@@ -1,5 +1,5 @@
 CC:=cc
-CFLAGS:=-Wall -Wextra -g -O3
+CFLAGS:=-Wall -Wextra -Wno-strict-aliasing -g -O3
 
 HEADERS=sse.h mmx.h
 

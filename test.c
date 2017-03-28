@@ -328,7 +328,9 @@ test_simd_mm_add_pi16(const MunitParameter params[], void* data) {
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     __m64 r = _mm_add_pi16(test_vec[i].a, test_vec[i].b);
-    assert_m64_pi16(r, ==, test_vec[i].r);
+    assert_m64_pi16(r,
+		    ==,
+		    test_vec[i].r);
   }
 
   return MUNIT_OK;
@@ -395,17 +397,13 @@ test_simd_mm_add_pi32(const MunitParameter params[], void* data) {
 
 /*** SSE ***/
 
-#define assert_m128_ps(a, cmp, b)      \
-  munit_assert_float((a)[0], cmp, (b)[0]); \
-  munit_assert_float((a)[1], cmp, (b)[1]); \
-  munit_assert_float((a)[2], cmp, (b)[2]); \
-  munit_assert_float((a)[3], cmp, (b)[3]);
-
-#define assert_m128_eq(a, b) \
-  munit_assert_double_equal((a)[0], (b)[0], 10); \
-  munit_assert_double_equal((a)[1], (b)[1], 10); \
-  munit_assert_double_equal((a)[2], (b)[2], 10); \
-  munit_assert_double_equal((a)[3], (b)[3], 10);
+#define assert_m128_ps(a, cmp, b)					\
+  do {									\
+    munit_assert_float(((float*) (&a))[0], cmp, ((float*) (&b))[0]);	\
+    munit_assert_float(((float*) (&a))[1], cmp, ((float*) (&b))[1]);	\
+    munit_assert_float(((float*) (&a))[2], cmp, ((float*) (&b))[2]);	\
+    munit_assert_float(((float*) (&a))[3], cmp, ((float*) (&b))[3]);	\
+  } while (0)
 
 static MunitResult
 test_simd_mm_set_ps(const MunitParameter params[], void* data) {

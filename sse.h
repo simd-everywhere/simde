@@ -14,24 +14,23 @@
 #  include <xmmintrin.h>
 #else
 
-typedef float SIMDE__TYPE(m128) __attribute__((__vector_size__(16),__unused__));
+typedef union {
+  char  i8  __attribute__((__vector_size__(16)));
+  short i16 __attribute__((__vector_size__(16)));
+  int   i32 __attribute__((__vector_size__(16)));
+  float flt __attribute__((__vector_size__(16)));
+} SIMDE__TYPE(m128);
 #if defined(SIMDE__EMULATE_NATIVE)
+#  if defined(__m128)
+#    undef __m128
+#  endif
 #  define __m128 SIMDE__TYPE(m128)
 #endif
-
-/* Internal types.  We cast to these for some operations because
-   bitwise operations on floats are undefined in C, but some functions
-   require them. */
-typedef unsigned int SIMDE__TYPE(_m128_u32) __attribute__((__vector_size__(16),__unused__));
-union SIMDE__TYPE(_m128_u) {
-  SIMDE__TYPE(m128) flt;
-  unsigned int u32 __attribute__((__vector_size__(16)));
-};
 
 SIMDE__SSE_INLINE_FUNC
 SIMDE__TYPE(m128)
 SIMDE__SYMBOL(set_ps) (float a, float b, float c, float d) {
-  return (SIMDE__TYPE(m128)) { d, c, b, a };
+  return (SIMDE__TYPE(m128)) { .flt = { d, c, b, a } };
 }
 #if defined(SIMDE__EMULATE_NATIVE)
 #  define _mm_set_ps SIMDE__SYMBOL(set_ps)
@@ -49,7 +48,7 @@ SIMDE__SYMBOL(set1_ps) (float v) {
 SIMDE__SSE_INLINE_FUNC
 SIMDE__TYPE(m128)
 SIMDE__SYMBOL(add_ps) (SIMDE__TYPE(m128) a, SIMDE__TYPE(m128) b) {
-  return a + b;
+  return (SIMDE__TYPE(m128)) { .flt = a.flt + b.flt };
 }
 #if defined(SIMDE__EMULATE_NATIVE)
 #  define _mm_add_ps SIMDE__SYMBOL(add_ps)
@@ -59,10 +58,7 @@ SIMDE__SSE_INLINE_FUNC
 SIMDE__TYPE(m128)
 SIMDE__SYMBOL(add_ss) (SIMDE__TYPE(m128) a, SIMDE__TYPE(m128) b) {
   return (SIMDE__TYPE(m128)) {
-    a[0] + b[0],
-    a[1],
-    a[2],
-    a[3]
+    .flt = { a.flt[0] + b.flt[0], a.flt[1], a.flt[2], a.flt[3] }
   };
 }
 #if defined(SIMDE__EMULATE_NATIVE)
@@ -72,13 +68,9 @@ SIMDE__SYMBOL(add_ss) (SIMDE__TYPE(m128) a, SIMDE__TYPE(m128) b) {
 SIMDE__SSE_INLINE_FUNC
 SIMDE__TYPE(m128)
 SIMDE__SYMBOL(and_ps) (SIMDE__TYPE(m128) a, SIMDE__TYPE(m128) b) {
-  SIMDE__TYPE(m128) r;
-  int p;
-  for (p = 0 ; p < 4 ; p++) {
-    unsigned int tmp = *((unsigned int*) (&a[p])) & *((unsigned int*) (&b[p]));
-    r[p] = *((float*) &tmp);
-  }
-  return r;
+  return (SIMDE__TYPE(m128)) {
+    .i32 = a.i32 & b.i32
+  };
 }
 #if defined(SIMDE__EMULATE_NATIVE)
 #  define _mm_and_ps SIMDE__SYMBOL(and_ps)
@@ -87,16 +79,9 @@ SIMDE__SYMBOL(and_ps) (SIMDE__TYPE(m128) a, SIMDE__TYPE(m128) b) {
 SIMDE__SSE_INLINE_FUNC
 SIMDE__TYPE(m128)
 SIMDE__SYMBOL(andnot_ps) (SIMDE__TYPE(m128) a, SIMDE__TYPE(m128) b) {
-  SIMDE__TYPE(m128) r;
-  union SIMDE__TYPE(_m128_u)* au = (union SIMDE__TYPE(_m128_u)*) &a;
-  union SIMDE__TYPE(_m128_u)* bu = (union SIMDE__TYPE(_m128_u)*) &b;
-  union SIMDE__TYPE(_m128_u)* ru = (union SIMDE__TYPE(_m128_u)*) &r;
-
-  int p;
-  for (p = 0 ; p < 4 ; p++)
-    ((*ru).u32)[p] = (~(((*au).u32)[p])) & (((*bu).u32)[p]);
-
-  return r;
+  return (SIMDE__TYPE(m128)) {
+    .i32 = ~(a.i32) & b.i32
+  };
 }
 #if defined(SIMDE__EMULATE_NATIVE)
 #  define _mm_andnot_ps SIMDE__SYMBOL(andnot_ps)
@@ -105,7 +90,9 @@ SIMDE__SYMBOL(andnot_ps) (SIMDE__TYPE(m128) a, SIMDE__TYPE(m128) b) {
 SIMDE__SSE_INLINE_FUNC
 SIMDE__TYPE(m128)
 SIMDE__SYMBOL(sub_ps) (SIMDE__TYPE(m128) a, SIMDE__TYPE(m128) b) {
-  return a - b;
+  return (SIMDE__TYPE(m128)) {
+    .flt = a.flt - b.flt
+  };
 }
 #if defined(SIMDE__EMULATE_NATIVE)
 #  define _mm_sub_ps SIMDE__SYMBOL(sub_ps)
@@ -114,7 +101,9 @@ SIMDE__SYMBOL(sub_ps) (SIMDE__TYPE(m128) a, SIMDE__TYPE(m128) b) {
 SIMDE__SSE_INLINE_FUNC
 SIMDE__TYPE(m128)
 SIMDE__SYMBOL(mul_ps) (SIMDE__TYPE(m128) a, SIMDE__TYPE(m128) b) {
-  return a * b;
+  return (SIMDE__TYPE(m128)) {
+    .flt = a.flt * b.flt
+  };
 }
 #if defined(SIMDE__EMULATE_NATIVE)
 #  define _mm_mul_ps SIMDE__SYMBOL(mul_ps)
@@ -123,7 +112,9 @@ SIMDE__SYMBOL(mul_ps) (SIMDE__TYPE(m128) a, SIMDE__TYPE(m128) b) {
 SIMDE__SSE_INLINE_FUNC
 SIMDE__TYPE(m128)
 SIMDE__SYMBOL(div_ps) (SIMDE__TYPE(m128) a, SIMDE__TYPE(m128) b) {
-  return a / b;
+  return (SIMDE__TYPE(m128)) {
+    .flt = a.flt / b.flt
+  };
 }
 #if defined(SIMDE__EMULATE_NATIVE)
 #  define _mm_div_ps SIMDE__SYMBOL(div_ps)
