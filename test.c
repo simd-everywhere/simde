@@ -1,8 +1,11 @@
 #define SIMDE__EMULATE_NATIVE
-/* #define SIMDE__MMX_NATIVE */
-/* #define SIMDE__SSE_NATIVE */
 
-#include <stdio.h>
+#if defined(TEST_NATIVE)
+#  define SIMDE__MMX_NATIVE
+#  define SIMDE__SSE_NATIVE
+#endif
+
+#include <limits.h>
 
 #include "sse.h"
 #include "munit/munit.h"
@@ -19,10 +22,31 @@
   munit_assert_double_equal((a)[2], (b)[2], 10); \
   munit_assert_double_equal((a)[3], (b)[3], 10);
 
+/*** MMX ***/
+
+static MunitResult
+test_simd_mm_set_pi8(const MunitParameter params[], void* data) {
+  char d[8 / sizeof(char)];
+  munit_rand_memory(sizeof(d), (uint8_t*) d);
+
+  __m64 x = _mm_set_pi8(d[0], d[1], d[2], d[3], d[4], d[5], d[6], d[7]);
+  char* c = (char*) &x;
+
+  munit_assert_int8(c[0], ==, d[7]);
+  munit_assert_int8(c[1], ==, d[6]);
+  munit_assert_int8(c[2], ==, d[5]);
+  munit_assert_int8(c[3], ==, d[4]);
+  munit_assert_int8(c[4], ==, d[3]);
+  munit_assert_int8(c[5], ==, d[2]);
+  munit_assert_int8(c[6], ==, d[1]);
+  munit_assert_int8(c[7], ==, d[0]);
+
+  return MUNIT_OK;
+}
 
 static MunitResult
 test_simd_mm_set_pi16(const MunitParameter params[], void* data) {
-  short d[4];
+  short d[8 / sizeof(short)];
   munit_rand_memory(sizeof(d), (uint8_t*) d);
 
   __m64 x = _mm_set_pi16(d[0], d[1], d[2], d[3]);
@@ -35,6 +59,119 @@ test_simd_mm_set_pi16(const MunitParameter params[], void* data) {
 
   return MUNIT_OK;
 }
+
+static MunitResult
+test_simd_mm_set_pi32(const MunitParameter params[], void* data) {
+  int d[8 / sizeof(int)];
+  munit_rand_memory(sizeof(d), (uint8_t*) d);
+
+  __m64 x = _mm_set_pi32(d[0], d[1]);
+  int* i = (int*) &x;
+
+  munit_assert_int(i[0], ==, d[1]);
+  munit_assert_int(i[1], ==, d[0]);
+
+  return MUNIT_OK;
+}
+
+static MunitResult
+test_simd_mm_set1_pi8(const MunitParameter params[], void* data) {
+  char v = (char) munit_rand_int_range(CHAR_MIN, CHAR_MAX);
+
+  __m64 x = _mm_set1_pi8(v);
+  char* r = (char*) &x;
+
+  munit_assert_int8(r[0], ==, v);
+  munit_assert_int8(r[1], ==, v);
+  munit_assert_int8(r[2], ==, v);
+  munit_assert_int8(r[3], ==, v);
+  munit_assert_int8(r[4], ==, v);
+  munit_assert_int8(r[5], ==, v);
+  munit_assert_int8(r[6], ==, v);
+  munit_assert_int8(r[7], ==, v);
+
+  return MUNIT_OK;
+}
+
+static MunitResult
+test_simd_mm_set1_pi16(const MunitParameter params[], void* data) {
+  short v = (short) munit_rand_int_range(SHRT_MIN, SHRT_MAX);
+
+  __m64 x = _mm_set1_pi16(v);
+  short* r = (short*) &x;
+
+  munit_assert_int8(r[0], ==, v);
+  munit_assert_int8(r[1], ==, v);
+  munit_assert_int8(r[2], ==, v);
+  munit_assert_int8(r[3], ==, v);
+
+  return MUNIT_OK;
+}
+
+static MunitResult
+test_simd_mm_set1_pi32(const MunitParameter params[], void* data) {
+  int v = (int) munit_rand_int_range(INT_MIN, INT_MAX);
+
+  __m64 x = _mm_set1_pi32(v);
+  int* r = (int*) &x;
+
+  munit_assert_int8(r[0], ==, v);
+  munit_assert_int8(r[1], ==, v);
+
+  return MUNIT_OK;
+}
+
+static MunitResult
+test_simd_mm_setr_pi8(const MunitParameter params[], void* data) {
+  char d[8 / sizeof(char)];
+  munit_rand_memory(sizeof(d), (uint8_t*) d);
+
+  __m64 x = _mm_setr_pi8(d[0], d[1], d[2], d[3], d[4], d[5], d[6], d[7]);
+  char* c = (char*) &x;
+
+  munit_assert_int8(c[0], ==, d[0]);
+  munit_assert_int8(c[1], ==, d[1]);
+  munit_assert_int8(c[2], ==, d[2]);
+  munit_assert_int8(c[3], ==, d[3]);
+  munit_assert_int8(c[4], ==, d[4]);
+  munit_assert_int8(c[5], ==, d[5]);
+  munit_assert_int8(c[6], ==, d[6]);
+  munit_assert_int8(c[7], ==, d[7]);
+
+  return MUNIT_OK;
+}
+
+static MunitResult
+test_simd_mm_setr_pi16(const MunitParameter params[], void* data) {
+  short d[8 / sizeof(short)];
+  munit_rand_memory(sizeof(d), (uint8_t*) d);
+
+  __m64 x = _mm_setr_pi16(d[0], d[1], d[2], d[3]);
+  short* s = (short*) &x;
+
+  munit_assert_short(s[0], ==, d[0]);
+  munit_assert_short(s[1], ==, d[1]);
+  munit_assert_short(s[2], ==, d[2]);
+  munit_assert_short(s[3], ==, d[3]);
+
+  return MUNIT_OK;
+}
+
+static MunitResult
+test_simd_mm_setr_pi32(const MunitParameter params[], void* data) {
+  int d[8 / sizeof(int)];
+  munit_rand_memory(sizeof(d), (uint8_t*) d);
+
+  __m64 x = _mm_setr_pi32(d[0], d[1]);
+  int* i = (int*) &x;
+
+  munit_assert_int(i[0], ==, d[0]);
+  munit_assert_int(i[1], ==, d[1]);
+
+  return MUNIT_OK;
+}
+
+/*** SSE ***/
 
 static MunitResult
 test_simd_mm_set_ps(const MunitParameter params[], void* data) {
@@ -230,13 +367,21 @@ test_simd_mm_sub_ps(const MunitParameter params[], void* data) {
 }
 
 static MunitTest test_suite_tests[] = {
-  { (char*) "/mmx/mm_set_pi16", test_simd_mm_set_pi16, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mmx/mm_set_pi8",   test_simd_mm_set_pi8,   NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mmx/mm_set_pi16",  test_simd_mm_set_pi16,  NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mmx/mm_set_pi32",  test_simd_mm_set_pi32,  NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mmx/mm_set1_pi8",  test_simd_mm_set1_pi8,  NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mmx/mm_set1_pi16", test_simd_mm_set1_pi8,  NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mmx/mm_set1_pi32", test_simd_mm_set1_pi8,  NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mmx/mm_setr_pi8",  test_simd_mm_setr_pi8,  NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mmx/mm_setr_pi16", test_simd_mm_setr_pi16, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mmx/mm_setr_pi32", test_simd_mm_setr_pi32, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
 
-  { (char*) "/sse/mm_set_ps", test_simd_mm_set_ps, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/sse/mm_set1_ps", test_simd_mm_set1_ps, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/sse/mm_add_ps", test_simd_mm_add_ps, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/sse/mm_add_ss", test_simd_mm_add_ss, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/sse/mm_and_ps", test_simd_mm_and_ps, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/sse/mm_set_ps",    test_simd_mm_set_ps,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/sse/mm_set1_ps",   test_simd_mm_set1_ps,   NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/sse/mm_add_ps",    test_simd_mm_add_ps,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/sse/mm_add_ss",    test_simd_mm_add_ss,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/sse/mm_and_ps",    test_simd_mm_and_ps,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
   { (char*) "/sse/mm_andnot_ps", test_simd_mm_andnot_ps, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
 
   { (char*) "/sse/mm_sub_ps", test_simd_mm_sub_ps, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
@@ -244,7 +389,12 @@ static MunitTest test_suite_tests[] = {
 };
 
 static const MunitSuite test_suite = {
-  (char*) "", test_suite_tests, NULL, 1, MUNIT_SUITE_OPTION_NONE
+#if defined(TEST_NATIVE)
+  (char*) "/native",
+#else
+  (char*) "/emul",
+#endif
+  test_suite_tests, NULL, 1, MUNIT_SUITE_OPTION_NONE
 };
 
 int main(int argc, char* argv[MUNIT_ARRAY_PARAM(argc + 1)]) {

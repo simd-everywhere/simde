@@ -1,4 +1,5 @@
 *~
 
 /munit.o
-/test
+/test-native
+/test-emul
