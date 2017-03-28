@@ -13,9 +13,9 @@
 #else
 
 typedef union {
-  char  i8 __attribute__((__vector_size__(16)));
-  short i16 __attribute__((__vector_size__(16)));
-  int   i32 __attribute__((__vector_size__(16)));
+  char  i8 __attribute__((__vector_size__(8)));
+  short i16 __attribute__((__vector_size__(8)));
+  int   i32 __attribute__((__vector_size__(8)));
 } SIMDE__TYPE(m64);
 #if defined(SIMDE__EMULATE_NATIVE)
 #  if defined(__m64)
