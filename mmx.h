@@ -26,6 +26,33 @@ typedef union {
 
 SIMDE__MMX_INLINE_FUNC
 SIMDE__TYPE(m64)
+SIMDE__SYMBOL(add_pi8) (__m64 a, __m64 b) {
+  return (SIMDE__TYPE(m64)) { .i8 = a.i8 + b.i8 };
+}
+#if defined(SIMDE__EMULATE_NATIVE)
+#  define _mm_add_pi8 SIMDE__SYMBOL(add_pi8)
+#endif
+
+SIMDE__MMX_INLINE_FUNC
+SIMDE__TYPE(m64)
+SIMDE__SYMBOL(add_pi16) (__m64 a, __m64 b) {
+  return (SIMDE__TYPE(m64)) { .i16 = a.i16 + b.i16 };
+}
+#if defined(SIMDE__EMULATE_NATIVE)
+#  define _mm_add_pi16 SIMDE__SYMBOL(add_pi16)
+#endif
+
+SIMDE__MMX_INLINE_FUNC
+SIMDE__TYPE(m64)
+SIMDE__SYMBOL(add_pi32) (__m64 a, __m64 b) {
+  return (SIMDE__TYPE(m64)) { .i32 = a.i32 + b.i32 };
+}
+#if defined(SIMDE__EMULATE_NATIVE)
+#  define _mm_add_pi32 SIMDE__SYMBOL(add_pi32)
+#endif
+
+SIMDE__MMX_INLINE_FUNC
+SIMDE__TYPE(m64)
 SIMDE__SYMBOL(set_pi8) (char e7, char e6, char e5, char e4, char e3, char e2, char e1, char e0) {
   return (SIMDE__TYPE(m64)) { .i8 = { e0, e1, e2, e3, e4, e5, e6, e7 } };
 }
