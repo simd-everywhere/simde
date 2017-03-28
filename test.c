@@ -1,5 +1,6 @@
-#define SIMDE_SIMD__EMULATE_NATIVE
-/* #define SIMDE_SIMD__SSE_NATIVE */
+#define SIMDE__EMULATE_NATIVE
+/* #define SIMDE__MMX_NATIVE */
+/* #define SIMDE__SSE_NATIVE */
 
 #include <stdio.h>
 
@@ -17,6 +18,23 @@
   munit_assert_double_equal((a)[1], (b)[1], 10); \
   munit_assert_double_equal((a)[2], (b)[2], 10); \
   munit_assert_double_equal((a)[3], (b)[3], 10);
+
+
+static MunitResult
+test_simd_mm_set_pi16(const MunitParameter params[], void* data) {
+  short d[4];
+  munit_rand_memory(sizeof(d), (uint8_t*) d);
+
+  __m64 x = _mm_set_pi16(d[0], d[1], d[2], d[3]);
+  short* s = (short*) &x;
+
+  munit_assert_short(s[0], ==, d[3]);
+  munit_assert_short(s[1], ==, d[2]);
+  munit_assert_short(s[2], ==, d[1]);
+  munit_assert_short(s[3], ==, d[0]);
+
+  return MUNIT_OK;
+}
 
 static MunitResult
 test_simd_mm_set_ps(const MunitParameter params[], void* data) {
@@ -212,6 +230,8 @@ test_simd_mm_sub_ps(const MunitParameter params[], void* data) {
 }
 
 static MunitTest test_suite_tests[] = {
+  { (char*) "/mmx/mm_set_pi16", test_simd_mm_set_pi16, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+
   { (char*) "/sse/mm_set_ps", test_simd_mm_set_ps, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
   { (char*) "/sse/mm_set1_ps", test_simd_mm_set1_ps, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
   { (char*) "/sse/mm_add_ps", test_simd_mm_add_ps, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
