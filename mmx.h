@@ -12,6 +12,8 @@
 #  include <mmintrin.h>
 #else
 
+#include <limits.h>
+
 typedef union {
   char  i8 __attribute__((__vector_size__(8)));
   short i16 __attribute__((__vector_size__(8)));
@@ -49,6 +51,44 @@ SIMDE__SYMBOL(add_pi32) (__m64 a, __m64 b) {
 }
 #if defined(SIMDE__EMULATE_NATIVE)
 #  define _mm_add_pi32 SIMDE__SYMBOL(add_pi32)
+#endif
+
+SIMDE__MMX_INLINE_FUNC
+SIMDE__TYPE(m64)
+SIMDE__SYMBOL(adds_pi8) (__m64 a, __m64 b) {
+  __m64 r;
+  for (int i = 0 ; i < 8 ; i++) {
+    if ((((b.i8[i]) > 0) && ((a.i8[i]) > (CHAR_MAX - (b.i8[i]))))) {
+      r.i8[i] = CHAR_MAX;
+    } else if ((((b.i8[i]) < 0) && ((a.i8[i]) < (CHAR_MIN - (b.i8[i]))))) {
+      r.i8[i] = CHAR_MIN;
+    } else {
+      r.i8[i] = (a.i8[i]) + (b.i8[i]);
+    }
+  }
+  return r;
+}
+#if defined(SIMDE__EMULATE_NATIVE)
+#  define _mm_adds_pi8 SIMDE__SYMBOL(adds_pi8)
+#endif
+
+SIMDE__MMX_INLINE_FUNC
+SIMDE__TYPE(m64)
+SIMDE__SYMBOL(adds_pi16) (__m64 a, __m64 b) {
+  __m64 r;
+  for (int i = 0 ; i < 4 ; i++) {
+    if ((((b.i16[i]) > 0) && ((a.i16[i]) > (SHRT_MAX - (b.i16[i]))))) {
+      r.i16[i] = SHRT_MAX;
+    } else if ((((b.i16[i]) < 0) && ((a.i16[i]) < (SHRT_MIN - (b.i16[i]))))) {
+      r.i16[i] = SHRT_MIN;
+    } else {
+      r.i16[i] = (a.i16[i]) + (b.i16[i]);
+    }
+  }
+  return r;
+}
+#if defined(SIMDE__EMULATE_NATIVE)
+#  define _mm_adds_pi16 SIMDE__SYMBOL(adds_pi16)
 #endif
 
 SIMDE__MMX_INLINE_FUNC
