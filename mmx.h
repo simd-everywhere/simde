@@ -12,6 +12,7 @@
 #  include <mmintrin.h>
 #else
 
+#include <stdint.h>
 #include <limits.h>
 
 typedef union {
@@ -94,6 +95,24 @@ SIMDE__SYMBOL(adds_pi16) (__m64 a, __m64 b) {
 
 SIMDE__MMX_INLINE_FUNC
 SIMDE__TYPE(m64)
+SIMDE__SYMBOL(and_si64) (__m64 a, __m64 b) {
+  return (SIMDE__TYPE(m64)) { .i64 = a.i64 & b.i64 };
+}
+#if defined(SIMDE__EMULATE_NATIVE)
+#  define _mm_and_si64 SIMDE__SYMBOL(and_si64)
+#endif
+
+SIMDE__MMX_INLINE_FUNC
+SIMDE__TYPE(m64)
+SIMDE__SYMBOL(andnot_si64) (__m64 a, __m64 b) {
+  return (SIMDE__TYPE(m64)) { .i64 = ~(a.i64) & b.i64 };
+}
+#if defined(SIMDE__EMULATE_NATIVE)
+#  define _mm_andnot_si64 SIMDE__SYMBOL(andnot_si64)
+#endif
+
+SIMDE__MMX_INLINE_FUNC
+SIMDE__TYPE(m64)
 SIMDE__SYMBOL(cmpeq_pi8) (__m64 a, __m64 b) {
   __m64 r;
   for (int i = 0 ; i < 8 ; i++) {
@@ -171,21 +190,39 @@ SIMDE__SYMBOL(cmpgt_pi32) (__m64 a, __m64 b) {
 #endif
 
 SIMDE__MMX_INLINE_FUNC
-SIMDE__TYPE(m64)
-SIMDE__SYMBOL(and_si64) (__m64 a, __m64 b) {
-  return (SIMDE__TYPE(m64)) { .i64 = a.i64 & b.i64 };
+int64_t
+SIMDE__SYMBOL(cvtm64_si64) (__m64 a) {
+  return a.i64;
 }
 #if defined(SIMDE__EMULATE_NATIVE)
-#  define _mm_and_si64 SIMDE__SYMBOL(and_si64)
+#  define _mm_cvtm64_si64 SIMDE__SYMBOL(cvtm64_si64)
 #endif
 
 SIMDE__MMX_INLINE_FUNC
 SIMDE__TYPE(m64)
-SIMDE__SYMBOL(andnot_si64) (__m64 a, __m64 b) {
-  return (SIMDE__TYPE(m64)) { .i64 = ~(a.i64) & b.i64 };
+SIMDE__SYMBOL(cvtsi32_si64) (int a) {
+  return (SIMDE__TYPE(m64)) { .i32 = { a, 0 } };
 }
 #if defined(SIMDE__EMULATE_NATIVE)
-#  define _mm_andnot_si64 SIMDE__SYMBOL(andnot_si64)
+#  define _mm_cvtsi32_si64 SIMDE__SYMBOL(cvtsi32_si64)
+#endif
+
+SIMDE__MMX_INLINE_FUNC
+SIMDE__TYPE(m64)
+SIMDE__SYMBOL(cvtsi64_m64) (int64_t a) {
+  return (SIMDE__TYPE(m64)) { .i64 = a };
+}
+#if defined(SIMDE__EMULATE_NATIVE)
+#  define _mm_cvtsi64_m64 SIMDE__SYMBOL(cvtsi64_m64)
+#endif
+
+SIMDE__MMX_INLINE_FUNC
+int
+SIMDE__SYMBOL(cvtsi64_si32) (__m64 a) {
+  return a.i32[0];
+}
+#if defined(SIMDE__EMULATE_NATIVE)
+#  define _mm_cvtsi64_si32 SIMDE__SYMBOL(cvtsi64_si32)
 #endif
 
 SIMDE__MMX_INLINE_FUNC
