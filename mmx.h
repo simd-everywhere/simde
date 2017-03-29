@@ -18,6 +18,7 @@ typedef union {
   char  i8 __attribute__((__vector_size__(8)));
   short i16 __attribute__((__vector_size__(8)));
   int   i32 __attribute__((__vector_size__(8)));
+  long long int i64;
 } SIMDE__TYPE(m64);
 #if defined(SIMDE__EMULATE_NATIVE)
 #  if defined(__m64)
@@ -89,6 +90,24 @@ SIMDE__SYMBOL(adds_pi16) (__m64 a, __m64 b) {
 }
 #if defined(SIMDE__EMULATE_NATIVE)
 #  define _mm_adds_pi16 SIMDE__SYMBOL(adds_pi16)
+#endif
+
+SIMDE__MMX_INLINE_FUNC
+SIMDE__TYPE(m64)
+SIMDE__SYMBOL(and_si64) (__m64 a, __m64 b) {
+  return (SIMDE__TYPE(m64)) { .i64 = a.i64 & b.i64 };
+}
+#if defined(SIMDE__EMULATE_NATIVE)
+#  define _mm_and_si64 SIMDE__SYMBOL(and_si64)
+#endif
+
+SIMDE__MMX_INLINE_FUNC
+SIMDE__TYPE(m64)
+SIMDE__SYMBOL(andnot_si64) (__m64 a, __m64 b) {
+  return (SIMDE__TYPE(m64)) { .i64 = ~(a.i64) & b.i64 };
+}
+#if defined(SIMDE__EMULATE_NATIVE)
+#  define _mm_andnot_si64 SIMDE__SYMBOL(andnot_si64)
 #endif
 
 SIMDE__MMX_INLINE_FUNC
