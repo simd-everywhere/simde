@@ -264,6 +264,48 @@ SIMDE__SYMBOL(__mm_empty) (__m64 a) {
 
 SIMDE__MMX_INLINE_FUNC
 SIMDE__TYPE(m64)
+SIMDE__SYMBOL(__mm_madd_pi16) (__m64 a, __m64 b) {
+  __m64 r;
+  for (int i = 0 ; i < 4 ; i += 2) {
+    r.i32[i / 2] = (a.i16[i] * b.i16[i]) + (a.i16[i + 1] * b.i16[i + 1]);
+  }
+  return r;
+}
+#if defined(_mm_madd_pi16)
+#  undef _mm_madd_pi16
+#endif
+#define _mm_madd_pi16 SIMDE__SYMBOL(__mm_madd_pi16)
+
+SIMDE__MMX_INLINE_FUNC
+SIMDE__TYPE(m64)
+SIMDE__SYMBOL(__mm_mulhi_pi16) (__m64 a, __m64 b) {
+  __m64 r;
+  for (int i = 0 ; i < 4 ; i++) {
+    r.i16[i] = (short) ((a.i16[i] * b.i16[i]) >> 16);
+  }
+  return r;
+}
+#if defined(_mm_mulhi_pi16)
+#  undef _mm_mulhi_pi16
+#endif
+#define _mm_mulhi_pi16 SIMDE__SYMBOL(__mm_mulhi_pi16)
+
+SIMDE__MMX_INLINE_FUNC
+SIMDE__TYPE(m64)
+SIMDE__SYMBOL(__mm_mullo_pi16) (__m64 a, __m64 b) {
+  __m64 r;
+  for (int i = 0 ; i < 4 ; i++) {
+    r.i16[i] = (short) ((a.i16[i] * b.i16[i]) & 0xffff);
+  }
+  return r;
+}
+#if defined(_mm_mullo_pi16)
+#  undef _mm_mullo_pi16
+#endif
+#define _mm_mullo_pi16 SIMDE__SYMBOL(__mm_mullo_pi16)
+
+SIMDE__MMX_INLINE_FUNC
+SIMDE__TYPE(m64)
 SIMDE__SYMBOL(__mm_set_pi8) (char e7, char e6, char e5, char e4, char e3, char e2, char e1, char e0) {
   return (SIMDE__TYPE(m64)) { .i8 = { e0, e1, e2, e3, e4, e5, e6, e7 } };
 }
