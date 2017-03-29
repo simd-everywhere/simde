@@ -133,6 +133,45 @@ SIMDE__SYMBOL(cmpeq_pi32) (__m64 a, __m64 b) {
 
 SIMDE__MMX_INLINE_FUNC
 SIMDE__TYPE(m64)
+SIMDE__SYMBOL(cmpgt_pi8) (__m64 a, __m64 b) {
+  __m64 r;
+  for (int i = 0 ; i < 8 ; i++) {
+    r.i8[i] = (a.i8[i] > b.i8[i]) * 0xff;
+  }
+  return r;
+}
+#if defined(SIMDE__EMULATE_NATIVE)
+#  define _mm_cmpgt_pi8 SIMDE__SYMBOL(cmpgt_pi8)
+#endif
+
+SIMDE__MMX_INLINE_FUNC
+SIMDE__TYPE(m64)
+SIMDE__SYMBOL(cmpgt_pi16) (__m64 a, __m64 b) {
+  __m64 r;
+  for (int i = 0 ; i < 4 ; i++) {
+    r.i16[i] = (a.i16[i] > b.i16[i]) * 0xffff;
+  }
+  return r;
+}
+#if defined(SIMDE__EMULATE_NATIVE)
+#  define _mm_cmpgt_pi16 SIMDE__SYMBOL(cmpgt_pi16)
+#endif
+
+SIMDE__MMX_INLINE_FUNC
+SIMDE__TYPE(m64)
+SIMDE__SYMBOL(cmpgt_pi32) (__m64 a, __m64 b) {
+  __m64 r;
+  for (int i = 0 ; i < 2 ; i++) {
+    r.i32[i] = (a.i32[i] > b.i32[i]) * 0xffffffff;
+  }
+  return r;
+}
+#if defined(SIMDE__EMULATE_NATIVE)
+#  define _mm_cmpgt_pi32 SIMDE__SYMBOL(cmpgt_pi32)
+#endif
+
+SIMDE__MMX_INLINE_FUNC
+SIMDE__TYPE(m64)
 SIMDE__SYMBOL(and_si64) (__m64 a, __m64 b) {
   return (SIMDE__TYPE(m64)) { .i64 = a.i64 & b.i64 };
 }
