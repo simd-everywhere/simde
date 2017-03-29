@@ -219,6 +219,10 @@ SIMDE__SYMBOL(__mm_cvtsi32_si64) (int a) {
 #  undef _mm_cvtsi32_si64
 #endif
 #define _mm_cvtsi32_si64 SIMDE__SYMBOL(__mm_cvtsi32_si64)
+#if defined(_m_from_int)
+#  undef _m_from_int
+#endif
+#define _m_from_int SIMDE__SYMBOL(__mm_from_int)
 
 SIMDE__MMX_INLINE_FUNC
 SIMDE__TYPE(m64)
@@ -229,6 +233,10 @@ SIMDE__SYMBOL(__mm_cvtsi64_m64) (int64_t a) {
 #  undef _mm_cvtsi64_m64
 #endif
 #define _mm_cvtsi64_m64 SIMDE__SYMBOL(__mm_cvtsi64_m64)
+#if defined(_m_from_int64)
+#  undef _m_from_int64
+#endif
+#define _m_from_int64 SIMDE__SYMBOL(__m_from_int64)
 
 SIMDE__MMX_INLINE_FUNC
 int
@@ -239,6 +247,20 @@ SIMDE__SYMBOL(__mm_cvtsi64_si32) (__m64 a) {
 #  undef _mm_cvtsi64_si32
 #endif
 #define _mm_cvtsi64_si32 SIMDE__SYMBOL(__mm_cvtsi64_si32)
+
+SIMDE__MMX_INLINE_FUNC
+int
+SIMDE__SYMBOL(__mm_empty) (__m64 a) {
+  return a.i32[0];
+}
+#if defined(_mm_empty)
+#  undef _mm_empty
+#endif
+#define _mm_empty SIMDE__SYMBOL(__mm_empty)
+#if defined(_m_empty)
+#  undef _m_empty
+#endif
+#define _m_empty SIMDE__SYMBOL(__mm_empty)
 
 SIMDE__MMX_INLINE_FUNC
 SIMDE__TYPE(m64)
