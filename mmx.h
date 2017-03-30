@@ -53,6 +53,10 @@ SIMDE__SYMBOL(__mm_add_pi16) (__m64 a, __m64 b) {
 #  undef _mm_add_pi16
 #endif
 #define _mm_add_pi16 SIMDE__SYMBOL(__mm_add_pi16)
+#if defined(_m_paddw)
+#  undef _m_paddw
+#endif
+#define _m_paddw SIMDE__SYMBOL(__m_paddw)
 
 SIMDE__MMX_INLINE_FUNC
 SIMDE__TYPE(m64)
@@ -163,6 +167,10 @@ SIMDE__SYMBOL(__mm_and_si64) (__m64 a, __m64 b) {
 #  undef _mm_and_si64
 #endif
 #define _mm_and_si64 SIMDE__SYMBOL(__mm_and_si64)
+#if defined(_m_pand)
+#  undef _m_pand
+#endif
+#define _m_pand SIMDE__SYMBOL(__mm_and_si64)
 
 SIMDE__MMX_INLINE_FUNC
 SIMDE__TYPE(m64)
@@ -173,6 +181,10 @@ SIMDE__SYMBOL(__mm_andnot_si64) (__m64 a, __m64 b) {
 #  undef _mm_andnot_si64
 #endif
 #define _mm_andnot_si64 SIMDE__SYMBOL(__mm_andnot_si64)
+#if defined(_m_pandn)
+#  undef _m_pandn
+#endif
+#define _m_pandn SIMDE__SYMBOL(__mm_andnot_si64)
 
 SIMDE__MMX_INLINE_FUNC
 SIMDE__TYPE(m64)
@@ -187,6 +199,10 @@ SIMDE__SYMBOL(__mm_cmpeq_pi8) (__m64 a, __m64 b) {
 #  undef _mm_cmpeq_pi8
 #endif
 #define _mm_cmpeq_pi8 SIMDE__SYMBOL(__mm_cmpeq_pi8)
+#if defined(_m_pcmpeqb)
+#  undef _m_pcmpeqb
+#endif
+#define _m_pcmpeqb SIMDE__SYMBOL(__mm_cmpeq_pi8)
 
 SIMDE__MMX_INLINE_FUNC
 SIMDE__TYPE(m64)
@@ -201,6 +217,10 @@ SIMDE__SYMBOL(__mm_cmpeq_pi16) (__m64 a, __m64 b) {
 #  undef _mm_cmpeq_pi16
 #endif
 #define _mm_cmpeq_pi16 SIMDE__SYMBOL(__mm_cmpeq_pi16)
+#if defined(_m_pcmpeqw)
+#  undef _m_pcmpeqw
+#endif
+#define _m_pcmpeqw SIMDE__SYMBOL(__mm_cmpeq_pi16)
 
 SIMDE__MMX_INLINE_FUNC
 SIMDE__TYPE(m64)
@@ -215,6 +235,10 @@ SIMDE__SYMBOL(__mm_cmpeq_pi32) (__m64 a, __m64 b) {
 #  undef _mm_cmpeq_pi32
 #endif
 #define _mm_cmpeq_pi32 SIMDE__SYMBOL(__mm_cmpeq_pi32)
+#if defined(_m_cpmpeqd)
+#  undef _m_cpmpeqd
+#endif
+#define _m_cpmpeqd SIMDE__SYMBOL(__m_cpmpeqd)
 
 SIMDE__MMX_INLINE_FUNC
 SIMDE__TYPE(m64)
@@ -229,6 +253,10 @@ SIMDE__SYMBOL(__mm_cmpgt_pi8) (__m64 a, __m64 b) {
 #  undef _mm_cmpgt_pi8
 #endif
 #define _mm_cmpgt_pi8 SIMDE__SYMBOL(__mm_cmpgt_pi8)
+#if defined(_m_pcmpgtb)
+#  undef _m_pcmpgtb
+#endif
+#define _m_pcmpgtb SIMDE__SYMBOL(__mm_cmpgt_pi8)
 
 SIMDE__MMX_INLINE_FUNC
 SIMDE__TYPE(m64)
@@ -243,6 +271,10 @@ SIMDE__SYMBOL(__mm_cmpgt_pi16) (__m64 a, __m64 b) {
 #  undef _mm_cmpgt_pi16
 #endif
 #define _mm_cmpgt_pi16 SIMDE__SYMBOL(__mm_cmpgt_pi16)
+#if defined(_m_pcmpgtw)
+#  undef _m_pcmpgtw
+#endif
+#define _m_pcmpgtw SIMDE__SYMBOL(__mm_cmpgt_pi16)
 
 SIMDE__MMX_INLINE_FUNC
 SIMDE__TYPE(m64)
@@ -257,6 +289,10 @@ SIMDE__SYMBOL(__mm_cmpgt_pi32) (__m64 a, __m64 b) {
 #  undef _mm_cmpgt_pi32
 #endif
 #define _mm_cmpgt_pi32 SIMDE__SYMBOL(__mm_cmpgt_pi32)
+#if defined(_m_pcmgtd)
+#  undef _m_pcmgtd
+#endif
+#define _m_pcmgtd SIMDE__SYMBOL(__mm_cmpgt_pi32)
 
 SIMDE__MMX_INLINE_FUNC
 int64_t
@@ -333,6 +369,10 @@ SIMDE__SYMBOL(__mm_madd_pi16) (__m64 a, __m64 b) {
 #  undef _mm_madd_pi16
 #endif
 #define _mm_madd_pi16 SIMDE__SYMBOL(__mm_madd_pi16)
+#if defined(_m_pmaddwd)
+#  undef _m_pmaddwd
+#endif
+#define _m_pmaddwd SIMDE__SYMBOL(__m_pmaddwd)
 
 SIMDE__MMX_INLINE_FUNC
 SIMDE__TYPE(m64)
@@ -347,6 +387,10 @@ SIMDE__SYMBOL(__mm_mulhi_pi16) (__m64 a, __m64 b) {
 #  undef _mm_mulhi_pi16
 #endif
 #define _mm_mulhi_pi16 SIMDE__SYMBOL(__mm_mulhi_pi16)
+#if defined(_m_pmulhw)
+#  undef _m_pmulhw
+#endif
+#define _m_pmulhw SIMDE__SYMBOL(__m_pmulhw)
 
 SIMDE__MMX_INLINE_FUNC
 SIMDE__TYPE(m64)
@@ -361,6 +405,10 @@ SIMDE__SYMBOL(__mm_mullo_pi16) (__m64 a, __m64 b) {
 #  undef _mm_mullo_pi16
 #endif
 #define _mm_mullo_pi16 SIMDE__SYMBOL(__mm_mullo_pi16)
+#if defined(_m_pmullw)
+#  undef _m_pmullw
+#endif
+#define _m_pmullw SIMDE__SYMBOL(__mm_mullo_pi16)
 
 SIMDE__MMX_INLINE_FUNC
 SIMDE__TYPE(m64)
@@ -371,6 +419,10 @@ SIMDE__SYMBOL(__mm_or_si64) (__m64 a, __m64 b) {
 #  undef _mm_or_si64
 #endif
 #define _mm_or_si64 SIMDE__SYMBOL(__mm_or_si64)
+#if defined(_m_por)
+#  undef _m_por
+#endif
+#define _m_por SIMDE__SYMBOL(__mm_or_si64)
 
 SIMDE__MMX_INLINE_FUNC
 SIMDE__TYPE(m64)
