@@ -620,5 +620,35 @@ SIMDE__SYMBOL(__mm_setzero_si64) (void) {
 #endif
 #define _mm_setzero_si64 SIMDE__SYMBOL(__mm_setr_si64)
 
+SIMDE__MMX_INLINE_FUNC
+SIMDE__TYPE(m64)
+SIMDE__SYMBOL(__mm_sll_pi16) (__m64 a, __m64 count) {
+  return (SIMDE__TYPE(m64)) { .i16 = a.i16 << count.i64 };
+}
+#if defined(_mm_sll_pi16)
+#  undef _mm_sll_pi16
+#endif
+#define _mm_sll_pi16 SIMDE__SYMBOL(__mm_sll_pi16)
+
+SIMDE__MMX_INLINE_FUNC
+SIMDE__TYPE(m64)
+SIMDE__SYMBOL(__mm_sll_pi32) (__m64 a, __m64 count) {
+  return (SIMDE__TYPE(m64)) { .i32 = a.i32 << count.i64 };
+}
+#if defined(_mm_sll_pi32)
+#  undef _mm_sll_pi32
+#endif
+#define _mm_sll_pi32 SIMDE__SYMBOL(__mm_sll_pi32)
+
+SIMDE__MMX_INLINE_FUNC
+SIMDE__TYPE(m64)
+SIMDE__SYMBOL(__mm_sll_si64) (__m64 a, __m64 count) {
+  return (SIMDE__TYPE(m64)) { .i64 = a.i64 << count.i64 };
+}
+#if defined(_mm_sll_si64)
+#  undef _mm_sll_si64
+#endif
+#define _mm_sll_si64 SIMDE__SYMBOL(__mm_sll_si64)
+
 #endif /* !defined(SIMDE__MMX_NATIVE) */
 #endif /* !defined(SIMDE__MMX_H) */

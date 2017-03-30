@@ -545,7 +545,6 @@ test_simd_mm_adds_pu16(const MunitParameter params[], void* data) {
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     __m64 r = _mm_adds_pu16(test_vec[i].a, test_vec[i].b);
-
     assert_m64_pi16(r, ==, test_vec[i].r);
   }
 
@@ -1314,6 +1313,138 @@ test_simd_mm_packs_pu16(const MunitParameter params[], void* data) {
   return MUNIT_OK;
 }
 
+static MunitResult
+test_simd_mm_sll_pi16(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  const struct {
+    __m64 a;
+    __m64 count;
+    __m64 r;
+  } test_vec[8] = {
+    { _mm_set_pi16(0xf5cc, 0xe395, 0x6194, 0x31c8),
+      _mm_cvtsi64_m64(15),
+      _mm_set_pi16(0x0000, 0x8000, 0x0000, 0x0000) },
+    { _mm_set_pi16(0x42f7, 0xd120, 0x7dff, 0x1548),
+      _mm_cvtsi64_m64(10),
+      _mm_set_pi16(0xdc00, 0x8000, 0xfc00, 0x2000) },
+    { _mm_set_pi16(0x04c3, 0xb817, 0x60bb, 0x32df),
+      _mm_cvtsi64_m64(3),
+      _mm_set_pi16(0x2618, 0xc0b8, 0x05d8, 0x96f8) },
+    { _mm_set_pi16(0x877b, 0xfe4a, 0xcca2, 0xf65c),
+      _mm_cvtsi64_m64(10),
+      _mm_set_pi16(0xec00, 0x2800, 0x8800, 0x7000) },
+    { _mm_set_pi16(0xb089, 0x77f9, 0x67c6, 0x23fd),
+      _mm_cvtsi64_m64(7),
+      _mm_set_pi16(0x4480, 0xfc80, 0xe300, 0xfe80) },
+    { _mm_set_pi16(0xc7ff, 0xecde, 0x7f92, 0xecb0),
+      _mm_cvtsi64_m64(5),
+      _mm_set_pi16(0xffe0, 0x9bc0, 0xf240, 0x9600) },
+    { _mm_set_pi16(0x5490, 0x6348, 0x4dd1, 0xbe9e),
+      _mm_cvtsi64_m64(0),
+      _mm_set_pi16(0x5490, 0x6348, 0x4dd1, 0xbe9e) },
+    { _mm_set_pi16(0xd780, 0xb3e5, 0xc3cc, 0x8ae5),
+      _mm_cvtsi64_m64(9),
+      _mm_set_pi16(0x0000, 0xca00, 0x9800, 0xca00) }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    __m64 r = _mm_sll_pi16(test_vec[i].a, test_vec[i].count);
+    assert_m64_pi8(r, ==, test_vec[i].r);
+  }
+
+  return MUNIT_OK;
+}
+
+static MunitResult
+test_simd_mm_sll_pi32(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  const struct {
+    __m64 a;
+    __m64 count;
+    __m64 r;
+  } test_vec[8] = {
+    { _mm_set_pi32(0x7f4ad262, 0x9ce45b37),
+      _mm_cvtsi64_m64(10),
+      _mm_set_pi32(0x2b498800, 0x916cdc00) },
+    { _mm_set_pi32(0x76509267, 0xfb7918be),
+      _mm_cvtsi64_m64(14),
+      _mm_set_pi32(0x2499c000, 0x462f8000) },
+    { _mm_set_pi32(0xb1961bea, 0x99a67ad1),
+      _mm_cvtsi64_m64(22),
+      _mm_set_pi32(0xfa800000, 0xb4400000) },
+    { _mm_set_pi32(0xcf780e55, 0x2ffc2805),
+      _mm_cvtsi64_m64(9),
+      _mm_set_pi32(0xf01caa00, 0xf8500a00) },
+    { _mm_set_pi32(0xa14be044, 0x7f1e6323),
+      _mm_cvtsi64_m64(1),
+      _mm_set_pi32(0x4297c088, 0xfe3cc646) },
+    { _mm_set_pi32(0x2ea0903c, 0x819cf8de),
+      _mm_cvtsi64_m64(16),
+      _mm_set_pi32(0x903c0000, 0xf8de0000) },
+    { _mm_set_pi32(0x9b698d6c, 0xb4ae77cf),
+      _mm_cvtsi64_m64(16),
+      _mm_set_pi32(0x8d6c0000, 0x77cf0000) },
+    { _mm_set_pi32(0xb4ff9134, 0x3a22907b),
+      _mm_cvtsi64_m64(5),
+      _mm_set_pi32(0x9ff22680, 0x44520f60) }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    __m64 r = _mm_sll_pi32(test_vec[i].a, test_vec[i].count);
+    assert_m64_pi8(r, ==, test_vec[i].r);
+  }
+
+  return MUNIT_OK;
+}
+
+static MunitResult
+test_simd_mm_sll_si64(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  const struct {
+    __m64 a;
+    __m64 count;
+    __m64 r;
+  } test_vec[8] = {
+    { _mm_cvtsi64_m64(UINT64_C(0x2c04f0afbb6ea869)),
+      _mm_cvtsi64_m64(26),
+      _mm_cvtsi64_m64(UINT64_C(0xbeedbaa1a4000000)) },
+    { _mm_cvtsi64_m64(UINT64_C(0x7a46741e0e1d199a)),
+      _mm_cvtsi64_m64(35),
+      _mm_cvtsi64_m64(UINT64_C(0x70e8ccd000000000)) },
+    { _mm_cvtsi64_m64(UINT64_C(0x728909a27299f7e0)),
+      _mm_cvtsi64_m64(60),
+      _mm_cvtsi64_m64(UINT64_C(0x0000000000000000)) },
+    { _mm_cvtsi64_m64(UINT64_C(0xfe7a4be78826c849)),
+      _mm_cvtsi64_m64(35),
+      _mm_cvtsi64_m64(UINT64_C(0x4136424800000000)) },
+    { _mm_cvtsi64_m64(UINT64_C(0x0b12beceffaf415c)),
+      _mm_cvtsi64_m64(19),
+      _mm_cvtsi64_m64(UINT64_C(0xf677fd7a0ae00000)) },
+    { _mm_cvtsi64_m64(UINT64_C(0xdf28bbede8bf899f)),
+      _mm_cvtsi64_m64(28),
+      _mm_cvtsi64_m64(UINT64_C(0xde8bf899f0000000)) },
+    { _mm_cvtsi64_m64(UINT64_C(0x2a161b540172d78c)),
+      _mm_cvtsi64_m64(28),
+      _mm_cvtsi64_m64(UINT64_C(0x40172d78c0000000)) },
+    { _mm_cvtsi64_m64(UINT64_C(0x4fae0c57c0b6e410)),
+      _mm_cvtsi64_m64(44),
+      _mm_cvtsi64_m64(UINT64_C(0x6e41000000000000)) }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    __m64 r = _mm_sll_si64(test_vec[i].a, test_vec[i].count);
+    assert_m64_pi8(r, ==, test_vec[i].r);
+  }
+
+  return MUNIT_OK;
+}
+
 /*** SSE ***/
 
 #define assert_m128_ps(a, cmp, b)					\
@@ -1672,6 +1803,9 @@ static MunitTest test_suite_tests[] = {
   { (char*) "/mmx/mm_packs_pi16",   test_simd_mm_packs_pi16,   NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
   { (char*) "/mmx/mm_packs_pi32",   test_simd_mm_packs_pi32,   NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
   { (char*) "/mmx/mm_packs_pu16",   test_simd_mm_packs_pu16,   NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mmx/mm_sll_pi16",     test_simd_mm_sll_pi16,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mmx/mm_sll_pi32",     test_simd_mm_sll_pi32,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mmx/mm_sll_si64",     test_simd_mm_sll_si64,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
 
   { (char*) "/sse/mm_set_ps",       test_simd_mm_set_ps,       NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
   { (char*) "/sse/mm_set1_ps",      test_simd_mm_set1_ps,      NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
