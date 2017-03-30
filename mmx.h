@@ -16,10 +16,14 @@
 #include <limits.h>
 
 typedef union {
-  char  i8 __attribute__((__vector_size__(8)));
-  short i16 __attribute__((__vector_size__(8)));
-  int   i32 __attribute__((__vector_size__(8)));
-  long long int i64;
+  char                   i8 __attribute__((__vector_size__(8)));
+  short                  i16 __attribute__((__vector_size__(8)));
+  int                    i32 __attribute__((__vector_size__(8)));
+  long long int          i64;
+  unsigned char          u8 __attribute__((__vector_size__(8)));
+  unsigned short         u16 __attribute__((__vector_size__(8)));
+  unsigned int           u32 __attribute__((__vector_size__(8)));
+  unsigned long long int u64;
 } SIMDE__TYPE(m64);
 #if defined(__m64)
 #  undef __m64
@@ -303,6 +307,112 @@ SIMDE__SYMBOL(__mm_mullo_pi16) (__m64 a, __m64 b) {
 #  undef _mm_mullo_pi16
 #endif
 #define _mm_mullo_pi16 SIMDE__SYMBOL(__mm_mullo_pi16)
+
+SIMDE__MMX_INLINE_FUNC
+SIMDE__TYPE(m64)
+SIMDE__SYMBOL(__mm_or_si64) (__m64 a, __m64 b) {
+  return (SIMDE__TYPE(m64)) { .i64 = a.i64 | b.i64 };
+}
+#if defined(_mm_or_si64)
+#  undef _mm_or_si64
+#endif
+#define _mm_or_si64 SIMDE__SYMBOL(__mm_or_si64)
+
+SIMDE__MMX_INLINE_FUNC
+SIMDE__TYPE(m64)
+SIMDE__SYMBOL(__mm_packs_pi16) (__m64 a, __m64 b) {
+  __m64 r;
+
+  for (size_t i = 0 ; i < (sizeof(__m64) / sizeof(short)) ; i++) {
+    if (a.i16[i] < CHAR_MIN) {
+      r.i8[i] = CHAR_MIN;
+    } else if (a.i16[i] > CHAR_MAX) {
+      r.i8[i] = CHAR_MAX;
+    } else {
+      r.i8[i] = (char) a.i16[i];
+    }
+  }
+
+  for (size_t i = 0 ; i < (sizeof(__m64) / sizeof(short)) ; i++) {
+    if (b.i16[i] < CHAR_MIN) {
+      r.i8[i + 4] = CHAR_MIN;
+    } else if (b.i16[i] > CHAR_MAX) {
+      r.i8[i + 4] = CHAR_MAX;
+    } else {
+      r.i8[i + 4] = (char) b.i16[i];
+    }
+  }
+
+  return r;
+}
+#if defined(_mm_packs_pi16)
+#  undef _mm_packs_pi16
+#endif
+#define _mm_packs_pi16 SIMDE__SYMBOL(__mm_packs_pi16)
+
+SIMDE__MMX_INLINE_FUNC
+SIMDE__TYPE(m64)
+SIMDE__SYMBOL(__mm_packs_pi32) (__m64 a, __m64 b) {
+  __m64 r;
+
+  for (size_t i = 0 ; i < (sizeof(__m64) / sizeof(a.i32[0])) ; i++) {
+    if (a.i32[i] < SHRT_MIN) {
+      r.i16[i] = SHRT_MIN;
+    } else if (a.i32[i] > SHRT_MAX) {
+      r.i16[i] = SHRT_MAX;
+    } else {
+      r.i16[i] = (short) a.i32[i];
+    }
+  }
+
+  for (size_t i = 0 ; i < (sizeof(__m64) / sizeof(b.i32[0])) ; i++) {
+    if (b.i32[i] < SHRT_MIN) {
+      r.i16[i + 2] = SHRT_MIN;
+    } else if (b.i32[i] > SHRT_MAX) {
+      r.i16[i + 2] = SHRT_MAX;
+    } else {
+      r.i16[i + 2] = (short) b.i32[i];
+    }
+  }
+
+  return r;
+}
+#if defined(_mm_packs_pi32)
+#  undef _mm_packs_pi32
+#endif
+#define _mm_packs_pi32 SIMDE__SYMBOL(__mm_packs_pi32)
+
+SIMDE__MMX_INLINE_FUNC
+SIMDE__TYPE(m64)
+SIMDE__SYMBOL(__mm_packs_pu16) (__m64 a, __m64 b) {
+  __m64 r;
+
+  for (size_t i = 0 ; i < (sizeof(__m64) / sizeof(short)) ; i++) {
+    if (a.i16[i] > UCHAR_MAX) {
+      r.u8[i] = UCHAR_MAX;
+    } else if (a.i16[i] < 0) {
+      r.u8[i] = 0;
+    } else {
+      r.u8[i] = (char) a.i16[i];
+    }
+  }
+
+  for (size_t i = 0 ; i < (sizeof(__m64) / sizeof(short)) ; i++) {
+    if (b.i16[i] > UCHAR_MAX) {
+      r.u8[i + 4] = UCHAR_MAX;
+    } else if (b.i16[i] < 0) {
+      r.u8[i + 4] = 0;
+    } else {
+      r.u8[i + 4] = (char) b.i16[i];
+    }
+  }
+
+  return r;
+}
+#if defined(_mm_packs_pu16)
+#  undef _mm_packs_pu16
+#endif
+#define _mm_packs_pu16 SIMDE__SYMBOL(__mm_packs_pu16)
 
 SIMDE__MMX_INLINE_FUNC
 SIMDE__TYPE(m64)
