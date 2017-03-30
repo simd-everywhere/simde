@@ -39,6 +39,10 @@ SIMDE__SYMBOL(__mm_add_pi8) (__m64 a, __m64 b) {
 #  undef _mm_add_pi8
 #endif
 #define _mm_add_pi8 SIMDE__SYMBOL(__mm_add_pi8)
+#if defined(_m_paddb)
+#  undef _m_paddb
+#endif
+#define _m_paddb SIMDE__SYMBOL(__mm_add_pi8)
 
 SIMDE__MMX_INLINE_FUNC
 SIMDE__TYPE(m64)
@@ -59,6 +63,10 @@ SIMDE__SYMBOL(__mm_add_pi32) (__m64 a, __m64 b) {
 #  undef _mm_add_pi32
 #endif
 #define _mm_add_pi32 SIMDE__SYMBOL(__mm_add_pi32)
+#if defined(_m_paddd)
+#  undef _m_paddd
+#endif
+#define _m_paddd SIMDE__SYMBOL(__mm_add_pi32)
 
 SIMDE__MMX_INLINE_FUNC
 SIMDE__TYPE(m64)
@@ -79,6 +87,30 @@ SIMDE__SYMBOL(__mm_adds_pi8) (__m64 a, __m64 b) {
 #  undef _mm_adds_pi8
 #endif
 #define _mm_adds_pi8 SIMDE__SYMBOL(__mm_adds_pi8)
+#if defined(_m_paddsb)
+#  undef _m_paddsb
+#endif
+#define _m_paddsb SIMDE__SYMBOL(__mm_adds_pi8)
+
+SIMDE__MMX_INLINE_FUNC
+SIMDE__TYPE(m64)
+SIMDE__SYMBOL(__mm_adds_pu8) (__m64 a, __m64 b) {
+  __m64 r;
+  for (size_t i = 0 ; i < sizeof(r) ; i++) {
+    const int x = a.u8[i] + b.u8[i];
+    if (x < 0)
+      r.u8[i] = 0;
+    else if (x > UCHAR_MAX)
+      r.u8[i] = UCHAR_MAX;
+    else
+      r.u8[i] = (unsigned char) x;
+  }
+  return r;
+}
+#if defined(_mm_adds_pu8)
+#  undef _mm_adds_pu8
+#endif
+#define _mm_adds_pu8 SIMDE__SYMBOL(__mm_adds_pu8)
 
 SIMDE__MMX_INLINE_FUNC
 SIMDE__TYPE(m64)
@@ -99,6 +131,28 @@ SIMDE__SYMBOL(__mm_adds_pi16) (__m64 a, __m64 b) {
 #  undef _mm_adds_pi16
 #endif
 #define _mm_adds_pi16 SIMDE__SYMBOL(__mm_adds_pi16)
+#if defined(_m_paddsw)
+#  undef _m_paddsw
+#endif
+#define _m_paddsw SIMDE__SYMBOL(__mm_adds_pi16)
+
+SIMDE__MMX_INLINE_FUNC
+SIMDE__TYPE(m64)
+SIMDE__SYMBOL(__mm_adds_pu16) (__m64 a, __m64 b) {
+  __m64 r;
+  for (size_t i = 0 ; i < (sizeof(r) / sizeof(short)) ; i++) {
+    const unsigned int x = a.u16[i] + b.u16[i];
+    if (x > USHRT_MAX)
+      r.u16[i] = USHRT_MAX;
+    else
+      r.u16[i] = (unsigned short) x;
+  }
+  return r;
+}
+#if defined(_mm_adds_pu16)
+#  undef _mm_adds_pu16
+#endif
+#define _mm_adds_pu16 SIMDE__SYMBOL(__mm_adds_pu16)
 
 SIMDE__MMX_INLINE_FUNC
 SIMDE__TYPE(m64)
