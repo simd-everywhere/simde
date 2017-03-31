@@ -1,7 +1,7 @@
 CC:=cc
 CFLAGS:=-Wall -Wextra -Wno-strict-aliasing -g -O3
 
-HEADERS=mmx.h sse.h sse2.h sse3.h
+HEADERS=mmx.h sse.h sse2.h
 
 .PHONY: all clean
 all: test-emul test-native

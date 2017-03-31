@@ -5,7 +5,7 @@
 #  define SIMDE__SSE_NATIVE
 #  define SIMDE__SSE2_NATIVE
 
-#  if defined(__GNUC__)
+#  if defined(__GNUC__) && !defined(__clang__)
 #    pragma GCC target("sse4.1")
 #  endif
 #endif
@@ -1502,7 +1502,7 @@ test_simd_mm_slli_pi16(const MunitParameter params[], void* data) {
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     __m64 r = _mm_slli_pi16(test_vec[i].a, test_vec[i].count);
-    assert_m64_pi8(r, ==, test_vec[i].r);
+    assert_m64_pi16(r, ==, test_vec[i].r);
   }
 
   return MUNIT_OK;
