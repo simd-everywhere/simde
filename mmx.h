@@ -623,7 +623,7 @@ SIMDE__SYMBOL(__mm_setzero_si64) (void) {
 SIMDE__MMX_INLINE_FUNC
 SIMDE__TYPE(m64)
 SIMDE__SYMBOL(__mm_sll_pi16) (__m64 a, __m64 count) {
-  return (SIMDE__TYPE(m64)) { .i16 = a.i16 << count.i64 };
+  return (SIMDE__TYPE(m64)) { .u16 = a.u16 << count.u64 };
 }
 #if defined(_mm_sll_pi16)
 #  undef _mm_sll_pi16
@@ -633,7 +633,7 @@ SIMDE__SYMBOL(__mm_sll_pi16) (__m64 a, __m64 count) {
 SIMDE__MMX_INLINE_FUNC
 SIMDE__TYPE(m64)
 SIMDE__SYMBOL(__mm_sll_pi32) (__m64 a, __m64 count) {
-  return (SIMDE__TYPE(m64)) { .i32 = a.i32 << count.i64 };
+  return (SIMDE__TYPE(m64)) { .u32 = a.u32 << count.u64 };
 }
 #if defined(_mm_sll_pi32)
 #  undef _mm_sll_pi32
@@ -642,13 +642,103 @@ SIMDE__SYMBOL(__mm_sll_pi32) (__m64 a, __m64 count) {
 
 SIMDE__MMX_INLINE_FUNC
 SIMDE__TYPE(m64)
+SIMDE__SYMBOL(__mm_slli_pi16) (__m64 a, int count) {
+  return (SIMDE__TYPE(m64)) { .u16 = a.u16 << count };
+}
+#if defined(_mm_slli_pi16)
+#  undef _mm_slli_pi16
+#endif
+#define _mm_slli_pi16 SIMDE__SYMBOL(__mm_slli_pi16)
+
+SIMDE__MMX_INLINE_FUNC
+SIMDE__TYPE(m64)
+SIMDE__SYMBOL(__mm_slli_pi32) (__m64 a, int count) {
+  return (SIMDE__TYPE(m64)) { .u32 = a.u32 << count };
+}
+#if defined(_mm_slli_pi32)
+#  undef _mm_slli_pi32
+#endif
+#define _mm_slli_pi32 SIMDE__SYMBOL(__mm_slli_pi32)
+
+SIMDE__MMX_INLINE_FUNC
+SIMDE__TYPE(m64)
+SIMDE__SYMBOL(__mm_slli_si64) (__m64 a, int count) {
+  return (SIMDE__TYPE(m64)) { .u64 = a.u64 << count };
+}
+#if defined(_mm_slli_si64)
+#  undef _mm_slli_si64
+#endif
+#define _mm_slli_si64 SIMDE__SYMBOL(__mm_slli_si64)
+
+SIMDE__MMX_INLINE_FUNC
+SIMDE__TYPE(m64)
 SIMDE__SYMBOL(__mm_sll_si64) (__m64 a, __m64 count) {
-  return (SIMDE__TYPE(m64)) { .i64 = a.i64 << count.i64 };
+  return (SIMDE__TYPE(m64)) { .u64 = a.u64 << count.u64 };
 }
 #if defined(_mm_sll_si64)
 #  undef _mm_sll_si64
 #endif
 #define _mm_sll_si64 SIMDE__SYMBOL(__mm_sll_si64)
+
+SIMDE__MMX_INLINE_FUNC
+SIMDE__TYPE(m64)
+SIMDE__SYMBOL(__mm_srl_pi16) (__m64 a, __m64 count) {
+  return (SIMDE__TYPE(m64)) { .u16 = a.u16 >> count.u64 };
+}
+#if defined(_mm_srl_pi16)
+#  undef _mm_srl_pi16
+#endif
+#define _mm_srl_pi16 SIMDE__SYMBOL(__mm_srl_pi16)
+
+SIMDE__MMX_INLINE_FUNC
+SIMDE__TYPE(m64)
+SIMDE__SYMBOL(__mm_srl_pi32) (__m64 a, __m64 count) {
+  return (SIMDE__TYPE(m64)) { .u32 = a.u32 >> count.u64 };
+}
+#if defined(_mm_srl_pi32)
+#  undef _mm_srl_pi32
+#endif
+#define _mm_srl_pi32 SIMDE__SYMBOL(__mm_srl_pi32)
+
+SIMDE__MMX_INLINE_FUNC
+SIMDE__TYPE(m64)
+SIMDE__SYMBOL(__mm_srli_pi16) (__m64 a, int count) {
+  return (SIMDE__TYPE(m64)) { .u16 = a.u16 >> count };
+}
+#if defined(_mm_srli_pi16)
+#  undef _mm_srli_pi16
+#endif
+#define _mm_srli_pi16 SIMDE__SYMBOL(__mm_srli_pi16)
+
+SIMDE__MMX_INLINE_FUNC
+SIMDE__TYPE(m64)
+SIMDE__SYMBOL(__mm_srli_pi32) (__m64 a, int count) {
+  return (SIMDE__TYPE(m64)) { .u32 = a.u32 >> count };
+}
+#if defined(_mm_srli_pi32)
+#  undef _mm_srli_pi32
+#endif
+#define _mm_srli_pi32 SIMDE__SYMBOL(__mm_srli_pi32)
+
+SIMDE__MMX_INLINE_FUNC
+SIMDE__TYPE(m64)
+SIMDE__SYMBOL(__mm_srli_si64) (__m64 a, int count) {
+  return (SIMDE__TYPE(m64)) { .u64 = a.u64 >> count };
+}
+#if defined(_mm_srli_si64)
+#  undef _mm_srli_si64
+#endif
+#define _mm_srli_si64 SIMDE__SYMBOL(__mm_srli_si64)
+
+SIMDE__MMX_INLINE_FUNC
+SIMDE__TYPE(m64)
+SIMDE__SYMBOL(__mm_srl_si64) (__m64 a, __m64 count) {
+  return (SIMDE__TYPE(m64)) { .u64 = a.u64 >> count.u64 };
+}
+#if defined(_mm_srl_si64)
+#  undef _mm_srl_si64
+#endif
+#define _mm_srl_si64 SIMDE__SYMBOL(__mm_srl_si64)
 
 #endif /* !defined(SIMDE__MMX_NATIVE) */
 #endif /* !defined(SIMDE__MMX_H) */
