@@ -1,26 +1,29 @@
 # SIMD Everywhere
 
 SIMDe is an experimental project which attempts to implement SIMD
-intrinsics on hardware which doesn't natively support them.
+intrinsics on hardware which doesn't natively support them (*e.g.*,
+calling SSE functions on ARM).
 
-The first target for SIMDe is SSE.  The goal is to be able to to
-include SIMDe's `sse.h` and have SSE functions like `_mm_add_ps()`
-available for use everywhere (i.e., even on ARM).
+The initial focus is on writing complete portable implementations.
+Once that's complete we will start focusing on optimizations, such as
+implementing one set of functions with another (*e.g.*, a NEON
+implementation of SSE).
 
-Right now the focus is on portable implementations, but eventually I'd
-like to try to implement instruction sets with one another (like
-implementing SSE using NEON).
+Currently, there are full implementations of the following instruction
+sets:
 
-For information on which instruction sets we intend to support, or to
-track progress, see the
+ * MMX
+
+For information on which instruction sets we intend to support, as
+well as detailed progress information, see the
 [instruction-set-support](https://github.com/nemequ/simde/issues?q=is%3Aissue+is%3Aopen+label%3Ainstruction-set-support)
-label in the issue tracker.
+label in the issue tracker.  If you'd like to be notified when an
+instruction set is available you may subscribe to the relevant issue.
 
-It's going to be a while before this project is really usable, if
-ever.  There are a *lot* of instructions.  If you'd like to help,
-please feel free to dive right in!  All instructions must have a test
-(see `test.c`), which tends to be harder than writing the actual
-implementation, but it's really not difficult work.
+There are a *lot* of instructions to get through.  If you're
+interested in helping please feel free to dive right in!  All
+instructions must have a test (see `test.c`), as well as a portable
+implementation in the relevant header.
 
 ## Portability
 
