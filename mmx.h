@@ -1014,5 +1014,15 @@ SIMDE__SYMBOL(__mm_unpacklo_pi32) (__m64 a, __m64 b) {
 #endif
 #define _mm_unpacklo_pi32 SIMDE__SYMBOL(__mm_unpacklo_pi32)
 
+SIMDE__MMX_INLINE_FUNC
+SIMDE__TYPE(m64)
+SIMDE__SYMBOL(__mm_xor_si64) (__m64 a, __m64 b) {
+  return (SIMDE__TYPE(m64)) { .i64 = a.i64 ^ b.i64 };
+}
+#if defined(_mm_xor_si64)
+#  undef _mm_xor_si64
+#endif
+#define _mm_xor_si64 SIMDE__SYMBOL(__mm_xor_si64)
+
 #endif /* !defined(SIMDE__MMX_NATIVE) */
 #endif /* !defined(SIMDE__MMX_H) */
