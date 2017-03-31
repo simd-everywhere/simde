@@ -946,5 +946,73 @@ SIMDE__SYMBOL(__mm_subs_pu16) (__m64 a, __m64 b) {
 #endif
 #define _mm_subs_pu16 SIMDE__SYMBOL(__mm_subs_pu16)
 
+SIMDE__MMX_INLINE_FUNC
+SIMDE__TYPE(m64)
+SIMDE__SYMBOL(__mm_unpackhi_pi8) (__m64 a, __m64 b) {
+  return (SIMDE__TYPE(m64)) { .i8 = {
+      a.i8[4], b.i8[4], a.i8[5], b.i8[5],
+      a.i8[6], b.i8[6], a.i8[7], b.i8[7]
+    }
+  };
+}
+#if defined(_mm_unpackhi_pi8)
+#  undef _mm_unpackhi_pi8
+#endif
+#define _mm_unpackhi_pi8 SIMDE__SYMBOL(__mm_unpackhi_pi8)
+
+SIMDE__MMX_INLINE_FUNC
+SIMDE__TYPE(m64)
+SIMDE__SYMBOL(__mm_unpackhi_pi16) (__m64 a, __m64 b) {
+  return (SIMDE__TYPE(m64)) { .i16 = { a.i16[2], b.i16[2], a.i16[3], b.i16[3] } };
+}
+#if defined(_mm_unpackhi_pi16)
+#  undef _mm_unpackhi_pi16
+#endif
+#define _mm_unpackhi_pi16 SIMDE__SYMBOL(__mm_unpackhi_pi16)
+
+SIMDE__MMX_INLINE_FUNC
+SIMDE__TYPE(m64)
+SIMDE__SYMBOL(__mm_unpackhi_pi32) (__m64 a, __m64 b) {
+  return (SIMDE__TYPE(m64)) { .i32 = { a.i32[1], b.i32[1] } };
+}
+#if defined(_mm_unpackhi_pi32)
+#  undef _mm_unpackhi_pi32
+#endif
+#define _mm_unpackhi_pi32 SIMDE__SYMBOL(__mm_unpackhi_pi32)
+
+SIMDE__MMX_INLINE_FUNC
+SIMDE__TYPE(m64)
+SIMDE__SYMBOL(__mm_unpacklo_pi8) (__m64 a, __m64 b) {
+  return (SIMDE__TYPE(m64)) { .i8 = {
+      a.i8[0], b.i8[0], a.i8[1], b.i8[1],
+      a.i8[2], b.i8[2], a.i8[3], b.i8[3]
+    }
+  };
+}
+#if defined(_mm_unpacklo_pi8)
+#  undef _mm_unpacklo_pi8
+#endif
+#define _mm_unpacklo_pi8 SIMDE__SYMBOL(__mm_unpacklo_pi8)
+
+SIMDE__MMX_INLINE_FUNC
+SIMDE__TYPE(m64)
+SIMDE__SYMBOL(__mm_unpacklo_pi16) (__m64 a, __m64 b) {
+  return (SIMDE__TYPE(m64)) { .i16 = { a.i16[0], b.i16[0], a.i16[1], b.i16[1] } };
+}
+#if defined(_mm_unpacklo_pi16)
+#  undef _mm_unpacklo_pi16
+#endif
+#define _mm_unpacklo_pi16 SIMDE__SYMBOL(__mm_unpacklo_pi16)
+
+SIMDE__MMX_INLINE_FUNC
+SIMDE__TYPE(m64)
+SIMDE__SYMBOL(__mm_unpacklo_pi32) (__m64 a, __m64 b) {
+  return (SIMDE__TYPE(m64)) { .i32 = { a.i32[0], b.i32[0] } };
+}
+#if defined(_mm_unpacklo_pi32)
+#  undef _mm_unpacklo_pi32
+#endif
+#define _mm_unpacklo_pi32 SIMDE__SYMBOL(__mm_unpacklo_pi32)
+
 #endif /* !defined(SIMDE__MMX_NATIVE) */
 #endif /* !defined(SIMDE__MMX_H) */

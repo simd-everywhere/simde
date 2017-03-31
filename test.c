@@ -18,6 +18,11 @@
 
 /*** MMX ***/
 
+void print_pi8(const char* prefix, __m64 v) {
+  char* vp = (char*) &v;
+  printf("%s: 0x%02hhx 0x%02hhx 0x%02hhx 0x%02hhx 0x%02hhx 0x%02hhx 0x%02hhx 0x%02hhx\n", prefix, vp[0], vp[1], vp[2], vp[3], vp[4], vp[5], vp[6], vp[7]);
+}
+
 void print_pi16(const char* prefix, __m64 v) {
   short* vp = (short*) &v;
   printf("%s: 0x%04hx 0x%04hx 0x%04hx 0x%04hx\n", prefix, vp[0], vp[1], vp[2], vp[3]);
@@ -2339,6 +2344,270 @@ test_simd_mm_subs_pu16(const MunitParameter params[], void* data) {
   return MUNIT_OK;
 }
 
+static MunitResult
+test_simd_mm_unpackhi_pi8(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  const struct {
+    __m64 a;
+    __m64 b;
+    __m64 r;
+  } test_vec[8] = {
+    { _mm_set_pi8(0x81, 0x30, 0x2a, 0x73, 0xb3, 0x04, 0x19, 0xd6),
+      _mm_set_pi8(0x39, 0x5c, 0xd9, 0xd6, 0x49, 0x04, 0x29, 0x76),
+      _mm_set_pi8(0x39, 0x81, 0x5c, 0x30, 0xd9, 0x2a, 0xd6, 0x73) },
+    { _mm_set_pi8(0xf0, 0x78, 0x10, 0x74, 0xdd, 0x9c, 0x00, 0xd9),
+      _mm_set_pi8(0x3f, 0xb7, 0x30, 0xbe, 0xdf, 0x9a, 0xc2, 0x76),
+      _mm_set_pi8(0x3f, 0xf0, 0xb7, 0x78, 0x30, 0x10, 0xbe, 0x74) },
+    { _mm_set_pi8(0xe8, 0xcf, 0x14, 0x22, 0xff, 0x3f, 0x0b, 0xdc),
+      _mm_set_pi8(0x9f, 0x34, 0x3e, 0xd0, 0xf1, 0x18, 0x12, 0xe4),
+      _mm_set_pi8(0x9f, 0xe8, 0x34, 0xcf, 0x3e, 0x14, 0xd0, 0x22) },
+    { _mm_set_pi8(0x22, 0xb6, 0xa8, 0xbc, 0x50, 0x50, 0xe5, 0x93),
+      _mm_set_pi8(0xf2, 0x11, 0xce, 0x32, 0xb8, 0x91, 0xe0, 0x8e),
+      _mm_set_pi8(0xf2, 0x22, 0x11, 0xb6, 0xce, 0xa8, 0x32, 0xbc) },
+    { _mm_set_pi8(0xae, 0x22, 0x4f, 0x4b, 0xd3, 0x2b, 0x9f, 0x37),
+      _mm_set_pi8(0x7e, 0x7e, 0x71, 0x7a, 0x07, 0x45, 0x1f, 0x53),
+      _mm_set_pi8(0x7e, 0xae, 0x7e, 0x22, 0x71, 0x4f, 0x7a, 0x4b) },
+    { _mm_set_pi8(0xfc, 0x9e, 0x07, 0x58, 0xa3, 0x38, 0xda, 0xf1),
+      _mm_set_pi8(0x4b, 0x61, 0x4c, 0x1a, 0x89, 0xa0, 0xb6, 0xe8),
+      _mm_set_pi8(0x4b, 0xfc, 0x61, 0x9e, 0x4c, 0x07, 0x1a, 0x58) },
+    { _mm_set_pi8(0x7c, 0x47, 0xf2, 0x13, 0xbb, 0xe1, 0x23, 0xae),
+      _mm_set_pi8(0xe1, 0x7d, 0x23, 0x54, 0x69, 0x8d, 0x0b, 0xf4),
+      _mm_set_pi8(0xe1, 0x7c, 0x7d, 0x47, 0x23, 0xf2, 0x54, 0x13) },
+    { _mm_set_pi8(0x2d, 0xcd, 0xb9, 0xd1, 0xe5, 0x14, 0x8b, 0xfb),
+      _mm_set_pi8(0xa4, 0xb6, 0x3a, 0x75, 0xcb, 0x2b, 0x42, 0xc9),
+      _mm_set_pi8(0xa4, 0x2d, 0xb6, 0xcd, 0x3a, 0xb9, 0x75, 0xd1) }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    __m64 r = _mm_unpackhi_pi8(test_vec[i].a, test_vec[i].b);
+    assert_m64_pi8(r, ==, test_vec[i].r);
+  }
+
+  return MUNIT_OK;
+}
+
+static MunitResult
+test_simd_mm_unpackhi_pi16(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  const struct {
+    __m64 a;
+    __m64 b;
+    __m64 r;
+  } test_vec[8] = {
+    { _mm_set_pi16(0xc58b, 0x6db0, 0xc30c, 0xd88d),
+      _mm_set_pi16(0x409a, 0xb683, 0xff02, 0xa559),
+      _mm_set_pi16(0x409a, 0xc58b, 0xb683, 0x6db0) },
+    { _mm_set_pi16(0xef06, 0x8c5d, 0x0551, 0x3edc),
+      _mm_set_pi16(0xeeb4, 0x9a98, 0x1bc7, 0x747f),
+      _mm_set_pi16(0xeeb4, 0xef06, 0x9a98, 0x8c5d) },
+    { _mm_set_pi16(0xa94b, 0xcb5a, 0x723b, 0xe416),
+      _mm_set_pi16(0xe87a, 0xd758, 0xebff, 0xc2e8),
+      _mm_set_pi16(0xe87a, 0xa94b, 0xd758, 0xcb5a) },
+    { _mm_set_pi16(0xaca8, 0x3a1e, 0x3754, 0x0aa7),
+      _mm_set_pi16(0x3123, 0xaec3, 0x465b, 0x153e),
+      _mm_set_pi16(0x3123, 0xaca8, 0xaec3, 0x3a1e) },
+    { _mm_set_pi16(0xaeca, 0xab29, 0xd020, 0xbbfe),
+      _mm_set_pi16(0x11e0, 0x1aba, 0xce84, 0xd1b2),
+      _mm_set_pi16(0x11e0, 0xaeca, 0x1aba, 0xab29) },
+    { _mm_set_pi16(0xce31, 0x59a7, 0xd336, 0x98ed),
+      _mm_set_pi16(0x9385, 0x851a, 0x3875, 0xf764),
+      _mm_set_pi16(0x9385, 0xce31, 0x851a, 0x59a7) },
+    { _mm_set_pi16(0xc2bb, 0x338c, 0x432e, 0x7411),
+      _mm_set_pi16(0x73a0, 0xaab8, 0xe2b4, 0x7be0),
+      _mm_set_pi16(0x73a0, 0xc2bb, 0xaab8, 0x338c) },
+    { _mm_set_pi16(0xbed7, 0xbf6f, 0x7fd8, 0x7ae3),
+      _mm_set_pi16(0x4fb7, 0xcdca, 0x4801, 0x0c2f),
+      _mm_set_pi16(0x4fb7, 0xbed7, 0xcdca, 0xbf6f) }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    __m64 r = _mm_unpackhi_pi16(test_vec[i].a, test_vec[i].b);
+    assert_m64_pi16(r, ==, test_vec[i].r);
+  }
+
+  return MUNIT_OK;
+}
+
+static MunitResult
+test_simd_mm_unpackhi_pi32(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  const struct {
+    __m64 a;
+    __m64 b;
+    __m64 r;
+  } test_vec[8] = {
+    { _mm_set_pi32(0x9d28e725, 0xb58d699a),
+      _mm_set_pi32(0x9b24ba0a, 0x19929dc7),
+      _mm_set_pi32(0x9b24ba0a, 0x9d28e725) },
+    { _mm_set_pi32(0x35b16936, 0xc03aa28a),
+      _mm_set_pi32(0xe8202fa7, 0x87f55a6c),
+      _mm_set_pi32(0xe8202fa7, 0x35b16936) },
+    { _mm_set_pi32(0xc40d7a67, 0xf4c71f5c),
+      _mm_set_pi32(0x3049fd79, 0xe5f4c846),
+      _mm_set_pi32(0x3049fd79, 0xc40d7a67) },
+    { _mm_set_pi32(0x029939e9, 0xa33572d4),
+      _mm_set_pi32(0x9e8f706d, 0xee4a8cb1),
+      _mm_set_pi32(0x9e8f706d, 0x029939e9) },
+    { _mm_set_pi32(0x30e8b509, 0x0000087b),
+      _mm_set_pi32(0x68364e38, 0x6a0ab740),
+      _mm_set_pi32(0x68364e38, 0x30e8b509) },
+    { _mm_set_pi32(0xf9a1f4c8, 0xd0cd717d),
+      _mm_set_pi32(0x779e0fd8, 0x1ce3a6ea),
+      _mm_set_pi32(0x779e0fd8, 0xf9a1f4c8) },
+    { _mm_set_pi32(0x70c614c2, 0xca5eee3f),
+      _mm_set_pi32(0x59325835, 0x321f31a1),
+      _mm_set_pi32(0x59325835, 0x70c614c2) },
+    { _mm_set_pi32(0x4d150666, 0xddbba464),
+      _mm_set_pi32(0x0373a08d, 0xfbc7349f),
+      _mm_set_pi32(0x0373a08d, 0x4d150666) }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    __m64 r = _mm_unpackhi_pi32(test_vec[i].a, test_vec[i].b);
+    assert_m64_pi32(r, ==, test_vec[i].r);
+  }
+
+  return MUNIT_OK;
+}
+
+static MunitResult
+test_simd_mm_unpacklo_pi8(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  const struct {
+    __m64 a;
+    __m64 b;
+    __m64 r;
+  } test_vec[8] = {
+    { _mm_set_pi8(0xf1, 0xe5, 0xe3, 0x02, 0x0b, 0x69, 0xcf, 0x0f),
+      _mm_set_pi8(0xa6, 0x2b, 0x37, 0x32, 0x9a, 0x19, 0xd8, 0x2f),
+      _mm_set_pi8(0x9a, 0x0b, 0x19, 0x69, 0xd8, 0xcf, 0x2f, 0x0f) },
+    { _mm_set_pi8(0x01, 0x53, 0x9b, 0x75, 0xcc, 0xb6, 0xc5, 0x79),
+      _mm_set_pi8(0x9a, 0x0c, 0xe4, 0x52, 0x86, 0x5e, 0x7f, 0xd0),
+      _mm_set_pi8(0x86, 0xcc, 0x5e, 0xb6, 0x7f, 0xc5, 0xd0, 0x79) },
+    { _mm_set_pi8(0x0d, 0x43, 0xb7, 0xdc, 0xa3, 0x65, 0x95, 0x76),
+      _mm_set_pi8(0x2e, 0xb8, 0xce, 0x22, 0x91, 0xef, 0x80, 0x82),
+      _mm_set_pi8(0x91, 0xa3, 0xef, 0x65, 0x80, 0x95, 0x82, 0x76) },
+    { _mm_set_pi8(0x04, 0xd8, 0xb7, 0x7a, 0x55, 0x07, 0xca, 0x89),
+      _mm_set_pi8(0xdb, 0xb0, 0x80, 0x45, 0x70, 0x32, 0x2c, 0xf5),
+      _mm_set_pi8(0x70, 0x55, 0x32, 0x07, 0x2c, 0xca, 0xf5, 0x89) },
+    { _mm_set_pi8(0x8f, 0x1e, 0x44, 0x60, 0xa2, 0xf3, 0xda, 0xc1),
+      _mm_set_pi8(0xf7, 0x1d, 0x05, 0xea, 0x42, 0x5e, 0xb1, 0xff),
+      _mm_set_pi8(0x42, 0xa2, 0x5e, 0xf3, 0xb1, 0xda, 0xff, 0xc1) },
+    { _mm_set_pi8(0xd6, 0xd6, 0x29, 0xf3, 0xd7, 0xdf, 0xe8, 0xfb),
+      _mm_set_pi8(0x55, 0x4f, 0x13, 0xa1, 0x2a, 0x84, 0xa0, 0x86),
+      _mm_set_pi8(0x2a, 0xd7, 0x84, 0xdf, 0xa0, 0xe8, 0x86, 0xfb) },
+    { _mm_set_pi8(0x1c, 0x63, 0xc7, 0x4f, 0x28, 0x9f, 0xb0, 0x10),
+      _mm_set_pi8(0x3c, 0x00, 0xf3, 0xa6, 0x11, 0x0e, 0x8d, 0x74),
+      _mm_set_pi8(0x11, 0x28, 0x0e, 0x9f, 0x8d, 0xb0, 0x74, 0x10) },
+    { _mm_set_pi8(0xe6, 0xd5, 0xeb, 0x49, 0x53, 0x21, 0x69, 0x39),
+      _mm_set_pi8(0xe3, 0x54, 0x0f, 0xad, 0xcd, 0x3c, 0xee, 0x13),
+      _mm_set_pi8(0xcd, 0x53, 0x3c, 0x21, 0xee, 0x69, 0x13, 0x39) }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    __m64 r = _mm_unpacklo_pi8(test_vec[i].a, test_vec[i].b);
+    assert_m64_pi8(r, ==, test_vec[i].r);
+  }
+
+  return MUNIT_OK;
+}
+
+static MunitResult
+test_simd_mm_unpacklo_pi16(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  const struct {
+    __m64 a;
+    __m64 b;
+    __m64 r;
+  } test_vec[8] = {
+    { _mm_set_pi16(0x3a48, 0xc8e4, 0xb83d, 0x1045),
+      _mm_set_pi16(0x5e3d, 0x735f, 0x3872, 0x02fc),
+      _mm_set_pi16(0x3872, 0xb83d, 0x02fc, 0x1045) },
+    { _mm_set_pi16(0x8d87, 0xae18, 0x8389, 0x0799),
+      _mm_set_pi16(0x576c, 0xdbc6, 0xc743, 0x6da9),
+      _mm_set_pi16(0xc743, 0x8389, 0x6da9, 0x0799) },
+    { _mm_set_pi16(0x72d4, 0xee7f, 0x3e89, 0xe1f4),
+      _mm_set_pi16(0x4b3e, 0xd6a0, 0x04b0, 0xa7f3),
+      _mm_set_pi16(0x04b0, 0x3e89, 0xa7f3, 0xe1f4) },
+    { _mm_set_pi16(0x2a1a, 0x89bc, 0x7b5c, 0x1030),
+      _mm_set_pi16(0xc1e5, 0x5067, 0xcdc1, 0x35f0),
+      _mm_set_pi16(0xcdc1, 0x7b5c, 0x35f0, 0x1030) },
+    { _mm_set_pi16(0x89c5, 0xc91a, 0x5614, 0xe4b5),
+      _mm_set_pi16(0xa8e8, 0x5613, 0xd4eb, 0x0f2a),
+      _mm_set_pi16(0xd4eb, 0x5614, 0x0f2a, 0xe4b5) },
+    { _mm_set_pi16(0x055d, 0x64bc, 0xc6d1, 0x4a34),
+      _mm_set_pi16(0x19b4, 0x35a2, 0xcd4d, 0x97ea),
+      _mm_set_pi16(0xcd4d, 0xc6d1, 0x97ea, 0x4a34) },
+    { _mm_set_pi16(0x69e6, 0x4841, 0xc1f9, 0xb8c7),
+      _mm_set_pi16(0x9a2c, 0x8de2, 0x7e6a, 0x9a09),
+      _mm_set_pi16(0x7e6a, 0xc1f9, 0x9a09, 0xb8c7) },
+    { _mm_set_pi16(0xf288, 0x6df7, 0x5392, 0x09f2),
+      _mm_set_pi16(0x75e7, 0xf9a8, 0x2d45, 0x5a28),
+      _mm_set_pi16(0x2d45, 0x5392, 0x5a28, 0x09f2) }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    __m64 r = _mm_unpacklo_pi16(test_vec[i].a, test_vec[i].b);
+    assert_m64_pi16(r, ==, test_vec[i].r);
+  }
+
+  return MUNIT_OK;
+}
+
+static MunitResult
+test_simd_mm_unpacklo_pi32(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  const struct {
+    __m64 a;
+    __m64 b;
+    __m64 r;
+  } test_vec[8] = {
+    { _mm_set_pi32(0xc49b1f7e, 0x02847d03),
+      _mm_set_pi32(0xfdcb62fd, 0xba3626bc),
+      _mm_set_pi32(0xba3626bc, 0x02847d03) },
+    { _mm_set_pi32(0x7b052e6a, 0x1d48eb25),
+      _mm_set_pi32(0x9a8655df, 0x181b2187),
+      _mm_set_pi32(0x181b2187, 0x1d48eb25) },
+    { _mm_set_pi32(0x1cbd2433, 0x7cf1e921),
+      _mm_set_pi32(0x5dff1f45, 0xb200baaa),
+      _mm_set_pi32(0xb200baaa, 0x7cf1e921) },
+    { _mm_set_pi32(0xee57143a, 0xbc487f18),
+      _mm_set_pi32(0x307628fa, 0x0862f5f7),
+      _mm_set_pi32(0x0862f5f7, 0xbc487f18) },
+    { _mm_set_pi32(0x9048b7e9, 0x3e5db541),
+      _mm_set_pi32(0x66030646, 0x278f7ad2),
+      _mm_set_pi32(0x278f7ad2, 0x3e5db541) },
+    { _mm_set_pi32(0x18b105d4, 0xbc34a4de),
+      _mm_set_pi32(0x4fa4e0ed, 0x89aaf1a3),
+      _mm_set_pi32(0x89aaf1a3, 0xbc34a4de) },
+    { _mm_set_pi32(0x8d123e24, 0x2a672b72),
+      _mm_set_pi32(0x355466c7, 0xec3b85ce),
+      _mm_set_pi32(0xec3b85ce, 0x2a672b72) },
+    { _mm_set_pi32(0xba2a6efe, 0xc7c11bd7),
+      _mm_set_pi32(0xb7bbaf6c, 0x957c8a00),
+      _mm_set_pi32(0x957c8a00, 0xc7c11bd7) }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    __m64 r = _mm_unpacklo_pi32(test_vec[i].a, test_vec[i].b);
+    assert_m64_pi32(r, ==, test_vec[i].r);
+  }
+
+  return MUNIT_OK;
+}
+
 /*** SSE ***/
 
 #define assert_m128_ps(a, cmp, b)					\
@@ -2662,76 +2931,82 @@ test_simd_mm_set_epi32(const MunitParameter params[], void* data) {
 /*** SSE3 ***/
 
 static MunitTest test_suite_tests[] = {
-  { (char*) "/mmx/mm_set_pi8",      test_simd_mm_set_pi8,      NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mmx/mm_set_pi16",     test_simd_mm_set_pi16,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mmx/mm_set_pi32",     test_simd_mm_set_pi32,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mmx/mm_set1_pi8",     test_simd_mm_set1_pi8,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mmx/mm_set1_pi16",    test_simd_mm_set1_pi16,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mmx/mm_set1_pi32",    test_simd_mm_set1_pi32,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mmx/mm_setr_pi8",     test_simd_mm_setr_pi8,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mmx/mm_setr_pi16",    test_simd_mm_setr_pi16,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mmx/mm_setr_pi32",    test_simd_mm_setr_pi32,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mmx/mm_add_pi8",      test_simd_mm_add_pi8,      NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mmx/mm_add_pi16",     test_simd_mm_add_pi16,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mmx/mm_add_pi32",     test_simd_mm_add_pi32,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mmx/mm_adds_pi8",     test_simd_mm_adds_pi8,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mmx/mm_adds_pi16",    test_simd_mm_adds_pi16,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mmx/mm_adds_pu8",     test_simd_mm_adds_pu8,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mmx/mm_adds_pu16",    test_simd_mm_adds_pu16,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mmx/mm_and_si64",     test_simd_mm_and_si64,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mmx/mm_andnot_si64",  test_simd_mm_andnot_si64,  NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mmx/mm_cmpeq_pi8",    test_simd_mm_cmpeq_pi8,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mmx/mm_cmpeq_pi16",   test_simd_mm_cmpeq_pi16,   NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mmx/mm_cmpeq_pi32",   test_simd_mm_cmpeq_pi32,   NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mmx/mm_cmpgt_pi8",    test_simd_mm_cmpgt_pi8,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mmx/mm_cmpgt_pi16",   test_simd_mm_cmpgt_pi16,   NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mmx/mm_cmpgt_pi32",   test_simd_mm_cmpgt_pi32,   NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mmx/mm_cvtm64_si64",  test_simd_mm_cvtm64_si64,  NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mmx/mm_cvtsi32_si64", test_simd_mm_cvtsi32_si64, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mmx/mm_cvtsi64_m64",  test_simd_mm_cvtsi64_m64,  NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mmx/mm_cvtsi64_si32", test_simd_mm_cvtsi64_si32, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mmx/mm_madd_pi16",    test_simd_mm_madd_pi16,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mmx/mm_mulhi_pi16",   test_simd_mm_mulhi_pi16,   NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mmx/mm_mullo_pi16",   test_simd_mm_mullo_pi16,   NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mmx/mm_or_si64",      test_simd_mm_or_si64,      NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mmx/mm_packs_pi16",   test_simd_mm_packs_pi16,   NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mmx/mm_packs_pi32",   test_simd_mm_packs_pi32,   NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mmx/mm_packs_pu16",   test_simd_mm_packs_pu16,   NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mmx/mm_sll_pi16",     test_simd_mm_sll_pi16,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mmx/mm_sll_pi32",     test_simd_mm_sll_pi32,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mmx/mm_sll_si64",     test_simd_mm_sll_si64,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mmx/mm_slli_pi16",    test_simd_mm_slli_pi16,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mmx/mm_slli_pi32",    test_simd_mm_slli_pi32,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mmx/mm_slli_si64",    test_simd_mm_slli_si64,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mmx/mm_srl_pi16",     test_simd_mm_srl_pi16,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mmx/mm_srl_pi32",     test_simd_mm_srl_pi32,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mmx/mm_srl_si64",     test_simd_mm_srl_si64,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mmx/mm_srli_pi16",    test_simd_mm_srli_pi16,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mmx/mm_srli_pi32",    test_simd_mm_srli_pi32,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mmx/mm_srli_si64",    test_simd_mm_srli_si64,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mmx/mm_srai_pi16",    test_simd_mm_srai_pi16,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mmx/mm_srai_pi32",    test_simd_mm_srai_pi32,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mmx/mm_sra_pi16",     test_simd_mm_sra_pi16,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mmx/mm_sra_pi32",     test_simd_mm_sra_pi32,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mmx/mm_sub_pi8",      test_simd_mm_sub_pi8,      NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mmx/mm_sub_pi16",     test_simd_mm_sub_pi16,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mmx/mm_sub_pi32",     test_simd_mm_sub_pi32,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mmx/mm_subs_pi8",     test_simd_mm_subs_pi8,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mmx/mm_subs_pi16",    test_simd_mm_subs_pi16,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mmx/mm_subs_pu8",     test_simd_mm_subs_pu8,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mmx/mm_subs_pu16",    test_simd_mm_subs_pu16,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mmx/mm_set_pi8",       test_simd_mm_set_pi8,       NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mmx/mm_set_pi16",      test_simd_mm_set_pi16,      NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mmx/mm_set_pi32",      test_simd_mm_set_pi32,      NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mmx/mm_set1_pi8",      test_simd_mm_set1_pi8,      NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mmx/mm_set1_pi16",     test_simd_mm_set1_pi16,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mmx/mm_set1_pi32",     test_simd_mm_set1_pi32,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mmx/mm_setr_pi8",      test_simd_mm_setr_pi8,      NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mmx/mm_setr_pi16",     test_simd_mm_setr_pi16,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mmx/mm_setr_pi32",     test_simd_mm_setr_pi32,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mmx/mm_add_pi8",       test_simd_mm_add_pi8,       NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mmx/mm_add_pi16",      test_simd_mm_add_pi16,      NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mmx/mm_add_pi32",      test_simd_mm_add_pi32,      NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mmx/mm_adds_pi8",      test_simd_mm_adds_pi8,      NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mmx/mm_adds_pi16",     test_simd_mm_adds_pi16,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mmx/mm_adds_pu8",      test_simd_mm_adds_pu8,      NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mmx/mm_adds_pu16",     test_simd_mm_adds_pu16,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mmx/mm_and_si64",      test_simd_mm_and_si64,      NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mmx/mm_andnot_si64",   test_simd_mm_andnot_si64,   NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mmx/mm_cmpeq_pi8",     test_simd_mm_cmpeq_pi8,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mmx/mm_cmpeq_pi16",    test_simd_mm_cmpeq_pi16,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mmx/mm_cmpeq_pi32",    test_simd_mm_cmpeq_pi32,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mmx/mm_cmpgt_pi8",     test_simd_mm_cmpgt_pi8,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mmx/mm_cmpgt_pi16",    test_simd_mm_cmpgt_pi16,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mmx/mm_cmpgt_pi32",    test_simd_mm_cmpgt_pi32,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mmx/mm_cvtm64_si64",   test_simd_mm_cvtm64_si64,   NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mmx/mm_cvtsi32_si64",  test_simd_mm_cvtsi32_si64,  NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mmx/mm_cvtsi64_m64",   test_simd_mm_cvtsi64_m64,   NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mmx/mm_cvtsi64_si32",  test_simd_mm_cvtsi64_si32,  NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mmx/mm_madd_pi16",     test_simd_mm_madd_pi16,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mmx/mm_mulhi_pi16",    test_simd_mm_mulhi_pi16,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mmx/mm_mullo_pi16",    test_simd_mm_mullo_pi16,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mmx/mm_or_si64",       test_simd_mm_or_si64,       NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mmx/mm_packs_pi16",    test_simd_mm_packs_pi16,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mmx/mm_packs_pi32",    test_simd_mm_packs_pi32,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mmx/mm_packs_pu16",    test_simd_mm_packs_pu16,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mmx/mm_sll_pi16",      test_simd_mm_sll_pi16,      NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mmx/mm_sll_pi32",      test_simd_mm_sll_pi32,      NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mmx/mm_sll_si64",      test_simd_mm_sll_si64,      NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mmx/mm_slli_pi16",     test_simd_mm_slli_pi16,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mmx/mm_slli_pi32",     test_simd_mm_slli_pi32,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mmx/mm_slli_si64",     test_simd_mm_slli_si64,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mmx/mm_srl_pi16",      test_simd_mm_srl_pi16,      NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mmx/mm_srl_pi32",      test_simd_mm_srl_pi32,      NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mmx/mm_srl_si64",      test_simd_mm_srl_si64,      NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mmx/mm_srli_pi16",     test_simd_mm_srli_pi16,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mmx/mm_srli_pi32",     test_simd_mm_srli_pi32,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mmx/mm_srli_si64",     test_simd_mm_srli_si64,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mmx/mm_srai_pi16",     test_simd_mm_srai_pi16,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mmx/mm_srai_pi32",     test_simd_mm_srai_pi32,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mmx/mm_sra_pi16",      test_simd_mm_sra_pi16,      NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mmx/mm_sra_pi32",      test_simd_mm_sra_pi32,      NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mmx/mm_sub_pi8",       test_simd_mm_sub_pi8,       NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mmx/mm_sub_pi16",      test_simd_mm_sub_pi16,      NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mmx/mm_sub_pi32",      test_simd_mm_sub_pi32,      NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mmx/mm_subs_pi8",      test_simd_mm_subs_pi8,      NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mmx/mm_subs_pi16",     test_simd_mm_subs_pi16,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mmx/mm_subs_pu8",      test_simd_mm_subs_pu8,      NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mmx/mm_subs_pu16",     test_simd_mm_subs_pu16,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mmx/mm_unpackhi_pi8",  test_simd_mm_unpackhi_pi8,  NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mmx/mm_unpackhi_pi16", test_simd_mm_unpackhi_pi16, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mmx/mm_unpackhi_pi32", test_simd_mm_unpackhi_pi32, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mmx/mm_unpacklo_pi8",  test_simd_mm_unpacklo_pi8,  NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mmx/mm_unpacklo_pi16", test_simd_mm_unpacklo_pi16, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mmx/mm_unpacklo_pi32", test_simd_mm_unpacklo_pi32, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
 
-  { (char*) "/sse/mm_set_ps",       test_simd_mm_set_ps,       NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/sse/mm_set1_ps",      test_simd_mm_set1_ps,      NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/sse/mm_add_ps",       test_simd_mm_add_ps,       NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/sse/mm_add_ss",       test_simd_mm_add_ss,       NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/sse/mm_and_ps",       test_simd_mm_and_ps,       NULL, NULL, MUNIT_TEST_OPTION_TODO, NULL },
-  { (char*) "/sse/mm_andnot_ps",    test_simd_mm_andnot_ps,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/sse/mm_set_ps",        test_simd_mm_set_ps,        NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/sse/mm_set1_ps",       test_simd_mm_set1_ps,       NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/sse/mm_add_ps",        test_simd_mm_add_ps,        NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/sse/mm_add_ss",        test_simd_mm_add_ss,        NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/sse/mm_and_ps",        test_simd_mm_and_ps,        NULL, NULL, MUNIT_TEST_OPTION_TODO, NULL },
+  { (char*) "/sse/mm_andnot_ps",     test_simd_mm_andnot_ps,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
 
-  { (char*) "/sse2/mm_set_epi8",    test_simd_mm_set_epi8,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/sse2/mm_set_epi16",   test_simd_mm_set_epi16,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/sse2/mm_set_epi32",   test_simd_mm_set_epi32,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/sse2/mm_add_epi8",    test_simd_mm_add_epi8,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/sse2/mm_set_epi8",     test_simd_mm_set_epi8,      NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/sse2/mm_set_epi16",    test_simd_mm_set_epi16,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/sse2/mm_set_epi32",    test_simd_mm_set_epi32,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/sse2/mm_add_epi8",     test_simd_mm_add_epi8,      NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
 
   { (char*) "/sse/mm_sub_ps", test_simd_mm_sub_ps, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
   { NULL, NULL, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL }
