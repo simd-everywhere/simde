@@ -28,14 +28,12 @@ implementation in the relevant header.
 ## Portability
 
 The code currently requires GCC (or a compiler which implements GCC's
-vector extensions, like clang or icc).  It wouldn't be too difficult
-to support other compilers, one would mostly just need to add macros
-for accessing individual elements in the vector types, and define
-vector types in an ifdef to avoid relying on the `vector_size` GNU C
-extension.
+vector extensions, like clang or icc).
 
-I don't know when, or if, I'll get around to it, but if you're willing
-to work on it patches are welcome.
+I plan to move from GCC's vector extensions to loops annotated with
+OpenMP 4 SIMD pragmas soon (note that this doesn't mean the code will
+require OpenMP; the SIMD pragmas don't have any runtime dependencies,
+they just provide a standard way to annotate code for the compiler).
 
 ## Related Projects
 
@@ -43,6 +41,17 @@ This is very similar to the builtins module in
 [portable-snippets](https://github.com/nemequ/portable-snippets).  In
 the future, I may even choose to roll this project into
 portable-snippets.
+
+## Why?
+
+Ideas include:
+
+ * Run code which relies on ISA extensions on CPUs which don't support
+   them without a rewrite.
+ * An easy way to port code to an instruction set your CPU doesn't
+   support without having to run your tests in an emulator.
+ * Understanding how an instruction works when the documentation fails
+   you.
 
 ## License
 
