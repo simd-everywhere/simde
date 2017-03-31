@@ -16,24 +16,42 @@
 #include <limits.h>
 
 typedef union {
-  char                   i8 __attribute__((__vector_size__(8)));
-  short                  i16 __attribute__((__vector_size__(8)));
-  int                    i32 __attribute__((__vector_size__(8)));
-  long long int          i64;
-  unsigned char          u8 __attribute__((__vector_size__(8)));
-  unsigned short         u16 __attribute__((__vector_size__(8)));
-  unsigned int           u32 __attribute__((__vector_size__(8)));
-  unsigned long long int u64;
+  char i8[8];
+  short i16[4];
+  int i32[2];
+  int64_t i64;
+  unsigned char u8[8];
+  unsigned short u16[4];
+  unsigned int u32[2];
+  uint64_t u64;
 } SIMDE__TYPE(m64);
 #if defined(__m64)
 #  undef __m64
 #endif
 #define __m64 SIMDE__TYPE(m64)
 
+#if defined(HEDLEY_STATIC_ASSERT)
+HEDLEY_STATIC_ASSERT(sizeof(__m64) == 8, "__m64 must be 8 bytes");
+#elif defined(__STDC_VERSION__) && __STDC_VERSION__ >= 201112L
+_Static_assert(sizeof(__m64) == 8, "__m64 must be 8 bytes");
+#elif defined(__has_feature)
+#  if __has_feature(c_static_assert)
+_Static_assert(sizeof(__m64) == 8, "__m64 must be 8 bytes");
+#  endif
+#elif defined(__GNUC__) && (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 6))
+_Static_assert(sizeof(__m64) == 8, "__m64 must be 8 bytes");
+#elif defined(_MSC_VER) && (_MSC_VER >= 1600)
+static_assert(sizeof(__m64) == 8, "__m64 must be 8 bytes");
+#endif
+
 SIMDE__MMX_INLINE_FUNC
 SIMDE__TYPE(m64)
 SIMDE__SYMBOL(__mm_add_pi8) (__m64 a, __m64 b) {
-  return (SIMDE__TYPE(m64)) { .i8 = a.i8 + b.i8 };
+  __m64 r;
+  for (size_t i = 0 ; i < (sizeof(__m64)) ; i++) {
+    r.i8[i] = a.i8[i] + b.i8[i];
+  }
+  return r;
 }
 #if defined(_mm_add_pi8)
 #  undef _mm_add_pi8
@@ -47,7 +65,11 @@ SIMDE__SYMBOL(__mm_add_pi8) (__m64 a, __m64 b) {
 SIMDE__MMX_INLINE_FUNC
 SIMDE__TYPE(m64)
 SIMDE__SYMBOL(__mm_add_pi16) (__m64 a, __m64 b) {
-  return (SIMDE__TYPE(m64)) { .i16 = a.i16 + b.i16 };
+  __m64 r;
+  for (size_t i = 0 ; i < (sizeof(__m64) / sizeof(short)) ; i++) {
+    r.i16[i] = a.i16[i] + b.i16[i];
+  }
+  return r;
 }
 #if defined(_mm_add_pi16)
 #  undef _mm_add_pi16
@@ -61,7 +83,11 @@ SIMDE__SYMBOL(__mm_add_pi16) (__m64 a, __m64 b) {
 SIMDE__MMX_INLINE_FUNC
 SIMDE__TYPE(m64)
 SIMDE__SYMBOL(__mm_add_pi32) (__m64 a, __m64 b) {
-  return (SIMDE__TYPE(m64)) { .i32 = a.i32 + b.i32 };
+  __m64 r;
+  for (size_t i = 0 ; i < (sizeof(__m64) / sizeof(int)) ; i++) {
+    r.i32[i] = a.i32[i] + b.i32[i];
+  }
+  return r;
 }
 #if defined(_mm_add_pi32)
 #  undef _mm_add_pi32
@@ -947,7 +973,11 @@ SIMDE__SYMBOL(__mm_sra_pi32) (__m64 a, __m64 count) {
 SIMDE__MMX_INLINE_FUNC
 SIMDE__TYPE(m64)
 SIMDE__SYMBOL(__mm_sub_pi8) (__m64 a, __m64 b) {
-  return (SIMDE__TYPE(m64)) { .i8 = a.i8 - b.i8 };
+  __m64 r;
+  for (size_t i = 0 ; i < (sizeof(__m64)) ; i++) {
+    r.i8[i] = a.i8[i] - b.i8[i];
+  }
+  return r;
 }
 #if defined(_mm_sub_pi8)
 #  undef _mm_sub_pi8
@@ -961,7 +991,11 @@ SIMDE__SYMBOL(__mm_sub_pi8) (__m64 a, __m64 b) {
 SIMDE__MMX_INLINE_FUNC
 SIMDE__TYPE(m64)
 SIMDE__SYMBOL(__mm_sub_pi16) (__m64 a, __m64 b) {
-  return (SIMDE__TYPE(m64)) { .i16 = a.i16 - b.i16 };
+  __m64 r;
+  for (size_t i = 0 ; i < (sizeof(__m64) / sizeof(short)) ; i++) {
+    r.i16[i] = a.i16[i] - b.i16[i];
+  }
+  return r;
 }
 #if defined(_mm_sub_pi16)
 #  undef _mm_sub_pi16
@@ -975,7 +1009,11 @@ SIMDE__SYMBOL(__mm_sub_pi16) (__m64 a, __m64 b) {
 SIMDE__MMX_INLINE_FUNC
 SIMDE__TYPE(m64)
 SIMDE__SYMBOL(__mm_sub_pi32) (__m64 a, __m64 b) {
-  return (SIMDE__TYPE(m64)) { .i32 = a.i32 - b.i32 };
+  __m64 r;
+  for (size_t i = 0 ; i < (sizeof(__m64) / sizeof(int)) ; i++) {
+    r.i32[i] = a.i32[i] - b.i32[i];
+  }
+  return r;
 }
 #if defined(_mm_sub_pi32)
 #  undef _mm_sub_pi32

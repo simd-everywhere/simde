@@ -25,16 +25,6 @@ interested in helping please feel free to dive right in!  All
 instructions must have a test (see `test.c`), as well as a portable
 implementation in the relevant header.
 
-## Portability
-
-The code currently requires GCC (or a compiler which implements GCC's
-vector extensions, like clang or icc).
-
-I plan to move from GCC's vector extensions to loops annotated with
-OpenMP 4 SIMD pragmas soon (note that this doesn't mean the code will
-require OpenMP; the SIMD pragmas don't have any runtime dependencies,
-they just provide a standard way to annotate code for the compiler).
-
 ## Related Projects
 
 This is very similar to the builtins module in
