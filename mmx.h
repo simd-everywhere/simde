@@ -777,5 +777,42 @@ SIMDE__SYMBOL(__mm_srai_pi32) (__m64 a, int count) {
 #endif
 #define _mm_srai_pi32 SIMDE__SYMBOL(__mm_srai_pi32)
 
+SIMDE__MMX_INLINE_FUNC
+SIMDE__TYPE(m64)
+SIMDE__SYMBOL(__mm_sra_pi16) (__m64 a, __m64 count) {
+  __m64 r;
+
+  const unsigned short m = (unsigned short) ((~0U) << ((sizeof(short) * CHAR_BIT) - count.i64));
+
+  for (size_t i = 0 ; i < (sizeof(__m64) / sizeof(short)) ; i++) {
+    const unsigned short is_neg = ((unsigned short) (((a.u16[i]) >> ((sizeof(short) * CHAR_BIT) - 1))));
+    r.u16[i] = (a.u16[i] >> count.i64) | (m * is_neg);
+  }
+
+  return r;
+}
+#if defined(_mm_sra_pi16)
+#  undef _mm_sra_pi16
+#endif
+#define _mm_sra_pi16 SIMDE__SYMBOL(__mm_sra_pi16)
+
+SIMDE__MMX_INLINE_FUNC
+SIMDE__TYPE(m64)
+SIMDE__SYMBOL(__mm_sra_pi32) (__m64 a, __m64 count) {
+  __m64 r;
+
+  const unsigned int m = (unsigned int) ((~0U) << ((sizeof(int) * CHAR_BIT) - count.i64));
+  for (size_t i = 0 ; i < (sizeof(__m64) / sizeof(int)) ; i++) {
+    const unsigned int is_neg = ((unsigned int) (((a.u32[i]) >> ((sizeof(int) * CHAR_BIT) - 1))));
+    r.u32[i] = (a.u32[i] >> count.i64) | (m * is_neg);
+  }
+
+  return r;
+}
+#if defined(_mm_sra_pi32)
+#  undef _mm_sra_pi32
+#endif
+#define _mm_sra_pi32 SIMDE__SYMBOL(__mm_sra_pi32)
+
 #endif /* !defined(SIMDE__MMX_NATIVE) */
 #endif /* !defined(SIMDE__MMX_H) */
