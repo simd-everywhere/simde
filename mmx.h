@@ -814,5 +814,137 @@ SIMDE__SYMBOL(__mm_sra_pi32) (__m64 a, __m64 count) {
 #endif
 #define _mm_sra_pi32 SIMDE__SYMBOL(__mm_sra_pi32)
 
+SIMDE__MMX_INLINE_FUNC
+SIMDE__TYPE(m64)
+SIMDE__SYMBOL(__mm_sub_pi8) (__m64 a, __m64 b) {
+  return (SIMDE__TYPE(m64)) { .i8 = a.i8 - b.i8 };
+}
+#if defined(_mm_sub_pi8)
+#  undef _mm_sub_pi8
+#endif
+#define _mm_sub_pi8 SIMDE__SYMBOL(__mm_sub_pi8)
+#if defined(_m_psubb)
+#  undef _m_psubb
+#endif
+#define _m_psubb SIMDE__SYMBOL(__mm_sub_pi8)
+
+SIMDE__MMX_INLINE_FUNC
+SIMDE__TYPE(m64)
+SIMDE__SYMBOL(__mm_sub_pi16) (__m64 a, __m64 b) {
+  return (SIMDE__TYPE(m64)) { .i16 = a.i16 - b.i16 };
+}
+#if defined(_mm_sub_pi16)
+#  undef _mm_sub_pi16
+#endif
+#define _mm_sub_pi16 SIMDE__SYMBOL(__mm_sub_pi16)
+#if defined(_m_psubw)
+#  undef _m_psubw
+#endif
+#define _m_psubw SIMDE__SYMBOL(__m_psubw)
+
+SIMDE__MMX_INLINE_FUNC
+SIMDE__TYPE(m64)
+SIMDE__SYMBOL(__mm_sub_pi32) (__m64 a, __m64 b) {
+  return (SIMDE__TYPE(m64)) { .i32 = a.i32 - b.i32 };
+}
+#if defined(_mm_sub_pi32)
+#  undef _mm_sub_pi32
+#endif
+#define _mm_sub_pi32 SIMDE__SYMBOL(__mm_sub_pi32)
+#if defined(_m_psubd)
+#  undef _m_psubd
+#endif
+#define _m_psubd SIMDE__SYMBOL(__mm_sub_pi32)
+
+SIMDE__MMX_INLINE_FUNC
+SIMDE__TYPE(m64)
+SIMDE__SYMBOL(__mm_subs_pi8) (__m64 a, __m64 b) {
+  __m64 r;
+  for (size_t i = 0 ; i < (sizeof(r)) ; i++) {
+    if (((b.i8[i]) > 0 && (a.i8[i]) < CHAR_MIN + (b.i8[i]))) {
+      r.i8[i] = CHAR_MIN;
+    } else if ((b.i8[i]) < 0 && (a.i8[i]) > CHAR_MAX + (b.i8[i])) {
+      r.i8[i] = CHAR_MAX;
+    } else {
+      r.i8[i] = (a.i8[i]) - (b.i8[i]);
+    }
+  }
+  return r;
+}
+#if defined(_mm_subs_pi8)
+#  undef _mm_subs_pi8
+#endif
+#define _mm_subs_pi8 SIMDE__SYMBOL(__mm_subs_pi8)
+#if defined(_m_psubsb)
+#  undef _m_psubsb
+#endif
+#define _m_psubsb SIMDE__SYMBOL(__mm_subs_pi8)
+
+SIMDE__MMX_INLINE_FUNC
+SIMDE__TYPE(m64)
+SIMDE__SYMBOL(__mm_subs_pu8) (__m64 a, __m64 b) {
+  __m64 r;
+  for (size_t i = 0 ; i < (sizeof(r)) ; i++) {
+    const int x = a.u8[i] - b.u8[i];
+    if (x < 0) {
+      r.u8[i] = 0;
+    } else if (x > UCHAR_MAX) {
+      r.u8[i] = UCHAR_MAX;
+    } else {
+      r.u8[i] = (unsigned char) x;
+    }
+  }
+  return r;
+}
+#if defined(_mm_subs_pu8)
+#  undef _mm_subs_pu8
+#endif
+#define _mm_subs_pu8 SIMDE__SYMBOL(__mm_subs_pu8)
+
+SIMDE__MMX_INLINE_FUNC
+SIMDE__TYPE(m64)
+SIMDE__SYMBOL(__mm_subs_pi16) (__m64 a, __m64 b) {
+  __m64 r;
+  for (size_t i = 0 ; i < (sizeof(r) / sizeof(short)) ; i++) {
+    if (((b.i16[i]) > 0 && (a.i16[i]) < SHRT_MIN + (b.i16[i]))) {
+      r.i16[i] = SHRT_MIN;
+    } else if ((b.i16[i]) < 0 && (a.i16[i]) > SHRT_MAX + (b.i16[i])) {
+      r.i16[i] = SHRT_MAX;
+    } else {
+      r.i16[i] = (a.i16[i]) - (b.i16[i]);
+    }
+  }
+  return r;
+}
+#if defined(_mm_subs_pi16)
+#  undef _mm_subs_pi16
+#endif
+#define _mm_subs_pi16 SIMDE__SYMBOL(__mm_subs_pi16)
+#if defined(_m_psubsw)
+#  undef _m_psubsw
+#endif
+#define _m_psubsw SIMDE__SYMBOL(__mm_subs_pi16)
+
+SIMDE__MMX_INLINE_FUNC
+SIMDE__TYPE(m64)
+SIMDE__SYMBOL(__mm_subs_pu16) (__m64 a, __m64 b) {
+  __m64 r;
+  for (size_t i = 0 ; i < (sizeof(r) / sizeof(unsigned short)) ; i++) {
+    const int x = a.u16[i] - b.u16[i];
+    if (x < 0) {
+      r.u16[i] = 0;
+    } else if (x > USHRT_MAX) {
+      r.u16[i] = USHRT_MAX;
+    } else {
+      r.u16[i] = (unsigned short) x;
+    }
+  }
+  return r;
+}
+#if defined(_mm_subs_pu16)
+#  undef _mm_subs_pu16
+#endif
+#define _mm_subs_pu16 SIMDE__SYMBOL(__mm_subs_pu16)
+
 #endif /* !defined(SIMDE__MMX_NATIVE) */
 #endif /* !defined(SIMDE__MMX_H) */
