@@ -18,14 +18,19 @@
 
 /*** MMX ***/
 
-/* void print_pi16(const char* prefix, __m64 v) { */
-/*   short* vp = (short*) &v; */
-/*   printf("%s: 0x%04hx 0x%04hx 0x%04hx 0x%04hx\n", prefix, vp[0], vp[1], vp[2], vp[3]); */
-/* } */
+void print_pi16(const char* prefix, __m64 v) {
+  short* vp = (short*) &v;
+  printf("%s: 0x%04hx 0x%04hx 0x%04hx 0x%04hx\n", prefix, vp[0], vp[1], vp[2], vp[3]);
+}
 
-/* void print_si64(const char* prefix, __m64 v) { */
-/*   printf("%s: 0x%016lx\n", prefix, *((int64_t*) &v)); */
-/* } */
+void print_pi32(const char* prefix, __m64 v) {
+  int* vp = (int*) &v;
+  printf("%s: 0x%08x 0x%08x\n", prefix, vp[0], vp[1]);
+}
+
+void print_si64(const char* prefix, __m64 v) {
+  printf("%s: 0x%016lx\n", prefix, *((int64_t*) &v));
+}
 
 static MunitResult
 test_simd_mm_set_pi8(const MunitParameter params[], void* data) {
@@ -1850,6 +1855,94 @@ test_simd_mm_srli_si64(const MunitParameter params[], void* data) {
   return MUNIT_OK;
 }
 
+static MunitResult
+test_simd_mm_srai_pi16(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  const struct {
+    __m64 a;
+    int count;
+    __m64 r;
+  } test_vec[8] = {
+    { _mm_set_pi16(0x81fd, 0xd76a, 0x6fd3, 0x493b),
+      6,
+      _mm_set_pi16(0xfe07, 0xff5d, 0x01bf, 0x0124) },
+    { _mm_set_pi16(0xfed4, 0xf342, 0xf4d3, 0xd383),
+      15,
+      _mm_set_pi16(0xffff, 0xffff, 0xffff, 0xffff) },
+    { _mm_set_pi16(0x1950, 0xc2bc, 0x0e03, 0x1ea4),
+      2,
+      _mm_set_pi16(0x0654, 0xf0af, 0x0380, 0x07a9) },
+    { _mm_set_pi16(0xe864, 0xc1b6, 0x06b9, 0x89bf),
+      5,
+      _mm_set_pi16(0xff43, 0xfe0d, 0x0035, 0xfc4d) },
+    { _mm_set_pi16(0x6021, 0x385f, 0x077d, 0xcc88),
+      13,
+      _mm_set_pi16(0x0003, 0x0001, 0x0000, 0xfffe) },
+    { _mm_set_pi16(0x3507, 0x7f62, 0xed65, 0x29fc),
+      12,
+      _mm_set_pi16(0x0003, 0x0007, 0xfffe, 0x0002) },
+    { _mm_set_pi16(0xf4f8, 0x6f43, 0xa439, 0xbca7),
+      11,
+      _mm_set_pi16(0xfffe, 0x000d, 0xfff4, 0xfff7) },
+    { _mm_set_pi16(0xeb52, 0x7264, 0xf22a, 0x552e),
+      10,
+      _mm_set_pi16(0xfffa, 0x001c, 0xfffc, 0x0015) }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    __m64 r = _mm_srai_pi16(test_vec[i].a, test_vec[i].count);
+    assert_m64_pi16(r, ==, test_vec[i].r);
+  }
+
+  return MUNIT_OK;
+}
+
+static MunitResult
+test_simd_mm_srai_pi32(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  const struct {
+    __m64 a;
+    int count;
+    __m64 r;
+  } test_vec[8] = {
+    { _mm_set_pi32(0x81fdd76a, 0x6fd3493b),
+      6,
+      _mm_set_pi32(0xfe07f75d, 0x01bf4d24) },
+    { _mm_set_pi32(0xfed4f342, 0xf4d3d383),
+      15,
+      _mm_set_pi32(0xfffffda9, 0xffffe9a7) },
+    { _mm_set_pi32(0x1950c2bc, 0x0e031ea4),
+      2,
+      _mm_set_pi32(0x065430af, 0x0380c7a9) },
+    { _mm_set_pi32(0xe864c1b6, 0x06b989bf),
+      5,
+      _mm_set_pi32(0xff43260d, 0x0035cc4d) },
+    { _mm_set_pi32(0x6021385f, 0x077dcc88),
+      13,
+      _mm_set_pi32(0x00030109, 0x00003bee) },
+    { _mm_set_pi32(0x35077f62, 0xed6529fc),
+      12,
+      _mm_set_pi32(0x00035077, 0xfffed652) },
+    { _mm_set_pi32(0xf4f86f43, 0xa439bca7),
+      11,
+      _mm_set_pi32(0xfffe9f0d, 0xfff48737) },
+    { _mm_set_pi32(0xeb527264, 0xf22a552e),
+      10,
+      _mm_set_pi32(0xfffad49c, 0xfffc8a95) }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    __m64 r = _mm_srai_pi32(test_vec[i].a, test_vec[i].count);
+    assert_m64_pi32(r, ==, test_vec[i].r);
+  }
+
+  return MUNIT_OK;
+}
+
 /*** SSE ***/
 
 #define assert_m128_ps(a, cmp, b)					\
@@ -2220,6 +2313,8 @@ static MunitTest test_suite_tests[] = {
   { (char*) "/mmx/mm_srli_pi16",    test_simd_mm_srli_pi16,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
   { (char*) "/mmx/mm_srli_pi32",    test_simd_mm_srli_pi32,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
   { (char*) "/mmx/mm_srli_si64",    test_simd_mm_srli_si64,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mmx/mm_srai_pi16",    test_simd_mm_srai_pi16,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mmx/mm_srai_pi32",    test_simd_mm_srai_pi32,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
 
   { (char*) "/sse/mm_set_ps",       test_simd_mm_set_ps,       NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
   { (char*) "/sse/mm_set1_ps",      test_simd_mm_set1_ps,      NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
