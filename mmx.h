@@ -351,10 +351,8 @@ SIMDE__SYMBOL(__mm_cvtsi64_si32) (__m64 a) {
 #define _mm_cvtsi64_si32 SIMDE__SYMBOL(__mm_cvtsi64_si32)
 
 SIMDE__MMX_INLINE_FUNC
-int
-SIMDE__SYMBOL(__mm_empty) (__m64 a) {
-  return a.i32[0];
-}
+void
+SIMDE__SYMBOL(__mm_empty) (void) { }
 #if defined(_mm_empty)
 #  undef _mm_empty
 #endif
