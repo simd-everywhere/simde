@@ -2652,6 +2652,60 @@ test_simd_mm_xor_si64(const MunitParameter params[], void* data) {
   return MUNIT_OK;
 }
 
+static MunitResult
+test_simd_m_to_int(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  const struct {
+    __m64 a;
+    int r;
+  } test_vec[8] = {
+    { _mm_set_pi32(0x0b305900, 0x2ce14997), 0x2ce14997 },
+    { _mm_set_pi32(0x5dcceaf2, 0x0612924a), 0x0612924a },
+    { _mm_set_pi32(0x3c4bbe31, 0x34cda252), 0x34cda252 },
+    { _mm_set_pi32(0xbdfde335, 0xce0a7b7f), 0xce0a7b7f },
+    { _mm_set_pi32(0x73ef67ae, 0x1bcf815e), 0x1bcf815e },
+    { _mm_set_pi32(0x1b5823dd, 0x0f574e31), 0x0f574e31 },
+    { _mm_set_pi32(0x3292e22f, 0xaba3930e), 0xaba3930e },
+    { _mm_set_pi32(0xa96fe14f, 0x9acd6061), 0x9acd6061 }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    int r = _m_to_int(test_vec[i].a);
+    munit_assert_int(r, ==, test_vec[i].r);
+  }
+
+  return MUNIT_OK;
+}
+
+static MunitResult
+test_simd_m_to_int64(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  const struct {
+    __m64 a;
+    int64_t r;
+  } test_vec[8] = {
+    { _mm_cvtsi64_m64(INT64_C(0xe430bbd7345fbdc6)), INT64_C(0xe430bbd7345fbdc6) },
+    { _mm_cvtsi64_m64(INT64_C(0xfad3191b857c9489)), INT64_C(0xfad3191b857c9489) },
+    { _mm_cvtsi64_m64(INT64_C(0xcd412cd09e6100a4)), INT64_C(0xcd412cd09e6100a4) },
+    { _mm_cvtsi64_m64(INT64_C(0x46c9e862ff60e44b)), INT64_C(0x46c9e862ff60e44b) },
+    { _mm_cvtsi64_m64(INT64_C(0xfd079f05a421a2c1)), INT64_C(0xfd079f05a421a2c1) },
+    { _mm_cvtsi64_m64(INT64_C(0x961974a98b0be6c7)), INT64_C(0x961974a98b0be6c7) },
+    { _mm_cvtsi64_m64(INT64_C(0x7e9c3f25c9da7889)), INT64_C(0x7e9c3f25c9da7889) },
+    { _mm_cvtsi64_m64(INT64_C(0x2d3ebe604bed8518)), INT64_C(0x2d3ebe604bed8518) }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    int64_t r = _m_to_int64(test_vec[i].a);
+    munit_assert_int64(r, ==, test_vec[i].r);
+  }
+
+  return MUNIT_OK;
+}
+
 /*** SSE ***/
 
 #define assert_m128_ps(a, cmp, b)					\
@@ -3040,6 +3094,8 @@ static MunitTest test_suite_tests[] = {
   { (char*) "/mmx/mm_unpacklo_pi16", test_simd_mm_unpacklo_pi16, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
   { (char*) "/mmx/mm_unpacklo_pi32", test_simd_mm_unpacklo_pi32, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
   { (char*) "/mmx/mm_xor_si64",      test_simd_mm_xor_si64,      NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mmx/m_to_int",         test_simd_m_to_int,         NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mmx/m_to_int64",       test_simd_m_to_int64,       NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
 
   { (char*) "/sse/mm_set_ps",        test_simd_mm_set_ps,        NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
   { (char*) "/sse/mm_set1_ps",       test_simd_mm_set1_ps,       NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },

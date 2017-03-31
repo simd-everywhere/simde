@@ -1144,5 +1144,25 @@ SIMDE__SYMBOL(__mm_xor_si64) (__m64 a, __m64 b) {
 #endif
 #define _m_pxor SIMDE__SYMBOL(__mm_xor_si64)
 
+SIMDE__MMX_INLINE_FUNC
+int
+SIMDE__SYMBOL(__m_to_int) (__m64 a) {
+  return a.i32[0];
+}
+#if defined(_m_to_int)
+#  undef _m_to_int
+#endif
+#define _m_to_int SIMDE__SYMBOL(__m_to_int)
+
+SIMDE__MMX_INLINE_FUNC
+int64_t
+SIMDE__SYMBOL(__m_to_int64) (__m64 a) {
+  return a.i64;
+}
+#if defined(_m_to_int64)
+#  undef _m_to_int64
+#endif
+#define _m_to_int64 SIMDE__SYMBOL(__m_to_int64)
+
 #endif /* !defined(SIMDE__MMX_NATIVE) */
 #endif /* !defined(SIMDE__MMX_H) */
