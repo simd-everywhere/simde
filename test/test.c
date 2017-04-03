@@ -13,7 +13,7 @@
 #include <stdio.h>
 #include <limits.h>
 
-#include "sse2.h"
+#include "../sse2.h"
 #include "munit/munit.h"
 
 /*** MMX ***/

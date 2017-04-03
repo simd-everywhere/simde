@@ -1,7 +1,7 @@
 #if !defined(SIMDE__MMX_H)
 #define SIMDE__MMX_H
 
-#define SIMDE__MMX_INLINE_FUNC __attribute__((__always_inline__)) static inline
+#include "simde-common.h"
 
 #if !defined(SIMDE__TYPE)
 #  define SIMDE__TYPE(name) simde_simd__mmx_##name
@@ -16,35 +16,23 @@
 #include <limits.h>
 
 typedef union {
-  char i8[8];
-  short i16[4];
-  int i32[2];
-  int64_t i64;
-  unsigned char u8[8];
+  char           i8[8];
+  short          i16[4];
+  int            i32[2];
+  int64_t        i64;
+  unsigned char  u8[8];
   unsigned short u16[4];
-  unsigned int u32[2];
-  uint64_t u64;
-} SIMDE__TYPE(m64);
+  unsigned int   u32[2];
+  uint64_t       u64;
+} SIMDE__TYPE(m64) SIMDE__ALIGN(16);
 #if defined(__m64)
 #  undef __m64
 #endif
 #define __m64 SIMDE__TYPE(m64)
 
-#if defined(HEDLEY_STATIC_ASSERT)
 HEDLEY_STATIC_ASSERT(sizeof(__m64) == 8, "__m64 must be 8 bytes");
-#elif defined(__STDC_VERSION__) && __STDC_VERSION__ >= 201112L
-_Static_assert(sizeof(__m64) == 8, "__m64 must be 8 bytes");
-#elif defined(__has_feature)
-#  if __has_feature(c_static_assert)
-_Static_assert(sizeof(__m64) == 8, "__m64 must be 8 bytes");
-#  endif
-#elif defined(__GNUC__) && (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 6))
-_Static_assert(sizeof(__m64) == 8, "__m64 must be 8 bytes");
-#elif defined(_MSC_VER) && (_MSC_VER >= 1600)
-static_assert(sizeof(__m64) == 8, "__m64 must be 8 bytes");
-#endif
 
-SIMDE__MMX_INLINE_FUNC
+SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__TYPE(m64)
 SIMDE__SYMBOL(__mm_add_pi8) (__m64 a, __m64 b) {
   __m64 r;
@@ -62,7 +50,7 @@ SIMDE__SYMBOL(__mm_add_pi8) (__m64 a, __m64 b) {
 #endif
 #define _m_paddb SIMDE__SYMBOL(__mm_add_pi8)
 
-SIMDE__MMX_INLINE_FUNC
+SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__TYPE(m64)
 SIMDE__SYMBOL(__mm_add_pi16) (__m64 a, __m64 b) {
   __m64 r;
@@ -80,7 +68,7 @@ SIMDE__SYMBOL(__mm_add_pi16) (__m64 a, __m64 b) {
 #endif
 #define _m_paddw SIMDE__SYMBOL(__m_paddw)
 
-SIMDE__MMX_INLINE_FUNC
+SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__TYPE(m64)
 SIMDE__SYMBOL(__mm_add_pi32) (__m64 a, __m64 b) {
   __m64 r;
@@ -98,7 +86,7 @@ SIMDE__SYMBOL(__mm_add_pi32) (__m64 a, __m64 b) {
 #endif
 #define _m_paddd SIMDE__SYMBOL(__mm_add_pi32)
 
-SIMDE__MMX_INLINE_FUNC
+SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__TYPE(m64)
 SIMDE__SYMBOL(__mm_adds_pi8) (__m64 a, __m64 b) {
   __m64 r;
@@ -122,7 +110,7 @@ SIMDE__SYMBOL(__mm_adds_pi8) (__m64 a, __m64 b) {
 #endif
 #define _m_paddsb SIMDE__SYMBOL(__mm_adds_pi8)
 
-SIMDE__MMX_INLINE_FUNC
+SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__TYPE(m64)
 SIMDE__SYMBOL(__mm_adds_pu8) (__m64 a, __m64 b) {
   __m64 r;
@@ -146,7 +134,7 @@ SIMDE__SYMBOL(__mm_adds_pu8) (__m64 a, __m64 b) {
 #endif
 #define _m_paddusb SIMDE__SYMBOL(__mm_adds_pu8)
 
-SIMDE__MMX_INLINE_FUNC
+SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__TYPE(m64)
 SIMDE__SYMBOL(__mm_adds_pi16) (__m64 a, __m64 b) {
   __m64 r;
@@ -170,7 +158,7 @@ SIMDE__SYMBOL(__mm_adds_pi16) (__m64 a, __m64 b) {
 #endif
 #define _m_paddsw SIMDE__SYMBOL(__mm_adds_pi16)
 
-SIMDE__MMX_INLINE_FUNC
+SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__TYPE(m64)
 SIMDE__SYMBOL(__mm_adds_pu16) (__m64 a, __m64 b) {
   __m64 r;
@@ -192,7 +180,7 @@ SIMDE__SYMBOL(__mm_adds_pu16) (__m64 a, __m64 b) {
 #endif
 #define _m_paddusw SIMDE__SYMBOL(__mm_adds_pu16)
 
-SIMDE__MMX_INLINE_FUNC
+SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__TYPE(m64)
 SIMDE__SYMBOL(__mm_and_si64) (__m64 a, __m64 b) {
   return (SIMDE__TYPE(m64)) { .i64 = a.i64 & b.i64 };
@@ -206,7 +194,7 @@ SIMDE__SYMBOL(__mm_and_si64) (__m64 a, __m64 b) {
 #endif
 #define _m_pand SIMDE__SYMBOL(__mm_and_si64)
 
-SIMDE__MMX_INLINE_FUNC
+SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__TYPE(m64)
 SIMDE__SYMBOL(__mm_andnot_si64) (__m64 a, __m64 b) {
   return (SIMDE__TYPE(m64)) { .i64 = ~(a.i64) & b.i64 };
@@ -220,7 +208,7 @@ SIMDE__SYMBOL(__mm_andnot_si64) (__m64 a, __m64 b) {
 #endif
 #define _m_pandn SIMDE__SYMBOL(__mm_andnot_si64)
 
-SIMDE__MMX_INLINE_FUNC
+SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__TYPE(m64)
 SIMDE__SYMBOL(__mm_cmpeq_pi8) (__m64 a, __m64 b) {
   __m64 r;
@@ -238,7 +226,7 @@ SIMDE__SYMBOL(__mm_cmpeq_pi8) (__m64 a, __m64 b) {
 #endif
 #define _m_pcmpeqb SIMDE__SYMBOL(__mm_cmpeq_pi8)
 
-SIMDE__MMX_INLINE_FUNC
+SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__TYPE(m64)
 SIMDE__SYMBOL(__mm_cmpeq_pi16) (__m64 a, __m64 b) {
   __m64 r;
@@ -256,7 +244,7 @@ SIMDE__SYMBOL(__mm_cmpeq_pi16) (__m64 a, __m64 b) {
 #endif
 #define _m_pcmpeqw SIMDE__SYMBOL(__mm_cmpeq_pi16)
 
-SIMDE__MMX_INLINE_FUNC
+SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__TYPE(m64)
 SIMDE__SYMBOL(__mm_cmpeq_pi32) (__m64 a, __m64 b) {
   __m64 r;
@@ -274,7 +262,7 @@ SIMDE__SYMBOL(__mm_cmpeq_pi32) (__m64 a, __m64 b) {
 #endif
 #define _m_cpmpeqd SIMDE__SYMBOL(__m_cpmpeqd)
 
-SIMDE__MMX_INLINE_FUNC
+SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__TYPE(m64)
 SIMDE__SYMBOL(__mm_cmpgt_pi8) (__m64 a, __m64 b) {
   __m64 r;
@@ -292,7 +280,7 @@ SIMDE__SYMBOL(__mm_cmpgt_pi8) (__m64 a, __m64 b) {
 #endif
 #define _m_pcmpgtb SIMDE__SYMBOL(__mm_cmpgt_pi8)
 
-SIMDE__MMX_INLINE_FUNC
+SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__TYPE(m64)
 SIMDE__SYMBOL(__mm_cmpgt_pi16) (__m64 a, __m64 b) {
   __m64 r;
@@ -310,7 +298,7 @@ SIMDE__SYMBOL(__mm_cmpgt_pi16) (__m64 a, __m64 b) {
 #endif
 #define _m_pcmpgtw SIMDE__SYMBOL(__mm_cmpgt_pi16)
 
-SIMDE__MMX_INLINE_FUNC
+SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__TYPE(m64)
 SIMDE__SYMBOL(__mm_cmpgt_pi32) (__m64 a, __m64 b) {
   __m64 r;
@@ -328,7 +316,7 @@ SIMDE__SYMBOL(__mm_cmpgt_pi32) (__m64 a, __m64 b) {
 #endif
 #define _m_pcmgtd SIMDE__SYMBOL(__mm_cmpgt_pi32)
 
-SIMDE__MMX_INLINE_FUNC
+SIMDE__FUNCTION_ATTRIBUTES
 int64_t
 SIMDE__SYMBOL(__mm_cvtm64_si64) (__m64 a) {
   return a.i64;
@@ -338,7 +326,7 @@ SIMDE__SYMBOL(__mm_cvtm64_si64) (__m64 a) {
 #endif
 #define _mm_cvtm64_si64 SIMDE__SYMBOL(__mm_cvtm64_si64)
 
-SIMDE__MMX_INLINE_FUNC
+SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__TYPE(m64)
 SIMDE__SYMBOL(__mm_cvtsi32_si64) (int a) {
   return (SIMDE__TYPE(m64)) { .i32 = { a, 0 } };
@@ -352,7 +340,7 @@ SIMDE__SYMBOL(__mm_cvtsi32_si64) (int a) {
 #endif
 #define _m_from_int SIMDE__SYMBOL(__mm_from_int)
 
-SIMDE__MMX_INLINE_FUNC
+SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__TYPE(m64)
 SIMDE__SYMBOL(__mm_cvtsi64_m64) (int64_t a) {
   return (SIMDE__TYPE(m64)) { .i64 = a };
@@ -366,7 +354,7 @@ SIMDE__SYMBOL(__mm_cvtsi64_m64) (int64_t a) {
 #endif
 #define _m_from_int64 SIMDE__SYMBOL(__m_from_int64)
 
-SIMDE__MMX_INLINE_FUNC
+SIMDE__FUNCTION_ATTRIBUTES
 int
 SIMDE__SYMBOL(__mm_cvtsi64_si32) (__m64 a) {
   return a.i32[0];
@@ -376,7 +364,7 @@ SIMDE__SYMBOL(__mm_cvtsi64_si32) (__m64 a) {
 #endif
 #define _mm_cvtsi64_si32 SIMDE__SYMBOL(__mm_cvtsi64_si32)
 
-SIMDE__MMX_INLINE_FUNC
+SIMDE__FUNCTION_ATTRIBUTES
 void
 SIMDE__SYMBOL(__mm_empty) (void) { }
 #if defined(_mm_empty)
@@ -388,7 +376,7 @@ SIMDE__SYMBOL(__mm_empty) (void) { }
 #endif
 #define _m_empty SIMDE__SYMBOL(__mm_empty)
 
-SIMDE__MMX_INLINE_FUNC
+SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__TYPE(m64)
 SIMDE__SYMBOL(__mm_madd_pi16) (__m64 a, __m64 b) {
   __m64 r;
@@ -406,7 +394,7 @@ SIMDE__SYMBOL(__mm_madd_pi16) (__m64 a, __m64 b) {
 #endif
 #define _m_pmaddwd SIMDE__SYMBOL(__m_pmaddwd)
 
-SIMDE__MMX_INLINE_FUNC
+SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__TYPE(m64)
 SIMDE__SYMBOL(__mm_mulhi_pi16) (__m64 a, __m64 b) {
   __m64 r;
@@ -424,7 +412,7 @@ SIMDE__SYMBOL(__mm_mulhi_pi16) (__m64 a, __m64 b) {
 #endif
 #define _m_pmulhw SIMDE__SYMBOL(__m_pmulhw)
 
-SIMDE__MMX_INLINE_FUNC
+SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__TYPE(m64)
 SIMDE__SYMBOL(__mm_mullo_pi16) (__m64 a, __m64 b) {
   __m64 r;
@@ -442,7 +430,7 @@ SIMDE__SYMBOL(__mm_mullo_pi16) (__m64 a, __m64 b) {
 #endif
 #define _m_pmullw SIMDE__SYMBOL(__mm_mullo_pi16)
 
-SIMDE__MMX_INLINE_FUNC
+SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__TYPE(m64)
 SIMDE__SYMBOL(__mm_or_si64) (__m64 a, __m64 b) {
   return (SIMDE__TYPE(m64)) { .i64 = a.i64 | b.i64 };
@@ -456,7 +444,7 @@ SIMDE__SYMBOL(__mm_or_si64) (__m64 a, __m64 b) {
 #endif
 #define _m_por SIMDE__SYMBOL(__mm_or_si64)
 
-SIMDE__MMX_INLINE_FUNC
+SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__TYPE(m64)
 SIMDE__SYMBOL(__mm_packs_pi16) (__m64 a, __m64 b) {
   __m64 r;
@@ -492,7 +480,7 @@ SIMDE__SYMBOL(__mm_packs_pi16) (__m64 a, __m64 b) {
 #endif
 #define _m_packsswb SIMDE__SYMBOL(__mm_packs_pi16)
 
-SIMDE__MMX_INLINE_FUNC
+SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__TYPE(m64)
 SIMDE__SYMBOL(__mm_packs_pi32) (__m64 a, __m64 b) {
   __m64 r;
@@ -528,7 +516,7 @@ SIMDE__SYMBOL(__mm_packs_pi32) (__m64 a, __m64 b) {
 #endif
 #define _m_packssdw SIMDE__SYMBOL(__mm_packs_pi32)
 
-SIMDE__MMX_INLINE_FUNC
+SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__TYPE(m64)
 SIMDE__SYMBOL(__mm_packs_pu16) (__m64 a, __m64 b) {
   __m64 r;
@@ -564,7 +552,7 @@ SIMDE__SYMBOL(__mm_packs_pu16) (__m64 a, __m64 b) {
 #endif
 #define _m_packuswb SIMDE__SYMBOL(__mm_packs_pu16)
 
-SIMDE__MMX_INLINE_FUNC
+SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__TYPE(m64)
 SIMDE__SYMBOL(__mm_set_pi8) (char e7, char e6, char e5, char e4, char e3, char e2, char e1, char e0) {
   return (SIMDE__TYPE(m64)) { .i8 = { e0, e1, e2, e3, e4, e5, e6, e7 } };
@@ -574,7 +562,7 @@ SIMDE__SYMBOL(__mm_set_pi8) (char e7, char e6, char e5, char e4, char e3, char e
 #endif
 #define _mm_set_pi8 SIMDE__SYMBOL(__mm_set_pi8)
 
-SIMDE__MMX_INLINE_FUNC
+SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__TYPE(m64)
 SIMDE__SYMBOL(__mm_set_pi16) (short e3, short e2, short e1, short e0) {
   return (SIMDE__TYPE(m64)) { .i16 = { e0, e1, e2, e3 } };
@@ -584,7 +572,7 @@ SIMDE__SYMBOL(__mm_set_pi16) (short e3, short e2, short e1, short e0) {
 #endif
 #define _mm_set_pi16 SIMDE__SYMBOL(__mm_set_pi16)
 
-SIMDE__MMX_INLINE_FUNC
+SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__TYPE(m64)
 SIMDE__SYMBOL(__mm_set_pi32) (int e1, int e0) {
   return (SIMDE__TYPE(m64)) { .i32 = { e0, e1 } };
@@ -594,7 +582,7 @@ SIMDE__SYMBOL(__mm_set_pi32) (int e1, int e0) {
 #endif
 #define _mm_set_pi32 SIMDE__SYMBOL(__mm_set_pi32)
 
-SIMDE__MMX_INLINE_FUNC
+SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__TYPE(m64)
 SIMDE__SYMBOL(__mm_set1_pi8) (char a) {
   return SIMDE__SYMBOL(__mm_set_pi8)(a, a, a, a, a, a, a, a);
@@ -604,7 +592,7 @@ SIMDE__SYMBOL(__mm_set1_pi8) (char a) {
 #endif
 #define _mm_set1_pi8 SIMDE__SYMBOL(__mm_set1_pi8)
 
-SIMDE__MMX_INLINE_FUNC
+SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__TYPE(m64)
 SIMDE__SYMBOL(__mm_set1_pi16) (char a) {
   return SIMDE__SYMBOL(__mm_set_pi16)(a, a, a, a);
@@ -614,7 +602,7 @@ SIMDE__SYMBOL(__mm_set1_pi16) (char a) {
 #endif
 #define _mm_set1_pi16 SIMDE__SYMBOL(__mm_set1_pi16)
 
-SIMDE__MMX_INLINE_FUNC
+SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__TYPE(m64)
 SIMDE__SYMBOL(__mm_set1_pi32) (char a) {
   return SIMDE__SYMBOL(__mm_set_pi32)(a, a);
@@ -624,7 +612,7 @@ SIMDE__SYMBOL(__mm_set1_pi32) (char a) {
 #endif
 #define _mm_set1_pi32 SIMDE__SYMBOL(__mm_set1_pi32)
 
-SIMDE__MMX_INLINE_FUNC
+SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__TYPE(m64)
 SIMDE__SYMBOL(__mm_setr_pi8) (char e7, char e6, char e5, char e4, char e3, char e2, char e1, char e0) {
   return (SIMDE__TYPE(m64)) { .i8 = { e7, e6, e5, e4, e3, e2, e1, e0 } };
@@ -634,7 +622,7 @@ SIMDE__SYMBOL(__mm_setr_pi8) (char e7, char e6, char e5, char e4, char e3, char 
 #endif
 #define _mm_setr_pi8 SIMDE__SYMBOL(__mm_setr_pi8)
 
-SIMDE__MMX_INLINE_FUNC
+SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__TYPE(m64)
 SIMDE__SYMBOL(__mm_setr_pi16) (short e3, short e2, short e1, short e0) {
   return (SIMDE__TYPE(m64)) { .i16 = { e3, e2, e1, e0 } };
@@ -644,7 +632,7 @@ SIMDE__SYMBOL(__mm_setr_pi16) (short e3, short e2, short e1, short e0) {
 #endif
 #define _mm_setr_pi16 SIMDE__SYMBOL(__mm_setr_pi16)
 
-SIMDE__MMX_INLINE_FUNC
+SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__TYPE(m64)
 SIMDE__SYMBOL(__mm_setr_pi32) (int e1, int e0) {
   return (SIMDE__TYPE(m64)) { .i32 = { e1, e0 } };
@@ -654,7 +642,7 @@ SIMDE__SYMBOL(__mm_setr_pi32) (int e1, int e0) {
 #endif
 #define _mm_setr_pi32 SIMDE__SYMBOL(__mm_setr_pi32)
 
-SIMDE__MMX_INLINE_FUNC
+SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__TYPE(m64)
 SIMDE__SYMBOL(__mm_setzero_si64) (void) {
   return (SIMDE__TYPE(m64)) { .i32 = { 0, 0 } };
@@ -664,7 +652,7 @@ SIMDE__SYMBOL(__mm_setzero_si64) (void) {
 #endif
 #define _mm_setzero_si64 SIMDE__SYMBOL(__mm_setr_si64)
 
-SIMDE__MMX_INLINE_FUNC
+SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__TYPE(m64)
 SIMDE__SYMBOL(__mm_sll_pi16) (__m64 a, __m64 count) {
   __m64 r;
@@ -684,7 +672,7 @@ SIMDE__SYMBOL(__mm_sll_pi16) (__m64 a, __m64 count) {
 #endif
 #define _m_psllw SIMDE__SYMBOL(__mm_sll_pi16)
 
-SIMDE__MMX_INLINE_FUNC
+SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__TYPE(m64)
 SIMDE__SYMBOL(__mm_sll_pi32) (__m64 a, __m64 count) {
   __m64 r;
@@ -704,7 +692,7 @@ SIMDE__SYMBOL(__mm_sll_pi32) (__m64 a, __m64 count) {
 #endif
 #define _m_pslld SIMDE__SYMBOL(__mm_sll_pi32)
 
-SIMDE__MMX_INLINE_FUNC
+SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__TYPE(m64)
 SIMDE__SYMBOL(__mm_slli_pi16) (__m64 a, int count) {
   __m64 r;
@@ -724,7 +712,7 @@ SIMDE__SYMBOL(__mm_slli_pi16) (__m64 a, int count) {
 #endif
 #define _m_psllwi SIMDE__SYMBOL(__mm_slli_pi16)
 
-SIMDE__MMX_INLINE_FUNC
+SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__TYPE(m64)
 SIMDE__SYMBOL(__mm_slli_pi32) (__m64 a, int count) {
   __m64 r;
@@ -744,7 +732,7 @@ SIMDE__SYMBOL(__mm_slli_pi32) (__m64 a, int count) {
 #endif
 #define _m_pslldi SIMDE__SYMBOL(__mm_slli_pi32)
 
-SIMDE__MMX_INLINE_FUNC
+SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__TYPE(m64)
 SIMDE__SYMBOL(__mm_slli_si64) (__m64 a, int count) {
   return (SIMDE__TYPE(m64)) { .u64 = a.u64 << count };
@@ -758,7 +746,7 @@ SIMDE__SYMBOL(__mm_slli_si64) (__m64 a, int count) {
 #endif
 #define _m_psllqi SIMDE__SYMBOL(__mm_slli_si64)
 
-SIMDE__MMX_INLINE_FUNC
+SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__TYPE(m64)
 SIMDE__SYMBOL(__mm_sll_si64) (__m64 a, __m64 count) {
   return (SIMDE__TYPE(m64)) { .u64 = a.u64 << count.u64 };
@@ -772,7 +760,7 @@ SIMDE__SYMBOL(__mm_sll_si64) (__m64 a, __m64 count) {
 #endif
 #define _m_psllq SIMDE__SYMBOL(__mm_sll_si64)
 
-SIMDE__MMX_INLINE_FUNC
+SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__TYPE(m64)
 SIMDE__SYMBOL(__mm_srl_pi16) (__m64 a, __m64 count) {
   __m64 r;
@@ -792,7 +780,7 @@ SIMDE__SYMBOL(__mm_srl_pi16) (__m64 a, __m64 count) {
 #endif
 #define _m_psrlw SIMDE__SYMBOL(__mm_srl_pi16)
 
-SIMDE__MMX_INLINE_FUNC
+SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__TYPE(m64)
 SIMDE__SYMBOL(__mm_srl_pi32) (__m64 a, __m64 count) {
   __m64 r;
@@ -812,7 +800,7 @@ SIMDE__SYMBOL(__mm_srl_pi32) (__m64 a, __m64 count) {
 #endif
 #define _m_psrld SIMDE__SYMBOL(__m_psrld)
 
-SIMDE__MMX_INLINE_FUNC
+SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__TYPE(m64)
 SIMDE__SYMBOL(__mm_srli_pi16) (__m64 a, int count) {
   __m64 r;
@@ -832,7 +820,7 @@ SIMDE__SYMBOL(__mm_srli_pi16) (__m64 a, int count) {
 #endif
 #define _m_psrlwi SIMDE__SYMBOL(__mm_srli_pi16)
 
-SIMDE__MMX_INLINE_FUNC
+SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__TYPE(m64)
 SIMDE__SYMBOL(__mm_srli_pi32) (__m64 a, int count) {
   __m64 r;
@@ -852,7 +840,7 @@ SIMDE__SYMBOL(__mm_srli_pi32) (__m64 a, int count) {
 #endif
 #define _m_psrldi SIMDE__SYMBOL(__mm_srli_pi32)
 
-SIMDE__MMX_INLINE_FUNC
+SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__TYPE(m64)
 SIMDE__SYMBOL(__mm_srli_si64) (__m64 a, int count) {
   return (SIMDE__TYPE(m64)) { .u64 = a.u64 >> count };
@@ -866,7 +854,7 @@ SIMDE__SYMBOL(__mm_srli_si64) (__m64 a, int count) {
 #endif
 #define _m_psrlqi SIMDE__SYMBOL(__m_psrlqi)
 
-SIMDE__MMX_INLINE_FUNC
+SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__TYPE(m64)
 SIMDE__SYMBOL(__mm_srl_si64) (__m64 a, __m64 count) {
   return (SIMDE__TYPE(m64)) { .u64 = a.u64 >> count.u64 };
@@ -880,7 +868,7 @@ SIMDE__SYMBOL(__mm_srl_si64) (__m64 a, __m64 count) {
 #endif
 #define _m_psrlq SIMDE__SYMBOL(__m_psrlq)
 
-SIMDE__MMX_INLINE_FUNC
+SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__TYPE(m64)
 SIMDE__SYMBOL(__mm_srai_pi16) (__m64 a, int count) {
   __m64 r;
@@ -903,7 +891,7 @@ SIMDE__SYMBOL(__mm_srai_pi16) (__m64 a, int count) {
 #endif
 #define _m_psrawi SIMDE__SYMBOL(__mm_srai_pi16)
 
-SIMDE__MMX_INLINE_FUNC
+SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__TYPE(m64)
 SIMDE__SYMBOL(__mm_srai_pi32) (__m64 a, int count) {
   __m64 r;
@@ -925,7 +913,7 @@ SIMDE__SYMBOL(__mm_srai_pi32) (__m64 a, int count) {
 #endif
 #define _m_psradi SIMDE__SYMBOL(__m_psradi)
 
-SIMDE__MMX_INLINE_FUNC
+SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__TYPE(m64)
 SIMDE__SYMBOL(__mm_sra_pi16) (__m64 a, __m64 count) {
   __m64 r;
@@ -948,7 +936,7 @@ SIMDE__SYMBOL(__mm_sra_pi16) (__m64 a, __m64 count) {
 #endif
 #define _m_psraw SIMDE__SYMBOL(__m_psraw)
 
-SIMDE__MMX_INLINE_FUNC
+SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__TYPE(m64)
 SIMDE__SYMBOL(__mm_sra_pi32) (__m64 a, __m64 count) {
   __m64 r;
@@ -970,7 +958,7 @@ SIMDE__SYMBOL(__mm_sra_pi32) (__m64 a, __m64 count) {
 #endif
 #define _m_psrad SIMDE__SYMBOL(__mm_sra_pi32)
 
-SIMDE__MMX_INLINE_FUNC
+SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__TYPE(m64)
 SIMDE__SYMBOL(__mm_sub_pi8) (__m64 a, __m64 b) {
   __m64 r;
@@ -988,7 +976,7 @@ SIMDE__SYMBOL(__mm_sub_pi8) (__m64 a, __m64 b) {
 #endif
 #define _m_psubb SIMDE__SYMBOL(__mm_sub_pi8)
 
-SIMDE__MMX_INLINE_FUNC
+SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__TYPE(m64)
 SIMDE__SYMBOL(__mm_sub_pi16) (__m64 a, __m64 b) {
   __m64 r;
@@ -1006,7 +994,7 @@ SIMDE__SYMBOL(__mm_sub_pi16) (__m64 a, __m64 b) {
 #endif
 #define _m_psubw SIMDE__SYMBOL(__m_psubw)
 
-SIMDE__MMX_INLINE_FUNC
+SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__TYPE(m64)
 SIMDE__SYMBOL(__mm_sub_pi32) (__m64 a, __m64 b) {
   __m64 r;
@@ -1024,7 +1012,7 @@ SIMDE__SYMBOL(__mm_sub_pi32) (__m64 a, __m64 b) {
 #endif
 #define _m_psubd SIMDE__SYMBOL(__mm_sub_pi32)
 
-SIMDE__MMX_INLINE_FUNC
+SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__TYPE(m64)
 SIMDE__SYMBOL(__mm_subs_pi8) (__m64 a, __m64 b) {
   __m64 r;
@@ -1048,7 +1036,7 @@ SIMDE__SYMBOL(__mm_subs_pi8) (__m64 a, __m64 b) {
 #endif
 #define _m_psubsb SIMDE__SYMBOL(__mm_subs_pi8)
 
-SIMDE__MMX_INLINE_FUNC
+SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__TYPE(m64)
 SIMDE__SYMBOL(__mm_subs_pu8) (__m64 a, __m64 b) {
   __m64 r;
@@ -1073,7 +1061,7 @@ SIMDE__SYMBOL(__mm_subs_pu8) (__m64 a, __m64 b) {
 #endif
 #define _m_psubusb SIMDE__SYMBOL(__mm_subs_pu8)
 
-SIMDE__MMX_INLINE_FUNC
+SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__TYPE(m64)
 SIMDE__SYMBOL(__mm_subs_pi16) (__m64 a, __m64 b) {
   __m64 r;
@@ -1097,7 +1085,7 @@ SIMDE__SYMBOL(__mm_subs_pi16) (__m64 a, __m64 b) {
 #endif
 #define _m_psubsw SIMDE__SYMBOL(__mm_subs_pi16)
 
-SIMDE__MMX_INLINE_FUNC
+SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__TYPE(m64)
 SIMDE__SYMBOL(__mm_subs_pu16) (__m64 a, __m64 b) {
   __m64 r;
@@ -1122,7 +1110,7 @@ SIMDE__SYMBOL(__mm_subs_pu16) (__m64 a, __m64 b) {
 #endif
 #define _m_psubusw SIMDE__SYMBOL(__mm_subs_pu16)
 
-SIMDE__MMX_INLINE_FUNC
+SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__TYPE(m64)
 SIMDE__SYMBOL(__mm_unpackhi_pi8) (__m64 a, __m64 b) {
   return (SIMDE__TYPE(m64)) { .i8 = {
@@ -1140,7 +1128,7 @@ SIMDE__SYMBOL(__mm_unpackhi_pi8) (__m64 a, __m64 b) {
 #endif
 #define _m_punpckhbw SIMDE__SYMBOL(__mm_unpackhi_pi8)
 
-SIMDE__MMX_INLINE_FUNC
+SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__TYPE(m64)
 SIMDE__SYMBOL(__mm_unpackhi_pi16) (__m64 a, __m64 b) {
   return (SIMDE__TYPE(m64)) { .i16 = { a.i16[2], b.i16[2], a.i16[3], b.i16[3] } };
@@ -1154,7 +1142,7 @@ SIMDE__SYMBOL(__mm_unpackhi_pi16) (__m64 a, __m64 b) {
 #endif
 #define _m_punpcklbw SIMDE__SYMBOL(__mm_unpackhi_pi16)
 
-SIMDE__MMX_INLINE_FUNC
+SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__TYPE(m64)
 SIMDE__SYMBOL(__mm_unpackhi_pi32) (__m64 a, __m64 b) {
   return (SIMDE__TYPE(m64)) { .i32 = { a.i32[1], b.i32[1] } };
@@ -1168,7 +1156,7 @@ SIMDE__SYMBOL(__mm_unpackhi_pi32) (__m64 a, __m64 b) {
 #endif
 #define _m_punpckhdq SIMDE__SYMBOL(__mm_unpackhi_pi32)
 
-SIMDE__MMX_INLINE_FUNC
+SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__TYPE(m64)
 SIMDE__SYMBOL(__mm_unpacklo_pi8) (__m64 a, __m64 b) {
   return (SIMDE__TYPE(m64)) { .i8 = {
@@ -1186,7 +1174,7 @@ SIMDE__SYMBOL(__mm_unpacklo_pi8) (__m64 a, __m64 b) {
 #endif
 #define _m_punpcklbw SIMDE__SYMBOL(__mm_unpacklo_pi8)
 
-SIMDE__MMX_INLINE_FUNC
+SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__TYPE(m64)
 SIMDE__SYMBOL(__mm_unpacklo_pi16) (__m64 a, __m64 b) {
   return (SIMDE__TYPE(m64)) { .i16 = { a.i16[0], b.i16[0], a.i16[1], b.i16[1] } };
@@ -1200,7 +1188,7 @@ SIMDE__SYMBOL(__mm_unpacklo_pi16) (__m64 a, __m64 b) {
 #endif
 #define _m_punpcklwd SIMDE__SYMBOL(__m_punpcklwd)
 
-SIMDE__MMX_INLINE_FUNC
+SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__TYPE(m64)
 SIMDE__SYMBOL(__mm_unpacklo_pi32) (__m64 a, __m64 b) {
   return (SIMDE__TYPE(m64)) { .i32 = { a.i32[0], b.i32[0] } };
@@ -1214,7 +1202,7 @@ SIMDE__SYMBOL(__mm_unpacklo_pi32) (__m64 a, __m64 b) {
 #endif
 #define _m_punpckldq SIMDE__SYMBOL(__mm_unpacklo_pi32)
 
-SIMDE__MMX_INLINE_FUNC
+SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__TYPE(m64)
 SIMDE__SYMBOL(__mm_xor_si64) (__m64 a, __m64 b) {
   return (SIMDE__TYPE(m64)) { .i64 = a.i64 ^ b.i64 };
@@ -1228,7 +1216,7 @@ SIMDE__SYMBOL(__mm_xor_si64) (__m64 a, __m64 b) {
 #endif
 #define _m_pxor SIMDE__SYMBOL(__mm_xor_si64)
 
-SIMDE__MMX_INLINE_FUNC
+SIMDE__FUNCTION_ATTRIBUTES
 int
 SIMDE__SYMBOL(__m_to_int) (__m64 a) {
   return a.i32[0];
@@ -1238,7 +1226,7 @@ SIMDE__SYMBOL(__m_to_int) (__m64 a) {
 #endif
 #define _m_to_int SIMDE__SYMBOL(__m_to_int)
 
-SIMDE__MMX_INLINE_FUNC
+SIMDE__FUNCTION_ATTRIBUTES
 int64_t
 SIMDE__SYMBOL(__m_to_int64) (__m64 a) {
   return a.i64;
