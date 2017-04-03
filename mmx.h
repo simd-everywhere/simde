@@ -14,6 +14,7 @@
 
 #include <stdint.h>
 #include <limits.h>
+#include <stdlib.h>
 
 typedef union {
   char           i8[8];

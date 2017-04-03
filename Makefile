@@ -16,7 +16,7 @@ test: test-native test-emul
 	./test-native && ./test-emul
 
 test-native: munit.o test/test.c $(HEADERS)
-	$(CC) $(CFLAGS) -DTEST_NATIVE -o $@ munit.o test/test.c
+	$(CC) $(CFLAGS) -DTEST_NATIVE -o $@ munit.o test/test.c test/test-mmx.c test/test-sse.c test/test-sse2.c
 
 test-emul: munit.o test/test.c $(HEADERS)
-	$(CC) $(CFLAGS) -o $@ munit.o test/test.c
+	$(CC) $(CFLAGS) -o $@ munit.o test/test.c test/test-mmx.c test/test-sse.c test/test-sse2.c
