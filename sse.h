@@ -18,13 +18,13 @@ typedef union {
   unsigned short u16[8];
   unsigned int   u32[4];
   uint64_t       u64[2];
-  float          flt[4];
+  float          f32[4];
 } SIMDE__ALIGN(16) SIMDE__SYMBOL(__m128);
 
 SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL(__m128)
 SIMDE__SYMBOL(_mm_set_ps) (float a, float b, float c, float d) {
-  return (SIMDE__SYMBOL(__m128)) { .flt = { d, c, b, a } };
+  return (SIMDE__SYMBOL(__m128)) { .f32 = { d, c, b, a } };
 }
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -37,8 +37,8 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL(__m128)
 SIMDE__SYMBOL(_mm_add_ps) (SIMDE__SYMBOL(__m128) a, SIMDE__SYMBOL(__m128) b) {
   SIMDE__SYMBOL(__m128) r;
-  for (size_t i = 0 ; i < (sizeof(r.flt) / sizeof(r.flt[0])) ; i++) {
-    r.flt[i] = a.flt[i] + b.flt[i];
+  for (size_t i = 0 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
+    r.f32[i] = a.f32[i] + b.f32[i];
   }
   return r;
 }
@@ -47,7 +47,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL(__m128)
 SIMDE__SYMBOL(_mm_add_ss) (SIMDE__SYMBOL(__m128) a, SIMDE__SYMBOL(__m128) b) {
   return (SIMDE__SYMBOL(__m128)) {
-    .flt = { a.flt[0] + b.flt[0], a.flt[1], a.flt[2], a.flt[3] }
+    .f32 = { a.f32[0] + b.f32[0], a.f32[1], a.f32[2], a.f32[3] }
   };
 }
 
@@ -93,10 +93,31 @@ SIMDE__SYMBOL(_mm_avg_pu8) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) b) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL(__m128)
+SIMDE__SYMBOL(_mm_cmpeq_ps) (SIMDE__SYMBOL(__m128) a, SIMDE__SYMBOL(__m128) b) {
+  SIMDE__SYMBOL(__m128) r;
+  for (size_t i = 0 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
+    r.u32[i] = (a.f32[i] == b.f32[i]) ? 0xffffffff : 0;
+  }
+  return r;
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL(__m128)
+SIMDE__SYMBOL(_mm_cmpeq_ss) (SIMDE__SYMBOL(__m128) a, SIMDE__SYMBOL(__m128) b) {
+  SIMDE__SYMBOL(__m128) r;
+  r.u32[0] = (a.f32[0] == b.f32[0]) ? 0xffffffff : 0;
+  for (size_t i = 1 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
+    r.u32[i] = a.u32[i];
+  }
+  return r;
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL(__m128)
 SIMDE__SYMBOL(_mm_sub_ps) (SIMDE__SYMBOL(__m128) a, SIMDE__SYMBOL(__m128) b) {
   SIMDE__SYMBOL(__m128) r;
-  for (size_t i = 0 ; i < (sizeof(r.flt) / sizeof(r.flt[0])) ; i++) {
-    r.flt[i] = a.flt[i] - b.flt[i];
+  for (size_t i = 0 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
+    r.f32[i] = a.f32[i] - b.f32[i];
   }
   return r;
 }
@@ -105,8 +126,8 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL(__m128)
 SIMDE__SYMBOL(_mm_mul_ps) (SIMDE__SYMBOL(__m128) a, SIMDE__SYMBOL(__m128) b) {
   SIMDE__SYMBOL(__m128) r;
-  for (size_t i = 0 ; i < (sizeof(r.flt) / sizeof(r.flt[0])) ; i++) {
-    r.flt[i] = a.flt[i] * b.flt[i];
+  for (size_t i = 0 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
+    r.f32[i] = a.f32[i] * b.f32[i];
   }
   return r;
 }
@@ -115,8 +136,8 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL(__m128)
 SIMDE__SYMBOL(_mm_div_ps) (SIMDE__SYMBOL(__m128) a, SIMDE__SYMBOL(__m128) b) {
   SIMDE__SYMBOL(__m128) r;
-  for (size_t i = 0 ; i < (sizeof(r.flt) / sizeof(r.flt[0])) ; i++) {
-    r.flt[i] = a.flt[i] / b.flt[i];
+  for (size_t i = 0 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
+    r.f32[i] = a.f32[i] / b.f32[i];
   }
   return r;
 }
