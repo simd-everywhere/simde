@@ -317,7 +317,7 @@ void
 SIMDE__SYMBOL(_mm_empty) (void) { }
 
 SIMDE__FUNCTION_ATTRIBUTES
-SIMDE__SYMBOL(__m64)
+void
 SIMDE__SYMBOL(_m_empty) (void) {
   SIMDE__SYMBOL(_mm_empty)();
 }
