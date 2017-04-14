@@ -108,18 +108,60 @@ test_simd_mm_and_ps(const MunitParameter params[], void* data) {
   return MUNIT_FAIL;
 }
 
-union test_m128 {
-  __m128 flt;
-  unsigned int u32 __attribute__((__vector_size__(16)));
-};
+/* I'll probably move these into µnit, but I want to play around with
+   them for a while first. */
 
-#define assert_test_m128_equal(a, b)			\
-  do {							\
-    munit_assert_uint((a).u32[0], ==, (b).u32[0]);	\
-    munit_assert_uint((a).u32[1], ==, (b).u32[1]);	\
-    munit_assert_uint((a).u32[2], ==, (b).u32[2]);	\
-    munit_assert_uint((a).u32[3], ==, (b).u32[3]);	\
+#define simde_assert_array_full(prefix, suffix, T, fmt, nmemb, a, op, b) \
+  do {									\
+    const T* simde__tmp_a_ = (a);					\
+    const T* simde__tmp_b_ = (b);					\
+    for (size_t simde__i_ = 0 ; simde__i_ < nmemb ; simde__i_++) {	\
+      if (!(simde__tmp_a_[simde__i_] op simde__tmp_b_[simde__i_])) {			\
+	munit_errorf("assertion failed: (" #a ")[%" MUNIT_SIZE_MODIFIER "u] " #op " (" #b ")[%" MUNIT_SIZE_MODIFIER "u] (" prefix "%" fmt suffix " " #op " " prefix "%" fmt suffix ")", simde__i_, simde__i_, simde__tmp_a_[simde__i_], simde__tmp_b_[simde__i_]); \
+      }									\
+    }									\
   } while (0)
+
+
+#define simde_assert_typev(T, fmt, nmemb, a, op, b)		\
+  simde_assert_array_full("", "", T, fmt, nmemb, a, op, b)
+
+#define simde_assert_floatv(nmemb, a, op, b)	\
+  simde_assert_typev(float, "g", nmemb, a, op, b)
+
+#define simde_assert_intv(nmemb, a, op, b) \
+  simde_assert_typev(int, "d", nmemb, a, op, b)
+
+#define simde_assert_uintv(nmemb, a, op, b) \
+  simde_assert_typev(int, "u", nmemb, a, op, b)
+
+/* These probably won't go into µnit; they're similar to the
+   simde_assert_*v macros above, but print in hex. */
+
+#define simde_assert_int32vx(nmemb, a, op, b) \
+  simde_assert_array_full("0x", "", int, "08x", 4, a, op, b)
+
+#define simde_assert_uint32vx(nmemb, a, op, b) \
+  simde_assert_array_full("0x", "", unsigned int, "08x", 4, a, op, b)
+
+/* SIMDe-specific */
+
+#define simde_assert_m128_i32(a, op, b) \
+  simde_assert_int32vx(4, (int*) &(a), op, (int*) &(b))
+
+#define simde_assert_m128_u32(a, op, b) \
+  simde_assert_uint32vx(4, (unsigned int*) &(a), op, (unsigned int*) &(b))
+
+static inline __m128
+simde_m128_set_u32(unsigned int a, unsigned int b, unsigned int c, unsigned int d) {
+  __m128 r;
+  unsigned int* rp = (unsigned int*) &r;
+  rp[0] = a;
+  rp[1] = b;
+  rp[2] = c;
+  rp[3] = d;
+  return r;
+}
 
 static MunitResult
 test_simd_mm_andnot_ps(const MunitParameter params[], void* data) {
@@ -127,41 +169,40 @@ test_simd_mm_andnot_ps(const MunitParameter params[], void* data) {
   (void) data;
 
   const struct {
-    union test_m128 a;
-    union test_m128 b;
-    union test_m128 r;
+    __m128 a;
+    __m128 b;
+    __m128 r;
   } test_vec[] = {
-    { { .u32 = { 0x68a765a6U, 0x3615220eU, 0xf27caeb4U, 0x145357a5U } },
-      { .u32 = { 0x7db442f9U, 0xc2f92119U, 0xdf75482eU, 0xa5d29ccaU } },
-      { .u32 = { 0x15100259U, 0xc0e80111U, 0x0d01400aU, 0xa180884aU } } },
-    { { .u32 = { 0xbac21a36U, 0x1b8c1a30U, 0x207e65f1U, 0x7e986bc6U } },
-      { .u32 = { 0xb4e0053fU, 0xb1b443c2U, 0x1df73f23U, 0xb88c9b63U } },
-      { .u32 = { 0x04200509U, 0xa03041c2U, 0x1d811a02U, 0x80049021U } } },
-    { { .u32 = { 0x9f9907b0U, 0x266cf90bU, 0xefbcb2daU, 0x63721e2fU } },
-      { .u32 = { 0xb418e8e0U, 0x04c49252U, 0x85f1d529U, 0x20ab72fcU } },
-      { .u32 = { 0x2000e840U, 0x00800250U, 0x00414521U, 0x008960d0U } } },
-    { { .u32 = { 0x32a6778fU, 0x927fa890U, 0x2f76ea91U, 0x9fdc18a3U } },
-      { .u32 = { 0x9a45c22bU, 0xfb88b4f5U, 0x8d063b31U, 0x832b9acdU } },
-      { .u32 = { 0x88418020U, 0x69801465U, 0x80001120U, 0x0023824cU } } },
-    { { .u32 = { 0x659de4f8U, 0xf213fa5eU, 0xc6c9e0beU, 0x6b9bf277U } },
-      { .u32 = { 0x31908876U, 0x1eeec04cU, 0x5310af8fU, 0xef14b6d9U } },
-      { .u32 = { 0x10000806U, 0x0cec0000U, 0x11100f01U, 0x84040488U } } },
-    { { .u32 = { 0x6d451104U, 0x027c2d5cU, 0xdc87cb64U, 0x6bf717a5U } },
-      { .u32 = { 0x01e81e45U, 0xa1fea0d1U, 0x68287855U, 0x54e0538dU } },
-      { .u32 = { 0x00a80e41U, 0xa1828081U, 0x20283011U, 0x14004008U } } },
-    { { .u32 = { 0xb1e89e3aU, 0x6d79a9c6U, 0x43e7d670U, 0x98a011a6U } },
-      { .u32 = { 0x96a71891U, 0x43f287c0U, 0x125aace7U, 0x8e69b84bU } },
-      { .u32 = { 0x06070081U, 0x02820600U, 0x10182887U, 0x0649a849U } } },
-    { { .u32 = { 0xe497a675U, 0x9ab8e09eU, 0x25f2ae74U, 0xfc5647eaU } },
-      { .u32 = { 0x045e24cdU, 0xd72971afU, 0x1ec71d1fU, 0x9f4d091dU } },
-      { .u32 = { 0x00480088U, 0x45011121U, 0x1a05110bU, 0x03090815U } } }
+    { simde_m128_set_u32(0x68a765a6U, 0x3615220eU, 0xf27caeb4U, 0x145357a5U),
+      simde_m128_set_u32(0x7db442f9U, 0xc2f92119U, 0xdf75482eU, 0xa5d29ccaU),
+      simde_m128_set_u32(0x15100259U, 0xc0e80111U, 0x0d01400aU, 0xa180884aU) },
+    { simde_m128_set_u32(0xbac21a36U, 0x1b8c1a30U, 0x207e65f1U, 0x7e986bc6U),
+      simde_m128_set_u32(0xb4e0053fU, 0xb1b443c2U, 0x1df73f23U, 0xb88c9b63U),
+      simde_m128_set_u32(0x04200509U, 0xa03041c2U, 0x1d811a02U, 0x80049021U) },
+    { simde_m128_set_u32(0x9f9907b0U, 0x266cf90bU, 0xefbcb2daU, 0x63721e2fU),
+      simde_m128_set_u32(0xb418e8e0U, 0x04c49252U, 0x85f1d529U, 0x20ab72fcU),
+      simde_m128_set_u32(0x2000e840U, 0x00800250U, 0x00414521U, 0x008960d0U) },
+    { simde_m128_set_u32(0x32a6778fU, 0x927fa890U, 0x2f76ea91U, 0x9fdc18a3U),
+      simde_m128_set_u32(0x9a45c22bU, 0xfb88b4f5U, 0x8d063b31U, 0x832b9acdU),
+      simde_m128_set_u32(0x88418020U, 0x69801465U, 0x80001120U, 0x0023824cU) },
+    { simde_m128_set_u32(0x659de4f8U, 0xf213fa5eU, 0xc6c9e0beU, 0x6b9bf277U),
+      simde_m128_set_u32(0x31908876U, 0x1eeec04cU, 0x5310af8fU, 0xef14b6d9U),
+      simde_m128_set_u32(0x10000806U, 0x0cec0000U, 0x11100f01U, 0x84040488U) },
+    { simde_m128_set_u32(0x6d451104U, 0x027c2d5cU, 0xdc87cb64U, 0x6bf717a5U),
+      simde_m128_set_u32(0x01e81e45U, 0xa1fea0d1U, 0x68287855U, 0x54e0538dU),
+      simde_m128_set_u32(0x00a80e41U, 0xa1828081U, 0x20283011U, 0x14004008U) },
+    { simde_m128_set_u32(0xb1e89e3aU, 0x6d79a9c6U, 0x43e7d670U, 0x98a011a6U),
+      simde_m128_set_u32(0x96a71891U, 0x43f287c0U, 0x125aace7U, 0x8e69b84bU),
+      simde_m128_set_u32(0x06070081U, 0x02820600U, 0x10182887U, 0x0649a849U) },
+    { simde_m128_set_u32(0xe497a675U, 0x9ab8e09eU, 0x25f2ae74U, 0xfc5647eaU),
+      simde_m128_set_u32(0x045e24cdU, 0xd72971afU, 0x1ec71d1fU, 0x9f4d091dU),
+      simde_m128_set_u32(0x00480088U, 0x45011121U, 0x1a05110bU, 0x03090815U) }
   };
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / (sizeof(test_vec[0]))) ; i++) {
-    union test_m128 r;
-    r.flt = _mm_andnot_ps(test_vec[i].a.flt, test_vec[i].b.flt);
-
-    assert_test_m128_equal(r, test_vec[i].r);
+    __m128 r;
+    r = _mm_andnot_ps(test_vec[i].a, test_vec[i].b);
+    simde_assert_m128_i32(r, ==, test_vec[i].r);
   }
 
   return MUNIT_OK;
