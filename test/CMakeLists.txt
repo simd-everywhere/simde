@@ -54,6 +54,7 @@ foreach(variant native emul)
     add_test(NAME "/${variant}${tst}" COMMAND $<TARGET_FILE:test-${variant}> "/${variant}${tst}")
   endforeach()
   target_add_extra_warning_flags(test-${variant})
+  set_property (TARGET test-${variant} PROPERTY C_STANDARD "99")
 endforeach()
 
 target_compile_definitions(test-native PRIVATE -DTEST_NATIVE)
