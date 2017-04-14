@@ -20,17 +20,17 @@ matrix:
           - g++-6
           - cmake
           - cmake-data
-    # - env: C_COMPILER=gcc-5
-    #   addons:
-    #     apt:
-    #       sources:
-    #       - ubuntu-toolchain-r-test
-    #       - george-edison55-precise-backports
-    #       packages:
-    #       - gcc-5
-    #       - g++-5
-    #       - cmake
-    #       - cmake-data
+    - env: C_COMPILER=gcc-5
+      addons:
+        apt:
+          sources:
+          - ubuntu-toolchain-r-test
+          - george-edison55-precise-backports
+          packages:
+          - gcc-5
+          - g++-5
+          - cmake
+          - cmake-data
     # - env: C_COMPILER=gcc-4.9
     #   addons:
     #     apt:
@@ -42,17 +42,17 @@ matrix:
     #       - g++-4.9
     #       - cmake
     #       - cmake-data
-    # - env: C_COMPILER=gcc-4.8
-    #   addons:
-    #     apt:
-    #       sources:
-    #       - ubuntu-toolchain-r-test
-    #       - george-edison55-precise-backports
-    #       packages:
-    #       - gcc-4.8
-    #       - g++-4.8
-    #       - cmake
-    #       - cmake-data
+    - env: C_COMPILER=gcc-4.8
+      addons:
+        apt:
+          sources:
+          - ubuntu-toolchain-r-test
+          - george-edison55-precise-backports
+          packages:
+          - gcc-4.8
+          - g++-4.8
+          - cmake
+          - cmake-data
     # - env: C_COMPILER=gcc-4.7
     #   addons:
     #     apt:
@@ -64,17 +64,17 @@ matrix:
     #       - g++-4.7
     #       - cmake
     #       - cmake-data
-    # - env: C_COMPILER=gcc-4.6
-    #   addons:
-    #     apt:
-    #       sources:
-    #       - ubuntu-toolchain-r-test
-    #       - george-edison55-precise-backports
-    #       packages:
-    #       - gcc-4.6
-    #       - g++-4.6
-    #       - cmake
-    #       - cmake-data
+    - env: C_COMPILER=gcc-4.6
+      addons:
+        apt:
+          sources:
+          - ubuntu-toolchain-r-test
+          - george-edison55-precise-backports
+          packages:
+          - gcc-4.6
+          - g++-4.6
+          - cmake
+          - cmake-data
     # - os: linux
     #   env: C_COMPILER=gcc-4.5
     #   addons:
@@ -87,17 +87,17 @@ matrix:
     #       - g++-4.5
     #       - cmake
     #       - cmake-data
-    # - env: C_COMPILER=gcc-4.4
-    #   addons:
-    #     apt:
-    #       sources:
-    #       - ubuntu-toolchain-r-test
-    #       - george-edison55-precise-backports
-    #       packages:
-    #       - gcc-4.4
-    #       - g++-4.4
-    #       - cmake
-    #       - cmake-data
+    - env: C_COMPILER=gcc-4.4
+      addons:
+        apt:
+          sources:
+          - ubuntu-toolchain-r-test
+          - george-edison55-precise-backports
+          packages:
+          - gcc-4.4
+          - g++-4.4
+          - cmake
+          - cmake-data
 
     ###
     ## clang on Linux
@@ -113,17 +113,17 @@ matrix:
           - clang-3.9
           - cmake
           - cmake-data
-    # - env: C_COMPILER=clang-3.8
-    #   addons:
-    #     apt:
-    #       sources:
-    #       - llvm-toolchain-precise-3.8
-    #       - ubuntu-toolchain-r-test
-    #       - george-edison55-precise-backports
-    #       packages:
-    #       - clang-3.8
-    #       - cmake
-    #       - cmake-data
+    - env: C_COMPILER=clang-3.8
+      addons:
+        apt:
+          sources:
+          - llvm-toolchain-precise-3.8
+          - ubuntu-toolchain-r-test
+          - george-edison55-precise-backports
+          packages:
+          - clang-3.8
+          - cmake
+          - cmake-data
     # - env: C_COMPILER=clang-3.7
     #   addons:
     #     apt:
