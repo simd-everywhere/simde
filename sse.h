@@ -59,6 +59,26 @@ SIMDE__SYMBOL(_mm_andnot_ps) (SIMDE__SYMBOL(__m128) a, SIMDE__SYMBOL(__m128) b) 
 }
 
 SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_mm_avg_pu16) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) b) {
+  SIMDE__SYMBOL(__m64) r;
+  for (size_t i = 0 ; i < 4 ; i++) {
+    r.u16[i] = (a.u16[i] + b.u16[i] + 1) >> 1;
+  }
+  return r;
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_mm_avg_pu8) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) b) {
+  SIMDE__SYMBOL(__m64) r;
+  for (size_t i = 0 ; i < 8 ; i++) {
+    r.u8[i] = (a.u8[i] + b.u8[i] + 1) >> 1;
+  }
+  return r;
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL(__m128)
 SIMDE__SYMBOL(_mm_sub_ps) (SIMDE__SYMBOL(__m128) a, SIMDE__SYMBOL(__m128) b) {
   return (SIMDE__SYMBOL(__m128)) {
