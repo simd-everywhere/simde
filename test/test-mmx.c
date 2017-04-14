@@ -3,22 +3,22 @@
 
 #include <stdio.h>
 
-inline void print_pi8(const char* prefix, __m64 v) {
+static inline void print_pi8(const char* prefix, __m64 v) {
   char* vp = (char*) &v;
   printf("%s: 0x%02hhx 0x%02hhx 0x%02hhx 0x%02hhx 0x%02hhx 0x%02hhx 0x%02hhx 0x%02hhx\n", prefix, vp[0], vp[1], vp[2], vp[3], vp[4], vp[5], vp[6], vp[7]);
 }
 
-inline void print_pi16(const char* prefix, __m64 v) {
+static inline void print_pi16(const char* prefix, __m64 v) {
   short* vp = (short*) &v;
   printf("%s: 0x%04hx 0x%04hx 0x%04hx 0x%04hx\n", prefix, vp[0], vp[1], vp[2], vp[3]);
 }
 
-inline void print_pi32(const char* prefix, __m64 v) {
+static inline void print_pi32(const char* prefix, __m64 v) {
   int* vp = (int*) &v;
   printf("%s: 0x%08x 0x%08x\n", prefix, vp[0], vp[1]);
 }
 
-inline void print_si64(const char* prefix, __m64 v) {
+static inline void print_si64(const char* prefix, __m64 v) {
   printf("%s: 0x%016lx\n", prefix, *((int64_t*) &v));
 }
 
