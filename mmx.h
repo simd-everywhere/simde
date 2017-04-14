@@ -3,11 +3,6 @@
 
 #include "simde-common.h"
 
-#if !defined(SIMDE__TYPE)
-#  define SIMDE__TYPE(name) simde_simd__mmx_##name
-#  define SIMDE__SYMBOL(name) simde_simd__mmx_##name
-#endif
-
 #if defined(SIMDE__MMX_NATIVE)
 #  include <mmintrin.h>
 #else
@@ -25,72 +20,60 @@ typedef union {
   unsigned short u16[4];
   unsigned int   u32[2];
   uint64_t       u64;
-} SIMDE__TYPE(m64) SIMDE__ALIGN(16);
-#if defined(__m64)
-#  undef __m64
-#endif
-#define __m64 SIMDE__TYPE(m64)
-
-HEDLEY_STATIC_ASSERT(sizeof(__m64) == 8, "__m64 must be 8 bytes");
+} SIMDE__ALIGN(16) SIMDE__SYMBOL(__m64);
 
 SIMDE__FUNCTION_ATTRIBUTES
-SIMDE__TYPE(m64)
-SIMDE__SYMBOL(__mm_add_pi8) (__m64 a, __m64 b) {
-  __m64 r;
-  for (size_t i = 0 ; i < (sizeof(__m64)) ; i++) {
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_mm_add_pi8) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) b) {
+  SIMDE__SYMBOL(__m64) r;
+  for (size_t i = 0 ; i < 8 ; i++) {
     r.i8[i] = a.i8[i] + b.i8[i];
   }
   return r;
 }
-#if defined(_mm_add_pi8)
-#  undef _mm_add_pi8
-#endif
-#define _mm_add_pi8 SIMDE__SYMBOL(__mm_add_pi8)
-#if defined(_m_paddb)
-#  undef _m_paddb
-#endif
-#define _m_paddb SIMDE__SYMBOL(__mm_add_pi8)
 
 SIMDE__FUNCTION_ATTRIBUTES
-SIMDE__TYPE(m64)
-SIMDE__SYMBOL(__mm_add_pi16) (__m64 a, __m64 b) {
-  __m64 r;
-  for (size_t i = 0 ; i < (sizeof(__m64) / sizeof(short)) ; i++) {
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_m_paddb) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) b) {
+  return SIMDE__SYMBOL(_mm_add_pi8)(a, b);
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_mm_add_pi16) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) b) {
+  SIMDE__SYMBOL(__m64) r;
+  for (size_t i = 0 ; i < (8 / sizeof(short)) ; i++) {
     r.i16[i] = a.i16[i] + b.i16[i];
   }
   return r;
 }
-#if defined(_mm_add_pi16)
-#  undef _mm_add_pi16
-#endif
-#define _mm_add_pi16 SIMDE__SYMBOL(__mm_add_pi16)
-#if defined(_m_paddw)
-#  undef _m_paddw
-#endif
-#define _m_paddw SIMDE__SYMBOL(__m_paddw)
 
 SIMDE__FUNCTION_ATTRIBUTES
-SIMDE__TYPE(m64)
-SIMDE__SYMBOL(__mm_add_pi32) (__m64 a, __m64 b) {
-  __m64 r;
-  for (size_t i = 0 ; i < (sizeof(__m64) / sizeof(int)) ; i++) {
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_m_paddw) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) b) {
+  return SIMDE__SYMBOL(_mm_add_pi16)(a, b);
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_mm_add_pi32) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) b) {
+  SIMDE__SYMBOL(__m64) r;
+  for (size_t i = 0 ; i < (8 / sizeof(int)) ; i++) {
     r.i32[i] = a.i32[i] + b.i32[i];
   }
   return r;
 }
-#if defined(_mm_add_pi32)
-#  undef _mm_add_pi32
-#endif
-#define _mm_add_pi32 SIMDE__SYMBOL(__mm_add_pi32)
-#if defined(_m_paddd)
-#  undef _m_paddd
-#endif
-#define _m_paddd SIMDE__SYMBOL(__mm_add_pi32)
 
 SIMDE__FUNCTION_ATTRIBUTES
-SIMDE__TYPE(m64)
-SIMDE__SYMBOL(__mm_adds_pi8) (__m64 a, __m64 b) {
-  __m64 r;
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_m_paddd) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) b) {
+  return SIMDE__SYMBOL(_mm_add_pi32)(a, b);
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_mm_adds_pi8) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) b) {
+  SIMDE__SYMBOL(__m64) r;
   for (int i = 0 ; i < 8 ; i++) {
     if ((((b.i8[i]) > 0) && ((a.i8[i]) > (CHAR_MAX - (b.i8[i]))))) {
       r.i8[i] = CHAR_MAX;
@@ -102,20 +85,18 @@ SIMDE__SYMBOL(__mm_adds_pi8) (__m64 a, __m64 b) {
   }
   return r;
 }
-#if defined(_mm_adds_pi8)
-#  undef _mm_adds_pi8
-#endif
-#define _mm_adds_pi8 SIMDE__SYMBOL(__mm_adds_pi8)
-#if defined(_m_paddsb)
-#  undef _m_paddsb
-#endif
-#define _m_paddsb SIMDE__SYMBOL(__mm_adds_pi8)
 
 SIMDE__FUNCTION_ATTRIBUTES
-SIMDE__TYPE(m64)
-SIMDE__SYMBOL(__mm_adds_pu8) (__m64 a, __m64 b) {
-  __m64 r;
-  for (size_t i = 0 ; i < sizeof(r) ; i++) {
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_m_paddsb) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) b) {
+  return SIMDE__SYMBOL(_mm_adds_pi8)(a, b);
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_mm_adds_pu8) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) b) {
+  SIMDE__SYMBOL(__m64) r;
+  for (size_t i = 0 ; i < 8 ; i++) {
     const int x = a.u8[i] + b.u8[i];
     if (x < 0)
       r.u8[i] = 0;
@@ -126,19 +107,17 @@ SIMDE__SYMBOL(__mm_adds_pu8) (__m64 a, __m64 b) {
   }
   return r;
 }
-#if defined(_mm_adds_pu8)
-#  undef _mm_adds_pu8
-#endif
-#define _mm_adds_pu8 SIMDE__SYMBOL(__mm_adds_pu8)
-#if defined(_m_paddusb)
-#  undef _m_paddusb
-#endif
-#define _m_paddusb SIMDE__SYMBOL(__mm_adds_pu8)
 
 SIMDE__FUNCTION_ATTRIBUTES
-SIMDE__TYPE(m64)
-SIMDE__SYMBOL(__mm_adds_pi16) (__m64 a, __m64 b) {
-  __m64 r;
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_m_paddusb) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) b) {
+  return SIMDE__SYMBOL(_mm_adds_pu8)(a, b);
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_mm_adds_pi16) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) b) {
+  SIMDE__SYMBOL(__m64) r;
   for (int i = 0 ; i < 4 ; i++) {
     if ((((b.i16[i]) > 0) && ((a.i16[i]) > (SHRT_MAX - (b.i16[i]))))) {
       r.i16[i] = SHRT_MAX;
@@ -150,20 +129,18 @@ SIMDE__SYMBOL(__mm_adds_pi16) (__m64 a, __m64 b) {
   }
   return r;
 }
-#if defined(_mm_adds_pi16)
-#  undef _mm_adds_pi16
-#endif
-#define _mm_adds_pi16 SIMDE__SYMBOL(__mm_adds_pi16)
-#if defined(_m_paddsw)
-#  undef _m_paddsw
-#endif
-#define _m_paddsw SIMDE__SYMBOL(__mm_adds_pi16)
 
 SIMDE__FUNCTION_ATTRIBUTES
-SIMDE__TYPE(m64)
-SIMDE__SYMBOL(__mm_adds_pu16) (__m64 a, __m64 b) {
-  __m64 r;
-  for (size_t i = 0 ; i < (sizeof(r) / sizeof(short)) ; i++) {
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_m_paddsw) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) b) {
+  return SIMDE__SYMBOL(_mm_adds_pi16)(a, b);
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_mm_adds_pu16) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) b) {
+  SIMDE__SYMBOL(__m64) r;
+  for (size_t i = 0 ; i < (8 / sizeof(short)) ; i++) {
     const unsigned int x = a.u16[i] + b.u16[i];
     if (x > USHRT_MAX)
       r.u16[i] = USHRT_MAX;
@@ -172,285 +149,245 @@ SIMDE__SYMBOL(__mm_adds_pu16) (__m64 a, __m64 b) {
   }
   return r;
 }
-#if defined(_mm_adds_pu16)
-#  undef _mm_adds_pu16
-#endif
-#define _mm_adds_pu16 SIMDE__SYMBOL(__mm_adds_pu16)
-#if defined(_m_paddusw)
-#  undef _m_paddusw
-#endif
-#define _m_paddusw SIMDE__SYMBOL(__mm_adds_pu16)
 
 SIMDE__FUNCTION_ATTRIBUTES
-SIMDE__TYPE(m64)
-SIMDE__SYMBOL(__mm_and_si64) (__m64 a, __m64 b) {
-  return (SIMDE__TYPE(m64)) { .i64 = a.i64 & b.i64 };
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_m_paddusw) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) b) {
+  return SIMDE__SYMBOL(_mm_adds_pu16)(a, b);
 }
-#if defined(_mm_and_si64)
-#  undef _mm_and_si64
-#endif
-#define _mm_and_si64 SIMDE__SYMBOL(__mm_and_si64)
-#if defined(_m_pand)
-#  undef _m_pand
-#endif
-#define _m_pand SIMDE__SYMBOL(__mm_and_si64)
 
 SIMDE__FUNCTION_ATTRIBUTES
-SIMDE__TYPE(m64)
-SIMDE__SYMBOL(__mm_andnot_si64) (__m64 a, __m64 b) {
-  return (SIMDE__TYPE(m64)) { .i64 = ~(a.i64) & b.i64 };
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_mm_and_si64) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) b) {
+  return (SIMDE__SYMBOL(__m64)) { .i64 = a.i64 & b.i64 };
 }
-#if defined(_mm_andnot_si64)
-#  undef _mm_andnot_si64
-#endif
-#define _mm_andnot_si64 SIMDE__SYMBOL(__mm_andnot_si64)
-#if defined(_m_pandn)
-#  undef _m_pandn
-#endif
-#define _m_pandn SIMDE__SYMBOL(__mm_andnot_si64)
 
 SIMDE__FUNCTION_ATTRIBUTES
-SIMDE__TYPE(m64)
-SIMDE__SYMBOL(__mm_cmpeq_pi8) (__m64 a, __m64 b) {
-  __m64 r;
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_m_pand) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) b) {
+  return SIMDE__SYMBOL(_mm_and_si64)(a, b);
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_mm_andnot_si64) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) b) {
+  return (SIMDE__SYMBOL(__m64)) { .i64 = ~(a.i64) & b.i64 };
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_m_pandn) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) b) {
+  return SIMDE__SYMBOL(_mm_andnot_si64)(a, b);
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_mm_cmpeq_pi8) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) b) {
+  SIMDE__SYMBOL(__m64) r;
   for (int i = 0 ; i < 8 ; i++) {
     r.i8[i] = (a.i8[i] == b.i8[i]) * 0xff;
   }
   return r;
 }
-#if defined(_mm_cmpeq_pi8)
-#  undef _mm_cmpeq_pi8
-#endif
-#define _mm_cmpeq_pi8 SIMDE__SYMBOL(__mm_cmpeq_pi8)
-#if defined(_m_pcmpeqb)
-#  undef _m_pcmpeqb
-#endif
-#define _m_pcmpeqb SIMDE__SYMBOL(__mm_cmpeq_pi8)
 
 SIMDE__FUNCTION_ATTRIBUTES
-SIMDE__TYPE(m64)
-SIMDE__SYMBOL(__mm_cmpeq_pi16) (__m64 a, __m64 b) {
-  __m64 r;
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_m_pcmpeqb) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) b) {
+  return SIMDE__SYMBOL(_mm_cmpeq_pi8)(a, b);
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_mm_cmpeq_pi16) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) b) {
+  SIMDE__SYMBOL(__m64) r;
   for (int i = 0 ; i < 4 ; i++) {
     r.i16[i] = (a.i16[i] == b.i16[i]) * 0xffff;
   }
   return r;
 }
-#if defined(_mm_cmpeq_pi16)
-#  undef _mm_cmpeq_pi16
-#endif
-#define _mm_cmpeq_pi16 SIMDE__SYMBOL(__mm_cmpeq_pi16)
-#if defined(_m_pcmpeqw)
-#  undef _m_pcmpeqw
-#endif
-#define _m_pcmpeqw SIMDE__SYMBOL(__mm_cmpeq_pi16)
 
 SIMDE__FUNCTION_ATTRIBUTES
-SIMDE__TYPE(m64)
-SIMDE__SYMBOL(__mm_cmpeq_pi32) (__m64 a, __m64 b) {
-  __m64 r;
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_m_pcmpeqw) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) b) {
+  return SIMDE__SYMBOL(_mm_cmpeq_pi16)(a, b);
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_mm_cmpeq_pi32) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) b) {
+  SIMDE__SYMBOL(__m64) r;
   for (int i = 0 ; i < 2 ; i++) {
     r.i32[i] = (a.i32[i] == b.i32[i]) * 0xffffffff;
   }
   return r;
 }
-#if defined(_mm_cmpeq_pi32)
-#  undef _mm_cmpeq_pi32
-#endif
-#define _mm_cmpeq_pi32 SIMDE__SYMBOL(__mm_cmpeq_pi32)
-#if defined(_m_cpmpeqd)
-#  undef _m_cpmpeqd
-#endif
-#define _m_cpmpeqd SIMDE__SYMBOL(__m_cpmpeqd)
 
 SIMDE__FUNCTION_ATTRIBUTES
-SIMDE__TYPE(m64)
-SIMDE__SYMBOL(__mm_cmpgt_pi8) (__m64 a, __m64 b) {
-  __m64 r;
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_m_cpmpeqd) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) b) {
+  return SIMDE__SYMBOL(_mm_cmpeq_pi32)(a, b);
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_mm_cmpgt_pi8) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) b) {
+  SIMDE__SYMBOL(__m64) r;
   for (int i = 0 ; i < 8 ; i++) {
     r.i8[i] = (a.i8[i] > b.i8[i]) * 0xff;
   }
   return r;
 }
-#if defined(_mm_cmpgt_pi8)
-#  undef _mm_cmpgt_pi8
-#endif
-#define _mm_cmpgt_pi8 SIMDE__SYMBOL(__mm_cmpgt_pi8)
-#if defined(_m_pcmpgtb)
-#  undef _m_pcmpgtb
-#endif
-#define _m_pcmpgtb SIMDE__SYMBOL(__mm_cmpgt_pi8)
 
 SIMDE__FUNCTION_ATTRIBUTES
-SIMDE__TYPE(m64)
-SIMDE__SYMBOL(__mm_cmpgt_pi16) (__m64 a, __m64 b) {
-  __m64 r;
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_m_pcmpgtb) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) b) {
+  return SIMDE__SYMBOL(_mm_cmpgt_pi8)(a, b);
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_mm_cmpgt_pi16) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) b) {
+  SIMDE__SYMBOL(__m64) r;
   for (int i = 0 ; i < 4 ; i++) {
     r.i16[i] = (a.i16[i] > b.i16[i]) * 0xffff;
   }
   return r;
 }
-#if defined(_mm_cmpgt_pi16)
-#  undef _mm_cmpgt_pi16
-#endif
-#define _mm_cmpgt_pi16 SIMDE__SYMBOL(__mm_cmpgt_pi16)
-#if defined(_m_pcmpgtw)
-#  undef _m_pcmpgtw
-#endif
-#define _m_pcmpgtw SIMDE__SYMBOL(__mm_cmpgt_pi16)
 
 SIMDE__FUNCTION_ATTRIBUTES
-SIMDE__TYPE(m64)
-SIMDE__SYMBOL(__mm_cmpgt_pi32) (__m64 a, __m64 b) {
-  __m64 r;
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_m_pcmpgtw) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) b) {
+  return SIMDE__SYMBOL(_mm_cmpgt_pi16)(a, b);
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_mm_cmpgt_pi32) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) b) {
+  SIMDE__SYMBOL(__m64) r;
   for (int i = 0 ; i < 2 ; i++) {
     r.i32[i] = (a.i32[i] > b.i32[i]) * 0xffffffff;
   }
   return r;
 }
-#if defined(_mm_cmpgt_pi32)
-#  undef _mm_cmpgt_pi32
-#endif
-#define _mm_cmpgt_pi32 SIMDE__SYMBOL(__mm_cmpgt_pi32)
-#if defined(_m_pcmgtd)
-#  undef _m_pcmgtd
-#endif
-#define _m_pcmgtd SIMDE__SYMBOL(__mm_cmpgt_pi32)
+
+SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_m_pcmgtd) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) b) {
+  return SIMDE__SYMBOL(_mm_cmpgt_pi32)(a, b);
+}
 
 SIMDE__FUNCTION_ATTRIBUTES
 int64_t
-SIMDE__SYMBOL(__mm_cvtm64_si64) (__m64 a) {
+SIMDE__SYMBOL(_mm_cvtm64_si64) (SIMDE__SYMBOL(__m64) a) {
   return a.i64;
 }
-#if defined(_mm_cvtm64_si64)
-#  undef _mm_cvtm64_si64
-#endif
-#define _mm_cvtm64_si64 SIMDE__SYMBOL(__mm_cvtm64_si64)
 
 SIMDE__FUNCTION_ATTRIBUTES
-SIMDE__TYPE(m64)
-SIMDE__SYMBOL(__mm_cvtsi32_si64) (int a) {
-  return (SIMDE__TYPE(m64)) { .i32 = { a, 0 } };
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_mm_cvtsi32_si64) (int a) {
+  return (SIMDE__SYMBOL(__m64)) { .i32 = { a, 0 } };
 }
-#if defined(_mm_cvtsi32_si64)
-#  undef _mm_cvtsi32_si64
-#endif
-#define _mm_cvtsi32_si64 SIMDE__SYMBOL(__mm_cvtsi32_si64)
-#if defined(_m_from_int)
-#  undef _m_from_int
-#endif
-#define _m_from_int SIMDE__SYMBOL(__mm_from_int)
 
 SIMDE__FUNCTION_ATTRIBUTES
-SIMDE__TYPE(m64)
-SIMDE__SYMBOL(__mm_cvtsi64_m64) (int64_t a) {
-  return (SIMDE__TYPE(m64)) { .i64 = a };
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_m_from_int) (int a) {
+  return SIMDE__SYMBOL(_mm_cvtsi32_si64)(a);
 }
-#if defined(_mm_cvtsi64_m64)
-#  undef _mm_cvtsi64_m64
-#endif
-#define _mm_cvtsi64_m64 SIMDE__SYMBOL(__mm_cvtsi64_m64)
-#if defined(_m_from_int64)
-#  undef _m_from_int64
-#endif
-#define _m_from_int64 SIMDE__SYMBOL(__m_from_int64)
+
+SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_mm_cvtsi64_m64) (int64_t a) {
+  return (SIMDE__SYMBOL(__m64)) { .i64 = a };
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_m_from_int64) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) b) {
+  return SIMDE__SYMBOL(_m_from_int64)(a, b);
+}
 
 SIMDE__FUNCTION_ATTRIBUTES
 int
-SIMDE__SYMBOL(__mm_cvtsi64_si32) (__m64 a) {
+SIMDE__SYMBOL(_mm_cvtsi64_si32) (SIMDE__SYMBOL(__m64) a) {
   return a.i32[0];
 }
-#if defined(_mm_cvtsi64_si32)
-#  undef _mm_cvtsi64_si32
-#endif
-#define _mm_cvtsi64_si32 SIMDE__SYMBOL(__mm_cvtsi64_si32)
 
 SIMDE__FUNCTION_ATTRIBUTES
 void
-SIMDE__SYMBOL(__mm_empty) (void) { }
-#if defined(_mm_empty)
-#  undef _mm_empty
-#endif
-#define _mm_empty SIMDE__SYMBOL(__mm_empty)
-#if defined(_m_empty)
-#  undef _m_empty
-#endif
-#define _m_empty SIMDE__SYMBOL(__mm_empty)
+SIMDE__SYMBOL(_mm_empty) (void) { }
 
 SIMDE__FUNCTION_ATTRIBUTES
-SIMDE__TYPE(m64)
-SIMDE__SYMBOL(__mm_madd_pi16) (__m64 a, __m64 b) {
-  __m64 r;
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_m_empty) (void) {
+  SIMDE__SYMBOL(_mm_empty)();
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_mm_madd_pi16) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) b) {
+  SIMDE__SYMBOL(__m64) r;
   for (int i = 0 ; i < 4 ; i += 2) {
     r.i32[i / 2] = (a.i16[i] * b.i16[i]) + (a.i16[i + 1] * b.i16[i + 1]);
   }
   return r;
 }
-#if defined(_mm_madd_pi16)
-#  undef _mm_madd_pi16
-#endif
-#define _mm_madd_pi16 SIMDE__SYMBOL(__mm_madd_pi16)
-#if defined(_m_pmaddwd)
-#  undef _m_pmaddwd
-#endif
-#define _m_pmaddwd SIMDE__SYMBOL(__m_pmaddwd)
 
 SIMDE__FUNCTION_ATTRIBUTES
-SIMDE__TYPE(m64)
-SIMDE__SYMBOL(__mm_mulhi_pi16) (__m64 a, __m64 b) {
-  __m64 r;
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_m_pmaddwd) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) b) {
+  return SIMDE__SYMBOL(_mm_madd_pi16)(a, b);
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_mm_mulhi_pi16) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) b) {
+  SIMDE__SYMBOL(__m64) r;
   for (int i = 0 ; i < 4 ; i++) {
     r.i16[i] = (short) ((a.i16[i] * b.i16[i]) >> 16);
   }
   return r;
 }
-#if defined(_mm_mulhi_pi16)
-#  undef _mm_mulhi_pi16
-#endif
-#define _mm_mulhi_pi16 SIMDE__SYMBOL(__mm_mulhi_pi16)
-#if defined(_m_pmulhw)
-#  undef _m_pmulhw
-#endif
-#define _m_pmulhw SIMDE__SYMBOL(__m_pmulhw)
 
 SIMDE__FUNCTION_ATTRIBUTES
-SIMDE__TYPE(m64)
-SIMDE__SYMBOL(__mm_mullo_pi16) (__m64 a, __m64 b) {
-  __m64 r;
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_m_pmulhw) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) b) {
+  return SIMDE__SYMBOL(_mm_mulhi_pi16)(a, b);
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_mm_mullo_pi16) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) b) {
+  SIMDE__SYMBOL(__m64) r;
   for (int i = 0 ; i < 4 ; i++) {
     r.i16[i] = (short) ((a.i16[i] * b.i16[i]) & 0xffff);
   }
   return r;
 }
-#if defined(_mm_mullo_pi16)
-#  undef _mm_mullo_pi16
-#endif
-#define _mm_mullo_pi16 SIMDE__SYMBOL(__mm_mullo_pi16)
-#if defined(_m_pmullw)
-#  undef _m_pmullw
-#endif
-#define _m_pmullw SIMDE__SYMBOL(__mm_mullo_pi16)
 
 SIMDE__FUNCTION_ATTRIBUTES
-SIMDE__TYPE(m64)
-SIMDE__SYMBOL(__mm_or_si64) (__m64 a, __m64 b) {
-  return (SIMDE__TYPE(m64)) { .i64 = a.i64 | b.i64 };
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_m_pmullw) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) b) {
+  return SIMDE__SYMBOL(_mm_mullo_pi16)(a, b);
 }
-#if defined(_mm_or_si64)
-#  undef _mm_or_si64
-#endif
-#define _mm_or_si64 SIMDE__SYMBOL(__mm_or_si64)
-#if defined(_m_por)
-#  undef _m_por
-#endif
-#define _m_por SIMDE__SYMBOL(__mm_or_si64)
 
 SIMDE__FUNCTION_ATTRIBUTES
-SIMDE__TYPE(m64)
-SIMDE__SYMBOL(__mm_packs_pi16) (__m64 a, __m64 b) {
-  __m64 r;
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_mm_or_si64) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) b) {
+  return (SIMDE__SYMBOL(__m64)) { .i64 = a.i64 | b.i64 };
+}
 
-  for (size_t i = 0 ; i < (sizeof(__m64) / sizeof(short)) ; i++) {
+SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_m_por) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) b) {
+  return SIMDE__SYMBOL(_mm_or_si64)(a, b);
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_mm_packs_pi16) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) b) {
+  SIMDE__SYMBOL(__m64) r;
+
+  for (size_t i = 0 ; i < (8 / sizeof(short)) ; i++) {
     if (a.i16[i] < CHAR_MIN) {
       r.i8[i] = CHAR_MIN;
     } else if (a.i16[i] > CHAR_MAX) {
@@ -460,7 +397,7 @@ SIMDE__SYMBOL(__mm_packs_pi16) (__m64 a, __m64 b) {
     }
   }
 
-  for (size_t i = 0 ; i < (sizeof(__m64) / sizeof(short)) ; i++) {
+  for (size_t i = 0 ; i < (8 / sizeof(short)) ; i++) {
     if (b.i16[i] < CHAR_MIN) {
       r.i8[i + 4] = CHAR_MIN;
     } else if (b.i16[i] > CHAR_MAX) {
@@ -472,21 +409,19 @@ SIMDE__SYMBOL(__mm_packs_pi16) (__m64 a, __m64 b) {
 
   return r;
 }
-#if defined(_mm_packs_pi16)
-#  undef _mm_packs_pi16
-#endif
-#define _mm_packs_pi16 SIMDE__SYMBOL(__mm_packs_pi16)
-#if defined(_m_packsswb)
-#  undef _m_packsswb
-#endif
-#define _m_packsswb SIMDE__SYMBOL(__mm_packs_pi16)
 
 SIMDE__FUNCTION_ATTRIBUTES
-SIMDE__TYPE(m64)
-SIMDE__SYMBOL(__mm_packs_pi32) (__m64 a, __m64 b) {
-  __m64 r;
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_m_packsswb) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) b) {
+  return SIMDE__SYMBOL(_mm_packs_pi16)(a, b);
+}
 
-  for (size_t i = 0 ; i < (sizeof(__m64) / sizeof(a.i32[0])) ; i++) {
+SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_mm_packs_pi32) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) b) {
+  SIMDE__SYMBOL(__m64) r;
+
+  for (size_t i = 0 ; i < (8 / sizeof(a.i32[0])) ; i++) {
     if (a.i32[i] < SHRT_MIN) {
       r.i16[i] = SHRT_MIN;
     } else if (a.i32[i] > SHRT_MAX) {
@@ -496,7 +431,7 @@ SIMDE__SYMBOL(__mm_packs_pi32) (__m64 a, __m64 b) {
     }
   }
 
-  for (size_t i = 0 ; i < (sizeof(__m64) / sizeof(b.i32[0])) ; i++) {
+  for (size_t i = 0 ; i < (8 / sizeof(b.i32[0])) ; i++) {
     if (b.i32[i] < SHRT_MIN) {
       r.i16[i + 2] = SHRT_MIN;
     } else if (b.i32[i] > SHRT_MAX) {
@@ -508,21 +443,19 @@ SIMDE__SYMBOL(__mm_packs_pi32) (__m64 a, __m64 b) {
 
   return r;
 }
-#if defined(_mm_packs_pi32)
-#  undef _mm_packs_pi32
-#endif
-#define _mm_packs_pi32 SIMDE__SYMBOL(__mm_packs_pi32)
-#if defined(_m_packssdw)
-#  undef _m_packssdw
-#endif
-#define _m_packssdw SIMDE__SYMBOL(__mm_packs_pi32)
 
 SIMDE__FUNCTION_ATTRIBUTES
-SIMDE__TYPE(m64)
-SIMDE__SYMBOL(__mm_packs_pu16) (__m64 a, __m64 b) {
-  __m64 r;
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_m_packssdw) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) b) {
+  return SIMDE__SYMBOL(_mm_packs_pi32)(a, b);
+}
 
-  for (size_t i = 0 ; i < (sizeof(__m64) / sizeof(short)) ; i++) {
+SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_mm_packs_pu16) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) b) {
+  SIMDE__SYMBOL(__m64) r;
+
+  for (size_t i = 0 ; i < (8 / sizeof(short)) ; i++) {
     if (a.i16[i] > UCHAR_MAX) {
       r.u8[i] = UCHAR_MAX;
     } else if (a.i16[i] < 0) {
@@ -532,7 +465,7 @@ SIMDE__SYMBOL(__mm_packs_pu16) (__m64 a, __m64 b) {
     }
   }
 
-  for (size_t i = 0 ; i < (sizeof(__m64) / sizeof(short)) ; i++) {
+  for (size_t i = 0 ; i < (8 / sizeof(short)) ; i++) {
     if (b.i16[i] > UCHAR_MAX) {
       r.u8[i + 4] = UCHAR_MAX;
     } else if (b.i16[i] < 0) {
@@ -544,480 +477,400 @@ SIMDE__SYMBOL(__mm_packs_pu16) (__m64 a, __m64 b) {
 
   return r;
 }
-#if defined(_mm_packs_pu16)
-#  undef _mm_packs_pu16
-#endif
-#define _mm_packs_pu16 SIMDE__SYMBOL(__mm_packs_pu16)
-#if defined(_m_packuswb)
-#  undef _m_packuswb
-#endif
-#define _m_packuswb SIMDE__SYMBOL(__mm_packs_pu16)
 
 SIMDE__FUNCTION_ATTRIBUTES
-SIMDE__TYPE(m64)
-SIMDE__SYMBOL(__mm_set_pi8) (char e7, char e6, char e5, char e4, char e3, char e2, char e1, char e0) {
-  return (SIMDE__TYPE(m64)) { .i8 = { e0, e1, e2, e3, e4, e5, e6, e7 } };
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_m_packuswb) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) b) {
+  return SIMDE__SYMBOL(_mm_packs_pu16)(a, b);
 }
-#if defined(_mm_set_pi8)
-#  undef _mm_set_pi8
-#endif
-#define _mm_set_pi8 SIMDE__SYMBOL(__mm_set_pi8)
 
 SIMDE__FUNCTION_ATTRIBUTES
-SIMDE__TYPE(m64)
-SIMDE__SYMBOL(__mm_set_pi16) (short e3, short e2, short e1, short e0) {
-  return (SIMDE__TYPE(m64)) { .i16 = { e0, e1, e2, e3 } };
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_mm_set_pi8) (char e7, char e6, char e5, char e4, char e3, char e2, char e1, char e0) {
+  return (SIMDE__SYMBOL(__m64)) { .i8 = { e0, e1, e2, e3, e4, e5, e6, e7 } };
 }
-#if defined(_mm_set_pi16)
-#  undef _mm_set_pi16
-#endif
-#define _mm_set_pi16 SIMDE__SYMBOL(__mm_set_pi16)
 
 SIMDE__FUNCTION_ATTRIBUTES
-SIMDE__TYPE(m64)
-SIMDE__SYMBOL(__mm_set_pi32) (int e1, int e0) {
-  return (SIMDE__TYPE(m64)) { .i32 = { e0, e1 } };
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_mm_set_pi16) (short e3, short e2, short e1, short e0) {
+  return (SIMDE__SYMBOL(__m64)) { .i16 = { e0, e1, e2, e3 } };
 }
-#if defined(_mm_set_pi32)
-#  undef _mm_set_pi32
-#endif
-#define _mm_set_pi32 SIMDE__SYMBOL(__mm_set_pi32)
 
 SIMDE__FUNCTION_ATTRIBUTES
-SIMDE__TYPE(m64)
-SIMDE__SYMBOL(__mm_set1_pi8) (char a) {
-  return SIMDE__SYMBOL(__mm_set_pi8)(a, a, a, a, a, a, a, a);
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_mm_set_pi32) (int e1, int e0) {
+  return (SIMDE__SYMBOL(__m64)) { .i32 = { e0, e1 } };
 }
-#if defined(_mm_set1_pi8)
-#  undef _mm_set1_pi8
-#endif
-#define _mm_set1_pi8 SIMDE__SYMBOL(__mm_set1_pi8)
 
 SIMDE__FUNCTION_ATTRIBUTES
-SIMDE__TYPE(m64)
-SIMDE__SYMBOL(__mm_set1_pi16) (char a) {
-  return SIMDE__SYMBOL(__mm_set_pi16)(a, a, a, a);
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_mm_set1_pi8) (char a) {
+  return SIMDE__SYMBOL(_mm_set_pi8)(a, a, a, a, a, a, a, a);
 }
-#if defined(_mm_set1_pi16)
-#  undef _mm_set1_pi16
-#endif
-#define _mm_set1_pi16 SIMDE__SYMBOL(__mm_set1_pi16)
 
 SIMDE__FUNCTION_ATTRIBUTES
-SIMDE__TYPE(m64)
-SIMDE__SYMBOL(__mm_set1_pi32) (char a) {
-  return SIMDE__SYMBOL(__mm_set_pi32)(a, a);
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_mm_set1_pi16) (char a) {
+  return SIMDE__SYMBOL(_mm_set_pi16)(a, a, a, a);
 }
-#if defined(_mm_set1_pi32)
-#  undef _mm_set1_pi32
-#endif
-#define _mm_set1_pi32 SIMDE__SYMBOL(__mm_set1_pi32)
 
 SIMDE__FUNCTION_ATTRIBUTES
-SIMDE__TYPE(m64)
-SIMDE__SYMBOL(__mm_setr_pi8) (char e7, char e6, char e5, char e4, char e3, char e2, char e1, char e0) {
-  return (SIMDE__TYPE(m64)) { .i8 = { e7, e6, e5, e4, e3, e2, e1, e0 } };
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_mm_set1_pi32) (char a) {
+  return SIMDE__SYMBOL(_mm_set_pi32)(a, a);
 }
-#if defined(_mm_setr_pi8)
-#  undef _mm_setr_pi8
-#endif
-#define _mm_setr_pi8 SIMDE__SYMBOL(__mm_setr_pi8)
 
 SIMDE__FUNCTION_ATTRIBUTES
-SIMDE__TYPE(m64)
-SIMDE__SYMBOL(__mm_setr_pi16) (short e3, short e2, short e1, short e0) {
-  return (SIMDE__TYPE(m64)) { .i16 = { e3, e2, e1, e0 } };
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_mm_setr_pi8) (char e7, char e6, char e5, char e4, char e3, char e2, char e1, char e0) {
+  return (SIMDE__SYMBOL(__m64)) { .i8 = { e7, e6, e5, e4, e3, e2, e1, e0 } };
 }
-#if defined(_mm_setr_pi16)
-#  undef _mm_setr_pi16
-#endif
-#define _mm_setr_pi16 SIMDE__SYMBOL(__mm_setr_pi16)
 
 SIMDE__FUNCTION_ATTRIBUTES
-SIMDE__TYPE(m64)
-SIMDE__SYMBOL(__mm_setr_pi32) (int e1, int e0) {
-  return (SIMDE__TYPE(m64)) { .i32 = { e1, e0 } };
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_mm_setr_pi16) (short e3, short e2, short e1, short e0) {
+  return (SIMDE__SYMBOL(__m64)) { .i16 = { e3, e2, e1, e0 } };
 }
-#if defined(_mm_setr_pi32)
-#  undef _mm_setr_pi32
-#endif
-#define _mm_setr_pi32 SIMDE__SYMBOL(__mm_setr_pi32)
 
 SIMDE__FUNCTION_ATTRIBUTES
-SIMDE__TYPE(m64)
-SIMDE__SYMBOL(__mm_setzero_si64) (void) {
-  return (SIMDE__TYPE(m64)) { .i32 = { 0, 0 } };
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_mm_setr_pi32) (int e1, int e0) {
+  return (SIMDE__SYMBOL(__m64)) { .i32 = { e1, e0 } };
 }
-#if defined(_mm_setzero_si64)
-#  undef _mm_setzero_si64
-#endif
-#define _mm_setzero_si64 SIMDE__SYMBOL(__mm_setr_si64)
 
 SIMDE__FUNCTION_ATTRIBUTES
-SIMDE__TYPE(m64)
-SIMDE__SYMBOL(__mm_sll_pi16) (__m64 a, __m64 count) {
-  __m64 r;
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_mm_setzero_si64) (void) {
+  return (SIMDE__SYMBOL(__m64)) { .i32 = { 0, 0 } };
+}
 
-  for (size_t i = 0 ; i < (sizeof(__m64) / sizeof(unsigned short)) ; i++) {
+SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_mm_sll_pi16) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) count) {
+  SIMDE__SYMBOL(__m64) r;
+
+  for (size_t i = 0 ; i < (8 / sizeof(unsigned short)) ; i++) {
     r.u16[i] = a.u16[i] << count.u64;
   }
 
   return r;
 }
-#if defined(_mm_sll_pi16)
-#  undef _mm_sll_pi16
-#endif
-#define _mm_sll_pi16 SIMDE__SYMBOL(__mm_sll_pi16)
-#if defined(_m_psllw)
-#  undef _m_psllw
-#endif
-#define _m_psllw SIMDE__SYMBOL(__mm_sll_pi16)
 
 SIMDE__FUNCTION_ATTRIBUTES
-SIMDE__TYPE(m64)
-SIMDE__SYMBOL(__mm_sll_pi32) (__m64 a, __m64 count) {
-  __m64 r;
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_m_psllw) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) count) {
+  return SIMDE__SYMBOL(_mm_sll_pi16)(a, count);
+}
 
-  for (size_t i = 0 ; i < (sizeof(__m64) / sizeof(unsigned int)) ; i++) {
+SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_mm_sll_pi32) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) count) {
+  SIMDE__SYMBOL(__m64) r;
+
+  for (size_t i = 0 ; i < (8 / sizeof(unsigned int)) ; i++) {
     r.u32[i] = a.u32[i] << count.u64;
   }
 
   return r;
 }
-#if defined(_mm_sll_pi32)
-#  undef _mm_sll_pi32
-#endif
-#define _mm_sll_pi32 SIMDE__SYMBOL(__mm_sll_pi32)
-#if defined(_m_pslld)
-#  undef _m_pslld
-#endif
-#define _m_pslld SIMDE__SYMBOL(__mm_sll_pi32)
 
 SIMDE__FUNCTION_ATTRIBUTES
-SIMDE__TYPE(m64)
-SIMDE__SYMBOL(__mm_slli_pi16) (__m64 a, int count) {
-  __m64 r;
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_m_pslld) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) count) {
+  return SIMDE__SYMBOL(_mm_sll_pi32)(a, count);
+}
 
-  for (size_t i = 0 ; i < (sizeof(__m64) / sizeof(unsigned short)) ; i++) {
+SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_mm_slli_pi16) (SIMDE__SYMBOL(__m64) a, int count) {
+  SIMDE__SYMBOL(__m64) r;
+
+  for (size_t i = 0 ; i < (8 / sizeof(unsigned short)) ; i++) {
     r.u16[i] = a.u16[i] << count;
   }
 
   return r;
 }
-#if defined(_mm_slli_pi16)
-#  undef _mm_slli_pi16
-#endif
-#define _mm_slli_pi16 SIMDE__SYMBOL(__mm_slli_pi16)
-#if defined(_m_psllwi)
-#  undef _m_psllwi
-#endif
-#define _m_psllwi SIMDE__SYMBOL(__mm_slli_pi16)
 
 SIMDE__FUNCTION_ATTRIBUTES
-SIMDE__TYPE(m64)
-SIMDE__SYMBOL(__mm_slli_pi32) (__m64 a, int count) {
-  __m64 r;
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_m_psllwi) (SIMDE__SYMBOL(__m64) a, int count) {
+  return SIMDE__SYMBOL(_mm_slli_pi16)(a, count);
+}
 
-  for (size_t i = 0 ; i < (sizeof(__m64) / sizeof(int)) ; i++) {
+SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_mm_slli_pi32) (SIMDE__SYMBOL(__m64) a, int count) {
+  SIMDE__SYMBOL(__m64) r;
+
+  for (size_t i = 0 ; i < (8 / sizeof(int)) ; i++) {
     r.u32[i] = a.u32[i] << count;
   }
 
   return r;
 }
-#if defined(_mm_slli_pi32)
-#  undef _mm_slli_pi32
-#endif
-#define _mm_slli_pi32 SIMDE__SYMBOL(__mm_slli_pi32)
-#if defined(_m_pslldi)
-#  undef _m_pslldi
-#endif
-#define _m_pslldi SIMDE__SYMBOL(__mm_slli_pi32)
 
 SIMDE__FUNCTION_ATTRIBUTES
-SIMDE__TYPE(m64)
-SIMDE__SYMBOL(__mm_slli_si64) (__m64 a, int count) {
-  return (SIMDE__TYPE(m64)) { .u64 = a.u64 << count };
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_m_pslldi) (SIMDE__SYMBOL(__m64) a, int count) {
+  return SIMDE__SYMBOL(_mm_slli_pi32)(a, count);
 }
-#if defined(_mm_slli_si64)
-#  undef _mm_slli_si64
-#endif
-#define _mm_slli_si64 SIMDE__SYMBOL(__mm_slli_si64)
-#if defined(_m_psllqi)
-#  undef _m_psllqi
-#endif
-#define _m_psllqi SIMDE__SYMBOL(__mm_slli_si64)
 
 SIMDE__FUNCTION_ATTRIBUTES
-SIMDE__TYPE(m64)
-SIMDE__SYMBOL(__mm_sll_si64) (__m64 a, __m64 count) {
-  return (SIMDE__TYPE(m64)) { .u64 = a.u64 << count.u64 };
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_mm_slli_si64) (SIMDE__SYMBOL(__m64) a, int count) {
+  return (SIMDE__SYMBOL(__m64)) { .u64 = a.u64 << count };
 }
-#if defined(_mm_sll_si64)
-#  undef _mm_sll_si64
-#endif
-#define _mm_sll_si64 SIMDE__SYMBOL(__mm_sll_si64)
-#if defined(_m_psllq)
-#  undef _m_psllq
-#endif
-#define _m_psllq SIMDE__SYMBOL(__mm_sll_si64)
 
 SIMDE__FUNCTION_ATTRIBUTES
-SIMDE__TYPE(m64)
-SIMDE__SYMBOL(__mm_srl_pi16) (__m64 a, __m64 count) {
-  __m64 r;
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_m_psllqi) (SIMDE__SYMBOL(__m64) a, int count) {
+  return SIMDE__SYMBOL(_mm_slli_si64)(a, count);
+}
 
-  for (size_t i = 0 ; i < (sizeof(__m64) / sizeof(unsigned short)) ; i++) {
+SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_mm_sll_si64) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) count) {
+  return (SIMDE__SYMBOL(__m64)) { .u64 = a.u64 << count.u64 };
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_m_psllq) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) count) {
+  return SIMDE__SYMBOL(_mm_sll_si64)(a, count);
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_mm_srl_pi16) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) count) {
+  SIMDE__SYMBOL(__m64) r;
+
+  for (size_t i = 0 ; i < (8 / sizeof(unsigned short)) ; i++) {
     r.u16[i] = a.u16[i] >> count.u64;
   }
 
   return r;
 }
-#if defined(_mm_srl_pi16)
-#  undef _mm_srl_pi16
-#endif
-#define _mm_srl_pi16 SIMDE__SYMBOL(__mm_srl_pi16)
-#if defined(_m_psrlw)
-#  undef _m_psrlw
-#endif
-#define _m_psrlw SIMDE__SYMBOL(__mm_srl_pi16)
 
 SIMDE__FUNCTION_ATTRIBUTES
-SIMDE__TYPE(m64)
-SIMDE__SYMBOL(__mm_srl_pi32) (__m64 a, __m64 count) {
-  __m64 r;
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_m_psrlw) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) count) {
+  return SIMDE__SYMBOL(_mm_srl_pi16)(a, count);
+}
 
-  for (size_t i = 0 ; i < (sizeof(__m64) / sizeof(unsigned int)) ; i++) {
+SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_mm_srl_pi32) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) count) {
+  SIMDE__SYMBOL(__m64) r;
+
+  for (size_t i = 0 ; i < (8 / sizeof(unsigned int)) ; i++) {
     r.u32[i] = a.u32[i] >> count.u64;
   }
 
   return r;
 }
-#if defined(_mm_srl_pi32)
-#  undef _mm_srl_pi32
-#endif
-#define _mm_srl_pi32 SIMDE__SYMBOL(__mm_srl_pi32)
-#if defined(_m_psrld)
-#  undef _m_psrld
-#endif
-#define _m_psrld SIMDE__SYMBOL(__m_psrld)
 
 SIMDE__FUNCTION_ATTRIBUTES
-SIMDE__TYPE(m64)
-SIMDE__SYMBOL(__mm_srli_pi16) (__m64 a, int count) {
-  __m64 r;
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_m_psrld) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) count) {
+  return SIMDE__SYMBOL(_mm_srl_pi32)(a, count);
+}
 
-  for (size_t i = 0 ; i < (sizeof(__m64) / sizeof(unsigned short)) ; i++) {
+SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_mm_srli_pi16) (SIMDE__SYMBOL(__m64) a, int count) {
+  SIMDE__SYMBOL(__m64) r;
+
+  for (size_t i = 0 ; i < (8 / sizeof(unsigned short)) ; i++) {
     r.u16[i] = a.u16[i] >> count;
   }
 
   return r;
 }
-#if defined(_mm_srli_pi16)
-#  undef _mm_srli_pi16
-#endif
-#define _mm_srli_pi16 SIMDE__SYMBOL(__mm_srli_pi16)
-#if defined(_m_psrlwi)
-#  undef _m_psrlwi
-#endif
-#define _m_psrlwi SIMDE__SYMBOL(__mm_srli_pi16)
 
 SIMDE__FUNCTION_ATTRIBUTES
-SIMDE__TYPE(m64)
-SIMDE__SYMBOL(__mm_srli_pi32) (__m64 a, int count) {
-  __m64 r;
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_m_psrlwi) (SIMDE__SYMBOL(__m64) a, int count) {
+  return SIMDE__SYMBOL(_mm_srli_pi16)(a, count);
+}
 
-  for (size_t i = 0 ; i < (sizeof(__m64) / sizeof(int)) ; i++) {
+SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_mm_srli_pi32) (SIMDE__SYMBOL(__m64) a, int count) {
+  SIMDE__SYMBOL(__m64) r;
+
+  for (size_t i = 0 ; i < (8 / sizeof(int)) ; i++) {
     r.u32[i] = a.u32[i] >> count;
   }
 
   return r;
 }
-#if defined(_mm_srli_pi32)
-#  undef _mm_srli_pi32
-#endif
-#define _mm_srli_pi32 SIMDE__SYMBOL(__mm_srli_pi32)
-#if defined(_m_psrldi)
-#  undef _m_psrldi
-#endif
-#define _m_psrldi SIMDE__SYMBOL(__mm_srli_pi32)
 
 SIMDE__FUNCTION_ATTRIBUTES
-SIMDE__TYPE(m64)
-SIMDE__SYMBOL(__mm_srli_si64) (__m64 a, int count) {
-  return (SIMDE__TYPE(m64)) { .u64 = a.u64 >> count };
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_m_psrldi) (SIMDE__SYMBOL(__m64) a, int count) {
+  return SIMDE__SYMBOL(_mm_srli_pi32)(a, count);
 }
-#if defined(_mm_srli_si64)
-#  undef _mm_srli_si64
-#endif
-#define _mm_srli_si64 SIMDE__SYMBOL(__mm_srli_si64)
-#if defined(_m_psrlqi)
-#  undef _m_psrlqi
-#endif
-#define _m_psrlqi SIMDE__SYMBOL(__m_psrlqi)
 
 SIMDE__FUNCTION_ATTRIBUTES
-SIMDE__TYPE(m64)
-SIMDE__SYMBOL(__mm_srl_si64) (__m64 a, __m64 count) {
-  return (SIMDE__TYPE(m64)) { .u64 = a.u64 >> count.u64 };
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_mm_srli_si64) (SIMDE__SYMBOL(__m64) a, int count) {
+  return (SIMDE__SYMBOL(__m64)) { .u64 = a.u64 >> count };
 }
-#if defined(_mm_srl_si64)
-#  undef _mm_srl_si64
-#endif
-#define _mm_srl_si64 SIMDE__SYMBOL(__mm_srl_si64)
-#if defined(_m_psrlq)
-#  undef _m_psrlq
-#endif
-#define _m_psrlq SIMDE__SYMBOL(__m_psrlq)
 
 SIMDE__FUNCTION_ATTRIBUTES
-SIMDE__TYPE(m64)
-SIMDE__SYMBOL(__mm_srai_pi16) (__m64 a, int count) {
-  __m64 r;
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_m_psrlqi) (SIMDE__SYMBOL(__m64) a, int count) {
+  return SIMDE__SYMBOL(_mm_srli_si64)(a, count);
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_mm_srl_si64) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) count) {
+  return (SIMDE__SYMBOL(__m64)) { .u64 = a.u64 >> count.u64 };
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_m_psrlq) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) count) {
+  return SIMDE__SYMBOL(_mm_srl_si64)(a, count);
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_mm_srai_pi16) (SIMDE__SYMBOL(__m64) a, int count) {
+  SIMDE__SYMBOL(__m64) r;
 
   const unsigned short m = (unsigned short) ((~0U) << ((sizeof(short) * CHAR_BIT) - count));
 
-  for (size_t i = 0 ; i < (sizeof(__m64) / sizeof(short)) ; i++) {
+  for (size_t i = 0 ; i < (8 / sizeof(short)) ; i++) {
     const unsigned short is_neg = ((unsigned short) (((a.u16[i]) >> ((sizeof(short) * CHAR_BIT) - 1))));
     r.u16[i] = (a.u16[i] >> count) | (m * is_neg);
   }
 
   return r;
 }
-#if defined(_mm_srai_pi16)
-#  undef _mm_srai_pi16
-#endif
-#define _mm_srai_pi16 SIMDE__SYMBOL(__mm_srai_pi16)
-#if defined(_m_psrawi)
-#  undef _m_psrawi
-#endif
-#define _m_psrawi SIMDE__SYMBOL(__mm_srai_pi16)
 
 SIMDE__FUNCTION_ATTRIBUTES
-SIMDE__TYPE(m64)
-SIMDE__SYMBOL(__mm_srai_pi32) (__m64 a, int count) {
-  __m64 r;
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_m_psrawi) (SIMDE__SYMBOL(__m64) a, int count) {
+  return SIMDE__SYMBOL(_mm_srai_pi16)(a, count);
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_mm_srai_pi32) (SIMDE__SYMBOL(__m64) a, int count) {
+  SIMDE__SYMBOL(__m64) r;
 
   const unsigned int m = (unsigned int) ((~0U) << ((sizeof(int) * CHAR_BIT) - count));
-  for (size_t i = 0 ; i < (sizeof(__m64) / sizeof(int)) ; i++) {
+  for (size_t i = 0 ; i < (8 / sizeof(int)) ; i++) {
     const unsigned int is_neg = ((unsigned int) (((a.u32[i]) >> ((sizeof(int) * CHAR_BIT) - 1))));
     r.u32[i] = (a.u32[i] >> count) | (m * is_neg);
   }
 
   return r;
 }
-#if defined(_mm_srai_pi32)
-#  undef _mm_srai_pi32
-#endif
-#define _mm_srai_pi32 SIMDE__SYMBOL(__mm_srai_pi32)
-#if defined(_m_psradi)
-#  undef _m_psradi
-#endif
-#define _m_psradi SIMDE__SYMBOL(__m_psradi)
 
 SIMDE__FUNCTION_ATTRIBUTES
-SIMDE__TYPE(m64)
-SIMDE__SYMBOL(__mm_sra_pi16) (__m64 a, __m64 count) {
-  __m64 r;
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_m_psradi) (SIMDE__SYMBOL(__m64) a, int count) {
+  return SIMDE__SYMBOL(_mm_srai_pi32)(a, count);
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_mm_sra_pi16) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) count) {
+  SIMDE__SYMBOL(__m64) r;
 
   const unsigned short m = (unsigned short) ((~0U) << ((sizeof(short) * CHAR_BIT) - count.i64));
 
-  for (size_t i = 0 ; i < (sizeof(__m64) / sizeof(short)) ; i++) {
+  for (size_t i = 0 ; i < (8 / sizeof(short)) ; i++) {
     const unsigned short is_neg = ((unsigned short) (((a.u16[i]) >> ((sizeof(short) * CHAR_BIT) - 1))));
     r.u16[i] = (a.u16[i] >> count.i64) | (m * is_neg);
   }
 
   return r;
 }
-#if defined(_mm_sra_pi16)
-#  undef _mm_sra_pi16
-#endif
-#define _mm_sra_pi16 SIMDE__SYMBOL(__mm_sra_pi16)
-#if defined(_m_psraw)
-#  undef _m_psraw
-#endif
-#define _m_psraw SIMDE__SYMBOL(__m_psraw)
 
 SIMDE__FUNCTION_ATTRIBUTES
-SIMDE__TYPE(m64)
-SIMDE__SYMBOL(__mm_sra_pi32) (__m64 a, __m64 count) {
-  __m64 r;
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_m_psraw) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) count) {
+  return SIMDE__SYMBOL(_mm_sra_pi16)(a, count);
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_mm_sra_pi32) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) count) {
+  SIMDE__SYMBOL(__m64) r;
 
   const unsigned int m = (unsigned int) ((~0U) << ((sizeof(int) * CHAR_BIT) - count.i64));
-  for (size_t i = 0 ; i < (sizeof(__m64) / sizeof(int)) ; i++) {
+  for (size_t i = 0 ; i < (8 / sizeof(int)) ; i++) {
     const unsigned int is_neg = ((unsigned int) (((a.u32[i]) >> ((sizeof(int) * CHAR_BIT) - 1))));
     r.u32[i] = (a.u32[i] >> count.i64) | (m * is_neg);
   }
 
   return r;
 }
-#if defined(_mm_sra_pi32)
-#  undef _mm_sra_pi32
-#endif
-#define _mm_sra_pi32 SIMDE__SYMBOL(__mm_sra_pi32)
-#if defined(_m_psrad)
-#  undef _m_psrad
-#endif
-#define _m_psrad SIMDE__SYMBOL(__mm_sra_pi32)
 
 SIMDE__FUNCTION_ATTRIBUTES
-SIMDE__TYPE(m64)
-SIMDE__SYMBOL(__mm_sub_pi8) (__m64 a, __m64 b) {
-  __m64 r;
-  for (size_t i = 0 ; i < (sizeof(__m64)) ; i++) {
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_m_psrad) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) b) {
+  return SIMDE__SYMBOL(_mm_sra_pi32)(a, b);
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_mm_sub_pi8) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) b) {
+  SIMDE__SYMBOL(__m64) r;
+  for (size_t i = 0 ; i < 8 ; i++) {
     r.i8[i] = a.i8[i] - b.i8[i];
   }
   return r;
 }
-#if defined(_mm_sub_pi8)
-#  undef _mm_sub_pi8
-#endif
-#define _mm_sub_pi8 SIMDE__SYMBOL(__mm_sub_pi8)
-#if defined(_m_psubb)
-#  undef _m_psubb
-#endif
-#define _m_psubb SIMDE__SYMBOL(__mm_sub_pi8)
 
 SIMDE__FUNCTION_ATTRIBUTES
-SIMDE__TYPE(m64)
-SIMDE__SYMBOL(__mm_sub_pi16) (__m64 a, __m64 b) {
-  __m64 r;
-  for (size_t i = 0 ; i < (sizeof(__m64) / sizeof(short)) ; i++) {
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_m_psubb) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) b) {
+  return SIMDE__SYMBOL(_mm_sub_pi8)(a, b);
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_mm_sub_pi16) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) b) {
+  SIMDE__SYMBOL(__m64) r;
+  for (size_t i = 0 ; i < (8 / sizeof(short)) ; i++) {
     r.i16[i] = a.i16[i] - b.i16[i];
   }
   return r;
 }
-#if defined(_mm_sub_pi16)
-#  undef _mm_sub_pi16
-#endif
-#define _mm_sub_pi16 SIMDE__SYMBOL(__mm_sub_pi16)
-#if defined(_m_psubw)
-#  undef _m_psubw
-#endif
-#define _m_psubw SIMDE__SYMBOL(__m_psubw)
 
 SIMDE__FUNCTION_ATTRIBUTES
-SIMDE__TYPE(m64)
-SIMDE__SYMBOL(__mm_sub_pi32) (__m64 a, __m64 b) {
-  __m64 r;
-  for (size_t i = 0 ; i < (sizeof(__m64) / sizeof(int)) ; i++) {
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_m_psubw) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) b) {
+  return SIMDE__SYMBOL()_mm_sub_pi16(a, b);
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_mm_sub_pi32) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) b) {
+  SIMDE__SYMBOL(__m64) r;
+  for (size_t i = 0 ; i < (8 / sizeof(int)) ; i++) {
     r.i32[i] = a.i32[i] - b.i32[i];
   }
   return r;
 }
-#if defined(_mm_sub_pi32)
-#  undef _mm_sub_pi32
-#endif
-#define _mm_sub_pi32 SIMDE__SYMBOL(__mm_sub_pi32)
-#if defined(_m_psubd)
-#  undef _m_psubd
-#endif
-#define _m_psubd SIMDE__SYMBOL(__mm_sub_pi32)
 
 SIMDE__FUNCTION_ATTRIBUTES
-SIMDE__TYPE(m64)
-SIMDE__SYMBOL(__mm_subs_pi8) (__m64 a, __m64 b) {
-  __m64 r;
-  for (size_t i = 0 ; i < (sizeof(r)) ; i++) {
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_m_psubd) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) b) {
+  return SIMDE__SYMBOL(_mm_sub_pi32)(a, b);
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_mm_subs_pi8) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) b) {
+  SIMDE__SYMBOL(__m64) r;
+  for (size_t i = 0 ; i < (8) ; i++) {
     if (((b.i8[i]) > 0 && (a.i8[i]) < CHAR_MIN + (b.i8[i]))) {
       r.i8[i] = CHAR_MIN;
     } else if ((b.i8[i]) < 0 && (a.i8[i]) > CHAR_MAX + (b.i8[i])) {
@@ -1028,20 +881,18 @@ SIMDE__SYMBOL(__mm_subs_pi8) (__m64 a, __m64 b) {
   }
   return r;
 }
-#if defined(_mm_subs_pi8)
-#  undef _mm_subs_pi8
-#endif
-#define _mm_subs_pi8 SIMDE__SYMBOL(__mm_subs_pi8)
-#if defined(_m_psubsb)
-#  undef _m_psubsb
-#endif
-#define _m_psubsb SIMDE__SYMBOL(__mm_subs_pi8)
 
 SIMDE__FUNCTION_ATTRIBUTES
-SIMDE__TYPE(m64)
-SIMDE__SYMBOL(__mm_subs_pu8) (__m64 a, __m64 b) {
-  __m64 r;
-  for (size_t i = 0 ; i < (sizeof(r)) ; i++) {
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_m_psubsb) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) b) {
+  return SIMDE__SYMBOL(_mm_subs_pi8)(a, b);
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_mm_subs_pu8) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) b) {
+  SIMDE__SYMBOL(__m64) r;
+  for (size_t i = 0 ; i < (8) ; i++) {
     const int x = a.u8[i] - b.u8[i];
     if (x < 0) {
       r.u8[i] = 0;
@@ -1053,20 +904,18 @@ SIMDE__SYMBOL(__mm_subs_pu8) (__m64 a, __m64 b) {
   }
   return r;
 }
-#if defined(_mm_subs_pu8)
-#  undef _mm_subs_pu8
-#endif
-#define _mm_subs_pu8 SIMDE__SYMBOL(__mm_subs_pu8)
-#if defined(_m_psubusb)
-#  undef _m_psubusb
-#endif
-#define _m_psubusb SIMDE__SYMBOL(__mm_subs_pu8)
 
 SIMDE__FUNCTION_ATTRIBUTES
-SIMDE__TYPE(m64)
-SIMDE__SYMBOL(__mm_subs_pi16) (__m64 a, __m64 b) {
-  __m64 r;
-  for (size_t i = 0 ; i < (sizeof(r) / sizeof(short)) ; i++) {
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_m_psubusb) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) b) {
+  return SIMDE__SYMBOL(_mm_subs_pu8)(a, b);
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_mm_subs_pi16) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) b) {
+  SIMDE__SYMBOL(__m64) r;
+  for (size_t i = 0 ; i < (8 / sizeof(short)) ; i++) {
     if (((b.i16[i]) > 0 && (a.i16[i]) < SHRT_MIN + (b.i16[i]))) {
       r.i16[i] = SHRT_MIN;
     } else if ((b.i16[i]) < 0 && (a.i16[i]) > SHRT_MAX + (b.i16[i])) {
@@ -1077,20 +926,18 @@ SIMDE__SYMBOL(__mm_subs_pi16) (__m64 a, __m64 b) {
   }
   return r;
 }
-#if defined(_mm_subs_pi16)
-#  undef _mm_subs_pi16
-#endif
-#define _mm_subs_pi16 SIMDE__SYMBOL(__mm_subs_pi16)
-#if defined(_m_psubsw)
-#  undef _m_psubsw
-#endif
-#define _m_psubsw SIMDE__SYMBOL(__mm_subs_pi16)
 
 SIMDE__FUNCTION_ATTRIBUTES
-SIMDE__TYPE(m64)
-SIMDE__SYMBOL(__mm_subs_pu16) (__m64 a, __m64 b) {
-  __m64 r;
-  for (size_t i = 0 ; i < (sizeof(r) / sizeof(unsigned short)) ; i++) {
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_m_psubsw) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) b) {
+  return SIMDE__SYMBOL(_mm_subs_pi16)(a, b);
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_mm_subs_pu16) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) b) {
+  SIMDE__SYMBOL(__m64) r;
+  for (size_t i = 0 ; i < (8 / sizeof(unsigned short)) ; i++) {
     const int x = a.u16[i] - b.u16[i];
     if (x < 0) {
       r.u16[i] = 0;
@@ -1102,140 +949,116 @@ SIMDE__SYMBOL(__mm_subs_pu16) (__m64 a, __m64 b) {
   }
   return r;
 }
-#if defined(_mm_subs_pu16)
-#  undef _mm_subs_pu16
-#endif
-#define _mm_subs_pu16 SIMDE__SYMBOL(__mm_subs_pu16)
-#if defined(_m_psubusw)
-#  undef _m_psubusw
-#endif
-#define _m_psubusw SIMDE__SYMBOL(__mm_subs_pu16)
 
 SIMDE__FUNCTION_ATTRIBUTES
-SIMDE__TYPE(m64)
-SIMDE__SYMBOL(__mm_unpackhi_pi8) (__m64 a, __m64 b) {
-  return (SIMDE__TYPE(m64)) { .i8 = {
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_m_psubusw) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) b) {
+  return SIMDE__SYMBOL(_mm_subs_pu16)(a, b);
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_mm_unpackhi_pi8) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) b) {
+  return (SIMDE__SYMBOL(__m64)) { .i8 = {
       a.i8[4], b.i8[4], a.i8[5], b.i8[5],
       a.i8[6], b.i8[6], a.i8[7], b.i8[7]
     }
   };
 }
-#if defined(_mm_unpackhi_pi8)
-#  undef _mm_unpackhi_pi8
-#endif
-#define _mm_unpackhi_pi8 SIMDE__SYMBOL(__mm_unpackhi_pi8)
-#if defined(_m_punpckhbw)
-#  undef _m_punpckhbw
-#endif
-#define _m_punpckhbw SIMDE__SYMBOL(__mm_unpackhi_pi8)
 
 SIMDE__FUNCTION_ATTRIBUTES
-SIMDE__TYPE(m64)
-SIMDE__SYMBOL(__mm_unpackhi_pi16) (__m64 a, __m64 b) {
-  return (SIMDE__TYPE(m64)) { .i16 = { a.i16[2], b.i16[2], a.i16[3], b.i16[3] } };
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_m_punpckhbw) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) b) {
+  return SIMDE__SYMBOL(_mm_unpackhi_pi8)(a, b);
 }
-#if defined(_mm_unpackhi_pi16)
-#  undef _mm_unpackhi_pi16
-#endif
-#define _mm_unpackhi_pi16 SIMDE__SYMBOL(__mm_unpackhi_pi16)
-#if defined(_m_punpcklbw)
-#  undef _m_punpcklbw
-#endif
-#define _m_punpcklbw SIMDE__SYMBOL(__mm_unpackhi_pi16)
 
 SIMDE__FUNCTION_ATTRIBUTES
-SIMDE__TYPE(m64)
-SIMDE__SYMBOL(__mm_unpackhi_pi32) (__m64 a, __m64 b) {
-  return (SIMDE__TYPE(m64)) { .i32 = { a.i32[1], b.i32[1] } };
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_mm_unpackhi_pi16) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) b) {
+  return (SIMDE__SYMBOL(__m64)) { .i16 = { a.i16[2], b.i16[2], a.i16[3], b.i16[3] } };
 }
-#if defined(_mm_unpackhi_pi32)
-#  undef _mm_unpackhi_pi32
-#endif
-#define _mm_unpackhi_pi32 SIMDE__SYMBOL(__mm_unpackhi_pi32)
-#if defined(_m_punpckhdq)
-#  undef _m_punpckhdq
-#endif
-#define _m_punpckhdq SIMDE__SYMBOL(__mm_unpackhi_pi32)
 
 SIMDE__FUNCTION_ATTRIBUTES
-SIMDE__TYPE(m64)
-SIMDE__SYMBOL(__mm_unpacklo_pi8) (__m64 a, __m64 b) {
-  return (SIMDE__TYPE(m64)) { .i8 = {
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_m_punpckhwd) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) b) {
+  return SIMDE__SYMBOL(_mm_unpackhi_pi16)(a, b);
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_mm_unpackhi_pi32) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) b) {
+  return (SIMDE__SYMBOL(__m64)) { .i32 = { a.i32[1], b.i32[1] } };
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_m_punpckhdq) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) b) {
+  return SIMDE__SYMBOL(_mm_unpackhi_pi32)(a, b);
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_mm_unpacklo_pi8) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) b) {
+  return (SIMDE__SYMBOL(__m64)) { .i8 = {
       a.i8[0], b.i8[0], a.i8[1], b.i8[1],
       a.i8[2], b.i8[2], a.i8[3], b.i8[3]
     }
   };
 }
-#if defined(_mm_unpacklo_pi8)
-#  undef _mm_unpacklo_pi8
-#endif
-#define _mm_unpacklo_pi8 SIMDE__SYMBOL(__mm_unpacklo_pi8)
-#if defined(_m_punpcklbw)
-#  undef _m_punpcklbw
-#endif
-#define _m_punpcklbw SIMDE__SYMBOL(__mm_unpacklo_pi8)
 
 SIMDE__FUNCTION_ATTRIBUTES
-SIMDE__TYPE(m64)
-SIMDE__SYMBOL(__mm_unpacklo_pi16) (__m64 a, __m64 b) {
-  return (SIMDE__TYPE(m64)) { .i16 = { a.i16[0], b.i16[0], a.i16[1], b.i16[1] } };
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_m_punpcklbw) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) b) {
+  return SIMDE__SYMBOL(_mm_unpacklo_pi8)(a, b);
 }
-#if defined(_mm_unpacklo_pi16)
-#  undef _mm_unpacklo_pi16
-#endif
-#define _mm_unpacklo_pi16 SIMDE__SYMBOL(__mm_unpacklo_pi16)
-#if defined(_m_punpcklwd)
-#  undef _m_punpcklwd
-#endif
-#define _m_punpcklwd SIMDE__SYMBOL(__m_punpcklwd)
 
 SIMDE__FUNCTION_ATTRIBUTES
-SIMDE__TYPE(m64)
-SIMDE__SYMBOL(__mm_unpacklo_pi32) (__m64 a, __m64 b) {
-  return (SIMDE__TYPE(m64)) { .i32 = { a.i32[0], b.i32[0] } };
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_mm_unpacklo_pi16) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) b) {
+  return (SIMDE__SYMBOL(__m64)) { .i16 = { a.i16[0], b.i16[0], a.i16[1], b.i16[1] } };
 }
-#if defined(_mm_unpacklo_pi32)
-#  undef _mm_unpacklo_pi32
-#endif
-#define _mm_unpacklo_pi32 SIMDE__SYMBOL(__mm_unpacklo_pi32)
-#if defined(_m_punpckldq)
-#  undef _m_punpckldq
-#endif
-#define _m_punpckldq SIMDE__SYMBOL(__mm_unpacklo_pi32)
 
 SIMDE__FUNCTION_ATTRIBUTES
-SIMDE__TYPE(m64)
-SIMDE__SYMBOL(__mm_xor_si64) (__m64 a, __m64 b) {
-  return (SIMDE__TYPE(m64)) { .i64 = a.i64 ^ b.i64 };
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_m_punpcklwd) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) b) {
+  return SIMDE__SYMBOL(_m_punpcklwd)(a, b);
 }
-#if defined(_mm_xor_si64)
-#  undef _mm_xor_si64
-#endif
-#define _mm_xor_si64 SIMDE__SYMBOL(__mm_xor_si64)
-#if defined(_m_pxor)
-#  undef _m_pxor
-#endif
-#define _m_pxor SIMDE__SYMBOL(__mm_xor_si64)
+
+SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_mm_unpacklo_pi32) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) b) {
+  return (SIMDE__SYMBOL(__m64)) { .i32 = { a.i32[0], b.i32[0] } };
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_m_punpckldq) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) b) {
+  return SIMDE__SYMBOL(_mm_unpacklo_pi32)(a, b);
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_mm_xor_si64) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) b) {
+  return (SIMDE__SYMBOL(__m64)) { .i64 = a.i64 ^ b.i64 };
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL(__m64)
+SIMDE__SYMBOL(_m_pxor) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) b) {
+  return SIMDE__SYMBOL(_mm_xor_si64)(a, b);
+}
 
 SIMDE__FUNCTION_ATTRIBUTES
 int
-SIMDE__SYMBOL(__m_to_int) (__m64 a) {
+SIMDE__SYMBOL(_m_to_int) (SIMDE__SYMBOL(__m64) a) {
   return a.i32[0];
 }
-#if defined(_m_to_int)
-#  undef _m_to_int
-#endif
-#define _m_to_int SIMDE__SYMBOL(__m_to_int)
 
 SIMDE__FUNCTION_ATTRIBUTES
 int64_t
-SIMDE__SYMBOL(__m_to_int64) (__m64 a) {
+SIMDE__SYMBOL(_m_to_int64) (SIMDE__SYMBOL(__m64) a) {
   return a.i64;
 }
-#if defined(_m_to_int64)
-#  undef _m_to_int64
-#endif
-#define _m_to_int64 SIMDE__SYMBOL(__m_to_int64)
 
 #endif /* !defined(SIMDE__MMX_NATIVE) */
 #endif /* !defined(SIMDE__MMX_H) */
