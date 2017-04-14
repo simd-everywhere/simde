@@ -302,8 +302,8 @@ SIMDE__SYMBOL(_mm_cvtsi64_m64) (int64_t a) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL(__m64)
-SIMDE__SYMBOL(_m_from_int64) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) b) {
-  return SIMDE__SYMBOL(_m_from_int64)(a, b);
+SIMDE__SYMBOL(_m_from_int64) (int64_t a) {
+  return SIMDE__SYMBOL(_mm_cvtsi64_m64)(a);
 }
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -1021,7 +1021,7 @@ SIMDE__SYMBOL(_mm_unpacklo_pi16) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) b
 SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL(__m64)
 SIMDE__SYMBOL(_m_punpcklwd) (SIMDE__SYMBOL(__m64) a, SIMDE__SYMBOL(__m64) b) {
-  return SIMDE__SYMBOL(_m_punpcklwd)(a, b);
+  return SIMDE__SYMBOL(_mm_unpacklo_pi16)(a, b);
 }
 
 SIMDE__FUNCTION_ATTRIBUTES
