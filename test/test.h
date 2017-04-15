@@ -14,13 +14,15 @@
 #include <stdio.h>
 #include <limits.h>
 
+#include "../hedley.h"
 #include "munit/munit.h"
 
 const MunitSuite simde_mmx_test_suite;
 const MunitSuite simde_sse_test_suite;
 const MunitSuite simde_sse2_test_suite;
 
-void debug_array_u32(const char* prefix, size_t nmemb, uint32_t* v);
+void debug_array_u32(const char* prefix, size_t nmemb, uint32_t v[HEDLEY_ARRAY_PARAM(nmemb)]);
+void random_floatv(size_t nmemb, float v[HEDLEY_ARRAY_PARAM(nmemb)]);
 
 #define assert_m64_pi8(a, cmp, b)					\
   do {									\

@@ -36,7 +36,7 @@ test_simde_mm_set_ps(const MunitParameter params[], void* data) {
   (void) data;
 
   float d[4];
-  munit_rand_memory(sizeof(d), (uint8_t*) d);
+  random_floatv(sizeof(d) / sizeof(d[0]), d);
 
   simde__m128 x = simde_mm_set_ps(d[0], d[1], d[2], d[3]);
 
@@ -55,7 +55,7 @@ test_simde_mm_set1_ps(const MunitParameter params[], void* data) {
   (void) data;
 
   float d;
-  munit_rand_memory(sizeof(d), (uint8_t*) &d);
+  random_floatv(1, &d);
 
   simde__m128 x = simde_mm_set1_ps(d);
 

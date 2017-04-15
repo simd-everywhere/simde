@@ -1,11 +1,21 @@
 #include "test.h"
 
-void debug_array_u32(const char* prefix, size_t nmemb, uint32_t* v) {
+#include <math.h>
+
+void debug_array_u32(const char* prefix, size_t nmemb, uint32_t v[HEDLEY_ARRAY_PARAM(nmemb)]) {
   fprintf(stderr, "%s:", prefix);
   for(size_t i = 0 ; i < nmemb ; i++) {
     fprintf(stderr, " 0x%08x", v[i]);
   }
   fprintf(stderr, "\n");
+}
+
+void random_floatv(size_t nmemb, float v[HEDLEY_ARRAY_PARAM(nmemb)]) {
+  for (size_t i = 0 ; i < nmemb ; i++) {
+    do {
+      munit_rand_memory(sizeof(v[i]), (uint8_t*) &(v[i]));
+    } while (!isnormal(v[i]));
+  }
 }
 
 static MunitTest test_suite_tests[] = {
