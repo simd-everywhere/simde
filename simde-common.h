@@ -10,6 +10,8 @@
 #  define SIMDE__ALIGN(alignment) __attribute__((aligned(alignment)))
 #elif defined(_MSC_VER)
 #  define SIMDE__ALIGN(alignment) __declspec(align(alignment))
+#else
+#  define SIMDE__ALIGN(alignment)
 #endif
 
 #if defined(__GNUC__)
