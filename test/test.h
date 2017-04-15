@@ -20,6 +20,8 @@ const MunitSuite simde_mmx_test_suite;
 const MunitSuite simde_sse_test_suite;
 const MunitSuite simde_sse2_test_suite;
 
+void debug_array_u32(const char* prefix, size_t nmemb, uint32_t* v);
+
 #define assert_m64_pi8(a, cmp, b)					\
   do {									\
     munit_assert_int8(((char*) (&a))[0], cmp, ((char*) (&b))[0]);	\

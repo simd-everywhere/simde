@@ -1,5 +1,13 @@
 #include "test.h"
 
+void debug_array_u32(const char* prefix, size_t nmemb, uint32_t* v) {
+  fprintf(stderr, "%s:", prefix);
+  for(size_t i = 0 ; i < nmemb ; i++) {
+    fprintf(stderr, " 0x%08x", v[i]);
+  }
+  fprintf(stderr, "\n");
+}
+
 static MunitTest test_suite_tests[] = {
   { NULL, NULL, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL }
 };
