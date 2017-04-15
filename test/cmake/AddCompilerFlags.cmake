@@ -20,7 +20,7 @@ endif ()
 # use.
 #
 # Example:
-#   set_compiler_flags(VARIABLE varname MSVC /wd666 INTEL /wd1729)
+#   set_compiler_specific_flags(VARIABLE varname MSVC /wd666 INTEL /wd1729)
 #
 #   This will set varname to /wd666 if the compiler is MSVC, and /wd1729
 #   if it is Intel.

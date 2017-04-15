@@ -47,6 +47,11 @@ set(TEST_SOURCES
   test-sse.c
   test-sse2.c)
 
+set_compiler_specific_flags(
+  VARIABLE extra_cflags
+  INTEL -wd3179
+  GCCISH -march=native)
+
 foreach(variant native emul)
   add_executable(test-${variant} ${TEST_SOURCES})
   target_link_libraries(test-${variant} munit)
@@ -55,6 +60,7 @@ foreach(variant native emul)
   endforeach()
   target_add_extra_warning_flags(test-${variant})
   set_property (TARGET test-${variant} PROPERTY C_STANDARD "99")
+  target_add_compiler_flags(test-${variant} ${extra_cflags})
 endforeach()
 
 target_compile_definitions(test-native PRIVATE -DTEST_NATIVE)

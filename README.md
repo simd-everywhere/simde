@@ -25,6 +25,22 @@ interested in helping please feel free to dive right in!  All
 instructions must have a test (see `test.c`), as well as a portable
 implementation in the relevant header.
 
+## Usage
+
+Each instruction set has a separate file; `mmx.h` for MMX, `sse.h` for
+SSE, `sse2.h` for SSE2, and so on.  Just include the header for
+whichever instruction sets you want.  If your compiler has enabled the
+relevant instruction set SIMDe will use the native intrinsics,
+otherwise a portable fallback will be used.
+
+By default, symbols are prefixed with `simde_`.  For example, the MMX
+`_mm_add_pi8` intrinsic becomes `simde_mm_add_pi8`, and `__m64`
+becomes `simde__m64`.  This can be changed by defining `SIMDE_PREFIX`
+prior to including any header.  If you desire, you can define
+`SIMDE_PREFIX` to nothing and the API will be compatible with the
+native version, though this can lead to problems in some situations
+and is therefore discouraged.
+
 ## Related Projects
 
 This is very similar to the builtins module in
