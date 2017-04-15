@@ -58,4 +58,8 @@
 #    endif
 #  endif
 
+SIMDE__BEGIN_DECLS
+
+SIMDE__END_DECLS
+
 #endif /* !defined(SIMDE__SSE4_2_H) */

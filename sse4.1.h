@@ -58,6 +58,8 @@
 #    endif
 #  endif
 
+SIMDE__BEGIN_DECLS
+
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_blendv_epi8 (simde__m128i a, simde__m128i b, simde__m128i mask) {
@@ -103,5 +105,7 @@ simde_mm_min_epi8 (simde__m128i a, simde__m128i b) {
   return r;
 #endif
 }
+
+SIMDE__END_DECLS
 
 #endif /* !defined(SIMDE__SSE4_1_H) */

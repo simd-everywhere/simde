@@ -47,7 +47,9 @@
 #  include <stdlib.h>
 #  include <string.h>
 
-typedef SIMDE__ALIGN(16) union {
+SIMDE__BEGIN_DECLS
+
+typedef union {
 #if defined(SIMDE__ENABLE_GCC_VEC_EXT)
   int8_t          i8 __attribute__((__vector_size__(8), __may_alias__));
   int16_t        i16 __attribute__((__vector_size__(8), __may_alias__));
@@ -1239,5 +1241,7 @@ simde_m_to_int (simde__m64 a) {
   return a.i32[0];
 #endif
 }
+
+SIMDE__END_DECLS
 
 #endif /* !defined(SIMDE__MMX_H) */

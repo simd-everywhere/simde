@@ -62,7 +62,9 @@
 #  include <limits.h>
 #  include <string.h>
 
-typedef union {
+SIMDE__BEGIN_DECLS
+
+typedef SIMDE__ALIGN(16) union {
 #if defined(SIMDE__ENABLE_GCC_VEC_EXT)
   int8_t          i8 __attribute__((__vector_size__(16), __may_alias__));
   int16_t        i16 __attribute__((__vector_size__(16), __may_alias__));
@@ -2361,5 +2363,7 @@ simde_mm_xor_si128 (simde__m128i a, simde__m128i b) {
   return r;
 #endif
 }
+
+SIMDE__END_DECLS
 
 #endif /* !defined(SIMDE__SSE2_H) */

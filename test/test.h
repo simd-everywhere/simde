@@ -32,6 +32,10 @@
 #include "../hedley.h"
 #include "munit/munit.h"
 
+#if defined(_MSC_VER)
+__pragma(warning(disable:4132 4204))
+#endif
+
 const MunitSuite simde_mmx_test_suite;
 const MunitSuite simde_sse_test_suite;
 const MunitSuite simde_sse2_test_suite;
@@ -40,7 +44,7 @@ const MunitSuite simde_ssse3_test_suite;
 const MunitSuite simde_sse4_1_test_suite;
 const MunitSuite simde_sse4_2_test_suite;
 
-#if 0
+#if defined(SIMDE__ENABLE_DEBUG_ARRAY)
 void debug_array_u8(const char* prefix, size_t nmemb, uint8_t v[HEDLEY_ARRAY_PARAM(nmemb)]);
 void debug_array_u16(const char* prefix, size_t nmemb, uint16_t v[HEDLEY_ARRAY_PARAM(nmemb)]);
 void debug_array_u32(const char* prefix, size_t nmemb, uint32_t v[HEDLEY_ARRAY_PARAM(nmemb)]);

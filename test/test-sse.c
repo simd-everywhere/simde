@@ -27,6 +27,8 @@
 #include <stdio.h>
 #include <math.h>
 
+#define NAN_AS_U32 (((union { simde_float32 f32; uint32_t u32; }) { .f32 = NAN }).u32)
+
 #define assert_m128_ps(a, cmp, b)					\
   do {									\
     munit_assert_float(((simde_float32*) (&a))[0], cmp, ((simde_float32*) (&b))[0]);	\
@@ -1324,16 +1326,16 @@ test_simde_mm_cmpord_ss(const MunitParameter params[], void* data) {
       simde_m128_set_u32(0x3f800000, 0x40000000, 0x40400000, 0xffffffff) },
     { simde_mm_set_ps( NAN,  NAN,  NAN,  NAN),
       simde_mm_set_ps( NAN,  NAN,  NAN,  NAN),
-      simde_m128_set_u32(0x7fc00000, 0x7fc00000, 0x7fc00000, 0x00000000) },
+      simde_m128_set_u32(NAN_AS_U32, NAN_AS_U32, NAN_AS_U32, 0x00000000) },
     { simde_mm_set_ps(NAN,  2.0f, 3.0f, 4.0f),
       simde_mm_set_ps(1.0f, 2.0f, 3.0f, 4.0f),
-      simde_m128_set_u32(0x7fc00000, 0x40000000, 0x40400000, 0xffffffff) },
+      simde_m128_set_u32(NAN_AS_U32, 0x40000000, 0x40400000, 0xffffffff) },
     { simde_mm_set_ps(1.0f,  NAN, 3.0f, 4.0f),
       simde_mm_set_ps(1.0f, 2.0f, 3.0f, 4.0f),
-      simde_m128_set_u32(0x3f800000, 0x7fc00000, 0x40400000, 0xffffffff) },
+      simde_m128_set_u32(0x3f800000, NAN_AS_U32, 0x40400000, 0xffffffff) },
     { simde_mm_set_ps(1.0f, 2.0f,  NAN, 4.0f),
       simde_mm_set_ps(1.0f, 2.0f, 3.0f, 4.0f),
-      simde_m128_set_u32(0x3f800000, 0x40000000, 0x7fc00000, 0xffffffff) },
+      simde_m128_set_u32(0x3f800000, 0x40000000, NAN_AS_U32, 0xffffffff) },
     { simde_mm_set_ps(1.0f, 2.0f, 3.0f, NAN),
       simde_mm_set_ps(1.0f, 2.0f, 3.0f, 4.0f),
       simde_m128_set_u32(0x3f800000, 0x40000000, 0x40400000, 0x00000000) },
@@ -1353,7 +1355,7 @@ test_simde_mm_cmpord_ss(const MunitParameter params[], void* data) {
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / (sizeof(test_vec[0]))) ; i++) {
     simde__m128 r = simde_mm_cmpord_ss(test_vec[i].a, test_vec[i].b);
-    simde_assert_m128_i32(r, ==, test_vec[i].r);
+    simde_assert_m128_u32(r, ==, test_vec[i].r);
   }
 
   return MUNIT_OK;
@@ -1688,16 +1690,16 @@ test_simde_mm_cmpunord_ss(const MunitParameter params[], void* data) {
       simde_m128_set_u32(0x3f800000, 0x40000000, 0x40400000, 0x00000000) },
     { simde_mm_set_ps( NAN,  NAN,  NAN,  NAN),
       simde_mm_set_ps( NAN,  NAN,  NAN,  NAN),
-      simde_m128_set_u32(0x7fc00000, 0x7fc00000, 0x7fc00000, 0xffffffff) },
+      simde_m128_set_u32(NAN_AS_U32, NAN_AS_U32, NAN_AS_U32, 0xffffffff) },
     { simde_mm_set_ps(NAN,  2.0f, 3.0f, 4.0f),
       simde_mm_set_ps(1.0f, 2.0f, 3.0f, 4.0f),
-      simde_m128_set_u32(0x7fc00000, 0x40000000, 0x40400000, 0x00000000) },
+      simde_m128_set_u32(NAN_AS_U32, 0x40000000, 0x40400000, 0x00000000) },
     { simde_mm_set_ps(1.0f,  NAN, 3.0f, 4.0f),
       simde_mm_set_ps(1.0f, 2.0f, 3.0f, 4.0f),
-      simde_m128_set_u32(0x3f800000, 0x7fc00000, 0x40400000, 0x00000000) },
+      simde_m128_set_u32(0x3f800000, NAN_AS_U32, 0x40400000, 0x00000000) },
     { simde_mm_set_ps(1.0f, 2.0f,  NAN, 4.0f),
       simde_mm_set_ps(1.0f, 2.0f, 3.0f, 4.0f),
-      simde_m128_set_u32(0x3f800000, 0x40000000, 0x7fc00000, 0x00000000) },
+      simde_m128_set_u32(0x3f800000, 0x40000000, NAN_AS_U32, 0x00000000) },
     { simde_mm_set_ps(1.0f, 2.0f, 3.0f, NAN),
       simde_mm_set_ps(1.0f, 2.0f, 3.0f, 4.0f),
       simde_m128_set_u32(0x3f800000, 0x40000000, 0x40400000, 0xffffffff) },

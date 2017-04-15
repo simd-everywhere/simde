@@ -22,6 +22,8 @@ progress information, see the
 label in the issue tracker.  If you'd like to be notified when an
 instruction set is available you may subscribe to the relevant issue.
 
+[![Travis](https://api.travis-ci.org/nemequ/simde.svg?branch=master)](https://travis-ci.org/nemequ/simde) [![AppVeyor](https://ci.appveyor.com/api/projects/status/1f3wp712w1ium5vi/branch/master?svg=true)](https://ci.appveyor.com/project/quixdb/simde/branch/master) [![Codecov](https://img.shields.io/codecov/c/github/nemequ/simde.svg)](https://codecov.io/gh/nemequ/simde)
+
 ## Want to help?
 
 There are a *lot* of instructions to get through, so any help would be
@@ -45,8 +47,6 @@ contact us; we're happy to help!
 If you're not sure that your implementation will be fast enough, don't
 worry!  Right now we just want to get correct implementations in
 place, we can worry about optimizing later.
-
-[![Travis](https://img.shields.io/travis/nemequ/simde.svg)](https://travis-ci.org/nemequ/simde) [![Codecov](https://img.shields.io/codecov/c/github/nemequ/simde.svg)](https://codecov.io/gh/nemequ/simde)
 
 ## Usage
 
@@ -127,11 +127,12 @@ support the following caveats apply:
 
 SIMDe requires C99.
 
-Every commit is tested with relatively recent versions of GCC (4.4+),
-clang (3.8+), and PGI (16.10), via [Travis
-CI](https://travis-ci.org/nemequ/simde).  Intel C/C++ Compiler is also
-tested sporadically (mostly because their optimization reports are
-excellent).
+Every commit is tested with several different versions of GCC, clang,
+and PGI via [Travis CI](https://travis-ci.org/nemequ/simde) on Linux.
+Microsoft Visual C++ is tested on Windows using
+[AppVeyor](https://ci.appveyor.com/project/quixdb/simde).  Intel C/C++
+Compiler is also tested sporadically (mostly because their
+optimization reports are excellent).
 
 I'm generally willing to accept patches to add support for other
 compilers, as long as they're not too disruptive, *especially* if we

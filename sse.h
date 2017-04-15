@@ -67,7 +67,9 @@
 #  include <math.h>
 #  include <fenv.h>
 
-typedef union {
+SIMDE__BEGIN_DECLS
+
+typedef SIMDE__ALIGN(16) union {
 #if defined(SIMDE__ENABLE_GCC_VEC_EXT)
   int8_t          i8 __attribute__((__vector_size__(16), __may_alias__));
   int16_t        i16 __attribute__((__vector_size__(16), __may_alias__));
@@ -111,7 +113,7 @@ typedef union {
   uint64x2_t     neon_u64;
   float32x4_t    neon_f32;
 #endif
-} SIMDE__ALIGN(16) simde__m128;
+} simde__m128;
 
 #if defined(SIMDE_SSE_NATIVE)
 HEDLEY_STATIC_ASSERT(sizeof(__m128) == sizeof(simde__m128), "__m128 size doesn't match simde__m128 size");
@@ -1416,7 +1418,10 @@ simde_mm_or_ps (simde__m128 a, simde__m128 b) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 void
-simde_mm_prefetch (char const* p, int i) { }
+simde_mm_prefetch (char const* p, int i) {
+  (void) p;
+  (void) i;
+}
 #if defined(SIMDE_SSE_NATIVE)
 #  define simde_mm_prefetch(p, i) _mm_prefetch(p, i)
 #endif
@@ -1579,7 +1584,7 @@ simde_mm_sfence (void) {
   atomic_thread_fence(memory_order_seq_cst);
 #  endif
 #elif defined(_MSC_VER)
-  MemoryBarrier()
+  MemoryBarrier();
 #elif defined(__GNUC__) && ((__GNUC__ > 4) || (__GNUC__ == 4 && __GNUC_MINOR__ >= 7))
   __atomic_thread_fence(__ATOMIC_SEQ_CST);
 #elif HEDLEY_CLANG_HAS_FEATURE(c_atomic)
@@ -1998,5 +2003,7 @@ simde_mm_setcsr (uint32_t a) {
   }
 #endif
 }
+
+SIMDE__END_DECLS
 
 #endif /* !defined(SIMDE__SSE_H) */

@@ -4,14 +4,16 @@
 include (CheckCCompilerFlag)
 include (CheckCXXCompilerFlag)
 
+cmake_policy(SET CMP0054 NEW)
+
 # Depending on the settings, some compilers will accept unknown flags.
 # We try to disable this behavior by also passing these flags when we
 # check if a flag is supported.
 set (ADD_COMPILER_FLAGS_PREPEND "")
 
-if ("GNU" STREQUAL "${CMAKE_C_COMPILER_ID}")
+if (CMAKE_C_COMPILER_ID STREQUAL "GNU")
   set (ADD_COMPILER_FLAGS_PREPEND "-Wall -Wextra -Werror")
-elseif ("Clang" STREQUAL "${CMAKE_C_COMPILER_ID}")
+elseif (CMAKE_C_COMPILER_ID STREQUAL "Clang")
   set (ADD_COMPILER_FLAGS_PREPEND "-Werror=unknown-warning-option")
 endif ()
 
@@ -32,13 +34,14 @@ endif ()
 #  - CLANG: clang
 #  - MSVC: Microsoft Visual C++ compiler
 #  - INTEL: Intel C Compiler
+#  - PGI: PGI C Compiler
 #
 # Note: the compiler is determined based on the value of the
 # CMAKE_C_COMPILER_ID variable, not CMAKE_CXX_COMPILER_ID.
 ##
 function (set_compiler_specific_flags)
   set (oneValueArgs VARIABLE)
-  set (multiValueArgs GCC GCCISH INTEL CLANG MSVC)
+  set (multiValueArgs GCC GCCISH INTEL CLANG MSVC PGI)
   cmake_parse_arguments(COMPILER_SPECIFIC_FLAGS "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
   unset (options)
   unset (oneValueArgs)
@@ -46,17 +49,21 @@ function (set_compiler_specific_flags)
 
   set (compiler_flags)
 
-  if ("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU")
+  if (CMAKE_C_COMPILER_ID STREQUAL "GNU")
     list (APPEND compiler_flags ${COMPILER_SPECIFIC_FLAGS_GCC})
-  elseif("${CMAKE_C_COMPILER_ID}" STREQUAL "Clang")
+  elseif(CMAKE_C_COMPILER_ID STREQUAL "Clang")
     list (APPEND compiler_flags ${COMPILER_SPECIFIC_FLAGS_CLANG})
-  elseif("${CMAKE_C_COMPILER_ID}" STREQUAL "Intel")
+  elseif(CMAKE_C_COMPILER_ID STREQUAL "Intel")
     list (APPEND compiler_flags ${COMPILER_SPECIFIC_FLAGS_INTEL})
-  elseif("${CMAKE_C_COMPILER_ID}" STREQUAL "MSVC")
+  elseif(CMAKE_C_COMPILER_ID STREQUAL "MSVC")
     list (APPEND compiler_flags ${COMPILER_SPECIFIC_FLAGS_MSVC})
+  elseif(CMAKE_C_COMPILER_ID STREQUAL "PGI")
+    list (APPEND compiler_flags ${COMPILER_SPECIFIC_FLAGS_PGI})
   endif()
 
-  if (NOT "${CMAKE_C_COMPILER_ID}" STREQUAL "MSVC")
+  set(GCCISH_COMPILERS GNU Clang Intel)
+  list(FIND GCCISH_COMPILERS "${CMAKE_C_COMPILER_ID}" IS_GCCISH)
+  if (IS_GCCISH GREATER -1)
     list (APPEND compiler_flags ${COMPILER_SPECIFIC_FLAGS_GCCISH})
   endif ()
 
@@ -86,17 +93,17 @@ function (source_file_add_compiler_flags file)
   get_source_file_property (sources ${file} SOURCES)
 
   foreach (flag ${flags})
-    if ("GNU" STREQUAL "${CMAKE_C_COMPILER_ID}")
+    if (CMAKE_C_COMPILER_ID STREQUAL "GNU")
       # Because https://gcc.gnu.org/wiki/FAQ#wnowarning
       string (REGEX REPLACE "\\-Wno\\-(.+)" "-W\\1" flag_to_test "${flag}")
     else ()
       set (flag_to_test ${flag})
     endif ()
 
-    if ("${file}" MATCHES "\\.c$")
+    if (file MATCHES "\\.c$")
       string (REGEX REPLACE "[^a-zA-Z0-9]+" "_" test_name "CFLAG_${flag_to_test}")
       CHECK_C_COMPILER_FLAG ("${ADD_COMPILER_FLAGS_PREPEND} ${flag_to_test}" ${test_name})
-    elseif ("${file}" MATCHES "\\.(cpp|cc|cxx)$")
+    elseif (file MATCHES "\\.(cpp|cc|cxx)$")
       string (REGEX REPLACE "[^a-zA-Z0-9]+" "_" test_name "CXXFLAG_${flag_to_test}")
       CHECK_CXX_COMPILER_FLAG ("${ADD_COMPILER_FLAGS_PREPEND} ${flag_to_test}" ${test_name})
     endif ()

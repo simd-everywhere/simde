@@ -58,6 +58,8 @@
 #    endif
 #  endif
 
+SIMDE__BEGIN_DECLS
+
 #if defined(simde_mm_alignr_epi8)
 #  undef simde_mm_alignr_epi8
 #endif
@@ -90,6 +92,9 @@ simde_mm_alignr_epi8 (simde__m128i a, simde__m128i b, int count) {
       r.u64[0]  = a.u64[1] >> bits;
       r.u64[1]  = 0;
       break;
+    default:
+      HEDLEY_UNREACHABLE();
+      break;
   }
 
   return r;
@@ -115,5 +120,7 @@ simde_mm_shuffle_epi8 (simde__m128i a, simde__m128i b) {
   return r;
 #endif
 }
+
+SIMDE__END_DECLS
 
 #endif /* !defined(SIMDE__SSE2_H) */

@@ -53,6 +53,8 @@ else()
   unset(orig_req_libs)
 endif()
 
+find_library(LIBM m)
+
 set_property(TARGET munit PROPERTY C_STANDARD "99")
 if("${CLOCK_GETTIME_EXISTS}")
   target_compile_definitions(munit PRIVATE "MUNIT_ALLOW_CLOCK_GETTIME")
@@ -85,7 +87,10 @@ endif()
 
 foreach(variant native emul)
   add_executable(test-${variant} ${TEST_SOURCES})
-  target_link_libraries(test-${variant} munit m)
+  target_link_libraries(test-${variant} munit)
+  if(LIBM)
+    target_link_libraries(test-${variant} ${LIBM})
+  endif()
   foreach(tst "/mmx" "/sse" "/sse2" "/sse3" "/ssse3" "/sse4.1" "/sse4.2")
     add_test(NAME "/${variant}${tst}" COMMAND $<TARGET_FILE:test-${variant}> "/${variant}${tst}")
   endforeach()
@@ -101,7 +106,10 @@ add_executable(test-cmp
   test-cmp-mmx.c
   test-cmp-sse.c
   test-cmp-sse2.c)
-target_link_libraries(test-cmp munit m)
+target_link_libraries(test-cmp munit)
+if(LIBM)
+  target_link_libraries(test-cmp ${LIBM})
+endif()
 add_test(NAME "/cmp" COMMAND $<TARGET_FILE:test-cmp>)
 target_add_extra_warning_flags(test-cmp)
 set_property (TARGET test-cmp PROPERTY C_STANDARD "99")

@@ -2,7 +2,7 @@
 
 #include <math.h>
 
-#if 0
+#if defined(SIMDE__ENABLE_DEBUG_ARRAY)
 void debug_array_u8(const char* prefix, size_t nmemb, uint8_t v[HEDLEY_ARRAY_PARAM(nmemb)]) {
   fprintf(stderr, "%s:", prefix);
   for(size_t i = 0 ; i < nmemb ; i++) {
