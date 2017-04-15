@@ -19,7 +19,7 @@ static inline void print_pi32(const char* prefix, simde__m64 v) {
 }
 
 static inline void print_si64(const char* prefix, simde__m64 v) {
-  printf("%s: 0x%016lx\n", prefix, *((int64_t*) &v));
+  printf("%s: 0x%016" PRIx64 "\n", prefix, *((int64_t*) &v));
 }
 
 static MunitResult
@@ -123,10 +123,10 @@ test_simde_mm_set1_pi16(const MunitParameter params[], void* data) {
 
   simde_mm_empty();
 
-  munit_assert_int8(r[0], ==, v);
-  munit_assert_int8(r[1], ==, v);
-  munit_assert_int8(r[2], ==, v);
-  munit_assert_int8(r[3], ==, v);
+  munit_assert_short(r[0], ==, v);
+  munit_assert_short(r[1], ==, v);
+  munit_assert_short(r[2], ==, v);
+  munit_assert_short(r[3], ==, v);
 
   return MUNIT_OK;
 }

@@ -753,7 +753,7 @@ SIMDE__SYMBOL_U(mm_set1_pi8) (char a) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
-SIMDE__SYMBOL_U(mm_set1_pi16) (char a) {
+SIMDE__SYMBOL_U(mm_set1_pi16) (short a) {
 #if defined(SIMDE__MMX_NATIVE)
   return _mm_set1_pi16(a);
 #else
