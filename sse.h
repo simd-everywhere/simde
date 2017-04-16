@@ -11,6 +11,8 @@
 
 #if defined(SIMDE__SSE_NATIVE)
 #  include <xmmintrin.h>
+#else
+#  include <math.h>
 #endif
 
 #if defined(SIMDE__MMX_NATIVE)
@@ -382,6 +384,64 @@ SIMDE__SYMBOL_U(mm_cmpnlt_ss) (SIMDE__SYMBOL_U(_m128) a, SIMDE__SYMBOL_U(_m128) 
   return _mm_cmpnlt_ss(a, b);
 #else
   return SIMDE__SYMBOL_U(mm_cmpge_ss)(a, b);
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL_U(_m128)
+SIMDE__SYMBOL_U(mm_cmpord_ps) (SIMDE__SYMBOL_U(_m128) a, SIMDE__SYMBOL_U(_m128) b) {
+#if defined(SIMDE__SSE_NATIVE)
+  return _mm_cmpord_ps(a, b);
+#else
+  SIMDE__SYMBOL_U(_m128) r;
+  for (size_t i = 0 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
+    r.u32[i] = (isnan(a.f32[i]) || isnan(b.f32[i])) ? 0 : 0xffffffff;
+  }
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL_U(_m128)
+SIMDE__SYMBOL_U(mm_cmpord_ss) (SIMDE__SYMBOL_U(_m128) a, SIMDE__SYMBOL_U(_m128) b) {
+#if defined(SIMDE__SSE_NATIVE)
+  return _mm_cmpord_ss(a, b);
+#else
+  SIMDE__SYMBOL_U(_m128) r;
+  r.u32[0] = (isnan(a.f32[0]) || isnan(b.f32[0])) ? 0 : 0xffffffff;
+  for (size_t i = 1 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
+    r.f32[i] = a.f32[i];
+  }
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL_U(_m128)
+SIMDE__SYMBOL_U(mm_cmpunord_ps) (SIMDE__SYMBOL_U(_m128) a, SIMDE__SYMBOL_U(_m128) b) {
+#if defined(SIMDE__SSE_NATIVE)
+  return _mm_cmpunord_ps(a, b);
+#else
+  SIMDE__SYMBOL_U(_m128) r;
+  for (size_t i = 0 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
+    r.u32[i] = (isnan(a.f32[i]) || isnan(b.f32[i])) ? 0xffffffff : 0;
+  }
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL_U(_m128)
+SIMDE__SYMBOL_U(mm_cmpunord_ss) (SIMDE__SYMBOL_U(_m128) a, SIMDE__SYMBOL_U(_m128) b) {
+#if defined(SIMDE__SSE_NATIVE)
+  return _mm_cmpunord_ss(a, b);
+#else
+  SIMDE__SYMBOL_U(_m128) r;
+  r.u32[0] = (isnan(a.f32[0]) || isnan(b.f32[0])) ? 0xffffffff : 0;
+  for (size_t i = 1 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
+    r.f32[i] = a.f32[i];
+  }
+  return r;
 #endif
 }
 

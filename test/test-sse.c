@@ -2,6 +2,7 @@
 #include "../sse.h"
 
 #include <stdio.h>
+#include <math.h>
 
 static inline void print_pi8(const char* prefix, simde__m64 v) {
   char* vp = (char*) &v;
@@ -1229,6 +1230,179 @@ test_simde_mm_cmpnlt_ss(const MunitParameter params[], void* data) {
 }
 
 static MunitResult
+test_simde_mm_cmpord_ps(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  const struct {
+    simde__m128 a;
+    simde__m128 b;
+    simde__m128 r;
+  } test_vec[] = {
+    { simde_mm_set_ps(1.0f,  NAN,  NAN, 2.0f),
+      simde_mm_set_ps( NAN, 3.0f,  NAN, 4.0f),
+      simde_m128_set_u32(0x0, 0x0, 0x0, 0xffffffff) },
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / (sizeof(test_vec[0]))) ; i++) {
+    simde__m128 r = simde_mm_cmpord_ps(test_vec[i].a, test_vec[i].b);
+    simde_assert_m128_i32(r, ==, test_vec[i].r);
+  }
+
+  return MUNIT_OK;
+}
+
+static MunitResult
+test_simde_mm_cmpord_ss(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  const struct {
+    simde__m128 a;
+    simde__m128 b;
+    simde__m128 r;
+  } test_vec[] = {
+    { simde_mm_set_ps(1.0f, 2.0f, 3.0f, 4.0f),
+      simde_mm_set_ps(1.0f, 2.0f, 3.0f, 4.0f),
+      simde_m128_set_u32(0x3f800000, 0x40000000, 0x40400000, 0xffffffff) },
+    { simde_mm_set_ps( NAN,  NAN,  NAN,  NAN),
+      simde_mm_set_ps( NAN,  NAN,  NAN,  NAN),
+      simde_m128_set_u32(0x7fc00000, 0x7fc00000, 0x7fc00000, 0x00000000) },
+    { simde_mm_set_ps(NAN,  2.0f, 3.0f, 4.0f),
+      simde_mm_set_ps(1.0f, 2.0f, 3.0f, 4.0f),
+      simde_m128_set_u32(0x7fc00000, 0x40000000, 0x40400000, 0xffffffff) },
+    { simde_mm_set_ps(1.0f,  NAN, 3.0f, 4.0f),
+      simde_mm_set_ps(1.0f, 2.0f, 3.0f, 4.0f),
+      simde_m128_set_u32(0x3f800000, 0x7fc00000, 0x40400000, 0xffffffff) },
+    { simde_mm_set_ps(1.0f, 2.0f,  NAN, 4.0f),
+      simde_mm_set_ps(1.0f, 2.0f, 3.0f, 4.0f),
+      simde_m128_set_u32(0x3f800000, 0x40000000, 0x7fc00000, 0xffffffff) },
+    { simde_mm_set_ps(1.0f, 2.0f, 3.0f, NAN),
+      simde_mm_set_ps(1.0f, 2.0f, 3.0f, 4.0f),
+      simde_m128_set_u32(0x3f800000, 0x40000000, 0x40400000, 0x00000000) },
+    { simde_mm_set_ps(1.0f, 2.0f, 3.0f, 4.0f),
+      simde_mm_set_ps( NAN, 2.0f, 3.0f, 4.0f),
+      simde_m128_set_u32(0x3f800000, 0x40000000, 0x40400000, 0xffffffff) },
+    { simde_mm_set_ps(1.0f, 2.0f, 3.0f, 4.0f),
+      simde_mm_set_ps(1.0f,  NAN, 3.0f, 4.0f),
+      simde_m128_set_u32(0x3f800000, 0x40000000, 0x40400000, 0xffffffff) },
+    { simde_mm_set_ps(1.0f, 2.0f, 3.0f, 4.0f),
+      simde_mm_set_ps(1.0f, 2.0f,  NAN, 4.0f),
+      simde_m128_set_u32(0x3f800000, 0x40000000, 0x40400000, 0xffffffff) },
+    { simde_mm_set_ps(1.0f, 2.0f, 3.0f, 4.0f),
+      simde_mm_set_ps(1.0f, 2.0f, 3.0f,  NAN),
+      simde_m128_set_u32(0x3f800000, 0x40000000, 0x40400000, 0x00000000) },
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / (sizeof(test_vec[0]))) ; i++) {
+    simde__m128 r = simde_mm_cmpord_ss(test_vec[i].a, test_vec[i].b);
+    simde_assert_m128_i32(r, ==, test_vec[i].r);
+  }
+
+  return MUNIT_OK;
+}
+
+static MunitResult
+test_simde_mm_cmpunord_ps(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  const struct {
+    simde__m128 a;
+    simde__m128 b;
+    simde__m128 r;
+  } test_vec[] = {
+    { simde_mm_set_ps(1.0f, 2.0f, 3.0f, 4.0f),
+      simde_mm_set_ps(1.0f, 2.0f, 3.0f, 4.0f),
+      simde_m128_set_u32(0x00000000, 0x00000000, 0x00000000, 0x00000000) },
+    { simde_mm_set_ps( NAN,  NAN,  NAN,  NAN),
+      simde_mm_set_ps( NAN,  NAN,  NAN,  NAN),
+      simde_m128_set_u32(0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff) },
+    { simde_mm_set_ps(NAN,  2.0f, 3.0f, 4.0f),
+      simde_mm_set_ps(1.0f, 2.0f, 3.0f, 4.0f),
+      simde_m128_set_u32(0xffffffff, 0x00000000, 0x00000000, 0x00000000) },
+    { simde_mm_set_ps(1.0f,  NAN, 3.0f, 4.0f),
+      simde_mm_set_ps(1.0f, 2.0f, 3.0f, 4.0f),
+      simde_m128_set_u32(0x00000000, 0xffffffff, 0x00000000, 0x00000000) },
+    { simde_mm_set_ps(1.0f, 2.0f,  NAN, 4.0f),
+      simde_mm_set_ps(1.0f, 2.0f, 3.0f, 4.0f),
+      simde_m128_set_u32(0x00000000, 0x00000000, 0xffffffff, 0x00000000) },
+    { simde_mm_set_ps(1.0f, 2.0f, 3.0f, NAN),
+      simde_mm_set_ps(1.0f, 2.0f, 3.0f, 4.0f),
+      simde_m128_set_u32(0x00000000, 0x00000000, 0x00000000, 0xffffffff) },
+    { simde_mm_set_ps(1.0f, 2.0f, 3.0f, 4.0f),
+      simde_mm_set_ps( NAN, 2.0f, 3.0f, 4.0f),
+      simde_m128_set_u32(0xffffffff, 0x00000000, 0x00000000, 0x00000000) },
+    { simde_mm_set_ps(1.0f, 2.0f, 3.0f, 4.0f),
+      simde_mm_set_ps(1.0f,  NAN, 3.0f, 4.0f),
+      simde_m128_set_u32(0x00000000, 0xffffffff, 0x00000000, 0x00000000) },
+    { simde_mm_set_ps(1.0f, 2.0f, 3.0f, 4.0f),
+      simde_mm_set_ps(1.0f, 2.0f,  NAN, 4.0f),
+      simde_m128_set_u32(0x00000000, 0x00000000, 0xffffffff, 0x00000000) },
+    { simde_mm_set_ps(1.0f, 2.0f, 3.0f, 4.0f),
+      simde_mm_set_ps(1.0f, 2.0f, 3.0f,  NAN),
+      simde_m128_set_u32(0x00000000, 0x00000000, 0x00000000, 0xffffffff) },
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / (sizeof(test_vec[0]))) ; i++) {
+    simde__m128 r = simde_mm_cmpunord_ps(test_vec[i].a, test_vec[i].b);
+    simde_assert_m128_i32(r, ==, test_vec[i].r);
+  }
+
+  return MUNIT_OK;
+}
+
+static MunitResult
+test_simde_mm_cmpunord_ss(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  const struct {
+    simde__m128 a;
+    simde__m128 b;
+    simde__m128 r;
+  } test_vec[] = {
+    { simde_mm_set_ps(1.0f, 2.0f, 3.0f, 4.0f),
+      simde_mm_set_ps(1.0f, 2.0f, 3.0f, 4.0f),
+      simde_m128_set_u32(0x3f800000, 0x40000000, 0x40400000, 0x00000000) },
+    { simde_mm_set_ps( NAN,  NAN,  NAN,  NAN),
+      simde_mm_set_ps( NAN,  NAN,  NAN,  NAN),
+      simde_m128_set_u32(0x7fc00000, 0x7fc00000, 0x7fc00000, 0xffffffff) },
+    { simde_mm_set_ps(NAN,  2.0f, 3.0f, 4.0f),
+      simde_mm_set_ps(1.0f, 2.0f, 3.0f, 4.0f),
+      simde_m128_set_u32(0x7fc00000, 0x40000000, 0x40400000, 0x00000000) },
+    { simde_mm_set_ps(1.0f,  NAN, 3.0f, 4.0f),
+      simde_mm_set_ps(1.0f, 2.0f, 3.0f, 4.0f),
+      simde_m128_set_u32(0x3f800000, 0x7fc00000, 0x40400000, 0x00000000) },
+    { simde_mm_set_ps(1.0f, 2.0f,  NAN, 4.0f),
+      simde_mm_set_ps(1.0f, 2.0f, 3.0f, 4.0f),
+      simde_m128_set_u32(0x3f800000, 0x40000000, 0x7fc00000, 0x00000000) },
+    { simde_mm_set_ps(1.0f, 2.0f, 3.0f, NAN),
+      simde_mm_set_ps(1.0f, 2.0f, 3.0f, 4.0f),
+      simde_m128_set_u32(0x3f800000, 0x40000000, 0x40400000, 0xffffffff) },
+    { simde_mm_set_ps(1.0f, 2.0f, 3.0f, 4.0f),
+      simde_mm_set_ps( NAN, 2.0f, 3.0f, 4.0f),
+      simde_m128_set_u32(0x3f800000, 0x40000000, 0x40400000, 0x00000000) },
+    { simde_mm_set_ps(1.0f, 2.0f, 3.0f, 4.0f),
+      simde_mm_set_ps(1.0f,  NAN, 3.0f, 4.0f),
+      simde_m128_set_u32(0x3f800000, 0x40000000, 0x40400000, 0x00000000) },
+    { simde_mm_set_ps(1.0f, 2.0f, 3.0f, 4.0f),
+      simde_mm_set_ps(1.0f, 2.0f,  NAN, 4.0f),
+      simde_m128_set_u32(0x3f800000, 0x40000000, 0x40400000, 0x00000000) },
+    { simde_mm_set_ps(1.0f, 2.0f, 3.0f, 4.0f),
+      simde_mm_set_ps(1.0f, 2.0f, 3.0f,  NAN),
+      simde_m128_set_u32(0x3f800000, 0x40000000, 0x40400000, 0xffffffff) }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / (sizeof(test_vec[0]))) ; i++) {
+    simde__m128 r = simde_mm_cmpunord_ss(test_vec[i].a, test_vec[i].b);
+    simde_assert_m128_i32(r, ==, test_vec[i].r);
+  }
+
+  return MUNIT_OK;
+}
+
+static MunitResult
 test_simde_mm_sub_ps(const MunitParameter params[], void* data) {
   (void) params;
   (void) data;
@@ -1273,6 +1447,10 @@ static MunitTest test_suite_tests[] = {
   { (char*) "/sse/mm_cmpnle_ss",     test_simde_mm_cmpnle_ss,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
   { (char*) "/sse/mm_cmpnlt_ps",     test_simde_mm_cmpnlt_ps,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
   { (char*) "/sse/mm_cmpnlt_ss",     test_simde_mm_cmpnlt_ss,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/sse/mm_cmpord_ps",     test_simde_mm_cmpord_ps,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/sse/mm_cmpord_ss",     test_simde_mm_cmpord_ss,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/sse/mm_cmpunord_ps",   test_simde_mm_cmpunord_ps,   NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/sse/mm_cmpunord_ss",   test_simde_mm_cmpunord_ss,   NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
   { (char*) "/sse/mm_sub_ps",        test_simde_mm_sub_ps,        NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
 
   { NULL, NULL, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL }
