@@ -54,7 +54,7 @@ set_compiler_specific_flags(
 
 foreach(variant native emul)
   add_executable(test-${variant} ${TEST_SOURCES})
-  target_link_libraries(test-${variant} munit)
+  target_link_libraries(test-${variant} munit m)
   foreach(tst "/mmx" "/sse")
     add_test(NAME "/${variant}${tst}" COMMAND $<TARGET_FILE:test-${variant}> "/${variant}${tst}")
   endforeach()
