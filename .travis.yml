@@ -3,7 +3,7 @@ sudo: false
 branches:
   except:
     - /^(wip\/)?(appveyor|msvc|mingw|windows)(\-.+)?$/
-    - /^master$/
+    # - /^master$/
 matrix:
   include:
     ###
