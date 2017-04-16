@@ -446,6 +446,66 @@ SIMDE__SYMBOL_U(mm_cmpunord_ss) (SIMDE__SYMBOL_U(_m128) a, SIMDE__SYMBOL_U(_m128
 }
 
 SIMDE__FUNCTION_ATTRIBUTES
+int
+SIMDE__SYMBOL_U(mm_comieq_ss) (SIMDE__SYMBOL_U(_m128) a, SIMDE__SYMBOL_U(_m128) b) {
+#if defined(SIMDE__SSE_NATIVE)
+  return _mm_comieq_ss(a, b);
+#else
+  return a.f32[0] == b.f32[0];
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+int
+SIMDE__SYMBOL_U(mm_comige_ss) (SIMDE__SYMBOL_U(_m128) a, SIMDE__SYMBOL_U(_m128) b) {
+#if defined(SIMDE__SSE_NATIVE)
+  return _mm_comige_ss(a, b);
+#else
+  return a.f32[0] >= b.f32[0];
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+int
+SIMDE__SYMBOL_U(mm_comigt_ss) (SIMDE__SYMBOL_U(_m128) a, SIMDE__SYMBOL_U(_m128) b) {
+#if defined(SIMDE__SSE_NATIVE)
+  return _mm_comigt_ss(a, b);
+#else
+  return a.f32[0] > b.f32[0];
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+int
+SIMDE__SYMBOL_U(mm_comile_ss) (SIMDE__SYMBOL_U(_m128) a, SIMDE__SYMBOL_U(_m128) b) {
+#if defined(SIMDE__SSE_NATIVE)
+  return _mm_comile_ss(a, b);
+#else
+  return a.f32[0] <= b.f32[0];
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+int
+SIMDE__SYMBOL_U(mm_comilt_ss) (SIMDE__SYMBOL_U(_m128) a, SIMDE__SYMBOL_U(_m128) b) {
+#if defined(SIMDE__SSE_NATIVE)
+  return _mm_comilt_ss(a, b);
+#else
+  return a.f32[0] < b.f32[0];
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+int
+SIMDE__SYMBOL_U(mm_comineq_ss) (SIMDE__SYMBOL_U(_m128) a, SIMDE__SYMBOL_U(_m128) b) {
+#if defined(SIMDE__SSE_NATIVE)
+  return _mm_comineq_ss(a, b);
+#else
+  return a.f32[0] != b.f32[0];
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m128)
 SIMDE__SYMBOL_U(mm_sub_ps) (SIMDE__SYMBOL_U(_m128) a, SIMDE__SYMBOL_U(_m128) b) {
 #if defined(SIMDE__SSE_NATIVE)
