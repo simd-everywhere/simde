@@ -10,6 +10,14 @@ void debug_array_u32(const char* prefix, size_t nmemb, uint32_t v[HEDLEY_ARRAY_P
   fprintf(stderr, "\n");
 }
 
+void debug_array_f32(const char* prefix, size_t nmemb, float v[HEDLEY_ARRAY_PARAM(nmemb)]) {
+  fprintf(stderr, "%s:", prefix);
+  for(size_t i = 0 ; i < nmemb ; i++) {
+    fprintf(stderr, " %2.6f", v[i]);
+  }
+  fprintf(stderr, "\n");
+}
+
 void random_floatv(size_t nmemb, float v[HEDLEY_ARRAY_PARAM(nmemb)]) {
   for (size_t i = 0 ; i < nmemb ; i++) {
     do {

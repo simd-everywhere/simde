@@ -1667,6 +1667,52 @@ test_simde_mm_cmpunord_ss(const MunitParameter params[], void* data) {
 }
 
 static MunitResult
+test_simde_mm_cvt_pi2ps(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  for (size_t i = 0 ; i < TEST_PREFERRED_ITERATIONS ; i++) {
+    simde__m128 a, r;
+    simde__m64 b;
+
+    munit_rand_memory(sizeof(a), (uint8_t*) &a);
+    munit_rand_memory(sizeof(b), (uint8_t*) &b);
+
+    r = simde_mm_cvt_pi2ps(a, b);
+
+    munit_assert_float(r.f32[0], ==, (float) b.i32[0]);
+    munit_assert_float(r.f32[1], ==, (float) b.i32[1]);
+    munit_assert_int32(r.i32[2], ==, a.i32[2]);
+    munit_assert_int32(r.i32[3], ==, a.i32[3]);
+  }
+
+  return MUNIT_OK;
+}
+
+static MunitResult
+test_simde_mm_cvt_ps2pi(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  for (size_t i = 0 ; i < TEST_PREFERRED_ITERATIONS ; i++) {
+    simde__m128 a;
+    simde__m64 r;
+
+    random_floatv(sizeof(a.f32) / sizeof(a.f32[0]), (float*) &a);
+
+    r = simde_mm_cvt_ps2pi(a);
+
+    for (size_t j = 0 ; j < 2 ; j++) {
+      int n = (int) a.f32[j];
+      if (n != r.i32[j] && (n + 1) != r.i32[j] && (n - 1) != r.i32[j])
+	munit_errorf("expected %d, got %d (from %g)", n, r.i32[j], a.f32[j]);
+    }
+  }
+
+  return MUNIT_OK;
+}
+
+static MunitResult
 test_simde_mm_sub_ps(const MunitParameter params[], void* data) {
   (void) params;
   (void) data;
@@ -1721,6 +1767,8 @@ static MunitTest test_suite_tests[] = {
   { (char*) "/sse/mm_comile_ss",     test_simde_mm_comile_ss,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
   { (char*) "/sse/mm_comilt_ss",     test_simde_mm_comilt_ss,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
   { (char*) "/sse/mm_comineq_ss",    test_simde_mm_comineq_ss,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/sse/mm_cvt_pi2ps",     test_simde_mm_cvt_pi2ps,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/sse/mm_cvt_ps2pi",     test_simde_mm_cvt_ps2pi,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
   { (char*) "/sse/mm_sub_ps",        test_simde_mm_sub_ps,        NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
 
   { NULL, NULL, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL }

@@ -511,6 +511,35 @@ SIMDE__SYMBOL_U(mm_comineq_ss) (SIMDE__SYMBOL_U(_m128) a, SIMDE__SYMBOL_U(_m128)
 
 SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m128)
+SIMDE__SYMBOL_U(mm_cvt_pi2ps) (SIMDE__SYMBOL_U(_m128) a, SIMDE__SYMBOL_U(_m64) b) {
+#if defined(SIMDE__SSE_NATIVE)
+  return SIMDE__M128_C(_mm_cvt_pi2ps(a.n, b.n));
+#else
+  SIMDE__SYMBOL_U(_m128) r;
+  r.f32[0] = (float) b.i32[0];
+  r.f32[1] = (float) b.i32[1];
+  r.i32[2] = a.i32[2];
+  r.i32[3] = a.i32[3];
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL_U(_m64)
+SIMDE__SYMBOL_U(mm_cvt_ps2pi) (SIMDE__SYMBOL_U(_m128) a) {
+#if defined(SIMDE__SSE_NATIVE)
+  return SIMDE__M64_C(_mm_cvt_ps2pi(a.n));
+#else
+  SIMDE__SYMBOL_U(_m64) r;
+  for (size_t i = 0 ; i < (sizeof(r.i32) / sizeof(r.i32[0])) ; i++) {
+    r.i32[i] = (int) a.f32[i];
+  }
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL_U(_m128)
 SIMDE__SYMBOL_U(mm_sub_ps) (SIMDE__SYMBOL_U(_m128) a, SIMDE__SYMBOL_U(_m128) b) {
 #if defined(SIMDE__SSE_NATIVE)
   return SIMDE__M128_C(_mm_sub_ps(a.n, b.n));

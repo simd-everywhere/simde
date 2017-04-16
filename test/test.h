@@ -18,6 +18,7 @@ const MunitSuite simde_sse_test_suite;
 const MunitSuite simde_sse2_test_suite;
 
 void debug_array_u32(const char* prefix, size_t nmemb, uint32_t v[HEDLEY_ARRAY_PARAM(nmemb)]);
+void debug_array_f32(const char* prefix, size_t nmemb, float v[HEDLEY_ARRAY_PARAM(nmemb)]);
 void random_floatv(size_t nmemb, float v[HEDLEY_ARRAY_PARAM(nmemb)]);
 
 #define assert_m64_pi8(a, cmp, b)					\
@@ -70,5 +71,7 @@ void random_floatv(size_t nmemb, float v[HEDLEY_ARRAY_PARAM(nmemb)]);
     munit_assert_uint8(((unsigned char*) (&a))[6], cmp, ((unsigned char*) (&b))[6]);	\
     munit_assert_uint8(((unsigned char*) (&a))[7], cmp, ((unsigned char*) (&b))[7]);	\
   } while (0)
+
+#define TEST_PREFERRED_ITERATIONS 1024
 
 #endif /* !defined(SIMDE_TEST_H) */
