@@ -15,9 +15,6 @@
 #include <limits.h>
 #include <stdlib.h>
 
-#if defined(SIMDE__MMX_NATIVE)
-typedef __m64 SIMDE__SYMBOL_U(_m64);
-#else
 typedef SIMDE__ALIGN(16) union {
   char           i8[8];
   short          i16[4];
@@ -27,14 +24,21 @@ typedef SIMDE__ALIGN(16) union {
   unsigned short u16[4];
   unsigned int   u32[2];
   uint64_t       u64;
+#if defined(SIMDE__MMX_NATIVE)
+  __m64          n;
+#endif
 } SIMDE__SYMBOL_U(_m64);
+
+#if defined(SIMDE__MMX_NATIVE)
+HEDLEY_STATIC_ASSERT(sizeof(__m64) == sizeof(SIMDE__SYMBOL_U(_m64)), "__m64 size incorrect");
+#define SIMDE__M64_C(expr) ((SIMDE__SYMBOL_U(_m64)) { .n = expr })
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(mm_add_pi8) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _mm_add_pi8(a, b);
+  return SIMDE__M64_C(_mm_add_pi8(a.n, b.n));
 #else
   SIMDE__SYMBOL_U(_m64) r;
   for (size_t i = 0 ; i < 8 ; i++) {
@@ -48,7 +52,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(m_paddb) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _m_paddb(a, b);
+  return SIMDE__M64_C(_m_paddb(a.n, b.n));
 #else
   return SIMDE__SYMBOL_U(mm_add_pi8)(a, b);
 #endif
@@ -58,7 +62,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(mm_add_pi16) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _mm_add_pi16(a, b);
+  return SIMDE__M64_C(_mm_add_pi16(a.n, b.n));
 #else
   SIMDE__SYMBOL_U(_m64) r;
   for (size_t i = 0 ; i < (8 / sizeof(short)) ; i++) {
@@ -72,7 +76,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(m_paddw) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _m_paddw(a, b);
+  return SIMDE__M64_C(_m_paddw(a.n, b.n));
 #else
   return SIMDE__SYMBOL_U(mm_add_pi16)(a, b);
 #endif
@@ -82,7 +86,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(mm_add_pi32) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _mm_add_pi32(a, b);
+  return SIMDE__M64_C(_mm_add_pi32(a.n, b.n));
 #else
   SIMDE__SYMBOL_U(_m64) r;
   for (size_t i = 0 ; i < (8 / sizeof(int)) ; i++) {
@@ -96,7 +100,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(m_paddd) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _m_paddd(a, b);
+  return SIMDE__M64_C(_m_paddd(a.n, b.n));
 #else
   return SIMDE__SYMBOL_U(mm_add_pi32)(a, b);
 #endif
@@ -106,7 +110,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(mm_adds_pi8) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _mm_adds_pi8(a, b);
+  return SIMDE__M64_C(_mm_adds_pi8(a.n, b.n));
 #else
   SIMDE__SYMBOL_U(_m64) r;
   for (int i = 0 ; i < 8 ; i++) {
@@ -126,7 +130,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(m_paddsb) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _m_paddsb(a, b);
+  return SIMDE__M64_C(_m_paddsb(a.n, b.n));
 #else
   return SIMDE__SYMBOL_U(mm_adds_pi8)(a, b);
 #endif
@@ -136,7 +140,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(mm_adds_pu8) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _mm_adds_pu8(a, b);
+  return SIMDE__M64_C(_mm_adds_pu8(a.n, b.n));
 #else
   SIMDE__SYMBOL_U(_m64) r;
   for (size_t i = 0 ; i < 8 ; i++) {
@@ -156,7 +160,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(m_paddusb) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _m_paddusb(a, b);
+  return SIMDE__M64_C(_m_paddusb(a.n, b.n));
 #else
   return SIMDE__SYMBOL_U(mm_adds_pu8)(a, b);
 #endif
@@ -166,7 +170,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(mm_adds_pi16) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _mm_adds_pi16(a, b);
+  return SIMDE__M64_C(_mm_adds_pi16(a.n, b.n));
 #else
   SIMDE__SYMBOL_U(_m64) r;
   for (int i = 0 ; i < 4 ; i++) {
@@ -186,7 +190,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(m_paddsw) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _m_paddsw(a, b);
+  return SIMDE__M64_C(_m_paddsw(a.n, b.n));
 #else
   return SIMDE__SYMBOL_U(mm_adds_pi16)(a, b);
 #endif
@@ -196,7 +200,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(mm_adds_pu16) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _mm_adds_pu16(a, b);
+  return SIMDE__M64_C(_mm_adds_pu16(a.n, b.n));
 #else
   SIMDE__SYMBOL_U(_m64) r;
   for (size_t i = 0 ; i < (8 / sizeof(short)) ; i++) {
@@ -214,7 +218,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(m_paddusw) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _m_paddusw(a, b);
+  return SIMDE__M64_C(_m_paddusw(a.n, b.n));
 #else
   return SIMDE__SYMBOL_U(mm_adds_pu16)(a, b);
 #endif
@@ -224,7 +228,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(mm_and_si64) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _mm_and_si64(a, b);
+  return SIMDE__M64_C(_mm_and_si64(a.n, b.n));
 #else
   return (SIMDE__SYMBOL_U(_m64)) { .i64 = a.i64 & b.i64 };
 #endif
@@ -234,7 +238,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(m_pand) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _m_pand(a, b);
+  return SIMDE__M64_C(_m_pand(a.n, b.n));
 #else
   return SIMDE__SYMBOL_U(mm_and_si64)(a, b);
 #endif
@@ -244,7 +248,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(mm_andnot_si64) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _mm_andnot_si64(a, b);
+  return SIMDE__M64_C(_mm_andnot_si64(a.n, b.n));
 #else
   return (SIMDE__SYMBOL_U(_m64)) { .i64 = ~(a.i64) & b.i64 };
 #endif
@@ -254,7 +258,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(m_pandn) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _m_pandn(a, b);
+  return SIMDE__M64_C(_m_pandn(a.n, b.n));
 #else
   return SIMDE__SYMBOL_U(mm_andnot_si64)(a, b);
 #endif
@@ -264,7 +268,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(mm_cmpeq_pi8) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _mm_cmpeq_pi8(a, b);
+  return SIMDE__M64_C(_mm_cmpeq_pi8(a.n, b.n));
 #else
   SIMDE__SYMBOL_U(_m64) r;
   for (int i = 0 ; i < 8 ; i++) {
@@ -278,7 +282,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(m_pcmpeqb) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _m_pcmpeqb(a, b);
+  return SIMDE__M64_C(_m_pcmpeqb(a.n, b.n));
 #else
   return SIMDE__SYMBOL_U(mm_cmpeq_pi8)(a, b);
 #endif
@@ -288,7 +292,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(mm_cmpeq_pi16) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _mm_cmpeq_pi16(a, b);
+  return SIMDE__M64_C(_mm_cmpeq_pi16(a.n, b.n));
 #else
   SIMDE__SYMBOL_U(_m64) r;
   for (int i = 0 ; i < 4 ; i++) {
@@ -302,7 +306,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(m_pcmpeqw) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _m_pcmpeqw(a, b);
+  return SIMDE__M64_C(_m_pcmpeqw(a.n, b.n));
 #else
   return SIMDE__SYMBOL_U(mm_cmpeq_pi16)(a, b);
 #endif
@@ -312,7 +316,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(mm_cmpeq_pi32) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _mm_cmpeq_pi32(a, b);
+  return SIMDE__M64_C(_mm_cmpeq_pi32(a.n, b.n));
 #else
   SIMDE__SYMBOL_U(_m64) r;
   for (int i = 0 ; i < 2 ; i++) {
@@ -326,7 +330,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(m_pcmpeqd) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _m_pcmpeqd(a, b);
+  return SIMDE__M64_C(_m_pcmpeqd(a.n, b.n));
 #else
   return SIMDE__SYMBOL_U(mm_cmpeq_pi32)(a, b);
 #endif
@@ -336,7 +340,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(mm_cmpgt_pi8) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _mm_cmpgt_pi8(a, b);
+  return SIMDE__M64_C(_mm_cmpgt_pi8(a.n, b.n));
 #else
   SIMDE__SYMBOL_U(_m64) r;
   for (int i = 0 ; i < 8 ; i++) {
@@ -350,7 +354,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(m_pcmpgtb) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _m_pcmpgtb(a, b);
+  return SIMDE__M64_C(_m_pcmpgtb(a.n, b.n));
 #else
   return SIMDE__SYMBOL_U(mm_cmpgt_pi8)(a, b);
 #endif
@@ -360,7 +364,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(mm_cmpgt_pi16) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _mm_cmpgt_pi16(a, b);
+  return SIMDE__M64_C(_mm_cmpgt_pi16(a.n, b.n));
 #else
   SIMDE__SYMBOL_U(_m64) r;
   for (int i = 0 ; i < 4 ; i++) {
@@ -374,7 +378,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(m_pcmpgtw) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _m_pcmpgtw(a, b);
+  return SIMDE__M64_C(_m_pcmpgtw(a.n, b.n));
 #else
   return SIMDE__SYMBOL_U(mm_cmpgt_pi16)(a, b);
 #endif
@@ -384,7 +388,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(mm_cmpgt_pi32) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _mm_cmpgt_pi32(a, b);
+  return SIMDE__M64_C(_mm_cmpgt_pi32(a.n, b.n));
 #else
   SIMDE__SYMBOL_U(_m64) r;
   for (int i = 0 ; i < 2 ; i++) {
@@ -398,7 +402,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(m_pcmpgtd) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _m_pcmpgtd(a, b);
+  return SIMDE__M64_C(_m_pcmpgtd(a.n, b.n));
 #else
   return SIMDE__SYMBOL_U(mm_cmpgt_pi32)(a, b);
 #endif
@@ -411,7 +415,7 @@ SIMDE__SYMBOL_U(mm_cvtm64_si64) (SIMDE__SYMBOL_U(_m64) a) {
 #  if defined(__PGI)
   return *((int64_t*) &a);
 #  else
-  return _mm_cvtm64_si64(a);
+  return _mm_cvtm64_si64(a.n);
 #  endif
 #else
   return a.i64;
@@ -422,7 +426,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(mm_cvtsi32_si64) (int a) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _mm_cvtsi32_si64(a);
+  return SIMDE__M64_C(_mm_cvtsi32_si64(a));
 #else
   return (SIMDE__SYMBOL_U(_m64)) { .i32 = { a, 0 } };
 #endif
@@ -432,7 +436,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(m_from_int) (int a) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _m_from_int(a);
+  return SIMDE__M64_C(_m_from_int(a));
 #else
   return SIMDE__SYMBOL_U(mm_cvtsi32_si64)(a);
 #endif
@@ -447,7 +451,7 @@ SIMDE__SYMBOL_U(mm_cvtsi64_m64) (int64_t a) {
   *((int64_t*) &r) = a;
   return r;
 #  else
-  return _mm_cvtsi64_m64(a);
+  return SIMDE__M64_C(_mm_cvtsi64_m64(a));
 #  endif
 #else
   return (SIMDE__SYMBOL_U(_m64)) { .i64 = a };
@@ -458,7 +462,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(m_from_int64) (int64_t a) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _m_from_int64(a);
+  return SIMDE__M64_C(_m_from_int64(a));
 #else
   return SIMDE__SYMBOL_U(mm_cvtsi64_m64)(a);
 #endif
@@ -468,7 +472,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 int
 SIMDE__SYMBOL_U(mm_cvtsi64_si32) (SIMDE__SYMBOL_U(_m64) a) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _mm_cvtsi64_si32(a);
+  return _mm_cvtsi64_si32(a.n);
 #else
   return a.i32[0];
 #endif
@@ -497,7 +501,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(mm_madd_pi16) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _mm_madd_pi16(a, b);
+  return SIMDE__M64_C(_mm_madd_pi16(a.n, b.n));
 #else
   SIMDE__SYMBOL_U(_m64) r;
   for (int i = 0 ; i < 4 ; i += 2) {
@@ -511,7 +515,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(m_pmaddwd) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _m_pmaddwd(a, b);
+  return SIMDE__M64_C(_m_pmaddwd(a.n, b.n));
 #else
   return SIMDE__SYMBOL_U(mm_madd_pi16)(a, b);
 #endif
@@ -521,7 +525,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(mm_mulhi_pi16) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _mm_mulhi_pi16(a, b);
+  return SIMDE__M64_C(_mm_mulhi_pi16(a.n, b.n));
 #else
   SIMDE__SYMBOL_U(_m64) r;
   for (int i = 0 ; i < 4 ; i++) {
@@ -535,7 +539,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(m_pmulhw) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _m_pmulhw(a, b);
+  return SIMDE__M64_C(_m_pmulhw(a.n, b.n));
 #else
   return SIMDE__SYMBOL_U(mm_mulhi_pi16)(a, b);
 #endif
@@ -545,7 +549,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(mm_mullo_pi16) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _mm_mullo_pi16(a, b);
+  return SIMDE__M64_C(_mm_mullo_pi16(a.n, b.n));
 #else
   SIMDE__SYMBOL_U(_m64) r;
   for (int i = 0 ; i < 4 ; i++) {
@@ -559,7 +563,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(m_pmullw) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _m_pmullw(a, b);
+  return SIMDE__M64_C(_m_pmullw(a.n, b.n));
 #else
   return SIMDE__SYMBOL_U(mm_mullo_pi16)(a, b);
 #endif
@@ -569,7 +573,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(mm_or_si64) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _mm_or_si64(a, b);
+  return SIMDE__M64_C(_mm_or_si64(a.n, b.n));
 #else
   return (SIMDE__SYMBOL_U(_m64)) { .i64 = a.i64 | b.i64 };
 #endif
@@ -579,7 +583,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(m_por) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _m_por(a, b);
+  return SIMDE__M64_C(_m_por(a.n, b.n));
 #else
   return SIMDE__SYMBOL_U(mm_or_si64)(a, b);
 #endif
@@ -589,7 +593,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(mm_packs_pi16) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _mm_packs_pi16(a, b);
+  return SIMDE__M64_C(_mm_packs_pi16(a.n, b.n));
 #else
   SIMDE__SYMBOL_U(_m64) r;
 
@@ -621,7 +625,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(m_packsswb) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _m_packsswb(a, b);
+  return SIMDE__M64_C(_m_packsswb(a.n, b.n));
 #else
   return SIMDE__SYMBOL_U(mm_packs_pi16)(a, b);
 #endif
@@ -631,7 +635,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(mm_packs_pi32) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _mm_packs_pi32(a, b);
+  return SIMDE__M64_C(_mm_packs_pi32(a.n, b.n));
 #else
   SIMDE__SYMBOL_U(_m64) r;
 
@@ -663,7 +667,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(m_packssdw) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _m_packssdw(a, b);
+  return SIMDE__M64_C(_m_packssdw(a.n, b.n));
 #else
   return SIMDE__SYMBOL_U(mm_packs_pi32)(a, b);
 #endif
@@ -673,7 +677,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(mm_packs_pu16) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _mm_packs_pu16(a, b);
+  return SIMDE__M64_C(_mm_packs_pu16(a.n, b.n));
 #else
   SIMDE__SYMBOL_U(_m64) r;
 
@@ -705,7 +709,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(m_packuswb) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _m_packuswb(a, b);
+  return SIMDE__M64_C(_m_packuswb(a.n, b.n));
 #else
   return SIMDE__SYMBOL_U(mm_packs_pu16)(a, b);
 #endif
@@ -715,7 +719,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(mm_set_pi8) (char e7, char e6, char e5, char e4, char e3, char e2, char e1, char e0) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _mm_set_pi8(e7, e6, e5, e4, e3, e2, e1, e0);
+  return SIMDE__M64_C(_mm_set_pi8(e7, e6, e5, e4, e3, e2, e1, e0));
 #else
   return (SIMDE__SYMBOL_U(_m64)) { .i8 = { e0, e1, e2, e3, e4, e5, e6, e7 } };
 #endif
@@ -725,7 +729,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(mm_set_pi16) (short e3, short e2, short e1, short e0) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _mm_set_pi16(e3, e2, e1, e0);
+  return SIMDE__M64_C(_mm_set_pi16(e3, e2, e1, e0));
 #else
   return (SIMDE__SYMBOL_U(_m64)) { .i16 = { e0, e1, e2, e3 } };
 #endif
@@ -735,7 +739,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(mm_set_pi32) (int e1, int e0) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _mm_set_pi32(e1, e0);
+  return SIMDE__M64_C(_mm_set_pi32(e1, e0));
 #else
   return (SIMDE__SYMBOL_U(_m64)) { .i32 = { e0, e1 } };
 #endif
@@ -745,7 +749,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(mm_set1_pi8) (char a) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _mm_set1_pi8(a);
+  return SIMDE__M64_C(_mm_set1_pi8(a));
 #else
   return SIMDE__SYMBOL_U(mm_set_pi8)(a, a, a, a, a, a, a, a);
 #endif
@@ -755,7 +759,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(mm_set1_pi16) (short a) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _mm_set1_pi16(a);
+  return SIMDE__M64_C(_mm_set1_pi16(a));
 #else
   return SIMDE__SYMBOL_U(mm_set_pi16)(a, a, a, a);
 #endif
@@ -765,7 +769,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(mm_set1_pi32) (char a) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _mm_set1_pi32(a);
+  return SIMDE__M64_C(_mm_set1_pi32(a));
 #else
   return SIMDE__SYMBOL_U(mm_set_pi32)(a, a);
 #endif
@@ -775,7 +779,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(mm_setr_pi8) (char e7, char e6, char e5, char e4, char e3, char e2, char e1, char e0) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _mm_setr_pi8(e7, e6, e5, e4, e3, e2, e1, e0);
+  return SIMDE__M64_C(_mm_setr_pi8(e7, e6, e5, e4, e3, e2, e1, e0));
 #else
   return (SIMDE__SYMBOL_U(_m64)) { .i8 = { e7, e6, e5, e4, e3, e2, e1, e0 } };
 #endif
@@ -785,7 +789,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(mm_setr_pi16) (short e3, short e2, short e1, short e0) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _mm_setr_pi16(e3, e2, e1, e0);
+  return SIMDE__M64_C(_mm_setr_pi16(e3, e2, e1, e0));
 #else
   return (SIMDE__SYMBOL_U(_m64)) { .i16 = { e3, e2, e1, e0 } };
 #endif
@@ -795,7 +799,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(mm_setr_pi32) (int e1, int e0) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _mm_setr_pi32(e1, e0);
+  return SIMDE__M64_C(_mm_setr_pi32(e1, e0));
 #else
   return (SIMDE__SYMBOL_U(_m64)) { .i32 = { e1, e0 } };
 #endif
@@ -805,7 +809,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(mm_setzero_si64) (void) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _mm_setzero_si64();
+  return SIMDE__M64_C(_mm_setzero_si64());
 #else
   return (SIMDE__SYMBOL_U(_m64)) { .i32 = { 0, 0 } };
 #endif
@@ -815,7 +819,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(mm_sll_pi16) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) count) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _mm_sll_pi16(a, count);
+  return SIMDE__M64_C(_mm_sll_pi16(a.n, count.n));
 #else
   SIMDE__SYMBOL_U(_m64) r;
 
@@ -831,7 +835,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(m_psllw) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) count) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _m_psllw(a, count);
+  return SIMDE__M64_C(_m_psllw(a.n, count.n));
 #else
   return SIMDE__SYMBOL_U(mm_sll_pi16)(a, count);
 #endif
@@ -841,7 +845,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(mm_sll_pi32) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) count) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _mm_sll_pi32(a, count);
+  return SIMDE__M64_C(_mm_sll_pi32(a.n, count.n));
 #else
   SIMDE__SYMBOL_U(_m64) r;
 
@@ -857,7 +861,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(m_pslld) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) count) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _m_pslld(a, count);
+  return SIMDE__M64_C(_m_pslld(a.n, count.n));
 #else
   return SIMDE__SYMBOL_U(mm_sll_pi32)(a, count);
 #endif
@@ -867,7 +871,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(mm_slli_pi16) (SIMDE__SYMBOL_U(_m64) a, int count) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _mm_slli_pi16(a, count);
+  return SIMDE__M64_C(_mm_slli_pi16(a.n, count));
 #else
   SIMDE__SYMBOL_U(_m64) r;
 
@@ -883,7 +887,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(m_psllwi) (SIMDE__SYMBOL_U(_m64) a, int count) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _m_psllwi(a, count);
+  return SIMDE__M64_C(_m_psllwi(a.n, count));
 #else
   return SIMDE__SYMBOL_U(mm_slli_pi16)(a, count);
 #endif
@@ -893,7 +897,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(mm_slli_pi32) (SIMDE__SYMBOL_U(_m64) a, int count) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _mm_slli_pi32(a, count);
+  return SIMDE__M64_C(_mm_slli_pi32(a.n, count));
 #else
   SIMDE__SYMBOL_U(_m64) r;
 
@@ -909,7 +913,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(m_pslldi) (SIMDE__SYMBOL_U(_m64) a, int count) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _m_pslldi(a, count);
+  return SIMDE__M64_C(_m_pslldi(a.n, count));
 #else
   return SIMDE__SYMBOL_U(mm_slli_pi32)(a, count);
 #endif
@@ -919,7 +923,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(mm_slli_si64) (SIMDE__SYMBOL_U(_m64) a, int count) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _mm_slli_si64(a, count);
+  return SIMDE__M64_C(_mm_slli_si64(a.n, count));
 #else
   return (SIMDE__SYMBOL_U(_m64)) { .u64 = a.u64 << count };
 #endif
@@ -929,7 +933,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(m_psllqi) (SIMDE__SYMBOL_U(_m64) a, int count) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _m_psllqi(a, count);
+  return SIMDE__M64_C(_m_psllqi(a.n, count));
 #else
   return SIMDE__SYMBOL_U(mm_slli_si64)(a, count);
 #endif
@@ -939,7 +943,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(mm_sll_si64) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) count) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _mm_sll_si64(a, count);
+  return SIMDE__M64_C(_mm_sll_si64(a.n, count.n));
 #else
   return (SIMDE__SYMBOL_U(_m64)) { .u64 = a.u64 << count.u64 };
 #endif
@@ -949,7 +953,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(m_psllq) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) count) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _m_psllq(a, count);
+  return SIMDE__M64_C(_m_psllq(a.n, count.n));
 #else
   return SIMDE__SYMBOL_U(mm_sll_si64)(a, count);
 #endif
@@ -959,7 +963,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(mm_srl_pi16) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) count) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _mm_srl_pi16(a, count);
+  return SIMDE__M64_C(_mm_srl_pi16(a.n, count.n));
 #else
   SIMDE__SYMBOL_U(_m64) r;
 
@@ -975,7 +979,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(m_psrlw) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) count) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _m_psrlw(a, count);
+  return SIMDE__M64_C(_m_psrlw(a.n, count.n));
 #else
   return SIMDE__SYMBOL_U(mm_srl_pi16)(a, count);
 #endif
@@ -985,7 +989,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(mm_srl_pi32) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) count) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _mm_srl_pi32(a, count);
+  return SIMDE__M64_C(_mm_srl_pi32(a.n, count.n));
 #else
   SIMDE__SYMBOL_U(_m64) r;
 
@@ -1001,7 +1005,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(m_psrld) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) count) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _m_psrld(a, count);
+  return SIMDE__M64_C(_m_psrld(a.n, count.n));
 #else
   return SIMDE__SYMBOL_U(mm_srl_pi32)(a, count);
 #endif
@@ -1011,7 +1015,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(mm_srli_pi16) (SIMDE__SYMBOL_U(_m64) a, int count) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _mm_srli_pi16(a, count);
+  return SIMDE__M64_C(_mm_srli_pi16(a.n, count));
 #else
   SIMDE__SYMBOL_U(_m64) r;
 
@@ -1027,7 +1031,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(m_psrlwi) (SIMDE__SYMBOL_U(_m64) a, int count) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _m_psrlwi(a, count);
+  return SIMDE__M64_C(_m_psrlwi(a.n, count));
 #else
   return SIMDE__SYMBOL_U(mm_srli_pi16)(a, count);
 #endif
@@ -1037,7 +1041,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(mm_srli_pi32) (SIMDE__SYMBOL_U(_m64) a, int count) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _mm_srli_pi32(a, count);
+  return SIMDE__M64_C(_mm_srli_pi32(a.n, count));
 #else
   SIMDE__SYMBOL_U(_m64) r;
 
@@ -1053,7 +1057,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(m_psrldi) (SIMDE__SYMBOL_U(_m64) a, int count) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _m_psrldi(a, count);
+  return SIMDE__M64_C(_m_psrldi(a.n, count));
 #else
   return SIMDE__SYMBOL_U(mm_srli_pi32)(a, count);
 #endif
@@ -1063,7 +1067,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(mm_srli_si64) (SIMDE__SYMBOL_U(_m64) a, int count) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _mm_srli_si64(a, count);
+  return SIMDE__M64_C(_mm_srli_si64(a.n, count));
 #else
   return (SIMDE__SYMBOL_U(_m64)) { .u64 = a.u64 >> count };
 #endif
@@ -1073,7 +1077,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(m_psrlqi) (SIMDE__SYMBOL_U(_m64) a, int count) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _m_psrlqi(a, count);
+  return SIMDE__M64_C(_m_psrlqi(a.n, count));
 #else
   return SIMDE__SYMBOL_U(mm_srli_si64)(a, count);
 #endif
@@ -1083,7 +1087,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(mm_srl_si64) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) count) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _mm_srl_si64(a, count);
+  return SIMDE__M64_C(_mm_srl_si64(a.n, count.n));
 #else
   return (SIMDE__SYMBOL_U(_m64)) { .u64 = a.u64 >> count.u64 };
 #endif
@@ -1093,7 +1097,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(m_psrlq) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) count) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _m_psrlq(a, count);
+  return SIMDE__M64_C(_m_psrlq(a.n, count.n));
 #else
   return SIMDE__SYMBOL_U(mm_srl_si64)(a, count);
 #endif
@@ -1103,7 +1107,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(mm_srai_pi16) (SIMDE__SYMBOL_U(_m64) a, int count) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _mm_srai_pi16(a, count);
+  return SIMDE__M64_C(_mm_srai_pi16(a.n, count));
 #else
   SIMDE__SYMBOL_U(_m64) r;
 
@@ -1122,7 +1126,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(m_psrawi) (SIMDE__SYMBOL_U(_m64) a, int count) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _m_psrawi(a, count);
+  return SIMDE__M64_C(_m_psrawi(a.n, count));
 #else
   return SIMDE__SYMBOL_U(mm_srai_pi16)(a, count);
 #endif
@@ -1132,7 +1136,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(mm_srai_pi32) (SIMDE__SYMBOL_U(_m64) a, int count) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _mm_srai_pi32(a, count);
+  return SIMDE__M64_C(_mm_srai_pi32(a.n, count));
 #else
   SIMDE__SYMBOL_U(_m64) r;
 
@@ -1150,7 +1154,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(m_psradi) (SIMDE__SYMBOL_U(_m64) a, int count) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _m_psradi(a, count);
+  return SIMDE__M64_C(_m_psradi(a.n, count));
 #else
   return SIMDE__SYMBOL_U(mm_srai_pi32)(a, count);
 #endif
@@ -1160,7 +1164,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(mm_sra_pi16) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) count) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _mm_sra_pi16(a, count);
+  return SIMDE__M64_C(_mm_sra_pi16(a.n, count.n));
 #else
   SIMDE__SYMBOL_U(_m64) r;
 
@@ -1179,7 +1183,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(m_psraw) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) count) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _m_psraw(a, count);
+  return SIMDE__M64_C(_m_psraw(a.n, count.n));
 #else
   return SIMDE__SYMBOL_U(mm_sra_pi16)(a, count);
 #endif
@@ -1189,7 +1193,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(mm_sra_pi32) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) count) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _mm_sra_pi32(a, count);
+  return SIMDE__M64_C(_mm_sra_pi32(a.n, count.n));
 #else
   SIMDE__SYMBOL_U(_m64) r;
 
@@ -1207,7 +1211,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(m_psrad) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _m_psrad(a, b);
+  return SIMDE__M64_C(_m_psrad(a.n, b.n));
 #else
   return SIMDE__SYMBOL_U(mm_sra_pi32)(a, b);
 #endif
@@ -1217,7 +1221,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(mm_sub_pi8) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _mm_sub_pi8(a, b);
+  return SIMDE__M64_C(_mm_sub_pi8(a.n, b.n));
 #else
   SIMDE__SYMBOL_U(_m64) r;
   for (size_t i = 0 ; i < 8 ; i++) {
@@ -1231,7 +1235,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(m_psubb) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _m_psubb(a, b);
+  return SIMDE__M64_C(_m_psubb(a.n, b.n));
 #else
   return SIMDE__SYMBOL_U(mm_sub_pi8)(a, b);
 #endif
@@ -1241,7 +1245,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(mm_sub_pi16) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _mm_sub_pi16(a, b);
+  return SIMDE__M64_C(_mm_sub_pi16(a.n, b.n));
 #else
   SIMDE__SYMBOL_U(_m64) r;
   for (size_t i = 0 ; i < (8 / sizeof(short)) ; i++) {
@@ -1255,7 +1259,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(m_psubw) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _m_psubw(a, b);
+  return SIMDE__M64_C(_m_psubw(a.n, b.n));
 #else
   return SIMDE__SYMBOL(_mm_sub_pi16)(a, b);
 #endif
@@ -1265,7 +1269,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(mm_sub_pi32) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _mm_sub_pi32(a, b);
+  return SIMDE__M64_C(_mm_sub_pi32(a.n, b.n));
 #else
   SIMDE__SYMBOL_U(_m64) r;
   for (size_t i = 0 ; i < (8 / sizeof(int)) ; i++) {
@@ -1279,7 +1283,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(m_psubd) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _m_psubd(a, b);
+  return SIMDE__M64_C(_m_psubd(a.n, b.n));
 #else
   return SIMDE__SYMBOL_U(mm_sub_pi32)(a, b);
 #endif
@@ -1289,7 +1293,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(mm_subs_pi8) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _mm_subs_pi8(a, b);
+  return SIMDE__M64_C(_mm_subs_pi8(a.n, b.n));
 #else
   SIMDE__SYMBOL_U(_m64) r;
   for (size_t i = 0 ; i < (8) ; i++) {
@@ -1309,7 +1313,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(m_psubsb) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _m_psubsb(a, b);
+  return SIMDE__M64_C(_m_psubsb(a.n, b.n));
 #else
   return SIMDE__SYMBOL_U(mm_subs_pi8)(a, b);
 #endif
@@ -1319,7 +1323,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(mm_subs_pu8) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _mm_subs_pu8(a, b);
+  return SIMDE__M64_C(_mm_subs_pu8(a.n, b.n));
 #else
   SIMDE__SYMBOL_U(_m64) r;
   for (size_t i = 0 ; i < (8) ; i++) {
@@ -1340,7 +1344,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(m_psubusb) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _m_psubusb(a, b);
+  return SIMDE__M64_C(_m_psubusb(a.n, b.n));
 #else
   return SIMDE__SYMBOL_U(mm_subs_pu8)(a, b);
 #endif
@@ -1350,7 +1354,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(mm_subs_pi16) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _mm_subs_pi16(a, b);
+  return SIMDE__M64_C(_mm_subs_pi16(a.n, b.n));
 #else
   SIMDE__SYMBOL_U(_m64) r;
   for (size_t i = 0 ; i < (8 / sizeof(short)) ; i++) {
@@ -1370,7 +1374,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(m_psubsw) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _m_psubsw(a, b);
+  return SIMDE__M64_C(_m_psubsw(a.n, b.n));
 #else
   return SIMDE__SYMBOL_U(mm_subs_pi16)(a, b);
 #endif
@@ -1380,7 +1384,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(mm_subs_pu16) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _mm_subs_pu16(a, b);
+  return SIMDE__M64_C(_mm_subs_pu16(a.n, b.n));
 #else
   SIMDE__SYMBOL_U(_m64) r;
   for (size_t i = 0 ; i < (8 / sizeof(unsigned short)) ; i++) {
@@ -1401,7 +1405,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(m_psubusw) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _m_psubusw(a, b);
+  return SIMDE__M64_C(_m_psubusw(a.n, b.n));
 #else
   return SIMDE__SYMBOL_U(mm_subs_pu16)(a, b);
 #endif
@@ -1411,7 +1415,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(mm_unpackhi_pi8) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _mm_unpackhi_pi8(a, b);
+  return SIMDE__M64_C(_mm_unpackhi_pi8(a.n, b.n));
 #else
   return (SIMDE__SYMBOL_U(_m64)) { .i8 = {
       a.i8[4], b.i8[4], a.i8[5], b.i8[5],
@@ -1425,7 +1429,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(m_punpckhbw) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _m_punpckhbw(a, b);
+  return SIMDE__M64_C(_m_punpckhbw(a.n, b.n));
 #else
   return SIMDE__SYMBOL_U(mm_unpackhi_pi8)(a, b);
 #endif
@@ -1435,7 +1439,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(mm_unpackhi_pi16) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _mm_unpackhi_pi16(a, b);
+  return SIMDE__M64_C(_mm_unpackhi_pi16(a.n, b.n));
 #else
   return (SIMDE__SYMBOL_U(_m64)) { .i16 = { a.i16[2], b.i16[2], a.i16[3], b.i16[3] } };
 #endif
@@ -1445,7 +1449,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(m_punpckhwd) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _m_punpckhwd(a, b);
+  return SIMDE__M64_C(_m_punpckhwd(a.n, b.n));
 #else
   return SIMDE__SYMBOL_U(mm_unpackhi_pi16)(a, b);
 #endif
@@ -1455,7 +1459,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(mm_unpackhi_pi32) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _mm_unpackhi_pi32(a, b);
+  return SIMDE__M64_C(_mm_unpackhi_pi32(a.n, b.n));
 #else
   return (SIMDE__SYMBOL_U(_m64)) { .i32 = { a.i32[1], b.i32[1] } };
 #endif
@@ -1465,7 +1469,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(m_punpckhdq) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _m_punpckhdq(a, b);
+  return SIMDE__M64_C(_m_punpckhdq(a.n, b.n));
 #else
   return SIMDE__SYMBOL_U(mm_unpackhi_pi32)(a, b);
 #endif
@@ -1475,7 +1479,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(mm_unpacklo_pi8) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _mm_unpacklo_pi8(a, b);
+  return SIMDE__M64_C(_mm_unpacklo_pi8(a.n, b.n));
 #else
   return (SIMDE__SYMBOL_U(_m64)) { .i8 = {
       a.i8[0], b.i8[0], a.i8[1], b.i8[1],
@@ -1489,7 +1493,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(m_punpcklbw) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _m_punpcklbw(a, b);
+  return SIMDE__M64_C(_m_punpcklbw(a.n, b.n));
 #else
   return SIMDE__SYMBOL_U(mm_unpacklo_pi8)(a, b);
 #endif
@@ -1499,7 +1503,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(mm_unpacklo_pi16) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _mm_unpacklo_pi16(a, b);
+  return SIMDE__M64_C(_mm_unpacklo_pi16(a.n, b.n));
 #else
   return (SIMDE__SYMBOL_U(_m64)) { .i16 = { a.i16[0], b.i16[0], a.i16[1], b.i16[1] } };
 #endif
@@ -1509,7 +1513,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(m_punpcklwd) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _m_punpcklwd(a, b);
+  return SIMDE__M64_C(_m_punpcklwd(a.n, b.n));
 #else
   return SIMDE__SYMBOL_U(mm_unpacklo_pi16)(a, b);
 #endif
@@ -1519,7 +1523,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(mm_unpacklo_pi32) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _mm_unpacklo_pi32(a, b);
+  return SIMDE__M64_C(_mm_unpacklo_pi32(a.n, b.n));
 #else
   return (SIMDE__SYMBOL_U(_m64)) { .i32 = { a.i32[0], b.i32[0] } };
 #endif
@@ -1529,7 +1533,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(m_punpckldq) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _m_punpckldq(a, b);
+  return SIMDE__M64_C(_m_punpckldq(a.n, b.n));
 #else
   return SIMDE__SYMBOL_U(mm_unpacklo_pi32)(a, b);
 #endif
@@ -1539,7 +1543,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(mm_xor_si64) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _mm_xor_si64(a, b);
+  return SIMDE__M64_C(_mm_xor_si64(a.n, b.n));
 #else
   return (SIMDE__SYMBOL_U(_m64)) { .i64 = a.i64 ^ b.i64 };
 #endif
@@ -1549,7 +1553,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(m_pxor) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _m_pxor(a, b);
+  return SIMDE__M64_C(_m_pxor(a.n, b.n));
 #else
   return SIMDE__SYMBOL_U(mm_xor_si64)(a, b);
 #endif
@@ -1559,7 +1563,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 int
 SIMDE__SYMBOL_U(m_to_int) (SIMDE__SYMBOL_U(_m64) a) {
 #if defined(SIMDE__MMX_NATIVE)
-  return _m_to_int(a);
+  return _m_to_int(a.n);
 #else
   return a.i32[0];
 #endif

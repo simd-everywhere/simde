@@ -5,10 +5,6 @@
 #  define SIMDE__MMX_NO_NATIVE
 #  define SIMDE__SSE_NO_NATIVE
 #  define SIMDE__SSE2_NO_NATIVE
-#else
-#  if defined(__GNUC__) && !defined(__clang__) && !defined(__INTEL_COMPILER)
-#    pragma GCC target("sse4.1")
-#  endif
 #endif
 
 #include <stdio.h>
