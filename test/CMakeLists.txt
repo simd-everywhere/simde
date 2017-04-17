@@ -11,9 +11,15 @@ if(CMAKE_BUILD_TYPE STREQUAL "")
   set(CMAKE_BUILD_TYPE "Debug")
 endif()
 
-if (NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/munit/munit.c")
-  message (FATAL_ERROR "It looks like you don't have submodules checked out.  Please run `git submodule update --init --recursive'")
-endif ()
+find_program(GIT git)
+if(GIT)
+  add_custom_command(OUTPUT "${CMAKE_CURRENT_SOURCE_DIR}/munit/munit.c"
+    COMMAND ${GIT} submodule update --init --recursive)
+else()
+  if (NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/munit/munit.c")
+    message (FATAL_ERROR "It looks like you don't have submodules checked out.  Please run `git submodule update --init --recursive'")
+  endif ()
+endif()
 
 add_library(munit STATIC munit/munit.c)
 
