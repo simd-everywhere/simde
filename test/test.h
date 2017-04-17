@@ -21,57 +21,89 @@ void debug_array_u32(const char* prefix, size_t nmemb, uint32_t v[HEDLEY_ARRAY_P
 void debug_array_f32(const char* prefix, size_t nmemb, float v[HEDLEY_ARRAY_PARAM(nmemb)]);
 void random_floatv(size_t nmemb, float v[HEDLEY_ARRAY_PARAM(nmemb)]);
 
-#define assert_m64_pi8(a, cmp, b)					\
-  do {									\
-    munit_assert_int8(((char*) (&a))[0], cmp, ((char*) (&b))[0]);	\
-    munit_assert_int8(((char*) (&a))[1], cmp, ((char*) (&b))[1]);	\
-    munit_assert_int8(((char*) (&a))[2], cmp, ((char*) (&b))[2]);	\
-    munit_assert_int8(((char*) (&a))[3], cmp, ((char*) (&b))[3]);	\
-    munit_assert_int8(((char*) (&a))[4], cmp, ((char*) (&b))[4]);	\
-    munit_assert_int8(((char*) (&a))[5], cmp, ((char*) (&b))[5]);	\
-    munit_assert_int8(((char*) (&a))[6], cmp, ((char*) (&b))[6]);	\
-    munit_assert_int8(((char*) (&a))[7], cmp, ((char*) (&b))[7]);	\
-  } while (0)
-
-#define assert_m64_pi16(a, cmp, b)					\
-  do {									\
-    munit_assert_short(((short*) (&a))[0], cmp, ((short*) (&b))[0]);	\
-    munit_assert_short(((short*) (&a))[1], cmp, ((short*) (&b))[1]);	\
-    munit_assert_short(((short*) (&a))[2], cmp, ((short*) (&b))[2]);	\
-    munit_assert_short(((short*) (&a))[3], cmp, ((short*) (&b))[3]);	\
-  } while (0)
-
-#define assert_m64_pi32(a, cmp, b)				\
-  do {								\
-    munit_assert_int(((int*) (&a))[0], cmp, ((int*) (&b))[0]);	\
-    munit_assert_int(((int*) (&a))[1], cmp, ((int*) (&b))[1]);	\
-  } while (0)
-
-#define assert_m64_si64(a, cmp, b)				\
-  do {								\
-    munit_assert_int64(((long long int*) (&a))[0], cmp, ((long long int*) (&b))[0]);	\
-  } while (0)
-
-#define assert_m64_pu16(a, cmp, b)					\
-  do {									\
-    munit_assert_ushort(((unsigned short*) (&a))[0], cmp, ((unsigned short*) (&b))[0]);	\
-    munit_assert_ushort(((unsigned short*) (&a))[1], cmp, ((unsigned short*) (&b))[1]);	\
-    munit_assert_ushort(((unsigned short*) (&a))[2], cmp, ((unsigned short*) (&b))[2]);	\
-    munit_assert_ushort(((unsigned short*) (&a))[3], cmp, ((unsigned short*) (&b))[3]);	\
-  } while (0)
-
-#define assert_m64_pu8(a, cmp, b)					\
-  do {									\
-    munit_assert_uint8(((unsigned char*) (&a))[0], cmp, ((unsigned char*) (&b))[0]);	\
-    munit_assert_uint8(((unsigned char*) (&a))[1], cmp, ((unsigned char*) (&b))[1]);	\
-    munit_assert_uint8(((unsigned char*) (&a))[2], cmp, ((unsigned char*) (&b))[2]);	\
-    munit_assert_uint8(((unsigned char*) (&a))[3], cmp, ((unsigned char*) (&b))[3]);	\
-    munit_assert_uint8(((unsigned char*) (&a))[4], cmp, ((unsigned char*) (&b))[4]);	\
-    munit_assert_uint8(((unsigned char*) (&a))[5], cmp, ((unsigned char*) (&b))[5]);	\
-    munit_assert_uint8(((unsigned char*) (&a))[6], cmp, ((unsigned char*) (&b))[6]);	\
-    munit_assert_uint8(((unsigned char*) (&a))[7], cmp, ((unsigned char*) (&b))[7]);	\
-  } while (0)
-
 #define TEST_PREFERRED_ITERATIONS 1024
+
+/* I'll probably move these into µnit, but I want to play around with
+   them for a while first. */
+
+#define simde_assert_array_full(prefix, suffix, T, fmt, nmemb, a, op, b) \
+  do {									\
+    const T* simde__tmp_a_ = (a);					\
+    const T* simde__tmp_b_ = (b);					\
+    for (size_t simde__i_ = 0 ; simde__i_ < nmemb ; simde__i_++) {	\
+      if (!(simde__tmp_a_[simde__i_] op simde__tmp_b_[simde__i_])) {	\
+	munit_errorf("assertion failed: (" #a ")[%" MUNIT_SIZE_MODIFIER "u] " #op " (" #b ")[%" MUNIT_SIZE_MODIFIER "u] (" prefix "%" fmt suffix " " #op " " prefix "%" fmt suffix ")", simde__i_, simde__i_, simde__tmp_a_[simde__i_], simde__tmp_b_[simde__i_]); \
+      }									\
+    }									\
+  } while (0)
+
+#define simde_assert_typev(T, fmt, nmemb, a, op, b)		\
+  simde_assert_array_full("", "", T, fmt, nmemb, a, op, b)
+
+#define simde_assert_floatv(nmemb, a, op, b)		\
+  simde_assert_typev(float, "g", nmemb, a, op, b)
+
+#define simde_assert_intv(nmemb, a, op, b)	\
+  simde_assert_typev(int, "d", nmemb, a, op, b)
+
+#define simde_assert_uintv(nmemb, a, op, b)	\
+  simde_assert_typev(int, "u", nmemb, a, op, b)
+
+/* These probably won't go into µnit; they're similar to the
+   simde_assert_*v macros above, but print in hex. */
+
+#define simde_assert_int8vx(nmemb, a, op, b)			\
+  simde_assert_array_full("0x", "", char, "02" PRIx8, nmemb, a, op, b)
+#define simde_assert_uint8vx(nmemb, a, op, b)				\
+  simde_assert_array_full("0x", "", munit_uint8_t, "02" PRIx8, nmemb, a, op, b)
+#define simde_assert_int16vx(nmemb, a, op, b)			\
+  simde_assert_array_full("0x", "", munit_int16_t, "04" PRIx16, nmemb, a, op, b)
+#define simde_assert_uint16vx(nmemb, a, op, b)				\
+  simde_assert_array_full("0x", "", munit_uint16_t, "04" PRIx16, nmemb, a, op, b)
+#define simde_assert_int32vx(nmemb, a, op, b)			\
+  simde_assert_array_full("0x", "", munit_int32_t, "08" PRIx32, nmemb, a, op, b)
+#define simde_assert_uint32vx(nmemb, a, op, b)				\
+  simde_assert_array_full("0x", "", munit_uint32_t, "08" PRIx32, nmemb, a, op, b)
+#define simde_assert_int64vx(nmemb, a, op, b)			\
+  simde_assert_array_full("0x", "", munit_int64_t, "016x" PRIx64, nmemb, a, op, b)
+#define simde_assert_uint64vx(nmemb, a, op, b)				\
+  simde_assert_array_full("0x", "", munit_uint64_t, "016x" PRIx64, nmemb, a, op, b)
+
+/* SIMDe-specific */
+
+#define simde_assert_m64_i8(a, op, b) \
+  simde_assert_int8vx(8, a.i8, op, b.i8)
+#define simde_assert_m64_u8(a, op, b) \
+  simde_assert_uint8vx(8, a.u8, op, b.u8)
+#define simde_assert_m64_i16(a, op, b) \
+  simde_assert_int16vx(4, a.i16, op, b.i16)
+#define simde_assert_m64_u16(a, op, b) \
+  simde_assert_uint16vx(4, a.u16, op, b.u16)
+#define simde_assert_m64_i32(a, op, b) \
+  simde_assert_int32vx(2, a.i32, op, b.i32)
+#define simde_assert_m64_u32(a, op, b) \
+  simde_assert_uint32vx(2, a.u32, op, b.u32)
+#define simde_assert_m64_i64(a, op, b) \
+  munit_assert_int64(a.i64, op, b.i64)
+#define simde_assert_m64_u64(a, op, b) \
+  munit_assert_uint64(a.u64, op, b.u64)
+
+#define simde_assert_m128_i8(a, op, b) \
+  simde_assert_int8vx(16, a.i8, op, b.i8)
+#define simde_assert_m128_u8(a, op, b) \
+  simde_assert_uint8vx(16, a.u8, op, b.u8)
+#define simde_assert_m128_i16(a, op, b) \
+  simde_assert_int16vx(8, a.i16, op, b.i16)
+#define simde_assert_m128_u16(a, op, b) \
+  simde_assert_uint16vx(8, a.u16, op, b.u16)
+#define simde_assert_m128_i32(a, op, b) \
+  simde_assert_int32vx(4, a.i32, op, b.i32)
+#define simde_assert_m128_u32(a, op, b) \
+  simde_assert_uint32vx(4, a.u32, op, b.u32)
+#define simde_assert_m128_i64(a, op, b) \
+  simde_assert_int64vx(2, a.i64, op, b.i64)
+#define simde_assert_m128_u64(a, op, b) \
+  simde_assert_uint64vx(2, a.u64, op, b.u64)
+
 
 #endif /* !defined(SIMDE_TEST_H) */

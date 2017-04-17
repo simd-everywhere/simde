@@ -4,25 +4,6 @@
 #include <stdio.h>
 #include <math.h>
 
-static inline void print_pi8(const char* prefix, simde__m64 v) {
-  char* vp = (char*) &v;
-  printf("%s: 0x%02hhx 0x%02hhx 0x%02hhx 0x%02hhx 0x%02hhx 0x%02hhx 0x%02hhx 0x%02hhx\n", prefix, vp[0], vp[1], vp[2], vp[3], vp[4], vp[5], vp[6], vp[7]);
-}
-
-static inline void print_pi16(const char* prefix, simde__m64 v) {
-  short* vp = (short*) &v;
-  printf("%s: 0x%04hx 0x%04hx 0x%04hx 0x%04hx\n", prefix, vp[0], vp[1], vp[2], vp[3]);
-}
-
-static inline void print_pi32(const char* prefix, simde__m64 v) {
-  int* vp = (int*) &v;
-  printf("%s: 0x%08x 0x%08x\n", prefix, vp[0], vp[1]);
-}
-
-static inline void print_si64(const char* prefix, simde__m64 v) {
-  printf("%s: 0x%016lx\n", prefix, *((int64_t*) &v));
-}
-
 #define assert_m128_ps(a, cmp, b)					\
   do {									\
     munit_assert_float(((float*) (&a))[0], cmp, ((float*) (&b))[0]);	\
@@ -108,50 +89,6 @@ test_simde_mm_and_ps(const MunitParameter params[], void* data) {
 
   return MUNIT_FAIL;
 }
-
-/* I'll probably move these into µnit, but I want to play around with
-   them for a while first. */
-
-#define simde_assert_array_full(prefix, suffix, T, fmt, nmemb, a, op, b) \
-  do {									\
-    const T* simde__tmp_a_ = (a);					\
-    const T* simde__tmp_b_ = (b);					\
-    for (size_t simde__i_ = 0 ; simde__i_ < nmemb ; simde__i_++) {	\
-    if (!(simde__tmp_a_[simde__i_] op simde__tmp_b_[simde__i_])) {	\
-      munit_errorf("assertion failed: (" #a ")[%" MUNIT_SIZE_MODIFIER "u] " #op " (" #b ")[%" MUNIT_SIZE_MODIFIER "u] (" prefix "%" fmt suffix " " #op " " prefix "%" fmt suffix ")", simde__i_, simde__i_, simde__tmp_a_[simde__i_], simde__tmp_b_[simde__i_]); \
-    }									\
-    }									\
-  } while (0)
-
-
-#define simde_assert_typev(T, fmt, nmemb, a, op, b)		\
-  simde_assert_array_full("", "", T, fmt, nmemb, a, op, b)
-
-#define simde_assert_floatv(nmemb, a, op, b)		\
-  simde_assert_typev(float, "g", nmemb, a, op, b)
-
-#define simde_assert_intv(nmemb, a, op, b)	\
-  simde_assert_typev(int, "d", nmemb, a, op, b)
-
-#define simde_assert_uintv(nmemb, a, op, b)	\
-  simde_assert_typev(int, "u", nmemb, a, op, b)
-
-/* These probably won't go into µnit; they're similar to the
-   simde_assert_*v macros above, but print in hex. */
-
-#define simde_assert_int32vx(nmemb, a, op, b)			\
-  simde_assert_array_full("0x", "", int, "08x", 4, a, op, b)
-
-#define simde_assert_uint32vx(nmemb, a, op, b)				\
-  simde_assert_array_full("0x", "", unsigned int, "08x", 4, a, op, b)
-
-/* SIMDe-specific */
-
-#define simde_assert_m128_i32(a, op, b)			\
-  simde_assert_int32vx(4, (int*) &(a), op, (int*) &(b))
-
-#define simde_assert_m128_u32(a, op, b)					\
-  simde_assert_uint32vx(4, (unsigned int*) &(a), op, (unsigned int*) &(b))
 
 static inline simde__m128
 simde_m128_set_u32(unsigned int a, unsigned int b, unsigned int c, unsigned int d) {
@@ -272,7 +209,7 @@ test_simde_mm_avg_pu16(const MunitParameter params[], void* data) {
   for (size_t i = 0 ; i < (sizeof(test_vec) / (sizeof(test_vec[0]))) ; i++) {
     simde__m64 r = simde_mm_avg_pu16(test_vec[i].a, test_vec[i].b);
     simde_mm_empty();
-    assert_m64_pi16(r, ==, test_vec[i].r);
+    simde_assert_m64_i16(r, ==, test_vec[i].r);
   }
 
   simde_mm_empty();
@@ -342,7 +279,7 @@ test_simde_mm_avg_pu8(const MunitParameter params[], void* data) {
   for (size_t i = 0 ; i < (sizeof(test_vec) / (sizeof(test_vec[0]))) ; i++) {
     simde__m64 r = simde_mm_avg_pu8(test_vec[i].a, test_vec[i].b);
     simde_mm_empty();
-    assert_m64_pi8(r, ==, test_vec[i].r);
+    simde_assert_m64_i8(r, ==, test_vec[i].r);
   }
 
   simde_mm_empty();

@@ -3,25 +3,6 @@
 
 #include <stdio.h>
 
-static inline void print_pi8(const char* prefix, simde__m64 v) {
-  char* vp = (char*) &v;
-  printf("%s: 0x%02hhx 0x%02hhx 0x%02hhx 0x%02hhx 0x%02hhx 0x%02hhx 0x%02hhx 0x%02hhx\n", prefix, vp[0], vp[1], vp[2], vp[3], vp[4], vp[5], vp[6], vp[7]);
-}
-
-static inline void print_pi16(const char* prefix, simde__m64 v) {
-  short* vp = (short*) &v;
-  printf("%s: 0x%04hx 0x%04hx 0x%04hx 0x%04hx\n", prefix, vp[0], vp[1], vp[2], vp[3]);
-}
-
-static inline void print_pi32(const char* prefix, simde__m64 v) {
-  int* vp = (int*) &v;
-  printf("%s: 0x%08x 0x%08x\n", prefix, vp[0], vp[1]);
-}
-
-static inline void print_si64(const char* prefix, simde__m64 v) {
-  printf("%s: 0x%016" PRIx64 "\n", prefix, *((int64_t*) &v));
-}
-
 static MunitResult
 test_simde_mm_set_pi8(const MunitParameter params[], void* data) {
   (void) params;
@@ -253,7 +234,7 @@ test_simde_mm_add_pi8(const MunitParameter params[], void* data) {
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m64 r = simde_mm_add_pi8(test_vec[i].a, test_vec[i].b);
     simde_mm_empty();
-    assert_m64_pi8(r, ==, test_vec[i].r);
+    simde_assert_m64_i8(r, ==, test_vec[i].r);
   }
 
   simde_mm_empty();
@@ -299,7 +280,7 @@ test_simde_mm_add_pi16(const MunitParameter params[], void* data) {
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m64 r = simde_mm_add_pi16(test_vec[i].a, test_vec[i].b);
     simde_mm_empty();
-    assert_m64_pi16(r, ==, test_vec[i].r);
+    simde_assert_m64_i16(r, ==, test_vec[i].r);
   }
 
   simde_mm_empty();
@@ -345,7 +326,7 @@ test_simde_mm_add_pi32(const MunitParameter params[], void* data) {
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m64 r = simde_mm_add_pi32(test_vec[i].a, test_vec[i].b);
     simde_mm_empty();
-    assert_m64_pi32(r, ==, test_vec[i].r);
+    simde_assert_m64_i32(r, ==, test_vec[i].r);
   }
 
   simde_mm_empty();
@@ -391,7 +372,7 @@ test_simde_mm_adds_pi8(const MunitParameter params[], void* data) {
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m64 r = simde_mm_adds_pi8(test_vec[i].a, test_vec[i].b);
     simde_mm_empty();
-    assert_m64_pi8(r, ==, test_vec[i].r);
+    simde_assert_m64_i8(r, ==, test_vec[i].r);
   }
 
   simde_mm_empty();
@@ -437,7 +418,7 @@ test_simde_mm_adds_pu8(const MunitParameter params[], void* data) {
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m64 r = simde_mm_adds_pu8(test_vec[i].a, test_vec[i].b);
     simde_mm_empty();
-    assert_m64_pi8(r, ==, test_vec[i].r);
+    simde_assert_m64_i8(r, ==, test_vec[i].r);
   }
 
   simde_mm_empty();
@@ -483,7 +464,7 @@ test_simde_mm_adds_pi16(const MunitParameter params[], void* data) {
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m64 r = simde_mm_adds_pi16(test_vec[i].a, test_vec[i].b);
     simde_mm_empty();
-    assert_m64_pi16(r, ==, test_vec[i].r);
+    simde_assert_m64_i16(r, ==, test_vec[i].r);
   }
 
   simde_mm_empty();
@@ -529,7 +510,7 @@ test_simde_mm_adds_pu16(const MunitParameter params[], void* data) {
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m64 r = simde_mm_adds_pu16(test_vec[i].a, test_vec[i].b);
     simde_mm_empty();
-    assert_m64_pi16(r, ==, test_vec[i].r);
+    simde_assert_m64_i16(r, ==, test_vec[i].r);
   }
 
   simde_mm_empty();
@@ -575,7 +556,7 @@ test_simde_mm_and_si64(const MunitParameter params[], void* data) {
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m64 r = simde_mm_and_si64(test_vec[i].a, test_vec[i].b);
     simde_mm_empty();
-    assert_m64_pi32(r, ==, test_vec[i].r);
+    simde_assert_m64_i32(r, ==, test_vec[i].r);
   }
 
   simde_mm_empty();
@@ -621,7 +602,7 @@ test_simde_mm_andnot_si64(const MunitParameter params[], void* data) {
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m64 r = simde_mm_andnot_si64(test_vec[i].a, test_vec[i].b);
     simde_mm_empty();
-    assert_m64_pi32(r, ==, test_vec[i].r);
+    simde_assert_m64_i32(r, ==, test_vec[i].r);
   }
 
   simde_mm_empty();
@@ -667,7 +648,7 @@ test_simde_mm_cmpeq_pi8(const MunitParameter params[], void* data) {
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m64 r = simde_mm_cmpeq_pi8(test_vec[i].a, test_vec[i].b);
     simde_mm_empty();
-    assert_m64_pi8(r, ==, test_vec[i].r);
+    simde_assert_m64_i8(r, ==, test_vec[i].r);
   }
 
   simde_mm_empty();
@@ -713,7 +694,7 @@ test_simde_mm_cmpeq_pi16(const MunitParameter params[], void* data) {
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m64 r = simde_mm_cmpeq_pi16(test_vec[i].a, test_vec[i].b);
     simde_mm_empty();
-    assert_m64_pi16(r, ==, test_vec[i].r);
+    simde_assert_m64_i16(r, ==, test_vec[i].r);
   }
 
   simde_mm_empty();
@@ -759,7 +740,7 @@ test_simde_mm_cmpeq_pi32(const MunitParameter params[], void* data) {
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m64 r = simde_mm_cmpeq_pi32(test_vec[i].a, test_vec[i].b);
     simde_mm_empty();
-    assert_m64_pi32(r, ==, test_vec[i].r);
+    simde_assert_m64_i32(r, ==, test_vec[i].r);
   }
 
   simde_mm_empty();
@@ -805,7 +786,7 @@ test_simde_mm_cmpgt_pi8(const MunitParameter params[], void* data) {
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m64 r = simde_mm_cmpgt_pi8(test_vec[i].a, test_vec[i].b);
     simde_mm_empty();
-    assert_m64_pi8(r, ==, test_vec[i].r);
+    simde_assert_m64_i8(r, ==, test_vec[i].r);
   }
 
   simde_mm_empty();
@@ -851,7 +832,7 @@ test_simde_mm_cmpgt_pi16(const MunitParameter params[], void* data) {
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m64 r = simde_mm_cmpgt_pi16(test_vec[i].a, test_vec[i].b);
     simde_mm_empty();
-    assert_m64_pi16(r, ==, test_vec[i].r);
+    simde_assert_m64_i16(r, ==, test_vec[i].r);
   }
 
   simde_mm_empty();
@@ -897,7 +878,7 @@ test_simde_mm_cmpgt_pi32(const MunitParameter params[], void* data) {
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m64 r = simde_mm_cmpgt_pi32(test_vec[i].a, test_vec[i].b);
     simde_mm_empty();
-    assert_m64_pi32(r, ==, test_vec[i].r);
+    simde_assert_m64_i32(r, ==, test_vec[i].r);
   }
 
   simde_mm_empty();
@@ -955,7 +936,7 @@ test_simde_mm_cvtsi32_si64(const MunitParameter params[], void* data) {
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m64 r = simde_mm_cvtsi32_si64(test_vec[i].a);
     simde_mm_empty();
-    assert_m64_pi32(r, ==, test_vec[i].r);
+    simde_assert_m64_i32(r, ==, test_vec[i].r);
   }
 
   simde_mm_empty();
@@ -984,7 +965,7 @@ test_simde_mm_cvtsi64_m64(const MunitParameter params[], void* data) {
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m64 r = simde_mm_cvtsi64_m64(test_vec[i].a);
     simde_mm_empty();
-    assert_m64_pi32(r, ==, test_vec[i].r);
+    simde_assert_m64_i32(r, ==, test_vec[i].r);
   }
 
   simde_mm_empty();
@@ -1059,7 +1040,7 @@ test_simde_mm_madd_pi16(const MunitParameter params[], void* data) {
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m64 r = simde_mm_madd_pi16(test_vec[i].a, test_vec[i].b);
     simde_mm_empty();
-    assert_m64_pi32(r, ==, test_vec[i].r);
+    simde_assert_m64_i32(r, ==, test_vec[i].r);
   }
 
   simde_mm_empty();
@@ -1105,7 +1086,7 @@ test_simde_mm_mulhi_pi16(const MunitParameter params[], void* data) {
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m64 r = simde_mm_mulhi_pi16(test_vec[i].a, test_vec[i].b);
     simde_mm_empty();
-    assert_m64_pi16(r, ==, test_vec[i].r);
+    simde_assert_m64_i16(r, ==, test_vec[i].r);
   }
 
   simde_mm_empty();
@@ -1151,7 +1132,7 @@ test_simde_mm_mullo_pi16(const MunitParameter params[], void* data) {
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m64 r = simde_mm_mullo_pi16(test_vec[i].a, test_vec[i].b);
     simde_mm_empty();
-    assert_m64_pi16(r, ==, test_vec[i].r);
+    simde_assert_m64_i16(r, ==, test_vec[i].r);
   }
 
   simde_mm_empty();
@@ -1229,7 +1210,7 @@ test_simde_mm_packs_pi16(const MunitParameter params[], void* data) {
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m64 r = simde_mm_packs_pi16(test_vec[i].a, test_vec[i].b);
     simde_mm_empty();
-    assert_m64_pi8(r, ==, test_vec[i].r);
+    simde_assert_m64_i8(r, ==, test_vec[i].r);
   }
 
   simde_mm_empty();
@@ -1275,7 +1256,7 @@ test_simde_mm_packs_pi32(const MunitParameter params[], void* data) {
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m64 r = simde_mm_packs_pi32(test_vec[i].a, test_vec[i].b);
     simde_mm_empty();
-    assert_m64_pi16(r, ==, test_vec[i].r);
+    simde_assert_m64_i16(r, ==, test_vec[i].r);
   }
 
   simde_mm_empty();
@@ -1329,7 +1310,7 @@ test_simde_mm_packs_pu16(const MunitParameter params[], void* data) {
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m64 r = simde_mm_packs_pu16(test_vec[i].a, test_vec[i].b);
     simde_mm_empty();
-    assert_m64_pu8(r, ==, test_vec[i].r);
+    simde_assert_m64_u8(r, ==, test_vec[i].r);
   }
 
   simde_mm_empty();
@@ -1375,7 +1356,7 @@ test_simde_mm_sll_pi16(const MunitParameter params[], void* data) {
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m64 r = simde_mm_sll_pi16(test_vec[i].a, test_vec[i].count);
     simde_mm_empty();
-    assert_m64_pi8(r, ==, test_vec[i].r);
+    simde_assert_m64_i8(r, ==, test_vec[i].r);
   }
 
   simde_mm_empty();
@@ -1421,7 +1402,7 @@ test_simde_mm_sll_pi32(const MunitParameter params[], void* data) {
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m64 r = simde_mm_sll_pi32(test_vec[i].a, test_vec[i].count);
     simde_mm_empty();
-    assert_m64_pi8(r, ==, test_vec[i].r);
+    simde_assert_m64_i8(r, ==, test_vec[i].r);
   }
 
   simde_mm_empty();
@@ -1467,7 +1448,7 @@ test_simde_mm_sll_si64(const MunitParameter params[], void* data) {
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m64 r = simde_mm_sll_si64(test_vec[i].a, test_vec[i].count);
     simde_mm_empty();
-    assert_m64_pi8(r, ==, test_vec[i].r);
+    simde_assert_m64_i8(r, ==, test_vec[i].r);
   }
 
   simde_mm_empty();
@@ -1513,7 +1494,7 @@ test_simde_mm_slli_pi16(const MunitParameter params[], void* data) {
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m64 r = simde_mm_slli_pi16(test_vec[i].a, test_vec[i].count);
     simde_mm_empty();
-    assert_m64_pi16(r, ==, test_vec[i].r);
+    simde_assert_m64_i16(r, ==, test_vec[i].r);
   }
 
   simde_mm_empty();
@@ -1559,7 +1540,7 @@ test_simde_mm_slli_pi32(const MunitParameter params[], void* data) {
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m64 r = simde_mm_slli_pi32(test_vec[i].a, test_vec[i].count);
     simde_mm_empty();
-    assert_m64_pi32(r, ==, test_vec[i].r);
+    simde_assert_m64_i32(r, ==, test_vec[i].r);
   }
 
   simde_mm_empty();
@@ -1605,7 +1586,7 @@ test_simde_mm_slli_si64(const MunitParameter params[], void* data) {
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m64 r = simde_mm_slli_si64(test_vec[i].a, test_vec[i].count);
     simde_mm_empty();
-    assert_m64_si64(r, ==, test_vec[i].r);
+    simde_assert_m64_i64(r, ==, test_vec[i].r);
   }
 
   simde_mm_empty();
@@ -1651,7 +1632,7 @@ test_simde_mm_srl_pi16(const MunitParameter params[], void* data) {
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m64 r = simde_mm_srl_pi16(test_vec[i].a, test_vec[i].count);
     simde_mm_empty();
-    assert_m64_pi16(r, ==, test_vec[i].r);
+    simde_assert_m64_i16(r, ==, test_vec[i].r);
   }
 
   simde_mm_empty();
@@ -1697,7 +1678,7 @@ test_simde_mm_srl_pi32(const MunitParameter params[], void* data) {
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m64 r = simde_mm_srl_pi32(test_vec[i].a, test_vec[i].count);
     simde_mm_empty();
-    assert_m64_pi32(r, ==, test_vec[i].r);
+    simde_assert_m64_i32(r, ==, test_vec[i].r);
   }
 
   simde_mm_empty();
@@ -1743,7 +1724,7 @@ test_simde_mm_srl_si64(const MunitParameter params[], void* data) {
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m64 r = simde_mm_srl_si64(test_vec[i].a, test_vec[i].count);
     simde_mm_empty();
-    assert_m64_si64(r, ==, test_vec[i].r);
+    simde_assert_m64_i64(r, ==, test_vec[i].r);
   }
 
   simde_mm_empty();
@@ -1789,7 +1770,7 @@ test_simde_mm_srli_pi16(const MunitParameter params[], void* data) {
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m64 r = simde_mm_srli_pi16(test_vec[i].a, test_vec[i].count);
     simde_mm_empty();
-    assert_m64_pi16(r, ==, test_vec[i].r);
+    simde_assert_m64_i16(r, ==, test_vec[i].r);
   }
 
   simde_mm_empty();
@@ -1835,7 +1816,7 @@ test_simde_mm_srli_pi32(const MunitParameter params[], void* data) {
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m64 r = simde_mm_srli_pi32(test_vec[i].a, test_vec[i].count);
     simde_mm_empty();
-    assert_m64_pi32(r, ==, test_vec[i].r);
+    simde_assert_m64_i32(r, ==, test_vec[i].r);
   }
 
   simde_mm_empty();
@@ -1881,7 +1862,7 @@ test_simde_mm_srli_si64(const MunitParameter params[], void* data) {
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m64 r = simde_mm_srli_si64(test_vec[i].a, test_vec[i].count);
     simde_mm_empty();
-    assert_m64_si64(r, ==, test_vec[i].r);
+    simde_assert_m64_i64(r, ==, test_vec[i].r);
   }
 
   simde_mm_empty();
@@ -1927,7 +1908,7 @@ test_simde_mm_srai_pi16(const MunitParameter params[], void* data) {
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m64 r = simde_mm_srai_pi16(test_vec[i].a, test_vec[i].count);
     simde_mm_empty();
-    assert_m64_pi16(r, ==, test_vec[i].r);
+    simde_assert_m64_i16(r, ==, test_vec[i].r);
   }
 
   simde_mm_empty();
@@ -1973,7 +1954,7 @@ test_simde_mm_srai_pi32(const MunitParameter params[], void* data) {
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m64 r = simde_mm_srai_pi32(test_vec[i].a, test_vec[i].count);
     simde_mm_empty();
-    assert_m64_pi32(r, ==, test_vec[i].r);
+    simde_assert_m64_i32(r, ==, test_vec[i].r);
   }
 
   simde_mm_empty();
@@ -2019,7 +2000,7 @@ test_simde_mm_sra_pi16(const MunitParameter params[], void* data) {
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m64 r = simde_mm_sra_pi16(test_vec[i].a, test_vec[i].count);
     simde_mm_empty();
-    assert_m64_pi16(r, ==, test_vec[i].r);
+    simde_assert_m64_i16(r, ==, test_vec[i].r);
   }
 
   simde_mm_empty();
@@ -2065,7 +2046,7 @@ test_simde_mm_sra_pi32(const MunitParameter params[], void* data) {
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m64 r = simde_mm_sra_pi32(test_vec[i].a, test_vec[i].count);
     simde_mm_empty();
-    assert_m64_pi32(r, ==, test_vec[i].r);
+    simde_assert_m64_i32(r, ==, test_vec[i].r);
   }
 
   simde_mm_empty();
@@ -2111,7 +2092,7 @@ test_simde_mm_sub_pi8(const MunitParameter params[], void* data) {
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m64 r = simde_mm_sub_pi8(test_vec[i].a, test_vec[i].b);
     simde_mm_empty();
-    assert_m64_pi8(r, ==, test_vec[i].r);
+    simde_assert_m64_i8(r, ==, test_vec[i].r);
   }
 
   simde_mm_empty();
@@ -2157,7 +2138,7 @@ test_simde_mm_sub_pi16(const MunitParameter params[], void* data) {
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m64 r = simde_mm_sub_pi16(test_vec[i].a, test_vec[i].b);
     simde_mm_empty();
-    assert_m64_pi16(r, ==, test_vec[i].r);
+    simde_assert_m64_i16(r, ==, test_vec[i].r);
   }
 
   simde_mm_empty();
@@ -2203,7 +2184,7 @@ test_simde_mm_sub_pi32(const MunitParameter params[], void* data) {
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m64 r = simde_mm_sub_pi32(test_vec[i].a, test_vec[i].b);
     simde_mm_empty();
-    assert_m64_pi32(r, ==, test_vec[i].r);
+    simde_assert_m64_i32(r, ==, test_vec[i].r);
   }
 
   simde_mm_empty();
@@ -2249,7 +2230,7 @@ test_simde_mm_subs_pi8(const MunitParameter params[], void* data) {
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m64 r = simde_mm_subs_pi8(test_vec[i].a, test_vec[i].b);
     simde_mm_empty();
-    assert_m64_pi8(r, ==, test_vec[i].r);
+    simde_assert_m64_i8(r, ==, test_vec[i].r);
   }
 
   simde_mm_empty();
@@ -2295,7 +2276,7 @@ test_simde_mm_subs_pu8(const MunitParameter params[], void* data) {
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m64 r = simde_mm_subs_pu8(test_vec[i].a, test_vec[i].b);
     simde_mm_empty();
-    assert_m64_pi8(r, ==, test_vec[i].r);
+    simde_assert_m64_i8(r, ==, test_vec[i].r);
   }
 
   simde_mm_empty();
@@ -2341,7 +2322,7 @@ test_simde_mm_subs_pi16(const MunitParameter params[], void* data) {
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m64 r = simde_mm_subs_pi16(test_vec[i].a, test_vec[i].b);
     simde_mm_empty();
-    assert_m64_pi16(r, ==, test_vec[i].r);
+    simde_assert_m64_i16(r, ==, test_vec[i].r);
   }
 
   simde_mm_empty();
@@ -2387,7 +2368,7 @@ test_simde_mm_subs_pu16(const MunitParameter params[], void* data) {
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m64 r = simde_mm_subs_pu16(test_vec[i].a, test_vec[i].b);
     simde_mm_empty();
-    assert_m64_pi16(r, ==, test_vec[i].r);
+    simde_assert_m64_i16(r, ==, test_vec[i].r);
   }
 
   simde_mm_empty();
@@ -2433,7 +2414,7 @@ test_simde_mm_unpackhi_pi8(const MunitParameter params[], void* data) {
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m64 r = simde_mm_unpackhi_pi8(test_vec[i].a, test_vec[i].b);
     simde_mm_empty();
-    assert_m64_pi8(r, ==, test_vec[i].r);
+    simde_assert_m64_i8(r, ==, test_vec[i].r);
   }
 
   simde_mm_empty();
@@ -2479,7 +2460,7 @@ test_simde_mm_unpackhi_pi16(const MunitParameter params[], void* data) {
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m64 r = simde_mm_unpackhi_pi16(test_vec[i].a, test_vec[i].b);
     simde_mm_empty();
-    assert_m64_pi16(r, ==, test_vec[i].r);
+    simde_assert_m64_i16(r, ==, test_vec[i].r);
   }
 
   simde_mm_empty();
@@ -2525,7 +2506,7 @@ test_simde_mm_unpackhi_pi32(const MunitParameter params[], void* data) {
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m64 r = simde_mm_unpackhi_pi32(test_vec[i].a, test_vec[i].b);
     simde_mm_empty();
-    assert_m64_pi32(r, ==, test_vec[i].r);
+    simde_assert_m64_i32(r, ==, test_vec[i].r);
   }
 
   simde_mm_empty();
@@ -2571,7 +2552,7 @@ test_simde_mm_unpacklo_pi8(const MunitParameter params[], void* data) {
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m64 r = simde_mm_unpacklo_pi8(test_vec[i].a, test_vec[i].b);
     simde_mm_empty();
-    assert_m64_pi8(r, ==, test_vec[i].r);
+    simde_assert_m64_i8(r, ==, test_vec[i].r);
   }
 
   simde_mm_empty();
@@ -2617,7 +2598,7 @@ test_simde_mm_unpacklo_pi16(const MunitParameter params[], void* data) {
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m64 r = simde_mm_unpacklo_pi16(test_vec[i].a, test_vec[i].b);
     simde_mm_empty();
-    assert_m64_pi16(r, ==, test_vec[i].r);
+    simde_assert_m64_i16(r, ==, test_vec[i].r);
   }
 
   simde_mm_empty();
@@ -2663,7 +2644,7 @@ test_simde_mm_unpacklo_pi32(const MunitParameter params[], void* data) {
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m64 r = simde_mm_unpacklo_pi32(test_vec[i].a, test_vec[i].b);
     simde_mm_empty();
-    assert_m64_pi32(r, ==, test_vec[i].r);
+    simde_assert_m64_i32(r, ==, test_vec[i].r);
   }
 
   simde_mm_empty();
@@ -2709,7 +2690,7 @@ test_simde_mm_xor_si64(const MunitParameter params[], void* data) {
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m64 r = simde_mm_xor_si64(test_vec[i].a, test_vec[i].b);
     simde_mm_empty();
-    assert_m64_si64(r, ==, test_vec[i].r);
+    simde_assert_m64_i64(r, ==, test_vec[i].r);
   }
 
   simde_mm_empty();
