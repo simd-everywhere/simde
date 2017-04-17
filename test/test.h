@@ -21,6 +21,8 @@ void debug_array_u32(const char* prefix, size_t nmemb, uint32_t v[HEDLEY_ARRAY_P
 void debug_array_f32(const char* prefix, size_t nmemb, float v[HEDLEY_ARRAY_PARAM(nmemb)]);
 void random_floatv(size_t nmemb, float v[HEDLEY_ARRAY_PARAM(nmemb)]);
 
+double random_double_range(double min, double max);
+
 #define TEST_PREFERRED_ITERATIONS 1024
 
 /* I'll probably move these into µnit, but I want to play around with

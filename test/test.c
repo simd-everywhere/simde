@@ -29,6 +29,14 @@ void random_floatv(size_t nmemb, float v[HEDLEY_ARRAY_PARAM(nmemb)]) {
   }
 }
 
+double random_double_range(double min, double max) {
+  const double range = max - min;
+  double x = (double) munit_rand_uint32();
+  x /= ((float) UINT32_MAX) / range;
+  x += min;
+  return x;
+}
+
 static MunitTest test_suite_tests[] = {
   { NULL, NULL, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL }
 };

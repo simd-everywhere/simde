@@ -593,6 +593,106 @@ SIMDE__SYMBOL_U(mm_cvtpi32_ps) (SIMDE__SYMBOL_U(_m128) a, SIMDE__SYMBOL_U(_m64) 
 #endif
 }
 
+SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL_U(_m128)
+SIMDE__SYMBOL_U(mm_cvtpi32x2_ps) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b) {
+#if defined(SIMDE__SSE_NATIVE)
+  return SIMDE__M128_C(_mm_cvtpi32x2_ps(a.n, b.n));
+#else
+  SIMDE__SYMBOL_U(_m128) r;
+  r.f32[0] = (float) a.i32[0];
+  r.f32[1] = (float) a.i32[1];
+  r.f32[2] = (float) b.i32[0];
+  r.f32[3] = (float) b.i32[1];
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL_U(_m128)
+SIMDE__SYMBOL_U(mm_cvtpi8_ps) (SIMDE__SYMBOL_U(_m64) a) {
+#if defined(SIMDE__SSE_NATIVE)
+  return SIMDE__M128_C(_mm_cvtpi8_ps(a.n));
+#else
+  SIMDE__SYMBOL_U(_m128) r;
+  r.f32[0] = (float) a.i8[0];
+  r.f32[1] = (float) a.i8[1];
+  r.f32[2] = (float) a.i8[2];
+  r.f32[3] = (float) a.i8[3];
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL_U(_m64)
+SIMDE__SYMBOL_U(mm_cvtps_pi16) (SIMDE__SYMBOL_U(_m128) a) {
+#if defined(SIMDE__SSE_NATIVE)
+  return SIMDE__M64_C(_mm_cvtps_pi16(a.n));
+#else
+  SIMDE__SYMBOL_U(_m64) r;
+  for (size_t i = 0 ; i < (sizeof(r.i16) / sizeof(r.i16[0])) ; i++) {
+    r.i16[i] = (short) a.f32[i];
+  }
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL_U(_m64)
+SIMDE__SYMBOL_U(mm_cvtps_pi32) (SIMDE__SYMBOL_U(_m128) a) {
+#if defined(SIMDE__SSE_NATIVE)
+  return SIMDE__M64_C(_mm_cvtps_pi32(a.n));
+#else
+  SIMDE__SYMBOL_U(_m64) r;
+  for (size_t i = 0 ; i < (sizeof(r.i32) / sizeof(r.i32[0])) ; i++) {
+    r.i32[i] = (int) a.f32[i];
+  }
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL_U(_m64)
+SIMDE__SYMBOL_U(mm_cvtps_pi8) (SIMDE__SYMBOL_U(_m128) a) {
+#if defined(SIMDE__SSE_NATIVE)
+  return SIMDE__M64_C(_mm_cvtps_pi8(a.n));
+#else
+  SIMDE__SYMBOL_U(_m64) r;
+  for (size_t i = 0 ; i < (sizeof(r.i8) / sizeof(r.i8[0])) ; i++) {
+    r.i8[i] = (char) a.f32[i];
+  }
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL_U(_m128)
+SIMDE__SYMBOL_U(mm_cvtpu16_ps) (SIMDE__SYMBOL_U(_m64) a) {
+#if defined(SIMDE__SSE_NATIVE)
+  return SIMDE__M128_C(_mm_cvtpu16_ps(a.n));
+#else
+  SIMDE__SYMBOL_U(_m128) r;
+  for (size_t i = 0 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
+    r.f32[i] = (float) a.u16[i];
+  }
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL_U(_m128)
+SIMDE__SYMBOL_U(mm_cvtpu8_ps) (SIMDE__SYMBOL_U(_m64) a) {
+#if defined(SIMDE__SSE_NATIVE)
+  return SIMDE__M128_C(_mm_cvtpu8_ps(a.n));
+#else
+  SIMDE__SYMBOL_U(_m128) r;
+  for (size_t i = 0 ; i < 4 ; i++) {
+    r.f32[i] = (float) a.u8[i];
+  }
+  return r;
+#endif
+}
+
 enum {
 #if defined(SIMDE__SSE_NATIVE)
   SIMDE__SYMBOL_U(MM_ROUND_NEAREST)     = _MM_ROUND_NEAREST,
