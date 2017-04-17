@@ -1,5 +1,8 @@
 #include "test.h"
 
+#include "../sse.h"
+#include <fenv.h>
+
 #include <math.h>
 
 void debug_array_u32(const char* prefix, size_t nmemb, uint32_t v[HEDLEY_ARRAY_PARAM(nmemb)]) {
@@ -49,6 +52,32 @@ int main(int argc, char* argv[MUNIT_ARRAY_PARAM(argc + 1)]) {
     1,
     MUNIT_SUITE_OPTION_NONE
   };
+
+  /* Set the SSE rounding mode to match the CPU rounding mode. */
+#if defined(SIMDE__SSE_NATIVE)
+  switch (fegetround()) {
+#if defined(FE_TONEAREST)
+    case FE_TONEAREST:
+      simde_MM_SET_ROUNDING_MODE(_MM_ROUND_NEAREST);
+      break;
+#endif
+#if defined(FE_DOWNWARD)
+    case FE_DOWNWARD:
+      simde_MM_SET_ROUNDING_MODE(_MM_ROUND_DOWN);
+      break;
+#endif
+#if defined(FE_UPWARD)
+    case FE_UPWARD:
+      simde_MM_SET_ROUNDING_MODE(_MM_ROUND_UP);
+      break;
+#endif
+#if defined(FE_TOWARDZERO)
+    case FE_TOWARDZERO:
+      simde_MM_SET_ROUNDING_MODE(_MM_ROUND_TOWARD_ZERO);
+      break;
+#endif
+  }
+#endif
 
   return munit_suite_main(&test_suite, NULL, argc, argv);
 }

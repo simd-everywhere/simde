@@ -13,6 +13,7 @@
 #  include <xmmintrin.h>
 #else
 #  include <math.h>
+#  include <fenv.h>
 #endif
 
 typedef union {
@@ -589,6 +590,58 @@ SIMDE__SYMBOL_U(mm_cvtpi32_ps) (SIMDE__SYMBOL_U(_m128) a, SIMDE__SYMBOL_U(_m64) 
   r.i32[2] = a.i32[2];
   r.i32[3] = a.i32[3];
   return r;
+#endif
+}
+
+enum {
+#if defined(SIMDE__SSE_NATIVE)
+  SIMDE__SYMBOL_U(MM_ROUND_NEAREST)     = _MM_ROUND_NEAREST,
+  SIMDE__SYMBOL_U(MM_ROUND_DOWN)        = _MM_ROUND_DOWN,
+  SIMDE__SYMBOL_U(MM_ROUND_UP)          = _MM_ROUND_UP,
+  SIMDE__SYMBOL_U(MM_ROUND_TOWARD_ZERO) = _MM_ROUND_TOWARD_ZERO
+#else
+  SIMDE__SYMBOL_U(MM_ROUND_NEAREST)
+#if defined(FE_TONEAREST)
+  = FE_TONEAREST
+#endif
+  ,
+
+  SIMDE__SYMBOL_U(MM_ROUND_DOWN)
+#if defined(FE_DOWNWARD)
+  = FE_DOWNWARD
+#endif
+  ,
+
+  SIMDE__SYMBOL_U(MM_ROUND_UP)
+#if defined(FE_UPWARD)
+  = FE_UPWARD
+#endif
+  ,
+
+  SIMDE__SYMBOL_U(MM_ROUND_TOWARD_ZERO)
+#if defined(FE_TOWARDZERO)
+  = FE_TOWARDZERO
+#endif
+#endif
+};
+
+SIMDE__FUNCTION_ATTRIBUTES
+unsigned int
+SIMDE__SYMBOL_U(MM_GET_ROUNDING_MODE)(void) {
+#if defined(SIMDE__SSE_NATIVE)
+  return _MM_GET_ROUNDING_MODE();
+#else
+  return fegetround();
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+void
+SIMDE__SYMBOL_U(MM_SET_ROUNDING_MODE)(unsigned int a) {
+#if defined(SIMDE__SSE_NATIVE)
+  _MM_SET_ROUNDING_MODE(a);
+#else
+  fesetround((int) a);
 #endif
 }
 

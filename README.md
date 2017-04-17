@@ -1,13 +1,12 @@
 # SIMD Everywhere
 
 SIMDe is an experimental project which attempts to implement SIMD
-intrinsics on hardware which doesn't natively support them (*e.g.*,
-calling SSE functions on ARM).
+intrinsics on hardware which doesn't natively support them, such as
+calling SSE functions on ARM.
 
 The initial focus is on writing complete portable implementations.
 Once that's complete we will start focusing on optimizations, such as
-implementing one set of functions with another (*e.g.*, a NEON
-implementation of SSE).
+implementing one set of functions with another.
 
 Currently, there are full implementations of the following instruction
 sets:
@@ -56,8 +55,13 @@ Ideas include:
    them without a rewrite.
  * An easy way to port code to an instruction set your CPU doesn't
    support without having to run your tests in an emulator.
- * Understanding how an instruction works when the documentation fails
-   you.
+
+## Caveats
+
+### SSE
+
+If SSE support is emulated, `_MM_SET_ROUNDING_MODE()` will use
+`fesetround()`, altering the global rounding mode.
 
 ## License
 
