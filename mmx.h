@@ -24,6 +24,7 @@ typedef SIMDE__ALIGN(16) union {
   unsigned short u16[4];
   unsigned int   u32[2];
   uint64_t       u64;
+  float          f32[2];
 #if defined(SIMDE__MMX_NATIVE)
   __m64          n;
 #endif

@@ -105,5 +105,13 @@ void random_floatv(size_t nmemb, float v[HEDLEY_ARRAY_PARAM(nmemb)]);
 #define simde_assert_m128_u64(a, op, b) \
   simde_assert_uint64vx(2, a.u64, op, b.u64)
 
+/* SIMD floating-point conversion functions may or may not be the same
+   as the normal FP conversion functions. */
+
+#define simde_assert_int_close(value, target) \
+  do { \
+    if (value != target && value != target + 1 && value != target - 1) \
+      munit_errorf("assertion failed: %s == %s (%d == %d)", #value, #target, value, target); \
+  } while (0)
 
 #endif /* !defined(SIMDE_TEST_H) */
