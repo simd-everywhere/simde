@@ -5,34 +5,34 @@
 
 #define assert_m128i_epi8(a, cmp, b)					\
   do {									\
-    munit_assert_int8(((char*) (&a))[ 0], cmp, ((char*) (&b))[ 0]);	\
-    munit_assert_int8(((char*) (&a))[ 1], cmp, ((char*) (&b))[ 1]);	\
-    munit_assert_int8(((char*) (&a))[ 2], cmp, ((char*) (&b))[ 2]);	\
-    munit_assert_int8(((char*) (&a))[ 3], cmp, ((char*) (&b))[ 3]);	\
-    munit_assert_int8(((char*) (&a))[ 4], cmp, ((char*) (&b))[ 4]);	\
-    munit_assert_int8(((char*) (&a))[ 5], cmp, ((char*) (&b))[ 5]);	\
-    munit_assert_int8(((char*) (&a))[ 6], cmp, ((char*) (&b))[ 6]);	\
-    munit_assert_int8(((char*) (&a))[ 7], cmp, ((char*) (&b))[ 7]);	\
-    munit_assert_int8(((char*) (&a))[ 8], cmp, ((char*) (&b))[ 8]);	\
-    munit_assert_int8(((char*) (&a))[ 9], cmp, ((char*) (&b))[ 9]);	\
-    munit_assert_int8(((char*) (&a))[10], cmp, ((char*) (&b))[10]);	\
-    munit_assert_int8(((char*) (&a))[11], cmp, ((char*) (&b))[11]);	\
-    munit_assert_int8(((char*) (&a))[12], cmp, ((char*) (&b))[12]);	\
-    munit_assert_int8(((char*) (&a))[13], cmp, ((char*) (&b))[13]);	\
-    munit_assert_int8(((char*) (&a))[14], cmp, ((char*) (&b))[14]);	\
-    munit_assert_int8(((char*) (&a))[15], cmp, ((char*) (&b))[15]);	\
+    munit_assert_int8(((int8_t*) (&a))[ 0], cmp, ((int8_t*) (&b))[ 0]);	\
+    munit_assert_int8(((int8_t*) (&a))[ 1], cmp, ((int8_t*) (&b))[ 1]);	\
+    munit_assert_int8(((int8_t*) (&a))[ 2], cmp, ((int8_t*) (&b))[ 2]);	\
+    munit_assert_int8(((int8_t*) (&a))[ 3], cmp, ((int8_t*) (&b))[ 3]);	\
+    munit_assert_int8(((int8_t*) (&a))[ 4], cmp, ((int8_t*) (&b))[ 4]);	\
+    munit_assert_int8(((int8_t*) (&a))[ 5], cmp, ((int8_t*) (&b))[ 5]);	\
+    munit_assert_int8(((int8_t*) (&a))[ 6], cmp, ((int8_t*) (&b))[ 6]);	\
+    munit_assert_int8(((int8_t*) (&a))[ 7], cmp, ((int8_t*) (&b))[ 7]);	\
+    munit_assert_int8(((int8_t*) (&a))[ 8], cmp, ((int8_t*) (&b))[ 8]);	\
+    munit_assert_int8(((int8_t*) (&a))[ 9], cmp, ((int8_t*) (&b))[ 9]);	\
+    munit_assert_int8(((int8_t*) (&a))[10], cmp, ((int8_t*) (&b))[10]);	\
+    munit_assert_int8(((int8_t*) (&a))[11], cmp, ((int8_t*) (&b))[11]);	\
+    munit_assert_int8(((int8_t*) (&a))[12], cmp, ((int8_t*) (&b))[12]);	\
+    munit_assert_int8(((int8_t*) (&a))[13], cmp, ((int8_t*) (&b))[13]);	\
+    munit_assert_int8(((int8_t*) (&a))[14], cmp, ((int8_t*) (&b))[14]);	\
+    munit_assert_int8(((int8_t*) (&a))[15], cmp, ((int8_t*) (&b))[15]);	\
   } while (0)
 
 #define assert_m128i_epi16(a, cmp, b)					\
   do {									\
-    munit_assert_int8(((short*) (&a))[ 0], cmp, ((short*) (&b))[ 0]);	\
-    munit_assert_int8(((short*) (&a))[ 1], cmp, ((short*) (&b))[ 1]);	\
-    munit_assert_int8(((short*) (&a))[ 2], cmp, ((short*) (&b))[ 2]);	\
-    munit_assert_int8(((short*) (&a))[ 3], cmp, ((short*) (&b))[ 3]);	\
-    munit_assert_int8(((short*) (&a))[ 4], cmp, ((short*) (&b))[ 4]);	\
-    munit_assert_int8(((short*) (&a))[ 5], cmp, ((short*) (&b))[ 5]);	\
-    munit_assert_int8(((short*) (&a))[ 6], cmp, ((short*) (&b))[ 6]);	\
-    munit_assert_int8(((short*) (&a))[ 7], cmp, ((short*) (&b))[ 7]);	\
+    munit_assert_int16(((int16_t*) (&a))[ 0], cmp, ((int16_t*) (&b))[ 0]);	\
+    munit_assert_int16(((int16_t*) (&a))[ 1], cmp, ((int16_t*) (&b))[ 1]);	\
+    munit_assert_int16(((int16_t*) (&a))[ 2], cmp, ((int16_t*) (&b))[ 2]);	\
+    munit_assert_int16(((int16_t*) (&a))[ 3], cmp, ((int16_t*) (&b))[ 3]);	\
+    munit_assert_int16(((int16_t*) (&a))[ 4], cmp, ((int16_t*) (&b))[ 4]);	\
+    munit_assert_int16(((int16_t*) (&a))[ 5], cmp, ((int16_t*) (&b))[ 5]);	\
+    munit_assert_int16(((int16_t*) (&a))[ 6], cmp, ((int16_t*) (&b))[ 6]);	\
+    munit_assert_int16(((int16_t*) (&a))[ 7], cmp, ((int16_t*) (&b))[ 7]);	\
   } while (0)
 
 static MunitResult
@@ -109,7 +109,7 @@ test_simde_mm_set_epi8(const MunitParameter params[], void* data) {
   (void) data;
 
   for (size_t i = 0 ; i < 32 ; i++) {
-    char a[16];
+    int8_t a[16];
     simde__m128i r;
 
     munit_rand_memory(sizeof(a), (uint8_t*) a);
@@ -128,7 +128,7 @@ test_simde_mm_set_epi16(const MunitParameter params[], void* data) {
   (void) data;
 
   for (size_t i = 0 ; i < 32 ; i++) {
-    short a[8];
+    int16_t a[8];
     simde__m128i r;
 
     munit_rand_memory(sizeof(a), (uint8_t*) a);
@@ -146,7 +146,7 @@ test_simde_mm_set_epi32(const MunitParameter params[], void* data) {
   (void) data;
 
   for (size_t i = 0 ; i < 32 ; i++) {
-    int a[4];
+    int32_t a[4];
     simde__m128i r;
 
     munit_rand_memory(sizeof(a), (uint8_t*) a);

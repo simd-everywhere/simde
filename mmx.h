@@ -16,13 +16,13 @@
 #include <stdlib.h>
 
 typedef SIMDE__ALIGN(16) union {
-  char           i8[8];
-  short          i16[4];
-  int            i32[2];
+  int8_t         i8[8];
+  int16_t        i16[4];
+  int32_t        i32[2];
   int64_t        i64;
-  unsigned char  u8[8];
-  unsigned short u16[4];
-  unsigned int   u32[2];
+  uint8_t        u8[8];
+  uint16_t       u16[4];
+  uint32_t       u32[2];
   uint64_t       u64;
   float          f32[2];
 #if defined(SIMDE__MMX_NATIVE)
@@ -66,7 +66,7 @@ SIMDE__SYMBOL_U(mm_add_pi16) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b) 
   return SIMDE__M64_C(_mm_add_pi16(a.n, b.n));
 #else
   SIMDE__SYMBOL_U(_m64) r;
-  for (size_t i = 0 ; i < (8 / sizeof(short)) ; i++) {
+  for (size_t i = 0 ; i < (8 / sizeof(int16_t)) ; i++) {
     r.i16[i] = a.i16[i] + b.i16[i];
   }
   return r;
@@ -90,7 +90,7 @@ SIMDE__SYMBOL_U(mm_add_pi32) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b) 
   return SIMDE__M64_C(_mm_add_pi32(a.n, b.n));
 #else
   SIMDE__SYMBOL_U(_m64) r;
-  for (size_t i = 0 ; i < (8 / sizeof(int)) ; i++) {
+  for (size_t i = 0 ; i < (8 / sizeof(int32_t)) ; i++) {
     r.i32[i] = a.i32[i] + b.i32[i];
   }
   return r;
@@ -115,8 +115,8 @@ SIMDE__SYMBOL_U(mm_adds_pi8) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b) 
 #else
   SIMDE__SYMBOL_U(_m64) r;
   for (int i = 0 ; i < 8 ; i++) {
-    if ((((b.i8[i]) > 0) && ((a.i8[i]) > (CHAR_MAX - (b.i8[i]))))) {
-      r.i8[i] = CHAR_MAX;
+    if ((((b.i8[i]) > 0) && ((a.i8[i]) > (INT8_MAX - (b.i8[i]))))) {
+      r.i8[i] = INT8_MAX;
     } else if ((((b.i8[i]) < 0) && ((a.i8[i]) < (CHAR_MIN - (b.i8[i]))))) {
       r.i8[i] = CHAR_MIN;
     } else {
@@ -145,13 +145,13 @@ SIMDE__SYMBOL_U(mm_adds_pu8) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b) 
 #else
   SIMDE__SYMBOL_U(_m64) r;
   for (size_t i = 0 ; i < 8 ; i++) {
-    const int x = a.u8[i] + b.u8[i];
+    const int32_t x = a.u8[i] + b.u8[i];
     if (x < 0)
       r.u8[i] = 0;
-    else if (x > UCHAR_MAX)
-      r.u8[i] = UCHAR_MAX;
+    else if (x > UINT8_MAX)
+      r.u8[i] = UINT8_MAX;
     else
-      r.u8[i] = (unsigned char) x;
+      r.u8[i] = (uint8_t) x;
   }
   return r;
 #endif
@@ -175,8 +175,8 @@ SIMDE__SYMBOL_U(mm_adds_pi16) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b)
 #else
   SIMDE__SYMBOL_U(_m64) r;
   for (int i = 0 ; i < 4 ; i++) {
-    if ((((b.i16[i]) > 0) && ((a.i16[i]) > (SHRT_MAX - (b.i16[i]))))) {
-      r.i16[i] = SHRT_MAX;
+    if ((((b.i16[i]) > 0) && ((a.i16[i]) > (INT16_MAX - (b.i16[i]))))) {
+      r.i16[i] = INT16_MAX;
     } else if ((((b.i16[i]) < 0) && ((a.i16[i]) < (SHRT_MIN - (b.i16[i]))))) {
       r.i16[i] = SHRT_MIN;
     } else {
@@ -204,12 +204,12 @@ SIMDE__SYMBOL_U(mm_adds_pu16) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b)
   return SIMDE__M64_C(_mm_adds_pu16(a.n, b.n));
 #else
   SIMDE__SYMBOL_U(_m64) r;
-  for (size_t i = 0 ; i < (8 / sizeof(short)) ; i++) {
-    const unsigned int x = a.u16[i] + b.u16[i];
-    if (x > USHRT_MAX)
-      r.u16[i] = USHRT_MAX;
+  for (size_t i = 0 ; i < (8 / sizeof(int16_t)) ; i++) {
+    const uint32_t x = a.u16[i] + b.u16[i];
+    if (x > UINT16_MAX)
+      r.u16[i] = UINT16_MAX;
     else
-      r.u16[i] = (unsigned short) x;
+      r.u16[i] = (uint16_t) x;
   }
   return r;
 #endif
@@ -425,7 +425,7 @@ SIMDE__SYMBOL_U(mm_cvtm64_si64) (SIMDE__SYMBOL_U(_m64) a) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
-SIMDE__SYMBOL_U(mm_cvtsi32_si64) (int a) {
+SIMDE__SYMBOL_U(mm_cvtsi32_si64) (int32_t a) {
 #if defined(SIMDE__MMX_NATIVE)
   return SIMDE__M64_C(_mm_cvtsi32_si64(a));
 #else
@@ -435,7 +435,7 @@ SIMDE__SYMBOL_U(mm_cvtsi32_si64) (int a) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
-SIMDE__SYMBOL_U(m_from_int) (int a) {
+SIMDE__SYMBOL_U(m_from_int) (int32_t a) {
 #if defined(SIMDE__MMX_NATIVE)
   return SIMDE__M64_C(_m_from_int(a));
 #else
@@ -470,7 +470,7 @@ SIMDE__SYMBOL_U(m_from_int64) (int64_t a) {
 }
 
 SIMDE__FUNCTION_ATTRIBUTES
-int
+int32_t
 SIMDE__SYMBOL_U(mm_cvtsi64_si32) (SIMDE__SYMBOL_U(_m64) a) {
 #if defined(SIMDE__MMX_NATIVE)
   return _mm_cvtsi64_si32(a.n);
@@ -530,7 +530,7 @@ SIMDE__SYMBOL_U(mm_mulhi_pi16) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b
 #else
   SIMDE__SYMBOL_U(_m64) r;
   for (int i = 0 ; i < 4 ; i++) {
-    r.i16[i] = (short) ((a.i16[i] * b.i16[i]) >> 16);
+    r.i16[i] = (int16_t) ((a.i16[i] * b.i16[i]) >> 16);
   }
   return r;
 #endif
@@ -554,7 +554,7 @@ SIMDE__SYMBOL_U(mm_mullo_pi16) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b
 #else
   SIMDE__SYMBOL_U(_m64) r;
   for (int i = 0 ; i < 4 ; i++) {
-    r.i16[i] = (short) ((a.i16[i] * b.i16[i]) & 0xffff);
+    r.i16[i] = (int16_t) ((a.i16[i] * b.i16[i]) & 0xffff);
   }
   return r;
 #endif
@@ -598,23 +598,23 @@ SIMDE__SYMBOL_U(mm_packs_pi16) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b
 #else
   SIMDE__SYMBOL_U(_m64) r;
 
-  for (size_t i = 0 ; i < (8 / sizeof(short)) ; i++) {
+  for (size_t i = 0 ; i < (8 / sizeof(int16_t)) ; i++) {
     if (a.i16[i] < CHAR_MIN) {
       r.i8[i] = CHAR_MIN;
-    } else if (a.i16[i] > CHAR_MAX) {
-      r.i8[i] = CHAR_MAX;
+    } else if (a.i16[i] > INT8_MAX) {
+      r.i8[i] = INT8_MAX;
     } else {
-      r.i8[i] = (char) a.i16[i];
+      r.i8[i] = (int8_t) a.i16[i];
     }
   }
 
-  for (size_t i = 0 ; i < (8 / sizeof(short)) ; i++) {
+  for (size_t i = 0 ; i < (8 / sizeof(int16_t)) ; i++) {
     if (b.i16[i] < CHAR_MIN) {
       r.i8[i + 4] = CHAR_MIN;
-    } else if (b.i16[i] > CHAR_MAX) {
-      r.i8[i + 4] = CHAR_MAX;
+    } else if (b.i16[i] > INT8_MAX) {
+      r.i8[i + 4] = INT8_MAX;
     } else {
-      r.i8[i + 4] = (char) b.i16[i];
+      r.i8[i + 4] = (int8_t) b.i16[i];
     }
   }
 
@@ -643,20 +643,20 @@ SIMDE__SYMBOL_U(mm_packs_pi32) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b
   for (size_t i = 0 ; i < (8 / sizeof(a.i32[0])) ; i++) {
     if (a.i32[i] < SHRT_MIN) {
       r.i16[i] = SHRT_MIN;
-    } else if (a.i32[i] > SHRT_MAX) {
-      r.i16[i] = SHRT_MAX;
+    } else if (a.i32[i] > INT16_MAX) {
+      r.i16[i] = INT16_MAX;
     } else {
-      r.i16[i] = (short) a.i32[i];
+      r.i16[i] = (int16_t) a.i32[i];
     }
   }
 
   for (size_t i = 0 ; i < (8 / sizeof(b.i32[0])) ; i++) {
     if (b.i32[i] < SHRT_MIN) {
       r.i16[i + 2] = SHRT_MIN;
-    } else if (b.i32[i] > SHRT_MAX) {
-      r.i16[i + 2] = SHRT_MAX;
+    } else if (b.i32[i] > INT16_MAX) {
+      r.i16[i + 2] = INT16_MAX;
     } else {
-      r.i16[i + 2] = (short) b.i32[i];
+      r.i16[i + 2] = (int16_t) b.i32[i];
     }
   }
 
@@ -682,23 +682,23 @@ SIMDE__SYMBOL_U(mm_packs_pu16) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b
 #else
   SIMDE__SYMBOL_U(_m64) r;
 
-  for (size_t i = 0 ; i < (8 / sizeof(short)) ; i++) {
-    if (a.i16[i] > UCHAR_MAX) {
-      r.u8[i] = UCHAR_MAX;
+  for (size_t i = 0 ; i < (8 / sizeof(int16_t)) ; i++) {
+    if (a.i16[i] > UINT8_MAX) {
+      r.u8[i] = UINT8_MAX;
     } else if (a.i16[i] < 0) {
       r.u8[i] = 0;
     } else {
-      r.u8[i] = (char) a.i16[i];
+      r.u8[i] = (int8_t) a.i16[i];
     }
   }
 
-  for (size_t i = 0 ; i < (8 / sizeof(short)) ; i++) {
-    if (b.i16[i] > UCHAR_MAX) {
-      r.u8[i + 4] = UCHAR_MAX;
+  for (size_t i = 0 ; i < (8 / sizeof(int16_t)) ; i++) {
+    if (b.i16[i] > UINT8_MAX) {
+      r.u8[i + 4] = UINT8_MAX;
     } else if (b.i16[i] < 0) {
       r.u8[i + 4] = 0;
     } else {
-      r.u8[i + 4] = (char) b.i16[i];
+      r.u8[i + 4] = (int8_t) b.i16[i];
     }
   }
 
@@ -718,7 +718,7 @@ SIMDE__SYMBOL_U(m_packuswb) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
-SIMDE__SYMBOL_U(mm_set_pi8) (char e7, char e6, char e5, char e4, char e3, char e2, char e1, char e0) {
+SIMDE__SYMBOL_U(mm_set_pi8) (int8_t e7, int8_t e6, int8_t e5, int8_t e4, int8_t e3, int8_t e2, int8_t e1, int8_t e0) {
 #if defined(SIMDE__MMX_NATIVE)
   return SIMDE__M64_C(_mm_set_pi8(e7, e6, e5, e4, e3, e2, e1, e0));
 #else
@@ -728,7 +728,7 @@ SIMDE__SYMBOL_U(mm_set_pi8) (char e7, char e6, char e5, char e4, char e3, char e
 
 SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
-SIMDE__SYMBOL_U(mm_set_pi16) (short e3, short e2, short e1, short e0) {
+SIMDE__SYMBOL_U(mm_set_pi16) (int16_t e3, int16_t e2, int16_t e1, int16_t e0) {
 #if defined(SIMDE__MMX_NATIVE)
   return SIMDE__M64_C(_mm_set_pi16(e3, e2, e1, e0));
 #else
@@ -738,7 +738,7 @@ SIMDE__SYMBOL_U(mm_set_pi16) (short e3, short e2, short e1, short e0) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
-SIMDE__SYMBOL_U(mm_set_pi32) (int e1, int e0) {
+SIMDE__SYMBOL_U(mm_set_pi32) (int32_t e1, int32_t e0) {
 #if defined(SIMDE__MMX_NATIVE)
   return SIMDE__M64_C(_mm_set_pi32(e1, e0));
 #else
@@ -748,7 +748,7 @@ SIMDE__SYMBOL_U(mm_set_pi32) (int e1, int e0) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
-SIMDE__SYMBOL_U(mm_set1_pi8) (char a) {
+SIMDE__SYMBOL_U(mm_set1_pi8) (int8_t a) {
 #if defined(SIMDE__MMX_NATIVE)
   return SIMDE__M64_C(_mm_set1_pi8(a));
 #else
@@ -758,7 +758,7 @@ SIMDE__SYMBOL_U(mm_set1_pi8) (char a) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
-SIMDE__SYMBOL_U(mm_set1_pi16) (short a) {
+SIMDE__SYMBOL_U(mm_set1_pi16) (int16_t a) {
 #if defined(SIMDE__MMX_NATIVE)
   return SIMDE__M64_C(_mm_set1_pi16(a));
 #else
@@ -768,7 +768,7 @@ SIMDE__SYMBOL_U(mm_set1_pi16) (short a) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
-SIMDE__SYMBOL_U(mm_set1_pi32) (char a) {
+SIMDE__SYMBOL_U(mm_set1_pi32) (int8_t a) {
 #if defined(SIMDE__MMX_NATIVE)
   return SIMDE__M64_C(_mm_set1_pi32(a));
 #else
@@ -778,7 +778,7 @@ SIMDE__SYMBOL_U(mm_set1_pi32) (char a) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
-SIMDE__SYMBOL_U(mm_setr_pi8) (char e7, char e6, char e5, char e4, char e3, char e2, char e1, char e0) {
+SIMDE__SYMBOL_U(mm_setr_pi8) (int8_t e7, int8_t e6, int8_t e5, int8_t e4, int8_t e3, int8_t e2, int8_t e1, int8_t e0) {
 #if defined(SIMDE__MMX_NATIVE)
   return SIMDE__M64_C(_mm_setr_pi8(e7, e6, e5, e4, e3, e2, e1, e0));
 #else
@@ -788,7 +788,7 @@ SIMDE__SYMBOL_U(mm_setr_pi8) (char e7, char e6, char e5, char e4, char e3, char 
 
 SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
-SIMDE__SYMBOL_U(mm_setr_pi16) (short e3, short e2, short e1, short e0) {
+SIMDE__SYMBOL_U(mm_setr_pi16) (int16_t e3, int16_t e2, int16_t e1, int16_t e0) {
 #if defined(SIMDE__MMX_NATIVE)
   return SIMDE__M64_C(_mm_setr_pi16(e3, e2, e1, e0));
 #else
@@ -798,7 +798,7 @@ SIMDE__SYMBOL_U(mm_setr_pi16) (short e3, short e2, short e1, short e0) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
-SIMDE__SYMBOL_U(mm_setr_pi32) (int e1, int e0) {
+SIMDE__SYMBOL_U(mm_setr_pi32) (int32_t e1, int32_t e0) {
 #if defined(SIMDE__MMX_NATIVE)
   return SIMDE__M64_C(_mm_setr_pi32(e1, e0));
 #else
@@ -824,7 +824,7 @@ SIMDE__SYMBOL_U(mm_sll_pi16) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) cou
 #else
   SIMDE__SYMBOL_U(_m64) r;
 
-  for (size_t i = 0 ; i < (8 / sizeof(unsigned short)) ; i++) {
+  for (size_t i = 0 ; i < (8 / sizeof(uint16_t)) ; i++) {
     r.u16[i] = a.u16[i] << count.u64;
   }
 
@@ -850,7 +850,7 @@ SIMDE__SYMBOL_U(mm_sll_pi32) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) cou
 #else
   SIMDE__SYMBOL_U(_m64) r;
 
-  for (size_t i = 0 ; i < (8 / sizeof(unsigned int)) ; i++) {
+  for (size_t i = 0 ; i < (8 / sizeof(uint32_t)) ; i++) {
     r.u32[i] = a.u32[i] << count.u64;
   }
 
@@ -876,7 +876,7 @@ SIMDE__SYMBOL_U(mm_slli_pi16) (SIMDE__SYMBOL_U(_m64) a, int count) {
 #else
   SIMDE__SYMBOL_U(_m64) r;
 
-  for (size_t i = 0 ; i < (8 / sizeof(unsigned short)) ; i++) {
+  for (size_t i = 0 ; i < (8 / sizeof(uint16_t)) ; i++) {
     r.u16[i] = a.u16[i] << count;
   }
 
@@ -968,7 +968,7 @@ SIMDE__SYMBOL_U(mm_srl_pi16) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) cou
 #else
   SIMDE__SYMBOL_U(_m64) r;
 
-  for (size_t i = 0 ; i < (8 / sizeof(unsigned short)) ; i++) {
+  for (size_t i = 0 ; i < (8 / sizeof(uint16_t)) ; i++) {
     r.u16[i] = a.u16[i] >> count.u64;
   }
 
@@ -994,7 +994,7 @@ SIMDE__SYMBOL_U(mm_srl_pi32) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) cou
 #else
   SIMDE__SYMBOL_U(_m64) r;
 
-  for (size_t i = 0 ; i < (8 / sizeof(unsigned int)) ; i++) {
+  for (size_t i = 0 ; i < (8 / sizeof(uint32_t)) ; i++) {
     r.u32[i] = a.u32[i] >> count.u64;
   }
 
@@ -1020,7 +1020,7 @@ SIMDE__SYMBOL_U(mm_srli_pi16) (SIMDE__SYMBOL_U(_m64) a, int count) {
 #else
   SIMDE__SYMBOL_U(_m64) r;
 
-  for (size_t i = 0 ; i < (8 / sizeof(unsigned short)) ; i++) {
+  for (size_t i = 0 ; i < (8 / sizeof(uint16_t)) ; i++) {
     r.u16[i] = a.u16[i] >> count;
   }
 
@@ -1112,10 +1112,10 @@ SIMDE__SYMBOL_U(mm_srai_pi16) (SIMDE__SYMBOL_U(_m64) a, int count) {
 #else
   SIMDE__SYMBOL_U(_m64) r;
 
-  const unsigned short m = (unsigned short) ((~0U) << ((sizeof(short) * CHAR_BIT) - count));
+  const uint16_t m = (uint16_t) ((~0U) << ((sizeof(int16_t) * CHAR_BIT) - count));
 
-  for (size_t i = 0 ; i < (8 / sizeof(short)) ; i++) {
-    const unsigned short is_neg = ((unsigned short) (((a.u16[i]) >> ((sizeof(short) * CHAR_BIT) - 1))));
+  for (size_t i = 0 ; i < (8 / sizeof(int16_t)) ; i++) {
+    const uint16_t is_neg = ((uint16_t) (((a.u16[i]) >> ((sizeof(int16_t) * CHAR_BIT) - 1))));
     r.u16[i] = (a.u16[i] >> count) | (m * is_neg);
   }
 
@@ -1141,9 +1141,9 @@ SIMDE__SYMBOL_U(mm_srai_pi32) (SIMDE__SYMBOL_U(_m64) a, int count) {
 #else
   SIMDE__SYMBOL_U(_m64) r;
 
-  const unsigned int m = (unsigned int) ((~0U) << ((sizeof(int) * CHAR_BIT) - count));
+  const uint32_t m = (uint32_t) ((~0U) << ((sizeof(int) * CHAR_BIT) - count));
   for (size_t i = 0 ; i < (8 / sizeof(int)) ; i++) {
-    const unsigned int is_neg = ((unsigned int) (((a.u32[i]) >> ((sizeof(int) * CHAR_BIT) - 1))));
+    const uint32_t is_neg = ((uint32_t) (((a.u32[i]) >> ((sizeof(int) * CHAR_BIT) - 1))));
     r.u32[i] = (a.u32[i] >> count) | (m * is_neg);
   }
 
@@ -1169,10 +1169,10 @@ SIMDE__SYMBOL_U(mm_sra_pi16) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) cou
 #else
   SIMDE__SYMBOL_U(_m64) r;
 
-  const unsigned short m = (unsigned short) ((~0U) << ((sizeof(short) * CHAR_BIT) - count.i64));
+  const uint16_t m = (uint16_t) ((~0U) << ((sizeof(int16_t) * CHAR_BIT) - count.i64));
 
-  for (size_t i = 0 ; i < (8 / sizeof(short)) ; i++) {
-    const unsigned short is_neg = ((unsigned short) (((a.u16[i]) >> ((sizeof(short) * CHAR_BIT) - 1))));
+  for (size_t i = 0 ; i < (8 / sizeof(int16_t)) ; i++) {
+    const uint16_t is_neg = ((uint16_t) (((a.u16[i]) >> ((sizeof(int16_t) * CHAR_BIT) - 1))));
     r.u16[i] = (a.u16[i] >> count.i64) | (m * is_neg);
   }
 
@@ -1198,9 +1198,9 @@ SIMDE__SYMBOL_U(mm_sra_pi32) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) cou
 #else
   SIMDE__SYMBOL_U(_m64) r;
 
-  const unsigned int m = (unsigned int) ((~0U) << ((sizeof(int) * CHAR_BIT) - count.i64));
+  const uint32_t m = (uint32_t) ((~0U) << ((sizeof(int) * CHAR_BIT) - count.i64));
   for (size_t i = 0 ; i < (8 / sizeof(int)) ; i++) {
-    const unsigned int is_neg = ((unsigned int) (((a.u32[i]) >> ((sizeof(int) * CHAR_BIT) - 1))));
+    const uint32_t is_neg = ((uint32_t) (((a.u32[i]) >> ((sizeof(int) * CHAR_BIT) - 1))));
     r.u32[i] = (a.u32[i] >> count.i64) | (m * is_neg);
   }
 
@@ -1249,7 +1249,7 @@ SIMDE__SYMBOL_U(mm_sub_pi16) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b) 
   return SIMDE__M64_C(_mm_sub_pi16(a.n, b.n));
 #else
   SIMDE__SYMBOL_U(_m64) r;
-  for (size_t i = 0 ; i < (8 / sizeof(short)) ; i++) {
+  for (size_t i = 0 ; i < (8 / sizeof(int16_t)) ; i++) {
     r.i16[i] = a.i16[i] - b.i16[i];
   }
   return r;
@@ -1300,8 +1300,8 @@ SIMDE__SYMBOL_U(mm_subs_pi8) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b) 
   for (size_t i = 0 ; i < (8) ; i++) {
     if (((b.i8[i]) > 0 && (a.i8[i]) < CHAR_MIN + (b.i8[i]))) {
       r.i8[i] = CHAR_MIN;
-    } else if ((b.i8[i]) < 0 && (a.i8[i]) > CHAR_MAX + (b.i8[i])) {
-      r.i8[i] = CHAR_MAX;
+    } else if ((b.i8[i]) < 0 && (a.i8[i]) > INT8_MAX + (b.i8[i])) {
+      r.i8[i] = INT8_MAX;
     } else {
       r.i8[i] = (a.i8[i]) - (b.i8[i]);
     }
@@ -1328,13 +1328,13 @@ SIMDE__SYMBOL_U(mm_subs_pu8) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b) 
 #else
   SIMDE__SYMBOL_U(_m64) r;
   for (size_t i = 0 ; i < (8) ; i++) {
-    const int x = a.u8[i] - b.u8[i];
+    const int32_t x = a.u8[i] - b.u8[i];
     if (x < 0) {
       r.u8[i] = 0;
-    } else if (x > UCHAR_MAX) {
-      r.u8[i] = UCHAR_MAX;
+    } else if (x > UINT8_MAX) {
+      r.u8[i] = UINT8_MAX;
     } else {
-      r.u8[i] = (unsigned char) x;
+      r.u8[i] = (uint8_t) x;
     }
   }
   return r;
@@ -1358,11 +1358,11 @@ SIMDE__SYMBOL_U(mm_subs_pi16) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b)
   return SIMDE__M64_C(_mm_subs_pi16(a.n, b.n));
 #else
   SIMDE__SYMBOL_U(_m64) r;
-  for (size_t i = 0 ; i < (8 / sizeof(short)) ; i++) {
+  for (size_t i = 0 ; i < (8 / sizeof(int16_t)) ; i++) {
     if (((b.i16[i]) > 0 && (a.i16[i]) < SHRT_MIN + (b.i16[i]))) {
       r.i16[i] = SHRT_MIN;
-    } else if ((b.i16[i]) < 0 && (a.i16[i]) > SHRT_MAX + (b.i16[i])) {
-      r.i16[i] = SHRT_MAX;
+    } else if ((b.i16[i]) < 0 && (a.i16[i]) > INT16_MAX + (b.i16[i])) {
+      r.i16[i] = INT16_MAX;
     } else {
       r.i16[i] = (a.i16[i]) - (b.i16[i]);
     }
@@ -1388,14 +1388,14 @@ SIMDE__SYMBOL_U(mm_subs_pu16) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b)
   return SIMDE__M64_C(_mm_subs_pu16(a.n, b.n));
 #else
   SIMDE__SYMBOL_U(_m64) r;
-  for (size_t i = 0 ; i < (8 / sizeof(unsigned short)) ; i++) {
+  for (size_t i = 0 ; i < (8 / sizeof(uint16_t)) ; i++) {
     const int x = a.u16[i] - b.u16[i];
     if (x < 0) {
       r.u16[i] = 0;
-    } else if (x > USHRT_MAX) {
-      r.u16[i] = USHRT_MAX;
+    } else if (x > UINT16_MAX) {
+      r.u16[i] = UINT16_MAX;
     } else {
-      r.u16[i] = (unsigned short) x;
+      r.u16[i] = (uint16_t) x;
     }
   }
   return r;
@@ -1561,7 +1561,7 @@ SIMDE__SYMBOL_U(m_pxor) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b) {
 }
 
 SIMDE__FUNCTION_ATTRIBUTES
-int
+int32_t
 SIMDE__SYMBOL_U(m_to_int) (SIMDE__SYMBOL_U(_m64) a) {
 #if defined(SIMDE__MMX_NATIVE)
   return _m_to_int(a.n);

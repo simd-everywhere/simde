@@ -17,13 +17,13 @@
 #endif
 
 typedef union {
-  char           i8[16];
-  short          i16[8];
-  int            i32[4];
+  int8_t         i8[16];
+  int16_t        i16[8];
+  int32_t        i32[4];
   int64_t        i64[2];
-  unsigned char  u8[16];
-  unsigned short u16[8];
-  unsigned int   u32[4];
+  uint8_t        u8[16];
+  uint16_t       u16[8];
+  uint32_t       u32[4];
   uint64_t       u64[2];
   float          f32[4];
 #if defined(SIMDE__SSE_NATIVE)
@@ -533,7 +533,7 @@ SIMDE__SYMBOL_U(mm_cvt_ps2pi) (SIMDE__SYMBOL_U(_m128) a) {
 #else
   SIMDE__SYMBOL_U(_m64) r;
   for (size_t i = 0 ; i < (sizeof(r.i32) / sizeof(r.i32[0])) ; i++) {
-    r.i32[i] = (int) a.f32[i];
+    r.i32[i] = (int32_t) a.f32[i];
   }
   return r;
 #endif
@@ -541,7 +541,7 @@ SIMDE__SYMBOL_U(mm_cvt_ps2pi) (SIMDE__SYMBOL_U(_m128) a) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m128)
-SIMDE__SYMBOL_U(mm_cvt_si2ss) (SIMDE__SYMBOL_U(_m128) a, int b) {
+SIMDE__SYMBOL_U(mm_cvt_si2ss) (SIMDE__SYMBOL_U(_m128) a, int32_t b) {
 #if defined(SIMDE__SSE_NATIVE)
   return SIMDE__M128_C(_mm_cvt_si2ss(a.n, b));
 #else
@@ -555,12 +555,12 @@ SIMDE__SYMBOL_U(mm_cvt_si2ss) (SIMDE__SYMBOL_U(_m128) a, int b) {
 }
 
 SIMDE__FUNCTION_ATTRIBUTES
-int
+int32_t
 SIMDE__SYMBOL_U(mm_cvt_ss2si) (SIMDE__SYMBOL_U(_m128) a) {
 #if defined(SIMDE__SSE_NATIVE)
   return _mm_cvt_ss2si(a.n);
 #else
-  return (int) a.f32[0];
+  return (int32_t) a.f32[0];
 #endif
 }
 
@@ -631,7 +631,7 @@ SIMDE__SYMBOL_U(mm_cvtps_pi16) (SIMDE__SYMBOL_U(_m128) a) {
 #else
   SIMDE__SYMBOL_U(_m64) r;
   for (size_t i = 0 ; i < (sizeof(r.i16) / sizeof(r.i16[0])) ; i++) {
-    r.i16[i] = (short) a.f32[i];
+    r.i16[i] = (int16_t) a.f32[i];
   }
   return r;
 #endif
@@ -645,7 +645,7 @@ SIMDE__SYMBOL_U(mm_cvtps_pi32) (SIMDE__SYMBOL_U(_m128) a) {
 #else
   SIMDE__SYMBOL_U(_m64) r;
   for (size_t i = 0 ; i < (sizeof(r.i32) / sizeof(r.i32[0])) ; i++) {
-    r.i32[i] = (int) a.f32[i];
+    r.i32[i] = (int32_t) a.f32[i];
   }
   return r;
 #endif
@@ -659,7 +659,7 @@ SIMDE__SYMBOL_U(mm_cvtps_pi8) (SIMDE__SYMBOL_U(_m128) a) {
 #else
   SIMDE__SYMBOL_U(_m64) r;
   for (size_t i = 0 ; i < (sizeof(r.i8) / sizeof(r.i8[0])) ; i++) {
-    r.i8[i] = (char) a.f32[i];
+    r.i8[i] = (int8_t) a.f32[i];
   }
   return r;
 #endif

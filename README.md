@@ -40,6 +40,14 @@ prior to including any header.  If you desire, you can define
 native version, though this can lead to problems in some situations
 and is therefore discouraged.
 
+Since SIMDe is meant to be portable, many functions which assume types
+are of a specific size have been altered to use fixed-width types
+instead.  For example, Intel's APIs assume `int` is 32 bits, so
+`simde_mm_set_pi32`'s arguments are `int32_t` instead of `int`.  On
+platforms where the native API's assumptions hold (*i.e.*, if `int`
+really is 32-bits) SIMDe's types should be compatible, so existing
+code needn't be changed unless you're porting to a new platform.
+
 ## Related Projects
 
 This is very similar to the builtins module in

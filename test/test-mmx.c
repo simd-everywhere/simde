@@ -8,11 +8,11 @@ test_simde_mm_set_pi8(const MunitParameter params[], void* data) {
   (void) params;
   (void) data;
 
-  char d[8 / sizeof(char)];
+  int8_t d[8 / sizeof(int8_t)];
   munit_rand_memory(sizeof(d), (uint8_t*) d);
 
   simde__m64 x = simde_mm_set_pi8(d[0], d[1], d[2], d[3], d[4], d[5], d[6], d[7]);
-  char* c = (char*) &x;
+  int8_t* c = (int8_t*) &x;
 
   simde_mm_empty();
 
@@ -33,18 +33,18 @@ test_simde_mm_set_pi16(const MunitParameter params[], void* data) {
   (void) params;
   (void) data;
 
-  short d[8 / sizeof(short)];
+  int16_t d[8 / sizeof(int16_t)];
   munit_rand_memory(sizeof(d), (uint8_t*) d);
 
   simde__m64 x = simde_mm_set_pi16(d[0], d[1], d[2], d[3]);
-  short* s = (short*) &x;
+  int16_t* s = (int16_t*) &x;
 
   simde_mm_empty();
 
-  munit_assert_short(s[0], ==, d[3]);
-  munit_assert_short(s[1], ==, d[2]);
-  munit_assert_short(s[2], ==, d[1]);
-  munit_assert_short(s[3], ==, d[0]);
+  munit_assert_int16(s[0], ==, d[3]);
+  munit_assert_int16(s[1], ==, d[2]);
+  munit_assert_int16(s[2], ==, d[1]);
+  munit_assert_int16(s[3], ==, d[0]);
 
   return MUNIT_OK;
 }
@@ -54,16 +54,16 @@ test_simde_mm_set_pi32(const MunitParameter params[], void* data) {
   (void) params;
   (void) data;
 
-  int d[8 / sizeof(int)];
+  int32_t d[8 / sizeof(int)];
   munit_rand_memory(sizeof(d), (uint8_t*) d);
 
   simde__m64 x = simde_mm_set_pi32(d[0], d[1]);
-  int* i = (int*) &x;
+  int32_t* i = (int32_t*) &x;
 
   simde_mm_empty();
 
-  munit_assert_int(i[0], ==, d[1]);
-  munit_assert_int(i[1], ==, d[0]);
+  munit_assert_int32(i[0], ==, d[1]);
+  munit_assert_int32(i[1], ==, d[0]);
 
   return MUNIT_OK;
 }
@@ -73,10 +73,10 @@ test_simde_mm_set1_pi8(const MunitParameter params[], void* data) {
   (void) params;
   (void) data;
 
-  char v = (char) munit_rand_int_range(CHAR_MIN, CHAR_MAX);
+  int8_t v = (int8_t) munit_rand_int_range(INT8_MIN, INT8_MAX);
 
   simde__m64 x = simde_mm_set1_pi8(v);
-  char* r = (char*) &x;
+  int8_t* r = (int8_t*) &x;
 
   simde_mm_empty();
 
@@ -97,17 +97,17 @@ test_simde_mm_set1_pi16(const MunitParameter params[], void* data) {
   (void) params;
   (void) data;
 
-  short v = (short) munit_rand_int_range(SHRT_MIN, SHRT_MAX);
+  int16_t v = (int16_t) munit_rand_int_range(SHRT_MIN, SHRT_MAX);
 
   simde__m64 x = simde_mm_set1_pi16(v);
-  short* r = (short*) &x;
+  int16_t* r = (int16_t*) &x;
 
   simde_mm_empty();
 
-  munit_assert_short(r[0], ==, v);
-  munit_assert_short(r[1], ==, v);
-  munit_assert_short(r[2], ==, v);
-  munit_assert_short(r[3], ==, v);
+  munit_assert_int16(r[0], ==, v);
+  munit_assert_int16(r[1], ==, v);
+  munit_assert_int16(r[2], ==, v);
+  munit_assert_int16(r[3], ==, v);
 
   return MUNIT_OK;
 }
@@ -117,10 +117,10 @@ test_simde_mm_set1_pi32(const MunitParameter params[], void* data) {
   (void) params;
   (void) data;
 
-  int v = (int) munit_rand_int_range(INT_MIN, INT_MAX);
+  int32_t v = (int32_t) munit_rand_int_range(INT32_MIN, INT32_MAX);
 
   simde__m64 x = simde_mm_set1_pi32(v);
-  int* r = (int*) &x;
+  int32_t* r = (int32_t*) &x;
 
   simde_mm_empty();
 
@@ -135,11 +135,11 @@ test_simde_mm_setr_pi8(const MunitParameter params[], void* data) {
   (void) params;
   (void) data;
 
-  char d[8 / sizeof(char)];
+  int8_t d[8 / sizeof(int8_t)];
   munit_rand_memory(sizeof(d), (uint8_t*) d);
 
   simde__m64 x = simde_mm_setr_pi8(d[0], d[1], d[2], d[3], d[4], d[5], d[6], d[7]);
-  char* c = (char*) &x;
+  int8_t* c = (int8_t*) &x;
 
   simde_mm_empty();
 
@@ -160,18 +160,18 @@ test_simde_mm_setr_pi16(const MunitParameter params[], void* data) {
   (void) params;
   (void) data;
 
-  short d[8 / sizeof(short)];
+  int16_t d[8 / sizeof(int16_t)];
   munit_rand_memory(sizeof(d), (uint8_t*) d);
 
   simde__m64 x = simde_mm_setr_pi16(d[0], d[1], d[2], d[3]);
-  short* s = (short*) &x;
+  int16_t* s = (int16_t*) &x;
 
   simde_mm_empty();
 
-  munit_assert_short(s[0], ==, d[0]);
-  munit_assert_short(s[1], ==, d[1]);
-  munit_assert_short(s[2], ==, d[2]);
-  munit_assert_short(s[3], ==, d[3]);
+  munit_assert_int16(s[0], ==, d[0]);
+  munit_assert_int16(s[1], ==, d[1]);
+  munit_assert_int16(s[2], ==, d[2]);
+  munit_assert_int16(s[3], ==, d[3]);
 
   return MUNIT_OK;
 }
@@ -181,16 +181,16 @@ test_simde_mm_setr_pi32(const MunitParameter params[], void* data) {
   (void) params;
   (void) data;
 
-  int d[8 / sizeof(int)];
+  int32_t d[8 / sizeof(int32_t)];
   munit_rand_memory(sizeof(d), (uint8_t*) d);
 
   simde__m64 x = simde_mm_setr_pi32(d[0], d[1]);
-  int* i = (int*) &x;
+  int32_t* i = (int32_t*) &x;
 
   simde_mm_empty();
 
-  munit_assert_int(i[0], ==, d[0]);
-  munit_assert_int(i[1], ==, d[1]);
+  munit_assert_int32(i[0], ==, d[0]);
+  munit_assert_int32(i[1], ==, d[1]);
 
   return MUNIT_OK;
 }
@@ -920,7 +920,7 @@ test_simde_mm_cvtsi32_si64(const MunitParameter params[], void* data) {
   (void) data;
 
   const struct {
-    int a;
+    int32_t a;
     simde__m64 r;
   } test_vec[8] = {
     { 0xaf9e3edb, simde_mm_set_pi32(0x00000000, 0xaf9e3edb) },
@@ -979,7 +979,7 @@ test_simde_mm_cvtsi64_si32(const MunitParameter params[], void* data) {
 
   const struct {
     simde__m64 a;
-    int r;
+    int32_t r;
   } test_vec[8] = {
     { simde_mm_set_pi32(0x5263c8d6, 0xfef29fb0), 0xfef29fb0, },
     { simde_mm_set_pi32(0x7f1adc3c, 0xa7900f8d), 0xa7900f8d, },
@@ -992,9 +992,9 @@ test_simde_mm_cvtsi64_si32(const MunitParameter params[], void* data) {
   };
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
-    int r = simde_mm_cvtsi64_si32(test_vec[i].a);
+    int32_t r = simde_mm_cvtsi64_si32(test_vec[i].a);
     simde_mm_empty();
-    munit_assert_int(r, ==, test_vec[i].r);
+    munit_assert_int32(r, ==, test_vec[i].r);
   }
 
   simde_mm_empty();
@@ -2704,7 +2704,7 @@ test_simde_m_to_int(const MunitParameter params[], void* data) {
 
   const struct {
     simde__m64 a;
-    int r;
+    int32_t r;
   } test_vec[8] = {
     { simde_mm_set_pi32(0x0b305900, 0x2ce14997), 0x2ce14997 },
     { simde_mm_set_pi32(0x5dcceaf2, 0x0612924a), 0x0612924a },
@@ -2717,9 +2717,9 @@ test_simde_m_to_int(const MunitParameter params[], void* data) {
   };
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
-    int r = simde_m_to_int(test_vec[i].a);
+    int32_t r = simde_m_to_int(test_vec[i].a);
     simde_mm_empty();
-    munit_assert_int(r, ==, test_vec[i].r);
+    munit_assert_int32(r, ==, test_vec[i].r);
   }
 
   simde_mm_empty();

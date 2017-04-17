@@ -55,7 +55,7 @@ double random_double_range(double min, double max);
    simde_assert_*v macros above, but print in hex. */
 
 #define simde_assert_int8vx(nmemb, a, op, b)			\
-  simde_assert_array_full("0x", "", char, "02" PRIx8, nmemb, a, op, b)
+  simde_assert_array_full("0x", "", munit_int8_t, "02" PRIx8, nmemb, a, op, b)
 #define simde_assert_uint8vx(nmemb, a, op, b)				\
   simde_assert_array_full("0x", "", munit_uint8_t, "02" PRIx8, nmemb, a, op, b)
 #define simde_assert_int16vx(nmemb, a, op, b)			\

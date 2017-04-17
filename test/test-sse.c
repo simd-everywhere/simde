@@ -91,9 +91,9 @@ test_simde_mm_and_ps(const MunitParameter params[], void* data) {
 }
 
 static inline simde__m128
-simde_m128_set_u32(unsigned int a, unsigned int b, unsigned int c, unsigned int d) {
+simde_m128_set_u32(uint32_t a, uint32_t b, uint32_t c, uint32_t d) {
   simde__m128 r;
-  unsigned int* rp = (unsigned int*) &r;
+  uint32_t* rp = (uint32_t*) &r;
   rp[3] = a;
   rp[2] = b;
   rp[1] = c;
@@ -1640,7 +1640,7 @@ test_simde_mm_cvt_ps2pi(const MunitParameter params[], void* data) {
     r = simde_mm_cvt_ps2pi(a);
 
     for (size_t j = 0 ; j < 2 ; j++) {
-      int n = (int) a.f32[j];
+      int32_t n = (int32_t) a.f32[j];
       if (n != r.i32[j] && (n + 1) != r.i32[j] && (n - 1) != r.i32[j])
 	munit_errorf("expected %d, got %d (from %g)", n, r.i32[j], a.f32[j]);
     }
@@ -1656,7 +1656,7 @@ test_simde_mm_cvt_si2ss(const MunitParameter params[], void* data) {
 
   for (size_t i = 0 ; i < TEST_PREFERRED_ITERATIONS ; i++) {
     simde__m128 a, r;
-    int b;
+    int32_t b;
 
     munit_rand_memory(sizeof(a), (uint8_t*) &a);
     munit_rand_memory(sizeof(b), (uint8_t*) &b);
@@ -1679,13 +1679,13 @@ test_simde_mm_cvt_ss2si(const MunitParameter params[], void* data) {
 
   for (size_t i = 0 ; i < TEST_PREFERRED_ITERATIONS ; i++) {
     simde__m128 a;
-    int r;
+    int32_t r;
 
     munit_rand_memory(sizeof(a), (uint8_t*) &a);
 
     r = simde_mm_cvt_ss2si(a);
 
-    simde_assert_int_close(r, (int) a.f32[0]);
+    simde_assert_int_close(r, (int32_t) a.f32[0]);
   }
 
   return MUNIT_OK;
@@ -1705,7 +1705,7 @@ test_simde_mm_cvtpi16_ps(const MunitParameter params[], void* data) {
     r = simde_mm_cvtpi16_ps(a);
 
     for (size_t j = 0 ; j < 4 ; j++) {
-      simde_assert_int_close(a.i16[j], (short) r.f32[j]);
+      simde_assert_int_close(a.i16[j], (int16_t) r.f32[j]);
     }
   }
 
@@ -1723,16 +1723,16 @@ test_simde_mm_cvtpi32_ps(const MunitParameter params[], void* data) {
 
     munit_rand_memory(sizeof(a), (uint8_t*) &a);
     for (size_t j = 0 ; j < 2 ; j++) {
-      a.i32[j] = munit_rand_int_range(-65536, 65535);
-      b.i32[j] = munit_rand_int_range(-65536, 65535);
+      a.i32[j] = (int32_t) munit_rand_int_range(-65536, 65535);
+      b.i32[j] = (int32_t) munit_rand_int_range(-65536, 65535);
     }
 
     r = simde_mm_cvtpi32_ps(a, b);
 
-    simde_assert_int_close(b.i32[0], (int) r.f32[0]);
-    simde_assert_int_close(b.i32[1], (int) r.f32[1]);
-    munit_assert_int(a.i32[2], ==, r.i32[2]);
-    munit_assert_int(a.i32[3], ==, r.i32[3]);
+    simde_assert_int_close(b.i32[0], (int32_t) r.f32[0]);
+    simde_assert_int_close(b.i32[1], (int32_t) r.f32[1]);
+    munit_assert_int32(a.i32[2], ==, r.i32[2]);
+    munit_assert_int32(a.i32[3], ==, r.i32[3]);
   }
 
   return MUNIT_OK;
@@ -1754,10 +1754,10 @@ test_simde_mm_cvtpi32x2_ps(const MunitParameter params[], void* data) {
 
     r = simde_mm_cvtpi32x2_ps(a, b);
 
-    simde_assert_int_close(a.i32[0], (int) r.f32[0]);
-    simde_assert_int_close(a.i32[1], (int) r.f32[1]);
-    simde_assert_int_close(b.i32[0], (int) r.f32[2]);
-    simde_assert_int_close(b.i32[1], (int) r.f32[3]);
+    simde_assert_int_close(a.i32[0], (int32_t) r.f32[0]);
+    simde_assert_int_close(a.i32[1], (int32_t) r.f32[1]);
+    simde_assert_int_close(b.i32[0], (int32_t) r.f32[2]);
+    simde_assert_int_close(b.i32[1], (int32_t) r.f32[3]);
   }
 
   return MUNIT_OK;
@@ -1776,10 +1776,10 @@ test_simde_mm_cvtpi8_ps(const MunitParameter params[], void* data) {
 
     r = simde_mm_cvtpi8_ps(a);
 
-    simde_assert_int_close(a.i8[0], (int) r.f32[0]);
-    simde_assert_int_close(a.i8[1], (int) r.f32[1]);
-    simde_assert_int_close(a.i8[2], (int) r.f32[2]);
-    simde_assert_int_close(a.i8[3], (int) r.f32[3]);
+    simde_assert_int_close(a.i8[0], (int32_t) r.f32[0]);
+    simde_assert_int_close(a.i8[1], (int32_t) r.f32[1]);
+    simde_assert_int_close(a.i8[2], (int32_t) r.f32[2]);
+    simde_assert_int_close(a.i8[3], (int32_t) r.f32[3]);
   }
 
   return MUNIT_OK;
@@ -1800,10 +1800,10 @@ test_simde_mm_cvtps_pi16(const MunitParameter params[], void* data) {
 
     r = simde_mm_cvtps_pi16(a);
 
-    simde_assert_int_close(r.i16[0], (short) a.f32[0]);
-    simde_assert_int_close(r.i16[1], (short) a.f32[1]);
-    simde_assert_int_close(r.i16[2], (short) a.f32[2]);
-    simde_assert_int_close(r.i16[3], (short) a.f32[3]);
+    simde_assert_int_close(r.i16[0], (int16_t) a.f32[0]);
+    simde_assert_int_close(r.i16[1], (int16_t) a.f32[1]);
+    simde_assert_int_close(r.i16[2], (int16_t) a.f32[2]);
+    simde_assert_int_close(r.i16[3], (int16_t) a.f32[3]);
   }
 
   return MUNIT_OK;
@@ -1824,8 +1824,8 @@ test_simde_mm_cvtps_pi32(const MunitParameter params[], void* data) {
 
     r = simde_mm_cvtps_pi32(a);
 
-    simde_assert_int_close(r.i32[0], (int) a.f32[0]);
-    simde_assert_int_close(r.i32[1], (int) a.f32[1]);
+    simde_assert_int_close(r.i32[0], (int32_t) a.f32[0]);
+    simde_assert_int_close(r.i32[1], (int32_t) a.f32[1]);
   }
 
   return MUNIT_OK;
@@ -1846,10 +1846,10 @@ test_simde_mm_cvtps_pi8(const MunitParameter params[], void* data) {
 
     r = simde_mm_cvtps_pi8(a);
 
-    simde_assert_int_close(r.i8[0], (int) a.f32[0]);
-    simde_assert_int_close(r.i8[1], (int) a.f32[1]);
-    simde_assert_int_close(r.i8[2], (int) a.f32[2]);
-    simde_assert_int_close(r.i8[3], (int) a.f32[3]);
+    simde_assert_int_close(r.i8[0], (int32_t) a.f32[0]);
+    simde_assert_int_close(r.i8[1], (int32_t) a.f32[1]);
+    simde_assert_int_close(r.i8[2], (int32_t) a.f32[2]);
+    simde_assert_int_close(r.i8[3], (int32_t) a.f32[3]);
   }
 
   return MUNIT_OK;
@@ -1868,10 +1868,10 @@ test_simde_mm_cvtpu16_ps(const MunitParameter params[], void* data) {
 
     r = simde_mm_cvtpu16_ps(a);
 
-    simde_assert_int_close((unsigned short) r.f32[0], a.u16[0]);
-    simde_assert_int_close((unsigned short) r.f32[1], a.u16[1]);
-    simde_assert_int_close((unsigned short) r.f32[2], a.u16[2]);
-    simde_assert_int_close((unsigned short) r.f32[3], a.u16[3]);
+    simde_assert_int_close((uint16_t) r.f32[0], a.u16[0]);
+    simde_assert_int_close((uint16_t) r.f32[1], a.u16[1]);
+    simde_assert_int_close((uint16_t) r.f32[2], a.u16[2]);
+    simde_assert_int_close((uint16_t) r.f32[3], a.u16[3]);
   }
 
   return MUNIT_OK;
@@ -1890,10 +1890,10 @@ test_simde_mm_cvtpu8_ps(const MunitParameter params[], void* data) {
 
     r = simde_mm_cvtpu8_ps(a);
 
-    simde_assert_int_close((unsigned short) r.f32[0], a.u8[0]);
-    simde_assert_int_close((unsigned short) r.f32[1], a.u8[1]);
-    simde_assert_int_close((unsigned short) r.f32[2], a.u8[2]);
-    simde_assert_int_close((unsigned short) r.f32[3], a.u8[3]);
+    simde_assert_int_close((uint16_t) r.f32[0], a.u8[0]);
+    simde_assert_int_close((uint16_t) r.f32[1], a.u8[1]);
+    simde_assert_int_close((uint16_t) r.f32[2], a.u8[2]);
+    simde_assert_int_close((uint16_t) r.f32[3], a.u8[3]);
   }
 
   return MUNIT_OK;
