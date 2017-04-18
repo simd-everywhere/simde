@@ -2147,6 +2147,47 @@ test_simde_mm_div_ss(const MunitParameter params[], void* data) {
 }
 
 static MunitResult
+test_simde_mm_extract_pi16(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  for (size_t i = 0 ; i < TEST_PREFERRED_ITERATIONS ; i++) {
+    simde__m64 a;
+    int r;
+
+    munit_rand_memory(sizeof(a), (uint8_t*) &a);
+
+    r = simde_mm_extract_pi16(a, 2);
+
+    munit_assert_int16((int16_t) (r & 0xffff), ==, a.i16[2]);
+  }
+
+  return MUNIT_OK;
+}
+
+static MunitResult
+test_simde_mm_insert_pi16(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  for (size_t j = 0 ; j < TEST_PREFERRED_ITERATIONS ; j++) {
+    simde__m64 a, r, x;
+    int16_t i;
+
+    munit_rand_memory(sizeof(a), (uint8_t*) &a);
+    i = munit_rand_int_range(INT16_MIN, INT16_MAX);
+
+    r = simde_mm_insert_pi16(a, i, 2);
+    x.i64 = a.i64;
+    x.i16[2] = i;
+
+    simde_assert_m64_i16(r, ==, x);
+  }
+
+  return MUNIT_OK;
+}
+
+static MunitResult
 test_simde_mm_sub_ps(const MunitParameter params[], void* data) {
   (void) params;
   (void) data;
@@ -2224,6 +2265,8 @@ static MunitTest test_suite_tests[] = {
   { (char*) "/sse/mm_cvttss_si64",   test_simde_mm_cvttss_si64,   NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
   { (char*) "/sse/mm_div_ps",        test_simde_mm_div_ps,        NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
   { (char*) "/sse/mm_div_ss",        test_simde_mm_div_ss,        NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/sse/mm_extract_pi16",  test_simde_mm_extract_pi16,  NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/sse/mm_insert_pi16",   test_simde_mm_insert_pi16,   NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
   { (char*) "/sse/mm_sub_ps",        test_simde_mm_sub_ps,        NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
 
   { NULL, NULL, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL }
