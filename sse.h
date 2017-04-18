@@ -713,8 +713,10 @@ SIMDE__SYMBOL_U(_m128)
 SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m128)
 SIMDE__SYMBOL_U(mm_cvtsi64_ss) (SIMDE__SYMBOL_U(_m128) a, int64_t b) {
-#if defined(SIMDE__SSE_NATIVE)
+#if defined(SIMDE__SSE_NATIVE) && !defined(__PGI)
   return SIMDE__M128_C(_mm_cvtsi64_ss(a.n, b));
+#elif defined(SIMDE__SSE_NATIVE)
+  return SIMDE__M128_C(_mm_cvtsi64x_ss(a.n, b));
 #else
   SIMDE__SYMBOL_U(_m128) r;
   r.f32[0] = (float) b;
@@ -748,8 +750,10 @@ SIMDE__SYMBOL_U(mm_cvtss_si32) (SIMDE__SYMBOL_U(_m128) a) {
 SIMDE__FUNCTION_ATTRIBUTES
 int64_t
 SIMDE__SYMBOL_U(mm_cvtss_si64) (SIMDE__SYMBOL_U(_m128) a) {
-#if defined(SIMDE__SSE_NATIVE)
+#if defined(SIMDE__SSE_NATIVE) && !defined(__PGI)
   return _mm_cvtss_si64(a.n);
+#elif defined(SIMDE__SSE_NATIVE)
+  return _mm_cvtss_si64x(a.n);
 #else
   return (int64_t) a.f32[0];
 #endif
@@ -802,7 +806,7 @@ SIMDE__SYMBOL_U(mm_cvttss_si32) (SIMDE__SYMBOL_U(_m128) a) {
 SIMDE__FUNCTION_ATTRIBUTES
 int64_t
 SIMDE__SYMBOL_U(mm_cvttss_si64) (SIMDE__SYMBOL_U(_m128) a) {
-#if defined(SIMDE__SSE_NATIVE)
+#if defined(SIMDE__SSE_NATIVE) && !defined(__PGI)
   return _mm_cvttss_si64(a.n);
 #else
   return (int64_t) truncf(a.f32[0]);
@@ -841,7 +845,7 @@ SIMDE__SYMBOL_U(mm_div_ss) (SIMDE__SYMBOL_U(_m128) a, SIMDE__SYMBOL_U(_m128) b) 
 SIMDE__FUNCTION_ATTRIBUTES
 int32_t
 SIMDE__SYMBOL_U(mm_extract_pi16) (SIMDE__SYMBOL_U(_m64) a, const int imm8) {
-#if defined(SIMDE__SSE_NATIVE) && !defined(__clang__)
+#if defined(SIMDE__SSE_NATIVE) && !defined(__clang__) && !defined(__PGI)
   return _mm_extract_pi16(a.n, imm8);
 #else
   return a.u16[imm8];
@@ -851,7 +855,7 @@ SIMDE__SYMBOL_U(mm_extract_pi16) (SIMDE__SYMBOL_U(_m64) a, const int imm8) {
 SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL_U(_m64)
 SIMDE__SYMBOL_U(mm_insert_pi16) (SIMDE__SYMBOL_U(_m64) a, int16_t i, const int imm8) {
-#if defined(SIMDE__SSE_NATIVE) && !defined(__clang__)
+#if defined(SIMDE__SSE_NATIVE) && !defined(__clang__) && !defined(__PGI)
   return SIMDE__M64_C(_mm_insert_pi16(a.n, i, imm8));
 #else
   SIMDE__SYMBOL_U(_m64) r;
