@@ -809,6 +809,35 @@ SIMDE__SYMBOL_U(mm_cvttss_si64) (SIMDE__SYMBOL_U(_m128) a) {
 #endif
 }
 
+SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL_U(_m128)
+SIMDE__SYMBOL_U(mm_div_ps) (SIMDE__SYMBOL_U(_m128) a, SIMDE__SYMBOL_U(_m128) b) {
+#if defined(SIMDE__SSE_NATIVE)
+  return SIMDE__M128_C(_mm_div_ps(a.n, b.n));
+#else
+  SIMDE__SYMBOL_U(_m128) r;
+  for (size_t i = 0 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
+    r.f32[i] = a.f32[i] / b.f32[i];
+  }
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL_U(_m128)
+SIMDE__SYMBOL_U(mm_div_ss) (SIMDE__SYMBOL_U(_m128) a, SIMDE__SYMBOL_U(_m128) b) {
+#if defined(SIMDE__SSE_NATIVE)
+  return SIMDE__M128_C(_mm_div_ss(a.n, b.n));
+#else
+  SIMDE__SYMBOL_U(_m128) r;
+  r.f32[0] = a.f32[0] / b.f32[0];
+  for (size_t i = 1 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
+    r.f32[i] = a.f32[i];
+  }
+  return r;
+#endif
+}
+
 enum {
 #if defined(SIMDE__SSE_NATIVE)
   SIMDE__SYMBOL_U(MM_ROUND_NEAREST)     = _MM_ROUND_NEAREST,
@@ -884,20 +913,6 @@ SIMDE__SYMBOL_U(mm_mul_ps) (SIMDE__SYMBOL_U(_m128) a, SIMDE__SYMBOL_U(_m128) b) 
   SIMDE__SYMBOL_U(_m128) r;
   for (size_t i = 0 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
     r.f32[i] = a.f32[i] * b.f32[i];
-  }
-  return r;
-#endif
-}
-
-SIMDE__FUNCTION_ATTRIBUTES
-SIMDE__SYMBOL_U(_m128)
-SIMDE__SYMBOL_U(mm_div_ps) (SIMDE__SYMBOL_U(_m128) a, SIMDE__SYMBOL_U(_m128) b) {
-#if defined(SIMDE__SSE_NATIVE)
-  return SIMDE__M128_C(_mm_div_ps(a.n, b.n));
-#else
-  SIMDE__SYMBOL_U(_m128) r;
-  for (size_t i = 0 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
-    r.f32[i] = a.f32[i] / b.f32[i];
   }
   return r;
 #endif
