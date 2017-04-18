@@ -23,7 +23,7 @@ void random_floatv(size_t nmemb, float v[HEDLEY_ARRAY_PARAM(nmemb)]);
 
 double random_double_range(double min, double max);
 
-#define TEST_PREFERRED_ITERATIONS 1024
+#define TEST_PREFERRED_ITERATIONS (16384)
 
 /* I'll probably move these into µnit, but I want to play around with
    them for a while first. */
@@ -110,10 +110,16 @@ double random_double_range(double min, double max);
 /* SIMD floating-point conversion functions may or may not be the same
    as the normal FP conversion functions. */
 
-#define simde_assert_int_close(value, target) \
+#define simde_assert_int32_close(value, target) \
   do { \
     if (value != target && value != target + 1 && value != target - 1) \
-      munit_errorf("assertion failed: %s == %s (%d == %d)", #value, #target, value, target); \
+      munit_errorf("assertion failed: %s == %s (%" PRId32 " == %" PRId32 ")", #value, #target, value, target); \
+  } while (0)
+
+#define simde_assert_int64_close(value, target) \
+  do { \
+    if (value != target && value != target + 1 && value != target - 1) \
+      munit_errorf("assertion failed: %s == %s (%" PRId64 " == %" PRId64 ")", #value, #target, value, target); \
   } while (0)
 
 #endif /* !defined(SIMDE_TEST_H) */
