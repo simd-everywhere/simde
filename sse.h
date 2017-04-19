@@ -34,6 +34,9 @@
 
 #if defined(SIMDE__SSE_NATIVE)
 #  include <xmmintrin.h>
+#  if defined(__PGI)
+#    include <math.h>
+#  endif
 #else
 #  include <math.h>
 #  include <fenv.h>

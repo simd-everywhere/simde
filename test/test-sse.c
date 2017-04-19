@@ -482,6 +482,8 @@ test_simde_mm_cmpge_ss(const MunitParameter params[], void* data) {
   (void) params;
   (void) data;
 
+  SIMDE_SKIP_PGI("http://www.pgroup.com/userforum/viewtopic.php?t=5578");
+
   const struct {
     simde__m128 a;
     simde__m128 b;
@@ -569,6 +571,8 @@ static MunitResult
 test_simde_mm_cmpgt_ss(const MunitParameter params[], void* data) {
   (void) params;
   (void) data;
+
+  SIMDE_SKIP_PGI("http://www.pgroup.com/userforum/viewtopic.php?t=5578");
 
   const struct {
     simde__m128 a;
@@ -922,6 +926,8 @@ test_simde_mm_cmpnge_ss(const MunitParameter params[], void* data) {
   (void) params;
   (void) data;
 
+  SIMDE_SKIP_PGI("http://www.pgroup.com/userforum/viewtopic.php?t=5578");
+
   const struct {
     simde__m128 a;
     simde__m128 b;
@@ -1009,6 +1015,8 @@ static MunitResult
 test_simde_mm_cmpngt_ss(const MunitParameter params[], void* data) {
   (void) params;
   (void) data;
+
+  SIMDE_SKIP_PGI("http://www.pgroup.com/userforum/viewtopic.php?t=5578");
 
   const struct {
     simde__m128 a;
@@ -1616,6 +1624,8 @@ static MunitResult
 test_simde_mm_cmpunord_ss(const MunitParameter params[], void* data) {
   (void) params;
   (void) data;
+
+  SIMDE_SKIP_PGI("http://www.pgroup.com/userforum/viewtopic.php?t=5578");
 
   const struct {
     simde__m128 a;

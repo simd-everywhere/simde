@@ -1483,6 +1483,8 @@ test_simde_mm_slli_pi16(const MunitParameter params[], void* data) {
   (void) params;
   (void) data;
 
+  SIMDE_SKIP_PGI("http://www.pgroup.com/userforum/viewtopic.php?t=5578");
+
   const struct {
     simde__m64 a;
     int count;
@@ -1528,6 +1530,8 @@ static MunitResult
 test_simde_mm_slli_pi32(const MunitParameter params[], void* data) {
   (void) params;
   (void) data;
+
+  SIMDE_SKIP_PGI("http://www.pgroup.com/userforum/viewtopic.php?t=5578");
 
   const struct {
     simde__m64 a;
@@ -1759,6 +1763,8 @@ test_simde_mm_srli_pi16(const MunitParameter params[], void* data) {
   (void) params;
   (void) data;
 
+  SIMDE_SKIP_PGI("http://www.pgroup.com/userforum/viewtopic.php?t=5578");
+
   const struct {
     simde__m64 a;
     int count;
@@ -1804,6 +1810,8 @@ static MunitResult
 test_simde_mm_srli_pi32(const MunitParameter params[], void* data) {
   (void) params;
   (void) data;
+
+  SIMDE_SKIP_PGI("http://www.pgroup.com/userforum/viewtopic.php?t=5578");
 
   const struct {
     simde__m64 a;
@@ -1851,6 +1859,8 @@ test_simde_mm_srli_si64(const MunitParameter params[], void* data) {
   (void) params;
   (void) data;
 
+  SIMDE_SKIP_PGI("http://www.pgroup.com/userforum/viewtopic.php?t=5578");
+
   const struct {
     simde__m64 a;
     int count;
@@ -1897,6 +1907,8 @@ test_simde_mm_srai_pi16(const MunitParameter params[], void* data) {
   (void) params;
   (void) data;
 
+  SIMDE_SKIP_PGI("http://www.pgroup.com/userforum/viewtopic.php?t=5578");
+
   const struct {
     simde__m64 a;
     int count;
@@ -1942,6 +1954,8 @@ static MunitResult
 test_simde_mm_srai_pi32(const MunitParameter params[], void* data) {
   (void) params;
   (void) data;
+
+  SIMDE_SKIP_PGI("http://www.pgroup.com/userforum/viewtopic.php?t=5578");
 
   const struct {
     simde__m64 a;

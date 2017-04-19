@@ -145,4 +145,11 @@ double random_double_range(double min, double max);
       munit_errorf("assertion failed: %s == %s (%" PRId64 " == %" PRId64 ")", #value, #target, value, target); \
   } while (0)
 
+/* Sometimes there are issues with specific compilers... */
+#if defined(__PGI)
+#  define SIMDE_SKIP_PGI(bug_url) return (munit_logf(MUNIT_LOG_DEBUG, "Test skipped; see <%s> for details", bug_url), MUNIT_SKIP)
+#else
+#  define SIMDE_SKIP_PGI(bug_url)
+#endif
+
 #endif /* !defined(SIMDE_TEST_H) */
