@@ -1013,6 +1013,18 @@ SIMDE__SYMBOL_U(mm_loadu_ps) (float const mem_addr[HEDLEY_ARRAY_PARAM(4)]) {
 #endif
 }
 
+SIMDE__FUNCTION_ATTRIBUTES
+void
+SIMDE__SYMBOL_U(mm_maskmove_si64) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) mask, char* mem_addr) {
+#if defined(SIMDE__SSE_NATIVE)
+  _mm_maskmove_si64(a.n, mask.n, mem_addr);
+#else
+  for (size_t i = 0 ; i < (sizeof(a.i8) / sizeof(a.i8[0])) ; i++)
+    if (mask.i8[i] < 0)
+      mem_addr[i] = a.i8[i];
+#endif
+}
+
 enum {
 #if defined(SIMDE__SSE_NATIVE)
   SIMDE__SYMBOL_U(MM_ROUND_NEAREST)     = _MM_ROUND_NEAREST,
