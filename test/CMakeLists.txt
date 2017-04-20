@@ -48,6 +48,7 @@ endif()
 
 set(TEST_SOURCES
   test.c
+  test-common.c
   test-mmx.c
   test-sse.c
   test-sse2.c)
@@ -67,5 +68,14 @@ foreach(variant native emul)
   set_property (TARGET test-${variant} PROPERTY C_STANDARD "99")
   target_add_compiler_flags(test-${variant} ${extra_cflags})
 endforeach()
-
 target_compile_definitions(test-emul PRIVATE -DSIMDE_NO_NATIVE)
+
+add_executable(test-cmp
+  test-cmp.c
+  test-common.c
+  test-cmp-mmx.c)
+target_link_libraries(test-cmp munit m)
+add_test(NAME "/cmp" COMMAND $<TARGET_FILE:test-cmp>)
+target_add_extra_warning_flags(test-cmp)
+set_property (TARGET test-cmp PROPERTY C_STANDARD "99")
+target_add_compiler_flags(test-cmp ${extra_cflags})

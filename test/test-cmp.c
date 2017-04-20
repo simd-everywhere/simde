@@ -24,8 +24,8 @@
 #include "test.h"
 
 #include "../sse.h"
-#include <fenv.h>
 
+#include <fenv.h>
 #include <math.h>
 
 static MunitTest test_suite_tests[] = {
@@ -35,20 +35,16 @@ static MunitTest test_suite_tests[] = {
 int main(int argc, char* argv[MUNIT_ARRAY_PARAM(argc + 1)]) {
   MunitSuite test_suites[] = {
     simde_mmx_test_suite,
-    simde_sse_test_suite,
-    simde_sse2_test_suite,
+    /* simde_sse_test_suite, */
+    /* simde_sse2_test_suite, */
     { 0, },
   };
 
   MunitSuite test_suite = {
-#if !defined(SIMDE_NO_NATIVE)
-    (char*) "/native",
-#else
-    (char*) "/emul",
-#endif
+    (char*) "/cmp",
     test_suite_tests,
     test_suites,
-    1,
+    TEST_PREFERRED_ITERATIONS,
     MUNIT_SUITE_OPTION_NONE
   };
 
