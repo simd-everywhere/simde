@@ -68,4 +68,4 @@ foreach(variant native emul)
   target_add_compiler_flags(test-${variant} ${extra_cflags})
 endforeach()
 
-target_compile_definitions(test-native PRIVATE -DTEST_NATIVE)
+target_compile_definitions(test-emul PRIVATE -DSIMDE_NO_NATIVE)

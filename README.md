@@ -34,11 +34,8 @@ otherwise a portable fallback will be used.
 
 By default, symbols are prefixed with `simde_`.  For example, the MMX
 `_mm_add_pi8` intrinsic becomes `simde_mm_add_pi8`, and `__m64`
-becomes `simde__m64`.  This can be changed by defining `SIMDE_PREFIX`
-prior to including any header.  If you desire, you can define
-`SIMDE_PREFIX` to nothing and the API will be compatible with the
-native version, though this can lead to problems in some situations
-and is therefore discouraged.
+becomes `simde__m64`.  The prefix can be changed by defining
+`SIMDE_PREFIX` prior to including any header.
 
 Since SIMDe is meant to be portable, many functions which assume types
 are of a specific size have been altered to use fixed-width types

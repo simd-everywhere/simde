@@ -97,7 +97,7 @@ int main(int argc, char* argv[MUNIT_ARRAY_PARAM(argc + 1)]) {
   };
 
   MunitSuite test_suite = {
-#if defined(TEST_NATIVE)
+#if !defined(SIMDE_NO_NATIVE)
     (char*) "/native",
 #else
     (char*) "/emul",

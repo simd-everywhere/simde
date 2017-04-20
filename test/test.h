@@ -24,12 +24,6 @@
 #if !defined(SIMDE_TEST_H)
 #define SIMDE_TEST_H
 
-#if !defined(TEST_NATIVE)
-#  define SIMDE__MMX_NO_NATIVE
-#  define SIMDE__SSE_NO_NATIVE
-#  define SIMDE__SSE2_NO_NATIVE
-#endif
-
 #include <stdio.h>
 #include <limits.h>
 
