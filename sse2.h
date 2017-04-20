@@ -40,6 +40,17 @@
 #include <limits.h>
 
 typedef union {
+#if defined(SIMDE__ENABLE_GCC_VEC_EXT)
+  int8_t          i8 __attribute__((__vector_size__(16), __may_alias__));
+  int16_t        i16 __attribute__((__vector_size__(16), __may_alias__));
+  int32_t        i32 __attribute__((__vector_size__(16), __may_alias__));
+  int64_t        i64 __attribute__((__vector_size__(16), __may_alias__));
+  uint8_t         u8 __attribute__((__vector_size__(16), __may_alias__));
+  uint16_t       u16 __attribute__((__vector_size__(16), __may_alias__));
+  uint32_t       u32 __attribute__((__vector_size__(16), __may_alias__));
+  uint64_t       u64 __attribute__((__vector_size__(16), __may_alias__));
+  float          f32 __attribute__((__vector_size__(16), __may_alias__));
+#else
   int8_t         i8[16];
   int16_t        i16[8];
   int32_t        i32[4];
@@ -48,6 +59,9 @@ typedef union {
   uint16_t       u16[8];
   uint32_t       u32[4];
   uint64_t       u64[2];
+  float          f32[4];
+#endif
+
 #if defined(SIMDE__SSE2_NATIVE)
   __m128i        n;
 #endif

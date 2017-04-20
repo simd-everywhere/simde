@@ -39,15 +39,28 @@
 #include <stdlib.h>
 
 typedef SIMDE__ALIGN(16) union {
+#if defined(SIMDE__ENABLE_GCC_VEC_EXT)
+  int8_t          i8 __attribute__((__vector_size__(8), __may_alias__));
+  int16_t        i16 __attribute__((__vector_size__(8), __may_alias__));
+  int32_t        i32 __attribute__((__vector_size__(8), __may_alias__));
+  int64_t        i64 __attribute__((__vector_size__(8), __may_alias__));
+  uint8_t         u8 __attribute__((__vector_size__(8), __may_alias__));
+  uint16_t       u16 __attribute__((__vector_size__(8), __may_alias__));
+  uint32_t       u32 __attribute__((__vector_size__(8), __may_alias__));
+  uint64_t       u64 __attribute__((__vector_size__(8), __may_alias__));
+  float          f32 __attribute__((__vector_size__(8), __may_alias__));
+#else
   int8_t         i8[8];
   int16_t        i16[4];
   int32_t        i32[2];
-  int64_t        i64;
+  int64_t        i64[1];
   uint8_t        u8[8];
   uint16_t       u16[4];
   uint32_t       u32[2];
-  uint64_t       u64;
+  uint64_t       u64[1];
   float          f32[2];
+#endif
+
 #if defined(SIMDE__MMX_NATIVE)
   __m64          n;
 #endif
@@ -254,7 +267,7 @@ SIMDE__SYMBOL_U(mm_and_si64) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b) 
 #if defined(SIMDE__MMX_NATIVE)
   return SIMDE__M64_C(_mm_and_si64(a.n, b.n));
 #else
-  return (SIMDE__SYMBOL_U(_m64)) { .i64 = a.i64 & b.i64 };
+  return (SIMDE__SYMBOL_U(_m64)) { .i64 = { a.i64[0] & b.i64[0] } };
 #endif
 }
 
@@ -274,7 +287,7 @@ SIMDE__SYMBOL_U(mm_andnot_si64) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) 
 #if defined(SIMDE__MMX_NATIVE)
   return SIMDE__M64_C(_mm_andnot_si64(a.n, b.n));
 #else
-  return (SIMDE__SYMBOL_U(_m64)) { .i64 = ~(a.i64) & b.i64 };
+  return (SIMDE__SYMBOL_U(_m64)) { .i64 = { ~(a.i64[0]) & b.i64[0] } };
 #endif
 }
 
@@ -442,7 +455,7 @@ SIMDE__SYMBOL_U(mm_cvtm64_si64) (SIMDE__SYMBOL_U(_m64) a) {
   return _mm_cvtm64_si64(a.n);
 #  endif
 #else
-  return a.i64;
+  return a.i64[0];
 #endif
 }
 
@@ -478,7 +491,7 @@ SIMDE__SYMBOL_U(mm_cvtsi64_m64) (int64_t a) {
   return SIMDE__M64_C(_mm_cvtsi64_m64(a));
 #  endif
 #else
-  return (SIMDE__SYMBOL_U(_m64)) { .i64 = a };
+  return (SIMDE__SYMBOL_U(_m64)) { .i64 = { a } };
 #endif
 }
 
@@ -599,7 +612,7 @@ SIMDE__SYMBOL_U(mm_or_si64) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b) {
 #if defined(SIMDE__MMX_NATIVE)
   return SIMDE__M64_C(_mm_or_si64(a.n, b.n));
 #else
-  return (SIMDE__SYMBOL_U(_m64)) { .i64 = a.i64 | b.i64 };
+  return (SIMDE__SYMBOL_U(_m64)) { .i64 = { a.i64[0] | b.i64[0] } };
 #endif
 }
 
@@ -848,7 +861,7 @@ SIMDE__SYMBOL_U(mm_sll_pi16) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) cou
   SIMDE__SYMBOL_U(_m64) r;
 
   for (size_t i = 0 ; i < (8 / sizeof(uint16_t)) ; i++) {
-    r.u16[i] = a.u16[i] << count.u64;
+    r.u16[i] = a.u16[i] << count.u64[0];
   }
 
   return r;
@@ -874,7 +887,7 @@ SIMDE__SYMBOL_U(mm_sll_pi32) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) cou
   SIMDE__SYMBOL_U(_m64) r;
 
   for (size_t i = 0 ; i < (8 / sizeof(uint32_t)) ; i++) {
-    r.u32[i] = a.u32[i] << count.u64;
+    r.u32[i] = a.u32[i] << count.u64[0];
   }
 
   return r;
@@ -949,7 +962,7 @@ SIMDE__SYMBOL_U(mm_slli_si64) (SIMDE__SYMBOL_U(_m64) a, int count) {
 #if defined(SIMDE__MMX_NATIVE)
   return SIMDE__M64_C(_mm_slli_si64(a.n, count));
 #else
-  return (SIMDE__SYMBOL_U(_m64)) { .u64 = a.u64 << count };
+  return (SIMDE__SYMBOL_U(_m64)) { .u64 = { a.u64[0] << count } };
 #endif
 }
 
@@ -969,7 +982,7 @@ SIMDE__SYMBOL_U(mm_sll_si64) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) cou
 #if defined(SIMDE__MMX_NATIVE)
   return SIMDE__M64_C(_mm_sll_si64(a.n, count.n));
 #else
-  return (SIMDE__SYMBOL_U(_m64)) { .u64 = a.u64 << count.u64 };
+  return (SIMDE__SYMBOL_U(_m64)) { .u64 = { a.u64[0] << count.u64[0] } };
 #endif
 }
 
@@ -992,7 +1005,7 @@ SIMDE__SYMBOL_U(mm_srl_pi16) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) cou
   SIMDE__SYMBOL_U(_m64) r;
 
   for (size_t i = 0 ; i < (8 / sizeof(uint16_t)) ; i++) {
-    r.u16[i] = a.u16[i] >> count.u64;
+    r.u16[i] = a.u16[i] >> count.u64[0];
   }
 
   return r;
@@ -1018,7 +1031,7 @@ SIMDE__SYMBOL_U(mm_srl_pi32) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) cou
   SIMDE__SYMBOL_U(_m64) r;
 
   for (size_t i = 0 ; i < (8 / sizeof(uint32_t)) ; i++) {
-    r.u32[i] = a.u32[i] >> count.u64;
+    r.u32[i] = a.u32[i] >> count.u64[0];
   }
 
   return r;
@@ -1093,7 +1106,7 @@ SIMDE__SYMBOL_U(mm_srli_si64) (SIMDE__SYMBOL_U(_m64) a, int count) {
 #if defined(SIMDE__MMX_NATIVE)
   return SIMDE__M64_C(_mm_srli_si64(a.n, count));
 #else
-  return (SIMDE__SYMBOL_U(_m64)) { .u64 = a.u64 >> count };
+  return (SIMDE__SYMBOL_U(_m64)) { .u64 = { a.u64[0] >> count } };
 #endif
 }
 
@@ -1113,7 +1126,7 @@ SIMDE__SYMBOL_U(mm_srl_si64) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) cou
 #if defined(SIMDE__MMX_NATIVE)
   return SIMDE__M64_C(_mm_srl_si64(a.n, count.n));
 #else
-  return (SIMDE__SYMBOL_U(_m64)) { .u64 = a.u64 >> count.u64 };
+  return (SIMDE__SYMBOL_U(_m64)) { .u64 = { a.u64[0] >> count.u64[0] } };
 #endif
 }
 
@@ -1192,11 +1205,11 @@ SIMDE__SYMBOL_U(mm_sra_pi16) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) cou
 #else
   SIMDE__SYMBOL_U(_m64) r;
 
-  const uint16_t m = (uint16_t) ((~0U) << ((sizeof(int16_t) * CHAR_BIT) - count.i64));
+  const uint16_t m = (uint16_t) ((~0U) << ((sizeof(int16_t) * CHAR_BIT) - count.i64[0]));
 
   for (size_t i = 0 ; i < (8 / sizeof(int16_t)) ; i++) {
     const uint16_t is_neg = ((uint16_t) (((a.u16[i]) >> ((sizeof(int16_t) * CHAR_BIT) - 1))));
-    r.u16[i] = (a.u16[i] >> count.i64) | (m * is_neg);
+    r.u16[i] = (a.u16[i] >> count.i64[0]) | (m * is_neg);
   }
 
   return r;
@@ -1221,10 +1234,10 @@ SIMDE__SYMBOL_U(mm_sra_pi32) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) cou
 #else
   SIMDE__SYMBOL_U(_m64) r;
 
-  const uint32_t m = (uint32_t) ((~0U) << ((sizeof(int) * CHAR_BIT) - count.i64));
+  const uint32_t m = (uint32_t) ((~0U) << ((sizeof(int) * CHAR_BIT) - count.i64[0]));
   for (size_t i = 0 ; i < (8 / sizeof(int)) ; i++) {
     const uint32_t is_neg = ((uint32_t) (((a.u32[i]) >> ((sizeof(int) * CHAR_BIT) - 1))));
-    r.u32[i] = (a.u32[i] >> count.i64) | (m * is_neg);
+    r.u32[i] = (a.u32[i] >> count.i64[0]) | (m * is_neg);
   }
 
   return r;
@@ -1569,7 +1582,7 @@ SIMDE__SYMBOL_U(mm_xor_si64) (SIMDE__SYMBOL_U(_m64) a, SIMDE__SYMBOL_U(_m64) b) 
 #if defined(SIMDE__MMX_NATIVE)
   return SIMDE__M64_C(_mm_xor_si64(a.n, b.n));
 #else
-  return (SIMDE__SYMBOL_U(_m64)) { .i64 = a.i64 ^ b.i64 };
+  return (SIMDE__SYMBOL_U(_m64)) { .i64 = { a.i64[0] ^ b.i64[0] } };
 #endif
 }
 
@@ -1599,7 +1612,7 @@ SIMDE__SYMBOL_U(m_to_int64) (SIMDE__SYMBOL_U(_m64) a) {
 #if defined(SIMDE__MMX_NATIVE)
   return SIMDE__SYMBOL_U(mm_cvtm64_si64)(a);
 #else
-  return a.i64;
+  return a.i64[0];
 #endif
 }
 

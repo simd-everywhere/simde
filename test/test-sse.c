@@ -36,6 +36,13 @@
   } while (0)
 
 static inline simde__m128
+random_m128_float(void) {
+  simde__m128 r;
+  random_floatv(sizeof(r.f32) / sizeof(r.f32[0]), (float*) &r);
+  return r;
+}
+
+static inline simde__m128
 simde_m128_set_u32(uint32_t a, uint32_t b, uint32_t c, uint32_t d) {
   simde__m128 r;
   uint32_t* rp = (uint32_t*) &r;
@@ -1704,7 +1711,7 @@ test_simde_mm_cvt_ps2pi(const MunitParameter params[], void* data) {
     simde__m128 a;
     simde__m64 r;
 
-    random_floatv(sizeof(a.f32) / sizeof(a.f32[0]), (float*) &a);
+    a = random_m128_float();
 
     r = simde_mm_cvt_ps2pi(a);
 
@@ -2211,7 +2218,7 @@ test_simde_mm_insert_pi16(const MunitParameter params[], void* data) {
     i = munit_rand_int_range(INT16_MIN, INT16_MAX);
 
     r = simde_mm_insert_pi16(a, i, 2);
-    x.i64 = a.i64;
+    x.i64[0] = a.i64[0];
     x.i16[2] = i;
 
     simde_assert_m64_i16(r, ==, x);

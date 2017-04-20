@@ -39,6 +39,10 @@
 #  define SIMDE__ALIGN(alignment)
 #endif
 
+#if HEDLEY_GCC_HAS_ATTRIBUTE(vector_size,4,6,0)
+#  define SIMDE__ENABLE_GCC_VEC_EXT
+#endif
+
 #if defined(__GNUC__)
 #  define SIMDE__FUNCTION_ATTRIBUTES __attribute__((__always_inline__,__gnu_inline__)) static HEDLEY_INLINE
 #else
