@@ -2228,6 +2228,162 @@ test_simde_mm_insert_pi16(const MunitParameter params[], void* data) {
 }
 
 static MunitResult
+test_simde_mm_load_ps(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  for (size_t j = 0 ; j < TEST_PREFERRED_ITERATIONS ; j++) {
+    simde__m128 a, r;
+
+    a = random_m128_float();
+
+    r = simde_mm_load_ps((float*) &a);
+
+    simde_assert_m128_f32(r, ==, a);
+  }
+
+  return MUNIT_OK;
+}
+
+static MunitResult
+test_simde_mm_load_ps1(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  for (size_t j = 0 ; j < TEST_PREFERRED_ITERATIONS ; j++) {
+    simde__m128 r;
+    float a;
+
+    random_floatv(1, &a);
+
+    r = simde_mm_load_ps1(&a);
+
+    for (size_t i = 0 ; i < sizeof(r.f32) / sizeof(r.f32[0]) ; i++) {
+      munit_assert_float(r.f32[i], ==, a);
+    }
+  }
+
+  return MUNIT_OK;
+}
+
+static MunitResult
+test_simde_mm_load_ss(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  for (size_t j = 0 ; j < TEST_PREFERRED_ITERATIONS ; j++) {
+    simde__m128 r;
+    float a;
+
+    r.i32[0] = 0;
+    r.i32[1] = 0;
+    r.i32[2] = 0;
+    r.i32[3] = 0;
+
+    random_floatv(1, &a);
+
+    r = simde_mm_load_ss(&a);
+
+    munit_assert_float(r.f32[0], ==, a);
+    munit_assert_int32(r.i32[1], ==, 0);
+    munit_assert_int32(r.i32[2], ==, 0);
+    munit_assert_int32(r.i32[3], ==, 0);
+  }
+
+  return MUNIT_OK;
+}
+
+static MunitResult
+test_simde_mm_loadh_pi(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  for (size_t j = 0 ; j < TEST_PREFERRED_ITERATIONS ; j++) {
+    simde__m128 a, r;
+    simde__m64 b;
+
+    a = random_m128_float();
+    random_floatv(sizeof(b) / sizeof(float), (float*) &b);
+
+    r = simde_mm_loadh_pi(a, &b);
+
+    munit_assert_double_equal(r.f32[0], a.f32[0], 4);
+    munit_assert_double_equal(r.f32[1], a.f32[1], 4);
+    munit_assert_double_equal(r.f32[2], b.f32[0], 4);
+    munit_assert_double_equal(r.f32[3], b.f32[1], 4);
+  }
+
+  return MUNIT_OK;
+}
+
+static MunitResult
+test_simde_mm_loadl_pi(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  for (size_t j = 0 ; j < TEST_PREFERRED_ITERATIONS ; j++) {
+    simde__m128 a, r;
+    simde__m64 b;
+
+    a = random_m128_float();
+    random_floatv(sizeof(b) / sizeof(float), (float*) &b);
+
+    r = simde_mm_loadl_pi(a, &b);
+
+    munit_assert_double_equal(r.f32[0], b.f32[0], 4);
+    munit_assert_double_equal(r.f32[1], b.f32[1], 4);
+    munit_assert_double_equal(r.f32[2], a.f32[2], 4);
+    munit_assert_double_equal(r.f32[3], a.f32[3], 4);
+  }
+
+  return MUNIT_OK;
+}
+
+static MunitResult
+test_simde_mm_loadr_ps(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  for (size_t j = 0 ; j < TEST_PREFERRED_ITERATIONS ; j++) {
+    simde__m128 r;
+    float a[4];
+
+    random_floatv(sizeof(a) / sizeof(a[0]), a);
+
+    r = simde_mm_loadr_ps(a);
+
+    munit_assert_double_equal(r.f32[0], a[3], 4);
+    munit_assert_double_equal(r.f32[1], a[2], 4);
+    munit_assert_double_equal(r.f32[2], a[1], 4);
+    munit_assert_double_equal(r.f32[3], a[0], 4);
+  }
+
+  return MUNIT_OK;
+}
+
+static MunitResult
+test_simde_mm_loadu_ps(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  for (size_t j = 0 ; j < TEST_PREFERRED_ITERATIONS ; j++) {
+    simde__m128 r;
+    float a[4];
+
+    random_floatv(sizeof(a) / sizeof(a[0]), a);
+
+    r = simde_mm_loadu_ps(a);
+
+    munit_assert_double_equal(r.f32[0], a[0], 4);
+    munit_assert_double_equal(r.f32[1], a[1], 4);
+    munit_assert_double_equal(r.f32[2], a[2], 4);
+    munit_assert_double_equal(r.f32[3], a[3], 4);
+  }
+
+  return MUNIT_OK;
+}
+
+static MunitResult
 test_simde_mm_sub_ps(const MunitParameter params[], void* data) {
   (void) params;
   (void) data;
@@ -2307,6 +2463,13 @@ static MunitTest test_suite_tests[] = {
   { (char*) "/sse/mm_div_ss",        test_simde_mm_div_ss,        NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
   { (char*) "/sse/mm_extract_pi16",  test_simde_mm_extract_pi16,  NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
   { (char*) "/sse/mm_insert_pi16",   test_simde_mm_insert_pi16,   NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/sse/mm_load_ps",       test_simde_mm_load_ps,       NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/sse/mm_load_ps1",      test_simde_mm_load_ps1,      NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/sse/mm_load_ss",       test_simde_mm_load_ss,       NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/sse/mm_loadh_pi",      test_simde_mm_loadh_pi,      NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/sse/mm_loadl_pi",      test_simde_mm_loadl_pi,      NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/sse/mm_loadr_ps",      test_simde_mm_loadr_ps,      NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/sse/mm_loadu_ps",      test_simde_mm_loadu_ps,      NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
   { (char*) "/sse/mm_sub_ps",        test_simde_mm_sub_ps,        NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
 
   { NULL, NULL, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL }

@@ -902,6 +902,117 @@ SIMDE__SYMBOL_U(mm_insert_pi16) (SIMDE__SYMBOL_U(_m64) a, int16_t i, const int i
 #endif
 }
 
+SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL_U(_m128)
+SIMDE__SYMBOL_U(mm_load_ps) (float const mem_addr[HEDLEY_ARRAY_PARAM(4)]) {
+#if defined(SIMDE__SSE_NATIVE)
+  return SIMDE__M128_C(_mm_load_ps(mem_addr));
+#else
+  SIMDE__SYMBOL_U(_m128) r;
+  memcpy(&r, mem_addr, sizeof(r.f32));
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL_U(_m128)
+SIMDE__SYMBOL_U(mm_load_ps1) (float const* mem_addr) {
+#if defined(SIMDE__SSE_NATIVE)
+  return SIMDE__M128_C(_mm_load_ps1(mem_addr));
+#else
+  SIMDE__SYMBOL_U(_m128) r;
+  for (size_t i = 0 ; i < (sizeof(r.i32) / sizeof(r.i32[0])) ; i++) {
+    r.f32[i] = *mem_addr;
+  }
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL_U(_m128)
+SIMDE__SYMBOL_U(mm_load_ss) (float const* mem_addr) {
+#if defined(SIMDE__SSE_NATIVE)
+  return SIMDE__M128_C(_mm_load_ss(mem_addr));
+#else
+  SIMDE__SYMBOL_U(_m128) r;
+  r.f32[0] = *mem_addr;
+  r.i32[1] = 0;
+  r.i32[2] = 0;
+  r.i32[3] = 0;
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL_U(_m128)
+SIMDE__SYMBOL_U(mm_load1_ps) (float const* mem_addr) {
+#if defined(SIMDE__SSE_NATIVE)
+  return SIMDE__M128_C(_mm_load1_ps(mem_addr));
+#else
+  return SIMDE__SYMBOL_U(mm_load_ps1)(mem_addr);
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL_U(_m128)
+SIMDE__SYMBOL_U(mm_loadh_pi) (SIMDE__SYMBOL_U(_m128) a, SIMDE__SYMBOL_U(_m64) const* mem_addr) {
+#if defined(SIMDE__SSE_NATIVE)
+  return SIMDE__M128_C(_mm_loadh_pi(a.n, (__m64*) mem_addr));
+#else
+  SIMDE__SYMBOL_U(_m128) r;
+  r.f32[0] = a.f32[0];
+  r.f32[1] = a.f32[1];
+  r.f32[2] = mem_addr->f32[0];
+  r.f32[3] = mem_addr->f32[1];
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL_U(_m128)
+SIMDE__SYMBOL_U(mm_loadl_pi) (SIMDE__SYMBOL_U(_m128) a, SIMDE__SYMBOL_U(_m64) const* mem_addr) {
+#if defined(SIMDE__SSE_NATIVE)
+  return SIMDE__M128_C(_mm_loadl_pi(a.n, (__m64*) mem_addr));
+#else
+  SIMDE__SYMBOL_U(_m128) r;
+  r.f32[0] = mem_addr->f32[0];
+  r.f32[1] = mem_addr->f32[1];
+  r.f32[2] = a.f32[2];
+  r.f32[3] = a.f32[3];
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL_U(_m128)
+SIMDE__SYMBOL_U(mm_loadr_ps) (float const mem_addr[HEDLEY_ARRAY_PARAM(4)]) {
+#if defined(SIMDE__SSE_NATIVE)
+  return SIMDE__M128_C(_mm_loadr_ps(mem_addr));
+#else
+  SIMDE__SYMBOL_U(_m128) r;
+  r.f32[0] = mem_addr[3];
+  r.f32[1] = mem_addr[2];
+  r.f32[2] = mem_addr[1];
+  r.f32[3] = mem_addr[0];
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL_U(_m128)
+SIMDE__SYMBOL_U(mm_loadu_ps) (float const mem_addr[HEDLEY_ARRAY_PARAM(4)]) {
+#if defined(SIMDE__SSE_NATIVE)
+  return SIMDE__M128_C(_mm_loadu_ps(mem_addr));
+#else
+  SIMDE__SYMBOL_U(_m128) r;
+  r.f32[0] = mem_addr[0];
+  r.f32[1] = mem_addr[1];
+  r.f32[2] = mem_addr[2];
+  r.f32[3] = mem_addr[3];
+  return r;
+#endif
+}
+
 enum {
 #if defined(SIMDE__SSE_NATIVE)
   SIMDE__SYMBOL_U(MM_ROUND_NEAREST)     = _MM_ROUND_NEAREST,
