@@ -101,6 +101,62 @@ SIMDE__SYMBOL(mm_add_epi8) (SIMDE__SYMBOL(_m128i) a, SIMDE__SYMBOL(_m128i) b) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL(_m128i)
+SIMDE__SYMBOL(mm_andnot_si128) (SIMDE__SYMBOL(_m128i) a, SIMDE__SYMBOL(_m128i) b) {
+#if defined(SIMDE__SSE2_NATIVE)
+  return SIMDE__M128I_C(_mm_andnot_si128(a.n, b.n));
+#else
+  SIMDE__SYMBOL(_m128i) r;
+  for (size_t i = 0 ; i < (sizeof(r.i64) / sizeof(r.i64[0])) ; i++) {
+    r.i64[i] = ~(a.i64[i]) & ~(b.i64[i]);
+  }
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL(_m128i)
+SIMDE__SYMBOL(mm_and_si128) (SIMDE__SYMBOL(_m128i) a, SIMDE__SYMBOL(_m128i) b) {
+#if defined(SIMDE__SSE2_NATIVE)
+  return SIMDE__M128I_C(_mm_and_si128(a.n, b.n));
+#else
+  SIMDE__SYMBOL(_m128i) r;
+  for (size_t i = 0 ; i < (sizeof(r.i64) / sizeof(r.i64[0])) ; i++) {
+    r.i64[i] = ~(a.i64[i]) & b.i64[i];
+  }
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL(_m128i)
+SIMDE__SYMBOL(mm_cmpeq_epi8) (SIMDE__SYMBOL(_m128i) a, SIMDE__SYMBOL(_m128i) b) {
+#if defined(SIMDE__SSE2_NATIVE)
+  return SIMDE__M128I_C(_mm_cmpeq_epi8(a.n, b.n));
+#else
+  SIMDE__SYMBOL(_m128i) r;
+  for (size_t i = 0 ; i < (sizeof(r.u8) / sizeof(r.u8[0])) ; i++) {
+    r.u8[i] = (a.u8[i] == b.u8[i]) ? 0xff : 0x00;
+  }
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL(_m128i)
+SIMDE__SYMBOL(mm_cmplt_epi8) (SIMDE__SYMBOL(_m128i) a, SIMDE__SYMBOL(_m128i) b) {
+#if defined(SIMDE__SSE2_NATIVE)
+  return SIMDE__M128I_C(_mm_cmplt_epi8(a.n, b.n));
+#else
+  SIMDE__SYMBOL(_m128i) r;
+  for (size_t i = 0 ; i < (sizeof(r.u8) / sizeof(r.u8[0])) ; i++) {
+    r.u8[i] = (a.u8[i] < b.u8[i]) ? 0xff : 0x00;
+  }
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL(_m128i)
 SIMDE__SYMBOL(mm_set_epi8) (int8_t e15, int8_t e14, int8_t e13, int8_t e12,
 			     int8_t e11, int8_t e10, int8_t  e9, int8_t  e8,
 			     int8_t  e7, int8_t  e6, int8_t  e5, int8_t  e4,
