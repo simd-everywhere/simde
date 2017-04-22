@@ -39,6 +39,8 @@ int main(int argc, char* argv[MUNIT_ARRAY_PARAM(argc + 1)]) {
     simde_sse2_test_suite,
     simde_sse3_test_suite,
     simde_ssse3_test_suite,
+    simde_sse4_1_test_suite,
+    simde_sse4_2_test_suite,
     { 0, },
   };
 

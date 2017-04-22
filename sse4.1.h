@@ -25,7 +25,7 @@
 #  if !defined(SIMDE__SSE4_1_H)
 #    define SIMDE__SSE4_1_H
 #  endif
-#  include "sse3.h"
+#  include "ssse3.h"
 
 #  if defined(SIMDE_SSE4_1_NATIVE)
 #    undef SIMDE_SSE4_1_NATIVE
@@ -49,4 +49,48 @@
 #    include <smmintrin.h>
 #  endif
 
-#endif /* !defined(SIMDE__SSE2_H) */
+SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL(_m128i)
+SIMDE__SYMBOL(mm_blendv_epi8) (SIMDE__SYMBOL(_m128i) a, SIMDE__SYMBOL(_m128i) b, SIMDE__SYMBOL(_m128i) mask) {
+#if defined(SIMDE_SSE4_1_NATIVE)
+  return SIMDE__M128I_C(_mm_blendv_epi8(a.n, b.n, mask.n));
+#else
+  SIMDE__SYMBOL(_m128i) r;
+  for (size_t i = 0 ; i < (sizeof(r.u8) / sizeof(r.u8[0])) ; i++) {
+    if (mask.u8[i] & 0x80) {
+      r.u8[i] = b.u8[i];
+    } else {
+      r.u8[i] = a.u8[i];
+    }
+  }
+  return r;
+#endif
+}
+
+#if defined(simde_mm_extract_epi64)
+#  undef simde_mm_extract_epi64
+#endif
+SIMDE__FUNCTION_ATTRIBUTES
+int64_t
+SIMDE__SYMBOL(mm_extract_epi64) (SIMDE__SYMBOL(_m128i) a, const int imm8) {
+  return a.u64[imm8];
+}
+#if defined(SIMDE_SSE4_1_NATIVE)
+#  define simde_mm_extract_epi64(a, imm8) _mm_extract_epi64(a.n, imm8)
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL(_m128i)
+SIMDE__SYMBOL(mm_min_epi8) (SIMDE__SYMBOL(_m128i) a, SIMDE__SYMBOL(_m128i) b) {
+#if defined(SIMDE_SSE2_NATIVE)
+  return SIMDE__M128I_C(_mm_min_epi8(a.n, b.n));
+#else
+  SIMDE__SYMBOL(_m128i) r;
+  for (size_t i = 0 ; i < (sizeof(r.i8) / sizeof(r.i8[0])) ; i++) {
+    r.i8[i] = a.i8[i] < b.i8[i] ? a.i8[i] : b.i8[i];
+  }
+  return r;
+#endif
+}
+
+#endif /* !defined(SIMDE__SSE4_1_H) */
