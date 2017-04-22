@@ -82,7 +82,7 @@ SIMDE__SYMBOL(mm_extract_epi64) (SIMDE__SYMBOL(_m128i) a, const int imm8) {
 SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL(_m128i)
 SIMDE__SYMBOL(mm_min_epi8) (SIMDE__SYMBOL(_m128i) a, SIMDE__SYMBOL(_m128i) b) {
-#if defined(SIMDE_SSE2_NATIVE)
+#if defined(SIMDE_SSE2_NATIVE) && !defined(__PGI)
   return SIMDE__M128I_C(_mm_min_epi8(a.n, b.n));
 #else
   SIMDE__SYMBOL(_m128i) r;

@@ -192,7 +192,7 @@ SIMDE__SYMBOL(mm_cmplt_epi8) (SIMDE__SYMBOL(_m128i) a, SIMDE__SYMBOL(_m128i) b) 
 SIMDE__FUNCTION_ATTRIBUTES
 int64_t
 SIMDE__SYMBOL(mm_cvtsi128_si64) (SIMDE__SYMBOL(_m128i) a) {
-#if defined(SIMDE_SSE2_NATIVE)
+#if defined(SIMDE_SSE2_NATIVE) && !defined(__PGI)
   return _mm_cvtsi128_si64(a.n);
 #else
   return a.i64[0];
@@ -366,7 +366,7 @@ SIMDE__SYMBOL(mm_srli_si128) (SIMDE__SYMBOL(_m128i) a, const int imm8) {
 
   return r;
 }
-#if defined(SIMDE_SSE2_NATIVE)
+#if defined(SIMDE_SSE2_NATIVE) && !defined(__PGI)
 #  define simde_mm_srli_si128(a, imm8) SIMDE__M128I_C(_mm_srli_si128(a.n, imm8))
 #endif
 
