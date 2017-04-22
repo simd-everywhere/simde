@@ -73,7 +73,9 @@
 #if defined(HEDLEY_INTEL_VERSION_CHECK)
 #  undef HEDLEY_INTEL_VERSION_CHECK
 #endif
-#if defined(__INTEL_COMPILER)
+#if defined(__INTEL_COMPILER) && defined(__INTEL_COMPILER_UPDATE)
+#  define HEDELY_INTEL_VERSION_CHECK(major, minor, patch) ((__INTEL_COMPILER + __INTEL_COMPILER_UPDATE) >= (((major) * 100) + (minor)))
+#elif defined(__INTEL_COMPILER)
 #  define HEDLEY_INTEL_VERSION_CHECK(major,minor,patch) (__INTEL_COMPILER >= (((major) * 100) + (minor)))
 #else
 #  define HEDLEY_INTEL_VERSION_CHECK(major,minor,patch) 0
@@ -468,6 +470,8 @@
 #endif
 #if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 201112L
 #  define HEDLEY_STATIC_ASSERT(expr, message) _Static_assert(expr, message)
+#elif defined(__cplusplus) && __cplusplus >= 201103L
+#  define HEDLEY_STATIC_ASSERT(expr, message) static_assert(expr, message)
 #elif HEDLEY_GCC_HAS_FEATURE(c_static_assert,4,6,0)
 #  define HEDLEY_STATIC_ASSERT(expr, message) _Static_assert(expr, message)
 #elif HEDLEY_MSVC_VERSION_CHECK(16,0,0)
@@ -517,9 +521,7 @@
 #if defined(HEDLEY_ASSUME_ALIGNED)
 #  undef HEDLEY_ASSUME_ALIGNED
 #endif
-#if defined(_OPENMP) && (_OPENMP >= 201307L)
-#  define HEDLEY_ASSUME_ALIGNED(ptr, align) HEDLEY_PRAGMA(omp simd aligned(ptr:align))
-#elif HEDLEY_INTEL_VERSION_CHECK(9,0,0)
+#if HEDLEY_INTEL_VERSION_CHECK(9,0,0)
 #  define HEDLEY_ASSUME_ALIGNED(ptr, align) __assume_aligned(ptr, align)
 #elif HEDLEY_MSVC_VERSION_CHECK(13,10,0)
 #  define HEDLEY_ASSUME_ALIGNED(ptr, align) __assume((((char*) ptr) - ((char*) 0)) % (align) == 0)
