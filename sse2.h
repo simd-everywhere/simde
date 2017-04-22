@@ -203,7 +203,11 @@ SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL(_m128i)
 SIMDE__SYMBOL(mm_cvtsi64_si128) (int64_t a) {
 #if defined(SIMDE_SSE2_NATIVE)
+#if !defined(__PGI)
   return SIMDE__M128I_C(_mm_cvtsi64_si128(a));
+#else
+  return SIMDE__M128I_C(_mm_cvtsi64x_si128(a));
+#endif
 #else
   SIMDE__SYMBOL(_m128i) r;
   r.i64[0] = a;
