@@ -86,29 +86,6 @@ test_simde_mm_alignr_epi8(const MunitParameter params[], void* data) {
 			0x07, 0x5c, 0x3c, 0x82, 0x4e, 0x4e, 0x8f, 0x89) }
   };
 
-  /* for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) { */
-  /*   simde__m128i a, b, r; */
-
-  /*   munit_rand_memory(sizeof(a), (uint8_t*) &a); */
-  /*   munit_rand_memory(sizeof(b), (uint8_t*) &b); */
-
-  /*   r = simde_mm_alignr_epi8(a, b, 17); */
-
-  /*   printf("{ simde_mm_set_epi8(0x%02hhx, 0x%02hhx, 0x%02hhx, 0x%02hhx, 0x%02hhx, 0x%02hhx, 0x%02hhx, 0x%02hhx,\n", */
-  /*   	   a.i8[15], a.i8[14], a.i8[13], a.i8[12], a.i8[11], a.i8[10], a.i8[9], a.i8[8]); */
-  /*   printf("                    0x%02hhx, 0x%02hhx, 0x%02hhx, 0x%02hhx, 0x%02hhx, 0x%02hhx, 0x%02hhx, 0x%02hhx),\n", */
-  /*   	   a.i8[7], a.i8[6], a.i8[5], a.i8[4], a.i8[3], a.i8[2], a.i8[1], a.i8[0]); */
-  /*   printf("  simde_mm_set_epi8(0x%02hhx, 0x%02hhx, 0x%02hhx, 0x%02hhx, 0x%02hhx, 0x%02hhx, 0x%02hhx, 0x%02hhx,\n", */
-  /*   	   b.i8[15], b.i8[14], b.i8[13], b.i8[12], b.i8[11], b.i8[10], b.i8[9], b.i8[8]); */
-  /*   printf("                    0x%02hhx, 0x%02hhx, 0x%02hhx, 0x%02hhx, 0x%02hhx, 0x%02hhx, 0x%02hhx, 0x%02hhx),\n", */
-  /*   	   b.i8[7], b.i8[6], b.i8[5], b.i8[4], b.i8[3], b.i8[2], b.i8[1], b.i8[0]); */
-  /*   printf("  simde_mm_set_epi8(0x%02hhx, 0x%02hhx, 0x%02hhx, 0x%02hhx, 0x%02hhx, 0x%02hhx, 0x%02hhx, 0x%02hhx,\n", */
-  /*   	   r.i8[15], r.i8[14], r.i8[13], r.i8[12], r.i8[11], r.i8[10], r.i8[9], r.i8[8]); */
-  /*   printf("                    0x%02hhx, 0x%02hhx, 0x%02hhx, 0x%02hhx, 0x%02hhx, 0x%02hhx, 0x%02hhx, 0x%02hhx) },\n", */
-  /*   	   r.i8[7], r.i8[6], r.i8[5], r.i8[4], r.i8[3], r.i8[2], r.i8[1], r.i8[0]); */
-  /* } */
-  /* return MUNIT_FAIL; */
-
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m128i r = simde_mm_alignr_epi8(test_vec[i].a, test_vec[i].b, 17);
     assert_m128i_epi8(r, ==, test_vec[i].r);
@@ -177,35 +154,8 @@ test_simde_mm_shuffle_epi8(const MunitParameter params[], void* data) {
 			0x00, 0x00, 0x01, 0x78, 0x79, 0xbe, 0xeb, 0x78) }
   };
 
-  /* for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) { */
-  /*   simde__m128i a, b, r; */
-
-  /*   munit_rand_memory(sizeof(a), (uint8_t*) &a); */
-  /*   munit_rand_memory(sizeof(b), (uint8_t*) &b); */
-
-  /*   r = simde_mm_shuffle_epi8(a, b); */
-
-  /*   printf("{ simde_mm_set_epi8(0x%02hhx, 0x%02hhx, 0x%02hhx, 0x%02hhx, 0x%02hhx, 0x%02hhx, 0x%02hhx, 0x%02hhx,\n", */
-  /*   	   a.i8[15], a.i8[14], a.i8[13], a.i8[12], a.i8[11], a.i8[10], a.i8[9], a.i8[8]); */
-  /*   printf("                    0x%02hhx, 0x%02hhx, 0x%02hhx, 0x%02hhx, 0x%02hhx, 0x%02hhx, 0x%02hhx, 0x%02hhx),\n", */
-  /*   	   a.i8[7], a.i8[6], a.i8[5], a.i8[4], a.i8[3], a.i8[2], a.i8[1], a.i8[0]); */
-  /*   printf("  simde_mm_set_epi8(0x%02hhx, 0x%02hhx, 0x%02hhx, 0x%02hhx, 0x%02hhx, 0x%02hhx, 0x%02hhx, 0x%02hhx,\n", */
-  /*   	   b.i8[15], b.i8[14], b.i8[13], b.i8[12], b.i8[11], b.i8[10], b.i8[9], b.i8[8]); */
-  /*   printf("                    0x%02hhx, 0x%02hhx, 0x%02hhx, 0x%02hhx, 0x%02hhx, 0x%02hhx, 0x%02hhx, 0x%02hhx),\n", */
-  /*   	   b.i8[7], b.i8[6], b.i8[5], b.i8[4], b.i8[3], b.i8[2], b.i8[1], b.i8[0]); */
-  /*   printf("  simde_mm_set_epi8(0x%02hhx, 0x%02hhx, 0x%02hhx, 0x%02hhx, 0x%02hhx, 0x%02hhx, 0x%02hhx, 0x%02hhx,\n", */
-  /*   	   r.i8[15], r.i8[14], r.i8[13], r.i8[12], r.i8[11], r.i8[10], r.i8[9], r.i8[8]); */
-  /*   printf("                    0x%02hhx, 0x%02hhx, 0x%02hhx, 0x%02hhx, 0x%02hhx, 0x%02hhx, 0x%02hhx, 0x%02hhx) },\n", */
-  /*   	   r.i8[7], r.i8[6], r.i8[5], r.i8[4], r.i8[3], r.i8[2], r.i8[1], r.i8[0]); */
-  /* } */
-  /* return MUNIT_FAIL; */
-
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m128i r = simde_mm_shuffle_epi8(test_vec[i].a, test_vec[i].b);
-    debug_array_u8("\na", sizeof(test_vec[i].a.u8) / sizeof(test_vec[i].a.u8[0]), (uint8_t*) &(test_vec[i].a.u8));
-    debug_array_u8("b", sizeof(test_vec[i].b.u8) / sizeof(test_vec[i].b.u8[0]), (uint8_t*) &(test_vec[i].b.u8));
-    debug_array_u8("x", sizeof(test_vec[i].r.u8) / sizeof(test_vec[i].r.u8[0]), (uint8_t*) &(test_vec[i].r.u8));
-    debug_array_u8("r", sizeof(r.u8) / sizeof(r.u8[0]), (uint8_t*) &(r.u8));
     assert_m128i_epi8(r, ==, test_vec[i].r);
   }
 
@@ -213,8 +163,8 @@ test_simde_mm_shuffle_epi8(const MunitParameter params[], void* data) {
 }
 
 static MunitTest test_suite_tests[] = {
-  { (char*) "/sse2/mm_alignr_epi8",      test_simde_mm_alignr_epi8,      NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/sse2/mm_shuffle_epi8",     test_simde_mm_shuffle_epi8,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mm_alignr_epi8",      test_simde_mm_alignr_epi8,      NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mm_shuffle_epi8",     test_simde_mm_shuffle_epi8,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
 
   { NULL, NULL, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL }
 };
