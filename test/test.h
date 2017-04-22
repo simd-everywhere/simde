@@ -33,6 +33,10 @@
 const MunitSuite simde_mmx_test_suite;
 const MunitSuite simde_sse_test_suite;
 const MunitSuite simde_sse2_test_suite;
+const MunitSuite simde_sse3_test_suite;
+const MunitSuite simde_ssse3_test_suite;
+const MunitSuite simde_sse4_1_test_suite;
+const MunitSuite simde_sse4_2_test_suite;
 
 void debug_array_u8(const char* prefix, size_t nmemb, uint8_t v[HEDLEY_ARRAY_PARAM(nmemb)]);
 void debug_array_u16(const char* prefix, size_t nmemb, uint16_t v[HEDLEY_ARRAY_PARAM(nmemb)]);
@@ -150,5 +154,58 @@ double random_double_range(double min, double max);
 #else
 #  define SIMDE_SKIP_PGI(bug_url)
 #endif
+
+/* Macros to verify results */
+
+#define assert_m128i_epi8(a, cmp, b)					\
+  do {									\
+    munit_assert_int8(((int8_t*) (&a))[ 0], cmp, ((int8_t*) (&b))[ 0]);	\
+    munit_assert_int8(((int8_t*) (&a))[ 1], cmp, ((int8_t*) (&b))[ 1]);	\
+    munit_assert_int8(((int8_t*) (&a))[ 2], cmp, ((int8_t*) (&b))[ 2]);	\
+    munit_assert_int8(((int8_t*) (&a))[ 3], cmp, ((int8_t*) (&b))[ 3]);	\
+    munit_assert_int8(((int8_t*) (&a))[ 4], cmp, ((int8_t*) (&b))[ 4]);	\
+    munit_assert_int8(((int8_t*) (&a))[ 5], cmp, ((int8_t*) (&b))[ 5]);	\
+    munit_assert_int8(((int8_t*) (&a))[ 6], cmp, ((int8_t*) (&b))[ 6]);	\
+    munit_assert_int8(((int8_t*) (&a))[ 7], cmp, ((int8_t*) (&b))[ 7]);	\
+    munit_assert_int8(((int8_t*) (&a))[ 8], cmp, ((int8_t*) (&b))[ 8]);	\
+    munit_assert_int8(((int8_t*) (&a))[ 9], cmp, ((int8_t*) (&b))[ 9]);	\
+    munit_assert_int8(((int8_t*) (&a))[10], cmp, ((int8_t*) (&b))[10]);	\
+    munit_assert_int8(((int8_t*) (&a))[11], cmp, ((int8_t*) (&b))[11]);	\
+    munit_assert_int8(((int8_t*) (&a))[12], cmp, ((int8_t*) (&b))[12]);	\
+    munit_assert_int8(((int8_t*) (&a))[13], cmp, ((int8_t*) (&b))[13]);	\
+    munit_assert_int8(((int8_t*) (&a))[14], cmp, ((int8_t*) (&b))[14]);	\
+    munit_assert_int8(((int8_t*) (&a))[15], cmp, ((int8_t*) (&b))[15]);	\
+  } while (0)
+
+#define assert_m128i_epi16(a, cmp, b)					\
+  do {									\
+    munit_assert_int16(((int16_t*) (&a))[ 0], cmp, ((int16_t*) (&b))[ 0]);	\
+    munit_assert_int16(((int16_t*) (&a))[ 1], cmp, ((int16_t*) (&b))[ 1]);	\
+    munit_assert_int16(((int16_t*) (&a))[ 2], cmp, ((int16_t*) (&b))[ 2]);	\
+    munit_assert_int16(((int16_t*) (&a))[ 3], cmp, ((int16_t*) (&b))[ 3]);	\
+    munit_assert_int16(((int16_t*) (&a))[ 4], cmp, ((int16_t*) (&b))[ 4]);	\
+    munit_assert_int16(((int16_t*) (&a))[ 5], cmp, ((int16_t*) (&b))[ 5]);	\
+    munit_assert_int16(((int16_t*) (&a))[ 6], cmp, ((int16_t*) (&b))[ 6]);	\
+    munit_assert_int16(((int16_t*) (&a))[ 7], cmp, ((int16_t*) (&b))[ 7]);	\
+  } while (0)
+
+#define assert_m128i_epi32(a, cmp, b)					\
+  do {									\
+    munit_assert_int32(((int32_t*) (&a))[ 0], cmp, ((int32_t*) (&b))[ 0]);	\
+    munit_assert_int32(((int32_t*) (&a))[ 1], cmp, ((int32_t*) (&b))[ 1]);	\
+    munit_assert_int32(((int32_t*) (&a))[ 2], cmp, ((int32_t*) (&b))[ 2]);	\
+    munit_assert_int32(((int32_t*) (&a))[ 3], cmp, ((int32_t*) (&b))[ 3]);	\
+  } while (0)
+
+#define assert_m128i_epi64(a, cmp, b)					\
+  do {									\
+    munit_assert_int64(((int64_t*) (&a))[ 0], cmp, ((int64_t*) (&b))[ 0]);	\
+    munit_assert_int64(((int64_t*) (&a))[ 1], cmp, ((int64_t*) (&b))[ 1]);	\
+  } while (0)
+
+#define assert_m128d_epi8(a, cmp, b)  assert_m128i_epi8(a, cmp, b)
+#define assert_m128d_epi16(a, cmp, b) assert_m128i_epi16(a, cmp, b)
+#define assert_m128d_epi32(a, cmp, b) assert_m128i_epi32(a, cmp, b)
+#define assert_m128d_epi64(a, cmp, b) assert_m128i_epi64(a, cmp, b)
 
 #endif /* !defined(SIMDE_TEST_H) */

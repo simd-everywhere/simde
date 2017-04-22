@@ -51,7 +51,11 @@ set(TEST_SOURCES
   test-common.c
   test-mmx.c
   test-sse.c
-  test-sse2.c)
+  test-sse2.c
+  test-sse3.c
+  test-ssse3.c
+  test-sse4.1.c
+  test-sse4.2.c)
 
 set_compiler_specific_flags(
   VARIABLE extra_cflags
@@ -61,7 +65,7 @@ set_compiler_specific_flags(
 foreach(variant native emul)
   add_executable(test-${variant} ${TEST_SOURCES})
   target_link_libraries(test-${variant} munit m)
-  foreach(tst "/mmx" "/sse")
+  foreach(tst "/mmx" "/sse" "/sse2" "/sse3" "/ssse3" "/sse4.1" "/sse4.2")
     add_test(NAME "/${variant}${tst}" COMMAND $<TARGET_FILE:test-${variant}> "/${variant}${tst}")
   endforeach()
   target_add_extra_warning_flags(test-${variant})

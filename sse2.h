@@ -63,6 +63,7 @@ typedef union {
   uint32_t       u32 __attribute__((__vector_size__(16), __may_alias__));
   uint64_t       u64 __attribute__((__vector_size__(16), __may_alias__));
   float          f32 __attribute__((__vector_size__(16), __may_alias__));
+  double         f64 __attribute__((__vector_size__(16), __may_alias__));
 #else
   int8_t         i8[16];
   int16_t        i16[8];
@@ -73,6 +74,7 @@ typedef union {
   uint32_t       u32[4];
   uint64_t       u64[2];
   float          f32[4];
+  double         f64[2];
 #endif
 
 #if defined(SIMDE_SSE2_NATIVE)
@@ -80,9 +82,41 @@ typedef union {
 #endif
 } SIMDE__SYMBOL(_m128i);
 
+typedef union {
+#if defined(SIMDE__ENABLE_GCC_VEC_EXT)
+  int8_t          i8 __attribute__((__vector_size__(16), __may_alias__));
+  int16_t        i16 __attribute__((__vector_size__(16), __may_alias__));
+  int32_t        i32 __attribute__((__vector_size__(16), __may_alias__));
+  int64_t        i64 __attribute__((__vector_size__(16), __may_alias__));
+  uint8_t         u8 __attribute__((__vector_size__(16), __may_alias__));
+  uint16_t       u16 __attribute__((__vector_size__(16), __may_alias__));
+  uint32_t       u32 __attribute__((__vector_size__(16), __may_alias__));
+  uint64_t       u64 __attribute__((__vector_size__(16), __may_alias__));
+  float          f32 __attribute__((__vector_size__(16), __may_alias__));
+  double         f64 __attribute__((__vector_size__(16), __may_alias__));
+#else
+  int8_t         i8[16];
+  int16_t        i16[8];
+  int32_t        i32[4];
+  int64_t        i64[2];
+  uint8_t        u8[16];
+  uint16_t       u16[8];
+  uint32_t       u32[4];
+  uint64_t       u64[2];
+  float          f32[4];
+  double         f64[2];
+#endif
+
+#if defined(SIMDE_SSE3_NATIVE)
+  __m128d        n;
+#endif
+} SIMDE__SYMBOL(_m128d);
+
 #if defined(SIMDE_SSE2_NATIVE)
 HEDLEY_STATIC_ASSERT(sizeof(__m128i) == sizeof(SIMDE__SYMBOL(_m128i)), "__m128i size incorrect");
+HEDLEY_STATIC_ASSERT(sizeof(__m128d) == sizeof(SIMDE__SYMBOL(_m128d)), "__m128d size incorrect");
 #define SIMDE__M128I_C(expr) ((SIMDE__SYMBOL(_m128i)) { .n = expr })
+#define SIMDE__M128D_C(expr) ((SIMDE__SYMBOL(_m128d)) { .n = expr })
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
