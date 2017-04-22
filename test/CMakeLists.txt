@@ -59,8 +59,8 @@ set(TEST_SOURCES
 
 set_compiler_specific_flags(
   VARIABLE extra_cflags
-  INTEL -wd3179
-  GCCISH -march=native)
+  INTEL -wd3179 -qopenmp-simd -DSIMDE_ENABLE_OPENMP
+  GCCISH -march=native -fopenmp-simd -DSIMDE_ENABLE_OPENMP)
 
 foreach(variant native emul)
   add_executable(test-${variant} ${TEST_SOURCES})

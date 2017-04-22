@@ -41,6 +41,31 @@
 #  define SIMDE__ENABLE_GCC_VEC_EXT
 #endif
 
+#if !defined(SIMDE_ENABLE_OPENMP) && ((defined(_OPENMP) && (_OPENMP >= 201307L)) || (defined(_OPENMP_SIMD) && (_OPENMP_SIMD >= 201307L)))
+#  define SIMDE_ENABLE_OPENMP
+#endif
+
+#if !defined(SIMDE_ENABLE_CILKPLUS) && defined(__cilk)
+#  define SIMDE_ENABLE_CILKPLUS
+#endif
+
+#if defined(SIMDE_ENABLE_OPENMP)
+#  define SIMDE__VECTORIZE _Pragma("omp simd")
+#  define SIMDE__VECTORIZE_SAFELEN(l) HEDLEY_PRAGMA(omp simd safelen(l))
+#elif defined(SIMDE_ENABLE_CILKPLUS)
+#  define SIMDE__VECTORIZE _Pragma("simd")
+#  define SIMDE__VECTORIZE_SAFELEN(l) HEDLEY_PRAGMA(simd vectorlength(l))
+#elif HEDLEY_GCC_VERSION_CHECK(4,9,0)
+#  define SIMDE__VECTORIZE _Pragma("GCC ivdep")
+#  define SIMDE__VECTORIZE_SAFELEN(l) SIMDE__VECTORIZE
+#elif defined(__clang__)
+#  define SIMDE__VECTORIZE _Pragma("clang loop vectorize(enable)")
+#  define SIMDE__VECTORIZE_SAFELEN(l) HEDLEY_PRAGMA(clang loop vectorize_width(2))
+#else
+#  define SIMDE__VECTORIZE
+#  define SIMDE__VECTORIZE_SAFELEN(l)
+#endif
+
 #if defined(__GNUC__)
 #  define SIMDE__FUNCTION_ATTRIBUTES __attribute__((__always_inline__,__gnu_inline__)) static HEDLEY_INLINE
 #else

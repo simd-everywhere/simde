@@ -56,6 +56,7 @@ SIMDE__SYMBOL(mm_blendv_epi8) (SIMDE__SYMBOL(_m128i) a, SIMDE__SYMBOL(_m128i) b,
   return SIMDE__M128I_C(_mm_blendv_epi8(a.n, b.n, mask.n));
 #else
   SIMDE__SYMBOL(_m128i) r;
+  SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.u8) / sizeof(r.u8[0])) ; i++) {
     if (mask.u8[i] & 0x80) {
       r.u8[i] = b.u8[i];
@@ -86,6 +87,7 @@ SIMDE__SYMBOL(mm_min_epi8) (SIMDE__SYMBOL(_m128i) a, SIMDE__SYMBOL(_m128i) b) {
   return SIMDE__M128I_C(_mm_min_epi8(a.n, b.n));
 #else
   SIMDE__SYMBOL(_m128i) r;
+  SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i8) / sizeof(r.i8[0])) ; i++) {
     r.i8[i] = a.i8[i] < b.i8[i] ? a.i8[i] : b.i8[i];
   }

@@ -74,7 +74,7 @@
 #  undef HEDLEY_INTEL_VERSION_CHECK
 #endif
 #if defined(__INTEL_COMPILER) && defined(__INTEL_COMPILER_UPDATE)
-#  define HEDELY_INTEL_VERSION_CHECK(major, minor, patch) ((__INTEL_COMPILER + __INTEL_COMPILER_UPDATE) >= (((major) * 100) + (minor)))
+#  define HEDLEY_INTEL_VERSION_CHECK(major, minor, patch) ((__INTEL_COMPILER + __INTEL_COMPILER_UPDATE) >= (((major) * 100) + (minor)))
 #elif defined(__INTEL_COMPILER)
 #  define HEDLEY_INTEL_VERSION_CHECK(major,minor,patch) (__INTEL_COMPILER >= (((major) * 100) + (minor)))
 #else
@@ -82,7 +82,7 @@
 #endif
 
 #if defined(HEDLEY_PGI_VERSION_CHECK)
-#  undef HEDLEY_INTEL_VERSION_CHECK
+#  undef HEDLEY_PGI_VERSION_CHECK
 #endif
 #if defined(__PGI)
 #  define HEDLEY_PGI_VERSION_CHECK(major,minor,patch) (HEDLEY_VERSION_ENCODE(__PGIC__, __PGIC_MINOR__, __PGIC_PATCHLEVEL__) >= HEDLEY_VERSION_ENCODE(major,minor,patch))
