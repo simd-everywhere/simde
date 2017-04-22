@@ -161,14 +161,14 @@ matrix:
     ###
     ## PGI
     ###
-    - env: C_COMPILER=pgcc
-      addons:
-        apt:
-          sources:
-          - george-edison55-precise-backports
-          packages:
-          - cmake
-          - cmake-data
+    # - env: C_COMPILER=pgcc
+    #   addons:
+    #     apt:
+    #       sources:
+    #       - george-edison55-precise-backports
+    #       packages:
+    #       - cmake
+    #       - cmake-data
 
     ###
     ## OS X
