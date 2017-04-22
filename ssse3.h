@@ -49,4 +49,62 @@
 #    include <tmmintrin.h>
 #  endif
 
+#if defined(simde_mm_alignr_epi8)
+#  undef simde_mm_alignr_epi8
+#endif
+SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL(_m128i)
+SIMDE__SYMBOL(mm_alignr_epi8) (SIMDE__SYMBOL(_m128i) a, SIMDE__SYMBOL(_m128i) b, int count) {
+  SIMDE__SYMBOL(_m128i) r;
+  const int bits = (8 * count) % 64;
+  const int eo = count / 8;
+
+  switch (eo) {
+    case 0:
+      r.u64[0]  = b.u64[0] >> bits;
+      r.u64[0] |= b.u64[1] << (64 - bits);
+      r.u64[1]  = b.u64[1] >> bits;
+      r.u64[1] |= a.u64[0] << (64 - bits);
+      break;
+    case 1:
+      r.u64[0]  = b.u64[1] >> bits;
+      r.u64[0] |= a.u64[0] << (64 - bits);
+      r.u64[1]  = a.u64[0] >> bits;
+      r.u64[1] |= a.u64[1] << (64 - bits);
+      break;
+    case 2:
+      r.u64[0]  = a.u64[0] >> bits;
+      r.u64[0] |= a.u64[1] << (64 - bits);
+      r.u64[1]  = a.u64[1] >> bits;
+      break;
+    case 3:
+      r.u64[0]  = a.u64[1] >> bits;
+      r.u64[1]  = 0;
+      break;
+  }
+
+  return r;
+}
+#if defined(SIMDE_SSSE3_NATIVE)
+#  define simde_mm_alignr_epi8(a, b, count) SIMDE__M128I_C(_mm_alignr_epi8(a.n, b.n, count))
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL(_m128i)
+SIMDE__SYMBOL(mm_shuffle_epi8) (SIMDE__SYMBOL(_m128i) a, SIMDE__SYMBOL(_m128i) b) {
+#if defined(SIMDE_SSSE3_NATIVE)
+  return SIMDE__M128I_C(_mm_shuffle_epi8(a.n, b.n));
+#else
+  SIMDE__SYMBOL(_m128i) r;
+  for (size_t i = 0 ; i < (sizeof(r.u8) / sizeof(r.u8[0])) ; i++) {
+    if (b.u8[i] & 0x80) {
+      r.u8[i] = 0;
+    } else {
+      r.u8[i] = a.u8[b.u8[i] & 15];
+    }
+  }
+  return r;
+#endif
+}
+
 #endif /* !defined(SIMDE__SSE2_H) */
