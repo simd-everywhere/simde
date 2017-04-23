@@ -1132,7 +1132,7 @@ SIMDE__SYMBOL(m_maskmovq) (SIMDE__SYMBOL(_m64) a, SIMDE__SYMBOL(_m64) mask, char
 #if defined(SIMDE_SSE_NATIVE)
   _m_maskmovq(a.n, mask.n, mem_addr);
 #else
-  SIMDE__SYMBOL(m_maskmovq)(a, mask, mem_addr);
+  SIMDE__SYMBOL(mm_maskmove_si64)(a, mask, mem_addr);
 #endif
 }
 

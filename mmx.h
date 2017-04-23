@@ -792,11 +792,32 @@ SIMDE__SYMBOL(mm_set_pi8) (int8_t e7, int8_t e6, int8_t e5, int8_t e4, int8_t e3
 
 SIMDE__FUNCTION_ATTRIBUTES
 SIMDE__SYMBOL(_m64)
+SIMDE__SYMBOL(x_mm_set_pu8) (uint8_t e7, uint8_t e6, uint8_t e5, uint8_t e4, uint8_t e3, uint8_t e2, uint8_t e1, uint8_t e0) {
+#if defined(SIMDE_MMX_NATIVE)
+  return SIMDE__M64_C(_mm_set_pi8((int8_t) e7, (int8_t) e6, (int8_t) e5, (int8_t) e4,
+				  (int8_t) e3, (int8_t) e2, (int8_t) e1, (int8_t) e0));
+#else
+  return (SIMDE__SYMBOL(_m64)) { .u8 = { e0, e1, e2, e3, e4, e5, e6, e7 } };
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL(_m64)
 SIMDE__SYMBOL(mm_set_pi16) (int16_t e3, int16_t e2, int16_t e1, int16_t e0) {
 #if defined(SIMDE_MMX_NATIVE)
   return SIMDE__M64_C(_mm_set_pi16(e3, e2, e1, e0));
 #else
   return (SIMDE__SYMBOL(_m64)) { .i16 = { e0, e1, e2, e3 } };
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+SIMDE__SYMBOL(_m64)
+SIMDE__SYMBOL(x_mm_set_pu16) (uint16_t e3, uint16_t e2, uint16_t e1, uint16_t e0) {
+#if defined(SIMDE_MMX_NATIVE)
+  return SIMDE__M64_C(_mm_set_pi16((int16_t) e3, (int16_t) e2, (int16_t) e1, (int16_t) e0));
+#else
+  return (SIMDE__SYMBOL(_m64)) { .u16 = { e0, e1, e2, e3 } };
 #endif
 }
 
