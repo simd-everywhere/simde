@@ -21,7 +21,7 @@
  * SOFTWARE.
  */
 
-#if !defined(SIMDE__SSSE3_H) || defined(SIMDE_MULTIPLE_INCLUDES)
+#if !defined(SIMDE__SSSE3_H)
 #  if !defined(SIMDE__SSSE3_H)
 #    define SIMDE__SSSE3_H
 #  endif
@@ -53,9 +53,9 @@
 #  undef simde_mm_alignr_epi8
 #endif
 SIMDE__FUNCTION_ATTRIBUTES
-SIMDE__SYMBOL(_m128i)
-SIMDE__SYMBOL(mm_alignr_epi8) (SIMDE__SYMBOL(_m128i) a, SIMDE__SYMBOL(_m128i) b, int count) {
-  SIMDE__SYMBOL(_m128i) r;
+simde__m128i
+simde_mm_alignr_epi8 (simde__m128i a, simde__m128i b, int count) {
+  simde__m128i r;
   const int bits = (8 * count) % 64;
   const int eo = count / 8;
 
@@ -90,12 +90,12 @@ SIMDE__SYMBOL(mm_alignr_epi8) (SIMDE__SYMBOL(_m128i) a, SIMDE__SYMBOL(_m128i) b,
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
-SIMDE__SYMBOL(_m128i)
-SIMDE__SYMBOL(mm_shuffle_epi8) (SIMDE__SYMBOL(_m128i) a, SIMDE__SYMBOL(_m128i) b) {
+simde__m128i
+simde_mm_shuffle_epi8 (simde__m128i a, simde__m128i b) {
 #if defined(SIMDE_SSSE3_NATIVE)
   return SIMDE__M128I_C(_mm_shuffle_epi8(a.n, b.n));
 #else
-  SIMDE__SYMBOL(_m128i) r;
+  simde__m128i r;
   for (size_t i = 0 ; i < (sizeof(r.u8) / sizeof(r.u8[0])) ; i++) {
     if (b.u8[i] & 0x80) {
       r.u8[i] = 0;

@@ -8,7 +8,7 @@ Once that's complete we will start focusing on optimizations, such as
 implementing one set of functions with another.
 
 For an example of a project using SIMDe, see
-[LZSSE-SIMDe](https://github.com/nemequ/LZSSE-SIMDe)
+[LZSSE-SIMDe](https://github.com/nemequ/LZSSE-SIMDe).
 
 There are currently full implementations of the following instruction
 sets:
@@ -23,9 +23,8 @@ instruction set is available you may subscribe to the relevant issue.
 
 There are a *lot* of instructions to get through.  If you're
 interested in helping please feel free to dive right in!  All
-instructions must include tests (see `test/test-*.c` and
-`test/test-cmp-*.c`), as well as a portable implementation in the
-relevant header.
+instructions must include tests (see `test/test-*.c`), as well as a
+portable implementation in the relevant header.
 
 ## Usage
 
@@ -35,10 +34,9 @@ whichever instruction sets you want.  If your compiler has enabled the
 relevant instruction set SIMDe will use the native intrinsics,
 otherwise a portable fallback will be used.
 
-By default, symbols are prefixed with `simde_`.  For example, the MMX
+Symbols are prefixed with `simde_`.  For example, the MMX
 `_mm_add_pi8` intrinsic becomes `simde_mm_add_pi8`, and `__m64`
-becomes `simde__m64`.  The prefix can be changed by defining
-`SIMDE_PREFIX` prior to including any header.
+becomes `simde__m64`.
 
 Since SIMDe is meant to be portable, many functions which assume types
 are of a specific size have been altered to use fixed-width types
@@ -52,15 +50,6 @@ code needn't be changed unless you're porting to a new platform.
 
 This is similar in principle to the builtins module in
 [portable-snippets](https://github.com/nemequ/portable-snippets).
-
-## Why?
-
-Ideas include:
-
- * Run code which relies on ISA extensions on CPUs which don't support
-   them without a rewrite.
- * An easy way to port code to an instruction set your CPU doesn't
-   support without having to run your tests in an emulator.
 
 ## Caveats
 

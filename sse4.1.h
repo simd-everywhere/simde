@@ -21,7 +21,7 @@
  * SOFTWARE.
  */
 
-#if !defined(SIMDE__SSE4_1_H) || defined(SIMDE_MULTIPLE_INCLUDES)
+#if !defined(SIMDE__SSE4_1_H)
 #  if !defined(SIMDE__SSE4_1_H)
 #    define SIMDE__SSE4_1_H
 #  endif
@@ -50,12 +50,12 @@
 #  endif
 
 SIMDE__FUNCTION_ATTRIBUTES
-SIMDE__SYMBOL(_m128i)
-SIMDE__SYMBOL(mm_blendv_epi8) (SIMDE__SYMBOL(_m128i) a, SIMDE__SYMBOL(_m128i) b, SIMDE__SYMBOL(_m128i) mask) {
+simde__m128i
+simde_mm_blendv_epi8 (simde__m128i a, simde__m128i b, simde__m128i mask) {
 #if defined(SIMDE_SSE4_1_NATIVE)
   return SIMDE__M128I_C(_mm_blendv_epi8(a.n, b.n, mask.n));
 #else
-  SIMDE__SYMBOL(_m128i) r;
+  simde__m128i r;
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.u8) / sizeof(r.u8[0])) ; i++) {
     if (mask.u8[i] & 0x80) {
@@ -73,7 +73,7 @@ SIMDE__SYMBOL(mm_blendv_epi8) (SIMDE__SYMBOL(_m128i) a, SIMDE__SYMBOL(_m128i) b,
 #endif
 SIMDE__FUNCTION_ATTRIBUTES
 int64_t
-SIMDE__SYMBOL(mm_extract_epi64) (SIMDE__SYMBOL(_m128i) a, const int imm8) {
+simde_mm_extract_epi64 (simde__m128i a, const int imm8) {
   return a.u64[imm8];
 }
 #if defined(SIMDE_SSE4_1_NATIVE)
@@ -81,12 +81,12 @@ SIMDE__SYMBOL(mm_extract_epi64) (SIMDE__SYMBOL(_m128i) a, const int imm8) {
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
-SIMDE__SYMBOL(_m128i)
-SIMDE__SYMBOL(mm_min_epi8) (SIMDE__SYMBOL(_m128i) a, SIMDE__SYMBOL(_m128i) b) {
+simde__m128i
+simde_mm_min_epi8 (simde__m128i a, simde__m128i b) {
 #if defined(SIMDE_SSE4_1_NATIVE) && !defined(__PGI)
   return SIMDE__M128I_C(_mm_min_epi8(a.n, b.n));
 #else
-  SIMDE__SYMBOL(_m128i) r;
+  simde__m128i r;
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i8) / sizeof(r.i8[0])) ; i++) {
     r.i8[i] = a.i8[i] < b.i8[i] ? a.i8[i] : b.i8[i];

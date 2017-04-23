@@ -21,7 +21,7 @@
  * SOFTWARE.
  */
 
-#if !defined(SIMDE__SSE4_2_H) || defined(SIMDE_MULTIPLE_INCLUDES)
+#if !defined(SIMDE__SSE4_2_H)
 #  if !defined(SIMDE__SSE4_2_H)
 #    define SIMDE__SSE4_2_H
 #  endif
@@ -49,4 +49,4 @@
 #    include <nmmintrin.h>
 #  endif
 
-#endif /* !defined(SIMDE__SSE2_H) */
+#endif /* !defined(SIMDE__SSE4_2_H) */

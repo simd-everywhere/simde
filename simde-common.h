@@ -72,12 +72,4 @@
 #  define SIMDE__FUNCTION_ATTRIBUTES static HEDLEY_INLINE
 #endif
 
-#if !defined(SIMDE_PREFIX)
-#  define SIMDE_PREFIX simde_
-#endif
-
-#if !defined(SIMDE__SYMBOL)
-#  define SIMDE__SYMBOL(name) SIMDE__XCONCAT(SIMDE_PREFIX, name)
-#endif
-
 #endif /* !defined(SIMDE_COMMON_H) */
