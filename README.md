@@ -7,13 +7,16 @@ The initial focus is on writing complete portable implementations.
 Once that's complete we will start focusing on optimizations, such as
 implementing one set of functions with another.
 
-Currently, there are full implementations of the following instruction
+For an example of a project using SIMDe, see
+[LZSSE-SIMDe](https://github.com/nemequ/LZSSE-SIMDe)
+
+There are currently full implementations of the following instruction
 sets:
 
  * MMX
 
-For information on which instruction sets we intend to support, as
-well as detailed progress information, see the
+Work is underway to support various versions of SSE.  For detailed
+progress information, see the
 [instruction-set-support](https://github.com/nemequ/simde/issues?q=is%3Aissue+is%3Aopen+label%3Ainstruction-set-support+sort%3Aupdated-desc)
 label in the issue tracker.  If you'd like to be notified when an
 instruction set is available you may subscribe to the relevant issue.
