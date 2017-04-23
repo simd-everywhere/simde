@@ -241,9 +241,11 @@ SIMDE__SYMBOL(mm_movemask_epi8) (SIMDE__SYMBOL(_m128i) a) {
   return _mm_movemask_epi8(a.n);
 #else
   int32_t r = 0;
+#if defined(SIMDE_ENABLE_OPENMP)
+#  pragma omp simd reduction(|:r)
+#endif
   for (size_t i = 0 ; i < 16 ; i++) {
-    r <<= 1;
-    r |= a.u8[15 - i] >> 7;
+    r |= (a.u8[15 - i] >> 7) << (15 - i);
   }
   return r;
 #endif

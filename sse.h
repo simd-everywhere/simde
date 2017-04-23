@@ -967,8 +967,10 @@ SIMDE__SYMBOL(mm_load_ps1) (float const* mem_addr) {
   return SIMDE__M128_C(_mm_load_ps1(mem_addr));
 #else
   SIMDE__SYMBOL(_m128) r;
+  const float v = *mem_addr;
+  SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i32) / sizeof(r.i32[0])) ; i++) {
-    r.f32[i] = *mem_addr;
+    r.f32[i] = v;
   }
   return r;
 #endif
