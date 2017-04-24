@@ -2924,6 +2924,60 @@ test_simde_mm_movelh_ps(const MunitParameter params[], void* data) {
 }
 
 static MunitResult
+test_simde_mm_movemask_pi8(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  const struct {
+    simde__m64 a;
+    int r;
+  } test_vec[8] = {
+    { simde_mm_set_pi8(   7,  -33,    4,  -58,  -87,   16,   83,  -97),  89 },
+    { simde_mm_set_pi8(  28,  -40,  -15, -114,  -71,  -97,  -12,  -53), 127 },
+    { simde_mm_set_pi8( -16,  -80,   47,   37,   16, -111,  120,  -12), 197 },
+    { simde_mm_set_pi8(   4,  -17,  -44,   -3,  -35,   81,  -87,   97), 122 },
+    { simde_mm_set_pi8( -84,   23,   93,   30,   87,  114,   66,   94), 128 },
+    { simde_mm_set_pi8(  -1,  -24,   -4,  -87,   33,   91,   32,   43), 240 },
+    { simde_mm_set_pi8( -11,   96,  -68,   84,   53, -120,  124,   -4), 165 },
+    { simde_mm_set_pi8(-122,   91,   -3,  -17,  -54,   62,  119,  -40), 185 }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / (sizeof(test_vec[0]))) ; i++) {
+    int r = simde_mm_movemask_pi8(test_vec[i].a);
+    munit_assert_int(r, ==, test_vec[i].r);
+  }
+
+  return MUNIT_OK;
+}
+
+static MunitResult
+test_simde_mm_movemask_ps(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  const struct {
+    simde__m128 a;
+    int r;
+  } test_vec[8] = {
+    { simde_m128_set_u32(0xa67d815d, 0x313ba9ba, 0x21c24eef, 0x423f8c9e),   8 },
+    { simde_m128_set_u32(0x489edd7d, 0x67cd5a03, 0x615ae189, 0x97259ce3),   1 },
+    { simde_m128_set_u32(0xe28d2b70, 0xe91a3281, 0x73d2c004, 0x7cc3587e),  12 },
+    { simde_m128_set_u32(0xb38e9200, 0xd86e4d45, 0xd67c3858, 0x6dd9c655),  14 },
+    { simde_m128_set_u32(0x3324bf52, 0x86f260cf, 0x1c6c8682, 0x53be68fe),   4 },
+    { simde_m128_set_u32(0xf2018c61, 0x250c57a7, 0x0654d448, 0x8a06fe60),   9 },
+    { simde_m128_set_u32(0x0430e063, 0x7ffc7ad3, 0x9306516d, 0x5896591c),   2 },
+    { simde_m128_set_u32(0xfa68023e, 0x2e799bce, 0x88c4c4ea, 0x31bc8ed8),  10 }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / (sizeof(test_vec[0]))) ; i++) {
+    int r = simde_mm_movemask_ps(test_vec[i].a);
+    munit_assert_int(r, ==, test_vec[i].r);
+  }
+
+  return MUNIT_OK;
+}
+
+static MunitResult
 test_simde_mm_sub_ps(const MunitParameter params[], void* data) {
   (void) params;
   (void) data;
@@ -3022,6 +3076,8 @@ static MunitTest test_suite_tests[] = {
   { (char*) "/mm_move_ss",       test_simde_mm_move_ss,       NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
   { (char*) "/mm_movehl_ps",     test_simde_mm_movehl_ps,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
   { (char*) "/mm_movelh_ps",     test_simde_mm_movelh_ps,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mm_movemask_pi8",  test_simde_mm_movemask_pi8,  NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mm_movemask_ps",   test_simde_mm_movemask_ps,   NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
   { (char*) "/mm_sub_ps",        test_simde_mm_sub_ps,        NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
 
   { NULL, NULL, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL }

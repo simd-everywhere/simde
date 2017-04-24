@@ -1302,6 +1302,41 @@ simde_mm_movelh_ps (simde__m128 a, simde__m128 b) {
 }
 
 SIMDE__FUNCTION_ATTRIBUTES
+int
+simde_mm_movemask_pi8 (simde__m64 a) {
+#if defined(SIMDE_SSE_NATIVE)
+  return _mm_movemask_pi8(a.n);
+#else
+  int r = 0;
+  const size_t nmemb = sizeof(a.i8) / sizeof(a.i8[0]);
+
+  SIMDE__VECTORIZE_REDUCTION(|:r)
+  for (size_t i = 0 ; i < nmemb ; i++) {
+    r |= (a.u8[nmemb - 1 - i] >> 7) << (nmemb - 1 - i);
+  }
+
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+int
+simde_mm_movemask_ps (simde__m128 a) {
+#if defined(SIMDE_SSE_NATIVE)
+  return _mm_movemask_ps(a.n);
+#else
+  int r = 0;
+
+  SIMDE__VECTORIZE_REDUCTION(|:r)
+  for (size_t i = 0 ; i < sizeof(a.u32) / sizeof(a.u32[0]) ; i++) {
+    r |= (a.u32[i] >> ((sizeof(a.u32[i]) * CHAR_BIT) - 1)) << i;
+  }
+
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
 simde__m128
 simde_mm_mul_ps (simde__m128 a, simde__m128 b) {
 #if defined(SIMDE_SSE_NATIVE)
