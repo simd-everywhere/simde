@@ -21,10 +21,29 @@ progress information, see the
 label in the issue tracker.  If you'd like to be notified when an
 instruction set is available you may subscribe to the relevant issue.
 
-There are a *lot* of instructions to get through.  If you're
-interested in helping please feel free to dive right in!  All
-instructions must include tests (see `test/test-*.c`), as well as a
-portable implementation in the relevant header.
+## Want to help?
+
+There are a *lot* of instructions to get through, so any help would be
+greatly appreciated!  It's pretty straightforward work, and a great
+way to learn about the instructions.
+
+There are three places you'll want to modify in order to implement a
+new function:
+
+ * ${isax}.h — this is where the implementations live
+ * test/test-${isax}.c — tests comparing the portable implementation
+   with the expected result.
+ * test/test-cmp-${isax}.c — tests comparing the portable
+   implementation with the "native" version, using random data for
+   inputs.
+
+Hopefully it's clear what to do by using other functions in those
+files as a template, but if you have trouble please feel free to
+contact us; we're happy to help!
+
+If you're not sure that your implementation will be fast enough, don't
+worry!  Right now we just want to get correct implementations in
+place, we can worry about optimizing later.
 
 ## Usage
 
