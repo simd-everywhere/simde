@@ -75,6 +75,20 @@ double random_double_range(double min, double max);
 #define simde_assert_uintv(nmemb, a, op, b)	\
   simde_assert_typev(int, "u", nmemb, a, op, b)
 
+#define simde_assert_floatv_equal(T, nmemb, a, b, precision)		\
+  do {									\
+    const T* simde_tmp_a_ = (a);					\
+    const T* simde_tmp_b_ = (b);					\
+    for (size_t simde_i_ = 0 ; simde_i_ < nmemb ; simde_i_++) {	\
+      const T simde_tmp_diff_ = ((simde_tmp_a_[simde_i_] - simde_tmp_b_[simde_i_]) < 0) ?	\
+	(simde_tmp_b_[simde_i_] - simde_tmp_a_[simde_i_]) :					\
+	(simde_tmp_a_[simde_i_] - simde_tmp_b_[simde_i_]);					\
+      if (MUNIT_UNLIKELY(simde_tmp_diff_ > 1e-##precision)) {		\
+	munit_errorf("assertion failed: (" #a ")[%" MUNIT_SIZE_MODIFIER "u] == (" #b ")[%" MUNIT_SIZE_MODIFIER "u] (%." #precision "f == %." #precision "f)", simde_i_, simde_i_, simde_tmp_a_[simde_i_], simde_tmp_b_[simde_i_]); \
+      }									\
+    }									\
+  } while (0)
+
 /* These probably won't go into µnit; they're similar to the
    simde_assert_*v macros above, but print in hex. */
 
@@ -132,6 +146,8 @@ double random_double_range(double min, double max);
   simde_assert_uint64vx(2, (uint64_t*) &(a), op, (uint64_t*) &(b)y)
 #define simde_assert_m128_f32(a, op, b) \
   simde_assert_typev(float, "f", 4, (float*) &(a), op, (float*) &(b))
+#define simde_assert_m128_f32_equal(a, b, precision) \
+  simde_assert_floatv_equal(float, 4, (float*) &(a), (float*) &(b), precision)
 
 /* SIMD floating-point conversion functions may or may not be the same
    as the normal FP conversion functions. */
