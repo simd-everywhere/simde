@@ -88,7 +88,7 @@ test_simde_mm_alignr_epi8(const MunitParameter params[], void* data) {
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m128i r = simde_mm_alignr_epi8(test_vec[i].a, test_vec[i].b, 17);
-    assert_m128i_epi8(r, ==, test_vec[i].r);
+    simde_assert_m128_i8(r, ==, test_vec[i].r);
   }
 
   return MUNIT_OK;
@@ -156,7 +156,7 @@ test_simde_mm_shuffle_epi8(const MunitParameter params[], void* data) {
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m128i r = simde_mm_shuffle_epi8(test_vec[i].a, test_vec[i].b);
-    assert_m128i_epi8(r, ==, test_vec[i].r);
+    simde_assert_m128_i8(r, ==, test_vec[i].r);
   }
 
   return MUNIT_OK;
