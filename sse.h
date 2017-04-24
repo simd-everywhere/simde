@@ -1457,6 +1457,29 @@ simde_mm_rsqrt_ss (simde__m128 a) {
 }
 
 SIMDE__FUNCTION_ATTRIBUTES
+simde__m64
+simde_mm_sad_pu8 (simde__m64 a, simde__m64 b) {
+#if defined(SIMDE_SSE_NATIVE)
+  return SIMDE__M64_C(_mm_sad_pu8(a.n, b.n));
+#else
+  simde__m64 r;
+  uint16_t sum = 0;
+
+  SIMDE__VECTORIZE_REDUCTION(+:sum)
+  for (size_t i = 0 ; i < (sizeof(r.u8) / sizeof(r.u8[0])) ; i++) {
+    sum += (uint8_t) abs(a.u8[i] - b.u8[i]);
+  }
+
+  r.i16[0] = sum;
+  r.i16[1] = 0;
+  r.i16[2] = 0;
+  r.i16[3] = 0;
+
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
 simde__m128
 simde_mm_sub_ps (simde__m128 a, simde__m128 b) {
 #if defined(SIMDE_SSE_NATIVE)

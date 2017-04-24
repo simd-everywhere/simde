@@ -3238,6 +3238,51 @@ test_simde_mm_rsqrt_ss(const MunitParameter params[], void* data) {
 }
 
 static MunitResult
+test_simde_mm_sad_pu8(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  const struct {
+    simde__m64 a;
+    simde__m64 b;
+    simde__m64 r;
+  } test_vec[8] = {
+    { simde_x_mm_set_pu8(158,  38, 204, 230, 242, 108, 135, 100),
+      simde_x_mm_set_pu8(130, 168, 102, 233, 237, 176,  22, 158),
+      simde_x_mm_set_pu16(0, 0, 0, 507) },
+    { simde_x_mm_set_pu8( 15, 252, 176, 193, 115,  44,   0,  83),
+      simde_x_mm_set_pu8( 99, 169,  76, 203, 218, 181, 138, 226),
+      simde_x_mm_set_pu16(0, 0, 0, 798) },
+    { simde_x_mm_set_pu8(230,  50, 152, 234, 252,  79, 170, 145),
+      simde_x_mm_set_pu8(225, 219, 116, 170, 250, 129, 102, 178),
+      simde_x_mm_set_pu16(0, 0, 0, 427) },
+    { simde_x_mm_set_pu8( 77, 112,  20, 247, 206, 117, 128, 107),
+      simde_x_mm_set_pu8(189, 223, 203, 181,  71, 239,  64, 186),
+      simde_x_mm_set_pu16(0, 0, 0, 872) },
+    { simde_x_mm_set_pu8(128, 104,  93, 138, 250, 105, 219, 255),
+      simde_x_mm_set_pu8(113, 248, 217,  59,  72,   4, 165,  83),
+      simde_x_mm_set_pu16(0, 0, 0, 867) },
+    { simde_x_mm_set_pu8(143,  12,  71,  81, 251, 175,  44, 206),
+      simde_x_mm_set_pu8( 80, 100, 129,  82,  59,  63,  26,  22),
+      simde_x_mm_set_pu16(0, 0, 0, 716) },
+    { simde_x_mm_set_pu8(  7, 202, 222,  71, 138,  18, 223,  92),
+      simde_x_mm_set_pu8(208, 174,  15, 221,  13,  93, 209, 116),
+      simde_x_mm_set_pu16(0, 0, 0, 824) },
+    { simde_x_mm_set_pu8( 92, 133, 132,   0,  24, 132, 201, 186),
+      simde_x_mm_set_pu8(194,  29, 160,  58,  50,  10,  65, 234),
+      simde_x_mm_set_pu16(0, 0, 0, 624) }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    simde__m64 r = simde_mm_sad_pu8(test_vec[i].a, test_vec[i].b);
+    simde_assert_m64_u16(r, ==, test_vec[i].r);
+  }
+
+  simde_mm_empty();
+  return MUNIT_OK;
+}
+
+static MunitResult
 test_simde_mm_sub_ps(const MunitParameter params[], void* data) {
   (void) params;
   (void) data;
@@ -3346,6 +3391,7 @@ static MunitTest test_suite_tests[] = {
   { (char*) "/mm_rcp_ss",        test_simde_mm_rcp_ss,        NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
   { (char*) "/mm_rsqrt_ps",      test_simde_mm_rsqrt_ps,      NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
   { (char*) "/mm_rsqrt_ss",      test_simde_mm_rsqrt_ss,      NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mm_sad_pu8",       test_simde_mm_sad_pu8,       NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
   { (char*) "/mm_sub_ps",        test_simde_mm_sub_ps,        NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
 
   { NULL, NULL, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL }
