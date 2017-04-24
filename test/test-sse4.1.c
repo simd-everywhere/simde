@@ -105,11 +105,6 @@ test_simde_mm_blendv_epi8(const MunitParameter params[], void* data) {
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m128i r = simde_mm_blendv_epi8(test_vec[i].a, test_vec[i].b, test_vec[i].mask);
-    debug_array_u8("\na", sizeof(test_vec[i].a.u8) / sizeof(test_vec[i].a.u8[0]), (uint8_t*) &(test_vec[i].a.u8));
-    debug_array_u8("b", sizeof(test_vec[i].b.u8) / sizeof(test_vec[i].b.u8[0]), (uint8_t*) &(test_vec[i].b.u8));
-    debug_array_u8("m", sizeof(test_vec[i].mask.u8) / sizeof(test_vec[i].mask.u8[0]), (uint8_t*) &(test_vec[i].mask.u8));
-    debug_array_u8("x", sizeof(test_vec[i].r.u8) / sizeof(test_vec[i].r.u8[0]), (uint8_t*) &(test_vec[i].r.u8));
-    debug_array_u8("r", sizeof(r.u8) / sizeof(r.u8[0]), (uint8_t*) &(r.u8));
     assert_m128i_epi8(r, ==, test_vec[i].r);
   }
 
