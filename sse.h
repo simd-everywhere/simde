@@ -1383,6 +1383,21 @@ simde_mm_mulhi_pu16 (simde__m64 a, simde__m64 b) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128
+simde_mm_or_ps (simde__m128 a, simde__m128 b) {
+#if defined(SIMDE_SSE_NATIVE)
+  return SIMDE__M128_C(_mm_or_ps(a.n, b.n));
+#else
+  simde__m128 r;
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.u32) / sizeof(r.u32[0])) ; i++) {
+    r.u32[i] = a.u32[i] | b.u32[i];
+  }
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128
 simde_mm_sub_ps (simde__m128 a, simde__m128 b) {
 #if defined(SIMDE_SSE_NATIVE)
   return SIMDE__M128_C(_mm_sub_ps(a.n, b.n));
