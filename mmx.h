@@ -27,9 +27,6 @@
 #  endif
 #  include "simde-common.h"
 
-#  if defined(SIMDE_MMX_NATIVE)
-#    undef SIMDE_MMX_NATIVE
-#  endif
 #  if defined(SIMDE_MMX_FORCE_NATIVE)
 #    define SIMDE_MMX_NATIVE
 #  elif defined(__MMX__) && (!defined(SIMDE_MMX_NO_NATIVE) && !defined(SIMDE_NO_NATIVE))

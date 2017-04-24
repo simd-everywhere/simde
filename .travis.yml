@@ -190,4 +190,4 @@ script:
 - cmake --version
 - cmake .. -DCMAKE_C_COMPILER="${C_COMPILER}" -DCMAKE_C_FLAGS="${CFLAGS}"
 - make VERBOSE=1
-- ./test-native && ./test-emul
+- ./test-native && ./test-emul && ./test-cmp

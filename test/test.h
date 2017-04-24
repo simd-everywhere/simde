@@ -45,6 +45,13 @@ void debug_array_u64(const char* prefix, size_t nmemb, uint64_t v[HEDLEY_ARRAY_P
 void debug_array_f32(const char* prefix, size_t nmemb, float v[HEDLEY_ARRAY_PARAM(nmemb)]);
 void random_floatv(size_t nmemb, float v[HEDLEY_ARRAY_PARAM(nmemb)]);
 
+#define random_intv_range(T, nmemb, v, min, max)			\
+  do {									\
+    for (size_t simde_tmp_i_ = 0 ; simde_tmp_i_ < nmemb ; simde_tmp_i_++) { \
+      ((T*) (v))[simde_tmp_i_] = munit_rand_int_range(min, max);	\
+    }									\
+  } while (0)
+
 double random_double_range(double min, double max);
 
 #define TEST_PREFERRED_ITERATIONS (16384)
