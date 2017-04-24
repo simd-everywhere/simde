@@ -1353,6 +1353,36 @@ simde_mm_mul_ps (simde__m128 a, simde__m128 b) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128
+simde_mm_mul_ss (simde__m128 a, simde__m128 b) {
+#if defined(SIMDE_SSE_NATIVE)
+  return SIMDE__M128_C(_mm_mul_ss(a.n, b.n));
+#else
+  simde__m128 r;
+  r.f32[0] = a.f32[0] * b.f32[0];
+  r.f32[1] = a.f32[1];
+  r.f32[2] = a.f32[2];
+  r.f32[3] = a.f32[3];
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m64
+simde_mm_mulhi_pu16 (simde__m64 a, simde__m64 b) {
+#if defined(SIMDE_SSE_NATIVE)
+  return SIMDE__M64_C(_mm_mulhi_pu16(a.n, b.n));
+#else
+  simde__m64 r;
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.u16) / sizeof(r.u16[0])) ; i++) {
+    r.u16[i] = (a.u16[i] * b.u16[i]) >> 16;
+  }
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128
 simde_mm_sub_ps (simde__m128 a, simde__m128 b) {
 #if defined(SIMDE_SSE_NATIVE)
   return SIMDE__M128_C(_mm_sub_ps(a.n, b.n));
