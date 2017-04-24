@@ -736,7 +736,7 @@ simde_mm_cvtps_pi8 (simde__m128 a) {
 #else
   simde__m64 r;
   SIMDE__VECTORIZE
-  for (size_t i = 0 ; i < (sizeof(r.i8) / sizeof(r.i8[0])) ; i++) {
+  for (size_t i = 0 ; i < (sizeof(a.f32) / sizeof(a.f32[0])) ; i++) {
     r.i8[i] = (int8_t) a.f32[i];
   }
   return r;
