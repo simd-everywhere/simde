@@ -46,10 +46,33 @@ platforms where the native API's assumptions hold (*i.e.*, if `int`
 really is 32-bits) SIMDe's types should be compatible, so existing
 code needn't be changed unless you're porting to a new platform.
 
+For best performance, you should enable OpenMP 4 SIMD support by
+defining `SIMDE_ENABLE_OPENMP` before including any SIMDe headers, and
+enabling OpenMP support in your compiler.  GCC and ICC both support a
+flag to enable only OpenMP SIMD support instead of full OpenMP (the
+SIMD support doesn't require the OpenMP run-time library); for GCC the
+flag is `-fopenmp-simd`, for ICC `-openmp-simd`.  SIMDe also supports
+using [Cilk Plus](https://www.cilkplus.org/), [GCC loop-specific
+pragmas](https://gcc.gnu.org/onlinedocs/gcc/Loop-Specific-Pragmas.html),
+or [clang pragma loop hint
+directives](http://llvm.org/docs/Vectorizers.html#pragma-loop-hint-directives),
+though these are not as well tested.
+
 ## Related Projects
 
-This is similar in principle to the builtins module in
-[portable-snippets](https://github.com/nemequ/portable-snippets).
+ * The "builtins" module in
+   [portable-snippets](https://github.com/nemequ/portable-snippets)
+   does much the same thing, but for compiler-specific intrinsics
+   (think `__builtin_clz` and `_BitScanForward`), **not** SIMD
+   intrinsics.
+ * Intel offers an emulator, the [Intel® Software Development
+   Emulator](https://software.intel.com/en-us/articles/intel-software-development-emulator/)
+   which can be used to develop software which uses Intel intrinsics
+   without having to own hardware which supports them, though AFAIK it
+   doesn't help for deployment.
+
+If you know of any other related projects, please [let us
+know](https://github.com/nemequ/simde/issues/new)!
 
 ## Caveats
 
@@ -60,9 +83,18 @@ If SSE support is emulated, `_MM_SET_ROUNDING_MODE()` will use
 
 ## Platform Support
 
-SIMDe requires C99, and is tested with relatively recent versions of
-GCC (4.4+), clang (3.8+), and PGI (16.10), via [Travis
-CI](https://travis-ci.org/nemequ/simde).
+SIMDe requires C99.
+
+Every commit is tested with relatively recent versions of GCC (4.4+),
+clang (3.8+), and PGI (16.10), via [Travis
+CI](https://travis-ci.org/nemequ/simde).  Intel C/C++ Compiler is also
+tested sporadically (mostly because their optimization reports are
+excellent).
+
+I'm generally willing to accept patches to add support for other
+compilers, as long as they're not too disruptive, *especially* if we
+can get CI support going.  Travis and AppVeyor are great, but feel
+free to use whatever works.
 
 ## License
 
