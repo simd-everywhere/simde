@@ -55,12 +55,15 @@
 #elif defined(SIMDE_ENABLE_CILKPLUS)
 #  define SIMDE__VECTORIZE _Pragma("simd")
 #  define SIMDE__VECTORIZE_SAFELEN(l) HEDLEY_PRAGMA(simd vectorlength(l))
+#elif defined(__INTEL_COMPILER)
+#  define SIMDE__VECTORIZE _Pragma("simd")
+#  define SIMDE__VECTORIZE_SAFELEN(l) HEDLEY_PRAGMA(simd vectorlength(l))
+#elif defined(__clang__)
+#  define SIMDE__VECTORIZE _Pragma("clang loop vectorize(enable)")
+#  define SIMDE__VECTORIZE_SAFELEN(l) HEDLEY_PRAGMA(clang loop vectorize_width(l))
 #elif HEDLEY_GCC_VERSION_CHECK(4,9,0)
 #  define SIMDE__VECTORIZE _Pragma("GCC ivdep")
 #  define SIMDE__VECTORIZE_SAFELEN(l) SIMDE__VECTORIZE
-#elif defined(__clang__)
-#  define SIMDE__VECTORIZE _Pragma("clang loop vectorize(enable)")
-#  define SIMDE__VECTORIZE_SAFELEN(l) HEDLEY_PRAGMA(clang loop vectorize_width(2))
 #else
 #  define SIMDE__VECTORIZE
 #  define SIMDE__VECTORIZE_SAFELEN(l)
