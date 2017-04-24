@@ -1258,6 +1258,51 @@ simde_mm_min_ss (simde__m128 a, simde__m128 b) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128
+simde_mm_move_ss (simde__m128 a, simde__m128 b) {
+#if defined(SIMDE_SSE_NATIVE)
+  return SIMDE__M128_C(_mm_move_ss(a.n, b.n));
+#else
+  simde__m128 r;
+  r.f32[0] = b.f32[0];
+  r.f32[1] = a.f32[1];
+  r.f32[2] = a.f32[2];
+  r.f32[3] = a.f32[3];
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128
+simde_mm_movehl_ps (simde__m128 a, simde__m128 b) {
+#if defined(SIMDE_SSE_NATIVE)
+  return SIMDE__M128_C(_mm_movehl_ps(a.n, b.n));
+#else
+  simde__m128 r;
+  r.f32[0] = b.f32[2];
+  r.f32[1] = b.f32[3];
+  r.f32[2] = a.f32[2];
+  r.f32[3] = a.f32[3];
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128
+simde_mm_movelh_ps (simde__m128 a, simde__m128 b) {
+#if defined(SIMDE_SSE_NATIVE)
+  return SIMDE__M128_C(_mm_movelh_ps(a.n, b.n));
+#else
+  simde__m128 r;
+  r.f32[0] = a.f32[0];
+  r.f32[1] = a.f32[1];
+  r.f32[2] = b.f32[0];
+  r.f32[3] = b.f32[1];
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128
 simde_mm_mul_ps (simde__m128 a, simde__m128 b) {
 #if defined(SIMDE_SSE_NATIVE)
   return SIMDE__M128_C(_mm_mul_ps(a.n, b.n));
