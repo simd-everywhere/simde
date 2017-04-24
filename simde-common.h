@@ -52,21 +52,27 @@
 #if defined(SIMDE_ENABLE_OPENMP)
 #  define SIMDE__VECTORIZE _Pragma("omp simd")
 #  define SIMDE__VECTORIZE_SAFELEN(l) HEDLEY_PRAGMA(omp simd safelen(l))
+#  define SIMDE__VECTORIZE_REDUCTION(r) HEDLEY_PRAGMA(omp simd reduction(r))
 #elif defined(SIMDE_ENABLE_CILKPLUS)
 #  define SIMDE__VECTORIZE _Pragma("simd")
 #  define SIMDE__VECTORIZE_SAFELEN(l) HEDLEY_PRAGMA(simd vectorlength(l))
+#  define SIMDE__VECTORIZE_REDUCTION(r) HEDLEY_PRAGMA(simd reduction(r))
 #elif defined(__INTEL_COMPILER)
 #  define SIMDE__VECTORIZE _Pragma("simd")
 #  define SIMDE__VECTORIZE_SAFELEN(l) HEDLEY_PRAGMA(simd vectorlength(l))
+#  define SIMDE__VECTORIZE_REDUCTION(r) HEDLEY_PRAGMA(simd reduction(r))
 #elif defined(__clang__)
 #  define SIMDE__VECTORIZE _Pragma("clang loop vectorize(enable)")
 #  define SIMDE__VECTORIZE_SAFELEN(l) HEDLEY_PRAGMA(clang loop vectorize_width(l))
+#  define SIMDE__VECTORIZE_REDUCTION(r) SIMDE__VECTORIZE
 #elif HEDLEY_GCC_VERSION_CHECK(4,9,0)
 #  define SIMDE__VECTORIZE _Pragma("GCC ivdep")
 #  define SIMDE__VECTORIZE_SAFELEN(l) SIMDE__VECTORIZE
+#  define SIMDE__VECTORIZE_REDUCTION(r) SIMDE__VECTORIZE
 #else
 #  define SIMDE__VECTORIZE
 #  define SIMDE__VECTORIZE_SAFELEN(l)
+#  define SIMDE__VECTORIZE_REDUCTION(r)
 #endif
 
 #if defined(__GNUC__)

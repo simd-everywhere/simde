@@ -241,9 +241,7 @@ simde_mm_movemask_epi8 (simde__m128i a) {
   return _mm_movemask_epi8(a.n);
 #else
   int32_t r = 0;
-#if defined(SIMDE_ENABLE_OPENMP)
-#  pragma omp simd reduction(|:r)
-#endif
+  SIMDE__VECTORIZE_REDUCTION(|:r)
   for (size_t i = 0 ; i < 16 ; i++) {
     r |= (a.u8[15 - i] >> 7) << (15 - i);
   }
