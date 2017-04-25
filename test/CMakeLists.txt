@@ -77,7 +77,8 @@ target_compile_definitions(test-emul PRIVATE -DSIMDE_NO_NATIVE)
 add_executable(test-cmp
   test-cmp.c
   test-common.c
-  test-cmp-mmx.c)
+  test-cmp-mmx.c
+  test-cmp-sse.c)
 target_link_libraries(test-cmp munit m)
 add_test(NAME "/cmp" COMMAND $<TARGET_FILE:test-cmp>)
 target_add_extra_warning_flags(test-cmp)

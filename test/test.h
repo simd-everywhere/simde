@@ -54,7 +54,7 @@ void random_floatv(size_t nmemb, float v[HEDLEY_ARRAY_PARAM(nmemb)]);
 
 double random_double_range(double min, double max);
 
-#define TEST_PREFERRED_ITERATIONS (16384)
+#define TEST_PREFERRED_ITERATIONS (256)
 
 /* I'll probably move these into µnit, but I want to play around with
    them for a while first. */
@@ -134,6 +134,8 @@ double random_double_range(double min, double max);
   simde_assert_int64vx(1, (int64_t*) &(a), op, (int64_t*) &(b))
 #define simde_assert_m64_u64(a, op, b) \
   simde_assert_uint64vx(1, (uint64_t*) &(a), op, (uint64_t*) &(b))
+#define simde_assert_m64_f32(a, op, b) \
+  simde_assert_typev(float, "f", 2, (float*) &(a), op, (float*) &(b))
 
 #define simde_assert_m128_i8(a, op, b) \
   simde_assert_int8vx(16, (int8_t*) &(a), op, (int8_t*) &(b))
