@@ -110,6 +110,7 @@ static MunitTest test_suite_tests[] = {
   { (char*) "/mm_comilt_ss",    test_simde_mm_comilt_ss,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
   { (char*) "/mm_comieq_ss",    test_simde_mm_comieq_ss,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
   { (char*) "/mm_comineq_ss",   test_simde_mm_comineq_ss,   NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mm_cvt_pi2ps",    test_simde_mm_cvt_pi2ps,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
   { (char*) "/mm_div_ps",       test_simde_mm_div_ps,       NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
   { (char*) "/mm_div_ss",       test_simde_mm_div_ss,       NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
 

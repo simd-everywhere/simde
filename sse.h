@@ -90,26 +90,6 @@ HEDLEY_STATIC_ASSERT(sizeof(__m128) == sizeof(simde__m128), "__m128 size incorre
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128
-simde_mm_set_ps (float a, float b, float c, float d) {
-#if defined(SIMDE_SSE_NATIVE)
-  return SIMDE__M128_C(_mm_set_ps(a, b, c, d));
-#else
-  return (simde__m128) { .f32 = { d, c, b, a } };
-#endif
-}
-
-SIMDE__FUNCTION_ATTRIBUTES
-simde__m128
-simde_mm_set1_ps (float v) {
-#if defined(SIMDE_SSE_NATIVE)
-  return SIMDE__M128_C(_mm_set1_ps(v));
-#else
-  return simde_mm_set_ps(v, v, v, v);
-#endif
-}
-
-SIMDE__FUNCTION_ATTRIBUTES
-simde__m128
 simde_mm_add_ps (simde__m128 a, simde__m128 b) {
 #if defined(SIMDE_SSE_NATIVE)
   return SIMDE__M128_C(_mm_add_ps(a.n, b.n));
@@ -1476,6 +1456,66 @@ simde_mm_sad_pu8 (simde__m64 a, simde__m64 b) {
   r.i16[3] = 0;
 
   return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128
+simde_mm_set_ps (float e3, float e2, float e1, float e0) {
+#if defined(SIMDE_SSE_NATIVE)
+  return SIMDE__M128_C(_mm_set_ps(e3, e2, e1, e0));
+#else
+  return (simde__m128) { .f32 = { e0, e1, e2, e3 } };
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128
+simde_mm_set_ps1 (float a) {
+#if defined(SIMDE_SSE_NATIVE)
+  return SIMDE__M128_C(_mm_set1_ps(a));
+#else
+  return simde_mm_set_ps(a, a, a, a);
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128
+simde_mm_set_ss (float a) {
+#if defined(SIMDE_SSE_NATIVE)
+  return SIMDE__M128_C(_mm_set_ss(a));
+#else
+  return simde_mm_set_ps(0, 0, 0, a);
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128
+simde_mm_set1_ps (float a) {
+#if defined(SIMDE_SSE_NATIVE)
+  return SIMDE__M128_C(_mm_set1_ps(a));
+#else
+  return simde_mm_set_ps(a, a, a, a);
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128
+simde_mm_setr_ps (float e3, float e2, float e1, float e0) {
+#if defined(SIMDE_SSE_NATIVE)
+  return SIMDE__M128_C(_mm_setr_ps(e3, e2, e1, e0));
+#else
+  return simde_mm_set_ps(e0, e1, e2, e3);
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128
+simde_mm_setzero_ps (void) {
+#if defined(SIMDE_SSE_NATIVE)
+  return SIMDE__M128_C(_mm_setzero_ps());
+#else
+  return simde_mm_set_ps(0.0f, 0.0f, 0.0f, 0.0f);
 #endif
 }
 

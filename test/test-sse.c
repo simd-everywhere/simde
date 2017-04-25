@@ -73,6 +73,25 @@ test_simde_mm_set_ps(const MunitParameter params[], void* data) {
 }
 
 static MunitResult
+test_simde_mm_set_ss(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  float d;
+  random_floatv(1, &d);
+
+  simde__m128 x = simde_mm_set_ss(d);
+
+  float* f = (float*) &x;
+  munit_assert_float(f[0], ==, d);
+  munit_assert_float(f[1], ==, 0.0f);
+  munit_assert_float(f[2], ==, 0.0f);
+  munit_assert_float(f[3], ==, 0.0f);
+
+  return MUNIT_OK;
+}
+
+static MunitResult
 test_simde_mm_set1_ps(const MunitParameter params[], void* data) {
   (void) params;
   (void) data;
@@ -87,6 +106,41 @@ test_simde_mm_set1_ps(const MunitParameter params[], void* data) {
   munit_assert_float(f[1], ==, d);
   munit_assert_float(f[2], ==, d);
   munit_assert_float(f[3], ==, d);
+
+  return MUNIT_OK;
+}
+
+static MunitResult
+test_simde_mm_setr_ps(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  float d[4];
+  random_floatv(sizeof(d) / sizeof(d[0]), d);
+
+  simde__m128 x = simde_mm_setr_ps(d[3], d[2], d[1], d[0]);
+
+  float* f = (float*) &x;
+  munit_assert_float(f[0], ==, d[3]);
+  munit_assert_float(f[1], ==, d[2]);
+  munit_assert_float(f[2], ==, d[1]);
+  munit_assert_float(f[3], ==, d[0]);
+
+  return MUNIT_OK;
+}
+
+static MunitResult
+test_simde_mm_setzero_ps(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  simde__m128 r = simde_mm_setzero_ps();
+
+  float* f = (float*) &r;
+  munit_assert_float(f[0], ==, 0.0f);
+  munit_assert_float(f[1], ==, 0.0f);
+  munit_assert_float(f[2], ==, 0.0f);
+  munit_assert_float(f[3], ==, 0.0f);
 
   return MUNIT_OK;
 }
@@ -3291,6 +3345,9 @@ test_simde_mm_sub_ps(const MunitParameter params[], void* data) {
 static MunitTest test_suite_tests[] = {
   { (char*) "/mm_set_ps",        test_simde_mm_set_ps,        NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
   { (char*) "/mm_set1_ps",       test_simde_mm_set1_ps,       NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mm_set_ss",        test_simde_mm_set_ss,        NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mm_setr_ps",       test_simde_mm_setr_ps,       NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mm_setzero_ps",    test_simde_mm_setzero_ps,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
   { (char*) "/mm_add_ps",        test_simde_mm_add_ps,        NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
   { (char*) "/mm_add_ss",        test_simde_mm_add_ss,        NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
   { (char*) "/mm_and_ps",        test_simde_mm_and_ps,        NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
