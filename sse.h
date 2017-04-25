@@ -1520,6 +1520,33 @@ simde_mm_setzero_ps (void) {
 }
 
 SIMDE__FUNCTION_ATTRIBUTES
+simde__m64
+simde_mm_shuffle_pi16 (simde__m64 a, const int imm8) {
+  simde__m64 r;
+  for (size_t i = 0 ; i < sizeof(r.u16) / sizeof(r.u16[0]) ; i++) {
+    r.i16[i] = a.i16[(imm8 >> (i * 2)) & 3];
+  }
+  return r;
+}
+#if defined(SIMDE_SSE_NATIVE)
+#  define simde_mm_shuffle_pi16(a, imm8) SIMDE__M64_C(_mm_shuffle_pi16(a.n, imm8))
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128
+simde_mm_shuffle_ps (simde__m128 a, simde__m128 b, const int imm8) {
+  simde__m128 r;
+  r.f32[0] = a.f32[(imm8 >> 0) & 3];
+  r.f32[1] = a.f32[(imm8 >> 2) & 3];
+  r.f32[2] = b.f32[(imm8 >> 4) & 3];
+  r.f32[3] = b.f32[(imm8 >> 6) & 3];
+  return r;
+}
+#if defined(SIMDE_SSE_NATIVE)
+#  define simde_mm_shuffle_ps(a, b, imm8) SIMDE__M128_C(_mm_shuffle_ps(a.n, b.n, imm8))
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
 simde__m128
 simde_mm_sub_ps (simde__m128 a, simde__m128 b) {
 #if defined(SIMDE_SSE_NATIVE)

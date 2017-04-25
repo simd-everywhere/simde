@@ -3327,6 +3327,85 @@ test_simde_mm_sad_pu8(const MunitParameter params[], void* data) {
 }
 
 static MunitResult
+test_simde_mm_shuffle_pi16(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  const struct {
+    simde__m64 a;
+    simde__m64 r;
+  } test_vec[8] = {
+    { simde_mm_set_pi16( 20374,  -8020,   9831, -21724),
+      simde_mm_set_pi16(-21724, -21724,   9831,   9831) },
+    { simde_mm_set_pi16( 26825,   6867,  -1457,  28819),
+      simde_mm_set_pi16( 28819,  28819,  -1457,  -1457) },
+    { simde_mm_set_pi16( -4347, -12641,  -8333, -18450),
+      simde_mm_set_pi16(-18450, -18450,  -8333,  -8333) },
+    { simde_mm_set_pi16( 22439,  23179, -32421,  -3266),
+      simde_mm_set_pi16( -3266,  -3266, -32421, -32421) },
+    { simde_mm_set_pi16(  9337,  -3310,  22225, -14472),
+      simde_mm_set_pi16(-14472, -14472,  22225,  22225) },
+    { simde_mm_set_pi16(-17114, -15656,  26827,  -1486),
+      simde_mm_set_pi16( -1486,  -1486,  26827,  26827) },
+    { simde_mm_set_pi16(  8123,   8758,  31545,  -8216),
+      simde_mm_set_pi16( -8216,  -8216,  31545,  31545) },
+    { simde_mm_set_pi16(-32324,  31163,  -3386,  23646),
+      simde_mm_set_pi16( 23646,  23646,  -3386,  -3386) }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / (sizeof(test_vec[0]))) ; i++) {
+    simde__m64 r = simde_mm_shuffle_pi16(test_vec[i].a, 5);
+    simde_assert_m64_i16(r, ==, test_vec[i].r);
+  }
+
+  return MUNIT_OK;
+}
+
+static MunitResult
+test_simde_mm_shuffle_ps(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  const struct {
+    simde__m128 a;
+    simde__m128 b;
+    simde__m128 r;
+  } test_vec[8] = {
+    { simde_mm_set_ps( 387.45f, -469.79f,  719.43f,  371.94f),
+      simde_mm_set_ps( 641.56f,  341.35f,  292.84f,  441.22f),
+      simde_mm_set_ps( 441.22f,  441.22f, -469.79f,  387.45f) },
+    { simde_mm_set_ps( 648.82f,  641.81f, -789.10f,  982.80f),
+      simde_mm_set_ps( 472.27f, -304.33f,  524.09f, -589.31f),
+      simde_mm_set_ps(-589.31f, -589.31f,  641.81f,  648.82f) },
+    { simde_mm_set_ps(-163.67f, -311.30f, -600.60f,  597.71f),
+      simde_mm_set_ps(-247.76f,  246.42f, -742.25f,  -20.93f),
+      simde_mm_set_ps( -20.93f,  -20.93f, -311.30f, -163.67f) },
+    { simde_mm_set_ps( 968.74f,  810.41f, -699.53f,  224.20f),
+      simde_mm_set_ps(-966.41f,  917.94f, -300.26f,   64.06f),
+      simde_mm_set_ps(  64.06f,   64.06f,  810.41f,  968.74f) },
+    { simde_mm_set_ps(  99.15f,  957.94f,  380.12f, -611.50f),
+      simde_mm_set_ps( -77.49f, -255.84f,  787.35f, -671.91f),
+      simde_mm_set_ps(-671.91f, -671.91f,  957.94f,   99.15f) },
+    { simde_mm_set_ps(-280.55f, -182.50f,  340.17f,  473.64f),
+      simde_mm_set_ps(  -3.29f, -413.78f, -406.24f,  521.82f),
+      simde_mm_set_ps( 521.82f,  521.82f, -182.50f, -280.55f) },
+    { simde_mm_set_ps(-677.92f,  481.01f,  494.26f,  565.24f),
+      simde_mm_set_ps( 205.66f,  769.40f, -900.58f, -847.82f),
+      simde_mm_set_ps(-847.82f, -847.82f,  481.01f, -677.92f) },
+    { simde_mm_set_ps( 703.71f,  397.64f,  773.55f, -739.53f),
+      simde_mm_set_ps(  99.18f, -932.61f, -902.04f,  169.61f),
+      simde_mm_set_ps( 169.61f,  169.61f,  397.64f,  703.71f) }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / (sizeof(test_vec[0]))) ; i++) {
+    simde__m128 r = simde_mm_shuffle_ps(test_vec[i].a, test_vec[i].b, 11);
+    simde_assert_m128_f32(r, ==, test_vec[i].r);
+  }
+
+  return MUNIT_OK;
+}
+
+static MunitResult
 test_simde_mm_sub_ps(const MunitParameter params[], void* data) {
   (void) params;
   (void) data;
@@ -3439,6 +3518,8 @@ static MunitTest test_suite_tests[] = {
   { (char*) "/mm_rsqrt_ps",      test_simde_mm_rsqrt_ps,      NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
   { (char*) "/mm_rsqrt_ss",      test_simde_mm_rsqrt_ss,      NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
   { (char*) "/mm_sad_pu8",       test_simde_mm_sad_pu8,       NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mm_shuffle_pi16",  test_simde_mm_shuffle_pi16,  NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mm_shuffle_ps",    test_simde_mm_shuffle_ps,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
   { (char*) "/mm_sub_ps",        test_simde_mm_sub_ps,        NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
 
   { NULL, NULL, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL }
