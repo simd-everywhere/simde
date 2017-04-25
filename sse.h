@@ -1553,6 +1553,7 @@ simde_mm_sqrt_ps (simde__m128 a) {
   return SIMDE__M128_C(_mm_sqrt_ps(a.n));
 #else
   simde__m128 r;
+  SIMDE__VECTORIZE
   for (size_t i = 0 ; i < sizeof(r.f32) / sizeof(r.f32[0]) ; i++) {
     r.f32[i] = sqrtf(a.f32[i]);
   }
@@ -1572,6 +1573,100 @@ simde_mm_sqrt_ss (simde__m128 a) {
   r.f32[2] = a.f32[2];
   r.f32[3] = a.f32[3];
   return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+void
+simde_mm_store_ps (float mem_addr[4], simde__m128 a) {
+#if defined(SIMDE_SSE_NATIVE)
+  _mm_store_ps(mem_addr, a.n);
+#else
+  SIMDE__VECTORIZE_ALIGNED(mem_addr:16)
+  for (size_t i = 0 ; i < sizeof(a.f32) / sizeof(a.f32[0]) ; i++) {
+    mem_addr[i] = a.f32[i];
+  }
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+void
+simde_mm_store_ps1 (float mem_addr[4], simde__m128 a) {
+#if defined(SIMDE_SSE_NATIVE)
+  _mm_store_ps1(mem_addr, a.n);
+#else
+  SIMDE__VECTORIZE_ALIGNED(mem_addr:16)
+  for (size_t i = 0 ; i < sizeof(a.f32) / sizeof(a.f32[0]) ; i++) {
+    mem_addr[i] = a.f32[0];
+  }
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+void
+simde_mm_store_ss (float* mem_addr, simde__m128 a) {
+#if defined(SIMDE_SSE_NATIVE)
+  _mm_store_ss(mem_addr, a.n);
+#else
+  *mem_addr = a.f32[0];
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+void
+simde_mm_store1_ps (float mem_addr[4], simde__m128 a) {
+#if defined(SIMDE_SSE_NATIVE)
+  _mm_store1_ps(mem_addr, a.n);
+#else
+  simde_mm_store_ps1(mem_addr, a);
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+void
+simde_mm_storeh_pi (simde__m64* mem_addr, simde__m128 a) {
+#if defined(SIMDE_SSE_NATIVE)
+  _mm_storeh_pi(&(mem_addr->n), a.n);
+#else
+  mem_addr->f32[0] = a.f32[2];
+  mem_addr->f32[1] = a.f32[3];
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+void
+simde_mm_storel_pi (simde__m64* mem_addr, simde__m128 a) {
+#if defined(SIMDE_SSE_NATIVE)
+  _mm_storel_pi(&(mem_addr->n), a.n);
+#else
+  mem_addr->f32[0] = a.f32[0];
+  mem_addr->f32[1] = a.f32[1];
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+void
+simde_mm_storer_ps (float mem_addr[4], simde__m128 a) {
+#if defined(SIMDE_SSE_NATIVE)
+  _mm_storer_ps(mem_addr, a.n);
+#else
+  SIMDE__VECTORIZE_ALIGNED(mem_addr:16)
+  for (size_t i = 0 ; i < sizeof(a.f32) / sizeof(a.f32[0]) ; i++) {
+    mem_addr[i] = a.f32[((sizeof(a.f32) / sizeof(a.f32[0])) - 1) - i];
+  }
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+void
+simde_mm_storeu_ps (float mem_addr[4], simde__m128 a) {
+#if defined(SIMDE_SSE_NATIVE)
+  _mm_storeu_ps(mem_addr, a.n);
+#else
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < sizeof(a.f32) / sizeof(a.f32[0]) ; i++) {
+    mem_addr[i] = a.f32[i];
+  }
 #endif
 }
 
