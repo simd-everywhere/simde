@@ -1528,7 +1528,7 @@ simde_mm_shuffle_pi16 (simde__m64 a, const int imm8) {
   }
   return r;
 }
-#if defined(SIMDE_SSE_NATIVE)
+#if defined(SIMDE_SSE_NATIVE) && !defined(__PGI)
 #  define simde_mm_shuffle_pi16(a, imm8) SIMDE__M64_C(_mm_shuffle_pi16(a.n, imm8))
 #endif
 
@@ -1542,7 +1542,7 @@ simde_mm_shuffle_ps (simde__m128 a, simde__m128 b, const int imm8) {
   r.f32[3] = b.f32[(imm8 >> 6) & 3];
   return r;
 }
-#if defined(SIMDE_SSE_NATIVE)
+#if defined(SIMDE_SSE_NATIVE) && !defined(__PGI)
 #  define simde_mm_shuffle_ps(a, b, imm8) SIMDE__M128_C(_mm_shuffle_ps(a.n, b.n, imm8))
 #endif
 
