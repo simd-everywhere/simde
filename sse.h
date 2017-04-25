@@ -1548,6 +1548,35 @@ simde_mm_shuffle_ps (simde__m128 a, simde__m128 b, const int imm8) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128
+simde_mm_sqrt_ps (simde__m128 a) {
+#if defined(SIMDE_SSE_NATIVE)
+  return SIMDE__M128_C(_mm_sqrt_ps(a.n));
+#else
+  simde__m128 r;
+  for (size_t i = 0 ; i < sizeof(r.f32) / sizeof(r.f32[0]) ; i++) {
+    r.f32[i] = sqrtf(a.f32[i]);
+  }
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128
+simde_mm_sqrt_ss (simde__m128 a) {
+#if defined(SIMDE_SSE_NATIVE)
+  return SIMDE__M128_C(_mm_sqrt_ss(a.n));
+#else
+  simde__m128 r;
+  r.f32[0] = sqrtf(a.f32[0]);
+  r.f32[1] = a.f32[1];
+  r.f32[2] = a.f32[2];
+  r.f32[3] = a.f32[3];
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128
 simde_mm_sub_ps (simde__m128 a, simde__m128 b) {
 #if defined(SIMDE_SSE_NATIVE)
   return SIMDE__M128_C(_mm_sub_ps(a.n, b.n));

@@ -106,3 +106,51 @@
     _mm_empty();							\
     return MUNIT_OK;							\
   }
+
+/*
+ * Unary operations
+ */
+
+#define define_test_cmp_VT_VT(T, func, CT)				\
+  static MunitResult							\
+  test_simde_##func(const MunitParameter params[], void* data) {	\
+    (void) params;							\
+    (void) data;							\
+									\
+    _##T na, nr;							\
+    simde_##T ea, er;							\
+									\
+    munit_rand_memory(sizeof(na), (uint8_t*) &na);			\
+    memcpy(&ea, &na, sizeof(na));					\
+									\
+    nr = _##func(na);							\
+    er = simde_##func(ea);						\
+									\
+    simde_assert##T##_##CT(nr, ==, er);					\
+									\
+    _mm_empty();							\
+    return MUNIT_OK;							\
+  }
+
+/* 32-bit floating point operand, no nan or inf */
+#define define_test_cmp_f32_VT_VT(T, func)				\
+  static MunitResult							\
+  test_simde_##func(const MunitParameter params[], void* data) {	\
+    (void) params;							\
+    (void) data;							\
+									\
+    _##T na, nr;							\
+    simde_##T ea, er;							\
+									\
+    random_floatv(sizeof(na) / sizeof(float), (float*) &na);		\
+    memcpy(&ea, &na, sizeof(na));					\
+									\
+    nr = _##func(na);							\
+    er = simde_##func(ea);						\
+									\
+    /* We use u32 since some functions fill elements with ~0U or 0U */	\
+    simde_assert##T##_u32(nr, ==, er);					\
+									\
+    _mm_empty();							\
+    return MUNIT_OK;							\
+  }
