@@ -47,7 +47,7 @@
 
 #  if defined(SIMDE_SSE_NATIVE)
 #    include <xmmintrin.h>
-#    if defined(__PGI)
+#    if defined(SIMDE_BUG_PGI_TPR_24170)
 #      include <math.h>
 #    endif
 #  else
@@ -244,7 +244,7 @@ simde_mm_cmpge_ps (simde__m128 a, simde__m128 b) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128
 simde_mm_cmpge_ss (simde__m128 a, simde__m128 b) {
-#if defined(SIMDE_SSE_NATIVE)
+#if defined(SIMDE_SSE_NATIVE) && !defined(SIMDE_BUG_PGI_TPR_24170)
   return SIMDE__M128_C(_mm_cmpge_ss(a.n, b.n));
 #else
   simde__m128 r;
@@ -275,7 +275,7 @@ simde_mm_cmpgt_ps (simde__m128 a, simde__m128 b) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128
 simde_mm_cmpgt_ss (simde__m128 a, simde__m128 b) {
-#if defined(SIMDE_SSE_NATIVE)
+#if defined(SIMDE_SSE_NATIVE) && !defined(SIMDE_BUG_PGI_TPR_24170)
   return SIMDE__M128_C(_mm_cmpgt_ss(a.n, b.n));
 #else
   simde__m128 r;
@@ -394,7 +394,7 @@ simde_mm_cmpnge_ps (simde__m128 a, simde__m128 b) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128
 simde_mm_cmpnge_ss (simde__m128 a, simde__m128 b) {
-#if defined(SIMDE_SSE_NATIVE)
+#if defined(SIMDE_SSE_NATIVE) && !defined(SIMDE_BUG_PGI_TPR_24170)
   return SIMDE__M128_C(_mm_cmpnge_ss(a.n, b.n));
 #else
   return simde_mm_cmplt_ss(a, b);
@@ -414,7 +414,7 @@ simde_mm_cmpngt_ps (simde__m128 a, simde__m128 b) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128
 simde_mm_cmpngt_ss (simde__m128 a, simde__m128 b) {
-#if defined(SIMDE_SSE_NATIVE)
+#if defined(SIMDE_SSE_NATIVE) && !defined(SIMDE_BUG_PGI_TPR_24170)
   return SIMDE__M128_C(_mm_cmpngt_ss(a.n, b.n));
 #else
   return simde_mm_cmple_ss(a, b);
@@ -510,7 +510,7 @@ simde_mm_cmpunord_ps (simde__m128 a, simde__m128 b) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128
 simde_mm_cmpunord_ss (simde__m128 a, simde__m128 b) {
-#if defined(SIMDE_SSE_NATIVE)
+#if defined(SIMDE_SSE_NATIVE) && !defined(SIMDE_BUG_PGI_TPR_24170)
   return SIMDE__M128_C(_mm_cmpunord_ss(a.n, b.n));
 #else
   simde__m128 r;
@@ -792,7 +792,7 @@ simde__m128
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128
 simde_mm_cvtsi64_ss (simde__m128 a, int64_t b) {
-#if defined(SIMDE_SSE_NATIVE) && !defined(__PGI)
+#if defined(SIMDE_SSE_NATIVE) && !defined(SIMDE_BUG_PGI_TPR_24170)
   return SIMDE__M128_C(_mm_cvtsi64_ss(a.n, b));
 #elif defined(SIMDE_SSE_NATIVE)
   return SIMDE__M128_C(_mm_cvtsi64x_ss(a.n, b));
@@ -830,7 +830,7 @@ simde_mm_cvtss_si32 (simde__m128 a) {
 SIMDE__FUNCTION_ATTRIBUTES
 int64_t
 simde_mm_cvtss_si64 (simde__m128 a) {
-#if defined(SIMDE_SSE_NATIVE) && !defined(__PGI)
+#if defined(SIMDE_SSE_NATIVE) && !defined(SIMDE_BUG_PGI_TPR_24170)
   return _mm_cvtss_si64(a.n);
 #elif defined(SIMDE_SSE_NATIVE)
   return _mm_cvtss_si64x(a.n);
@@ -887,7 +887,7 @@ simde_mm_cvttss_si32 (simde__m128 a) {
 SIMDE__FUNCTION_ATTRIBUTES
 int64_t
 simde_mm_cvttss_si64 (simde__m128 a) {
-#if defined(SIMDE_SSE_NATIVE) && !defined(__PGI)
+#if defined(SIMDE_SSE_NATIVE) && !defined(SIMDE_BUG_PGI_TPR_24170)
   return _mm_cvttss_si64(a.n);
 #else
   return (int64_t) truncf(a.f32[0]);
@@ -928,7 +928,7 @@ simde_mm_div_ss (simde__m128 a, simde__m128 b) {
 SIMDE__FUNCTION_ATTRIBUTES
 int32_t
 simde_mm_extract_pi16 (simde__m64 a, const int imm8) {
-#if defined(SIMDE_SSE_NATIVE) && !defined(__clang__) && !defined(__PGI)
+#if defined(SIMDE_SSE_NATIVE) && !defined(__clang__) && !defined(SIMDE_BUG_PGI_TPR_24170)
   return _mm_extract_pi16(a.n, imm8);
 #else
   return a.u16[imm8];
@@ -990,7 +990,7 @@ simde_MM_SET_ROUNDING_MODE(unsigned int a) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m64
 simde_mm_insert_pi16 (simde__m64 a, int16_t i, const int imm8) {
-#if defined(SIMDE_SSE_NATIVE) && !defined(__clang__) && !defined(__PGI)
+#if defined(SIMDE_SSE_NATIVE) && !defined(__clang__) && !defined(SIMDE_BUG_PGI_TPR_24170)
   return SIMDE__M64_C(_mm_insert_pi16(a.n, i, imm8));
 #else
   simde__m64 r;

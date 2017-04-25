@@ -81,4 +81,16 @@
 #  define SIMDE__FUNCTION_ATTRIBUTES static HEDLEY_INLINE
 #endif
 
+/* Sometimes we run into problems with specific versions of compilers
+   which make the native versions unusable for us.  Often this is due
+   to missing functions, sometimes buggy implementations, etc.  These
+   macros are how we check for specific bugs.  As they are fixed we'll
+   start only defining them for problematic compiler versions. */
+
+#if !defined(SIMDE_IGNORE_COMPILER_BUGS)
+#  if defined(__PGI)
+#    define SIMDE_BUG_PGI_TPR_24170 /* http://www.pgroup.com/userforum/viewtopic.php?t=5578 */
+#  endif
+#endif
+
 #endif /* !defined(SIMDE_COMMON_H) */

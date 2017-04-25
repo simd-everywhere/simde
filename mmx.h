@@ -963,7 +963,7 @@ simde_m_pslld (simde__m64 a, simde__m64 count) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m64
 simde_mm_slli_pi16 (simde__m64 a, int count) {
-#if defined(SIMDE_MMX_NATIVE)
+#if defined(SIMDE_MMX_NATIVE) && !defined(SIMDE_BUG_PGI_TPR_24170)
   return SIMDE__M64_C(_mm_slli_pi16(a.n, count));
 #else
   simde__m64 r;
@@ -990,7 +990,7 @@ simde_m_psllwi (simde__m64 a, int count) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m64
 simde_mm_slli_pi32 (simde__m64 a, int count) {
-#if defined(SIMDE_MMX_NATIVE)
+#if defined(SIMDE_MMX_NATIVE) && !defined(SIMDE_BUG_PGI_TPR_24170)
   return SIMDE__M64_C(_mm_slli_pi32(a.n, count));
 #else
   simde__m64 r;
@@ -1128,7 +1128,7 @@ simde_m_psrld (simde__m64 a, simde__m64 count) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m64
 simde_mm_srli_pi16 (simde__m64 a, int count) {
-#if defined(SIMDE_MMX_NATIVE)
+#if defined(SIMDE_MMX_NATIVE) && !defined(SIMDE_BUG_PGI_TPR_24170)
   return SIMDE__M64_C(_mm_srli_pi16(a.n, count));
 #else
   simde__m64 r;
@@ -1155,7 +1155,7 @@ simde_m_psrlwi (simde__m64 a, int count) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m64
 simde_mm_srli_pi32 (simde__m64 a, int count) {
-#if defined(SIMDE_MMX_NATIVE)
+#if defined(SIMDE_MMX_NATIVE) && !defined(SIMDE_BUG_PGI_TPR_24170)
   return SIMDE__M64_C(_mm_srli_pi32(a.n, count));
 #else
   simde__m64 r;
@@ -1182,7 +1182,7 @@ simde_m_psrldi (simde__m64 a, int count) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m64
 simde_mm_srli_si64 (simde__m64 a, int count) {
-#if defined(SIMDE_MMX_NATIVE)
+#if defined(SIMDE_MMX_NATIVE) && !defined(SIMDE_BUG_PGI_TPR_24170)
   return SIMDE__M64_C(_mm_srli_si64(a.n, count));
 #else
   return (simde__m64) { .u64 = { a.u64[0] >> count } };
@@ -1230,7 +1230,7 @@ simde_m_psrlq (simde__m64 a, simde__m64 count) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m64
 simde_mm_srai_pi16 (simde__m64 a, int count) {
-#if defined(SIMDE_MMX_NATIVE)
+#if defined(SIMDE_MMX_NATIVE) && !defined(SIMDE_BUG_PGI_TPR_24170)
   return SIMDE__M64_C(_mm_srai_pi16(a.n, count));
 #else
   simde__m64 r;
@@ -1260,7 +1260,7 @@ simde_m_psrawi (simde__m64 a, int count) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m64
 simde_mm_srai_pi32 (simde__m64 a, int count) {
-#if defined(SIMDE_MMX_NATIVE)
+#if defined(SIMDE_MMX_NATIVE) && !defined(SIMDE_BUG_PGI_TPR_24170)
   return SIMDE__M64_C(_mm_srai_pi32(a.n, count));
 #else
   simde__m64 r;
