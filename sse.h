@@ -1847,4 +1847,25 @@ simde_mm_xor_ps (simde__m128 a, simde__m128 b) {
 #endif
 }
 
+SIMDE__FUNCTION_ATTRIBUTES
+void
+simde_mm_stream_pi (simde__m64* mem_addr, simde__m64 a) {
+#if defined(SIMDE_SSE_NATIVE)
+  _mm_stream_pi(&(mem_addr->n), a.n);
+#else
+  mem_addr->i64[0] = a.i64[0];
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+void
+simde_mm_stream_ps (float mem_addr[4], simde__m128 a) {
+#if defined(SIMDE_SSE_NATIVE)
+  _mm_stream_ps(mem_addr, a.n);
+#else
+  HEDLEY_ASSUME_ALIGNED(mem_addr, 16);
+  memcpy(mem_addr, &a, sizeof(a));
+#endif
+}
+
 #endif /* !defined(SIMDE__SSE_H) */
