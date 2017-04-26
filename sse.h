@@ -1700,4 +1700,94 @@ simde_mm_sub_ss (simde__m128 a, simde__m128 b) {
 #endif
 }
 
+SIMDE__FUNCTION_ATTRIBUTES
+int
+simde_mm_ucomieq_ss (simde__m128 a, simde__m128 b) {
+#if defined(SIMDE_SSE_NATIVE)
+  return _mm_ucomieq_ss(a.n, b.n);
+#else
+  fenv_t envp;
+  int x = feholdexcept(&envp);
+  int r = a.f32[0] == b.f32[0];
+  if (HEDLEY_LIKELY(x == 0))
+    fesetenv(&envp);
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+int
+simde_mm_ucomige_ss (simde__m128 a, simde__m128 b) {
+#if defined(SIMDE_SSE_NATIVE)
+  return _mm_ucomige_ss(a.n, b.n);
+#else
+  fenv_t envp;
+  int x = feholdexcept(&envp);
+  int r = a.f32[0] >= b.f32[0];
+  if (HEDLEY_LIKELY(x == 0))
+    fesetenv(&envp);
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+int
+simde_mm_ucomigt_ss (simde__m128 a, simde__m128 b) {
+#if defined(SIMDE_SSE_NATIVE)
+  return _mm_ucomigt_ss(a.n, b.n);
+#else
+  fenv_t envp;
+  int x = feholdexcept(&envp);
+  int r = a.f32[0] > b.f32[0];
+  if (HEDLEY_LIKELY(x == 0))
+    fesetenv(&envp);
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+int
+simde_mm_ucomile_ss (simde__m128 a, simde__m128 b) {
+#if defined(SIMDE_SSE_NATIVE)
+  return _mm_ucomile_ss(a.n, b.n);
+#else
+  fenv_t envp;
+  int x = feholdexcept(&envp);
+  int r = a.f32[0] <= b.f32[0];
+  if (HEDLEY_LIKELY(x == 0))
+    fesetenv(&envp);
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+int
+simde_mm_ucomilt_ss (simde__m128 a, simde__m128 b) {
+#if defined(SIMDE_SSE_NATIVE)
+  return _mm_ucomilt_ss(a.n, b.n);
+#else
+  fenv_t envp;
+  int x = feholdexcept(&envp);
+  int r = a.f32[0] < b.f32[0];
+  if (HEDLEY_LIKELY(x == 0))
+    fesetenv(&envp);
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+int
+simde_mm_ucomineq_ss (simde__m128 a, simde__m128 b) {
+#if defined(SIMDE_SSE_NATIVE)
+  return _mm_ucomineq_ss(a.n, b.n);
+#else
+  fenv_t envp;
+  int x = feholdexcept(&envp);
+  int r = a.f32[0] != b.f32[0];
+  if (HEDLEY_LIKELY(x == 0))
+    fesetenv(&envp);
+  return r;
+#endif
+}
+
 #endif /* !defined(SIMDE__SSE_H) */
