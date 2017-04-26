@@ -162,6 +162,16 @@ simde_mm_avg_pu16 (simde__m64 a, simde__m64 b) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m64
+simde_m_pavgw (simde__m64 a, simde__m64 b) {
+#if defined(SIMDE_SSE_NATIVE)
+  return SIMDE__M64_C(_m_pavgw(a.n, b.n));
+#else
+  return simde_mm_avg_pu16(a, b);
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m64
 simde_mm_avg_pu8 (simde__m64 a, simde__m64 b) {
 #if defined(SIMDE_SSE_NATIVE)
   return SIMDE__M64_C(_mm_avg_pu8(a.n, b.n));
@@ -172,6 +182,16 @@ simde_mm_avg_pu8 (simde__m64 a, simde__m64 b) {
     r.u8[i] = (a.u8[i] + b.u8[i] + 1) >> 1;
   }
   return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m64
+simde_m_pavgb (simde__m64 a, simde__m64 b) {
+#if defined(SIMDE_SSE_NATIVE)
+  return SIMDE__M64_C(_m_pavgb(a.n, b.n));
+#else
+  return simde_mm_avg_pu8(a, b);
 #endif
 }
 
@@ -915,6 +935,16 @@ simde_mm_extract_pi16 (simde__m64 a, const int imm8) {
 #endif
 }
 
+SIMDE__FUNCTION_ATTRIBUTES
+int32_t
+simde_m_pextrw(simde__m64 a, const int imm8) {
+#if defined(SIMDE_SSE_NATIVE) && !defined(__clang__) && !defined(SIMDE_BUG_PGI_TPR_24170)
+  return _m_pextrw(a.n, imm8);
+#else
+  return simde_mm_extract_pi16(a, imm8);
+#endif
+}
+
 enum {
 #if defined(SIMDE_SSE_NATIVE)
   simde_MM_ROUND_NEAREST     = _MM_ROUND_NEAREST,
@@ -977,6 +1007,16 @@ simde_mm_insert_pi16 (simde__m64 a, int16_t i, const int imm8) {
   r.i64[0] = a.i64[0];
   r.i16[imm8] = i;
   return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m64
+simde_m_pinsrw(simde__m64 a, int16_t i, const int imm8) {
+#if defined(SIMDE_SSE_NATIVE) && !defined(__clang__) && !defined(SIMDE_BUG_PGI_TPR_24170)
+  return SIMDE__M64_C(_m_pinsrw(a.n, i, imm8));
+#else
+  return simde_mm_insert_pi16(a, i, imm8);
 #endif
 }
 
@@ -1132,6 +1172,16 @@ simde_mm_max_pi16 (simde__m64 a, simde__m64 b) {
 }
 
 SIMDE__FUNCTION_ATTRIBUTES
+simde__m64
+simde_m_pmaxsw (simde__m64 a, simde__m64 b) {
+#if defined(SIMDE_SSE_NATIVE)
+  return SIMDE__M64_C(_m_pmaxsw(a.n, b.n));
+#else
+  return simde_mm_max_pi16(a, b);
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
 simde__m128
 simde_mm_max_ps (simde__m128 a, simde__m128 b) {
 #if defined(SIMDE_SSE_NATIVE)
@@ -1158,6 +1208,16 @@ simde_mm_max_pu8 (simde__m64 a, simde__m64 b) {
     r.u8[i] = (a.u8[i] > b.u8[i]) ? a.u8[i] : b.u8[i];
   }
   return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m64
+simde_m_pmaxub (simde__m64 a, simde__m64 b) {
+#if defined(SIMDE_SSE_NATIVE)
+  return SIMDE__M64_C(_m_pmaxub(a.n, b.n));
+#else
+  return simde_mm_max_pu8(a, b);
 #endif
 }
 
@@ -1192,6 +1252,16 @@ simde_mm_min_pi16 (simde__m64 a, simde__m64 b) {
 }
 
 SIMDE__FUNCTION_ATTRIBUTES
+simde__m64
+simde_m_pminsw (simde__m64 a, simde__m64 b) {
+#if defined(SIMDE_SSE_NATIVE)
+  return SIMDE__M64_C(_m_pminsw(a.n, b.n));
+#else
+  return simde_mm_min_pi16(a, b);
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
 simde__m128
 simde_mm_min_ps (simde__m128 a, simde__m128 b) {
 #if defined(SIMDE_SSE_NATIVE)
@@ -1218,6 +1288,16 @@ simde_mm_min_pu8 (simde__m64 a, simde__m64 b) {
     r.u8[i] = (a.u8[i] < b.u8[i]) ? a.u8[i] : b.u8[i];
   }
   return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m64
+simde_m_pminub (simde__m64 a, simde__m64 b) {
+#if defined(SIMDE_SSE_NATIVE)
+  return SIMDE__M64_C(_m_pminub(a.n, b.n));
+#else
+  return simde_mm_min_pu8(a, b);
 #endif
 }
 
@@ -1301,6 +1381,16 @@ simde_mm_movemask_pi8 (simde__m64 a) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 int
+simde_m_pmovmskb (simde__m64 a) {
+#if defined(SIMDE_SSE_NATIVE)
+  return _m_pmovmskb(a.n);
+#else
+  return simde_mm_movemask_pi8(a);
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+int
 simde_mm_movemask_ps (simde__m128 a) {
 #if defined(SIMDE_SSE_NATIVE)
   return _mm_movemask_ps(a.n);
@@ -1358,6 +1448,16 @@ simde_mm_mulhi_pu16 (simde__m64 a, simde__m64 b) {
     r.u16[i] = (a.u16[i] * b.u16[i]) >> 16;
   }
   return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m64
+simde_m_pmulhuw (simde__m64 a, simde__m64 b) {
+#if defined(SIMDE_SSE_NATIVE)
+  return SIMDE__M64_C(_m_pmulhuw(a.n, b.n));
+#else
+  return simde_mm_mulhi_pu16(a, b);
 #endif
 }
 
@@ -1460,6 +1560,16 @@ simde_mm_sad_pu8 (simde__m64 a, simde__m64 b) {
 }
 
 SIMDE__FUNCTION_ATTRIBUTES
+simde__m64
+simde_m_psadbw (simde__m64 a, simde__m64 b) {
+#if defined(SIMDE_SSE_NATIVE)
+  return SIMDE__M64_C(_m_psadbw(a.n, b.n));
+#else
+  return simde_mm_sad_pu8(a, b);
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
 simde__m128
 simde_mm_set_ps (float e3, float e2, float e1, float e0) {
 #if defined(SIMDE_SSE_NATIVE)
@@ -1530,6 +1640,15 @@ simde_mm_shuffle_pi16 (simde__m64 a, const int imm8) {
 }
 #if defined(SIMDE_SSE_NATIVE) && !defined(__PGI)
 #  define simde_mm_shuffle_pi16(a, imm8) SIMDE__M64_C(_mm_shuffle_pi16(a.n, imm8))
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m64
+simde_m_pshufw (simde__m64 a, const int imm8) {
+  return simde_mm_shuffle_pi16(a, imm8);
+}
+#if defined(SIMDE_SSE_NATIVE) && !defined(__PGI)
+#  define simde_m_pshufw(a, imm8) SIMDE__M64_C(_m_pshufw(a.n, imm8))
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
