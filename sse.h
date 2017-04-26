@@ -2025,4 +2025,54 @@ simde_mm_stream_ps (float mem_addr[4], simde__m128 a) {
 #endif
 }
 
+SIMDE__FUNCTION_ATTRIBUTES
+uint32_t
+simde_mm_getcsr (void) {
+#if defined(SIMDE_SSE_NATIVE)
+  return _mm_getcsr();
+#else
+  uint32_t r = 0;
+  int rounding_mode = fegetround();
+
+  switch(rounding_mode) {
+    case FE_TONEAREST:
+      break;
+    case FE_UPWARD:
+      r |= 2 << 13;
+      break;
+    case FE_DOWNWARD:
+      r |= 1 << 13;
+      break;
+    case FE_TOWARDZERO:
+      r = 3 << 13;
+      break;
+  }
+
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+void
+simde_mm_setcsr (uint32_t a) {
+#if defined(SIMDE_SSE_NATIVE)
+  _mm_setcsr(a);
+#else
+  switch((a >> 13) & 3) {
+    case 0:
+      fesetround(FE_TONEAREST);
+      break;
+    case 1:
+      fesetround(FE_DOWNWARD);
+      break;
+    case 2:
+      fesetround(FE_UPWARD);
+      break;
+    case 3:
+      fesetround(FE_TOWARDZERO);
+      break;
+  }
+#endif
+}
+
 #endif /* !defined(SIMDE__SSE_H) */

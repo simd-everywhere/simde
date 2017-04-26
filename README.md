@@ -14,6 +14,7 @@ There are currently full implementations of the following instruction
 sets:
 
  * MMX
+ * SSE
 
 Work is underway to support various versions of SSE.  For detailed
 progress information, see the
@@ -95,10 +96,16 @@ know](https://github.com/nemequ/simde/issues/new)!
 
 ## Caveats
 
+Sometime features can't be emulated.  If SIMDe is operating in native
+mode the functions will work as expected, but if there is no native
+support the following caveats apply:
+
 ### SSE
 
-If SSE support is emulated, `_MM_SET_ROUNDING_MODE()` will use
-`fesetround()`, altering the global rounding mode.
+ * `simde_MM_SET_ROUNDING_MODE()` will use `fesetround()`, altering
+   the global rounding mode.
+ * `simde_mm_getcsr` and `simde_mm_setcsr` only implement bits 13 and
+   14 (rounding mode).
 
 ## Platform Support
 
