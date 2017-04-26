@@ -97,6 +97,11 @@
 #  if defined(__PGI)
 #    define SIMDE_BUG_PGI_TPR_24170 /* http://www.pgroup.com/userforum/viewtopic.php?t=5578 */
 #  endif
+#  if defined(__GNUC__) && !defined(__clang__) && !defined(__INTEL_COMPILER)
+#    if !HEDLEY_GCC_VERSION_CHECK(4,9,0)
+#      define SIMDE_BUG_GCC_REV_208793
+#    endif
+#  endif
 #endif
 
 #endif /* !defined(SIMDE_COMMON_H) */

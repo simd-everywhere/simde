@@ -1793,7 +1793,9 @@ simde_mm_ucomineq_ss (simde__m128 a, simde__m128 b) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128
 simde_mm_undefined_ps (void) {
-#if defined(SIMDE_SSE_NATIVE)
+#if defined(SIMDE_SSE_NATIVE) && \
+  !defined(SIMDE_BUG_GCC_REV_208793) && \
+  !defined(SIMDE_BUG_PGI_TPR_24170)
   return SIMDE__M128_C(_mm_undefined_ps());
 #else
   return simde_mm_setzero_ps();
