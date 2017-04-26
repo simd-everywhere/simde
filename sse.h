@@ -1685,4 +1685,19 @@ simde_mm_sub_ps (simde__m128 a, simde__m128 b) {
 #endif
 }
 
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128
+simde_mm_sub_ss (simde__m128 a, simde__m128 b) {
+#if defined(SIMDE_SSE_NATIVE)
+  return SIMDE__M128_C(_mm_sub_ss(a.n, b.n));
+#else
+  simde__m128 r;
+  r.f32[0] = a.f32[0] - b.f32[0];
+  r.f32[1] = a.f32[1];
+  r.f32[2] = a.f32[2];
+  r.f32[3] = a.f32[3];
+  return r;
+#endif
+}
+
 #endif /* !defined(SIMDE__SSE_H) */

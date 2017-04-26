@@ -72,6 +72,8 @@ define_test_cmp_f32_VT_2xVT(_m128, mm_div_ps)
 define_test_cmp_f32_VT_2xVT(_m128, mm_div_ss)
 define_test_cmp_f32_VT_VT(_m128, mm_sqrt_ps)
 define_test_cmp_f32_VT_VT(_m128, mm_sqrt_ss)
+define_test_cmp_f32_VT_2xVT(_m128, mm_sub_ps)
+define_test_cmp_f32_VT_2xVT(_m128, mm_sub_ss)
 
 static MunitTest test_suite_tests[] = {
   { (char*) "/mm_add_ps",       test_simde_mm_add_ps,       NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
@@ -117,6 +119,8 @@ static MunitTest test_suite_tests[] = {
   { (char*) "/mm_div_ss",       test_simde_mm_div_ss,       NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
   { (char*) "/mm_sqrt_ps",      test_simde_mm_sqrt_ps,      NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
   { (char*) "/mm_sqrt_ss",      test_simde_mm_sqrt_ss,      NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mm_sub_ps",       test_simde_mm_sub_ps,       NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mm_sub_ss",       test_simde_mm_sub_ss,       NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
 
   { NULL, NULL, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL }
 };
