@@ -4219,6 +4219,50 @@ test_simde_mm_unpacklo_ps(const MunitParameter params[], void* data) {
   return MUNIT_OK;
 }
 
+static MunitResult
+test_simde_mm_xor_ps(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  const struct {
+    simde__m128 a;
+    simde__m128 b;
+    simde__m128 r;
+  } test_vec[8] = {
+    { simde_m128_set_u32(UINT32_C(0x024f4584), UINT32_C(0xa17da0be), UINT32_C(0x58a7e615), UINT32_C(0x4a3b7e6a)),
+      simde_m128_set_u32(UINT32_C(0x48d3d04c), UINT32_C(0xdc574d32), UINT32_C(0x6c3bc006), UINT32_C(0xc8120e07)),
+      simde_m128_set_u32(UINT32_C(0x4a9c95c8), UINT32_C(0x7d2aed8c), UINT32_C(0x349c2613), UINT32_C(0x8229706d)) },
+    { simde_m128_set_u32(UINT32_C(0x430ea8b4), UINT32_C(0x2c6e1c1f), UINT32_C(0x4634b744), UINT32_C(0xc1a535c3)),
+      simde_m128_set_u32(UINT32_C(0x2ebc830c), UINT32_C(0x09ff7c77), UINT32_C(0xb03e6975), UINT32_C(0x3b6351c2)),
+      simde_m128_set_u32(UINT32_C(0x6db22bb8), UINT32_C(0x25916068), UINT32_C(0xf60ade31), UINT32_C(0xfac66401)) },
+    { simde_m128_set_u32(UINT32_C(0xc2025c69), UINT32_C(0xb9a74036), UINT32_C(0x7a940029), UINT32_C(0x0ba4d901)),
+      simde_m128_set_u32(UINT32_C(0xc3fc959c), UINT32_C(0x59083db4), UINT32_C(0x915055e4), UINT32_C(0x5dbf7703)),
+      simde_m128_set_u32(UINT32_C(0x01fec9f5), UINT32_C(0xe0af7d82), UINT32_C(0xebc455cd), UINT32_C(0x561bae02)) },
+    { simde_m128_set_u32(UINT32_C(0xf802d7d5), UINT32_C(0xed34ed1c), UINT32_C(0x9d828497), UINT32_C(0xc6637f1f)),
+      simde_m128_set_u32(UINT32_C(0xdba38586), UINT32_C(0x7071b51f), UINT32_C(0xcac3fcc0), UINT32_C(0x8f7eb2d1)),
+      simde_m128_set_u32(UINT32_C(0x23a15253), UINT32_C(0x9d455803), UINT32_C(0x57417857), UINT32_C(0x491dcdce)) },
+    { simde_m128_set_u32(UINT32_C(0x79606c79), UINT32_C(0xf71d7967), UINT32_C(0xada55028), UINT32_C(0xb78eeb2e)),
+      simde_m128_set_u32(UINT32_C(0x69d0518e), UINT32_C(0x2752e0c6), UINT32_C(0x3f450894), UINT32_C(0x77f477b4)),
+      simde_m128_set_u32(UINT32_C(0x10b03df7), UINT32_C(0xd04f99a1), UINT32_C(0x92e058bc), UINT32_C(0xc07a9c9a)) },
+    { simde_m128_set_u32(UINT32_C(0x441b98db), UINT32_C(0xe94eb7e6), UINT32_C(0xb63975b0), UINT32_C(0x3d68f9d5)),
+      simde_m128_set_u32(UINT32_C(0x26f600f1), UINT32_C(0x5d69ebb6), UINT32_C(0x58f8ec40), UINT32_C(0xae6e3695)),
+      simde_m128_set_u32(UINT32_C(0x62ed982a), UINT32_C(0xb4275c50), UINT32_C(0xeec199f0), UINT32_C(0x9306cf40)) },
+    { simde_m128_set_u32(UINT32_C(0xdd0bf52e), UINT32_C(0x1aac98e2), UINT32_C(0x9f63c82f), UINT32_C(0x9e5b5bfb)),
+      simde_m128_set_u32(UINT32_C(0xb98fae38), UINT32_C(0xf9bff81d), UINT32_C(0x54613b0c), UINT32_C(0x2d9c5cba)),
+      simde_m128_set_u32(UINT32_C(0x64845b16), UINT32_C(0xe31360ff), UINT32_C(0xcb02f323), UINT32_C(0xb3c70741)) },
+    { simde_m128_set_u32(UINT32_C(0xba2156c4), UINT32_C(0xdb2aa6aa), UINT32_C(0xd67bed5a), UINT32_C(0xdab4319d)),
+      simde_m128_set_u32(UINT32_C(0xc2c3ccf5), UINT32_C(0xabb0afdd), UINT32_C(0x96fd5dd6), UINT32_C(0xa2b25a76)),
+      simde_m128_set_u32(UINT32_C(0x78e29a31), UINT32_C(0x709a0977), UINT32_C(0x4086b08c), UINT32_C(0x78066beb)) }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / (sizeof(test_vec[0]))) ; i++) {
+    simde__m128 r = simde_mm_xor_ps(test_vec[i].a, test_vec[i].b);
+    simde_assert_m128_u32(r, ==, test_vec[i].r);
+  }
+
+  return MUNIT_OK;
+}
+
 static MunitTest test_suite_tests[] = {
   { (char*) "/mm_set_ps",        test_simde_mm_set_ps,        NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
   { (char*) "/mm_set1_ps",       test_simde_mm_set1_ps,       NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
@@ -4338,6 +4382,7 @@ static MunitTest test_suite_tests[] = {
   { (char*) "/mm_ucomineq_ss",   test_simde_mm_ucomineq_ss,   NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
   { (char*) "/mm_unpackhi_ps",   test_simde_mm_unpackhi_ps,   NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
   { (char*) "/mm_unpacklo_ps",   test_simde_mm_unpacklo_ps,   NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mm_xor_ps",        test_simde_mm_xor_ps,        NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
 
   { NULL, NULL, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL }
 };

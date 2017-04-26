@@ -1830,4 +1830,19 @@ simde_mm_unpacklo_ps (simde__m128 a, simde__m128 b) {
 #endif
 }
 
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128
+simde_mm_xor_ps (simde__m128 a, simde__m128 b) {
+#if defined(SIMDE_SSE_NATIVE)
+  return SIMDE__M128_C(_mm_xor_ps(a.n, b.n));
+#else
+  simde__m128 r;
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.u32) / sizeof(r.u32[0])) ; i++) {
+    r.u32[i] = a.u32[i] ^ b.u32[i];
+  }
+  return r;
+#endif
+}
+
 #endif /* !defined(SIMDE__SSE_H) */
