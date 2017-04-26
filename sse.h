@@ -51,6 +51,11 @@
 #      include <math.h>
 #    endif
 #  else
+#    if !defined(__INTEL_COMPILER) && defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 201112L) && !defined(__STDC_NO_ATOMICS__)
+#      include <stdatomic.h>
+#    elif defined(_WIN32)
+#      include <Windows.h>
+#    endif
 #    include <math.h>
 #    include <fenv.h>
 #  endif
@@ -1477,6 +1482,13 @@ simde_mm_or_ps (simde__m128 a, simde__m128 b) {
 }
 
 SIMDE__FUNCTION_ATTRIBUTES
+void
+simde_mm_prefetch (char const* p, int i) { }
+#if defined(SIMDE_SSE_NATIVE)
+#  define simde_mm_prefetch(p, i) _mm_prefetch(p, i)
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
 simde__m128
 simde_mm_rcp_ps (simde__m128 a) {
 #if defined(SIMDE_SSE_NATIVE)
@@ -1630,6 +1642,35 @@ simde_mm_setzero_ps (void) {
 }
 
 SIMDE__FUNCTION_ATTRIBUTES
+void
+simde_mm_sfence (void) {
+#if defined(SIMDE_SSE_NATIVE)
+  _mm_sfence();
+#elif defined(__GNUC__) && ((__GNUC__ > 4) || (__GNUC__ == 4 && __GNUC_MINOR__ >= 7))
+  __atomic_thread_fence(__ATOMIC_SEQ_CST);
+#elif !defined(__INTEL_COMPILER) && defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 201112L) && !defined(__STDC_NO_ATOMICS__)
+#  if defined(__GNUC__) && (__GNUC__ == 4) && (__GNUC_MINOR__ < 9)
+  __atomic_thread_fence(__ATOMIC_SEQ_CST);
+#  else
+  atomic_thread_fence(memory_order_seq_cst);
+#  endif
+#elif defined(_MSC_VER)
+  MemoryBarrier()
+#elif defined(__GNUC__) && ((__GNUC__ > 4) || (__GNUC__ == 4 && __GNUC_MINOR__ >= 7))
+  __atomic_thread_fence(__ATOMIC_SEQ_CST);
+#elif HEDLEY_CLANG_HAS_FEATURE(c_atomic)
+  __c11_atomic_thread_fence(__ATOMIC_SEQ_CST)
+#elif defined(__GNUC__) && ((__GNUC__ > 4) || (__GNUC__ == 4 && __GNUC_MINOR__ >= 1))
+  __sync_synchronize();
+#elif (defined(__SUNPRO_C) && (__SUNPRO_C >= 0x5140)) || (defined(__SUNPRO_CC) && (__SUNPRO_CC >= 0x5140))
+  __atomic_thread_fence(__ATOMIC_SEQ_CST);
+#elif defined(_OPENMP)
+#  pragma omp critical(simde_mm_sfence_)
+  { }
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
 simde__m64
 simde_mm_shuffle_pi16 (simde__m64 a, const int imm8) {
   simde__m64 r;
@@ -1642,13 +1683,10 @@ simde_mm_shuffle_pi16 (simde__m64 a, const int imm8) {
 #  define simde_mm_shuffle_pi16(a, imm8) SIMDE__M64_C(_mm_shuffle_pi16(a.n, imm8))
 #endif
 
-SIMDE__FUNCTION_ATTRIBUTES
-simde__m64
-simde_m_pshufw (simde__m64 a, const int imm8) {
-  return simde_mm_shuffle_pi16(a, imm8);
-}
 #if defined(SIMDE_SSE_NATIVE) && !defined(__PGI)
 #  define simde_m_pshufw(a, imm8) SIMDE__M64_C(_m_pshufw(a.n, imm8))
+#else
+#  define simde_m_pshufw(a, imm8) simde_mm_shuffle_pi16(a, imm8)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
