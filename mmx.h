@@ -464,12 +464,8 @@ simde_m_pcmpgtd (simde__m64 a, simde__m64 b) {
 SIMDE__FUNCTION_ATTRIBUTES
 int64_t
 simde_mm_cvtm64_si64 (simde__m64 a) {
-#if defined(SIMDE_MMX_NATIVE)
-#  if defined(__PGI)
-  return *((int64_t*) &a);
-#  else
+#if defined(SIMDE_MMX_NATIVE) && defined(SIMDE_ARCH_AMD64) && !defined(SIMDE_BUG_PGI_TPR_24170)
   return _mm_cvtm64_si64(a.n);
-#  endif
 #else
   return a.i64[0];
 #endif
@@ -498,14 +494,8 @@ simde_m_from_int (int32_t a) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m64
 simde_mm_cvtsi64_m64 (int64_t a) {
-#if defined(SIMDE_MMX_NATIVE)
-#  if defined(__PGI)
-  simde__m64 r;
-  *((int64_t*) &r) = a;
-  return r;
-#  else
+#if defined(SIMDE_MMX_NATIVE) && defined(SIMDE_ARCH_AMD64) && !defined(SIMDE_BUG_PGI_TPR_24170)
   return SIMDE__M64_C(_mm_cvtsi64_m64(a));
-#  endif
 #else
   return (simde__m64) { .i64 = { a } };
 #endif
@@ -514,7 +504,7 @@ simde_mm_cvtsi64_m64 (int64_t a) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m64
 simde_m_from_int64 (int64_t a) {
-#if defined(SIMDE_MMX_NATIVE)
+#if defined(SIMDE_MMX_NATIVE) && defined(SIMDE_ARCH_AMD64)
   return SIMDE__M64_C(_m_from_int64(a));
 #else
   return simde_mm_cvtsi64_m64(a);

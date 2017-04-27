@@ -47,18 +47,16 @@
 
 #  if defined(SIMDE_SSE_NATIVE)
 #    include <xmmintrin.h>
-#    if defined(SIMDE_BUG_PGI_TPR_24170)
-#      include <math.h>
-#    endif
 #  else
 #    if !defined(__INTEL_COMPILER) && defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 201112L) && !defined(__STDC_NO_ATOMICS__)
 #      include <stdatomic.h>
 #    elif defined(_WIN32)
 #      include <Windows.h>
 #    endif
-#    include <math.h>
-#    include <fenv.h>
 #  endif
+
+#  include <math.h>
+#  include <fenv.h>
 
 typedef union {
 #if defined(SIMDE__ENABLE_GCC_VEC_EXT)
@@ -797,10 +795,12 @@ simde__m128
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128
 simde_mm_cvtsi64_ss (simde__m128 a, int64_t b) {
-#if defined(SIMDE_SSE_NATIVE) && !defined(SIMDE_BUG_PGI_TPR_24170)
-  return SIMDE__M128_C(_mm_cvtsi64_ss(a.n, b));
-#elif defined(SIMDE_SSE_NATIVE)
-  return SIMDE__M128_C(_mm_cvtsi64x_ss(a.n, b));
+#if defined(SIMDE_SSE_NATIVE) && defined(SIMDE_ARCH_AMD64)
+  #if !defined(SIMDE_BUG_PGI_TPR_24170)
+    return SIMDE__M128_C(_mm_cvtsi64_ss(a.n, b));
+  #else
+    return SIMDE__M128_C(_mm_cvtsi64x_ss(a.n, b));
+  #endif
 #else
   simde__m128 r;
   r.f32[0] = (float) b;
@@ -835,10 +835,12 @@ simde_mm_cvtss_si32 (simde__m128 a) {
 SIMDE__FUNCTION_ATTRIBUTES
 int64_t
 simde_mm_cvtss_si64 (simde__m128 a) {
-#if defined(SIMDE_SSE_NATIVE) && !defined(SIMDE_BUG_PGI_TPR_24170)
-  return _mm_cvtss_si64(a.n);
-#elif defined(SIMDE_SSE_NATIVE)
-  return _mm_cvtss_si64x(a.n);
+#if defined(SIMDE_SSE_NATIVE) && defined(SIMDE_ARCH_AMD64)
+  #if !defined(SIMDE_BUG_PGI_TPR_24170)
+    return _mm_cvtss_si64(a.n);
+  #else
+    return _mm_cvtss_si64x(a.n);
+  #endif
 #else
   return (int64_t) a.f32[0];
 #endif
@@ -892,7 +894,7 @@ simde_mm_cvttss_si32 (simde__m128 a) {
 SIMDE__FUNCTION_ATTRIBUTES
 int64_t
 simde_mm_cvttss_si64 (simde__m128 a) {
-#if defined(SIMDE_SSE_NATIVE) && !defined(SIMDE_BUG_PGI_TPR_24170)
+#if defined(SIMDE_SSE_NATIVE) && defined(SIMDE_ARCH_AMD64) && !defined(SIMDE_BUG_PGI_TPR_24170)
   return _mm_cvttss_si64(a.n);
 #else
   return (int64_t) truncf(a.f32[0]);

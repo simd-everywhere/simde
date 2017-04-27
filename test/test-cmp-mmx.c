@@ -224,11 +224,6 @@ test_simde_mm_sra_pi32(const MunitParameter params[], void* data) {
   nr = _mm_sra_pi32(na, ncount);
   er = simde_mm_sra_pi32(ea, ecount);
 
-  debug_array_u32("\nna", sizeof(na) / sizeof(uint32_t), (uint32_t*) &na);
-  fprintf(stderr, "nc: %ld\n", *((int64_t*) &ncount));
-  debug_array_u32("nr", sizeof(nr) / sizeof(uint32_t), (uint32_t*) &nr);
-  debug_array_u32("er", sizeof(er) / sizeof(uint32_t), (uint32_t*) &er);
-
   simde_assert_m64_i32(nr, ==, er);
 
   _mm_empty();

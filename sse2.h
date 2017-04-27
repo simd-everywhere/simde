@@ -198,7 +198,7 @@ simde_mm_cmplt_epi8 (simde__m128i a, simde__m128i b) {
 SIMDE__FUNCTION_ATTRIBUTES
 int64_t
 simde_mm_cvtsi128_si64 (simde__m128i a) {
-#if defined(SIMDE_SSE2_NATIVE) && !defined(__PGI)
+#if defined(SIMDE_SSE2_NATIVE) && defined(SIMDE_ARCH_AMD64) && !defined(SIMDE_BUG_PGI_TPR_24170)
   return _mm_cvtsi128_si64(a.n);
 #else
   return a.i64[0];
@@ -208,12 +208,12 @@ simde_mm_cvtsi128_si64 (simde__m128i a) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_cvtsi64_si128 (int64_t a) {
-#if defined(SIMDE_SSE2_NATIVE)
-#if !defined(__PGI)
-  return SIMDE__M128I_C(_mm_cvtsi64_si128(a));
-#else
-  return SIMDE__M128I_C(_mm_cvtsi64x_si128(a));
-#endif
+#if defined(SIMDE_SSE2_NATIVE) && defined(SIMDE_ARCH_AMD64)
+  #if !defined(SIMDE_BUG_PGI_TPR_24170)
+    return SIMDE__M128I_C(_mm_cvtsi64_si128(a));
+  #else
+    return SIMDE__M128I_C(_mm_cvtsi64x_si128(a));
+  #endif
 #else
   simde__m128i r;
   r.i64[0] = a;

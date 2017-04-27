@@ -76,7 +76,7 @@ int64_t
 simde_mm_extract_epi64 (simde__m128i a, const int imm8) {
   return a.u64[imm8];
 }
-#if defined(SIMDE_SSE4_1_NATIVE)
+#if defined(SIMDE_SSE4_1_NATIVE) && defined(SIMDE_ARCH_AMD64)
 #  define simde_mm_extract_epi64(a, imm8) _mm_extract_epi64(a.n, imm8)
 #endif
 
