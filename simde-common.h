@@ -29,6 +29,8 @@
 #define SIMDE__CONCAT(a,b) a##b
 #define SIMDE__XCONCAT(a,b) SIMDE__CONCAT(a,b)
 
+#include "simde-arch.h"
+
 #if defined(__GNUC__)
 #  define SIMDE__ALIGN(alignment) __attribute__((aligned(alignment)))
 #elif defined(_MSC_VER)
