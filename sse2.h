@@ -108,7 +108,7 @@ typedef union {
   double         f64[2];
 #endif
 
-#if defined(SIMDE_SSE3_NATIVE)
+#if defined(SIMDE_SSE2_NATIVE)
   __m128d        n;
 #endif
 } simde__m128d;
@@ -267,22 +267,22 @@ simde_mm_or_si128 (simde__m128i a, simde__m128i b) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_set_epi8 (int8_t e15, int8_t e14, int8_t e13, int8_t e12,
-			    int8_t e11, int8_t e10, int8_t  e9, int8_t  e8,
-			    int8_t  e7, int8_t  e6, int8_t  e5, int8_t  e4,
-			    int8_t  e3, int8_t  e2, int8_t  e1, int8_t  e0) {
+		   int8_t e11, int8_t e10, int8_t  e9, int8_t  e8,
+		   int8_t  e7, int8_t  e6, int8_t  e5, int8_t  e4,
+		   int8_t  e3, int8_t  e2, int8_t  e1, int8_t  e0) {
 #if defined(SIMDE_SSE2_NATIVE)
   return SIMDE__M128I_C(_mm_set_epi8(e15, e14, e13, e12, e11, e10,  e9,  e8,
 				      e7,  e6,  e5,  e4,  e3,  e2,  e1,  e0));
 #else
   return (simde__m128i) { .i8 = {  e0,  e1,  e2,  e3,  e4,  e5,  e6,  e7,
-					    e8,  e9, e10, e11, e12, e13, e14, e15 } };
+				   e8,  e9, e10, e11, e12, e13, e14, e15 } };
 #endif
 }
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_set_epi16 (int16_t e7, int16_t e6, int16_t e5, int16_t e4,
-			      int16_t e3, int16_t e2, int16_t e1, int16_t e0) {
+		    int16_t e3, int16_t e2, int16_t e1, int16_t e0) {
 #if defined(SIMDE_SSE2_NATIVE)
   return SIMDE__M128I_C(_mm_set_epi16(e7, e6, e5, e4, e3, e2, e1, e0));
 #else
@@ -321,12 +321,161 @@ simde_mm_set_epi64x (int64_t e1, int64_t e0) {
 }
 
 SIMDE__FUNCTION_ATTRIBUTES
+simde__m128d
+simde_mm_set_pd (double e1, double e0) {
+#if defined(SIMDE_SSE2_NATIVE)
+  return SIMDE__M128D_C(_mm_set_pd(e1, e0));
+#else
+  return (simde__m128d) { .f64 = { e0, e1 } };
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128d
+simde_mm_set_pd1 (double a) {
+#if defined(SIMDE_SSE2_NATIVE)
+  return SIMDE__M128D_C(_mm_set1_pd(a));
+#else
+  return (simde__m128d) { .f64 = { a, a } };
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128d
+simde_mm_set_sd (double a) {
+#if defined(SIMDE_SSE2_NATIVE)
+  return SIMDE__M128D_C(_mm_set_sd(a));
+#else
+  simde__m128d r;
+  r.f64[0] = a;
+  r.u64[1] = 0;
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_set1_epi8 (int8_t a) {
 #if defined(SIMDE_SSE2_NATIVE)
   return SIMDE__M128I_C(_mm_set1_epi8(a));
 #else
   return (simde__m128i) { .i8 = { a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a } };
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128i
+simde_mm_set1_epi16 (int16_t a) {
+#if defined(SIMDE_SSE2_NATIVE)
+  return SIMDE__M128I_C(_mm_set1_epi16(a));
+#else
+  return (simde__m128i) { .i16 = { a, a, a, a, a, a, a, a } };
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128i
+simde_mm_set1_epi32 (int32_t a) {
+#if defined(SIMDE_SSE2_NATIVE)
+  return SIMDE__M128I_C(_mm_set1_epi32(a));
+#else
+  return (simde__m128i) { .i32 = { a, a, a, a } };
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128i
+simde_mm_set1_epi64x (int64_t a) {
+#if defined(SIMDE_SSE2_NATIVE)
+  return SIMDE__M128I_C(_mm_set1_epi64x(a));
+#else
+  return (simde__m128i) { .i64 = { a, a } };
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128i
+simde_mm_set1_epi64 (simde__m64 a) {
+#if defined(SIMDE_SSE2_NATIVE)
+  return SIMDE__M128I_C(_mm_set1_epi64(a.n));
+#else
+  return (simde__m128i) { .i64 = { a.i64[0], a.i64[0] } };
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128d
+simde_mm_set1_pd (double a) {
+#if defined(SIMDE_SSE2_NATIVE)
+  return SIMDE__M128D_C(_mm_set1_pd(a));
+#else
+  return (simde__m128d) { .f64 = { a, a } };
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128i
+simde_mm_setr_epi8 (int8_t e15, int8_t e14, int8_t e13, int8_t e12,
+		    int8_t e11, int8_t e10, int8_t  e9, int8_t  e8,
+		    int8_t  e7, int8_t  e6, int8_t  e5, int8_t  e4,
+		    int8_t  e3, int8_t  e2, int8_t  e1, int8_t  e0) {
+#if defined(SIMDE_SSE2_NATIVE)
+  return SIMDE__M128I_C(_mm_setr_epi8(e15, e14, e13, e12, e11, e10,  e9,  e8,
+				       e7,  e6,  e5,  e4,  e3,  e2,  e1,  e0));
+#else
+  return (simde__m128i) { .i8 = { e15, e14, e13, e12, e11, e10,  e9,  e8,
+				   e7,  e6,  e5,  e4,  e3,  e2,  e1,  e0  } };
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128i
+simde_mm_setr_epi16 (int16_t e7, int16_t e6, int16_t e5, int16_t e4,
+		     int16_t e3, int16_t e2, int16_t e1, int16_t e0) {
+#if defined(SIMDE_SSE2_NATIVE)
+  return SIMDE__M128I_C(_mm_setr_epi16(e7, e6, e5, e4, e3, e2, e1, e0));
+#else
+  return (simde__m128i) { .i16 = { e7, e6, e5, e4, e3, e2, e1, e0 } };
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128i
+simde_mm_setr_epi32 (int32_t e3, int32_t e2, int32_t e1, int32_t e0) {
+#if defined(SIMDE_SSE2_NATIVE)
+  return SIMDE__M128I_C(_mm_setr_epi32(e3, e2, e1, e0));
+#else
+  return (simde__m128i) { .i32 = { e3, e2, e1, e0 } };
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128i
+simde_mm_setr_epi64 (simde__m64 e1, simde__m64 e0) {
+#if defined(SIMDE_SSE2_NATIVE)
+  return SIMDE__M128I_C(_mm_setr_epi64(e1.n, e0.n));
+#else
+  return (simde__m128i) { .i64 = { e1.i64[0], e0.i64[0] } };
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128d
+simde_mm_setr_pd (double e1, double e0) {
+#if defined(SIMDE_SSE2_NATIVE)
+  return SIMDE__M128D_C(_mm_setr_pd(e1, e0));
+#else
+  return (simde__m128d) { .i64 = { e1, e0 } };
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128d
+simde_mm_setzero_pd (void) {
+#if defined(SIMDE_SSE2_NATIVE)
+  return SIMDE__M128D_C(_mm_setzero_pd());
+#else
+  return (simde__m128d) { .u64 = { 0.0, } };
 #endif
 }
 

@@ -622,20 +622,79 @@ test_simde_mm_set_epi64x(const MunitParameter params[], void* data) {
 }
 
 static MunitResult
+test_simde_mm_set_pd(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  for (size_t i = 0 ; i < 32 ; i++) {
+    double e1, e0;
+    simde__m128d r;
+
+    e0 = random_double_range(-1000.0, 1000.0);
+    e1 = random_double_range(-1000.0, 1000.0);
+    r = simde_mm_set_pd(e1, e0);
+
+    munit_assert_int64(r.f64[0], ==, e0);
+    munit_assert_int64(r.f64[1], ==, e1);
+  }
+
+  return MUNIT_OK;
+}
+
+static MunitResult
 test_simde_mm_set1_epi8(const MunitParameter params[], void* data) {
   (void) params;
   (void) data;
 
   for (size_t i = 0 ; i < 32 ; i++) {
-    int8_t a;
+    int8_t v;
     simde__m128i r;
 
-    munit_rand_memory(sizeof(a), (uint8_t*) &a);
-    r = simde_mm_set1_epi8(a);
+    munit_rand_memory(sizeof(v), (uint8_t*) &v);
 
-    for (size_t j = 0 ; j < sizeof(r.i8) / sizeof(r.i8[0]) ; j++) {
-      munit_assert_int8(a, ==, r.i8[j]);
+    r = simde_mm_set1_epi8(v);
+
+    for (size_t j = 0 ; j < sizeof(r) / sizeof(r.i8) ; j++) {
+      munit_assert_int8(v, ==, r.i8[j]);
     }
+  }
+
+  return MUNIT_OK;
+}
+
+static MunitResult
+test_simde_mm_set_pd1(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  for (size_t i = 0 ; i < 32 ; i++) {
+    double a;
+    simde__m128d r;
+
+    a = random_double_range(-1000.0, 1000.0);
+    r = simde_mm_set_pd1(a);
+
+    munit_assert_double(r.f64[0], ==, a);
+    munit_assert_double(r.f64[1], ==, a);
+  }
+
+  return MUNIT_OK;
+}
+
+static MunitResult
+test_simde_mm_set_sd(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  for (size_t i = 0 ; i < 32 ; i++) {
+    double a;
+    simde__m128d r;
+
+    a = random_double_range(-1000.0, 1000.0);
+    r = simde_mm_set_sd(a);
+
+    munit_assert_double(r.f64[0], ==, a);
+    munit_assert_int64(r.i64[1], ==, 0);
   }
 
   return MUNIT_OK;
@@ -912,6 +971,10 @@ static MunitTest test_suite_tests[] = {
   { (char*) "/mm_set_epi32",     test_simde_mm_set_epi32,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
   { (char*) "/mm_set_epi64",     test_simde_mm_set_epi64,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
   { (char*) "/mm_set_epi64x",    test_simde_mm_set_epi64x,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mm_set_pd",        test_simde_mm_set_pd,        NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mm_set_pd1",       test_simde_mm_set_pd1,       NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mm_set_sd",        test_simde_mm_set_sd,        NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+
   { (char*) "/mm_set1_epi8",     test_simde_mm_set1_epi8,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
   { (char*) "/mm_setzero_si128", test_simde_mm_setzero_si128, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
   { (char*) "/mm_add_epi8",      test_simde_mm_add_epi8,      NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
