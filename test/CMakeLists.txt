@@ -59,8 +59,16 @@ set(TEST_SOURCES
 
 set_compiler_specific_flags(
   VARIABLE extra_cflags
-  INTEL -wd3179 -qopenmp-simd -DSIMDE_ENABLE_OPENMP
-  GCCISH -march=native -fopenmp-simd -DSIMDE_ENABLE_OPENMP)
+  INTEL -wd3179
+  GCCISH -march=native)
+
+check_c_compiler_flag("-fopenmp-simd" CFLAG__fopenmp_simd)
+check_c_compiler_flag("-qopenmp-simd" CFLAG__qopenmp_simd)
+if(CFLAG__fopenmp_simd)
+  set(extra_cflags "${extra_cflags} -fopenmp-simd -DSIMDE_ENABLE_OPENMP")
+elseif(CFLAG__qopenmp_simd)
+  set(extra_cflags "${extra_cflags} -qopenmp-simd -DSIMDE_ENABLE_OPENMP")
+endif()
 
 foreach(variant native emul)
   add_executable(test-${variant} ${TEST_SOURCES})
