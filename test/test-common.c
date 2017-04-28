@@ -34,6 +34,38 @@ void debug_array_u64(const char* prefix, size_t nmemb, uint64_t v[HEDLEY_ARRAY_P
   fprintf(stderr, "\n");
 }
 
+void debug_array_i8(const char* prefix, size_t nmemb, int8_t v[HEDLEY_ARRAY_PARAM(nmemb)]) {
+  fprintf(stderr, "%s:", prefix);
+  for(size_t i = 0 ; i < nmemb ; i++) {
+    fprintf(stderr, " %4" PRId8, v[i]);
+  }
+  fprintf(stderr, "\n");
+}
+
+void debug_array_i16(const char* prefix, size_t nmemb, int16_t v[HEDLEY_ARRAY_PARAM(nmemb)]) {
+  fprintf(stderr, "%s:", prefix);
+  for(size_t i = 0 ; i < nmemb ; i++) {
+    fprintf(stderr, " %6" PRId16, v[i]);
+  }
+  fprintf(stderr, "\n");
+}
+
+void debug_array_i32(const char* prefix, size_t nmemb, int32_t v[HEDLEY_ARRAY_PARAM(nmemb)]) {
+  fprintf(stderr, "%s:", prefix);
+  for(size_t i = 0 ; i < nmemb ; i++) {
+    fprintf(stderr, " %11" PRId32, v[i]);
+  }
+  fprintf(stderr, "\n");
+}
+
+void debug_array_i64(const char* prefix, size_t nmemb, int64_t v[HEDLEY_ARRAY_PARAM(nmemb)]) {
+  fprintf(stderr, "%s:", prefix);
+  for(size_t i = 0 ; i < nmemb ; i++) {
+    fprintf(stderr, " %21" PRId64, v[i]);
+  }
+  fprintf(stderr, "\n");
+}
+
 void debug_array_f32(const char* prefix, size_t nmemb, float v[HEDLEY_ARRAY_PARAM(nmemb)]) {
   fprintf(stderr, "%s:", prefix);
   for(size_t i = 0 ; i < nmemb ; i++) {
