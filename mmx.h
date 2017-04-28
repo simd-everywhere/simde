@@ -160,8 +160,8 @@ simde_mm_adds_pi8 (simde__m64 a, simde__m64 b) {
   for (int i = 0 ; i < 8 ; i++) {
     if ((((b.i8[i]) > 0) && ((a.i8[i]) > (INT8_MAX - (b.i8[i]))))) {
       r.i8[i] = INT8_MAX;
-    } else if ((((b.i8[i]) < 0) && ((a.i8[i]) < (CHAR_MIN - (b.i8[i]))))) {
-      r.i8[i] = CHAR_MIN;
+    } else if ((((b.i8[i]) < 0) && ((a.i8[i]) < (INT8_MIN - (b.i8[i]))))) {
+      r.i8[i] = INT8_MIN;
     } else {
       r.i8[i] = (a.i8[i]) + (b.i8[i]);
     }
@@ -645,8 +645,8 @@ simde_mm_packs_pi16 (simde__m64 a, simde__m64 b) {
 
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (8 / sizeof(int16_t)) ; i++) {
-    if (a.i16[i] < CHAR_MIN) {
-      r.i8[i] = CHAR_MIN;
+    if (a.i16[i] < INT8_MIN) {
+      r.i8[i] = INT8_MIN;
     } else if (a.i16[i] > INT8_MAX) {
       r.i8[i] = INT8_MAX;
     } else {
@@ -656,8 +656,8 @@ simde_mm_packs_pi16 (simde__m64 a, simde__m64 b) {
 
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (8 / sizeof(int16_t)) ; i++) {
-    if (b.i16[i] < CHAR_MIN) {
-      r.i8[i + 4] = CHAR_MIN;
+    if (b.i16[i] < INT8_MIN) {
+      r.i8[i + 4] = INT8_MIN;
     } else if (b.i16[i] > INT8_MAX) {
       r.i8[i + 4] = INT8_MAX;
     } else {
@@ -1432,8 +1432,8 @@ simde_mm_subs_pi8 (simde__m64 a, simde__m64 b) {
   simde__m64 r;
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (8) ; i++) {
-    if (((b.i8[i]) > 0 && (a.i8[i]) < CHAR_MIN + (b.i8[i]))) {
-      r.i8[i] = CHAR_MIN;
+    if (((b.i8[i]) > 0 && (a.i8[i]) < INT8_MIN + (b.i8[i]))) {
+      r.i8[i] = INT8_MIN;
     } else if ((b.i8[i]) < 0 && (a.i8[i]) > INT8_MAX + (b.i8[i])) {
       r.i8[i] = INT8_MAX;
     } else {
