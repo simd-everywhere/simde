@@ -123,9 +123,9 @@ double random_double_range(double min, double max);
 /* SIMDe-specific */
 
 #define simde_assert_m64_i8(a, op, b) \
-  simde_assert_int8vx(8, (int8_t*) &(a), op, (int8_t*) &(b))
+  simde_assert_typev(int8_t, PRId8, 8, (int8_t*) &(a), op, (int8_t*) &(b))
 #define simde_assert_m64_u8(a, op, b) \
-  simde_assert_uint8vx(8, (uint8_t*) &(a), op, (uint8_t*) &(b))
+  simde_assert_typev(uint8_t, PRIu8, 8, (uint8_t*) &(a), op, (uint8_t*) &(b))
 #define simde_assert_m64_i16(a, op, b) \
   simde_assert_int16vx(4, (int16_t*) &(a), op, (int16_t*) &(b))
 #define simde_assert_m64_u16(a, op, b) \
@@ -142,9 +142,9 @@ double random_double_range(double min, double max);
   simde_assert_typev(float, "f", 2, (float*) &(a), op, (float*) &(b))
 
 #define simde_assert_m128_i8(a, op, b) \
-  simde_assert_int8vx(16, (int8_t*) &(a), op, (int8_t*) &(b))
+  simde_assert_typev(int8_t, PRId8, 16, (int8_t*) &(a), op, (int8_t*) &(b))
 #define simde_assert_m128_u8(a, op, b) \
-  simde_assert_uint8vx(16, (uint8_t*) &(a), op, (uint8_t*) &(b))
+  simde_assert_typev(uint8_t, PRIu8, 16, (uint8_t*) &(a), op, (uint8_t*) &(b))
 #define simde_assert_m128_i16(a, op, b) \
   simde_assert_int16vx(8, (int16_t*) &(a), op, (int16_t*) &(b))
 #define simde_assert_m128_u16(a, op, b) \

@@ -5,7 +5,7 @@
 void debug_array_u8(const char* prefix, size_t nmemb, uint8_t v[HEDLEY_ARRAY_PARAM(nmemb)]) {
   fprintf(stderr, "%s:", prefix);
   for(size_t i = 0 ; i < nmemb ; i++) {
-    fprintf(stderr, " 0x%02hhx", v[i]);
+    fprintf(stderr, " %3" PRIu8, v[i]);
   }
   fprintf(stderr, "\n");
 }
@@ -13,7 +13,7 @@ void debug_array_u8(const char* prefix, size_t nmemb, uint8_t v[HEDLEY_ARRAY_PAR
 void debug_array_u16(const char* prefix, size_t nmemb, uint16_t v[HEDLEY_ARRAY_PARAM(nmemb)]) {
   fprintf(stderr, "%s:", prefix);
   for(size_t i = 0 ; i < nmemb ; i++) {
-    fprintf(stderr, " 0x%04" PRIx16, v[i]);
+    fprintf(stderr, " %5" PRIu16, v[i]);
   }
   fprintf(stderr, "\n");
 }
@@ -21,7 +21,7 @@ void debug_array_u16(const char* prefix, size_t nmemb, uint16_t v[HEDLEY_ARRAY_P
 void debug_array_u32(const char* prefix, size_t nmemb, uint32_t v[HEDLEY_ARRAY_PARAM(nmemb)]) {
   fprintf(stderr, "%s:", prefix);
   for(size_t i = 0 ; i < nmemb ; i++) {
-    fprintf(stderr, " 0x%08" PRIx32, v[i]);
+    fprintf(stderr, " %10" PRIu32, v[i]);
   }
   fprintf(stderr, "\n");
 }
@@ -29,7 +29,7 @@ void debug_array_u32(const char* prefix, size_t nmemb, uint32_t v[HEDLEY_ARRAY_P
 void debug_array_u64(const char* prefix, size_t nmemb, uint64_t v[HEDLEY_ARRAY_PARAM(nmemb)]) {
   fprintf(stderr, "%s:", prefix);
   for(size_t i = 0 ; i < nmemb ; i++) {
-    fprintf(stderr, " 0x%08" PRIx64, v[i]);
+    fprintf(stderr, " %20" PRIu64, v[i]);
   }
   fprintf(stderr, "\n");
 }
