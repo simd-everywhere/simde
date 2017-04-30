@@ -48,6 +48,7 @@ void debug_array_i32(const char* prefix, size_t nmemb, int32_t v[HEDLEY_ARRAY_PA
 void debug_array_i64(const char* prefix, size_t nmemb, int64_t v[HEDLEY_ARRAY_PARAM(nmemb)]);
 void debug_array_f32(const char* prefix, size_t nmemb, float v[HEDLEY_ARRAY_PARAM(nmemb)]);
 void random_floatv(size_t nmemb, float v[HEDLEY_ARRAY_PARAM(nmemb)]);
+void random_doublev(size_t nmemb, double v[HEDLEY_ARRAY_PARAM(nmemb)]);
 
 #define random_intv_range(T, nmemb, v, min, max)			\
   do {									\
@@ -164,6 +165,32 @@ double random_double_range(double min, double max);
 #define simde_assert_m128_f64(a, op, b) \
   simde_assert_typev(double, "f", 2, (double*) &(a), op, (double*) &(b))
 #define simde_assert_m128_f64_equal(a, b, precision) \
+  simde_assert_floatv_equal(double, 2, (double*) &(a), (double*) &(b), precision)
+
+#define simde_assert_m128i_i8(a, op, b) \
+  simde_assert_typev(int8_t, PRId8, 16, (int8_t*) &(a), op, (int8_t*) &(b))
+#define simde_assert_m128i_u8(a, op, b) \
+  simde_assert_typev(uint8_t, PRIu8, 16, (uint8_t*) &(a), op, (uint8_t*) &(b))
+#define simde_assert_m128i_i16(a, op, b) \
+  simde_assert_int16vx(8, (int16_t*) &(a), op, (int16_t*) &(b))
+#define simde_assert_m128i_u16(a, op, b) \
+  simde_assert_uint16vx(8, (uint16_t*) &(a), op, (uint16_t*) &(b))
+#define simde_assert_m128i_i32(a, op, b) \
+  simde_assert_int32vx(4, (int32_t*) &(a), op, (int32_t*) &(b))
+#define simde_assert_m128i_u32(a, op, b) \
+  simde_assert_uint32vx(4, (uint32_t*) &(a), op, (uint32_t*) &(b))
+#define simde_assert_m128i_i64(a, op, b) \
+  simde_assert_int64vx(2, (int64_t*) &(a), op, (int64_t*) &(b))
+#define simde_assert_m128i_u64(a, op, b) \
+  simde_assert_uint64vx(2, (uint64_t*) &(a), op, (uint64_t*) &(b)y)
+
+#define simde_assert_m128d_f32(a, op, b) \
+  simde_assert_typev(float, "f", 4, (float*) &(a), op, (float*) &(b))
+#define simde_assert_m128d_f32_equal(a, b, precision) \
+  simde_assert_floatv_equal(float, 4, (float*) &(a), (float*) &(b), precision)
+#define simde_assert_m128d_f64(a, op, b) \
+  simde_assert_typev(double, "f", 2, (double*) &(a), op, (double*) &(b))
+#define simde_assert_m128d_f64_equal(a, b, precision) \
   simde_assert_floatv_equal(double, 2, (double*) &(a), (double*) &(b), precision)
 
 /* SIMD floating-point conversion functions may or may not be the same

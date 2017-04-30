@@ -89,3 +89,11 @@ double random_double_range(double min, double max) {
   x += min;
   return x;
 }
+
+void random_doublev(size_t nmemb, double v[HEDLEY_ARRAY_PARAM(nmemb)]) {
+  for (size_t i = 0 ; i < nmemb ; i++) {
+    do {
+      munit_rand_memory(sizeof(v[i]), (uint8_t*) &(v[i]));
+    } while (!isnormal(v[i]));
+  }
+}

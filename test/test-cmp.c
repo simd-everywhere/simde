@@ -36,7 +36,7 @@ int main(int argc, char* argv[MUNIT_ARRAY_PARAM(argc + 1)]) {
   MunitSuite test_suites[] = {
     simde_mmx_test_suite,
     simde_sse_test_suite,
-    /* simde_sse2_test_suite, */
+    simde_sse2_test_suite,
     { 0, },
   };
 

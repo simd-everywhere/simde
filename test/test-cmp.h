@@ -50,6 +50,31 @@
     return MUNIT_OK;							\
   }
 
+/* 64-bit floating point operands, no nan or inf */
+#define define_test_cmp_f64_VT_2xVT(T, func)				\
+  static MunitResult							\
+  test_simde_##func(const MunitParameter params[], void* data) {	\
+    (void) params;							\
+    (void) data;							\
+									\
+    _##T na, nb, nr;							\
+    simde_##T ea, eb, er;						\
+									\
+    random_doublev(sizeof(na) / sizeof(double), (double*) &na);		\
+    random_doublev(sizeof(nb) / sizeof(double), (double*) &nb);		\
+    memcpy(&ea, &na, sizeof(na));					\
+    memcpy(&eb, &nb, sizeof(nb));					\
+									\
+    nr = _##func(na, nb);						\
+    er = simde_##func(ea, eb);						\
+									\
+    /* We use u64 since some functions fill elements with ~0U or 0U */	\
+    simde_assert##T##_f64(nr, ==, er);					\
+									\
+    _mm_empty();							\
+    return MUNIT_OK;							\
+  }
+
 /* Operation on 2 vector types which returns a scalar */
 #define define_test_cmp_s_2xVT(T, func, MCT, RT)			\
   static MunitResult							\
@@ -68,11 +93,6 @@
 									\
     nr = _##func(na, nb);						\
     er = simde_##func(ea, eb);						\
-									\
-    debug_array_f32("\na", sizeof(na) / sizeof(float), (float*) &na);	\
-    debug_array_f32("b", sizeof(nb) / sizeof(float), (float*) &nb);	\
-    debug_array_f32("r", sizeof(nb) / sizeof(float), (float*) &er);	\
-    debug_array_f32("x", sizeof(nb) / sizeof(float), (float*) &nr);	\
 									\
     munit_assert_##MCT(nr, ==, er);					\
 									\
