@@ -161,6 +161,10 @@ double random_double_range(double min, double max);
   simde_assert_typev(float, "f", 4, (float*) &(a), op, (float*) &(b))
 #define simde_assert_m128_f32_equal(a, b, precision) \
   simde_assert_floatv_equal(float, 4, (float*) &(a), (float*) &(b), precision)
+#define simde_assert_m128_f64(a, op, b) \
+  simde_assert_typev(double, "f", 2, (double*) &(a), op, (double*) &(b))
+#define simde_assert_m128_f64_equal(a, b, precision) \
+  simde_assert_floatv_equal(double, 2, (double*) &(a), (double*) &(b), precision)
 
 /* SIMD floating-point conversion functions may or may not be the same
    as the normal FP conversion functions. */

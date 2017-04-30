@@ -137,6 +137,91 @@ simde_mm_add_epi8 (simde__m128i a, simde__m128i b) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
+simde_mm_add_epi16 (simde__m128i a, simde__m128i b) {
+#if defined(SIMDE_SSE2_NATIVE)
+  return SIMDE__M128I_C(_mm_add_epi16(a.n, b.n));
+#else
+  simde__m128i r;
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.i16) / sizeof(r.i16[0])) ; i++) {
+    r.i16[i] = a.i16[i] + b.i16[i];
+  }
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128i
+simde_mm_add_epi32 (simde__m128i a, simde__m128i b) {
+#if defined(SIMDE_SSE2_NATIVE)
+  return SIMDE__M128I_C(_mm_add_epi32(a.n, b.n));
+#else
+  simde__m128i r;
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.i32) / sizeof(r.i32[0])) ; i++) {
+    r.i32[i] = a.i32[i] + b.i32[i];
+  }
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128i
+simde_mm_add_epi64 (simde__m128i a, simde__m128i b) {
+#if defined(SIMDE_SSE2_NATIVE)
+  return SIMDE__M128I_C(_mm_add_epi64(a.n, b.n));
+#else
+  simde__m128i r;
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.i64) / sizeof(r.i64[0])) ; i++) {
+    r.i64[i] = a.i64[i] + b.i64[i];
+  }
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128d
+simde_mm_add_pd (simde__m128d a, simde__m128d b) {
+#if defined(SIMDE_SSE2_NATIVE)
+  return SIMDE__M128D_C(_mm_add_pd(a.n, b.n));
+#else
+  simde__m128d r;
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.f64) / sizeof(r.f64[0])) ; i++) {
+    r.f64[i] = a.f64[i] + b.f64[i];
+  }
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128d
+simde_mm_add_sd (simde__m128d a, simde__m128d b) {
+#if defined(SIMDE_SSE2_NATIVE)
+  return SIMDE__M128D_C(_mm_add_sd(a.n, b.n));
+#else
+  simde__m128d r;
+  r.f64[0] = a.f64[0] + b.f64[0];
+  r.f64[1] = a.f64[1];
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m64
+simde_mm_add_si64 (simde__m64 a, simde__m64 b) {
+#if defined(SIMDE_SSE2_NATIVE)
+  return SIMDE__M64_C(_mm_add_si64(a.n, b.n));
+#else
+  simde__m64 r;
+  r.i64[0] = a.i64[0] + b.i64[0];
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128i
 simde_mm_andnot_si128 (simde__m128i a, simde__m128i b) {
 #if defined(SIMDE_SSE2_NATIVE)
   return SIMDE__M128I_C(_mm_andnot_si128(a.n, b.n));
