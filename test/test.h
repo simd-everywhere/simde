@@ -157,7 +157,7 @@ double random_double_range(double min, double max);
 #define simde_assert_m128_i64(a, op, b) \
   simde_assert_int64vx(2, (int64_t*) &(a), op, (int64_t*) &(b))
 #define simde_assert_m128_u64(a, op, b) \
-  simde_assert_uint64vx(2, (uint64_t*) &(a), op, (uint64_t*) &(b)y)
+  simde_assert_uint64vx(2, (uint64_t*) &(a), op, (uint64_t*) &(b))
 #define simde_assert_m128_f32(a, op, b) \
   simde_assert_typev(float, "f", 4, (float*) &(a), op, (float*) &(b))
 #define simde_assert_m128_f32_equal(a, b, precision) \

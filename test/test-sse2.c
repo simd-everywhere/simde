@@ -831,6 +831,86 @@ test_simde_mm_avg_epu16(const MunitParameter params[], void* data) {
 }
 
 static MunitResult
+test_simde_mm_bslli_si128(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  const struct {
+    simde__m128i a;
+    simde__m128i r;
+  } test_vec[8] = {
+    { simde_mm_set_epi64x(UINT64_C(0x5a28bd9d89a4536f), UINT64_C(0xfa801ab52af8a0bb)),
+      simde_mm_set_epi64x(UINT64_C(0xa4536ffa801ab52a), UINT64_C(0xf8a0bb0000000000)) },
+    { simde_mm_set_epi64x(UINT64_C(0x62a4a58f46e1fdac), UINT64_C(0x27ceff2a94d4864e)),
+      simde_mm_set_epi64x(UINT64_C(0x2a94d4864e000000), UINT64_C(0x0000000000000000)) },
+    { simde_mm_set_epi64x(UINT64_C(0xce7e92d6fed2f41c), UINT64_C(0x5642d045ccd076aa)),
+      simde_mm_set_epi64x(UINT64_C(0xd2f41c5642d045cc), UINT64_C(0xd076aa0000000000)) },
+    { simde_mm_set_epi64x(UINT64_C(0x8112b33129fae185), UINT64_C(0xb784cc1a835ef987)),
+      simde_mm_set_epi64x(UINT64_C(0x1a835ef987000000), UINT64_C(0x0000000000000000)) },
+    { simde_mm_set_epi64x(UINT64_C(0x2d5273611fc8f28f), UINT64_C(0x8d3fd42bb4e4400c)),
+      simde_mm_set_epi64x(UINT64_C(0xc8f28f8d3fd42bb4), UINT64_C(0xe4400c0000000000)) },
+    { simde_mm_set_epi64x(UINT64_C(0x7d70b414ab6171b3), UINT64_C(0x49bc6df939c254c5)),
+      simde_mm_set_epi64x(UINT64_C(0xf939c254c5000000), UINT64_C(0x0000000000000000)) },
+    { simde_mm_set_epi64x(UINT64_C(0x862bca5cde3a4e8a), UINT64_C(0xedfb6b1198fdef83)),
+      simde_mm_set_epi64x(UINT64_C(0x3a4e8aedfb6b1198), UINT64_C(0xfdef830000000000)) },
+    { simde_mm_set_epi64x(UINT64_C(0x3356f11da6d1a8ea), UINT64_C(0xc7d2edf087fb72d4)),
+      simde_mm_set_epi64x(UINT64_C(0xf087fb72d4000000), UINT64_C(0x0000000000000000)) }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    simde__m128i r;
+    if (i % 2) {
+      r = simde_mm_bslli_si128(test_vec[i].a, 11);
+    } else {
+      r = simde_mm_bslli_si128(test_vec[i].a, 5);
+    }
+    simde_assert_m128_u64(r, ==, test_vec[i].r);
+  }
+
+  return MUNIT_OK;
+}
+
+static MunitResult
+test_simde_mm_bsrli_si128(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  const struct {
+    simde__m128i a;
+    simde__m128i r;
+  } test_vec[8] = {
+    { simde_mm_set_epi64x(UINT64_C(0xf756056220c4cc15), UINT64_C(0xc682702e7ceff764)),
+      simde_mm_set_epi64x(UINT64_C(0x0000000000f75605), UINT64_C(0x6220c4cc15c68270)) },
+    { simde_mm_set_epi64x(UINT64_C(0x10c69dbcb51bdb1f), UINT64_C(0x7814b4a2c58f6c58)),
+      simde_mm_set_epi64x(UINT64_C(0x0000000000000000), UINT64_C(0x00000010c69dbcb5)) },
+    { simde_mm_set_epi64x(UINT64_C(0x32c3d2c34ac8daba), UINT64_C(0xbe64037b9031c8e6)),
+      simde_mm_set_epi64x(UINT64_C(0x000000000032c3d2), UINT64_C(0xc34ac8dababe6403)) },
+    { simde_mm_set_epi64x(UINT64_C(0xcdaebcfc8d354bf5), UINT64_C(0x4670b52bc62e41e9)),
+      simde_mm_set_epi64x(UINT64_C(0x0000000000000000), UINT64_C(0x000000cdaebcfc8d)) },
+    { simde_mm_set_epi64x(UINT64_C(0x1b7d52a9d22616ff), UINT64_C(0xe67a61bc6e0dd9b8)),
+      simde_mm_set_epi64x(UINT64_C(0x00000000001b7d52), UINT64_C(0xa9d22616ffe67a61)) },
+    { simde_mm_set_epi64x(UINT64_C(0x77a146df43387240), UINT64_C(0x553fbe9b1e911c28)),
+      simde_mm_set_epi64x(UINT64_C(0x0000000000000000), UINT64_C(0x00000077a146df43)) },
+    { simde_mm_set_epi64x(UINT64_C(0xa238a74cf266ddca), UINT64_C(0x80c8b7989fed59dd)),
+      simde_mm_set_epi64x(UINT64_C(0x0000000000a238a7), UINT64_C(0x4cf266ddca80c8b7)) },
+    { simde_mm_set_epi64x(UINT64_C(0x953632e347ddef89), UINT64_C(0x5d7bb6c0e6cecf31)),
+      simde_mm_set_epi64x(UINT64_C(0x0000000000000000), UINT64_C(0x000000953632e347)) }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    simde__m128i r;
+    if (i % 2) {
+      r = simde_mm_bsrli_si128(test_vec[i].a, 11);
+    } else {
+      r = simde_mm_bsrli_si128(test_vec[i].a, 5);
+    }
+    simde_assert_m128_u64(r, ==, test_vec[i].r);
+  }
+
+  return MUNIT_OK;
+}
+
+static MunitResult
 test_simde_mm_cmpeq_epi8(const MunitParameter params[], void* data) {
   (void) params;
   (void) data;
@@ -1643,6 +1723,9 @@ static MunitTest test_suite_tests[] = {
 
   { (char*) "/mm_avg_epu8",      test_simde_mm_avg_epu8,      NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
   { (char*) "/mm_avg_epu16",     test_simde_mm_avg_epu16,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+
+  { (char*) "/mm_bslli_si128",   test_simde_mm_bslli_si128,   NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mm_bsrli_si128",   test_simde_mm_bsrli_si128,   NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
 
   { (char*) "/mm_cmpeq_epi8",    test_simde_mm_cmpeq_epi8,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
   { (char*) "/mm_cmplt_epi8",    test_simde_mm_cmplt_epi8,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
