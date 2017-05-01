@@ -68,6 +68,10 @@ typedef union {
   uint16_t       u16 __attribute__((__vector_size__(16), __may_alias__));
   uint32_t       u32 __attribute__((__vector_size__(16), __may_alias__));
   uint64_t       u64 __attribute__((__vector_size__(16), __may_alias__));
+  #if defined(SIMDE__HAVE_INT128)
+  simde_int128  i128 __attribute__((__vector_size__(16), __may_alias__));
+  simde_uint128 u128 __attribute__((__vector_size__(16), __may_alias__));
+  #endif
   float          f32 __attribute__((__vector_size__(16), __may_alias__));
 #else
   int8_t         i8[16];
@@ -78,6 +82,10 @@ typedef union {
   uint16_t       u16[8];
   uint32_t       u32[4];
   uint64_t       u64[2];
+  #if defined(SIMDE__HAVE_INT128)
+  simde_int128  i128[1];
+  simde_uint128 u128[1];
+  #endif
   float          f32[4];
 #endif
 

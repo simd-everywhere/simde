@@ -63,6 +63,10 @@ typedef union {
   uint16_t       u16 __attribute__((__vector_size__(16), __may_alias__));
   uint32_t       u32 __attribute__((__vector_size__(16), __may_alias__));
   uint64_t       u64 __attribute__((__vector_size__(16), __may_alias__));
+  #if defined(SIMDE__HAVE_INT128)
+  simde_int128  i128 __attribute__((__vector_size__(16), __may_alias__));
+  simde_uint128 u128 __attribute__((__vector_size__(16), __may_alias__));
+  #endif
   float          f32 __attribute__((__vector_size__(16), __may_alias__));
   double         f64 __attribute__((__vector_size__(16), __may_alias__));
 #else
@@ -74,6 +78,10 @@ typedef union {
   uint16_t       u16[8];
   uint32_t       u32[4];
   uint64_t       u64[2];
+  #if defined(SIMDE__HAVE_INT128)
+  simde_int128  i128[1];
+  simde_uint128 u128[1];
+  #endif
   float          f32[4];
   double         f64[2];
 #endif
@@ -394,6 +402,10 @@ simde_mm_bslli_si128 (simde__m128i a, const int imm8) {
   }
 
   const int s = imm8 * 8;
+
+#if defined(SIMDE__HAVE_INT128)
+  r.u128[0] = a.u128[0] << s;
+#else
   if (s < 64) {
     r.u64[0] = (a.u64[0] << s);
     r.u64[1] = (a.u64[1] << s) | (a.u64[0] >> (64 - s));
@@ -401,6 +413,8 @@ simde_mm_bslli_si128 (simde__m128i a, const int imm8) {
     r.u64[0] = 0;
     r.u64[1] = a.u64[0] << (s - 64);
   }
+#endif
+
   return r;
 }
 #if defined(SIMDE_SSE2_NATIVE) && !defined(SIMDE_BUG_PGI_TPR_24170)
@@ -419,6 +433,10 @@ simde_mm_bsrli_si128 (simde__m128i a, const int imm8) {
   }
 
   const int s = imm8 * 8;
+
+#if defined(SIMDE__HAVE_INT128)
+  r.u128[0] = a.u128[0] >> s;
+#else
   if (s < 64) {
     r.u64[0] = (a.u64[0] >> s) | (a.u64[1] << (64 - s));
     r.u64[1] = (a.u64[1] >> s);
@@ -426,6 +444,8 @@ simde_mm_bsrli_si128 (simde__m128i a, const int imm8) {
     r.u64[0] = a.u64[1] >> (s - 64);
     r.u64[1] = 0;
   }
+#endif
+
   return r;
 }
 #if defined(SIMDE_SSE2_NATIVE) && !defined(SIMDE_BUG_PGI_TPR_24170)

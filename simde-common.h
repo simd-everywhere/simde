@@ -89,6 +89,12 @@
 #  define SIMDE__FUNCTION_ATTRIBUTES static HEDLEY_INLINE
 #endif
 
+#if defined(__SIZEOF_INT128__)
+#  define SIMDE__HAVE_INT128
+typedef __int128 simde_int128;
+typedef unsigned __int128 simde_uint128;
+#endif
+
 /* Sometimes we run into problems with specific versions of compilers
    which make the native versions unusable for us.  Often this is due
    to missing functions, sometimes buggy implementations, etc.  These
