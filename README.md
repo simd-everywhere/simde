@@ -90,6 +90,20 @@ though these are not as well tested.
    which can be used to develop software which uses Intel intrinsics
    without having to own hardware which supports them, though AFAIK it
    doesn't help for deployment.
+ * I'm not aware of anyone else trying to create portable
+   implementations of an instruction set, but there are a few projects
+   trying to implement one set with another:
+   * [ARM_NEON_2_x86_SSE](https://github.com/intel/ARM_NEON_2_x86_SSE)
+     — implementing NEON using SSE, quite extensive
+   * [sse2neon](https://github.com/jratcliff63367/sse2neon) —
+     implementing SSE using NEON
+   * [veclib](https://github.com/IvantheDugtrio/veclib) — implementing
+     SSE2 using AltiVec/VMX, using a non-free IBM library called
+     [powerveclib](https://www.ibm.com/developerworks/community/groups/community/powerveclib/)
+   * [SSE-to-NEON](https://github.com/otim/SSE-to-NEON) — implementing
+     SSE with NEON.  Non-free.
+ * [arm-neon-tests](https://github.com/christophe-lyon/arm-neon-tests)
+   contains tests te verify NEON implementations.
 
 If you know of any other related projects, please [let us
 know](https://github.com/nemequ/simde/issues/new)!
