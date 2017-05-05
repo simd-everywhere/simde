@@ -32,8 +32,10 @@
 #  endif
 #  if defined(SIMDE_SSE_FORCE_NATIVE)
 #    define SIMDE_SSE_NATIVE
-#  elif defined(__SSE__) && (!defined(SIMDE_SSE_NO_NATIVE) && !defined(SIMDE_NO_NATIVE))
+#  elif defined(__SSE__) && !defined(SIMDE_SSE_NO_NATIVE) && !defined(SIMDE_NO_NATIVE)
 #    define SIMDE_SSE_NATIVE
+#  elif defined(__ARM_NEON) && !defined(SIMDE_SSE_NO_NEON) && !defined(SIMDE_NO_NEON)
+#    define SIMDE_SSE_NEON
 #  endif
 
 #  if defined(SIMDE_SSE_NATIVE) && !defined(SIMDE_MMX_NATIVE)
@@ -43,11 +45,18 @@
 #      warning Native SSE support requires native MMX support, disabling
 #      undef SIMDE_SSE_NATIVE
 #    endif
+#  elif defined(SIMDE_SSE_NEON) && !defined(SIMDE_MMX_NEON)
+#    warning SSE3 NEON support requires MMX NEON support, disabling
+#    undef SIMDE_SSE3_NEON
 #  endif
 
 #  if defined(SIMDE_SSE_NATIVE)
 #    include <xmmintrin.h>
 #  else
+#    if defined(SIMDE_SSE_NEON)
+#      include <arm_neon.h>
+#    endif
+
 #    if !defined(__INTEL_COMPILER) && defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 201112L) && !defined(__STDC_NO_ATOMICS__)
 #      include <stdatomic.h>
 #    elif defined(_WIN32)
@@ -91,13 +100,24 @@ typedef union {
 
 #if defined(SIMDE_SSE_NATIVE)
   __m128         n;
+#elif defined(SIMDE_SSE_NEON)
+  int8x16_t      neon_i8;
+  int16x8_t      neon_i16;
+  int32x4_t      neon_i32;
+  int64x2_t      neon_i64;
+  uint8x16_t     neon_u8;
+  uint16x8_t     neon_u16;
+  uint32x4_t     neon_u32;
+  uint64x2_t     neon_u64;
+  float32x4_t    neon_f32;
 #endif
 } SIMDE__ALIGN(16) simde__m128;
 
 #if defined(SIMDE_SSE_NATIVE)
-HEDLEY_STATIC_ASSERT(sizeof(__m128) == sizeof(simde__m128), "__m128 size incorrect");
+HEDLEY_STATIC_ASSERT(sizeof(__m128) == sizeof(simde__m128), "__m128 size doesn't match simde__m128 size");
 #define SIMDE__M128_C(expr) ((simde__m128) { .n = expr })
 #endif
+HEDLEY_STATIC_ASSERT(16 == sizeof(simde__m128), "simde__m128 size incorrect");
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128

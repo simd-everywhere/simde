@@ -32,8 +32,10 @@
 #  endif
 #  if defined(SIMDE_SSE2_FORCE_NATIVE)
 #    define SIMDE_SSE2_NATIVE
-#  elif defined(__SSE2__) && (!defined(SIMDE_SSE2_NO_NATIVE) && !defined(SIMDE_NO_NATIVE))
+#  elif defined(__SSE2__) && !defined(SIMDE_SSE2_NO_NATIVE) && !defined(SIMDE_NO_NATIVE)
 #    define SIMDE_SSE2_NATIVE
+#  elif defined(__ARM_NEON) && !defined(SIMDE_SSE2_NO_NEON) && !defined(SIMDE_NO_NEON)
+#    define SIMDE_SSE2_NEON
 #  endif
 
 #  if defined(SIMDE_SSE2_NATIVE) && !defined(SIMDE_SSE_NATIVE)
@@ -43,10 +45,17 @@
 #      warning Native SSE2 support requires native SSE support, disabling
 #      undef SIMDE_SSE2_NATIVE
 #    endif
+#  elif defined(SIMDE_SSE2_NEON) && !defined(SIMDE_SSE_NEON)
+#    warning SSE2 NEON support requires SSE NEON support, disabling
+#    undef SIMDE_SSE_NEON
 #  endif
 
 #  if defined(SIMDE_SSE2_NATIVE)
 #    include <emmintrin.h>
+#  else
+#    if defined(SIMDE_SSE2_NEON)
+#      include <arm_neon.h>
+#    endif
 #  endif
 
 #  include <stdint.h>
@@ -88,6 +97,16 @@ typedef union {
 
 #if defined(SIMDE_SSE2_NATIVE)
   __m128i        n;
+#elif defined(SIMDE_SSE2_NEON)
+  int8x16_t      neon_i8;
+  int16x8_t      neon_i16;
+  int32x4_t      neon_i32;
+  int64x2_t      neon_i64;
+  uint8x16_t     neon_u8;
+  uint16x8_t     neon_u16;
+  uint32x4_t     neon_u32;
+  uint64x2_t     neon_u64;
+  float32x4_t    neon_f32;
 #endif
 } simde__m128i;
 
@@ -118,15 +137,27 @@ typedef union {
 
 #if defined(SIMDE_SSE2_NATIVE)
   __m128d        n;
+#elif defined(SIMDE_SSE2_NEON)
+  int8x16_t      neon_i8;
+  int16x8_t      neon_i16;
+  int32x4_t      neon_i32;
+  int64x2_t      neon_i64;
+  uint8x16_t     neon_u8;
+  uint16x8_t     neon_u16;
+  uint32x4_t     neon_u32;
+  uint64x2_t     neon_u64;
+  float32x4_t    neon_f32;
 #endif
 } simde__m128d;
 
 #if defined(SIMDE_SSE2_NATIVE)
-HEDLEY_STATIC_ASSERT(sizeof(__m128i) == sizeof(simde__m128i), "__m128i size incorrect");
-HEDLEY_STATIC_ASSERT(sizeof(__m128d) == sizeof(simde__m128d), "__m128d size incorrect");
+HEDLEY_STATIC_ASSERT(sizeof(__m128i) == sizeof(simde__m128i), "__m128i size doesn't match simde__m128i size");
+HEDLEY_STATIC_ASSERT(sizeof(__m128d) == sizeof(simde__m128d), "__m128d size doesn't match simde__m128d size");
 #define SIMDE__M128I_C(expr) ((simde__m128i) { .n = expr })
 #define SIMDE__M128D_C(expr) ((simde__m128d) { .n = expr })
 #endif
+HEDLEY_STATIC_ASSERT(16 == sizeof(simde__m128i), "simde__m128i size incorrect");
+HEDLEY_STATIC_ASSERT(16 == sizeof(simde__m128d), "simde__m128d size incorrect");
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i

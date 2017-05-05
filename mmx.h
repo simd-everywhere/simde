@@ -29,12 +29,18 @@
 
 #  if defined(SIMDE_MMX_FORCE_NATIVE)
 #    define SIMDE_MMX_NATIVE
-#  elif defined(__MMX__) && (!defined(SIMDE_MMX_NO_NATIVE) && !defined(SIMDE_NO_NATIVE))
+#  elif defined(__MMX__) && !defined(SIMDE_MMX_NO_NATIVE) && !defined(SIMDE_NO_NATIVE)
 #    define SIMDE_MMX_NATIVE
+#  elif defined(__ARM_NEON) && !defined(SIMDE_MMX_NO_NEON) && !defined(SIMDE_NO_NEON)
+#    define SIMDE_MMX_NEON
 #  endif
 
 #  if defined(SIMDE_MMX_NATIVE)
 #    include <mmintrin.h>
+#  else
+#    if defined(SIMDE_MMX_NEON)
+#      include <arm_neon.h>
+#    endif
 #  endif
 #  include <stdint.h>
 #  include <limits.h>
@@ -66,13 +72,24 @@ typedef SIMDE__ALIGN(16) union {
 
 #if defined(SIMDE_MMX_NATIVE)
   __m64          n;
+#elif defined(SIMDE_MMX_NEON)
+  int8x8_t       neon_i8;
+  int16x4_t      neon_i16;
+  int32x2_t      neon_i32;
+  int64x1_t      neon_i64;
+  uint8x8_t      neon_u8;
+  uint16x4_t     neon_u16;
+  uint32x2_t     neon_u32;
+  uint64x1_t     neon_u64;
+  float32x2_t    neon_f32;
 #endif
 } simde__m64;
 
 #if defined(SIMDE_MMX_NATIVE)
-HEDLEY_STATIC_ASSERT(sizeof(__m64) == sizeof(simde__m64), "__m64 size incorrect");
+HEDLEY_STATIC_ASSERT(sizeof(__m64) == sizeof(simde__m64), "__m64 size doesn't match simde__m64 size");
 #define SIMDE__M64_C(expr) ((simde__m64) { .n = expr })
 #endif
+HEDLEY_STATIC_ASSERT(8 == sizeof(simde__m64), "__m64 size incorrect");
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m64

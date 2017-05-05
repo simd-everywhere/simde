@@ -32,8 +32,10 @@
 #  endif
 #  if defined(SIMDE_SSSE3_FORCE_NATIVE)
 #    define SIMDE_SSSE3_NATIVE
-#  elif defined(__SSSE3__) && (!defined(SIMDE_SSSE3_NO_NATIVE) && !defined(SIMDE_NO_NATIVE))
+#  elif defined(__SSSE3__) && !defined(SIMDE_SSSE3_NO_NATIVE) && !defined(SIMDE_NO_NATIVE)
 #    define SIMDE_SSSE3_NATIVE
+#  elif defined(__ARM_NEON) && !defined(SIMDE_SSSE3_NO_NEON) && !defined(SIMDE_NO_NEON)
+#    define SIMDE_SSSE3_NEON
 #  endif
 
 #  if defined(SIMDE_SSSE3_NATIVE) && !defined(SIMDE_SSE3_NATIVE)
@@ -43,10 +45,17 @@
 #      warning Native SSSE3 support requires native SSE3 support, disabling
 #      undef SIMDE_SSSE3_NATIVE
 #    endif
+#  elif defined(SIMDE_SSSE3_NEON) && !defined(SIMDE_SSE3_NEON)
+#    warning SSSE3 NEON support requires SSE3 NEON support, disabling
+#    undef SIMDE_SSSE3_NEON
 #  endif
 
 #  if defined(SIMDE_SSSE3_NATIVE)
 #    include <tmmintrin.h>
+#  else
+#    if defined(SIMDE_SSSE3_NEON)
+#      include <arm_neon.h>
+#    endif
 #  endif
 
 #if defined(simde_mm_alignr_epi8)

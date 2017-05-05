@@ -32,21 +32,30 @@
 #  endif
 #  if defined(SIMDE_SSE4_2_FORCE_NATIVE)
 #    define SIMDE_SSE4_2_NATIVE
-#  elif defined(__SSE4_2__) && (!defined(SIMDE_SSE4_2_NO_NATIVE) && !defined(SIMDE_NO_NATIVE))
+#  elif defined(__SSE4_2__) && !defined(SIMDE_SSE4_2_NO_NATIVE) && !defined(SIMDE_NO_NATIVE)
 #    define SIMDE_SSE4_2_NATIVE
+#  elif defined(__ARM_NEON) && !defined(SIMDE_SSE4_2_NO_NEON) && !defined(SIMDE_NO_NEON)
+#    define SIMDE_SSE4_1_NEON
 #  endif
 
-#  if defined(SIMDE_SSE4_2_NATIVE) && !defined(SIMDE_SSE3_NATIVE)
+#  if defined(SIMDE_SSE4_2_NATIVE) && !defined(SIMDE_SSE4_1_NATIVE)
 #    if defined(SIMDE_SSE4_2_FORCE_NATIVE)
 #      error Native SSE4.2 support requires native SSE4.1 support
 #    else
 #      warning Native SSE4.2 support requires native SSE4.1 support, disabling
 #      undef SIMDE_SSE4_2_NATIVE
 #    endif
+#  elif defined(SIMDE_SSE4_2_NEON) && !defined(SIMDE_SSE4_1_NEON)
+#    warning SSE4.2 NEON support requires SSE4.1 NEON support, disabling
+#    undef SIMDE_SSE4_2_NEON
 #  endif
 
 #  if defined(SIMDE_SSE4_2_NATIVE)
 #    include <nmmintrin.h>
+#  else
+#    if defined(SIMDE_SSE4_1_NEON)
+#      include <arm_neon.h>
+#    endif
 #  endif
 
 #endif /* !defined(SIMDE__SSE4_2_H) */
