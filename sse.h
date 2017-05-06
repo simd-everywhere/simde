@@ -190,16 +190,7 @@ simde_mm_avg_pu16 (simde__m64 a, simde__m64 b) {
   return r;
 #endif
 }
-
-SIMDE__FUNCTION_ATTRIBUTES
-simde__m64
-simde_m_pavgw (simde__m64 a, simde__m64 b) {
-#if defined(SIMDE_SSE_NATIVE)
-  return SIMDE__M64_C(_m_pavgw(a.n, b.n));
-#else
-  return simde_mm_avg_pu16(a, b);
-#endif
-}
+#define simde_m_pavgw(a, b) simde_mm_avg_pu16(a, b)
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m64
@@ -215,16 +206,7 @@ simde_mm_avg_pu8 (simde__m64 a, simde__m64 b) {
   return r;
 #endif
 }
-
-SIMDE__FUNCTION_ATTRIBUTES
-simde__m64
-simde_m_pavgb (simde__m64 a, simde__m64 b) {
-#if defined(SIMDE_SSE_NATIVE)
-  return SIMDE__M64_C(_m_pavgb(a.n, b.n));
-#else
-  return simde_mm_avg_pu8(a, b);
-#endif
-}
+#define simde_m_pavgb(a, b) simde_mm_avg_pu8(a, b)
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128
@@ -965,18 +947,10 @@ int32_t
 simde_mm_extract_pi16 (simde__m64 a, const int imm8) {
   return a.u16[imm8];
 }
-
-SIMDE__FUNCTION_ATTRIBUTES
-int32_t
-simde_m_pextrw(simde__m64 a, const int imm8) {
-  return simde_mm_extract_pi16(a, imm8);
-}
 #if defined(SIMDE_SSE_NATIVE) && !defined(SIMDE_BUG_PGI_TPR_24170)
 #  define simde_mm_extract_pi16(a, imm8) _mm_extract_pi16(a.n, imm8)
 #endif
-#if defined(SIMDE_SSE_NATIVE) && !defined(SIMDE_BUG_PGI_TPR_24170)
-#  define simde_m_pextrw(a, imm8) _m_pextrw(a.n, imm8)
-#endif
+#define simde_m_pextrw(a, imm8) simde_mm_extract_pi16(a.n, imm8)
 
 enum {
 #if defined(SIMDE_SSE_NATIVE)
@@ -1038,19 +1012,10 @@ simde_mm_insert_pi16 (simde__m64 a, int16_t i, const int imm8) {
   r.i16[imm8] = i;
   return r;
 }
-
-SIMDE__FUNCTION_ATTRIBUTES
-simde__m64
-simde_m_pinsrw(simde__m64 a, int16_t i, const int imm8) {
-  return simde_mm_insert_pi16(a, i, imm8);
-}
-
 #if defined(SIMDE_SSE_NATIVE) && !defined(SIMDE_BUG_PGI_TPR_24170)
 #  define simde_mm_insert_pi16(a, i, imm8) SIMDE__M64_C(_mm_insert_pi16((a).n, i, imm8));
 #endif
-#if defined(SIMDE_SSE_NATIVE) && !defined(SIMDE_BUG_PGI_TPR_24170)
-#  define simde_m_pinsrw(a, i, imm8) SIMDE__M64_C(_m_pinsrw((a).n, i, imm8));
-#endif
+#define simde_m_pinsrw(a, i, imm8) SIMDE__M64_C(simde_mm_insert_pi16((a).n, i, imm8));
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128
@@ -1177,16 +1142,7 @@ simde_mm_maskmove_si64 (simde__m64 a, simde__m64 mask, char* mem_addr) {
       mem_addr[i] = a.i8[i];
 #endif
 }
-
-SIMDE__FUNCTION_ATTRIBUTES
-void
-simde_m_maskmovq (simde__m64 a, simde__m64 mask, char* mem_addr) {
-#if defined(SIMDE_SSE_NATIVE)
-  _m_maskmovq(a.n, mask.n, mem_addr);
-#else
-  simde_mm_maskmove_si64(a, mask, mem_addr);
-#endif
-}
+#define simde_m_maskmovq(a, mask, mem_addr) simde_mm_maskmove_si64(a, mask, mem_addr)
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m64
@@ -1202,16 +1158,7 @@ simde_mm_max_pi16 (simde__m64 a, simde__m64 b) {
   return r;
 #endif
 }
-
-SIMDE__FUNCTION_ATTRIBUTES
-simde__m64
-simde_m_pmaxsw (simde__m64 a, simde__m64 b) {
-#if defined(SIMDE_SSE_NATIVE)
-  return SIMDE__M64_C(_m_pmaxsw(a.n, b.n));
-#else
-  return simde_mm_max_pi16(a, b);
-#endif
-}
+#define simde_m_pmaxsw(a, b) simde_mm_max_pi16(a, b)
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128
@@ -1242,16 +1189,7 @@ simde_mm_max_pu8 (simde__m64 a, simde__m64 b) {
   return r;
 #endif
 }
-
-SIMDE__FUNCTION_ATTRIBUTES
-simde__m64
-simde_m_pmaxub (simde__m64 a, simde__m64 b) {
-#if defined(SIMDE_SSE_NATIVE)
-  return SIMDE__M64_C(_m_pmaxub(a.n, b.n));
-#else
-  return simde_mm_max_pu8(a, b);
-#endif
-}
+#define simde_m_pmaxub(a, b) simde_mm_max_pu8(a, b)
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128
@@ -1282,16 +1220,7 @@ simde_mm_min_pi16 (simde__m64 a, simde__m64 b) {
   return r;
 #endif
 }
-
-SIMDE__FUNCTION_ATTRIBUTES
-simde__m64
-simde_m_pminsw (simde__m64 a, simde__m64 b) {
-#if defined(SIMDE_SSE_NATIVE)
-  return SIMDE__M64_C(_m_pminsw(a.n, b.n));
-#else
-  return simde_mm_min_pi16(a, b);
-#endif
-}
+#define simde_m_pminsw(a, b) simde_mm_min_pi16(a, b)
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128
@@ -1322,16 +1251,7 @@ simde_mm_min_pu8 (simde__m64 a, simde__m64 b) {
   return r;
 #endif
 }
-
-SIMDE__FUNCTION_ATTRIBUTES
-simde__m64
-simde_m_pminub (simde__m64 a, simde__m64 b) {
-#if defined(SIMDE_SSE_NATIVE)
-  return SIMDE__M64_C(_m_pminub(a.n, b.n));
-#else
-  return simde_mm_min_pu8(a, b);
-#endif
-}
+#define simde_m_pminub(a, b) simde_mm_min_pu8(a, b)
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128
@@ -1410,16 +1330,7 @@ simde_mm_movemask_pi8 (simde__m64 a) {
   return r;
 #endif
 }
-
-SIMDE__FUNCTION_ATTRIBUTES
-int
-simde_m_pmovmskb (simde__m64 a) {
-#if defined(SIMDE_SSE_NATIVE)
-  return _m_pmovmskb(a.n);
-#else
-  return simde_mm_movemask_pi8(a);
-#endif
-}
+#define simde_m_pmovmskb(a, b) simde_mm_movemask_pi8(a, b)
 
 SIMDE__FUNCTION_ATTRIBUTES
 int
@@ -1482,16 +1393,7 @@ simde_mm_mulhi_pu16 (simde__m64 a, simde__m64 b) {
   return r;
 #endif
 }
-
-SIMDE__FUNCTION_ATTRIBUTES
-simde__m64
-simde_m_pmulhuw (simde__m64 a, simde__m64 b) {
-#if defined(SIMDE_SSE_NATIVE)
-  return SIMDE__M64_C(_m_pmulhuw(a.n, b.n));
-#else
-  return simde_mm_mulhi_pu16(a, b);
-#endif
-}
+#define simde_m_pmulhuw(a, b) simde_mm_mulhi_pu16(a, b)
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128
@@ -1597,16 +1499,7 @@ simde_mm_sad_pu8 (simde__m64 a, simde__m64 b) {
   return r;
 #endif
 }
-
-SIMDE__FUNCTION_ATTRIBUTES
-simde__m64
-simde_m_psadbw (simde__m64 a, simde__m64 b) {
-#if defined(SIMDE_SSE_NATIVE)
-  return SIMDE__M64_C(_m_psadbw(a.n, b.n));
-#else
-  return simde_mm_sad_pu8(a, b);
-#endif
-}
+#define simde_m_psadbw(a, b) simde_mm_sad_pu8(a, b)
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128
