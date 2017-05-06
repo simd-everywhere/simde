@@ -83,10 +83,24 @@
 #  define SIMDE__VECTORIZE_ALIGNED(a)
 #endif
 
-#if defined(__GNUC__)
-#  define SIMDE__FUNCTION_ATTRIBUTES __attribute__((__always_inline__,__gnu_inline__)) static HEDLEY_INLINE
+#if HEDLEY_GCC_HAS_ATTRIBUTE(unused,3,1,0)
+#  define SIMDE__UNUSED __attribute__((__unused__))
 #else
-#  define SIMDE__FUNCTION_ATTRIBUTES static HEDLEY_INLINE
+#  define SIMDE__UNUSED
+#endif
+
+#if HEDLEY_GCC_HAS_ATTRIBUTE(artificial,4,3,0)
+#  define SIMDE__ARTIFICIAL __attribute__((__artificial__))
+#else
+#  define SIMDE__ARTIFICIAL
+#endif
+
+/* Intended for checking coverage, you should never use this in
+   production. */
+#if defined(SIMDE_NO_INLINE)
+#  define SIMDE__FUNCTION_ATTRIBUTES HEDLEY_NEVER_INLINE SIMDE__UNUSED static
+#else
+#  define SIMDE__FUNCTION_ATTRIBUTES HEDLEY_INLINE SIMDE__ARTIFICIAL static
 #endif
 
 #if defined(__SIZEOF_INT128__)

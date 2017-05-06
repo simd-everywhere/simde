@@ -963,22 +963,20 @@ simde_mm_div_ss (simde__m128 a, simde__m128 b) {
 SIMDE__FUNCTION_ATTRIBUTES
 int32_t
 simde_mm_extract_pi16 (simde__m64 a, const int imm8) {
-#if defined(SIMDE_SSE_NATIVE) && !defined(__clang__) && !defined(SIMDE_BUG_PGI_TPR_24170)
-  return _mm_extract_pi16(a.n, imm8);
-#else
   return a.u16[imm8];
-#endif
 }
 
 SIMDE__FUNCTION_ATTRIBUTES
 int32_t
 simde_m_pextrw(simde__m64 a, const int imm8) {
-#if defined(SIMDE_SSE_NATIVE) && !defined(__clang__) && !defined(SIMDE_BUG_PGI_TPR_24170)
-  return _m_pextrw(a.n, imm8);
-#else
   return simde_mm_extract_pi16(a, imm8);
-#endif
 }
+#if defined(SIMDE_SSE_NATIVE) && !defined(SIMDE_BUG_PGI_TPR_24170)
+#  define simde_mm_extract_pi16(a, imm8) _mm_extract_pi16(a.n, imm8)
+#endif
+#if defined(SIMDE_SSE_NATIVE) && !defined(SIMDE_BUG_PGI_TPR_24170)
+#  define simde_m_pextrw(a, imm8) _m_pextrw(a.n, imm8)
+#endif
 
 enum {
 #if defined(SIMDE_SSE_NATIVE)
@@ -1035,25 +1033,24 @@ simde_MM_SET_ROUNDING_MODE(unsigned int a) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m64
 simde_mm_insert_pi16 (simde__m64 a, int16_t i, const int imm8) {
-#if defined(SIMDE_SSE_NATIVE) && !defined(__clang__) && !defined(SIMDE_BUG_PGI_TPR_24170)
-  return SIMDE__M64_C(_mm_insert_pi16(a.n, i, imm8));
-#else
   simde__m64 r;
   r.i64[0] = a.i64[0];
   r.i16[imm8] = i;
   return r;
-#endif
 }
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m64
 simde_m_pinsrw(simde__m64 a, int16_t i, const int imm8) {
-#if defined(SIMDE_SSE_NATIVE) && !defined(__clang__) && !defined(SIMDE_BUG_PGI_TPR_24170)
-  return SIMDE__M64_C(_m_pinsrw(a.n, i, imm8));
-#else
   return simde_mm_insert_pi16(a, i, imm8);
-#endif
 }
+
+#if defined(SIMDE_SSE_NATIVE) && !defined(SIMDE_BUG_PGI_TPR_24170)
+#  define simde_mm_insert_pi16(a, i, imm8) SIMDE__M64_C(_mm_insert_pi16((a).n, i, imm8));
+#endif
+#if defined(SIMDE_SSE_NATIVE) && !defined(SIMDE_BUG_PGI_TPR_24170)
+#  define simde_m_pinsrw(a, i, imm8) SIMDE__M64_C(_m_pinsrw((a).n, i, imm8));
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128

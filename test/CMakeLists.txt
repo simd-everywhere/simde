@@ -7,16 +7,29 @@ include (ExtraWarningFlags)
 
 enable_testing()
 
-if(CMAKE_BUILD_TYPE STREQUAL "")
-  set(CMAKE_BUILD_TYPE "Debug")
-endif()
-
 if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/munit/munit.c")
   find_program(GIT git)
   if(GIT)
     execute_process(COMMAND ${GIT} submodule update --init --recursive)
   else()
     message (FATAL_ERROR "It looks like you don't have submodules checked out.  Please run `git submodule update --init --recursive'")
+  endif()
+endif()
+
+if(CMAKE_BUILD_TYPE STREQUAL "")
+  set(CMAKE_BUILD_TYPE "Debug")
+elseif(CMAKE_BUILD_TYPE STREQUAL "Coverage")
+  set(orig_req_libs "${CMAKE_REQUIRED_LIBRARIES}")
+  set(CMAKE_REQUIRED_LIBRARIES "${CMAKE_REQUIRED_LIBRARIES};--coverage")
+  check_c_compiler_flag("--coverage" CFLAG___coverage)
+  set(CMAKE_REQUIRED_LIBRARIES "${orig_req_libs}")
+
+  if(CFLAG___coverage)
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} --coverage")
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_C_FLAGS} --coverage")
+    add_definitions("-DSIMDE_NO_INLINE")
+  else()
+    set(CMAKE_BUILD_TYPE "Debug")
   endif()
 endif()
 
