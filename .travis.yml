@@ -1,9 +1,9 @@
 language: c
 sudo: false
+dist: trusty
 branches:
   except:
     - /^(wip\/)?(appveyor|msvc|mingw|windows)(\-.+)?$/
-    - /^master$/
 matrix:
   include:
     ###
@@ -20,7 +20,7 @@ matrix:
           - g++-6
           - cmake
           - cmake-data
-    - env: C_COMPILER=gcc-5
+    - env: C_COMPILER=gcc-5 BUILD_TYPE=Release
       addons:
         apt:
           sources:
@@ -42,15 +42,11 @@ matrix:
     #       - g++-4.9
     #       - cmake
     #       - cmake-data
-    - env: C_COMPILER=gcc-4.8
-      addons:
+    - addons:
         apt:
           sources:
-          - ubuntu-toolchain-r-test
           - george-edison55-precise-backports
           packages:
-          - gcc-4.8
-          - g++-4.8
           - cmake
           - cmake-data
     # - env: C_COMPILER=gcc-4.7
@@ -181,13 +177,17 @@ before_install:
 ## so instead we use C/CXX_COMPILER, then copy the values to CC/CXX
 ## here (after Travis has set CC/CXX).
 ###
-- if [ "${C_COMPILER}" = "pgcc" ]; then wget -q -O /dev/stdout 'https://raw.githubusercontent.com/nemequ/pgi-travis/master/install-pgi.sh' | /bin/sh; fi
+- if [ "${C_COMPILER}" = "pgcc" ]; then curl 'https://raw.githubusercontent.com/nemequ/pgi-travis/master/install-pgi.sh' | /bin/sh; fi
 - if [ -n "${C_COMPILER}" ]; then export CC="${C_COMPILER}"; fi
+- if [ -n "${BUILD_TYPE}" ]; then export BUILD_TYPE="Coverage"; fi
 - mkdir test/build
 - cd test/build
 
 script:
-- cmake --version
-- cmake .. -DCMAKE_C_COMPILER="${C_COMPILER}" -DCMAKE_C_FLAGS="${CFLAGS}"
+- if [ -n "${C_COMPILER}" ]; then export CC="${C_COMPILER}"; fi
+- cmake .. -DCMAKE_BUILD_TYPE="${BUILD_TYPE}"
 - make VERBOSE=1
 - ./test-native && ./test-emul && ./test-cmp
+
+after_success:
+- if [ "${BUILD_TYPE}" = "Coverage" ]; then bash <(curl -s https://codecov.io/bash) -f '!*test-common.c'; fi

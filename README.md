@@ -46,6 +46,8 @@ If you're not sure that your implementation will be fast enough, don't
 worry!  Right now we just want to get correct implementations in
 place, we can worry about optimizing later.
 
+[![Travis](https://img.shields.io/travis/nemequ/simde.svg)](https://travis-ci.org/nemequ/simde) [![Codecov](https://img.shields.io/codecov/c/github/nemequ/simde.svg)](https://codecov.io/gh/nemequ/simde)
+
 ## Usage
 
 Each instruction set has a separate file; `mmx.h` for MMX, `sse.h` for
