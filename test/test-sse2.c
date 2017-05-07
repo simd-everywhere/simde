@@ -1443,44 +1443,210 @@ test_simde_mm_setzero_si128(const MunitParameter params[], void* data) {
 }
 
 static MunitResult
+test_simde_mm_slli_epi16(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  const struct {
+    simde__m128i a;
+    simde__m128i r;
+  } test_vec[8] = {
+    { simde_mm_set_epi16(-29640,  27486, -30681,  22606, -21221,   7042,  -7099, -13884),
+      simde_mm_set_epi16( 25024,  23280,  16696, -15760,  26840,  -9200,   8744,  20000) },
+    { simde_mm_set_epi16( 15230,  23269, -21546,  15633,   9645, -32001,  -1446,  -7049),
+      simde_mm_set_epi16( -9232, -10456,  24240,  -6008,  11624,   6136, -11568,   9144) },
+    { simde_mm_set_epi16( -4964,  29371,  -7375,   7185, -25257,  29335,  15023,  23258),
+      simde_mm_set_epi16( 25824, -27176,   6536,  -8056,  -5448, -27464, -10888, -10544) },
+    { simde_mm_set_epi16(-29984, -17481, -31241,  11397,   2926, -28904, -20560, -32448),
+      simde_mm_set_epi16( 22272,  -8776,  12216,  25640,  23408,  30912,  32128,   2560) },
+    { simde_mm_set_epi16(-18879,   5889, -27972,  -4500, -12683,  25849,  24809,  26782),
+      simde_mm_set_epi16(-19960, -18424, -27168,  29536,  29608,  10184,   1864,  17648) },
+    { simde_mm_set_epi16(-12553, -22953,  21946,  -9017, -10462,  -7608,  26015, -24893),
+      simde_mm_set_epi16( 30648,  12984, -21040,  -6600, -18160,   4672,  11512,  -2536) },
+    { simde_mm_set_epi16( 23545,   -728,  17963, -24889,  18443,  19433, -18886, -28120),
+      simde_mm_set_epi16( -8248,  -5824,  12632,  -2504,  16472,  24392, -20016, -28352) },
+    { simde_mm_set_epi16(  1885, -18948, -21057,    636,  -9667, -20298,  25111,  30554),
+      simde_mm_set_epi16( 15080, -20512,  28152,   5088, -11800, -31312,   4280, -17712) }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    simde__m128i r = simde_mm_slli_epi16(test_vec[i].a, 3);
+    simde_assert_m128i_i16(r, ==, test_vec[i].r);
+  }
+
+  return MUNIT_OK;
+}
+
+static MunitResult
+test_simde_mm_srli_epi16(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  const struct {
+    simde__m128i a;
+    simde__m128i r;
+  } test_vec[8] = {
+    { simde_mm_set_epi16(-29640,  27486, -30681,  22606, -21221,   7042,  -7099, -13884),
+      simde_mm_set_epi16(  4487,   3435,   4356,   2825,   5539,    880,   7304,   6456) },
+    { simde_mm_set_epi16( 15230,  23269, -21546,  15633,   9645, -32001,  -1446,  -7049),
+      simde_mm_set_epi16(  1903,   2908,   5498,   1954,   1205,   4191,   8011,   7310) },
+    { simde_mm_set_epi16( -4964,  29371,  -7375,   7185, -25257,  29335,  15023,  23258),
+      simde_mm_set_epi16(  7571,   3671,   7270,    898,   5034,   3666,   1877,   2907) },
+    { simde_mm_set_epi16(-29984, -17481, -31241,  11397,   2926, -28904, -20560, -32448),
+      simde_mm_set_epi16(  4444,   6006,   4286,   1424,    365,   4579,   5622,   4136) },
+    { simde_mm_set_epi16(-18879,   5889, -27972,  -4500, -12683,  25849,  24809,  26782),
+      simde_mm_set_epi16(  5832,    736,   4695,   7629,   6606,   3231,   3101,   3347) },
+    { simde_mm_set_epi16(-12553, -22953,  21946,  -9017, -10462,  -7608,  26015, -24893),
+      simde_mm_set_epi16(  6622,   5322,   2743,   7064,   6884,   7241,   3251,   5080) },
+    { simde_mm_set_epi16( 23545,   -728,  17963, -24889,  18443,  19433, -18886, -28120),
+      simde_mm_set_epi16(  2943,   8101,   2245,   5080,   2305,   2429,   5831,   4677) },
+    { simde_mm_set_epi16(  1885, -18948, -21057,    636,  -9667, -20298,  25111,  30554),
+      simde_mm_set_epi16(   235,   5823,   5559,     79,   6983,   5654,   3138,   3819) }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    simde__m128i r = simde_mm_srli_epi16(test_vec[i].a, 3);
+    simde_assert_m128i_i16(r, ==, test_vec[i].r);
+  }
+
+  return MUNIT_OK;
+}
+
+static MunitResult
+test_simde_mm_slli_epi32(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  const struct {
+    simde__m128i a;
+    simde__m128i r;
+  } test_vec[8] = {
+    { simde_mm_set_epi32(-1285208672,  1618695439, -1484382898,    97979804),
+      simde_mm_set_epi32( 1822995456,   258646496,  -255612480, -1159613568) },
+    { simde_mm_set_epi32( -215274446, -1750972712, -2134111648,  -338295419),
+      simde_mm_set_epi32( 1701152320,  -196551936,   427904000,  2059448480) },
+    { simde_mm_set_epi32(  406577052, -1272707531,  -128013424,  1090211344),
+      simde_mm_set_epi32(  125563776, -2071935328,   198537728,   527024640) },
+    { simde_mm_set_epi32( -547315834,   386023226,   789460810, -2097507270),
+      simde_mm_set_epi32( -334237504,  -532158656,  -507057856,  1599244096) },
+    { simde_mm_set_epi32( 1943314584,   126005183,   199695502, -1431967820),
+      simde_mm_set_epi32( 2056524544,  -262801440,  2095288768,  1421670016) },
+    { simde_mm_set_epi32( 1899687789, -1162493730,  1537811436,   825134965),
+      simde_mm_set_epi32(  660467104,  1454906304,  1965325696,   634515104) },
+    { simde_mm_set_epi32(-1452393292, -1781210226, -1307434085, -2039047771),
+      simde_mm_set_epi32(  768054912, -1164152384,  1111782240,  -825019232) },
+    { simde_mm_set_epi32(-1646930836,   816193989, -1662050152,   347461227),
+      simde_mm_set_epi32(-1162179200,   348403872, -1645997312, -1766142624) }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    simde__m128i r = simde_mm_slli_epi32(test_vec[i].a, 5);
+    simde_assert_m128i_i32(r, ==, test_vec[i].r);
+  }
+
+  return MUNIT_OK;
+}
+
+static MunitResult
 test_simde_mm_srli_epi32(const MunitParameter params[], void* data) {
   (void) params;
   (void) data;
 
   const struct {
     simde__m128i a;
-    int imm8;
     simde__m128i r;
   } test_vec[8] = {
-    { simde_mm_set_epi32(0xbc86a144, 0x30ab31e4, 0x5521c348, 0xcf932eef),
-      14,
-      simde_mm_set_epi32(0x0002f21a, 0x0000c2ac, 0x00015487, 0x00033e4c) },
-    { simde_mm_set_epi32(0x7d240145, 0x1ecfb081, 0x40961300, 0xcfad5ab6),
-      17,
-      simde_mm_set_epi32(0x00003e92, 0x00000f67, 0x0000204b, 0x000067d6) },
-    { simde_mm_set_epi32(0x996bddc1, 0x1374762b, 0xecafdaee, 0x5fa7ac85),
-      22,
-      simde_mm_set_epi32(0x00000265, 0x0000004d, 0x000003b2, 0x0000017e) },
-    { simde_mm_set_epi32(0x70fddfba, 0x9139ca7e, 0x9bbb9a7b, 0xad9b8144),
-      10,
-      simde_mm_set_epi32(0x001c3f77, 0x00244e72, 0x0026eee6, 0x002b66e0) },
-    { simde_mm_set_epi32(0x2bead65e, 0x5452344c, 0x7add4cb9, 0xe18ac1e1),
-      11,
-      simde_mm_set_epi32(0x00057d5a, 0x000a8a46, 0x000f5ba9, 0x001c3158) },
-    { simde_mm_set_epi32(0xf5a1ffa9, 0x9ce096ea, 0xc386d670, 0xcb94bb65),
-      28,
-      simde_mm_set_epi32(0x0000000f, 0x00000009, 0x0000000c, 0x0000000c) },
-    { simde_mm_set_epi32(0xcf4851fa, 0xd3b76669, 0x83eb1076, 0x92a708a8),
-      10,
-      simde_mm_set_epi32(0x0033d214, 0x0034edd9, 0x0020fac4, 0x0024a9c2) },
-    { simde_mm_set_epi32(0x204cac38, 0x2dd5f86c, 0xfb993fc0, 0x19f263d3),
-      26,
-      simde_mm_set_epi32(0x00000008, 0x0000000b, 0x0000003e, 0x00000006) }
+    { simde_mm_set_epi32(   71624167,   617025209,  -286267780, -1151099730),
+      simde_mm_set_epi32(    2238255,    19282037,   125271859,    98245861) },
+    { simde_mm_set_epi32(-1660949423,    45505817,  1892774959,  -917815961),
+      simde_mm_set_epi32(   82313058,     1422056,    59149217,   105535979) },
+    { simde_mm_set_epi32( 1642659615,  -757986143, -1891097222,   940303240),
+      simde_mm_set_epi32(   51333112,   110530661,    75120939,    29384476) },
+    { simde_mm_set_epi32( 1761409447,   115333600,  -589319110, -1530115830),
+      simde_mm_set_epi32(   55044045,     3604175,   115801505,    86401608) },
+    { simde_mm_set_epi32( -502944468, -1500485927,    32222499,  1115657749),
+      simde_mm_set_epi32(  118500713,    87327542,     1006953,    34864304) },
+    { simde_mm_set_epi32( -545012251,   924477372, -1883097200,  1327167226),
+      simde_mm_set_epi32(  117186095,    28889917,    75370940,    41473975) },
+    { simde_mm_set_epi32(  995448668,   377764585, -1462273550,  1306007963),
+      simde_mm_set_epi32(   31107770,    11805143,    88521679,    40812748) },
+    { simde_mm_set_epi32( 1991954175,   665906947,  -606406775,  1678465696),
+      simde_mm_set_epi32(   62248567,    20809592,   115267516,    52452053) }
   };
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
-    simde__m128i r = simde_mm_srli_epi32(test_vec[i].a, test_vec[i].imm8);
-    simde_assert_m128_i64(r, ==, test_vec[i].r);
+    simde__m128i r = simde_mm_srli_epi32(test_vec[i].a, 5);
+    simde_assert_m128i_i32(r, ==, test_vec[i].r);
+  }
+
+  return MUNIT_OK;
+}
+
+static MunitResult
+test_simde_mm_slli_epi64(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  const struct {
+    simde__m128i a;
+    simde__m128i r;
+  } test_vec[8] = {
+    { simde_mm_set_epi64x(INT64_C(-2315072815474662386), INT64_C( 6072154117607221746)),
+      simde_mm_set_epi64x(INT64_C(-1181415201403959552), INT64_C( 2472475957923215616)) },
+    { simde_mm_set_epi64x(INT64_C(-2150345518249743204), INT64_C( 3180241355952247476)),
+      simde_mm_set_epi64x(INT64_C( 1456934769676144128), INT64_C( 1242523940277541376)) },
+    { simde_mm_set_epi64x(INT64_C( 6492638483912689614), INT64_C( 7722522576063149658)),
+      simde_mm_set_epi64x(INT64_C(  954242623894447872), INT64_C(-7641290244232631040)) },
+    { simde_mm_set_epi64x(INT64_C(-3437371876454060839), INT64_C(-7472017034411611746)),
+      simde_mm_set_epi64x(INT64_C( 2738257582909451392), INT64_C( 2812511428210380544)) },
+    { simde_mm_set_epi64x(INT64_C(-2994435188669454779), INT64_C(-4713226846452985822)),
+      simde_mm_set_epi64x(INT64_C( 4093921398210372224), INT64_C( 5449518086433018112)) },
+    { simde_mm_set_epi64x(INT64_C(-1348831542752523511), INT64_C(-2794326256527200530)),
+      simde_mm_set_epi64x(INT64_C(-6629740808937044864), INT64_C(-7185623435000187136)) },
+    { simde_mm_set_epi64x(INT64_C(-5602242705933140185), INT64_C( 6492190109232091873)),
+      simde_mm_set_epi64x(INT64_C( 2335952515230569344), INT64_C(  896850664777937024)) },
+    { simde_mm_set_epi64x(INT64_C( 8003331601608352009), INT64_C(-5520322068937257120)),
+      simde_mm_set_epi64x(INT64_C(-8591223121865833344), INT64_C(-5624950023005949952)) }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    simde__m128i r = simde_mm_slli_epi64(test_vec[i].a, 7);
+    simde_assert_m128i_i32(r, ==, test_vec[i].r);
+  }
+
+  return MUNIT_OK;
+}
+
+static MunitResult
+test_simde_mm_srli_epi64(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  const struct {
+    simde__m128i a;
+    simde__m128i r;
+  } test_vec[8] = {
+    { simde_mm_set_epi64x(INT64_C(-2315072815474662386), INT64_C( 6072154117607221746)),
+      simde_mm_set_epi64x(INT64_C(  126028681704960072), INT64_C(   47438704043806419)) },
+    { simde_mm_set_epi64x(INT64_C(-2150345518249743204), INT64_C( 3180241355952247476)),
+      simde_mm_set_epi64x(INT64_C(  127315613714529753), INT64_C(   24845635593376933)) },
+    { simde_mm_set_epi64x(INT64_C( 6492638483912689614), INT64_C( 7722522576063149658)),
+      simde_mm_set_epi64x(INT64_C(   50723738155567887), INT64_C(   60332207625493356)) },
+    { simde_mm_set_epi64x(INT64_C(-3437371876454060839), INT64_C(-7472017034411611746)),
+      simde_mm_set_epi64x(INT64_C(  117260720291058521), INT64_C(   85740054994515155)) },
+    { simde_mm_set_epi64x(INT64_C(-2994435188669454779), INT64_C(-4713226846452985822)),
+      simde_mm_set_epi64x(INT64_C(  120721163164375756), INT64_C(  107293103337941920)) },
+    { simde_mm_set_epi64x(INT64_C(-1348831542752523511), INT64_C(-2794326256527200530)),
+      simde_mm_set_epi64x(INT64_C(  133577441648101782), INT64_C(  122284514196737117)) },
+    { simde_mm_set_epi64x(INT64_C(-5602242705933140185), INT64_C( 6492190109232091873)),
+      simde_mm_set_epi64x(INT64_C(  100347666935753214), INT64_C(   50720235228375717)) },
+    { simde_mm_set_epi64x(INT64_C( 8003331601608352009), INT64_C(-5520322068937257120)),
+      simde_mm_set_epi64x(INT64_C(   62526028137565250), INT64_C(  100987671912283550)) }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    simde__m128i r = simde_mm_srli_epi64(test_vec[i].a, 7);
+    simde_assert_m128i_i32(r, ==, test_vec[i].r);
   }
 
   return MUNIT_OK;
@@ -1539,7 +1705,7 @@ test_simde_mm_srli_si128(const MunitParameter params[], void* data) {
 
   for (size_t i = ((sizeof(test_vec) / sizeof(test_vec[0])) / 2) ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
     simde__m128i r = simde_mm_srli_si128(test_vec[i].a, 12);
-    simde_assert_m128_i64(r, ==, test_vec[i].r);
+    simde_assert_m128_i32(r, ==, test_vec[i].r);
   }
 
   return MUNIT_OK;
@@ -2110,6 +2276,13 @@ static MunitTest test_suite_tests[] = {
 
   { (char*) "/mm_bslli_si128",   test_simde_mm_bslli_si128,   NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
   { (char*) "/mm_bsrli_si128",   test_simde_mm_bsrli_si128,   NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mm_slli_epi16",    test_simde_mm_slli_epi16,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mm_slli_epi32",    test_simde_mm_slli_epi32,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mm_slli_epi64",    test_simde_mm_slli_epi64,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mm_srli_epi16",    test_simde_mm_srli_epi16,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mm_srli_epi32",    test_simde_mm_srli_epi32,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mm_srli_epi64",    test_simde_mm_srli_epi64,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mm_srli_si128",    test_simde_mm_srli_si128,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
 
   { (char*) "/mm_cmpeq_epi8",    test_simde_mm_cmpeq_epi8,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
   { (char*) "/mm_cmplt_epi8",    test_simde_mm_cmplt_epi8,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
@@ -2118,8 +2291,6 @@ static MunitTest test_suite_tests[] = {
   { (char*) "/mm_loadu_si128",   test_simde_mm_loadu_si128,   NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
   { (char*) "/mm_movemask_epi8", test_simde_mm_movemask_epi8, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
   { (char*) "/mm_or_si128",      test_simde_mm_or_si128,      NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_srli_epi32",    test_simde_mm_srli_epi32,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_srli_si128",    test_simde_mm_srli_si128,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
 
   { (char*) "/mm_store_pd",      test_simde_mm_store_pd,      NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
   { (char*) "/mm_store_pd1",     test_simde_mm_store_pd1,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
