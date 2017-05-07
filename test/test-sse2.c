@@ -1222,6 +1222,50 @@ test_simde_mm_loadu_si128(const MunitParameter params[], void* data) {
 }
 
 static MunitResult
+test_simde_mm_madd_epi16(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  const struct {
+    simde__m128i a;
+    simde__m128i b;
+    simde__m128i r;
+  } test_vec[8] = {
+    { simde_mm_set_epi16( 24289,  22642,  24338,  21466, -21399, -25114,    -38,  24157),
+      simde_mm_set_epi16( -9939, -13077, -13691, -22496,  -7750,   2620, -25114,   6535),
+      simde_mm_set_epi32( -537497805,  -816110694,   100043570,   158820327) },
+    { simde_mm_set_epi16( 13645,  20663,  21053,   5963,  -9189,  -1395,  25221,  27070),
+      simde_mm_set_epi16(-28936, -24038,   6837,  18195, -15316, -11637,   5200,   7885),
+      simde_mm_set_epi32( -891528914,   252436146,   156972339,   344596150) },
+    { simde_mm_set_epi16(-31367, -13886,  25125, -12503,  15451,  -6370, -24113,   2653),
+      simde_mm_set_epi16(  5595, -23387, -11854,    264,  15071,   3868, -30127,   2383),
+      simde_mm_set_epi32(  149253517,  -301132542,   208222861,   732774450) },
+    { simde_mm_set_epi16(  6250,    794,  -7973,  27046,  13164,  16469,   1989, -24542),
+      simde_mm_set_epi16( 22452,  -4402, -26550,  31252, -29251,  -1650, -13867,  26387),
+      simde_mm_set_epi32(  136829812,  1056924742,  -412234014,  -675171217) },
+    { simde_mm_set_epi16(-17693, -18978,  22797,  31393,  32262, -21009,   9435,  20059),
+      simde_mm_set_epi16( 20064,   4406,   1105, -32185,  26331,  -8672,  15113, -24381),
+      simde_mm_set_epi32( -438609420,  -985193020,  1031680770,  -346467324) },
+    { simde_mm_set_epi16( -9214, -31455, -14871,  -8603,  17039, -27694,  18091,  27811),
+      simde_mm_set_epi16(  9903,   7626,  -7009, -11696, -31989,  28434, -24743, -27058),
+      simde_mm_set_epi32( -331122072,   204851527, -1332511767, -1200135651) },
+    { simde_mm_set_epi16( 20741,   5382, -29692,  12589,  21204,   3076, -24365,  -1783),
+      simde_mm_set_epi16(-15203, -26894,  -6878, -23472, -18994,  11044,  15739,   -241),
+      simde_mm_set_epi32( -460068931,   -91267432,  -368777432,  -383051032) },
+    { simde_mm_set_epi16( 24682,  17647, -19806, -13656,  26394,   4814,  -4589,  17983),
+      simde_mm_set_epi16(-32304, -30224, -20430, -28018,  29012,   7494,  -7871,  16228),
+      simde_mm_set_epi32(-1330690256,   787250388,   801818844,   327948143) }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    simde__m128i r = simde_mm_madd_epi16(test_vec[i].a, test_vec[i].b);
+    simde_assert_m128i_i32(r, ==, test_vec[i].r);
+  }
+
+  return MUNIT_OK;
+}
+
+static MunitResult
 test_simde_mm_movemask_epi8(const MunitParameter params[], void* data) {
   (void) params;
   (void) data;
@@ -3008,14 +3052,6 @@ static MunitTest test_suite_tests[] = {
   { (char*) "/mm_srai_epi16",    test_simde_mm_srai_epi16,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
   { (char*) "/mm_srai_epi32",    test_simde_mm_srai_epi32,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
 
-  { (char*) "/mm_cmpeq_epi8",    test_simde_mm_cmpeq_epi8,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_cmplt_epi8",    test_simde_mm_cmplt_epi8,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_cvtsi128_si64", test_simde_mm_cvtsi128_si64, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_cvtsi64_si128", test_simde_mm_cvtsi64_si128, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_loadu_si128",   test_simde_mm_loadu_si128,   NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_movemask_epi8", test_simde_mm_movemask_epi8, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_or_si128",      test_simde_mm_or_si128,      NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-
   { (char*) "/mm_store_pd",      test_simde_mm_store_pd,      NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
   { (char*) "/mm_store_pd1",     test_simde_mm_store_pd1,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
   { (char*) "/mm_store_sd",      test_simde_mm_store_sd,      NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
@@ -3038,6 +3074,15 @@ static MunitTest test_suite_tests[] = {
   { (char*) "/mm_subs_epi16",    test_simde_mm_subs_epi16,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
   { (char*) "/mm_subs_epu8",     test_simde_mm_subs_epu8,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
   { (char*) "/mm_subs_epu16",    test_simde_mm_subs_epu16,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+
+  { (char*) "/mm_cmpeq_epi8",    test_simde_mm_cmpeq_epi8,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mm_cmplt_epi8",    test_simde_mm_cmplt_epi8,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mm_cvtsi128_si64", test_simde_mm_cvtsi128_si64, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mm_cvtsi64_si128", test_simde_mm_cvtsi64_si128, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mm_loadu_si128",   test_simde_mm_loadu_si128,   NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mm_madd_epi16",    test_simde_mm_madd_epi16,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mm_movemask_epi8", test_simde_mm_movemask_epi8, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mm_or_si128",      test_simde_mm_or_si128,      NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
 
   { (char*) "/mm_xor_si128",     test_simde_mm_xor_si128,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
 

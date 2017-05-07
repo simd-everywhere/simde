@@ -553,6 +553,21 @@ simde_mm_loadu_si128 (simde__m128i const* mem_addr) {
 }
 
 SIMDE__FUNCTION_ATTRIBUTES
+simde__m128i
+simde_mm_madd_epi16 (simde__m128i a, simde__m128i b) {
+#if defined(SIMDE_SSE2_NATIVE)
+  return SIMDE__M128I_C(_mm_madd_epi16(a.n, b.n));
+#else
+  simde__m128i r;
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r) / sizeof(r.i16[0])) ; i += 2) {
+    r.i32[i / 2] = (a.i16[i] * b.i16[i]) + (a.i16[i + 1] * b.i16[i + 1]);
+  }
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
 int32_t
 simde_mm_movemask_epi8 (simde__m128i a) {
 #if defined(SIMDE_SSE2_NATIVE)
