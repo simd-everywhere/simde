@@ -109,6 +109,20 @@ typedef __int128 simde_int128;
 typedef unsigned __int128 simde_uint128;
 #endif
 
+/* This will probably move into Hedley at some point, but I'd like to
+   more thoroughly check for other compilers which define __GNUC__
+   first. */
+#if defined(SIMDE__REALLY_GCC)
+#  undef SIMDE__REALLY_GCC
+#endif
+#if !defined(__GNUC__) || \
+  defined(__clang__) || \
+  defined(__INTEL_COMPILER)
+#define SIMDE__REALLY_GCC 0
+#else
+#define SIMDE__REALLY_GCC 1
+#endif
+
 /* Sometimes we run into problems with specific versions of compilers
    which make the native versions unusable for us.  Often this is due
    to missing functions, sometimes buggy implementations, etc.  These
@@ -119,9 +133,12 @@ typedef unsigned __int128 simde_uint128;
 #  if defined(__PGI)
 #    define SIMDE_BUG_PGI_TPR_24170 /* http://www.pgroup.com/userforum/viewtopic.php?t=5578 */
 #  endif
-#  if defined(__GNUC__) && !defined(__clang__) && !defined(__INTEL_COMPILER)
+#  if SIMDE__REALLY_GCC
 #    if !HEDLEY_GCC_VERSION_CHECK(4,9,0)
 #      define SIMDE_BUG_GCC_REV_208793
+#    endif
+#    if !HEDLEY_GCC_VERSION_CHECK(5,0,0)
+#      define SIMDE_BGU_GCC_BAD_MM_SRA_EPI32 /* TODO: find relevant bug or commit */
 #    endif
 #  endif
 #endif

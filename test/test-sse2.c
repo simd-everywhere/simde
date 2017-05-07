@@ -1443,6 +1443,182 @@ test_simde_mm_setzero_si128(const MunitParameter params[], void* data) {
 }
 
 static MunitResult
+test_simde_mm_sra_epi16(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  const struct {
+    simde__m128i a;
+    simde__m128i count;
+    simde__m128i r;
+  } test_vec[8] = {
+    { simde_mm_set_epi16( 28258,   1159,  20634, -30158,  10049, -31721, -26691, -28181),
+      simde_mm_set_epi16(    11,      6,     10,      8,     15,      3,      8,      1),
+      simde_mm_set_epi16(     0,      0,      0,     -1,      0,     -1,     -1,     -1) },
+    { simde_mm_set_epi16(-25682,   7964,   1259,  18017,  10765, -10649,  -9400,  12110),
+      simde_mm_set_epi16(     3,      8,      3,      2,     10,      5,      2,      2),
+      simde_mm_set_epi16(    -1,      0,      0,      0,      0,     -1,     -1,      0) },
+    { simde_mm_set_epi16(-24685,  14370,  13079,  -6409, -18776,  20941,  22692,    312),
+      simde_mm_set_epi16(    13,     13,      0,      7,      4,     10,     15,     11),
+      simde_mm_set_epi16(    -1,      0,      0,     -1,     -1,      0,      0,      0) },
+    { simde_mm_set_epi16( 13442, -32489, -21378,  10156,  15393,  20131,  15138, -12589),
+      simde_mm_set_epi16(     1,      3,      1,      8,     12,      3,      4,      2),
+      simde_mm_set_epi16(     0,     -1,     -1,      0,      0,      0,      0,     -1) },
+    { simde_mm_set_epi16( -9561,  25554,  -5305,  -7173, -10064,  31075,  30218, -18929),
+      simde_mm_set_epi16(     5,     10,      8,      1,     12,      3,     10,     10),
+      simde_mm_set_epi16(    -1,      0,     -1,     -1,     -1,      0,      0,     -1) },
+    { simde_mm_set_epi16( 14091,  24202,  -8543,  -7482, -26143,  20277, -27984, -32658),
+      simde_mm_set_epi16(     5,      7,      6,      6,     10,      3,      7,     11),
+      simde_mm_set_epi16(     0,      0,     -1,     -1,     -1,      0,     -1,     -1) },
+    { simde_mm_set_epi16(-19726,  12311,  16279,  -6277,  19874, -27089,  14524, -14305),
+      simde_mm_set_epi16(     7,      7,      3,      1,     12,      1,     10,      9),
+      simde_mm_set_epi16(    -1,      0,      0,     -1,      0,     -1,      0,     -1) },
+    { simde_mm_set_epi16( 19801, -12786,  31632,  19030, -19420, -12406,  12426,  27612),
+      simde_mm_set_epi16(     2,      0,     10,      3,      9,      0,      1,      8),
+      simde_mm_set_epi16(     0,     -1,      0,      0,     -1,     -1,      0,      0) }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    simde__m128i r = simde_mm_sra_epi16(test_vec[i].a, test_vec[i].count);
+    simde_assert_m128i_i16(r, ==, test_vec[i].r);
+  }
+
+  return MUNIT_OK;
+}
+
+static MunitResult
+test_simde_mm_sra_epi32(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  const struct {
+    simde__m128i a;
+    simde__m128i count;
+    simde__m128i r;
+  } test_vec[8] = {
+    { simde_mm_set_epi32(-1401500752,  1421016087, -1798399636,  -218944829),
+      simde_mm_set_epi32(          3,           4,          14,          13),
+      simde_mm_set_epi32(         -1,           0,          -1,          -1) },
+    { simde_mm_set_epi32(-1301672349, -1257788466,  1299081562, -2081916956),
+      simde_mm_set_epi32(          5,           0,          28,          28),
+      simde_mm_set_epi32(         -1,          -1,           0,          -1) },
+    { simde_mm_set_epi32(  486412899,  1710025226, -1708639681,   179026170),
+      simde_mm_set_epi32(          8,          27,           7,          28),
+      simde_mm_set_epi32(          0,           0,          -1,           0) },
+    { simde_mm_set_epi32(  611228560,  1089473069,  -348396556,  1221615457),
+      simde_mm_set_epi32(         22,          10,          31,          13),
+      simde_mm_set_epi32(          0,           0,          -1,           0) },
+    { simde_mm_set_epi32(-1397263422,   364817906,   -61765119,   893503448),
+      simde_mm_set_epi32(          7,          26,          26,           9),
+      simde_mm_set_epi32(         -1,           0,          -1,           0) },
+    { simde_mm_set_epi32( -809986849,   -41634974,  2083198151,  -832824649),
+      simde_mm_set_epi32(         26,          28,           3,          28),
+      simde_mm_set_epi32(         -1,          -1,           0,          -1) },
+    { simde_mm_set_epi32(-1514242199,  1925959405, -1844305920,   423301368),
+      simde_mm_set_epi32(          9,          11,          26,           3),
+      simde_mm_set_epi32(         -1,           0,          -1,           0) },
+    { simde_mm_set_epi32( 1189234358,  1471344312,  2129964179,   228172545),
+      simde_mm_set_epi32(         15,          22,          29,          13),
+      simde_mm_set_epi32(          0,           0,           0,           0) }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    simde__m128i r = simde_mm_sra_epi32(test_vec[i].a, test_vec[i].count);
+    simde_assert_m128i_i32(r, ==, test_vec[i].r);
+  }
+
+  return MUNIT_OK;
+}
+
+static MunitResult
+test_simde_mm_srai_epi16(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  const struct {
+    simde__m128i a;
+    int count;
+    simde__m128i r;
+  } test_vec[8] = {
+    { simde_mm_set_epi16( 23582,  20066, -22582,  -6703, -24294, -27424,  18869,  26741),
+      9,
+      simde_mm_set_epi16(    46,     39,    -45,    -14,    -48,    -54,     36,     52) },
+    { simde_mm_set_epi16(-31006,  27597,  15778,  26853,  15128,   5628,  15204, -20146),
+      7,
+      simde_mm_set_epi16(  -243,    215,    123,    209,    118,     43,    118,   -158) },
+    { simde_mm_set_epi16(-14866, -32053,   3649,   1973,  21119, -16403, -16731,  29131),
+      8,
+      simde_mm_set_epi16(   -59,   -126,     14,      7,     82,    -65,    -66,    113) },
+    { simde_mm_set_epi16(-23938,  -8837,  23202,   2346, -22781,  -7725,  30292, -24024),
+      11,
+      simde_mm_set_epi16(   -12,     -5,     11,      1,    -12,     -4,     14,    -12) },
+    { simde_mm_set_epi16( 10586, -31643,  28726, -28181,  23679, -32344,  17987,   4670),
+      13,
+      simde_mm_set_epi16(     1,     -4,      3,     -4,      2,     -4,      2,      0) },
+    { simde_mm_set_epi16(-32292,   5538, -10255, -11002, -14111,  -4210,  17581,  15112),
+      12,
+      simde_mm_set_epi16(    -8,      1,     -3,     -3,     -4,     -2,      4,      3) },
+    { simde_mm_set_epi16(  9274,   5650,  10395, -25251, -30201, -15673,  -5153,   9214),
+      1,
+      simde_mm_set_epi16(  4637,   2825,   5197, -12626, -15101,  -7837,  -2577,   4607) },
+    { simde_mm_set_epi16(-15540,  22158,   4092,   6979,  -6646, -25697, -31903,   5928),
+      7,
+      simde_mm_set_epi16(  -122,    173,     31,     54,    -52,   -201,   -250,     46) }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    simde__m128i r = simde_mm_srai_epi16(test_vec[i].a, test_vec[i].count);
+    simde_assert_m128i_i16(r, ==, test_vec[i].r);
+  }
+
+  return MUNIT_OK;
+}
+
+static MunitResult
+test_simde_mm_srai_epi32(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  const struct {
+    simde__m128i a;
+    int count;
+    simde__m128i r;
+  } test_vec[8] = {
+    { simde_mm_set_epi32(-1131934153,  1564906572, -1819251842,  2113577502),
+      6,
+      simde_mm_set_epi32(  -17686472,    24451665,   -28425811,    33024648) },
+    { simde_mm_set_epi32( 1898762691, -1673929561,  -363852881, -1016088778),
+      25,
+      simde_mm_set_epi32(         56,         -50,         -11,         -31) },
+    { simde_mm_set_epi32(-1661480117, -1741629978,  1726631387, -1146598010),
+      15,
+      simde_mm_set_epi32(     -50705,      -53151,       52692,      -34992) },
+    { simde_mm_set_epi32( 1786148983,   684894373,  1599659581, -1871135081),
+      11,
+      simde_mm_set_epi32(     872143,      334421,      781083,     -913641) },
+    { simde_mm_set_epi32( -970339319,  1644341516,   150378618, -1952528595),
+      25,
+      simde_mm_set_epi32(        -29,          49,           4,         -59) },
+    { simde_mm_set_epi32(-2135894572,  -293347256,  -925174046,  1577624957),
+      27,
+      simde_mm_set_epi32(        -16,          -3,          -7,          11) },
+    { simde_mm_set_epi32(-1521729654,  2089690706, -1865503124,  1738035635),
+      18,
+      simde_mm_set_epi32(      -5805,        7971,       -7117,        6630) },
+    { simde_mm_set_epi32( 1496299243,   260013912,  -621752978,   -20875751),
+      6,
+      simde_mm_set_epi32(   23379675,     4062717,    -9714891,     -326184) }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    simde__m128i r = simde_mm_srai_epi32(test_vec[i].a, test_vec[i].count);
+    simde_assert_m128i_i32(r, ==, test_vec[i].r);
+  }
+
+  return MUNIT_OK;
+}
+
+static MunitResult
 test_simde_mm_slli_epi16(const MunitParameter params[], void* data) {
   (void) params;
   (void) data;
@@ -2283,6 +2459,11 @@ static MunitTest test_suite_tests[] = {
   { (char*) "/mm_srli_epi32",    test_simde_mm_srli_epi32,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
   { (char*) "/mm_srli_epi64",    test_simde_mm_srli_epi64,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
   { (char*) "/mm_srli_si128",    test_simde_mm_srli_si128,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+
+  { (char*) "/mm_sra_epi16",     test_simde_mm_sra_epi16,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mm_sra_epi32",     test_simde_mm_sra_epi32,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mm_srai_epi16",    test_simde_mm_srai_epi16,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mm_srai_epi32",    test_simde_mm_srai_epi32,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
 
   { (char*) "/mm_cmpeq_epi8",    test_simde_mm_cmpeq_epi8,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
   { (char*) "/mm_cmplt_epi8",    test_simde_mm_cmplt_epi8,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
