@@ -870,6 +870,103 @@ simde_mm_srli_si128 (simde__m128i a, const int imm8) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 void
+simde_mm_store_pd (double mem_addr[HEDLEY_ARRAY_PARAM(2)], simde__m128d a) {
+#if defined(SIMDE_SSE2_NATIVE)
+  _mm_store_pd(mem_addr, a.n);
+#else
+  HEDLEY_ASSUME_ALIGNED(mem_addr, 16);
+  memcpy(mem_addr, &a, sizeof(a));
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+void
+simde_mm_store1_pd (double mem_addr[HEDLEY_ARRAY_PARAM(2)], simde__m128d a) {
+#if defined(SIMDE_SSE2_NATIVE)
+  _mm_store1_pd(mem_addr, a.n);
+#else
+  HEDLEY_ASSUME_ALIGNED(mem_addr, 16);
+  mem_addr[0] = a.f64[0];
+  mem_addr[1] = a.f64[0];
+#endif
+}
+#define simde_mm_store_pd1(mem_addr, a) simde_mm_store1_pd(mem_addr, a)
+
+SIMDE__FUNCTION_ATTRIBUTES
+void
+simde_mm_store_sd (double* mem_addr, simde__m128d a) {
+#if defined(SIMDE_SSE2_NATIVE)
+  _mm_store_sd(mem_addr, a.n);
+#else
+  memcpy(mem_addr, &a, sizeof(a.f64[0]));
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+void
+simde_mm_store_si128 (simde__m128i* mem_addr, simde__m128i a) {
+#if defined(SIMDE_SSE2_NATIVE)
+  _mm_storeu_si128(&mem_addr->n, a.n);
+#else
+  HEDLEY_ASSUME_ALIGNED(mem_addr, 16);
+  memcpy(mem_addr, &a, sizeof(a));
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+void
+simde_mm_storeh_pd (double* mem_addr, simde__m128d a) {
+#if defined(SIMDE_SSE2_NATIVE)
+  _mm_storeh_pd(mem_addr, a.n);
+#else
+  *mem_addr = a.f64[1];
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+void
+simde_mm_storel_epi64 (simde__m128i* mem_addr, simde__m128i a) {
+#if defined(SIMDE_SSE2_NATIVE)
+  _mm_storel_epi64(&(mem_addr->n), a.n);
+#else
+  mem_addr->i64[0] = a.i64[0];
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+void
+simde_mm_storel_pd (double* mem_addr, simde__m128d a) {
+#if defined(SIMDE_SSE2_NATIVE)
+  _mm_storel_pd(mem_addr, a.n);
+#else
+  *mem_addr = a.f64[0];
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+void
+simde_mm_storer_pd (double* mem_addr, simde__m128d a) {
+#if defined(SIMDE_SSE2_NATIVE)
+  _mm_storel_pd(mem_addr, a.n);
+#else
+  HEDLEY_ASSUME_ALIGNED(mem_addr, 16);
+  *mem_addr = a.f64[0];
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+void
+simde_mm_storeu_pd (double* mem_addr, simde__m128d a) {
+#if defined(SIMDE_SSE2_NATIVE)
+  _mm_storel_pd(mem_addr, a.n);
+#else
+  double v = a.f64[0];
+  memcpy(mem_addr, &v, sizeof(v));
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+void
 simde_mm_storeu_si128 (simde__m128i* mem_addr, simde__m128i a) {
 #if defined(SIMDE_SSE2_NATIVE)
   _mm_storeu_si128(&mem_addr->n, a.n);
