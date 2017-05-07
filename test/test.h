@@ -38,6 +38,7 @@ const MunitSuite simde_ssse3_test_suite;
 const MunitSuite simde_sse4_1_test_suite;
 const MunitSuite simde_sse4_2_test_suite;
 
+#if 0
 void debug_array_u8(const char* prefix, size_t nmemb, uint8_t v[HEDLEY_ARRAY_PARAM(nmemb)]);
 void debug_array_u16(const char* prefix, size_t nmemb, uint16_t v[HEDLEY_ARRAY_PARAM(nmemb)]);
 void debug_array_u32(const char* prefix, size_t nmemb, uint32_t v[HEDLEY_ARRAY_PARAM(nmemb)]);
@@ -47,8 +48,11 @@ void debug_array_i16(const char* prefix, size_t nmemb, int16_t v[HEDLEY_ARRAY_PA
 void debug_array_i32(const char* prefix, size_t nmemb, int32_t v[HEDLEY_ARRAY_PARAM(nmemb)]);
 void debug_array_i64(const char* prefix, size_t nmemb, int64_t v[HEDLEY_ARRAY_PARAM(nmemb)]);
 void debug_array_f32(const char* prefix, size_t nmemb, float v[HEDLEY_ARRAY_PARAM(nmemb)]);
+#endif
+
 void random_floatv(size_t nmemb, float v[HEDLEY_ARRAY_PARAM(nmemb)]);
 void random_doublev(size_t nmemb, double v[HEDLEY_ARRAY_PARAM(nmemb)]);
+double random_double_range(double min, double max);
 
 #define random_intv_range(T, nmemb, v, min, max)			\
   do {									\
@@ -56,8 +60,6 @@ void random_doublev(size_t nmemb, double v[HEDLEY_ARRAY_PARAM(nmemb)]);
       ((T*) (v))[simde_tmp_i_] = munit_rand_int_range(min, max);	\
     }									\
   } while (0)
-
-double random_double_range(double min, double max);
 
 #define TEST_PREFERRED_ITERATIONS (256)
 

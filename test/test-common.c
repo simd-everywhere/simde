@@ -2,6 +2,7 @@
 
 #include <math.h>
 
+#if 0
 void debug_array_u8(const char* prefix, size_t nmemb, uint8_t v[HEDLEY_ARRAY_PARAM(nmemb)]) {
   fprintf(stderr, "%s:", prefix);
   for(size_t i = 0 ; i < nmemb ; i++) {
@@ -73,6 +74,7 @@ void debug_array_f32(const char* prefix, size_t nmemb, float v[HEDLEY_ARRAY_PARA
   }
   fprintf(stderr, "\n");
 }
+#endif
 
 void random_floatv(size_t nmemb, float v[HEDLEY_ARRAY_PARAM(nmemb)]) {
   for (size_t i = 0 ; i < nmemb ; i++) {

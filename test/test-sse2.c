@@ -488,10 +488,6 @@ test_simde_mm_adds_epu8(const MunitParameter params[], void* data) {
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m128i r = simde_mm_adds_epu8(test_vec[i].a, test_vec[i].b);
-    debug_array_u8("\na", 16, (uint8_t*) &(test_vec[i].a));
-    debug_array_u8("b", 16, (uint8_t*) &(test_vec[i].b));
-    debug_array_u8("r", 16, (uint8_t*) &r);
-    debug_array_u8("x", 16, (uint8_t*) &(test_vec[i].r));
     simde_assert_m128_u8(r, ==, test_vec[i].r);
   }
 
