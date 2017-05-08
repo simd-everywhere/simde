@@ -56,6 +56,14 @@ define_test_cmp_VT_2xVT(_m128i, mm_subs_epi16, i16)
 define_test_cmp_VT_2xVT(_m128i, mm_subs_epu8, i8)
 define_test_cmp_VT_2xVT(_m128i, mm_subs_epu16, i16)
 define_test_cmp_VT_2xVT(_m128i, mm_madd_epi16, i32)
+define_test_cmp_VT_2xVT(_m128i, mm_min_epi16, i16)
+define_test_cmp_VT_2xVT(_m128i, mm_min_epu8, i8)
+define_test_cmp_f64_VT_2xVT(_m128d, mm_min_pd)
+define_test_cmp_f64_VT_2xVT(_m128d, mm_min_sd)
+define_test_cmp_VT_2xVT(_m128i, mm_max_epi16, i16)
+define_test_cmp_VT_2xVT(_m128i, mm_max_epu8, i8)
+define_test_cmp_f64_VT_2xVT(_m128d, mm_max_pd)
+define_test_cmp_f64_VT_2xVT(_m128d, mm_max_sd)
 
 static MunitTest test_suite_tests[] = {
   { (char*) "/mm_add_epi8",       test_simde_mm_add_epi8,       NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
@@ -73,6 +81,14 @@ static MunitTest test_suite_tests[] = {
   { (char*) "/mm_avg_epu8",       test_simde_mm_avg_epu8,       NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
   { (char*) "/mm_avg_epu16",      test_simde_mm_avg_epu16,      NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
   { (char*) "/mm_madd_epi16",     test_simde_mm_madd_epi16,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mm_min_epi16",      test_simde_mm_min_epi16,      NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mm_min_epu8",       test_simde_mm_min_epu8,       NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mm_min_pd",         test_simde_mm_min_pd,         NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mm_min_sd",         test_simde_mm_min_sd,         NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mm_max_epi16",      test_simde_mm_max_epi16,      NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mm_max_epu8",       test_simde_mm_max_epu8,       NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mm_max_pd",         test_simde_mm_max_pd,         NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mm_max_sd",         test_simde_mm_max_sd,         NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
   { (char*) "/mm_sub_epi8",       test_simde_mm_sub_epi8,       NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
   { (char*) "/mm_sub_epi16",      test_simde_mm_sub_epi16,      NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
   { (char*) "/mm_sub_epi32",      test_simde_mm_sub_epi32,      NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
