@@ -603,6 +603,16 @@ simde_x_mm_set_pu16 (uint16_t e3, uint16_t e2, uint16_t e1, uint16_t e0) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m64
+simde_x_mm_set_pu32 (uint32_t e1, uint32_t e0) {
+#if defined(SIMDE_MMX_NATIVE)
+  return SIMDE__M64_C(_mm_set_pi32((int32_t) e1, (int32_t) e0));
+#else
+  return (simde__m64) { .u32 = { e0, e1 } };
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m64
 simde_mm_set_pi32 (int32_t e1, int32_t e0) {
 #if defined(SIMDE_MMX_NATIVE)
   return SIMDE__M64_C(_mm_set_pi32(e1, e0));

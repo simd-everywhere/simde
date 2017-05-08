@@ -103,6 +103,20 @@ double random_double_range(double min, double max);
     }									\
   } while (0)
 
+#define simde_assert_floatv_close(T, nmemb, a, b, precision)		\
+  do {									\
+    const T* simde_tmp_a_ = (a);					\
+    const T* simde_tmp_b_ = (b);					\
+    for (size_t simde_i_ = 0 ; simde_i_ < nmemb ; simde_i_++) {	\
+      const T simde_tmp_diff_ = ((simde_tmp_a_[simde_i_] - simde_tmp_b_[simde_i_]) < 0) ?	\
+	(simde_tmp_b_[simde_i_] - simde_tmp_a_[simde_i_]) :					\
+	(simde_tmp_a_[simde_i_] - simde_tmp_b_[simde_i_]);					\
+      if (MUNIT_UNLIKELY(simde_tmp_diff_ > precision)) {		\
+	munit_errorf("assertion failed: (" #a ")[%" MUNIT_SIZE_MODIFIER "u] == (" #b ")[%" MUNIT_SIZE_MODIFIER "u] (%" #precision ".1f == %" #precision ".1f)", simde_i_, simde_i_, simde_tmp_a_[simde_i_], simde_tmp_b_[simde_i_]); \
+      }									\
+    }									\
+  } while (0)
+
 /* These probably won't go into µnit; they're similar to the
    simde_assert_*v macros above, but print in hex. */
 
@@ -143,6 +157,10 @@ double random_double_range(double min, double max);
   simde_assert_uint64vx(1, (uint64_t*) &(a), op, (uint64_t*) &(b))
 #define simde_assert_m64_f32(a, op, b) \
   simde_assert_typev(float, "f", 2, (float*) &(a), op, (float*) &(b))
+#define simde_assert_m64_f64(a, op, b) \
+  simde_assert_typev(double, "f", 1, (double*) &(a), op, (double*) &(b))
+#define simde_assert_m64_f64_equal(a, b, precision) \
+  simde_assert_floatv_equal(double, 1, (double*) &(a), (double*) &(b), precision)
 
 #define simde_assert_m128_i8(a, op, b) \
   simde_assert_typev(int8_t, PRId8, 16, (int8_t*) &(a), op, (int8_t*) &(b))
@@ -194,6 +212,8 @@ double random_double_range(double min, double max);
   simde_assert_typev(double, "f", 2, (double*) &(a), op, (double*) &(b))
 #define simde_assert_m128d_f64_equal(a, b, precision) \
   simde_assert_floatv_equal(double, 2, (double*) &(a), (double*) &(b), precision)
+#define simde_assert_m128d_f64_close(a, b, precision) \
+  simde_assert_floatv_close(double, 2, (double*) &(a), (double*) &(b), precision)
 
 /* SIMD floating-point conversion functions may or may not be the same
    as the normal FP conversion functions. */
