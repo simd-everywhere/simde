@@ -27,6 +27,8 @@
 #include <stdio.h>
 #include <limits.h>
 
+#include "../simde-common.h"
+
 #include "../hedley.h"
 #include "munit/munit.h"
 
@@ -47,12 +49,12 @@ void debug_array_i8(const char* prefix, size_t nmemb, int8_t v[HEDLEY_ARRAY_PARA
 void debug_array_i16(const char* prefix, size_t nmemb, int16_t v[HEDLEY_ARRAY_PARAM(nmemb)]);
 void debug_array_i32(const char* prefix, size_t nmemb, int32_t v[HEDLEY_ARRAY_PARAM(nmemb)]);
 void debug_array_i64(const char* prefix, size_t nmemb, int64_t v[HEDLEY_ARRAY_PARAM(nmemb)]);
-void debug_array_f32(const char* prefix, size_t nmemb, float v[HEDLEY_ARRAY_PARAM(nmemb)]);
+void debug_array_f32(const char* prefix, size_t nmemb, simde_float32 v[HEDLEY_ARRAY_PARAM(nmemb)]);
 #endif
 
-void random_floatv(size_t nmemb, float v[HEDLEY_ARRAY_PARAM(nmemb)]);
-void random_doublev(size_t nmemb, double v[HEDLEY_ARRAY_PARAM(nmemb)]);
-double random_double_range(double min, double max);
+void random_f32v(size_t nmemb, simde_float32 v[HEDLEY_ARRAY_PARAM(nmemb)]);
+void random_f64v(size_t nmemb, simde_float64 v[HEDLEY_ARRAY_PARAM(nmemb)]);
+simde_float64 random_f64_range(simde_float64 min, simde_float64 max);
 
 #define random_intv_range(T, nmemb, v, min, max)			\
   do {									\
@@ -80,8 +82,8 @@ double random_double_range(double min, double max);
 #define simde_assert_typev(T, fmt, nmemb, a, op, b)		\
   simde_assert_array_full("", "", T, fmt, nmemb, a, op, b)
 
-#define simde_assert_floatv(nmemb, a, op, b)		\
-  simde_assert_typev(float, "g", nmemb, a, op, b)
+#define simde_assert_f32v(nmemb, a, op, b)		\
+  simde_assert_typev(simde_float32, "g", nmemb, a, op, b)
 
 #define simde_assert_intv(nmemb, a, op, b)	\
   simde_assert_typev(int, "d", nmemb, a, op, b)
@@ -89,7 +91,7 @@ double random_double_range(double min, double max);
 #define simde_assert_uintv(nmemb, a, op, b)	\
   simde_assert_typev(int, "u", nmemb, a, op, b)
 
-#define simde_assert_floatv_equal(T, nmemb, a, b, precision)		\
+#define simde_assert_f32v_equal(T, nmemb, a, b, precision)		\
   do {									\
     const T* simde_tmp_a_ = (a);					\
     const T* simde_tmp_b_ = (b);					\
@@ -103,7 +105,7 @@ double random_double_range(double min, double max);
     }									\
   } while (0)
 
-#define simde_assert_floatv_close(T, nmemb, a, b, precision)		\
+#define simde_assert_f32v_close(T, nmemb, a, b, precision)		\
   do {									\
     const T* simde_tmp_a_ = (a);					\
     const T* simde_tmp_b_ = (b);					\
@@ -156,11 +158,11 @@ double random_double_range(double min, double max);
 #define simde_assert_m64_u64(a, op, b) \
   simde_assert_uint64vx(1, (uint64_t*) &(a), op, (uint64_t*) &(b))
 #define simde_assert_m64_f32(a, op, b) \
-  simde_assert_typev(float, "f", 2, (float*) &(a), op, (float*) &(b))
+  simde_assert_typev(simde_float32, "f", 2, (simde_float32*) &(a), op, (simde_float32*) &(b))
 #define simde_assert_m64_f64(a, op, b) \
-  simde_assert_typev(double, "f", 1, (double*) &(a), op, (double*) &(b))
+  simde_assert_typev(simde_float64, "f", 1, (simde_float64*) &(a), op, (simde_float64*) &(b))
 #define simde_assert_m64_f64_equal(a, b, precision) \
-  simde_assert_floatv_equal(double, 1, (double*) &(a), (double*) &(b), precision)
+  simde_assert_f32v_equal(simde_float64, 1, (simde_float64*) &(a), (simde_float64*) &(b), precision)
 
 #define simde_assert_m128_i8(a, op, b) \
   simde_assert_typev(int8_t, PRId8, 16, (int8_t*) &(a), op, (int8_t*) &(b))
@@ -179,13 +181,13 @@ double random_double_range(double min, double max);
 #define simde_assert_m128_u64(a, op, b) \
   simde_assert_uint64vx(2, (uint64_t*) &(a), op, (uint64_t*) &(b))
 #define simde_assert_m128_f32(a, op, b) \
-  simde_assert_typev(float, "f", 4, (float*) &(a), op, (float*) &(b))
+  simde_assert_typev(simde_float32, "f", 4, (simde_float32*) &(a), op, (simde_float32*) &(b))
 #define simde_assert_m128_f32_equal(a, b, precision) \
-  simde_assert_floatv_equal(float, 4, (float*) &(a), (float*) &(b), precision)
+  simde_assert_f32v_equal(simde_float32, 4, (simde_float32*) &(a), (simde_float32*) &(b), precision)
 #define simde_assert_m128_f64(a, op, b) \
-  simde_assert_typev(double, "f", 2, (double*) &(a), op, (double*) &(b))
+  simde_assert_typev(simde_float64, "f", 2, (simde_float64*) &(a), op, (simde_float64*) &(b))
 #define simde_assert_m128_f64_equal(a, b, precision) \
-  simde_assert_floatv_equal(double, 2, (double*) &(a), (double*) &(b), precision)
+  simde_assert_f32v_equal(simde_float64, 2, (simde_float64*) &(a), (simde_float64*) &(b), precision)
 
 #define simde_assert_m128i_i8(a, op, b) \
   simde_assert_typev(int8_t, PRId8, 16, (int8_t*) &(a), op, (int8_t*) &(b))
@@ -205,15 +207,15 @@ double random_double_range(double min, double max);
   simde_assert_typev(uint64_t, PRIu64, 2, (uint64_t*) &(a), op, (uint64_t*) &(b))
 
 #define simde_assert_m128d_f32(a, op, b) \
-  simde_assert_typev(float, "f", 4, (float*) &(a), op, (float*) &(b))
+  simde_assert_typev(simde_float32, "f", 4, (simde_float32*) &(a), op, (simde_float32*) &(b))
 #define simde_assert_m128d_f32_equal(a, b, precision) \
-  simde_assert_floatv_equal(float, 4, (float*) &(a), (float*) &(b), precision)
+  simde_assert_f32v_equal(simde_float32, 4, (simde_float32*) &(a), (simde_float32*) &(b), precision)
 #define simde_assert_m128d_f64(a, op, b) \
-  simde_assert_typev(double, "f", 2, (double*) &(a), op, (double*) &(b))
+  simde_assert_typev(simde_float64, "f", 2, (simde_float64*) &(a), op, (simde_float64*) &(b))
 #define simde_assert_m128d_f64_equal(a, b, precision) \
-  simde_assert_floatv_equal(double, 2, (double*) &(a), (double*) &(b), precision)
+  simde_assert_f32v_equal(simde_float64, 2, (simde_float64*) &(a), (simde_float64*) &(b), precision)
 #define simde_assert_m128d_f64_close(a, b, precision) \
-  simde_assert_floatv_close(double, 2, (double*) &(a), (double*) &(b), precision)
+  simde_assert_f32v_close(simde_float64, 2, (simde_float64*) &(a), (simde_float64*) &(b), precision)
 
 /* SIMD floating-point conversion functions may or may not be the same
    as the normal FP conversion functions. */

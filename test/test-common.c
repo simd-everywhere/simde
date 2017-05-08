@@ -67,7 +67,7 @@ void debug_array_i64(const char* prefix, size_t nmemb, int64_t v[HEDLEY_ARRAY_PA
   fprintf(stderr, "\n");
 }
 
-void debug_array_f32(const char* prefix, size_t nmemb, float v[HEDLEY_ARRAY_PARAM(nmemb)]) {
+void debug_array_f32(const char* prefix, size_t nmemb, simde_float32 v[HEDLEY_ARRAY_PARAM(nmemb)]) {
   fprintf(stderr, "%s:", prefix);
   for(size_t i = 0 ; i < nmemb ; i++) {
     fprintf(stderr, " %2.6f", v[i]);
@@ -76,7 +76,7 @@ void debug_array_f32(const char* prefix, size_t nmemb, float v[HEDLEY_ARRAY_PARA
 }
 #endif
 
-void random_floatv(size_t nmemb, float v[HEDLEY_ARRAY_PARAM(nmemb)]) {
+void random_f32v(size_t nmemb, simde_float32 v[HEDLEY_ARRAY_PARAM(nmemb)]) {
   for (size_t i = 0 ; i < nmemb ; i++) {
     do {
       munit_rand_memory(sizeof(v[i]), (uint8_t*) &(v[i]));
@@ -84,15 +84,15 @@ void random_floatv(size_t nmemb, float v[HEDLEY_ARRAY_PARAM(nmemb)]) {
   }
 }
 
-double random_double_range(double min, double max) {
-  const double range = max - min;
-  double x = (double) munit_rand_uint32();
-  x /= ((float) UINT32_MAX) / range;
+simde_float64 random_f64_range(simde_float64 min, simde_float64 max) {
+  const simde_float64 range = max - min;
+  simde_float64 x = (simde_float64) munit_rand_uint32();
+  x /= ((simde_float32) UINT32_MAX) / range;
   x += min;
   return x;
 }
 
-void random_doublev(size_t nmemb, double v[HEDLEY_ARRAY_PARAM(nmemb)]) {
+void random_f64v(size_t nmemb, simde_float64 v[HEDLEY_ARRAY_PARAM(nmemb)]) {
   for (size_t i = 0 ; i < nmemb ; i++) {
     do {
       munit_rand_memory(sizeof(v[i]), (uint8_t*) &(v[i]));

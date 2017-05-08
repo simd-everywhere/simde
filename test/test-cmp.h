@@ -35,8 +35,8 @@
     _##T na, nb, nr;							\
     simde_##T ea, eb, er;						\
 									\
-    random_floatv(sizeof(na) / sizeof(float), (float*) &na);		\
-    random_floatv(sizeof(nb) / sizeof(float), (float*) &nb);		\
+    random_f32v(sizeof(na) / sizeof(simde_float32), (float*) &na);	\
+    random_f32v(sizeof(nb) / sizeof(simde_float32), (float*) &nb);	\
     memcpy(&ea, &na, sizeof(na));					\
     memcpy(&eb, &nb, sizeof(nb));					\
 									\
@@ -60,8 +60,8 @@
     _##T na, nb, nr;							\
     simde_##T ea, eb, er;						\
 									\
-    random_doublev(sizeof(na) / sizeof(double), (double*) &na);		\
-    random_doublev(sizeof(nb) / sizeof(double), (double*) &nb);		\
+    random_f64v(sizeof(na) / sizeof(simde_float64), (simde_float64*) &na); \
+    random_f64v(sizeof(nb) / sizeof(simde_float64), (simde_float64*) &nb); \
     memcpy(&ea, &na, sizeof(na));					\
     memcpy(&eb, &nb, sizeof(nb));					\
 									\
@@ -86,8 +86,8 @@
     simde_##T ea, eb;							\
     RT nr, er;								\
 									\
-    random_floatv(sizeof(na) / sizeof(float), (float*) &na);		\
-    random_floatv(sizeof(nb) / sizeof(float), (float*) &nb);		\
+    random_f32v(sizeof(na) / sizeof(simde_float32), (simde_float32*) &na); \
+    random_f32v(sizeof(nb) / sizeof(simde_float32), (simde_float32*) &nb); \
     memcpy(&ea, &na, sizeof(na));					\
     memcpy(&eb, &nb, sizeof(nb));					\
 									\
@@ -162,7 +162,7 @@
     _##T na, nr;							\
     simde_##T ea, er;							\
 									\
-    random_floatv(sizeof(na) / sizeof(float), (float*) &na);		\
+    random_f32v(sizeof(na) / sizeof(simde_float32), (simde_float32*) &na); \
     memcpy(&ea, &na, sizeof(na));					\
 									\
     nr = _##func(na);							\

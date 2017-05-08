@@ -3457,11 +3457,11 @@ test_simde_mm_set_pd(const MunitParameter params[], void* data) {
   (void) data;
 
   for (size_t i = 0 ; i < 32 ; i++) {
-    double e1, e0;
+    simde_float64 e1, e0;
     simde__m128d r;
 
-    e0 = random_double_range(-1000.0, 1000.0);
-    e1 = random_double_range(-1000.0, 1000.0);
+    e0 = random_f64_range(-1000.0, 1000.0);
+    e1 = random_f64_range(-1000.0, 1000.0);
     r = simde_mm_set_pd(e1, e0);
 
     munit_assert_int64(r.f64[0], ==, e0);
@@ -3498,10 +3498,10 @@ test_simde_mm_set_pd1(const MunitParameter params[], void* data) {
   (void) data;
 
   for (size_t i = 0 ; i < 32 ; i++) {
-    double a;
+    simde_float64 a;
     simde__m128d r;
 
-    a = random_double_range(-1000.0, 1000.0);
+    a = random_f64_range(-1000.0, 1000.0);
     r = simde_mm_set_pd1(a);
 
     munit_assert_double(r.f64[0], ==, a);
@@ -3517,10 +3517,10 @@ test_simde_mm_set_sd(const MunitParameter params[], void* data) {
   (void) data;
 
   for (size_t i = 0 ; i < 32 ; i++) {
-    double a;
+    simde_float64 a;
     simde__m128d r;
 
-    a = random_double_range(-1000.0, 1000.0);
+    a = random_f64_range(-1000.0, 1000.0);
     r = simde_mm_set_sd(a);
 
     munit_assert_double(r.f64[0], ==, a);
@@ -3996,7 +3996,7 @@ test_simde_mm_store_pd(const MunitParameter params[], void* data) {
 
   const struct {
     simde__m128d a;
-    double SIMDE__ALIGN(16) r[2];
+    simde_float64 SIMDE__ALIGN(16) r[2];
   } test_vec[8] = {
     { simde_mm_set_pd(  825.31,   176.75),
       {   176.75,   825.31 } },
@@ -4017,9 +4017,9 @@ test_simde_mm_store_pd(const MunitParameter params[], void* data) {
   };
 
   for (size_t i = 0 ; i < sizeof(test_vec) / sizeof(test_vec[0]) ; i++) {
-    double SIMDE__ALIGN(16) r[2];
+    simde_float64 SIMDE__ALIGN(16) r[2];
     simde_mm_store_pd(r, test_vec[i].a);
-    simde_assert_floatv_equal(double, 2, test_vec[i].r, r, 4);
+    simde_assert_f32v_equal(simde_float64, 2, test_vec[i].r, r, 4);
   }
 
   return MUNIT_OK;
@@ -4032,7 +4032,7 @@ test_simde_mm_store_pd1(const MunitParameter params[], void* data) {
 
   const struct {
     simde__m128d a;
-    double SIMDE__ALIGN(16) r[2];
+    simde_float64 SIMDE__ALIGN(16) r[2];
   } test_vec[8] = {
     { simde_mm_set_pd(  278.50,   554.87),
       {   554.87,   554.87 } },
@@ -4053,9 +4053,9 @@ test_simde_mm_store_pd1(const MunitParameter params[], void* data) {
   };
 
   for (size_t i = 0 ; i < sizeof(test_vec) / sizeof(test_vec[0]) ; i++) {
-    double SIMDE__ALIGN(16) r[2];
+    simde_float64 SIMDE__ALIGN(16) r[2];
     simde_mm_store_pd1(r, test_vec[i].a);
-    simde_assert_floatv_equal(double, 2, test_vec[i].r, r, 4);
+    simde_assert_f32v_equal(simde_float64, 2, test_vec[i].r, r, 4);
   }
 
   return MUNIT_OK;
@@ -4068,8 +4068,8 @@ test_simde_mm_store_sd(const MunitParameter params[], void* data) {
 
   const struct {
     simde__m128d a;
-    double SIMDE__ALIGN(16) b[2];
-    double SIMDE__ALIGN(16) r[2];
+    simde_float64 SIMDE__ALIGN(16) b[2];
+    simde_float64 SIMDE__ALIGN(16) r[2];
   } test_vec[8] = {
     { simde_mm_set_pd( -380.32,   589.10),
       {  -886.38,   706.27 },
@@ -4098,10 +4098,10 @@ test_simde_mm_store_sd(const MunitParameter params[], void* data) {
   };
 
   for (size_t i = 0 ; i < sizeof(test_vec) / sizeof(test_vec[0]) ; i++) {
-    double SIMDE__ALIGN(16) r[2];
+    simde_float64 SIMDE__ALIGN(16) r[2];
     memcpy(r, &(test_vec[i].b), sizeof(test_vec[i].b));
     simde_mm_store_sd(r, test_vec[i].a);
-    simde_assert_floatv_equal(double, 2, test_vec[i].r, r, 4);
+    simde_assert_f32v_equal(simde_float64, 2, test_vec[i].r, r, 4);
   }
 
   return MUNIT_OK;
@@ -4150,8 +4150,8 @@ test_simde_mm_storeh_pd(const MunitParameter params[], void* data) {
 
   const struct {
     simde__m128d a;
-    double SIMDE__ALIGN(16) b[2];
-    double SIMDE__ALIGN(16) r[2];
+    simde_float64 SIMDE__ALIGN(16) b[2];
+    simde_float64 SIMDE__ALIGN(16) r[2];
   } test_vec[8] = {
     { simde_mm_set_pd( -154.79,   689.59),
       {  -986.30,  -463.82 },
@@ -4180,10 +4180,10 @@ test_simde_mm_storeh_pd(const MunitParameter params[], void* data) {
   };
 
   for (size_t i = 0 ; i < sizeof(test_vec) / sizeof(test_vec[0]) ; i++) {
-    double SIMDE__ALIGN(16) r[2];
+    simde_float64 SIMDE__ALIGN(16) r[2];
     memcpy(r, &(test_vec[i].b), sizeof(test_vec[i].b));
     simde_mm_storeh_pd(r, test_vec[i].a);
-    simde_assert_floatv_equal(double, 2, test_vec[i].r, r, 4);
+    simde_assert_f32v_equal(simde_float64, 2, test_vec[i].r, r, 4);
   }
 
   return MUNIT_OK;
@@ -4242,8 +4242,8 @@ test_simde_mm_storel_pd(const MunitParameter params[], void* data) {
 
   const struct {
     simde__m128d a;
-    double SIMDE__ALIGN(16) b[2];
-    double SIMDE__ALIGN(16) r[2];
+    simde_float64 SIMDE__ALIGN(16) b[2];
+    simde_float64 SIMDE__ALIGN(16) r[2];
   } test_vec[8] = {
     { simde_mm_set_pd( -887.08,  -520.70),
       {  -258.49,   913.00 },
@@ -4272,10 +4272,10 @@ test_simde_mm_storel_pd(const MunitParameter params[], void* data) {
   };
 
   for (size_t i = 0 ; i < sizeof(test_vec) / sizeof(test_vec[0]) ; i++) {
-    double SIMDE__ALIGN(16) r[2];
+    simde_float64 SIMDE__ALIGN(16) r[2];
     memcpy(r, &(test_vec[i].b), sizeof(test_vec[i].b));
     simde_mm_storel_pd(r, test_vec[i].a);
-    simde_assert_floatv_equal(double, 2, test_vec[i].r, r, 4);
+    simde_assert_f32v_equal(simde_float64, 2, test_vec[i].r, r, 4);
   }
 
   return MUNIT_OK;
@@ -4288,8 +4288,8 @@ test_simde_mm_storer_pd(const MunitParameter params[], void* data) {
 
   const struct {
     simde__m128d a;
-    double SIMDE__ALIGN(16) b[2];
-    double SIMDE__ALIGN(16) r[2];
+    simde_float64 SIMDE__ALIGN(16) b[2];
+    simde_float64 SIMDE__ALIGN(16) r[2];
   } test_vec[8] = {
     { simde_mm_set_pd( -545.91,  -446.91),
       {   394.90,    50.99 },
@@ -4318,10 +4318,10 @@ test_simde_mm_storer_pd(const MunitParameter params[], void* data) {
   };
 
   for (size_t i = 0 ; i < sizeof(test_vec) / sizeof(test_vec[0]) ; i++) {
-    double SIMDE__ALIGN(16) r[2];
+    simde_float64 SIMDE__ALIGN(16) r[2];
     memcpy(r, &(test_vec[i].b), sizeof(test_vec[i].b));
     simde_mm_storer_pd(r, test_vec[i].a);
-    simde_assert_floatv_equal(double, 2, test_vec[i].r, r, 4);
+    simde_assert_f32v_equal(simde_float64, 2, test_vec[i].r, r, 4);
   }
 
   return MUNIT_OK;
@@ -4334,8 +4334,8 @@ test_simde_mm_storeu_pd(const MunitParameter params[], void* data) {
 
   const struct {
     simde__m128d a;
-    double SIMDE__ALIGN(16) b[2];
-    double SIMDE__ALIGN(16) r[2];
+    simde_float64 SIMDE__ALIGN(16) b[2];
+    simde_float64 SIMDE__ALIGN(16) r[2];
   } test_vec[8] = {
     { simde_mm_set_pd( -545.91,  -446.91),
       {   394.90,    50.99 },
@@ -4364,10 +4364,10 @@ test_simde_mm_storeu_pd(const MunitParameter params[], void* data) {
   };
 
   for (size_t i = 0 ; i < sizeof(test_vec) / sizeof(test_vec[0]) ; i++) {
-    double SIMDE__ALIGN(16) r[2];
+    simde_float64 SIMDE__ALIGN(16) r[2];
     memcpy(r, &(test_vec[i].b), sizeof(test_vec[i].b));
     simde_mm_storeu_pd(r, test_vec[i].a);
-    simde_assert_floatv_equal(double, 2, test_vec[i].r, r, 4);
+    simde_assert_f32v_equal(simde_float64, 2, test_vec[i].r, r, 4);
   }
 
   return MUNIT_OK;

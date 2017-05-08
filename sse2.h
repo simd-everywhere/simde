@@ -76,8 +76,8 @@ typedef union {
   simde_int128  i128 __attribute__((__vector_size__(16), __may_alias__));
   simde_uint128 u128 __attribute__((__vector_size__(16), __may_alias__));
   #endif
-  float          f32 __attribute__((__vector_size__(16), __may_alias__));
-  double         f64 __attribute__((__vector_size__(16), __may_alias__));
+  simde_float32  f32 __attribute__((__vector_size__(16), __may_alias__));
+  simde_float64  f64 __attribute__((__vector_size__(16), __may_alias__));
 #else
   int8_t         i8[16];
   int16_t        i16[8];
@@ -91,8 +91,8 @@ typedef union {
   simde_int128  i128[1];
   simde_uint128 u128[1];
   #endif
-  float          f32[4];
-  double         f64[2];
+  simde_float32  f32[4];
+  simde_float64  f64[2];
 #endif
 
 #if defined(SIMDE_SSE2_NATIVE)
@@ -120,8 +120,8 @@ typedef union {
   uint16_t       u16 __attribute__((__vector_size__(16), __may_alias__));
   uint32_t       u32 __attribute__((__vector_size__(16), __may_alias__));
   uint64_t       u64 __attribute__((__vector_size__(16), __may_alias__));
-  float          f32 __attribute__((__vector_size__(16), __may_alias__));
-  double         f64 __attribute__((__vector_size__(16), __may_alias__));
+  simde_float32  f32 __attribute__((__vector_size__(16), __may_alias__));
+  simde_float64  f64 __attribute__((__vector_size__(16), __may_alias__));
 #else
   int8_t         i8[16];
   int16_t        i16[8];
@@ -131,8 +131,8 @@ typedef union {
   uint16_t       u16[8];
   uint32_t       u32[4];
   uint64_t       u64[2];
-  float          f32[4];
-  double         f64[2];
+  simde_float32  f32[4];
+  simde_float64  f64[2];
 #endif
 
 #if defined(SIMDE_SSE2_NATIVE)
@@ -1289,7 +1289,7 @@ simde_x_mm_set_epu64x (uint64_t e1, uint64_t e0) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
-simde_mm_set_pd (double e1, double e0) {
+simde_mm_set_pd (simde_float64 e1, simde_float64 e0) {
 #if defined(SIMDE_SSE2_NATIVE)
   return SIMDE__M128D_C(_mm_set_pd(e1, e0));
 #else
@@ -1299,7 +1299,7 @@ simde_mm_set_pd (double e1, double e0) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
-simde_mm_set_pd1 (double a) {
+simde_mm_set_pd1 (simde_float64 a) {
 #if defined(SIMDE_SSE2_NATIVE)
   return SIMDE__M128D_C(_mm_set1_pd(a));
 #else
@@ -1309,7 +1309,7 @@ simde_mm_set_pd1 (double a) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
-simde_mm_set_sd (double a) {
+simde_mm_set_sd (simde_float64 a) {
 #if defined(SIMDE_SSE2_NATIVE)
   return SIMDE__M128D_C(_mm_set_sd(a));
 #else
@@ -1372,7 +1372,7 @@ simde_mm_set1_epi64 (simde__m64 a) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
-simde_mm_set1_pd (double a) {
+simde_mm_set1_pd (simde_float64 a) {
 #if defined(SIMDE_SSE2_NATIVE)
   return SIMDE__M128D_C(_mm_set1_pd(a));
 #else
@@ -1428,7 +1428,7 @@ simde_mm_setr_epi64 (simde__m64 e1, simde__m64 e0) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
-simde_mm_setr_pd (double e1, double e0) {
+simde_mm_setr_pd (simde_float64 e1, simde_float64 e0) {
 #if defined(SIMDE_SSE2_NATIVE)
   return SIMDE__M128D_C(_mm_setr_pd(e1, e0));
 #else
@@ -1662,7 +1662,7 @@ simde_mm_srli_si128 (simde__m128i a, const int imm8) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 void
-simde_mm_store_pd (double mem_addr[HEDLEY_ARRAY_PARAM(2)], simde__m128d a) {
+simde_mm_store_pd (simde_float64 mem_addr[HEDLEY_ARRAY_PARAM(2)], simde__m128d a) {
 #if defined(SIMDE_SSE2_NATIVE)
   _mm_store_pd(mem_addr, a.n);
 #else
@@ -1673,7 +1673,7 @@ simde_mm_store_pd (double mem_addr[HEDLEY_ARRAY_PARAM(2)], simde__m128d a) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 void
-simde_mm_store1_pd (double mem_addr[HEDLEY_ARRAY_PARAM(2)], simde__m128d a) {
+simde_mm_store1_pd (simde_float64 mem_addr[HEDLEY_ARRAY_PARAM(2)], simde__m128d a) {
 #if defined(SIMDE_SSE2_NATIVE)
   _mm_store1_pd(mem_addr, a.n);
 #else
@@ -1686,7 +1686,7 @@ simde_mm_store1_pd (double mem_addr[HEDLEY_ARRAY_PARAM(2)], simde__m128d a) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 void
-simde_mm_store_sd (double* mem_addr, simde__m128d a) {
+simde_mm_store_sd (simde_float64* mem_addr, simde__m128d a) {
 #if defined(SIMDE_SSE2_NATIVE)
   _mm_store_sd(mem_addr, a.n);
 #else
@@ -1707,7 +1707,7 @@ simde_mm_store_si128 (simde__m128i* mem_addr, simde__m128i a) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 void
-simde_mm_storeh_pd (double* mem_addr, simde__m128d a) {
+simde_mm_storeh_pd (simde_float64* mem_addr, simde__m128d a) {
 #if defined(SIMDE_SSE2_NATIVE)
   _mm_storeh_pd(mem_addr, a.n);
 #else
@@ -1727,7 +1727,7 @@ simde_mm_storel_epi64 (simde__m128i* mem_addr, simde__m128i a) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 void
-simde_mm_storel_pd (double* mem_addr, simde__m128d a) {
+simde_mm_storel_pd (simde_float64* mem_addr, simde__m128d a) {
 #if defined(SIMDE_SSE2_NATIVE)
   _mm_storel_pd(mem_addr, a.n);
 #else
@@ -1737,7 +1737,7 @@ simde_mm_storel_pd (double* mem_addr, simde__m128d a) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 void
-simde_mm_storer_pd (double* mem_addr, simde__m128d a) {
+simde_mm_storer_pd (simde_float64* mem_addr, simde__m128d a) {
 #if defined(SIMDE_SSE2_NATIVE)
   _mm_storel_pd(mem_addr, a.n);
 #else
@@ -1748,11 +1748,11 @@ simde_mm_storer_pd (double* mem_addr, simde__m128d a) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 void
-simde_mm_storeu_pd (double* mem_addr, simde__m128d a) {
+simde_mm_storeu_pd (simde_float64* mem_addr, simde__m128d a) {
 #if defined(SIMDE_SSE2_NATIVE)
   _mm_storel_pd(mem_addr, a.n);
 #else
-  double v = a.f64[0];
+  simde_float64 v = a.f64[0];
   memcpy(mem_addr, &v, sizeof(v));
 #endif
 }

@@ -109,6 +109,22 @@ typedef __int128 simde_int128;
 typedef unsigned __int128 simde_uint128;
 #endif
 
+/* TODO: we should at least make an attempt to detect the correct
+   types for simde_float32/float64 instead of just assuming float and
+   double. */
+
+#if !defined(SIMDE_FLOAT32_TYPE)
+#  define SIMDE_FLOAT32_TYPE float
+#endif
+typedef SIMDE_FLOAT32_TYPE simde_float32;
+HEDLEY_STATIC_ASSERT(sizeof(simde_float32) == 4, "Unable to find 32-bit floating-point type.");
+
+#if !defined(SIMDE_FLOAT64_TYPE)
+#  define SIMDE_FLOAT64_TYPE double
+#endif
+typedef SIMDE_FLOAT64_TYPE simde_float64;
+HEDLEY_STATIC_ASSERT(sizeof(simde_float64) == 8, "Unable to find 64-bit floating-point type.");
+
 /* This will probably move into Hedley at some point, but I'd like to
    more thoroughly check for other compilers which define __GNUC__
    first. */

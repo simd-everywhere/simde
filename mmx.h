@@ -57,7 +57,7 @@ typedef SIMDE__ALIGN(16) union {
   uint16_t       u16 __attribute__((__vector_size__(8), __may_alias__));
   uint32_t       u32 __attribute__((__vector_size__(8), __may_alias__));
   uint64_t       u64 __attribute__((__vector_size__(8), __may_alias__));
-  float          f32 __attribute__((__vector_size__(8), __may_alias__));
+  simde_float32  f32 __attribute__((__vector_size__(8), __may_alias__));
 #else
   int8_t         i8[8];
   int16_t        i16[4];
@@ -67,7 +67,7 @@ typedef SIMDE__ALIGN(16) union {
   uint16_t       u16[4];
   uint32_t       u32[2];
   uint64_t       u64[1];
-  float          f32[2];
+  simde_float32  f32[2];
 #endif
 
 #if defined(SIMDE_MMX_NATIVE)
