@@ -951,6 +951,216 @@ test_simde_mm_bsrli_si128(const MunitParameter params[], void* data) {
 }
 
 static MunitResult
+test_simde_mm_castpd_ps(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  const struct {
+    simde__m128d a;
+    simde__m128 r;
+  } test_vec[8] = {
+    { { .f32 = { -361.15, -420.10,   72.83,  499.48 } },
+      { .f32 = { -361.15, -420.10,   72.83,  499.48 } } },
+    { { .f32 = {  128.01, -851.03, -314.35, -412.40 } },
+      { .f32 = {  128.01, -851.03, -314.35, -412.40 } } },
+    { { .f32 = {  762.24, -928.22,  780.67, -411.93 } },
+      { .f32 = {  762.24, -928.22,  780.67, -411.93 } } },
+    { { .f32 = {  871.68,  -41.15,  644.19, -614.18 } },
+      { .f32 = {  871.68,  -41.15,  644.19, -614.18 } } },
+    { { .f32 = {  277.69, -686.59,  486.26,  795.82 } },
+      { .f32 = {  277.69, -686.59,  486.26,  795.82 } } },
+    { { .f32 = { -245.25, -366.90, -655.22,  221.74 } },
+      { .f32 = { -245.25, -366.90, -655.22,  221.74 } } },
+    { { .f32 = {  -26.83,   55.37,  862.26,  -83.75 } },
+      { .f32 = {  -26.83,   55.37,  862.26,  -83.75 } } },
+    { { .f32 = {  395.47, -507.07, -554.56, -557.26 } },
+      { .f32 = {  395.47, -507.07, -554.56, -557.26 } } }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    simde__m128 r = simde_mm_castpd_ps(test_vec[i].a);
+    simde_assert_m128_f32_equal(r, test_vec[i].r, 1);
+  }
+
+  return MUNIT_OK;
+}
+
+static MunitResult
+test_simde_mm_castpd_si128(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  const struct {
+    simde__m128d a;
+    simde__m128i r;
+  } test_vec[8] = {
+    { { .i32 = { -1540456442,  -395796931, -1009885897,  1337070221 } },
+      simde_mm_set_epi32( 1337070221, -1009885897,  -395796931, -1540456442), },
+    { { .i32 = {  1277280632, -1818316890,  -367987949,  1874302240 } },
+      simde_mm_set_epi32( 1874302240,  -367987949, -1818316890,  1277280632), },
+    { { .i32 = {  1560518331,  -724399327,  1142463406,   454744018 } },
+      simde_mm_set_epi32(  454744018,  1142463406,  -724399327,  1560518331), },
+    { { .i32 = { -1340192556, -1029548646,  -737133505, -1937643542 } },
+      simde_mm_set_epi32(-1937643542,  -737133505, -1029548646, -1340192556), },
+    { { .i32 = {   584297221, -1611276894,  1102325404, -1311597040 } },
+      simde_mm_set_epi32(-1311597040,  1102325404, -1611276894,   584297221), },
+    { { .i32 = {  -984960247,  -130164504, -1330467539,  1922602439 } },
+      simde_mm_set_epi32( 1922602439, -1330467539,  -130164504,  -984960247), },
+    { { .i32 = {  1885023173,   303880298,  -678773931,  1486794971 } },
+      simde_mm_set_epi32( 1486794971,  -678773931,   303880298,  1885023173), },
+    { { .i32 = {   727059566, -1372913628,  1355834368,  -404200005 } },
+      simde_mm_set_epi32( -404200005,  1355834368, -1372913628,   727059566), }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    simde__m128i r = simde_mm_castpd_si128(test_vec[i].a);
+    simde_assert_m128i_i32(r, ==, test_vec[i].r);
+  }
+
+  return MUNIT_OK;
+}
+
+static MunitResult
+test_simde_mm_castps_pd(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  const struct {
+    simde__m128 a;
+    simde__m128d r;
+  } test_vec[8] = {
+    { { .f32 = {  366.32, -328.03,  569.73,  843.57 } },
+      { .f32 = {  366.32, -328.03,  569.73,  843.57 } } },
+    { { .f32 = {   51.58,  603.75, -216.23,  669.70 } },
+      { .f32 = {   51.58,  603.75, -216.23,  669.70 } } },
+    { { .f32 = {  -83.81,  615.06, -558.66, -558.53 } },
+      { .f32 = {  -83.81,  615.06, -558.66, -558.53 } } },
+    { { .f32 = {  315.83, -418.47,  768.14,   27.25 } },
+      { .f32 = {  315.83, -418.47,  768.14,   27.25 } } },
+    { { .f32 = {  851.14, -148.65,  714.80, -673.90 } },
+      { .f32 = {  851.14, -148.65,  714.80, -673.90 } } },
+    { { .f32 = {  523.95, -205.95,  886.68,  -58.53 } },
+      { .f32 = {  523.95, -205.95,  886.68,  -58.53 } } },
+    { { .f32 = {  696.73,  564.15, -372.94,  -11.42 } },
+      { .f32 = {  696.73,  564.15, -372.94,  -11.42 } } },
+    { { .f32 = {  294.91,  191.88, -741.15,  582.57 } },
+      { .f32 = {  294.91,  191.88, -741.15,  582.57 } } }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    simde__m128d r = simde_mm_castps_pd(test_vec[i].a);
+    simde_assert_m128d_f32_equal(r, test_vec[i].r, 1);
+  }
+
+  return MUNIT_OK;
+}
+
+static MunitResult
+test_simde_mm_castps_si128(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  const struct {
+    simde__m128 a;
+    simde__m128i r;
+  } test_vec[8] = {
+    { { .i32 = {   327624598,   227635238, -2043762718, -2139391811 } },
+      simde_mm_set_epi32(-2139391811, -2043762718,   227635238,   327624598) },
+    { { .i32 = {  1784083500,    46938140,  1210391681,    31729233 } },
+      simde_mm_set_epi32(   31729233,  1210391681,    46938140,  1784083500) },
+    { { .i32 = {  1355765848,   248022794,   482145542,   863637609 } },
+      simde_mm_set_epi32(  863637609,   482145542,   248022794,  1355765848) },
+    { { .i32 = {  1348893372, -1650844384,  1607490839,  -355700684 } },
+      simde_mm_set_epi32( -355700684,  1607490839, -1650844384,  1348893372) },
+    { { .i32 = {  -533214985,  -575191576, -1609706886,  1691892900 } },
+      simde_mm_set_epi32( 1691892900, -1609706886,  -575191576,  -533214985) },
+    { { .i32 = {   414836574, -1579072140,   217232207,   473058112 } },
+      simde_mm_set_epi32(  473058112,   217232207, -1579072140,   414836574) },
+    { { .i32 = {  -162487183,  1888000278,  1711517123,   384687384 } },
+      simde_mm_set_epi32(  384687384,  1711517123,  1888000278,  -162487183) },
+    { { .i32 = { -1816666455,    87539468, -1168134517,  -503126508 } },
+      simde_mm_set_epi32( -503126508, -1168134517,    87539468, -1816666455) }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    simde__m128i r = simde_mm_castps_si128(test_vec[i].a);
+    simde_assert_m128i_i32(r, ==, test_vec[i].r);
+  }
+
+  return MUNIT_OK;
+}
+
+static MunitResult
+test_simde_mm_castsi128_pd(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  const struct {
+    simde__m128i a;
+    simde__m128d r;
+  } test_vec[8] = {
+    { { .f32 = {  495.20, -811.39, -292.74,  517.86 } },
+      { .f32 = {  495.20, -811.39, -292.74,  517.86 } } },
+    { { .f32 = {  148.80, -130.41,  200.96, -631.37 } },
+      { .f32 = {  148.80, -130.41,  200.96, -631.37 } } },
+    { { .f32 = { -945.95,  190.22,  788.07, -840.57 } },
+      { .f32 = { -945.95,  190.22,  788.07, -840.57 } } },
+    { { .f32 = {  937.11, -168.76, -278.23, -916.39 } },
+      { .f32 = {  937.11, -168.76, -278.23, -916.39 } } },
+    { { .f32 = {   69.83, -252.93,  282.60, -858.66 } },
+      { .f32 = {   69.83, -252.93,  282.60, -858.66 } } },
+    { { .f32 = {  780.20, -757.46,  105.02,  664.00 } },
+      { .f32 = {  780.20, -757.46,  105.02,  664.00 } } },
+    { { .f32 = { -774.94,  969.57,  152.22,  878.38 } },
+      { .f32 = { -774.94,  969.57,  152.22,  878.38 } } },
+    { { .f32 = { -101.73,  618.39,  361.70,  972.05 } },
+      { .f32 = { -101.73,  618.39,  361.70,  972.05 } } }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    simde__m128d r = simde_mm_castsi128_pd(test_vec[i].a);
+    simde_assert_m128d_f32(r, ==, test_vec[i].r);
+  }
+
+  return MUNIT_OK;
+}
+
+static MunitResult
+test_simde_mm_castsi128_ps(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  const struct {
+    simde__m128i a;
+    simde__m128 r;
+  } test_vec[8] = {
+    { { .i32 = { -1792339626, -1837627143, -1900209626,   900119330 } },
+      { .i32 = { -1792339626, -1837627143, -1900209626,   900119330 } } },
+    { { .i32 = {   955394187, -2105686139,  -774948852,   226816217 } },
+      { .i32 = {   955394187, -2105686139,  -774948852,   226816217 } } },
+    { { .i32 = {  -369529228,  1207534445,  -840063817,  1751173014 } },
+      { .i32 = {  -369529228,  1207534445,  -840063817,  1751173014 } } },
+    { { .i32 = {  1525240748,   694762919,  -262757515,  -931109987 } },
+      { .i32 = {  1525240748,   694762919,  -262757515,  -931109987 } } },
+    { { .i32 = { -2146827352,  1195921952, -1530442152,  -846166190 } },
+      { .i32 = { -2146827352,  1195921952, -1530442152,  -846166190 } } },
+    { { .i32 = {    84000468,  1710821207,  -219204266, -1438293253 } },
+      { .i32 = {    84000468,  1710821207,  -219204266, -1438293253 } } },
+    { { .i32 = { -2065935636,  -603792080,  -529648704,  -851259847 } },
+      { .i32 = { -2065935636,  -603792080,  -529648704,  -851259847 } } },
+    { { .i32 = {  -388036657,   861872120,  -200275070, -1296344641 } },
+      { .i32 = {  -388036657,   861872120,  -200275070, -1296344641 } } }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    simde__m128 r = simde_mm_castsi128_ps(test_vec[i].a);
+    simde_assert_m128i_i32(r, ==, test_vec[i].r);
+  }
+
+  return MUNIT_OK;
+}
+
+static MunitResult
 test_simde_mm_cmpeq_epi8(const MunitParameter params[], void* data) {
   (void) params;
   (void) data;
@@ -5881,6 +6091,13 @@ static MunitTest test_suite_tests[] = {
   { (char*) "/mm_cmpord_sd",     test_simde_mm_cmpord_sd,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
   { (char*) "/mm_cmpunord_pd",   test_simde_mm_cmpunord_pd,   NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
   { (char*) "/mm_cmpunord_sd",   test_simde_mm_cmpunord_sd,   NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+
+  { (char*) "/mm_castpd_ps",     test_simde_mm_castpd_ps,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mm_castpd_si128",  test_simde_mm_castpd_si128,  NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mm_castps_pd",     test_simde_mm_castps_pd,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mm_castps_si128",  test_simde_mm_castps_si128,  NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mm_castsi128_pd",  test_simde_mm_castsi128_pd,  NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  { (char*) "/mm_castsi128_ps",  test_simde_mm_castsi128_ps,  NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
 
   { (char*) "/mm_cvtepi32_pd",   test_simde_mm_cvtepi32_pd,   NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
   { (char*) "/mm_cvtepi32_ps",   test_simde_mm_cvtepi32_ps,   NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
