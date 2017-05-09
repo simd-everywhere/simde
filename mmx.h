@@ -346,7 +346,7 @@ simde_mm_cmpgt_pi32 (simde__m64 a, simde__m64 b) {
 SIMDE__FUNCTION_ATTRIBUTES
 int64_t
 simde_mm_cvtm64_si64 (simde__m64 a) {
-#if defined(SIMDE_MMX_NATIVE) && defined(SIMDE_ARCH_AMD64) && !defined(SIMDE_BUG_PGI_TPR_24170)
+#if defined(SIMDE_MMX_NATIVE) && defined(SIMDE_ARCH_AMD64) && !defined(__PGI)
   return _mm_cvtm64_si64(a.n);
 #else
   return a.i64[0];
@@ -368,7 +368,7 @@ simde_mm_cvtsi32_si64 (int32_t a) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m64
 simde_mm_cvtsi64_m64 (int64_t a) {
-#if defined(SIMDE_MMX_NATIVE) && defined(SIMDE_ARCH_AMD64) && !defined(SIMDE_BUG_PGI_TPR_24170)
+#if defined(SIMDE_MMX_NATIVE) && defined(SIMDE_ARCH_AMD64) && !defined(__PGI)
   return SIMDE__M64_C(_mm_cvtsi64_m64(a));
 #else
   return (simde__m64) { .i64 = { a } };
@@ -738,7 +738,7 @@ simde_mm_sll_pi32 (simde__m64 a, simde__m64 count) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m64
 simde_mm_slli_pi16 (simde__m64 a, int count) {
-#if defined(SIMDE_MMX_NATIVE) && !defined(SIMDE_BUG_PGI_TPR_24170)
+#if defined(SIMDE_MMX_NATIVE) && !defined(__PGI)
   return SIMDE__M64_C(_mm_slli_pi16(a.n, count));
 #else
   simde__m64 r;
@@ -756,7 +756,7 @@ simde_mm_slli_pi16 (simde__m64 a, int count) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m64
 simde_mm_slli_pi32 (simde__m64 a, int count) {
-#if defined(SIMDE_MMX_NATIVE) && !defined(SIMDE_BUG_PGI_TPR_24170)
+#if defined(SIMDE_MMX_NATIVE) && !defined(__PGI)
   return SIMDE__M64_C(_mm_slli_pi32(a.n, count));
 #else
   simde__m64 r;
@@ -849,7 +849,7 @@ simde_mm_srl_pi32 (simde__m64 a, simde__m64 count) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m64
 simde_mm_srli_pi16 (simde__m64 a, int count) {
-#if defined(SIMDE_MMX_NATIVE) && !defined(SIMDE_BUG_PGI_TPR_24170)
+#if defined(SIMDE_MMX_NATIVE) && !defined(__PGI)
   return SIMDE__M64_C(_mm_srli_pi16(a.n, count));
 #else
   simde__m64 r;
@@ -867,7 +867,7 @@ simde_mm_srli_pi16 (simde__m64 a, int count) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m64
 simde_mm_srli_pi32 (simde__m64 a, int count) {
-#if defined(SIMDE_MMX_NATIVE) && !defined(SIMDE_BUG_PGI_TPR_24170)
+#if defined(SIMDE_MMX_NATIVE) && !defined(__PGI)
   return SIMDE__M64_C(_mm_srli_pi32(a.n, count));
 #else
   simde__m64 r;
@@ -885,7 +885,7 @@ simde_mm_srli_pi32 (simde__m64 a, int count) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m64
 simde_mm_srli_si64 (simde__m64 a, int count) {
-#if defined(SIMDE_MMX_NATIVE) && !defined(SIMDE_BUG_PGI_TPR_24170)
+#if defined(SIMDE_MMX_NATIVE) && !defined(__PGI)
   return SIMDE__M64_C(_mm_srli_si64(a.n, count));
 #else
   return (simde__m64) { .u64 = { a.u64[0] >> count } };
@@ -915,7 +915,7 @@ simde_mm_srl_si64 (simde__m64 a, simde__m64 count) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m64
 simde_mm_srai_pi16 (simde__m64 a, int count) {
-#if defined(SIMDE_MMX_NATIVE) && !defined(SIMDE_BUG_PGI_TPR_24170)
+#if defined(SIMDE_MMX_NATIVE) && !defined(__PGI)
   return SIMDE__M64_C(_mm_srai_pi16(a.n, count));
 #else
   simde__m64 r;
@@ -936,7 +936,7 @@ simde_mm_srai_pi16 (simde__m64 a, int count) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m64
 simde_mm_srai_pi32 (simde__m64 a, int count) {
-#if defined(SIMDE_MMX_NATIVE) && !defined(SIMDE_BUG_PGI_TPR_24170)
+#if defined(SIMDE_MMX_NATIVE) && !defined(__PGI)
   return SIMDE__M64_C(_mm_srai_pi32(a.n, count));
 #else
   simde__m64 r;

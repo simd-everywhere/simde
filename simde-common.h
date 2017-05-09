@@ -146,9 +146,6 @@ HEDLEY_STATIC_ASSERT(sizeof(simde_float64) == 8, "Unable to find 64-bit floating
    start only defining them for problematic compiler versions. */
 
 #if !defined(SIMDE_IGNORE_COMPILER_BUGS)
-#  if defined(__PGI)
-#    define SIMDE_BUG_PGI_TPR_24170 /* http://www.pgroup.com/userforum/viewtopic.php?t=5578 */
-#  endif
 #  if SIMDE__REALLY_GCC
 #    if !HEDLEY_GCC_VERSION_CHECK(4,9,0)
 #      define SIMDE_BUG_GCC_REV_208793

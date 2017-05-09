@@ -95,7 +95,7 @@ static MunitTest test_suite_tests[] = {
   { (char*) "/mm_cmpeq_ps",     test_simde_mm_cmpeq_ps,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
   { (char*) "/mm_cmpeq_ss",     test_simde_mm_cmpeq_ss,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
   { (char*) "/mm_cmpge_ps",     test_simde_mm_cmpge_ps,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-#if !defined(SIMDE_BUG_PGI_TPR_24170)
+#if !defined(__PGI)
   { (char*) "/mm_cmpge_ss",     test_simde_mm_cmpge_ss,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
   { (char*) "/mm_cmpgt_ss",     test_simde_mm_cmpgt_ss,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
   { (char*) "/mm_cmpnge_ss",    test_simde_mm_cmpnge_ss,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
