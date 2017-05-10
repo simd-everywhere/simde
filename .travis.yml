@@ -20,7 +20,7 @@ matrix:
           - g++-6
           - cmake
           - cmake-data
-    - env: C_COMPILER=gcc-5
+    - env: C_COMPILER=gcc-5 BUILD_TYPE=Release
       addons:
         apt:
           sources:

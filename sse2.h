@@ -112,7 +112,7 @@ typedef SIMDE__ALIGN(16) union {
 #endif
 } simde__m128i;
 
-typedef union {
+typedef SIMDE__ALIGN(16) union {
 #if defined(SIMDE__ENABLE_GCC_VEC_EXT)
   int8_t          i8 __attribute__((__vector_size__(16), __may_alias__));
   int16_t        i16 __attribute__((__vector_size__(16), __may_alias__));
@@ -623,7 +623,7 @@ simde_mm_cmpeq_pd (simde__m128d a, simde__m128d b) {
   simde__m128d r;
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.f64) / sizeof(r.f64[0])) ; i++) {
-    r.u64[i] = (a.f64[i] == b.f64[i]) ? UINT64_C(0xffffffffffffffff) : UINT32_C(0x0000000000000000);
+    r.u64[i] = (a.f64[i] == b.f64[i]) ? ~UINT64_C(0) : UINT64_C(0);
   }
   return r;
 #endif
@@ -636,8 +636,8 @@ simde_mm_cmpeq_sd (simde__m128d a, simde__m128d b) {
   return SIMDE__M128D_C(_mm_cmpeq_sd(a.n, b.n));
 #else
   simde__m128d r;
-  r.u64[0] = (a.f64[0] == b.f64[0]) ? UINT64_C(0xffffffffffffffff) : UINT32_C(0x0000000000000000);
-  r.f64[1] = a.f64[1];
+  r.u64[0] = (a.f64[0] == b.f64[0]) ? ~UINT64_C(0) : 0;
+  r.u64[1] = a.u64[1];
   return r;
 #endif
 }
@@ -651,7 +651,7 @@ simde_mm_cmpneq_pd (simde__m128d a, simde__m128d b) {
   simde__m128d r;
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.f64) / sizeof(r.f64[0])) ; i++) {
-    r.u64[i] = (a.f64[i] != b.f64[i]) ? UINT64_C(0xffffffffffffffff) : UINT32_C(0x0000000000000000);
+    r.u64[i] = (a.f64[i] != b.f64[i]) ? ~UINT64_C(0) : UINT64_C(0);
   }
   return r;
 #endif
@@ -664,8 +664,8 @@ simde_mm_cmpneq_sd (simde__m128d a, simde__m128d b) {
   return SIMDE__M128D_C(_mm_cmpneq_sd(a.n, b.n));
 #else
   simde__m128d r;
-  r.u64[0] = (a.f64[0] != b.f64[0]) ? UINT64_C(0xffffffffffffffff) : UINT32_C(0x0000000000000000);
-  r.f64[1] = a.f64[1];
+  r.u64[0] = (a.f64[0] != b.f64[0]) ? ~UINT64_C(0) : UINT64_C(0);
+  r.u64[1] = a.u64[1];
   return r;
 #endif
 }
@@ -724,7 +724,7 @@ simde_mm_cmplt_pd (simde__m128d a, simde__m128d b) {
   simde__m128d r;
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.f64) / sizeof(r.f64[0])) ; i++) {
-    r.u64[i] = (a.f64[i] < b.f64[i]) ? UINT64_C(0xffffffffffffffff) : UINT32_C(0x0000000000000000);
+    r.u64[i] = (a.f64[i] < b.f64[i]) ? ~UINT64_C(0) : UINT64_C(0);
   }
   return r;
 #endif
@@ -737,8 +737,8 @@ simde_mm_cmplt_sd (simde__m128d a, simde__m128d b) {
   return SIMDE__M128D_C(_mm_cmplt_sd(a.n, b.n));
 #else
   simde__m128d r;
-  r.u64[0] = (a.f64[0] < b.f64[0]) ? UINT64_C(0xffffffffffffffff) : UINT32_C(0x0000000000000000);
-  r.f64[1] = a.f64[1];
+  r.u64[0] = (a.f64[0] < b.f64[0]) ? ~UINT64_C(0) : UINT64_C(0);
+  r.u64[1] = a.u64[1];
   return r;
 #endif
 }
@@ -752,7 +752,7 @@ simde_mm_cmple_pd (simde__m128d a, simde__m128d b) {
   simde__m128d r;
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.f64) / sizeof(r.f64[0])) ; i++) {
-    r.u64[i] = (a.f64[i] <= b.f64[i]) ? UINT64_C(0xffffffffffffffff) : UINT32_C(0x0000000000000000);
+    r.u64[i] = (a.f64[i] <= b.f64[i]) ? ~UINT64_C(0) : UINT64_C(0);
   }
   return r;
 #endif
@@ -765,8 +765,8 @@ simde_mm_cmple_sd (simde__m128d a, simde__m128d b) {
   return SIMDE__M128D_C(_mm_cmple_sd(a.n, b.n));
 #else
   simde__m128d r;
-  r.u64[0] = (a.f64[0] <= b.f64[0]) ? UINT64_C(0xffffffffffffffff) : UINT32_C(0x0000000000000000);
-  r.f64[1] = a.f64[1];
+  r.u64[0] = (a.f64[0] <= b.f64[0]) ? ~UINT64_C(0) : UINT64_C(0);
+  r.u64[1] = a.u64[1];
   return r;
 #endif
 }
@@ -825,7 +825,7 @@ simde_mm_cmpgt_pd (simde__m128d a, simde__m128d b) {
   simde__m128d r;
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.f64) / sizeof(r.f64[0])) ; i++) {
-    r.u64[i] = (a.f64[i] > b.f64[i]) ? UINT64_C(0xffffffffffffffff) : UINT32_C(0x0000000000000000);
+    r.u64[i] = (a.f64[i] > b.f64[i]) ? ~UINT64_C(0) : UINT64_C(0);
   }
   return r;
 #endif
@@ -838,8 +838,8 @@ simde_mm_cmpgt_sd (simde__m128d a, simde__m128d b) {
   return SIMDE__M128D_C(_mm_cmpgt_sd(a.n, b.n));
 #else
   simde__m128d r;
-  r.u64[0] = (a.f64[0] > b.f64[0]) ? UINT64_C(0xffffffffffffffff) : UINT32_C(0x0000000000000000);
-  r.f64[1] = a.f64[1];
+  r.u64[0] = (a.f64[0] > b.f64[0]) ? ~UINT64_C(0) : UINT64_C(0);
+  r.u64[1] = a.u64[1];
   return r;
 #endif
 }
@@ -853,7 +853,7 @@ simde_mm_cmpge_pd (simde__m128d a, simde__m128d b) {
   simde__m128d r;
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.f64) / sizeof(r.f64[0])) ; i++) {
-    r.u64[i] = (a.f64[i] >= b.f64[i]) ? UINT64_C(0xffffffffffffffff) : UINT32_C(0x0000000000000000);
+    r.u64[i] = (a.f64[i] >= b.f64[i]) ? ~UINT64_C(0) : UINT64_C(0);
   }
   return r;
 #endif
@@ -866,8 +866,8 @@ simde_mm_cmpge_sd (simde__m128d a, simde__m128d b) {
   return SIMDE__M128D_C(_mm_cmpge_sd(a.n, b.n));
 #else
   simde__m128d r;
-  r.u64[0] = (a.f64[0] >= b.f64[0]) ? UINT64_C(0xffffffffffffffff) : UINT32_C(0x0000000000000000);
-  r.f64[1] = a.f64[1];
+  r.u64[0] = (a.f64[0] >= b.f64[0]) ? ~UINT64_C(0) : UINT64_C(0);
+  r.u64[1] = a.u64[1];
   return r;
 #endif
 }
@@ -941,7 +941,7 @@ simde_mm_cmpord_pd (simde__m128d a, simde__m128d b) {
   simde__m128d r;
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.f64) / sizeof(r.f64[0])) ; i++) {
-    r.u64[i] = (!isnan(a.f64[i]) && !isnan(b.f64[i])) ? UINT64_C(0xffffffffffffffff) : UINT32_C(0x0000000000000000);
+    r.u64[i] = (!isnan(a.f64[i]) && !isnan(b.f64[i])) ? ~UINT64_C(0) : UINT64_C(0);
   }
   return r;
 #endif
@@ -954,8 +954,8 @@ simde_mm_cmpord_sd (simde__m128d a, simde__m128d b) {
   return SIMDE__M128D_C(_mm_cmpord_sd(a.n, b.n));
 #else
   simde__m128d r;
-  r.u64[0] = (!isnan(a.f64[0]) && !isnan(b.f64[0])) ? UINT64_C(0xffffffffffffffff) : UINT32_C(0x0000000000000000);
-  r.f64[1] = a.f64[1];
+  r.u64[0] = (!isnan(a.f64[0]) && !isnan(b.f64[0])) ? ~UINT64_C(0) : UINT64_C(0);
+  r.u64[1] = a.u64[1];
   return r;
 #endif
 }
@@ -969,7 +969,7 @@ simde_mm_cmpunord_pd (simde__m128d a, simde__m128d b) {
   simde__m128d r;
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.f64) / sizeof(r.f64[0])) ; i++) {
-    r.u64[i] = (isnan(a.f64[i]) || isnan(b.f64[i])) ? UINT64_C(0xffffffffffffffff) : UINT32_C(0x0000000000000000);
+    r.u64[i] = (isnan(a.f64[i]) || isnan(b.f64[i])) ? ~UINT64_C(0) : UINT64_C(0);
   }
   return r;
 #endif
@@ -982,8 +982,8 @@ simde_mm_cmpunord_sd (simde__m128d a, simde__m128d b) {
   return SIMDE__M128D_C(_mm_cmpunord_sd(a.n, b.n));
 #else
   simde__m128d r;
-  r.u64[0] = (isnan(a.f64[0]) || isnan(b.f64[0])) ? UINT64_C(0xffffffffffffffff) : UINT32_C(0x0000000000000000);
-  r.f64[1] = a.f64[1];
+  r.u64[0] = (isnan(a.f64[0]) || isnan(b.f64[0])) ? ~UINT64_C(0) : UINT64_C(0);
+  r.u64[1] = a.u64[1];
   return r;
 #endif
 }
