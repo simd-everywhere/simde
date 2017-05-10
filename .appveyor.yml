@@ -5,7 +5,6 @@ environment:
 branches:
   except:
     - /^(wip\/)?(travis|osx|ipp)(\-.+)?$/
-    - /^master$/
 
 before_build:
   - ps: |
