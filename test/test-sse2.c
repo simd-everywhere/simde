@@ -2652,21 +2652,21 @@ test_simde_mm_cvtepi32_ps(const MunitParameter params[], void* data) {
     simde__m128 r;
   } test_vec[8] = {
     { simde_mm_set_epi32( 332, -787,  -79, -785),
-      simde_mm_set_ps( 332.00, -787.00,  -79.00, -785.00) },
+      simde_mm_set_ps( 332.00f, -787.00f,  -79.00f, -785.00f) },
     { simde_mm_set_epi32( 394, -936, -733, -136),
-      simde_mm_set_ps( 394.00, -936.00, -733.00, -136.00) },
+      simde_mm_set_ps( 394.00f, -936.00f, -733.00f, -136.00f) },
     { simde_mm_set_epi32( 618, -416,  310,  183),
-      simde_mm_set_ps( 618.00, -416.00,  310.00,  183.00) },
+      simde_mm_set_ps( 618.00f, -416.00f,  310.00f,  183.00f) },
     { simde_mm_set_epi32(-748,  245,  533, -152),
-      simde_mm_set_ps(-748.00,  245.00,  533.00, -152.00) },
+      simde_mm_set_ps(-748.00f,  245.00f,  533.00f, -152.00f) },
     { simde_mm_set_epi32(  42,  893,  849, -741),
-      simde_mm_set_ps(  42.00,  893.00,  849.00, -741.00) },
+      simde_mm_set_ps(  42.00f,  893.00f,  849.00f, -741.00f) },
     { simde_mm_set_epi32( 657,  222, -709, -177),
-      simde_mm_set_ps( 657.00,  222.00, -709.00, -177.00) },
+      simde_mm_set_ps( 657.00f,  222.00f, -709.00f, -177.00f) },
     { simde_mm_set_epi32( 762, -586,  196,  717),
-      simde_mm_set_ps( 762.00, -586.00,  196.00,  717.00) },
+      simde_mm_set_ps( 762.00f, -586.00f,  196.00f,  717.00f) },
     { simde_mm_set_epi32( 322,  178,  766, -110),
-      simde_mm_set_ps( 322.00,  178.00,  766.00, -110.00) }
+      simde_mm_set_ps( 322.00f,  178.00f,  766.00f, -110.00f) }
   };
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
@@ -2759,21 +2759,21 @@ test_simde_mm_cvtpd_ps(const MunitParameter params[], void* data) {
     simde__m128 r;
   } test_vec[8] = {
     { simde_mm_set_pd(  655.71,   689.41),
-      simde_mm_set_ps(    0.00,     0.00,   655.71,   689.41) },
+      simde_mm_set_ps(    0.00f,     0.00f,   655.71f,   689.41f) },
     { simde_mm_set_pd(  -50.10,  -149.72),
-      simde_mm_set_ps(    0.00,     0.00,   -50.10,  -149.72) },
+      simde_mm_set_ps(    0.00f,     0.00f,   -50.10f,  -149.72f) },
     { simde_mm_set_pd(  227.42,   655.70),
-      simde_mm_set_ps(    0.00,     0.00,   227.42,   655.70) },
+      simde_mm_set_ps(    0.00f,     0.00f,   227.42f,   655.70f) },
     { simde_mm_set_pd( -635.17,   938.65),
-      simde_mm_set_ps(    0.00,     0.00,  -635.17,   938.65) },
+      simde_mm_set_ps(    0.00f,     0.00f,  -635.17f,   938.65f) },
     { simde_mm_set_pd(  548.99,   -18.53),
-      simde_mm_set_ps(    0.00,     0.00,   548.99,   -18.53) },
+      simde_mm_set_ps(    0.00f,     0.00f,   548.99f,   -18.53f) },
     { simde_mm_set_pd( -548.71,    31.33),
-      simde_mm_set_ps(    0.00,     0.00,  -548.71,    31.33) },
+      simde_mm_set_ps(    0.00f,     0.00f,  -548.71f,    31.33f) },
     { simde_mm_set_pd( -978.36,  -341.93),
-      simde_mm_set_ps(    0.00,     0.00,  -978.36,  -341.93) },
+      simde_mm_set_ps(    0.00f,     0.00f,  -978.36f,  -341.93f) },
     { simde_mm_set_pd(  211.73,   471.24),
-      simde_mm_set_ps(    0.00,     0.00,   211.73,   471.24) }
+      simde_mm_set_ps(    0.00f,     0.00f,   211.73f,   471.24f) }
   };
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
@@ -2830,21 +2830,21 @@ test_simde_mm_cvtps_epi32(const MunitParameter params[], void* data) {
     simde__m128 a;
     simde__m128i r;
   } test_vec[8] = {
-    { simde_mm_set_ps(    0.00, -11516.98,  -879.85,  -804.87),
+    { simde_mm_set_ps(    0.00f, -11516.98f,  -879.85f,  -804.87f),
       simde_mm_set_epi32(   0, -11517, -880, -805) },
-    { simde_mm_set_ps(    0.00, -11516.98,   -75.52,  -969.73),
+    { simde_mm_set_ps(    0.00f, -11516.98f,   -75.52f,  -969.73f),
       simde_mm_set_epi32(   0, -11517,  -76, -970) },
-    { simde_mm_set_ps(    0.00, -11516.98,   469.26,   307.36),
+    { simde_mm_set_ps(    0.00f, -11516.98f,   469.26f,   307.36f),
       simde_mm_set_epi32(   0, -11517,  469,  307) },
-    { simde_mm_set_ps(    0.00, -11516.98,   953.93,  -612.11),
+    { simde_mm_set_ps(    0.00f, -11516.98f,   953.93f,  -612.11f),
       simde_mm_set_epi32(   0, -11517,  954, -612) },
-    { simde_mm_set_ps(    0.00, -11516.98,  -155.14,  -589.40),
+    { simde_mm_set_ps(    0.00f, -11516.98f,  -155.14f,  -589.40f),
       simde_mm_set_epi32(   0, -11517, -155, -589) },
-    { simde_mm_set_ps(    0.00, -11516.98,  -256.28,  -717.85),
+    { simde_mm_set_ps(    0.00f, -11516.98f,  -256.28f,  -717.85f),
       simde_mm_set_epi32(   0, -11517, -256, -718) },
-    { simde_mm_set_ps(    0.00, -11516.98,   293.21,  -340.18),
+    { simde_mm_set_ps(    0.00f, -11516.98f,   293.21f,  -340.18f),
       simde_mm_set_epi32(   0, -11517,  293, -340) },
-    { simde_mm_set_ps(    0.00, -11516.98,  -141.85,   -14.16),
+    { simde_mm_set_ps(    0.00f, -11516.98f,  -141.85f,   -14.16f),
       simde_mm_set_epi32(   0, -11517, -142,  -14) }
   };
 
@@ -2866,21 +2866,21 @@ test_simde_mm_cvtps_pd(const MunitParameter params[], void* data) {
     simde__m128 a;
     simde__m128d r;
   } test_vec[8] = {
-    { simde_mm_set_ps(  295.41,  -909.65,   156.64,  -802.16),
+    { simde_mm_set_ps(  295.41f,  -909.65f,   156.64f,  -802.16f),
       simde_mm_set_pd(  156.64,  -802.16) },
-    { simde_mm_set_ps(  649.83,  -763.68,   364.80,   389.19),
+    { simde_mm_set_ps(  649.83f,  -763.68f,   364.80f,   389.19f),
       simde_mm_set_pd(  364.80,   389.19) },
-    { simde_mm_set_ps(  269.92,  -207.13,   538.63,   487.11),
+    { simde_mm_set_ps(  269.92f,  -207.13f,   538.63f,   487.11f),
       simde_mm_set_pd(  538.63,   487.11) },
-    { simde_mm_set_ps( -982.29,   234.64,   -53.82,   899.43),
+    { simde_mm_set_ps( -982.29f,   234.64f,   -53.82f,   899.43f),
       simde_mm_set_pd(  -53.82,   899.43) },
-    { simde_mm_set_ps(  945.89,   -98.53,     1.57,    49.07),
+    { simde_mm_set_ps(  945.89f,   -98.53f,     1.57f,    49.07f),
       simde_mm_set_pd(    1.57,    49.07) },
-    { simde_mm_set_ps(  -47.73,   806.42,    11.76,    -1.19),
+    { simde_mm_set_ps(  -47.73f,   806.42f,    11.76f,    -1.19f),
       simde_mm_set_pd(   11.76,    -1.19) },
-    { simde_mm_set_ps( -961.08,  -192.05,   553.30,  -994.71),
+    { simde_mm_set_ps( -961.08f,  -192.05f,   553.30f,  -994.71f),
       simde_mm_set_pd(  553.30,  -994.71) },
-    { simde_mm_set_ps(    9.30,  -203.20,  -196.20,   707.05),
+    { simde_mm_set_ps(    9.30f,  -203.20f,  -196.20f,   707.05f),
       simde_mm_set_pd( -196.20,   707.05) }
   };
 
@@ -2991,30 +2991,30 @@ test_simde_mm_cvtsd_ss(const MunitParameter params[], void* data) {
     simde__m128d b;
     simde__m128 r;
   } test_vec[8] = {
-    { simde_mm_set_ps(  522.41,   122.44,   708.76,   910.97),
+    { simde_mm_set_ps(  522.41f,   122.44f,   708.76f,   910.97f),
       simde_mm_set_pd(  -52.04,   228.75),
-      simde_mm_set_ps(  522.41,   122.44,   708.76,   228.75) },
-    { simde_mm_set_ps( -311.44,   267.00,   965.23,  -248.92),
+      simde_mm_set_ps(  522.41f,   122.44f,   708.76f,   228.75f) },
+    { simde_mm_set_ps( -311.44f,   267.00f,   965.23f,  -248.92f),
       simde_mm_set_pd(  -89.48,   178.71),
-      simde_mm_set_ps( -311.44,   267.00,   965.23,   178.71) },
-    { simde_mm_set_ps(  252.50,   744.35,   237.50,   713.77),
+      simde_mm_set_ps( -311.44f,   267.00f,   965.23f,   178.71f) },
+    { simde_mm_set_ps(  252.50f,   744.35f,   237.50f,   713.77f),
       simde_mm_set_pd( -913.96,   935.45),
-      simde_mm_set_ps(  252.50,   744.35,   237.50,   935.45) },
-    { simde_mm_set_ps(  781.08,   -50.03,  -658.11,   945.59),
+      simde_mm_set_ps(  252.50f,   744.35f,   237.50f,   935.45f) },
+    { simde_mm_set_ps(  781.08f,   -50.03f,  -658.11f,   945.59f),
       simde_mm_set_pd( -556.84,   452.90),
-      simde_mm_set_ps(  781.08,   -50.03,  -658.11,   452.90) },
-    { simde_mm_set_ps(  459.13,   794.72,   105.91,   688.90),
+      simde_mm_set_ps(  781.08f,   -50.03f,  -658.11f,   452.90f) },
+    { simde_mm_set_ps(  459.13f,   794.72f,   105.91f,   688.90f),
       simde_mm_set_pd( -123.20,   469.36),
-      simde_mm_set_ps(  459.13,   794.72,   105.91,   469.36) },
-    { simde_mm_set_ps( -699.67,   751.26,    72.14,  -162.03),
+      simde_mm_set_ps(  459.13f,   794.72f,   105.91f,   469.36f) },
+    { simde_mm_set_ps( -699.67f,   751.26f,    72.14f,  -162.03f),
       simde_mm_set_pd(  868.66,   138.18),
-      simde_mm_set_ps( -699.67,   751.26,    72.14,   138.18) },
-    { simde_mm_set_ps( -144.80,   372.44,  -878.31,   984.43),
+      simde_mm_set_ps( -699.67f,   751.26f,    72.14f,   138.18f) },
+    { simde_mm_set_ps( -144.80f,   372.44f,  -878.31f,   984.43f),
       simde_mm_set_pd( -559.54,   112.58),
-      simde_mm_set_ps( -144.80,   372.44,  -878.31,   112.58) },
-    { simde_mm_set_ps( -958.65,   333.33,  -940.30,   396.81),
+      simde_mm_set_ps( -144.80f,   372.44f,  -878.31f,   112.58f) },
+    { simde_mm_set_ps( -958.65f,   333.33f,  -940.30f,   396.81f),
       simde_mm_set_pd(  263.65,   199.76),
-      simde_mm_set_ps( -958.65,   333.33,  -940.30,   199.76) }
+      simde_mm_set_ps( -958.65f,   333.33f,  -940.30f,   199.76f) }
   };
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
@@ -3240,28 +3240,28 @@ test_simde_mm_cvtss_sd(const MunitParameter params[], void* data) {
     simde__m128d r;
   } test_vec[8] = {
     { simde_mm_set_pd( 546.48,  729.20),
-      simde_mm_set_ps( 142.68,  -75.76, -648.72,  148.36),
+      simde_mm_set_ps( 142.68f,  -75.76f, -648.72f,  148.36f),
       simde_mm_set_pd( 546.48,  148.36) },
     { simde_mm_set_pd(  79.60,  648.49),
-      simde_mm_set_ps( 631.34,  902.53,  -54.65,  614.98),
+      simde_mm_set_ps( 631.34f,  902.53f,  -54.65f,  614.98f),
       simde_mm_set_pd(  79.60,  614.98) },
     { simde_mm_set_pd( 811.47,  -95.71),
-      simde_mm_set_ps(  13.27,  315.63,  407.80, -826.61),
+      simde_mm_set_ps(  13.27f,  315.63f,  407.80f, -826.61f),
       simde_mm_set_pd( 811.47, -826.61) },
     { simde_mm_set_pd( 315.42,  -69.06),
-      simde_mm_set_ps( 775.15,  935.54, -964.44,  659.62),
+      simde_mm_set_ps( 775.15f,  935.54f, -964.44f,  659.62f),
       simde_mm_set_pd( 315.42,  659.62) },
     { simde_mm_set_pd(-579.75, -291.65),
-      simde_mm_set_ps( 533.61,  565.53,  -36.93,   57.54),
+      simde_mm_set_ps( 533.61f,  565.53f,  -36.93f,   57.54f),
       simde_mm_set_pd(-579.75,   57.54) },
     { simde_mm_set_pd( 979.09, -471.44),
-      simde_mm_set_ps( 927.62,  955.93, -964.80,  823.88),
+      simde_mm_set_ps( 927.62f,  955.93f, -964.80f,  823.88f),
       simde_mm_set_pd( 979.09,  823.88) },
     { simde_mm_set_pd( 172.44, -427.74),
-      simde_mm_set_ps(-343.18, -352.03, -836.30,  -61.82),
+      simde_mm_set_ps(-343.18f, -352.03f, -836.30f,  -61.82f),
       simde_mm_set_pd( 172.44,  -61.82) },
     { simde_mm_set_pd( 975.42,  394.72),
-      simde_mm_set_ps( 748.90, -410.84,  636.92,  230.31),
+      simde_mm_set_ps( 748.90f, -410.84f,  636.92f,  230.31f),
       simde_mm_set_pd( 975.42,  230.31) }
   };
 
@@ -3353,19 +3353,19 @@ test_simde_mm_cvttps_epi32(const MunitParameter params[], void* data) {
     simde__m128 a;
     simde__m128i r;
   } test_vec[8] = {
-    { simde_mm_set_ps(-529.70,  872.16,  247.85,  866.62),
+    { simde_mm_set_ps(-529.70f,  872.16f,  247.85f,  866.62f),
       simde_mm_set_epi32(-529, 872,  247,  866) },
-    { simde_mm_set_ps( 543.02, -211.71,  579.48, -807.83),
+    { simde_mm_set_ps( 543.02f, -211.71f,  579.48f, -807.83f),
       simde_mm_set_epi32(543, -211,  579, -807) },
-    { simde_mm_set_ps(-740.55,  847.79, -708.61,  883.97),
+    { simde_mm_set_ps(-740.55f,  847.79f, -708.61f,  883.97f),
       simde_mm_set_epi32(-740, 847, -708,  883) },
-    { simde_mm_set_ps(-439.93,  682.25, -615.83,  330.85),
+    { simde_mm_set_ps(-439.93f,  682.25f, -615.83f,  330.85f),
       simde_mm_set_epi32(-439, 682, -615,  330) },
-    { simde_mm_set_ps( 750.74,  646.41,  456.96, -492.54),
+    { simde_mm_set_ps( 750.74f,  646.41f,  456.96f, -492.54f),
       simde_mm_set_epi32(750, 646,  456, -492) },
-    { simde_mm_set_ps(-556.32,  674.09, -481.35,  566.79),
+    { simde_mm_set_ps(-556.32f,  674.09f, -481.35f,  566.79f),
       simde_mm_set_epi32(-556, 674, -481,  566) },
-    { simde_mm_set_ps( 753.09,  737.97,  556.48,  999.26),
+    { simde_mm_set_ps( 753.09f,  737.97f,  556.48f,  999.26f),
       simde_mm_set_epi32(753, 737,  556,  999) }
   };
 
