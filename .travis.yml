@@ -20,7 +20,7 @@ matrix:
           - g++-6
           - cmake
           - cmake-data
-    - env: C_COMPILER=gcc-5 BUILD_TYPE=Release
+    - env: C_COMPILER=gcc-5
       addons:
         apt:
           sources:
@@ -157,7 +157,7 @@ matrix:
     ###
     ## PGI
     ###
-    - env: C_COMPILER=pgcc
+    - env: C_COMPILER=pgcc BUILD_TYPE=Debug
       addons:
         apt:
           sources:
@@ -179,7 +179,7 @@ before_install:
 ###
 - if [ "${C_COMPILER}" = "pgcc" ]; then curl 'https://raw.githubusercontent.com/nemequ/pgi-travis/master/install-pgi.sh' | /bin/sh; fi
 - if [ -n "${C_COMPILER}" ]; then export CC="${C_COMPILER}"; fi
-- if [ -n "${BUILD_TYPE}" ]; then export BUILD_TYPE="Coverage"; fi
+- if [ -z "${BUILD_TYPE}" ]; then export BUILD_TYPE="Coverage"; fi
 - mkdir test/build
 - cd test/build
 
