@@ -1326,6 +1326,127 @@ simde_mm_cvttsd_si64 (simde__m128d a) {
 #define simde_mm_cvttsd_si64x(a) simde_mm_cvttsd_si64(a)
 
 SIMDE__FUNCTION_ATTRIBUTES
+simde__m128d
+simde_mm_load_pd (simde_float64 const mem_addr[HEDLEY_ARRAY_PARAM(2)]) {
+#if defined(SIMDE_SSE2_NATIVE)
+  return SIMDE__M128D_C(_mm_load_pd(mem_addr));
+#else
+  simde__m128d r;
+  HEDLEY_ASSUME_ALIGNED(mem_addr, 16);
+  memcpy(&r, mem_addr, sizeof(r));
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128d
+simde_mm_load_pd1 (simde_float64 const* mem_addr) {
+#if defined(SIMDE_SSE2_NATIVE)
+  return SIMDE__M128D_C(_mm_load_pd1(mem_addr));
+#else
+  return (simde__m128d) { .f64 = { *mem_addr, *mem_addr } };
+#endif
+}
+#define simde_mm_load1_pd(mem_addr) simde_mm_load_pd1(mem_addr)
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128d
+simde_mm_load_sd (simde_float64 const* mem_addr) {
+#if defined(SIMDE_SSE2_NATIVE)
+  return SIMDE__M128D_C(_mm_load_sd(mem_addr));
+#else
+  simde__m128d r;
+  memcpy(&r, mem_addr, sizeof(simde_float64));
+  r.u64[1] = 0;
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128i
+simde_mm_load_si128 (simde__m128i const* mem_addr) {
+#if defined(SIMDE_SSE2_NATIVE)
+  return SIMDE__M128I_C(_mm_loadu_si128(&(mem_addr->n)));
+#else
+  simde__m128i r;
+  HEDLEY_ASSUME_ALIGNED(mem_addr, 16);
+  memcpy(&r, mem_addr, sizeof(r));
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128d
+simde_mm_loadh_pd (simde__m128d a, simde_float64 const* mem_addr) {
+#if defined(SIMDE_SSE2_NATIVE)
+  return SIMDE__M128D_C(_mm_loadh_pd(a.n, mem_addr));
+#else
+  simde__m128d r;
+  simde_float64 t;
+  memcpy(&t, mem_addr, sizeof(t));
+  r.f64[0] = a.f64[0];
+  r.f64[1] = t;
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128i
+simde_mm_loadl_epi64 (simde__m128i const* mem_addr) {
+#if defined(SIMDE_SSE2_NATIVE)
+  return SIMDE__M128I_C(_mm_loadl_epi64(&mem_addr->n));
+#else
+  simde__m128i r;
+  r.u64[0] = mem_addr->u64[0];
+  r.u64[1] = 0;
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128d
+simde_mm_loadl_pd (simde__m128d a, simde_float64 const* mem_addr) {
+#if defined(SIMDE_SSE2_NATIVE)
+  return SIMDE__M128D_C(_mm_loadl_pd(a.n, mem_addr));
+#else
+  simde__m128d r;
+  memcpy(&r, mem_addr, sizeof(simde_float64));
+  r.u64[1] = a.u64[1];
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128d
+simde_mm_loadr_pd (simde_float64 const mem_addr[HEDLEY_ARRAY_PARAM(2)]) {
+#if defined(SIMDE_SSE2_NATIVE)
+  return SIMDE__M128D_C(_mm_loadr_pd(mem_addr));
+#else
+  simde__m128d r;
+  HEDLEY_ASSUME_ALIGNED(mem_addr, 16);
+  r.f64[0] = mem_addr[1];
+  r.f64[1] = mem_addr[0];
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128d
+simde_mm_loadu_pd (simde_float64 const mem_addr[HEDLEY_ARRAY_PARAM(2)]) {
+#if defined(SIMDE_SSE2_NATIVE)
+  return SIMDE__M128D_C(_mm_loadu_pd(mem_addr));
+#else
+  simde__m128d r;
+  simde_float64 l, h;
+  memcpy(&l, &mem_addr[0], sizeof(l));
+  memcpy(&h, &mem_addr[1], sizeof(h));
+  r.f64[0] = l;
+  r.f64[1] = h;
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_loadu_si128 (simde__m128i const* mem_addr) {
 #if defined(SIMDE_SSE2_NATIVE)
