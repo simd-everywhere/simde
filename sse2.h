@@ -1721,6 +1721,54 @@ simde_mm_or_si128 (simde__m128i a, simde__m128i b) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
+simde_mm_packs_epi16 (simde__m128i a, simde__m128i b) {
+#if defined(SIMDE_SSE2_NATIVE)
+  return SIMDE__M128I_C(_mm_packs_epi16(a.n, b.n));
+#else
+  simde__m128i r;
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.i16) / sizeof(r.i16[0])) ; i++) {
+    r.i8[i]     = (a.i16[i] > INT8_MAX) ? INT8_MAX : ((a.i16[i] < INT8_MIN) ? INT8_MIN : ((int8_t) a.i16[i]));
+    r.i8[i + 8] = (b.i16[i] > INT8_MAX) ? INT8_MAX : ((b.i16[i] < INT8_MIN) ? INT8_MIN : ((int8_t) b.i16[i]));
+  }
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128i
+simde_mm_packs_epi32 (simde__m128i a, simde__m128i b) {
+#if defined(SIMDE_SSE2_NATIVE)
+  return SIMDE__M128I_C(_mm_packs_epi32(a.n, b.n));
+#else
+  simde__m128i r;
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.i32) / sizeof(r.i32[0])) ; i++) {
+    r.i16[i]     = (a.i32[i] > INT16_MAX) ? INT16_MAX : ((a.i32[i] < INT16_MIN) ? INT16_MIN : ((int16_t) a.i32[i]));
+    r.i16[i + 4] = (b.i32[i] > INT16_MAX) ? INT16_MAX : ((b.i32[i] < INT16_MIN) ? INT16_MIN : ((int16_t) b.i32[i]));
+  }
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128i
+simde_mm_packus_epi16 (simde__m128i a, simde__m128i b) {
+#if defined(SIMDE_SSE2_NATIVE)
+  return SIMDE__M128I_C(_mm_packus_epi16(a.n, b.n));
+#else
+  simde__m128i r;
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.i16) / sizeof(r.i16[0])) ; i++) {
+    r.u8[i]     = (a.i16[i] > UINT8_MAX) ? UINT8_MAX : ((a.i16[i] < 0) ? 0 : ((int8_t) a.i16[i]));
+    r.u8[i + 8] = (b.i16[i] > UINT8_MAX) ? UINT8_MAX : ((b.i16[i] < 0) ? 0 : ((int8_t) b.i16[i]));
+  }
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128i
 simde_mm_set_epi8 (int8_t e15, int8_t e14, int8_t e13, int8_t e12,
 		   int8_t e11, int8_t e10, int8_t  e9, int8_t  e8,
 		   int8_t  e7, int8_t  e6, int8_t  e5, int8_t  e4,
