@@ -3414,6 +3414,77 @@ test_simde_mm_cvttsd_si64(const MunitParameter params[], void* data) {
 }
 
 static MunitResult
+test_simde_mm_extract_epi16(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  const struct {
+    simde__m128i a;
+    int32_t r;
+  } test_vec[8] = {
+    { simde_mm_set_epi16(-22888, -26241,  16094,  25365, -10975,  -4323,   9478, -18966), 54561 },
+    { simde_mm_set_epi16( -4494, -23544,  12313,  19220,  16921,   9248,  -1076, -18617), 16921 },
+    { simde_mm_set_epi16(  5051,  30913,  18404, -11820,  16495,  32647,  21150,  16664), 16495 },
+    { simde_mm_set_epi16(   987,  32176, -17758,  21096,   -945,   5537,   5495, -18130), 64591 },
+    { simde_mm_set_epi16(-16046,  13714,  12272,  32151, -14156,   8851, -19624,  -2653), 51380 },
+    { simde_mm_set_epi16(-28172,   1666,  15569,  -1622,  22048, -24364,   2478,  20826), 22048 },
+    { simde_mm_set_epi16(-29653, -27750,   5027,  -7816, -20852,   3178, -27881,   3156), 44684 },
+    { simde_mm_set_epi16(-26280,  27067,  10815, -30178, -26852,  26399, -30202, -11030), 38684 }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    int32_t r = simde_mm_extract_epi16(test_vec[i].a, 3);
+    munit_assert_int32(r, ==, test_vec[i].r);
+  }
+
+  return MUNIT_OK;
+}
+
+static MunitResult
+test_simde_mm_insert_epi16(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  const struct {
+    simde__m128i a;
+    int16_t b;
+    simde__m128i r;
+  } test_vec[8] = {
+    { simde_mm_set_epi16(-18659,  19491, -30434,  -6059,  11985,   5369, -14188,   9668),
+       21712,
+      simde_mm_set_epi16(-18659,  19491, -30434,  -6059,  21712,   5369, -14188,   9668) },
+    { simde_mm_set_epi16( 32684, -21716,   7657,   3627,  12377,  30609, -12611, -11955),
+      -27473,
+      simde_mm_set_epi16( 32684, -21716,   7657,   3627, -27473,  30609, -12611, -11955) },
+    { simde_mm_set_epi16(-18344,  -4896, -19094,   -638, -30376, -17556, -31358, -17530),
+      -19116,
+      simde_mm_set_epi16(-18344,  -4896, -19094,   -638, -19116, -17556, -31358, -17530) },
+    { simde_mm_set_epi16(-11121,  29288,  -3915,  13306,  30582,   4374,  -9323,  -2317),
+        5778,
+      simde_mm_set_epi16(-11121,  29288,  -3915,  13306,   5778,   4374,  -9323,  -2317) },
+    { simde_mm_set_epi16(  7542, -16196, -24612,   8929, -16460,  17259,    672, -18076),
+        -411,
+      simde_mm_set_epi16(  7542, -16196, -24612,   8929,   -411,  17259,    672, -18076) },
+    { simde_mm_set_epi16( 15913, -18873,  14978,  31946,  -6939,  26150,  18499, -16752),
+        1141,
+      simde_mm_set_epi16( 15913, -18873,  14978,  31946,   1141,  26150,  18499, -16752) },
+    { simde_mm_set_epi16(  1093,  -6101, -30747, -18266,   4085, -14478,  -6279, -25531),
+      -18605,
+      simde_mm_set_epi16(  1093,  -6101, -30747, -18266, -18605, -14478,  -6279, -25531) },
+    { simde_mm_set_epi16( -2463,  -3389,  28311,  -5667,  24886,  24368,  19484, -11581),
+      -17420,
+      simde_mm_set_epi16( -2463,  -3389,  28311,  -5667, -17420,  24368,  19484, -11581) }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    simde__m128i r = simde_mm_insert_epi16(test_vec[i].a, test_vec[i].b, 3);
+    simde_assert_m128i_i16(r, ==, test_vec[i].r);
+  }
+
+  return MUNIT_OK;
+}
+
+static MunitResult
 test_simde_mm_load_pd(const MunitParameter params[], void* data) {
   (void) params;
   (void) data;
@@ -7061,6 +7132,9 @@ static MunitTest test_suite_tests[] = {
   SIMDE_TEST_FUNC(mm_cvttps_epi32),
   SIMDE_TEST_FUNC(mm_cvttsd_si32),
   SIMDE_TEST_FUNC(mm_cvttsd_si64),
+
+  SIMDE_TEST_FUNC(mm_extract_epi16),
+  SIMDE_TEST_FUNC(mm_insert_epi16),
 
   SIMDE_TEST_FUNC(mm_load_pd),
   SIMDE_TEST_FUNC(mm_load_pd1),

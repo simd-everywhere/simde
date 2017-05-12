@@ -1326,6 +1326,25 @@ simde_mm_cvttsd_si64 (simde__m128d a) {
 #define simde_mm_cvttsd_si64x(a) simde_mm_cvttsd_si64(a)
 
 SIMDE__FUNCTION_ATTRIBUTES
+int32_t
+simde_mm_extract_epi16 (simde__m128i a, const int imm8) {
+  return a.u16[imm8 & 7];
+}
+#if defined(SIMDE_SSE2_NATIVE)
+#  define simde_mm_extract_epi16(a, imm8) _mm_extract_epi16(a.n, imm8)
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128i
+simde_mm_insert_epi16 (simde__m128i a, int32_t i, const int imm8) {
+  a.u16[imm8 & 7] = (int16_t) i;
+  return a;
+}
+#if defined(SIMDE_SSE2_NATIVE)
+#  define simde_mm_insert_epi16(a, i, imm8) SIMDE__M128I_C(_mm_insert_epi16(a.n, i, imm8))
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
 simde_mm_load_pd (simde_float64 const mem_addr[HEDLEY_ARRAY_PARAM(2)]) {
 #if defined(SIMDE_SSE2_NATIVE)
