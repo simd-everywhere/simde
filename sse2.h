@@ -486,6 +486,14 @@ simde_mm_bsrli_si128 (simde__m128i a, const int imm8) {
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
+void
+simde_mm_clflush (void const* p) {
+#if defined(SIMDE_SSE2_NATIVE)
+  return _mm_clflush(p);
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
 simde__m128
 simde_mm_castpd_ps (simde__m128d a) {
 #if defined(SIMDE_SSE2_NATIVE)
@@ -1330,7 +1338,7 @@ int32_t
 simde_mm_extract_epi16 (simde__m128i a, const int imm8) {
   return a.u16[imm8 & 7];
 }
-#if defined(SIMDE_SSE2_NATIVE)
+#if defined(SIMDE_SSE2_NATIVE) && (!defined(SIMDE__REALLY_GCC) || HEDLEY_GCC_VERSION_CHECK(4,6,0))
 #  define simde_mm_extract_epi16(a, imm8) _mm_extract_epi16(a.n, imm8)
 #endif
 
@@ -1340,7 +1348,7 @@ simde_mm_insert_epi16 (simde__m128i a, int32_t i, const int imm8) {
   a.u16[imm8 & 7] = (int16_t) i;
   return a;
 }
-#if defined(SIMDE_SSE2_NATIVE)
+#if defined(SIMDE_SSE2_NATIVE) && !defined(__PGI)
 #  define simde_mm_insert_epi16(a, i, imm8) SIMDE__M128I_C(_mm_insert_epi16(a.n, i, imm8))
 #endif
 
@@ -2348,6 +2356,54 @@ simde_mm_storeu_si128 (simde__m128i* mem_addr, simde__m128i a) {
   _mm_storeu_si128(&mem_addr->n, a.n);
 #else
   memcpy(mem_addr, &a, sizeof(a));
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+void
+simde_mm_stream_pd (simde_float64 mem_addr[HEDLEY_ARRAY_PARAM(2)], simde__m128d a) {
+#if defined(SIMDE_SSE2_NATIVE)
+  _mm_stream_pd(mem_addr, a.n);
+#else
+  HEDLEY_ASSUME_ALIGNED(mem_addr, 16);
+  memcpy(mem_addr, &a, sizeof(a));
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+void
+simde_mm_stream_si128 (simde__m128i* mem_addr, simde__m128i a) {
+#if defined(SIMDE_SSE2_NATIVE)
+  _mm_stream_si128(&mem_addr->n, a.n);
+#else
+  HEDLEY_ASSUME_ALIGNED(mem_addr, 16);
+  memcpy(mem_addr, &a, sizeof(a));
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+void
+simde_mm_stream_si32 (int32_t* mem_addr, int32_t a) {
+#if defined(SIMDE_SSE2_NATIVE)
+  _mm_stream_si32(mem_addr, a);
+#else
+  *mem_addr = a;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+void
+simde_mm_stream_si64 (int64_t* mem_addr, int64_t a) {
+#if defined(SIMDE_SSE2_NATIVE) && defined(SIMDE_ARCH_AMD64)
+  #if defined(SIMDE__REALLY_GCC) && !HEDLEY_GCC_VERSION_CHECK(4,8,0)
+    *mem_addr = a;
+  #elif defined(__GNUC__)
+    _mm_stream_si64((long long*) mem_addr, a);
+  #else
+    _mm_stream_si64(mem_addr, a);
+  #endif
+#else
+  *mem_addr = a;
 #endif
 }
 
