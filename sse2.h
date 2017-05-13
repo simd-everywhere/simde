@@ -451,8 +451,9 @@ simde_mm_bslli_si128 (simde__m128i a, const int imm8) {
   return r;
 }
 #if defined(SIMDE_SSE2_NATIVE) && !defined(__PGI)
-#  define simde_mm_bslli_si128(a, imm8) SIMDE__M128I_C(_mm_slli_si128(a.n, imm8));
+#  define simde_mm_bslli_si128(a, imm8) SIMDE__M128I_C(_mm_slli_si128(a.n, imm8))
 #endif
+#define simde_mm_slli_si128(a, imm8) simde_mm_bslli_si128(a, imm8)
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -482,8 +483,9 @@ simde_mm_bsrli_si128 (simde__m128i a, const int imm8) {
   return r;
 }
 #if defined(SIMDE_SSE2_NATIVE) && !defined(__PGI)
-#  define simde_mm_bsrli_si128(a, imm8) SIMDE__M128I_C(_mm_srli_si128(a.n, imm8));
+#  define simde_mm_bsrli_si128(a, imm8) SIMDE__M128I_C(_mm_srli_si128(a.n, imm8))
 #endif
+#define simde_mm_srli_si128(a, imm8) simde_mm_bsrli_si128(a, imm8)
 
 SIMDE__FUNCTION_ATTRIBUTES
 void
@@ -2227,29 +2229,6 @@ simde_mm_srli_epi64 (simde__m128i a, const int imm8) {
 }
 #if defined(SIMDE_SSE2_NATIVE)
 #  define simde_mm_srli_epi64(a, imm8) SIMDE__M128I_C(_mm_srli_epi64(a.n, imm8));
-#endif
-
-#if defined(simde_mm_srli_si128)
-#  undef simde_mm_srli_si128
-#endif
-SIMDE__FUNCTION_ATTRIBUTES
-simde__m128i
-simde_mm_srli_si128 (simde__m128i a, const int imm8) {
-  simde__m128i r;
-  const int s = (imm8 > 15 ? 16 : imm8) * 8;
-
-  if (s > 64) {
-    r.u64[0] = a.u64[1] >> (s - 64);
-    r.u64[1] = 0;
-  } else {
-    r.u64[0] = a.u64[0] >> s | a.u64[1] << (64 - s);
-    r.u64[1] = a.u64[1] >> s;
-  }
-
-  return r;
-}
-#if defined(SIMDE_SSE2_NATIVE) && !defined(__PGI)
-#  define simde_mm_srli_si128(a, imm8) SIMDE__M128I_C(_mm_srli_si128(a.n, imm8))
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES

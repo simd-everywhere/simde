@@ -918,33 +918,52 @@ test_simde_mm_bsrli_si128(const MunitParameter params[], void* data) {
   const struct {
     simde__m128i a;
     simde__m128i r;
-  } test_vec[8] = {
-    { simde_mm_set_epi64x(UINT64_C(0xf756056220c4cc15), UINT64_C(0xc682702e7ceff764)),
-      simde_mm_set_epi64x(UINT64_C(0x0000000000f75605), UINT64_C(0x6220c4cc15c68270)) },
-    { simde_mm_set_epi64x(UINT64_C(0x10c69dbcb51bdb1f), UINT64_C(0x7814b4a2c58f6c58)),
-      simde_mm_set_epi64x(UINT64_C(0x0000000000000000), UINT64_C(0x00000010c69dbcb5)) },
-    { simde_mm_set_epi64x(UINT64_C(0x32c3d2c34ac8daba), UINT64_C(0xbe64037b9031c8e6)),
-      simde_mm_set_epi64x(UINT64_C(0x000000000032c3d2), UINT64_C(0xc34ac8dababe6403)) },
-    { simde_mm_set_epi64x(UINT64_C(0xcdaebcfc8d354bf5), UINT64_C(0x4670b52bc62e41e9)),
-      simde_mm_set_epi64x(UINT64_C(0x0000000000000000), UINT64_C(0x000000cdaebcfc8d)) },
-    { simde_mm_set_epi64x(UINT64_C(0x1b7d52a9d22616ff), UINT64_C(0xe67a61bc6e0dd9b8)),
-      simde_mm_set_epi64x(UINT64_C(0x00000000001b7d52), UINT64_C(0xa9d22616ffe67a61)) },
-    { simde_mm_set_epi64x(UINT64_C(0x77a146df43387240), UINT64_C(0x553fbe9b1e911c28)),
-      simde_mm_set_epi64x(UINT64_C(0x0000000000000000), UINT64_C(0x00000077a146df43)) },
-    { simde_mm_set_epi64x(UINT64_C(0xa238a74cf266ddca), UINT64_C(0x80c8b7989fed59dd)),
-      simde_mm_set_epi64x(UINT64_C(0x0000000000a238a7), UINT64_C(0x4cf266ddca80c8b7)) },
-    { simde_mm_set_epi64x(UINT64_C(0x953632e347ddef89), UINT64_C(0x5d7bb6c0e6cecf31)),
-      simde_mm_set_epi64x(UINT64_C(0x0000000000000000), UINT64_C(0x000000953632e347)) }
+  } test_vec[] = {
+    /* 7 */
+    { simde_mm_set_epi32(0x47cbef9b, 0xf37c681b, 0xe0db7ffa, 0x55b931b1),
+      simde_mm_set_epi32(0x00000000, 0x00000047, 0xcbef9bf3, 0x7c681be0) },
+    { simde_mm_set_epi32(0x66b2ef71, 0x8953e15e, 0xdf9e86f7, 0xeba5f6fa),
+      simde_mm_set_epi32(0x00000000, 0x00000066, 0xb2ef7189, 0x53e15edf) },
+    { simde_mm_set_epi32(0x94ef5556, 0x634aa32f, 0xd712a48b, 0x6988ae75),
+      simde_mm_set_epi32(0x00000000, 0x00000094, 0xef555663, 0x4aa32fd7) },
+    { simde_mm_set_epi32(0x8fb32058, 0xcdc81a0a, 0x705b7228, 0xf67253b0),
+      simde_mm_set_epi32(0x00000000, 0x0000008f, 0xb32058cd, 0xc81a0a70) },
+    { simde_mm_set_epi32(0x0ef23909, 0x4d648689, 0x7496ffa0, 0x5b738ef2),
+      simde_mm_set_epi32(0x00000000, 0x0000000e, 0xf239094d, 0x64868974) },
+    { simde_mm_set_epi32(0x31274e9b, 0x8df1bbf8, 0x7b1c9e50, 0xc893b6e5),
+      simde_mm_set_epi32(0x00000000, 0x00000031, 0x274e9b8d, 0xf1bbf87b) },
+    { simde_mm_set_epi32(0x23b4b19b, 0xabb75a2b, 0xccef392d, 0xbba221b5),
+      simde_mm_set_epi32(0x00000000, 0x00000023, 0xb4b19bab, 0xb75a2bcc) },
+    { simde_mm_set_epi32(0x66b0b27f, 0xf97b0a8e, 0xd86b776e, 0x7fe77f32),
+      simde_mm_set_epi32(0x00000000, 0x00000066, 0xb0b27ff9, 0x7b0a8ed8) },
+
+    /* 12 */
+    { simde_mm_set_epi32(0xcc7298bc, 0x0eaefe5e, 0x83053094, 0x0eacbc77),
+      simde_mm_set_epi32(0x00000000, 0x00000000, 0x00000000, 0xcc7298bc) },
+    { simde_mm_set_epi32(0xea80c99e, 0xe9d9f6e5, 0x627abfad, 0xd8e9308f),
+      simde_mm_set_epi32(0x00000000, 0x00000000, 0x00000000, 0xea80c99e) },
+    { simde_mm_set_epi32(0x80e25197, 0x89703305, 0x432d91e4, 0xe5275d5f),
+      simde_mm_set_epi32(0x00000000, 0x00000000, 0x00000000, 0x80e25197) },
+    { simde_mm_set_epi32(0x648e872a, 0x1002e7bb, 0xcfac334d, 0x2c1bbc18),
+      simde_mm_set_epi32(0x00000000, 0x00000000, 0x00000000, 0x648e872a) },
+    { simde_mm_set_epi32(0x6a7be438, 0xe6a30e9c, 0xb169e292, 0x3691e799),
+      simde_mm_set_epi32(0x00000000, 0x00000000, 0x00000000, 0x6a7be438) },
+    { simde_mm_set_epi32(0x55989681, 0x9be27948, 0xbdef7a68, 0xedbaf7ae),
+      simde_mm_set_epi32(0x00000000, 0x00000000, 0x00000000, 0x55989681) },
+    { simde_mm_set_epi32(0xe9287476, 0x1ee24abc, 0x6bd94ff4, 0x712cfb27),
+      simde_mm_set_epi32(0x00000000, 0x00000000, 0x00000000, 0xe9287476) },
+    { simde_mm_set_epi32(0x6aa0826a, 0xd63b0b45, 0x8d69bc3c, 0xb0465f97),
+      simde_mm_set_epi32(0x00000000, 0x00000000, 0x00000000, 0x6aa0826a) }
   };
 
-  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
-    simde__m128i r;
-    if (i % 2) {
-      r = simde_mm_bsrli_si128(test_vec[i].a, 11);
-    } else {
-      r = simde_mm_bsrli_si128(test_vec[i].a, 5);
-    }
-    simde_assert_m128_u64(r, ==, test_vec[i].r);
+  for (size_t i = 0 ; i < ((sizeof(test_vec) / sizeof(test_vec[0])) / 2) ; i++) {
+    simde__m128i r = simde_mm_bsrli_si128(test_vec[i].a, 7);
+    simde_assert_m128_i64(r, ==, test_vec[i].r);
+  }
+
+  for (size_t i = ((sizeof(test_vec) / sizeof(test_vec[0])) / 2) ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
+    simde__m128i r = simde_mm_bsrli_si128(test_vec[i].a, 12);
+    simde_assert_m128_i32(r, ==, test_vec[i].r);
   }
 
   return MUNIT_OK;
@@ -5165,37 +5184,28 @@ test_simde_mm_srai_epi32(const MunitParameter params[], void* data) {
 
   const struct {
     simde__m128i a;
-    int count;
     simde__m128i r;
   } test_vec[8] = {
-    { simde_mm_set_epi32(-1131934153,  1564906572, -1819251842,  2113577502),
-      6,
-      simde_mm_set_epi32(  -17686472,    24451665,   -28425811,    33024648) },
-    { simde_mm_set_epi32( 1898762691, -1673929561,  -363852881, -1016088778),
-      25,
-      simde_mm_set_epi32(         56,         -50,         -11,         -31) },
-    { simde_mm_set_epi32(-1661480117, -1741629978,  1726631387, -1146598010),
-      15,
-      simde_mm_set_epi32(     -50705,      -53151,       52692,      -34992) },
-    { simde_mm_set_epi32( 1786148983,   684894373,  1599659581, -1871135081),
-      11,
-      simde_mm_set_epi32(     872143,      334421,      781083,     -913641) },
-    { simde_mm_set_epi32( -970339319,  1644341516,   150378618, -1952528595),
-      25,
-      simde_mm_set_epi32(        -29,          49,           4,         -59) },
-    { simde_mm_set_epi32(-2135894572,  -293347256,  -925174046,  1577624957),
-      27,
-      simde_mm_set_epi32(        -16,          -3,          -7,          11) },
-    { simde_mm_set_epi32(-1521729654,  2089690706, -1865503124,  1738035635),
-      18,
-      simde_mm_set_epi32(      -5805,        7971,       -7117,        6630) },
-    { simde_mm_set_epi32( 1496299243,   260013912,  -621752978,   -20875751),
-      6,
-      simde_mm_set_epi32(   23379675,     4062717,    -9714891,     -326184) }
+    { simde_mm_set_epi32(UINT32_C( 1376258289), UINT32_C(-1706053826), UINT32_C(-1453299791), UINT32_C( 1957670308)),
+      simde_mm_set_epi32(UINT32_C(   21504035), UINT32_C(  -26657092), UINT32_C(  -22707810), UINT32_C(   30588598)) },
+    { simde_mm_set_epi32(UINT32_C( -987178070), UINT32_C(-1848596736), UINT32_C(  129186724), UINT32_C(-1716082103)),
+      simde_mm_set_epi32(UINT32_C(  -15424658), UINT32_C(  -28884324), UINT32_C(    2018542), UINT32_C(  -26813783)) },
+    { simde_mm_set_epi32(UINT32_C( -234644460), UINT32_C(  433030254), UINT32_C(  545613441), UINT32_C(-1884669607)),
+      simde_mm_set_epi32(UINT32_C(   -3666320), UINT32_C(    6766097), UINT32_C(    8525210), UINT32_C(  -29447963)) },
+    { simde_mm_set_epi32(UINT32_C( -867257848), UINT32_C(-1023156928), UINT32_C(  967922247), UINT32_C(  502198363)),
+      simde_mm_set_epi32(UINT32_C(  -13550904), UINT32_C(  -15986827), UINT32_C(   15123785), UINT32_C(    7846849)) },
+    { simde_mm_set_epi32(UINT32_C(-1378148631), UINT32_C(  908123340), UINT32_C( -632440988), UINT32_C(-1285317707)),
+      simde_mm_set_epi32(UINT32_C(  -21533573), UINT32_C(   14189427), UINT32_C(   -9881891), UINT32_C(  -20083090)) },
+    { simde_mm_set_epi32(UINT32_C(-1083362196), UINT32_C(-1640695627), UINT32_C(-1362811468), UINT32_C(-1852035314)),
+      simde_mm_set_epi32(UINT32_C(  -16927535), UINT32_C(  -25635870), UINT32_C(  -21293930), UINT32_C(  -28938052)) },
+    { simde_mm_set_epi32(UINT32_C(  840318059), UINT32_C( 2038482840), UINT32_C( -611554758), UINT32_C(-1407203570)),
+      simde_mm_set_epi32(UINT32_C(   13129969), UINT32_C(   31851294), UINT32_C(   -9555544), UINT32_C(  -21987556)) },
+    { simde_mm_set_epi32(UINT32_C( 1357110356), UINT32_C( -162175806), UINT32_C( -668288751), UINT32_C(  229393371)),
+      simde_mm_set_epi32(UINT32_C(   21204849), UINT32_C(   -2533997), UINT32_C(  -10442012), UINT32_C(    3584271)) }
   };
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
-    simde__m128i r = simde_mm_srai_epi32(test_vec[i].a, test_vec[i].count);
+    simde__m128i r = simde_mm_srai_epi32(test_vec[i].a, 6);
     simde_assert_m128i_i32(r, ==, test_vec[i].r);
   }
 
@@ -5407,65 +5417,6 @@ test_simde_mm_srli_epi64(const MunitParameter params[], void* data) {
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m128i r = simde_mm_srli_epi64(test_vec[i].a, 7);
     simde_assert_m128i_i32(r, ==, test_vec[i].r);
-  }
-
-  return MUNIT_OK;
-}
-
-static MunitResult
-test_simde_mm_srli_si128(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
-  const struct {
-    simde__m128i a;
-    simde__m128i r;
-  } test_vec[] = {
-    /* 7 */
-    { simde_mm_set_epi32(0x47cbef9b, 0xf37c681b, 0xe0db7ffa, 0x55b931b1),
-      simde_mm_set_epi32(0x00000000, 0x00000047, 0xcbef9bf3, 0x7c681be0) },
-    { simde_mm_set_epi32(0x66b2ef71, 0x8953e15e, 0xdf9e86f7, 0xeba5f6fa),
-      simde_mm_set_epi32(0x00000000, 0x00000066, 0xb2ef7189, 0x53e15edf) },
-    { simde_mm_set_epi32(0x94ef5556, 0x634aa32f, 0xd712a48b, 0x6988ae75),
-      simde_mm_set_epi32(0x00000000, 0x00000094, 0xef555663, 0x4aa32fd7) },
-    { simde_mm_set_epi32(0x8fb32058, 0xcdc81a0a, 0x705b7228, 0xf67253b0),
-      simde_mm_set_epi32(0x00000000, 0x0000008f, 0xb32058cd, 0xc81a0a70) },
-    { simde_mm_set_epi32(0x0ef23909, 0x4d648689, 0x7496ffa0, 0x5b738ef2),
-      simde_mm_set_epi32(0x00000000, 0x0000000e, 0xf239094d, 0x64868974) },
-    { simde_mm_set_epi32(0x31274e9b, 0x8df1bbf8, 0x7b1c9e50, 0xc893b6e5),
-      simde_mm_set_epi32(0x00000000, 0x00000031, 0x274e9b8d, 0xf1bbf87b) },
-    { simde_mm_set_epi32(0x23b4b19b, 0xabb75a2b, 0xccef392d, 0xbba221b5),
-      simde_mm_set_epi32(0x00000000, 0x00000023, 0xb4b19bab, 0xb75a2bcc) },
-    { simde_mm_set_epi32(0x66b0b27f, 0xf97b0a8e, 0xd86b776e, 0x7fe77f32),
-      simde_mm_set_epi32(0x00000000, 0x00000066, 0xb0b27ff9, 0x7b0a8ed8) },
-
-    /* 12 */
-    { simde_mm_set_epi32(0xcc7298bc, 0x0eaefe5e, 0x83053094, 0x0eacbc77),
-      simde_mm_set_epi32(0x00000000, 0x00000000, 0x00000000, 0xcc7298bc) },
-    { simde_mm_set_epi32(0xea80c99e, 0xe9d9f6e5, 0x627abfad, 0xd8e9308f),
-      simde_mm_set_epi32(0x00000000, 0x00000000, 0x00000000, 0xea80c99e) },
-    { simde_mm_set_epi32(0x80e25197, 0x89703305, 0x432d91e4, 0xe5275d5f),
-      simde_mm_set_epi32(0x00000000, 0x00000000, 0x00000000, 0x80e25197) },
-    { simde_mm_set_epi32(0x648e872a, 0x1002e7bb, 0xcfac334d, 0x2c1bbc18),
-      simde_mm_set_epi32(0x00000000, 0x00000000, 0x00000000, 0x648e872a) },
-    { simde_mm_set_epi32(0x6a7be438, 0xe6a30e9c, 0xb169e292, 0x3691e799),
-      simde_mm_set_epi32(0x00000000, 0x00000000, 0x00000000, 0x6a7be438) },
-    { simde_mm_set_epi32(0x55989681, 0x9be27948, 0xbdef7a68, 0xedbaf7ae),
-      simde_mm_set_epi32(0x00000000, 0x00000000, 0x00000000, 0x55989681) },
-    { simde_mm_set_epi32(0xe9287476, 0x1ee24abc, 0x6bd94ff4, 0x712cfb27),
-      simde_mm_set_epi32(0x00000000, 0x00000000, 0x00000000, 0xe9287476) },
-    { simde_mm_set_epi32(0x6aa0826a, 0xd63b0b45, 0x8d69bc3c, 0xb0465f97),
-      simde_mm_set_epi32(0x00000000, 0x00000000, 0x00000000, 0x6aa0826a) }
-  };
-
-  for (size_t i = 0 ; i < ((sizeof(test_vec) / sizeof(test_vec[0])) / 2) ; i++) {
-    simde__m128i r = simde_mm_srli_si128(test_vec[i].a, 7);
-    simde_assert_m128_i64(r, ==, test_vec[i].r);
-  }
-
-  for (size_t i = ((sizeof(test_vec) / sizeof(test_vec[0])) / 2) ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
-    simde__m128i r = simde_mm_srli_si128(test_vec[i].a, 12);
-    simde_assert_m128_i32(r, ==, test_vec[i].r);
   }
 
   return MUNIT_OK;
@@ -7150,7 +7101,6 @@ static MunitTest test_suite_tests[] = {
   SIMDE_TEST_FUNC(mm_srli_epi16),
   SIMDE_TEST_FUNC(mm_srli_epi32),
   SIMDE_TEST_FUNC(mm_srli_epi64),
-  SIMDE_TEST_FUNC(mm_srli_si128),
 
   SIMDE_TEST_FUNC(mm_sra_epi16),
   SIMDE_TEST_FUNC(mm_sra_epi32),
