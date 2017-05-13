@@ -56,6 +56,21 @@
 
 SIMDE__BEGIN_DECLS
 
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128
+simde_mm_hadd_ps (simde__m128 a, simde__m128 b) {
+#if defined(SIMDE_SSE3_NATIVE)
+  return SIMDE__M128_C(_mm_hadd_ps(a.n, b.n));
+#else
+  simde__m128 r;
+  r.f32[0] = a.f32[0] + a.f32[1];
+  r.f32[1] = a.f32[2] + a.f32[3];
+  r.f32[2] = b.f32[0] + b.f32[1];
+  r.f32[3] = b.f32[2] + b.f32[3];
+  return r;
+#endif
+}
+
 SIMDE__END_DECLS
 
 #endif /* !defined(SIMDE__SSE3_H) */
