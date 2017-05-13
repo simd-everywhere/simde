@@ -2052,42 +2052,40 @@ simde_mm_setzero_si128 (void) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
-simde_mm_srai_epi16 (simde__m128i a, int count) {
-#if defined(SIMDE_SSE2_NATIVE)
-  return SIMDE__M128I_C(_mm_srai_epi16(a.n, count));
-#else
+simde_mm_srai_epi16 (simde__m128i a, int imm8) {
   simde__m128i r;
 
-  const uint16_t m = (uint16_t) ((~0U) << ((sizeof(int16_t) * CHAR_BIT) - count));
+  const uint16_t m = (uint16_t) ((~0U) << ((sizeof(int16_t) * CHAR_BIT) - imm8));
 
   SIMDE__VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r) / sizeof(r.u16[0])) ; i++) {
     const uint16_t is_neg = ((uint16_t) (((a.u16[i]) >> ((sizeof(int16_t) * CHAR_BIT) - 1))));
-    r.u16[i] = (a.u16[i] >> count) | (m * is_neg);
+    r.u16[i] = (a.u16[i] >> imm8) | (m * is_neg);
   }
 
   return r;
-#endif
 }
+#if defined(SIMDE_SSE2_NATIVE)
+#  define simde_mm_srai_epi16(a, imm8) SIMDE__M128I_C(_mm_srai_epi16((a).n, (imm8)));
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
-simde_mm_srai_epi32 (simde__m128i a, int count) {
-#if defined(SIMDE_SSE2_NATIVE)
-  return SIMDE__M128I_C(_mm_srai_epi32(a.n, count));
-#else
+simde_mm_srai_epi32 (simde__m128i a, int imm8) {
   simde__m128i r;
 
-  const uint32_t m = (uint32_t) ((~0U) << ((sizeof(int) * CHAR_BIT) - count));
+  const uint32_t m = (uint32_t) ((~0U) << ((sizeof(int) * CHAR_BIT) - imm8));
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i <  (sizeof(r) / sizeof(r.u32[0])) ; i++) {
     uint32_t is_neg = ((uint32_t) (((a.u32[i]) >> ((sizeof(int32_t) * CHAR_BIT) - 1))));
-    r.u32[i] = (a.u32[i] >> count) | (m * is_neg);
+    r.u32[i] = (a.u32[i] >> imm8) | (m * is_neg);
   }
 
   return r;
-#endif
 }
+#if defined(SIMDE_SSE2_NATIVE)
+#  define simde_mm_srai_epi32(a, imm8) SIMDE__M128I_C(_mm_srai_epi32((a).n, (imm8)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
