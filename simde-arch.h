@@ -68,7 +68,13 @@
 
 /* ARM
    <https://en.wikipedia.org/wiki/ARM_architecture> */
-#if defined(__ARM_ARCH_7S__)
+#if defined(__ARM_ARCH_8A__)
+#  define SIMDE_ARCH_ARM 82
+#elif defined(__ARM_ARCH_8R__)
+#  define SIMDE_ARCH_ARM 81
+#elif defined(__ARM_ARCH_8__)
+#  define SIMDE_ARCH_ARM 80
+#elif defined(__ARM_ARCH_7S__)
 #  define SIMDE_ARCH_ARM 74
 #elif defined(__ARM_ARCH_7M__)
 #  define SIMDE_ARCH_ARM 73
@@ -78,6 +84,8 @@
 #  define SIMDE_ARCH_ARM 71
 #elif defined(__ARM_ARCH_7__)
 #  define SIMDE_ARCH_ARM 70
+#elif defined(__ARM_ARCH)
+#  define SIMDE_ARCH_ARM (__ARM_ARCH * 10)
 #elif defined(_M_ARM)
 #  define SIMDE_ARCH_ARM (_M_ARM * 10)
 #elif defined(__arm__) || defined(__thumb__) || defined(__TARGET_ARCH_ARM) || defined(_ARM) || defined(_M_ARM) || defined(_M_ARM)

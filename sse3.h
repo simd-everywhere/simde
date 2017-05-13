@@ -61,6 +61,16 @@ simde__m128
 simde_mm_hadd_ps (simde__m128 a, simde__m128 b) {
 #if defined(SIMDE_SSE3_NATIVE)
   return SIMDE__M128_C(_mm_hadd_ps(a.n, b.n));
+#elif defined(SIMDE_SSE3_NEON)
+  #if defined(SIMDE_ARCH_AARCH64)
+    return SIMDE__M128_NEON_C(f32, vpaddq_f32(a.neon_f32, b.neon_f32));
+  #else
+    float32x2_t a10 = vget_low_f32(a.neon_f32);
+    float32x2_t a32 = vget_high_f32(a.neon_f32);
+    float32x2_t b10 = vget_low_f32(b.neon_f32);
+    float32x2_t b32 = vget_high_f32(b.neon_f32);
+    return SIMDE__M128_NEON_C(f32, vcombine_f32(vpadd_f32(a10, a32), vpadd_f32(b10, b32)));
+  #endif
 #else
   simde__m128 r;
   r.f32[0] = a.f32[0] + a.f32[1];

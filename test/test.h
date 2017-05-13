@@ -188,10 +188,14 @@ simde_float64 random_f64_range(simde_float64 min, simde_float64 max);
   simde_assert_typev(simde_float32, "f", 4, (simde_float32*) &(a), op, (simde_float32*) &(b))
 #define simde_assert_m128_f32_equal(a, b, precision) \
   simde_assert_f32v_equal(simde_float32, 4, (simde_float32*) &(a), (simde_float32*) &(b), precision)
+#define simde_assert_m128_f32_close(a, b, precision) \
+  simde_assert_f32v_close(simde_float32, 4, (simde_float32*) &(a), (simde_float32*) &(b), precision)
 #define simde_assert_m128_f64(a, op, b) \
   simde_assert_typev(simde_float64, "f", 2, (simde_float64*) &(a), op, (simde_float64*) &(b))
 #define simde_assert_m128_f64_equal(a, b, precision) \
   simde_assert_f32v_equal(simde_float64, 2, (simde_float64*) &(a), (simde_float64*) &(b), precision)
+#define simde_assert_m128_f64_close(a, b, precision) \
+  simde_assert_f32v_close(simde_float64, 2, (simde_float64*) &(a), (simde_float64*) &(b), precision)
 
 #define simde_assert_m128i_i8(a, op, b) \
   simde_assert_typev(int8_t, PRId8, 16, (int8_t*) &(a), op, (int8_t*) &(b))

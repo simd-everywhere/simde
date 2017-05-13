@@ -133,6 +133,13 @@ HEDLEY_STATIC_ASSERT(sizeof(simde_float32) == 4, "Unable to find 32-bit floating
 typedef SIMDE_FLOAT64_TYPE simde_float64;
 HEDLEY_STATIC_ASSERT(sizeof(simde_float64) == 8, "Unable to find 64-bit floating-point type.");
 
+/* Some algorithms are iterative, and fewer iterations means less
+   accuracy.  Lower values here will result in faster, but less
+   accurate, calculations for some functions. */
+#if !defined(SIMDE_ACCURACY_ITERS)
+#  define SIMDE_ACCURACY_ITERS 2
+#endif
+
 /* This will probably move into Hedley at some point, but I'd like to
    more thoroughly check for other compilers which define __GNUC__
    first. */

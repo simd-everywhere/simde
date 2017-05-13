@@ -2204,7 +2204,7 @@ test_simde_mm_div_ps(const MunitParameter params[], void* data) {
 
     r = simde_mm_div_ps(a, b);
 
-    assert_m128_ps(r, ==, x);
+    simde_assert_m128_f32_equal(r, x, 1);
   }
 
   return MUNIT_OK;
@@ -2226,7 +2226,7 @@ test_simde_mm_div_ss(const MunitParameter params[], void* data) {
 
     r = simde_mm_div_ss(a, b);
 
-    assert_m128_ps(r, ==, x);
+    simde_assert_m128_f32_equal(r, x, 2);
   }
 
   return MUNIT_OK;
@@ -3436,7 +3436,7 @@ test_simde_mm_sqrt_ps(const MunitParameter params[], void* data) {
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / (sizeof(test_vec[0]))) ; i++) {
     simde__m128 r = simde_mm_sqrt_ps(test_vec[i].a);
-    simde_assert_m128_f32_equal(r, test_vec[i].r, 1);
+    simde_assert_m128_f32_close(r, test_vec[i].r, 1);
   }
 
   return MUNIT_OK;
