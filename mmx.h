@@ -90,6 +90,8 @@ typedef union {
 #if defined(SIMDE_MMX_NATIVE)
 HEDLEY_STATIC_ASSERT(sizeof(__m64) == sizeof(simde__m64), "__m64 size doesn't match simde__m64 size");
 #define SIMDE__M64_C(expr) ((simde__m64) { .n = expr })
+#elif defined(SIMDE_MMX_NEON)
+#define SIMDE__M64_NEON_C(T, expr) (simde__m64) { .neon_##T = (expr) }
 #endif
 HEDLEY_STATIC_ASSERT(8 == sizeof(simde__m64), "__m64 size incorrect");
 
