@@ -3,9 +3,8 @@
 SIMDe is an attempt to implement SIMD intrinsics on hardware which
 doesn't natively support them, such as calling SSE functions on ARM.
 
-The initial focus is on writing complete portable implementations.
-Once that's complete we will start focusing on optimizations, such as
-implementing one set of functions with another.
+The current focus is on writing complete portable implementations, but
+quite a few SSE functions already have NEON implementations.
 
 For an example of a project using SIMDe, see
 [LZSSE-SIMDe](https://github.com/nemequ/LZSSE-SIMDe).
@@ -15,6 +14,7 @@ sets:
 
  * MMX
  * SSE
+ * SSE2
 
 Work is underway to support various versions of SSE.  For detailed
 progress information, see the
@@ -45,8 +45,8 @@ files as a template, but if you have trouble please feel free to
 contact us; we're happy to help!
 
 If you're not sure that your implementation will be fast enough, don't
-worry!  Right now we just want to get correct implementations in
-place, we can worry about optimizing later.
+worry!  Right now we just want to get correct portable implementations
+in place, we can worry about optimizing later.
 
 ## Usage
 
@@ -98,7 +98,8 @@ though these are not as well tested.
    * [ARM_NEON_2_x86_SSE](https://github.com/intel/ARM_NEON_2_x86_SSE)
      — implementing NEON using SSE, quite extensive
    * [sse2neon](https://github.com/jratcliff63367/sse2neon) —
-     implementing SSE using NEON
+     implementing SSE using NEON.  This code has already been merged
+     into SIMDe.
    * [veclib](https://github.com/IvantheDugtrio/veclib) — implementing
      SSE2 using AltiVec/VMX, using a non-free IBM library called
      [powerveclib](https://www.ibm.com/developerworks/community/groups/community/powerveclib/)
@@ -141,7 +142,5 @@ free to use whatever works.
 
 ## License
 
-To the extent possible under law, the authors have waived all
-copyright and related or neighboring rights to this code.  For
-details, see the Creative Commons Zero 1.0 Universal license at
-https://creativecommons.org/publicdomain/zero/1.0/
+SIMDe is distributed under an MIT-style license; see COPYING for
+details.
