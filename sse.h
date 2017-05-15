@@ -1738,6 +1738,8 @@ simde_mm_sfence (void) {
 #endif
 }
 
+#define SIMDE_MM_SHUFFLE(z, y, x, w) (((z) << 6) | ((y) << 4) | ((x) << 2) | (w))
+
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m64
 simde_mm_shuffle_pi16 (simde__m64 a, const int imm8) {
@@ -1749,6 +1751,16 @@ simde_mm_shuffle_pi16 (simde__m64 a, const int imm8) {
 }
 #if defined(SIMDE_SSE_NATIVE) && !defined(__PGI)
 #  define simde_mm_shuffle_pi16(a, imm8) SIMDE__M64_C(_mm_shuffle_pi16(a.n, imm8))
+#elif HEDLEY_CLANG_HAS_BUILTIN(__builtin_shufflevector)
+#  define simde_mm_shuffle_pi16(a, imm8) ({				\
+      const simde__m64 simde__tmp_a_ = a;				\
+      (simde__m64) { .i16 =						\
+	  __builtin_shufflevector((simde__tmp_a_).i16,			\
+				  (simde__tmp_a_).i16,			\
+				  (((imm8)     ) & 3),			\
+				  (((imm8) >> 2) & 3),			\
+				  (((imm8) >> 4) & 3),			\
+				  (((imm8) >> 6) & 3)) }; })
 #endif
 
 #if defined(SIMDE_SSE_NATIVE) && !defined(__PGI)
@@ -1770,13 +1782,14 @@ simde_mm_shuffle_ps (simde__m128 a, simde__m128 b, const int imm8) {
 #if defined(SIMDE_SSE_NATIVE) && !defined(__PGI)
 #  define simde_mm_shuffle_ps(a, b, imm8) SIMDE__M128_C(_mm_shuffle_ps(a.n, b.n, imm8))
 #elif HEDLEY_CLANG_HAS_BUILTIN(__builtin_shufflevector)
-#  define simde_mm_shuffle_ps(a, b, imm8)			\
-  ({ (simde__m128) { .f32 =					\
-	__builtin_shufflevector(a.f32, b.f32,			\
-				(((imm8) >> 0) & 3),		\
-				(((imm8) >> 2) & 3),		\
-				(((imm8) >> 4) & 3) + 4,	\
-				(((imm8) >> 6) & 3) + 4) }; })
+#  define simde_mm_shuffle_ps(a, b, imm8) ({ \
+      (simde__m128) { .f32 =					\
+	  __builtin_shufflevector((a).f32,			\
+				  (b).f32,			\
+				  (((imm8)     ) & 3),		\
+				  (((imm8) >> 2) & 3),		\
+				  (((imm8) >> 4) & 3) + 4,	\
+				  (((imm8) >> 6) & 3) + 4) }; })
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES

@@ -2440,6 +2440,16 @@ simde_mm_shuffle_epi32 (simde__m128i a, const int imm8) {
 }
 #if defined(SIMDE_SSE2_NATIVE)
 #  define simde_mm_shuffle_epi32(a, imm8) SIMDE__M128I_C(_mm_shuffle_epi32((a).n, (imm8)))
+#elif HEDLEY_CLANG_HAS_BUILTIN(__builtin_shufflevector)
+#  define simde_mm_shuffle_epi32(a, imm8) ({			\
+      const simde__m128i simde__tmp_a_ = a;			\
+      (simde__m128i) { .i32 =					\
+	  __builtin_shufflevector((simde__tmp_a_).i32,		\
+				  (simde__tmp_a_).i32,		\
+				  ((imm8)     ) & 3,		\
+				  ((imm8) >> 2) & 3,		\
+				  ((imm8) >> 4) & 3,		\
+				  ((imm8) >> 6) & 3) }; })
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -2454,6 +2464,13 @@ simde_mm_shuffle_pd (simde__m128d a, simde__m128d b, const int imm8) {
 }
 #if defined(SIMDE_SSE2_NATIVE) && !defined(__PGI)
 #  define simde_mm_shuffle_pd(a, b, imm8) SIMDE__M128D_C(_mm_shuffle_pd((a).n, (b).n, (imm8)))
+#elif HEDLEY_CLANG_HAS_BUILTIN(__builtin_shufflevector)
+#  define simde_mm_shuffle_pd(a, b, imm8) ({				\
+      (simde__m128d) { .f64 =						\
+	  __builtin_shufflevector((a).f64,				\
+				  (b).f64,				\
+				  (((imm8)     ) & 1),			\
+				  (((imm8) >> 1) & 1) + 2) }; })
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -2470,6 +2487,17 @@ simde_mm_shufflehi_epi16 (simde__m128i a, const int imm8) {
 }
 #if defined(SIMDE_SSE2_NATIVE)
 #  define simde_mm_shufflehi_epi16(a, imm8) SIMDE__M128I_C(_mm_shufflehi_epi16((a).n, (imm8)))
+#elif HEDLEY_CLANG_HAS_BUILTIN(__builtin_shufflevector)
+#  define simde_mm_shufflehi_epi16(a, imm8) ({				\
+      const simde__m128i simde__tmp_a_ = a;				\
+      (simde__m128i) { .i16 =						\
+	  __builtin_shufflevector((simde__tmp_a_).i16,			\
+				  (simde__tmp_a_).i16,			\
+				  0, 1, 2, 3,				\
+				  (((imm8)     ) & 3) + 4,		\
+				  (((imm8) >> 2) & 3) + 4,		\
+				  (((imm8) >> 4) & 3) + 4,		\
+				  (((imm8) >> 6) & 3) + 4) }; })
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -2486,6 +2514,17 @@ simde_mm_shufflelo_epi16 (simde__m128i a, const int imm8) {
 }
 #if defined(SIMDE_SSE2_NATIVE)
 #  define simde_mm_shufflelo_epi16(a, imm8) SIMDE__M128I_C(_mm_shufflelo_epi16((a).n, (imm8)))
+#elif HEDLEY_CLANG_HAS_BUILTIN(__builtin_shufflevector)
+#  define simde_mm_shufflelo_epi16(a, imm8) ({		\
+      const simde__m128i simde__tmp_a_ = a;		\
+      (simde__m128i) { .i16 =				\
+	  __builtin_shufflevector((simde__tmp_a_).i16,	\
+				  (simde__tmp_a_).i16,	\
+				  (((imm8)     ) & 3),	\
+				  (((imm8) >> 2) & 3),	\
+				  (((imm8) >> 4) & 3),	\
+				  (((imm8) >> 6) & 3),	\
+				  4, 5, 6, 7) }; })
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
