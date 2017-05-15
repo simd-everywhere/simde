@@ -138,15 +138,15 @@ simde_mm_hsub_ps (simde__m128 a, simde__m128 b) {
 #if defined(SIMDE_SSE3_NATIVE)
   return SIMDE__M128_C(_mm_hsub_ps(a.n, b.n));
 #elif defined(SIMDE_SSE3_NEON)
-  #if defined(SIMDE_ARCH_AARCH64)
-    return SIMDE__M128_NEON_C(f32, vpsubq_f32(a.neon_f32, b.neon_f32));
-  #else
-    float32x2_t a10 = vget_low_f32(a.neon_f32);
-    float32x2_t a32 = vget_high_f32(a.neon_f32);
-    float32x2_t b10 = vget_low_f32(b.neon_f32);
-    float32x2_t b32 = vget_high_f32(b.neon_f32);
-    return SIMDE__M128_NEON_C(f32, vcombine_f32(vpsub_f32(a10, a32), vpsub_f32(b10, b32)));
-  #endif
+  const float32_t mp[] = { 1.0f, -1.0f, 1.0f, -1.0f };
+  const float32x4_t m = vld1q_f32(mp);
+
+  float32x4_t ap = vmulq_f32(a.neon_f32, m);
+  float32x4_t bp = vmulq_f32(b.neon_f32, m);
+  float32x2_t ax = vpadd_f32(vget_low_f32(ap), vget_high_f32(ap));
+  float32x2_t bx = vpadd_f32(vget_low_f32(bp), vget_high_f32(bp));
+
+  return SIMDE__M128_NEON_C(f32, vcombine_f32(ax, bx));
 #else
   simde__m128 r;
   r.f32[0] = a.f32[0] - a.f32[1];
