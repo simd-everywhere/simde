@@ -133,6 +133,37 @@ HEDLEY_STATIC_ASSERT(sizeof(simde_float32) == 4, "Unable to find 32-bit floating
 typedef SIMDE_FLOAT64_TYPE simde_float64;
 HEDLEY_STATIC_ASSERT(sizeof(simde_float64) == 8, "Unable to find 64-bit floating-point type.");
 
+/* Whether to assume that the compiler can auto-vectorize reasonably
+   well.  This will cause SIMDe to attempt to compose vector
+   operations using more simple vector operations instead of minimize
+   serial work.
+
+   As an example, consider the _mm_add_ss(a, b) function from SSE,
+   which returns { a0 + b0, a1, a2, a3 }.  This pattern is repeated
+   for other operations (sub, mul, etc.).
+
+   The naïve implementation would result in loading a0 and b0, adding
+   them into a temporary variable, then splicing that value into a new
+   vector with the remaining elements from a.
+
+   On platforms which support vectorization, it's generally faster to
+   simply perform the operation on the entire vector to avoid having
+   to move data between SIMD registers and non-SIMD registers.
+   Basically, instead of the temporary variable being (a0 + b0) it
+   would be a vector of (a + b), which is then combined with a to form
+   the result.
+
+   By default, SIMDe will prefer the pure-vector versions if we detect
+   a vector ISA extension, but this can be overridden by defining
+   SIMDE_NO_ASSUME_VECTORIZATION.  You can also define
+   SIMDE_ASSUME_VECTORIZATION if you want to force SIMDe to use the
+   vectorized version. */
+#if !defined(SIMDE_NO_ASSUME_VECTORIZATION) && !defined(SIMDE_ASSUME_VECTORIZATION)
+#  if defined(__SSE__) || defined(__ARM_NEON) || defined(__mips_msa) || defined(__ALTIVEC__)
+#    define SIMDE_ASSUME_VECTORIZATION
+#  endif
+#endif
+
 /* GCC and clang have built-in functions to handle shuffling of
    vectors, but the implementations are slightly different.  This
    macro is just an abstraction over them.  Note that elem_size is in

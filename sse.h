@@ -154,6 +154,10 @@ simde_mm_add_ss (simde__m128 a, simde__m128 b) {
   float32x4_t value = vsetq_lane_f32(b0, vdupq_n_f32(0), 0);
   /* the upper values in the result must be the remnants of <a>. */
   return SIMDE__M128_NEON_C(f32, vaddq_f32(a.neon_f32, value));
+#elif defined(SIMDE__SHUFFLE_VECTOR) && defined(SIMDE_ASSUME_VECTORIZATION)
+  return (simde__m128) {
+    .f32 = SIMDE__SHUFFLE_VECTOR(32, 16, a.f32, simde_mm_add_ps(a, b).f32, 4, 1, 2, 3)
+  };
 #else
   return (simde__m128) {
     .f32 = { a.f32[0] + b.f32[0], a.f32[1], a.f32[2], a.f32[3] }

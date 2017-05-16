@@ -1,7 +1,8 @@
 # SIMD Everywhere
 
-SIMDe is an attempt to implement SIMD intrinsics on hardware which
-doesn't natively support them, such as calling SSE functions on ARM.
+SIMDe provides fast, portable implementations of SIMD intrinsics on
+hardware which doesn't natively support them, such as calling SSE
+functions on ARM.
 
 The current focus is on writing complete portable implementations,
 though a large number of functions already have accelerated
@@ -9,11 +10,11 @@ implementations using one (or more) of the following:
 
  * SIMD intrinsics from other ISA extensions (e.g., using NEON to
    implement SSE).
- * Compiler-specific built-ins such as
+ * Compiler-specific vector extensions and built-ins such as
    [`__builtin_shufflevector`](http://clang.llvm.org/docs/LanguageExtensions.html#langext-builtin-shufflevector)
    and
    [`__builtin_convertvector`](http://clang.llvm.org/docs/LanguageExtensions.html#langext-builtin-convertvector)
- * Auto-vectoriztation compiler hints:
+ * Compiler auto-vectorization hints, using:
    * [OpenMP 4 SIMD](http://www.openmp.org/)
    * [Cilk Plus](https://www.cilkplus.org/)
    * [GCC loop-specific pragmas](https://gcc.gnu.org/onlinedocs/gcc/Loop-Specific-Pragmas.html)
@@ -34,8 +35,7 @@ sets:
  * SSE2
  * SSE3
 
-Work is underway to support various versions of SSE.  For detailed
-progress information, see the
+For progress information on other ISA extensions, see the
 [instruction-set-support](https://github.com/nemequ/simde/issues?q=is%3Aissue+is%3Aopen+label%3Ainstruction-set-support+sort%3Aupdated-desc)
 label in the issue tracker.  If you'd like to be notified when an
 instruction set is available you may subscribe to the relevant issue.
