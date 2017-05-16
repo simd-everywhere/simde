@@ -111,11 +111,7 @@ simde_mm_shuffle_epi8 (simde__m128i a, simde__m128i b) {
 #else
   simde__m128i r;
   for (size_t i = 0 ; i < (sizeof(r.u8) / sizeof(r.u8[0])) ; i++) {
-    if (b.u8[i] & 0x80) {
-      r.u8[i] = 0;
-    } else {
-      r.u8[i] = a.u8[b.u8[i] & 15];
-    }
+    r.u8[i] = a.u8[b.u8[i] & 15] * ((~(b.u8[i]) >> 7) & 1);
   }
   return r;
 #endif
