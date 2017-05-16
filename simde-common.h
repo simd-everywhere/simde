@@ -133,6 +133,16 @@ HEDLEY_STATIC_ASSERT(sizeof(simde_float32) == 4, "Unable to find 32-bit floating
 typedef SIMDE_FLOAT64_TYPE simde_float64;
 HEDLEY_STATIC_ASSERT(sizeof(simde_float64) == 8, "Unable to find 64-bit floating-point type.");
 
+/* GCC and clang have built-in functions to handle shuffling of
+   vectors, but the implementations are slightly different.  This
+   macro is just an abstraction over them.  Note that elem_size is in
+   bits but vec_size is in bytes. */
+#if HEDLEY_CLANG_HAS_BUILTIN(__builtin_shufflevector)
+#  define SIMDE__SHUFFLE_VECTOR(elem_size, vec_size, a, b, ...) __builtin_shufflevector(a, b, __VA_ARGS__)
+#elif HEDLEY_GCC_HAS_BUILTIN(__builtin_shuffle,4,7,0)
+#  define SIMDE__SHUFFLE_VECTOR(elem_size, vec_size, a, b, ...) __builtin_shuffle(a, b, (int##elem_size##_t __attribute__((__vector_size__(vec_size)))) { __VA_ARGS__ })
+#endif
+
 /* Some algorithms are iterative, and fewer iterations means less
    accuracy.  Lower values here will result in faster, but less
    accurate, calculations for some functions. */
