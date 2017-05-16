@@ -3331,7 +3331,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 void
 simde_mm_lfence (void) {
 #if defined(SIMDE_SSE2_NATIVE)
-  simde_mm_lfence();
+  _mm_lfence();
 #else
   simde_mm_sfence();
 #endif
@@ -3341,7 +3341,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 void
 simde_mm_mfence (void) {
 #if defined(SIMDE_SSE2_NATIVE)
-  simde_mm_mfence();
+  _mm_mfence();
 #else
   simde_mm_sfence();
 #endif
