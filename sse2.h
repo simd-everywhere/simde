@@ -1689,6 +1689,12 @@ simde__m128i
 simde_mm_madd_epi16 (simde__m128i a, simde__m128i b) {
 #if defined(SIMDE_SSE2_NATIVE)
   return SIMDE__M128I_C(_mm_madd_epi16(a.n, b.n));
+#elif defined(SIMDE_SSE2_NEON)
+  int32x4_t pl = vmull_s16(vget_low_s16(a.neon_i32),  vget_low_s16(b.neon_i32));
+  int32x4_t ph = vmull_s16(vget_high_s16(a.neon_i32), vget_high_s16(b.neon_i32));
+  int32x2_t rl = vpadd_s32(vget_low_s32(pl), vget_high_s32(pl));
+  int32x2_t rh = vpadd_s32(vget_low_s32(ph), vget_high_s32(ph));
+  return SIMDE__M128I_NEON_C(i32, vcombine_s32(rl, rh));
 #else
   simde__m128i r;
   SIMDE__VECTORIZE
