@@ -2930,7 +2930,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 void
 simde_mm_store_si128 (simde__m128i* mem_addr, simde__m128i a) {
 #if defined(SIMDE_SSE2_NATIVE)
-  _mm_storeu_si128(&mem_addr->n, a.n);
+  _mm_store_si128(&mem_addr->n, a.n);
 #elif defined(SIMDE_SSE2_NEON)
   vst1q_s32((int32_t*) mem_addr, a.neon_i32);
 #else
@@ -2955,9 +2955,7 @@ simde_mm_storel_epi64 (simde__m128i* mem_addr, simde__m128i a) {
 #if defined(SIMDE_SSE2_NATIVE)
   _mm_storel_epi64(&(mem_addr->n), a.n);
 #elif defined(SIMDE_SSE2_NEON)
-  uint64x1_t hi = vget_high_u64(mem_addr->neon_u64);
-  uint64x1_t lo = vget_low_u64(vreinterpretq_u64_m128i(a));
-  *mem_addr = vreinterpretq_m128i_u64(vcombine_u64(lo, hi));
+  mem_addr->i64[0] = vget_low_s64(a.neon_i64);
 #else
   mem_addr->i64[0] = a.i64[0];
 #endif
@@ -2975,12 +2973,13 @@ simde_mm_storel_pd (simde_float64* mem_addr, simde__m128d a) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 void
-simde_mm_storer_pd (simde_float64* mem_addr, simde__m128d a) {
+simde_mm_storer_pd (simde_float64 mem_addr[2], simde__m128d a) {
 #if defined(SIMDE_SSE2_NATIVE)
-  _mm_storel_pd(mem_addr, a.n);
+  _mm_storer_pd(mem_addr, a.n);
 #else
   HEDLEY_ASSUME_ALIGNED(mem_addr, 16);
-  *mem_addr = a.f64[0];
+  mem_addr[0] = a.f64[1];
+  mem_addr[1] = a.f64[0];
 #endif
 }
 
@@ -2988,10 +2987,9 @@ SIMDE__FUNCTION_ATTRIBUTES
 void
 simde_mm_storeu_pd (simde_float64* mem_addr, simde__m128d a) {
 #if defined(SIMDE_SSE2_NATIVE)
-  _mm_storel_pd(mem_addr, a.n);
+  _mm_storeu_pd(mem_addr, a.n);
 #else
-  simde_float64 v = a.f64[0];
-  memcpy(mem_addr, &v, sizeof(v));
+  memcpy(mem_addr, &a, sizeof(a));
 #endif
 }
 
