@@ -1550,6 +1550,8 @@ simde__m128d
 simde_mm_load_pd (simde_float64 const mem_addr[HEDLEY_ARRAY_PARAM(2)]) {
 #if defined(SIMDE_SSE2_NATIVE)
   return SIMDE__M128D_C(_mm_load_pd(mem_addr));
+#elif defined(SIMDE_SSE2_NEON)
+  return SIMDE__M128D_NEON_C(u32, vld1q_u32((uint32_t*) mem_addr));
 #else
   simde__m128d r;
   HEDLEY_ASSUME_ALIGNED(mem_addr, 16);
@@ -2998,6 +3000,10 @@ void
 simde_mm_storeu_si128 (simde__m128i* mem_addr, simde__m128i a) {
 #if defined(SIMDE_SSE2_NATIVE)
   _mm_storeu_si128(&mem_addr->n, a.n);
+#elif defined(SIMDE_SSE2_NEON)
+  int32_t v[4];
+  vst1q_s32(v, a.neon_i32);
+  memcpy(mem_addr, v, sizeof(v));
 #else
   memcpy(mem_addr, &a, sizeof(a));
 #endif

@@ -261,6 +261,10 @@ simde_mm_cmpeq_ss (simde__m128 a, simde__m128 b) {
   float32x4_t r = vceqq_f32(a.neon_f32, b.neon_f32);
   float32x4_t t = vextq_f32(a.neon_f32, r, 1);
   return SIMDE__M128_NEON_C(f32, vextq_f32(t, t, 3));
+#elif defined(SIMDE__SHUFFLE_VECTOR) && defined(SIMDE_ASSUME_VECTORIZATION)
+  return (simde__m128) {
+    .f32 = SIMDE__SHUFFLE_VECTOR(32, 16, a.f32, simde_mm_cmpeq_ps(a, b).f32, 4, 1, 2, 3)
+  };
 #else
   simde__m128 r;
   r.u32[0] = (a.f32[0] == b.f32[0]) ? 0xffffffff : 0;
@@ -298,6 +302,10 @@ simde_mm_cmpge_ss (simde__m128 a, simde__m128 b) {
   float32x4_t r = vcgeq_f32(a.neon_f32, b.neon_f32);
   float32x4_t t = vextq_f32(a.neon_f32, r, 1);
   return SIMDE__M128_NEON_C(f32, vextq_f32(t, t, 3));
+#elif defined(SIMDE__SHUFFLE_VECTOR) && defined(SIMDE_ASSUME_VECTORIZATION)
+  return (simde__m128) {
+    .f32 = SIMDE__SHUFFLE_VECTOR(32, 16, a.f32, simde_mm_cmpge_ps(a, b).f32, 4, 1, 2, 3)
+  };
 #else
   simde__m128 r;
   r.u32[0] = (a.f32[0] >= b.f32[0]) ? 0xffffffff : 0;
@@ -335,6 +343,10 @@ simde_mm_cmpgt_ss (simde__m128 a, simde__m128 b) {
   float32x4_t r = vcgtq_f32(a.neon_f32, b.neon_f32);
   float32x4_t t = vextq_f32(a.neon_f32, r, 1);
   return SIMDE__M128_NEON_C(f32, vextq_f32(t, t, 3));
+#elif defined(SIMDE__SHUFFLE_VECTOR) && defined(SIMDE_ASSUME_VECTORIZATION)
+  return (simde__m128) {
+    .f32 = SIMDE__SHUFFLE_VECTOR(32, 16, a.f32, simde_mm_cmpgt_ps(a, b).f32, 4, 1, 2, 3)
+  };
 #else
   simde__m128 r;
   r.u32[0] = (a.f32[0] > b.f32[0]) ? 0xffffffff : 0;
@@ -372,6 +384,10 @@ simde_mm_cmple_ss (simde__m128 a, simde__m128 b) {
   float32x4_t r = vcleq_f32(a.neon_f32, b.neon_f32);
   float32x4_t t = vextq_f32(a.neon_f32, r, 1);
   return SIMDE__M128_NEON_C(f32, vextq_f32(t, t, 3));
+#elif defined(SIMDE__SHUFFLE_VECTOR) && defined(SIMDE_ASSUME_VECTORIZATION)
+  return (simde__m128) {
+    .f32 = SIMDE__SHUFFLE_VECTOR(32, 16, a.f32, simde_mm_cmple_ps(a, b).f32, 4, 1, 2, 3)
+  };
 #else
   simde__m128 r;
   r.u32[0] = (a.f32[0] <= b.f32[0]) ? 0xffffffff : 0;
@@ -409,6 +425,10 @@ simde_mm_cmplt_ss (simde__m128 a, simde__m128 b) {
   float32x4_t r = vcltq_f32(a.neon_f32, b.neon_f32);
   float32x4_t t = vextq_f32(a.neon_f32, r, 1);
   return SIMDE__M128_NEON_C(f32, vextq_f32(t, t, 3));
+#elif defined(SIMDE__SHUFFLE_VECTOR) && defined(SIMDE_ASSUME_VECTORIZATION)
+  return (simde__m128) {
+    .f32 = SIMDE__SHUFFLE_VECTOR(32, 16, a.f32, simde_mm_cmplt_ps(a, b).f32, 4, 1, 2, 3)
+  };
 #else
   simde__m128 r;
   r.u32[0] = (a.f32[0] < b.f32[0]) ? 0xffffffff : 0;
@@ -447,6 +467,10 @@ simde_mm_cmpneq_ss (simde__m128 a, simde__m128 b) {
   float32x4_t r = vreinterpretq_f32_u32(vmvnq_u32(vreinterpretq_u32_f32(e)));
   float32x4_t t = vextq_f32(a.neon_f32, r, 1);
   return SIMDE__M128_NEON_C(f32, vextq_f32(t, t, 3));
+#elif defined(SIMDE__SHUFFLE_VECTOR) && defined(SIMDE_ASSUME_VECTORIZATION)
+  return (simde__m128) {
+    .f32 = SIMDE__SHUFFLE_VECTOR(32, 16, a.f32, simde_mm_cmpneq_ps(a, b).f32, 4, 1, 2, 3)
+  };
 #else
   simde__m128 r;
   r.u32[0] = (a.f32[0] != b.f32[0]) ? 0xffffffff : 0;
@@ -591,6 +615,10 @@ simde_mm_cmpord_ss (simde__m128 a, simde__m128 b) {
   float32x4_t r = vreinterpretq_f32_u32(vandq_u32(ceqaa, ceqbb));
   float32x4_t t = vextq_f32(a.neon_f32, r, 1);
   return SIMDE__M128_NEON_C(f32, vextq_f32(t, t, 3));
+#elif defined(SIMDE__SHUFFLE_VECTOR) && defined(SIMDE_ASSUME_VECTORIZATION)
+  return (simde__m128) {
+    .f32 = SIMDE__SHUFFLE_VECTOR(32, 16, a.f32, simde_mm_cmpord_ps(a, b).f32, 4, 1, 2, 3)
+  };
 #else
   simde__m128 r;
   r.u32[0] = (isnan(a.f32[0]) || isnan(b.f32[0])) ? 0 : 0xffffffff;
@@ -622,6 +650,10 @@ simde__m128
 simde_mm_cmpunord_ss (simde__m128 a, simde__m128 b) {
 #if defined(SIMDE_SSE_NATIVE) && !defined(__PGI)
   return SIMDE__M128_C(_mm_cmpunord_ss(a.n, b.n));
+#elif defined(SIMDE__SHUFFLE_VECTOR) && defined(SIMDE_ASSUME_VECTORIZATION)
+  return (simde__m128) {
+    .f32 = SIMDE__SHUFFLE_VECTOR(32, 16, a.f32, simde_mm_cmpunord_ps(a, b).f32, 4, 1, 2, 3)
+  };
 #else
   simde__m128 r;
   r.u32[0] = (isnan(a.f32[0]) || isnan(b.f32[0])) ? 0xffffffff : 0;
