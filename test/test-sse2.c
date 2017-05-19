@@ -8994,7 +8994,7 @@ static MunitTest test_suite_tests[] = {
   { NULL, NULL, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL }
 };
 
-const MunitSuite simde_sse2_test_suite = {
+MunitSuite simde_sse2_test_suite = {
   (char*) "/sse2",
   test_suite_tests,
   NULL,

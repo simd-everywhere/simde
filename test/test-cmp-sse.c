@@ -150,7 +150,7 @@ static MunitTest test_suite_tests[] = {
 };
 #endif
 
-const MunitSuite simde_sse_test_suite = {
+MunitSuite simde_sse_test_suite = {
   (char*) "/sse",
   test_suite_tests,
   NULL,

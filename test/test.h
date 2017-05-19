@@ -36,13 +36,13 @@
 __pragma(warning(disable:4132 4204))
 #endif
 
-const MunitSuite simde_mmx_test_suite;
-const MunitSuite simde_sse_test_suite;
-const MunitSuite simde_sse2_test_suite;
-const MunitSuite simde_sse3_test_suite;
-const MunitSuite simde_ssse3_test_suite;
-const MunitSuite simde_sse4_1_test_suite;
-const MunitSuite simde_sse4_2_test_suite;
+MunitSuite simde_mmx_test_suite;
+MunitSuite simde_sse_test_suite;
+MunitSuite simde_sse2_test_suite;
+MunitSuite simde_sse3_test_suite;
+MunitSuite simde_ssse3_test_suite;
+MunitSuite simde_sse4_1_test_suite;
+MunitSuite simde_sse4_2_test_suite;
 
 #if defined(SIMDE__ENABLE_DEBUG_ARRAY)
 void debug_array_u8(const char* prefix, size_t nmemb, uint8_t v[HEDLEY_ARRAY_PARAM(nmemb)]);

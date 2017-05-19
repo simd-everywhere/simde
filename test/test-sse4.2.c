@@ -32,7 +32,7 @@ static MunitTest test_suite_tests[] = {
   { NULL, NULL, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL }
 };
 
-const MunitSuite simde_sse4_2_test_suite = {
+MunitSuite simde_sse4_2_test_suite = {
   (char*) "/sse4.2",
   test_suite_tests,
   NULL,

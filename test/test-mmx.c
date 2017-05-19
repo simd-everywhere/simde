@@ -2850,7 +2850,7 @@ static MunitTest test_suite_tests[] = {
   { NULL, NULL, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL }
 };
 
-const MunitSuite simde_mmx_test_suite = {
+MunitSuite simde_mmx_test_suite = {
   (char*) "/mmx",
   test_suite_tests,
   NULL,
