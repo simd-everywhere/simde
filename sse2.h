@@ -1692,8 +1692,8 @@ simde_mm_madd_epi16 (simde__m128i a, simde__m128i b) {
 #if defined(SIMDE_SSE2_NATIVE)
   return SIMDE__M128I_C(_mm_madd_epi16(a.n, b.n));
 #elif defined(SIMDE_SSE2_NEON)
-  int32x4_t pl = vmull_s16(vget_low_s16(a.neon_i32),  vget_low_s16(b.neon_i32));
-  int32x4_t ph = vmull_s16(vget_high_s16(a.neon_i32), vget_high_s16(b.neon_i32));
+  int32x4_t pl = vmull_s16(vget_low_s16(a.neon_i16),  vget_low_s16(b.neon_i16));
+  int32x4_t ph = vmull_s16(vget_high_s16(a.neon_i16), vget_high_s16(b.neon_i16));
   int32x2_t rl = vpadd_s32(vget_low_s32(pl), vget_high_s32(pl));
   int32x2_t rh = vpadd_s32(vget_low_s32(ph), vget_high_s32(ph));
   return SIMDE__M128I_NEON_C(i32, vcombine_s32(rl, rh));
@@ -2957,7 +2957,7 @@ simde_mm_storel_epi64 (simde__m128i* mem_addr, simde__m128i a) {
 #if defined(SIMDE_SSE2_NATIVE)
   _mm_storel_epi64(&(mem_addr->n), a.n);
 #elif defined(SIMDE_SSE2_NEON)
-  mem_addr->i64[0] = vget_low_s64(a.neon_i64);
+  mem_addr->i64[0] = vgetq_lane_s64(a.neon_i64, 0);
 #else
   mem_addr->i64[0] = a.i64[0];
 #endif
