@@ -1234,7 +1234,7 @@ simde_mm_cvtps_epi32 (simde__m128 a) {
   /* The default rounding mode on SSE is 'round to even', which ArmV7
      does not support!  It is supported on ARMv8 however. */
   #if defined(SIMDE_ARCH_AARCH64)
-    return SIMDE__M128I_NEON_C(i32, vcvtnq_s32_f32(a));
+    return SIMDE__M128I_NEON_C(i32, vcvtnq_s32_f32(a.neon_f32));
   #else
     uint32x4_t signmask = vdupq_n_u32(0x80000000);
     float32x4_t half = vbslq_f32(signmask, a.neon_f32, vdupq_n_f32(0.5f)); /* +/- 0.5 */
