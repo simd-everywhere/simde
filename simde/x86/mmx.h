@@ -25,7 +25,7 @@
 #  if !defined(SIMDE__MMX_H)
 #    define SIMDE__MMX_H
 #  endif
-#  include "simde-common.h"
+#  include "../simde-common.h"
 
 #  if defined(SIMDE_MMX_FORCE_NATIVE)
 #    define SIMDE_MMX_NATIVE

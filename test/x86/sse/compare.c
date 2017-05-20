@@ -21,15 +21,15 @@
  * SOFTWARE.
  */
 
-#include "test.h"
+#include "../../test.h"
 #include <stdio.h>
 
 #if defined(__SSE__)
 #define SIMDE_SSE_NO_NATIVE
-#include "../sse.h"
+#include "../../../simde/x86/sse.h"
 #include <xmmintrin.h>
 
-#include "test-cmp.h"
+#include "../../compare.h"
 
 define_test_cmp_f32_VT_2xVT(_m128, mm_add_ps)
 define_test_cmp_f32_VT_2xVT(_m128, mm_add_ss)

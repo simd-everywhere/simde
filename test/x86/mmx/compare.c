@@ -21,15 +21,15 @@
  * SOFTWARE.
  */
 
-#include "test.h"
+#include "../../test.h"
 #include <stdio.h>
 
 #if defined(__MMX__)
 #define SIMDE_MMX_NO_NATIVE
-#include "../mmx.h"
+#include "../../../simde/x86/mmx.h"
 #include <mmintrin.h>
 
-#include "test-cmp.h"
+#include "../../compare.h"
 
 define_test_cmp_VT_2xVT(_m64, mm_add_pi8,      i8)
 define_test_cmp_VT_2xVT(_m64, mm_add_pi16,    i16)

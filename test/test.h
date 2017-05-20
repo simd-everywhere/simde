@@ -27,9 +27,9 @@
 #include <stdio.h>
 #include <limits.h>
 
-#include "../simde-common.h"
+#include "../simde/simde-common.h"
 
-#include "../hedley.h"
+#include "../simde/hedley.h"
 #include "munit/munit.h"
 
 #if defined(_MSC_VER)

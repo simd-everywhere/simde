@@ -21,8 +21,8 @@
  * SOFTWARE.
  */
 
-#include "test.h"
-#include "../sse.h"
+#include "../../test.h"
+#include "../../../simde/x86/sse.h"
 
 #include <stdio.h>
 #include <math.h>

@@ -21,8 +21,8 @@
  * SOFTWARE.
  */
 
-#include "test.h"
-#include "../mmx.h"
+#include "../../test.h"
+#include "../../../simde/x86/mmx.h"
 
 #include <stdio.h>
 

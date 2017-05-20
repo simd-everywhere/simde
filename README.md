@@ -53,10 +53,10 @@ way to learn about the instructions.
 There are three places you'll want to modify in order to implement a
 new function:
 
- * ${isax}.h — this is where the implementations live
- * test/test-${isax}.c — tests comparing the portable implementation
-   with the expected result.
- * test/test-cmp-${isax}.c — tests comparing the portable
+ * ${arch}/${isax}.h — this is where the implementations live
+ * test/${isax}/${isax}.c — tests comparing the implementation with
+   the expected result.
+ * test/${arch}/${isax}/compare.c — tests comparing the portable
    implementation with the "native" version, using random data for
    inputs.
 
@@ -69,12 +69,12 @@ contact us; we're happy to help!
 
 ## Usage
 
-Each instruction set has a separate file; `mmx.h` for MMX, `sse.h` for
-SSE, `sse2.h` for SSE2, and so on.  Just include the header for
-whichever instruction set(s) you want, and SIMDe will provide the
-fastest implementation it can given which extensions you've enabled in
-your compiler (i.e., if you want to use NEON to implement SSE, you'll
-need to pass something like `-mfpu=neon`).
+Each instruction set has a separate file; `x86/mmx.h` for MMX,
+`s`x86/se.h` for SSE, ``x86/sse2.h` for SSE2, and so on.  Just include
+the header for whichever instruction set(s) you want, and SIMDe will
+provide the fastest implementation it can given which extensions
+you've enabled in your compiler (i.e., if you want to use NEON to
+implement SSE, you'll need to pass something like `-mfpu=neon`).
 
 Symbols are prefixed with `simde_`.  For example, the MMX
 `_mm_add_pi8` intrinsic becomes `simde_mm_add_pi8`, and `__m64`

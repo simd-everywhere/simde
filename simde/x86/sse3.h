@@ -160,9 +160,9 @@ simde_mm_hsub_ps (simde__m128 a, simde__m128 b) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_lddqu_si128 (simde__m128i const* mem_addr) {
-#if defined(SIMDE_SSE2_NATIVE)
+#if defined(SIMDE_SSE3_NATIVE)
   return SIMDE__M128I_C(_mm_lddqu_si128(&mem_addr->n));
-#elif defined(SIMDE_SSE2_NEON)
+#elif defined(SIMDE_SSE3_NEON)
   return SIMDE__M128I_NEON_C(i32, vld1q_s32((int32_t*) mem_addr));
 #else
   simde__m128i r;
@@ -174,7 +174,7 @@ simde_mm_lddqu_si128 (simde__m128i const* mem_addr) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
 simde_mm_movedup_pd (simde__m128d a) {
-#if defined(SIMDE_SSE2_NATIVE)
+#if defined(SIMDE_SSE3_NATIVE)
   return SIMDE__M128D_C(_mm_movedup_pd(a.n));
 #else
   simde__m128d r;
@@ -187,7 +187,7 @@ simde_mm_movedup_pd (simde__m128d a) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128
 simde_mm_movehdup_ps (simde__m128 a) {
-#if defined(SIMDE_SSE2_NATIVE)
+#if defined(SIMDE_SSE3_NATIVE)
   return SIMDE__M128_C(_mm_movehdup_ps(a.n));
 #else
   simde__m128 r;
@@ -202,7 +202,7 @@ simde_mm_movehdup_ps (simde__m128 a) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128
 simde_mm_moveldup_ps (simde__m128 a) {
-#if defined(SIMDE_SSE2_NATIVE)
+#if defined(SIMDE__SSE3_NATIVE)
   return SIMDE__M128_C(_mm_moveldup_ps(a.n));
 #else
   simde__m128 r;

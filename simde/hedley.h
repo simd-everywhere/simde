@@ -107,6 +107,16 @@
 #  define HEDLEY_SUNPRO_VERSION_CHECK(major,minor,patch) 0
 #endif
 
+#if defined(HEDLEY_EMSCRIPTEN_VERSION_CHECK)
+#  undef HEDLEY_EMSCRIPTEN_VERSION_CHECK
+#endif
+#if defined(__EMSCRIPTEN__)
+#  define HEDLEY_EMSCRIPTEN_VERSION_CHECK(major,minor,patch) \
+  (HEDLEY_VERSION_ENCODE(__EMSCRIPTEN_major__, __EMSCRIPTEN_minor__, __EMSCRIPTEN_tiny__) >= HEDLEY_VERSION_ENCODE(major, minor, patch))
+#else
+#  define HEDLEY_EMSCRIPTEN_VERSION_CHECK(major,minor,patch) 0
+#endif
+
 #if defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 199901L)
 #  define HEDLEY_PRAGMA(value) _Pragma(#value)
 #elif HEDLEY_GCC_VERSION_CHECK(3,0,0)

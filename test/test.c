@@ -23,9 +23,9 @@
 
 #include "test.h"
 
-#include "../sse.h"
-#include <fenv.h>
+#include "../simde/x86/sse.h"
 
+#include <fenv.h>
 #include <math.h>
 
 static MunitTest test_suite_tests[] = {

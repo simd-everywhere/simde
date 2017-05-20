@@ -64,13 +64,14 @@ endif()
 set(TEST_SOURCES
   test.c
   test-common.c
-  test-mmx.c
-  test-sse.c
-  test-sse2.c
-  test-sse3.c
-  test-ssse3.c
-  test-sse4.1.c
-  test-sse4.2.c)
+
+  x86/mmx/mmx.c
+  x86/sse/sse.c
+  x86/sse2/sse2.c
+  x86/sse3/sse3.c
+  x86/ssse3/ssse3.c
+  x86/sse4.1/sse4.1.c
+  x86/sse4.2/sse4.2.c)
 
 set_compiler_specific_flags(
   VARIABLE extra_cflags
@@ -101,11 +102,11 @@ endforeach()
 target_compile_definitions(test-emul PRIVATE -DSIMDE_NO_NATIVE)
 
 add_executable(test-cmp
-  test-cmp.c
+  compare.c
   test-common.c
-  test-cmp-mmx.c
-  test-cmp-sse.c
-  test-cmp-sse2.c)
+  x86/mmx/compare.c
+  x86/sse/compare.c
+  x86/sse2/compare.c)
 target_link_libraries(test-cmp munit)
 if(LIBM)
   target_link_libraries(test-cmp ${LIBM})
