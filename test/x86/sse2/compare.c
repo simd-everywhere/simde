@@ -21,7 +21,7 @@
  * SOFTWARE.
  */
 
-#include "../../test.h"
+#include "../x86-internal.h"
 #include <stdio.h>
 
 #if defined(__SSE2__)
@@ -29,7 +29,7 @@
 #include "../../../simde/x86/sse2.h"
 #include <emmintrin.h>
 
-#include "../../compare.h"
+#include "../compare.h"
 
 define_test_cmp_VT_2xVT(_m128i, mm_add_epi8, i8)
 define_test_cmp_VT_2xVT(_m128i, mm_add_epi16, i16)
@@ -66,39 +66,39 @@ define_test_cmp_f64_VT_2xVT(_m128d, mm_max_pd)
 define_test_cmp_f64_VT_2xVT(_m128d, mm_max_sd)
 
 static MunitTest test_suite_tests[] = {
-  { (char*) "/mm_add_epi8",       test_simde_mm_add_epi8,       NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_add_epi16",      test_simde_mm_add_epi16,      NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_add_epi32",      test_simde_mm_add_epi32,      NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_add_epi64",      test_simde_mm_add_epi64,      NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_add_pd",         test_simde_mm_add_pd,         NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_add_sd",         test_simde_mm_add_sd,         NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_adds_epi8",      test_simde_mm_adds_epi8,      NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_adds_epi16",     test_simde_mm_adds_epi16,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_adds_epu8",      test_simde_mm_adds_epu8,      NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_adds_epu16",     test_simde_mm_adds_epu16,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_and_pd",         test_simde_mm_and_pd,         NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_andnot_pd",      test_simde_mm_andnot_pd,      NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_avg_epu8",       test_simde_mm_avg_epu8,       NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_avg_epu16",      test_simde_mm_avg_epu16,      NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_madd_epi16",     test_simde_mm_madd_epi16,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_min_epi16",      test_simde_mm_min_epi16,      NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_min_epu8",       test_simde_mm_min_epu8,       NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_min_pd",         test_simde_mm_min_pd,         NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_min_sd",         test_simde_mm_min_sd,         NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_max_epi16",      test_simde_mm_max_epi16,      NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_max_epu8",       test_simde_mm_max_epu8,       NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_max_pd",         test_simde_mm_max_pd,         NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_max_sd",         test_simde_mm_max_sd,         NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_sub_epi8",       test_simde_mm_sub_epi8,       NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_sub_epi16",      test_simde_mm_sub_epi16,      NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_sub_epi32",      test_simde_mm_sub_epi32,      NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_sub_epi64",      test_simde_mm_sub_epi64,      NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_sub_pd",         test_simde_mm_sub_pd,         NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_sub_sd",         test_simde_mm_sub_sd,         NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_subs_epi8",      test_simde_mm_subs_epi8,      NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_subs_epi16",     test_simde_mm_subs_epi16,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_subs_epu8",      test_simde_mm_subs_epu8,      NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_subs_epu16",     test_simde_mm_subs_epu16,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  TEST_FUNC_CMP(mm_add_epi8),
+  TEST_FUNC_CMP(mm_add_epi16),
+  TEST_FUNC_CMP(mm_add_epi32),
+  TEST_FUNC_CMP(mm_add_epi64),
+  TEST_FUNC_CMP(mm_add_pd),
+  TEST_FUNC_CMP(mm_add_sd),
+  TEST_FUNC_CMP(mm_adds_epi8),
+  TEST_FUNC_CMP(mm_adds_epi16),
+  TEST_FUNC_CMP(mm_adds_epu8),
+  TEST_FUNC_CMP(mm_adds_epu16),
+  TEST_FUNC_CMP(mm_and_pd),
+  TEST_FUNC_CMP(mm_andnot_pd),
+  TEST_FUNC_CMP(mm_avg_epu8),
+  TEST_FUNC_CMP(mm_avg_epu16),
+  TEST_FUNC_CMP(mm_madd_epi16),
+  TEST_FUNC_CMP(mm_min_epi16),
+  TEST_FUNC_CMP(mm_min_epu8),
+  TEST_FUNC_CMP(mm_min_pd),
+  TEST_FUNC_CMP(mm_min_sd),
+  TEST_FUNC_CMP(mm_max_epi16),
+  TEST_FUNC_CMP(mm_max_epu8),
+  TEST_FUNC_CMP(mm_max_pd),
+  TEST_FUNC_CMP(mm_max_sd),
+  TEST_FUNC_CMP(mm_sub_epi8),
+  TEST_FUNC_CMP(mm_sub_epi16),
+  TEST_FUNC_CMP(mm_sub_epi32),
+  TEST_FUNC_CMP(mm_sub_epi64),
+  TEST_FUNC_CMP(mm_sub_pd),
+  TEST_FUNC_CMP(mm_sub_sd),
+  TEST_FUNC_CMP(mm_subs_epi8),
+  TEST_FUNC_CMP(mm_subs_epi16),
+  TEST_FUNC_CMP(mm_subs_epu8),
+  TEST_FUNC_CMP(mm_subs_epu16),
 
   { NULL, NULL, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL }
 };
@@ -108,7 +108,7 @@ static MunitTest test_suite_tests[] = {
 };
 #endif
 
-MunitSuite simde_sse2_test_suite = {
+MunitSuite simde_sse2_cmp_test_suite = {
   (char*) "/sse2",
   test_suite_tests,
   NULL,

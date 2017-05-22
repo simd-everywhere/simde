@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.0)
 
-project(portable-snippet-tests)
+project(simde-tests)
 
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 include (ExtraWarningFlags)
@@ -63,15 +63,23 @@ endif()
 
 set(TEST_SOURCES
   test.c
-  test-common.c
+  test-common.c)
 
-  x86/mmx/mmx.c
-  x86/sse/sse.c
-  x86/sse2/sse2.c
-  x86/sse3/sse3.c
-  x86/ssse3/ssse3.c
-  x86/sse4.1/sse4.1.c
-  x86/sse4.2/sse4.2.c)
+if(NOT DISABLE_X86)
+  list(APPEND TEST_SOURCES
+    x86/mmx/mmx.c
+    x86/mmx/compare.c
+    x86/sse/sse.c
+    x86/sse/compare.c
+    x86/sse2/sse2.c
+    x86/sse2/compare.c
+    x86/sse3/sse3.c
+    x86/ssse3/ssse3.c
+    x86/sse4.1/sse4.1.c
+    x86/sse4.2/sse4.2.c)
+else()
+  add_definitions(-DDISABLE_X86)
+endif()
 
 set_compiler_specific_flags(
   VARIABLE extra_cflags
@@ -92,26 +100,13 @@ foreach(variant native emul)
   if(LIBM)
     target_link_libraries(test-${variant} ${LIBM})
   endif()
-  foreach(tst "/mmx" "/sse" "/sse2" "/sse3" "/ssse3" "/sse4.1" "/sse4.2")
-    add_test(NAME "/${variant}${tst}" COMMAND $<TARGET_FILE:test-${variant}> "/${variant}${tst}")
-  endforeach()
+  if (NOT DISABLE_X86)
+    foreach(tst "/x86/mmx" "/x86/sse" "/x86/sse2" "/x86/sse3" "/x86/ssse3" "/x86/sse4.1" "/x86/sse4.2")
+      add_test(NAME "${tst}/${variant}" COMMAND $<TARGET_FILE:test-${variant}> "${tst}")
+    endforeach()
+  endif()
   target_add_extra_warning_flags(test-${variant})
   set_property (TARGET test-${variant} PROPERTY C_STANDARD "99")
   target_add_compiler_flags(test-${variant} ${extra_cflags})
 endforeach()
 target_compile_definitions(test-emul PRIVATE -DSIMDE_NO_NATIVE)
-
-add_executable(test-cmp
-  compare.c
-  test-common.c
-  x86/mmx/compare.c
-  x86/sse/compare.c
-  x86/sse2/compare.c)
-target_link_libraries(test-cmp munit)
-if(LIBM)
-  target_link_libraries(test-cmp ${LIBM})
-endif()
-add_test(NAME "/cmp" COMMAND $<TARGET_FILE:test-cmp>)
-target_add_extra_warning_flags(test-cmp)
-set_property (TARGET test-cmp PROPERTY C_STANDARD "99")
-target_add_compiler_flags(test-cmp ${extra_cflags})

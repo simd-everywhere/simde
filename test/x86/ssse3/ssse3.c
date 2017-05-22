@@ -21,7 +21,7 @@
  * SOFTWARE.
  */
 
-#include "../../test.h"
+#include "../x86-internal.h"
 #include "../../../simde/x86/ssse3.h"
 
 #include <stdio.h>

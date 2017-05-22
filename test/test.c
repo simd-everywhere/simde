@@ -23,7 +23,9 @@
 
 #include "test.h"
 
-#include "../simde/x86/sse.h"
+#if !defined(DISABLE_X86)
+#  include "x86/x86-internal.h"
+#endif
 
 #include <fenv.h>
 #include <math.h>
@@ -33,54 +35,38 @@ static MunitTest test_suite_tests[] = {
 };
 
 int main(int argc, char* argv[MUNIT_ARRAY_PARAM(argc + 1)]) {
-  MunitSuite test_suites[] = {
+  MunitSuite x86_test_suites[] = {
+#if !defined(DISABLE_X86)
     simde_mmx_test_suite,
+    simde_mmx_cmp_test_suite,
     simde_sse_test_suite,
+    simde_sse_cmp_test_suite,
     simde_sse2_test_suite,
+    simde_sse2_cmp_test_suite,
     simde_sse3_test_suite,
     simde_ssse3_test_suite,
     simde_sse4_1_test_suite,
     simde_sse4_2_test_suite,
+#endif
+    { 0, },
+  };
+
+  MunitSuite test_suites[] = {
+    { (char*) "/x86",
+      NULL,
+      x86_test_suites,
+      1,
+      MUNIT_SUITE_OPTION_NONE },
     { 0, },
   };
 
   MunitSuite test_suite = {
-#if !defined(SIMDE_NO_NATIVE)
-    (char*) "/native",
-#else
-    (char*) "/emul",
-#endif
+    NULL,
     test_suite_tests,
     test_suites,
     1,
     MUNIT_SUITE_OPTION_NONE
   };
-
-  /* Set the SSE rounding mode to match the CPU rounding mode. */
-#if defined(SIMDE__SSE_NATIVE)
-  switch (fegetround()) {
-#if defined(FE_TONEAREST)
-    case FE_TONEAREST:
-      simde_MM_SET_ROUNDING_MODE(_MM_ROUND_NEAREST);
-      break;
-#endif
-#if defined(FE_DOWNWARD)
-    case FE_DOWNWARD:
-      simde_MM_SET_ROUNDING_MODE(_MM_ROUND_DOWN);
-      break;
-#endif
-#if defined(FE_UPWARD)
-    case FE_UPWARD:
-      simde_MM_SET_ROUNDING_MODE(_MM_ROUND_UP);
-      break;
-#endif
-#if defined(FE_TOWARDZERO)
-    case FE_TOWARDZERO:
-      simde_MM_SET_ROUNDING_MODE(_MM_ROUND_TOWARD_ZERO);
-      break;
-#endif
-  }
-#endif
 
   return munit_suite_main(&test_suite, NULL, argc, argv);
 }

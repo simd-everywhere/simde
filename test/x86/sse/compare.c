@@ -21,7 +21,7 @@
  * SOFTWARE.
  */
 
-#include "../../test.h"
+#include "../x86-internal.h"
 #include <stdio.h>
 
 #if defined(__SSE__)
@@ -29,7 +29,7 @@
 #include "../../../simde/x86/sse.h"
 #include <xmmintrin.h>
 
-#include "../../compare.h"
+#include "../compare.h"
 
 define_test_cmp_f32_VT_2xVT(_m128, mm_add_ps)
 define_test_cmp_f32_VT_2xVT(_m128, mm_add_ss)
@@ -85,62 +85,65 @@ define_test_cmp_f32_VT_2xVT(_m128, mm_unpacklo_ps)
 define_test_cmp_VT_2xVT(_m128, mm_or_ps, u32)
 define_test_cmp_VT_2xVT(_m128, mm_xor_ps, u32)
 
+#define TEST_FUNC_CMP(name) \
+  { (char*) "/" #name "/cmp", test_simde_##name, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL }
+
 static MunitTest test_suite_tests[] = {
-  { (char*) "/mm_add_ps",       test_simde_mm_add_ps,       NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_add_ss",       test_simde_mm_add_ss,       NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_and_ps",       test_simde_mm_and_ps,       NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_andnot_ps",    test_simde_mm_andnot_ps,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_avg_pu16",     test_simde_mm_avg_pu16,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_avg_pu8",      test_simde_mm_avg_pu8,      NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_cmpeq_ps",     test_simde_mm_cmpeq_ps,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_cmpeq_ss",     test_simde_mm_cmpeq_ss,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_cmpge_ps",     test_simde_mm_cmpge_ps,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  TEST_FUNC_CMP(mm_add_ps),
+  TEST_FUNC_CMP(mm_add_ss),
+  TEST_FUNC_CMP(mm_and_ps),
+  TEST_FUNC_CMP(mm_andnot_ps),
+  TEST_FUNC_CMP(mm_avg_pu16),
+  TEST_FUNC_CMP(mm_avg_pu8),
+  TEST_FUNC_CMP(mm_cmpeq_ps),
+  TEST_FUNC_CMP(mm_cmpeq_ss),
+  TEST_FUNC_CMP(mm_cmpge_ps),
 #if !defined(__PGI)
-  { (char*) "/mm_cmpge_ss",     test_simde_mm_cmpge_ss,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_cmpgt_ss",     test_simde_mm_cmpgt_ss,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_cmpnge_ss",    test_simde_mm_cmpnge_ss,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_cmpngt_ss",    test_simde_mm_cmpngt_ss,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_cmpunord_ss",  test_simde_mm_cmpunord_ss,  NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  TEST_FUNC_CMP(mm_cmpge_ss),
+  TEST_FUNC_CMP(mm_cmpgt_ss),
+  TEST_FUNC_CMP(mm_cmpnge_ss),
+  TEST_FUNC_CMP(mm_cmpngt_ss),
+  TEST_FUNC_CMP(mm_cmpunord_ss),
 #endif
-  { (char*) "/mm_cmpgt_ps",     test_simde_mm_cmpgt_ps,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_cmple_ps",     test_simde_mm_cmple_ps,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_cmple_ss",     test_simde_mm_cmple_ss,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_cmplt_ps",     test_simde_mm_cmplt_ps,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_cmplt_ss",     test_simde_mm_cmplt_ss,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_cmpneq_ps",    test_simde_mm_cmpneq_ps,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_cmpneq_ss",    test_simde_mm_cmpneq_ss,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_cmpnge_ps",    test_simde_mm_cmpnge_ps,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_cmpngt_ps",    test_simde_mm_cmpngt_ps,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_cmpnle_ps",    test_simde_mm_cmpnle_ps,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_cmpnle_ss",    test_simde_mm_cmpnle_ss,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_cmpnlt_ps",    test_simde_mm_cmpnlt_ps,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_cmpnlt_ss",    test_simde_mm_cmpnlt_ss,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_cmpord_ps",    test_simde_mm_cmpord_ps,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_cmpord_ss",    test_simde_mm_cmpord_ss,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_cmpunord_ps",  test_simde_mm_cmpunord_ps,  NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_comige_ss",    test_simde_mm_comige_ss,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_comigt_ss",    test_simde_mm_comigt_ss,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_comile_ss",    test_simde_mm_comile_ss,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_comilt_ss",    test_simde_mm_comilt_ss,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_comieq_ss",    test_simde_mm_comieq_ss,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_comineq_ss",   test_simde_mm_comineq_ss,   NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_cvt_pi2ps",    test_simde_mm_cvt_pi2ps,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_div_ps",       test_simde_mm_div_ps,       NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_div_ss",       test_simde_mm_div_ss,       NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_sqrt_ps",      test_simde_mm_sqrt_ps,      NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_sqrt_ss",      test_simde_mm_sqrt_ss,      NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_sub_ps",       test_simde_mm_sub_ps,       NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_sub_ss",       test_simde_mm_sub_ss,       NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_ucomige_ss",   test_simde_mm_ucomige_ss,   NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_ucomigt_ss",   test_simde_mm_ucomigt_ss,   NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_ucomile_ss",   test_simde_mm_ucomile_ss,   NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_ucomilt_ss",   test_simde_mm_ucomilt_ss,   NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_ucomieq_ss",   test_simde_mm_ucomieq_ss,   NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_ucomineq_ss",  test_simde_mm_ucomineq_ss,  NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_unpackhi_ps",  test_simde_mm_unpackhi_ps,  NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_unpacklo_ps",  test_simde_mm_unpacklo_ps,  NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_or_ps",        test_simde_mm_or_ps,        NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_xor_ps",       test_simde_mm_xor_ps,       NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  TEST_FUNC_CMP(mm_cmpgt_ps),
+  TEST_FUNC_CMP(mm_cmple_ps),
+  TEST_FUNC_CMP(mm_cmple_ss),
+  TEST_FUNC_CMP(mm_cmplt_ps),
+  TEST_FUNC_CMP(mm_cmplt_ss),
+  TEST_FUNC_CMP(mm_cmpneq_ps),
+  TEST_FUNC_CMP(mm_cmpneq_ss),
+  TEST_FUNC_CMP(mm_cmpnge_ps),
+  TEST_FUNC_CMP(mm_cmpngt_ps),
+  TEST_FUNC_CMP(mm_cmpnle_ps),
+  TEST_FUNC_CMP(mm_cmpnle_ss),
+  TEST_FUNC_CMP(mm_cmpnlt_ps),
+  TEST_FUNC_CMP(mm_cmpnlt_ss),
+  TEST_FUNC_CMP(mm_cmpord_ps),
+  TEST_FUNC_CMP(mm_cmpord_ss),
+  TEST_FUNC_CMP(mm_cmpunord_ps),
+  TEST_FUNC_CMP(mm_comige_ss),
+  TEST_FUNC_CMP(mm_comigt_ss),
+  TEST_FUNC_CMP(mm_comile_ss),
+  TEST_FUNC_CMP(mm_comilt_ss),
+  TEST_FUNC_CMP(mm_comieq_ss),
+  TEST_FUNC_CMP(mm_comineq_ss),
+  TEST_FUNC_CMP(mm_cvt_pi2ps),
+  TEST_FUNC_CMP(mm_div_ps),
+  TEST_FUNC_CMP(mm_div_ss),
+  TEST_FUNC_CMP(mm_sqrt_ps),
+  TEST_FUNC_CMP(mm_sqrt_ss),
+  TEST_FUNC_CMP(mm_sub_ps),
+  TEST_FUNC_CMP(mm_sub_ss),
+  TEST_FUNC_CMP(mm_ucomige_ss),
+  TEST_FUNC_CMP(mm_ucomigt_ss),
+  TEST_FUNC_CMP(mm_ucomile_ss),
+  TEST_FUNC_CMP(mm_ucomilt_ss),
+  TEST_FUNC_CMP(mm_ucomieq_ss),
+  TEST_FUNC_CMP(mm_ucomineq_ss),
+  TEST_FUNC_CMP(mm_unpackhi_ps),
+  TEST_FUNC_CMP(mm_unpacklo_ps),
+  TEST_FUNC_CMP(mm_or_ps),
+  TEST_FUNC_CMP(mm_xor_ps),
 
   { NULL, NULL, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL }
 };
@@ -150,7 +153,7 @@ static MunitTest test_suite_tests[] = {
 };
 #endif
 
-MunitSuite simde_sse_test_suite = {
+MunitSuite simde_sse_cmp_test_suite = {
   (char*) "/sse",
   test_suite_tests,
   NULL,

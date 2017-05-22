@@ -36,14 +36,6 @@
 __pragma(warning(disable:4132 4204))
 #endif
 
-MunitSuite simde_mmx_test_suite;
-MunitSuite simde_sse_test_suite;
-MunitSuite simde_sse2_test_suite;
-MunitSuite simde_sse3_test_suite;
-MunitSuite simde_ssse3_test_suite;
-MunitSuite simde_sse4_1_test_suite;
-MunitSuite simde_sse4_2_test_suite;
-
 #if defined(SIMDE__ENABLE_DEBUG_ARRAY)
 void debug_array_u8(const char* prefix, size_t nmemb, uint8_t v[HEDLEY_ARRAY_PARAM(nmemb)]);
 void debug_array_u16(const char* prefix, size_t nmemb, uint16_t v[HEDLEY_ARRAY_PARAM(nmemb)]);
@@ -143,91 +135,6 @@ simde_float64 random_f64_range(simde_float64 min, simde_float64 max);
 #define simde_assert_uint64vx(nmemb, a, op, b)				\
   simde_assert_array_full("0x", "", munit_uint64_t, "016" PRIx64, nmemb, a, op, b)
 
-/* SIMDe-specific */
-
-#define simde_assert_m64_i8(a, op, b) \
-  simde_assert_typev(int8_t, PRId8, 8, (int8_t*) &(a), op, (int8_t*) &(b))
-#define simde_assert_m64_u8(a, op, b) \
-  simde_assert_typev(uint8_t, PRIu8, 8, (uint8_t*) &(a), op, (uint8_t*) &(b))
-#define simde_assert_m64_i16(a, op, b) \
-  simde_assert_int16vx(4, (int16_t*) &(a), op, (int16_t*) &(b))
-#define simde_assert_m64_u16(a, op, b) \
-  simde_assert_uint16vx(4, (uint16_t*) &(a), op, (uint16_t*) &(b))
-#define simde_assert_m64_i32(a, op, b) \
-  simde_assert_int32vx(2, (int32_t*) &(a), op, (int32_t*) &(b))
-#define simde_assert_m64_u32(a, op, b) \
-  simde_assert_uint32vx(2, (uint32_t*) &(a), op, (uint32_t*) &(b))
-#define simde_assert_m64_i64(a, op, b) \
-  simde_assert_int64vx(1, (int64_t*) &(a), op, (int64_t*) &(b))
-#define simde_assert_m64_u64(a, op, b) \
-  simde_assert_uint64vx(1, (uint64_t*) &(a), op, (uint64_t*) &(b))
-#define simde_assert_m64_f32(a, op, b) \
-  simde_assert_typev(simde_float32, "f", 2, (simde_float32*) &(a), op, (simde_float32*) &(b))
-#define simde_assert_m64_f64(a, op, b) \
-  simde_assert_typev(simde_float64, "f", 1, (simde_float64*) &(a), op, (simde_float64*) &(b))
-#define simde_assert_m64_f64_equal(a, b, precision) \
-  simde_assert_f32v_equal(simde_float64, 1, (simde_float64*) &(a), (simde_float64*) &(b), precision)
-
-#define simde_assert_m128_i8(a, op, b) \
-  simde_assert_typev(int8_t, PRId8, 16, (int8_t*) &(a), op, (int8_t*) &(b))
-#define simde_assert_m128_u8(a, op, b) \
-  simde_assert_typev(uint8_t, PRIu8, 16, (uint8_t*) &(a), op, (uint8_t*) &(b))
-#define simde_assert_m128_i16(a, op, b) \
-  simde_assert_int16vx(8, (int16_t*) &(a), op, (int16_t*) &(b))
-#define simde_assert_m128_u16(a, op, b) \
-  simde_assert_uint16vx(8, (uint16_t*) &(a), op, (uint16_t*) &(b))
-#define simde_assert_m128_i32(a, op, b) \
-  simde_assert_int32vx(4, (int32_t*) &(a), op, (int32_t*) &(b))
-#define simde_assert_m128_u32(a, op, b) \
-  simde_assert_uint32vx(4, (uint32_t*) &(a), op, (uint32_t*) &(b))
-#define simde_assert_m128_i64(a, op, b) \
-  simde_assert_int64vx(2, (int64_t*) &(a), op, (int64_t*) &(b))
-#define simde_assert_m128_u64(a, op, b) \
-  simde_assert_uint64vx(2, (uint64_t*) &(a), op, (uint64_t*) &(b))
-#define simde_assert_m128_f32(a, op, b) \
-  simde_assert_typev(simde_float32, "f", 4, (simde_float32*) &(a), op, (simde_float32*) &(b))
-#define simde_assert_m128_f32_equal(a, b, precision) \
-  simde_assert_f32v_equal(simde_float32, 4, (simde_float32*) &(a), (simde_float32*) &(b), precision)
-#define simde_assert_m128_f32_close(a, b, precision) \
-  simde_assert_f32v_close(simde_float32, 4, (simde_float32*) &(a), (simde_float32*) &(b), precision)
-#define simde_assert_m128_f64(a, op, b) \
-  simde_assert_typev(simde_float64, "f", 2, (simde_float64*) &(a), op, (simde_float64*) &(b))
-#define simde_assert_m128_f64_equal(a, b, precision) \
-  simde_assert_f32v_equal(simde_float64, 2, (simde_float64*) &(a), (simde_float64*) &(b), precision)
-#define simde_assert_m128_f64_close(a, b, precision) \
-  simde_assert_f32v_close(simde_float64, 2, (simde_float64*) &(a), (simde_float64*) &(b), precision)
-
-#define simde_assert_m128i_i8(a, op, b) \
-  simde_assert_typev(int8_t, PRId8, 16, (int8_t*) &(a), op, (int8_t*) &(b))
-#define simde_assert_m128i_u8(a, op, b) \
-  simde_assert_typev(uint8_t, PRIu8, 16, (uint8_t*) &(a), op, (uint8_t*) &(b))
-#define simde_assert_m128i_i16(a, op, b) \
-  simde_assert_typev(int16_t, PRId16, 8, (int16_t*) &(a), op, (int16_t*) &(b))
-#define simde_assert_m128i_u16(a, op, b) \
-  simde_assert_typev(uint16_t, PRIu16, 8, (uint16_t*) &(a), op, (uint16_t*) &(b))
-#define simde_assert_m128i_i32(a, op, b) \
-  simde_assert_typev(int32_t, PRId32, 4, (int32_t*) &(a), op, (int32_t*) &(b))
-#define simde_assert_m128i_u32(a, op, b) \
-  simde_assert_typev(uint32_t, PRIu32, 4, (uint32_t*) &(a), op, (uint32_t*) &(b))
-#define simde_assert_m128i_i64(a, op, b) \
-  simde_assert_typev(int64_t, PRId64, 2, (int64_t*) &(a), op, (int64_t*) &(b))
-#define simde_assert_m128i_u64(a, op, b) \
-  simde_assert_typev(uint64_t, PRIu64, 2, (uint64_t*) &(a), op, (uint64_t*) &(b))
-
-#define simde_assert_m128d_f32(a, op, b) \
-  simde_assert_typev(simde_float32, "f", 4, (simde_float32*) &(a), op, (simde_float32*) &(b))
-#define simde_assert_m128d_f32_equal(a, b, precision) \
-  simde_assert_f32v_equal(simde_float32, 4, (simde_float32*) &(a), (simde_float32*) &(b), precision)
-#define simde_assert_m128d_f64(a, op, b) \
-  simde_assert_typev(simde_float64, "f", 2, (simde_float64*) &(a), op, (simde_float64*) &(b))
-#define simde_assert_m128d_f64_equal(a, b, precision) \
-  simde_assert_f32v_equal(simde_float64, 2, (simde_float64*) &(a), (simde_float64*) &(b), precision)
-#define simde_assert_m128d_f64_close(a, b, precision) \
-  simde_assert_f32v_close(simde_float64, 2, (simde_float64*) &(a), (simde_float64*) &(b), precision)
-
-/* SIMD floating-point conversion functions may or may not be the same
-   as the normal FP conversion functions. */
-
 #define simde_assert_int32_close(value, target) \
   do { \
     if (value != target && value != target + 1 && value != target - 1) \
@@ -239,5 +146,11 @@ simde_float64 random_f64_range(simde_float64 min, simde_float64 max);
     if (value != target && value != target + 1 && value != target - 1) \
       munit_errorf("assertion failed: %s == %s (%" PRId64 " == %" PRId64 ")", #value, #target, value, target); \
   } while (0)
+
+#define TEST_FUNC(name) \
+  { (char*) "/" #name, test_simde_##name, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL }
+
+#define TEST_FUNC_CMP(name) \
+  { (char*) "/" #name "/cmp", test_simde_##name, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL }
 
 #endif /* !defined(SIMDE_TEST_H) */
