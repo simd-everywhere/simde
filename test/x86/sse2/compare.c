@@ -21,15 +21,15 @@
  * SOFTWARE.
  */
 
-#include "../x86-internal.h"
+#include <test/x86/x86-internal.h>
 #include <stdio.h>
 
 #if defined(__SSE2__)
 #define SIMDE_SSE2_NO_NATIVE
-#include "../../../simde/x86/sse2.h"
+#include <simde/x86/sse2.h>
 #include <emmintrin.h>
 
-#include "../compare.h"
+#include <test/x86/compare.h>
 
 define_test_cmp_VT_2xVT(_m128i, mm_add_epi8, i8)
 define_test_cmp_VT_2xVT(_m128i, mm_add_epi16, i16)

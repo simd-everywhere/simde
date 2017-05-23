@@ -4,15 +4,28 @@
 #include "../test.h"
 
 MunitSuite simde_mmx_test_suite;
+MunitSuite simde_mmx_emul_test_suite;
 MunitSuite simde_mmx_cmp_test_suite;
+
 MunitSuite simde_sse_test_suite;
+MunitSuite simde_sse_emul_test_suite;
 MunitSuite simde_sse_cmp_test_suite;
+
 MunitSuite simde_sse2_test_suite;
+MunitSuite simde_sse2_emul_test_suite;
 MunitSuite simde_sse2_cmp_test_suite;
+
 MunitSuite simde_sse3_test_suite;
+MunitSuite simde_sse3_emul_test_suite;
+
 MunitSuite simde_ssse3_test_suite;
+MunitSuite simde_ssse3_emul_test_suite;
+
 MunitSuite simde_sse4_1_test_suite;
+MunitSuite simde_sse4_1_emul_test_suite;
+
 MunitSuite simde_sse4_2_test_suite;
+MunitSuite simde_sse4_2_emul_test_suite;
 
 #define simde_assert_m64_i8(a, op, b) \
   simde_assert_typev(int8_t, PRId8, 8, (int8_t*) &(a), op, (int8_t*) &(b))

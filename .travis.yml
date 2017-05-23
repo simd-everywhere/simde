@@ -187,7 +187,7 @@ script:
 - if [ -n "${C_COMPILER}" ]; then export CC="${C_COMPILER}"; fi
 - cmake .. -DCMAKE_BUILD_TYPE="${BUILD_TYPE}"
 - make VERBOSE=1
-- ./test-native && ./test-emul
+- ./run-tests
 
 after_success:
 - if [ "${BUILD_TYPE}" = "Coverage" ]; then bash <(curl -s https://codecov.io/bash) -f '!*test-common.c'; fi

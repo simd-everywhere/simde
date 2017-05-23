@@ -61,12 +61,14 @@ if("${CLOCK_GETTIME_EXISTS}")
   target_link_libraries(munit "${CLOCK_GETTIME_LIBRARY}")
 endif()
 
+include_directories("${CMAKE_SOURCE_DIR}/..")
+
 set(TEST_SOURCES
   test.c
   test-common.c)
 
 if(NOT DISABLE_X86)
-  list(APPEND TEST_SOURCES
+  set(TEST_SOURCES
     x86/mmx/mmx.c
     x86/mmx/compare.c
     x86/sse/sse.c
@@ -81,6 +83,26 @@ else()
   add_definitions(-DDISABLE_X86)
 endif()
 
+foreach(src ${TEST_SOURCES})
+  get_filename_component(bn "${src}" NAME_WE)
+  if (NOT "compare" STREQUAL "${bn}")
+    get_filename_component(file_extension "${src}" EXT)
+    string(LENGTH "${file_extension}" file_extension_length)
+    string(LENGTH "${src}" src_length)
+    math(EXPR base_length "${src_length} - ${file_extension_length}")
+    string(SUBSTRING "${src}" 0 ${base_length} file)
+    string (REGEX REPLACE "[^a-zA-Z0-9]+" "-" file "${file}")
+    set(file "${CMAKE_CURRENT_BINARY_DIR}/${file}${file_extension}")
+    configure_file("${src}" "${file}" COPYONLY)
+    list(APPEND TEST_SOURCES "${file}")
+    set_source_files_properties("${file}" PROPERTIES COMPILE_DEFINITIONS "SIMDE_NO_NATIVE")
+  endif()
+endforeach()
+
+list(APPEND TEST_SOURCES
+  test.c
+  test-common.c)
+
 set_compiler_specific_flags(
   VARIABLE extra_cflags
   INTEL -wd3179
@@ -94,19 +116,16 @@ elseif(CFLAG__qopenmp_simd)
   set(extra_cflags "${extra_cflags} -qopenmp-simd -DSIMDE_ENABLE_OPENMP")
 endif()
 
-foreach(variant native emul)
-  add_executable(test-${variant} ${TEST_SOURCES})
-  target_link_libraries(test-${variant} munit)
-  if(LIBM)
-    target_link_libraries(test-${variant} ${LIBM})
-  endif()
-  if (NOT DISABLE_X86)
-    foreach(tst "/x86/mmx" "/x86/sse" "/x86/sse2" "/x86/sse3" "/x86/ssse3" "/x86/sse4.1" "/x86/sse4.2")
-      add_test(NAME "${tst}/${variant}" COMMAND $<TARGET_FILE:test-${variant}> "${tst}")
-    endforeach()
-  endif()
-  target_add_extra_warning_flags(test-${variant})
-  set_property (TARGET test-${variant} PROPERTY C_STANDARD "99")
-  target_add_compiler_flags(test-${variant} ${extra_cflags})
-endforeach()
-target_compile_definitions(test-emul PRIVATE -DSIMDE_NO_NATIVE)
+add_executable(run-tests ${TEST_SOURCES})
+target_link_libraries(run-tests munit)
+if(LIBM)
+  target_link_libraries(run-tests ${LIBM})
+endif()
+if (NOT DISABLE_X86)
+  foreach(tst "/x86/mmx" "/x86/sse" "/x86/sse2" "/x86/sse3" "/x86/ssse3" "/x86/sse4.1" "/x86/sse4.2")
+    add_test(NAME "${tst}/${variant}" COMMAND $<TARGET_FILE:run-tests> "${tst}")
+  endforeach()
+endif()
+target_add_extra_warning_flags(run-tests)
+set_property (TARGET run-tests PROPERTY C_STANDARD "99")
+target_add_compiler_flags(run-tests ${extra_cflags})

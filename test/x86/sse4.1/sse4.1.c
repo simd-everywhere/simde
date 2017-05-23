@@ -21,8 +21,8 @@
  * SOFTWARE.
  */
 
-#include "../x86-internal.h"
-#include "../../../simde/x86/sse4.1.h"
+#include <test/x86/x86-internal.h>
+#include <simde/x86/sse4.1.h>
 
 #include <stdio.h>
 
@@ -493,22 +493,26 @@ test_simde_mm_mullo_epi32(const MunitParameter params[], void* data) {
 }
 
 static MunitTest test_suite_tests[] = {
-  { (char*) "/mm_blendv_epi8",    test_simde_mm_blendv_epi8,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  TEST_FUNC(mm_blendv_epi8),
 
-  { (char*) "/mm_cvtepi16_epi32", test_simde_mm_cvtepi16_epi32, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_cvtepu8_epi32",  test_simde_mm_cvtepu8_epi32,  NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  TEST_FUNC(mm_cvtepi16_epi32),
+  TEST_FUNC(mm_cvtepu8_epi32),
 
-  { (char*) "/mm_extract_epi64",  test_simde_mm_extract_epi64,  NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  TEST_FUNC(mm_extract_epi64),
 
-  { (char*) "/mm_max_epi32",      test_simde_mm_max_epi32,      NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_max_epi8",       test_simde_mm_max_epi8,       NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_min_epi8",       test_simde_mm_min_epi8,       NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_min_epi32",      test_simde_mm_min_epi32,      NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  TEST_FUNC(mm_max_epi32),
+  TEST_FUNC(mm_max_epi8),
+  TEST_FUNC(mm_min_epi8),
+  TEST_FUNC(mm_min_epi32),
 
-  { (char*) "/mm_mullo_epi32",    test_simde_mm_mullo_epi32,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  TEST_FUNC(mm_mullo_epi32),
 
   { NULL, NULL, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL }
 };
+
+#if defined(SIMDE_NO_NATIVE)
+#  define simde_sse4_1_test_suite simde_sse4_1_emul_test_suite
+#endif
 
 MunitSuite simde_sse4_1_test_suite = {
   (char*) "/sse4.1",

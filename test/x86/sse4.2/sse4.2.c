@@ -21,8 +21,8 @@
  * SOFTWARE.
  */
 
-#include "../x86-internal.h"
-#include "../../../simde/x86/sse4.2.h"
+#include <test/x86/x86-internal.h>
+#include <simde/x86/sse4.2.h>
 
 #include <stdio.h>
 
@@ -31,6 +31,10 @@ static MunitTest test_suite_tests[] = {
 
   { NULL, NULL, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL }
 };
+
+#if defined(SIMDE_NO_NATIVE)
+#  define simde_sse4_2_test_suite simde_sse4_2_emul_test_suite
+#endif
 
 MunitSuite simde_sse4_2_test_suite = {
   (char*) "/sse4.2",

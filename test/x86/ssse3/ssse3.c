@@ -21,8 +21,8 @@
  * SOFTWARE.
  */
 
-#include "../x86-internal.h"
-#include "../../../simde/x86/ssse3.h"
+#include <test/x86/x86-internal.h>
+#include <simde/x86/ssse3.h>
 
 #include <stdio.h>
 
@@ -163,11 +163,15 @@ test_simde_mm_shuffle_epi8(const MunitParameter params[], void* data) {
 }
 
 static MunitTest test_suite_tests[] = {
-  { (char*) "/mm_alignr_epi8",      test_simde_mm_alignr_epi8,      NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_shuffle_epi8",     test_simde_mm_shuffle_epi8,     NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  TEST_FUNC(mm_alignr_epi8),
+  TEST_FUNC(mm_shuffle_epi8),
 
   { NULL, NULL, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL }
 };
+
+#if defined(SIMDE_NO_NATIVE)
+#  define simde_ssse3_test_suite simde_ssse3_emul_test_suite
+#endif
 
 MunitSuite simde_ssse3_test_suite = {
   (char*) "/ssse3",

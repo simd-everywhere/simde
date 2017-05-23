@@ -21,8 +21,8 @@
  * SOFTWARE.
  */
 
-#include "../x86-internal.h"
-#include "../../../simde/x86/sse3.h"
+#include <test/x86/x86-internal.h>
+#include <simde/x86/sse3.h>
 
 #include <stdio.h>
 
@@ -447,19 +447,23 @@ test_simde_mm_moveldup_ps(const MunitParameter params[], void* data) {
 }
 
 static MunitTest test_suite_tests[] = {
-  { (char*) "/mm_addsub_pd",    test_simde_mm_addsub_pd,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_addsub_ps",    test_simde_mm_addsub_ps,    NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_hadd_pd",      test_simde_mm_hadd_pd,      NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_hadd_ps",      test_simde_mm_hadd_ps,      NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_hsub_pd",      test_simde_mm_hsub_pd,      NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_hsub_ps",      test_simde_mm_hsub_ps,      NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_lddqu_si128",  test_simde_mm_lddqu_si128,  NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_movedup_pd",   test_simde_mm_movedup_pd,   NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_movehdup_ps",  test_simde_mm_movehdup_ps,  NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
-  { (char*) "/mm_moveldup_ps",  test_simde_mm_moveldup_ps,  NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL },
+  TEST_FUNC(mm_addsub_pd),
+  TEST_FUNC(mm_addsub_ps),
+  TEST_FUNC(mm_hadd_pd),
+  TEST_FUNC(mm_hadd_ps),
+  TEST_FUNC(mm_hsub_pd),
+  TEST_FUNC(mm_hsub_ps),
+  TEST_FUNC(mm_lddqu_si128),
+  TEST_FUNC(mm_movedup_pd),
+  TEST_FUNC(mm_movehdup_ps),
+  TEST_FUNC(mm_moveldup_ps),
 
   { NULL, NULL, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL }
 };
+
+#if defined(SIMDE_NO_NATIVE)
+#  define simde_sse3_test_suite simde_sse3_emul_test_suite
+#endif
 
 MunitSuite simde_sse3_test_suite = {
   (char*) "/sse3",

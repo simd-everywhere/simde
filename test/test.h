@@ -147,8 +147,11 @@ simde_float64 random_f64_range(simde_float64 min, simde_float64 max);
       munit_errorf("assertion failed: %s == %s (%" PRId64 " == %" PRId64 ")", #value, #target, value, target); \
   } while (0)
 
-#define TEST_FUNC(name) \
-  { (char*) "/" #name, test_simde_##name, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL }
+#if defined(SIMDE_NO_NATIVE)
+#  define TEST_FUNC(name) { (char*) "/" #name "/emul", test_simde_##name, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL }
+#else
+#  define TEST_FUNC(name) { (char*) "/" #name, test_simde_##name, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL }
+#endif
 
 #define TEST_FUNC_CMP(name) \
   { (char*) "/" #name "/cmp", test_simde_##name, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL }
