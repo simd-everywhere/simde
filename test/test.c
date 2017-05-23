@@ -26,6 +26,7 @@
 #if !defined(DISABLE_X86)
 #  include "x86/x86-internal.h"
 #endif
+#include "simd-js/simd-js.h"
 
 #include <fenv.h>
 #include <math.h>
@@ -64,10 +65,22 @@ int main(int argc, char* argv[MUNIT_ARRAY_PARAM(argc + 1)]) {
     { 0, },
   };
 
+  MunitSuite simd_js_test_suites[] = {
+    simde_simd_js_test_suite,
+    simde_simd_js_emul_test_suite,
+    simde_simd_js_cmp_test_suite,
+    { 0, },
+  };
+
   MunitSuite test_suites[] = {
     { (char*) "/x86",
       NULL,
       x86_test_suites,
+      1,
+      MUNIT_SUITE_OPTION_NONE },
+    { (char*) "/simd-js",
+      NULL,
+      simd_js_test_suites,
       1,
       MUNIT_SUITE_OPTION_NONE },
     { 0, },

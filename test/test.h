@@ -87,6 +87,23 @@ simde_float64 random_f64_range(simde_float64 min, simde_float64 max);
 #define simde_assert_uintv(nmemb, a, op, b)	\
   simde_assert_typev(int, "u", nmemb, a, op, b)
 
+#define simde_assert_int8v(nmemb, a, op, b)			\
+  simde_assert_array_full("", "", munit_int8_t, PRId8, nmemb, a, op, b)
+#define simde_assert_uint8v(nmemb, a, op, b)				\
+  simde_assert_array_full("", "", munit_uint8_t, PRIu8, nmemb, a, op, b)
+#define simde_assert_int16v(nmemb, a, op, b)			\
+  simde_assert_array_full("", "", munit_int16_t, PRId16, nmemb, a, op, b)
+#define simde_assert_uint16v(nmemb, a, op, b)				\
+  simde_assert_array_full("", "", munit_uint16_t, PRIu16, nmemb, a, op, b)
+#define simde_assert_int32v(nmemb, a, op, b)			\
+  simde_assert_array_full("", "", munit_int32_t, PRId32, nmemb, a, op, b)
+#define simde_assert_uint32v(nmemb, a, op, b)				\
+  simde_assert_array_full("", "", munit_uint32_t, PRIu32, nmemb, a, op, b)
+#define simde_assert_int64v(nmemb, a, op, b)			\
+  simde_assert_array_full("", "", munit_int64_t,  PRId64, nmemb, a, op, b)
+#define simde_assert_uint64v(nmemb, a, op, b)				\
+  simde_assert_array_full("", "", munit_uint64_t, PRIu64, nmemb, a, op, b)
+
 #define simde_assert_f32v_equal(T, nmemb, a, b, precision)		\
   do {									\
     const T* simde_tmp_a_ = (a);					\

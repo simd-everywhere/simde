@@ -63,9 +63,7 @@ endif()
 
 include_directories("${CMAKE_SOURCE_DIR}/..")
 
-set(TEST_SOURCES
-  test.c
-  test-common.c)
+set(TEST_SOURCES)
 
 if(NOT DISABLE_X86)
   set(TEST_SOURCES
@@ -82,6 +80,10 @@ if(NOT DISABLE_X86)
 else()
   add_definitions(-DDISABLE_X86)
 endif()
+
+list(APPEND TEST_SOURCES
+  simd-js/simd-js.c
+  simd-js/compare.c)
 
 foreach(src ${TEST_SOURCES})
   get_filename_component(bn "${src}" NAME_WE)
@@ -123,9 +125,10 @@ if(LIBM)
 endif()
 if (NOT DISABLE_X86)
   foreach(tst "/x86/mmx" "/x86/sse" "/x86/sse2" "/x86/sse3" "/x86/ssse3" "/x86/sse4.1" "/x86/sse4.2")
-    add_test(NAME "${tst}/${variant}" COMMAND $<TARGET_FILE:run-tests> "${tst}")
+    add_test(NAME "${tst}/${variant}" COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:run-tests> "${tst}")
   endforeach()
 endif()
+add_test(NAME "/simd-js" COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:run-tests> "/simd-js")
 target_add_extra_warning_flags(run-tests)
 set_property (TARGET run-tests PROPERTY C_STANDARD "99")
 target_add_compiler_flags(run-tests ${extra_cflags})
