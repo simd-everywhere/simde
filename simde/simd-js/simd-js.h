@@ -71,15 +71,35 @@ typedef SIMDE__ALIGN(16) union {
 #endif
 } simde_em_int32x4;
 
+typedef SIMDE__ALIGN(16) union {
+#if defined(SIMDE__ENABLE_GCC_VEC_EXT)
+  int32_t       v __attribute__((__vector_size__(16), __may_alias__));
+#else
+  int32_t       v[4];
+#endif
+
 #if defined(SIMDE_EM_NATIVE)
-HEDLEY_STATIC_ASSERT(sizeof(int32x4_t) == sizeof(simde_em_int32x4), "int32x4_t size doesn't match simde__m128 size");
-#define SIMDE_EM_INT32X4_C(expr) ((simde_em_int32x4) { .n = (expr) })
+  bool32x4      n;
 #elif defined(SIMDE_EM_SSE2)
-#define SIMDE_EM_INT32X4_SSE2_C(expr) (simde_em_int32x4) { .sse2 = (expr) }
+  __m128i       sse2;
 #elif defined(SIMDE_EM_NEON)
-#define SIMDE_EM_INT32X4_NEON_C(expr) (simde_em_int32x4) { .neon = (expr) }
+  uint32x4_t    neon;
+#endif
+} simde_em_bool32x4;
+
+#if defined(SIMDE_EM_NATIVE)
+  HEDLEY_STATIC_ASSERT(sizeof(int32x4_t) == sizeof(simde_em_int32x4), "int32x4_t size doesn't match simde__m128 size");
+  #define SIMDE_EM_INT32X4_C(expr) ((simde_em_int32x4) { .n = (expr) })
+  #define SIMDE_EM_BOOL32X4_C(expr) ((simde_em_bool32x4) { .n = (expr) })
+#elif defined(SIMDE_EM_SSE2)
+  #define SIMDE_EM_INT32X4_SSE2_C(expr) (simde_em_int32x4) { .sse2 = (expr) }
+  #define SIMDE_EM_BOOL32X4_SSE2_C(expr) (simde_em_bool32x4) { .sse2 = (expr) }
+#elif defined(SIMDE_EM_NEON)
+  #define SIMDE_EM_INT32X4_NEON_C(expr) (simde_em_int32x4) { .neon = (expr) }
+  #define SIMDE_EM_BOOL32X4_NEON_C(expr) (simde_em_bool32x4) { .neon = vreinterpretq_s32_u32(expr) }
 #endif
 HEDLEY_STATIC_ASSERT(16 == sizeof(simde_em_int32x4), "simde_em_int32x4 size incorrect");
+HEDLEY_STATIC_ASSERT(16 == sizeof(simde_em_bool32x4), "simde_em_bool32x4 size incorrect");
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde_em_int32x4
@@ -266,6 +286,8 @@ simde_em_int32x4
 simde_em_int32x4_not (simde_em_int32x4 a) {
 #if defined(SIMDE_EM_NATIVE)
   return SIMDE_EM_INT32X4_C(emscripten_int32x4_not(a.n));
+#elif defined(SIMDE_EM_SSE2)
+  return SIMDE_EM_INT32X4_SSE2_C(_mm_andnot_si128(a.sse2, _mm_set1_epi32(~INT32_C(0))));
 #elif defined(SIMDE_EM_NEON)
   return SIMDE_EM_INT32X4_NEON_C(vmvnq_s32(a.neon));
 #elif defined(SIMDE__ENABLE_GCC_VEC_EXT)
@@ -277,6 +299,146 @@ simde_em_int32x4_not (simde_em_int32x4 a) {
     r.v[i] = ~(a.v[i]);
   }
   return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde_em_bool32x4
+simde_em_int32x4_lessThan (simde_em_int32x4 a, simde_em_int32x4 b) {
+#if defined(SIMDE_EM_NATIVE)
+  return SIMDE_EM_BOOL32X4_C(emscripten_int32x4_lessThan(a.n, b.n));
+#elif defined(SIMDE_EM_SSE2)
+  return SIMDE_EM_BOOL32X4_SSE2_C(_mm_cmplt_epi32(a.sse2, b.sse2));
+#elif defined(SIMDE_EM_NEON)
+  return SIMDE_EM_BOOL32X4_NEON_C(vcltq_s32(a.neon, b.neon));
+#else
+  simde_em_bool32x4 r;
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.v) / sizeof(r.v[0])) ; i++) {
+    r.v[i] = (a.v[i] < b.v[i]) ? ~INT32_C(0) : 0;
+  }
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde_em_bool32x4
+simde_em_int32x4_lessThanOrEqual (simde_em_int32x4 a, simde_em_int32x4 b) {
+#if defined(SIMDE_EM_NATIVE)
+  return SIMDE_EM_BOOL32X4_C(emscripten_int32x4_lessThanOrEqual(a.n, b.n));
+#elif defined(SIMDE_EM_SSE2)
+  return SIMDE_EM_BOOL32X4_SSE2_C(_mm_andnot_si128(_mm_cmpgt_epi32(a.sse2, b.sse2), _mm_set1_epi32(~INT32_C(0))));
+#elif defined(SIMDE_EM_NEON)
+  return SIMDE_EM_BOOL32X4_NEON_C(vcleq_s32(a.neon, b.neon));
+#else
+  simde_em_bool32x4 r;
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.v) / sizeof(r.v[0])) ; i++) {
+    r.v[i] = (a.v[i] <= b.v[i]) ? ~INT32_C(0) : 0;
+  }
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde_em_bool32x4
+simde_em_int32x4_greaterThan (simde_em_int32x4 a, simde_em_int32x4 b) {
+#if defined(SIMDE_EM_NATIVE)
+  return SIMDE_EM_BOOL32X4_C(emscripten_int32x4_greaterThan(a.n, b.n));
+#elif defined(SIMDE_EM_SSE2)
+  return SIMDE_EM_BOOL32X4_SSE2_C(_mm_cmpgt_epi32(a.sse2, b.sse2));
+#elif defined(SIMDE_EM_NEON)
+  return SIMDE_EM_BOOL32X4_NEON_C(vcgtq_s32(a.neon, b.neon));
+#else
+  simde_em_bool32x4 r;
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.v) / sizeof(r.v[0])) ; i++) {
+    r.v[i] = (a.v[i] > b.v[i]) ? ~INT32_C(0) : 0;
+  }
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde_em_bool32x4
+simde_em_int32x4_greaterThanOrEqual (simde_em_int32x4 a, simde_em_int32x4 b) {
+#if defined(SIMDE_EM_NATIVE)
+  return SIMDE_EM_BOOL32X4_C(emscripten_int32x4_greaterThanOrEqual(a.n, b.n));
+#elif defined(SIMDE_EM_SSE2)
+  return SIMDE_EM_BOOL32X4_SSE2_C(_mm_andnot_si128(_mm_cmplt_epi32(a.sse2, b.sse2), _mm_set1_epi32(~INT32_C(0))));
+#elif defined(SIMDE_EM_NEON)
+  return SIMDE_EM_BOOL32X4_NEON_C(vcgeq_s32(a.neon, b.neon));
+#else
+  simde_em_bool32x4 r;
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.v) / sizeof(r.v[0])) ; i++) {
+    r.v[i] = (a.v[i] >= b.v[i]) ? ~INT32_C(0) : 0;
+  }
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde_em_bool32x4
+simde_em_int32x4_equal (simde_em_int32x4 a, simde_em_int32x4 b) {
+#if defined(SIMDE_EM_NATIVE)
+  return SIMDE_EM_BOOL32X4_C(emscripten_int32x4_equal(a.n, b.n));
+#elif defined(SIMDE_EM_SSE2)
+  return SIMDE_EM_BOOL32X4_SSE2_C(_mm_cmpeq_epi32(a.sse2, b.sse2));
+#elif defined(SIMDE_EM_NEON)
+  return SIMDE_EM_BOOL32X4_NEON_C(vceqq_s32(a.neon, b.neon));
+#else
+  simde_em_bool32x4 r;
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.v) / sizeof(r.v[0])) ; i++) {
+    r.v[i] = (a.v[i] == b.v[i]) ? ~INT32_C(0) : 0;
+  }
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde_em_bool32x4
+simde_em_int32x4_notEqual (simde_em_int32x4 a, simde_em_int32x4 b) {
+#if defined(SIMDE_EM_NATIVE)
+  return SIMDE_EM_BOOL32X4_C(emscripten_int32x4_notEqual(a.n, b.n));
+#elif defined(SIMDE_EM_SSE2)
+  return SIMDE_EM_BOOL32X4_SSE2_C(_mm_andnot_si128(_mm_cmpeq_epi32(a.sse2, b.sse2), _mm_set1_epi32(~INT32_C(0))));
+#elif defined(SIMDE_EM_NEON)
+  return SIMDE_EM_BOOL32X4_NEON_C(vmvnq_u32(vceqq_s32(a.neon, b.neon)));
+#else
+  simde_em_bool32x4 r;
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.v) / sizeof(r.v[0])) ; i++) {
+    r.v[i] = (a.v[i] != b.v[i]) ? ~INT32_C(0) : 0;
+  }
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde_em_bool32x4
+simde_x_em_bool32x4_set (_Bool s0, _Bool s1, _Bool s2, _Bool s3) {
+#if defined(SIMDE_EM_NATIVE)
+  int32x4 a = emscripten_int32x4_set(s0, s1, s2, s3);
+  int32x4 b = emscripten_int32x4_splat(0);
+  return SIMDE_EM_BOOL32X4_C(emscripten_int32x4_notEqual(a, b));
+#elif defined(SIMDE_EM_SSE2)
+  __m128i a = _mm_set_epi32(s3, s2, s1, s0);
+  __m128i b = _mm_set1_epi32(0);
+  return SIMDE_EM_BOOL32X4_SSE2_C(_mm_andnot_si128(_mm_cmpeq_epi32(a, b), _mm_set1_epi32(~INT32_C(0))));
+#elif defined(SIMDE_EM_NEON)
+  SIMDE__ALIGN(16) int32_t data[4] = { s0, s1, s2, s3 };
+  return SIMDE_EM_BOOL32X4_NEON_C(vmvnq_s32(vceqq_s32(vld1q_s32(data), vdupq_n_s32(0))));
+#else
+  return (simde_em_bool32x4) {
+    .v = {
+      s0 ? ~INT32_C(0) : 0,
+      s1 ? ~INT32_C(0) : 0,
+      s2 ? ~INT32_C(0) : 0,
+      s3 ? ~INT32_C(0) : 0
+    }
+  };
 #endif
 }
 
