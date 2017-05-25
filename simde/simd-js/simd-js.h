@@ -145,7 +145,9 @@ simde_em_int32x4_add (simde_em_int32x4 a, simde_em_int32x4 b) {
 #elif defined(SIMDE_EM_NEON)
   return SIMDE_EM_INT32X4_NEON_C(vaddq_s32(a.neon, b.neon));
 #elif defined(SIMDE__ENABLE_GCC_VEC_EXT)
-  return (simde_em_int32x4) { .v = a.v + b.v };
+  simde_em_int32x4 r;
+  r.v = a.v + b.v;
+  return r;
 #else
   simde_em_int32x4 r;
   SIMDE__VECTORIZE
@@ -166,7 +168,9 @@ simde_em_int32x4_sub (simde_em_int32x4 a, simde_em_int32x4 b) {
 #elif defined(SIMDE_EM_NEON)
   return SIMDE_EM_INT32X4_NEON_C(vsubq_s32(a.neon, b.neon));
 #elif defined(SIMDE__ENABLE_GCC_VEC_EXT)
-  return (simde_em_int32x4) { .v = a.v - b.v };
+  simde_em_int32x4 r;
+  r.v = a.v - b.v;
+  return r;
 #else
   simde_em_int32x4 r;
   SIMDE__VECTORIZE
@@ -187,7 +191,9 @@ simde_em_int32x4_mul (simde_em_int32x4 a, simde_em_int32x4 b) {
 #elif defined(SIMDE_EM_NEON)
   return SIMDE_EM_INT32X4_NEON_C(vmulq_s32(a.neon, b.neon));
 #elif defined(SIMDE__ENABLE_GCC_VEC_EXT)
-  return (simde_em_int32x4) { .v = a.v * b.v };
+  simde_em_int32x4 r;
+  r.v = a.v * b.v;
+  return r;
 #else
   simde_em_int32x4 r;
   SIMDE__VECTORIZE
@@ -208,7 +214,9 @@ simde_em_int32x4_neg (simde_em_int32x4 a) {
 #elif defined(SIMDE_EM_NEON)
   return SIMDE_EM_INT32X4_NEON_C(vnegq_s32(a.neon));
 #elif defined(SIMDE__ENABLE_GCC_VEC_EXT)
-  return (simde_em_int32x4) { .v = -(a.v) };
+  simde_em_int32x4 r;
+  r.v = -(a.v);
+  return r;
 #else
   simde_em_int32x4 r;
   SIMDE__VECTORIZE
@@ -229,7 +237,9 @@ simde_em_int32x4_and (simde_em_int32x4 a, simde_em_int32x4 b) {
 #elif defined(SIMDE_EM_NEON)
   return SIMDE_EM_INT32X4_NEON_C(vandq_s32(a.neon, b.neon));
 #elif defined(SIMDE__ENABLE_GCC_VEC_EXT)
-  return (simde_em_int32x4) { .v = a.v & b.v };
+  simde_em_int32x4 r;
+  r.v = a.v & b.v;
+  return r;
 #else
   simde_em_int32x4 r;
   SIMDE__VECTORIZE
@@ -250,7 +260,9 @@ simde_em_int32x4_xor (simde_em_int32x4 a, simde_em_int32x4 b) {
 #elif defined(SIMDE_EM_NEON)
   return SIMDE_EM_INT32X4_NEON_C(veorq_s32(a.neon, b.neon));
 #elif defined(SIMDE__ENABLE_GCC_VEC_EXT)
-  return (simde_em_int32x4) { .v = a.v ^ b.v };
+  simde_em_int32x4 r;
+  r.v = a.v ^ b.v;
+  return r;
 #else
   simde_em_int32x4 r;
   SIMDE__VECTORIZE
@@ -271,7 +283,9 @@ simde_em_int32x4_or (simde_em_int32x4 a, simde_em_int32x4 b) {
 #elif defined(SIMDE_EM_NEON)
   return SIMDE_EM_INT32X4_NEON_C(vorrq_s32(a.neon, b.neon));
 #elif defined(SIMDE__ENABLE_GCC_VEC_EXT)
-  return (simde_em_int32x4) { .v = a.v | b.v };
+  simde_em_int32x4 r;
+  r.v = a.v | b.v;
+  return r;
 #else
   simde_em_int32x4 r;
   SIMDE__VECTORIZE
@@ -292,7 +306,9 @@ simde_em_int32x4_not (simde_em_int32x4 a) {
 #elif defined(SIMDE_EM_NEON)
   return SIMDE_EM_INT32X4_NEON_C(vmvnq_s32(a.neon));
 #elif defined(SIMDE__ENABLE_GCC_VEC_EXT)
-  return (simde_em_int32x4) { .v = ~(a.v) };
+  simde_em_int32x4 r;
+  r.v = ~(a.v);
+  return r;
 #else
   simde_em_int32x4 r;
   SIMDE__VECTORIZE
