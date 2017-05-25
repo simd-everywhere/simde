@@ -83,7 +83,7 @@ typedef SIMDE__ALIGN(16) union {
 #elif defined(SIMDE_EM_SSE2)
   __m128i       sse2;
 #elif defined(SIMDE_EM_NEON)
-  uint32x4_t    neon;
+  int32x4_t     neon;
 #endif
 } simde_em_bool32x4;
 
@@ -92,11 +92,12 @@ typedef SIMDE__ALIGN(16) union {
   #define SIMDE_EM_INT32X4_C(expr) ((simde_em_int32x4) { .n = (expr) })
   #define SIMDE_EM_BOOL32X4_C(expr) ((simde_em_bool32x4) { .n = (expr) })
 #elif defined(SIMDE_EM_SSE2)
-  #define SIMDE_EM_INT32X4_SSE2_C(expr) (simde_em_int32x4) { .sse2 = (expr) }
-  #define SIMDE_EM_BOOL32X4_SSE2_C(expr) (simde_em_bool32x4) { .sse2 = (expr) }
+  #define SIMDE_EM_INT32X4_SSE2_C(expr) ((simde_em_int32x4) { .sse2 = (expr) })
+  #define SIMDE_EM_BOOL32X4_SSE2_C(expr) ((simde_em_bool32x4) { .sse2 = (expr) })
 #elif defined(SIMDE_EM_NEON)
-  #define SIMDE_EM_INT32X4_NEON_C(expr) (simde_em_int32x4) { .neon = (expr) }
-  #define SIMDE_EM_BOOL32X4_NEON_C(expr) (simde_em_bool32x4) { .neon = vreinterpretq_s32_u32(expr) }
+  #define SIMDE_EM_INT32X4_NEON_C(expr) ((simde_em_int32x4) { .neon = (expr) })
+  #define SIMDE_EM_BOOL32X4_NEON_C(expr) ((simde_em_bool32x4) { .neon = (expr) })
+  #define SIMDE_EM_BOOL32X4_NEON_UC(expr) ((simde_em_bool32x4) { .neon = vreinterpretq_s32_u32(expr) })
 #endif
 HEDLEY_STATIC_ASSERT(16 == sizeof(simde_em_int32x4), "simde_em_int32x4 size incorrect");
 HEDLEY_STATIC_ASSERT(16 == sizeof(simde_em_bool32x4), "simde_em_bool32x4 size incorrect");
@@ -310,7 +311,7 @@ simde_em_int32x4_lessThan (simde_em_int32x4 a, simde_em_int32x4 b) {
 #elif defined(SIMDE_EM_SSE2)
   return SIMDE_EM_BOOL32X4_SSE2_C(_mm_cmplt_epi32(a.sse2, b.sse2));
 #elif defined(SIMDE_EM_NEON)
-  return SIMDE_EM_BOOL32X4_NEON_C(vcltq_s32(a.neon, b.neon));
+  return SIMDE_EM_BOOL32X4_NEON_UC(vcltq_s32(a.neon, b.neon));
 #else
   simde_em_bool32x4 r;
   SIMDE__VECTORIZE
@@ -329,7 +330,7 @@ simde_em_int32x4_lessThanOrEqual (simde_em_int32x4 a, simde_em_int32x4 b) {
 #elif defined(SIMDE_EM_SSE2)
   return SIMDE_EM_BOOL32X4_SSE2_C(_mm_andnot_si128(_mm_cmpgt_epi32(a.sse2, b.sse2), _mm_set1_epi32(~INT32_C(0))));
 #elif defined(SIMDE_EM_NEON)
-  return SIMDE_EM_BOOL32X4_NEON_C(vcleq_s32(a.neon, b.neon));
+  return SIMDE_EM_BOOL32X4_NEON_UC(vcleq_s32(a.neon, b.neon));
 #else
   simde_em_bool32x4 r;
   SIMDE__VECTORIZE
@@ -348,7 +349,7 @@ simde_em_int32x4_greaterThan (simde_em_int32x4 a, simde_em_int32x4 b) {
 #elif defined(SIMDE_EM_SSE2)
   return SIMDE_EM_BOOL32X4_SSE2_C(_mm_cmpgt_epi32(a.sse2, b.sse2));
 #elif defined(SIMDE_EM_NEON)
-  return SIMDE_EM_BOOL32X4_NEON_C(vcgtq_s32(a.neon, b.neon));
+  return SIMDE_EM_BOOL32X4_NEON_UC(vcgtq_s32(a.neon, b.neon));
 #else
   simde_em_bool32x4 r;
   SIMDE__VECTORIZE
@@ -367,7 +368,7 @@ simde_em_int32x4_greaterThanOrEqual (simde_em_int32x4 a, simde_em_int32x4 b) {
 #elif defined(SIMDE_EM_SSE2)
   return SIMDE_EM_BOOL32X4_SSE2_C(_mm_andnot_si128(_mm_cmplt_epi32(a.sse2, b.sse2), _mm_set1_epi32(~INT32_C(0))));
 #elif defined(SIMDE_EM_NEON)
-  return SIMDE_EM_BOOL32X4_NEON_C(vcgeq_s32(a.neon, b.neon));
+  return SIMDE_EM_BOOL32X4_NEON_UC(vcgeq_s32(a.neon, b.neon));
 #else
   simde_em_bool32x4 r;
   SIMDE__VECTORIZE
@@ -386,7 +387,7 @@ simde_em_int32x4_equal (simde_em_int32x4 a, simde_em_int32x4 b) {
 #elif defined(SIMDE_EM_SSE2)
   return SIMDE_EM_BOOL32X4_SSE2_C(_mm_cmpeq_epi32(a.sse2, b.sse2));
 #elif defined(SIMDE_EM_NEON)
-  return SIMDE_EM_BOOL32X4_NEON_C(vceqq_s32(a.neon, b.neon));
+  return SIMDE_EM_BOOL32X4_NEON_UC(vceqq_s32(a.neon, b.neon));
 #else
   simde_em_bool32x4 r;
   SIMDE__VECTORIZE
@@ -405,7 +406,7 @@ simde_em_int32x4_notEqual (simde_em_int32x4 a, simde_em_int32x4 b) {
 #elif defined(SIMDE_EM_SSE2)
   return SIMDE_EM_BOOL32X4_SSE2_C(_mm_andnot_si128(_mm_cmpeq_epi32(a.sse2, b.sse2), _mm_set1_epi32(~INT32_C(0))));
 #elif defined(SIMDE_EM_NEON)
-  return SIMDE_EM_BOOL32X4_NEON_C(vmvnq_u32(vceqq_s32(a.neon, b.neon)));
+  return SIMDE_EM_BOOL32X4_NEON_UC(vmvnq_u32(vceqq_s32(a.neon, b.neon)));
 #else
   simde_em_bool32x4 r;
   SIMDE__VECTORIZE
@@ -429,7 +430,7 @@ simde_x_em_bool32x4_set (_Bool s0, _Bool s1, _Bool s2, _Bool s3) {
   return SIMDE_EM_BOOL32X4_SSE2_C(_mm_andnot_si128(_mm_cmpeq_epi32(a, b), _mm_set1_epi32(~INT32_C(0))));
 #elif defined(SIMDE_EM_NEON)
   SIMDE__ALIGN(16) int32_t data[4] = { s0, s1, s2, s3 };
-  return SIMDE_EM_BOOL32X4_NEON_C(vmvnq_s32(vceqq_s32(vld1q_s32(data), vdupq_n_s32(0))));
+  return SIMDE_EM_BOOL32X4_NEON_UC(vmvnq_u32(vceqq_s32(vld1q_s32(data), vdupq_n_s32(0))));
 #else
   return (simde_em_bool32x4) {
     .v = {

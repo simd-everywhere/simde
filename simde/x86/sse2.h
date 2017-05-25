@@ -120,7 +120,7 @@ typedef SIMDE__ALIGN(16) union {
   uint64x2_t     neon_u64;
   float32x4_t    neon_f32;
   #if defined(SIMDE_ARCH_AMD64)
-  float32x4_t    neon_f64;
+  float64x2_t    neon_f64;
   #endif
 #endif
 } simde__m128i;
@@ -163,7 +163,7 @@ typedef SIMDE__ALIGN(16) union {
   uint64x2_t     neon_u64;
   float32x4_t    neon_f32;
   #if defined(SIMDE_ARCH_AMD64)
-  float32x4_t    neon_f64;
+  float64x2_t    neon_f64;
   #endif
 #endif
 } simde__m128d;
