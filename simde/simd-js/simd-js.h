@@ -434,6 +434,33 @@ simde_em_int32x4_notEqual (simde_em_int32x4 a, simde_em_int32x4 b) {
 }
 
 SIMDE__FUNCTION_ATTRIBUTES
+simde_em_int32x4
+simde_em_int32x4_select (simde_em_bool32x4 selector, simde_em_int32x4 a, simde_em_int32x4 b) {
+#if defined(SIMDE_EM_NATIVE)
+  return SIMDE_EM_INT32X4_C(emscripten_int32x4_select(selector.n, a.n, b.n));
+#elif defined(SIMDE_EM_SSE2)
+  #if defined(__AVX512VL__)
+    return SIMDE_EM_INT32X4_SSE2_C(_mm_mask_blend_epi32(selector.n, b.n, a.n));
+  #else
+    /* TODO: check if this is faster than the portable version */
+    __m128i s  = _mm_cmpeq_epi32(selector.sse2, _mm_set1_epi32(0));
+    __m128i bp = _mm_and_si128(s, b.sse2);
+    __m128i ap = _mm_and_si128(_mm_andnot_si128(s, _mm_set1_epi32(~0)), a.sse2);
+    return SIMDE_EM_INT32X4_SSE2_C(_mm_or_si128(ap, bp));
+  #endif
+#elif defined(SIMDE_EM_NEON)
+  return SIMDE_EM_INT32X4_NEON_C(vbslq_s32(vreinterpretq_u32_s32(selector.neon), a.neon, b.neon));
+#else
+  simde_em_int32x4 r;
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.v) / sizeof(r.v[0])) ; i++) {
+    r.v[i] = selector.v[i] ? a.v[i] : b.v[i];
+  }
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
 simde_em_bool32x4
 simde_x_em_bool32x4_set (_Bool s0, _Bool s1, _Bool s2, _Bool s3) {
 #if defined(SIMDE_EM_NATIVE)
