@@ -115,3 +115,41 @@ test_simde_em_int32x4_compare(const MunitParameter params[], void* data) {
 
   return MUNIT_OK;
 }
+
+static MunitResult
+test_simde_em_int32x4_scalar(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  const struct {
+    simde_em_int32x4 a;
+    int b;
+    simde_em_int32x4 r;
+  } test_vec[8] = {
+
+  };
+
+  printf("\n");
+  for (size_t i = 0 ; i < (sizeof(test_vec) / (sizeof(test_vec[0]))) ; i++) {
+    simde_em_int32x4 a, r;
+    int b;
+
+    munit_rand_memory(sizeof(a), (uint8_t*) &a);
+    b = munit_rand_int_range(0, (sizeof(a.v[0]) * CHAR_BIT) - 1);
+
+    r = simde_em_int32x4_scalar(a, b);
+
+    printf("    { simde_em_int32x4_set(INT32_C(%11d), INT32_C(%11d), INT32_C(%11d), INT32_C(%11d)), %d,\n",
+  	   a.v[0], a.v[1], a.v[2], a.v[3], b);
+    printf("      simde_em_int32x4_set(INT32_C(%11d), INT32_C(%11d), INT32_C(%11d), INT32_C(%11d)) },\n",
+  	   r.v[0], r.v[1], r.v[2], r.v[3]);
+  }
+  return MUNIT_FAIL;
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    simde_em_int32x4 r = simde_em_int32x4_scalar(test_vec[i].a, test_vec[i].b);
+    simde_assert_int32x4(r, ==, test_vec[i].r);
+  }
+
+  return MUNIT_OK;
+}
