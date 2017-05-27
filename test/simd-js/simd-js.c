@@ -833,6 +833,109 @@ test_simde_em_int32x4_shiftRightByScalar(const MunitParameter params[], void* da
   return MUNIT_OK;
 }
 
+static MunitResult
+test_simde_em_int32x4_store(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  const struct {
+    simde_em_int32x4 a;
+    int32_t r[4];
+  } test_vec[8] = {
+    { simde_em_int32x4_set(INT32_C( -874342913), INT32_C(-1187479894), INT32_C(  905482520), INT32_C( -632088408)),
+      { INT32_C( -874342913), INT32_C(-1187479894), INT32_C(  905482520), INT32_C( -632088408) } },
+    { simde_em_int32x4_set(INT32_C(-1679785361), INT32_C( 1510543621), INT32_C( -701761037), INT32_C(-1724840226)),
+      { INT32_C(-1679785361), INT32_C( 1510543621), INT32_C( -701761037), INT32_C(-1724840226) } },
+    { simde_em_int32x4_set(INT32_C(  -91322883), INT32_C( 1433497093), INT32_C(-2027463216), INT32_C(-1375112229)),
+      { INT32_C(  -91322883), INT32_C( 1433497093), INT32_C(-2027463216), INT32_C(-1375112229) } },
+    { simde_em_int32x4_set(INT32_C(  193680238), INT32_C( 1228976669), INT32_C( -603627036), INT32_C( 1032765535)),
+      { INT32_C(  193680238), INT32_C( 1228976669), INT32_C( -603627036), INT32_C( 1032765535) } },
+    { simde_em_int32x4_set(INT32_C( 1230355780), INT32_C( -747750768), INT32_C(-1675953158), INT32_C( -586545241)),
+      { INT32_C( 1230355780), INT32_C( -747750768), INT32_C(-1675953158), INT32_C( -586545241) } },
+    { simde_em_int32x4_set(INT32_C( -318979488), INT32_C(  870447334), INT32_C(  488216963), INT32_C( 1882916721)),
+      { INT32_C( -318979488), INT32_C(  870447334), INT32_C(  488216963), INT32_C( 1882916721) } },
+    { simde_em_int32x4_set(INT32_C(-1203278003), INT32_C( 1593221512), INT32_C( -156775926), INT32_C(-1961327053)),
+      { INT32_C(-1203278003), INT32_C( 1593221512), INT32_C( -156775926), INT32_C(-1961327053) } },
+    { simde_em_int32x4_set(INT32_C(  163526504), INT32_C( -931818186), INT32_C(-1527789476), INT32_C(-1841022596)),
+      { INT32_C(  163526504), INT32_C( -931818186), INT32_C(-1527789476), INT32_C(-1841022596) } }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    int32_t r[4];
+    munit_rand_memory(sizeof(r), (uint8_t*) r);
+    simde_em_int32x4_store(r, test_vec[i].a);
+    simde_assert_int32x4(r, ==, test_vec[i].r);
+  }
+
+  return MUNIT_OK;
+}
+
+static MunitResult
+test_simde_em_int32x4_store1(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  const struct {
+    simde_em_int32x4 a;
+    int32_t r;
+  } test_vec[8] = {
+    { simde_em_int32x4_set(INT32_C(  514001735), INT32_C( -148782675), INT32_C( -657027721), INT32_C( 1938559351)), INT32_C(  514001735) },
+    { simde_em_int32x4_set(INT32_C(-1750602100), INT32_C( -302081577), INT32_C(-1089905893), INT32_C(  395500323)), INT32_C(-1750602100) },
+    { simde_em_int32x4_set(INT32_C( 1592018939), INT32_C(-1993969641), INT32_C(  621150503), INT32_C( -328617516)), INT32_C( 1592018939) },
+    { simde_em_int32x4_set(INT32_C( -836133263), INT32_C(  548932868), INT32_C( 1556558905), INT32_C(  264214561)), INT32_C( -836133263) },
+    { simde_em_int32x4_set(INT32_C( -422991692), INT32_C( -119016138), INT32_C(-1196278505), INT32_C(-1902025164)), INT32_C( -422991692) },
+    { simde_em_int32x4_set(INT32_C( 2023768635), INT32_C(-1397474436), INT32_C( -372162977), INT32_C( -886358730)), INT32_C( 2023768635) },
+    { simde_em_int32x4_set(INT32_C( -878830806), INT32_C(-1327692990), INT32_C(  930269172), INT32_C(-2087458606)), INT32_C( -878830806) },
+    { simde_em_int32x4_set(INT32_C( -804621531), INT32_C(-1254931710), INT32_C( 1047840347), INT32_C(-1327747438)), INT32_C( -804621531) }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    int32_t r = (int32_t) munit_rand_uint32();
+    simde_em_int32x4_store1(&r, test_vec[i].a);
+    munit_assert_int32(r, ==, test_vec[i].r);
+  }
+
+  return MUNIT_OK;
+}
+
+static MunitResult
+test_simde_em_int32x4_store2(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  const struct {
+    simde_em_int32x4 a;
+    int32_t r[2];
+  } test_vec[8] = {
+    { simde_em_int32x4_set(INT32_C(  482403464), INT32_C(  614485428), INT32_C(  240615429), INT32_C( -221362594)),
+      { INT32_C(  482403464), INT32_C(  614485428) } },
+    { simde_em_int32x4_set(INT32_C( 1605903673), INT32_C(  713719419), INT32_C( -652484472), INT32_C(  186960609)),
+      { INT32_C( 1605903673), INT32_C(  713719419) } },
+    { simde_em_int32x4_set(INT32_C(  111653274), INT32_C( 1113753966), INT32_C(-2052064259), INT32_C( 1941947990)),
+      { INT32_C(  111653274), INT32_C( 1113753966) } },
+    { simde_em_int32x4_set(INT32_C(-1110771816), INT32_C( -861766383), INT32_C( -341186564), INT32_C( -918753780)),
+      { INT32_C(-1110771816), INT32_C( -861766383) } },
+    { simde_em_int32x4_set(INT32_C( -546183052), INT32_C( 1863765408), INT32_C(  776845138), INT32_C(-1682897840)),
+      { INT32_C( -546183052), INT32_C( 1863765408) } },
+    { simde_em_int32x4_set(INT32_C( -458202392), INT32_C(-1456484722), INT32_C( -240150474), INT32_C(-1918236448)),
+      { INT32_C( -458202392), INT32_C(-1456484722) } },
+    { simde_em_int32x4_set(INT32_C(-1259935189), INT32_C(-1393296185), INT32_C( 1113249304), INT32_C(-1819617239)),
+      { INT32_C(-1259935189), INT32_C(-1393296185) } },
+    { simde_em_int32x4_set(INT32_C(-2116986529), INT32_C(  539654173), INT32_C( -937145916), INT32_C( 1460329889)),
+      { INT32_C(-2116986529), INT32_C(  539654173) } }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    int32_t r[2];
+    munit_rand_memory(sizeof(r), (uint8_t*) r);
+    simde_em_int32x4_store2(r, test_vec[i].a);
+    munit_assert_int32(r[0], ==, test_vec[i].r[0]);
+    munit_assert_int32(r[1], ==, test_vec[i].r[1]);
+  }
+
+  return MUNIT_OK;
+}
+
 static MunitTest test_suite_tests[] = {
   TEST_FUNC(em_int32x4_set),
   TEST_FUNC(em_int32x4_splat),
@@ -853,6 +956,9 @@ static MunitTest test_suite_tests[] = {
   TEST_FUNC(em_int32x4_select),
   TEST_FUNC(em_int32x4_shiftLeftByScalar),
   TEST_FUNC(em_int32x4_shiftRightByScalar),
+  TEST_FUNC(em_int32x4_store),
+  TEST_FUNC(em_int32x4_store1),
+  TEST_FUNC(em_int32x4_store2),
 
   { NULL, NULL, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL }
 };

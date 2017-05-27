@@ -521,6 +521,50 @@ simde_em_int32x4_shiftRightByScalar (simde_em_int32x4 a, const int bits) {
 }
 
 SIMDE__FUNCTION_ATTRIBUTES
+void
+simde_em_int32x4_store (int32_t dest[HEDLEY_ARRAY_PARAM(4)], simde_em_int32x4 a) {
+#if defined(SIMDE_EM_NATIVE)
+  emscripten_int32x4_store(dest, a.n);
+#elif defined(SIMDE_EM_SSE2)
+  _mm_storeu_si128((__m128i*) dest, a.sse2);
+#elif defined(SIMDE_EM_NEON)
+  vst1q_s32(dest, a.neon);
+#else
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < 4 ; i++) {
+    dest[i] = a.v[i];
+  }
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+void
+simde_em_int32x4_store1 (int32_t* dest, simde_em_int32x4 a) {
+#if defined(SIMDE_EM_NATIVE)
+  emscripten_int32x4_store1(dest, a.n);
+#elif defined(SIMDE_EM_NEON)
+  vst1q_lane_s32(dest, a.neon, 0);
+#else
+  *dest = a.v[0];
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+void
+simde_em_int32x4_store2 (int32_t dest[HEDLEY_ARRAY_PARAM(2)], simde_em_int32x4 a) {
+#if defined(SIMDE_EM_NATIVE)
+  emscripten_int32x4_store2(dest, a.n);
+#elif defined(SIMDE_EM_NEON)
+  vst1_s32(dest, vget_low_s32(a.neon));
+#else
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < 2 ; i++) {
+    dest[i] = a.v[i];
+  }
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
 simde_em_bool32x4
 simde_x_em_bool32x4_set (_Bool s0, _Bool s1, _Bool s2, _Bool s3) {
 #if defined(SIMDE_EM_NATIVE)
