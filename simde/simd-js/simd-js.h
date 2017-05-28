@@ -621,6 +621,32 @@ simde_em_int32x4_load2 (const int32_t src[HEDLEY_ARRAY_PARAM(2)]) {
 }
 
 SIMDE__FUNCTION_ATTRIBUTES
+simde_em_int32x4
+simde_em_int32x4_swizzle (simde_em_int32x4 a, int lane0, int lane1, int lane2, int lane3) {
+#if defined(SIMDE_EM_NATIVE)
+  return SIMDE_EM_INT32X4_C(emscripten_int32x4_swizzle(a.n, lane0, lane1, lane2, lane3));
+#else
+  return simde_em_int32x4_set(a.v[lane0], a.v[lane1], a.v[lane2], a.v[lane3]);
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde_em_int32x4
+simde_em_int32x4_shuffle (simde_em_int32x4 a, simde_em_int32x4 b, int lane0, int lane1, int lane2, int lane3) {
+#if defined(SIMDE_EM_NATIVE)
+  return SIMDE_EM_INT32X4_C(emscripten_int32x4_shuffle(a.n, b.n, lane0, lane1, lane2, lane3));
+#else
+  int32_t t[4] = {
+    (lane0 < 4) ? (a.v[lane0]) : (b.v[lane0 & 3]),
+    (lane1 < 4) ? (a.v[lane1]) : (b.v[lane1 & 3]),
+    (lane2 < 4) ? (a.v[lane2]) : (b.v[lane2 & 3]),
+    (lane3 < 4) ? (a.v[lane3]) : (b.v[lane3 & 3])
+  };
+  return simde_em_int32x4_load(t);
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
 simde_em_bool32x4
 simde_x_em_bool32x4_set (_Bool s0, _Bool s1, _Bool s2, _Bool s3) {
 #if defined(SIMDE_EM_NATIVE)
