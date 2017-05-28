@@ -565,6 +565,62 @@ simde_em_int32x4_store2 (int32_t dest[HEDLEY_ARRAY_PARAM(2)], simde_em_int32x4 a
 }
 
 SIMDE__FUNCTION_ATTRIBUTES
+simde_em_int32x4
+simde_em_int32x4_load (const int32_t src[HEDLEY_ARRAY_PARAM(4)]) {
+#if defined(SIMDE_EM_NATIVE)
+  return SIMDE_EM_INT32X4_C(emscripten_int32x4_load(src));
+#elif defined(SIMDE_EM_SSE2)
+  return SIMDE_EM_INT32X4_SSE2_C(_mm_loadu_si128((__m128i const*) src));
+#elif defined(SIMDE_EM_NEON)
+  return SIMDE_EM_INT32X4_NEON_C(vld1q_s32(src));
+#else
+  simde_em_int32x4 r;
+  memcpy(&r, src, sizeof(r));
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde_em_int32x4
+simde_em_int32x4_load1 (const int32_t* src) {
+#if defined(SIMDE_EM_NATIVE)
+  return SIMDE_EM_INT32X4_C(emscripten_int32x4_load1(src));
+#elif defined(SIMDE_EM_SSE2)
+  int32_t tmp;
+  memcpy(&tmp, src, sizeof(int32_t));
+  return SIMDE_EM_INT32X4_SSE2_C(_mm_set_epi32(0, 0, 0, tmp));
+#elif defined(SIMDE_EM_NEON)
+  int32_t tmp[4] = { 0, };
+  memcpy(tmp, src, sizeof(int32_t));
+  return SIMDE_EM_INT32X4_NEON_C(vld1q_s32(tmp));
+#else
+  int32_t tmp;
+  memcpy(&tmp, src, sizeof(int32_t));
+  return simde_em_int32x4_set(tmp, 0, 0, 0);
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde_em_int32x4
+simde_em_int32x4_load2 (const int32_t src[HEDLEY_ARRAY_PARAM(2)]) {
+#if defined(SIMDE_EM_NATIVE)
+  return SIMDE_EM_INT32X4_C(emscripten_int32x4_load2(src));
+#elif defined(SIMDE_EM_SSE2)
+  __m128i r;
+  memcpy(&(((int32_t*) &r)[0]), &(src[0]), sizeof(int32_t));
+  memcpy(&(((int32_t*) &r)[1]), &(src[1]), sizeof(int32_t));
+  memset(&(((int32_t*) &r)[2]), 0, sizeof(int32_t) * 2);
+  return SIMDE_EM_INT32X4_SSE2_C(r);
+#elif defined(SIMDE_EM_NEON)
+  int32_t tmp[4] = { 0, };
+  memcpy(&(tmp[0]), src, sizeof(int32_t) * 2);
+  return SIMDE_EM_INT32X4_NEON_C(vld1q_s32(tmp));
+#else
+  return simde_em_int32x4_set(src[0], src[1], 0, 0);
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
 simde_em_bool32x4
 simde_x_em_bool32x4_set (_Bool s0, _Bool s1, _Bool s2, _Bool s3) {
 #if defined(SIMDE_EM_NATIVE)
