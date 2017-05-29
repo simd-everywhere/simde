@@ -66,9 +66,9 @@ int main(int argc, char* argv[MUNIT_ARRAY_PARAM(argc + 1)]) {
   };
 
   MunitSuite simd_js_test_suites[] = {
-    simde_simd_js_test_suite,
-    simde_simd_js_emul_test_suite,
-    simde_simd_js_cmp_test_suite,
+    simde_simd_js_int32x4_test_suite,
+    simde_simd_js_int32x4_emul_test_suite,
+    simde_simd_js_int32x4_cmp_test_suite,
     { 0, },
   };
 

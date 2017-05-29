@@ -1139,43 +1139,43 @@ test_simde_em_int32x4_shuffle(const MunitParameter params[], void* data) {
 }
 
 static MunitTest test_suite_tests[] = {
-  TEST_FUNC(em_int32x4_set),
-  TEST_FUNC(em_int32x4_splat),
-  TEST_FUNC(em_int32x4_add),
-  TEST_FUNC(em_int32x4_sub),
-  TEST_FUNC(em_int32x4_mul),
-  TEST_FUNC(em_int32x4_neg),
-  TEST_FUNC(em_int32x4_and),
-  TEST_FUNC(em_int32x4_xor),
-  TEST_FUNC(em_int32x4_or),
-  TEST_FUNC(em_int32x4_not),
-  TEST_FUNC(em_int32x4_lessThan),
-  TEST_FUNC(em_int32x4_lessThanOrEqual),
-  TEST_FUNC(em_int32x4_greaterThan),
-  TEST_FUNC(em_int32x4_greaterThanOrEqual),
-  TEST_FUNC(em_int32x4_equal),
-  TEST_FUNC(em_int32x4_notEqual),
-  TEST_FUNC(em_int32x4_select),
-  TEST_FUNC(em_int32x4_shiftLeftByScalar),
-  TEST_FUNC(em_int32x4_shiftRightByScalar),
-  TEST_FUNC(em_int32x4_store),
-  TEST_FUNC(em_int32x4_store1),
-  TEST_FUNC(em_int32x4_store2),
-  TEST_FUNC(em_int32x4_load),
-  TEST_FUNC(em_int32x4_load1),
-  TEST_FUNC(em_int32x4_load2),
-  TEST_FUNC(em_int32x4_swizzle),
-  TEST_FUNC(em_int32x4_shuffle),
+  SIMD_JS_TEST_FUNC(int32x4, set),
+  SIMD_JS_TEST_FUNC(int32x4, splat),
+  SIMD_JS_TEST_FUNC(int32x4, add),
+  SIMD_JS_TEST_FUNC(int32x4, sub),
+  SIMD_JS_TEST_FUNC(int32x4, mul),
+  SIMD_JS_TEST_FUNC(int32x4, neg),
+  SIMD_JS_TEST_FUNC(int32x4, and),
+  SIMD_JS_TEST_FUNC(int32x4, xor),
+  SIMD_JS_TEST_FUNC(int32x4, or),
+  SIMD_JS_TEST_FUNC(int32x4, not),
+  SIMD_JS_TEST_FUNC(int32x4, lessThan),
+  SIMD_JS_TEST_FUNC(int32x4, lessThanOrEqual),
+  SIMD_JS_TEST_FUNC(int32x4, greaterThan),
+  SIMD_JS_TEST_FUNC(int32x4, greaterThanOrEqual),
+  SIMD_JS_TEST_FUNC(int32x4, equal),
+  SIMD_JS_TEST_FUNC(int32x4, notEqual),
+  SIMD_JS_TEST_FUNC(int32x4, select),
+  SIMD_JS_TEST_FUNC(int32x4, shiftLeftByScalar),
+  SIMD_JS_TEST_FUNC(int32x4, shiftRightByScalar),
+  SIMD_JS_TEST_FUNC(int32x4, store),
+  SIMD_JS_TEST_FUNC(int32x4, store1),
+  SIMD_JS_TEST_FUNC(int32x4, store2),
+  SIMD_JS_TEST_FUNC(int32x4, load),
+  SIMD_JS_TEST_FUNC(int32x4, load1),
+  SIMD_JS_TEST_FUNC(int32x4, load2),
+  SIMD_JS_TEST_FUNC(int32x4, swizzle),
+  SIMD_JS_TEST_FUNC(int32x4, shuffle),
 
   { NULL, NULL, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL }
 };
 
 #if defined(SIMDE_NO_NATIVE)
-#  define simde_simd_js_test_suite simde_simd_js_emul_test_suite
+#  define simde_simd_js_int32x4_test_suite simde_simd_js_int32x4_emul_test_suite
 #endif
 
-MunitSuite simde_simd_js_test_suite = {
-  (char*) "",
+MunitSuite simde_simd_js_int32x4_test_suite = {
+  (char*) "/int32x4",
   test_suite_tests,
   NULL,
   1,

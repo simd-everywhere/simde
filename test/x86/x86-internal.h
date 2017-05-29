@@ -1,5 +1,5 @@
 #if !defined(SIMDE__X86_INTERNAL_H)
-#define SIMDE__X64_INTERNAL_H
+#define SIMDE__X86_INTERNAL_H
 
 #include "../test.h"
 

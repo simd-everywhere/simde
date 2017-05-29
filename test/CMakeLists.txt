@@ -82,12 +82,12 @@ else()
 endif()
 
 list(APPEND TEST_SOURCES
-  simd-js/simd-js.c
-  simd-js/compare.c)
+  simd-js/int32x4.c
+  simd-js/int32x4-compare.c)
 
 foreach(src ${TEST_SOURCES})
   get_filename_component(bn "${src}" NAME_WE)
-  if (NOT "compare" STREQUAL "${bn}")
+  if (NOT "${bn}" MATCHES "compare")
     get_filename_component(file_extension "${src}" EXT)
     string(LENGTH "${file_extension}" file_extension_length)
     string(LENGTH "${src}" src_length)
