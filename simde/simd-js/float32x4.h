@@ -29,6 +29,8 @@
 #if !defined(SIMDE__EM_FLOAT32X4_H)
 #define SIMDE__EM_FLOAT32X4_H
 
+#include <math.h>
+
 SIMDE__BEGIN_DECLS
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -135,6 +137,71 @@ simde_em_float32x4_mul (simde_em_float32x4 a, simde_em_float32x4 b) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde_em_float32x4
+simde_em_float32x4_div (simde_em_float32x4 a, simde_em_float32x4 b) {
+#if defined(SIMDE_EM_NATIVE)
+  return SIMDE_EM_FLOAT32X4_C(emscripten_float32x4_div(a.n, b.n));
+#elif defined(SIMDE_EM_SSE)
+  return SIMDE_EM_FLOAT32X4_SSE_C(_mm_div_ps(a.sse, b.sse));
+#elif defined(SIMDE_EM_NEON) && defined(SIMDE_ARCH_AARCH64)
+  return SIMDE_EM_FLOAT32X4_NEON_C(vdivq_f32(a.neon, b.neon));
+#elif defined(SIMDE_EM_NEON)
+  float32x4_t recip0 = vrecpeq_f32(b.neon);
+  float32x4_t recip1 = vmulq_f32(recip0, vrecpsq_f32(recip0, b.neon));
+  return SIMDE_EM_FLOAT32X4_NEON_C(vmulq_f32(a.neon, recip1));
+#elif defined(SIMDE__ENABLE_GCC_VEC_EXT)
+  simde_em_float32x4 r;
+  r.v = a.v / b.v;
+  return r;
+#else
+  simde_em_float32x4 r;
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.v) / sizeof(r.v[0])) ; i++) {
+    r.v[i] = a.v[i] / b.v[i];
+  }
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde_em_float32x4
+simde_em_float32x4_max (simde_em_float32x4 a, simde_em_float32x4 b) {
+#if defined(SIMDE_EM_NATIVE)
+  return SIMDE_EM_FLOAT32X4_C(emscripten_float32x4_max(a.n, b.n));
+#elif defined(SIMDE_EM_SSE)
+  return SIMDE_EM_FLOAT32X4_SSE_C(_mm_max_ps(a.sse, b.sse));
+#elif defined(SIMDE_EM_NEON)
+  return SIMDE_EM_FLOAT32X4_NEON_C(vmaxq_f32(a.neon, b.neon));
+#else
+  simde_em_float32x4 r;
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.v) / sizeof(r.v[0])) ; i++) {
+    r.v[i] = (a.v[i] > b.v[i]) ? a.v[i] : b.v[i];
+  }
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde_em_float32x4
+simde_em_float32x4_min (simde_em_float32x4 a, simde_em_float32x4 b) {
+#if defined(SIMDE_EM_NATIVE)
+  return SIMDE_EM_FLOAT32X4_C(emscripten_float32x4_min(a.n, b.n));
+#elif defined(SIMDE_EM_SSE)
+  return SIMDE_EM_FLOAT32X4_SSE_C(_mm_min_ps(a.sse, b.sse));
+#elif defined(SIMDE_EM_NEON)
+  return SIMDE_EM_FLOAT32X4_NEON_C(vminq_f32(a.neon, b.neon));
+#else
+  simde_em_float32x4 r;
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.v) / sizeof(r.v[0])) ; i++) {
+    r.v[i] = (a.v[i] < b.v[i]) ? a.v[i] : b.v[i];
+  }
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde_em_float32x4
 simde_em_float32x4_neg (simde_em_float32x4 a) {
 #if defined(SIMDE_EM_NATIVE)
   return SIMDE_EM_FLOAT32X4_C(emscripten_float32x4_neg(a.n));
@@ -151,6 +218,84 @@ simde_em_float32x4_neg (simde_em_float32x4 a) {
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.v) / sizeof(r.v[0])) ; i++) {
     r.v[i] = -(a.v[i]);
+  }
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde_em_float32x4
+simde_em_float32x4_sqrt (simde_em_float32x4 a) {
+#if defined(SIMDE_EM_NATIVE)
+  return SIMDE_EM_FLOAT32X4_C(emscripten_float32x4_sqrt(a.n));
+#elif defined(SIMDE_EM_SSE)
+  return SIMDE_EM_FLOAT32X4_SSE_C(_mm_sqrt_ps(a.sse));
+#elif defined(SIMDE_EM_NEON) && defined(SIMDE_ARCH_AARCH64)
+  return SIMDE_EM_FLOAT32X4_NEON_C(vsqrtq_f32(a.neon));
+#elif defined(SIMDE_EM_NEON)
+  return SIMDE_EM_FLOAT32X4_NEON_C(vrecpeq_f32(vrsqrteq_f32(a.neon)));
+#else
+  simde_em_float32x4 r;
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.v) / sizeof(r.v[0])) ; i++) {
+    r.v[i] = sqrtf(a.v[i]);
+  }
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde_em_float32x4
+simde_em_float32x4_reciprocalApproximation (simde_em_float32x4 a) {
+#if defined(SIMDE_EM_NATIVE)
+  return SIMDE_EM_FLOAT32X4_C(emscripten_float32x4_reciprocalApproximation(a.n));
+#elif defined(SIMDE_EM_SSE)
+  return SIMDE_EM_FLOAT32X4_SSE_C(_mm_rcp_ps(a.sse));
+#elif defined(SIMDE_EM_NEON)
+  return SIMDE_EM_FLOAT32X4_NEON_C(vrecpeq_f32(a.neon));
+#else
+  simde_em_float32x4 r;
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.v) / sizeof(r.v[0])) ; i++) {
+    r.v[i] = ((simde_float32) 1.0f) / a.v[i];
+  }
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde_em_float32x4
+simde_em_float32x4_reciprocalSqrtApproximation (simde_em_float32x4 a) {
+#if defined(SIMDE_EM_NATIVE)
+  return SIMDE_EM_FLOAT32X4_C(emscripten_float32x4_reciprocalSqrtApproximation(a.n));
+#elif defined(SIMDE_EM_SSE)
+  return SIMDE_EM_FLOAT32X4_SSE_C(_mm_rsqrt_ps(a.sse));
+#elif defined(SIMDE_EM_NEON)
+  return SIMDE_EM_FLOAT32X4_NEON_C(vrsqrteq_f32(a.neon));
+#else
+  simde_em_float32x4 r;
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.v) / sizeof(r.v[0])) ; i++) {
+    r.v[i] = ((simde_float32) 1.0f) / sqrtf(a.v[i]);
+  }
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde_em_float32x4
+simde_em_float32x4_abs (simde_em_float32x4 a) {
+#if defined(SIMDE_EM_NATIVE)
+  return SIMDE_EM_FLOAT32X4_C(emscripten_float32x4_abs(a.n));
+#elif defined(SIMDE_EM_SSE2)
+  return SIMDE_EM_FLOAT32X4_SSE_C(_mm_and_ps(a.sse, _mm_castsi128_ps(_mm_set1_epi32(~(1<<31)))));
+#elif defined(SIMDE_EM_NEON)
+  return SIMDE_EM_FLOAT32X4_NEON_C(vabsq_f32(a.neon));
+#else
+  simde_em_float32x4 r;
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.v) / sizeof(r.v[0])) ; i++) {
+    r.v[i] = fabsf(a.v[i]);
   }
   return r;
 #endif

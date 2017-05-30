@@ -34,7 +34,7 @@ simde_assert_float32x4_equal_(simde_float32 precision, simde_em_float32x4 a, sim
       (a.v[i] - b.v[i]);
     if (MUNIT_UNLIKELY(diff > (1.0 / precision))) {
       fprintf(stderr, "a: %8.2f %8.2f  %8.2f %8.2f\n", a.v[0], a.v[1], a.v[2], a.v[3]);
-      fprintf(stderr, "b: %8.2f %8.2f  %8.2f %8.2f\n", a.v[0], a.v[1], a.v[2], a.v[3]);
+      fprintf(stderr, "b: %8.2f %8.2f  %8.2f %8.2f\n", b.v[0], b.v[1], b.v[2], b.v[3]);
       munit_errorf("assertion failed: %s[%" MUNIT_SIZE_MODIFIER "u] == %s[%" MUNIT_SIZE_MODIFIER "u] (%f == %f)",
 		   a_, i, b_, i, a.v[i], b.v[i]);
     }
@@ -239,6 +239,138 @@ test_simde_em_float32x4_mul(const MunitParameter params[], void* data) {
 }
 
 static MunitResult
+test_simde_em_float32x4_div(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  const struct {
+    simde_em_float32x4 a;
+    simde_em_float32x4 b;
+    simde_em_float32x4 r;
+  } test_vec[8] = {
+    { simde_em_float32x4_set( 174.53,  589.72,  126.11,  783.16),
+      simde_em_float32x4_set( 365.14, -305.45, -915.07,  861.88),
+      simde_em_float32x4_set(   0.48,   -1.93,   -0.14,    0.91) },
+    { simde_em_float32x4_set(-671.87, -523.51,  416.45,  657.80),
+      simde_em_float32x4_set( -36.67, -261.08, -414.96, -389.37),
+      simde_em_float32x4_set(  18.32,    2.01,   -1.00,   -1.69) },
+    { simde_em_float32x4_set(-245.49,  511.70, -254.98,  337.57),
+      simde_em_float32x4_set(-553.82,  951.63, -803.16,  198.14),
+      simde_em_float32x4_set(   0.44,    0.54,    0.32,    1.70) },
+    { simde_em_float32x4_set( 772.61, -444.55, -922.71,  140.78),
+      simde_em_float32x4_set( 866.48,  410.81,  661.80, -542.62),
+      simde_em_float32x4_set(   0.89,   -1.08,   -1.39,   -0.26) },
+    { simde_em_float32x4_set(-629.54, -880.50, -575.75,  393.64),
+      simde_em_float32x4_set(-570.90, -967.32, -391.88,  442.98),
+      simde_em_float32x4_set(   1.10,    0.91,    1.47,    0.89) },
+    { simde_em_float32x4_set( 147.62, -703.04, -358.60, -433.16),
+      simde_em_float32x4_set( 495.05, -195.88,  227.39, -122.80),
+      simde_em_float32x4_set(   0.30,    3.59,   -1.58,    3.53) },
+    { simde_em_float32x4_set(-252.47,  138.37,  460.35, -286.62),
+      simde_em_float32x4_set(-293.89, -257.43, -540.44,  752.87),
+      simde_em_float32x4_set(   0.86,   -0.54,   -0.85,   -0.38) },
+    { simde_em_float32x4_set( 748.77,  551.14, -315.72,  712.78),
+      simde_em_float32x4_set( 686.27,   48.29,  609.68,  323.46),
+      simde_em_float32x4_set(   1.09,   11.41,   -0.52,    2.20) }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    simde_em_float32x4 r = simde_em_float32x4_div(test_vec[i].a, test_vec[i].b);
+    simde_assert_float32x4_equal(2, r, test_vec[i].r);
+  }
+
+  return MUNIT_OK;
+}
+
+static MunitResult
+test_simde_em_float32x4_max(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  const struct {
+    simde_em_float32x4 a;
+    simde_em_float32x4 b;
+    simde_em_float32x4 r;
+  } test_vec[8] = {
+    { simde_em_float32x4_set( 351.79, -991.10, -974.91,  547.84),
+      simde_em_float32x4_set(-799.63,  473.61, -367.79, -731.89),
+      simde_em_float32x4_set( 351.79,  473.61, -367.79,  547.84) },
+    { simde_em_float32x4_set( 541.66,  779.90,  630.79,  694.34),
+      simde_em_float32x4_set(-347.62,  997.13,  -31.67,  978.45),
+      simde_em_float32x4_set( 541.66,  997.13,  630.79,  978.45) },
+    { simde_em_float32x4_set(-163.03, -917.39, -676.54, -531.65),
+      simde_em_float32x4_set( 531.90, -880.53, -338.38, -804.75),
+      simde_em_float32x4_set( 531.90, -880.53, -338.38, -531.65) },
+    { simde_em_float32x4_set( -81.16, -467.70, -993.29, -662.90),
+      simde_em_float32x4_set(-132.21,  630.89, -934.35,  317.85),
+      simde_em_float32x4_set( -81.16,  630.89, -934.35,  317.85) },
+    { simde_em_float32x4_set( 242.81,  315.49,  204.21,  404.36),
+      simde_em_float32x4_set( 175.26,  203.56, -600.36, -177.21),
+      simde_em_float32x4_set( 242.81,  315.49,  204.21,  404.36) },
+    { simde_em_float32x4_set(-432.56, -782.58,  273.39,   49.06),
+      simde_em_float32x4_set(-884.62,  125.20,  546.47,   95.38),
+      simde_em_float32x4_set(-432.56,  125.20,  546.47,   95.38) },
+    { simde_em_float32x4_set(-876.55,  562.09,    7.56,  165.49),
+      simde_em_float32x4_set( -64.93, -368.10,  479.79, -923.54),
+      simde_em_float32x4_set( -64.93,  562.09,  479.79,  165.49) },
+    { simde_em_float32x4_set( 482.98, -883.06,  312.21,  977.07),
+      simde_em_float32x4_set(-943.70,  252.49,  430.60,  698.90),
+      simde_em_float32x4_set( 482.98,  252.49,  430.60,  977.07) }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    simde_em_float32x4 r = simde_em_float32x4_max(test_vec[i].a, test_vec[i].b);
+    simde_assert_float32x4_equal(2, r, test_vec[i].r);
+  }
+
+  return MUNIT_OK;
+}
+
+static MunitResult
+test_simde_em_float32x4_min(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  const struct {
+    simde_em_float32x4 a;
+    simde_em_float32x4 b;
+    simde_em_float32x4 r;
+  } test_vec[8] = {
+    { simde_em_float32x4_set( 719.13, -763.38,   86.07, -837.88),
+      simde_em_float32x4_set(  12.77, -864.63,  417.28, -952.55),
+      simde_em_float32x4_set(  12.77, -864.63,   86.07, -952.55) },
+    { simde_em_float32x4_set(-403.31,  -43.43,  813.50, -347.96),
+      simde_em_float32x4_set( 291.95, -295.88,  540.56,   56.18),
+      simde_em_float32x4_set(-403.31, -295.88,  540.56, -347.96) },
+    { simde_em_float32x4_set(-724.58,  837.92, -350.25, -116.61),
+      simde_em_float32x4_set(  68.77, -895.80,  402.41,  902.84),
+      simde_em_float32x4_set(-724.58, -895.80, -350.25, -116.61) },
+    { simde_em_float32x4_set(-259.60,  357.34, -450.05,  117.02),
+      simde_em_float32x4_set(-932.80, -262.20,  970.91, -667.85),
+      simde_em_float32x4_set(-932.80, -262.20, -450.05, -667.85) },
+    { simde_em_float32x4_set(-458.74, -592.88,  785.83,  -89.14),
+      simde_em_float32x4_set( 944.07, -671.55, -103.93, -936.31),
+      simde_em_float32x4_set(-458.74, -671.55, -103.93, -936.31) },
+    { simde_em_float32x4_set(  39.15,  572.17, -143.64,  134.64),
+      simde_em_float32x4_set( 941.26,  459.48,  328.60, -507.30),
+      simde_em_float32x4_set(  39.15,  459.48, -143.64, -507.30) },
+    { simde_em_float32x4_set( -68.59, -600.82,  612.46,  152.37),
+      simde_em_float32x4_set(-380.92, -151.36,   70.58,  336.05),
+      simde_em_float32x4_set(-380.92, -600.82,   70.58,  152.37) },
+    { simde_em_float32x4_set(-110.87,  435.53,  134.99,  349.38),
+      simde_em_float32x4_set( 817.34, -672.00,  960.93,  771.14),
+      simde_em_float32x4_set(-110.87, -672.00,  134.99,  349.38) }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    simde_em_float32x4 r = simde_em_float32x4_min(test_vec[i].a, test_vec[i].b);
+    simde_assert_float32x4_equal(2, r, test_vec[i].r);
+  }
+
+  return MUNIT_OK;
+}
+
+static MunitResult
 test_simde_em_float32x4_neg(const MunitParameter params[], void* data) {
   (void) params;
   (void) data;
@@ -273,13 +405,160 @@ test_simde_em_float32x4_neg(const MunitParameter params[], void* data) {
   return MUNIT_OK;
 }
 
+static MunitResult
+test_simde_em_float32x4_sqrt(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  const struct {
+    simde_em_float32x4 a;
+    simde_em_float32x4 r;
+  } test_vec[8] = {
+    { simde_em_float32x4_set(592.28, 201.57, 831.38, 716.38),
+      simde_em_float32x4_set( 24.34,  14.20,  28.83,  26.77) },
+    { simde_em_float32x4_set(828.99, 185.53,  12.52, 997.92),
+      simde_em_float32x4_set( 28.79,  13.62,   3.54,  31.59) },
+    { simde_em_float32x4_set(640.39, 739.78, 751.16, 408.06),
+      simde_em_float32x4_set( 25.31,  27.20,  27.41,  20.20) },
+    { simde_em_float32x4_set(441.60, 653.06, 949.93, 996.81),
+      simde_em_float32x4_set( 21.01,  25.56,  30.82,  31.57) },
+    { simde_em_float32x4_set(533.29, 826.83, 957.35, 649.17),
+      simde_em_float32x4_set( 23.09,  28.75,  30.94,  25.48) },
+    { simde_em_float32x4_set(137.46,  53.06, 859.32, 683.49),
+      simde_em_float32x4_set( 11.72,   7.28,  29.31,  26.14) },
+    { simde_em_float32x4_set(345.43, 286.01, 583.82, 455.58),
+      simde_em_float32x4_set( 18.59,  16.91,  24.16,  21.34) },
+    { simde_em_float32x4_set(327.74,  69.69, 384.37, 951.57),
+      simde_em_float32x4_set( 18.10,   8.35,  19.61,  30.85) }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    simde_em_float32x4 r = simde_em_float32x4_sqrt(test_vec[i].a);
+    simde_assert_float32x4_equal(2, r, test_vec[i].r);
+  }
+
+  return MUNIT_OK;
+}
+
+static MunitResult
+test_simde_em_float32x4_reciprocalApproximation(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  const struct {
+    simde_em_float32x4 a;
+    simde_em_float32x4 r;
+  } test_vec[8] = {
+    { simde_em_float32x4_set( -590.54,   -52.74,  -155.37,  -122.51),
+      simde_em_float32x4_set(   -0.00,    -0.02,    -0.01,    -0.01) },
+    { simde_em_float32x4_set( -692.64,    39.44,  -818.15,   550.54),
+      simde_em_float32x4_set(   -0.00,     0.03,    -0.00,     0.00) },
+    { simde_em_float32x4_set(  843.46,  -916.67,  -556.75,   345.52),
+      simde_em_float32x4_set(    0.00,    -0.00,    -0.00,     0.00) },
+    { simde_em_float32x4_set( -570.25,  -590.37,   161.05,   317.58),
+      simde_em_float32x4_set(   -0.00,    -0.00,     0.01,     0.00) },
+    { simde_em_float32x4_set(   86.44,  -710.63,  -269.99,   895.79),
+      simde_em_float32x4_set(    0.01,    -0.00,    -0.00,     0.00) },
+    { simde_em_float32x4_set(  796.62,  -446.44,   495.30,  -108.28),
+      simde_em_float32x4_set(    0.00,    -0.00,     0.00,    -0.01) },
+    { simde_em_float32x4_set( -682.29,  -425.52,  -534.07,  -645.66),
+      simde_em_float32x4_set(   -0.00,    -0.00,    -0.00,    -0.00) },
+    { simde_em_float32x4_set( -456.79,   391.79,  -752.69,  -273.82),
+      simde_em_float32x4_set(   -0.00,     0.00,    -0.00,    -0.00) }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    simde_em_float32x4 r = simde_em_float32x4_reciprocalApproximation(test_vec[i].a);
+    simde_assert_float32x4_equal(2, r, test_vec[i].r);
+  }
+
+  return MUNIT_OK;
+}
+
+static MunitResult
+test_simde_em_float32x4_reciprocalSqrtApproximation(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  const struct {
+    simde_em_float32x4 a;
+    simde_em_float32x4 r;
+  } test_vec[8] = {
+    { simde_em_float32x4_set(170.38, 295.38, 762.40, 382.38),
+      simde_em_float32x4_set(  0.08,   0.06,   0.04,   0.05) },
+    { simde_em_float32x4_set(112.04, 798.81,  23.63, 690.92),
+      simde_em_float32x4_set(  0.09,   0.04,   0.21,   0.04) },
+    { simde_em_float32x4_set(613.95, 938.56, 239.42, 333.33),
+      simde_em_float32x4_set(  0.04,   0.03,   0.06,   0.05) },
+    { simde_em_float32x4_set(858.90, 269.40, 719.68, 523.91),
+      simde_em_float32x4_set(  0.03,   0.06,   0.04,   0.04) },
+    { simde_em_float32x4_set(453.36,  24.25, 397.32, 894.42),
+      simde_em_float32x4_set(  0.05,   0.20,   0.05,   0.03) },
+    { simde_em_float32x4_set(446.54, 671.26, 635.99, 794.66),
+      simde_em_float32x4_set(  0.05,   0.04,   0.04,   0.04) },
+    { simde_em_float32x4_set(687.70, 323.54, 997.05, 129.72),
+      simde_em_float32x4_set(  0.04,   0.06,   0.03,   0.09) },
+    { simde_em_float32x4_set(743.90, 245.13, 398.54, 649.75),
+      simde_em_float32x4_set(  0.04,   0.06,   0.05,   0.04) }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    simde_em_float32x4 r = simde_em_float32x4_reciprocalSqrtApproximation(test_vec[i].a);
+    simde_assert_float32x4_equal(2, r, test_vec[i].r);
+  }
+
+  return MUNIT_OK;
+}
+
+static MunitResult
+test_simde_em_float32x4_abs(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  const struct {
+    simde_em_float32x4 a;
+    simde_em_float32x4 r;
+  } test_vec[8] = {
+    { simde_em_float32x4_set( 337.22,  531.25, -582.00,  724.58),
+      simde_em_float32x4_set( 337.22,  531.25,  582.00,  724.58) },
+    { simde_em_float32x4_set(-260.26,  504.92,  159.80,  235.10),
+      simde_em_float32x4_set( 260.26,  504.92,  159.80,  235.10) },
+    { simde_em_float32x4_set(  94.14, -135.81, -255.39,  202.16),
+      simde_em_float32x4_set(  94.14,  135.81,  255.39,  202.16) },
+    { simde_em_float32x4_set(  13.09, -713.07,   26.09,  475.48),
+      simde_em_float32x4_set(  13.09,  713.07,   26.09,  475.48) },
+    { simde_em_float32x4_set(-907.50,  627.28, -963.83,  566.55),
+      simde_em_float32x4_set( 907.50,  627.28,  963.83,  566.55) },
+    { simde_em_float32x4_set( 890.68, -524.61,  628.68, -220.49),
+      simde_em_float32x4_set( 890.68,  524.61,  628.68,  220.49) },
+    { simde_em_float32x4_set(-273.99, -202.14,  831.07, -643.02),
+      simde_em_float32x4_set( 273.99,  202.14,  831.07,  643.02) },
+    { simde_em_float32x4_set( 953.46, -884.05,  645.13, -364.98),
+      simde_em_float32x4_set( 953.46,  884.05,  645.13,  364.98) }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    simde_em_float32x4 r = simde_em_float32x4_abs(test_vec[i].a);
+    simde_assert_float32x4_equal(2, r, test_vec[i].r);
+  }
+
+  return MUNIT_OK;
+}
+
 static MunitTest test_suite_tests[] = {
   SIMD_JS_TEST_FUNC(float32x4, set),
   SIMD_JS_TEST_FUNC(float32x4, splat),
   SIMD_JS_TEST_FUNC(float32x4, add),
   SIMD_JS_TEST_FUNC(float32x4, sub),
   SIMD_JS_TEST_FUNC(float32x4, mul),
+  SIMD_JS_TEST_FUNC(float32x4, div),
+  SIMD_JS_TEST_FUNC(float32x4, max),
+  SIMD_JS_TEST_FUNC(float32x4, min),
   SIMD_JS_TEST_FUNC(float32x4, neg),
+  SIMD_JS_TEST_FUNC(float32x4, sqrt),
+  SIMD_JS_TEST_FUNC(float32x4, reciprocalApproximation),
+  SIMD_JS_TEST_FUNC(float32x4, reciprocalSqrtApproximation),
+  SIMD_JS_TEST_FUNC(float32x4, abs),
 
   { NULL, NULL, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL }
 };

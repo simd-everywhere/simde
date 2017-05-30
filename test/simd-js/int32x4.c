@@ -695,6 +695,72 @@ test_simde_em_int32x4_notEqual(const MunitParameter params[], void* data) {
 }
 
 static MunitResult
+test_simde_em_int32x4_anyTrue(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  const struct {
+    simde_em_int32x4 a;
+    simde_em_bool32x4 r;
+  } test_vec[] = {
+    { simde_em_int32x4_set(INT32_C(          0), INT32_C(-1642209200), INT32_C(          0), INT32_C(          0)),
+      simde_x_em_bool32x4_set(1, 1, 1, 1) },
+    { simde_em_int32x4_set(INT32_C(-1464498813), INT32_C( -646874599), INT32_C(          0), INT32_C(-1658432920)),
+      simde_x_em_bool32x4_set(1, 1, 1, 1) },
+    { simde_em_int32x4_set(INT32_C(          0), INT32_C(          0), INT32_C(          0), INT32_C(          0)),
+      simde_x_em_bool32x4_set(0, 0, 0, 0) },
+    { simde_em_int32x4_set(INT32_C(          0), INT32_C(          0), INT32_C(          0), INT32_C(  282476292)),
+      simde_x_em_bool32x4_set(1, 1, 1, 1) },
+    { simde_em_int32x4_set(INT32_C( -142013167), INT32_C( -332185942), INT32_C(          0), INT32_C(          0)),
+      simde_x_em_bool32x4_set(1, 1, 1, 1) },
+    { simde_em_int32x4_set(INT32_C(          0), INT32_C(          0), INT32_C(-1995834622), INT32_C(-1115654080)),
+      simde_x_em_bool32x4_set(1, 1, 1, 1) },
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    simde_em_bool32x4 r = simde_em_int32x4_anyTrue(test_vec[i].a);
+    simde_assert_bool32x4(r, ==, test_vec[i].r);
+  }
+
+  return MUNIT_OK;
+}
+
+static MunitResult
+test_simde_em_int32x4_allTrue(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  const struct {
+    simde_em_int32x4 a;
+    simde_em_bool32x4 r;
+  } test_vec[8] = {
+    { simde_em_int32x4_set(INT32_C( 1924755501), INT32_C(-1487094809), INT32_C(          0), INT32_C(          0)),
+      simde_x_em_bool32x4_set(0, 0, 0, 0) },
+    { simde_em_int32x4_set(INT32_C(-1563852499), INT32_C(          0), INT32_C(-1164461569), INT32_C(          0)),
+      simde_x_em_bool32x4_set(0, 0, 0, 0) },
+    { simde_em_int32x4_set(INT32_C(  166325311), INT32_C( -663110561), INT32_C( 1779011063), INT32_C( -851266434)),
+      simde_x_em_bool32x4_set(1, 1, 1, 1) },
+    { simde_em_int32x4_set(INT32_C(  381345185), INT32_C(-1082961579), INT32_C(          0), INT32_C(          0)),
+      simde_x_em_bool32x4_set(0, 0, 0, 0) },
+    { simde_em_int32x4_set(INT32_C(          0), INT32_C(          0), INT32_C(          0), INT32_C(          0)),
+      simde_x_em_bool32x4_set(0, 0, 0, 0) },
+    { simde_em_int32x4_set(INT32_C(-1600691899), INT32_C(          0), INT32_C(          0), INT32_C(          0)),
+      simde_x_em_bool32x4_set(0, 0, 0, 0) },
+    { simde_em_int32x4_set(INT32_C( 1542884964), INT32_C(          0), INT32_C( 1150791959), INT32_C(          0)),
+      simde_x_em_bool32x4_set(0, 0, 0, 0) },
+    { simde_em_int32x4_set(INT32_C(  990770967), INT32_C(  776141755), INT32_C(    -506037), INT32_C(          0)),
+      simde_x_em_bool32x4_set(0, 0, 0, 0) }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    simde_em_bool32x4 r = simde_em_int32x4_allTrue(test_vec[i].a);
+    simde_assert_bool32x4(r, ==, test_vec[i].r);
+  }
+
+  return MUNIT_OK;
+}
+
+static MunitResult
 test_simde_em_int32x4_select(const MunitParameter params[], void* data) {
   (void) params;
   (void) data;
@@ -1155,6 +1221,8 @@ static MunitTest test_suite_tests[] = {
   SIMD_JS_TEST_FUNC(int32x4, greaterThanOrEqual),
   SIMD_JS_TEST_FUNC(int32x4, equal),
   SIMD_JS_TEST_FUNC(int32x4, notEqual),
+  SIMD_JS_TEST_FUNC(int32x4, anyTrue),
+  SIMD_JS_TEST_FUNC(int32x4, allTrue),
   SIMD_JS_TEST_FUNC(int32x4, select),
   SIMD_JS_TEST_FUNC(int32x4, shiftLeftByScalar),
   SIMD_JS_TEST_FUNC(int32x4, shiftRightByScalar),

@@ -2774,7 +2774,7 @@ simde_mm_sra_epi16 (simde__m128i a, simde__m128i count) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_sra_epi32 (simde__m128i a, simde__m128i count) {
-#if defined(SIMDE_SSE2_NATIVE) && !defined(SIMDE_BGU_GCC_BAD_MM_SRA_EPI32)
+#if defined(SIMDE_SSE2_NATIVE) && !defined(SIMDE_BUG_GCC_BAD_MM_SRA_EPI32)
   return SIMDE__M128I_C(_mm_sra_epi32(a.n, count.n));
 #else
   simde__m128i r;

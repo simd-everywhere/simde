@@ -69,7 +69,7 @@ typedef SIMDE__ALIGN(16) union {
   float64x2     n;
 #elif defined(SIMDE_EM_SSE)
   __m128d       sse;
-#elif defined(SIMDE_EM_NEON)
+#elif defined(SIMDE_EM_NEON) && defined(SIMDE_ARCH_AARCH64)
   float64x2_t   neon;
 #endif
 } simde_em_float64x2;
@@ -375,6 +375,9 @@ HEDLEY_STATIC_ASSERT(16 == sizeof(simde_em_bool64x2), "simde_em_bool64x2 size in
 HEDLEY_STATIC_ASSERT(16 == sizeof(simde_em_bool32x4), "simde_em_bool32x4 size incorrect");
 HEDLEY_STATIC_ASSERT(16 == sizeof(simde_em_bool16x8), "simde_em_bool16x8 size incorrect");
 HEDLEY_STATIC_ASSERT(16 == sizeof(simde_em_bool8x16), "simde_em_bool8x16 size incorrect");
+
+#define SIMDE__CAST(to, from, value) \
+  (((union { from a; to b; } *) (&(value)))->b)
 
 /* #include "float64x2.h" */
 #include "float32x4.h"

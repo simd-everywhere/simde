@@ -178,11 +178,11 @@ test_simde_em_float32x4_binary(const MunitParameter params[], void* data) {
 
     r = simde_em_float32x4_binary(a, b);
 
-    printf("    { simde_em_float32x4_set(%8.2f, %8.2f, %8.2f, %8.2f),\n",
+    printf("    { simde_em_float32x4_set(%7.2f, %7.2f, %7.2f, %7.2f),\n",
   	   a.v[0], a.v[1], a.v[2], a.v[3]);
-    printf("      simde_em_float32x4_set(%8.2f, %8.2f, %8.2f, %8.2f),\n",
+    printf("      simde_em_float32x4_set(%7.2f, %7.2f, %7.2f, %7.2f),\n",
   	   b.v[0], b.v[1], b.v[2], b.v[3]);
-    printf("      simde_em_float32x4_set(%8.2f, %8.2f, %8.2f, %8.2f) },\n",
+    printf("      simde_em_float32x4_set(%7.2f, %7.2f, %7.2f, %7.2f) },\n",
   	   r.v[0], r.v[1], r.v[2], r.v[3]);
   }
   return MUNIT_FAIL;
@@ -217,9 +217,9 @@ test_simde_em_float32x4_unary(const MunitParameter params[], void* data) {
 
     r = simde_em_float32x4_unary(a);
 
-    printf("    { simde_em_float32x4_set(%8.2f, %8.2f, %8.2f, %8.2f),\n",
+    printf("    { simde_em_float32x4_set(%7.2f, %7.2f, %7.2f, %7.2f),\n",
   	   a.v[0], a.v[1], a.v[2], a.v[3]);
-    printf("      simde_em_float32x4_set(%8.2f, %8.2f, %8.2f, %8.2f) },\n",
+    printf("      simde_em_float32x4_set(%7.2f, %7.2f, %7.2f, %7.2f) },\n",
   	   r.v[0], r.v[1], r.v[2], r.v[3]);
   }
   return MUNIT_FAIL;
@@ -256,9 +256,9 @@ test_simde_em_float32x4_compare(const MunitParameter params[], void* data) {
 
     r = simde_em_float32x4_compare(a, b);
 
-    printf("    { simde_em_float32x4_set(%8.2f, %8.2f, %8.2f, %8.2f),\n",
+    printf("    { simde_em_float32x4_set(%7.2f, %7.2f, %7.2f, %7.2f),\n",
   	   a.v[0], a.v[1], a.v[2], a.v[3]);
-    printf("      simde_em_float32x4_set(%8.2f, %8.2f, %8.2f, %8.2f),\n",
+    printf("      simde_em_float32x4_set(%7.2f, %7.2f, %7.2f, %7.2f),\n",
   	   b.v[0], b.v[1], b.v[2], b.v[3]);
     printf("      simde_x_em_bool32x4_set(%d, %d, %d, %d) },\n",
   	   r.v[0] != 0, r.v[1] != 0, r.v[2] != 0, r.v[3] != 0);
@@ -296,9 +296,9 @@ test_simde_em_float32x4_scalar(const MunitParameter params[], void* data) {
 
     r = simde_em_float32x4_scalar(a, b);
 
-    printf("    { simde_em_float32x4_set(%8.2f, %8.2f, %8.2f, %8.2f), %d,\n",
+    printf("    { simde_em_float32x4_set(%7.2f, %7.2f, %7.2f, %7.2f), %d,\n",
   	   a.v[0], a.v[1], a.v[2], a.v[3], b);
-    printf("      simde_em_float32x4_set(%8.2f, %8.2f, %8.2f, %8.2f) },\n",
+    printf("      simde_em_float32x4_set(%7.2f, %7.2f, %7.2f, %7.2f) },\n",
   	   r.v[0], r.v[1], r.v[2], r.v[3]);
   }
   return MUNIT_FAIL;
