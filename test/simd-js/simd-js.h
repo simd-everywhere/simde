@@ -87,6 +87,8 @@ MunitSuite simde_simd_js_int32x4_test_suite;
 MunitSuite simde_simd_js_int32x4_emul_test_suite;
 MunitSuite simde_simd_js_int32x4_cmp_test_suite;
 
+MunitSuite simde_simd_js_float32x4_test_suite;
+
 #define simde_assert_int32x4(a, op, b) \
   simde_assert_int32v(4, (int32_t*) &(a), op, (int32_t*) &(b))
 

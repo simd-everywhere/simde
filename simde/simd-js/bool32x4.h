@@ -41,7 +41,7 @@ simde_x_em_bool32x4_set (_Bool s0, _Bool s1, _Bool s2, _Bool s3) {
 #elif defined(SIMDE_EM_SSE2)
   __m128i a = _mm_set_epi32(s3, s2, s1, s0);
   __m128i b = _mm_set1_epi32(0);
-  return SIMDE_EM_BOOL32X4_SSE2_C(_mm_andnot_si128(_mm_cmpeq_epi32(a, b), _mm_set1_epi32(~INT32_C(0))));
+  return SIMDE_EM_BOOL32X4_SSE_C(_mm_andnot_si128(_mm_cmpeq_epi32(a, b), _mm_set1_epi32(~INT32_C(0))));
 #elif defined(SIMDE_EM_NEON)
   SIMDE__ALIGN(16) int32_t data[4] = { s0, s1, s2, s3 };
   return SIMDE_EM_BOOL32X4_NEON_UC(vmvnq_u32(vceqq_s32(vld1q_s32(data), vdupq_n_s32(0))));

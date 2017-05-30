@@ -36,8 +36,8 @@ simde_em_int32x4
 simde_em_int32x4_set (int32_t s0, int32_t s1, int32_t s2, int32_t s3) {
 #if defined(SIMDE_EM_NATIVE)
   return SIMDE_EM_INT32X4_C(emscripten_int32x4_set(s0, s1, s2, s3));
-#elif defined(SIMDE_EM_SSE2)
-  return SIMDE_EM_INT32X4_SSE2_C(_mm_set_epi32(s3, s2, s1, s0));
+#elif defined(SIMDE_EM_SSE)
+  return SIMDE_EM_INT32X4_SSE_C(_mm_set_epi32(s3, s2, s1, s0));
 #elif defined(SIMDE_EM_NEON)
   SIMDE__ALIGN(16) int32_t data[4] = { s0, s1, s2, s3 };
   return SIMDE_EM_INT32X4_NEON_C(vld1q_s32(data));
@@ -54,7 +54,7 @@ simde_em_int32x4_splat (int32_t s) {
 #if defined(SIMDE_EM_NATIVE)
   return SIMDE_EM_INT32X4_C(emscripten_int32x4_splat(s));
 #elif defined(SIMDE_EM_SSE2)
-  return SIMDE_EM_INT32X4_SSE2_C(_mm_set1_epi32(s));
+  return SIMDE_EM_INT32X4_SSE_C(_mm_set1_epi32(s));
 #elif defined(SIMDE_SSE2_NEON)
   return SIMDE_EM_INT32X4_NEON_C(vdupq_n_s32(a));
 #else
@@ -70,7 +70,7 @@ simde_em_int32x4_add (simde_em_int32x4 a, simde_em_int32x4 b) {
 #if defined(SIMDE_EM_NATIVE)
   return SIMDE_EM_INT32X4_C(emscripten_int32x4_add(a.n, b.n));
 #elif defined(SIMDE_EM_SSE2)
-  return SIMDE_EM_INT32X4_SSE2_C(_mm_add_epi32(a.sse2, b.sse2));
+  return SIMDE_EM_INT32X4_SSE_C(_mm_add_epi32(a.sse, b.sse));
 #elif defined(SIMDE_EM_NEON)
   return SIMDE_EM_INT32X4_NEON_C(vaddq_s32(a.neon, b.neon));
 #elif defined(SIMDE__ENABLE_GCC_VEC_EXT)
@@ -93,7 +93,7 @@ simde_em_int32x4_sub (simde_em_int32x4 a, simde_em_int32x4 b) {
 #if defined(SIMDE_EM_NATIVE)
   return SIMDE_EM_INT32X4_C(emscripten_int32x4_sub(a.n, b.n));
 #elif defined(SIMDE_EM_SSE2)
-  return SIMDE_EM_INT32X4_SSE2_C(_mm_sub_epi32(a.sse2, b.sse2));
+  return SIMDE_EM_INT32X4_SSE_C(_mm_sub_epi32(a.sse, b.sse));
 #elif defined(SIMDE_EM_NEON)
   return SIMDE_EM_INT32X4_NEON_C(vsubq_s32(a.neon, b.neon));
 #elif defined(SIMDE__ENABLE_GCC_VEC_EXT)
@@ -116,7 +116,7 @@ simde_em_int32x4_mul (simde_em_int32x4 a, simde_em_int32x4 b) {
 #if defined(SIMDE_EM_NATIVE)
   return SIMDE_EM_INT32X4_C(emscripten_int32x4_mul(a.n, b.n));
 #elif defined(SIMDE_EM_SSE2) && defined(__SSE4_1__)
-  return SIMDE_EM_INT32X4_SSE2_C(_mm_mullo_epi32(a.sse2, b.sse2));
+  return SIMDE_EM_INT32X4_SSE_C(_mm_mullo_epi32(a.sse, b.sse));
 #elif defined(SIMDE_EM_NEON)
   return SIMDE_EM_INT32X4_NEON_C(vmulq_s32(a.neon, b.neon));
 #elif defined(SIMDE__ENABLE_GCC_VEC_EXT)
@@ -139,7 +139,7 @@ simde_em_int32x4_neg (simde_em_int32x4 a) {
 #if defined(SIMDE_EM_NATIVE)
   return SIMDE_EM_INT32X4_C(emscripten_int32x4_neg(a.n));
 #elif defined(SIMDE_EM_SSE2) && defined(__SSE4_1__)
-  return SIMDE_EM_INT32X4_SSE2_C(_mm_mullo_epi32(a.sse2, _mm_set1_epi32(-1)));
+  return SIMDE_EM_INT32X4_SSE_C(_mm_mullo_epi32(a.sse, _mm_set1_epi32(-1)));
 #elif defined(SIMDE_EM_NEON)
   return SIMDE_EM_INT32X4_NEON_C(vnegq_s32(a.neon));
 #elif defined(SIMDE__ENABLE_GCC_VEC_EXT)
@@ -162,7 +162,7 @@ simde_em_int32x4_and (simde_em_int32x4 a, simde_em_int32x4 b) {
 #if defined(SIMDE_EM_NATIVE)
   return SIMDE_EM_INT32X4_C(emscripten_int32x4_and(a.n, b.n));
 #elif defined(SIMDE_EM_SSE2)
-  return SIMDE_EM_INT32X4_SSE2_C(_mm_and_si128(a.sse2, b.sse2));
+  return SIMDE_EM_INT32X4_SSE_C(_mm_and_si128(a.sse, b.sse));
 #elif defined(SIMDE_EM_NEON)
   return SIMDE_EM_INT32X4_NEON_C(vandq_s32(a.neon, b.neon));
 #elif defined(SIMDE__ENABLE_GCC_VEC_EXT)
@@ -185,7 +185,7 @@ simde_em_int32x4_xor (simde_em_int32x4 a, simde_em_int32x4 b) {
 #if defined(SIMDE_EM_NATIVE)
   return SIMDE_EM_INT32X4_C(emscripten_int32x4_xor(a.n, b.n));
 #elif defined(SIMDE_EM_SSE2)
-  return SIMDE_EM_INT32X4_SSE2_C(_mm_xor_si128(a.sse2, b.sse2));
+  return SIMDE_EM_INT32X4_SSE_C(_mm_xor_si128(a.sse, b.sse));
 #elif defined(SIMDE_EM_NEON)
   return SIMDE_EM_INT32X4_NEON_C(veorq_s32(a.neon, b.neon));
 #elif defined(SIMDE__ENABLE_GCC_VEC_EXT)
@@ -208,7 +208,7 @@ simde_em_int32x4_or (simde_em_int32x4 a, simde_em_int32x4 b) {
 #if defined(SIMDE_EM_NATIVE)
   return SIMDE_EM_INT32X4_C(emscripten_int32x4_or(a.n, b.n));
 #elif defined(SIMDE_EM_SSE2)
-  return SIMDE_EM_INT32X4_SSE2_C(_mm_or_si128(a.sse2, b.sse2));
+  return SIMDE_EM_INT32X4_SSE_C(_mm_or_si128(a.sse, b.sse));
 #elif defined(SIMDE_EM_NEON)
   return SIMDE_EM_INT32X4_NEON_C(vorrq_s32(a.neon, b.neon));
 #elif defined(SIMDE__ENABLE_GCC_VEC_EXT)
@@ -231,7 +231,7 @@ simde_em_int32x4_not (simde_em_int32x4 a) {
 #if defined(SIMDE_EM_NATIVE)
   return SIMDE_EM_INT32X4_C(emscripten_int32x4_not(a.n));
 #elif defined(SIMDE_EM_SSE2)
-  return SIMDE_EM_INT32X4_SSE2_C(_mm_andnot_si128(a.sse2, _mm_set1_epi32(~INT32_C(0))));
+  return SIMDE_EM_INT32X4_SSE_C(_mm_andnot_si128(a.sse, _mm_set1_epi32(~INT32_C(0))));
 #elif defined(SIMDE_EM_NEON)
   return SIMDE_EM_INT32X4_NEON_C(vmvnq_s32(a.neon));
 #elif defined(SIMDE__ENABLE_GCC_VEC_EXT)
@@ -254,7 +254,7 @@ simde_em_int32x4_lessThan (simde_em_int32x4 a, simde_em_int32x4 b) {
 #if defined(SIMDE_EM_NATIVE)
   return SIMDE_EM_BOOL32X4_C(emscripten_int32x4_lessThan(a.n, b.n));
 #elif defined(SIMDE_EM_SSE2)
-  return SIMDE_EM_BOOL32X4_SSE2_C(_mm_cmplt_epi32(a.sse2, b.sse2));
+  return SIMDE_EM_BOOL32X4_SSE_C(_mm_cmplt_epi32(a.sse, b.sse));
 #elif defined(SIMDE_EM_NEON)
   return SIMDE_EM_BOOL32X4_NEON_UC(vcltq_s32(a.neon, b.neon));
 #else
@@ -273,7 +273,7 @@ simde_em_int32x4_lessThanOrEqual (simde_em_int32x4 a, simde_em_int32x4 b) {
 #if defined(SIMDE_EM_NATIVE)
   return SIMDE_EM_BOOL32X4_C(emscripten_int32x4_lessThanOrEqual(a.n, b.n));
 #elif defined(SIMDE_EM_SSE2)
-  return SIMDE_EM_BOOL32X4_SSE2_C(_mm_andnot_si128(_mm_cmpgt_epi32(a.sse2, b.sse2), _mm_set1_epi32(~INT32_C(0))));
+  return SIMDE_EM_BOOL32X4_SSE_C(_mm_andnot_si128(_mm_cmpgt_epi32(a.sse, b.sse), _mm_set1_epi32(~INT32_C(0))));
 #elif defined(SIMDE_EM_NEON)
   return SIMDE_EM_BOOL32X4_NEON_UC(vcleq_s32(a.neon, b.neon));
 #else
@@ -292,7 +292,7 @@ simde_em_int32x4_greaterThan (simde_em_int32x4 a, simde_em_int32x4 b) {
 #if defined(SIMDE_EM_NATIVE)
   return SIMDE_EM_BOOL32X4_C(emscripten_int32x4_greaterThan(a.n, b.n));
 #elif defined(SIMDE_EM_SSE2)
-  return SIMDE_EM_BOOL32X4_SSE2_C(_mm_cmpgt_epi32(a.sse2, b.sse2));
+  return SIMDE_EM_BOOL32X4_SSE_C(_mm_cmpgt_epi32(a.sse, b.sse));
 #elif defined(SIMDE_EM_NEON)
   return SIMDE_EM_BOOL32X4_NEON_UC(vcgtq_s32(a.neon, b.neon));
 #else
@@ -311,7 +311,7 @@ simde_em_int32x4_greaterThanOrEqual (simde_em_int32x4 a, simde_em_int32x4 b) {
 #if defined(SIMDE_EM_NATIVE)
   return SIMDE_EM_BOOL32X4_C(emscripten_int32x4_greaterThanOrEqual(a.n, b.n));
 #elif defined(SIMDE_EM_SSE2)
-  return SIMDE_EM_BOOL32X4_SSE2_C(_mm_andnot_si128(_mm_cmplt_epi32(a.sse2, b.sse2), _mm_set1_epi32(~INT32_C(0))));
+  return SIMDE_EM_BOOL32X4_SSE_C(_mm_andnot_si128(_mm_cmplt_epi32(a.sse, b.sse), _mm_set1_epi32(~INT32_C(0))));
 #elif defined(SIMDE_EM_NEON)
   return SIMDE_EM_BOOL32X4_NEON_UC(vcgeq_s32(a.neon, b.neon));
 #else
@@ -330,7 +330,7 @@ simde_em_int32x4_equal (simde_em_int32x4 a, simde_em_int32x4 b) {
 #if defined(SIMDE_EM_NATIVE)
   return SIMDE_EM_BOOL32X4_C(emscripten_int32x4_equal(a.n, b.n));
 #elif defined(SIMDE_EM_SSE2)
-  return SIMDE_EM_BOOL32X4_SSE2_C(_mm_cmpeq_epi32(a.sse2, b.sse2));
+  return SIMDE_EM_BOOL32X4_SSE_C(_mm_cmpeq_epi32(a.sse, b.sse));
 #elif defined(SIMDE_EM_NEON)
   return SIMDE_EM_BOOL32X4_NEON_UC(vceqq_s32(a.neon, b.neon));
 #else
@@ -349,7 +349,7 @@ simde_em_int32x4_notEqual (simde_em_int32x4 a, simde_em_int32x4 b) {
 #if defined(SIMDE_EM_NATIVE)
   return SIMDE_EM_BOOL32X4_C(emscripten_int32x4_notEqual(a.n, b.n));
 #elif defined(SIMDE_EM_SSE2)
-  return SIMDE_EM_BOOL32X4_SSE2_C(_mm_andnot_si128(_mm_cmpeq_epi32(a.sse2, b.sse2), _mm_set1_epi32(~INT32_C(0))));
+  return SIMDE_EM_BOOL32X4_SSE_C(_mm_andnot_si128(_mm_cmpeq_epi32(a.sse, b.sse), _mm_set1_epi32(~INT32_C(0))));
 #elif defined(SIMDE_EM_NEON)
   return SIMDE_EM_BOOL32X4_NEON_UC(vmvnq_u32(vceqq_s32(a.neon, b.neon)));
 #else
@@ -369,13 +369,13 @@ simde_em_int32x4_select (simde_em_bool32x4 selector, simde_em_int32x4 a, simde_e
   return SIMDE_EM_INT32X4_C(emscripten_int32x4_select(selector.n, a.n, b.n));
 #elif defined(SIMDE_EM_SSE2)
   #if defined(__AVX512VL__)
-    return SIMDE_EM_INT32X4_SSE2_C(_mm_mask_blend_epi32(selector.n, b.n, a.n));
+    return SIMDE_EM_INT32X4_SSE_C(_mm_mask_blend_epi32(selector.n, b.n, a.n));
   #else
     /* TODO: check if this is faster than the portable version */
-    __m128i s  = _mm_cmpeq_epi32(selector.sse2, _mm_set1_epi32(0));
-    __m128i bp = _mm_and_si128(s, b.sse2);
-    __m128i ap = _mm_and_si128(_mm_andnot_si128(s, _mm_set1_epi32(~0)), a.sse2);
-    return SIMDE_EM_INT32X4_SSE2_C(_mm_or_si128(ap, bp));
+    __m128i s  = _mm_cmpeq_epi32(selector.sse, _mm_set1_epi32(0));
+    __m128i bp = _mm_and_si128(s, b.sse);
+    __m128i ap = _mm_and_si128(_mm_andnot_si128(s, _mm_set1_epi32(~0)), a.sse);
+    return SIMDE_EM_INT32X4_SSE_C(_mm_or_si128(ap, bp));
   #endif
 #elif defined(SIMDE_EM_NEON)
   return SIMDE_EM_INT32X4_NEON_C(vbslq_s32(vreinterpretq_u32_s32(selector.neon), a.neon, b.neon));
@@ -395,7 +395,7 @@ simde_em_int32x4_shiftLeftByScalar (simde_em_int32x4 a, const int bits) {
 #if defined(SIMDE_EM_NATIVE)
   return SIMDE_EM_INT32X4_C(emscripten_int32x4_shiftLeftByScalar(a.n, bits & 31));
 #elif defined(SIMDE_EM_SSE2)
-  return SIMDE_EM_INT32X4_SSE2_C(_mm_slli_epi32(a.sse2, bits & 31));
+  return SIMDE_EM_INT32X4_SSE_C(_mm_slli_epi32(a.sse, bits & 31));
 #elif defined(SIMDE_EM_NEON)
   #if defined(__GNUC__)
     if (__builtin_constant_p(bits))
@@ -425,7 +425,7 @@ simde_em_int32x4_shiftRightByScalar (simde_em_int32x4 a, const int bits) {
 #if defined(SIMDE_EM_NATIVE)
   return SIMDE_EM_INT32X4_C(emscripten_int32x4_shiftRightByScalar(a.n, bits & 31));
 #elif defined(SIMDE_EM_SSE2)
-  return SIMDE_EM_INT32X4_SSE2_C(_mm_srai_epi32(a.sse2, bits & 31));
+  return SIMDE_EM_INT32X4_SSE_C(_mm_srai_epi32(a.sse, bits & 31));
 #elif defined(SIMDE_EM_NEON)
   #if defined(__GNUC__)
     if (__builtin_constant_p(bits))
@@ -455,7 +455,7 @@ simde_em_int32x4_store (int32_t dest[HEDLEY_ARRAY_PARAM(4)], simde_em_int32x4 a)
 #if defined(SIMDE_EM_NATIVE)
   emscripten_int32x4_store(dest, a.n);
 #elif defined(SIMDE_EM_SSE2)
-  _mm_storeu_si128((__m128i*) dest, a.sse2);
+  _mm_storeu_si128((__m128i*) dest, a.sse);
 #elif defined(SIMDE_EM_NEON)
   vst1q_s32(dest, a.neon);
 #else
@@ -499,7 +499,7 @@ simde_em_int32x4_load (const int32_t src[HEDLEY_ARRAY_PARAM(4)]) {
 #if defined(SIMDE_EM_NATIVE)
   return SIMDE_EM_INT32X4_C(emscripten_int32x4_load(src));
 #elif defined(SIMDE_EM_SSE2)
-  return SIMDE_EM_INT32X4_SSE2_C(_mm_loadu_si128((__m128i const*) src));
+  return SIMDE_EM_INT32X4_SSE_C(_mm_loadu_si128((__m128i const*) src));
 #elif defined(SIMDE_EM_NEON)
   return SIMDE_EM_INT32X4_NEON_C(vld1q_s32(src));
 #else
@@ -517,7 +517,7 @@ simde_em_int32x4_load1 (const int32_t* src) {
 #elif defined(SIMDE_EM_SSE2)
   int32_t tmp;
   memcpy(&tmp, src, sizeof(int32_t));
-  return SIMDE_EM_INT32X4_SSE2_C(_mm_set_epi32(0, 0, 0, tmp));
+  return SIMDE_EM_INT32X4_SSE_C(_mm_set_epi32(0, 0, 0, tmp));
 #elif defined(SIMDE_EM_NEON)
   int32_t tmp[4] = { 0, };
   memcpy(tmp, src, sizeof(int32_t));
@@ -539,7 +539,7 @@ simde_em_int32x4_load2 (const int32_t src[HEDLEY_ARRAY_PARAM(2)]) {
   memcpy(&(((int32_t*) &r)[0]), &(src[0]), sizeof(int32_t));
   memcpy(&(((int32_t*) &r)[1]), &(src[1]), sizeof(int32_t));
   memset(&(((int32_t*) &r)[2]), 0, sizeof(int32_t) * 2);
-  return SIMDE_EM_INT32X4_SSE2_C(r);
+  return SIMDE_EM_INT32X4_SSE_C(r);
 #elif defined(SIMDE_EM_NEON)
   int32_t tmp[4] = { 0, };
   memcpy(&(tmp[0]), src, sizeof(int32_t) * 2);

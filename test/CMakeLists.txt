@@ -83,7 +83,8 @@ endif()
 
 list(APPEND TEST_SOURCES
   simd-js/int32x4.c
-  simd-js/int32x4-compare.c)
+  simd-js/int32x4-compare.c
+  simd-js/float32x4.c)
 
 foreach(src ${TEST_SOURCES})
   get_filename_component(bn "${src}" NAME_WE)
