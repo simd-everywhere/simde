@@ -301,6 +301,29 @@ simde_em_float32x4_abs (simde_em_float32x4 a) {
 #endif
 }
 
+SIMDE__FUNCTION_ATTRIBUTES
+simde_em_float32x4
+simde_em_float32x4_and (simde_em_float32x4 a, simde_em_float32x4 b) {
+#if defined(SIMDE_EM_NATIVE)
+  return SIMDE_EM_FLOAT32X4_C(emscripten_float32x4_and(a.n, b.n));
+#elif defined(SIMDE_EM_SSE2)
+  return SIMDE_EM_FLOAT32X4_SSE_C(_mm_and_ps(a.sse, b.sse));
+#elif defined(SIMDE_EM_NEON)
+  return SIMDE_EM_FLOAT32X4_NEON_C(vreinterpretq_f32_s32(vandq_s32(vreinterpretq_s32_f32(a.neon), vreinterpretq_s32_f32(b.neon))));
+#else
+  union { simde_em_float32x4 f32; simde_em_int32x4 s32; } ap, bp, tmp;
+  ap.f32 = a;
+  bp.f32 = b;
+
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(ap.s32.v) / sizeof(ap.s32.v[0])) ; i++) {
+    tmp.s32.v[i] = ap.s32.v[i] & bp.s32.v[i];
+  }
+
+  return tmp.f32;
+#endif
+}
+
 SIMDE__END_DECLS
 
 #endif /* !defined(SIMDE__EM_FLOAT32X4_H) */
