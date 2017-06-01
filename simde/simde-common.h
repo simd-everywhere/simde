@@ -123,12 +123,18 @@ typedef unsigned __int128 simde_uint128;
 
 #if !defined(SIMDE_FLOAT32_TYPE)
 #  define SIMDE_FLOAT32_TYPE float
+#  define SIMDE_FLOAT32_C(value) value##f
+#else
+#  define SIMDE_FLOAT32_C(value) ((SIMDE_FLOAT32_TYPE) value)
 #endif
 typedef SIMDE_FLOAT32_TYPE simde_float32;
 HEDLEY_STATIC_ASSERT(sizeof(simde_float32) == 4, "Unable to find 32-bit floating-point type.");
 
 #if !defined(SIMDE_FLOAT64_TYPE)
 #  define SIMDE_FLOAT64_TYPE double
+#  define SIMDE_FLOAT64_C(value) value
+#else
+#  define SIMDE_FLOAT32_C(value) ((SIMDE_FLOAT64_TYPE) value)
 #endif
 typedef SIMDE_FLOAT64_TYPE simde_float64;
 HEDLEY_STATIC_ASSERT(sizeof(simde_float64) == 8, "Unable to find 64-bit floating-point type.");

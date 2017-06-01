@@ -541,6 +541,8 @@ void
 simde_mm_clflush (void const* p) {
 #if defined(SIMDE_SSE2_NATIVE)
   _mm_clflush(p);
+#else
+  (void) p;
 #endif
 }
 
@@ -1301,7 +1303,7 @@ simde_mm_cvtsd_si64 (simde__m128d a) {
     return _mm_cvtsd_si64(a.n);
   #endif
 #else
-  return (int64_t) a.f64[0];
+  return (int32_t) a.f64[0];
 #endif
 }
 #define simde_mm_cvtsd_si64x(a) simde_mm_cvtsd_si64(a)
@@ -1475,7 +1477,7 @@ simde_mm_cvttsd_si32 (simde__m128d a) {
 #if defined(SIMDE_SSE2_NATIVE)
   return _mm_cvttsd_si32(a.n);
 #else
-  return (int32_t) truncf(a.f64[0]);
+  return (int32_t) trunc(a.f64[0]);
 #endif
 }
 
@@ -1489,7 +1491,7 @@ simde_mm_cvttsd_si64 (simde__m128d a) {
     return _mm_cvttsd_si64x(a.n);
   #endif
 #else
-  return (int64_t) truncf(a.f64[0]);
+  return (int64_t) trunc(a.f64[0]);
 #endif
 }
 #define simde_mm_cvttsd_si64x(a) simde_mm_cvttsd_si64(a)
@@ -2427,7 +2429,7 @@ simde_mm_setr_pd (simde_float64 e1, simde_float64 e0) {
 #if defined(SIMDE_SSE2_NATIVE)
   return SIMDE__M128D_C(_mm_setr_pd(e1, e0));
 #else
-  return (simde__m128d) { .i64 = { e1, e0 } };
+  return (simde__m128d) { .f64 = { e1, e0 } };
 #endif
 }
 
@@ -2437,7 +2439,7 @@ simde_mm_setzero_pd (void) {
 #if defined(SIMDE_SSE2_NATIVE)
   return SIMDE__M128D_C(_mm_setzero_pd());
 #else
-  return (simde__m128d) { .u64 = { 0.0, } };
+  return (simde__m128d) { .u64 = { 0, } };
 #endif
 }
 

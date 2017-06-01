@@ -647,7 +647,7 @@ simde_mm_set1_pi16 (int16_t a) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m64
-simde_mm_set1_pi32 (int8_t a) {
+simde_mm_set1_pi32 (int32_t a) {
 #if defined(SIMDE_MMX_NATIVE)
   return SIMDE__M64_C(_mm_set1_pi32(a));
 #else

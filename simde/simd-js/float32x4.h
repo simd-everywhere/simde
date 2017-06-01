@@ -52,7 +52,7 @@ simde_em_float32x4_set (simde_float32 s0, simde_float32 s1, simde_float32 s2, si
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde_em_float32x4
-simde_em_float32x4_splat (int32_t s) {
+simde_em_float32x4_splat (simde_float32 s) {
 #if defined(SIMDE_EM_NATIVE)
   return SIMDE_EM_FLOAT32X4_C(emscripten_float32x4_splat(s));
 #elif defined(SIMDE_EM_SSE)

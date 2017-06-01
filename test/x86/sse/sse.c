@@ -1786,7 +1786,8 @@ test_simde_mm_cvt_si2ss(const MunitParameter params[], void* data) {
     r = simde_mm_cvt_si2ss(a, b);
 
     munit_assert_float(r.f32[0], ==, (simde_float32) b);
-    munit_assert_float(r.i32[1], ==, a.i32[1]);
+    /* Use int32 since comparing NaNs is always false. */
+    munit_assert_int32(r.i32[1], ==, a.i32[1]);
     munit_assert_int32(r.i32[2], ==, a.i32[2]);
     munit_assert_int32(r.i32[3], ==, a.i32[3]);
   }
@@ -2261,7 +2262,7 @@ test_simde_mm_insert_pi16(const MunitParameter params[], void* data) {
     int16_t i;
 
     munit_rand_memory(sizeof(a), (uint8_t*) &a);
-    i = munit_rand_int_range(INT16_MIN, INT16_MAX);
+    i = (int16_t) munit_rand_int_range(INT16_MIN, INT16_MAX);
 
     r = simde_mm_insert_pi16(a, i, 2);
     x.i64[0] = a.i64[0];

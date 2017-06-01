@@ -147,8 +147,8 @@ test_simde_mm_set1_pi32(const MunitParameter params[], void* data) {
 
   simde_mm_empty();
 
-  munit_assert_int8(r[0], ==, v);
-  munit_assert_int8(r[1], ==, v);
+  munit_assert_int32(r[0], ==, v);
+  munit_assert_int32(r[1], ==, v);
 
   return MUNIT_OK;
 }
