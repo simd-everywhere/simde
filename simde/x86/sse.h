@@ -1678,6 +1678,20 @@ simde_mm_rsqrt_ps (simde__m128 a) {
   return SIMDE__M128_C(_mm_rsqrt_ps(a.n));
 #elif defined(SIMDE_SSE_NEON)
   return SIMDE__M128_NEON_C(f32, vrsqrteq_f32(a.neon_f32));
+#elif defined(__STDC_IEC_559__)
+  /* http://h14s.p5r.org/2012/09/0x5f3759df.html?mwh=1 */
+  simde__m128 r;
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
+    r.i32[i]  = INT32_C(0x5f3759df) - (a.i32[i] >> 1);
+
+#if SIMDE_ACCURACY_ITERS > 2
+    const float half = SIMDE_FLOAT32_C(0.5) * a.f32[i];
+    for (int ai = 2 ; ai < SIMDE_ACCURACY_ITERS ; ai++)
+      r.f32[i] *= SIMDE_FLOAT32_C(1.5) - (half * r.f32[i] * r.f32[i]);
+#endif
+  }
+  return r;
 #else
   simde__m128 r;
   SIMDE__VECTORIZE
@@ -1693,6 +1707,22 @@ simde__m128
 simde_mm_rsqrt_ss (simde__m128 a) {
 #if defined(SIMDE_SSE_NATIVE)
   return SIMDE__M128_C(_mm_rsqrt_ss(a.n));
+#elif defined(__STDC_IEC_559__)
+  simde__m128 r;
+  {
+    r.i32[0]  = INT32_C(0x5f3759df) - (a.i32[0] >> 1);
+
+#if SIMDE_ACCURACY_ITERS > 2
+    float half = SIMDE_FLOAT32_C(0.5) * a.f32[0];
+    for (int ai = 2 ; ai < SIMDE_ACCURACY_ITERS ; ai++)
+      r.f32[0] *= SIMDE_FLOAT32_C(1.5) - (half * r.f32[0] * r.f32[0]);
+#endif
+  }
+  r.f32[0] = 1.0f / sqrtf(a.f32[0]);
+  r.f32[1] = a.f32[1];
+  r.f32[2] = a.f32[2];
+  r.f32[3] = a.f32[3];
+  return r;
 #else
   simde__m128 r;
   r.f32[0] = 1.0f / sqrtf(a.f32[0]);
