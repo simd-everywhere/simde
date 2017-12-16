@@ -271,6 +271,76 @@ simde_mm_shuffle_epi8 (simde__m128i a, simde__m128i b) {
 #endif
 }
 
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128i
+simde_mm_hadd_epi16 (simde__m128i a, simde__m128i b) {
+#if defined(SIMDE_SSSE3_NATIVE)
+  return SIMDE__M128I_C(_mm_hadd_epi16(a.n, b.n));
+#else
+  simde__m128i r;
+
+  r.i16[0] = a.i16[0] + a.i16[1];
+  r.i16[1] = a.i16[2] + a.i16[3];
+  r.i16[2] = a.i16[4] + a.i16[5];
+  r.i16[3] = a.i16[6] + a.i16[7];
+  r.i16[4] = b.i16[0] + b.i16[1];
+  r.i16[5] = b.i16[2] + b.i16[3];
+  r.i16[6] = b.i16[4] + b.i16[5];
+  r.i16[7] = b.i16[6] + b.i16[7];
+
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128i
+simde_mm_hadd_epi32 (simde__m128i a, simde__m128i b) {
+#if defined(SIMDE_SSSE3_NATIVE)
+  return SIMDE__M128I_C(_mm_hadd_epi32(a.n, b.n));
+#else
+  simde__m128i r;
+
+  r.i32[0] = a.i32[0] + a.i32[1];
+  r.i32[1] = a.i32[2] + a.i32[3];
+  r.i32[2] = b.i32[0] + b.i32[1];
+  r.i32[3] = b.i32[2] + b.i32[3];
+
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m64
+simde_mm_hadd_pi16 (simde__m64 a, simde__m64 b) {
+#if defined(SIMDE_SSSE3_NATIVE)
+  return SIMDE__M64_C(_mm_hadd_pi16(a.n, b.n));
+#else
+  simde__m64 r;
+
+  r.i16[0] = a.i16[0] + a.i16[1];
+  r.i16[1] = a.i16[2] + a.i16[3];
+  r.i16[2] = b.i16[0] + b.i16[1];
+  r.i16[3] = b.i16[2] + b.i16[3];
+
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m64
+simde_mm_hadd_pi32 (simde__m64 a, simde__m64 b) {
+#if defined(SIMDE_SSSE3_NATIVE)
+  return SIMDE__M64_C(_mm_hadd_pi32(a.n, b.n));
+#else
+  simde__m64 r;
+
+  r.i32[0] = a.i32[0] + a.i32[1];
+  r.i32[1] = b.i32[0] + b.i32[1];
+
+  return r;
+#endif
+}
+
 SIMDE__END_DECLS
 
 #endif /* !defined(SIMDE__SSE2_H) */
