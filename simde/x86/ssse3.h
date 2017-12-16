@@ -523,6 +523,90 @@ simde_mm_mulhrs_pi16 (simde__m64 a, simde__m64 b) {
 #endif
 }
 
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128i
+simde_mm_sign_epi8 (simde__m128i a, simde__m128i b) {
+#if defined(SIMDE_SSSE3_NATIVE)
+  return SIMDE__M128I_C(_mm_sign_epi8(a.n, b.n));
+#else
+  simde__m128i r;
+  for (size_t i = 0 ; i < (sizeof(r.i8) / sizeof(r.i8[0])) ; i++) {
+    r.i8[i] = (b.i8[i] < 0) ? (- a.i8[i]) : ((b.i8[i] > 0) ? (a.i8[i]) : INT8_C(0));
+  }
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128i
+simde_mm_sign_epi16 (simde__m128i a, simde__m128i b) {
+#if defined(SIMDE_SSSE3_NATIVE)
+  return SIMDE__M128I_C(_mm_sign_epi16(a.n, b.n));
+#else
+  simde__m128i r;
+  for (size_t i = 0 ; i < (sizeof(r.i16) / sizeof(r.i16[0])) ; i++) {
+    r.i16[i] = (b.i16[i] < 0) ? (- a.i16[i]) : ((b.i16[i] > 0) ? (a.i16[i]) : INT16_C(0));
+  }
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128i
+simde_mm_sign_epi32 (simde__m128i a, simde__m128i b) {
+#if defined(SIMDE_SSSE3_NATIVE)
+  return SIMDE__M128I_C(_mm_sign_epi32(a.n, b.n));
+#else
+  simde__m128i r;
+  for (size_t i = 0 ; i < (sizeof(r.i32) / sizeof(r.i32[0])) ; i++) {
+    r.i32[i] = (b.i32[i] < 0) ? (- a.i32[i]) : ((b.i32[i] > 0) ? (a.i32[i]) : INT32_C(0));
+  }
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m64
+simde_mm_sign_pi8 (simde__m64 a, simde__m64 b) {
+#if defined(SIMDE_SSSE3_NATIVE)
+  return SIMDE__M64_C(_mm_sign_pi8(a.n, b.n));
+#else
+  simde__m64 r;
+  for (size_t i = 0 ; i < (sizeof(r.i8) / sizeof(r.i8[0])) ; i++) {
+    r.i8[i] = (b.i8[i] < 0) ? (- a.i8[i]) : ((b.i8[i] > 0) ? (a.i8[i]) : INT8_C(0));
+  }
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m64
+simde_mm_sign_pi16 (simde__m64 a, simde__m64 b) {
+#if defined(SIMDE_SSSE3_NATIVE)
+  return SIMDE__M64_C(_mm_sign_pi16(a.n, b.n));
+#else
+  simde__m64 r;
+  for (size_t i = 0 ; i < (sizeof(r.i16) / sizeof(r.i16[0])) ; i++) {
+    r.i16[i] = (b.i16[i] < 0) ? (- a.i16[i]) : ((b.i16[i] > 0) ? (a.i16[i]) : INT16_C(0));
+  }
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m64
+simde_mm_sign_pi32 (simde__m64 a, simde__m64 b) {
+#if defined(SIMDE_SSSE3_NATIVE)
+  return SIMDE__M64_C(_mm_sign_pi32(a.n, b.n));
+#else
+  simde__m64 r;
+  for (size_t i = 0 ; i < (sizeof(r.i32) / sizeof(r.i32[0])) ; i++) {
+    r.i32[i] = (b.i32[i] < 0) ? (- a.i32[i]) : ((b.i32[i] > 0) ? (a.i32[i]) : INT32_C(0));
+  }
+  return r;
+#endif
+}
+
 SIMDE__END_DECLS
 
 #endif /* !defined(SIMDE__SSE2_H) */
