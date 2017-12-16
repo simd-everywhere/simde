@@ -507,3 +507,123 @@ test_simde_mm_xxx_epu16(const MunitParameter params[], void* data) {
 
   return MUNIT_OK;
 }
+
+static MunitResult
+test_simde_mm_xxx_pi8(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  const struct {
+    simde__m64 a;
+    simde__m64 b;
+    simde__m64 r;
+  } test_vec[8] = {
+
+  };
+
+  printf("\n");
+  for (size_t i = 0 ; i < (sizeof(test_vec) / (sizeof(test_vec[0]))) ; i++) {
+    simde__m64 a, b, r;
+
+    munit_rand_memory(sizeof(a), (uint8_t*) &a);
+    munit_rand_memory(sizeof(b), (uint8_t*) &b);
+
+    r = simde_mm_xxx_pi8(a, b);
+
+    printf("    { simde_mm_set_pi8(INT8_C(%4hhd), INT8_C(%4hhd), INT8_C(%4hhd), INT8_C(%4hhd),\n"
+	   "                       INT8_C(%4hhd), INT8_C(%4hhd), INT8_C(%4hhd), INT8_C(%4hhd)),\n",
+           a.i8[ 7], a.i8[ 6], a.i8[ 5], a.i8[ 4], a.i8[ 3], a.i8[ 2], a.i8[ 1], a.i8[ 0]);
+    printf("      simde_mm_set_pi8(INT8_C(%4hhd), INT8_C(%4hhd), INT8_C(%4hhd), INT8_C(%4hhd),\n"
+	   "                       INT8_C(%4hhd), INT8_C(%4hhd), INT8_C(%4hhd), INT8_C(%4hhd)),\n",
+           b.i8[ 7], b.i8[ 6], b.i8[ 5], b.i8[ 4], b.i8[ 3], b.i8[ 2], b.i8[ 1], b.i8[ 0]);
+    printf("      simde_mm_set_pi8(INT8_C(%4hhd), INT8_C(%4hhd), INT8_C(%4hhd), INT8_C(%4hhd),\n"
+	   "                       INT8_C(%4hhd), INT8_C(%4hhd), INT8_C(%4hhd), INT8_C(%4hhd)) },\n",
+           r.i8[ 7], r.i8[ 6], r.i8[ 5], r.i8[ 4], r.i8[ 3], r.i8[ 2], r.i8[ 1], r.i8[ 0]);
+  }
+  return MUNIT_FAIL;
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    simde__m64 r = simde_mm_xxx_pi8(test_vec[i].a, test_vec[i].b);
+    simde_assert_m128i_i8(r, ==, test_vec[i].r);
+  }
+
+  return MUNIT_OK;
+}
+
+static MunitResult
+test_simde_mm_xxx_pi16(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  const struct {
+    simde__m64 a;
+    simde__m64 b;
+    simde__m64 r;
+  } test_vec[8] = {
+
+  };
+
+  printf("\n");
+  for (size_t i = 0 ; i < (sizeof(test_vec) / (sizeof(test_vec[0]))) ; i++) {
+    simde__m64 a, b, r;
+
+    munit_rand_memory(sizeof(a), (uint8_t*) &a);
+    munit_rand_memory(sizeof(b), (uint8_t*) &b);
+
+    r = simde_mm_xxx_pi16(a, b);
+
+    printf("    { simde_mm_set_pi16(INT16_C(%6hd), INT16_C(%6hd), INT16_C(%6hd), INT16_C(%6hd)),\n",
+           a.i16[3], a.i16[2], a.i16[1], a.i16[0]);
+    printf("      simde_mm_set_pi16(INT16_C(%6hd), INT16_C(%6hd), INT16_C(%6hd), INT16_C(%6hd)),\n",
+           b.i16[3], b.i16[2], b.i16[1], b.i16[0]);
+    printf("      simde_mm_set_pi16(INT16_C(%6hd), INT16_C(%6hd), INT16_C(%6hd), INT16_C(%6hd)) },\n",
+           r.i16[3], r.i16[2], r.i16[1], r.i16[0]);
+  }
+  return MUNIT_FAIL;
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    simde__m64 r = simde_mm_xxx_pi16(test_vec[i].a, test_vec[i].b);
+    simde_assert_m128i_i16(r, ==, test_vec[i].r);
+  }
+
+  return MUNIT_OK;
+}
+
+static MunitResult
+test_simde_mm_xxx_pi32(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  const struct {
+    simde__m64 a;
+    simde__m64 b;
+    simde__m64 r;
+  } test_vec[8] = {
+
+  };
+
+  printf("\n");
+  for (size_t i = 0 ; i < (sizeof(test_vec) / (sizeof(test_vec[0]))) ; i++) {
+    simde__m64 a, b, r;
+
+    munit_rand_memory(sizeof(a), (uint8_t*) &a);
+    munit_rand_memory(sizeof(b), (uint8_t*) &b);
+
+    r = simde_mm_xxx_pi32(a, b);
+
+    printf("    { simde_mm_set_pi32(INT32_C(%11d), INT32_C(%11d)),\n",
+  	   a.i32[1], a.i32[0]);
+    printf("      simde_mm_set_pi32(INT32_C(%11d), INT32_C(%11d)),\n",
+  	   b.i32[1], b.i32[0]);
+    printf("      simde_mm_set_pi32(INT32_C(%11d), INT32_C(%11d)) },\n",
+  	   r.i32[1], r.i32[0]);
+  }
+  return MUNIT_FAIL;
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    simde__m64 r = simde_mm_xxx_pi32(test_vec[i].a, test_vec[i].b);
+    simde_assert_m128i_i32(r, ==, test_vec[i].r);
+  }
+
+  return MUNIT_OK;
+}
