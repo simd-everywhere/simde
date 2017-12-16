@@ -60,9 +60,6 @@
 
 SIMDE__BEGIN_DECLS
 
-#if defined(simde_mm_abs_epi8)
-#  undef simde_mm_abs_epi8
-#endif
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_abs_epi8 (simde__m128i a) {
@@ -77,13 +74,7 @@ simde_mm_abs_epi8 (simde__m128i a) {
   return r;
 #endif
 }
-#if defined(SIMDE_SSSE3_NATIVE)
-#  define simde_mm_abs_epi8(a) SIMDE__M128I_C(_mm_abs_epi8(a.n))
-#endif
 
-#if defined(simde_mm_abs_epi16)
-#  undef simde_mm_abs_epi16
-#endif
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_abs_epi16 (simde__m128i a) {
@@ -98,13 +89,7 @@ simde_mm_abs_epi16 (simde__m128i a) {
   return r;
 #endif
 }
-#if defined(SIMDE_SSSE3_NATIVE)
-#  define simde_mm_abs_epi16(a) SIMDE__M128I_C(_mm_abs_epi16(a.n))
-#endif
 
-#if defined(simde_mm_abs_epi32)
-#  undef simde_mm_abs_epi32
-#endif
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_abs_epi32 (simde__m128i a) {
@@ -119,13 +104,7 @@ simde_mm_abs_epi32 (simde__m128i a) {
   return r;
 #endif
 }
-#if defined(SIMDE_SSSE3_NATIVE)
-#  define simde_mm_abs_epi32(a) SIMDE__M128I_C(_mm_abs_epi32(a.n))
-#endif
 
-#if defined(simde_mm_abs_pi8)
-#  undef simde_mm_abs_pi8
-#endif
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m64
 simde_mm_abs_pi8 (simde__m64 a) {
@@ -140,13 +119,7 @@ simde_mm_abs_pi8 (simde__m64 a) {
   return r;
 #endif
 }
-#if defined(SIMDE_SSSE3_NATIVE)
-#  define simde_mm_abs_pi8(a) SIMDE__M64_C(_mm_abs_pi8(a.n))
-#endif
 
-#if defined(simde_mm_abs_pi16)
-#  undef simde_mm_abs_pi16
-#endif
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m64
 simde_mm_abs_pi16 (simde__m64 a) {
@@ -161,13 +134,7 @@ simde_mm_abs_pi16 (simde__m64 a) {
   return r;
 #endif
 }
-#if defined(SIMDE_SSSE3_NATIVE)
-#  define simde_mm_abs_pi16(a) SIMDE__M64_C(_mm_abs_pi16(a.n))
-#endif
 
-#if defined(simde_mm_abs_pi32)
-#  undef simde_mm_abs_pi32
-#endif
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m64
 simde_mm_abs_pi32 (simde__m64 a) {
@@ -182,9 +149,6 @@ simde_mm_abs_pi32 (simde__m64 a) {
   return r;
 #endif
 }
-#if defined(SIMDE_SSSE3_NATIVE)
-#  define simde_mm_abs_pi32(a) SIMDE__M64_C(_mm_abs_pi32(a.n))
-#endif
 
 #if defined(simde_mm_alignr_epi8)
 #  undef simde_mm_alignr_epi8
