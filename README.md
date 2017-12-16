@@ -27,18 +27,20 @@ For an example of a project using SIMDe, see
 
 [![Travis](https://api.travis-ci.org/nemequ/simde.svg?branch=master)](https://travis-ci.org/nemequ/simde) [![AppVeyor](https://ci.appveyor.com/api/projects/status/1f3wp712w1ium5vi/branch/master?svg=true)](https://ci.appveyor.com/project/quixdb/simde/branch/master) [![Codecov](https://img.shields.io/codecov/c/github/nemequ/simde.svg)](https://codecov.io/gh/nemequ/simde)
 
-There are currently full implementations of the following instruction
+There are currently complete implementations of the following instruction
 sets:
 
  * MMX
  * SSE
  * SSE2
  * SSE3
+ * SSSE3
 
-For progress information on other ISA extensions, see the
+As well as partial support for many others; see the
 [instruction-set-support](https://github.com/nemequ/simde/issues?q=is%3Aissue+is%3Aopen+label%3Ainstruction-set-support+sort%3Aupdated-desc)
-label in the issue tracker.  If you'd like to be notified when an
-instruction set is available you may subscribe to the relevant issue.
+label in the issue tracker for details on progress.  If you'd like to
+be notified when an instruction set is available you may subscribe to
+the relevant issue.
 
 If you have a project you're interested in with SIMDe but we don't yet
 support all the functions you need, please file an issue with a list
