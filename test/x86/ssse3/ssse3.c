@@ -385,6 +385,93 @@ test_simde_mm_alignr_epi8(const MunitParameter params[], void* data) {
 }
 
 static MunitResult
+test_simde_mm_alignr_pi8(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  const struct {
+    simde__m64 a;
+    simde__m64 b;
+    simde__m64 r3;
+    simde__m64 r12;
+  } test_vec[8] = {
+    { simde_mm_set_pi8(INT8_C( -39), INT8_C(-110), INT8_C(  56), INT8_C(  87),
+                       INT8_C(  10), INT8_C( -78), INT8_C(  61), INT8_C( -21)),
+      simde_mm_set_pi8(INT8_C(  13), INT8_C( -51), INT8_C(   6), INT8_C( -66),
+                       INT8_C( -73), INT8_C(  87), INT8_C( -77), INT8_C( 108)),
+      simde_mm_set_pi8(INT8_C( -78), INT8_C(  61), INT8_C( -21), INT8_C(  13),
+                       INT8_C( -51), INT8_C(   6), INT8_C( -66), INT8_C( -73)),
+      simde_mm_set_pi8(INT8_C(   0), INT8_C(   0), INT8_C(   0), INT8_C(   0),
+                       INT8_C( -39), INT8_C(-110), INT8_C(  56), INT8_C(  87)) },
+    { simde_mm_set_pi8(INT8_C(  51), INT8_C( -90), INT8_C(-118), INT8_C( -36),
+                       INT8_C(  81), INT8_C(  52), INT8_C(  14), INT8_C(  46)),
+      simde_mm_set_pi8(INT8_C(  26), INT8_C( -56), INT8_C( -35), INT8_C( -50),
+                       INT8_C( 106), INT8_C(  71), INT8_C(  68), INT8_C(  40)),
+      simde_mm_set_pi8(INT8_C(  52), INT8_C(  14), INT8_C(  46), INT8_C(  26),
+                       INT8_C( -56), INT8_C( -35), INT8_C( -50), INT8_C( 106)),
+      simde_mm_set_pi8(INT8_C(   0), INT8_C(   0), INT8_C(   0), INT8_C(   0),
+                       INT8_C(  51), INT8_C( -90), INT8_C(-118), INT8_C( -36)) },
+    { simde_mm_set_pi8(INT8_C(  -8), INT8_C( -77), INT8_C(-125), INT8_C( -59),
+                       INT8_C(   8), INT8_C( -89), INT8_C( -90), INT8_C( -97)),
+      simde_mm_set_pi8(INT8_C( -59), INT8_C( -51), INT8_C( -30), INT8_C( -57),
+                       INT8_C(  35), INT8_C(-105), INT8_C(  -5), INT8_C(  -3)),
+      simde_mm_set_pi8(INT8_C( -89), INT8_C( -90), INT8_C( -97), INT8_C( -59),
+                       INT8_C( -51), INT8_C( -30), INT8_C( -57), INT8_C(  35)),
+      simde_mm_set_pi8(INT8_C(   0), INT8_C(   0), INT8_C(   0), INT8_C(   0),
+                       INT8_C(  -8), INT8_C( -77), INT8_C(-125), INT8_C( -59)) },
+    { simde_mm_set_pi8(INT8_C(  67), INT8_C(  48), INT8_C( -81), INT8_C( -50),
+                       INT8_C(  41), INT8_C( -92), INT8_C(  -5), INT8_C(  14)),
+      simde_mm_set_pi8(INT8_C( -86), INT8_C( -71), INT8_C(  17), INT8_C( 108),
+                       INT8_C( -44), INT8_C(  60), INT8_C(  44), INT8_C(  75)),
+      simde_mm_set_pi8(INT8_C( -92), INT8_C(  -5), INT8_C(  14), INT8_C( -86),
+                       INT8_C( -71), INT8_C(  17), INT8_C( 108), INT8_C( -44)),
+      simde_mm_set_pi8(INT8_C(   0), INT8_C(   0), INT8_C(   0), INT8_C(   0),
+                       INT8_C(  67), INT8_C(  48), INT8_C( -81), INT8_C( -50)) },
+    { simde_mm_set_pi8(INT8_C( -89), INT8_C(-124), INT8_C(-127), INT8_C(  44),
+                       INT8_C( 127), INT8_C(  11), INT8_C(-119), INT8_C( -70)),
+      simde_mm_set_pi8(INT8_C(  39), INT8_C( -13), INT8_C(  68), INT8_C( -96),
+                       INT8_C(-112), INT8_C(-118), INT8_C( 122), INT8_C( -32)),
+      simde_mm_set_pi8(INT8_C(  11), INT8_C(-119), INT8_C( -70), INT8_C(  39),
+                       INT8_C( -13), INT8_C(  68), INT8_C( -96), INT8_C(-112)),
+      simde_mm_set_pi8(INT8_C(   0), INT8_C(   0), INT8_C(   0), INT8_C(   0),
+                       INT8_C( -89), INT8_C(-124), INT8_C(-127), INT8_C(  44)) },
+    { simde_mm_set_pi8(INT8_C(-100), INT8_C( -55), INT8_C(   7), INT8_C( -95),
+                       INT8_C( -19), INT8_C(-101), INT8_C(  80), INT8_C( -82)),
+      simde_mm_set_pi8(INT8_C( -54), INT8_C(   2), INT8_C( 109), INT8_C( 126),
+                       INT8_C(-123), INT8_C( -75), INT8_C( -35), INT8_C(-107)),
+      simde_mm_set_pi8(INT8_C(-101), INT8_C(  80), INT8_C( -82), INT8_C( -54),
+                       INT8_C(   2), INT8_C( 109), INT8_C( 126), INT8_C(-123)),
+      simde_mm_set_pi8(INT8_C(   0), INT8_C(   0), INT8_C(   0), INT8_C(   0),
+                       INT8_C(-100), INT8_C( -55), INT8_C(   7), INT8_C( -95)) },
+    { simde_mm_set_pi8(INT8_C( -17), INT8_C( 109), INT8_C(-102), INT8_C( -75),
+                       INT8_C( -61), INT8_C(  83), INT8_C(   8), INT8_C(  -7)),
+      simde_mm_set_pi8(INT8_C(  94), INT8_C(-110), INT8_C( 105), INT8_C(   1),
+                       INT8_C( 125), INT8_C(  57), INT8_C( -29), INT8_C(  60)),
+      simde_mm_set_pi8(INT8_C(  83), INT8_C(   8), INT8_C(  -7), INT8_C(  94),
+                       INT8_C(-110), INT8_C( 105), INT8_C(   1), INT8_C( 125)),
+      simde_mm_set_pi8(INT8_C(   0), INT8_C(   0), INT8_C(   0), INT8_C(   0),
+                       INT8_C( -17), INT8_C( 109), INT8_C(-102), INT8_C( -75)) },
+    { simde_mm_set_pi8(INT8_C( 127), INT8_C(-126), INT8_C( -37), INT8_C( -53),
+                       INT8_C(  30), INT8_C(  85), INT8_C( -75), INT8_C(  62)),
+      simde_mm_set_pi8(INT8_C(  72), INT8_C(  61), INT8_C(-110), INT8_C(  76),
+                       INT8_C(  26), INT8_C(-125), INT8_C( -54), INT8_C( -64)),
+      simde_mm_set_pi8(INT8_C(  85), INT8_C( -75), INT8_C(  62), INT8_C(  72),
+                       INT8_C(  61), INT8_C(-110), INT8_C(  76), INT8_C(  26)),
+      simde_mm_set_pi8(INT8_C(   0), INT8_C(   0), INT8_C(   0), INT8_C(   0),
+                       INT8_C( 127), INT8_C(-126), INT8_C( -37), INT8_C( -53)) }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    simde__m64 r = simde_mm_alignr_pi8(test_vec[i].a, test_vec[i].b, 3);
+    simde_assert_m64_i8(r, ==, test_vec[i].r3);
+    r = simde_mm_alignr_pi8(test_vec[i].a, test_vec[i].b, 12);
+    simde_assert_m64_i8(r, ==, test_vec[i].r12);
+  }
+
+  return MUNIT_OK;
+}
+
+static MunitResult
 test_simde_mm_shuffle_epi8(const MunitParameter params[], void* data) {
   (void) params;
   (void) data;
@@ -460,6 +547,7 @@ static MunitTest test_suite_tests[] = {
   TEST_FUNC(mm_abs_pi16),
   TEST_FUNC(mm_abs_pi32),
   TEST_FUNC(mm_alignr_epi8),
+  TEST_FUNC(mm_alignr_pi8),
   TEST_FUNC(mm_shuffle_epi8),
 
   { NULL, NULL, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL }

@@ -229,6 +229,34 @@ simde_mm_alignr_epi8 (simde__m128i a, simde__m128i b, int count) {
 #  define simde_mm_alignr_epi8(a, b, count) SIMDE__M128I_C(_mm_alignr_epi8(a.n, b.n, count))
 #endif
 
+#if defined(simde_mm_alignr_pi8)
+#  undef simde_mm_alignr_pi8
+#endif
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m64
+simde_mm_alignr_pi8 (simde__m64 a, simde__m64 b, const int count) {
+  simde__m64 r;
+#if defined(__GNUC__) && ((__GNUC__ >= 4) || (__GNUC__ == 4 && __GNUC_MINOR__ >= 6)) && defined(__SIZEOF_INT128__)
+  unsigned __int128 t = a.u64[0];
+  t <<= 64;
+  t |= b.u64[0];
+  t >>= count * 8;
+  r.u64[0] = (uint64_t) t;
+#else
+  const int cb = count * 8;
+
+  if (cb > 64) {
+    r.u64[0] = a.u64[0] >> (cb - 64);
+  } else {
+    r.u64[0] = (a.u64[0] << (64 - cb)) | (b.u64[0] >> cb);
+  }
+#endif
+  return r;
+}
+#if defined(SIMDE_SSSE3_NATIVE)
+#  define simde_mm_alignr_pi8(a, b, count) SIMDE__M64_C(_mm_alignr_pi8(a.n, b.n, count))
+#endif
+
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_shuffle_epi8 (simde__m128i a, simde__m128i b) {
