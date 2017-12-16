@@ -236,6 +236,20 @@ simde_mm_shuffle_epi8 (simde__m128i a, simde__m128i b) {
 }
 
 SIMDE__FUNCTION_ATTRIBUTES
+simde__m64
+simde_mm_shuffle_pi8 (simde__m64 a, simde__m64 b) {
+#if defined(SIMDE_SSSE3_NATIVE)
+  return SIMDE__M64_C(_mm_shuffle_pi8(a.n, b.n));
+#else
+  simde__m64 r;
+  for (size_t i = 0 ; i < (sizeof(r.u8) / sizeof(r.u8[0])) ; i++) {
+    r.u8[i] = a.u8[b.u8[i] & 7] * ((~(b.u8[i]) >> 7) & 1);
+  }
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_hadd_epi16 (simde__m128i a, simde__m128i b) {
 #if defined(SIMDE_SSSE3_NATIVE)
