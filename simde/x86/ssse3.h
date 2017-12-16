@@ -60,6 +60,69 @@
 
 SIMDE__BEGIN_DECLS
 
+#if defined(simde_mm_abs_epi8)
+#  undef simde_mm_abs_epi8
+#endif
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128i
+simde_mm_abs_epi8 (simde__m128i a) {
+#if defined(SIMDE_SSSE3_NATIVE)
+  return SIMDE__M128I_C(_mm_abs_epi8(a.n));
+#else
+  simde__m128i r;
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.i8) / sizeof(r.i8[0])) ; i++) {
+    r.u8[i] = (a.i8[i] < 0) ? (- a.i8[i]) : a.i8[i];
+  }
+  return r;
+#endif
+}
+#if defined(SIMDE_SSSE3_NATIVE)
+#  define simde_mm_abs_epi8(a) SIMDE__M128I_C(_mm_abs_epi8(a.n))
+#endif
+
+#if defined(simde_mm_abs_epi16)
+#  undef simde_mm_abs_epi16
+#endif
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128i
+simde_mm_abs_epi16 (simde__m128i a) {
+#if defined(SIMDE_SSSE3_NATIVE)
+  return SIMDE__M128I_C(_mm_abs_epi16(a.n));
+#else
+  simde__m128i r;
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.i16) / sizeof(r.i16[0])) ; i++) {
+    r.u16[i] = (a.i16[i] < 0) ? (- a.i16[i]) : a.i16[i];
+  }
+  return r;
+#endif
+}
+#if defined(SIMDE_SSSE3_NATIVE)
+#  define simde_mm_abs_epi16(a) SIMDE__M128I_C(_mm_abs_epi16(a.n))
+#endif
+
+#if defined(simde_mm_abs_epi32)
+#  undef simde_mm_abs_epi32
+#endif
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128i
+simde_mm_abs_epi32 (simde__m128i a) {
+#if defined(SIMDE_SSSE3_NATIVE)
+  return SIMDE__M128I_C(_mm_abs_epi32(a.n));
+#else
+  simde__m128i r;
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.i32) / sizeof(r.i32[0])) ; i++) {
+    r.u32[i] = (a.i32[i] < 0) ? (- a.i32[i]) : a.i32[i];
+  }
+  return r;
+#endif
+}
+#if defined(SIMDE_SSSE3_NATIVE)
+#  define simde_mm_abs_epi32(a) SIMDE__M128I_C(_mm_abs_epi32(a.n))
+#endif
+
 #if defined(simde_mm_alignr_epi8)
 #  undef simde_mm_alignr_epi8
 #endif
