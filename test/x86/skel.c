@@ -509,6 +509,45 @@ test_simde_mm_xxx_epu16(const MunitParameter params[], void* data) {
 }
 
 static MunitResult
+test_simde_mm_xxx_epu32(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  const struct {
+    simde__m128i a;
+    simde__m128i b;
+    simde__m128i r;
+  } test_vec[8] = {
+
+  };
+
+  printf("\n");
+  for (size_t i = 0 ; i < (sizeof(test_vec) / (sizeof(test_vec[0]))) ; i++) {
+    simde__m128i a, b, r;
+
+    munit_rand_memory(sizeof(a), (uint8_t*) &a);
+    munit_rand_memory(sizeof(b), (uint8_t*) &b);
+
+    r = simde_mm_xxx_epu32(a, b);
+
+    printf("    { simde_mm_set_epu32(UINT32_C(%10u), UINT32_C(%10u), UINT32_C(%10u), UINT32_C(%10u)),\n",
+  	   a.u32[3], a.u32[2], a.u32[1], a.u32[0]);
+    printf("      simde_mm_set_epu32(UINT32_C(%10u), UINT32_C(%10u), UINT32_C(%10u), UINT32_C(%10u)),\n",
+  	   b.u32[3], b.u32[2], b.u32[1], b.u32[0]);
+    printf("      simde_mm_set_epu32(UINT32_C(%10u), UINT32_C(%10u), UINT32_C(%10u), UINT32_C(%10u)) },\n",
+  	   r.u32[3], r.u32[2], r.u32[1], r.u32[0]);
+  }
+  return MUNIT_FAIL;
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    simde__m128i r = simde_mm_xxx_epu32(test_vec[i].a, test_vec[i].b);
+    simde_assert_m128i_u32(r, ==, test_vec[i].r);
+  }
+
+  return MUNIT_OK;
+}
+
+static MunitResult
 test_simde_mm_xxx_pi8(const MunitParameter params[], void* data) {
   (void) params;
   (void) data;
