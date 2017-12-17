@@ -270,6 +270,50 @@ test_simde_mm_ceil_ss(const MunitParameter params[], void* data) {
 }
 
 static MunitResult
+test_simde_mm_cmpeq_epi64(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  const struct {
+    simde__m128i a;
+    simde__m128i b;
+    simde__m128i r;
+  } test_vec[8] = {
+    { simde_x_mm_set_epu64x(UINT64_C(13269709557652540150), UINT64_C( 5229646237911669536)),
+      simde_x_mm_set_epu64x(UINT64_C(13269709557652540150), UINT64_C( 5229646237911669536)),
+      simde_x_mm_set_epu64x(UINT64_C(18446744073709551615), UINT64_C(18446744073709551615)) },
+    { simde_x_mm_set_epu64x(UINT64_C(14039735832537203737), UINT64_C(18065414586371585158)),
+      simde_x_mm_set_epu64x(UINT64_C( 7896134184979754273), UINT64_C(18065414586371585158)),
+      simde_x_mm_set_epu64x(UINT64_C(                   0), UINT64_C(18446744073709551615)) },
+    { simde_x_mm_set_epu64x(UINT64_C( 8088434365645432882), UINT64_C( 2110149590601129498)),
+      simde_x_mm_set_epu64x(UINT64_C(12894308138858138936), UINT64_C( 7645444803376971084)),
+      simde_x_mm_set_epu64x(UINT64_C(                   0), UINT64_C(                   0)) },
+    { simde_x_mm_set_epu64x(UINT64_C( 6900998750312547586), UINT64_C(11115665826166806875)),
+      simde_x_mm_set_epu64x(UINT64_C(  253910074237567150), UINT64_C(11115665826166806875)),
+      simde_x_mm_set_epu64x(UINT64_C(                   0), UINT64_C(18446744073709551615)) },
+    { simde_x_mm_set_epu64x(UINT64_C(15513947591537518317), UINT64_C( 6346622963553980783)),
+      simde_x_mm_set_epu64x(UINT64_C( 1894817647097843127), UINT64_C( 9019647896255166506)),
+      simde_x_mm_set_epu64x(UINT64_C(                   0), UINT64_C(                   0)) },
+    { simde_x_mm_set_epu64x(UINT64_C(  189073800069710221), UINT64_C( 5830713182261233236)),
+      simde_x_mm_set_epu64x(UINT64_C(  189073800069710221), UINT64_C( 8422068610497871432)),
+      simde_x_mm_set_epu64x(UINT64_C(18446744073709551615), UINT64_C(                   0)) },
+    { simde_x_mm_set_epu64x(UINT64_C(17115829668729212386), UINT64_C(11158226665026575121)),
+      simde_x_mm_set_epu64x(UINT64_C(17115829668729212386), UINT64_C(11158226665026575121)),
+      simde_x_mm_set_epu64x(UINT64_C(18446744073709551615), UINT64_C(18446744073709551615)) },
+    { simde_x_mm_set_epu64x(UINT64_C( 9543887299291080046), UINT64_C(14913997234931691871)),
+      simde_x_mm_set_epu64x(UINT64_C( 9543887299291080046), UINT64_C(12485648986158046833)),
+      simde_x_mm_set_epu64x(UINT64_C(18446744073709551615), UINT64_C(                   0)) }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    simde__m128i r = simde_mm_cmpeq_epi64(test_vec[i].a, test_vec[i].b);
+    simde_assert_m128i_i64(r, ==, test_vec[i].r);
+  }
+
+  return MUNIT_OK;
+}
+
+static MunitResult
 test_simde_mm_cvtepi16_epi32(const MunitParameter params[], void* data) {
   (void) params;
   (void) data;
@@ -657,6 +701,8 @@ static MunitTest test_suite_tests[] = {
   TEST_FUNC(mm_ceil_ps),
   TEST_FUNC(mm_ceil_sd),
   TEST_FUNC(mm_ceil_ss),
+
+  TEST_FUNC(mm_cmpeq_epi64),
 
   TEST_FUNC(mm_cvtepi16_epi32),
   TEST_FUNC(mm_cvtepu8_epi32),

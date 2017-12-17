@@ -131,6 +131,21 @@ simde_mm_ceil_ss (simde__m128 a, simde__m128 b) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
+simde_mm_cmpeq_epi64 (simde__m128i a, simde__m128i b) {
+#if defined(SIMDE_SSE4_1_NATIVE)
+  return SIMDE__M128I_C(_mm_cmpeq_epi64(a.n, b.n));
+#else
+  simde__m128i r;
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.u64) / sizeof(r.u64[0])) ; i++) {
+    r.u64[i] = (a.u64[i] == b.u64[i]) ? ~UINT64_C(0) : UINT64_C(0);
+  }
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128i
 simde_mm_cvtepi16_epi32 (simde__m128i a) {
 #if defined(SIMDE_SSE4_1_NATIVE)
   return SIMDE__M128I_C(_mm_cvtepi16_epi32(a.n));
