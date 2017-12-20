@@ -463,7 +463,7 @@ int32_t
 simde_mm_extract_epi8 (simde__m128i a, const int imm8) {
   return a.u8[imm8];
 }
-#if defined(SIMDE_SSE4_1_NATIVE)
+#if defined(SIMDE_SSE4_1_NATIVE) && !defined(SIMDE_BUG_GCC_BAD_MM_EXTRACT_EPI8)
 #  define simde_mm_extract_epi8(a, imm8) _mm_extract_epi8(a.n, imm8)
 #endif
 
@@ -548,6 +548,55 @@ simde_mm_floor_ss (simde__m128 a, simde__m128 b) {
   return r;
 #endif
 }
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128i
+simde_mm_insert_epi8 (simde__m128i a, int i, const int imm8) {
+  a.i8[imm8] = (int8_t) i;
+  return a;
+}
+#if defined(SIMDE_SSE4_1_NATIVE)
+#  define simde_mm_insert_epi8(a, i, imm8) SIMDE__M128I_C(_mm_insert_epi8(a.n, i, imm8));
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128i
+simde_mm_insert_epi32 (simde__m128i a, int i, const int imm8) {
+  a.i32[imm8] = (int32_t) i;
+  return a;
+}
+#if defined(SIMDE_SSE4_1_NATIVE)
+#  define simde_mm_insert_epi32(a, i, imm8) SIMDE__M128I_C(_mm_insert_epi32(a.n, i, imm8));
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128i
+simde_mm_insert_epi64 (simde__m128i a, int64_t i, const int imm8) {
+  a.i64[imm8] = i;
+  return a;
+}
+#if defined(SIMDE_SSE4_1_NATIVE)
+#  define simde_mm_insert_epi64(a, i, imm8) SIMDE__M128I_C(_mm_insert_epi64(a.n, i, imm8));
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128
+simde_mm_insert_ps (simde__m128 a, simde__m128 b, const int imm8) {
+  simde__m128 r;
+
+  a.f32[0] = b.f32[(imm8 >> 6) & 3];
+  a.f32[(imm8 >> 4) & 3] = a.f32[0];
+
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
+    r.f32[i] = (imm8 >> i) ? SIMDE_FLOAT32_C(0.0) : a.f32[i];
+  }
+
+  return r;
+}
+#if defined(SIMDE_SSE4_1_NATIVE)
+#  define simde_mm_insert_ps(a, b, imm8) SIMDE__M128_C(_mm_insert_ps((a).n, (b).n, imm8));
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
