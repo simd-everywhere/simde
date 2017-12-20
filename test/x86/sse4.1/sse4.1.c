@@ -1164,6 +1164,94 @@ test_simde_mm_cvtepu32_epi64(const MunitParameter params[], void* data) {
 }
 
 static MunitResult
+test_simde_mm_dp_pd(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  const struct {
+    simde__m128d a;
+    simde__m128d b;
+    simde__m128d r;
+  } test_vec[8] = {
+    { simde_mm_set_pd(SIMDE_FLOAT64_C( -564.11), SIMDE_FLOAT64_C(  340.88)),
+      simde_mm_set_pd(SIMDE_FLOAT64_C( -778.50), SIMDE_FLOAT64_C( -785.47)),
+      simde_mm_set_pd(SIMDE_FLOAT64_C(    0.00), SIMDE_FLOAT64_C(-267751.01)) },
+    { simde_mm_set_pd(SIMDE_FLOAT64_C( -557.21), SIMDE_FLOAT64_C( -291.36)),
+      simde_mm_set_pd(SIMDE_FLOAT64_C( -799.93), SIMDE_FLOAT64_C( -716.65)),
+      simde_mm_set_pd(SIMDE_FLOAT64_C(    0.00), SIMDE_FLOAT64_C(208803.14)) },
+    { simde_mm_set_pd(SIMDE_FLOAT64_C( -377.58), SIMDE_FLOAT64_C(  860.62)),
+      simde_mm_set_pd(SIMDE_FLOAT64_C( -199.70), SIMDE_FLOAT64_C( -642.81)),
+      simde_mm_set_pd(SIMDE_FLOAT64_C(    0.00), SIMDE_FLOAT64_C(-553215.14)) },
+    { simde_mm_set_pd(SIMDE_FLOAT64_C( -782.59), SIMDE_FLOAT64_C(  223.96)),
+      simde_mm_set_pd(SIMDE_FLOAT64_C( -805.25), SIMDE_FLOAT64_C(  736.23)),
+      simde_mm_set_pd(SIMDE_FLOAT64_C(    0.00), SIMDE_FLOAT64_C(164886.07)) },
+    { simde_mm_set_pd(SIMDE_FLOAT64_C(  472.55), SIMDE_FLOAT64_C( -591.15)),
+      simde_mm_set_pd(SIMDE_FLOAT64_C(  932.48), SIMDE_FLOAT64_C(  630.07)),
+      simde_mm_set_pd(SIMDE_FLOAT64_C(    0.00), SIMDE_FLOAT64_C(-372465.88)) },
+    { simde_mm_set_pd(SIMDE_FLOAT64_C(  484.26), SIMDE_FLOAT64_C(  -41.63)),
+      simde_mm_set_pd(SIMDE_FLOAT64_C(  593.03), SIMDE_FLOAT64_C(  955.21)),
+      simde_mm_set_pd(SIMDE_FLOAT64_C(    0.00), SIMDE_FLOAT64_C(-39765.39)) },
+    { simde_mm_set_pd(SIMDE_FLOAT64_C(  820.67), SIMDE_FLOAT64_C(  120.74)),
+      simde_mm_set_pd(SIMDE_FLOAT64_C(  576.08), SIMDE_FLOAT64_C(  524.49)),
+      simde_mm_set_pd(SIMDE_FLOAT64_C(    0.00), SIMDE_FLOAT64_C(63326.92)) },
+    { simde_mm_set_pd(SIMDE_FLOAT64_C(  696.23), SIMDE_FLOAT64_C( -565.44)),
+      simde_mm_set_pd(SIMDE_FLOAT64_C(  313.65), SIMDE_FLOAT64_C(  242.19)),
+      simde_mm_set_pd(SIMDE_FLOAT64_C(    0.00), SIMDE_FLOAT64_C(-136943.91)) }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    simde__m128d r = simde_mm_dp_pd(test_vec[i].a, test_vec[i].b, 85);
+    simde_assert_m128d_f64_equal(r, test_vec[i].r, 1);
+  }
+
+  return MUNIT_OK;
+}
+
+static MunitResult
+test_simde_mm_dp_ps(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  const struct {
+    simde__m128 a;
+    simde__m128 b;
+    simde__m128 r;
+  } test_vec[8] = {
+    { simde_mm_set_ps(SIMDE_FLOAT32_C(  553.37), SIMDE_FLOAT32_C(  120.49), SIMDE_FLOAT32_C( -272.20), SIMDE_FLOAT32_C(  -36.55)),
+      simde_mm_set_ps(SIMDE_FLOAT32_C(  115.84), SIMDE_FLOAT32_C(  676.89), SIMDE_FLOAT32_C( -919.81), SIMDE_FLOAT32_C( -927.02)),
+      simde_mm_set_ps(SIMDE_FLOAT32_C(250372.30), SIMDE_FLOAT32_C(    0.00), SIMDE_FLOAT32_C(250372.30), SIMDE_FLOAT32_C(    0.00)) },
+    { simde_mm_set_ps(SIMDE_FLOAT32_C(  329.44), SIMDE_FLOAT32_C(  -11.73), SIMDE_FLOAT32_C( -693.65), SIMDE_FLOAT32_C( -971.02)),
+      simde_mm_set_ps(SIMDE_FLOAT32_C( -316.00), SIMDE_FLOAT32_C( -919.35), SIMDE_FLOAT32_C(  956.50), SIMDE_FLOAT32_C( -382.80)),
+      simde_mm_set_ps(SIMDE_FLOAT32_C(-663476.25), SIMDE_FLOAT32_C(    0.00), SIMDE_FLOAT32_C(-663476.25), SIMDE_FLOAT32_C(    0.00)) },
+    { simde_mm_set_ps(SIMDE_FLOAT32_C(   48.87), SIMDE_FLOAT32_C( -212.15), SIMDE_FLOAT32_C(  812.72), SIMDE_FLOAT32_C(  350.56)),
+      simde_mm_set_ps(SIMDE_FLOAT32_C(  612.16), SIMDE_FLOAT32_C( -336.28), SIMDE_FLOAT32_C( -314.44), SIMDE_FLOAT32_C(  725.39)),
+      simde_mm_set_ps(SIMDE_FLOAT32_C(-255551.67), SIMDE_FLOAT32_C(    0.00), SIMDE_FLOAT32_C(-255551.67), SIMDE_FLOAT32_C(    0.00)) },
+    { simde_mm_set_ps(SIMDE_FLOAT32_C(  -17.80), SIMDE_FLOAT32_C(   55.32), SIMDE_FLOAT32_C(  517.59), SIMDE_FLOAT32_C(  356.24)),
+      simde_mm_set_ps(SIMDE_FLOAT32_C(  440.41), SIMDE_FLOAT32_C( -728.96), SIMDE_FLOAT32_C(  250.15), SIMDE_FLOAT32_C( -658.46)),
+      simde_mm_set_ps(SIMDE_FLOAT32_C(129475.14), SIMDE_FLOAT32_C(    0.00), SIMDE_FLOAT32_C(129475.14), SIMDE_FLOAT32_C(    0.00)) },
+    { simde_mm_set_ps(SIMDE_FLOAT32_C(  724.19), SIMDE_FLOAT32_C(  892.03), SIMDE_FLOAT32_C(  632.84), SIMDE_FLOAT32_C(  912.13)),
+      simde_mm_set_ps(SIMDE_FLOAT32_C(  816.72), SIMDE_FLOAT32_C(  934.76), SIMDE_FLOAT32_C(  -86.66), SIMDE_FLOAT32_C(  780.21)),
+      simde_mm_set_ps(SIMDE_FLOAT32_C(-54841.92), SIMDE_FLOAT32_C(    0.00), SIMDE_FLOAT32_C(-54841.92), SIMDE_FLOAT32_C(    0.00)) },
+    { simde_mm_set_ps(SIMDE_FLOAT32_C(  767.35), SIMDE_FLOAT32_C(  593.67), SIMDE_FLOAT32_C(  295.16), SIMDE_FLOAT32_C( -928.99)),
+      simde_mm_set_ps(SIMDE_FLOAT32_C(  446.17), SIMDE_FLOAT32_C( -781.62), SIMDE_FLOAT32_C(  967.10), SIMDE_FLOAT32_C( -630.50)),
+      simde_mm_set_ps(SIMDE_FLOAT32_C(285449.22), SIMDE_FLOAT32_C(    0.00), SIMDE_FLOAT32_C(285449.22), SIMDE_FLOAT32_C(    0.00)) },
+    { simde_mm_set_ps(SIMDE_FLOAT32_C(  954.16), SIMDE_FLOAT32_C( -247.39), SIMDE_FLOAT32_C(   69.65), SIMDE_FLOAT32_C( -817.12)),
+      simde_mm_set_ps(SIMDE_FLOAT32_C(  330.91), SIMDE_FLOAT32_C(  409.60), SIMDE_FLOAT32_C(  841.84), SIMDE_FLOAT32_C( -474.27)),
+      simde_mm_set_ps(SIMDE_FLOAT32_C(58634.16), SIMDE_FLOAT32_C(    0.00), SIMDE_FLOAT32_C(58634.16), SIMDE_FLOAT32_C(    0.00)) },
+    { simde_mm_set_ps(SIMDE_FLOAT32_C( -783.51), SIMDE_FLOAT32_C( -866.65), SIMDE_FLOAT32_C( -877.85), SIMDE_FLOAT32_C( -911.84)),
+      simde_mm_set_ps(SIMDE_FLOAT32_C(    4.33), SIMDE_FLOAT32_C(  855.54), SIMDE_FLOAT32_C( -839.28), SIMDE_FLOAT32_C(  261.89)),
+      simde_mm_set_ps(SIMDE_FLOAT32_C(736761.94), SIMDE_FLOAT32_C(    0.00), SIMDE_FLOAT32_C(736761.94), SIMDE_FLOAT32_C(    0.00)) }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    simde__m128 r = simde_mm_dp_ps(test_vec[i].a, test_vec[i].b, 42);
+    simde_assert_m128_f32_equal(r, test_vec[i].r, 1);
+  }
+
+  return MUNIT_OK;
+}
+
+static MunitResult
 test_simde_mm_extract_epi64(const MunitParameter params[], void* data) {
   (void) params;
   (void) data;
@@ -1493,6 +1581,9 @@ static MunitTest test_suite_tests[] = {
   TEST_FUNC(mm_cvtepu16_epi64),
   TEST_FUNC(mm_cvtepi32_epi64),
   TEST_FUNC(mm_cvtepu32_epi64),
+
+  TEST_FUNC(mm_dp_pd),
+  TEST_FUNC(mm_dp_ps),
 
   TEST_FUNC(mm_extract_epi64),
 

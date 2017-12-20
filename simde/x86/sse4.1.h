@@ -63,16 +63,12 @@ SIMDE__BEGIN_DECLS
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_blend_epi16 (simde__m128i a, simde__m128i b, const int imm8) {
-#if defined(SIMDE_SSE4_1_NATIVE)
-  return SIMDE__M128I_C(_mm_blend_epi16(a.n, b.n, imm8));
-#else
   simde__m128i r;
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.u16) / sizeof(r.u16[0])) ; i++) {
     r.u16[i] = ((imm8 >> i) & 1) ? b.u16[i] : a.u16[i];
   }
   return r;
-#endif
 }
 #if defined(SIMDE_SSE4_1_NATIVE)
 #  define simde_mm_blend_epi16(a, b, imm8) SIMDE__M128I_C(_mm_blend_epi16(a.n, b.n, imm8))
@@ -81,16 +77,12 @@ simde_mm_blend_epi16 (simde__m128i a, simde__m128i b, const int imm8) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
 simde_mm_blend_pd (simde__m128d a, simde__m128d b, const int imm8) {
-#if defined(SIMDE_SSE4_1_NATIVE)
-  return SIMDE__M128D_C(_mm_blend_pd(a.n, b.n, imm8));
-#else
   simde__m128d r;
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.f64) / sizeof(r.f64[0])) ; i++) {
     r.f64[i] = ((imm8 >> i) & 1) ? b.f64[i] : a.f64[i];
   }
   return r;
-#endif
 }
 #if defined(SIMDE_SSE4_1_NATIVE)
 #  define simde_mm_blend_pd(a, b, imm8) SIMDE__M128D_C(_mm_blend_pd(a.n, b.n, imm8))
@@ -99,16 +91,12 @@ simde_mm_blend_pd (simde__m128d a, simde__m128d b, const int imm8) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128
 simde_mm_blend_ps (simde__m128 a, simde__m128 b, const int imm8) {
-#if defined(SIMDE_SSE4_1_NATIVE)
-  return SIMDE__M128_C(_mm_blend_ps(a.n, b.n, imm8));
-#else
   simde__m128 r;
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
     r.f32[i] = ((imm8 >> i) & 1) ? b.f32[i] : a.f32[i];
   }
   return r;
-#endif
 }
 #if defined(SIMDE_SSE4_1_NATIVE)
 #  define simde_mm_blend_ps(a, b, imm8) SIMDE__M128_C(_mm_blend_ps(a.n, b.n, imm8))
@@ -422,6 +410,50 @@ simde_mm_cvtepu32_epi64 (simde__m128i a) {
   return r;
 #endif
 }
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128d
+simde_mm_dp_pd (simde__m128d a, simde__m128d b, const int imm8) {
+  simde__m128d r;
+  simde_float64 sum = SIMDE_FLOAT64_C(0.0);
+
+  SIMDE__VECTORIZE_REDUCTION(+:sum)
+  for (size_t i = 0 ; i < (sizeof(r.f64) / sizeof(r.f64[0])) ; i++) {
+    sum += ((imm8 >> (i + 4)) & 1) ? (a.f64[i] * b.f64[i]) : 0.0;
+  }
+
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.f64) / sizeof(r.f64[0])) ; i++) {
+    r.f64[i] = ((imm8 >> i) & 1) ? sum : 0.0;
+  }
+
+  return r;
+}
+#if defined(SIMDE_SSE4_1_NATIVE)
+#  define simde_mm_dp_pd(a, b, imm8) SIMDE__M128D_C(_mm_dp_pd(a.n, b.n, imm8))
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128
+simde_mm_dp_ps (simde__m128 a, simde__m128 b, const int imm8) {
+  simde__m128 r;
+  simde_float32 sum = SIMDE_FLOAT32_C(0.0);
+
+  SIMDE__VECTORIZE_REDUCTION(+:sum)
+  for (size_t i = 0 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
+    sum += ((imm8 >> (i + 4)) & 1) ? (a.f32[i] * b.f32[i]) : 0.0;
+  }
+
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
+    r.f32[i] = ((imm8 >> i) & 1) ? sum : 0.0;
+  }
+
+  return r;
+}
+#if defined(SIMDE_SSE4_1_NATIVE)
+#  define simde_mm_dp_ps(a, b, imm8) SIMDE__M128_C(_mm_dp_ps(a.n, b.n, imm8))
+#endif
 
 #if defined(simde_mm_extract_epi64)
 #  undef simde_mm_extract_epi64
