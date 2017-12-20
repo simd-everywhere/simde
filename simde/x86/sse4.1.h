@@ -492,6 +492,64 @@ simde_mm_extract_epi64 (simde__m128i a, const int imm8) {
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
+simde__m128d
+simde_mm_floor_pd (simde__m128d a) {
+#if defined(SIMDE_SSE4_1_NATIVE)
+  return SIMDE__M128D_C(_mm_floor_pd(a.n));
+#else
+  simde__m128d r;
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.f64) / sizeof(r.f64[0])) ; i++) {
+    r.f64[i] = floor(a.f64[i]);
+  }
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128
+simde_mm_floor_ps (simde__m128 a) {
+#if defined(SIMDE_SSE4_1_NATIVE)
+  return SIMDE__M128_C(_mm_floor_ps(a.n));
+#else
+  simde__m128 r;
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
+    r.f32[i] = floorf(a.f32[i]);
+  }
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128d
+simde_mm_floor_sd (simde__m128d a, simde__m128d b) {
+#if defined(SIMDE_SSE4_1_NATIVE)
+  return SIMDE__M128D_C(_mm_floor_sd(a.n, b.n));
+#else
+  simde__m128d r;
+  r.f64[0] = floor(b.f64[0]);
+  r.f64[1] = a.f64[1];
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128
+simde_mm_floor_ss (simde__m128 a, simde__m128 b) {
+#if defined(SIMDE_SSE4_1_NATIVE)
+  return SIMDE__M128_C(_mm_floor_ss(a.n, b.n));
+#else
+  simde__m128 r;
+  r.f32[0] = floor(b.f32[0]);
+  for (size_t i = 1 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
+    r.f32[i] = a.f32[i];
+  }
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_max_epi8 (simde__m128i a, simde__m128i b) {
 #if defined(SIMDE_SSE4_1_NATIVE) && !defined(__PGI)
