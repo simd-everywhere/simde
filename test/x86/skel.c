@@ -548,6 +548,42 @@ test_simde_mm_xxx_epu32(const MunitParameter params[], void* data) {
 }
 
 static MunitResult
+test_simde_mm_xxx_epi64(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  const struct {
+    simde__m128i a;
+    simde__m128i b;
+    simde__m128i r;
+  } test_vec[8] = {
+
+  };
+
+  printf("\n");
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    simde__m128i a, b, r;
+
+    munit_rand_memory(sizeof(a), (uint8_t*) &a);
+    munit_rand_memory(sizeof(b), (uint8_t*) &b);
+
+    r = simde_mm_xxx_epu64(a, b);
+
+    printf("    { simde_mm_set_epu64x(UINT64_C(%19ld), UINT64_C(%19ld)),\n", a.u64[1], a.u64[0]);
+    printf("      simde_mm_set_epu64x(UINT64_C(%19ld), UINT64_C(%19ld)),\n", b.u64[1], b.u64[0]);
+    printf("      simde_mm_set_epu64x(UINT64_C(%19ld), UINT64_C(%19ld)) },\n", r.u64[1], r.u64[0]);
+  }
+  return MUNIT_FAIL;
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    simde__m128i r = simde_mm_xxx_epu64(test_vec[i].a, test_vec[i].b);
+    simde_assert_m128i_u64(r, ==, test_vec[i].r);
+  }
+
+  return MUNIT_OK;
+}
+
+static MunitResult
 test_simde_mm_xxx_pi8(const MunitParameter params[], void* data) {
   (void) params;
   (void) data;
