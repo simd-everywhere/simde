@@ -455,15 +455,39 @@ simde_mm_dp_ps (simde__m128 a, simde__m128 b, const int imm8) {
 #  define simde_mm_dp_ps(a, b, imm8) SIMDE__M128_C(_mm_dp_ps(a.n, b.n, imm8))
 #endif
 
+#if defined(simde_mm_extract_epi8)
+#  undef simde_mm_extract_epi8
+#endif
+SIMDE__FUNCTION_ATTRIBUTES
+int32_t
+simde_mm_extract_epi8 (simde__m128i a, const int imm8) {
+  return a.u8[imm8];
+}
+#if defined(SIMDE_SSE4_1_NATIVE)
+#  define simde_mm_extract_epi8(a, imm8) _mm_extract_epi8(a.n, imm8)
+#endif
+
+#if defined(simde_mm_extract_epi32)
+#  undef simde_mm_extract_epi32
+#endif
+SIMDE__FUNCTION_ATTRIBUTES
+int32_t
+simde_mm_extract_epi32 (simde__m128i a, const int imm8) {
+  return a.i32[imm8];
+}
+#if defined(SIMDE_SSE4_1_NATIVE)
+#  define simde_mm_extract_epi32(a, imm8) _mm_extract_epi32(a.n, imm8)
+#endif
+
 #if defined(simde_mm_extract_epi64)
 #  undef simde_mm_extract_epi64
 #endif
 SIMDE__FUNCTION_ATTRIBUTES
 int64_t
 simde_mm_extract_epi64 (simde__m128i a, const int imm8) {
-  return a.u64[imm8];
+  return a.i64[imm8];
 }
-#if defined(SIMDE_SSE4_1_NATIVE) && defined(SIMDE_ARCH_AMD64)
+#if defined(SIMDE_SSE4_1_NATIVE)
 #  define simde_mm_extract_epi64(a, imm8) _mm_extract_epi64(a.n, imm8)
 #endif
 
