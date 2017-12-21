@@ -530,11 +530,11 @@ test_simde_mm_xxx_epu32(const MunitParameter params[], void* data) {
 
     r = simde_mm_xxx_epu32(a, b);
 
-    printf("    { simde_mm_set_epu32(UINT32_C(%10u), UINT32_C(%10u), UINT32_C(%10u), UINT32_C(%10u)),\n",
+    printf("    { simde_x_mm_set_epu32(UINT32_C(%10u), UINT32_C(%10u), UINT32_C(%10u), UINT32_C(%10u)),\n",
   	   a.u32[3], a.u32[2], a.u32[1], a.u32[0]);
-    printf("      simde_mm_set_epu32(UINT32_C(%10u), UINT32_C(%10u), UINT32_C(%10u), UINT32_C(%10u)),\n",
+    printf("      simde_x_mm_set_epu32(UINT32_C(%10u), UINT32_C(%10u), UINT32_C(%10u), UINT32_C(%10u)),\n",
   	   b.u32[3], b.u32[2], b.u32[1], b.u32[0]);
-    printf("      simde_mm_set_epu32(UINT32_C(%10u), UINT32_C(%10u), UINT32_C(%10u), UINT32_C(%10u)) },\n",
+    printf("      simde_x_mm_set_epu32(UINT32_C(%10u), UINT32_C(%10u), UINT32_C(%10u), UINT32_C(%10u)) },\n",
   	   r.u32[3], r.u32[2], r.u32[1], r.u32[0]);
   }
   return MUNIT_FAIL;
