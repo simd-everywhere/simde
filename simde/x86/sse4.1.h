@@ -60,6 +60,39 @@
 
 SIMDE__BEGIN_DECLS
 
+#if defined(SIMDE_SSE4_1_NATIVE)
+#  define SIMDE_MM_FROUND_TO_NEAREST_INT _MM_FROUND_TO_NEAREST_INT
+#  define SIMDE_MM_FROUND_TO_NEG_INF     _MM_FROUND_TO_NEG_INF
+#  define SIMDE_MM_FROUND_TO_POS_INF		 _MM_FROUND_TO_POS_INF
+#  define SIMDE_MM_FROUND_TO_ZERO        _MM_FROUND_TO_ZERO
+#  define SIMDE_MM_FROUND_CUR_DIRECTION  _MM_FROUND_CUR_DIRECTION
+
+#  define SIMDE_MM_FROUND_RAISE_EXC      _MM_FROUND_RAISE_EXC
+#  define SIMDE_MM_FROUND_NO_EXC         _MM_FROUND_NO_EXC
+#else
+#  define SIMDE_MM_FROUND_TO_NEAREST_INT 0x00
+#  define SIMDE_MM_FROUND_TO_NEG_INF     0x01
+#  define SIMDE_MM_FROUND_TO_POS_INF		 0x02
+#  define SIMDE_MM_FROUND_TO_ZERO        0x03
+#  define SIMDE_MM_FROUND_CUR_DIRECTION  0x04
+
+#  define SIMDE_MM_FROUND_RAISE_EXC      0x00
+#  define SIMDE_MM_FROUND_NO_EXC         0x08
+#endif
+
+#define SIMDE_MM_FROUND_NINT		\
+  (SIMDE_MM_FROUND_TO_NEAREST_INT | SIMDE_MM_FROUND_RAISE_EXC)
+#define SIMDE_MM_FROUND_FLOOR	\
+  (SIMDE_MM_FROUND_TO_NEG_INF | SIMDE_MM_FROUND_RAISE_EXC)
+#define SIMDE_MM_FROUND_CEIL		\
+  (SIMDE_MM_FROUND_TO_POS_INF | SIMDE_MM_FROUND_RAISE_EXC)
+#define SIMDE_MM_FROUND_TRUNC	\
+  (SIMDE_MM_FROUND_TO_ZERO | SIMDE_MM_FROUND_RAISE_EXC)
+#define SIMDE_MM_FROUND_RINT		\
+  (SIMDE_MM_FROUND_CUR_DIRECTION | SIMDE_MM_FROUND_RAISE_EXC)
+#define SIMDE_MM_FROUND_NEARBYINT	\
+  (SIMDE_MM_FROUND_CUR_DIRECTION | SIMDE_MM_FROUND_NO_EXC)
+
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_blend_epi16 (simde__m128i a, simde__m128i b, const int imm8) {
@@ -814,6 +847,130 @@ simde_mm_packus_epi32 (simde__m128i a, simde__m128i b) {
   return r;
 #endif
 }
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128d
+simde_mm_round_pd (simde__m128d a, int rounding) {
+  simde__m128d r;
+  for (size_t i = 0 ; i < (sizeof(r.f64) / sizeof(r.f64[0])) ; i++) {
+    switch (rounding & ~SIMDE_MM_FROUND_NO_EXC) {
+      case SIMDE_MM_FROUND_TO_NEAREST_INT:
+        r.f64[i] = nearbyint(a.f64[i]);
+        break;
+      case SIMDE_MM_FROUND_TO_NEG_INF:
+        r.f64[i] = floor(a.f64[i]);
+        break;
+      case SIMDE_MM_FROUND_TO_POS_INF:
+        r.f64[i] = ceil(a.f64[i]);
+        break;
+      case SIMDE_MM_FROUND_TO_ZERO:
+        r.f64[i] = trunc(a.f64[i]);
+        break;
+      case SIMDE_MM_FROUND_CUR_DIRECTION:
+        r.f64[i] = nearbyint(a.f64[i]);
+        break;
+      default:
+        HEDLEY_UNREACHABLE();
+        break;
+    }
+  }
+  return r;
+}
+#if defined(SIMDE_SSE4_1_NATIVE)
+#  define simde_mm_round_pd(a, rounding) SIMDE__M128D_C(_mm_round_pd((a).n, rounding))
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128
+simde_mm_round_ps (simde__m128 a, int rounding) {
+  simde__m128 r;
+  for (size_t i = 0 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
+    switch (rounding & ~SIMDE_MM_FROUND_NO_EXC) {
+      case SIMDE_MM_FROUND_TO_NEAREST_INT:
+        r.f32[i] = nearbyintf(a.f32[i]);
+        break;
+      case SIMDE_MM_FROUND_TO_NEG_INF:
+        r.f32[i] = floorf(a.f32[i]);
+        break;
+      case SIMDE_MM_FROUND_TO_POS_INF:
+        r.f32[i] = ceilf(a.f32[i]);
+        break;
+      case SIMDE_MM_FROUND_TO_ZERO:
+        r.f32[i] = truncf(a.f32[i]);
+        break;
+      case SIMDE_MM_FROUND_CUR_DIRECTION:
+        r.f32[i] = nearbyintf (a.f32[i]);
+        break;
+      default:
+        HEDLEY_UNREACHABLE();
+        break;
+    }
+  }
+  return r;
+}
+#if defined(SIMDE_SSE4_1_NATIVE)
+#  define simde_mm_round_ps(a, rounding) SIMDE__M128_C(_mm_round_ps((a).n, rounding))
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128d
+simde_mm_round_sd (simde__m128d a, simde__m128d b, int rounding) {
+  simde__m128d r = a;
+  switch (rounding & ~SIMDE_MM_FROUND_NO_EXC) {
+    case SIMDE_MM_FROUND_TO_NEAREST_INT:
+      r.f64[0] = nearbyint(b.f64[0]);
+      break;
+    case SIMDE_MM_FROUND_TO_NEG_INF:
+      r.f64[0] = floor(b.f64[0]);
+      break;
+    case SIMDE_MM_FROUND_TO_POS_INF:
+      r.f64[0] = ceil(b.f64[0]);
+      break;
+    case SIMDE_MM_FROUND_TO_ZERO:
+      r.f64[0] = trunc(b.f64[0]);
+      break;
+    case SIMDE_MM_FROUND_CUR_DIRECTION:
+      r.f64[0] = nearbyint(b.f64[0]);
+      break;
+    default:
+      HEDLEY_UNREACHABLE();
+      break;
+  }
+  return r;
+}
+#if defined(SIMDE_SSE4_1_NATIVE)
+#  define simde_mm_round_sd(a, b, rounding) SIMDE__M128D_C(_mm_round_sd((a).n, (b).n, rounding))
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128
+simde_mm_round_ss (simde__m128 a, simde__m128 b, int rounding) {
+  simde__m128 r = a;
+  switch (rounding & ~SIMDE_MM_FROUND_NO_EXC) {
+    case SIMDE_MM_FROUND_TO_NEAREST_INT:
+      r.f32[0] = nearbyintf(b.f32[0]);
+      break;
+    case SIMDE_MM_FROUND_TO_NEG_INF:
+      r.f32[0] = floorf(b.f32[0]);
+      break;
+    case SIMDE_MM_FROUND_TO_POS_INF:
+      r.f32[0] = ceilf(b.f32[0]);
+      break;
+    case SIMDE_MM_FROUND_TO_ZERO:
+      r.f32[0] = truncf(b.f32[0]);
+      break;
+    case SIMDE_MM_FROUND_CUR_DIRECTION:
+      r.f32[0] = nearbyintf (b.f32[0]);
+      break;
+    default:
+      HEDLEY_UNREACHABLE();
+      break;
+  }
+  return r;
+}
+#if defined(SIMDE_SSE4_1_NATIVE)
+#  define simde_mm_round_ss(a, b, rounding) SIMDE__M128_C(_mm_round_ss((a).n, (b).n, rounding))
+#endif
 
 SIMDE__END_DECLS
 

@@ -92,6 +92,10 @@ simde_float64 random_f64_range(simde_float64 min, simde_float64 max) {
   return x;
 }
 
+simde_float32 random_f32_range(simde_float32 min, simde_float32 max) {
+  return (simde_float32) random_f64_range(min, max);
+}
+
 void random_f64v(size_t nmemb, simde_float64 v[HEDLEY_ARRAY_PARAM(nmemb)]) {
   for (size_t i = 0 ; i < nmemb ; i++) {
     do {

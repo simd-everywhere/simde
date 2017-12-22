@@ -51,6 +51,7 @@ void debug_array_f32(const char* prefix, size_t nmemb, simde_float32 v[HEDLEY_AR
 void random_f32v(size_t nmemb, simde_float32 v[HEDLEY_ARRAY_PARAM(nmemb)]);
 void random_f64v(size_t nmemb, simde_float64 v[HEDLEY_ARRAY_PARAM(nmemb)]);
 simde_float64 random_f64_range(simde_float64 min, simde_float64 max);
+simde_float32 random_f32_range(simde_float32 min, simde_float32 max);
 
 #define random_intv_range(T, nmemb, v, min, max)			\
   do {									\
