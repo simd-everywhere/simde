@@ -728,6 +728,46 @@ simde_mm_min_epu32 (simde__m128i a, simde__m128i b) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
+simde_mm_minpos_epu16 (simde__m128i a) {
+#if defined(SIMDE_SSE4_1_NATIVE)
+  return SIMDE__M128I_C(_mm_minpos_epu16(a.n));
+#else
+  simde__m128i r = simde_x_mm_set_epu16(0, 0, 0, 0, 0, 0, 0, UINT16_MAX);
+
+  for (size_t i = 0 ; i < (sizeof(r.u16) / sizeof(r.u16[0])) ; i++) {
+    if (a.u16[i] < r.u16[0]) {
+      r.u16[0] = a.u16[i];
+      r.u16[1] = (uint16_t) i;
+    }
+  }
+
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128i
+simde_mm_mpsadbw_epu8 (simde__m128i a, simde__m128i b, const int imm8) {
+  simde__m128i r;
+  const int a_offset = imm8 & 4;
+  const int b_offset = (imm8 & 3) << 2;
+
+  for (size_t i = 0 ; i < (sizeof(r.u16) / sizeof(r.u16[0])) ; i++) {
+    r.u16[i] =
+      ((uint16_t) abs(a.u8[a_offset + i + 0] - b.u8[b_offset + 0])) +
+      ((uint16_t) abs(a.u8[a_offset + i + 1] - b.u8[b_offset + 1])) +
+      ((uint16_t) abs(a.u8[a_offset + i + 2] - b.u8[b_offset + 2])) +
+      ((uint16_t) abs(a.u8[a_offset + i + 3] - b.u8[b_offset + 3]));
+  }
+
+  return r;
+}
+#if defined(SIMDE_SSE4_1_NATIVE)
+#  define simde_mm_mpsadbw_epu8(a, b, imm8) SIMDE__M128I_C(_mm_mpsadbw_epu8(a.n, b.n, imm8));
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128i
 simde_mm_mullo_epi32 (simde__m128i a, simde__m128i b) {
 #if defined(SIMDE_SSE4_1_NATIVE)
   return SIMDE__M128I_C(_mm_mullo_epi32(a.n, b.n));
