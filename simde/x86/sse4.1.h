@@ -768,6 +768,23 @@ simde_mm_mpsadbw_epu8 (simde__m128i a, simde__m128i b, const int imm8) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
+simde_mm_mul_epi32 (simde__m128i a, simde__m128i b) {
+#if defined(SIMDE_SSE4_1_NATIVE)
+  return SIMDE__M128I_C(_mm_mul_epi32(a.n, b.n));
+#else
+  simde__m128i r;
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.i64) / sizeof(r.i64[0])) ; i++) {
+    r.i64[i] =
+      ((int64_t) a.i32[i * 2]) *
+      ((int64_t) b.i32[i * 2]);
+  }
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128i
 simde_mm_mullo_epi32 (simde__m128i a, simde__m128i b) {
 #if defined(SIMDE_SSE4_1_NATIVE)
   return SIMDE__M128I_C(_mm_mullo_epi32(a.n, b.n));
@@ -778,6 +795,21 @@ simde_mm_mullo_epi32 (simde__m128i a, simde__m128i b) {
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i32) / sizeof(r.i32[0])) ; i++) {
     r.u32[i] = (uint32_t) (((uint64_t) (((int64_t) a.i32[i]) * ((int64_t) b.i32[i]))) & 0xffffffff);
+  }
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128i
+simde_mm_packus_epi32 (simde__m128i a, simde__m128i b) {
+#if defined(SIMDE_SSE4_1_NATIVE)
+  return SIMDE__M128I_C(_mm_packus_epi32(a.n, b.n));
+#else
+  simde__m128i r;
+  for (size_t i = 0 ; i < (sizeof(r.i32) / sizeof(r.i32[0])) ; i++) {
+    r.u16[i + 0] = (a.i32[i] < 0) ? UINT16_C(0) : ((a.i32[i] > UINT16_MAX) ? (UINT16_MAX) : ((uint32_t) a.i32[i]));
+    r.u16[i + 4] = (b.i32[i] < 0) ? UINT16_C(0) : ((b.i32[i] > UINT16_MAX) ? (UINT16_MAX) : ((uint32_t) b.i32[i]));
   }
   return r;
 #endif
