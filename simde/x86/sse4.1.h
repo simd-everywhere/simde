@@ -1010,6 +1010,61 @@ simde_mm_test_all_zeros (simde__m128i a, simde__m128i mask) {
 #endif
 }
 
+SIMDE__FUNCTION_ATTRIBUTES
+int
+simde_mm_test_mix_ones_zeros (simde__m128i a, simde__m128i mask) {
+#if defined(SIMDE_SSE4_1_NATIVE)
+  return _mm_test_mix_ones_zeros(a.n, mask.n);
+#else
+  for (size_t i = 0 ; i < (sizeof(a.u64) / sizeof(a.u64[0])) ; i++)
+    if (((a.u64[i] & mask.u64[i]) != 0) && ((~a.u64[i] & mask.u64[i]) != 0))
+      return 1;
+  return 0;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+int
+simde_mm_testc_si128 (simde__m128i a, simde__m128i b) {
+#if defined(SIMDE_SSE4_1_NATIVE)
+  return _mm_testc_si128(a.n, b.n);
+#else
+  for (size_t i = 0 ; i < (sizeof(a.u64) / sizeof(a.u64[0])) ; i++) {
+    if ((~a.u64[i] & b.u64[i]) == 0)
+      return 1;
+  }
+  return 0;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+int
+simde_mm_testnzc_si128 (simde__m128i a, simde__m128i b) {
+#if defined(SIMDE_SSE4_1_NATIVE)
+  return _mm_testnzc_si128(a.n, b.n);
+#else
+  for (size_t i = 0 ; i < (sizeof(a.u64) / sizeof(a.u64[0])) ; i++) {
+    if (((a.u64[i] & b.u64[i]) != 0) && ((~a.u64[i] & b.u64[i]) != 0))
+      return 1;
+  }
+  return 0;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+int
+simde_mm_testz_si128 (simde__m128i a, simde__m128i b) {
+#if defined(SIMDE_SSE4_1_NATIVE)
+  return _mm_testz_si128(a.n, b.n);
+#else
+  for (size_t i = 0 ; i < (sizeof(a.u64) / sizeof(a.u64[0])) ; i++) {
+    if ((a.u64[i] & b.u64[i]) == 0)
+      return 1;
+  }
+  return 0;
+#endif
+}
+
 SIMDE__END_DECLS
 
 #endif /* !defined(SIMDE__SSE4_1_H) */
