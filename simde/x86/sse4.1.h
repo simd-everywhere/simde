@@ -972,6 +972,44 @@ simde_mm_round_ss (simde__m128 a, simde__m128 b, int rounding) {
 #  define simde_mm_round_ss(a, b, rounding) SIMDE__M128_C(_mm_round_ss((a).n, (b).n, rounding))
 #endif
 
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128i
+simde_mm_stream_load_si128 (const simde__m128i* mem_addr) {
+#if defined(SIMDE_SSE4_1_NATIVE)
+  return SIMDE__M128I_C(_mm_stream_load_si128((void*) &(mem_addr->n)));
+#else
+  return *mem_addr;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+int
+simde_mm_test_all_ones (simde__m128i a) {
+#if defined(SIMDE_SSE4_1_NATIVE)
+  return _mm_test_all_ones(a.n);
+#else
+  for (size_t i = 0 ; i < (sizeof(a.u64) / sizeof(a.u64[0])) ; i++) {
+    if (a.u64[i] != ~UINT64_C(0))
+      return 0;
+  }
+  return 1;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+int
+simde_mm_test_all_zeros (simde__m128i a, simde__m128i mask) {
+#if defined(SIMDE_SSE4_1_NATIVE)
+  return _mm_test_all_zeros(a.n, mask.n);
+#else
+  for (size_t i = 0 ; i < (sizeof(a.u64) / sizeof(a.u64[0])) ; i++) {
+    if ((a.u64[i] & mask.u64[i]) != 0)
+      return 0;
+  }
+  return 1;
+#endif
+}
+
 SIMDE__END_DECLS
 
 #endif /* !defined(SIMDE__SSE4_1_H) */
