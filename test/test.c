@@ -1,4 +1,4 @@
-/* Copyright (c) 2017 Evan Nemerson <evan@nemerson.com>
+/* Copyright (c) 2018 Evan Nemerson <evan@nemerson.com>
  *
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
@@ -61,6 +61,9 @@ int main(int argc, char* argv[MUNIT_ARRAY_PARAM(argc + 1)]) {
 
     simde_sse4_2_test_suite,
     simde_sse4_2_emul_test_suite,
+
+    simde_avx_test_suite,
+    simde_avx_emul_test_suite,
 #endif
     { 0, },
   };

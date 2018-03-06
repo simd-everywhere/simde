@@ -27,6 +27,9 @@ MunitSuite simde_sse4_1_emul_test_suite;
 MunitSuite simde_sse4_2_test_suite;
 MunitSuite simde_sse4_2_emul_test_suite;
 
+MunitSuite simde_avx_test_suite;
+MunitSuite simde_avx_emul_test_suite;
+
 #define simde_assert_m64_i8(a, op, b) \
   simde_assert_typev(int8_t, PRId8, 8, (int8_t*) &(a), op, (int8_t*) &(b))
 #define simde_assert_m64_u8(a, op, b) \
@@ -106,5 +109,34 @@ MunitSuite simde_sse4_2_emul_test_suite;
   simde_assert_f32v_equal(simde_float64, 2, (simde_float64*) &(a), (simde_float64*) &(b), precision)
 #define simde_assert_m128d_f64_close(a, b, precision) \
   simde_assert_f32v_close(simde_float64, 2, (simde_float64*) &(a), (simde_float64*) &(b), precision)
+
+#define simde_assert_m256i_i8(a, op, b) \
+  simde_assert_typev(int8_t, PRId8, 32, (int8_t*) &(a), op, (int8_t*) &(b))
+#define simde_assert_m256i_u8(a, op, b) \
+  simde_assert_typev(uint8_t, PRIu8, 32, (uint8_t*) &(a), op, (uint8_t*) &(b))
+#define simde_assert_m256i_i16(a, op, b) \
+  simde_assert_typev(int16_t, PRId16, 16, (int16_t*) &(a), op, (int16_t*) &(b))
+#define simde_assert_m256i_u16(a, op, b) \
+  simde_assert_typev(uint16_t, PRIu16, 16, (uint16_t*) &(a), op, (uint16_t*) &(b))
+#define simde_assert_m256i_i32(a, op, b) \
+  simde_assert_typev(int32_t, PRId32, 8, (int32_t*) &(a), op, (int32_t*) &(b))
+#define simde_assert_m256i_u32(a, op, b) \
+  simde_assert_typev(uint32_t, PRIu32, 8, (uint32_t*) &(a), op, (uint32_t*) &(b))
+#define simde_assert_m256i_i64(a, op, b) \
+  simde_assert_typev(int64_t, PRId64, 4, (int64_t*) &(a), op, (int64_t*) &(b))
+#define simde_assert_m256i_u64(a, op, b) \
+  simde_assert_typev(uint64_t, PRIu64, 4, (uint64_t*) &(a), op, (uint64_t*) &(b))
+
+#define simde_assert_m256d_f64(a, op, b) \
+  simde_assert_typev(simde_float64, "f", 4, (simde_float64*) &(a), op, (simde_float64*) &(b))
+#define simde_assert_m256d_f64_equal(a, b, precision) \
+  simde_assert_f32v_equal(simde_float64, 4, (simde_float64*) &(a), (simde_float64*) &(b), precision)
+#define simde_assert_m256d_f64_close(a, b, precision) \
+  simde_assert_f32v_close(simde_float64, 4, (simde_float64*) &(a), (simde_float64*) &(b), precision)
+
+#define simde_assert_m256_f32(a, op, b) \
+  simde_assert_typev(simde_float32, "f", 8, (simde_float32*) &(a), op, (simde_float32*) &(b))
+#define simde_assert_m256_f32_equal(a, b, precision) \
+  simde_assert_f32v_equal(simde_float32, 8, (simde_float32*) &(a), (simde_float32*) &(b), precision)
 
 #endif
