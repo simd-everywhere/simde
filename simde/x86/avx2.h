@@ -66,8 +66,8 @@ simde_mm256_add_epi8 (simde__m256i a, simde__m256i b) {
   return SIMDE__M256I_C(_mm256_add_epi8(a.n, b.n));
 #elif defined(SIMDE_SSE2_NATIVE)
   simde__m256i res;
-  res.sse2[0] = _mm_add_epi8(a.sse2[0], b.sse2[0]);
-  res.sse2[1] = _mm_add_epi8(a.sse2[1], b.sse2[1]);
+  res.m128i[0] = _mm_add_epi8(a.m128i[0], b.m128i[0]);
+  res.m128i[1] = _mm_add_epi8(a.m128i[1], b.m128i[1]);
   return res;
 #else
   simde__m256i r;
@@ -86,8 +86,8 @@ simde_mm256_add_epi16 (simde__m256i a, simde__m256i b) {
   return SIMDE__M256I_C(_mm256_add_epi16(a.n, b.n));
 #elif defined(SIMDE_SSE2_NATIVE)
   simde__m256i res;
-  res.sse2[0] = _mm_add_epi16(a.sse2[0], b.sse2[0]);
-  res.sse2[1] = _mm_add_epi16(a.sse2[1], b.sse2[1]);
+  res.m128i[0] = _mm_add_epi16(a.m128i[0], b.m128i[0]);
+  res.m128i[1] = _mm_add_epi16(a.m128i[1], b.m128i[1]);
   return res;
 #else
   simde__m256i r;
@@ -106,8 +106,8 @@ simde_mm256_add_epi32 (simde__m256i a, simde__m256i b) {
   return SIMDE__M256I_C(_mm256_add_epi32(a.n, b.n));
 #elif defined(SIMDE_SSE2_NATIVE)
   simde__m256i res;
-  res.sse2[0] = _mm_add_epi32(a.sse2[0], b.sse2[0]);
-  res.sse2[1] = _mm_add_epi32(a.sse2[1], b.sse2[1]);
+  res.m128i[0] = _mm_add_epi32(a.m128i[0], b.m128i[0]);
+  res.m128i[1] = _mm_add_epi32(a.m128i[1], b.m128i[1]);
   return res;
 #else
   simde__m256i r;
@@ -126,8 +126,8 @@ simde_mm256_add_epi64 (simde__m256i a, simde__m256i b) {
   return SIMDE__M256I_C(_mm256_add_epi64(a.n, b.n));
 #elif defined(SIMDE_SSE2_NATIVE)
   simde__m256i res;
-  res.sse2[0] = _mm_add_epi64(a.sse2[0], b.sse2[0]);
-  res.sse2[1] = _mm_add_epi64(a.sse2[1], b.sse2[1]);
+  res.m128i[0] = _mm_add_epi64(a.m128i[0], b.m128i[0]);
+  res.m128i[1] = _mm_add_epi64(a.m128i[1], b.m128i[1]);
   return res;
 #else
   simde__m256i r;

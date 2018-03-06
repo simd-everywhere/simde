@@ -82,8 +82,8 @@ typedef SIMDE__ALIGN(16) union {
   simde_float64  f64[4];
 #endif
 
-#if defined(SIMDE_SSE2_NATIVE)
-  __m128         sse2[2];
+#if defined(SIMDE_SSE_NATIVE)
+  __m128         m128[2];
 #endif
 #if defined(SIMDE_AVX_NATIVE)
   __m256         n;
@@ -124,7 +124,7 @@ typedef SIMDE__ALIGN(16) union {
 #endif
 
 #if defined(SIMDE_SSE2_NATIVE)
-  __m128d        sse2[2];
+  __m128d        m128d[2];
 #endif
 #if defined(SIMDE_AVX_NATIVE)
   __m256d        n;
@@ -165,7 +165,7 @@ typedef SIMDE__ALIGN(16) union {
 #endif
 
 #if defined(SIMDE_SSE2_NATIVE)
-  __m128i        sse2[2];
+  __m128i        m128i[2];
 #endif
 #if defined(SIMDE_AVX_NATIVE)
   __m256i        n;
@@ -201,10 +201,10 @@ simde_mm256_set_epi8 (int8_t e31, int8_t e30, int8_t e29, int8_t e28,
                                         e7,  e6,  e5,  e4,  e3,  e2,  e1,  e0));
 #elif defined(SIMDE_SSE2_NATIVE)
   simde__m256i res;
-  res.sse2[0] = _mm_set_epi8(e15, e14, e13, e12, e11, e10,  e9,  e8,
-                              e7,  e6,  e5,  e4,  e3,  e2,  e1,  e0);
-  res.sse2[1] = _mm_set_epi8(e31, e30, e29, e28, e27, e26, e25, e24,
-                             e23, e22, e21, e20, e19, e18, e17, e16);
+  res.m128i[0] = _mm_set_epi8(e15, e14, e13, e12, e11, e10,  e9,  e8,
+                               e7,  e6,  e5,  e4,  e3,  e2,  e1,  e0);
+  res.m128i[1] = _mm_set_epi8(e31, e30, e29, e28, e27, e26, e25, e24,
+                              e23, e22, e21, e20, e19, e18, e17, e16);
   return res;
 #else
   return (simde__m256i) { .i8 = {  e0,  e1,  e2,  e3,  e4,  e5,  e6,  e7,
@@ -225,8 +225,8 @@ simde_mm256_set_epi16 (int16_t e15, int16_t e14, int16_t e13, int16_t e12,
                                           e7,  e6,  e5,  e4,  e3,  e2,  e1,  e0));
 #elif defined(SIMDE_SSE2_NATIVE)
   simde__m256i res;
-  res.sse2[0] = _mm_set_epi16( e7,  e6,  e5,  e4,  e3,  e2,  e1,  e0);
-  res.sse2[1] = _mm_set_epi16(e15, e14, e13, e12, e11, e10,  e9,  e8);
+  res.m128i[0] = _mm_set_epi16( e7,  e6,  e5,  e4,  e3,  e2,  e1,  e0);
+  res.m128i[1] = _mm_set_epi16(e15, e14, e13, e12, e11, e10,  e9,  e8);
   return res;
 #else
   return (simde__m256i) { .i16 = { e0,  e1,  e2,  e3,  e4,  e5,  e6,  e7,
@@ -242,8 +242,8 @@ simde_mm256_set_epi32 (int32_t e7, int32_t e6, int32_t e5, int32_t e4,
   return SIMDE__M256I_C(_mm256_set_epi32(e7, e6, e5, e4, e3, e2, e1, e0));
 #elif defined(SIMDE_SSE2_NATIVE)
   simde__m256i res;
-  res.sse2[0] = _mm_set_epi32(e3, e2, e1, e0);
-  res.sse2[1] = _mm_set_epi32(e7, e6, e5, e4);
+  res.m128i[0] = _mm_set_epi32(e3, e2, e1, e0);
+  res.m128i[1] = _mm_set_epi32(e7, e6, e5, e4);
   return res;
 #else
   return (simde__m256i) { .i32 = { e0, e1, e2, e3, e4, e5, e6, e7 } };
@@ -257,8 +257,8 @@ simde_mm256_set_epi64x (int64_t  e3, int64_t  e2, int64_t  e1, int64_t  e0) {
   return SIMDE__M256I_C(_mm256_set_epi64x(e3, e2, e1, e0));
 #elif defined(SIMDE_SSE2_NATIVE)
   simde__m256i res;
-  res.sse2[0] = _mm_set_epi64x(e1, e0);
-  res.sse2[1] = _mm_set_epi64x(e3, e2);
+  res.m128i[0] = _mm_set_epi64x(e1, e0);
+  res.m128i[1] = _mm_set_epi64x(e3, e2);
   return res;
 #else
   return (simde__m256i) { .i64 = { e0, e1, e2, e3 } };
@@ -271,10 +271,10 @@ simde_mm256_set_ps (simde_float32 e7, simde_float32 e6, simde_float32 e5, simde_
                     simde_float32 e3, simde_float32 e2, simde_float32 e1, simde_float32 e0) {
 #if defined(SIMDE_AVX_NATIVE)
   return SIMDE__M256_C(_mm256_set_ps(e7, e6, e5, e4, e3, e2, e1, e0));
-#elif defined(SIMDE_SSE2_NATIVE)
+#elif defined(SIMDE_SSE_NATIVE)
   simde__m256 res;
-  res.sse2[0] = _mm_set_ps(e3, e2, e1, e0);
-  res.sse2[1] = _mm_set_ps(e7, e6, e5, e4);
+  res.m128[0] = _mm_set_ps(e3, e2, e1, e0);
+  res.m128[1] = _mm_set_ps(e7, e6, e5, e4);
   return res;
 #else
   return (simde__m256) { .f32 = { e0, e1, e2, e3, e4, e5, e6, e7 } };
@@ -288,8 +288,8 @@ simde_mm256_set_pd (simde_float64 e3, simde_float64 e2, simde_float64 e1, simde_
   return SIMDE__M256D_C(_mm256_set_pd(e3, e2, e1, e0));
 #elif defined(SIMDE_SSE2_NATIVE)
   simde__m256d res;
-  res.sse2[0] = _mm_set_pd(e1, e0);
-  res.sse2[1] = _mm_set_pd(e3, e2);
+  res.m128d[0] = _mm_set_pd(e1, e0);
+  res.m128d[1] = _mm_set_pd(e3, e2);
   return res;
 #else
   return (simde__m256d) { .f64 = { e0, e1, e2, e3 } };
@@ -302,7 +302,7 @@ simde_mm256_set_m128 (simde__m128 e1, simde__m128 e0) {
 #if defined(SIMDE_AVX_NATIVE)
   return SIMDE__M256_C((__m256) _mm256_insertf128_si256(_mm256_castps128_ps256(e0.n), e1.n, 1));
 #elif defined(SIMDE_SSE2_NATIVE)
-  return (simde__m256) { .sse2 = { e0.n, e1.n } };
+  return (simde__m256) { .m128 = { e0.n, e1.n } };
 #elif defined(SIMDE__HAVE_INT128)
   return (simde__m256) { .i128 = { e0.i128[0], e1.i128[0] } };
 #else
@@ -316,7 +316,7 @@ simde_mm256_set_m128d (simde__m128d e1, simde__m128d e0) {
 #if defined(SIMDE_AVX_NATIVE)
   return SIMDE__M256D_C(_mm256_insertf128_pd(_mm256_castpd128_pd256(e0.n), e1.n, 1));
 #elif defined(SIMDE_SSE2_NATIVE)
-  return (simde__m256d) { .sse2 = { e0.n, e1.n } };
+  return (simde__m256d) { .m128d = { e0.n, e1.n } };
 #else
   return (simde__m256d) { .i64 = { e0.i64[0], e0.i64[1], e1.i64[0], e1.i64[1] } };
 #endif
@@ -328,7 +328,7 @@ simde_mm256_set_m128i (simde__m128i e1, simde__m128i e0) {
 #if defined(SIMDE_AVX_NATIVE)
   return SIMDE__M256I_C(_mm256_insertf128_si256(_mm256_castsi128_si256(e0.n), e1.n, 1));
 #elif defined(SIMDE_SSE2_NATIVE)
-  return (simde__m256i) { .sse2 = { e0.n, e1.n } };
+  return (simde__m256i) { .m128i = { e0.n, e1.n } };
 #else
   return (simde__m256i) { .i64 = { e0.i64[0], e0.i64[1], e1.i64[0], e1.i64[1] } };
 #endif
@@ -341,8 +341,8 @@ simde_mm256_set1_epi8 (int8_t a) {
   return SIMDE__M256I_C(_mm256_set1_epi8(a));
 #elif defined(SIMDE_SSE2_NATIVE)
   simde__m256i res;
-  res.sse2[0] = _mm_set1_epi8(a);
-  res.sse2[1] = _mm_set1_epi8(a);
+  res.m128i[0] = _mm_set1_epi8(a);
+  res.m128i[1] = _mm_set1_epi8(a);
   return res;
 #else
   return (simde__m256i) { .i8 = { a, a, a, a, a, a, a, a,
@@ -359,8 +359,8 @@ simde_mm256_set1_epi16 (int16_t a) {
   return SIMDE__M256I_C(_mm256_set1_epi16(a));
 #elif defined(SIMDE_SSE2_NATIVE)
   simde__m256i res;
-  res.sse2[0] = _mm_set1_epi16(a);
-  res.sse2[1] = _mm_set1_epi16(a);
+  res.m128i[0] = _mm_set1_epi16(a);
+  res.m128i[1] = _mm_set1_epi16(a);
   return res;
 #else
   return (simde__m256i) { .i16 = { a, a, a, a, a, a, a, a,
@@ -375,8 +375,8 @@ simde_mm256_set1_epi32 (int32_t a) {
   return SIMDE__M256I_C(_mm256_set1_epi32(a));
 #elif defined(SIMDE_SSE2_NATIVE)
   simde__m256i res;
-  res.sse2[0] = _mm_set1_epi32(a);
-  res.sse2[1] = _mm_set1_epi32(a);
+  res.m128i[0] = _mm_set1_epi32(a);
+  res.m128i[1] = _mm_set1_epi32(a);
   return res;
 #else
   return (simde__m256i) { .i32 = { a, a, a, a, a, a, a, a } };
@@ -390,8 +390,8 @@ simde_mm256_set1_epi64x (int64_t a) {
   return SIMDE__M256I_C(_mm256_set1_epi64x(a));
 #elif defined(SIMDE_SSE2_NATIVE)
   simde__m256i res;
-  res.sse2[0] = _mm_set1_epi64x(a);
-  res.sse2[1] = _mm_set1_epi64x(a);
+  res.m128i[0] = _mm_set1_epi64x(a);
+  res.m128i[1] = _mm_set1_epi64x(a);
   return res;
 #else
   return (simde__m256i) { .i64 = { a, a, a, a } };
@@ -403,10 +403,10 @@ simde__m256
 simde_mm256_set1_ps (simde_float32 a) {
 #if defined(SIMDE_AVX_NATIVE)
   return SIMDE__M256_C(_mm256_set1_ps(a));
-#elif defined(SIMDE_SSE2_NATIVE)
+#elif defined(SIMDE_SSE_NATIVE)
   simde__m256 res;
-  res.sse2[0] = _mm_set1_ps(a);
-  res.sse2[1] = _mm_set1_ps(a);
+  res.m128[0] = _mm_set1_ps(a);
+  res.m128[1] = _mm_set1_ps(a);
   return res;
 #else
   return (simde__m256) { .f32 = { a, a, a, a, a, a, a, a } };
@@ -420,8 +420,8 @@ simde_mm256_set1_pd (simde_float64 a) {
   return SIMDE__M256D_C(_mm256_set1_pd(a));
 #elif defined(SIMDE_SSE2_NATIVE)
   simde__m256d res;
-  res.sse2[0] = _mm_set1_pd(a);
-  res.sse2[1] = _mm_set1_pd(a);
+  res.m128d[0] = _mm_set1_pd(a);
+  res.m128d[1] = _mm_set1_pd(a);
   return res;
 #else
   return (simde__m256d) { .f64 = { a, a, a, a } };
@@ -433,10 +433,10 @@ simde__m256
 simde_mm256_add_ps (simde__m256 a, simde__m256 b) {
 #if defined(SIMDE_AVX_NATIVE)
   return SIMDE__M256_C(_mm256_add_ps(a.n, b.n));
-#elif defined(SIMDE_SSE2_NATIVE)
+#elif defined(SIMDE_SSE_NATIVE)
   simde__m256 res;
-  res.sse2[0] = _mm_add_ps(a.sse2[0], b.sse2[0]);
-  res.sse2[1] = _mm_add_ps(a.sse2[1], b.sse2[1]);
+  res.m128[0] = _mm_add_ps(a.m128[0], b.m128[0]);
+  res.m128[1] = _mm_add_ps(a.m128[1], b.m128[1]);
   return res;
 #else
   simde__m256 r;
@@ -455,8 +455,8 @@ simde_mm256_add_pd (simde__m256d a, simde__m256d b) {
   return SIMDE__M256D_C(_mm256_add_pd(a.n, b.n));
 #elif defined(SIMDE_SSE2_NATIVE)
   simde__m256d res;
-  res.sse2[0] = _mm_add_pd(a.sse2[0], b.sse2[0]);
-  res.sse2[1] = _mm_add_pd(a.sse2[1], b.sse2[1]);
+  res.m128d[0] = _mm_add_pd(a.m128d[0], b.m128d[0]);
+  res.m128d[1] = _mm_add_pd(a.m128d[1], b.m128d[1]);
   return res;
 #else
   simde__m256d r;
@@ -475,8 +475,8 @@ simde_mm256_addsub_ps (simde__m256 a, simde__m256 b) {
   return SIMDE__M256_C(_mm256_addsub_ps(a.n, b.n));
 #elif defined(SIMDE_SSE3_NATIVE)
   simde__m256 res;
-  res.sse2[0] = _mm_addsub_ps(a.sse2[0], b.sse2[0]);
-  res.sse2[1] = _mm_addsub_ps(a.sse2[1], b.sse2[1]);
+  res.m128[0] = _mm_addsub_ps(a.m128[0], b.m128[0]);
+  res.m128[1] = _mm_addsub_ps(a.m128[1], b.m128[1]);
   return res;
 #else
   simde__m256 r;
@@ -496,8 +496,8 @@ simde_mm256_addsub_pd (simde__m256d a, simde__m256d b) {
   return SIMDE__M256D_C(_mm256_addsub_pd(a.n, b.n));
 #elif defined(SIMDE_SSE3_NATIVE)
   simde__m256d res;
-  res.sse2[0] = _mm_addsub_pd(a.sse2[0], b.sse2[0]);
-  res.sse2[1] = _mm_addsub_pd(a.sse2[1], b.sse2[1]);
+  res.m128d[0] = _mm_addsub_pd(a.m128d[0], b.m128d[0]);
+  res.m128d[1] = _mm_addsub_pd(a.m128d[1], b.m128d[1]);
   return res;
 #else
   simde__m256d r;
