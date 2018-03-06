@@ -428,6 +428,46 @@ simde_mm256_set1_pd (simde_float64 a) {
 #endif
 }
 
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256
+simde_mm256_add_ps (simde__m256 a, simde__m256 b) {
+#if defined(SIMDE_AVX_NATIVE)
+  return SIMDE__M256_C(_mm256_add_ps(a.n, b.n));
+#elif defined(SIMDE_SSE2_NATIVE)
+  simde__m256 res;
+  res.sse2[0] = _mm_add_ps(a.sse2[0], b.sse2[0]);
+  res.sse2[1] = _mm_add_ps(a.sse2[1], b.sse2[1]);
+  return res;
+#else
+  simde__m256 r;
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
+    r.f32[i] = a.f32[i] + b.f32[i];
+  }
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256d
+simde_mm256_add_pd (simde__m256d a, simde__m256d b) {
+#if defined(SIMDE_AVX_NATIVE)
+  return SIMDE__M256D_C(_mm256_add_pd(a.n, b.n));
+#elif defined(SIMDE_SSE2_NATIVE)
+  simde__m256d res;
+  res.sse2[0] = _mm_add_pd(a.sse2[0], b.sse2[0]);
+  res.sse2[1] = _mm_add_pd(a.sse2[1], b.sse2[1]);
+  return res;
+#else
+  simde__m256d r;
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.f64) / sizeof(r.f64[0])) ; i++) {
+    r.f64[i] = a.f64[i] + b.f64[i];
+  }
+  return r;
+#endif
+}
+
 SIMDE__END_DECLS
 
 #endif /* !defined(SIMDE__AVX_H) */
