@@ -30,6 +30,9 @@ MunitSuite simde_sse4_2_emul_test_suite;
 MunitSuite simde_avx_test_suite;
 MunitSuite simde_avx_emul_test_suite;
 
+MunitSuite simde_avx2_test_suite;
+MunitSuite simde_avx2_emul_test_suite;
+
 #define simde_assert_m64_i8(a, op, b) \
   simde_assert_typev(int8_t, PRId8, 8, (int8_t*) &(a), op, (int8_t*) &(b))
 #define simde_assert_m64_u8(a, op, b) \

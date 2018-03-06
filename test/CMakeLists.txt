@@ -77,7 +77,8 @@ if(NOT DISABLE_X86)
     x86/ssse3/ssse3.c
     x86/sse4.1/sse4.1.c
     x86/sse4.2/sse4.2.c
-    x86/avx/avx.c)
+    x86/avx/avx.c
+    x86/avx2/avx2.c)
 else()
   add_definitions(-DDISABLE_X86)
 endif()
@@ -126,7 +127,7 @@ if(LIBM)
   target_link_libraries(run-tests ${LIBM})
 endif()
 if (NOT DISABLE_X86)
-  foreach(tst "/x86/mmx" "/x86/sse" "/x86/sse2" "/x86/sse3" "/x86/ssse3" "/x86/sse4.1" "/x86/sse4.2" "/x86/avx")
+  foreach(tst "/x86/mmx" "/x86/sse" "/x86/sse2" "/x86/sse3" "/x86/ssse3" "/x86/sse4.1" "/x86/sse4.2" "/x86/avx" "/x86/avx2")
     add_test(NAME "${tst}/${variant}" COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:run-tests> "${tst}")
   endforeach()
 endif()

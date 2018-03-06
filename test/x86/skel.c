@@ -795,14 +795,20 @@ test_simde_mm256_xxx_epi16(const MunitParameter params[], void* data) {
     r = simde_mm256_xxx_epi16(a, b);
 
     printf("    { simde_mm256_set_epi16(INT16_C(%6hd), INT16_C(%6hd), INT16_C(%6hd), INT16_C(%6hd),\n"
-	        "                             INT16_C(%6hd), INT16_C(%6hd), INT16_C(%6hd), INT16_C(%6hd)),\n",
+	         "                            INT16_C(%6hd), INT16_C(%6hd), INT16_C(%6hd), INT16_C(%6hd),\n"
+	         "                            INT16_C(%6hd), INT16_C(%6hd), INT16_C(%6hd), INT16_C(%6hd),\n"
+	         "                            INT16_C(%6hd), INT16_C(%6hd), INT16_C(%6hd), INT16_C(%6hd)),\n",
            a.i16[15], a.i16[14], a.i16[13], a.i16[12], a.i16[11], a.i16[10], a.i16[ 9], a.i16[ 8],
            a.i16[ 7], a.i16[ 6], a.i16[ 5], a.i16[ 4], a.i16[ 3], a.i16[ 2], a.i16[ 1], a.i16[ 0]);
     printf("      simde_mm256_set_epi16(INT16_C(%6hd), INT16_C(%6hd), INT16_C(%6hd), INT16_C(%6hd),\n"
+	         "                            INT16_C(%6hd), INT16_C(%6hd), INT16_C(%6hd), INT16_C(%6hd),\n"
+	         "                            INT16_C(%6hd), INT16_C(%6hd), INT16_C(%6hd), INT16_C(%6hd),\n"
 	         "                            INT16_C(%6hd), INT16_C(%6hd), INT16_C(%6hd), INT16_C(%6hd)),\n",
            b.i16[15], b.i16[14], b.i16[13], b.i16[12], b.i16[11], b.i16[10], b.i16[ 9], b.i16[ 8],
            b.i16[ 7], b.i16[ 6], b.i16[ 5], b.i16[ 4], b.i16[ 3], b.i16[ 2], b.i16[ 1], b.i16[ 0]);
     printf("      simde_mm256_set_epi16(INT16_C(%6hd), INT16_C(%6hd), INT16_C(%6hd), INT16_C(%6hd),\n"
+	         "                            INT16_C(%6hd), INT16_C(%6hd), INT16_C(%6hd), INT16_C(%6hd),\n"
+	         "                            INT16_C(%6hd), INT16_C(%6hd), INT16_C(%6hd), INT16_C(%6hd),\n"
 	         "                            INT16_C(%6hd), INT16_C(%6hd), INT16_C(%6hd), INT16_C(%6hd)) },\n",
            r.i16[15], r.i16[14], r.i16[13], r.i16[12], r.i16[11], r.i16[10], r.i16[ 9], r.i16[ 8],
            r.i16[ 7], r.i16[ 6], r.i16[ 5], r.i16[ 4], r.i16[ 3], r.i16[ 2], r.i16[ 1], r.i16[ 0]);
@@ -840,13 +846,13 @@ test_simde_mm256_xxx_epi32(const MunitParameter params[], void* data) {
     r = simde_mm256_xxx_epi32(a, b);
 
     printf("    { simde_mm256_set_epi32(INT32_C(%11d), INT32_C(%11d), INT32_C(%11d), INT32_C(%11d),\n"
-           "                            INT32_C(%11d), INT32_C(%11d), INT32_C(%11d), INT32_C(%11d)),",
+           "                            INT32_C(%11d), INT32_C(%11d), INT32_C(%11d), INT32_C(%11d)),\n",
            a.i32[7], a.i32[6], a.i32[5], a.i32[4], a.i32[3], a.i32[2], a.i32[1], a.i32[0]);
     printf("      simde_mm256_set_epi32(INT32_C(%11d), INT32_C(%11d), INT32_C(%11d), INT32_C(%11d),\n"
-           "                            INT32_C(%11d), INT32_C(%11d), INT32_C(%11d), INT32_C(%11d)),",
+           "                            INT32_C(%11d), INT32_C(%11d), INT32_C(%11d), INT32_C(%11d)),\n",
            b.i32[7], b.i32[6], b.i32[5], b.i32[4], b.i32[3], b.i32[2], b.i32[1], b.i32[0]);
     printf("      simde_mm256_set_epi32(INT32_C(%11d), INT32_C(%11d), INT32_C(%11d), INT32_C(%11d),\n"
-           "                            INT32_C(%11d), INT32_C(%11d), INT32_C(%11d), INT32_C(%11d)),",
+           "                            INT32_C(%11d), INT32_C(%11d), INT32_C(%11d), INT32_C(%11d)) },\n",
            r.i32[7], r.i32[6], r.i32[5], r.i32[4], r.i32[3], r.i32[2], r.i32[1], r.i32[0]);
   }
   return MUNIT_FAIL;
