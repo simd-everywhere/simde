@@ -9,17 +9,28 @@ matrix:
     ###
     ## Linux builds using various versions of GCC.
     ###
-    - env: C_COMPILER=gcc-6
+    - env: C_COMPILER=gcc-7
       addons:
         apt:
           sources:
           - ubuntu-toolchain-r-test
           - george-edison55-precise-backports
           packages:
-          - gcc-6
-          - g++-6
+          - gcc-7
+          - g++-7
           - cmake
           - cmake-data
+    # - env: C_COMPILER=gcc-6
+    #   addons:
+    #     apt:
+    #       sources:
+    #       - ubuntu-toolchain-r-test
+    #       - george-edison55-precise-backports
+    #       packages:
+    #       - gcc-6
+    #       - g++-6
+    #       - cmake
+    #       - cmake-data
     - env: C_COMPILER=gcc-5 BUILD_TYPE=Release
       addons:
         apt:
@@ -60,17 +71,17 @@ matrix:
     #       - g++-4.7
     #       - cmake
     #       - cmake-data
-    - env: C_COMPILER=gcc-4.6
-      addons:
-        apt:
-          sources:
-          - ubuntu-toolchain-r-test
-          - george-edison55-precise-backports
-          packages:
-          - gcc-4.6
-          - g++-4.6
-          - cmake
-          - cmake-data
+    # - env: C_COMPILER=gcc-4.6
+    #   addons:
+    #     apt:
+    #       sources:
+    #       - ubuntu-toolchain-r-test
+    #       - george-edison55-precise-backports
+    #       packages:
+    #       - gcc-4.6
+    #       - g++-4.6
+    #       - cmake
+    #       - cmake-data
     # - os: linux
     #   env: C_COMPILER=gcc-4.5
     #   addons:
