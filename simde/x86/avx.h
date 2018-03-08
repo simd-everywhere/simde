@@ -198,7 +198,7 @@ simde_mm256_set_epi8 (int8_t e31, int8_t e30, int8_t e29, int8_t e28,
   return SIMDE__M256I_C(_mm256_set_epi8(e31, e30, e29, e28, e27, e26, e25, e24,
                                         e23, e22, e21, e20, e19, e18, e17, e16,
                                         e15, e14, e13, e12, e11, e10,  e9,  e8,
-                                        e7,  e6,  e5,  e4,  e3,  e2,  e1,  e0));
+                                         e7,  e6,  e5,  e4,  e3,  e2,  e1,  e0));
 #elif defined(SIMDE_SSE2_NATIVE)
   simde__m256i res;
   res.m128i[0] = _mm_set_epi8(e15, e14, e13, e12, e11, e10,  e9,  e8,
@@ -300,7 +300,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 simde__m256
 simde_mm256_set_m128 (simde__m128 e1, simde__m128 e0) {
 #if defined(SIMDE_AVX_NATIVE)
-  return SIMDE__M256_C((__m256) _mm256_insertf128_si256(_mm256_castps128_ps256(e0.n), e1.n, 1));
+  return SIMDE__M256_C(_mm256_insertf128_ps(_mm256_castps128_ps256(e0.n), e1.n, 1));
 #elif defined(SIMDE_SSE2_NATIVE)
   return (simde__m256) { .m128 = { e0.n, e1.n } };
 #elif defined(SIMDE__HAVE_INT128)
