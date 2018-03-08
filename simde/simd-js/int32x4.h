@@ -487,7 +487,7 @@ simde_em_int32x4_store (int32_t dest[HEDLEY_ARRAY_PARAM(4)], simde_em_int32x4 a)
 #if defined(SIMDE_EM_NATIVE)
   emscripten_int32x4_store(dest, a.n);
 #elif defined(SIMDE_EM_SSE2)
-  _mm_storeu_si128((__m128i*) dest, a.sse);
+  _mm_storeu_si128((__m128i*) (void*) dest, a.sse);
 #elif defined(SIMDE_EM_NEON)
   vst1q_s32(dest, a.neon);
 #else
@@ -531,7 +531,7 @@ simde_em_int32x4_load (const int32_t src[HEDLEY_ARRAY_PARAM(4)]) {
 #if defined(SIMDE_EM_NATIVE)
   return SIMDE_EM_INT32X4_C(emscripten_int32x4_load(src));
 #elif defined(SIMDE_EM_SSE2)
-  return SIMDE_EM_INT32X4_SSE_C(_mm_loadu_si128((__m128i const*) src));
+  return SIMDE_EM_INT32X4_SSE_C(_mm_loadu_si128((__m128i const*) (void const*) src));
 #elif defined(SIMDE_EM_NEON)
   return SIMDE_EM_INT32X4_NEON_C(vld1q_s32(src));
 #else
