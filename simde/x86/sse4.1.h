@@ -1,4 +1,4 @@
-/* Copyright (c) 2017 Evan Nemerson <evan@nemerson.com>
+/* Copyright (c) 2017-2018 Evan Nemerson <evan@nemerson.com>
  *
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
@@ -163,7 +163,7 @@ simde_mm_blendv_pd (simde__m128d a, simde__m128d b, simde__m128d mask) {
   simde__m128d r;
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.f64) / sizeof(r.f64[0])) ; i++) {
-    if (mask.u64[i] & 0x80) {
+    if (mask.u64[i] & (UINT64_C(1) << 63)) {
       r.f64[i] = b.f64[i];
     } else {
       r.f64[i] = a.f64[i];
@@ -182,7 +182,7 @@ simde_mm_blendv_ps (simde__m128 a, simde__m128 b, simde__m128 mask) {
   simde__m128 r;
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
-    if (mask.u32[i] & 0x80) {
+    if (mask.u32[i] & (UINT32_C(1) << 31)) {
       r.f32[i] = b.f32[i];
     } else {
       r.f32[i] = a.f32[i];
