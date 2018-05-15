@@ -684,7 +684,7 @@ simde_mm_max_epu32 (simde__m128i a, simde__m128i b) {
 #if defined(SIMDE_SSE4_1_NATIVE)
   return SIMDE__M128I_C(_mm_max_epu32(a.n, b.n));
 #elif defined(SIMDE_SSE4_1_NEON)
-  return SIMDE__M128I_NEON_C(i32, vmaxq_u32(a.neon_i32, b.neon_i32));
+  return SIMDE__M128I_NEON_C(u32, vmaxq_u32(a.neon_u32, b.neon_u32));
 #else
   simde__m128i r;
   SIMDE__VECTORIZE
