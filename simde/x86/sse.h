@@ -2248,7 +2248,7 @@ simde_mm_stream_ps (simde_float32 mem_addr[4], simde__m128 a) {
 #if defined(SIMDE_SSE_NATIVE)
   _mm_stream_ps(mem_addr, a.n);
 #else
-  HEDLEY_ASSUME_ALIGNED(mem_addr, 16);
+  SIMDE__ASSUME_ALIGNED(mem_addr, 16);
   memcpy(mem_addr, &a, sizeof(a));
 #endif
 }

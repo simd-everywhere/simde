@@ -1556,7 +1556,7 @@ simde_mm_load_pd (simde_float64 const mem_addr[HEDLEY_ARRAY_PARAM(2)]) {
   return SIMDE__M128D_NEON_C(u32, vld1q_u32((uint32_t*) mem_addr));
 #else
   simde__m128d r;
-  HEDLEY_ASSUME_ALIGNED(mem_addr, 16);
+  SIMDE__ASSUME_ALIGNED(mem_addr, 16);
   memcpy(&r, mem_addr, sizeof(r));
   return r;
 #endif
@@ -1595,7 +1595,7 @@ simde_mm_load_si128 (simde__m128i const* mem_addr) {
   return SIMDE__M128I_NEON_C(i32, vld1q_s32((int32_t*) mem_addr));
 #else
   simde__m128i r;
-  HEDLEY_ASSUME_ALIGNED(mem_addr, 16);
+  SIMDE__ASSUME_ALIGNED(mem_addr, 16);
   memcpy(&r, mem_addr, sizeof(r));
   return r;
 #endif
@@ -1651,7 +1651,7 @@ simde_mm_loadr_pd (simde_float64 const mem_addr[HEDLEY_ARRAY_PARAM(2)]) {
   return SIMDE__M128D_C(_mm_loadr_pd(mem_addr));
 #else
   simde__m128d r;
-  HEDLEY_ASSUME_ALIGNED(mem_addr, 16);
+  SIMDE__ASSUME_ALIGNED(mem_addr, 16);
   r.f64[0] = mem_addr[1];
   r.f64[1] = mem_addr[0];
   return r;
@@ -2902,7 +2902,7 @@ simde_mm_store_pd (simde_float64 mem_addr[HEDLEY_ARRAY_PARAM(2)], simde__m128d a
 #if defined(SIMDE_SSE2_NATIVE)
   _mm_store_pd(mem_addr, a.n);
 #else
-  HEDLEY_ASSUME_ALIGNED(mem_addr, 16);
+  SIMDE__ASSUME_ALIGNED(mem_addr, 16);
   memcpy(mem_addr, &a, sizeof(a));
 #endif
 }
@@ -2913,7 +2913,7 @@ simde_mm_store1_pd (simde_float64 mem_addr[HEDLEY_ARRAY_PARAM(2)], simde__m128d 
 #if defined(SIMDE_SSE2_NATIVE)
   _mm_store1_pd(mem_addr, a.n);
 #else
-  HEDLEY_ASSUME_ALIGNED(mem_addr, 16);
+  SIMDE__ASSUME_ALIGNED(mem_addr, 16);
   mem_addr[0] = a.f64[0];
   mem_addr[1] = a.f64[0];
 #endif
@@ -2938,7 +2938,7 @@ simde_mm_store_si128 (simde__m128i* mem_addr, simde__m128i a) {
 #elif defined(SIMDE_SSE2_NEON)
   vst1q_s32((int32_t*) mem_addr, a.neon_i32);
 #else
-  HEDLEY_ASSUME_ALIGNED(mem_addr, 16);
+  SIMDE__ASSUME_ALIGNED(mem_addr, 16);
   memcpy(mem_addr, &a, sizeof(a));
 #endif
 }
@@ -2981,7 +2981,7 @@ simde_mm_storer_pd (simde_float64 mem_addr[2], simde__m128d a) {
 #if defined(SIMDE_SSE2_NATIVE)
   _mm_storer_pd(mem_addr, a.n);
 #else
-  HEDLEY_ASSUME_ALIGNED(mem_addr, 16);
+  SIMDE__ASSUME_ALIGNED(mem_addr, 16);
   mem_addr[0] = a.f64[1];
   mem_addr[1] = a.f64[0];
 #endif
@@ -3017,7 +3017,7 @@ simde_mm_stream_pd (simde_float64 mem_addr[HEDLEY_ARRAY_PARAM(2)], simde__m128d 
 #if defined(SIMDE_SSE2_NATIVE)
   _mm_stream_pd(mem_addr, a.n);
 #else
-  HEDLEY_ASSUME_ALIGNED(mem_addr, 16);
+  SIMDE__ASSUME_ALIGNED(mem_addr, 16);
   memcpy(mem_addr, &a, sizeof(a));
 #endif
 }
@@ -3028,7 +3028,7 @@ simde_mm_stream_si128 (simde__m128i* mem_addr, simde__m128i a) {
 #if defined(SIMDE_SSE2_NATIVE)
   _mm_stream_si128(&mem_addr->n, a.n);
 #else
-  HEDLEY_ASSUME_ALIGNED(mem_addr, 16);
+  SIMDE__ASSUME_ALIGNED(mem_addr, 16);
   memcpy(mem_addr, &a, sizeof(a));
 #endif
 }

@@ -201,6 +201,23 @@ HEDLEY_STATIC_ASSERT(sizeof(simde_float64) == 8, "Unable to find 64-bit floating
 #define SIMDE__REALLY_GCC 1
 #endif
 
+#if defined(SIMDE__ASSUME_ALIGNED)
+#  undef SIMDE__ASSUME_ALIGNED
+#endif
+#if HEDLEY_INTEL_VERSION_CHECK(9,0,0)
+#  define SIMDE__ASSUME_ALIGNED(ptr, align) __assume_aligned(ptr, align)
+#elif HEDLEY_MSVC_VERSION_CHECK(13,10,0)
+#  define SIMDE__ASSUME_ALIGNED(ptr, align) __assume((((char*) ptr) - ((char*) 0)) % (align) == 0)
+#elif HEDLEY_GCC_HAS_BUILTIN(__builtin_assume_aligned,4,7,0)
+#  define SIMDE__ASSUME_ALIGNED(ptr, align) (ptr = (__typeof__(ptr)) __builtin_assume_aligned((ptr), align))
+#elif HEDLEY_CLANG_HAS_BUILTIN(__builtin_assume)
+#  define SIMDE__ASSUME_ALIGNED(ptr, align) __builtin_assume((((char*) ptr) - ((char*) 0)) % (align) == 0)
+#elif HEDLEY_GCC_HAS_BUILTIN(__builtin_unreachable,4,5,0)
+#  define SIMDE__ASSUME_ALIGNED(ptr, align) ((((char*) ptr) - ((char*) 0)) % (align) == 0) ? (1) : (__builtin_unreachable(), 0)
+#else
+#  define SIMDE__ASSUME_ALIGNED(ptr, align)
+#endif
+
 /* Sometimes we run into problems with specific versions of compilers
    which make the native versions unusable for us.  Often this is due
    to missing functions, sometimes buggy implementations, etc.  These
