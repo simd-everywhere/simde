@@ -266,6 +266,22 @@ simde_mm256_set_epi64x (int64_t  e3, int64_t  e2, int64_t  e1, int64_t  e0) {
 }
 
 SIMDE__FUNCTION_ATTRIBUTES
+simde__m256i
+simde_x_mm256_set_epu8 (uint8_t e31, uint8_t e30, uint8_t e29, uint8_t e28,
+                        uint8_t e27, uint8_t e26, uint8_t e25, uint8_t e24,
+                        uint8_t e23, uint8_t e22, uint8_t e21, uint8_t e20,
+                        uint8_t e19, uint8_t e18, uint8_t e17, uint8_t e16,
+                        uint8_t e15, uint8_t e14, uint8_t e13, uint8_t e12,
+                        uint8_t e11, uint8_t e10, uint8_t  e9, uint8_t  e8,
+                        uint8_t  e7, uint8_t  e6, uint8_t  e5, uint8_t  e4,
+                        uint8_t  e3, uint8_t  e2, uint8_t  e1, uint8_t  e0) {
+  return (simde__m256i) { .u8 = {   e0,  e1,  e2,  e3,  e4,  e5,  e6,  e7,
+                                    e8,  e9, e10, e11, e12, e13, e14, e15,
+                                   e16, e17, e18, e19, e20, e21, e22, e23,
+                                   e24, e25, e26, e27, e28, e29, e30, e31 } };
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
 simde__m256
 simde_mm256_set_ps (simde_float32 e7, simde_float32 e6, simde_float32 e5, simde_float32 e4,
                     simde_float32 e3, simde_float32 e2, simde_float32 e1, simde_float32 e0) {
@@ -732,6 +748,24 @@ simde_mm256_broadcast_ss (simde_float32 const * a) {
   }
   return r;
 #endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256i
+simde_mm256_loadu_si256 (simde__m256i const * a) {
+#if defined(SIMDE_AVX2_NATIVE)
+  return SIMDE__M256I_C(_mm256_loadu_si256(&(a->n)));
+#else
+  simde__m256i res;
+  memcpy(&(res.i64), &(a->i64), sizeof(res.i64));
+  return res;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+void
+simde_mm256_storeu_si256(simde__m256i * mem_addr, simde__m256i a) {
+  memcpy(mem_addr, &a, sizeof(a));
 }
 
 SIMDE__END_DECLS

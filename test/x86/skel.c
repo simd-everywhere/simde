@@ -908,6 +908,75 @@ test_simde_mm256_xxx_epi64(const MunitParameter params[], void* data) {
 }
 
 static MunitResult
+test_simde_mm256_xxx_epu8(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  const struct {
+    simde__m256i a;
+    simde__m256i b;
+    simde__m256i r;
+  } test_vec[8] = {
+
+  };
+
+  printf("\n");
+  for (size_t i = 0 ; i < (sizeof(test_vec) / (sizeof(test_vec[0]))) ; i++) {
+    simde__m256i a, b, r;
+
+    munit_rand_memory(sizeof(a), (uint8_t*) &a);
+    munit_rand_memory(sizeof(b), (uint8_t*) &b);
+
+    r = simde_mm256_xxx_epu8(a, b);
+
+    printf("    { simde_x_mm256_set_epu8(UINT8_C(%3hhu), UINT8_C(%3hhu), UINT8_C(%3hhu), UINT8_C(%3hhu),\n"
+	   "                             UINT8_C(%3hhu), UINT8_C(%3hhu), UINT8_C(%3hhu), UINT8_C(%3hhu),\n"
+	   "                             UINT8_C(%3hhu), UINT8_C(%3hhu), UINT8_C(%3hhu), UINT8_C(%3hhu),\n"
+	   "                             UINT8_C(%3hhu), UINT8_C(%3hhu), UINT8_C(%3hhu), UINT8_C(%3hhu),\n"
+           "                             UINT8_C(%3hhu), UINT8_C(%3hhu), UINT8_C(%3hhu), UINT8_C(%3hhu),\n"
+	   "                             UINT8_C(%3hhu), UINT8_C(%3hhu), UINT8_C(%3hhu), UINT8_C(%3hhu),\n"
+	   "                             UINT8_C(%3hhu), UINT8_C(%3hhu), UINT8_C(%3hhu), UINT8_C(%3hhu),\n"
+	   "                             UINT8_C(%3hhu), UINT8_C(%3hhu), UINT8_C(%3hhu), UINT8_C(%3hhu)),\n",
+           a.u8[31], a.u8[30], a.u8[29], a.u8[28], a.u8[27], a.u8[26], a.u8[25], a.u8[24],
+           a.u8[23], a.u8[22], a.u8[21], a.u8[20], a.u8[19], a.u8[18], a.u8[17], a.u8[16],
+           a.u8[15], a.u8[14], a.u8[13], a.u8[12], a.u8[11], a.u8[10], a.u8[ 9], a.u8[ 8],
+           a.u8[ 7], a.u8[ 6], a.u8[ 5], a.u8[ 4], a.u8[ 3], a.u8[ 2], a.u8[ 1], a.u8[ 0]);
+    printf("      simde_x_mm256_set_epu8(UINT8_C(%3hhu), UINT8_C(%3hhu), UINT8_C(%3hhu), UINT8_C(%3hhu),\n"
+	   "                             UINT8_C(%3hhu), UINT8_C(%3hhu), UINT8_C(%3hhu), UINT8_C(%3hhu),\n"
+	   "                             UINT8_C(%3hhu), UINT8_C(%3hhu), UINT8_C(%3hhu), UINT8_C(%3hhu),\n"
+	   "                             UINT8_C(%3hhu), UINT8_C(%3hhu), UINT8_C(%3hhu), UINT8_C(%3hhu),\n"
+           "                             UINT8_C(%3hhu), UINT8_C(%3hhu), UINT8_C(%3hhu), UINT8_C(%3hhu),\n"
+	   "                             UINT8_C(%3hhu), UINT8_C(%3hhu), UINT8_C(%3hhu), UINT8_C(%3hhu),\n"
+	   "                             UINT8_C(%3hhu), UINT8_C(%3hhu), UINT8_C(%3hhu), UINT8_C(%3hhu),\n"
+	   "                             UINT8_C(%3hhu), UINT8_C(%3hhu), UINT8_C(%3hhu), UINT8_C(%3hhu)),\n",
+           b.u8[31], b.u8[30], b.u8[29], b.u8[28], b.u8[27], b.u8[26], b.u8[25], b.u8[24],
+           b.u8[23], b.u8[22], b.u8[21], b.u8[20], b.u8[19], b.u8[18], b.u8[17], b.u8[16],
+           b.u8[15], b.u8[14], b.u8[13], b.u8[12], b.u8[11], b.u8[10], b.u8[ 9], b.u8[ 8],
+           b.u8[ 7], b.u8[ 6], b.u8[ 5], b.u8[ 4], b.u8[ 3], b.u8[ 2], b.u8[ 1], b.u8[ 0]);
+    printf("      simde_x_mm256_set_epu8(UINT8_C(%3hhu), UINT8_C(%3hhu), UINT8_C(%3hhu), UINT8_C(%3hhu),\n"
+	   "                             UINT8_C(%3hhu), UINT8_C(%3hhu), UINT8_C(%3hhu), UINT8_C(%3hhu),\n"
+	   "                             UINT8_C(%3hhu), UINT8_C(%3hhu), UINT8_C(%3hhu), UINT8_C(%3hhu),\n"
+	   "                             UINT8_C(%3hhu), UINT8_C(%3hhu), UINT8_C(%3hhu), UINT8_C(%3hhu),\n"
+           "                             UINT8_C(%3hhu), UINT8_C(%3hhu), UINT8_C(%3hhu), UINT8_C(%3hhu),\n"
+	   "                             UINT8_C(%3hhu), UINT8_C(%3hhu), UINT8_C(%3hhu), UINT8_C(%3hhu),\n"
+	   "                             UINT8_C(%3hhu), UINT8_C(%3hhu), UINT8_C(%3hhu), UINT8_C(%3hhu),\n"
+	   "                             UINT8_C(%3hhu), UINT8_C(%3hhu), UINT8_C(%3hhu), UINT8_C(%3hhu)) },\n",
+           r.u8[31], r.u8[30], r.u8[29], r.u8[28], r.u8[27], r.u8[26], r.u8[25], r.u8[24],
+           r.u8[23], r.u8[22], r.u8[21], r.u8[20], r.u8[19], r.u8[18], r.u8[17], r.u8[16],
+           r.u8[15], r.u8[14], r.u8[13], r.u8[12], r.u8[11], r.u8[10], r.u8[ 9], r.u8[ 8],
+           r.u8[ 7], r.u8[ 6], r.u8[ 5], r.u8[ 4], r.u8[ 3], r.u8[ 2], r.u8[ 1], r.u8[ 0]);
+  }
+  return MUNIT_FAIL;
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    simde__m256i r = simde_mm256_xxx_epu8(test_vec[i].a, test_vec[i].b);
+    simde_assert_m256i_u8(r, ==, test_vec[i].r);
+  }
+
+  return MUNIT_OK;
+}
+
+static MunitResult
 test_simde_mm256_xxx_ps(const MunitParameter params[], void* data) {
   (void) params;
   (void) data;

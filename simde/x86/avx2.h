@@ -139,6 +139,94 @@ simde_mm256_add_epi64 (simde__m256i a, simde__m256i b) {
 #endif
 }
 
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256i
+simde_mm256_and_si256 (simde__m256i a, simde__m256i b) {
+#if defined(SIMDE_AVX2_NATIVE)
+  return SIMDE__M256I_C(_mm256_and_si256(a.n, b.n));
+#elif defined(SIMDE_SSE2_NATIVE)
+  simde__m256i res;
+  res.m128i[0] = _mm_and_si128(a.m128i[0], b.m128i[0]);
+  res.m128i[1] = _mm_and_si128(a.m128i[1], b.m128i[1]);
+  return res;
+#else
+  simde__m256i r;
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.i64) / sizeof(r.i64[0])) ; i++) {
+    r.i64[i] = a.i64[i] & b.i64[i];
+  }
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256i
+simde_mm256_broadcastsi128_si256 (simde__m128i a) {
+#if defined(SIMDE_AVX2_NATIVE)
+  return SIMDE__M256I_C(_mm256_broadcastsi128_si256(a.n));
+#elif defined(SIMDE_SSE2_NATIVE)
+  simde__m256i res;
+  res.m128i[0] = a.n;
+  res.m128i[1] = a.n;
+  return res;
+#else
+  return (simde__m256i) { .i64 = {  a.i64[0], a.i64[1],
+                                    a.i64[0], a.i64[1] } };
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256i
+simde_mm256_shuffle_epi8 (simde__m256i a, simde__m256i b) {
+#if defined(SIMDE_AVX2_NATIVE)
+  return SIMDE__M256I_C(_mm256_shuffle_epi8(a.n, b.n));
+#else
+  simde__m256i r;
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < ((sizeof(r.u8) / sizeof(r.u8[0])) / 2) ; i++) {
+    r.u8[  i   ] = (b.u8[  i   ] & 0x80) ? 0 : a.u8[(b.u8[  i   ] & 0x0f)     ];
+    r.u8[i + 16] = (b.u8[i + 16] & 0x80) ? 0 : a.u8[(b.u8[i + 16] & 0x0f) + 16];
+  }
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256i
+simde_mm256_srli_epi64 (simde__m256i a, const int imm8) {
+  simde__m256i r;
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.u64) / sizeof(r.u64[0])) ; i++) {
+    r.u64[i] = a.u64[i] >> imm8;
+  }
+  return r;
+}
+#if defined(SIMDE_AVX2_NATIVE)
+#  define simde_mm256_srli_epi64(a, imm8) SIMDE__M256I_C(_mm256_srli_epi64(a.n, imm8))
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256i
+simde_mm256_xor_si256 (simde__m256i a, simde__m256i b) {
+#if defined(SIMDE_AVX2_NATIVE)
+  return SIMDE__M256I_C(_mm256_xor_si256(a.n, b.n));
+  /* I'm worried this would be slower since the compiler may not fuse
+     the loops… */
+/* #elif defined(SIMDE_SSE2_NATIVE) */
+/*   simde__m256i res; */
+/*   res.m128i[0] = _mm_xor_si128(a.m128i[0], b.m128i[0]); */
+/*   res.m128i[1] = _mm_xor_si128(a.m128i[1], b.m128i[1]); */
+/*   return res; */
+#else
+  simde__m256i r;
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.i64) / sizeof(r.i64[0])) ; i++) {
+    r.i64[i] = a.i64[i] ^ b.i64[i];
+  }
+  return r;
+#endif
+}
+
 SIMDE__END_DECLS
 
 #endif /* !defined(SIMDE__AVX2_H) */
