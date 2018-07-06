@@ -318,6 +318,8 @@ simde__m128i
 simde_mm_adds_epi16 (simde__m128i a, simde__m128i b) {
 #if defined(SIMDE_SSE2_NATIVE)
   return SIMDE__M128I_C(_mm_adds_epi16(a.n, b.n));
+#elif defined(SIMDE_SSE2_NEON)
+  return SIMDE__M128I_NEON_C(i16, vqaddq_s16(a.neon_i16, b.neon_i16));
 #else
   simde__m128i r;
   SIMDE__VECTORIZE
@@ -339,6 +341,8 @@ simde__m128i
 simde_mm_adds_epu8 (simde__m128i a, simde__m128i b) {
 #if defined(SIMDE_SSE2_NATIVE)
   return SIMDE__M128I_C(_mm_adds_epu8(a.n, b.n));
+#elif defined(SIMDE_SSE2_NEON)
+  return SIMDE__M128I_NEON_C(u8, vqaddq_u8(a.neon_u8, b.neon_u8));
 #else
   simde__m128i r;
   SIMDE__VECTORIZE
@@ -2197,6 +2201,9 @@ simde_mm_set_epi16 (int16_t e7, int16_t e6, int16_t e5, int16_t e4,
 		    int16_t e3, int16_t e2, int16_t e1, int16_t e0) {
 #if defined(SIMDE_SSE2_NATIVE)
   return SIMDE__M128I_C(_mm_set_epi16(e7, e6, e5, e4, e3, e2, e1, e0));
+#elif defined(SIMDE_SSE2_NEON)
+  SIMDE__ALIGN(16) int16_t data[8] = { e0, e1, e2, e3, e4, e5, e6, e7 };
+  return SIMDE__M128I_NEON_C(i16, vld1q_s16(data));
 #else
   return (simde__m128i) { .i16 = { e0, e1, e2, e3, e4, e5, e6, e7 } };
 #endif
@@ -2302,6 +2309,8 @@ simde__m128i
 simde_mm_set1_epi8 (int8_t a) {
 #if defined(SIMDE_SSE2_NATIVE)
   return SIMDE__M128I_C(_mm_set1_epi8(a));
+#elif defined(SIMDE_SSE2_NEON)
+  return SIMDE__M128I_NEON_C(i8, vdupq_n_s8(a));
 #else
   return (simde__m128i) { .i8 = { a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a } };
 #endif
@@ -2312,6 +2321,8 @@ simde__m128i
 simde_mm_set1_epi16 (int16_t a) {
 #if defined(SIMDE_SSE2_NATIVE)
   return SIMDE__M128I_C(_mm_set1_epi16(a));
+#elif defined(SIMDE_SSE2_NEON)
+  return SIMDE__M128I_NEON_C(i16, vdupq_n_s16(a));
 #else
   return (simde__m128i) { .i16 = { a, a, a, a, a, a, a, a } };
 #endif
@@ -2813,6 +2824,9 @@ simde_mm_slli_epi16 (simde__m128i a, const int imm8) {
 }
 #if defined(SIMDE_SSE2_NATIVE)
 #  define simde_mm_slli_epi16(a, imm8) SIMDE__M128I_C(_mm_slli_epi16(a.n, imm8));
+#elif defined(SIMDE_SSE2_NEON)
+#  define simde_mm_slli_epi16(a, imm8) \
+  SIMDE__M128I_NEON_C(i16, ((imm8) <= 0) ? ((a).neon_i16) : (((imm8) > 31) ? (vdupq_n_s16(0)) : (vshlq_n_s16((a).neon_i16, (imm8)))))
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -2861,6 +2875,9 @@ simde_mm_srli_epi16 (simde__m128i a, const int imm8) {
 }
 #if defined(SIMDE_SSE2_NATIVE)
 #  define simde_mm_srli_epi16(a, imm8) SIMDE__M128I_C(_mm_srli_epi16(a.n, imm8));
+#elif defined(SIMDE_SSE2_NEON)
+#  define simde_mm_srli_epi16(a, imm8) \
+  SIMDE__M128I_NEON_C(u16, ((imm8) <= 0) ? ((a).neon_u16) : (((imm8) > 31) ? (vdupq_n_u16(0)) : (vshrq_n_u16((a).neon_u16, (imm8)))))
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -3212,6 +3229,8 @@ simde__m128i
 simde_mm_subs_epu8 (simde__m128i a, simde__m128i b) {
 #if defined(SIMDE_SSE2_NATIVE)
   return SIMDE__M128I_C(_mm_subs_epu8(a.n, b.n));
+#elif defined(SIMDE_SSE2_NEON)
+  return SIMDE__M128I_NEON_C(u8, vqsubq_u8(a.neon_u8, b.neon_u8));
 #else
   simde__m128i r;
   SIMDE__VECTORIZE
@@ -3234,6 +3253,8 @@ simde__m128i
 simde_mm_subs_epu16 (simde__m128i a, simde__m128i b) {
 #if defined(SIMDE_SSE2_NATIVE)
   return SIMDE__M128I_C(_mm_subs_epu16(a.n, b.n));
+#elif defined(SIMDE_SSE2_NEON)
+  return SIMDE__M128I_NEON_C(u16, vqsubq_u16(a.neon_u16, b.neon_u16));
 #else
   simde__m128i r;
   SIMDE__VECTORIZE
