@@ -110,8 +110,12 @@ list(APPEND TEST_SOURCES
 
 set_compiler_specific_flags(
   VARIABLE extra_cflags
-  INTEL -wd3179
-  GCCISH -march=native)
+  INTEL -wd3179)
+
+check_c_compiler_flag("-march=native" CFLAG__march_native)
+if(CFLAG__march_native)
+  set(extra_cflags "${extra_cflags} -march=native")
+endif()
 
 check_c_compiler_flag("-fopenmp-simd" CFLAG__fopenmp_simd)
 check_c_compiler_flag("-qopenmp-simd" CFLAG__qopenmp_simd)
@@ -120,6 +124,15 @@ if(CFLAG__fopenmp_simd)
 elseif(CFLAG__qopenmp_simd)
   set(extra_cflags "${extra_cflags} -qopenmp-simd -DSIMDE_ENABLE_OPENMP")
 endif()
+
+check_c_compiler_flag("-mfpu=neon" CFLAG__mfpu_neon)
+if(CFLAG__mfpu_neon)
+  set(extra_cflags "${extra_cflags} -mfpu=neon")
+endif()
+
+message(STATUS "extra_cflags=${extra_cflags}")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${extra_cflags}")
+message(STATUS "CMAKE_C_FLAGS=${CMAKE_C_FLAGS}")
 
 add_executable(run-tests ${TEST_SOURCES})
 target_link_libraries(run-tests munit)
