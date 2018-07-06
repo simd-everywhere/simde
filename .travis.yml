@@ -247,9 +247,9 @@ script:
 - cmake .. -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" ${SIMDE_CMAKE_ARGS}
 - make VERBOSE=1
 - if [ "${C_COMPILER}" = "arm-linux-gnueabihf-gcc" ]; then
-    qemu-arm -L /usr/arm-linxu-gnueabihf ./run-tests;
+    qemu-arm ./run-tests;
   elif [ "${C_COMPILER}" = "aarch64-linux-gnu-gcc" ]; then
-    qemu-aarch64 -L /usr/aarch64-linxu-gnu ./run-tests;
+    qemu-aarch64 ./run-tests;
   else
     ./run-tests;
   fi
