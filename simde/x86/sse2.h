@@ -297,6 +297,8 @@ simde__m128i
 simde_mm_adds_epi8 (simde__m128i a, simde__m128i b) {
 #if defined(SIMDE_SSE2_NATIVE)
   return SIMDE__M128I_C(_mm_adds_epi8(a.n, b.n));
+#elif defined(SIMDE_SSE2_NEON)
+  return SIMDE__M128I_NEON_C(i8, vqaddq_s8(a.neon_i8, b.neon_i8));
 #else
   simde__m128i r;
   SIMDE__VECTORIZE
@@ -358,6 +360,8 @@ simde__m128i
 simde_mm_adds_epu16 (simde__m128i a, simde__m128i b) {
 #if defined(SIMDE_SSE2_NATIVE)
   return SIMDE__M128I_C(_mm_adds_epu16(a.n, b.n));
+#elif defined(SIMDE_SSE2_NEON)
+  return SIMDE__M128I_NEON_C(u16, vqaddq_u16(a.neon_u16, b.neon_u16));
 #else
   simde__m128i r;
   SIMDE__VECTORIZE
@@ -1806,7 +1810,7 @@ simde__m128i
 simde_mm_min_epi16 (simde__m128i a, simde__m128i b) {
 #if defined(SIMDE_SSE2_NATIVE)
   return SIMDE__M128I_C(_mm_min_epi16(a.n, b.n));
-#elif defined(SIMDE_SSE2_NATIVE)
+#elif defined(SIMDE_SSE2_NEON)
   return SIMDE__M128I_NEON_C(i16, vminq_s16(a.neon_i16, b.neon_i16));
 #else
   simde__m128i r;
@@ -1823,7 +1827,7 @@ simde__m128i
 simde_mm_min_epu8 (simde__m128i a, simde__m128i b) {
 #if defined(SIMDE_SSE2_NATIVE)
   return SIMDE__M128I_C(_mm_min_epu8(a.n, b.n));
-#elif defined(SIMDE_SSE2_NATIVE)
+#elif defined(SIMDE_SSE2_NEON)
   return SIMDE__M128I_NEON_C(u8, vminq_u8(a.neon_u8, b.neon_u8));
 #else
   simde__m128i r;
@@ -1868,7 +1872,7 @@ simde__m128i
 simde_mm_max_epi16 (simde__m128i a, simde__m128i b) {
 #if defined(SIMDE_SSE2_NATIVE)
   return SIMDE__M128I_C(_mm_max_epi16(a.n, b.n));
-#elif defined(SIMDE_SSE2_NATIVE)
+#elif defined(SIMDE_SSE2_NEON)
   return SIMDE__M128I_NEON_C(i16, vmaxq_s16(a.neon_i16, b.neon_i16));
 #else
   simde__m128i r;
@@ -1885,7 +1889,7 @@ simde__m128i
 simde_mm_max_epu8 (simde__m128i a, simde__m128i b) {
 #if defined(SIMDE_SSE2_NATIVE)
   return SIMDE__M128I_C(_mm_max_epu8(a.n, b.n));
-#elif defined(SIMDE_SSE2_NATIVE)
+#elif defined(SIMDE_SSE2_NEON)
   return SIMDE__M128I_NEON_C(u8, vmaxq_u8(a.neon_u8, b.neon_u8));
 #else
   simde__m128i r;
@@ -1930,7 +1934,7 @@ simde__m128i
 simde_mm_move_epi64 (simde__m128i a) {
 #if defined(SIMDE_SSE2_NATIVE)
   return SIMDE__M128I_C(_mm_move_epi64(a.n));
-#elif defined(SIMDE_SSE2_NATIVE)
+#elif defined(SIMDE_SSE2_NEON)
   return SIMDE__M128I_NEON_C(i64, vsetq_lane_s64(0, a.neon_i64, 1));
 #else
   simde__m128i r;
@@ -2137,7 +2141,7 @@ simde__m128i
 simde_mm_packus_epi16 (simde__m128i a, simde__m128i b) {
 #if defined(SIMDE_SSE2_NATIVE)
   return SIMDE__M128I_C(_mm_packus_epi16(a.n, b.n));
-#elif defined(SIMDE_SSE2_NATIVE)
+#elif defined(SIMDE_SSE2_NEON)
   return SIMDE__M128I_NEON_C(u8, vcombine_u8(vqmovun_s16(a.neon_i16), vqmovun_s16(b.neon_i16)));
 #else
   simde__m128i r;
