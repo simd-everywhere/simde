@@ -247,11 +247,12 @@ script:
 - cmake .. -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" ${SIMDE_CMAKE_ARGS}
 - make VERBOSE=1
 - if [ "${C_COMPILER}" = "arm-linux-gnueabihf-gcc" ]; then
-    qemu-arm -L /usr/arm-linxu-gnueabihf ./run-tests
+    qemu-arm -L /usr/arm-linxu-gnueabihf ./run-tests;
   elif [ "${C_COMPILER}" = "aarch64-linux-gnu-gcc" ]; then
-    qemu-aarch64 -L /usr/aarch64-linxu-gnu ./run-tests
+    qemu-aarch64 -L /usr/aarch64-linxu-gnu ./run-tests;
   else
-    ./run-tests
+    ./run-tests;
+  fi
 
 after_success:
 - if [ "${BUILD_TYPE}" = "Coverage" ]; then bash <(curl -s https://codecov.io/bash) -f '!*test-common.c'; fi
