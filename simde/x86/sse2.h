@@ -23,6 +23,8 @@
  *   2015-2017 John W. Ratcliff <jratcliffscarab@gmail.com>
  *   2015      Brandon Rowlett <browlett@nvidia.com>
  *   2015      Ken Fast <kfast@gdeb.com>
+ *   2017      Hasindu Gamaarachchi <hasindu@unsw.edu.au>
+ *   2018      Jeff Daily <jeff.daily@amd.com>
  */
 
 #if !defined(SIMDE__SSE2_H)
