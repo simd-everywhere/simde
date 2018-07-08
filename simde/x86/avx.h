@@ -751,9 +751,23 @@ simde_mm256_broadcast_ss (simde_float32 const * a) {
 }
 
 SIMDE__FUNCTION_ATTRIBUTES
+simde__m256d
+simde_mm256_cvtepi32_pd (simde__m128i a) {
+#if defined(SIMDE_AVX_NATIVE)
+  return SIMDE__M256D_C(_mm256_cvtepi32_pd(a.n));
+#else
+  simde__m256d r;
+  for (size_t i = 0 ; i < (sizeof(r.f64) / sizeof(r.f64[0])) ; i++) {
+    r.f64[i] = (simde_float64) a.i32[i];
+  }
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
 simde__m256i
 simde_mm256_loadu_si256 (simde__m256i const * a) {
-#if defined(SIMDE_AVX2_NATIVE)
+#if defined(SIMDE_AVX_NATIVE)
   return SIMDE__M256I_C(_mm256_loadu_si256(&(a->n)));
 #else
   simde__m256i res;
