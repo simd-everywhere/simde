@@ -26,6 +26,9 @@
 #if !defined(DISABLE_X86)
 #  include "x86/x86-internal.h"
 #endif
+#if !defined(DISABLE_ARM)
+#  include "arm/arm-internal.h"
+#endif
 #include "simd-js/simd-js.h"
 
 #include <fenv.h>
@@ -68,6 +71,7 @@ int main(int argc, char* argv[MUNIT_ARRAY_PARAM(argc + 1)]) {
     simde_avx2_test_suite,
     simde_avx2_emul_test_suite,
 #endif
+
     { 0, },
   };
 
@@ -79,15 +83,30 @@ int main(int argc, char* argv[MUNIT_ARRAY_PARAM(argc + 1)]) {
     { 0, },
   };
 
+  MunitSuite arm_test_suites[] = {
+#if !defined(DISABLE_ARM)
+    simde_neon_vdup_n_test_suite,
+    simde_neon_vdup_n_emul_test_suite,
+#endif
+    { 0, },
+  };
+
   MunitSuite test_suites[] = {
     { (char*) "/x86",
       NULL,
       x86_test_suites,
       1,
       MUNIT_SUITE_OPTION_NONE },
+
     { (char*) "/simd-js",
       NULL,
       simd_js_test_suites,
+      1,
+      MUNIT_SUITE_OPTION_NONE },
+
+    { (char*) "/arm",
+      NULL,
+      arm_test_suites,
       1,
       MUNIT_SUITE_OPTION_NONE },
     { 0, },

@@ -88,6 +88,9 @@ list(APPEND TEST_SOURCES
   simd-js/int32x4-compare.c
   simd-js/float32x4.c)
 
+list(APPEND TEST_SOURCES
+  arm/neon/vdup_n.c)
+
 foreach(src ${TEST_SOURCES})
   get_filename_component(bn "${src}" NAME_WE)
   if (NOT "${bn}" MATCHES "compare")
