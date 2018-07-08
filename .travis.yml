@@ -219,6 +219,11 @@ matrix:
     #       - cmake
     #       - cmake-data
 
+  allow_failures:
+  # This works with GCC 7.3.1 on qemu 2.11.1, but not on Travis.  Not
+  # sure if the issue is with GCC or QEMU (or something else).
+  - env: C_COMPILER=aarch64-linux-gnu-gcc
+
 before_install:
 ###
 ## If we use the matrix to set CC/CXX Travis overwrites the values,
