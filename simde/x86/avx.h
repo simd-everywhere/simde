@@ -757,8 +757,24 @@ simde_mm256_cvtepi32_pd (simde__m128i a) {
   return SIMDE__M256D_C(_mm256_cvtepi32_pd(a.n));
 #else
   simde__m256d r;
+  SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.f64) / sizeof(r.f64[0])) ; i++) {
     r.f64[i] = (simde_float64) a.i32[i];
+  }
+  return r;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256
+simde_mm256_cvtepi32_ps (simde__m256i a) {
+#if defined(SIMDE_AVX_NATIVE)
+  return SIMDE__M256_C(_mm256_cvtepi32_ps(a.n));
+#else
+  simde__m256 r;
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
+    r.f32[i] = (simde_float32) a.i32[i];
   }
   return r;
 #endif
