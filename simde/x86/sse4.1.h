@@ -140,6 +140,9 @@ simde__m128i
 simde_mm_blendv_epi8 (simde__m128i a, simde__m128i b, simde__m128i mask) {
 #if defined(SIMDE_SSE4_1_NATIVE)
   return SIMDE__M128I_C(_mm_blendv_epi8(a.n, b.n, mask.n));
+#elif defined(SIMDE_SSE4_1_NEON)
+  simde__m128i mask_ = simde_mm_cmplt_epi8(mask, simde_mm_set1_epi8(0));
+  return SIMDE__M128I_NEON_C(i8, vbslq_s8(mask_.neon_u8, b.neon_i8, a.neon_i8));
 #else
   simde__m128i r;
   SIMDE__VECTORIZE
