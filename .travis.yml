@@ -9,17 +9,28 @@ matrix:
     ###
     ## Linux builds using various versions of GCC.
     ###
-    - env: C_COMPILER=gcc-7
+    - env: C_COMPILER=gcc-8
       addons:
         apt:
           sources:
           - ubuntu-toolchain-r-test
           - george-edison55-precise-backports
           packages:
-          - gcc-7
-          - g++-7
+          - gcc-8
+          - g++-8
           - cmake
           - cmake-data
+    # - env: C_COMPILER=gcc-7
+    #   addons:
+    #     apt:
+    #       sources:
+    #       - ubuntu-toolchain-r-test
+    #       - george-edison55-precise-backports
+    #       packages:
+    #       - gcc-7
+    #       - g++-7
+    #       - cmake
+    #       - cmake-data
     # - env: C_COMPILER=gcc-6
     #   addons:
     #     apt:
@@ -31,17 +42,17 @@ matrix:
     #       - g++-6
     #       - cmake
     #       - cmake-data
-    - env: C_COMPILER=gcc-5 BUILD_TYPE=Release
-      addons:
-        apt:
-          sources:
-          - ubuntu-toolchain-r-test
-          - george-edison55-precise-backports
-          packages:
-          - gcc-5
-          - g++-5
-          - cmake
-          - cmake-data
+    # - env: C_COMPILER=gcc-5 BUILD_TYPE=Release
+    #   addons:
+    #     apt:
+    #       sources:
+    #       - ubuntu-toolchain-r-test
+    #       - george-edison55-precise-backports
+    #       packages:
+    #       - gcc-5
+    #       - g++-5
+    #       - cmake
+    #       - cmake-data
     # - env: C_COMPILER=gcc-4.9
     #   addons:
     #     apt:
@@ -53,13 +64,13 @@ matrix:
     #       - g++-4.9
     #       - cmake
     #       - cmake-data
-    - addons:
-        apt:
-          sources:
-          - george-edison55-precise-backports
-          packages:
-          - cmake
-          - cmake-data
+    # - addons:
+    #     apt:
+    #       sources:
+    #       - george-edison55-precise-backports
+    #       packages:
+    #       - cmake
+    #       - cmake-data
     # - env: C_COMPILER=gcc-4.7
     #   addons:
     #     apt:
@@ -105,6 +116,7 @@ matrix:
           - g++-4.4
           - cmake
           - cmake-data
+
     - env: C_COMPILER=aarch64-linux-gnu-gcc
       addons:
         apt:
@@ -133,28 +145,39 @@ matrix:
     ###
     ## clang on Linux
     ###
-    - env: C_COMPILER=clang-3.9
+    - env: C_COMPILER=clang
       addons:
         apt:
           sources:
-          - llvm-toolchain-precise-3.9
+          - llvm-toolchain-trusty
           - ubuntu-toolchain-r-test
           - george-edison55-precise-backports
           packages:
-          - clang-3.9
+          - clang
           - cmake
           - cmake-data
-    - env: C_COMPILER=clang-3.8
-      addons:
-        apt:
-          sources:
-          - llvm-toolchain-precise-3.8
-          - ubuntu-toolchain-r-test
-          - george-edison55-precise-backports
-          packages:
-          - clang-3.8
-          - cmake
-          - cmake-data
+    # - env: C_COMPILER=clang-3.9
+    #   addons:
+    #     apt:
+    #       sources:
+    #       - llvm-toolchain-precise-3.9
+    #       - ubuntu-toolchain-r-test
+    #       - george-edison55-precise-backports
+    #       packages:
+    #       - clang-3.9
+    #       - cmake
+    #       - cmake-data
+    # - env: C_COMPILER=clang-3.8
+    #   addons:
+    #     apt:
+    #       sources:
+    #       - llvm-toolchain-precise-3.8
+    #       - ubuntu-toolchain-r-test
+    #       - george-edison55-precise-backports
+    #       packages:
+    #       - clang-3.8
+    #       - cmake
+    #       - cmake-data
     # - env: C_COMPILER=clang-3.7
     #   addons:
     #     apt:
@@ -166,28 +189,28 @@ matrix:
     #       - clang-3.7
     #       - cmake
     #       - cmake-data
-    - env: C_COMPILER=clang-3.6
-      addons:
-        apt:
-          sources:
-          - llvm-toolchain-precise-3.6
-          - ubuntu-toolchain-r-test
-          - george-edison55-precise-backports
-          packages:
-          - clang-3.6
-          - cmake
-          - cmake-data
-    # - env: C_COMPILER=clang-3.5
+    # - env: C_COMPILER=clang-3.6
     #   addons:
     #     apt:
     #       sources:
-    #       - llvm-toolchain-precise-3.5
+    #       - llvm-toolchain-precise-3.6
     #       - ubuntu-toolchain-r-test
     #       - george-edison55-precise-backports
     #       packages:
-    #       - clang-3.5
+    #       - clang-3.6
     #       - cmake
     #       - cmake-data
+    - env: C_COMPILER=clang-3.5
+      addons:
+        apt:
+          sources:
+          - llvm-toolchain-precise-3.5
+          - ubuntu-toolchain-r-test
+          - george-edison55-precise-backports
+          packages:
+          - clang-3.5
+          - cmake
+          - cmake-data
 
     ###
     ## PGI
@@ -204,7 +227,7 @@ matrix:
     ###
     ## OS X
     ###
-    # - os: osx
+    - os: osx
 
     ###
     ## Emscripten — requires CMake 3.4.3.  If anyone is aware of a PPA
