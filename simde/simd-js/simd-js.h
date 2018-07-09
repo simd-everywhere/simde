@@ -94,9 +94,9 @@ typedef SIMDE__ALIGN(16) union {
 /* int64x2 */
 typedef SIMDE__ALIGN(16) union {
 #if defined(SIMDE__ENABLE_GCC_VEC_EXT)
-  int32_t       v __attribute__((__vector_size__(16), __may_alias__));
+  int64_t       v __attribute__((__vector_size__(16), __may_alias__));
 #else
-  int32_t       v[2];
+  int64_t       v[2];
 #endif
 
 #if defined(SIMDE_EM_NATIVE)
@@ -111,9 +111,9 @@ typedef SIMDE__ALIGN(16) union {
 /* uint64x2 */
 typedef SIMDE__ALIGN(16) union {
 #if defined(SIMDE__ENABLE_GCC_VEC_EXT)
-  uint32_t      v __attribute__((__vector_size__(16), __may_alias__));
+  uint64_t      v __attribute__((__vector_size__(16), __may_alias__));
 #else
-  uint32_t      v[2];
+  uint64_t      v[2];
 #endif
 
 #if defined(SIMDE_EM_NATIVE)
