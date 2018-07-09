@@ -33,7 +33,7 @@
 
 #if defined(__GNUC__)
 #  define SIMDE__ALIGN(alignment) __attribute__((aligned(alignment)))
-#elif defined(_MSC_VER)
+#elif defined(_MSC_VER) && (!defined(_M_IX86) || defined(_M_AMD64))
 #  define SIMDE__ALIGN(alignment) __declspec(align(alignment))
 #else
 #  define SIMDE__ALIGN(alignment)
