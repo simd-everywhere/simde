@@ -173,12 +173,12 @@ typedef SIMDE__ALIGN(16) union {
 } simde__m256i;
 
 #if defined(SIMDE_AVX_NATIVE)
-HEDLEY_STATIC_ASSERT(sizeof(__m256i) == sizeof(simde__m256i), "__m256i size doesn't match simde__m256i size");
-HEDLEY_STATIC_ASSERT(sizeof(__m256d) == sizeof(simde__m256d), "__m256d size doesn't match simde__m256d size");
-HEDLEY_STATIC_ASSERT( sizeof(__m256) ==  sizeof(simde__m256), "__m256 size doesn't match simde__m256 size");
-#define SIMDE__M256I_C(expr) ((simde__m256i) { .n = expr })
-#define SIMDE__M256D_C(expr) ((simde__m256d) { .n = expr })
-#define SIMDE__M256_C(expr)  ( (simde__m256) { .n = expr })
+  HEDLEY_STATIC_ASSERT(sizeof(__m256i) == sizeof(simde__m256i), "__m256i size doesn't match simde__m256i size");
+  HEDLEY_STATIC_ASSERT(sizeof(__m256d) == sizeof(simde__m256d), "__m256d size doesn't match simde__m256d size");
+  HEDLEY_STATIC_ASSERT( sizeof(__m256) ==  sizeof(simde__m256), "__m256 size doesn't match simde__m256 size");
+  SIMDE__FUNCTION_ATTRIBUTES simde__m256i SIMDE__M256I_C(__m256i v) { simde__m256i r; r.n = v; return r; }
+  SIMDE__FUNCTION_ATTRIBUTES simde__m256d SIMDE__M256D_C(__m256d v) { simde__m256d r; r.n = v; return r; }
+  SIMDE__FUNCTION_ATTRIBUTES simde__m256 SIMDE__M256_C(__m256 v) { simde__m256 r; r.n = v; return r; }
 #endif
 HEDLEY_STATIC_ASSERT(32 == sizeof(simde__m256i), "simde__m256i size incorrect");
 HEDLEY_STATIC_ASSERT(32 == sizeof(simde__m256d), "simde__m256d size incorrect");

@@ -88,10 +88,10 @@ typedef union {
 } simde__m64;
 
 #if defined(SIMDE_MMX_NATIVE)
-HEDLEY_STATIC_ASSERT(sizeof(__m64) == sizeof(simde__m64), "__m64 size doesn't match simde__m64 size");
-#define SIMDE__M64_C(expr) ((simde__m64) { .n = expr })
+  HEDLEY_STATIC_ASSERT(sizeof(__m64) == sizeof(simde__m64), "__m64 size doesn't match simde__m64 size");
+  SIMDE__FUNCTION_ATTRIBUTES simde__m64 SIMDE__M64_C(__m64 v) { simde__m64 r; r.n = v; return r; }
 #elif defined(SIMDE_MMX_NEON)
-#define SIMDE__M64_NEON_C(T, expr) (simde__m64) { .neon_##T = (expr) }
+  #define SIMDE__M64_NEON_C(T, expr) (simde__m64) { .neon_##T = (expr) }
 #endif
 HEDLEY_STATIC_ASSERT(8 == sizeof(simde__m64), "__m64 size incorrect");
 

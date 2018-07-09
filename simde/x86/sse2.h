@@ -171,13 +171,13 @@ typedef SIMDE__ALIGN(16) union {
 } simde__m128d;
 
 #if defined(SIMDE_SSE2_NATIVE)
-HEDLEY_STATIC_ASSERT(sizeof(__m128i) == sizeof(simde__m128i), "__m128i size doesn't match simde__m128i size");
-HEDLEY_STATIC_ASSERT(sizeof(__m128d) == sizeof(simde__m128d), "__m128d size doesn't match simde__m128d size");
-#define SIMDE__M128I_C(expr) ((simde__m128i) { .n = expr })
-#define SIMDE__M128D_C(expr) ((simde__m128d) { .n = expr })
+  HEDLEY_STATIC_ASSERT(sizeof(__m128i) == sizeof(simde__m128i), "__m128i size doesn't match simde__m128i size");
+  HEDLEY_STATIC_ASSERT(sizeof(__m128d) == sizeof(simde__m128d), "__m128d size doesn't match simde__m128d size");
+  SIMDE__FUNCTION_ATTRIBUTES simde__m128i SIMDE__M128I_C(__m128i v) { simde__m128i r; r.n = v; return r; }
+  SIMDE__FUNCTION_ATTRIBUTES simde__m128d SIMDE__M128D_C(__m128d v) { simde__m128d r; r.n = v; return r; }
 #elif defined(SIMDE_SSE_NEON)
-#define SIMDE__M128I_NEON_C(T, expr) (simde__m128i) { .neon_##T = expr }
-#define SIMDE__M128D_NEON_C(T, expr) (simde__m128d) { .neon_##T = expr }
+  #define SIMDE__M128I_NEON_C(T, expr) (simde__m128i) { .neon_##T = expr }
+  #define SIMDE__M128D_NEON_C(T, expr) (simde__m128d) { .neon_##T = expr }
 #endif
 HEDLEY_STATIC_ASSERT(16 == sizeof(simde__m128i), "simde__m128i size incorrect");
 HEDLEY_STATIC_ASSERT(16 == sizeof(simde__m128d), "simde__m128d size incorrect");
@@ -2582,7 +2582,7 @@ simde_mm_set1_epi64x (int64_t a) {
   simde__m128i r;
 
 #if defined(SIMDE_SSE2_NATIVE)
-  return SIMDE__M128I_C(_mm_set1_epi64x(a));
+  r.n = _mm_set1_epi64x(a);
 #else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i64) / sizeof(r.i64[0])) ; i++) {
