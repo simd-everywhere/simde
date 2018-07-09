@@ -1128,11 +1128,9 @@ HEDLEY_DIAGNOSTIC_POP
     )
 #  define HEDLEY_STATIC_ASSERT(expr, message) _Static_assert(expr, message)
 #elif \
-  (defined(__cplusplus) && (__cplusplus >= 201703L)) || \
+  (defined(__cplusplus) && (__cplusplus >= 201103L)) || \
   HEDLEY_MSVC_VERSION_CHECK(16,0,0)
 #  define HEDLEY_STATIC_ASSERT(expr, message) static_assert(expr, message)
-#elif defined(__cplusplus) && (__cplusplus >= 201103L)
-#  define HEDLEY_STATIC_ASSERT(expr, message) static_assert(expr)
 #else
 #  define HEDLEY_STATIC_ASSERT(expr, message)
 #endif

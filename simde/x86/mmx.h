@@ -1,4 +1,4 @@
-/* Copyright (c) 2017 Evan Nemerson <evan@nemerson.com>
+/* Copyright (c) 2017-2018 Evan Nemerson <evan@nemerson.com>
  *
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
@@ -235,7 +235,9 @@ simde_mm_and_si64 (simde__m64 a, simde__m64 b) {
 #if defined(SIMDE_MMX_NATIVE)
   return SIMDE__M64_C(_mm_and_si64(a.n, b.n));
 #else
-  return (simde__m64) { .i64 = { a.i64[0] & b.i64[0] } };
+  simde__m64 r;
+  r.i64[0] = a.i64[0] & b.i64[0];
+  return r;
 #endif
 }
 #define simde_m_pand(a, b) simde_mm_and_si64(a, b)
@@ -246,7 +248,9 @@ simde_mm_andnot_si64 (simde__m64 a, simde__m64 b) {
 #if defined(SIMDE_MMX_NATIVE)
   return SIMDE__M64_C(_mm_andnot_si64(a.n, b.n));
 #else
-  return (simde__m64) { .i64 = { ~(a.i64[0]) & b.i64[0] } };
+  simde__m64 r;
+  r.i64[0] = ~(a.i64[0]) & b.i64[0];
+  return r;
 #endif
 }
 #define simde_m_pandn(a, b) simde_mm_andnot_si64(a, b)
@@ -364,7 +368,10 @@ simde_mm_cvtsi32_si64 (int32_t a) {
 #if defined(SIMDE_MMX_NATIVE)
   return SIMDE__M64_C(_mm_cvtsi32_si64(a));
 #else
-  return (simde__m64) { .i32 = { a, 0 } };
+  simde__m64 r;
+  r.i32[0] = a;
+  r.i32[1] = 0;
+  return r;
 #endif
 }
 #define simde_m_from_int(a) simde_mm_cvtsi32_si64(a)
@@ -375,7 +382,9 @@ simde_mm_cvtsi64_m64 (int64_t a) {
 #if defined(SIMDE_MMX_NATIVE) && defined(SIMDE_ARCH_AMD64) && !defined(__PGI)
   return SIMDE__M64_C(_mm_cvtsi64_m64(a));
 #else
-  return (simde__m64) { .i64 = { a } };
+  simde__m64 r;
+  r.i64[0] = a;
+  return r;
 #endif
 }
 #define simde_m_from_int64(a) simde_mm_cvtsi64_m64(a)
@@ -454,7 +463,9 @@ simde_mm_or_si64 (simde__m64 a, simde__m64 b) {
 #if defined(SIMDE_MMX_NATIVE)
   return SIMDE__M64_C(_mm_or_si64(a.n, b.n));
 #else
-  return (simde__m64) { .i64 = { a.i64[0] | b.i64[0] } };
+  simde__m64 r;
+  r.i64[0] = a.i64[0] | b.i64[0];
+  return r;
 #endif
 }
 #define simde_m_por(a, b) simde_mm_or_si64(a, b)
@@ -570,7 +581,16 @@ simde_mm_set_pi8 (int8_t e7, int8_t e6, int8_t e5, int8_t e4, int8_t e3, int8_t 
 #if defined(SIMDE_MMX_NATIVE)
   return SIMDE__M64_C(_mm_set_pi8(e7, e6, e5, e4, e3, e2, e1, e0));
 #else
-  return (simde__m64) { .i8 = { e0, e1, e2, e3, e4, e5, e6, e7 } };
+  simde__m64 r;
+  r.i8[0] = e0;
+  r.i8[1] = e1;
+  r.i8[2] = e2;
+  r.i8[3] = e3;
+  r.i8[4] = e4;
+  r.i8[5] = e5;
+  r.i8[6] = e6;
+  r.i8[7] = e7;
+  return r;
 #endif
 }
 
@@ -581,7 +601,16 @@ simde_x_mm_set_pu8 (uint8_t e7, uint8_t e6, uint8_t e5, uint8_t e4, uint8_t e3, 
   return SIMDE__M64_C(_mm_set_pi8((int8_t) e7, (int8_t) e6, (int8_t) e5, (int8_t) e4,
 				  (int8_t) e3, (int8_t) e2, (int8_t) e1, (int8_t) e0));
 #else
-  return (simde__m64) { .u8 = { e0, e1, e2, e3, e4, e5, e6, e7 } };
+  simde__m64 r;
+  r.u8[0] = e0;
+  r.u8[1] = e1;
+  r.u8[2] = e2;
+  r.u8[3] = e3;
+  r.u8[4] = e4;
+  r.u8[5] = e5;
+  r.u8[6] = e6;
+  r.u8[7] = e7;
+  return r;
 #endif
 }
 
@@ -591,7 +620,12 @@ simde_mm_set_pi16 (int16_t e3, int16_t e2, int16_t e1, int16_t e0) {
 #if defined(SIMDE_MMX_NATIVE)
   return SIMDE__M64_C(_mm_set_pi16(e3, e2, e1, e0));
 #else
-  return (simde__m64) { .i16 = { e0, e1, e2, e3 } };
+  simde__m64 r;
+  r.i16[0] = e0;
+  r.i16[1] = e1;
+  r.i16[2] = e2;
+  r.i16[3] = e3;
+  return r;
 #endif
 }
 
@@ -601,7 +635,12 @@ simde_x_mm_set_pu16 (uint16_t e3, uint16_t e2, uint16_t e1, uint16_t e0) {
 #if defined(SIMDE_MMX_NATIVE)
   return SIMDE__M64_C(_mm_set_pi16((int16_t) e3, (int16_t) e2, (int16_t) e1, (int16_t) e0));
 #else
-  return (simde__m64) { .u16 = { e0, e1, e2, e3 } };
+  simde__m64 r;
+  r.u16[0] = e0;
+  r.u16[1] = e1;
+  r.u16[2] = e2;
+  r.u16[3] = e3;
+  return r;
 #endif
 }
 
@@ -611,7 +650,10 @@ simde_x_mm_set_pu32 (uint32_t e1, uint32_t e0) {
 #if defined(SIMDE_MMX_NATIVE)
   return SIMDE__M64_C(_mm_set_pi32((int32_t) e1, (int32_t) e0));
 #else
-  return (simde__m64) { .u32 = { e0, e1 } };
+  simde__m64 r;
+  r.u32[0] = e0;
+  r.u32[1] = e1;
+  return r;
 #endif
 }
 
@@ -621,7 +663,10 @@ simde_mm_set_pi32 (int32_t e1, int32_t e0) {
 #if defined(SIMDE_MMX_NATIVE)
   return SIMDE__M64_C(_mm_set_pi32(e1, e0));
 #else
-  return (simde__m64) { .i32 = { e0, e1 } };
+  simde__m64 r;
+  r.i32[0] = e0;
+  r.i32[1] = e1;
+  return r;
 #endif
 }
 
@@ -661,7 +706,7 @@ simde_mm_setr_pi8 (int8_t e7, int8_t e6, int8_t e5, int8_t e4, int8_t e3, int8_t
 #if defined(SIMDE_MMX_NATIVE)
   return SIMDE__M64_C(_mm_setr_pi8(e7, e6, e5, e4, e3, e2, e1, e0));
 #else
-  return (simde__m64) { .i8 = { e7, e6, e5, e4, e3, e2, e1, e0 } };
+  return simde_mm_set_pi8(e0, e1, e2, e3, e4, e5, e6, e7);
 #endif
 }
 
@@ -671,7 +716,7 @@ simde_mm_setr_pi16 (int16_t e3, int16_t e2, int16_t e1, int16_t e0) {
 #if defined(SIMDE_MMX_NATIVE)
   return SIMDE__M64_C(_mm_setr_pi16(e3, e2, e1, e0));
 #else
-  return (simde__m64) { .i16 = { e3, e2, e1, e0 } };
+  return simde_mm_set_pi16(e0, e1, e2, e3);
 #endif
 }
 
@@ -681,7 +726,7 @@ simde_mm_setr_pi32 (int32_t e1, int32_t e0) {
 #if defined(SIMDE_MMX_NATIVE)
   return SIMDE__M64_C(_mm_setr_pi32(e1, e0));
 #else
-  return (simde__m64) { .i32 = { e1, e0 } };
+  return simde_mm_set_pi32(e0, e1);
 #endif
 }
 
@@ -691,7 +736,7 @@ simde_mm_setzero_si64 (void) {
 #if defined(SIMDE_MMX_NATIVE)
   return SIMDE__M64_C(_mm_setzero_si64());
 #else
-  return (simde__m64) { .i32 = { 0, 0 } };
+  return simde_mm_set_pi32(0, 0);
 #endif
 }
 
@@ -781,7 +826,9 @@ simde_mm_slli_si64 (simde__m64 a, int count) {
 #if defined(SIMDE_MMX_NATIVE)
   return SIMDE__M64_C(_mm_slli_si64(a.n, count));
 #else
-  return (simde__m64) { .u64 = { a.u64[0] << count } };
+  simde__m64 r;
+  r.u64[0] = a.u64[0] << count;
+  return r;
 #endif
 }
 #define simde_m_psllqi(a, count) simde_mm_slli_si64(a, count)
@@ -892,7 +939,9 @@ simde_mm_srli_si64 (simde__m64 a, int count) {
 #if defined(SIMDE_MMX_NATIVE) && !defined(__PGI)
   return SIMDE__M64_C(_mm_srli_si64(a.n, count));
 #else
-  return (simde__m64) { .u64 = { a.u64[0] >> count } };
+  simde__m64 r;
+  r.u64[0] = a.u64[0] >> count;
+  return r;
 #endif
 }
 #define simde_m_psrlqi(a, count) simde_mm_srli_si64(a, count)
@@ -1155,11 +1204,16 @@ simde_mm_unpackhi_pi8 (simde__m64 a, simde__m64 b) {
 #if defined(SIMDE_MMX_NATIVE)
   return SIMDE__M64_C(_mm_unpackhi_pi8(a.n, b.n));
 #else
-  return (simde__m64) { .i8 = {
-      a.i8[4], b.i8[4], a.i8[5], b.i8[5],
-      a.i8[6], b.i8[6], a.i8[7], b.i8[7]
-    }
-  };
+  simde__m64 r;
+  r.i8[0] = a.i8[4];
+  r.i8[1] = b.i8[4];
+  r.i8[2] = a.i8[5];
+  r.i8[3] = b.i8[5];
+  r.i8[4] = a.i8[6];
+  r.i8[5] = b.i8[6];
+  r.i8[6] = a.i8[7];
+  r.i8[7] = b.i8[7];
+  return r;
 #endif
 }
 #define simde_m_punpckhbw(a, b) simde_mm_unpackhi_pi8(a, b)
@@ -1170,7 +1224,12 @@ simde_mm_unpackhi_pi16 (simde__m64 a, simde__m64 b) {
 #if defined(SIMDE_MMX_NATIVE)
   return SIMDE__M64_C(_mm_unpackhi_pi16(a.n, b.n));
 #else
-  return (simde__m64) { .i16 = { a.i16[2], b.i16[2], a.i16[3], b.i16[3] } };
+  simde__m64 r;
+  r.i16[0] = a.i16[2];
+  r.i16[1] = b.i16[2];
+  r.i16[2] = a.i16[3];
+  r.i16[3] = b.i16[3];
+  return r;
 #endif
 }
 #define simde_m_punpckhwd(a, b) simde_mm_unpackhi_pi16(a, b)
@@ -1181,7 +1240,10 @@ simde_mm_unpackhi_pi32 (simde__m64 a, simde__m64 b) {
 #if defined(SIMDE_MMX_NATIVE)
   return SIMDE__M64_C(_mm_unpackhi_pi32(a.n, b.n));
 #else
-  return (simde__m64) { .i32 = { a.i32[1], b.i32[1] } };
+  simde__m64 r;
+  r.i32[0] = a.i32[1];
+  r.i32[1] = b.i32[1];
+  return r;
 #endif
 }
 #define simde_m_punpckhdq(a, b) simde_mm_unpackhi_pi32(a, b)
@@ -1192,11 +1254,16 @@ simde_mm_unpacklo_pi8 (simde__m64 a, simde__m64 b) {
 #if defined(SIMDE_MMX_NATIVE)
   return SIMDE__M64_C(_mm_unpacklo_pi8(a.n, b.n));
 #else
-  return (simde__m64) { .i8 = {
-      a.i8[0], b.i8[0], a.i8[1], b.i8[1],
-      a.i8[2], b.i8[2], a.i8[3], b.i8[3]
-    }
-  };
+  simde__m64 r;
+  r.i8[0] = a.i8[0];
+  r.i8[1] = b.i8[0];
+  r.i8[2] = a.i8[1];
+  r.i8[3] = b.i8[1];
+  r.i8[4] = a.i8[2];
+  r.i8[5] = b.i8[2];
+  r.i8[6] = a.i8[3];
+  r.i8[7] = b.i8[3];
+  return r;
 #endif
 }
 #define simde_m_punpcklbw(a, b) simde_mm_unpacklo_pi8(a, b)
@@ -1207,7 +1274,12 @@ simde_mm_unpacklo_pi16 (simde__m64 a, simde__m64 b) {
 #if defined(SIMDE_MMX_NATIVE)
   return SIMDE__M64_C(_mm_unpacklo_pi16(a.n, b.n));
 #else
-  return (simde__m64) { .i16 = { a.i16[0], b.i16[0], a.i16[1], b.i16[1] } };
+  simde__m64 r;
+  r.i16[0] = a.i16[0];
+  r.i16[1] = b.i16[0];
+  r.i16[2] = a.i16[1];
+  r.i16[3] = b.i16[1];
+  return r;
 #endif
 }
 #define simde_m_punpcklwd(a, b) simde_mm_unpacklo_pi16(a, b)
@@ -1218,7 +1290,10 @@ simde_mm_unpacklo_pi32 (simde__m64 a, simde__m64 b) {
 #if defined(SIMDE_MMX_NATIVE)
   return SIMDE__M64_C(_mm_unpacklo_pi32(a.n, b.n));
 #else
-  return (simde__m64) { .i32 = { a.i32[0], b.i32[0] } };
+  simde__m64 r;
+  r.i32[0] = a.i32[0];
+  r.i32[1] = b.i32[0];
+  return r;
 #endif
 }
 #define simde_m_punpckldq(a, b) simde_mm_unpacklo_pi32(a, b)
@@ -1229,7 +1304,9 @@ simde_mm_xor_si64 (simde__m64 a, simde__m64 b) {
 #if defined(SIMDE_MMX_NATIVE)
   return SIMDE__M64_C(_mm_xor_si64(a.n, b.n));
 #else
-  return (simde__m64) { .i64 = { a.i64[0] ^ b.i64[0] } };
+  simde__m64 r;
+  r.i64[0] = a.i64[0] ^ b.i64[0];
+  return r;
 #endif
 }
 #define simde_m_pxor(a, b) simde_mm_xor_si64(a, b)

@@ -62,133 +62,139 @@ SIMDE__BEGIN_DECLS
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256i
 simde_mm256_add_epi8 (simde__m256i a, simde__m256i b) {
-#if defined(SIMDE_AVX2_NATIVE)
-  return SIMDE__M256I_C(_mm256_add_epi8(a.n, b.n));
-#elif defined(SIMDE_SSE2_NATIVE)
-  simde__m256i res;
-  res.m128i[0] = _mm_add_epi8(a.m128i[0], b.m128i[0]);
-  res.m128i[1] = _mm_add_epi8(a.m128i[1], b.m128i[1]);
-  return res;
-#else
   simde__m256i r;
+
+#if defined(SIMDE_AVX2_NATIVE)
+  r.n = _mm256_add_epi8(a.n, b.n);
+#elif defined(SIMDE_SSE2_NATIVE)
+  r.m128i[0] = _mm_add_epi8(a.m128i[0], b.m128i[0]);
+  r.m128i[1] = _mm_add_epi8(a.m128i[1], b.m128i[1]);
+#else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i8) / sizeof(r.i8[0])) ; i++) {
     r.i8[i] = a.i8[i] + b.i8[i];
   }
-  return r;
 #endif
+
+  return r;
 }
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256i
 simde_mm256_add_epi16 (simde__m256i a, simde__m256i b) {
-#if defined(SIMDE_AVX2_NATIVE)
-  return SIMDE__M256I_C(_mm256_add_epi16(a.n, b.n));
-#elif defined(SIMDE_SSE2_NATIVE)
-  simde__m256i res;
-  res.m128i[0] = _mm_add_epi16(a.m128i[0], b.m128i[0]);
-  res.m128i[1] = _mm_add_epi16(a.m128i[1], b.m128i[1]);
-  return res;
-#else
   simde__m256i r;
+
+#if defined(SIMDE_AVX2_NATIVE)
+  r.n = _mm256_add_epi16(a.n, b.n);
+#elif defined(SIMDE_SSE2_NATIVE)
+  r.m128i[0] = _mm_add_epi16(a.m128i[0], b.m128i[0]);
+  r.m128i[1] = _mm_add_epi16(a.m128i[1], b.m128i[1]);
+#else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i16) / sizeof(r.i16[0])) ; i++) {
     r.i16[i] = a.i16[i] + b.i16[i];
   }
-  return r;
 #endif
+
+  return r;
 }
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256i
 simde_mm256_add_epi32 (simde__m256i a, simde__m256i b) {
-#if defined(SIMDE_AVX2_NATIVE)
-  return SIMDE__M256I_C(_mm256_add_epi32(a.n, b.n));
-#elif defined(SIMDE_SSE2_NATIVE)
-  simde__m256i res;
-  res.m128i[0] = _mm_add_epi32(a.m128i[0], b.m128i[0]);
-  res.m128i[1] = _mm_add_epi32(a.m128i[1], b.m128i[1]);
-  return res;
-#else
   simde__m256i r;
+
+#if defined(SIMDE_AVX2_NATIVE)
+  r.n = _mm256_add_epi32(a.n, b.n);
+#elif defined(SIMDE_SSE2_NATIVE)
+  r.m128i[0] = _mm_add_epi32(a.m128i[0], b.m128i[0]);
+  r.m128i[1] = _mm_add_epi32(a.m128i[1], b.m128i[1]);
+#else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i32) / sizeof(r.i32[0])) ; i++) {
     r.i32[i] = a.i32[i] + b.i32[i];
   }
-  return r;
 #endif
+
+  return r;
 }
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256i
 simde_mm256_add_epi64 (simde__m256i a, simde__m256i b) {
-#if defined(SIMDE_AVX2_NATIVE)
-  return SIMDE__M256I_C(_mm256_add_epi64(a.n, b.n));
-#elif defined(SIMDE_SSE2_NATIVE)
-  simde__m256i res;
-  res.m128i[0] = _mm_add_epi64(a.m128i[0], b.m128i[0]);
-  res.m128i[1] = _mm_add_epi64(a.m128i[1], b.m128i[1]);
-  return res;
-#else
   simde__m256i r;
+
+#if defined(SIMDE_AVX2_NATIVE)
+  r.n = _mm256_add_epi64(a.n, b.n);
+#elif defined(SIMDE_SSE2_NATIVE)
+  r.m128i[0] = _mm_add_epi64(a.m128i[0], b.m128i[0]);
+  r.m128i[1] = _mm_add_epi64(a.m128i[1], b.m128i[1]);
+#else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i64) / sizeof(r.i64[0])) ; i++) {
     r.i64[i] = a.i64[i] + b.i64[i];
   }
-  return r;
 #endif
+
+  return r;
 }
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256i
 simde_mm256_and_si256 (simde__m256i a, simde__m256i b) {
-#if defined(SIMDE_AVX2_NATIVE)
-  return SIMDE__M256I_C(_mm256_and_si256(a.n, b.n));
-#elif defined(SIMDE_SSE2_NATIVE)
-  simde__m256i res;
-  res.m128i[0] = _mm_and_si128(a.m128i[0], b.m128i[0]);
-  res.m128i[1] = _mm_and_si128(a.m128i[1], b.m128i[1]);
-  return res;
-#else
   simde__m256i r;
+
+#if defined(SIMDE_AVX2_NATIVE)
+  r.n = _mm256_and_si256(a.n, b.n);
+#elif defined(SIMDE_SSE2_NATIVE)
+  r.m128i[0] = _mm_and_si128(a.m128i[0], b.m128i[0]);
+  r.m128i[1] = _mm_and_si128(a.m128i[1], b.m128i[1]);
+#else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i64) / sizeof(r.i64[0])) ; i++) {
     r.i64[i] = a.i64[i] & b.i64[i];
   }
-  return r;
 #endif
+
+  return r;
 }
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256i
 simde_mm256_broadcastsi128_si256 (simde__m128i a) {
+  simde__m256i r;
+
 #if defined(SIMDE_AVX2_NATIVE)
   return SIMDE__M256I_C(_mm256_broadcastsi128_si256(a.n));
 #elif defined(SIMDE_SSE2_NATIVE)
-  simde__m256i res;
-  res.m128i[0] = a.n;
-  res.m128i[1] = a.n;
-  return res;
+  r.m128i[0] = a.n;
+  r.m128i[1] = a.n;
 #else
-  return (simde__m256i) { .i64 = {  a.i64[0], a.i64[1],
-                                    a.i64[0], a.i64[1] } };
+  r.i64[0] = a.i64[0];
+  r.i64[1] = a.i64[1];
+  r.i64[2] = a.i64[0];
+  r.i64[3] = a.i64[1];
 #endif
+
+  return r;
 }
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256i
 simde_mm256_shuffle_epi8 (simde__m256i a, simde__m256i b) {
-#if defined(SIMDE_AVX2_NATIVE)
-  return SIMDE__M256I_C(_mm256_shuffle_epi8(a.n, b.n));
-#else
   simde__m256i r;
+
+#if defined(SIMDE_AVX2_NATIVE)
+  r.n = _mm256_shuffle_epi8(a.n, b.n);
+#else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < ((sizeof(r.u8) / sizeof(r.u8[0])) / 2) ; i++) {
     r.u8[  i   ] = (b.u8[  i   ] & 0x80) ? 0 : a.u8[(b.u8[  i   ] & 0x0f)     ];
     r.u8[i + 16] = (b.u8[i + 16] & 0x80) ? 0 : a.u8[(b.u8[i + 16] & 0x0f) + 16];
   }
-  return r;
 #endif
+
+  return r;
 }
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -208,23 +214,21 @@ simde_mm256_srli_epi64 (simde__m256i a, const int imm8) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256i
 simde_mm256_xor_si256 (simde__m256i a, simde__m256i b) {
-#if defined(SIMDE_AVX2_NATIVE)
-  return SIMDE__M256I_C(_mm256_xor_si256(a.n, b.n));
-  /* I'm worried this would be slower since the compiler may not fuse
-     the loops… */
-/* #elif defined(SIMDE_SSE2_NATIVE) */
-/*   simde__m256i res; */
-/*   res.m128i[0] = _mm_xor_si128(a.m128i[0], b.m128i[0]); */
-/*   res.m128i[1] = _mm_xor_si128(a.m128i[1], b.m128i[1]); */
-/*   return res; */
-#else
   simde__m256i r;
+
+#if defined(SIMDE_AVX2_NATIVE)
+  r.n = _mm256_xor_si256(a.n, b.n);
+#elif defined(SIMDE_SSE2_NATIVE)
+  r.m128i[0] = _mm_xor_si128(a.m128i[0], b.m128i[0]);
+  r.m128i[1] = _mm_xor_si128(a.m128i[1], b.m128i[1]);
+#else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i64) / sizeof(r.i64[0])) ; i++) {
     r.i64[i] = a.i64[i] ^ b.i64[i];
   }
-  return r;
 #endif
+
+  return r;
 }
 
 SIMDE__END_DECLS
