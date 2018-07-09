@@ -636,6 +636,8 @@ simde__m128i
 simde_mm_max_epi8 (simde__m128i a, simde__m128i b) {
 #if defined(SIMDE_SSE4_1_NATIVE) && !defined(__PGI)
   return SIMDE__M128I_C(_mm_max_epi8(a.n, b.n));
+#elif defined(SIMDE_SSE4_1_NEON)
+  return SIMDE__M128I_NEON_C(i8, vmaxq_s8(a.neon_i8, b.neon_i8));
 #else
   simde__m128i r;
   SIMDE__VECTORIZE
@@ -668,6 +670,8 @@ simde__m128i
 simde_mm_max_epu16 (simde__m128i a, simde__m128i b) {
 #if defined(SIMDE_SSE4_1_NATIVE)
   return SIMDE__M128I_C(_mm_max_epu16(a.n, b.n));
+#elif defined(SIMDE_SSE4_1_NEON)
+  return SIMDE__M128I_NEON_C(u16, vmaxq_u16(a.neon_u16, b.neon_u16));
 #else
   simde__m128i r;
   SIMDE__VECTORIZE
@@ -700,6 +704,8 @@ simde__m128i
 simde_mm_min_epi8 (simde__m128i a, simde__m128i b) {
 #if defined(SIMDE_SSE4_1_NATIVE) && !defined(__PGI)
   return SIMDE__M128I_C(_mm_min_epi8(a.n, b.n));
+#elif defined(SIMDE_SSE4_1_NEON)
+  return SIMDE__M128I_NEON_C(i8, vminq_s8(a.neon_i8, b.neon_i8));
 #else
   simde__m128i r;
   SIMDE__VECTORIZE
@@ -732,6 +738,8 @@ simde__m128i
 simde_mm_min_epu16 (simde__m128i a, simde__m128i b) {
 #if defined(SIMDE_SSE4_1_NATIVE)
   return SIMDE__M128I_C(_mm_min_epu16(a.n, b.n));
+#elif defined(SIMDE_SSE4_1_NEON)
+  return SIMDE__M128I_NEON_C(u16, vminq_u16(a.neon_u16, b.neon_u16));
 #else
   simde__m128i r;
   SIMDE__VECTORIZE
