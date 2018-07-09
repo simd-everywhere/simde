@@ -31,7 +31,7 @@
 #if defined(SIMDE_NEON64_NATIVE)
 #  if defined(HEDLEY_GCC_VERSION) && !HEDLEY_GCC_VERSION_CHECK(4,9,0)
 #  else
-#    define SIMDE_NEON_HAVE_FLOAT64X1
+#    define SIMDE_NEON_HAVE_FLOAT64X2
 #  endif
 #endif
 
@@ -42,7 +42,7 @@ typedef union {
   simde_float64   f64[2];
 #endif
 
-#if defined(SIMDE_NEON_HAVE_FLOAT64X1)
+#if defined(SIMDE_NEON_HAVE_FLOAT64X2)
   float64x2_t     n;
 #endif
 
@@ -50,20 +50,35 @@ typedef union {
   __m64           mmx[2];
 #endif
 #if defined(SIMDE_NEON_SSE2)
-  __m128d         sse;
+  __m128i         sse;
 #endif
 } simde_float64x2_t;
 
-#if defined(SIMDE_NEON_HAVE_FLOAT64X1)
+#if defined(SIMDE_NEON_HAVE_FLOAT64X2)
 HEDLEY_STATIC_ASSERT(sizeof(float64x2_t) == sizeof(simde_float64x2_t), "float64x2_t size doesn't match simde_float64x2_t size");
 #endif
 HEDLEY_STATIC_ASSERT(16 == sizeof(simde_float64x2_t), "simde_float64x2_t size incorrect");
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde_float64x2_t
+simde_vaddq_f64(simde_float64x2_t a, simde_float64x2_t b) {
+  simde_float64x2_t r;
+#if defined(SIMDE_NEON_HAVE_FLOAT64X2)
+  r.n = vaddq_f64(a.n, b.n);
+#else
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.f64) / sizeof(r.f64[0])) ; i++) {
+    r.f64[i] = a.f64[i] + b.f64[i];
+  }
+#endif
+  return r;
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde_float64x2_t
 simde_vld1q_f64 (simde_float64 const ptr[2]) {
   simde_float64x2_t r;
-#if defined(SIMDE_NEON_HAVE_FLOAT64X1)
+#if defined(SIMDE_NEON_HAVE_FLOAT64X2)
   r.n = vld1q_f64(ptr);
 #else
   SIMDE__VECTORIZE
@@ -85,7 +100,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 simde_float64x2_t
 simde_vdupq_n_f64 (simde_float64 value) {
   simde_float64x2_t r;
-#if defined(SIMDE_NEON_HAVE_FLOAT64X1)
+#if defined(SIMDE_NEON_HAVE_FLOAT64X2)
   r.n = vdupq_n_f64(value);
 #else
   SIMDE__VECTORIZE

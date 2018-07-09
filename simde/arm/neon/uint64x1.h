@@ -51,6 +51,21 @@ HEDLEY_STATIC_ASSERT(8 == sizeof(simde_uint64x1_t), "simde_uint64x1_t size incor
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde_uint64x1_t
+simde_vadd_u64(simde_uint64x1_t a, simde_uint64x1_t b) {
+  simde_uint64x1_t r;
+#if defined(SIMDE_NEON_NATIVE)
+  r.n = vadd_u64(a.n, b.n);
+#else
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.u64) / sizeof(r.u64[0])) ; i++) {
+    r.u64[i] = a.u64[i] + b.u64[i];
+  }
+#endif
+  return r;
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde_uint64x1_t
 simde_vld1_u64 (uint64_t const ptr[1]) {
   simde_uint64x1_t r;
 #if defined(SIMDE_NEON_NATIVE)

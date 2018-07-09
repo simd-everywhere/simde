@@ -89,6 +89,7 @@ list(APPEND TEST_SOURCES
   simd-js/float32x4.c)
 
 list(APPEND TEST_SOURCES
+  arm/neon/vadd.c
   arm/neon/vdup_n.c)
 
 foreach(src ${TEST_SOURCES})

@@ -172,15 +172,15 @@ simde_float32 random_f32_range(simde_float32 min, simde_float32 max);
 #endif
 
 #if defined(SIMDE_NO_NATIVE)
-#  define TEST_FUNC2(group, name) { (char*) "/" #name "/emul", test_simde_##group##_##name, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL }
+#  define TEST_FUNC2(group, sfx) { (char*) "/" #sfx "/emul", test_simde_##group##_##sfx, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL }
 #else
-#  define TEST_FUNC2(group, name) { (char*) "/" #name, test_simde_##group##_##name, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL }
+#  define TEST_FUNC2(group, sfx) { (char*) "/" #sfx, test_simde_##group##_##sfx, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL }
 #endif
 
 #if defined(SIMDE_NO_NATIVE)
-#  define TEST_FUNC3(func, name, variant) { (char*) "/" #name "/" #variant "/emul", test_simde_##func##_##variant, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL }
+#  define TEST_FUNC3(group, variant, sfx) { (char*) "/" #group "/" #sfx "/emul", test_simde_##group##_##sfx, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL }
 #else
-#  define TEST_FUNC3(func, name, variant) { (char*) "/" #name "/" #variant, test_simde_##func##_##variant, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL }
+#  define TEST_FUNC3(group, variant, sfx) { (char*) "/" #group "/" #sfx, test_simde_##group##_##sfx, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL }
 #endif
 
 #define TEST_FUNC_CMP(name) \

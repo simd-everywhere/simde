@@ -24,8 +24,6 @@
 #include <test/arm/arm-internal.h>
 #include <simde/arm/neon.h>
 
-#include <stdio.h>
-
 static MunitResult
 test_simde_vdup_n_s8(const MunitParameter params[], void* data) {
   (void) params;

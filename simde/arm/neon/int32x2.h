@@ -51,6 +51,23 @@ HEDLEY_STATIC_ASSERT(8 == sizeof(simde_int32x2_t), "simde_int32x2_t size incorre
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde_int32x2_t
+simde_vadd_s32(simde_int32x2_t a, simde_int32x2_t b) {
+  simde_int32x2_t r;
+#if defined(SIMDE_NEON_NATIVE)
+  r.n = vadd_s32(a.n, b.n);
+#elif defined(SIMDE_MMX_NATIVE)
+  r.mmx = _mm_add_pi32(a.mmx, b.mmx);
+#else
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.i32) / sizeof(r.i32[0])) ; i++) {
+    r.i32[i] = a.i32[i] + b.i32[i];
+  }
+#endif
+  return r;
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde_int32x2_t
 simde_vld1_s32 (int32_t const ptr[2]) {
   simde_int32x2_t r;
 #if defined(SIMDE_NEON_NATIVE)

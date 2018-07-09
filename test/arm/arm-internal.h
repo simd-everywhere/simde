@@ -2,6 +2,8 @@
 #define SIMDE__ARM_INTERNAL_H
 
 #include "../test.h"
+#include <simde/arm/neon.h>
+#include <math.h>
 
 #if !defined(SIMDE_NO_NATIVE)
 #  define NEON_TEST_SUITE(name) simde_neon_##name##_emul_test_suite
@@ -9,6 +11,8 @@
 #  define NEON_TEST_SUITE(name) simde_neon_##name##_test_suite
 #endif
 
+MunitSuite simde_neon_vadd_test_suite;
+MunitSuite simde_neon_vadd_emul_test_suite;
 MunitSuite simde_neon_vdup_n_test_suite;
 MunitSuite simde_neon_vdup_n_emul_test_suite;
 
@@ -61,5 +65,56 @@ MunitSuite simde_neon_vdup_n_emul_test_suite;
   simde_assert_typev(simde_float64, "f", (sizeof(a) / sizeof(simde_float64)), (simde_float64*) &(a), op, (simde_float64*) &(b))
 #define simde_neon_assert_float64x2_equal(a, b, precision) \
   simde_assert_f32v_equal(simde_float64, (sizeof(a) / sizeof(simde_float64)), (simde_float64*) &(a), (simde_float64*) &(b), precision)
+
+#define SIMDE_NEON_GEN_RAND_ARRAY_FUNC(L, N, V)	\
+  SIMDE__FUNCTION_ATTRIBUTES \
+  simde_float##L##x##N##_t \
+  simde_neon_random_float##L##x##N(void) { \
+    simde_float##L v[sizeof(simde_float##L##x##N##_t) / sizeof(simde_float##L)]; \
+    for (size_t i = 0 ; i < sizeof(v) / sizeof(v[0]) ; i++) { \
+      v[i] = (simde_float##L) (round(random_f64_range(-1000.0, 1000.0) * 100.0) / 100.0); \
+    } \
+    return simde_vld1##V##_f##L(v); \
+  }
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde_float32x2_t
+simde_neon_random_float32x2(void) {
+  simde_float32 v[sizeof(simde_float32x2_t) / sizeof(simde_float32)];
+  for (size_t i = 0 ; i < sizeof(v) / sizeof(v[0]) ; i++) {
+    v[i] = (simde_float64) (round(random_f64_range(-1000.0, 1000.0) * 100.0) / 100.0);
+  }
+  return simde_vld1_f32(v);
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde_float64x1_t
+simde_neon_random_float64x1(void) {
+  simde_float64 v[sizeof(simde_float64x1_t) / sizeof(simde_float64)];
+  for (size_t i = 0 ; i < sizeof(v) / sizeof(v[0]) ; i++) {
+    v[i] = (simde_float64) (round(random_f64_range(-1000.0, 1000.0) * 100.0) / 100.0);
+  }
+  return simde_vld1_f64(v);
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde_float32x4_t
+simde_neon_random_float32x4(void) {
+  simde_float32 v[sizeof(simde_float32x4_t) / sizeof(simde_float32)];
+  for (size_t i = 0 ; i < sizeof(v) / sizeof(v[0]) ; i++) {
+    v[i] = (simde_float64) (round(random_f64_range(-1000.0, 1000.0) * 100.0) / 100.0);
+  }
+  return simde_vld1q_f32(v);
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde_float64x2_t
+simde_neon_random_float64x2(void) {
+  simde_float64 v[sizeof(simde_float64x2_t) / sizeof(simde_float64)];
+  for (size_t i = 0 ; i < sizeof(v) / sizeof(v[0]) ; i++) {
+    v[i] = (simde_float64) (round(random_f64_range(-1000.0, 1000.0) * 100.0) / 100.0);
+  }
+  return simde_vld1q_f64(v);
+}
 
 #endif
