@@ -2198,16 +2198,28 @@ simde_mm_ucomineq_ss (simde__m128 a, simde__m128 b) {
 #endif
 }
 
+#if defined(SIMDE_SSE_NATIVE)
+#  if defined(__has_builtin)
+#    if __has_builtin(__builtin_ia32_undef128)
+#      define SIMDE__HAVE_UNDEFINED128
+#    endif
+#  elif !defined(__PGI) && !defined(SIMDE_BUG_GCC_REV_208793)
+#    define SIMDE__HAVE_UNDEFINED128
+#  endif
+#endif
+
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128
 simde_mm_undefined_ps (void) {
-#if defined(SIMDE_SSE_NATIVE) && \
-  !defined(SIMDE_BUG_GCC_REV_208793) && \
-  !defined(__PGI)
-  return SIMDE__M128_C(_mm_undefined_ps());
+  simde__m128 r;
+
+#if defined(SIMDE__HAVE_UNDEFINED128)
+  r.n = _mm_undefined_ps();
 #else
-  return simde_mm_setzero_ps();
+ r = simde_mm_setzero_ps();
 #endif
+
+ return r;
 }
 
 SIMDE__FUNCTION_ATTRIBUTES

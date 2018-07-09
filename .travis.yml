@@ -166,17 +166,17 @@ matrix:
     #       - clang-3.7
     #       - cmake
     #       - cmake-data
-    # - env: C_COMPILER=clang-3.6
-    #   addons:
-    #     apt:
-    #       sources:
-    #       - llvm-toolchain-precise-3.6
-    #       - ubuntu-toolchain-r-test
-    #       - george-edison55-precise-backports
-    #       packages:
-    #       - clang-3.6
-    #       - cmake
-    #       - cmake-data
+    - env: C_COMPILER=clang-3.6
+      addons:
+        apt:
+          sources:
+          - llvm-toolchain-precise-3.6
+          - ubuntu-toolchain-r-test
+          - george-edison55-precise-backports
+          packages:
+          - clang-3.6
+          - cmake
+          - cmake-data
     # - env: C_COMPILER=clang-3.5
     #   addons:
     #     apt:
