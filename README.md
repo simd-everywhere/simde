@@ -73,7 +73,7 @@ contact us; we're happy to help!
 ## Usage
 
 Each instruction set has a separate file; `x86/mmx.h` for MMX,
-`s`x86/se.h` for SSE, ``x86/sse2.h` for SSE2, and so on.  Just include
+`x86/sse.h` for SSE, `x86/sse2.h` for SSE2, and so on.  Just include
 the header for whichever instruction set(s) you want, and SIMDe will
 provide the fastest implementation it can given which extensions
 you've enabled in your compiler (i.e., if you want to use NEON to
