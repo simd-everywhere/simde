@@ -986,6 +986,46 @@ simde_mm256_cvtepi32_ps (simde__m256i a) {
 }
 
 SIMDE__FUNCTION_ATTRIBUTES
+simde__m256
+simde_mm256_div_ps (simde__m256 a, simde__m256 b) {
+  simde__m256 r;
+
+#if defined(SIMDE_AVX_NATIVE)
+  r.n = _mm256_div_ps(a.n, b.n);
+#elif defined(SIMDE_SSE_NATIVE)
+  r.m128[0] = _mm_div_ps(a.m128[0], b.m128[0]);
+  r.m128[1] = _mm_div_ps(a.m128[1], b.m128[1]);
+#else
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
+    r.f32[i] = a.f32[i] / b.f32[i];
+  }
+#endif
+
+  return r;
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256d
+simde_mm256_div_pd (simde__m256d a, simde__m256d b) {
+  simde__m256d r;
+
+#if defined(SIMDE_AVX_NATIVE)
+  r.n = _mm256_div_pd(a.n, b.n);
+#elif defined(SIMDE_SSE2_NATIVE)
+  r.m128d[0] = _mm_div_pd(a.m128d[0], b.m128d[0]);
+  r.m128d[1] = _mm_div_pd(a.m128d[1], b.m128d[1]);
+#else
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.f64) / sizeof(r.f64[0])) ; i++) {
+    r.f64[i] = a.f64[i] / b.f64[i];
+  }
+#endif
+
+  return r;
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
 simde__m256i
 simde_mm256_loadu_si256 (simde__m256i const * a) {
   simde__m256i r;
