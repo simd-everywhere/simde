@@ -1046,7 +1046,7 @@ test_simde_mm256_xxx_pd(const MunitParameter params[], void* data) {
   for (size_t i = 0 ; i < (sizeof(test_vec) / (sizeof(test_vec[0]))) ; i++) {
     simde__m256d a, b, r;
 
-    for (size_t j = 0 ; j < sizeof(simde__m256) / sizeof(simde_float64) ; j++) {
+    for (size_t j = 0 ; j < sizeof(simde__m256d) / sizeof(simde_float64) ; j++) {
       a.f64[j] = round(random_f64_range(-1000.0, 1000.0) * 100.0) / 100.0;
       b.f64[j] = round(random_f64_range(-1000.0, 1000.0) * 100.0) / 100.0;
     }
