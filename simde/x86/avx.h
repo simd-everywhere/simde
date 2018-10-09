@@ -1210,6 +1210,44 @@ simde_mm256_floor_ps (simde__m256 a) {
 }
 
 SIMDE__FUNCTION_ATTRIBUTES
+simde__m256
+simde_mm256_hadd_ps (simde__m256 a, simde__m256 b) {
+  simde__m256 r;
+
+#if defined(SIMDE_AVX_NATIVE)
+  r.n = _mm256_hadd_ps(a.n, b.n);
+#else
+  r.f32[0] = a.f32[0] + a.f32[1];
+  r.f32[1] = a.f32[2] + a.f32[3];
+  r.f32[2] = b.f32[0] + b.f32[1];
+  r.f32[3] = b.f32[2] + b.f32[3];
+  r.f32[4] = a.f32[4] + a.f32[5];
+  r.f32[5] = a.f32[6] + a.f32[7];
+  r.f32[6] = b.f32[4] + b.f32[5];
+  r.f32[7] = b.f32[6] + b.f32[7];
+#endif
+
+  return r;
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256d
+simde_mm256_hadd_pd (simde__m256d a, simde__m256d b) {
+  simde__m256d r;
+
+#if defined(SIMDE_AVX_NATIVE)
+  r.n = _mm256_hadd_pd(a.n, b.n);
+#else
+  r.f64[0] = a.f64[0] + a.f64[1];
+  r.f64[1] = b.f64[0] + b.f64[1];
+  r.f64[2] = a.f64[2] + a.f64[3];
+  r.f64[3] = b.f64[2] + b.f64[3];
+#endif
+
+  return r;
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
 simde__m256i
 simde_mm256_loadu_si256 (simde__m256i const * a) {
   simde__m256i r;
