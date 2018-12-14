@@ -2108,7 +2108,7 @@ simde_mm_sqrt_ss (simde__m128 a) {
 
 #if defined(SIMDE_SSE_NATIVE)
   r.n = _mm_sqrt_ss(a.n);
-#elif defined(SIMDE_SSE_NATIVE)
+#elif defined(SIMDE_SSE_NEON)
   float32_t value = vgetq_lane_f32(simde_mm_sqrt_ps(a).neon_f32, 0);
   r.neon_f32 = vsetq_lane_f32(value, a.neon_f32, 0);
 #else
