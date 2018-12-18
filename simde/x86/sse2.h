@@ -1597,7 +1597,7 @@ simde_mm_load_pd (simde_float64 const mem_addr[HEDLEY_ARRAY_PARAM(2)]) {
 #if defined(SIMDE_SSE2_NATIVE)
   r.n = _mm_load_pd(mem_addr);
 #elif defined(SIMDE_SSE2_NEON)
-  r.neon_u32 = vld1q_u32((uint32_t*) mem_addr);
+  r.neon_u32 = vld1q_u32((uint32_t const*) mem_addr);
 #else
   SIMDE__ASSUME_ALIGNED(mem_addr, 16);
   memcpy(&r, mem_addr, sizeof(r));
@@ -1645,7 +1645,7 @@ simde_mm_load_si128 (simde__m128i const* mem_addr) {
 #if defined(SIMDE_SSE2_NATIVE)
   r.n = _mm_load_si128(&(mem_addr->n));
 #elif defined(SIMDE_SSE2_NEON)
-  r.neon_i32 = vld1q_s32((int32_t*) mem_addr);
+  r.neon_i32 = vld1q_s32((int32_t const*) mem_addr);
 #else
   SIMDE__ASSUME_ALIGNED(mem_addr, 16);
   memcpy(&r, mem_addr, sizeof(r));
@@ -1745,7 +1745,7 @@ simde_mm_loadu_si128 (simde__m128i const* mem_addr) {
 #if defined(SIMDE_SSE2_NATIVE)
   r.n = _mm_loadu_si128(&((*mem_addr).n));
 #elif defined(SIMDE_SSE2_NEON)
-  r.neon_i32 = vld1q_s32((int32_t*) mem_addr);
+  r.neon_i32 = vld1q_s32((int32_t const*) mem_addr);
 #else
   memcpy(&r, mem_addr, sizeof(r));
 #endif

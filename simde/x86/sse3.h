@@ -163,7 +163,7 @@ simde_mm_lddqu_si128 (simde__m128i const* mem_addr) {
 #if defined(SIMDE_SSE3_NATIVE)
   return SIMDE__M128I_C(_mm_lddqu_si128(&mem_addr->n));
 #elif defined(SIMDE_SSE3_NEON)
-  return SIMDE__M128I_NEON_C(i32, vld1q_s32((int32_t*) mem_addr));
+  return SIMDE__M128I_NEON_C(i32, vld1q_s32((int32_t const*) mem_addr));
 #else
   simde__m128i r;
   memcpy(&r, mem_addr, sizeof(r));
