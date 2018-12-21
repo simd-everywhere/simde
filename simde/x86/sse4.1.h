@@ -497,10 +497,12 @@ simde_mm_dp_ps (simde__m128 a, simde__m128 b, const int imm8) {
 SIMDE__FUNCTION_ATTRIBUTES
 int32_t
 simde_mm_extract_epi8 (simde__m128i a, const int imm8) {
-  return a.u8[imm8];
+  return a.u8[imm8&15];
 }
 #if defined(SIMDE_SSE4_1_NATIVE) && !defined(SIMDE_BUG_GCC_BAD_MM_EXTRACT_EPI8)
 #  define simde_mm_extract_epi8(a, imm8) _mm_extract_epi8(a.n, imm8)
+#elif defined(SIMDE_SSE4_1_NEON)
+#  define simde_mm_extract_epi8(a, imm8) (int32_t)((uint8_t)vgetq_lane_s8(a.neon_i8, imm8))
 #endif
 
 #if defined(simde_mm_extract_epi32)
