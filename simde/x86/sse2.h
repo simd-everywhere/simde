@@ -2600,6 +2600,8 @@ simde_mm_set1_epi64 (simde__m64 a) {
 
 #if defined(SIMDE_SSE2_NATIVE)
   r.n = _mm_set1_epi64(a.n);
+#elif defined(SIMDE_SSE2_NEON)
+  r.neon_i64 = vmovq_n_s64(a.i64[0]);
 #else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i64) / sizeof(r.i64[0])) ; i++) {
