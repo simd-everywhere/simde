@@ -2396,6 +2396,8 @@ simde_mm_set_epi64x (int64_t e1, int64_t e0) {
 
 #if defined(SIMDE_SSE2_NATIVE)
   r.n = _mm_set_epi64x(e1, e0);
+#elif defined(SIMDE_SSE2_NEON)
+  r = SIMDE__M128I_NEON_C(i64, vcombine_s64(vdup_n_s64(e0), vdup_n_s64(e1)));
 #else
   r.i64[0] = e0;
   r.i64[1] = e1;
