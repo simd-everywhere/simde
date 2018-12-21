@@ -509,10 +509,12 @@ simde_mm_extract_epi8 (simde__m128i a, const int imm8) {
 SIMDE__FUNCTION_ATTRIBUTES
 int32_t
 simde_mm_extract_epi32 (simde__m128i a, const int imm8) {
-  return a.i32[imm8];
+  return a.i32[imm8&3];
 }
 #if defined(SIMDE_SSE4_1_NATIVE)
 #  define simde_mm_extract_epi32(a, imm8) _mm_extract_epi32(a.n, imm8)
+#elif defined(SIMDE_SSE4_1_NEON)
+#  define simde_mm_extract_epi32(a, imm8) vgetq_lane_s32(a.neon_i32, imm8)
 #endif
 
 #if defined(simde_mm_extract_epi64)
