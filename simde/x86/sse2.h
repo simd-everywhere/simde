@@ -3219,15 +3219,22 @@ SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_srli_epi64 (simde__m128i a, const int imm8) {
   simde__m128i r;
-  const int s = (imm8 > ((int) sizeof(r.i64[0]) * CHAR_BIT) - 1) ? 0 : imm8;
+  const unsigned char s = imm8&255;
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i64) / sizeof(r.i64[0])) ; i++) {
-    r.u64[i] = a.u64[i] >> s;
+    if (s > 63) {
+      r.u64[i] = 0;
+    } else {
+      r.u64[i] = a.u64[i] >> s;
+    }
   }
   return r;
 }
 #if defined(SIMDE_SSE2_NATIVE)
 #  define simde_mm_srli_epi64(a, imm8) SIMDE__M128I_C(_mm_srli_epi64(a.n, imm8))
+#elif defined(SIMDE_SSE2_NEON)
+#  define simde_mm_srli_epi64(a, imm8) \
+  SIMDE__M128I_NEON_C(u64, (((imm8)&255) < 0 || ((imm8)&255) > 63) ? (vdupq_n_u64(0)) : ((((imm8)&255) == 0) ? (a.neon_u64) : (vshrq_n_u64((a).neon_u64, (imm8)&255))))
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
