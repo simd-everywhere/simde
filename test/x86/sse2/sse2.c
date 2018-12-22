@@ -6761,8 +6761,20 @@ test_simde_mm_srli_epi64(const MunitParameter params[], void* data) {
   };
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
-    simde__m128i r = simde_mm_srli_epi64(test_vec[i].a, 7);
+    simde__m128i r;
+    simde__m128i zeros = simde_mm_set1_epi64x(INT64_C(0));
+
+    r = simde_mm_srli_epi64(test_vec[i].a, -1);
+    simde_assert_m128i_i32(r, ==, zeros);
+
+    r = simde_mm_srli_epi64(test_vec[i].a, 0);
+    simde_assert_m128i_i32(r, ==, test_vec[i].a);
+
+    r = simde_mm_srli_epi64(test_vec[i].a, 7);
     simde_assert_m128i_i32(r, ==, test_vec[i].r);
+
+    r = simde_mm_srli_epi64(test_vec[i].a, 64);
+    simde_assert_m128i_i32(r, ==, zeros);
   }
 
   return MUNIT_OK;
