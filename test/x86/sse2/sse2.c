@@ -5760,6 +5760,27 @@ test_simde_mm_set_sd(const MunitParameter params[], void* data) {
 }
 
 static MunitResult
+test_simde_mm_set1_epi64(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  for (size_t i = 0 ; i < 32 ; i++) {
+    simde__m64 v;
+    simde__m128i r;
+
+    munit_rand_memory(sizeof(v), (uint8_t*) &v);
+
+    r = simde_mm_set1_epi64(v);
+
+    for (size_t j = 0 ; j < sizeof(r) / sizeof(r.i64[0]) ; j++) {
+      munit_assert_int64(v.i64[0], ==, r.i64[j]);
+    }
+  }
+
+  return MUNIT_OK;
+}
+
+static MunitResult
 test_simde_mm_set1_epi64x(const MunitParameter params[], void* data) {
   (void) params;
   (void) data;
@@ -8783,6 +8804,7 @@ static MunitTest test_suite_tests[] = {
   TEST_FUNC(mm_set_pd1),
   TEST_FUNC(mm_set_sd),
   TEST_FUNC(mm_set1_epi8),
+  TEST_FUNC(mm_set1_epi64),
   TEST_FUNC(mm_set1_epi64x),
   TEST_FUNC(mm_setr_epi8),
   TEST_FUNC(mm_setr_epi16),
