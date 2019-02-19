@@ -11,10 +11,13 @@
 #  define NEON_TEST_SUITE(name) simde_neon_##name##_test_suite
 #endif
 
-MunitSuite simde_neon_vadd_test_suite;
-MunitSuite simde_neon_vadd_emul_test_suite;
-MunitSuite simde_neon_vdup_n_test_suite;
-MunitSuite simde_neon_vdup_n_emul_test_suite;
+#define SIMDE_NEON_DECLARE_TEST_SUITE(name) \
+  MunitSuite simde_neon_##name##_test_suite; \
+  MunitSuite simde_neon_##name##_emul_test_suite;
+
+SIMDE_NEON_DECLARE_TEST_SUITE(vadd)
+SIMDE_NEON_DECLARE_TEST_SUITE(vdup_n)
+SIMDE_NEON_DECLARE_TEST_SUITE(vsub)
 
 #define simde_neon_assert_int8x8(a, op, b) \
   simde_assert_typev(int8_t, PRId8, (sizeof(a) / sizeof(int8_t)), (int8_t*) &(a), op, (int8_t*) &(b))

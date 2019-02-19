@@ -1,4 +1,4 @@
-/* Copyright (c) 2018 Evan Nemerson <evan@nemerson.com>
+/* Copyright (c) 2018-2019 Evan Nemerson <evan@nemerson.com>
  *
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
@@ -98,6 +98,23 @@ simde_vdup_n_s16 (int16_t value) {
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i16) / sizeof(r.i16[0])) ; i++) {
     r.i16[i] = value;
+  }
+#endif
+  return r;
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde_int16x4_t
+simde_vsub_s16(simde_int16x4_t a, simde_int16x4_t b) {
+  simde_int16x4_t r;
+#if defined(SIMDE_NEON_NATIVE)
+  r.n = vsub_s16(a.n, b.n);
+#elif defined(SIMDE_MMX_NATIVE)
+  r.mmx = _mm_sub_pi16(a.mmx, b.mmx);
+#else
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.i16) / sizeof(r.i16[0])) ; i++) {
+    r.i16[i] = a.i16[i] - b.i16[i];
   }
 #endif
   return r;

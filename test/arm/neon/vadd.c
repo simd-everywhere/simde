@@ -1,4 +1,4 @@
-/* Copyright (c) 2018 Evan Nemerson <evan@nemerson.com>
+/* Copyright (c) 2018-2019 Evan Nemerson <evan@nemerson.com>
  *
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
@@ -1227,16 +1227,16 @@ static MunitTest vadd_tests[] = {
   TEST_FUNC2(vadd, u64),
   TEST_FUNC2(vadd, f32),
   TEST_FUNC2(vadd, f64),
-  TEST_FUNC3(vaddq, q, s8),
-  TEST_FUNC3(vaddq, q, s16),
-  TEST_FUNC3(vaddq, q, s32),
-  TEST_FUNC3(vaddq, q, s64),
-  TEST_FUNC3(vaddq, q, u8),
-  TEST_FUNC3(vaddq, q, u16),
-  TEST_FUNC3(vaddq, q, u32),
-  TEST_FUNC3(vaddq, q, u64),
-  TEST_FUNC3(vaddq, q, f32),
-  TEST_FUNC3(vaddq, q, f64),
+  TEST_FUNC3(vadd, q, s8),
+  TEST_FUNC3(vadd, q, s16),
+  TEST_FUNC3(vadd, q, s32),
+  TEST_FUNC3(vadd, q, s64),
+  TEST_FUNC3(vadd, q, u8),
+  TEST_FUNC3(vadd, q, u16),
+  TEST_FUNC3(vadd, q, u32),
+  TEST_FUNC3(vadd, q, u64),
+  TEST_FUNC3(vadd, q, f32),
+  TEST_FUNC3(vadd, q, f64),
 
   { NULL, NULL, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL }
 };

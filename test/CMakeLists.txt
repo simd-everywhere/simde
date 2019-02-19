@@ -90,7 +90,8 @@ list(APPEND TEST_SOURCES
 
 list(APPEND TEST_SOURCES
   arm/neon/vadd.c
-  arm/neon/vdup_n.c)
+  arm/neon/vdup_n.c
+  arm/neon/vsub.c)
 
 foreach(src ${TEST_SOURCES})
   get_filename_component(bn "${src}" NAME_WE)

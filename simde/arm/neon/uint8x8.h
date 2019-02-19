@@ -1,4 +1,4 @@
-/* Copyright (c) 2018 Evan Nemerson <evan@nemerson.com>
+/* Copyright (c) 2018-2019 Evan Nemerson <evan@nemerson.com>
  *
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
@@ -97,6 +97,21 @@ simde_vdup_n_u8 (uint8_t value) {
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.u8) / sizeof(r.u8[0])) ; i++) {
     r.u8[i] = value;
+  }
+#endif
+  return r;
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde_uint8x8_t
+simde_vsub_u8(simde_uint8x8_t a, simde_uint8x8_t b) {
+  simde_uint8x8_t r;
+#if defined(SIMDE_NEON_NATIVE)
+  r.n = vsub_u8(a.n, b.n);
+#else
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.u8) / sizeof(r.u8[0])) ; i++) {
+    r.u8[i] = a.u8[i] - b.u8[i];
   }
 #endif
   return r;

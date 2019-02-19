@@ -1,4 +1,4 @@
-/* Copyright (c) 2018 Evan Nemerson <evan@nemerson.com>
+/* Copyright (c) 2019 Evan Nemerson <evan@nemerson.com>
  *
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
@@ -568,9 +568,9 @@ test_simde_xxxq_s64(const MunitParameter params[], void* data) {
 
     r = simde_xxxq_s64(a, b);
 
-    printf("    { simde_x_vloadq_s64(INT64_C(%20" PRId64 "), INT64_C(%20" PRId64 ")),\n", a.i64[0], a.i64[1]);
-    printf("      simde_x_vloadq_s64(INT64_C(%20" PRId64 "), INT64_C(%20" PRId64 ")),\n", b.i64[0], b.i64[1]);
-    printf("      simde_x_vloadq_s64(INT64_C(%20" PRId64 "), INT64_C(%20" PRId64 ")) },\n", r.i64[0], r.i64[1]);
+    printf("    { simde_x_vloadq_s64(INT64_C(%21" PRId64 "), INT64_C(%21" PRId64 ")),\n", a.i64[0], a.i64[1]);
+    printf("      simde_x_vloadq_s64(INT64_C(%21" PRId64 "), INT64_C(%21" PRId64 ")),\n", b.i64[0], b.i64[1]);
+    printf("      simde_x_vloadq_s64(INT64_C(%21" PRId64 "), INT64_C(%21" PRId64 ")) },\n", r.i64[0], r.i64[1]);
   }
   return MUNIT_FAIL;
 

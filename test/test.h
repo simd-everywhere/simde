@@ -1,4 +1,4 @@
-/* Copyright (c) 2017-2018 Evan Nemerson <evan@nemerson.com>
+/* Copyright (c) 2017-2019 Evan Nemerson <evan@nemerson.com>
  *
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
@@ -178,9 +178,9 @@ simde_float32 random_f32_range(simde_float32 min, simde_float32 max);
 #endif
 
 #if defined(SIMDE_NO_NATIVE)
-#  define TEST_FUNC3(group, variant, sfx) { (char*) "/" #group "/" #sfx "/emul", test_simde_##group##_##sfx, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL }
+#  define TEST_FUNC3(group, variant, sfx) { (char*) #variant "/" #sfx "/emul", test_simde_##group##variant##_##sfx, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL }
 #else
-#  define TEST_FUNC3(group, variant, sfx) { (char*) "/" #group "/" #sfx, test_simde_##group##_##sfx, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL }
+#  define TEST_FUNC3(group, variant, sfx) { (char*) #variant "/" #sfx, test_simde_##group##variant##_##sfx, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL }
 #endif
 
 #define TEST_FUNC_CMP(name) \
