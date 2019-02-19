@@ -17,6 +17,7 @@
 
 SIMDE_NEON_DECLARE_TEST_SUITE(vadd)
 SIMDE_NEON_DECLARE_TEST_SUITE(vdup_n)
+SIMDE_NEON_DECLARE_TEST_SUITE(vmul)
 SIMDE_NEON_DECLARE_TEST_SUITE(vsub)
 
 #define simde_neon_assert_int8x8(a, op, b) \

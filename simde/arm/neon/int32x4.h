@@ -108,6 +108,23 @@ simde_vdupq_n_s32 (int32_t value) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde_int32x4_t
+simde_vmulq_s32(simde_int32x4_t a, simde_int32x4_t b) {
+  simde_int32x4_t r;
+#if defined(SIMDE_NEON_NATIVE)
+  r.n = vmulq_s32(a.n, b.n);
+#elif defined(SIMDE_SSE2_NATIVE)
+  r.sse = _mm_mul_epi32(a.sse, b.sse);
+#else
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.i32) / sizeof(r.i32[0])) ; i++) {
+    r.i32[i] = a.i32[i] * b.i32[i];
+  }
+#endif
+  return r;
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde_int32x4_t
 simde_vsubq_s32(simde_int32x4_t a, simde_int32x4_t b) {
   simde_int32x4_t r;
 #if defined(SIMDE_NEON_NATIVE)

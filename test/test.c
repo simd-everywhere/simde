@@ -89,6 +89,8 @@ int main(int argc, char* argv[MUNIT_ARRAY_PARAM(argc + 1)]) {
     simde_neon_vadd_emul_test_suite,
     simde_neon_vdup_n_test_suite,
     simde_neon_vdup_n_emul_test_suite,
+    simde_neon_vmul_test_suite,
+    simde_neon_vmul_emul_test_suite,
     simde_neon_vsub_test_suite,
     simde_neon_vsub_emul_test_suite,
 #endif

@@ -102,6 +102,19 @@ simde_vdup_n_u64 (uint64_t value) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde_uint64x1_t
+simde_x_vmul_u64(simde_uint64x1_t a, simde_uint64x1_t b) {
+  simde_uint64x1_t r;
+
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.u64) / sizeof(r.u64[0])) ; i++) {
+    r.u64[i] = a.u64[i] * b.u64[i];
+  }
+
+  return r;
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde_uint64x1_t
 simde_vsub_u64(simde_uint64x1_t a, simde_uint64x1_t b) {
   simde_uint64x1_t r;
 #if defined(SIMDE_NEON_NATIVE)

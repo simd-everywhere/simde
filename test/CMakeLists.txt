@@ -91,6 +91,7 @@ list(APPEND TEST_SOURCES
 list(APPEND TEST_SOURCES
   arm/neon/vadd.c
   arm/neon/vdup_n.c
+  arm/neon/vmul.c
   arm/neon/vsub.c)
 
 foreach(src ${TEST_SOURCES})

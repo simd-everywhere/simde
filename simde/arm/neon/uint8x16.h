@@ -110,6 +110,21 @@ simde_vdupq_n_u8 (uint8_t value) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde_uint8x16_t
+simde_vmulq_u8(simde_uint8x16_t a, simde_uint8x16_t b) {
+  simde_uint8x16_t r;
+#if defined(SIMDE_NEON_NATIVE)
+  r.n = vmulq_u8(a.n, b.n);
+#else
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.u8) / sizeof(r.u8[0])) ; i++) {
+    r.u8[i] = a.u8[i] * b.u8[i];
+  }
+#endif
+  return r;
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde_uint8x16_t
 simde_vsubq_u8(simde_uint8x16_t a, simde_uint8x16_t b) {
   simde_uint8x16_t r;
 #if defined(SIMDE_NEON_NATIVE)

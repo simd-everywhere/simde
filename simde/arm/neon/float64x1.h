@@ -110,6 +110,21 @@ simde_vdup_n_f64 (simde_float64 value) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde_float64x1_t
+simde_vmul_f64(simde_float64x1_t a, simde_float64x1_t b) {
+  simde_float64x1_t r;
+#if defined(SIMDE_NEON_HAVE_FLOAT64X1)
+  r.n = vmul_f64(a.n, b.n);
+#else
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.f64) / sizeof(r.f64[0])) ; i++) {
+    r.f64[i] = a.f64[i] * b.f64[i];
+  }
+#endif
+  return r;
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde_float64x1_t
 simde_vsub_f64(simde_float64x1_t a, simde_float64x1_t b) {
   simde_float64x1_t r;
 #if defined(SIMDE_NEON_HAVE_FLOAT64X1)

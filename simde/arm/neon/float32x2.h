@@ -105,6 +105,23 @@ simde_vdup_n_f32 (simde_float32 value) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde_float32x2_t
+simde_vmul_f32(simde_float32x2_t a, simde_float32x2_t b) {
+  simde_float32x2_t r;
+#if defined(SIMDE_NEON_NATIVE)
+  r.n = vmul_f32(a.n, b.n);
+#elif defined(SIMDE_MMX_NATIVE)
+  r.mmx = _mm_mul_ps(a.mmx, b.mmx);
+#else
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
+    r.f32[i] = a.f32[i] * b.f32[i];
+  }
+#endif
+  return r;
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde_float32x2_t
 simde_vsub_f32(simde_float32x2_t a, simde_float32x2_t b) {
   simde_float32x2_t r;
 #if defined(SIMDE_NEON_NATIVE)

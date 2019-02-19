@@ -104,6 +104,21 @@ simde_vdup_n_s64 (int64_t value) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde_int64x1_t
+simde_x_vmul_s64(simde_int64x1_t a, simde_int64x1_t b) {
+  simde_int64x1_t r;
+#if defined(SIMDE_MMX_NATIVE)
+  r.mmx = _mm_mul_pi64(a.mmx, b.mmx);
+#else
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.i64) / sizeof(r.i64[0])) ; i++) {
+    r.i64[i] = a.i64[i] * b.i64[i];
+  }
+#endif
+  return r;
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde_int64x1_t
 simde_vsub_s64(simde_int64x1_t a, simde_int64x1_t b) {
   simde_int64x1_t r;
 #if defined(SIMDE_NEON_NATIVE)
