@@ -2054,10 +2054,36 @@ simde_mm_mul_epu32 (simde__m128i a, simde__m128i b) {
   r.n = _mm_mul_epu32(a.n, b.n);
 #else
   SIMDE__VECTORIZE
-  for (size_t i = 0 ; i < (sizeof(r.i64) / sizeof(r.i64[0])) ; i++) {
+  for (size_t i = 0 ; i < (sizeof(r.u64) / sizeof(r.u64[0])) ; i++) {
     r.u64[i] = ((uint64_t) a.u32[i * 2]) * ((uint64_t) b.u32[i * 2]);
   }
 #endif
+
+  return r;
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128i
+simde_x_mm_mul_epi64 (simde__m128i a, simde__m128i b) {
+  simde__m128i r;
+
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.i64) / sizeof(r.i64[0])) ; i++) {
+    r.i64[i] = a.i64[i] * b.i64[i];
+  }
+
+  return r;
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128i
+simde_x_mm_mod_epi64 (simde__m128i a, simde__m128i b) {
+  simde__m128i r;
+
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.i64) / sizeof(r.i64[0])) ; i++) {
+    r.i64[i] = a.i64[i] % b.i64[i];
+  }
 
   return r;
 }
