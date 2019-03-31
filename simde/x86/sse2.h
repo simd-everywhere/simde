@@ -3962,6 +3962,21 @@ simde_mm_xor_si128 (simde__m128i a, simde__m128i b) {
 #endif
 }
 
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128i
+simde_x_mm_not_si128 (simde__m128i a) {
+#if defined(SIMDE_SSE2_NEON)
+  return SIMDE__M128I_NEON_C(i32, vmvnq_s32(a.neon_i32));
+#else
+  simde__m128i r;
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.i32) / sizeof(r.i32[0])) ; i++) {
+    r.i32[i] = ~(a.i32[i]);
+  }
+  return r;
+#endif
+}
+
 SIMDE__END_DECLS
 
 #endif /* !defined(SIMDE__SSE2_H) */

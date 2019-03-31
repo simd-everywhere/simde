@@ -1,4 +1,4 @@
-/* Copyright (c) 2017 Evan Nemerson <evan@nemerson.com>
+/* Copyright (c) 2017, 2019 Evan Nemerson <evan@nemerson.com>
  *
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
@@ -8806,6 +8806,41 @@ test_simde_mm_xor_si128(const MunitParameter params[], void* data) {
   return MUNIT_OK;
 }
 
+static MunitResult
+test_simde_x_mm_not_si128(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  const struct {
+    simde__m128i a;
+    simde__m128i r;
+  } test_vec[8] = {
+    { simde_mm_set_epi32(INT32_C( -817965525), INT32_C( 2140859656), INT32_C(  142941694), INT32_C(-1061432158)),
+      simde_mm_set_epi32(INT32_C(  817965524), INT32_C(-2140859657), INT32_C( -142941695), INT32_C( 1061432157)) },
+    { simde_mm_set_epi32(INT32_C( 1656377120), INT32_C( 1182756765), INT32_C(  499148047), INT32_C( 1939837842)),
+      simde_mm_set_epi32(INT32_C(-1656377121), INT32_C(-1182756766), INT32_C( -499148048), INT32_C(-1939837843)) },
+    { simde_mm_set_epi32(INT32_C(-1391390683), INT32_C( -880299242), INT32_C( 1262346433), INT32_C(-1162276292)),
+      simde_mm_set_epi32(INT32_C( 1391390682), INT32_C(  880299241), INT32_C(-1262346434), INT32_C( 1162276291)) },
+    { simde_mm_set_epi32(INT32_C(  402553699), INT32_C(-1406117325), INT32_C(-1620159472), INT32_C( 1950201834)),
+      simde_mm_set_epi32(INT32_C( -402553700), INT32_C( 1406117324), INT32_C( 1620159471), INT32_C(-1950201835)) },
+    { simde_mm_set_epi32(INT32_C( 1201512664), INT32_C( -722158977), INT32_C(-1427673018), INT32_C(-1348620069)),
+      simde_mm_set_epi32(INT32_C(-1201512665), INT32_C(  722158976), INT32_C( 1427673017), INT32_C( 1348620068)) },
+    { simde_mm_set_epi32(INT32_C( 2022239253), INT32_C(  336656978), INT32_C(-2043097029), INT32_C( 2060912582)),
+      simde_mm_set_epi32(INT32_C(-2022239254), INT32_C( -336656979), INT32_C( 2043097028), INT32_C(-2060912583)) },
+    { simde_mm_set_epi32(INT32_C(-1767401405), INT32_C(  988173440), INT32_C(  653493949), INT32_C( 1545873213)),
+      simde_mm_set_epi32(INT32_C( 1767401404), INT32_C( -988173441), INT32_C( -653493950), INT32_C(-1545873214)) },
+    { simde_mm_set_epi32(INT32_C(  164259681), INT32_C( 1625402133), INT32_C(  274817939), INT32_C( 1382941610)),
+      simde_mm_set_epi32(INT32_C( -164259682), INT32_C(-1625402134), INT32_C( -274817940), INT32_C(-1382941611)) }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    simde__m128i r = simde_x_mm_not_si128(test_vec[i].a);
+    simde_assert_m128i_i32(r, ==, test_vec[i].r);
+  }
+
+  return MUNIT_OK;
+}
+
 static MunitTest test_suite_tests[] = {
   TEST_FUNC(mm_set_epi8),
   TEST_FUNC(mm_set_epi16),
@@ -9043,6 +9078,8 @@ static MunitTest test_suite_tests[] = {
 
   TEST_FUNC(mm_xor_pd),
   TEST_FUNC(mm_xor_si128),
+
+  TEST_FUNC(x_mm_not_si128),
 
   { NULL, NULL, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL }
 };
