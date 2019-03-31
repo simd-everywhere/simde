@@ -1,4 +1,4 @@
-/* Copyright (c) 2017-2018 Evan Nemerson <evan@nemerson.com>
+/* Copyright (c) 2017-2019 Evan Nemerson <evan@nemerson.com>
  *
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
@@ -73,6 +73,11 @@
 #  define SIMDE__VECTORIZE_ALIGNED(a)
 #elif HEDLEY_GCC_VERSION_CHECK(4,9,0)
 #  define SIMDE__VECTORIZE _Pragma("GCC ivdep")
+#  define SIMDE__VECTORIZE_SAFELEN(l) SIMDE__VECTORIZE
+#  define SIMDE__VECTORIZE_REDUCTION(r) SIMDE__VECTORIZE
+#  define SIMDE__VECTORIZE_ALIGNED(a)
+#elif HEDLEY_CRAY_VERSION_CHECK(5,0,0)
+#  define SIMDE__VECTORIZE _Pragma("_CRI ivdep")
 #  define SIMDE__VECTORIZE_SAFELEN(l) SIMDE__VECTORIZE
 #  define SIMDE__VECTORIZE_REDUCTION(r) SIMDE__VECTORIZE
 #  define SIMDE__VECTORIZE_ALIGNED(a)
