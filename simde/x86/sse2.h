@@ -1780,7 +1780,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 void
 simde_mm_maskmoveu_si128 (simde__m128i a, simde__m128i mask, int8_t mem_addr[HEDLEY_ARRAY_PARAM(16)]) {
 #if defined(SIMDE_SSE2_NATIVE)
-  return _mm_maskmoveu_si128(a.n, mask.n, (char*) mem_addr);
+  _mm_maskmoveu_si128(a.n, mask.n, (char*) mem_addr);
 #else
   for (size_t i = 0 ; i < 16 ; i++) {
     if (mask.u8[i] & 0x80) {
