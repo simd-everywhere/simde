@@ -2505,6 +2505,19 @@ simde_mm_setcsr (uint32_t a) {
 #endif
 }
 
+#define _MM_TRANSPOSE4_PS(row0, row1, row2, row3) \
+  do { \
+    simde__m128 tmp3, tmp2, tmp1, tmp0; \
+    tmp0 = simde_mm_unpacklo_ps((row0), (row1)); \
+    tmp2 = simde_mm_unpacklo_ps((row2), (row3)); \
+    tmp1 = simde_mm_unpackhi_ps((row0), (row1)); \
+    tmp3 = simde_mm_unpackhi_ps((row2), (row3)); \
+    row0 = simde_mm_movelh_ps(tmp0, tmp2); \
+    row1 = simde_mm_movehl_ps(tmp2, tmp0); \
+    row2 = simde_mm_movelh_ps(tmp1, tmp3); \
+    row3 = simde_mm_movehl_ps(tmp3, tmp1); \
+  } while (0)
+
 SIMDE__END_DECLS
 
 #endif /* !defined(SIMDE__SSE_H) */
