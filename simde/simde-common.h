@@ -31,7 +31,15 @@
 
 #include "simde-arch.h"
 
-#if defined(__GNUC__)
+#if \
+  HEDLEY_GCC_VERSION_CHECK(2,95,0) || \
+  HEDLEY_CRAY_VERSION_CHECK(8,4,0) || \
+  HEDLEY_IBM_VERSION_CHECK(11,1,0) || \
+  HEDLEY_INTEL_VERSION_CHECK(13,0,0) || \
+  HEDLEY_PGI_VERSION_CHECK(19,4,0) || \
+  HEDLEY_ARM_VERSION_CHECK(4,1,0) || \
+  HEDLEY_TINYC_VERSION_CHECK(0,9,24) || \
+  HEDLEY_TI_VERSION_CHECK(8,1,0)
 #  define SIMDE__ALIGN(alignment) __attribute__((aligned(alignment)))
 #elif defined(_MSC_VER) && (!defined(_M_IX86) || defined(_M_AMD64))
 #  define SIMDE__ALIGN(alignment) __declspec(align(alignment))

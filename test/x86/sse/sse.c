@@ -1,4 +1,4 @@
-/* Copyright (c) 2017 Evan Nemerson <evan@nemerson.com>
+/* Copyright (c) 2017, 2019 Evan Nemerson <evan@nemerson.com>
  *
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
@@ -2393,7 +2393,7 @@ test_simde_mm_loadr_ps(const MunitParameter params[], void* data) {
 
   for (size_t j = 0 ; j < TEST_PREFERRED_ITERATIONS ; j++) {
     simde__m128 r;
-    simde_float32 a[4];
+    SIMDE__ALIGN(16) simde_float32 a[4];
 
     random_f32v(sizeof(a) / sizeof(a[0]), a);
 
@@ -3485,7 +3485,7 @@ test_simde_mm_store_ps(const MunitParameter params[], void* data) {
 
   const struct {
     simde__m128 a;
-    simde_float32 r[4];
+    SIMDE__ALIGN(16) simde_float32 r[4];
   } test_vec[8] = {
     { simde_mm_set_ps( 797.84f,  342.63f,  173.26f,  427.65f),
       {  427.65f,  173.26f,  342.63f,  797.84f } },
@@ -3506,7 +3506,7 @@ test_simde_mm_store_ps(const MunitParameter params[], void* data) {
   };
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / (sizeof(test_vec[0]))) ; i++) {
-    simde_float32 r[4];
+    SIMDE__ALIGN(16) simde_float32 r[4];
     simde_mm_store_ps(r, test_vec[i].a);
     for (size_t j = 0 ; j < 4 ; j++) {
       munit_assert_float(r[j], ==, test_vec[i].r[j]);
@@ -3523,7 +3523,7 @@ test_simde_mm_store_ps1(const MunitParameter params[], void* data) {
 
   const struct {
     simde__m128 a;
-    simde_float32 r[4];
+    SIMDE__ALIGN(16) simde_float32 r[4];
   } test_vec[8] = {
     { simde_mm_set_ps( 854.57f,  299.85f,   53.35f,  467.01f),
       {  467.01f,  467.01f,  467.01f,  467.01f } },
@@ -3544,7 +3544,7 @@ test_simde_mm_store_ps1(const MunitParameter params[], void* data) {
   };
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / (sizeof(test_vec[0]))) ; i++) {
-    simde_float32 r[4];
+    SIMDE__ALIGN(16) simde_float32 r[4];
     simde_mm_store_ps1(r, test_vec[i].a);
     for (size_t j = 0 ; j < 4 ; j++) {
       munit_assert_float(r[j], ==, test_vec[i].r[j]);
@@ -3599,7 +3599,7 @@ test_simde_mm_store1_ps(const MunitParameter params[], void* data) {
 
   const struct {
     simde__m128 a;
-    simde_float32 r[4];
+    SIMDE__ALIGN(16) simde_float32 r[4];
   } test_vec[8] = {
     { simde_mm_set_ps( 274.23f,   89.27f,  784.72f,  646.53f),
       {  646.53f,  646.53f,  646.53f,  646.53f } },
@@ -3620,7 +3620,7 @@ test_simde_mm_store1_ps(const MunitParameter params[], void* data) {
   };
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / (sizeof(test_vec[0]))) ; i++) {
-    simde_float32 r[4] = { 0, };
+    SIMDE__ALIGN(16) simde_float32 r[4] = { 0, };
     simde_mm_store1_ps(r, test_vec[i].a);
     for (size_t j = 0 ; j < 4 ; j++) {
       munit_assert_float(r[j], ==, test_vec[i].r[j]);
@@ -3713,7 +3713,7 @@ test_simde_mm_storer_ps(const MunitParameter params[], void* data) {
 
   const struct {
     simde__m128 a;
-    simde_float32 r[4];
+    SIMDE__ALIGN(16) simde_float32 r[4];
   } test_vec[8] = {
     { simde_mm_set_ps( 709.97f,  746.23f,  453.60f,  303.28f),
       {  709.97f,  746.23f,  453.60f,  303.28f } },
@@ -3734,7 +3734,7 @@ test_simde_mm_storer_ps(const MunitParameter params[], void* data) {
   };
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / (sizeof(test_vec[0]))) ; i++) {
-    simde_float32 r[4] = { 0, };
+    SIMDE__ALIGN(16) simde_float32 r[4] = { 0, };
     simde_mm_storer_ps(r, test_vec[i].a);
     for (size_t j = 0 ; j < 4 ; j++) {
       munit_assert_float(r[j], ==, test_vec[i].r[j]);
@@ -4309,7 +4309,7 @@ test_simde_mm_stream_ps(const MunitParameter params[], void* data) {
 
   const struct {
     simde__m128 a;
-    simde_float32 r[4];
+    SIMDE__ALIGN(16) simde_float32 r[4];
   } test_vec[8] = {
     { simde_mm_set_ps(-386.97f,  492.19f,  318.83f,  345.85f),
       {  345.85f,  318.83f,  492.19f, -386.97f } },
@@ -4330,7 +4330,7 @@ test_simde_mm_stream_ps(const MunitParameter params[], void* data) {
   };
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / (sizeof(test_vec[0]))) ; i++) {
-    simde_float32 r[4];
+    SIMDE__ALIGN(16) simde_float32 r[4];
     simde_mm_stream_ps(r, test_vec[i].a);
     for (size_t j = 0 ; j < sizeof(simde__m128) / sizeof(simde_float32) ; j++) {
       munit_assert_float(r[j], ==, test_vec[i].r[j]);
