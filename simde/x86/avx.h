@@ -1300,6 +1300,26 @@ simde_mm256_loadu_si256 (simde__m256i const * a) {
 }
 
 SIMDE__FUNCTION_ATTRIBUTES
+simde__m256
+simde_mm256_mul_ps (simde__m256 a, simde__m256 b) {
+  simde__m256 r;
+
+#if defined(SIMDE_AVX_NATIVE)
+  r.n = _mm256_mul_ps(a.n,b.n);
+#elif defined(SIMDE_SSE_NATIVE)
+  r.m128[0] = _mm_mul_ps(a.m128[0], b.m128[0]);
+  r.m128[1] = _mm_mul_ps(a.m128[1], b.m128[1]);
+#else
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
+    r.f32[i] = a.f32[i] * b.f32[i];
+  }
+#endif
+
+  return r;
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
 void
 simde_mm256_storeu_si256(simde__m256i * mem_addr, simde__m256i a) {
   memcpy(mem_addr, &a, sizeof(a));
