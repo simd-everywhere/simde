@@ -53,9 +53,9 @@
 #  else
 #    if defined(HEDLEY_ASSUME)
 #      define simde_assert(expr) HEDLEY_ASSUME(expr)
-#    elif defined(__GNUC__)
+#    elif HEDLEY_GCC_VERSION_CHECK(4,5,0)
 #      define simde_assert(expr) ((void) (!!(expr) ? 1 : (__builtin_unreachable(), 1)))
-#    elif defined(_MSC_VER)
+#    elif HEDLEY_MSVC_VERSION_CHECK(13,10,0)
 #      define simde_assert(expr) __assume(expr)
 #    else
 #      define simde_assert(expr)
