@@ -73,7 +73,7 @@
 
 SIMDE__BEGIN_DECLS
 
-typedef SIMDE__ALIGN(16) union {
+typedef SIMDE_ALIGN(16) union {
 #if defined(SIMDE__ENABLE_GCC_VEC_EXT)
   int8_t          i8 __attribute__((__vector_size__(16), __may_alias__));
   int16_t        i16 __attribute__((__vector_size__(16), __may_alias__));
@@ -1917,7 +1917,7 @@ simde_mm_set_ps (simde_float32 e3, simde_float32 e2, simde_float32 e1, simde_flo
 #if defined(SIMDE_SSE_NATIVE)
   r.n = _mm_set_ps(e3, e2, e1, e0);
 #elif defined(SIMDE_SSE_NEON)
-  SIMDE__ALIGN(16) simde_float32 data[4] = { e0, e1, e2, e3 };
+  SIMDE_ALIGN(16) simde_float32 data[4] = { e0, e1, e2, e3 };
   r.neon_f32 = vld1q_f32(data);
 #else
   r.f32[0] = e0;
@@ -1968,7 +1968,7 @@ simde_mm_setr_ps (simde_float32 e3, simde_float32 e2, simde_float32 e1, simde_fl
 #if defined(SIMDE_SSE_NATIVE)
   r.n = _mm_setr_ps(e3, e2, e1, e0);
 #elif defined(SIMDE_SSE_NEON)
-  SIMDE__ALIGN(16) simde_float32 data[4] = { e3, e2, e1, e0 };
+  SIMDE_ALIGN(16) simde_float32 data[4] = { e3, e2, e1, e0 };
   r.neon_f32 = vld1q_f32(data);
 #else
   r = simde_mm_set_ps(e0, e1, e2, e3);

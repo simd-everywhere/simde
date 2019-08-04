@@ -76,7 +76,7 @@
 
 SIMDE__BEGIN_DECLS
 
-typedef SIMDE__ALIGN(16) union {
+typedef SIMDE_ALIGN(16) union {
 #if defined(SIMDE__ENABLE_GCC_VEC_EXT)
   int8_t          i8 __attribute__((__vector_size__(16), __may_alias__));
   int16_t        i16 __attribute__((__vector_size__(16), __may_alias__));
@@ -127,7 +127,7 @@ typedef SIMDE__ALIGN(16) union {
 #endif
 } simde__m128i;
 
-typedef SIMDE__ALIGN(16) union {
+typedef SIMDE_ALIGN(16) union {
 #if defined(SIMDE__ENABLE_GCC_VEC_EXT)
   int8_t          i8 __attribute__((__vector_size__(16), __may_alias__));
   int16_t        i16 __attribute__((__vector_size__(16), __may_alias__));
@@ -1797,7 +1797,7 @@ simde_mm_movemask_epi8 (simde__m128i a) {
   return _mm_movemask_epi8(a.n);
 #elif defined(SIMDE_SSE2_NEON)
   uint8x16_t input = a.neon_u8;
-  SIMDE__ALIGN(16) static const int8_t xr[8] = { -7, -6, -5, -4, -3, -2, -1, 0 };
+  SIMDE_ALIGN(16) static const int8_t xr[8] = { -7, -6, -5, -4, -3, -2, -1, 0 };
   uint8x8_t mask_and = vdup_n_u8(0x80);
   int8x8_t mask_shift = vld1_s8(xr);
 
@@ -2364,7 +2364,7 @@ simde_mm_set_epi16 (int16_t e7, int16_t e6, int16_t e5, int16_t e4,
 #if defined(SIMDE_SSE2_NATIVE)
   r.n = _mm_set_epi16(e7, e6, e5, e4, e3, e2, e1, e0);
 #elif defined(SIMDE_SSE2_NEON)
-  SIMDE__ALIGN(16) int16_t data[8] = { e0, e1, e2, e3, e4, e5, e6, e7 };
+  SIMDE_ALIGN(16) int16_t data[8] = { e0, e1, e2, e3, e4, e5, e6, e7 };
   r.neon_i16 = vld1q_s16(data);
 #else
   r.i16[0] = e0;
@@ -2388,7 +2388,7 @@ simde_mm_set_epi32 (int32_t e3, int32_t e2, int32_t e1, int32_t e0) {
 #if defined(SIMDE_SSE2_NATIVE)
   r.n = _mm_set_epi32(e3, e2, e1, e0);
 #elif defined(SIMDE_SSE2_NEON)
-  SIMDE__ALIGN(16) int32_t data[4] = { e0, e1, e2, e3 };
+  SIMDE_ALIGN(16) int32_t data[4] = { e0, e1, e2, e3 };
   r.neon_i32 = vld1q_s32(data);
 #else
   r.i32[0] = e0;

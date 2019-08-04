@@ -58,7 +58,7 @@
 SIMDE__BEGIN_DECLS
 
 /* float64x2 */
-typedef SIMDE__ALIGN(16) union {
+typedef SIMDE_ALIGN(16) union {
 #if defined(SIMDE__ENABLE_GCC_VEC_EXT)
   simde_float64 v __attribute__((__vector_size__(16), __may_alias__));
 #else
@@ -75,7 +75,7 @@ typedef SIMDE__ALIGN(16) union {
 } simde_em_float64x2;
 
 /* float32x4 */
-typedef SIMDE__ALIGN(16) union {
+typedef SIMDE_ALIGN(16) union {
 #if defined(SIMDE__ENABLE_GCC_VEC_EXT)
   simde_float32 v __attribute__((__vector_size__(16), __may_alias__));
 #else
@@ -92,7 +92,7 @@ typedef SIMDE__ALIGN(16) union {
 } simde_em_float32x4;
 
 /* int64x2 */
-typedef SIMDE__ALIGN(16) union {
+typedef SIMDE_ALIGN(16) union {
 #if defined(SIMDE__ENABLE_GCC_VEC_EXT)
   int64_t       v __attribute__((__vector_size__(16), __may_alias__));
 #else
@@ -109,7 +109,7 @@ typedef SIMDE__ALIGN(16) union {
 } simde_em_int64x2;
 
 /* uint64x2 */
-typedef SIMDE__ALIGN(16) union {
+typedef SIMDE_ALIGN(16) union {
 #if defined(SIMDE__ENABLE_GCC_VEC_EXT)
   uint64_t      v __attribute__((__vector_size__(16), __may_alias__));
 #else
@@ -126,7 +126,7 @@ typedef SIMDE__ALIGN(16) union {
 } simde_em_uint64x2;
 
 /* int32x4 */
-typedef SIMDE__ALIGN(16) union {
+typedef SIMDE_ALIGN(16) union {
 #if defined(SIMDE__ENABLE_GCC_VEC_EXT)
   int32_t       v __attribute__((__vector_size__(16), __may_alias__));
 #else
@@ -143,7 +143,7 @@ typedef SIMDE__ALIGN(16) union {
 } simde_em_int32x4;
 
 /* uint32x4 */
-typedef SIMDE__ALIGN(16) union {
+typedef SIMDE_ALIGN(16) union {
 #if defined(SIMDE__ENABLE_GCC_VEC_EXT)
   uint32_t      v __attribute__((__vector_size__(16), __may_alias__));
 #else
@@ -160,7 +160,7 @@ typedef SIMDE__ALIGN(16) union {
 } simde_em_uint32x4;
 
 /* int16x8 */
-typedef SIMDE__ALIGN(16) union {
+typedef SIMDE_ALIGN(16) union {
 #if defined(SIMDE__ENABLE_GCC_VEC_EXT)
   int32_t       v __attribute__((__vector_size__(16), __may_alias__));
 #else
@@ -177,7 +177,7 @@ typedef SIMDE__ALIGN(16) union {
 } simde_em_int16x8;
 
 /* uint16x8 */
-typedef SIMDE__ALIGN(16) union {
+typedef SIMDE_ALIGN(16) union {
 #if defined(SIMDE__ENABLE_GCC_VEC_EXT)
   uint32_t      v __attribute__((__vector_size__(16), __may_alias__));
 #else
@@ -194,7 +194,7 @@ typedef SIMDE__ALIGN(16) union {
 } simde_em_uint16x8;
 
 /* int8x16 */
-typedef SIMDE__ALIGN(16) union {
+typedef SIMDE_ALIGN(16) union {
 #if defined(SIMDE__ENABLE_GCC_VEC_EXT)
   int32_t       v __attribute__((__vector_size__(16), __may_alias__));
 #else
@@ -211,7 +211,7 @@ typedef SIMDE__ALIGN(16) union {
 } simde_em_int8x16;
 
 /* uint8x16 */
-typedef SIMDE__ALIGN(16) union {
+typedef SIMDE_ALIGN(16) union {
 #if defined(SIMDE__ENABLE_GCC_VEC_EXT)
   uint32_t      v __attribute__((__vector_size__(16), __may_alias__));
 #else
@@ -228,7 +228,7 @@ typedef SIMDE__ALIGN(16) union {
 } simde_em_uint8x16;
 
 /* bool64x2 */
-typedef SIMDE__ALIGN(16) union {
+typedef SIMDE_ALIGN(16) union {
 #if defined(SIMDE__ENABLE_GCC_VEC_EXT)
   int32_t       v __attribute__((__vector_size__(16), __may_alias__));
 #else
@@ -245,7 +245,7 @@ typedef SIMDE__ALIGN(16) union {
 } simde_em_bool64x2;
 
 /* bool32x4 */
-typedef SIMDE__ALIGN(16) union {
+typedef SIMDE_ALIGN(16) union {
 #if defined(SIMDE__ENABLE_GCC_VEC_EXT)
   int32_t       v __attribute__((__vector_size__(16), __may_alias__));
 #else
@@ -262,7 +262,7 @@ typedef SIMDE__ALIGN(16) union {
 } simde_em_bool32x4;
 
 /* bool16x8 */
-typedef SIMDE__ALIGN(16) union {
+typedef SIMDE_ALIGN(16) union {
 #if defined(SIMDE__ENABLE_GCC_VEC_EXT)
   int32_t       v __attribute__((__vector_size__(16), __may_alias__));
 #else
@@ -279,7 +279,7 @@ typedef SIMDE__ALIGN(16) union {
 } simde_em_bool16x8;
 
 /* bool8x16 */
-typedef SIMDE__ALIGN(16) union {
+typedef SIMDE_ALIGN(16) union {
 #if defined(SIMDE__ENABLE_GCC_VEC_EXT)
   int32_t       v __attribute__((__vector_size__(16), __may_alias__));
 #else

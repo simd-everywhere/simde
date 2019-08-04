@@ -32,6 +32,12 @@
 #include "simde-arch.h"
 
 #if \
+  (defined(__STDC_VERSION__) && __STDC_VERSION__ >= 201112L)
+#  define SIMDE_ALIGN(alignment) _Alignas(alignment)
+#elif \
+  (defined(__cplusplus) && (__cplusplus >= 201103L))
+#  define SIMDE_ALIGN(alignment) alignas(alignment)
+#elif \
   HEDLEY_GCC_VERSION_CHECK(2,95,0) || \
   HEDLEY_CRAY_VERSION_CHECK(8,4,0) || \
   HEDLEY_IBM_VERSION_CHECK(11,1,0) || \
@@ -40,11 +46,11 @@
   HEDLEY_ARM_VERSION_CHECK(4,1,0) || \
   HEDLEY_TINYC_VERSION_CHECK(0,9,24) || \
   HEDLEY_TI_VERSION_CHECK(8,1,0)
-#  define SIMDE__ALIGN(alignment) __attribute__((aligned(alignment)))
+#  define SIMDE_ALIGN(alignment) __attribute__((aligned(alignment)))
 #elif defined(_MSC_VER) && (!defined(_M_IX86) || defined(_M_AMD64))
-#  define SIMDE__ALIGN(alignment) __declspec(align(alignment))
+#  define SIMDE_ALIGN(alignment) __declspec(align(alignment))
 #else
-#  define SIMDE__ALIGN(alignment)
+#  define SIMDE_ALIGN(alignment)
 #endif
 
 #if HEDLEY_GCC_HAS_ATTRIBUTE(vector_size,4,6,0)

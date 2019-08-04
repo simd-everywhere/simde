@@ -39,7 +39,7 @@ simde_em_int32x4_set (int32_t s0, int32_t s1, int32_t s2, int32_t s3) {
 #elif defined(SIMDE_EM_SSE)
   return SIMDE_EM_INT32X4_SSE_C(_mm_set_epi32(s3, s2, s1, s0));
 #elif defined(SIMDE_EM_NEON)
-  SIMDE__ALIGN(16) int32_t data[4] = { s0, s1, s2, s3 };
+  SIMDE_ALIGN(16) int32_t data[4] = { s0, s1, s2, s3 };
   return SIMDE_EM_INT32X4_NEON_C(vld1q_s32(data));
 #else
   return (simde_em_int32x4) {

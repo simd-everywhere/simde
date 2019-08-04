@@ -49,7 +49,7 @@
 
 SIMDE__BEGIN_DECLS
 
-typedef SIMDE__ALIGN(16) union {
+typedef SIMDE_ALIGN(16) union {
 #if defined(SIMDE__ENABLE_GCC_VEC_EXT)
   int8_t          i8 __attribute__((__vector_size__(32), __may_alias__));
   int16_t        i16 __attribute__((__vector_size__(32), __may_alias__));
@@ -90,7 +90,7 @@ typedef SIMDE__ALIGN(16) union {
 #endif
 } simde__m256;
 
-typedef SIMDE__ALIGN(16) union {
+typedef SIMDE_ALIGN(16) union {
 #if defined(SIMDE__ENABLE_GCC_VEC_EXT)
   int8_t          i8 __attribute__((__vector_size__(32), __may_alias__));
   int16_t        i16 __attribute__((__vector_size__(32), __may_alias__));
@@ -131,7 +131,7 @@ typedef SIMDE__ALIGN(16) union {
 #endif
 } simde__m256d;
 
-typedef SIMDE__ALIGN(16) union {
+typedef SIMDE_ALIGN(16) union {
 #if defined(SIMDE__ENABLE_GCC_VEC_EXT)
   int8_t          i8 __attribute__((__vector_size__(32), __may_alias__));
   int16_t        i16 __attribute__((__vector_size__(32), __may_alias__));
