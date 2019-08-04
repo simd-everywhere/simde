@@ -1402,6 +1402,8 @@ simde__m128
 simde_mm_loadr_ps (simde_float32 const mem_addr[HEDLEY_ARRAY_PARAM(4)]) {
   simde__m128 r;
 
+  simde_assert_aligned(16, mem_addr);
+
 #if defined(SIMDE_SSE_NATIVE)
   r.n = _mm_loadr_ps(mem_addr);
 #else
@@ -2124,6 +2126,8 @@ simde_mm_sqrt_ss (simde__m128 a) {
 SIMDE__FUNCTION_ATTRIBUTES
 void
 simde_mm_store_ps (simde_float32 mem_addr[4], simde__m128 a) {
+  simde_assert_aligned(16, mem_addr);
+
 #if defined(SIMDE_SSE_NATIVE)
   _mm_store_ps(mem_addr, a.n);
 #elif defined(SIMDE_SSE_NEON)
@@ -2139,6 +2143,8 @@ simde_mm_store_ps (simde_float32 mem_addr[4], simde__m128 a) {
 SIMDE__FUNCTION_ATTRIBUTES
 void
 simde_mm_store_ps1 (simde_float32 mem_addr[4], simde__m128 a) {
+  simde_assert_aligned(16, mem_addr);
+
 #if defined(SIMDE_SSE_NATIVE)
   _mm_store_ps1(mem_addr, a.n);
 #else
@@ -2164,6 +2170,8 @@ simde_mm_store_ss (simde_float32* mem_addr, simde__m128 a) {
 SIMDE__FUNCTION_ATTRIBUTES
 void
 simde_mm_store1_ps (simde_float32 mem_addr[4], simde__m128 a) {
+  simde_assert_aligned(16, mem_addr);
+
 #if defined(SIMDE_SSE_NATIVE)
   _mm_store1_ps(mem_addr, a.n);
 #else
@@ -2196,6 +2204,8 @@ simde_mm_storel_pi (simde__m64* mem_addr, simde__m128 a) {
 SIMDE__FUNCTION_ATTRIBUTES
 void
 simde_mm_storer_ps (simde_float32 mem_addr[4], simde__m128 a) {
+  simde_assert_aligned(16, mem_addr);
+
 #if defined(SIMDE_SSE_NATIVE)
   _mm_storer_ps(mem_addr, a.n);
 #else

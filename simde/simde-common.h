@@ -25,10 +25,7 @@
 #define SIMDE_COMMON_H
 
 #include "hedley.h"
-
-#define SIMDE__CONCAT(a,b) a##b
-#define SIMDE__XCONCAT(a,b) SIMDE__CONCAT(a,b)
-
+#include "check.h"
 #include "simde-arch.h"
 
 #if \
@@ -52,6 +49,9 @@
 #else
 #  define SIMDE_ALIGN(alignment)
 #endif
+
+#define simde_assert_aligned(alignment, val) \
+  simde_assert_int(((uintptr_t) (val)) % (alignment), ==, 0)
 
 #if HEDLEY_GCC_HAS_ATTRIBUTE(vector_size,4,6,0)
 #  define SIMDE__ENABLE_GCC_VEC_EXT

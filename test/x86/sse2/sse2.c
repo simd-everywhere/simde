@@ -4143,7 +4143,7 @@ test_simde_mm_loadu_pd(const MunitParameter params[], void* data) {
   (void) data;
 
   const struct {
-    SIMDE_ALIGN(16) simde_float64 mem_addr[2];
+    simde_float64 mem_addr[2];
     simde__m128d r;
   } test_vec[8] = {
     { {SIMDE_FLOAT64_C(  -578.02), SIMDE_FLOAT64_C(   20.66) },
