@@ -1320,6 +1320,34 @@ simde_mm256_mul_ps (simde__m256 a, simde__m256 b) {
 }
 
 SIMDE__FUNCTION_ATTRIBUTES
+simde__m256
+simde_mm256_dp_ps (simde__m256 a, simde__m256 b, const int imm8) {
+  simde__m256 r;
+  simde_float32 sum1 = SIMDE_FLOAT32_C(0.0);
+  simde_float32 sum2 = SIMDE_FLOAT32_C(0.0);
+
+  SIMDE__VECTORIZE_REDUCTION(+:sum1)
+  for (size_t i = 0 ; i < 4 ; i++) {
+    sum1 += (imm8 & (16 << i)) ? (a.f32[i + 4] * b.f32[i + 4]) : SIMDE_FLOAT32_C(0.0);
+  }
+  SIMDE__VECTORIZE_REDUCTION(+:sum2)
+  for (size_t i = 0 ; i < 4 ; i++) {
+    sum2 += (imm8 & (16 << i)) ? (a.f32[  i  ] * b.f32[  i  ]) : SIMDE_FLOAT32_C(0.0);
+  }
+
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < 4 ; i++) {
+    r.f32[i + 4] = (imm8 & (8 >> i)) ? sum1 : SIMDE_FLOAT32_C(0.0);
+    r.f32[  i  ] = (imm8 & (8 >> i)) ? sum2 : SIMDE_FLOAT32_C(0.0);
+  }
+
+  return r;
+}
+#if defined(SIMDE_AVX_NATIVE)
+#  define simde_mm256_dp_ps(a, b, imm8) SIMDE__M256_C(_mm256_dp_ps(a.n, b.n, imm8))
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
 void
 simde_mm256_storeu_si256(simde__m256i * mem_addr, simde__m256i a) {
   memcpy(mem_addr, &a, sizeof(a));
