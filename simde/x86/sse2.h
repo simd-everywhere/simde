@@ -3355,6 +3355,8 @@ simde_mm_storel_pd (simde_float64* mem_addr, simde__m128d a) {
 SIMDE__FUNCTION_ATTRIBUTES
 void
 simde_mm_storer_pd (simde_float64 mem_addr[2], simde__m128d a) {
+  simde_assert_aligned(16, mem_addr);
+
 #if defined(SIMDE_SSE2_NATIVE)
   _mm_storer_pd(mem_addr, a.n);
 #else
