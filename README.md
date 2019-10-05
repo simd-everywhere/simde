@@ -68,15 +68,22 @@ label in the issue tracker for details on progress.  If you'd like to
 be notified when an instruction set is available you may subscribe to
 the relevant issue.
 
-If you have a project you're interested in with SIMDe but we don't yet
-support all the functions you need, please file an issue with a list
-of what's missing so we know what to prioritize.
+If you have a project you're interested in using with SIMDe but we
+don't yet support all the functions you need, please file an issue
+with a list of what's missing so we know what to prioritize.
 
 ## Want to help?
 
 There are a *lot* of instructions to get through, so any help would be
 greatly appreciated!  It's pretty straightforward work, and a great
 way to learn about the instructions.
+
+There is [a
+guide](https://github.com/nemequ/simde/wiki/Implementing-a-New-Function)
+explaining how to add new functions and how to quickly and easily get
+a test case in place.  It's a bit rough right now, but if anything is
+unclear please feel free to use the issue tracker to ask about
+anything you're not clear on.
 
 There are three places you'll want to modify in order to implement a
 new function:
@@ -132,7 +139,8 @@ though these are not as well tested.
 
 ### Compilers
 
-SIMDe requires C99.
+SIMDe does depend on some C99 feauters, though the subset supported by
+MSVC also works.
 
 Every commit is tested with several different versions of GCC, clang,
 and PGI via [Travis CI](https://travis-ci.org/nemequ/simde) on Linux.
