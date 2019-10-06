@@ -1348,6 +1348,18 @@ simde_mm256_dp_ps (simde__m256 a, simde__m256 b, const int imm8) {
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
+int32_t
+simde_mm256_extract_epi32 (simde__m256i a, const int index) {
+  return a.i32[index];
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+int64_t
+simde_mm256_extract_epi64 (simde__m256i a, const int index) {
+  return a.i64[index];
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
 void
 simde_mm256_storeu_si256(simde__m256i * mem_addr, simde__m256i a) {
   memcpy(mem_addr, &a, sizeof(a));

@@ -180,6 +180,18 @@ simde_mm256_broadcastsi128_si256 (simde__m128i a) {
 }
 
 SIMDE__FUNCTION_ATTRIBUTES
+int
+simde_mm256_extract_epi8 (simde__m256i a, const int index) {
+  return a.i8[index];
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+int
+simde_mm256_extract_epi16 (simde__m256i a, const int index) {
+  return a.i16[index];
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
 simde__m256i
 simde_mm256_shuffle_epi8 (simde__m256i a, simde__m256i b) {
   simde__m256i r;

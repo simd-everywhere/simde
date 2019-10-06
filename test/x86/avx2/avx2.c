@@ -1,4 +1,4 @@
-/* Copyright (c) 2018 Evan Nemerson <evan@nemerson.com>
+/* Copyright (c) 2018, 2019 Evan Nemerson <evan@nemerson.com>
  *
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
@@ -602,6 +602,158 @@ test_simde_mm256_broadcastsi128_si256(const MunitParameter params[], void* data)
 }
 
 static MunitResult
+test_simde_mm256_extract_epi8(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  const struct {
+    simde__m256i a;
+    int index;
+    int r;
+  } test_vec[8] = {
+    { simde_mm256_set_epi8(INT8_C(  85), INT8_C(-106), INT8_C(  44), INT8_C( -49),
+                           INT8_C( 119), INT8_C(  80), INT8_C( 116), INT8_C( -43),
+                           INT8_C( -47), INT8_C( -11), INT8_C(  62), INT8_C( -51),
+                           INT8_C( -20), INT8_C( -60), INT8_C(-115), INT8_C(   4),
+                           INT8_C( 127), INT8_C( -43), INT8_C( -71), INT8_C(  56),
+                           INT8_C( -31), INT8_C(  66), INT8_C(  34), INT8_C(-119),
+                           INT8_C(  19), INT8_C(  36), INT8_C( -12), INT8_C( 112),
+                           INT8_C(  60), INT8_C(  83), INT8_C(-120), INT8_C(  56)),
+      31, 85 },
+    { simde_mm256_set_epi8(INT8_C(  18), INT8_C(  -1), INT8_C(  58), INT8_C(  88),
+                           INT8_C( 126), INT8_C(  33), INT8_C( -76), INT8_C(  89),
+                           INT8_C( 117), INT8_C(  96), INT8_C(  36), INT8_C( -36),
+                           INT8_C( 119), INT8_C(  42), INT8_C(  42), INT8_C(  20),
+                           INT8_C(  29), INT8_C(  56), INT8_C(  62), INT8_C(  24),
+                           INT8_C( 114), INT8_C(  -2), INT8_C(  32), INT8_C( -56),
+                           INT8_C( -33), INT8_C( -80), INT8_C( 116), INT8_C(  62),
+                           INT8_C( -70), INT8_C( -24), INT8_C( 104), INT8_C( 113)),
+      2, -24 },
+    { simde_mm256_set_epi8(INT8_C( 126), INT8_C(-115), INT8_C(-111), INT8_C( 126),
+                           INT8_C(  64), INT8_C(  84), INT8_C(-101), INT8_C( -21),
+                           INT8_C(  63), INT8_C( -34), INT8_C( -47), INT8_C( 123),
+                           INT8_C(  67), INT8_C( -48), INT8_C( -40), INT8_C( -10),
+                           INT8_C( -48), INT8_C(-117), INT8_C( 115), INT8_C( -29),
+                           INT8_C(  -9), INT8_C(  82), INT8_C(  65), INT8_C(  40),
+                           INT8_C(   0), INT8_C(  84), INT8_C(  65), INT8_C( -33),
+                           INT8_C( 106), INT8_C(  47), INT8_C( -38), INT8_C(  57)),
+      12, -29 },
+    { simde_mm256_set_epi8(INT8_C(  -5), INT8_C(-104), INT8_C(  70), INT8_C( 103),
+                           INT8_C(  37), INT8_C( -19), INT8_C(  55), INT8_C(  18),
+                           INT8_C(  29), INT8_C( -66), INT8_C(-109), INT8_C(-128),
+                           INT8_C(  94), INT8_C( -29), INT8_C( -29), INT8_C( -32),
+                           INT8_C( -43), INT8_C(  55), INT8_C(  69), INT8_C( -62),
+                           INT8_C( -91), INT8_C( -92), INT8_C(  80), INT8_C( -28),
+                           INT8_C( -29), INT8_C( -53), INT8_C(-109), INT8_C( -97),
+                           INT8_C(  13), INT8_C( -90), INT8_C( -67), INT8_C( -51)),
+      29, 70 },
+    { simde_mm256_set_epi8(INT8_C(  92), INT8_C(  10), INT8_C( 114), INT8_C( -32),
+                           INT8_C(-114), INT8_C( -95), INT8_C( -42), INT8_C(  32),
+                           INT8_C( -76), INT8_C( 127), INT8_C(  62), INT8_C(  11),
+                           INT8_C( 127), INT8_C(  98), INT8_C(   5), INT8_C( -14),
+                           INT8_C( -11), INT8_C( -28), INT8_C(-127), INT8_C(  51),
+                           INT8_C( -66), INT8_C(  94), INT8_C(  -6), INT8_C(   7),
+                           INT8_C( -95), INT8_C( -38), INT8_C(  -3), INT8_C(-103),
+                           INT8_C( -87), INT8_C( 100), INT8_C(-113), INT8_C(  87)),
+      22, 127 },
+    { simde_mm256_set_epi8(INT8_C( -54), INT8_C(  70), INT8_C( 120), INT8_C( -67),
+                           INT8_C(  17), INT8_C(  73), INT8_C(  40), INT8_C(-111),
+                           INT8_C( 115), INT8_C( -79), INT8_C( -43), INT8_C(-120),
+                           INT8_C(  70), INT8_C(  68), INT8_C( -87), INT8_C( -94),
+                           INT8_C( 122), INT8_C( -19), INT8_C(-114), INT8_C(  82),
+                           INT8_C(  81), INT8_C(  36), INT8_C(  42), INT8_C(-128),
+                           INT8_C(  -8), INT8_C(  49), INT8_C( -14), INT8_C( -85),
+                           INT8_C( -12), INT8_C( -81), INT8_C(  99), INT8_C(  11)),
+      15, 122 },
+    { simde_mm256_set_epi8(INT8_C(  27), INT8_C(  67), INT8_C( -85), INT8_C( -45),
+                           INT8_C(-107), INT8_C(  17), INT8_C( -93), INT8_C( -57),
+                           INT8_C(-113), INT8_C( -70), INT8_C(  37), INT8_C(  35),
+                           INT8_C( -58), INT8_C(-116), INT8_C(  52), INT8_C( -81),
+                           INT8_C( -49), INT8_C( -86), INT8_C( -44), INT8_C(  70),
+                           INT8_C(  40), INT8_C(  67), INT8_C(  17), INT8_C( -49),
+                           INT8_C(-118), INT8_C( -65), INT8_C(  29), INT8_C( -74),
+                           INT8_C(   2), INT8_C(-103), INT8_C(  55), INT8_C(-109)),
+      19, -58 },
+    { simde_mm256_set_epi8(INT8_C( 104), INT8_C(  -9), INT8_C( 103), INT8_C( -86),
+                           INT8_C(   0), INT8_C(  11), INT8_C(-114), INT8_C( -78),
+                           INT8_C(-128), INT8_C(  29), INT8_C(  27), INT8_C(-121),
+                           INT8_C( -68), INT8_C(   9), INT8_C(   6), INT8_C( 111),
+                           INT8_C(-117), INT8_C(  82), INT8_C(  75), INT8_C(  -2),
+                           INT8_C(-105), INT8_C(  43), INT8_C( 116), INT8_C( -47),
+                           INT8_C(  14), INT8_C(  41), INT8_C(  29), INT8_C(  -4),
+                           INT8_C( -87), INT8_C( 114), INT8_C( -11), INT8_C(-103)),
+      1, -11 }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    int r = simde_mm256_extract_epi8(test_vec[i].a, test_vec[i].index);
+    simde_assert_int(r, ==, test_vec[i].r);
+  }
+
+  return MUNIT_OK;
+}
+
+static MunitResult
+test_simde_mm256_extract_epi16(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  const struct {
+    simde__m256i a;
+    int index;
+    int r;
+  } test_vec[8] = {
+    { simde_mm256_set_epi16(INT16_C( 21910), INT16_C( 11471), INT16_C( 30544), INT16_C( 29909),
+                            INT16_C(-11787), INT16_C( 16077), INT16_C( -4924), INT16_C(-29436),
+                            INT16_C( 32725), INT16_C(-18120), INT16_C( -7870), INT16_C(  8841),
+                            INT16_C(  4900), INT16_C( -2960), INT16_C( 15443), INT16_C(-30664)),
+      15, -106 },
+    { simde_mm256_set_epi16(INT16_C(  4863), INT16_C( 14936), INT16_C( 32289), INT16_C(-19367),
+                            INT16_C( 30048), INT16_C(  9436), INT16_C( 30506), INT16_C( 10772),
+                            INT16_C(  7480), INT16_C( 15896), INT16_C( 29438), INT16_C(  8392),
+                            INT16_C( -8272), INT16_C( 29758), INT16_C(-17688), INT16_C( 26737)),
+      2, 62 },
+    { simde_mm256_set_epi16(INT16_C( 32397), INT16_C(-28290), INT16_C( 16468), INT16_C(-25621),
+                            INT16_C( 16350), INT16_C(-11909), INT16_C( 17360), INT16_C( -9994),
+                            INT16_C(-12149), INT16_C( 29667), INT16_C( -2222), INT16_C( 16680),
+                            INT16_C(    84), INT16_C( 16863), INT16_C( 27183), INT16_C( -9671)),
+      12, -21 },
+    { simde_mm256_set_epi16(INT16_C( -1128), INT16_C( 18023), INT16_C(  9709), INT16_C( 14098),
+                            INT16_C(  7614), INT16_C(-27776), INT16_C( 24291), INT16_C( -7200),
+                            INT16_C(-10953), INT16_C( 17858), INT16_C(-23132), INT16_C( 20708),
+                            INT16_C( -7221), INT16_C(-27745), INT16_C(  3494), INT16_C(-16947)),
+      13, -19 },
+    { simde_mm256_set_epi16(INT16_C( 23562), INT16_C( 29408), INT16_C(-29023), INT16_C(-10720),
+                            INT16_C(-19329), INT16_C( 15883), INT16_C( 32610), INT16_C(  1522),
+                            INT16_C( -2588), INT16_C(-32461), INT16_C(-16802), INT16_C( -1529),
+                            INT16_C(-24102), INT16_C(  -615), INT16_C(-22172), INT16_C(-28841)),
+      6, 51 },
+    { simde_mm256_set_epi16(INT16_C(-13754), INT16_C( 30909), INT16_C(  4425), INT16_C( 10385),
+                            INT16_C( 29617), INT16_C(-10872), INT16_C( 17988), INT16_C(-22110),
+                            INT16_C( 31469), INT16_C(-29102), INT16_C( 20772), INT16_C( 10880),
+                            INT16_C( -1999), INT16_C( -3413), INT16_C( -2897), INT16_C( 25355)),
+      15, 70 },
+    { simde_mm256_set_epi16(INT16_C(  6979), INT16_C(-21549), INT16_C(-27375), INT16_C(-23609),
+                            INT16_C(-28742), INT16_C(  9507), INT16_C(-14708), INT16_C( 13487),
+                            INT16_C(-12374), INT16_C(-11194), INT16_C( 10307), INT16_C(  4559),
+                            INT16_C(-30017), INT16_C(  7606), INT16_C(   665), INT16_C( 14227)),
+      3, -65 },
+    { simde_mm256_set_epi16(INT16_C( 26871), INT16_C( 26538), INT16_C(    11), INT16_C(-29006),
+                            INT16_C(-32739), INT16_C(  7047), INT16_C(-17399), INT16_C(  1647),
+                            INT16_C(-29870), INT16_C( 19454), INT16_C(-26837), INT16_C( 29905),
+                            INT16_C(  3625), INT16_C(  7676), INT16_C(-22158), INT16_C( -2663)),
+      1, 114 }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    int r = simde_mm256_extract_epi16(test_vec[i].a, test_vec[i].index);
+    simde_assert_int(r, ==, test_vec[i].r);
+  }
+
+  return MUNIT_OK;
+}
+
+static MunitResult
 test_simde_mm256_shuffle_epi8(const MunitParameter params[], void* data) {
   (void) params;
   (void) data;
@@ -941,6 +1093,9 @@ static MunitTest test_suite_tests[] = {
   TEST_FUNC(mm256_and_si256),
 
   TEST_FUNC(mm256_broadcastsi128_si256),
+
+  TEST_FUNC(mm256_extract_epi8),
+  TEST_FUNC(mm256_extract_epi16),
 
   TEST_FUNC(mm256_shuffle_epi8),
 
