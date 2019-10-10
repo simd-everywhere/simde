@@ -20,14 +20,14 @@ Second, SIMDe makes it easier to write code targeting ISA extensions
 you don't have convenient access to.  You can run NEON code on your
 x86 machine *without an emulator*.  Obviously you'll eventually want
 to test on the actual hardware you're targeting, but for most
-development SIMDe can provide a much easier path.
+development, SIMDe can provide a much easier path.
 
 SIMDe takes a very different approach from most other SIMD abstraction
 layers in that it aims to expose the entire functionality of the
-underlying instruction set.  Instead of limiting functionality to a
+underlying instruction set.  Instead of limiting functionality to the
 lowest common denominator, SIMDe tries to minimize the amount of
-effort required to port while still allowing you the space to optimize as
-needed.
+effort required to port while still allowing you the space to optimize
+as needed.
 
 The current focus is on writing complete portable implementations,
 though a large number of functions already have accelerated
