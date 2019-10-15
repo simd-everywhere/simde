@@ -1,111 +1,26 @@
 language: c
 sudo: false
-dist: trusty
+dist: bionic
 branches:
   except:
     - /^(wip\/)?(appveyor|msvc|mingw|windows)(\-.+)?$/
 matrix:
   include:
-    ###
-    ## Linux builds using various versions of GCC.
-    ###
-    - env: C_COMPILER=gcc-8
+    - env: C_COMPILER=gcc
       addons:
         apt:
-          sources:
-          - ubuntu-toolchain-r-test
-          - george-edison55-precise-backports
           packages:
-          - gcc-8
-          - g++-8
           - cmake
           - cmake-data
-    # - env: C_COMPILER=gcc-7
-    #   addons:
-    #     apt:
-    #       sources:
-    #       - ubuntu-toolchain-r-test
-    #       - george-edison55-precise-backports
-    #       packages:
-    #       - gcc-7
-    #       - g++-7
-    #       - cmake
-    #       - cmake-data
-    # - env: C_COMPILER=gcc-6
-    #   addons:
-    #     apt:
-    #       sources:
-    #       - ubuntu-toolchain-r-test
-    #       - george-edison55-precise-backports
-    #       packages:
-    #       - gcc-6
-    #       - g++-6
-    #       - cmake
-    #       - cmake-data
-    # - env: C_COMPILER=gcc-5 BUILD_TYPE=Release
-    #   addons:
-    #     apt:
-    #       sources:
-    #       - ubuntu-toolchain-r-test
-    #       - george-edison55-precise-backports
-    #       packages:
-    #       - gcc-5
-    #       - g++-5
-    #       - cmake
-    #       - cmake-data
-    # - env: C_COMPILER=gcc-4.9
-    #   addons:
-    #     apt:
-    #       sources:
-    #       - ubuntu-toolchain-r-test
-    #       - george-edison55-precise-backports
-    #       packages:
-    #       - gcc-4.9
-    #       - g++-4.9
-    #       - cmake
-    #       - cmake-data
-    # - addons:
-    #     apt:
-    #       sources:
-    #       - george-edison55-precise-backports
-    #       packages:
-    #       - cmake
-    #       - cmake-data
-    # - env: C_COMPILER=gcc-4.7
-    #   addons:
-    #     apt:
-    #       sources:
-    #       - ubuntu-toolchain-r-test
-    #       - george-edison55-precise-backports
-    #       packages:
-    #       - gcc-4.7
-    #       - g++-4.7
-    #       - cmake
-    #       - cmake-data
-    # - env: C_COMPILER=gcc-4.6
-    #   addons:
-    #     apt:
-    #       sources:
-    #       - ubuntu-toolchain-r-test
-    #       - george-edison55-precise-backports
-    #       packages:
-    #       - gcc-4.6
-    #       - g++-4.6
-    #       - cmake
-    #       - cmake-data
-    # - os: linux
-    #   env: C_COMPILER=gcc-4.5
-    #   addons:
-    #     apt:
-    #       sources:
-    #       - ubuntu-toolchain-r-test
-    #       - george-edison55-precise-backports
-    #       packages:
-    #       - gcc-4.5
-    #       - g++-4.5
-    #       - cmake
-    #       - cmake-data
+    - env: C_COMPILER=clang
+      addons:
+        apt:
+          packages:
+          - clang
+          - cmake
+          - cmake-data
     - env: C_COMPILER=gcc-4.4
+      dist: trusty
       addons:
         apt:
           sources:
@@ -116,91 +31,17 @@ matrix:
           - g++-4.4
           - cmake
           - cmake-data
-
     - env: C_COMPILER=aarch64-linux-gnu-gcc
       addons:
         apt:
-          sources:
-          - ubuntu-toolchain-r-test
-          - george-edison55-precise-backports
           packages:
           - gcc-aarch64-linux-gnu
           - g++-aarch64-linux-gnu
           - qemu
           - cmake
           - cmake-data
-    - env: C_COMPILER=arm-linux-gnueabihf-gcc
-      addons:
-        apt:
-          sources:
-          - ubuntu-toolchain-r-test
-          - george-edison55-precise-backports
-          packages:
-          - gcc-arm-linux-gnueabihf
-          - g++-arm-linux-gnueabihf
-          - qemu
-          - cmake
-          - cmake-data
-
-    ###
-    ## clang on Linux
-    ###
-    - env: C_COMPILER=clang
-      addons:
-        apt:
-          sources:
-          - llvm-toolchain-trusty
-          - ubuntu-toolchain-r-test
-          - george-edison55-precise-backports
-          packages:
-          - clang
-          - cmake
-          - cmake-data
-    # - env: C_COMPILER=clang-3.9
-    #   addons:
-    #     apt:
-    #       sources:
-    #       - llvm-toolchain-precise-3.9
-    #       - ubuntu-toolchain-r-test
-    #       - george-edison55-precise-backports
-    #       packages:
-    #       - clang-3.9
-    #       - cmake
-    #       - cmake-data
-    # - env: C_COMPILER=clang-3.8
-    #   addons:
-    #     apt:
-    #       sources:
-    #       - llvm-toolchain-precise-3.8
-    #       - ubuntu-toolchain-r-test
-    #       - george-edison55-precise-backports
-    #       packages:
-    #       - clang-3.8
-    #       - cmake
-    #       - cmake-data
-    # - env: C_COMPILER=clang-3.7
-    #   addons:
-    #     apt:
-    #       sources:
-    #       - llvm-toolchain-precise-3.7
-    #       - ubuntu-toolchain-r-test
-    #       - george-edison55-precise-backports
-    #       packages:
-    #       - clang-3.7
-    #       - cmake
-    #       - cmake-data
-    # - env: C_COMPILER=clang-3.6
-    #   addons:
-    #     apt:
-    #       sources:
-    #       - llvm-toolchain-precise-3.6
-    #       - ubuntu-toolchain-r-test
-    #       - george-edison55-precise-backports
-    #       packages:
-    #       - clang-3.6
-    #       - cmake
-    #       - cmake-data
     - env: C_COMPILER=clang-3.5
+      dist: trusty
       addons:
         apt:
           sources:
@@ -211,41 +52,19 @@ matrix:
           - clang-3.5
           - cmake
           - cmake-data
-
-    ###
-    ## PGI
-    ###
     - env: C_COMPILER=pgcc BUILD_TYPE=Debug
       addons:
         apt:
-          sources:
-          - george-edison55-precise-backports
           packages:
           - cmake
           - cmake-data
-
-    ###
-    ## OS X
-    ###
     - os: osx
-
-    ###
-    ## Emscripten — requires CMake 3.4.3.  If anyone is aware of a PPA
-    ## with it please let me know.
-    ###
     # - env: C_COMPILER=emcc BUILD_TYPE=Debug
     #   addons:
     #     apt:
-    #       sources:
-    #       - george-edison55-precise-backports
     #       packages:
     #       - cmake
     #       - cmake-data
-
-  allow_failures:
-  # This works with GCC 7.3.1 on qemu 2.11.1, but not on Travis.  Not
-  # sure if the issue is with GCC or QEMU (or something else).
-  - env: C_COMPILER=aarch64-linux-gnu-gcc
 
 before_install:
 ###
