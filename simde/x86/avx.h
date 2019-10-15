@@ -1419,6 +1419,33 @@ simde_mm256_div_pd (simde__m256d a, simde__m256d b) {
 }
 
 SIMDE__FUNCTION_ATTRIBUTES
+simde__m128d
+simde_mm256_extractf128_pd (simde__m256d a, const int imm8) {
+  return a.m128d[imm8 & 1];
+}
+#if defined(SIMDE_AVX_NATIVE)
+#  define simde_mm256_extractf128_pd(a, imm8) SIMDE__M128D_C(_mm256_extractf128_pd(a.n, imm8))
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128
+simde_mm256_extractf128_ps (simde__m256 a, const int imm8) {
+  return a.m128[imm8 & 1];
+}
+#if defined(SIMDE_AVX_NATIVE)
+#  define simde_mm256_extractf128_ps(a, imm8) SIMDE__M128_C(_mm256_extractf128_ps(a.n, imm8))
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128i
+simde_mm256_extractf128_si256 (simde__m256i a, const int imm8) {
+  return a.m128i[imm8 & 1];
+}
+#if defined(SIMDE_AVX_NATIVE)
+#  define simde_mm256_extractf128_si256(a, imm8) SIMDE__M128I_C(_mm256_extractf128_si256(a.n, imm8))
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
 simde__m256d
 simde_mm256_floor_pd (simde__m256d a) {
   simde__m256d r;
