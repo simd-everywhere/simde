@@ -1557,6 +1557,34 @@ simde_mm256_hsub_pd (simde__m256d a, simde__m256d b) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256i
+simde_mm256_insert_epi8 (simde__m256i a, int8_t i, const int index) {
+  a.i8[index] = i;
+  return a;
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256i
+simde_mm256_insert_epi16 (simde__m256i a, int16_t i, const int index) {
+  a.i16[index] = i;
+  return a;
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256i
+simde_mm256_insert_epi32 (simde__m256i a, int32_t i, const int index) {
+  a.i32[index] = i;
+  return a;
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256i
+simde_mm256_insert_epi64 (simde__m256i a, int64_t i, const int index) {
+  a.i64[index] = i;
+  return a;
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256i
 simde_mm256_loadu_si256 (simde__m256i const * a) {
   simde__m256i r;
 
