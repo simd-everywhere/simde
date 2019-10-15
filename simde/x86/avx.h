@@ -1283,6 +1283,108 @@ simde_mm256_cvtepi32_ps (simde__m256i a) {
 }
 
 SIMDE__FUNCTION_ATTRIBUTES
+simde__m128i
+simde_mm256_cvtpd_epi32 (simde__m256d a) {
+  simde__m128i r;
+
+#if defined(SIMDE_AVX_NATIVE)
+  r.n = _mm256_cvtpd_epi32(a.n);
+#else
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(a.f64) / sizeof(a.f64[0])) ; i++) {
+    r.i32[i] = (int32_t) round(a.f64[i]);
+  }
+#endif
+
+  return r;
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128
+simde_mm256_cvtpd_ps (simde__m256d a) {
+  simde__m128 r;
+
+#if defined(SIMDE_AVX_NATIVE)
+  r.n = _mm256_cvtpd_ps(a.n);
+#else
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
+    r.f32[i] = (simde_float32) a.f64[i];
+  }
+#endif
+
+  return r;
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256i
+simde_mm256_cvtps_epi32 (simde__m256 a) {
+  simde__m256i r;
+
+#if defined(SIMDE_AVX_NATIVE)
+  r.n = _mm256_cvtps_epi32(a.n);
+#else
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(a.f32) / sizeof(a.f32[0])) ; i++) {
+    r.i32[i] = (int32_t) roundf(a.f32[i]);
+  }
+#endif
+
+  return r;
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256d
+simde_mm256_cvtps_pd (simde__m128 a) {
+  simde__m256d r;
+
+#if defined(SIMDE_AVX_NATIVE)
+  r.n = _mm256_cvtps_pd(a.n);
+#else
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(a.f32) / sizeof(a.f32[0])) ; i++) {
+    r.f64[i] = a.f32[i];
+  }
+#endif
+
+  return r;
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128i
+simde_mm256_cvttpd_epi32 (simde__m256d a) {
+  simde__m128i r;
+
+#if defined(SIMDE_AVX_NATIVE)
+  r.n = _mm256_cvttpd_epi32(a.n);
+#else
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(a.f64) / sizeof(a.f64[0])) ; i++) {
+    r.i32[i] = (int32_t) trunc(a.f64[i]);
+  }
+#endif
+
+  return r;
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256i
+simde_mm256_cvttps_epi32 (simde__m256 a) {
+  simde__m256i r;
+
+#if defined(SIMDE_AVX_NATIVE)
+  r.n = _mm256_cvttps_epi32(a.n);
+#else
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(a.f32) / sizeof(a.f32[0])) ; i++) {
+    r.i32[i] = (int32_t) trunc(a.f32[i]);
+  }
+#endif
+
+  return r;
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
 simde__m256
 simde_mm256_div_ps (simde__m256 a, simde__m256 b) {
   simde__m256 r;
