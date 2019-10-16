@@ -1594,6 +1594,27 @@ simde_mm256_insert_epi64 (simde__m256i a, int64_t i, const int index)
 }
 
 SIMDE__FUNCTION_ATTRIBUTES
+simde__m256d simde_mm256_insertf128_pd(simde__m256d a, simde__m128d b, int imm8)
+    HEDLEY_REQUIRE_MSG((imm8 & 0xff) == imm8, "imm8 must be in [0, 3]") {
+  a.m128d[imm8] = b;
+  return a;
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256 simde_mm256_insertf128_ps(simde__m256 a, simde__m128 b, int imm8)
+    HEDLEY_REQUIRE_MSG((imm8 & 0xff) == imm8, "imm8 must be in [0, 7]") {
+  a.m128[imm8] = b;
+  return a;
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256i simde_mm256_insertf128_si256(simde__m256i a, simde__m128i b, int imm8)
+    HEDLEY_REQUIRE_MSG((imm8 & 0xff) == imm8, "imm8 must be in [0, 7]") {
+  a.m128i[imm8] = b;
+  return a;
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
 simde__m256i
 simde_mm256_loadu_si256 (simde__m256i const * a) {
   simde__m256i r;
