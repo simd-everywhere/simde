@@ -792,7 +792,8 @@ simde_mm256_andnot_pd (simde__m256d a, simde__m256d b) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256
-simde_mm256_blend_ps (simde__m256 a, simde__m256 b, const int imm8) {
+simde_mm256_blend_ps (simde__m256 a, simde__m256 b, const int imm8)
+    HEDLEY_REQUIRE_MSG((imm8 & 0xff) == imm8, "imm8 must be in range [0, 255]") {
   simde__m256 r;
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
@@ -806,7 +807,8 @@ simde_mm256_blend_ps (simde__m256 a, simde__m256 b, const int imm8) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256d
-simde_mm256_blend_pd (simde__m256d a, simde__m256d b, const int imm8) {
+simde_mm256_blend_pd (simde__m256d a, simde__m256d b, const int imm8)
+    HEDLEY_REQUIRE_MSG((imm8 & 0xf) == imm8, "imm8 must be in range [0, 15]") {
   simde__m256d r;
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.f64) / sizeof(r.f64[0])) ; i++) {
@@ -1131,7 +1133,8 @@ simde_mm256_ceil_ps (simde__m256 a) {
 /* This implementation does not support signaling NaNs (yet?) */
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
-simde_mm_cmp_pd (simde__m128d a, simde__m128d b, const int imm8) {
+simde_mm_cmp_pd (simde__m128d a, simde__m128d b, const int imm8)
+    HEDLEY_REQUIRE_MSG((imm8 & 31) == imm8, "imm8 must one of the SIMDE_CMP_* macros (values: [0, 31])") {
   simde__m128d r;
 
   SIMDE__VECTORIZE
@@ -1420,8 +1423,9 @@ simde_mm256_div_pd (simde__m256d a, simde__m256d b) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
-simde_mm256_extractf128_pd (simde__m256d a, const int imm8) {
-  return a.m128d[imm8 & 1];
+simde_mm256_extractf128_pd (simde__m256d a, const int imm8)
+    HEDLEY_REQUIRE_MSG((imm8 & 1) == imm8, "imm8 must be 0 or 1") {
+  return a.m128d[imm8];
 }
 #if defined(SIMDE_AVX_NATIVE)
 #  define simde_mm256_extractf128_pd(a, imm8) SIMDE__M128D_C(_mm256_extractf128_pd(a.n, imm8))
@@ -1429,8 +1433,9 @@ simde_mm256_extractf128_pd (simde__m256d a, const int imm8) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128
-simde_mm256_extractf128_ps (simde__m256 a, const int imm8) {
-  return a.m128[imm8 & 1];
+simde_mm256_extractf128_ps (simde__m256 a, const int imm8)
+    HEDLEY_REQUIRE_MSG((imm8 & 1) == imm8, "imm8 must be 0 or 1") {
+  return a.m128[imm8];
 }
 #if defined(SIMDE_AVX_NATIVE)
 #  define simde_mm256_extractf128_ps(a, imm8) SIMDE__M128_C(_mm256_extractf128_ps(a.n, imm8))
@@ -1438,8 +1443,9 @@ simde_mm256_extractf128_ps (simde__m256 a, const int imm8) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
-simde_mm256_extractf128_si256 (simde__m256i a, const int imm8) {
-  return a.m128i[imm8 & 1];
+simde_mm256_extractf128_si256 (simde__m256i a, const int imm8)
+    HEDLEY_REQUIRE_MSG((imm8 & 1) == imm8, "imm8 must be 0 or 1") {
+  return a.m128i[imm8];
 }
 #if defined(SIMDE_AVX_NATIVE)
 #  define simde_mm256_extractf128_si256(a, imm8) SIMDE__M128I_C(_mm256_extractf128_si256(a.n, imm8))
@@ -1557,28 +1563,32 @@ simde_mm256_hsub_pd (simde__m256d a, simde__m256d b) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256i
-simde_mm256_insert_epi8 (simde__m256i a, int8_t i, const int index) {
+simde_mm256_insert_epi8 (simde__m256i a, int8_t i, const int index)
+    HEDLEY_REQUIRE_MSG((index & 0xff) == index, "index must be in [0, 31]") {
   a.i8[index] = i;
   return a;
 }
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256i
-simde_mm256_insert_epi16 (simde__m256i a, int16_t i, const int index) {
+simde_mm256_insert_epi16 (simde__m256i a, int16_t i, const int index)
+    HEDLEY_REQUIRE_MSG((index & 0xff) == index, "index must be in [0, 15]")  {
   a.i16[index] = i;
   return a;
 }
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256i
-simde_mm256_insert_epi32 (simde__m256i a, int32_t i, const int index) {
+simde_mm256_insert_epi32 (simde__m256i a, int32_t i, const int index)
+    HEDLEY_REQUIRE_MSG((index & 0xff) == index, "index must be in [0, 7]")  {
   a.i32[index] = i;
   return a;
 }
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256i
-simde_mm256_insert_epi64 (simde__m256i a, int64_t i, const int index) {
+simde_mm256_insert_epi64 (simde__m256i a, int64_t i, const int index)
+    HEDLEY_REQUIRE_MSG((index & 0xff) == index, "index must be in [0, 3]")  {
   a.i64[index] = i;
   return a;
 }
