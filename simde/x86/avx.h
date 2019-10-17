@@ -49,7 +49,7 @@
 
 SIMDE__BEGIN_DECLS
 
-typedef SIMDE_ALIGN(16) union {
+typedef SIMDE_ALIGN(32) union {
 #if defined(SIMDE__ENABLE_GCC_VEC_EXT)
   int8_t          i8 __attribute__((__vector_size__(32), __may_alias__));
   int16_t        i16 __attribute__((__vector_size__(32), __may_alias__));
@@ -88,7 +88,7 @@ typedef SIMDE_ALIGN(16) union {
 #endif
 } simde__m256;
 
-typedef SIMDE_ALIGN(16) union {
+typedef SIMDE_ALIGN(32) union {
 #if defined(SIMDE__ENABLE_GCC_VEC_EXT)
   int8_t          i8 __attribute__((__vector_size__(32), __may_alias__));
   int16_t        i16 __attribute__((__vector_size__(32), __may_alias__));
@@ -127,7 +127,7 @@ typedef SIMDE_ALIGN(16) union {
 #endif
 } simde__m256d;
 
-typedef SIMDE_ALIGN(16) union {
+typedef SIMDE_ALIGN(32) union {
 #if defined(SIMDE__ENABLE_GCC_VEC_EXT)
   int8_t          i8 __attribute__((__vector_size__(32), __may_alias__));
   int16_t        i16 __attribute__((__vector_size__(32), __may_alias__));
@@ -1686,6 +1686,37 @@ SIMDE__FUNCTION_ATTRIBUTES
 int64_t
 simde_mm256_extract_epi64 (simde__m256i a, const int index) {
   return a.i64[index];
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256i
+simde_mm256_lddqu_si256 (simde__m256i const * a) {
+  simde__m256i r;
+
+#if defined(SIMDE_AVX_NATIVE)
+  r.n = _mm256_loadu_si256(&(a->n));
+#else
+  memcpy(&r, a, sizeof(r));
+#endif
+
+  return r;
+}
+
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256d
+simde_mm256_load_pd (const double a[HEDLEY_ARRAY_PARAM(4)]) {
+  simde__m256d r;
+
+  simde_assert_aligned(32, a);
+
+#if defined(SIMDE_AVX_NATIVE)
+  r.n = _mm256_load_pd(a);
+#else
+  memcpy(&r, a, sizeof(r));
+#endif
+
+  return r;
 }
 
 SIMDE__FUNCTION_ATTRIBUTES
