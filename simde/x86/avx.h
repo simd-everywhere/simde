@@ -1760,7 +1760,7 @@ simde_mm256_loadu_si256 (simde__m256i const * a) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256
-simde_mm256_loadu2_m128 (const float hiaddr[4], const float loaddr[4]) {
+simde_mm256_loadu2_m128 (const float hiaddr[HEDLEY_ARRAY_PARAM(4)], const float loaddr[HEDLEY_ARRAY_PARAM(4)]) {
   return
     simde_mm256_insertf128_ps(simde_mm256_castps128_ps256(simde_mm_loadu_ps(loaddr)),
 			      simde_mm_loadu_ps(hiaddr), 1);
@@ -1768,7 +1768,7 @@ simde_mm256_loadu2_m128 (const float hiaddr[4], const float loaddr[4]) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256d
-simde_mm256_loadu2_m128d (const double hiaddr[2], const double loaddr[2]) {
+simde_mm256_loadu2_m128d (const double hiaddr[HEDLEY_ARRAY_PARAM(2)], const double loaddr[HEDLEY_ARRAY_PARAM(2)]) {
   return
     simde_mm256_insertf128_pd(simde_mm256_castpd128_pd256(simde_mm_loadu_pd(loaddr)),
 			      simde_mm_loadu_pd(hiaddr), 1);
@@ -1780,6 +1780,77 @@ simde_mm256_loadu2_m128i (const simde__m128i* hiaddr, const simde__m128i* loaddr
   return
     simde_mm256_insertf128_si256(simde_mm256_castsi128_si256(simde_mm_loadu_si128(loaddr)),
 				 simde_mm_loadu_si128(hiaddr), 1);
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128d
+simde_mm_maskload_pd (const simde_float64 mem_addr[HEDLEY_ARRAY_PARAM(4)], simde__m128i mask) {
+  simde__m128d r;
+
+#if defined(SIMDE_AVX_NATIVE)
+  r.n = _mm_maskload_pd(mem_addr, mask.n);
+#else
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.f64) / sizeof(r.f64[0])) ; i++) {
+    /* TODO: it may be better to just do something along the lines of
+       (r.f64[i] = (mask.u64[i] & (1 << 63)) ? a.f64[i] : 0.0);
+       Which compilers may bo more likely to compile to a masked op. */
+    r.u64[i] = ((uint64_t*) mem_addr)[i] & (mask.i64[i] >> ((sizeof(mask.i64[0]) * CHAR_BIT) - 1));
+  }
+#endif
+
+  return r;
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256d
+simde_mm256_maskload_pd (const simde_float64 mem_addr[HEDLEY_ARRAY_PARAM(4)], simde__m256i mask) {
+  simde__m256d r;
+
+#if defined(SIMDE_AVX_NATIVE)
+  r.n = _mm256_maskload_pd(mem_addr, mask.n);
+#else
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.f64) / sizeof(r.f64[0])) ; i++) {
+    r.u64[i] = ((uint64_t*) mem_addr)[i] & (mask.i64[i] >> ((sizeof(mask.i64[0]) * CHAR_BIT) - 1));
+  }
+#endif
+
+  return r;
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128
+simde_mm_maskload_ps (const simde_float32 mem_addr[HEDLEY_ARRAY_PARAM(4)], simde__m128i mask) {
+  simde__m128 r;
+
+#if defined(SIMDE_AVX_NATIVE)
+  r.n = _mm_maskload_ps(mem_addr, mask.n);
+#else
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
+    r.u32[i] = ((uint32_t*) mem_addr)[i] & (mask.i32[i] >> ((sizeof(mask.i32[0]) * CHAR_BIT) - 1));
+  }
+#endif
+
+  return r;
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256
+simde_mm256_maskload_ps (const simde_float32 mem_addr[HEDLEY_ARRAY_PARAM(4)], simde__m256i mask) {
+  simde__m256 r;
+
+#if defined(SIMDE_AVX_NATIVE)
+  r.n = _mm256_maskload_ps(mem_addr, mask.n);
+#else
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
+    r.u32[i] = ((uint32_t*) mem_addr)[i] & (mask.i32[i] >> ((sizeof(mask.i32[0]) * CHAR_BIT) - 1));
+  }
+#endif
+
+  return r;
 }
 
 SIMDE__FUNCTION_ATTRIBUTES
