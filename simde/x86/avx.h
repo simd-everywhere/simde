@@ -1702,7 +1702,6 @@ simde_mm256_lddqu_si256 (simde__m256i const * a) {
   return r;
 }
 
-
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256d
 simde_mm256_load_pd (const double a[HEDLEY_ARRAY_PARAM(4)]) {
@@ -1714,6 +1713,38 @@ simde_mm256_load_pd (const double a[HEDLEY_ARRAY_PARAM(4)]) {
   r.n = _mm256_load_pd(a);
 #else
   memcpy(&r, a, sizeof(r));
+#endif
+
+  return r;
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256
+simde_mm256_load_ps (const float a[HEDLEY_ARRAY_PARAM(8)]) {
+  simde__m256 r;
+
+  simde_assert_aligned(32, a);
+
+#if defined(SIMDE_AVX_NATIVE)
+  r.n = _mm256_load_ps(a);
+#else
+  memcpy(&r, a, sizeof(r));
+#endif
+
+  return r;
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256i
+simde_mm256_load_si256 (simde__m256i const * mem_addr) {
+  simde__m256i r;
+
+  simde_assert_aligned(32, mem_addr);
+
+#if defined(SIMDE_AVX_NATIVE)
+  r.n = _mm256_load_si256((__m256i*) mem_addr);
+#else
+  memcpy(&r, mem_addr, sizeof(r));
 #endif
 
   return r;
