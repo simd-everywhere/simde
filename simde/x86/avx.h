@@ -1854,6 +1854,62 @@ simde_mm256_maskload_ps (const simde_float32 mem_addr[HEDLEY_ARRAY_PARAM(4)], si
 }
 
 SIMDE__FUNCTION_ATTRIBUTES
+void
+simde_mm_maskstore_pd (simde_float64 mem_addr[HEDLEY_ARRAY_PARAM(2)], simde__m128i mask, simde__m128d a) {
+#if defined(SIMDE_AVX_NATIVE)
+  _mm_maskstore_pd(mem_addr, mask.n, a.n);
+#else
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < 2 ; i++) {
+    if (mask.i64[i] >> 63)
+      mem_addr[i] = a.f64[i];
+  }
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+void
+simde_mm256_maskstore_pd (simde_float64 mem_addr[HEDLEY_ARRAY_PARAM(4)], simde__m256i mask, simde__m256d a) {
+#if defined(SIMDE_AVX_NATIVE)
+  _mm256_maskstore_pd(mem_addr, mask.n, a.n);
+#else
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < 4 ; i++) {
+    if (mask.i64[i] >> 63)
+      mem_addr[i] = a.f64[i];
+  }
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+void
+simde_mm_maskstore_ps (simde_float32 mem_addr[HEDLEY_ARRAY_PARAM(4)], simde__m128i mask, simde__m128 a) {
+#if defined(SIMDE_AVX_NATIVE)
+  _mm_maskstore_ps(mem_addr, mask.n, a.n);
+#else
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < 4 ; i++) {
+    if (mask.i32[i] >> 31)
+      mem_addr[i] = a.f32[i];
+  }
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+void
+simde_mm256_maskstore_ps (simde_float32 mem_addr[HEDLEY_ARRAY_PARAM(8)], simde__m256i mask, simde__m256 a) {
+#if defined(SIMDE_AVX_NATIVE)
+  _mm256_maskstore_ps(mem_addr, mask.n, a.n);
+#else
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < 8 ; i++) {
+    if (mask.i32[i] >> 31)
+      mem_addr[i] = a.f32[i];
+  }
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
 simde__m256
 simde_mm256_mul_ps (simde__m256 a, simde__m256 b) {
   simde__m256 r;
