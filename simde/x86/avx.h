@@ -2047,6 +2047,40 @@ simde_mm256_moveldup_ps (simde__m256 a) {
 }
 
 SIMDE__FUNCTION_ATTRIBUTES
+int
+simde_mm256_movemask_ps (simde__m256 a) {
+  int r = 0;
+
+#if defined(SIMDE_AVX_NATIVE)
+  r = _mm256_movemask_ps(a.n);
+#else
+  SIMDE__VECTORIZE_REDUCTION(|:r)
+  for (size_t i = 0 ; i < (sizeof(a.f32) / sizeof(a.f32[0])) ; i++) {
+    r |= (a.u32[i] >> 31) << i;
+  }
+#endif
+
+  return r;
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+int
+simde_mm256_movemask_pd (simde__m256d a) {
+  int r = 0;
+
+#if defined(SIMDE_AVX_NATIVE)
+  r = _mm256_movemask_pd(a.n);
+#else
+  SIMDE__VECTORIZE_REDUCTION(|:r)
+  for (size_t i = 0 ; i < (sizeof(a.f64) / sizeof(a.f64[0])) ; i++) {
+    r |= (a.u64[i] >> 63) << i;
+  }
+#endif
+
+  return r;
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
 simde__m256
 simde_mm256_mul_ps (simde__m256 a, simde__m256 b) {
   simde__m256 r;
