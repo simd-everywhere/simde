@@ -1,4 +1,4 @@
-/* Copyright (c) 2017-2018 Evan Nemerson <evan@nemerson.com>
+/* Copyright (c) 2017-2019 Evan Nemerson <evan@nemerson.com>
  *
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
@@ -63,7 +63,7 @@ SIMDE__BEGIN_DECLS
 #if defined(SIMDE_SSE4_1_NATIVE)
 #  define SIMDE_MM_FROUND_TO_NEAREST_INT _MM_FROUND_TO_NEAREST_INT
 #  define SIMDE_MM_FROUND_TO_NEG_INF     _MM_FROUND_TO_NEG_INF
-#  define SIMDE_MM_FROUND_TO_POS_INF		 _MM_FROUND_TO_POS_INF
+#  define SIMDE_MM_FROUND_TO_POS_INF     _MM_FROUND_TO_POS_INF
 #  define SIMDE_MM_FROUND_TO_ZERO        _MM_FROUND_TO_ZERO
 #  define SIMDE_MM_FROUND_CUR_DIRECTION  _MM_FROUND_CUR_DIRECTION
 
@@ -72,7 +72,7 @@ SIMDE__BEGIN_DECLS
 #else
 #  define SIMDE_MM_FROUND_TO_NEAREST_INT 0x00
 #  define SIMDE_MM_FROUND_TO_NEG_INF     0x01
-#  define SIMDE_MM_FROUND_TO_POS_INF		 0x02
+#  define SIMDE_MM_FROUND_TO_POS_INF     0x02
 #  define SIMDE_MM_FROUND_TO_ZERO        0x03
 #  define SIMDE_MM_FROUND_CUR_DIRECTION  0x04
 

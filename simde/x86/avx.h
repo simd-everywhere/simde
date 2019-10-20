@@ -26,7 +26,7 @@
 #  if !defined(SIMDE__AVX_H)
 #    define SIMDE__AVX_H
 #  endif
-#  include "sse2.h"
+#  include "sse4.1.h"
 
 #  if defined(SIMDE_AVX_NATIVE)
 #    undef SIMDE_AVX_NATIVE
@@ -2244,6 +2244,62 @@ simde_mm256_rcp_ps (simde__m256 a) {
 
   return r;
 }
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256
+simde_mm256_round_ps (simde__m256 a, const int rounding) {
+  simde__m256 r;
+
+  for (size_t i = 0 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
+    switch (rounding & ~SIMDE_MM_FROUND_NO_EXC) {
+      case SIMDE_MM_FROUND_TO_NEAREST_INT:
+        r.f32[i] = nearbyintf(a.f32[i]);
+        break;
+      case SIMDE_MM_FROUND_TO_NEG_INF:
+        r.f32[i] = floorf(a.f32[i]);
+        break;
+      case SIMDE_MM_FROUND_TO_POS_INF:
+        r.f32[i] = ceilf(a.f32[i]);
+        break;
+      case SIMDE_MM_FROUND_TO_ZERO:
+        r.f32[i] = truncf(a.f32[i]);
+        break;
+    }
+  }
+
+  return r;
+}
+#if defined(SIMDE_AVX_NATIVE)
+#  define simde_mm256_round_ps(a, rounding) SIMDE__M256_C(_mm256_round_ps(a.n, rounding))
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256d
+simde_mm256_round_pd (simde__m256d a, const int rounding) {
+  simde__m256d r;
+
+  for (size_t i = 0 ; i < (sizeof(r.f64) / sizeof(r.f64[0])) ; i++) {
+    switch (rounding & ~SIMDE_MM_FROUND_NO_EXC) {
+      case SIMDE_MM_FROUND_TO_NEAREST_INT:
+        r.f64[i] = nearbyint(a.f64[i]);
+        break;
+      case SIMDE_MM_FROUND_TO_NEG_INF:
+        r.f64[i] = floor(a.f64[i]);
+        break;
+      case SIMDE_MM_FROUND_TO_POS_INF:
+        r.f64[i] = ceil(a.f64[i]);
+        break;
+      case SIMDE_MM_FROUND_TO_ZERO:
+        r.f64[i] = trunc(a.f64[i]);
+        break;
+    }
+  }
+
+  return r;
+}
+#if defined(SIMDE_AVX_NATIVE)
+#  define simde_mm256_round_pd(a, rounding) SIMDE__M256D_C(_mm256_round_pd(a.n, rounding))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 void
