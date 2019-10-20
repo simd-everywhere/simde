@@ -2302,6 +2302,23 @@ simde_mm256_round_pd (simde__m256d a, const int rounding) {
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
+simde__m256
+simde_mm256_rsqrt_ps (simde__m256 a) {
+  simde__m256 r;
+
+#if defined(SIMDE_AVX_NATIVE)
+  r.n = _mm256_rsqrt_ps(a.n);
+#else
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
+    r.f32[i] = 1.0f / sqrtf(a.f32[i]);
+  }
+#endif
+
+  return r;
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
 void
 simde_mm256_storeu_si256(simde__m256i * mem_addr, simde__m256i a) {
   memcpy(mem_addr, &a, sizeof(a));
