@@ -2319,6 +2319,133 @@ simde_mm256_rsqrt_ps (simde__m256 a) {
 }
 
 SIMDE__FUNCTION_ATTRIBUTES
+simde__m256i
+simde_mm256_setr_epi8 (
+    int8_t e31, int8_t e30, int8_t e29, int8_t e28, int8_t e27, int8_t e26, int8_t e25, int8_t e24,
+    int8_t e23, int8_t e22, int8_t e21, int8_t e20, int8_t e19, int8_t e18, int8_t e17, int8_t e16,
+    int8_t e15, int8_t e14, int8_t e13, int8_t e12, int8_t e11, int8_t e10, int8_t  e9, int8_t  e8,
+    int8_t  e7, int8_t  e6, int8_t  e5, int8_t  e4, int8_t  e3, int8_t  e2, int8_t  e1, int8_t  e0) {
+  simde__m256i r;
+
+#if defined(SIMDE_AVX_NATIVE)
+  r.n = _mm256_setr_epi8(
+      e31, e30, e29, e28, e27, e26, e25, e24,
+      e23, e22, e21, e20, e19, e18, e17, e16,
+      e15, e14, e13, e12, e11, e10,  e9,  e8,
+       e7,  e6,  e5,  e4,  e3,  e2,  e1,  e0);
+#else
+  r = simde_mm256_set_epi8(
+       e0,  e1,  e2,  e3,  e4,  e5,  e6,  e7,
+       e8,  e9, e10, e11, e12, e13, e14, e15,
+      e16, e17, e18, e19, e20, e21, e22, e23,
+      e24, e25, e26, e27, e28, e29, e30, e31);
+#endif
+
+  return r;
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256i
+simde_mm256_setr_epi16 (
+    int16_t e15, int16_t e14, int16_t e13, int16_t e12, int16_t e11, int16_t e10, int16_t  e9, int16_t  e8,
+    int16_t  e7, int16_t  e6, int16_t  e5, int16_t  e4, int16_t  e3, int16_t  e2, int16_t  e1, int16_t  e0) {
+  simde__m256i r;
+
+#if defined(SIMDE_AVX_NATIVE)
+  r.n = _mm256_setr_epi16(
+      e15, e14, e13, e12, e11, e10,  e9,  e8,
+       e7,  e6,  e5,  e4,  e3,  e2,  e1,  e0);
+#else
+  r = simde_mm256_set_epi16(
+       e0,  e1,  e2,  e3,  e4,  e5,  e6,  e7,
+       e8,  e9, e10, e11, e12, e13, e14, e15);
+#endif
+
+  return r;
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256i
+simde_mm256_setr_epi32 (
+    int32_t  e7, int32_t  e6, int32_t  e5, int32_t  e4, int32_t  e3, int32_t  e2, int32_t  e1, int32_t  e0) {
+  simde__m256i r;
+
+#if defined(SIMDE_AVX_NATIVE)
+  r.n = _mm256_setr_epi32(
+       e7,  e6,  e5,  e4,  e3,  e2,  e1,  e0);
+#else
+  r = simde_mm256_set_epi32(
+       e0,  e1,  e2,  e3,  e4,  e5,  e6,  e7);
+#endif
+
+  return r;
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256i
+simde_mm256_setr_epi64 (int64_t  e3, int64_t  e2, int64_t  e1, int64_t  e0) {
+  simde__m256i r;
+
+#if defined(SIMDE_AVX_NATIVE)
+  r.n = _mm256_setr_epi64x(e3, e2, e1, e0);
+#else
+  r = simde_mm256_set_epi64x(e0, e1, e2, e3);
+#endif
+
+  return r;
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256
+simde_mm256_setr_ps (
+    simde_float32  e7, simde_float32  e6, simde_float32  e5, simde_float32  e4,
+    simde_float32  e3, simde_float32  e2, simde_float32  e1, simde_float32  e0) {
+  simde__m256 r;
+
+#if defined(SIMDE_AVX_NATIVE)
+  r.n = _mm256_setr_ps(
+       e7,  e6,  e5,  e4,  e3,  e2,  e1,  e0);
+#else
+  r = simde_mm256_set_ps(
+       e0,  e1,  e2,  e3,  e4,  e5,  e6,  e7);
+#endif
+
+  return r;
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256d
+simde_mm256_setr_pd (simde_float64  e3, simde_float64  e2, simde_float64  e1, simde_float64  e0) {
+  simde__m256d r;
+
+#if defined(SIMDE_AVX_NATIVE)
+  r.n = _mm256_setr_pd(e3, e2, e1, e0);
+#else
+  r = simde_mm256_set_pd(e0, e1, e2, e3);
+#endif
+
+  return r;
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256
+simde_mm256_setr_m128 (simde__m128 lo, simde__m128 hi) {
+  return simde_mm256_set_m128(hi, lo);
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256d
+simde_mm256_setr_m128d (simde__m128d lo, simde__m128d hi) {
+  return simde_mm256_set_m128d(hi, lo);
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256i
+simde_mm256_setr_m128i (simde__m128i lo, simde__m128i hi) {
+  return simde_mm256_set_m128i(hi, lo);
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
 void
 simde_mm256_storeu_si256(simde__m256i * mem_addr, simde__m256i a) {
   memcpy(mem_addr, &a, sizeof(a));
