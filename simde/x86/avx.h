@@ -698,7 +698,7 @@ simde_mm256_addsub_pd (simde__m256d a, simde__m256d b) {
   r.n = _mm256_addsub_pd(a.n, b.n);
 #elif defined(SIMDE_SSE3_NATIVE)
   r.m128d[0].n = _mm_addsub_pd(a.m128d[0].n, b.m128d[0].n);
-  r.m128d[1].n = _mm_addsub_pd(a.m128d[1], b.m128d[1]);
+  r.m128d[1].n = _mm_addsub_pd(a.m128d[1].n, b.m128d[1].n);
 #else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.f64) / sizeof(r.f64[0])) ; i += 2) {
