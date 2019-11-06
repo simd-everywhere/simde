@@ -1678,7 +1678,7 @@ simde_mm256_load_pd (const double a[HEDLEY_ARRAY_PARAM(4)]) {
 #if defined(SIMDE_AVX_NATIVE)
   r.n = _mm256_load_pd(a);
 #else
-  r = *((simde__m256d*) a);
+  r = *SIMDE_CAST_ALIGN(32, simde__m256d*, &a);
 #endif
 
   return r;
@@ -1694,7 +1694,7 @@ simde_mm256_load_ps (const float a[HEDLEY_ARRAY_PARAM(8)]) {
 #if defined(SIMDE_AVX_NATIVE)
   r.n = _mm256_load_ps(a);
 #else
-  r = *((simde__m256*) a);
+  r = *SIMDE_CAST_ALIGN(32, simde__m256*, &a);
 #endif
 
   return r;
@@ -2489,6 +2489,42 @@ simde_mm256_sqrt_pd (simde__m256d a) {
 #endif
 
   return r;
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+void
+simde_mm256_store_ps (simde_float32 mem_addr[8], simde__m256 a) {
+  simde_assert_aligned(32, mem_addr);
+
+#if defined(SIMDE_AVX_NATIVE)
+  _mm256_store_ps(mem_addr, a.n);
+#else
+  *SIMDE_CAST_ALIGN(32, simde__m256*, mem_addr) =  a;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+void
+simde_mm256_store_pd (simde_float64 mem_addr[4], simde__m256d a) {
+  simde_assert_aligned(32, mem_addr);
+
+#if defined(SIMDE_AVX_NATIVE)
+  _mm256_store_pd(mem_addr, a.n);
+#else
+  *SIMDE_CAST_ALIGN(32, simde__m256d*, mem_addr) =  a;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+void
+simde_mm256_store_si256 (simde__m256i* mem_addr, simde__m256i a) {
+  simde_assert_aligned(32, mem_addr);
+
+#if defined(SIMDE_AVX_NATIVE)
+  _mm256_store_si256(&(mem_addr->n), a.n);
+#else
+  *mem_addr = a;
+#endif
 }
 
 SIMDE__END_DECLS

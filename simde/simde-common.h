@@ -53,6 +53,20 @@
 #define simde_assert_aligned(alignment, val) \
   simde_assert_int(((uintptr_t) (val)) % (alignment), ==, 0)
 
+/* TODO: this should really do something like
+   HEDLEY_STATIC_CAST(T, (simde_assert_int(alignment, v), v))
+   but I need to think about how to handle it in all compilers...
+   may end up moving to Hedley, too. */
+#if HEDLEY_HAS_WARNING("-Wcast-align")
+#  define SIMDE_CAST_ALIGN(alignment, T, v) \
+    HEDLEY_DIAGNOSTIC_PUSH \
+    _Pragma("clang diagnostic ignored \"-Wcast-align\"") \
+    HEDLEY_STATIC_CAST(T, v) \
+    HEDLEY_DIAGNOSTIC_POP
+#else
+#  define SIMDE_CAST_ALIGN(alignment, T, v) HEDLEY_STATIC_CAST(T, v)
+#endif
+
 #if HEDLEY_GCC_HAS_ATTRIBUTE(vector_size,4,6,0)
 #  define SIMDE__ENABLE_GCC_VEC_EXT
 #endif
