@@ -2,7 +2,8 @@
 #define SIMDE__ARM_INTERNAL_H
 
 #include "../test.h"
-#include <simde/arm/neon.h>
+#include "../../simde/arm/neon.h"
+
 #include <math.h>
 
 #if !defined(SIMDE_NO_NATIVE)

@@ -94,25 +94,12 @@ list(APPEND TEST_SOURCES
   arm/neon/vmul.c
   arm/neon/vsub.c)
 
-foreach(src ${TEST_SOURCES})
-  get_filename_component(bn "${src}" NAME_WE)
-  if (NOT "${bn}" MATCHES "compare")
-    get_filename_component(file_extension "${src}" EXT)
-    string(LENGTH "${file_extension}" file_extension_length)
-    string(LENGTH "${src}" src_length)
-    math(EXPR base_length "${src_length} - ${file_extension_length}")
-    string(SUBSTRING "${src}" 0 ${base_length} file)
-    string (REGEX REPLACE "[^a-zA-Z0-9]+" "-" file "${file}")
-    set(file "${CMAKE_CURRENT_BINARY_DIR}/${file}${file_extension}")
-    configure_file("${src}" "${file}" COPYONLY)
-    list(APPEND TEST_SOURCES "${file}")
-    set_source_files_properties("${file}" PROPERTIES COMPILE_DEFINITIONS "SIMDE_NO_NATIVE")
-  endif()
-endforeach()
+add_library(simde-test-no-native STATIC ${TEST_SOURCES})
+target_compile_definitions(simde-test-no-native PRIVATE SIMDE_NO_NATIVE)
+set_property(TARGET simde-test-no-native PROPERTY C_STANDARD "99")
 
-list(APPEND TEST_SOURCES
-  test.c
-  test-common.c)
+add_library(simde-test-native STATIC ${TEST_SOURCES})
+set_property(TARGET simde-test-native PROPERTY C_STANDARD "99")
 
 set_compiler_specific_flags(
   VARIABLE extra_cflags
@@ -138,8 +125,9 @@ endif()
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${extra_cflags}")
 
-add_executable(run-tests ${TEST_SOURCES})
-target_link_libraries(run-tests munit)
+add_executable(run-tests test.c test-common.c)
+target_link_libraries(run-tests munit simde-test-no-native simde-test-native)
+
 if(LIBM)
   target_link_libraries(run-tests ${LIBM})
 endif()

@@ -21,8 +21,8 @@
  * SOFTWARE.
  */
 
-#include <test/simd-js/simd-js.h>
-#include <simde/simd-js/simd-js.h>
+#include "simd-js.h"
+#include "../../simde/simd-js/simd-js.h"
 
 #include <math.h>
 

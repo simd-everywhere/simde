@@ -20,16 +20,16 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+#include "../x86-internal.h"
+#include "../../../simde/x86/mmx.h"
 
-#include <test/x86/x86-internal.h>
 #include <stdio.h>
 
 #if defined(__MMX__)
 #define SIMDE_MMX_NO_NATIVE
-#include <simde/x86/mmx.h>
 #include <mmintrin.h>
 
-#include <test/x86/compare.h>
+#include "../compare.h"
 
 define_test_cmp_VT_2xVT(_m64, mm_add_pi8,      i8)
 define_test_cmp_VT_2xVT(_m64, mm_add_pi16,    i16)

@@ -22,11 +22,12 @@
  */
 
 #include <stdio.h>
-#include <test/simd-js/simd-js.h>
+
+#include "simd-js.h"
+#include "../../simde/simd-js/simd-js.h"
 
 #if defined(__EMSCRIPTEN__)
 #define SIMDE_EM_NO_NATIVE
-#include <simde/simd-js/simd-js.h>
 #include <emscripten/vector.h>
 
 SIMDE_JS_DEFINE_TEST_EM_BINARY (int32x4, add)

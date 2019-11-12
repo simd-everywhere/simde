@@ -21,8 +21,8 @@
  * SOFTWARE.
  */
 
-#include <test/x86/x86-internal.h>
-#include <simde/x86/avx.h>
+#include "../x86-internal.h"
+#include "../../../simde/x86/avx.h"
 
 #include <stdio.h>
 
