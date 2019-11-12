@@ -29,12 +29,7 @@
 #include "simde-arch.h"
 
 #if \
-  (defined(__STDC_VERSION__) && __STDC_VERSION__ >= 201112L)
-#  define SIMDE_ALIGN(alignment) _Alignas(alignment)
-#elif \
-  (defined(__cplusplus) && (__cplusplus >= 201103L))
-#  define SIMDE_ALIGN(alignment) alignas(alignment)
-#elif \
+  HEDLEY_HAS_ATTRIBUTE(aligned) || \
   HEDLEY_GCC_VERSION_CHECK(2,95,0) || \
   HEDLEY_CRAY_VERSION_CHECK(8,4,0) || \
   HEDLEY_IBM_VERSION_CHECK(11,1,0) || \
@@ -46,6 +41,10 @@
 #  define SIMDE_ALIGN(alignment) __attribute__((aligned(alignment)))
 #elif defined(_MSC_VER) && (!defined(_M_IX86) || defined(_M_AMD64))
 #  define SIMDE_ALIGN(alignment) __declspec(align(alignment))
+#elif defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 201112L)
+#  define SIMDE_ALIGN(alignment) _Alignas(alignment)
+#elif defined(__cplusplus) && (__cplusplus >= 201103L)
+#  define SIMDE_ALIGN(alignment) alignas(alignment)
 #else
 #  define SIMDE_ALIGN(alignment)
 #endif
@@ -57,7 +56,9 @@
    HEDLEY_STATIC_CAST(T, (simde_assert_int(alignment, v), v))
    but I need to think about how to handle it in all compilers...
    may end up moving to Hedley, too. */
-#if HEDLEY_HAS_WARNING("-Wcast-align")
+#if HEDLEY_HAS_BUILTIN(__builtin_assume_aligned)
+#  define SIMDE_CAST_ALIGN(alignment, T, v) ((T) __builtin_assume_aligned(v, alignment))
+#elif HEDLEY_HAS_WARNING("-Wcast-align")
 #  define SIMDE_CAST_ALIGN(alignment, T, v) \
     HEDLEY_DIAGNOSTIC_PUSH \
     _Pragma("clang diagnostic ignored \"-Wcast-align\"") \

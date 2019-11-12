@@ -131,7 +131,7 @@ elseif(CFLAG__qopenmp_simd)
   set(extra_cflags "${extra_cflags} -qopenmp-simd -DSIMDE_ENABLE_OPENMP")
 endif()
 
-check_c_compiler_flag("-mfpu=neon" CFLAG__mfpu_neon)
+check_c_compiler_flag("-mfpu=neon -Werror" CFLAG__mfpu_neon)
 if(CFLAG__mfpu_neon)
   set(extra_cflags "${extra_cflags} -mfpu=neon")
 endif()
