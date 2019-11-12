@@ -2572,6 +2572,42 @@ simde_mm256_storeu2_m128i (simde__m128i* hi_addr, simde__m128i* lo_addr, simde__
   simde_mm_storeu_si128(hi_addr, simde_mm256_extractf128_si256(a, 1));
 }
 
+SIMDE__FUNCTION_ATTRIBUTES
+void
+simde_mm256_stream_ps (simde_float32 mem_addr[8], simde__m256 a) {
+  simde_assert_aligned(32, mem_addr);
+
+#if defined(SIMDE_AVX_NATIVE)
+  _mm256_stream_ps(mem_addr, a.n);
+#else
+  *SIMDE_CAST_ALIGN(32, simde__m256*, mem_addr) = a;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+void
+simde_mm256_stream_pd (simde_float64 mem_addr[4], simde__m256d a) {
+  simde_assert_aligned(32, mem_addr);
+
+#if defined(SIMDE_AVX_NATIVE)
+  _mm256_stream_pd(mem_addr, a.n);
+#else
+  *SIMDE_CAST_ALIGN(32, simde__m256d*, mem_addr) =  a;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+void
+simde_mm256_stream_si256 (simde__m256i* mem_addr, simde__m256i a) {
+  simde_assert_aligned(32, mem_addr);
+
+#if defined(SIMDE_AVX_NATIVE)
+  _mm256_stream_si256(&(mem_addr->n), a.n);
+#else
+  *mem_addr = a;
+#endif
+}
+
 SIMDE__END_DECLS
 
 #endif /* !defined(SIMDE__AVX_H) */
