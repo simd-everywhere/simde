@@ -2551,6 +2551,27 @@ simde_mm256_storeu_si256 (simde__m256i* mem_addr, simde__m256i a) {
 #endif
 }
 
+SIMDE__FUNCTION_ATTRIBUTES
+void
+simde_mm256_storeu2_m128 (simde_float32 hi_addr[4], simde_float32 lo_addr[4], simde__m256 a) {
+  simde_mm_storeu_ps(lo_addr, simde_mm256_castps256_ps128(a));
+  simde_mm_storeu_ps(hi_addr, simde_mm256_extractf128_ps(a, 1));
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+void
+simde_mm256_storeu2_m128d (simde_float64 hi_addr[2], simde_float64 lo_addr[2], simde__m256d a) {
+  simde_mm_storeu_pd(lo_addr, simde_mm256_castpd256_pd128(a));
+  simde_mm_storeu_pd(hi_addr, simde_mm256_extractf128_pd(a, 1));
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+void
+simde_mm256_storeu2_m128i (simde__m128i* hi_addr, simde__m128i* lo_addr, simde__m256i a) {
+  simde_mm_storeu_si128(lo_addr, simde_mm256_castsi256_si128(a));
+  simde_mm_storeu_si128(hi_addr, simde_mm256_extractf128_si256(a, 1));
+}
+
 SIMDE__END_DECLS
 
 #endif /* !defined(SIMDE__AVX_H) */
