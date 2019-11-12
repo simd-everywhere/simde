@@ -49,120 +49,120 @@
 
 SIMDE__BEGIN_DECLS
 
-typedef SIMDE_ALIGN(32) union {
+typedef union {
 #if defined(SIMDE__ENABLE_GCC_VEC_EXT)
-  int8_t          i8 __attribute__((__vector_size__(32), __may_alias__));
-  int16_t        i16 __attribute__((__vector_size__(32), __may_alias__));
-  int32_t        i32 __attribute__((__vector_size__(32), __may_alias__));
-  int64_t        i64 __attribute__((__vector_size__(32), __may_alias__));
-  uint8_t         u8 __attribute__((__vector_size__(32), __may_alias__));
-  uint16_t       u16 __attribute__((__vector_size__(32), __may_alias__));
-  uint32_t       u32 __attribute__((__vector_size__(32), __may_alias__));
-  uint64_t       u64 __attribute__((__vector_size__(32), __may_alias__));
+  SIMDE_ALIGN(32) int8_t          i8 __attribute__((__vector_size__(32), __may_alias__));
+  SIMDE_ALIGN(32) int16_t        i16 __attribute__((__vector_size__(32), __may_alias__));
+  SIMDE_ALIGN(32) int32_t        i32 __attribute__((__vector_size__(32), __may_alias__));
+  SIMDE_ALIGN(32) int64_t        i64 __attribute__((__vector_size__(32), __may_alias__));
+  SIMDE_ALIGN(32) uint8_t         u8 __attribute__((__vector_size__(32), __may_alias__));
+  SIMDE_ALIGN(32) uint16_t       u16 __attribute__((__vector_size__(32), __may_alias__));
+  SIMDE_ALIGN(32) uint32_t       u32 __attribute__((__vector_size__(32), __may_alias__));
+  SIMDE_ALIGN(32) uint64_t       u64 __attribute__((__vector_size__(32), __may_alias__));
   #if defined(SIMDE__HAVE_INT128)
-  simde_int128  i128 __attribute__((__vector_size__(32), __may_alias__));
-  simde_uint128 u128 __attribute__((__vector_size__(32), __may_alias__));
+  SIMDE_ALIGN(32) simde_int128  i128 __attribute__((__vector_size__(32), __may_alias__));
+  SIMDE_ALIGN(32) simde_uint128 u128 __attribute__((__vector_size__(32), __may_alias__));
   #endif
-  simde_float32  f32 __attribute__((__vector_size__(32), __may_alias__));
-  simde_float64  f64 __attribute__((__vector_size__(32), __may_alias__));
+  SIMDE_ALIGN(32) simde_float32  f32 __attribute__((__vector_size__(32), __may_alias__));
+  SIMDE_ALIGN(32) simde_float64  f64 __attribute__((__vector_size__(32), __may_alias__));
 #else
-  int8_t          i8[32];
-  int16_t        i16[16];
-  int32_t        i32[8];
-  int64_t        i64[4];
-  uint8_t         u8[32];
-  uint16_t       u16[16];
-  uint32_t       u32[8];
-  uint64_t       u64[4];
+  SIMDE_ALIGN(32) int8_t          i8[32];
+  SIMDE_ALIGN(32) int16_t        i16[16];
+  SIMDE_ALIGN(32) int32_t        i32[8];
+  SIMDE_ALIGN(32) int64_t        i64[4];
+  SIMDE_ALIGN(32) uint8_t         u8[32];
+  SIMDE_ALIGN(32) uint16_t       u16[16];
+  SIMDE_ALIGN(32) uint32_t       u32[8];
+  SIMDE_ALIGN(32) uint64_t       u64[4];
   #if defined(SIMDE__HAVE_INT128)
-  simde_int128  i128[2];
-  simde_uint128 u128[2];
+  SIMDE_ALIGN(32) simde_int128  i128[2];
+  SIMDE_ALIGN(32) simde_uint128 u128[2];
   #endif
-  simde_float32  f32[8];
-  simde_float64  f64[4];
+  SIMDE_ALIGN(32) simde_float32  f32[8];
+  SIMDE_ALIGN(32) simde_float64  f64[4];
 #endif
 
-  simde__m128    m128[2];
+  SIMDE_ALIGN(32) simde__m128    m128[2];
 #if defined(SIMDE_AVX_NATIVE)
-  __m256         n;
+  SIMDE_ALIGN(32) __m256         n;
 #endif
 } simde__m256;
 
-typedef SIMDE_ALIGN(32) union {
+typedef union {
 #if defined(SIMDE__ENABLE_GCC_VEC_EXT)
-  int8_t          i8 __attribute__((__vector_size__(32), __may_alias__));
-  int16_t        i16 __attribute__((__vector_size__(32), __may_alias__));
-  int32_t        i32 __attribute__((__vector_size__(32), __may_alias__));
-  int64_t        i64 __attribute__((__vector_size__(32), __may_alias__));
-  uint8_t         u8 __attribute__((__vector_size__(32), __may_alias__));
-  uint16_t       u16 __attribute__((__vector_size__(32), __may_alias__));
-  uint32_t       u32 __attribute__((__vector_size__(32), __may_alias__));
-  uint64_t       u64 __attribute__((__vector_size__(32), __may_alias__));
+  SIMDE_ALIGN(32) int8_t          i8 __attribute__((__vector_size__(32), __may_alias__));
+  SIMDE_ALIGN(32) int16_t        i16 __attribute__((__vector_size__(32), __may_alias__));
+  SIMDE_ALIGN(32) int32_t        i32 __attribute__((__vector_size__(32), __may_alias__));
+  SIMDE_ALIGN(32) int64_t        i64 __attribute__((__vector_size__(32), __may_alias__));
+  SIMDE_ALIGN(32) uint8_t         u8 __attribute__((__vector_size__(32), __may_alias__));
+  SIMDE_ALIGN(32) uint16_t       u16 __attribute__((__vector_size__(32), __may_alias__));
+  SIMDE_ALIGN(32) uint32_t       u32 __attribute__((__vector_size__(32), __may_alias__));
+  SIMDE_ALIGN(32) uint64_t       u64 __attribute__((__vector_size__(32), __may_alias__));
   #if defined(SIMDE__HAVE_INT128)
-  simde_int128  i128 __attribute__((__vector_size__(32), __may_alias__));
-  simde_uint128 u128 __attribute__((__vector_size__(32), __may_alias__));
+  SIMDE_ALIGN(32) simde_int128  i128 __attribute__((__vector_size__(32), __may_alias__));
+  SIMDE_ALIGN(32) simde_uint128 u128 __attribute__((__vector_size__(32), __may_alias__));
   #endif
-  simde_float32  f32 __attribute__((__vector_size__(32), __may_alias__));
-  simde_float64  f64 __attribute__((__vector_size__(32), __may_alias__));
+  SIMDE_ALIGN(32) simde_float32  f32 __attribute__((__vector_size__(32), __may_alias__));
+  SIMDE_ALIGN(32) simde_float64  f64 __attribute__((__vector_size__(32), __may_alias__));
 #else
-  int8_t          i8[32];
-  int16_t        i16[16];
-  int32_t        i32[8];
-  int64_t        i64[4];
-  uint8_t         u8[32];
-  uint16_t       u16[16];
-  uint32_t       u32[8];
-  uint64_t       u64[4];
+  SIMDE_ALIGN(32) int8_t          i8[32];
+  SIMDE_ALIGN(32) int16_t        i16[16];
+  SIMDE_ALIGN(32) int32_t        i32[8];
+  SIMDE_ALIGN(32) int64_t        i64[4];
+  SIMDE_ALIGN(32) uint8_t         u8[32];
+  SIMDE_ALIGN(32) uint16_t       u16[16];
+  SIMDE_ALIGN(32) uint32_t       u32[8];
+  SIMDE_ALIGN(32) uint64_t       u64[4];
   #if defined(SIMDE__HAVE_INT128)
-  simde_int128  i128[2];
-  simde_uint128 u128[2];
+  SIMDE_ALIGN(32) simde_int128  i128[2];
+  SIMDE_ALIGN(32) simde_uint128 u128[2];
   #endif
-  simde_float32  f32[8];
-  simde_float64  f64[4];
+  SIMDE_ALIGN(32) simde_float32  f32[8];
+  SIMDE_ALIGN(32) simde_float64  f64[4];
 #endif
 
-  simde__m128d  m128d[2];
+  SIMDE_ALIGN(32) simde__m128d m128d[2];
 #if defined(SIMDE_AVX_NATIVE)
-  __m256d        n;
+  SIMDE_ALIGN(32) __m256d        n;
 #endif
 } simde__m256d;
 
-typedef SIMDE_ALIGN(32) union {
+typedef union {
 #if defined(SIMDE__ENABLE_GCC_VEC_EXT)
-  int8_t          i8 __attribute__((__vector_size__(32), __may_alias__));
-  int16_t        i16 __attribute__((__vector_size__(32), __may_alias__));
-  int32_t        i32 __attribute__((__vector_size__(32), __may_alias__));
-  int64_t        i64 __attribute__((__vector_size__(32), __may_alias__));
-  uint8_t         u8 __attribute__((__vector_size__(32), __may_alias__));
-  uint16_t       u16 __attribute__((__vector_size__(32), __may_alias__));
-  uint32_t       u32 __attribute__((__vector_size__(32), __may_alias__));
-  uint64_t       u64 __attribute__((__vector_size__(32), __may_alias__));
+  SIMDE_ALIGN(32) int8_t          i8 __attribute__((__vector_size__(32), __may_alias__));
+  SIMDE_ALIGN(32) int16_t        i16 __attribute__((__vector_size__(32), __may_alias__));
+  SIMDE_ALIGN(32) int32_t        i32 __attribute__((__vector_size__(32), __may_alias__));
+  SIMDE_ALIGN(32) int64_t        i64 __attribute__((__vector_size__(32), __may_alias__));
+  SIMDE_ALIGN(32) uint8_t         u8 __attribute__((__vector_size__(32), __may_alias__));
+  SIMDE_ALIGN(32) uint16_t       u16 __attribute__((__vector_size__(32), __may_alias__));
+  SIMDE_ALIGN(32) uint32_t       u32 __attribute__((__vector_size__(32), __may_alias__));
+  SIMDE_ALIGN(32) uint64_t       u64 __attribute__((__vector_size__(32), __may_alias__));
   #if defined(SIMDE__HAVE_INT128)
-  simde_int128  i128 __attribute__((__vector_size__(32), __may_alias__));
-  simde_uint128 u128 __attribute__((__vector_size__(32), __may_alias__));
+  SIMDE_ALIGN(32) simde_int128  i128 __attribute__((__vector_size__(32), __may_alias__));
+  SIMDE_ALIGN(32) simde_uint128 u128 __attribute__((__vector_size__(32), __may_alias__));
   #endif
-  simde_float32  f32 __attribute__((__vector_size__(32), __may_alias__));
-  simde_float64  f64 __attribute__((__vector_size__(32), __may_alias__));
+  SIMDE_ALIGN(32) simde_float32  f32 __attribute__((__vector_size__(32), __may_alias__));
+  SIMDE_ALIGN(32) simde_float64  f64 __attribute__((__vector_size__(32), __may_alias__));
 #else
-  int8_t          i8[32];
-  int16_t        i16[16];
-  int32_t        i32[8];
-  int64_t        i64[4];
-  uint8_t         u8[32];
-  uint16_t       u16[16];
-  uint32_t       u32[8];
-  uint64_t       u64[4];
+  SIMDE_ALIGN(32) int8_t          i8[32];
+  SIMDE_ALIGN(32) int16_t        i16[16];
+  SIMDE_ALIGN(32) int32_t        i32[8];
+  SIMDE_ALIGN(32) int64_t        i64[4];
+  SIMDE_ALIGN(32) uint8_t         u8[32];
+  SIMDE_ALIGN(32) uint16_t       u16[16];
+  SIMDE_ALIGN(32) uint32_t       u32[8];
+  SIMDE_ALIGN(32) uint64_t       u64[4];
   #if defined(SIMDE__HAVE_INT128)
-  simde_int128  i128[2];
-  simde_uint128 u128[2];
+  SIMDE_ALIGN(32) simde_int128  i128[2];
+  SIMDE_ALIGN(32) simde_uint128 u128[2];
   #endif
-  simde_float32  f32[8];
-  simde_float64  f64[4];
+  SIMDE_ALIGN(32) simde_float32  f32[8];
+  SIMDE_ALIGN(32) simde_float64  f64[4];
 #endif
 
-  simde__m128i   m128i[2];
+  SIMDE_ALIGN(32) simde__m128i   m128i[2];
 #if defined(SIMDE_AVX_NATIVE)
-  __m256i        n;
+  SIMDE_ALIGN(32) __m256i        n;
 #endif
 } simde__m256i;
 
@@ -1678,7 +1678,7 @@ simde_mm256_load_pd (const double a[HEDLEY_ARRAY_PARAM(4)]) {
 #if defined(SIMDE_AVX_NATIVE)
   r.n = _mm256_load_pd(a);
 #else
-  r = *SIMDE_CAST_ALIGN(32, simde__m256d*, &a);
+  r = *SIMDE_CAST_ALIGN(32, simde__m256d*, a);
 #endif
 
   return r;
@@ -1694,7 +1694,7 @@ simde_mm256_load_ps (const float a[HEDLEY_ARRAY_PARAM(8)]) {
 #if defined(SIMDE_AVX_NATIVE)
   r.n = _mm256_load_ps(a);
 #else
-  r = *SIMDE_CAST_ALIGN(32, simde__m256*, &a);
+  r = *SIMDE_CAST_ALIGN(32, simde__m256*, a);
 #endif
 
   return r;
@@ -2499,7 +2499,7 @@ simde_mm256_store_ps (simde_float32 mem_addr[8], simde__m256 a) {
 #if defined(SIMDE_AVX_NATIVE)
   _mm256_store_ps(mem_addr, a.n);
 #else
-  *SIMDE_CAST_ALIGN(32, simde__m256*, mem_addr) =  a;
+  *SIMDE_CAST_ALIGN(32, simde__m256*, mem_addr) = a;
 #endif
 }
 
