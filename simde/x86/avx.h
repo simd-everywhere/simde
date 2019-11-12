@@ -2446,12 +2446,6 @@ simde_mm256_setr_m128i (simde__m128i lo, simde__m128i hi) {
 }
 
 SIMDE__FUNCTION_ATTRIBUTES
-void
-simde_mm256_storeu_si256(simde__m256i * mem_addr, simde__m256i a) {
-  memcpy(mem_addr, &a, sizeof(a));
-}
-
-SIMDE__FUNCTION_ATTRIBUTES
 simde__m256
 simde_mm256_sqrt_ps (simde__m256 a) {
   simde__m256 r;
@@ -2524,6 +2518,36 @@ simde_mm256_store_si256 (simde__m256i* mem_addr, simde__m256i a) {
   _mm256_store_si256(&(mem_addr->n), a.n);
 #else
   *mem_addr = a;
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+void
+simde_mm256_storeu_ps (simde_float32 mem_addr[8], simde__m256 a) {
+#if defined(SIMDE_AVX_NATIVE)
+  _mm256_storeu_ps(mem_addr, a.n);
+#else
+  memcpy(mem_addr, &a, sizeof(a));
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+void
+simde_mm256_storeu_pd (simde_float64 mem_addr[4], simde__m256d a) {
+#if defined(SIMDE_AVX_NATIVE)
+  _mm256_storeu_pd(mem_addr, a.n);
+#else
+  memcpy(mem_addr, &a, sizeof(a));
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+void
+simde_mm256_storeu_si256 (simde__m256i* mem_addr, simde__m256i a) {
+#if defined(SIMDE_AVX_NATIVE)
+  _mm256_storeu_si256(&(mem_addr->n), a.n);
+#else
+  memcpy(mem_addr, &a, sizeof(a));
 #endif
 }
 
