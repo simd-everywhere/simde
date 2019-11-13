@@ -172,11 +172,13 @@ CI).
  * Intel offers an emulator, the [Intel® Software Development
    Emulator](https://software.intel.com/en-us/articles/intel-software-development-emulator/)
    which can be used to develop software which uses Intel intrinsics
-   without having to own hardware which supports them, though AFAIK it
+   without having to own hardware which supports them, though it
    doesn't help for deployment.
- * I'm not aware of anyone else trying to create portable
-   implementations of an instruction set, but there are a few projects
-   trying to implement one set with another:
+ * [Iris](https://github.com/AlexYaruki/iris) is the only other project
+   I'm aware of which is attempting to create portable implementations
+   like SIMDe.  SIMDe is much further along on the Intel side, but Iris
+   looks to be farther along on ARM.  C++-only, Apache 2.0 license.
+ * There are a few projects trying to implement one set with another:
    * [ARM_NEON_2_x86_SSE](https://github.com/intel/ARM_NEON_2_x86_SSE)
      — implementing NEON using SSE.  Quite extensive, Apache 2.0
      license.
@@ -187,7 +189,7 @@ CI).
      SSE2 using AltiVec/VMX, using a non-free IBM library called
      [powerveclib](https://www.ibm.com/developerworks/community/groups/community/powerveclib/)
    * [SSE-to-NEON](https://github.com/otim/SSE-to-NEON) — implementing
-     SSE with NEON.  Non-free.
+     SSE with NEON.  Non-free, C++.
  * [arm-neon-tests](https://github.com/christophe-lyon/arm-neon-tests)
    contains tests te verify NEON implementations.
 
@@ -198,14 +200,22 @@ know](https://github.com/nemequ/simde/issues/new)!
 
 Sometime features can't be emulated.  If SIMDe is operating in native
 mode the functions will work as expected, but if there is no native
-support the following caveats apply:
+support some caveats apply:
 
-### SSE
+ * x86 / x86_64
+   * SSE
+     * `simde_MM_SET_ROUNDING_MODE()` will use `fesetround()`, altering
+       the global rounding mode.
+     * `simde_mm_getcsr` and `simde_mm_setcsr` only implement bits 13 and
+       14 (rounding mode).
+   * AVX
+     * `simde_mm256_test*` do not set the CF/ZF registers as there is no
+       portable way to implement that functionality.
+     * `simde_mm256_zeroall` and `simde_mm256_zeroupper` are not implemented
+       as there is no portable way to implement that functionality.
 
- * `simde_MM_SET_ROUNDING_MODE()` will use `fesetround()`, altering
-   the global rounding mode.
- * `simde_mm_getcsr` and `simde_mm_setcsr` only implement bits 13 and
-   14 (rounding mode).
+If you find any other differences, please file an issue so we can either fix
+it or add it to the list above.
 
 ## License
 
