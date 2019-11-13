@@ -2648,6 +2648,130 @@ simde_mm256_sub_pd (simde__m256d a, simde__m256d b) {
   return r;
 }
 
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256
+simde_mm256_xor_ps (simde__m256 a, simde__m256 b) {
+  simde__m256 r;
+
+#if defined(SIMDE_AVX_NATIVE)
+  r.n = _mm256_xor_ps(a.n, b.n);
+#elif defined(SIMDE_SSE_NATIVE)
+  r.m128[0].n = _mm_xor_ps(a.m128[0].n, b.m128[0].n);
+  r.m128[1].n = _mm_xor_ps(a.m128[1].n, b.m128[1].n);
+#else
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.u32) / sizeof(r.u32[0])) ; i++) {
+    r.u32[i] = a.u32[i] ^ b.u32[i];
+  }
+#endif
+
+  return r;
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256d
+simde_mm256_xor_pd (simde__m256d a, simde__m256d b) {
+  simde__m256d r;
+
+#if defined(SIMDE_AVX_NATIVE)
+  r.n = _mm256_xor_pd(a.n, b.n);
+#elif defined(SIMDE_SSE2_NATIVE)
+  r.m128d[0].n = _mm_xor_pd(a.m128d[0].n, b.m128d[0].n);
+  r.m128d[1].n = _mm_xor_pd(a.m128d[1].n, b.m128d[1].n);
+#else
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.u64) / sizeof(r.u64[0])) ; i++) {
+    r.u64[i] = a.u64[i] ^ b.u64[i];
+  }
+#endif
+
+  return r;
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256
+simde_mm256_unpackhi_ps (simde__m256 a, simde__m256 b) {
+  simde__m256 r;
+
+#if defined(SIMDE_AVX_NATIVE)
+  r.n = _mm256_unpackhi_ps(a.n, b.n);
+#elif defined(SIMDE__SHUFFLE_VECTOR)
+  r.f32 = SIMDE__SHUFFLE_VECTOR(32, 32, a.f32, b.f32, 2, 10, 3, 11, 6, 14, 7, 15);
+#else
+  r.f32[0] = a.f32[2];
+  r.f32[1] = b.f32[2];
+  r.f32[2] = a.f32[3];
+  r.f32[3] = b.f32[3];
+  r.f32[4] = a.f32[6];
+  r.f32[5] = b.f32[6];
+  r.f32[6] = a.f32[7];
+  r.f32[7] = b.f32[7];
+#endif
+
+  return r;
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256d
+simde_mm256_unpackhi_pd (simde__m256d a, simde__m256d b) {
+  simde__m256d r;
+
+#if defined(SIMDE_AVX_NATIVE)
+  r.n = _mm256_unpackhi_pd(a.n, b.n);
+#elif defined(SIMDE__SHUFFLE_VECTOR)
+  r.f64 = SIMDE__SHUFFLE_VECTOR(64, 32, a.f64, b.f64, 1, 5, 3, 7);
+#else
+  r.f64[0] = a.f64[1];
+  r.f64[1] = b.f64[1];
+  r.f64[2] = a.f64[3];
+  r.f64[3] = b.f64[3];
+#endif
+
+  return r;
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256
+simde_mm256_unpacklo_ps (simde__m256 a, simde__m256 b) {
+  simde__m256 r;
+
+#if defined(SIMDE_AVX_NATIVE)
+  r.n = _mm256_unpacklo_ps(a.n, b.n);
+#elif defined(SIMDE__SHUFFLE_VECTOR)
+  r.f32 = SIMDE__SHUFFLE_VECTOR(32, 32, a.f32, b.f32, 0, 8, 1, 9, 4, 12, 5, 13);
+#else
+  r.f32[0] = a.f32[0];
+  r.f32[1] = b.f32[0];
+  r.f32[2] = a.f32[1];
+  r.f32[3] = b.f32[1];
+  r.f32[4] = a.f32[4];
+  r.f32[5] = b.f32[4];
+  r.f32[6] = a.f32[5];
+  r.f32[7] = b.f32[5];
+#endif
+
+  return r;
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256d
+simde_mm256_unpacklo_pd (simde__m256d a, simde__m256d b) {
+  simde__m256d r;
+
+#if defined(SIMDE_AVX_NATIVE)
+  r.n = _mm256_unpacklo_pd(a.n, b.n);
+#elif defined(SIMDE__SHUFFLE_VECTOR)
+  r.f64 = SIMDE__SHUFFLE_VECTOR(64, 32, a.f64, b.f64, 0, 4, 2, 6);
+#else
+  r.f64[0] = a.f64[0];
+  r.f64[1] = b.f64[0];
+  r.f64[2] = a.f64[2];
+  r.f64[3] = b.f64[2];
+#endif
+
+  return r;
+}
+
 SIMDE__END_DECLS
 
 #endif /* !defined(SIMDE__AVX_H) */
