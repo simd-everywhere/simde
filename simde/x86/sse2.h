@@ -3426,10 +3426,10 @@ SIMDE__FUNCTION_ATTRIBUTES
 void
 simde_mm_stream_si64 (int64_t* mem_addr, int64_t a) {
 #if defined(SIMDE_SSE2_NATIVE) && defined(SIMDE_ARCH_AMD64)
-  #if HEDLEY_GCC_VERSION_CHECK(5,3,0) // https://github.com/gcc-mirror/gcc/commit/821b85a2a0869b5128bd67e192a5a97748cbd90d
+  #if \
+      (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(5,3,0)) && \
+      (!defined(HEDLEY_PGI_VERSION))
     _mm_stream_si64((long long*) mem_addr, a);
-  #elif !defined(HEDLEY_PGI_VERSION) && !defined(HEDLEY_GCC_VERSION)
-    _mm_stream_si64(mem_addr, a);
   #else
     *mem_addr = a;
   #endif
