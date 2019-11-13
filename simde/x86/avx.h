@@ -2447,6 +2447,49 @@ simde_mm256_setr_m128i (simde__m128i lo, simde__m128i hi) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256
+simde_mm256_shuffle_ps (simde__m256 a, simde__m256 b, const int imm8)
+    HEDLEY_REQUIRE_MSG((imm8 & 0xff) == imm8, "imm8 must be in range [0, 255]") {
+  simde__m256 r;
+
+  // SIMDE__VECTORIZE
+  // for (size_t i = 0 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
+  //   r.f32[i] = ((i & 2) ? b : a).m128[i >> 2].f32[(imm8 >> ((i & 3) << 1) & 3)];
+  // }
+
+  r.f32[0] = a.m128[0].f32[(imm8 >> 0) & 3];
+  r.f32[1] = a.m128[0].f32[(imm8 >> 2) & 3];
+  r.f32[2] = b.m128[0].f32[(imm8 >> 4) & 3];
+  r.f32[3] = b.m128[0].f32[(imm8 >> 6) & 3];
+  r.f32[4] = a.m128[1].f32[(imm8 >> 0) & 3];
+  r.f32[5] = a.m128[1].f32[(imm8 >> 2) & 3];
+  r.f32[6] = b.m128[1].f32[(imm8 >> 4) & 3];
+  r.f32[7] = b.m128[1].f32[(imm8 >> 6) & 3];
+
+  return r;
+}
+#if defined(SIMDE_AVX_NATIVE)
+#  define simde_mm256_shuffle_ps(a, b, imm8) SIMDE__M256_C(_mm256_shuffle_ps(a.n, b.n, imm8))
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256d
+simde_mm256_shuffle_pd (simde__m256d a, simde__m256d b, const int imm8)
+    HEDLEY_REQUIRE_MSG((imm8 & 0xff) == imm8, "imm8 must be in range [0, 15]") {
+  simde__m256d r;
+
+  r.f64[0] = a.f64[((imm8     ) & 1)    ];
+  r.f64[1] = b.f64[((imm8 >> 1) & 1)    ];
+  r.f64[2] = a.f64[((imm8 >> 2) & 1) | 2];
+  r.f64[3] = b.f64[((imm8 >> 3) & 1) | 2];
+
+  return r;
+}
+#if defined(SIMDE_AVX_NATIVE)
+#  define simde_mm256_shuffle_pd(a, b, imm8) SIMDE__M256D_C(_mm256_shuffle_pd(a.n, b.n, imm8))
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256
 simde_mm256_sqrt_ps (simde__m256 a) {
   simde__m256 r;
 
