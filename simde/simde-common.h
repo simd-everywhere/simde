@@ -254,6 +254,9 @@ HEDLEY_STATIC_ASSERT(sizeof(simde_float64) == 8, "Unable to find 64-bit floating
 #  if !HEDLEY_GCC_VERSION_CHECK(4,6,0)
 #    define SIMDE_BUG_GCC_BAD_MM_EXTRACT_EPI8 /* TODO: find relevant bug or commit */
 #  endif
+#  if !HEDLEY_GCC_VERSION_CHECK(10,0,0)
+#    define SIMDE_BUG_GCC_REV_274313
+#  endif
 #  if defined(HEDLEY_EMSCRIPTEN_VERSION)
 #    define SIMDE_BUG_EMSCRIPTEN_MISSING_IMPL /* Placeholder for (as yet) unfiled issues. */
 #    define SIMDE_BUG_EMSCRIPTEN_5242

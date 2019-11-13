@@ -2772,6 +2772,51 @@ simde_mm256_unpacklo_pd (simde__m256d a, simde__m256d b) {
   return r;
 }
 
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256
+simde_mm256_zextps128_ps256 (simde__m128 a) {
+  simde__m256 r;
+
+#if defined(SIMDE_AVX_NATIVE) && !defined(SIMDE_BUG_GCC_REV_274313)
+  r.n = _mm256_zextps128_ps256(a.n);
+#else
+  r.m128[0] = a;
+  r.m128[1] = simde_mm_setzero_ps();
+#endif
+
+  return r;
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256d
+simde_mm256_zextpd128_pd256 (simde__m128d a) {
+  simde__m256d r;
+
+#if defined(SIMDE_AVX_NATIVE) && !defined(SIMDE_BUG_GCC_REV_274313)
+  r.n = _mm256_zextpd128_pd256(a.n);
+#else
+  r.m128d[0] = a;
+  r.m128d[1] = simde_mm_setzero_pd();
+#endif
+
+  return r;
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256i
+simde_mm256_zextsi128_si256 (simde__m128i a) {
+  simde__m256i r;
+
+#if defined(SIMDE_AVX_NATIVE) && !defined(SIMDE_BUG_GCC_REV_274313)
+  r.n = _mm256_zextsi128_si256(a.n);
+#else
+  r.m128i[0] = a;
+  r.m128i[1] = simde_mm_setzero_si128();
+#endif
+
+  return r;
+}
+
 SIMDE__END_DECLS
 
 #endif /* !defined(SIMDE__AVX_H) */
