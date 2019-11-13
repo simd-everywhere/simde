@@ -10221,6 +10221,53 @@ test_simde_mm256_sqrt_ps(const MunitParameter params[], void* data) {
 }
 
 static MunitResult
+test_simde_mm256_setzero_ps(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  simde__m256 r =
+    simde_mm256_set_ps(SIMDE_FLOAT32_C(    0.00), SIMDE_FLOAT32_C(    0.00),
+                       SIMDE_FLOAT32_C(    0.00), SIMDE_FLOAT32_C(    0.00),
+                       SIMDE_FLOAT32_C(    0.00), SIMDE_FLOAT32_C(    0.00),
+                       SIMDE_FLOAT32_C(    0.00), SIMDE_FLOAT32_C(    0.00));
+
+  simde__m256 res = simde_mm256_setzero_ps();
+  simde_assert_m256_f32_equal(r, res, 1);
+
+  return MUNIT_OK;
+}
+
+static MunitResult
+test_simde_mm256_setzero_pd(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  simde__m256d r = 
+    simde_mm256_set_pd(SIMDE_FLOAT64_C(    0.00), SIMDE_FLOAT64_C(    0.00),
+                       SIMDE_FLOAT64_C(    0.00), SIMDE_FLOAT64_C(    0.00));
+
+  simde__m256d res = simde_mm256_setzero_pd();
+  simde_assert_m256d_f64_equal(r, res, 1);
+
+  return MUNIT_OK;
+}
+
+static MunitResult
+test_simde_mm256_setzero_si256(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  simde__m256i r = 
+    simde_mm256_set_epi32(INT32_C(0), INT32_C(0), INT32_C(0), INT32_C(0),
+                          INT32_C(0), INT32_C(0), INT32_C(0), INT32_C(0));
+
+  simde__m256i res = simde_mm256_setzero_si256();
+  simde_assert_m256i_i32(r, ==, res);
+
+  return MUNIT_OK;
+}
+
+static MunitResult
 test_simde_mm256_sqrt_pd(const MunitParameter params[], void* data) {
   (void) params;
   (void) data;
@@ -11877,6 +11924,10 @@ static MunitTest test_suite_tests[] = {
   TEST_FUNC(mm256_setr_m128),
   TEST_FUNC(mm256_setr_m128d),
   TEST_FUNC(mm256_setr_m128i),
+
+  TEST_FUNC(mm256_setzero_ps),
+  TEST_FUNC(mm256_setzero_pd),
+  TEST_FUNC(mm256_setzero_si256),
 
   TEST_FUNC(mm256_shuffle_ps),
   TEST_FUNC(mm256_shuffle_pd),

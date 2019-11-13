@@ -2447,6 +2447,57 @@ simde_mm256_setr_m128i (simde__m128i lo, simde__m128i hi) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256
+simde_mm256_setzero_ps (void) {
+  simde__m256 r;
+
+#if defined(SIMDE_AVX_NATIVE)
+  r.n = _mm256_setzero_ps();
+#elif defined(SIMDE_SSE2_NATIVE)
+  r.m128[0] = simde_mm_setzero_ps();
+  r.m128[1] = simde_mm_setzero_ps();
+#else
+  memset(&r, 0, sizeof(r));
+#endif
+
+  return r;
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256d
+simde_mm256_setzero_pd (void) {
+  simde__m256d r;
+
+#if defined(SIMDE_AVX_NATIVE)
+  r.n = _mm256_setzero_pd();
+#elif defined(SIMDE_SSE2_NATIVE)
+  r.m128d[0] = simde_mm_setzero_pd();
+  r.m128d[1] = simde_mm_setzero_pd();
+#else
+  memset(&r, 0, sizeof(r));
+#endif
+
+  return r;
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256i
+simde_mm256_setzero_si256 (void) {
+  simde__m256i r;
+
+#if defined(SIMDE_AVX_NATIVE)
+  r.n = _mm256_setzero_si256();
+#elif defined(SIMDE_SSE2_NATIVE)
+  r.m128i[0] = simde_mm_setzero_si128();
+  r.m128i[1] = simde_mm_setzero_si128();
+#else
+  memset(&r, 0, sizeof(r));
+#endif
+
+  return r;
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256
 simde_mm256_shuffle_ps (simde__m256 a, simde__m256 b, const int imm8)
     HEDLEY_REQUIRE_MSG((imm8 & 0xff) == imm8, "imm8 must be in range [0, 255]") {
   simde__m256 r;
