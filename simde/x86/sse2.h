@@ -1571,7 +1571,7 @@ int32_t
 simde_mm_extract_epi16 (simde__m128i a, const int imm8) {
   return a.u16[imm8 & 7];
 }
-#if defined(SIMDE_SSE2_NATIVE) && (!defined(SIMDE__REALLY_GCC) || HEDLEY_GCC_VERSION_CHECK(4,6,0))
+#if defined(SIMDE_SSE2_NATIVE) && (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(4,6,0))
 #  define simde_mm_extract_epi16(a, imm8) _mm_extract_epi16(a.n, imm8)
 #elif defined(SIMDE_SSE2_NEON)
 #  define simde_mm_extract_epi16(a, imm8) (vgetq_lane_s16((a).neon_i16, (imm8)) & ((int32_t) UINT32_C(0x0000ffff)))
@@ -3426,12 +3426,12 @@ SIMDE__FUNCTION_ATTRIBUTES
 void
 simde_mm_stream_si64 (int64_t* mem_addr, int64_t a) {
 #if defined(SIMDE_SSE2_NATIVE) && defined(SIMDE_ARCH_AMD64)
-  #if defined(SIMDE__REALLY_GCC) && !HEDLEY_GCC_VERSION_CHECK(4,8,0)
-    *mem_addr = a;
-  #elif defined(__GNUC__)
+  #if defined(HEDLEY_GCC_VERSION)
     _mm_stream_si64((long long*) mem_addr, a);
-  #else
+  #elif !defined(HEDLEY_PGI_VERSION)
     _mm_stream_si64(mem_addr, a);
+  #else
+    *mem_addr = a;
   #endif
 #else
   *mem_addr = a;
