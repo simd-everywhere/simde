@@ -2225,6 +2225,74 @@ simde_mm_permute_pd (simde__m128d a, const int imm8) {
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
+simde__m128
+simde_mm_permutevar_ps (simde__m128 a, simde__m128i b) {
+  simde__m128 r;
+
+#if defined(SIMDE_AVX_NATIVE)
+  r.n = _mm_permutevar_ps(a.n, b.n);
+#else
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
+    r.f32[i] = a.f32[b.i32[i] & 3];
+  }
+#endif
+
+  return r;
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128d
+simde_mm_permutevar_pd (simde__m128d a, simde__m128i b) {
+  simde__m128d r;
+
+#if defined(SIMDE_AVX_NATIVE)
+  r.n = _mm_permutevar_pd(a.n, b.n);
+#else
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.f64) / sizeof(r.f64[0])) ; i++) {
+    r.f64[i] = a.f64[(b.i64[i] & 2) >> 1];
+  }
+#endif
+
+  return r;
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256
+simde_mm256_permutevar_ps (simde__m256 a, simde__m256i b) {
+  simde__m256 r;
+
+#if defined(SIMDE_AVX_NATIVE)
+  r.n = _mm256_permutevar_ps(a.n, b.n);
+#else
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
+    r.f32[i] = a.f32[(b.i32[i] & 3) + (i & 4)];
+  }
+#endif
+
+  return r;
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256d
+simde_mm256_permutevar_pd (simde__m256d a, simde__m256i b) {
+  simde__m256d r;
+
+#if defined(SIMDE_AVX_NATIVE)
+  r.n = _mm256_permutevar_pd(a.n, b.n);
+#else
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.f64) / sizeof(r.f64[0])) ; i++) {
+    r.f64[i] = a.f64[((b.i64[i] & 2) >> 1) + (i & 2)];
+  }
+#endif
+
+  return r;
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
 simde__m256
 simde_mm256_rcp_ps (simde__m256 a) {
   simde__m256 r;
