@@ -238,6 +238,34 @@ HEDLEY_STATIC_ASSERT(sizeof(simde_float64) == 8, "Unable to find 64-bit floating
 #  define SIMDE__ASSUME_ALIGNED(ptr, align)
 #endif
 
+/* This is only to help us implement functions like _mm_undefined_ps. */
+#if defined(SIMDE_DIAGNOSTIC_DISABLE_UNINITIALIZED_)
+#  undef SIMDE_DIAGNOSTIC_DISABLE_UNINITIALIZED_
+#endif
+#if HEDLEY_HAS_WARNING("-Wuninitialized")
+#  define SIMDE_DIAGNOSTIC_DISABLE_UNINITIALIZED_ _Pragma("clang diagnostic ignored \"-Wuninitialized\"")
+#elif HEDLEY_GCC_VERSION_CHECK(4,2,0)
+#  define SIMDE_DIAGNOSTIC_DISABLE_UNINITIALIZED_ _Pragma("GCC diagnostic ignored \"-Wuninitialized\"")
+#elif HEDLEY_PGI_VERSION_CHECK(19,10,0)
+#  define SIMDE_DIAGNOSTIC_DISABLE_UNINITIALIZED_ _Pragma("diag_suppress 549")
+#elif HEDLEY_SUNPRO_VERSION_CHECK(5,14,0) && defined(__cplusplus)
+#  define SIMDE_DIAGNOSTIC_DISABLE_UNINITIALIZED_ _Pragma("error_messages(off,SEC_UNINITIALIZED_MEM_READ,SEC_UNDEFINED_RETURN_VALUE,unassigned)")
+#elif HEDLEY_SUNPRO_VERSION_CHECK(5,14,0)
+#  define SIMDE_DIAGNOSTIC_DISABLE_UNINITIALIZED_ _Pragma("error_messages(off,SEC_UNINITIALIZED_MEM_READ,SEC_UNDEFINED_RETURN_VALUE)")
+#elif HEDLEY_SUNPRO_VERSION_CHECK(5,12,0) && defined(__cplusplus)
+#  define SIMDE_DIAGNOSTIC_DISABLE_UNINITIALIZED_ _Pragma("error_messages(off,unassigned)")
+// #elif \
+//     HEDLEY_TI_VERSION_CHECK(16,9,9) || \
+//     HEDLEY_TI_CL6X_VERSION_CHECK(8,0,0) || \
+//     HEDLEY_TI_CL7X_VERSION_CHECK(1,2,0) || \
+//     HEDLEY_TI_CLPRU_VERSION_CHECK(2,3,2)
+// #  define SIMDE_DIAGNOSTIC_DISABLE_UNINITIALIZED_ _Pragma("diag_suppress 551")
+#elif HEDLEY_INTEL_VERSION_CHECK(13,0,0)
+#  define SIMDE_DIAGNOSTIC_DISABLE_UNINITIALIZED_ _Pragma("warning(disable:592)")
+#elif HEDLEY_MSVC_VERSION_CHECK(19,0,0)
+#  define SIMDE_DIAGNOSTIC_DISABLE_UNINITIALIZED_ __pragma(warning(disable:4700))
+#endif
+
 /* Sometimes we run into problems with specific versions of compilers
    which make the native versions unusable for us.  Often this is due
    to missing functions, sometimes buggy implementations, etc.  These

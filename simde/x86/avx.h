@@ -2857,6 +2857,57 @@ simde_mm256_sub_pd (simde__m256d a, simde__m256d b) {
   return r;
 }
 
+#if defined(SIMDE_DIAGNOSTIC_DISABLE_UNINITIALIZED_)
+  HEDLEY_DIAGNOSTIC_PUSH
+  SIMDE_DIAGNOSTIC_DISABLE_UNINITIALIZED_
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256
+simde_mm256_undefined_ps (void) {
+  simde__m256 r;
+
+#if defined(SIMDE_AVX_NATIVE)
+  r.n = _mm256_undefined_ps();
+#elif !defined(SIMDE_DIAGNOSTIC_DISABLE_UNINITIALIZED_)
+  r = simde_mm256_setzero_ps();
+#endif
+
+  return r;
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256d
+simde_mm256_undefined_pd (void) {
+  simde__m256d r;
+
+#if defined(SIMDE_AVX_NATIVE)
+  r.n = _mm256_undefined_pd();
+#elif !defined(SIMDE_DIAGNOSTIC_DISABLE_UNINITIALIZED_)
+  r = simde_mm256_setzero_pd();
+#endif
+
+  return r;
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256i
+simde_mm256_undefined_si256 (void) {
+  simde__m256i r;
+
+#if defined(SIMDE_AVX_NATIVE)
+  r.n = _mm256_undefined_si256();
+#elif !defined(SIMDE_DIAGNOSTIC_DISABLE_UNINITIALIZED_)
+  r = simde_mm256_setzero_si256();
+#endif
+
+  return r;
+}
+
+#if defined(SIMDE_DIAGNOSTIC_DISABLE_UNINITIALIZED_)
+  HEDLEY_DIAGNOSTIC_POP
+#endif
+
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256
 simde_mm256_xor_ps (simde__m256 a, simde__m256 b) {

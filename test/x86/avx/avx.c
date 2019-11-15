@@ -11776,6 +11776,53 @@ test_simde_mm256_sub_pd(const MunitParameter params[], void* data) {
 }
 
 static MunitResult
+test_simde_mm256_undefined_ps(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  simde__m256 r;
+  simde__m256 e = simde_mm256_setzero_ps();
+
+  r = simde_mm256_undefined_ps();
+  r = simde_mm256_xor_ps(r, r);
+
+  simde_assert_m256_f32_equal(r, e, 1);
+
+  return MUNIT_OK;
+}
+
+static MunitResult
+test_simde_mm256_undefined_pd(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  simde__m256d r;
+  simde__m256d e = simde_mm256_setzero_pd();
+
+  r = simde_mm256_undefined_pd();
+  r = simde_mm256_xor_pd(r, r);
+
+  simde_assert_m256d_f64_equal(r, e, 1);
+
+  return MUNIT_OK;
+}
+
+static MunitResult
+test_simde_mm256_undefined_si256(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  simde__m256d r;
+  simde__m256d e = simde_mm256_setzero_pd();
+
+  r = simde_mm256_undefined_pd();
+  r = simde_mm256_xor_pd(r, r);
+
+  simde_assert_m256i_i32(r, ==, e);
+  return MUNIT_OK;
+}
+
+static MunitResult
 test_simde_mm256_unpackhi_ps(const MunitParameter params[], void* data) {
   (void) params;
   (void) data;
@@ -12470,6 +12517,10 @@ static MunitTest test_suite_tests[] = {
 
   TEST_FUNC(mm256_sub_ps),
   TEST_FUNC(mm256_sub_pd),
+
+  TEST_FUNC(mm256_undefined_ps),
+  TEST_FUNC(mm256_undefined_pd),
+  TEST_FUNC(mm256_undefined_si256),
 
   TEST_FUNC(mm256_unpackhi_ps),
   TEST_FUNC(mm256_unpackhi_pd),
