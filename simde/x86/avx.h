@@ -22,6 +22,8 @@
  *   2018      Evan Nemerson <evan@nemerson.com>
  */
 
+#include "sse.h"
+#include "sse2.h"
 #if !defined(SIMDE__AVX_H)
 #  if !defined(SIMDE__AVX_H)
 #    define SIMDE__AVX_H
@@ -2291,6 +2293,51 @@ simde_mm256_permutevar_pd (simde__m256d a, simde__m256i b) {
 
   return r;
 }
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256
+simde_mm256_permute2f128_ps (simde__m256 a, simde__m256 b, const int imm8)
+    HEDLEY_REQUIRE_MSG((imm8 & 0xff) == imm8, "imm8 must be in range [0, 15]") {
+  simde__m256 r;
+
+  r.m128[0] = (imm8 & 0x08) ? simde_mm_setzero_ps() : ((imm8 & 0x02) ? b.m128[(imm8     ) & 1] : a.m128[(imm8     ) & 1]);
+  r.m128[1] = (imm8 & 0x80) ? simde_mm_setzero_ps() : ((imm8 & 0x20) ? b.m128[(imm8 >> 4) & 1] : a.m128[(imm8 >> 4) & 1]);
+
+  return r;
+}
+#if defined(SIMDE_AVX_NATIVE)
+#  define simde_mm256_permute2f128_ps(a, b, imm8) SIMDE__M256_C(_mm256_permute2f128_ps(a.n, b.n, imm8))
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256d
+simde_mm256_permute2f128_pd (simde__m256d a, simde__m256d b, const int imm8)
+    HEDLEY_REQUIRE_MSG((imm8 & 0xf) == imm8, "imm8 must be in range [0, 15]") {
+  simde__m256d r;
+
+  r.m128d[0] = (imm8 & 0x08) ? simde_mm_setzero_pd() : ((imm8 & 0x02) ? b.m128d[(imm8     ) & 1] : a.m128d[(imm8     ) & 1]);
+  r.m128d[1] = (imm8 & 0x80) ? simde_mm_setzero_pd() : ((imm8 & 0x20) ? b.m128d[(imm8 >> 4) & 1] : a.m128d[(imm8 >> 4) & 1]);
+
+  return r;
+}
+#if defined(SIMDE_AVX_NATIVE)
+#  define simde_mm256_permute2f128_pd(a, b, imm8) SIMDE__M256D_C(_mm256_permute2f128_pd(a.n, b.n, imm8))
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256i
+simde_mm256_permute2f128_si256 (simde__m256i a, simde__m256i b, const int imm8)
+    HEDLEY_REQUIRE_MSG((imm8 & 0xf) == imm8, "imm8 must be in range [0, 15]") {
+  simde__m256i r;
+
+  r.m128i[0] = (imm8 & 0x08) ? simde_mm_setzero_si128() : ((imm8 & 0x02) ? b.m128i[(imm8     ) & 1] : a.m128i[(imm8     ) & 1]);
+  r.m128i[1] = (imm8 & 0x80) ? simde_mm_setzero_si128() : ((imm8 & 0x20) ? b.m128i[(imm8 >> 4) & 1] : a.m128i[(imm8 >> 4) & 1]);
+
+  return r;
+}
+#if defined(SIMDE_AVX_NATIVE)
+#  define simde_mm256_permute2f128_si128(a, b, imm8) SIMDE__M256I_C(_mm256_permute2f128_si128(a.n, b.n, imm8))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256
