@@ -3730,6 +3730,11 @@ simde_mm_ucomineq_sd (simde__m128d a, simde__m128d b) {
 #endif
 }
 
+#if defined(SIMDE_DIAGNOSTIC_DISABLE_UNINITIALIZED_)
+  HEDLEY_DIAGNOSTIC_PUSH
+  SIMDE_DIAGNOSTIC_DISABLE_UNINITIALIZED_
+#endif
+
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
 simde_mm_undefined_pd (void) {
@@ -3737,7 +3742,7 @@ simde_mm_undefined_pd (void) {
 
 #if defined(SIMDE_SSE2_NATIVE) && defined(SIMDE__HAVE_UNDEFINED128)
   r.n = _mm_undefined_pd();
-#else
+#elif !defined(SIMDE_DIAGNOSTIC_DISABLE_UNINITIALIZED_)
  r = simde_mm_setzero_pd();
 #endif
 
@@ -3751,12 +3756,16 @@ simde_mm_undefined_si128 (void) {
 
 #if defined(SIMDE_SSE2_NATIVE) && defined(SIMDE__HAVE_UNDEFINED128)
   r.n = _mm_undefined_si128();
-#else
+#elif !defined(SIMDE_DIAGNOSTIC_DISABLE_UNINITIALIZED_)
   r = simde_mm_setzero_si128();
 #endif
 
  return r;
 }
+
+#if defined(SIMDE_DIAGNOSTIC_DISABLE_UNINITIALIZED_)
+  HEDLEY_DIAGNOSTIC_POP
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 void
