@@ -771,6 +771,50 @@ test_simde_mm256_cvtepi16_epi64(const MunitParameter params[], void* data) {
 }
 
 static MunitResult
+test_simde_mm256_cvtepi32_epi64(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  const struct {
+    simde__m128i a;
+    simde__m256i r;
+  } test_vec[8] = {
+    { simde_mm_set_epi32(INT32_C( 1724176280), INT32_C( 1056866183), INT32_C(-1168814772), INT32_C(  436637329)),
+      simde_mm256_set_epi32(INT32_C(          0), INT32_C( 1724176280), INT32_C(          0), INT32_C( 1056866183),
+                            INT32_C(         -1), INT32_C(-1168814772), INT32_C(          0), INT32_C(  436637329)) },
+    { simde_mm_set_epi32(INT32_C( -189342318), INT32_C( 1500351754), INT32_C(-1179088209), INT32_C(  373817664)),
+      simde_mm256_set_epi32(INT32_C(         -1), INT32_C( -189342318), INT32_C(          0), INT32_C( 1500351754),
+                            INT32_C(         -1), INT32_C(-1179088209), INT32_C(          0), INT32_C(  373817664)) },
+    { simde_mm_set_epi32(INT32_C( -875273087), INT32_C(-1374882671), INT32_C(  170870738), INT32_C(  176375529)),
+      simde_mm256_set_epi32(INT32_C(         -1), INT32_C( -875273087), INT32_C(         -1), INT32_C(-1374882671),
+                            INT32_C(          0), INT32_C(  170870738), INT32_C(          0), INT32_C(  176375529)) },
+    { simde_mm_set_epi32(INT32_C( 2051957746), INT32_C( -540720535), INT32_C( 2058375625), INT32_C(-1743932075)),
+      simde_mm256_set_epi32(INT32_C(          0), INT32_C( 2051957746), INT32_C(         -1), INT32_C( -540720535),
+                            INT32_C(          0), INT32_C( 2058375625), INT32_C(         -1), INT32_C(-1743932075)) },
+    { simde_mm_set_epi32(INT32_C(   58481197), INT32_C(  -12810019), INT32_C(-1497428307), INT32_C(-1188147093)),
+      simde_mm256_set_epi32(INT32_C(          0), INT32_C(   58481197), INT32_C(         -1), INT32_C(  -12810019),
+                            INT32_C(         -1), INT32_C(-1497428307), INT32_C(         -1), INT32_C(-1188147093)) },
+    { simde_mm_set_epi32(INT32_C( 2090870443), INT32_C( -917208135), INT32_C( 2079627861), INT32_C( -768384061)),
+      simde_mm256_set_epi32(INT32_C(          0), INT32_C( 2090870443), INT32_C(         -1), INT32_C( -917208135),
+                            INT32_C(          0), INT32_C( 2079627861), INT32_C(         -1), INT32_C( -768384061)) },
+    { simde_mm_set_epi32(INT32_C( -297580502), INT32_C(-1417106854), INT32_C(-1288213555), INT32_C(    3240585)),
+      simde_mm256_set_epi32(INT32_C(         -1), INT32_C( -297580502), INT32_C(         -1), INT32_C(-1417106854),
+                            INT32_C(         -1), INT32_C(-1288213555), INT32_C(          0), INT32_C(    3240585)) },
+    { simde_mm_set_epi32(INT32_C( 1692537538), INT32_C( -764623934), INT32_C( 1120288816), INT32_C(  296268349)),
+      simde_mm256_set_epi32(INT32_C(          0), INT32_C( 1692537538), INT32_C(         -1), INT32_C( -764623934),
+                            INT32_C(          0), INT32_C( 1120288816), INT32_C(          0), INT32_C(  296268349)) },
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    simde__m256i r = simde_mm256_cvtepi32_epi64(test_vec[i].a);
+    simde_assert_m256i_i64(r, ==, test_vec[i].r);
+  }
+
+  return MUNIT_OK;
+}
+
+
+static MunitResult
 test_simde_mm256_extract_epi8(const MunitParameter params[], void* data) {
   (void) params;
   (void) data;
@@ -1266,6 +1310,7 @@ static MunitTest test_suite_tests[] = {
   TEST_FUNC(mm256_cvtepi8_epi32),
   TEST_FUNC(mm256_cvtepi16_epi32),
   TEST_FUNC(mm256_cvtepi16_epi64),
+  TEST_FUNC(mm256_cvtepi32_epi64),
 
   TEST_FUNC(mm256_extract_epi8),
   TEST_FUNC(mm256_extract_epi16),
