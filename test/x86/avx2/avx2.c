@@ -602,6 +602,57 @@ test_simde_mm256_broadcastsi128_si256(const MunitParameter params[], void* data)
 }
 
 static MunitResult
+test_simde_mm256_cvtepi16_epi32(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  const struct {
+    simde__m128i a;
+    simde__m256i r;
+  } test_vec[8] = {
+    { simde_mm_set_epi16(INT16_C( 29201), INT16_C( 17763), INT16_C( 13480), INT16_C( 29487),
+                         INT16_C( -6581), INT16_C( 13446), INT16_C( 26538), INT16_C( -3936)),
+      simde_mm256_set_epi32(INT32_C(      29201), INT32_C(      17763), INT32_C(      13480), INT32_C(      29487),
+                            INT32_C(      -6581), INT32_C(      13446), INT32_C(      26538), INT32_C(      -3936)) },
+    { simde_mm_set_epi16(INT16_C( -3829), INT16_C( 12503), INT16_C( 10513), INT16_C( 11407),
+                         INT16_C( 28611), INT16_C(  5727), INT16_C( 32199), INT16_C( 11434)),
+      simde_mm256_set_epi32(INT32_C(      -3829), INT32_C(      12503), INT32_C(      10513), INT32_C(      11407),
+                            INT32_C(      28611), INT32_C(       5727), INT32_C(      32199), INT32_C(      11434)) },
+    { simde_mm_set_epi16(INT16_C( -4989), INT16_C(-23450), INT16_C(-15441), INT16_C( 22895),
+                         INT16_C(  2927), INT16_C(-20709), INT16_C( -7582), INT16_C(-31347)),
+      simde_mm256_set_epi32(INT32_C(      -4989), INT32_C(     -23450), INT32_C(     -15441), INT32_C(      22895),
+                            INT32_C(       2927), INT32_C(     -20709), INT32_C(      -7582), INT32_C(     -31347)) },
+    { simde_mm_set_epi16(INT16_C( 24635), INT16_C( 21162), INT16_C( 29781), INT16_C(  -488),
+                         INT16_C( -6580), INT16_C(-27732), INT16_C(   607), INT16_C(-20782)),
+      simde_mm256_set_epi32(INT32_C(      24635), INT32_C(      21162), INT32_C(      29781), INT32_C(       -488),
+                            INT32_C(      -6580), INT32_C(     -27732), INT32_C(        607), INT32_C(     -20782)) },
+    { simde_mm_set_epi16(INT16_C(  -401), INT16_C( -5605), INT16_C(-28681), INT16_C(  4577),
+                         INT16_C( -9094), INT16_C(  6804), INT16_C( -9223), INT16_C( 10661)),
+      simde_mm256_set_epi32(INT32_C(       -401), INT32_C(      -5605), INT32_C(     -28681), INT32_C(       4577),
+                            INT32_C(      -9094), INT32_C(       6804), INT32_C(      -9223), INT32_C(      10661)) },
+    { simde_mm_set_epi16(INT16_C(  2053), INT16_C(-19489), INT16_C(  7360), INT16_C( 16515),
+                         INT16_C( 32080), INT16_C(-16555), INT16_C(-32752), INT16_C( 19001)),
+      simde_mm256_set_epi32(INT32_C(       2053), INT32_C(     -19489), INT32_C(       7360), INT32_C(      16515),
+                            INT32_C(      32080), INT32_C(     -16555), INT32_C(     -32752), INT32_C(      19001)) },
+    { simde_mm_set_epi16(INT16_C(-31610), INT16_C(-22910), INT16_C( 22850), INT16_C(-27168),
+                         INT16_C( 13092), INT16_C(-21449), INT16_C( 16024), INT16_C(  8597)),
+      simde_mm256_set_epi32(INT32_C(     -31610), INT32_C(     -22910), INT32_C(      22850), INT32_C(     -27168),
+                            INT32_C(      13092), INT32_C(     -21449), INT32_C(      16024), INT32_C(       8597)) },
+    { simde_mm_set_epi16(INT16_C( 28081), INT16_C( -7416), INT16_C( 18632), INT16_C(-28896),
+                         INT16_C(-23156), INT16_C(-15424), INT16_C(-13082), INT16_C( 23555)),
+      simde_mm256_set_epi32(INT32_C(      28081), INT32_C(      -7416), INT32_C(      18632), INT32_C(     -28896),
+                            INT32_C(     -23156), INT32_C(     -15424), INT32_C(     -13082), INT32_C(      23555)) },
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    simde__m256i r = simde_mm256_cvtepi16_epi32(test_vec[i].a);
+    simde_assert_m256i_i64(r, ==, test_vec[i].r);
+  }
+
+  return MUNIT_OK;
+}
+
+static MunitResult
 test_simde_mm256_extract_epi8(const MunitParameter params[], void* data) {
   (void) params;
   (void) data;
@@ -1093,6 +1144,8 @@ static MunitTest test_suite_tests[] = {
   TEST_FUNC(mm256_and_si256),
 
   TEST_FUNC(mm256_broadcastsi128_si256),
+
+  TEST_FUNC(mm256_cvtepi16_epi32),
 
   TEST_FUNC(mm256_extract_epi8),
   TEST_FUNC(mm256_extract_epi16),
