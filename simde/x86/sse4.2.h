@@ -58,6 +58,10 @@
 #    endif
 #  endif
 
+#  if !defined(SIMDE_SSE4_2_NATIVE) && defined(SIMDE_ENABLE_NATIVE_ALIASES)
+#    define SIMDE_SSE4_2_ENABLE_NATIVE_ALIASES
+#  endif
+
 SIMDE__BEGIN_DECLS
 
 SIMDE__END_DECLS

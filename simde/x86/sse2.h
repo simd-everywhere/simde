@@ -68,12 +68,6 @@
 #  include <limits.h>
 #  include <string.h>
 
-#define vreinterpretq_m128i_s32(v) (simde__m128i) { .neon_i32 = v }
-#define vreinterpretq_m128i_u64(v) (simde__m128i) { .neon_u64 = v }
-
-#define vreinterpretq_s32_m128i(a) a.neon_i32
-#define vreinterpretq_u64_m128i(a) a.neon_u64
-
 SIMDE__BEGIN_DECLS
 
 typedef union {
@@ -182,6 +176,24 @@ typedef union {
 HEDLEY_STATIC_ASSERT(16 == sizeof(simde__m128i), "simde__m128i size incorrect");
 HEDLEY_STATIC_ASSERT(16 == sizeof(simde__m128d), "simde__m128d size incorrect");
 
+#if !defined(SIMDE_SSE2_NATIVE) && defined(SIMDE_ENABLE_NATIVE_ALIASES)
+#  define SIMDE_SSE2_ENABLE_NATIVE_ALIASES
+   typedef simde__m128d __m128d;
+   typedef simde__m128i __m128i;
+#endif
+
+#if defined(SIMDE_SSE2_NATIVE)
+   SIMDE__FUNCTION_ATTRIBUTES simde__m128d SIMDE__M128D_FROM_NATIVE(__m128d v) { simde__m128d r; r.n = v; return r; }
+   SIMDE__FUNCTION_ATTRIBUTES simde__m128i SIMDE__M128I_FROM_NATIVE(__m128i v) { simde__m128i r; r.n = v; return r; }
+#  define SIMDE__M128D_TO_NATIVE(v) (v.n)
+#  define SIMDE__M128I_TO_NATIVE(v) (v.n)
+#else
+#  define SIMDE__M128D_FROM_NATIVE(val) (val)
+#  define SIMDE__M128I_FROM_NATIVE(val) (val)
+#  define SIMDE__M128D_TO_NATIVE(val) (val)
+#  define SIMDE__M128I_TO_NATIVE(val) (val)
+#endif
+
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_add_epi8 (simde__m128i a, simde__m128i b) {
@@ -198,6 +210,9 @@ simde_mm_add_epi8 (simde__m128i a, simde__m128i b) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_add_epi8(a, b) SIMDE__M128I_TO_NATIVE(simde_mm_add_epi8(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -215,6 +230,9 @@ simde_mm_add_epi16 (simde__m128i a, simde__m128i b) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_add_epi16(a, b) SIMDE__M128I_TO_NATIVE(simde_mm_add_epi16(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -232,6 +250,9 @@ simde_mm_add_epi32 (simde__m128i a, simde__m128i b) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_add_epi32(a, b) SIMDE__M128I_TO_NATIVE(simde_mm_add_epi32(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -249,6 +270,9 @@ simde_mm_add_epi64 (simde__m128i a, simde__m128i b) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_add_epi64(a, b) SIMDE__M128I_TO_NATIVE(simde_mm_add_epi64(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
@@ -266,6 +290,9 @@ simde_mm_add_pd (simde__m128d a, simde__m128d b) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_add_pd(a, b) SIMDE__M128D_TO_NATIVE(simde_mm_add_pd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
@@ -279,20 +306,28 @@ simde_mm_add_sd (simde__m128d a, simde__m128d b) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_add_sd(a, b) SIMDE__M128D_TO_NATIVE(simde_mm_add_sd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m64
 simde_mm_add_si64 (simde__m64 a, simde__m64 b) {
-#if defined(SIMDE_SSE2_NATIVE)
-  return SIMDE__M64_C(_mm_add_si64(a.n, b.n));
-#elif defined(SIMDE_SSE2_NEON)
-  return SIMDE__M64_NEON_C(i64, vadd_s64(a.neon_i64, b.neon_i64));
-#else
   simde__m64 r;
+
+#if defined(SIMDE_SSE2_NATIVE)
+  r.n = _mm_add_si64(a.n, b.n);
+#elif defined(SIMDE_SSE2_NEON)
+  r.neon_i64 = vadd_s64(a.neon_i64, b.neon_i64);
+#else
   r.i64[0] = a.i64[0] + b.i64[0];
-  return r;
 #endif
+
+  return r;
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_add_si64(a, b) SIMDE__M64_TO_NATIVE(simde_mm_add_si64(SIMDE__M64_FROM_NATIVE(a), SIMDE__M64_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -316,6 +351,9 @@ simde_mm_adds_epi8 (simde__m128i a, simde__m128i b) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_adds_epi8(a, b) SIMDE__M128I_TO_NATIVE(simde_mm_adds_epi8(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -339,6 +377,9 @@ simde_mm_adds_epi16 (simde__m128i a, simde__m128i b) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_adds_epi16(a, b) SIMDE__M128I_TO_NATIVE(simde_mm_adds_epi16(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -356,6 +397,9 @@ simde_mm_adds_epu8 (simde__m128i a, simde__m128i b) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_adds_epu8(a, b) SIMDE__M128I_TO_NATIVE(simde_mm_adds_epu8(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -373,6 +417,9 @@ simde_mm_adds_epu16 (simde__m128i a, simde__m128i b) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_adds_epu16(a, b) SIMDE__M128I_TO_NATIVE(simde_mm_adds_epu16(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
@@ -390,6 +437,9 @@ simde_mm_and_pd (simde__m128d a, simde__m128d b) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_and_pd(a, b) SIMDE__M128D_TO_NATIVE(simde_mm_and_pd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -407,6 +457,9 @@ simde_mm_and_si128 (simde__m128i a, simde__m128i b) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_and_si128(a, b) SIMDE__M128I_TO_NATIVE(simde_mm_and_si128(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
@@ -424,6 +477,9 @@ simde_mm_andnot_pd (simde__m128d a, simde__m128d b) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_andnot_pd(a, b) SIMDE__M128D_TO_NATIVE(simde_mm_andnot_pd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -441,6 +497,9 @@ simde_mm_andnot_si128 (simde__m128i a, simde__m128i b) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_andnot_si128(a, b) SIMDE__M128I_TO_NATIVE(simde_mm_andnot_si128(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -458,6 +517,9 @@ simde_mm_avg_epu8 (simde__m128i a, simde__m128i b) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_avg_epu8(a, b) SIMDE__M128I_TO_NATIVE(simde_mm_avg_epu8(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -475,6 +537,9 @@ simde_mm_avg_epu16 (simde__m128i a, simde__m128i b) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_avg_epu16(a, b) SIMDE__M128I_TO_NATIVE(simde_mm_avg_epu16(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -510,6 +575,10 @@ simde_mm_bslli_si128 (simde__m128i a, const int imm8) {
   SIMDE__M128I_NEON_C(i8, (((imm8) <= 0) ? ((a).neon_i8) : (((imm8) > 15) ? (vdupq_n_s8(0)) : (vextq_s8(vdupq_n_s8(0), (a).neon_i8, 16 - (imm8))))))
 #endif
 #define simde_mm_slli_si128(a, imm8) simde_mm_bslli_si128(a, imm8)
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_bslli_si128(a, b) SIMDE__M128I_TO_NATIVE(simde_mm_bslli_si128(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(b)))
+#  define _mm_slli_si128(a, b) SIMDE__M128I_TO_NATIVE(simde_mm_bslli_si128(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -545,6 +614,10 @@ simde_mm_bsrli_si128 (simde__m128i a, const int imm8) {
   SIMDE__M128I_NEON_C(i8, ((imm8) <= 0) ? ((a).neon_i8) : (((imm8) > 15) ? (vdupq_n_s8(0)) : (vextq_s8((a).neon_i8, vdupq_n_s8(0), (imm8)))))
 #endif
 #define simde_mm_srli_si128(a, imm8) simde_mm_bsrli_si128(a, imm8)
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_bsrli_si128(a, b) SIMDE__M128I_TO_NATIVE(simde_mm_bsrli_si128(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(b)))
+#  define _mm_srli_si128(a, b) SIMDE__M128I_TO_NATIVE(simde_mm_bsrli_si128(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 void
@@ -555,6 +628,9 @@ simde_mm_clflush (void const* p) {
   (void) p;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_clflush(a, b) simde_mm_clflush()
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 int
@@ -565,6 +641,9 @@ simde_mm_comieq_sd (simde__m128d a, simde__m128d b) {
   return a.f64[0] == b.f64[0];
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_comieq_sd(a, b) simde_mm_comieq_sd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 int
@@ -575,6 +654,9 @@ simde_mm_comige_sd (simde__m128d a, simde__m128d b) {
   return a.f64[0] >= b.f64[0];
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_comige_sd(a, b) simde_mm_comige_sd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 int
@@ -585,6 +667,9 @@ simde_mm_comigt_sd (simde__m128d a, simde__m128d b) {
   return a.f64[0] > b.f64[0];
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_comigt_sd(a, b) simde_mm_comigt_sd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 int
@@ -595,6 +680,9 @@ simde_mm_comile_sd (simde__m128d a, simde__m128d b) {
   return a.f64[0] <= b.f64[0];
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_comile_sd(a, b) simde_mm_comile_sd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 int
@@ -605,6 +693,9 @@ simde_mm_comilt_sd (simde__m128d a, simde__m128d b) {
   return a.f64[0] < b.f64[0];
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_comilt_sd(a, b) simde_mm_comilt_sd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 int
@@ -615,12 +706,15 @@ simde_mm_comineq_sd (simde__m128d a, simde__m128d b) {
   return a.f64[0] != b.f64[0];
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_comineq_sd(a, b) simde_mm_comineq_sd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128
 simde_mm_castpd_ps (simde__m128d a) {
 #if defined(SIMDE_SSE2_NATIVE)
-  return SIMDE__M128_C(_mm_castpd_ps(a.n));
+  return SIMDE__M128_FROM_NATIVE(_mm_castpd_ps(a.n));
 #else
   union {
     simde__m128d pd;
@@ -630,6 +724,9 @@ simde_mm_castpd_ps (simde__m128d a) {
   return r.ps;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_castpd_ps(a) SIMDE__M128_TO_NATIVE(simde_mm_castpd_ps(SIMDE__M128D_FROM_NATIVE(a)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -645,6 +742,9 @@ simde_mm_castpd_si128 (simde__m128d a) {
   return r.si128;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_castpd_si128(a) SIMDE__M128I_TO_NATIVE(simde_mm_castpd_si128(SIMDE__M128D_FROM_NATIVE(a)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
@@ -660,6 +760,9 @@ simde_mm_castps_pd (simde__m128 a) {
   return r.pd;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_castps_pd(a) SIMDE__M128D_TO_NATIVE(simde_mm_castps_pd(SIMDE__M128_FROM_NATIVE(a)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -677,6 +780,9 @@ simde_mm_castps_si128 (simde__m128 a) {
   return r.si128;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_castps_si128(a) SIMDE__M128I_TO_NATIVE(simde_mm_castps_si128(SIMDE__M128_FROM_NATIVE(a)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
@@ -692,12 +798,15 @@ simde_mm_castsi128_pd (simde__m128i a) {
   return r.pd;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_castsi128_pd(a) SIMDE__M128D_TO_NATIVE(simde_mm_castsi128_pd(SIMDE__M128I_FROM_NATIVE(a)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128
 simde_mm_castsi128_ps (simde__m128i a) {
 #if defined(SIMDE_SSE2_NATIVE)
-  return SIMDE__M128_C(_mm_castsi128_ps(a.n));
+  return SIMDE__M128_FROM_NATIVE(_mm_castsi128_ps(a.n));
 #elif defined(SIMDE_SSE2_NEON)
   return SIMDE__M128_NEON_C(f32, a.neon_f32);
 #else
@@ -709,6 +818,9 @@ simde_mm_castsi128_ps (simde__m128i a) {
   return r.ps;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_castsi128_ps(a) SIMDE__M128_TO_NATIVE(simde_mm_castsi128_ps(SIMDE__M128I_FROM_NATIVE(a)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -726,6 +838,9 @@ simde_mm_cmpeq_epi8 (simde__m128i a, simde__m128i b) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_cmpeq_epi8(a, b) SIMDE__M128I_TO_NATIVE(simde_mm_cmpeq_epi8(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -743,6 +858,9 @@ simde_mm_cmpeq_epi16 (simde__m128i a, simde__m128i b) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_cmpeq_epi16(a, b) SIMDE__M128I_TO_NATIVE(simde_mm_cmpeq_epi16(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -760,6 +878,9 @@ simde_mm_cmpeq_epi32 (simde__m128i a, simde__m128i b) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_cmpeq_epi32(a, b) SIMDE__M128I_TO_NATIVE(simde_mm_cmpeq_epi32(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
@@ -777,6 +898,9 @@ simde_mm_cmpeq_pd (simde__m128d a, simde__m128d b) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_cmpeq_pd(a, b) SIMDE__M128D_TO_NATIVE(simde_mm_cmpeq_pd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
@@ -790,6 +914,9 @@ simde_mm_cmpeq_sd (simde__m128d a, simde__m128d b) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_cmpeq_sd(a, b) SIMDE__M128D_TO_NATIVE(simde_mm_cmpeq_sd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
@@ -807,6 +934,9 @@ simde_mm_cmpneq_pd (simde__m128d a, simde__m128d b) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_cmpneq_pd(a, b) SIMDE__M128D_TO_NATIVE(simde_mm_cmpneq_pd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
@@ -820,6 +950,9 @@ simde_mm_cmpneq_sd (simde__m128d a, simde__m128d b) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_cmpneq_sd(a, b) SIMDE__M128D_TO_NATIVE(simde_mm_cmpneq_sd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -837,6 +970,9 @@ simde_mm_cmplt_epi8 (simde__m128i a, simde__m128i b) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_cmplt_epi8(a, b) SIMDE__M128I_TO_NATIVE(simde_mm_cmplt_epi8(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -854,6 +990,9 @@ simde_mm_cmplt_epi16 (simde__m128i a, simde__m128i b) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_cmplt_epi16(a, b) SIMDE__M128I_TO_NATIVE(simde_mm_cmplt_epi16(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -871,6 +1010,9 @@ simde_mm_cmplt_epi32 (simde__m128i a, simde__m128i b) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_cmplt_epi32(a, b) SIMDE__M128I_TO_NATIVE(simde_mm_cmplt_epi32(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
@@ -886,6 +1028,9 @@ simde_mm_cmplt_pd (simde__m128d a, simde__m128d b) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_cmplt_pd(a, b) SIMDE__M128D_TO_NATIVE(simde_mm_cmplt_pd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
@@ -899,6 +1044,9 @@ simde_mm_cmplt_sd (simde__m128d a, simde__m128d b) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_cmplt_sd(a, b) SIMDE__M128D_TO_NATIVE(simde_mm_cmplt_sd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
@@ -914,6 +1062,9 @@ simde_mm_cmple_pd (simde__m128d a, simde__m128d b) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_cmple_pd(a, b) SIMDE__M128D_TO_NATIVE(simde_mm_cmple_pd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
@@ -927,6 +1078,9 @@ simde_mm_cmple_sd (simde__m128d a, simde__m128d b) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_cmple_sd(a, b) SIMDE__M128D_TO_NATIVE(simde_mm_cmple_sd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -944,6 +1098,9 @@ simde_mm_cmpgt_epi8 (simde__m128i a, simde__m128i b) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_cmpgt_epi8(a, b) SIMDE__M128I_TO_NATIVE(simde_mm_cmpgt_epi8(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -961,6 +1118,9 @@ simde_mm_cmpgt_epi16 (simde__m128i a, simde__m128i b) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_cmpgt_epi16(a, b) SIMDE__M128I_TO_NATIVE(simde_mm_cmpgt_epi16(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -978,6 +1138,9 @@ simde_mm_cmpgt_epi32 (simde__m128i a, simde__m128i b) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_cmpgt_epi32(a, b) SIMDE__M128I_TO_NATIVE(simde_mm_cmpgt_epi32(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
@@ -993,6 +1156,9 @@ simde_mm_cmpgt_pd (simde__m128d a, simde__m128d b) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_cmpgt_pd(a, b) SIMDE__M128D_TO_NATIVE(simde_mm_cmpgt_pd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
@@ -1006,6 +1172,9 @@ simde_mm_cmpgt_sd (simde__m128d a, simde__m128d b) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_cmpgt_sd(a, b) SIMDE__M128D_TO_NATIVE(simde_mm_cmpgt_sd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
@@ -1021,6 +1190,9 @@ simde_mm_cmpge_pd (simde__m128d a, simde__m128d b) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_cmpge_pd(a, b) SIMDE__M128D_TO_NATIVE(simde_mm_cmpge_pd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
@@ -1034,6 +1206,9 @@ simde_mm_cmpge_sd (simde__m128d a, simde__m128d b) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_cmpge_sd(a, b) SIMDE__M128D_TO_NATIVE(simde_mm_cmpge_sd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
@@ -1044,6 +1219,9 @@ simde_mm_cmpnge_pd (simde__m128d a, simde__m128d b) {
   return simde_mm_cmplt_pd(a, b);
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_cmpnge_pd(a, b) SIMDE__M128D_TO_NATIVE(simde_mm_cmpnge_pd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
@@ -1054,6 +1232,9 @@ simde_mm_cmpnge_sd (simde__m128d a, simde__m128d b) {
   return simde_mm_cmplt_sd(a, b);
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_cmpnge_sd(a, b) SIMDE__M128D_TO_NATIVE(simde_mm_cmpnge_sd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
@@ -1064,6 +1245,9 @@ simde_mm_cmpnlt_pd (simde__m128d a, simde__m128d b) {
   return simde_mm_cmpge_pd(a, b);
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_cmpnlt_pd(a, b) SIMDE__M128D_TO_NATIVE(simde_mm_cmpnlt_pd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
@@ -1074,6 +1258,9 @@ simde_mm_cmpnlt_sd (simde__m128d a, simde__m128d b) {
   return simde_mm_cmpge_sd(a, b);
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_cmpnlt_sd(a, b) SIMDE__M128D_TO_NATIVE(simde_mm_cmpnlt_sd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
@@ -1084,6 +1271,9 @@ simde_mm_cmpnle_pd (simde__m128d a, simde__m128d b) {
   return simde_mm_cmpgt_pd(a, b);
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_cmpnle_pd(a, b) SIMDE__M128D_TO_NATIVE(simde_mm_cmpnle_pd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
@@ -1094,6 +1284,9 @@ simde_mm_cmpnle_sd (simde__m128d a, simde__m128d b) {
   return simde_mm_cmpgt_sd(a, b);
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_cmpnle_sd(a, b) SIMDE__M128D_TO_NATIVE(simde_mm_cmpnle_sd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
@@ -1109,6 +1302,9 @@ simde_mm_cmpord_pd (simde__m128d a, simde__m128d b) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_cmpord_pd(a, b) SIMDE__M128D_TO_NATIVE(simde_mm_cmpord_pd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
@@ -1122,6 +1318,9 @@ simde_mm_cmpord_sd (simde__m128d a, simde__m128d b) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_cmpord_sd(a, b) SIMDE__M128D_TO_NATIVE(simde_mm_cmpord_sd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
@@ -1137,6 +1336,9 @@ simde_mm_cmpunord_pd (simde__m128d a, simde__m128d b) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_cmpunord_pd(a, b) SIMDE__M128D_TO_NATIVE(simde_mm_cmpunord_pd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
@@ -1150,6 +1352,9 @@ simde_mm_cmpunord_sd (simde__m128d a, simde__m128d b) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_cmpunord_sd(a, b) SIMDE__M128D_TO_NATIVE(simde_mm_cmpunord_sd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
@@ -1165,12 +1370,15 @@ simde_mm_cvtepi32_pd (simde__m128i a) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_cvtepi32_pd(a) SIMDE__M128D_TO_NATIVE(simde_mm_cvtepi32_pd(SIMDE__M128I_FROM_NATIVE(a)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128
 simde_mm_cvtepi32_ps (simde__m128i a) {
 #if defined(SIMDE_SSE2_NATIVE)
-  return SIMDE__M128_C(_mm_cvtepi32_ps(a.n));
+  return SIMDE__M128_FROM_NATIVE(_mm_cvtepi32_ps(a.n));
 #elif defined(SIMDE_SSE2_NEON)
   return SIMDE__M128_NEON_C(f32, vcvtq_f32_s32(a.neon_i32));
 #else
@@ -1182,6 +1390,9 @@ simde_mm_cvtepi32_ps (simde__m128i a) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_cvtepi32_ps(a) SIMDE__M128_TO_NATIVE(simde_mm_cvtepi32_ps(SIMDE__M128I_FROM_NATIVE(a)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -1197,12 +1408,15 @@ simde_mm_cvtpd_epi32 (simde__m128d a) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_cvtpd_epi32(a) SIMDE__M128I_TO_NATIVE(simde_mm_cvtpd_epi32(SIMDE__M128D_FROM_NATIVE(a)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m64
 simde_mm_cvtpd_pi32 (simde__m128d a) {
 #if defined(SIMDE_SSE2_NATIVE)
-  return SIMDE__M64_C(_mm_cvtpd_pi32(a.n));
+  return SIMDE__M64_FROM_NATIVE(_mm_cvtpd_pi32(a.n));
 #else
   simde__m64 r;
   SIMDE__VECTORIZE
@@ -1212,12 +1426,15 @@ simde_mm_cvtpd_pi32 (simde__m128d a) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_cvtpd_pi32(a) SIMDE__M64_TO_NATIVE(simde_mm_cvtpd_pi32(SIMDE__M128D_FROM_NATIVE(a)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128
 simde_mm_cvtpd_ps (simde__m128d a) {
 #if defined(SIMDE_SSE2_NATIVE)
-  return SIMDE__M128_C(_mm_cvtpd_ps(a.n));
+  return SIMDE__M128_FROM_NATIVE(_mm_cvtpd_ps(a.n));
 #else
   simde__m128 r;
   SIMDE__VECTORIZE
@@ -1227,6 +1444,9 @@ simde_mm_cvtpd_ps (simde__m128d a) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_cvtpd_ps(a) SIMDE__M128_TO_NATIVE(simde_mm_cvtpd_ps(SIMDE__M128D_FROM_NATIVE(a)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
@@ -1242,6 +1462,9 @@ simde_mm_cvtpi32_pd (simde__m64 a) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_cvtpi32_pd(a) SIMDE__M128D_TO_NATIVE(simde_mm_cvtpi32_pd(SIMDE__M64_FROM_NATIVE(a)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -1273,6 +1496,9 @@ simde_mm_cvtps_epi32 (simde__m128 a) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_cvtps_epi32(a) SIMDE__M128I_TO_NATIVE(simde_mm_cvtps_epi32(SIMDE__M128_FROM_NATIVE(a)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
@@ -1288,9 +1514,12 @@ simde_mm_cvtps_pd (simde__m128 a) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_cvtps_pd(a) SIMDE__M128D_TO_NATIVE(simde_mm_cvtps_pd(SIMDE__M128_FROM_NATIVE(a)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
-double
+simde_float64
 simde_mm_cvtsd_f64 (simde__m128d a) {
 #if defined(SIMDE_SSE2_NATIVE) && !defined(__PGI)
   return _mm_cvtsd_f64(a.n);
@@ -1298,6 +1527,9 @@ simde_mm_cvtsd_f64 (simde__m128d a) {
   return a.f64[0];
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_cvtsd_f64(a) simde_mm_cvtsd_f64(SIMDE__M128D_FROM_NATIVE(a))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 int32_t
@@ -1308,6 +1540,9 @@ simde_mm_cvtsd_si32 (simde__m128d a) {
   return (int32_t) a.f64[0];
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_cvtsd_si32(a) simde_mm_cvtsd_si32(SIMDE__M128D_FROM_NATIVE(a))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 int32_t
@@ -1323,12 +1558,16 @@ simde_mm_cvtsd_si64 (simde__m128d a) {
 #endif
 }
 #define simde_mm_cvtsd_si64x(a) simde_mm_cvtsd_si64(a)
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_cvtsd_si64(a) simde_mm_cvtsd_si64(SIMDE__M128D_FROM_NATIVE(a))
+#  define _mm_cvtsd_si64x(a) simde_mm_cvtsd_si64x(SIMDE__M128D_FROM_NATIVE(a))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128
 simde_mm_cvtsd_ss (simde__m128 a, simde__m128d b) {
 #if defined(SIMDE_SSE2_NATIVE)
-  return SIMDE__M128_C(_mm_cvtsd_ss(a.n, b.n));
+  return SIMDE__M128_FROM_NATIVE(_mm_cvtsd_ss(a.n, b.n));
 #else
   simde__m128 r;
 
@@ -1342,6 +1581,9 @@ simde_mm_cvtsd_ss (simde__m128 a, simde__m128d b) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_cvtsd_ss(a, b) SIMDE__M128_TO_NATIVE(simde_mm_cvtsd_ss(SIMDE__M128_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 int32_t
@@ -1354,6 +1596,9 @@ simde_mm_cvtsi128_si32 (simde__m128i a) {
   return a.i32[0];
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_cvtsi128_si32(a) simde_mm_cvtsi128_si32(SIMDE__M128I_FROM_NATIVE(a))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 int64_t
@@ -1369,6 +1614,10 @@ simde_mm_cvtsi128_si64 (simde__m128i a) {
 #endif
 }
 #define simde_mm_cvtsi128_si64x(a) simde_mm_cvtsi128_si64(a)
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_cvtsi128_si64(a) simde_mm_cvtsi128_si64(SIMDE__M128I_FROM_NATIVE(a))
+#  define _mm_cvtsi128_si64x(a) simde_mm_cvtsi128_si64x(SIMDE__M128I_FROM_NATIVE(a))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
@@ -1384,6 +1633,9 @@ simde_mm_cvtsi32_sd (simde__m128d a, int32_t b) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_cvtsi32_sd(a, b) SIMDE__M128D_TO_NATIVE(simde_mm_cvtsi32_sd(SIMDE__M128D_FROM_NATIVE(a), b))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -1403,6 +1655,9 @@ simde_mm_cvtsi32_si128 (int32_t a) {
 
   return r;
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_cvtsi32_si128(a) SIMDE__M128I_TO_NATIVE(simde_mm_cvtsi32_si128(a))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
@@ -1422,7 +1677,11 @@ simde_mm_cvtsi64_sd (simde__m128d a, int32_t b) {
 
   return r;
 }
-#define simde_mm_cvtsi64x_sd(a, b) simde_mm_cvtsi64(a, b)
+#define simde_mm_cvtsi64x_sd(a, b) simde_mm_cvtsi64_sd(a, b)
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_cvtsi64_sd(a, b) SIMDE__M128D_TO_NATIVE(simde_mm_cvtsi64_sd(SIMDE__M128D_FROM_NATIVE(a), b))
+#  define _mm_cvtsi64x_sd(a, b) SIMDE__M128D_TO_NATIVE(simde_mm_cvtsi64x_sd(SIMDE__M128D_FROM_NATIVE(a), b))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -1443,6 +1702,10 @@ simde_mm_cvtsi64_si128 (int64_t a) {
   return r;
 }
 #define simde_mm_cvtsi64x_si128(a) simde_mm_cvtsi64_si128(a)
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_cvtsi64_si128(a) SIMDE__M128I_TO_NATIVE(simde_mm_cvtsi64_si128(a))
+#  define _mm_cvtsi64x_si128(a) SIMDE__M128I_TO_NATIVE(simde_mm_cvtsi64x_si128(a))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
@@ -1458,6 +1721,9 @@ simde_mm_cvtss_sd (simde__m128d a, simde__m128 b) {
 
   return r;
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_cvtss_sd(a, b) SIMDE__M128D_TO_NATIVE(simde_mm_cvtss_sd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -1474,6 +1740,9 @@ simde_mm_cvttpd_epi32 (simde__m128d a) {
 
   return r;
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_cvttpd_epi32(a) SIMDE__M128I_TO_NATIVE(simde_mm_cvttpd_epi32(SIMDE__M128D_FROM_NATIVE(a)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m64
@@ -1490,6 +1759,9 @@ simde_mm_cvttpd_pi32 (simde__m128d a) {
 
   return r;
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_cvttpd_pi32(a) SIMDE__M64_TO_NATIVE(simde_mm_cvttpd_pi32(SIMDE__M128D_FROM_NATIVE(a)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -1508,6 +1780,9 @@ simde_mm_cvttps_epi32 (simde__m128 a) {
 
   return r;
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_cvttps_epi32(a) SIMDE__M128I_TO_NATIVE(simde_mm_cvttps_epi32(SIMDE__M128_FROM_NATIVE(a)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 int32_t
@@ -1518,6 +1793,9 @@ simde_mm_cvttsd_si32 (simde__m128d a) {
   return (int32_t) trunc(a.f64[0]);
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_cvttsd_si32(a) simde_mm_cvttsd_si32(SIMDE__M128D_FROM_NATIVE(a))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 int64_t
@@ -1533,6 +1811,10 @@ simde_mm_cvttsd_si64 (simde__m128d a) {
 #endif
 }
 #define simde_mm_cvttsd_si64x(a) simde_mm_cvttsd_si64(a)
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_cvttsd_si64(a) simde_mm_cvttsd_si64(SIMDE__M128D_FROM_NATIVE(a))
+#  define _mm_cvttsd_si64x(a) simde_mm_cvttsd_si64x(SIMDE__M128D_FROM_NATIVE(a))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
@@ -1550,6 +1832,9 @@ simde_mm_div_pd (simde__m128d a, simde__m128d b) {
 
   return r;
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_div_pd(a, b) SIMDE__M128D_TO_NATIVE(simde_mm_div_pd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
@@ -1565,6 +1850,9 @@ simde_mm_div_sd (simde__m128d a, simde__m128d b) {
 
   return r;
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_div_sd(a, b) SIMDE__M128D_TO_NATIVE(simde_mm_div_sd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 int32_t
@@ -1575,6 +1863,9 @@ simde_mm_extract_epi16 (simde__m128i a, const int imm8) {
 #  define simde_mm_extract_epi16(a, imm8) _mm_extract_epi16(a.n, imm8)
 #elif defined(SIMDE_SSE2_NEON)
 #  define simde_mm_extract_epi16(a, imm8) (vgetq_lane_s16((a).neon_i16, (imm8)) & ((int32_t) UINT32_C(0x0000ffff)))
+#endif
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_extract_epi16(a, imm8) simde_mm_extract_epi16(SIMDE__M128I_FROM_NATIVE(a), imm8)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -1587,6 +1878,9 @@ simde_mm_insert_epi16 (simde__m128i a, int32_t i, const int imm8) {
 #  define simde_mm_insert_epi16(a, i, imm8) SIMDE__M128I_C(_mm_insert_epi16((a).n, (i), (imm8)))
 #elif defined(SIMDE_SSE2_NEON)
 #  define simde_mm_insert_epi16(a, i, imm8) SIMDE__M128I_NEON_C(i16, vsetq_lane_s16((i), a.neon_i16, (imm8)))
+#endif
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_insert_epi16(a, i, imm8) SIMDE__M128I_TO_NATIVE(simde_mm_insert_epi16(SIMDE__M128I_FROM_NATIVE(a), i, imm8))
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -1607,6 +1901,9 @@ simde_mm_load_pd (simde_float64 const mem_addr[HEDLEY_ARRAY_PARAM(2)]) {
 
   return r;
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_load_pd(mem_addr) SIMDE__M128D_TO_NATIVE(simde_mm_load_pd(mem_addr))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
@@ -1623,6 +1920,10 @@ simde_mm_load_pd1 (simde_float64 const* mem_addr) {
   return r;
 }
 #define simde_mm_load1_pd(mem_addr) simde_mm_load_pd1(mem_addr)
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_load_pd1(mem_addr) SIMDE__M128D_TO_NATIVE(simde_mm_load_pd1(mem_addr))
+#  define _mm_load1_pd(mem_addr) SIMDE__M128D_TO_NATIVE(simde_mm_load1_pd(mem_addr))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
@@ -1638,6 +1939,9 @@ simde_mm_load_sd (simde_float64 const* mem_addr) {
 
   return r;
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_load_sd(mem_addr) SIMDE__M128D_TO_NATIVE(simde_mm_load_sd(mem_addr))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -1657,6 +1961,9 @@ simde_mm_load_si128 (simde__m128i const* mem_addr) {
 
   return r;
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_load_si128(mem_addr) SIMDE__M128I_TO_NATIVE(simde_mm_load_si128(mem_addr))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
@@ -1674,6 +1981,9 @@ simde_mm_loadh_pd (simde__m128d a, simde_float64 const* mem_addr) {
 
   return r;
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_loadh_pd(a, mem_addr) SIMDE__M128D_TO_NATIVE(simde_mm_loadh_pd(SIMDE__M128D_FROM_NATIVE(a), mem_addr))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -1691,6 +2001,9 @@ simde_mm_loadl_epi64 (simde__m128i const* mem_addr) {
 
   return r;
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_loadl_epi64(mem_addr) SIMDE__M128I_TO_NATIVE(simde_mm_loadl_epi64(mem_addr))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
@@ -1706,6 +2019,9 @@ simde_mm_loadl_pd (simde__m128d a, simde_float64 const* mem_addr) {
 
   return r;
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_loadl_pd(a, mem_addr) SIMDE__M128D_TO_NATIVE(simde_mm_loadl_pd(SIMDE__M128D_FROM_NATIVE(a), mem_addr))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
@@ -1724,6 +2040,9 @@ simde_mm_loadr_pd (simde_float64 const mem_addr[HEDLEY_ARRAY_PARAM(2)]) {
 
   return r;
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_loadr_pd(mem_addr) SIMDE__M128D_TO_NATIVE(simde_mm_loadr_pd(mem_addr))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
@@ -1742,6 +2061,9 @@ simde_mm_loadu_pd (simde_float64 const mem_addr[HEDLEY_ARRAY_PARAM(2)]) {
 
   return r;
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_loadu_pd(mem_addr) SIMDE__M128D_TO_NATIVE(simde_mm_loadu_pd(mem_addr))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -1758,6 +2080,9 @@ simde_mm_loadu_si128 (simde__m128i const* mem_addr) {
 
   return r;
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_loadu_si128(mem_addr) SIMDE__M128I_TO_NATIVE(simde_mm_loadu_si128(mem_addr))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -1781,6 +2106,9 @@ simde_mm_madd_epi16 (simde__m128i a, simde__m128i b) {
 
   return r;
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_madd_epi16(a, b) SIMDE__M128I_TO_NATIVE(simde_mm_madd_epi16(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 void
@@ -1795,6 +2123,9 @@ simde_mm_maskmoveu_si128 (simde__m128i a, simde__m128i mask, int8_t mem_addr[HED
   }
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_maskmoveu_si128(a, mask, mem_addr) simde_mm_maskmoveu_si128(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(mask), mem_addr)
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 int32_t
@@ -1834,6 +2165,9 @@ simde_mm_movemask_epi8 (simde__m128i a) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_movemask_epi8(a) simde_mm_movemask_epi8(SIMDE__M128I_FROM_NATIVE(a))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 int32_t
@@ -1849,6 +2183,9 @@ simde_mm_movemask_pd (simde__m128d a) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_movemask_pd(a) simde_mm_movemask_pd(SIMDE__M128D_FROM_NATIVE(a))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m64
@@ -1863,6 +2200,9 @@ simde_mm_movepi64_pi64 (simde__m128i a) {
 
   return r;
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_movepi64_pi64(a) SIMDE__M64_TO_NATIVE(simde_mm_movepi64_pi64(SIMDE__M128I_FROM_NATIVE(a)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -1878,6 +2218,9 @@ simde_mm_movpi64_epi64 (simde__m64 a) {
 
   return r;
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_movpi64_epi64(a) SIMDE__M128I_TO_NATIVE(simde_mm_movpi64_epi64(SIMDE__M64_FROM_NATIVE(a)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -1897,6 +2240,9 @@ simde_mm_min_epi16 (simde__m128i a, simde__m128i b) {
 
   return r;
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_min_epi16(a, b) SIMDE__M128I_TO_NATIVE(simde_mm_min_epi16(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -1916,6 +2262,9 @@ simde_mm_min_epu8 (simde__m128i a, simde__m128i b) {
 
   return r;
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_min_epu8(a, b) SIMDE__M128I_TO_NATIVE(simde_mm_min_epu8(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
@@ -1933,6 +2282,9 @@ simde_mm_min_pd (simde__m128d a, simde__m128d b) {
 
   return r;
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_min_pd(a, b) SIMDE__M128D_TO_NATIVE(simde_mm_min_pd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
@@ -1948,6 +2300,9 @@ simde_mm_min_sd (simde__m128d a, simde__m128d b) {
 
   return r;
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_min_sd(a, b) SIMDE__M128D_TO_NATIVE(simde_mm_min_sd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -1967,6 +2322,9 @@ simde_mm_max_epi16 (simde__m128i a, simde__m128i b) {
 
   return r;
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_max_epi16(a, b) SIMDE__M128I_TO_NATIVE(simde_mm_max_epi16(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -1986,6 +2344,9 @@ simde_mm_max_epu8 (simde__m128i a, simde__m128i b) {
 
   return r;
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_max_epu8(a, b) SIMDE__M128I_TO_NATIVE(simde_mm_max_epu8(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
@@ -2003,6 +2364,9 @@ simde_mm_max_pd (simde__m128d a, simde__m128d b) {
 
   return r;
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_max_pd(a, b) SIMDE__M128D_TO_NATIVE(simde_mm_max_pd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
@@ -2018,6 +2382,9 @@ simde_mm_max_sd (simde__m128d a, simde__m128d b) {
 
   return r;
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_max_sd(a, b) SIMDE__M128D_TO_NATIVE(simde_mm_max_sd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -2035,6 +2402,9 @@ simde_mm_move_epi64 (simde__m128i a) {
 
   return r;
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_move_epi64(a) SIMDE__M128I_TO_NATIVE(simde_mm_move_epi64(SIMDE__M128I_FROM_NATIVE(a)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
@@ -2050,6 +2420,9 @@ simde_mm_move_sd (simde__m128d a, simde__m128d b) {
 
   return r;
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_move_sd(a, b) SIMDE__M128D_TO_NATIVE(simde_mm_move_sd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -2067,6 +2440,9 @@ simde_mm_mul_epu32 (simde__m128i a, simde__m128i b) {
 
   return r;
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_mul_epu32(a, b) SIMDE__M128I_TO_NATIVE(simde_mm_mul_epu32(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -2110,6 +2486,9 @@ simde_mm_mul_pd (simde__m128d a, simde__m128d b) {
 
   return r;
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_mul_pd(a, b) SIMDE__M128D_TO_NATIVE(simde_mm_mul_pd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
@@ -2125,6 +2504,9 @@ simde_mm_mul_sd (simde__m128d a, simde__m128d b) {
 
   return r;
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_mul_sd(a, b) SIMDE__M128D_TO_NATIVE(simde_mm_mul_sd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m64
@@ -2139,6 +2521,9 @@ simde_mm_mul_su32 (simde__m64 a, simde__m64 b) {
 
   return r;
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_mul_su32(a, b) SIMDE__M64_TO_NATIVE(simde_mm_mul_su32(SIMDE__M64_FROM_NATIVE(a), SIMDE__M64_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -2165,6 +2550,9 @@ simde_mm_mulhi_epi16 (simde__m128i a, simde__m128i b) {
 
   return r;
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_mulhi_epi16(a, b) SIMDE__M128I_TO_NATIVE(simde_mm_mulhi_epi16(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -2182,6 +2570,9 @@ simde_mm_mulhi_epu16 (simde__m128i a, simde__m128i b) {
 
   return r;
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_mulhi_epu16(a, b) SIMDE__M128I_TO_NATIVE(simde_mm_mulhi_epu16(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -2201,6 +2592,9 @@ simde_mm_mullo_epi16 (simde__m128i a, simde__m128i b) {
 
   return r;
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_mullo_epi16(a, b) SIMDE__M128I_TO_NATIVE(simde_mm_mullo_epi16(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
@@ -2218,6 +2612,9 @@ simde_mm_or_pd (simde__m128d a, simde__m128d b) {
 
   return r;
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_or_pd(a, b) SIMDE__M128D_TO_NATIVE(simde_mm_or_pd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -2237,6 +2634,9 @@ simde_mm_or_si128 (simde__m128i a, simde__m128i b) {
 
   return r;
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_or_si128(a, b) SIMDE__M128I_TO_NATIVE(simde_mm_or_si128(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -2257,6 +2657,9 @@ simde_mm_packs_epi16 (simde__m128i a, simde__m128i b) {
 
   return r;
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_packs_epi16(a, b) SIMDE__M128I_TO_NATIVE(simde_mm_packs_epi16(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -2277,6 +2680,9 @@ simde_mm_packs_epi32 (simde__m128i a, simde__m128i b) {
 
   return r;
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_packs_epi32(a, b) SIMDE__M128I_TO_NATIVE(simde_mm_packs_epi32(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -2297,6 +2703,9 @@ simde_mm_packus_epi16 (simde__m128i a, simde__m128i b) {
 
   return r;
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_packus_epi16(a, b) SIMDE__M128I_TO_NATIVE(simde_mm_packus_epi16(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 void
@@ -2305,6 +2714,9 @@ simde_mm_pause (void) {
   _mm_pause();
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_pause() SIMDE__M128_TO_NATIVE(simde_mm_pause())
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -2327,6 +2739,9 @@ simde_mm_sad_epu8 (simde__m128i a, simde__m128i b) {
 
   return r;
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_sad_epu8(a, b) SIMDE__M128I_TO_NATIVE(simde_mm_sad_epu8(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -2360,6 +2775,9 @@ simde_mm_set_epi8 (int8_t e15, int8_t e14, int8_t e13, int8_t e12,
 
   return r;
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_set_epi8(e15, e14, e13, e12, e11, e10,  e9,  e8,  e7,  e6,  e5,  e4,  e3,  e2,  e1,  e0) SIMDE__M128I_TO_NATIVE(simde_mm_set_epi8(e15, e14, e13, e12, e11, e10,  e9,  e8,  e7,  e6,  e5,  e4,  e3,  e2,  e1,  e0))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -2385,6 +2803,9 @@ simde_mm_set_epi16 (int16_t e7, int16_t e6, int16_t e5, int16_t e4,
 
   return r;
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_set_epi16(e7,  e6,  e5,  e4,  e3,  e2,  e1,  e0) SIMDE__M128I_TO_NATIVE(simde_mm_set_epi16(e7,  e6,  e5,  e4,  e3,  e2,  e1,  e0))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -2405,6 +2826,9 @@ simde_mm_set_epi32 (int32_t e3, int32_t e2, int32_t e1, int32_t e0) {
 
   return r;
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_set_epi32(e3,  e2,  e1,  e0) SIMDE__M128I_TO_NATIVE(simde_mm_set_epi32(e3,  e2,  e1,  e0))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -2420,6 +2844,9 @@ simde_mm_set_epi64 (simde__m64 e1, simde__m64 e0) {
 
   return r;
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_set_epi64(e1, e0) SIMDE__M128I_TO_NATIVE(simde_mm_set_epi64(SIMDE__M64_FROM_NATIVE(e1), SIMDE__M64_FROM_NATIVE(e0)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -2437,6 +2864,9 @@ simde_mm_set_epi64x (int64_t e1, int64_t e0) {
 
   return r;
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_set_epi64x(e1, e0) SIMDE__M128I_TO_NATIVE(simde_mm_set_epi64x(e1, e0))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -2522,6 +2952,9 @@ simde_mm_set_pd (simde_float64 e1, simde_float64 e0) {
 
   return r;
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_set_pd(e1, e0) SIMDE__M128D_TO_NATIVE(simde_mm_set_pd(e1, e0))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
@@ -2537,6 +2970,9 @@ simde_mm_set_pd1 (simde_float64 a) {
 
   return r;
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_set_pd1(a) SIMDE__M128D_TO_NATIVE(simde_mm_set_pd1(a))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
@@ -2552,6 +2988,9 @@ simde_mm_set_sd (simde_float64 a) {
 
   return r;
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_set_sd(a) SIMDE__M128D_TO_NATIVE(simde_mm_set_sd(a))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -2571,6 +3010,9 @@ simde_mm_set1_epi8 (int8_t a) {
 
   return r;
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_set1_epi8(a) SIMDE__M128I_TO_NATIVE(simde_mm_set1_epi8(a))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -2590,6 +3032,9 @@ simde_mm_set1_epi16 (int16_t a) {
 
   return r;
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_set1_epi16(a) SIMDE__M128I_TO_NATIVE(simde_mm_set1_epi16(a))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -2609,6 +3054,9 @@ simde_mm_set1_epi32 (int32_t a) {
 
   return r;
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_set1_epi32(a) SIMDE__M128I_TO_NATIVE(simde_mm_set1_epi32(a))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -2628,6 +3076,9 @@ simde_mm_set1_epi64x (int64_t a) {
 
   return r;
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_set1_epi64x(a) SIMDE__M128I_TO_NATIVE(simde_mm_set1_epi64x(a))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -2645,6 +3096,9 @@ simde_mm_set1_epi64 (simde__m64 a) {
 
   return r;
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_set1_epi64(a) SIMDE__M128I_TO_NATIVE(simde_mm_set1_epi64(SIMDE__M64_FROM_NATIVE(a)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
@@ -2662,6 +3116,9 @@ simde_mm_set1_pd (simde_float64 a) {
 
   return r;
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_set1_pd(a) SIMDE__M128D_TO_NATIVE(simde_mm_set1_pd(a))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -2701,6 +3158,9 @@ simde_mm_setr_epi8 (int8_t e15, int8_t e14, int8_t e13, int8_t e12,
 
   return r;
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_setr_epi8(e15, e14, e13, e12, e11, e10, e9, e8, e7, e6, e5, e4, e3, e2, e1, e0) SIMDE__M128I_TO_NATIVE(simde_mm_setr_epi8(e15, e14, e13, e12, e11, e10, e9, e8, e7, e6, e5, e4, e3, e2, e1, e0))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -2728,6 +3188,9 @@ simde_mm_setr_epi16 (int16_t e7, int16_t e6, int16_t e5, int16_t e4,
 
   return r;
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_setr_epi16(e7, e6, e5, e4, e3, e2, e1, e0) SIMDE__M128I_TO_NATIVE(simde_mm_setr_epi16(e7, e6, e5, e4, e3, e2, e1, e0))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -2750,6 +3213,9 @@ simde_mm_setr_epi32 (int32_t e3, int32_t e2, int32_t e1, int32_t e0) {
 
   return r;
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_setr_epi32(e3, e2, e1, e0) SIMDE__M128I_TO_NATIVE(simde_mm_setr_epi32(e3, e2, e1, e0))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -2767,6 +3233,9 @@ simde_mm_setr_epi64 (simde__m64 e1, simde__m64 e0) {
 
   return r;
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_setr_epi64(e1, e0) SIMDE__M128I_TO_NATIVE(simde_mm_setr_epi64(SIMDE__M64_FROM_NATIVE(e1), SIMDE__M64_FROM_NATIVE(e0)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
@@ -2782,6 +3251,9 @@ simde_mm_setr_pd (simde_float64 e1, simde_float64 e0) {
 
   return r;
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_setr_pd(e1, e0) SIMDE__M128D_TO_NATIVE(simde_mm_setr_pd(e1, e0))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
@@ -2797,6 +3269,9 @@ simde_mm_setzero_pd (void) {
 
   return r;
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_setzero_pd() SIMDE__M128D_TO_NATIVE(simde_mm_setzero_pd())
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -2814,6 +3289,9 @@ simde_mm_setzero_si128 (void) {
 
   return r;
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_setzero_si128() SIMDE__M128I_TO_NATIVE(simde_mm_setzero_si128())
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -2840,6 +3318,9 @@ simde_mm_shuffle_epi32 (simde__m128i a, const int imm8) {
 				((imm8) >> 4) & 3,		\
 				((imm8) >> 6) & 3) }; })
 #endif
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_shuffle_epi32(a, imm8) SIMDE__M128I_TO_NATIVE(simde_mm_shuffle_epi32(SIMDE__M128I_FROM_NATIVE(a), imm8))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
@@ -2861,6 +3342,9 @@ simde_mm_shuffle_pd (simde__m128d a, simde__m128d b, const int imm8) {
 				(b).f64,			\
 				(((imm8)     ) & 1),		\
 				(((imm8) >> 1) & 1) + 2) }; })
+#endif
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_shuffle_pd(a, b, imm8) SIMDE__M128D_TO_NATIVE(simde_mm_shuffle_pd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b), imm8))
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -2890,6 +3374,9 @@ simde_mm_shufflehi_epi16 (simde__m128i a, const int imm8) {
 				(((imm8) >> 4) & 3) + 4,		\
 				(((imm8) >> 6) & 3) + 4) }; })
 #endif
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_shufflehi_epi16(a, imm8) SIMDE__M128I_TO_NATIVE(simde_mm_shufflehi_epi16(SIMDE__M128I_FROM_NATIVE(a), imm8))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -2918,6 +3405,9 @@ simde_mm_shufflelo_epi16 (simde__m128i a, const int imm8) {
 				(((imm8) >> 6) & 3),	\
 				4, 5, 6, 7) }; })
 #endif
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_shufflelo_epi16(a, imm8) SIMDE__M128I_TO_NATIVE(simde_mm_shufflelo_epi16(SIMDE__M128I_FROM_NATIVE(a), imm8))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -2938,6 +3428,9 @@ simde_mm_sll_epi16 (simde__m128i a, simde__m128i count) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_sll_epi16(a, count) SIMDE__M128I_TO_NATIVE(simde_mm_sll_epi16(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(count)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -2958,6 +3451,9 @@ simde_mm_sll_epi32 (simde__m128i a, simde__m128i count) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_sll_epi32(a, count) SIMDE__M128I_TO_NATIVE(simde_mm_sll_epi32(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(count)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -2978,6 +3474,9 @@ simde_mm_sll_epi64 (simde__m128i a, simde__m128i count) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_sll_epi64(a, count) SIMDE__M128I_TO_NATIVE(simde_mm_sll_epi64(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(count)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
@@ -2995,6 +3494,9 @@ simde_mm_sqrt_pd (simde__m128d a) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_sqrt_pd(a) SIMDE__M128D_TO_NATIVE(simde_mm_sqrt_pd(SIMDE__M128D_FROM_NATIVE(a)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
@@ -3008,6 +3510,9 @@ simde_mm_sqrt_sd (simde__m128d a, simde__m128d b) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_sqrt_sd(a, b) SIMDE__M128D_TO_NATIVE(simde_mm_sqrt_sd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -3028,6 +3533,9 @@ simde_mm_srl_epi16 (simde__m128i a, simde__m128i count) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_srl_epi16(a, count) SIMDE__M128I_TO_NATIVE(simde_mm_srl_epi16(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(count)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -3048,6 +3556,9 @@ simde_mm_srl_epi32 (simde__m128i a, simde__m128i count) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_srl_epi32(a, count) SIMDE__M128I_TO_NATIVE(simde_mm_srl_epi32(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(count)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -3068,6 +3579,9 @@ simde_mm_srl_epi64 (simde__m128i a, simde__m128i count) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_srl_epi64(a, count) SIMDE__M128I_TO_NATIVE(simde_mm_srl_epi64(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(count)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -3086,6 +3600,9 @@ simde_mm_srai_epi16 (simde__m128i a, int imm8) {
 }
 #if defined(SIMDE_SSE2_NATIVE)
 #  define simde_mm_srai_epi16(a, imm8) SIMDE__M128I_C(_mm_srai_epi16((a).n, (imm8)));
+#endif
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_srai_epi16(a, imm8) SIMDE__M128I_TO_NATIVE(simde_mm_srai_epi16(SIMDE__M128I_FROM_NATIVE(a), imm8))
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -3106,6 +3623,9 @@ simde_mm_srai_epi32 (simde__m128i a, int imm8) {
 #  define simde_mm_srai_epi32(a, imm8) SIMDE__M128I_C(_mm_srai_epi32((a).n, (imm8)))
 #elif defined(SIMDE_SSE2_NEON)
 #  define simde_mm_srai_epi32(a, imm8) SIMDE__M128I_NEON_C(i32, ((imm8) <= 0) ? (a.neon_i32) : (((imm8) > 31) ? (vshrq_n_s32(vshrq_n_s32(a.neon_i32, 16), 16)) : (vshrq_n_s32(a.neon_i32, (imm8)))))
+#endif
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_srai_epi32(a, imm8) SIMDE__M128I_TO_NATIVE(simde_mm_srai_epi32(SIMDE__M128I_FROM_NATIVE(a), imm8))
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -3132,6 +3652,9 @@ simde_mm_sra_epi16 (simde__m128i a, simde__m128i count) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_sra_epi16(a, count) SIMDE__M128I_TO_NATIVE(simde_mm_sra_epi16(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(count)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -3159,6 +3682,9 @@ simde_mm_sra_epi32 (simde__m128i a, simde__m128i count) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_sra_epi32(a, count) SIMDE__M128I_TO_NATIVE(simde_mm_sra_epi32(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(count)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -3176,6 +3702,9 @@ simde_mm_slli_epi16 (simde__m128i a, const int imm8) {
 #elif defined(SIMDE_SSE2_NEON)
 #  define simde_mm_slli_epi16(a, imm8) \
   SIMDE__M128I_NEON_C(i16, ((imm8) <= 0) ? ((a).neon_i16) : (((imm8) > 31) ? (vdupq_n_s16(0)) : (vshlq_n_s16((a).neon_i16, (imm8)))))
+#endif
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_slli_epi16(a, imm8) SIMDE__M128I_TO_NATIVE(simde_mm_slli_epi16(SIMDE__M128I_FROM_NATIVE(a), imm8))
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -3195,6 +3724,9 @@ simde_mm_slli_epi32 (simde__m128i a, const int imm8) {
 #  define simde_mm_slli_epi32(a, imm8) \
   SIMDE__M128I_NEON_C(i32, ((imm8) <= 0) ? ((a).neon_i32) : (((imm8) > 31) ? (vdupq_n_s32(0)) : (vshlq_n_s32((a).neon_i32, (imm8)))))
 #endif
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_slli_epi32(a, imm8) SIMDE__M128I_TO_NATIVE(simde_mm_slli_epi32(SIMDE__M128I_FROM_NATIVE(a), imm8))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -3209,6 +3741,9 @@ simde_mm_slli_epi64 (simde__m128i a, const int imm8) {
 }
 #if defined(SIMDE_SSE2_NATIVE)
 #  define simde_mm_slli_epi64(a, imm8) SIMDE__M128I_C(_mm_slli_epi64(a.n, imm8));
+#endif
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_slli_epi64(a, imm8) SIMDE__M128I_TO_NATIVE(simde_mm_slli_epi64(SIMDE__M128I_FROM_NATIVE(a), imm8))
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -3228,6 +3763,9 @@ simde_mm_srli_epi16 (simde__m128i a, const int imm8) {
 #  define simde_mm_srli_epi16(a, imm8) \
   SIMDE__M128I_NEON_C(u16, ((imm8) <= 0) ? ((a).neon_u16) : (((imm8) > 31) ? (vdupq_n_u16(0)) : (vshrq_n_u16((a).neon_u16, (imm8)))))
 #endif
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_srli_epi16(a, imm8) SIMDE__M128I_TO_NATIVE(simde_mm_srli_epi16(SIMDE__M128I_FROM_NATIVE(a), imm8))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -3245,6 +3783,9 @@ simde_mm_srli_epi32 (simde__m128i a, const int imm8) {
 #elif defined(SIMDE_SSE2_NEON)
 #  define simde_mm_srli_epi32(a, imm8) \
   SIMDE__M128I_NEON_C(u32, ((imm8) <= 0) ? ((a).neon_u32) : (((imm8) > 31) ? (vdupq_n_u32(0)) : (vshrq_n_u32((a).neon_u32, (imm8)))))
+#endif
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_srli_epi32(a, imm8) SIMDE__M128I_TO_NATIVE(simde_mm_srli_epi32(SIMDE__M128I_FROM_NATIVE(a), imm8))
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -3268,6 +3809,9 @@ simde_mm_srli_epi64 (simde__m128i a, const int imm8) {
 #  define simde_mm_srli_epi64(a, imm8) \
   SIMDE__M128I_NEON_C(u64, (((imm8)&255) < 0 || ((imm8)&255) > 63) ? (vdupq_n_u64(0)) : ((((imm8)&255) == 0) ? (a.neon_u64) : (vshrq_n_u64((a).neon_u64, (imm8)&255))))
 #endif
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_srli_epi64(a, imm8) SIMDE__M128I_TO_NATIVE(simde_mm_srli_epi64(SIMDE__M128I_FROM_NATIVE(a), imm8))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 void
@@ -3281,6 +3825,9 @@ simde_mm_store_pd (simde_float64 mem_addr[HEDLEY_ARRAY_PARAM(2)], simde__m128d a
   memcpy(mem_addr, &a, sizeof(a));
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_store_pd(mem_addr, a) simde_mm_store_pd(mem_addr, SIMDE__M128D_FROM_NATIVE(a))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 void
@@ -3296,6 +3843,10 @@ simde_mm_store1_pd (simde_float64 mem_addr[HEDLEY_ARRAY_PARAM(2)], simde__m128d 
 #endif
 }
 #define simde_mm_store_pd1(mem_addr, a) simde_mm_store1_pd(mem_addr, a)
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_store1_pd(mem_addr, a) simde_mm_store1_pd(mem_addr, SIMDE__M128D_FROM_NATIVE(a))
+#  define _mm_store_pd1(mem_addr, a) simde_mm_store_pd1(mem_addr, SIMDE__M128D_FROM_NATIVE(a))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 void
@@ -3306,6 +3857,9 @@ simde_mm_store_sd (simde_float64* mem_addr, simde__m128d a) {
   memcpy(mem_addr, &a, sizeof(a.f64[0]));
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_store_sd(mem_addr, a) SIMDE__M128D_TO_NATIVE(simde_mm_store_sd(mem_addr, SIMDE__M128D_FROM_NATIVE(a)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 void
@@ -3319,6 +3873,9 @@ simde_mm_store_si128 (simde__m128i* mem_addr, simde__m128i a) {
   memcpy(mem_addr, &a, sizeof(a));
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_store_si128(mem_addr, a) simde_mm_store_si128(mem_addr, SIMDE__M128I_FROM_NATIVE(a))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 void
@@ -3329,6 +3886,9 @@ simde_mm_storeh_pd (simde_float64* mem_addr, simde__m128d a) {
   *mem_addr = a.f64[1];
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_storeh_pd(mem_addr, a) simde_mm_storeh_pd(mem_addr, SIMDE__M128D_FROM_NATIVE(a))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 void
@@ -3341,6 +3901,9 @@ simde_mm_storel_epi64 (simde__m128i* mem_addr, simde__m128i a) {
   mem_addr->i64[0] = a.i64[0];
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_storel_epi64(mem_addr, a) simde_mm_storel_epi64(mem_addr, SIMDE__M128I_FROM_NATIVE(a))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 void
@@ -3351,6 +3914,9 @@ simde_mm_storel_pd (simde_float64* mem_addr, simde__m128d a) {
   *mem_addr = a.f64[0];
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_storel_pd(mem_addr, a) simde_mm_storel_pd(mem_addr, SIMDE__M128D_FROM_NATIVE(a))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 void
@@ -3365,6 +3931,9 @@ simde_mm_storer_pd (simde_float64 mem_addr[2], simde__m128d a) {
   mem_addr[1] = a.f64[0];
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_storer_pd(mem_addr, a) simde_mm_storer_pd(mem_addr, SIMDE__M128D_FROM_NATIVE(a))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 void
@@ -3375,6 +3944,9 @@ simde_mm_storeu_pd (simde_float64* mem_addr, simde__m128d a) {
   memcpy(mem_addr, &a, sizeof(a));
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_storeu_pd(mem_addr, a) simde_mm_storeu_pd(mem_addr, SIMDE__M128D_FROM_NATIVE(a))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 void
@@ -3389,6 +3961,9 @@ simde_mm_storeu_si128 (simde__m128i* mem_addr, simde__m128i a) {
   memcpy(mem_addr, &a, sizeof(a));
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_storeu_si128(mem_addr, a) simde_mm_storeu_si128(mem_addr, SIMDE__M128I_FROM_NATIVE(a))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 void
@@ -3400,6 +3975,9 @@ simde_mm_stream_pd (simde_float64 mem_addr[HEDLEY_ARRAY_PARAM(2)], simde__m128d 
   memcpy(mem_addr, &a, sizeof(a));
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_stream_pd(mem_addr, a) simde_mm_stream_pd(mem_addr, SIMDE__M128D_FROM_NATIVE(a))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 void
@@ -3411,6 +3989,9 @@ simde_mm_stream_si128 (simde__m128i* mem_addr, simde__m128i a) {
   memcpy(mem_addr, &a, sizeof(a));
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_stream_si128(mem_addr, a) simde_mm_stream_si128(mem_addr, SIMDE__M128I_FROM_NATIVE(a))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 void
@@ -3421,6 +4002,9 @@ simde_mm_stream_si32 (int32_t* mem_addr, int32_t a) {
   *mem_addr = a;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_stream_si32(mem_addr, a) simde_mm_stream_si32(mem_addr, a)
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 void
@@ -3437,6 +4021,9 @@ simde_mm_stream_si64 (int64_t* mem_addr, int64_t a) {
   *mem_addr = a;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_stream_si64(mem_addr, a) simde_mm_stream_si64(mem_addr, a)
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -3454,6 +4041,9 @@ simde_mm_sub_epi8 (simde__m128i a, simde__m128i b) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_sub_epi8(a, b) SIMDE__M128I_TO_NATIVE(simde_mm_sub_epi8(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -3471,6 +4061,9 @@ simde_mm_sub_epi16 (simde__m128i a, simde__m128i b) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_sub_epi16(a, b) SIMDE__M128I_TO_NATIVE(simde_mm_sub_epi16(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -3488,6 +4081,9 @@ simde_mm_sub_epi32 (simde__m128i a, simde__m128i b) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_sub_epi32(a, b) SIMDE__M128I_TO_NATIVE(simde_mm_sub_epi32(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -3505,6 +4101,9 @@ simde_mm_sub_epi64 (simde__m128i a, simde__m128i b) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_sub_epi64(a, b) SIMDE__M128I_TO_NATIVE(simde_mm_sub_epi64(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
@@ -3520,6 +4119,9 @@ simde_mm_sub_pd (simde__m128d a, simde__m128d b) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_sub_pd(a, b) SIMDE__M128D_TO_NATIVE(simde_mm_sub_pd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
@@ -3533,18 +4135,24 @@ simde_mm_sub_sd (simde__m128d a, simde__m128d b) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_sub_sd(a, b) SIMDE__M128D_TO_NATIVE(simde_mm_sub_sd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m64
 simde_mm_sub_si64 (simde__m64 a, simde__m64 b) {
 #if defined(SIMDE_SSE2_NATIVE)
-  return SIMDE__M64_C(_mm_sub_si64(a.n, b.n));
+  return SIMDE__M64_FROM_NATIVE(_mm_sub_si64(a.n, b.n));
 #else
   simde__m64 r;
   r.i64[0] = a.i64[0] - b.i64[0];
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_sub_si64(a, b) SIMDE__M64_TO_NATIVE(simde_mm_sub_si64(SIMDE__M64_FROM_NATIVE(a), SIMDE__M64_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -3568,6 +4176,9 @@ simde_mm_subs_epi8 (simde__m128i a, simde__m128i b) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_subs_epi8(a, b) SIMDE__M128I_TO_NATIVE(simde_mm_subs_epi8(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -3591,6 +4202,9 @@ simde_mm_subs_epi16 (simde__m128i a, simde__m128i b) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_subs_epi16(a, b) SIMDE__M128I_TO_NATIVE(simde_mm_subs_epi16(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -3615,6 +4229,9 @@ simde_mm_subs_epu8 (simde__m128i a, simde__m128i b) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_subs_epu8(a, b) SIMDE__M128I_TO_NATIVE(simde_mm_subs_epu8(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -3639,6 +4256,9 @@ simde_mm_subs_epu16 (simde__m128i a, simde__m128i b) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_subs_epu16(a, b) SIMDE__M128I_TO_NATIVE(simde_mm_subs_epu16(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 int
@@ -3654,6 +4274,9 @@ simde_mm_ucomieq_sd (simde__m128d a, simde__m128d b) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_ucomieq_sd(a, b) simde_mm_ucomieq_sd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 int
@@ -3669,6 +4292,9 @@ simde_mm_ucomige_sd (simde__m128d a, simde__m128d b) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_ucomige_sd(a, b) simde_mm_ucomige_sd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 int
@@ -3684,6 +4310,9 @@ simde_mm_ucomigt_sd (simde__m128d a, simde__m128d b) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_ucomigt_sd(a, b) simde_mm_ucomigt_sd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 int
@@ -3699,6 +4328,9 @@ simde_mm_ucomile_sd (simde__m128d a, simde__m128d b) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_ucomile_sd(a, b) simde_mm_ucomile_sd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 int
@@ -3714,6 +4346,9 @@ simde_mm_ucomilt_sd (simde__m128d a, simde__m128d b) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_ucomilt_sd(a, b) simde_mm_ucomilt_sd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 int
@@ -3729,6 +4364,9 @@ simde_mm_ucomineq_sd (simde__m128d a, simde__m128d b) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_ucomineq_sd(a, b) simde_mm_ucomineq_sd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b))
+#endif
 
 #if defined(SIMDE_DIAGNOSTIC_DISABLE_UNINITIALIZED_)
   HEDLEY_DIAGNOSTIC_PUSH
@@ -3748,6 +4386,9 @@ simde_mm_undefined_pd (void) {
 
  return r;
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_undefined_pd() SIMDE__M128D_TO_NATIVE(simde_mm_undefined_pd())
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -3762,6 +4403,9 @@ simde_mm_undefined_si128 (void) {
 
  return r;
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_undefined_si128() SIMDE__M128I_TO_NATIVE(simde_mm_undefined_si128())
+#endif
 
 #if defined(SIMDE_DIAGNOSTIC_DISABLE_UNINITIALIZED_)
   HEDLEY_DIAGNOSTIC_POP
@@ -3776,6 +4420,9 @@ simde_mm_lfence (void) {
   simde_mm_sfence();
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_lfence() simde_mm_lfence()
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 void
@@ -3786,6 +4433,9 @@ simde_mm_mfence (void) {
   simde_mm_sfence();
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_mfence() simde_mm_mfence()
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -3807,6 +4457,9 @@ simde_mm_unpackhi_epi8 (simde__m128i a, simde__m128i b) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_unpackhi_epi8(a, b) SIMDE__M128I_TO_NATIVE(simde_mm_unpackhi_epi8(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -3828,6 +4481,9 @@ simde_mm_unpackhi_epi16 (simde__m128i a, simde__m128i b) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_unpackhi_epi16(a, b) SIMDE__M128I_TO_NATIVE(simde_mm_unpackhi_epi16(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -3849,6 +4505,9 @@ simde_mm_unpackhi_epi32 (simde__m128i a, simde__m128i b) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_unpackhi_epi32(a, b) SIMDE__M128I_TO_NATIVE(simde_mm_unpackhi_epi32(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -3865,6 +4524,9 @@ simde_mm_unpackhi_epi64 (simde__m128i a, simde__m128i b) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_unpackhi_epi64(a, b) SIMDE__M128I_TO_NATIVE(simde_mm_unpackhi_epi64(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
@@ -3881,6 +4543,9 @@ simde_mm_unpackhi_pd (simde__m128d a, simde__m128d b) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_unpackhi_pd(a, b) SIMDE__M128D_TO_NATIVE(simde_mm_unpackhi_pd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -3902,6 +4567,9 @@ simde_mm_unpacklo_epi8 (simde__m128i a, simde__m128i b) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_unpacklo_epi8(a, b) SIMDE__M128I_TO_NATIVE(simde_mm_unpacklo_epi8(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -3923,6 +4591,9 @@ simde_mm_unpacklo_epi16 (simde__m128i a, simde__m128i b) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_unpacklo_epi16(a, b) SIMDE__M128I_TO_NATIVE(simde_mm_unpacklo_epi16(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -3944,6 +4615,9 @@ simde_mm_unpacklo_epi32 (simde__m128i a, simde__m128i b) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_unpacklo_epi32(a, b) SIMDE__M128I_TO_NATIVE(simde_mm_unpacklo_epi32(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -3960,6 +4634,9 @@ simde_mm_unpacklo_epi64 (simde__m128i a, simde__m128i b) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_unpacklo_epi64(a, b) SIMDE__M128I_TO_NATIVE(simde_mm_unpacklo_epi64(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
@@ -3976,6 +4653,9 @@ simde_mm_unpacklo_pd (simde__m128d a, simde__m128d b) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_unpacklo_pd(a, b) SIMDE__M128D_TO_NATIVE(simde_mm_unpacklo_pd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
@@ -3991,6 +4671,9 @@ simde_mm_xor_pd (simde__m128d a, simde__m128d b) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_xor_pd(a, b) SIMDE__M128D_TO_NATIVE(simde_mm_xor_pd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -4008,6 +4691,9 @@ simde_mm_xor_si128 (simde__m128i a, simde__m128i b) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_xor_si128(a, b) SIMDE__M128I_TO_NATIVE(simde_mm_xor_si128(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i

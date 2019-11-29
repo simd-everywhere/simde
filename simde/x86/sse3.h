@@ -54,6 +54,10 @@
 #    include <pmmintrin.h>
 #  endif
 
+#if !defined(SIMDE_SSE3_NATIVE) && defined(SIMDE_ENABLE_NATIVE_ALIASES)
+#  define SIMDE_SSE3_ENABLE_NATIVE_ALIASES
+#endif
+
 SIMDE__BEGIN_DECLS
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -70,16 +74,22 @@ simde_mm_addsub_pd (simde__m128d a, simde__m128d b) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE3_ENABLE_NATIVE_ALIASES)
+#  define _mm_addsub_pd(a, b) SIMDE__M128D_TO_NATIVE(simde_mm_addsub_pd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128
 simde_mm_addsub_ps (simde__m128 a, simde__m128 b) {
 #if defined(SIMDE_SSE3_NATIVE)
-  return SIMDE__M128_C(_mm_addsub_ps(a.n, b.n));
+  return SIMDE__M128_FROM_NATIVE(_mm_addsub_ps(a.n, b.n));
 #else
   return simde_mm_add_ps(a, simde_mm_mul_ps(simde_mm_set_ps( 1.0f, -1.0f,  1.0f, -1.0f), b));
 #endif
 }
+#if defined(SIMDE_SSE3_ENABLE_NATIVE_ALIASES)
+#  define _mm_addsub_ps(a, b) SIMDE__M128_TO_NATIVE(simde_mm_addsub_ps(SIMDE__M128_FROM_NATIVE(a), SIMDE__M128_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
@@ -93,12 +103,15 @@ simde_mm_hadd_pd (simde__m128d a, simde__m128d b) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE3_ENABLE_NATIVE_ALIASES)
+#  define _mm_hadd_pd(a, b) SIMDE__M128D_TO_NATIVE(simde_mm_hadd_pd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128
 simde_mm_hadd_ps (simde__m128 a, simde__m128 b) {
 #if defined(SIMDE_SSE3_NATIVE)
-  return SIMDE__M128_C(_mm_hadd_ps(a.n, b.n));
+  return SIMDE__M128_FROM_NATIVE(_mm_hadd_ps(a.n, b.n));
 #elif defined(SIMDE_SSE3_NEON)
   #if defined(SIMDE_ARCH_AARCH64)
     return SIMDE__M128_NEON_C(f32, vpaddq_f32(a.neon_f32, b.neon_f32));
@@ -118,6 +131,9 @@ simde_mm_hadd_ps (simde__m128 a, simde__m128 b) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE3_ENABLE_NATIVE_ALIASES)
+#  define _mm_hadd_ps(a, b) SIMDE__M128_TO_NATIVE(simde_mm_hadd_ps(SIMDE__M128_FROM_NATIVE(a), SIMDE__M128_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
@@ -131,12 +147,15 @@ simde_mm_hsub_pd (simde__m128d a, simde__m128d b) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE3_ENABLE_NATIVE_ALIASES)
+#  define _mm_hsub_pd(a, b) SIMDE__M128D_TO_NATIVE(simde_mm_hsub_pd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128
 simde_mm_hsub_ps (simde__m128 a, simde__m128 b) {
 #if defined(SIMDE_SSE3_NATIVE)
-  return SIMDE__M128_C(_mm_hsub_ps(a.n, b.n));
+  return SIMDE__M128_FROM_NATIVE(_mm_hsub_ps(a.n, b.n));
 #elif defined(SIMDE_SSE3_NEON)
   const float32_t mp[] = { 1.0f, -1.0f, 1.0f, -1.0f };
   const float32x4_t m = vld1q_f32(mp);
@@ -156,6 +175,9 @@ simde_mm_hsub_ps (simde__m128 a, simde__m128 b) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE3_ENABLE_NATIVE_ALIASES)
+#  define _mm_hsub_ps(a, b) SIMDE__M128_TO_NATIVE(simde_mm_hsub_ps(SIMDE__M128_FROM_NATIVE(a), SIMDE__M128_FROM_NATIVE(b)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
@@ -170,6 +192,9 @@ simde_mm_lddqu_si128 (simde__m128i const* mem_addr) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE3_ENABLE_NATIVE_ALIASES)
+#  define _mm_lddqu_si128(mem_addr) SIMDE__M128I_TO_NATIVE(simde_mm_lddqu_si128(mem_addr))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
@@ -183,12 +208,15 @@ simde_mm_movedup_pd (simde__m128d a) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE3_ENABLE_NATIVE_ALIASES)
+#  define _mm_movedup_pd(a) SIMDE__M128D_TO_NATIVE(simde_mm_movedup_pd(SIMDE__M128D_FROM_NATIVE(a)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128
 simde_mm_movehdup_ps (simde__m128 a) {
 #if defined(SIMDE_SSE3_NATIVE)
-  return SIMDE__M128_C(_mm_movehdup_ps(a.n));
+  return SIMDE__M128_FROM_NATIVE(_mm_movehdup_ps(a.n));
 #else
   simde__m128 r;
   r.f32[0] = a.f32[1];
@@ -198,12 +226,15 @@ simde_mm_movehdup_ps (simde__m128 a) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE3_ENABLE_NATIVE_ALIASES)
+#  define _mm_movehdup_ps(a) SIMDE__M128_TO_NATIVE(simde_mm_movehdup_ps(SIMDE__M128_FROM_NATIVE(a)))
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128
 simde_mm_moveldup_ps (simde__m128 a) {
 #if defined(SIMDE__SSE3_NATIVE)
-  return SIMDE__M128_C(_mm_moveldup_ps(a.n));
+  return SIMDE__M128_FROM_NATIVE(_mm_moveldup_ps(a.n));
 #else
   simde__m128 r;
   r.f32[0] = a.f32[0];
@@ -213,6 +244,9 @@ simde_mm_moveldup_ps (simde__m128 a) {
   return r;
 #endif
 }
+#if defined(SIMDE_SSE3_ENABLE_NATIVE_ALIASES)
+#  define _mm_moveldup_ps(a) SIMDE__M128_TO_NATIVE(simde_mm_moveldup_ps(SIMDE__M128_FROM_NATIVE(a)))
+#endif
 
 SIMDE__END_DECLS
 
