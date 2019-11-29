@@ -181,6 +181,22 @@ simde_mm256_broadcastsi128_si256 (simde__m128i a) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256i
+simde_mm256_cvtepi8_epi16 (simde__m128i a){
+  simde__m256i r;
+#if defined(SIMDE_AVX2_NATIVE)
+  r = SIMDE__M256I_C(_mm256_cvtepi8_epi16(a.n));
+#else
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.i16) / sizeof(r.i16[0])) ; i++) {
+    r.i16[i] = a.i8[i];
+  }
+#endif
+  return r;
+}
+
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256i
 simde_mm256_cvtepi8_epi32 (simde__m128i a){
   simde__m256i r;
 #if defined(SIMDE_AVX2_NATIVE)
