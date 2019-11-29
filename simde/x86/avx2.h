@@ -210,6 +210,21 @@ simde_mm256_cvtepi16_epi32 (simde__m128i a){
 }
 
 SIMDE__FUNCTION_ATTRIBUTES
+simde__m256i
+simde_mm256_cvtepi16_epi64 (simde__m128i a){
+  simde__m256i r;
+#if defined(SIMDE_AVX2_NATIVE)
+  r = SIMDE__M256I_C(_mm256_cvtepi16_epi64(a.n));
+#else
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.i64) / sizeof(r.i64[0])) ; i++) {
+    r.i64[i] = a.i16[i];
+  }
+#endif
+  return r;
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
 int
 simde_mm256_extract_epi8 (simde__m256i a, const int index) {
   return a.i8[index];
