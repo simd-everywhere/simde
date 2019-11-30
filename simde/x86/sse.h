@@ -71,6 +71,11 @@
 #  include <math.h>
 #  include <fenv.h>
 
+HEDLEY_DIAGNOSTIC_PUSH
+#  if HEDLEY_HAS_WARNING("-Wfloat-equal")
+#    pragma clang diagnostic ignored "-Wfloat-equal"
+#  endif
+
 SIMDE__BEGIN_DECLS
 
 typedef union {
@@ -1298,7 +1303,7 @@ simde_mm_cvtt_ps2pi (simde__m128 a) {
 #else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
-    r.i32[i] = (int32_t) truncf(a.f32[i]);
+    r.i32[i] = SIMDE_CONVERT_FTOI(int32_t, truncf(a.f32[i]));
   }
 #endif
 
@@ -1314,7 +1319,7 @@ simde_mm_cvtt_ss2si (simde__m128 a) {
 #if defined(SIMDE_SSE_NATIVE)
   return _mm_cvtt_ss2si(a.n);
 #else
-  return (int32_t) truncf(a.f32[0]);
+  return SIMDE_CONVERT_FTOI(int32_t, truncf(a.f32[0]));
 #endif
 }
 #if defined(SIMDE_SSE_ENABLE_NATIVE_ALIASES)
@@ -1344,7 +1349,7 @@ simde_mm_cvttss_si32 (simde__m128 a) {
 #if defined(SIMDE_SSE_NATIVE)
   return _mm_cvttss_si32(a.n);
 #else
-  return (int32_t) truncf(a.f32[0]);
+  return SIMDE_CONVERT_FTOI(int32_t, truncf(a.f32[0]));
 #endif
 }
 #if defined(SIMDE_SSE_ENABLE_NATIVE_ALIASES)
@@ -1361,7 +1366,7 @@ simde_mm_cvttss_si64 (simde__m128 a) {
     return _mm_cvttss_si64(a.n);
   #endif
 #else
-  return (int64_t) truncf(a.f32[0]);
+  return SIMDE_CONVERT_FTOI(int64_t, truncf(a.f32[0]));
 #endif
 }
 #if defined(SIMDE_SSE_ENABLE_NATIVE_ALIASES)
@@ -1464,7 +1469,7 @@ simde_MM_GET_ROUNDING_MODE(void) {
 #if defined(SIMDE_SSE_NATIVE)
   return _MM_GET_ROUNDING_MODE();
 #else
-  return fegetround();
+  return (unsigned int) fegetround();
 #endif
 }
 #if defined(SIMDE_SSE_ENABLE_NATIVE_ALIASES)
@@ -2207,7 +2212,7 @@ simde_mm_sad_pu8 (simde__m64 a, simde__m64 b) {
     sum += (uint8_t) abs(a.u8[i] - b.u8[i]);
   }
 
-  r.i16[0] = sum;
+  r.i16[0] = (int16_t) sum;
   r.i16[1] = 0;
   r.i16[2] = 0;
   r.i16[3] = 0;
@@ -2337,10 +2342,8 @@ simde_mm_sfence (void) {
 #  endif
 #elif defined(_MSC_VER)
   MemoryBarrier();
-#elif defined(__GNUC__) && ((__GNUC__ > 4) || (__GNUC__ == 4 && __GNUC_MINOR__ >= 7))
-  __atomic_thread_fence(__ATOMIC_SEQ_CST);
-#elif HEDLEY_CLANG_HAS_FEATURE(c_atomic)
-  __c11_atomic_thread_fence(__ATOMIC_SEQ_CST)
+#elif HEDLEY_HAS_EXTENSION(c_atomic)
+  __c11_atomic_thread_fence(__ATOMIC_SEQ_CST);
 #elif defined(__GNUC__) && ((__GNUC__ > 4) || (__GNUC__ == 4 && __GNUC_MINOR__ >= 1))
   __sync_synchronize();
 #elif (defined(__SUNPRO_C) && (__SUNPRO_C >= 0x5140)) || (defined(__SUNPRO_CC) && (__SUNPRO_CC >= 0x5140))
@@ -2363,15 +2366,21 @@ SIMDE__FUNCTION_ATTRIBUTES
 simde__m64
 simde_mm_shuffle_pi16 (simde__m64 a, const int imm8) {
   simde__m64 r;
-  for (size_t i = 0 ; i < sizeof(r.u16) / sizeof(r.u16[0]) ; i++) {
+  for (size_t i = 0 ; i < sizeof(r.i16) / sizeof(r.i16[0]) ; i++) {
     r.i16[i] = a.i16[(imm8 >> (i * 2)) & 3];
   }
+
+HEDLEY_DIAGNOSTIC_PUSH
+#if HEDLEY_HAS_WARNING("-Wconditional-uninitialized")
+#  pragma clang diagnostic ignored "-Wconditional-uninitialized"
+#endif
   return r;
+HEDLEY_DIAGNOSTIC_POP
 }
 #if defined(SIMDE_SSE_NATIVE) && !defined(__PGI)
 #  define simde_mm_shuffle_pi16(a, imm8) SIMDE__M64_FROM_NATIVE(_mm_shuffle_pi16(a.n, imm8))
 #elif defined(SIMDE__SHUFFLE_VECTOR)
-#  define simde_mm_shuffle_pi16(a, imm8) ({			\
+#  define simde_mm_shuffle_pi16(a, imm8) (__extension__ ({ \
       const simde__m64 simde__tmp_a_ = a;			\
       (simde__m64) { .i16 =					\
 	  SIMDE__SHUFFLE_VECTOR(16, 8,				\
@@ -2380,7 +2389,7 @@ simde_mm_shuffle_pi16 (simde__m64 a, const int imm8) {
 				(((imm8)     ) & 3),		\
 				(((imm8) >> 2) & 3),		\
 				(((imm8) >> 4) & 3),		\
-				(((imm8) >> 6) & 3)) }; })
+				(((imm8) >> 6) & 3)) }; }))
 #endif
 #if defined(SIMDE_SSE_NATIVE) && !defined(__PGI)
 #  define simde_m_pshufw(a, imm8) SIMDE__M64_FROM_NATIVE(_m_pshufw(a.n, imm8))
@@ -2405,7 +2414,7 @@ simde_mm_shuffle_ps (simde__m128 a, simde__m128 b, const int imm8) {
 #if defined(SIMDE_SSE_NATIVE) && !defined(__PGI)
 #  define simde_mm_shuffle_ps(a, b, imm8) SIMDE__M128_FROM_NATIVE(_mm_shuffle_ps(a.n, b.n, imm8))
 #elif defined(SIMDE__SHUFFLE_VECTOR)
-#  define simde_mm_shuffle_ps(a, b, imm8) ({			\
+#  define simde_mm_shuffle_ps(a, b, imm8) (__extension__ ({			\
       (simde__m128) { .f32 =					\
 	  SIMDE__SHUFFLE_VECTOR(32, 16,				\
 				(a).f32,			\
@@ -2413,7 +2422,7 @@ simde_mm_shuffle_ps (simde__m128 a, simde__m128 b, const int imm8) {
 				(((imm8)     ) & 3),		\
 				(((imm8) >> 2) & 3),		\
 				(((imm8) >> 4) & 3) + 4,	\
-				(((imm8) >> 6) & 3) + 4) }; })
+				(((imm8) >> 6) & 3) + 4) }; }))
 #endif
 #if defined(SIMDE_SSE_ENABLE_NATIVE_ALIASES)
 #  define _mm_shuffle_ps(a, b, imm8) SIMDE__M128_TO_NATIVE(simde_mm_shuffle_ps(SIMDE__M128_FROM_NATIVE(a), SIMDE__M128_FROM_NATIVE(b), imm8))
@@ -2959,5 +2968,7 @@ SIMDE__END_DECLS
 #if defined(SIMDE_SSE_ENABLE_NATIVE_ALIASES)
 #  define _MM_TRANSPOSE4_PS(row0, row1, row2, row3) SIMDE_MM_TRANSPOSE4_PS(row0, row1, row2, row3)
 #endif
+
+HEDLEY_DIAGNOSTIC_POP
 
 #endif /* !defined(SIMDE__SSE_H) */

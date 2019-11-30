@@ -288,7 +288,7 @@ simde_em_float32x4_abs (simde_em_float32x4 a) {
 #if defined(SIMDE_EM_NATIVE)
   return SIMDE_EM_FLOAT32X4_C(emscripten_float32x4_abs(a.n));
 #elif defined(SIMDE_EM_SSE2)
-  return SIMDE_EM_FLOAT32X4_SSE_C(_mm_and_ps(a.sse, _mm_castsi128_ps(_mm_set1_epi32(~(1<<31)))));
+  return SIMDE_EM_FLOAT32X4_SSE_C(_mm_and_ps(a.sse, _mm_castsi128_ps(_mm_set1_epi32(INT_MAX))));
 #elif defined(SIMDE_EM_NEON)
   return SIMDE_EM_FLOAT32X4_NEON_C(vabsq_f32(a.neon));
 #else

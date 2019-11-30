@@ -73,7 +73,7 @@ simde_mm_abs_epi8 (simde__m128i a) {
   simde__m128i r;
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i8) / sizeof(r.i8[0])) ; i++) {
-    r.u8[i] = (a.i8[i] < 0) ? (- a.i8[i]) : a.i8[i];
+    r.u8[i] = (uint8_t) ((a.i8[i] < 0) ? (- a.i8[i]) : a.i8[i]);
   }
   return r;
 #endif
@@ -91,7 +91,7 @@ simde_mm_abs_epi16 (simde__m128i a) {
   simde__m128i r;
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i16) / sizeof(r.i16[0])) ; i++) {
-    r.u16[i] = (a.i16[i] < 0) ? (- a.i16[i]) : a.i16[i];
+    r.u16[i] = (uint16_t) ((a.i16[i] < 0) ? (- a.i16[i]) : a.i16[i]);
   }
   return r;
 #endif
@@ -109,7 +109,7 @@ simde_mm_abs_epi32 (simde__m128i a) {
   simde__m128i r;
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i32) / sizeof(r.i32[0])) ; i++) {
-    r.u32[i] = (a.i32[i] < 0) ? (- a.i32[i]) : a.i32[i];
+    r.u32[i] = (uint32_t) ((a.i32[i] < 0) ? (- a.i32[i]) : a.i32[i]);
   }
   return r;
 #endif
@@ -127,7 +127,7 @@ simde_mm_abs_pi8 (simde__m64 a) {
   simde__m64 r;
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i8) / sizeof(r.i8[0])) ; i++) {
-    r.u8[i] = (a.i8[i] < 0) ? (- a.i8[i]) : a.i8[i];
+    r.u8[i] = (uint8_t) ((a.i8[i] < 0) ? (- a.i8[i]) : a.i8[i]);
   }
   return r;
 #endif
@@ -145,7 +145,7 @@ simde_mm_abs_pi16 (simde__m64 a) {
   simde__m64 r;
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i16) / sizeof(r.i16[0])) ; i++) {
-    r.u16[i] = (a.i16[i] < 0) ? (- a.i16[i]) : a.i16[i];
+    r.u16[i] = (uint16_t) ((a.i16[i] < 0) ? (- a.i16[i]) : a.i16[i]);
   }
   return r;
 #endif
@@ -163,7 +163,7 @@ simde_mm_abs_pi32 (simde__m64 a) {
   simde__m64 r;
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i32) / sizeof(r.i32[0])) ; i++) {
-    r.u32[i] = (a.i32[i] < 0) ? (- a.i32[i]) : a.i32[i];
+    r.u32[i] = (uint32_t) ((a.i32[i] < 0) ? (- a.i32[i]) : a.i32[i]);
   }
   return r;
 #endif
@@ -535,7 +535,7 @@ simde_mm_maddubs_epi16 (simde__m128i a, simde__m128i b) {
 #else
   simde__m128i r;
   for (size_t i = 0 ; i < (sizeof(r.i16) / sizeof(r.i16[0])) ; i++) {
-    const int idx = i * 2;
+    const int idx = ((int) i) << 1;
     int32_t ts =
       (((int16_t) a.u8[  idx  ]) * ((int16_t) b.i8[  idx  ])) +
       (((int16_t) a.u8[idx + 1]) * ((int16_t) b.i8[idx + 1]));
@@ -556,7 +556,7 @@ simde_mm_maddubs_pi16 (simde__m64 a, simde__m64 b) {
 #else
   simde__m64 r;
   for (size_t i = 0 ; i < (sizeof(r.i16) / sizeof(r.i16[0])) ; i++) {
-    const int idx = i * 2;
+    const int idx = ((int) i) << 1;
     int32_t ts =
       (((int16_t) a.u8[  idx  ]) * ((int16_t) b.i8[  idx  ])) +
       (((int16_t) a.u8[idx + 1]) * ((int16_t) b.i8[idx + 1]));

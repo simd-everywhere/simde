@@ -214,6 +214,16 @@ HEDLEY_STATIC_ASSERT(sizeof(simde_float64) == 8, "Unable to find 64-bit floating
 #  define SIMDE__SHUFFLE_VECTOR(elem_size, vec_size, a, b, ...) __builtin_shuffle(a, b, (int##elem_size##_t __attribute__((__vector_size__(vec_size)))) { __VA_ARGS__ })
 #endif
 
+#if HEDLEY_HAS_WARNING("-Wbad-function-cast")
+#  define SIMDE_CONVERT_FTOI(T,v) \
+    HEDLEY_DIAGNOSTIC_PUSH \
+    _Pragma("clang diagnostic ignored \"-Wbad-function-cast\"") \
+    ((T) (v)) \
+    HEDLEY_DIAGNOSTIC_POP
+#else
+#  define SIMDE_CONVERT_FTOI(T,v) ((T) (v))
+#endif
+
 /* Some algorithms are iterative, and fewer iterations means less
    accuracy.  Lower values here will result in faster, but less
    accurate, calculations for some functions. */

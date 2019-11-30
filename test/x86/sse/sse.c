@@ -2140,8 +2140,8 @@ test_simde_mm_cvtt_ps2pi(const MunitParameter params[], void* data) {
 
     r = simde_mm_cvtt_ps2pi(a);
 
-    munit_assert_int32(r.i32[0], ==, (int32_t) truncf(a.f32[0]));
-    munit_assert_int32(r.i32[1], ==, (int32_t) truncf(a.f32[1]));
+    munit_assert_int32(r.i32[0], ==, SIMDE_CONVERT_FTOI(int32_t, truncf(a.f32[0])));
+    munit_assert_int32(r.i32[1], ==, SIMDE_CONVERT_FTOI(int32_t, truncf(a.f32[1])));
   }
 
   return MUNIT_OK;
@@ -2162,7 +2162,7 @@ test_simde_mm_cvtt_ss2si(const MunitParameter params[], void* data) {
 
     r = simde_mm_cvtt_ss2si(a);
 
-    munit_assert_int32(r, ==, (int32_t) truncf(a.f32[0]));
+    munit_assert_int32(r, ==, SIMDE_CONVERT_FTOI(int32_t, truncf(a.f32[0])));
   }
 
   return MUNIT_OK;
@@ -2183,7 +2183,7 @@ test_simde_mm_cvttss_si64(const MunitParameter params[], void* data) {
 
     r = simde_mm_cvttss_si64(a);
 
-    munit_assert_int64(r, ==, (int64_t) truncf(a.f32[0]));
+    munit_assert_int64(r, ==, SIMDE_CONVERT_FTOI(int64_t, truncf(a.f32[0])));
   }
 
   return MUNIT_OK;
@@ -2240,7 +2240,7 @@ test_simde_mm_extract_pi16(const MunitParameter params[], void* data) {
 
   for (size_t i = 0 ; i < TEST_PREFERRED_ITERATIONS ; i++) {
     simde__m64 a;
-    int r;
+    int_fast16_t r;
 
     munit_rand_memory(sizeof(a), (uint8_t*) &a);
 

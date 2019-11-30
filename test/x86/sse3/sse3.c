@@ -26,6 +26,10 @@
 
 #include <stdio.h>
 
+#if HEDLEY_HAS_WARNING("-Wsign-conversion")
+#  pragma clang diagnostic ignored "-Wsign-conversion"
+#endif
+
 static MunitResult
 test_simde_mm_addsub_pd(const MunitParameter params[], void* data) {
   (void) params;

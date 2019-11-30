@@ -1,6 +1,18 @@
 #if !defined(SIMDE__JS_INTERNAL_H)
 #define SIMDE__JS_INTERNAL_H
 
+#include "../../simde/hedley.h"
+
+#if HEDLEY_HAS_WARNING("-Wpadded")
+#  pragma clang diagnostic ignored "-Wpadded"
+#endif
+#if HEDLEY_HAS_WARNING("-Wmissing-variable-declarations")
+#  pragma clang diagnostic ignored "-Wmissing-variable-declarations"
+#endif
+#if HEDLEY_HAS_WARNING("-Wextra-semi")
+#  pragma clang diagnostic ignored "-Wextra-semi"
+#endif
+
 #include "../test.h"
 
 #if defined(SIMDE_NO_NATIVE)
@@ -90,9 +102,9 @@ MunitSuite simde_simd_js_int32x4_cmp_test_suite;
 MunitSuite simde_simd_js_float32x4_test_suite;
 
 #define simde_assert_int32x4(a, op, b) \
-  simde_assert_int32v(4, (int32_t*) &(a), op, (int32_t*) &(b))
+  simde_assert_int32v(4, (const int32_t*) &(a), op, (const int32_t*) &(b))
 
 #define simde_assert_bool32x4(a, op, b) \
-  simde_assert_uint32vx(4, (uint32_t*) &(a), op, (uint32_t*) &(b))
+  simde_assert_uint32vx(4, (const uint32_t*) &(a), op, (const uint32_t*) &(b))
 
 #endif

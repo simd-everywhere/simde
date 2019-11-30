@@ -310,7 +310,7 @@ simde_mm_cmpeq_pi8 (simde__m64 a, simde__m64 b) {
   simde__m64 r;
   SIMDE__VECTORIZE
   for (int i = 0 ; i < 8 ; i++) {
-    r.i8[i] = (a.i8[i] == b.i8[i]) * 0xff;
+    r.i8[i] = (a.i8[i] == b.i8[i]) ? ~INT8_C(0) : INT8_C(0);
   }
   return r;
 #endif
@@ -330,7 +330,7 @@ simde_mm_cmpeq_pi16 (simde__m64 a, simde__m64 b) {
   simde__m64 r;
   SIMDE__VECTORIZE
   for (int i = 0 ; i < 4 ; i++) {
-    r.i16[i] = (a.i16[i] == b.i16[i]) * 0xffff;
+    r.i16[i] = (a.i16[i] == b.i16[i]) ? ~INT16_C(0) : INT16_C(0);
   }
   return r;
 #endif
@@ -350,7 +350,7 @@ simde_mm_cmpeq_pi32 (simde__m64 a, simde__m64 b) {
   simde__m64 r;
   SIMDE__VECTORIZE
   for (int i = 0 ; i < 2 ; i++) {
-    r.i32[i] = (a.i32[i] == b.i32[i]) * 0xffffffff;
+    r.i32[i] = (a.i32[i] == b.i32[i]) ? ~INT32_C(0) : INT32_C(0);
   }
   return r;
 #endif
@@ -370,7 +370,7 @@ simde_mm_cmpgt_pi8 (simde__m64 a, simde__m64 b) {
   simde__m64 r;
   SIMDE__VECTORIZE
   for (int i = 0 ; i < 8 ; i++) {
-    r.i8[i] = (a.i8[i] > b.i8[i]) * 0xff;
+    r.i8[i] = (a.i8[i] > b.i8[i]) ? ~INT8_C(0) : INT8_C(0);
   }
   return r;
 #endif
@@ -390,7 +390,7 @@ simde_mm_cmpgt_pi16 (simde__m64 a, simde__m64 b) {
   simde__m64 r;
   SIMDE__VECTORIZE
   for (int i = 0 ; i < 4 ; i++) {
-    r.i16[i] = (a.i16[i] > b.i16[i]) * 0xffff;
+    r.i16[i] = (a.i16[i] > b.i16[i]) ? ~INT16_C(0) : INT16_C(0);
   }
   return r;
 #endif
@@ -410,7 +410,7 @@ simde_mm_cmpgt_pi32 (simde__m64 a, simde__m64 b) {
   simde__m64 r;
   SIMDE__VECTORIZE
   for (int i = 0 ; i < 2 ; i++) {
-    r.i32[i] = (a.i32[i] > b.i32[i]) * 0xffffffff;
+    r.i32[i] = (a.i32[i] > b.i32[i]) ? ~INT32_C(0) : INT32_C(0);
   }
   return r;
 #endif
@@ -668,7 +668,7 @@ simde_mm_packs_pu16 (simde__m64 a, simde__m64 b) {
     } else if (a.i16[i] < 0) {
       r.u8[i] = 0;
     } else {
-      r.u8[i] = (int8_t) a.i16[i];
+      r.u8[i] = (uint8_t) a.i16[i];
     }
   }
 
@@ -679,7 +679,7 @@ simde_mm_packs_pu16 (simde__m64 a, simde__m64 b) {
     } else if (b.i16[i] < 0) {
       r.u8[i + 4] = 0;
     } else {
-      r.u8[i + 4] = (int8_t) b.i16[i];
+      r.u8[i + 4] = (uint8_t) b.i16[i];
     }
   }
 
@@ -902,7 +902,7 @@ simde_mm_sll_pi16 (simde__m64 a, simde__m64 count) {
 
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.u16) / sizeof(r.u16[0])) ; i++) {
-    r.u16[i] = a.u16[i] << count.u64[0];
+    r.u16[i] = (uint16_t) (a.u16[i] << count.u64[0]);
   }
   return r;
 #endif
@@ -949,7 +949,7 @@ simde_mm_slli_pi16 (simde__m64 a, int count) {
 
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.u16) / sizeof(r.u16[0])) ; i++) {
-    r.u16[i] = a.u16[i] << count;
+    r.u16[i] = (uint16_t) (a.u16[i] << count);
   }
 
   return r;
@@ -1168,12 +1168,9 @@ simde_mm_srai_pi16 (simde__m64 a, int count) {
 #else
   simde__m64 r;
 
-  const uint16_t m = (uint16_t) ((~0U) << ((sizeof(int16_t) * CHAR_BIT) - count));
-
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (8 / sizeof(int16_t)) ; i++) {
-    const uint16_t is_neg = ((uint16_t) (((a.u16[i]) >> ((sizeof(int16_t) * CHAR_BIT) - 1))));
-    r.u16[i] = (a.u16[i] >> count) | (m * is_neg);
+    r.i16[i] = a.i16[i] >> (count & 0xff);
   }
 
   return r;
@@ -1193,11 +1190,9 @@ simde_mm_srai_pi32 (simde__m64 a, int count) {
 #else
   simde__m64 r;
 
-  const uint32_t m = (uint32_t) ((~0U) << ((sizeof(int) * CHAR_BIT) - count));
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (8 / sizeof(int)) ; i++) {
-    const uint32_t is_neg = ((uint32_t) (((a.u32[i]) >> ((sizeof(int) * CHAR_BIT) - 1))));
-    r.u32[i] = (a.u32[i] >> count) | (m * is_neg);
+    r.i32[i] = a.i32[i] >> (count & 0xff);
   }
 
   return r;
@@ -1216,18 +1211,11 @@ simde_mm_sra_pi16 (simde__m64 a, simde__m64 count) {
   return SIMDE__M64_FROM_NATIVE(_mm_sra_pi16(a.n, count.n));
 #else
   simde__m64 r;
-  int cnt = (int) count.i64[0];
+  const int cnt = (int) (count.i64[0] > 15 ? 15 : count.i64[0]);
 
-  if (cnt > 15 || cnt < 0) {
-    for (size_t i = 0 ; i < (sizeof(r.i16) / sizeof(r.i16[0])) ; i++) {
-      r.u16[i] = (a.i16[i] < 0) ? 0xffff : 0x0000;
-    }
-  } else {
-    const uint16_t m = (uint16_t) ((~0U) << ((sizeof(int16_t) * CHAR_BIT) - cnt));
-    for (size_t i = 0 ; i < (sizeof(r.i16) / sizeof(r.i16[0])) ; i++) {
-      const uint16_t is_neg = a.i16[i] < 0;
-      r.u16[i] = (a.u16[i] >> cnt) | (m * is_neg);
-    }
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.i16) / sizeof(r.i16[0])) ; i++) {
+    r.i16[i] = a.i16[i] >> cnt;
   }
 
   return r;
@@ -1246,20 +1234,11 @@ simde_mm_sra_pi32 (simde__m64 a, simde__m64 count) {
   return SIMDE__M64_FROM_NATIVE(_mm_sra_pi32(a.n, count.n));
 #else
   simde__m64 r;
-  const uint64_t cnt = count.u64[0];
+  const int cnt = (int) count.u64[0];
 
-  if (cnt > 31) {
-    for (size_t i = 0 ; i < (sizeof(r.i32) / sizeof(r.i32[0])) ; i++) {
-      r.u32[i] = (a.i32[i] < 0) ? UINT32_MAX : 0;
-    }
-  } else if (cnt == 0) {
-    memcpy(&r, &a, sizeof(r));
-  } else {
-    const uint32_t m = (uint32_t) ((~0U) << ((sizeof(int32_t) * CHAR_BIT) - cnt));
-    for (size_t i = 0 ; i < (sizeof(r.i32) / sizeof(r.i32[0])) ; i++) {
-      const uint32_t is_neg = a.i32[i] < 0;
-      r.u32[i] = (a.u32[i] >> cnt) | (m * is_neg);
-    }
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.i32) / sizeof(r.i32[0])) ; i++) {
+    r.i32[i] = a.i32[i] >> (cnt > 31 ? 31 : cnt);
   }
 
   return r;

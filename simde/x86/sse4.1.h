@@ -287,7 +287,7 @@ simde_mm_ceil_ss (simde__m128 a, simde__m128 b) {
 #if defined(SIMDE_SSE4_1_NATIVE)
   return SIMDE__M128_FROM_NATIVE(_mm_ceil_ss(a.n, b.n));
 #else
-  return simde_mm_set_ps(a.f32[3], a.f32[2], a.f32[1], ceil(b.f32[0]));
+  return simde_mm_set_ps(a.f32[3], a.f32[2], a.f32[1], ceilf(b.f32[0]));
 #endif
 }
 #if defined(SIMDE_SSE4_1_ENABLE_NATIVE_ALIASES)
@@ -568,12 +568,12 @@ simde_mm_dp_ps (simde__m128 a, simde__m128 b, const int imm8) {
 
   SIMDE__VECTORIZE_REDUCTION(+:sum)
   for (size_t i = 0 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
-    sum += ((imm8 >> (i + 4)) & 1) ? (a.f32[i] * b.f32[i]) : 0.0;
+    sum += ((imm8 >> (i + 4)) & 1) ? (a.f32[i] * b.f32[i]) : SIMDE_FLOAT32_C(0.0);
   }
 
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
-    r.f32[i] = ((imm8 >> i) & 1) ? sum : 0.0;
+    r.f32[i] = ((imm8 >> i) & 1) ? sum : SIMDE_FLOAT32_C(0.0);
   }
 
   return r;
@@ -695,7 +695,7 @@ simde_mm_floor_ss (simde__m128 a, simde__m128 b) {
   return SIMDE__M128_FROM_NATIVE(_mm_floor_ss(a.n, b.n));
 #else
   simde__m128 r;
-  r.f32[0] = floor(b.f32[0]);
+  r.f32[0] = floorf(b.f32[0]);
   for (size_t i = 1 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
     r.f32[i] = a.f32[i];
   }
@@ -956,7 +956,7 @@ simde_mm_mpsadbw_epu8 (simde__m128i a, simde__m128i b, const int imm8) {
   const int a_offset = imm8 & 4;
   const int b_offset = (imm8 & 3) << 2;
 
-  for (size_t i = 0 ; i < (sizeof(r.u16) / sizeof(r.u16[0])) ; i++) {
+  for (int i = 0 ; i < ((int) (sizeof(r.u16) / sizeof(r.u16[0]))) ; i++) {
     r.u16[i] =
       ((uint16_t) abs(a.u8[a_offset + i + 0] - b.u8[b_offset + 0])) +
       ((uint16_t) abs(a.u8[a_offset + i + 1] - b.u8[b_offset + 1])) +
@@ -1021,8 +1021,8 @@ simde_mm_packus_epi32 (simde__m128i a, simde__m128i b) {
 #else
   simde__m128i r;
   for (size_t i = 0 ; i < (sizeof(r.i32) / sizeof(r.i32[0])) ; i++) {
-    r.u16[i + 0] = (a.i32[i] < 0) ? UINT16_C(0) : ((a.i32[i] > UINT16_MAX) ? (UINT16_MAX) : ((uint32_t) a.i32[i]));
-    r.u16[i + 4] = (b.i32[i] < 0) ? UINT16_C(0) : ((b.i32[i] > UINT16_MAX) ? (UINT16_MAX) : ((uint32_t) b.i32[i]));
+    r.u16[i + 0] = (a.i32[i] < 0) ? UINT16_C(0) : ((a.i32[i] > UINT16_MAX) ? (UINT16_MAX) : ((uint16_t) a.i32[i]));
+    r.u16[i + 4] = (b.i32[i] < 0) ? UINT16_C(0) : ((b.i32[i] > UINT16_MAX) ? (UINT16_MAX) : ((uint16_t) b.i32[i]));
   }
   return r;
 #endif

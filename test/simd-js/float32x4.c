@@ -32,11 +32,11 @@ simde_assert_float32x4_equal_(simde_float32 precision, simde_em_float32x4 a, sim
     const simde_float32 diff = ((a.v[i] - b.v[i]) < 0) ?
       (b.v[i] - a.v[i]) :
       (a.v[i] - b.v[i]);
-    if (MUNIT_UNLIKELY(diff > (1.0 / precision))) {
-      fprintf(stderr, "a: %8.2f %8.2f  %8.2f %8.2f\n", a.v[0], a.v[1], a.v[2], a.v[3]);
-      fprintf(stderr, "b: %8.2f %8.2f  %8.2f %8.2f\n", b.v[0], b.v[1], b.v[2], b.v[3]);
+    if (MUNIT_UNLIKELY(diff > (SIMDE_FLOAT32_C(1.0) / precision))) {
+      fprintf(stderr, "a: %8.2f %8.2f  %8.2f %8.2f\n", (double) a.v[0], (double) a.v[1], (double) a.v[2], (double) a.v[3]);
+      fprintf(stderr, "b: %8.2f %8.2f  %8.2f %8.2f\n", (double) b.v[0], (double) b.v[1], (double) b.v[2], (double) b.v[3]);
       munit_errorf("assertion failed at line %d: %s[%" MUNIT_SIZE_MODIFIER "u] == %s[%" MUNIT_SIZE_MODIFIER "u] (%f == %f)",
-		   line, a_, i, b_, i, a.v[i], b.v[i]);
+		   line, a_, i, b_, i, (double) a.v[i], (double) b.v[i]);
     }
   }
 }

@@ -27,7 +27,7 @@
 #include <stdio.h>
 
 #if defined(__SSE__)
-#define SIMDE_SSE_NO_NATIVE
+#define SIMDE_MMX_NO_NATIVE
 #include <xmmintrin.h>
 
 #include "../compare.h"

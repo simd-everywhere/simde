@@ -833,7 +833,7 @@ simde_mm_cmpeq_epi8 (simde__m128i a, simde__m128i b) {
   simde__m128i r;
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i8) / sizeof(r.i8[0])) ; i++) {
-    r.i8[i] = (a.i8[i] == b.i8[i]) ? 0xff : 0x00;
+    r.i8[i] = (a.i8[i] == b.i8[i]) ? ~INT8_C(0) : INT8_C(0);
   }
   return r;
 #endif
@@ -853,7 +853,7 @@ simde_mm_cmpeq_epi16 (simde__m128i a, simde__m128i b) {
   simde__m128i r;
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i16) / sizeof(r.i16[0])) ; i++) {
-    r.i16[i] = (a.i16[i] == b.i16[i]) ? 0xffff : 0x0000;
+    r.i16[i] = (a.i16[i] == b.i16[i]) ? ~INT16_C(0) : INT16_C(0);
   }
   return r;
 #endif
@@ -873,7 +873,7 @@ simde_mm_cmpeq_epi32 (simde__m128i a, simde__m128i b) {
   simde__m128i r;
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i32) / sizeof(r.i32[0])) ; i++) {
-    r.i32[i] = (a.i32[i] == b.i32[i]) ? 0xffffffff : 0x00000000;
+    r.i32[i] = (a.i32[i] == b.i32[i]) ? ~INT32_C(0) : INT32_C(0);
   }
   return r;
 #endif
@@ -965,7 +965,7 @@ simde_mm_cmplt_epi8 (simde__m128i a, simde__m128i b) {
   simde__m128i r;
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i8) / sizeof(r.i8[0])) ; i++) {
-    r.i8[i] = (a.i8[i] < b.i8[i]) ? 0xff : 0x00;
+    r.i8[i] = (a.i8[i] < b.i8[i]) ? ~INT8_C(0) : INT8_C(0);
   }
   return r;
 #endif
@@ -985,7 +985,7 @@ simde_mm_cmplt_epi16 (simde__m128i a, simde__m128i b) {
   simde__m128i r;
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i16) / sizeof(r.i16[0])) ; i++) {
-    r.i16[i] = (a.i16[i] < b.i16[i]) ? 0xffff : 0x0000;
+    r.i16[i] = (a.i16[i] < b.i16[i]) ? ~INT16_C(0) : INT16_C(0);
   }
   return r;
 #endif
@@ -1005,7 +1005,7 @@ simde_mm_cmplt_epi32 (simde__m128i a, simde__m128i b) {
   simde__m128i r;
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i32) / sizeof(r.i32[0])) ; i++) {
-    r.i32[i] = (a.i32[i] < b.i32[i]) ? 0xffffffff : 0x00000000;
+    r.i32[i] = (a.i32[i] < b.i32[i]) ? ~INT32_C(0) : INT32_C(0);
   }
   return r;
 #endif
@@ -1093,7 +1093,7 @@ simde_mm_cmpgt_epi8 (simde__m128i a, simde__m128i b) {
   simde__m128i r;
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i8) / sizeof(r.i8[0])) ; i++) {
-    r.i8[i] = (a.i8[i] > b.i8[i]) ? 0xff : 0x00;
+    r.i8[i] = (a.i8[i] > b.i8[i]) ? ~INT8_C(0) : INT8_C(0);
   }
   return r;
 #endif
@@ -1113,7 +1113,7 @@ simde_mm_cmpgt_epi16 (simde__m128i a, simde__m128i b) {
   simde__m128i r;
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i16) / sizeof(r.i16[0])) ; i++) {
-    r.i16[i] = (a.i16[i] > b.i16[i]) ? 0xffff : 0x0000;
+    r.i16[i] = (a.i16[i] > b.i16[i]) ? ~INT16_C(0) : INT16_C(0);
   }
   return r;
 #endif
@@ -1133,7 +1133,7 @@ simde_mm_cmpgt_epi32 (simde__m128i a, simde__m128i b) {
   simde__m128i r;
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i32) / sizeof(r.i32[0])) ; i++) {
-    r.i32[i] = (a.i32[i] > b.i32[i]) ? 0xffffffff : 0x00000000;
+    r.i32[i] = (a.i32[i] > b.i32[i]) ? ~INT32_C(0) : INT32_C(0);
   }
   return r;
 #endif
@@ -1661,7 +1661,7 @@ simde_mm_cvtsi32_si128 (int32_t a) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
-simde_mm_cvtsi64_sd (simde__m128d a, int32_t b) {
+simde_mm_cvtsi64_sd (simde__m128d a, int64_t b) {
   simde__m128d r;
 
 #if defined(SIMDE_SSE2_NATIVE) && defined(SIMDE_ARCH_AMD64)
@@ -1734,7 +1734,7 @@ simde_mm_cvttpd_epi32 (simde__m128d a) {
   r.n = _mm_cvttpd_epi32(a.n);
 #else
   for (size_t i = 0 ; i < (sizeof(a.f64) / sizeof(a.f64[0])) ; i++) {
-    r.i32[i] = (int32_t) trunc(a.f64[i]);
+    r.i32[i] = SIMDE_CONVERT_FTOI(int32_t, trunc(a.f64[i]));
   }
 #endif
 
@@ -1753,7 +1753,7 @@ simde_mm_cvttpd_pi32 (simde__m128d a) {
   r.n = _mm_cvttpd_pi32(a.n);
 #else
   for (size_t i = 0 ; i < (sizeof(r.i32) / sizeof(r.i32[0])) ; i++) {
-    r.i32[i] = (int32_t) trunc(a.f64[i]);
+    r.i32[i] = SIMDE_CONVERT_FTOI(int32_t, trunc(a.f64[i]));
   }
 #endif
 
@@ -1774,7 +1774,7 @@ simde_mm_cvttps_epi32 (simde__m128 a) {
   r.neon_i32 = vcvtq_s32_f32(a.neon_f32);
 #else
   for (size_t i = 0 ; i < (sizeof(r.i32) / sizeof(r.i32[0])) ; i++) {
-    r.i32[i] = (int32_t) truncf(a.f32[i]);
+    r.i32[i] = SIMDE_CONVERT_FTOI(int32_t, truncf(a.f32[i]));
   }
 #endif
 
@@ -1790,7 +1790,7 @@ simde_mm_cvttsd_si32 (simde__m128d a) {
 #if defined(SIMDE_SSE2_NATIVE)
   return _mm_cvttsd_si32(a.n);
 #else
-  return (int32_t) trunc(a.f64[0]);
+  return SIMDE_CONVERT_FTOI(int32_t, trunc(a.f64[0]));
 #endif
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
@@ -1807,7 +1807,7 @@ simde_mm_cvttsd_si64 (simde__m128d a) {
     return _mm_cvttsd_si64x(a.n);
   #endif
 #else
-  return (int64_t) trunc(a.f64[0]);
+  return SIMDE_CONVERT_FTOI(int64_t, trunc(a.f64[0]));
 #endif
 }
 #define simde_mm_cvttsd_si64x(a) simde_mm_cvttsd_si64(a)
@@ -1871,7 +1871,7 @@ simde_mm_extract_epi16 (simde__m128i a, const int imm8) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_insert_epi16 (simde__m128i a, int32_t i, const int imm8) {
-  a.u16[imm8 & 7] = (int16_t) i;
+  a.i16[imm8 & 7] = (int16_t) i;
   return a;
 }
 #if defined(SIMDE_SSE2_NATIVE) && !defined(__PGI)
@@ -2696,8 +2696,8 @@ simde_mm_packus_epi16 (simde__m128i a, simde__m128i b) {
 #else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i16) / sizeof(r.i16[0])) ; i++) {
-    r.u8[i]     = (a.i16[i] > UINT8_MAX) ? UINT8_MAX : ((a.i16[i] < 0) ? 0 : ((int8_t) a.i16[i]));
-    r.u8[i + 8] = (b.i16[i] > UINT8_MAX) ? UINT8_MAX : ((b.i16[i] < 0) ? 0 : ((int8_t) b.i16[i]));
+    r.u8[i]     = (a.i16[i] > UINT8_MAX) ? UINT8_MAX : ((a.i16[i] < 0) ? UINT8_C(0) : ((uint8_t) a.i16[i]));
+    r.u8[i + 8] = (b.i16[i] > UINT8_MAX) ? UINT8_MAX : ((b.i16[i] < 0) ? UINT8_C(0) : ((uint8_t) b.i16[i]));
   }
 #endif
 
@@ -3307,7 +3307,7 @@ simde_mm_shuffle_epi32 (simde__m128i a, const int imm8) {
 #if defined(SIMDE_SSE2_NATIVE)
 #  define simde_mm_shuffle_epi32(a, imm8) SIMDE__M128I_C(_mm_shuffle_epi32((a).n, (imm8)))
 #elif defined(SIMDE__SHUFFLE_VECTOR)
-#  define simde_mm_shuffle_epi32(a, imm8) ({			\
+#  define simde_mm_shuffle_epi32(a, imm8) (__extension__ ({ \
       const simde__m128i simde__tmp_a_ = a;			\
       (simde__m128i) { .i32 =					\
 	  SIMDE__SHUFFLE_VECTOR(32, 16,				\
@@ -3316,7 +3316,7 @@ simde_mm_shuffle_epi32 (simde__m128i a, const int imm8) {
 				((imm8)     ) & 3,		\
 				((imm8) >> 2) & 3,		\
 				((imm8) >> 4) & 3,		\
-				((imm8) >> 6) & 3) }; })
+				((imm8) >> 6) & 3) }; }))
 #endif
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_shuffle_epi32(a, imm8) SIMDE__M128I_TO_NATIVE(simde_mm_shuffle_epi32(SIMDE__M128I_FROM_NATIVE(a), imm8))
@@ -3335,13 +3335,13 @@ simde_mm_shuffle_pd (simde__m128d a, simde__m128d b, const int imm8) {
 #if defined(SIMDE_SSE2_NATIVE) && !defined(__PGI)
 #  define simde_mm_shuffle_pd(a, b, imm8) SIMDE__M128D_C(_mm_shuffle_pd((a).n, (b).n, (imm8)))
 #elif defined(SIMDE__SHUFFLE_VECTOR)
-#  define simde_mm_shuffle_pd(a, b, imm8) ({			\
+#  define simde_mm_shuffle_pd(a, b, imm8) (__extension__ ({ \
       (simde__m128d) { .f64 =					\
 	  SIMDE__SHUFFLE_VECTOR(64, 16,				\
 				(a).f64,			\
 				(b).f64,			\
 				(((imm8)     ) & 1),		\
-				(((imm8) >> 1) & 1) + 2) }; })
+				(((imm8) >> 1) & 1) + 2) }; }))
 #endif
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_shuffle_pd(a, b, imm8) SIMDE__M128D_TO_NATIVE(simde_mm_shuffle_pd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b), imm8))
@@ -3362,7 +3362,7 @@ simde_mm_shufflehi_epi16 (simde__m128i a, const int imm8) {
 #if defined(SIMDE_SSE2_NATIVE)
 #  define simde_mm_shufflehi_epi16(a, imm8) SIMDE__M128I_C(_mm_shufflehi_epi16((a).n, (imm8)))
 #elif defined(SIMDE__SHUFFLE_VECTOR)
-#  define simde_mm_shufflehi_epi16(a, imm8) ({				\
+#  define simde_mm_shufflehi_epi16(a, imm8) (__extension__ ({ \
       const simde__m128i simde__tmp_a_ = a;				\
       (simde__m128i) { .i16 =						\
 	  SIMDE__SHUFFLE_VECTOR(16, 16,					\
@@ -3372,7 +3372,7 @@ simde_mm_shufflehi_epi16 (simde__m128i a, const int imm8) {
 				(((imm8)     ) & 3) + 4,		\
 				(((imm8) >> 2) & 3) + 4,		\
 				(((imm8) >> 4) & 3) + 4,		\
-				(((imm8) >> 6) & 3) + 4) }; })
+				(((imm8) >> 6) & 3) + 4) }; }))
 #endif
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_shufflehi_epi16(a, imm8) SIMDE__M128I_TO_NATIVE(simde_mm_shufflehi_epi16(SIMDE__M128I_FROM_NATIVE(a), imm8))
@@ -3393,7 +3393,7 @@ simde_mm_shufflelo_epi16 (simde__m128i a, const int imm8) {
 #if defined(SIMDE_SSE2_NATIVE)
 #  define simde_mm_shufflelo_epi16(a, imm8) SIMDE__M128I_C(_mm_shufflelo_epi16((a).n, (imm8)))
 #elif defined(SIMDE__SHUFFLE_VECTOR)
-#  define simde_mm_shufflelo_epi16(a, imm8) ({		\
+#  define simde_mm_shufflelo_epi16(a, imm8) (__extension__ ({ \
       const simde__m128i simde__tmp_a_ = a;		\
       (simde__m128i) { .i16 =				\
 	  SIMDE__SHUFFLE_VECTOR(16, 16,			\
@@ -3403,7 +3403,7 @@ simde_mm_shufflelo_epi16 (simde__m128i a, const int imm8) {
 				(((imm8) >> 2) & 3),	\
 				(((imm8) >> 4) & 3),	\
 				(((imm8) >> 6) & 3),	\
-				4, 5, 6, 7) }; })
+				4, 5, 6, 7) }; }))
 #endif
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_shufflelo_epi16(a, imm8) SIMDE__M128I_TO_NATIVE(simde_mm_shufflelo_epi16(SIMDE__M128I_FROM_NATIVE(a), imm8))
@@ -3423,7 +3423,7 @@ simde_mm_sll_epi16 (simde__m128i a, simde__m128i count) {
 
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.u16) / sizeof(r.u16[0])) ; i++) {
-    r.u16[i] = a.u16[i] << s;
+    r.u16[i] = (uint16_t) (a.u16[i] << s);
   }
   return r;
 #endif
@@ -3585,15 +3585,13 @@ simde_mm_srl_epi64 (simde__m128i a, simde__m128i count) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
-simde_mm_srai_epi16 (simde__m128i a, int imm8) {
+simde_mm_srai_epi16 (simde__m128i a, const int imm8) {
   simde__m128i r;
-
-  const uint16_t m = (uint16_t) ((~0U) << ((sizeof(int16_t) * CHAR_BIT) - imm8));
+  const int cnt = imm8 > 15 ? 15 : imm8;
 
   SIMDE__VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r) / sizeof(r.u16[0])) ; i++) {
-    const uint16_t is_neg = ((uint16_t) (((a.u16[i]) >> ((sizeof(int16_t) * CHAR_BIT) - 1))));
-    r.u16[i] = (a.u16[i] >> imm8) | (m * is_neg);
+    r.i16[i] = a.i16[i] >> cnt;
   }
 
   return r;
@@ -3609,12 +3607,11 @@ SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_srai_epi32 (simde__m128i a, int imm8) {
   simde__m128i r;
+  const int cnt = imm8 > 31 ? 31 : imm8;
 
-  const uint32_t m = (uint32_t) ((~0U) << ((sizeof(int) * CHAR_BIT) - imm8));
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r) / sizeof(r.u32[0])) ; i++) {
-    uint32_t is_neg = ((uint32_t) (((a.u32[i]) >> ((sizeof(int32_t) * CHAR_BIT) - 1))));
-    r.u32[i] = (a.u32[i] >> imm8) | (m * is_neg);
+    r.i32[i] = a.i32[i] >> cnt;
   }
 
   return r;
@@ -3635,18 +3632,11 @@ simde_mm_sra_epi16 (simde__m128i a, simde__m128i count) {
   return SIMDE__M128I_C(_mm_sra_epi16(a.n, count.n));
 #else
   simde__m128i r;
-  int cnt = (int) count.i64[0];
+  const int cnt = (int) (count.i64[0] > 15 ? 15 : count.i64[0]);
 
-  if (cnt > 15 || cnt < 0) {
-    for (size_t i = 0 ; i < (sizeof(r.i16) / sizeof(r.i16[0])) ; i++) {
-      r.u16[i] = (a.i16[i] < 0) ? 0xffff : 0x0000;
-    }
-  } else {
-    const uint16_t m = (uint16_t) ((~0U) << ((sizeof(int16_t) * CHAR_BIT) - cnt));
-    for (size_t i = 0 ; i < (sizeof(r.i16) / sizeof(r.i16[0])) ; i++) {
-      const uint16_t is_neg = a.i16[i] < 0;
-      r.u16[i] = (a.u16[i] >> cnt) | (m * is_neg);
-    }
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.i16) / sizeof(r.i16[0])) ; i++) {
+    r.i16[i] = a.i16[i] >> cnt;
   }
 
   return r;
@@ -3663,20 +3653,11 @@ simde_mm_sra_epi32 (simde__m128i a, simde__m128i count) {
   return SIMDE__M128I_C(_mm_sra_epi32(a.n, count.n));
 #else
   simde__m128i r;
-  const uint64_t cnt = count.u64[0];
+  const int cnt = count.u64[0] > 31 ? 31 : ((int) count.u64[0]);
 
-  if (cnt > 31) {
-    for (size_t i = 0 ; i < (sizeof(r.i32) / sizeof(r.i32[0])) ; i++) {
-      r.u32[i] = (a.i32[i] < 0) ? UINT32_MAX : 0;
-    }
-  } else if (cnt == 0) {
-    memcpy(&r, &a, sizeof(r));
-  } else {
-    const uint32_t m = (uint32_t) ((~0U) << ((sizeof(int32_t) * CHAR_BIT) - cnt));
-    for (size_t i = 0 ; i < (sizeof(r.i32) / sizeof(r.i32[0])) ; i++) {
-      const uint32_t is_neg = a.i32[i] < 0;
-      r.u32[i] = (a.u32[i] >> cnt) | (m * is_neg);
-    }
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.i32) / sizeof(r.i32[0])) ; i++) {
+    r.i32[i] = a.i32[i] >> cnt;
   }
 
   return r;
@@ -3693,7 +3674,7 @@ simde_mm_slli_epi16 (simde__m128i a, const int imm8) {
   const int s = (imm8 > ((int) sizeof(r.i16[0]) * CHAR_BIT) - 1) ? 0 : imm8;
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i16) / sizeof(r.i16[0])) ; i++) {
-    r.i16[i] = a.i16[i] << s;
+    r.i16[i] = (int16_t) (a.i16[i] << s);
   }
   return r;
 }

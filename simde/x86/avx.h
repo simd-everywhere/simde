@@ -2050,7 +2050,7 @@ simde_mm256_cvtpd_epi32 (simde__m256d a) {
 #else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(a.f64) / sizeof(a.f64[0])) ; i++) {
-    r.i32[i] = (int32_t) round(a.f64[i]);
+    r.i32[i] = SIMDE_CONVERT_FTOI(int32_t, round(a.f64[i]));
   }
 #endif
 
@@ -2090,7 +2090,7 @@ simde_mm256_cvtps_epi32 (simde__m256 a) {
 #else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(a.f32) / sizeof(a.f32[0])) ; i++) {
-    r.i32[i] = (int32_t) roundf(a.f32[i]);
+    r.i32[i] = SIMDE_CONVERT_FTOI(int32_t, roundf(a.f32[i]));
   }
 #endif
 
@@ -2130,7 +2130,7 @@ simde_mm256_cvttpd_epi32 (simde__m256d a) {
 #else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(a.f64) / sizeof(a.f64[0])) ; i++) {
-    r.i32[i] = (int32_t) trunc(a.f64[i]);
+    r.i32[i] = SIMDE_CONVERT_FTOI(int32_t, trunc(a.f64[i]));
   }
 #endif
 
@@ -2150,7 +2150,7 @@ simde_mm256_cvttps_epi32 (simde__m256 a) {
 #else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(a.f32) / sizeof(a.f32[0])) ; i++) {
-    r.i32[i] = (int32_t) trunc(a.f32[i]);
+    r.i32[i] = SIMDE_CONVERT_FTOI(int32_t, trunc(a.f32[i]));
   }
 #endif
 
@@ -2664,10 +2664,7 @@ simde_mm_maskload_pd (const simde_float64 mem_addr[HEDLEY_ARRAY_PARAM(4)], simde
 #else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.f64) / sizeof(r.f64[0])) ; i++) {
-    /* TODO: it may be better to just do something along the lines of
-       (r.f64[i] = (mask.u64[i] & (1 << 63)) ? a.f64[i] : 0.0);
-       Which compilers may bo more likely to compile to a masked op. */
-    r.u64[i] = ((uint64_t*) mem_addr)[i] & (mask.i64[i] >> ((sizeof(mask.i64[0]) * CHAR_BIT) - 1));
+    r.i64[i] = ((int64_t*) mem_addr)[i] & (mask.i64[i] >> 63);
   }
 #endif
 
@@ -2687,7 +2684,7 @@ simde_mm256_maskload_pd (const simde_float64 mem_addr[HEDLEY_ARRAY_PARAM(4)], si
 #else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.f64) / sizeof(r.f64[0])) ; i++) {
-    r.u64[i] = ((uint64_t*) mem_addr)[i] & (mask.i64[i] >> ((sizeof(mask.i64[0]) * CHAR_BIT) - 1));
+    r.i64[i] = ((int64_t*) mem_addr)[i] & (mask.i64[i] >> 63);
   }
 #endif
 
@@ -2707,7 +2704,7 @@ simde_mm_maskload_ps (const simde_float32 mem_addr[HEDLEY_ARRAY_PARAM(4)], simde
 #else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
-    r.u32[i] = ((uint32_t*) mem_addr)[i] & (mask.i32[i] >> ((sizeof(mask.i32[0]) * CHAR_BIT) - 1));
+    r.i32[i] = ((int32_t*) mem_addr)[i] & (mask.i32[i] >> 31);
   }
 #endif
 
@@ -2727,7 +2724,7 @@ simde_mm256_maskload_ps (const simde_float32 mem_addr[HEDLEY_ARRAY_PARAM(4)], si
 #else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
-    r.u32[i] = ((uint32_t*) mem_addr)[i] & (mask.i32[i] >> ((sizeof(mask.i32[0]) * CHAR_BIT) - 1));
+    r.i32[i] = ((int32_t*) mem_addr)[i] & (mask.i32[i] >> 31);
   }
 #endif
 

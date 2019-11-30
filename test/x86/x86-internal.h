@@ -1,6 +1,33 @@
 #if !defined(SIMDE__X86_INTERNAL_H)
 #define SIMDE__X86_INTERNAL_H
 
+#include "../../simde/hedley.h"
+
+#if HEDLEY_HAS_WARNING("-Wsign-conversion")
+#  pragma clang diagnostic ignored "-Wsign-conversion"
+#endif
+#if HEDLEY_HAS_WARNING("-Wcast-qual")
+#  pragma clang diagnostic ignored "-Wcast-qual"
+#endif
+#if HEDLEY_HAS_WARNING("-Wpadded")
+#  pragma clang diagnostic ignored "-Wpadded"
+#endif
+#if HEDLEY_HAS_WARNING("-Wmissing-variable-declarations")
+#  pragma clang diagnostic ignored "-Wmissing-variable-declarations"
+#endif
+#if HEDLEY_HAS_WARNING("-Wextra-semi")
+#  pragma clang diagnostic ignored "-Wextra-semi"
+#endif
+#if HEDLEY_HAS_WARNING("-Wfloat-equal")
+#  pragma clang diagnostic ignored "-Wfloat-equal"
+#endif
+#if HEDLEY_HAS_WARNING("-Wdouble-promotion")
+#  pragma clang diagnostic ignored "-Wdouble-promotion"
+#endif
+#if HEDLEY_HAS_WARNING("-Wconditional-uninitialized")
+#  pragma clang diagnostic ignored "-Wconditional-uninitialized"
+#endif
+
 #include "../test.h"
 
 MunitSuite simde_mmx_test_suite;
