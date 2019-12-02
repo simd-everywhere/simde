@@ -4196,6 +4196,106 @@ simde_mm256_zextsi128_si256 (simde__m128i a) {
 #  define _mm256_zextsi128_si256(a) SIMDE__M256I_TO_NATIVE(simde_mm256_zextsi128_si256(SIMDE__M128I_FROM_NATIVE(a)))
 #endif
 
+SIMDE__FUNCTION_ATTRIBUTES
+int
+simde_mm_testc_ps (simde__m128 a, simde__m128 b) {
+#if defined(SIMDE_AVX_NATIVE)
+  return _mm_testc_ps(a.n, b.n);
+#else
+  uint_fast32_t r = 0;
+
+  SIMDE__VECTORIZE_REDUCTION(|:r)
+  for (size_t i = 0 ; i < (sizeof(a.u32) / sizeof(a.u32[0])) ; i++) {
+    r |= ~a.u32[i] & b.u32[i];
+  }
+
+  return (int) ((~r >> 31) & 1);
+#endif
+}
+#if defined(SIMDE_AVX_ENABLE_NATIVE_ALIASES)
+#  define _mm_testc_ps(a, b) simde_mm_testc_ps(SIMDE__M128_FROM_NATIVE(a), SIMDE__M128_FROM_NATIVE(b))
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+int
+simde_mm_testc_pd (simde__m128d a, simde__m128d b) {
+#if defined(SIMDE_AVX_NATIVE)
+  return _mm_testc_pd(a.n, b.n);
+#else
+  uint_fast64_t r = 0;
+
+  SIMDE__VECTORIZE_REDUCTION(|:r)
+  for (size_t i = 0 ; i < (sizeof(a.u64) / sizeof(a.u64[0])) ; i++) {
+    r |= ~a.u64[i] & b.u64[i];
+  }
+
+  return (int) ((~r >> 63) & 1);
+#endif
+}
+#if defined(SIMDE_AVX_ENABLE_NATIVE_ALIASES)
+#  define _mm_testc_pd(a, b) simde_mm_testc_pd(SIMDE__M128_FROM_NATIVE(a), SIMDE__M128_FROM_NATIVE(b))
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+int
+simde_mm256_testc_ps (simde__m256 a, simde__m256 b) {
+#if defined(SIMDE_AVX_NATIVE)
+  return _mm256_testc_ps(a.n, b.n);
+#else
+  uint_fast32_t r = 0;
+
+  SIMDE__VECTORIZE_REDUCTION(|:r)
+  for (size_t i = 0 ; i < (sizeof(a.u32) / sizeof(a.u32[0])) ; i++) {
+    r |= ~a.u32[i] & b.u32[i];
+  }
+
+  return (int) ((~r >> 31) & 1);
+#endif
+}
+#if defined(SIMDE_AVX_ENABLE_NATIVE_ALIASES)
+#  define _mm256_testc_ps(a, b) simde_mm256_testc_ps(SIMDE__M256_FROM_NATIVE(a), SIMDE__M256_FROM_NATIVE(b))
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+int
+simde_mm256_testc_pd (simde__m256d a, simde__m256d b) {
+#if defined(SIMDE_AVX_NATIVE)
+  return _mm256_testc_pd(a.n, b.n);
+#else
+  uint_fast64_t r = 0;
+
+  SIMDE__VECTORIZE_REDUCTION(|:r)
+  for (size_t i = 0 ; i < (sizeof(a.u64) / sizeof(a.u64[0])) ; i++) {
+    r |= ~a.u64[i] & b.u64[i];
+  }
+
+  return (int) ((~r >> 63) & 1);
+#endif
+}
+#if defined(SIMDE_AVX_ENABLE_NATIVE_ALIASES)
+#  define _mm256_testc_pd(a, b) simde_mm256_testc_pd(SIMDE__M256_FROM_NATIVE(a), SIMDE__M256_FROM_NATIVE(b))
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+int
+simde_mm256_testc_si256 (simde__m256i a, simde__m256i b) {
+#if defined(SIMDE_AVX_NATIVE)
+  return _mm256_testc_si256(a.n, b.n);
+#else
+  uint_fast64_t r = 0;
+
+  SIMDE__VECTORIZE_REDUCTION(|:r)
+  for (size_t i = 0 ; i < (sizeof(a.u64) / sizeof(a.u64[0])) ; i++) {
+    r |= ~a.u64[i] | b.u64[i];
+  }
+
+  return (int) !r;
+#endif
+}
+#if defined(SIMDE_AVX_ENABLE_NATIVE_ALIASES)
+#  define _mm256_testc_si256(a, b) simde_mm256_testc_si256(SIMDE__M256I_FROM_NATIVE(a), SIMDE__M256I_FROM_NATIVE(b))
+#endif
+
 SIMDE__END_DECLS
 
 #endif /* !defined(SIMDE__AVX_H) */
