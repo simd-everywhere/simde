@@ -104,6 +104,16 @@ contact us; we're happy to help!
 
 ## Usage
 
+First, it is important to note that *you do not need two separate
+versions* (one using SIMDe, the other native).  If the native functions
+are available SIMDe will use them, and compilers easily optimize away
+any overhead from SIMDe; all they have to do is some basic inlining.
+`-O2` should be enough for inlining, but we strongly recommend `-O3`
+(or whatever flag instructs your compiler to aggressizely optimize)
+since many of the portable fallbacks are substantially faster with
+aggressize auto-vectorization that isn't enabled at lower optimization
+levels.
+
 Each instruction set has a separate file; `x86/mmx.h` for MMX,
 `x86/sse.h` for SSE, `x86/sse2.h` for SSE2, and so on.  Just include
 the header for whichever instruction set(s) you want, and SIMDe will
@@ -111,20 +121,29 @@ provide the fastest implementation it can given which extensions
 you've enabled in your compiler (i.e., if you want to use NEON to
 implement SSE, you'll need to pass something like `-mfpu=neon`).
 
-Symbols are prefixed with `simde_`.  For example, the MMX
-`_mm_add_pi8` intrinsic becomes `simde_mm_add_pi8`, and `__m64`
-becomes `simde__m64`.
+If you define `SIMDE_ENABLE_NATIVE_ALIASES` before including SIMDe
+you can use the same names as the native functions.  Unfortunately,
+this is somewhat error-prone due to portability issues in the APIs, so
+it's recommended to only do this for testing.  When
+`SIMDE_ENABLE_NATIVE_ALIASES` is undefined only the versions prefixed
+with `simde_` will be available; for example, the MMX `_mm_add_pi8`
+intrinsic becomes `simde_mm_add_pi8`, and `__m64` becomes `simde__m64`.
 
 Since SIMDe is meant to be portable, many functions which assume types
 are of a specific size have been altered to use fixed-width types
-instead.  For example, Intel's APIs assume `int` is 32 bits, so
-`simde_mm_set_pi32`'s arguments are `int32_t` instead of `int`.  On
-platforms where the native API's assumptions hold (*i.e.*, if `int`
-really is 32-bits) SIMDe's types should be compatible, so existing
-code needn't be changed unless you're porting to a new platform.
+instead.  For example, Intel's APIs use `char` for signed 8-bit
+integers, but `char` on ARM is generally unsigned.  SIMDe uses `int8_t`
+to make the API portable, but that means your code may require some
+minor changes (such as using `int8_t` instead of `char`) to work on
+other platforms. 
 
-For best performance, you should enable OpenMP 4 SIMD support by
-defining `SIMDE_ENABLE_OPENMP` before including any SIMDe headers, and
+That said, the changes are usually quite minor.  It's often enough to
+just use search and replace, manual changes are required pretty
+infrequently.
+
+For best performance, in addition to `-O3` (or whatever your compiler's
+equivalent is), you should enable OpenMP 4 SIMD support by defining
+`SIMDE_ENABLE_OPENMP` before including any SIMDe headers, and
 enabling OpenMP support in your compiler.  GCC and ICC both support a
 flag to enable only OpenMP SIMD support instead of full OpenMP (the
 SIMD support doesn't require the OpenMP run-time library); for GCC the
@@ -178,6 +197,8 @@ CI).
    I'm aware of which is attempting to create portable implementations
    like SIMDe.  SIMDe is much further along on the Intel side, but Iris
    looks to be farther along on ARM.  C++-only, Apache 2.0 license.
+   AFAICT there are no accelerated fallbacks, nor is there a good way to
+   add them since it relies extensively on templates.
  * There are a few projects trying to implement one set with another:
    * [ARM_NEON_2_x86_SSE](https://github.com/intel/ARM_NEON_2_x86_SSE)
      — implementing NEON using SSE.  Quite extensive, Apache 2.0
