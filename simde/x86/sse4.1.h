@@ -1236,11 +1236,14 @@ simde_mm_testc_si128 (simde__m128i a, simde__m128i b) {
 #if defined(SIMDE_SSE4_1_NATIVE)
   return _mm_testc_si128(a.n, b.n);
 #else
-  for (size_t i = 0 ; i < (sizeof(a.u64) / sizeof(a.u64[0])) ; i++) {
-    if ((~a.u64[i] & b.u64[i]) == 0)
-      return 1;
+  int_fast32_t r = 0;
+
+  SIMDE__VECTORIZE_REDUCTION(|:r)
+  for (size_t i = 0 ; i < (sizeof(a.i32f) / sizeof(a.i32f[0])) ; i++) {
+    r |= ~a.i32f[i] & b.i32f[i];
   }
-  return 0;
+
+  return (int) !r;
 #endif
 }
 #if defined(SIMDE_SSE4_1_ENABLE_NATIVE_ALIASES)

@@ -51,25 +51,29 @@ SIMDE__BEGIN_DECLS
 
 typedef union {
 #if defined(SIMDE__ENABLE_GCC_VEC_EXT)
-  int8_t          i8 __attribute__((__vector_size__(8), __may_alias__));
-  int16_t        i16 __attribute__((__vector_size__(8), __may_alias__));
-  int32_t        i32 __attribute__((__vector_size__(8), __may_alias__));
-  int64_t        i64 __attribute__((__vector_size__(8), __may_alias__));
-  uint8_t         u8 __attribute__((__vector_size__(8), __may_alias__));
-  uint16_t       u16 __attribute__((__vector_size__(8), __may_alias__));
-  uint32_t       u32 __attribute__((__vector_size__(8), __may_alias__));
-  uint64_t       u64 __attribute__((__vector_size__(8), __may_alias__));
-  simde_float32  f32 __attribute__((__vector_size__(8), __may_alias__));
+  SIMDE_ALIGN(8) int8_t          i8 __attribute__((__vector_size__(8), __may_alias__));
+  SIMDE_ALIGN(8) int16_t        i16 __attribute__((__vector_size__(8), __may_alias__));
+  SIMDE_ALIGN(8) int32_t        i32 __attribute__((__vector_size__(8), __may_alias__));
+  SIMDE_ALIGN(8) int64_t        i64 __attribute__((__vector_size__(8), __may_alias__));
+  SIMDE_ALIGN(8) uint8_t         u8 __attribute__((__vector_size__(8), __may_alias__));
+  SIMDE_ALIGN(8) uint16_t       u16 __attribute__((__vector_size__(8), __may_alias__));
+  SIMDE_ALIGN(8) uint32_t       u32 __attribute__((__vector_size__(8), __may_alias__));
+  SIMDE_ALIGN(8) uint64_t       u64 __attribute__((__vector_size__(8), __may_alias__));
+  SIMDE_ALIGN(8) simde_float32  f32 __attribute__((__vector_size__(8), __may_alias__));
+  SIMDE_ALIGN(8) int_fast32_t  i32f __attribute__((__vector_size__(8), __may_alias__));
+  SIMDE_ALIGN(8) uint_fast32_t u32f __attribute__((__vector_size__(8), __may_alias__));
 #else
-  int8_t         i8[8];
-  int16_t        i16[4];
-  int32_t        i32[2];
-  int64_t        i64[1];
-  uint8_t        u8[8];
-  uint16_t       u16[4];
-  uint32_t       u32[2];
-  uint64_t       u64[1];
-  simde_float32  f32[2];
+  SIMDE_ALIGN(8) int8_t          i8[8];
+  SIMDE_ALIGN(8) int16_t        i16[4];
+  SIMDE_ALIGN(8) int32_t        i32[2];
+  SIMDE_ALIGN(8) int64_t        i64[1];
+  SIMDE_ALIGN(8) uint8_t         u8[8];
+  SIMDE_ALIGN(8) uint16_t       u16[4];
+  SIMDE_ALIGN(8) uint32_t       u32[2];
+  SIMDE_ALIGN(8) uint64_t       u64[1];
+  SIMDE_ALIGN(8) simde_float32  f32[2];
+  SIMDE_ALIGN(8) int_fast32_t  i32f[8 / sizeof(int_fast32_t)];
+  SIMDE_ALIGN(8) uint_fast32_t u32f[8 / sizeof(uint_fast32_t)];
 #endif
 
 #if defined(SIMDE_MMX_NATIVE)

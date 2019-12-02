@@ -86,6 +86,9 @@ typedef union {
   #endif
   SIMDE_ALIGN(16) simde_float32  f32 __attribute__((__vector_size__(16), __may_alias__));
   SIMDE_ALIGN(16) simde_float64  f64 __attribute__((__vector_size__(16), __may_alias__));
+
+  SIMDE_ALIGN(16) int_fast32_t  i32f __attribute__((__vector_size__(16), __may_alias__));
+  SIMDE_ALIGN(16) uint_fast32_t u32f __attribute__((__vector_size__(16), __may_alias__));
 #else
   SIMDE_ALIGN(16) int8_t         i8[16];
   SIMDE_ALIGN(16) int16_t        i16[8];
@@ -101,6 +104,9 @@ typedef union {
   #endif
   SIMDE_ALIGN(16) simde_float32  f32[4];
   SIMDE_ALIGN(16) simde_float64  f64[2];
+
+  SIMDE_ALIGN(16) int_fast32_t  i32f[16 / sizeof(int_fast32_t)];
+  SIMDE_ALIGN(16) uint_fast32_t u32f[16 / sizeof(uint_fast32_t)];
 #endif
 
 #if defined(SIMDE_SSE2_NATIVE)
@@ -133,6 +139,8 @@ typedef union {
   SIMDE_ALIGN(16) uint64_t       u64 __attribute__((__vector_size__(16), __may_alias__));
   SIMDE_ALIGN(16) simde_float32  f32 __attribute__((__vector_size__(16), __may_alias__));
   SIMDE_ALIGN(16) simde_float64  f64 __attribute__((__vector_size__(16), __may_alias__));
+  SIMDE_ALIGN(16) int_fast32_t  i32f __attribute__((__vector_size__(16), __may_alias__));
+  SIMDE_ALIGN(16) uint_fast32_t u32f __attribute__((__vector_size__(16), __may_alias__));
 #else
   SIMDE_ALIGN(16) int8_t         i8[16];
   SIMDE_ALIGN(16) int16_t        i16[8];
@@ -144,6 +152,8 @@ typedef union {
   SIMDE_ALIGN(16) uint64_t       u64[2];
   SIMDE_ALIGN(16) simde_float32  f32[4];
   SIMDE_ALIGN(16) simde_float64  f64[2];
+  SIMDE_ALIGN(16) int_fast32_t  i32f[16 / sizeof(int_fast32_t)];
+  SIMDE_ALIGN(16) uint_fast32_t u32f[16 / sizeof(uint_fast32_t)];
 #endif
 
 #if defined(SIMDE_SSE2_NATIVE)
@@ -451,8 +461,8 @@ simde_mm_and_si128 (simde__m128i a, simde__m128i b) {
 #else
   simde__m128i r;
   SIMDE__VECTORIZE
-  for (size_t i = 0 ; i < (sizeof(r.i64) / sizeof(r.i64[0])) ; i++) {
-    r.i64[i] = a.i64[i] & b.i64[i];
+  for (size_t i = 0 ; i < (sizeof(r.i32f) / sizeof(r.i32f[0])) ; i++) {
+    r.i32f[i] = a.i32f[i] & b.i32f[i];
   }
   return r;
 #endif
@@ -491,8 +501,8 @@ simde_mm_andnot_si128 (simde__m128i a, simde__m128i b) {
 #else
   simde__m128i r;
   SIMDE__VECTORIZE
-  for (size_t i = 0 ; i < (sizeof(r.i64) / sizeof(r.i64[0])) ; i++) {
-    r.i64[i] = ~(a.i64[i]) & b.i64[i];
+  for (size_t i = 0 ; i < (sizeof(r.i32f) / sizeof(r.i32f[0])) ; i++) {
+    r.i32f[i] = ~(a.i32f[i]) & b.i32f[i];
   }
   return r;
 #endif
@@ -2627,8 +2637,8 @@ simde_mm_or_si128 (simde__m128i a, simde__m128i b) {
   r.neon_i32 = vorrq_s32(a.neon_i32, b.neon_i32);
 #else
   SIMDE__VECTORIZE
-  for (size_t i = 0 ; i < (sizeof(r.i64) / sizeof(r.i64[0])) ; i++) {
-    r.i64[i] = a.i64[i] | b.i64[i];
+  for (size_t i = 0 ; i < (sizeof(r.i32f) / sizeof(r.i32f[0])) ; i++) {
+    r.i32f[i] = a.i32f[i] | b.i32f[i];
   }
 #endif
 
@@ -3283,8 +3293,10 @@ simde_mm_setzero_si128 (void) {
 #elif defined(SIMDE_SSE2_NEON)
   r.neon_i32 = vdupq_n_s32(0);
 #else
-  r.u64[0] = 0;
-  r.u64[1] = 0;
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.i32f) / sizeof(r.i32f[0])) ; i++) {
+    r.i32f[i] = 0;
+  }
 #endif
 
   return r;
@@ -4666,8 +4678,8 @@ simde_mm_xor_si128 (simde__m128i a, simde__m128i b) {
 #else
   simde__m128i r;
   SIMDE__VECTORIZE
-  for (size_t i = 0 ; i < (sizeof(r.i32) / sizeof(r.i32[0])) ; i++) {
-    r.i32[i] = a.i32[i] ^ b.i32[i];
+  for (size_t i = 0 ; i < (sizeof(r.i32f) / sizeof(r.i32f[0])) ; i++) {
+    r.i32f[i] = a.i32f[i] ^ b.i32f[i];
   }
   return r;
 #endif
@@ -4684,8 +4696,8 @@ simde_x_mm_not_si128 (simde__m128i a) {
 #else
   simde__m128i r;
   SIMDE__VECTORIZE
-  for (size_t i = 0 ; i < (sizeof(r.i32) / sizeof(r.i32[0])) ; i++) {
-    r.i32[i] = ~(a.i32[i]);
+  for (size_t i = 0 ; i < (sizeof(r.i32f) / sizeof(r.i32f[0])) ; i++) {
+    r.i32f[i] = ~(a.i32f[i]);
   }
   return r;
 #endif

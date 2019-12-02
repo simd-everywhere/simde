@@ -67,6 +67,8 @@ typedef union {
   #endif
   SIMDE_ALIGN(32) simde_float32  f32 __attribute__((__vector_size__(32), __may_alias__));
   SIMDE_ALIGN(32) simde_float64  f64 __attribute__((__vector_size__(32), __may_alias__));
+  SIMDE_ALIGN(32) int_fast32_t  i32f __attribute__((__vector_size__(32), __may_alias__));
+  SIMDE_ALIGN(32) uint_fast32_t u32f __attribute__((__vector_size__(32), __may_alias__));
 #else
   SIMDE_ALIGN(32) int8_t          i8[32];
   SIMDE_ALIGN(32) int16_t        i16[16];
@@ -76,6 +78,8 @@ typedef union {
   SIMDE_ALIGN(32) uint16_t       u16[16];
   SIMDE_ALIGN(32) uint32_t       u32[8];
   SIMDE_ALIGN(32) uint64_t       u64[4];
+  SIMDE_ALIGN(32) int_fast32_t  i32f[32 / sizeof(int_fast32_t)];
+  SIMDE_ALIGN(32) uint_fast32_t u32f[32 / sizeof(uint_fast32_t)];
   #if defined(SIMDE__HAVE_INT128)
   SIMDE_ALIGN(32) simde_int128  i128[2];
   SIMDE_ALIGN(32) simde_uint128 u128[2];
@@ -106,6 +110,8 @@ typedef union {
   #endif
   SIMDE_ALIGN(32) simde_float32  f32 __attribute__((__vector_size__(32), __may_alias__));
   SIMDE_ALIGN(32) simde_float64  f64 __attribute__((__vector_size__(32), __may_alias__));
+  SIMDE_ALIGN(32) int_fast32_t  i32f __attribute__((__vector_size__(32), __may_alias__));
+  SIMDE_ALIGN(32) uint_fast32_t u32f __attribute__((__vector_size__(32), __may_alias__));
 #else
   SIMDE_ALIGN(32) int8_t          i8[32];
   SIMDE_ALIGN(32) int16_t        i16[16];
@@ -121,6 +127,8 @@ typedef union {
   #endif
   SIMDE_ALIGN(32) simde_float32  f32[8];
   SIMDE_ALIGN(32) simde_float64  f64[4];
+  SIMDE_ALIGN(32) int_fast32_t  i32f[32 / sizeof(int_fast32_t)];
+  SIMDE_ALIGN(32) uint_fast32_t u32f[32 / sizeof(uint_fast32_t)];
 #endif
 
   SIMDE_ALIGN(32) simde__m128d m128d[2];
@@ -145,6 +153,8 @@ typedef union {
   #endif
   SIMDE_ALIGN(32) simde_float32  f32 __attribute__((__vector_size__(32), __may_alias__));
   SIMDE_ALIGN(32) simde_float64  f64 __attribute__((__vector_size__(32), __may_alias__));
+  SIMDE_ALIGN(32) int_fast32_t  i32f __attribute__((__vector_size__(32), __may_alias__));
+  SIMDE_ALIGN(32) uint_fast32_t u32f __attribute__((__vector_size__(32), __may_alias__));
 #else
   SIMDE_ALIGN(32) int8_t          i8[32];
   SIMDE_ALIGN(32) int16_t        i16[16];
@@ -154,6 +164,8 @@ typedef union {
   SIMDE_ALIGN(32) uint16_t       u16[16];
   SIMDE_ALIGN(32) uint32_t       u32[8];
   SIMDE_ALIGN(32) uint64_t       u64[4];
+  SIMDE_ALIGN(32) int_fast32_t  i32f[32 / sizeof(int_fast32_t)];
+  SIMDE_ALIGN(32) uint_fast32_t u32f[32 / sizeof(uint_fast32_t)];
   #if defined(SIMDE__HAVE_INT128)
   SIMDE_ALIGN(32) simde_int128  i128[2];
   SIMDE_ALIGN(32) simde_uint128 u128[2];
@@ -3620,8 +3632,10 @@ simde_mm256_setzero_si256 (void) {
 #if defined(SIMDE_AVX_NATIVE)
   r.n = _mm256_setzero_si256();
 #elif defined(SIMDE_SSE2_NATIVE)
-  r.m128i[0] = simde_mm_setzero_si128();
-  r.m128i[1] = simde_mm_setzero_si128();
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.i32f) / sizeof(r.i32f[0])) ; i++) {
+    r.i32f[i] = 0;
+  }
 #else
   memset(&r, 0, sizeof(r));
 #endif
@@ -4282,11 +4296,11 @@ simde_mm256_testc_si256 (simde__m256i a, simde__m256i b) {
 #if defined(SIMDE_AVX_NATIVE)
   return _mm256_testc_si256(a.n, b.n);
 #else
-  uint_fast64_t r = 0;
+  int_fast32_t r = 0;
 
   SIMDE__VECTORIZE_REDUCTION(|:r)
-  for (size_t i = 0 ; i < (sizeof(a.u64) / sizeof(a.u64[0])) ; i++) {
-    r |= ~a.u64[i] | b.u64[i];
+  for (size_t i = 0 ; i < (sizeof(a.i32f) / sizeof(a.i32f[0])) ; i++) {
+    r |= ~a.i32f[i] & b.i32f[i];
   }
 
   return (int) !r;

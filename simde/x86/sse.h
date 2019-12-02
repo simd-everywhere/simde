@@ -93,6 +93,8 @@ typedef union {
   SIMDE_ALIGN(16) simde_uint128 u128 __attribute__((__vector_size__(16), __may_alias__));
   #endif
   SIMDE_ALIGN(16) simde_float32  f32 __attribute__((__vector_size__(16), __may_alias__));
+  SIMDE_ALIGN(16) int_fast32_t  i32f __attribute__((__vector_size__(16), __may_alias__));
+  SIMDE_ALIGN(16) uint_fast32_t u32f __attribute__((__vector_size__(16), __may_alias__));
 #else
   SIMDE_ALIGN(16) int8_t         i8[16];
   SIMDE_ALIGN(16) int16_t        i16[8];
@@ -107,6 +109,8 @@ typedef union {
   SIMDE_ALIGN(16) simde_uint128 u128[1];
   #endif
   SIMDE_ALIGN(16) simde_float32  f32[4];
+  SIMDE_ALIGN(16) int_fast32_t  i32f[16 / sizeof(int_fast32_t)];
+  SIMDE_ALIGN(16) uint_fast32_t u32f[16 / sizeof(uint_fast32_t)];
 #endif
 
 #if defined(SIMDE_SSE_NATIVE)
