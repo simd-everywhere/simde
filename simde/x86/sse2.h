@@ -211,18 +211,20 @@ HEDLEY_STATIC_ASSERT(16 == sizeof(simde__m128d), "simde__m128d size incorrect");
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_add_epi8 (simde__m128i a, simde__m128i b) {
-#if defined(SIMDE_SSE2_NATIVE)
-  return SIMDE__M128I_C(_mm_add_epi8(a.n, b.n));
-#elif defined(SIMDE_SSE2_NEON)
-  return SIMDE__M128I_NEON_C(i8, vaddq_s8(a.neon_i8, b.neon_i8));
-#else
   simde__m128i r;
+
+#if defined(SIMDE_SSE2_NATIVE)
+  r.n = _mm_add_epi8(a.n, b.n);
+#elif defined(SIMDE_SSE2_NEON)
+  r.neon_i8 = vaddq_s8(a.neon_i8, b.neon_i8);
+#else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i8) / sizeof(r.i8[0])) ; i++) {
     r.i8[i] = a.i8[i] + b.i8[i];
   }
-  return r;
 #endif
+
+  return r;
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_add_epi8(a, b) SIMDE__M128I_TO_NATIVE(simde_mm_add_epi8(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(b)))
@@ -231,18 +233,20 @@ simde_mm_add_epi8 (simde__m128i a, simde__m128i b) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_add_epi16 (simde__m128i a, simde__m128i b) {
-#if defined(SIMDE_SSE2_NATIVE)
-  return SIMDE__M128I_C(_mm_add_epi16(a.n, b.n));
-#elif defined(SIMDE_SSE2_NEON)
-  return SIMDE__M128I_NEON_C(i16, vaddq_s16(a.neon_i16, b.neon_i16));
-#else
   simde__m128i r;
+
+#if defined(SIMDE_SSE2_NATIVE)
+  r.n = _mm_add_epi16(a.n, b.n);
+#elif defined(SIMDE_SSE2_NEON)
+  r.neon_i16 = vaddq_s16(a.neon_i16, b.neon_i16);
+#else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i16) / sizeof(r.i16[0])) ; i++) {
     r.i16[i] = a.i16[i] + b.i16[i];
   }
-  return r;
 #endif
+
+  return r;
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_add_epi16(a, b) SIMDE__M128I_TO_NATIVE(simde_mm_add_epi16(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(b)))
@@ -251,18 +255,20 @@ simde_mm_add_epi16 (simde__m128i a, simde__m128i b) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_add_epi32 (simde__m128i a, simde__m128i b) {
-#if defined(SIMDE_SSE2_NATIVE)
-  return SIMDE__M128I_C(_mm_add_epi32(a.n, b.n));
-#elif defined(SIMDE_SSE2_NEON)
-  return SIMDE__M128I_NEON_C(i32, vaddq_s32(a.neon_i32, b.neon_i32));
-#else
   simde__m128i r;
+
+#if defined(SIMDE_SSE2_NATIVE)
+  r.n = _mm_add_epi32(a.n, b.n);
+#elif defined(SIMDE_SSE2_NEON)
+  r.neon_i32 = vaddq_s32(a.neon_i32, b.neon_i32);
+#else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i32) / sizeof(r.i32[0])) ; i++) {
     r.i32[i] = a.i32[i] + b.i32[i];
   }
-  return r;
 #endif
+
+  return r;
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_add_epi32(a, b) SIMDE__M128I_TO_NATIVE(simde_mm_add_epi32(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(b)))
@@ -271,18 +277,20 @@ simde_mm_add_epi32 (simde__m128i a, simde__m128i b) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_add_epi64 (simde__m128i a, simde__m128i b) {
-#if defined(SIMDE_SSE2_NATIVE)
-  return SIMDE__M128I_C(_mm_add_epi64(a.n, b.n));
-#elif defined(SIMDE_SSE2_NEON)
-  return SIMDE__M128I_NEON_C(i64, vaddq_s64(a.neon_i64, b.neon_i64));
-#else
   simde__m128i r;
+
+#if defined(SIMDE_SSE2_NATIVE)
+  r.n = _mm_add_epi64(a.n, b.n);
+#elif defined(SIMDE_SSE2_NEON)
+  r.neon_i64 = vaddq_s64(a.neon_i64, b.neon_i64);
+#else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i64) / sizeof(r.i64[0])) ; i++) {
     r.i64[i] = a.i64[i] + b.i64[i];
   }
-  return r;
 #endif
+
+  return r;
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_add_epi64(a, b) SIMDE__M128I_TO_NATIVE(simde_mm_add_epi64(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(b)))
@@ -291,18 +299,20 @@ simde_mm_add_epi64 (simde__m128i a, simde__m128i b) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
 simde_mm_add_pd (simde__m128d a, simde__m128d b) {
-#if defined(SIMDE_SSE2_NATIVE)
-  return SIMDE__M128D_C(_mm_add_pd(a.n, b.n));
-#elif defined(SIMDE_SSE2_NEON) && defined(SIMDE_ARCH_AMD64)
-  return SIMDE__M128I_NEON_C(f64, vaddq_f64(a.neon_f64, b.neon_f64));
-#else
   simde__m128d r;
+
+#if defined(SIMDE_SSE2_NATIVE)
+  r.n = _mm_add_pd(a.n, b.n);
+#elif defined(SIMDE_SSE2_NEON) && defined(SIMDE_ARCH_AMD64)
+  r.neon_f64 = vaddq_f64(a.neon_f64, b.neon_f64);
+#else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.f64) / sizeof(r.f64[0])) ; i++) {
     r.f64[i] = a.f64[i] + b.f64[i];
   }
-  return r;
 #endif
+
+  return r;
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_add_pd(a, b) SIMDE__M128D_TO_NATIVE(simde_mm_add_pd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b)))
@@ -311,14 +321,16 @@ simde_mm_add_pd (simde__m128d a, simde__m128d b) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
 simde_mm_add_sd (simde__m128d a, simde__m128d b) {
-#if defined(SIMDE_SSE2_NATIVE)
-  return SIMDE__M128D_C(_mm_add_sd(a.n, b.n));
-#else
   simde__m128d r;
+
+#if defined(SIMDE_SSE2_NATIVE)
+  r.n = _mm_add_sd(a.n, b.n);
+#else
   r.f64[0] = a.f64[0] + b.f64[0];
   r.f64[1] = a.f64[1];
-  return r;
 #endif
+
+  return r;
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_add_sd(a, b) SIMDE__M128D_TO_NATIVE(simde_mm_add_sd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b)))
@@ -346,12 +358,13 @@ simde_mm_add_si64 (simde__m64 a, simde__m64 b) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_adds_epi8 (simde__m128i a, simde__m128i b) {
-#if defined(SIMDE_SSE2_NATIVE)
-  return SIMDE__M128I_C(_mm_adds_epi8(a.n, b.n));
-#elif defined(SIMDE_SSE2_NEON)
-  return SIMDE__M128I_NEON_C(i8, vqaddq_s8(a.neon_i8, b.neon_i8));
-#else
   simde__m128i r;
+
+#if defined(SIMDE_SSE2_NATIVE)
+  r.n = _mm_adds_epi8(a.n, b.n);
+#elif defined(SIMDE_SSE2_NEON)
+  r.neon_i8 = vqaddq_s8(a.neon_i8, b.neon_i8);
+#else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i8) / sizeof(r.i8[0])) ; i++) {
     if ((((b.i8[i]) > 0) && ((a.i8[i]) > (INT8_MAX - (b.i8[i]))))) {
@@ -362,8 +375,9 @@ simde_mm_adds_epi8 (simde__m128i a, simde__m128i b) {
       r.i8[i] = (a.i8[i]) + (b.i8[i]);
     }
   }
-  return r;
 #endif
+
+  return r;
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_adds_epi8(a, b) SIMDE__M128I_TO_NATIVE(simde_mm_adds_epi8(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(b)))
@@ -372,12 +386,13 @@ simde_mm_adds_epi8 (simde__m128i a, simde__m128i b) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_adds_epi16 (simde__m128i a, simde__m128i b) {
-#if defined(SIMDE_SSE2_NATIVE)
-  return SIMDE__M128I_C(_mm_adds_epi16(a.n, b.n));
-#elif defined(SIMDE_SSE2_NEON)
-  return SIMDE__M128I_NEON_C(i16, vqaddq_s16(a.neon_i16, b.neon_i16));
-#else
   simde__m128i r;
+
+#if defined(SIMDE_SSE2_NATIVE)
+  r.n = _mm_adds_epi16(a.n, b.n);
+#elif defined(SIMDE_SSE2_NEON)
+  r.neon_i16 = vqaddq_s16(a.neon_i16, b.neon_i16);
+#else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i16) / sizeof(r.i16[0])) ; i++) {
     if ((((b.i16[i]) > 0) && ((a.i16[i]) > (INT16_MAX - (b.i16[i]))))) {
@@ -388,8 +403,9 @@ simde_mm_adds_epi16 (simde__m128i a, simde__m128i b) {
       r.i16[i] = (a.i16[i]) + (b.i16[i]);
     }
   }
-  return r;
 #endif
+
+  return r;
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_adds_epi16(a, b) SIMDE__M128I_TO_NATIVE(simde_mm_adds_epi16(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(b)))
@@ -398,18 +414,20 @@ simde_mm_adds_epi16 (simde__m128i a, simde__m128i b) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_adds_epu8 (simde__m128i a, simde__m128i b) {
-#if defined(SIMDE_SSE2_NATIVE)
-  return SIMDE__M128I_C(_mm_adds_epu8(a.n, b.n));
-#elif defined(SIMDE_SSE2_NEON)
-  return SIMDE__M128I_NEON_C(u8, vqaddq_u8(a.neon_u8, b.neon_u8));
-#else
   simde__m128i r;
+
+#if defined(SIMDE_SSE2_NATIVE)
+  r.n = _mm_adds_epu8(a.n, b.n);
+#elif defined(SIMDE_SSE2_NEON)
+  r.neon_u8 = vqaddq_u8(a.neon_u8, b.neon_u8);
+#else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.u8) / sizeof(r.u8[0])) ; i++) {
     r.u8[i] = ((UINT8_MAX - a.u8[i]) > b.u8[i]) ? (a.u8[i] + b.u8[i]) : UINT8_MAX;
   }
-  return r;
 #endif
+
+  return r;
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_adds_epu8(a, b) SIMDE__M128I_TO_NATIVE(simde_mm_adds_epu8(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(b)))
@@ -418,18 +436,20 @@ simde_mm_adds_epu8 (simde__m128i a, simde__m128i b) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_adds_epu16 (simde__m128i a, simde__m128i b) {
-#if defined(SIMDE_SSE2_NATIVE)
-  return SIMDE__M128I_C(_mm_adds_epu16(a.n, b.n));
-#elif defined(SIMDE_SSE2_NEON)
-  return SIMDE__M128I_NEON_C(u16, vqaddq_u16(a.neon_u16, b.neon_u16));
-#else
   simde__m128i r;
+
+#if defined(SIMDE_SSE2_NATIVE)
+  r.n = _mm_adds_epu16(a.n, b.n);
+#elif defined(SIMDE_SSE2_NEON)
+  r.neon_u16 = vqaddq_u16(a.neon_u16, b.neon_u16);
+#else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.u16) / sizeof(r.u16[0])) ; i++) {
     r.u16[i] = ((UINT16_MAX - a.u16[i]) > b.u16[i]) ? (a.u16[i] + b.u16[i]) : UINT16_MAX;
   }
-  return r;
 #endif
+
+  return r;
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_adds_epu16(a, b) SIMDE__M128I_TO_NATIVE(simde_mm_adds_epu16(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(b)))
@@ -438,18 +458,20 @@ simde_mm_adds_epu16 (simde__m128i a, simde__m128i b) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
 simde_mm_and_pd (simde__m128d a, simde__m128d b) {
-#if defined(SIMDE_SSE2_NATIVE)
-  return SIMDE__M128D_C(_mm_and_pd(a.n, b.n));
-#elif defined(SIMDE_SSE2_NEON)
-  return SIMDE__M128D_NEON_C(i32, vandq_s32(a.neon_i32, b.neon_i32));
-#else
   simde__m128d r;
+
+#if defined(SIMDE_SSE2_NATIVE)
+  r.n = _mm_and_pd(a.n, b.n);
+#elif defined(SIMDE_SSE2_NEON)
+  r.neon_i32 = vandq_s32(a.neon_i32, b.neon_i32);
+#else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.u64) / sizeof(r.u64[0])) ; i++) {
     r.u64[i] = a.u64[i] & b.u64[i];
   }
-  return r;
 #endif
+
+  return r;
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_and_pd(a, b) SIMDE__M128D_TO_NATIVE(simde_mm_and_pd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b)))
@@ -458,18 +480,20 @@ simde_mm_and_pd (simde__m128d a, simde__m128d b) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_and_si128 (simde__m128i a, simde__m128i b) {
-#if defined(SIMDE_SSE2_NATIVE)
-  return SIMDE__M128I_C(_mm_and_si128(a.n, b.n));
-#elif defined(SIMDE_SSE_NEON)
-  return SIMDE__M128I_NEON_C(i32, vandq_s32(b.neon_i32, a.neon_i32));
-#else
   simde__m128i r;
+
+#if defined(SIMDE_SSE2_NATIVE)
+  r.n = _mm_and_si128(a.n, b.n);
+#elif defined(SIMDE_SSE_NEON)
+  r.neon_i32 = vandq_s32(b.neon_i32, a.neon_i32);
+#else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i32f) / sizeof(r.i32f[0])) ; i++) {
     r.i32f[i] = a.i32f[i] & b.i32f[i];
   }
-  return r;
 #endif
+
+  return r;
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_and_si128(a, b) SIMDE__M128I_TO_NATIVE(simde_mm_and_si128(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(b)))
@@ -478,18 +502,20 @@ simde_mm_and_si128 (simde__m128i a, simde__m128i b) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
 simde_mm_andnot_pd (simde__m128d a, simde__m128d b) {
+  simde__m128d r;
+
 #if defined(SIMDE_SSE2_NATIVE)
   return SIMDE__M128D_C(_mm_andnot_pd(a.n, b.n));
 #elif defined(SIMDE_SSE2_NEON)
-  return SIMDE__M128D_NEON_C(i32, vbicq_s32(a.neon_i32, b.neon_i32));
+  r.neon_i32 = vbicq_s32(a.neon_i32, b.neon_i32);
 #else
-  simde__m128d r;
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.u64) / sizeof(r.u64[0])) ; i++) {
     r.u64[i] = ~a.u64[i] & b.u64[i];
   }
-  return r;
 #endif
+
+  return r;
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_andnot_pd(a, b) SIMDE__M128D_TO_NATIVE(simde_mm_andnot_pd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b)))
@@ -498,18 +524,20 @@ simde_mm_andnot_pd (simde__m128d a, simde__m128d b) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_andnot_si128 (simde__m128i a, simde__m128i b) {
-#if defined(SIMDE_SSE2_NATIVE)
-  return SIMDE__M128I_C(_mm_andnot_si128(a.n, b.n));
-#elif defined(SIMDE_SSE2_NEON)
-  return SIMDE__M128I_NEON_C(i32, vbicq_s32(b.neon_i32, a.neon_i32));
-#else
   simde__m128i r;
+
+#if defined(SIMDE_SSE2_NATIVE)
+  r.n = _mm_andnot_si128(a.n, b.n);
+#elif defined(SIMDE_SSE2_NEON)
+  r.neon_i32 = vbicq_s32(b.neon_i32, a.neon_i32);
+#else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i32f) / sizeof(r.i32f[0])) ; i++) {
     r.i32f[i] = ~(a.i32f[i]) & b.i32f[i];
   }
-  return r;
 #endif
+
+  return r;
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_andnot_si128(a, b) SIMDE__M128I_TO_NATIVE(simde_mm_andnot_si128(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(b)))
@@ -518,18 +546,20 @@ simde_mm_andnot_si128 (simde__m128i a, simde__m128i b) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_avg_epu8 (simde__m128i a, simde__m128i b) {
-#if defined(SIMDE_SSE2_NATIVE)
-  return SIMDE__M128I_C(_mm_avg_epu8(a.n, b.n));
-#elif defined(SIMDE_SSE2_NEON)
-  return SIMDE__M128I_NEON_C(u8, vrhaddq_u8(b.neon_u8, a.neon_u8));
-#else
   simde__m128i r;
+
+#if defined(SIMDE_SSE2_NATIVE)
+  r.n = _mm_avg_epu8(a.n, b.n);
+#elif defined(SIMDE_SSE2_NEON)
+  r.neon_u8 = vrhaddq_u8(b.neon_u8, a.neon_u8);
+#else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.u8) / sizeof(r.u8[0])) ; i++) {
     r.u8[i] = (a.u8[i] + b.u8[i] + 1) >> 1;
   }
-  return r;
 #endif
+
+  return r;
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_avg_epu8(a, b) SIMDE__M128I_TO_NATIVE(simde_mm_avg_epu8(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(b)))
@@ -538,18 +568,20 @@ simde_mm_avg_epu8 (simde__m128i a, simde__m128i b) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_avg_epu16 (simde__m128i a, simde__m128i b) {
-#if defined(SIMDE_SSE2_NATIVE)
-  return SIMDE__M128I_C(_mm_avg_epu16(a.n, b.n));
-#elif defined(SIMDE_SSE2_NEON)
-  return SIMDE__M128I_NEON_C(u16, vrhaddq_u16(b.neon_u16, a.neon_u16));
-#else
   simde__m128i r;
+
+#if defined(SIMDE_SSE2_NATIVE)
+  r.n = _mm_avg_epu16(a.n, b.n);
+#elif defined(SIMDE_SSE2_NEON)
+  r.neon_u16 = vrhaddq_u16(b.neon_u16, a.neon_u16);
+#else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.u16) / sizeof(r.u16[0])) ; i++) {
     r.u16[i] = (a.u16[i] + b.u16[i] + 1) >> 1;
   }
-  return r;
 #endif
+
+  return r;
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_avg_epu16(a, b) SIMDE__M128I_TO_NATIVE(simde_mm_avg_epu16(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(b)))
@@ -781,18 +813,17 @@ simde_mm_castps_pd (simde__m128 a) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_castps_si128 (simde__m128 a) {
+  simde__m128i r;
+
 #if defined(SIMDE_SSE2_NATIVE)
   return SIMDE__M128I_C(_mm_castps_si128(a.n));
 #elif defined(SIMDE_SSE2_NEON)
-  return SIMDE__M128I_NEON_C(i32, a.neon_i32);
+  r.neon_i32 = a.neon_i32;
 #else
-  union {
-    simde__m128 ps;
-    simde__m128i si128;
-  } r;
-  r.ps = a;
-  return r.si128;
+  r = HEDLEY_REINTERPRET_CAST(simde__m128i, a);
 #endif
+
+  return r;
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_castps_si128(a) SIMDE__M128I_TO_NATIVE(simde_mm_castps_si128(SIMDE__M128_FROM_NATIVE(a)))
@@ -801,16 +832,15 @@ simde_mm_castps_si128 (simde__m128 a) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
 simde_mm_castsi128_pd (simde__m128i a) {
+  simde__m128d r;
+
 #if defined(SIMDE_SSE2_NATIVE)
   return SIMDE__M128D_C(_mm_castsi128_pd(a.n));
 #else
-  union {
-    simde__m128i si128;
-    simde__m128d pd;
-  } r;
-  r.si128 = a;
-  return r.pd;
+  r = HEDLEY_REINTERPRET_CAST(simde__m128d, a);
 #endif
+
+  return r;
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_castsi128_pd(a) SIMDE__M128D_TO_NATIVE(simde_mm_castsi128_pd(SIMDE__M128I_FROM_NATIVE(a)))
@@ -819,18 +849,17 @@ simde_mm_castsi128_pd (simde__m128i a) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128
 simde_mm_castsi128_ps (simde__m128i a) {
+  simde__m128 r;
+
 #if defined(SIMDE_SSE2_NATIVE)
-  return SIMDE__M128_FROM_NATIVE(_mm_castsi128_ps(a.n));
+  r.n = _mm_castsi128_ps(a.n);
 #elif defined(SIMDE_SSE2_NEON)
-  return SIMDE__M128_NEON_C(f32, a.neon_f32);
+  r.neon_f32 = a.neon_f32;
 #else
-  union {
-    simde__m128i si128;
-    simde__m128 ps;
-  } r;
-  r.si128 = a;
-  return r.ps;
+  r = HEDLEY_REINTERPRET_CAST(simde__m128, a);
 #endif
+
+  return r;
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_castsi128_ps(a) SIMDE__M128_TO_NATIVE(simde_mm_castsi128_ps(SIMDE__M128I_FROM_NATIVE(a)))
@@ -839,18 +868,20 @@ simde_mm_castsi128_ps (simde__m128i a) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_cmpeq_epi8 (simde__m128i a, simde__m128i b) {
-#if defined(SIMDE_SSE2_NATIVE)
-  return SIMDE__M128I_C(_mm_cmpeq_epi8(a.n, b.n));
-#elif defined(SIMDE_SSE2_NEON)
-  return SIMDE__M128I_NEON_C(i8, vreinterpretq_s8_u8(vceqq_s8(b.neon_i8, a.neon_i8)));
-#else
   simde__m128i r;
+
+#if defined(SIMDE_SSE2_NATIVE)
+  r.n = _mm_cmpeq_epi8(a.n, b.n);
+#elif defined(SIMDE_SSE2_NEON)
+  r.neon_i8 = vreinterpretq_s8_u8(vceqq_s8(b.neon_i8, a.neon_i8));
+#else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i8) / sizeof(r.i8[0])) ; i++) {
     r.i8[i] = (a.i8[i] == b.i8[i]) ? ~INT8_C(0) : INT8_C(0);
   }
-  return r;
 #endif
+
+  return r;
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_cmpeq_epi8(a, b) SIMDE__M128I_TO_NATIVE(simde_mm_cmpeq_epi8(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(b)))
@@ -859,18 +890,20 @@ simde_mm_cmpeq_epi8 (simde__m128i a, simde__m128i b) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_cmpeq_epi16 (simde__m128i a, simde__m128i b) {
-#if defined(SIMDE_SSE2_NATIVE)
-  return SIMDE__M128I_C(_mm_cmpeq_epi16(a.n, b.n));
-#elif defined(SIMDE_SSE2_NEON)
-  return SIMDE__M128I_NEON_C(i16, vreinterpretq_s16_u16(vceqq_s16(b.neon_i16, a.neon_i16)));
-#else
   simde__m128i r;
+
+#if defined(SIMDE_SSE2_NATIVE)
+  r.n = _mm_cmpeq_epi16(a.n, b.n);
+#elif defined(SIMDE_SSE2_NEON)
+  r.neon_i16 = vreinterpretq_s16_u16(vceqq_s16(b.neon_i16, a.neon_i16));
+#else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i16) / sizeof(r.i16[0])) ; i++) {
     r.i16[i] = (a.i16[i] == b.i16[i]) ? ~INT16_C(0) : INT16_C(0);
   }
-  return r;
 #endif
+
+  return r;
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_cmpeq_epi16(a, b) SIMDE__M128I_TO_NATIVE(simde_mm_cmpeq_epi16(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(b)))
@@ -879,18 +912,20 @@ simde_mm_cmpeq_epi16 (simde__m128i a, simde__m128i b) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_cmpeq_epi32 (simde__m128i a, simde__m128i b) {
-#if defined(SIMDE_SSE2_NATIVE)
-  return SIMDE__M128I_C(_mm_cmpeq_epi32(a.n, b.n));
-#elif defined(SIMDE_SSE2_NEON)
-  return SIMDE__M128I_NEON_C(i32, vreinterpretq_s32_u32(vceqq_s32(b.neon_i32, a.neon_i32)));
-#else
   simde__m128i r;
+
+#if defined(SIMDE_SSE2_NATIVE)
+  r.n = _mm_cmpeq_epi32(a.n, b.n);
+#elif defined(SIMDE_SSE2_NEON)
+  r.neon_i32 = vreinterpretq_s32_u32(vceqq_s32(b.neon_i32, a.neon_i32));
+#else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i32) / sizeof(r.i32[0])) ; i++) {
     r.i32[i] = (a.i32[i] == b.i32[i]) ? ~INT32_C(0) : INT32_C(0);
   }
-  return r;
 #endif
+
+  return r;
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_cmpeq_epi32(a, b) SIMDE__M128I_TO_NATIVE(simde_mm_cmpeq_epi32(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(b)))
@@ -899,18 +934,20 @@ simde_mm_cmpeq_epi32 (simde__m128i a, simde__m128i b) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
 simde_mm_cmpeq_pd (simde__m128d a, simde__m128d b) {
-#if defined(SIMDE_SSE2_NATIVE)
-  return SIMDE__M128D_C(_mm_cmpeq_pd(a.n, b.n));
-#elif defined(SIMDE_SSE2_NEON)
-  return SIMDE__M128D_NEON_C(i32, vreinterpretq_s32_u32(vceqq_s32(vreinterpretq_s32_f32(b.neon_f32), vreinterpretq_s32_f32(a.neon_f32))));
-#else
   simde__m128d r;
+
+#if defined(SIMDE_SSE2_NATIVE)
+  r.n = _mm_cmpeq_pd(a.n, b.n);
+#elif defined(SIMDE_SSE2_NEON)
+  r.neon_i32 = vreinterpretq_s32_u32(vceqq_s32(vreinterpretq_s32_f32(b.neon_f32), vreinterpretq_s32_f32(a.neon_f32)));
+#else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.f64) / sizeof(r.f64[0])) ; i++) {
     r.u64[i] = (a.f64[i] == b.f64[i]) ? ~UINT64_C(0) : UINT64_C(0);
   }
-  return r;
 #endif
+
+  return r;
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_cmpeq_pd(a, b) SIMDE__M128D_TO_NATIVE(simde_mm_cmpeq_pd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b)))
@@ -919,14 +956,16 @@ simde_mm_cmpeq_pd (simde__m128d a, simde__m128d b) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
 simde_mm_cmpeq_sd (simde__m128d a, simde__m128d b) {
-#if defined(SIMDE_SSE2_NATIVE)
-  return SIMDE__M128D_C(_mm_cmpeq_sd(a.n, b.n));
-#else
   simde__m128d r;
+  
+#if defined(SIMDE_SSE2_NATIVE)
+  r.n = _mm_cmpeq_sd(a.n, b.n);
+#else
   r.u64[0] = (a.f64[0] == b.f64[0]) ? ~UINT64_C(0) : 0;
   r.u64[1] = a.u64[1];
-  return r;
 #endif
+
+  return r;
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_cmpeq_sd(a, b) SIMDE__M128D_TO_NATIVE(simde_mm_cmpeq_sd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b)))
@@ -935,18 +974,20 @@ simde_mm_cmpeq_sd (simde__m128d a, simde__m128d b) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
 simde_mm_cmpneq_pd (simde__m128d a, simde__m128d b) {
-#if defined(SIMDE_SSE2_NATIVE)
-  return SIMDE__M128D_C(_mm_cmpneq_pd(a.n, b.n));
-#elif defined(SIMDE_SSE2_NEON)
-  return SIMDE__M128D_NEON_C(f32, vreinterpretq_f32_u16(vmvnq_u16(vceqq_s16(b.neon_i16, a.neon_i16))));
-#else
   simde__m128d r;
+
+#if defined(SIMDE_SSE2_NATIVE)
+  r.n = _mm_cmpneq_pd(a.n, b.n);
+#elif defined(SIMDE_SSE2_NEON)
+  r.neon_f32 = vreinterpretq_f32_u16(vmvnq_u16(vceqq_s16(b.neon_i16, a.neon_i16)));
+#else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.f64) / sizeof(r.f64[0])) ; i++) {
     r.u64[i] = (a.f64[i] != b.f64[i]) ? ~UINT64_C(0) : UINT64_C(0);
   }
-  return r;
 #endif
+
+  return r;
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_cmpneq_pd(a, b) SIMDE__M128D_TO_NATIVE(simde_mm_cmpneq_pd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b)))
@@ -955,14 +996,16 @@ simde_mm_cmpneq_pd (simde__m128d a, simde__m128d b) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
 simde_mm_cmpneq_sd (simde__m128d a, simde__m128d b) {
-#if defined(SIMDE_SSE2_NATIVE)
-  return SIMDE__M128D_C(_mm_cmpneq_sd(a.n, b.n));
-#else
   simde__m128d r;
+
+#if defined(SIMDE_SSE2_NATIVE)
+  r.n = _mm_cmpneq_sd(a.n, b.n);
+#else
   r.u64[0] = (a.f64[0] != b.f64[0]) ? ~UINT64_C(0) : UINT64_C(0);
   r.u64[1] = a.u64[1];
-  return r;
 #endif
+
+  return r;
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_cmpneq_sd(a, b) SIMDE__M128D_TO_NATIVE(simde_mm_cmpneq_sd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b)))
@@ -971,18 +1014,20 @@ simde_mm_cmpneq_sd (simde__m128d a, simde__m128d b) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_cmplt_epi8 (simde__m128i a, simde__m128i b) {
-#if defined(SIMDE_SSE2_NATIVE)
-  return SIMDE__M128I_C(_mm_cmplt_epi8(a.n, b.n));
-#elif defined(SIMDE_SSE2_NEON)
-  return SIMDE__M128I_NEON_C(i8, vreinterpretq_s8_u8(vcltq_s8(a.neon_i8, b.neon_i8)));
-#else
   simde__m128i r;
+
+#if defined(SIMDE_SSE2_NATIVE)
+  r.n = _mm_cmplt_epi8(a.n, b.n);
+#elif defined(SIMDE_SSE2_NEON)
+  r.neon_i8 = vreinterpretq_s8_u8(vcltq_s8(a.neon_i8, b.neon_i8));
+#else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i8) / sizeof(r.i8[0])) ; i++) {
     r.i8[i] = (a.i8[i] < b.i8[i]) ? ~INT8_C(0) : INT8_C(0);
   }
-  return r;
 #endif
+
+  return r;
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_cmplt_epi8(a, b) SIMDE__M128I_TO_NATIVE(simde_mm_cmplt_epi8(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(b)))
@@ -991,18 +1036,20 @@ simde_mm_cmplt_epi8 (simde__m128i a, simde__m128i b) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_cmplt_epi16 (simde__m128i a, simde__m128i b) {
-#if defined(SIMDE_SSE2_NATIVE)
-  return SIMDE__M128I_C(_mm_cmplt_epi16(a.n, b.n));
-#elif defined(SIMDE_SSE2_NEON)
-  return SIMDE__M128I_NEON_C(i16, vreinterpretq_s16_u16(vcltq_s16(a.neon_i16, b.neon_i16)));
-#else
   simde__m128i r;
+
+#if defined(SIMDE_SSE2_NATIVE)
+  r.n = _mm_cmplt_epi16(a.n, b.n);
+#elif defined(SIMDE_SSE2_NEON)
+  r.neon_i16 = vreinterpretq_s16_u16(vcltq_s16(a.neon_i16, b.neon_i16));
+#else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i16) / sizeof(r.i16[0])) ; i++) {
     r.i16[i] = (a.i16[i] < b.i16[i]) ? ~INT16_C(0) : INT16_C(0);
   }
-  return r;
 #endif
+
+  return r;
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_cmplt_epi16(a, b) SIMDE__M128I_TO_NATIVE(simde_mm_cmplt_epi16(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(b)))
@@ -1011,18 +1058,20 @@ simde_mm_cmplt_epi16 (simde__m128i a, simde__m128i b) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_cmplt_epi32 (simde__m128i a, simde__m128i b) {
-#if defined(SIMDE_SSE2_NATIVE)
-  return SIMDE__M128I_C(_mm_cmplt_epi32(a.n, b.n));
-#elif defined(SIMDE_SSE2_NEON)
-  return SIMDE__M128I_NEON_C(i32, vreinterpretq_s32_u32(vcltq_s32(a.neon_i32, b.neon_i32)));
-#else
   simde__m128i r;
+
+#if defined(SIMDE_SSE2_NATIVE)
+  r.n = _mm_cmplt_epi32(a.n, b.n);
+#elif defined(SIMDE_SSE2_NEON)
+  r.neon_i32 = vreinterpretq_s32_u32(vcltq_s32(a.neon_i32, b.neon_i32));
+#else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i32) / sizeof(r.i32[0])) ; i++) {
     r.i32[i] = (a.i32[i] < b.i32[i]) ? ~INT32_C(0) : INT32_C(0);
   }
-  return r;
 #endif
+
+  return r;
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_cmplt_epi32(a, b) SIMDE__M128I_TO_NATIVE(simde_mm_cmplt_epi32(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(b)))
@@ -1031,16 +1080,18 @@ simde_mm_cmplt_epi32 (simde__m128i a, simde__m128i b) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
 simde_mm_cmplt_pd (simde__m128d a, simde__m128d b) {
-#if defined(SIMDE_SSE2_NATIVE)
-  return SIMDE__M128D_C(_mm_cmplt_pd(a.n, b.n));
-#else
   simde__m128d r;
+
+#if defined(SIMDE_SSE2_NATIVE)
+  r.n = _mm_cmplt_pd(a.n, b.n);
+#else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.f64) / sizeof(r.f64[0])) ; i++) {
     r.u64[i] = (a.f64[i] < b.f64[i]) ? ~UINT64_C(0) : UINT64_C(0);
   }
-  return r;
 #endif
+
+  return r;
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_cmplt_pd(a, b) SIMDE__M128D_TO_NATIVE(simde_mm_cmplt_pd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b)))
@@ -1049,14 +1100,16 @@ simde_mm_cmplt_pd (simde__m128d a, simde__m128d b) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
 simde_mm_cmplt_sd (simde__m128d a, simde__m128d b) {
-#if defined(SIMDE_SSE2_NATIVE)
-  return SIMDE__M128D_C(_mm_cmplt_sd(a.n, b.n));
-#else
   simde__m128d r;
+
+#if defined(SIMDE_SSE2_NATIVE)
+  r.n = _mm_cmplt_sd(a.n, b.n);
+#else
   r.u64[0] = (a.f64[0] < b.f64[0]) ? ~UINT64_C(0) : UINT64_C(0);
   r.u64[1] = a.u64[1];
-  return r;
 #endif
+
+  return r;
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_cmplt_sd(a, b) SIMDE__M128D_TO_NATIVE(simde_mm_cmplt_sd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b)))
@@ -1065,16 +1118,18 @@ simde_mm_cmplt_sd (simde__m128d a, simde__m128d b) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
 simde_mm_cmple_pd (simde__m128d a, simde__m128d b) {
-#if defined(SIMDE_SSE2_NATIVE)
-  return SIMDE__M128D_C(_mm_cmple_pd(a.n, b.n));
-#else
   simde__m128d r;
+
+#if defined(SIMDE_SSE2_NATIVE)
+  r.n = _mm_cmple_pd(a.n, b.n);
+#else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.f64) / sizeof(r.f64[0])) ; i++) {
     r.u64[i] = (a.f64[i] <= b.f64[i]) ? ~UINT64_C(0) : UINT64_C(0);
   }
-  return r;
 #endif
+
+  return r;
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_cmple_pd(a, b) SIMDE__M128D_TO_NATIVE(simde_mm_cmple_pd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b)))
@@ -1083,14 +1138,16 @@ simde_mm_cmple_pd (simde__m128d a, simde__m128d b) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
 simde_mm_cmple_sd (simde__m128d a, simde__m128d b) {
-#if defined(SIMDE_SSE2_NATIVE)
-  return SIMDE__M128D_C(_mm_cmple_sd(a.n, b.n));
-#else
   simde__m128d r;
+
+#if defined(SIMDE_SSE2_NATIVE)
+  r.n = _mm_cmple_sd(a.n, b.n);
+#else
   r.u64[0] = (a.f64[0] <= b.f64[0]) ? ~UINT64_C(0) : UINT64_C(0);
   r.u64[1] = a.u64[1];
-  return r;
 #endif
+
+  return r;
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_cmple_sd(a, b) SIMDE__M128D_TO_NATIVE(simde_mm_cmple_sd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b)))
@@ -1099,18 +1156,20 @@ simde_mm_cmple_sd (simde__m128d a, simde__m128d b) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_cmpgt_epi8 (simde__m128i a, simde__m128i b) {
-#if defined(SIMDE_SSE2_NATIVE)
-  return SIMDE__M128I_C(_mm_cmpgt_epi8(a.n, b.n));
-#elif defined(SIMDE_SSE2_NEON)
-  return SIMDE__M128I_NEON_C(i8, vreinterpretq_s8_u8(vcgtq_s8(a.neon_i8, b.neon_i8)));
-#else
   simde__m128i r;
+
+#if defined(SIMDE_SSE2_NATIVE)
+  r.n = _mm_cmpgt_epi8(a.n, b.n);
+#elif defined(SIMDE_SSE2_NEON)
+  r.neon_i8 = vreinterpretq_s8_u8(vcgtq_s8(a.neon_i8, b.neon_i8));
+#else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i8) / sizeof(r.i8[0])) ; i++) {
     r.i8[i] = (a.i8[i] > b.i8[i]) ? ~INT8_C(0) : INT8_C(0);
   }
-  return r;
 #endif
+
+  return r;
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_cmpgt_epi8(a, b) SIMDE__M128I_TO_NATIVE(simde_mm_cmpgt_epi8(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(b)))
@@ -1119,18 +1178,20 @@ simde_mm_cmpgt_epi8 (simde__m128i a, simde__m128i b) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_cmpgt_epi16 (simde__m128i a, simde__m128i b) {
-#if defined(SIMDE_SSE2_NATIVE)
-  return SIMDE__M128I_C(_mm_cmpgt_epi16(a.n, b.n));
-#elif defined(SIMDE_SSE2_NEON)
-  return SIMDE__M128I_NEON_C(i16, vreinterpretq_s16_u16(vcgtq_s16(a.neon_i16, b.neon_i16)));
-#else
   simde__m128i r;
+
+#if defined(SIMDE_SSE2_NATIVE)
+  r.n = _mm_cmpgt_epi16(a.n, b.n);
+#elif defined(SIMDE_SSE2_NEON)
+  r.neon_i16 = vreinterpretq_s16_u16(vcgtq_s16(a.neon_i16, b.neon_i16));
+#else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i16) / sizeof(r.i16[0])) ; i++) {
     r.i16[i] = (a.i16[i] > b.i16[i]) ? ~INT16_C(0) : INT16_C(0);
   }
-  return r;
 #endif
+
+  return r;
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_cmpgt_epi16(a, b) SIMDE__M128I_TO_NATIVE(simde_mm_cmpgt_epi16(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(b)))
@@ -1139,18 +1200,20 @@ simde_mm_cmpgt_epi16 (simde__m128i a, simde__m128i b) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_cmpgt_epi32 (simde__m128i a, simde__m128i b) {
-#if defined(SIMDE_SSE2_NATIVE)
-  return SIMDE__M128I_C(_mm_cmpgt_epi32(a.n, b.n));
-#elif defined(SIMDE_SSE2_NEON)
-  return SIMDE__M128I_NEON_C(i32, vreinterpretq_s32_u32(vcgtq_s32(a.neon_i32, b.neon_i32)));
-#else
   simde__m128i r;
+
+#if defined(SIMDE_SSE2_NATIVE)
+  r.n = _mm_cmpgt_epi32(a.n, b.n);
+#elif defined(SIMDE_SSE2_NEON)
+  r.neon_i32 = vreinterpretq_s32_u32(vcgtq_s32(a.neon_i32, b.neon_i32));
+#else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i32) / sizeof(r.i32[0])) ; i++) {
     r.i32[i] = (a.i32[i] > b.i32[i]) ? ~INT32_C(0) : INT32_C(0);
   }
-  return r;
 #endif
+
+  return r;
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_cmpgt_epi32(a, b) SIMDE__M128I_TO_NATIVE(simde_mm_cmpgt_epi32(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(b)))
@@ -1159,16 +1222,18 @@ simde_mm_cmpgt_epi32 (simde__m128i a, simde__m128i b) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
 simde_mm_cmpgt_pd (simde__m128d a, simde__m128d b) {
-#if defined(SIMDE_SSE2_NATIVE)
-  return SIMDE__M128D_C(_mm_cmpgt_pd(a.n, b.n));
-#else
   simde__m128d r;
+
+#if defined(SIMDE_SSE2_NATIVE)
+  r.n = _mm_cmpgt_pd(a.n, b.n);
+#else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.f64) / sizeof(r.f64[0])) ; i++) {
     r.u64[i] = (a.f64[i] > b.f64[i]) ? ~UINT64_C(0) : UINT64_C(0);
   }
-  return r;
 #endif
+
+  return r;
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_cmpgt_pd(a, b) SIMDE__M128D_TO_NATIVE(simde_mm_cmpgt_pd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b)))
@@ -1177,14 +1242,16 @@ simde_mm_cmpgt_pd (simde__m128d a, simde__m128d b) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
 simde_mm_cmpgt_sd (simde__m128d a, simde__m128d b) {
-#if defined(SIMDE_SSE2_NATIVE) && !defined(__PGI)
-  return SIMDE__M128D_C(_mm_cmpgt_sd(a.n, b.n));
-#else
   simde__m128d r;
+
+#if defined(SIMDE_SSE2_NATIVE) && !defined(__PGI)
+  r.n = _mm_cmpgt_sd(a.n, b.n);
+#else
   r.u64[0] = (a.f64[0] > b.f64[0]) ? ~UINT64_C(0) : UINT64_C(0);
   r.u64[1] = a.u64[1];
-  return r;
 #endif
+
+  return r;
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_cmpgt_sd(a, b) SIMDE__M128D_TO_NATIVE(simde_mm_cmpgt_sd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b)))
@@ -1193,16 +1260,18 @@ simde_mm_cmpgt_sd (simde__m128d a, simde__m128d b) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
 simde_mm_cmpge_pd (simde__m128d a, simde__m128d b) {
-#if defined(SIMDE_SSE2_NATIVE)
-  return SIMDE__M128D_C(_mm_cmpge_pd(a.n, b.n));
-#else
   simde__m128d r;
+
+#if defined(SIMDE_SSE2_NATIVE)
+  r.n = _mm_cmpge_pd(a.n, b.n);
+#else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.f64) / sizeof(r.f64[0])) ; i++) {
     r.u64[i] = (a.f64[i] >= b.f64[i]) ? ~UINT64_C(0) : UINT64_C(0);
   }
-  return r;
 #endif
+
+  return r;
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_cmpge_pd(a, b) SIMDE__M128D_TO_NATIVE(simde_mm_cmpge_pd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b)))
@@ -1211,14 +1280,16 @@ simde_mm_cmpge_pd (simde__m128d a, simde__m128d b) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
 simde_mm_cmpge_sd (simde__m128d a, simde__m128d b) {
-#if defined(SIMDE_SSE2_NATIVE) && !defined(__PGI)
-  return SIMDE__M128D_C(_mm_cmpge_sd(a.n, b.n));
-#else
   simde__m128d r;
+
+#if defined(SIMDE_SSE2_NATIVE) && !defined(__PGI)
+  r.n = _mm_cmpge_sd(a.n, b.n);
+#else
   r.u64[0] = (a.f64[0] >= b.f64[0]) ? ~UINT64_C(0) : UINT64_C(0);
   r.u64[1] = a.u64[1];
-  return r;
 #endif
+
+  return r;
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_cmpge_sd(a, b) SIMDE__M128D_TO_NATIVE(simde_mm_cmpge_sd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b)))
@@ -1227,11 +1298,15 @@ simde_mm_cmpge_sd (simde__m128d a, simde__m128d b) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
 simde_mm_cmpnge_pd (simde__m128d a, simde__m128d b) {
+  simde__m128d r;
+
 #if defined(SIMDE_SSE2_NATIVE)
-  return SIMDE__M128D_C(_mm_cmpnge_pd(a.n, b.n));
+  r.n = _mm_cmpnge_pd(a.n, b.n);
 #else
-  return simde_mm_cmplt_pd(a, b);
+  r = simde_mm_cmplt_pd(a, b);
 #endif
+
+  return r;
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_cmpnge_pd(a, b) SIMDE__M128D_TO_NATIVE(simde_mm_cmpnge_pd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b)))
@@ -1240,11 +1315,15 @@ simde_mm_cmpnge_pd (simde__m128d a, simde__m128d b) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
 simde_mm_cmpnge_sd (simde__m128d a, simde__m128d b) {
+  simde__m128d r;
+
 #if defined(SIMDE_SSE2_NATIVE) && !defined(__PGI)
-  return SIMDE__M128D_C(_mm_cmpnge_sd(a.n, b.n));
+  r.n = _mm_cmpnge_sd(a.n, b.n);
 #else
-  return simde_mm_cmplt_sd(a, b);
+  r = simde_mm_cmplt_sd(a, b);
 #endif
+
+  return r;
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_cmpnge_sd(a, b) SIMDE__M128D_TO_NATIVE(simde_mm_cmpnge_sd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b)))
@@ -1253,11 +1332,15 @@ simde_mm_cmpnge_sd (simde__m128d a, simde__m128d b) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
 simde_mm_cmpnlt_pd (simde__m128d a, simde__m128d b) {
+  simde__m128d r;
+
 #if defined(SIMDE_SSE2_NATIVE)
-  return SIMDE__M128D_C(_mm_cmpnlt_pd(a.n, b.n));
+  r.n = _mm_cmpnlt_pd(a.n, b.n);
 #else
-  return simde_mm_cmpge_pd(a, b);
+  r = simde_mm_cmpge_pd(a, b);
 #endif
+
+  return r;
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_cmpnlt_pd(a, b) SIMDE__M128D_TO_NATIVE(simde_mm_cmpnlt_pd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b)))
@@ -1266,11 +1349,15 @@ simde_mm_cmpnlt_pd (simde__m128d a, simde__m128d b) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
 simde_mm_cmpnlt_sd (simde__m128d a, simde__m128d b) {
+  simde__m128d r;
+
 #if defined(SIMDE_SSE2_NATIVE)
-  return SIMDE__M128D_C(_mm_cmpnlt_sd(a.n, b.n));
+  r.n = _mm_cmpnlt_sd(a.n, b.n);
 #else
-  return simde_mm_cmpge_sd(a, b);
+  r = simde_mm_cmpge_sd(a, b);
 #endif
+
+  return r;
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_cmpnlt_sd(a, b) SIMDE__M128D_TO_NATIVE(simde_mm_cmpnlt_sd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b)))
@@ -1279,11 +1366,15 @@ simde_mm_cmpnlt_sd (simde__m128d a, simde__m128d b) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
 simde_mm_cmpnle_pd (simde__m128d a, simde__m128d b) {
+  simde__m128d r;
+
 #if defined(SIMDE_SSE2_NATIVE)
-  return SIMDE__M128D_C(_mm_cmpnle_pd(a.n, b.n));
+  r.n = _mm_cmpnle_pd(a.n, b.n);
 #else
-  return simde_mm_cmpgt_pd(a, b);
+  r = simde_mm_cmpgt_pd(a, b);
 #endif
+
+  return r;
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_cmpnle_pd(a, b) SIMDE__M128D_TO_NATIVE(simde_mm_cmpnle_pd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b)))
@@ -1292,11 +1383,15 @@ simde_mm_cmpnle_pd (simde__m128d a, simde__m128d b) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
 simde_mm_cmpnle_sd (simde__m128d a, simde__m128d b) {
+  simde__m128d r;
+
 #if defined(SIMDE_SSE2_NATIVE)
-  return SIMDE__M128D_C(_mm_cmpnle_sd(a.n, b.n));
+  r.n = _mm_cmpnle_sd(a.n, b.n);
 #else
-  return simde_mm_cmpgt_sd(a, b);
+  r = simde_mm_cmpgt_sd(a, b);
 #endif
+
+  return r;
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_cmpnle_sd(a, b) SIMDE__M128D_TO_NATIVE(simde_mm_cmpnle_sd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b)))
@@ -1305,16 +1400,18 @@ simde_mm_cmpnle_sd (simde__m128d a, simde__m128d b) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
 simde_mm_cmpord_pd (simde__m128d a, simde__m128d b) {
-#if defined(SIMDE_SSE2_NATIVE)
-  return SIMDE__M128D_C(_mm_cmpord_pd(a.n, b.n));
-#else
   simde__m128d r;
+
+#if defined(SIMDE_SSE2_NATIVE)
+  r.n = _mm_cmpord_pd(a.n, b.n);
+#else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.f64) / sizeof(r.f64[0])) ; i++) {
     r.u64[i] = (!isnan(a.f64[i]) && !isnan(b.f64[i])) ? ~UINT64_C(0) : UINT64_C(0);
   }
-  return r;
 #endif
+
+  return r;
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_cmpord_pd(a, b) SIMDE__M128D_TO_NATIVE(simde_mm_cmpord_pd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b)))
@@ -1323,14 +1420,16 @@ simde_mm_cmpord_pd (simde__m128d a, simde__m128d b) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
 simde_mm_cmpord_sd (simde__m128d a, simde__m128d b) {
-#if defined(SIMDE_SSE2_NATIVE)
-  return SIMDE__M128D_C(_mm_cmpord_sd(a.n, b.n));
-#else
   simde__m128d r;
+
+#if defined(SIMDE_SSE2_NATIVE)
+  r.n = _mm_cmpord_sd(a.n, b.n);
+#else
   r.u64[0] = (!isnan(a.f64[0]) && !isnan(b.f64[0])) ? ~UINT64_C(0) : UINT64_C(0);
   r.u64[1] = a.u64[1];
-  return r;
 #endif
+
+  return r;
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_cmpord_sd(a, b) SIMDE__M128D_TO_NATIVE(simde_mm_cmpord_sd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b)))
@@ -1339,16 +1438,18 @@ simde_mm_cmpord_sd (simde__m128d a, simde__m128d b) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
 simde_mm_cmpunord_pd (simde__m128d a, simde__m128d b) {
-#if defined(SIMDE_SSE2_NATIVE)
-  return SIMDE__M128D_C(_mm_cmpunord_pd(a.n, b.n));
-#else
   simde__m128d r;
+
+#if defined(SIMDE_SSE2_NATIVE)
+  r.n = _mm_cmpunord_pd(a.n, b.n);
+#else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.f64) / sizeof(r.f64[0])) ; i++) {
     r.u64[i] = (isnan(a.f64[i]) || isnan(b.f64[i])) ? ~UINT64_C(0) : UINT64_C(0);
   }
-  return r;
 #endif
+
+  return r;
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_cmpunord_pd(a, b) SIMDE__M128D_TO_NATIVE(simde_mm_cmpunord_pd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b)))
@@ -1357,14 +1458,16 @@ simde_mm_cmpunord_pd (simde__m128d a, simde__m128d b) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
 simde_mm_cmpunord_sd (simde__m128d a, simde__m128d b) {
-#if defined(SIMDE_SSE2_NATIVE)
-  return SIMDE__M128D_C(_mm_cmpunord_sd(a.n, b.n));
-#else
   simde__m128d r;
+
+#if defined(SIMDE_SSE2_NATIVE)
+  r.n = _mm_cmpunord_sd(a.n, b.n);
+#else
   r.u64[0] = (isnan(a.f64[0]) || isnan(b.f64[0])) ? ~UINT64_C(0) : UINT64_C(0);
   r.u64[1] = a.u64[1];
-  return r;
 #endif
+
+  return r;
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_cmpunord_sd(a, b) SIMDE__M128D_TO_NATIVE(simde_mm_cmpunord_sd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b)))
@@ -1400,7 +1503,7 @@ simde_mm_cvtepi32_ps (simde__m128i a) {
 #if defined(SIMDE_SSE2_NATIVE)
   r = SIMDE__M128_FROM_NATIVE(_mm_cvtepi32_ps(a.n));
 #elif defined(SIMDE_SSE2_NEON)
-  r = SIMDE__M128_NEON_C(f32, vcvtq_f32_s32(a.neon_i32));
+  r.neon_f32 = vcvtq_f32_s32(a.neon_i32);
 #elif defined(SIMDE__CONVERT_VECTOR)
   SIMDE__CONVERT_VECTOR(r.f32, a.i32);
 #else
@@ -1518,7 +1621,7 @@ simde_mm_cvtps_epi32 (simde__m128 a) {
   /* The default rounding mode on SSE is 'round to even', which ArmV7
      does not support!  It is supported on ARMv8 however. */
   #if defined(SIMDE_ARCH_AARCH64)
-    r = SIMDE__M128I_NEON_C(i32, vcvtnq_s32_f32(a.neon_f32));
+    r.neon_i32 = vcvtnq_s32_f32(a.neon_f32);
   #else
     uint32x4_t signmask = vdupq_n_u32(0x80000000);
     float32x4_t half = vbslq_f32(signmask, a.neon_f32, vdupq_n_f32(0.5f)); /* +/- 0.5 */
@@ -1528,7 +1631,7 @@ simde_mm_cvtps_epi32 (simde__m128 a) {
     int32x4_t r_even = vbicq_s32(vaddq_s32(r_trunc, plusone), vdupq_n_s32(1)); /* ([a] + {0,1}) & ~1 */
     float32x4_t delta = vsubq_f32(a.neon_f32, vcvtq_f32_s32(r_trunc)); /* compute delta: delta = (a - [a]) */
     uint32x4_t is_delta_half = vceqq_f32(delta, half); /* delta == +/- 0.5 */
-    r = SIMDE__M128I_NEON_C(i32, vbslq_s32(is_delta_half, r_even, r_normal));
+    r.neon_i32 = vbslq_s32(is_delta_half, r_even, r_normal);
   #endif
 #elif defined(SIMDE__CONVERT_VECTOR)
   SIMDE__CONVERT_VECTOR(r.i32, a.f32);
@@ -1548,16 +1651,18 @@ simde_mm_cvtps_epi32 (simde__m128 a) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
 simde_mm_cvtps_pd (simde__m128 a) {
-#if defined(SIMDE_SSE2_NATIVE)
-  return SIMDE__M128D_C(_mm_cvtps_pd(a.n));
-#else
   simde__m128d r;
+
+#if defined(SIMDE_SSE2_NATIVE)
+  r.n = _mm_cvtps_pd(a.n);
+#else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.f64) / sizeof(r.f64[0])) ; i++) {
     r.f64[i] = a.f32[i];
   }
-  return r;
 #endif
+
+  return r;
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_cvtps_pd(a) SIMDE__M128D_TO_NATIVE(simde_mm_cvtps_pd(SIMDE__M128_FROM_NATIVE(a)))
@@ -1667,16 +1772,16 @@ simde_mm_cvtsi128_si64 (simde__m128i a) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
 simde_mm_cvtsi32_sd (simde__m128d a, int32_t b) {
-#if defined(SIMDE_SSE2_NATIVE)
-  return SIMDE__M128D_C(_mm_cvtsi32_sd(a.n, b));
-#else
   simde__m128d r;
 
+#if defined(SIMDE_SSE2_NATIVE)
+  r.n = _mm_cvtsi32_sd(a.n, b);
+#else
   r.f64[0] = (simde_float64) b;
   r.i64[1] = a.i64[1];
+#endif
 
   return r;
-#endif
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_cvtsi32_sd(a, b) SIMDE__M128D_TO_NATIVE(simde_mm_cvtsi32_sd(SIMDE__M128D_FROM_NATIVE(a), b))
@@ -2901,7 +3006,7 @@ simde_mm_set_epi64x (int64_t e1, int64_t e0) {
 #if defined(SIMDE_SSE2_NATIVE)
   r.n = _mm_set_epi64x(e1, e0);
 #elif defined(SIMDE_SSE2_NEON)
-  r = SIMDE__M128I_NEON_C(i64, vcombine_s64(vdup_n_s64(e0), vdup_n_s64(e1)));
+  r.neon_i64 = vcombine_s64(vdup_n_s64(e0), vdup_n_s64(e1));
 #else
   r.i64[0] = e0;
   r.i64[1] = e1;
@@ -3459,11 +3564,11 @@ simde_mm_shufflelo_epi16 (simde__m128i a, const int imm8) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_sll_epi16 (simde__m128i a, simde__m128i count) {
-#if defined(SIMDE_SSE2_NATIVE)
-  return SIMDE__M128I_C(_mm_sll_epi16(a.n, count.n));
-#else
   simde__m128i r;
 
+#if defined(SIMDE_SSE2_NATIVE)
+  r.n = _mm_sll_epi16(a.n, count.n);
+#else
   if (count.u64[0] > 15)
     return simde_mm_setzero_si128();
   const int s = (int) (count.u64[0]);
@@ -3472,8 +3577,9 @@ simde_mm_sll_epi16 (simde__m128i a, simde__m128i count) {
   for (size_t i = 0 ; i < (sizeof(r.u16) / sizeof(r.u16[0])) ; i++) {
     r.u16[i] = (uint16_t) (a.u16[i] << s);
   }
-  return r;
 #endif
+
+  return r;
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_sll_epi16(a, count) SIMDE__M128I_TO_NATIVE(simde_mm_sll_epi16(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(count)))
@@ -3482,11 +3588,11 @@ simde_mm_sll_epi16 (simde__m128i a, simde__m128i count) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_sll_epi32 (simde__m128i a, simde__m128i count) {
-#if defined(SIMDE_SSE2_NATIVE)
-  return SIMDE__M128I_C(_mm_sll_epi32(a.n, count.n));
-#else
   simde__m128i r;
 
+#if defined(SIMDE_SSE2_NATIVE)
+  r.n = _mm_sll_epi32(a.n, count.n);
+#else
   if (count.u64[0] > 31)
     return simde_mm_setzero_si128();
   const int s = (int) (count.u64[0]);
@@ -3495,8 +3601,9 @@ simde_mm_sll_epi32 (simde__m128i a, simde__m128i count) {
   for (size_t i = 0 ; i < (sizeof(r.i32) / sizeof(r.i32[0])) ; i++) {
     r.i32[i] = a.i32[i] << s;
   }
-  return r;
 #endif
+
+  return r;
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_sll_epi32(a, count) SIMDE__M128I_TO_NATIVE(simde_mm_sll_epi32(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(count)))
@@ -3505,12 +3612,12 @@ simde_mm_sll_epi32 (simde__m128i a, simde__m128i count) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_sll_epi64 (simde__m128i a, simde__m128i count) {
-#if defined(SIMDE_SSE2_NATIVE)
-  return SIMDE__M128I_C(_mm_sll_epi64(a.n, count.n));
-#else
   simde__m128i r;
 
-  if (count.u64[0] > 63)
+#if defined(SIMDE_SSE2_NATIVE)
+  r.n = _mm_sll_epi64(a.n, count.n);
+#else
+  if (HEDLEY_UNLIKELY(count.u64[0] > 63))
     return simde_mm_setzero_si128();
   const int s = (int) (count.u64[0]);
 
@@ -3518,8 +3625,9 @@ simde_mm_sll_epi64 (simde__m128i a, simde__m128i count) {
   for (size_t i = 0 ; i < (sizeof(r.i64) / sizeof(r.i64[0])) ; i++) {
     r.i64[i] = a.i64[i] << s;
   }
-  return r;
 #endif
+
+  return r;
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_sll_epi64(a, count) SIMDE__M128I_TO_NATIVE(simde_mm_sll_epi64(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(count)))
@@ -3528,18 +3636,18 @@ simde_mm_sll_epi64 (simde__m128i a, simde__m128i count) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
 simde_mm_sqrt_pd (simde__m128d a) {
-#if defined(SIMDE_SSE2_NATIVE)
-  return SIMDE__M128D_C(_mm_sqrt_pd(a.n));
-#else
   simde__m128d r;
 
+#if defined(SIMDE_SSE2_NATIVE)
+  r.n = _mm_sqrt_pd(a.n);
+#else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.f64) / sizeof(r.f64[0])) ; i++) {
     r.f64[i] = sqrt(a.f64[i]);
   }
+#endif
 
   return r;
-#endif
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_sqrt_pd(a) SIMDE__M128D_TO_NATIVE(simde_mm_sqrt_pd(SIMDE__M128D_FROM_NATIVE(a)))
@@ -3548,14 +3656,16 @@ simde_mm_sqrt_pd (simde__m128d a) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
 simde_mm_sqrt_sd (simde__m128d a, simde__m128d b) {
-#if defined(SIMDE_SSE2_NATIVE)
-  return SIMDE__M128D_C(_mm_sqrt_sd(a.n, b.n));
-#else
   simde__m128d r;
+
+#if defined(SIMDE_SSE2_NATIVE)
+  r.n = _mm_sqrt_sd(a.n, b.n);
+#else
   r.f64[0] = sqrt(b.f64[0]);
   r.f64[1] = a.f64[1];
-  return r;
 #endif
+
+  return r;
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_sqrt_sd(a, b) SIMDE__M128D_TO_NATIVE(simde_mm_sqrt_sd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b)))
@@ -3564,11 +3674,11 @@ simde_mm_sqrt_sd (simde__m128d a, simde__m128d b) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_srl_epi16 (simde__m128i a, simde__m128i count) {
-#if defined(SIMDE_SSE2_NATIVE)
-  return SIMDE__M128I_C(_mm_srl_epi16(a.n, count.n));
-#else
   simde__m128i r;
 
+#if defined(SIMDE_SSE2_NATIVE)
+  r.n = _mm_srl_epi16(a.n, count.n);
+#else
   if (count.u64[0] > 15)
     return simde_mm_setzero_si128();
   const int s = (int) (count.u64[0]);
@@ -3577,8 +3687,9 @@ simde_mm_srl_epi16 (simde__m128i a, simde__m128i count) {
   for (size_t i = 0 ; i < (sizeof(r.u16) / sizeof(r.u16[0])) ; i++) {
     r.u16[i] = a.u16[i] >> s;
   }
-  return r;
 #endif
+
+  return r;
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_srl_epi16(a, count) SIMDE__M128I_TO_NATIVE(simde_mm_srl_epi16(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(count)))
@@ -3587,11 +3698,11 @@ simde_mm_srl_epi16 (simde__m128i a, simde__m128i count) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_srl_epi32 (simde__m128i a, simde__m128i count) {
-#if defined(SIMDE_SSE2_NATIVE)
-  return SIMDE__M128I_C(_mm_srl_epi32(a.n, count.n));
-#else
   simde__m128i r;
 
+#if defined(SIMDE_SSE2_NATIVE)
+  r.n = _mm_srl_epi32(a.n, count.n);
+#else
   if (count.u64[0] > 31)
     return simde_mm_setzero_si128();
   const int s = (int) (count.u64[0]);
@@ -3600,8 +3711,9 @@ simde_mm_srl_epi32 (simde__m128i a, simde__m128i count) {
   for (size_t i = 0 ; i < (sizeof(r.u32) / sizeof(r.u32[0])) ; i++) {
     r.u32[i] = a.u32[i] >> s;
   }
-  return r;
 #endif
+
+  return r;
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_srl_epi32(a, count) SIMDE__M128I_TO_NATIVE(simde_mm_srl_epi32(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(count)))
@@ -3610,11 +3722,11 @@ simde_mm_srl_epi32 (simde__m128i a, simde__m128i count) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_srl_epi64 (simde__m128i a, simde__m128i count) {
-#if defined(SIMDE_SSE2_NATIVE)
-  return SIMDE__M128I_C(_mm_srl_epi64(a.n, count.n));
-#else
   simde__m128i r;
 
+#if defined(SIMDE_SSE2_NATIVE)
+  r.n = _mm_srl_epi64(a.n, count.n);
+#else
   if (count.u64[0] > 31)
     return simde_mm_setzero_si128();
   const int s = (int) (count.u64[0]);
@@ -3623,8 +3735,9 @@ simde_mm_srl_epi64 (simde__m128i a, simde__m128i count) {
   for (size_t i = 0 ; i < (sizeof(r.u64) / sizeof(r.u64[0])) ; i++) {
     r.u64[i] = a.u64[i] >> s;
   }
-  return r;
 #endif
+
+  return r;
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_srl_epi64(a, count) SIMDE__M128I_TO_NATIVE(simde_mm_srl_epi64(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(count)))
@@ -3675,19 +3788,20 @@ simde_mm_srai_epi32 (simde__m128i a, int imm8) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_sra_epi16 (simde__m128i a, simde__m128i count) {
-#if defined(SIMDE_SSE2_NATIVE)
-  return SIMDE__M128I_C(_mm_sra_epi16(a.n, count.n));
-#else
   simde__m128i r;
+
+#if defined(SIMDE_SSE2_NATIVE)
+  r.n = _mm_sra_epi16(a.n, count.n);
+#else
   const int cnt = (int) (count.i64[0] > 15 ? 15 : count.i64[0]);
 
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i16) / sizeof(r.i16[0])) ; i++) {
     r.i16[i] = a.i16[i] >> cnt;
   }
+#endif
 
   return r;
-#endif
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_sra_epi16(a, count) SIMDE__M128I_TO_NATIVE(simde_mm_sra_epi16(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(count)))
@@ -3696,19 +3810,20 @@ simde_mm_sra_epi16 (simde__m128i a, simde__m128i count) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_sra_epi32 (simde__m128i a, simde__m128i count) {
-#if defined(SIMDE_SSE2_NATIVE) && !defined(SIMDE_BUG_GCC_BAD_MM_SRA_EPI32)
-  return SIMDE__M128I_C(_mm_sra_epi32(a.n, count.n));
-#else
   simde__m128i r;
+
+#if defined(SIMDE_SSE2_NATIVE) && !defined(SIMDE_BUG_GCC_BAD_MM_SRA_EPI32)
+  r.n = _mm_sra_epi32(a.n, count.n);
+#else
   const int cnt = count.u64[0] > 31 ? 31 : ((int) count.u64[0]);
 
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i32) / sizeof(r.i32[0])) ; i++) {
     r.i32[i] = a.i32[i] >> cnt;
   }
+#endif
 
   return r;
-#endif
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_sra_epi32(a, count) SIMDE__M128I_TO_NATIVE(simde_mm_sra_epi32(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(count)))
@@ -4056,18 +4171,20 @@ simde_mm_stream_si64 (int64_t* mem_addr, int64_t a) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_sub_epi8 (simde__m128i a, simde__m128i b) {
-#if defined(SIMDE_SSE2_NATIVE)
-  return SIMDE__M128I_C(_mm_sub_epi8(a.n, b.n));
-#elif defined(SIMDE_SSE2_NEON)
-  return SIMDE__M128I_NEON_C(i8, vsubq_s8(a.neon_i8, b.neon_i8));
-#else
   simde__m128i r;
+
+#if defined(SIMDE_SSE2_NATIVE)
+  r.n = _mm_sub_epi8(a.n, b.n);
+#elif defined(SIMDE_SSE2_NEON)
+  r.neon_i8 = vsubq_s8(a.neon_i8, b.neon_i8);
+#else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i8) / sizeof(r.i8[0])) ; i++) {
     r.i8[i] = a.i8[i] - b.i8[i];
   }
-  return r;
 #endif
+
+  return r;
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_sub_epi8(a, b) SIMDE__M128I_TO_NATIVE(simde_mm_sub_epi8(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(b)))
@@ -4076,18 +4193,20 @@ simde_mm_sub_epi8 (simde__m128i a, simde__m128i b) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_sub_epi16 (simde__m128i a, simde__m128i b) {
-#if defined(SIMDE_SSE2_NATIVE)
-  return SIMDE__M128I_C(_mm_sub_epi16(a.n, b.n));
-#elif defined(SIMDE_SSE2_NEON)
-  return SIMDE__M128I_NEON_C(i16, vsubq_s16(a.neon_i16, b.neon_i16));
-#else
   simde__m128i r;
+
+#if defined(SIMDE_SSE2_NATIVE)
+  r.n = _mm_sub_epi16(a.n, b.n);
+#elif defined(SIMDE_SSE2_NEON)
+  r.neon_i16 = vsubq_s16(a.neon_i16, b.neon_i16);
+#else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i16) / sizeof(r.i16[0])) ; i++) {
     r.i16[i] = a.i16[i] - b.i16[i];
   }
-  return r;
 #endif
+
+  return r;
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_sub_epi16(a, b) SIMDE__M128I_TO_NATIVE(simde_mm_sub_epi16(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(b)))
@@ -4096,18 +4215,20 @@ simde_mm_sub_epi16 (simde__m128i a, simde__m128i b) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_sub_epi32 (simde__m128i a, simde__m128i b) {
-#if defined(SIMDE_SSE2_NATIVE)
-  return SIMDE__M128I_C(_mm_sub_epi32(a.n, b.n));
-#elif defined(SIMDE_SSE2_NEON)
-  return SIMDE__M128I_NEON_C(i32, vsubq_s32(a.neon_i32, b.neon_i32));
-#else
   simde__m128i r;
+
+#if defined(SIMDE_SSE2_NATIVE)
+  r.n = _mm_sub_epi32(a.n, b.n);
+#elif defined(SIMDE_SSE2_NEON)
+  r.neon_i32 = vsubq_s32(a.neon_i32, b.neon_i32);
+#else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i32) / sizeof(r.i32[0])) ; i++) {
     r.i32[i] = a.i32[i] - b.i32[i];
   }
-  return r;
 #endif
+
+  return r;
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_sub_epi32(a, b) SIMDE__M128I_TO_NATIVE(simde_mm_sub_epi32(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(b)))
@@ -4116,18 +4237,20 @@ simde_mm_sub_epi32 (simde__m128i a, simde__m128i b) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_sub_epi64 (simde__m128i a, simde__m128i b) {
-#if defined(SIMDE_SSE2_NATIVE)
-  return SIMDE__M128I_C(_mm_sub_epi64(a.n, b.n));
-#elif defined(SIMDE_SSE2_NEON)
-  return SIMDE__M128I_NEON_C(i64, vsubq_s64(a.neon_i64, b.neon_i64));
-#else
   simde__m128i r;
+
+#if defined(SIMDE_SSE2_NATIVE)
+  r.n = _mm_sub_epi64(a.n, b.n);
+#elif defined(SIMDE_SSE2_NEON)
+  r.neon_i64 = vsubq_s64(a.neon_i64, b.neon_i64);
+#else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i64) / sizeof(r.i64[0])) ; i++) {
     r.i64[i] = a.i64[i] - b.i64[i];
   }
-  return r;
 #endif
+
+  return r;
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_sub_epi64(a, b) SIMDE__M128I_TO_NATIVE(simde_mm_sub_epi64(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(b)))
@@ -4136,16 +4259,18 @@ simde_mm_sub_epi64 (simde__m128i a, simde__m128i b) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
 simde_mm_sub_pd (simde__m128d a, simde__m128d b) {
-#if defined(SIMDE_SSE2_NATIVE)
-  return SIMDE__M128D_C(_mm_sub_pd(a.n, b.n));
-#else
   simde__m128d r;
+
+#if defined(SIMDE_SSE2_NATIVE)
+  r.n = _mm_sub_pd(a.n, b.n);
+#else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.f64) / sizeof(r.f64[0])) ; i++) {
     r.f64[i] = a.f64[i] - b.f64[i];
   }
-  return r;
 #endif
+
+  return r;
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_sub_pd(a, b) SIMDE__M128D_TO_NATIVE(simde_mm_sub_pd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b)))
@@ -4154,14 +4279,16 @@ simde_mm_sub_pd (simde__m128d a, simde__m128d b) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
 simde_mm_sub_sd (simde__m128d a, simde__m128d b) {
-#if defined(SIMDE_SSE2_NATIVE)
-  return SIMDE__M128D_C(_mm_sub_sd(a.n, b.n));
-#else
   simde__m128d r;
+
+#if defined(SIMDE_SSE2_NATIVE)
+  r.n = _mm_sub_sd(a.n, b.n);
+#else
   r.f64[0] = a.f64[0] - b.f64[0];
   r.f64[1] = a.f64[1];
-  return r;
 #endif
+
+  return r;
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_sub_sd(a, b) SIMDE__M128D_TO_NATIVE(simde_mm_sub_sd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b)))
@@ -4185,12 +4312,13 @@ simde_mm_sub_si64 (simde__m64 a, simde__m64 b) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_subs_epi8 (simde__m128i a, simde__m128i b) {
-#if defined(SIMDE_SSE2_NATIVE)
-  return SIMDE__M128I_C(_mm_subs_epi8(a.n, b.n));
-#elif defined(SIMDE_SSE2_NEON)
-  return SIMDE__M128I_NEON_C(i8, vqsubq_s8(a.neon_i8, b.neon_i8));
-#else
   simde__m128i r;
+
+#if defined(SIMDE_SSE2_NATIVE)
+  r.n = _mm_subs_epi8(a.n, b.n);
+#elif defined(SIMDE_SSE2_NEON)
+  r.neon_i8 = vqsubq_s8(a.neon_i8, b.neon_i8);
+#else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r) / sizeof(r.i8[0])) ; i++) {
     if (((b.i8[i]) > 0 && (a.i8[i]) < INT8_MIN + (b.i8[i]))) {
@@ -4201,8 +4329,9 @@ simde_mm_subs_epi8 (simde__m128i a, simde__m128i b) {
       r.i8[i] = (a.i8[i]) - (b.i8[i]);
     }
   }
-  return r;
 #endif
+
+  return r;
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_subs_epi8(a, b) SIMDE__M128I_TO_NATIVE(simde_mm_subs_epi8(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(b)))
@@ -4211,12 +4340,13 @@ simde_mm_subs_epi8 (simde__m128i a, simde__m128i b) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_subs_epi16 (simde__m128i a, simde__m128i b) {
-#if defined(SIMDE_SSE2_NATIVE)
-  return SIMDE__M128I_C(_mm_subs_epi16(a.n, b.n));
-#elif defined(SIMDE_SSE2_NEON)
-  return SIMDE__M128I_NEON_C(i16, vqsubq_s16(a.neon_i16, b.neon_i16));
-#else
   simde__m128i r;
+
+#if defined(SIMDE_SSE2_NATIVE)
+  r.n = _mm_subs_epi16(a.n, b.n);
+#elif defined(SIMDE_SSE2_NEON)
+  r.neon_i16 = vqsubq_s16(a.neon_i16, b.neon_i16);
+#else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r) / sizeof(r.i16[0])) ; i++) {
     if (((b.i16[i]) > 0 && (a.i16[i]) < INT16_MIN + (b.i16[i]))) {
@@ -4227,8 +4357,9 @@ simde_mm_subs_epi16 (simde__m128i a, simde__m128i b) {
       r.i16[i] = (a.i16[i]) - (b.i16[i]);
     }
   }
-  return r;
 #endif
+
+  return r;
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_subs_epi16(a, b) SIMDE__M128I_TO_NATIVE(simde_mm_subs_epi16(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(b)))
@@ -4237,12 +4368,13 @@ simde_mm_subs_epi16 (simde__m128i a, simde__m128i b) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_subs_epu8 (simde__m128i a, simde__m128i b) {
-#if defined(SIMDE_SSE2_NATIVE)
-  return SIMDE__M128I_C(_mm_subs_epu8(a.n, b.n));
-#elif defined(SIMDE_SSE2_NEON)
-  return SIMDE__M128I_NEON_C(u8, vqsubq_u8(a.neon_u8, b.neon_u8));
-#else
   simde__m128i r;
+
+#if defined(SIMDE_SSE2_NATIVE)
+  r.n = _mm_subs_epu8(a.n, b.n);
+#elif defined(SIMDE_SSE2_NEON)
+  r.neon_u8 = vqsubq_u8(a.neon_u8, b.neon_u8);
+#else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r) / sizeof(r.i8[0])) ; i++) {
     const int32_t x = a.u8[i] - b.u8[i];
@@ -4254,8 +4386,9 @@ simde_mm_subs_epu8 (simde__m128i a, simde__m128i b) {
       r.u8[i] = (uint8_t) x;
     }
   }
-  return r;
 #endif
+
+  return r;
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_subs_epu8(a, b) SIMDE__M128I_TO_NATIVE(simde_mm_subs_epu8(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(b)))
@@ -4264,12 +4397,13 @@ simde_mm_subs_epu8 (simde__m128i a, simde__m128i b) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_subs_epu16 (simde__m128i a, simde__m128i b) {
-#if defined(SIMDE_SSE2_NATIVE)
-  return SIMDE__M128I_C(_mm_subs_epu16(a.n, b.n));
-#elif defined(SIMDE_SSE2_NEON)
-  return SIMDE__M128I_NEON_C(u16, vqsubq_u16(a.neon_u16, b.neon_u16));
-#else
   simde__m128i r;
+
+#if defined(SIMDE_SSE2_NATIVE)
+  r.n = _mm_subs_epu16(a.n, b.n);
+#elif defined(SIMDE_SSE2_NEON)
+  r.neon_u16 = vqsubq_u16(a.neon_u16, b.neon_u16);
+#else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r) / sizeof(r.i16[0])) ; i++) {
     const int32_t x = a.u16[i] - b.u16[i];
@@ -4281,8 +4415,9 @@ simde_mm_subs_epu16 (simde__m128i a, simde__m128i b) {
       r.u16[i] = (uint16_t) x;
     }
   }
-  return r;
 #endif
+
+  return r;
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_subs_epu16(a, b) SIMDE__M128I_TO_NATIVE(simde_mm_subs_epu16(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(b)))
@@ -4476,7 +4611,7 @@ simde_mm_unpackhi_epi8 (simde__m128i a, simde__m128i b) {
   int8x8_t a1 = vreinterpret_s8_s16(vget_high_s16(a.neon_i16));
   int8x8_t b1 = vreinterpret_s8_s16(vget_high_s16(b.neon_i16));
   int8x8x2_t result = vzip_s8(a1, b1);
-  r = SIMDE__M128I_NEON_C(i8, vcombine_s8(result.val[0], result.val[1]));
+  r.neon_i8 = vcombine_s8(result.val[0], result.val[1]);
 #elif defined(SIMDE__SHUFFLE_VECTOR)
   r.i8 = SIMDE__SHUFFLE_VECTOR(8, 16, a.i8, b.i8, 8, 24, 9, 25, 10, 26, 11, 27, 12, 28, 13, 29, 14, 30, 15, 31);
 #else
@@ -4504,7 +4639,7 @@ simde_mm_unpackhi_epi16 (simde__m128i a, simde__m128i b) {
   int16x4_t a1 = vget_high_s16(a.neon_i16);
   int16x4_t b1 = vget_high_s16(b.neon_i16);
   int16x4x2_t result = vzip_s16(a1, b1);
-  r = SIMDE__M128I_NEON_C(i16, vcombine_s16(result.val[0], result.val[1]));
+  r.neon_i16 = vcombine_s16(result.val[0], result.val[1]);
 #elif defined(SIMDE__SHUFFLE_VECTOR)
   r.i16 = SIMDE__SHUFFLE_VECTOR(16, 16, a.i16, b.i16, 4, 12, 5, 13, 6, 14, 7, 15);
 #else
@@ -4532,7 +4667,7 @@ simde_mm_unpackhi_epi32 (simde__m128i a, simde__m128i b) {
   int32x2_t a1 = vget_high_s32(a.neon_i32);
   int32x2_t b1 = vget_high_s32(b.neon_i32);
   int32x2x2_t result = vzip_s32(a1, b1);
-  r = SIMDE__M128I_NEON_C(i32, vcombine_s32(result.val[0], result.val[1]));
+  r.neon_i32 = vcombine_s32(result.val[0], result.val[1]);
 #elif defined(SIMDE__SHUFFLE_VECTOR)
   r.i32 = SIMDE__SHUFFLE_VECTOR(32, 16, a.i32, b.i32, 2, 6, 3, 7);
 #else
@@ -4606,7 +4741,7 @@ simde_mm_unpacklo_epi8 (simde__m128i a, simde__m128i b) {
   int8x8_t a1 = vreinterpret_s8_s16(vget_low_s16(a.neon_i16));
   int8x8_t b1 = vreinterpret_s8_s16(vget_low_s16(b.neon_i16));
   int8x8x2_t result = vzip_s8(a1, b1);
-  r = SIMDE__M128I_NEON_C(i8, vcombine_s8(result.val[0], result.val[1]));
+  r.neon_i8 = vcombine_s8(result.val[0], result.val[1]);
 #elif defined(SIMDE__SHUFFLE_VECTOR)
   r.i8 = SIMDE__SHUFFLE_VECTOR(8, 16, a.i8, b.i8, 0, 16, 1, 17, 2, 18, 3, 19, 4, 20, 5, 21, 6, 22, 7, 23);
 #else
@@ -4634,7 +4769,7 @@ simde_mm_unpacklo_epi16 (simde__m128i a, simde__m128i b) {
   int16x4_t a1 = vget_low_s16(a.neon_i16);
   int16x4_t b1 = vget_low_s16(b.neon_i16);
   int16x4x2_t result = vzip_s16(a1, b1);
-  r = SIMDE__M128I_NEON_C(i16, vcombine_s16(result.val[0], result.val[1]));
+  r.neon_i16 = vcombine_s16(result.val[0], result.val[1]);
 #elif defined(SIMDE__SHUFFLE_VECTOR)
   r.i16 = SIMDE__SHUFFLE_VECTOR(16, 16, a.i16, b.i16, 0, 8, 1, 9, 2, 10, 3, 11);
 #else
@@ -4662,7 +4797,7 @@ simde_mm_unpacklo_epi32 (simde__m128i a, simde__m128i b) {
   int32x2_t a1 = vget_low_s32(a.neon_i32);
   int32x2_t b1 = vget_low_s32(b.neon_i32);
   int32x2x2_t result = vzip_s32(a1, b1);
-  r = SIMDE__M128I_NEON_C(i32, vcombine_s32(result.val[0], result.val[1]));
+  r.neon_i32 = vcombine_s32(result.val[0], result.val[1]);
 #elif defined(SIMDE__SHUFFLE_VECTOR)
   r.i32 = SIMDE__SHUFFLE_VECTOR(32, 16, a.i32, b.i32, 0, 4, 1, 5);
 #else
@@ -4728,16 +4863,18 @@ simde_mm_unpacklo_pd (simde__m128d a, simde__m128d b) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
 simde_mm_xor_pd (simde__m128d a, simde__m128d b) {
-#if defined(SIMDE_SSE2_NATIVE)
-  return SIMDE__M128D_C(_mm_xor_pd(a.n, b.n));
-#else
   simde__m128d r;
+
+#if defined(SIMDE_SSE2_NATIVE)
+  r.n = _mm_xor_pd(a.n, b.n);
+#else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i64) / sizeof(r.i64[0])) ; i++) {
     r.i64[i] = a.i64[i] ^ b.i64[i];
   }
-  return r;
 #endif
+
+  return r;
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_xor_pd(a, b) SIMDE__M128D_TO_NATIVE(simde_mm_xor_pd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b)))
@@ -4746,18 +4883,20 @@ simde_mm_xor_pd (simde__m128d a, simde__m128d b) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_xor_si128 (simde__m128i a, simde__m128i b) {
-#if defined(SIMDE_SSE2_NATIVE)
-  return SIMDE__M128I_C(_mm_xor_si128(a.n, b.n));
-#elif defined(SIMDE_SSE2_NEON)
-  return SIMDE__M128I_NEON_C(i32, veorq_s32(a.neon_i32, b.neon_i32));
-#else
   simde__m128i r;
+
+#if defined(SIMDE_SSE2_NATIVE)
+  r.n = _mm_xor_si128(a.n, b.n);
+#elif defined(SIMDE_SSE2_NEON)
+  r.neon_i32 = veorq_s32(a.neon_i32, b.neon_i32);
+#else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i32f) / sizeof(r.i32f[0])) ; i++) {
     r.i32f[i] = a.i32f[i] ^ b.i32f[i];
   }
-  return r;
 #endif
+
+  return r;
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_xor_si128(a, b) SIMDE__M128I_TO_NATIVE(simde_mm_xor_si128(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(b)))
@@ -4766,16 +4905,18 @@ simde_mm_xor_si128 (simde__m128i a, simde__m128i b) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_x_mm_not_si128 (simde__m128i a) {
-#if defined(SIMDE_SSE2_NEON)
-  return SIMDE__M128I_NEON_C(i32, vmvnq_s32(a.neon_i32));
-#else
   simde__m128i r;
+
+#if defined(SIMDE_SSE2_NEON)
+  r.neon_i32 = vmvnq_s32(a.neon_i32);
+#else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i32f) / sizeof(r.i32f[0])) ; i++) {
     r.i32f[i] = ~(a.i32f[i]);
   }
-  return r;
 #endif
+
+  return r;
 }
 
 SIMDE__END_DECLS

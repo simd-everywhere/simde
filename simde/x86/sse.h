@@ -132,8 +132,6 @@ typedef union {
 
 #if defined(SIMDE_SSE_NATIVE)
   HEDLEY_STATIC_ASSERT(sizeof(__m128) == sizeof(simde__m128), "__m128 size doesn't match simde__m128 size");
-#elif defined(SIMDE_SSE_NEON)
-  #define SIMDE__M128_NEON_C(T, expr) (simde__m128) { .neon_##T = expr }
 #endif
 HEDLEY_STATIC_ASSERT(16 == sizeof(simde__m128), "simde__m128 size incorrect");
 
@@ -145,6 +143,8 @@ HEDLEY_STATIC_ASSERT(16 == sizeof(simde__m128), "simde__m128 size incorrect");
 #if defined(SIMDE_SSE_NATIVE)
    SIMDE__FUNCTION_ATTRIBUTES simde__m128 SIMDE__M128_FROM_NATIVE(__m128 v) { simde__m128 r; r.n = v; return r; }
 #  define SIMDE__M128_TO_NATIVE(v) (v.n)
+#elif defined(SIMDE_SSE_NEON)
+  #define SIMDE__M128_NEON_C(T, expr) (simde__m128) { .neon_##T = expr }
 #else
 #  define SIMDE__M128_FROM_NATIVE(val) (val)
 #  define SIMDE__M128_TO_NATIVE(val) (val)
