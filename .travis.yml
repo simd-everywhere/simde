@@ -1,6 +1,5 @@
 language: c
 sudo: false
-dist: bionic
 branches:
   except:
     - /^(wip\/)?(appveyor|msvc|mingw|windows)(\-.+)?$/
