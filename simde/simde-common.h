@@ -208,10 +208,14 @@ HEDLEY_STATIC_ASSERT(sizeof(simde_float64) == 8, "Unable to find 64-bit floating
    vectors, but the implementations are slightly different.  This
    macro is just an abstraction over them.  Note that elem_size is in
    bits but vec_size is in bytes. */
-#if HEDLEY_CLANG_HAS_BUILTIN(__builtin_shufflevector)
+#if HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
 #  define SIMDE__SHUFFLE_VECTOR(elem_size, vec_size, a, b, ...) __builtin_shufflevector(a, b, __VA_ARGS__)
 #elif HEDLEY_GCC_HAS_BUILTIN(__builtin_shuffle,4,7,0) && !defined(__INTEL_COMPILER)
 #  define SIMDE__SHUFFLE_VECTOR(elem_size, vec_size, a, b, ...) __builtin_shuffle(a, b, (int##elem_size##_t __attribute__((__vector_size__(vec_size)))) { __VA_ARGS__ })
+#endif
+
+#if HEDLEY_GCC_HAS_BUILTIN(__builtin_convertvector,9,0,0)
+#  define SIMDE__CONVERT_VECTOR(to, from) ((to) = __builtin_convertvector((from), typeof(to)))
 #endif
 
 #if HEDLEY_HAS_WARNING("-Wbad-function-cast")

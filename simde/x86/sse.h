@@ -113,6 +113,8 @@ typedef union {
   SIMDE_ALIGN(16) uint_fast32_t u32f[16 / sizeof(uint_fast32_t)];
 #endif
 
+  SIMDE_ALIGN(16) simde__m64     m64[2];
+
 #if defined(SIMDE_SSE_NATIVE)
   SIMDE_ALIGN(16) __m128         n;
 #elif defined(SIMDE_SSE_NEON)
@@ -960,6 +962,9 @@ simde_mm_cvt_pi2ps (simde__m128 a, simde__m64 b) {
 
 #if defined(SIMDE_SSE_NATIVE)
   r.n = _mm_cvt_pi2ps(a.n, b.n);
+#elif defined(SIMDE__CONVERT_VECTOR)
+  SIMDE__CONVERT_VECTOR(r.m64[0].f32, b.i32);
+  r.m64[1] = a.m64[1];
 #else
   r.f32[0] = (simde_float32) b.i32[0];
   r.f32[1] = (simde_float32) b.i32[1];
@@ -980,6 +985,8 @@ simde_mm_cvt_ps2pi (simde__m128 a) {
 
 #if defined(SIMDE_SSE_NATIVE)
   r.n = _mm_cvt_ps2pi(a.n);
+#elif defined(SIMDE__CONVERT_VECTOR) && !defined(__clang__)
+  SIMDE__CONVERT_VECTOR(r.i32, a.m64[0].f32);
 #else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i32) / sizeof(r.i32[0])) ; i++) {
@@ -1033,6 +1040,8 @@ simde_mm_cvtpi16_ps (simde__m64 a) {
 
 #if defined(SIMDE_SSE_NATIVE)
   r.n = _mm_cvtpi16_ps(a.n);
+#elif defined(SIMDE__CONVERT_VECTOR)
+  SIMDE__CONVERT_VECTOR(r.f32, a.i16);
 #else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
@@ -1053,6 +1062,9 @@ simde_mm_cvtpi32_ps (simde__m128 a, simde__m64 b) {
 
 #if defined(SIMDE_SSE_NATIVE)
   r.n = _mm_cvtpi32_ps(a.n, b.n);
+#elif defined(SIMDE__CONVERT_VECTOR)
+  SIMDE__CONVERT_VECTOR(r.m64[0].f32, b.i32);
+  r.m64[1] = a.m64[1];
 #else
   r.f32[0] = (simde_float32) b.i32[0];
   r.f32[1] = (simde_float32) b.i32[1];
@@ -1073,6 +1085,9 @@ simde_mm_cvtpi32x2_ps (simde__m64 a, simde__m64 b) {
 
 #if defined(SIMDE_SSE_NATIVE)
   r.n = _mm_cvtpi32x2_ps(a.n, b.n);
+#elif defined(SIMDE__CONVERT_VECTOR)
+  SIMDE__CONVERT_VECTOR(r.m64[0].f32, a.i32);
+  SIMDE__CONVERT_VECTOR(r.m64[1].f32, b.i32);
 #else
   r.f32[0] = (simde_float32) a.i32[0];
   r.f32[1] = (simde_float32) a.i32[1];
@@ -1113,6 +1128,8 @@ simde_mm_cvtps_pi16 (simde__m128 a) {
 
 #if defined(SIMDE_SSE_NATIVE)
   r.n = _mm_cvtps_pi16(a.n);
+#elif defined(SIMDE__CONVERT_VECTOR)
+  SIMDE__CONVERT_VECTOR(r.i16, a.f32);
 #else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i16) / sizeof(r.i16[0])) ; i++) {
@@ -1133,6 +1150,8 @@ simde_mm_cvtps_pi32 (simde__m128 a) {
 
 #if defined(SIMDE_SSE_NATIVE)
   r.n = _mm_cvtps_pi32(a.n);
+#elif defined(SIMDE__CONVERT_VECTOR)
+  SIMDE__CONVERT_VECTOR(r.i32, a.m64[0].f32);
 #else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i32) / sizeof(r.i32[0])) ; i++) {
@@ -1173,6 +1192,8 @@ simde_mm_cvtpu16_ps (simde__m64 a) {
 
 #if defined(SIMDE_SSE_NATIVE)
   r.n = _mm_cvtpu16_ps(a.n);
+#elif defined(SIMDE__CONVERT_VECTOR)
+  SIMDE__CONVERT_VECTOR(r.f32, a.u16);
 #else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
@@ -1304,6 +1325,8 @@ simde_mm_cvtt_ps2pi (simde__m128 a) {
 
 #if defined(SIMDE_SSE_NATIVE)
   r.n = _mm_cvtt_ps2pi(a.n);
+#elif defined(SIMDE__CONVERT_VECTOR)
+  SIMDE__CONVERT_VECTOR(r.i32, a.m64[0].f32);
 #else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
