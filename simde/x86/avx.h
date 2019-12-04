@@ -1318,6 +1318,114 @@ simde_mm_cmp_pd (simde__m128d a, simde__m128d b, const int imm8)
     HEDLEY_REQUIRE_MSG((imm8 & 31) == imm8, "imm8 must one of the SIMDE_CMP_* macros (values: [0, 31])") {
   simde__m128d r;
 
+#if defined(SIMDE__ENABLE_GCC_VEC_EXT)
+  switch (imm8) {
+    case SIMDE_CMP_EQ_OQ:
+      r.f64 = (a.f64 == b.f64);
+      break;
+    case SIMDE_CMP_LT_OS:
+      r.f64 = (a.f64 < b.f64);
+      break;
+    case SIMDE_CMP_LE_OS:
+      r.f64 = (a.f64 <= b.f64);
+      break;
+    case SIMDE_CMP_UNORD_Q:
+      for (size_t i = 0 ; i < (sizeof(r.f64) / sizeof(r.f64[0])) ; i++) {
+        r.u64[i] = (isnan(a.f64[i]) || isnan(b.f64[i])) ? ~UINT64_C(0) : UINT64_C(0);
+      }
+      break;
+    case SIMDE_CMP_NEQ_UQ:
+      r.f64 = (a.f64 != b.f64);
+      break;
+    case SIMDE_CMP_NLT_US:
+      r.f64 = (a.f64 >= b.f64);
+      break;
+    case SIMDE_CMP_NLE_US:
+      r.f64 = (a.f64 > b.f64);
+      break;
+    case SIMDE_CMP_ORD_Q:
+      for (size_t i = 0 ; i < (sizeof(r.f64) / sizeof(r.f64[0])) ; i++) {
+        r.u64[i] = (!isnan(a.f64[i]) && !isnan(b.f64[i])) ? ~UINT64_C(0) : UINT64_C(0);
+      }
+      break;
+    case SIMDE_CMP_EQ_UQ:
+      r.f64 = (a.f64 == b.f64);
+      break;
+    case SIMDE_CMP_NGE_US:
+      r.f64 = (a.f64 < b.f64);
+      break;
+    case SIMDE_CMP_NGT_US:
+      r.f64 = (a.f64 <= b.f64);
+      break;
+    case SIMDE_CMP_FALSE_OQ:
+      r.i32f = (a.i32f ^ a.i32f);
+      break;
+    case SIMDE_CMP_NEQ_OQ:
+      r.f64 = (a.f64 != b.f64);
+      break;
+    case SIMDE_CMP_GE_OS:
+      r.f64 = (a.f64 >= b.f64);
+      break;
+    case SIMDE_CMP_GT_OS:
+      r.f64 = (a.f64 > b.f64);
+      break;
+    case SIMDE_CMP_TRUE_UQ:
+      r.i32f = ~(a.i32f ^ a.i32f);
+      break;
+    case SIMDE_CMP_EQ_OS:
+      r.f64 = (a.f64 == b.f64);
+      break;
+    case SIMDE_CMP_LT_OQ:
+      r.f64 = (a.f64 < b.f64);
+      break;
+    case SIMDE_CMP_LE_OQ:
+      r.f64 = (a.f64 <= b.f64);
+      break;
+    case SIMDE_CMP_UNORD_S:
+      for (size_t i = 0 ; i < (sizeof(r.f64) / sizeof(r.f64[0])) ; i++) {
+        r.u64[i] = (isnan(a.f64[i]) || isnan(b.f64[i])) ? ~UINT64_C(0) : UINT64_C(0);
+      }
+      break;
+     case SIMDE_CMP_NEQ_US:
+      r.f64 = (a.f64 != b.f64);
+      break;
+    case SIMDE_CMP_NLT_UQ:
+      r.f64 = (a.f64 >= b.f64);
+      break;
+    case SIMDE_CMP_NLE_UQ:
+      r.f64 = (a.f64 > b.f64);
+      break;
+    case SIMDE_CMP_ORD_S:
+      for (size_t i = 0 ; i < (sizeof(r.f64) / sizeof(r.f64[0])) ; i++) {
+        r.u64[i] = (isnan(a.f64[i]) || isnan(b.f64[i])) ? UINT64_C(0) : ~UINT64_C(0);
+      }
+      break;
+    case SIMDE_CMP_EQ_US:
+      r.f64 = (a.f64 == b.f64);
+      break;
+    case SIMDE_CMP_NGE_UQ:
+      r.f64 = (a.f64 < b.f64);
+      break;
+    case SIMDE_CMP_NGT_UQ:
+      r.f64 = (a.f64 <= b.f64);
+      break;
+    case SIMDE_CMP_FALSE_OS:
+      r.i32f = (a.i32f ^ a.i32f);
+      break;
+    case SIMDE_CMP_NEQ_OS:
+      r.f64 = (a.f64 != b.f64);
+      break;
+    case SIMDE_CMP_GE_OQ:
+      r.f64 = (a.f64 >= b.f64);
+      break;
+    case SIMDE_CMP_GT_OQ:
+      r.f64 = (a.f64 > b.f64);
+      break;
+    case SIMDE_CMP_TRUE_US:
+      r.i32f = ~(r.i32f ^ r.i32f);
+      break;
+  }
+#else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.f64) / sizeof(r.f64[0])) ; i++) {
     switch (imm8) {
@@ -1419,6 +1527,7 @@ simde_mm_cmp_pd (simde__m128d a, simde__m128d b, const int imm8)
         break;
     }
   }
+#endif
 
   return r;
 }
@@ -1435,6 +1544,114 @@ simde_mm_cmp_ps (simde__m128 a, simde__m128 b, const int imm8)
     HEDLEY_REQUIRE_MSG((imm8 & 31) == imm8, "imm8 must one of the SIMDE_CMP_* macros (values: [0, 31])") {
   simde__m128 r;
 
+#if defined(SIMDE__ENABLE_GCC_VEC_EXT)
+  switch (imm8) {
+    case SIMDE_CMP_EQ_OQ:
+      r.f32 = (a.f32 == b.f32);
+      break;
+    case SIMDE_CMP_LT_OS:
+      r.f32 = (a.f32 < b.f32);
+      break;
+    case SIMDE_CMP_LE_OS:
+      r.f32 = (a.f32 <= b.f32);
+      break;
+    case SIMDE_CMP_UNORD_Q:
+      for (size_t i = 0 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
+        r.u32[i] = (isnan(a.f32[i]) || isnan(b.f32[i])) ? ~UINT32_C(0) : UINT32_C(0);
+      }
+      break;
+    case SIMDE_CMP_NEQ_UQ:
+      r.f32 = (a.f32 != b.f32);
+      break;
+    case SIMDE_CMP_NLT_US:
+      r.f32 = (a.f32 >= b.f32);
+      break;
+    case SIMDE_CMP_NLE_US:
+      r.f32 = (a.f32 > b.f32);
+      break;
+    case SIMDE_CMP_ORD_Q:
+      for (size_t i = 0 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
+        r.u32[i] = (!isnan(a.f32[i]) && !isnan(b.f32[i])) ? ~UINT32_C(0) : UINT32_C(0);
+      }
+      break;
+    case SIMDE_CMP_EQ_UQ:
+      r.f32 = (a.f32 == b.f32);
+      break;
+    case SIMDE_CMP_NGE_US:
+      r.f32 = (a.f32 < b.f32);
+      break;
+    case SIMDE_CMP_NGT_US:
+      r.f32 = (a.f32 <= b.f32);
+      break;
+    case SIMDE_CMP_FALSE_OQ:
+      r.i32 = (a.i32 ^ a.i32);
+      break;
+    case SIMDE_CMP_NEQ_OQ:
+      r.f32 = (a.f32 != b.f32);
+      break;
+    case SIMDE_CMP_GE_OS:
+      r.f32 = (a.f32 >= b.f32);
+      break;
+    case SIMDE_CMP_GT_OS:
+      r.f32 = (a.f32 > b.f32);
+      break;
+    case SIMDE_CMP_TRUE_UQ:
+      r.i32 = ~(a.i32 ^ a.i32);
+      break;
+    case SIMDE_CMP_EQ_OS:
+      r.f32 = (a.f32 == b.f32);
+      break;
+    case SIMDE_CMP_LT_OQ:
+      r.f32 = (a.f32 < b.f32);
+      break;
+    case SIMDE_CMP_LE_OQ:
+      r.f32 = (a.f32 <= b.f32);
+      break;
+    case SIMDE_CMP_UNORD_S:
+      for (size_t i = 0 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
+        r.u32[i] = (isnan(a.f32[i]) || isnan(b.f32[i])) ? ~UINT32_C(0) : UINT32_C(0);
+      }
+      break;
+    case SIMDE_CMP_NEQ_US:
+      r.f32 = (a.f32 != b.f32);
+      break;
+    case SIMDE_CMP_NLT_UQ:
+      r.f32 = (a.f32 >= b.f32);
+      break;
+    case SIMDE_CMP_NLE_UQ:
+      r.f32 = (a.f32 > b.f32);
+      break;
+    case SIMDE_CMP_ORD_S:
+      for (size_t i = 0 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
+        r.u32[i] = (isnan(a.f32[i]) || isnan(b.f32[i])) ? UINT32_C(0) : ~UINT32_C(0);
+      }
+      break;
+    case SIMDE_CMP_EQ_US:
+      r.f32 = (a.f32 == b.f32);
+      break;
+    case SIMDE_CMP_NGE_UQ:
+      r.f32 = (a.f32 < b.f32);
+      break;
+    case SIMDE_CMP_NGT_UQ:
+      r.f32 = (a.f32 <= b.f32);
+      break;
+    case SIMDE_CMP_FALSE_OS:
+      r.i32 = (a.i32 ^ a.i32);
+      break;
+    case SIMDE_CMP_NEQ_OS:
+      r.f32 = (a.f32 != b.f32);
+      break;
+    case SIMDE_CMP_GE_OQ:
+      r.f32 = (a.f32 >= b.f32);
+      break;
+    case SIMDE_CMP_GT_OQ:
+      r.f32 = (a.f32 > b.f32);
+      break;
+    case SIMDE_CMP_TRUE_US:
+      r.i32 = ~(a.i32 ^ a.i32);
+      break;
+  }
+#else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
     switch (imm8) {
@@ -1536,6 +1753,7 @@ simde_mm_cmp_ps (simde__m128 a, simde__m128 b, const int imm8)
         break;
     }
   }
+#endif
 
   return r;
 }
@@ -1784,6 +2002,114 @@ simde_mm256_cmp_pd (simde__m256d a, simde__m256d b, const int imm8)
     HEDLEY_REQUIRE_MSG((imm8 & 31) == imm8, "imm8 must one of the SIMDE_CMP_* macros (values: [0, 31])") {
   simde__m256d r;
 
+#if defined(SIMDE__ENABLE_GCC_VEC_EXT)
+  switch (imm8) {
+    case SIMDE_CMP_EQ_OQ:
+      r.f64 = (a.f64 == b.f64);
+      break;
+    case SIMDE_CMP_LT_OS:
+      r.f64 = (a.f64 < b.f64);
+      break;
+    case SIMDE_CMP_LE_OS:
+      r.f64 = (a.f64 <= b.f64);
+      break;
+    case SIMDE_CMP_UNORD_Q:
+      for (size_t i = 0 ; i < (sizeof(r.f64) / sizeof(r.f64[0])) ; i++) {
+        r.u64[i] = (isnan(a.f64[i]) || isnan(b.f64[i])) ? ~UINT64_C(0) : UINT64_C(0);
+      }
+      break;
+    case SIMDE_CMP_NEQ_UQ:
+      r.f64 = (a.f64 != b.f64);
+      break;
+    case SIMDE_CMP_NLT_US:
+      r.f64 = (a.f64 >= b.f64);
+      break;
+    case SIMDE_CMP_NLE_US:
+      r.f64 = (a.f64 > b.f64);
+      break;
+    case SIMDE_CMP_ORD_Q:
+      for (size_t i = 0 ; i < (sizeof(r.f64) / sizeof(r.f64[0])) ; i++) {
+        r.u64[i] = (!isnan(a.f64[i]) && !isnan(b.f64[i])) ? ~UINT64_C(0) : UINT64_C(0);
+      }
+      break;
+    case SIMDE_CMP_EQ_UQ:
+      r.f64 = (a.f64 == b.f64);
+      break;
+    case SIMDE_CMP_NGE_US:
+      r.f64 = (a.f64 < b.f64);
+      break;
+    case SIMDE_CMP_NGT_US:
+      r.f64 = (a.f64 <= b.f64);
+      break;
+    case SIMDE_CMP_FALSE_OQ:
+      r.i32f = (a.i32f ^ a.i32f);
+      break;
+    case SIMDE_CMP_NEQ_OQ:
+      r.f64 = (a.f64 != b.f64);
+      break;
+    case SIMDE_CMP_GE_OS:
+      r.f64 = (a.f64 >= b.f64);
+      break;
+    case SIMDE_CMP_GT_OS:
+      r.f64 = (a.f64 > b.f64);
+      break;
+    case SIMDE_CMP_TRUE_UQ:
+      r.i32f = ~(a.i32f ^ a.i32f);
+      break;
+    case SIMDE_CMP_EQ_OS:
+      r.f64 = (a.f64 == b.f64);
+      break;
+    case SIMDE_CMP_LT_OQ:
+      r.f64 = (a.f64 < b.f64);
+      break;
+    case SIMDE_CMP_LE_OQ:
+      r.f64 = (a.f64 <= b.f64);
+      break;
+    case SIMDE_CMP_UNORD_S:
+      for (size_t i = 0 ; i < (sizeof(r.f64) / sizeof(r.f64[0])) ; i++) {
+        r.u64[i] = (isnan(a.f64[i]) || isnan(b.f64[i])) ? ~UINT64_C(0) : UINT64_C(0);
+      }
+      break;
+     case SIMDE_CMP_NEQ_US:
+      r.f64 = (a.f64 != b.f64);
+      break;
+    case SIMDE_CMP_NLT_UQ:
+      r.f64 = (a.f64 >= b.f64);
+      break;
+    case SIMDE_CMP_NLE_UQ:
+      r.f64 = (a.f64 > b.f64);
+      break;
+    case SIMDE_CMP_ORD_S:
+      for (size_t i = 0 ; i < (sizeof(r.f64) / sizeof(r.f64[0])) ; i++) {
+        r.u64[i] = (isnan(a.f64[i]) || isnan(b.f64[i])) ? UINT64_C(0) : ~UINT64_C(0);
+      }
+      break;
+    case SIMDE_CMP_EQ_US:
+      r.f64 = (a.f64 == b.f64);
+      break;
+    case SIMDE_CMP_NGE_UQ:
+      r.f64 = (a.f64 < b.f64);
+      break;
+    case SIMDE_CMP_NGT_UQ:
+      r.f64 = (a.f64 <= b.f64);
+      break;
+    case SIMDE_CMP_FALSE_OS:
+      r.i32f = (a.i32f ^ a.i32f);
+      break;
+    case SIMDE_CMP_NEQ_OS:
+      r.f64 = (a.f64 != b.f64);
+      break;
+    case SIMDE_CMP_GE_OQ:
+      r.f64 = (a.f64 >= b.f64);
+      break;
+    case SIMDE_CMP_GT_OQ:
+      r.f64 = (a.f64 > b.f64);
+      break;
+    case SIMDE_CMP_TRUE_US:
+      r.i32f = ~(r.i32f ^ r.i32f);
+      break;
+  }
+#else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.f64) / sizeof(r.f64[0])) ; i++) {
     switch (imm8) {
@@ -1885,6 +2211,7 @@ simde_mm256_cmp_pd (simde__m256d a, simde__m256d b, const int imm8)
         break;
     }
   }
+#endif
 
   return r;
 }
@@ -1901,6 +2228,114 @@ simde_mm256_cmp_ps (simde__m256 a, simde__m256 b, const int imm8)
     HEDLEY_REQUIRE_MSG((imm8 & 31) == imm8, "imm8 must one of the SIMDE_CMP_* macros (values: [0, 31])") {
   simde__m256 r;
 
+#if defined(SIMDE__ENABLE_GCC_VEC_EXT)
+  switch (imm8) {
+    case SIMDE_CMP_EQ_OQ:
+      r.f32 = (a.f32 == b.f32);
+      break;
+    case SIMDE_CMP_LT_OS:
+      r.f32 = (a.f32 < b.f32);
+      break;
+    case SIMDE_CMP_LE_OS:
+      r.f32 = (a.f32 <= b.f32);
+      break;
+    case SIMDE_CMP_UNORD_Q:
+      for (size_t i = 0 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
+        r.u32[i] = (isnan(a.f32[i]) || isnan(b.f32[i])) ? ~UINT32_C(0) : UINT32_C(0);
+      }
+      break;
+    case SIMDE_CMP_NEQ_UQ:
+      r.f32 = (a.f32 != b.f32);
+      break;
+    case SIMDE_CMP_NLT_US:
+      r.f32 = (a.f32 >= b.f32);
+      break;
+    case SIMDE_CMP_NLE_US:
+      r.f32 = (a.f32 > b.f32);
+      break;
+    case SIMDE_CMP_ORD_Q:
+      for (size_t i = 0 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
+        r.u32[i] = (!isnan(a.f32[i]) && !isnan(b.f32[i])) ? ~UINT32_C(0) : UINT32_C(0);
+      }
+      break;
+    case SIMDE_CMP_EQ_UQ:
+      r.f32 = (a.f32 == b.f32);
+      break;
+    case SIMDE_CMP_NGE_US:
+      r.f32 = (a.f32 < b.f32);
+      break;
+    case SIMDE_CMP_NGT_US:
+      r.f32 = (a.f32 <= b.f32);
+      break;
+    case SIMDE_CMP_FALSE_OQ:
+      r.i32 = (a.i32 ^ a.i32);
+      break;
+    case SIMDE_CMP_NEQ_OQ:
+      r.f32 = (a.f32 != b.f32);
+      break;
+    case SIMDE_CMP_GE_OS:
+      r.f32 = (a.f32 >= b.f32);
+      break;
+    case SIMDE_CMP_GT_OS:
+      r.f32 = (a.f32 > b.f32);
+      break;
+    case SIMDE_CMP_TRUE_UQ:
+      r.i32 = ~(a.i32 ^ a.i32);
+      break;
+    case SIMDE_CMP_EQ_OS:
+      r.f32 = (a.f32 == b.f32);
+      break;
+    case SIMDE_CMP_LT_OQ:
+      r.f32 = (a.f32 < b.f32);
+      break;
+    case SIMDE_CMP_LE_OQ:
+      r.f32 = (a.f32 <= b.f32);
+      break;
+    case SIMDE_CMP_UNORD_S:
+      for (size_t i = 0 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
+        r.u32[i] = (isnan(a.f32[i]) || isnan(b.f32[i])) ? ~UINT32_C(0) : UINT32_C(0);
+      }
+      break;
+    case SIMDE_CMP_NEQ_US:
+      r.f32 = (a.f32 != b.f32);
+      break;
+    case SIMDE_CMP_NLT_UQ:
+      r.f32 = (a.f32 >= b.f32);
+      break;
+    case SIMDE_CMP_NLE_UQ:
+      r.f32 = (a.f32 > b.f32);
+      break;
+    case SIMDE_CMP_ORD_S:
+      for (size_t i = 0 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
+        r.u32[i] = (isnan(a.f32[i]) || isnan(b.f32[i])) ? UINT32_C(0) : ~UINT32_C(0);
+      }
+      break;
+    case SIMDE_CMP_EQ_US:
+      r.f32 = (a.f32 == b.f32);
+      break;
+    case SIMDE_CMP_NGE_UQ:
+      r.f32 = (a.f32 < b.f32);
+      break;
+    case SIMDE_CMP_NGT_UQ:
+      r.f32 = (a.f32 <= b.f32);
+      break;
+    case SIMDE_CMP_FALSE_OS:
+      r.i32 = (a.i32 ^ a.i32);
+      break;
+    case SIMDE_CMP_NEQ_OS:
+      r.f32 = (a.f32 != b.f32);
+      break;
+    case SIMDE_CMP_GE_OQ:
+      r.f32 = (a.f32 >= b.f32);
+      break;
+    case SIMDE_CMP_GT_OQ:
+      r.f32 = (a.f32 > b.f32);
+      break;
+    case SIMDE_CMP_TRUE_US:
+      r.i32 = ~(a.i32 ^ a.i32);
+      break;
+  }
+#else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
     switch (imm8) {
@@ -2002,6 +2437,7 @@ simde_mm256_cmp_ps (simde__m256 a, simde__m256 b, const int imm8)
         break;
     }
   }
+#endif
 
   return r;
 }
