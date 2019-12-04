@@ -159,6 +159,8 @@ simde_mm_add_ps (simde__m128 a, simde__m128 b) {
   r.n = _mm_add_ps(a.n, b.n);
 #elif defined(SIMDE_SSE_NEON)
   r.neon_f32 = vaddq_f32(a.neon_f32, b.neon_f32);
+#elif defined(SIMDE__ENABLE_GCC_VEC_EXT)
+  r.f32 = a.f32 + b.f32;
 #else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
@@ -208,6 +210,8 @@ simde_mm_and_ps (simde__m128 a, simde__m128 b) {
   r.n = _mm_and_ps(a.n, b.n);
 #elif defined(SIMDE_SSE_NEON)
   r.neon_i32 = vandq_s32(a.neon_i32, b.neon_i32);
+#elif defined(SIMDE__ENABLE_GCC_VEC_EXT)
+  r.i32 = a.i32 & b.i32;
 #else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i32) / sizeof(r.i32[0])) ; i++) {
@@ -2833,6 +2837,8 @@ simde_mm_unpackhi_ps (simde__m128 a, simde__m128 b) {
   float32x2_t b1 = vget_high_f32(b.neon_f32);
   float32x2x2_t result = vzip_f32(a1, b1);
   r.neon_f32 = vcombine_f32(result.val[0], result.val[1]);
+#elif defined(SIMDE__SHUFFLE_VECTOR)
+  r.f32 = SIMDE__SHUFFLE_VECTOR(32, 16, a.f32, b.f32, 2, 6, 3, 7);
 #else
   r.f32[0] = a.f32[2];
   r.f32[1] = b.f32[2];
@@ -2853,6 +2859,8 @@ simde_mm_unpacklo_ps (simde__m128 a, simde__m128 b) {
 
 #if defined(SIMDE_SSE_NATIVE)
   r.n = _mm_unpacklo_ps(a.n, b.n);
+#elif defined(SIMDE__SHUFFLE_VECTOR)
+  r.f32 = SIMDE__SHUFFLE_VECTOR(32, 16, a.f32, b.f32, 0, 4, 1, 5);
 #elif defined(SIMDE_SSE_NEON)
   float32x2_t a1 = vget_low_f32(a.neon_f32);
   float32x2_t b1 = vget_low_f32(b.neon_f32);
