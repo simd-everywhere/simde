@@ -2454,7 +2454,9 @@ simde_mm256_cmp_ps (simde__m256 a, simde__m256 b, const int imm8)
   return r;
 }
 #if defined(SIMDE_AVX_NATIVE)
-#  define simde_mm256_cmp_ps(a, b, imm8) SIMDE__M256_C(_mm256_cmp_ps(a.n, b.n, imm8))
+#  if !defined(__clang__)
+#    define simde_mm256_cmp_ps(a, b, imm8) SIMDE__M256_C(_mm256_cmp_ps(a.n, b.n, imm8))
+#  endif
 #endif
 #if defined(SIMDE_AVX_ENABLE_NATIVE_ALIASES)
 #  define _mm256_cmp_ps(a, b, imm8) SIMDE__M256_TO_NATIVE(simde_mm256_cmp_ps(SIMDE__M256_FROM_NATIVE(a), SIMDE__M256_FROM_NATIVE(b), imm8))
