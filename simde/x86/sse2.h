@@ -1655,6 +1655,8 @@ simde_mm_cvtps_pd (simde__m128 a) {
 
 #if defined(SIMDE_SSE2_NATIVE)
   r.n = _mm_cvtps_pd(a.n);
+#elif defined(SIMDE__CONVERT_VECTOR)
+  SIMDE__CONVERT_VECTOR(r.f64, a.m64[0].f32);
 #else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.f64) / sizeof(r.f64[0])) ; i++) {
@@ -1901,6 +1903,8 @@ simde_mm_cvttpd_pi32 (simde__m128d a) {
 
 #if defined(SIMDE_SSE2_NATIVE)
   r.n = _mm_cvttpd_pi32(a.n);
+#elif defined(SIMDE__CONVERT_VECTOR)
+  SIMDE__CONVERT_VECTOR(r.i32, a.f64);
 #else
   for (size_t i = 0 ; i < (sizeof(r.i32) / sizeof(r.i32[0])) ; i++) {
     r.i32[i] = SIMDE_CONVERT_FTOI(int32_t, trunc(a.f64[i]));
@@ -1922,6 +1926,8 @@ simde_mm_cvttps_epi32 (simde__m128 a) {
   r.n = _mm_cvttps_epi32(a.n);
 #elif defined(SIMDE_SSE2_NEON)
   r.neon_i32 = vcvtq_s32_f32(a.neon_f32);
+#elif defined(SIMDE__CONVERT_VECTOR)
+  SIMDE__CONVERT_VECTOR(r.i32, a.f32);
 #else
   for (size_t i = 0 ; i < (sizeof(r.i32) / sizeof(r.i32[0])) ; i++) {
     r.i32[i] = SIMDE_CONVERT_FTOI(int32_t, truncf(a.f32[i]));
@@ -1973,6 +1979,8 @@ simde_mm_div_pd (simde__m128d a, simde__m128d b) {
 
 #if defined(SIMDE_SSE2_NATIVE)
   r.n = _mm_div_pd(a.n, b.n);
+#elif defined(SIMDE__ENABLE_GCC_VEC_EXT)
+  r.f64 = a.f64 / b.f64;
 #else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.f64) / sizeof(r.f64[0])) ; i++) {
