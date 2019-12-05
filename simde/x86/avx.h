@@ -868,8 +868,8 @@ simde_mm256_andnot_ps (simde__m256 a, simde__m256 b) {
   r.m128[1].n = _mm_andnot_ps(a.m128[1].n, b.m128[1].n);
 #else
   SIMDE__VECTORIZE
-  for (size_t i = 0 ; i < (sizeof(r.u32) / sizeof(r.u32[0])) ; i++) {
-    r.u32[i] = a.u32[i] & b.u32[i];
+  for (size_t i = 0 ; i < (sizeof(r.i32f) / sizeof(r.i32f[0])) ; i++) {
+    r.i32f[i] = ~a.i32f[i] & b.i32f[i];
   }
 #endif
 
@@ -891,8 +891,8 @@ simde_mm256_andnot_pd (simde__m256d a, simde__m256d b) {
   r.m128d[1].n = _mm_andnot_pd(a.m128d[1].n, b.m128d[1].n);
 #else
   SIMDE__VECTORIZE
-  for (size_t i = 0 ; i < (sizeof(r.u64) / sizeof(r.u64[0])) ; i++) {
-    r.u64[i] = a.u64[i] & b.u64[i];
+  for (size_t i = 0 ; i < (sizeof(r.i32f) / sizeof(r.i32f[0])) ; i++) {
+    r.i32f[i] = ~a.i32f[i] & b.i32f[i];
   }
 #endif
 
