@@ -1340,8 +1340,10 @@ simde_mm_cvtt_ps2pi (simde__m128 a) {
 
   return r;
 }
+#define simde_mm_cvttps_pi32(a) simde_mm_cvtt_ps2pi(a)
 #if defined(SIMDE_SSE_ENABLE_NATIVE_ALIASES)
 #  define _mm_cvtt_ps2pi(a) SIMDE__M64_TO_NATIVE(simde_mm_cvtt_ps2pi(SIMDE__M128_FROM_NATIVE(a)))
+#  define _mm_cvttps_pi32(a) SIMDE__M64_TO_NATIVE(simde_mm_cvttps_pi32(SIMDE__M128_FROM_NATIVE(a)))
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -1353,37 +1355,9 @@ simde_mm_cvtt_ss2si (simde__m128 a) {
   return SIMDE_CONVERT_FTOI(int32_t, truncf(a.f32[0]));
 #endif
 }
+#define simde_mm_cvttss_si32(a) simde_mm_cvtt_ss2si(a)
 #if defined(SIMDE_SSE_ENABLE_NATIVE_ALIASES)
 #  define _mm_cvtt_ss2si(a) simde_mm_cvtt_ss2si(SIMDE__M128_FROM_NATIVE(a))
-#endif
-
-SIMDE__FUNCTION_ATTRIBUTES
-simde__m64
-simde_mm_cvttps_pi32 (simde__m128 a) {
-  simde__m64 r;
-
-#if defined(SIMDE_SSE_NATIVE)
-  r.n = _mm_cvttps_pi32(a.n);
-#else
-  r = simde_mm_cvtt_ps2pi(a);
-#endif
-
-  return r;
-}
-#if defined(SIMDE_SSE_ENABLE_NATIVE_ALIASES)
-#  define _mm_cvtt_pi32(a) SIMDE__M64_TO_NATIVE(simde_mm_cvtt_pi32(SIMDE__M128_FROM_NATIVE(a)))
-#endif
-
-SIMDE__FUNCTION_ATTRIBUTES
-int32_t
-simde_mm_cvttss_si32 (simde__m128 a) {
-#if defined(SIMDE_SSE_NATIVE)
-  return _mm_cvttss_si32(a.n);
-#else
-  return SIMDE_CONVERT_FTOI(int32_t, truncf(a.f32[0]));
-#endif
-}
-#if defined(SIMDE_SSE_ENABLE_NATIVE_ALIASES)
 #  define _mm_cvttss_si32(a) simde_mm_cvttss_si32(SIMDE__M128_FROM_NATIVE(a))
 #endif
 
@@ -1565,6 +1539,8 @@ simde_mm_load_ps1 (simde_float32 const* mem_addr) {
 
 #if defined(SIMDE_SSE_NATIVE)
   r.n = _mm_load_ps1(mem_addr);
+#elif defined(SIMDE_SSE_NEON)
+  r.neon_f32 = vld1q_dup_f32(mem_addr);
 #else
   const simde_float32 v = *mem_addr;
   SIMDE__VECTORIZE
@@ -1575,6 +1551,7 @@ simde_mm_load_ps1 (simde_float32 const* mem_addr) {
 
   return r;
 }
+#define simde_mm_load1_ps(mem_addr) simde_mm_load_ps1(mem_addr)
 #if defined(SIMDE_SSE_ENABLE_NATIVE_ALIASES)
 #  define _mm_load_ps1(mem_addr) SIMDE__M128_TO_NATIVE(simde_mm_load_ps1(mem_addr))
 #endif
@@ -1599,25 +1576,6 @@ simde_mm_load_ss (simde_float32 const* mem_addr) {
 }
 #if defined(SIMDE_SSE_ENABLE_NATIVE_ALIASES)
 #  define _mm_load_ss(mem_addr) SIMDE__M128_TO_NATIVE(simde_mm_load_ss(mem_addr))
-#endif
-
-SIMDE__FUNCTION_ATTRIBUTES
-simde__m128
-simde_mm_load1_ps (simde_float32 const* mem_addr) {
-  simde__m128 r;
-
-#if defined(SIMDE_SSE_NATIVE)
-  r.n = _mm_load1_ps(mem_addr);
-#elif defined(SIMDE_SSE_NEON)
-  r.neon_f32 = vld1q_dup_f32(mem_addr);
-#else
-  r = simde_mm_load_ps1(mem_addr);
-#endif
-
-  return r;
-}
-#if defined(SIMDE_SSE_ENABLE_NATIVE_ALIASES)
-#  define _mm_load1_ps(mem_addr) SIMDE__M128_TO_NATIVE(simde_mm_load1_ps(mem_addr))
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -2393,21 +2351,6 @@ simde_mm_sfence (void) {
 #  define _MM_SHUFFLE(z, y, x, w) SIMDE_MM_SHUFFLE(z, y, x, w)
 #endif
 
-SIMDE__FUNCTION_ATTRIBUTES
-simde__m64
-simde_mm_shuffle_pi16 (simde__m64 a, const int imm8) {
-  simde__m64 r;
-  for (size_t i = 0 ; i < sizeof(r.i16) / sizeof(r.i16[0]) ; i++) {
-    r.i16[i] = a.i16[(imm8 >> (i * 2)) & 3];
-  }
-
-HEDLEY_DIAGNOSTIC_PUSH
-#if HEDLEY_HAS_WARNING("-Wconditional-uninitialized")
-#  pragma clang diagnostic ignored "-Wconditional-uninitialized"
-#endif
-  return r;
-HEDLEY_DIAGNOSTIC_POP
-}
 #if defined(SIMDE_SSE_NATIVE) && !defined(__PGI)
 #  define simde_mm_shuffle_pi16(a, imm8) SIMDE__M64_FROM_NATIVE(_mm_shuffle_pi16(a.n, imm8))
 #elif defined(SIMDE__SHUFFLE_VECTOR)
@@ -2421,6 +2364,23 @@ HEDLEY_DIAGNOSTIC_POP
 				(((imm8) >> 2) & 3),		\
 				(((imm8) >> 4) & 3),		\
 				(((imm8) >> 6) & 3)) }; }))
+#else
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m64
+simde_mm_shuffle_pi16 (simde__m64 a, const int imm8) {
+  simde__m64 r;
+
+  for (size_t i = 0 ; i < sizeof(r.i16) / sizeof(r.i16[0]) ; i++) {
+    r.i16[i] = a.i16[(imm8 >> (i * 2)) & 3];
+  }
+
+HEDLEY_DIAGNOSTIC_PUSH
+#if HEDLEY_HAS_WARNING("-Wconditional-uninitialized")
+#  pragma clang diagnostic ignored "-Wconditional-uninitialized"
+#endif
+  return r;
+HEDLEY_DIAGNOSTIC_POP
+}
 #endif
 #if defined(SIMDE_SSE_NATIVE) && !defined(__PGI)
 #  define simde_m_pshufw(a, imm8) SIMDE__M64_FROM_NATIVE(_m_pshufw(a.n, imm8))
@@ -2432,16 +2392,6 @@ HEDLEY_DIAGNOSTIC_POP
 #  define _m_pshufw(a, imm8) SIMDE__M64_TO_NATIVE(simde_mm_shuffle_pi16(SIMDE__M64_FROM_NATIVE(a), imm8))
 #endif
 
-SIMDE__FUNCTION_ATTRIBUTES
-simde__m128
-simde_mm_shuffle_ps (simde__m128 a, simde__m128 b, const int imm8) {
-  simde__m128 r;
-  r.f32[0] = a.f32[(imm8 >> 0) & 3];
-  r.f32[1] = a.f32[(imm8 >> 2) & 3];
-  r.f32[2] = b.f32[(imm8 >> 4) & 3];
-  r.f32[3] = b.f32[(imm8 >> 6) & 3];
-  return r;
-}
 #if defined(SIMDE_SSE_NATIVE) && !defined(__PGI)
 #  define simde_mm_shuffle_ps(a, b, imm8) SIMDE__M128_FROM_NATIVE(_mm_shuffle_ps(a.n, b.n, imm8))
 #elif defined(SIMDE__SHUFFLE_VECTOR)
@@ -2454,6 +2404,17 @@ simde_mm_shuffle_ps (simde__m128 a, simde__m128 b, const int imm8) {
 				(((imm8) >> 2) & 3),		\
 				(((imm8) >> 4) & 3) + 4,	\
 				(((imm8) >> 6) & 3) + 4) }; }))
+#else
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128
+simde_mm_shuffle_ps (simde__m128 a, simde__m128 b, const int imm8) {
+  simde__m128 r;
+  r.f32[0] = a.f32[(imm8 >> 0) & 3];
+  r.f32[1] = a.f32[(imm8 >> 2) & 3];
+  r.f32[2] = b.f32[(imm8 >> 4) & 3];
+  r.f32[3] = b.f32[(imm8 >> 6) & 3];
+  return r;
+}
 #endif
 #if defined(SIMDE_SSE_ENABLE_NATIVE_ALIASES)
 #  define _mm_shuffle_ps(a, b, imm8) SIMDE__M128_TO_NATIVE(simde_mm_shuffle_ps(SIMDE__M128_FROM_NATIVE(a), SIMDE__M128_FROM_NATIVE(b), imm8))

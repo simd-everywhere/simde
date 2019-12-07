@@ -4223,6 +4223,20 @@ test_simde_mm_unpacklo_ps(const MunitParameter params[], void* data) {
 }
 
 static MunitResult
+test_simde_mm_undefined_ps(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  simde__m128 z = simde_mm_setzero_ps();
+  simde__m128 v = simde_mm_undefined_ps();
+  v = simde_mm_xor_ps(v, v);
+
+  simde_assert_m128_u32(v, ==, z);
+
+  return MUNIT_OK;
+}
+
+static MunitResult
 test_simde_mm_xor_ps(const MunitParameter params[], void* data) {
   (void) params;
   (void) data;
@@ -4459,6 +4473,7 @@ static MunitTest test_suite_tests[] = {
   TEST_FUNC(mm_ucomineq_ss),
   TEST_FUNC(mm_unpackhi_ps),
   TEST_FUNC(mm_unpacklo_ps),
+  TEST_FUNC(mm_undefined_ps),
   TEST_FUNC(mm_xor_ps),
   TEST_FUNC(mm_stream_pi),
   TEST_FUNC(mm_stream_ps),
