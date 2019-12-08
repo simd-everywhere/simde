@@ -1813,7 +1813,7 @@ test_simde_mm_broadcast_ss(const MunitParameter params[], void* data) {
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m128 r = simde_mm_broadcast_ss(&(test_vec[i].a));
-    simde_assert_m128_f32_equal(r, test_vec[i].r, 1);
+    simde_assert_m128_close(r, test_vec[i].r, 1);
   }
 
   return MUNIT_OK;
@@ -2936,7 +2936,7 @@ test_simde_mm_cmp_sd(const MunitParameter params[], void* data) {
   b = simde_mm_set_pd(SIMDE_FLOAT64_C(  787.17), SIMDE_FLOAT64_C( -721.13));
   e = simde_mm_set_pd(SIMDE_FLOAT64_C(  107.30), SIMDE_FLOAT64_C(    0.00));
   r = simde_mm_cmp_sd(a, b, 0);
-  simde_assert_m128_u64(r, ==, e);
+  simde_assert_m128d_equal(r, e);
 
   a = simde_mm_set_pd(SIMDE_FLOAT64_C(   33.46), SIMDE_FLOAT64_C(  248.77));
   b = simde_mm_set_pd(SIMDE_FLOAT64_C( -730.30), SIMDE_FLOAT64_C(  751.84));
@@ -4307,7 +4307,7 @@ test_simde_mm256_cvtpd_ps(const MunitParameter params[], void* data) {
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m128 r = simde_mm256_cvtpd_ps(test_vec[i].a);
-    simde_assert_m128_f32_equal(r, test_vec[i].r, 1);
+    simde_assert_m128_close(r, test_vec[i].r, 1);
   }
 
   return MUNIT_OK;
@@ -4966,8 +4966,8 @@ test_simde_mm256_extractf128_ps(const MunitParameter params[], void* data) {
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m128 ra = simde_mm256_extractf128_ps(test_vec[i].a, 0);
     simde__m128 rb = simde_mm256_extractf128_ps(test_vec[i].a, 1);
-    simde_assert_m128_f32_equal(ra, test_vec[i].ra, 1);
-    simde_assert_m128_f32_equal(rb, test_vec[i].rb, 1);
+    simde_assert_m128_close(ra, test_vec[i].ra, 1);
+    simde_assert_m128_close(rb, test_vec[i].rb, 1);
   }
 
   return MUNIT_OK;
@@ -7075,7 +7075,7 @@ test_simde_mm_maskload_ps(const MunitParameter params[], void* data) {
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m128 r = simde_mm_maskload_ps((float*) &(test_vec[i].a), test_vec[i].mask);
-    simde_assert_m128_f32_equal(r, test_vec[i].r, 1);
+    simde_assert_m128_close(r, test_vec[i].r, 1);
   }
 
   return MUNIT_OK;
@@ -7372,7 +7372,7 @@ test_simde_mm_maskstore_ps(const MunitParameter params[], void* data) {
     simde_float32 r[4];
     memcpy(r, test_vec[i].ri, sizeof(r));
     simde_mm_maskstore_ps(r, test_vec[i].mask, test_vec[i].a);
-    simde_assert_m128_f32_equal(r, test_vec[i].ro, 1);
+    simde_assert_f32v_close(simde_float32, 4, r, test_vec[i].ro, 1);
   }
 
   return MUNIT_OK;
@@ -8134,7 +8134,7 @@ test_simde_mm256_movemask_ps(const MunitParameter params[], void* data) {
   };
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
-    int r = simde_mm256_movemask_ps(*((simde__m256*) &(test_vec[i].a)));
+    int r = simde_mm256_movemask_ps(simde_mm256_castsi256_ps(test_vec[i].a));
     munit_assert_int(r, ==, test_vec[i].r);
   }
 
@@ -8177,7 +8177,7 @@ test_simde_mm256_movemask_pd(const MunitParameter params[], void* data) {
   };
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
-    int r = simde_mm256_movemask_pd(* ((simde__m256d*) &(test_vec[i].a)));
+    int r = simde_mm256_movemask_pd(simde_mm256_castsi256_pd(test_vec[i].a));
     munit_assert_int(r, ==, test_vec[i].r);
   }
 
@@ -9337,769 +9337,769 @@ test_simde_mm_permute_ps(const MunitParameter params[], void* data) {
     simde__m128 r;
 
     r = simde_mm_permute_ps(test_vec[i].p[  0].a,   0);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[  0].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[  0].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[  1].a,   1);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[  1].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[  1].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[  2].a,   2);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[  2].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[  2].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[  3].a,   3);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[  3].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[  3].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[  4].a,   4);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[  4].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[  4].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[  5].a,   5);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[  5].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[  5].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[  6].a,   6);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[  6].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[  6].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[  7].a,   7);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[  7].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[  7].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[  8].a,   8);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[  8].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[  8].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[  9].a,   9);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[  9].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[  9].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[ 10].a,  10);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[ 10].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[ 10].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[ 11].a,  11);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[ 11].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[ 11].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[ 12].a,  12);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[ 12].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[ 12].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[ 13].a,  13);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[ 13].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[ 13].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[ 14].a,  14);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[ 14].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[ 14].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[ 15].a,  15);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[ 15].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[ 15].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[ 16].a,  16);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[ 16].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[ 16].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[ 17].a,  17);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[ 17].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[ 17].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[ 18].a,  18);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[ 18].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[ 18].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[ 19].a,  19);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[ 19].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[ 19].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[ 20].a,  20);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[ 20].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[ 20].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[ 21].a,  21);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[ 21].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[ 21].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[ 22].a,  22);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[ 22].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[ 22].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[ 23].a,  23);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[ 23].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[ 23].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[ 24].a,  24);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[ 24].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[ 24].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[ 25].a,  25);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[ 25].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[ 25].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[ 26].a,  26);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[ 26].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[ 26].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[ 27].a,  27);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[ 27].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[ 27].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[ 28].a,  28);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[ 28].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[ 28].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[ 29].a,  29);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[ 29].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[ 29].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[ 30].a,  30);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[ 30].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[ 30].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[ 31].a,  31);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[ 31].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[ 31].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[ 32].a,  32);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[ 32].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[ 32].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[ 33].a,  33);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[ 33].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[ 33].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[ 34].a,  34);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[ 34].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[ 34].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[ 35].a,  35);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[ 35].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[ 35].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[ 36].a,  36);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[ 36].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[ 36].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[ 37].a,  37);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[ 37].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[ 37].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[ 38].a,  38);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[ 38].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[ 38].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[ 39].a,  39);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[ 39].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[ 39].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[ 40].a,  40);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[ 40].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[ 40].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[ 41].a,  41);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[ 41].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[ 41].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[ 42].a,  42);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[ 42].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[ 42].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[ 43].a,  43);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[ 43].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[ 43].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[ 44].a,  44);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[ 44].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[ 44].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[ 45].a,  45);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[ 45].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[ 45].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[ 46].a,  46);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[ 46].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[ 46].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[ 47].a,  47);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[ 47].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[ 47].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[ 48].a,  48);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[ 48].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[ 48].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[ 49].a,  49);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[ 49].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[ 49].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[ 50].a,  50);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[ 50].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[ 50].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[ 51].a,  51);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[ 51].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[ 51].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[ 52].a,  52);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[ 52].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[ 52].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[ 53].a,  53);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[ 53].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[ 53].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[ 54].a,  54);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[ 54].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[ 54].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[ 55].a,  55);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[ 55].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[ 55].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[ 56].a,  56);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[ 56].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[ 56].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[ 57].a,  57);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[ 57].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[ 57].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[ 58].a,  58);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[ 58].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[ 58].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[ 59].a,  59);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[ 59].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[ 59].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[ 60].a,  60);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[ 60].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[ 60].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[ 61].a,  61);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[ 61].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[ 61].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[ 62].a,  62);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[ 62].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[ 62].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[ 63].a,  63);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[ 63].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[ 63].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[ 64].a,  64);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[ 64].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[ 64].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[ 65].a,  65);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[ 65].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[ 65].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[ 66].a,  66);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[ 66].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[ 66].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[ 67].a,  67);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[ 67].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[ 67].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[ 68].a,  68);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[ 68].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[ 68].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[ 69].a,  69);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[ 69].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[ 69].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[ 70].a,  70);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[ 70].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[ 70].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[ 71].a,  71);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[ 71].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[ 71].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[ 72].a,  72);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[ 72].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[ 72].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[ 73].a,  73);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[ 73].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[ 73].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[ 74].a,  74);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[ 74].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[ 74].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[ 75].a,  75);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[ 75].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[ 75].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[ 76].a,  76);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[ 76].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[ 76].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[ 77].a,  77);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[ 77].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[ 77].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[ 78].a,  78);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[ 78].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[ 78].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[ 79].a,  79);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[ 79].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[ 79].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[ 80].a,  80);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[ 80].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[ 80].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[ 81].a,  81);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[ 81].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[ 81].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[ 82].a,  82);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[ 82].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[ 82].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[ 83].a,  83);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[ 83].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[ 83].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[ 84].a,  84);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[ 84].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[ 84].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[ 85].a,  85);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[ 85].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[ 85].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[ 86].a,  86);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[ 86].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[ 86].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[ 87].a,  87);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[ 87].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[ 87].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[ 88].a,  88);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[ 88].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[ 88].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[ 89].a,  89);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[ 89].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[ 89].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[ 90].a,  90);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[ 90].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[ 90].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[ 91].a,  91);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[ 91].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[ 91].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[ 92].a,  92);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[ 92].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[ 92].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[ 93].a,  93);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[ 93].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[ 93].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[ 94].a,  94);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[ 94].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[ 94].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[ 95].a,  95);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[ 95].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[ 95].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[ 96].a,  96);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[ 96].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[ 96].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[ 97].a,  97);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[ 97].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[ 97].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[ 98].a,  98);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[ 98].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[ 98].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[ 99].a,  99);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[ 99].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[ 99].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[100].a, 100);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[100].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[100].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[101].a, 101);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[101].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[101].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[102].a, 102);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[102].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[102].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[103].a, 103);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[103].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[103].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[104].a, 104);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[104].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[104].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[105].a, 105);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[105].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[105].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[106].a, 106);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[106].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[106].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[107].a, 107);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[107].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[107].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[108].a, 108);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[108].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[108].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[109].a, 109);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[109].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[109].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[110].a, 110);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[110].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[110].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[111].a, 111);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[111].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[111].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[112].a, 112);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[112].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[112].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[113].a, 113);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[113].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[113].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[114].a, 114);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[114].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[114].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[115].a, 115);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[115].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[115].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[116].a, 116);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[116].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[116].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[117].a, 117);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[117].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[117].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[118].a, 118);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[118].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[118].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[119].a, 119);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[119].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[119].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[120].a, 120);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[120].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[120].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[121].a, 121);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[121].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[121].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[122].a, 122);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[122].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[122].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[123].a, 123);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[123].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[123].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[124].a, 124);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[124].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[124].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[125].a, 125);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[125].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[125].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[126].a, 126);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[126].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[126].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[127].a, 127);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[127].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[127].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[128].a, 128);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[128].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[128].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[129].a, 129);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[129].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[129].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[130].a, 130);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[130].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[130].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[131].a, 131);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[131].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[131].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[132].a, 132);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[132].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[132].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[133].a, 133);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[133].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[133].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[134].a, 134);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[134].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[134].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[135].a, 135);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[135].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[135].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[136].a, 136);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[136].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[136].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[137].a, 137);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[137].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[137].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[138].a, 138);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[138].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[138].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[139].a, 139);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[139].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[139].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[140].a, 140);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[140].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[140].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[141].a, 141);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[141].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[141].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[142].a, 142);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[142].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[142].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[143].a, 143);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[143].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[143].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[144].a, 144);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[144].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[144].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[145].a, 145);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[145].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[145].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[146].a, 146);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[146].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[146].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[147].a, 147);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[147].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[147].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[148].a, 148);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[148].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[148].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[149].a, 149);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[149].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[149].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[150].a, 150);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[150].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[150].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[151].a, 151);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[151].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[151].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[152].a, 152);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[152].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[152].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[153].a, 153);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[153].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[153].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[154].a, 154);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[154].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[154].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[155].a, 155);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[155].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[155].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[156].a, 156);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[156].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[156].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[157].a, 157);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[157].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[157].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[158].a, 158);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[158].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[158].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[159].a, 159);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[159].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[159].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[160].a, 160);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[160].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[160].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[161].a, 161);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[161].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[161].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[162].a, 162);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[162].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[162].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[163].a, 163);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[163].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[163].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[164].a, 164);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[164].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[164].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[165].a, 165);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[165].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[165].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[166].a, 166);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[166].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[166].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[167].a, 167);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[167].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[167].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[168].a, 168);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[168].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[168].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[169].a, 169);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[169].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[169].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[170].a, 170);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[170].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[170].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[171].a, 171);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[171].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[171].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[172].a, 172);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[172].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[172].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[173].a, 173);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[173].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[173].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[174].a, 174);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[174].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[174].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[175].a, 175);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[175].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[175].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[176].a, 176);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[176].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[176].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[177].a, 177);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[177].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[177].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[178].a, 178);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[178].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[178].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[179].a, 179);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[179].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[179].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[180].a, 180);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[180].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[180].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[181].a, 181);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[181].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[181].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[182].a, 182);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[182].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[182].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[183].a, 183);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[183].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[183].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[184].a, 184);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[184].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[184].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[185].a, 185);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[185].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[185].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[186].a, 186);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[186].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[186].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[187].a, 187);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[187].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[187].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[188].a, 188);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[188].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[188].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[189].a, 189);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[189].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[189].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[190].a, 190);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[190].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[190].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[191].a, 191);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[191].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[191].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[192].a, 192);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[192].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[192].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[193].a, 193);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[193].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[193].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[194].a, 194);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[194].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[194].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[195].a, 195);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[195].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[195].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[196].a, 196);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[196].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[196].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[197].a, 197);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[197].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[197].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[198].a, 198);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[198].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[198].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[199].a, 199);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[199].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[199].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[200].a, 200);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[200].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[200].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[201].a, 201);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[201].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[201].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[202].a, 202);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[202].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[202].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[203].a, 203);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[203].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[203].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[204].a, 204);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[204].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[204].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[205].a, 205);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[205].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[205].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[206].a, 206);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[206].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[206].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[207].a, 207);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[207].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[207].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[208].a, 208);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[208].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[208].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[209].a, 209);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[209].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[209].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[210].a, 210);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[210].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[210].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[211].a, 211);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[211].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[211].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[212].a, 212);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[212].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[212].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[213].a, 213);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[213].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[213].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[214].a, 214);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[214].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[214].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[215].a, 215);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[215].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[215].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[216].a, 216);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[216].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[216].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[217].a, 217);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[217].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[217].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[218].a, 218);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[218].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[218].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[219].a, 219);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[219].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[219].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[220].a, 220);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[220].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[220].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[221].a, 221);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[221].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[221].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[222].a, 222);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[222].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[222].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[223].a, 223);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[223].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[223].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[224].a, 224);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[224].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[224].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[225].a, 225);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[225].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[225].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[226].a, 226);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[226].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[226].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[227].a, 227);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[227].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[227].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[228].a, 228);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[228].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[228].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[229].a, 229);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[229].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[229].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[230].a, 230);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[230].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[230].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[231].a, 231);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[231].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[231].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[232].a, 232);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[232].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[232].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[233].a, 233);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[233].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[233].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[234].a, 234);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[234].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[234].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[235].a, 235);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[235].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[235].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[236].a, 236);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[236].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[236].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[237].a, 237);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[237].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[237].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[238].a, 238);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[238].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[238].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[239].a, 239);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[239].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[239].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[240].a, 240);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[240].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[240].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[241].a, 241);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[241].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[241].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[242].a, 242);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[242].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[242].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[243].a, 243);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[243].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[243].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[244].a, 244);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[244].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[244].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[245].a, 245);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[245].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[245].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[246].a, 246);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[246].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[246].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[247].a, 247);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[247].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[247].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[248].a, 248);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[248].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[248].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[249].a, 249);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[249].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[249].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[250].a, 250);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[250].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[250].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[251].a, 251);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[251].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[251].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[252].a, 252);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[252].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[252].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[253].a, 253);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[253].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[253].r, 1);
 
     r = simde_mm_permute_ps(test_vec[i].p[254].a, 254);
-    simde_assert_m128_f32_equal(r, test_vec[i].p[254].r, 1);
+    simde_assert_m128_close(r, test_vec[i].p[254].r, 1);
   }
 
   return MUNIT_OK;
@@ -10301,7 +10301,7 @@ test_simde_mm_permutevar_ps(const MunitParameter params[], void* data) {
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m128 r = simde_mm_permutevar_ps(test_vec[i].a, test_vec[i].b);
-    simde_assert_m128_f32_equal(r, test_vec[i].r, 1);
+    simde_assert_m128_close(r, test_vec[i].r, 1);
   }
 
   return MUNIT_OK;
@@ -12840,8 +12840,8 @@ test_simde_mm256_storeu2_m128(const MunitParameter params[], void* data) {
     simde_float32 lo[4];
     simde_float32 hi[4];
     simde_mm256_storeu2_m128(hi, lo, test_vec[i].a);
-    simde_assert_m128_f32_equal(lo, test_vec[i].lo, 1);
-    simde_assert_m128_f32_equal(hi, test_vec[i].hi, 1);
+    simde_assert_f32v_close(simde_float32, 4, lo, test_vec[i].lo, 1);
+    simde_assert_f32v_close(simde_float32, 4, hi, test_vec[i].hi, 1);
   }
 
   return MUNIT_OK;

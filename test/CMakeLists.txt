@@ -68,11 +68,8 @@ set(TEST_SOURCES)
 if(NOT DISABLE_X86)
   set(TEST_SOURCES
     x86/mmx/mmx.c
-    x86/mmx/compare.c
     x86/sse/sse.c
-    x86/sse/compare.c
     x86/sse2/sse2.c
-    x86/sse2/compare.c
     x86/sse3/sse3.c
     x86/ssse3/ssse3.c
     x86/sse4.1/sse4.1.c

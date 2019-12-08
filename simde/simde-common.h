@@ -305,4 +305,21 @@ HEDLEY_STATIC_ASSERT(sizeof(simde_float64) == 8, "Unable to find 64-bit floating
 #  endif
 #endif
 
+#if !defined(__cplusplus)
+#define SIMDE_F64_ALL_SET   (((union { uint64_t u64; simde_float64 f64; }) { .u64 = ~UINT64_C(0x0) }).f64)
+#define SIMDE_F64_ALL_UNSET (((union { uint64_t u64; simde_float64 f64; }) { .u64 =  UINT64_C(0x0) }).f64)
+#define SIMDE_F32_ALL_SET   (((union { uint32_t u32; simde_float32 f32; }) { .u32 = ~UINT32_C(0x0) }).f32)
+#define SIMDE_F32_ALL_UNSET (((union { uint32_t u32; simde_float32 f32; }) { .u32 =  UINT32_C(0x0) }).f32)
+#else
+static const union { uint64_t u64; simde_float64 f64; } simde_f64_all_set   = { .u64 = ~UINT64_C(0) };
+static const union { uint64_t u64; simde_float64 f64; } simde_f64_all_unset = { .u64 =  UINT64_C(0) };
+static const union { uint64_t u32; simde_float64 f32; } simde_f32_all_set   = { .u32 = ~UINT32_C(0) };
+static const union { uint64_t u32; simde_float64 f32; } simde_f32_all_unset = { .u32 =  UINT32_C(0) };
+
+#  define SIMDE_F64_ALL_SET   (simde_f64_all_set.f64)
+#  define SIMDE_F64_ALL_UNSET (simde_f64_all_unset.f64)
+#  define SIMDE_F32_ALL_SET   (simde_f32_all_set.f32)
+#  define SIMDE_F32_ALL_UNSET (simde_f32_all_unset.f32)
+#endif
+
 #endif /* !defined(SIMDE_COMMON_H) */

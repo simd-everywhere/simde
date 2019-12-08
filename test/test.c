@@ -43,15 +43,12 @@ int main(int argc, char* argv[MUNIT_ARRAY_PARAM(argc + 1)]) {
 #if !defined(DISABLE_X86)
     simde_mmx_test_suite,
     simde_mmx_emul_test_suite,
-    simde_mmx_cmp_test_suite,
 
     simde_sse_test_suite,
     simde_sse_emul_test_suite,
-    simde_sse_cmp_test_suite,
 
     simde_sse2_test_suite,
     simde_sse2_emul_test_suite,
-    simde_sse2_cmp_test_suite,
 
     simde_sse3_test_suite,
     simde_sse3_emul_test_suite,

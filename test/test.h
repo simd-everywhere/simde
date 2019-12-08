@@ -133,6 +133,20 @@ simde_float32 random_f32_range(simde_float32 min, simde_float32 max);
     }									\
   } while (0)
 
+#define simde_assert_f64v_close(T, nmemb, a, b, precision)		\
+  do {									\
+    const T* simde_tmp_a_ = (a);					\
+    const T* simde_tmp_b_ = (b);					\
+    for (size_t simde_i_ = 0 ; simde_i_ < nmemb ; simde_i_++) {	\
+      const T simde_tmp_diff_ = ((simde_tmp_a_[simde_i_] - simde_tmp_b_[simde_i_]) < 0) ?	\
+	(simde_tmp_b_[simde_i_] - simde_tmp_a_[simde_i_]) :					\
+	(simde_tmp_a_[simde_i_] - simde_tmp_b_[simde_i_]);					\
+      if (MUNIT_UNLIKELY(simde_tmp_diff_ > precision)) {		\
+	munit_errorf("assertion failed: (" #a ")[%" MUNIT_SIZE_MODIFIER "u] == (" #b ")[%" MUNIT_SIZE_MODIFIER "u] (%" #precision ".1f == %" #precision ".1f)", simde_i_, simde_i_, simde_tmp_a_[simde_i_], simde_tmp_b_[simde_i_]); \
+      }									\
+    }									\
+  } while (0)
+
 /* These probably won't go into µnit; they're similar to the
    simde_assert_*v macros above, but print in hex. */
 
