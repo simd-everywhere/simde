@@ -205,16 +205,23 @@ MunitSuite simde_avx2_emul_test_suite;
 #define simde_assert_m64_u64(a, op, b) \
   simde_assert_vec_i(a, op, b, simde__m64, u64, PRIu64)
 
+#if !defined(HEDLEY_PGI_VERSION)
+#  define SIMDE_ALMOST_EQUAL_TO "≈"
+#else
+#  define SIMDE_ALMOST_EQUAL_TO "~=~"
+#endif
+
 /* Assert that the floating point values in each vector are approximately equal. */
 #define simde_assert_vec_close(a, b, precision, T, accessor) { \
       const T simde_a_ = (a), simde_b_ = (b); \
       for (int simde_i_ = 0 ; simde_i_ < (int) (sizeof(a.accessor) / sizeof(a.accessor[0])) ; simde_i_++) { \
         if (HEDLEY_UNLIKELY(!((simde_a_.accessor[simde_i_] < (simde_b_.accessor[simde_i_] + 1e-##precision)) && (simde_a_.accessor[simde_i_] > (simde_b_.accessor[simde_i_] - 1e-##precision))))) { \
-          munit_errorf("assertion failed: " #a "." #accessor "[%d] ≈ " #b "." #accessor "[%d] (%." #precision "f" " ≈ %." #precision "f)", \
+          munit_errorf("assertion failed: " #a "." #accessor "[%d] " SIMDE_ALMOST_EQUAL_TO " " #b "." #accessor "[%d] (%." #precision "f" " " SIMDE_ALMOST_EQUAL_TO " %." #precision "f)", \
               simde_i_, simde_i_, simde_a_.accessor[simde_i_], simde_b_.accessor[simde_i_]); \
         } \
       } \
     }
+
 #define simde_assert_m128_close(a, b, precision) \
   simde_assert_vec_close(a, b, precision, simde__m128, f32)
 #define simde_assert_m128d_close(a, b, precision) \
