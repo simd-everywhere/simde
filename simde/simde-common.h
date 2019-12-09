@@ -215,7 +215,7 @@ HEDLEY_STATIC_ASSERT(sizeof(simde_float64) == 8, "Unable to find 64-bit floating
 #endif
 
 #if HEDLEY_GCC_HAS_BUILTIN(__builtin_convertvector,9,0,0)
-#  define SIMDE__CONVERT_VECTOR(to, from) ((to) = __builtin_convertvector((from), typeof(to)))
+#  define SIMDE__CONVERT_VECTOR(to, from) ((to) = __builtin_convertvector((from), __typeof__(to)))
 #endif
 
 #if HEDLEY_HAS_WARNING("-Wbad-function-cast")
