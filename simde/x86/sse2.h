@@ -1695,7 +1695,7 @@ simde_mm_cvtsd_si32 (simde__m128d a) {
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
-int32_t
+int64_t
 simde_mm_cvtsd_si64 (simde__m128d a) {
 #if defined(SIMDE_SSE2_NATIVE) && defined(SIMDE_ARCH_AMD64)
   #if defined(__PGI)
