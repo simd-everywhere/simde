@@ -102,11 +102,6 @@ set_compiler_specific_flags(
   VARIABLE extra_cflags
   INTEL -wd3179)
 
-check_c_compiler_flag("-march=native" CFLAG__march_native)
-if(CFLAG__march_native)
-  set(extra_cflags "${extra_cflags} -march=native")
-endif()
-
 check_c_compiler_flag("-fopenmp-simd" CFLAG__fopenmp_simd)
 check_c_compiler_flag("-qopenmp-simd" CFLAG__qopenmp_simd)
 if(CFLAG__fopenmp_simd)

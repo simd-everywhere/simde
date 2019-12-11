@@ -5,20 +5,29 @@ branches:
     - /^(wip\/)?(appveyor|msvc|mingw|windows)(\-.+)?$/
 matrix:
   include:
-    - env: C_COMPILER=gcc
+    - env: C_COMPILER=gcc CFLAGS=-march=native
       addons:
         apt:
           packages:
           - cmake
           - cmake-data
-    - env: C_COMPILER=clang
+    - env: C_COMPILER=i686-linux-gnu-gcc-8 CFLAGS=-march=i686
+      dist: bionic
+      addons:
+        apt:
+          packages:
+          - gcc-8-i686-linux-gnu
+          - libc6-dev-i386-cross
+          - cmake
+          - cmake-data
+    - env: C_COMPILER=clang CFLAGS=-march=native
       addons:
         apt:
           packages:
           - clang
           - cmake
           - cmake-data
-    - env: C_COMPILER=gcc-4.4
+    - env: C_COMPILER=gcc-4.4 CFLAGS=-march=native
       dist: trusty
       addons:
         apt:
@@ -39,7 +48,7 @@ matrix:
           - qemu
           - cmake
           - cmake-data
-    - env: C_COMPILER=clang-3.5
+    - env: C_COMPILER=clang-3.5 CFLAGS=-march=native
       dist: trusty
       addons:
         apt:
@@ -82,6 +91,8 @@ before_install:
     SIMDE_CMAKE_ARGS="-DCMAKE_TOOLCHAIN_FILE=${TRAVIS_BUILD_DIR}/test/cmake/toolchain-arm-linux-gnueabihf.cmake";
   elif [ "${C_COMPILER}" = "aarch64-linux-gnu-gcc" ]; then
     SIMDE_CMAKE_ARGS="-DCMAKE_TOOLCHAIN_FILE=${TRAVIS_BUILD_DIR}/test/cmake/toolchain-aarch64-linux-gnu.cmake";
+  elif [ "${C_COMPILER}" = "i686-linux-gnu-gcc-8" ]; then
+    sudo dpkg --add-architecture i386 && sudo apt-get update && sudo apt install libc6:i386 ;
   fi
 - if [ -n "${C_COMPILER}" ]; then export CC="${C_COMPILER}"; fi
 - if [ -z "${BUILD_TYPE}" ]; then export BUILD_TYPE="Coverage"; fi
@@ -91,14 +102,14 @@ before_install:
 script:
 - if [ -n "${C_COMPILER}" ]; then export CC="${C_COMPILER}"; fi
 - cat /proc/cpuinfo || true
-- cmake .. -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" -DCMAKE_C_FLAGS=-DTRAVIS_CI ${SIMDE_CMAKE_ARGS}
+- cmake .. -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" -DCMAKE_C_FLAGS="-DTRAVIS_CI ${CFLAGS}" ${SIMDE_CMAKE_ARGS}
 - make VERBOSE=1
 - if [ "${C_COMPILER}" = "arm-linux-gnueabihf-gcc" ]; then
     qemu-arm ./run-tests;
   elif [ "${C_COMPILER}" = "aarch64-linux-gnu-gcc" ]; then
     qemu-aarch64 ./run-tests;
   else
-    ./run-tests;
+    ./run-tests ;
   fi
 
 after_success:
