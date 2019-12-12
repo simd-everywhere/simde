@@ -68,8 +68,13 @@
 #    endif
 #  endif
 
+#if !defined(__cplusplus)
 #  include <math.h>
 #  include <fenv.h>
+#else
+#  include <cmath>
+#  include <cfenv>
+#endif
 
 HEDLEY_DIAGNOSTIC_PUSH
 #  if HEDLEY_HAS_WARNING("-Wfloat-equal")
@@ -2901,17 +2906,25 @@ simde_mm_getcsr (void) {
   int rounding_mode = fegetround();
 
   switch(rounding_mode) {
+#if defined(FE_TONEAREST)
     case FE_TONEAREST:
       break;
+#endif
+#if defined(FE_UPWARD)
     case FE_UPWARD:
       r |= 2 << 13;
       break;
+#endif
+#if defined(FE_DOWNWARD)
     case FE_DOWNWARD:
       r |= 1 << 13;
       break;
+#endif
+#if defined(FE_TOWARDZERO)
     case FE_TOWARDZERO:
       r = 3 << 13;
       break;
+#endif
   }
 
   return r;
@@ -2928,18 +2941,26 @@ simde_mm_setcsr (uint32_t a) {
   _mm_setcsr(a);
 #else
   switch((a >> 13) & 3) {
+#if defined(FE_TONEAREST)
     case 0:
       fesetround(FE_TONEAREST);
+#endif
+#if defined(FE_DOWNWARD)
       break;
     case 1:
       fesetround(FE_DOWNWARD);
+#endif
+#if defined(FE_UPWARD)
       break;
     case 2:
       fesetround(FE_UPWARD);
+#endif
+#if defined(FE_TOWARDZERO)
       break;
     case 3:
       fesetround(FE_TOWARDZERO);
       break;
+#endif
   }
 #endif
 }
