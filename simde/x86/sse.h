@@ -74,6 +74,7 @@
 #else
 #  include <cmath>
 #  include <cfenv>
+   using std::isnan;
 #endif
 
 HEDLEY_DIAGNOSTIC_PUSH
