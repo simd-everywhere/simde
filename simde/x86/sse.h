@@ -68,13 +68,8 @@
 #    endif
 #  endif
 
-#if !defined(__cplusplus)
-#  include <math.h>
-#  include <fenv.h>
-#else
-#  include <cmath>
-#  include <cfenv>
-#endif
+#include <math.h>
+#include <fenv.h>
 
 HEDLEY_DIAGNOSTIC_PUSH
 #  if HEDLEY_HAS_WARNING("-Wfloat-equal")
