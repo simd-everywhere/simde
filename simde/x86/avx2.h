@@ -180,6 +180,28 @@ simde_mm256_and_si256 (simde__m256i a, simde__m256i b) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256i
+simde_mm256_blendv_epi8 (simde__m256i a, simde__m256i b, simde__m256i mask) {
+#if defined(SIMDE_AVX2_NATIVE)
+  return SIMDE__M256I_FROM_NATIVE(_mm256_blendv_epi8(a.n, b.n, mask.n));
+#else
+  simde__m256i r;
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.u8) / sizeof(r.u8[0])) ; i++) {
+    if (mask.u8[i] & 0x80) {
+      r.u8[i] = b.u8[i];
+    } else {
+      r.u8[i] = a.u8[i];
+    }
+  }
+  return r;
+#endif
+}
+#if defined(SIMDE_AVX2_ENABLE_NATIVE_ALIASES)
+#  define _mm256_blendv_epi8(a, b, mask) SIMDE__M256I_TO_NATIVE(simde_mm256_blendv_epi8(SIMDE__M256I_FROM_NATIVE(a), SIMDE__M256I_FROM_NATIVE(b), SIMDE__M256i_FROM_NATIVE(mask)))
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256i
 simde_mm256_broadcastsi128_si256 (simde__m128i a) {
   simde__m256i r;
 
