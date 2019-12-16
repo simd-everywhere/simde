@@ -479,6 +479,19 @@ simde_mm256_extract_epi16 (simde__m256i a, const int index) {
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
+simde__m128i
+simde_mm256_extracti128_si256 (simde__m256i a, const int imm8)
+    HEDLEY_REQUIRE_MSG((imm8 & 1) == imm8, "imm8 must be 0 or 1") {
+  return a.m128i[imm8];
+}
+#if defined(SIMDE_AVX2_NATIVE)
+#  define simde_mm256_extracti128_si256(a, imm8) SIMDE__M128I_FROM_NATIVE(_mm256_extracti128_si256(a.n, imm8))
+#endif
+#if defined(SIMDE_AVX2_ENABLE_NATIVE_ALIASES)
+#  define _mm256_extracti128_si256(a, imm8) SIMDE__M128I_TO_NATIVE(simde_mm256_extracti128_si256(SIMDE__M256I_FROM_NATIVE(a), imm8))
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
 simde__m256i
 simde_mm256_max_epi32 (simde__m256i a, simde__m256i b) {
 #if defined(SIMDE_AVX2_NATIVE)
