@@ -480,6 +480,24 @@ simde_mm256_extract_epi16 (simde__m256i a, const int index) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256i
+simde_mm256_max_epi32 (simde__m256i a, simde__m256i b) {
+#if defined(SIMDE_AVX2_NATIVE)
+  return SIMDE__M256I_FROM_NATIVE(_mm256_max_epi32(a.n, b.n));
+#else
+  simde__m256i r;
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.i32) / sizeof(r.i32[0])) ; i++) {
+    r.i32[i] = a.i32[i] > b.i32[i] ? a.i32[i] : b.i32[i];
+  }
+  return r;
+#endif
+}
+#if defined(SIMDE_AVX2_ENABLE_NATIVE_ALIASES)
+#  define _mm256_max_epi32(a, b) SIMDE__M256I_TO_NATIVE(simde_mm256_max_epi32(SIMDE__M256I_FROM_NATIVE(a), SIMDE__M256I_FROM_NATIVE(b)))
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256i
 simde_mm256_shuffle_epi8 (simde__m256i a, simde__m256i b) {
   simde__m256i r;
 
