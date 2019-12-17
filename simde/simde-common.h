@@ -62,10 +62,10 @@
 #  define SIMDE_CAST_ALIGN(alignment, T, v) \
     HEDLEY_DIAGNOSTIC_PUSH \
     _Pragma("clang diagnostic ignored \"-Wcast-align\"") \
-    HEDLEY_STATIC_CAST(T, v) \
+    ((T) (v)) \
     HEDLEY_DIAGNOSTIC_POP
 #else
-#  define SIMDE_CAST_ALIGN(alignment, T, v) HEDLEY_STATIC_CAST(T, v)
+#  define SIMDE_CAST_ALIGN(alignment, T, v) ((T) (v))
 #endif
 
 #if HEDLEY_GCC_HAS_ATTRIBUTE(vector_size,4,6,0)
