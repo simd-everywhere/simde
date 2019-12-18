@@ -38,6 +38,10 @@
 #    define SIMDE_SSE_NATIVE
 #  elif defined(__SSE__) && !defined(SIMDE_SSE_NO_NATIVE) && !defined(SIMDE_NO_NATIVE)
 #    define SIMDE_SSE_NATIVE
+#  elif defined(_M_IX86_FP) && !defined(SIMDE_SSE_NO_NATIVE) && !defined(SIMDE_NO_NATIVE)
+#    if (_M_IX86_FP >= 1)
+#      define SIMDE_SSE_NATIVE
+#    endif
 #  elif defined(__ARM_NEON) && !defined(SIMDE_SSE_NO_NEON) && !defined(SIMDE_NO_NEON)
 #    define SIMDE_SSE_NEON
 #  endif
