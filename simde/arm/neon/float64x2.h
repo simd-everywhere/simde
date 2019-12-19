@@ -30,6 +30,7 @@
 
 #if defined(SIMDE_NEON64_NATIVE)
 #  if defined(HEDLEY_GCC_VERSION) && !HEDLEY_GCC_VERSION_CHECK(4,9,0)
+#  elif defined(HEDLEY_MSVC_VERSION)
 #  else
 #    define SIMDE_NEON_HAVE_FLOAT64X2
 #  endif
