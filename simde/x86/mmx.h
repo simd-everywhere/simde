@@ -101,6 +101,13 @@ typedef union {
 #endif
 HEDLEY_STATIC_ASSERT(8 == sizeof(simde__m64), "__m64 size incorrect");
 
+HEDLEY_DIAGNOSTIC_PUSH
+
+/* Function has no EMMS instruction */
+#if defined(HEDLEY_MSVC_VERSION)
+#pragma warning(disable:4799)
+#endif
+
 #if defined(SIMDE_MMX_NATIVE)
    SIMDE__FUNCTION_ATTRIBUTES simde__m64 SIMDE__M64_FROM_NATIVE(__m64 v) { simde__m64 r; r.n = v; return r; }
 #  define SIMDE__M64_TO_NATIVE(v) (v.n)
@@ -1573,6 +1580,8 @@ simde_m_to_int (simde__m64 a) {
 #if defined(SIMDE_MMX_ENABLE_NATIVE_ALIASES)
 #  define _m_to_int(a) simde_m_to_int(SIMDE__M64_FROM_NATIVE(a))
 #endif
+
+HEDLEY_DIAGNOSTIC_POP
 
 SIMDE__END_DECLS
 
