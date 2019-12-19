@@ -39,7 +39,7 @@
   HEDLEY_TINYC_VERSION_CHECK(0,9,24) || \
   HEDLEY_TI_VERSION_CHECK(8,1,0)
 #  define SIMDE_ALIGN(alignment) __attribute__((aligned(alignment)))
-#elif defined(_MSC_VER) && (!defined(_M_IX86) || defined(_M_AMD64))
+#elif defined(_MSC_VER) && !(defined(_M_ARM) && !defined(_M_ARM64))
 #  define SIMDE_ALIGN(alignment) __declspec(align(alignment))
 #elif defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 201112L)
 #  define SIMDE_ALIGN(alignment) _Alignas(alignment)
