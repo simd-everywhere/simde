@@ -3293,7 +3293,7 @@ simde_mm256_min_pd (simde__m256d a, simde__m256d b) {
 
 #if defined(SIMDE_AVX_NATIVE)
   r.n = _mm256_min_pd(a.n,b.n);
-#elif defined(SIMDE_SSE_NATIVE)
+#elif defined(SIMDE_SSE2_NATIVE)
   r.m128d[0].n = _mm_min_pd(a.m128d[0].n, b.m128d[0].n);
   r.m128d[1].n = _mm_min_pd(a.m128d[1].n, b.m128d[1].n);
 #else
@@ -3339,7 +3339,7 @@ simde_mm256_max_pd (simde__m256d a, simde__m256d b) {
 
 #if defined(SIMDE_AVX_NATIVE)
   r.n = _mm256_max_pd(a.n,b.n);
-#elif defined(SIMDE_SSE_NATIVE)
+#elif defined(SIMDE_SSE2_NATIVE)
   r.m128d[0].n = _mm_max_pd(a.m128d[0].n, b.m128d[0].n);
   r.m128d[1].n = _mm_max_pd(a.m128d[1].n, b.m128d[1].n);
 #else
@@ -3493,7 +3493,7 @@ simde_mm256_mul_pd (simde__m256d a, simde__m256d b) {
 
 #if defined(SIMDE_AVX_NATIVE)
   r.n = _mm256_mul_pd(a.n,b.n);
-#elif defined(SIMDE_SSE_NATIVE)
+#elif defined(SIMDE_SSE2_NATIVE)
   r.m128d[0].n = _mm_mul_pd(a.m128d[0].n, b.m128d[0].n);
   r.m128d[1].n = _mm_mul_pd(a.m128d[1].n, b.m128d[1].n);
 #elif defined(SIMDE__ENABLE_GCC_VEC_EXT)
@@ -3543,7 +3543,7 @@ simde_mm256_or_pd (simde__m256d a, simde__m256d b) {
 
 #if defined(SIMDE_AVX_NATIVE)
   r.n = _mm256_or_pd(a.n,b.n);
-#elif defined(SIMDE_SSE_NATIVE)
+#elif defined(SIMDE_SSE2_NATIVE)
   r.m128d[0].n = _mm_or_pd(a.m128d[0].n, b.m128d[0].n);
   r.m128d[1].n = _mm_or_pd(a.m128d[1].n, b.m128d[1].n);
 #elif defined(SIMDE__ENABLE_GCC_VEC_EXT)
