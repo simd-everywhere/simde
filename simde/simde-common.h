@@ -145,10 +145,21 @@
 #  define SIMDE__END_DECLS HEDLEY_END_C_DECLS
 #endif
 
+#if HEDLEY_HAS_WARNING("-Wpedantic")
+#  define SIMDE_DIAGNOSTIC_DISABLE_INT128 _Pragma("clang diagnostic ignored \"-Wpedantic\"")
+#elif defined(HEDLEY_GCC_VERSION)
+#  define SIMDE_DIAGNOSTIC_DISABLE_INT128 _Pragma("GCC diagnostic ignored \"-Wpedantic\"")
+#else
+#  define SIMDE_DIAGNOSTIC_DISABLE_INT128
+#endif
+
 #if defined(__SIZEOF_INT128__)
 #  define SIMDE__HAVE_INT128
+HEDLEY_DIAGNOSTIC_PUSH
+SIMDE_DIAGNOSTIC_DISABLE_INT128
 typedef __int128 simde_int128;
 typedef unsigned __int128 simde_uint128;
+HEDLEY_DIAGNOSTIC_POP
 #endif
 
 /* TODO: we should at least make an attempt to detect the correct
@@ -211,7 +222,10 @@ HEDLEY_STATIC_ASSERT(sizeof(simde_float64) == 8, "Unable to find 64-bit floating
 #if HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
 #  define SIMDE__SHUFFLE_VECTOR(elem_size, vec_size, a, b, ...) __builtin_shufflevector(a, b, __VA_ARGS__)
 #elif HEDLEY_GCC_HAS_BUILTIN(__builtin_shuffle,4,7,0) && !defined(__INTEL_COMPILER)
-#  define SIMDE__SHUFFLE_VECTOR(elem_size, vec_size, a, b, ...) __builtin_shuffle(a, b, (int##elem_size##_t __attribute__((__vector_size__(vec_size)))) { __VA_ARGS__ })
+#  define SIMDE__SHUFFLE_VECTOR(elem_size, vec_size, a, b, ...) (__extension__ ({ \
+       int##elem_size##_t __attribute__((__vector_size__(vec_size))) simde_shuffle_ = { __VA_ARGS__ }; \
+       __builtin_shuffle(a, b, simde_shuffle_); \
+     }))
 #endif
 
 #if HEDLEY_GCC_HAS_BUILTIN(__builtin_convertvector,9,0,0)
@@ -311,10 +325,10 @@ HEDLEY_STATIC_ASSERT(sizeof(simde_float64) == 8, "Unable to find 64-bit floating
 #define SIMDE_F32_ALL_SET   (((union { uint32_t u32; simde_float32 f32; }) { .u32 = ~UINT32_C(0x0) }).f32)
 #define SIMDE_F32_ALL_UNSET (((union { uint32_t u32; simde_float32 f32; }) { .u32 =  UINT32_C(0x0) }).f32)
 #else
-static const union { uint64_t u64; simde_float64 f64; } simde_f64_all_set   = { .u64 = ~UINT64_C(0) };
-static const union { uint64_t u64; simde_float64 f64; } simde_f64_all_unset = { .u64 =  UINT64_C(0) };
-static const union { uint64_t u32; simde_float64 f32; } simde_f32_all_set   = { .u32 = ~UINT32_C(0) };
-static const union { uint64_t u32; simde_float64 f32; } simde_f32_all_unset = { .u32 =  UINT32_C(0) };
+static const union { uint64_t u64; simde_float64 f64; } simde_f64_all_set   = { ~UINT64_C(0) };
+static const union { uint64_t u64; simde_float64 f64; } simde_f64_all_unset = {  UINT64_C(0) };
+static const union { uint64_t u32; simde_float64 f32; } simde_f32_all_set   = { ~UINT32_C(0) };
+static const union { uint64_t u32; simde_float64 f32; } simde_f32_all_unset = {  UINT32_C(0) };
 
 #  define SIMDE_F64_ALL_SET   (simde_f64_all_set.f64)
 #  define SIMDE_F64_ALL_UNSET (simde_f64_all_unset.f64)

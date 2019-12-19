@@ -2984,7 +2984,7 @@ simde_mm256_load_pd (const double a[HEDLEY_ARRAY_PARAM(4)]) {
 #if defined(SIMDE_AVX_NATIVE)
   r.n = _mm256_load_pd(a);
 #else
-  r = *SIMDE_CAST_ALIGN(32, simde__m256d*, a);
+  r = *SIMDE_CAST_ALIGN(32, simde__m256d*, HEDLEY_CONST_CAST(double*, a));
 #endif
 
   return r;
@@ -3003,7 +3003,7 @@ simde_mm256_load_ps (const float a[HEDLEY_ARRAY_PARAM(8)]) {
 #if defined(SIMDE_AVX_NATIVE)
   r.n = _mm256_load_ps(a);
 #else
-  r = *SIMDE_CAST_ALIGN(32, simde__m256*, a);
+  r = *SIMDE_CAST_ALIGN(32, simde__m256*, HEDLEY_CONST_CAST(float*, a));
 #endif
 
   return r;
@@ -3125,7 +3125,7 @@ simde_mm_maskload_pd (const simde_float64 mem_addr[HEDLEY_ARRAY_PARAM(4)], simde
 #else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.f64) / sizeof(r.f64[0])) ; i++) {
-    r.i64[i] = ((int64_t*) mem_addr)[i] & (mask.i64[i] >> 63);
+    r.i64[i] = HEDLEY_REINTERPRET_CAST(int64_t const*, mem_addr)[i] & (mask.i64[i] >> 63);
   }
 #endif
 
@@ -3145,7 +3145,7 @@ simde_mm256_maskload_pd (const simde_float64 mem_addr[HEDLEY_ARRAY_PARAM(4)], si
 #else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.f64) / sizeof(r.f64[0])) ; i++) {
-    r.i64[i] = ((int64_t*) mem_addr)[i] & (mask.i64[i] >> 63);
+    r.i64[i] = HEDLEY_REINTERPRET_CAST(int64_t const*, mem_addr)[i] & (mask.i64[i] >> 63);
   }
 #endif
 
@@ -3165,7 +3165,7 @@ simde_mm_maskload_ps (const simde_float32 mem_addr[HEDLEY_ARRAY_PARAM(4)], simde
 #else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
-    r.i32[i] = ((int32_t*) mem_addr)[i] & (mask.i32[i] >> 31);
+    r.i32[i] = HEDLEY_REINTERPRET_CAST(int32_t const*, mem_addr)[i] & (mask.i32[i] >> 31);
   }
 #endif
 
@@ -3185,7 +3185,7 @@ simde_mm256_maskload_ps (const simde_float32 mem_addr[HEDLEY_ARRAY_PARAM(4)], si
 #else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
-    r.i32[i] = ((int32_t*) mem_addr)[i] & (mask.i32[i] >> 31);
+    r.i32[i] = HEDLEY_REINTERPRET_CAST(int32_t const*, mem_addr)[i] & (mask.i32[i] >> 31);
   }
 #endif
 

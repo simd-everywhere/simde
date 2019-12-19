@@ -1171,7 +1171,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_stream_load_si128 (const simde__m128i* mem_addr) {
 #if defined(SIMDE_SSE4_1_NATIVE)
-  return SIMDE__M128I_FROM_NATIVE(_mm_stream_load_si128((__m128i*)(void*) &(mem_addr->n)));
+  return SIMDE__M128I_FROM_NATIVE(_mm_stream_load_si128(HEDLEY_CONST_CAST(__m128i*, &(mem_addr->n))));
 #else
   return *mem_addr;
 #endif

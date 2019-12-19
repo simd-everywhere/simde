@@ -225,12 +225,15 @@ SIMDE__FUNCTION_ATTRIBUTES
 simde__m64
 simde_mm_alignr_pi8 (simde__m64 a, simde__m64 b, const int count) {
   simde__m64 r;
-#if defined(__GNUC__) && ((__GNUC__ >= 4) || (__GNUC__ == 4 && __GNUC_MINOR__ >= 6)) && defined(__SIZEOF_INT128__)
+#if defined(SIMDE__HAVE_INT128)
+HEDLEY_DIAGNOSTIC_PUSH
+SIMDE_DIAGNOSTIC_DISABLE_INT128
   unsigned __int128 t = a.u64[0];
   t <<= 64;
   t |= b.u64[0];
   t >>= count * 8;
   r.u64[0] = (uint64_t) t;
+HEDLEY_DIAGNOSTIC_POP
 #else
   const int cb = count * 8;
 

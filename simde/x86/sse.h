@@ -1588,7 +1588,7 @@ simde_mm_loadh_pi (simde__m128 a, simde__m64 const* mem_addr) {
   simde__m128 r;
 
 #if defined(SIMDE_SSE_NATIVE)
-  r.n = _mm_loadh_pi(a.n, (__m64*) mem_addr);
+  r.n = _mm_loadh_pi(a.n, HEDLEY_REINTERPRET_CAST(__m64 const*, mem_addr));
 #else
   r.f32[0] = a.f32[0];
   r.f32[1] = a.f32[1];
@@ -1608,7 +1608,7 @@ simde_mm_loadl_pi (simde__m128 a, simde__m64 const* mem_addr) {
   simde__m128 r;
 
 #if defined(SIMDE_SSE_NATIVE)
-  r.n = _mm_loadl_pi(a.n, (__m64*) mem_addr);
+  r.n = _mm_loadl_pi(a.n, HEDLEY_REINTERPRET_CAST(__m64 const*, mem_addr));
 #else
   r.f32[0] = mem_addr->f32[0];
   r.f32[1] = mem_addr->f32[1];
