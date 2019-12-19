@@ -1,7 +1,15 @@
 environment:
   matrix:
-    - GENERATOR: Visual Studio 14 2015 Win64
-    - GENERATOR: Visual Studio 14 2015
+    - ARCH: Win32
+      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+    - ARCH: x64
+      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+    - ARCH: ARM
+      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+      RUN_TESTS: no
+    - ARCH: ARM64
+      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+      RUN_TESTS: no
 
 branches:
   except:
@@ -13,7 +21,7 @@ before_build:
       cd test
       mkdir build
       cd build
-      cmake -G "$env:GENERATOR" ..
+      cmake -G "Visual Studio 16 2019" -A "$env:ARCH" ..
 
 build_script:
   - ps: |
@@ -21,4 +29,4 @@ build_script:
 
 test_script:
   - ps: |
-      ctest --output-on-failure --interactive-debug-mode 0 -C Debug -V
+      if("$env:RUN_TESTS" -ne "no") { ctest --output-on-failure --interactive-debug-mode 0 -C Debug -V }
