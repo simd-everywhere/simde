@@ -204,7 +204,7 @@ test_simde_mm_xxx_ps(const MunitParameter params[], void* data) {
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m128 r = simde_mm_xxx_ps(test_vec[i].a, test_vec[i].b);
-    simde_assert_m128_f32_equal(r, test_vec[i].r, 1);
+    simde_assert_m128_close(r, test_vec[i].r, 1);
   }
 
   return MUNIT_OK;
@@ -1023,7 +1023,7 @@ test_simde_mm256_xxx_ps(const MunitParameter params[], void* data) {
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m256 r = simde_mm256_xxx_ps(test_vec[i].a, test_vec[i].b);
-    simde_assert_m256_f32_equal(r, test_vec[i].r, 1);
+    simde_assert_m256_close(r, test_vec[i].r, 1);
   }
 
   return MUNIT_OK;
@@ -1067,7 +1067,7 @@ test_simde_mm256_xxx_pd(const MunitParameter params[], void* data) {
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m256d r = simde_mm256_xxx_pd(test_vec[i].a, test_vec[i].b);
-    simde_assert_m256d_f64_equal(r, test_vec[i].r, 1);
+    simde_assert_m256d_close(r, test_vec[i].r, 1);
   }
 
   return MUNIT_OK;
@@ -1111,7 +1111,7 @@ test_simde_mm256_xxx_sd(const MunitParameter params[], void* data) {
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m256d r = simde_mm_xxx_sd(test_vec[i].a, test_vec[i].b);
-    simde_assert_m256d_f64_equal(r, test_vec[i].r, 1);
+    simde_assert_m256d_close(r, test_vec[i].r, 1);
   }
 
   return MUNIT_OK;

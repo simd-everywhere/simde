@@ -75,7 +75,8 @@ if(NOT DISABLE_X86)
     x86/sse4.1/sse4.1.c
     x86/sse4.2/sse4.2.c
     x86/avx/avx.c
-    x86/avx2/avx2.c)
+    x86/avx2/avx2.c
+    x86/fma/fma.c)
 else()
   add_definitions(-DDISABLE_X86)
 endif()

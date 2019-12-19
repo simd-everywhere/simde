@@ -57,6 +57,9 @@ MunitSuite simde_avx_emul_test_suite;
 MunitSuite simde_avx2_test_suite;
 MunitSuite simde_avx2_emul_test_suite;
 
+MunitSuite simde_fma_test_suite;
+MunitSuite simde_fma_emul_test_suite;
+
 
 #define simde_assert_m64_f32(a, op, b) \
   simde_assert_typev(simde_float32, "f", 2, (simde_float32*) &(a), op, (simde_float32*) &(b))
@@ -226,5 +229,9 @@ MunitSuite simde_avx2_emul_test_suite;
   simde_assert_vec_close(a, b, precision, simde__m128, f32)
 #define simde_assert_m128d_close(a, b, precision) \
   simde_assert_vec_close(a, b, precision, simde__m128d, f64)
+#define simde_assert_m256_close(a, b, precision) \
+  simde_assert_vec_close(a, b, precision, simde__m256, f32)
+#define simde_assert_m256d_close(a, b, precision) \
+  simde_assert_vec_close(a, b, precision, simde__m256d, f64)
 
 #endif

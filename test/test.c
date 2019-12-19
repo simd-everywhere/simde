@@ -67,6 +67,9 @@ int main(int argc, char* argv[MUNIT_ARRAY_PARAM(argc + 1)]) {
 
     simde_avx2_test_suite,
     simde_avx2_emul_test_suite,
+
+    simde_fma_test_suite,
+    simde_fma_emul_test_suite,
 #endif
 
     { 0, },
