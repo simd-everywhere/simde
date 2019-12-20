@@ -535,6 +535,122 @@ simde_mm_fnmadd_ss (simde__m128 a, simde__m128 b, simde__m128 c) {
 #  define _mm_fnmadd_ss(a, b) SIMDE__M128_TO_NATIVE(simde_mm_fnmadd_ss(SIMDE__M128_FROM_NATIVE(a), SIMDE__M128_FROM_NATIVE(b), SIMDE__M128_FROM_NATIVE(c)))
 #endif
 
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128d
+simde_mm_fnmsub_pd (simde__m128d a, simde__m128d b, simde__m128d c) {
+  simde__m128d r;
+
+#if defined(SIMDE_FMA_NATIVE)
+  r.n = _mm_fnmsub_pd(a.n, b.n, c.n);
+#else
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.f64) / sizeof(r.f64[0])) ; i++) {
+    r.f64[i] = -(a.f64[i] * b.f64[i]) - c.f64[i];
+  }
+#endif
+
+  return r;
+}
+#if defined(SIMDE_FMA_ENABLE_NATIVE_ALIASES)
+#  define _mm_fnmsub_pd(a, b) SIMDE__M128D_TO_NATIVE(simde_mm_fnmsub_pd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b), SIMDE__M128D_FROM_NATIVE(c)))
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256d
+simde_mm256_fnmsub_pd (simde__m256d a, simde__m256d b, simde__m256d c) {
+  simde__m256d r;
+
+#if defined(SIMDE_FMA_NATIVE)
+  r.n = _mm256_fnmsub_pd(a.n, b.n, c.n);
+#else
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.f64) / sizeof(r.f64[0])) ; i++) {
+    r.f64[i] = -(a.f64[i] * b.f64[i]) - c.f64[i];
+  }
+#endif
+
+  return r;
+}
+#if defined(SIMDE_FMA_ENABLE_NATIVE_ALIASES)
+#  define _mm_fnmsub_pd(a, b) SIMDE__M256D_TO_NATIVE(simde_mm_fnmsub_pd(SIMDE__M256D_FROM_NATIVE(a), SIMDE__M256D_FROM_NATIVE(b), SIMDE__M256D_FROM_NATIVE(c)))
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128
+simde_mm_fnmsub_ps (simde__m128 a, simde__m128 b, simde__m128 c) {
+  simde__m128 r;
+
+#if defined(SIMDE_FMA_NATIVE)
+  r.n = _mm_fnmsub_ps(a.n, b.n, c.n);
+#else
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
+    r.f32[i] = -(a.f32[i] * b.f32[i]) - c.f32[i];
+  }
+#endif
+
+  return r;
+}
+#if defined(SIMDE_FMA_ENABLE_NATIVE_ALIASES)
+#  define _mm_fnmsub_ps(a, b) SIMDE__M128_TO_NATIVE(simde_mm_fnmsub_ps(SIMDE__M128_FROM_NATIVE(a), SIMDE__M128_FROM_NATIVE(b), SIMDE__M128_FROM_NATIVE(c)))
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256
+simde_mm256_fnmsub_ps (simde__m256 a, simde__m256 b, simde__m256 c) {
+  simde__m256 r;
+
+#if defined(SIMDE_FMA_NATIVE)
+  r.n = _mm256_fnmsub_ps(a.n, b.n, c.n);
+#else
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
+    r.f32[i] = -(a.f32[i] * b.f32[i]) - c.f32[i];
+  }
+#endif
+
+  return r;
+}
+#if defined(SIMDE_FMA_ENABLE_NATIVE_ALIASES)
+#  define _mm_fnmsub_ps(a, b) SIMDE__M256_TO_NATIVE(simde_mm_fnmsub_ps(SIMDE__M256_FROM_NATIVE(a), SIMDE__M256_FROM_NATIVE(b), SIMDE__M256_FROM_NATIVE(c)))
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128d
+simde_mm_fnmsub_sd (simde__m128d a, simde__m128d b, simde__m128d c) {
+  simde__m128d r;
+
+#if defined(SIMDE_FMA_NATIVE)
+  r.n = _mm_fnmsub_sd(a.n, b.n, c.n);
+#else
+  r = a;
+  r.f64[0] = -(a.f64[0] * b.f64[0]) - c.f64[0];
+#endif
+
+  return r;
+}
+#if defined(SIMDE_FMA_ENABLE_NATIVE_ALIASES)
+#  define _mm_fnmsub_sd(a, b) SIMDE__M128D_TO_NATIVE(simde_mm_fnmsub_sd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b), SIMDE__M128D_FROM_NATIVE(c)))
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128
+simde_mm_fnmsub_ss (simde__m128 a, simde__m128 b, simde__m128 c) {
+  simde__m128 r;
+
+#if defined(SIMDE_FMA_NATIVE)
+  r.n = _mm_fnmsub_ss(a.n, b.n, c.n);
+#else
+  r = a;
+  r.f32[0] = -(a.f32[0] * b.f32[0]) - c.f32[0];
+#endif
+
+  return r;
+}
+#if defined(SIMDE_FMA_ENABLE_NATIVE_ALIASES)
+#  define _mm_fnmsub_ss(a, b) SIMDE__M128_TO_NATIVE(simde_mm_fnmsub_ss(SIMDE__M128_FROM_NATIVE(a), SIMDE__M128_FROM_NATIVE(b), SIMDE__M128_FROM_NATIVE(c)))
+#endif
+
 SIMDE__END_DECLS
 
 #endif /* !defined(SIMDE__FMA_H) */
