@@ -50,7 +50,7 @@
 #endif
 
 #define simde_assert_aligned(alignment, val) \
-  simde_assert_int(HEDLEY_REINTERPRET_CAST(const uintptr_t, (val)) % (alignment), ==, 0)
+  simde_assert_int(HEDLEY_REINTERPRET_CAST(uintptr_t, HEDLEY_CONST_CAST(void*, HEDLEY_REINTERPRET_CAST(const void*, (val)))) % (alignment), ==, 0)
 
 /* TODO: this should really do something like
    HEDLEY_STATIC_CAST(T, (simde_assert_int(alignment, v), v))
