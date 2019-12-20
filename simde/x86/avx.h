@@ -1100,7 +1100,7 @@ simde_mm256_castpd_ps (simde__m256d a) {
 #if defined(SIMDE_AVX_NATIVE)
   return SIMDE__M256_FROM_NATIVE(_mm256_castpd_ps(a.n));
 #else
-  return *((simde__m256*) &a);
+  return *HEDLEY_REINTERPRET_CAST(simde__m256*, &a);
 #endif
 }
 #if defined(SIMDE_AVX_ENABLE_NATIVE_ALIASES)
@@ -1113,7 +1113,7 @@ simde_mm256_castpd_si256 (simde__m256d a) {
 #if defined(SIMDE_AVX_NATIVE)
   return SIMDE__M256I_FROM_NATIVE(_mm256_castpd_si256(a.n));
 #else
-  return *((simde__m256i*) &a);
+  return *HEDLEY_REINTERPRET_CAST(simde__m256i*, &a);
 #endif
 }
 #if defined(SIMDE_AVX_ENABLE_NATIVE_ALIASES)
@@ -1162,7 +1162,7 @@ simde_mm256_castps_pd (simde__m256 a) {
 #if defined(SIMDE_AVX_NATIVE)
   return SIMDE__M256D_FROM_NATIVE(_mm256_castps_pd(a.n));
 #else
-  return *((simde__m256d*) &a);
+  return *HEDLEY_REINTERPRET_CAST(simde__m256d*, &a);
 #endif
 }
 #if defined(SIMDE_AVX_ENABLE_NATIVE_ALIASES)
@@ -1175,7 +1175,7 @@ simde_mm256_castps_si256 (simde__m256 a) {
 #if defined(SIMDE_AVX_NATIVE)
   return SIMDE__M256I_FROM_NATIVE(_mm256_castps_si256(a.n));
 #else
-  return *((simde__m256i*) &a);
+  return *HEDLEY_REINTERPRET_CAST(simde__m256i*, &a);
 #endif
 }
 #if defined(SIMDE_AVX_ENABLE_NATIVE_ALIASES)
@@ -1260,7 +1260,7 @@ simde_mm256_castsi256_pd (simde__m256i a) {
 #if defined(SIMDE_AVX_NATIVE)
   return SIMDE__M256D_FROM_NATIVE(_mm256_castsi256_pd(a.n));
 #else
-  return *((simde__m256d*) &a);
+  return *HEDLEY_REINTERPRET_CAST(simde__m256d*, &a);
 #endif
 }
 #if defined(SIMDE_AVX_ENABLE_NATIVE_ALIASES)
@@ -1273,7 +1273,7 @@ simde_mm256_castsi256_ps (simde__m256i a) {
 #if defined(SIMDE_AVX_NATIVE)
   return SIMDE__M256_FROM_NATIVE(_mm256_castsi256_ps(a.n));
 #else
-  return *((simde__m256*) &a);
+  return *HEDLEY_REINTERPRET_CAST(simde__m256*, &a);
 #endif
 }
 #if defined(SIMDE_AVX_ENABLE_NATIVE_ALIASES)
@@ -2467,7 +2467,7 @@ simde_mm256_cvtepi32_pd (simde__m128i a) {
 #else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.f64) / sizeof(r.f64[0])) ; i++) {
-    r.f64[i] = (simde_float64) a.i32[i];
+    r.f64[i] = HEDLEY_STATIC_CAST(simde_float64, a.i32[i]);
   }
 #endif
 
@@ -2487,7 +2487,7 @@ simde_mm256_cvtepi32_ps (simde__m256i a) {
 #else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
-    r.f32[i] = (simde_float32) a.i32[i];
+    r.f32[i] = HEDLEY_STATIC_CAST(simde_float32, a.i32[i]);
   }
 #endif
 
@@ -2527,7 +2527,7 @@ simde_mm256_cvtpd_ps (simde__m256d a) {
 #else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
-    r.f32[i] = (simde_float32) a.f64[i];
+    r.f32[i] = HEDLEY_STATIC_CAST(simde_float32, a.f64[i]);
   }
 #endif
 
@@ -2984,7 +2984,7 @@ simde_mm256_load_pd (const double a[HEDLEY_ARRAY_PARAM(4)]) {
 #if defined(SIMDE_AVX_NATIVE)
   r.n = _mm256_load_pd(a);
 #else
-  r = *SIMDE_CAST_ALIGN(32, simde__m256d*, HEDLEY_CONST_CAST(double*, a));
+  r = *SIMDE_CAST_ALIGN(32, simde__m256d const*, a);
 #endif
 
   return r;
@@ -3003,7 +3003,7 @@ simde_mm256_load_ps (const float a[HEDLEY_ARRAY_PARAM(8)]) {
 #if defined(SIMDE_AVX_NATIVE)
   r.n = _mm256_load_ps(a);
 #else
-  r = *SIMDE_CAST_ALIGN(32, simde__m256*, HEDLEY_CONST_CAST(float*, a));
+  r = *SIMDE_CAST_ALIGN(32, simde__m256 const*, a);
 #endif
 
   return r;
@@ -4688,7 +4688,7 @@ simde_mm_testc_ps (simde__m128 a, simde__m128 b) {
     r |= ~a.u32[i] & b.u32[i];
   }
 
-  return (int) ((~r >> 31) & 1);
+  return HEDLEY_STATIC_CAST(int, ((~r >> 31) & 1));
 #endif
 }
 #if defined(SIMDE_AVX_ENABLE_NATIVE_ALIASES)
@@ -4708,7 +4708,7 @@ simde_mm_testc_pd (simde__m128d a, simde__m128d b) {
     r |= ~a.u64[i] & b.u64[i];
   }
 
-  return (int) ((~r >> 63) & 1);
+  return HEDLEY_STATIC_CAST(int, ((~r >> 63) & 1));
 #endif
 }
 #if defined(SIMDE_AVX_ENABLE_NATIVE_ALIASES)
@@ -4728,7 +4728,7 @@ simde_mm256_testc_ps (simde__m256 a, simde__m256 b) {
     r |= ~a.u32[i] & b.u32[i];
   }
 
-  return (int) ((~r >> 31) & 1);
+  return HEDLEY_STATIC_CAST(int, ((~r >> 31) & 1));
 #endif
 }
 #if defined(SIMDE_AVX_ENABLE_NATIVE_ALIASES)
@@ -4748,7 +4748,7 @@ simde_mm256_testc_pd (simde__m256d a, simde__m256d b) {
     r |= ~a.u64[i] & b.u64[i];
   }
 
-  return (int) ((~r >> 63) & 1);
+  return HEDLEY_STATIC_CAST(int, ((~r >> 63) & 1));
 #endif
 }
 #if defined(SIMDE_AVX_ENABLE_NATIVE_ALIASES)
@@ -4768,7 +4768,7 @@ simde_mm256_testc_si256 (simde__m256i a, simde__m256i b) {
     r |= ~a.i32f[i] & b.i32f[i];
   }
 
-  return (int) !r;
+  return HEDLEY_STATIC_CAST(int, !r);
 #endif
 }
 #if defined(SIMDE_AVX_ENABLE_NATIVE_ALIASES)
@@ -4788,7 +4788,7 @@ simde_mm_testz_ps (simde__m128 a, simde__m128 b) {
     r |= a.u32[i] & b.u32[i];
   }
 
-  return (int) ((~r >> 31) & 1);
+  return HEDLEY_STATIC_CAST(int, ((~r >> 31) & 1));
 #endif
 }
 #if defined(SIMDE_AVX_ENABLE_NATIVE_ALIASES)
@@ -4808,7 +4808,7 @@ simde_mm_testz_pd (simde__m128d a, simde__m128d b) {
     r |= a.u64[i] & b.u64[i];
   }
 
-  return (int) ((~r >> 63) & 1);
+  return HEDLEY_STATIC_CAST(int, ((~r >> 63) & 1));
 #endif
 }
 #if defined(SIMDE_AVX_ENABLE_NATIVE_ALIASES)
@@ -4828,7 +4828,7 @@ simde_mm256_testz_ps (simde__m256 a, simde__m256 b) {
     r |= a.u32[i] & b.u32[i];
   }
 
-  return (int) ((~r >> 31) & 1);
+  return HEDLEY_STATIC_CAST(int, ((~r >> 31) & 1));
 #endif
 }
 #if defined(SIMDE_AVX_ENABLE_NATIVE_ALIASES)
@@ -4848,7 +4848,7 @@ simde_mm256_testz_pd (simde__m256d a, simde__m256d b) {
     r |= a.u64[i] & b.u64[i];
   }
 
-  return (int) ((~r >> 63) & 1);
+  return HEDLEY_STATIC_CAST(int, ((~r >> 63) & 1));
 #endif
 }
 #if defined(SIMDE_AVX_ENABLE_NATIVE_ALIASES)
@@ -4868,7 +4868,7 @@ simde_mm256_testz_si256 (simde__m256i a, simde__m256i b) {
     r |= a.i32f[i] & b.i32f[i];
   }
 
-  return (int) !r;
+  return HEDLEY_STATIC_CAST(int, !r);
 #endif
 }
 #if defined(SIMDE_AVX_ENABLE_NATIVE_ALIASES)

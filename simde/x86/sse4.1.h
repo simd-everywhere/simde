@@ -709,7 +709,7 @@ simde_mm_floor_ss (simde__m128 a, simde__m128 b) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_insert_epi8 (simde__m128i a, int i, const int imm8) {
-  a.i8[imm8] = (int8_t) i;
+  a.i8[imm8] = HEDLEY_STATIC_CAST(int8_t, i);
   return a;
 }
 #if defined(SIMDE_SSE4_1_NATIVE)
@@ -722,7 +722,7 @@ simde_mm_insert_epi8 (simde__m128i a, int i, const int imm8) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_insert_epi32 (simde__m128i a, int i, const int imm8) {
-  a.i32[imm8] = (int32_t) i;
+  a.i32[imm8] = HEDLEY_STATIC_CAST(int32_t, i);
   return a;
 }
 #if defined(SIMDE_SSE4_1_NATIVE)
@@ -938,7 +938,7 @@ simde_mm_minpos_epu16 (simde__m128i a) {
   for (size_t i = 0 ; i < (sizeof(r.u16) / sizeof(r.u16[0])) ; i++) {
     if (a.u16[i] < r.u16[0]) {
       r.u16[0] = a.u16[i];
-      r.u16[1] = (uint16_t) i;
+      r.u16[1] = HEDLEY_STATIC_CAST(uint16_t, i);
     }
   }
 
@@ -956,12 +956,12 @@ simde_mm_mpsadbw_epu8 (simde__m128i a, simde__m128i b, const int imm8) {
   const int a_offset = imm8 & 4;
   const int b_offset = (imm8 & 3) << 2;
 
-  for (int i = 0 ; i < ((int) (sizeof(r.u16) / sizeof(r.u16[0]))) ; i++) {
+  for (int i = 0 ; i < HEDLEY_STATIC_CAST(int, (sizeof(r.u16) / sizeof(r.u16[0]))) ; i++) {
     r.u16[i] =
-      ((uint16_t) abs(a.u8[a_offset + i + 0] - b.u8[b_offset + 0])) +
-      ((uint16_t) abs(a.u8[a_offset + i + 1] - b.u8[b_offset + 1])) +
-      ((uint16_t) abs(a.u8[a_offset + i + 2] - b.u8[b_offset + 2])) +
-      ((uint16_t) abs(a.u8[a_offset + i + 3] - b.u8[b_offset + 3]));
+      HEDLEY_STATIC_CAST(uint16_t, abs(a.u8[a_offset + i + 0] - b.u8[b_offset + 0])) +
+      HEDLEY_STATIC_CAST(uint16_t, abs(a.u8[a_offset + i + 1] - b.u8[b_offset + 1])) +
+      HEDLEY_STATIC_CAST(uint16_t, abs(a.u8[a_offset + i + 2] - b.u8[b_offset + 2])) +
+      HEDLEY_STATIC_CAST(uint16_t, abs(a.u8[a_offset + i + 3] - b.u8[b_offset + 3]));
   }
 
   return r;
@@ -983,8 +983,8 @@ simde_mm_mul_epi32 (simde__m128i a, simde__m128i b) {
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i64) / sizeof(r.i64[0])) ; i++) {
     r.i64[i] =
-      ((int64_t) a.i32[i * 2]) *
-      ((int64_t) b.i32[i * 2]);
+      HEDLEY_STATIC_CAST(int64_t, a.i32[i * 2]) *
+      HEDLEY_STATIC_CAST(int64_t, b.i32[i * 2]);
   }
   return r;
 #endif
@@ -1004,7 +1004,7 @@ simde_mm_mullo_epi32 (simde__m128i a, simde__m128i b) {
   simde__m128i r;
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i32) / sizeof(r.i32[0])) ; i++) {
-    r.u32[i] = (uint32_t) (((uint64_t) (((int64_t) a.i32[i]) * ((int64_t) b.i32[i]))) & 0xffffffff);
+    r.u32[i] = HEDLEY_STATIC_CAST(uint32_t, (HEDLEY_STATIC_CAST(uint64_t, (HEDLEY_STATIC_CAST(int64_t, a.i32[i]) * HEDLEY_STATIC_CAST(int64_t, b.i32[i]))) & 0xffffffff));
   }
   return r;
 #endif
@@ -1021,8 +1021,8 @@ simde_mm_packus_epi32 (simde__m128i a, simde__m128i b) {
 #else
   simde__m128i r;
   for (size_t i = 0 ; i < (sizeof(r.i32) / sizeof(r.i32[0])) ; i++) {
-    r.u16[i + 0] = (a.i32[i] < 0) ? UINT16_C(0) : ((a.i32[i] > UINT16_MAX) ? (UINT16_MAX) : ((uint16_t) a.i32[i]));
-    r.u16[i + 4] = (b.i32[i] < 0) ? UINT16_C(0) : ((b.i32[i] > UINT16_MAX) ? (UINT16_MAX) : ((uint16_t) b.i32[i]));
+    r.u16[i + 0] = (a.i32[i] < 0) ? UINT16_C(0) : ((a.i32[i] > UINT16_MAX) ? (UINT16_MAX) : HEDLEY_STATIC_CAST(uint16_t, a.i32[i]));
+    r.u16[i + 4] = (b.i32[i] < 0) ? UINT16_C(0) : ((b.i32[i] > UINT16_MAX) ? (UINT16_MAX) : HEDLEY_STATIC_CAST(uint16_t, b.i32[i]));
   }
   return r;
 #endif
@@ -1243,7 +1243,7 @@ simde_mm_testc_si128 (simde__m128i a, simde__m128i b) {
     r |= ~a.i32f[i] & b.i32f[i];
   }
 
-  return (int) !r;
+  return HEDLEY_STATIC_CAST(int, !r);
 #endif
 }
 #if defined(SIMDE_SSE4_1_ENABLE_NATIVE_ALIASES)

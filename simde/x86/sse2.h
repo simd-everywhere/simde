@@ -2027,7 +2027,7 @@ simde_mm_extract_epi16 (simde__m128i a, const int imm8) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_insert_epi16 (simde__m128i a, int32_t i, const int imm8) {
-  a.i16[imm8 & 7] = (int16_t) i;
+  a.i16[imm8 & 7] = HEDLEY_STATIC_CAST(int16_t, i);
   return a;
 }
 #if defined(SIMDE_SSE2_NATIVE) && !defined(__PGI)
@@ -2270,7 +2270,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 void
 simde_mm_maskmoveu_si128 (simde__m128i a, simde__m128i mask, int8_t mem_addr[HEDLEY_ARRAY_PARAM(16)]) {
 #if defined(SIMDE_SSE2_NATIVE)
-  _mm_maskmoveu_si128(a.n, mask.n, (char*) mem_addr);
+  _mm_maskmoveu_si128(a.n, mask.n, HEDLEY_REINTERPRET_CAST(char*, mem_addr));
 #else
   for (size_t i = 0 ; i < 16 ; i++) {
     if (mask.u8[i] & 0x80) {
@@ -3821,7 +3821,7 @@ simde_mm_sra_epi32 (simde__m128i a, simde__m128i count) {
 #if defined(SIMDE_SSE2_NATIVE) && !defined(SIMDE_BUG_GCC_BAD_MM_SRA_EPI32)
   r.n = _mm_sra_epi32(a.n, count.n);
 #else
-  const int cnt = count.u64[0] > 31 ? 31 : ((int) count.u64[0]);
+  const int cnt = count.u64[0] > 31 ? 31 : HEDLEY_STATIC_CAST(int, count.u64[0]);
 
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i32) / sizeof(r.i32[0])) ; i++) {
@@ -3839,11 +3839,13 @@ SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_slli_epi16 (simde__m128i a, const int imm8) {
   simde__m128i r;
-  const int s = (imm8 > ((int) sizeof(r.i16[0]) * CHAR_BIT) - 1) ? 0 : imm8;
+
+  const int s = (imm8 > HEDLEY_STATIC_CAST(int, sizeof(r.i16[0]) * CHAR_BIT) - 1) ? 0 : imm8;
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i16) / sizeof(r.i16[0])) ; i++) {
-    r.i16[i] = (int16_t) (a.i16[i] << s);
+    r.i16[i] = HEDLEY_STATIC_CAST(int16_t, a.i16[i] << s);
   }
+
   return r;
 }
 #if defined(SIMDE_SSE2_NATIVE)
@@ -3860,7 +3862,8 @@ SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_slli_epi32 (simde__m128i a, const int imm8) {
   simde__m128i r;
-  const int s = (imm8 > ((int) sizeof(r.i32[0]) * CHAR_BIT) - 1) ? 0 : imm8;
+
+  const int s = (imm8 > HEDLEY_STATIC_CAST(int, sizeof(r.i32[0]) * CHAR_BIT) - 1) ? 0 : imm8;
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i32) / sizeof(r.i32[0])) ; i++) {
     r.i32[i] = a.i32[i] << s;
@@ -3881,11 +3884,13 @@ SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_slli_epi64 (simde__m128i a, const int imm8) {
   simde__m128i r;
-  const int s = (imm8 > ((int) sizeof(r.i64[0]) * CHAR_BIT) - 1) ? 0 : imm8;
+
+  const int s = (imm8 > HEDLEY_STATIC_CAST(int, sizeof(r.i64[0]) * CHAR_BIT) - 1) ? 0 : imm8;
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i64) / sizeof(r.i64[0])) ; i++) {
     r.i64[i] = a.i64[i] << s;
   }
+
   return r;
 }
 #if defined(SIMDE_SSE2_NATIVE)
@@ -3899,11 +3904,13 @@ SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_srli_epi16 (simde__m128i a, const int imm8) {
   simde__m128i r;
-  const int s = (imm8 > ((int) sizeof(r.i16[0]) * CHAR_BIT) - 1) ? 0 : imm8;
+
+  const int s = (imm8 > HEDLEY_STATIC_CAST(int, sizeof(r.i16[0]) * CHAR_BIT) - 1) ? 0 : imm8;
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i16) / sizeof(r.i16[0])) ; i++) {
     r.u16[i] = a.u16[i] >> s;
   }
+
   return r;
 }
 #if defined(SIMDE_SSE2_NATIVE)
@@ -3920,11 +3927,13 @@ SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_srli_epi32 (simde__m128i a, const int imm8) {
   simde__m128i r;
-  const int s = (imm8 > ((int) sizeof(r.i32[0]) * CHAR_BIT) - 1) ? 0 : imm8;
+
+  const int s = (imm8 > HEDLEY_STATIC_CAST(int, sizeof(r.i32[0]) * CHAR_BIT) - 1) ? 0 : imm8;
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i32) / sizeof(r.i32[0])) ; i++) {
     r.u32[i] = a.u32[i] >> s;
   }
+
   return r;
 }
 #if defined(SIMDE_SSE2_NATIVE)
@@ -4162,7 +4171,7 @@ simde_mm_stream_si64 (int64_t* mem_addr, int64_t a) {
   #if \
       (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(5,3,0)) && \
       (!defined(HEDLEY_PGI_VERSION))
-    _mm_stream_si64((long long*) mem_addr, a);
+    _mm_stream_si64(HEDLEY_REINTERPRET_CAST(long long*, mem_addr), a);
   #else
     *mem_addr = a;
   #endif

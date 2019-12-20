@@ -50,22 +50,22 @@
 #endif
 
 #define simde_assert_aligned(alignment, val) \
-  simde_assert_int(((uintptr_t) (val)) % (alignment), ==, 0)
+  simde_assert_int(HEDLEY_REINTERPRET_CAST(const uintptr_t, (val)) % (alignment), ==, 0)
 
 /* TODO: this should really do something like
    HEDLEY_STATIC_CAST(T, (simde_assert_int(alignment, v), v))
    but I need to think about how to handle it in all compilers...
    may end up moving to Hedley, too. */
 #if HEDLEY_HAS_BUILTIN(__builtin_assume_aligned)
-#  define SIMDE_CAST_ALIGN(alignment, T, v) ((T) __builtin_assume_aligned(v, alignment))
+#  define SIMDE_CAST_ALIGN(alignment, T, v) HEDLEY_REINTERPRET_CAST(T, __builtin_assume_aligned(v, alignment))
 #elif HEDLEY_HAS_WARNING("-Wcast-align")
 #  define SIMDE_CAST_ALIGN(alignment, T, v) \
     HEDLEY_DIAGNOSTIC_PUSH \
     _Pragma("clang diagnostic ignored \"-Wcast-align\"") \
-    ((T) (v)) \
+    HEDLEY_REINTERPRET_CAST(T, (v)) \
     HEDLEY_DIAGNOSTIC_POP
 #else
-#  define SIMDE_CAST_ALIGN(alignment, T, v) ((T) (v))
+#  define SIMDE_CAST_ALIGN(alignment, T, v) HEDLEY_REINTERPRET_CAST(T, (v))
 #endif
 
 #if HEDLEY_GCC_HAS_ATTRIBUTE(vector_size,4,6,0)
@@ -236,7 +236,7 @@ HEDLEY_STATIC_ASSERT(sizeof(simde_float64) == 8, "Unable to find 64-bit floating
 #  define SIMDE_CONVERT_FTOI(T,v) \
     HEDLEY_DIAGNOSTIC_PUSH \
     _Pragma("clang diagnostic ignored \"-Wbad-function-cast\"") \
-    ((T) (v)) \
+    HEDLEY_STATIC_CAST(T, (v)) \
     HEDLEY_DIAGNOSTIC_POP
 #else
 #  define SIMDE_CONVERT_FTOI(T,v) ((T) (v))

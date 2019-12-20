@@ -728,11 +728,19 @@ simde_mm_set_pi8 (int8_t e7, int8_t e6, int8_t e5, int8_t e4, int8_t e3, int8_t 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m64
 simde_x_mm_set_pu8 (uint8_t e7, uint8_t e6, uint8_t e5, uint8_t e4, uint8_t e3, uint8_t e2, uint8_t e1, uint8_t e0) {
-#if defined(SIMDE_MMX_NATIVE)
-  return SIMDE__M64_FROM_NATIVE(_mm_set_pi8((int8_t) e7, (int8_t) e6, (int8_t) e5, (int8_t) e4,
-				  (int8_t) e3, (int8_t) e2, (int8_t) e1, (int8_t) e0));
-#else
   simde__m64 r;
+
+#if defined(SIMDE_MMX_NATIVE)
+  r.n = _mm_set_pi8(
+      HEDLEY_STATIC_CAST(int8_t, e7),
+      HEDLEY_STATIC_CAST(int8_t, e6),
+      HEDLEY_STATIC_CAST(int8_t, e5),
+      HEDLEY_STATIC_CAST(int8_t, e4),
+      HEDLEY_STATIC_CAST(int8_t, e3),
+      HEDLEY_STATIC_CAST(int8_t, e2),
+      HEDLEY_STATIC_CAST(int8_t, e1),
+      HEDLEY_STATIC_CAST(int8_t, e0));
+#else
   r.u8[0] = e0;
   r.u8[1] = e1;
   r.u8[2] = e2;
@@ -741,8 +749,9 @@ simde_x_mm_set_pu8 (uint8_t e7, uint8_t e6, uint8_t e5, uint8_t e4, uint8_t e3, 
   r.u8[5] = e5;
   r.u8[6] = e6;
   r.u8[7] = e7;
-  return r;
 #endif
+
+  return r;
 }
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -766,29 +775,40 @@ simde_mm_set_pi16 (int16_t e3, int16_t e2, int16_t e1, int16_t e0) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m64
 simde_x_mm_set_pu16 (uint16_t e3, uint16_t e2, uint16_t e1, uint16_t e0) {
-#if defined(SIMDE_MMX_NATIVE)
-  return SIMDE__M64_FROM_NATIVE(_mm_set_pi16((int16_t) e3, (int16_t) e2, (int16_t) e1, (int16_t) e0));
-#else
   simde__m64 r;
+
+#if defined(SIMDE_MMX_NATIVE)
+  r.n = _mm_set_pi16(
+      HEDLEY_STATIC_CAST(int16_t, e3),
+      HEDLEY_STATIC_CAST(int16_t, e2),
+      HEDLEY_STATIC_CAST(int16_t, e1),
+      HEDLEY_STATIC_CAST(int16_t, e0)
+    );
+#else
   r.u16[0] = e0;
   r.u16[1] = e1;
   r.u16[2] = e2;
   r.u16[3] = e3;
-  return r;
 #endif
+
+  return r;
 }
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m64
 simde_x_mm_set_pu32 (uint32_t e1, uint32_t e0) {
-#if defined(SIMDE_MMX_NATIVE)
-  return SIMDE__M64_FROM_NATIVE(_mm_set_pi32((int32_t) e1, (int32_t) e0));
-#else
   simde__m64 r;
+
+#if defined(SIMDE_MMX_NATIVE)
+  r.n = _mm_set_pi32(
+      HEDLEY_STATIC_CAST(int32_t, e1),
+      HEDLEY_STATIC_CAST(int32_t, e0));
+#else
   r.u32[0] = e0;
   r.u32[1] = e1;
-  return r;
 #endif
+
+  return r;
 }
 
 SIMDE__FUNCTION_ATTRIBUTES
