@@ -242,6 +242,15 @@ HEDLEY_STATIC_ASSERT(sizeof(simde_float64) == 8, "Unable to find 64-bit floating
 #  define SIMDE_CONVERT_FTOI(T,v) ((T) (v))
 #endif
 
+
+#if HEDLEY_HAS_WARNING("-Wfloat-equal")
+#  define SIMDE_DIAGNOSTIC_DISABLE_FLOAT_EQUAL _Pragma("clang diagnostic ignored \"-Wfloat-equal\"")
+#elif HEDLEY_GCC_VERSION_CHECK(3,0,0)
+#  define SIMDE_DIAGNOSTIC_DISABLE_FLOAT_EQUAL _Pragma("GCC diagnostic ignored \"-Wfloat-equal\"")
+#else
+#  define SIMDE_DIAGNOSTIC_DISABLE_FLOAT_EQUAL
+#endif
+
 /* Some algorithms are iterative, and fewer iterations means less
    accuracy.  Lower values here will result in faster, but less
    accurate, calculations for some functions. */

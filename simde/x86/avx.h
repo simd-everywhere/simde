@@ -1320,6 +1320,9 @@ simde_mm256_ceil_ps (simde__m256 a) {
 #  define _mm256_ceil_ps(a) SIMDE__M256_TO_NATIVE(simde_mm256_ceil_ps(SIMDE__M256_FROM_NATIVE(a)))
 #endif
 
+HEDLEY_DIAGNOSTIC_PUSH
+SIMDE_DIAGNOSTIC_DISABLE_FLOAT_EQUAL
+
 /* This implementation does not support signaling NaNs (yet?) */
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
@@ -2456,6 +2459,8 @@ simde_mm256_cmp_ps (simde__m256 a, simde__m256 b, const int imm8)
 #if defined(SIMDE_AVX_ENABLE_NATIVE_ALIASES)
 #  define _mm256_cmp_ps(a, b, imm8) SIMDE__M256_TO_NATIVE(simde_mm256_cmp_ps(SIMDE__M256_FROM_NATIVE(a), SIMDE__M256_FROM_NATIVE(b), imm8))
 #endif
+
+HEDLEY_DIAGNOSTIC_POP /* -Wfloat-equal */
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256d
