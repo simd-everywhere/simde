@@ -130,6 +130,40 @@ simde_mm256_fmadd_ps (simde__m256 a, simde__m256 b, simde__m256 c) {
 #  define _mm_fmadd_ps(a, b) SIMDE__M256_TO_NATIVE(simde_mm_fmadd_ps(SIMDE__M256_FROM_NATIVE(a), SIMDE__M256_FROM_NATIVE(b), SIMDE__M256_FROM_NATIVE(c)))
 #endif
 
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128d
+simde_mm_fmadd_sd (simde__m128d a, simde__m128d b, simde__m128d c) {
+  simde__m128d r;
+
+#if defined(SIMDE_FMA_NATIVE)
+  r.n = _mm_fmadd_sd(a.n, b.n, c.n);
+#else
+  r = simde_mm_add_sd(simde_mm_mul_sd(a, b), c);
+#endif
+
+  return r;
+}
+#if defined(SIMDE_FMA_ENABLE_NATIVE_ALIASES)
+#  define _mm_fmadd_sd(a, b) SIMDE__M128D_TO_NATIVE(simde_mm_fmadd_sd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b), SIMDE__M128D_FROM_NATIVE(c)))
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128
+simde_mm_fmadd_ss (simde__m128 a, simde__m128 b, simde__m128 c) {
+  simde__m128 r;
+
+#if defined(SIMDE_FMA_NATIVE)
+  r.n = _mm_fmadd_ss(a.n, b.n, c.n);
+#else
+  r = simde_mm_add_ss(simde_mm_mul_ss(a, b), c);
+#endif
+
+  return r;
+}
+#if defined(SIMDE_FMA_ENABLE_NATIVE_ALIASES)
+#  define _mm_fmadd_ss(a, b) SIMDE__M128_TO_NATIVE(simde_mm_fmadd_ss(SIMDE__M128_FROM_NATIVE(a), SIMDE__M128_FROM_NATIVE(b), SIMDE__M128_FROM_NATIVE(c)))
+#endif
+
 SIMDE__END_DECLS
 
 #endif /* !defined(SIMDE__FMA_H) */
