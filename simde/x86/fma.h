@@ -232,6 +232,108 @@ simde_mm256_fmaddsub_ps (simde__m256 a, simde__m256 b, simde__m256 c) {
 #  define _mm_fmaddsub_ps(a, b) SIMDE__M256_TO_NATIVE(simde_mm_fmaddsub_ps(SIMDE__M256_FROM_NATIVE(a), SIMDE__M256_FROM_NATIVE(b), SIMDE__M256_FROM_NATIVE(c)))
 #endif
 
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128d
+simde_mm_fmsub_pd (simde__m128d a, simde__m128d b, simde__m128d c) {
+  simde__m128d r;
+
+#if defined(SIMDE_FMA_NATIVE)
+  r.n = _mm_fmsub_pd(a.n, b.n, c.n);
+#else
+  r = simde_mm_sub_pd(simde_mm_mul_pd(a, b), c);
+#endif
+
+  return r;
+}
+#if defined(SIMDE_FMA_ENABLE_NATIVE_ALIASES)
+#  define _mm_fmsub_pd(a, b) SIMDE__M128D_TO_NATIVE(simde_mm_fmsub_pd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b), SIMDE__M128D_FROM_NATIVE(c)))
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256d
+simde_mm256_fmsub_pd (simde__m256d a, simde__m256d b, simde__m256d c) {
+  simde__m256d r;
+
+#if defined(SIMDE_FMA_NATIVE)
+  r.n = _mm256_fmsub_pd(a.n, b.n, c.n);
+#else
+  r = simde_mm256_sub_pd(simde_mm256_mul_pd(a, b), c);
+#endif
+
+  return r;
+}
+#if defined(SIMDE_FMA_ENABLE_NATIVE_ALIASES)
+#  define _mm_fmsub_pd(a, b) SIMDE__M256D_TO_NATIVE(simde_mm_fmsub_pd(SIMDE__M256D_FROM_NATIVE(a), SIMDE__M256D_FROM_NATIVE(b), SIMDE__M256D_FROM_NATIVE(c)))
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128
+simde_mm_fmsub_ps (simde__m128 a, simde__m128 b, simde__m128 c) {
+  simde__m128 r;
+
+#if defined(SIMDE_FMA_NATIVE)
+  r.n = _mm_fmsub_ps(a.n, b.n, c.n);
+#else
+  r = simde_mm_sub_ps(simde_mm_mul_ps(a, b), c);
+#endif
+
+  return r;
+}
+#if defined(SIMDE_FMA_ENABLE_NATIVE_ALIASES)
+#  define _mm_fmsub_ps(a, b) SIMDE__M128_TO_NATIVE(simde_mm_fmsub_ps(SIMDE__M128_FROM_NATIVE(a), SIMDE__M128_FROM_NATIVE(b), SIMDE__M128_FROM_NATIVE(c)))
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256
+simde_mm256_fmsub_ps (simde__m256 a, simde__m256 b, simde__m256 c) {
+  simde__m256 r;
+
+#if defined(SIMDE_FMA_NATIVE)
+  r.n = _mm256_fmsub_ps(a.n, b.n, c.n);
+#else
+  r = simde_mm256_sub_ps(simde_mm256_mul_ps(a, b), c);
+#endif
+
+  return r;
+}
+#if defined(SIMDE_FMA_ENABLE_NATIVE_ALIASES)
+#  define _mm_fmsub_ps(a, b) SIMDE__M256_TO_NATIVE(simde_mm_fmsub_ps(SIMDE__M256_FROM_NATIVE(a), SIMDE__M256_FROM_NATIVE(b), SIMDE__M256_FROM_NATIVE(c)))
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128d
+simde_mm_fmsub_sd (simde__m128d a, simde__m128d b, simde__m128d c) {
+  simde__m128d r;
+
+#if defined(SIMDE_FMA_NATIVE)
+  r.n = _mm_fmsub_sd(a.n, b.n, c.n);
+#else
+  r = simde_mm_sub_sd(simde_mm_mul_sd(a, b), c);
+#endif
+
+  return r;
+}
+#if defined(SIMDE_FMA_ENABLE_NATIVE_ALIASES)
+#  define _mm_fmsub_sd(a, b) SIMDE__M128D_TO_NATIVE(simde_mm_fmsub_sd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b), SIMDE__M128D_FROM_NATIVE(c)))
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128
+simde_mm_fmsub_ss (simde__m128 a, simde__m128 b, simde__m128 c) {
+  simde__m128 r;
+
+#if defined(SIMDE_FMA_NATIVE)
+  r.n = _mm_fmsub_ss(a.n, b.n, c.n);
+#else
+  r = simde_mm_sub_ss(simde_mm_mul_ss(a, b), c);
+#endif
+
+  return r;
+}
+#if defined(SIMDE_FMA_ENABLE_NATIVE_ALIASES)
+#  define _mm_fmsub_ss(a, b) SIMDE__M128_TO_NATIVE(simde_mm_fmsub_ss(SIMDE__M128_FROM_NATIVE(a), SIMDE__M128_FROM_NATIVE(b), SIMDE__M128_FROM_NATIVE(c)))
+#endif
+
 SIMDE__END_DECLS
 
 #endif /* !defined(SIMDE__FMA_H) */
