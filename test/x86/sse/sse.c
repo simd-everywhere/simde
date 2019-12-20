@@ -27,7 +27,18 @@
 #include <stdio.h>
 #include <math.h>
 
-#define NAN_AS_U32 (((union { simde_float32 f32; uint32_t u32; }) { .f32 = NAN }).u32)
+HEDLEY_ALWAYS_INLINE static
+uint32_t
+simde_test_f32_to_u32(simde_float32 val) {
+  union {
+    simde_float32 from;
+    uint32_t to;
+  } u;
+  u.from = val;
+  return u.to;
+}
+
+#define NAN_AS_U32 (simde_test_f32_to_u32(NAN))
 
 #define assert_m128_ps(a, cmp, b)					\
   do {									\

@@ -26,9 +26,6 @@
 
 #include <stdio.h>
 
-#define SIMDE_TEST_ALL_SET_FLOAT64 (((union { uint64_t u; simde_float64 b; }) { ~UINT64_C(0x0) }).b)
-#define SIMDE_TEST_ALL_SET_FLOAT32 (((union { uint32_t u; simde_float32 b; }) { ~UINT32_C(0x0) }).b)
-
 static MunitResult
 test_simde_mm256_set_epi8(const MunitParameter params[], void* data) {
   (void) params;
@@ -2117,7 +2114,7 @@ test_simde_mm_cmp_pd(const MunitParameter params[], void* data) {
       simde_mm_set_pd(SIMDE_FLOAT64_C(    0.00), SIMDE_FLOAT64_C(    0.00)) },
     { simde_mm_set_pd(SIMDE_FLOAT64_C(  154.75), SIMDE_FLOAT64_C(  421.91)),
       simde_mm_set_pd(SIMDE_FLOAT64_C(  154.75), SIMDE_FLOAT64_C(  421.91)),
-      simde_mm_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64) },
+      simde_mm_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET) },
     { simde_mm_set_pd(SIMDE_FLOAT64_C(  824.22), SIMDE_FLOAT64_C(  893.34)),
       simde_mm_set_pd(                     NAN ,                      NAN ),
       simde_mm_set_pd(SIMDE_FLOAT64_C(    0.00), SIMDE_FLOAT64_C(    0.00)) },
@@ -2127,7 +2124,7 @@ test_simde_mm_cmp_pd(const MunitParameter params[], void* data) {
     /* 1 */
     { simde_mm_set_pd(SIMDE_FLOAT64_C(  696.22), SIMDE_FLOAT64_C( -762.68)),
       simde_mm_set_pd(SIMDE_FLOAT64_C(  919.14), SIMDE_FLOAT64_C(  193.81)),
-      simde_mm_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64) },
+      simde_mm_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET) },
     { simde_mm_set_pd(SIMDE_FLOAT64_C(  633.35), SIMDE_FLOAT64_C(  108.68)),
       simde_mm_set_pd(SIMDE_FLOAT64_C( -781.31), SIMDE_FLOAT64_C( -480.81)),
       simde_mm_set_pd(SIMDE_FLOAT64_C(    0.00), SIMDE_FLOAT64_C(    0.00)) },
@@ -2143,13 +2140,13 @@ test_simde_mm_cmp_pd(const MunitParameter params[], void* data) {
     /* 2 */
     { simde_mm_set_pd(SIMDE_FLOAT64_C(  867.95), SIMDE_FLOAT64_C(  922.57)),
       simde_mm_set_pd(SIMDE_FLOAT64_C(  898.26), SIMDE_FLOAT64_C(  935.85)),
-      simde_mm_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64) },
+      simde_mm_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET) },
     { simde_mm_set_pd(SIMDE_FLOAT64_C(  202.85), SIMDE_FLOAT64_C(  -31.08)),
       simde_mm_set_pd(SIMDE_FLOAT64_C( -774.78), SIMDE_FLOAT64_C( -447.16)),
       simde_mm_set_pd(SIMDE_FLOAT64_C(    0.00), SIMDE_FLOAT64_C(    0.00)) },
     { simde_mm_set_pd(SIMDE_FLOAT64_C(  -73.41), SIMDE_FLOAT64_C( -449.20)),
       simde_mm_set_pd(SIMDE_FLOAT64_C(  -73.41), SIMDE_FLOAT64_C( -449.20)),
-      simde_mm_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64) },
+      simde_mm_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET) },
     { simde_mm_set_pd(SIMDE_FLOAT64_C(  566.15), SIMDE_FLOAT64_C(   58.04)),
       simde_mm_set_pd(                     NAN ,                      NAN ),
       simde_mm_set_pd(SIMDE_FLOAT64_C(    0.00), SIMDE_FLOAT64_C(    0.00)) },
@@ -2168,68 +2165,68 @@ test_simde_mm_cmp_pd(const MunitParameter params[], void* data) {
       simde_mm_set_pd(SIMDE_FLOAT64_C(    0.00), SIMDE_FLOAT64_C(    0.00)) },
     { simde_mm_set_pd(SIMDE_FLOAT64_C(  885.07), SIMDE_FLOAT64_C(  301.93)),
       simde_mm_set_pd(                     NAN ,                      NAN ),
-      simde_mm_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64) },
+      simde_mm_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET) },
     { simde_mm_set_pd(                     NAN ,                      NAN ),
       simde_mm_set_pd(SIMDE_FLOAT64_C(  439.24), SIMDE_FLOAT64_C( -579.89)),
-      simde_mm_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64) },
+      simde_mm_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET) },
     /* 4 */
     { simde_mm_set_pd(SIMDE_FLOAT64_C( -870.88), SIMDE_FLOAT64_C(  245.45)),
       simde_mm_set_pd(SIMDE_FLOAT64_C(  -24.26), SIMDE_FLOAT64_C(  522.18)),
-      simde_mm_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64) },
+      simde_mm_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET) },
     { simde_mm_set_pd(SIMDE_FLOAT64_C(  197.35), SIMDE_FLOAT64_C(  431.63)),
       simde_mm_set_pd(SIMDE_FLOAT64_C( -239.79), SIMDE_FLOAT64_C( -923.26)),
-      simde_mm_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64) },
+      simde_mm_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET) },
     { simde_mm_set_pd(SIMDE_FLOAT64_C( -817.59), SIMDE_FLOAT64_C(  878.84)),
       simde_mm_set_pd(SIMDE_FLOAT64_C( -817.59), SIMDE_FLOAT64_C(  878.84)),
       simde_mm_set_pd(SIMDE_FLOAT64_C(    0.00), SIMDE_FLOAT64_C(    0.00)) },
     { simde_mm_set_pd(SIMDE_FLOAT64_C(  732.05), SIMDE_FLOAT64_C(  358.02)),
       simde_mm_set_pd(                     NAN ,                      NAN ),
-      simde_mm_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64) },
+      simde_mm_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET) },
     { simde_mm_set_pd(                     NAN ,                      NAN ),
       simde_mm_set_pd(SIMDE_FLOAT64_C(  376.41), SIMDE_FLOAT64_C( -150.39)),
-      simde_mm_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64) },
+      simde_mm_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET) },
     /* 5 */
     { simde_mm_set_pd(SIMDE_FLOAT64_C( -752.97), SIMDE_FLOAT64_C(  -94.36)),
       simde_mm_set_pd(SIMDE_FLOAT64_C(  129.56), SIMDE_FLOAT64_C(  291.14)),
       simde_mm_set_pd(SIMDE_FLOAT64_C(    0.00), SIMDE_FLOAT64_C(    0.00)) },
     { simde_mm_set_pd(SIMDE_FLOAT64_C( -694.60), SIMDE_FLOAT64_C(  283.15)),
       simde_mm_set_pd(SIMDE_FLOAT64_C( -744.59), SIMDE_FLOAT64_C( -281.74)),
-      simde_mm_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64) },
+      simde_mm_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET) },
     { simde_mm_set_pd(SIMDE_FLOAT64_C( -245.17), SIMDE_FLOAT64_C(  713.29)),
       simde_mm_set_pd(SIMDE_FLOAT64_C( -245.17), SIMDE_FLOAT64_C(  713.29)),
-      simde_mm_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64) },
+      simde_mm_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET) },
     { simde_mm_set_pd(SIMDE_FLOAT64_C(  800.54), SIMDE_FLOAT64_C(  336.83)),
       simde_mm_set_pd(                     NAN ,                      NAN ),
-      simde_mm_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64) },
+      simde_mm_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET) },
     { simde_mm_set_pd(                     NAN ,                      NAN ),
       simde_mm_set_pd(SIMDE_FLOAT64_C( -984.20), SIMDE_FLOAT64_C(  916.79)),
-      simde_mm_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64) },
+      simde_mm_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET) },
     /* 6 */
     { simde_mm_set_pd(SIMDE_FLOAT64_C(  418.56), SIMDE_FLOAT64_C(  721.42)),
       simde_mm_set_pd(SIMDE_FLOAT64_C(  588.80), SIMDE_FLOAT64_C(  954.29)),
       simde_mm_set_pd(SIMDE_FLOAT64_C(    0.00), SIMDE_FLOAT64_C(    0.00)) },
     { simde_mm_set_pd(SIMDE_FLOAT64_C( -876.64), SIMDE_FLOAT64_C(  774.45)),
       simde_mm_set_pd(SIMDE_FLOAT64_C( -978.38), SIMDE_FLOAT64_C( -374.92)),
-      simde_mm_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64) },
+      simde_mm_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET) },
     { simde_mm_set_pd(SIMDE_FLOAT64_C(  421.63), SIMDE_FLOAT64_C(  686.94)),
       simde_mm_set_pd(SIMDE_FLOAT64_C(  421.63), SIMDE_FLOAT64_C(  686.94)),
       simde_mm_set_pd(SIMDE_FLOAT64_C(    0.00), SIMDE_FLOAT64_C(    0.00)) },
     { simde_mm_set_pd(SIMDE_FLOAT64_C(  562.25), SIMDE_FLOAT64_C(  712.76)),
       simde_mm_set_pd(                     NAN ,                      NAN ),
-      simde_mm_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64) },
+      simde_mm_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET) },
     { simde_mm_set_pd(                     NAN ,                      NAN ),
       simde_mm_set_pd(SIMDE_FLOAT64_C(  -34.73), SIMDE_FLOAT64_C(   32.85)),
-      simde_mm_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64) },
+      simde_mm_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET) },
     /* 7 */
     { simde_mm_set_pd(SIMDE_FLOAT64_C( -970.08), SIMDE_FLOAT64_C(  342.40)),
       simde_mm_set_pd(SIMDE_FLOAT64_C( -564.35), SIMDE_FLOAT64_C(  715.16)),
-      simde_mm_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64) },
+      simde_mm_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET) },
     { simde_mm_set_pd(SIMDE_FLOAT64_C(   74.04), SIMDE_FLOAT64_C(  782.97)),
       simde_mm_set_pd(SIMDE_FLOAT64_C( -252.40), SIMDE_FLOAT64_C( -653.45)),
-      simde_mm_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64) },
+      simde_mm_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET) },
     { simde_mm_set_pd(SIMDE_FLOAT64_C( -820.35), SIMDE_FLOAT64_C(  846.68)),
       simde_mm_set_pd(SIMDE_FLOAT64_C( -820.35), SIMDE_FLOAT64_C(  846.68)),
-      simde_mm_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64) },
+      simde_mm_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET) },
     { simde_mm_set_pd(SIMDE_FLOAT64_C(  262.97), SIMDE_FLOAT64_C( -220.11)),
       simde_mm_set_pd(                     NAN ,                      NAN ),
       simde_mm_set_pd(SIMDE_FLOAT64_C(    0.00), SIMDE_FLOAT64_C(    0.00)) },
@@ -2245,17 +2242,17 @@ test_simde_mm_cmp_pd(const MunitParameter params[], void* data) {
       simde_mm_set_pd(SIMDE_FLOAT64_C(    0.00), SIMDE_FLOAT64_C(    0.00)) },
     { simde_mm_set_pd(SIMDE_FLOAT64_C(  900.57), SIMDE_FLOAT64_C(  468.19)),
       simde_mm_set_pd(SIMDE_FLOAT64_C(  900.57), SIMDE_FLOAT64_C(  468.19)),
-      simde_mm_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64) },
+      simde_mm_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET) },
     { simde_mm_set_pd(SIMDE_FLOAT64_C( -955.72), SIMDE_FLOAT64_C( -966.92)),
       simde_mm_set_pd(                     NAN ,                      NAN ),
-      simde_mm_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64) },
+      simde_mm_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET) },
     { simde_mm_set_pd(                     NAN ,                      NAN ),
       simde_mm_set_pd(SIMDE_FLOAT64_C(  955.81), SIMDE_FLOAT64_C(  521.19)),
-      simde_mm_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64) },
+      simde_mm_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET) },
     /* 9 */
     { simde_mm_set_pd(SIMDE_FLOAT64_C(  295.38), SIMDE_FLOAT64_C( -590.44)),
       simde_mm_set_pd(SIMDE_FLOAT64_C(  311.26), SIMDE_FLOAT64_C(  337.73)),
-      simde_mm_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64) },
+      simde_mm_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET) },
     { simde_mm_set_pd(SIMDE_FLOAT64_C(  -88.55), SIMDE_FLOAT64_C( -176.19)),
       simde_mm_set_pd(SIMDE_FLOAT64_C( -876.40), SIMDE_FLOAT64_C( -707.99)),
       simde_mm_set_pd(SIMDE_FLOAT64_C(    0.00), SIMDE_FLOAT64_C(    0.00)) },
@@ -2264,26 +2261,26 @@ test_simde_mm_cmp_pd(const MunitParameter params[], void* data) {
       simde_mm_set_pd(SIMDE_FLOAT64_C(    0.00), SIMDE_FLOAT64_C(    0.00)) },
     { simde_mm_set_pd(SIMDE_FLOAT64_C( -138.67), SIMDE_FLOAT64_C( -722.72)),
       simde_mm_set_pd(                     NAN ,                      NAN ),
-      simde_mm_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64) },
+      simde_mm_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET) },
     { simde_mm_set_pd(                     NAN ,                      NAN ),
       simde_mm_set_pd(SIMDE_FLOAT64_C(  469.74), SIMDE_FLOAT64_C( -238.12)),
-      simde_mm_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64) },
+      simde_mm_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET) },
     /* 10 */
     { simde_mm_set_pd(SIMDE_FLOAT64_C( -964.03), SIMDE_FLOAT64_C( -655.88)),
       simde_mm_set_pd(SIMDE_FLOAT64_C(  882.48), SIMDE_FLOAT64_C( -632.34)),
-      simde_mm_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64) },
+      simde_mm_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET) },
     { simde_mm_set_pd(SIMDE_FLOAT64_C( -490.96), SIMDE_FLOAT64_C( -663.74)),
       simde_mm_set_pd(SIMDE_FLOAT64_C( -923.12), SIMDE_FLOAT64_C( -723.09)),
       simde_mm_set_pd(SIMDE_FLOAT64_C(    0.00), SIMDE_FLOAT64_C(    0.00)) },
     { simde_mm_set_pd(SIMDE_FLOAT64_C( -820.28), SIMDE_FLOAT64_C(  245.58)),
       simde_mm_set_pd(SIMDE_FLOAT64_C( -820.28), SIMDE_FLOAT64_C(  245.58)),
-      simde_mm_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64) },
+      simde_mm_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET) },
     { simde_mm_set_pd(SIMDE_FLOAT64_C(  -45.30), SIMDE_FLOAT64_C( -758.31)),
       simde_mm_set_pd(                     NAN ,                      NAN ),
-      simde_mm_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64) },
+      simde_mm_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET) },
     { simde_mm_set_pd(                     NAN ,                      NAN ),
       simde_mm_set_pd(SIMDE_FLOAT64_C( -336.62), SIMDE_FLOAT64_C(  364.29)),
-      simde_mm_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64) },
+      simde_mm_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET) },
     /* 11 */
     { simde_mm_set_pd(SIMDE_FLOAT64_C( -362.47), SIMDE_FLOAT64_C( -433.79)),
       simde_mm_set_pd(SIMDE_FLOAT64_C(   48.67), SIMDE_FLOAT64_C(  358.03)),
@@ -2303,10 +2300,10 @@ test_simde_mm_cmp_pd(const MunitParameter params[], void* data) {
     /* 12 */
     { simde_mm_set_pd(SIMDE_FLOAT64_C( -144.07), SIMDE_FLOAT64_C(  314.22)),
       simde_mm_set_pd(SIMDE_FLOAT64_C(  -99.92), SIMDE_FLOAT64_C(  650.58)),
-      simde_mm_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64) },
+      simde_mm_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET) },
     { simde_mm_set_pd(SIMDE_FLOAT64_C( -107.66), SIMDE_FLOAT64_C(  861.03)),
       simde_mm_set_pd(SIMDE_FLOAT64_C( -934.47), SIMDE_FLOAT64_C( -412.02)),
-      simde_mm_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64) },
+      simde_mm_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET) },
     { simde_mm_set_pd(SIMDE_FLOAT64_C( -526.73), SIMDE_FLOAT64_C(  343.68)),
       simde_mm_set_pd(SIMDE_FLOAT64_C( -526.73), SIMDE_FLOAT64_C(  343.68)),
       simde_mm_set_pd(SIMDE_FLOAT64_C(    0.00), SIMDE_FLOAT64_C(    0.00)) },
@@ -2322,10 +2319,10 @@ test_simde_mm_cmp_pd(const MunitParameter params[], void* data) {
       simde_mm_set_pd(SIMDE_FLOAT64_C(    0.00), SIMDE_FLOAT64_C(    0.00)) },
     { simde_mm_set_pd(SIMDE_FLOAT64_C(  939.35), SIMDE_FLOAT64_C( -697.80)),
       simde_mm_set_pd(SIMDE_FLOAT64_C(  734.09), SIMDE_FLOAT64_C( -772.91)),
-      simde_mm_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64) },
+      simde_mm_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET) },
     { simde_mm_set_pd(SIMDE_FLOAT64_C(  218.18), SIMDE_FLOAT64_C(  171.79)),
       simde_mm_set_pd(SIMDE_FLOAT64_C(  218.18), SIMDE_FLOAT64_C(  171.79)),
-      simde_mm_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64) },
+      simde_mm_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET) },
     { simde_mm_set_pd(SIMDE_FLOAT64_C(  886.78), SIMDE_FLOAT64_C(  528.38)),
       simde_mm_set_pd(                     NAN ,                      NAN ),
       simde_mm_set_pd(SIMDE_FLOAT64_C(    0.00), SIMDE_FLOAT64_C(    0.00)) },
@@ -2338,7 +2335,7 @@ test_simde_mm_cmp_pd(const MunitParameter params[], void* data) {
       simde_mm_set_pd(SIMDE_FLOAT64_C(    0.00), SIMDE_FLOAT64_C(    0.00)) },
     { simde_mm_set_pd(SIMDE_FLOAT64_C( -912.43), SIMDE_FLOAT64_C( -847.25)),
       simde_mm_set_pd(SIMDE_FLOAT64_C( -926.68), SIMDE_FLOAT64_C( -927.41)),
-      simde_mm_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64) },
+      simde_mm_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET) },
     { simde_mm_set_pd(SIMDE_FLOAT64_C( -280.98), SIMDE_FLOAT64_C( -321.44)),
       simde_mm_set_pd(SIMDE_FLOAT64_C( -280.98), SIMDE_FLOAT64_C( -321.44)),
       simde_mm_set_pd(SIMDE_FLOAT64_C(    0.00), SIMDE_FLOAT64_C(    0.00)) },
@@ -2351,19 +2348,19 @@ test_simde_mm_cmp_pd(const MunitParameter params[], void* data) {
     /* 15 */
     { simde_mm_set_pd(SIMDE_FLOAT64_C( -534.25), SIMDE_FLOAT64_C(  462.64)),
       simde_mm_set_pd(SIMDE_FLOAT64_C( -400.74), SIMDE_FLOAT64_C(  786.60)),
-      simde_mm_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64) },
+      simde_mm_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET) },
     { simde_mm_set_pd(SIMDE_FLOAT64_C(   22.21), SIMDE_FLOAT64_C(    3.85)),
       simde_mm_set_pd(SIMDE_FLOAT64_C( -806.06), SIMDE_FLOAT64_C( -774.50)),
-      simde_mm_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64) },
+      simde_mm_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET) },
     { simde_mm_set_pd(SIMDE_FLOAT64_C( -135.43), SIMDE_FLOAT64_C(    5.39)),
       simde_mm_set_pd(SIMDE_FLOAT64_C( -135.43), SIMDE_FLOAT64_C(    5.39)),
-      simde_mm_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64) },
+      simde_mm_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET) },
     { simde_mm_set_pd(SIMDE_FLOAT64_C( -328.86), SIMDE_FLOAT64_C(   -1.43)),
       simde_mm_set_pd(                     NAN ,                      NAN ),
-      simde_mm_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64) },
+      simde_mm_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET) },
     { simde_mm_set_pd(                     NAN ,                      NAN ),
       simde_mm_set_pd(SIMDE_FLOAT64_C( -578.68), SIMDE_FLOAT64_C( -504.59)),
-      simde_mm_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64) },
+      simde_mm_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET) },
     /* 16 */
     { simde_mm_set_pd(SIMDE_FLOAT64_C( -183.81), SIMDE_FLOAT64_C(  940.71)),
       simde_mm_set_pd(SIMDE_FLOAT64_C(  116.32), SIMDE_FLOAT64_C(  968.80)),
@@ -2373,7 +2370,7 @@ test_simde_mm_cmp_pd(const MunitParameter params[], void* data) {
       simde_mm_set_pd(SIMDE_FLOAT64_C(    0.00), SIMDE_FLOAT64_C(    0.00)) },
     { simde_mm_set_pd(SIMDE_FLOAT64_C(  372.34), SIMDE_FLOAT64_C(  537.19)),
       simde_mm_set_pd(SIMDE_FLOAT64_C(  372.34), SIMDE_FLOAT64_C(  537.19)),
-      simde_mm_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64) },
+      simde_mm_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET) },
     { simde_mm_set_pd(SIMDE_FLOAT64_C( -170.70), SIMDE_FLOAT64_C(   78.35)),
       simde_mm_set_pd(                     NAN ,                      NAN ),
       simde_mm_set_pd(SIMDE_FLOAT64_C(    0.00), SIMDE_FLOAT64_C(    0.00)) },
@@ -2383,7 +2380,7 @@ test_simde_mm_cmp_pd(const MunitParameter params[], void* data) {
     /* 17 */
     { simde_mm_set_pd(SIMDE_FLOAT64_C(  571.06), SIMDE_FLOAT64_C( -858.35)),
       simde_mm_set_pd(SIMDE_FLOAT64_C(  935.34), SIMDE_FLOAT64_C(  933.83)),
-      simde_mm_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64) },
+      simde_mm_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET) },
     { simde_mm_set_pd(SIMDE_FLOAT64_C(   66.28), SIMDE_FLOAT64_C(   64.16)),
       simde_mm_set_pd(SIMDE_FLOAT64_C( -291.80), SIMDE_FLOAT64_C(  -28.70)),
       simde_mm_set_pd(SIMDE_FLOAT64_C(    0.00), SIMDE_FLOAT64_C(    0.00)) },
@@ -2399,13 +2396,13 @@ test_simde_mm_cmp_pd(const MunitParameter params[], void* data) {
     /* 18 */
     { simde_mm_set_pd(SIMDE_FLOAT64_C( -366.69), SIMDE_FLOAT64_C(  668.86)),
       simde_mm_set_pd(SIMDE_FLOAT64_C(  797.88), SIMDE_FLOAT64_C(  703.26)),
-      simde_mm_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64) },
+      simde_mm_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET) },
     { simde_mm_set_pd(SIMDE_FLOAT64_C(  789.39), SIMDE_FLOAT64_C(  864.32)),
       simde_mm_set_pd(SIMDE_FLOAT64_C( -300.63), SIMDE_FLOAT64_C( -736.94)),
       simde_mm_set_pd(SIMDE_FLOAT64_C(    0.00), SIMDE_FLOAT64_C(    0.00)) },
     { simde_mm_set_pd(SIMDE_FLOAT64_C(   83.76), SIMDE_FLOAT64_C( -578.41)),
       simde_mm_set_pd(SIMDE_FLOAT64_C(   83.76), SIMDE_FLOAT64_C( -578.41)),
-      simde_mm_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64) },
+      simde_mm_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET) },
     { simde_mm_set_pd(SIMDE_FLOAT64_C(   92.61), SIMDE_FLOAT64_C(  780.89)),
       simde_mm_set_pd(                     NAN ,                      NAN ),
       simde_mm_set_pd(SIMDE_FLOAT64_C(    0.00), SIMDE_FLOAT64_C(    0.00)) },
@@ -2424,68 +2421,68 @@ test_simde_mm_cmp_pd(const MunitParameter params[], void* data) {
       simde_mm_set_pd(SIMDE_FLOAT64_C(    0.00), SIMDE_FLOAT64_C(    0.00)) },
     { simde_mm_set_pd(SIMDE_FLOAT64_C( -855.58), SIMDE_FLOAT64_C(  821.79)),
       simde_mm_set_pd(                     NAN ,                      NAN ),
-      simde_mm_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64) },
+      simde_mm_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET) },
     { simde_mm_set_pd(                     NAN ,                      NAN ),
       simde_mm_set_pd(SIMDE_FLOAT64_C( -759.48), SIMDE_FLOAT64_C( -410.97)),
-      simde_mm_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64) },
+      simde_mm_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET) },
     /* 20 */
     { simde_mm_set_pd(SIMDE_FLOAT64_C(  608.05), SIMDE_FLOAT64_C(  305.86)),
       simde_mm_set_pd(SIMDE_FLOAT64_C(  786.81), SIMDE_FLOAT64_C(  485.46)),
-      simde_mm_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64) },
+      simde_mm_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET) },
     { simde_mm_set_pd(SIMDE_FLOAT64_C( -332.74), SIMDE_FLOAT64_C( -240.33)),
       simde_mm_set_pd(SIMDE_FLOAT64_C( -490.37), SIMDE_FLOAT64_C( -482.95)),
-      simde_mm_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64) },
+      simde_mm_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET) },
     { simde_mm_set_pd(SIMDE_FLOAT64_C(  959.57), SIMDE_FLOAT64_C( -245.61)),
       simde_mm_set_pd(SIMDE_FLOAT64_C(  959.57), SIMDE_FLOAT64_C( -245.61)),
       simde_mm_set_pd(SIMDE_FLOAT64_C(    0.00), SIMDE_FLOAT64_C(    0.00)) },
     { simde_mm_set_pd(SIMDE_FLOAT64_C(  471.52), SIMDE_FLOAT64_C( -254.36)),
       simde_mm_set_pd(                     NAN ,                      NAN ),
-      simde_mm_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64) },
+      simde_mm_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET) },
     { simde_mm_set_pd(                     NAN ,                      NAN ),
       simde_mm_set_pd(SIMDE_FLOAT64_C(  805.34), SIMDE_FLOAT64_C(   47.10)),
-      simde_mm_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64) },
+      simde_mm_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET) },
     /* 21 */
     { simde_mm_set_pd(SIMDE_FLOAT64_C( -883.05), SIMDE_FLOAT64_C( -685.82)),
       simde_mm_set_pd(SIMDE_FLOAT64_C(  437.76), SIMDE_FLOAT64_C( -261.16)),
       simde_mm_set_pd(SIMDE_FLOAT64_C(    0.00), SIMDE_FLOAT64_C(    0.00)) },
     { simde_mm_set_pd(SIMDE_FLOAT64_C(   25.17), SIMDE_FLOAT64_C( -978.34)),
       simde_mm_set_pd(SIMDE_FLOAT64_C( -316.84), SIMDE_FLOAT64_C( -988.59)),
-      simde_mm_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64) },
+      simde_mm_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET) },
     { simde_mm_set_pd(SIMDE_FLOAT64_C( -278.35), SIMDE_FLOAT64_C(  800.33)),
       simde_mm_set_pd(SIMDE_FLOAT64_C( -278.35), SIMDE_FLOAT64_C(  800.33)),
-      simde_mm_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64) },
+      simde_mm_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET) },
     { simde_mm_set_pd(SIMDE_FLOAT64_C(  504.01), SIMDE_FLOAT64_C( -993.03)),
       simde_mm_set_pd(                     NAN ,                      NAN ),
-      simde_mm_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64) },
+      simde_mm_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET) },
     { simde_mm_set_pd(                     NAN ,                      NAN ),
       simde_mm_set_pd(SIMDE_FLOAT64_C( -482.47), SIMDE_FLOAT64_C( -682.33)),
-      simde_mm_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64) },
+      simde_mm_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET) },
     /* 22 */
     { simde_mm_set_pd(SIMDE_FLOAT64_C( -947.05), SIMDE_FLOAT64_C(  497.51)),
       simde_mm_set_pd(SIMDE_FLOAT64_C( -479.84), SIMDE_FLOAT64_C(  771.58)),
       simde_mm_set_pd(SIMDE_FLOAT64_C(    0.00), SIMDE_FLOAT64_C(    0.00)) },
     { simde_mm_set_pd(SIMDE_FLOAT64_C( -957.22), SIMDE_FLOAT64_C( -498.17)),
       simde_mm_set_pd(SIMDE_FLOAT64_C( -996.36), SIMDE_FLOAT64_C( -893.25)),
-      simde_mm_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64) },
+      simde_mm_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET) },
     { simde_mm_set_pd(SIMDE_FLOAT64_C( -196.35), SIMDE_FLOAT64_C(   70.52)),
       simde_mm_set_pd(SIMDE_FLOAT64_C( -196.35), SIMDE_FLOAT64_C(   70.52)),
       simde_mm_set_pd(SIMDE_FLOAT64_C(    0.00), SIMDE_FLOAT64_C(    0.00)) },
     { simde_mm_set_pd(SIMDE_FLOAT64_C( -895.00), SIMDE_FLOAT64_C( -516.24)),
       simde_mm_set_pd(                     NAN ,                      NAN ),
-      simde_mm_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64) },
+      simde_mm_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET) },
     { simde_mm_set_pd(                     NAN ,                      NAN ),
       simde_mm_set_pd(SIMDE_FLOAT64_C( -605.59), SIMDE_FLOAT64_C(   95.56)),
-      simde_mm_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64) },
+      simde_mm_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET) },
     /* 23 */
     { simde_mm_set_pd(SIMDE_FLOAT64_C( -277.10), SIMDE_FLOAT64_C(  593.77)),
       simde_mm_set_pd(SIMDE_FLOAT64_C( -225.52), SIMDE_FLOAT64_C(  955.22)),
-      simde_mm_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64) },
+      simde_mm_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET) },
     { simde_mm_set_pd(SIMDE_FLOAT64_C(  210.46), SIMDE_FLOAT64_C( -668.10)),
       simde_mm_set_pd(SIMDE_FLOAT64_C(    0.93), SIMDE_FLOAT64_C( -776.93)),
-      simde_mm_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64) },
+      simde_mm_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET) },
     { simde_mm_set_pd(SIMDE_FLOAT64_C(  268.81), SIMDE_FLOAT64_C(   42.66)),
       simde_mm_set_pd(SIMDE_FLOAT64_C(  268.81), SIMDE_FLOAT64_C(   42.66)),
-      simde_mm_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64) },
+      simde_mm_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET) },
     { simde_mm_set_pd(SIMDE_FLOAT64_C(  -67.56), SIMDE_FLOAT64_C( -371.19)),
       simde_mm_set_pd(                     NAN ,                      NAN ),
       simde_mm_set_pd(SIMDE_FLOAT64_C(    0.00), SIMDE_FLOAT64_C(    0.00)) },
@@ -2501,17 +2498,17 @@ test_simde_mm_cmp_pd(const MunitParameter params[], void* data) {
       simde_mm_set_pd(SIMDE_FLOAT64_C(    0.00), SIMDE_FLOAT64_C(    0.00)) },
     { simde_mm_set_pd(SIMDE_FLOAT64_C(  395.44), SIMDE_FLOAT64_C(  139.62)),
       simde_mm_set_pd(SIMDE_FLOAT64_C(  395.44), SIMDE_FLOAT64_C(  139.62)),
-      simde_mm_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64) },
+      simde_mm_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET) },
     { simde_mm_set_pd(SIMDE_FLOAT64_C(  -61.05), SIMDE_FLOAT64_C(  478.18)),
       simde_mm_set_pd(                     NAN ,                      NAN ),
-      simde_mm_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64) },
+      simde_mm_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET) },
     { simde_mm_set_pd(                     NAN ,                      NAN ),
       simde_mm_set_pd(SIMDE_FLOAT64_C( -577.95), SIMDE_FLOAT64_C( -574.53)),
-      simde_mm_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64) },
+      simde_mm_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET) },
     /* 25 */
     { simde_mm_set_pd(SIMDE_FLOAT64_C(  416.40), SIMDE_FLOAT64_C( -526.24)),
       simde_mm_set_pd(SIMDE_FLOAT64_C(  660.03), SIMDE_FLOAT64_C(  -28.91)),
-      simde_mm_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64) },
+      simde_mm_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET) },
     { simde_mm_set_pd(SIMDE_FLOAT64_C( -774.73), SIMDE_FLOAT64_C(  566.48)),
       simde_mm_set_pd(SIMDE_FLOAT64_C( -917.37), SIMDE_FLOAT64_C( -880.02)),
       simde_mm_set_pd(SIMDE_FLOAT64_C(    0.00), SIMDE_FLOAT64_C(    0.00)) },
@@ -2520,26 +2517,26 @@ test_simde_mm_cmp_pd(const MunitParameter params[], void* data) {
       simde_mm_set_pd(SIMDE_FLOAT64_C(    0.00), SIMDE_FLOAT64_C(    0.00)) },
     { simde_mm_set_pd(SIMDE_FLOAT64_C( -568.05), SIMDE_FLOAT64_C( -288.94)),
       simde_mm_set_pd(                     NAN ,                      NAN ),
-      simde_mm_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64) },
+      simde_mm_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET) },
     { simde_mm_set_pd(                     NAN ,                      NAN ),
       simde_mm_set_pd(SIMDE_FLOAT64_C(  864.36), SIMDE_FLOAT64_C(  525.81)),
-      simde_mm_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64) },
+      simde_mm_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET) },
     /* 26 */
     { simde_mm_set_pd(SIMDE_FLOAT64_C( -542.28), SIMDE_FLOAT64_C(  892.19)),
       simde_mm_set_pd(SIMDE_FLOAT64_C( -306.92), SIMDE_FLOAT64_C(  949.05)),
-      simde_mm_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64) },
+      simde_mm_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET) },
     { simde_mm_set_pd(SIMDE_FLOAT64_C(  412.57), SIMDE_FLOAT64_C(  620.17)),
       simde_mm_set_pd(SIMDE_FLOAT64_C(   59.07), SIMDE_FLOAT64_C(  108.31)),
       simde_mm_set_pd(SIMDE_FLOAT64_C(    0.00), SIMDE_FLOAT64_C(    0.00)) },
     { simde_mm_set_pd(SIMDE_FLOAT64_C( -427.72), SIMDE_FLOAT64_C(  114.96)),
       simde_mm_set_pd(SIMDE_FLOAT64_C( -427.72), SIMDE_FLOAT64_C(  114.96)),
-      simde_mm_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64) },
+      simde_mm_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET) },
     { simde_mm_set_pd(SIMDE_FLOAT64_C(  946.11), SIMDE_FLOAT64_C(   48.04)),
       simde_mm_set_pd(                     NAN ,                      NAN ),
-      simde_mm_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64) },
+      simde_mm_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET) },
     { simde_mm_set_pd(                     NAN ,                      NAN ),
       simde_mm_set_pd(SIMDE_FLOAT64_C(  318.10), SIMDE_FLOAT64_C( -874.65)),
-      simde_mm_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64) },
+      simde_mm_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET) },
     /* 27 */
     { simde_mm_set_pd(SIMDE_FLOAT64_C(  143.93), SIMDE_FLOAT64_C(  507.00)),
       simde_mm_set_pd(SIMDE_FLOAT64_C(  234.55), SIMDE_FLOAT64_C(  992.31)),
@@ -2559,10 +2556,10 @@ test_simde_mm_cmp_pd(const MunitParameter params[], void* data) {
     /* 28 */
     { simde_mm_set_pd(SIMDE_FLOAT64_C(  979.33), SIMDE_FLOAT64_C( -879.66)),
       simde_mm_set_pd(SIMDE_FLOAT64_C(  997.49), SIMDE_FLOAT64_C(  973.15)),
-      simde_mm_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64) },
+      simde_mm_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET) },
     { simde_mm_set_pd(SIMDE_FLOAT64_C( -307.60), SIMDE_FLOAT64_C(  589.50)),
       simde_mm_set_pd(SIMDE_FLOAT64_C( -312.27), SIMDE_FLOAT64_C( -323.93)),
-      simde_mm_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64) },
+      simde_mm_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET) },
     { simde_mm_set_pd(SIMDE_FLOAT64_C( -607.36), SIMDE_FLOAT64_C(  554.31)),
       simde_mm_set_pd(SIMDE_FLOAT64_C( -607.36), SIMDE_FLOAT64_C(  554.31)),
       simde_mm_set_pd(SIMDE_FLOAT64_C(    0.00), SIMDE_FLOAT64_C(    0.00)) },
@@ -2578,10 +2575,10 @@ test_simde_mm_cmp_pd(const MunitParameter params[], void* data) {
       simde_mm_set_pd(SIMDE_FLOAT64_C(    0.00), SIMDE_FLOAT64_C(    0.00)) },
     { simde_mm_set_pd(SIMDE_FLOAT64_C(   83.52), SIMDE_FLOAT64_C( -712.98)),
       simde_mm_set_pd(SIMDE_FLOAT64_C( -494.14), SIMDE_FLOAT64_C( -713.70)),
-      simde_mm_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64) },
+      simde_mm_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET) },
     { simde_mm_set_pd(SIMDE_FLOAT64_C( -225.77), SIMDE_FLOAT64_C(  -14.65)),
       simde_mm_set_pd(SIMDE_FLOAT64_C( -225.77), SIMDE_FLOAT64_C(  -14.65)),
-      simde_mm_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64) },
+      simde_mm_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET) },
     { simde_mm_set_pd(SIMDE_FLOAT64_C(  277.42), SIMDE_FLOAT64_C( -194.72)),
       simde_mm_set_pd(                     NAN ,                      NAN ),
       simde_mm_set_pd(SIMDE_FLOAT64_C(    0.00), SIMDE_FLOAT64_C(    0.00)) },
@@ -2594,7 +2591,7 @@ test_simde_mm_cmp_pd(const MunitParameter params[], void* data) {
       simde_mm_set_pd(SIMDE_FLOAT64_C(    0.00), SIMDE_FLOAT64_C(    0.00)) },
     { simde_mm_set_pd(SIMDE_FLOAT64_C( -834.34), SIMDE_FLOAT64_C(  188.96)),
       simde_mm_set_pd(SIMDE_FLOAT64_C( -969.00), SIMDE_FLOAT64_C( -426.74)),
-      simde_mm_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64) },
+      simde_mm_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET) },
     { simde_mm_set_pd(SIMDE_FLOAT64_C(  862.72), SIMDE_FLOAT64_C(  212.40)),
       simde_mm_set_pd(SIMDE_FLOAT64_C(  862.72), SIMDE_FLOAT64_C(  212.40)),
       simde_mm_set_pd(SIMDE_FLOAT64_C(    0.00), SIMDE_FLOAT64_C(    0.00)) },
@@ -2607,19 +2604,19 @@ test_simde_mm_cmp_pd(const MunitParameter params[], void* data) {
     /* 31 */
     { simde_mm_set_pd(SIMDE_FLOAT64_C( -438.67), SIMDE_FLOAT64_C(  106.33)),
       simde_mm_set_pd(SIMDE_FLOAT64_C(   49.90), SIMDE_FLOAT64_C(  670.54)),
-      simde_mm_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64) },
+      simde_mm_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET) },
     { simde_mm_set_pd(SIMDE_FLOAT64_C( -363.04), SIMDE_FLOAT64_C(  742.23)),
       simde_mm_set_pd(SIMDE_FLOAT64_C( -538.59), SIMDE_FLOAT64_C(  410.25)),
-      simde_mm_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64) },
+      simde_mm_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET) },
     { simde_mm_set_pd(SIMDE_FLOAT64_C(  183.16), SIMDE_FLOAT64_C( -831.08)),
       simde_mm_set_pd(SIMDE_FLOAT64_C(  183.16), SIMDE_FLOAT64_C( -831.08)),
-      simde_mm_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64) },
+      simde_mm_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET) },
     { simde_mm_set_pd(SIMDE_FLOAT64_C(  429.68), SIMDE_FLOAT64_C(   -7.96)),
       simde_mm_set_pd(                     NAN ,                      NAN ),
-      simde_mm_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64) },
+      simde_mm_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET) },
     { simde_mm_set_pd(                     NAN ,                      NAN ),
       simde_mm_set_pd(SIMDE_FLOAT64_C(  700.81), SIMDE_FLOAT64_C( -641.71)),
-      simde_mm_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64) },
+      simde_mm_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET) },
   };
 
   for (size_t i = 0 ; i < 1 ; i++) {
@@ -2738,13 +2735,13 @@ test_simde_mm_cmp_ps(const MunitParameter params[], void* data) {
 
   a = simde_mm_set_ps(SIMDE_FLOAT32_C( -265.69), SIMDE_FLOAT32_C(  933.07), SIMDE_FLOAT32_C( -527.28), SIMDE_FLOAT32_C(  -86.99));
   b = simde_mm_set_ps(SIMDE_FLOAT32_C( -890.35), SIMDE_FLOAT32_C( -111.28), SIMDE_FLOAT32_C(  338.07), SIMDE_FLOAT32_C( -617.73));
-  e = simde_mm_set_ps(SIMDE_FLOAT32_C(    0.00), SIMDE_FLOAT32_C(    0.00), SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_FLOAT32_C(    0.00));
+  e = simde_mm_set_ps(SIMDE_FLOAT32_C(    0.00), SIMDE_FLOAT32_C(    0.00), SIMDE_F32_ALL_SET, SIMDE_FLOAT32_C(    0.00));
   r = simde_mm_cmp_ps(a, b, 1);
   simde_assert_m128_u32(r, ==, e);
 
   a = simde_mm_set_ps(SIMDE_FLOAT32_C(  768.00), SIMDE_FLOAT32_C(   58.55), SIMDE_FLOAT32_C(  317.58), SIMDE_FLOAT32_C( -318.11));
   b = simde_mm_set_ps(SIMDE_FLOAT32_C(  357.58), SIMDE_FLOAT32_C(  682.66), SIMDE_FLOAT32_C(  366.57), SIMDE_FLOAT32_C( -244.60));
-  e = simde_mm_set_ps(SIMDE_FLOAT32_C(    0.00), SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_TEST_ALL_SET_FLOAT32);
+  e = simde_mm_set_ps(SIMDE_FLOAT32_C(    0.00), SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET);
   r = simde_mm_cmp_ps(a, b, 2);
   simde_assert_m128_u32(r, ==, e);
 
@@ -2756,25 +2753,25 @@ test_simde_mm_cmp_ps(const MunitParameter params[], void* data) {
 
   a = simde_mm_set_ps(SIMDE_FLOAT32_C( -120.65), SIMDE_FLOAT32_C( -397.11), SIMDE_FLOAT32_C(  121.30), SIMDE_FLOAT32_C( -296.83));
   b = simde_mm_set_ps(SIMDE_FLOAT32_C(  705.83), SIMDE_FLOAT32_C(   29.37), SIMDE_FLOAT32_C(  519.72), SIMDE_FLOAT32_C( -103.90));
-  e = simde_mm_set_ps(SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_TEST_ALL_SET_FLOAT32);
+  e = simde_mm_set_ps(SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET);
   r = simde_mm_cmp_ps(a, b, 4);
   simde_assert_m128_u32(r, ==, e);
 
   a = simde_mm_set_ps(SIMDE_FLOAT32_C(  303.98), SIMDE_FLOAT32_C(  122.35), SIMDE_FLOAT32_C( -371.51), SIMDE_FLOAT32_C( -830.97));
   b = simde_mm_set_ps(SIMDE_FLOAT32_C(  595.80), SIMDE_FLOAT32_C( -291.27), SIMDE_FLOAT32_C(  984.58), SIMDE_FLOAT32_C( -789.32));
-  e = simde_mm_set_ps(SIMDE_FLOAT32_C(    0.00), SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_FLOAT32_C(    0.00), SIMDE_FLOAT32_C(    0.00));
+  e = simde_mm_set_ps(SIMDE_FLOAT32_C(    0.00), SIMDE_F32_ALL_SET, SIMDE_FLOAT32_C(    0.00), SIMDE_FLOAT32_C(    0.00));
   r = simde_mm_cmp_ps(a, b, 5);
   simde_assert_m128_u32(r, ==, e);
 
   a = simde_mm_set_ps(SIMDE_FLOAT32_C(  390.87), SIMDE_FLOAT32_C( -500.80), SIMDE_FLOAT32_C(  239.69), SIMDE_FLOAT32_C( -651.02));
   b = simde_mm_set_ps(SIMDE_FLOAT32_C( -942.42), SIMDE_FLOAT32_C( -340.28), SIMDE_FLOAT32_C(  850.37), SIMDE_FLOAT32_C(  422.67));
-  e = simde_mm_set_ps(SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_FLOAT32_C(    0.00), SIMDE_FLOAT32_C(    0.00), SIMDE_FLOAT32_C(    0.00));
+  e = simde_mm_set_ps(SIMDE_F32_ALL_SET, SIMDE_FLOAT32_C(    0.00), SIMDE_FLOAT32_C(    0.00), SIMDE_FLOAT32_C(    0.00));
   r = simde_mm_cmp_ps(a, b, 6);
   simde_assert_m128_u32(r, ==, e);
 
   a = simde_mm_set_ps(SIMDE_FLOAT32_C(  241.90), SIMDE_FLOAT32_C(  133.36), SIMDE_FLOAT32_C(  343.70), SIMDE_FLOAT32_C( -917.50));
   b = simde_mm_set_ps(SIMDE_FLOAT32_C( -715.40), SIMDE_FLOAT32_C( -986.32), SIMDE_FLOAT32_C(  113.89), SIMDE_FLOAT32_C(  742.57));
-  e = simde_mm_set_ps(SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_TEST_ALL_SET_FLOAT32);
+  e = simde_mm_set_ps(SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET);
   r = simde_mm_cmp_ps(a, b, 7);
   simde_assert_m128_u32(r, ==, e);
 
@@ -2786,13 +2783,13 @@ test_simde_mm_cmp_ps(const MunitParameter params[], void* data) {
 
   a = simde_mm_set_ps(SIMDE_FLOAT32_C(  702.60), SIMDE_FLOAT32_C( -355.63), SIMDE_FLOAT32_C(  969.32), SIMDE_FLOAT32_C(  907.68));
   b = simde_mm_set_ps(SIMDE_FLOAT32_C(  987.82), SIMDE_FLOAT32_C(   -0.12), SIMDE_FLOAT32_C(  651.63), SIMDE_FLOAT32_C(  179.23));
-  e = simde_mm_set_ps(SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_FLOAT32_C(    0.00), SIMDE_FLOAT32_C(    0.00));
+  e = simde_mm_set_ps(SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET, SIMDE_FLOAT32_C(    0.00), SIMDE_FLOAT32_C(    0.00));
   r = simde_mm_cmp_ps(a, b, 9);
   simde_assert_m128_u32(r, ==, e);
 
   a = simde_mm_set_ps(SIMDE_FLOAT32_C( -252.24), SIMDE_FLOAT32_C(  835.98), SIMDE_FLOAT32_C(  -89.83), SIMDE_FLOAT32_C( -473.83));
   b = simde_mm_set_ps(SIMDE_FLOAT32_C(  473.44), SIMDE_FLOAT32_C(  -13.26), SIMDE_FLOAT32_C(  522.39), SIMDE_FLOAT32_C(  -29.61));
-  e = simde_mm_set_ps(SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_FLOAT32_C(    0.00), SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_TEST_ALL_SET_FLOAT32);
+  e = simde_mm_set_ps(SIMDE_F32_ALL_SET, SIMDE_FLOAT32_C(    0.00), SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET);
   r = simde_mm_cmp_ps(a, b, 10);
   simde_assert_m128_u32(r, ==, e);
 
@@ -2804,25 +2801,25 @@ test_simde_mm_cmp_ps(const MunitParameter params[], void* data) {
 
   a = simde_mm_set_ps(SIMDE_FLOAT32_C(  178.14), SIMDE_FLOAT32_C( -394.90), SIMDE_FLOAT32_C( -713.61), SIMDE_FLOAT32_C( -298.00));
   b = simde_mm_set_ps(SIMDE_FLOAT32_C( -303.13), SIMDE_FLOAT32_C( -717.53), SIMDE_FLOAT32_C(  358.73), SIMDE_FLOAT32_C(  268.02));
-  e = simde_mm_set_ps(SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_TEST_ALL_SET_FLOAT32);
+  e = simde_mm_set_ps(SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET);
   r = simde_mm_cmp_ps(a, b, 12);
   simde_assert_m128_u32(r, ==, e);
 
   a = simde_mm_set_ps(SIMDE_FLOAT32_C(  241.76), SIMDE_FLOAT32_C(  236.50), SIMDE_FLOAT32_C(  831.59), SIMDE_FLOAT32_C( -144.41));
   b = simde_mm_set_ps(SIMDE_FLOAT32_C( -899.96), SIMDE_FLOAT32_C( -131.90), SIMDE_FLOAT32_C( -192.42), SIMDE_FLOAT32_C(  450.27));
-  e = simde_mm_set_ps(SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_FLOAT32_C(    0.00));
+  e = simde_mm_set_ps(SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET, SIMDE_FLOAT32_C(    0.00));
   r = simde_mm_cmp_ps(a, b, 13);
   simde_assert_m128_u32(r, ==, e);
 
   a = simde_mm_set_ps(SIMDE_FLOAT32_C( -203.58), SIMDE_FLOAT32_C( -605.68), SIMDE_FLOAT32_C(  670.89), SIMDE_FLOAT32_C(  -47.94));
   b = simde_mm_set_ps(SIMDE_FLOAT32_C(  952.52), SIMDE_FLOAT32_C(  790.50), SIMDE_FLOAT32_C( -574.64), SIMDE_FLOAT32_C(  891.61));
-  e = simde_mm_set_ps(SIMDE_FLOAT32_C(    0.00), SIMDE_FLOAT32_C(    0.00), SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_FLOAT32_C(    0.00));
+  e = simde_mm_set_ps(SIMDE_FLOAT32_C(    0.00), SIMDE_FLOAT32_C(    0.00), SIMDE_F32_ALL_SET, SIMDE_FLOAT32_C(    0.00));
   r = simde_mm_cmp_ps(a, b, 14);
   simde_assert_m128_u32(r, ==, e);
 
   a = simde_mm_set_ps(SIMDE_FLOAT32_C(  598.32), SIMDE_FLOAT32_C( -203.48), SIMDE_FLOAT32_C(  825.79), SIMDE_FLOAT32_C(  618.02));
   b = simde_mm_set_ps(SIMDE_FLOAT32_C(  823.42), SIMDE_FLOAT32_C(  557.19), SIMDE_FLOAT32_C( -969.07), SIMDE_FLOAT32_C(   94.87));
-  e = simde_mm_set_ps(SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_TEST_ALL_SET_FLOAT32);
+  e = simde_mm_set_ps(SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET);
   r = simde_mm_cmp_ps(a, b, 15);
   simde_assert_m128_u32(r, ==, e);
 
@@ -2834,13 +2831,13 @@ test_simde_mm_cmp_ps(const MunitParameter params[], void* data) {
 
   a = simde_mm_set_ps(SIMDE_FLOAT32_C(  545.05), SIMDE_FLOAT32_C( -368.18), SIMDE_FLOAT32_C( -221.86), SIMDE_FLOAT32_C(  -21.72));
   b = simde_mm_set_ps(SIMDE_FLOAT32_C(  521.14), SIMDE_FLOAT32_C(  669.26), SIMDE_FLOAT32_C( -763.27), SIMDE_FLOAT32_C(  590.72));
-  e = simde_mm_set_ps(SIMDE_FLOAT32_C(    0.00), SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_FLOAT32_C(    0.00), SIMDE_TEST_ALL_SET_FLOAT32);
+  e = simde_mm_set_ps(SIMDE_FLOAT32_C(    0.00), SIMDE_F32_ALL_SET, SIMDE_FLOAT32_C(    0.00), SIMDE_F32_ALL_SET);
   r = simde_mm_cmp_ps(a, b, 17);
   simde_assert_m128_u32(r, ==, e);
 
   a = simde_mm_set_ps(SIMDE_FLOAT32_C(  763.29), SIMDE_FLOAT32_C(  255.26), SIMDE_FLOAT32_C(  981.60), SIMDE_FLOAT32_C(  404.33));
   b = simde_mm_set_ps(SIMDE_FLOAT32_C(  913.52), SIMDE_FLOAT32_C(  284.87), SIMDE_FLOAT32_C(  420.08), SIMDE_FLOAT32_C( -817.56));
-  e = simde_mm_set_ps(SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_FLOAT32_C(    0.00), SIMDE_FLOAT32_C(    0.00));
+  e = simde_mm_set_ps(SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET, SIMDE_FLOAT32_C(    0.00), SIMDE_FLOAT32_C(    0.00));
   r = simde_mm_cmp_ps(a, b, 18);
   simde_assert_m128_u32(r, ==, e);
 
@@ -2852,25 +2849,25 @@ test_simde_mm_cmp_ps(const MunitParameter params[], void* data) {
 
   a = simde_mm_set_ps(SIMDE_FLOAT32_C(  995.87), SIMDE_FLOAT32_C( -552.98), SIMDE_FLOAT32_C( -836.61), SIMDE_FLOAT32_C(  490.77));
   b = simde_mm_set_ps(SIMDE_FLOAT32_C(  436.74), SIMDE_FLOAT32_C(  515.09), SIMDE_FLOAT32_C( -164.26), SIMDE_FLOAT32_C(   49.24));
-  e = simde_mm_set_ps(SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_TEST_ALL_SET_FLOAT32);
+  e = simde_mm_set_ps(SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET);
   r = simde_mm_cmp_ps(a, b, 20);
   simde_assert_m128_u32(r, ==, e);
 
   a = simde_mm_set_ps(SIMDE_FLOAT32_C(  827.88), SIMDE_FLOAT32_C(  337.02), SIMDE_FLOAT32_C( -301.47), SIMDE_FLOAT32_C( -546.27));
   b = simde_mm_set_ps(SIMDE_FLOAT32_C(  388.16), SIMDE_FLOAT32_C( -352.07), SIMDE_FLOAT32_C( -527.92), SIMDE_FLOAT32_C(  674.15));
-  e = simde_mm_set_ps(SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_FLOAT32_C(    0.00));
+  e = simde_mm_set_ps(SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET, SIMDE_FLOAT32_C(    0.00));
   r = simde_mm_cmp_ps(a, b, 21);
   simde_assert_m128_u32(r, ==, e);
 
   a = simde_mm_set_ps(SIMDE_FLOAT32_C(  819.64), SIMDE_FLOAT32_C(   88.69), SIMDE_FLOAT32_C( -965.38), SIMDE_FLOAT32_C(  535.26));
   b = simde_mm_set_ps(SIMDE_FLOAT32_C( -769.63), SIMDE_FLOAT32_C(  452.84), SIMDE_FLOAT32_C( -471.48), SIMDE_FLOAT32_C(  287.79));
-  e = simde_mm_set_ps(SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_FLOAT32_C(    0.00), SIMDE_FLOAT32_C(    0.00), SIMDE_TEST_ALL_SET_FLOAT32);
+  e = simde_mm_set_ps(SIMDE_F32_ALL_SET, SIMDE_FLOAT32_C(    0.00), SIMDE_FLOAT32_C(    0.00), SIMDE_F32_ALL_SET);
   r = simde_mm_cmp_ps(a, b, 22);
   simde_assert_m128_u32(r, ==, e);
 
   a = simde_mm_set_ps(SIMDE_FLOAT32_C(  936.69), SIMDE_FLOAT32_C( -942.15), SIMDE_FLOAT32_C( -816.57), SIMDE_FLOAT32_C( -442.35));
   b = simde_mm_set_ps(SIMDE_FLOAT32_C( -647.50), SIMDE_FLOAT32_C( -658.30), SIMDE_FLOAT32_C(  279.90), SIMDE_FLOAT32_C( -609.51));
-  e = simde_mm_set_ps(SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_TEST_ALL_SET_FLOAT32);
+  e = simde_mm_set_ps(SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET);
   r = simde_mm_cmp_ps(a, b, 23);
   simde_assert_m128_u32(r, ==, e);
 
@@ -2882,13 +2879,13 @@ test_simde_mm_cmp_ps(const MunitParameter params[], void* data) {
 
   a = simde_mm_set_ps(SIMDE_FLOAT32_C(  286.91), SIMDE_FLOAT32_C( -919.92), SIMDE_FLOAT32_C( -349.88), SIMDE_FLOAT32_C( -228.88));
   b = simde_mm_set_ps(SIMDE_FLOAT32_C( -295.09), SIMDE_FLOAT32_C(  514.22), SIMDE_FLOAT32_C(  562.09), SIMDE_FLOAT32_C(  891.91));
-  e = simde_mm_set_ps(SIMDE_FLOAT32_C(    0.00), SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_TEST_ALL_SET_FLOAT32);
+  e = simde_mm_set_ps(SIMDE_FLOAT32_C(    0.00), SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET);
   r = simde_mm_cmp_ps(a, b, 25);
   simde_assert_m128_u32(r, ==, e);
 
   a = simde_mm_set_ps(SIMDE_FLOAT32_C( -640.97), SIMDE_FLOAT32_C( -490.26), SIMDE_FLOAT32_C( -933.90), SIMDE_FLOAT32_C( -330.97));
   b = simde_mm_set_ps(SIMDE_FLOAT32_C(  534.02), SIMDE_FLOAT32_C( -107.29), SIMDE_FLOAT32_C( -715.08), SIMDE_FLOAT32_C(  503.15));
-  e = simde_mm_set_ps(SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_TEST_ALL_SET_FLOAT32);
+  e = simde_mm_set_ps(SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET);
   r = simde_mm_cmp_ps(a, b, 26);
   simde_assert_m128_u32(r, ==, e);
 
@@ -2900,25 +2897,25 @@ test_simde_mm_cmp_ps(const MunitParameter params[], void* data) {
 
   a = simde_mm_set_ps(SIMDE_FLOAT32_C(  218.19), SIMDE_FLOAT32_C( -253.10), SIMDE_FLOAT32_C(  639.91), SIMDE_FLOAT32_C(  539.70));
   b = simde_mm_set_ps(SIMDE_FLOAT32_C(  363.48), SIMDE_FLOAT32_C( -215.54), SIMDE_FLOAT32_C( -953.32), SIMDE_FLOAT32_C(  216.26));
-  e = simde_mm_set_ps(SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_TEST_ALL_SET_FLOAT32);
+  e = simde_mm_set_ps(SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET);
   r = simde_mm_cmp_ps(a, b, 28);
   simde_assert_m128_u32(r, ==, e);
 
   a = simde_mm_set_ps(SIMDE_FLOAT32_C( -168.77), SIMDE_FLOAT32_C( -919.40), SIMDE_FLOAT32_C(  791.57), SIMDE_FLOAT32_C( -550.77));
   b = simde_mm_set_ps(SIMDE_FLOAT32_C(  879.65), SIMDE_FLOAT32_C(  140.25), SIMDE_FLOAT32_C( -548.43), SIMDE_FLOAT32_C( -209.64));
-  e = simde_mm_set_ps(SIMDE_FLOAT32_C(    0.00), SIMDE_FLOAT32_C(    0.00), SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_FLOAT32_C(    0.00));
+  e = simde_mm_set_ps(SIMDE_FLOAT32_C(    0.00), SIMDE_FLOAT32_C(    0.00), SIMDE_F32_ALL_SET, SIMDE_FLOAT32_C(    0.00));
   r = simde_mm_cmp_ps(a, b, 29);
   simde_assert_m128_u32(r, ==, e);
 
   a = simde_mm_set_ps(SIMDE_FLOAT32_C( -239.98), SIMDE_FLOAT32_C( -569.53), SIMDE_FLOAT32_C(  225.34), SIMDE_FLOAT32_C( -242.34));
   b = simde_mm_set_ps(SIMDE_FLOAT32_C(  514.36), SIMDE_FLOAT32_C(  873.84), SIMDE_FLOAT32_C(  151.62), SIMDE_FLOAT32_C(  886.55));
-  e = simde_mm_set_ps(SIMDE_FLOAT32_C(    0.00), SIMDE_FLOAT32_C(    0.00), SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_FLOAT32_C(    0.00));
+  e = simde_mm_set_ps(SIMDE_FLOAT32_C(    0.00), SIMDE_FLOAT32_C(    0.00), SIMDE_F32_ALL_SET, SIMDE_FLOAT32_C(    0.00));
   r = simde_mm_cmp_ps(a, b, 30);
   simde_assert_m128_u32(r, ==, e);
 
   a = simde_mm_set_ps(SIMDE_FLOAT32_C(  -63.94), SIMDE_FLOAT32_C(  491.29), SIMDE_FLOAT32_C( -755.45), SIMDE_FLOAT32_C(  869.26));
   b = simde_mm_set_ps(SIMDE_FLOAT32_C(  206.87), SIMDE_FLOAT32_C( -613.92), SIMDE_FLOAT32_C(  387.86), SIMDE_FLOAT32_C(  -36.43));
-  e = simde_mm_set_ps(SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_TEST_ALL_SET_FLOAT32);
+  e = simde_mm_set_ps(SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET);
   r = simde_mm_cmp_ps(a, b, 31);
   simde_assert_m128_u32(r, ==, e);
 
@@ -2940,7 +2937,7 @@ test_simde_mm_cmp_sd(const MunitParameter params[], void* data) {
 
   a = simde_mm_set_pd(SIMDE_FLOAT64_C(   33.46), SIMDE_FLOAT64_C(  248.77));
   b = simde_mm_set_pd(SIMDE_FLOAT64_C( -730.30), SIMDE_FLOAT64_C(  751.84));
-  e = simde_mm_set_pd(SIMDE_FLOAT64_C(   33.46), SIMDE_TEST_ALL_SET_FLOAT64);
+  e = simde_mm_set_pd(SIMDE_FLOAT64_C(   33.46), SIMDE_F64_ALL_SET);
   r = simde_mm_cmp_sd(a, b, 1);
   simde_assert_m128_u64(r, ==, e);
 
@@ -2958,7 +2955,7 @@ test_simde_mm_cmp_sd(const MunitParameter params[], void* data) {
 
   a = simde_mm_set_pd(SIMDE_FLOAT64_C(  961.48), SIMDE_FLOAT64_C(  556.89));
   b = simde_mm_set_pd(SIMDE_FLOAT64_C(  374.50), SIMDE_FLOAT64_C(  904.56));
-  e = simde_mm_set_pd(SIMDE_FLOAT64_C(  961.48), SIMDE_TEST_ALL_SET_FLOAT64);
+  e = simde_mm_set_pd(SIMDE_FLOAT64_C(  961.48), SIMDE_F64_ALL_SET);
   r = simde_mm_cmp_sd(a, b, 4);
   simde_assert_m128_u64(r, ==, e);
 
@@ -2976,7 +2973,7 @@ test_simde_mm_cmp_sd(const MunitParameter params[], void* data) {
 
   a = simde_mm_set_pd(SIMDE_FLOAT64_C( -431.55), SIMDE_FLOAT64_C(  636.53));
   b = simde_mm_set_pd(SIMDE_FLOAT64_C( -452.34), SIMDE_FLOAT64_C( -728.36));
-  e = simde_mm_set_pd(SIMDE_FLOAT64_C( -431.55), SIMDE_TEST_ALL_SET_FLOAT64);
+  e = simde_mm_set_pd(SIMDE_FLOAT64_C( -431.55), SIMDE_F64_ALL_SET);
   r = simde_mm_cmp_sd(a, b, 7);
   simde_assert_m128_u64(r, ==, e);
 
@@ -2988,13 +2985,13 @@ test_simde_mm_cmp_sd(const MunitParameter params[], void* data) {
 
   a = simde_mm_set_pd(SIMDE_FLOAT64_C( -210.29), SIMDE_FLOAT64_C(  -50.46));
   b = simde_mm_set_pd(SIMDE_FLOAT64_C( -734.21), SIMDE_FLOAT64_C(  273.75));
-  e = simde_mm_set_pd(SIMDE_FLOAT64_C( -210.29), SIMDE_TEST_ALL_SET_FLOAT64);
+  e = simde_mm_set_pd(SIMDE_FLOAT64_C( -210.29), SIMDE_F64_ALL_SET);
   r = simde_mm_cmp_sd(a, b, 9);
   simde_assert_m128_u64(r, ==, e);
 
   a = simde_mm_set_pd(SIMDE_FLOAT64_C( -186.57), SIMDE_FLOAT64_C( -822.86));
   b = simde_mm_set_pd(SIMDE_FLOAT64_C( -462.18), SIMDE_FLOAT64_C( -425.13));
-  e = simde_mm_set_pd(SIMDE_FLOAT64_C( -186.57), SIMDE_TEST_ALL_SET_FLOAT64);
+  e = simde_mm_set_pd(SIMDE_FLOAT64_C( -186.57), SIMDE_F64_ALL_SET);
   r = simde_mm_cmp_sd(a, b, 10);
   simde_assert_m128_u64(r, ==, e);
 
@@ -3006,13 +3003,13 @@ test_simde_mm_cmp_sd(const MunitParameter params[], void* data) {
 
   a = simde_mm_set_pd(SIMDE_FLOAT64_C(  671.94), SIMDE_FLOAT64_C( -405.59));
   b = simde_mm_set_pd(SIMDE_FLOAT64_C( -842.74), SIMDE_FLOAT64_C( -483.02));
-  e = simde_mm_set_pd(SIMDE_FLOAT64_C(  671.94), SIMDE_TEST_ALL_SET_FLOAT64);
+  e = simde_mm_set_pd(SIMDE_FLOAT64_C(  671.94), SIMDE_F64_ALL_SET);
   r = simde_mm_cmp_sd(a, b, 12);
   simde_assert_m128_u64(r, ==, e);
 
   a = simde_mm_set_pd(SIMDE_FLOAT64_C( -228.63), SIMDE_FLOAT64_C(  298.91));
   b = simde_mm_set_pd(SIMDE_FLOAT64_C( -708.14), SIMDE_FLOAT64_C(  189.31));
-  e = simde_mm_set_pd(SIMDE_FLOAT64_C( -228.63), SIMDE_TEST_ALL_SET_FLOAT64);
+  e = simde_mm_set_pd(SIMDE_FLOAT64_C( -228.63), SIMDE_F64_ALL_SET);
   r = simde_mm_cmp_sd(a, b, 13);
   simde_assert_m128_u64(r, ==, e);
 
@@ -3024,7 +3021,7 @@ test_simde_mm_cmp_sd(const MunitParameter params[], void* data) {
 
   a = simde_mm_set_pd(SIMDE_FLOAT64_C( -248.44), SIMDE_FLOAT64_C(  191.43));
   b = simde_mm_set_pd(SIMDE_FLOAT64_C(  602.04), SIMDE_FLOAT64_C(  999.35));
-  e = simde_mm_set_pd(SIMDE_FLOAT64_C( -248.44), SIMDE_TEST_ALL_SET_FLOAT64);
+  e = simde_mm_set_pd(SIMDE_FLOAT64_C( -248.44), SIMDE_F64_ALL_SET);
   r = simde_mm_cmp_sd(a, b, 15);
   simde_assert_m128_u64(r, ==, e);
 
@@ -3054,25 +3051,25 @@ test_simde_mm_cmp_sd(const MunitParameter params[], void* data) {
 
   a = simde_mm_set_pd(SIMDE_FLOAT64_C( -600.32), SIMDE_FLOAT64_C( -105.54));
   b = simde_mm_set_pd(SIMDE_FLOAT64_C( -623.63), SIMDE_FLOAT64_C(  235.12));
-  e = simde_mm_set_pd(SIMDE_FLOAT64_C( -600.32), SIMDE_TEST_ALL_SET_FLOAT64);
+  e = simde_mm_set_pd(SIMDE_FLOAT64_C( -600.32), SIMDE_F64_ALL_SET);
   r = simde_mm_cmp_sd(a, b, 20);
   simde_assert_m128_u64(r, ==, e);
 
   a = simde_mm_set_pd(SIMDE_FLOAT64_C(  548.84), SIMDE_FLOAT64_C(  411.69));
   b = simde_mm_set_pd(SIMDE_FLOAT64_C(  824.49), SIMDE_FLOAT64_C( -866.20));
-  e = simde_mm_set_pd(SIMDE_FLOAT64_C(  548.84), SIMDE_TEST_ALL_SET_FLOAT64);
+  e = simde_mm_set_pd(SIMDE_FLOAT64_C(  548.84), SIMDE_F64_ALL_SET);
   r = simde_mm_cmp_sd(a, b, 21);
   simde_assert_m128_u64(r, ==, e);
 
   a = simde_mm_set_pd(SIMDE_FLOAT64_C(  201.44), SIMDE_FLOAT64_C(  276.75));
   b = simde_mm_set_pd(SIMDE_FLOAT64_C( -301.93), SIMDE_FLOAT64_C( -238.56));
-  e = simde_mm_set_pd(SIMDE_FLOAT64_C(  201.44), SIMDE_TEST_ALL_SET_FLOAT64);
+  e = simde_mm_set_pd(SIMDE_FLOAT64_C(  201.44), SIMDE_F64_ALL_SET);
   r = simde_mm_cmp_sd(a, b, 22);
   simde_assert_m128_u64(r, ==, e);
 
   a = simde_mm_set_pd(SIMDE_FLOAT64_C(  250.23), SIMDE_FLOAT64_C( -604.81));
   b = simde_mm_set_pd(SIMDE_FLOAT64_C(  557.49), SIMDE_FLOAT64_C(  137.99));
-  e = simde_mm_set_pd(SIMDE_FLOAT64_C(  250.23), SIMDE_TEST_ALL_SET_FLOAT64);
+  e = simde_mm_set_pd(SIMDE_FLOAT64_C(  250.23), SIMDE_F64_ALL_SET);
   r = simde_mm_cmp_sd(a, b, 23);
   simde_assert_m128_u64(r, ==, e);
 
@@ -3090,7 +3087,7 @@ test_simde_mm_cmp_sd(const MunitParameter params[], void* data) {
 
   a = simde_mm_set_pd(SIMDE_FLOAT64_C( -156.34), SIMDE_FLOAT64_C( -571.13));
   b = simde_mm_set_pd(SIMDE_FLOAT64_C( -665.54), SIMDE_FLOAT64_C(  -18.98));
-  e = simde_mm_set_pd(SIMDE_FLOAT64_C( -156.34), SIMDE_TEST_ALL_SET_FLOAT64);
+  e = simde_mm_set_pd(SIMDE_FLOAT64_C( -156.34), SIMDE_F64_ALL_SET);
   r = simde_mm_cmp_sd(a, b, 26);
   simde_assert_m128_u64(r, ==, e);
 
@@ -3102,7 +3099,7 @@ test_simde_mm_cmp_sd(const MunitParameter params[], void* data) {
 
   a = simde_mm_set_pd(SIMDE_FLOAT64_C(  959.19), SIMDE_FLOAT64_C( -478.47));
   b = simde_mm_set_pd(SIMDE_FLOAT64_C( -520.61), SIMDE_FLOAT64_C( -214.50));
-  e = simde_mm_set_pd(SIMDE_FLOAT64_C(  959.19), SIMDE_TEST_ALL_SET_FLOAT64);
+  e = simde_mm_set_pd(SIMDE_FLOAT64_C(  959.19), SIMDE_F64_ALL_SET);
   r = simde_mm_cmp_sd(a, b, 28);
   simde_assert_m128_u64(r, ==, e);
 
@@ -3120,7 +3117,7 @@ test_simde_mm_cmp_sd(const MunitParameter params[], void* data) {
 
   a = simde_mm_set_pd(SIMDE_FLOAT64_C(  981.35), SIMDE_FLOAT64_C( -586.10));
   b = simde_mm_set_pd(SIMDE_FLOAT64_C(  775.81), SIMDE_FLOAT64_C(  631.37));
-  e = simde_mm_set_pd(SIMDE_FLOAT64_C(  981.35), SIMDE_TEST_ALL_SET_FLOAT64);
+  e = simde_mm_set_pd(SIMDE_FLOAT64_C(  981.35), SIMDE_F64_ALL_SET);
   r = simde_mm_cmp_sd(a, b, 31);
   simde_assert_m128_u64(r, ==, e);
 
@@ -3160,25 +3157,25 @@ test_simde_mm_cmp_ss(const MunitParameter params[], void* data) {
 
   a = simde_mm_set_ps(SIMDE_FLOAT32_C(  820.59), SIMDE_FLOAT32_C(  257.56), SIMDE_FLOAT32_C( -468.51), SIMDE_FLOAT32_C( -573.74));
   b = simde_mm_set_ps(SIMDE_FLOAT32_C( -952.67), SIMDE_FLOAT32_C( -547.39), SIMDE_FLOAT32_C(   82.21), SIMDE_FLOAT32_C(   55.32));
-  e = simde_mm_set_ps(SIMDE_FLOAT32_C(  820.59), SIMDE_FLOAT32_C(  257.56), SIMDE_FLOAT32_C( -468.51), SIMDE_TEST_ALL_SET_FLOAT32);
+  e = simde_mm_set_ps(SIMDE_FLOAT32_C(  820.59), SIMDE_FLOAT32_C(  257.56), SIMDE_FLOAT32_C( -468.51), SIMDE_F32_ALL_SET);
   r = simde_mm_cmp_ss(a, b, 4);
   simde_assert_m128_u64(r, ==, e);
 
   a = simde_mm_set_ps(SIMDE_FLOAT32_C( -856.96), SIMDE_FLOAT32_C(  380.95), SIMDE_FLOAT32_C(  354.16), SIMDE_FLOAT32_C(  933.34));
   b = simde_mm_set_ps(SIMDE_FLOAT32_C(  937.78), SIMDE_FLOAT32_C( -846.91), SIMDE_FLOAT32_C(  481.96), SIMDE_FLOAT32_C( -401.55));
-  e = simde_mm_set_ps(SIMDE_FLOAT32_C( -856.96), SIMDE_FLOAT32_C(  380.95), SIMDE_FLOAT32_C(  354.16), SIMDE_TEST_ALL_SET_FLOAT32);
+  e = simde_mm_set_ps(SIMDE_FLOAT32_C( -856.96), SIMDE_FLOAT32_C(  380.95), SIMDE_FLOAT32_C(  354.16), SIMDE_F32_ALL_SET);
   r = simde_mm_cmp_ss(a, b, 5);
   simde_assert_m128_u64(r, ==, e);
 
   a = simde_mm_set_ps(SIMDE_FLOAT32_C(  701.49), SIMDE_FLOAT32_C(  203.70), SIMDE_FLOAT32_C( -473.49), SIMDE_FLOAT32_C(  919.68));
   b = simde_mm_set_ps(SIMDE_FLOAT32_C(  917.48), SIMDE_FLOAT32_C(  496.48), SIMDE_FLOAT32_C( -380.99), SIMDE_FLOAT32_C( -612.04));
-  e = simde_mm_set_ps(SIMDE_FLOAT32_C(  701.49), SIMDE_FLOAT32_C(  203.70), SIMDE_FLOAT32_C( -473.49), SIMDE_TEST_ALL_SET_FLOAT32);
+  e = simde_mm_set_ps(SIMDE_FLOAT32_C(  701.49), SIMDE_FLOAT32_C(  203.70), SIMDE_FLOAT32_C( -473.49), SIMDE_F32_ALL_SET);
   r = simde_mm_cmp_ss(a, b, 6);
   simde_assert_m128_u64(r, ==, e);
 
   a = simde_mm_set_ps(SIMDE_FLOAT32_C( -495.27), SIMDE_FLOAT32_C(    2.61), SIMDE_FLOAT32_C(  190.46), SIMDE_FLOAT32_C( -489.47));
   b = simde_mm_set_ps(SIMDE_FLOAT32_C(  733.40), SIMDE_FLOAT32_C( -262.53), SIMDE_FLOAT32_C( -250.54), SIMDE_FLOAT32_C(  753.56));
-  e = simde_mm_set_ps(SIMDE_FLOAT32_C( -495.27), SIMDE_FLOAT32_C(    2.61), SIMDE_FLOAT32_C(  190.46), SIMDE_TEST_ALL_SET_FLOAT32);
+  e = simde_mm_set_ps(SIMDE_FLOAT32_C( -495.27), SIMDE_FLOAT32_C(    2.61), SIMDE_FLOAT32_C(  190.46), SIMDE_F32_ALL_SET);
   r = simde_mm_cmp_ss(a, b, 7);
   simde_assert_m128_u64(r, ==, e);
 
@@ -3190,13 +3187,13 @@ test_simde_mm_cmp_ss(const MunitParameter params[], void* data) {
 
   a = simde_mm_set_ps(SIMDE_FLOAT32_C( -446.36), SIMDE_FLOAT32_C( -630.25), SIMDE_FLOAT32_C(  895.61), SIMDE_FLOAT32_C( -359.83));
   b = simde_mm_set_ps(SIMDE_FLOAT32_C( -712.74), SIMDE_FLOAT32_C( -683.20), SIMDE_FLOAT32_C( -684.03), SIMDE_FLOAT32_C(  476.51));
-  e = simde_mm_set_ps(SIMDE_FLOAT32_C( -446.36), SIMDE_FLOAT32_C( -630.25), SIMDE_FLOAT32_C(  895.61), SIMDE_TEST_ALL_SET_FLOAT32);
+  e = simde_mm_set_ps(SIMDE_FLOAT32_C( -446.36), SIMDE_FLOAT32_C( -630.25), SIMDE_FLOAT32_C(  895.61), SIMDE_F32_ALL_SET);
   r = simde_mm_cmp_ss(a, b, 9);
   simde_assert_m128_u64(r, ==, e);
 
   a = simde_mm_set_ps(SIMDE_FLOAT32_C(  453.59), SIMDE_FLOAT32_C( -704.68), SIMDE_FLOAT32_C(  968.54), SIMDE_FLOAT32_C(  -73.76));
   b = simde_mm_set_ps(SIMDE_FLOAT32_C( -793.56), SIMDE_FLOAT32_C( -626.26), SIMDE_FLOAT32_C(  371.33), SIMDE_FLOAT32_C(  945.10));
-  e = simde_mm_set_ps(SIMDE_FLOAT32_C(  453.59), SIMDE_FLOAT32_C( -704.68), SIMDE_FLOAT32_C(  968.54), SIMDE_TEST_ALL_SET_FLOAT32);
+  e = simde_mm_set_ps(SIMDE_FLOAT32_C(  453.59), SIMDE_FLOAT32_C( -704.68), SIMDE_FLOAT32_C(  968.54), SIMDE_F32_ALL_SET);
   r = simde_mm_cmp_ss(a, b, 10);
   simde_assert_m128_u64(r, ==, e);
 
@@ -3208,7 +3205,7 @@ test_simde_mm_cmp_ss(const MunitParameter params[], void* data) {
 
   a = simde_mm_set_ps(SIMDE_FLOAT32_C( -393.04), SIMDE_FLOAT32_C( -521.21), SIMDE_FLOAT32_C(  315.85), SIMDE_FLOAT32_C(  101.30));
   b = simde_mm_set_ps(SIMDE_FLOAT32_C( -254.13), SIMDE_FLOAT32_C(  380.76), SIMDE_FLOAT32_C(  862.95), SIMDE_FLOAT32_C( -994.97));
-  e = simde_mm_set_ps(SIMDE_FLOAT32_C( -393.04), SIMDE_FLOAT32_C( -521.21), SIMDE_FLOAT32_C(  315.85), SIMDE_TEST_ALL_SET_FLOAT32);
+  e = simde_mm_set_ps(SIMDE_FLOAT32_C( -393.04), SIMDE_FLOAT32_C( -521.21), SIMDE_FLOAT32_C(  315.85), SIMDE_F32_ALL_SET);
   r = simde_mm_cmp_ss(a, b, 12);
   simde_assert_m128_u64(r, ==, e);
 
@@ -3220,13 +3217,13 @@ test_simde_mm_cmp_ss(const MunitParameter params[], void* data) {
 
   a = simde_mm_set_ps(SIMDE_FLOAT32_C(  499.30), SIMDE_FLOAT32_C(  807.95), SIMDE_FLOAT32_C( -410.68), SIMDE_FLOAT32_C(  505.23));
   b = simde_mm_set_ps(SIMDE_FLOAT32_C( -114.66), SIMDE_FLOAT32_C(  865.01), SIMDE_FLOAT32_C( -665.39), SIMDE_FLOAT32_C(  342.00));
-  e = simde_mm_set_ps(SIMDE_FLOAT32_C(  499.30), SIMDE_FLOAT32_C(  807.95), SIMDE_FLOAT32_C( -410.68), SIMDE_TEST_ALL_SET_FLOAT32);
+  e = simde_mm_set_ps(SIMDE_FLOAT32_C(  499.30), SIMDE_FLOAT32_C(  807.95), SIMDE_FLOAT32_C( -410.68), SIMDE_F32_ALL_SET);
   r = simde_mm_cmp_ss(a, b, 14);
   simde_assert_m128_u64(r, ==, e);
 
   a = simde_mm_set_ps(SIMDE_FLOAT32_C(  744.11), SIMDE_FLOAT32_C(  103.80), SIMDE_FLOAT32_C(  230.08), SIMDE_FLOAT32_C( -784.93));
   b = simde_mm_set_ps(SIMDE_FLOAT32_C( -640.30), SIMDE_FLOAT32_C(  690.88), SIMDE_FLOAT32_C( -782.01), SIMDE_FLOAT32_C( -779.01));
-  e = simde_mm_set_ps(SIMDE_FLOAT32_C(  744.11), SIMDE_FLOAT32_C(  103.80), SIMDE_FLOAT32_C(  230.08), SIMDE_TEST_ALL_SET_FLOAT32);
+  e = simde_mm_set_ps(SIMDE_FLOAT32_C(  744.11), SIMDE_FLOAT32_C(  103.80), SIMDE_FLOAT32_C(  230.08), SIMDE_F32_ALL_SET);
   r = simde_mm_cmp_ss(a, b, 15);
   simde_assert_m128_u64(r, ==, e);
 
@@ -3256,25 +3253,25 @@ test_simde_mm_cmp_ss(const MunitParameter params[], void* data) {
 
   a = simde_mm_set_ps(SIMDE_FLOAT32_C( -387.90), SIMDE_FLOAT32_C( -409.94), SIMDE_FLOAT32_C(  339.05), SIMDE_FLOAT32_C(  567.23));
   b = simde_mm_set_ps(SIMDE_FLOAT32_C(  548.12), SIMDE_FLOAT32_C(  482.27), SIMDE_FLOAT32_C( -877.01), SIMDE_FLOAT32_C(  105.90));
-  e = simde_mm_set_ps(SIMDE_FLOAT32_C( -387.90), SIMDE_FLOAT32_C( -409.94), SIMDE_FLOAT32_C(  339.05), SIMDE_TEST_ALL_SET_FLOAT32);
+  e = simde_mm_set_ps(SIMDE_FLOAT32_C( -387.90), SIMDE_FLOAT32_C( -409.94), SIMDE_FLOAT32_C(  339.05), SIMDE_F32_ALL_SET);
   r = simde_mm_cmp_ss(a, b, 20);
   simde_assert_m128_u64(r, ==, e);
 
   a = simde_mm_set_ps(SIMDE_FLOAT32_C(  443.93), SIMDE_FLOAT32_C(  879.02), SIMDE_FLOAT32_C(  280.77), SIMDE_FLOAT32_C(  215.63));
   b = simde_mm_set_ps(SIMDE_FLOAT32_C(  858.68), SIMDE_FLOAT32_C(  507.37), SIMDE_FLOAT32_C(  274.86), SIMDE_FLOAT32_C( -935.31));
-  e = simde_mm_set_ps(SIMDE_FLOAT32_C(  443.93), SIMDE_FLOAT32_C(  879.02), SIMDE_FLOAT32_C(  280.77), SIMDE_TEST_ALL_SET_FLOAT32);
+  e = simde_mm_set_ps(SIMDE_FLOAT32_C(  443.93), SIMDE_FLOAT32_C(  879.02), SIMDE_FLOAT32_C(  280.77), SIMDE_F32_ALL_SET);
   r = simde_mm_cmp_ss(a, b, 21);
   simde_assert_m128_u64(r, ==, e);
 
   a = simde_mm_set_ps(SIMDE_FLOAT32_C(  417.98), SIMDE_FLOAT32_C(  304.47), SIMDE_FLOAT32_C( -370.04), SIMDE_FLOAT32_C(  620.00));
   b = simde_mm_set_ps(SIMDE_FLOAT32_C( -491.67), SIMDE_FLOAT32_C(  756.54), SIMDE_FLOAT32_C( -538.71), SIMDE_FLOAT32_C( -880.53));
-  e = simde_mm_set_ps(SIMDE_FLOAT32_C(  417.98), SIMDE_FLOAT32_C(  304.47), SIMDE_FLOAT32_C( -370.04), SIMDE_TEST_ALL_SET_FLOAT32);
+  e = simde_mm_set_ps(SIMDE_FLOAT32_C(  417.98), SIMDE_FLOAT32_C(  304.47), SIMDE_FLOAT32_C( -370.04), SIMDE_F32_ALL_SET);
   r = simde_mm_cmp_ss(a, b, 22);
   simde_assert_m128_u64(r, ==, e);
 
   a = simde_mm_set_ps(SIMDE_FLOAT32_C( -778.82), SIMDE_FLOAT32_C( -277.37), SIMDE_FLOAT32_C( -561.10), SIMDE_FLOAT32_C(  913.75));
   b = simde_mm_set_ps(SIMDE_FLOAT32_C( -799.75), SIMDE_FLOAT32_C(  322.89), SIMDE_FLOAT32_C(  168.49), SIMDE_FLOAT32_C( -586.31));
-  e = simde_mm_set_ps(SIMDE_FLOAT32_C( -778.82), SIMDE_FLOAT32_C( -277.37), SIMDE_FLOAT32_C( -561.10), SIMDE_TEST_ALL_SET_FLOAT32);
+  e = simde_mm_set_ps(SIMDE_FLOAT32_C( -778.82), SIMDE_FLOAT32_C( -277.37), SIMDE_FLOAT32_C( -561.10), SIMDE_F32_ALL_SET);
   r = simde_mm_cmp_ss(a, b, 23);
   simde_assert_m128_u64(r, ==, e);
 
@@ -3286,7 +3283,7 @@ test_simde_mm_cmp_ss(const MunitParameter params[], void* data) {
 
   a = simde_mm_set_ps(SIMDE_FLOAT32_C( -935.55), SIMDE_FLOAT32_C( -906.06), SIMDE_FLOAT32_C(   23.18), SIMDE_FLOAT32_C( -374.29));
   b = simde_mm_set_ps(SIMDE_FLOAT32_C(  903.69), SIMDE_FLOAT32_C( -930.74), SIMDE_FLOAT32_C( -354.90), SIMDE_FLOAT32_C( -304.33));
-  e = simde_mm_set_ps(SIMDE_FLOAT32_C( -935.55), SIMDE_FLOAT32_C( -906.06), SIMDE_FLOAT32_C(   23.18), SIMDE_TEST_ALL_SET_FLOAT32);
+  e = simde_mm_set_ps(SIMDE_FLOAT32_C( -935.55), SIMDE_FLOAT32_C( -906.06), SIMDE_FLOAT32_C(   23.18), SIMDE_F32_ALL_SET);
   r = simde_mm_cmp_ss(a, b, 25);
   simde_assert_m128_u64(r, ==, e);
 
@@ -3304,13 +3301,13 @@ test_simde_mm_cmp_ss(const MunitParameter params[], void* data) {
 
   a = simde_mm_set_ps(SIMDE_FLOAT32_C(  239.21), SIMDE_FLOAT32_C(  527.22), SIMDE_FLOAT32_C(  489.56), SIMDE_FLOAT32_C(  238.84));
   b = simde_mm_set_ps(SIMDE_FLOAT32_C( -364.20), SIMDE_FLOAT32_C(  722.98), SIMDE_FLOAT32_C(  475.77), SIMDE_FLOAT32_C( -967.04));
-  e = simde_mm_set_ps(SIMDE_FLOAT32_C(  239.21), SIMDE_FLOAT32_C(  527.22), SIMDE_FLOAT32_C(  489.56), SIMDE_TEST_ALL_SET_FLOAT32);
+  e = simde_mm_set_ps(SIMDE_FLOAT32_C(  239.21), SIMDE_FLOAT32_C(  527.22), SIMDE_FLOAT32_C(  489.56), SIMDE_F32_ALL_SET);
   r = simde_mm_cmp_ss(a, b, 28);
   simde_assert_m128_u64(r, ==, e);
 
   a = simde_mm_set_ps(SIMDE_FLOAT32_C( -308.58), SIMDE_FLOAT32_C( -108.66), SIMDE_FLOAT32_C(  857.88), SIMDE_FLOAT32_C( -131.87));
   b = simde_mm_set_ps(SIMDE_FLOAT32_C( -505.11), SIMDE_FLOAT32_C( -213.47), SIMDE_FLOAT32_C(   71.14), SIMDE_FLOAT32_C( -330.60));
-  e = simde_mm_set_ps(SIMDE_FLOAT32_C( -308.58), SIMDE_FLOAT32_C( -108.66), SIMDE_FLOAT32_C(  857.88), SIMDE_TEST_ALL_SET_FLOAT32);
+  e = simde_mm_set_ps(SIMDE_FLOAT32_C( -308.58), SIMDE_FLOAT32_C( -108.66), SIMDE_FLOAT32_C(  857.88), SIMDE_F32_ALL_SET);
   r = simde_mm_cmp_ss(a, b, 29);
   simde_assert_m128_u64(r, ==, e);
 
@@ -3322,7 +3319,7 @@ test_simde_mm_cmp_ss(const MunitParameter params[], void* data) {
 
   a = simde_mm_set_ps(SIMDE_FLOAT32_C( -851.42), SIMDE_FLOAT32_C(  716.28), SIMDE_FLOAT32_C(  257.21), SIMDE_FLOAT32_C(  191.16));
   b = simde_mm_set_ps(SIMDE_FLOAT32_C( -758.42), SIMDE_FLOAT32_C(  731.61), SIMDE_FLOAT32_C(   23.45), SIMDE_FLOAT32_C(  503.57));
-  e = simde_mm_set_ps(SIMDE_FLOAT32_C( -851.42), SIMDE_FLOAT32_C(  716.28), SIMDE_FLOAT32_C(  257.21), SIMDE_TEST_ALL_SET_FLOAT32);
+  e = simde_mm_set_ps(SIMDE_FLOAT32_C( -851.42), SIMDE_FLOAT32_C(  716.28), SIMDE_FLOAT32_C(  257.21), SIMDE_F32_ALL_SET);
   r = simde_mm_cmp_ss(a, b, 31);
   simde_assert_m128_u64(r, ==, e);
 
@@ -3349,7 +3346,7 @@ test_simde_mm256_cmp_pd(const MunitParameter params[], void* data) {
                          SIMDE_FLOAT64_C(   97.90), SIMDE_FLOAT64_C(  892.29));
   b = simde_mm256_set_pd(SIMDE_FLOAT64_C( -838.35), SIMDE_FLOAT64_C(  389.60),
                          SIMDE_FLOAT64_C( -784.06), SIMDE_FLOAT64_C( -852.24));
-  e = simde_mm256_set_pd(SIMDE_FLOAT64_C(    0.00), SIMDE_TEST_ALL_SET_FLOAT64,
+  e = simde_mm256_set_pd(SIMDE_FLOAT64_C(    0.00), SIMDE_F64_ALL_SET,
                          SIMDE_FLOAT64_C(    0.00), SIMDE_FLOAT64_C(    0.00));
   r = simde_mm256_cmp_pd(a, b, 1);
   simde_assert_m256i_i64(r, ==, e);
@@ -3358,8 +3355,8 @@ test_simde_mm256_cmp_pd(const MunitParameter params[], void* data) {
                          SIMDE_FLOAT64_C(   95.45), SIMDE_FLOAT64_C(  511.10));
   b = simde_mm256_set_pd(SIMDE_FLOAT64_C(   72.91), SIMDE_FLOAT64_C(  842.59),
                          SIMDE_FLOAT64_C( -301.64), SIMDE_FLOAT64_C(  977.39));
-  e = simde_mm256_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64,
-                         SIMDE_FLOAT64_C(    0.00), SIMDE_TEST_ALL_SET_FLOAT64);
+  e = simde_mm256_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET,
+                         SIMDE_FLOAT64_C(    0.00), SIMDE_F64_ALL_SET);
   r = simde_mm256_cmp_pd(a, b, 2);
   simde_assert_m256i_i64(r, ==, e);
 
@@ -3376,8 +3373,8 @@ test_simde_mm256_cmp_pd(const MunitParameter params[], void* data) {
                          SIMDE_FLOAT64_C( -642.19), SIMDE_FLOAT64_C( -977.08));
   b = simde_mm256_set_pd(SIMDE_FLOAT64_C(  565.32), SIMDE_FLOAT64_C( -745.60),
                          SIMDE_FLOAT64_C( -937.14), SIMDE_FLOAT64_C( -396.84));
-  e = simde_mm256_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64,
-                         SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64);
+  e = simde_mm256_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET,
+                         SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET);
   r = simde_mm256_cmp_pd(a, b, 4);
   simde_assert_m256i_i64(r, ==, e);
 
@@ -3386,7 +3383,7 @@ test_simde_mm256_cmp_pd(const MunitParameter params[], void* data) {
   b = simde_mm256_set_pd(SIMDE_FLOAT64_C(  610.68), SIMDE_FLOAT64_C(  607.60),
                          SIMDE_FLOAT64_C(  346.14), SIMDE_FLOAT64_C( -567.77));
   e = simde_mm256_set_pd(SIMDE_FLOAT64_C(    0.00), SIMDE_FLOAT64_C(    0.00),
-                         SIMDE_FLOAT64_C(    0.00), SIMDE_TEST_ALL_SET_FLOAT64);
+                         SIMDE_FLOAT64_C(    0.00), SIMDE_F64_ALL_SET);
   r = simde_mm256_cmp_pd(a, b, 5);
   simde_assert_m256i_i64(r, ==, e);
 
@@ -3394,7 +3391,7 @@ test_simde_mm256_cmp_pd(const MunitParameter params[], void* data) {
                          SIMDE_FLOAT64_C( -158.08), SIMDE_FLOAT64_C( -924.19));
   b = simde_mm256_set_pd(SIMDE_FLOAT64_C(  -46.81), SIMDE_FLOAT64_C( -380.35),
                          SIMDE_FLOAT64_C(  820.23), SIMDE_FLOAT64_C( -250.91));
-  e = simde_mm256_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64,
+  e = simde_mm256_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET,
                          SIMDE_FLOAT64_C(    0.00), SIMDE_FLOAT64_C(    0.00));
   r = simde_mm256_cmp_pd(a, b, 6);
   simde_assert_m256i_i64(r, ==, e);
@@ -3403,8 +3400,8 @@ test_simde_mm256_cmp_pd(const MunitParameter params[], void* data) {
                          SIMDE_FLOAT64_C(  260.25), SIMDE_FLOAT64_C(  164.20));
   b = simde_mm256_set_pd(SIMDE_FLOAT64_C(  715.03), SIMDE_FLOAT64_C(  526.68),
                          SIMDE_FLOAT64_C(  724.10), SIMDE_FLOAT64_C( -661.45));
-  e = simde_mm256_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64,
-                         SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64);
+  e = simde_mm256_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET,
+                         SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET);
   r = simde_mm256_cmp_pd(a, b, 7);
   simde_assert_m256i_i64(r, ==, e);
 
@@ -3421,8 +3418,8 @@ test_simde_mm256_cmp_pd(const MunitParameter params[], void* data) {
                          SIMDE_FLOAT64_C(  386.06), SIMDE_FLOAT64_C(  874.65));
   b = simde_mm256_set_pd(SIMDE_FLOAT64_C(  544.80), SIMDE_FLOAT64_C(  381.68),
                          SIMDE_FLOAT64_C(  466.15), SIMDE_FLOAT64_C( -212.81));
-  e = simde_mm256_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64,
-                         SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_FLOAT64_C(    0.00));
+  e = simde_mm256_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET,
+                         SIMDE_F64_ALL_SET, SIMDE_FLOAT64_C(    0.00));
   r = simde_mm256_cmp_pd(a, b, 9);
   simde_assert_m256i_i64(r, ==, e);
 
@@ -3430,7 +3427,7 @@ test_simde_mm256_cmp_pd(const MunitParameter params[], void* data) {
                          SIMDE_FLOAT64_C(  907.57), SIMDE_FLOAT64_C(  981.95));
   b = simde_mm256_set_pd(SIMDE_FLOAT64_C(  537.33), SIMDE_FLOAT64_C( -552.73),
                          SIMDE_FLOAT64_C( -335.84), SIMDE_FLOAT64_C(  263.81));
-  e = simde_mm256_set_pd(SIMDE_FLOAT64_C(    0.00), SIMDE_TEST_ALL_SET_FLOAT64,
+  e = simde_mm256_set_pd(SIMDE_FLOAT64_C(    0.00), SIMDE_F64_ALL_SET,
                          SIMDE_FLOAT64_C(    0.00), SIMDE_FLOAT64_C(    0.00));
   r = simde_mm256_cmp_pd(a, b, 10);
   simde_assert_m256i_i64(r, ==, e);
@@ -3448,8 +3445,8 @@ test_simde_mm256_cmp_pd(const MunitParameter params[], void* data) {
                          SIMDE_FLOAT64_C( -999.81), SIMDE_FLOAT64_C(  133.54));
   b = simde_mm256_set_pd(SIMDE_FLOAT64_C( -236.40), SIMDE_FLOAT64_C(  458.49),
                          SIMDE_FLOAT64_C( -796.87), SIMDE_FLOAT64_C(  971.44));
-  e = simde_mm256_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64,
-                         SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64);
+  e = simde_mm256_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET,
+                         SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET);
   r = simde_mm256_cmp_pd(a, b, 12);
   simde_assert_m256i_i64(r, ==, e);
 
@@ -3457,8 +3454,8 @@ test_simde_mm256_cmp_pd(const MunitParameter params[], void* data) {
                          SIMDE_FLOAT64_C(  709.03), SIMDE_FLOAT64_C(  -42.30));
   b = simde_mm256_set_pd(SIMDE_FLOAT64_C( -249.29), SIMDE_FLOAT64_C( -863.89),
                          SIMDE_FLOAT64_C(  838.41), SIMDE_FLOAT64_C( -285.41));
-  e = simde_mm256_set_pd(SIMDE_FLOAT64_C(    0.00), SIMDE_TEST_ALL_SET_FLOAT64,
-                         SIMDE_FLOAT64_C(    0.00), SIMDE_TEST_ALL_SET_FLOAT64);
+  e = simde_mm256_set_pd(SIMDE_FLOAT64_C(    0.00), SIMDE_F64_ALL_SET,
+                         SIMDE_FLOAT64_C(    0.00), SIMDE_F64_ALL_SET);
   r = simde_mm256_cmp_pd(a, b, 13);
   simde_assert_m256i_i64(r, ==, e);
 
@@ -3467,7 +3464,7 @@ test_simde_mm256_cmp_pd(const MunitParameter params[], void* data) {
   b = simde_mm256_set_pd(SIMDE_FLOAT64_C(  111.55), SIMDE_FLOAT64_C( -222.13),
                          SIMDE_FLOAT64_C( -579.35), SIMDE_FLOAT64_C( -996.45));
   e = simde_mm256_set_pd(SIMDE_FLOAT64_C(    0.00), SIMDE_FLOAT64_C(    0.00),
-                         SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64);
+                         SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET);
   r = simde_mm256_cmp_pd(a, b, 14);
   simde_assert_m256i_i64(r, ==, e);
 
@@ -3475,8 +3472,8 @@ test_simde_mm256_cmp_pd(const MunitParameter params[], void* data) {
                          SIMDE_FLOAT64_C( -199.31), SIMDE_FLOAT64_C(  982.01));
   b = simde_mm256_set_pd(SIMDE_FLOAT64_C(  421.52), SIMDE_FLOAT64_C(  488.69),
                          SIMDE_FLOAT64_C(  995.06), SIMDE_FLOAT64_C( -730.80));
-  e = simde_mm256_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64,
-                         SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64);
+  e = simde_mm256_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET,
+                         SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET);
   r = simde_mm256_cmp_pd(a, b, 15);
   simde_assert_m256i_i64(r, ==, e);
 
@@ -3502,8 +3499,8 @@ test_simde_mm256_cmp_pd(const MunitParameter params[], void* data) {
                          SIMDE_FLOAT64_C( -825.83), SIMDE_FLOAT64_C( -323.02));
   b = simde_mm256_set_pd(SIMDE_FLOAT64_C( -282.39), SIMDE_FLOAT64_C(  572.90),
                          SIMDE_FLOAT64_C( -581.23), SIMDE_FLOAT64_C(   32.08));
-  e = simde_mm256_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64,
-                         SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64);
+  e = simde_mm256_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET,
+                         SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET);
   r = simde_mm256_cmp_pd(a, b, 18);
   simde_assert_m256i_i64(r, ==, e);
 
@@ -3520,8 +3517,8 @@ test_simde_mm256_cmp_pd(const MunitParameter params[], void* data) {
                          SIMDE_FLOAT64_C( -163.93), SIMDE_FLOAT64_C( -138.57));
   b = simde_mm256_set_pd(SIMDE_FLOAT64_C(  684.55), SIMDE_FLOAT64_C( -319.23),
                          SIMDE_FLOAT64_C(  930.19), SIMDE_FLOAT64_C(  517.01));
-  e = simde_mm256_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64,
-                         SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64);
+  e = simde_mm256_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET,
+                         SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET);
   r = simde_mm256_cmp_pd(a, b, 20);
   simde_assert_m256i_i64(r, ==, e);
 
@@ -3529,8 +3526,8 @@ test_simde_mm256_cmp_pd(const MunitParameter params[], void* data) {
                          SIMDE_FLOAT64_C(  575.12), SIMDE_FLOAT64_C(  845.68));
   b = simde_mm256_set_pd(SIMDE_FLOAT64_C(  233.22), SIMDE_FLOAT64_C( -237.00),
                          SIMDE_FLOAT64_C( -964.93), SIMDE_FLOAT64_C(  750.37));
-  e = simde_mm256_set_pd(SIMDE_FLOAT64_C(    0.00), SIMDE_TEST_ALL_SET_FLOAT64,
-                         SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64);
+  e = simde_mm256_set_pd(SIMDE_FLOAT64_C(    0.00), SIMDE_F64_ALL_SET,
+                         SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET);
   r = simde_mm256_cmp_pd(a, b, 21);
   simde_assert_m256i_i64(r, ==, e);
 
@@ -3538,7 +3535,7 @@ test_simde_mm256_cmp_pd(const MunitParameter params[], void* data) {
                          SIMDE_FLOAT64_C( -723.44), SIMDE_FLOAT64_C(  323.27));
   b = simde_mm256_set_pd(SIMDE_FLOAT64_C(  103.44), SIMDE_FLOAT64_C( -854.52),
                          SIMDE_FLOAT64_C(  244.92), SIMDE_FLOAT64_C(  486.47));
-  e = simde_mm256_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64,
+  e = simde_mm256_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET,
                          SIMDE_FLOAT64_C(    0.00), SIMDE_FLOAT64_C(    0.00));
   r = simde_mm256_cmp_pd(a, b, 22);
   simde_assert_m256i_i64(r, ==, e);
@@ -3547,8 +3544,8 @@ test_simde_mm256_cmp_pd(const MunitParameter params[], void* data) {
                          SIMDE_FLOAT64_C(  434.13), SIMDE_FLOAT64_C(  344.29));
   b = simde_mm256_set_pd(SIMDE_FLOAT64_C( -968.83), SIMDE_FLOAT64_C(  577.41),
                          SIMDE_FLOAT64_C(  995.59), SIMDE_FLOAT64_C(  750.10));
-  e = simde_mm256_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64,
-                         SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64);
+  e = simde_mm256_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET,
+                         SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET);
   r = simde_mm256_cmp_pd(a, b, 23);
   simde_assert_m256i_i64(r, ==, e);
 
@@ -3565,8 +3562,8 @@ test_simde_mm256_cmp_pd(const MunitParameter params[], void* data) {
                          SIMDE_FLOAT64_C( -766.87), SIMDE_FLOAT64_C(   11.16));
   b = simde_mm256_set_pd(SIMDE_FLOAT64_C(  695.58), SIMDE_FLOAT64_C(  482.48),
                          SIMDE_FLOAT64_C(  350.48), SIMDE_FLOAT64_C( -969.97));
-  e = simde_mm256_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_FLOAT64_C(    0.00),
-                         SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_FLOAT64_C(    0.00));
+  e = simde_mm256_set_pd(SIMDE_F64_ALL_SET, SIMDE_FLOAT64_C(    0.00),
+                         SIMDE_F64_ALL_SET, SIMDE_FLOAT64_C(    0.00));
   r = simde_mm256_cmp_pd(a, b, 25);
   simde_assert_m256i_i64(r, ==, e);
 
@@ -3574,8 +3571,8 @@ test_simde_mm256_cmp_pd(const MunitParameter params[], void* data) {
                          SIMDE_FLOAT64_C(  916.37), SIMDE_FLOAT64_C(  398.15));
   b = simde_mm256_set_pd(SIMDE_FLOAT64_C(  745.00), SIMDE_FLOAT64_C( -144.13),
                          SIMDE_FLOAT64_C( -516.66), SIMDE_FLOAT64_C(  995.75));
-  e = simde_mm256_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_FLOAT64_C(    0.00),
-                         SIMDE_FLOAT64_C(    0.00), SIMDE_TEST_ALL_SET_FLOAT64);
+  e = simde_mm256_set_pd(SIMDE_F64_ALL_SET, SIMDE_FLOAT64_C(    0.00),
+                         SIMDE_FLOAT64_C(    0.00), SIMDE_F64_ALL_SET);
   r = simde_mm256_cmp_pd(a, b, 26);
   simde_assert_m256i_i64(r, ==, e);
 
@@ -3592,8 +3589,8 @@ test_simde_mm256_cmp_pd(const MunitParameter params[], void* data) {
                          SIMDE_FLOAT64_C( -602.22), SIMDE_FLOAT64_C(  375.71));
   b = simde_mm256_set_pd(SIMDE_FLOAT64_C(  363.61), SIMDE_FLOAT64_C( -315.81),
                          SIMDE_FLOAT64_C( -199.39), SIMDE_FLOAT64_C(  806.44));
-  e = simde_mm256_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64,
-                         SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64);
+  e = simde_mm256_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET,
+                         SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET);
   r = simde_mm256_cmp_pd(a, b, 28);
   simde_assert_m256i_i64(r, ==, e);
 
@@ -3601,8 +3598,8 @@ test_simde_mm256_cmp_pd(const MunitParameter params[], void* data) {
                          SIMDE_FLOAT64_C(  -75.31), SIMDE_FLOAT64_C(  801.78));
   b = simde_mm256_set_pd(SIMDE_FLOAT64_C(  431.61), SIMDE_FLOAT64_C(  123.43),
                          SIMDE_FLOAT64_C(  753.52), SIMDE_FLOAT64_C( -346.75));
-  e = simde_mm256_set_pd(SIMDE_FLOAT64_C(    0.00), SIMDE_TEST_ALL_SET_FLOAT64,
-                         SIMDE_FLOAT64_C(    0.00), SIMDE_TEST_ALL_SET_FLOAT64);
+  e = simde_mm256_set_pd(SIMDE_FLOAT64_C(    0.00), SIMDE_F64_ALL_SET,
+                         SIMDE_FLOAT64_C(    0.00), SIMDE_F64_ALL_SET);
   r = simde_mm256_cmp_pd(a, b, 29);
   simde_assert_m256i_i64(r, ==, e);
 
@@ -3610,8 +3607,8 @@ test_simde_mm256_cmp_pd(const MunitParameter params[], void* data) {
                          SIMDE_FLOAT64_C(  742.64), SIMDE_FLOAT64_C(  -59.01));
   b = simde_mm256_set_pd(SIMDE_FLOAT64_C(  812.89), SIMDE_FLOAT64_C( -405.22),
                          SIMDE_FLOAT64_C(  782.32), SIMDE_FLOAT64_C( -131.42));
-  e = simde_mm256_set_pd(SIMDE_FLOAT64_C(    0.00), SIMDE_TEST_ALL_SET_FLOAT64,
-                         SIMDE_FLOAT64_C(    0.00), SIMDE_TEST_ALL_SET_FLOAT64);
+  e = simde_mm256_set_pd(SIMDE_FLOAT64_C(    0.00), SIMDE_F64_ALL_SET,
+                         SIMDE_FLOAT64_C(    0.00), SIMDE_F64_ALL_SET);
   r = simde_mm256_cmp_pd(a, b, 30);
   simde_assert_m256i_i64(r, ==, e);
 
@@ -3619,8 +3616,8 @@ test_simde_mm256_cmp_pd(const MunitParameter params[], void* data) {
                          SIMDE_FLOAT64_C(   32.69), SIMDE_FLOAT64_C( -878.59));
   b = simde_mm256_set_pd(SIMDE_FLOAT64_C(  -82.57), SIMDE_FLOAT64_C(  930.53),
                          SIMDE_FLOAT64_C( -591.17), SIMDE_FLOAT64_C( -164.90));
-  e = simde_mm256_set_pd(SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64,
-                         SIMDE_TEST_ALL_SET_FLOAT64, SIMDE_TEST_ALL_SET_FLOAT64);
+  e = simde_mm256_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET,
+                         SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET);
   r = simde_mm256_cmp_pd(a, b, 31);
   simde_assert_m256i_i64(r, ==, e);
 
@@ -3658,9 +3655,9 @@ test_simde_mm256_cmp_ps(const MunitParameter params[], void* data) {
                          SIMDE_FLOAT32_C( -368.63), SIMDE_FLOAT32_C(  744.09),
                          SIMDE_FLOAT32_C( -903.28), SIMDE_FLOAT32_C(  297.64));
   e = simde_mm256_set_ps(SIMDE_FLOAT32_C(    0.00), SIMDE_FLOAT32_C(    0.00),
-                         SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_TEST_ALL_SET_FLOAT32,
-                         SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_TEST_ALL_SET_FLOAT32,
-                         SIMDE_FLOAT32_C(    0.00), SIMDE_TEST_ALL_SET_FLOAT32);
+                         SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET,
+                         SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET,
+                         SIMDE_FLOAT32_C(    0.00), SIMDE_F32_ALL_SET);
   r = simde_mm256_cmp_ps(a, b, 1);
   simde_assert_m256i_i32(r, ==, e);
 
@@ -3672,10 +3669,10 @@ test_simde_mm256_cmp_ps(const MunitParameter params[], void* data) {
                          SIMDE_FLOAT32_C(  455.91), SIMDE_FLOAT32_C( -309.55),
                          SIMDE_FLOAT32_C(  306.68), SIMDE_FLOAT32_C(   44.72),
                          SIMDE_FLOAT32_C(  995.53), SIMDE_FLOAT32_C( -435.97));
-  e = simde_mm256_set_ps(SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_FLOAT32_C(    0.00),
-                         SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_TEST_ALL_SET_FLOAT32,
-                         SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_FLOAT32_C(    0.00),
-                         SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_FLOAT32_C(    0.00));
+  e = simde_mm256_set_ps(SIMDE_F32_ALL_SET, SIMDE_FLOAT32_C(    0.00),
+                         SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET,
+                         SIMDE_F32_ALL_SET, SIMDE_FLOAT32_C(    0.00),
+                         SIMDE_F32_ALL_SET, SIMDE_FLOAT32_C(    0.00));
   r = simde_mm256_cmp_ps(a, b, 2);
   simde_assert_m256i_i32(r, ==, e);
 
@@ -3702,10 +3699,10 @@ test_simde_mm256_cmp_ps(const MunitParameter params[], void* data) {
                          SIMDE_FLOAT32_C(  290.29), SIMDE_FLOAT32_C(  456.74),
                          SIMDE_FLOAT32_C( -688.44), SIMDE_FLOAT32_C(  479.20),
                          SIMDE_FLOAT32_C( -526.39), SIMDE_FLOAT32_C(  111.85));
-  e = simde_mm256_set_ps(SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_TEST_ALL_SET_FLOAT32,
-                         SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_TEST_ALL_SET_FLOAT32,
-                         SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_TEST_ALL_SET_FLOAT32,
-                         SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_TEST_ALL_SET_FLOAT32);
+  e = simde_mm256_set_ps(SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET,
+                         SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET,
+                         SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET,
+                         SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET);
   r = simde_mm256_cmp_ps(a, b, 4);
   simde_assert_m256i_i32(r, ==, e);
 
@@ -3717,10 +3714,10 @@ test_simde_mm256_cmp_ps(const MunitParameter params[], void* data) {
                          SIMDE_FLOAT32_C( -428.69), SIMDE_FLOAT32_C(  594.16),
                          SIMDE_FLOAT32_C( -385.45), SIMDE_FLOAT32_C(  878.38),
                          SIMDE_FLOAT32_C(  771.04), SIMDE_FLOAT32_C( -520.10));
-  e = simde_mm256_set_ps(SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_TEST_ALL_SET_FLOAT32,
-                         SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_FLOAT32_C(    0.00),
+  e = simde_mm256_set_ps(SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET,
+                         SIMDE_F32_ALL_SET, SIMDE_FLOAT32_C(    0.00),
                          SIMDE_FLOAT32_C(    0.00), SIMDE_FLOAT32_C(    0.00),
-                         SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_TEST_ALL_SET_FLOAT32);
+                         SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET);
   r = simde_mm256_cmp_ps(a, b, 5);
   simde_assert_m256i_i32(r, ==, e);
 
@@ -3732,10 +3729,10 @@ test_simde_mm256_cmp_ps(const MunitParameter params[], void* data) {
                          SIMDE_FLOAT32_C(  447.08), SIMDE_FLOAT32_C(  452.17),
                          SIMDE_FLOAT32_C( -243.40), SIMDE_FLOAT32_C(  350.62),
                          SIMDE_FLOAT32_C(  305.52), SIMDE_FLOAT32_C( -502.03));
-  e = simde_mm256_set_ps(SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_TEST_ALL_SET_FLOAT32,
+  e = simde_mm256_set_ps(SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET,
                          SIMDE_FLOAT32_C(    0.00), SIMDE_FLOAT32_C(    0.00),
-                         SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_TEST_ALL_SET_FLOAT32,
-                         SIMDE_FLOAT32_C(    0.00), SIMDE_TEST_ALL_SET_FLOAT32);
+                         SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET,
+                         SIMDE_FLOAT32_C(    0.00), SIMDE_F32_ALL_SET);
   r = simde_mm256_cmp_ps(a, b, 6);
   simde_assert_m256i_i32(r, ==, e);
 
@@ -3747,10 +3744,10 @@ test_simde_mm256_cmp_ps(const MunitParameter params[], void* data) {
                          SIMDE_FLOAT32_C( -658.13), SIMDE_FLOAT32_C(  663.72),
                          SIMDE_FLOAT32_C(  841.19), SIMDE_FLOAT32_C( -155.80),
                          SIMDE_FLOAT32_C(  212.50), SIMDE_FLOAT32_C( -466.55));
-  e = simde_mm256_set_ps(SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_TEST_ALL_SET_FLOAT32,
-                         SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_TEST_ALL_SET_FLOAT32,
-                         SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_TEST_ALL_SET_FLOAT32,
-                         SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_TEST_ALL_SET_FLOAT32);
+  e = simde_mm256_set_ps(SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET,
+                         SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET,
+                         SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET,
+                         SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET);
   r = simde_mm256_cmp_ps(a, b, 7);
   simde_assert_m256i_i32(r, ==, e);
 
@@ -3777,10 +3774,10 @@ test_simde_mm256_cmp_ps(const MunitParameter params[], void* data) {
                          SIMDE_FLOAT32_C(  631.03), SIMDE_FLOAT32_C( -295.26),
                          SIMDE_FLOAT32_C(  -48.91), SIMDE_FLOAT32_C(  969.53),
                          SIMDE_FLOAT32_C( -852.51), SIMDE_FLOAT32_C(  559.42));
-  e = simde_mm256_set_ps(SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_TEST_ALL_SET_FLOAT32,
-                         SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_TEST_ALL_SET_FLOAT32,
-                         SIMDE_FLOAT32_C(    0.00), SIMDE_TEST_ALL_SET_FLOAT32,
-                         SIMDE_FLOAT32_C(    0.00), SIMDE_TEST_ALL_SET_FLOAT32);
+  e = simde_mm256_set_ps(SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET,
+                         SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET,
+                         SIMDE_FLOAT32_C(    0.00), SIMDE_F32_ALL_SET,
+                         SIMDE_FLOAT32_C(    0.00), SIMDE_F32_ALL_SET);
   r = simde_mm256_cmp_ps(a, b, 9);
   simde_assert_m256i_i32(r, ==, e);
 
@@ -3792,10 +3789,10 @@ test_simde_mm256_cmp_ps(const MunitParameter params[], void* data) {
                          SIMDE_FLOAT32_C( -636.90), SIMDE_FLOAT32_C(  992.53),
                          SIMDE_FLOAT32_C( -474.40), SIMDE_FLOAT32_C(  -74.21),
                          SIMDE_FLOAT32_C( -340.21), SIMDE_FLOAT32_C( -243.84));
-  e = simde_mm256_set_ps(SIMDE_FLOAT32_C(    0.00), SIMDE_TEST_ALL_SET_FLOAT32,
-                         SIMDE_FLOAT32_C(    0.00), SIMDE_TEST_ALL_SET_FLOAT32,
-                         SIMDE_FLOAT32_C(    0.00), SIMDE_TEST_ALL_SET_FLOAT32,
-                         SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_FLOAT32_C(    0.00));
+  e = simde_mm256_set_ps(SIMDE_FLOAT32_C(    0.00), SIMDE_F32_ALL_SET,
+                         SIMDE_FLOAT32_C(    0.00), SIMDE_F32_ALL_SET,
+                         SIMDE_FLOAT32_C(    0.00), SIMDE_F32_ALL_SET,
+                         SIMDE_F32_ALL_SET, SIMDE_FLOAT32_C(    0.00));
   r = simde_mm256_cmp_ps(a, b, 10);
   simde_assert_m256i_i32(r, ==, e);
 
@@ -3822,10 +3819,10 @@ test_simde_mm256_cmp_ps(const MunitParameter params[], void* data) {
                          SIMDE_FLOAT32_C(  649.25), SIMDE_FLOAT32_C(  176.45),
                          SIMDE_FLOAT32_C(  565.41), SIMDE_FLOAT32_C( -548.53),
                          SIMDE_FLOAT32_C( -949.03), SIMDE_FLOAT32_C(  336.81));
-  e = simde_mm256_set_ps(SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_TEST_ALL_SET_FLOAT32,
-                         SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_TEST_ALL_SET_FLOAT32,
-                         SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_TEST_ALL_SET_FLOAT32,
-                         SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_TEST_ALL_SET_FLOAT32);
+  e = simde_mm256_set_ps(SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET,
+                         SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET,
+                         SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET,
+                         SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET);
   r = simde_mm256_cmp_ps(a, b, 12);
   simde_assert_m256i_i32(r, ==, e);
 
@@ -3838,9 +3835,9 @@ test_simde_mm256_cmp_ps(const MunitParameter params[], void* data) {
                          SIMDE_FLOAT32_C( -597.85), SIMDE_FLOAT32_C( -502.38),
                          SIMDE_FLOAT32_C(  175.10), SIMDE_FLOAT32_C( -126.08));
   e = simde_mm256_set_ps(SIMDE_FLOAT32_C(    0.00), SIMDE_FLOAT32_C(    0.00),
-                         SIMDE_FLOAT32_C(    0.00), SIMDE_TEST_ALL_SET_FLOAT32,
-                         SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_TEST_ALL_SET_FLOAT32,
-                         SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_TEST_ALL_SET_FLOAT32);
+                         SIMDE_FLOAT32_C(    0.00), SIMDE_F32_ALL_SET,
+                         SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET,
+                         SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET);
   r = simde_mm256_cmp_ps(a, b, 13);
   simde_assert_m256i_i32(r, ==, e);
 
@@ -3852,10 +3849,10 @@ test_simde_mm256_cmp_ps(const MunitParameter params[], void* data) {
                          SIMDE_FLOAT32_C(  359.65), SIMDE_FLOAT32_C(  441.32),
                          SIMDE_FLOAT32_C( -219.23), SIMDE_FLOAT32_C(  477.22),
                          SIMDE_FLOAT32_C( -766.46), SIMDE_FLOAT32_C( -440.48));
-  e = simde_mm256_set_ps(SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_TEST_ALL_SET_FLOAT32,
+  e = simde_mm256_set_ps(SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET,
                          SIMDE_FLOAT32_C(    0.00), SIMDE_FLOAT32_C(    0.00),
-                         SIMDE_FLOAT32_C(    0.00), SIMDE_TEST_ALL_SET_FLOAT32,
-                         SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_FLOAT32_C(    0.00));
+                         SIMDE_FLOAT32_C(    0.00), SIMDE_F32_ALL_SET,
+                         SIMDE_F32_ALL_SET, SIMDE_FLOAT32_C(    0.00));
   r = simde_mm256_cmp_ps(a, b, 14);
   simde_assert_m256i_i32(r, ==, e);
 
@@ -3867,10 +3864,10 @@ test_simde_mm256_cmp_ps(const MunitParameter params[], void* data) {
                          SIMDE_FLOAT32_C( -163.21), SIMDE_FLOAT32_C( -687.90),
                          SIMDE_FLOAT32_C( -906.29), SIMDE_FLOAT32_C(  896.58),
                          SIMDE_FLOAT32_C(  176.66), SIMDE_FLOAT32_C( -333.48));
-  e = simde_mm256_set_ps(SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_TEST_ALL_SET_FLOAT32,
-                         SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_TEST_ALL_SET_FLOAT32,
-                         SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_TEST_ALL_SET_FLOAT32,
-                         SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_TEST_ALL_SET_FLOAT32);
+  e = simde_mm256_set_ps(SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET,
+                         SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET,
+                         SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET,
+                         SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET);
   r = simde_mm256_cmp_ps(a, b, 15);
   simde_assert_m256i_i32(r, ==, e);
 
@@ -3898,9 +3895,9 @@ test_simde_mm256_cmp_ps(const MunitParameter params[], void* data) {
                          SIMDE_FLOAT32_C( -971.31), SIMDE_FLOAT32_C( -618.84),
                          SIMDE_FLOAT32_C( -770.29), SIMDE_FLOAT32_C(  646.67));
   e = simde_mm256_set_ps(SIMDE_FLOAT32_C(    0.00), SIMDE_FLOAT32_C(    0.00),
-                         SIMDE_FLOAT32_C(    0.00), SIMDE_TEST_ALL_SET_FLOAT32,
+                         SIMDE_FLOAT32_C(    0.00), SIMDE_F32_ALL_SET,
                          SIMDE_FLOAT32_C(    0.00), SIMDE_FLOAT32_C(    0.00),
-                         SIMDE_FLOAT32_C(    0.00), SIMDE_TEST_ALL_SET_FLOAT32);
+                         SIMDE_FLOAT32_C(    0.00), SIMDE_F32_ALL_SET);
   r = simde_mm256_cmp_ps(a, b, 17);
   simde_assert_m256i_i32(r, ==, e);
 
@@ -3912,10 +3909,10 @@ test_simde_mm256_cmp_ps(const MunitParameter params[], void* data) {
                          SIMDE_FLOAT32_C(  664.13), SIMDE_FLOAT32_C( -598.78),
                          SIMDE_FLOAT32_C(  405.66), SIMDE_FLOAT32_C( -161.92),
                          SIMDE_FLOAT32_C( -284.93), SIMDE_FLOAT32_C(  894.57));
-  e = simde_mm256_set_ps(SIMDE_FLOAT32_C(    0.00), SIMDE_TEST_ALL_SET_FLOAT32,
-                         SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_FLOAT32_C(    0.00),
-                         SIMDE_FLOAT32_C(    0.00), SIMDE_TEST_ALL_SET_FLOAT32,
-                         SIMDE_FLOAT32_C(    0.00), SIMDE_TEST_ALL_SET_FLOAT32);
+  e = simde_mm256_set_ps(SIMDE_FLOAT32_C(    0.00), SIMDE_F32_ALL_SET,
+                         SIMDE_F32_ALL_SET, SIMDE_FLOAT32_C(    0.00),
+                         SIMDE_FLOAT32_C(    0.00), SIMDE_F32_ALL_SET,
+                         SIMDE_FLOAT32_C(    0.00), SIMDE_F32_ALL_SET);
   r = simde_mm256_cmp_ps(a, b, 18);
   simde_assert_m256i_i32(r, ==, e);
 
@@ -3942,10 +3939,10 @@ test_simde_mm256_cmp_ps(const MunitParameter params[], void* data) {
                          SIMDE_FLOAT32_C( -416.27), SIMDE_FLOAT32_C(   38.97),
                          SIMDE_FLOAT32_C( -132.92), SIMDE_FLOAT32_C(  674.04),
                          SIMDE_FLOAT32_C( -271.02), SIMDE_FLOAT32_C(  227.53));
-  e = simde_mm256_set_ps(SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_TEST_ALL_SET_FLOAT32,
-                         SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_TEST_ALL_SET_FLOAT32,
-                         SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_TEST_ALL_SET_FLOAT32,
-                         SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_TEST_ALL_SET_FLOAT32);
+  e = simde_mm256_set_ps(SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET,
+                         SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET,
+                         SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET,
+                         SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET);
   r = simde_mm256_cmp_ps(a, b, 20);
   simde_assert_m256i_i32(r, ==, e);
 
@@ -3957,10 +3954,10 @@ test_simde_mm256_cmp_ps(const MunitParameter params[], void* data) {
                          SIMDE_FLOAT32_C(  -16.42), SIMDE_FLOAT32_C(  297.67),
                          SIMDE_FLOAT32_C( -699.86), SIMDE_FLOAT32_C( -654.27),
                          SIMDE_FLOAT32_C( -999.41), SIMDE_FLOAT32_C( -517.03));
-  e = simde_mm256_set_ps(SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_TEST_ALL_SET_FLOAT32,
-                         SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_TEST_ALL_SET_FLOAT32,
-                         SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_FLOAT32_C(    0.00),
-                         SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_TEST_ALL_SET_FLOAT32);
+  e = simde_mm256_set_ps(SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET,
+                         SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET,
+                         SIMDE_F32_ALL_SET, SIMDE_FLOAT32_C(    0.00),
+                         SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET);
   r = simde_mm256_cmp_ps(a, b, 21);
   simde_assert_m256i_i32(r, ==, e);
 
@@ -3974,7 +3971,7 @@ test_simde_mm256_cmp_ps(const MunitParameter params[], void* data) {
                          SIMDE_FLOAT32_C(  471.29), SIMDE_FLOAT32_C(  313.92));
   e = simde_mm256_set_ps(SIMDE_FLOAT32_C(    0.00), SIMDE_FLOAT32_C(    0.00),
                          SIMDE_FLOAT32_C(    0.00), SIMDE_FLOAT32_C(    0.00),
-                         SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_FLOAT32_C(    0.00),
+                         SIMDE_F32_ALL_SET, SIMDE_FLOAT32_C(    0.00),
                          SIMDE_FLOAT32_C(    0.00), SIMDE_FLOAT32_C(    0.00));
   r = simde_mm256_cmp_ps(a, b, 22);
   simde_assert_m256i_i32(r, ==, e);
@@ -3987,10 +3984,10 @@ test_simde_mm256_cmp_ps(const MunitParameter params[], void* data) {
                          SIMDE_FLOAT32_C(  255.36), SIMDE_FLOAT32_C( -282.34),
                          SIMDE_FLOAT32_C( -175.69), SIMDE_FLOAT32_C( -724.05),
                          SIMDE_FLOAT32_C(  699.09), SIMDE_FLOAT32_C(  269.04));
-  e = simde_mm256_set_ps(SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_TEST_ALL_SET_FLOAT32,
-                         SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_TEST_ALL_SET_FLOAT32,
-                         SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_TEST_ALL_SET_FLOAT32,
-                         SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_TEST_ALL_SET_FLOAT32);
+  e = simde_mm256_set_ps(SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET,
+                         SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET,
+                         SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET,
+                         SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET);
   r = simde_mm256_cmp_ps(a, b, 23);
   simde_assert_m256i_i32(r, ==, e);
 
@@ -4018,8 +4015,8 @@ test_simde_mm256_cmp_ps(const MunitParameter params[], void* data) {
                          SIMDE_FLOAT32_C( -164.06), SIMDE_FLOAT32_C(  498.34),
                          SIMDE_FLOAT32_C( -327.01), SIMDE_FLOAT32_C(   70.94));
   e = simde_mm256_set_ps(SIMDE_FLOAT32_C(    0.00), SIMDE_FLOAT32_C(    0.00),
-                         SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_FLOAT32_C(    0.00),
-                         SIMDE_FLOAT32_C(    0.00), SIMDE_TEST_ALL_SET_FLOAT32,
+                         SIMDE_F32_ALL_SET, SIMDE_FLOAT32_C(    0.00),
+                         SIMDE_FLOAT32_C(    0.00), SIMDE_F32_ALL_SET,
                          SIMDE_FLOAT32_C(    0.00), SIMDE_FLOAT32_C(    0.00));
   r = simde_mm256_cmp_ps(a, b, 25);
   simde_assert_m256i_i32(r, ==, e);
@@ -4032,10 +4029,10 @@ test_simde_mm256_cmp_ps(const MunitParameter params[], void* data) {
                          SIMDE_FLOAT32_C(  521.60), SIMDE_FLOAT32_C(  169.38),
                          SIMDE_FLOAT32_C( -454.09), SIMDE_FLOAT32_C( -679.40),
                          SIMDE_FLOAT32_C(  296.09), SIMDE_FLOAT32_C( -189.79));
-  e = simde_mm256_set_ps(SIMDE_FLOAT32_C(    0.00), SIMDE_TEST_ALL_SET_FLOAT32,
-                         SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_FLOAT32_C(    0.00),
-                         SIMDE_FLOAT32_C(    0.00), SIMDE_TEST_ALL_SET_FLOAT32,
-                         SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_FLOAT32_C(    0.00));
+  e = simde_mm256_set_ps(SIMDE_FLOAT32_C(    0.00), SIMDE_F32_ALL_SET,
+                         SIMDE_F32_ALL_SET, SIMDE_FLOAT32_C(    0.00),
+                         SIMDE_FLOAT32_C(    0.00), SIMDE_F32_ALL_SET,
+                         SIMDE_F32_ALL_SET, SIMDE_FLOAT32_C(    0.00));
   r = simde_mm256_cmp_ps(a, b, 26);
   simde_assert_m256i_i32(r, ==, e);
 
@@ -4062,10 +4059,10 @@ test_simde_mm256_cmp_ps(const MunitParameter params[], void* data) {
                          SIMDE_FLOAT32_C( -452.87), SIMDE_FLOAT32_C( -385.46),
                          SIMDE_FLOAT32_C( -717.37), SIMDE_FLOAT32_C(  438.32),
                          SIMDE_FLOAT32_C(  629.22), SIMDE_FLOAT32_C(  831.24));
-  e = simde_mm256_set_ps(SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_TEST_ALL_SET_FLOAT32,
-                         SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_TEST_ALL_SET_FLOAT32,
-                         SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_TEST_ALL_SET_FLOAT32,
-                         SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_TEST_ALL_SET_FLOAT32);
+  e = simde_mm256_set_ps(SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET,
+                         SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET,
+                         SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET,
+                         SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET);
   r = simde_mm256_cmp_ps(a, b, 28);
   simde_assert_m256i_i32(r, ==, e);
 
@@ -4080,7 +4077,7 @@ test_simde_mm256_cmp_ps(const MunitParameter params[], void* data) {
   e = simde_mm256_set_ps(SIMDE_FLOAT32_C(    0.00), SIMDE_FLOAT32_C(    0.00),
                          SIMDE_FLOAT32_C(    0.00), SIMDE_FLOAT32_C(    0.00),
                          SIMDE_FLOAT32_C(    0.00), SIMDE_FLOAT32_C(    0.00),
-                         SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_TEST_ALL_SET_FLOAT32);
+                         SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET);
   r = simde_mm256_cmp_ps(a, b, 29);
   simde_assert_m256i_i32(r, ==, e);
 
@@ -4092,9 +4089,9 @@ test_simde_mm256_cmp_ps(const MunitParameter params[], void* data) {
                          SIMDE_FLOAT32_C(  205.60), SIMDE_FLOAT32_C(  160.74),
                          SIMDE_FLOAT32_C( -717.63), SIMDE_FLOAT32_C( -124.46),
                          SIMDE_FLOAT32_C(  761.31), SIMDE_FLOAT32_C(  650.10));
-  e = simde_mm256_set_ps(SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_TEST_ALL_SET_FLOAT32,
-                         SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_FLOAT32_C(    0.00),
-                         SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_TEST_ALL_SET_FLOAT32,
+  e = simde_mm256_set_ps(SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET,
+                         SIMDE_F32_ALL_SET, SIMDE_FLOAT32_C(    0.00),
+                         SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET,
                          SIMDE_FLOAT32_C(    0.00), SIMDE_FLOAT32_C(    0.00));
   r = simde_mm256_cmp_ps(a, b, 30);
   simde_assert_m256i_i32(r, ==, e);
@@ -4107,10 +4104,10 @@ test_simde_mm256_cmp_ps(const MunitParameter params[], void* data) {
                          SIMDE_FLOAT32_C(  326.55), SIMDE_FLOAT32_C(  551.02),
                          SIMDE_FLOAT32_C(  772.13), SIMDE_FLOAT32_C(  272.66),
                          SIMDE_FLOAT32_C(  449.95), SIMDE_FLOAT32_C( -910.83));
-  e = simde_mm256_set_ps(SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_TEST_ALL_SET_FLOAT32,
-                         SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_TEST_ALL_SET_FLOAT32,
-                         SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_TEST_ALL_SET_FLOAT32,
-                         SIMDE_TEST_ALL_SET_FLOAT32, SIMDE_TEST_ALL_SET_FLOAT32);
+  e = simde_mm256_set_ps(SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET,
+                         SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET,
+                         SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET,
+                         SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET);
   r = simde_mm256_cmp_ps(a, b, 31);
   simde_assert_m256i_i32(r, ==, e);
 
