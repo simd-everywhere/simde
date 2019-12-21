@@ -62,6 +62,7 @@ sets:
  * SSSE3
  * SSE4.1
  * AVX
+ * FMA
 
 As well as partial support for many others; see the
 [instruction-set-support](https://github.com/nemequ/simde/issues?q=is%3Aissue+is%3Aopen+label%3Ainstruction-set-support+sort%3Aupdated-desc)
