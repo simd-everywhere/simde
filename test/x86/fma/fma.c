@@ -1,4 +1,4 @@
-/* Copyright (c) 2018, 2019 Evan Nemerson <evan@nemerson.com>
+/* Copyright (c) 2019 Evan Nemerson <evan@nemerson.com>
  *
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
@@ -71,7 +71,7 @@ test_simde_mm_fmadd_pd(const MunitParameter params[], void* data) {
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m128d r = simde_mm_fmadd_pd(test_vec[i].a, test_vec[i].b, test_vec[i].c);
-    simde_assert_m128d_f64_equal(r, test_vec[i].r, 1);
+    simde_assert_m128d_close(r, test_vec[i].r, 1);
   }
 
   return MUNIT_OK;
@@ -156,7 +156,7 @@ test_simde_mm256_fmadd_pd(const MunitParameter params[], void* data) {
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m256d r = simde_mm256_fmadd_pd(test_vec[i].a, test_vec[i].b, test_vec[i].c);
-    simde_assert_m256d_f64_equal(r, test_vec[i].r, 1);
+    simde_assert_m256d_close(r, test_vec[i].r, 1);
   }
 
   return MUNIT_OK;
@@ -411,7 +411,7 @@ test_simde_mm_fmadd_sd(const MunitParameter params[], void* data) {
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m128d r = simde_mm_fmadd_sd(test_vec[i].a, test_vec[i].b, test_vec[i].c);
-    simde_assert_m128d_f64_equal(r, test_vec[i].r, 1);
+    simde_assert_m128d_close(r, test_vec[i].r, 1);
   }
 
   return MUNIT_OK;
@@ -517,7 +517,7 @@ test_simde_mm_fmaddsub_pd(const MunitParameter params[], void* data) {
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m128d r = simde_mm_fmaddsub_pd(test_vec[i].a, test_vec[i].b, test_vec[i].c);
-    simde_assert_m128d_f64_equal(r, test_vec[i].r, 1);
+    simde_assert_m128d_close(r, test_vec[i].r, 1);
   }
 
   return MUNIT_OK;
@@ -857,7 +857,7 @@ test_simde_mm_fmsub_pd(const MunitParameter params[], void* data) {
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m128d r = simde_mm_fmsub_pd(test_vec[i].a, test_vec[i].b, test_vec[i].c);
-    simde_assert_m128d_f64_equal(r, test_vec[i].r, 1);
+    simde_assert_m128d_close(r, test_vec[i].r, 1);
   }
 
   return MUNIT_OK;
@@ -1197,7 +1197,7 @@ test_simde_mm_fmsub_sd(const MunitParameter params[], void* data) {
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m128d r = simde_mm_fmsub_sd(test_vec[i].a, test_vec[i].b, test_vec[i].c);
-    simde_assert_m128d_f64_equal(r, test_vec[i].r, 1);
+    simde_assert_m128d_close(r, test_vec[i].r, 1);
   }
 
   return MUNIT_OK;
@@ -1303,7 +1303,7 @@ test_simde_mm_fmsubadd_pd(const MunitParameter params[], void* data) {
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m128d r = simde_mm_fmsubadd_pd(test_vec[i].a, test_vec[i].b, test_vec[i].c);
-    simde_assert_m128d_f64_equal(r, test_vec[i].r, 1);
+    simde_assert_m128d_close(r, test_vec[i].r, 1);
   }
 
   return MUNIT_OK;
@@ -1638,7 +1638,7 @@ test_simde_mm_fnmadd_pd(const MunitParameter params[], void* data) {
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m128d r = simde_mm_fnmadd_pd(test_vec[i].a, test_vec[i].b, test_vec[i].c);
-    simde_assert_m128d_f64_equal(r, test_vec[i].r, 1);
+    simde_assert_m128d_close(r, test_vec[i].r, 1);
   }
 
   return MUNIT_OK;
@@ -1978,7 +1978,7 @@ test_simde_mm_fnmadd_sd(const MunitParameter params[], void* data) {
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m128d r = simde_mm_fnmadd_sd(test_vec[i].a, test_vec[i].b, test_vec[i].c);
-    simde_assert_m128d_f64_equal(r, test_vec[i].r, 1);
+    simde_assert_m128d_close(r, test_vec[i].r, 1);
   }
 
   return MUNIT_OK;
@@ -2084,7 +2084,7 @@ test_simde_mm_fnmsub_pd(const MunitParameter params[], void* data) {
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m128d r = simde_mm_fnmsub_pd(test_vec[i].a, test_vec[i].b, test_vec[i].c);
-    simde_assert_m128d_f64_equal(r, test_vec[i].r, 1);
+    simde_assert_m128d_close(r, test_vec[i].r, 1);
   }
 
   return MUNIT_OK;
@@ -2424,7 +2424,7 @@ test_simde_mm_fnmsub_sd(const MunitParameter params[], void* data) {
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m128d r = simde_mm_fnmsub_sd(test_vec[i].a, test_vec[i].b, test_vec[i].c);
-    simde_assert_m128d_f64_equal(r, test_vec[i].r, 1);
+    simde_assert_m128d_close(r, test_vec[i].r, 1);
   }
 
   return MUNIT_OK;
