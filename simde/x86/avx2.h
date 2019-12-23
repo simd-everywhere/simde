@@ -572,6 +572,25 @@ simde_mm256_shuffle_epi8 (simde__m256i a, simde__m256i b) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256i
+simde_mm256_slli_epi32 (simde__m256i a, const int imm8) {
+  simde__m256i r;
+
+  const int s = (imm8 > HEDLEY_STATIC_CAST(int, sizeof(r.i32[0]) * CHAR_BIT) - 1) ? 0 : imm8;
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.i32) / sizeof(r.i32[0])) ; i++) {
+    r.i32[i] = a.i32[i] << s;
+  }
+  return r;
+}
+#if defined(SIMDE_AVX2_NATIVE)
+#  define simde_mm256_slli_epi32(a, imm8) SIMDE__M256I_FROM_NATIVE(_mm256_slli_epi32(a.n, imm8));
+#endif
+#if defined(SIMDE_AVX2_ENABLE_NATIVE_ALIASES)
+#  define _mm256_slli_epi32(a, imm8) SIMDE__M256I_TO_NATIVE(simde_mm256_slli_epi32(SIMDE__M256I_FROM_NATIVE(a), imm8))
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256i
 simde_mm256_sub_epi32 (simde__m256i a, simde__m256i b) {
   simde__m256i r;
 
