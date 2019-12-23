@@ -531,6 +531,26 @@ simde_mm256_max_epi32 (simde__m256i a, simde__m256i b) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256i
+simde_mm256_min_epu8 (simde__m256i a, simde__m256i b) {
+  simde__m256i r;
+
+#if defined(SIMDE_AVX2_NATIVE)
+  r.n = _mm256_min_epu8(a.n, b.n);
+#else
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.u8) / sizeof(r.u8[0])) ; i++) {
+    r.u8[i] = (a.u8[i] < b.u8[i]) ? a.u8[i] : b.u8[i];
+  }
+#endif
+
+  return r;
+}
+#if defined(SIMDE_AVX22_ENABLE_NATIVE_ALIASES)
+#  define _mm256_min_epu8(a, b) SIMDE__M256I_TO_NATIVE(simde_mm256_min_epu8(SIMDE__M256I_FROM_NATIVE(a), SIMDE__M256I_FROM_NATIVE(b)))
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256i
 simde_mm256_shuffle_epi8 (simde__m256i a, simde__m256i b) {
   simde__m256i r;
 
