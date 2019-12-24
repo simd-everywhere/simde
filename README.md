@@ -87,34 +87,16 @@ a test case in place.  It's a bit rough right now, but if anything is
 unclear please feel free to use the issue tracker to ask about
 anything you're not clear on.
 
-There are three places you'll want to modify in order to implement a
-new function:
-
- * ${arch}/${isax}.h — this is where the implementations live
- * test/${isax}/${isax}.c — tests comparing the implementation with
-   the expected result.
- * test/${arch}/${isax}/compare.c — tests comparing the portable
-   implementation with the "native" version, using random data for
-   inputs.
-
-The comparison test is optional, but very nice to have.  The regular
-tests are required.
-
-Hopefully it's clear what to do by using other functions in those
-files as a template, but if you have trouble please feel free to
-contact us; we're happy to help!
-
 ## Usage
 
 First, it is important to note that *you do not need two separate
 versions* (one using SIMDe, the other native).  If the native functions
 are available SIMDe will use them, and compilers easily optimize away
 any overhead from SIMDe; all they have to do is some basic inlining.
-`-O2` should be enough for inlining, but we strongly recommend `-O3`
-(or whatever flag instructs your compiler to aggressizely optimize)
-since many of the portable fallbacks are substantially faster with
-aggressize auto-vectorization that isn't enabled at lower optimization
-levels.
+`-O2` should be enough, but we strongly recommend `-O3` (or whatever
+flag instructs your compiler to aggressizely optimize) since many of
+the portable fallbacks are substantially faster with aggressive
+auto-vectorization that isn't enabled at lower optimization levels.
 
 Each instruction set has a separate file; `x86/mmx.h` for MMX,
 `x86/sse.h` for SSE, `x86/sse2.h` for SSE2, and so on.  Just include
@@ -137,7 +119,7 @@ instead.  For example, Intel's APIs use `char` for signed 8-bit
 integers, but `char` on ARM is generally unsigned.  SIMDe uses `int8_t`
 to make the API portable, but that means your code may require some
 minor changes (such as using `int8_t` instead of `char`) to work on
-other platforms. 
+other platforms.
 
 That said, the changes are usually quite minor.  It's often enough to
 just use search and replace, manual changes are required pretty
@@ -149,7 +131,7 @@ equivalent is), you should enable OpenMP 4 SIMD support by defining
 enabling OpenMP support in your compiler.  GCC and ICC both support a
 flag to enable only OpenMP SIMD support instead of full OpenMP (the
 SIMD support doesn't require the OpenMP run-time library); for GCC the
-flag is `-fopenmp-simd`, for ICC `-openmp-simd`.  SIMDe also supports
+flag is `-fopenmp-simd`, for ICC `-qopenmp-simd`.  SIMDe also supports
 using [Cilk Plus](https://www.cilkplus.org/), [GCC loop-specific
 pragmas](https://gcc.gnu.org/onlinedocs/gcc/Loop-Specific-Pragmas.html),
 or [clang pragma loop hint
@@ -160,7 +142,7 @@ though these are not as well tested.
 
 ### Compilers
 
-SIMDe does depend on some C99 feauters, though the subset supported by
+SIMDe does depend on some C99 features, though the subset supported by
 MSVC also works.
 
 Every commit is tested with several different versions of GCC, clang,
@@ -180,8 +162,6 @@ free to use whatever works.
 Currently only x86_64, x86, and ARMv7 receive any sort of regular
 testing.  If you'd like to see more thorough testing of other
 architectures, please consider finding a way to integrate it into CI.
-One example might be running qemu on Travis CI (or some other hosted
-CI).
 
 ## Related Projects
 
@@ -198,7 +178,7 @@ CI).
  * [Iris](https://github.com/AlexYaruki/iris) is the only other project
    I'm aware of which is attempting to create portable implementations
    like SIMDe.  SIMDe is much further along on the Intel side, but Iris
-   looks to be farther along on ARM.  C++-only, Apache 2.0 license.
+   looks to be in better shape on ARM.  C++-only, Apache 2.0 license.
    AFAICT there are no accelerated fallbacks, nor is there a good way to
    add them since it relies extensively on templates.
  * There are a few projects trying to implement one set with another:
@@ -229,13 +209,19 @@ support some caveats apply:
    * SSE
      * `simde_MM_SET_ROUNDING_MODE()` will use `fesetround()`, altering
        the global rounding mode.
-     * `simde_mm_getcsr` and `simde_mm_setcsr` only implement bits 13 and
-       14 (rounding mode).
+     * `simde_mm_getcsr` and `simde_mm_setcsr` only implement bits 13
+       and 14 (rounding mode).
    * AVX
-     * `simde_mm256_test*` do not set the CF/ZF registers as there is no
-       portable way to implement that functionality.
-     * `simde_mm256_zeroall` and `simde_mm256_zeroupper` are not implemented
-       as there is no portable way to implement that functionality.
+     * `simde_mm256_test*` do not set the CF/ZF registers as there is
+       no portable way to implement that functionality.
+     * `simde_mm256_zeroall` and `simde_mm256_zeroupper` are not
+       implemented as there is no portable way to implement that
+       functionality.
+
+Also, as mentioned earlier, while some APIs make assumptions about
+basic types (*e.g.*, `int` is 32 bits), SIMDe can not so many types
+have been altered to used portable fixed-width versions such as
+`int32_t`.
 
 If you find any other differences, please file an issue so we can either fix
 it or add it to the list above.
