@@ -21,8 +21,8 @@
  * SOFTWARE.
  */
 
-#include "../x86-internal.h"
-#include "../../../simde/x86/fma.h"
+#include "x86-internal.h"
+#include "../../simde/x86/fma.h"
 
 static MunitResult
 test_simde_mm_fmadd_pd(const MunitParameter params[], void* data) {

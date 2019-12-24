@@ -21,8 +21,8 @@
  * SOFTWARE.
  */
 
-#include "../x86-internal.h"
-#include "../../../simde/x86/sse4.1.h"
+#include "x86-internal.h"
+#include "../../simde/x86/sse4.1.h"
 
 #include <stdio.h>
 

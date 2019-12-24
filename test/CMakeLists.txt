@@ -67,16 +67,16 @@ set(TEST_SOURCES)
 
 if(NOT DISABLE_X86)
   set(TEST_SOURCES
-    x86/mmx/mmx.c
-    x86/sse/sse.c
-    x86/sse2/sse2.c
-    x86/sse3/sse3.c
-    x86/ssse3/ssse3.c
-    x86/sse4.1/sse4.1.c
-    x86/sse4.2/sse4.2.c
-    x86/avx/avx.c
-    x86/avx2/avx2.c
-    x86/fma/fma.c)
+    x86/mmx.c
+    x86/sse.c
+    x86/sse2.c
+    x86/sse3.c
+    x86/ssse3.c
+    x86/sse4.1.c
+    x86/sse4.2.c
+    x86/avx.c
+    x86/avx2.c
+    x86/fma.c)
 else()
   add_definitions(-DDISABLE_X86)
 endif()
