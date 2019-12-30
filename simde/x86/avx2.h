@@ -20,6 +20,7 @@
  *
  * Copyright:
  *   2018      Evan Nemerson <evan@nemerson.com>
+ *   2019      Michael R. Crusoe <michael.crusoe@gmail.com>
  */
 
 #include "sse4.1.h"
