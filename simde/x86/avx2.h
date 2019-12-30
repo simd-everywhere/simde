@@ -20,6 +20,7 @@
  *
  * Copyright:
  *   2018      Evan Nemerson <evan@nemerson.com>
+ *   2019      Michael R. Crusoe <michael.crusoe@gmail.com>
  */
 
 #include "sse4.1.h"
@@ -260,6 +261,51 @@ simde_mm256_broadcastsi128_si256 (simde__m128i a) {
 }
 #if defined(SIMDE_AVX2_ENABLE_NATIVE_ALIASES)
 #  define _mm256_broadcastsi128_si256(a) SIMDE__M256I_TO_NATIVE(simde_mm256_broadcastsi128_si256(SIMDE__M128I_FROM_NATIVE(a)))
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256i
+simde_mm256_cmpeq_epi8 (simde__m256i a, simde__m256i b) {
+  simde__m256i r;
+
+#if defined(SIMDE_AVX2_NATIVE)
+  r.n = _mm256_cmpeq_epi8(a.n, b.n);
+#else
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.i8) / sizeof(r.i8[0])) ; i++) {
+    r.i8[i] = (a.i8[i] == b.i8[i]) ? ~INT8_C(0) : INT8_C(0);
+  }
+#endif
+
+  return r;
+}
+#if defined(SIMDE_AVX2_ENABLE_NATIVE_ALIASES)
+#  define _mm256_cmpeq_epi8(a, b) SIMDE__M256I_TO_NATIVE(simde_mm256_cmpeq_epi8(SIMDE__M256I_FROM_NATIVE(a), SIMDE__M256I_FROM_NATIVE(b)))
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256i
+simde_mm256_cmpgt_epi16 (simde__m256i a, simde__m256i b) {
+  simde__m256i r;
+
+#if defined(SIMDE_AVX2_NATIVE)
+  r.n = _mm256_cmpgt_epi16(a.n, b.n);
+#elif defined(SIMDE_SSE2_NATIVE)
+  r.m128i[0].n = _mm_cmpgt_epi16(a.m128i[0].n, b.m128i[0].n);
+  r.m128i[1].n = _mm_cmpgt_epi16(a.m128i[1].n, b.m128i[1].n);
+#elif defined(SIMDE__ENABLE_GCC_VEC_EXT)
+  r.i16 = a.i16 > b.i16;
+#else
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.i16) / sizeof(r.i16[0])) ; i++) {
+    r.i16[i] = (a.i16[i] > b.i16[i]) ? ~INT16_C(0) : INT16_C(0);
+  }
+#endif
+
+  return r;
+}
+#if defined(SIMDE_AVX2_ENABLE_NATIVE_ALIASES)
+#  define _mm256_cmpgt_epi16(a, b) SIMDE__M256I_TO_NATIVE(simde_mm256_cmpgt_epi16(SIMDE__M256I_FROM_NATIVE(a), SIMDE__M256I_FROM_NATIVE(b)))
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -622,6 +668,31 @@ simde_mm256_min_epu8 (simde__m256i a, simde__m256i b) {
 }
 #if defined(SIMDE_AVX22_ENABLE_NATIVE_ALIASES)
 #  define _mm256_min_epu8(a, b) SIMDE__M256I_TO_NATIVE(simde_mm256_min_epu8(SIMDE__M256I_FROM_NATIVE(a), SIMDE__M256I_FROM_NATIVE(b)))
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256i
+simde_mm256_or_si256 (simde__m256i a, simde__m256i b) {
+  simde__m256i r;
+
+#if defined(SIMDE_AVX2_NATIVE)
+  r.n = _mm256_or_si256(a.n, b.n);
+#elif defined(SIMDE_SSE2_NATIVE)
+  r.m128i[0].n = _mm_or_si128(a.m128i[0].n, b.m128i[0].n);
+  r.m128i[1].n = _mm_or_si128(a.m128i[1].n, b.m128i[1].n);
+#elif defined(SIMDE__ENABLE_GCC_VEC_EXT)
+  r.i32f = a.i32f | b.i32f;
+#else
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.i32f) / sizeof(r.i32f[0])) ; i++) {
+    r.i32f[i] = a.i32f[i] | b.i32f[i];
+  }
+#endif
+
+  return r;
+}
+#if defined(SIMDE_AVX2_ENABLE_NATIVE_ALIASES)
+#  define _mm256_or_si256(a, b) SIMDE__M256I_TO_NATIVE(simde_mm256_or_si128(SIMDE__M256I_FROM_NATIVE(a), SIMDE__M256I_FROM_NATIVE(b)))
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
