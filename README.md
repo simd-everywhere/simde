@@ -55,14 +55,14 @@ For an example of a project using SIMDe, see
 There are currently complete implementations of the following instruction
 sets:
 
- * MMX
- * SSE
- * SSE2
- * SSE3
- * SSSE3
- * SSE4.1
- * AVX
- * FMA
+ * [MMX](https://en.wikipedia.org/wiki/MMX_(instruction_set))
+ * [SSE](https://en.wikipedia.org/wiki/Streaming_SIMD_Extensions)
+ * [SSE2](https://en.wikipedia.org/wiki/SSE2)
+ * [SSE3](https://en.wikipedia.org/wiki/SSE3)
+ * [SSSE3](https://en.wikipedia.org/wiki/SSSE3)
+ * [SSE4.1](https://en.wikipedia.org/wiki/SSE4#SSE4.1)
+ * [AVX](https://en.wikipedia.org/wiki/Advanced_Vector_Extensions)
+ * [FMA](https://en.wikipedia.org/wiki/FMA_instruction_set)
 
 As well as partial support for many others; see the
 [instruction-set-support](https://github.com/nemequ/simde/issues?q=is%3Aissue+is%3Aopen+label%3Ainstruction-set-support+sort%3Aupdated-desc)
