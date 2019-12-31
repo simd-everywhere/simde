@@ -760,7 +760,48 @@ simde_mm256_shuffle_epi8 (simde__m256i a, simde__m256i b) {
   return r;
 }
 #if defined(SIMDE_AVX2_ENABLE_NATIVE_ALIASES)
-#  define _mm256_shuffle_epi8(a, b) simde_mm256_shuffle_epi8(SIMDE__M256I_FROM_NATIVE(a), SIMDE__M256I_FROM_NATIVE(b))
+#  define _mm256_shuffle_epi8(a, b) SIMDE__M256I_TO_NATIVE(simde_mm256_shuffle_epi8(SIMDE__M256I_FROM_NATIVE(a), SIMDE__M256I_FROM_NATIVE(b)))
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256i
+simde_mm256_shuffle_epi32 (simde__m256i a, const int imm8) {
+  simde__m256i r;
+
+  for (size_t i = 0 ; i < ((sizeof(r.i32) / sizeof(r.i32[0])) / 2) ; i++) {
+    r.i32[i] = a.i32[(imm8 >> (i * 2)) & 3];
+  }
+  for (size_t i = 0 ; i < ((sizeof(r.i32) / sizeof(r.i32[0])) / 2) ; i++) {
+    r.i32[i + 4] = a.i32[((imm8 >> (i * 2)) & 3) + 4];
+  }
+
+  return r;
+}
+#if defined(SIMDE_AVX2_NATIVE) && !defined(__PGI)
+#  define simde_mm256_shuffle_epi32(a, imm8) SIMDE__M256I_FROM_NATIVE(_mm256_shuffle_epi32((a).n, (imm8)))
+#elif defined(SIMDE_SSE2_NATIVE)
+#  define simde_mm256_shuffle_epi32(a, imm8) \
+     simde_mm256_set_m128i( \
+       SIMDE__M128I_FROM_NATIVE(_mm_shuffle_epi32((a).m128i[1].n, (imm8))), \
+       SIMDE__M128I_FROM_NATIVE(_mm_shuffle_epi32((a).m128i[0].n, (imm8))))
+#elif defined(SIMDE__SHUFFLE_VECTOR)
+#  define simde_mm256_shuffle_epi32(a, imm8) (__extension__ ({ \
+      const simde__m256i simde__tmp_a_ = a;                     \
+      (simde__m256i) { .i32 =                                   \
+          SIMDE__SHUFFLE_VECTOR(32, 32,                         \
+                                (simde__tmp_a_).i32,            \
+                                (simde__tmp_a_).i32,            \
+                                ((imm8)     ) & 3,              \
+                                ((imm8) >> 2) & 3,              \
+                                ((imm8) >> 4) & 3,              \
+                                ((imm8) >> 6) & 3,              \
+                                (((imm8)     ) & 3) + 4,        \
+                                (((imm8) >> 2) & 3) + 4,        \
+                                (((imm8) >> 4) & 3) + 4,        \
+                                (((imm8) >> 6) & 3) + 4) }; }))
+#endif
+#if defined(SIMDE_AVX2_ENABLE_NATIVE_ALIASES)
+#  define _mm256_shuffle_epi32(a, imm8) SIMDE__M256I_TO_NATIVE(simde_mm256_shuffle_epi32(SIMDE__M256I_FROM_NATIVE(a), imm8))
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
