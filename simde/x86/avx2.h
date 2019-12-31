@@ -788,6 +788,24 @@ simde_mm256_min_epu8 (simde__m256i a, simde__m256i b) {
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
+int32_t
+simde_mm256_movemask_epi8 (simde__m256i a) {
+#if defined(SIMDE_AVX2_NATIVE)
+  return _mm256_movemask_epi8(a.n);
+#else
+  int32_t r = 0;
+  SIMDE__VECTORIZE_REDUCTION(|:r)
+  for (size_t i = 0 ; i < 32 ; i++) {
+    r |= (a.u8[31 - i] >> 7) << (31 - i);
+  }
+  return r;
+#endif
+}
+#if defined(SIMDE_AVX2_ENABLE_NATIVE_ALIASES)
+#  define _mm256_movemask_epi8(a) simde_mm256_movemask_epi8(SIMDE__M256I_FROM_NATIVE(a))
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
 simde__m256i
 simde_mm256_or_si256 (simde__m256i a, simde__m256i b) {
   simde__m256i r;
