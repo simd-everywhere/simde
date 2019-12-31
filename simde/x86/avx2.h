@@ -603,6 +603,35 @@ simde_mm256_extracti128_si256 (simde__m256i a, const int imm8)
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256i
+simde_mm256_max_epu8 (simde__m256i a, simde__m256i b) {
+  simde__m256i r;
+
+#if defined(SIMDE_AVX2_NATIVE)
+  r.n = _mm256_max_epu8(a.n, b.n);
+#elif defined(SIMDE_SSE2_NATIVE)
+  r.m128i[0].n = _mm_max_epu8(a.m128i[0].n, b.m128i[0].n);
+  r.m128i[1].n = _mm_max_epu8(a.m128i[1].n, b.m128i[1].n);
+#else
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.u8) / sizeof(r.u8[0])) ; i++) {
+    r.u8[i] = (a.u8[i] > b.u8[i]) ? a.u8[i] : b.u8[i];
+  }
+#endif
+
+  return r;
+}
+#if defined(SIMDE_SSE2_NEON)
+#  define simde_mm256_max_epu8(a, b) \
+     simde_mm256_set_m128i( \
+       simde_mm_max_epu8((a).m128i[1], (b).m128i[1]), \
+       simde_mm_max_epu8((a).m128i[0], (b).m128i[0]))
+#endif
+#if defined(SIMDE_AVX2_ENABLE_NATIVE_ALIASES)
+#  define _mm256_max_epu8(a, b) SIMDE__M256I_TO_NATIVE(simde_mm256_max_epu8(SIMDE__M256I_FROM_NATIVE(a), SIMDE__M256I_FROM_NATIVE(b)))
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256i
 simde_mm256_max_epi16 (simde__m256i a, simde__m256i b) {
   simde__m256i r;
 
