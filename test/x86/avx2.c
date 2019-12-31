@@ -4120,12 +4120,16 @@ test_simde_mm256_srli_si256(const MunitParameter params[], void* data) {
 
   for (size_t i = 0 ; i < ((sizeof(test_vec) / sizeof(test_vec[0])) / 2); i++) {
     simde__m256i r = simde_mm256_srli_si256(test_vec[i].a, 7);
+    simde__m256i r2 = simde_mm256_srli_si256(test_vec[i].a, 16);
     simde_assert_m256i_i64(r, ==, test_vec[i].r);
+    simde_assert_m256i_i64(r2, ==, simde_mm256_set_epi64x(INT64_C(0), INT64_C(0), INT64_C(0), INT64_C(0)));
   }
 
   for (size_t i = ((sizeof(test_vec) / sizeof(test_vec[0])) / 2) ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m256i r = simde_mm256_srli_si256(test_vec[i].a, 12);
+    simde__m256i r2 = simde_mm256_srli_si256(test_vec[i].a, 21);
     simde_assert_m256i_i64(r, ==, test_vec[i].r);
+    simde_assert_m256i_i64(r2, ==, simde_mm256_set_epi64x(INT64_C(0), INT64_C(0), INT64_C(0), INT64_C(0)));
   }
 
   return MUNIT_OK;

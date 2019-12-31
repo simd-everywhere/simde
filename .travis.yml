@@ -1,5 +1,5 @@
 language: c
-sudo: false
+cache: ccache
 branches:
   except:
     - /^(wip\/)?(appveyor|msvc|mingw|windows)(\-.+)?$/
@@ -12,6 +12,17 @@ matrix:
           - cmake
           - cmake-data
     - env: C_COMPILER=i686-linux-gnu-gcc-8 CFLAGS=-march=i686
+      dist: bionic
+      addons:
+        apt:
+          packages:
+          - gcc-8-i686-linux-gnu
+          - libc6-dev-i386-cross
+          - cmake
+          - cmake-data
+    - env:
+        - C_COMPILER=i686-linux-gnu-gcc-8
+        - CFLAGS='-march=i686 -DSIMDE_NO_SHUFFLE_VECTOR -mno-avx2 -mno-avx -mno-sse4.2 -mno-sse4.1 -mno-ssse3 -mno-sse3'
       dist: bionic
       addons:
         apt:
@@ -67,6 +78,9 @@ matrix:
           - cmake
           - cmake-data
     - os: osx
+      install:
+        - brew install ccache
+        - export PATH="/usr/local/opt/ccache/libexec:$PATH"
     # - env: C_COMPILER=emcc BUILD_TYPE=Debug
     #   addons:
     #     apt:
