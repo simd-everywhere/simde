@@ -806,6 +806,49 @@ simde_mm256_shuffle_epi32 (simde__m256i a, const int imm8) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256i
+simde_mm256_shufflelo_epi16 (simde__m256i a, const int imm8) {
+  simde__m256i r;
+
+  for (size_t i = 0 ; i < 4 ; i++) {
+    r.i16[i] = a.i16[((imm8 >> (i * 2)) & 3)];
+    r.i16[i+8] = a.i16[((imm8 >> (i * 2)) & 3) + 8];
+  }
+  r.i64[1] = a.i64[1];
+  r.i64[3] = a.i64[3];
+
+  return r;
+}
+#if defined(SIMDE_AVX2_NATIVE)
+#  define simde_mm256_shufflelo_epi16(a, imm8) SIMDE__M256I_FROM_NATIVE(_mm256_shufflelo_epi16((a).n, (imm8)))
+#elif defined(SIMDE_SSE2_NATIVE)
+#  define simde_mm256_shufflelo_epi32(a, imm8) \
+     simde_mm256_set_m128i( \
+       SIMDE__M128I_FROM_NATIVE(_mm_shufflelo_epi16((a).m128i[1].n, (imm8))), \
+       SIMDE__M128I_FROM_NATIVE(_mm_shufflelo_epi16((a).m128i[0].n, (imm8))))
+#elif defined(SIMDE__SHUFFLE_VECTOR)
+#  define simde_mm256_shufflelo_epi16(a, imm8) (__extension__ ({ \
+      const simde__m256i simde__tmp_a_ = a;			\
+      (simde__m256i) { .i16 =					\
+	  SIMDE__SHUFFLE_VECTOR(16, 32,				\
+				(simde__tmp_a_).i16,		\
+				(simde__tmp_a_).i16,		\
+				(((imm8)     ) & 3),		\
+				(((imm8) >> 2) & 3),		\
+				(((imm8) >> 4) & 3),		\
+				(((imm8) >> 6) & 3),		\
+				4, 5, 6, 7,             	\
+				((((imm8)     ) & 3) + 8),	\
+				((((imm8) >> 2) & 3) + 8),	\
+				((((imm8) >> 4) & 3) + 8),	\
+				((((imm8) >> 6) & 3) + 8),	\
+				12, 13, 14, 15) }; }))
+#endif
+#if defined(SIMDE_AVX2_ENABLE_NATIVE_ALIASES)
+#  define _mm256_shufflelo_epi16(a, imm8) SIMDE__M256I_TO_NATIVE(simde_mm256_shufflelo_epi16(SIMDE__M256I_FROM_NATIVE(a), imm8))
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256i
 simde_mm256_slli_epi32 (simde__m256i a, const int imm8) {
   simde__m256i r;
 
