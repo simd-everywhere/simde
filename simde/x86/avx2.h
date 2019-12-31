@@ -167,6 +167,67 @@ simde_mm256_add_epi64 (simde__m256i a, simde__m256i b) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256i
+simde_mm256_alignr_epi8 (simde__m256i a, simde__m256i b, int count) {
+  simde__m256i r;
+  const int bits = (8 * count) % 64;
+  const int eo = count / 8;
+
+  switch (eo) {
+    case 0:
+      r.u64[0]  = b.u64[0] >> bits;
+      r.u64[0] |= b.u64[1] << (64 - bits);
+      r.u64[1]  = b.u64[1] >> bits;
+      r.u64[1] |= a.u64[0] << (64 - bits);
+      r.u64[2]  = b.u64[2] >> bits;
+      r.u64[2] |= b.u64[3] << (64 - bits);
+      r.u64[3]  = b.u64[3] >> bits;
+      r.u64[3] |= a.u64[2] << (64 - bits);
+      break;
+    case 1:
+      r.u64[0]  = b.u64[1] >> bits;
+      r.u64[0] |= a.u64[0] << (64 - bits);
+      r.u64[1]  = a.u64[0] >> bits;
+      r.u64[1] |= a.u64[1] << (64 - bits);
+      r.u64[2]  = b.u64[3] >> bits;
+      r.u64[2] |= a.u64[2] << (64 - bits);
+      r.u64[3]  = a.u64[2] >> bits;
+      r.u64[3] |= a.u64[3] << (64 - bits);
+       break;
+    case 2:
+      r.u64[0]  = a.u64[0] >> bits;
+      r.u64[0] |= a.u64[1] << (64 - bits);
+      r.u64[1]  = a.u64[1] >> bits;
+      r.u64[2]  = a.u64[2] >> bits;
+      r.u64[2] |= a.u64[3] << (64 - bits);
+      r.u64[3]  = a.u64[3] >> bits;
+      break;
+    case 3:
+      r.u64[0]  = a.u64[1] >> bits;
+      r.u64[1]  = 0;
+      r.u64[2]  = a.u64[3] >> bits;
+      r.u64[3]  = 0;
+      break;
+    default:
+      HEDLEY_UNREACHABLE();
+      break;
+  }
+
+  return r;
+}
+#if defined(SIMDE_AVX2_NATIVE)
+#  define simde_mm256_alignr_epi8(a, b, count) SIMDE__M256I_FROM_NATIVE(_mm256_alignr_epi8(a.n, b.n, count))
+#elif defined(SIMDE_SSSE3_NATIVE)
+#  define simde_mm256_alignr_epi8(a, b, count) \
+     simde_mm256_set_m128i( \
+       SIMDE__M128I_FROM_NATIVE(_mm_alignr_epi8((a).m128i[1].n, (b).m128i[1].n, (count))), \
+       SIMDE__M128I_FROM_NATIVE(_mm_alignr_epi8((a).m128i[0].n, (b).m128i[0].n, (count))))
+#endif
+#if defined(SIMDE_AVX2_ENABLE_NATIVE_ALIASES)
+#  define _mm256_alignr_epi8(a, b, count) SIMDE__M256I_TO_NATIVE(simde_mm256_alignr_epi8(SIMDE__M256I_FROM_NATIVE(a), SIMDE__M256I_FROM_NATIVE(b), (count)))
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256i
 simde_mm256_and_si256 (simde__m256i a, simde__m256i b) {
   simde__m256i r;
 
