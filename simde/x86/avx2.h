@@ -981,6 +981,58 @@ simde_mm256_srli_epi64 (simde__m256i a, const int imm8) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256i
+simde_mm256_srli_si256 (simde__m256i a, const int imm8) {
+  simde__m256i r;
+
+  if (HEDLEY_UNLIKELY(imm8 > 15)) {
+    r.u64[0] = 0;
+    r.u64[1] = 0;
+    r.u64[2] = 0;
+    r.u64[3] = 0;
+    return r;
+  }
+
+  const int s = imm8 * 8;
+
+#if defined(SIMDE__HAVE_INT128)
+  r.u128[0] = a.u128[0] >> s;
+  r.u128[1] = a.u128[1] >> s;
+#else
+  if (s < 64) {
+    r.u64[0] = (a.u64[0] >> s) | (a.u64[1] << (64 - s));
+    r.u64[1] = (a.u64[1] >> s);
+    r.u64[2] = (a.u64[2] >> s) | (a.u64[3] << (64 - s));
+    r.u64[3] = (a.u64[3] >> s);
+  } else {
+    r.u64[0] = a.u64[1] >> (s - 64);
+    r.u64[1] = 0;
+    r.u64[2] = a.u64[3] >> (s - 64);
+    r.u64[3] = 0;
+  }
+#endif
+
+  return r;
+}
+
+#if defined(SIMDE_AVX2_NATIVE) && !defined(__PGI)
+#  define simde_mm256_srli_si256(a, imm8) SIMDE__M256I_FROM_NATIVE(_mm256_srli_si256(a.n, imm8))
+#elif defined(SIMDE_SSE2_NATIVE)
+#  define simde_mm256_srli_si256(a, imm8) \
+     simde_mm256_set_m128i( \
+         SIMDE__M128I_FROM_NATIVE(_mm_srli_si128((a).m128i[1].n, (imm8))), \
+         SIMDE__M128I_FROM_NATIVE(_mm_srli_si128((a).m128i[0].n, (imm8))))
+#elif defined(SIMDE_SSE2_NEON)
+#  define simde_mm256_srli_si256(a, imm8) \
+     simde_mm256_set_m128i( \
+       simde_mm_bsrli_si128((a).m128i[1], (imm8)), \
+       simde_mm_bsrli_si128((a).m128i[0], (imm8)))
+#endif
+#if defined(SIMDE_AVX2_ENABLE_NATIVE_ALIASES)
+#  define _mm256_srli_si256(a, imm8) SIMDE__M256I_TO_NATIVE(simde_mm_srli_si256(SIMDE__M256I_FROM_NATIVE(a), imm8))
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256i
 simde_mm256_xor_si256 (simde__m256i a, simde__m256i b) {
   simde__m256i r;
 
