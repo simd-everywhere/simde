@@ -659,8 +659,8 @@ simde_mm_bsrli_si128 (simde__m128i a, const int imm8) {
 #endif
 #define simde_mm_srli_si128(a, imm8) simde_mm_bsrli_si128(a, imm8)
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
-#  define _mm_bsrli_si128(a, b) SIMDE__M128I_TO_NATIVE(simde_mm_bsrli_si128(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(b)))
-#  define _mm_srli_si128(a, b) SIMDE__M128I_TO_NATIVE(simde_mm_bsrli_si128(SIMDE__M128I_FROM_NATIVE(a), SIMDE__M128I_FROM_NATIVE(b)))
+#  define _mm_bsrli_si128(a, imm8) SIMDE__M128I_TO_NATIVE(simde_mm_bsrli_si128(SIMDE__M128I_FROM_NATIVE(a), (imm8))
+#  define _mm_srli_si128(a, imm8) SIMDE__M128I_TO_NATIVE(simde_mm_bsrli_si128(SIMDE__M128I_FROM_NATIVE(a), (imm8))
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES

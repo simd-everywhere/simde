@@ -1,5 +1,5 @@
 language: c
-sudo: false
+cache: ccache
 branches:
   except:
     - /^(wip\/)?(appveyor|msvc|mingw|windows)(\-.+)?$/
@@ -11,13 +11,21 @@ matrix:
           packages:
           - cmake
           - cmake-data
-    - env: C_COMPILER=i686-linux-gnu-gcc-8 CFLAGS=-march=i686
+    - env: ARCH=i686 C_COMPILER=gcc-8 CFLAGS=-march=i686
       dist: bionic
       addons:
         apt:
           packages:
-          - gcc-8-i686-linux-gnu
-          - libc6-dev-i386-cross
+          - cmake
+          - cmake-data
+    - env:
+        - ARCH=i686
+        - C_COMPILER=gcc-8
+        - CFLAGS='-march=i686 -DSIMDE_NO_SHUFFLE_VECTOR -mno-avx2 -mno-avx -mno-sse4.2 -mno-sse4.1 -mno-ssse3 -mno-sse3'
+      dist: bionic
+      addons:
+        apt:
+          packages:
           - cmake
           - cmake-data
     - env: C_COMPILER=clang CFLAGS=-march=native
@@ -91,8 +99,8 @@ before_install:
     SIMDE_CMAKE_ARGS="-DCMAKE_TOOLCHAIN_FILE=${TRAVIS_BUILD_DIR}/test/cmake/toolchain-arm-linux-gnueabihf.cmake";
   elif [ "${C_COMPILER}" = "aarch64-linux-gnu-gcc" ]; then
     SIMDE_CMAKE_ARGS="-DCMAKE_TOOLCHAIN_FILE=${TRAVIS_BUILD_DIR}/test/cmake/toolchain-aarch64-linux-gnu.cmake";
-  elif [ "${C_COMPILER}" = "i686-linux-gnu-gcc-8" ]; then
-    sudo dpkg --add-architecture i386 && sudo apt-get update && sudo apt install libc6:i386 ;
+  elif [ "${ARCH}" = "i686" ]; then
+    sudo dpkg --add-architecture i386 && sudo apt-get update && sudo apt install -y libc6:i386 libc6-dev:i386 gcc-8:i386 cpp-8:i386 binutils:i386 binutils-i686-linux-gnu:i386 && export GCOV="-x /usr/bin/gcov-8" ;
   fi
 - if [ -n "${C_COMPILER}" ]; then export CC="${C_COMPILER}"; fi
 - if [ -z "${BUILD_TYPE}" ]; then export BUILD_TYPE="Coverage"; fi
@@ -113,4 +121,4 @@ script:
   fi
 
 after_success:
-- if [ "${BUILD_TYPE}" = "Coverage" ]; then bash <(curl -s https://codecov.io/bash) -f '!*test-common.c'; fi
+- if [ "${BUILD_TYPE}" = "Coverage" ]; then bash <(curl -s https://codecov.io/bash) -f '!*test-common.c' ${GCOV}; fi
