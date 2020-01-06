@@ -78,9 +78,6 @@ matrix:
           - cmake
           - cmake-data
     - os: osx
-      install:
-        - brew install ccache
-        - export PATH="/usr/local/opt/ccache/libexec:$PATH"
     # - env: C_COMPILER=emcc BUILD_TYPE=Debug
     #   addons:
     #     apt:
