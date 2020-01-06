@@ -883,9 +883,9 @@ simde_mm256_shuffle_epi32 (simde__m256i a, const int imm8) {
 
   return r;
 }
-#if defined(SIMDE_AVX2_NATIVE) && !defined(__PGI)
+#if defined(SIMDE_AVX2_NATIVE)
 #  define simde_mm256_shuffle_epi32(a, imm8) SIMDE__M256I_FROM_NATIVE(_mm256_shuffle_epi32((a).n, (imm8)))
-#elif defined(SIMDE_SSE2_NATIVE)
+#elif defined(SIMDE_SSE2_NATIVE) && !defined(__PGI)
 #  define simde_mm256_shuffle_epi32(a, imm8) \
      simde_mm256_set_m128i( \
        SIMDE__M128I_FROM_NATIVE(_mm_shuffle_epi32((a).m128i[1].n, (imm8))), \
@@ -1120,9 +1120,9 @@ simde_mm256_srli_si256 (simde__m256i a, const int imm8) {
   return r;
 }
 
-#if defined(SIMDE_AVX2_NATIVE) && !defined(__PGI)
+#if defined(SIMDE_AVX2_NATIVE)
 #  define simde_mm256_srli_si256(a, imm8) SIMDE__M256I_FROM_NATIVE(_mm256_srli_si256(a.n, imm8))
-#elif defined(SIMDE_SSE2_NATIVE)
+#elif defined(SIMDE_SSE2_NATIVE) && !defined(__PGI)
 #  define simde_mm256_srli_si256(a, imm8) \
      simde_mm256_set_m128i( \
          SIMDE__M128I_FROM_NATIVE(_mm_srli_si128((a).m128i[1].n, (imm8))), \
