@@ -1582,6 +1582,10 @@ simde_mm_unpackhi_pi8 (simde__m64 a, simde__m64 b) {
   return SIMDE__M64_FROM_NATIVE(_mm_unpackhi_pi8(a.n, b.n));
 #else
   simde__m64 r;
+
+#if defined(SIMDE__SHUFFLE_VECTOR)
+  r.i8 = SIMDE__SHUFFLE_VECTOR(8, 8, a.i8, b.i8, 4, 12, 5, 13, 6, 14, 7, 15);
+#else
   r.i8[0] = a.i8[4];
   r.i8[1] = b.i8[4];
   r.i8[2] = a.i8[5];
@@ -1590,6 +1594,8 @@ simde_mm_unpackhi_pi8 (simde__m64 a, simde__m64 b) {
   r.i8[5] = b.i8[6];
   r.i8[6] = a.i8[7];
   r.i8[7] = b.i8[7];
+#endif
+
   return r;
 #endif
 }
@@ -1606,10 +1612,16 @@ simde_mm_unpackhi_pi16 (simde__m64 a, simde__m64 b) {
   return SIMDE__M64_FROM_NATIVE(_mm_unpackhi_pi16(a.n, b.n));
 #else
   simde__m64 r;
+
+#if defined(SIMDE__SHUFFLE_VECTOR)
+  r.i16 = SIMDE__SHUFFLE_VECTOR(16, 8, a.i16, b.i16, 2, 6, 3, 7);
+#else
   r.i16[0] = a.i16[2];
   r.i16[1] = b.i16[2];
   r.i16[2] = a.i16[3];
   r.i16[3] = b.i16[3];
+#endif
+
   return r;
 #endif
 }
@@ -1626,8 +1638,14 @@ simde_mm_unpackhi_pi32 (simde__m64 a, simde__m64 b) {
   return SIMDE__M64_FROM_NATIVE(_mm_unpackhi_pi32(a.n, b.n));
 #else
   simde__m64 r;
+
+#if defined(SIMDE__SHUFFLE_VECTOR)
+  r.i32 = SIMDE__SHUFFLE_VECTOR(32, 8, a.i32, b.i32, 1, 3);
+#else
   r.i32[0] = a.i32[1];
   r.i32[1] = b.i32[1];
+#endif
+
   return r;
 #endif
 }
@@ -1644,6 +1662,10 @@ simde_mm_unpacklo_pi8 (simde__m64 a, simde__m64 b) {
   return SIMDE__M64_FROM_NATIVE(_mm_unpacklo_pi8(a.n, b.n));
 #else
   simde__m64 r;
+
+#if defined(SIMDE__SHUFFLE_VECTOR)
+  r.i8 = SIMDE__SHUFFLE_VECTOR(8, 8, a.i8, b.i8, 0, 8, 1, 9, 2, 10, 3, 11);
+#else
   r.i8[0] = a.i8[0];
   r.i8[1] = b.i8[0];
   r.i8[2] = a.i8[1];
@@ -1652,6 +1674,8 @@ simde_mm_unpacklo_pi8 (simde__m64 a, simde__m64 b) {
   r.i8[5] = b.i8[2];
   r.i8[6] = a.i8[3];
   r.i8[7] = b.i8[3];
+#endif
+
   return r;
 #endif
 }
@@ -1668,10 +1692,16 @@ simde_mm_unpacklo_pi16 (simde__m64 a, simde__m64 b) {
   return SIMDE__M64_FROM_NATIVE(_mm_unpacklo_pi16(a.n, b.n));
 #else
   simde__m64 r;
+
+#if defined(SIMDE__SHUFFLE_VECTOR)
+  r.i16 = SIMDE__SHUFFLE_VECTOR(16, 8, a.i16, b.i16, 0, 4, 1, 5);
+#else
   r.i16[0] = a.i16[0];
   r.i16[1] = b.i16[0];
   r.i16[2] = a.i16[1];
   r.i16[3] = b.i16[1];
+#endif
+
   return r;
 #endif
 }
@@ -1688,8 +1718,14 @@ simde_mm_unpacklo_pi32 (simde__m64 a, simde__m64 b) {
   return SIMDE__M64_FROM_NATIVE(_mm_unpacklo_pi32(a.n, b.n));
 #else
   simde__m64 r;
+
+#if defined(SIMDE__SHUFFLE_VECTOR)
+  r.i32 = SIMDE__SHUFFLE_VECTOR(32, 8, a.i32, b.i32, 0, 2);
+#else
   r.i32[0] = a.i32[0];
   r.i32[1] = b.i32[0];
+#endif
+
   return r;
 #endif
 }
