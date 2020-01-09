@@ -35,22 +35,53 @@ test_simde_mm_set_pi8(const MunitParameter params[], void* data) {
   (void) params;
   (void) data;
 
-  int8_t d[8 / sizeof(int8_t)];
-  munit_rand_memory(sizeof(d), (uint8_t*) d);
+  const struct {
+    int8_t a[8];
+    int8_t r[8];
+  } test_vec[8] = {
+    { { INT8_C( -18), INT8_C(   5), INT8_C(  95), INT8_C(  85),
+        INT8_C(-120), INT8_C( -83), INT8_C( -24), INT8_C(  10) },
+      { INT8_C(  10), INT8_C( -24), INT8_C( -83), INT8_C(-120),
+        INT8_C(  85), INT8_C(  95), INT8_C(   5), INT8_C( -18) } },
+    { { INT8_C( -90), INT8_C(  16), INT8_C(   4), INT8_C(  40),
+        INT8_C( -80), INT8_C( -82), INT8_C( -42), INT8_C(  33) },
+      { INT8_C(  33), INT8_C( -42), INT8_C( -82), INT8_C( -80),
+        INT8_C(  40), INT8_C(   4), INT8_C(  16), INT8_C( -90) } },
+    { { INT8_C(  42), INT8_C(  24), INT8_C(  71), INT8_C(  37),
+        INT8_C( -96), INT8_C(  45), INT8_C( 110), INT8_C(  -1) },
+      { INT8_C(  -1), INT8_C( 110), INT8_C(  45), INT8_C( -96),
+        INT8_C(  37), INT8_C(  71), INT8_C(  24), INT8_C(  42) } },
+    { { INT8_C(  74), INT8_C( -24), INT8_C(  54), INT8_C( 127),
+        INT8_C(   0), INT8_C( 102), INT8_C( -47), INT8_C( -38) },
+      { INT8_C( -38), INT8_C( -47), INT8_C( 102), INT8_C(   0),
+        INT8_C( 127), INT8_C(  54), INT8_C( -24), INT8_C(  74) } },
+    { { INT8_C( -75), INT8_C( -25), INT8_C(  -5), INT8_C( -79),
+        INT8_C( -50), INT8_C( 103), INT8_C( 101), INT8_C(   9) },
+      { INT8_C(   9), INT8_C( 101), INT8_C( 103), INT8_C( -50),
+        INT8_C( -79), INT8_C(  -5), INT8_C( -25), INT8_C( -75) } },
+    { { INT8_C(  67), INT8_C(  35), INT8_C( -76), INT8_C( -11),
+        INT8_C(  85), INT8_C(   3), INT8_C(  28), INT8_C(-112) },
+      { INT8_C(-112), INT8_C(  28), INT8_C(   3), INT8_C(  85),
+        INT8_C( -11), INT8_C( -76), INT8_C(  35), INT8_C(  67) } },
+    { { INT8_C(  43), INT8_C( -85), INT8_C( -72), INT8_C(-110),
+        INT8_C(  18), INT8_C(  -2), INT8_C(-101), INT8_C( -59) },
+      { INT8_C( -59), INT8_C(-101), INT8_C(  -2), INT8_C(  18),
+        INT8_C(-110), INT8_C( -72), INT8_C( -85), INT8_C(  43) } },
+    { { INT8_C( -28), INT8_C( 112), INT8_C( -91), INT8_C(  78),
+        INT8_C(  17), INT8_C( -12), INT8_C(  13), INT8_C( -29) },
+      { INT8_C( -29), INT8_C(  13), INT8_C( -12), INT8_C(  17),
+        INT8_C(  78), INT8_C( -91), INT8_C( 112), INT8_C( -28) } }
+  };
 
-  simde__m64 x = simde_mm_set_pi8(d[0], d[1], d[2], d[3], d[4], d[5], d[6], d[7]);
-  int8_t* c = (int8_t*) &x;
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    simde__m64 r = simde_mm_set_pi8(
+        test_vec[i].a[0], test_vec[i].a[1], test_vec[i].a[2], test_vec[i].a[3],
+        test_vec[i].a[4], test_vec[i].a[5],test_vec[i].a[6], test_vec[i].a[7]);
 
-  simde_mm_empty();
-
-  munit_assert_int8(c[0], ==, d[7]);
-  munit_assert_int8(c[1], ==, d[6]);
-  munit_assert_int8(c[2], ==, d[5]);
-  munit_assert_int8(c[3], ==, d[4]);
-  munit_assert_int8(c[4], ==, d[3]);
-  munit_assert_int8(c[5], ==, d[2]);
-  munit_assert_int8(c[6], ==, d[1]);
-  munit_assert_int8(c[7], ==, d[0]);
+    for (size_t j = 0 ; j < 8 ; j++) {
+      munit_assert_int8(test_vec[i].r[j], ==, r.i8[j]);
+    }
+  }
 
   return MUNIT_OK;
 }
