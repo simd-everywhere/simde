@@ -253,6 +253,30 @@ simde_mm256_and_si256 (simde__m256i a, simde__m256i b) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256i
+simde_mm256_andnot_si256 (simde__m256i a, simde__m256i b) {
+  simde__m256i r;
+
+#if defined(SIMDE_AVX2_NATIVE)
+  r.n = _mm256_andnot_si256(a.n, b.n);
+#elif defined(SIMDE_SSE2_NATIVE) || defined(SIMDE_SSE2_NEON)
+  r = simde_mm256_set_m128i(
+        simde_mm_andnot_si128(a.m128i[1], b.m128i[1]),
+	simde_mm_andnot_si128(a.m128i[0], b.m128i[0]));
+#else
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.i32f) / sizeof(r.i32f[0])) ; i++) {
+    r.i32f[i] = ~(a.i32f[i]) & b.i32f[i];
+  }
+#endif
+
+  return r;
+}
+#if defined(SIMDE_AVX2_ENABLE_NATIVE_ALIASES)
+#  define _mm256_andnot_si256(a, b) SIMDE__M256I_TO_NATIVE(simde_mm256_andnot_si256(SIMDE__M256I_FROM_NATIVE(a), SIMDE__M256I_FROM_NATIVE(b)))
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256i
 simde_mm256_adds_epu8 (simde__m256i a, simde__m256i b) {
   simde__m256i r;
 
