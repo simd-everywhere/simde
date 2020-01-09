@@ -370,6 +370,30 @@ simde_mm256_cmpeq_epi8 (simde__m256i a, simde__m256i b) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256i
+simde_mm256_cmpeq_epi32 (simde__m256i a, simde__m256i b) {
+  simde__m256i r;
+
+#if defined(SIMDE_AVX2_NATIVE)
+  r.n = _mm256_cmpeq_epi32(a.n, b.n);
+#elif defined(SIMDE_SSE2_NATIVE) || defined(SIMDE_SSE2_NEON)
+  r = simde_mm256_set_m128i(
+        simde_mm_cmpeq_epi32(a.m128i[1], b.m128i[1]),
+        simde_mm_cmpeq_epi32(a.m128i[0], b.m128i[0]));
+#else
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.i32) / sizeof(r.i32[0])) ; i++) {
+    r.i32[i] = (a.i32[i] == b.i32[i]) ? ~INT32_C(0) : INT32_C(0);
+  }
+#endif
+
+  return r;
+}
+#if defined(SIMDE_AVX2_ENABLE_NATIVE_ALIASES)
+#  define _mm256_cmpeq_epi32(a, b) SIMDE__M256I_TO_NATIVE(simde_mm256_cmpeq_epi32(SIMDE__M256I_FROM_NATIVE(a), SIMDE__M256I_FROM_NATIVE(b)))
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256i
 simde_mm256_cmpgt_epi16 (simde__m256i a, simde__m256i b) {
   simde__m256i r;
 
