@@ -70,6 +70,12 @@
 
 #if HEDLEY_GCC_HAS_ATTRIBUTE(vector_size,4,6,0)
 #  define SIMDE__ENABLE_GCC_VEC_EXT
+/* clang had a bug (present in 3.5 at least) where it wouldn't
+   shift by a scalar value.  I have no idea how to detect when
+   it was fixed, so we just blacklist clang from certain functions. */
+#  if !defined(__clang__)
+#    define SIMDE__ENABLE_GCC_VEC_EXT_SHIFT_BY_SCALAR
+#  endif
 #endif
 
 #if !defined(SIMDE_ENABLE_OPENMP) && ((defined(_OPENMP) && (_OPENMP >= 201307L)) || (defined(_OPENMP_SIMD) && (_OPENMP_SIMD >= 201307L)))

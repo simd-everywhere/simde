@@ -963,7 +963,7 @@ simde_mm_sll_pi16 (simde__m64 a, simde__m64 count) {
 #else
   simde__m64 r;
 
-#if defined(SIMDE__ENABLE_GCC_VEC_EXT)
+#if defined(SIMDE__ENABLE_GCC_VEC_EXT_SHIFT_BY_SCALAR)
   r.i16 = a.i16 << count.u64[0];
 #else
   if (HEDLEY_UNLIKELY(count.u64[0] > 15)) {
@@ -994,7 +994,7 @@ simde_mm_sll_pi32 (simde__m64 a, simde__m64 count) {
 #else
   simde__m64 r;
 
-#if defined(SIMDE__ENABLE_GCC_VEC_EXT)
+#if defined(SIMDE__ENABLE_GCC_VEC_EXT_SHIFT_BY_SCALAR)
   r.i32 = a.i32 << count.u64[0];
 #else
   if (HEDLEY_UNLIKELY(count.u64[0] > 31)) {
@@ -1025,7 +1025,7 @@ simde_mm_slli_pi16 (simde__m64 a, int count) {
 #else
   simde__m64 r;
 
-#if defined(SIMDE__ENABLE_GCC_VEC_EXT)
+#if defined(SIMDE__ENABLE_GCC_VEC_EXT_SHIFT_BY_SCALAR)
   r.i16 = a.i16 << count;
 #else
   SIMDE__VECTORIZE
@@ -1051,7 +1051,7 @@ simde_mm_slli_pi32 (simde__m64 a, int count) {
 #else
   simde__m64 r;
 
-#if defined(SIMDE__ENABLE_GCC_VEC_EXT)
+#if defined(SIMDE__ENABLE_GCC_VEC_EXT_SHIFT_BY_SCALAR)
   r.i32 = a.i32 << count;
 #else
   SIMDE__VECTORIZE
@@ -1077,7 +1077,7 @@ simde_mm_slli_si64 (simde__m64 a, int count) {
 #else
   simde__m64 r;
 
-#if defined(SIMDE__ENABLE_GCC_VEC_EXT)
+#if defined(SIMDE__ENABLE_GCC_VEC_EXT_SHIFT_BY_SCALAR)
   r.i64 = a.i64 << count;
 #else
   r.u64[0] = a.u64[0] << count;
@@ -1128,7 +1128,7 @@ simde_mm_srl_pi16 (simde__m64 a, simde__m64 count) {
 #else
   simde__m64 r;
 
-#if defined(SIMDE__ENABLE_GCC_VEC_EXT)
+#if defined(SIMDE__ENABLE_GCC_VEC_EXT_SHIFT_BY_SCALAR)
   r.u16 = a.u16 >> count.u64[0];
 #else
   if (HEDLEY_UNLIKELY(count.u64[0] > 15)) {
@@ -1159,7 +1159,7 @@ simde_mm_srl_pi32 (simde__m64 a, simde__m64 count) {
 #else
   simde__m64 r;
 
-#if defined(SIMDE__ENABLE_GCC_VEC_EXT)
+#if defined(SIMDE__ENABLE_GCC_VEC_EXT_SHIFT_BY_SCALAR)
   r.u32 = a.u32 >> count.u64[0];
 #else
   if (HEDLEY_UNLIKELY(count.u64[0] > 31)) {
@@ -1190,7 +1190,7 @@ simde_mm_srli_pi16 (simde__m64 a, int count) {
 #else
   simde__m64 r;
 
-#if defined(SIMDE__ENABLE_GCC_VEC_EXT)
+#if defined(SIMDE__ENABLE_GCC_VEC_EXT_SHIFT_BY_SCALAR)
   r.u16 = a.u16 >> count;
 #else
   SIMDE__VECTORIZE
@@ -1216,7 +1216,7 @@ simde_mm_srli_pi32 (simde__m64 a, int count) {
 #else
   simde__m64 r;
 
-#if defined(SIMDE__ENABLE_GCC_VEC_EXT)
+#if defined(SIMDE__ENABLE_GCC_VEC_EXT_SHIFT_BY_SCALAR)
   r.u32 = a.u32 >> count;
 #else
   SIMDE__VECTORIZE
@@ -1242,7 +1242,7 @@ simde_mm_srli_si64 (simde__m64 a, int count) {
 #else
   simde__m64 r;
 
-#if defined(SIMDE__ENABLE_GCC_VEC_EXT)
+#if defined(SIMDE__ENABLE_GCC_VEC_EXT_SHIFT_BY_SCALAR)
   r.u64 = a.u64 >> count;
 #else
   r.u64[0] = a.u64[0] >> count;
@@ -1293,7 +1293,7 @@ simde_mm_srai_pi16 (simde__m64 a, int count) {
 #else
   simde__m64 r;
 
-#if defined(SIMDE__ENABLE_GCC_VEC_EXT)
+#if defined(SIMDE__ENABLE_GCC_VEC_EXT_SHIFT_BY_SCALAR)
   r.i16 = a.i16 >> (count & 0xff);
 #else
   SIMDE__VECTORIZE
@@ -1319,7 +1319,7 @@ simde_mm_srai_pi32 (simde__m64 a, int count) {
 #else
   simde__m64 r;
 
-#if defined(SIMDE__ENABLE_GCC_VEC_EXT)
+#if defined(SIMDE__ENABLE_GCC_VEC_EXT_SHIFT_BY_SCALAR)
   r.i32 = a.i32 >> (count & 0xff);
 #else
   SIMDE__VECTORIZE
@@ -1346,7 +1346,7 @@ simde_mm_sra_pi16 (simde__m64 a, simde__m64 count) {
   simde__m64 r;
   const int cnt = (int) (count.i64[0] > 15 ? 15 : count.i64[0]);
 
-#if defined(SIMDE__ENABLE_GCC_VEC_EXT)
+#if defined(SIMDE__ENABLE_GCC_VEC_EXT_SHIFT_BY_SCALAR)
   r.i16 = a.i16 >> cnt;
 #else
   SIMDE__VECTORIZE
@@ -1373,7 +1373,7 @@ simde_mm_sra_pi32 (simde__m64 a, simde__m64 count) {
   simde__m64 r;
   const int32_t cnt = (count.u64[0] > 31) ? 31 : ((int32_t) count.u64[0]);
 
-#if defined(SIMDE__ENABLE_GCC_VEC_EXT)
+#if defined(SIMDE__ENABLE_GCC_VEC_EXT_SHIFT_BY_SCALAR)
   r.i32 = a.i32 >> cnt;
 #else
   SIMDE__VECTORIZE
