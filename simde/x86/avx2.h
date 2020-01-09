@@ -832,6 +832,33 @@ simde_mm256_or_si256 (simde__m256i a, simde__m256i b) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256i
+simde_mm256_packs_epi32 (simde__m256i a, simde__m256i b) {
+  simde__m256i r;
+
+#if defined(SIMDE_AVX2_NATIVE)
+  r.n = _mm256_packs_epi32(a.n, b.n);
+#elif defined(SIMDE_SSE2_NATIVE) || defined(SIMDE_SSE2_NEON)
+  r = simde_mm256_set_m128i(
+    simde_mm_packs_epi32(a.m128i[1], b.m128i[1]),
+    simde_mm_packs_epi32(a.m128i[0], b.m128i[0]));
+#else
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r.i32) / sizeof(r.i32[0]) / 2) ; i++) {
+    r.i16[i]      = (a.i32[i] > INT16_MAX) ? INT16_MAX : ((a.i32[i] < INT16_MIN) ? INT16_MIN : ((int16_t) a.i32[i]));
+    r.i16[i + 4]  = (b.i32[i] > INT16_MAX) ? INT16_MAX : ((b.i32[i] < INT16_MIN) ? INT16_MIN : ((int16_t) b.i32[i]));
+    r.i16[i + 8]  = (a.i32[i + 4] > INT16_MAX) ? INT16_MAX : ((a.i32[i + 4] < INT16_MIN) ? INT16_MIN : ((int16_t) a.i32[i]));
+    r.i16[i + 12] = (b.i32[i + 4] > INT16_MAX) ? INT16_MAX : ((b.i32[i + 4] < INT16_MIN) ? INT16_MIN : ((int16_t) b.i32[i]));
+  }
+#endif
+
+  return r;
+}
+#if defined(SIMDE_AVX2_ENABLE_NATIVE_ALIASES)
+#  define _mm256_packs_epi32(a, b) SIMDE__M256I_TO_NATIVE(simde_mm256_packs_epi32(SIMDE__M256I_FROM_NATIVE(a), SIMDE__M256I_FROM_NATIVE(b)))
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256i
 simde_mm256_permute2x128_si256 (simde__m256i a, simde__m256i b, const int imm8)
     HEDLEY_REQUIRE_MSG((imm8 & 0xf) == imm8, "imm8 must be in range [0, 15]") {
   simde__m256i r;
