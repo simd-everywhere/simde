@@ -1165,7 +1165,7 @@ simde_mm_sll_pi16 (simde__m64 a, simde__m64 count) {
   simde__m64 r;
 
 #if defined(SIMDE_MMX_NEON)
-  r.neon_i16 = vshl_n_s16(a.neon_i16, (int) vget_lane_s64(count.neon_i64, 0));
+  r.neon_i16 = vshl_s16(a.neon_i16, vmov_n_s16((int16_t) vget_lane_u64(count.neon_u64, 0)));
 #elif defined(SIMDE__ENABLE_GCC_VEC_EXT_SHIFT_BY_SCALAR)
   r.i16 = a.i16 << count.u64[0];
 #else
@@ -1198,7 +1198,7 @@ simde_mm_sll_pi32 (simde__m64 a, simde__m64 count) {
   simde__m64 r;
 
 #if defined(SIMDE_MMX_NEON)
-  r.neon_i32 = vshl_n_s32(a.neon_i32, (int) vget_lane_s64(count.neon_i64, 0));
+  r.neon_i32 = vshl_s32(a.neon_i32, vmov_n_s32((int32_t) vget_lane_u64(count.neon_u64, 0)));
 #elif defined(SIMDE__ENABLE_GCC_VEC_EXT_SHIFT_BY_SCALAR)
   r.i32 = a.i32 << count.u64[0];
 #else
@@ -1230,10 +1230,10 @@ simde_mm_slli_pi16 (simde__m64 a, int count) {
 #else
   simde__m64 r;
 
-#if defined(SIMDE_MMX_NEON)
-  r.neon_i16 = vshl_n_s16(a.neon_i16, count);
-#elif defined(SIMDE__ENABLE_GCC_VEC_EXT_SHIFT_BY_SCALAR)
+#if defined(SIMDE__ENABLE_GCC_VEC_EXT_SHIFT_BY_SCALAR)
   r.i16 = a.i16 << count;
+#elif defined(SIMDE_MMX_NEON)
+  r.neon_i16 = vshl_s16(a.neon_i16, vmov_n_s16((int16_t) count));
 #else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.u16) / sizeof(r.u16[0])) ; i++) {
@@ -1258,10 +1258,10 @@ simde_mm_slli_pi32 (simde__m64 a, int count) {
 #else
   simde__m64 r;
 
-#if defined(SIMDE_MMX_NEON)
-  r.neon_i32 = vshl_n_s32(a.neon_i32, count);
-#elif defined(SIMDE__ENABLE_GCC_VEC_EXT_SHIFT_BY_SCALAR)
+#if defined(SIMDE__ENABLE_GCC_VEC_EXT_SHIFT_BY_SCALAR)
   r.i32 = a.i32 << count;
+#elif defined(SIMDE_MMX_NEON)
+  r.neon_i32 = vshl_s32(a.neon_i32, vmov_n_s32((int32_t) count));
 #else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.u32) / sizeof(r.u32[0])) ; i++) {
@@ -1286,10 +1286,10 @@ simde_mm_slli_si64 (simde__m64 a, int count) {
 #else
   simde__m64 r;
 
-#if defined(SIMDE_MMX_NEON)
-  r.neon_i64 = vshl_n_s64(a.neon_i64, count);
-#elif defined(SIMDE__ENABLE_GCC_VEC_EXT_SHIFT_BY_SCALAR)
+#if defined(SIMDE__ENABLE_GCC_VEC_EXT_SHIFT_BY_SCALAR)
   r.i64 = a.i64 << count;
+#elif defined(SIMDE_MMX_NEON)
+  r.neon_i64 = vshl_s64(a.neon_i64, vmov_n_s64((int64_t) count));
 #else
   r.u64[0] = a.u64[0] << count;
 #endif
@@ -1341,10 +1341,10 @@ simde_mm_srl_pi16 (simde__m64 a, simde__m64 count) {
 #else
   simde__m64 r;
 
-#if defined(SIMDE_MMX_NEON)
-  r.neon_u16 = vshr_n_u16(a.neon_u16, (int) vget_lane_s64(count.neon_i64, 0));
-#elif defined(SIMDE__ENABLE_GCC_VEC_EXT_SHIFT_BY_SCALAR)
+#if defined(SIMDE__ENABLE_GCC_VEC_EXT_SHIFT_BY_SCALAR)
   r.u16 = a.u16 >> count.u64[0];
+#elif defined(SIMDE_MMX_NEON)
+  r.neon_u16 = vshl_u16(a.neon_u16, vmov_n_s16(-((int16_t) vget_lane_u64(count.neon_u64, 0))));
 #else
   if (HEDLEY_UNLIKELY(count.u64[0] > 15)) {
     memset(&r, 0, sizeof(r));
@@ -1374,10 +1374,10 @@ simde_mm_srl_pi32 (simde__m64 a, simde__m64 count) {
 #else
   simde__m64 r;
 
-#if defined(SIMDE_MMX_NEON)
-  r.neon_u32 = vshr_n_u32(a.neon_u32, (int) vget_lane_s64(count.neon_i64, 0));
-#elif defined(SIMDE__ENABLE_GCC_VEC_EXT_SHIFT_BY_SCALAR)
+#if defined(SIMDE__ENABLE_GCC_VEC_EXT_SHIFT_BY_SCALAR)
   r.u32 = a.u32 >> count.u64[0];
+#elif defined(SIMDE_MMX_NEON)
+  r.neon_u32 = vshl_u32(a.neon_u32, vmov_n_s32(-((int32_t) vget_lane_u64(count.neon_u64, 0))));
 #else
   if (HEDLEY_UNLIKELY(count.u64[0] > 31)) {
     memset(&r, 0, sizeof(r));
@@ -1407,10 +1407,10 @@ simde_mm_srli_pi16 (simde__m64 a, int count) {
 #else
   simde__m64 r;
 
-#if defined(SIMDE_MMX_NEON)
-  r.neon_u16 = vshr_n_u16(a.neon_u16, count);
-#elif defined(SIMDE__ENABLE_GCC_VEC_EXT_SHIFT_BY_SCALAR)
+#if defined(SIMDE__ENABLE_GCC_VEC_EXT_SHIFT_BY_SCALAR)
   r.u16 = a.u16 >> count;
+#elif defined(SIMDE_MMX_NEON)
+  r.neon_u16 = vshl_u16(a.neon_u16, vmov_n_s16(-((int16_t) count)));
 #else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.u16) / sizeof(r.u16[0])) ; i++) {
@@ -1435,10 +1435,10 @@ simde_mm_srli_pi32 (simde__m64 a, int count) {
 #else
   simde__m64 r;
 
-#if defined(SIMDE_MMX_NEON)
-  r.neon_u32 = vshr_n_u32(a.neon_u32, count);
-#elif defined(SIMDE__ENABLE_GCC_VEC_EXT_SHIFT_BY_SCALAR)
+#if defined(SIMDE__ENABLE_GCC_VEC_EXT_SHIFT_BY_SCALAR)
   r.u32 = a.u32 >> count;
+#elif defined(SIMDE_MMX_NEON)
+  r.neon_u32 = vshl_u32(a.neon_u32, vmov_n_s32(-((int32_t) count)));
 #else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.u32) / sizeof(r.u32[0])) ; i++) {
@@ -1518,10 +1518,10 @@ simde_mm_srai_pi16 (simde__m64 a, int count) {
 #else
   simde__m64 r;
 
-#if defined(SIMDE_MMX_NEON)
-  r.neon_i16 = vshr_n_s16(a.neon_i16, count);
-#elif defined(SIMDE__ENABLE_GCC_VEC_EXT_SHIFT_BY_SCALAR)
+#if defined(SIMDE__ENABLE_GCC_VEC_EXT_SHIFT_BY_SCALAR)
   r.i16 = a.i16 >> (count & 0xff);
+#elif defined(SIMDE_MMX_NEON)
+  r.neon_i16 = vshl_s16(a.neon_i16, vmov_n_s16(-((int16_t) count)));
 #else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i16) / sizeof(r.i16[0])) ; i++) {
@@ -1546,10 +1546,10 @@ simde_mm_srai_pi32 (simde__m64 a, int count) {
 #else
   simde__m64 r;
 
-#if defined(SIMDE_MMX_NEON)
-  r.neon_i32 = vshr_n_s32(a.neon_i32, count);
-#elif defined(SIMDE__ENABLE_GCC_VEC_EXT_SHIFT_BY_SCALAR)
+#if defined(SIMDE__ENABLE_GCC_VEC_EXT_SHIFT_BY_SCALAR)
   r.i32 = a.i32 >> (count & 0xff);
+#elif defined(SIMDE_MMX_NEON)
+  r.neon_i32 = vshl_s32(a.neon_i32, vmov_n_s32(-((int32_t) count)));
 #else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i32) / sizeof(r.i32[0])) ; i++) {
@@ -1575,10 +1575,10 @@ simde_mm_sra_pi16 (simde__m64 a, simde__m64 count) {
   simde__m64 r;
   const int cnt = (int) (count.i64[0] > 15 ? 15 : count.i64[0]);
 
-#if defined(SIMDE_MMX_NEON)
-  r.neon_i16 = vshr_n_s16(a.neon_i16, (int) vget_lane_s64(count.neon_i64, 0));
-#elif defined(SIMDE__ENABLE_GCC_VEC_EXT_SHIFT_BY_SCALAR)
+#if defined(SIMDE__ENABLE_GCC_VEC_EXT_SHIFT_BY_SCALAR)
   r.i16 = a.i16 >> cnt;
+#elif defined(SIMDE_MMX_NEON)
+  r.neon_i16 = vshl_s16(a.neon_i16, vmov_n_s16(-((int16_t) vget_lane_u64(count.neon_u64, 0))));
 #else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i16) / sizeof(r.i16[0])) ; i++) {
@@ -1604,10 +1604,10 @@ simde_mm_sra_pi32 (simde__m64 a, simde__m64 count) {
   simde__m64 r;
   const int32_t cnt = (count.u64[0] > 31) ? 31 : ((int32_t) count.u64[0]);
 
-#if defined(SIMDE_MMX_NEON)
-  r.neon_i32 = vshr_n_s32(a.neon_i32, (int) vget_lane_s64(count.neon_i64, 0));
-#elif defined(SIMDE__ENABLE_GCC_VEC_EXT_SHIFT_BY_SCALAR)
+#if defined(SIMDE__ENABLE_GCC_VEC_EXT_SHIFT_BY_SCALAR)
   r.i32 = a.i32 >> cnt;
+#elif defined(SIMDE_MMX_NEON)
+  r.neon_i32 = vshl_s32(a.neon_i32, vmov_n_s32(-((int32_t) vget_lane_u64(count.neon_u64, 0))));
 #else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i32) / sizeof(r.i32[0])) ; i++) {
