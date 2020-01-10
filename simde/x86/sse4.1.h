@@ -627,7 +627,7 @@ int64_t
 simde_mm_extract_epi64 (simde__m128i a, const int imm8) {
   return a.i64[imm8&1];
 }
-#if defined(SIMDE_SSE4_1_NATIVE)
+#if defined(SIMDE_SSE4_1_NATIVE) && defined(SIMDE_ARCH_AMD64)
 #  define simde_mm_extract_epi64(a, imm8) _mm_extract_epi64(a.n, imm8)
 #elif defined(SIMDE_SSE4_1_NEON)
 #  define simde_mm_extract_epi64(a, imm8) vgetq_lane_s64(a.neon_i64, imm8)
@@ -738,7 +738,7 @@ simde_mm_insert_epi64 (simde__m128i a, int64_t i, const int imm8) {
   a.i64[imm8] = i;
   return a;
 }
-#if defined(SIMDE_SSE4_1_NATIVE)
+#if defined(SIMDE_SSE4_1_NATIVE) && defined(SIMDE_ARCH_AMD64)
 #  define simde_mm_insert_epi64(a, i, imm8) SIMDE__M128I_FROM_NATIVE(_mm_insert_epi64(a.n, i, imm8));
 #endif
 #if defined(SIMDE_SSE4_1_ENABLE_NATIVE_ALIASES)
