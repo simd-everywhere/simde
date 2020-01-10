@@ -23,22 +23,22 @@ test_simde_mm_xxx_epi8(const MunitParameter params[], void* data) {
 
     r = simde_mm_xxx_epi8(a, b);
 
-    printf("    { simde_mm_set_epi8(INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"),\n"
-	   "                        INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"),\n"
-	   "                        INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"),\n"
-	   "                        INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8")),\n",
+    printf("    { simde_mm_set_epi8(INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "),\n"
+	   "                        INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "),\n"
+	   "                        INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "),\n"
+	   "                        INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 ")),\n",
            a.i8[15], a.i8[14], a.i8[13], a.i8[12], a.i8[11], a.i8[10], a.i8[ 9], a.i8[ 8],
            a.i8[ 7], a.i8[ 6], a.i8[ 5], a.i8[ 4], a.i8[ 3], a.i8[ 2], a.i8[ 1], a.i8[ 0]);
-    printf("      simde_mm_set_epi8(INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"),\n"
-	   "                        INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"),\n"
-	   "                        INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"),\n"
-	   "                        INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8")),\n",
+    printf("      simde_mm_set_epi8(INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "),\n"
+	   "                        INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "),\n"
+	   "                        INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "),\n"
+	   "                        INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 ")),\n",
            b.i8[15], b.i8[14], b.i8[13], b.i8[12], b.i8[11], b.i8[10], b.i8[ 9], b.i8[ 8],
            b.i8[ 7], b.i8[ 6], b.i8[ 5], b.i8[ 4], b.i8[ 3], b.i8[ 2], b.i8[ 1], b.i8[ 0]);
-    printf("      simde_mm_set_epi8(INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"),\n"
-	   "                        INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"),\n"
-	   "                        INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"),\n"
-	   "                        INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8")) },\n",
+    printf("      simde_mm_set_epi8(INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "),\n"
+	   "                        INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "),\n"
+	   "                        INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "),\n"
+	   "                        INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 ")) },\n",
            r.i8[15], r.i8[14], r.i8[13], r.i8[12], r.i8[11], r.i8[10], r.i8[ 9], r.i8[ 8],
            r.i8[ 7], r.i8[ 6], r.i8[ 5], r.i8[ 4], r.i8[ 3], r.i8[ 2], r.i8[ 1], r.i8[ 0]);
   }
@@ -74,14 +74,14 @@ test_simde_mm_xxx_epi16(const MunitParameter params[], void* data) {
 
     r = simde_mm_xxx_epi16(a, b);
 
-    printf("    { simde_mm_set_epi16(INT16_C(%6"PRId16"), INT16_C(%6"PRId16"), INT16_C(%6"PRId16"), INT16_C(%6"PRId16"),\n"
-	   "                         INT16_C(%6"PRId16"), INT16_C(%6"PRId16"), INT16_C(%6"PRId16"), INT16_C(%6"PRId16")),\n",
+    printf("    { simde_mm_set_epi16(INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 "),\n"
+	   "                         INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 ")),\n",
            a.i16[7], a.i16[6], a.i16[5], a.i16[4], a.i16[3], a.i16[2], a.i16[1], a.i16[0]);
-    printf("      simde_mm_set_epi16(INT16_C(%6"PRId16"), INT16_C(%6"PRId16"), INT16_C(%6"PRId16"), INT16_C(%6"PRId16"),\n"
-	   "                         INT16_C(%6"PRId16"), INT16_C(%6"PRId16"), INT16_C(%6"PRId16"), INT16_C(%6"PRId16")),\n",
+    printf("      simde_mm_set_epi16(INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 "),\n"
+	   "                         INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 ")),\n",
            b.i16[7], b.i16[6], b.i16[5], b.i16[4], b.i16[3], b.i16[2], b.i16[1], b.i16[0]);
-    printf("      simde_mm_set_epi16(INT16_C(%6"PRId16"), INT16_C(%6"PRId16"), INT16_C(%6"PRId16"), INT16_C(%6"PRId16"),\n"
-	   "                         INT16_C(%6"PRId16"), INT16_C(%6"PRId16"), INT16_C(%6"PRId16"), INT16_C(%6"PRId16")) },\n",
+    printf("      simde_mm_set_epi16(INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 "),\n"
+	   "                         INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 ")) },\n",
            r.i16[7], r.i16[6], r.i16[5], r.i16[4], r.i16[3], r.i16[2], r.i16[1], r.i16[0]);
   }
   return MUNIT_FAIL;
@@ -116,11 +116,11 @@ test_simde_mm_xxx_epi32(const MunitParameter params[], void* data) {
 
     r = simde_mm_xxx_epi32(a, b);
 
-    printf("    { simde_mm_set_epi32(INT32_C(%11"PRId32"), INT32_C(%11"PRId32"), INT32_C(%11"PRId32"), INT32_C(%11"PRId32")),\n",
+    printf("    { simde_mm_set_epi32(INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 ")),\n",
   	   a.i32[3], a.i32[2], a.i32[1], a.i32[0]);
-    printf("      simde_mm_set_epi32(INT32_C(%11"PRId32"), INT32_C(%11"PRId32"), INT32_C(%11"PRId32"), INT32_C(%11"PRId32")),\n",
+    printf("      simde_mm_set_epi32(INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 ")),\n",
   	   b.i32[3], b.i32[2], b.i32[1], b.i32[0]);
-    printf("      simde_mm_set_epi32(INT32_C(%11"PRId32"), INT32_C(%11"PRId32"), INT32_C(%11"PRId32"), INT32_C(%11"PRId32")) },\n",
+    printf("      simde_mm_set_epi32(INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 ")) },\n",
   	   r.i32[3], r.i32[2], r.i32[1], r.i32[0]);
   }
   return MUNIT_FAIL;
@@ -155,9 +155,9 @@ test_simde_mm_xxx_epi64(const MunitParameter params[], void* data) {
 
     r = simde_mm_xxx_epi64(a, b);
 
-    printf("    { simde_mm_set_epi64x(INT64_C(%20"PRId64"), INT64_C(%20"PRId64")),\n", a.i64[1], a.i64[0]);
-    printf("      simde_mm_set_epi64x(INT64_C(%20"PRId64"), INT64_C(%20"PRId64")),\n", b.i64[1], b.i64[0]);
-    printf("      simde_mm_set_epi64x(INT64_C(%20"PRId64"), INT64_C(%20"PRId64")) },\n", r.i64[1], r.i64[0]);
+    printf("    { simde_mm_set_epi64x(INT64_C(%20" PRId64 "), INT64_C(%20" PRId64 ")),\n", a.i64[1], a.i64[0]);
+    printf("      simde_mm_set_epi64x(INT64_C(%20" PRId64 "), INT64_C(%20" PRId64 ")),\n", b.i64[1], b.i64[0]);
+    printf("      simde_mm_set_epi64x(INT64_C(%20" PRId64 "), INT64_C(%20" PRId64 ")) },\n", r.i64[1], r.i64[0]);
   }
   return MUNIT_FAIL;
 
@@ -308,9 +308,9 @@ test_simde_mm_xxx_si64(const MunitParameter params[], void* data) {
 
     r = simde_mm_xxx_si64(a, b);
 
-    printf("    { simde_mm_cvtsi64_m64(INT64_C(%20"PRId64")),\n", a.i64[0]);
-    printf("      simde_mm_cvtsi64_m64(INT64_C(%20"PRId64")),\n", b.i64[0]);
-    printf("      simde_mm_cvtsi64_m64(INT64_C(%20"PRId64")), },\n", r.i64[0]);
+    printf("    { simde_mm_cvtsi64_m64(INT64_C(%20" PRId64 ")),\n", a.i64[0]);
+    printf("      simde_mm_cvtsi64_m64(INT64_C(%20" PRId64 ")),\n", b.i64[0]);
+    printf("      simde_mm_cvtsi64_m64(INT64_C(%20" PRId64 ")), },\n", r.i64[0]);
   }
   return MUNIT_FAIL;
 
@@ -344,22 +344,22 @@ test_simde_mm_xxx_epi8(const MunitParameter params[], void* data) {
 
     r = simde_mm_xxx_epi8(a, b);
 
-    printf("    { simde_mm_set_epi8(INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"),\n"
-	   "                        INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"),\n"
-	   "                        INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"),\n"
-	   "                        INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8")),\n",
+    printf("    { simde_mm_set_epi8(INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "),\n"
+	   "                        INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "),\n"
+	   "                        INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "),\n"
+	   "                        INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 ")),\n",
            a.i8[15], a.i8[14], a.i8[13], a.i8[12], a.i8[11], a.i8[10], a.i8[ 9], a.i8[ 8],
            a.i8[ 7], a.i8[ 6], a.i8[ 5], a.i8[ 4], a.i8[ 3], a.i8[ 2], a.i8[ 1], a.i8[ 0]);
-    printf("      simde_mm_set_epi8(INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"),\n"
-	   "                        INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"),\n"
-	   "                        INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"),\n"
-	   "                        INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8")),\n",
+    printf("      simde_mm_set_epi8(INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "),\n"
+	   "                        INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "),\n"
+	   "                        INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "),\n"
+	   "                        INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 ")),\n",
            b.i8[15], b.i8[14], b.i8[13], b.i8[12], b.i8[11], b.i8[10], b.i8[ 9], b.i8[ 8],
            b.i8[ 7], b.i8[ 6], b.i8[ 5], b.i8[ 4], b.i8[ 3], b.i8[ 2], b.i8[ 1], b.i8[ 0]);
-    printf("      simde_mm_set_epi8(INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"),\n"
-	   "                        INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"),\n"
-	   "                        INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"),\n"
-	   "                        INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8")) },\n",
+    printf("      simde_mm_set_epi8(INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "),\n"
+	   "                        INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "),\n"
+	   "                        INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "),\n"
+	   "                        INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 ")) },\n",
            r.i8[15], r.i8[14], r.i8[13], r.i8[12], r.i8[11], r.i8[10], r.i8[ 9], r.i8[ 8],
            r.i8[ 7], r.i8[ 6], r.i8[ 5], r.i8[ 4], r.i8[ 3], r.i8[ 2], r.i8[ 1], r.i8[ 0]);
   }
@@ -395,14 +395,14 @@ test_simde_mm_xxx_epi16(const MunitParameter params[], void* data) {
 
     r = simde_mm_xxx_epi16(a, b);
 
-    printf("    { simde_mm_set_epi16(INT16_C(%6"PRId16"), INT16_C(%6"PRId16"), INT16_C(%6"PRId16"), INT16_C(%6"PRId16"),\n"
-	   "                         INT16_C(%6"PRId16"), INT16_C(%6"PRId16"), INT16_C(%6"PRId16"), INT16_C(%6"PRId16")),\n",
+    printf("    { simde_mm_set_epi16(INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 "),\n"
+	   "                         INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 ")),\n",
            a.i16[7], a.i16[6], a.i16[5], a.i16[4], a.i16[3], a.i16[2], a.i16[1], a.i16[0]);
-    printf("      simde_mm_set_epi16(INT16_C(%6"PRId16"), INT16_C(%6"PRId16"), INT16_C(%6"PRId16"), INT16_C(%6"PRId16"),\n"
-	   "                         INT16_C(%6"PRId16"), INT16_C(%6"PRId16"), INT16_C(%6"PRId16"), INT16_C(%6"PRId16")),\n",
+    printf("      simde_mm_set_epi16(INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 "),\n"
+	   "                         INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 ")),\n",
            b.i16[7], b.i16[6], b.i16[5], b.i16[4], b.i16[3], b.i16[2], b.i16[1], b.i16[0]);
-    printf("      simde_mm_set_epi16(INT16_C(%6"PRId16"), INT16_C(%6"PRId16"), INT16_C(%6"PRId16"), INT16_C(%6"PRId16"),\n"
-	   "                         INT16_C(%6"PRId16"), INT16_C(%6"PRId16"), INT16_C(%6"PRId16"), INT16_C(%6"PRId16")) },\n",
+    printf("      simde_mm_set_epi16(INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 "),\n"
+	   "                         INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 ")) },\n",
            r.i16[7], r.i16[6], r.i16[5], r.i16[4], r.i16[3], r.i16[2], r.i16[1], r.i16[0]);
   }
   return MUNIT_FAIL;
@@ -605,14 +605,14 @@ test_simde_mm_xxx_pi8(const MunitParameter params[], void* data) {
 
     r = simde_mm_xxx_pi8(a, b);
 
-    printf("    { simde_mm_set_pi8(INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"),\n"
-	   "                       INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8")),\n",
+    printf("    { simde_mm_set_pi8(INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "),\n"
+	   "                       INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 ")),\n",
            a.i8[ 7], a.i8[ 6], a.i8[ 5], a.i8[ 4], a.i8[ 3], a.i8[ 2], a.i8[ 1], a.i8[ 0]);
-    printf("      simde_mm_set_pi8(INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"),\n"
-	   "                       INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8")),\n",
+    printf("      simde_mm_set_pi8(INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "),\n"
+	   "                       INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 ")),\n",
            b.i8[ 7], b.i8[ 6], b.i8[ 5], b.i8[ 4], b.i8[ 3], b.i8[ 2], b.i8[ 1], b.i8[ 0]);
-    printf("      simde_mm_set_pi8(INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"),\n"
-	   "                       INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8")) },\n",
+    printf("      simde_mm_set_pi8(INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "),\n"
+	   "                       INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 ")) },\n",
            r.i8[ 7], r.i8[ 6], r.i8[ 5], r.i8[ 4], r.i8[ 3], r.i8[ 2], r.i8[ 1], r.i8[ 0]);
   }
   return MUNIT_FAIL;
@@ -647,11 +647,11 @@ test_simde_mm_xxx_pi16(const MunitParameter params[], void* data) {
 
     r = simde_mm_xxx_pi16(a, b);
 
-    printf("    { simde_mm_set_pi16(INT16_C(%6"PRId16"), INT16_C(%6"PRId16"), INT16_C(%6"PRId16"), INT16_C(%6"PRId16")),\n",
+    printf("    { simde_mm_set_pi16(INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 ")),\n",
            a.i16[3], a.i16[2], a.i16[1], a.i16[0]);
-    printf("      simde_mm_set_pi16(INT16_C(%6"PRId16"), INT16_C(%6"PRId16"), INT16_C(%6"PRId16"), INT16_C(%6"PRId16")),\n",
+    printf("      simde_mm_set_pi16(INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 ")),\n",
            b.i16[3], b.i16[2], b.i16[1], b.i16[0]);
-    printf("      simde_mm_set_pi16(INT16_C(%6"PRId16"), INT16_C(%6"PRId16"), INT16_C(%6"PRId16"), INT16_C(%6"PRId16")) },\n",
+    printf("      simde_mm_set_pi16(INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 ")) },\n",
            r.i16[3], r.i16[2], r.i16[1], r.i16[0]);
   }
   return MUNIT_FAIL;
@@ -686,11 +686,11 @@ test_simde_mm_xxx_pi32(const MunitParameter params[], void* data) {
 
     r = simde_mm_xxx_pi32(a, b);
 
-    printf("    { simde_mm_set_pi32(INT32_C(%11"PRId32"), INT32_C(%11"PRId32")),\n",
+    printf("    { simde_mm_set_pi32(INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 ")),\n",
   	   a.i32[1], a.i32[0]);
-    printf("      simde_mm_set_pi32(INT32_C(%11"PRId32"), INT32_C(%11"PRId32")),\n",
+    printf("      simde_mm_set_pi32(INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 ")),\n",
   	   b.i32[1], b.i32[0]);
-    printf("      simde_mm_set_pi32(INT32_C(%11"PRId32"), INT32_C(%11"PRId32")) },\n",
+    printf("      simde_mm_set_pi32(INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 ")) },\n",
   	   r.i32[1], r.i32[0]);
   }
   return MUNIT_FAIL;
@@ -725,38 +725,38 @@ test_simde_mm256_xxx_epi8(const MunitParameter params[], void* data) {
 
     r = simde_mm256_xxx_epi8(a, b);
 
-    printf("    { simde_mm256_set_epi8(INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"),\n"
-           "                           INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"),\n"
-           "                           INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"),\n"
-           "                           INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"),\n"
-           "                           INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"),\n"
-           "                           INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"),\n"
-           "                           INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"),\n"
-           "                           INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8")),\n",
+    printf("    { simde_mm256_set_epi8(INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "),\n"
+           "                           INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "),\n"
+           "                           INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "),\n"
+           "                           INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "),\n"
+           "                           INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "),\n"
+           "                           INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "),\n"
+           "                           INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "),\n"
+           "                           INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 ")),\n",
            a.i8[31], a.i8[30], a.i8[29], a.i8[28], a.i8[27], a.i8[26], a.i8[25], a.i8[24],
            a.i8[23], a.i8[22], a.i8[21], a.i8[20], a.i8[19], a.i8[18], a.i8[17], a.i8[16],
            a.i8[15], a.i8[14], a.i8[13], a.i8[12], a.i8[11], a.i8[10], a.i8[ 9], a.i8[ 8],
            a.i8[ 7], a.i8[ 6], a.i8[ 5], a.i8[ 4], a.i8[ 3], a.i8[ 2], a.i8[ 1], a.i8[ 0]);
-    printf("      simde_mm256_set_epi8(INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"),\n"
-           "                           INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"),\n"
-           "                           INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"),\n"
-           "                           INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"),\n"
-           "                           INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"),\n"
-           "                           INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"),\n"
-           "                           INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"),\n"
-           "                           INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8")),\n",
+    printf("      simde_mm256_set_epi8(INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "),\n"
+           "                           INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "),\n"
+           "                           INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "),\n"
+           "                           INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "),\n"
+           "                           INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "),\n"
+           "                           INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "),\n"
+           "                           INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "),\n"
+           "                           INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 ")),\n",
            b.i8[31], b.i8[30], b.i8[29], b.i8[28], b.i8[27], b.i8[26], b.i8[25], b.i8[24],
            b.i8[23], b.i8[22], b.i8[21], b.i8[20], b.i8[19], b.i8[18], b.i8[17], b.i8[16],
            b.i8[15], b.i8[14], b.i8[13], b.i8[12], b.i8[11], b.i8[10], b.i8[ 9], b.i8[ 8],
            b.i8[ 7], b.i8[ 6], b.i8[ 5], b.i8[ 4], b.i8[ 3], b.i8[ 2], b.i8[ 1], b.i8[ 0]);
-    printf("      simde_mm256_set_epi8(INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"),\n"
-           "                           INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"),\n"
-           "                           INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"),\n"
-           "                           INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"),\n"
-           "                           INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"),\n"
-           "                           INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"),\n"
-           "                           INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"),\n"
-           "                           INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8"), INT8_C(%4"PRId8")) },\n",
+    printf("      simde_mm256_set_epi8(INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "),\n"
+           "                           INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "),\n"
+           "                           INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "),\n"
+           "                           INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "),\n"
+           "                           INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "),\n"
+           "                           INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "),\n"
+           "                           INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "),\n"
+           "                           INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 ")) },\n",
            r.i8[31], r.i8[30], r.i8[29], r.i8[28], r.i8[27], r.i8[26], r.i8[25], r.i8[24],
            r.i8[23], r.i8[22], r.i8[21], r.i8[20], r.i8[19], r.i8[18], r.i8[17], r.i8[16],
            r.i8[15], r.i8[14], r.i8[13], r.i8[12], r.i8[11], r.i8[10], r.i8[ 9], r.i8[ 8],
@@ -794,22 +794,22 @@ test_simde_mm256_xxx_epi16(const MunitParameter params[], void* data) {
 
     r = simde_mm256_xxx_epi16(a, b);
 
-    printf("    { simde_mm256_set_epi16(INT16_C(%6"PRId16"), INT16_C(%6"PRId16"), INT16_C(%6"PRId16"), INT16_C(%6"PRId16"),\n"
-	         "                            INT16_C(%6"PRId16"), INT16_C(%6"PRId16"), INT16_C(%6"PRId16"), INT16_C(%6"PRId16"),\n"
-	         "                            INT16_C(%6"PRId16"), INT16_C(%6"PRId16"), INT16_C(%6"PRId16"), INT16_C(%6"PRId16"),\n"
-	         "                            INT16_C(%6"PRId16"), INT16_C(%6"PRId16"), INT16_C(%6"PRId16"), INT16_C(%6"PRId16")),\n",
+    printf("    { simde_mm256_set_epi16(INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 "),\n"
+	         "                            INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 "),\n"
+	         "                            INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 "),\n"
+	         "                            INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 ")),\n",
            a.i16[15], a.i16[14], a.i16[13], a.i16[12], a.i16[11], a.i16[10], a.i16[ 9], a.i16[ 8],
            a.i16[ 7], a.i16[ 6], a.i16[ 5], a.i16[ 4], a.i16[ 3], a.i16[ 2], a.i16[ 1], a.i16[ 0]);
-    printf("      simde_mm256_set_epi16(INT16_C(%6"PRId16"), INT16_C(%6"PRId16"), INT16_C(%6"PRId16"), INT16_C(%6"PRId16"),\n"
-	         "                            INT16_C(%6"PRId16"), INT16_C(%6"PRId16"), INT16_C(%6"PRId16"), INT16_C(%6"PRId16"),\n"
-	         "                            INT16_C(%6"PRId16"), INT16_C(%6"PRId16"), INT16_C(%6"PRId16"), INT16_C(%6"PRId16"),\n"
-	         "                            INT16_C(%6"PRId16"), INT16_C(%6"PRId16"), INT16_C(%6"PRId16"), INT16_C(%6"PRId16")),\n",
+    printf("      simde_mm256_set_epi16(INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 "),\n"
+	         "                            INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 "),\n"
+	         "                            INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 "),\n"
+	         "                            INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 ")),\n",
            b.i16[15], b.i16[14], b.i16[13], b.i16[12], b.i16[11], b.i16[10], b.i16[ 9], b.i16[ 8],
            b.i16[ 7], b.i16[ 6], b.i16[ 5], b.i16[ 4], b.i16[ 3], b.i16[ 2], b.i16[ 1], b.i16[ 0]);
-    printf("      simde_mm256_set_epi16(INT16_C(%6"PRId16"), INT16_C(%6"PRId16"), INT16_C(%6"PRId16"), INT16_C(%6"PRId16"),\n"
-	         "                            INT16_C(%6"PRId16"), INT16_C(%6"PRId16"), INT16_C(%6"PRId16"), INT16_C(%6"PRId16"),\n"
-	         "                            INT16_C(%6"PRId16"), INT16_C(%6"PRId16"), INT16_C(%6"PRId16"), INT16_C(%6"PRId16"),\n"
-	         "                            INT16_C(%6"PRId16"), INT16_C(%6"PRId16"), INT16_C(%6"PRId16"), INT16_C(%6"PRId16")) },\n",
+    printf("      simde_mm256_set_epi16(INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 "),\n"
+	         "                            INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 "),\n"
+	         "                            INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 "),\n"
+	         "                            INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 ")) },\n",
            r.i16[15], r.i16[14], r.i16[13], r.i16[12], r.i16[11], r.i16[10], r.i16[ 9], r.i16[ 8],
            r.i16[ 7], r.i16[ 6], r.i16[ 5], r.i16[ 4], r.i16[ 3], r.i16[ 2], r.i16[ 1], r.i16[ 0]);
   }
@@ -845,14 +845,14 @@ test_simde_mm256_xxx_epi32(const MunitParameter params[], void* data) {
 
     r = simde_mm256_xxx_epi32(a, b);
 
-    printf("    { simde_mm256_set_epi32(INT32_C(%11"PRId32"), INT32_C(%11"PRId32"), INT32_C(%11"PRId32"), INT32_C(%11"PRId32"),\n"
-           "                            INT32_C(%11"PRId32"), INT32_C(%11"PRId32"), INT32_C(%11"PRId32"), INT32_C(%11"PRId32")),\n",
+    printf("    { simde_mm256_set_epi32(INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "),\n"
+           "                            INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 ")),\n",
            a.i32[7], a.i32[6], a.i32[5], a.i32[4], a.i32[3], a.i32[2], a.i32[1], a.i32[0]);
-    printf("      simde_mm256_set_epi32(INT32_C(%11"PRId32"), INT32_C(%11"PRId32"), INT32_C(%11"PRId32"), INT32_C(%11"PRId32"),\n"
-           "                            INT32_C(%11"PRId32"), INT32_C(%11"PRId32"), INT32_C(%11"PRId32"), INT32_C(%11"PRId32")),\n",
+    printf("      simde_mm256_set_epi32(INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "),\n"
+           "                            INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 ")),\n",
            b.i32[7], b.i32[6], b.i32[5], b.i32[4], b.i32[3], b.i32[2], b.i32[1], b.i32[0]);
-    printf("      simde_mm256_set_epi32(INT32_C(%11"PRId32"), INT32_C(%11"PRId32"), INT32_C(%11"PRId32"), INT32_C(%11"PRId32"),\n"
-           "                            INT32_C(%11"PRId32"), INT32_C(%11"PRId32"), INT32_C(%11"PRId32"), INT32_C(%11"PRId32")) },\n",
+    printf("      simde_mm256_set_epi32(INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "),\n"
+           "                            INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 ")) },\n",
            r.i32[7], r.i32[6], r.i32[5], r.i32[4], r.i32[3], r.i32[2], r.i32[1], r.i32[0]);
   }
   return MUNIT_FAIL;
@@ -887,14 +887,14 @@ test_simde_mm256_xxx_epi64(const MunitParameter params[], void* data) {
 
     r = simde_mm256_xxx_epi64(a, b);
 
-    printf("    { simde_mm256_set_epi64x(INT64_C(%20"PRId64"), INT64_C(%20"PRId64"),\n"
-           "                             INT64_C(%20"PRId64"), INT64_C(%20"PRId64")),\n",
+    printf("    { simde_mm256_set_epi64x(INT64_C(%20" PRId64 "), INT64_C(%20" PRId64 "),\n"
+           "                             INT64_C(%20" PRId64 "), INT64_C(%20" PRId64 ")),\n",
            a.i64[3], a.i64[2], a.i64[1], a.i64[0]);
-    printf("      simde_mm256_set_epi64x(INT64_C(%20"PRId64"), INT64_C(%20"PRId64"),\n"
-           "                             INT64_C(%20"PRId64"), INT64_C(%20"PRId64")),\n",
+    printf("      simde_mm256_set_epi64x(INT64_C(%20" PRId64 "), INT64_C(%20" PRId64 "),\n"
+           "                             INT64_C(%20" PRId64 "), INT64_C(%20" PRId64 ")),\n",
            b.i64[3], b.i64[2], b.i64[1], b.i64[0]);
-    printf("      simde_mm256_set_epi64x(INT64_C(%20"PRId64"), INT64_C(%20"PRId64"),\n"
-           "                             INT64_C(%20"PRId64"), INT64_C(%20"PRId64")) },\n",
+    printf("      simde_mm256_set_epi64x(INT64_C(%20" PRId64 "), INT64_C(%20" PRId64 "),\n"
+           "                             INT64_C(%20" PRId64 "), INT64_C(%20" PRId64 ")) },\n",
            r.i64[3], r.i64[2], r.i64[1], r.i64[0]);
   }
   return MUNIT_FAIL;
