@@ -3965,7 +3965,7 @@ simde_mm_srli_epi64 (simde__m128i a, const int imm8) {
 #  define simde_mm_srli_epi64(a, imm8) SIMDE__M128I_FROM_NATIVE(_mm_srli_epi64(a.n, imm8))
 #elif defined(SIMDE_SSE2_NEON)
 #  define simde_mm_srli_epi64(a, imm8) \
-  SIMDE__M128I_NEON_C(u64, (((imm8)&255) < 0 || ((imm8)&255) > 63) ? (vdupq_n_u64(0)) : ((((imm8)&255) == 0) ? (a.neon_u64) : (vshrq_n_u64((a).neon_u64, (imm8)&255))))
+  SIMDE__M128I_NEON_C(u64, (((imm8)&127) < 0 || ((imm8)&127) > 63) ? (vdupq_n_u64(0)) : ((((imm8)&127) == 0) ? (a.neon_u64) : (vshrq_n_u64((a).neon_u64, (imm8)&127))))
 #endif
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_srli_epi64(a, imm8) SIMDE__M128I_TO_NATIVE(simde_mm_srli_epi64(SIMDE__M128I_FROM_NATIVE(a), imm8))
