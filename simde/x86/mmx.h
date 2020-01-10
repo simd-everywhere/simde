@@ -116,6 +116,10 @@ HEDLEY_DIAGNOSTIC_PUSH
 #  define SIMDE__M64_TO_NATIVE(val) (val)
 #endif
 
+#if defined(SIMDE_MMX_NEON)
+#  define SIMDE__M64_FROM_NEON(T, expr) ((simde__m64) { .neon_##T = (expr) })
+#endif
+
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m64
 simde_mm_add_pi8 (simde__m64 a, simde__m64 b) {
@@ -356,7 +360,7 @@ simde_mm_andnot_si64 (simde__m64 a, simde__m64 b) {
   simde__m64 r;
 
 #if defined(SIMDE_MMX_NEON)
-  r.neon_i32 = vand_s32(vmvn_s32(a.neon_i32), b.neon_i32);
+  r.neon_i32 = vbic_s32(b.neon_i32, a.neon_i32);
 #elif defined(SIMDE__ENABLE_GCC_VEC_EXT)
   r.i32f = ~a.i32f & b.i32f;
 #else
