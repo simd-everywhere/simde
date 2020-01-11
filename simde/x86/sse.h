@@ -1054,7 +1054,9 @@ simde__m64
 simde_mm_cvtps_pi16 (simde__m128 a) {
   simde__m64 r;
 
-#if defined(SIMDE_SSE_NATIVE)
+#if defined(SIMDE__CONVERT_VECTOR)
+  SIMDE__CONVERT_VECTOR(r.i16, a.f32);
+#elif defined(SIMDE_SSE_NATIVE)
   r.n = _mm_cvtps_pi16(a.n);
 #elif defined(SIMDE_SSE_NEON)
   r.neon_i16 = vmovn_s32(vcvtq_s32_f32(a.neon_f32));
