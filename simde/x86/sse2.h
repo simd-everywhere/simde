@@ -503,7 +503,7 @@ simde_mm_andnot_pd (simde__m128d a, simde__m128d b) {
   simde__m128d r;
 
 #if defined(SIMDE_SSE2_NATIVE)
-  return SIMDE__M128D_FROM_NATIVE(_mm_andnot_pd(a.n, b.n));
+  r.n = _mm_andnot_pd(a.n, b.n);
 #elif defined(SIMDE_SSE2_NEON)
   r.neon_i32 = vbicq_s32(a.neon_i32, b.neon_i32);
 #else
@@ -814,7 +814,7 @@ simde_mm_castps_si128 (simde__m128 a) {
   simde__m128i r;
 
 #if defined(SIMDE_SSE2_NATIVE)
-  return SIMDE__M128I_FROM_NATIVE(_mm_castps_si128(a.n));
+  r.n = _mm_castps_si128(a.n);
 #elif defined(SIMDE_SSE2_NEON)
   r.neon_i32 = a.neon_i32;
 #else
@@ -833,7 +833,7 @@ simde_mm_castsi128_pd (simde__m128i a) {
   simde__m128d r;
 
 #if defined(SIMDE_SSE2_NATIVE)
-  return SIMDE__M128D_FROM_NATIVE(_mm_castsi128_pd(a.n));
+  r.n = _mm_castsi128_pd(a.n);
 #else
   r = *((simde__m128d*) &a);
 #endif

@@ -1062,7 +1062,7 @@ simde_mm_set1_pi16 (int16_t a) {
 #elif defined(SIMDE_MMX_NEON)
   r.neon_i16 = vmov_n_s16(a);
 #else
-  return simde_mm_set_pi16(a, a, a, a);
+  r = simde_mm_set_pi16(a, a, a, a);
 #endif
 
   return r;
@@ -1081,7 +1081,7 @@ simde_mm_set1_pi32 (int32_t a) {
 #elif defined(SIMDE_MMX_NEON)
   r.neon_i32 = vmov_n_s32(a);
 #else
-  return simde_mm_set_pi32(a, a);
+  r = simde_mm_set_pi32(a, a);
 #endif
 
   return r;
