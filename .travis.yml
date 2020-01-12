@@ -1,143 +1,133 @@
 language: c
 cache: ccache
+dist: bionic
 branches:
   except:
     - /^(wip\/)?(appveyor|msvc|mingw|windows)(\-.+)?$/
-matrix:
+
+addons:
+  apt:
+    update: true
+    packages:
+    - cmake
+env:
+  global:
+  - BUILD_TYPE="Coverage"
+  - ARCH_FLAGS="-march=native"
+
+jobs:
   include:
-    - env: C_COMPILER=gcc CFLAGS=-march=native
-      addons:
-        apt:
-          packages:
-          - cmake
-          - cmake-data
-    - env: ARCH=i686 C_COMPILER=gcc-8 CFLAGS=-march=i686
-      dist: bionic
-      addons:
-        apt:
-          packages:
-          - cmake
-          - cmake-data
-    - env:
-        - ARCH=i686
-        - C_COMPILER=gcc-8
-        - CFLAGS='-march=i686 -DSIMDE_NO_SHUFFLE_VECTOR -mno-avx2 -mno-avx -mno-sse4.2 -mno-sse4.1 -mno-ssse3 -mno-sse3'
-      dist: bionic
-      addons:
-        apt:
-          packages:
-          - cmake
-          - cmake-data
-    - env: C_COMPILER=clang CFLAGS=-march=native
-      addons:
-        apt:
-          packages:
-          - clang
-          - cmake
-          - cmake-data
-    - env: C_COMPILER=gcc-4.4 CFLAGS=-march=native
-      dist: trusty
-      addons:
-        apt:
-          sources:
-          - ubuntu-toolchain-r-test
-          - george-edison55-precise-backports
-          packages:
-          - gcc-4.4
-          - g++-4.4
-          - cmake
-          - cmake-data
-    - env: C_COMPILER=aarch64-linux-gnu-gcc
-      addons:
-        apt:
-          packages:
-          - gcc-aarch64-linux-gnu
-          - g++-aarch64-linux-gnu
-          - qemu
-          - cmake
-          - cmake-data
-    - env: C_COMPILER=clang-3.5 CFLAGS=-march=native
-      dist: trusty
-      addons:
-        apt:
-          sources:
-          - llvm-toolchain-precise-3.5
-          - ubuntu-toolchain-r-test
-          - george-edison55-precise-backports
-          packages:
-          - clang-3.5
-          - cmake
-          - cmake-data
-    - env: C_COMPILER=pgcc BUILD_TYPE=Debug
-      addons:
-        apt:
-          packages:
-          - cmake
-          - cmake-data
-    - os: osx
-    # - env: C_COMPILER=emcc BUILD_TYPE=Debug
-    #   addons:
-    #     apt:
-    #       packages:
-    #       - cmake
-    #       - cmake-data
+  - name: "gcc amd64"
+    compiler: gcc
+    arch: amd64
+
+  - name: "clang amd64"
+    arch: amd64
+    compiler: clang
+
+  - name: "gcc-8 i686"
+    arch: amd64
+    compiler: gcc-8
+    env:
+    - C_COMPILER=gcc-8
+    - CXX_COMPILER=g++-8
+    - ARCH_FLAGS="-march=i686"
+    addons:
+      apt:
+        packages:
+        - libc6:i386
+        - libc6-dev:i386
+        - gcc-8:i386
+        - g++-8:i386
+        - cpp-8:i386
+        - binutils:i386
+        - binutils-i686-linux-gnu:i386
+
+  - name: "aarch64"
+    arch: arm64
+
+  - name: "ppc64le"
+    arch: ppc64le
+    env:
+    - ARCH_FLAGS="-mcpu=native"
+    addons:
+      apt:
+        packages:
+        - gcc
+        - g++
+    arch: arm64
+
+  - name: "-DSIMDE_NO_SHUFFLE_VECTOR"
+    env:
+    - COMPILER_FLAGS=-DSIMDE_NO_SHUFFLE_VECTOR
+
+  - name: "pgcc"
+    env:
+    - C_COMPILER=pgcc
+    - CXX_COMPILER=pgc++
+    - ARCH_FLAGS="-m64"
+    install:
+    - curl 'https://raw.githubusercontent.com/nemequ/pgi-travis/master/install-pgi.sh' | /bin/sh
+
+  - name: "xlc"
+    arch: ppc64le
+    install:
+    - |
+      wget -q https://public.dhe.ibm.com/software/server/POWER/Linux/xl-compiler/eval/ppc64le/ubuntu/public.gpg -O- | sudo apt-key add -
+      echo "deb https://public.dhe.ibm.com/software/server/POWER/Linux/xl-compiler/eval/ppc64le/ubuntu/ ${TRAVIS_DIST} main" >> /etc/apt/sources.list
+      sudo apt-get update
+      export XLC_VERSION="$(apt-cache search '^xlc\.[0-9]+\.[0-9]+\.[0-9]+$' | awk '{ print $1 }' | cut -b5-)"
+      sudo apt-get install "xlc.${XLC_VERSION}" "xlc-license-community.${XLC_VERSION}"
+      sudo /opt/ibm/xlC/${XLC_VERSION}/bin/xlc_configure <<< 1 >/dev/null
+    env:
+    - C_COMPILER=xlc
+    - CXX_COMPILER=xlc++
+
+  - name: s390x
+    arch: s390x
+
+  - name: osx
+    os: osx
+
+  # TODO: tests compile but don't run
+  - name: windows
+    os: windows
+    env:
+    - ARCH_FLAGS=""
+
+  allow_failures:
+  - name: xlc
+  - name: s390x
 
 before_install:
-###
+- cat /proc/cpuinfo || true
+
 ## If we use the matrix to set CC/CXX Travis overwrites the values,
 ## so instead we use C/CXX_COMPILER, then copy the values to CC/CXX
 ## here (after Travis has set CC/CXX).
-###
-- |
-  if [ "${C_COMPILER}" = "pgcc" ]; then
-    curl 'https://raw.githubusercontent.com/nemequ/pgi-travis/master/install-pgi.sh' | /bin/sh
-  elif [ "${C_COMPILER}" = "emcc" ]; then
-    cd "${HOME}"
-    curl -L https://github.com/urho3d/emscripten-sdk/archive/master.tar.gz | tar zx
-    . emscripten-sdk-master/emsdk_env.sh
-    SIMDE_CMAKE_ARGS="-DCMAKE_TOOLCHAIN_FILE=${EMSDK}/emscripten/master/cmake/Modules/Platform/Emscripten.cmake -DDISABLE_X86=yes"
-  elif [ "${C_COMPILER}" = "arm-linux-gnueabihf-gcc" ]; then
-    SIMDE_CMAKE_ARGS="-DCMAKE_TOOLCHAIN_FILE=${TRAVIS_BUILD_DIR}/test/cmake/toolchain-arm-linux-gnueabihf.cmake"
-  elif [ "${C_COMPILER}" = "aarch64-linux-gnu-gcc" ]; then
-    SIMDE_CMAKE_ARGS="-DCMAKE_TOOLCHAIN_FILE=${TRAVIS_BUILD_DIR}/test/cmake/toolchain-aarch64-linux-gnu.cmake"
-  elif [ "${ARCH}" = "i686" ]; then
-    sudo dpkg --add-architecture i386 && \
-      sudo apt-get update && \
-      sudo apt install -y \
-        libc6:i386 \
-        libc6-dev:i386 \
-        gcc-8:i386 \
-        cpp-8:i386 \
-        binutils:i386 \
-        binutils-i686-linux-gnu:i386 && \
-      export GCOV="-x /usr/bin/gcov-8"
-  fi
 - |
   if [ -n "${C_COMPILER}" ]; then
     export CC="${C_COMPILER}"
   fi
-- |
-  if [ -z "${BUILD_TYPE}" ]; then
-    export BUILD_TYPE="Coverage"
+  if [ -n "${CXX_COMPILER}" ]; then
+    export CXX="${CXX_COMPILER}"
   fi
-- mkdir "${TRAVIS_BUILD_DIR}/test/build"
-- cd "${TRAVIS_BUILD_DIR}/test/build"
 
 script:
+- mkdir "${TRAVIS_BUILD_DIR}/test/build" && cd "${TRAVIS_BUILD_DIR}/test/build"
 - |
-  if [ -n "${C_COMPILER}" ]; then
-    export CC="${C_COMPILER}"
-  fi
-- cat /proc/cpuinfo || true
-- cmake .. -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" -DCMAKE_C_FLAGS="-DTRAVIS_CI ${CFLAGS}" ${SIMDE_CMAKE_ARGS}
-- make VERBOSE=1
+  cmake .. \
+    -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
+    -DCMAKE_C_FLAGS="${ARCH_FLAGS} ${COMPILER_FLAGS} ${CFLAGS}" \
+    -DCMAKE_CXX_FLAGS="${ARCH_FLAGS} ${COMPILER_FLAGS} ${CXXFLAGS}" \
+    -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON \
+    ${CMAKE_ARGS}
+- cmake --build .
 - |
-  if [ "${C_COMPILER}" = "arm-linux-gnueabihf-gcc" ]; then
-    qemu-arm ./run-tests
-  elif [ "${C_COMPILER}" = "aarch64-linux-gnu-gcc" ]; then
-    qemu-aarch64 ./run-tests
-  else
+  if [ "windows" != "${TRAVIS_OS_NAME}" ]; then
     ./run-tests
+  else
+    ctest --output-on-failure --interactive-debug-mode 0 -C Debug -V
   fi
 
 after_success:
