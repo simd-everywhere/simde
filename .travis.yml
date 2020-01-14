@@ -25,7 +25,7 @@ jobs:
     arch: amd64
     compiler: clang
 
-  - name: "clang-9 asan,ubsan"
+  - name: "clang-9"
     compiler: clang-9
     env:
     - C_COMPILER=clang-9
