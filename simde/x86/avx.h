@@ -1370,7 +1370,7 @@ simde_mm_cmp_pd (simde__m128d a, simde__m128d b, const int imm8)
       r.i64 = (int64_t __attribute__((__vector_size__(16)))) (a.f64 <= b.f64);
       break;
     case SIMDE_CMP_FALSE_OQ:
-      r.i32f = (a.i32f ^ a.i32f);
+      r.i32 = (a.i32 ^ a.i32);
       break;
     case SIMDE_CMP_NEQ_OQ:
       r.i64 = (int64_t __attribute__((__vector_size__(16)))) (a.f64 != b.f64);
@@ -1382,7 +1382,7 @@ simde_mm_cmp_pd (simde__m128d a, simde__m128d b, const int imm8)
       r.i64 = (int64_t __attribute__((__vector_size__(16)))) (a.f64 > b.f64);
       break;
     case SIMDE_CMP_TRUE_UQ:
-      r.i32f = ~(a.i32f ^ a.i32f);
+      r.i32 = ~(a.i32 ^ a.i32);
       break;
     case SIMDE_CMP_EQ_OS:
       r.i64 = (int64_t __attribute__((__vector_size__(16)))) (a.f64 == b.f64);
