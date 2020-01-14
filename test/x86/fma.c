@@ -1439,6 +1439,11 @@ test_simde_mm_fmsubadd_ps(const MunitParameter params[], void* data) {
       simde_mm_set_ps(SIMDE_FLOAT32_C( 2396.40), SIMDE_FLOAT32_C( 1940.76), SIMDE_FLOAT32_C( -760.80), SIMDE_FLOAT32_C(  -49.00)) }
   };
 
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    simde__m128 r = simde_mm_fmsubadd_ps(test_vec[i].a, test_vec[i].b, test_vec[i].c);
+    simde_assert_m128_close(r, test_vec[i].r, 1);
+  }
+
   return MUNIT_OK;
 }
 
