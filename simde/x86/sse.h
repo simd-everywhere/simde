@@ -2829,6 +2829,8 @@ void
 simde_mm_stream_pi (simde__m64* mem_addr, simde__m64 a) {
 #if defined(SIMDE_SSE_NATIVE)
   _mm_stream_pi(&(mem_addr->n), a.n);
+#elif defined(SIMDE_SSE_NEON)
+  mem_addr->i64[0] = vget_lane_s64(a.neon_i64, 0);
 #else
   mem_addr->i64[0] = a.i64[0];
 #endif
@@ -2844,6 +2846,8 @@ simde_mm_stream_ps (simde_float32 mem_addr[4], simde__m128 a) {
 
 #if defined(SIMDE_SSE_NATIVE)
   _mm_stream_ps(mem_addr, a.n);
+#elif defined(SIMDE_SSE_NEON)
+  vst1q_f32(mem_addr, a.neon_f32);
 #else
   SIMDE__ASSUME_ALIGNED(mem_addr, 16);
   memcpy(mem_addr, &a, sizeof(a));
