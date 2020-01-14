@@ -88,7 +88,7 @@ jobs:
     - wget -q https://public.dhe.ibm.com/software/server/POWER/Linux/xl-compiler/eval/ppc64le/ubuntu/public.gpg -O- | sudo apt-key add -
     - echo "deb https://public.dhe.ibm.com/software/server/POWER/Linux/xl-compiler/eval/ppc64le/ubuntu/ ${TRAVIS_DIST} main" >> /etc/apt/sources.list
     - sudo apt-get update
-    - export XLC_VERSION="$(apt-cache search '^xlc\.[0-9]+\.[0-9]+\.[0-9]+$' | awk '{ print $1 }' | cut -b5-)"
+    - export XLC_VERSION="$(apt-cache search '^xlc\.[0-9]+\.[0-9]+\.[0-9]+$' | awk '{ print substr($1, 5) }')"
     - sudo apt-get install "xlc.${XLC_VERSION}" "xlc-license-community.${XLC_VERSION}"
     - sudo /opt/ibm/xlC/${XLC_VERSION}/bin/xlc_configure <<< 1 >/dev/null
     env:
