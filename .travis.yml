@@ -55,7 +55,6 @@ jobs:
         packages:
         - gcc
         - g++
-    arch: arm64
 
   - name: "-DSIMDE_NO_SHUFFLE_VECTOR"
     env:
