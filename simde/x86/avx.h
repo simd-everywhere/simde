@@ -1544,7 +1544,27 @@ simde_mm_cmp_pd (simde__m128d a, simde__m128d b, const int imm8)
   return r;
 }
 #if defined(SIMDE_AVX_NATIVE)
-#  define simde_mm_cmp_pd(a, b, imm8) SIMDE__M128D_FROM_NATIVE(_mm_cmp_pd(a.n, b.n, imm8))
+#  if defined(__clang__) && defined(__AVX512F__)
+#    define simde_mm_cmp_pd(a, b, imm8) (__extension__ ({ \
+         simde__m128d r; \
+         switch (imm8) { \
+           case SIMDE_CMP_FALSE_OQ: \
+           case SIMDE_CMP_FALSE_OS: \
+             r.i64 = (int64_t __attribute__((__vector_size__(16)))) (a.i64 != a.i64); \
+             break; \
+           case SIMDE_CMP_TRUE_UQ: \
+           case SIMDE_CMP_TRUE_US: \
+             r.i64 = (int64_t __attribute__((__vector_size__(16)))) (a.i64 == a.i64); \
+             break; \
+           default: \
+             r.n = _mm_cmp_pd(a.n, b.n, imm8); \
+             break; \
+         } \
+         r; \
+       }))
+#  else
+#    define simde_mm_cmp_pd(a, b, imm8) SIMDE__M128D_FROM_NATIVE(_mm_cmp_pd(a.n, b.n, imm8))
+#  endif
 #endif
 #if defined(SIMDE_AVX_ENABLE_NATIVE_ALIASES)
 #  define _mm_cmp_pd(a, b, imm8) SIMDE__M128D_TO_NATIVE(simde_mm_cmp_pd(SIMDE__M128D_FROM_NATIVE(a), SIMDE__M128D_FROM_NATIVE(b), imm8))
@@ -1770,7 +1790,27 @@ simde_mm_cmp_ps (simde__m128 a, simde__m128 b, const int imm8)
   return r;
 }
 #if defined(SIMDE_AVX_NATIVE)
-#  define simde_mm_cmp_ps(a, b, imm8) SIMDE__M128_FROM_NATIVE(_mm_cmp_ps(a.n, b.n, imm8))
+#  if defined(__clang__) && defined(__AVX512F__)
+#    define simde_mm_cmp_ps(a, b, imm8) (__extension__ ({ \
+         simde__m128 r; \
+         switch (imm8) { \
+           case SIMDE_CMP_FALSE_OQ: \
+           case SIMDE_CMP_FALSE_OS: \
+             r.i32 = (int32_t __attribute__((__vector_size__(16)))) (a.i32 != a.i32); \
+             break; \
+           case SIMDE_CMP_TRUE_UQ: \
+           case SIMDE_CMP_TRUE_US: \
+             r.i32 = (int32_t __attribute__((__vector_size__(16)))) (a.i32 == a.i32); \
+             break; \
+           default: \
+             r.n = _mm_cmp_ps(a.n, b.n, imm8); \
+             break; \
+         } \
+         r; \
+       }))
+#  else
+#    define simde_mm_cmp_ps(a, b, imm8) SIMDE__M128_FROM_NATIVE(_mm_cmp_ps(a.n, b.n, imm8))
+#  endif
 #endif
 #if defined(SIMDE_AVX_ENABLE_NATIVE_ALIASES)
 #  define _mm_cmp_ps(a, b, imm8) SIMDE__M128_TO_NATIVE(simde_mm_cmp_ps(SIMDE__M128_FROM_NATIVE(a), SIMDE__M128_FROM_NATIVE(b), imm8))
@@ -2228,7 +2268,27 @@ simde_mm256_cmp_pd (simde__m256d a, simde__m256d b, const int imm8)
   return r;
 }
 #if defined(SIMDE_AVX_NATIVE)
-#  define simde_mm256_cmp_pd(a, b, imm8) SIMDE__M256D_FROM_NATIVE(_mm256_cmp_pd(a.n, b.n, imm8))
+#  if defined(__clang__) && defined(__AVX512F__)
+#    define simde_mm256_cmp_pd(a, b, imm8) (__extension__ ({ \
+         simde__m256d r; \
+         switch (imm8) { \
+           case SIMDE_CMP_FALSE_OQ: \
+           case SIMDE_CMP_FALSE_OS: \
+             r.i64 = (int64_t __attribute__((__vector_size__(32)))) (a.i64 != a.i64); \
+             break; \
+           case SIMDE_CMP_TRUE_UQ: \
+           case SIMDE_CMP_TRUE_US: \
+             r.i64 = (int64_t __attribute__((__vector_size__(32)))) (a.i64 == a.i64); \
+             break; \
+           default: \
+             r.n = _mm256_cmp_pd(a.n, b.n, imm8); \
+             break; \
+         } \
+         r; \
+       }))
+#  else
+#    define simde_mm256_cmp_pd(a, b, imm8) SIMDE__M256D_FROM_NATIVE(_mm256_cmp_pd(a.n, b.n, imm8))
+#  endif
 #endif
 #if defined(SIMDE_AVX_ENABLE_NATIVE_ALIASES)
 #  define _mm256_cmp_pd(a, b, imm8) SIMDE__M256D_TO_NATIVE(simde_mm256_cmp_pd(SIMDE__M256D_FROM_NATIVE(a), SIMDE__M256D_FROM_NATIVE(b), imm8))
@@ -2454,7 +2514,27 @@ simde_mm256_cmp_ps (simde__m256 a, simde__m256 b, const int imm8)
   return r;
 }
 #if defined(SIMDE_AVX_NATIVE)
-#  define simde_mm256_cmp_ps(a, b, imm8) SIMDE__M256_FROM_NATIVE(_mm256_cmp_ps(a.n, b.n, imm8))
+#  if defined(__clang__) && defined(__AVX512F__)
+#    define simde_mm256_cmp_ps(a, b, imm8) (__extension__ ({ \
+         simde__m256 r; \
+         switch (imm8) { \
+           case SIMDE_CMP_FALSE_OQ: \
+           case SIMDE_CMP_FALSE_OS: \
+             r.i32 = (int64_t __attribute__((__vector_size__(32)))) (a.i32 != a.i32); \
+             break; \
+           case SIMDE_CMP_TRUE_UQ: \
+           case SIMDE_CMP_TRUE_US: \
+             r.i32 = (int64_t __attribute__((__vector_size__(32)))) (a.i32 == a.i32); \
+             break; \
+           default: \
+             r.n = _mm256_cmp_ps(a.n, b.n, imm8); \
+             break; \
+         } \
+         r; \
+       }))
+#  else
+#    define simde_mm256_cmp_ps(a, b, imm8) SIMDE__M256_FROM_NATIVE(_mm256_cmp_ps(a.n, b.n, imm8))
+#  endif
 #endif
 #if defined(SIMDE_AVX_ENABLE_NATIVE_ALIASES)
 #  define _mm256_cmp_ps(a, b, imm8) SIMDE__M256_TO_NATIVE(simde_mm256_cmp_ps(SIMDE__M256_FROM_NATIVE(a), SIMDE__M256_FROM_NATIVE(b), imm8))

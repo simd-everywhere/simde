@@ -14775,17 +14775,10 @@ static MunitTest test_suite_tests[] = {
 
   TEST_FUNC(mm_cmp_sd),
   TEST_FUNC(mm_cmp_ss),
-#if !(defined(__clang__) && defined(TRAVIS_CI))
-  /* These fail on Travis sometimes.  The failure seems to occur when the hardware supports AVX-512,
-     but I'm not sure that's the cause (just a correlated data point).  Since I can't reproduce it
-     reliably I'm going to disable the test only on Travis.  If you're able to reproduce the problem
-     please get in touch; I'd love to figure out what's wrong, but debugging this on Travis is
-     infeasible. */
   TEST_FUNC(mm_cmp_pd),
   TEST_FUNC(mm_cmp_ps),
   TEST_FUNC(mm256_cmp_pd),
   TEST_FUNC(mm256_cmp_ps),
-#endif
 
   TEST_FUNC(mm256_cvtepi32_pd),
   TEST_FUNC(mm256_cvtepi32_ps),

@@ -25,7 +25,7 @@ jobs:
     arch: amd64
     compiler: clang
 
-  - name: "clang-9"
+  - name: "clang-9 asan,ubsan"
     compiler: clang-9
     env:
     - C_COMPILER=clang-9
@@ -101,7 +101,6 @@ jobs:
   - name: osx
     os: osx
 
-  # TODO: tests compile but don't run
   - name: windows
     os: windows
     env:
