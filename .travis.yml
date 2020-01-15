@@ -25,19 +25,19 @@ jobs:
     arch: amd64
     compiler: clang
 
-  # - name: "clang-9"
-  #   compiler: clang-9
-  #   env:
-  #   - C_COMPILER=clang-9
-  #   - CXX_COMPILER=clang++-9
-  #   - COMPILER_FLAGS='-fsanitize=address,undefined'
-  #   addons:
-  #     apt:
-  #       sources:
-  #         sourceline: 'deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-9 main'
-  #         key_url: 'https://apt.llvm.org/llvm-snapshot.gpg.key'
-  #       packages:
-  #       - clang-9
+  - name: "clang-9"
+    compiler: clang-9
+    env:
+    - C_COMPILER=clang-9
+    - CXX_COMPILER=clang++-9
+    - COMPILER_FLAGS='-fsanitize=address,undefined'
+    addons:
+      apt:
+        sources:
+          sourceline: 'deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-9 main'
+          key_url: 'https://apt.llvm.org/llvm-snapshot.gpg.key'
+        packages:
+        - clang-9
 
   - name: "gcc-8 i686"
     arch: amd64
