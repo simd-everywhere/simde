@@ -1882,7 +1882,7 @@ simde_mm_unpackhi_pi16 (simde__m64 a, simde__m64 b) {
 #else
   simde__m64 r;
 
-#if defined(SIMDE_MMX_NEON)
+#if defined(SIMDE_MMX_NEON) && defined(SIMDE_ARCH_AARCH64)
   r.neon_i16 = vzip2_s16(a.neon_i16, b.neon_i16);
 #elif defined(SIMDE__SHUFFLE_VECTOR)
   r.i16 = SIMDE__SHUFFLE_VECTOR(16, 8, a.i16, b.i16, 2, 6, 3, 7);
