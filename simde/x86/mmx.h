@@ -832,7 +832,7 @@ simde_mm_packs_pu16 (simde__m64 a, simde__m64 b) {
 #else
   simde__m64 r;
 
-#if defined(SIMDE_MMX_NEON)
+#if defined(SIMDE_MMX_NEON) && defined(SIMDE_ARCH_AARCH64)
   const int16x8_t t1 = vcombine_s16(a.neon_i16, b.neon_i16);
 
   /* Set elements which are < 0 to 0 */
@@ -1492,7 +1492,7 @@ simde_mm_srl_si64 (simde__m64 a, simde__m64 count) {
 #else
   simde__m64 r;
 
-#if defined(SIMDE_MMX_NEON)
+#if defined(SIMDE_MMX_NEON) && defined(SIMDE_ARCH_AARCH64)
   r.neon_u64 = vshl_u64(a.neon_u64, vneg_s64(count.neon_i64));
 #elif defined(SIMDE__ENABLE_GCC_VEC_EXT)
   r.u64 = a.u64 >> count.u64;
@@ -1850,7 +1850,7 @@ simde_mm_unpackhi_pi8 (simde__m64 a, simde__m64 b) {
 #else
   simde__m64 r;
 
-#if defined(SIMDE_MMX_NEON)
+#if defined(SIMDE_MMX_NEON) && defined(SIMDE_ARCH_AARCH64)
   r.neon_i8 = vzip2_s8(a.neon_i8, b.neon_i8);
 #elif defined(SIMDE__SHUFFLE_VECTOR)
   r.i8 = SIMDE__SHUFFLE_VECTOR(8, 8, a.i8, b.i8, 4, 12, 5, 13, 6, 14, 7, 15);
@@ -1910,7 +1910,7 @@ simde_mm_unpackhi_pi32 (simde__m64 a, simde__m64 b) {
 #else
   simde__m64 r;
 
-#if defined(SIMDE_MMX_NEON)
+#if defined(SIMDE_MMX_NEON) && defined(SIMDE_ARCH_AARCH64)
   r.neon_i32 = vzip2_s32(a.neon_i32, b.neon_i32);
 #elif defined(SIMDE__SHUFFLE_VECTOR)
   r.i32 = SIMDE__SHUFFLE_VECTOR(32, 8, a.i32, b.i32, 1, 3);
@@ -1936,7 +1936,7 @@ simde_mm_unpacklo_pi8 (simde__m64 a, simde__m64 b) {
 #else
   simde__m64 r;
 
-#if defined(SIMDE_MMX_NEON)
+#if defined(SIMDE_MMX_NEON) && defined(SIMDE_ARCH_AARCH64)
   r.neon_i8 = vzip1_s8(a.neon_i8, b.neon_i8);
 #elif defined(SIMDE__SHUFFLE_VECTOR)
   r.i8 = SIMDE__SHUFFLE_VECTOR(8, 8, a.i8, b.i8, 0, 8, 1, 9, 2, 10, 3, 11);
@@ -1968,7 +1968,7 @@ simde_mm_unpacklo_pi16 (simde__m64 a, simde__m64 b) {
 #else
   simde__m64 r;
 
-#if defined(SIMDE_MMX_NEON)
+#if defined(SIMDE_MMX_NEON) && defined(SIMDE_ARCH_AARCH64)
   r.neon_i16 = vzip1_s16(a.neon_i16, b.neon_i16);
 #elif defined(SIMDE__SHUFFLE_VECTOR)
   r.i16 = SIMDE__SHUFFLE_VECTOR(16, 8, a.i16, b.i16, 0, 4, 1, 5);
@@ -1996,7 +1996,7 @@ simde_mm_unpacklo_pi32 (simde__m64 a, simde__m64 b) {
 #else
   simde__m64 r;
 
-#if defined(SIMDE_MMX_NEON)
+#if defined(SIMDE_MMX_NEON) && defined(SIMDE_ARCH_AARCH64)
   r.neon_i32 = vzip1_s32(a.neon_i32, b.neon_i32);
 #elif defined(SIMDE__SHUFFLE_VECTOR)
   r.i32 = SIMDE__SHUFFLE_VECTOR(32, 8, a.i32, b.i32, 0, 2);
