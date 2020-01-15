@@ -121,9 +121,25 @@ jobs:
         packages:
         - intel-oneapi-icc
 
+  - name: "arm32"
+    arch: arm64
+    env:
+    - C_COMPILER=arm-linux-gnueabihf-gcc
+    - CXX_COMPILER=arm-linux-gnueabihf-g++
+    - ARCH_FLAGS="-march=armv8-a"
+    install:
+    - dpkg -L gcc-arm-linux-gnueabihf
+    - dpkg -L g++-arm-linux-gnueabihf
+    addons:
+      apt:
+        packages:
+        - gcc-arm-linux-gnueabihf
+        - g++-arm-linux-gnueabihf
+
   allow_failures:
   - name: xlc
   - name: s390x
+  - name: arm32
   # https://travis-ci.community/t/odd-error-in-one-repo-works-in-another/6859/3
   - name: clang-9
   - name: icc
