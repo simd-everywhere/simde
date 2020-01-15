@@ -128,13 +128,9 @@ jobs:
     - CXX_COMPILER=arm-linux-gnueabihf-g++
     - ARCH_FLAGS="-march=armv8-a"
     install:
-    - dpkg -L gcc-arm-linux-gnueabihf
-    - dpkg -L g++-arm-linux-gnueabihf
-    addons:
-      apt:
-        packages:
-        - gcc-arm-linux-gnueabihf
-        - g++-arm-linux-gnueabihf
+    - sudo dpkg --add-architecture armhf
+    - sudo apt-get update
+    - sudo apt-get -y install crossbuild-essential-armhf libc6:armhf
 
   allow_failures:
   - name: xlc
