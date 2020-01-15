@@ -25,7 +25,7 @@ jobs:
     arch: amd64
     compiler: clang
 
-  - name: "clang-9"
+  - name: "clang-9 asan,ubsan"
     compiler: clang-9
     env:
     - C_COMPILER=clang-9
@@ -34,7 +34,7 @@ jobs:
     addons:
       apt:
         sources:
-          sourceline: 'deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-9 main'
+        - sourceline: 'deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-9 main'
           key_url: 'https://apt.llvm.org/llvm-snapshot.gpg.key'
         packages:
         - clang-9
@@ -116,7 +116,7 @@ jobs:
     addons:
       apt:
         sources:
-          sourceline: 'deb https://apt.repos.intel.com/oneapi all main'
+        - sourceline: 'deb https://apt.repos.intel.com/oneapi all main'
           key_url: 'https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS-2023.PUB'
         packages:
         - intel-oneapi-icc
@@ -140,9 +140,6 @@ jobs:
   - name: xlc
   - name: s390x
   - name: arm32
-  # https://travis-ci.community/t/odd-error-in-one-repo-works-in-another/6859/3
-  - name: clang-9
-  - name: icc
 
 before_install:
 - cat /proc/cpuinfo || true
