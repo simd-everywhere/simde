@@ -226,6 +226,35 @@ have been altered to used portable fixed-width versions such as
 If you find any other differences, please file an issue so we can either fix
 it or add it to the list above.
 
+## Benefactors
+
+SIMDe uses resources provided for free by a number of organizations.
+While this shouldn't be taken to imply endorsement of SIMDe, we're
+tremendously grateful for their support:
+
+ * [GitHub](https://github.com/) — hosts our source repository, issue
+   tracker, etc.
+ * [Travis CI](https://travis-ci.org/) — provides CI testing on
+   numerous platforms.
+ * [AppVeyor](https://www.appveyor.com/) — provides CI testing on
+   Windows.
+ * [IntegriCloud](https://integricloud.com/) — provides a POWER9 VPS
+   for development.
+ * [CodeCov.io](https://codecov.io/) — provides code coverage analysis
+   for our test cases.
+
+Without such organizations donating resources SIMDe wouldn't be nearly
+as useful or usable as it is today.
+
+We would also like to thank anyone who has helped develop the myriad
+of software on which SIMDe relies, including compilers and analysis
+tools.
+
+Finally, a special thank you to
+[anyone who has contributed](https://github.com/nemequ/simde/graphs/contributors)
+to SIMDe, filed bugs, provided suggestions, or helped with SIMDe
+development in any way.
+
 ## License
 
 SIMDe is distributed under an MIT-style license; see COPYING for
