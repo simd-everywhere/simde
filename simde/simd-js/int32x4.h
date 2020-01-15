@@ -400,11 +400,11 @@ simde_em_int32x4_select (simde_em_bool32x4 selector, simde_em_int32x4 a, simde_e
 #if defined(SIMDE_EM_NATIVE)
   return SIMDE_EM_INT32X4_C(emscripten_int32x4_select(selector.n, a.n, b.n));
 #elif defined(SIMDE_EM_SSE2)
-  #if defined(__AVX512VL__) && ( \
+  #if 0 && defined(__AVX512VL__) && ( \
         (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(8,0,0)) && \
         (!defined(__clang__) || HEDLEY_HAS_BUILTIN(__builtin_ia32_blendmd_128_mask)) \
       )
-    return SIMDE_EM_INT32X4_SSE_C(_mm_mask_blend_epi32(selector.n, b.n, a.n));
+    ret.urn SIMDE_EM_INT32X4_SSE_C(_mm_mask_blend_epi32(selector.sse, b.sse, a.sse));
   #else
     /* TODO: check if this is faster than the portable version */
     __m128i s  = _mm_cmpeq_epi32(selector.sse, _mm_set1_epi32(0));
