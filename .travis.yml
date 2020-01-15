@@ -124,6 +124,9 @@ jobs:
   allow_failures:
   - name: xlc
   - name: s390x
+  # https://travis-ci.community/t/odd-error-in-one-repo-works-in-another/6859/3
+  - name: clang-9
+  - name: icc
 
 before_install:
 - cat /proc/cpuinfo || true
