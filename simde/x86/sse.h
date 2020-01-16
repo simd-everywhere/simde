@@ -944,9 +944,9 @@ simde_mm_cvt_ss2si (simde__m128 a) {
 #if defined(SIMDE_SSE_NATIVE)
   return _mm_cvt_ss2si(a.n);
 #elif defined(SIMDE_SSE_NEON)
-  return vgetq_lane_f32(a.neon_f32, 0);
+  return SIMDE_CONVERT_FTOI(int32_t, nearbyintf(vgetq_lane_f32(a.neon_f32, 0)));
 #else
-  return (int32_t) a.f32[0];
+  return SIMDE_CONVERT_FTOI(int32_t, nearbyintf(a.f32[0]));
 #endif
 }
 #if defined(SIMDE_SSE_ENABLE_NATIVE_ALIASES)
@@ -1065,7 +1065,7 @@ simde_mm_cvtps_pi16 (simde__m128 a) {
 #else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i16) / sizeof(r.i16[0])) ; i++) {
-    r.i16[i] = (int16_t) a.f32[i];
+    r.i16[i] = SIMDE_CONVERT_FTOI(int16_t, a.f32[i]);
   }
 #endif
 
@@ -1089,7 +1089,7 @@ simde_mm_cvtps_pi32 (simde__m128 a) {
 #else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i32) / sizeof(r.i32[0])) ; i++) {
-    r.i32[i] = (int32_t) a.f32[i];
+    r.i32[i] = SIMDE_CONVERT_FTOI(int32_t, a.f32[i]);
   }
 #endif
 
@@ -1113,7 +1113,7 @@ simde_mm_cvtps_pi8 (simde__m128 a) {
 #else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(a.f32) / sizeof(a.f32[0])) ; i++) {
-    r.i8[i] = (int8_t) a.f32[i];
+    r.i8[i] = SIMDE_CONVERT_FTOI(int8_t, a.f32[i]);
   }
 #endif
 
@@ -1237,13 +1237,7 @@ simde_mm_cvtss_f32 (simde__m128 a) {
 SIMDE__FUNCTION_ATTRIBUTES
 int32_t
 simde_mm_cvtss_si32 (simde__m128 a) {
-#if defined(SIMDE_SSE_NATIVE)
-  return _mm_cvtss_si32(a.n);
-#elif defined(SIMDE_SSE_NEON)
-  return (int32_t) vgetq_lane_f32(a.neon_f32, 0);
-#else
-  return (int32_t) a.f32[0];
-#endif
+  return simde_mm_cvt_ss2si(a);
 }
 #if defined(SIMDE_SSE_ENABLE_NATIVE_ALIASES)
 #  define _mm_cvtss_si32(a) simde_mm_cvtss_si32(SIMDE__M128_FROM_NATIVE(a))
@@ -1259,9 +1253,9 @@ simde_mm_cvtss_si64 (simde__m128 a) {
     return _mm_cvtss_si64x(a.n);
   #endif
 #elif defined(SIMDE_SSE_NEON)
-  return (int64_t) vgetq_lane_f32(a.neon_f32, 0);
+  return SIMDE_CONVERT_FTOI(int64_t, vgetq_lane_f32(a.neon_f32, 0));
 #else
-  return (int64_t) a.f32[0];
+  return SIMDE_CONVERT_FTOI(int64_t, a.f32[0]);
 #endif
 }
 #if defined(SIMDE_SSE_ENABLE_NATIVE_ALIASES)
@@ -1300,7 +1294,7 @@ simde_mm_cvtt_ss2si (simde__m128 a) {
 #if defined(SIMDE_SSE_NATIVE)
   return _mm_cvtt_ss2si(a.n);
 #elif defined(SIMDE_SSE_NEON)
-  return (int32_t) vgetq_lane_f32(a.neon_f32, 0);
+  return SIMDE_CONVERT_FTOI(int32_t, vgetq_lane_f32(a.neon_f32, 0));
 #else
   return SIMDE_CONVERT_FTOI(int32_t, truncf(a.f32[0]));
 #endif
@@ -1321,7 +1315,7 @@ simde_mm_cvttss_si64 (simde__m128 a) {
     return _mm_cvttss_si64(a.n);
   #endif
 #elif defined(SIMDE_SSE_NEON)
-  return (int64_t) vgetq_lane_f32(a.neon_f32, 0);
+  return SIMDE_CONVERT_FTOI(int64_t, truncf(vgetq_lane_f32(a.neon_f32, 0)));
 #else
   return SIMDE_CONVERT_FTOI(int64_t, truncf(a.f32[0]));
 #endif
