@@ -189,6 +189,12 @@ HEDLEY_STATIC_ASSERT(32 == sizeof(simde__m256i), "simde__m256i size incorrect");
 HEDLEY_STATIC_ASSERT(32 == sizeof(simde__m256d), "simde__m256d size incorrect");
 HEDLEY_STATIC_ASSERT(32 ==  sizeof(simde__m256),  "simde__m256 size incorrect");
 
+#if defined(SIMDE_ALIGN_OF)
+HEDLEY_STATIC_ASSERT(SIMDE_ALIGN_OF(simde__m256)  == 32, "__m256 is not 32-byte aligned");
+HEDLEY_STATIC_ASSERT(SIMDE_ALIGN_OF(simde__m256i) == 32, "__m256i is not 32-byte aligned");
+HEDLEY_STATIC_ASSERT(SIMDE_ALIGN_OF(simde__m256d) == 32, "__m256d is not 32-byte aligned");
+#endif
+
 #if !defined(SIMDE_AVX_NATIVE) && defined(SIMDE_ENABLE_NATIVE_ALIASES)
 #  define SIMDE_AVX_ENABLE_NATIVE_ALIASES
    typedef simde__m256 __m256;

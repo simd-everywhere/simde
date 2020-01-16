@@ -101,6 +101,10 @@ typedef union {
 #endif
 HEDLEY_STATIC_ASSERT(8 == sizeof(simde__m64), "__m64 size incorrect");
 
+#if defined(SIMDE_ALIGN_OF)
+HEDLEY_STATIC_ASSERT(SIMDE_ALIGN_OF(simde__m64) == 8, "__m64 is not 8-byte aligned");
+#endif
+
 HEDLEY_DIAGNOSTIC_PUSH
 
 /* Function has no EMMS instruction */

@@ -188,6 +188,11 @@ typedef union {
 HEDLEY_STATIC_ASSERT(16 == sizeof(simde__m128i), "simde__m128i size incorrect");
 HEDLEY_STATIC_ASSERT(16 == sizeof(simde__m128d), "simde__m128d size incorrect");
 
+#if defined(SIMDE_ALIGN_OF)
+HEDLEY_STATIC_ASSERT(SIMDE_ALIGN_OF(simde__m128i) == 16, "__m128i is not 16-byte aligned");
+HEDLEY_STATIC_ASSERT(SIMDE_ALIGN_OF(simde__m128d) == 16, "__m128d is not 16-byte aligned");
+#endif
+
 #if !defined(SIMDE_SSE2_NATIVE) && defined(SIMDE_ENABLE_NATIVE_ALIASES)
 #  define SIMDE_SSE2_ENABLE_NATIVE_ALIASES
    typedef simde__m128d __m128d;
