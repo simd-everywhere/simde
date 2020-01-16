@@ -135,6 +135,8 @@
 #  define SIMDE__ARTIFICIAL
 #endif
 
+#define SIMDE__MASK_NZ(v, mask) (((v) & (mask)) | !((v) & (mask)))
+
 /* Intended for checking coverage, you should never use this in
    production. */
 #if defined(SIMDE_NO_INLINE)
