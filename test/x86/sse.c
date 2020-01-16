@@ -1872,7 +1872,7 @@ test_simde_mm_cvt_ps2pi(const MunitParameter params[], void* data) {
   (void) params;
   (void) data;
 
-  const unsigned int orig_round = simde_MM_GET_ROUNDING_MODE();
+  const unsigned int orig_round = SIMDE_MM_GET_ROUNDING_MODE();
   const struct {
     simde__m128 a;
     simde__m64 r;
@@ -1895,14 +1895,14 @@ test_simde_mm_cvt_ps2pi(const MunitParameter params[], void* data) {
       simde_mm_set_pi32(INT32_C(        323), INT32_C(        851)) }
   };
 
-  simde_MM_SET_ROUNDING_MODE(simde_MM_ROUND_TOWARD_ZERO);
+  SIMDE_MM_SET_ROUNDING_MODE(SIMDE_MM_ROUND_TOWARD_ZERO);
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m64 r = simde_mm_cvt_ps2pi(test_vec[i].a);
     simde_assert_m64_i32(r, ==, test_vec[i].r);
   }
 
-  simde_MM_SET_ROUNDING_MODE(orig_round);
+  SIMDE_MM_SET_ROUNDING_MODE(orig_round);
 
   return MUNIT_OK;
 }
@@ -1936,7 +1936,7 @@ test_simde_mm_cvt_ss2si(const MunitParameter params[], void* data) {
   (void) params;
   (void) data;
 
-  const unsigned int orig_round = simde_MM_GET_ROUNDING_MODE();
+  const unsigned int orig_round = SIMDE_MM_GET_ROUNDING_MODE();
 
   const struct {
     simde__m128 a;
@@ -1960,14 +1960,14 @@ test_simde_mm_cvt_ss2si(const MunitParameter params[], void* data) {
       222 }
   };
 
-  simde_MM_SET_ROUNDING_MODE(simde_MM_ROUND_TOWARD_ZERO);
+  SIMDE_MM_SET_ROUNDING_MODE(SIMDE_MM_ROUND_TOWARD_ZERO);
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     int32_t r = simde_mm_cvt_ss2si(test_vec[i].a);
     munit_assert_int32(r, ==, test_vec[i].r);
   }
 
-  simde_MM_SET_ROUNDING_MODE(orig_round);
+  SIMDE_MM_SET_ROUNDING_MODE(orig_round);
 
   return MUNIT_OK;
 }

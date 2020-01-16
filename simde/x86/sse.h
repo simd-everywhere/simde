@@ -1387,30 +1387,30 @@ simde_mm_extract_pi16 (simde__m64 a, const int imm8) {
 
 enum {
 #if defined(SIMDE_SSE_NATIVE)
-  simde_MM_ROUND_NEAREST     = _MM_ROUND_NEAREST,
-  simde_MM_ROUND_DOWN        = _MM_ROUND_DOWN,
-  simde_MM_ROUND_UP          = _MM_ROUND_UP,
-  simde_MM_ROUND_TOWARD_ZERO = _MM_ROUND_TOWARD_ZERO
+  SIMDE_MM_ROUND_NEAREST     = _MM_ROUND_NEAREST,
+  SIMDE_MM_ROUND_DOWN        = _MM_ROUND_DOWN,
+  SIMDE_MM_ROUND_UP          = _MM_ROUND_UP,
+  SIMDE_MM_ROUND_TOWARD_ZERO = _MM_ROUND_TOWARD_ZERO
 #else
-  simde_MM_ROUND_NEAREST
+  SIMDE_MM_ROUND_NEAREST
 #if defined(FE_TONEAREST)
   = FE_TONEAREST
 #endif
   ,
 
-  simde_MM_ROUND_DOWN
+  SIMDE_MM_ROUND_DOWN
 #if defined(FE_DOWNWARD)
   = FE_DOWNWARD
 #endif
   ,
 
-  simde_MM_ROUND_UP
+  SIMDE_MM_ROUND_UP
 #if defined(FE_UPWARD)
   = FE_UPWARD
 #endif
   ,
 
-  simde_MM_ROUND_TOWARD_ZERO
+  SIMDE_MM_ROUND_TOWARD_ZERO
 #if defined(FE_TOWARDZERO)
   = FE_TOWARDZERO
 #endif
@@ -1419,7 +1419,7 @@ enum {
 
 SIMDE__FUNCTION_ATTRIBUTES
 unsigned int
-simde_MM_GET_ROUNDING_MODE(void) {
+SIMDE_MM_GET_ROUNDING_MODE(void) {
 #if defined(SIMDE_SSE_NATIVE)
   return _MM_GET_ROUNDING_MODE();
 #else
@@ -1432,7 +1432,7 @@ simde_MM_GET_ROUNDING_MODE(void) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 void
-simde_MM_SET_ROUNDING_MODE(unsigned int a) {
+SIMDE_MM_SET_ROUNDING_MODE(unsigned int a) {
 #if defined(SIMDE_SSE_NATIVE)
   _MM_SET_ROUNDING_MODE(a);
 #else
@@ -1440,7 +1440,7 @@ simde_MM_SET_ROUNDING_MODE(unsigned int a) {
 #endif
 }
 #if defined(SIMDE_SSE_ENABLE_NATIVE_ALIASES)
-#  define _MM_SET_ROUNDING_MODE(a) simde_MM_SET_ROUNDING_MODE(a)
+#  define _MM_SET_ROUNDING_MODE(a) SIMDE_MM_SET_ROUNDING_MODE(a)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES

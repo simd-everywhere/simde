@@ -207,7 +207,7 @@ support some caveats apply:
 
  * x86 / x86_64
    * SSE
-     * `simde_MM_SET_ROUNDING_MODE()` will use `fesetround()`, altering
+     * `SIMDE_MM_SET_ROUNDING_MODE()` will use `fesetround()`, altering
        the global rounding mode.
      * `simde_mm_getcsr` and `simde_mm_setcsr` only implement bits 13
        and 14 (rounding mode).
