@@ -429,27 +429,22 @@ simde_em_int32x4
 simde_em_int32x4_shiftLeftByScalar (simde_em_int32x4 a, const int bits) {
 #if defined(SIMDE_EM_NATIVE)
   return SIMDE_EM_INT32X4_C(emscripten_int32x4_shiftLeftByScalar(a.n, bits & 31));
-#elif defined(SIMDE_EM_SSE2)
-  return SIMDE_EM_INT32X4_SSE_C(_mm_slli_epi32(a.sse, bits & 31));
-#elif defined(SIMDE_EM_NEON)
-  #if defined(__GNUC__)
-    if (__builtin_constant_p(bits))
-      return SIMDE_EM_INT32X4_NEON_C(vshlq_n_s32(a.neon, bits & 31));
-    else
-      return SIMDE_EM_INT32X4_NEON_C(vshlq_s32(a.neon, vdupq_n_s32(bits & 31)));
-  #else
-    return SIMDE_EM_INT32X4_NEON_C(vshlq_n_s32(a.neon, bits & 31));
-  #endif
-#elif defined(SIMDE__ENABLE_GCC_VEC_EXT)
-  simde_em_int32x4 r;
-  r.v = a.v << bits;
-  return r;
 #else
   simde_em_int32x4 r;
+
+#if defined(SIMDE_EM_SSE2)
+  r.sse = _mm_slli_epi32(a.sse, bits & 31);
+#elif defined(SIMDE_EM_NEON)
+  r.neon = vshlq_s32(a.neon, vdupq_n_s32(bits & 31));
+#elif defined(SIMDE__ENABLE_GCC_VEC_EXT)
+  r.v = a.v << bits;
+#else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.v) / sizeof(r.v[0])) ; i++) {
     r.v[i] = a.v[i] << bits;
   }
+#endif
+
   return r;
 #endif
 }
@@ -459,27 +454,22 @@ simde_em_int32x4
 simde_em_int32x4_shiftRightByScalar (simde_em_int32x4 a, const int bits) {
 #if defined(SIMDE_EM_NATIVE)
   return SIMDE_EM_INT32X4_C(emscripten_int32x4_shiftRightByScalar(a.n, bits & 31));
-#elif defined(SIMDE_EM_SSE2)
-  return SIMDE_EM_INT32X4_SSE_C(_mm_srai_epi32(a.sse, bits & 31));
-#elif defined(SIMDE_EM_NEON)
-  #if defined(__GNUC__)
-    if (__builtin_constant_p(bits))
-      return SIMDE_EM_INT32X4_NEON_C(vshrq_n_s32(a.neon, bits & 31));
-    else
-      return SIMDE_EM_INT32X4_NEON_C(vshlq_s32(a.neon, vdupq_n_s32(-(bits & 31))));
-  #else
-    return SIMDE_EM_INT32X4_NEON_C(vshrq_n_s32(a.neon, bits & 31));
-  #endif
-#elif defined(SIMDE__ENABLE_GCC_VEC_EXT)
-  simde_em_int32x4 r;
-  r.v = a.v >> bits;
-  return r;
 #else
   simde_em_int32x4 r;
+
+#if defined(SIMDE_EM_SSE2)
+  return SIMDE_EM_INT32X4_SSE_C(_mm_srai_epi32(a.sse, bits & 31));
+#elif defined(SIMDE_EM_NEON)
+  r.neon = vshlq_s32(a.neon, vdupq_n_s32(-(bits & 31)));
+#elif defined(SIMDE__ENABLE_GCC_VEC_EXT)
+  r.v = a.v >> bits;
+#else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.v) / sizeof(r.v[0])) ; i++) {
     r.v[i] = a.v[i] >> bits;
   }
+#endif
+
   return r;
 #endif
 }
