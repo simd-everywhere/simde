@@ -92,6 +92,7 @@ jobs:
     - sudo apt-get install "xlc.${XLC_VERSION}" "xlc-license-community.${XLC_VERSION}"
     - sudo /opt/ibm/xlC/${XLC_VERSION}/bin/xlc_configure <<< 1 >/dev/null
     env:
+    - ARCH_FLAGS=-qarch=auto
     - C_COMPILER=xlc
     - CXX_COMPILER=xlc++
 

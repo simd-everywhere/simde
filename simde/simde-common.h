@@ -90,6 +90,25 @@
 #  if !defined(__clang__) && !defined(__INTEL_COMPILER)
 #    define SIMDE__ENABLE_GCC_VEC_EXT_SHIFT_BY_SCALAR
 #  endif
+
+/* GCC and clang have built-in functions to handle shuffling of
+   vectors, but the implementations are slightly different.  This
+   macro is just an abstraction over them.  Note that elem_size is in
+   bits but vec_size is in bytes. */
+#  if !defined(SIMDE_NO_SHUFFLE_VECTOR)
+#    if HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
+#      define SIMDE__SHUFFLE_VECTOR(elem_size, vec_size, a, b, ...) __builtin_shufflevector(a, b, __VA_ARGS__)
+#    elif HEDLEY_GCC_HAS_BUILTIN(__builtin_shuffle,4,7,0) && !defined(__INTEL_COMPILER)
+#      define SIMDE__SHUFFLE_VECTOR(elem_size, vec_size, a, b, ...) (__extension__ ({ \
+         int##elem_size##_t __attribute__((__vector_size__(vec_size))) simde_shuffle_ = { __VA_ARGS__ }; \
+           __builtin_shuffle(a, b, simde_shuffle_); \
+         }))
+#    endif
+#  endif
+
+#  if HEDLEY_GCC_HAS_BUILTIN(__builtin_convertvector,9,0,0)
+#    define SIMDE__CONVERT_VECTOR(to, from) ((to) = __builtin_convertvector((from), __typeof__(to)))
+#  endif
 #endif
 
 #if !defined(SIMDE_ENABLE_OPENMP) && ((defined(_OPENMP) && (_OPENMP >= 201307L)) || (defined(_OPENMP_SIMD) && (_OPENMP_SIMD >= 201307L)))
@@ -246,25 +265,6 @@ HEDLEY_STATIC_ASSERT(sizeof(simde_float64) == 8, "Unable to find 64-bit floating
 #  if defined(__SSE__) || defined(__ARM_NEON) || defined(__mips_msa) || defined(__ALTIVEC__)
 #    define SIMDE_ASSUME_VECTORIZATION
 #  endif
-#endif
-
-/* GCC and clang have built-in functions to handle shuffling of
-   vectors, but the implementations are slightly different.  This
-   macro is just an abstraction over them.  Note that elem_size is in
-   bits but vec_size is in bytes. */
-#if !defined(SIMDE_NO_SHUFFLE_VECTOR)
-#if HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
-#  define SIMDE__SHUFFLE_VECTOR(elem_size, vec_size, a, b, ...) __builtin_shufflevector(a, b, __VA_ARGS__)
-#elif HEDLEY_GCC_HAS_BUILTIN(__builtin_shuffle,4,7,0) && !defined(__INTEL_COMPILER)
-#  define SIMDE__SHUFFLE_VECTOR(elem_size, vec_size, a, b, ...) (__extension__ ({ \
-       int##elem_size##_t __attribute__((__vector_size__(vec_size))) simde_shuffle_ = { __VA_ARGS__ }; \
-       __builtin_shuffle(a, b, simde_shuffle_); \
-     }))
-#endif
-#endif
-
-#if HEDLEY_GCC_HAS_BUILTIN(__builtin_convertvector,9,0,0)
-#  define SIMDE__CONVERT_VECTOR(to, from) ((to) = __builtin_convertvector((from), __typeof__(to)))
 #endif
 
 #if HEDLEY_HAS_WARNING("-Wbad-function-cast")
