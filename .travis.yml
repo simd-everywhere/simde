@@ -17,15 +17,22 @@ env:
 
 jobs:
   include:
-  - name: "gcc amd64"
-    compiler: gcc
-    arch: amd64
+  - name: "gcc-9"
+    compiler: gcc-9
+    env:
+    - C_COMPILER=gcc-9
+    - CXX_COMPILER=g++-9
+    - COMPILER_FLAGS='-fsanitize=address,undefined'
+    addons:
+      apt:
+        sources:
+        - sourceline: "ppa:ubuntu-toolchain-r/test"
+          key_url: https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x60c317803a41ba51845e371a1e9377a2ba9ef27f
+        packages:
+        - gcc-9
+        - g++-9
 
-  - name: "clang amd64"
-    arch: amd64
-    compiler: clang
-
-  - name: "clang-9 asan,ubsan"
+  - name: "clang-9"
     compiler: clang-9
     env:
     - C_COMPILER=clang-9
@@ -106,6 +113,14 @@ jobs:
     os: windows
     env:
     - ARCH_FLAGS=""
+
+  - name: "gcc-7 amd64"
+    compiler: gcc
+    arch: amd64
+
+  - name: "clang-7 amd64"
+    arch: amd64
+    compiler: clang
 
   - name: icc
     compiler: icc
