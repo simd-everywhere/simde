@@ -134,7 +134,6 @@ jobs:
     - sudo apt-get -y install crossbuild-essential-armhf libc6:armhf
 
   allow_failures:
-  - name: xlc
   - name: s390x
   - name: arm32
 
