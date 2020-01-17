@@ -188,3 +188,6 @@ after_success:
   if [ "${BUILD_TYPE}" = "Coverage" ]; then
     bash <(curl -s https://codecov.io/bash) -f '!*test-common.c' ${GCOV}
   fi
+
+notifications:
+  email: false
