@@ -92,11 +92,6 @@ else()
 endif()
 
 list(APPEND TEST_SOURCES
-  simd-js/int32x4.c
-  simd-js/int32x4-compare.c
-  simd-js/float32x4.c)
-
-list(APPEND TEST_SOURCES
   arm/neon/vadd.c
   arm/neon/vdup_n.c
   arm/neon/vmul.c
@@ -139,7 +134,6 @@ if (NOT DISABLE_X86)
     add_test(NAME "${tst}/${variant}" COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:run-tests> "${tst}")
   endforeach()
 endif()
-add_test(NAME "/simd-js" COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:run-tests> "/simd-js")
 target_add_extra_warning_flags(run-tests)
 set_property (TARGET run-tests PROPERTY C_STANDARD "99")
 if("${CMAKE_C_COMPILER}" MATCHES "arm-linux-gnueabihf-gcc")

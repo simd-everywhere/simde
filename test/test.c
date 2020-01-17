@@ -29,7 +29,6 @@
 #if !defined(DISABLE_ARM)
 #  include "arm/arm-internal.h"
 #endif
-#include "simd-js/simd-js.h"
 
 #include <fenv.h>
 #include <math.h>
@@ -75,14 +74,6 @@ int main(int argc, char* argv[MUNIT_ARRAY_PARAM(argc + 1)]) {
     { 0, },
   };
 
-  MunitSuite simd_js_test_suites[] = {
-    simde_simd_js_int32x4_test_suite,
-    simde_simd_js_int32x4_emul_test_suite,
-    simde_simd_js_int32x4_cmp_test_suite,
-    simde_simd_js_float32x4_test_suite,
-    { 0, },
-  };
-
   MunitSuite arm_test_suites[] = {
 #if !defined(DISABLE_ARM)
     simde_neon_vadd_test_suite,
@@ -101,12 +92,6 @@ int main(int argc, char* argv[MUNIT_ARRAY_PARAM(argc + 1)]) {
     { (char*) "/x86",
       NULL,
       x86_test_suites,
-      1,
-      MUNIT_SUITE_OPTION_NONE },
-
-    { (char*) "/simd-js",
-      NULL,
-      simd_js_test_suites,
       1,
       MUNIT_SUITE_OPTION_NONE },
 

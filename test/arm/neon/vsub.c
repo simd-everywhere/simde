@@ -22,7 +22,6 @@
  */
 
 #include "../arm-internal.h"
-#include "../../../simde/simd-js/simd-js.h"
 
 static MunitResult
 test_simde_vsub_s8(const MunitParameter params[], void* data) {
