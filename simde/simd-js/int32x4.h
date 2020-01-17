@@ -441,7 +441,7 @@ simde_em_int32x4_shiftLeftByScalar (simde_em_int32x4 a, const int bits) {
 #else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.v) / sizeof(r.v[0])) ; i++) {
-    r.v[i] = a.v[i] << bits;
+    r.v[i] = a.v[i] << (bits & 31);
   }
 #endif
 
@@ -466,7 +466,7 @@ simde_em_int32x4_shiftRightByScalar (simde_em_int32x4 a, const int bits) {
 #else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.v) / sizeof(r.v[0])) ; i++) {
-    r.v[i] = a.v[i] >> bits;
+    r.v[i] = a.v[i] >> (bits & 31);
   }
 #endif
 
