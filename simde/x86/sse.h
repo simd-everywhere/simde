@@ -65,7 +65,7 @@
 #      include <arm_neon.h>
 #    endif
 
-#    if !defined(__INTEL_COMPILER) && defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 201112L) && !defined(__STDC_NO_ATOMICS__)
+#    if !defined(HEDLEY_INTEL_VERSION) && !defined(HEDLEY_EMSCRIPTEN_VERSION) && defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 201112L) && !defined(__STDC_NO_ATOMICS__)
 #      include <stdatomic.h>
 #    elif defined(_WIN32)
 #      include <Windows.h>
