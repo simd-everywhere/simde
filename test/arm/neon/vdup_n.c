@@ -21,7 +21,11 @@
  * SOFTWARE.
  */
 
-#include "../arm-internal.h"
+#define SIMDE_TESTS_CURRENT_NEON_OP dup
+#include <test/arm/neon/test-neon-internal.h>
+#include <simde/arm/neon.h>
+
+#if defined(SIMDE_NO_NATIVE) || defined(SIMDE_NEON_NATIVE)
 
 static MunitResult
 test_simde_vdup_n_s8(const MunitParameter params[], void* data) {
@@ -827,36 +831,38 @@ test_simde_vdupq_n_f64(const MunitParameter params[], void* data) {
   return MUNIT_OK;
 }
 
-static MunitTest vdup_n_tests[] = {
-  TEST_FUNC2(vdup_n, s8),
-  TEST_FUNC2(vdup_n, s16),
-  TEST_FUNC2(vdup_n, s32),
-  TEST_FUNC2(vdup_n, s64),
-  TEST_FUNC2(vdup_n, u8),
-  TEST_FUNC2(vdup_n, u16),
-  TEST_FUNC2(vdup_n, u32),
-  TEST_FUNC2(vdup_n, u64),
-  TEST_FUNC2(vdup_n, f32),
-  TEST_FUNC2(vdup_n, f64),
+#endif /* defined(SIMDE_NO_NATIVE) || defined(SIMDE_NEON_NATIVE) */
 
-  TEST_FUNC2(vdupq_n, s8),
-  TEST_FUNC2(vdupq_n, s16),
-  TEST_FUNC2(vdupq_n, s32),
-  TEST_FUNC2(vdupq_n, s64),
-  TEST_FUNC2(vdupq_n, u8),
-  TEST_FUNC2(vdupq_n, u16),
-  TEST_FUNC2(vdupq_n, u32),
-  TEST_FUNC2(vdupq_n, u64),
-  TEST_FUNC2(vdupq_n, f32),
-  TEST_FUNC2(vdupq_n, f64),
+static MunitTest test_suite_tests[] = {
+#if defined(SIMDE_NO_NATIVE) || defined(SIMDE_NEON_NATIVE)
+  SIMDE_TESTS_NEON_DEFINE_TEST(n_s8),
+  SIMDE_TESTS_NEON_DEFINE_TEST(n_s16),
+  SIMDE_TESTS_NEON_DEFINE_TEST(n_s32),
+  SIMDE_TESTS_NEON_DEFINE_TEST(n_s64),
+  SIMDE_TESTS_NEON_DEFINE_TEST(n_u8),
+  SIMDE_TESTS_NEON_DEFINE_TEST(n_u16),
+  SIMDE_TESTS_NEON_DEFINE_TEST(n_u32),
+  SIMDE_TESTS_NEON_DEFINE_TEST(n_u64),
+  SIMDE_TESTS_NEON_DEFINE_TEST(n_f32),
+  SIMDE_TESTS_NEON_DEFINE_TEST(n_f64),
+
+  SIMDE_TESTS_NEON_DEFINE_TEST_FULL(q, n_s8),
+  SIMDE_TESTS_NEON_DEFINE_TEST_FULL(q, n_s16),
+  SIMDE_TESTS_NEON_DEFINE_TEST_FULL(q, n_s32),
+  SIMDE_TESTS_NEON_DEFINE_TEST_FULL(q, n_s64),
+  SIMDE_TESTS_NEON_DEFINE_TEST_FULL(q, n_u8),
+  SIMDE_TESTS_NEON_DEFINE_TEST_FULL(q, n_u16),
+  SIMDE_TESTS_NEON_DEFINE_TEST_FULL(q, n_u32),
+  SIMDE_TESTS_NEON_DEFINE_TEST_FULL(q, n_u64),
+  SIMDE_TESTS_NEON_DEFINE_TEST_FULL(q, n_f32),
+  SIMDE_TESTS_NEON_DEFINE_TEST_FULL(q, n_f64),
+#endif /* defined(SIMDE_NO_NATIVE) || defined(SIMDE_NEON_NATIVE) */
 
   { NULL, NULL, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL }
 };
 
-MunitSuite NEON_TEST_SUITE(vdup_n) = {
-  (char*) "/vdup_n",
-  vdup_n_tests,
-  NULL,
-  1,
-  MUNIT_SUITE_OPTION_NONE
-};
+HEDLEY_C_DECL MunitSuite* SIMDE_TESTS_GENERATE_SYMBOL(SIMDE_TESTS_CURRENT_NEON_OP)(void) {
+  static MunitSuite suite = { (char*) "/v" HEDLEY_STRINGIFY(SIMDE_TESTS_CURRENT_NEON_OP), test_suite_tests, NULL, 1, MUNIT_SUITE_OPTION_NONE };
+
+  return &suite;
+}

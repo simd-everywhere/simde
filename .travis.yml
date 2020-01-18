@@ -1,15 +1,11 @@
 language: c
+dist: bionic
 cache: ccache
 dist: bionic
 branches:
   except:
     - /^(wip\/)?(appveyor|msvc|mingw|windows)(\-.+)?$/
 
-addons:
-  apt:
-    update: true
-    packages:
-    - cmake
 env:
   global:
   - BUILD_TYPE="Coverage"
@@ -185,6 +181,10 @@ before_install:
   fi
   if [ -n "${CXX_COMPILER}" ]; then
     export CXX="${CXX_COMPILER}"
+  fi
+  if [ -n "${COMPILER_FLAGS}" ]; then
+    export CFLAGS="${ARCH_FLAGS} ${COMPILER_FLAGS} ${CFLAGS}"
+    export CXXFLAGS="${ARCH_FLAGS} ${COMPILER_FLAGS} ${CXXFLAGS}"
   fi
 
 script:

@@ -21,14 +21,9 @@
  * SOFTWARE.
  */
 
-#include "x86-internal.h"
-#include "../../simde/x86/mmx.h"
-
-#include <stdio.h>
-
-#if HEDLEY_HAS_WARNING("-Wsign-conversion")
-#  pragma clang diagnostic ignored "-Wsign-conversion"
-#endif
+#define SIMDE_TESTS_CURRENT_ISAX mmx
+#include <test/x86/test-x86-internal.h>
+#include <simde/x86/mmx.h>
 
 static MunitResult
 test_simde_mm_set_pi8(const MunitParameter params[], void* data) {
@@ -2853,85 +2848,79 @@ test_simde_m_to_int64(const MunitParameter params[], void* data) {
 }
 
 static MunitTest test_suite_tests[] = {
-  TEST_FUNC(mm_set_pi8),
-  TEST_FUNC(mm_set_pi16),
-  TEST_FUNC(mm_set_pi32),
-  TEST_FUNC(mm_set1_pi8),
-  TEST_FUNC(mm_set1_pi16),
-  TEST_FUNC(mm_set1_pi32),
-  TEST_FUNC(mm_setr_pi8),
-  TEST_FUNC(mm_setr_pi16),
-  TEST_FUNC(mm_setr_pi32),
-  TEST_FUNC(mm_add_pi8),
-  TEST_FUNC(mm_add_pi16),
-  TEST_FUNC(mm_add_pi32),
-  TEST_FUNC(mm_adds_pi8),
-  TEST_FUNC(mm_adds_pi16),
-  TEST_FUNC(mm_adds_pu8),
-  TEST_FUNC(mm_adds_pu16),
-  TEST_FUNC(mm_and_si64),
-  TEST_FUNC(mm_andnot_si64),
-  TEST_FUNC(mm_cmpeq_pi8),
-  TEST_FUNC(mm_cmpeq_pi16),
-  TEST_FUNC(mm_cmpeq_pi32),
-  TEST_FUNC(mm_cmpgt_pi8),
-  TEST_FUNC(mm_cmpgt_pi16),
-  TEST_FUNC(mm_cmpgt_pi32),
-  TEST_FUNC(mm_cvtm64_si64),
-  TEST_FUNC(mm_cvtsi32_si64),
-  TEST_FUNC(mm_cvtsi64_m64),
-  TEST_FUNC(mm_cvtsi64_si32),
-  TEST_FUNC(mm_madd_pi16),
-  TEST_FUNC(mm_mulhi_pi16),
-  TEST_FUNC(mm_mullo_pi16),
-  TEST_FUNC(mm_or_si64),
-  TEST_FUNC(mm_packs_pi16),
-  TEST_FUNC(mm_packs_pi32),
-  TEST_FUNC(mm_packs_pu16),
-  TEST_FUNC(mm_sll_pi16),
-  TEST_FUNC(mm_sll_pi32),
-  TEST_FUNC(mm_sll_si64),
-  TEST_FUNC(mm_slli_pi16),
-  TEST_FUNC(mm_slli_pi32),
-  TEST_FUNC(mm_slli_si64),
-  TEST_FUNC(mm_srl_pi16),
-  TEST_FUNC(mm_srl_pi32),
-  TEST_FUNC(mm_srl_si64),
-  TEST_FUNC(mm_srli_pi16),
-  TEST_FUNC(mm_srli_pi32),
-  TEST_FUNC(mm_srli_si64),
-  TEST_FUNC(mm_srai_pi16),
-  TEST_FUNC(mm_srai_pi32),
-  TEST_FUNC(mm_sra_pi16),
-  TEST_FUNC(mm_sra_pi32),
-  TEST_FUNC(mm_sub_pi8),
-  TEST_FUNC(mm_sub_pi16),
-  TEST_FUNC(mm_sub_pi32),
-  TEST_FUNC(mm_subs_pi8),
-  TEST_FUNC(mm_subs_pi16),
-  TEST_FUNC(mm_subs_pu8),
-  TEST_FUNC(mm_subs_pu16),
-  TEST_FUNC(mm_unpackhi_pi8),
-  TEST_FUNC(mm_unpackhi_pi16),
-  TEST_FUNC(mm_unpackhi_pi32),
-  TEST_FUNC(mm_unpacklo_pi8),
-  TEST_FUNC(mm_unpacklo_pi16),
-  TEST_FUNC(mm_unpacklo_pi32),
-  TEST_FUNC(mm_xor_si64),
-  TEST_FUNC(m_to_int),
-  TEST_FUNC(m_to_int64),
+  SIMDE_TESTS_DEFINE_TEST(mm_set_pi8),
+  SIMDE_TESTS_DEFINE_TEST(mm_set_pi16),
+  SIMDE_TESTS_DEFINE_TEST(mm_set_pi32),
+  SIMDE_TESTS_DEFINE_TEST(mm_set1_pi8),
+  SIMDE_TESTS_DEFINE_TEST(mm_set1_pi16),
+  SIMDE_TESTS_DEFINE_TEST(mm_set1_pi32),
+  SIMDE_TESTS_DEFINE_TEST(mm_setr_pi8),
+  SIMDE_TESTS_DEFINE_TEST(mm_setr_pi16),
+  SIMDE_TESTS_DEFINE_TEST(mm_setr_pi32),
+  SIMDE_TESTS_DEFINE_TEST(mm_add_pi8),
+  SIMDE_TESTS_DEFINE_TEST(mm_add_pi16),
+  SIMDE_TESTS_DEFINE_TEST(mm_add_pi32),
+  SIMDE_TESTS_DEFINE_TEST(mm_adds_pi8),
+  SIMDE_TESTS_DEFINE_TEST(mm_adds_pi16),
+  SIMDE_TESTS_DEFINE_TEST(mm_adds_pu8),
+  SIMDE_TESTS_DEFINE_TEST(mm_adds_pu16),
+  SIMDE_TESTS_DEFINE_TEST(mm_and_si64),
+  SIMDE_TESTS_DEFINE_TEST(mm_andnot_si64),
+  SIMDE_TESTS_DEFINE_TEST(mm_cmpeq_pi8),
+  SIMDE_TESTS_DEFINE_TEST(mm_cmpeq_pi16),
+  SIMDE_TESTS_DEFINE_TEST(mm_cmpeq_pi32),
+  SIMDE_TESTS_DEFINE_TEST(mm_cmpgt_pi8),
+  SIMDE_TESTS_DEFINE_TEST(mm_cmpgt_pi16),
+  SIMDE_TESTS_DEFINE_TEST(mm_cmpgt_pi32),
+  SIMDE_TESTS_DEFINE_TEST(mm_cvtm64_si64),
+  SIMDE_TESTS_DEFINE_TEST(mm_cvtsi32_si64),
+  SIMDE_TESTS_DEFINE_TEST(mm_cvtsi64_m64),
+  SIMDE_TESTS_DEFINE_TEST(mm_cvtsi64_si32),
+  SIMDE_TESTS_DEFINE_TEST(mm_madd_pi16),
+  SIMDE_TESTS_DEFINE_TEST(mm_mulhi_pi16),
+  SIMDE_TESTS_DEFINE_TEST(mm_mullo_pi16),
+  SIMDE_TESTS_DEFINE_TEST(mm_or_si64),
+  SIMDE_TESTS_DEFINE_TEST(mm_packs_pi16),
+  SIMDE_TESTS_DEFINE_TEST(mm_packs_pi32),
+  SIMDE_TESTS_DEFINE_TEST(mm_packs_pu16),
+  SIMDE_TESTS_DEFINE_TEST(mm_sll_pi16),
+  SIMDE_TESTS_DEFINE_TEST(mm_sll_pi32),
+  SIMDE_TESTS_DEFINE_TEST(mm_sll_si64),
+  SIMDE_TESTS_DEFINE_TEST(mm_slli_pi16),
+  SIMDE_TESTS_DEFINE_TEST(mm_slli_pi32),
+  SIMDE_TESTS_DEFINE_TEST(mm_slli_si64),
+  SIMDE_TESTS_DEFINE_TEST(mm_srl_pi16),
+  SIMDE_TESTS_DEFINE_TEST(mm_srl_pi32),
+  SIMDE_TESTS_DEFINE_TEST(mm_srl_si64),
+  SIMDE_TESTS_DEFINE_TEST(mm_srli_pi16),
+  SIMDE_TESTS_DEFINE_TEST(mm_srli_pi32),
+  SIMDE_TESTS_DEFINE_TEST(mm_srli_si64),
+  SIMDE_TESTS_DEFINE_TEST(mm_srai_pi16),
+  SIMDE_TESTS_DEFINE_TEST(mm_srai_pi32),
+  SIMDE_TESTS_DEFINE_TEST(mm_sra_pi16),
+  SIMDE_TESTS_DEFINE_TEST(mm_sra_pi32),
+  SIMDE_TESTS_DEFINE_TEST(mm_sub_pi8),
+  SIMDE_TESTS_DEFINE_TEST(mm_sub_pi16),
+  SIMDE_TESTS_DEFINE_TEST(mm_sub_pi32),
+  SIMDE_TESTS_DEFINE_TEST(mm_subs_pi8),
+  SIMDE_TESTS_DEFINE_TEST(mm_subs_pi16),
+  SIMDE_TESTS_DEFINE_TEST(mm_subs_pu8),
+  SIMDE_TESTS_DEFINE_TEST(mm_subs_pu16),
+  SIMDE_TESTS_DEFINE_TEST(mm_unpackhi_pi8),
+  SIMDE_TESTS_DEFINE_TEST(mm_unpackhi_pi16),
+  SIMDE_TESTS_DEFINE_TEST(mm_unpackhi_pi32),
+  SIMDE_TESTS_DEFINE_TEST(mm_unpacklo_pi8),
+  SIMDE_TESTS_DEFINE_TEST(mm_unpacklo_pi16),
+  SIMDE_TESTS_DEFINE_TEST(mm_unpacklo_pi32),
+  SIMDE_TESTS_DEFINE_TEST(mm_xor_si64),
+  SIMDE_TESTS_DEFINE_TEST(m_to_int),
+  SIMDE_TESTS_DEFINE_TEST(m_to_int64),
 
   { NULL, NULL, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL }
 };
 
-#if defined(SIMDE_NO_NATIVE)
-#  define simde_mmx_test_suite simde_mmx_emul_test_suite
-#endif
+HEDLEY_C_DECL MunitSuite* SIMDE_TESTS_GENERATE_SYMBOL(suite)(void) {
+  static MunitSuite suite = { (char*) "/" HEDLEY_STRINGIFY(SIMDE_TESTS_CURRENT_ISAX), test_suite_tests, NULL, 1, MUNIT_SUITE_OPTION_NONE };
 
-MunitSuite simde_mmx_test_suite = {
-  (char*) "/mmx",
-  test_suite_tests,
-  NULL,
-  1,
-  MUNIT_SUITE_OPTION_NONE
-};
+  return &suite;
+}

@@ -21,8 +21,9 @@
  * SOFTWARE.
  */
 
-#include "x86-internal.h"
-#include "../../simde/x86/fma.h"
+#define SIMDE_TESTS_CURRENT_ISAX fma
+#include <test/x86/test-x86-internal.h>
+#include <simde/x86/fma.h>
 
 static MunitResult
 test_simde_mm_fmadd_pd(const MunitParameter params[], void* data) {
@@ -2489,55 +2490,49 @@ test_simde_mm_fnmsub_ss(const MunitParameter params[], void* data) {
 }
 
 static MunitTest test_suite_tests[] = {
-  TEST_FUNC(mm_fmadd_pd),
-  TEST_FUNC(mm256_fmadd_pd),
-  TEST_FUNC(mm_fmadd_ps),
-  TEST_FUNC(mm256_fmadd_ps),
-  TEST_FUNC(mm_fmadd_sd),
-  TEST_FUNC(mm_fmadd_ss),
+  SIMDE_TESTS_DEFINE_TEST(mm_fmadd_pd),
+  SIMDE_TESTS_DEFINE_TEST(mm256_fmadd_pd),
+  SIMDE_TESTS_DEFINE_TEST(mm_fmadd_ps),
+  SIMDE_TESTS_DEFINE_TEST(mm256_fmadd_ps),
+  SIMDE_TESTS_DEFINE_TEST(mm_fmadd_sd),
+  SIMDE_TESTS_DEFINE_TEST(mm_fmadd_ss),
 
-  TEST_FUNC(mm_fmaddsub_pd),
-  TEST_FUNC(mm256_fmaddsub_pd),
-  TEST_FUNC(mm_fmaddsub_ps),
-  TEST_FUNC(mm256_fmaddsub_ps),
+  SIMDE_TESTS_DEFINE_TEST(mm_fmaddsub_pd),
+  SIMDE_TESTS_DEFINE_TEST(mm256_fmaddsub_pd),
+  SIMDE_TESTS_DEFINE_TEST(mm_fmaddsub_ps),
+  SIMDE_TESTS_DEFINE_TEST(mm256_fmaddsub_ps),
 
-  TEST_FUNC(mm_fmsub_pd),
-  TEST_FUNC(mm256_fmsub_pd),
-  TEST_FUNC(mm_fmsub_ps),
-  TEST_FUNC(mm256_fmsub_ps),
-  TEST_FUNC(mm_fmsub_sd),
-  TEST_FUNC(mm_fmsub_ss),
+  SIMDE_TESTS_DEFINE_TEST(mm_fmsub_pd),
+  SIMDE_TESTS_DEFINE_TEST(mm256_fmsub_pd),
+  SIMDE_TESTS_DEFINE_TEST(mm_fmsub_ps),
+  SIMDE_TESTS_DEFINE_TEST(mm256_fmsub_ps),
+  SIMDE_TESTS_DEFINE_TEST(mm_fmsub_sd),
+  SIMDE_TESTS_DEFINE_TEST(mm_fmsub_ss),
 
-  TEST_FUNC(mm_fmsubadd_pd),
-  TEST_FUNC(mm256_fmsubadd_pd),
-  TEST_FUNC(mm_fmsubadd_ps),
-  TEST_FUNC(mm256_fmsubadd_ps),
+  SIMDE_TESTS_DEFINE_TEST(mm_fmsubadd_pd),
+  SIMDE_TESTS_DEFINE_TEST(mm256_fmsubadd_pd),
+  SIMDE_TESTS_DEFINE_TEST(mm_fmsubadd_ps),
+  SIMDE_TESTS_DEFINE_TEST(mm256_fmsubadd_ps),
 
-  TEST_FUNC(mm_fnmadd_pd),
-  TEST_FUNC(mm256_fnmadd_pd),
-  TEST_FUNC(mm_fnmadd_ps),
-  TEST_FUNC(mm256_fnmadd_ps),
-  TEST_FUNC(mm_fnmadd_sd),
-  TEST_FUNC(mm_fnmadd_ss),
+  SIMDE_TESTS_DEFINE_TEST(mm_fnmadd_pd),
+  SIMDE_TESTS_DEFINE_TEST(mm256_fnmadd_pd),
+  SIMDE_TESTS_DEFINE_TEST(mm_fnmadd_ps),
+  SIMDE_TESTS_DEFINE_TEST(mm256_fnmadd_ps),
+  SIMDE_TESTS_DEFINE_TEST(mm_fnmadd_sd),
+  SIMDE_TESTS_DEFINE_TEST(mm_fnmadd_ss),
 
-  TEST_FUNC(mm_fnmsub_pd),
-  TEST_FUNC(mm256_fnmsub_pd),
-  TEST_FUNC(mm_fnmsub_ps),
-  TEST_FUNC(mm256_fnmsub_ps),
-  TEST_FUNC(mm_fnmsub_sd),
-  TEST_FUNC(mm_fnmsub_ss),
+  SIMDE_TESTS_DEFINE_TEST(mm_fnmsub_pd),
+  SIMDE_TESTS_DEFINE_TEST(mm256_fnmsub_pd),
+  SIMDE_TESTS_DEFINE_TEST(mm_fnmsub_ps),
+  SIMDE_TESTS_DEFINE_TEST(mm256_fnmsub_ps),
+  SIMDE_TESTS_DEFINE_TEST(mm_fnmsub_sd),
+  SIMDE_TESTS_DEFINE_TEST(mm_fnmsub_ss),
 
   { NULL, NULL, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL }
 };
 
-#if defined(SIMDE_NO_NATIVE)
-#  define simde_fma_test_suite simde_fma_emul_test_suite
-#endif
+HEDLEY_C_DECL MunitSuite* SIMDE_TESTS_GENERATE_SYMBOL(suite)(void) {
+  static MunitSuite suite = { (char*) "/" HEDLEY_STRINGIFY(SIMDE_TESTS_CURRENT_ISAX), test_suite_tests, NULL, 1, MUNIT_SUITE_OPTION_NONE };
 
-MunitSuite simde_fma_test_suite = {
-  (char*) "/fma",
-  test_suite_tests,
-  NULL,
-  1,
-  MUNIT_SUITE_OPTION_NONE
-};
+  return &suite;
+}

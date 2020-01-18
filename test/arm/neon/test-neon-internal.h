@@ -1,31 +1,29 @@
-#if !defined(SIMDE__ARM_INTERNAL_H)
-#define SIMDE__ARM_INTERNAL_H
+#if !defined(SIMDE_TESTS_NEON_INTERNAL_H)
+#define SIMDE_TESTS_CURRENT_ARCH arm
+#define SIMDE_TESTS_CURRENT_ISAX neon
 
-#include "../../simde/hedley.h"
+#include "../../run-tests.h"
+#include "../../../simde/arm/neon.h"
 
-#if HEDLEY_HAS_WARNING("-Wdouble-promotion")
-#  pragma clang diagnostic ignored "-Wpadded"
-#endif
+HEDLEY_BEGIN_C_DECLS
 
-#include "../test.h"
-#include "../../simde/arm/neon.h"
+#define SIMDE_TESTS_GENERATE_SUITE_GETTERS(op) \
+  MunitSuite* SIMDE_TESTS_GENERATE_SYMBOL_FULL(op, SIMDE_TESTS_CURRENT_ARCH, neon, native, c)  (void); \
+  MunitSuite* SIMDE_TESTS_GENERATE_SYMBOL_FULL(op, SIMDE_TESTS_CURRENT_ARCH, neon, native, cpp)(void); \
+  MunitSuite* SIMDE_TESTS_GENERATE_SYMBOL_FULL(op, SIMDE_TESTS_CURRENT_ARCH, neon, emul,   c)  (void); \
+  MunitSuite* SIMDE_TESTS_GENERATE_SYMBOL_FULL(op, SIMDE_TESTS_CURRENT_ARCH, neon, emul,   cpp)(void)
 
-#include <math.h>
+#define SIMDE_TESTS_NEON_GENERATE_INTRIN(vtype, variant) HEDLEY_CONCAT(v, SIMDE_TESTS_CONCAT3(HEDLEY_CONCAT(SIMDE_TESTS_CURRENT_NEON_OP, vtype), _, variant))
 
-#if !defined(SIMDE_NO_NATIVE)
-#  define NEON_TEST_SUITE(name) simde_neon_##name##_emul_test_suite
-#else
-#  define NEON_TEST_SUITE(name) simde_neon_##name##_test_suite
-#endif
+#define SIMDE_TESTS_NEON_DEFINE_TEST_FULL(vtype, variant) \
+  { (char*) HEDLEY_STRINGIFY(vtype) "_" HEDLEY_STRINGIFY(variant) "/" HEDLEY_STRINGIFY(SIMDE_TESTS_CURRENT_NATIVE) "/" HEDLEY_STRINGIFY(SIMDE_TESTS_CURRENT_LANG), HEDLEY_CONCAT(test_simde_, SIMDE_TESTS_NEON_GENERATE_INTRIN(vtype, variant)), NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL }
+#define SIMDE_TESTS_NEON_DEFINE_TEST(variant) \
+  SIMDE_TESTS_NEON_DEFINE_TEST_FULL(, variant)
 
-#define SIMDE_NEON_DECLARE_TEST_SUITE(name) \
-  MunitSuite simde_neon_##name##_test_suite; \
-  MunitSuite simde_neon_##name##_emul_test_suite;
-
-SIMDE_NEON_DECLARE_TEST_SUITE(vadd)
-SIMDE_NEON_DECLARE_TEST_SUITE(vdup_n)
-SIMDE_NEON_DECLARE_TEST_SUITE(vmul)
-SIMDE_NEON_DECLARE_TEST_SUITE(vsub)
+SIMDE_TESTS_GENERATE_SUITE_GETTERS(add);
+SIMDE_TESTS_GENERATE_SUITE_GETTERS(dup);
+SIMDE_TESTS_GENERATE_SUITE_GETTERS(mul);
+SIMDE_TESTS_GENERATE_SUITE_GETTERS(sub);
 
 #define simde_neon_assert_int8x8(a, op, b) \
   simde_assert_typev(int8_t, PRId8, (sizeof(a) / sizeof(int8_t)), (const int8_t*) &(a), op, (const int8_t*) &(b))
@@ -76,6 +74,8 @@ SIMDE_NEON_DECLARE_TEST_SUITE(vsub)
   simde_assert_typev(simde_float64, "f", (sizeof(a) / sizeof(simde_float64)), (const simde_float64*) &(a), op, (const simde_float64*) &(b))
 #define simde_neon_assert_float64x2_equal(a, b, precision) \
   simde_assert_f32v_equal(simde_float64, (sizeof(a) / sizeof(simde_float64)), (const simde_float64*) &(a), (const simde_float64*) &(b), precision)
+
+#include <math.h>
 
 #define SIMDE_NEON_GEN_RAND_ARRAY_FUNC(L, N, V)	\
   SIMDE__FUNCTION_ATTRIBUTES \
@@ -128,4 +128,6 @@ simde_neon_random_float64x2(void) {
   return simde_vld1q_f64(v);
 }
 
-#endif
+HEDLEY_END_C_DECLS
+
+#endif /* !defined(SIMDE_TESTS_NEON_INTERNAL_H) */

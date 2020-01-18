@@ -21,14 +21,9 @@
  * SOFTWARE.
  */
 
-#include "x86-internal.h"
-#include "../../simde/x86/ssse3.h"
-
-#include <stdio.h>
-
-#if HEDLEY_HAS_WARNING("-Wsign-conversion")
-#  pragma clang diagnostic ignored "-Wsign-conversion"
-#endif
+#define SIMDE_TESTS_CURRENT_ISAX ssse3
+#include <test/x86/test-x86-internal.h>
+#include <simde/x86/ssse3.h>
 
 static MunitResult
 test_simde_mm_abs_epi8(const MunitParameter params[], void* data) {
@@ -1949,50 +1944,44 @@ test_simde_mm_sign_pi32(const MunitParameter params[], void* data) {
 }
 
 static MunitTest test_suite_tests[] = {
-  TEST_FUNC(mm_abs_epi8),
-  TEST_FUNC(mm_abs_epi16),
-  TEST_FUNC(mm_abs_epi32),
-  TEST_FUNC(mm_abs_pi8),
-  TEST_FUNC(mm_abs_pi16),
-  TEST_FUNC(mm_abs_pi32),
-  TEST_FUNC(mm_alignr_epi8),
-  TEST_FUNC(mm_alignr_pi8),
-  TEST_FUNC(mm_hadd_epi16),
-  TEST_FUNC(mm_hadd_epi32),
-  TEST_FUNC(mm_hadd_pi16),
-  TEST_FUNC(mm_hadd_pi32),
-  TEST_FUNC(mm_hadds_epi16),
-  TEST_FUNC(mm_hadds_pi16),
-  TEST_FUNC(mm_hsub_epi16),
-  TEST_FUNC(mm_hsub_epi32),
-  TEST_FUNC(mm_hsub_pi16),
-  TEST_FUNC(mm_hsub_pi32),
-  TEST_FUNC(mm_hsubs_epi16),
-  TEST_FUNC(mm_hsubs_pi16),
-  TEST_FUNC(mm_maddubs_epi16),
-  TEST_FUNC(mm_maddubs_pi16),
-  TEST_FUNC(mm_mulhrs_epi16),
-  TEST_FUNC(mm_mulhrs_pi16),
-  TEST_FUNC(mm_shuffle_epi8),
-  TEST_FUNC(mm_shuffle_pi8),
-  TEST_FUNC(mm_sign_epi8),
-  TEST_FUNC(mm_sign_epi16),
-  TEST_FUNC(mm_sign_epi32),
-  TEST_FUNC(mm_sign_pi8),
-  TEST_FUNC(mm_sign_pi16),
-  TEST_FUNC(mm_sign_pi32),
+  SIMDE_TESTS_DEFINE_TEST(mm_abs_epi8),
+  SIMDE_TESTS_DEFINE_TEST(mm_abs_epi16),
+  SIMDE_TESTS_DEFINE_TEST(mm_abs_epi32),
+  SIMDE_TESTS_DEFINE_TEST(mm_abs_pi8),
+  SIMDE_TESTS_DEFINE_TEST(mm_abs_pi16),
+  SIMDE_TESTS_DEFINE_TEST(mm_abs_pi32),
+  SIMDE_TESTS_DEFINE_TEST(mm_alignr_epi8),
+  SIMDE_TESTS_DEFINE_TEST(mm_alignr_pi8),
+  SIMDE_TESTS_DEFINE_TEST(mm_hadd_epi16),
+  SIMDE_TESTS_DEFINE_TEST(mm_hadd_epi32),
+  SIMDE_TESTS_DEFINE_TEST(mm_hadd_pi16),
+  SIMDE_TESTS_DEFINE_TEST(mm_hadd_pi32),
+  SIMDE_TESTS_DEFINE_TEST(mm_hadds_epi16),
+  SIMDE_TESTS_DEFINE_TEST(mm_hadds_pi16),
+  SIMDE_TESTS_DEFINE_TEST(mm_hsub_epi16),
+  SIMDE_TESTS_DEFINE_TEST(mm_hsub_epi32),
+  SIMDE_TESTS_DEFINE_TEST(mm_hsub_pi16),
+  SIMDE_TESTS_DEFINE_TEST(mm_hsub_pi32),
+  SIMDE_TESTS_DEFINE_TEST(mm_hsubs_epi16),
+  SIMDE_TESTS_DEFINE_TEST(mm_hsubs_pi16),
+  SIMDE_TESTS_DEFINE_TEST(mm_maddubs_epi16),
+  SIMDE_TESTS_DEFINE_TEST(mm_maddubs_pi16),
+  SIMDE_TESTS_DEFINE_TEST(mm_mulhrs_epi16),
+  SIMDE_TESTS_DEFINE_TEST(mm_mulhrs_pi16),
+  SIMDE_TESTS_DEFINE_TEST(mm_shuffle_epi8),
+  SIMDE_TESTS_DEFINE_TEST(mm_shuffle_pi8),
+  SIMDE_TESTS_DEFINE_TEST(mm_sign_epi8),
+  SIMDE_TESTS_DEFINE_TEST(mm_sign_epi16),
+  SIMDE_TESTS_DEFINE_TEST(mm_sign_epi32),
+  SIMDE_TESTS_DEFINE_TEST(mm_sign_pi8),
+  SIMDE_TESTS_DEFINE_TEST(mm_sign_pi16),
+  SIMDE_TESTS_DEFINE_TEST(mm_sign_pi32),
 
   { NULL, NULL, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL }
 };
 
-#if defined(SIMDE_NO_NATIVE)
-#  define simde_ssse3_test_suite simde_ssse3_emul_test_suite
-#endif
+HEDLEY_C_DECL MunitSuite* SIMDE_TESTS_GENERATE_SYMBOL(suite)(void) {
+  static MunitSuite suite = { (char*) "/" HEDLEY_STRINGIFY(SIMDE_TESTS_CURRENT_ISAX), test_suite_tests, NULL, 1, MUNIT_SUITE_OPTION_NONE };
 
-MunitSuite simde_ssse3_test_suite = {
-  (char*) "/ssse3",
-  test_suite_tests,
-  NULL,
-  1,
-  MUNIT_SUITE_OPTION_NONE
-};
+  return &suite;
+}

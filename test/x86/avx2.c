@@ -21,10 +21,9 @@
  * SOFTWARE.
  */
 
-#include "x86-internal.h"
-#include "../../simde/x86/avx2.h"
-
-#include <stdio.h>
+#define SIMDE_TESTS_CURRENT_ISAX avx2
+#include <test/x86/test-x86-internal.h>
+#include <simde/x86/avx2.h>
 
 static MunitResult
 test_simde_mm256_add_epi8(const MunitParameter params[], void* data) {
@@ -5440,87 +5439,87 @@ test_simde_mm256_xor_si256(const MunitParameter params[], void* data) {
 }
 
 static MunitTest test_suite_tests[] = {
-  TEST_FUNC(mm256_add_epi8),
-  TEST_FUNC(mm256_add_epi16),
-  TEST_FUNC(mm256_add_epi32),
-  TEST_FUNC(mm256_add_epi64),
-  TEST_FUNC(mm256_adds_epu8),
+  SIMDE_TESTS_DEFINE_TEST(mm256_add_epi8),
+  SIMDE_TESTS_DEFINE_TEST(mm256_add_epi16),
+  SIMDE_TESTS_DEFINE_TEST(mm256_add_epi32),
+  SIMDE_TESTS_DEFINE_TEST(mm256_add_epi64),
+  SIMDE_TESTS_DEFINE_TEST(mm256_adds_epu8),
 
-  TEST_FUNC(mm256_alignr_epi8_case0),
-  TEST_FUNC(mm256_alignr_epi8_case1),
-  TEST_FUNC(mm256_alignr_epi8_case2),
-  TEST_FUNC(mm256_alignr_epi8_case3),
+  SIMDE_TESTS_DEFINE_TEST(mm256_alignr_epi8_case0),
+  SIMDE_TESTS_DEFINE_TEST(mm256_alignr_epi8_case1),
+  SIMDE_TESTS_DEFINE_TEST(mm256_alignr_epi8_case2),
+  SIMDE_TESTS_DEFINE_TEST(mm256_alignr_epi8_case3),
 
-  TEST_FUNC(mm256_and_si256),
-  TEST_FUNC(mm256_andnot_si256),
+  SIMDE_TESTS_DEFINE_TEST(mm256_and_si256),
+  SIMDE_TESTS_DEFINE_TEST(mm256_andnot_si256),
+  SIMDE_TESTS_DEFINE_TEST(mm256_and_si256),
 
-  TEST_FUNC(mm256_blendv_epi8),
+  SIMDE_TESTS_DEFINE_TEST(mm256_blendv_epi8),
 
-  TEST_FUNC(mm256_broadcastsi128_si256),
+  SIMDE_TESTS_DEFINE_TEST(mm256_broadcastsi128_si256),
 
-  TEST_FUNC(mm256_cmpeq_epi8),
-  TEST_FUNC(mm256_cmpeq_epi32),
+  SIMDE_TESTS_DEFINE_TEST(mm256_cmpeq_epi8),
+  SIMDE_TESTS_DEFINE_TEST(mm256_cmpeq_epi32),
 
-  TEST_FUNC(mm256_cmpgt_epi16),
-  TEST_FUNC(mm256_cmpgt_epi32),
+  SIMDE_TESTS_DEFINE_TEST(mm256_cmpgt_epi16),
+  SIMDE_TESTS_DEFINE_TEST(mm256_cmpgt_epi32),
+  SIMDE_TESTS_DEFINE_TEST(mm256_cmpgt_epi32),
 
-  TEST_FUNC(mm256_cvtepi8_epi16),
-  TEST_FUNC(mm256_cvtepi8_epi32),
-  TEST_FUNC(mm256_cvtepi8_epi64),
-  TEST_FUNC(mm256_cvtepi16_epi32),
-  TEST_FUNC(mm256_cvtepi16_epi64),
-  TEST_FUNC(mm256_cvtepi32_epi64),
-  TEST_FUNC(mm256_cvtepu8_epi16),
-  TEST_FUNC(mm256_cvtepu8_epi32),
-  TEST_FUNC(mm256_cvtepu8_epi64),
-  TEST_FUNC(mm256_cvtepu16_epi32),
-  TEST_FUNC(mm256_cvtepu16_epi64),
-  TEST_FUNC(mm256_cvtepu32_epi64),
+  SIMDE_TESTS_DEFINE_TEST(mm256_cvtepi8_epi16),
+  SIMDE_TESTS_DEFINE_TEST(mm256_cvtepi8_epi32),
+  SIMDE_TESTS_DEFINE_TEST(mm256_cvtepi8_epi64),
+  SIMDE_TESTS_DEFINE_TEST(mm256_cvtepi16_epi32),
+  SIMDE_TESTS_DEFINE_TEST(mm256_cvtepi16_epi64),
+  SIMDE_TESTS_DEFINE_TEST(mm256_cvtepi32_epi64),
+  SIMDE_TESTS_DEFINE_TEST(mm256_cvtepu8_epi16),
+  SIMDE_TESTS_DEFINE_TEST(mm256_cvtepu8_epi32),
+  SIMDE_TESTS_DEFINE_TEST(mm256_cvtepu8_epi64),
+  SIMDE_TESTS_DEFINE_TEST(mm256_cvtepu16_epi32),
+  SIMDE_TESTS_DEFINE_TEST(mm256_cvtepu16_epi64),
+  SIMDE_TESTS_DEFINE_TEST(mm256_cvtepu32_epi64),
 
 
-  TEST_FUNC(mm256_extract_epi8),
-  TEST_FUNC(mm256_extract_epi16),
-  TEST_FUNC(mm256_extracti128_si256),
+  SIMDE_TESTS_DEFINE_TEST(mm256_extract_epi8),
+  SIMDE_TESTS_DEFINE_TEST(mm256_extract_epi16),
+  SIMDE_TESTS_DEFINE_TEST(mm256_extracti128_si256),
 
-  TEST_FUNC(mm256_max_epi8),
-  TEST_FUNC(mm256_max_epu8),
-  TEST_FUNC(mm256_max_epi16),
-  TEST_FUNC(mm256_max_epi32),
+  SIMDE_TESTS_DEFINE_TEST(mm256_max_epi8),
+  SIMDE_TESTS_DEFINE_TEST(mm256_max_epu8),
+  SIMDE_TESTS_DEFINE_TEST(mm256_max_epi16),
+  SIMDE_TESTS_DEFINE_TEST(mm256_max_epi32),
+  SIMDE_TESTS_DEFINE_TEST(mm256_max_epi16),
+  SIMDE_TESTS_DEFINE_TEST(mm256_max_epi32),
 
-  TEST_FUNC(mm256_min_epu8),
+  SIMDE_TESTS_DEFINE_TEST(mm256_min_epu8),
 
-  TEST_FUNC(mm256_movemask_epi8),
+  SIMDE_TESTS_DEFINE_TEST(mm256_movemask_epi8),
 
-  TEST_FUNC(mm256_or_si256),
+  SIMDE_TESTS_DEFINE_TEST(mm256_or_si256),
 
-  TEST_FUNC(mm256_packs_epi32),
+  SIMDE_TESTS_DEFINE_TEST(mm256_packs_epi32),
 
-  TEST_FUNC(mm256_shuffle_epi8),
-  TEST_FUNC(mm256_shuffle_epi32),
-  TEST_FUNC(mm256_shufflelo_epi16),
+  SIMDE_TESTS_DEFINE_TEST(mm256_shuffle_epi8),
+  SIMDE_TESTS_DEFINE_TEST(mm256_shuffle_epi32),
+  SIMDE_TESTS_DEFINE_TEST(mm256_shufflelo_epi16),
+  SIMDE_TESTS_DEFINE_TEST(mm256_shuffle_epi8),
 
-  TEST_FUNC(mm256_slli_epi32),
+  SIMDE_TESTS_DEFINE_TEST(mm256_slli_epi32),
 
-  TEST_FUNC(mm256_sub_epi8),
-  TEST_FUNC(mm256_sub_epi16),
-  TEST_FUNC(mm256_sub_epi32),
+  SIMDE_TESTS_DEFINE_TEST(mm256_sub_epi8),
+  SIMDE_TESTS_DEFINE_TEST(mm256_sub_epi16),
+  SIMDE_TESTS_DEFINE_TEST(mm256_sub_epi32),
 
-  TEST_FUNC(mm256_srli_epi64),
-  TEST_FUNC(mm256_srli_si256),
+  SIMDE_TESTS_DEFINE_TEST(mm256_srli_epi64),
+  SIMDE_TESTS_DEFINE_TEST(mm256_srli_si256),
+  SIMDE_TESTS_DEFINE_TEST(mm256_srli_epi64),
 
-  TEST_FUNC(mm256_xor_si256),
+  SIMDE_TESTS_DEFINE_TEST(mm256_xor_si256),
 
   { NULL, NULL, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL }
 };
 
-#if defined(SIMDE_NO_NATIVE)
-#  define simde_avx2_test_suite simde_avx2_emul_test_suite
-#endif
+HEDLEY_C_DECL MunitSuite* SIMDE_TESTS_GENERATE_SYMBOL(suite)(void) {
+  static MunitSuite suite = { (char*) "/" HEDLEY_STRINGIFY(SIMDE_TESTS_CURRENT_ISAX), test_suite_tests, NULL, 1, MUNIT_SUITE_OPTION_NONE };
 
-MunitSuite simde_avx2_test_suite = {
-  (char*) "/avx2",
-  test_suite_tests,
-  NULL,
-  1,
-  MUNIT_SUITE_OPTION_NONE
-};
+  return &suite;
+}

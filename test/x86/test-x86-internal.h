@@ -1,64 +1,7 @@
-#if !defined(SIMDE__X86_INTERNAL_H)
-#define SIMDE__X86_INTERNAL_H
+#if !defined(SIMDE_TESTS_X86_INTERNAL_H)
+#define SIMDE_TESTS_CURRENT_ARCH x86
 
-#include "../../simde/hedley.h"
-
-#if HEDLEY_HAS_WARNING("-Wsign-conversion")
-#  pragma clang diagnostic ignored "-Wsign-conversion"
-#endif
-#if HEDLEY_HAS_WARNING("-Wcast-qual")
-#  pragma clang diagnostic ignored "-Wcast-qual"
-#endif
-#if HEDLEY_HAS_WARNING("-Wpadded")
-#  pragma clang diagnostic ignored "-Wpadded"
-#endif
-#if HEDLEY_HAS_WARNING("-Wmissing-variable-declarations")
-#  pragma clang diagnostic ignored "-Wmissing-variable-declarations"
-#endif
-#if HEDLEY_HAS_WARNING("-Wextra-semi")
-#  pragma clang diagnostic ignored "-Wextra-semi"
-#endif
-#if HEDLEY_HAS_WARNING("-Wfloat-equal")
-#  pragma clang diagnostic ignored "-Wfloat-equal"
-#endif
-#if HEDLEY_HAS_WARNING("-Wdouble-promotion")
-#  pragma clang diagnostic ignored "-Wdouble-promotion"
-#endif
-#if HEDLEY_HAS_WARNING("-Wconditional-uninitialized")
-#  pragma clang diagnostic ignored "-Wconditional-uninitialized"
-#endif
-
-#include "../test.h"
-
-MunitSuite simde_mmx_test_suite;
-MunitSuite simde_mmx_emul_test_suite;
-
-MunitSuite simde_sse_test_suite;
-MunitSuite simde_sse_emul_test_suite;
-
-MunitSuite simde_sse2_test_suite;
-MunitSuite simde_sse2_emul_test_suite;
-
-MunitSuite simde_sse3_test_suite;
-MunitSuite simde_sse3_emul_test_suite;
-
-MunitSuite simde_ssse3_test_suite;
-MunitSuite simde_ssse3_emul_test_suite;
-
-MunitSuite simde_sse4_1_test_suite;
-MunitSuite simde_sse4_1_emul_test_suite;
-
-MunitSuite simde_sse4_2_test_suite;
-MunitSuite simde_sse4_2_emul_test_suite;
-
-MunitSuite simde_avx_test_suite;
-MunitSuite simde_avx_emul_test_suite;
-
-MunitSuite simde_avx2_test_suite;
-MunitSuite simde_avx2_emul_test_suite;
-
-MunitSuite simde_fma_test_suite;
-MunitSuite simde_fma_emul_test_suite;
+#include "../run-tests.h"
 
 /* Assert that two vectors are bit-identical without worring about the
    underlying type. */
@@ -174,4 +117,25 @@ MunitSuite simde_fma_emul_test_suite;
 #define simde_assert_m256d_close(a, b, precision) \
   simde_assert_vec_close(a, b, precision, simde__m256d, f64)
 
-#endif
+HEDLEY_BEGIN_C_DECLS
+
+#define SIMDE_TESTS_GENERATE_SUITE_GETTERS(isax) \
+  MunitSuite* SIMDE_TESTS_GENERATE_SYMBOL_FULL(suite, SIMDE_TESTS_CURRENT_ARCH, isax, native, c)(void); \
+  MunitSuite* SIMDE_TESTS_GENERATE_SYMBOL_FULL(suite, SIMDE_TESTS_CURRENT_ARCH, isax, native, cpp)(void); \
+  MunitSuite* SIMDE_TESTS_GENERATE_SYMBOL_FULL(suite, SIMDE_TESTS_CURRENT_ARCH, isax, emul,   c)(void); \
+  MunitSuite* SIMDE_TESTS_GENERATE_SYMBOL_FULL(suite, SIMDE_TESTS_CURRENT_ARCH, isax, emul,   cpp)(void)
+
+SIMDE_TESTS_GENERATE_SUITE_GETTERS(mmx);
+SIMDE_TESTS_GENERATE_SUITE_GETTERS(sse);
+SIMDE_TESTS_GENERATE_SUITE_GETTERS(sse2);
+SIMDE_TESTS_GENERATE_SUITE_GETTERS(sse3);
+SIMDE_TESTS_GENERATE_SUITE_GETTERS(ssse3);
+SIMDE_TESTS_GENERATE_SUITE_GETTERS(sse4_1);
+SIMDE_TESTS_GENERATE_SUITE_GETTERS(sse4_2);
+SIMDE_TESTS_GENERATE_SUITE_GETTERS(avx);
+SIMDE_TESTS_GENERATE_SUITE_GETTERS(fma);
+SIMDE_TESTS_GENERATE_SUITE_GETTERS(avx2);
+
+HEDLEY_END_C_DECLS
+
+#endif /* !defined(SIMDE_TESTS_X86_INTERNAL_H) */

@@ -71,73 +71,60 @@ if("${CLOCK_GETTIME_EXISTS}")
   target_link_libraries(munit "${CLOCK_GETTIME_LIBRARY}")
 endif()
 
-include_directories("${CMAKE_SOURCE_DIR}/..")
+if("${OPENMP_SIMD_FLAGS}" STREQUAL "")
+  foreach(omp_simd_flag in "-fopenmp-simd" "-qopenmp-simd" "-openmp-simd")
+    string (REGEX REPLACE "[^a-zA-Z0-9]+" "_" omp_simd_flag_name "CFLAG_${omp_simd_flag}")
+    check_c_compiler_flag("${omp_simd_flag}" "${omp_simd_flag_name}")
 
-set(TEST_SOURCES)
-
-if(NOT DISABLE_X86)
-  set(TEST_SOURCES
-    x86/mmx.c
-    x86/sse.c
-    x86/sse2.c
-    x86/sse3.c
-    x86/ssse3.c
-    x86/sse4.1.c
-    x86/sse4.2.c
-    x86/avx.c
-    x86/avx2.c
-    x86/fma.c)
-else()
-  add_definitions(-DDISABLE_X86)
+    if(${omp_simd_flag_name})
+      set(OPENMP_SIMD_FLAGS "${omp_simd_flag}")
+      break()
+    endif()
+  endforeach()
 endif()
 
-list(APPEND TEST_SOURCES
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OPENMP_SIMD_FLAGS}")
+
+set(TEST_SOURCES_C
+  x86/mmx.c
+  x86/sse.c
+  x86/sse2.c
+  x86/sse3.c
+  x86/ssse3.c
+  x86/sse4.1.c
+  x86/sse4.2.c
+  x86/avx.c
+  x86/avx2.c
+  x86/fma.c
+
   arm/neon/vadd.c
   arm/neon/vdup_n.c
   arm/neon/vmul.c
   arm/neon/vsub.c)
 
-add_library(simde-test-no-native STATIC ${TEST_SOURCES})
-target_compile_definitions(simde-test-no-native PRIVATE SIMDE_NO_NATIVE)
-set_property(TARGET simde-test-no-native PROPERTY C_STANDARD "99")
-
-add_library(simde-test-native STATIC ${TEST_SOURCES})
-set_property(TARGET simde-test-native PROPERTY C_STANDARD "99")
-
-set_compiler_specific_flags(
-  VARIABLE extra_cflags
-  INTEL -wd3179)
-
-check_c_compiler_flag("-fopenmp-simd" CFLAG__fopenmp_simd)
-check_c_compiler_flag("-qopenmp-simd" CFLAG__qopenmp_simd)
-if(CFLAG__fopenmp_simd)
-  set(extra_cflags "${extra_cflags} -fopenmp-simd -DSIMDE_ENABLE_OPENMP")
-elseif(CFLAG__qopenmp_simd)
-  set(extra_cflags "${extra_cflags} -qopenmp-simd -DSIMDE_ENABLE_OPENMP")
-endif()
-
-check_c_compiler_flag("-mfpu=neon -Werror" CFLAG__mfpu_neon)
-if(CFLAG__mfpu_neon)
-  set(extra_cflags "${extra_cflags} -mfpu=neon")
-endif()
-
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${extra_cflags}")
-
-add_executable(run-tests test.c test-common.c)
-target_link_libraries(run-tests munit simde-test-no-native simde-test-native)
-
+set(TEST_RUNNER_SOURCES
+  run-tests.c
+  x86/test-x86.c
+  arm/neon/test-neon.c
+  arm/test-arm.c)
+add_executable(run-tests ${TEST_RUNNER_SOURCES})
+target_link_libraries(run-tests munit)
 if(NEED_LIBM)
   target_link_libraries(run-tests m)
-endif()
-if (NOT DISABLE_X86)
-  foreach(tst "/x86/mmx" "/x86/sse" "/x86/sse2" "/x86/sse3" "/x86/ssse3" "/x86/sse4.1" "/x86/sse4.2" "/x86/avx" "/x86/avx2")
-    add_test(NAME "${tst}/${variant}" COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:run-tests> "${tst}")
-  endforeach()
-endif()
-target_add_extra_warning_flags(run-tests)
-set_property (TARGET run-tests PROPERTY C_STANDARD "99")
-if("${CMAKE_C_COMPILER}" MATCHES "arm-linux-gnueabihf-gcc")
-  target_link_libraries(run-tests -static)
-elseif("${CMAKE_C_COMPILER}" MATCHES "aarch64-linux-gnu-gcc")
-  target_link_libraries(run-tests -static)
-endif()
+endif(NEED_LIBM)
+
+set(TEST_SOURCES_CPP)
+foreach(csource ${TEST_SOURCES_C})
+  configure_file("${csource}" "${CMAKE_CURRENT_BINARY_DIR}/${csource}pp")
+  list(APPEND TEST_SOURCES_CPP "${CMAKE_CURRENT_BINARY_DIR}/${csource}pp")
+endforeach()
+
+foreach(native native emul)
+  add_library(simde-test-${native} STATIC ${TEST_SOURCES_C} ${TEST_SOURCES_CPP})
+
+  target_include_directories(simde-test-${native} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/..")
+  set_property(TARGET simde-test-${native} PROPERTY C_STANDARD "99")
+
+  target_link_libraries(run-tests simde-test-${native})
+endforeach(native native emul)
+target_compile_definitions(simde-test-emul PRIVATE SIMDE_NO_NATIVE)

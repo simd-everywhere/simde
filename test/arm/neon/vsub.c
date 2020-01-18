@@ -21,7 +21,11 @@
  * SOFTWARE.
  */
 
-#include "../arm-internal.h"
+#define SIMDE_TESTS_CURRENT_NEON_OP sub
+#include <test/arm/neon/test-neon-internal.h>
+#include <simde/arm/neon.h>
+
+#if defined(SIMDE_NO_NATIVE) || defined(SIMDE_NEON_NATIVE)
 
 static MunitResult
 test_simde_vsub_s8(const MunitParameter params[], void* data) {
@@ -1215,35 +1219,37 @@ test_simde_vsubq_f64(const MunitParameter params[], void* data) {
   return MUNIT_OK;
 }
 
-static MunitTest vsub_tests[] = {
-  TEST_FUNC2(vsub, s8),
-  TEST_FUNC2(vsub, s16),
-  TEST_FUNC2(vsub, s32),
-  TEST_FUNC2(vsub, s64),
-  TEST_FUNC2(vsub, u8),
-  TEST_FUNC2(vsub, u16),
-  TEST_FUNC2(vsub, u32),
-  TEST_FUNC2(vsub, u64),
-  TEST_FUNC2(vsub, f32),
-  TEST_FUNC2(vsub, f64),
-  TEST_FUNC3(vsub, q, s8),
-  TEST_FUNC3(vsub, q, s16),
-  TEST_FUNC3(vsub, q, s32),
-  TEST_FUNC3(vsub, q, s64),
-  TEST_FUNC3(vsub, q, u8),
-  TEST_FUNC3(vsub, q, u16),
-  TEST_FUNC3(vsub, q, u32),
-  TEST_FUNC3(vsub, q, u64),
-  TEST_FUNC3(vsub, q, f32),
-  TEST_FUNC3(vsub, q, f64),
+#endif /* defined(SIMDE_NO_NATIVE) || defined(SIMDE_NEON_NATIVE) */
+
+static MunitTest test_suite_tests[] = {
+#if defined(SIMDE_NO_NATIVE) || defined(SIMDE_NEON_NATIVE)
+  SIMDE_TESTS_NEON_DEFINE_TEST(s8),
+  SIMDE_TESTS_NEON_DEFINE_TEST(s16),
+  SIMDE_TESTS_NEON_DEFINE_TEST(s32),
+  SIMDE_TESTS_NEON_DEFINE_TEST(s64),
+  SIMDE_TESTS_NEON_DEFINE_TEST(u8),
+  SIMDE_TESTS_NEON_DEFINE_TEST(u16),
+  SIMDE_TESTS_NEON_DEFINE_TEST(u32),
+  SIMDE_TESTS_NEON_DEFINE_TEST(u64),
+  SIMDE_TESTS_NEON_DEFINE_TEST(f32),
+  SIMDE_TESTS_NEON_DEFINE_TEST(f64),
+  SIMDE_TESTS_NEON_DEFINE_TEST_FULL(q, s8),
+  SIMDE_TESTS_NEON_DEFINE_TEST_FULL(q, s16),
+  SIMDE_TESTS_NEON_DEFINE_TEST_FULL(q, s32),
+  SIMDE_TESTS_NEON_DEFINE_TEST_FULL(q, s64),
+  SIMDE_TESTS_NEON_DEFINE_TEST_FULL(q, u8),
+  SIMDE_TESTS_NEON_DEFINE_TEST_FULL(q, u16),
+  SIMDE_TESTS_NEON_DEFINE_TEST_FULL(q, u32),
+  SIMDE_TESTS_NEON_DEFINE_TEST_FULL(q, u64),
+  SIMDE_TESTS_NEON_DEFINE_TEST_FULL(q, f32),
+  SIMDE_TESTS_NEON_DEFINE_TEST_FULL(q, f64),
+#endif /* defined(SIMDE_NO_NATIVE) || defined(SIMDE_NEON_NATIVE) */
 
   { NULL, NULL, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL }
 };
 
-MunitSuite NEON_TEST_SUITE(vsub) = {
-  (char*) "/vsub",
-  vsub_tests,
-  NULL,
-  1,
-  MUNIT_SUITE_OPTION_NONE
-};
+HEDLEY_C_DECL MunitSuite* SIMDE_TESTS_GENERATE_SYMBOL(SIMDE_TESTS_CURRENT_NEON_OP)(void) {
+  static MunitSuite suite = { (char*) "/v" HEDLEY_STRINGIFY(SIMDE_TESTS_CURRENT_NEON_OP), test_suite_tests, NULL, 1, MUNIT_SUITE_OPTION_NONE };
+
+  return &suite;
+}
