@@ -148,6 +148,27 @@ jobs:
     - sudo apt-get update
     - sudo apt-get -y install crossbuild-essential-armhf libc6:armhf
 
+  - name: emscripten
+    compiler: emcc
+    env:
+    - ARCH_FLAGS=""
+    - C_COMPILER=emcc
+    - CXX_COMPILER=emcc
+    - CONFIGURE_WRAPPER=emconfigure
+    - BUILD_WRAPPER=emmake
+    - EXECUTABLE_EXTENSION=.js
+    - TEST_WRAPPER=node
+    addons:
+      apt:
+        packages:
+        - nodejs
+    install:
+    - |
+      git clone https://github.com/emscripten-core/emsdk.git
+      emsdk/emsdk install latest
+      emsdk/emsdk activate latest
+      source emsdk/emsdk_env.sh
+
   allow_failures:
   - name: s390x
   - name: arm32
@@ -169,16 +190,16 @@ before_install:
 script:
 - mkdir "${TRAVIS_BUILD_DIR}/test/build" && cd "${TRAVIS_BUILD_DIR}/test/build"
 - |
-  cmake .. \
+  ${CONFIGURE_WRAPPER} cmake .. \
     -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
     -DCMAKE_C_FLAGS="${ARCH_FLAGS} ${COMPILER_FLAGS} ${CFLAGS}" \
     -DCMAKE_CXX_FLAGS="${ARCH_FLAGS} ${COMPILER_FLAGS} ${CXXFLAGS}" \
     -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON \
     ${CMAKE_ARGS}
-- cmake --build .
+- ${BUILD_WRAPPER} cmake --build .
 - |
   if [ "windows" != "${TRAVIS_OS_NAME}" ]; then
-    ./run-tests
+    ${TEST_WRAPPER} ./run-tests${EXECUTABLE_EXTENSION}
   else
     ctest --output-on-failure --interactive-debug-mode 0 -C Debug -V
   fi
