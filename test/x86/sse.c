@@ -2650,9 +2650,9 @@ test_simde_mm_maskmove_si64(const MunitParameter params[], void* data) {
 
   const struct {
     simde__m64 a;
-    char b[8];
+    int8_t b[8];
     simde__m64 mask;
-    char r[8];
+    int8_t r[8];
   } test_vec[8] = {
     { simde_mm_set_pi8(INT8_C(  -5), INT8_C( 112), INT8_C( 109), INT8_C(  -9), INT8_C( -10), INT8_C( -30), INT8_C(-103), INT8_C( -13)),
       { INT8_C( -67), INT8_C( -21), INT8_C( 107), INT8_C(  96), INT8_C( -47), INT8_C(  95), INT8_C(  34), INT8_C(-108) },
@@ -2689,11 +2689,11 @@ test_simde_mm_maskmove_si64(const MunitParameter params[], void* data) {
   };
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
-    char r[8];
+    int8_t r[8];
     memcpy(r, test_vec[i].b, sizeof(r));
 
     simde_mm_maskmove_si64(test_vec[i].a, test_vec[i].mask, r);
-    simde_assert_int8vx(8, (int8_t*) r, ==, (int8_t*) test_vec[i].r);
+    simde_assert_int8vx(8, r, ==, test_vec[i].r);
   }
 
   simde_mm_empty();

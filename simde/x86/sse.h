@@ -1629,9 +1629,9 @@ simde_mm_loadu_ps (simde_float32 const mem_addr[HEDLEY_ARRAY_PARAM(4)]) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 void
-simde_mm_maskmove_si64 (simde__m64 a, simde__m64 mask, char* mem_addr) {
+simde_mm_maskmove_si64 (simde__m64 a, simde__m64 mask, int8_t* mem_addr) {
 #if defined(SIMDE_SSE_NATIVE)
-  _mm_maskmove_si64(a.n, mask.n, mem_addr);
+  _mm_maskmove_si64(a.n, mask.n, HEDLEY_REINTERPRET_CAST(char*, mem_addr));
 #else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(a.i8) / sizeof(a.i8[0])) ; i++)
