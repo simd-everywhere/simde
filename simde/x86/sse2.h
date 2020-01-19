@@ -482,7 +482,7 @@ simde_mm_and_pd (simde__m128d a, simde__m128d b) {
 #else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.u64) / sizeof(r.u64[0])) ; i++) {
-    r.u64[i] = a.u64[i] & b.u64[i];
+    r.i32f[i] = a.i32f[i] & b.i32f[i];
   }
 #endif
 
@@ -2842,8 +2842,8 @@ simde_mm_or_pd (simde__m128d a, simde__m128d b) {
   r.i32f = a.i32f | b.i32f;
 #else
   SIMDE__VECTORIZE
-  for (size_t i = 0 ; i < (sizeof(r.i64) / sizeof(r.i64[0])) ; i++) {
-    r.i64[i] = a.i64[i] | b.i64[i];
+  for (size_t i = 0 ; i < (sizeof(r.i32f) / sizeof(r.i32f[0])) ; i++) {
+    r.i32f[i] = a.i32f[i] | b.i32f[i];
   }
 #endif
 
@@ -5008,7 +5008,7 @@ simde_mm_xor_pd (simde__m128d a, simde__m128d b) {
 #else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i64) / sizeof(r.i64[0])) ; i++) {
-    r.i64[i] = a.i64[i] ^ b.i64[i];
+    r.i32f[i] = a.i32f[i] ^ b.i32f[i];
   }
 #endif
 
