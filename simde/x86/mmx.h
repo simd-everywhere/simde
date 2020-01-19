@@ -1039,6 +1039,22 @@ simde_mm_set_pi32 (int32_t e1, int32_t e0) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m64
+simde_x_mm_set_pi64 (int64_t e0) {
+  simde__m64 r;
+
+#if defined(SIMDE_MMX_NEON)
+  const int64_t v[sizeof(r.i64) / sizeof(r.i64[0])] = { e0 };
+  r.neon_i64 = vld1_s64(v);
+#else
+  r.i64[0] = e0;
+#endif
+
+  return r;
+}
+
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m64
 simde_x_mm_set_f32x2 (simde_float32 e1, simde_float32 e0) {
   simde__m64 r;
 
