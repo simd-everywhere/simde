@@ -191,7 +191,7 @@ simde_mm_add_ps (simde__m128 a, simde__m128 b) {
   r.n = _mm_add_ps(a.n, b.n);
 #elif defined(SIMDE_SSE_NEON)
   r.neon_f32 = vaddq_f32(a.neon_f32, b.neon_f32);
-#elif defined(SIMDE_VECTOR_SUBSCRIPT_BINARY)
+#elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
   r.f32 = a.f32 + b.f32;
 #else
   SIMDE__VECTORIZE
@@ -237,7 +237,7 @@ simde_mm_and_ps (simde__m128 a, simde__m128 b) {
   r.n = _mm_and_ps(a.n, b.n);
 #elif defined(SIMDE_SSE_NEON)
   r.neon_i32 = vandq_s32(a.neon_i32, b.neon_i32);
-#elif defined(SIMDE_VECTOR_SUBSCRIPT_BINARY)
+#elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
   r.i32 = a.i32 & b.i32;
 #else
   SIMDE__VECTORIZE
@@ -261,6 +261,8 @@ simde_mm_andnot_ps (simde__m128 a, simde__m128 b) {
   r.n = _mm_andnot_ps(a.n, b.n);
 #elif defined(SIMDE_SSE_NEON)
   r.neon_i32 = vbicq_s32(b.neon_i32, a.neon_i32);
+#elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+  r.i32 = ~a.i32 & b.i32;
 #else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i32) / sizeof(r.i32[0])) ; i++) {
@@ -283,6 +285,14 @@ simde_mm_avg_pu16 (simde__m64 a, simde__m64 b) {
   r.n = _mm_avg_pu16(a.n, b.n);
 #elif defined(SIMDE_SSE_NEON)
   r.neon_u16 = vrhadd_u16(b.neon_u16, a.neon_u16);
+#elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && defined(SIMDE__CONVERT_VECTOR)
+  uint32_t wa SIMDE_VECTOR(16);
+  uint32_t wb SIMDE_VECTOR(16);
+  uint32_t wr SIMDE_VECTOR(16);
+  SIMDE__CONVERT_VECTOR(wa, a.u16);
+  SIMDE__CONVERT_VECTOR(wb, b.u16);
+  wr = (wa + wb + 1) >> 1;
+  SIMDE__CONVERT_VECTOR(r.u16, wr);
 #else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < 4 ; i++) {
@@ -307,6 +317,14 @@ simde_mm_avg_pu8 (simde__m64 a, simde__m64 b) {
   r.n = _mm_avg_pu8(a.n, b.n);
 #elif defined(SIMDE_SSE_NEON)
   r.neon_u8 = vrhadd_u8(b.neon_u8, a.neon_u8);
+#elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && defined(SIMDE__CONVERT_VECTOR)
+  uint16_t wa SIMDE_VECTOR(16);
+  uint16_t wb SIMDE_VECTOR(16);
+  uint16_t wr SIMDE_VECTOR(16);
+  SIMDE__CONVERT_VECTOR(wa, a.u8);
+  SIMDE__CONVERT_VECTOR(wb, b.u8);
+  wr = (wa + wb + 1) >> 1;
+  SIMDE__CONVERT_VECTOR(r.u8, wr);
 #else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < 8 ; i++) {
@@ -331,6 +349,8 @@ simde_mm_cmpeq_ps (simde__m128 a, simde__m128 b) {
   r.n = _mm_cmpeq_ps(a.n, b.n);
 #elif defined(SIMDE_SSE_NEON)
   r.neon_u32 = vceqq_f32(a.neon_f32, b.neon_f32);
+#elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+  r.f32 = a.f32 == b.f32;
 #else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
@@ -376,6 +396,8 @@ simde_mm_cmpge_ps (simde__m128 a, simde__m128 b) {
   r.n = _mm_cmpge_ps(a.n, b.n);
 #elif defined(SIMDE_SSE_NEON)
   r.neon_u32 = vcgeq_f32(a.neon_f32, b.neon_f32);
+#elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+  r.f32 = a.f32 >= b.f32;
 #else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
@@ -421,6 +443,8 @@ simde_mm_cmpgt_ps (simde__m128 a, simde__m128 b) {
   r.n = _mm_cmpgt_ps(a.n, b.n);
 #elif defined(SIMDE_SSE_NEON)
   r.neon_u32 = vcgtq_f32(a.neon_f32, b.neon_f32);
+#elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+  r.f32 = a.f32 > b.f32;
 #else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
@@ -466,6 +490,8 @@ simde_mm_cmple_ps (simde__m128 a, simde__m128 b) {
   r.n = _mm_cmple_ps(a.n, b.n);
 #elif defined(SIMDE_SSE_NEON)
   r.neon_u32 = vcleq_f32(a.neon_f32, b.neon_f32);
+#elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+  r.f32 = a.f32 <= b.f32;
 #else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
@@ -511,6 +537,8 @@ simde_mm_cmplt_ps (simde__m128 a, simde__m128 b) {
   r.n = _mm_cmplt_ps(a.n, b.n);
 #elif defined(SIMDE_SSE_NEON)
   r.neon_u32 = vcltq_f32(a.neon_f32, b.neon_f32);
+#elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+  r.f32 = a.f32 < b.f32;
 #else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
@@ -556,6 +584,8 @@ simde_mm_cmpneq_ps (simde__m128 a, simde__m128 b) {
   r.n = _mm_cmpneq_ps(a.n, b.n);
 #elif defined(SIMDE_SSE_NEON)
   r.neon_u32 = vmvnq_u32(vceqq_f32(a.neon_f32, b.neon_f32));
+#elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+  r.f32 = a.f32 != b.f32;
 #else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
@@ -1341,6 +1371,8 @@ simde_mm_div_ps (simde__m128 a, simde__m128 b) {
   float32x4_t recip0 = vrecpeq_f32(b.neon_f32);
   float32x4_t recip1 = vmulq_f32(recip0, vrecpsq_f32(recip0, b.neon_f32));
   r.neon_f32 = vmulq_f32(a.neon_f32, recip1);
+#elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+  r.f32 = a.f32 / b.f32;
 #else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
@@ -1928,6 +1960,8 @@ simde_mm_mul_ps (simde__m128 a, simde__m128 b) {
   r.n = _mm_mul_ps(a.n, b.n);
 #elif defined(SIMDE_SSE_NEON)
   r.neon_f32 = vmulq_f32(a.neon_f32, b.neon_f32);
+#elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+  r.f32 = a.f32 * b.f32;
 #else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
@@ -1993,6 +2027,8 @@ simde_mm_or_ps (simde__m128 a, simde__m128 b) {
   r.n = _mm_or_ps(a.n, b.n);
 #elif defined(SIMDE_SSE_NEON)
   r.neon_i32 = vorrq_s32(a.neon_i32, b.neon_i32);
+#elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+  r.i32f = a.i32f | b.i32f;
 #else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.u32) / sizeof(r.u32[0])) ; i++) {
@@ -2038,6 +2074,8 @@ simde_mm_rcp_ps (simde__m128 a) {
   }
 
   r.neon_f32 = recip;
+#elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+  r.f32 = 1.0f / a.f32;
 #else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
@@ -2565,6 +2603,8 @@ simde_mm_sub_ps (simde__m128 a, simde__m128 b) {
   r.n = _mm_sub_ps(a.n, b.n);
 #elif defined(SIMDE_SSE_NEON)
   r.neon_f32 = vsubq_f32(a.neon_f32, b.neon_f32);
+#elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+  r.f32 = a.f32 - b.f32;
 #else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
@@ -2807,6 +2847,8 @@ simde_mm_xor_ps (simde__m128 a, simde__m128 b) {
   r.n = _mm_xor_ps(a.n, b.n);
 #elif defined(SIMDE_SSE_NEON)
   r.neon_i32 = veorq_s32(a.neon_i32, b.neon_i32);
+#elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+  r.i32f = a.i32f ^ b.i32f;
 #else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.u32) / sizeof(r.u32[0])) ; i++) {

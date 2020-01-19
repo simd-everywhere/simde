@@ -739,7 +739,7 @@ test_simde_mm_xxx_pu16(const MunitParameter params[], void* data) {
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m64 r = simde_mm_xxx_pu16(test_vec[i].a, test_vec[i].b);
-    simde_assert_m64_i16(r, ==, test_vec[i].r);
+    simde_assert_m64_u16(r, ==, test_vec[i].r);
   }
 
   return MUNIT_OK;
