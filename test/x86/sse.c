@@ -1964,7 +1964,16 @@ test_simde_mm_cvt_ss2si(const MunitParameter params[], void* data) {
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     int32_t r = simde_mm_cvt_ss2si(test_vec[i].a);
-    munit_assert_int32(r, ==, test_vec[i].r);
+    #if defined(HEDLEY_EMSCRIPTEN_VERSION)
+      /* https://github.com/emscripten-core/emscripten/issues/10241 */
+      if (r != test_vec[i].r) {
+        munit_assert_int32(r, ==, (int32_t) roundf(test_vec[i].a.f32[0]));
+      } else {
+        munit_assert_int32(r, ==, test_vec[i].r);
+      }
+    #else
+      munit_assert_int32(r, ==, test_vec[i].r);
+    #endif
   }
 
   SIMDE_MM_SET_ROUNDING_MODE(orig_round);
