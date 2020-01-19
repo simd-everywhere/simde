@@ -37,8 +37,8 @@
 #endif
 
 typedef union {
-#if defined(SIMDE__ENABLE_GCC_VEC_EXT)
-  simde_float64     f64 __attribute__((__vector_size__(8)));
+#if defined(SIMDE_VECTOR_SUBSCRIPT)
+  simde_float64     f64 SIMDE_VECTOR(8) SIMDE_MAY_ALIAS;
 #else
   simde_float64     f64[1];
 #endif

@@ -29,8 +29,8 @@
 #define SIMDE__NEON_INT16X4_H
 
 typedef union {
-#if defined(SIMDE__ENABLE_GCC_VEC_EXT)
-  int16_t         i16 __attribute__((__vector_size__(8)));
+#if defined(SIMDE_VECTOR_SUBSCRIPT)
+  int16_t         i16 SIMDE_VECTOR(8) SIMDE_MAY_ALIAS;
 #else
   int16_t         i16[4];
 #endif

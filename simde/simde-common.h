@@ -82,7 +82,71 @@
 #  define SIMDE_CAST_ALIGN(alignment, T, v) HEDLEY_REINTERPRET_CAST(T, (v))
 #endif
 
-#if HEDLEY_GCC_HAS_ATTRIBUTE(vector_size,4,6,0)
+#if \
+  (HEDLEY_HAS_ATTRIBUTE(may_alias) && !defined(HEDLEY_SUNPRO_VERSION)) || \
+  HEDLEY_GCC_VERSION_CHECK(3,3,0) || \
+  HEDLEY_INTEL_VERSION_CHECK(13,0,0) || \
+  HEDLEY_IBM_VERSION_CHECK(13,1,0)
+#  define SIMDE_MAY_ALIAS __attribute__((__may_alias__))
+#else
+#  define SIMDE_MAY_ALIAS
+#endif
+
+/*  Lots of compilers support GCC-style vector extensions, but many
+    don't support all the features.  Define different macros depending
+    on support for
+    
+    * SIMDE_VECTOR - Declaring a vector.
+    * SIMDE_VECTOR_OPS - basic operations (binary and unary).
+    * SIMDE_VECTOR_SCALAR - For binary operators, the second argument
+        can be a scalar, in which case the result is as if that scalar
+        had been broadcast to all lanes of a vector.
+    * SIMDE_VECTOR_SUBSCRIPT - Supports array subscript notation for
+        extracting/inserting a single element.=
+    
+    SIMDE_VECTOR can be assumed if any others are defined, the
+    others are independent. */
+#if \
+  HEDLEY_GCC_VERSION_CHECK(4,8,0) || \
+  HEDLEY_INTEL_VERSION_CHECK(16,0,0)
+#  define SIMDE_VECTOR(size) __attribute__((__vector_size__(size)))
+#  define SIMDE_VECTOR_OPS
+#  define SIMDE_VECTOR_SCALAR
+#  define SIMDE_VECTOR_SUBSCRIPT
+#elif \
+  HEDLEY_GCC_VERSION_CHECK(4,1,0) || \
+  HEDLEY_INTEL_VERSION_CHECK(13,0,0)
+#  define SIMDE_VECTOR(size) __attribute__((__vector_size__(size)))
+#  define SIMDE_VECTOR_OPS
+#elif HEDLEY_SUNPRO_VERSION_CHECK(5,12,0)
+#  define SIMDE_VECTOR(size) __attribute__((__vector_size__(size)))
+#elif HEDLEY_HAS_ATTRIBUTE(vector_size)
+#  define SIMDE_VECTOR(size) __attribute__((__vector_size__(size)))
+#  define SIMDE_VECTOR_OPS
+#  define SIMDE_VECTOR_SUBSCRIPT
+#  if HEDLEY_HAS_ATTRIBUTE(diagnose_if) /* clang 4.0 */
+#    define SIMDE_VECTOR_SCALAR
+#  endif
+#endif
+
+/* Since we currently require SUBSCRIPT before using a vector in a
+   union, we define these as dependencies of SUBSCRIPT.  They are
+   likely to disappear in the future, once SIMDe learns how to make
+   use of vectors without using the union members.  Do not use them
+   in your code unless you're okay with it breaking when SIMDe
+   changes. */
+#if defined(SIMDE_VECTOR_SUBSCRIPT)
+#  if defined(SIMDE_VECTOR_OPS)
+#    define SIMDE_VECTOR_SUBSCRIPT_OPS
+#  endif
+#  if defined(SIMDE_VECTOR_OPS)
+#    define SIMDE_VECTOR_SUBSCRIPT_SCALAR
+#  endif
+#endif
+
+#if \
+  HEDLEY_HAS_ATTRIBUTE(vector_size) || \
+  HEDLEY_GCC_VERSION_CHECK(4,6,0)
 #  define SIMDE__ENABLE_GCC_VEC_EXT
 /* clang had a bug (present in 3.5 at least) where it wouldn't
    shift by a scalar value.  I have no idea how to detect when
@@ -100,7 +164,7 @@
 #      define SIMDE__SHUFFLE_VECTOR(elem_size, vec_size, a, b, ...) __builtin_shufflevector(a, b, __VA_ARGS__)
 #    elif HEDLEY_GCC_HAS_BUILTIN(__builtin_shuffle,4,7,0) && !defined(__INTEL_COMPILER)
 #      define SIMDE__SHUFFLE_VECTOR(elem_size, vec_size, a, b, ...) (__extension__ ({ \
-         int##elem_size##_t __attribute__((__vector_size__(vec_size))) simde_shuffle_ = { __VA_ARGS__ }; \
+         int##elem_size##_t SIMDE_VECTOR(vec_size) simde_shuffle_ = { __VA_ARGS__ }; \
            __builtin_shuffle(a, b, simde_shuffle_); \
          }))
 #    endif
@@ -170,7 +234,7 @@
 
 #define SIMDE__MASK_NZ(v, mask) (((v) & (mask)) | !((v) & (mask)))
 
-/* Intended for checking coverage, you should never use this in
+/* Intended for checking cover,,age, you should never use this in
    production. */
 #if defined(SIMDE_NO_INLINE)
 #  define SIMDE__FUNCTION_ATTRIBUTES HEDLEY_NEVER_INLINE SIMDE__UNUSED static

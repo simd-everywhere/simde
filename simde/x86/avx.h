@@ -52,23 +52,23 @@
 SIMDE__BEGIN_DECLS
 
 typedef union {
-#if defined(SIMDE__ENABLE_GCC_VEC_EXT)
-  SIMDE_ALIGN(32) int8_t          i8 __attribute__((__vector_size__(32), __may_alias__));
-  SIMDE_ALIGN(32) int16_t        i16 __attribute__((__vector_size__(32), __may_alias__));
-  SIMDE_ALIGN(32) int32_t        i32 __attribute__((__vector_size__(32), __may_alias__));
-  SIMDE_ALIGN(32) int64_t        i64 __attribute__((__vector_size__(32), __may_alias__));
-  SIMDE_ALIGN(32) uint8_t         u8 __attribute__((__vector_size__(32), __may_alias__));
-  SIMDE_ALIGN(32) uint16_t       u16 __attribute__((__vector_size__(32), __may_alias__));
-  SIMDE_ALIGN(32) uint32_t       u32 __attribute__((__vector_size__(32), __may_alias__));
-  SIMDE_ALIGN(32) uint64_t       u64 __attribute__((__vector_size__(32), __may_alias__));
+#if defined(SIMDE_VECTOR_SUBSCRIPT)
+  SIMDE_ALIGN(32) int8_t          i8 SIMDE_VECTOR(32) SIMDE_MAY_ALIAS;
+  SIMDE_ALIGN(32) int16_t        i16 SIMDE_VECTOR(32) SIMDE_MAY_ALIAS;
+  SIMDE_ALIGN(32) int32_t        i32 SIMDE_VECTOR(32) SIMDE_MAY_ALIAS;
+  SIMDE_ALIGN(32) int64_t        i64 SIMDE_VECTOR(32) SIMDE_MAY_ALIAS;
+  SIMDE_ALIGN(32) uint8_t         u8 SIMDE_VECTOR(32) SIMDE_MAY_ALIAS;
+  SIMDE_ALIGN(32) uint16_t       u16 SIMDE_VECTOR(32) SIMDE_MAY_ALIAS;
+  SIMDE_ALIGN(32) uint32_t       u32 SIMDE_VECTOR(32) SIMDE_MAY_ALIAS;
+  SIMDE_ALIGN(32) uint64_t       u64 SIMDE_VECTOR(32) SIMDE_MAY_ALIAS;
   #if defined(SIMDE__HAVE_INT128)
-  SIMDE_ALIGN(32) simde_int128  i128 __attribute__((__vector_size__(32), __may_alias__));
-  SIMDE_ALIGN(32) simde_uint128 u128 __attribute__((__vector_size__(32), __may_alias__));
+  SIMDE_ALIGN(32) simde_int128  i128 SIMDE_VECTOR(32) SIMDE_MAY_ALIAS;
+  SIMDE_ALIGN(32) simde_uint128 u128 SIMDE_VECTOR(32) SIMDE_MAY_ALIAS;
   #endif
-  SIMDE_ALIGN(32) simde_float32  f32 __attribute__((__vector_size__(32), __may_alias__));
-  SIMDE_ALIGN(32) simde_float64  f64 __attribute__((__vector_size__(32), __may_alias__));
-  SIMDE_ALIGN(32) int_fast32_t  i32f __attribute__((__vector_size__(32), __may_alias__));
-  SIMDE_ALIGN(32) uint_fast32_t u32f __attribute__((__vector_size__(32), __may_alias__));
+  SIMDE_ALIGN(32) simde_float32  f32 SIMDE_VECTOR(32) SIMDE_MAY_ALIAS;
+  SIMDE_ALIGN(32) simde_float64  f64 SIMDE_VECTOR(32) SIMDE_MAY_ALIAS;
+  SIMDE_ALIGN(32) int_fast32_t  i32f SIMDE_VECTOR(32) SIMDE_MAY_ALIAS;
+  SIMDE_ALIGN(32) uint_fast32_t u32f SIMDE_VECTOR(32) SIMDE_MAY_ALIAS;
 #else
   SIMDE_ALIGN(32) int8_t          i8[32];
   SIMDE_ALIGN(32) int16_t        i16[16];
@@ -95,23 +95,23 @@ typedef union {
 } simde__m256;
 
 typedef union {
-#if defined(SIMDE__ENABLE_GCC_VEC_EXT)
-  SIMDE_ALIGN(32) int8_t          i8 __attribute__((__vector_size__(32), __may_alias__));
-  SIMDE_ALIGN(32) int16_t        i16 __attribute__((__vector_size__(32), __may_alias__));
-  SIMDE_ALIGN(32) int32_t        i32 __attribute__((__vector_size__(32), __may_alias__));
-  SIMDE_ALIGN(32) int64_t        i64 __attribute__((__vector_size__(32), __may_alias__));
-  SIMDE_ALIGN(32) uint8_t         u8 __attribute__((__vector_size__(32), __may_alias__));
-  SIMDE_ALIGN(32) uint16_t       u16 __attribute__((__vector_size__(32), __may_alias__));
-  SIMDE_ALIGN(32) uint32_t       u32 __attribute__((__vector_size__(32), __may_alias__));
-  SIMDE_ALIGN(32) uint64_t       u64 __attribute__((__vector_size__(32), __may_alias__));
+#if defined(SIMDE_VECTOR_SUBSCRIPT)
+  SIMDE_ALIGN(32) int8_t          i8 SIMDE_VECTOR(32) SIMDE_MAY_ALIAS;
+  SIMDE_ALIGN(32) int16_t        i16 SIMDE_VECTOR(32) SIMDE_MAY_ALIAS;
+  SIMDE_ALIGN(32) int32_t        i32 SIMDE_VECTOR(32) SIMDE_MAY_ALIAS;
+  SIMDE_ALIGN(32) int64_t        i64 SIMDE_VECTOR(32) SIMDE_MAY_ALIAS;
+  SIMDE_ALIGN(32) uint8_t         u8 SIMDE_VECTOR(32) SIMDE_MAY_ALIAS;
+  SIMDE_ALIGN(32) uint16_t       u16 SIMDE_VECTOR(32) SIMDE_MAY_ALIAS;
+  SIMDE_ALIGN(32) uint32_t       u32 SIMDE_VECTOR(32) SIMDE_MAY_ALIAS;
+  SIMDE_ALIGN(32) uint64_t       u64 SIMDE_VECTOR(32) SIMDE_MAY_ALIAS;
   #if defined(SIMDE__HAVE_INT128)
-  SIMDE_ALIGN(32) simde_int128  i128 __attribute__((__vector_size__(32), __may_alias__));
-  SIMDE_ALIGN(32) simde_uint128 u128 __attribute__((__vector_size__(32), __may_alias__));
+  SIMDE_ALIGN(32) simde_int128  i128 SIMDE_VECTOR(32) SIMDE_MAY_ALIAS;
+  SIMDE_ALIGN(32) simde_uint128 u128 SIMDE_VECTOR(32) SIMDE_MAY_ALIAS;
   #endif
-  SIMDE_ALIGN(32) simde_float32  f32 __attribute__((__vector_size__(32), __may_alias__));
-  SIMDE_ALIGN(32) simde_float64  f64 __attribute__((__vector_size__(32), __may_alias__));
-  SIMDE_ALIGN(32) int_fast32_t  i32f __attribute__((__vector_size__(32), __may_alias__));
-  SIMDE_ALIGN(32) uint_fast32_t u32f __attribute__((__vector_size__(32), __may_alias__));
+  SIMDE_ALIGN(32) simde_float32  f32 SIMDE_VECTOR(32) SIMDE_MAY_ALIAS;
+  SIMDE_ALIGN(32) simde_float64  f64 SIMDE_VECTOR(32) SIMDE_MAY_ALIAS;
+  SIMDE_ALIGN(32) int_fast32_t  i32f SIMDE_VECTOR(32) SIMDE_MAY_ALIAS;
+  SIMDE_ALIGN(32) uint_fast32_t u32f SIMDE_VECTOR(32) SIMDE_MAY_ALIAS;
 #else
   SIMDE_ALIGN(32) int8_t          i8[32];
   SIMDE_ALIGN(32) int16_t        i16[16];
@@ -138,23 +138,23 @@ typedef union {
 } simde__m256d;
 
 typedef union {
-#if defined(SIMDE__ENABLE_GCC_VEC_EXT)
-  SIMDE_ALIGN(32) int8_t          i8 __attribute__((__vector_size__(32), __may_alias__));
-  SIMDE_ALIGN(32) int16_t        i16 __attribute__((__vector_size__(32), __may_alias__));
-  SIMDE_ALIGN(32) int32_t        i32 __attribute__((__vector_size__(32), __may_alias__));
-  SIMDE_ALIGN(32) int64_t        i64 __attribute__((__vector_size__(32), __may_alias__));
-  SIMDE_ALIGN(32) uint8_t         u8 __attribute__((__vector_size__(32), __may_alias__));
-  SIMDE_ALIGN(32) uint16_t       u16 __attribute__((__vector_size__(32), __may_alias__));
-  SIMDE_ALIGN(32) uint32_t       u32 __attribute__((__vector_size__(32), __may_alias__));
-  SIMDE_ALIGN(32) uint64_t       u64 __attribute__((__vector_size__(32), __may_alias__));
+#if defined(SIMDE_VECTOR_SUBSCRIPT)
+  SIMDE_ALIGN(32) int8_t          i8 SIMDE_VECTOR(32) SIMDE_MAY_ALIAS;
+  SIMDE_ALIGN(32) int16_t        i16 SIMDE_VECTOR(32) SIMDE_MAY_ALIAS;
+  SIMDE_ALIGN(32) int32_t        i32 SIMDE_VECTOR(32) SIMDE_MAY_ALIAS;
+  SIMDE_ALIGN(32) int64_t        i64 SIMDE_VECTOR(32) SIMDE_MAY_ALIAS;
+  SIMDE_ALIGN(32) uint8_t         u8 SIMDE_VECTOR(32) SIMDE_MAY_ALIAS;
+  SIMDE_ALIGN(32) uint16_t       u16 SIMDE_VECTOR(32) SIMDE_MAY_ALIAS;
+  SIMDE_ALIGN(32) uint32_t       u32 SIMDE_VECTOR(32) SIMDE_MAY_ALIAS;
+  SIMDE_ALIGN(32) uint64_t       u64 SIMDE_VECTOR(32) SIMDE_MAY_ALIAS;
   #if defined(SIMDE__HAVE_INT128)
-  SIMDE_ALIGN(32) simde_int128  i128 __attribute__((__vector_size__(32), __may_alias__));
-  SIMDE_ALIGN(32) simde_uint128 u128 __attribute__((__vector_size__(32), __may_alias__));
+  SIMDE_ALIGN(32) simde_int128  i128 SIMDE_VECTOR(32) SIMDE_MAY_ALIAS;
+  SIMDE_ALIGN(32) simde_uint128 u128 SIMDE_VECTOR(32) SIMDE_MAY_ALIAS;
   #endif
-  SIMDE_ALIGN(32) simde_float32  f32 __attribute__((__vector_size__(32), __may_alias__));
-  SIMDE_ALIGN(32) simde_float64  f64 __attribute__((__vector_size__(32), __may_alias__));
-  SIMDE_ALIGN(32) int_fast32_t  i32f __attribute__((__vector_size__(32), __may_alias__));
-  SIMDE_ALIGN(32) uint_fast32_t u32f __attribute__((__vector_size__(32), __may_alias__));
+  SIMDE_ALIGN(32) simde_float32  f32 SIMDE_VECTOR(32) SIMDE_MAY_ALIAS;
+  SIMDE_ALIGN(32) simde_float64  f64 SIMDE_VECTOR(32) SIMDE_MAY_ALIAS;
+  SIMDE_ALIGN(32) int_fast32_t  i32f SIMDE_VECTOR(32) SIMDE_MAY_ALIAS;
+  SIMDE_ALIGN(32) uint_fast32_t u32f SIMDE_VECTOR(32) SIMDE_MAY_ALIAS;
 #else
   SIMDE_ALIGN(32) int8_t          i8[32];
   SIMDE_ALIGN(32) int16_t        i16[16];
@@ -729,7 +729,7 @@ simde_mm256_add_ps (simde__m256 a, simde__m256 b) {
 #elif defined(SIMDE_SSE_NATIVE)
   r.m128[0].n = _mm_add_ps(a.m128[0].n, b.m128[0].n);
   r.m128[1].n = _mm_add_ps(a.m128[1].n, b.m128[1].n);
-#elif defined(SIMDE__ENABLE_GCC_VEC_EXT)
+#elif defined(SIMDE_VECTOR_SUBSCRIPT_BINARY)
   r.f32 = a.f32 + b.f32;
 #else
   SIMDE__VECTORIZE
@@ -754,7 +754,7 @@ simde_mm256_add_pd (simde__m256d a, simde__m256d b) {
 #elif defined(SIMDE_SSE2_NATIVE)
   r.m128d[0].n = _mm_add_pd(a.m128d[0].n, b.m128d[0].n);
   r.m128d[1].n = _mm_add_pd(a.m128d[1].n, b.m128d[1].n);
-#elif defined(SIMDE__ENABLE_GCC_VEC_EXT)
+#elif defined(SIMDE_VECTOR_SUBSCRIPT_BINARY)
   r.f64 = a.f64 + b.f64;
 #else
   SIMDE__VECTORIZE
@@ -827,7 +827,7 @@ simde_mm256_and_ps (simde__m256 a, simde__m256 b) {
 #elif defined(SIMDE_SSE_NATIVE)
   r.m128[0].n = _mm_and_ps(a.m128[0].n, b.m128[0].n);
   r.m128[1].n = _mm_and_ps(a.m128[1].n, b.m128[1].n);
-#elif defined(SIMDE__ENABLE_GCC_VEC_EXT)
+#elif defined(SIMDE_VECTOR_SUBSCRIPT_BINARY)
   r.i32f = a.i32f & b.i32f;
 #else
   SIMDE__VECTORIZE
@@ -852,7 +852,7 @@ simde_mm256_and_pd (simde__m256d a, simde__m256d b) {
 #elif defined(SIMDE_SSE2_NATIVE)
   r.m128d[0].n = _mm_and_pd(a.m128d[0].n, b.m128d[0].n);
   r.m128d[1].n = _mm_and_pd(a.m128d[1].n, b.m128d[1].n);
-#elif defined(SIMDE__ENABLE_GCC_VEC_EXT)
+#elif defined(SIMDE_VECTOR_SUBSCRIPT_BINARY)
   r.i32f = a.i32f & b.i32f;
 #else
   SIMDE__VECTORIZE
@@ -877,7 +877,7 @@ simde_mm256_andnot_ps (simde__m256 a, simde__m256 b) {
 #elif defined(SIMDE_SSE_NATIVE)
   r.m128[0].n = _mm_andnot_ps(a.m128[0].n, b.m128[0].n);
   r.m128[1].n = _mm_andnot_ps(a.m128[1].n, b.m128[1].n);
-#elif defined(SIMDE__ENABLE_GCC_VEC_EXT)
+#elif defined(SIMDE_VECTOR_SUBSCRIPT_BINARY)
   r.i32f = ~a.i32f & b.i32f;
 #else
   SIMDE__VECTORIZE
@@ -902,7 +902,7 @@ simde_mm256_andnot_pd (simde__m256d a, simde__m256d b) {
 #elif defined(SIMDE_SSE2_NATIVE)
   r.m128d[0].n = _mm_andnot_pd(a.m128d[0].n, b.m128d[0].n);
   r.m128d[1].n = _mm_andnot_pd(a.m128d[1].n, b.m128d[1].n);
-#elif defined(SIMDE__ENABLE_GCC_VEC_EXT)
+#elif defined(SIMDE_VECTOR_SUBSCRIPT_BINARY)
   r.i32f = ~a.i32f & b.i32f;
 #else
   SIMDE__VECTORIZE
@@ -1336,16 +1336,16 @@ simde_mm_cmp_pd (simde__m128d a, simde__m128d b, const int imm8)
     HEDLEY_REQUIRE_MSG((imm8 & 31) == imm8, "imm8 must one of the SIMDE_CMP_* macros (values: [0, 31])") {
   simde__m128d r;
 
-#if defined(SIMDE__ENABLE_GCC_VEC_EXT)
+#if defined(SIMDE_VECTOR_SUBSCRIPT_BINARY)
   switch (imm8) {
     case SIMDE_CMP_EQ_OQ:
-      r.i64 = (int64_t __attribute__((__vector_size__(sizeof(r))))) (a.f64 == b.f64);
+      r.i64 = (int64_t SIMDE_VECTOR(sizeof(r))) (a.f64 == b.f64);
       break;
     case SIMDE_CMP_LT_OS:
-      r.i64 = (int64_t __attribute__((__vector_size__(sizeof(r))))) (a.f64 < b.f64);
+      r.i64 = (int64_t SIMDE_VECTOR(sizeof(r))) (a.f64 < b.f64);
       break;
     case SIMDE_CMP_LE_OS:
-      r.i64 = (int64_t __attribute__((__vector_size__(sizeof(r))))) (a.f64 <= b.f64);
+      r.i64 = (int64_t SIMDE_VECTOR(sizeof(r))) (a.f64 <= b.f64);
       break;
     case SIMDE_CMP_UNORD_Q:
       for (size_t i = 0 ; i < (sizeof(r.f64) / sizeof(r.f64[0])) ; i++) {
@@ -1353,13 +1353,13 @@ simde_mm_cmp_pd (simde__m128d a, simde__m128d b, const int imm8)
       }
       break;
     case SIMDE_CMP_NEQ_UQ:
-      r.i64 = (int64_t __attribute__((__vector_size__(sizeof(r))))) (a.f64 != b.f64);
+      r.i64 = (int64_t SIMDE_VECTOR(sizeof(r))) (a.f64 != b.f64);
       break;
     case SIMDE_CMP_NLT_US:
-      r.i64 = (int64_t __attribute__((__vector_size__(sizeof(r))))) (a.f64 >= b.f64);
+      r.i64 = (int64_t SIMDE_VECTOR(sizeof(r))) (a.f64 >= b.f64);
       break;
     case SIMDE_CMP_NLE_US:
-      r.i64 = (int64_t __attribute__((__vector_size__(sizeof(r))))) (a.f64 > b.f64);
+      r.i64 = (int64_t SIMDE_VECTOR(sizeof(r))) (a.f64 > b.f64);
       break;
     case SIMDE_CMP_ORD_Q:
       for (size_t i = 0 ; i < (sizeof(r.f64) / sizeof(r.f64[0])) ; i++) {
@@ -1367,37 +1367,37 @@ simde_mm_cmp_pd (simde__m128d a, simde__m128d b, const int imm8)
       }
       break;
     case SIMDE_CMP_EQ_UQ:
-      r.i64 = (int64_t __attribute__((__vector_size__(sizeof(r))))) (a.f64 == b.f64);
+      r.i64 = (int64_t SIMDE_VECTOR(sizeof(r))) (a.f64 == b.f64);
       break;
     case SIMDE_CMP_NGE_US:
-      r.i64 = (int64_t __attribute__((__vector_size__(sizeof(r))))) (a.f64 < b.f64);
+      r.i64 = (int64_t SIMDE_VECTOR(sizeof(r))) (a.f64 < b.f64);
       break;
     case SIMDE_CMP_NGT_US:
-      r.i64 = (int64_t __attribute__((__vector_size__(sizeof(r))))) (a.f64 <= b.f64);
+      r.i64 = (int64_t SIMDE_VECTOR(sizeof(r))) (a.f64 <= b.f64);
       break;
     case SIMDE_CMP_FALSE_OQ:
-      r.i64 = (int64_t __attribute__((__vector_size__(sizeof(r))))) (a.f64 != a.f64);
+      r.i64 = (int64_t SIMDE_VECTOR(sizeof(r))) (a.f64 != a.f64);
       break;
     case SIMDE_CMP_NEQ_OQ:
-      r.i64 = (int64_t __attribute__((__vector_size__(sizeof(r))))) (a.f64 != b.f64);
+      r.i64 = (int64_t SIMDE_VECTOR(sizeof(r))) (a.f64 != b.f64);
       break;
     case SIMDE_CMP_GE_OS:
-      r.i64 = (int64_t __attribute__((__vector_size__(sizeof(r))))) (a.f64 >= b.f64);
+      r.i64 = (int64_t SIMDE_VECTOR(sizeof(r))) (a.f64 >= b.f64);
       break;
     case SIMDE_CMP_GT_OS:
-      r.i64 = (int64_t __attribute__((__vector_size__(sizeof(r))))) (a.f64 > b.f64);
+      r.i64 = (int64_t SIMDE_VECTOR(sizeof(r))) (a.f64 > b.f64);
       break;
     case SIMDE_CMP_TRUE_UQ:
-      r.i64 = (int64_t __attribute__((__vector_size__(sizeof(r))))) (a.i64 == a.i64);
+      r.i64 = (int64_t SIMDE_VECTOR(sizeof(r))) (a.i64 == a.i64);
       break;
     case SIMDE_CMP_EQ_OS:
-      r.i64 = (int64_t __attribute__((__vector_size__(sizeof(r))))) (a.f64 == b.f64);
+      r.i64 = (int64_t SIMDE_VECTOR(sizeof(r))) (a.f64 == b.f64);
       break;
     case SIMDE_CMP_LT_OQ:
-      r.i64 = (int64_t __attribute__((__vector_size__(sizeof(r))))) (a.f64 < b.f64);
+      r.i64 = (int64_t SIMDE_VECTOR(sizeof(r))) (a.f64 < b.f64);
       break;
     case SIMDE_CMP_LE_OQ:
-      r.i64 = (int64_t __attribute__((__vector_size__(sizeof(r))))) (a.f64 <= b.f64);
+      r.i64 = (int64_t SIMDE_VECTOR(sizeof(r))) (a.f64 <= b.f64);
       break;
     case SIMDE_CMP_UNORD_S:
       for (size_t i = 0 ; i < (sizeof(r.f64) / sizeof(r.f64[0])) ; i++) {
@@ -1405,13 +1405,13 @@ simde_mm_cmp_pd (simde__m128d a, simde__m128d b, const int imm8)
       }
       break;
      case SIMDE_CMP_NEQ_US:
-      r.i64 = (int64_t __attribute__((__vector_size__(sizeof(r))))) (a.f64 != b.f64);
+      r.i64 = (int64_t SIMDE_VECTOR(sizeof(r))) (a.f64 != b.f64);
       break;
     case SIMDE_CMP_NLT_UQ:
-      r.i64 = (int64_t __attribute__((__vector_size__(sizeof(r))))) (a.f64 >= b.f64);
+      r.i64 = (int64_t SIMDE_VECTOR(sizeof(r))) (a.f64 >= b.f64);
       break;
     case SIMDE_CMP_NLE_UQ:
-      r.i64 = (int64_t __attribute__((__vector_size__(sizeof(r))))) (a.f64 > b.f64);
+      r.i64 = (int64_t SIMDE_VECTOR(sizeof(r))) (a.f64 > b.f64);
       break;
     case SIMDE_CMP_ORD_S:
       for (size_t i = 0 ; i < (sizeof(r.f64) / sizeof(r.f64[0])) ; i++) {
@@ -1419,25 +1419,25 @@ simde_mm_cmp_pd (simde__m128d a, simde__m128d b, const int imm8)
       }
       break;
     case SIMDE_CMP_EQ_US:
-      r.i64 = (int64_t __attribute__((__vector_size__(sizeof(r))))) (a.f64 == b.f64);
+      r.i64 = (int64_t SIMDE_VECTOR(sizeof(r))) (a.f64 == b.f64);
       break;
     case SIMDE_CMP_NGE_UQ:
-      r.i64 = (int64_t __attribute__((__vector_size__(sizeof(r))))) (a.f64 < b.f64);
+      r.i64 = (int64_t SIMDE_VECTOR(sizeof(r))) (a.f64 < b.f64);
       break;
     case SIMDE_CMP_NGT_UQ:
-      r.i64 = (int64_t __attribute__((__vector_size__(sizeof(r))))) (a.f64 <= b.f64);
+      r.i64 = (int64_t SIMDE_VECTOR(sizeof(r))) (a.f64 <= b.f64);
       break;
     case SIMDE_CMP_FALSE_OS:
       r.i32f = (a.i32f ^ a.i32f);
       break;
     case SIMDE_CMP_NEQ_OS:
-      r.i64 = (int64_t __attribute__((__vector_size__(sizeof(r))))) (a.f64 != b.f64);
+      r.i64 = (int64_t SIMDE_VECTOR(sizeof(r))) (a.f64 != b.f64);
       break;
     case SIMDE_CMP_GE_OQ:
-      r.i64 = (int64_t __attribute__((__vector_size__(sizeof(r))))) (a.f64 >= b.f64);
+      r.i64 = (int64_t SIMDE_VECTOR(sizeof(r))) (a.f64 >= b.f64);
       break;
     case SIMDE_CMP_GT_OQ:
-      r.i64 = (int64_t __attribute__((__vector_size__(sizeof(r))))) (a.f64 > b.f64);
+      r.i64 = (int64_t SIMDE_VECTOR(sizeof(r))) (a.f64 > b.f64);
       break;
     case SIMDE_CMP_TRUE_US:
       r.i32f = ~(r.i32f ^ r.i32f);
@@ -1556,11 +1556,11 @@ simde_mm_cmp_pd (simde__m128d a, simde__m128d b, const int imm8)
          switch (imm8) { \
            case SIMDE_CMP_FALSE_OQ: \
            case SIMDE_CMP_FALSE_OS: \
-             r.i64 = (int64_t __attribute__((__vector_size__(sizeof(r))))) (a.i64 != a.i64); \
+             r.i64 = (int64_t SIMDE_VECTOR(sizeof(r))) (a.i64 != a.i64); \
              break; \
            case SIMDE_CMP_TRUE_UQ: \
            case SIMDE_CMP_TRUE_US: \
-             r.i64 = (int64_t __attribute__((__vector_size__(sizeof(r))))) (a.i64 == a.i64); \
+             r.i64 = (int64_t SIMDE_VECTOR(sizeof(r))) (a.i64 == a.i64); \
              break; \
            default: \
              r.n = _mm_cmp_pd(a.n, b.n, imm8); \
@@ -1582,16 +1582,16 @@ simde_mm_cmp_ps (simde__m128 a, simde__m128 b, const int imm8)
     HEDLEY_REQUIRE_MSG((imm8 & 31) == imm8, "imm8 must one of the SIMDE_CMP_* macros (values: [0, 31])") {
   simde__m128 r;
 
-#if defined(SIMDE__ENABLE_GCC_VEC_EXT)
+#if defined(SIMDE_VECTOR_SUBSCRIPT_BINARY)
   switch (imm8) {
     case SIMDE_CMP_EQ_OQ:
-      r.i32 = (int32_t __attribute__((__vector_size__(sizeof(r))))) (a.f32 == b.f32);
+      r.i32 = (int32_t SIMDE_VECTOR(sizeof(r))) (a.f32 == b.f32);
       break;
     case SIMDE_CMP_LT_OS:
-      r.i32 = (int32_t __attribute__((__vector_size__(sizeof(r))))) (a.f32 < b.f32);
+      r.i32 = (int32_t SIMDE_VECTOR(sizeof(r))) (a.f32 < b.f32);
       break;
     case SIMDE_CMP_LE_OS:
-      r.i32 = (int32_t __attribute__((__vector_size__(sizeof(r))))) (a.f32 <= b.f32);
+      r.i32 = (int32_t SIMDE_VECTOR(sizeof(r))) (a.f32 <= b.f32);
       break;
     case SIMDE_CMP_UNORD_Q:
       for (size_t i = 0 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
@@ -1599,13 +1599,13 @@ simde_mm_cmp_ps (simde__m128 a, simde__m128 b, const int imm8)
       }
       break;
     case SIMDE_CMP_NEQ_UQ:
-      r.i32 = (int32_t __attribute__((__vector_size__(sizeof(r))))) (a.f32 != b.f32);
+      r.i32 = (int32_t SIMDE_VECTOR(sizeof(r))) (a.f32 != b.f32);
       break;
     case SIMDE_CMP_NLT_US:
-      r.i32 = (int32_t __attribute__((__vector_size__(sizeof(r))))) (a.f32 >= b.f32);
+      r.i32 = (int32_t SIMDE_VECTOR(sizeof(r))) (a.f32 >= b.f32);
       break;
     case SIMDE_CMP_NLE_US:
-      r.i32 = (int32_t __attribute__((__vector_size__(sizeof(r))))) (a.f32 > b.f32);
+      r.i32 = (int32_t SIMDE_VECTOR(sizeof(r))) (a.f32 > b.f32);
       break;
     case SIMDE_CMP_ORD_Q:
       for (size_t i = 0 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
@@ -1613,37 +1613,37 @@ simde_mm_cmp_ps (simde__m128 a, simde__m128 b, const int imm8)
       }
       break;
     case SIMDE_CMP_EQ_UQ:
-      r.i32 = (int32_t __attribute__((__vector_size__(sizeof(r))))) (a.f32 == b.f32);
+      r.i32 = (int32_t SIMDE_VECTOR(sizeof(r))) (a.f32 == b.f32);
       break;
     case SIMDE_CMP_NGE_US:
-      r.i32 = (int32_t __attribute__((__vector_size__(sizeof(r))))) (a.f32 < b.f32);
+      r.i32 = (int32_t SIMDE_VECTOR(sizeof(r))) (a.f32 < b.f32);
       break;
     case SIMDE_CMP_NGT_US:
-      r.i32 = (int32_t __attribute__((__vector_size__(sizeof(r))))) (a.f32 <= b.f32);
+      r.i32 = (int32_t SIMDE_VECTOR(sizeof(r))) (a.f32 <= b.f32);
       break;
     case SIMDE_CMP_FALSE_OQ:
-      r.i32 = (int32_t __attribute__((__vector_size__(sizeof(r))))) (a.i32 != a.i32);
+      r.i32 = (int32_t SIMDE_VECTOR(sizeof(r))) (a.i32 != a.i32);
       break;
     case SIMDE_CMP_NEQ_OQ:
-      r.i32 = (int32_t __attribute__((__vector_size__(sizeof(r))))) (a.f32 != b.f32);
+      r.i32 = (int32_t SIMDE_VECTOR(sizeof(r))) (a.f32 != b.f32);
       break;
     case SIMDE_CMP_GE_OS:
-      r.i32 = (int32_t __attribute__((__vector_size__(sizeof(r))))) (a.f32 >= b.f32);
+      r.i32 = (int32_t SIMDE_VECTOR(sizeof(r))) (a.f32 >= b.f32);
       break;
     case SIMDE_CMP_GT_OS:
-      r.i32 = (int32_t __attribute__((__vector_size__(sizeof(r))))) (a.f32 > b.f32);
+      r.i32 = (int32_t SIMDE_VECTOR(sizeof(r))) (a.f32 > b.f32);
       break;
     case SIMDE_CMP_TRUE_UQ:
-      r.i32 = (int32_t __attribute__((__vector_size__(sizeof(r))))) (a.i32 == a.i32);
+      r.i32 = (int32_t SIMDE_VECTOR(sizeof(r))) (a.i32 == a.i32);
       break;
     case SIMDE_CMP_EQ_OS:
-      r.i32 = (int32_t __attribute__((__vector_size__(sizeof(r))))) (a.f32 == b.f32);
+      r.i32 = (int32_t SIMDE_VECTOR(sizeof(r))) (a.f32 == b.f32);
       break;
     case SIMDE_CMP_LT_OQ:
-      r.i32 = (int32_t __attribute__((__vector_size__(sizeof(r))))) (a.f32 < b.f32);
+      r.i32 = (int32_t SIMDE_VECTOR(sizeof(r))) (a.f32 < b.f32);
       break;
     case SIMDE_CMP_LE_OQ:
-      r.i32 = (int32_t __attribute__((__vector_size__(sizeof(r))))) (a.f32 <= b.f32);
+      r.i32 = (int32_t SIMDE_VECTOR(sizeof(r))) (a.f32 <= b.f32);
       break;
     case SIMDE_CMP_UNORD_S:
       for (size_t i = 0 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
@@ -1651,13 +1651,13 @@ simde_mm_cmp_ps (simde__m128 a, simde__m128 b, const int imm8)
       }
       break;
     case SIMDE_CMP_NEQ_US:
-      r.i32 = (int32_t __attribute__((__vector_size__(sizeof(r))))) (a.f32 != b.f32);
+      r.i32 = (int32_t SIMDE_VECTOR(sizeof(r))) (a.f32 != b.f32);
       break;
     case SIMDE_CMP_NLT_UQ:
-      r.i32 = (int32_t __attribute__((__vector_size__(sizeof(r))))) (a.f32 >= b.f32);
+      r.i32 = (int32_t SIMDE_VECTOR(sizeof(r))) (a.f32 >= b.f32);
       break;
     case SIMDE_CMP_NLE_UQ:
-      r.i32 = (int32_t __attribute__((__vector_size__(sizeof(r))))) (a.f32 > b.f32);
+      r.i32 = (int32_t SIMDE_VECTOR(sizeof(r))) (a.f32 > b.f32);
       break;
     case SIMDE_CMP_ORD_S:
       for (size_t i = 0 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
@@ -1665,25 +1665,25 @@ simde_mm_cmp_ps (simde__m128 a, simde__m128 b, const int imm8)
       }
       break;
     case SIMDE_CMP_EQ_US:
-      r.i32 = (int32_t __attribute__((__vector_size__(sizeof(r))))) (a.f32 == b.f32);
+      r.i32 = (int32_t SIMDE_VECTOR(sizeof(r))) (a.f32 == b.f32);
       break;
     case SIMDE_CMP_NGE_UQ:
-      r.i32 = (int32_t __attribute__((__vector_size__(sizeof(r))))) (a.f32 < b.f32);
+      r.i32 = (int32_t SIMDE_VECTOR(sizeof(r))) (a.f32 < b.f32);
       break;
     case SIMDE_CMP_NGT_UQ:
-      r.i32 = (int32_t __attribute__((__vector_size__(sizeof(r))))) (a.f32 <= b.f32);
+      r.i32 = (int32_t SIMDE_VECTOR(sizeof(r))) (a.f32 <= b.f32);
       break;
     case SIMDE_CMP_FALSE_OS:
       r.i32 = (a.i32 ^ a.i32);
       break;
     case SIMDE_CMP_NEQ_OS:
-      r.i32 = (int32_t __attribute__((__vector_size__(sizeof(r))))) (a.f32 != b.f32);
+      r.i32 = (int32_t SIMDE_VECTOR(sizeof(r))) (a.f32 != b.f32);
       break;
     case SIMDE_CMP_GE_OQ:
-      r.i32 = (int32_t __attribute__((__vector_size__(sizeof(r))))) (a.f32 >= b.f32);
+      r.i32 = (int32_t SIMDE_VECTOR(sizeof(r))) (a.f32 >= b.f32);
       break;
     case SIMDE_CMP_GT_OQ:
-      r.i32 = (int32_t __attribute__((__vector_size__(sizeof(r))))) (a.f32 > b.f32);
+      r.i32 = (int32_t SIMDE_VECTOR(sizeof(r))) (a.f32 > b.f32);
       break;
     case SIMDE_CMP_TRUE_US:
       r.i32 = ~(a.i32 ^ a.i32);
@@ -1802,11 +1802,11 @@ simde_mm_cmp_ps (simde__m128 a, simde__m128 b, const int imm8)
          switch (imm8) { \
            case SIMDE_CMP_FALSE_OQ: \
            case SIMDE_CMP_FALSE_OS: \
-             r.i32 = (int32_t __attribute__((__vector_size__(sizeof(r))))) (a.i32 != a.i32); \
+             r.i32 = (int32_t SIMDE_VECTOR(sizeof(r))) (a.i32 != a.i32); \
              break; \
            case SIMDE_CMP_TRUE_UQ: \
            case SIMDE_CMP_TRUE_US: \
-             r.i32 = (int32_t __attribute__((__vector_size__(sizeof(r))))) (a.i32 == a.i32); \
+             r.i32 = (int32_t SIMDE_VECTOR(sizeof(r))) (a.i32 == a.i32); \
              break; \
            default: \
              r.n = _mm_cmp_ps(a.n, b.n, imm8); \
@@ -2060,16 +2060,16 @@ simde_mm256_cmp_pd (simde__m256d a, simde__m256d b, const int imm8)
     HEDLEY_REQUIRE_MSG((imm8 & 31) == imm8, "imm8 must one of the SIMDE_CMP_* macros (values: [0, 31])") {
   simde__m256d r;
 
-#if defined(SIMDE__ENABLE_GCC_VEC_EXT)
+#if defined(SIMDE_VECTOR_SUBSCRIPT_BINARY)
   switch (imm8) {
     case SIMDE_CMP_EQ_OQ:
-      r.i64 = (int64_t __attribute__((__vector_size__(sizeof(r))))) (a.f64 == b.f64);
+      r.i64 = (int64_t SIMDE_VECTOR(sizeof(r))) (a.f64 == b.f64);
       break;
     case SIMDE_CMP_LT_OS:
-      r.i64 = (int64_t __attribute__((__vector_size__(sizeof(r))))) (a.f64 < b.f64);
+      r.i64 = (int64_t SIMDE_VECTOR(sizeof(r))) (a.f64 < b.f64);
       break;
     case SIMDE_CMP_LE_OS:
-      r.i64 = (int64_t __attribute__((__vector_size__(sizeof(r))))) (a.f64 <= b.f64);
+      r.i64 = (int64_t SIMDE_VECTOR(sizeof(r))) (a.f64 <= b.f64);
       break;
     case SIMDE_CMP_UNORD_Q:
       for (size_t i = 0 ; i < (sizeof(r.f64) / sizeof(r.f64[0])) ; i++) {
@@ -2077,13 +2077,13 @@ simde_mm256_cmp_pd (simde__m256d a, simde__m256d b, const int imm8)
       }
       break;
     case SIMDE_CMP_NEQ_UQ:
-      r.i64 = (int64_t __attribute__((__vector_size__(sizeof(r))))) (a.f64 != b.f64);
+      r.i64 = (int64_t SIMDE_VECTOR(sizeof(r))) (a.f64 != b.f64);
       break;
     case SIMDE_CMP_NLT_US:
-      r.i64 = (int64_t __attribute__((__vector_size__(sizeof(r))))) (a.f64 >= b.f64);
+      r.i64 = (int64_t SIMDE_VECTOR(sizeof(r))) (a.f64 >= b.f64);
       break;
     case SIMDE_CMP_NLE_US:
-      r.i64 = (int64_t __attribute__((__vector_size__(sizeof(r))))) (a.f64 > b.f64);
+      r.i64 = (int64_t SIMDE_VECTOR(sizeof(r))) (a.f64 > b.f64);
       break;
     case SIMDE_CMP_ORD_Q:
       for (size_t i = 0 ; i < (sizeof(r.f64) / sizeof(r.f64[0])) ; i++) {
@@ -2091,37 +2091,37 @@ simde_mm256_cmp_pd (simde__m256d a, simde__m256d b, const int imm8)
       }
       break;
     case SIMDE_CMP_EQ_UQ:
-      r.i64 = (int64_t __attribute__((__vector_size__(sizeof(r))))) (a.f64 == b.f64);
+      r.i64 = (int64_t SIMDE_VECTOR(sizeof(r))) (a.f64 == b.f64);
       break;
     case SIMDE_CMP_NGE_US:
-      r.i64 = (int64_t __attribute__((__vector_size__(sizeof(r))))) (a.f64 < b.f64);
+      r.i64 = (int64_t SIMDE_VECTOR(sizeof(r))) (a.f64 < b.f64);
       break;
     case SIMDE_CMP_NGT_US:
-      r.i64 = (int64_t __attribute__((__vector_size__(sizeof(r))))) (a.f64 <= b.f64);
+      r.i64 = (int64_t SIMDE_VECTOR(sizeof(r))) (a.f64 <= b.f64);
       break;
     case SIMDE_CMP_FALSE_OQ:
-      r.i64 = (int64_t __attribute__((__vector_size__(sizeof(r))))) (a.i64 != a.i64);
+      r.i64 = (int64_t SIMDE_VECTOR(sizeof(r))) (a.i64 != a.i64);
       break;
     case SIMDE_CMP_NEQ_OQ:
-      r.i64 = (int64_t __attribute__((__vector_size__(sizeof(r))))) (a.f64 != b.f64);
+      r.i64 = (int64_t SIMDE_VECTOR(sizeof(r))) (a.f64 != b.f64);
       break;
     case SIMDE_CMP_GE_OS:
-      r.i64 = (int64_t __attribute__((__vector_size__(sizeof(r))))) (a.f64 >= b.f64);
+      r.i64 = (int64_t SIMDE_VECTOR(sizeof(r))) (a.f64 >= b.f64);
       break;
     case SIMDE_CMP_GT_OS:
-      r.i64 = (int64_t __attribute__((__vector_size__(sizeof(r))))) (a.f64 > b.f64);
+      r.i64 = (int64_t SIMDE_VECTOR(sizeof(r))) (a.f64 > b.f64);
       break;
     case SIMDE_CMP_TRUE_UQ:
-      r.i64 = (int64_t __attribute__((__vector_size__(sizeof(r))))) (a.i64 == a.i64);
+      r.i64 = (int64_t SIMDE_VECTOR(sizeof(r))) (a.i64 == a.i64);
       break;
     case SIMDE_CMP_EQ_OS:
-      r.i64 = (int64_t __attribute__((__vector_size__(sizeof(r))))) (a.f64 == b.f64);
+      r.i64 = (int64_t SIMDE_VECTOR(sizeof(r))) (a.f64 == b.f64);
       break;
     case SIMDE_CMP_LT_OQ:
-      r.i64 = (int64_t __attribute__((__vector_size__(sizeof(r))))) (a.f64 < b.f64);
+      r.i64 = (int64_t SIMDE_VECTOR(sizeof(r))) (a.f64 < b.f64);
       break;
     case SIMDE_CMP_LE_OQ:
-      r.i64 = (int64_t __attribute__((__vector_size__(sizeof(r))))) (a.f64 <= b.f64);
+      r.i64 = (int64_t SIMDE_VECTOR(sizeof(r))) (a.f64 <= b.f64);
       break;
     case SIMDE_CMP_UNORD_S:
       for (size_t i = 0 ; i < (sizeof(r.f64) / sizeof(r.f64[0])) ; i++) {
@@ -2129,13 +2129,13 @@ simde_mm256_cmp_pd (simde__m256d a, simde__m256d b, const int imm8)
       }
       break;
      case SIMDE_CMP_NEQ_US:
-      r.i64 = (int64_t __attribute__((__vector_size__(sizeof(r))))) (a.f64 != b.f64);
+      r.i64 = (int64_t SIMDE_VECTOR(sizeof(r))) (a.f64 != b.f64);
       break;
     case SIMDE_CMP_NLT_UQ:
-      r.i64 = (int64_t __attribute__((__vector_size__(sizeof(r))))) (a.f64 >= b.f64);
+      r.i64 = (int64_t SIMDE_VECTOR(sizeof(r))) (a.f64 >= b.f64);
       break;
     case SIMDE_CMP_NLE_UQ:
-      r.i64 = (int64_t __attribute__((__vector_size__(sizeof(r))))) (a.f64 > b.f64);
+      r.i64 = (int64_t SIMDE_VECTOR(sizeof(r))) (a.f64 > b.f64);
       break;
     case SIMDE_CMP_ORD_S:
       for (size_t i = 0 ; i < (sizeof(r.f64) / sizeof(r.f64[0])) ; i++) {
@@ -2143,25 +2143,25 @@ simde_mm256_cmp_pd (simde__m256d a, simde__m256d b, const int imm8)
       }
       break;
     case SIMDE_CMP_EQ_US:
-      r.i64 = (int64_t __attribute__((__vector_size__(sizeof(r))))) (a.f64 == b.f64);
+      r.i64 = (int64_t SIMDE_VECTOR(sizeof(r))) (a.f64 == b.f64);
       break;
     case SIMDE_CMP_NGE_UQ:
-      r.i64 = (int64_t __attribute__((__vector_size__(sizeof(r))))) (a.f64 < b.f64);
+      r.i64 = (int64_t SIMDE_VECTOR(sizeof(r))) (a.f64 < b.f64);
       break;
     case SIMDE_CMP_NGT_UQ:
-      r.i64 = (int64_t __attribute__((__vector_size__(sizeof(r))))) (a.f64 <= b.f64);
+      r.i64 = (int64_t SIMDE_VECTOR(sizeof(r))) (a.f64 <= b.f64);
       break;
     case SIMDE_CMP_FALSE_OS:
       r.i32f = (a.i32f ^ a.i32f);
       break;
     case SIMDE_CMP_NEQ_OS:
-      r.i64 = (int64_t __attribute__((__vector_size__(sizeof(r))))) (a.f64 != b.f64);
+      r.i64 = (int64_t SIMDE_VECTOR(sizeof(r))) (a.f64 != b.f64);
       break;
     case SIMDE_CMP_GE_OQ:
-      r.i64 = (int64_t __attribute__((__vector_size__(sizeof(r))))) (a.f64 >= b.f64);
+      r.i64 = (int64_t SIMDE_VECTOR(sizeof(r))) (a.f64 >= b.f64);
       break;
     case SIMDE_CMP_GT_OQ:
-      r.i64 = (int64_t __attribute__((__vector_size__(sizeof(r))))) (a.f64 > b.f64);
+      r.i64 = (int64_t SIMDE_VECTOR(sizeof(r))) (a.f64 > b.f64);
       break;
     case SIMDE_CMP_TRUE_US:
       r.i32f = ~(r.i32f ^ r.i32f);
@@ -2280,11 +2280,11 @@ simde_mm256_cmp_pd (simde__m256d a, simde__m256d b, const int imm8)
          switch (imm8) { \
            case SIMDE_CMP_FALSE_OQ: \
            case SIMDE_CMP_FALSE_OS: \
-             r.i64 = (int64_t __attribute__((__vector_size__(sizeof(r))))) (a.i64 != a.i64); \
+             r.i64 = (int64_t SIMDE_VECTOR(sizeof(r))) (a.i64 != a.i64); \
              break; \
            case SIMDE_CMP_TRUE_UQ: \
            case SIMDE_CMP_TRUE_US: \
-             r.i64 = (int64_t __attribute__((__vector_size__(sizeof(r))))) (a.i64 == a.i64); \
+             r.i64 = (int64_t SIMDE_VECTOR(sizeof(r))) (a.i64 == a.i64); \
              break; \
            default: \
              r.n = _mm256_cmp_pd(a.n, b.n, imm8); \
@@ -2306,16 +2306,16 @@ simde_mm256_cmp_ps (simde__m256 a, simde__m256 b, const int imm8)
     HEDLEY_REQUIRE_MSG((imm8 & 31) == imm8, "imm8 must one of the SIMDE_CMP_* macros (values: [0, 31])") {
   simde__m256 r;
 
-#if defined(SIMDE__ENABLE_GCC_VEC_EXT)
+#if defined(SIMDE_VECTOR_SUBSCRIPT_BINARY)
   switch (imm8) {
     case SIMDE_CMP_EQ_OQ:
-      r.i32 = (int32_t __attribute__((__vector_size__(sizeof(r))))) (a.f32 == b.f32);
+      r.i32 = (int32_t SIMDE_VECTOR(sizeof(r))) (a.f32 == b.f32);
       break;
     case SIMDE_CMP_LT_OS:
-      r.i32 = (int32_t __attribute__((__vector_size__(sizeof(r))))) (a.f32 < b.f32);
+      r.i32 = (int32_t SIMDE_VECTOR(sizeof(r))) (a.f32 < b.f32);
       break;
     case SIMDE_CMP_LE_OS:
-      r.i32 = (int32_t __attribute__((__vector_size__(sizeof(r))))) (a.f32 <= b.f32);
+      r.i32 = (int32_t SIMDE_VECTOR(sizeof(r))) (a.f32 <= b.f32);
       break;
     case SIMDE_CMP_UNORD_Q:
       for (size_t i = 0 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
@@ -2323,13 +2323,13 @@ simde_mm256_cmp_ps (simde__m256 a, simde__m256 b, const int imm8)
       }
       break;
     case SIMDE_CMP_NEQ_UQ:
-      r.i32 = (int32_t __attribute__((__vector_size__(sizeof(r))))) (a.f32 != b.f32);
+      r.i32 = (int32_t SIMDE_VECTOR(sizeof(r))) (a.f32 != b.f32);
       break;
     case SIMDE_CMP_NLT_US:
-      r.i32 = (int32_t __attribute__((__vector_size__(sizeof(r))))) (a.f32 >= b.f32);
+      r.i32 = (int32_t SIMDE_VECTOR(sizeof(r))) (a.f32 >= b.f32);
       break;
     case SIMDE_CMP_NLE_US:
-      r.i32 = (int32_t __attribute__((__vector_size__(sizeof(r))))) (a.f32 > b.f32);
+      r.i32 = (int32_t SIMDE_VECTOR(sizeof(r))) (a.f32 > b.f32);
       break;
     case SIMDE_CMP_ORD_Q:
       for (size_t i = 0 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
@@ -2337,37 +2337,37 @@ simde_mm256_cmp_ps (simde__m256 a, simde__m256 b, const int imm8)
       }
       break;
     case SIMDE_CMP_EQ_UQ:
-      r.i32 = (int32_t __attribute__((__vector_size__(sizeof(r))))) (a.f32 == b.f32);
+      r.i32 = (int32_t SIMDE_VECTOR(sizeof(r))) (a.f32 == b.f32);
       break;
     case SIMDE_CMP_NGE_US:
-      r.i32 = (int32_t __attribute__((__vector_size__(sizeof(r))))) (a.f32 < b.f32);
+      r.i32 = (int32_t SIMDE_VECTOR(sizeof(r))) (a.f32 < b.f32);
       break;
     case SIMDE_CMP_NGT_US:
-      r.i32 = (int32_t __attribute__((__vector_size__(sizeof(r))))) (a.f32 <= b.f32);
+      r.i32 = (int32_t SIMDE_VECTOR(sizeof(r))) (a.f32 <= b.f32);
       break;
     case SIMDE_CMP_FALSE_OQ:
-      r.i32 = (int32_t __attribute__((__vector_size__(sizeof(r))))) (a.i32 != a.i32);
+      r.i32 = (int32_t SIMDE_VECTOR(sizeof(r))) (a.i32 != a.i32);
       break;
     case SIMDE_CMP_NEQ_OQ:
-      r.i32 = (int32_t __attribute__((__vector_size__(sizeof(r))))) (a.f32 != b.f32);
+      r.i32 = (int32_t SIMDE_VECTOR(sizeof(r))) (a.f32 != b.f32);
       break;
     case SIMDE_CMP_GE_OS:
-      r.i32 = (int32_t __attribute__((__vector_size__(sizeof(r))))) (a.f32 >= b.f32);
+      r.i32 = (int32_t SIMDE_VECTOR(sizeof(r))) (a.f32 >= b.f32);
       break;
     case SIMDE_CMP_GT_OS:
-      r.i32 = (int32_t __attribute__((__vector_size__(sizeof(r))))) (a.f32 > b.f32);
+      r.i32 = (int32_t SIMDE_VECTOR(sizeof(r))) (a.f32 > b.f32);
       break;
     case SIMDE_CMP_TRUE_UQ:
-      r.i32 = (int32_t __attribute__((__vector_size__(sizeof(r))))) (a.i32 == a.i32);
+      r.i32 = (int32_t SIMDE_VECTOR(sizeof(r))) (a.i32 == a.i32);
       break;
     case SIMDE_CMP_EQ_OS:
-      r.i32 = (int32_t __attribute__((__vector_size__(sizeof(r))))) (a.f32 == b.f32);
+      r.i32 = (int32_t SIMDE_VECTOR(sizeof(r))) (a.f32 == b.f32);
       break;
     case SIMDE_CMP_LT_OQ:
-      r.i32 = (int32_t __attribute__((__vector_size__(sizeof(r))))) (a.f32 < b.f32);
+      r.i32 = (int32_t SIMDE_VECTOR(sizeof(r))) (a.f32 < b.f32);
       break;
     case SIMDE_CMP_LE_OQ:
-      r.i32 = (int32_t __attribute__((__vector_size__(sizeof(r))))) (a.f32 <= b.f32);
+      r.i32 = (int32_t SIMDE_VECTOR(sizeof(r))) (a.f32 <= b.f32);
       break;
     case SIMDE_CMP_UNORD_S:
       for (size_t i = 0 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
@@ -2375,13 +2375,13 @@ simde_mm256_cmp_ps (simde__m256 a, simde__m256 b, const int imm8)
       }
       break;
     case SIMDE_CMP_NEQ_US:
-      r.i32 = (int32_t __attribute__((__vector_size__(sizeof(r))))) (a.f32 != b.f32);
+      r.i32 = (int32_t SIMDE_VECTOR(sizeof(r))) (a.f32 != b.f32);
       break;
     case SIMDE_CMP_NLT_UQ:
-      r.i32 = (int32_t __attribute__((__vector_size__(sizeof(r))))) (a.f32 >= b.f32);
+      r.i32 = (int32_t SIMDE_VECTOR(sizeof(r))) (a.f32 >= b.f32);
       break;
     case SIMDE_CMP_NLE_UQ:
-      r.i32 = (int32_t __attribute__((__vector_size__(sizeof(r))))) (a.f32 > b.f32);
+      r.i32 = (int32_t SIMDE_VECTOR(sizeof(r))) (a.f32 > b.f32);
       break;
     case SIMDE_CMP_ORD_S:
       for (size_t i = 0 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
@@ -2389,25 +2389,25 @@ simde_mm256_cmp_ps (simde__m256 a, simde__m256 b, const int imm8)
       }
       break;
     case SIMDE_CMP_EQ_US:
-      r.i32 = (int32_t __attribute__((__vector_size__(sizeof(r))))) (a.f32 == b.f32);
+      r.i32 = (int32_t SIMDE_VECTOR(sizeof(r))) (a.f32 == b.f32);
       break;
     case SIMDE_CMP_NGE_UQ:
-      r.i32 = (int32_t __attribute__((__vector_size__(sizeof(r))))) (a.f32 < b.f32);
+      r.i32 = (int32_t SIMDE_VECTOR(sizeof(r))) (a.f32 < b.f32);
       break;
     case SIMDE_CMP_NGT_UQ:
-      r.i32 = (int32_t __attribute__((__vector_size__(sizeof(r))))) (a.f32 <= b.f32);
+      r.i32 = (int32_t SIMDE_VECTOR(sizeof(r))) (a.f32 <= b.f32);
       break;
     case SIMDE_CMP_FALSE_OS:
       r.i32 = (a.i32 ^ a.i32);
       break;
     case SIMDE_CMP_NEQ_OS:
-      r.i32 = (int32_t __attribute__((__vector_size__(sizeof(r))))) (a.f32 != b.f32);
+      r.i32 = (int32_t SIMDE_VECTOR(sizeof(r))) (a.f32 != b.f32);
       break;
     case SIMDE_CMP_GE_OQ:
-      r.i32 = (int32_t __attribute__((__vector_size__(sizeof(r))))) (a.f32 >= b.f32);
+      r.i32 = (int32_t SIMDE_VECTOR(sizeof(r))) (a.f32 >= b.f32);
       break;
     case SIMDE_CMP_GT_OQ:
-      r.i32 = (int32_t __attribute__((__vector_size__(sizeof(r))))) (a.f32 > b.f32);
+      r.i32 = (int32_t SIMDE_VECTOR(sizeof(r))) (a.f32 > b.f32);
       break;
     case SIMDE_CMP_TRUE_US:
       r.i32 = ~(a.i32 ^ a.i32);
@@ -2526,11 +2526,11 @@ simde_mm256_cmp_ps (simde__m256 a, simde__m256 b, const int imm8)
          switch (imm8) { \
            case SIMDE_CMP_FALSE_OQ: \
            case SIMDE_CMP_FALSE_OS: \
-             r.i32 = (int64_t __attribute__((__vector_size__(sizeof(r))))) (a.i32 != a.i32); \
+             r.i32 = (int64_t SIMDE_VECTOR(sizeof(r))) (a.i32 != a.i32); \
              break; \
            case SIMDE_CMP_TRUE_UQ: \
            case SIMDE_CMP_TRUE_US: \
-             r.i32 = (int64_t __attribute__((__vector_size__(sizeof(r))))) (a.i32 == a.i32); \
+             r.i32 = (int64_t SIMDE_VECTOR(sizeof(r))) (a.i32 == a.i32); \
              break; \
            default: \
              r.n = _mm256_cmp_ps(a.n, b.n, imm8); \
@@ -2718,7 +2718,7 @@ simde_mm256_div_ps (simde__m256 a, simde__m256 b) {
 #elif defined(SIMDE_SSE_NATIVE)
   r.m128[0].n = _mm_div_ps(a.m128[0].n, b.m128[0].n);
   r.m128[1].n = _mm_div_ps(a.m128[1].n, b.m128[1].n);
-#elif defined(SIMDE__ENABLE_GCC_VEC_EXT)
+#elif defined(SIMDE_VECTOR_SUBSCRIPT_BINARY)
   r.f32 = a.f32 / b.f32;
 #else
   SIMDE__VECTORIZE
@@ -2743,7 +2743,7 @@ simde_mm256_div_pd (simde__m256d a, simde__m256d b) {
 #elif defined(SIMDE_SSE2_NATIVE)
   r.m128d[0].n = _mm_div_pd(a.m128d[0].n, b.m128d[0].n);
   r.m128d[1].n = _mm_div_pd(a.m128d[1].n, b.m128d[1].n);
-#elif defined(SIMDE__ENABLE_GCC_VEC_EXT)
+#elif defined(SIMDE_VECTOR_SUBSCRIPT_BINARY)
   r.f64 = a.f64 / b.f64;
 #else
   SIMDE__VECTORIZE
@@ -3562,7 +3562,7 @@ simde_mm256_mul_ps (simde__m256 a, simde__m256 b) {
 #elif defined(SIMDE_SSE_NATIVE)
   r.m128[0].n = _mm_mul_ps(a.m128[0].n, b.m128[0].n);
   r.m128[1].n = _mm_mul_ps(a.m128[1].n, b.m128[1].n);
-#elif defined(SIMDE__ENABLE_GCC_VEC_EXT)
+#elif defined(SIMDE_VECTOR_SUBSCRIPT_BINARY)
   r.f32 = a.f32 * b.f32;
 #else
   SIMDE__VECTORIZE
@@ -3587,7 +3587,7 @@ simde_mm256_mul_pd (simde__m256d a, simde__m256d b) {
 #elif defined(SIMDE_SSE2_NATIVE)
   r.m128d[0].n = _mm_mul_pd(a.m128d[0].n, b.m128d[0].n);
   r.m128d[1].n = _mm_mul_pd(a.m128d[1].n, b.m128d[1].n);
-#elif defined(SIMDE__ENABLE_GCC_VEC_EXT)
+#elif defined(SIMDE_VECTOR_SUBSCRIPT_BINARY)
   r.f64 = a.f64 * b.f64;
 #else
   SIMDE__VECTORIZE
@@ -3612,7 +3612,7 @@ simde_mm256_or_ps (simde__m256 a, simde__m256 b) {
 #elif defined(SIMDE_SSE_NATIVE)
   r.m128[0].n = _mm_or_ps(a.m128[0].n, b.m128[0].n);
   r.m128[1].n = _mm_or_ps(a.m128[1].n, b.m128[1].n);
-#elif defined(SIMDE__ENABLE_GCC_VEC_EXT)
+#elif defined(SIMDE_VECTOR_SUBSCRIPT_BINARY)
   r.i32f = a.i32f | b.i32f;
 #else
   SIMDE__VECTORIZE
@@ -3637,7 +3637,7 @@ simde_mm256_or_pd (simde__m256d a, simde__m256d b) {
 #elif defined(SIMDE_SSE2_NATIVE)
   r.m128d[0].n = _mm_or_pd(a.m128d[0].n, b.m128d[0].n);
   r.m128d[1].n = _mm_or_pd(a.m128d[1].n, b.m128d[1].n);
-#elif defined(SIMDE__ENABLE_GCC_VEC_EXT)
+#elif defined(SIMDE_VECTOR_SUBSCRIPT_BINARY)
   r.i32f = a.i32f | b.i32f;
 #else
   SIMDE__VECTORIZE
@@ -4458,7 +4458,7 @@ simde_mm256_sub_ps (simde__m256 a, simde__m256 b) {
 #elif defined(SIMDE_SSE_NATIVE)
   r.m128[0].n = _mm_sub_ps(a.m128[0].n, b.m128[0].n);
   r.m128[1].n = _mm_sub_ps(a.m128[1].n, b.m128[1].n);
-#elif defined(SIMDE__ENABLE_GCC_VEC_EXT)
+#elif defined(SIMDE_VECTOR_SUBSCRIPT_BINARY)
   r.f32 = a.f32 - b.f32;
 #else
   SIMDE__VECTORIZE
@@ -4483,7 +4483,7 @@ simde_mm256_sub_pd (simde__m256d a, simde__m256d b) {
 #elif defined(SIMDE_SSE2_NATIVE)
   r.m128d[0].n = _mm_sub_pd(a.m128d[0].n, b.m128d[0].n);
   r.m128d[1].n = _mm_sub_pd(a.m128d[1].n, b.m128d[1].n);
-#elif defined(SIMDE__ENABLE_GCC_VEC_EXT)
+#elif defined(SIMDE_VECTOR_SUBSCRIPT_BINARY)
   r.f64 = a.f64 - b.f64;
 #else
   SIMDE__VECTORIZE
@@ -4576,7 +4576,7 @@ simde_mm256_xor_ps (simde__m256 a, simde__m256 b) {
 #elif defined(SIMDE_SSE_NATIVE)
   r.m128[0].n = _mm_xor_ps(a.m128[0].n, b.m128[0].n);
   r.m128[1].n = _mm_xor_ps(a.m128[1].n, b.m128[1].n);
-#elif defined(SIMDE__ENABLE_GCC_VEC_EXT)
+#elif defined(SIMDE_VECTOR_SUBSCRIPT_BINARY)
   r.i32f = a.i32f ^ b.i32f;
 #else
   SIMDE__VECTORIZE
@@ -4601,7 +4601,7 @@ simde_mm256_xor_pd (simde__m256d a, simde__m256d b) {
 #elif defined(SIMDE_SSE2_NATIVE)
   r.m128d[0].n = _mm_xor_pd(a.m128d[0].n, b.m128d[0].n);
   r.m128d[1].n = _mm_xor_pd(a.m128d[1].n, b.m128d[1].n);
-#elif defined(SIMDE__ENABLE_GCC_VEC_EXT)
+#elif defined(SIMDE_VECTOR_SUBSCRIPT_BINARY)
   r.i32f = a.i32f ^ b.i32f;
 #else
   SIMDE__VECTORIZE

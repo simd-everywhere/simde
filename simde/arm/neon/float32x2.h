@@ -29,8 +29,8 @@
 #define SIMDE__NEON_FLOAT32X2_H
 
 typedef union {
-#if defined(SIMDE__ENABLE_GCC_VEC_EXT)
-  simde_float32     f32 __attribute__((__vector_size__(8)));
+#if defined(SIMDE_VECTOR_SUBSCRIPT)
+  simde_float32     f32 SIMDE_VECTOR(8) SIMDE_MAY_ALIAS;
 #else
   simde_float32     f32[2];
 #endif
