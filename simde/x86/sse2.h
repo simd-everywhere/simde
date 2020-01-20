@@ -3657,17 +3657,15 @@ simde_mm_sll_epi16 (simde__m128i a, simde__m128i count) {
 
 #if defined(SIMDE_SSE2_NATIVE)
   r.n = _mm_sll_epi16(a.n, count.n);
-#elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
-  r.u16 = a.u16 << count.u64[0];
 #else
-  if (count.u64[0] > 15)
-    return simde_mm_setzero_si128();
-  const int s = (int) (count.u64[0]);
-
-  SIMDE__VECTORIZE
-  for (size_t i = 0 ; i < (sizeof(r.u16) / sizeof(r.u16[0])) ; i++) {
-    r.u16[i] = (uint16_t) (a.u16[i] << s);
-  }
+  #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+    r.u16 = (count.u64[0] & ~UINT64_C(15)) ? ((__typeof__(r.u16)) (a.u16 ^ a.u16)) : (a.u16 << count.u64[0]);
+  #else
+    SIMDE__VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r.u16) / sizeof(r.u16[0])) ; i++) {
+      r.u16[i] = (uint16_t) (a.u16[i] << count.u64[0]);
+    }
+  #endif
 #endif
 
   return r;
