@@ -74,7 +74,7 @@ if("${CLOCK_GETTIME_EXISTS}")
 endif()
 
 if("${OPENMP_SIMD_FLAGS}" STREQUAL "")
-  foreach(omp_simd_flag "-fopenmp-simd" "-qopenmp-simd" "-openmp-simd")
+  foreach(omp_simd_flag "-fopenmp-simd" "-qopenmp-simd")
     string (REGEX REPLACE "[^a-zA-Z0-9]+" "_" omp_simd_flag_name "CFLAG_${omp_simd_flag}")
     check_c_compiler_flag("${omp_simd_flag}" "${omp_simd_flag_name}")
 
