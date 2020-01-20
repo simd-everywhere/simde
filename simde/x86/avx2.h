@@ -75,7 +75,7 @@ simde_mm256_add_epi8 (simde__m256i a, simde__m256i b) {
 #elif defined(SIMDE_SSE2_NATIVE)
   r.m128i[0].n = _mm_add_epi8(a.m128i[0].n, b.m128i[0].n);
   r.m128i[1].n = _mm_add_epi8(a.m128i[1].n, b.m128i[1].n);
-#elif defined(SIMDE_VECTOR_SUBSCRIPT_BINARY)
+#elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
   r.i8 = a.i8 + b.i8;
 #else
   SIMDE__VECTORIZE
@@ -100,7 +100,7 @@ simde_mm256_add_epi16 (simde__m256i a, simde__m256i b) {
 #elif defined(SIMDE_SSE2_NATIVE)
   r.m128i[0].n = _mm_add_epi16(a.m128i[0].n, b.m128i[0].n);
   r.m128i[1].n = _mm_add_epi16(a.m128i[1].n, b.m128i[1].n);
-#elif defined(SIMDE_VECTOR_SUBSCRIPT_BINARY)
+#elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
   r.i16 = a.i16 + b.i16;
 #else
   SIMDE__VECTORIZE
@@ -125,7 +125,7 @@ simde_mm256_add_epi32 (simde__m256i a, simde__m256i b) {
 #elif defined(SIMDE_SSE2_NATIVE)
   r.m128i[0].n = _mm_add_epi32(a.m128i[0].n, b.m128i[0].n);
   r.m128i[1].n = _mm_add_epi32(a.m128i[1].n, b.m128i[1].n);
-#elif defined(SIMDE_VECTOR_SUBSCRIPT_BINARY)
+#elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
   r.i32 = a.i32 + b.i32;
 #else
   SIMDE__VECTORIZE
@@ -150,7 +150,7 @@ simde_mm256_add_epi64 (simde__m256i a, simde__m256i b) {
 #elif defined(SIMDE_SSE2_NATIVE)
   r.m128i[0].n = _mm_add_epi64(a.m128i[0].n, b.m128i[0].n);
   r.m128i[1].n = _mm_add_epi64(a.m128i[1].n, b.m128i[1].n);
-#elif defined(SIMDE_VECTOR_SUBSCRIPT_BINARY)
+#elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
   r.i64 = a.i64 + b.i64;
 #else
   SIMDE__VECTORIZE
@@ -236,7 +236,7 @@ simde_mm256_and_si256 (simde__m256i a, simde__m256i b) {
 #elif defined(SIMDE_SSE2_NATIVE)
   r.m128i[0].n = _mm_and_si128(a.m128i[0].n, b.m128i[0].n);
   r.m128i[1].n = _mm_and_si128(a.m128i[1].n, b.m128i[1].n);
-#elif defined(SIMDE_VECTOR_SUBSCRIPT_BINARY)
+#elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
   r.i32f = a.i32f & b.i32f;
 #else
   SIMDE__VECTORIZE
@@ -402,7 +402,7 @@ simde_mm256_cmpgt_epi16 (simde__m256i a, simde__m256i b) {
 #elif defined(SIMDE_SSE2_NATIVE)
   r.m128i[0].n = _mm_cmpgt_epi16(a.m128i[0].n, b.m128i[0].n);
   r.m128i[1].n = _mm_cmpgt_epi16(a.m128i[1].n, b.m128i[1].n);
-#elif defined(SIMDE_VECTOR_SUBSCRIPT_BINARY)
+#elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
   r.i16 = a.i16 > b.i16;
 #else
   SIMDE__VECTORIZE
@@ -427,7 +427,7 @@ simde_mm256_cmpgt_epi32 (simde__m256i a, simde__m256i b) {
 #elif defined(SIMDE_SSE2_NATIVE)
   r.m128i[0].n = _mm_cmpgt_epi32(a.m128i[0].n, b.m128i[0].n);
   r.m128i[1].n = _mm_cmpgt_epi32(a.m128i[1].n, b.m128i[1].n);
-#elif defined(SIMDE_VECTOR_SUBSCRIPT_BINARY)
+#elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
   r.i32 = a.i32 > b.i32;
 #else
   SIMDE__VECTORIZE
@@ -863,7 +863,7 @@ simde_mm256_or_si256 (simde__m256i a, simde__m256i b) {
 #elif defined(SIMDE_SSE2_NATIVE)
   r.m128i[0].n = _mm_or_si128(a.m128i[0].n, b.m128i[0].n);
   r.m128i[1].n = _mm_or_si128(a.m128i[1].n, b.m128i[1].n);
-#elif defined(SIMDE_VECTOR_SUBSCRIPT_BINARY)
+#elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
   r.i32f = a.i32f | b.i32f;
 #else
   SIMDE__VECTORIZE
@@ -1067,7 +1067,7 @@ simde_mm256_sub_epi8 (simde__m256i a, simde__m256i b) {
 #elif defined(SIMDE_SSE2_NATIVE)
   r.m128i[0].n = _mm_sub_epi8(a.m128i[0].n, b.m128i[0].n);
   r.m128i[1].n = _mm_sub_epi8(a.m128i[1].n, b.m128i[1].n);
-#elif defined(SIMDE_VECTOR_SUBSCRIPT_BINARY)
+#elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
   r.i8 = a.i8 - b.i8;
 #else
   SIMDE__VECTORIZE
@@ -1092,7 +1092,7 @@ simde_mm256_sub_epi16 (simde__m256i a, simde__m256i b) {
 #elif defined(SIMDE_SSE2_NATIVE)
   r.m128i[0].n = _mm_sub_epi16(a.m128i[0].n, b.m128i[0].n);
   r.m128i[1].n = _mm_sub_epi16(a.m128i[1].n, b.m128i[1].n);
-#elif defined(SIMDE_VECTOR_SUBSCRIPT_BINARY)
+#elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
   r.i16 = a.i16 - b.i16;
 #else
   SIMDE__VECTORIZE
@@ -1117,7 +1117,7 @@ simde_mm256_sub_epi32 (simde__m256i a, simde__m256i b) {
 #elif defined(SIMDE_SSE2_NATIVE)
   r.m128i[0].n = _mm_sub_epi32(a.m128i[0].n, b.m128i[0].n);
   r.m128i[1].n = _mm_sub_epi32(a.m128i[1].n, b.m128i[1].n);
-#elif defined(SIMDE_VECTOR_SUBSCRIPT_BINARY)
+#elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
   r.i32 = a.i32 - b.i32;
 #else
   SIMDE__VECTORIZE
@@ -1222,7 +1222,7 @@ simde_mm256_xor_si256 (simde__m256i a, simde__m256i b) {
 #elif defined(SIMDE_SSE2_NATIVE)
   r.m128i[0].n = _mm_xor_si128(a.m128i[0].n, b.m128i[0].n);
   r.m128i[1].n = _mm_xor_si128(a.m128i[1].n, b.m128i[1].n);
-#elif defined(SIMDE_VECTOR_SUBSCRIPT_BINARY)
+#elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
   r.i32f = a.i32f ^ b.i32f;
 #else
   SIMDE__VECTORIZE

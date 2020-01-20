@@ -139,7 +139,7 @@
 #  if defined(SIMDE_VECTOR_OPS)
 #    define SIMDE_VECTOR_SUBSCRIPT_OPS
 #  endif
-#  if defined(SIMDE_VECTOR_OPS)
+#  if defined(SIMDE_VECTOR_SCALAR)
 #    define SIMDE_VECTOR_SUBSCRIPT_SCALAR
 #  endif
 #endif
