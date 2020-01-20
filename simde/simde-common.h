@@ -107,11 +107,15 @@
     SIMDE_VECTOR can be assumed if any others are defined, the
     others are independent. */
 #if \
-  HEDLEY_GCC_VERSION_CHECK(4,8,0) || \
-  HEDLEY_INTEL_VERSION_CHECK(16,0,0)
+  HEDLEY_GCC_VERSION_CHECK(4,8,0)
 #  define SIMDE_VECTOR(size) __attribute__((__vector_size__(size)))
 #  define SIMDE_VECTOR_OPS
 #  define SIMDE_VECTOR_SCALAR
+#  define SIMDE_VECTOR_SUBSCRIPT
+#elif HEDLEY_INTEL_VERSION_CHECK(16,0,0)
+#  define SIMDE_VECTOR(size) __attribute__((__vector_size__(size)))
+#  define SIMDE_VECTOR_OPS
+/* ICC only supports SIMDE_VECTOR_SCALAR for constants */
 #  define SIMDE_VECTOR_SUBSCRIPT
 #elif \
   HEDLEY_GCC_VERSION_CHECK(4,1,0) || \
