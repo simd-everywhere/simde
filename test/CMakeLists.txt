@@ -7,6 +7,8 @@ include (ExtraWarningFlags)
 
 enable_testing()
 
+option(BUILD_CPP_TESTS "Build C++ tests" OFF)
+
 if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/munit/munit.c")
   find_program(GIT git)
   if(GIT)
@@ -114,10 +116,14 @@ if(NEED_LIBM)
 endif(NEED_LIBM)
 
 set(TEST_SOURCES_CPP)
-foreach(csource ${TEST_SOURCES_C})
-  configure_file("${csource}" "${CMAKE_CURRENT_BINARY_DIR}/${csource}pp")
-  list(APPEND TEST_SOURCES_CPP "${CMAKE_CURRENT_BINARY_DIR}/${csource}pp")
-endforeach()
+if(BUILD_CPP_TESTS)
+  foreach(csource ${TEST_SOURCES_C})
+    configure_file("${csource}" "${CMAKE_CURRENT_BINARY_DIR}/${csource}pp")
+    list(APPEND TEST_SOURCES_CPP "${CMAKE_CURRENT_BINARY_DIR}/${csource}pp")
+  endforeach()
+
+  add_definitions(-DSIMDE_BUILD_CPP_TESTS)
+endif(BUILD_CPP_TESTS)
 
 foreach(native native emul)
   add_library(simde-test-${native} STATIC ${TEST_SOURCES_C} ${TEST_SOURCES_CPP})

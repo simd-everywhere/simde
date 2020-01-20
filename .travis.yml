@@ -10,6 +10,7 @@ env:
   global:
   - BUILD_TYPE="Coverage"
   - ARCH_FLAGS="-march=native"
+  - BUILD_CPP_TESTS=ON
 
 jobs:
   include:
@@ -82,6 +83,7 @@ jobs:
     - C_COMPILER=pgcc
     - CXX_COMPILER=pgc++
     - ARCH_FLAGS="-m64"
+    - BUILD_CPP_TESTS=OFF
     install:
     - curl 'https://raw.githubusercontent.com/nemequ/pgi-travis/master/install-pgi.sh' | /bin/sh
 
@@ -123,6 +125,7 @@ jobs:
     env:
     - C_COMPILER=icc
     - CXX_COMPILER=icpc
+    - BUILD_CPP_TESTS=OFF
     install:
     - source /opt/intel/inteloneapi/compiler/latest/env/vars.sh
     addons:
@@ -195,6 +198,7 @@ script:
     -DCMAKE_C_FLAGS="${ARCH_FLAGS} ${COMPILER_FLAGS} ${CFLAGS}" \
     -DCMAKE_CXX_FLAGS="${ARCH_FLAGS} ${COMPILER_FLAGS} ${CXXFLAGS}" \
     -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON \
+    -DBUILD_CPP_TESTS=${BUILD_CPP_TESTS} \
     ${CMAKE_ARGS}
 - ${BUILD_WRAPPER} cmake --build .
 - |

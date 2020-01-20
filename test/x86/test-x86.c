@@ -3,20 +3,28 @@
 
 #include <stdio.h>
 
+#if defined(SIMDE_BUILD_CPP_TESTS)
+#define SUITES_PER_ISAX 4
 #define SET_CHILDREN_FOR_ARCH(isax) \
   children[i++] = *SIMDE_TESTS_GENERATE_SYMBOL_FULL(suite, SIMDE_TESTS_CURRENT_ARCH, isax, native, c)(); \
   children[i++] = *SIMDE_TESTS_GENERATE_SYMBOL_FULL(suite, SIMDE_TESTS_CURRENT_ARCH, isax, emul,   c)(); \
   children[i++] = *SIMDE_TESTS_GENERATE_SYMBOL_FULL(suite, SIMDE_TESTS_CURRENT_ARCH, isax, native, cpp)(); \
   children[i++] = *SIMDE_TESTS_GENERATE_SYMBOL_FULL(suite, SIMDE_TESTS_CURRENT_ARCH, isax, emul,   cpp)()
+#else
+#define SUITES_PER_ISAX 2
+#define SET_CHILDREN_FOR_ARCH(isax) \
+  children[i++] = *SIMDE_TESTS_GENERATE_SYMBOL_FULL(suite, SIMDE_TESTS_CURRENT_ARCH, isax, native, c)(); \
+  children[i++] = *SIMDE_TESTS_GENERATE_SYMBOL_FULL(suite, SIMDE_TESTS_CURRENT_ARCH, isax, emul,   c)()
+#endif
 
 MunitSuite*
 simde_tests_x86_get_suite(void) {
-  static MunitSuite children[(10 * 4) + 1];
+  static MunitSuite children[(10 * SUITES_PER_ISAX) + 1];
   static MunitSuite suite = { "/x86", NULL, children, 1, MUNIT_SUITE_OPTION_NONE };
   static const MunitSuite empty = { NULL, NULL, NULL, 1, MUNIT_SUITE_OPTION_NONE };
 
   size_t i = 0;
-  
+
   SET_CHILDREN_FOR_ARCH(mmx);
   SET_CHILDREN_FOR_ARCH(sse);
   SET_CHILDREN_FOR_ARCH(sse2);

@@ -3,12 +3,20 @@
 
 #include <stdio.h>
 
+#if defined(SIMDE_BUILD_CPP_TESTS)
 #define CHILD_GROUP_LEN 4
 #define SET_CHILDREN_FOR_OP(op) \
   children[i++] = *SIMDE_TESTS_GENERATE_SYMBOL_FULL(op, SIMDE_TESTS_CURRENT_ARCH, neon, native, c)  (); \
   children[i++] = *SIMDE_TESTS_GENERATE_SYMBOL_FULL(op, SIMDE_TESTS_CURRENT_ARCH, neon, emul,   c)  (); \
   children[i++] = *SIMDE_TESTS_GENERATE_SYMBOL_FULL(op, SIMDE_TESTS_CURRENT_ARCH, neon, native, cpp)(); \
   children[i++] = *SIMDE_TESTS_GENERATE_SYMBOL_FULL(op, SIMDE_TESTS_CURRENT_ARCH, neon, emul,   cpp)()
+#else
+#define CHILD_GROUP_LEN 2
+#define SET_CHILDREN_FOR_OP(op) \
+  children[i++] = *SIMDE_TESTS_GENERATE_SYMBOL_FULL(op, SIMDE_TESTS_CURRENT_ARCH, neon, native, c)  (); \
+  children[i++] = *SIMDE_TESTS_GENERATE_SYMBOL_FULL(op, SIMDE_TESTS_CURRENT_ARCH, neon, emul,   c)  ()
+
+#endif
 
 MunitSuite*
 simde_tests_arm_neon_get_suite(void) {
