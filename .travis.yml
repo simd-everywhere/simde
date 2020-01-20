@@ -145,7 +145,7 @@ jobs:
     install:
     - sudo dpkg --add-architecture armhf
     - sudo apt-get update
-    - sudo apt-get -y install crossbuild-essential-armhf libc6:armhf
+    - sudo apt-get -y install crossbuild-essential-armhf libc6:armhf libstdc++6:armhf
 
   - name: emscripten
     compiler: emcc
@@ -170,7 +170,6 @@ jobs:
 
   allow_failures:
   - name: s390x
-  - name: arm32
 
 before_install:
 - cat /proc/cpuinfo || true
