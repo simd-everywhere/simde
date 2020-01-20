@@ -984,7 +984,7 @@ simde_mm_cmpeq_pd (simde__m128d a, simde__m128d b) {
 #elif defined(SIMDE_SSE2_NEON)
   r.neon_i32 = vreinterpretq_s32_u32(vceqq_s32(vreinterpretq_s32_f32(b.neon_f32), vreinterpretq_s32_f32(a.neon_f32)));
 #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-  r.i32 = (a.f32 == b.f32);
+  r.i32 = (__typeof__(r.i32)) (a.f32 == b.f32);
 #else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.f64) / sizeof(r.f64[0])) ; i++) {
@@ -2046,7 +2046,7 @@ simde_mm_div_pd (simde__m128d a, simde__m128d b) {
 
 #if defined(SIMDE_SSE2_NATIVE)
   r.n = _mm_div_pd(a.n, b.n);
-#elif defined(SIMDE_VECTOR_SUBSCRIPT_BINARY)
+#elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
   r.f64 = a.f64 / b.f64;
 #else
   SIMDE__VECTORIZE
@@ -3987,7 +3987,7 @@ simde_mm_slli_epi64 (simde__m128i a, const int imm8) {
 #else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i64) / sizeof(r.i64[0])) ; i++) {
-    r.i64[i] = a.i64[i] << (s & 0xff);
+    r.i64[i] = a.i64[i] << (imm8 & 0xff);
   }
 #endif
 
@@ -4036,7 +4036,7 @@ simde_mm_srli_epi32 (simde__m128i a, const int imm8) {
 #else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i32) / sizeof(r.i32[0])) ; i++) {
-    r.u32[i] = a.u32[i] >> (s & 0xff);
+    r.u32[i] = a.u32[i] >> (imm8 & 0xff);
   }
 #endif
 
@@ -4057,12 +4057,15 @@ simde__m128i
 simde_mm_srli_epi64 (simde__m128i a, const int imm8) {
   simde__m128i r;
 
+  if (HEDLEY_UNLIKELY((imm8 & 63) != imm8))
+    return simde_mm_setzero_si128();
+
 #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
-  r.u64 = a.u64 >> (imm8 & 0xff);
+  r.u64 = a.u64 >> imm8;
 #else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i64) / sizeof(r.i64[0])) ; i++) {
-    r.u64[i] = a.u64[i] >> (s & 0xff);
+    r.u64[i] = a.u64[i] >> imm8;
   }
 #endif
 

@@ -350,7 +350,7 @@ simde_mm_cmpeq_ps (simde__m128 a, simde__m128 b) {
 #elif defined(SIMDE_SSE_NEON)
   r.neon_u32 = vceqq_f32(a.neon_f32, b.neon_f32);
 #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-  r.i32 = a.f32 == b.f32;
+  r.f32 = a.f32 == b.f32;
 #else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
@@ -397,7 +397,7 @@ simde_mm_cmpge_ps (simde__m128 a, simde__m128 b) {
 #elif defined(SIMDE_SSE_NEON)
   r.neon_u32 = vcgeq_f32(a.neon_f32, b.neon_f32);
 #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-  r.i32 = a.f32 >= b.f32;
+  r.i32 = (__typeof__(r.i32)) (a.f32 >= b.f32);
 #else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
@@ -444,7 +444,7 @@ simde_mm_cmpgt_ps (simde__m128 a, simde__m128 b) {
 #elif defined(SIMDE_SSE_NEON)
   r.neon_u32 = vcgtq_f32(a.neon_f32, b.neon_f32);
 #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-  r.i32 = a.f32 > b.f32;
+  r.i32 = (__typeof__(r.i32)) (a.f32 > b.f32);
 #else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
@@ -491,7 +491,7 @@ simde_mm_cmple_ps (simde__m128 a, simde__m128 b) {
 #elif defined(SIMDE_SSE_NEON)
   r.neon_u32 = vcleq_f32(a.neon_f32, b.neon_f32);
 #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-  r.i32 = a.f32 <= b.f32;
+  r.i32 = (__typeof__(r.i32)) (a.f32 <= b.f32);
 #else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
@@ -538,7 +538,7 @@ simde_mm_cmplt_ps (simde__m128 a, simde__m128 b) {
 #elif defined(SIMDE_SSE_NEON)
   r.neon_u32 = vcltq_f32(a.neon_f32, b.neon_f32);
 #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-  r.i32 = a.f32 < b.f32;
+  r.i32 = (__typeof__(r.i32)) (a.f32 < b.f32);
 #else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
@@ -585,7 +585,7 @@ simde_mm_cmpneq_ps (simde__m128 a, simde__m128 b) {
 #elif defined(SIMDE_SSE_NEON)
   r.neon_u32 = vmvnq_u32(vceqq_f32(a.neon_f32, b.neon_f32));
 #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-  r.i32 = a.f32 != b.f32;
+  r.i32 = (__typeof__(r.i32)) (a.f32 != b.f32);
 #else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
