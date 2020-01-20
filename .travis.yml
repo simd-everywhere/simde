@@ -170,6 +170,7 @@ jobs:
 
   allow_failures:
   - name: s390x
+  - name: windows
 
 before_install:
 - cat /proc/cpuinfo || true
