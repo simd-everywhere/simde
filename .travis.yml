@@ -4,7 +4,7 @@ cache: ccache
 dist: bionic
 branches:
   except:
-    - /^(wip\/)?(appveyor|msvc|mingw|windows)(\-.+)?$/
+    - /^(wip\/)?(appveyor)(\-.+)?$/
 
 env:
   global:
