@@ -567,17 +567,17 @@ test_simde_mm_xxx_epi64(const MunitParameter params[], void* data) {
     munit_rand_memory(sizeof(a), (uint8_t*) &a);
     munit_rand_memory(sizeof(b), (uint8_t*) &b);
 
-    r = simde_mm_xxx_epu64(a, b);
+    r = simde_mm_xxx_epi64(a, b);
 
-    printf("    { simde_mm_set_epu64x(UINT64_C(%19"PRIu64"), UINT64_C(%19"PRIu64")),\n", a.u64[1], a.u64[0]);
-    printf("      simde_mm_set_epu64x(UINT64_C(%19"PRIu64"), UINT64_C(%19"PRIu64")),\n", b.u64[1], b.u64[0]);
-    printf("      simde_mm_set_epu64x(UINT64_C(%19"PRIu64"), UINT64_C(%19"PRIu64")) },\n", r.u64[1], r.u64[0]);
+    printf("    { simde_mm_set_epi64x(INT64_C(%19" PRId64 "), INT64_C(%19" PRId64 ")),\n", a.i64[1], a.i64[0]);
+    printf("      simde_mm_set_epi64x(INT64_C(%19" PRId64 "), INT64_C(%19" PRId64 ")),\n", b.i64[1], b.i64[0]);
+    printf("      simde_mm_set_epi64x(INT64_C(%19" PRId64 "), INT64_C(%19" PRId64 ")) },\n", r.i64[1], r.i64[0]);
   }
   return MUNIT_FAIL;
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
-    simde__m128i r = simde_mm_xxx_epu64(test_vec[i].a, test_vec[i].b);
-    simde_assert_m128i_u64(r, ==, test_vec[i].r);
+    simde__m128i r = simde_mm_xxx_epi64(test_vec[i].a, test_vec[i].b);
+    simde_assert_m128i_i64(r, ==, test_vec[i].r);
   }
 
   return MUNIT_OK;
