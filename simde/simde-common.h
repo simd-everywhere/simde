@@ -106,57 +106,32 @@
     
     SIMDE_VECTOR can be assumed if any others are defined, the
     others are independent. */
-#if \
-  HEDLEY_GCC_VERSION_CHECK(4,8,0)
-#  define SIMDE_VECTOR(size) __attribute__((__vector_size__(size)))
-#  define SIMDE_VECTOR_OPS
-#  define SIMDE_VECTOR_SCALAR
-#  define SIMDE_VECTOR_SUBSCRIPT
-#elif HEDLEY_INTEL_VERSION_CHECK(16,0,0)
-#  define SIMDE_VECTOR(size) __attribute__((__vector_size__(size)))
-#  define SIMDE_VECTOR_OPS
-/* ICC only supports SIMDE_VECTOR_SCALAR for constants */
-#  define SIMDE_VECTOR_SUBSCRIPT
-#elif \
-  HEDLEY_GCC_VERSION_CHECK(4,1,0) || \
-  HEDLEY_INTEL_VERSION_CHECK(13,0,0)
-#  define SIMDE_VECTOR(size) __attribute__((__vector_size__(size)))
-#  define SIMDE_VECTOR_OPS
-#elif HEDLEY_SUNPRO_VERSION_CHECK(5,12,0)
-#  define SIMDE_VECTOR(size) __attribute__((__vector_size__(size)))
-#elif HEDLEY_HAS_ATTRIBUTE(vector_size)
-#  define SIMDE_VECTOR(size) __attribute__((__vector_size__(size)))
-#  define SIMDE_VECTOR_OPS
-#  define SIMDE_VECTOR_SUBSCRIPT
-#  if HEDLEY_HAS_ATTRIBUTE(diagnose_if) /* clang 4.0 */
+#if !defined(SIMDE_NO_VECTOR)
+#  if \
+    HEDLEY_GCC_VERSION_CHECK(4,8,0)
+#    define SIMDE_VECTOR(size) __attribute__((__vector_size__(size)))
+#    define SIMDE_VECTOR_OPS
 #    define SIMDE_VECTOR_SCALAR
-#  endif
-#endif
-
-/* Since we currently require SUBSCRIPT before using a vector in a
-   union, we define these as dependencies of SUBSCRIPT.  They are
-   likely to disappear in the future, once SIMDe learns how to make
-   use of vectors without using the union members.  Do not use them
-   in your code unless you're okay with it breaking when SIMDe
-   changes. */
-#if defined(SIMDE_VECTOR_SUBSCRIPT)
-#  if defined(SIMDE_VECTOR_OPS)
-#    define SIMDE_VECTOR_SUBSCRIPT_OPS
-#  endif
-#  if defined(SIMDE_VECTOR_SCALAR)
-#    define SIMDE_VECTOR_SUBSCRIPT_SCALAR
-#  endif
-#endif
-
-#if \
-  HEDLEY_HAS_ATTRIBUTE(vector_size) || \
-  HEDLEY_GCC_VERSION_CHECK(4,6,0)
-#  define SIMDE__ENABLE_GCC_VEC_EXT
-/* clang had a bug (present in 3.5 at least) where it wouldn't
-   shift by a scalar value.  I have no idea how to detect when
-   it was fixed, so we just blacklist clang from certain functions. */
-#  if !defined(__clang__) && !defined(__INTEL_COMPILER)
-#    define SIMDE__ENABLE_GCC_VEC_EXT_SHIFT_BY_SCALAR
+#    define SIMDE_VECTOR_SUBSCRIPT
+#  elif HEDLEY_INTEL_VERSION_CHECK(16,0,0)
+#    define SIMDE_VECTOR(size) __attribute__((__vector_size__(size)))
+#    define SIMDE_VECTOR_OPS
+/* ICC only supports SIMDE_VECTOR_SCALAR for constants */
+#    define SIMDE_VECTOR_SUBSCRIPT
+#  elif \
+    HEDLEY_GCC_VERSION_CHECK(4,1,0) || \
+    HEDLEY_INTEL_VERSION_CHECK(13,0,0)
+#    define SIMDE_VECTOR(size) __attribute__((__vector_size__(size)))
+#    define SIMDE_VECTOR_OPS
+#  elif HEDLEY_SUNPRO_VERSION_CHECK(5,12,0)
+#    define SIMDE_VECTOR(size) __attribute__((__vector_size__(size)))
+#  elif HEDLEY_HAS_ATTRIBUTE(vector_size)
+#    define SIMDE_VECTOR(size) __attribute__((__vector_size__(size)))
+#    define SIMDE_VECTOR_OPS
+#    define SIMDE_VECTOR_SUBSCRIPT
+#    if HEDLEY_HAS_ATTRIBUTE(diagnose_if) /* clang 4.0 */
+#      define SIMDE_VECTOR_SCALAR
+#    endif
 #  endif
 
 /* GCC and clang have built-in functions to handle shuffling of
@@ -174,8 +149,23 @@
 #    endif
 #  endif
 
-#  if HEDLEY_GCC_HAS_BUILTIN(__builtin_convertvector,9,0,0)
+#  if HEDLEY_HAS_BUILTIN(__builtin_convertvector) || HEDLEY_GCC_VERSION_CHECK(9,0,0)
 #    define SIMDE__CONVERT_VECTOR(to, from) ((to) = __builtin_convertvector((from), __typeof__(to)))
+#  endif
+#endif
+
+/* Since we currently require SUBSCRIPT before using a vector in a
+   union, we define these as dependencies of SUBSCRIPT.  They are
+   likely to disappear in the future, once SIMDe learns how to make
+   use of vectors without using the union members.  Do not use them
+   in your code unless you're okay with it breaking when SIMDe
+   changes. */
+#if defined(SIMDE_VECTOR_SUBSCRIPT)
+#  if defined(SIMDE_VECTOR_OPS)
+#    define SIMDE_VECTOR_SUBSCRIPT_OPS
+#  endif
+#  if defined(SIMDE_VECTOR_SCALAR)
+#    define SIMDE_VECTOR_SUBSCRIPT_SCALAR
 #  endif
 #endif
 
@@ -404,6 +394,36 @@ HEDLEY_STATIC_ASSERT(sizeof(simde_float64) == 8, "Unable to find 64-bit floating
 #  define SIMDE_DIAGNOSTIC_DISABLE_UNINITIALIZED_ _Pragma("warning(disable:592)")
 #elif HEDLEY_MSVC_VERSION_CHECK(19,0,0)
 #  define SIMDE_DIAGNOSTIC_DISABLE_UNINITIALIZED_ __pragma(warning(disable:4700))
+#endif
+
+#if HEDLEY_GCC_VERSION_CHECK(8,0,0)
+#  define SIMDE_DIAGNOSTIC_DISABLE_PSABI_ _Pragma("GCC diagnostic ignored \"-Wpsabi\"")
+#else
+#  define SIMDE_DIAGNOSTIC_DISABLE_PSABI_
+#endif
+
+#if \
+  HEDLEY_HAS_WARNING("-Wtautological-compare") || \
+  HEDLEY_GCC_VERSION_CHECK(8,0,0)
+#  if defined(__cplusplus) && (__cplusplus >= 201103L)
+#    define SIMDE_TAUTOLOGICAL_COMPARE_(expr) \
+      (([](auto expr_){ \
+        HEDLEY_DIAGNOSTIC_PUSH \
+        _Pragma("GCC diagnostic ignored \"-Wtautological-compare\"") \
+        return (expr_); \
+        HEDLEY_DIAGNOSTIC_POP \
+      })(expr))
+#  else
+#    define SIMDE_TAUTOLOGICAL_COMPARE_(expr) \
+       (__extension__ ({ \
+         HEDLEY_DIAGNOSTIC_PUSH \
+         _Pragma("GCC diagnostic ignored \"-Wtautological-compare\"") \
+         (expr); \
+         HEDLEY_DIAGNOSTIC_POP \
+       }))
+#  endif
+#else
+#  define SIMDE_TAUTOLOGICAL_COMPARE_(expr) (expr)
 #endif
 
 /* Sometimes we run into problems with specific versions of compilers
