@@ -2982,8 +2982,7 @@ test_simde_mm_cvtpd_epi32(const MunitParameter params[], void* data) {
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m128i r = simde_mm_cvtpd_epi32(test_vec[i].a);
-    for (size_t j = 0 ; j < sizeof(test_vec[i].a.f64) / sizeof(test_vec[i].a.f64[0]) ; j++)
-      simde_assert_int32_close(r.i32[j], test_vec[i].r.i32[j]);
+    simde_assert_m128i_i32_close(r, test_vec[i].r, 1);
   }
 
   return MUNIT_OK;
@@ -3018,8 +3017,7 @@ test_simde_mm_cvtpd_pi32(const MunitParameter params[], void* data) {
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m64 r = simde_mm_cvtpd_pi32(test_vec[i].a);
-    for (size_t j = 0 ; j < sizeof(test_vec[i].a.f64) / sizeof(test_vec[i].a.f64[0]) ; j++)
-      simde_assert_int32_close(r.i32[j], test_vec[i].r.i32[j]);
+    simde_assert_m64_i32_close(r, test_vec[i].r, 1);
   }
 
   return MUNIT_OK;

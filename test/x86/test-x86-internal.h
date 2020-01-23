@@ -117,6 +117,50 @@
 #define simde_assert_m256d_close(a, b, precision) \
   simde_assert_vec_close(a, b, precision, simde__m256d, f64)
 
+/* Assert that the integer values in each vector are approximately equal. */
+#define simde_assert_vec_i_close(a, b, precision, T, accessor, fmt) do { \
+      const T simde_a_ = (a), simde_b_ = (b); \
+      for (int simde_i_ = 0 ; simde_i_ < (int) (sizeof(a.accessor) / sizeof(a.accessor[0])) ; simde_i_++) { \
+        if (!((simde_a_.accessor[simde_i_] <= (simde_b_.accessor[simde_i_] + precision)) && (simde_a_.accessor[simde_i_] >= (simde_b_.accessor[simde_i_] - precision)))) { \
+          munit_errorf("assertion failed: " #a "." #accessor "[%d] " SIMDE_ALMOST_EQUAL_TO " " #b "." #accessor "[%d] (%" fmt " " SIMDE_ALMOST_EQUAL_TO " %" fmt ")", \
+              simde_i_, simde_i_, simde_a_.accessor[simde_i_], simde_b_.accessor[simde_i_]); \
+        } \
+      } \
+    } while(0)
+
+#define simde_assert_m64_i8_close(a, b, precision) \
+  simde_assert_vec_i_close(a, b, precision, simde__m64, i8, PRId8)
+#define simde_assert_m64_i16_close(a, b, precision) \
+  simde_assert_vec_i_close(a, b, precision, simde__m64, i16, PRId16)
+#define simde_assert_m64_i32_close(a, b, precision) \
+  simde_assert_vec_i_close(a, b, precision, simde__m64, i32, PRId32)
+#define simde_assert_m64_i64_close(a, b, precision) \
+  simde_assert_vec_i_close(a, b, precision, simde__m64, i64, PRId64)
+#define simde_assert_m64_u8_close(a, b, precision) \
+  simde_assert_vec_i_close(a, b, precision, simde__m64, u8, PRIu8)
+#define simde_assert_m64_u16_close(a, b, precision) \
+  simde_assert_vec_i_close(a, b, precision, simde__m64, u16, PRIu16)
+#define simde_assert_m64_u32_close(a, b, precision) \
+  simde_assert_vec_i_close(a, b, precision, simde__m64, u32, PRIu32)
+#define simde_assert_m64_u64_close(a, b, precision) \
+  simde_assert_vec_i_close(a, b, precision, simde__m64, u64, PRIu64)
+#define simde_assert_m128i_i8_close(a, b, precision) \
+  simde_assert_vec_i_close(a, b, precision, simde__m128i, i8, PRId8)
+#define simde_assert_m128i_i16_close(a, b, precision) \
+  simde_assert_vec_i_close(a, b, precision, simde__m128i, i16, PRId16)
+#define simde_assert_m128i_i32_close(a, b, precision) \
+  simde_assert_vec_i_close(a, b, precision, simde__m128i, i32, PRId32)
+#define simde_assert_m128i_i64_close(a, b, precision) \
+  simde_assert_vec_i_close(a, b, precision, simde__m128i, i64, PRId64)
+#define simde_assert_m128i_u8_close(a, b, precision) \
+  simde_assert_vec_i_close(a, b, precision, simde__m128i, u8, PRIu8)
+#define simde_assert_m128i_u16_close(a, b, precision) \
+  simde_assert_vec_i_close(a, b, precision, simde__m128i, u16, PRIu16)
+#define simde_assert_m128i_u32_close(a, b, precision) \
+  simde_assert_vec_i_close(a, b, precision, simde__m128i, u32, PRIu32)
+#define simde_assert_m128i_u64_close(a, b, precision) \
+  simde_assert_vec_i_close(a, b, precision, simde__m128i, u64, PRIu64)
+
 HEDLEY_BEGIN_C_DECLS
 
 #define SIMDE_TESTS_GENERATE_SUITE_GETTERS(isax) \

@@ -2691,7 +2691,7 @@ test_simde_mm_loadh_pi(const MunitParameter params[], void* data) {
   };
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
-    simde__m128 r = simde_mm_loadh_pi(test_vec[i].a, HEDLEY_REINTERPRET_CAST(simde__m64*, test_vec[i].b));
+    simde__m128 r = simde_mm_loadh_pi(test_vec[i].a, HEDLEY_REINTERPRET_CAST(simde__m64 const*, test_vec[i].b));
     simde_assert_m128_close(r, test_vec[i].r, 1);
   }
 
@@ -2735,7 +2735,7 @@ test_simde_mm_loadl_pi(const MunitParameter params[], void* data) {
   };
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
-    simde__m128 r = simde_mm_loadl_pi(test_vec[i].a, HEDLEY_REINTERPRET_CAST(simde__m64*, test_vec[i].b));
+    simde__m128 r = simde_mm_loadl_pi(test_vec[i].a, HEDLEY_REINTERPRET_CAST(simde__m64 const*, test_vec[i].b));
     simde_assert_m128_close(r, test_vec[i].r, 1);
   }
 
