@@ -409,14 +409,16 @@ HEDLEY_STATIC_ASSERT(sizeof(simde_float64) == 8, "Unable to find 64-bit floating
 #if \
   HEDLEY_HAS_WARNING("-Wtautological-compare") || \
   HEDLEY_GCC_VERSION_CHECK(8,0,0)
-#  if defined(__cplusplus) && (__cplusplus >= 201103L)
-#    define SIMDE_TAUTOLOGICAL_COMPARE_(expr) \
-      (([](auto expr_){ \
-        HEDLEY_DIAGNOSTIC_PUSH \
-        _Pragma("GCC diagnostic ignored \"-Wtautological-compare\"") \
-        return (expr_); \
-        HEDLEY_DIAGNOSTIC_POP \
-      })(expr))
+#  if defined(__cplusplus)
+#    if (__cplusplus >= 201402L)
+#      define SIMDE_TAUTOLOGICAL_COMPARE_(expr) \
+        (([](auto expr_){ \
+          HEDLEY_DIAGNOSTIC_PUSH \
+          _Pragma("GCC diagnostic ignored \"-Wtautological-compare\"") \
+          return (expr_); \
+          HEDLEY_DIAGNOSTIC_POP \
+        })(expr))
+#    endif
 #  else
 #    define SIMDE_TAUTOLOGICAL_COMPARE_(expr) \
        (__extension__ ({ \
@@ -424,9 +426,10 @@ HEDLEY_STATIC_ASSERT(sizeof(simde_float64) == 8, "Unable to find 64-bit floating
          _Pragma("GCC diagnostic ignored \"-Wtautological-compare\"") \
          (expr); \
          HEDLEY_DIAGNOSTIC_POP \
-       }))
+     }))
 #  endif
-#else
+#endif
+#if !defined(SIMDE_TAUTOLOGICAL_COMPARE_)
 #  define SIMDE_TAUTOLOGICAL_COMPARE_(expr) (expr)
 #endif
 
