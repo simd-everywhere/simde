@@ -134,11 +134,11 @@
 #    endif
 #  endif
 
-/* GCC and clang have built-in functions to handle shuffling of
-   vectors, but the implementations are slightly different.  This
-   macro is just an abstraction over them.  Note that elem_size is in
-   bits but vec_size is in bytes. */
-#  if !defined(SIMDE_NO_SHUFFLE_VECTOR)
+/* GCC and clang have built-in functions to handle shuffling and
+   converting of vectors, but the implementations are slightly
+   different.  This macro is just an abstraction over them.  Note that
+   elem_size is in bits but vec_size is in bytes. */
+#  if !defined(SIMDE_NO_SHUFFLE_VECTOR) && defined(SIMDE_VECTOR_SUBSCRIPT)
 #    if HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
 #      define SIMDE__SHUFFLE_VECTOR(elem_size, vec_size, a, b, ...) __builtin_shufflevector(a, b, __VA_ARGS__)
 #    elif HEDLEY_GCC_HAS_BUILTIN(__builtin_shuffle,4,7,0) && !defined(__INTEL_COMPILER)
@@ -149,8 +149,12 @@
 #    endif
 #  endif
 
-#  if HEDLEY_HAS_BUILTIN(__builtin_convertvector) || HEDLEY_GCC_VERSION_CHECK(9,0,0)
-#    define SIMDE__CONVERT_VECTOR(to, from) ((to) = __builtin_convertvector((from), __typeof__(to)))
+/* TODO: this actually works on XL C/C++ without SIMDE_VECTOR_SUBSCRIPT
+   but the code needs to be refactored a bit to take advantage. */
+#  if !defined(SIMDE_NO_CONVERT_VECTOR) && defined(SIMDE_VECTOR_SUBSCRIPT)
+#    if HEDLEY_HAS_BUILTIN(__builtin_convertvector) || HEDLEY_GCC_VERSION_CHECK(9,0,0)
+#      define SIMDE__CONVERT_VECTOR(to, from) ((to) = __builtin_convertvector((from), __typeof__(to)))
+#    endif
 #  endif
 #endif
 
