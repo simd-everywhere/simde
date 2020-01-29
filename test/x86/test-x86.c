@@ -38,7 +38,7 @@ simde_tests_x86_get_suite(void) {
 
   children[i++] = empty;
 
-  munit_assert_size(i, ==, sizeof(children) / sizeof(children[0]));
+  munit_assert_size(i, <=, sizeof(children) / sizeof(children[0]));
 
   return &suite;
 }

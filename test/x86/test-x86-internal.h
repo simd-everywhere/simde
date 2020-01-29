@@ -6,8 +6,9 @@
 /* Assert that two vectors are bit-identical without worring about the
    underlying type. */
 #define simde_assert_vec_equal(a, b, T) do { \
-    for (int simde_i_ = 0 ; simde_i_ < (int) (sizeof(a.u32f) / sizeof(a.u32f[0])) ; simde_i_++) { \
-      T simde_a_ = (a), simde_b_ = (b); \
+    const T##_private simde_a_ = T##_to_private(a); \
+    const T##_private simde_b_ = T##_to_private(b); \
+    for (int simde_i_ = 0 ; simde_i_ < (int) (sizeof(simde_a_.u32f) / sizeof(simde_a_.u32f[0])) ; simde_i_++) { \
       if (HEDLEY_UNLIKELY(simde_a_.u32f[simde_i_] != simde_b_.u32f[simde_i_])) { \
         munit_errorf("assertion failed: " #a ".u32f[%d] (%" PRIxFAST32 ") != " #b ".u32f[%d] (%" PRIxFAST32 ")", \
             simde_i_, simde_a_.u32f[simde_i_], \
@@ -32,8 +33,9 @@
 
 /* Assert that every integer in two vectors are equal */
 #define simde_assert_vec_i(a, op, b, T, accessor, fmt) do { \
-      const T simde_a_ = (a), simde_b_ = (b); \
-      for (int simde_i_ = 0 ; simde_i_ < (int) (sizeof(a.accessor) / sizeof(a.accessor[0])) ; simde_i_++) { \
+      const T##_private simde_a_ = T##_to_private(a); \
+      const T##_private simde_b_ = T##_to_private(b); \
+      for (int simde_i_ = 0 ; simde_i_ < (int) (sizeof(simde_a_.accessor) / sizeof(simde_a_.accessor[0])) ; simde_i_++) { \
         if (HEDLEY_UNLIKELY(!(simde_a_.accessor[simde_i_] op simde_b_.accessor[simde_i_]))) { \
           munit_errorf("assertion failed: " #a "." #accessor "[%d] " #op " " #b "." #accessor "[%d] (%" fmt " " #op " %" fmt ")", \
               simde_i_, simde_i_, simde_a_.accessor[simde_i_], simde_b_.accessor[simde_i_]); \
@@ -97,8 +99,9 @@
 
 /* Assert that the floating point values in each vector are approximately equal. */
 #define simde_assert_vec_close(a, b, precision, T, accessor) do { \
-      const T simde_a_ = (a), simde_b_ = (b); \
-      for (int simde_i_ = 0 ; simde_i_ < (int) (sizeof(a.accessor) / sizeof(a.accessor[0])) ; simde_i_++) { \
+      const T##_private simde_a_ = T##_to_private(a); \
+      const T##_private simde_b_ = T##_to_private(b); \
+      for (int simde_i_ = 0 ; simde_i_ < (int) (sizeof(simde_a_.accessor) / sizeof(simde_a_.accessor[0])) ; simde_i_++) { \
         if (HEDLEY_UNLIKELY(!((simde_a_.accessor[simde_i_] < (simde_b_.accessor[simde_i_] + 1e-##precision)) && (simde_a_.accessor[simde_i_] > (simde_b_.accessor[simde_i_] - 1e-##precision))))) { \
           munit_errorf("assertion failed: " #a "." #accessor "[%d] " SIMDE_ALMOST_EQUAL_TO " " #b "." #accessor "[%d] (%." #precision "f" " " SIMDE_ALMOST_EQUAL_TO " %." #precision "f)", \
               simde_i_, simde_i_, simde_a_.accessor[simde_i_], simde_b_.accessor[simde_i_]); \
@@ -119,8 +122,9 @@
 
 /* Assert that the integer values in each vector are approximately equal. */
 #define simde_assert_vec_i_close(a, b, precision, T, accessor, fmt) do { \
-      const T simde_a_ = (a), simde_b_ = (b); \
-      for (int simde_i_ = 0 ; simde_i_ < (int) (sizeof(a.accessor) / sizeof(a.accessor[0])) ; simde_i_++) { \
+      const T##_private simde_a_ = T##_to_private(a); \
+      const T##_private simde_b_ = T##_to_private(b); \
+      for (int simde_i_ = 0 ; simde_i_ < (int) (sizeof(simde_a_.accessor) / sizeof(simde_a_.accessor[0])) ; simde_i_++) { \
         if (!((simde_a_.accessor[simde_i_] <= (simde_b_.accessor[simde_i_] + precision)) && (simde_a_.accessor[simde_i_] >= (simde_b_.accessor[simde_i_] - precision)))) { \
           munit_errorf("assertion failed: " #a "." #accessor "[%d] " SIMDE_ALMOST_EQUAL_TO " " #b "." #accessor "[%d] (%" fmt " " SIMDE_ALMOST_EQUAL_TO " %" fmt ")", \
               simde_i_, simde_i_, simde_a_.accessor[simde_i_], simde_b_.accessor[simde_i_]); \

@@ -11,6 +11,8 @@ env:
   - BUILD_TYPE="Coverage"
   - ARCH_FLAGS="-march=native"
   - BUILD_CPP_TESTS=ON
+  - CMAKE_GENERATOR='Unix Makefiles'
+  - RUN_TESTS=true
 
 jobs:
   include:
@@ -43,13 +45,13 @@ jobs:
         packages:
         - clang-9
 
-  - name: "gcc-8 i686"
+  - name: "gcc-8 x86"
     arch: amd64
     compiler: gcc-8
     env:
     - C_COMPILER=gcc-8
     - CXX_COMPILER=g++-8
-    - ARCH_FLAGS="-march=i686"
+    - ARCH_FLAGS="-m32"
     addons:
       apt:
         packages:
@@ -101,16 +103,27 @@ jobs:
     - C_COMPILER=xlc
     - CXX_COMPILER=xlc++
 
-  - name: s390x
-    arch: s390x
-
   - name: osx
     os: osx
 
-  - name: windows
+  - name: msvc x86
     os: windows
     env:
     - ARCH_FLAGS=""
+    - CMAKE_GENERATOR="Visual Studio 15 2017"
+
+  - name: msvc x86_64
+    os: windows
+    env:
+    - ARCH_FLAGS=""
+    - CMAKE_GENERATOR="Visual Studio 15 2017 Win64"
+
+  - name: msvc arm
+    os: windows
+    env:
+    - ARCH_FLAGS=""
+    - CMAKE_GENERATOR="Visual Studio 15 2017 ARM"
+    - RUN_TESTS=false
 
   - name: "gcc-7 amd64"
     compiler: gcc
@@ -168,9 +181,8 @@ jobs:
       emsdk/emsdk activate latest
       source emsdk/emsdk_env.sh
 
-  allow_failures:
-  - name: s390x
-  - name: windows
+  # - name: s390x
+  #   arch: s390x
 
 before_install:
 - cat /proc/cpuinfo || true
@@ -194,6 +206,7 @@ script:
 - mkdir "${TRAVIS_BUILD_DIR}/test/build" && cd "${TRAVIS_BUILD_DIR}/test/build"
 - |
   ${CONFIGURE_WRAPPER} cmake .. \
+    -G "${CMAKE_GENERATOR}" \
     -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
     -DCMAKE_C_FLAGS="${ARCH_FLAGS} ${COMPILER_FLAGS} ${CFLAGS}" \
     -DCMAKE_CXX_FLAGS="${ARCH_FLAGS} ${COMPILER_FLAGS} ${CXXFLAGS}" \
@@ -202,10 +215,12 @@ script:
     ${CMAKE_ARGS}
 - ${BUILD_WRAPPER} cmake --build .
 - |
-  if [ "windows" != "${TRAVIS_OS_NAME}" ]; then
-    ${TEST_WRAPPER} ./run-tests${EXECUTABLE_EXTENSION}
-  else
-    ctest --output-on-failure --interactive-debug-mode 0 -C Debug -V
+  if [ "${RUN_TESTS}" = "true" ]; then
+    if [ "windows" != "${TRAVIS_OS_NAME}" ]; then
+      ${TEST_WRAPPER} ./run-tests${EXECUTABLE_EXTENSION}
+    else
+      ctest --output-on-failure --interactive-debug-mode 0 -C Debug -V
+    fi
   fi
 
 after_success:

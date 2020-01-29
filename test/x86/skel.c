@@ -16,12 +16,12 @@ test_simde_mm_xxx_epi8(const MunitParameter params[], void* data) {
 
   printf("\n");
   for (size_t i = 0 ; i < (sizeof(test_vec) / (sizeof(test_vec[0]))) ; i++) {
-    simde__m128i a, b, r;
+    simde__m128i_private a, b, r;
 
     munit_rand_memory(sizeof(a), (uint8_t*) &a);
     munit_rand_memory(sizeof(b), (uint8_t*) &b);
 
-    r = simde_mm_xxx_epi8(a, b);
+    r = simde__m128i_to_private(simde_mm_xxx_epi8(simde__m128i_from_private(a), simde__m128i_from_private(b)));
 
     printf("    { simde_mm_set_epi8(INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "),\n"
 	   "                        INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "),\n"
@@ -67,12 +67,12 @@ test_simde_mm_xxx_epi16(const MunitParameter params[], void* data) {
 
   printf("\n");
   for (size_t i = 0 ; i < (sizeof(test_vec) / (sizeof(test_vec[0]))) ; i++) {
-    simde__m128i a, b, r;
+    simde__m128i_private a, b, r;
 
     munit_rand_memory(sizeof(a), (uint8_t*) &a);
     munit_rand_memory(sizeof(b), (uint8_t*) &b);
 
-    r = simde_mm_xxx_epi16(a, b);
+    r = simde__m128i_to_private(simde_mm_xxx_epi16(simde__m128i_from_private(a), simde__m128i_from_private(b)));
 
     printf("    { simde_mm_set_epi16(INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 "),\n"
 	   "                         INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 ")),\n",
@@ -109,12 +109,12 @@ test_simde_mm_xxx_epi32(const MunitParameter params[], void* data) {
 
   printf("\n");
   for (size_t i = 0 ; i < (sizeof(test_vec) / (sizeof(test_vec[0]))) ; i++) {
-    simde__m128i a, b, r;
+    simde__m128i_private a, b, r;
 
     munit_rand_memory(sizeof(a), (uint8_t*) &a);
     munit_rand_memory(sizeof(b), (uint8_t*) &b);
 
-    r = simde_mm_xxx_epi32(a, b);
+    r = simde__m128i_to_private(simde_mm_xxx_epi32(simde__m128i_from_private(a), simde__m128i_from_private(b)));
 
     printf("    { simde_mm_set_epi32(INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 ")),\n",
   	   a.i32[3], a.i32[2], a.i32[1], a.i32[0]);
@@ -148,12 +148,12 @@ test_simde_mm_xxx_epi64(const MunitParameter params[], void* data) {
 
   printf("\n");
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
-    simde__m128i a, b, r;
+    simde__m128i_private a, b, r;
 
     munit_rand_memory(sizeof(a), (uint8_t*) &a);
     munit_rand_memory(sizeof(b), (uint8_t*) &b);
 
-    r = simde_mm_xxx_epi64(a, b);
+    r = simde__m128i_to_private(simde_mm_xxx_epi64(simde__m128i_from_private(a), simde__m128i_from_private(b)));
 
     printf("    { simde_mm_set_epi64x(INT64_C(%20" PRId64 "), INT64_C(%20" PRId64 ")),\n", a.i64[1], a.i64[0]);
     printf("      simde_mm_set_epi64x(INT64_C(%20" PRId64 "), INT64_C(%20" PRId64 ")),\n", b.i64[1], b.i64[0]);
@@ -184,14 +184,14 @@ test_simde_mm_xxx_ps(const MunitParameter params[], void* data) {
 
   printf("\n");
   for (size_t i = 0 ; i < (sizeof(test_vec) / (sizeof(test_vec[0]))) ; i++) {
-    simde__m128 a, b, r;
+    simde__m128_private a, b, r;
 
     for (size_t j = 0 ; j < sizeof(simde__m128) / sizeof(simde_float32) ; j++) {
       a.f32[j] = (simde_float32) (round(random_f64_range(-1000.0, 1000.0) * 100.0) / 100.0);
       b.f32[j] = (simde_float32) (round(random_f64_range(-1000.0, 1000.0) * 100.0) / 100.0);
     }
 
-    r = simde_mm_xxx_ps(a, b);
+    r = simde__m128_to_private(simde_mm_xxx_ps(simde__m128_from_private(a), simde__m128_from_private(b)));
 
     printf("    { simde_mm_set_ps(SIMDE_FLOAT32_C(%*.2f), SIMDE_FLOAT32_C(%*.2f), SIMDE_FLOAT32_C(%*.2f), SIMDE_FLOAT32_C(%*.2f)),\n",
 	   9, a.f32[3], 9, a.f32[2], 9, a.f32[1], 9, a.f32[0]);
@@ -225,18 +225,56 @@ test_simde_mm_xxx_pd(const MunitParameter params[], void* data) {
 
   printf("\n");
   for (size_t i = 0 ; i < (sizeof(test_vec) / (sizeof(test_vec[0]))) ; i++) {
-    simde__m128d a, b, r;
+    simde__m128d_private a, b, r;
 
     for (size_t j = 0 ; j < sizeof(simde__m128) / sizeof(simde_float64) ; j++) {
       a.f64[j] = round(random_f64_range(-1000.0, 1000.0) * 100.0) / 100.0;
       b.f64[j] = round(random_f64_range(-1000.0, 1000.0) * 100.0) / 100.0;
     }
 
-    r = simde_mm_xxx_pd(a, b);
+    r = simde__m128d_to_private(simde_mm_xxx_pd(simde__m128d_from_private(a), simde__m128d_from_private(b)));
 
     printf("    { simde_mm_set_pd(SIMDE_FLOAT64_C(%*.2f), SIMDE_FLOAT64_C(%*.2f)),\n", 8, a.f64[1], 8, a.f64[0]);
     printf("      simde_mm_set_pd(SIMDE_FLOAT64_C(%*.2f), SIMDE_FLOAT64_C(%*.2f)),\n", 8, b.f64[1], 8, b.f64[0]);
     printf("      simde_mm_set_pd(SIMDE_FLOAT64_C(%*.2f), SIMDE_FLOAT64_C(%*.2f)) },\n", 8, r.f64[1], 8, r.f64[0]);
+  }
+  return MUNIT_FAIL;
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    simde__m128d r = simde_mm_xxx_pd(test_vec[i].a, test_vec[i].b);
+    simde_assert_m128d_close(r, test_vec[i].r, 1);
+  }
+
+  return MUNIT_OK;
+}
+
+static MunitResult
+test_simde_mm_cmpxxx_sd(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  const struct {
+    simde__m128d a;
+    simde__m128d b;
+    simde__m128d r;
+  } test_vec[8] = {
+
+  };
+
+  printf("\n");
+  for (size_t i = 0 ; i < (sizeof(test_vec) / (sizeof(test_vec[0]))) ; i++) {
+    simde__m128d_private a, b, r;
+
+    for (size_t j = 0 ; j < sizeof(simde__m128) / sizeof(simde_float64) ; j++) {
+      a.f64[j] = round(random_f64_range(-1000.0, 1000.0) * 100.0) / 100.0;
+      b.f64[j] = round(random_f64_range(-1000.0, 1000.0) * 100.0) / 100.0;
+    }
+
+    r = simde__m128d_to_private(simde_mm_cmpxxx_sd(simde__m128d_from_private(a), simde__m128d_from_private(b)));
+
+    printf("    { simde_mm_set_pd(SIMDE_FLOAT64_C(%*.2f), SIMDE_FLOAT64_C(%*.2f)),\n", 8, a.f64[1], 8, a.f64[0]);
+    printf("      simde_mm_set_pd(SIMDE_FLOAT64_C(%*.2f), SIMDE_FLOAT64_C(%*.2f)),\n", 8, b.f64[1], 8, b.f64[0]);
+    printf("      simde_mm_set_pd(SIMDE_FLOAT64_C(%*.2f), SIMDE_F64_ALL_%s) },\n", 8, r.f64[1], r.f64[0] == 0.0 ? "UNSET" : "SET");
   }
   return MUNIT_FAIL;
 
@@ -263,7 +301,7 @@ test_simde_mm_xxx_sd(const MunitParameter params[], void* data) {
 
   printf("\n");
   for (size_t i = 0 ; i < (sizeof(test_vec) / (sizeof(test_vec[0]))) ; i++) {
-    simde__m128d a, b, r;
+    simde__m128d_private a, b, r;
 
     for (size_t j = 0 ; j < sizeof(simde__m128) / sizeof(simde_float64) ; j++) {
       a.f64[j] = round(random_f64_range(-1000.0, 1000.0) * 100.0) / 100.0;
@@ -301,7 +339,7 @@ test_simde_mm_xxx_si64(const MunitParameter params[], void* data) {
 
   printf("\n");
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
-    simde__m64 a, b, r;
+    simde__m64_private a, b, r;
 
     munit_rand_memory(sizeof(a), (uint8_t*) &a);
     munit_rand_memory(sizeof(b), (uint8_t*) &b);
@@ -337,12 +375,12 @@ test_simde_mm_xxx_epi8(const MunitParameter params[], void* data) {
 
   printf("\n");
   for (size_t i = 0 ; i < (sizeof(test_vec) / (sizeof(test_vec[0]))) ; i++) {
-    simde__m128i a, b, r;
+    simde__m128i_private a, b, r;
 
     munit_rand_memory(sizeof(a), (uint8_t*) &a);
     munit_rand_memory(sizeof(b), (uint8_t*) &b);
 
-    r = simde_mm_xxx_epi8(a, b);
+    r = simde__m128i_to_private(simde_mm_xxx_epi8(simde__m128i_from_private(a), simde__m128i_from_private(b)));
 
     printf("    { simde_mm_set_epi8(INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "),\n"
 	   "                        INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "),\n"
@@ -388,12 +426,12 @@ test_simde_mm_xxx_epi16(const MunitParameter params[], void* data) {
 
   printf("\n");
   for (size_t i = 0 ; i < (sizeof(test_vec) / (sizeof(test_vec[0]))) ; i++) {
-    simde__m128i a, b, r;
+    simde__m128i_private a, b, r;
 
     munit_rand_memory(sizeof(a), (uint8_t*) &a);
     munit_rand_memory(sizeof(b), (uint8_t*) &b);
 
-    r = simde_mm_xxx_epi16(a, b);
+    r = simde__m128i_to_private(simde_mm_xxx_epi16(simde__m128i_from_private(a), simde__m128i_from_private(b)));
 
     printf("    { simde_mm_set_epi16(INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 "),\n"
 	   "                         INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 ")),\n",
@@ -430,12 +468,12 @@ test_simde_mm_xxx_epu8(const MunitParameter params[], void* data) {
 
   printf("\n");
   for (size_t i = 0 ; i < (sizeof(test_vec) / (sizeof(test_vec[0]))) ; i++) {
-    simde__m128i a, b, r;
+    simde__m128i_private a, b, r;
 
     munit_rand_memory(sizeof(a), (uint8_t*) &a);
     munit_rand_memory(sizeof(b), (uint8_t*) &b);
 
-    r = simde_mm_xxx_epu8(a, b);
+    r = simde__m128u_to_private(simde_mm_xxx_epu8(simde__m128u_from_private(a), simde__m128u_from_private(a)));
 
     printf("    { simde_x_mm_set_epu8(UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"),\n"
 	   "                          UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"),\n"
@@ -481,12 +519,12 @@ test_simde_mm_xxx_epu16(const MunitParameter params[], void* data) {
 
   printf("\n");
   for (size_t i = 0 ; i < (sizeof(test_vec) / (sizeof(test_vec[0]))) ; i++) {
-    simde__m128i a, b, r;
+    simde__m128i_private a, b, r;
 
     munit_rand_memory(sizeof(a), (uint8_t*) &a);
     munit_rand_memory(sizeof(b), (uint8_t*) &b);
 
-    r = simde_mm_xxx_epu16(a, b);
+    r = simde__m128u_to_private(simde_mm_xxx_epu16(simde__m128u_from_private(a), simde__m128u_from_private(a)));
 
     printf("    { simde_x_mm_set_epu16(UINT16_C(%5"PRIu16"), UINT16_C(%5"PRIu16"), UINT16_C(%5"PRIu16"), UINT16_C(%5"PRIu16"),\n"
 	   "                           UINT16_C(%5"PRIu16"), UINT16_C(%5"PRIu16"), UINT16_C(%5"PRIu16"), UINT16_C(%5"PRIu16")),\n",
@@ -523,12 +561,12 @@ test_simde_mm_xxx_epu32(const MunitParameter params[], void* data) {
 
   printf("\n");
   for (size_t i = 0 ; i < (sizeof(test_vec) / (sizeof(test_vec[0]))) ; i++) {
-    simde__m128i a, b, r;
+    simde__m128i_private a, b, r;
 
     munit_rand_memory(sizeof(a), (uint8_t*) &a);
     munit_rand_memory(sizeof(b), (uint8_t*) &b);
 
-    r = simde_mm_xxx_epu32(a, b);
+    r = simde__m128u_to_private(simde_mm_xxx_epu32(simde__m128u_from_private(a), simde__m128u_from_private(a)));
 
     printf("    { simde_x_mm_set_epu32(UINT32_C(%10"PRIu32"), UINT32_C(%10"PRIu32"), UINT32_C(%10"PRIu32"), UINT32_C(%10"PRIu32")),\n",
   	   a.u32[3], a.u32[2], a.u32[1], a.u32[0]);
@@ -562,12 +600,12 @@ test_simde_mm_xxx_epi64(const MunitParameter params[], void* data) {
 
   printf("\n");
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
-    simde__m128i a, b, r;
+    simde__m128i_private a, b, r;
 
     munit_rand_memory(sizeof(a), (uint8_t*) &a);
     munit_rand_memory(sizeof(b), (uint8_t*) &b);
 
-    r = simde_mm_xxx_epi64(a, b);
+    r = simde__m128i_to_private(simde_mm_xxx_epi64(simde__m128i_from_private(a), simde__m128i_from_private(b)));
 
     printf("    { simde_mm_set_epi64x(INT64_C(%19" PRId64 "), INT64_C(%19" PRId64 ")),\n", a.i64[1], a.i64[0]);
     printf("      simde_mm_set_epi64x(INT64_C(%19" PRId64 "), INT64_C(%19" PRId64 ")),\n", b.i64[1], b.i64[0]);
@@ -598,12 +636,12 @@ test_simde_mm_xxx_pi8(const MunitParameter params[], void* data) {
 
   printf("\n");
   for (size_t i = 0 ; i < (sizeof(test_vec) / (sizeof(test_vec[0]))) ; i++) {
-    simde__m64 a, b, r;
+    simde__m64_private a, b, r;
 
     munit_rand_memory(sizeof(a), (uint8_t*) &a);
     munit_rand_memory(sizeof(b), (uint8_t*) &b);
 
-    r = simde_mm_xxx_pi8(a, b);
+    r = simde__m64_to_private(simde_mm_xxx_pi8(simde__m64_from_private(a), simde__m64_from_private(b)));
 
     printf("    { simde_mm_set_pi8(INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "),\n"
 	   "                       INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 ")),\n",
@@ -640,12 +678,12 @@ test_simde_mm_xxx_pu8(const MunitParameter params[], void* data) {
 
   printf("\n");
   for (size_t i = 0 ; i < (sizeof(test_vec) / (sizeof(test_vec[0]))) ; i++) {
-    simde__m64 a, b, r;
+    simde__m64_private a, b, r;
 
     munit_rand_memory(sizeof(a), (uint8_t*) &a);
     munit_rand_memory(sizeof(b), (uint8_t*) &b);
 
-    r = simde_mm_xxx_pu8(a, b);
+    r = simde__m64_to_private(simde_mm_xxx_pu8(simde__m64_from_private(a), simde__m64_from_private(b)));
 
     printf("    { simde_x_mm_set_pu8(UINT8_C(%4" PRIu8 "), UINT8_C(%4" PRIu8 "), UINT8_C(%4" PRIu8 "), UINT8_C(%4" PRIu8 "),\n"
 	         "                         UINT8_C(%4" PRIu8 "), UINT8_C(%4" PRIu8 "), UINT8_C(%4" PRIu8 "), UINT8_C(%4" PRIu8 ")),\n",
@@ -682,12 +720,12 @@ test_simde_mm_xxx_pi16(const MunitParameter params[], void* data) {
 
   printf("\n");
   for (size_t i = 0 ; i < (sizeof(test_vec) / (sizeof(test_vec[0]))) ; i++) {
-    simde__m64 a, b, r;
+    simde__m64_private a, b, r;
 
     munit_rand_memory(sizeof(a), (uint8_t*) &a);
     munit_rand_memory(sizeof(b), (uint8_t*) &b);
 
-    r = simde_mm_xxx_pi16(a, b);
+    r = simde__m64_to_private(simde_mm_xxx_pi16(simde__m64_from_private(a), simde__m64_from_private(b)));
 
     printf("    { simde_mm_set_pi16(INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 ")),\n",
            a.i16[3], a.i16[2], a.i16[1], a.i16[0]);
@@ -721,12 +759,12 @@ test_simde_mm_xxx_pu16(const MunitParameter params[], void* data) {
 
   printf("\n");
   for (size_t i = 0 ; i < (sizeof(test_vec) / (sizeof(test_vec[0]))) ; i++) {
-    simde__m64 a, b, r;
+    simde__m64_private a, b, r;
 
     munit_rand_memory(sizeof(a), (uint8_t*) &a);
     munit_rand_memory(sizeof(b), (uint8_t*) &b);
 
-    r = simde_mm_xxx_pu16(a, b);
+    r = simde__m64_to_private(simde_mm_xxx_pu16(simde__m64_from_private(a), simde__m64_from_private(b)));
 
     printf("    { simde_x_mm_set_pu16(UINT16_C(%5" PRIu16 "), UINT16_C(%5" PRIu16 "), UINT16_C(%5" PRIu16 "), UINT16_C(%5" PRIu16 ")),\n",
            a.u16[3], a.u16[2], a.u16[1], a.u16[0]);
@@ -760,12 +798,12 @@ test_simde_mm_xxx_pi32(const MunitParameter params[], void* data) {
 
   printf("\n");
   for (size_t i = 0 ; i < (sizeof(test_vec) / (sizeof(test_vec[0]))) ; i++) {
-    simde__m64 a, b, r;
+    simde__m64_private a, b, r;
 
     munit_rand_memory(sizeof(a), (uint8_t*) &a);
     munit_rand_memory(sizeof(b), (uint8_t*) &b);
 
-    r = simde_mm_xxx_pi32(a, b);
+    r = simde__m64_to_private(simde_mm_xxx_pi32(simde__m64_from_private(a), simde__m64_from_private(b)));
 
     printf("    { simde_mm_set_pi32(INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 ")),\n",
   	   a.i32[1], a.i32[0]);

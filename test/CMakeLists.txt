@@ -135,6 +135,17 @@ foreach(native native emul)
 endforeach(native native emul)
 target_compile_definitions(simde-test-emul PRIVATE SIMDE_NO_NATIVE)
 
-foreach(tst "/x86/mmx" "/x86/sse" "/x86/sse2" "/x86/sse3" "/x86/ssse3" "/x86/sse4.1" "/x86/sse4.2" "/x86/avx" "/x86/fma" "/x86/avx2")
+foreach(tst
+      "/x86/mmx"
+      "/x86/sse"
+      "/x86/sse2"
+      # "/x86/sse3"
+      # "/x86/ssse3"
+      # "/x86/sse4.1"
+      # "/x86/sse4.2"
+      # "/x86/avx"
+      # "/x86/fma"
+      # "/x86/avx2"
+    )
   add_test(NAME "${tst}/${variant}" COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:run-tests> "${tst}")
 endforeach()

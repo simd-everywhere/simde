@@ -5,6 +5,8 @@
 #include "munit/munit.h"
 #include "../simde/simde-common.h"
 
+SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
+
 #define SIMDE_TESTS_CONCAT3_EX(a, b, c) a##b##c
 #define SIMDE_TESTS_CONCAT3(a, b, c) SIMDE_TESTS_CONCAT3_EX(a, b, c)
 
