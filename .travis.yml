@@ -11,7 +11,7 @@ env:
   - BUILD_TYPE="Coverage"
   - ARCH_FLAGS="-march=native"
   - BUILD_CPP_TESTS=ON
-  - CMAKE_GENERATOR='Unix Makefiles'
+  - CMAKE_GENERATOR='Ninja'
   - RUN_TESTS=true
 
 jobs:
@@ -185,6 +185,22 @@ jobs:
   #   arch: s390x
 
 before_install:
+- |
+  if [ "${CMAKE_GENERATOR}" = "Ninja" ]; then
+    case "${TRAVIS_OS_NAME}" in
+      "linux")
+        sudo apt-get install -y ninja-build
+        ;;
+      "osx")
+        brew install ninja
+        ;;
+      "windows")
+        choco install ninja
+        ;;
+    esac
+  fi
+
+## It can be helpful to know what the CPU we're on looks like.
 - cat /proc/cpuinfo || true
 
 ## If we use the matrix to set CC/CXX Travis overwrites the values,
