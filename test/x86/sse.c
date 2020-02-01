@@ -1888,20 +1888,40 @@ test_simde_mm_cvt_si2ss(const MunitParameter params[], void* data) {
   (void) params;
   (void) data;
 
-  for (size_t i = 0 ; i < TEST_PREFERRED_ITERATIONS ; i++) {
-    simde__m128_private a, r;
+  const struct {
+    simde__m128 a;
     int32_t b;
+    simde__m128 r;
+  } test_vec[8] = {
+    { simde_mm_set_ps(SIMDE_FLOAT32_C(  -896.28), SIMDE_FLOAT32_C(  -653.23), SIMDE_FLOAT32_C(    62.87), SIMDE_FLOAT32_C(  -477.72)),
+      INT32_C(-172),
+      simde_mm_set_ps(SIMDE_FLOAT32_C(  -896.28), SIMDE_FLOAT32_C(  -653.23), SIMDE_FLOAT32_C(    62.87), SIMDE_FLOAT32_C(  -172.00)) },
+    { simde_mm_set_ps(SIMDE_FLOAT32_C(   980.80), SIMDE_FLOAT32_C(   527.97), SIMDE_FLOAT32_C(  -324.27), SIMDE_FLOAT32_C(   641.93)),
+      INT32_C(-906),
+      simde_mm_set_ps(SIMDE_FLOAT32_C(   980.80), SIMDE_FLOAT32_C(   527.97), SIMDE_FLOAT32_C(  -324.27), SIMDE_FLOAT32_C(  -906.00)) },
+    { simde_mm_set_ps(SIMDE_FLOAT32_C(     6.14), SIMDE_FLOAT32_C(   647.61), SIMDE_FLOAT32_C(   446.77), SIMDE_FLOAT32_C(   149.50)),
+      INT32_C(-312),
+      simde_mm_set_ps(SIMDE_FLOAT32_C(     6.14), SIMDE_FLOAT32_C(   647.61), SIMDE_FLOAT32_C(   446.77), SIMDE_FLOAT32_C(  -312.00)) },
+    { simde_mm_set_ps(SIMDE_FLOAT32_C(   671.83), SIMDE_FLOAT32_C(   292.90), SIMDE_FLOAT32_C(   137.83), SIMDE_FLOAT32_C(   652.08)),
+      INT32_C(  72),
+      simde_mm_set_ps(SIMDE_FLOAT32_C(   671.83), SIMDE_FLOAT32_C(   292.90), SIMDE_FLOAT32_C(   137.83), SIMDE_FLOAT32_C(    72.00)) },
+    { simde_mm_set_ps(SIMDE_FLOAT32_C(   428.68), SIMDE_FLOAT32_C(   323.04), SIMDE_FLOAT32_C(  -369.14), SIMDE_FLOAT32_C(  -143.52)),
+      INT32_C( 648),
+      simde_mm_set_ps(SIMDE_FLOAT32_C(   428.68), SIMDE_FLOAT32_C(   323.04), SIMDE_FLOAT32_C(  -369.14), SIMDE_FLOAT32_C(   648.00)) },
+    { simde_mm_set_ps(SIMDE_FLOAT32_C(  -834.08), SIMDE_FLOAT32_C(   861.01), SIMDE_FLOAT32_C(   -60.60), SIMDE_FLOAT32_C(  -978.47)),
+      INT32_C( 327),
+      simde_mm_set_ps(SIMDE_FLOAT32_C(  -834.08), SIMDE_FLOAT32_C(   861.01), SIMDE_FLOAT32_C(   -60.60), SIMDE_FLOAT32_C(   327.00)) },
+    { simde_mm_set_ps(SIMDE_FLOAT32_C(  -462.87), SIMDE_FLOAT32_C(   -82.73), SIMDE_FLOAT32_C(   641.71), SIMDE_FLOAT32_C(   690.58)),
+      INT32_C(  78),
+      simde_mm_set_ps(SIMDE_FLOAT32_C(  -462.87), SIMDE_FLOAT32_C(   -82.73), SIMDE_FLOAT32_C(   641.71), SIMDE_FLOAT32_C(    78.00)) },
+    { simde_mm_set_ps(SIMDE_FLOAT32_C(  -896.41), SIMDE_FLOAT32_C(  -179.07), SIMDE_FLOAT32_C(  -535.21), SIMDE_FLOAT32_C(   722.87)),
+      INT32_C(-106),
+      simde_mm_set_ps(SIMDE_FLOAT32_C(  -896.41), SIMDE_FLOAT32_C(  -179.07), SIMDE_FLOAT32_C(  -535.21), SIMDE_FLOAT32_C(  -106.00)) }
+  };
 
-    munit_rand_memory(sizeof(a), (uint8_t*) &a);
-    munit_rand_memory(sizeof(b), (uint8_t*) &b);
-
-    r = simde__m128_to_private(simde_mm_cvt_si2ss(simde__m128_from_private(a), b));
-
-    munit_assert_float(r.f32[0], ==, (simde_float32) b);
-    /* Use int32 since comparing NaNs is always false. */
-    munit_assert_int32(r.i32[1], ==, a.i32[1]);
-    munit_assert_int32(r.i32[2], ==, a.i32[2]);
-    munit_assert_int32(r.i32[3], ==, a.i32[3]);
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    simde__m128 r = simde_mm_cvt_si2ss(test_vec[i].a, test_vec[i].b);
+    simde_assert_m128_close(r, test_vec[i].r, 1);
   }
 
   return MUNIT_OK;
