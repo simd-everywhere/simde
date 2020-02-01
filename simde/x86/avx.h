@@ -2148,7 +2148,7 @@ simde_mm_cmp_sd (simde__m128d a, simde__m128d b, const int imm8)
       r_.u64[0] = ~UINT64_C(0);
       break;
   }
-  r_.f64[1] = a_.f64[1];
+  r_.u64[1] = a_.u64[1];
 
   return simde__m128d_from_private(r_);
 }
