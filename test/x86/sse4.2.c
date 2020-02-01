@@ -32,6 +32,9 @@
 
 #endif /* defined(SIMDE_NO_NATIVE) || defined(SIMDE_SSE4_2_NATIVE) */
 
+HEDLEY_DIAGNOSTIC_PUSH
+HEDLEY_DIAGNOSTIC_DISABLE_CAST_QUAL
+
 static MunitTest test_suite_tests[] = {
 #if defined(SIMDE_NO_NATIVE) || defined(SIMDE_SSE4_2_NATIVE)
   /* { (char*) "/sse4.2/mm_set_epi8",      test_simde_mm_set_epi8,      NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL }, */
@@ -45,3 +48,5 @@ HEDLEY_C_DECL MunitSuite* SIMDE_TESTS_GENERATE_SYMBOL(suite)(void) {
 
   return &suite;
 }
+
+HEDLEY_DIAGNOSTIC_POP

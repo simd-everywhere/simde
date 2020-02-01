@@ -66,8 +66,6 @@ jobs:
 
   - name: "aarch64"
     arch: arm64
-    env:
-    - OPTIMIZATION_FLAGS=''
 
   - name: "ppc64le"
     arch: ppc64le
@@ -90,7 +88,6 @@ jobs:
     - CXX_COMPILER=pgc++
     - ARCH_FLAGS="-m64"
     - BUILD_CPP_TESTS=OFF
-    - OPTIMIZATION_FLAGS=''
     install:
     - curl 'https://raw.githubusercontent.com/nemequ/pgi-travis/master/install-pgi.sh' | /bin/sh
 
@@ -107,7 +104,6 @@ jobs:
     - ARCH_FLAGS=-qarch=auto
     - C_COMPILER=xlc
     - CXX_COMPILER=xlc++
-    - OPTIMIZATION_FLAGS=''
 
   - name: osx
     os: osx
@@ -138,7 +134,6 @@ jobs:
     compiler: gcc
     arch: amd64
     env:
-    - OPTIMIZATION_FLAGS=''
 
   - name: "clang-7 amd64"
     arch: amd64
@@ -150,6 +145,7 @@ jobs:
     - C_COMPILER=icc
     - CXX_COMPILER=icpc
     - COMPILER_FLAGS='-wd13200 -wd13203'
+    - OPTIMIZATION_FLAGS=''
     - BUILD_CPP_TESTS=OFF
     install:
     - source /opt/intel/inteloneapi/compiler/latest/env/vars.sh
@@ -178,7 +174,6 @@ jobs:
     - ARCH_FLAGS=""
     - C_COMPILER=emcc
     - CXX_COMPILER=emcc
-    - OPTIMIZATION_FLAGS=''
     - CONFIGURE_WRAPPER=emconfigure
     - BUILD_WRAPPER=emmake
     - EXECUTABLE_EXTENSION=.js
@@ -238,6 +233,7 @@ script:
     -G "${CMAKE_GENERATOR}" \
     -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
     -DBUILD_CPP_TESTS=${BUILD_CPP_TESTS} \
+    -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON \
     ${CMAKE_ARGS}
 - ${BUILD_WRAPPER} cmake --build .
 - |

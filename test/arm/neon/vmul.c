@@ -1045,6 +1045,9 @@ test_simde_vmulq_f64(const MunitParameter params[], void* data) {
 
 #endif /* defined(SIMDE_NO_NATIVE) || defined(SIMDE_NEON_NATIVE) */
 
+HEDLEY_DIAGNOSTIC_PUSH
+HEDLEY_DIAGNOSTIC_DISABLE_CAST_QUAL
+
 static MunitTest test_suite_tests[] = {
 #if defined(SIMDE_NO_NATIVE) || defined(SIMDE_NEON_NATIVE)
   SIMDE_TESTS_NEON_DEFINE_TEST(s8),
@@ -1078,3 +1081,4 @@ HEDLEY_C_DECL MunitSuite* SIMDE_TESTS_GENERATE_SYMBOL(SIMDE_TESTS_CURRENT_NEON_O
   return &suite;
 }
 
+HEDLEY_DIAGNOSTIC_POP

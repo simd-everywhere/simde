@@ -1110,14 +1110,14 @@ test_simde_mm256_xxx_ps(const MunitParameter params[], void* data) {
 
   printf("\n");
   for (size_t i = 0 ; i < (sizeof(test_vec) / (sizeof(test_vec[0]))) ; i++) {
-    simde__m256 a, b, r;
+    simde__m256_private a, b, r;
 
     for (size_t j = 0 ; j < sizeof(simde__m256) / sizeof(simde_float32) ; j++) {
       a.f32[j] = (simde_float32) (round(random_f64_range(-1000.0, 1000.0) * 100.0) / 100.0);
       b.f32[j] = (simde_float32) (round(random_f64_range(-1000.0, 1000.0) * 100.0) / 100.0);
     }
 
-    r = simde_mm256_xxx_ps(a, b);
+    r = simde__m256_to_private(simde_mm256_xxx_ps(simde__m256_from_private(a), simde__m256_from_private(b)));
 
     printf("    { simde_mm256_set_ps(SIMDE_FLOAT32_C(%*.2f), SIMDE_FLOAT32_C(%*.2f),\n"
            "                         SIMDE_FLOAT32_C(%*.2f), SIMDE_FLOAT32_C(%*.2f),\n"
@@ -1163,14 +1163,14 @@ test_simde_mm256_xxx_pd(const MunitParameter params[], void* data) {
 
   printf("\n");
   for (size_t i = 0 ; i < (sizeof(test_vec) / (sizeof(test_vec[0]))) ; i++) {
-    simde__m256d a, b, r;
+    simde__m256d_private a, b, r;
 
     for (size_t j = 0 ; j < sizeof(simde__m256d) / sizeof(simde_float64) ; j++) {
       a.f64[j] = round(random_f64_range(-1000.0, 1000.0) * 100.0) / 100.0;
       b.f64[j] = round(random_f64_range(-1000.0, 1000.0) * 100.0) / 100.0;
     }
 
-    r = simde_mm256_xxx_pd(a, b);
+    r = simde__m256d_to_private(simde_mm256_xxx_pd(simde__m256d_from_private(a), simde__m256d_from_private(b)));
 
     printf("    { simde_mm256_set_pd(SIMDE_FLOAT64_C(%*.2f), SIMDE_FLOAT64_C(%*.2f),\n"
            "                         SIMDE_FLOAT64_C(%*.2f), SIMDE_FLOAT64_C(%*.2f)),\n",

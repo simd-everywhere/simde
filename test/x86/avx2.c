@@ -5442,6 +5442,9 @@ test_simde_mm256_xor_si256(const MunitParameter params[], void* data) {
 
 #endif /* defined(SIMDE_NO_NATIVE) || defined(SIMDE_AVX2_NATIVE) */
 
+HEDLEY_DIAGNOSTIC_PUSH
+HEDLEY_DIAGNOSTIC_DISABLE_CAST_QUAL
+
 static MunitTest test_suite_tests[] = {
 #if defined(SIMDE_NO_NATIVE) || defined(SIMDE_AVX2_NATIVE)
   SIMDE_TESTS_DEFINE_TEST(mm256_add_epi8),
@@ -5528,3 +5531,5 @@ HEDLEY_C_DECL MunitSuite* SIMDE_TESTS_GENERATE_SYMBOL(suite)(void) {
 
   return &suite;
 }
+
+HEDLEY_DIAGNOSTIC_POP

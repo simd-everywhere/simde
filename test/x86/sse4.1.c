@@ -378,7 +378,7 @@ test_simde_mm_blendv_pd(const MunitParameter params[], void* data) {
   };
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
-    simde__m128d r = simde_mm_blendv_pd(test_vec[i].a, test_vec[i].b, *((simde__m128d*) &(test_vec[i].mask)));
+    simde__m128d r = simde_mm_blendv_pd(test_vec[i].a, test_vec[i].b, simde_mm_castsi128_pd(test_vec[i].mask));
     simde_assert_m128d_close(r, test_vec[i].r, 1);
   }
 
@@ -431,7 +431,7 @@ test_simde_mm_blendv_ps(const MunitParameter params[], void* data) {
   };
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
-    simde__m128 r = simde_mm_blendv_ps(test_vec[i].a, test_vec[i].b, *((simde__m128*) &(test_vec[i].mask)));
+    simde__m128 r = simde_mm_blendv_ps(test_vec[i].a, test_vec[i].b, simde_mm_castsi128_ps(test_vec[i].mask));
     simde_assert_m128_close(r, test_vec[i].r, 1);
   }
 
@@ -3148,6 +3148,9 @@ test_simde_mm_testz_si128(const MunitParameter params[], void* data) {
 
 #endif /* defined(SIMDE_NO_NATIVE) || defined(SIMDE_SSE4_1_NATIVE) */
 
+HEDLEY_DIAGNOSTIC_PUSH
+HEDLEY_DIAGNOSTIC_DISABLE_CAST_QUAL
+
 static MunitTest test_suite_tests[] = {
 #if defined(SIMDE_NO_NATIVE) || defined(SIMDE_SSE4_1_NATIVE)
   SIMDE_TESTS_DEFINE_TEST(mm_blend_epi16),
@@ -3236,3 +3239,5 @@ HEDLEY_C_DECL MunitSuite* SIMDE_TESTS_GENERATE_SYMBOL(suite)(void) {
 
   return &suite;
 }
+
+HEDLEY_DIAGNOSTIC_POP
