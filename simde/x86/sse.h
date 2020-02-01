@@ -1702,7 +1702,7 @@ void
 SIMDE_MM_SET_ROUNDING_MODE(unsigned int a) {
 #if defined(SIMDE_SSE_NATIVE)
   _MM_SET_ROUNDING_MODE(a);
-#else
+#elif !defined(__wasm__)
   fesetround((int) a);
 #endif
 }
@@ -3376,7 +3376,7 @@ void
 simde_mm_setcsr (uint32_t a) {
 #if defined(SIMDE_SSE_NATIVE)
   _mm_setcsr(a);
-#else
+#elif !defined(__wasm__)
   switch((a >> 13) & 3) {
 #if defined(FE_TONEAREST)
     case 0:
