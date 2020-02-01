@@ -25,6 +25,8 @@
 #include <test/x86/test-x86-internal.h>
 #include <simde/x86/avx2.h>
 
+#if defined(SIMDE_NO_NATIVE) || defined(SIMDE_AVX2_NATIVE)
+
 static MunitResult
 test_simde_mm256_add_epi8(const MunitParameter params[], void* data) {
   (void) params;
@@ -5438,7 +5440,10 @@ test_simde_mm256_xor_si256(const MunitParameter params[], void* data) {
   return MUNIT_OK;
 }
 
+#endif /* defined(SIMDE_NO_NATIVE) || defined(SIMDE_AVX2_NATIVE) */
+
 static MunitTest test_suite_tests[] = {
+#if defined(SIMDE_NO_NATIVE) || defined(SIMDE_AVX2_NATIVE)
   SIMDE_TESTS_DEFINE_TEST(mm256_add_epi8),
   SIMDE_TESTS_DEFINE_TEST(mm256_add_epi16),
   SIMDE_TESTS_DEFINE_TEST(mm256_add_epi32),
@@ -5514,7 +5519,7 @@ static MunitTest test_suite_tests[] = {
   SIMDE_TESTS_DEFINE_TEST(mm256_srli_epi64),
 
   SIMDE_TESTS_DEFINE_TEST(mm256_xor_si256),
-
+#endif /* defined(SIMDE_NO_NATIVE) || defined(SIMDE_AVX2_NATIVE) */
   { NULL, NULL, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL }
 };
 

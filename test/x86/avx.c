@@ -25,6 +25,8 @@
 #include <test/x86/test-x86-internal.h>
 #include <simde/x86/avx.h>
 
+#if defined(SIMDE_NO_NATIVE) || defined(SIMDE_AVX_NATIVE)
+
 static simde_float32 u32_to_f32(uint32_t u32) {
   simde_float32 f32;
   memcpy(&f32, &u32, sizeof(f32));
@@ -13504,7 +13506,10 @@ test_simde_mm256_testnzc_si256(const MunitParameter params[], void* data) {
   return MUNIT_OK;
 }
 
+#endif /* !defined(SIMDE_NO_NATIVE) || defined(SIMDE_AVX_NATIVE) */
+
 static MunitTest test_suite_tests[] = {
+#if defined(SIMDE_NO_NATIVE) || defined(SIMDE_AVX_NATIVE)
   SIMDE_TESTS_DEFINE_TEST(mm256_set_epi8),
   SIMDE_TESTS_DEFINE_TEST(mm256_set_epi16),
   SIMDE_TESTS_DEFINE_TEST(mm256_set_epi32),
@@ -13714,6 +13719,7 @@ static MunitTest test_suite_tests[] = {
   SIMDE_TESTS_DEFINE_TEST(mm256_zextps128_ps256),
   SIMDE_TESTS_DEFINE_TEST(mm256_zextpd128_pd256),
   SIMDE_TESTS_DEFINE_TEST(mm256_zextsi128_si256),
+#endif /* !defined(SIMDE_NO_NATIVE) || defined(SIMDE_AVX_NATIVE) */
 
   { NULL, NULL, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL }
 };

@@ -25,6 +25,9 @@
 #include <test/x86/test-x86-internal.h>
 #include <simde/x86/mmx.h>
 
+#if defined(SIMDE_NO_NATIVE) || defined(SIMDE_MMX_NATIVE)
+#endif /* defined(SIMDE_NO_NATIVE) || defined(SIMDE_MMX_NATIVE) */
+
 static MunitResult
 test_simde_mm_set1_pi8(const MunitParameter params[], void* data) {
   (void) params;
@@ -2770,7 +2773,11 @@ test_simde_m_to_int64(const MunitParameter params[], void* data) {
   return MUNIT_OK;
 }
 
+#if defined(SIMDE_NO_NATIVE) || defined(SIMDE_MMX_NATIVE)
+#endif /* defined(SIMDE_NO_NATIVE) || defined(SIMDE_MMX_NATIVE) */
+
 static MunitTest test_suite_tests[] = {
+#if defined(SIMDE_NO_NATIVE) || defined(SIMDE_MMX_NATIVE)
   SIMDE_TESTS_DEFINE_TEST(mm_set1_pi8),
   SIMDE_TESTS_DEFINE_TEST(mm_set1_pi16),
   SIMDE_TESTS_DEFINE_TEST(mm_set1_pi32),
@@ -2835,6 +2842,7 @@ static MunitTest test_suite_tests[] = {
   SIMDE_TESTS_DEFINE_TEST(mm_xor_si64),
   SIMDE_TESTS_DEFINE_TEST(m_to_int),
   SIMDE_TESTS_DEFINE_TEST(m_to_int64),
+#endif /* defined(SIMDE_NO_NATIVE) || defined(SIMDE_MMX_NATIVE) */
 
   { NULL, NULL, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL }
 };
