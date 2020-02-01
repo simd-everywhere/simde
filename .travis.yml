@@ -13,6 +13,7 @@ env:
   - BUILD_CPP_TESTS=ON
   - CMAKE_GENERATOR='Ninja'
   - RUN_TESTS=true
+  - OPTIMIZATION_FLAGS='-O3'
 
 jobs:
   include:
@@ -65,6 +66,8 @@ jobs:
 
   - name: "aarch64"
     arch: arm64
+    env:
+    - OPTIMIZATION_FLAGS=''
 
   - name: "ppc64le"
     arch: ppc64le
@@ -79,6 +82,7 @@ jobs:
   - name: "-DSIMDE_NO_SHUFFLE_VECTOR"
     env:
     - COMPILER_FLAGS=-DSIMDE_NO_SHUFFLE_VECTOR
+    - OPTIMIZATION_FLAGS=''
 
   - name: "pgcc"
     env:
@@ -86,6 +90,7 @@ jobs:
     - CXX_COMPILER=pgc++
     - ARCH_FLAGS="-m64"
     - BUILD_CPP_TESTS=OFF
+    - OPTIMIZATION_FLAGS=''
     install:
     - curl 'https://raw.githubusercontent.com/nemequ/pgi-travis/master/install-pgi.sh' | /bin/sh
 
@@ -102,6 +107,7 @@ jobs:
     - ARCH_FLAGS=-qarch=auto
     - C_COMPILER=xlc
     - CXX_COMPILER=xlc++
+    - OPTIMIZATION_FLAGS=''
 
   - name: osx
     os: osx
@@ -111,12 +117,14 @@ jobs:
     env:
     - ARCH_FLAGS=""
     - CMAKE_GENERATOR="Visual Studio 15 2017"
+    - OPTIMIZATION_FLAGS="/Ox"
 
   - name: msvc x86_64
     os: windows
     env:
     - ARCH_FLAGS=""
     - CMAKE_GENERATOR="Visual Studio 15 2017 Win64"
+    - OPTIMIZATION_FLAGS="/Ox"
 
   - name: msvc arm
     os: windows
@@ -124,10 +132,13 @@ jobs:
     - ARCH_FLAGS=""
     - CMAKE_GENERATOR="Visual Studio 15 2017 ARM"
     - RUN_TESTS=false
+    - OPTIMIZATION_FLAGS="/Ox"
 
   - name: "gcc-7 amd64"
     compiler: gcc
     arch: amd64
+    env:
+    - OPTIMIZATION_FLAGS=''
 
   - name: "clang-7 amd64"
     arch: amd64
@@ -138,6 +149,7 @@ jobs:
     env:
     - C_COMPILER=icc
     - CXX_COMPILER=icpc
+    - OPTIMIZATION_FLAGS="/Ox"
     - BUILD_CPP_TESTS=OFF
     install:
     - source /opt/intel/inteloneapi/compiler/latest/env/vars.sh
@@ -166,6 +178,7 @@ jobs:
     - ARCH_FLAGS=""
     - C_COMPILER=emcc
     - CXX_COMPILER=emcc
+    - OPTIMIZATION_FLAGS=''
     - CONFIGURE_WRAPPER=emconfigure
     - BUILD_WRAPPER=emmake
     - EXECUTABLE_EXTENSION=.js
