@@ -1737,7 +1737,7 @@ simde_mm_insert_pi16 (simde__m64 a, int16_t i, const int imm8) {
 #elif defined(SIMDE_SSE_NEON)
 #  define simde_mm_insert_pi16(a, i, imm8) simde__m64_from_private((simde__m64_private) { .neon_i16 = vset_lane_s16(i, simde__m64_to_private(a).neon_i16, (imm8)) })
 #endif
-#define simde_m_pinsrw(a, i, imm8) (simde_mm_insert_pi16(a, i, imm8));
+#define simde_m_pinsrw(a, i, imm8) (simde_mm_insert_pi16(a, i, imm8))
 #if defined(SIMDE_SSE_ENABLE_NATIVE_ALIASES)
 #  define _mm_insert_pi16(a, i, imm8) simde_mm_insert_pi16(a, i, imm8)
 #  define _m_pinsrw(a, i, imm8) simde_mm_insert_pi16(a, i, imm8)

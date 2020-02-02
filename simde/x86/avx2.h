@@ -1205,7 +1205,7 @@ simde_mm256_slli_epi32 (simde__m256i a, const int imm8) {
   return simde__m256i_from_private(r_);
 }
 #if defined(SIMDE_AVX2_NATIVE)
-#  define simde_mm256_slli_epi32(a, imm8) _mm256_slli_epi32(a, imm8);
+#  define simde_mm256_slli_epi32(a, imm8) _mm256_slli_epi32(a, imm8)
 #elif defined(SIMDE_SSE2_NATIVE)
 #  define simde_mm256_slli_epi32(a, imm8) \
      simde_mm256_set_m128i( \

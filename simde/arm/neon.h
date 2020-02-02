@@ -1,4 +1,4 @@
-/* Copyright (c) 2017-2019 Evan Nemerson <evan@nemerson.com>
+/* Copyright (c) 2017-2020 Evan Nemerson <evan@nemerson.com>
  *
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
@@ -88,7 +88,7 @@ simde_vget_lane_s8(simde_int8x8_t v, const int lane) {
   return v.i8[lane];
 }
 #if defined(SIMDE_NEON_NATIVE)
-#  define simde_vget_lane_s8(v, lane) vget_lane_s8(v.n, lane);
+#  define simde_vget_lane_s8(v, lane) vget_lane_s8(v.n, lane)
 #endif
 
 SIMDE__END_DECLS

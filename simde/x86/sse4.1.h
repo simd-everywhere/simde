@@ -1,4 +1,4 @@
-/* Copyright (c) 2017-2019 Evan Nemerson <evan@nemerson.com>
+/* Copyright (c) 2017-2020 Evan Nemerson <evan@nemerson.com>
  *
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
@@ -1173,7 +1173,7 @@ simde_mm_mpsadbw_epu8 (simde__m128i a, simde__m128i b, const int imm8) {
   return simde__m128i_from_private(r_);
 }
 #if defined(SIMDE_SSE4_1_NATIVE)
-#  define simde_mm_mpsadbw_epu8(a, b, imm8) _mm_mpsadbw_epu8(a, b, imm8);
+#  define simde_mm_mpsadbw_epu8(a, b, imm8) _mm_mpsadbw_epu8(a, b, imm8)
 #endif
 #if defined(SIMDE_SSE4_1_ENABLE_NATIVE_ALIASES)
 #  define _mm_mpsadbw_epu8(a, b, imm8) simde_mm_mpsadbw_epu8(a, b, imm8)
