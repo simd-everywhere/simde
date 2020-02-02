@@ -1790,6 +1790,7 @@ simde_mm_load_ps1 (simde_float32 const* mem_addr) {
 #define simde_mm_load1_ps(mem_addr) simde_mm_load_ps1(mem_addr)
 #if defined(SIMDE_SSE_ENABLE_NATIVE_ALIASES)
 #  define _mm_load_ps1(mem_addr) simde_mm_load_ps1(mem_addr)
+#  define _mm_load1_ps(mem_addr) simde_mm_load_ps1(mem_addr)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
