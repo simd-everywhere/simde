@@ -4570,9 +4570,7 @@ simde_mm_store_sd (simde_float64* mem_addr, simde__m128d a) {
 #if defined(SIMDE_SSE2_NATIVE)
   _mm_store_sd(mem_addr, a);
 #else
-  simde__m128d_private a_ = simde__m128d_to_private(a);
-
-  memcpy(mem_addr, &a, sizeof(a_.f64[0]));
+  memcpy(mem_addr, &a, sizeof(simde_float64));
 #endif
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
