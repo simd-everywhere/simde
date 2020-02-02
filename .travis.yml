@@ -82,6 +82,22 @@ jobs:
     - COMPILER_FLAGS=-DSIMDE_NO_SHUFFLE_VECTOR
     - OPTIMIZATION_FLAGS=''
 
+  - name: icc
+    compiler: icc
+    env:
+    - C_COMPILER=icc
+    - CXX_COMPILER=icpc
+    - COMPILER_FLAGS='-wd13200 -wd13203'
+    install:
+    - source /opt/intel/inteloneapi/compiler/latest/env/vars.sh
+    addons:
+      apt:
+        sources:
+        - sourceline: 'deb https://apt.repos.intel.com/oneapi all main'
+          key_url: 'https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS-2023.PUB'
+        packages:
+        - intel-oneapi-icc
+
   - name: "pgcc"
     env:
     - C_COMPILER=pgcc
@@ -138,22 +154,6 @@ jobs:
   - name: "clang-7 amd64"
     arch: amd64
     compiler: clang
-
-  - name: icc
-    compiler: icc
-    env:
-    - C_COMPILER=icc
-    - CXX_COMPILER=icpc
-    - COMPILER_FLAGS='-wd13200 -wd13203'
-    install:
-    - source /opt/intel/inteloneapi/compiler/latest/env/vars.sh
-    addons:
-      apt:
-        sources:
-        - sourceline: 'deb https://apt.repos.intel.com/oneapi all main'
-          key_url: 'https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS-2023.PUB'
-        packages:
-        - intel-oneapi-icc
 
   - name: "arm32"
     arch: arm64
