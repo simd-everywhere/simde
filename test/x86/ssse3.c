@@ -170,7 +170,7 @@ test_simde_mm_abs_epi32(const MunitParameter params[], void* data) {
     simde__m128i a;
     simde__m128i r;
   } test_vec[8] = {
-    { simde_mm_set_epi32(INT32_C(-2147483648), INT32_C(2147483647), INT32_C(0), INT32_C(-1)),
+    { simde_mm_set_epi32(            INT32_MIN , INT32_C(2147483647), INT32_C(0), INT32_C(-1)),
       simde_x_mm_set_epu32(UINT32_C(2147483648), UINT32_C(2147483647), UINT32_C(0), UINT32_C(1)) },
     { simde_mm_set_epi32(INT32_C(-1840848639), INT32_C( 1050450514), INT32_C( -157155149), INT32_C(-1343526078)),
       simde_x_mm_set_epu32(UINT32_C(1840848639), UINT32_C(1050450514), UINT32_C( 157155149), UINT32_C(1343526078)) },

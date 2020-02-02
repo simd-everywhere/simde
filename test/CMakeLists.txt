@@ -111,6 +111,7 @@ set(TEST_RUNNER_SOURCES
   arm/test-arm.c)
 add_executable(run-tests ${TEST_RUNNER_SOURCES})
 target_link_libraries(run-tests munit)
+target_add_compiler_flags (munit "-w")
 if(NEED_LIBM)
   target_link_libraries(run-tests m)
 endif(NEED_LIBM)
