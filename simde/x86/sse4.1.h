@@ -695,7 +695,7 @@ simde_mm_extract_epi8 (simde__m128i a, const int imm8) {
   simde__m128i_private
     a_ = simde__m128i_to_private(a);
 
-  return a_.u8[imm8&15];
+  return a_.i8[imm8&15];
 }
 #if defined(SIMDE_SSE4_1_NATIVE) && !defined(SIMDE_BUG_GCC_BAD_MM_EXTRACT_EPI8)
 #  define simde_mm_extract_epi8(a, imm8) HEDLEY_STATIC_CAST(int8_t, _mm_extract_epi8(a, imm8))

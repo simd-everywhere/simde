@@ -1815,32 +1815,6 @@ test_simde_mm_cvt_pi2ps(const MunitParameter params[], void* data) {
   }
 
   return MUNIT_OK;
-
-
-
-
-  (void) params;
-  (void) data;
-
-  for (size_t i = 0 ; i < TEST_PREFERRED_ITERATIONS ; i++) {
-    simde__m128_private r;
-    simde__m128_private a;
-    simde__m64_private b;
-
-    munit_rand_memory(sizeof(a), (uint8_t*) &a);
-    munit_rand_memory(sizeof(b), (uint8_t*) &b);
-
-    r = simde__m128_to_private(simde_mm_cvt_pi2ps(simde__m128_from_private(a), simde__m64_from_private(b)));  
-
-    munit_assert_float(r.f32[0], ==, (simde_float32) b.i32[0]);
-    munit_assert_float(r.f32[1], ==, (simde_float32) b.i32[1]);
-    munit_assert_int32(r.i32[2], ==, a.i32[2]);
-    munit_assert_int32(r.i32[3], ==, a.i32[3]);
-  }
-
-  simde_mm_empty();
-
-  return MUNIT_OK;
 }
 
 static MunitResult
@@ -2817,7 +2791,10 @@ test_simde_mm_loadh_pi(const MunitParameter params[], void* data) {
   };
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    HEDLEY_DIAGNOSTIC_PUSH
+    SIMDE_DIAGNOSTIC_DISABLE_CAST_ALIGN_
     simde__m128 r = simde_mm_loadh_pi(test_vec[i].a, HEDLEY_REINTERPRET_CAST(simde__m64 const*, test_vec[i].b));
+    HEDLEY_DIAGNOSTIC_POP
     simde_assert_m128_close(r, test_vec[i].r, 1);
   }
 
@@ -2861,7 +2838,10 @@ test_simde_mm_loadl_pi(const MunitParameter params[], void* data) {
   };
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    HEDLEY_DIAGNOSTIC_PUSH
+    SIMDE_DIAGNOSTIC_DISABLE_CAST_ALIGN_
     simde__m128 r = simde_mm_loadl_pi(test_vec[i].a, HEDLEY_REINTERPRET_CAST(simde__m64 const*, test_vec[i].b));
+    HEDLEY_DIAGNOSTIC_POP
     simde_assert_m128_close(r, test_vec[i].r, 1);
   }
 

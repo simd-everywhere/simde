@@ -2,6 +2,7 @@
 #include "x86/test-x86.h"
 #include "arm/test-arm.h"
 #include "../simde/simde-common.h"
+#include "run-tests.h"
 
 #include <math.h>
 
@@ -15,7 +16,7 @@ void random_f32v(size_t nmemb, simde_float32 v[HEDLEY_ARRAY_PARAM(nmemb)]) {
 
 simde_float64 random_f64_range(simde_float64 min, simde_float64 max) {
   const simde_float64 range = max - min;
-  simde_float64 x = (simde_float64) munit_rand_uint32();
+  simde_float64 x = HEDLEY_STATIC_CAST(simde_float64, munit_rand_uint32());
   x /= ((simde_float32) UINT32_MAX) / range;
   x += min;
   return x;

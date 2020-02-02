@@ -438,10 +438,33 @@ HEDLEY_STATIC_ASSERT(sizeof(simde_float64) == 8, "Unable to find 64-bit floating
 #  define SIMDE_TAUTOLOGICAL_COMPARE_(expr) (expr)
 #endif
 
+#if \
+  HEDLEY_HAS_WARNING("-Wconditional-uninitialized")
+#  define SIMDE_DIAGNOSTIC_DISABLE_CONDITIONAL_UNINITIALIZED_ _Pragma("clang diagnostic ignored \"-Wconditional-uninitialized\"")
+#else
+#  define SIMDE_DIAGNOSTIC_DISABLE_CONDITIONAL_UNINITIALIZED_
+#endif
+
+#if \
+  HEDLEY_HAS_WARNING("-Wfloat-equal") || \
+  HEDLEY_GCC_VERSION_CHECK(3,0,0)
+#  define SIMDE_DIAGNOSTIC_DISABLE_FLOAT_EQUAL_ _Pragma("GCC diagnostic ignored \"-Wfloat-equal\"")
+#else
+#  define SIMDE_DIAGNOSTIC_DISABLE_FLOAT_EQUAL_
+#endif
+
+#if HEDLEY_HAS_WARNING("-Wcast-align")
+#  define SIMDE_DIAGNOSTIC_DISABLE_CAST_ALIGN_ _Pragma("clang diagnostic ignored \"-Wcast-align\"")
+#else
+#  define SIMDE_DIAGNOSTIC_DISABLE_CAST_ALIGN_
+#endif
+
 #define SIMDE_DISABLE_UNWANTED_DIAGNOSTICS \
   SIMDE_DIAGNOSTIC_DISABLE_PSABI_ \
   SIMDE_DIAGNOSTIC_DISABLE_NO_EMMS_INSTRUCTION_ \
-  SIMDE_DIAGNOSTIC_DISABLE_SIMD_PRAGMA_DEPRECATED_
+  SIMDE_DIAGNOSTIC_DISABLE_SIMD_PRAGMA_DEPRECATED_ \
+  SIMDE_DIAGNOSTIC_DISABLE_CONDITIONAL_UNINITIALIZED_ \
+  SIMDE_DIAGNOSTIC_DISABLE_FLOAT_EQUAL_
 
 /* Sometimes we run into problems with specific versions of compilers
    which make the native versions unusable for us.  Often this is due

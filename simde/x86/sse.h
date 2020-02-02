@@ -1756,7 +1756,7 @@ simde_mm_load_ps (simde_float32 const mem_addr[HEDLEY_ARRAY_PARAM(4)]) {
 #if defined(SIMDE_SSE_NEON)
   r_.neon_f32 = vld1q_f32(mem_addr);
 #else
-  r_ = *HEDLEY_REINTERPRET_CAST(simde__m128_private const*, mem_addr);
+  r_ = *SIMDE_CAST_ALIGN(16, simde__m128_private const*, mem_addr);
 #endif
 
   return simde__m128_from_private(r_);
@@ -1844,6 +1844,15 @@ simde_mm_loadh_pi (simde__m128 a, simde__m64 const* mem_addr) {
 #  define _mm_loadh_pi(a, mem_addr) simde_mm_loadh_pi((a), (simde__m64 const*) (mem_addr))
 #endif
 
+/* The SSE documentation says that there are no alignment requirements
+   for mem_addr.  Unfortunately they used the __m64 type for the argument
+   which is supposed to be 8-byte aligned, so some compilers (like clang
+   with -Wcast-align) will generate a warning if you try to cast, say,
+   a simde_float32* to a simde__m64* for this function.
+
+   I think the choice of argument type is unfortunate, but I do think we
+   need to stick to it here.  If there is demand I can always add something
+   like simde_x_mm_loadl_f32(simde__m128, simde_float32 mem_addr[2]) */
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128
 simde_mm_loadl_pi (simde__m128 a, simde__m64 const* mem_addr) {
@@ -1857,11 +1866,12 @@ simde_mm_loadl_pi (simde__m128 a, simde__m64 const* mem_addr) {
 #if defined(SIMDE_SSE_NEON)
   r_.neon_f32 = vcombine_f32(vld1_f32(HEDLEY_REINTERPRET_CAST(const float32_t*, mem_addr)), vget_high_f32(a_.neon_f32));
 #else
-  simde__m64_private b_ = *HEDLEY_REINTERPRET_CAST(simde__m64_private const*, mem_addr);
-  r_.f32[0] = b_.f32[0];
-  r_.f32[1] = b_.f32[1];
-  r_.f32[2] = a_.f32[2];
-  r_.f32[3] = a_.f32[3];
+  simde__m64_private b_;
+  memcpy(&b_, mem_addr, sizeof(b_));
+  r_.i32[0] = b_.i32[0];
+  r_.i32[1] = b_.i32[1];
+  r_.i32[2] = a_.i32[2];
+  r_.i32[3] = a_.i32[3];
 #endif
 
   return simde__m128_from_private(r_);

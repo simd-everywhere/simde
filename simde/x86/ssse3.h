@@ -124,7 +124,7 @@ simde_mm_abs_epi32 (simde__m128i a) {
 
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {
-    r_.u32[i] = HEDLEY_STATIC_CAST(uint32_t, (a_.i32[i] < 0) ? (- (uint32_t) a_.i32[i]) : a_.i32[i]);
+    r_.u32[i] = (a_.i32[i] < 0) ? (- HEDLEY_STATIC_CAST(uint32_t, a_.i32[i])) : HEDLEY_STATIC_CAST(uint32_t, a_.i32[i]);
   }
 
   return simde__m128i_from_private(r_);

@@ -2172,14 +2172,12 @@ simde_mm_cvtss_sd (simde__m128d a, simde__m128 b) {
   return _mm_cvtss_sd(a, b);
 #else
   simde__m128d_private
-    r_,
     a_ = simde__m128d_to_private(a);
   simde__m128_private b_ = simde__m128_to_private(b);
 
-  r_.f64[0] = b_.f32[0];
-  r_.i64[1] = a_.i64[1];
+  a_.f64[0] = HEDLEY_STATIC_CAST(simde_float64, b_.f32[0]);
 
-  return simde__m128d_from_private(r_);
+  return simde__m128d_from_private(a_);
 #endif
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
@@ -2380,7 +2378,7 @@ simde_mm_load_pd (simde_float64 const mem_addr[HEDLEY_ARRAY_PARAM(2)]) {
 #if defined(SIMDE_SSE2_NEON)
   r_.neon_u32 = vld1q_u32((uint32_t const*) mem_addr);
 #else
-  r_ = *HEDLEY_REINTERPRET_CAST(simde__m128d_private const*, mem_addr);
+  r_ = *SIMDE_CAST_ALIGN(16, simde__m128d_private const*, mem_addr);
 #endif
 
   return simde__m128d_from_private(r_);
