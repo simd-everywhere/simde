@@ -145,8 +145,6 @@ jobs:
     - C_COMPILER=icc
     - CXX_COMPILER=icpc
     - COMPILER_FLAGS='-wd13200 -wd13203'
-    - OPTIMIZATION_FLAGS=''
-    - BUILD_CPP_TESTS=OFF
     install:
     - source /opt/intel/inteloneapi/compiler/latest/env/vars.sh
     addons:
