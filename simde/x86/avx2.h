@@ -1140,22 +1140,6 @@ simde_mm256_shuffle_epi32 (simde__m256i a, const int imm8) {
 #  define _mm256_shuffle_epi32(a, imm8) simde_mm256_shuffle_epi32(a, imm8)
 #endif
 
-SIMDE__FUNCTION_ATTRIBUTES
-simde__m256i
-simde_mm256_shufflelo_epi16 (simde__m256i a, const int imm8) {
-  simde__m256i_private
-    r_,
-    a_ = simde__m256i_to_private(a);
-
-  for (size_t i = 0 ; i < 4 ; i++) {
-    r_.i16[ i ] = a_.i16[((imm8 >> (i * 2)) & 3)];
-    r_.i16[i+8] = a_.i16[((imm8 >> (i * 2)) & 3) + 8];
-  }
-  r_.i64[1] = a_.i64[1];
-  r_.i64[3] = a_.i64[3];
-
-  return simde__m256i_from_private(r_);
-}
 #if defined(SIMDE_AVX2_NATIVE)
 #  define simde_mm256_shufflelo_epi16(a, imm8) _mm256_shufflelo_epi16(a, imm8)
 #elif defined(SIMDE_SSE2_NATIVE)
@@ -1180,6 +1164,11 @@ simde_mm256_shufflelo_epi16 (simde__m256i a, const int imm8) {
 				  ((((imm8) >> 4) & 3) + 8), \
 				  ((((imm8) >> 6) & 3) + 8), \
 				  12, 13, 14, 15) }); }))
+#else
+#  define simde_mm256_shufflelo_epi16(a, imm8) \
+     simde_mm256_set_m128i( \
+       simde_mm_shufflelo_epi16(simde__m256i_to_private(a).m128i[1], imm8), \
+       simde_mm_shufflelo_epi16(simde__m256i_to_private(a).m128i[0], imm8))
 #endif
 #if defined(SIMDE_AVX2_ENABLE_NATIVE_ALIASES)
 #  define _mm256_shufflelo_epi16(a, imm8) simde_mm256_shufflelo_epi16(a, imm8)

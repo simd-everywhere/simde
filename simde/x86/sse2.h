@@ -3986,7 +3986,10 @@ simde_mm_shufflehi_epi16 (simde__m128i a, const int imm8) {
     r_,
     a_ = simde__m128i_to_private(a);
 
-  r_.i64[0] = a_.i64[0];
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < 4 ; i++) {
+    r_.i16[i] = a_.i16[i];
+  }
   for (size_t i = 4 ; i < (sizeof(r_.i16) / sizeof(r_.i16[0])) ; i++) {
     r_.i16[i] = a_.i16[((imm8 >> ((i - 4) * 2)) & 3) + 4];
   }
@@ -4022,7 +4025,10 @@ simde_mm_shufflelo_epi16 (simde__m128i a, const int imm8) {
   for (size_t i = 0 ; i < ((sizeof(r_.i16) / sizeof(r_.i16[0])) / 2) ; i++) {
     r_.i16[i] = a_.i16[((imm8 >> (i * 2)) & 3)];
   }
-  r_.i64[1] = a_.i64[1];
+  SIMDE__VECTORIZE
+  for (size_t i = 4 ; i < 8 ; i++) {
+    r_.i16[i] = a_.i16[i];
+  }
 
   return simde__m128i_from_private(r_);
 }

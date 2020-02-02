@@ -6399,49 +6399,63 @@ test_simde_mm_shufflelo_epi16(const MunitParameter params[], void* data) {
   (void) params;
   (void) data;
 
-  const struct {
-    simde__m128i a;
-    simde__m128i r;
-  } test_vec[8] = {
-    { simde_mm_set_epi16(INT16_C( 25921), INT16_C( 23086), INT16_C(-17780), INT16_C( -8946),
-                         INT16_C( -3821), INT16_C(-23407), INT16_C(  3363), INT16_C(-23898)),
-      simde_mm_set_epi16(INT16_C( 25921), INT16_C( 23086), INT16_C(-17780), INT16_C( -8946),
-                         INT16_C(-23407), INT16_C(  3363), INT16_C(  3363), INT16_C(  3363)) },
-    { simde_mm_set_epi16(INT16_C(-15732), INT16_C(-14043), INT16_C(-24694), INT16_C(-28614),
-                         INT16_C(  9258), INT16_C( -6444), INT16_C( 22259), INT16_C(-29550)),
-      simde_mm_set_epi16(INT16_C(-15732), INT16_C(-14043), INT16_C(-24694), INT16_C(-28614),
-                         INT16_C( -6444), INT16_C( 22259), INT16_C( 22259), INT16_C( 22259)) },
-    { simde_mm_set_epi16(INT16_C( 29589), INT16_C( 24471), INT16_C(   935), INT16_C( 15548),
-                         INT16_C(-31326), INT16_C( 12242), INT16_C(-15498), INT16_C( 20611)),
-      simde_mm_set_epi16(INT16_C( 29589), INT16_C( 24471), INT16_C(   935), INT16_C( 15548),
-                         INT16_C( 12242), INT16_C(-15498), INT16_C(-15498), INT16_C(-15498)) },
-    { simde_mm_set_epi16(INT16_C(-11775), INT16_C( 19870), INT16_C( 27196), INT16_C(-27788),
-                         INT16_C(-25544), INT16_C(-26192), INT16_C( 16129), INT16_C( 25581)),
-      simde_mm_set_epi16(INT16_C(-11775), INT16_C( 19870), INT16_C( 27196), INT16_C(-27788),
-                         INT16_C(-26192), INT16_C( 16129), INT16_C( 16129), INT16_C( 16129)) },
-    { simde_mm_set_epi16(INT16_C( 31307), INT16_C( -8332), INT16_C(-11671), INT16_C(-17958),
-                         INT16_C(-30437), INT16_C( 30830), INT16_C( 32511), INT16_C( 26274)),
-      simde_mm_set_epi16(INT16_C( 31307), INT16_C( -8332), INT16_C(-11671), INT16_C(-17958),
-                         INT16_C( 30830), INT16_C( 32511), INT16_C( 32511), INT16_C( 32511)) },
-    { simde_mm_set_epi16(INT16_C(-19440), INT16_C(-28661), INT16_C(-27597), INT16_C(-21720),
-                         INT16_C(-29791), INT16_C( 17924), INT16_C( -2221), INT16_C(-31687)),
-      simde_mm_set_epi16(INT16_C(-19440), INT16_C(-28661), INT16_C(-27597), INT16_C(-21720),
-                         INT16_C( 17924), INT16_C( -2221), INT16_C( -2221), INT16_C( -2221)) },
-    { simde_mm_set_epi16(INT16_C( 26610), INT16_C( 31793), INT16_C(  1765), INT16_C(  -378),
-                         INT16_C(-15235), INT16_C( 17943), INT16_C(     8), INT16_C( 14365)),
-      simde_mm_set_epi16(INT16_C( 26610), INT16_C( 31793), INT16_C(  1765), INT16_C(  -378),
-                         INT16_C( 17943), INT16_C(     8), INT16_C(     8), INT16_C(     8)) },
-    { simde_mm_set_epi16(INT16_C( -8514), INT16_C( 17338), INT16_C(  1723), INT16_C(  1355),
-                         INT16_C( 27911), INT16_C(-15857), INT16_C( 13585), INT16_C(  3367)),
-      simde_mm_set_epi16(INT16_C( -8514), INT16_C( 17338), INT16_C(  1723), INT16_C(  1355),
-                         INT16_C(-15857), INT16_C( 13585), INT16_C( 13585), INT16_C( 13585)) }
-  };
+  simde__m128i a, r, e;
 
-  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
-    /* 149 chosen by fair dice roll.  guaranteed to be random. */
-    simde__m128i r = simde_mm_shufflelo_epi16(test_vec[i].a, 149);
-    simde_assert_m128i_i16(r, ==, test_vec[i].r);
-  }
+  a = simde_mm_set_epi16(INT16_C(-24821), INT16_C(-30256), INT16_C(  8570), INT16_C( 11360),
+                          INT16_C(-20759), INT16_C(-23279), INT16_C(  9158), INT16_C( -6205));
+  e = simde_mm_set_epi16(INT16_C(-24821), INT16_C(-30256), INT16_C(  8570), INT16_C( 11360),
+                          INT16_C( -6205), INT16_C(-23279), INT16_C(  9158), INT16_C(-20759));
+  r = simde_mm_shufflelo_epi16(a,  39);
+  simde_assert_m128i_i16(r, ==, e);
+
+  a = simde_mm_set_epi16(INT16_C(-26644), INT16_C( -8695), INT16_C( -9741), INT16_C(-14158),
+                          INT16_C( -3323), INT16_C(  7181), INT16_C( 10186), INT16_C(-16906));
+  e = simde_mm_set_epi16(INT16_C(-26644), INT16_C( -8695), INT16_C( -9741), INT16_C(-14158),
+                          INT16_C(  7181), INT16_C(-16906), INT16_C( 10186), INT16_C( -3323));
+  r = simde_mm_shufflelo_epi16(a, 135);
+  simde_assert_m128i_i16(r, ==, e);
+
+  a = simde_mm_set_epi16(INT16_C(-20225), INT16_C( 19920), INT16_C( -3607), INT16_C( 11889),
+                          INT16_C( 12271), INT16_C(-20589), INT16_C( 17338), INT16_C( -7507));
+  e = simde_mm_set_epi16(INT16_C(-20225), INT16_C( 19920), INT16_C( -3607), INT16_C( 11889),
+                          INT16_C( 12271), INT16_C( 17338), INT16_C( 12271), INT16_C( -7507));
+  r = simde_mm_shufflelo_epi16(a, 220);
+  simde_assert_m128i_i16(r, ==, e);
+
+  a = simde_mm_set_epi16(INT16_C( -8042), INT16_C(-18261), INT16_C( 20990), INT16_C(-18752),
+                          INT16_C( 26566), INT16_C(-27202), INT16_C( -3939), INT16_C( -1274));
+  e = simde_mm_set_epi16(INT16_C( -8042), INT16_C(-18261), INT16_C( 20990), INT16_C(-18752),
+                          INT16_C( -3939), INT16_C( 26566), INT16_C( -3939), INT16_C( -1274));
+  r = simde_mm_shufflelo_epi16(a, 116);
+  simde_assert_m128i_i16(r, ==, e);
+
+  a = simde_mm_set_epi16(INT16_C(  5383), INT16_C(-27918), INT16_C( 16559), INT16_C(-31608),
+                          INT16_C(  6504), INT16_C(-11225), INT16_C(-13396), INT16_C( 20261));
+  e = simde_mm_set_epi16(INT16_C(  5383), INT16_C(-27918), INT16_C( 16559), INT16_C(-31608),
+                          INT16_C(-13396), INT16_C(-13396), INT16_C(-13396), INT16_C(-13396));
+  r = simde_mm_shufflelo_epi16(a,  85);
+  simde_assert_m128i_i16(r, ==, e);
+
+  a = simde_mm_set_epi16(INT16_C( -8905), INT16_C( 30480), INT16_C( 20250), INT16_C(    30),
+                          INT16_C( 24188), INT16_C( 21861), INT16_C( -9955), INT16_C(  6282));
+  e = simde_mm_set_epi16(INT16_C( -8905), INT16_C( 30480), INT16_C( 20250), INT16_C(    30),
+                          INT16_C(  6282), INT16_C( 24188), INT16_C( 21861), INT16_C( 21861));
+  r = simde_mm_shufflelo_epi16(a,  58);
+  simde_assert_m128i_i16(r, ==, e);
+
+  a = simde_mm_set_epi16(INT16_C(  7654), INT16_C(  4685), INT16_C( 25749), INT16_C(-30088),
+                          INT16_C( -7783), INT16_C( 10182), INT16_C( 23640), INT16_C(  4937));
+  e = simde_mm_set_epi16(INT16_C(  7654), INT16_C(  4685), INT16_C( 25749), INT16_C(-30088),
+                          INT16_C( -7783), INT16_C(  4937), INT16_C( 23640), INT16_C(  4937));
+  r = simde_mm_shufflelo_epi16(a, 196);
+  simde_assert_m128i_i16(r, ==, e);
+
+  a = simde_mm_set_epi16(INT16_C(-26752), INT16_C(  9125), INT16_C(-14825), INT16_C( 13732),
+                          INT16_C( 15859), INT16_C(-32053), INT16_C(-12419), INT16_C( 17722));
+  e = simde_mm_set_epi16(INT16_C(-26752), INT16_C(  9125), INT16_C(-14825), INT16_C( 13732),
+                          INT16_C( 15859), INT16_C( 17722), INT16_C(-12419), INT16_C(-32053));
+  r = simde_mm_shufflelo_epi16(a, 198);
+  simde_assert_m128i_i16(r, ==, e);
 
   return MUNIT_OK;
 }
