@@ -71,7 +71,7 @@ SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 #    if !defined(HEDLEY_INTEL_VERSION) && !defined(HEDLEY_EMSCRIPTEN_VERSION) && defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 201112L) && !defined(__STDC_NO_ATOMICS__)
 #      include <stdatomic.h>
 #    elif defined(_WIN32)
-#      include <Windows.h>
+#      include <windows.h>
 #    endif
 #  endif
 
