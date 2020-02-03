@@ -1,32 +1,30 @@
-# environment:
-#   matrix:
-#     - ARCH: Win32
-#       APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-#     - ARCH: x64
-#       APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-#     - ARCH: ARM
-#       APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-#       RUN_TESTS: no
-#     - ARCH: ARM64
-#       APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-#       RUN_TESTS: no
+environment:
+  matrix:
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+      GENERATOR: Visual Studio 15 2017 Win64
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+      GENERATOR: Visual Studio 14 2015 Win64
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2013
+      GENERATOR: Visual Studio 12 2013 Win64
 
-# branches:
-#   except:
-#     - /^(wip\/)?(travis|osx|ipp)(\-.+)?$/
+branches:
+  except:
+    - /^(wip\/)?(travis|osx|ipp)(\-.+)?$/
 
-# before_build:
-#   - ps: |
-#       git submodule -q update --init --recursive
-#       cd test
-#       mkdir build
-#       cd build
-#       cmake -G "Visual Studio 16 2019" -A "$env:ARCH" ..
+before_build:
+  - ps: |
+      cmake --help
+      git submodule -q update --init --recursive
+      cd test
+      mkdir build
+      cd build
+      cmake -G "$env:GENERATOR" ..
 
-# build_script:
-#   - ps: |
-#       cmake --build . --config Debug
+build_script:
+  - ps: |
+      cmake --build . --config Debug
 
-# test_script:
-#   - ps: |
-#       if("$env:RUN_TESTS" -ne "no") { ctest --output-on-failure --interactive-debug-mode 0 -C Debug -V }
+test_script:
+  - ps: |
+      if("$env:RUN_TESTS" -ne "no") { ctest --output-on-failure --interactive-debug-mode 0 -C Debug -V }
+ 
