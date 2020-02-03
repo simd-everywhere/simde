@@ -72,7 +72,7 @@
 #endif
 
 #define simde_assert_aligned(alignment, val) \
-  simde_assert_int(HEDLEY_REINTERPRET_CAST(const uintptr_t, HEDLEY_REINTERPRET_CAST(const void*, (val))) % (alignment), ==, 0)
+  simde_assert_int(HEDLEY_REINTERPRET_CAST(uintptr_t, HEDLEY_REINTERPRET_CAST(const void*, (val))) % (alignment), ==, 0)
 
 /* TODO: this should really do something like
    HEDLEY_STATIC_CAST(T, (simde_assert_int(alignment, v), v))
@@ -161,7 +161,12 @@
    but the code needs to be refactored a bit to take advantage. */
 #  if !defined(SIMDE_NO_CONVERT_VECTOR) && defined(SIMDE_VECTOR_SUBSCRIPT)
 #    if HEDLEY_HAS_BUILTIN(__builtin_convertvector) || HEDLEY_GCC_VERSION_CHECK(9,0,0)
-#      define SIMDE__CONVERT_VECTOR(to, from) ((to) = __builtin_convertvector((from), __typeof__(to)))
+/* https://gcc.gnu.org/bugzilla/show_bug.cgi?id=93557 */
+#      define SIMDE__CONVERT_VECTOR(to, from) ((to) = (__extension__({ \
+           __typeof__(from) from_ = (from); \
+           ((void) from_); \
+           __builtin_convertvector(from_, __typeof__(to)); \
+         })))
 #    endif
 #  endif
 #endif
