@@ -149,14 +149,14 @@ jobs:
   - name: msvc x86
     os: windows
     env:
-    - ARCH_FLAGS=""
+    - ARCH_FLAGS="/arch:AVX2"
     - CMAKE_GENERATOR="Visual Studio 15 2017"
     - OPTIMIZATION_FLAGS="/Ox"
 
   - name: msvc x86_64
     os: windows
     env:
-    - ARCH_FLAGS=""
+    - ARCH_FLAGS="/arch:AVX2"
     - CMAKE_GENERATOR="Visual Studio 15 2017 Win64"
     - OPTIMIZATION_FLAGS="/Ox"
 
