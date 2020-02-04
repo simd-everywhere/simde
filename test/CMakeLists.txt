@@ -7,7 +7,7 @@ include (ExtraWarningFlags)
 
 enable_testing()
 
-option(BUILD_CPP_TESTS "Build C++ tests" OFF)
+option(BUILD_CPP_TESTS "Build C++ tests" ON)
 
 if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/munit/munit.c")
   find_program(GIT git)
