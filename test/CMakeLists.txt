@@ -110,6 +110,7 @@ set(TEST_RUNNER_SOURCES
   arm/neon/test-neon.c
   arm/test-arm.c)
 add_executable(run-tests ${TEST_RUNNER_SOURCES})
+set_property(TARGET run-tests PROPERTY C_STANDARD "99")
 target_link_libraries(run-tests munit)
 target_add_compiler_flags (munit "-w")
 if(NEED_LIBM)

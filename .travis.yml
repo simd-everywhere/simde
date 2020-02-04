@@ -187,6 +187,15 @@ jobs:
       emsdk/emsdk activate latest
       source emsdk/emsdk_env.sh
 
+  - name: gcc-4.8
+    dist: trusty
+    addons:
+      apt:
+        packages:
+        - cmake
+        sources:
+        - kalakris-cmake
+
   # - name: s390x
   #   arch: s390x
 
