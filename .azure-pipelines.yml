@@ -13,3 +13,19 @@ jobs:
     displayName: Build
   - script: ./run-tests
     displayName: Tests
+
+- job: mipsel
+  steps:
+  - script: sudo apt-get -y install qemu-user
+    displayName: APT Dependencies
+  - script: |
+      docker pull dockcross/linux-mipsel
+      docker run --rm dockcross/linux-mipsel > ./dockcross-linux-mipsel
+      chmod u+x ./dockcross-linux-mipsel
+    displayName: Prepare Dockcross
+  - script: ./dockcross-linux-mipsel cmake test -DBUILD_CPP_TESTS=ON
+    displayName: Configure
+  - script: ./dockcross-linux-mipsel make VERBOSE=1
+    displayName: Build
+  - script: ./dockcross-linux-mipsel ./run-tests
+    displayName: Tests
