@@ -200,9 +200,6 @@ simde_mm_abs_pi32 (simde__m64 a) {
 #  define _mm_abs_pi32(a) simde_mm_abs_pi32(a)
 #endif
 
-#if defined(simde_mm_alignr_epi8)
-#  undef simde_mm_alignr_epi8
-#endif
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_alignr_epi8 (simde__m128i a, simde__m128i b, int count) {
