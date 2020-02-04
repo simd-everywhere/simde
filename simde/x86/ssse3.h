@@ -246,7 +246,7 @@ simde_mm_alignr_epi8 (simde__m128i a, simde__m128i b, int count) {
 #  define simde_mm_alignr_epi8(a, b, count) _mm_alignr_epi8(a, b, count)
 #endif
 #if defined(SIMDE_SSSE3_ENABLE_NATIVE_ALIASES)
-#  define _mm_alignr_epi8(a, b, count) simde_mm_alignr_epi8(a, b, count))
+#  define _mm_alignr_epi8(a, b, count) simde_mm_alignr_epi8(a, b, count)
 #endif
 
 #if defined(simde_mm_alignr_pi8)
@@ -325,7 +325,7 @@ simde_mm_shuffle_pi8 (simde__m64 a, simde__m64 b) {
 #endif
 }
 #if defined(SIMDE_SSSE3_ENABLE_NATIVE_ALIASES)
-#  define _mm_shuffle_pi8(a, b) (simde_mm_shuffle_pi8(a, b)
+#  define _mm_shuffle_pi8(a, b) simde_mm_shuffle_pi8(a, b)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
