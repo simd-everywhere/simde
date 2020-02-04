@@ -74,13 +74,28 @@ If you have a project you're interested in using with SIMDe but we
 don't yet support all the functions you need, please file an issue
 with a list of what's missing so we know what to prioritize.
 
-## Want to help?
+## Contributing
 
-There are a *lot* of instructions to get through, so any help would be
-greatly appreciated!  It's pretty straightforward work, and a great
-way to learn about the instructions.
+First off, if you're reading this: thank you! Even considering
+contributing to SIMDe is very much appreciated!
 
-There is [a
+SIMDe is a fairly large undertaking; there are a *lot* of functions to
+get through and a lot of opportunities for optimization on different
+platforms, so we're very happy for any help you can provide.
+
+Programmers of all skill levels are welcome, there are lots of tasks
+which are pretty straightforward and don't require any special
+expertise.
+
+If you're not sure how you'd like to contribute, please consider taking
+a look at [the issue tracker](https://github.com/nemequ/simde/issues).
+There is a [good first issue](https://github.com/nemequ/simde/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22)
+tag if you want to ease into a your first contributions, but if you're
+interested in something else please get in touch via the issue tracker;
+we're happy to help you get a handle on whatever you are interested in.
+
+If you're interested in implementing currently unimplemented functions,
+there is [a
 guide](https://github.com/nemequ/simde/wiki/Implementing-a-New-Function)
 explaining how to add new functions and how to quickly and easily get
 a test case in place.  It's a bit rough right now, but if anything is
@@ -136,32 +151,51 @@ using [Cilk Plus](https://www.cilkplus.org/), [GCC loop-specific
 pragmas](https://gcc.gnu.org/onlinedocs/gcc/Loop-Specific-Pragmas.html),
 or [clang pragma loop hint
 directives](http://llvm.org/docs/Vectorizers.html#pragma-loop-hint-directives),
-though these are not as well tested.
+though these are not nearly as effective as OpenMP SIMD and depending
+on them will likely result in less efficient code.
 
 ## Portability
 
 ### Compilers
 
 SIMDe does depend on some C99 features, though the subset supported by
-MSVC also works.
+MSVC also works.  While we do our best to make sure we provide optimized
+implementations where they are supported, SIMDe does contain portable
+fallbacks which are designed to work on any C99 compiler.
 
-Every commit is tested with several different versions of GCC, clang,
-and PGI via [Travis CI](https://travis-ci.org/nemequ/simde) on Linux.
-Microsoft Visual C++ is tested on Windows using
-[AppVeyor](https://ci.appveyor.com/project/quixdb/simde).  Intel C/C++
-Compiler is also tested sporadically (mostly because their
-optimization reports are excellent).
+Every commit is tested in CI on multiple compilers, platforms, and
+configurations, and our test coverage is extremely extnensive.
+Currently tested compilers include:
+
+ * GCC versions back to 4.8
+ * Clang versions back to 7
+ * Microsoft Visual Studio back to 12 (2013)
+ * IBM XL C/C++
+ * Intel C/C++ Compiler
+ * PGI C Compiler
 
 I'm generally willing to accept patches to add support for other
 compilers, as long as they're not too disruptive, *especially* if we
-can get CI support going.  Travis and AppVeyor are great, but feel
-free to use whatever works.
+can get CI support going.  We currently use Travis CI, AppVeyor, and
+Microsoft Azure Pipelines, but other CI platforms can be added as
+necessary.
 
 ### Hardware
 
-Currently only x86_64, x86, and ARMv7 receive any sort of regular
-testing.  If you'd like to see more thorough testing of other
-architectures, please consider finding a way to integrate it into CI.
+The following architectures are tested in CI for every commit:
+
+ * x86_64
+ * x86
+ * AArch64
+ * ARMv8
+ * PPC64
+ * MIPS
+
+We would love to add more, so patches are extremely welcome!
+
+The tests currently contain some assumptions that they are running on
+a little-endian CPU.  We're working on this, but for now big endian
+CPUs *should* work, but we can't promise.
 
 ## Related Projects
 
@@ -238,8 +272,6 @@ tremendously grateful for their support:
    numerous platforms.
  * [AppVeyor](https://www.appveyor.com/) — provides CI testing on
    Windows.
- * [IntegriCloud](https://integricloud.com/) — provides a POWER9 VPS
-   for development.
  * [CodeCov.io](https://codecov.io/) — provides code coverage analysis
    for our test cases.
 
