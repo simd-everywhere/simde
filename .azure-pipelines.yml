@@ -7,7 +7,7 @@ jobs:
   steps:
   - script: sudo apt-get install -y ninja-build
     displayName: Dependencies
-  - script: cmake test -G Ninja -DCMAKE_C_FLAGS='-msse2' -DCMAKE_CXX_FLAGS='-march=native'
+  - script: cmake test -G Ninja -DCMAKE_BUILD_TYPE=Coverage -DCMAKE_C_FLAGS='-msse2' -DCMAKE_CXX_FLAGS='-march=native'
     displayName: Configure
   - script: ninja -v
     displayName: Build
@@ -16,11 +16,11 @@ jobs:
   - script: bash <(curl -s https://codecov.io/bash)
     displayName: 'Upload to codecov.io'
 
-- job: sse4.1
+- job: sse4_1
   steps:
   - script: sudo apt-get install -y ninja-build
     displayName: Dependencies
-  - script: cmake test -G Ninja -DCMAKE_C_FLAGS='-msse4.1' -DCMAKE_CXX_FLAGS='-march=native'
+  - script: cmake test -G Ninja -DCMAKE_BUILD_TYPE=Coverage -DCMAKE_C_FLAGS='-msse4.1' -DCMAKE_CXX_FLAGS='-march=native'
     displayName: Configure
   - script: ninja -v
     displayName: Build
@@ -38,7 +38,7 @@ jobs:
       docker run --rm dockcross/linux-mipsel > ./dockcross-linux-mipsel
       chmod u+x ./dockcross-linux-mipsel
     displayName: Prepare Dockcross
-  - script: ./dockcross-linux-mipsel cmake test
+  - script: ./dockcross-linux-mipsel cmake test -DCMAKE_BUILD_TYPE=Coverage
     displayName: Configure
   - script: ./dockcross-linux-mipsel make VERBOSE=1
     displayName: Build
