@@ -155,12 +155,23 @@ jobs:
     arch: amd64
     compiler: clang
 
-  - name: "arm32"
+  - name: "armv8-a"
     arch: arm64
     env:
     - C_COMPILER=arm-linux-gnueabihf-gcc
     - CXX_COMPILER=arm-linux-gnueabihf-g++
-    - ARCH_FLAGS="-march=armv8-a"
+    - ARCH_FLAGS="-march=armv8-a+simd"
+    install:
+    - sudo dpkg --add-architecture armhf
+    - sudo apt-get update
+    - sudo apt-get -y install crossbuild-essential-armhf libc6:armhf libstdc++6:armhf
+
+  - name: "armv7-a"
+    arch: arm64
+    env:
+    - C_COMPILER=arm-linux-gnueabihf-gcc
+    - CXX_COMPILER=arm-linux-gnueabihf-g++
+    - ARCH_FLAGS="-march=armv7-a+simd"
     install:
     - sudo dpkg --add-architecture armhf
     - sudo apt-get update

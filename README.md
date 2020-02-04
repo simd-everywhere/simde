@@ -188,6 +188,7 @@ The following architectures are tested in CI for every commit:
  * x86
  * AArch64
  * ARMv8
+ * ARMv7
  * PPC64
  * MIPS
 
