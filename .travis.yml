@@ -82,6 +82,28 @@ jobs:
     - COMPILER_FLAGS=-DSIMDE_NO_SHUFFLE_VECTOR
     - OPTIMIZATION_FLAGS=''
 
+  - name: "armv8-a"
+    arch: arm64
+    env:
+    - C_COMPILER=arm-linux-gnueabihf-gcc
+    - CXX_COMPILER=arm-linux-gnueabihf-g++
+    - ARCH_FLAGS="-march=armv8-a+simd"
+    install:
+    - sudo dpkg --add-architecture armhf
+    - sudo apt-get update
+    - sudo apt-get -y install crossbuild-essential-armhf libc6:armhf libstdc++6:armhf
+
+  - name: "armv7-a"
+    arch: arm64
+    env:
+    - C_COMPILER=arm-linux-gnueabihf-gcc
+    - CXX_COMPILER=arm-linux-gnueabihf-g++
+    - ARCH_FLAGS="-march=armv7-a+simd"
+    install:
+    - sudo dpkg --add-architecture armhf
+    - sudo apt-get update
+    - sudo apt-get -y install crossbuild-essential-armhf libc6:armhf libstdc++6:armhf
+
   - name: icc
     compiler: icc
     env:
@@ -154,28 +176,6 @@ jobs:
   - name: "clang-7 amd64"
     arch: amd64
     compiler: clang
-
-  - name: "armv8-a"
-    arch: arm64
-    env:
-    - C_COMPILER=arm-linux-gnueabihf-gcc
-    - CXX_COMPILER=arm-linux-gnueabihf-g++
-    - ARCH_FLAGS="-march=armv8-a+simd"
-    install:
-    - sudo dpkg --add-architecture armhf
-    - sudo apt-get update
-    - sudo apt-get -y install crossbuild-essential-armhf libc6:armhf libstdc++6:armhf
-
-  - name: "armv7-a"
-    arch: arm64
-    env:
-    - C_COMPILER=arm-linux-gnueabihf-gcc
-    - CXX_COMPILER=arm-linux-gnueabihf-g++
-    - ARCH_FLAGS="-march=armv7-a+simd"
-    install:
-    - sudo dpkg --add-architecture armhf
-    - sudo apt-get update
-    - sudo apt-get -y install crossbuild-essential-armhf libc6:armhf libstdc++6:armhf
 
   - name: emscripten
     compiler: emcc
