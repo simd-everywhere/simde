@@ -3,11 +3,24 @@ pool:
 
 jobs:
 
-- job: gcc
+- job: sse2
   steps:
   - script: sudo apt-get install -y ninja-build
     displayName: Dependencies
-  - script: cmake test -G Ninja -DBUILD_CPP_TESTS=ON -DCMAKE_C_FLAGS='-march=native' -DCMAKE_CXX_FLAGS='-march=native'
+  - script: cmake test -G Ninja -DCMAKE_C_FLAGS='-msse2' -DCMAKE_CXX_FLAGS='-march=native'
+    displayName: Configure
+  - script: ninja -v
+    displayName: Build
+  - script: ./run-tests
+    displayName: Tests
+  - script: bash <(curl -s https://codecov.io/bash)
+    displayName: 'Upload to codecov.io'
+
+- job: sse4.1
+  steps:
+  - script: sudo apt-get install -y ninja-build
+    displayName: Dependencies
+  - script: cmake test -G Ninja -DCMAKE_C_FLAGS='-msse4.1' -DCMAKE_CXX_FLAGS='-march=native'
     displayName: Configure
   - script: ninja -v
     displayName: Build
@@ -25,7 +38,7 @@ jobs:
       docker run --rm dockcross/linux-mipsel > ./dockcross-linux-mipsel
       chmod u+x ./dockcross-linux-mipsel
     displayName: Prepare Dockcross
-  - script: ./dockcross-linux-mipsel cmake test -DBUILD_CPP_TESTS=ON
+  - script: ./dockcross-linux-mipsel cmake test
     displayName: Configure
   - script: ./dockcross-linux-mipsel make VERBOSE=1
     displayName: Build
