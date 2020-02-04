@@ -1,0 +1,15 @@
+pool:
+  vmImage: 'ubuntu-latest'
+
+jobs:
+
+- job: gcc
+  steps:
+  - script: sudo apt-get install -y ninja-build
+    displayName: Dependencies
+  - script: cmake test -G Ninja -DBUILD_CPP_TESTS=ON -DCMAKE_C_FLAGS='-march=native' -DCMAKE_CXX_FLAGS='-march=native'
+    displayName: Configure
+  - script: ninja -v
+    displayName: Build
+  - script: ./run-tests
+    displayName: Tests

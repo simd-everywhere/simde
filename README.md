@@ -50,7 +50,7 @@ For an example of a project using SIMDe, see
 
 ## Current Status
 
-[![Travis](https://api.travis-ci.org/nemequ/simde.svg?branch=master)](https://travis-ci.org/nemequ/simde) [![AppVeyor](https://ci.appveyor.com/api/projects/status/1f3wp712w1ium5vi/branch/master?svg=true)](https://ci.appveyor.com/project/quixdb/simde/branch/master) [![Codecov](https://img.shields.io/codecov/c/github/nemequ/simde.svg)](https://codecov.io/gh/nemequ/simde)
+[![Travis](https://api.travis-ci.org/nemequ/simde.svg?branch=master)](https://travis-ci.org/nemequ/simde) [![AppVeyor](https://ci.appveyor.com/api/projects/status/1f3wp712w1ium5vi/branch/master?svg=true)](https://ci.appveyor.com/project/quixdb/simde/branch/master) [![Azure Pipelines](https://dev.azure.com/simd-everywhere/SIMDe/_apis/build/status/nemequ.simde?branchName=master)](https://dev.azure.com/simd-everywhere/SIMDe/_build/latest?definitionId=1&branchName=master) [![Codecov](https://img.shields.io/codecov/c/github/nemequ/simde.svg)](https://codecov.io/gh/nemequ/simde)
 
 There are currently complete implementations of the following instruction
 sets:
