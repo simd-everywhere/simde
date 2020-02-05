@@ -13,7 +13,6 @@ branches:
 
 before_build:
   - ps: |
-      cmake --help
       git submodule -q update --init --recursive
       cd test
       mkdir build
