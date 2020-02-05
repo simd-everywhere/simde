@@ -1555,8 +1555,7 @@ simde_mm_cmpord_ss (simde__m128 a, simde__m128 b) {
 #else
   simde__m128_private
     r_,
-    a_ = simde__m128_to_private(a),
-    b_ = simde__m128_to_private(b);
+    a_ = simde__m128_to_private(a);
 
   r_.u32[0] = (isnan(simde_mm_cvtss_f32(a)) || isnan(simde_mm_cvtss_f32(b))) ? UINT32_C(0) : ~UINT32_C(0);
   SIMDE__VECTORIZE
