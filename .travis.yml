@@ -207,6 +207,24 @@ jobs:
         sources:
         - kalakris-cmake
 
+  - name: amalgamate
+    if: branch = master AND type != pull_request
+    script:
+    - |
+      if [ ! -e amalgamated/x86 ]; then
+        mkdir -p amalgamated/x86;
+        (cd simde && for header in x86/*.h; do
+          ../amalgamate.py "$header" > ../amalgamated/"$header"
+        done);
+      fi
+    deploy:
+      provider: pages
+      target_branch: amalgamated
+      local_dir: amalgamated
+      github_token: $GITHUB_TOKEN
+      skip_cleanup: true
+      keep_history: true
+
   # - name: s390x
   #   arch: s390x
 
