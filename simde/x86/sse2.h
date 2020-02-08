@@ -453,13 +453,10 @@ simde_mm_adds_epi8 (simde__m128i a, simde__m128i b) {
 #else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r_.i8) / sizeof(r_.i8[0])) ; i++) {
-    if ((((b_.i8[i]) > 0) && ((a_.i8[i]) > (INT8_MAX - (b_.i8[i]))))) {
-      r_.i8[i] = INT8_MAX;
-    } else if ((((b_.i8[i]) < 0) && ((a_.i8[i]) < (INT8_MIN - (b_.i8[i]))))) {
-      r_.i8[i] = INT8_MIN;
-    } else {
-      r_.i8[i] = (a_.i8[i]) + (b_.i8[i]);
-    }
+    const int32_t tmp =
+      HEDLEY_STATIC_CAST(int16_t, a_.i8[i]) +
+      HEDLEY_STATIC_CAST(int16_t, b_.i8[i]);
+    r_.i8[i] = HEDLEY_STATIC_CAST(int8_t, ((tmp < INT8_MAX) ? ((tmp > INT8_MIN) ? tmp : INT8_MIN) : INT8_MAX));
   }
 #endif
 
@@ -481,18 +478,16 @@ simde_mm_adds_epi16 (simde__m128i a, simde__m128i b) {
     a_ = simde__m128i_to_private(a),
     b_ = simde__m128i_to_private(b);
 
+
 #if defined(SIMDE_SSE2_NEON)
   r_.neon_i16 = vqaddq_s16(a_.neon_i16, b_.neon_i16);
 #else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r_.i16) / sizeof(r_.i16[0])) ; i++) {
-    if ((((b_.i16[i]) > 0) && ((a_.i16[i]) > (INT16_MAX - (b_.i16[i]))))) {
-      r_.i16[i] = INT16_MAX;
-    } else if ((((b_.i16[i]) < 0) && ((a_.i16[i]) < (INT16_MIN - (b_.i16[i]))))) {
-      r_.i16[i] = INT16_MIN;
-    } else {
-      r_.i16[i] = (a_.i16[i]) + (b_.i16[i]);
-    }
+    const int32_t tmp =
+      HEDLEY_STATIC_CAST(int32_t, a_.i16[i]) +
+      HEDLEY_STATIC_CAST(int32_t, b_.i16[i]);
+    r_.i16[i] = HEDLEY_STATIC_CAST(int16_t, ((tmp < INT16_MAX) ? ((tmp > INT16_MIN) ? tmp : INT16_MIN) : INT16_MAX));
   }
 #endif
 
