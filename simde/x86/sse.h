@@ -3191,7 +3191,7 @@ simde_mm_ucomineq_ss (simde__m128 a, simde__m128 b) {
 #    if __has_builtin(__builtin_ia32_undef128)
 #      define SIMDE__HAVE_UNDEFINED128
 #    endif
-#  elif !defined(__PGI) && !defined(SIMDE_BUG_GCC_REV_208793)
+#  elif !defined(__PGI) && !defined(SIMDE_BUG_GCC_REV_208793) && !defined(_MSC_VER)
 #    define SIMDE__HAVE_UNDEFINED128
 #  endif
 #endif
