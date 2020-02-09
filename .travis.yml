@@ -177,27 +177,6 @@ jobs:
     arch: amd64
     compiler: clang
 
-  - name: emscripten
-    compiler: emcc
-    env:
-    - ARCH_FLAGS=""
-    - C_COMPILER=emcc
-    - CXX_COMPILER=emcc
-    - CONFIGURE_WRAPPER=emconfigure
-    - BUILD_WRAPPER=emmake
-    - EXECUTABLE_EXTENSION=.js
-    - TEST_WRAPPER=node
-    addons:
-      apt:
-        packages:
-        - nodejs
-    install:
-    - |
-      git clone https://github.com/emscripten-core/emsdk.git
-      emsdk/emsdk install latest
-      emsdk/emsdk activate latest
-      source emsdk/emsdk_env.sh
-
   - name: gcc-4.8
     dist: trusty
     addons:
@@ -224,6 +203,27 @@ jobs:
       github_token: $GITHUB_TOKEN
       skip_cleanup: true
       keep_history: true
+
+  # - name: emscripten
+  #   compiler: emcc
+  #   env:
+  #   - ARCH_FLAGS=""
+  #   - C_COMPILER=emcc
+  #   - CXX_COMPILER=emcc
+  #   - CONFIGURE_WRAPPER=emconfigure
+  #   - BUILD_WRAPPER=emmake
+  #   - EXECUTABLE_EXTENSION=.js
+  #   - TEST_WRAPPER=node
+  #   addons:
+  #     apt:
+  #       packages:
+  #       - nodejs
+  #   install:
+  #   - |
+  #     git clone https://github.com/emscripten-core/emsdk.git
+  #     emsdk/emsdk install latest
+  #     emsdk/emsdk activate latest
+  #     source emsdk/emsdk_env.sh
 
   # - name: s390x
   #   arch: s390x
