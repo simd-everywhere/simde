@@ -27,7 +27,7 @@
 
 #include <math.h>
 
-#if defined(SIMDE_NO_NATIVE) || defined(SIMDE_SSE_NATIVE)
+#if defined(SIMDE_SSE_NATIVE) || defined(SIMDE_NO_NATIVE) || defined(SIMDE_ALWAYS_BUILD_NATIVE_TESTS)
 
 static MunitResult
 test_simde_mm_set_ps(const MunitParameter params[], void* data) {
@@ -4897,13 +4897,13 @@ test_simde_mm_stream_ps(const MunitParameter params[], void* data) {
   return MUNIT_OK;
 }
 
-#endif /* defined(SIMDE_NO_NATIVE) || defined(SIMDE_SSE_NATIVE) */
+#endif /* defined(SIMDE_SSE_NATIVE) || defined(SIMDE_NO_NATIVE) || defined(SIMDE_ALWAYS_BUILD_NATIVE_TESTS) */
 
 HEDLEY_DIAGNOSTIC_PUSH
 HEDLEY_DIAGNOSTIC_DISABLE_CAST_QUAL
 
 static MunitTest test_suite_tests[] = {
-#if defined(SIMDE_NO_NATIVE) || defined(SIMDE_SSE_NATIVE)
+#if defined(SIMDE_SSE_NATIVE) || defined(SIMDE_NO_NATIVE) || defined(SIMDE_ALWAYS_BUILD_NATIVE_TESTS)
   SIMDE_TESTS_DEFINE_TEST(mm_set_ps),
   SIMDE_TESTS_DEFINE_TEST(mm_set1_ps),
   SIMDE_TESTS_DEFINE_TEST(mm_set_ss),
@@ -5027,7 +5027,7 @@ static MunitTest test_suite_tests[] = {
   SIMDE_TESTS_DEFINE_TEST(mm_xor_ps),
   SIMDE_TESTS_DEFINE_TEST(mm_stream_pi),
   SIMDE_TESTS_DEFINE_TEST(mm_stream_ps),
-#endif /* defined(SIMDE_NO_NATIVE) || defined(SIMDE_SSE_NATIVE) */
+#endif /* defined(SIMDE_SSE_NATIVE) || defined(SIMDE_NO_NATIVE) || defined(SIMDE_ALWAYS_BUILD_NATIVE_TESTS) */
 
   { NULL, NULL, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL }
 };

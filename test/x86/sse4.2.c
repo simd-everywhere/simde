@@ -25,20 +25,20 @@
 #include <test/x86/test-x86-internal.h>
 #include <simde/x86/sse4.2.h>
 
-#if defined(SIMDE_NO_NATIVE) || defined(SIMDE_SSE4_2_NATIVE)
+#if defined(SIMDE_SSE4_2_NATIVE) || defined(SIMDE_NO_NATIVE) || defined(SIMDE_ALWAYS_BUILD_NATIVE_TESTS)
 
 
 
 
-#endif /* defined(SIMDE_NO_NATIVE) || defined(SIMDE_SSE4_2_NATIVE) */
+#endif /* defined(SIMDE_SSE4_2_NATIVE) || defined(SIMDE_NO_NATIVE) || defined(SIMDE_ALWAYS_BUILD_NATIVE_TESTS) */
 
 HEDLEY_DIAGNOSTIC_PUSH
 HEDLEY_DIAGNOSTIC_DISABLE_CAST_QUAL
 
 static MunitTest test_suite_tests[] = {
-#if defined(SIMDE_NO_NATIVE) || defined(SIMDE_SSE4_2_NATIVE)
+#if defined(SIMDE_SSE4_2_NATIVE) || defined(SIMDE_NO_NATIVE) || defined(SIMDE_ALWAYS_BUILD_NATIVE_TESTS)
   /* { (char*) "/sse4.2/mm_set_epi8",      test_simde_mm_set_epi8,      NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL }, */
-#endif /* defined(SIMDE_NO_NATIVE) || defined(SIMDE_SSE4_2_NATIVE) */
+#endif /* defined(SIMDE_SSE4_2_NATIVE) || defined(SIMDE_NO_NATIVE) || defined(SIMDE_ALWAYS_BUILD_NATIVE_TESTS) */
 
   { NULL, NULL, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL }
 };

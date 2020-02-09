@@ -25,7 +25,7 @@
 #include <test/x86/test-x86-internal.h>
 #include <simde/x86/sse3.h>
 
-#if defined(SIMDE_NO_NATIVE) || defined(SIMDE_SSE3_NATIVE)
+#if defined(SIMDE_SSE3_NATIVE) || defined(SIMDE_NO_NATIVE) || defined(SIMDE_ALWAYS_BUILD_NATIVE_TESTS)
 
 static MunitResult
 test_simde_mm_addsub_pd(const MunitParameter params[], void* data) {
@@ -447,13 +447,13 @@ test_simde_mm_moveldup_ps(const MunitParameter params[], void* data) {
   return MUNIT_OK;
 }
 
-#endif /* defined(SIMDE_NO_NATIVE) || defined(SIMDE_SSE3_NATIVE) */
+#endif /* defined(SIMDE_SSE3_NATIVE) || defined(SIMDE_NO_NATIVE) || defined(SIMDE_ALWAYS_BUILD_NATIVE_TESTS) */
 
 HEDLEY_DIAGNOSTIC_PUSH
 HEDLEY_DIAGNOSTIC_DISABLE_CAST_QUAL
 
 static MunitTest test_suite_tests[] = {
-#if defined(SIMDE_NO_NATIVE) || defined(SIMDE_SSE3_NATIVE)
+#if defined(SIMDE_SSE3_NATIVE) || defined(SIMDE_NO_NATIVE) || defined(SIMDE_ALWAYS_BUILD_NATIVE_TESTS)
   SIMDE_TESTS_DEFINE_TEST(mm_addsub_pd),
   SIMDE_TESTS_DEFINE_TEST(mm_addsub_ps),
   SIMDE_TESTS_DEFINE_TEST(mm_hadd_pd),
@@ -464,7 +464,7 @@ static MunitTest test_suite_tests[] = {
   SIMDE_TESTS_DEFINE_TEST(mm_movedup_pd),
   SIMDE_TESTS_DEFINE_TEST(mm_movehdup_ps),
   SIMDE_TESTS_DEFINE_TEST(mm_moveldup_ps),
-#endif /* defined(SIMDE_NO_NATIVE) || defined(SIMDE_SSE3_NATIVE) */
+#endif /* defined(SIMDE_SSE3_NATIVE) || defined(SIMDE_NO_NATIVE) || defined(SIMDE_ALWAYS_BUILD_NATIVE_TESTS) */
 
   { NULL, NULL, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL }
 };

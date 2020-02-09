@@ -8,6 +8,7 @@ include (ExtraWarningFlags)
 enable_testing()
 
 option(BUILD_CPP_TESTS "Build C++ tests" ON)
+option(ALWAYS_BUILD_NATIVE_TESTS "Build 'native' tests even if the native instructions aren't available" OFF)
 
 if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/munit/munit.c")
   find_program(GIT git)
@@ -79,7 +80,7 @@ if("${OPENMP_SIMD_FLAGS}" STREQUAL "")
     check_c_compiler_flag("${omp_simd_flag}" "${omp_simd_flag_name}")
 
     if(${omp_simd_flag_name})
-      set(OPENMP_SIMD_FLAGS "${omp_simd_flag}")
+      set(OPENMP_SIMD_FLAGS "-DSIMDE_ENABLE_OPENMP ${omp_simd_flag}")
       break()
     endif()
   endforeach()
@@ -132,6 +133,10 @@ foreach(native native emul)
 
   target_include_directories(simde-test-${native} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/..")
   set_property(TARGET simde-test-${native} PROPERTY C_STANDARD "99")
+
+  if(ALWAYS_BUILD_NATIVE_TESTS)
+    target_compile_definitions(simde-test-${native} PRIVATE SIMDE_ALWAYS_BUILD_NATIVE_TESTS)
+  endif(ALWAYS_BUILD_NATIVE_TESTS)
 
   target_link_libraries(run-tests simde-test-${native})
 endforeach(native native emul)

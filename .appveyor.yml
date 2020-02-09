@@ -17,7 +17,7 @@ before_build:
       cd test
       mkdir build
       cd build
-      cmake -G "$env:GENERATOR" ..
+      cmake -G "$env:GENERATOR" -DALWAYS_BUILD_NATIVE_TESTS=ON ..
 
 build_script:
   - ps: |
