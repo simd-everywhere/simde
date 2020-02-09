@@ -48,6 +48,9 @@ implementations using one (or more) of the following:
 For an example of a project using SIMDe, see
 [LZSSE-SIMDe](https://github.com/nemequ/LZSSE-SIMDe).
 
+You can [try SIMDe online](https://godbolt.org/z/5gpF97) using Compiler
+Explorer and an amalgamated SIMDe header.
+
 ## Current Status
 
 [![Travis](https://api.travis-ci.org/nemequ/simde.svg?branch=master)](https://travis-ci.org/nemequ/simde) [![AppVeyor](https://ci.appveyor.com/api/projects/status/1f3wp712w1ium5vi/branch/master?svg=true)](https://ci.appveyor.com/project/quixdb/simde/branch/master) [![Azure Pipelines](https://dev.azure.com/simd-everywhere/SIMDe/_apis/build/status/nemequ.simde?branchName=master)](https://dev.azure.com/simd-everywhere/SIMDe/_build/latest?definitionId=1&branchName=master) ![GitHub Actions CI](https://github.com/nemequ/simde/workflows/CI/badge.svg) [![Codecov](https://img.shields.io/codecov/c/github/nemequ/simde.svg)](https://codecov.io/gh/nemequ/simde)
