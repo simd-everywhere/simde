@@ -432,16 +432,16 @@ simde__m256i
 simde_mm256_setone_si256 (void) {
   simde__m256i_private r_;
 
-#if defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && 0
+#if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
   r_.i32f = ((__typeof__(r_.i32f)) { 0, });
   r_.i32f = ~(r_.i32f);
-#elif defined(SIMDE_AVX_NATIVE)
+#elif defined(SIMDE_AVX2_NATIVE)
   __m256i t = _mm256_setzero_si256();
   r_.n = _mm256_cmpeq_epi32(t, t);
 #else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r_.i32f) / sizeof(r_.i32f[0])) ; i++) {
-    r_.i32[i] = ~HEDLEY_STATIC_CAST(int_fast32_t, 0);
+    r_.i32f[i] = ~HEDLEY_STATIC_CAST(int_fast32_t, 0);
   }
 #endif
 
