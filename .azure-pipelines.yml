@@ -13,7 +13,7 @@ jobs:
     displayName: Build
   - script: ./run-tests
     displayName: Tests
-  - script: bash <(curl -s https://codecov.io/bash)
+  - script: bash <(curl -s https://codecov.io/bash) -y ./.codecov.yml
     displayName: 'Upload to codecov.io'
 
 - job: sse4_1
@@ -26,7 +26,7 @@ jobs:
     displayName: Build
   - script: ./run-tests
     displayName: Tests
-  - script: bash <(curl -s https://codecov.io/bash)
+  - script: bash <(curl -s https://codecov.io/bash) -y ./.codecov.yml
     displayName: 'Upload to codecov.io'
 
 - job: mipsel
@@ -44,5 +44,5 @@ jobs:
     displayName: Build
   - script: ./dockcross-linux-mipsel ./run-tests
     displayName: Tests
-  - script: bash <(curl -s https://codecov.io/bash)
+  - script: bash <(curl -s https://codecov.io/bash) -y ./.codecov.yml
     displayName: 'Upload to codecov.io'

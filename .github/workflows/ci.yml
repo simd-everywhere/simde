@@ -42,4 +42,4 @@ jobs:
   #   - name: Test
   #     run: node ./run-tests
   #   - name: Upload Coverage Data
-  #     run: bash <(curl -s https://codecov.io/bash)
+  #     run: bash <(curl -s https://codecov.io/bash) -y ./.codecov.yml

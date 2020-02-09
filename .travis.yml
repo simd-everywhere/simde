@@ -285,7 +285,7 @@ script:
 after_success:
 - |
   if [ "${BUILD_TYPE}" = "Coverage" ]; then
-    bash <(curl -s https://codecov.io/bash) -f '!*test-common.c' ${GCOV}
+    bash <(curl -s https://codecov.io/bash) -y "${TRAVIS_BUILD_DIR}"/.codecov.yml ${GCOV}
   fi
 
 notifications:
