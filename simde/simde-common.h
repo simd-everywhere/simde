@@ -478,17 +478,22 @@ HEDLEY_STATIC_ASSERT(sizeof(simde_float64) == 8, "Unable to find 64-bit floating
    start only defining them for problematic compiler versions. */
 
 #if !defined(SIMDE_IGNORE_COMPILER_BUGS)
-#  if !HEDLEY_GCC_VERSION_CHECK(4,9,0)
-#    define SIMDE_BUG_GCC_REV_208793
-#  endif
-#  if !HEDLEY_GCC_VERSION_CHECK(5,0,0)
-#    define SIMDE_BUG_GCC_BAD_MM_SRA_EPI32 /* TODO: find relevant bug or commit */
-#  endif
-#  if !HEDLEY_GCC_VERSION_CHECK(4,6,0)
-#    define SIMDE_BUG_GCC_BAD_MM_EXTRACT_EPI8 /* TODO: find relevant bug or commit */
-#  endif
-#  if !HEDLEY_GCC_VERSION_CHECK(10,0,0)
-#    define SIMDE_BUG_GCC_REV_274313
+#  if defined(HEDLEY_GCC_VERSION)
+#    if !HEDLEY_GCC_VERSION_CHECK(4,9,0)
+#      define SIMDE_BUG_GCC_REV_208793
+#    endif
+#    if !HEDLEY_GCC_VERSION_CHECK(5,0,0)
+#      define SIMDE_BUG_GCC_BAD_MM_SRA_EPI32 /* TODO: find relevant bug or commit */
+#    endif
+#    if !HEDLEY_GCC_VERSION_CHECK(4,6,0)
+#      define SIMDE_BUG_GCC_BAD_MM_EXTRACT_EPI8 /* TODO: find relevant bug or commit */
+#    endif
+#    if !HEDLEY_GCC_VERSION_CHECK(10,0,0)
+#      define SIMDE_BUG_GCC_REV_274313
+#    endif
+#    if !HEDLEY_GCC_VERSION_CHECK(8,0,0) && defined(SIMDE_ARCH_ARM_NEON)
+#      define SIMDE_BUG_GCC_ARM_SHIFT_SCALAR
+#    endif
 #  endif
 #  if defined(HEDLEY_EMSCRIPTEN_VERSION)
 #    define SIMDE_BUG_EMSCRIPTEN_MISSING_IMPL /* Placeholder for (as yet) unfiled issues. */

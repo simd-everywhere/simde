@@ -4113,8 +4113,7 @@ simde_mm_sll_epi64 (simde__m128i a, simde__m128i count) {
   if (count_.u64[0] > 63)
     return simde_mm_setzero_si128();
 
-#if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && \
-  (!defined(SIMDE_ARCH_AARCH64) || !defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(8,0,0))
+#if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && !defined(SIMDE_BUG_GCC_ARM_SHIFT_SCALAR)
   /* GCC ≤ 7 on AArch64 generates an ICE here */
   r_.u64 = (a_.u64 << count_.u64[0]);
 #else
