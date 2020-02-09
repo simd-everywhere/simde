@@ -36,11 +36,9 @@ SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 #  if defined(SIMDE_AVX_NATIVE)
 #    undef SIMDE_AVX_NATIVE
 #  endif
-#  if defined(SIMDE_AVX_FORCE_NATIVE)
+#  if defined(SIMDE_ARCH_X86_AVX) && !defined(SIMDE_AVX_NO_NATIVE) && !defined(SIMDE_NO_NATIVE)
 #    define SIMDE_AVX_NATIVE
-#  elif defined(__AVX__) && !defined(SIMDE_AVX_NO_NATIVE) && !defined(SIMDE_NO_NATIVE)
-#    define SIMDE_AVX_NATIVE
-#  elif defined(__ARM_NEON) && !defined(SIMDE_AVX_NO_NEON) && !defined(SIMDE_NO_NEON)
+#  elif defined(SIMDE_ARCH_ARM_NEON) && !defined(SIMDE_AVX_NO_NEON) && !defined(SIMDE_NO_NEON)
 #    define SIMDE_AVX_NEON
 #  endif
 

@@ -40,14 +40,9 @@ SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 #  if defined(SIMDE_SSE2_NATIVE)
 #    undef SIMDE_SSE2_NATIVE
 #  endif
-#  if defined(SIMDE_SSE2_FORCE_NATIVE)
+#  if defined(SIMDE_ARCH_X86_SSE2) && !defined(SIMDE_SSE2_NO_NATIVE) && !defined(SIMDE_NO_NATIVE)
 #    define SIMDE_SSE2_NATIVE
-#  elif !defined(SIMDE_SSE2_NO_NATIVE) && !defined(SIMDE_NO_NATIVE) && ( \
-        defined(__SSE2__)  || \
-        (defined(_M_IX86_FP) && (_M_IX86_FP >= 2)) \
-      )
-#    define SIMDE_SSE2_NATIVE
-#  elif defined(__ARM_NEON) && !defined(SIMDE_SSE2_NO_NEON) && !defined(SIMDE_NO_NEON)
+#  elif defined(SIMDE_ARCH_ARM_NEON) && !defined(SIMDE_SSE2_NO_NEON) && !defined(SIMDE_NO_NEON)
 #    define SIMDE_SSE2_NEON
 #  endif
 

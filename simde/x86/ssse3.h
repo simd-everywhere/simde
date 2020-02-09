@@ -34,11 +34,9 @@ SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 #  if defined(SIMDE_SSSE3_NATIVE)
 #    undef SIMDE_SSSE3_NATIVE
 #  endif
-#  if defined(SIMDE_SSSE3_FORCE_NATIVE)
+#  if defined(SIMDE_ARCH_X86_SSSE3) && !defined(SIMDE_SSSE3_NO_NATIVE) && !defined(SIMDE_NO_NATIVE)
 #    define SIMDE_SSSE3_NATIVE
-#  elif defined(__SSSE3__) && !defined(SIMDE_SSSE3_NO_NATIVE) && !defined(SIMDE_NO_NATIVE)
-#    define SIMDE_SSSE3_NATIVE
-#  elif defined(__ARM_NEON) && !defined(SIMDE_SSSE3_NO_NEON) && !defined(SIMDE_NO_NEON)
+#  elif defined(SIMDE_ARCH_ARM_NEON) && !defined(SIMDE_SSSE3_NO_NEON) && !defined(SIMDE_NO_NEON)
 #    define SIMDE_SSSE3_NEON
 #  endif
 

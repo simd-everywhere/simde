@@ -32,9 +32,9 @@ SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 
 #  if defined(SIMDE_MMX_FORCE_NATIVE)
 #    define SIMDE_MMX_NATIVE
-#  elif (defined(__MMX__) || (defined(_MSC_VER) && defined(_M_IX86))) && !defined(SIMDE_MMX_NO_NATIVE) && !defined(SIMDE_NO_NATIVE)
+#  elif defined(SIMDE_ARCH_X86_MMX) && !defined(SIMDE_MMX_NO_NATIVE) && !defined(SIMDE_NO_NATIVE)
 #    define SIMDE_MMX_NATIVE
-#  elif defined(__ARM_NEON) && !defined(SIMDE_MMX_NO_NEON) && !defined(SIMDE_NO_NEON)
+#  elif defined(SIMDE_ARCH_ARM_NEON) && !defined(SIMDE_MMX_NO_NEON) && !defined(SIMDE_NO_NEON)
 #    define SIMDE_MMX_NEON
 #  endif
 

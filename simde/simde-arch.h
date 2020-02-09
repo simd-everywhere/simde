@@ -63,7 +63,7 @@
 /* AMD64 / x86_64
    <https://en.wikipedia.org/wiki/X86-64> */
 #if defined(__amd64__) || defined(__amd64) || defined(__x86_64__) || defined(__x86_64) || defined(_M_X66) || defined(_M_AMD64)
-#  define SIMDE_ARCH_AMD64 1
+#  define SIMDE_ARCH_AMD64 1000
 #endif
 
 /* ARM
@@ -95,7 +95,16 @@
 /* AArch64
    <https://en.wikipedia.org/wiki/ARM_architecture> */
 #if defined(__aarch64__) || defined(_M_ARM64)
-#  define SIMDE_ARCH_AARCH64 10
+#  define SIMDE_ARCH_AARCH64 1000
+#endif
+
+/* ARM SIMD ISA extensions */
+#if defined(__ARM_NEON)
+#  if defined(SIMDE_ARCH_AARCH64)
+#    define SIMDE_ARCH_ARM_NEON SIMDE_ARCH_AARCH64
+#  elif defined(SIMDE_ARCH_ARM)
+#    define SIMDE_ARCH_ARM_NEON SIMDE_ARCH_ARM
+#  endif
 #endif
 
 /* Blackfin
@@ -172,6 +181,77 @@
 #  define SIMDE_ARCH_X86 3
 #elif defined(_X86_) || defined(__X86__) || defined(__THW_INTEL__)
 #  define SIMDE_ARCH_X86 3
+#endif
+
+/* SIMD ISA extensions for x86/x86_64 */
+#if defined(SIMDE_ARCH_X86) || defined(SIMDE_ARCH_AMD64)
+#  if defined(_M_IX86_FP)
+#    define SIMDE_ARCH_X86_MMX
+#    if (_M_IX86_FP >= 1)
+#      define SIMDE_ARCH_X86_SSE 1
+#    endif
+#    if (_M_IX86_FP >= 2)
+#      define SIMDE_ARCH_X86_SSE2 1
+#    endif
+#  else
+#    if defined(__MMX__)
+#      define SIMDE_ARCH_X86_MMX 1
+#    endif
+#    if defined(__SSE__)
+#      define SIMDE_ARCH_X86_SSE 1
+#    endif
+#    if defined(__SSE2__)
+#      define SIMDE_ARCH_X86_SSE2 1
+#    endif
+#  endif
+#  if defined(__SSE3__)
+#    define SIMDE_ARCH_X86_SSE3 1
+#  endif
+#  if defined(__SSSE3__)
+#    define SIMDE_ARCH_X86_SSSE3 1
+#  endif
+#  if defined(__SSE4_1__)
+#    define SIMDE_ARCH_X86_SSE4_1 1
+#  endif
+#  if defined(__SSE4_2__)
+#    define SIMDE_ARCH_X86_SSE4_2 1
+#  endif
+#  if defined(__AVX__)
+#    define SIMDE_ARCH_X86_AVX 1
+#    if !defined(SIMDE_ARCH_X86_SSE3)
+#      define SIMDE_ARCH_X86_SSE3 1
+#    endif
+#    if !defined(SIMDE_ARCH_X86_SSE4_1)
+#      define SIMDE_ARCH_X86_SSE4_1 1
+#    endif
+#    if !defined(SIMDE_ARCH_X86_SSE4_1)
+#      define SIMDE_ARCH_X86_SSE4_2 1
+#    endif
+#  endif
+#  if defined(__AVX2__)
+#    define SIMDE_ARCH_X86_AVX2 1
+#  endif
+#  if defined(__FMA__)
+#    define SIMDE_ARCH_X86_FMA 1
+#    if !defined(SIMDE_ARCH_X86_AVX)
+#      define SIMDE_ARCH_X86_AVX 1
+#    endif
+#  endif
+#  if defined(__AVX512BW__)
+#    define SIMDE_ARCH_X86_AVX512BW 1
+#  endif
+#  if defined(__AVX512CD__)
+#    define SIMDE_ARCH_X86_AVX512CD 1
+#  endif
+#  if defined(__AVX512DQ__)
+#    define SIMDE_ARCH_X86_AVX512DQ 1
+#  endif
+#  if defined(__AVX512F__)
+#    define SIMDE_ARCH_X86_AVX512F 1
+#  endif
+#  if defined(__AVX512VL__)
+#    define SIMDE_ARCH_X86_AVX512VL 1
+#  endif
 #endif
 
 /* Itanium
