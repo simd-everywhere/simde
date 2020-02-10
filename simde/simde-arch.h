@@ -194,7 +194,6 @@
 #      define SIMDE_ARCH_X86_SSE2 1
 #    endif
 #  elif defined(_M_X64)
-#    define SIMDE_ARCH_X86_MMX 1
 #    define SIMDE_ARCH_X86_SSE 1
 #    define SIMDE_ARCH_X86_SSE2 1
 #  else
