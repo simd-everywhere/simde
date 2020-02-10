@@ -3458,7 +3458,7 @@ simde_mm_set_epi64 (simde__m64 e1, simde__m64 e0) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_set_epi64x (int64_t e1, int64_t e0) {
-#if defined(SIMDE_SSE2_NATIVE)
+#if defined(SIMDE_SSE2_NATIVE) && (!defined(HEDLEY_MSVC_VERSION) || HEDLEY_MSVC_VERSION_CHECK(19,0,0))
   return _mm_set_epi64x(e1, e0);
 #else
   simde__m128i_private r_;
@@ -3676,7 +3676,7 @@ simde_mm_set1_epi32 (int32_t a) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_set1_epi64x (int64_t a) {
-#if defined(SIMDE_SSE2_NATIVE)
+#if defined(SIMDE_SSE2_NATIVE) && (!defined(HEDLEY_MSVC_VERSION) || HEDLEY_MSVC_VERSION_CHECK(19,0,0))
   return _mm_set1_epi64x(a);
 #else
   simde__m128i_private r_;
