@@ -22,8 +22,8 @@
  */
 
 #define SIMDE_TESTS_CURRENT_ISAX sse4_1
-#include <test/x86/test-x86-internal.h>
 #include <simde/x86/sse4.1.h>
+#include <test/x86/test-sse2.h>
 
 #if defined(SIMDE_SSE4_1_NATIVE) || defined(SIMDE_NO_NATIVE) || defined(SIMDE_ALWAYS_BUILD_NATIVE_TESTS)
 

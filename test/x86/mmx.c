@@ -22,8 +22,7 @@
  */
 
 #define SIMDE_TESTS_CURRENT_ISAX mmx
-#include <test/x86/test-x86-internal.h>
-#include <simde/x86/mmx.h>
+#include <test/x86/test-mmx.h>
 
 #if defined(SIMDE_MMX_NATIVE) || defined(SIMDE_NO_NATIVE) || defined(SIMDE_ALWAYS_BUILD_NATIVE_TESTS)
 #endif /* defined(SIMDE_MMX_NATIVE) || defined(SIMDE_NO_NATIVE) || defined(SIMDE_ALWAYS_BUILD_NATIVE_TESTS) */

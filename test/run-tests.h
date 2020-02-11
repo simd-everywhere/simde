@@ -5,6 +5,8 @@
 #include "munit/munit.h"
 #include "../simde/simde-common.h"
 
+#include <math.h>
+
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 
 #define SIMDE_TESTS_CONCAT3_EX(a, b, c) a##b##c
@@ -40,6 +42,36 @@ SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
   { (char*) SIMDE_TESTS_GENERATE_NAME(name), test_simde_##name, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL }
 
 HEDLEY_BEGIN_C_DECLS
+
+#if !defined(HEDLEY_PGI_VERSION)
+#  define SIMDE_ALMOST_EQUAL_TO "≈"
+#else
+#  define SIMDE_ALMOST_EQUAL_TO "~=~"
+#endif
+
+static int
+simde_check_double_close(double a, double b, int precision) {
+  const double r = 1.0 * pow(10, HEDLEY_STATIC_CAST(double, precision));
+  return
+    HEDLEY_UNLIKELY(a < (b - r)) ||
+    HEDLEY_UNLIKELY(a > (b + r));
+}
+
+#define SIMDE_TEST_DEFINE_ASSERT_VEC_CLOSE(VT, accessor) \
+  static void \
+  simde_assert_##VT##_##accessor##_close_ex(int line, const char* file, simde__##VT a, simde__##VT b, int precision) { \
+    simde__##VT##_private \
+      a_ = simde__##VT##_to_private(a), \
+      b_ = simde__##VT##_to_private(b);	\
+    const double r = 1.0 / HEDLEY_STATIC_CAST(double, precision); \
+    \
+    for (int i = 0 ; i < HEDLEY_STATIC_CAST(int, sizeof(a_.accessor) / sizeof(a_.accessor[0])) ; i++) { \
+      if (simde_check_double_close(HEDLEY_STATIC_CAST(double, a_.accessor[i]), HEDLEY_STATIC_CAST(double, b_.accessor[i]), precision)) { \
+        fprintf(stderr, "%s:%d: assertion failed[%d]: %g " SIMDE_ALMOST_EQUAL_TO " %g (precision: 1e-%d)\n", file, line, i, a_.accessor[i], b_.accessor[i], precision); \
+        abort(); \
+      } \
+    } \
+  }
 
 void random_f32v(size_t nmemb, simde_float32 v[HEDLEY_ARRAY_PARAM(nmemb)]);
 void random_f64v(size_t nmemb, simde_float64 v[HEDLEY_ARRAY_PARAM(nmemb)]);

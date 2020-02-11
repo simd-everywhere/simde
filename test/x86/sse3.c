@@ -22,8 +22,8 @@
  */
 
 #define SIMDE_TESTS_CURRENT_ISAX sse3
-#include <test/x86/test-x86-internal.h>
 #include <simde/x86/sse3.h>
+#include <test/x86/test-sse2.h>
 
 #if defined(SIMDE_SSE3_NATIVE) || defined(SIMDE_NO_NATIVE) || defined(SIMDE_ALWAYS_BUILD_NATIVE_TESTS)
 

@@ -22,8 +22,8 @@
  */
 
 #define SIMDE_TESTS_CURRENT_ISAX avx
-#include <test/x86/test-x86-internal.h>
 #include <simde/x86/avx.h>
+#include <test/x86/test-avx.h>
 
 #if defined(SIMDE_AVX_NATIVE) || defined(SIMDE_NO_NATIVE) || defined(SIMDE_ALWAYS_BUILD_NATIVE_TESTS)
 

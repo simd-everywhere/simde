@@ -22,10 +22,7 @@
  */
 
 #define SIMDE_TESTS_CURRENT_ISAX sse
-#include <test/x86/test-x86-internal.h>
-#include <simde/x86/sse2.h>
-
-#include <math.h>
+#include <test/x86/test-sse2.h>
 
 #if defined(SIMDE_SSE_NATIVE) || defined(SIMDE_NO_NATIVE) || defined(SIMDE_ALWAYS_BUILD_NATIVE_TESTS)
 
