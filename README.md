@@ -256,6 +256,13 @@ support some caveats apply:
        implemented as there is no portable way to implement that
        functionality.
 
+Additionally, there are some known limitations which apply when using
+native aliases (`SIMDE_ENABLE_NATIVE_ALIASES`):
+
+* On Windows x86 (but not x86_64), some MMX functions and SSE/SSE2
+  functions which use MMX types (__m64) other than for pointers may
+  return incorrect results.
+
 Also, as mentioned earlier, while some APIs make assumptions about
 basic types (*e.g.*, `int` is 32 bits), SIMDe can not so many types
 have been altered to used portable fixed-width versions such as
