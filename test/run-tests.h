@@ -58,6 +58,7 @@ simde_check_double_close(double a, double b, int precision) {
 }
 
 #define SIMDE_TEST_DEFINE_ASSERT_VEC_CLOSE(VT, accessor) \
+  HEDLEY_ALWAYS_INLINE \
   static void \
   simde_assert_##VT##_##accessor##_close_ex(int line, const char* file, simde__##VT a, simde__##VT b, int precision) { \
     simde__##VT##_private \
