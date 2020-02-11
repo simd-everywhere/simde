@@ -50,11 +50,11 @@ SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 #    if defined(SIMDE_SSE2_FORCE_NATIVE)
 #      error Native SSE2 support requires native SSE support
 #    else
-#      warning Native SSE2 support requires native SSE support, disabling
+       HEDLEY_WARNING("Native SSE2 support requires native SSE support, disabling")
 #      undef SIMDE_SSE2_NATIVE
 #    endif
 #  elif defined(SIMDE_SSE2_NEON) && !defined(SIMDE_SSE_NEON)
-#    warning SSE2 NEON support requires SSE NEON support, disabling
+     HEDLEY_WARNING("SSE2 NEON support requires SSE NEON support, disabling")
 #    undef SIMDE_SSE_NEON
 #  endif
 

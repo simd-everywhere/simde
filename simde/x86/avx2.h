@@ -46,11 +46,11 @@ SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 #    if defined(SIMDE_AVX2_FORCE_NATIVE)
 #      error Native AVX2 support requires native AVX support
 #    else
-#      warning Native AVX2 support requires native AVX support, disabling
+       HEDLEY_WARNING("Native AVX2 support requires native AVX support, disabling")
 #      undef SIMDE_AVX2_NATIVE
 #    endif
 #  elif defined(SIMDE_AVX2_NEON) && !defined(SIMDE_AVX_NEON)
-#    warning AVX2 NEON support requires AVX NEON support, disabling
+     HEDLEY_WARNING("AVX2 NEON support requires AVX NEON support, disabling")
 #    undef SIMDE_AVX_NEON
 #  endif
 

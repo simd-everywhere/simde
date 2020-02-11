@@ -43,11 +43,11 @@ SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 #    if defined(SIMDE_SSE4_1_FORCE_NATIVE)
 #      error Native SSE4.1 support requires native SSE3 support
 #    else
-#      warning Native SSE4.1 support requires native SSE3 support, disabling
+       HEDLEY_WARNING("Native SSE4.1 support requires native SSE3 support, disabling")
 #      undef SIMDE_SSE4_1_NATIVE
 #    endif
 #  elif defined(SIMDE_SSE4_1_NEON) && !defined(SIMDE_SSE3_NEON)
-#    warning SSE4.1 NEON support requires SSE3 NEON support, disabling
+     HEDLEY_WARNING("SSE4.1 NEON support requires SSE3 NEON support, disabling")
 #    undef SIMDE_SSE4_1_NEON
 #  endif
 

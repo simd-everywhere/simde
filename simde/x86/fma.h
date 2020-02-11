@@ -46,11 +46,11 @@ SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 #    if defined(SIMDE_FMA_FORCE_NATIVE)
 #      error Native FMA support requires native AVX support
 #    else
-#      warning Native FMA support requires native AVX support, disabling
+       HEDLEY_WARNING("Native FMA support requires native AVX support, disabling")
 #      undef SIMDE_FMA_NATIVE
 #    endif
 #  elif defined(SIMDE_FMA_NEON) && !defined(SIMDE_AVX_NEON)
-#    warning FMA NEON support requires AVX NEON support, disabling
+     HEDLEY_WARNING("FMA NEON support requires AVX NEON support, disabling")
 #    undef SIMDE_AVX_NEON
 #  endif
 
