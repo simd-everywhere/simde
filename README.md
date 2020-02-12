@@ -48,7 +48,7 @@ implementations using one (or more) of the following:
 For an example of a project using SIMDe, see
 [LZSSE-SIMDe](https://github.com/nemequ/LZSSE-SIMDe).
 
-You can [try SIMDe online](https://godbolt.org/z/5gpF97) using Compiler
+You can [try SIMDe online](https://godbolt.org/z/xkT8MA) using Compiler
 Explorer and an amalgamated SIMDe header.
 
 ## Current Status
