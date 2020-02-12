@@ -300,8 +300,8 @@ simde_mm_shuffle_epi8 (simde__m128i a, simde__m128i b) {
     r_,
     a_ = simde__m128i_to_private(a),
     b_ = simde__m128i_to_private(b);
-  for (size_t i = 0 ; i < (sizeof(r_.u8) / sizeof(r_.u8[0])) ; i++) {
-    r_.u8[i] = a_.u8[b_.u8[i] & 15] * ((~(b_.u8[i]) >> 7) & 1);
+  for (size_t i = 0 ; i < (sizeof(r_.i8) / sizeof(r_.i8[0])) ; i++) {
+    r_.i8[i] = a_.i8[b_.i8[i] & 15] & (~(b_.i8[i]) >> 7);
   }
   return simde__m128i_from_private(r_);
 #endif
@@ -321,7 +321,7 @@ simde_mm_shuffle_pi8 (simde__m64 a, simde__m64 b) {
     a_ = simde__m64_to_private(a),
     b_ = simde__m64_to_private(b);
   for (size_t i = 0 ; i < (sizeof(r_.u8) / sizeof(r_.u8[0])) ; i++) {
-    r_.u8[i] = a_.u8[b_.u8[i] & 7] * ((~(b_.u8[i]) >> 7) & 1);
+    r_.i8[i] = a_.i8[b_.i8[i] & 7] & (~(b_.i8[i]) >> 7);
   }
   return simde__m64_from_private(r_);
 #endif
