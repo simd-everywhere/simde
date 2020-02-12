@@ -118,7 +118,7 @@ typedef union {
 #if defined(SIMDE_SSE_NATIVE)
   typedef __m128 simde__m128;
 #elif defined(SIMDE_VECTOR_SUBSCRIPT)
-  typedef simde_float32 simde__m128 SIMDE_ALIGN(16) SIMDE_VECTOR(16);
+  typedef simde_float32 simde__m128 SIMDE_ALIGN(16) SIMDE_VECTOR(16) SIMDE_MAY_ALIAS;
 #else
   typedef simde__m128_private simde__m128;
 #endif

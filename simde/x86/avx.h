@@ -192,9 +192,9 @@ typedef union {
   typedef __m256i simde__m256i;
   typedef __m256d simde__m256d;
 #elif defined(SIMDE_VECTOR_SUBSCRIPT)
-  typedef simde_float32 simde__m256  SIMDE_ALIGN(32) SIMDE_VECTOR(32);
-  typedef int_fast32_t  simde__m256i SIMDE_ALIGN(32) SIMDE_VECTOR(32);
-  typedef simde_float64 simde__m256d SIMDE_ALIGN(32) SIMDE_VECTOR(32);
+  typedef simde_float32 simde__m256  SIMDE_ALIGN(32) SIMDE_VECTOR(32) SIMDE_MAY_ALIAS;
+  typedef int_fast32_t  simde__m256i SIMDE_ALIGN(32) SIMDE_VECTOR(32) SIMDE_MAY_ALIAS;
+  typedef simde_float64 simde__m256d SIMDE_ALIGN(32) SIMDE_VECTOR(32) SIMDE_MAY_ALIAS;
 #else
   typedef simde__m256_private  simde__m256;
   typedef simde__m256i_private simde__m256i;
