@@ -40,7 +40,7 @@ SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 
 #  if defined(SIMDE_MMX_NATIVE)
 #    define SIMDE_MMX_USE_NATIVE_TYPE
-#  elif !defined(SIMDE_ENABLE_NATIVE_ALIASES) && (defined(SIMDE_ARCH_X86_SSE) || defined(SIMDE_ARCH_X86_SSE2))
+#  elif defined(SIMDE_ARCH_X86_SSE)
 #    define SIMDE_MMX_USE_NATIVE_TYPE
 #  endif
 
