@@ -13,7 +13,7 @@ env:
   - BUILD_CPP_TESTS=ON
   - CMAKE_GENERATOR='Ninja'
   - RUN_TESTS=true
-  - OPTIMIZATION_FLAGS='-O3'
+  - OPTIMIZATION_FLAGS=''
 
 jobs:
   include:
@@ -23,6 +23,7 @@ jobs:
     - C_COMPILER=gcc-9
     - CXX_COMPILER=g++-9
     - COMPILER_FLAGS='-fsanitize=address,undefined'
+    - OPTIMIZATION_FLAGS=''
     addons:
       apt:
         sources:
@@ -260,10 +261,6 @@ before_install:
   if [ -n "${CXX_COMPILER}" ]; then
     export CXX="${CXX_COMPILER}"
   fi
-  if [ -n "${COMPILER_FLAGS}" ]; then
-    export CFLAGS="${ARCH_FLAGS} ${OPTIMIZATION_FLAGS} ${COMPILER_FLAGS} ${CFLAGS}"
-    export CXXFLAGS="${ARCH_FLAGS} ${OPTIMIZATION_FLAGS} ${COMPILER_FLAGS} ${CXXFLAGS}"
-  fi
 
 script:
 - mkdir "${TRAVIS_BUILD_DIR}/test/build" && cd "${TRAVIS_BUILD_DIR}/test/build"
@@ -274,6 +271,8 @@ script:
     -DBUILD_CPP_TESTS=${BUILD_CPP_TESTS} \
     -DCMAKE_CROSSCOMPILING_EMULATOR="${TEST_WRAPPER}" \
     -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON \
+    -DCMAKE_C_FLAGS="${ARCH_FLAGS} ${OPTIMIZATION_FLAGS} ${COMPILER_FLAGS} ${CFLAGS}" \
+    -DCMAKE_CXX_FLAGS="${ARCH_FLAGS} ${OPTIMIZATION_FLAGS} ${COMPILER_FLAGS} ${CXXFLAGS}" \
     ${CMAKE_ARGS}
 - ${BUILD_WRAPPER} cmake --build .
 - |
