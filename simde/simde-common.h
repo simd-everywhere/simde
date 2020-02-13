@@ -491,7 +491,7 @@ HEDLEY_STATIC_ASSERT(sizeof(simde_float64) == 8, "Unable to find 64-bit floating
 #    if !HEDLEY_GCC_VERSION_CHECK(10,0,0)
 #      define SIMDE_BUG_GCC_REV_274313
 #    endif
-#    if !HEDLEY_GCC_VERSION_CHECK(8,0,0) && defined(SIMDE_ARCH_ARM_NEON)
+#    if !HEDLEY_GCC_VERSION_CHECK(9,0,0) && defined(SIMDE_ARCH_AARCH64)
 #      define SIMDE_BUG_GCC_ARM_SHIFT_SCALAR
 #    endif
 #  endif
