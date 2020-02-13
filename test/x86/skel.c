@@ -906,12 +906,12 @@ test_simde_mm256_xxx_epi16(const MunitParameter params[], void* data) {
 
   printf("\n");
   for (size_t i = 0 ; i < (sizeof(test_vec) / (sizeof(test_vec[0]))) ; i++) {
-    simde__m256i a, b, r;
+    simde__m256i_private a, b, r;
 
     munit_rand_memory(sizeof(a), (uint8_t*) &a);
     munit_rand_memory(sizeof(b), (uint8_t*) &b);
 
-    r = simde_mm256_xxx_epi16(a, b);
+    r = simde__m256i_to_private(simde_mm256_xxx_epi16(simde__m256i_from_private(a), simde__m256i_from_private(b)));
 
     printf("    { simde_mm256_set_epi16(INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 "),\n"
 	         "                            INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 "), INT16_C(%6" PRId16 "),\n"
@@ -962,7 +962,7 @@ test_simde_mm256_xxx_epi32(const MunitParameter params[], void* data) {
     munit_rand_memory(sizeof(a), (uint8_t*) &a);
     munit_rand_memory(sizeof(b), (uint8_t*) &b);
 
-    r = simde_mm256_xxx_epi32(a, b);
+    r = simde__m256i_to_private(simde_mm256_xxx_epi32(simde__m256i_from_private(a), simde__m256i_from_private(b)));
 
     printf("    { simde_mm256_set_epi32(INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "),\n"
            "                            INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 ")),\n",
@@ -999,12 +999,12 @@ test_simde_mm256_xxx_epi64(const MunitParameter params[], void* data) {
 
   printf("\n");
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
-    simde__m256i a, b, r;
+    simde__m256i_private a, b, r;
 
     munit_rand_memory(sizeof(a), (uint8_t*) &a);
     munit_rand_memory(sizeof(b), (uint8_t*) &b);
 
-    r = simde_mm256_xxx_epi64(a, b);
+    r = simde__m256i_to_private(simde_mm256_xxx_epi64(simde__m256i_from_private(a), simde__m256i_from_private(b)));
 
     printf("    { simde_mm256_set_epi64x(INT64_C(%20" PRId64 "), INT64_C(%20" PRId64 "),\n"
            "                             INT64_C(%20" PRId64 "), INT64_C(%20" PRId64 ")),\n",

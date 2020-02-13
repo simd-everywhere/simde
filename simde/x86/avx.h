@@ -3582,7 +3582,7 @@ simde_mm_maskstore_ps (simde_float32 mem_addr[HEDLEY_ARRAY_PARAM(4)], simde__m12
 
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < 4 ; i++) {
-    if (mask_.i32[i] >> 31)
+    if (mask_.u32[i] >> 31)
       mem_addr[i] = a_.f32[i];
   }
 #endif

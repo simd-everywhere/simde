@@ -748,7 +748,7 @@ simde_mm_bslli_si128 (simde__m128i a, const int imm8) {
 
   const int s = imm8 * 8;
 
-#if defined(SIMDE__HAVE_INT128)
+#if defined(SIMDE__HAVE_INT128) && defined(__BYTE_ORDER__) && (__BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__)
   r_.u128[0] = a_.u128[0] << s;
 #else
   if (s < 64) {
