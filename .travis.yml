@@ -88,7 +88,7 @@ jobs:
     env:
     - C_COMPILER=arm-linux-gnueabihf-gcc
     - CXX_COMPILER=arm-linux-gnueabihf-g++
-    - ARCH_FLAGS="-march=armv8-a+simd"
+    - ARCH_FLAGS="-march=armv8-a"
     install:
     - sudo dpkg --add-architecture armhf
     - sudo apt-get update
@@ -99,7 +99,7 @@ jobs:
     env:
     - C_COMPILER=arm-linux-gnueabihf-gcc
     - CXX_COMPILER=arm-linux-gnueabihf-g++
-    - ARCH_FLAGS="-march=armv7-a+simd"
+    - ARCH_FLAGS="-march=armv7-a"
     install:
     - sudo dpkg --add-architecture armhf
     - sudo apt-get update
