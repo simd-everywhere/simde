@@ -5,7 +5,7 @@ jobs:
 
 - job: sse2
   steps:
-  - script: sudo apt-get install -y ninja-build
+  - script: sudo apt-get update && sudo apt-get install -y ninja-build
     displayName: Dependencies
   - script: cmake test -G Ninja -DCMAKE_BUILD_TYPE=Coverage -DALWAYS_BUILD_NATIVE_TESTS=ON -DCMAKE_C_FLAGS='-msse2' -DCMAKE_CXX_FLAGS='-march=native'
     displayName: Configure
@@ -18,7 +18,7 @@ jobs:
 
 - job: sse4_1
   steps:
-  - script: sudo apt-get install -y ninja-build
+  - script: sudo apt-get update && sudo apt-get install -y ninja-build
     displayName: Dependencies
   - script: cmake test -G Ninja -DCMAKE_BUILD_TYPE=Coverage -DALWAYS_BUILD_NATIVE_TESTS=ON -DCMAKE_C_FLAGS='-msse4.1' -DCMAKE_CXX_FLAGS='-march=native'
     displayName: Configure
@@ -31,7 +31,7 @@ jobs:
 
 - job: mipsel
   steps:
-  - script: sudo apt-get -y install qemu-user
+  - script: sudo apt-get update && sudo apt-get -y install qemu-user
     displayName: APT Dependencies
   - script: |
       docker pull dockcross/linux-mipsel
