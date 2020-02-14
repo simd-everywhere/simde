@@ -243,6 +243,9 @@ Sometime features can't be emulated.  If SIMDe is operating in native
 mode the functions will work as expected, but if there is no native
 support some caveats apply:
 
+ * Many functions require <math.h> and/or <fenv.h>.  SIMDe will still
+   work without those headers, but the results of those functions are
+   undefined.
  * x86 / x86_64
    * SSE
      * `SIMDE_MM_SET_ROUNDING_MODE()` will use `fesetround()`, altering

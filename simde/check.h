@@ -40,9 +40,27 @@
 #endif
 
 #if !defined(simde_errorf)
-#  include <stdio.h>
-#  include <stdlib.h>
-#  define simde_errorf(format, ...) (fprintf(stderr, format, __VA_ARGS__), abort())
+#  if defined(__has_include)
+#    if __has_include(<stdio.h>)
+#      include <stdio.h>
+#    endif
+#  elif defined(SIMDE_STDC_HOSTED)
+#    if SIMDE_STDC_HOSTED == 1
+#      include <stdio.h>
+#    endif
+#  elif defined(__STDC_HOSTED__)
+#    if __STDC_HOSTETD__ == 1
+#      include <stdio.h>
+#    endif
+#  endif
+
+#  include "debug-trap.h"
+
+#  if defined(EOF)
+#    define simde_errorf(format, ...) (fprintf(stderr, format, __VA_ARGS__), abort())
+#  else
+#    define simde_errorf(format, ...) (simde_trap())
+#  endif
 #endif
 
 #define simde_error(msg) simde_errorf("%s", msg)

@@ -25,10 +25,9 @@
 #define SIMDE_COMMON_H
 
 #include "hedley.h"
-#include "check.h"
 #include "simde-arch.h"
 
-#include <string.h>
+#include <stddef.h>
 
 #if \
   HEDLEY_HAS_ATTRIBUTE(aligned) || \
@@ -470,6 +469,126 @@ HEDLEY_STATIC_ASSERT(sizeof(simde_float64) == 8, "Unable to find 64-bit floating
   SIMDE_DIAGNOSTIC_DISABLE_SIMD_PRAGMA_DEPRECATED_ \
   SIMDE_DIAGNOSTIC_DISABLE_CONDITIONAL_UNINITIALIZED_ \
   SIMDE_DIAGNOSTIC_DISABLE_FLOAT_EQUAL_
+
+#if defined(__STDC_HOSTED__)
+#  define SIMDE_STDC_HOSTED __STDC_HOSTED__
+#else
+#  if \
+     defined(HEDLEY_PGI_VERSION_CHECK) || \
+     defined(HEDLEY_MSVC_VERSION_CHECK)
+#    define SIMDE_STDC_HOSTED 1
+#  else
+#    define SIMDE_STDC_HOSTED 0
+#  endif
+#endif
+
+/* Try to deal with environments without a standard library. */
+#if !defined(simde_memcpy) || !defined(simde_memset)
+#  if !defined(SIMDE_NO_STRING_H) && defined(__has_include)
+#    if __has_include(<string.h>)
+#      include <string.h>
+#      if !defined(simde_memcpy)
+#        define simde_memcpy(dest, src, n) memcpy(dest, src, n)
+#      endif
+#      if !defined(simde_memset)
+#        define simde_memset(s, c, n) memset(s, c, n)
+#      endif
+#    else
+#      define SIMDE_NO_STRING_H
+#    endif
+#  endif
+#endif
+#if !defined(simde_memcpy) || !defined(simde_memset)
+#  if !defined(SIMDE_NO_STRING_H) && (SIMDE_STDC_HOSTED == 1)
+#    include <string.h>
+#    if !defined(simde_memcpy)
+#      define simde_memcpy(dest, src, n) memcpy(dest, src, n)
+#    endif
+#    if !defined(simde_memset)
+#      define simde_memset(s, c, n) memset(s, c, n)
+#    endif
+#  elif (HEDLEY_HAS_BUILTIN(__builtin_memcpy) && HEDLEY_HAS_BUILTIN(__builtin_memset)) || HEDLEY_GCC_VERSION_CHECK(4,2,0)
+#    if !defined(simde_memcpy)
+#      define simde_memcpy(dest, src, n) __builtin_memcpy(dest, src, n)
+#    endif
+#    if !defined(simde_memset)
+#      define simde_memset(s, c, n) __builtin_memset(s, c, n)
+#    endif
+#  else
+
+/* These are meant to be portable, not fast.  If you're hitting them you
+ * should think about providing your own (by defining the simde_memcpy
+ * macro prior to including any SIMDe files) or submitting a patch to
+ * SIMDe so we can detect your system-provided memcpy/memset, like by
+ * adding your compiler to the checks for __builtin_memcpy and/or
+ * __builtin_memset. */
+#if !defined(simde_memcpy)
+SIMDE__FUNCTION_ATTRIBUTES
+void
+simde_memcpy_(void* dest, const void* src, size_t len) {
+  char* dest_ = HEDLEY_STATIC_CAST(char*, dest);
+  char* src_ = HEDLEY_STATIC_CAST(const char*, src);
+  for (size_t i = 0 ; i < len ; i++) {
+    dest_[i] = src_[i];
+  }
+}
+#define simde_memcpy(dest, src, n) simde_memcpy_(dest, src, n)
+#endif
+
+#if !defined(simde_memset)
+SIMDE__FUNCTION_ATTRIBUTES
+void
+simde_memset_(void* s, int c, size_t len) {
+  char* s_ = HEDLEY_STATIC_CAST(char*, s);
+  char c_ = HEDLEY_STATIC_CAST(char, c);
+  for (size_t i = 0 ; i < len ; i++) {
+    s_[i] = c_[i];
+  }
+}
+#define simde_memset(s, c, n) simde_memset_(s, c, n)
+#endif
+
+#  endif /* !defined(SIMDE_NO_STRING_H) && (SIMDE_STDC_HOSTED == 1) */
+#endif /* !defined(simde_memcpy) || !defined(simde_memset) */
+
+/* If we don't have */
+#if defined(__has_include)
+#  if __has_include(<math.h>)
+#    include <math.h>
+#  endif
+#  if __has_include(<fenv.h>)
+#    include <fenv.h>
+#  endif
+#  if __has_include(<stdlib.h>)
+#    include <stdlib.h>
+#  endif
+#elif SIMDE_STDC_HOSTED == 1
+#  include <math.h>
+#  include <stdlib.h>
+#  include <fenv.h>
+#endif
+
+#if defined(SIMDE_HAVE_MATH_H)
+#  include <math.h>
+#endif
+#if defined(SIMDE_HAVE_FENV_H)
+#  include <fenv.h>
+#endif
+#if defined(SIMDE_HAVE_STDLIB_H)
+#  include <stdlib.h>
+#endif
+
+#if !defined(SIMDE_HAVE_MATH_H) && defined(HUGE_VAL)
+#  define SIMDE_HAVE_MATH_H
+#endif
+#if !defined(SIMDE_HAVE_FENV_H) && defined(FE_DIVBYZERO)
+#  define SIMDE_HAVE_FENV_H
+#endif
+#if !defined(SIMDE_HAVE_STDLIB_H) && defined(EXIT_SUCCESS)
+#  define SIMDE_HAVE_STDLIB_H
+#endif
+
+#include "check.h"
 
 /* Sometimes we run into problems with specific versions of compilers
    which make the native versions unusable for us.  Often this is due

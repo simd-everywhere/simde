@@ -219,7 +219,7 @@ simde_mm_lddqu_si128 (simde__m128i const* mem_addr) {
 #if defined(SIMDE_SSE3_NEON)
   r_.neon_i32 = vld1q_s32(HEDLEY_REINTERPRET_CAST(int32_t const*, mem_addr));
 #else
-  memcpy(&r_, mem_addr, sizeof(r_));
+  simde_memcpy(&r_, mem_addr, sizeof(r_));
 #endif
 
   return simde__m128i_from_private(r_);

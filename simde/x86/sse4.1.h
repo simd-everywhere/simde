@@ -274,10 +274,15 @@ simde_mm_ceil_pd (simde__m128d a) {
     r_,
     a_ = simde__m128d_to_private(a);
 
+#if defined(SIMDE_HAVE_MATH_H)
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
     r_.f64[i] = ceil(a_.f64[i]);
   }
+#else
+  HEDLEY_UNREACHABLE();
+#endif
+
   return simde__m128d_from_private(r_);
 #endif
 }
@@ -295,10 +300,15 @@ simde_mm_ceil_ps (simde__m128 a) {
     r_,
     a_ = simde__m128_to_private(a);
 
+#if defined(SIMDE_HAVE_MATH_H)
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
     r_.f32[i] = ceilf(a_.f32[i]);
   }
+#else
+  HEDLEY_UNREACHABLE();
+#endif
+
   return simde__m128_from_private(r_);
 #endif
 }
@@ -313,10 +323,17 @@ simde_mm_ceil_sd (simde__m128d a, simde__m128d b) {
   return _mm_ceil_sd(a, b);
 #else
   simde__m128d_private
+    r_,
     a_ = simde__m128d_to_private(a),
     b_ = simde__m128d_to_private(b);
 
-  return simde_mm_set_pd(a_.f64[1], ceil(b_.f64[0]));
+#if defined(SIMDE_HAVE_MATH_H)
+  r_ = simde__m128d_to_private(simde_mm_set_pd(a_.f64[1], ceil(b_.f64[0])));
+#else
+  HEDLEY_UNREACHABLE();
+#endif
+
+  return simde__m128d_from_private(r_);
 #endif
 }
 #if defined(SIMDE_SSE4_1_ENABLE_NATIVE_ALIASES)
@@ -330,10 +347,17 @@ simde_mm_ceil_ss (simde__m128 a, simde__m128 b) {
   return _mm_ceil_ss(a, b);
 #else
   simde__m128_private
+    r_,
     a_ = simde__m128_to_private(a),
     b_ = simde__m128_to_private(b);
 
-  return simde_mm_set_ps(a_.f32[3], a_.f32[2], a_.f32[1], ceilf(b_.f32[0]));
+#if defined(SIMDE_HAVE_MATH_H)
+  r_ = simde__m128_to_private(simde_mm_set_ps(a_.f32[3], a_.f32[2], a_.f32[1], ceilf(b_.f32[0])));
+#else
+  HEDLEY_UNREACHABLE();
+#endif
+
+  return simde__m128_from_private(r_);
 #endif
 }
 #if defined(SIMDE_SSE4_1_ENABLE_NATIVE_ALIASES)
@@ -754,10 +778,14 @@ simde_mm_floor_pd (simde__m128d a) {
     r_,
     a_ = simde__m128d_to_private(a);
 
+#if defined(SIMDE_HAVE_MATH_H)
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
     r_.f64[i] = floor(a_.f64[i]);
   }
+#else
+  HEDLEY_UNREACHABLE();
+#endif
 
   return simde__m128d_from_private(r_);
 #endif
@@ -776,10 +804,14 @@ simde_mm_floor_ps (simde__m128 a) {
     r_,
     a_ = simde__m128_to_private(a);
 
+#if defined(SIMDE_HAVE_MATH_H)
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
     r_.f32[i] = floorf(a_.f32[i]);
   }
+#else
+  HEDLEY_UNREACHABLE();
+#endif
 
   return simde__m128_from_private(r_);
 #endif
@@ -799,8 +831,12 @@ simde_mm_floor_sd (simde__m128d a, simde__m128d b) {
     a_ = simde__m128d_to_private(a),
     b_ = simde__m128d_to_private(b);
 
+#if defined(SIMDE_HAVE_MATH_H)
   r_.f64[0] = floor(b_.f64[0]);
   r_.f64[1] = a_.f64[1];
+#else
+  HEDLEY_UNREACHABLE();
+#endif
 
   return simde__m128d_from_private(r_);
 #endif
@@ -820,10 +856,14 @@ simde_mm_floor_ss (simde__m128 a, simde__m128 b) {
     a_ = simde__m128_to_private(a),
     b_ = simde__m128_to_private(b);
 
+#if defined(SIMDE_HAVE_MATH_H)
   r_.f32[0] = floorf(b_.f32[0]);
   for (size_t i = 1 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
     r_.f32[i] = a_.f32[i];
   }
+#else
+  HEDLEY_UNREACHABLE();
+#endif
 
   return simde__m128_from_private(r_);
 #endif
@@ -1160,6 +1200,7 @@ simde_mm_mpsadbw_epu8 (simde__m128i a, simde__m128i b, const int imm8) {
   const int a_offset = imm8 & 4;
   const int b_offset = (imm8 & 3) << 2;
 
+#if defined(SIMDE_HAVE_MATH_H)
   for (int i = 0 ; i < HEDLEY_STATIC_CAST(int, (sizeof(r_.u16) / sizeof(r_.u16[0]))) ; i++) {
     r_.u16[i] =
       HEDLEY_STATIC_CAST(uint16_t, abs(a_.u8[a_offset + i + 0] - b_.u8[b_offset + 0])) +
@@ -1167,6 +1208,9 @@ simde_mm_mpsadbw_epu8 (simde__m128i a, simde__m128i b, const int imm8) {
       HEDLEY_STATIC_CAST(uint16_t, abs(a_.u8[a_offset + i + 2] - b_.u8[b_offset + 2])) +
       HEDLEY_STATIC_CAST(uint16_t, abs(a_.u8[a_offset + i + 3] - b_.u8[b_offset + 3]));
   }
+#else
+  HEDLEY_UNREACHABLE();
+#endif
 
   return simde__m128i_from_private(r_);
 }
@@ -1257,6 +1301,7 @@ simde_mm_round_pd (simde__m128d a, int rounding) {
     r_,
     a_ = simde__m128d_to_private(a);
 
+#if defined(SIMDE_HAVE_MATH_H)
   for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
     switch (rounding & ~SIMDE_MM_FROUND_NO_EXC) {
       case SIMDE_MM_FROUND_TO_NEAREST_INT:
@@ -1279,6 +1324,9 @@ simde_mm_round_pd (simde__m128d a, int rounding) {
         break;
     }
   }
+#else
+  HEDLEY_UNREACHABLE();
+#endif
 
   return simde__m128d_from_private(r_);
 }
@@ -1296,6 +1344,7 @@ simde_mm_round_ps (simde__m128 a, int rounding) {
     r_,
     a_ = simde__m128_to_private(a);
 
+#if defined(SIMDE_HAVE_MATH_H)
   for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
     switch (rounding & ~SIMDE_MM_FROUND_NO_EXC) {
       case SIMDE_MM_FROUND_TO_NEAREST_INT:
@@ -1318,6 +1367,10 @@ simde_mm_round_ps (simde__m128 a, int rounding) {
         break;
     }
   }
+#else
+  HEDLEY_UNREACHABLE();
+#endif
+
   return simde__m128_from_private(r_);
 }
 #if defined(SIMDE_SSE4_1_NATIVE)
@@ -1334,6 +1387,7 @@ simde_mm_round_sd (simde__m128d a, simde__m128d b, int rounding) {
     r_ = simde__m128d_to_private(a),
     b_ = simde__m128d_to_private(b);
 
+#if defined(SIMDE_HAVE_MATH_H)
   switch (rounding & ~SIMDE_MM_FROUND_NO_EXC) {
     case SIMDE_MM_FROUND_TO_NEAREST_INT:
       r_.f64[0] = nearbyint(b_.f64[0]);
@@ -1354,6 +1408,9 @@ simde_mm_round_sd (simde__m128d a, simde__m128d b, int rounding) {
       HEDLEY_UNREACHABLE();
       break;
   }
+#else
+  HEDLEY_UNREACHABLE();
+#endif
 
   return simde__m128d_from_private(r_);
 }
@@ -1371,6 +1428,7 @@ simde_mm_round_ss (simde__m128 a, simde__m128 b, int rounding) {
     r_ = simde__m128_to_private(a),
     b_ = simde__m128_to_private(b);
 
+#if defined(SIMDE_HAVE_MATH_H)
   switch (rounding & ~SIMDE_MM_FROUND_NO_EXC) {
     case SIMDE_MM_FROUND_TO_NEAREST_INT:
       r_.f32[0] = nearbyintf(b_.f32[0]);
@@ -1391,6 +1449,10 @@ simde_mm_round_ss (simde__m128 a, simde__m128 b, int rounding) {
       HEDLEY_UNREACHABLE();
       break;
   }
+#else
+  HEDLEY_UNREACHABLE();
+#endif
+
   return simde__m128_from_private(r_);
 }
 #if defined(SIMDE_SSE4_1_NATIVE)

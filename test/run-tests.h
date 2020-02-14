@@ -5,6 +5,7 @@
 #include "munit/munit.h"
 #include "../simde/simde-common.h"
 
+#include <stdio.h>
 #include <math.h>
 
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS

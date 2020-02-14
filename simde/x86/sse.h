@@ -57,9 +57,6 @@ SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 #    endif
 #  endif
 
-#include <math.h>
-#include <fenv.h>
-
 SIMDE__BEGIN_DECLS
 
 typedef union {
@@ -139,7 +136,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 simde__m128
 simde__m128_from_private(simde__m128_private v) {
   simde__m128 r;
-  memcpy(&r, &v, sizeof(r));
+  simde_memcpy(&r, &v, sizeof(r));
   return r;
 }
 
@@ -147,7 +144,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 simde__m128_private
 simde__m128_to_private(simde__m128 v) {
   simde__m128_private r;
-  memcpy(&r, &v, sizeof(r));
+  simde_memcpy(&r, &v, sizeof(r));
   return r;
 }
 
@@ -790,11 +787,13 @@ simde_mm_cmpord_ps (simde__m128 a, simde__m128 b) {
   uint32x4_t ceqaa = vceqq_f32(a_.neon_f32, a_.neon_f32);
   uint32x4_t ceqbb = vceqq_f32(b_.neon_f32, b_.neon_f32);
   r_.neon_u32 = vandq_u32(ceqaa, ceqbb);
-#else
+#elif defined(SIMDE_HAVE_MATH_H)
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
     r_.u32[i] = (isnan(a_.f32[i]) || isnan(b_.f32[i])) ? UINT32_C(0) : ~UINT32_C(0);
   }
+#else
+  HEDLEY_UNREACHABLE();
 #endif
 
   return simde__m128_from_private(r_);
@@ -815,10 +814,14 @@ simde_mm_cmpunord_ps (simde__m128 a, simde__m128 b) {
     a_ = simde__m128_to_private(a),
     b_ = simde__m128_to_private(b);
 
+#if defined(SIMDE_HAVE_MATH_H)
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
     r_.u32[i] = (isnan(a_.f32[i]) || isnan(b_.f32[i])) ? ~UINT32_C(0) : UINT32_C(0);
   }
+#else
+  HEDLEY_UNREACHABLE();
+#endif
 
   return simde__m128_from_private(r_);
 #endif
@@ -840,11 +843,15 @@ simde_mm_cmpunord_ss (simde__m128 a, simde__m128 b) {
     a_ = simde__m128_to_private(a),
     b_ = simde__m128_to_private(b);
 
+#if defined(SIMDE_HAVE_MATH_H)
   r_.u32[0] = (isnan(a_.f32[0]) || isnan(b_.f32[0])) ? ~UINT32_C(0) : UINT32_C(0);
   SIMDE__VECTORIZE
   for (size_t i = 1 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
     r_.f32[i] = a_.f32[i];
   }
+#else
+  HEDLEY_UNREACHABLE();
+#endif
 
   return simde__m128_from_private(r_);
 #endif
@@ -1097,8 +1104,10 @@ simde_mm_cvt_ss2si (simde__m128 a) {
 
   #if defined(SIMDE_SSE_NEON)
     return SIMDE_CONVERT_FTOI(int32_t, nearbyintf(vgetq_lane_f32(a_.neon_f32, 0)));
-  #else
+  #elif defined(SIMDE_HAVE_MATH_H)
     return SIMDE_CONVERT_FTOI(int32_t, nearbyintf(a_.f32[0]));
+  #else
+    HEDLEY_UNREACHABLE();
   #endif
 #endif
 }
@@ -1539,11 +1548,15 @@ simde_mm_cmpord_ss (simde__m128 a, simde__m128 b) {
     r_,
     a_ = simde__m128_to_private(a);
 
+#if defined(SIMDE_HAVE_MATH_H)
   r_.u32[0] = (isnan(simde_mm_cvtss_f32(a)) || isnan(simde_mm_cvtss_f32(b))) ? UINT32_C(0) : ~UINT32_C(0);
   SIMDE__VECTORIZE
   for (size_t i = 1 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
     r_.u32[i] = a_.u32[i];
   }
+#else
+  HEDLEY_UNREACHABLE();
+#endif
 
   return simde__m128_from_private(r_);
 #endif
@@ -1670,8 +1683,10 @@ unsigned int
 SIMDE_MM_GET_ROUNDING_MODE(void) {
 #if defined(SIMDE_SSE_NATIVE)
   return _MM_GET_ROUNDING_MODE();
-#else
+#elif defined(SIMDE_HAVE_MATH_H)
   return (unsigned int) fegetround();
+#else
+  HEDLEY_UNREACHABLE();
 #endif
 }
 #if defined(SIMDE_SSE_ENABLE_NATIVE_ALIASES)
@@ -1848,7 +1863,7 @@ simde_mm_loadl_pi (simde__m128 a, simde__m64 const* mem_addr) {
   r_.neon_f32 = vcombine_f32(vld1_f32(HEDLEY_REINTERPRET_CAST(const float32_t*, mem_addr)), vget_high_f32(a_.neon_f32));
 #else
   simde__m64_private b_;
-  memcpy(&b_, mem_addr, sizeof(b_));
+  simde_memcpy(&b_, mem_addr, sizeof(b_));
   r_.i32[0] = b_.i32[0];
   r_.i32[1] = b_.i32[1];
   r_.i32[2] = a_.i32[2];
@@ -2465,11 +2480,13 @@ simde_mm_rsqrt_ps (simde__m128 a) {
       r_.f32[i] *= SIMDE_FLOAT32_C(1.5) - (half * r_.f32[i] * r_.f32[i]);
 #endif
   }
-#else
+#elif defined(SIMDE_HAVE_MATH_H)
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
     r_.f32[i] = 1.0f / sqrtf(a_.f32[i]);
   }
+#else
+  HEDLEY_UNREACHABLE();
 #endif
 
   return simde__m128_from_private(r_);
@@ -2505,11 +2522,13 @@ simde_mm_rsqrt_ss (simde__m128 a) {
   r_.f32[1] = a_.f32[1];
   r_.f32[2] = a_.f32[2];
   r_.f32[3] = a_.f32[3];
-#else
+#elif defined(SIMDE_HAVE_MATH_H)
   r_.f32[0] = 1.0f / sqrtf(a_.f32[0]);
   r_.f32[1] = a_.f32[1];
   r_.f32[2] = a_.f32[2];
   r_.f32[3] = a_.f32[3];
+#else
+  HEDLEY_UNREACHABLE();
 #endif
 
   return simde__m128_from_private(r_);
@@ -2531,6 +2550,7 @@ simde_mm_sad_pu8 (simde__m64 a, simde__m64 b) {
     b_ = simde__m64_to_private(b);
   uint16_t sum = 0;
 
+#if defined(SIMDE_HAVE_STDLIB_H)
   SIMDE__VECTORIZE_REDUCTION(+:sum)
   for (size_t i = 0 ; i < (sizeof(r_.u8) / sizeof(r_.u8[0])) ; i++) {
     sum += (uint8_t) abs(a_.u8[i] - b_.u8[i]);
@@ -2540,6 +2560,9 @@ simde_mm_sad_pu8 (simde__m64 a, simde__m64 b) {
   r_.i16[1] = 0;
   r_.i16[2] = 0;
   r_.i16[3] = 0;
+#else
+  HEDLEY_UNREACHABLE();
+#endif
 
   return simde__m64_from_private(r_);
 #endif
@@ -2628,7 +2651,7 @@ simde_mm_setzero_ps (void) {
   return vdupq_n_f32(SIMDE_FLOAT32_C(0.0));
 #else
   simde__m128 r;
-  memset(&r, 0, sizeof(r));
+  simde_memset(&r, 0, sizeof(r));
   return r;
 #endif
 }
@@ -2793,11 +2816,13 @@ simde_mm_sqrt_ps (simde__m128 a) {
   float32x4_t sq = vrecpeq_f32(recipsq);
   /* ??? use step versions of both sqrt and recip for better accuracy? */
   r_.neon_f32 = sq;
-#else
+#elif defined(SIMDE_HAVE_MATH_H)
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < sizeof(r_.f32) / sizeof(r_.f32[0]) ; i++) {
     r_.f32[i] = sqrtf(a_.f32[i]);
   }
+#else
+  HEDLEY_UNREACHABLE();
 #endif
 
   return simde__m128_from_private(r_);
@@ -2819,10 +2844,14 @@ simde_mm_sqrt_ss (simde__m128 a) {
     r_,
     a_ = simde__m128_to_private(a);
 
+#if defined(SIMDE_HAVE_MATH_H)
   r_.f32[0] = sqrtf(a_.f32[0]);
   r_.f32[1] = a_.f32[1];
   r_.f32[2] = a_.f32[2];
   r_.f32[3] = a_.f32[3];
+#else
+  HEDLEY_UNREACHABLE();
+#endif
 
   return simde__m128_from_private(r_);
 #endif
@@ -2974,7 +3003,7 @@ simde_mm_storeu_ps (simde_float32 mem_addr[4], simde__m128 a) {
 #if defined(SIMDE_SSE_NEON)
   vst1q_f32(mem_addr, a_.neon_f32);
 #else
-  memcpy(mem_addr, &a_, sizeof(a_));
+  simde_memcpy(mem_addr, &a_, sizeof(a_));
 #endif
 #endif
 }
@@ -3045,12 +3074,17 @@ simde_mm_ucomieq_ss (simde__m128 a, simde__m128 b) {
   simde__m128_private
     a_ = simde__m128_to_private(a),
     b_ = simde__m128_to_private(b);
+  int r;
 
+#if defined(SIMDE_HAVE_FENV_H)
   fenv_t envp;
   int x = feholdexcept(&envp);
-  int r = a_.f32[0] == b_.f32[0];
+  r = a_.f32[0] == b_.f32[0];
   if (HEDLEY_LIKELY(x == 0))
     fesetenv(&envp);
+#else
+  HEDLEY_UNREACHABLE();
+#endif
 
   return r;
 #endif
@@ -3068,12 +3102,17 @@ simde_mm_ucomige_ss (simde__m128 a, simde__m128 b) {
   simde__m128_private
     a_ = simde__m128_to_private(a),
     b_ = simde__m128_to_private(b);
+  int r;
 
+#if defined(SIMDE_HAVE_FENV_H)
   fenv_t envp;
   int x = feholdexcept(&envp);
-  int r = a_.f32[0] >= b_.f32[0];
+  r = a_.f32[0] >= b_.f32[0];
   if (HEDLEY_LIKELY(x == 0))
     fesetenv(&envp);
+#else
+  HEDLEY_UNREACHABLE();
+#endif
 
   return r;
 #endif
@@ -3091,12 +3130,17 @@ simde_mm_ucomigt_ss (simde__m128 a, simde__m128 b) {
   simde__m128_private
     a_ = simde__m128_to_private(a),
     b_ = simde__m128_to_private(b);
+  int r;
 
+#if defined(SIMDE_HAVE_FENV_H)
   fenv_t envp;
   int x = feholdexcept(&envp);
-  int r = a_.f32[0] > b_.f32[0];
+  r = a_.f32[0] > b_.f32[0];
   if (HEDLEY_LIKELY(x == 0))
     fesetenv(&envp);
+#else
+  HEDLEY_UNREACHABLE();
+#endif
 
   return r;
 #endif
@@ -3114,12 +3158,17 @@ simde_mm_ucomile_ss (simde__m128 a, simde__m128 b) {
   simde__m128_private
     a_ = simde__m128_to_private(a),
     b_ = simde__m128_to_private(b);
+  int r;
 
+#if defined(SIMDE_HAVE_FENV_H)
   fenv_t envp;
   int x = feholdexcept(&envp);
-  int r = a_.f32[0] <= b_.f32[0];
+  r = a_.f32[0] <= b_.f32[0];
   if (HEDLEY_LIKELY(x == 0))
     fesetenv(&envp);
+#else
+  HEDLEY_UNREACHABLE();
+#endif
 
   return r;
 #endif
@@ -3137,12 +3186,17 @@ simde_mm_ucomilt_ss (simde__m128 a, simde__m128 b) {
   simde__m128_private
     a_ = simde__m128_to_private(a),
     b_ = simde__m128_to_private(b);
+  int r;
 
+#if defined(SIMDE_HAVE_FENV_H)
   fenv_t envp;
   int x = feholdexcept(&envp);
-  int r = a_.f32[0] < b_.f32[0];
+  r = a_.f32[0] < b_.f32[0];
   if (HEDLEY_LIKELY(x == 0))
     fesetenv(&envp);
+#else
+  HEDLEY_UNREACHABLE();
+#endif
 
   return r;
 #endif
@@ -3160,12 +3214,17 @@ simde_mm_ucomineq_ss (simde__m128 a, simde__m128 b) {
   simde__m128_private
     a_ = simde__m128_to_private(a),
     b_ = simde__m128_to_private(b);
+  int r;
 
+#if defined(SIMDE_HAVE_FENV_H)
   fenv_t envp;
   int x = feholdexcept(&envp);
-  int r = a_.f32[0] != b_.f32[0];
+  r = a_.f32[0] != b_.f32[0];
   if (HEDLEY_LIKELY(x == 0))
     fesetenv(&envp);
+#else
+  HEDLEY_UNREACHABLE();
+#endif
 
   return r;
 #endif
@@ -3317,7 +3376,7 @@ simde_mm_stream_ps (simde_float32 mem_addr[4], simde__m128 a) {
   vst1q_f32(mem_addr, a_.neon_f32);
 #else
   SIMDE__ASSUME_ALIGNED(mem_addr, 16);
-  memcpy(mem_addr, &a_, sizeof(a_));
+  simde_memcpy(mem_addr, &a_, sizeof(a_));
 #endif
 #endif
 }
@@ -3332,6 +3391,8 @@ simde_mm_getcsr (void) {
   return _mm_getcsr();
 #else
   uint32_t r = 0;
+
+#if defined(SIMDE_HAVE_FENV_H)
   int rounding_mode = fegetround();
 
   switch(rounding_mode) {
@@ -3355,6 +3416,9 @@ simde_mm_getcsr (void) {
       break;
 #endif
   }
+#else
+  HEDLEY_UNREACHABLE();
+#endif
 
   return r;
 #endif

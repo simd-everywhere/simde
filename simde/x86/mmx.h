@@ -53,8 +53,6 @@ SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 #  endif
 #  include <stdint.h>
 #  include <limits.h>
-#  include <stdlib.h>
-#  include <string.h>
 
 SIMDE__BEGIN_DECLS
 
@@ -127,7 +125,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 simde__m64
 simde__m64_from_private(simde__m64_private v) {
   simde__m64 r;
-  memcpy(&r, &v, sizeof(r));
+  simde_memcpy(&r, &v, sizeof(r));
   return r;
 }
 
@@ -135,7 +133,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 simde__m64_private
 simde__m64_to_private(simde__m64 v) {
   simde__m64_private r;
-  memcpy(&r, &v, sizeof(r));
+  simde_memcpy(&r, &v, sizeof(r));
   return r;
 }
 
@@ -1250,7 +1248,7 @@ simde_mm_setone_si64 (void) {
   return _mm_andnot_ps(t, t);
 #else
   simde__m64 r;
-  memset(&r, ~0, sizeof(r));
+  simde_memset(&r, ~0, sizeof(r));
   return r;
 #endif
 }
@@ -1271,7 +1269,7 @@ simde_mm_sll_pi16 (simde__m64 a, simde__m64 count) {
   r_.i16 = a_.i16 << count_.u64[0];
 #else
   if (HEDLEY_UNLIKELY(count_.u64[0] > 15)) {
-    memset(&r_, 0, sizeof(r_));
+    simde_memset(&r_, 0, sizeof(r_));
     return simde__m64_from_private(r_);
   }
 
@@ -1306,7 +1304,7 @@ simde_mm_sll_pi32 (simde__m64 a, simde__m64 count) {
   r_.i32 = a_.i32 << count_.u64[0];
 #else
   if (HEDLEY_UNLIKELY(count_.u64[0] > 31)) {
-    memset(&r_, 0, sizeof(r_));
+    simde_memset(&r_, 0, sizeof(r_));
     return simde__m64_from_private(r_);
   }
 
@@ -1425,7 +1423,7 @@ simde_mm_sll_si64 (simde__m64 a, simde__m64 count) {
   r_.i64 = a_.i64 << count_.i64;
 #else
   if (HEDLEY_UNLIKELY(count_.u64[0] > 63)) {
-    memset(&r_, 0, sizeof(r_));
+    simde_memset(&r_, 0, sizeof(r_));
     return simde__m64_from_private(r_);
   }
 
@@ -1457,7 +1455,7 @@ simde_mm_srl_pi16 (simde__m64 a, simde__m64 count) {
   r_.neon_u16 = vshl_u16(a_.neon_u16, vmov_n_s16(-((int16_t) vget_lane_u64(count_.neon_u64, 0))));
 #else
   if (HEDLEY_UNLIKELY(count_.u64[0] > 15)) {
-    memset(&r_, 0, sizeof(r_));
+    simde_memset(&r_, 0, sizeof(r_));
     return simde__m64_from_private(r_);
   }
 
@@ -1492,7 +1490,7 @@ simde_mm_srl_pi32 (simde__m64 a, simde__m64 count) {
   r_.neon_u32 = vshl_u32(a_.neon_u32, vmov_n_s32(-((int32_t) vget_lane_u64(count_.neon_u64, 0))));
 #else
   if (HEDLEY_UNLIKELY(count_.u64[0] > 31)) {
-    memset(&r_, 0, sizeof(r_));
+    simde_memset(&r_, 0, sizeof(r_));
     return simde__m64_from_private(r_);
   }
 
@@ -1611,7 +1609,7 @@ simde_mm_srl_si64 (simde__m64 a, simde__m64 count) {
   r_.u64 = a_.u64 >> count_.u64;
 #else
   if (HEDLEY_UNLIKELY(count_.u64[0] > 63)) {
-    memset(&r_, 0, sizeof(r_));
+    simde_memset(&r_, 0, sizeof(r_));
     return simde__m64_from_private(r_);
   }
 
