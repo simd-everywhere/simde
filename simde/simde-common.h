@@ -271,6 +271,14 @@ typedef unsigned __int128 simde_uint128;
 HEDLEY_DIAGNOSTIC_POP
 #endif
 
+#if defined(__BYTE_ORDER__) && defined(__ORDER_LITTLE_ENDIAN__) && defined(__ORDER_BIG_ENDIAN__)
+#  if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
+#    define SIMDE_BYTE_ORDER_LE
+#  else
+#    define SIMDE_BYTE_ORDER_BE
+#  endif
+#endif
+
 /* TODO: we should at least make an attempt to detect the correct
    types for simde_float32/float64 instead of just assuming float and
    double. */

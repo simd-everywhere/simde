@@ -212,6 +212,8 @@ simde_mm_alignr_epi8 (simde__m128i a, simde__m128i b, int count) {
     r_,
     a_ = simde__m128i_to_private(a),
     b_ = simde__m128i_to_private(b);
+
+#if 0 && defined(SIMDE_BYTE_ORDER_LE)
   const int bits = (8 * count) % 64;
   const int eo = count / 8;
 
@@ -241,6 +243,21 @@ simde_mm_alignr_epi8 (simde__m128i a, simde__m128i b, int count) {
       HEDLEY_UNREACHABLE();
       break;
   }
+#else
+  if (HEDLEY_UNLIKELY(count > 31))
+    return simde_mm_setzero_si128();
+
+  for (size_t i = 0 ; i < (sizeof(r_.i8) / sizeof(r_.i8[0])) ; i++) {
+    const int srcpos = count + i;
+    if (srcpos > 31) {
+      r_.i8[i] = 0;
+    } else if (srcpos > 15) {
+      r_.i8[i] = a_.i8[(srcpos) & 15];
+    } else {
+      r_.i8[i] = b_.i8[srcpos];
+    }
+  }
+#endif
 
   return simde__m128i_from_private(r_);
 }
@@ -262,24 +279,19 @@ simde_mm_alignr_pi8 (simde__m64 a, simde__m64 b, const int count) {
     a_ = simde__m64_to_private(a),
     b_ = simde__m64_to_private(b);
 
-#if defined(SIMDE__HAVE_INT128)
-HEDLEY_DIAGNOSTIC_PUSH
-SIMDE_DIAGNOSTIC_DISABLE_INT128
-  unsigned __int128 t = a_.u64[0];
-  t <<= 64;
-  t |= b_.u64[0];
-  t >>= count * 8;
-  r_.u64[0] = HEDLEY_STATIC_CAST(uint64_t, t);
-HEDLEY_DIAGNOSTIC_POP
-#else
-  const int cb = count * 8;
+  if (HEDLEY_UNLIKELY(count > 15))
+    return simde_mm_setzero_si64();
 
-  if (cb > 64) {
-    r_.u64[0] = a_.u64[0] >> (cb - 64);
-  } else {
-    r_.u64[0] = (a_.u64[0] << (64 - cb)) | (b_.u64[0] >> cb);
+  for (size_t i = 0 ; i < (sizeof(r_.i8) / sizeof(r_.i8[0])) ; i++) {
+    const int srcpos = count + i;
+    if (srcpos > 15) {
+      r_.i8[i] = 0;
+    } else if (srcpos > 7) {
+      r_.i8[i] = a_.i8[(srcpos) & 7];
+    } else {
+      r_.i8[i] = b_.i8[srcpos];
+    }
   }
-#endif
 
   return simde__m64_from_private(r_);
 }

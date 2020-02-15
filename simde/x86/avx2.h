@@ -193,47 +193,24 @@ simde_mm256_alignr_epi8 (simde__m256i a, simde__m256i b, int count) {
     r_,
     a_ = simde__m256i_to_private(a),
     b_ = simde__m256i_to_private(b);
-  const int bits = (8 * count) % 64;
-  const int eo = count / 8;
 
-  switch (eo) {
-    case 0:
-      r_.u64[0]  = b_.u64[0] >> bits;
-      r_.u64[0] |= b_.u64[1] << (64 - bits);
-      r_.u64[1]  = b_.u64[1] >> bits;
-      r_.u64[1] |= a_.u64[0] << (64 - bits);
-      r_.u64[2]  = b_.u64[2] >> bits;
-      r_.u64[2] |= b_.u64[3] << (64 - bits);
-      r_.u64[3]  = b_.u64[3] >> bits;
-      r_.u64[3] |= a_.u64[2] << (64 - bits);
-      break;
-    case 1:
-      r_.u64[0]  = b_.u64[1] >> bits;
-      r_.u64[0] |= a_.u64[0] << (64 - bits);
-      r_.u64[1]  = a_.u64[0] >> bits;
-      r_.u64[1] |= a_.u64[1] << (64 - bits);
-      r_.u64[2]  = b_.u64[3] >> bits;
-      r_.u64[2] |= a_.u64[2] << (64 - bits);
-      r_.u64[3]  = a_.u64[2] >> bits;
-      r_.u64[3] |= a_.u64[3] << (64 - bits);
-       break;
-    case 2:
-      r_.u64[0]  = a_.u64[0] >> bits;
-      r_.u64[0] |= a_.u64[1] << (64 - bits);
-      r_.u64[1]  = a_.u64[1] >> bits;
-      r_.u64[2]  = a_.u64[2] >> bits;
-      r_.u64[2] |= a_.u64[3] << (64 - bits);
-      r_.u64[3]  = a_.u64[3] >> bits;
-      break;
-    case 3:
-      r_.u64[0]  = a_.u64[1] >> bits;
-      r_.u64[1]  = 0;
-      r_.u64[2]  = a_.u64[3] >> bits;
-      r_.u64[3]  = 0;
-      break;
-    default:
-      HEDLEY_UNREACHABLE();
-      break;
+  if (HEDLEY_UNLIKELY(count > 31))
+    return simde_mm256_setzero_si256();
+
+  SIMDE__VECTORIZE
+  for (size_t h = 0 ; h < (sizeof(r_.m128i) / sizeof(r_.m128i[0])) ; h++) {
+
+    SIMDE__VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.m128i_private[h].i8) / sizeof(r_.m128i_private[h].i8[0])) ; i++) {
+      const int srcpos = count + i;
+      if (srcpos > 31) {
+        r_.m128i_private[h].i8[i] = 0;
+      } else if (srcpos > 15) {
+        r_.m128i_private[h].i8[i] = a_.m128i_private[h].i8[(srcpos) & 15];
+      } else {
+        r_.m128i_private[h].i8[i] = b_.m128i_private[h].i8[srcpos];
+      }
+    }
   }
 
   return simde__m256i_from_private(r_);
