@@ -1027,6 +1027,48 @@ test_simde_mm256_xxx_epi64(const MunitParameter params[], void* data) {
 }
 
 static MunitResult
+test_simde_mm256_xxx_epu64(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  const struct {
+    simde__m256i a;
+    simde__m256i b;
+    simde__m256i r;
+  } test_vec[8] = {
+
+  };
+
+  printf("\n");
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    simde__m256i_private a, b, r;
+
+    munit_rand_memory(sizeof(a), (uint8_t*) &a);
+    munit_rand_memory(sizeof(b), (uint8_t*) &b);
+
+    r = simde__m256i_to_private(simde_mm256_xxx_epi64(simde__m256i_from_private(a), simde__m256i_from_private(b)));
+
+    printf("    { simde_mm256_set_epi64x(HEDLEY_STATIC_CAST(int64_t, UINT64_C(%20" PRIu64 ")), HEDLEY_STATIC_CAST(int64_t, UINT64_C(%20" PRIu64 ")),\n"
+           "                             HEDLEY_STATIC_CAST(int64_t, UINT64_C(%20" PRIu64 ")), HEDLEY_STATIC_CAST(int64_t, UINT64_C(%20" PRIu64 "))),\n",
+           a.u64[3], a.u64[2], a.u64[1], a.u64[0]);
+    printf("      simde_mm256_set_epi64x(HEDLEY_STATIC_CAST(int64_t, UINT64_C(%20" PRIu64 ")), HEDLEY_STATIC_CAST(int64_t, UINT64_C(%20" PRIu64 ")),\n"
+           "                             HEDLEY_STATIC_CAST(int64_t, UINT64_C(%20" PRIu64 ")), HEDLEY_STATIC_CAST(int64_t, UINT64_C(%20" PRIu64 "))),\n",
+           b.u64[3], b.u64[2], b.u64[1], b.u64[0]);
+    printf("      simde_mm256_set_epi64x(HEDLEY_STATIC_CAST(int64_t, UINT64_C(%20" PRIu64 ")), HEDLEY_STATIC_CAST(int64_t, UINT64_C(%20" PRIu64 ")),\n"
+           "                             HEDLEY_STATIC_CAST(int64_t, UINT64_C(%20" PRIu64 ")), HEDLEY_STATIC_CAST(int64_t, UINT64_C(%20" PRIu64 "))) },\n",
+           r.u64[3], r.u64[2], r.u64[1], r.u64[0]);
+  }
+  return MUNIT_FAIL;
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    simde__m256i r = simde_mm256_xxx_epi64(test_vec[i].a, test_vec[i].b);
+    simde_assert_m256i_i64(r, ==, test_vec[i].r);
+  }
+
+  return MUNIT_OK;
+}
+
+static MunitResult
 test_simde_mm256_xxx_epu8(const MunitParameter params[], void* data) {
   (void) params;
   (void) data;
