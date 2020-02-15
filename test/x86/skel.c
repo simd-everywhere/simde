@@ -837,12 +837,12 @@ test_simde_mm256_xxx_epi8(const MunitParameter params[], void* data) {
 
   printf("\n");
   for (size_t i = 0 ; i < (sizeof(test_vec) / (sizeof(test_vec[0]))) ; i++) {
-    simde__m256i a, b, r;
+    simde__m256i_private a, b, r;
 
     munit_rand_memory(sizeof(a), (uint8_t*) &a);
     munit_rand_memory(sizeof(b), (uint8_t*) &b);
 
-    r = simde_mm256_xxx_epi8(a, b);
+    r = simde__m256i_to_private(simde_mm256_xxx_epi8(simde__m256i_from_private(a), simde__m256i_from_private(b)));
 
     printf("    { simde_mm256_set_epi8(INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "),\n"
            "                           INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "), INT8_C(%4" PRId8 "),\n"

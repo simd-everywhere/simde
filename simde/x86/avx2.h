@@ -1306,32 +1306,15 @@ simde_mm256_srli_si256 (simde__m256i a, const int imm8) {
     r_,
     a_ = simde__m256i_to_private(a);
 
-  if (HEDLEY_UNLIKELY(imm8 > 15)) {
-    return simde_mm256_setzero_si256();
+  for (size_t h = 0 ; h < 2 ; h++) {
+    SIMDE__VECTORIZE
+    for (int i = 0 ; i < (sizeof(r_.i8) / sizeof(r_.i8[0])) ; i++) {
+      r_.m128i_private[h].i8[i] = ((i + imm8) < 16) ? a_.m128i_private[h].i8[i + imm8] : 0;
+    }
   }
-
-  const int s = imm8 * 8;
-
-#if defined(SIMDE__HAVE_INT128)
-  r_.u128[0] = a_.u128[0] >> s;
-  r_.u128[1] = a_.u128[1] >> s;
-#else
-  if (s < 64) {
-    r_.u64[0] = (a_.u64[0] >> s) | (a_.u64[1] << (64 - s));
-    r_.u64[1] = (a_.u64[1] >> s);
-    r_.u64[2] = (a_.u64[2] >> s) | (a_.u64[3] << (64 - s));
-    r_.u64[3] = (a_.u64[3] >> s);
-  } else {
-    r_.u64[0] = a_.u64[1] >> (s - 64);
-    r_.u64[1] = 0;
-    r_.u64[2] = a_.u64[3] >> (s - 64);
-    r_.u64[3] = 0;
-  }
-#endif
 
   return simde__m256i_from_private(r_);
 }
-
 #if defined(SIMDE_AVX2_NATIVE)
 #  define simde_mm256_srli_si256(a, imm8) _mm256_srli_si256(a, imm8)
 #elif defined(SIMDE_ARCH_X86_SSE2) && !defined(__PGI)
