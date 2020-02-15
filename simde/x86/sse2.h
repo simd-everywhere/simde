@@ -775,30 +775,39 @@ simde_mm_bslli_si128 (simde__m128i a, const int imm8) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
+simde_mm_setzero_si128 (void) {
+#if defined(SIMDE_SSE2_NATIVE)
+  return _mm_setzero_si128();
+#else
+  simde__m128i_private r_;
+
+#if defined(SIMDE_SSE2_NEON)
+  r_.neon_i32 = vdupq_n_s32(0);
+#else
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r_.i32f) / sizeof(r_.i32f[0])) ; i++) {
+    r_.i32f[i] = 0;
+  }
+#endif
+
+  return simde__m128i_from_private(r_);
+#endif
+}
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_setzero_si128() (simde_mm_setzero_si128())
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128i
 simde_mm_bsrli_si128 (simde__m128i a, const int imm8) {
   simde__m128i_private
     r_,
     a_ = simde__m128i_to_private(a);
 
-  if (HEDLEY_UNLIKELY(imm8 > 15)) {
-    r_.u64[0] = 0;
-    r_.u64[1] = 0;
-    return simde__m128i_from_private(r_);
+  SIMDE__VECTORIZE
+  for (int i = 0 ; i < (sizeof(r_.i8) / sizeof(r_.i8[0])) ; i++) {
+    r_.i8[i] = ((i + imm8) < 16) ? a_.i8[i + imm8] : 0;
   }
-
-  const int s = imm8 * 8;
-
-#if defined(SIMDE__HAVE_INT128)
-  r_.u128[0] = a_.u128[0] >> s;
-#else
-  if (s < 64) {
-    r_.u64[0] = (a_.u64[0] >> s) | (a_.u64[1] << (64 - s));
-    r_.u64[1] = (a_.u64[1] >> s);
-  } else {
-    r_.u64[0] = a_.u64[1] >> (s - 64);
-    r_.u64[1] = 0;
-  }
-#endif
 
   return simde__m128i_from_private(r_);
 }
@@ -3842,30 +3851,6 @@ simde_mm_setzero_pd (void) {
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_setzero_pd() simde_mm_setzero_pd()
-#endif
-
-SIMDE__FUNCTION_ATTRIBUTES
-simde__m128i
-simde_mm_setzero_si128 (void) {
-#if defined(SIMDE_SSE2_NATIVE)
-  return _mm_setzero_si128();
-#else
-  simde__m128i_private r_;
-
-#if defined(SIMDE_SSE2_NEON)
-  r_.neon_i32 = vdupq_n_s32(0);
-#else
-  SIMDE__VECTORIZE
-  for (size_t i = 0 ; i < (sizeof(r_.i32f) / sizeof(r_.i32f[0])) ; i++) {
-    r_.i32f[i] = 0;
-  }
-#endif
-
-  return simde__m128i_from_private(r_);
-#endif
-}
-#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
-#  define _mm_setzero_si128() (simde_mm_setzero_si128())
 #endif
 
 #if defined(SIMDE_DIAGNOSTIC_DISABLE_UNINITIALIZED_)
