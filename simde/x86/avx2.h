@@ -1306,7 +1306,7 @@ simde_mm256_srli_si256 (simde__m256i a, const int imm8) {
 
   for (size_t h = 0 ; h < 2 ; h++) {
     SIMDE__VECTORIZE
-    for (int i = 0 ; i < (sizeof(r_.i8) / sizeof(r_.i8[0])) ; i++) {
+    for (int i = 0 ; i < (sizeof(r_.m128i_private[h].i8) / sizeof(r_.m128i_private[h].i8[0])) ; i++) {
       r_.m128i_private[h].i8[i] = ((i + imm8) < 16) ? a_.m128i_private[h].i8[i + imm8] : 0;
     }
   }
