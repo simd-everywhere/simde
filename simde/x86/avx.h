@@ -3717,7 +3717,7 @@ simde_mm_maskstore_pd (simde_float64 mem_addr[HEDLEY_ARRAY_PARAM(2)], simde__m12
 
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < 2 ; i++) {
-    if (mask_.i64[i] >> 63)
+    if (mask_.u64[i] >> 63)
       mem_addr[i] = a_.f64[i];
   }
 #endif
@@ -3737,7 +3737,7 @@ simde_mm256_maskstore_pd (simde_float64 mem_addr[HEDLEY_ARRAY_PARAM(4)], simde__
 
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < 4 ; i++) {
-    if (mask_.i64[i] >> 63)
+    if (mask_.u64[i] & (UINT64_C(1) << 63))
       mem_addr[i] = a_.f64[i];
   }
 #endif
@@ -3757,7 +3757,7 @@ simde_mm_maskstore_ps (simde_float32 mem_addr[HEDLEY_ARRAY_PARAM(4)], simde__m12
 
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < 4 ; i++) {
-    if (mask_.u32[i] >> 31)
+    if (mask_.u32[i] & (UINT32_C(1) << 31))
       mem_addr[i] = a_.f32[i];
   }
 #endif
@@ -3777,7 +3777,7 @@ simde_mm256_maskstore_ps (simde_float32 mem_addr[HEDLEY_ARRAY_PARAM(8)], simde__
 
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < 8 ; i++) {
-    if (mask_.i32[i] >> 31)
+    if (mask_.u32[i] & (UINT32_C(1) << 31))
       mem_addr[i] = a_.f32[i];
   }
 #endif
