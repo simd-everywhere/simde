@@ -197,9 +197,7 @@ simde_mm256_alignr_epi8 (simde__m256i a, simde__m256i b, int count) {
   if (HEDLEY_UNLIKELY(count > 31))
     return simde_mm256_setzero_si256();
 
-  SIMDE__VECTORIZE
   for (size_t h = 0 ; h < (sizeof(r_.m128i) / sizeof(r_.m128i[0])) ; h++) {
-
     SIMDE__VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.m128i_private[h].i8) / sizeof(r_.m128i_private[h].i8[0])) ; i++) {
       const int srcpos = count + i;
