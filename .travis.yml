@@ -208,26 +208,28 @@ jobs:
       skip_cleanup: true
       keep_history: true
 
-  # - name: emscripten
-  #   compiler: emcc
-  #   env:
-  #   - ARCH_FLAGS=""
-  #   - C_COMPILER=emcc
-  #   - CXX_COMPILER=emcc
-  #   - CONFIGURE_WRAPPER=emconfigure
-  #   - BUILD_WRAPPER=emmake
-  #   - EXECUTABLE_EXTENSION=.js
-  #   - TEST_WRAPPER=node
-  #   addons:
-  #     apt:
-  #       packages:
-  #       - nodejs
-  #   install:
-  #   - |
-  #     git clone https://github.com/emscripten-core/emsdk.git
-  #     emsdk/emsdk install latest
-  #     emsdk/emsdk activate latest
-  #     source emsdk/emsdk_env.sh
+  - name: emscripten
+    compiler: emcc
+    env:
+    - ARCH_FLAGS=""
+    - C_COMPILER=emcc
+    - CXX_COMPILER=emcc
+    - CONFIGURE_WRAPPER=emcmake
+    - BUILD_WRAPPER=emmake
+    - EXECUTABLE_EXTENSION=.js
+    - TEST_WRAPPER=node
+    - OPTIMIZATION_FLAGS="-O3"
+    addons:
+      apt:
+        packages:
+        - nodejs
+    install:
+    - |
+      git clone https://github.com/emscripten-core/emsdk.git
+      emsdk/emsdk update-tags
+      emsdk/emsdk install tot
+      emsdk/emsdk activate tot
+      source emsdk/emsdk_env.sh
 
 before_install:
 - |
@@ -245,8 +247,8 @@ before_install:
     esac
   fi
 
-## It can be helpful to know what the CPU we're on looks like.
 - cat /proc/cpuinfo || true
+- cat /proc/meminfo || true
 
 ## If we use the matrix to set CC/CXX Travis overwrites the values,
 ## so instead we use C/CXX_COMPILER, then copy the values to CC/CXX
