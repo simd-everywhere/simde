@@ -73,10 +73,12 @@ simde_mm_addsub_pd (simde__m128d a, simde__m128d b) {
     a_ = simde__m128d_to_private(a),
     b_ = simde__m128d_to_private(b);
 
-  for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i += 2) {
-    r_.f64[    i] = a_.f64[    i] - b_.f64[    i];
-    r_.f64[1 + i] = a_.f64[1 + i] + b_.f64[1 + i];
-  }
+  #if defined(SIMDE_SSE3_NEON) && defined(SIMDE_ARCH_AARCH64)
+    for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i += 2) {
+      r_.f64[  i  ] = a_.f64[  i  ] - b_.f64[  i  ];
+      r_.f64[1 + i] = a_.f64[1 + i] + b_.f64[1 + i];
+    }
+  #endif
 
   return simde__m128d_from_private(r_);
 #endif
@@ -91,7 +93,23 @@ simde_mm_addsub_ps (simde__m128 a, simde__m128 b) {
 #if defined(SIMDE_SSE3_NATIVE)
   return _mm_addsub_ps(a, b);
 #else
-  return simde_mm_add_ps(a, simde_mm_mul_ps(simde_mm_set_ps( 1.0f, -1.0f,  1.0f, -1.0f), b));
+  simde__m128_private
+    r_,
+    a_ = simde__m128_to_private(a),
+    b_ = simde__m128_to_private(b);
+
+  #if defined(SIMDE_SSE3_NEON)
+    float32x4_t rs = vsubq_f32(a_.neon_f32, b_.neon_f32);
+    float32x4_t ra = vaddq_f32(a_.neon_f32, b_.neon_f32);
+    return vtrn2q_f32(vrev64q_s32(vreinterpretq_s32_f32(rs)), ra);
+  #else
+    for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i += 2) {
+      r_.f32[  i  ] = a_.f32[  i  ] - b_.f32[  i  ];
+      r_.f32[1 + i] = a_.f32[1 + i] + b_.f32[1 + i];
+    }
+  #endif
+
+  return simde__m128_from_private(r_);
 #endif
 }
 #if defined(SIMDE_SSE3_ENABLE_NATIVE_ALIASES)
@@ -108,8 +126,15 @@ simde_mm_hadd_pd (simde__m128d a, simde__m128d b) {
     r_,
     a_ = simde__m128d_to_private(a),
     b_ = simde__m128d_to_private(b);
-  r_.f64[0] = a_.f64[0] + a_.f64[1];
-  r_.f64[1] = b_.f64[0] + b_.f64[1];
+
+  #if defined(SIMDE_SSE3_NEON) && defined(SIMDE_ARCH_AARCH64)
+    simde_float64 res[2] = { vaddvq_f64(a_.neon_f64), vaddvq_f64(b_.neon_f64)};
+    r_.neon_f64 = vld1q_f64(res);
+  #else
+    r_.f64[0] = a_.f64[0] + a_.f64[1];
+    r_.f64[1] = b_.f64[0] + b_.f64[1];
+  #endif
+
   return simde__m128d_from_private(r_);
 #endif
 }
