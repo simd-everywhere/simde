@@ -115,6 +115,9 @@ typedef union {
   SIMDE_ALIGN(16) uint32x4_t     neon_u32;
   SIMDE_ALIGN(16) uint64x2_t     neon_u64;
   SIMDE_ALIGN(16) float32x4_t    neon_f32;
+  #if defined(SIMDE_ARCH_AARCH64)
+  SIMDE_ALIGN(16) float64x2_t    neon_f64;
+  #endif
 #elif defined(SIMDE_SSE_WASM_SIMD128)
   SIMDE_ALIGN(16) v128_t         wasm_v128;
 #endif
