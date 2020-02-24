@@ -183,7 +183,7 @@ simde_mm_blendv_epi8 (simde__m128i a, simde__m128i b, simde__m128i mask) {
 #if defined(SIMDE_SSE4_1_NATIVE)
   return _mm_blendv_epi8(a, b, mask);
 #else
-   simde__m128i_private
+  simde__m128i_private
     r_,
     a_ = simde__m128i_to_private(a),
     b_ = simde__m128i_to_private(b),
@@ -216,7 +216,7 @@ simde_mm_blendv_pd (simde__m128d a, simde__m128d b, simde__m128d mask) {
 #if defined(SIMDE_SSE4_1_NATIVE)
   return _mm_blendv_pd(a, b, mask);
 #else
-   simde__m128d_private
+  simde__m128d_private
     r_,
     a_ = simde__m128d_to_private(a),
     b_ = simde__m128d_to_private(b),
@@ -243,7 +243,7 @@ simde_mm_blendv_ps (simde__m128 a, simde__m128 b, simde__m128 mask) {
 #if defined(SIMDE_SSE4_1_NATIVE)
   return _mm_blendv_ps(a, b, mask);
 #else
-   simde__m128_private
+  simde__m128_private
     r_,
     a_ = simde__m128_to_private(a),
     b_ = simde__m128_to_private(b),
@@ -270,7 +270,7 @@ simde_mm_ceil_pd (simde__m128d a) {
 #if defined(SIMDE_SSE4_1_NATIVE)
   return _mm_ceil_pd(a);
 #else
-   simde__m128d_private
+  simde__m128d_private
     r_,
     a_ = simde__m128d_to_private(a);
 
@@ -298,7 +298,7 @@ simde_mm_ceil_ps (simde__m128 a) {
 #if defined(SIMDE_SSE4_1_NATIVE)
   return _mm_ceil_ps(a);
 #else
-   simde__m128_private
+  simde__m128_private
     r_,
     a_ = simde__m128_to_private(a);
 
@@ -376,7 +376,7 @@ simde_mm_cmpeq_epi64 (simde__m128i a, simde__m128i b) {
 #if defined(SIMDE_SSE4_1_NATIVE)
   return _mm_cmpeq_epi64(a, b);
 #else
-   simde__m128i_private
+  simde__m128i_private
     r_,
     a_ = simde__m128i_to_private(a),
     b_ = simde__m128i_to_private(b);
@@ -403,7 +403,7 @@ simde_mm_cvtepi8_epi16 (simde__m128i a) {
 #if defined(SIMDE_SSE4_1_NATIVE)
   return _mm_cvtepi8_epi16(a);
 #else
-   simde__m128i_private
+  simde__m128i_private
     r_,
     a_ = simde__m128i_to_private(a);
 
@@ -429,7 +429,7 @@ simde_mm_cvtepi8_epi32 (simde__m128i a) {
 #if defined(SIMDE_SSE4_1_NATIVE)
   return _mm_cvtepi8_epi32(a);
 #else
-   simde__m128i_private
+  simde__m128i_private
     r_,
     a_ = simde__m128i_to_private(a);
 
@@ -451,7 +451,7 @@ simde_mm_cvtepi8_epi64 (simde__m128i a) {
 #if defined(SIMDE_SSE4_1_NATIVE)
   return _mm_cvtepi8_epi64(a);
 #else
-   simde__m128i_private
+  simde__m128i_private
     r_,
     a_ = simde__m128i_to_private(a);
 
@@ -473,7 +473,7 @@ simde_mm_cvtepu8_epi16 (simde__m128i a) {
 #if defined(SIMDE_SSE4_1_NATIVE)
   return _mm_cvtepu8_epi16(a);
 #else
-   simde__m128i_private
+  simde__m128i_private
     r_,
     a_ = simde__m128i_to_private(a);
 
@@ -499,7 +499,7 @@ simde_mm_cvtepu8_epi32 (simde__m128i a) {
 #if defined(SIMDE_SSE4_1_NATIVE)
   return _mm_cvtepu8_epi32(a);
 #else
-   simde__m128i_private
+  simde__m128i_private
     r_,
     a_ = simde__m128i_to_private(a);
 
@@ -527,7 +527,7 @@ simde_mm_cvtepu8_epi64 (simde__m128i a) {
 #if defined(SIMDE_SSE4_1_NATIVE)
   return _mm_cvtepu8_epi64(a);
 #else
-   simde__m128i_private
+  simde__m128i_private
     r_,
     a_ = simde__m128i_to_private(a);
 
@@ -549,7 +549,7 @@ simde_mm_cvtepi16_epi32 (simde__m128i a) {
 #if defined(SIMDE_SSE4_1_NATIVE)
   return _mm_cvtepi16_epi32(a);
 #else
-   simde__m128i_private
+  simde__m128i_private
     r_,
     a_ = simde__m128i_to_private(a);
 
@@ -601,7 +601,7 @@ simde_mm_cvtepu16_epi64 (simde__m128i a) {
 #if defined(SIMDE_SSE4_1_NATIVE)
   return _mm_cvtepu16_epi64(a);
 #else
-   simde__m128i_private
+  simde__m128i_private
     r_,
     a_ = simde__m128i_to_private(a);
 
@@ -623,7 +623,7 @@ simde_mm_cvtepi16_epi64 (simde__m128i a) {
 #if defined(SIMDE_SSE4_1_NATIVE)
   return _mm_cvtepi16_epi64(a);
 #else
-   simde__m128i_private
+  simde__m128i_private
     r_,
     a_ = simde__m128i_to_private(a);
 
@@ -645,7 +645,7 @@ simde_mm_cvtepi32_epi64 (simde__m128i a) {
 #if defined(SIMDE_SSE4_1_NATIVE)
   return _mm_cvtepi32_epi64(a);
 #else
-   simde__m128i_private
+  simde__m128i_private
     r_,
     a_ = simde__m128i_to_private(a);
 
@@ -671,7 +671,7 @@ simde_mm_cvtepu32_epi64 (simde__m128i a) {
 #if defined(SIMDE_SSE4_1_NATIVE)
   return _mm_cvtepu32_epi64(a);
 #else
-   simde__m128i_private
+  simde__m128i_private
     r_,
     a_ = simde__m128i_to_private(a);
 
@@ -723,7 +723,7 @@ simde_mm_dp_pd (simde__m128d a, simde__m128d b, const int imm8) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128
 simde_mm_dp_ps (simde__m128 a, simde__m128 b, const int imm8) {
-   simde__m128_private
+  simde__m128_private
     r_,
     a_ = simde__m128_to_private(a),
     b_ = simde__m128_to_private(b);
@@ -815,7 +815,7 @@ simde_mm_floor_pd (simde__m128d a) {
 #if defined(SIMDE_SSE4_1_NATIVE)
   return _mm_floor_pd(a);
 #else
-   simde__m128d_private
+  simde__m128d_private
     r_,
     a_ = simde__m128d_to_private(a);
 
@@ -841,7 +841,7 @@ simde_mm_floor_ps (simde__m128 a) {
 #if defined(SIMDE_SSE4_1_NATIVE)
   return _mm_floor_ps(a);
 #else
-   simde__m128_private
+  simde__m128_private
     r_,
     a_ = simde__m128_to_private(a);
 
@@ -867,7 +867,7 @@ simde_mm_floor_sd (simde__m128d a, simde__m128d b) {
 #if defined(SIMDE_SSE4_1_NATIVE)
   return _mm_floor_sd(a, b);
 #else
-   simde__m128d_private
+  simde__m128d_private
     r_,
     a_ = simde__m128d_to_private(a),
     b_ = simde__m128d_to_private(b);
@@ -892,7 +892,7 @@ simde_mm_floor_ss (simde__m128 a, simde__m128 b) {
 #if defined(SIMDE_SSE4_1_NATIVE)
   return _mm_floor_ss(a, b);
 #else
-   simde__m128_private
+  simde__m128_private
     r_,
     a_ = simde__m128_to_private(a),
     b_ = simde__m128_to_private(b);
@@ -969,7 +969,7 @@ simde_mm_insert_epi64 (simde__m128i a, int64_t i, const int imm8) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128
 simde_mm_insert_ps (simde__m128 a, simde__m128 b, const int imm8) {
-   simde__m128_private
+  simde__m128_private
     r_,
     a_ = simde__m128_to_private(a),
     b_ = simde__m128_to_private(b);
@@ -997,7 +997,7 @@ simde_mm_max_epi8 (simde__m128i a, simde__m128i b) {
 #if defined(SIMDE_SSE4_1_NATIVE) && !defined(__PGI)
   return _mm_max_epi8(a, b);
 #else
-   simde__m128i_private
+  simde__m128i_private
     r_,
     a_ = simde__m128i_to_private(a),
     b_ = simde__m128i_to_private(b);
@@ -1024,7 +1024,7 @@ simde_mm_max_epi32 (simde__m128i a, simde__m128i b) {
 #if defined(SIMDE_SSE4_1_NATIVE) && !defined(__PGI)
   return _mm_max_epi32(a, b);
 #else
-   simde__m128i_private
+  simde__m128i_private
     r_,
     a_ = simde__m128i_to_private(a),
     b_ = simde__m128i_to_private(b);
@@ -1051,7 +1051,7 @@ simde_mm_max_epu16 (simde__m128i a, simde__m128i b) {
 #if defined(SIMDE_SSE4_1_NATIVE)
   return _mm_max_epu16(a, b);
 #else
-   simde__m128i_private
+  simde__m128i_private
     r_,
     a_ = simde__m128i_to_private(a),
     b_ = simde__m128i_to_private(b);
@@ -1078,7 +1078,7 @@ simde_mm_max_epu32 (simde__m128i a, simde__m128i b) {
 #if defined(SIMDE_SSE4_1_NATIVE)
   return _mm_max_epu32(a, b);
 #else
-   simde__m128i_private
+  simde__m128i_private
     r_,
     a_ = simde__m128i_to_private(a),
     b_ = simde__m128i_to_private(b);
@@ -1105,7 +1105,7 @@ simde_mm_min_epi8 (simde__m128i a, simde__m128i b) {
 #if defined(SIMDE_SSE4_1_NATIVE) && !defined(__PGI)
   return _mm_min_epi8(a, b);
 #else
-   simde__m128i_private
+  simde__m128i_private
     r_,
     a_ = simde__m128i_to_private(a),
     b_ = simde__m128i_to_private(b);
@@ -1132,7 +1132,7 @@ simde_mm_min_epi32 (simde__m128i a, simde__m128i b) {
 #if defined(SIMDE_SSE4_1_NATIVE) && !defined(__PGI)
   return _mm_min_epi32(a, b);
 #else
-   simde__m128i_private
+  simde__m128i_private
     r_,
     a_ = simde__m128i_to_private(a),
     b_ = simde__m128i_to_private(b);
@@ -1159,7 +1159,7 @@ simde_mm_min_epu16 (simde__m128i a, simde__m128i b) {
 #if defined(SIMDE_SSE4_1_NATIVE)
   return _mm_min_epu16(a, b);
 #else
-   simde__m128i_private
+  simde__m128i_private
     r_,
     a_ = simde__m128i_to_private(a),
     b_ = simde__m128i_to_private(b);
@@ -1186,7 +1186,7 @@ simde_mm_min_epu32 (simde__m128i a, simde__m128i b) {
 #if defined(SIMDE_SSE4_1_NATIVE)
   return _mm_min_epu32(a, b);
 #else
-   simde__m128i_private
+  simde__m128i_private
     r_,
     a_ = simde__m128i_to_private(a),
     b_ = simde__m128i_to_private(b);
@@ -1270,7 +1270,7 @@ simde_mm_mul_epi32 (simde__m128i a, simde__m128i b) {
 #if defined(SIMDE_SSE4_1_NATIVE)
   return _mm_mul_epi32(a, b);
 #else
-   simde__m128i_private
+  simde__m128i_private
     r_,
     a_ = simde__m128i_to_private(a),
     b_ = simde__m128i_to_private(b);
@@ -1295,7 +1295,7 @@ simde_mm_mullo_epi32 (simde__m128i a, simde__m128i b) {
 #if defined(SIMDE_SSE4_1_NATIVE)
   return _mm_mullo_epi32(a, b);
 #else
-   simde__m128i_private
+  simde__m128i_private
     r_,
     a_ = simde__m128i_to_private(a),
     b_ = simde__m128i_to_private(b);
@@ -1322,7 +1322,7 @@ simde_mm_packus_epi32 (simde__m128i a, simde__m128i b) {
 #if defined(SIMDE_SSE4_1_NATIVE)
   return _mm_packus_epi32(a, b);
 #else
-   simde__m128i_private
+  simde__m128i_private
     r_,
     a_ = simde__m128i_to_private(a),
     b_ = simde__m128i_to_private(b);
@@ -1341,7 +1341,7 @@ simde_mm_packus_epi32 (simde__m128i a, simde__m128i b) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
 simde_mm_round_pd (simde__m128d a, int rounding) {
-   simde__m128d_private
+  simde__m128d_private
     r_,
     a_ = simde__m128d_to_private(a);
 
@@ -1384,7 +1384,7 @@ simde_mm_round_pd (simde__m128d a, int rounding) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128
 simde_mm_round_ps (simde__m128 a, int rounding) {
-   simde__m128_private
+  simde__m128_private
     r_,
     a_ = simde__m128_to_private(a);
 
@@ -1427,7 +1427,7 @@ simde_mm_round_ps (simde__m128 a, int rounding) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
 simde_mm_round_sd (simde__m128d a, simde__m128d b, int rounding) {
-   simde__m128d_private
+  simde__m128d_private
     r_ = simde__m128d_to_private(a),
     b_ = simde__m128d_to_private(b);
 
