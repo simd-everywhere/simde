@@ -475,4 +475,12 @@ HEDLEY_C_DECL MunitSuite* SIMDE_TESTS_GENERATE_SYMBOL(suite)(void) {
   return &suite;
 }
 
+#if defined(SIMDE_TESTS_SINGLE_ISAX)
+int main(int argc, char* argv[HEDLEY_ARRAY_PARAM(argc + 1)]) {
+  static MunitSuite suite = { "", test_suite_tests, NULL, 1, MUNIT_SUITE_OPTION_NONE };
+
+  return munit_suite_main(&suite, NULL, argc, argv);
+}
+#endif /* defined(SIMDE_TESTS_SINGLE_ISAX) */
+
 HEDLEY_DIAGNOSTIC_POP
