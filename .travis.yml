@@ -217,7 +217,7 @@ jobs:
     - CONFIGURE_WRAPPER=emcmake
     - BUILD_WRAPPER=emmake
     - EXECUTABLE_EXTENSION=.js
-    - TEST_WRAPPER=node
+    - TEST_WRAPPER="${HOME}/.jsvu/v8 --experimental-wasm-simd"
     - OPTIMIZATION_FLAGS="-O3"
     addons:
       apt:
@@ -230,6 +230,10 @@ jobs:
       emsdk/emsdk install tot
       emsdk/emsdk activate tot
       source emsdk/emsdk_env.sh
+    - |
+      npm install jsvu -g
+      jsvu --os=linux64 --engines=v8
+      
 
 before_install:
 - |
