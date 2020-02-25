@@ -211,7 +211,7 @@ jobs:
   - name: emscripten
     compiler: emcc
     env:
-    - ARCH_FLAGS=""
+    - ARCH_FLAGS="-msimd128"
     - C_COMPILER=emcc
     - CXX_COMPILER=emcc
     - CONFIGURE_WRAPPER=emcmake
