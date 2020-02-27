@@ -675,6 +675,74 @@ simde_x_mm256_set_epu8 (uint8_t e31, uint8_t e30, uint8_t e29, uint8_t e28,
 }
 
 SIMDE__FUNCTION_ATTRIBUTES
+simde__m256i
+simde_x_mm256_set_epu16 (uint16_t e15, uint16_t e14, uint16_t e13, uint16_t e12,
+                       uint16_t e11, uint16_t e10, uint16_t  e9, uint16_t  e8,
+                       uint16_t  e7, uint16_t  e6, uint16_t  e5, uint16_t  e4,
+                       uint16_t  e3, uint16_t  e2, uint16_t  e1, uint16_t  e0) {
+  simde__m256i_private r_;
+
+  r_.u16[ 0] =  e0;
+  r_.u16[ 1] =  e1;
+  r_.u16[ 2] =  e2;
+  r_.u16[ 3] =  e3;
+  r_.u16[ 4] =  e4;
+  r_.u16[ 5] =  e5;
+  r_.u16[ 6] =  e6;
+  r_.u16[ 7] =  e7;
+  r_.u16[ 8] =  e8;
+  r_.u16[ 9] =  e9;
+  r_.u16[10] = e10;
+  r_.u16[11] = e11;
+  r_.u16[12] = e12;
+  r_.u16[13] = e13;
+  r_.u16[14] = e14;
+  r_.u16[15] = e15;
+
+  return simde__m256i_from_private(r_);
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256i
+simde_x_mm256_set_epu32 (uint32_t e7, uint32_t e6, uint32_t e5, uint32_t e4,
+                       uint32_t e3, uint32_t e2, uint32_t e1, uint32_t e0) {
+#if defined(SIMDE_AVX_NATIVE)
+  return _mm256_set_epi32(e7, e6, e5, e4, e3, e2, e1, e0);
+#else
+  simde__m256i_private r_;
+
+#if defined(SIMDE_ARCH_X86_SSE2)
+  r_.m128i[0] = simde_mm_set_epi32(e3, e2, e1, e0);
+  r_.m128i[1] = simde_mm_set_epi32(e7, e6, e5, e4);
+#else
+  r_.u32[ 0] =  e0;
+  r_.u32[ 1] =  e1;
+  r_.u32[ 2] =  e2;
+  r_.u32[ 3] =  e3;
+  r_.u32[ 4] =  e4;
+  r_.u32[ 5] =  e5;
+  r_.u32[ 6] =  e6;
+  r_.u32[ 7] =  e7;
+#endif
+
+  return simde__m256i_from_private(r_);
+#endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256i
+simde_x_mm256_set_epu64x (uint64_t  e3, uint64_t  e2, uint64_t  e1, uint64_t  e0) {
+  simde__m256i_private r_;
+
+  r_.u64[0] = e0;
+  r_.u64[1] = e1;
+  r_.u64[2] = e2;
+  r_.u64[3] = e3;
+
+  return simde__m256i_from_private(r_);
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
 simde__m256
 simde_mm256_set_ps (simde_float32 e7, simde_float32 e6, simde_float32 e5, simde_float32 e4,
                     simde_float32 e3, simde_float32 e2, simde_float32 e1, simde_float32 e0) {
