@@ -733,28 +733,6 @@ simde_mm_hsubs_pi16 (simde__m64 a, simde__m64 b) {
 #if defined(SIMDE_SSSE3_ENABLE_NATIVE_ALIASES)
 #  define _mm_hsubs_pi16(a, b) simde_mm_hsubs_pi16(a, b)
 #endif
-#if defined(SIMDE_SSSE3_NEON)
-static void
-print_8x16(uint8x16_t a) {
-  uint8_t v[16];
-  vst1q_u8(v, a);
-  printf(":: %6hhu %6hhu %6hhu %6hhu    %6hhu %6hhu %6hhu %6hhu\n"
-         "   %6hhu %6hhu %6hhu %6hhu    %6hhu %6hhu %6hhu %6hhu\n",
-         v[0], v[1], v[2], v[3],
-         v[4], v[5], v[6], v[7],
-         v[8], v[9], v[10], v[11],
-         v[12], v[13], v[14], v[15]);
-}
-
-static void
-print_16x8(int16x8_t a) {
-  int16_t v[8];
-  vst1q_s16(v, a);
-  printf(":: %6hd %6hd %6hd %6hd    %6hd %6hd %6hd %6hd\n",
-         v[0], v[1], v[2], v[3],
-         v[4], v[5], v[6], v[7]);
-}
-#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
