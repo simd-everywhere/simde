@@ -65,6 +65,35 @@ SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 
 SIMDE__BEGIN_DECLS
 
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128i
+simde_mm_cmpgt_epi64 (simde__m128i a, simde__m128i b) {
+#if defined(SIMDE_SSE4_2_NATIVE)
+  return _mm_cmpgt_epi64(a, b);
+#else
+  simde__m128i_private
+    r_,
+    a_ = simde__m128i_to_private(a),
+    b_ = simde__m128i_to_private(b);
+
+  #if defined(SIMDE_SSE2_NEON) && defined(SIMDE_ARCH_AARCH64)
+    r_.neon_i64 = vreinterpretq_s64_u64(vcgtq_s64(a_.neon_i64, b_.neon_i64));
+  #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+    r_.i64 = (__typeof__(r_.i64))(a_.i64 > b_.i64);
+  #else
+    SIMDE__VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.i64) / sizeof(r_.i64[0])) ; i++) {
+      r_.i64[i] = (a_.i64[i] > b_.i64[i]) ? ~INT64_C(0) : INT64_C(0);
+    }
+  #endif
+
+  return simde__m128i_from_private(r_);
+#endif
+}
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_cmpgt_epi64(a, b) simde_mm_cmpgt_epi64(a, b)
+#endif
+
 SIMDE__END_DECLS
 
 HEDLEY_DIAGNOSTIC_POP
