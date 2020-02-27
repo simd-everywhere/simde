@@ -1,10 +1,13 @@
 # SIMD Everywhere
 
-SIMDe provides fast, portable implementations of SIMD intrinsics on
-hardware which doesn't natively support them, such as calling SSE
+The SIMDe header-only library provides fast, portable implementations of 
+[SIMD intrinsics](https://en.wikipedia.org/wiki/SIMD) on hardware which
+doesn't natively support them, such as calling [SSE](https://en.wikipedia.org/wiki/Streaming_SIMD_Extensions)
 functions on ARM.  There is no performance penalty if the hardware
-supports the native implementation (*e.g.*, SSE/AVX runs at full speed
-on x86, NEON on ARM, *etc.*).
+supports the native implementation (*e.g.*, SSE/[AVX](https://en.wikipedia.org/wiki/Advanced_Vector_Extensions)
+runs at full speed on [x86](https://en.wikipedia.org/wiki/X86),
+[NEON](https://en.wikipedia.org/wiki/NEON_(instruction_set)) on [ARM](https://en.wikipedia.org/wiki/ARM_architecture),
+*etc.*).
 
 This makes porting code to other architectures much easier in a few
 key ways:
@@ -16,8 +19,8 @@ performance-critical sections to native intrinsics, improving
 performance gradually.  SIMDe lets (for example) SSE/AVX and NEON code
 exist side-by-side, in the same implementation.
 
-Second, SIMDe makes it easier to write code targeting ISA extensions
-you don't have convenient access to.  You can run NEON code on your
+Second, SIMDe makes it easier to write code targeting [ISA](https://en.wikipedia.org/wiki/Instruction_set_architecture)
+extensions you don't have convenient access to.  You can run NEON code on your
 x86 machine *without an emulator*.  Obviously you'll eventually want
 to test on the actual hardware you're targeting, but for most
 development, SIMDe can provide a much easier path.
