@@ -393,7 +393,7 @@ simde_mm_cmpeq_ps (simde__m128 a, simde__m128 b) {
 
   #if defined(SIMDE_SSE_NEON)
     r_.neon_u32 = vceqq_f32(a_.neon_f32, b_.neon_f32);
-  #elif defined(SIMDE_SSE2_WASM_SIMD128)
+  #elif defined(SIMDE_SSE_WASM_SIMD128)
     r_.wasm_v128 = wasm_f32x4_eq(a_.wasm_v128, b_.wasm_v128);
   #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
     r_.i32 = HEDLEY_STATIC_CAST(__typeof__(r_.i32), a_.f32 == b_.f32);
@@ -450,7 +450,7 @@ simde_mm_cmpge_ps (simde__m128 a, simde__m128 b) {
 
   #if defined(SIMDE_SSE_NEON)
     r_.neon_u32 = vcgeq_f32(a_.neon_f32, b_.neon_f32);
-  #elif defined(SIMDE_SSE2_WASM_SIMD128)
+  #elif defined(SIMDE_SSE_WASM_SIMD128)
     r_.wasm_v128 = wasm_f32x4_ge(a_.wasm_v128, b_.wasm_v128);
   #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
     r_.i32 = (__typeof__(r_.i32)) (a_.f32 >= b_.f32);
@@ -507,7 +507,7 @@ simde_mm_cmpgt_ps (simde__m128 a, simde__m128 b) {
 
   #if defined(SIMDE_SSE_NEON)
     r_.neon_u32 = vcgtq_f32(a_.neon_f32, b_.neon_f32);
-  #elif defined(SIMDE_SSE2_WASM_SIMD128)
+  #elif defined(SIMDE_SSE_WASM_SIMD128)
     r_.wasm_v128 = wasm_f32x4_gt(a_.wasm_v128, b_.wasm_v128);
   #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
     r_.i32 = (__typeof__(r_.i32)) (a_.f32 > b_.f32);
@@ -564,7 +564,7 @@ simde_mm_cmple_ps (simde__m128 a, simde__m128 b) {
 
   #if defined(SIMDE_SSE_NEON)
     r_.neon_u32 = vcleq_f32(a_.neon_f32, b_.neon_f32);
-  #elif defined(SIMDE_SSE2_WASM_SIMD128)
+  #elif defined(SIMDE_SSE_WASM_SIMD128)
     r_.wasm_v128 = wasm_f32x4_le(a_.wasm_v128, b_.wasm_v128);
   #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
     r_.i32 = (__typeof__(r_.i32)) (a_.f32 <= b_.f32);
@@ -621,7 +621,7 @@ simde_mm_cmplt_ps (simde__m128 a, simde__m128 b) {
 
   #if defined(SIMDE_SSE_NEON)
     r_.neon_u32 = vcltq_f32(a_.neon_f32, b_.neon_f32);
-  #elif defined(SIMDE_SSE2_WASM_SIMD128)
+  #elif defined(SIMDE_SSE_WASM_SIMD128)
     r_.wasm_v128 = wasm_f32x4_lt(a_.wasm_v128, b_.wasm_v128);
   #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
     r_.i32 = (__typeof__(r_.i32)) (a_.f32 < b_.f32);
@@ -678,7 +678,7 @@ simde_mm_cmpneq_ps (simde__m128 a, simde__m128 b) {
 
   #if defined(SIMDE_SSE_NEON)
     r_.neon_u32 = vmvnq_u32(vceqq_f32(a_.neon_f32, b_.neon_f32));
-  #elif defined(SIMDE_SSE2_WASM_SIMD128)
+  #elif defined(SIMDE_SSE_WASM_SIMD128)
     r_.wasm_v128 = wasm_f32x4_ne(a_.wasm_v128, b_.wasm_v128);
   #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
     r_.i32 = (__typeof__(r_.i32)) (a_.f32 != b_.f32);
