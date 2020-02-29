@@ -40,10 +40,16 @@ SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 #    define SIMDE_AVX_NATIVE
 #  elif defined(SIMDE_ARCH_ARM_NEON) && !defined(SIMDE_AVX_NO_NEON) && !defined(SIMDE_NO_NEON)
 #    define SIMDE_AVX_NEON
+#  elif defined(SIMDE_ARCH_POWER_ALTIVEC)
+#    define SIMDE_AVX_POWER_ALTIVEC
 #  endif
 
 #  if defined(SIMDE_AVX_NATIVE)
 #    include <immintrin.h>
+#  endif
+
+#  if defined(SIMDE_AVX_POWER_ALTIVEC)
+#    include <altivec.h>
 #  endif
 
 #  include <stdint.h>
@@ -93,6 +99,17 @@ typedef union {
 
 #if defined(SIMDE_AVX_NATIVE)
   SIMDE_ALIGN(32) __m256         n;
+#elif defined(SIMDE_ARCH_POWER_ALTIVEC)
+  SIMDE_ALIGN(16) vector unsigned char      altivec_u8[2];
+  SIMDE_ALIGN(16) vector unsigned short     altivec_u16[2];
+  SIMDE_ALIGN(16) vector unsigned int       altivec_u32[2];
+  SIMDE_ALIGN(16) vector unsigned long long altivec_u64[2];
+  SIMDE_ALIGN(16) vector signed char        altivec_i8[2];
+  SIMDE_ALIGN(16) vector signed short       altivec_i16[2];
+  SIMDE_ALIGN(16) vector signed int         altivec_i32[2];
+  SIMDE_ALIGN(16) vector signed long long   altivec_i64[2];
+  SIMDE_ALIGN(16) vector float              altivec_f32[2];
+  SIMDE_ALIGN(16) vector double             altivec_f64[2];
 #endif
 } simde__m256_private;
 
@@ -138,6 +155,17 @@ typedef union {
 
 #if defined(SIMDE_AVX_NATIVE)
   SIMDE_ALIGN(32) __m256d        n;
+#elif defined(SIMDE_ARCH_POWER_ALTIVEC)
+  SIMDE_ALIGN(16) vector unsigned char      altivec_u8[2];
+  SIMDE_ALIGN(16) vector unsigned short     altivec_u16[2];
+  SIMDE_ALIGN(16) vector unsigned int       altivec_u32[2];
+  SIMDE_ALIGN(16) vector unsigned long long altivec_u64[2];
+  SIMDE_ALIGN(16) vector signed char        altivec_i8[2];
+  SIMDE_ALIGN(16) vector signed short       altivec_i16[2];
+  SIMDE_ALIGN(16) vector signed int         altivec_i32[2];
+  SIMDE_ALIGN(16) vector signed long long   altivec_i64[2];
+  SIMDE_ALIGN(16) vector float              altivec_f32[2];
+  SIMDE_ALIGN(16) vector double             altivec_f64[2];
 #endif
 } simde__m256d_private;
 
@@ -183,6 +211,17 @@ typedef union {
 
 #if defined(SIMDE_AVX_NATIVE)
   SIMDE_ALIGN(32) __m256i        n;
+#elif defined(SIMDE_ARCH_POWER_ALTIVEC)
+  SIMDE_ALIGN(16) vector unsigned char      altivec_u8[2];
+  SIMDE_ALIGN(16) vector unsigned short     altivec_u16[2];
+  SIMDE_ALIGN(16) vector unsigned int       altivec_u32[2];
+  SIMDE_ALIGN(16) vector unsigned long long altivec_u64[2];
+  SIMDE_ALIGN(16) vector signed char        altivec_i8[2];
+  SIMDE_ALIGN(16) vector signed short       altivec_i16[2];
+  SIMDE_ALIGN(16) vector signed int         altivec_i32[2];
+  SIMDE_ALIGN(16) vector signed long long   altivec_i64[2];
+  SIMDE_ALIGN(16) vector float              altivec_f32[2];
+  SIMDE_ALIGN(16) vector double             altivec_f64[2];
 #endif
 } simde__m256i_private;
 

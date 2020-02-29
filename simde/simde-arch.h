@@ -323,6 +323,8 @@
    <https://en.wikipedia.org/wiki/IBM_POWER_Instruction_Set_Architecture> */
 #if defined(_M_PPC)
 #  define SIMDE_ARCH_POWER _M_PPC
+#elif defined(_ARCH_PWR9)
+#  define SIMDE_ARCH_POWER 900
 #elif defined(_ARCH_PWR8)
 #  define SIMDE_ARCH_POWER 800
 #elif defined(_ARCH_PWR7)
@@ -349,6 +351,10 @@
 #  define SIMDE_ARCH_POWER 620
 #elif defined(__powerpc) || defined(__powerpc__) || defined(__POWERPC__) || defined(__ppc__) || defined(__PPC__) || defined(_ARCH_PPC) || defined(__ppc)
 #  define SIMDE_ARCH_POWER 1
+#endif
+
+#if defined(__ALTIVEC__)
+#  define SIMDE_ARCH_POWER_ALTIVEC SIMDE_ARCH_POWER
 #endif
 
 /* SPARC
