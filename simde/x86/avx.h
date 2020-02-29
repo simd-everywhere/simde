@@ -252,12 +252,12 @@ HEDLEY_STATIC_ASSERT(32 == sizeof(simde__m256i_private), "simde__m256i_private s
 HEDLEY_STATIC_ASSERT(32 == sizeof(simde__m256d), "simde__m256d size incorrect");
 HEDLEY_STATIC_ASSERT(32 == sizeof(simde__m256d_private), "simde__m256d_private size incorrect");
 #if defined(SIMDE_CHECK_ALIGNMENT) && defined(SIMDE_ALIGN_OF)
-HEDLEY_STATIC_ASSERT(SIMDE_ALIGN_OF(simde__m256) == 16, "simde__m256 is not 16-byte aligned");
-HEDLEY_STATIC_ASSERT(SIMDE_ALIGN_OF(simde__m256_private) == 16, "simde__m256_private is not 16-byte aligned");
-HEDLEY_STATIC_ASSERT(SIMDE_ALIGN_OF(simde__m256i) == 16, "simde__m256i is not 16-byte aligned");
-HEDLEY_STATIC_ASSERT(SIMDE_ALIGN_OF(simde__m256i_private) == 16, "simde__m256i_private is not 16-byte aligned");
-HEDLEY_STATIC_ASSERT(SIMDE_ALIGN_OF(simde__m256d) == 16, "simde__m256d is not 16-byte aligned");
-HEDLEY_STATIC_ASSERT(SIMDE_ALIGN_OF(simde__m256d_private) == 16, "simde__m256d_private is not 16-byte aligned");
+HEDLEY_STATIC_ASSERT(SIMDE_ALIGN_OF(simde__m256) == 32, "simde__m256 is not 32-byte aligned");
+HEDLEY_STATIC_ASSERT(SIMDE_ALIGN_OF(simde__m256_private) == 32, "simde__m256_private is not 32-byte aligned");
+HEDLEY_STATIC_ASSERT(SIMDE_ALIGN_OF(simde__m256i) == 32, "simde__m256i is not 32-byte aligned");
+HEDLEY_STATIC_ASSERT(SIMDE_ALIGN_OF(simde__m256i_private) == 32, "simde__m256i_private is not 32-byte aligned");
+HEDLEY_STATIC_ASSERT(SIMDE_ALIGN_OF(simde__m256d) == 32, "simde__m256d is not 32-byte aligned");
+HEDLEY_STATIC_ASSERT(SIMDE_ALIGN_OF(simde__m256d_private) == 32, "simde__m256d_private is not 32-byte aligned");
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
