@@ -241,6 +241,7 @@ typedef union {
 
 #if !defined(SIMDE_AVX_NATIVE) && defined(SIMDE_ENABLE_NATIVE_ALIASES)
   #define SIMDE_AVX_ENABLE_NATIVE_ALIASES
+  typedef simde__m256 __m256;
   typedef simde__m256i __m256i;
   typedef simde__m256d __m256d;
 #endif
