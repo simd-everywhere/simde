@@ -776,7 +776,8 @@ simde_mm256_cvtepu32_epi64 (simde__m128i a) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 int
-simde_mm256_extract_epi8 (simde__m256i a, const int index) {
+simde_mm256_extract_epi8 (simde__m256i a, const int index)
+    HEDLEY_REQUIRE_MSG((index & 31) == index, "index must be in range [0, 31]"){
   return simde__m256i_to_private(a).i8[index];
 }
 #if defined(SIMDE_AVX2_ENABLE_NATIVE_ALIASES)
@@ -785,7 +786,8 @@ simde_mm256_extract_epi8 (simde__m256i a, const int index) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 int
-simde_mm256_extract_epi16 (simde__m256i a, const int index) {
+simde_mm256_extract_epi16 (simde__m256i a, const int index)
+    HEDLEY_REQUIRE_MSG((index & 0xf) == index, "index must be in range [0, 15]")  {
   return simde__m256i_to_private(a).i16[index];
 }
 #if defined(SIMDE_AVX2_ENABLE_NATIVE_ALIASES)
