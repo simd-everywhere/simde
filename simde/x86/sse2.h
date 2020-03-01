@@ -46,6 +46,8 @@ SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 #    define SIMDE_SSE2_NEON
 #  elif defined(SIMDE_ARCH_WASM_SIMD128)
 #    define SIMDE_SSE2_WASM_SIMD128
+#  elif defined(SIMDE_ARCH_POWER_ALTIVEC)
+#    define SIMDE_SSE2_POWER_ALTIVEC
 #  endif
 
 #  if defined(SIMDE_SSE2_NATIVE) && !defined(SIMDE_SSE_NATIVE)
@@ -68,6 +70,9 @@ SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 #    endif
 #    if defined(SIMDE_SSE2_WASM_SIMD128)
 #      include <wasm_simd128.h>
+#    endif
+#    if defined(SIMDE_SSE2_ALTIVEC)
+#      include <altivec.h>
 #    endif
 #  endif
 
@@ -135,6 +140,17 @@ typedef union {
   #endif
 #elif defined(SIMDE_SSE2_WASM_SIMD128)
   SIMDE_ALIGN(16) v128_t         wasm_v128;
+#elif defined(SIMDE_SSE2_ALTIVEC)
+  SIMDE_ALIGN(16) vector unsigned char      altivec_u8;
+  SIMDE_ALIGN(16) vector unsigned short     altivec_u16;
+  SIMDE_ALIGN(16) vector unsigned int       altivec_u32;
+  SIMDE_ALIGN(16) vector unsigned long long altivec_u64;
+  SIMDE_ALIGN(16) vector signed char        altivec_i8;
+  SIMDE_ALIGN(16) vector signed short       altivec_i16;
+  SIMDE_ALIGN(16) vector signed int         altivec_i32;
+  SIMDE_ALIGN(16) vector signed long long   altivec_i64;
+  SIMDE_ALIGN(16) vector float              altivec_f32;
+  SIMDE_ALIGN(16) vector double             altivec_f64;
 #endif
 } simde__m128i_private;
 
@@ -187,12 +203,38 @@ typedef union {
   #endif
 #elif defined(SIMDE_SSE2_WASM_SIMD128)
   SIMDE_ALIGN(16) v128_t         wasm_v128;
+#elif defined(SIMDE_SSE2_ALTIVEC)
+  SIMDE_ALIGN(16) vector unsigned char      altivec_u8;
+  SIMDE_ALIGN(16) vector unsigned short     altivec_u16;
+  SIMDE_ALIGN(16) vector unsigned int       altivec_u32;
+  SIMDE_ALIGN(16) vector unsigned long long altivec_u64;
+  SIMDE_ALIGN(16) vector signed char        altivec_i8;
+  SIMDE_ALIGN(16) vector signed short       altivec_i16;
+  SIMDE_ALIGN(16) vector signed int         altivec_i32;
+  SIMDE_ALIGN(16) vector signed long long   altivec_i64;
+  SIMDE_ALIGN(16) vector float              altivec_f32;
+  SIMDE_ALIGN(16) vector double             altivec_f64;
 #endif
 } simde__m128d_private;
 
 #if defined(SIMDE_SSE2_NATIVE)
   typedef __m128i simde__m128i;
   typedef __m128d simde__m128d;
+#elif defined(SIMDE_SSE2_NEON)
+   typedef float32x4_t simde__m128i;
+#  if defined(SIMDE_ARCH_AARCH64)
+     typedef float64x2_t simde__m128d;
+#  elif defined(SIMDE_VECTOR_SUBSCRIPT)
+     typedef simde_float64 simde__m128d SIMDE_VECTOR(16) SIMDE_MAY_ALIAS;
+#  else
+     typedef simde__m128d_private simde__m128d;
+#  endif
+#elif defined(SIMDE_SSE2_WASM_SIMD128)
+   typedef v128_t simde__m128i;
+   typedef v128_t simde__m128d;
+#elif defined(SIMDE_SSE2_POWER_ALTIVEC)
+   typedef vector float simde__m128i;
+   typedef vector double simde__m128d;
 #elif defined(SIMDE_VECTOR_SUBSCRIPT)
   typedef int_fast32_t simde__m128i SIMDE_ALIGN(16) SIMDE_VECTOR(16) SIMDE_MAY_ALIAS;
   typedef simde_float64 simde__m128d SIMDE_ALIGN(16) SIMDE_VECTOR(16) SIMDE_MAY_ALIAS;

@@ -1,3 +1,9 @@
+coverage:
+  status:
+    project:
+      default:
+        if_no_uploads: success
+
 ignore:
 - test/**/*
 - test/*

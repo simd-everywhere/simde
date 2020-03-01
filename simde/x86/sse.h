@@ -19,7 +19,7 @@
  * SOFTWARE.
  *
  * Copyright:
- *   2017-2019 Evan Nemerson <evan@nemerson.com>
+ *   2017-2020 Evan Nemerson <evan@nemerson.com>
  *   2015-2017 John W. Ratcliff <jratcliffscarab@gmail.com>
  *   2015      Brandon Rowlett <browlett@nvidia.com>
  *   2015      Ken Fast <kfast@gdeb.com>
@@ -43,6 +43,8 @@ SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 #    define SIMDE_SSE_NEON
 #  elif defined(SIMDE_ARCH_WASM_SIMD128)
 #    define SIMDE_SSE_WASM_SIMD128
+#  elif defined(SIMDE_ARCH_POWER_ALTIVEC)
+#    define SIMDE_SSE_POWER_ALTIVEC
 #  endif
 
 #  if defined(SIMDE_SSE_NATIVE)
@@ -51,9 +53,11 @@ SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 #    if defined(SIMDE_SSE_NEON)
 #      include <arm_neon.h>
 #    endif
-
 #    if defined(SIMDE_SSE_WASM_SIMD128)
 #      include <wasm_simd128.h>
+#    endif
+#    if defined(SIMDE_SSE_POWER_ALTIVEC)
+#      include <altivec.h>
 #    endif
 
 #    if !defined(HEDLEY_INTEL_VERSION) && !defined(HEDLEY_EMSCRIPTEN_VERSION) && defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 201112L) && !defined(__STDC_NO_ATOMICS__)
@@ -120,11 +124,28 @@ typedef union {
   #endif
 #elif defined(SIMDE_SSE_WASM_SIMD128)
   SIMDE_ALIGN(16) v128_t         wasm_v128;
+#elif defined(SIMDE_SSE_POWER_ALTIVEC)
+  SIMDE_ALIGN(16) vector unsigned char      altivec_u8;
+  SIMDE_ALIGN(16) vector unsigned short     altivec_u16;
+  SIMDE_ALIGN(16) vector unsigned int       altivec_u32;
+  SIMDE_ALIGN(16) vector unsigned long long altivec_u64;
+  SIMDE_ALIGN(16) vector signed char        altivec_i8;
+  SIMDE_ALIGN(16) vector signed short       altivec_i16;
+  SIMDE_ALIGN(16) vector signed int         altivec_i32;
+  SIMDE_ALIGN(16) vector signed long long   altivec_i64;
+  SIMDE_ALIGN(16) vector float              altivec_f32;
+  SIMDE_ALIGN(16) vector double             altivec_f64;
 #endif
 } simde__m128_private;
 
 #if defined(SIMDE_SSE_NATIVE)
   typedef __m128 simde__m128;
+#elif defined(SIMDE_SSE_NEON)
+   typedef float32x4_t simde__m128;
+#elif defined(SIMDE_SSE_WASM_SIMD128)
+   typedef v128_t simde__m128;
+#elif defined(SIMDE_SSE_POWER_ALTIVEC)
+   typedef vector float simde__m128;
 #elif defined(SIMDE_VECTOR_SUBSCRIPT)
   typedef simde_float32 simde__m128 SIMDE_ALIGN(16) SIMDE_VECTOR(16) SIMDE_MAY_ALIAS;
 #else
@@ -207,6 +228,8 @@ simde_mm_add_ps (simde__m128 a, simde__m128 b) {
   r_.neon_f32 = vaddq_f32(a_.neon_f32, b_.neon_f32);
 #elif defined(SIMDE_SSE_WASM_SIMD128)
   r_.wasm_v128 = wasm_f32x4_add(a_.wasm_v128, b_.wasm_v128);
+#elif defined(SIMDE_SSE_POWER_ALTIVEC)
+  r_.altivec_f32 = vec_add(a_.altivec_f32, b_.altivec_f32);
 #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
   r_.f32 = a_.f32 + b_.f32;
 #else
@@ -393,7 +416,7 @@ simde_mm_cmpeq_ps (simde__m128 a, simde__m128 b) {
 
   #if defined(SIMDE_SSE_NEON)
     r_.neon_u32 = vceqq_f32(a_.neon_f32, b_.neon_f32);
-  #elif defined(SIMDE_SSE2_WASM_SIMD128)
+  #elif defined(SIMDE_SSE_WASM_SIMD128)
     r_.wasm_v128 = wasm_f32x4_eq(a_.wasm_v128, b_.wasm_v128);
   #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
     r_.i32 = HEDLEY_STATIC_CAST(__typeof__(r_.i32), a_.f32 == b_.f32);
@@ -450,7 +473,7 @@ simde_mm_cmpge_ps (simde__m128 a, simde__m128 b) {
 
   #if defined(SIMDE_SSE_NEON)
     r_.neon_u32 = vcgeq_f32(a_.neon_f32, b_.neon_f32);
-  #elif defined(SIMDE_SSE2_WASM_SIMD128)
+  #elif defined(SIMDE_SSE_WASM_SIMD128)
     r_.wasm_v128 = wasm_f32x4_ge(a_.wasm_v128, b_.wasm_v128);
   #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
     r_.i32 = (__typeof__(r_.i32)) (a_.f32 >= b_.f32);
@@ -507,7 +530,7 @@ simde_mm_cmpgt_ps (simde__m128 a, simde__m128 b) {
 
   #if defined(SIMDE_SSE_NEON)
     r_.neon_u32 = vcgtq_f32(a_.neon_f32, b_.neon_f32);
-  #elif defined(SIMDE_SSE2_WASM_SIMD128)
+  #elif defined(SIMDE_SSE_WASM_SIMD128)
     r_.wasm_v128 = wasm_f32x4_gt(a_.wasm_v128, b_.wasm_v128);
   #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
     r_.i32 = (__typeof__(r_.i32)) (a_.f32 > b_.f32);
@@ -564,7 +587,7 @@ simde_mm_cmple_ps (simde__m128 a, simde__m128 b) {
 
   #if defined(SIMDE_SSE_NEON)
     r_.neon_u32 = vcleq_f32(a_.neon_f32, b_.neon_f32);
-  #elif defined(SIMDE_SSE2_WASM_SIMD128)
+  #elif defined(SIMDE_SSE_WASM_SIMD128)
     r_.wasm_v128 = wasm_f32x4_le(a_.wasm_v128, b_.wasm_v128);
   #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
     r_.i32 = (__typeof__(r_.i32)) (a_.f32 <= b_.f32);
@@ -621,7 +644,7 @@ simde_mm_cmplt_ps (simde__m128 a, simde__m128 b) {
 
   #if defined(SIMDE_SSE_NEON)
     r_.neon_u32 = vcltq_f32(a_.neon_f32, b_.neon_f32);
-  #elif defined(SIMDE_SSE2_WASM_SIMD128)
+  #elif defined(SIMDE_SSE_WASM_SIMD128)
     r_.wasm_v128 = wasm_f32x4_lt(a_.wasm_v128, b_.wasm_v128);
   #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
     r_.i32 = (__typeof__(r_.i32)) (a_.f32 < b_.f32);
@@ -678,7 +701,7 @@ simde_mm_cmpneq_ps (simde__m128 a, simde__m128 b) {
 
   #if defined(SIMDE_SSE_NEON)
     r_.neon_u32 = vmvnq_u32(vceqq_f32(a_.neon_f32, b_.neon_f32));
-  #elif defined(SIMDE_SSE2_WASM_SIMD128)
+  #elif defined(SIMDE_SSE_WASM_SIMD128)
     r_.wasm_v128 = wasm_f32x4_ne(a_.wasm_v128, b_.wasm_v128);
   #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
     r_.i32 = (__typeof__(r_.i32)) (a_.f32 != b_.f32);
