@@ -785,7 +785,8 @@ simde_mm_avg_epu16 (simde__m128i a, simde__m128i b) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
-simde_mm_bslli_si128 (simde__m128i a, const int imm8) {
+simde_mm_bslli_si128 (simde__m128i a, const int imm8)
+    HEDLEY_REQUIRE_MSG((imm8 & 0xff) == imm8, "imm8 must be in range [0, 255]")  {
   simde__m128i_private
     r_,
     a_ = simde__m128i_to_private(a);
@@ -850,7 +851,8 @@ simde_mm_setzero_si128 (void) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
-simde_mm_bsrli_si128 (simde__m128i a, const int imm8) {
+simde_mm_bsrli_si128 (simde__m128i a, const int imm8)
+    HEDLEY_REQUIRE_MSG((imm8 & 0xff) == imm8, "imm8 must be in range [0, 255]")  {
   simde__m128i_private
     r_,
     a_ = simde__m128i_to_private(a);
@@ -2432,7 +2434,8 @@ simde_mm_div_sd (simde__m128d a, simde__m128d b) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 int32_t
-simde_mm_extract_epi16 (simde__m128i a, const int imm8) {
+simde_mm_extract_epi16 (simde__m128i a, const int imm8)
+    HEDLEY_REQUIRE_MSG((imm8 & 7) == imm8, "imm8 must be in range [0, 7]")  {
   return simde__m128i_to_private(a).u16[imm8 & 7];
 }
 #if defined(SIMDE_SSE2_NATIVE) && (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(4,6,0))
@@ -2446,7 +2449,8 @@ simde_mm_extract_epi16 (simde__m128i a, const int imm8) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
-simde_mm_insert_epi16 (simde__m128i a, int16_t i, const int imm8) {
+simde_mm_insert_epi16 (simde__m128i a, int16_t i, const int imm8)
+    HEDLEY_REQUIRE_MSG((imm8 & 7) == imm8, "imm8 must be in range [0, 7]")  {
   simde__m128i_private a_ = simde__m128i_to_private(a);
   a_.i16[imm8 & 7] = i;
   return simde__m128i_from_private(a_);
@@ -4019,7 +4023,8 @@ simde_mm_setone_si128 (void) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
-simde_mm_shuffle_epi32 (simde__m128i a, const int imm8) {
+simde_mm_shuffle_epi32 (simde__m128i a, const int imm8)
+    HEDLEY_REQUIRE_MSG((imm8 & 0xff) == imm8, "imm8 must be in range [0, 255]")  {
   simde__m128i_private
     r_,
     a_ = simde__m128i_to_private(a);
@@ -4050,7 +4055,8 @@ simde_mm_shuffle_epi32 (simde__m128i a, const int imm8) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
-simde_mm_shuffle_pd (simde__m128d a, simde__m128d b, const int imm8) {
+simde_mm_shuffle_pd (simde__m128d a, simde__m128d b, const int imm8)
+    HEDLEY_REQUIRE_MSG((imm8 & 3) == imm8, "imm8 must be in range [0, 3]")  {
   simde__m128d_private
     r_,
     a_ = simde__m128d_to_private(a),
@@ -4078,7 +4084,8 @@ simde_mm_shuffle_pd (simde__m128d a, simde__m128d b, const int imm8) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
-simde_mm_shufflehi_epi16 (simde__m128i a, const int imm8) {
+simde_mm_shufflehi_epi16 (simde__m128i a, const int imm8)
+    HEDLEY_REQUIRE_MSG((imm8 & 0xff) == imm8, "imm8 must be in range [0, 255]")  {
   simde__m128i_private
     r_,
     a_ = simde__m128i_to_private(a);
@@ -4114,7 +4121,8 @@ simde_mm_shufflehi_epi16 (simde__m128i a, const int imm8) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
-simde_mm_shufflelo_epi16 (simde__m128i a, const int imm8) {
+simde_mm_shufflelo_epi16 (simde__m128i a, const int imm8)
+    HEDLEY_REQUIRE_MSG((imm8 & 0xff) == imm8, "imm8 must be in range [0, 255]")  {
   simde__m128i_private
     r_,
     a_ = simde__m128i_to_private(a);
@@ -4375,7 +4383,8 @@ simde_mm_srl_epi64 (simde__m128i a, simde__m128i count) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
-simde_mm_srai_epi16 (simde__m128i a, const int imm8) {
+simde_mm_srai_epi16 (simde__m128i a, const int imm8)
+    HEDLEY_REQUIRE_MSG((imm8 & 0xff) == imm8, "imm8 must be in range [0, 255]")  {
   simde__m128i_private
     r_,
     a_ = simde__m128i_to_private(a);
@@ -4397,7 +4406,8 @@ simde_mm_srai_epi16 (simde__m128i a, const int imm8) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
-simde_mm_srai_epi32 (simde__m128i a, const int imm8) {
+simde_mm_srai_epi32 (simde__m128i a, const int imm8)
+    HEDLEY_REQUIRE_MSG((imm8 & 0xff) == imm8, "imm8 must be in range [0, 255]")  {
   simde__m128i_private
     r_,
     a_ = simde__m128i_to_private(a);
@@ -4470,7 +4480,8 @@ simde_mm_sra_epi32 (simde__m128i a, simde__m128i count) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
-simde_mm_slli_epi16 (simde__m128i a, const int imm8) {
+simde_mm_slli_epi16 (simde__m128i a, const int imm8)
+    HEDLEY_REQUIRE_MSG((imm8 & 0xff) == imm8, "imm8 must be in range [0, 255]")  {
   simde__m128i_private
     r_,
     a_ = simde__m128i_to_private(a);
@@ -4499,7 +4510,8 @@ simde_mm_slli_epi16 (simde__m128i a, const int imm8) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
-simde_mm_slli_epi32 (simde__m128i a, const int imm8) {
+simde_mm_slli_epi32 (simde__m128i a, const int imm8)
+    HEDLEY_REQUIRE_MSG((imm8 & 0xff) == imm8, "imm8 must be in range [0, 255]")  {
   simde__m128i_private
     r_,
     a_ = simde__m128i_to_private(a);
@@ -4527,7 +4539,8 @@ simde_mm_slli_epi32 (simde__m128i a, const int imm8) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
-simde_mm_slli_epi64 (simde__m128i a, const int imm8) {
+simde_mm_slli_epi64 (simde__m128i a, const int imm8)
+    HEDLEY_REQUIRE_MSG((imm8 & 0xff) == imm8, "imm8 must be in range [0, 255]")  {
   simde__m128i_private
     r_,
     a_ = simde__m128i_to_private(a);
@@ -4552,7 +4565,8 @@ simde_mm_slli_epi64 (simde__m128i a, const int imm8) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
-simde_mm_srli_epi16 (simde__m128i a, const int imm8) {
+simde_mm_srli_epi16 (simde__m128i a, const int imm8)
+    HEDLEY_REQUIRE_MSG((imm8 & 0xff) == imm8, "imm8 must be in range [0, 255]")  {
   simde__m128i_private
     r_,
     a_ = simde__m128i_to_private(a);
@@ -4580,7 +4594,8 @@ simde_mm_srli_epi16 (simde__m128i a, const int imm8) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
-simde_mm_srli_epi32 (simde__m128i a, const int imm8) {
+simde_mm_srli_epi32 (simde__m128i a, const int imm8)
+    HEDLEY_REQUIRE_MSG((imm8 & 0xff) == imm8, "imm8 must be in range [0, 255]")  {
   simde__m128i_private
     r_,
     a_ = simde__m128i_to_private(a);
@@ -4608,7 +4623,8 @@ simde_mm_srli_epi32 (simde__m128i a, const int imm8) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
-simde_mm_srli_epi64 (simde__m128i a, const int imm8) {
+simde_mm_srli_epi64 (simde__m128i a, const int imm8)
+    HEDLEY_REQUIRE_MSG((imm8 & 0xff) == imm8, "imm8 must be in range [0, 255]")  {
   simde__m128i_private
     r_,
     a_ = simde__m128i_to_private(a);
