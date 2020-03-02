@@ -54,6 +54,10 @@ For an example of a project using SIMDe, see
 You can [try SIMDe online](https://godbolt.org/z/xkT8MA) using Compiler
 Explorer and an amalgamated SIMDe header.
 
+If you have any questions, please feel free to use the
+[issue tracker](https://github.com/nemequ/simde/issues) or the
+[mailing list](https://groups.google.com/forum/#!forum/simde).
+
 ## Current Status
 
 [![Travis](https://api.travis-ci.org/nemequ/simde.svg?branch=master)](https://travis-ci.org/nemequ/simde) [![AppVeyor](https://ci.appveyor.com/api/projects/status/1f3wp712w1ium5vi/branch/master?svg=true)](https://ci.appveyor.com/project/quixdb/simde/branch/master) [![Azure Pipelines](https://dev.azure.com/simd-everywhere/SIMDe/_apis/build/status/nemequ.simde?branchName=master)](https://dev.azure.com/simd-everywhere/SIMDe/_build/latest?definitionId=1&branchName=master) ![GitHub Actions CI](https://github.com/nemequ/simde/workflows/CI/badge.svg) [![Codecov](https://img.shields.io/codecov/c/github/nemequ/simde.svg)](https://codecov.io/gh/nemequ/simde)
