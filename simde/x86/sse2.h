@@ -480,6 +480,12 @@ simde_mm_move_sd (simde__m128d a, simde__m128d b) {
 
 #if defined(SIMDE_SSE2_NEON) && defined(SIMDE_ARCH_AARCH64)
   r_.neon_f64 = vsetq_lane_f64(vgetq_lane_f64(b_.neon_f64, 0), a_.neon_f64, 0);
+#elif defined(SIMDE_SSE2_POWER_ALTIVEC)
+  vector unsigned char m = {
+    16, 17, 18, 19, 20, 21, 22, 23,
+     8,  9, 10, 11, 12, 13, 14, 15
+  };
+  r_.altivec_f64 = vec_perm(a_.altivec_f64, b_.altivec_f64, m);
 #elif defined(SIMDE__SHUFFLE_VECTOR)
   r_.f64 = SIMDE__SHUFFLE_VECTOR(64, 16, a_.f64, b_.f64, 2, 1);
 #else
