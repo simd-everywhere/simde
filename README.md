@@ -54,9 +54,11 @@ For an example of a project using SIMDe, see
 You can [try SIMDe online](https://godbolt.org/z/xkT8MA) using Compiler
 Explorer and an amalgamated SIMDe header.
 
-## Current Status
+If you have any questions, please feel free to use the
+[issue tracker](https://github.com/nemequ/simde/issues) or the
+[mailing list](https://groups.google.com/forum/#!forum/simde).
 
-[![Travis](https://api.travis-ci.org/nemequ/simde.svg?branch=master)](https://travis-ci.org/nemequ/simde) [![AppVeyor](https://ci.appveyor.com/api/projects/status/1f3wp712w1ium5vi/branch/master?svg=true)](https://ci.appveyor.com/project/quixdb/simde/branch/master) [![Azure Pipelines](https://dev.azure.com/simd-everywhere/SIMDe/_apis/build/status/nemequ.simde?branchName=master)](https://dev.azure.com/simd-everywhere/SIMDe/_build/latest?definitionId=1&branchName=master) ![GitHub Actions CI](https://github.com/nemequ/simde/workflows/CI/badge.svg) [![Codecov](https://img.shields.io/codecov/c/github/nemequ/simde.svg)](https://codecov.io/gh/nemequ/simde)
+## Current Status
 
 There are currently complete implementations of the following instruction
 sets:
@@ -79,6 +81,15 @@ the relevant issue.
 If you have a project you're interested in using with SIMDe but we
 don't yet support all the functions you need, please file an issue
 with a list of what's missing so we know what to prioritize.
+
+The `master` branch is protected so commits never reach it unless
+they have passed extensive CI checks.  Status badges don't really
+make sense since they will always be green, but here are the links:
+
+* [Travis CI](https://travis-ci.org/nemequ/simde)
+* [AppVeyor](https://ci.appveyor.com/project/quixdb/simde)
+* [GitHub Actions](https://github.com/nemequ/simde/actions)
+* [Azure Pipelines](https://dev.azure.com/simd-everywhere/SIMDe/_build)
 
 ## Contributing
 
