@@ -469,6 +469,33 @@ simde_mm_add_pd (simde__m128d a, simde__m128d b) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
+simde_mm_move_sd (simde__m128d a, simde__m128d b) {
+#if defined(SIMDE_SSE2_NATIVE)
+  return _mm_move_sd(a, b);
+#else
+  simde__m128d_private
+    r_,
+    a_ = simde__m128d_to_private(a),
+    b_ = simde__m128d_to_private(b);
+
+#if defined(SIMDE_SSE2_NEON) && defined(SIMDE_ARCH_AARCH64)
+  r_.neon_f64 = vsetq_lane_f64(vgetq_lane_f64(b_.neon_f64, 0), a_.neon_f64, 0);
+#elif defined(SIMDE__SHUFFLE_VECTOR)
+  r_.f64 = SIMDE__SHUFFLE_VECTOR(64, 16, a_.f64, b_.f64, 2, 1);
+#else
+  r_.f64[0] = b_.f64[0];
+  r_.f64[1] = a_.f64[1];
+#endif
+
+  return simde__m128d_from_private(r_);
+#endif
+}
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _mm_move_sd(a, b) simde_mm_move_sd(a, b)
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128d
 simde_mm_add_sd (simde__m128d a, simde__m128d b) {
 #if defined(SIMDE_SSE2_NATIVE)
   return _mm_add_sd(a, b);
@@ -3084,27 +3111,6 @@ simde_mm_move_epi64 (simde__m128i a) {
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_move_epi64(a) simde_mm_move_epi64(a)
-#endif
-
-SIMDE__FUNCTION_ATTRIBUTES
-simde__m128d
-simde_mm_move_sd (simde__m128d a, simde__m128d b) {
-#if defined(SIMDE_SSE2_NATIVE)
-  return _mm_move_sd(a, b);
-#else
-  simde__m128d_private
-    r_,
-    a_ = simde__m128d_to_private(a),
-    b_ = simde__m128d_to_private(b);
-
-  r_.f64[0] = b_.f64[0];
-  r_.f64[1] = a_.f64[1];
-
-  return simde__m128d_from_private(r_);
-#endif
-}
-#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
-#  define _mm_move_sd(a, b) simde_mm_move_sd(a, b)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
