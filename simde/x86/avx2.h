@@ -1271,6 +1271,36 @@ simde_mm256_sub_epi32 (simde__m256i a, simde__m256i b) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256i
+simde_mm256_sub_epi64 (simde__m256i a, simde__m256i b) {
+  #if defined(SIMDE_AVX2_NATIVE)
+    return _mm256_sub_epi64(a, b);
+  #else
+    simde__m256i_private
+      r_,
+      a_ = simde__m256i_to_private(a),
+      b_ = simde__m256i_to_private(b);
+
+  #if defined(SIMDE_ARCH_X86_SSE2)
+    r_.m128i[0] = simde_mm_sub_epi64(a_.m128i[0], b_.m128i[0]);
+    r_.m128i[1] = simde_mm_sub_epi64(a_.m128i[1], b_.m128i[1]);
+  #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+    r_.i64 = a_.i64 - b_.i64;
+  #else
+    SIMDE__VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.i64) / sizeof(r_.i64[0])) ; i++) {
+      r_.i64[i] = a_.i64[i] - b_.i64[i];
+    }
+  #endif
+
+  return simde__m256i_from_private(r_);
+#endif
+}
+#if defined(SIMDE_AVX2_ENABLE_NATIVE_ALIASES)
+#  define _mm256_sub_epi64(a, b) simde_mm256_sub_epi64(a, b)
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256i
 simde_mm256_srli_epi64 (simde__m256i a, const int imm8) {
   simde__m256i_private
     r_,
