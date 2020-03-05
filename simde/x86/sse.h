@@ -197,6 +197,14 @@ simde_mm_move_ss (simde__m128 a, simde__m128 b) {
 
 #if defined(SIMDE_SSE_NEON)
   r_.neon_f32 = vsetq_lane_f32(vgetq_lane_f32(b_.neon_f32, 0), a_.neon_f32, 0);
+#elif defined(SIMDE_SSE_POWER_ALTIVEC)
+  vector unsigned char m = {
+    16, 17, 18, 19,
+     4,  5,  6,  7,
+     8,  9, 10, 11,
+    12, 13, 14, 15
+  };
+  r_.altivec_f32 = vec_perm(a_.altivec_f32, b_.altivec_f32, m);
 #elif defined(SIMDE__SHUFFLE_VECTOR)
   r_.f32 = SIMDE__SHUFFLE_VECTOR(32, 16, a_.f32, b_.f32, 4, 1, 2, 3);
 #else
