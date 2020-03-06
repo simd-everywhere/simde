@@ -1057,7 +1057,7 @@ simde_mm256_packs_epi32 (simde__m256i a, simde__m256i b) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256i
 simde_mm256_permute2x128_si256 (simde__m256i a, simde__m256i b, const int imm8)
-    HEDLEY_REQUIRE_MSG((imm8 & 0xf) == imm8, "imm8 must be in range [0, 15]") {
+    HEDLEY_REQUIRE_MSG((imm8 & 0xff) == imm8, "imm8 must be in range [0, 255]") {
   simde__m256i_private
     r_,
     a_ = simde__m256i_to_private(a),
