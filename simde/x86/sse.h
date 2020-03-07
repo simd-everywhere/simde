@@ -2345,6 +2345,8 @@ simde_mm_mul_ps (simde__m128 a, simde__m128 b) {
 
 #if defined(SIMDE_SSE_NEON)
   r_.neon_f32 = vmulq_f32(a_.neon_f32, b_.neon_f32);
+#elif defined(SIMDE_SSE_WASM_SIMD128)
+  r_.wasm_v128 = wasm_f32x4_mul(a_.wasm_v128, b_.wasm_v128);
 #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
   r_.f32 = a_.f32 * b_.f32;
 #else
