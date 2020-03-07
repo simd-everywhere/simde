@@ -313,6 +313,34 @@ simde_mm256_adds_epu8 (simde__m256i a, simde__m256i b) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256i
+simde_mm256_adds_epu16(simde__m256i a, simde__m256i b) {
+#if defined(SIMDE_AVX2_NATIVE)
+  return _mm256_adds_epu16(a, b);
+#else
+  simde__m256i_private
+    r_,
+    a_ = simde__m256i_to_private(a),
+    b_ = simde__m256i_to_private(b);
+
+#if defined(SIMDE_ARCH_X86_SSE2)
+  r_.m128i[0] = simde_mm_adds_epu16(a_.m128i[0], b_.m128i[0]);
+  r_.m128i[1] = simde_mm_adds_epu16(a_.m128i[1], b_.m128i[1]);
+#else
+  SIMDE__VECTORIZE
+for (size_t i = 0 ; i < (sizeof(r_.u16) / sizeof(r_.u16[0])) ; i++) {
+  r_.u16[i] = ((UINT16_MAX - a_.u16[i]) > b_.u16[i]) ? (a_.u16[i] + b_.u16[i]) : UINT16_MAX;
+}
+#endif
+
+  return simde__m256i_from_private(r_);
+#endif
+}
+#if defined(SIMDE_AVX2_ENABLE_NATIVE_ALIASES)
+#  define _mm256_adds_epu16(a, b) simde_mm256_adds_epu16(a, b)
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256i
 simde_mm256_blendv_epi8(simde__m256i a, simde__m256i b, simde__m256i mask) {
 #if defined(SIMDE_AVX2_NATIVE)
   return _mm256_blendv_epi8(a, b, mask);
@@ -776,7 +804,8 @@ simde_mm256_cvtepu32_epi64 (simde__m128i a) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 int
-simde_mm256_extract_epi8 (simde__m256i a, const int index) {
+simde_mm256_extract_epi8 (simde__m256i a, const int index)
+    HEDLEY_REQUIRE_MSG((index & 31) == index, "index must be in range [0, 31]"){
   return simde__m256i_to_private(a).i8[index];
 }
 #if defined(SIMDE_AVX2_ENABLE_NATIVE_ALIASES)
@@ -785,7 +814,8 @@ simde_mm256_extract_epi8 (simde__m256i a, const int index) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 int
-simde_mm256_extract_epi16 (simde__m256i a, const int index) {
+simde_mm256_extract_epi16 (simde__m256i a, const int index)
+    HEDLEY_REQUIRE_MSG((index & 0xf) == index, "index must be in range [0, 15]")  {
   return simde__m256i_to_private(a).i16[index];
 }
 #if defined(SIMDE_AVX2_ENABLE_NATIVE_ALIASES)
@@ -1027,7 +1057,7 @@ simde_mm256_packs_epi32 (simde__m256i a, simde__m256i b) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256i
 simde_mm256_permute2x128_si256 (simde__m256i a, simde__m256i b, const int imm8)
-    HEDLEY_REQUIRE_MSG((imm8 & 0xf) == imm8, "imm8 must be in range [0, 15]") {
+    HEDLEY_REQUIRE_MSG((imm8 & 0xff) == imm8, "imm8 must be in range [0, 255]") {
   simde__m256i_private
     r_,
     a_ = simde__m256i_to_private(a),
@@ -1043,6 +1073,28 @@ simde_mm256_permute2x128_si256 (simde__m256i a, simde__m256i b, const int imm8)
 #endif
 #if defined(SIMDE_AVX2_ENABLE_NATIVE_ALIASES)
 #  define _mm256_permute2x128_si256(a, b, imm8) simde_mm256_permute2x128_si256(a, b, imm8)
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256i
+simde_mm256_permute4x64_epi64 (simde__m256i a, const int imm8)
+HEDLEY_REQUIRE_MSG((imm8 & 0xff) == imm8, "imm8 must be in range [0, 255]") {
+  simde__m256i_private
+    r_,
+    a_ = simde__m256i_to_private(a);
+
+  r_.i64[0] = (imm8 & 0x02) ? a_.i64[((imm8     ) & 1)+2] : a_.i64[(imm8     ) & 1];
+  r_.i64[1] = (imm8 & 0x08) ? a_.i64[((imm8 >> 2  ) & 1)+2] : a_.i64[(imm8 >> 2  ) & 1];
+  r_.i64[2] = (imm8 & 0x20) ? a_.i64[((imm8 >> 4  ) & 1)+2] : a_.i64[(imm8 >> 4  ) & 1];
+  r_.i64[3] = (imm8 & 0x80) ? a_.i64[((imm8 >> 6  ) & 1)+2] : a_.i64[(imm8 >> 6  ) & 1];
+
+  return simde__m256i_from_private(r_);
+}
+#if defined(SIMDE_AVX2_NATIVE)
+#  define simde_mm256_permute4x64_epi64(a, imm8) _mm256_permute4x64_epi64(a, imm8)
+#endif
+#if defined(SIMDE_AVX2_ENABLE_NATIVE_ALIASES)
+#  define _mm256_permute4x64_epi64(a, imm8) simde_mm256_permute4x64_epi64(a, imm8)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -1265,6 +1317,36 @@ simde_mm256_sub_epi32 (simde__m256i a, simde__m256i b) {
 }
 #if defined(SIMDE_AVX2_ENABLE_NATIVE_ALIASES)
 #  define _mm256_sub_epi32(a, b) simde_mm256_sub_epi32(a, b)
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256i
+simde_mm256_sub_epi64 (simde__m256i a, simde__m256i b) {
+  #if defined(SIMDE_AVX2_NATIVE)
+    return _mm256_sub_epi64(a, b);
+  #else
+    simde__m256i_private
+      r_,
+      a_ = simde__m256i_to_private(a),
+      b_ = simde__m256i_to_private(b);
+
+  #if defined(SIMDE_ARCH_X86_SSE2)
+    r_.m128i[0] = simde_mm_sub_epi64(a_.m128i[0], b_.m128i[0]);
+    r_.m128i[1] = simde_mm_sub_epi64(a_.m128i[1], b_.m128i[1]);
+  #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+    r_.i64 = a_.i64 - b_.i64;
+  #else
+    SIMDE__VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.i64) / sizeof(r_.i64[0])) ; i++) {
+      r_.i64[i] = a_.i64[i] - b_.i64[i];
+    }
+  #endif
+
+  return simde__m256i_from_private(r_);
+#endif
+}
+#if defined(SIMDE_AVX2_ENABLE_NATIVE_ALIASES)
+#  define _mm256_sub_epi64(a, b) simde_mm256_sub_epi64(a, b)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
