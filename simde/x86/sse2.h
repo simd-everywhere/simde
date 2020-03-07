@@ -981,10 +981,10 @@ simde_mm_comieq_sd (simde__m128d a, simde__m128d b) {
     a_ = simde__m128d_to_private(a),
     b_ = simde__m128d_to_private(b);
 #if defined(SIMDE_SSE2_NEON)
-  uint64x4_t a_not_nan = vceqq_f64(a_.neon_f64, a_.neon_f64);
-  uint64x4_t b_not_nan = vceqq_f64(b_.neon_f64, b_.neon_f64);
-  uint64x4_t a_or_b_nan = vmvnq_u64(vandq_u64(a_not_nan, b_not_nan));
-  uint64x4_t a_eq_b = vceqq_f64(a_.neon_f64, b_.neon_f64);
+  uint64x2_t a_not_nan = vceqq_f64(a_.neon_f64, a_.neon_f64);
+  uint64x2_t b_not_nan = vceqq_f64(b_.neon_f64, b_.neon_f64);
+  uint64x2_t a_or_b_nan = vmvnq_u64(vandq_u64(a_not_nan, b_not_nan));
+  uint64x2_t a_eq_b = vceqq_f64(a_.neon_f64, b_.neon_f64);
   return (vgetq_lane_u64(vorrq_u64(a_or_b_nan, a_eq_b), 0) != 0) ? 1 : 0;
 #else
   return a_.f64[0] == b_.f64[0];
@@ -1005,10 +1005,10 @@ simde_mm_comige_sd (simde__m128d a, simde__m128d b) {
     a_ = simde__m128d_to_private(a),
     b_ = simde__m128d_to_private(b);
 #if defined(SIMDE_SSE2_NEON)
-  uint64x4_t a_not_nan = vceqq_f64(a_.neon_f64, a_.neon_f64);
-  uint64x4_t b_not_nan = vceqq_f64(b_.neon_f64, b_.neon_f64);
-  uint64x4_t a_or_b_nan = vmvnq_u64(vandq_u64(a_not_nan, b_not_nan));
-  uint64x4_t a_eq_b = vceqq_f64(a_.neon_f64, b_.neon_f64);
+  uint64x2_t a_not_nan = vceqq_f64(a_.neon_f64, a_.neon_f64);
+  uint64x2_t b_not_nan = vceqq_f64(b_.neon_f64, b_.neon_f64);
+  uint64x2_t a_or_b_nan = vmvnq_u64(vandq_u64(a_not_nan, b_not_nan));
+  uint64x2_t a_eq_b = vceqq_f64(a_.neon_f64, b_.neon_f64);
   return (vgetq_lane_u64(vorrq_u64(a_or_b_nan, a_eq_b), 0) != 0) ? 1 : 0;
 #else
   return a_.f64[0] >= b_.f64[0];
@@ -1029,10 +1029,10 @@ simde_mm_comigt_sd (simde__m128d a, simde__m128d b) {
     a_ = simde__m128d_to_private(a),
     b_ = simde__m128d_to_private(b);
 #if defined(SIMDE_SSE2_NEON)
-  uint64x4_t a_not_nan = vceqq_f64(a_.neon_f64, a_.neon_f64);
-  uint64x4_t b_not_nan = vceqq_f64(b_.neon_f64, b_.neon_f64);
-  uint64x4_t a_or_b_nan = vmvnq_u64(vandq_u64(a_not_nan, b_not_nan));
-  uint64x4_t a_eq_b = vceqq_f64(a_.neon_f64, b_.neon_f64);
+  uint64x2_t a_not_nan = vceqq_f64(a_.neon_f64, a_.neon_f64);
+  uint64x2_t b_not_nan = vceqq_f64(b_.neon_f64, b_.neon_f64);
+  uint64x2_t a_or_b_nan = vmvnq_u64(vandq_u64(a_not_nan, b_not_nan));
+  uint64x2_t a_eq_b = vceqq_f64(a_.neon_f64, b_.neon_f64);
   return (vgetq_lane_u64(vorrq_u64(a_or_b_nan, a_eq_b), 0) != 0) ? 1 : 0;
 #else
   return a_.f64[0] > b_.f64[0];
@@ -1053,10 +1053,10 @@ simde_mm_comile_sd (simde__m128d a, simde__m128d b) {
     a_ = simde__m128d_to_private(a),
     b_ = simde__m128d_to_private(b);
 #if defined(SIMDE_SSE2_NEON)
-  uint64x4_t a_not_nan = vceqq_f64(a_.neon_f64, a_.neon_f64);
-  uint64x4_t b_not_nan = vceqq_f64(b_.neon_f64, b_.neon_f64);
-  uint64x4_t a_or_b_nan = vmvnq_u64(vandq_u64(a_not_nan, b_not_nan));
-  uint64x4_t a_eq_b = vceqq_f64(a_.neon_f64, b_.neon_f64);
+  uint64x2_t a_not_nan = vceqq_f64(a_.neon_f64, a_.neon_f64);
+  uint64x2_t b_not_nan = vceqq_f64(b_.neon_f64, b_.neon_f64);
+  uint64x2_t a_or_b_nan = vmvnq_u64(vandq_u64(a_not_nan, b_not_nan));
+  uint64x2_t a_eq_b = vceqq_f64(a_.neon_f64, b_.neon_f64);
   return (vgetq_lane_u64(vorrq_u64(a_or_b_nan, a_eq_b), 0) != 0) ? 1 : 0;
 #else
   return a_.f64[0] <= b_.f64[0];
@@ -1077,10 +1077,10 @@ simde_mm_comilt_sd (simde__m128d a, simde__m128d b) {
     a_ = simde__m128d_to_private(a),
     b_ = simde__m128d_to_private(b);
 #if defined(SIMDE_SSE2_NEON)
-  uint64x4_t a_not_nan = vceqq_f64(a_.neon_f64, a_.neon_f64);
-  uint64x4_t b_not_nan = vceqq_f64(b_.neon_f64, b_.neon_f64);
-  uint64x4_t a_or_b_nan = vmvnq_u64(vandq_u64(a_not_nan, b_not_nan));
-  uint64x4_t a_eq_b = vceqq_f64(a_.neon_f64, b_.neon_f64);
+  uint64x2_t a_not_nan = vceqq_f64(a_.neon_f64, a_.neon_f64);
+  uint64x2_t b_not_nan = vceqq_f64(b_.neon_f64, b_.neon_f64);
+  uint64x2_t a_or_b_nan = vmvnq_u64(vandq_u64(a_not_nan, b_not_nan));
+  uint64x2_t a_eq_b = vceqq_f64(a_.neon_f64, b_.neon_f64);
   return (vgetq_lane_u64(vorrq_u64(a_or_b_nan, a_eq_b), 0) != 0) ? 1 : 0;
 #else
   return a_.f64[0] < b_.f64[0];
@@ -1101,10 +1101,10 @@ simde_mm_comineq_sd (simde__m128d a, simde__m128d b) {
     a_ = simde__m128d_to_private(a),
     b_ = simde__m128d_to_private(b);
 #if defined(SIMDE_SSE2_NEON)
-  uint64x4_t a_not_nan = vceqq_f64(a_.neon_f64, a_.neon_f64);
-  uint64x4_t b_not_nan = vceqq_f64(b_.neon_f64, b_.neon_f64);
-  uint64x4_t a_or_b_nan = vmvnq_u64(vandq_u64(a_not_nan, b_not_nan));
-  uint64x4_t a_eq_b = vceqq_f64(a_.neon_f64, b_.neon_f64);
+  uint64x2_t a_not_nan = vceqq_f64(a_.neon_f64, a_.neon_f64);
+  uint64x2_t b_not_nan = vceqq_f64(b_.neon_f64, b_.neon_f64);
+  uint64x2_t a_or_b_nan = vmvnq_u64(vandq_u64(a_not_nan, b_not_nan));
+  uint64x2_t a_eq_b = vceqq_f64(a_.neon_f64, b_.neon_f64);
   return (vgetq_lane_u64(vorrq_u64(a_or_b_nan, a_eq_b), 0) != 0) ? 1 : 0;
 #else
   return a_.f64[0] != b_.f64[0];
