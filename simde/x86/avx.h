@@ -1520,10 +1520,7 @@ simde_mm256_castpd128_pd256 (simde__m128d a) {
   simde__m256d_private r_;
   simde__m128d_private a_ = simde__m128d_to_private(a);
 
-  SIMDE__VECTORIZE
-  for (size_t i = 0 ; i < 2 ; i++) {
-    r_.i64[i] = a_.i64[i];
-  }
+  r_.m128d_private[0] = a_;
 
   return simde__m256d_from_private(r_);
 #endif
@@ -1538,15 +1535,7 @@ simde_mm256_castpd256_pd128 (simde__m256d a) {
 #if defined(SIMDE_AVX_NATIVE)
   return _mm256_castpd256_pd128(a);
 #else
-  simde__m128d_private r_;
-  simde__m256d_private a_ = simde__m256d_to_private(a);
-
-  SIMDE__VECTORIZE
-  for (size_t i = 0 ; i < 2 ; i++) {
-    r_.i64[i] = a_.i64[i];
-  }
-
-  return simde__m128d_from_private(r_);
+  return simde__m256d_to_private(a).m128d[0];
 #endif
 }
 #if defined(SIMDE_AVX_ENABLE_NATIVE_ALIASES)
@@ -1562,10 +1551,7 @@ simde_mm256_castps128_ps256 (simde__m128 a) {
   simde__m256_private r_;
   simde__m128_private a_ = simde__m128_to_private(a);
 
-  SIMDE__VECTORIZE
-  for (size_t i = 0 ; i < 2 ; i++) {
-    r_.i64[i] = a_.i64[i];
-  }
+  r_.m128_private[0] = a_;
 
   return simde__m256_from_private(r_);
 #endif
@@ -1580,15 +1566,7 @@ simde_mm256_castps256_ps128 (simde__m256 a) {
 #if defined(SIMDE_AVX_NATIVE)
   return _mm256_castps256_ps128(a);
 #else
-  simde__m128_private r_;
-  simde__m256_private a_ = simde__m256_to_private(a);
-
-  SIMDE__VECTORIZE
-  for (size_t i = 0 ; i < 2 ; i++) {
-    r_.i64[i] = a_.i64[i];
-  }
-
-  return simde__m128_from_private(r_);
+  return simde__m256_to_private(a).m128[0];
 #endif
 }
 #if defined(SIMDE_AVX_ENABLE_NATIVE_ALIASES)
@@ -1604,10 +1582,7 @@ simde_mm256_castsi128_si256 (simde__m128i a) {
   simde__m256i_private r_;
   simde__m128i_private a_ = simde__m128i_to_private(a);
 
-  SIMDE__VECTORIZE
-  for (size_t i = 0 ; i < 2 ; i++) {
-    r_.i64[i] = a_.i64[i];
-  }
+  r_.m128i_private[0] = a_;
 
   return simde__m256i_from_private(r_);
 #endif
@@ -1622,15 +1597,7 @@ simde_mm256_castsi256_si128 (simde__m256i a) {
 #if defined(SIMDE_AVX_NATIVE)
   return _mm256_castsi256_si128(a);
 #else
-  simde__m128i_private r_;
-  simde__m256i_private a_ = simde__m256i_to_private(a);
-
-  SIMDE__VECTORIZE
-  for (size_t i = 0 ; i < 2 ; i++) {
-    r_.i64[i] = a_.i64[i];
-  }
-
-  return simde__m128i_from_private(r_);
+  return simde__m256i_to_private(a).m128i[0];
 #endif
 }
 #if defined(SIMDE_AVX_ENABLE_NATIVE_ALIASES)
