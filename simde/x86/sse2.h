@@ -1317,7 +1317,7 @@ simde_mm_cmpeq_sd (simde__m128d a, simde__m128d b) {
     r_,
     a_ = simde__m128d_to_private(a),
     b_ = simde__m128d_to_private(b);
-  
+
   r_.u64[0] = (a_.u64[0] == b_.u64[0]) ? ~UINT64_C(0) : 0;
   r_.u64[1] = a_.u64[1];
 
@@ -1374,6 +1374,7 @@ simde_mm_cmpneq_sd (simde__m128d a, simde__m128d b) {
 
   r_.u64[0] = (a_.f64[0] != b_.f64[0]) ? ~UINT64_C(0) : UINT64_C(0);
   r_.u64[1] = a_.u64[1];
+
 
   return simde__m128d_from_private(r_);
 #endif
@@ -1964,6 +1965,7 @@ simde_mm_cmpunord_sd (simde__m128d a, simde__m128d b) {
 #if defined(SIMDE_HAVE_MATH_H)
   r_.u64[0] = (isnan(a_.f64[0]) || isnan(b_.f64[0])) ? ~UINT64_C(0) : UINT64_C(0);
   r_.u64[1] = a_.u64[1];
+
 #else
   HEDLEY_UNREACHABLE();
 #endif
@@ -2845,7 +2847,7 @@ simde_mm_maskmoveu_si128 (simde__m128i a, simde__m128i mask, int8_t mem_addr[HED
     a_ = simde__m128i_to_private(a),
     mask_ = simde__m128i_to_private(mask);
 
-  for (size_t i = 0 ; i < 16 ; i++) {
+  for (size_t i = 0 ; i < (sizeof(a_.i8) / sizeof(a_.i8[0])) ; i++) {
     if (mask_.u8[i] & 0x80) {
       mem_addr[i] = a_.i8[i];
     }
@@ -2892,7 +2894,7 @@ simde_mm_movemask_epi8 (simde__m128i a) {
   r = ((hi[0] << 8) | (lo[0] & 0xFF));
 #else
   SIMDE__VECTORIZE_REDUCTION(|:r)
-  for (size_t i = 0 ; i < 16 ; i++) {
+  for (size_t i = 0 ; i < (sizeof(a_.u8) / sizeof(a_.u8[0])) ; i++) {
     r |= (a_.u8[15 - i] >> 7) << (15 - i);
   }
 #endif
@@ -4212,10 +4214,10 @@ simde_mm_shufflehi_epi16 (simde__m128i a, const int imm8)
     a_ = simde__m128i_to_private(a);
 
   SIMDE__VECTORIZE
-  for (size_t i = 0 ; i < 4 ; i++) {
+  for (size_t i = 0 ; i < ((sizeof(a_.i16) / sizeof(a_.i16[0])) / 2) ; i++) {
     r_.i16[i] = a_.i16[i];
   }
-  for (size_t i = 4 ; i < (sizeof(r_.i16) / sizeof(r_.i16[0])) ; i++) {
+  for (size_t i = ((sizeof(a_.i16) / sizeof(a_.i16[0])) / 2) ; i < (sizeof(r_.i16) / sizeof(r_.i16[0])) ; i++) {
     r_.i16[i] = a_.i16[((imm8 >> ((i - 4) * 2)) & 3) + 4];
   }
 
@@ -4252,7 +4254,7 @@ simde_mm_shufflelo_epi16 (simde__m128i a, const int imm8)
     r_.i16[i] = a_.i16[((imm8 >> (i * 2)) & 3)];
   }
   SIMDE__VECTORIZE
-  for (size_t i = 4 ; i < 8 ; i++) {
+  for (size_t i = ((sizeof(a_.i16) / sizeof(a_.i16[0])) / 2) ; i < (sizeof(r_.i16) / sizeof(r_.i16[0])) ; i++) {
     r_.i16[i] = a_.i16[i];
   }
 

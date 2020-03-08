@@ -360,7 +360,7 @@ simde_mm_avg_pu16 (simde__m64 a, simde__m64 b) {
   SIMDE__CONVERT_VECTOR(r_.u16, wr);
 #else
   SIMDE__VECTORIZE
-  for (size_t i = 0 ; i < 4 ; i++) {
+  for (size_t i = 0 ; i < (sizeof(r_.u16) / sizeof(r_.u16[0])) ; i++) {
     r_.u16[i] = (a_.u16[i] + b_.u16[i] + 1) >> 1;
   }
 #endif
@@ -397,7 +397,7 @@ simde_mm_avg_pu8 (simde__m64 a, simde__m64 b) {
   SIMDE__CONVERT_VECTOR(r_.u8, wr);
 #else
   SIMDE__VECTORIZE
-  for (size_t i = 0 ; i < 8 ; i++) {
+  for (size_t i = 0 ; i < (sizeof(r_.u8) / sizeof(r_.u8[0])) ; i++) {
     r_.u8[i] = (a_.u8[i] + b_.u8[i] + 1) >> 1;
   }
 #endif
@@ -1406,7 +1406,7 @@ simde_mm_cvtpu8_ps (simde__m64 a) {
   r_.neon_f32 = vcvtq_f32_u32(vmovl_u16(vget_low_u16(vmovl_u8(a_.neon_u8))));
 #else
   SIMDE__VECTORIZE
-  for (size_t i = 0 ; i < 4 ; i++) {
+  for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
     r_.f32[i] = (simde_float32) a_.u8[i];
   }
 #endif
@@ -1432,7 +1432,7 @@ simde__m128
 #else
   r_.f32[0] = (simde_float32) b;
   SIMDE__VECTORIZE
-  for (size_t i = 1 ; i < 4 ; i++) {
+  for (size_t i = 1 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {
     r_.i32[i] = a_.i32[i];
   }
 #endif

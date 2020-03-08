@@ -984,7 +984,7 @@ simde_mm256_movemask_epi8 (simde__m256i a) {
   simde__m256i_private a_ = simde__m256i_to_private(a);
   int32_t r = 0;
   SIMDE__VECTORIZE_REDUCTION(|:r)
-  for (size_t i = 0 ; i < 32 ; i++) {
+  for (size_t i = 0 ; i < (sizeof(a_.u8) / sizeof(a_.u8[0])) ; i++) {
     r |= (a_.u8[31 - i] >> 7) << (31 - i);
   }
   return r;
@@ -1386,7 +1386,7 @@ simde_mm256_srli_si256 (simde__m256i a, const int imm8) {
     r_,
     a_ = simde__m256i_to_private(a);
 
-  for (size_t h = 0 ; h < 2 ; h++) {
+  for (size_t h = 0 ; h < (sizeof(r_.m128i_private) / sizeof(r_.m128i_private[0])) ; h++) {
     SIMDE__VECTORIZE
     for (int i = 0 ; i < (sizeof(r_.m128i_private[h].i8) / sizeof(r_.m128i_private[h].i8[0])) ; i++) {
       r_.m128i_private[h].i8[i] = ((i + imm8) < 16) ? a_.m128i_private[h].i8[i + imm8] : 0;
