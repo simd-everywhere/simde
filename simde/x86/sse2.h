@@ -980,7 +980,11 @@ simde_mm_comieq_sd (simde__m128d a, simde__m128d b) {
   simde__m128d_private
     a_ = simde__m128d_to_private(a),
     b_ = simde__m128d_to_private(b);
+#if defined(SIMDE_SSE2_NEON) && defined(SIMDE_ARCH_AARCH64)
+  return vgetq_lane_u64(vceqq_f64(a_.neon_f64, b_.neon_f64), 0) ? 1 : 0;
+#else
   return a_.f64[0] == b_.f64[0];
+#endif
 #endif
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
@@ -996,7 +1000,11 @@ simde_mm_comige_sd (simde__m128d a, simde__m128d b) {
   simde__m128d_private
     a_ = simde__m128d_to_private(a),
     b_ = simde__m128d_to_private(b);
+#if defined(SIMDE_SSE2_NEON) && defined(SIMDE_ARCH_AARCH64)
+  return vgetq_lane_u64(vcgeq_f64(a_.neon_f64, b_.neon_f64), 0) ? 1 : 0;
+#else
   return a_.f64[0] >= b_.f64[0];
+#endif
 #endif
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
@@ -1012,7 +1020,11 @@ simde_mm_comigt_sd (simde__m128d a, simde__m128d b) {
   simde__m128d_private
     a_ = simde__m128d_to_private(a),
     b_ = simde__m128d_to_private(b);
+#if defined(SIMDE_SSE2_NEON) && defined(SIMDE_ARCH_AARCH64)
+  return vgetq_lane_u64(vcgtq_f64(a_.neon_f64, b_.neon_f64), 0) ? 1 : 0;
+#else
   return a_.f64[0] > b_.f64[0];
+#endif
 #endif
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
@@ -1028,7 +1040,11 @@ simde_mm_comile_sd (simde__m128d a, simde__m128d b) {
   simde__m128d_private
     a_ = simde__m128d_to_private(a),
     b_ = simde__m128d_to_private(b);
+#if defined(SIMDE_SSE2_NEON) && defined(SIMDE_ARCH_AARCH64)
+  return vgetq_lane_u64(vcleq_f64(a_.neon_f64, b_.neon_f64), 0) ? 1 : 0;
+#else
   return a_.f64[0] <= b_.f64[0];
+#endif
 #endif
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
@@ -1044,7 +1060,11 @@ simde_mm_comilt_sd (simde__m128d a, simde__m128d b) {
   simde__m128d_private
     a_ = simde__m128d_to_private(a),
     b_ = simde__m128d_to_private(b);
+#if defined(SIMDE_SSE2_NEON) && defined(SIMDE_ARCH_AARCH64)
+  return vgetq_lane_u64(vcltq_f64(a_.neon_f64, b_.neon_f64), 0) ? 1 : 0;
+#else
   return a_.f64[0] < b_.f64[0];
+#endif
 #endif
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
@@ -1060,7 +1080,11 @@ simde_mm_comineq_sd (simde__m128d a, simde__m128d b) {
   simde__m128d_private
     a_ = simde__m128d_to_private(a),
     b_ = simde__m128d_to_private(b);
+#if defined(SIMDE_SSE2_NEON) && defined(SIMDE_ARCH_AARCH64)
+  return !vgetq_lane_u64(vceqq_f64(a_.neon_f64, b_.neon_f64), 0);
+#else
   return a_.f64[0] != b_.f64[0];
+#endif
 #endif
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
@@ -2271,16 +2295,22 @@ simde_mm_cvtsi128_si64 (simde__m128i a) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
 simde_mm_cvtsi32_sd (simde__m128d a, int32_t b) {
-  simde__m128d_private r_;
 
 #if defined(SIMDE_SSE2_NATIVE)
   return _mm_cvtsi32_sd(a, b);
+#else
+  simde__m128d_private r_;
+  simde__m128d_private a_ = simde__m128d_to_private(a);
+
+#if defined(SIMDE_SSE2_NEON)
+  r_.neon_f64 = vsetq_lane_f64((simde_float64) b, a_.neon_f64, 0);
 #else
   r_.f64[0] = (simde_float64) b;
   r_.i64[1] = simde__m128d_to_private(a).i64[1];
 #endif
 
   return simde__m128d_from_private(r_);
+#endif
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_cvtsi32_sd(a, b) simde_mm_cvtsi32_sd(a, b)
@@ -2324,8 +2354,12 @@ simde_mm_cvtsi64_sd (simde__m128d a, int64_t b) {
     r_,
     a_ = simde__m128d_to_private(a);
 
+#if defined(SIMDE_SSE_NEON)
+  r_.neon_f64 = vsetq_lane_f64((simde_float64) b, a_.neon_f64, 0);
+#else
   r_.f64[0] = (simde_float64) b;
   r_.f64[1] = a_.f64[1];
+#endif
 
   return simde__m128d_from_private(r_);
 #endif
@@ -2615,8 +2649,12 @@ simde_mm_load_sd (simde_float64 const* mem_addr) {
 #else
   simde__m128d_private r_;
 
+#if defined(SIMDE_SSE2_NEON)
+  r_.neon_f64 = vsetq_lane_f64(*mem_addr, vdupq_n_f64(0), 0);
+#else
   r_.f64[0] = *mem_addr;
   r_.u64[1] = UINT64_C(0);
+#endif
 
   return simde__m128d_from_private(r_);
 #endif
@@ -3804,13 +3842,11 @@ simde__m128d
 simde_mm_set_sd (simde_float64 a) {
 #if defined(SIMDE_SSE2_NATIVE)
   return _mm_set_sd(a);
+#elif defined(SIMDE_SSE2_NEON)
+  return vsetq_lane_f64(a, vdupq_n_f64(SIMDE_FLOAT32_C(0.0)), 0);
 #else
-  simde__m128d_private r_;
+  return simde_mm_set_pd(SIMDE_FLOAT32_C(0.0), a);
 
-  r_.f64[0] = a;
-  r_.u64[1] = 0;
-
-  return simde__m128d_from_private(r_);
 #endif
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
