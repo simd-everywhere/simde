@@ -981,7 +981,7 @@ simde_mm_comieq_sd (simde__m128d a, simde__m128d b) {
     a_ = simde__m128d_to_private(a),
     b_ = simde__m128d_to_private(b);
 #if defined(SIMDE_SSE2_NEON) && defined(SIMDE_ARCH_AARCH64)
-  return vgetq_lane_u64(vceqq_f64(a_.neon_f64, b_.neon_f64), 0) ? 1 : 0;
+  return !!vgetq_lane_u64(vceqq_f64(a_.neon_f64, b_.neon_f64), 0);
 #else
   return a_.f64[0] == b_.f64[0];
 #endif
@@ -1001,7 +1001,7 @@ simde_mm_comige_sd (simde__m128d a, simde__m128d b) {
     a_ = simde__m128d_to_private(a),
     b_ = simde__m128d_to_private(b);
 #if defined(SIMDE_SSE2_NEON) && defined(SIMDE_ARCH_AARCH64)
-  return vgetq_lane_u64(vcgeq_f64(a_.neon_f64, b_.neon_f64), 0) ? 1 : 0;
+  return !!vgetq_lane_u64(vcgeq_f64(a_.neon_f64, b_.neon_f64), 0);
 #else
   return a_.f64[0] >= b_.f64[0];
 #endif
@@ -1021,7 +1021,7 @@ simde_mm_comigt_sd (simde__m128d a, simde__m128d b) {
     a_ = simde__m128d_to_private(a),
     b_ = simde__m128d_to_private(b);
 #if defined(SIMDE_SSE2_NEON) && defined(SIMDE_ARCH_AARCH64)
-  return vgetq_lane_u64(vcgtq_f64(a_.neon_f64, b_.neon_f64), 0) ? 1 : 0;
+  return !!vgetq_lane_u64(vcgtq_f64(a_.neon_f64, b_.neon_f64), 0);
 #else
   return a_.f64[0] > b_.f64[0];
 #endif
@@ -1041,7 +1041,7 @@ simde_mm_comile_sd (simde__m128d a, simde__m128d b) {
     a_ = simde__m128d_to_private(a),
     b_ = simde__m128d_to_private(b);
 #if defined(SIMDE_SSE2_NEON) && defined(SIMDE_ARCH_AARCH64)
-  return vgetq_lane_u64(vcleq_f64(a_.neon_f64, b_.neon_f64), 0) ? 1 : 0;
+  return !!vgetq_lane_u64(vcleq_f64(a_.neon_f64, b_.neon_f64), 0);
 #else
   return a_.f64[0] <= b_.f64[0];
 #endif
@@ -1061,7 +1061,7 @@ simde_mm_comilt_sd (simde__m128d a, simde__m128d b) {
     a_ = simde__m128d_to_private(a),
     b_ = simde__m128d_to_private(b);
 #if defined(SIMDE_SSE2_NEON) && defined(SIMDE_ARCH_AARCH64)
-  return vgetq_lane_u64(vcltq_f64(a_.neon_f64, b_.neon_f64), 0) ? 1 : 0;
+  return !!vgetq_lane_u64(vcltq_f64(a_.neon_f64, b_.neon_f64), 0);
 #else
   return a_.f64[0] < b_.f64[0];
 #endif
