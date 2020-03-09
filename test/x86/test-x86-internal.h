@@ -42,6 +42,22 @@
         } \
       } \
     } while (0)
+#define simde_assert_m512i_i8(a, op, b) \
+  simde_assert_vec_i(a, op, b, simde__m512i,  i8,  PRId8)
+#define simde_assert_m512i_i16(a, op, b) \
+  simde_assert_vec_i(a, op, b, simde__m512i, i16, PRId16)
+#define simde_assert_m512i_i32(a, op, b) \
+  simde_assert_vec_i(a, op, b, simde__m512i, i32, PRId32)
+#define simde_assert_m512i_i64(a, op, b) \
+  simde_assert_vec_i(a, op, b, simde__m512i, i64, PRId64)
+#define simde_assert_m512i_u8(a, op, b) \
+  simde_assert_vec_i(a, op, b, simde__m512i,  u8,  PRIu8)
+#define simde_assert_m512i_u16(a, op, b) \
+  simde_assert_vec_i(a, op, b, simde__m512i, u16, PRIu16)
+#define simde_assert_m512i_u32(a, op, b) \
+  simde_assert_vec_i(a, op, b, simde__m512i, u32, PRIu32)
+#define simde_assert_m512i_u64(a, op, b) \
+  simde_assert_vec_i(a, op, b, simde__m512i, u64, PRIu64)
 #define simde_assert_m256i_i8(a, op, b) \
   simde_assert_vec_i(a, op, b, simde__m256i,  i8,  PRId8)
 #define simde_assert_m256i_i16(a, op, b) \
@@ -135,6 +151,22 @@
   simde_assert_vec_i_close(a, b, precision, simde__m128i, u32, PRIu32)
 #define simde_assert_m128i_u64_close(a, b, precision) \
   simde_assert_vec_i_close(a, b, precision, simde__m128i, u64, PRIu64)
+#define simde_assert_m256i_i8_close(a, b, precision) \
+  simde_assert_vec_i_close(a, b, precision, simde__m256i, i8, PRId8)
+#define simde_assert_m256i_i16_close(a, b, precision) \
+  simde_assert_vec_i_close(a, b, precision, simde__m256i, i16, PRId16)
+#define simde_assert_m256i_i32_close(a, b, precision) \
+  simde_assert_vec_i_close(a, b, precision, simde__m256i, i32, PRId32)
+#define simde_assert_m256i_i64_close(a, b, precision) \
+  simde_assert_vec_i_close(a, b, precision, simde__m256i, i64, PRId64)
+#define simde_assert_m256i_u8_close(a, b, precision) \
+  simde_assert_vec_i_close(a, b, precision, simde__m256i, u8, PRIu8)
+#define simde_assert_m256i_u16_close(a, b, precision) \
+  simde_assert_vec_i_close(a, b, precision, simde__m256i, u16, PRIu16)
+#define simde_assert_m256i_u32_close(a, b, precision) \
+  simde_assert_vec_i_close(a, b, precision, simde__m256i, u32, PRIu32)
+#define simde_assert_m256i_u64_close(a, b, precision) \
+  simde_assert_vec_i_close(a, b, precision, simde__m256i, u64, PRIu64)
 
 HEDLEY_BEGIN_C_DECLS
 
@@ -154,6 +186,7 @@ SIMDE_TESTS_GENERATE_SUITE_GETTERS(sse4_2);
 SIMDE_TESTS_GENERATE_SUITE_GETTERS(avx);
 SIMDE_TESTS_GENERATE_SUITE_GETTERS(fma);
 SIMDE_TESTS_GENERATE_SUITE_GETTERS(avx2);
+SIMDE_TESTS_GENERATE_SUITE_GETTERS(avx512f);
 SIMDE_TESTS_GENERATE_SUITE_GETTERS(svml);
 
 HEDLEY_END_C_DECLS

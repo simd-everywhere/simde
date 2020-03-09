@@ -98,6 +98,7 @@ set(TEST_SOURCES_C
   x86/sse4.2.c
   x86/avx.c
   x86/avx2.c
+  x86/avx512f.c
   x86/fma.c
   x86/svml.c
 
@@ -154,6 +155,7 @@ foreach(tst
       "/x86/avx"
       "/x86/fma"
       "/x86/avx2"
+      "/x86/avx512f"
       "/x86/svml"
     )
   add_test(NAME "${tst}/${variant}" COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:run-tests> "${tst}")
