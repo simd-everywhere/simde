@@ -40,10 +40,16 @@ SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 #    define SIMDE_AVX_NATIVE
 #  elif defined(SIMDE_ARCH_ARM_NEON) && !defined(SIMDE_AVX_NO_NEON) && !defined(SIMDE_NO_NEON)
 #    define SIMDE_AVX_NEON
+#  elif defined(SIMDE_ARCH_POWER_ALTIVEC)
+#    define SIMDE_AVX_POWER_ALTIVEC
 #  endif
 
 #  if defined(SIMDE_AVX_NATIVE)
 #    include <immintrin.h>
+#  endif
+
+#  if defined(SIMDE_AVX_POWER_ALTIVEC)
+#    include <altivec.h>
 #  endif
 
 #  include <stdint.h>
@@ -93,6 +99,17 @@ typedef union {
 
 #if defined(SIMDE_AVX_NATIVE)
   SIMDE_ALIGN(32) __m256         n;
+#elif defined(SIMDE_ARCH_POWER_ALTIVEC)
+  SIMDE_ALIGN(16) vector unsigned char      altivec_u8[2];
+  SIMDE_ALIGN(16) vector unsigned short     altivec_u16[2];
+  SIMDE_ALIGN(16) vector unsigned int       altivec_u32[2];
+  SIMDE_ALIGN(16) vector unsigned long long altivec_u64[2];
+  SIMDE_ALIGN(16) vector signed char        altivec_i8[2];
+  SIMDE_ALIGN(16) vector signed short       altivec_i16[2];
+  SIMDE_ALIGN(16) vector signed int         altivec_i32[2];
+  SIMDE_ALIGN(16) vector signed long long   altivec_i64[2];
+  SIMDE_ALIGN(16) vector float              altivec_f32[2];
+  SIMDE_ALIGN(16) vector double             altivec_f64[2];
 #endif
 } simde__m256_private;
 
@@ -138,6 +155,17 @@ typedef union {
 
 #if defined(SIMDE_AVX_NATIVE)
   SIMDE_ALIGN(32) __m256d        n;
+#elif defined(SIMDE_ARCH_POWER_ALTIVEC)
+  SIMDE_ALIGN(16) vector unsigned char      altivec_u8[2];
+  SIMDE_ALIGN(16) vector unsigned short     altivec_u16[2];
+  SIMDE_ALIGN(16) vector unsigned int       altivec_u32[2];
+  SIMDE_ALIGN(16) vector unsigned long long altivec_u64[2];
+  SIMDE_ALIGN(16) vector signed char        altivec_i8[2];
+  SIMDE_ALIGN(16) vector signed short       altivec_i16[2];
+  SIMDE_ALIGN(16) vector signed int         altivec_i32[2];
+  SIMDE_ALIGN(16) vector signed long long   altivec_i64[2];
+  SIMDE_ALIGN(16) vector float              altivec_f32[2];
+  SIMDE_ALIGN(16) vector double             altivec_f64[2];
 #endif
 } simde__m256d_private;
 
@@ -183,6 +211,17 @@ typedef union {
 
 #if defined(SIMDE_AVX_NATIVE)
   SIMDE_ALIGN(32) __m256i        n;
+#elif defined(SIMDE_ARCH_POWER_ALTIVEC)
+  SIMDE_ALIGN(16) vector unsigned char      altivec_u8[2];
+  SIMDE_ALIGN(16) vector unsigned short     altivec_u16[2];
+  SIMDE_ALIGN(16) vector unsigned int       altivec_u32[2];
+  SIMDE_ALIGN(16) vector unsigned long long altivec_u64[2];
+  SIMDE_ALIGN(16) vector signed char        altivec_i8[2];
+  SIMDE_ALIGN(16) vector signed short       altivec_i16[2];
+  SIMDE_ALIGN(16) vector signed int         altivec_i32[2];
+  SIMDE_ALIGN(16) vector signed long long   altivec_i64[2];
+  SIMDE_ALIGN(16) vector float              altivec_f32[2];
+  SIMDE_ALIGN(16) vector double             altivec_f64[2];
 #endif
 } simde__m256i_private;
 
@@ -202,6 +241,7 @@ typedef union {
 
 #if !defined(SIMDE_AVX_NATIVE) && defined(SIMDE_ENABLE_NATIVE_ALIASES)
   #define SIMDE_AVX_ENABLE_NATIVE_ALIASES
+  typedef simde__m256 __m256;
   typedef simde__m256i __m256i;
   typedef simde__m256d __m256d;
 #endif
@@ -213,12 +253,12 @@ HEDLEY_STATIC_ASSERT(32 == sizeof(simde__m256i_private), "simde__m256i_private s
 HEDLEY_STATIC_ASSERT(32 == sizeof(simde__m256d), "simde__m256d size incorrect");
 HEDLEY_STATIC_ASSERT(32 == sizeof(simde__m256d_private), "simde__m256d_private size incorrect");
 #if defined(SIMDE_CHECK_ALIGNMENT) && defined(SIMDE_ALIGN_OF)
-HEDLEY_STATIC_ASSERT(SIMDE_ALIGN_OF(simde__m256) == 16, "simde__m256 is not 16-byte aligned");
-HEDLEY_STATIC_ASSERT(SIMDE_ALIGN_OF(simde__m256_private) == 16, "simde__m256_private is not 16-byte aligned");
-HEDLEY_STATIC_ASSERT(SIMDE_ALIGN_OF(simde__m256i) == 16, "simde__m256i is not 16-byte aligned");
-HEDLEY_STATIC_ASSERT(SIMDE_ALIGN_OF(simde__m256i_private) == 16, "simde__m256i_private is not 16-byte aligned");
-HEDLEY_STATIC_ASSERT(SIMDE_ALIGN_OF(simde__m256d) == 16, "simde__m256d is not 16-byte aligned");
-HEDLEY_STATIC_ASSERT(SIMDE_ALIGN_OF(simde__m256d_private) == 16, "simde__m256d_private is not 16-byte aligned");
+HEDLEY_STATIC_ASSERT(SIMDE_ALIGN_OF(simde__m256) == 32, "simde__m256 is not 32-byte aligned");
+HEDLEY_STATIC_ASSERT(SIMDE_ALIGN_OF(simde__m256_private) == 32, "simde__m256_private is not 32-byte aligned");
+HEDLEY_STATIC_ASSERT(SIMDE_ALIGN_OF(simde__m256i) == 32, "simde__m256i is not 32-byte aligned");
+HEDLEY_STATIC_ASSERT(SIMDE_ALIGN_OF(simde__m256i_private) == 32, "simde__m256i_private is not 32-byte aligned");
+HEDLEY_STATIC_ASSERT(SIMDE_ALIGN_OF(simde__m256d) == 32, "simde__m256d is not 32-byte aligned");
+HEDLEY_STATIC_ASSERT(SIMDE_ALIGN_OF(simde__m256d_private) == 32, "simde__m256d_private is not 32-byte aligned");
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -1480,10 +1520,7 @@ simde_mm256_castpd128_pd256 (simde__m128d a) {
   simde__m256d_private r_;
   simde__m128d_private a_ = simde__m128d_to_private(a);
 
-  SIMDE__VECTORIZE
-  for (size_t i = 0 ; i < 2 ; i++) {
-    r_.i64[i] = a_.i64[i];
-  }
+  r_.m128d_private[0] = a_;
 
   return simde__m256d_from_private(r_);
 #endif
@@ -1498,15 +1535,7 @@ simde_mm256_castpd256_pd128 (simde__m256d a) {
 #if defined(SIMDE_AVX_NATIVE)
   return _mm256_castpd256_pd128(a);
 #else
-  simde__m128d_private r_;
-  simde__m256d_private a_ = simde__m256d_to_private(a);
-
-  SIMDE__VECTORIZE
-  for (size_t i = 0 ; i < 2 ; i++) {
-    r_.i64[i] = a_.i64[i];
-  }
-
-  return simde__m128d_from_private(r_);
+  return simde__m256d_to_private(a).m128d[0];
 #endif
 }
 #if defined(SIMDE_AVX_ENABLE_NATIVE_ALIASES)
@@ -1522,10 +1551,7 @@ simde_mm256_castps128_ps256 (simde__m128 a) {
   simde__m256_private r_;
   simde__m128_private a_ = simde__m128_to_private(a);
 
-  SIMDE__VECTORIZE
-  for (size_t i = 0 ; i < 2 ; i++) {
-    r_.i64[i] = a_.i64[i];
-  }
+  r_.m128_private[0] = a_;
 
   return simde__m256_from_private(r_);
 #endif
@@ -1540,15 +1566,7 @@ simde_mm256_castps256_ps128 (simde__m256 a) {
 #if defined(SIMDE_AVX_NATIVE)
   return _mm256_castps256_ps128(a);
 #else
-  simde__m128_private r_;
-  simde__m256_private a_ = simde__m256_to_private(a);
-
-  SIMDE__VECTORIZE
-  for (size_t i = 0 ; i < 2 ; i++) {
-    r_.i64[i] = a_.i64[i];
-  }
-
-  return simde__m128_from_private(r_);
+  return simde__m256_to_private(a).m128[0];
 #endif
 }
 #if defined(SIMDE_AVX_ENABLE_NATIVE_ALIASES)
@@ -1564,10 +1582,7 @@ simde_mm256_castsi128_si256 (simde__m128i a) {
   simde__m256i_private r_;
   simde__m128i_private a_ = simde__m128i_to_private(a);
 
-  SIMDE__VECTORIZE
-  for (size_t i = 0 ; i < 2 ; i++) {
-    r_.i64[i] = a_.i64[i];
-  }
+  r_.m128i_private[0] = a_;
 
   return simde__m256i_from_private(r_);
 #endif
@@ -1582,15 +1597,7 @@ simde_mm256_castsi256_si128 (simde__m256i a) {
 #if defined(SIMDE_AVX_NATIVE)
   return _mm256_castsi256_si128(a);
 #else
-  simde__m128i_private r_;
-  simde__m256i_private a_ = simde__m256i_to_private(a);
-
-  SIMDE__VECTORIZE
-  for (size_t i = 0 ; i < 2 ; i++) {
-    r_.i64[i] = a_.i64[i];
-  }
-
-  return simde__m128i_from_private(r_);
+  return simde__m256i_to_private(a).m128i[0];
 #endif
 }
 #if defined(SIMDE_AVX_ENABLE_NATIVE_ALIASES)
@@ -3491,36 +3498,13 @@ simde__m256i simde_mm256_insertf128_si256(simde__m256i a, simde__m128i b, int im
 #  define _mm256_insertf128_si256(a, b, imm8) simde_mm256_insertf128_si256(a, b, imm8)
 #endif
 
-SIMDE__FUNCTION_ATTRIBUTES
-simde__m256
-simde_mm256_dp_ps (simde__m256 a, simde__m256 b, const int imm8) {
-    simde__m256_private
-    r_,
-    a_ = simde__m256_to_private(a),
-    b_ = simde__m256_to_private(b);
-
-  simde_float32 sum1 = SIMDE_FLOAT32_C(0.0);
-  simde_float32 sum2 = SIMDE_FLOAT32_C(0.0);
-
-  SIMDE__VECTORIZE_REDUCTION(+:sum1)
-  for (size_t i = 0 ; i < 4 ; i++) {
-    sum1 += (imm8 & (16 << i)) ? (a_.f32[i + 4] * b_.f32[i + 4]) : SIMDE_FLOAT32_C(0.0);
-  }
-  SIMDE__VECTORIZE_REDUCTION(+:sum2)
-  for (size_t i = 0 ; i < 4 ; i++) {
-    sum2 += (imm8 & (16 << i)) ? (a_.f32[  i  ] * b_.f32[  i  ]) : SIMDE_FLOAT32_C(0.0);
-  }
-
-  SIMDE__VECTORIZE
-  for (size_t i = 0 ; i < 4 ; i++) {
-    r_.f32[i + 4] = (imm8 & (8 >> i)) ? sum1 : SIMDE_FLOAT32_C(0.0);
-    r_.f32[  i  ] = (imm8 & (8 >> i)) ? sum2 : SIMDE_FLOAT32_C(0.0);
-  }
-
-  return simde__m256_from_private(r_);
-}
 #if defined(SIMDE_AVX_NATIVE)
 #  define simde_mm256_dp_ps(a, b, imm8) _mm256_dp_ps(a, b, imm8)
+#else
+#  define simde_mm256_dp_ps(a, b, imm8) \
+    simde_mm256_set_m128( \
+      simde_mm_dp_ps(simde_mm256_extractf128_ps(a, 1), simde_mm256_extractf128_ps(b, 1), imm8), \
+      simde_mm_dp_ps(simde_mm256_extractf128_ps(a, 0), simde_mm256_extractf128_ps(b, 0), imm8))
 #endif
 #if defined(SIMDE_AVX_ENABLE_NATIVE_ALIASES)
 #  define _mm256_dp_ps(a, b, imm8) simde_mm256_dp_ps(a, b, imm8)
@@ -3784,7 +3768,7 @@ simde_mm_maskstore_pd (simde_float64 mem_addr[HEDLEY_ARRAY_PARAM(2)], simde__m12
   simde__m128d_private a_ = simde__m128d_to_private(a);
 
   SIMDE__VECTORIZE
-  for (size_t i = 0 ; i < 2 ; i++) {
+  for (size_t i = 0 ; i < (sizeof(a_.f64) / sizeof(a_.f64[0])) ; i++) {
     if (mask_.u64[i] >> 63)
       mem_addr[i] = a_.f64[i];
   }
@@ -3804,7 +3788,7 @@ simde_mm256_maskstore_pd (simde_float64 mem_addr[HEDLEY_ARRAY_PARAM(4)], simde__
   simde__m256d_private a_ = simde__m256d_to_private(a);
 
   SIMDE__VECTORIZE
-  for (size_t i = 0 ; i < 4 ; i++) {
+  for (size_t i = 0 ; i < (sizeof(a_.f64) / sizeof(a_.f64[0])) ; i++) {
     if (mask_.u64[i] & (UINT64_C(1) << 63))
       mem_addr[i] = a_.f64[i];
   }
@@ -3824,7 +3808,7 @@ simde_mm_maskstore_ps (simde_float32 mem_addr[HEDLEY_ARRAY_PARAM(4)], simde__m12
   simde__m128_private a_ = simde__m128_to_private(a);
 
   SIMDE__VECTORIZE
-  for (size_t i = 0 ; i < 4 ; i++) {
+  for (size_t i = 0 ; i < (sizeof(a_.f32) / sizeof(a_.f32[0])) ; i++) {
     if (mask_.u32[i] & (UINT32_C(1) << 31))
       mem_addr[i] = a_.f32[i];
   }
@@ -3844,7 +3828,7 @@ simde_mm256_maskstore_ps (simde_float32 mem_addr[HEDLEY_ARRAY_PARAM(8)], simde__
   simde__m256_private a_ = simde__m256_to_private(a);
 
   SIMDE__VECTORIZE
-  for (size_t i = 0 ; i < 8 ; i++) {
+  for (size_t i = 0 ; i < (sizeof(a_.f32) / sizeof(a_.f32[0])) ; i++) {
     if (mask_.u32[i] & (UINT32_C(1) << 31))
       mem_addr[i] = a_.f32[i];
   }

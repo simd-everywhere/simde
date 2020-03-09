@@ -1,10 +1,13 @@
 # SIMD Everywhere
 
-SIMDe provides fast, portable implementations of SIMD intrinsics on
-hardware which doesn't natively support them, such as calling SSE
+The SIMDe header-only library provides fast, portable implementations of 
+[SIMD intrinsics](https://en.wikipedia.org/wiki/SIMD) on hardware which
+doesn't natively support them, such as calling [SSE](https://en.wikipedia.org/wiki/Streaming_SIMD_Extensions)
 functions on ARM.  There is no performance penalty if the hardware
-supports the native implementation (*e.g.*, SSE/AVX runs at full speed
-on x86, NEON on ARM, *etc.*).
+supports the native implementation (*e.g.*, SSE/[AVX](https://en.wikipedia.org/wiki/Advanced_Vector_Extensions)
+runs at full speed on [x86](https://en.wikipedia.org/wiki/X86),
+[NEON](https://en.wikipedia.org/wiki/NEON_(instruction_set)) on [ARM](https://en.wikipedia.org/wiki/ARM_architecture),
+*etc.*).
 
 This makes porting code to other architectures much easier in a few
 key ways:
@@ -16,8 +19,8 @@ performance-critical sections to native intrinsics, improving
 performance gradually.  SIMDe lets (for example) SSE/AVX and NEON code
 exist side-by-side, in the same implementation.
 
-Second, SIMDe makes it easier to write code targeting ISA extensions
-you don't have convenient access to.  You can run NEON code on your
+Second, SIMDe makes it easier to write code targeting [ISA](https://en.wikipedia.org/wiki/Instruction_set_architecture)
+extensions you don't have convenient access to.  You can run NEON code on your
 x86 machine *without an emulator*.  Obviously you'll eventually want
 to test on the actual hardware you're targeting, but for most
 development, SIMDe can provide a much easier path.
@@ -51,9 +54,11 @@ For an example of a project using SIMDe, see
 You can [try SIMDe online](https://godbolt.org/z/xkT8MA) using Compiler
 Explorer and an amalgamated SIMDe header.
 
-## Current Status
+If you have any questions, please feel free to use the
+[issue tracker](https://github.com/nemequ/simde/issues) or the
+[mailing list](https://groups.google.com/forum/#!forum/simde).
 
-[![Travis](https://api.travis-ci.org/nemequ/simde.svg?branch=master)](https://travis-ci.org/nemequ/simde) [![AppVeyor](https://ci.appveyor.com/api/projects/status/1f3wp712w1ium5vi/branch/master?svg=true)](https://ci.appveyor.com/project/quixdb/simde/branch/master) [![Azure Pipelines](https://dev.azure.com/simd-everywhere/SIMDe/_apis/build/status/nemequ.simde?branchName=master)](https://dev.azure.com/simd-everywhere/SIMDe/_build/latest?definitionId=1&branchName=master) ![GitHub Actions CI](https://github.com/nemequ/simde/workflows/CI/badge.svg) [![Codecov](https://img.shields.io/codecov/c/github/nemequ/simde.svg)](https://codecov.io/gh/nemequ/simde)
+## Current Status
 
 There are currently complete implementations of the following instruction
 sets:
@@ -76,6 +81,15 @@ the relevant issue.
 If you have a project you're interested in using with SIMDe but we
 don't yet support all the functions you need, please file an issue
 with a list of what's missing so we know what to prioritize.
+
+The `master` branch is protected so commits never reach it unless
+they have passed extensive CI checks.  Status badges don't really
+make sense since they will always be green, but here are the links:
+
+* [Travis CI](https://travis-ci.org/nemequ/simde)
+* [AppVeyor](https://ci.appveyor.com/project/quixdb/simde)
+* [GitHub Actions](https://github.com/nemequ/simde/actions)
+* [Azure Pipelines](https://dev.azure.com/simd-everywhere/SIMDe/_build)
 
 ## Contributing
 
