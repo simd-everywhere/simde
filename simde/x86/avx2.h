@@ -1442,6 +1442,38 @@ simde_mm256_xor_si256 (simde__m256i a, simde__m256i b) {
 #  define _mm256_xor_epi8(a, b) simde_mm256_xor_epi8(a, b)
 #endif
 
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256i
+simde_mm256_srli_epi32 (simde__m256i a, const int imm8) {
+  simde__m256i_private
+    r_,
+    a_ = simde__m256i_to_private(a);
+
+#if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+  r_.u32 = a_.u32 >> HEDLEY_STATIC_CAST(int16_t, imm8);
+#else
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r_.u32) / sizeof(r_.u32[0])) ; i++) {
+    r_.u32[i] = a_.u32[i] >> imm8;
+  }
+#endif
+
+  return simde__m256i_from_private(r_);
+}
+#if defined(SIMDE_AVX2_NATIVE)
+#  define simde_mm256_srli_epi32(a, imm8) _mm256_srli_epi32(a, imm8)
+#elif defined(SIMDE_ARCH_X86_SSE2)
+#  define simde_mm256_srli_epi32(a, imm8) \
+     simde_mm256_set_m128i( \
+         simde_mm_srli_epi32(simde__m256i_to_private(a).m128i[1], (imm8)), \
+         simde_mm_srli_epi32(simde__m256i_to_private(a).m128i[0], (imm8)))
+#endif
+#if defined(SIMDE_AVX2_ENABLE_NATIVE_ALIASES)
+#  define _mm256_srli_epi32(a, imm8) simde_mm256_srli_epi32(a, imm8)
+#endif
+
+
 SIMDE__END_DECLS
 
 HEDLEY_DIAGNOSTIC_POP
