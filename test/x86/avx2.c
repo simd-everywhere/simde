@@ -5962,8 +5962,6 @@ test_simde_mm256_max_epu16(const MunitParameter params[], void* data) {
   return MUNIT_OK;
 }
 
-
-
 #endif /* defined(SIMDE_AVX2_NATIVE) || defined(SIMDE_NO_NATIVE) || defined(SIMDE_ALWAYS_BUILD_NATIVE_TESTS) */
 
 HEDLEY_DIAGNOSTIC_PUSH
