@@ -5845,6 +5845,124 @@ test_simde_mm256_srli_epi32(const MunitParameter params[], void* data) {
   return MUNIT_OK;
 }
 
+static MunitResult
+test_simde_mm256_max_epu16(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  const struct {
+    simde__m256i a;
+    simde__m256i b;
+    simde__m256i r;
+  } test_vec[8] = {
+         { simde_x_mm256_set_epu16(UINT16_C( 46627), UINT16_C( 59720), UINT16_C( 61906), UINT16_C( 11658),
+                              UINT16_C( 20044), UINT16_C( 39774), UINT16_C( 13081), UINT16_C( 26580),
+                              UINT16_C( 18209), UINT16_C( 20949), UINT16_C( 29177), UINT16_C( 31372),
+                              UINT16_C(  2292), UINT16_C(  1480), UINT16_C( 23053), UINT16_C( 14592)),
+      simde_x_mm256_set_epu16(UINT16_C( 18663), UINT16_C( 17474), UINT16_C( 64035), UINT16_C( 52566),
+                              UINT16_C( 14212), UINT16_C( 10671), UINT16_C( 65410), UINT16_C( 60796),
+                              UINT16_C( 54296), UINT16_C( 44956), UINT16_C(  2247), UINT16_C(  1960),
+                              UINT16_C( 42291), UINT16_C( 26784), UINT16_C( 22137), UINT16_C( 30865)),
+      simde_x_mm256_set_epu16(UINT16_C( 46627), UINT16_C( 59720), UINT16_C( 64035), UINT16_C( 52566),
+                              UINT16_C( 20044), UINT16_C( 39774), UINT16_C( 65410), UINT16_C( 60796),
+                              UINT16_C( 54296), UINT16_C( 44956), UINT16_C( 29177), UINT16_C( 31372),
+                              UINT16_C( 42291), UINT16_C( 26784), UINT16_C( 23053), UINT16_C( 30865)) },
+    { simde_x_mm256_set_epu16(UINT16_C( 18263), UINT16_C( 58739), UINT16_C( 63639), UINT16_C( 55084),
+                              UINT16_C( 26185), UINT16_C( 41545), UINT16_C( 59964), UINT16_C( 12474),
+                              UINT16_C( 53086), UINT16_C( 18094), UINT16_C( 30753), UINT16_C( 29484),
+                              UINT16_C( 20722), UINT16_C( 11313), UINT16_C( 13962), UINT16_C( 39972)),
+      simde_x_mm256_set_epu16(UINT16_C( 58325), UINT16_C( 58948), UINT16_C( 43545), UINT16_C( 59756),
+                              UINT16_C( 12295), UINT16_C( 57147), UINT16_C( 58632), UINT16_C( 46109),
+                              UINT16_C( 49795), UINT16_C(  8909), UINT16_C(  2266), UINT16_C( 36324),
+                              UINT16_C( 59196), UINT16_C( 64507), UINT16_C(  7734), UINT16_C( 45358)),
+      simde_x_mm256_set_epu16(UINT16_C( 58325), UINT16_C( 58948), UINT16_C( 63639), UINT16_C( 59756),
+                              UINT16_C( 26185), UINT16_C( 57147), UINT16_C( 59964), UINT16_C( 46109),
+                              UINT16_C( 53086), UINT16_C( 18094), UINT16_C( 30753), UINT16_C( 36324),
+                              UINT16_C( 59196), UINT16_C( 64507), UINT16_C( 13962), UINT16_C( 45358)) },
+    { simde_x_mm256_set_epu16(UINT16_C( 39984), UINT16_C( 47951), UINT16_C( 65190), UINT16_C( 48692),
+                              UINT16_C( 48663), UINT16_C( 53744), UINT16_C( 12623), UINT16_C( 35136),
+                              UINT16_C(  1353), UINT16_C( 21406), UINT16_C( 10132), UINT16_C( 27940),
+                              UINT16_C(  4906), UINT16_C( 10556), UINT16_C( 20269), UINT16_C( 18864)),
+      simde_x_mm256_set_epu16(UINT16_C( 52708), UINT16_C( 50460), UINT16_C( 39275), UINT16_C( 31341),
+                              UINT16_C( 59248), UINT16_C( 23377), UINT16_C( 29345), UINT16_C( 50829),
+                              UINT16_C(  4977), UINT16_C( 15093), UINT16_C( 36151), UINT16_C( 58243),
+                              UINT16_C( 16819), UINT16_C( 62076), UINT16_C( 48614), UINT16_C(  2944)),
+      simde_x_mm256_set_epu16(UINT16_C( 52708), UINT16_C( 50460), UINT16_C( 65190), UINT16_C( 48692),
+                              UINT16_C( 59248), UINT16_C( 53744), UINT16_C( 29345), UINT16_C( 50829),
+                              UINT16_C(  4977), UINT16_C( 21406), UINT16_C( 36151), UINT16_C( 58243),
+                              UINT16_C( 16819), UINT16_C( 62076), UINT16_C( 48614), UINT16_C( 18864)) },
+    { simde_x_mm256_set_epu16(UINT16_C( 14954), UINT16_C( 41703), UINT16_C( 49393), UINT16_C( 33328),
+                              UINT16_C( 13198), UINT16_C(  8963), UINT16_C( 20974), UINT16_C( 46796),
+                              UINT16_C(  4895), UINT16_C(  2875), UINT16_C( 62027), UINT16_C( 51154),
+                              UINT16_C( 19247), UINT16_C( 34899), UINT16_C( 65019), UINT16_C( 60032)),
+      simde_x_mm256_set_epu16(UINT16_C( 58187), UINT16_C(  7429), UINT16_C( 29396), UINT16_C( 13821),
+                              UINT16_C( 33371), UINT16_C(  1928), UINT16_C( 49379), UINT16_C(   722),
+                              UINT16_C( 28382), UINT16_C( 55366), UINT16_C( 43323), UINT16_C( 47667),
+                              UINT16_C(  5125), UINT16_C( 60684), UINT16_C( 59616), UINT16_C( 50280)),
+      simde_x_mm256_set_epu16(UINT16_C( 58187), UINT16_C( 41703), UINT16_C( 49393), UINT16_C( 33328),
+                              UINT16_C( 33371), UINT16_C(  8963), UINT16_C( 49379), UINT16_C( 46796),
+                              UINT16_C( 28382), UINT16_C( 55366), UINT16_C( 62027), UINT16_C( 51154),
+                              UINT16_C( 19247), UINT16_C( 60684), UINT16_C( 65019), UINT16_C( 60032)) },
+    { simde_x_mm256_set_epu16(UINT16_C( 27739), UINT16_C( 29065), UINT16_C( 56947), UINT16_C( 55426),
+                              UINT16_C( 46492), UINT16_C( 58959), UINT16_C( 17884), UINT16_C(   106),
+                              UINT16_C( 40322), UINT16_C( 13650), UINT16_C( 50675), UINT16_C( 30885),
+                              UINT16_C(  7879), UINT16_C(  4114), UINT16_C( 54484), UINT16_C( 15816)),
+      simde_x_mm256_set_epu16(UINT16_C( 43597), UINT16_C( 65192), UINT16_C( 43740), UINT16_C( 54700),
+                              UINT16_C( 31952), UINT16_C( 20957), UINT16_C( 20261), UINT16_C( 50955),
+                              UINT16_C( 37051), UINT16_C( 36093), UINT16_C( 59438), UINT16_C( 28726),
+                              UINT16_C(  6886), UINT16_C( 52003), UINT16_C( 19596), UINT16_C( 59577)),
+      simde_x_mm256_set_epu16(UINT16_C( 43597), UINT16_C( 65192), UINT16_C( 56947), UINT16_C( 55426),
+                              UINT16_C( 46492), UINT16_C( 58959), UINT16_C( 20261), UINT16_C( 50955),
+                              UINT16_C( 40322), UINT16_C( 36093), UINT16_C( 59438), UINT16_C( 30885),
+                              UINT16_C(  7879), UINT16_C( 52003), UINT16_C( 54484), UINT16_C( 59577)) },
+    { simde_x_mm256_set_epu16(UINT16_C( 57657), UINT16_C( 13117), UINT16_C( 60292), UINT16_C( 65452),
+                              UINT16_C(   694), UINT16_C( 21975), UINT16_C( 46000), UINT16_C( 22467),
+                              UINT16_C( 60775), UINT16_C(  6084), UINT16_C( 52920), UINT16_C( 10893),
+                              UINT16_C( 33722), UINT16_C( 16366), UINT16_C(   746), UINT16_C( 51289)),
+      simde_x_mm256_set_epu16(UINT16_C( 18878), UINT16_C( 35582), UINT16_C( 34313), UINT16_C( 41553),
+                              UINT16_C( 15025), UINT16_C( 13655), UINT16_C( 30842), UINT16_C( 55976),
+                              UINT16_C( 55306), UINT16_C(  8486), UINT16_C( 20326), UINT16_C( 56205),
+                              UINT16_C(  9516), UINT16_C(  5604), UINT16_C( 41707), UINT16_C( 23844)),
+      simde_x_mm256_set_epu16(UINT16_C( 57657), UINT16_C( 35582), UINT16_C( 60292), UINT16_C( 65452),
+                              UINT16_C( 15025), UINT16_C( 21975), UINT16_C( 46000), UINT16_C( 55976),
+                              UINT16_C( 60775), UINT16_C(  8486), UINT16_C( 52920), UINT16_C( 56205),
+                              UINT16_C( 33722), UINT16_C( 16366), UINT16_C( 41707), UINT16_C( 51289)) },
+    { simde_x_mm256_set_epu16(UINT16_C( 35061), UINT16_C( 31271), UINT16_C( 44458), UINT16_C( 43999),
+                              UINT16_C( 52764), UINT16_C( 24092), UINT16_C( 55278), UINT16_C(  9729),
+                              UINT16_C( 30350), UINT16_C( 35228), UINT16_C( 24843), UINT16_C( 46927),
+                              UINT16_C( 47959), UINT16_C(  8348), UINT16_C( 39137), UINT16_C( 59054)),
+      simde_x_mm256_set_epu16(UINT16_C( 18920), UINT16_C( 22899), UINT16_C(  4131), UINT16_C( 54549),
+                              UINT16_C( 33095), UINT16_C( 25760), UINT16_C(  6465), UINT16_C( 12263),
+                              UINT16_C( 47803), UINT16_C( 61613), UINT16_C( 51708), UINT16_C( 45746),
+                              UINT16_C( 59719), UINT16_C(  2919), UINT16_C( 24086), UINT16_C(  5665)),
+      simde_x_mm256_set_epu16(UINT16_C( 35061), UINT16_C( 31271), UINT16_C( 44458), UINT16_C( 54549),
+                              UINT16_C( 52764), UINT16_C( 25760), UINT16_C( 55278), UINT16_C( 12263),
+                              UINT16_C( 47803), UINT16_C( 61613), UINT16_C( 51708), UINT16_C( 46927),
+                              UINT16_C( 59719), UINT16_C(  8348), UINT16_C( 39137), UINT16_C( 59054)) },
+    { simde_x_mm256_set_epu16(UINT16_C( 46764), UINT16_C( 51381), UINT16_C( 57954), UINT16_C( 11573),
+                              UINT16_C( 40336), UINT16_C( 26367), UINT16_C( 17948), UINT16_C( 58963),
+                              UINT16_C( 63320), UINT16_C( 30133), UINT16_C( 13248), UINT16_C(  4541),
+                              UINT16_C( 43652), UINT16_C(  3442), UINT16_C(   602), UINT16_C( 59909)),
+      simde_x_mm256_set_epu16(UINT16_C( 34844), UINT16_C( 11763), UINT16_C( 21582), UINT16_C( 37103),
+                              UINT16_C( 62839), UINT16_C( 48595), UINT16_C( 34664), UINT16_C( 65307),
+                              UINT16_C( 42742), UINT16_C(  1820), UINT16_C( 54309), UINT16_C( 55027),
+                              UINT16_C( 64764), UINT16_C( 27300), UINT16_C( 20131), UINT16_C( 43537)),
+      simde_x_mm256_set_epu16(UINT16_C( 46764), UINT16_C( 51381), UINT16_C( 57954), UINT16_C( 37103),
+                              UINT16_C( 62839), UINT16_C( 48595), UINT16_C( 34664), UINT16_C( 65307),
+                              UINT16_C( 63320), UINT16_C( 30133), UINT16_C( 54309), UINT16_C( 55027),
+                              UINT16_C( 64764), UINT16_C( 27300), UINT16_C( 20131), UINT16_C( 59909)) }
+
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    simde__m256i r = simde_mm256_max_epu16(test_vec[i].a, test_vec[i].b);
+    simde_assert_m256i_u16(r, ==, test_vec[i].r);
+  }
+
+  return MUNIT_OK;
+}
+
+
 
 #endif /* defined(SIMDE_AVX2_NATIVE) || defined(SIMDE_NO_NATIVE) || defined(SIMDE_ALWAYS_BUILD_NATIVE_TESTS) */
 
@@ -5899,11 +6017,10 @@ static MunitTest test_suite_tests[] = {
   SIMDE_TESTS_DEFINE_TEST(mm256_extracti128_si256),
 
   SIMDE_TESTS_DEFINE_TEST(mm256_max_epi8),
+  SIMDE_TESTS_DEFINE_TEST(mm256_max_epi16),
+  SIMDE_TESTS_DEFINE_TEST(mm256_max_epi32),
   SIMDE_TESTS_DEFINE_TEST(mm256_max_epu8),
-  SIMDE_TESTS_DEFINE_TEST(mm256_max_epi16),
-  SIMDE_TESTS_DEFINE_TEST(mm256_max_epi32),
-  SIMDE_TESTS_DEFINE_TEST(mm256_max_epi16),
-  SIMDE_TESTS_DEFINE_TEST(mm256_max_epi32),
+  SIMDE_TESTS_DEFINE_TEST(mm256_max_epu16),
 
   SIMDE_TESTS_DEFINE_TEST(mm256_min_epu8),
 
