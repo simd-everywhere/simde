@@ -292,6 +292,8 @@ simde_mm_and_ps (simde__m128 a, simde__m128 b) {
 
 #if defined(SIMDE_SSE_NEON)
   r_.neon_i32 = vandq_s32(a_.neon_i32, b_.neon_i32);
+#elif defined(SIMDE_SSE_WASM_SIMD128)
+  r_.wasm_v128 = wasm_v128_and(a_.wasm_v128, b_.wasm_v128);
 #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
   r_.i32 = a_.i32 & b_.i32;
 #else
