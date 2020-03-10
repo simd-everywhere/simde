@@ -5985,7 +5985,6 @@ static MunitTest test_suite_tests[] = {
 
   SIMDE_TESTS_DEFINE_TEST(mm256_and_si256),
   SIMDE_TESTS_DEFINE_TEST(mm256_andnot_si256),
-  SIMDE_TESTS_DEFINE_TEST(mm256_and_si256),
 
   SIMDE_TESTS_DEFINE_TEST(mm256_blendv_epi8),
 
@@ -5995,7 +5994,6 @@ static MunitTest test_suite_tests[] = {
   SIMDE_TESTS_DEFINE_TEST(mm256_cmpeq_epi32),
 
   SIMDE_TESTS_DEFINE_TEST(mm256_cmpgt_epi16),
-  SIMDE_TESTS_DEFINE_TEST(mm256_cmpgt_epi32),
   SIMDE_TESTS_DEFINE_TEST(mm256_cmpgt_epi32),
 
   SIMDE_TESTS_DEFINE_TEST(mm256_cvtepi8_epi16),
