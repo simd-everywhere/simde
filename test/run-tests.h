@@ -50,6 +50,7 @@ HEDLEY_BEGIN_C_DECLS
 #  define SIMDE_ALMOST_EQUAL_TO "~=~"
 #endif
 
+SIMDE__FUNCTION_POSSIBLY_UNUSED
 static int
 simde_check_double_close(double a, double b, int precision) {
   const double r = 1.0 * pow(10, HEDLEY_STATIC_CAST(double, precision));
@@ -65,7 +66,6 @@ simde_check_double_close(double a, double b, int precision) {
     simde__##VT##_private \
       a_ = simde__##VT##_to_private(a), \
       b_ = simde__##VT##_to_private(b);	\
-    const double r = 1.0 / HEDLEY_STATIC_CAST(double, precision); \
     \
     for (int i = 0 ; i < HEDLEY_STATIC_CAST(int, sizeof(a_.accessor) / sizeof(a_.accessor[0])) ; i++) { \
       if (simde_check_double_close(HEDLEY_STATIC_CAST(double, a_.accessor[i]), HEDLEY_STATIC_CAST(double, b_.accessor[i]), precision)) { \
@@ -75,7 +75,7 @@ simde_check_double_close(double a, double b, int precision) {
     } \
   }
 
-
+SIMDE__FUNCTION_POSSIBLY_UNUSED
 static void random_f32v(size_t nmemb, simde_float32 v[HEDLEY_ARRAY_PARAM(nmemb)]) {
   for (size_t i = 0 ; i < nmemb ; i++) {
     do {
@@ -84,6 +84,7 @@ static void random_f32v(size_t nmemb, simde_float32 v[HEDLEY_ARRAY_PARAM(nmemb)]
   }
 }
 
+SIMDE__FUNCTION_POSSIBLY_UNUSED
 static simde_float64 random_f64_range(simde_float64 min, simde_float64 max) {
   const simde_float64 range = max - min;
   simde_float64 x = HEDLEY_STATIC_CAST(simde_float64, munit_rand_uint32());
@@ -92,10 +93,12 @@ static simde_float64 random_f64_range(simde_float64 min, simde_float64 max) {
   return x;
 }
 
+SIMDE__FUNCTION_POSSIBLY_UNUSED
 static simde_float32 random_f32_range(simde_float32 min, simde_float32 max) {
   return (simde_float32) random_f64_range(min, max);
 }
 
+SIMDE__FUNCTION_POSSIBLY_UNUSED
 static void random_f64v(size_t nmemb, simde_float64 v[HEDLEY_ARRAY_PARAM(nmemb)]) {
   for (size_t i = 0 ; i < nmemb ; i++) {
     do {

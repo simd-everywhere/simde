@@ -2311,7 +2311,7 @@ simde_mm_cvtsi32_sd (simde__m128d a, int32_t b) {
   r_.neon_f64 = vsetq_lane_f64((simde_float64) b, a_.neon_f64, 0);
 #else
   r_.f64[0] = (simde_float64) b;
-  r_.i64[1] = simde__m128d_to_private(a).i64[1];
+  r_.i64[1] = a_.i64[1];
 #endif
 
   return simde__m128d_from_private(r_);

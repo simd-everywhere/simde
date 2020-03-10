@@ -235,6 +235,14 @@
 #  define SIMDE__FUNCTION_ATTRIBUTES HEDLEY_ALWAYS_INLINE static
 #endif
 
+#if \
+    HEDLEY_HAS_ATTRIBUTE(unused) || \
+    HEDLEY_GCC_VERSION_CHECK(2,95,0)
+#  define SIMDE__FUNCTION_POSSIBLY_UNUSED __attribute__((__unused__))
+#else
+#  define SIMDE__FUNCTION_POSSIBLY_UNUSED
+#endif
+
 #if HEDLEY_HAS_WARNING("-Wused-but-marked-unused")
 #  define SIMDE_DIAGNOSTIC_DISABLE_USED_BUT_MARKED_UNUSED _Pragma("clang diagnostic ignored \"-Wused-but-marked-unused\"")
 #else
