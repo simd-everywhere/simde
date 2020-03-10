@@ -5787,7 +5787,7 @@ test_simde_mm256_srli_epi32(const MunitParameter params[], void* data) {
     simde__m256i b;
     simde__m256i r;
   } test_vec[8] = {
-       { simde_mm256_set_epi32(INT32_C(  732419944), INT32_C(  -77147012), INT32_C(  489295522), INT32_C( -707244875),
+    { simde_mm256_set_epi32(INT32_C(  732419944), INT32_C(  -77147012), INT32_C(  489295522), INT32_C( -707244875),
                             INT32_C( 1759674836), INT32_C(  934163130), INT32_C( 1804082267), INT32_C(-1601331496)),
       simde_mm256_set_epi32(INT32_C(  849157488), INT32_C( 1818223314), INT32_C( -155475303), INT32_C(-1398665928),
                             INT32_C( 1594244161), INT32_C( -844009252), INT32_C( 1806417213), INT32_C(-2079022073)),

@@ -1470,7 +1470,6 @@ simde_mm256_xor_si256 (simde__m256i a, simde__m256i b) {
 #  define _mm256_xor_epi8(a, b) simde_mm256_xor_epi8(a, b)
 #endif
 
-
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256i
 simde_mm256_srli_epi32 (simde__m256i a, const int imm8) {
@@ -1500,7 +1499,6 @@ simde_mm256_srli_epi32 (simde__m256i a, const int imm8) {
 #if defined(SIMDE_AVX2_ENABLE_NATIVE_ALIASES)
 #  define _mm256_srli_epi32(a, imm8) simde_mm256_srli_epi32(a, imm8)
 #endif
-
 
 SIMDE__END_DECLS
 
