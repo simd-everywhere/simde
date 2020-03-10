@@ -70,6 +70,9 @@ SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 #    endif
 #    if defined(SIMDE_SSE2_WASM_SIMD128)
 #      include <wasm_simd128.h>
+#      if !defined(__wasm_unimplemented_simd128__)
+#        define __wasm_unimplemented_simd128__
+#      endif
 #    endif
 #    if defined(SIMDE_SSE2_POWER_ALTIVEC)
 #      include <altivec.h>

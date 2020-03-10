@@ -73,6 +73,9 @@ SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 #    endif
 
 #    if defined(SIMDE_SVML_WASM_SIMD128)
+#      if !defined(__wasm_unimplemented_simd128__)
+#        define __wasm_unimplemented_simd128__
+#      endif
 #      include <wasm_simd128.h>
 #    endif
 

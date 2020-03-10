@@ -54,6 +54,9 @@ SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 #      include <arm_neon.h>
 #    endif
 #    if defined(SIMDE_SSE_WASM_SIMD128)
+#      if !defined(__wasm_unimplemented_simd128__)
+#        define __wasm_unimplemented_simd128__
+#      endif
 #      include <wasm_simd128.h>
 #    endif
 #    if defined(SIMDE_SSE_POWER_ALTIVEC)
