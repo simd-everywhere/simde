@@ -943,7 +943,7 @@ simde_mm_bsrli_si128 (simde__m128i a, const int imm8)
     a_ = simde__m128i_to_private(a);
 
   SIMDE__VECTORIZE
-  for (int i = 0 ; i < (sizeof(r_.i8) / sizeof(r_.i8[0])) ; i++) {
+  for (size_t i = 0 ; i < (sizeof(r_.i8) / sizeof(r_.i8[0])) ; i++) {
     r_.i8[i] = ((i + imm8) < 16) ? a_.i8[i + imm8] : 0;
   }
 
