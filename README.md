@@ -6,7 +6,7 @@ doesn't natively support them, such as calling [SSE](https://en.wikipedia.org/wi
 functions on ARM.  There is no performance penalty if the hardware
 supports the native implementation (*e.g.*, SSE/[AVX](https://en.wikipedia.org/wiki/Advanced_Vector_Extensions)
 runs at full speed on [x86](https://en.wikipedia.org/wiki/X86),
-[NEON](https://en.wikipedia.org/wiki/NEON_(instruction_set)) on [ARM](https://en.wikipedia.org/wiki/ARM_architecture),
+[NEON](https://en.wikipedia.org/wiki/ARM_architecture#Advanced_SIMD_(Neon)) on [ARM](https://en.wikipedia.org/wiki/ARM_architecture),
 *etc.*).
 
 This makes porting code to other architectures much easier in a few
