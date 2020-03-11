@@ -1228,6 +1228,37 @@ simde_mm256_shuffle_epi32 (simde__m256i a, const int imm8) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256i
+simde_mm256_slli_epi16 (simde__m256i a, const int imm8) {
+  simde__m256i_private
+    r_,
+    a_ = simde__m256i_to_private(a);
+
+#if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+  r_.i16 = a_.i16 << HEDLEY_STATIC_CAST(int16_t, imm8);
+#else
+  const int s = (imm8 > HEDLEY_STATIC_CAST(int, sizeof(r_.i16[0]) * CHAR_BIT) - 1) ? 0 : imm8;
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r_.i16) / sizeof(r_.i16[0])) ; i++) {
+    r_.i16[i] = a_.i16[i] << s;
+  }
+#endif
+
+  return simde__m256i_from_private(r_);
+}
+#if defined(SIMDE_AVX2_NATIVE)
+#  define simde_mm256_slli_epi16(a, imm8) _mm256_slli_epi16(a, imm8)
+#elif defined(SIMDE_ARCH_X86_SSE2)
+#  define simde_mm256_slli_epi16(a, imm8) \
+     simde_mm256_set_m128i( \
+         simde_mm_slli_epi16(simde__m256i_to_private(a).m128i[1], (imm8)), \
+         simde_mm_slli_epi16(simde__m256i_to_private(a).m128i[0], (imm8)))
+#endif
+#if defined(SIMDE_AVX2_ENABLE_NATIVE_ALIASES)
+#  define _mm256_slli_epi16(a, imm8) simde_mm256_slli_epi16(a, imm8)
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256i
 simde_mm256_slli_epi32 (simde__m256i a, const int imm8) {
   simde__m256i_private
     r_,
@@ -1257,6 +1288,37 @@ simde_mm256_slli_epi32 (simde__m256i a, const int imm8) {
 #  define _mm256_slli_epi32(a, imm8) simde_mm256_slli_epi32(a, imm8)
 #endif
 
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256i
+simde_mm256_slli_epi64 (simde__m256i a, const int imm8) {
+  simde__m256i_private
+    r_,
+    a_ = simde__m256i_to_private(a);
+
+#if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+  r_.i64 = a_.i64 << HEDLEY_STATIC_CAST(int64_t, imm8);
+#else
+  const int s = (imm8 > HEDLEY_STATIC_CAST(int, sizeof(r_.i64[0]) * CHAR_BIT) - 1) ? 0 : imm8;
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r_.i64) / sizeof(r_.i64[0])) ; i++) {
+    r_.i64[i] = a_.i64[i] << s;
+  }
+#endif
+
+  return simde__m256i_from_private(r_);
+}
+#if defined(SIMDE_AVX2_NATIVE)
+#  define simde_mm256_slli_epi64(a, imm8) _mm256_slli_epi64(a, imm8)
+#elif defined(SIMDE_ARCH_X86_SSE2)
+#  define simde_mm256_slli_epi64(a, imm8) \
+     simde_mm256_set_m128i( \
+         simde_mm_slli_epi64(simde__m256i_to_private(a).m128i[1], (imm8)), \
+         simde_mm_slli_epi64(simde__m256i_to_private(a).m128i[0], (imm8)))
+#endif
+#if defined(SIMDE_AVX2_ENABLE_NATIVE_ALIASES)
+#  define _mm256_slli_epi64(a, imm8) simde_mm256_slli_epi64(a, imm8)
+#endif
+     
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256i
 simde_mm256_sub_epi8 (simde__m256i a, simde__m256i b) {
