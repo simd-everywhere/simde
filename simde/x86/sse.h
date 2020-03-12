@@ -1762,7 +1762,7 @@ void
 SIMDE_MM_SET_ROUNDING_MODE(unsigned int a) {
 #if defined(SIMDE_SSE_NATIVE)
   _MM_SET_ROUNDING_MODE(a);
-#elif !defined(__wasm__)
+#else
   fesetround((int) a);
 #endif
 }
@@ -2948,7 +2948,7 @@ simde_mm_store_ps (simde_float32 mem_addr[4], simde__m128 a) {
   #if defined(SIMDE_SSE_NEON)
     vst1q_f32(mem_addr, a_.neon_f32);
   #elif defined(SIMDE_SSE_WASM_SIMD128)
-    wasm_v128_store(mem_addr, a);
+    wasm_v128_store(mem_addr, a_.wasm_v128);
   #else
     SIMDE__VECTORIZE_ALIGNED(mem_addr:16)
     for (size_t i = 0 ; i < sizeof(a_.f32) / sizeof(a_.f32[0]) ; i++) {
@@ -3511,7 +3511,7 @@ void
 simde_mm_setcsr (uint32_t a) {
 #if defined(SIMDE_SSE_NATIVE)
   _mm_setcsr(a);
-#elif !defined(__wasm__)
+#else
   switch((a >> 13) & 3) {
 #if defined(FE_TONEAREST)
     case 0:
