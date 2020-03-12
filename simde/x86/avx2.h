@@ -24,6 +24,7 @@
  */
 
 #include "sse4.1.h"
+#include "sse4.2.h"
 #if !defined(SIMDE__AVX2_H)
 #  if !defined(SIMDE__AVX2_H)
 #    define SIMDE__AVX2_H
@@ -423,6 +424,29 @@ simde_mm256_cmpeq_epi8 (simde__m256i a, simde__m256i b) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256i
+simde_mm256_cmpeq_epi16 (simde__m256i a, simde__m256i b) {
+#if defined(SIMDE_AVX2_NATIVE)
+  return _mm256_cmpeq_epi16(a, b);
+#else
+  simde__m256i_private
+    r_,
+    a_ = simde__m256i_to_private(a),
+    b_ = simde__m256i_to_private(b);
+
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r_.i16) / sizeof(r_.i16[0])) ; i++) {
+    r_.i16[i] = (a_.i16[i] == b_.i16[i]) ? ~INT16_C(0) : INT16_C(0);
+  }
+
+  return simde__m256i_from_private(r_);
+#endif
+}
+#if defined(SIMDE_AVX2_ENABLE_NATIVE_ALIASES)
+#  define _mm256_cmpeq_epi16(a, b) simde_mm256_cmpeq_epi16(a, b)
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256i
 simde_mm256_cmpeq_epi32 (simde__m256i a, simde__m256i b) {
 #if defined(SIMDE_AVX2_NATIVE)
   return _mm256_cmpeq_epi32(a, b);
@@ -447,6 +471,34 @@ simde_mm256_cmpeq_epi32 (simde__m256i a, simde__m256i b) {
 }
 #if defined(SIMDE_AVX2_ENABLE_NATIVE_ALIASES)
 #  define _mm256_cmpeq_epi32(a, b) simde_mm256_cmpeq_epi32(a, b)
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256i
+simde_mm256_cmpeq_epi64 (simde__m256i a, simde__m256i b) {
+#if defined(SIMDE_AVX2_NATIVE)
+  return _mm256_cmpeq_epi64(a, b);
+#else
+  simde__m256i_private
+    r_,
+    a_ = simde__m256i_to_private(a),
+    b_ = simde__m256i_to_private(b);
+
+#if defined(SIMDE_ARCH_X86_SSE2) || defined(SIMDE_SSE2_NEON)
+  r_.m128i[0] = simde_mm_cmpeq_epi64(a_.m128i[0], b_.m128i[0]);
+  r_.m128i[1] = simde_mm_cmpeq_epi64(a_.m128i[1], b_.m128i[1]);
+#else
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r_.i64) / sizeof(r_.i64[0])) ; i++) {
+    r_.i64[i] = (a_.i64[i] == b_.i64[i]) ? ~INT64_C(0) : INT64_C(0);
+  }
+#endif
+
+  return simde__m256i_from_private(r_);
+#endif
+}
+#if defined(SIMDE_AVX2_ENABLE_NATIVE_ALIASES)
+#  define _mm256_cmpeq_epi64(a, b) simde_mm256_cmpeq_epi64(a, b)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -509,6 +561,35 @@ simde_mm256_cmpgt_epi32 (simde__m256i a, simde__m256i b) {
 #  define _mm256_cmpgt_epi32(a, b) simde_mm256_cmpgt_epi32(a, b)
 #endif
 
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256i
+simde_mm256_cmpgt_epi64 (simde__m256i a, simde__m256i b) {
+#if defined(SIMDE_AVX2_NATIVE)
+  return _mm256_cmpgt_epi64(a, b);
+#else
+  simde__m256i_private
+    r_,
+    a_ = simde__m256i_to_private(a),
+    b_ = simde__m256i_to_private(b);
+
+#if defined(SIMDE_ARCH_X86_SSE2)
+  r_.m128i[0] = simde_mm_cmpgt_epi64(a_.m128i[0], b_.m128i[0]);
+  r_.m128i[1] = simde_mm_cmpgt_epi64(a_.m128i[1], b_.m128i[1]);
+#elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+  r_.i64 = a_.i64 > b_.i64;
+#else
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r_.i64) / sizeof(r_.i64[0])) ; i++) {
+    r_.i64[i] = (a_.i64[i] > b_.i64[i]) ? ~INT64_C(0) : INT64_C(0);
+  }
+#endif
+
+  return simde__m256i_from_private(r_);
+#endif
+}
+#if defined(SIMDE_AVX2_ENABLE_NATIVE_ALIASES)
+#  define _mm256_cmpgt_epi64(a, b) simde_mm256_cmpgt_epi64(a, b)
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256i
