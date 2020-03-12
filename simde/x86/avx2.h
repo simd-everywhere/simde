@@ -1228,7 +1228,12 @@ simde_mm256_shuffle_epi32 (simde__m256i a, const int imm8) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256i
-simde_mm256_slli_epi16 (simde__m256i a, const int imm8) {
+simde_mm256_slli_epi16 (simde__m256i a, const int imm8)
+    HEDLEY_REQUIRE_MSG((imm8 & 15) == imm8, "imm8 must be in range [0, 15]") {
+  /* Note: There is no consistency in how compilers handle values outside of
+     the expected range, hence the discrepancy between what we allow and what
+     Intel specifies.  Some compilers will return 0, others seem to just mask
+     off everything outside of the range. */
   simde__m256i_private
     r_,
     a_ = simde__m256i_to_private(a);
@@ -1236,10 +1241,9 @@ simde_mm256_slli_epi16 (simde__m256i a, const int imm8) {
 #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
   r_.i16 = a_.i16 << HEDLEY_STATIC_CAST(int16_t, imm8);
 #else
-  const int s = (imm8 > HEDLEY_STATIC_CAST(int, sizeof(r_.i16[0]) * CHAR_BIT) - 1) ? 0 : imm8;
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r_.i16) / sizeof(r_.i16[0])) ; i++) {
-    r_.i16[i] = a_.i16[i] << s;
+    r_.i16[i] = a_.i16[i] << (imm8 & 0xff);
   }
 #endif
 
@@ -1259,7 +1263,8 @@ simde_mm256_slli_epi16 (simde__m256i a, const int imm8) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256i
-simde_mm256_slli_epi32 (simde__m256i a, const int imm8) {
+simde_mm256_slli_epi32 (simde__m256i a, const int imm8)
+    HEDLEY_REQUIRE_MSG((imm8 & 31) == imm8, "imm8 must be in range [0, 31]") {
   simde__m256i_private
     r_,
     a_ = simde__m256i_to_private(a);
@@ -1267,10 +1272,9 @@ simde_mm256_slli_epi32 (simde__m256i a, const int imm8) {
 #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
   r_.i32 = a_.i32 << HEDLEY_STATIC_CAST(int32_t, imm8);
 #else
-  const int s = (imm8 > HEDLEY_STATIC_CAST(int, sizeof(r_.i32[0]) * CHAR_BIT) - 1) ? 0 : imm8;
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {
-    r_.i32[i] = a_.i32[i] << s;
+    r_.i32[i] = a_.i32[i] << (imm8 & 0xff);
   }
 #endif
 
@@ -1290,7 +1294,8 @@ simde_mm256_slli_epi32 (simde__m256i a, const int imm8) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256i
-simde_mm256_slli_epi64 (simde__m256i a, const int imm8) {
+simde_mm256_slli_epi64 (simde__m256i a, const int imm8)
+    HEDLEY_REQUIRE_MSG((imm8 & 15) == imm8, "imm8 must be in range [0, 63]") {
   simde__m256i_private
     r_,
     a_ = simde__m256i_to_private(a);
@@ -1298,10 +1303,9 @@ simde_mm256_slli_epi64 (simde__m256i a, const int imm8) {
 #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
   r_.i64 = a_.i64 << HEDLEY_STATIC_CAST(int64_t, imm8);
 #else
-  const int s = (imm8 > HEDLEY_STATIC_CAST(int, sizeof(r_.i64[0]) * CHAR_BIT) - 1) ? 0 : imm8;
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r_.i64) / sizeof(r_.i64[0])) ; i++) {
-    r_.i64[i] = a_.i64[i] << s;
+    r_.i64[i] = a_.i64[i] << (imm8 & 0xff);
   }
 #endif
 
