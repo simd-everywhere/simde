@@ -329,17 +329,35 @@ simde_mm_alignr_pi8 (simde__m64 a, simde__m64 b, const int count) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_shuffle_epi8 (simde__m128i a, simde__m128i b) {
-#if defined(SIMDE_SSSE3_NATIVE)
-  return _mm_shuffle_epi8(a, b);
-#else
-  simde__m128i_private
-    r_,
-    a_ = simde__m128i_to_private(a),
-    b_ = simde__m128i_to_private(b);
-  for (size_t i = 0 ; i < (sizeof(r_.i8) / sizeof(r_.i8[0])) ; i++) {
-    r_.i8[i] = a_.i8[b_.i8[i] & 15] & (~(b_.i8[i]) >> 7);
-  }
-  return simde__m128i_from_private(r_);
+  #if defined(SIMDE_SSSE3_NATIVE)
+    return _mm_shuffle_epi8(a, b);
+  #else
+    simde__m128i_private
+      r_,
+      a_ = simde__m128i_to_private(a),
+      b_ = simde__m128i_to_private(b);
+
+    #if defined(SIMDE_SSSE3_NEON)
+      /* Mask out the bits we're not interested in.  vtbl will result in 0
+         for any values outside of [0, 15], so if the high bit is set it
+         will return 0, just like in SSSE3. */
+      b_.neon_i8 = vandq_s8(b_.neon_i8, vdupq_n_s8((1 << 7) | 15));
+
+      /* Convert a from an int8x16_t to an int8x8x2_t */
+      int8x8x2_t i = { .val = { vget_low_s8(a_.neon_i8), vget_high_s8(a_.neon_i8) } };
+
+      /* Table lookups */
+      int8x8_t l = vtbl2_s8(i, vget_low_s8(b_.neon_i8));
+      int8x8_t h = vtbl2_s8(i, vget_high_s8(b_.neon_i8));
+
+      r_.neon_i8 = vcombine_s8(l, h);
+    #else
+      for (size_t i = 0 ; i < (sizeof(r_.i8) / sizeof(r_.i8[0])) ; i++) {
+        r_.i8[i] = a_.i8[b_.i8[i] & 15] & (~(b_.i8[i]) >> 7);
+      }
+    #endif
+
+    return simde__m128i_from_private(r_);
 #endif
 }
 #if defined(SIMDE_SSSE3_ENABLE_NATIVE_ALIASES)
@@ -349,18 +367,25 @@ simde_mm_shuffle_epi8 (simde__m128i a, simde__m128i b) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m64
 simde_mm_shuffle_pi8 (simde__m64 a, simde__m64 b) {
-#if defined(SIMDE_SSSE3_NATIVE)
-  return _mm_shuffle_pi8(a, b);
-#else
-  simde__m64_private
-    r_,
-    a_ = simde__m64_to_private(a),
-    b_ = simde__m64_to_private(b);
-  for (size_t i = 0 ; i < (sizeof(r_.u8) / sizeof(r_.u8[0])) ; i++) {
-    r_.i8[i] = a_.i8[b_.i8[i] & 7] & (~(b_.i8[i]) >> 7);
-  }
-  return simde__m64_from_private(r_);
-#endif
+  #if defined(SIMDE_SSSE3_NATIVE)
+    return _mm_shuffle_pi8(a, b);
+  #else
+    simde__m64_private
+      r_,
+      a_ = simde__m64_to_private(a),
+      b_ = simde__m64_to_private(b);
+
+    #if defined(SIMDE_SSSE3_NEON)
+      b_.neon_i8 = vand_s8(b_.neon_i8, vdup_n_s8((1 << 7) | 7));
+      r_.neon_i8 = vtbl1_s8(a_.neon_i8, b_.neon_i8);
+    #else
+      for (size_t i = 0 ; i < (sizeof(r_.u8) / sizeof(r_.u8[0])) ; i++) {
+        r_.i8[i] = a_.i8[b_.i8[i] & 7] & (~(b_.i8[i]) >> 7);
+      }
+    #endif
+
+    return simde__m64_from_private(r_);
+  #endif
 }
 #if defined(SIMDE_SSSE3_ENABLE_NATIVE_ALIASES)
 #  define _mm_shuffle_pi8(a, b) simde_mm_shuffle_pi8(a, b)
