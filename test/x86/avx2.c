@@ -2186,7 +2186,7 @@ test_simde_mm256_cmpeq_epi16(const MunitParameter params[], void* data) {
     simde__m256i b;
     simde__m256i r;
   } test_vec[8] = {
-       { simde_mm256_set_epi16( INT16_C( -5413),  INT16_C( -8669),  INT16_C(-20019),  INT16_C( 13281),
+    { simde_mm256_set_epi16( INT16_C( -5413),  INT16_C( -8669),  INT16_C(-20019),  INT16_C( 13281),
                              INT16_C( 31513),  INT16_C( 29495),  INT16_C( 24515),  INT16_C( -4843),
                              INT16_C(-25942),  INT16_C(-22058),  INT16_C( 25862),  INT16_C( 17599),
                              INT16_C(  3410),  INT16_C(-25277),  INT16_C( -9899),  INT16_C( -1157)),
@@ -2369,7 +2369,7 @@ test_simde_mm256_cmpeq_epi64(const MunitParameter params[], void* data) {
     simde__m256i b;
     simde__m256i r;
   } test_vec[8] = {
-     { simde_mm256_set_epi64x( INT64_C( 5666986029204224795),  INT64_C( 4139191150084672711),
+    { simde_mm256_set_epi64x( INT64_C( 5666986029204224795),  INT64_C( 4139191150084672711),
                               INT64_C(-2995542033801296871),  INT64_C( 2916699395471658679)),
       simde_mm256_set_epi64x( INT64_C( 5666986029204224795),  INT64_C(-4286656252876457389),
                               INT64_C( 1630571993074201933),  INT64_C(-4091102519963379575)),
