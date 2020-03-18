@@ -11,6 +11,11 @@ information, especially the
 [implement a new
 function](https://github.com/nemequ/simde/wiki/Implementing-a-New-Function).
 
+For information on developing for architectures you don't have access
+to, please see the [Development
+Environment](https://github.com/nemequ/simde/wiki/Development-Environment)
+page on the wiki.
+
 If you still have questions, or if anything below doesn't make sense
 to you, please feel free to use the [issue
 tracker](https://github.com/nemequ/simde/issues) or the [mailing
