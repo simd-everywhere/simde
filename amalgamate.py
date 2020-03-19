@@ -20,7 +20,7 @@
 # tracker at <https://github.com/nemequ/simde/issues> or directly to
 # the author so they can be merged back into the original version.
 
-import sys, re, os
+import sys, re, os, subprocess
 
 amalgamate_include = re.compile('^\\s*#\\s*include\\s+\\"([^)]+)\\"\\s$')
 already_included = []
@@ -50,5 +50,9 @@ if len(sys.argv) != 2:
 
   sys.exit(1)
 
-print('/* AUTOMATICALLY GENERATED FILE, DO NOT MODIFY */\n')
+print('/* AUTOMATICALLY GENERATED FILE, DO NOT MODIFY */')
+
+git_id = subprocess.check_output(["git", "rev-parse", "HEAD"]).decode().strip()
+print("/* {:s} */".format(git_id))
+
 amalgamate(sys.argv[1], sys.stdout)
