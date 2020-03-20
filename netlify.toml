@@ -6,3 +6,15 @@
   for = "/amalgamated/x86/*.h"
   [headers.values]
     Access-Control-Allow-Origin = "*"
+
+[[redirects]]
+  from = "/godbolt/simple"
+  to = "https://godbolt.org/z/-twon_"
+  status = 302
+  force = true
+
+[[redirects]]
+  from = "/godbolt/demo"
+  to = "https://godbolt.org/z/8cAgiy"
+  status = 302
+  force = true
