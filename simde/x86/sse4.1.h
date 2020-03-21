@@ -37,6 +37,8 @@ SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 #    define SIMDE_SSE4_1_NATIVE
 #  elif defined(__ARM_NEON) && !defined(SIMDE_SSE4_1_NO_NEON) && !defined(SIMDE_NO_NEON)
 #    define SIMDE_SSE4_1_NEON
+#  elif defined(SIMDE_ARCH_POWER_ALTIVEC)
+#    define SIMDE_SSE4_1_POWER_ALTIVEC
 #  endif
 
 #  if defined(SIMDE_SSE4_1_NATIVE) && !defined(SIMDE_SSE3_NATIVE)
@@ -367,6 +369,8 @@ simde_mm_ceil_pd (simde__m128d a) {
 
   #if defined(SIMDE_SSE4_1_NEON) && defined(SIMDE_ARCH_AARCH64)
     r_.neon_f64 = vrndpq_f64(a_.neon_f64);
+  #elif defined(SIMDE_SSE_POWER_ALTIVEC)
+    r_.altivec_f64 = vec_ceil(a_.altivec_f64);
   #elif defined(SIMDE_HAVE_MATH_H)
     SIMDE__VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
@@ -395,6 +399,8 @@ simde_mm_ceil_ps (simde__m128 a) {
 
   #if defined(SIMDE_SSE4_1_NEON) && (SIMDE_ARCH_ARM >= 80)
     r_.neon_f32 = vrndpq_f32(a_.neon_f32);
+  #elif defined(SIMDE_SSE_POWER_ALTIVEC)
+    r_.altivec_f32 = vec_ceil(a_.altivec_f32);
   #elif defined(SIMDE_HAVE_MATH_H)
     SIMDE__VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
