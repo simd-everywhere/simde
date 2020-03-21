@@ -815,6 +815,8 @@ simde_mm_avg_epu8 (simde__m128i a, simde__m128i b) {
 
 #if defined(SIMDE_SSE2_NEON)
   r_.neon_u8 = vrhaddq_u8(b_.neon_u8, a_.neon_u8);
+#elif defined(SIMDE_SSE2_POWER_ALTIVEC)
+  r_.altivec_u8 = vec_avg(a_.altivec_u8, b_.altivec_u8);
 #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && defined(SIMDE__CONVERT_VECTOR)
   uint16_t wa SIMDE_VECTOR(32);
   uint16_t wb SIMDE_VECTOR(32);
@@ -850,6 +852,8 @@ simde_mm_avg_epu16 (simde__m128i a, simde__m128i b) {
 
 #if defined(SIMDE_SSE2_NEON)
   r_.neon_u16 = vrhaddq_u16(b_.neon_u16, a_.neon_u16);
+#elif defined(SIMDE_SSE2_POWER_ALTIVEC)
+  r_.altivec_u16 = vec_avg(a_.altivec_u16, b_.altivec_u16);
 #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && defined(SIMDE__CONVERT_VECTOR)
   uint32_t wa SIMDE_VECTOR(32);
   uint32_t wb SIMDE_VECTOR(32);
