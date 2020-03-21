@@ -299,6 +299,8 @@ simde_mm_and_ps (simde__m128 a, simde__m128 b) {
   r_.wasm_v128 = wasm_v128_and(a_.wasm_v128, b_.wasm_v128);
 #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
   r_.i32 = a_.i32 & b_.i32;
+#elif defined(SIMDE_SSE_POWER_ALTIVEC)
+  r_.altivec_f32 = vec_and(a_.altivec_f32, b_.altivec_f32);
 #else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {

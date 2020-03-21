@@ -691,6 +691,8 @@ simde_mm_and_pd (simde__m128d a, simde__m128d b) {
 
 #if defined(SIMDE_SSE2_NEON)
   r_.neon_i32 = vandq_s32(a_.neon_i32, b_.neon_i32);
+#elif defined(SIMDE_SSE2_POWER_ALTIVEC)
+  r_.altivec_f64 = vec_and(a_.altivec_f64, b_.altivec_f64);
 #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
   r_.i32f = a_.i32f & b_.i32f;
 #else
@@ -722,6 +724,8 @@ simde_mm_and_si128 (simde__m128i a, simde__m128i b) {
   r_.neon_i32 = vandq_s32(b_.neon_i32, a_.neon_i32);
 #elif defined(SIMDE_SSE2_POWER_ALTIVEC)
   r_.altivec_u32f = vec_and(a_.altivec_u32f, b_.altivec_u32f);
+#elif defined(SIMDE_SSE2_POWER_ALTIVEC)
+  r_.altivec_i32 = vec_and(a_.altivec_i32, b_.altivec_i32);
 #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
   r_.i32f = a_.i32f & b_.i32f;
 #else
