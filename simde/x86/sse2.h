@@ -1759,6 +1759,8 @@ simde_mm_cmpge_pd (simde__m128d a, simde__m128d b) {
     r_.i64 = (__typeof__(r_.i64))(a_.f64 >= b_.f64);
   #elif defined(SIMDE_SSE2_WASM_SIMD128)
     r_.wasm_v128 = wasm_f64x2_ge(a_.wasm_v128, b_.wasm_v128);
+  #elif defined(SIMDE_SSE2_POWER_ALTIVEC)
+    r_.altivec_f64 = (vector double) vec_cmpge(a_.altivec_f64, b_.altivec_f64);
   #else
     SIMDE__VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
