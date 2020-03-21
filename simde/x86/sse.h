@@ -330,6 +330,8 @@ simde_mm_andnot_ps (simde__m128 a, simde__m128 b) {
   r_.neon_i32 = vbicq_s32(b_.neon_i32, a_.neon_i32);
 #elif defined(SIMDE_SSE_WASM_SIMD128)
   r_.wasm_v128 = wasm_v128_andnot(b_.wasm_v128, a_.wasm_v128);
+#elif defined(SIMDE_SSE_POWER_ALTIVEC)
+  r_.altivec_f32 = vec_andc(b_.altivec_f32, a_.altivec_f32);
 #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
   r_.i32 = ~a_.i32 & b_.i32;
 #else
