@@ -1207,6 +1207,8 @@ simde_mm_cmpeq_epi8 (simde__m128i a, simde__m128i b) {
     r_.neon_i8 = vreinterpretq_s8_u8(vceqq_s8(b_.neon_i8, a_.neon_i8));
   #elif defined(SIMDE_SSE2_WASM_SIMD128)
     r_.wasm_v128 = wasm_i8x16_eq(a_.wasm_v128, b_.wasm_v128);
+  #elif defined(SIMDE_SSE_POWER_ALTIVEC)
+    r_.altivec_i8 = (vector signed char) vec_cmpeq(a_.altivec_i8, b_.altivec_i8);
   #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
     r_.i8 = (__typeof__(r_.i8))(a_.i8 == b_.i8);
   #else
@@ -1238,6 +1240,8 @@ simde_mm_cmpeq_epi16 (simde__m128i a, simde__m128i b) {
     r_.neon_i16 = vreinterpretq_s16_u16(vceqq_s16(b_.neon_i16, a_.neon_i16));
   #elif defined(SIMDE_SSE2_WASM_SIMD128)
     r_.wasm_v128 = wasm_i16x8_eq(a_.wasm_v128, b_.wasm_v128);
+  #elif defined(SIMDE_SSE_POWER_ALTIVEC)
+    r_.altivec_i16 = (vector signed short) vec_cmpeq(a_.altivec_i16, b_.altivec_i16);
   #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
     r_.i16 = (a_.i16 == b_.i16);
   #else
@@ -1269,6 +1273,8 @@ simde_mm_cmpeq_epi32 (simde__m128i a, simde__m128i b) {
     r_.neon_i32 = vreinterpretq_s32_u32(vceqq_s32(b_.neon_i32, a_.neon_i32));
   #elif defined(SIMDE_SSE2_WASM_SIMD128)
     r_.wasm_v128 = wasm_i32x4_eq(a_.wasm_v128, b_.wasm_v128);
+  #elif defined(SIMDE_SSE_POWER_ALTIVEC)
+    r_.altivec_i32 = (vector signed int) vec_cmpeq(a_.altivec_i32, b_.altivec_i32);
   #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
     r_.i32 = (a_.i32 == b_.i32);
   #else
@@ -1300,6 +1306,8 @@ simde_mm_cmpeq_pd (simde__m128d a, simde__m128d b) {
     r_.neon_i32 = vreinterpretq_s32_u32(vceqq_s32(vreinterpretq_s32_f32(b_.neon_f32), vreinterpretq_s32_f32(a_.neon_f32)));
   #elif defined(SIMDE_SSE2_WASM_SIMD128)
     r_.wasm_v128 = wasm_f64x2_eq(a_.wasm_v128, b_.wasm_v128);
+  #elif defined(SIMDE_SSE_POWER_ALTIVEC)
+    r_.altivec_f64 = (vector double) vec_cmpeq(a_.altivec_f64, b_.altivec_f64);
   #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
     r_.i32 = (__typeof__(r_.i32)) (a_.f32 == b_.f32);
   #else

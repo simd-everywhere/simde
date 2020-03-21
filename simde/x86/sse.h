@@ -437,6 +437,8 @@ simde_mm_cmpeq_ps (simde__m128 a, simde__m128 b) {
     r_.neon_u32 = vceqq_f32(a_.neon_f32, b_.neon_f32);
   #elif defined(SIMDE_SSE_WASM_SIMD128)
     r_.wasm_v128 = wasm_f32x4_eq(a_.wasm_v128, b_.wasm_v128);
+  #elif defined(SIMDE_SSE_POWER_ALTIVEC)
+    r_.altivec_f32 = (vector float) vec_cmpeq(a_.altivec_f32, b_.altivec_f32);
   #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
     r_.i32 = HEDLEY_STATIC_CAST(__typeof__(r_.i32), a_.f32 == b_.f32);
   #else
