@@ -36,7 +36,9 @@ SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 #  if defined(SIMDE_ARCH_X86_SSE4_2) && !defined(SIMDE_SSE4_2_NO_NATIVE) && !defined(SIMDE_NO_NATIVE)
 #    define SIMDE_SSE4_2_NATIVE
 #  elif defined(SIMDE_ARCH_ARM_NEON) && !defined(SIMDE_SSE4_2_NO_NEON) && !defined(SIMDE_NO_NEON)
-#    define SIMDE_SSE4_1_NEON
+#    define SIMDE_SSE4_2_NEON
+#  elif defined(SIMDE_ARCH_POWER_ALTIVEC)
+#    define SIMDE_SSE4_2_POWER_ALTIVEC
 #  endif
 
 #  if defined(SIMDE_SSE4_2_NATIVE) && !defined(SIMDE_SSE4_1_NATIVE)
@@ -76,8 +78,10 @@ simde_mm_cmpgt_epi64 (simde__m128i a, simde__m128i b) {
     a_ = simde__m128i_to_private(a),
     b_ = simde__m128i_to_private(b);
 
-  #if defined(SIMDE_SSE2_NEON) && defined(SIMDE_ARCH_AARCH64)
+  #if defined(SIMDE_SSE4_2_NEON) && defined(SIMDE_ARCH_AARCH64)
     r_.neon_i64 = vreinterpretq_s64_u64(vcgtq_s64(a_.neon_i64, b_.neon_i64));
+  #elif defined(SIMDE_SSE4_2_POWER_ALTIVEC)
+    r_.altivec_i64 = (vector signed long long) vec_cmpgt(a_.altivec_i64, b_.altivec_i64);
   #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
     r_.i64 = (__typeof__(r_.i64))(a_.i64 > b_.i64);
   #else
