@@ -38,6 +38,8 @@ SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 #    define SIMDE_SSSE3_NATIVE
 #  elif defined(SIMDE_ARCH_ARM_NEON) && !defined(SIMDE_SSSE3_NO_NEON) && !defined(SIMDE_NO_NEON)
 #    define SIMDE_SSSE3_NEON
+#  elif defined(SIMDE_ARCH_POWER_ALTIVEC)
+#    define SIMDE_SSSE3_POWER_ALTIVEC
 #  endif
 
 #  if defined(SIMDE_SSSE3_NATIVE) && !defined(SIMDE_SSE3_NATIVE)
@@ -78,6 +80,8 @@ simde_mm_abs_epi8 (simde__m128i a) {
 
   #if defined(SIMDE_SSSE3_NEON)
     r_.neon_i8 = vabsq_s8(a_.neon_i8);
+#elif defined(SIMDE_SSSE3_POWER_ALTIVEC)
+  r_.altivec_i8 = vec_abs(a_.altivec_i8);
   #else
     SIMDE__VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.i8) / sizeof(r_.i8[0])) ; i++) {
@@ -104,6 +108,8 @@ simde_mm_abs_epi16 (simde__m128i a) {
 
   #if defined(SIMDE_SSSE3_NEON)
     r_.neon_i16 = vabsq_s16(a_.neon_i16);
+  #elif defined(SIMDE_SSSE3_POWER_ALTIVEC)
+    r_.altivec_i16 = vec_abs(a_.altivec_i16);
   #else
     SIMDE__VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.i16) / sizeof(r_.i16[0])) ; i++) {
@@ -130,6 +136,8 @@ simde_mm_abs_epi32 (simde__m128i a) {
 
   #if defined(SIMDE_SSE3_NEON)
     r_.neon_i32 = vabsq_s32(a_.neon_i32);
+  #elif defined(SIMDE_SSSE3_POWER_ALTIVEC)
+    r_.altivec_i32 = vec_abs(a_.altivec_i32);
   #else
     SIMDE__VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {
