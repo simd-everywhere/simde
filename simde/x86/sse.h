@@ -2284,10 +2284,14 @@ simde_mm_movelh_ps (simde__m128 a, simde__m128 b) {
     a_ = simde__m128_to_private(a),
     b_ = simde__m128_to_private(b);
 
-  r_.f32[0] = a_.f32[0];
-  r_.f32[1] = a_.f32[1];
-  r_.f32[2] = b_.f32[0];
-  r_.f32[3] = b_.f32[1];
+  #if defined(SIMDE__SHUFFLE_VECTOR)
+    r_.f32 = SIMDE__SHUFFLE_VECTOR(32, 16, a_.f32, b_.f32, 0, 1, 4, 5);
+  #else
+    r_.f32[0] = a_.f32[0];
+    r_.f32[1] = a_.f32[1];
+    r_.f32[2] = b_.f32[0];
+    r_.f32[3] = b_.f32[1];
+  #endif
 
   return simde__m128_from_private(r_);
 #endif
