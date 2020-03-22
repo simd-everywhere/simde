@@ -1645,6 +1645,8 @@ simde_mm_div_ps (simde__m128 a, simde__m128 b) {
   float32x4_t recip0 = vrecpeq_f32(b_.neon_f32);
   float32x4_t recip1 = vmulq_f32(recip0, vrecpsq_f32(recip0, b_.neon_f32));
   r_.neon_f32 = vmulq_f32(a_.neon_f32, recip1);
+#elif defined(SIMDE_SSE_WASM_SIMD128)
+    r_.wasm_v128 =  wasm_f32x4_div(a_.wasm_v128, b_.wasm_v128);
 #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
   r_.f32 = a_.f32 / b_.f32;
 #else
@@ -2968,6 +2970,7 @@ simde_mm_store_ps1 (simde_float32 mem_addr[4], simde__m128 a) {
 
 #if defined(SIMDE_SSE_NATIVE)
   _mm_store_ps1(mem_addr, a);
+
 #else
   simde__m128_private a_ = simde__m128_to_private(a);
 
