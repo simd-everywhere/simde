@@ -3075,10 +3075,15 @@ simde_mm_storer_ps (simde_float32 mem_addr[4], simde__m128 a) {
 #else
   simde__m128_private a_ = simde__m128_to_private(a);
 
-  SIMDE__VECTORIZE_ALIGNED(mem_addr:16)
-  for (size_t i = 0 ; i < sizeof(a_.f32) / sizeof(a_.f32[0]) ; i++) {
-    mem_addr[i] = a_.f32[((sizeof(a_.f32) / sizeof(a_.f32[0])) - 1) - i];
-  }
+  #if defined(SIMDE__SHUFFLE_VECTOR)
+    a_.f32 = SIMDE__SHUFFLE_VECTOR(32, 16, a_.f32, a_.f32, 3, 2, 1, 0);
+    simde_mm_store_ps(mem_addr, simde__m128_from_private(a_));
+  #else
+    SIMDE__VECTORIZE_ALIGNED(mem_addr:16)
+    for (size_t i = 0 ; i < sizeof(a_.f32) / sizeof(a_.f32[0]) ; i++) {
+      mem_addr[i] = a_.f32[((sizeof(a_.f32) / sizeof(a_.f32[0])) - 1) - i];
+    }
+  #endif
 #endif
 }
 #if defined(SIMDE_SSE_ENABLE_NATIVE_ALIASES)
