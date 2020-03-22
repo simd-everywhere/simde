@@ -99,7 +99,6 @@ simde_mm_div_epi8 (simde__m128i a, simde__m128i b) {
       a_ = simde__m128i_to_private(a),
       b_ = simde__m128i_to_private(b);
 
-  
   #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
     r_.i8 = a_.i8 / b_.i8;
   #elif defined(SIMDE_SVML_WASM_SIMD128)
@@ -245,7 +244,6 @@ simde_mm_div_epu16 (simde__m128i a, simde__m128i b) {
       a_ = simde__m128i_to_private(a),
       b_ = simde__m128i_to_private(b);
 
-  
   #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
     r_.u16 = a_.u16 / b_.u16;
   #elif defined(SIMDE_SVML_WASM_SIMD128)

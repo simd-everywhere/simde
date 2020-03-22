@@ -2970,7 +2970,6 @@ simde_mm_store_ps1 (simde_float32 mem_addr[4], simde__m128 a) {
 
 #if defined(SIMDE_SSE_NATIVE)
   _mm_store_ps1(mem_addr, a);
-
 #else
   simde__m128_private a_ = simde__m128_to_private(a);
 
