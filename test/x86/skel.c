@@ -1990,6 +1990,14 @@ test_simde_mm512_xxx_epu8(const MunitParameter params[], void* data) {
            "                             UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"),\n"
            "                             UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"),\n"
            "                             UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"),\n"
+           "                             UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"),\n"
+           "                             UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"),\n"
+           "                             UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"),\n"
+           "                             UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"),\n"
+           "                             UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"),\n"
+           "                             UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"),\n"
+           "                             UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"),\n"
+           "                             UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"),\n"
            "                             UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8")),\n",
            a.u8[63], a.u8[62], a.u8[61], a.u8[60], a.u8[59], a.u8[58], a.u8[57], a.u8[56],
            a.u8[55], a.u8[54], a.u8[53], a.u8[52], a.u8[51], a.u8[50], a.u8[49], a.u8[48],
@@ -2006,6 +2014,14 @@ test_simde_mm512_xxx_epu8(const MunitParameter params[], void* data) {
            "                             UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"),\n"
            "                             UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"),\n"
            "                             UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"),\n"
+           "                             UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"),\n"
+           "                             UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"),\n"
+           "                             UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"),\n"
+           "                             UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"),\n"
+           "                             UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"),\n"
+           "                             UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"),\n"
+           "                             UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"),\n"
+           "                             UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"),\n"
            "                             UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8")),\n",
            b.u8[63], b.u8[62], b.u8[61], b.u8[60], b.u8[59], b.u8[58], b.u8[57], b.u8[56],
            b.u8[55], b.u8[54], b.u8[53], b.u8[52], b.u8[51], b.u8[50], b.u8[49], b.u8[48],
@@ -2016,6 +2032,14 @@ test_simde_mm512_xxx_epu8(const MunitParameter params[], void* data) {
            b.u8[15], b.u8[14], b.u8[13], b.u8[12], b.u8[11], b.u8[10], b.u8[ 9], b.u8[ 8],
            b.u8[ 7], b.u8[ 6], b.u8[ 5], b.u8[ 4], b.u8[ 3], b.u8[ 2], b.u8[ 1], b.u8[ 0]);
     printf("      simde_x_mm512_set_epu8(UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"),\n"
+           "                             UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"),\n"
+           "                             UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"),\n"
+           "                             UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"),\n"
+           "                             UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"),\n"
+           "                             UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"),\n"
+           "                             UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"),\n"
+           "                             UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"),\n"
+           "                             UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"),\n"
            "                             UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"),\n"
            "                             UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"),\n"
            "                             UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"), UINT8_C(%3"PRIu8"),\n"
@@ -2065,25 +2089,37 @@ test_simde_mm512_xxx_epu16(const MunitParameter params[], void* data) {
     r = simde__m512i_to_private(simde_mm512_xxx_epu16(simde__m512i_from_private(a), simde__m512i_from_private(b)));
 
     printf("    { simde_x_mm512_set_epu16(UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "),\n"
-	         "                              UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "),\n"
-	         "                              UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "),\n"
-	         "                              UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 ")),\n",
+           "                              UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "),\n"
+           "                              UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "),\n"
+           "                              UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "),\n"
+           "                              UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "),\n"
+           "                              UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "),\n"
+           "                              UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "),\n"
+           "                              UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 ")),\n",
            a.u16[31], a.u16[30], a.u16[29], a.u16[28], a.u16[27], a.u16[26], a.u16[25], a.u16[24],
            a.u16[23], a.u16[22], a.u16[21], a.u16[20], a.u16[19], a.u16[18], a.u16[17], a.u16[16],
            a.u16[15], a.u16[14], a.u16[13], a.u16[12], a.u16[11], a.u16[10], a.u16[ 9], a.u16[ 8],
            a.u16[ 7], a.u16[ 6], a.u16[ 5], a.u16[ 4], a.u16[ 3], a.u16[ 2], a.u16[ 1], a.u16[ 0]);
     printf("      simde_x_mm512_set_epu16(UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "),\n"
-	         "                              UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "),\n"
-	         "                              UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "),\n"
-	         "                              UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 ")),\n",
+           "                              UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "),\n"
+           "                              UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "),\n"
+           "                              UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "),\n"
+           "                              UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "),\n"
+           "                              UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "),\n"
+           "                              UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "),\n"
+           "                              UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 ")),\n",
            b.u16[31], b.u16[30], b.u16[29], b.u16[28], b.u16[27], b.u16[26], b.u16[25], b.u16[24],
            b.u16[23], b.u16[22], b.u16[21], b.u16[20], b.u16[19], b.u16[18], b.u16[17], b.u16[16],
            b.u16[15], b.u16[14], b.u16[13], b.u16[12], b.u16[11], b.u16[10], b.u16[ 9], b.u16[ 8],
            b.u16[ 7], b.u16[ 6], b.u16[ 5], b.u16[ 4], b.u16[ 3], b.u16[ 2], b.u16[ 1], b.u16[ 0]);
     printf("      simde_x_mm512_set_epu16(UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "),\n"
-	         "                              UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "),\n"
-	         "                              UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "),\n"
-	         "                              UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 ")) },\n",
+           "                              UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "),\n"
+           "                              UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "),\n"
+           "                              UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "),\n"
+           "                              UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "),\n"
+           "                              UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "),\n"
+           "                              UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "),\n"
+           "                              UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 "), UINT16_C(%6" PRIu16 ")) },\n",
            r.u16[31], r.u16[30], r.u16[29], r.u16[28], r.u16[27], r.u16[26], r.u16[25], r.u16[24],
            r.u16[23], r.u16[22], r.u16[21], r.u16[20], r.u16[19], r.u16[18], r.u16[17], r.u16[16],
            r.u16[15], r.u16[14], r.u16[13], r.u16[12], r.u16[11], r.u16[10], r.u16[ 9], r.u16[ 8],
