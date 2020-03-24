@@ -183,14 +183,14 @@ implementations where they are supported, SIMDe does contain portable
 fallbacks which are designed to work on any C99 compiler.
 
 Every commit is tested in CI on multiple compilers, platforms, and
-configurations, and our test coverage is extremely extnensive.
+configurations, and our test coverage is extremely extensive.
 Currently tested compilers include:
 
  * GCC versions back to 4.8
  * Clang versions back to 7
  * Microsoft Visual Studio back to 12 (2013)
  * IBM XL C/C++
- * Intel C/C++ Compiler
+ * Intel C/C++ Compiler (ICC)
  * PGI C Compiler
 
 I'm generally willing to accept patches to add support for other
@@ -283,8 +283,8 @@ native aliases (`SIMDE_ENABLE_NATIVE_ALIASES`):
   return incorrect results.
 
 Also, as mentioned earlier, while some APIs make assumptions about
-basic types (*e.g.*, `int` is 32 bits), SIMDe can not so many types
-have been altered to used portable fixed-width versions such as
+basic types (*e.g.*, `int` is 32 bits), SIMDe does not, so many types
+have been altered to use portable fixed-width versions such as
 `int32_t`.
 
 If you find any other differences, please file an issue so we can either fix
@@ -305,7 +305,7 @@ tremendously grateful for their support:
  * [CodeCov.io](https://codecov.io/) — provides code coverage analysis
    for our test cases.
 
-Without such organizations donating resources SIMDe wouldn't be nearly
+Without such organizations donating resources, SIMDe wouldn't be nearly
 as useful or usable as it is today.
 
 We would also like to thank anyone who has helped develop the myriad
