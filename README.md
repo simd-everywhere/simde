@@ -135,7 +135,9 @@ Each instruction set has a separate file; `x86/mmx.h` for MMX,
 the header for whichever instruction set(s) you want, and SIMDe will
 provide the fastest implementation it can given which extensions
 you've enabled in your compiler (i.e., if you want to use NEON to
-implement SSE, you'll need to pass something like `-mfpu=neon`).
+implement SSE, you'll need to pass something like `-mfpu=neon`,
+'-mfpu=name' specifies the floating-point hardware or hardware emulation
+that is available on the target, check [GCC ARM-Options](https://gcc.gnu.org/onlinedocs/gcc/ARM-Options.html) for more).
 
 If you define `SIMDE_ENABLE_NATIVE_ALIASES` before including SIMDe
 you can use the same names as the native functions.  Unfortunately,
@@ -161,7 +163,7 @@ For best performance, in addition to `-O3` (or whatever your compiler's
 equivalent is), you should enable OpenMP 4 SIMD support by defining
 `SIMDE_ENABLE_OPENMP` before including any SIMDe headers, and
 enabling OpenMP support in your compiler.  GCC and ICC both support a
-flag to enable only OpenMP SIMD support instead of full OpenMP (the
+flag to enable only OpenMP SIMD support instead of full OpenMP (the OpenMP
 SIMD support doesn't require the OpenMP run-time library); for GCC the
 flag is `-fopenmp-simd`, for ICC `-qopenmp-simd`.  SIMDe also supports
 using [Cilk Plus](https://www.cilkplus.org/), [GCC loop-specific
