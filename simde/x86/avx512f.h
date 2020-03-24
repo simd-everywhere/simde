@@ -521,6 +521,130 @@ simde_mm512_set_epi64 (int64_t e7, int64_t e6, int64_t e5, int64_t e4, int64_t e
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
+simde__m512i
+simde_x_mm512_set_epu8 (uint8_t e63, uint8_t e62, uint8_t e61, uint8_t e60, uint8_t e59, uint8_t e58, uint8_t e57, uint8_t e56,
+                        uint8_t e55, uint8_t e54, uint8_t e53, uint8_t e52, uint8_t e51, uint8_t e50, uint8_t e49, uint8_t e48,
+                        uint8_t e47, uint8_t e46, uint8_t e45, uint8_t e44, uint8_t e43, uint8_t e42, uint8_t e41, uint8_t e40,
+                        uint8_t e39, uint8_t e38, uint8_t e37, uint8_t e36, uint8_t e35, uint8_t e34, uint8_t e33, uint8_t e32,
+                        uint8_t e31, uint8_t e30, uint8_t e29, uint8_t e28, uint8_t e27, uint8_t e26, uint8_t e25, uint8_t e24,
+                        uint8_t e23, uint8_t e22, uint8_t e21, uint8_t e20, uint8_t e19, uint8_t e18, uint8_t e17, uint8_t e16,
+                        uint8_t e15, uint8_t e14, uint8_t e13, uint8_t e12, uint8_t e11, uint8_t e10, uint8_t  e9, uint8_t  e8,
+                        uint8_t  e7, uint8_t  e6, uint8_t  e5, uint8_t  e4, uint8_t  e3, uint8_t  e2, uint8_t  e1, uint8_t  e0) {
+  simde__m512i_private r_;
+
+  r_.u8[ 0] = e0;
+  r_.u8[ 1] = e1;
+  r_.u8[ 2] = e2;
+  r_.u8[ 3] = e3;
+  r_.u8[ 4] = e4;
+  r_.u8[ 5] = e5;
+  r_.u8[ 6] = e6;
+  r_.u8[ 7] = e7;
+  r_.u8[ 8] = e8;
+  r_.u8[ 9] = e9;
+  r_.u8[10] = e10;
+  r_.u8[11] = e11;
+  r_.u8[12] = e12;
+  r_.u8[13] = e13;
+  r_.u8[14] = e14;
+  r_.u8[15] = e15;
+  r_.u8[16] = e16;
+  r_.u8[17] = e17;
+  r_.u8[18] = e18;
+  r_.u8[19] = e19;
+  r_.u8[20] = e20;
+  r_.u8[21] = e21;
+  r_.u8[22] = e22;
+  r_.u8[23] = e23;
+  r_.u8[24] = e24;
+  r_.u8[25] = e25;
+  r_.u8[26] = e26;
+  r_.u8[27] = e27;
+  r_.u8[28] = e28;
+  r_.u8[29] = e29;
+  r_.u8[30] = e30;
+  r_.u8[31] = e31;
+  r_.u8[32] = e32;
+  r_.u8[33] = e33;
+  r_.u8[34] = e34;
+  r_.u8[35] = e35;
+  r_.u8[36] = e36;
+  r_.u8[37] = e37;
+  r_.u8[38] = e38;
+  r_.u8[39] = e39;
+  r_.u8[40] = e40;
+  r_.u8[41] = e41;
+  r_.u8[42] = e42;
+  r_.u8[43] = e43;
+  r_.u8[44] = e44;
+  r_.u8[45] = e45;
+  r_.u8[46] = e46;
+  r_.u8[47] = e47;
+  r_.u8[48] = e48;
+  r_.u8[49] = e49;
+  r_.u8[50] = e50;
+  r_.u8[51] = e51;
+  r_.u8[52] = e52;
+  r_.u8[53] = e53;
+  r_.u8[54] = e54;
+  r_.u8[55] = e55;
+  r_.u8[56] = e56;
+  r_.u8[57] = e57;
+  r_.u8[58] = e58;
+  r_.u8[59] = e59;
+  r_.u8[60] = e60;
+  r_.u8[61] = e61;
+  r_.u8[62] = e62;
+  r_.u8[63] = e63;
+
+  return simde__m512i_from_private(r_);
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m512i
+simde_x_mm512_set_epu16 (uint16_t e31, uint16_t e30, uint16_t e29, uint16_t e28, uint16_t e27, uint16_t e26, uint16_t e25, uint16_t e24,
+                       uint16_t e23, uint16_t e22, uint16_t e21, uint16_t e20, uint16_t e19, uint16_t e18, uint16_t e17, uint16_t e16,
+                       uint16_t e15, uint16_t e14, uint16_t e13, uint16_t e12, uint16_t e11, uint16_t e10, uint16_t  e9, uint16_t  e8,
+                       uint16_t  e7, uint16_t  e6, uint16_t  e5, uint16_t  e4, uint16_t  e3, uint16_t  e2, uint16_t  e1, uint16_t  e0) {
+  simde__m512i_private r_;
+
+  r_.u16[ 0] = e0;
+  r_.u16[ 1] = e1;
+  r_.u16[ 2] = e2;
+  r_.u16[ 3] = e3;
+  r_.u16[ 4] = e4;
+  r_.u16[ 5] = e5;
+  r_.u16[ 6] = e6;
+  r_.u16[ 7] = e7;
+  r_.u16[ 8] = e8;
+  r_.u16[ 9] = e9;
+  r_.u16[10] = e10;
+  r_.u16[11] = e11;
+  r_.u16[12] = e12;
+  r_.u16[13] = e13;
+  r_.u16[14] = e14;
+  r_.u16[15] = e15;
+  r_.u16[16] = e16;
+  r_.u16[17] = e17;
+  r_.u16[18] = e18;
+  r_.u16[19] = e19;
+  r_.u16[20] = e20;
+  r_.u16[21] = e21;
+  r_.u16[22] = e22;
+  r_.u16[23] = e23;
+  r_.u16[24] = e24;
+  r_.u16[25] = e25;
+  r_.u16[26] = e26;
+  r_.u16[27] = e27;
+  r_.u16[28] = e28;
+  r_.u16[29] = e29;
+  r_.u16[30] = e30;
+  r_.u16[31] = e31;
+
+  return simde__m512i_from_private(r_);
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
 simde__m512
 simde_mm512_set_ps (simde_float32 e15, simde_float32 e14, simde_float32 e13, simde_float32 e12,
                     simde_float32 e11, simde_float32 e10, simde_float32  e9, simde_float32  e8,
