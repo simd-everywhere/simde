@@ -67,8 +67,8 @@ simde_mm512_add_epi8 (simde__m512i a, simde__m512i b) {
   r_.i8 = a_.i8 + b_.i8;
 #else
   SIMDE__VECTORIZE
-  for (size_t i = 0 ; i < (sizeof(r_.m128i) / sizeof(r_.m128i[0])) ; i++) {
-    r_.m128i[i] = simde_mm_add_epi8(a_.m128i[i], b_.m128i[i]);
+  for (size_t i = 0 ; i < (sizeof(r_.m256i) / sizeof(r_.m256i[0])) ; i++) {
+    r_.m256i[i] = simde_mm256_add_epi8(a_.m256i[i], b_.m256i[i]);
   }
 #endif
 
@@ -94,8 +94,8 @@ simde_mm512_add_epi16 (simde__m512i a, simde__m512i b) {
   r_.i16 = a_.i16 + b_.i16;
 #else
   SIMDE__VECTORIZE
-  for (size_t i = 0 ; i < (sizeof(r_.m128i) / sizeof(r_.m128i[0])) ; i++) {
-    r_.m128i[i] = simde_mm_add_epi16(a_.m128i[i], b_.m128i[i]);
+  for (size_t i = 0 ; i < (sizeof(r_.m256i) / sizeof(r_.m256i[0])) ; i++) {
+    r_.m256i[i] = simde_mm256_add_epi16(a_.m256i[i], b_.m256i[i]);
   }
 #endif
 
@@ -118,8 +118,8 @@ simde_mm512_adds_epu8 (simde__m512i a, simde__m512i b) {
     b_ = simde__m512i_to_private(b);
 
   SIMDE__VECTORIZE
-  for (size_t i = 0 ; i < (sizeof(r_.m128i) / sizeof(r_.m128i[0])) ; i++) {
-    r_.m128i[i] = simde_mm_adds_epu8(a_.m128i[i], b_.m128i[i]);
+  for (size_t i = 0 ; i < (sizeof(r_.m256i) / sizeof(r_.m256i[0])) ; i++) {
+    r_.m256i[i] = simde_mm256_adds_epu8(a_.m256i[i], b_.m256i[i]);
   }
 
   return simde__m512i_from_private(r_);
@@ -141,8 +141,8 @@ simde_mm512_adds_epu16 (simde__m512i a, simde__m512i b) {
     b_ = simde__m512i_to_private(b);
 
   SIMDE__VECTORIZE
-  for (size_t i = 0 ; i < (sizeof(r_.m128i) / sizeof(r_.m128i[0])) ; i++) {
-    r_.m128i[i] = simde_mm_adds_epu16(a_.m128i[i], b_.m128i[i]);
+  for (size_t i = 0 ; i < (sizeof(r_.m256i) / sizeof(r_.m256i[0])) ; i++) {
+    r_.m256i[i] = simde_mm256_adds_epu16(a_.m256i[i], b_.m256i[i]);
   }
 
   return simde__m512i_from_private(r_);
