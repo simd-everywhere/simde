@@ -286,6 +286,72 @@ simde_mm256_andnot_si256 (simde__m256i a, simde__m256i b) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256i
+simde_mm256_adds_epi8 (simde__m256i a, simde__m256i b) {
+#if defined(SIMDE_AVX2_NATIVE)
+  return _mm256_adds_epi8(a, b);
+#else
+  simde__m256i_private
+    r_,
+    a_ = simde__m256i_to_private(a),
+    b_ = simde__m256i_to_private(b);
+
+  #if defined(SIMDE_ARCH_X86_SSE2) && !defined(HEDLEY_INTEL_VERSION)
+    SIMDE__VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.m128i) / sizeof(r_.m128i[0])) ; i++) {
+      r_.m128i[i] = simde_mm_adds_epi8(a_.m128i[i], b_.m128i[i]);
+    }
+  #else
+    SIMDE__VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.i8) / sizeof(r_.i8[0])) ; i++) {
+      const int32_t tmp =
+        HEDLEY_STATIC_CAST(int16_t, a_.i8[i]) +
+        HEDLEY_STATIC_CAST(int16_t, b_.i8[i]);
+      r_.i8[i] = HEDLEY_STATIC_CAST(int8_t, ((tmp < INT8_MAX) ? ((tmp > INT8_MIN) ? tmp : INT8_MIN) : INT8_MAX));
+    }
+  #endif
+
+  return simde__m256i_from_private(r_);
+#endif
+}
+#if defined(SIMDE_AVX2_ENABLE_NATIVE_ALIASES)
+#  define _mm256_adds_epi8(a, b) simde_mm256_adds_epi8(a, b)
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256i
+simde_mm256_adds_epi16(simde__m256i a, simde__m256i b) {
+#if defined(SIMDE_AVX2_NATIVE)
+  return _mm256_adds_epi16(a, b);
+#else
+  simde__m256i_private
+    r_,
+    a_ = simde__m256i_to_private(a),
+    b_ = simde__m256i_to_private(b);
+
+  #if defined(SIMDE_ARCH_X86_SSE2) && !defined(HEDLEY_INTEL_VERSION)
+    SIMDE__VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.m128i) / sizeof(r_.m128i[0])) ; i++) {
+      r_.m128i[i] = simde_mm_adds_epi16(a_.m128i[i], b_.m128i[i]);
+    }
+  #else
+    SIMDE__VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.i16) / sizeof(r_.i16[0])) ; i++) {
+      const int32_t tmp =
+        HEDLEY_STATIC_CAST(int32_t, a_.i16[i]) +
+        HEDLEY_STATIC_CAST(int32_t, b_.i16[i]);
+      r_.i16[i] = HEDLEY_STATIC_CAST(int16_t, ((tmp < INT16_MAX) ? ((tmp > INT16_MIN) ? tmp : INT16_MIN) : INT16_MAX));
+    }
+  #endif
+
+  return simde__m256i_from_private(r_);
+#endif
+}
+#if defined(SIMDE_AVX2_ENABLE_NATIVE_ALIASES)
+#  define _mm256_adds_epi16(a, b) simde_mm256_adds_epi16(a, b)
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256i
 simde_mm256_adds_epu8 (simde__m256i a, simde__m256i b) {
 #if defined(SIMDE_AVX2_NATIVE)
   return _mm256_adds_epu8(a, b);
