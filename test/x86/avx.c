@@ -2709,7 +2709,7 @@ test_simde_mm_cmp_pd(const MunitParameter params[], void* data) {
     r = simde_mm_cmp_pd(test_vec[(23 * 5) + i].a, test_vec[(23 * 5) + i].b, 23);
     simde_assert_m128d_equal(r, test_vec[23 * 5].r);
 
-    r = simde_mm_cmp_pd(test_vec[(24 * 5) + i].a, test_vec[(24 * 5) + i].b, 24);
+    r = simde_mm_cmp_pd(test_vec[(24 * 5) + i].a, test_vec[(24 * 5) + i].b, SIMDE_CMP_EQ_US);
     simde_assert_m128d_equal(r, test_vec[24 * 5].r);
 
     r = simde_mm_cmp_pd(test_vec[(25 * 5) + i].a, test_vec[(25 * 5) + i].b, 25);
@@ -2747,193 +2747,193 @@ test_simde_mm_cmp_ps(const MunitParameter params[], void* data) {
   a = simde_mm_set_ps(SIMDE_FLOAT32_C(   78.15), SIMDE_FLOAT32_C(  891.26), SIMDE_FLOAT32_C( -343.00), SIMDE_FLOAT32_C(   84.56));
   b = simde_mm_set_ps(SIMDE_FLOAT32_C(  698.49), SIMDE_FLOAT32_C( -963.46), SIMDE_FLOAT32_C( -116.01), SIMDE_FLOAT32_C( -590.30));
   e = simde_mm_set_ps(SIMDE_FLOAT32_C(    0.00), SIMDE_FLOAT32_C(    0.00), SIMDE_FLOAT32_C(    0.00), SIMDE_FLOAT32_C(    0.00));
-  r = simde_mm_cmp_ps(a, b, 0);
+  r = simde_mm_cmp_ps(a, b, SIMDE_CMP_EQ_OQ);
   simde_assert_m128i_u32(simde_mm_castps_si128(r), ==, simde_mm_castps_si128(e));
 
   a = simde_mm_set_ps(SIMDE_FLOAT32_C( -265.69), SIMDE_FLOAT32_C(  933.07), SIMDE_FLOAT32_C( -527.28), SIMDE_FLOAT32_C(  -86.99));
   b = simde_mm_set_ps(SIMDE_FLOAT32_C( -890.35), SIMDE_FLOAT32_C( -111.28), SIMDE_FLOAT32_C(  338.07), SIMDE_FLOAT32_C( -617.73));
   e = simde_mm_set_ps(SIMDE_FLOAT32_C(    0.00), SIMDE_FLOAT32_C(    0.00), SIMDE_F32_ALL_SET, SIMDE_FLOAT32_C(    0.00));
-  r = simde_mm_cmp_ps(a, b, 1);
+  r = simde_mm_cmp_ps(a, b, SIMDE_CMP_LT_OS);
   simde_assert_m128i_u32(simde_mm_castps_si128(r), ==, simde_mm_castps_si128(e));
 
   a = simde_mm_set_ps(SIMDE_FLOAT32_C(  768.00), SIMDE_FLOAT32_C(   58.55), SIMDE_FLOAT32_C(  317.58), SIMDE_FLOAT32_C( -318.11));
   b = simde_mm_set_ps(SIMDE_FLOAT32_C(  357.58), SIMDE_FLOAT32_C(  682.66), SIMDE_FLOAT32_C(  366.57), SIMDE_FLOAT32_C( -244.60));
   e = simde_mm_set_ps(SIMDE_FLOAT32_C(    0.00), SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET);
-  r = simde_mm_cmp_ps(a, b, 2);
+  r = simde_mm_cmp_ps(a, b, SIMDE_CMP_LE_OS);
   simde_assert_m128i_u32(simde_mm_castps_si128(r), ==, simde_mm_castps_si128(e));
 
   a = simde_mm_set_ps(SIMDE_FLOAT32_C( -194.29), SIMDE_FLOAT32_C(  977.31), SIMDE_FLOAT32_C(  -40.23), SIMDE_FLOAT32_C(  277.84));
   b = simde_mm_set_ps(SIMDE_FLOAT32_C(  740.22), SIMDE_FLOAT32_C(  146.59), SIMDE_FLOAT32_C(  780.20), SIMDE_FLOAT32_C(  471.27));
   e = simde_mm_set_ps(SIMDE_FLOAT32_C(    0.00), SIMDE_FLOAT32_C(    0.00), SIMDE_FLOAT32_C(    0.00), SIMDE_FLOAT32_C(    0.00));
-  r = simde_mm_cmp_ps(a, b, 3);
+  r = simde_mm_cmp_ps(a, b, SIMDE_CMP_UNORD_Q);
   simde_assert_m128i_u32(simde_mm_castps_si128(r), ==, simde_mm_castps_si128(e));
 
   a = simde_mm_set_ps(SIMDE_FLOAT32_C( -120.65), SIMDE_FLOAT32_C( -397.11), SIMDE_FLOAT32_C(  121.30), SIMDE_FLOAT32_C( -296.83));
   b = simde_mm_set_ps(SIMDE_FLOAT32_C(  705.83), SIMDE_FLOAT32_C(   29.37), SIMDE_FLOAT32_C(  519.72), SIMDE_FLOAT32_C( -103.90));
   e = simde_mm_set_ps(SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET);
-  r = simde_mm_cmp_ps(a, b, 4);
+  r = simde_mm_cmp_ps(a, b, SIMDE_CMP_NEQ_UQ);
   simde_assert_m128i_u32(simde_mm_castps_si128(r), ==, simde_mm_castps_si128(e));
 
   a = simde_mm_set_ps(SIMDE_FLOAT32_C(  303.98), SIMDE_FLOAT32_C(  122.35), SIMDE_FLOAT32_C( -371.51), SIMDE_FLOAT32_C( -830.97));
   b = simde_mm_set_ps(SIMDE_FLOAT32_C(  595.80), SIMDE_FLOAT32_C( -291.27), SIMDE_FLOAT32_C(  984.58), SIMDE_FLOAT32_C( -789.32));
   e = simde_mm_set_ps(SIMDE_FLOAT32_C(    0.00), SIMDE_F32_ALL_SET, SIMDE_FLOAT32_C(    0.00), SIMDE_FLOAT32_C(    0.00));
-  r = simde_mm_cmp_ps(a, b, 5);
+  r = simde_mm_cmp_ps(a, b, SIMDE_CMP_NLT_US);
   simde_assert_m128i_u32(simde_mm_castps_si128(r), ==, simde_mm_castps_si128(e));
 
   a = simde_mm_set_ps(SIMDE_FLOAT32_C(  390.87), SIMDE_FLOAT32_C( -500.80), SIMDE_FLOAT32_C(  239.69), SIMDE_FLOAT32_C( -651.02));
   b = simde_mm_set_ps(SIMDE_FLOAT32_C( -942.42), SIMDE_FLOAT32_C( -340.28), SIMDE_FLOAT32_C(  850.37), SIMDE_FLOAT32_C(  422.67));
   e = simde_mm_set_ps(SIMDE_F32_ALL_SET, SIMDE_FLOAT32_C(    0.00), SIMDE_FLOAT32_C(    0.00), SIMDE_FLOAT32_C(    0.00));
-  r = simde_mm_cmp_ps(a, b, 6);
+  r = simde_mm_cmp_ps(a, b, SIMDE_CMP_NLE_US);
   simde_assert_m128i_u32(simde_mm_castps_si128(r), ==, simde_mm_castps_si128(e));
 
   a = simde_mm_set_ps(SIMDE_FLOAT32_C(  241.90), SIMDE_FLOAT32_C(  133.36), SIMDE_FLOAT32_C(  343.70), SIMDE_FLOAT32_C( -917.50));
   b = simde_mm_set_ps(SIMDE_FLOAT32_C( -715.40), SIMDE_FLOAT32_C( -986.32), SIMDE_FLOAT32_C(  113.89), SIMDE_FLOAT32_C(  742.57));
   e = simde_mm_set_ps(SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET);
-  r = simde_mm_cmp_ps(a, b, 7);
+  r = simde_mm_cmp_ps(a, b, SIMDE_CMP_ORD_Q);
   simde_assert_m128i_u32(simde_mm_castps_si128(r), ==, simde_mm_castps_si128(e));
 
   a = simde_mm_set_ps(SIMDE_FLOAT32_C(  230.45), SIMDE_FLOAT32_C( -311.44), SIMDE_FLOAT32_C(  132.25), SIMDE_FLOAT32_C(  566.85));
   b = simde_mm_set_ps(SIMDE_FLOAT32_C( -731.72), SIMDE_FLOAT32_C(  889.65), SIMDE_FLOAT32_C( -586.14), SIMDE_FLOAT32_C( -778.06));
   e = simde_mm_set_ps(SIMDE_FLOAT32_C(    0.00), SIMDE_FLOAT32_C(    0.00), SIMDE_FLOAT32_C(    0.00), SIMDE_FLOAT32_C(    0.00));
-  r = simde_mm_cmp_ps(a, b, 8);
+  r = simde_mm_cmp_ps(a, b, SIMDE_CMP_EQ_UQ);
   simde_assert_m128i_u32(simde_mm_castps_si128(r), ==, simde_mm_castps_si128(e));
 
   a = simde_mm_set_ps(SIMDE_FLOAT32_C(  702.60), SIMDE_FLOAT32_C( -355.63), SIMDE_FLOAT32_C(  969.32), SIMDE_FLOAT32_C(  907.68));
   b = simde_mm_set_ps(SIMDE_FLOAT32_C(  987.82), SIMDE_FLOAT32_C(   -0.12), SIMDE_FLOAT32_C(  651.63), SIMDE_FLOAT32_C(  179.23));
   e = simde_mm_set_ps(SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET, SIMDE_FLOAT32_C(    0.00), SIMDE_FLOAT32_C(    0.00));
-  r = simde_mm_cmp_ps(a, b, 9);
+  r = simde_mm_cmp_ps(a, b, SIMDE_CMP_NGE_US);
   simde_assert_m128i_u32(simde_mm_castps_si128(r), ==, simde_mm_castps_si128(e));
 
   a = simde_mm_set_ps(SIMDE_FLOAT32_C( -252.24), SIMDE_FLOAT32_C(  835.98), SIMDE_FLOAT32_C(  -89.83), SIMDE_FLOAT32_C( -473.83));
   b = simde_mm_set_ps(SIMDE_FLOAT32_C(  473.44), SIMDE_FLOAT32_C(  -13.26), SIMDE_FLOAT32_C(  522.39), SIMDE_FLOAT32_C(  -29.61));
   e = simde_mm_set_ps(SIMDE_F32_ALL_SET, SIMDE_FLOAT32_C(    0.00), SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET);
-  r = simde_mm_cmp_ps(a, b, 10);
+  r = simde_mm_cmp_ps(a, b, SIMDE_CMP_NGT_US);
   simde_assert_m128i_u32(simde_mm_castps_si128(r), ==, simde_mm_castps_si128(e));
 
   a = simde_mm_set_ps(SIMDE_FLOAT32_C( -250.48), SIMDE_FLOAT32_C( -560.42), SIMDE_FLOAT32_C( -229.52), SIMDE_FLOAT32_C(  960.81));
   b = simde_mm_set_ps(SIMDE_FLOAT32_C(  541.13), SIMDE_FLOAT32_C( -966.78), SIMDE_FLOAT32_C( -436.47), SIMDE_FLOAT32_C( -463.72));
   e = simde_mm_set_ps(SIMDE_FLOAT32_C(    0.00), SIMDE_FLOAT32_C(    0.00), SIMDE_FLOAT32_C(    0.00), SIMDE_FLOAT32_C(    0.00));
-  r = simde_mm_cmp_ps(a, b, 11);
+  r = simde_mm_cmp_ps(a, b, SIMDE_CMP_FALSE_OQ);
   simde_assert_m128i_u32(simde_mm_castps_si128(r), ==, simde_mm_castps_si128(e));
 
   a = simde_mm_set_ps(SIMDE_FLOAT32_C(  178.14), SIMDE_FLOAT32_C( -394.90), SIMDE_FLOAT32_C( -713.61), SIMDE_FLOAT32_C( -298.00));
   b = simde_mm_set_ps(SIMDE_FLOAT32_C( -303.13), SIMDE_FLOAT32_C( -717.53), SIMDE_FLOAT32_C(  358.73), SIMDE_FLOAT32_C(  268.02));
   e = simde_mm_set_ps(SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET);
-  r = simde_mm_cmp_ps(a, b, 12);
+  r = simde_mm_cmp_ps(a, b, SIMDE_CMP_NEQ_OQ);
   simde_assert_m128i_u32(simde_mm_castps_si128(r), ==, simde_mm_castps_si128(e));
 
   a = simde_mm_set_ps(SIMDE_FLOAT32_C(  241.76), SIMDE_FLOAT32_C(  236.50), SIMDE_FLOAT32_C(  831.59), SIMDE_FLOAT32_C( -144.41));
   b = simde_mm_set_ps(SIMDE_FLOAT32_C( -899.96), SIMDE_FLOAT32_C( -131.90), SIMDE_FLOAT32_C( -192.42), SIMDE_FLOAT32_C(  450.27));
   e = simde_mm_set_ps(SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET, SIMDE_FLOAT32_C(    0.00));
-  r = simde_mm_cmp_ps(a, b, 13);
+  r = simde_mm_cmp_ps(a, b, SIMDE_CMP_GE_OS);
   simde_assert_m128i_u32(simde_mm_castps_si128(r), ==, simde_mm_castps_si128(e));
 
   a = simde_mm_set_ps(SIMDE_FLOAT32_C( -203.58), SIMDE_FLOAT32_C( -605.68), SIMDE_FLOAT32_C(  670.89), SIMDE_FLOAT32_C(  -47.94));
   b = simde_mm_set_ps(SIMDE_FLOAT32_C(  952.52), SIMDE_FLOAT32_C(  790.50), SIMDE_FLOAT32_C( -574.64), SIMDE_FLOAT32_C(  891.61));
   e = simde_mm_set_ps(SIMDE_FLOAT32_C(    0.00), SIMDE_FLOAT32_C(    0.00), SIMDE_F32_ALL_SET, SIMDE_FLOAT32_C(    0.00));
-  r = simde_mm_cmp_ps(a, b, 14);
+  r = simde_mm_cmp_ps(a, b, SIMDE_CMP_GT_OS);
   simde_assert_m128i_u32(simde_mm_castps_si128(r), ==, simde_mm_castps_si128(e));
 
   a = simde_mm_set_ps(SIMDE_FLOAT32_C(  598.32), SIMDE_FLOAT32_C( -203.48), SIMDE_FLOAT32_C(  825.79), SIMDE_FLOAT32_C(  618.02));
   b = simde_mm_set_ps(SIMDE_FLOAT32_C(  823.42), SIMDE_FLOAT32_C(  557.19), SIMDE_FLOAT32_C( -969.07), SIMDE_FLOAT32_C(   94.87));
   e = simde_mm_set_ps(SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET);
-  r = simde_mm_cmp_ps(a, b, 15);
+  r = simde_mm_cmp_ps(a, b, SIMDE_CMP_TRUE_UQ);
   simde_assert_m128i_u32(simde_mm_castps_si128(r), ==, simde_mm_castps_si128(e));
 
   a = simde_mm_set_ps(SIMDE_FLOAT32_C( -576.38), SIMDE_FLOAT32_C( -929.43), SIMDE_FLOAT32_C(  533.57), SIMDE_FLOAT32_C( -129.85));
   b = simde_mm_set_ps(SIMDE_FLOAT32_C( -792.74), SIMDE_FLOAT32_C( -537.71), SIMDE_FLOAT32_C(  -20.65), SIMDE_FLOAT32_C(  249.94));
   e = simde_mm_set_ps(SIMDE_FLOAT32_C(    0.00), SIMDE_FLOAT32_C(    0.00), SIMDE_FLOAT32_C(    0.00), SIMDE_FLOAT32_C(    0.00));
-  r = simde_mm_cmp_ps(a, b, 16);
+  r = simde_mm_cmp_ps(a, b, SIMDE_CMP_EQ_OS);
   simde_assert_m128i_u32(simde_mm_castps_si128(r), ==, simde_mm_castps_si128(e));
 
   a = simde_mm_set_ps(SIMDE_FLOAT32_C(  545.05), SIMDE_FLOAT32_C( -368.18), SIMDE_FLOAT32_C( -221.86), SIMDE_FLOAT32_C(  -21.72));
   b = simde_mm_set_ps(SIMDE_FLOAT32_C(  521.14), SIMDE_FLOAT32_C(  669.26), SIMDE_FLOAT32_C( -763.27), SIMDE_FLOAT32_C(  590.72));
   e = simde_mm_set_ps(SIMDE_FLOAT32_C(    0.00), SIMDE_F32_ALL_SET, SIMDE_FLOAT32_C(    0.00), SIMDE_F32_ALL_SET);
-  r = simde_mm_cmp_ps(a, b, 17);
+  r = simde_mm_cmp_ps(a, b, SIMDE_CMP_LT_OQ);
   simde_assert_m128i_u32(simde_mm_castps_si128(r), ==, simde_mm_castps_si128(e));
 
   a = simde_mm_set_ps(SIMDE_FLOAT32_C(  763.29), SIMDE_FLOAT32_C(  255.26), SIMDE_FLOAT32_C(  981.60), SIMDE_FLOAT32_C(  404.33));
   b = simde_mm_set_ps(SIMDE_FLOAT32_C(  913.52), SIMDE_FLOAT32_C(  284.87), SIMDE_FLOAT32_C(  420.08), SIMDE_FLOAT32_C( -817.56));
   e = simde_mm_set_ps(SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET, SIMDE_FLOAT32_C(    0.00), SIMDE_FLOAT32_C(    0.00));
-  r = simde_mm_cmp_ps(a, b, 18);
+  r = simde_mm_cmp_ps(a, b, SIMDE_CMP_LE_OQ);
   simde_assert_m128i_u32(simde_mm_castps_si128(r), ==, simde_mm_castps_si128(e));
 
   a = simde_mm_set_ps(SIMDE_FLOAT32_C(  989.95), SIMDE_FLOAT32_C(  638.39), SIMDE_FLOAT32_C( -397.70), SIMDE_FLOAT32_C( -288.05));
   b = simde_mm_set_ps(SIMDE_FLOAT32_C(  358.68), SIMDE_FLOAT32_C( -151.14), SIMDE_FLOAT32_C(  886.12), SIMDE_FLOAT32_C( -860.69));
   e = simde_mm_set_ps(SIMDE_FLOAT32_C(    0.00), SIMDE_FLOAT32_C(    0.00), SIMDE_FLOAT32_C(    0.00), SIMDE_FLOAT32_C(    0.00));
-  r = simde_mm_cmp_ps(a, b, 19);
+  r = simde_mm_cmp_ps(a, b, SIMDE_CMP_UNORD_S);
   simde_assert_m128i_u32(simde_mm_castps_si128(r), ==, simde_mm_castps_si128(e));
 
   a = simde_mm_set_ps(SIMDE_FLOAT32_C(  995.87), SIMDE_FLOAT32_C( -552.98), SIMDE_FLOAT32_C( -836.61), SIMDE_FLOAT32_C(  490.77));
   b = simde_mm_set_ps(SIMDE_FLOAT32_C(  436.74), SIMDE_FLOAT32_C(  515.09), SIMDE_FLOAT32_C( -164.26), SIMDE_FLOAT32_C(   49.24));
   e = simde_mm_set_ps(SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET);
-  r = simde_mm_cmp_ps(a, b, 20);
+  r = simde_mm_cmp_ps(a, b, SIMDE_CMP_NEQ_US);
   simde_assert_m128i_u32(simde_mm_castps_si128(r), ==, simde_mm_castps_si128(e));
 
   a = simde_mm_set_ps(SIMDE_FLOAT32_C(  827.88), SIMDE_FLOAT32_C(  337.02), SIMDE_FLOAT32_C( -301.47), SIMDE_FLOAT32_C( -546.27));
   b = simde_mm_set_ps(SIMDE_FLOAT32_C(  388.16), SIMDE_FLOAT32_C( -352.07), SIMDE_FLOAT32_C( -527.92), SIMDE_FLOAT32_C(  674.15));
   e = simde_mm_set_ps(SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET, SIMDE_FLOAT32_C(    0.00));
-  r = simde_mm_cmp_ps(a, b, 21);
+  r = simde_mm_cmp_ps(a, b, SIMDE_CMP_NLT_UQ);
   simde_assert_m128i_u32(simde_mm_castps_si128(r), ==, simde_mm_castps_si128(e));
 
   a = simde_mm_set_ps(SIMDE_FLOAT32_C(  819.64), SIMDE_FLOAT32_C(   88.69), SIMDE_FLOAT32_C( -965.38), SIMDE_FLOAT32_C(  535.26));
   b = simde_mm_set_ps(SIMDE_FLOAT32_C( -769.63), SIMDE_FLOAT32_C(  452.84), SIMDE_FLOAT32_C( -471.48), SIMDE_FLOAT32_C(  287.79));
   e = simde_mm_set_ps(SIMDE_F32_ALL_SET, SIMDE_FLOAT32_C(    0.00), SIMDE_FLOAT32_C(    0.00), SIMDE_F32_ALL_SET);
-  r = simde_mm_cmp_ps(a, b, 22);
+  r = simde_mm_cmp_ps(a, b, SIMDE_CMP_NLE_UQ);
   simde_assert_m128i_u32(simde_mm_castps_si128(r), ==, simde_mm_castps_si128(e));
 
   a = simde_mm_set_ps(SIMDE_FLOAT32_C(  936.69), SIMDE_FLOAT32_C( -942.15), SIMDE_FLOAT32_C( -816.57), SIMDE_FLOAT32_C( -442.35));
   b = simde_mm_set_ps(SIMDE_FLOAT32_C( -647.50), SIMDE_FLOAT32_C( -658.30), SIMDE_FLOAT32_C(  279.90), SIMDE_FLOAT32_C( -609.51));
   e = simde_mm_set_ps(SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET);
-  r = simde_mm_cmp_ps(a, b, 23);
+  r = simde_mm_cmp_ps(a, b, SIMDE_CMP_ORD_S);
   simde_assert_m128i_u32(simde_mm_castps_si128(r), ==, simde_mm_castps_si128(e));
 
   a = simde_mm_set_ps(SIMDE_FLOAT32_C(   97.05), SIMDE_FLOAT32_C(  576.41), SIMDE_FLOAT32_C( -784.84), SIMDE_FLOAT32_C(  209.13));
   b = simde_mm_set_ps(SIMDE_FLOAT32_C(  856.70), SIMDE_FLOAT32_C( -622.84), SIMDE_FLOAT32_C( -415.55), SIMDE_FLOAT32_C(   89.79));
   e = simde_mm_set_ps(SIMDE_FLOAT32_C(    0.00), SIMDE_FLOAT32_C(    0.00), SIMDE_FLOAT32_C(    0.00), SIMDE_FLOAT32_C(    0.00));
-  r = simde_mm_cmp_ps(a, b, 24);
+  r = simde_mm_cmp_ps(a, b, SIMDE_CMP_EQ_US);
   simde_assert_m128i_u32(simde_mm_castps_si128(r), ==, simde_mm_castps_si128(e));
 
   a = simde_mm_set_ps(SIMDE_FLOAT32_C(  286.91), SIMDE_FLOAT32_C( -919.92), SIMDE_FLOAT32_C( -349.88), SIMDE_FLOAT32_C( -228.88));
   b = simde_mm_set_ps(SIMDE_FLOAT32_C( -295.09), SIMDE_FLOAT32_C(  514.22), SIMDE_FLOAT32_C(  562.09), SIMDE_FLOAT32_C(  891.91));
   e = simde_mm_set_ps(SIMDE_FLOAT32_C(    0.00), SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET);
-  r = simde_mm_cmp_ps(a, b, 25);
+  r = simde_mm_cmp_ps(a, b, SIMDE_CMP_NGE_UQ);
   simde_assert_m128i_u32(simde_mm_castps_si128(r), ==, simde_mm_castps_si128(e));
 
   a = simde_mm_set_ps(SIMDE_FLOAT32_C( -640.97), SIMDE_FLOAT32_C( -490.26), SIMDE_FLOAT32_C( -933.90), SIMDE_FLOAT32_C( -330.97));
   b = simde_mm_set_ps(SIMDE_FLOAT32_C(  534.02), SIMDE_FLOAT32_C( -107.29), SIMDE_FLOAT32_C( -715.08), SIMDE_FLOAT32_C(  503.15));
   e = simde_mm_set_ps(SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET);
-  r = simde_mm_cmp_ps(a, b, 26);
+  r = simde_mm_cmp_ps(a, b, SIMDE_CMP_NGT_UQ);
   simde_assert_m128i_u32(simde_mm_castps_si128(r), ==, simde_mm_castps_si128(e));
 
   a = simde_mm_set_ps(SIMDE_FLOAT32_C( -792.34), SIMDE_FLOAT32_C(  644.13), SIMDE_FLOAT32_C( -103.88), SIMDE_FLOAT32_C(  651.28));
   b = simde_mm_set_ps(SIMDE_FLOAT32_C(   95.97), SIMDE_FLOAT32_C(   33.42), SIMDE_FLOAT32_C( -634.97), SIMDE_FLOAT32_C(  883.69));
   e = simde_mm_set_ps(SIMDE_FLOAT32_C(    0.00), SIMDE_FLOAT32_C(    0.00), SIMDE_FLOAT32_C(    0.00), SIMDE_FLOAT32_C(    0.00));
-  r = simde_mm_cmp_ps(a, b, 27);
+  r = simde_mm_cmp_ps(a, b, SIMDE_CMP_FALSE_OS);
   simde_assert_m128i_u32(simde_mm_castps_si128(r), ==, simde_mm_castps_si128(e));
 
   a = simde_mm_set_ps(SIMDE_FLOAT32_C(  218.19), SIMDE_FLOAT32_C( -253.10), SIMDE_FLOAT32_C(  639.91), SIMDE_FLOAT32_C(  539.70));
   b = simde_mm_set_ps(SIMDE_FLOAT32_C(  363.48), SIMDE_FLOAT32_C( -215.54), SIMDE_FLOAT32_C( -953.32), SIMDE_FLOAT32_C(  216.26));
   e = simde_mm_set_ps(SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET);
-  r = simde_mm_cmp_ps(a, b, 28);
+  r = simde_mm_cmp_ps(a, b, SIMDE_CMP_NEQ_OS);
   simde_assert_m128i_u32(simde_mm_castps_si128(r), ==, simde_mm_castps_si128(e));
 
   a = simde_mm_set_ps(SIMDE_FLOAT32_C( -168.77), SIMDE_FLOAT32_C( -919.40), SIMDE_FLOAT32_C(  791.57), SIMDE_FLOAT32_C( -550.77));
   b = simde_mm_set_ps(SIMDE_FLOAT32_C(  879.65), SIMDE_FLOAT32_C(  140.25), SIMDE_FLOAT32_C( -548.43), SIMDE_FLOAT32_C( -209.64));
   e = simde_mm_set_ps(SIMDE_FLOAT32_C(    0.00), SIMDE_FLOAT32_C(    0.00), SIMDE_F32_ALL_SET, SIMDE_FLOAT32_C(    0.00));
-  r = simde_mm_cmp_ps(a, b, 29);
+  r = simde_mm_cmp_ps(a, b, SIMDE_CMP_GE_OQ);
   simde_assert_m128i_u32(simde_mm_castps_si128(r), ==, simde_mm_castps_si128(e));
 
   a = simde_mm_set_ps(SIMDE_FLOAT32_C( -239.98), SIMDE_FLOAT32_C( -569.53), SIMDE_FLOAT32_C(  225.34), SIMDE_FLOAT32_C( -242.34));
   b = simde_mm_set_ps(SIMDE_FLOAT32_C(  514.36), SIMDE_FLOAT32_C(  873.84), SIMDE_FLOAT32_C(  151.62), SIMDE_FLOAT32_C(  886.55));
   e = simde_mm_set_ps(SIMDE_FLOAT32_C(    0.00), SIMDE_FLOAT32_C(    0.00), SIMDE_F32_ALL_SET, SIMDE_FLOAT32_C(    0.00));
-  r = simde_mm_cmp_ps(a, b, 30);
+  r = simde_mm_cmp_ps(a, b, SIMDE_CMP_GT_OQ);
   simde_assert_m128i_u32(simde_mm_castps_si128(r), ==, simde_mm_castps_si128(e));
 
   a = simde_mm_set_ps(SIMDE_FLOAT32_C(  -63.94), SIMDE_FLOAT32_C(  491.29), SIMDE_FLOAT32_C( -755.45), SIMDE_FLOAT32_C(  869.26));
   b = simde_mm_set_ps(SIMDE_FLOAT32_C(  206.87), SIMDE_FLOAT32_C( -613.92), SIMDE_FLOAT32_C(  387.86), SIMDE_FLOAT32_C(  -36.43));
   e = simde_mm_set_ps(SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET, SIMDE_F32_ALL_SET);
-  r = simde_mm_cmp_ps(a, b, 31);
+  r = simde_mm_cmp_ps(a, b, SIMDE_CMP_TRUE_US);
   simde_assert_m128i_u32(simde_mm_castps_si128(r), ==, simde_mm_castps_si128(e));
 
   return MUNIT_OK;
