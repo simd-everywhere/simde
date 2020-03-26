@@ -1769,6 +1769,35 @@ simde_mm256_srli_si256 (simde__m256i a, const int imm8) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256i
+simde_mm256_unpacklo_epi8 (simde__m256i a, simde__m256i b) {
+  #if defined(SIMDE_AVX2_NATIVE)
+    return _mm256_unpacklo_epi8(a, b);
+  #else
+    simde__m256i_private
+      r_,
+      a_ = simde__m256i_to_private(a),
+      b_ = simde__m256i_to_private(b);
+
+    #if defined(SIMDE__SHUFFLE_VECTOR)
+      r_.i8 = SIMDE__SHUFFLE_VECTOR(8, 32, a_.i8, b_.i8,
+           0, 32,  1, 33,  2, 34,  3, 35,
+           4, 36,  5, 37,  6, 38,  7, 39,
+          16, 48, 17, 49, 18, 50, 19, 51,
+          20, 52, 21, 53, 22, 54, 23, 55);
+    #else
+      r_.m128i[0] = simde_mm_unpacklo_epi8(a_.m128i[0], b_.m128i[0]);
+      r_.m128i[1] = simde_mm_unpacklo_epi8(a_.m128i[1], b_.m128i[1]);
+    #endif
+
+    return simde__m256i_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_AVX2_ENABLE_NATIVE_ALIASES)
+#  define _mm256_unpacklo_epi8(a, b) simde_mm256_unpacklo_epi8(a, b)
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256i
 simde_mm256_xor_si256 (simde__m256i a, simde__m256i b) {
 #if defined(SIMDE_AVX2_NATIVE)
   return _mm256_xor_si256(a, b);
