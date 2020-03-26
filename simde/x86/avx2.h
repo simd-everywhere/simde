@@ -1014,6 +1014,27 @@ simde_mm256_extracti128_si256 (simde__m256i a, const int imm8)
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256i
+simde_mm256_madd_epi16 (simde__m256i a, simde__m256i b) {
+#if defined(SIMDE_AVX2_NATIVE)
+  return _mm256_madd_epi16(a, b);
+#else
+  simde__m256i_private
+    r_,
+    a_ = simde__m256i_to_private(a),
+    b_ = simde__m256i_to_private(b);
+
+  r_.m128i[0] = simde_mm_madd_epi16(a_.m128i[0], b_.m128i[0]);
+  r_.m128i[1] = simde_mm_madd_epi16(a_.m128i[1], b_.m128i[1]);
+
+  return simde__m256i_from_private(r_);
+#endif
+}
+#if defined(SIMDE_AVX2_ENABLE_NATIVE_ALIASES)
+#  define _mm256_add_epi16(a, b) simde_mm256_add_epi16(a, b)
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256i
 simde_mm256_max_epi8 (simde__m256i a, simde__m256i b) {
 #if defined(SIMDE_AVX2_NATIVE) && !defined(__PGI)
   return _mm256_max_epi8(a, b);
