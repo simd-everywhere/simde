@@ -860,10 +860,10 @@ simde_mm_cmpord_ps (simde__m128 a, simde__m128 b) {
   uint32x4_t ceqaa = vceqq_f32(a_.neon_f32, a_.neon_f32);
   uint32x4_t ceqbb = vceqq_f32(b_.neon_f32, b_.neon_f32);
   r_.neon_u32 = vandq_u32(ceqaa, ceqbb);
-#elif defined(SIMDE_HAVE_MATH_H)
+#elif defined(simde_isnanf)
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
-    r_.u32[i] = (isnan(a_.f32[i]) || isnan(b_.f32[i])) ? UINT32_C(0) : ~UINT32_C(0);
+    r_.u32[i] = (simde_isnanf(a_.f32[i]) || simde_isnanf(b_.f32[i])) ? UINT32_C(0) : ~UINT32_C(0);
   }
 #else
   HEDLEY_UNREACHABLE();
@@ -887,10 +887,10 @@ simde_mm_cmpunord_ps (simde__m128 a, simde__m128 b) {
     a_ = simde__m128_to_private(a),
     b_ = simde__m128_to_private(b);
 
-#if defined(SIMDE_HAVE_MATH_H)
+#if defined(simde_isnanf)
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
-    r_.u32[i] = (isnan(a_.f32[i]) || isnan(b_.f32[i])) ? ~UINT32_C(0) : UINT32_C(0);
+    r_.u32[i] = (simde_isnanf(a_.f32[i]) || simde_isnanf(b_.f32[i])) ? ~UINT32_C(0) : UINT32_C(0);
   }
 #else
   HEDLEY_UNREACHABLE();
@@ -916,8 +916,8 @@ simde_mm_cmpunord_ss (simde__m128 a, simde__m128 b) {
     a_ = simde__m128_to_private(a),
     b_ = simde__m128_to_private(b);
 
-#if defined(SIMDE_HAVE_MATH_H)
-  r_.u32[0] = (isnan(a_.f32[0]) || isnan(b_.f32[0])) ? ~UINT32_C(0) : UINT32_C(0);
+#if defined(simde_isnanf)
+  r_.u32[0] = (simde_isnanf(a_.f32[0]) || simde_isnanf(b_.f32[0])) ? ~UINT32_C(0) : UINT32_C(0);
   SIMDE__VECTORIZE
   for (size_t i = 1 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
     r_.f32[i] = a_.f32[i];
@@ -1621,8 +1621,8 @@ simde_mm_cmpord_ss (simde__m128 a, simde__m128 b) {
     r_,
     a_ = simde__m128_to_private(a);
 
-#if defined(SIMDE_HAVE_MATH_H)
-  r_.u32[0] = (isnan(simde_mm_cvtss_f32(a)) || isnan(simde_mm_cvtss_f32(b))) ? UINT32_C(0) : ~UINT32_C(0);
+#if defined(simde_isnanf)
+  r_.u32[0] = (simde_isnanf(simde_mm_cvtss_f32(a)) || simde_isnanf(simde_mm_cvtss_f32(b))) ? UINT32_C(0) : ~UINT32_C(0);
   SIMDE__VECTORIZE
   for (size_t i = 1 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
     r_.u32[i] = a_.u32[i];

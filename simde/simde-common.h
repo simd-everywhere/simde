@@ -500,78 +500,115 @@ HEDLEY_STATIC_ASSERT(sizeof(simde_float64) == 8, "Unable to find 64-bit floating
 
 /* Try to deal with environments without a standard library. */
 #if !defined(simde_memcpy) || !defined(simde_memset)
-#  if !defined(SIMDE_NO_STRING_H) && defined(__has_include)
-#    if __has_include(<string.h>)
-#      include <string.h>
-#      if !defined(simde_memcpy)
-#        define simde_memcpy(dest, src, n) memcpy(dest, src, n)
-#      endif
-#      if !defined(simde_memset)
-#        define simde_memset(s, c, n) memset(s, c, n)
-#      endif
-#    else
-#      define SIMDE_NO_STRING_H
-#    endif
-#  endif
+  #if !defined(SIMDE_NO_STRING_H) && defined(__has_include)
+    #if __has_include(<string.h>)
+      #include <string.h>
+      #if !defined(simde_memcpy)
+        #define simde_memcpy(dest, src, n) memcpy(dest, src, n)
+      #endif
+      #if !defined(simde_memset)
+        #define simde_memset(s, c, n) memset(s, c, n)
+      #endif
+    #else
+      #define SIMDE_NO_STRING_H
+    #endif
+  #endif
 #endif
 #if !defined(simde_memcpy) || !defined(simde_memset)
-#  if !defined(SIMDE_NO_STRING_H) && (SIMDE_STDC_HOSTED == 1)
-#    include <string.h>
-#    if !defined(simde_memcpy)
-#      define simde_memcpy(dest, src, n) memcpy(dest, src, n)
-#    endif
-#    if !defined(simde_memset)
-#      define simde_memset(s, c, n) memset(s, c, n)
-#    endif
-#  elif (HEDLEY_HAS_BUILTIN(__builtin_memcpy) && HEDLEY_HAS_BUILTIN(__builtin_memset)) || HEDLEY_GCC_VERSION_CHECK(4,2,0)
-#    if !defined(simde_memcpy)
-#      define simde_memcpy(dest, src, n) __builtin_memcpy(dest, src, n)
-#    endif
-#    if !defined(simde_memset)
-#      define simde_memset(s, c, n) __builtin_memset(s, c, n)
-#    endif
-#  else
+  #if !defined(SIMDE_NO_STRING_H) && (SIMDE_STDC_HOSTED == 1)
+    #include <string.h>
+    #if !defined(simde_memcpy)
+      #define simde_memcpy(dest, src, n) memcpy(dest, src, n)
+    #endif
+    #if !defined(simde_memset)
+      #define simde_memset(s, c, n) memset(s, c, n)
+    #endif
+  #elif (HEDLEY_HAS_BUILTIN(__builtin_memcpy) && HEDLEY_HAS_BUILTIN(__builtin_memset)) || HEDLEY_GCC_VERSION_CHECK(4,2,0)
+    #if !defined(simde_memcpy)
+      #define simde_memcpy(dest, src, n) __builtin_memcpy(dest, src, n)
+    #endif
+    #if !defined(simde_memset)
+      #define simde_memset(s, c, n) __builtin_memset(s, c, n)
+    #endif
+  #else
+    /* These are meant to be portable, not fast.  If you're hitting them you
+     * should think about providing your own (by defining the simde_memcpy
+     * macro prior to including any SIMDe files) or submitting a patch to
+     * SIMDe so we can detect your system-provided memcpy/memset, like by
+     * adding your compiler to the checks for __builtin_memcpy and/or
+     * __builtin_memset. */
+    #if !defined(simde_memcpy)
+      SIMDE__FUNCTION_ATTRIBUTES
+      void
+      simde_memcpy_(void* dest, const void* src, size_t len) {
+        char* dest_ = HEDLEY_STATIC_CAST(char*, dest);
+        char* src_ = HEDLEY_STATIC_CAST(const char*, src);
+        for (size_t i = 0 ; i < len ; i++) {
+          dest_[i] = src_[i];
+        }
+      }
+      #define simde_memcpy(dest, src, n) simde_memcpy_(dest, src, n)
+    #endif
 
-/* These are meant to be portable, not fast.  If you're hitting them you
- * should think about providing your own (by defining the simde_memcpy
- * macro prior to including any SIMDe files) or submitting a patch to
- * SIMDe so we can detect your system-provided memcpy/memset, like by
- * adding your compiler to the checks for __builtin_memcpy and/or
- * __builtin_memset. */
-#if !defined(simde_memcpy)
-SIMDE__FUNCTION_ATTRIBUTES
-void
-simde_memcpy_(void* dest, const void* src, size_t len) {
-  char* dest_ = HEDLEY_STATIC_CAST(char*, dest);
-  char* src_ = HEDLEY_STATIC_CAST(const char*, src);
-  for (size_t i = 0 ; i < len ; i++) {
-    dest_[i] = src_[i];
-  }
-}
-#define simde_memcpy(dest, src, n) simde_memcpy_(dest, src, n)
-#endif
-
-#if !defined(simde_memset)
-SIMDE__FUNCTION_ATTRIBUTES
-void
-simde_memset_(void* s, int c, size_t len) {
-  char* s_ = HEDLEY_STATIC_CAST(char*, s);
-  char c_ = HEDLEY_STATIC_CAST(char, c);
-  for (size_t i = 0 ; i < len ; i++) {
-    s_[i] = c_[i];
-  }
-}
-#define simde_memset(s, c, n) simde_memset_(s, c, n)
-#endif
-
-#  endif /* !defined(SIMDE_NO_STRING_H) && (SIMDE_STDC_HOSTED == 1) */
+    #if !defined(simde_memset)
+      SIMDE__FUNCTION_ATTRIBUTES
+      void
+      simde_memset_(void* s, int c, size_t len) {
+        char* s_ = HEDLEY_STATIC_CAST(char*, s);
+        char c_ = HEDLEY_STATIC_CAST(char, c);
+        for (size_t i = 0 ; i < len ; i++) {
+          s_[i] = c_[i];
+        }
+      }
+      #define simde_memset(s, c, n) simde_memset_(s, c, n)
+    #endif
+  #endif /* !defined(SIMDE_NO_STRING_H) && (SIMDE_STDC_HOSTED == 1) */
 #endif /* !defined(simde_memcpy) || !defined(simde_memset) */
 
-/* If we don't have */
+#if !defined(SIMDE_NO_MATH_H)
+  #if defined(HUGE_VAL)
+    /* <math.h> has already been included */
+  #elif defined(__has_include)
+    #if !__has_include(<math.h>)
+      #define SIMDE_NO_MATH_H
+    #endif
+  #elif SIMDE_STDC_HOSTED == 0
+    #define SIMDE_NO_MATH_H
+  #endif
+#endif
+
+#if !defined(SIMDE_NO_MATH_H)
+  #define SIMDE_HAVE_MATH_H
+  #include <math.h>
+#endif
+
+#if !defined(simde_isnan)
+  #if !defined(SIMDE_NO_MATH_H)
+    #define simde_isnan(v) isnan(v)
+  #elif \
+      HEDLEY_HAS_BUILTIN(__builtin_isnan) || \
+      HEDLEY_GCC_VERSION_CHECK(4,4,0) || \
+      HEDLEY_ARM_VERSION_CHECK(4,1,0) || \
+      HEDLEY_INTEL_VERSION_CHECK(13,0,0) || \
+      HEDLEY_IBM_VERSION_CHECK(13,1,0)
+    #define simde_isnan(v) __builtin_isnan(v)
+  #endif
+#endif
+
+#if !defined(simde_isnanf)
+  #if !defined(SIMDE_NO_MATH_H)
+    #define simde_isnanf(v) isnan(v)
+  #elif \
+      HEDLEY_HAS_BUILTIN(__builtin_isnanf) || \
+      HEDLEY_GCC_VERSION_CHECK(4,4,0) || \
+      HEDLEY_ARM_VERSION_CHECK(4,1,0) || \
+      HEDLEY_INTEL_VERSION_CHECK(13,0,0) || \
+      HEDLEY_IBM_VERSION_CHECK(13,1,0)
+    #define simde_isnanf(v) __builtin_isnanf(v)
+  #endif
+#endif
+
 #if defined(__has_include)
-#  if __has_include(<math.h>)
-#    include <math.h>
-#  endif
 #  if __has_include(<fenv.h>)
 #    include <fenv.h>
 #  endif
@@ -579,14 +616,10 @@ simde_memset_(void* s, int c, size_t len) {
 #    include <stdlib.h>
 #  endif
 #elif SIMDE_STDC_HOSTED == 1
-#  include <math.h>
 #  include <stdlib.h>
 #  include <fenv.h>
 #endif
 
-#if defined(SIMDE_HAVE_MATH_H)
-#  include <math.h>
-#endif
 #if defined(SIMDE_HAVE_FENV_H)
 #  include <fenv.h>
 #endif
@@ -594,9 +627,6 @@ simde_memset_(void* s, int c, size_t len) {
 #  include <stdlib.h>
 #endif
 
-#if !defined(SIMDE_HAVE_MATH_H) && defined(HUGE_VAL)
-#  define SIMDE_HAVE_MATH_H
-#endif
 #if !defined(SIMDE_HAVE_FENV_H) && defined(FE_DIVBYZERO)
 #  define SIMDE_HAVE_FENV_H
 #endif

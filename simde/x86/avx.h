@@ -1819,8 +1819,8 @@ simde_mm_cmp_sd (simde__m128d a, simde__m128d b, const int imm8)
       r_.u64[0] = (a_.f64[0] <= b_.f64[0]) ? ~UINT64_C(0) : UINT64_C(0);
       break;
     case SIMDE_CMP_UNORD_Q:
-#if defined(SIMDE_HAVE_MATH_H)
-      r_.u64[0] = (isnan(a_.f64[0]) || isnan(b_.f64[0])) ? ~UINT64_C(0) : UINT64_C(0);
+#if defined(simde_isnan)
+      r_.u64[0] = (simde_isnan(a_.f64[0]) || simde_isnan(b_.f64[0])) ? ~UINT64_C(0) : UINT64_C(0);
 #else
   HEDLEY_UNREACHABLE();
 #endif
@@ -1835,8 +1835,8 @@ simde_mm_cmp_sd (simde__m128d a, simde__m128d b, const int imm8)
       r_.u64[0] = (a_.f64[0] > b_.f64[0]) ? ~UINT64_C(0) : UINT64_C(0);
       break;
     case SIMDE_CMP_ORD_Q:
-#if defined(SIMDE_HAVE_MATH_H)
-      r_.u64[0] = (!isnan(a_.f64[0]) && !isnan(b_.f64[0])) ? ~UINT64_C(0) : UINT64_C(0);
+#if defined(simde_isnan)
+      r_.u64[0] = (!simde_isnan(a_.f64[0]) && !simde_isnan(b_.f64[0])) ? ~UINT64_C(0) : UINT64_C(0);
 #else
   HEDLEY_UNREACHABLE();
 #endif
@@ -1875,8 +1875,8 @@ simde_mm_cmp_sd (simde__m128d a, simde__m128d b, const int imm8)
       r_.u64[0] = (a_.f64[0] <= b_.f64[0]) ? ~UINT64_C(0) : UINT64_C(0);
       break;
     case SIMDE_CMP_UNORD_S:
-#if defined(SIMDE_HAVE_MATH_H)
-      r_.u64[0] = (isnan(a_.f64[0]) || isnan(b_.f64[0])) ? ~UINT64_C(0) : UINT64_C(0);
+#if defined(simde_isnan)
+      r_.u64[0] = (simde_isnan(a_.f64[0]) || simde_isnan(b_.f64[0])) ? ~UINT64_C(0) : UINT64_C(0);
 #else
   HEDLEY_UNREACHABLE();
 #endif
@@ -1891,8 +1891,8 @@ simde_mm_cmp_sd (simde__m128d a, simde__m128d b, const int imm8)
       r_.u64[0] = (a_.f64[0] > b_.f64[0]) ? ~UINT64_C(0) : UINT64_C(0);
       break;
     case SIMDE_CMP_ORD_S:
-#if defined(SIMDE_HAVE_MATH_H)
-      r_.u64[0] = (isnan(a_.f64[0]) || isnan(b_.f64[0])) ? UINT64_C(0) : ~UINT64_C(0);
+#if defined(simde_isnan)
+      r_.u64[0] = (simde_isnan(a_.f64[0]) || simde_isnan(b_.f64[0])) ? UINT64_C(0) : ~UINT64_C(0);
 #else
   HEDLEY_UNREACHABLE();
 #endif
@@ -1953,8 +1953,8 @@ simde_mm_cmp_ss (simde__m128 a, simde__m128 b, const int imm8)
       r_.u32[0] = (a_.f32[0] <= b_.f32[0]) ? ~UINT32_C(0) : UINT32_C(0);
       break;
     case SIMDE_CMP_UNORD_Q:
-#if defined(SIMDE_HAVE_MATH_H)
-      r_.u32[0] = (isnan(a_.f32[0]) || isnan(b_.f32[0])) ? ~UINT32_C(0) : UINT32_C(0);
+#if defined(simde_isnanf)
+      r_.u32[0] = (simde_isnanf(a_.f32[0]) || simde_isnanf(b_.f32[0])) ? ~UINT32_C(0) : UINT32_C(0);
 #else
       HEDLEY_UNREACHABLE();
 #endif
@@ -1969,8 +1969,8 @@ simde_mm_cmp_ss (simde__m128 a, simde__m128 b, const int imm8)
       r_.u32[0] = (a_.f32[0] > b_.f32[0]) ? ~UINT32_C(0) : UINT32_C(0);
       break;
     case SIMDE_CMP_ORD_Q:
-#if defined(SIMDE_HAVE_MATH_H)
-      r_.u32[0] = (!isnan(a_.f32[0]) && !isnan(b_.f32[0])) ? ~UINT32_C(0) : UINT32_C(0);
+#if defined(simde_isnanf)
+      r_.u32[0] = (!simde_isnanf(a_.f32[0]) && !simde_isnanf(b_.f32[0])) ? ~UINT32_C(0) : UINT32_C(0);
 #else
       HEDLEY_UNREACHABLE();
 #endif
@@ -2009,8 +2009,8 @@ simde_mm_cmp_ss (simde__m128 a, simde__m128 b, const int imm8)
       r_.u32[0] = (a_.f32[0] <= b_.f32[0]) ? ~UINT32_C(0) : UINT32_C(0);
       break;
     case SIMDE_CMP_UNORD_S:
-#if defined(SIMDE_HAVE_MATH_H)
-      r_.u32[0] = (isnan(a_.f32[0]) || isnan(b_.f32[0])) ? ~UINT32_C(0) : UINT32_C(0);
+#if defined(simde_isnanf)
+      r_.u32[0] = (simde_isnanf(a_.f32[0]) || simde_isnanf(b_.f32[0])) ? ~UINT32_C(0) : UINT32_C(0);
 #else
       HEDLEY_UNREACHABLE();
 #endif
@@ -2025,8 +2025,8 @@ simde_mm_cmp_ss (simde__m128 a, simde__m128 b, const int imm8)
       r_.u32[0] = (a_.f32[0] > b_.f32[0]) ? ~UINT32_C(0) : UINT32_C(0);
       break;
     case SIMDE_CMP_ORD_S:
-#if defined(SIMDE_HAVE_MATH_H)
-      r_.u32[0] = (isnan(a_.f32[0]) || isnan(b_.f32[0])) ? UINT32_C(0) : ~UINT32_C(0);
+#if defined(simde_isnanf)
+      r_.u32[0] = (simde_isnanf(a_.f32[0]) || simde_isnanf(b_.f32[0])) ? UINT32_C(0) : ~UINT32_C(0);
 #else
       HEDLEY_UNREACHABLE();
 #endif
@@ -2091,9 +2091,9 @@ simde_mm256_cmp_pd (simde__m256d a, simde__m256d b, const int imm8)
       r_.i64 = (int64_t SIMDE_VECTOR(sizeof(r_))) (a_.f64 <= b_.f64);
       break;
     case SIMDE_CMP_UNORD_Q:
-#if defined(SIMDE_HAVE_MATH_H)
+#if defined(simde_isnan)
       for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
-        r_.u64[i] = (isnan(a_.f64[i]) || isnan(b_.f64[i])) ? ~UINT64_C(0) : UINT64_C(0);
+        r_.u64[i] = (simde_isnan(a_.f64[i]) || simde_isnan(b_.f64[i])) ? ~UINT64_C(0) : UINT64_C(0);
       }
 #else
       HEDLEY_UNREACHABLE();
@@ -2109,9 +2109,9 @@ simde_mm256_cmp_pd (simde__m256d a, simde__m256d b, const int imm8)
       r_.i64 = (int64_t SIMDE_VECTOR(sizeof(r_))) (a_.f64 > b_.f64);
       break;
     case SIMDE_CMP_ORD_Q:
-#if defined(SIMDE_HAVE_MATH_H)
+#if defined(simde_isnan)
       for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
-        r_.u64[i] = (!isnan(a_.f64[i]) && !isnan(b_.f64[i])) ? ~UINT64_C(0) : UINT64_C(0);
+        r_.u64[i] = (!simde_isnan(a_.f64[i]) && !simde_isnan(b_.f64[i])) ? ~UINT64_C(0) : UINT64_C(0);
       }
 #else
       HEDLEY_UNREACHABLE();
@@ -2151,9 +2151,9 @@ simde_mm256_cmp_pd (simde__m256d a, simde__m256d b, const int imm8)
       r_.i64 = (int64_t SIMDE_VECTOR(sizeof(r_))) (a_.f64 <= b_.f64);
       break;
     case SIMDE_CMP_UNORD_S:
-#if defined(SIMDE_HAVE_MATH_H)
+#if defined(simde_isnan)
       for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
-        r_.u64[i] = (isnan(a_.f64[i]) || isnan(b_.f64[i])) ? ~UINT64_C(0) : UINT64_C(0);
+        r_.u64[i] = (simde_isnan(a_.f64[i]) || simde_isnan(b_.f64[i])) ? ~UINT64_C(0) : UINT64_C(0);
       }
 #else
       HEDLEY_UNREACHABLE();
@@ -2169,9 +2169,9 @@ simde_mm256_cmp_pd (simde__m256d a, simde__m256d b, const int imm8)
       r_.i64 = (int64_t SIMDE_VECTOR(sizeof(r_))) (a_.f64 > b_.f64);
       break;
     case SIMDE_CMP_ORD_S:
-#if defined(SIMDE_HAVE_MATH_H)
+#if defined(simde_isnan)
       for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
-        r_.u64[i] = (isnan(a_.f64[i]) || isnan(b_.f64[i])) ? UINT64_C(0) : ~UINT64_C(0);
+        r_.u64[i] = (simde_isnan(a_.f64[i]) || simde_isnan(b_.f64[i])) ? UINT64_C(0) : ~UINT64_C(0);
       }
 #else
       HEDLEY_UNREACHABLE();
@@ -2216,7 +2216,7 @@ simde_mm256_cmp_pd (simde__m256d a, simde__m256d b, const int imm8)
         r_.u64[i] = (a_.f64[i] <= b_.f64[i]) ? ~UINT64_C(0) : UINT64_C(0);
         break;
       case SIMDE_CMP_UNORD_Q:
-        r_.u64[i] = (isnan(a_.f64[i]) || isnan(b_.f64[i])) ? ~UINT64_C(0) : UINT64_C(0);
+        r_.u64[i] = (simde_isnan(a_.f64[i]) || simde_isnan(b_.f64[i])) ? ~UINT64_C(0) : UINT64_C(0);
         break;
       case SIMDE_CMP_NEQ_UQ:
         r_.u64[i] = (a_.f64[i] != b_.f64[i]) ? ~UINT64_C(0) : UINT64_C(0);
@@ -2228,8 +2228,8 @@ simde_mm256_cmp_pd (simde__m256d a, simde__m256d b, const int imm8)
         r_.u64[i] = (a_.f64[i] > b_.f64[i]) ? ~UINT64_C(0) : UINT64_C(0);
         break;
       case SIMDE_CMP_ORD_Q:
-#if defined(SIMDE_HAVE_MATH_H)
-        r_.u64[i] = (!isnan(a_.f64[i]) && !isnan(b_.f64[i])) ? ~UINT64_C(0) : UINT64_C(0);
+#if defined(simde_isnan)
+        r_.u64[i] = (!simde_isnan(a_.f64[i]) && !simde_isnan(b_.f64[i])) ? ~UINT64_C(0) : UINT64_C(0);
 #else
         HEDLEY_UNREACHABLE();
 #endif
@@ -2268,8 +2268,8 @@ simde_mm256_cmp_pd (simde__m256d a, simde__m256d b, const int imm8)
         r_.u64[i] = (a_.f64[i] <= b_.f64[i]) ? ~UINT64_C(0) : UINT64_C(0);
         break;
       case SIMDE_CMP_UNORD_S:
-#if defined(SIMDE_HAVE_MATH_H)
-        r_.u64[i] = (isnan(a_.f64[i]) || isnan(b_.f64[i])) ? ~UINT64_C(0) : UINT64_C(0);
+#if defined(simde_isnan)
+        r_.u64[i] = (simde_isnan(a_.f64[i]) || simde_isnan(b_.f64[i])) ? ~UINT64_C(0) : UINT64_C(0);
 #else
         HEDLEY_UNREACHABLE();
 #endif
@@ -2284,8 +2284,8 @@ simde_mm256_cmp_pd (simde__m256d a, simde__m256d b, const int imm8)
         r_.u64[i] = (a_.f64[i] > b_.f64[i]) ? ~UINT64_C(0) : UINT64_C(0);
         break;
       case SIMDE_CMP_ORD_S:
-#if defined(SIMDE_HAVE_MATH_H)
-        r_.u64[i] = (isnan(a_.f64[i]) || isnan(b_.f64[i])) ? UINT64_C(0) : ~UINT64_C(0);
+#if defined(simde_isnan)
+        r_.u64[i] = (simde_isnan(a_.f64[i]) || simde_isnan(b_.f64[i])) ? UINT64_C(0) : ~UINT64_C(0);
 #else
         HEDLEY_UNREACHABLE();
 #endif
@@ -2349,9 +2349,9 @@ simde_mm256_cmp_ps (simde__m256 a, simde__m256 b, const int imm8)
       r_.i32 = (int32_t SIMDE_VECTOR(sizeof(r_))) (a_.f32 <= b_.f32);
       break;
     case SIMDE_CMP_UNORD_Q:
-#if defined(SIMDE_HAVE_MATH_H)
+#if defined(simde_isnanf)
       for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
-        r_.u32[i] = (isnan(a_.f32[i]) || isnan(b_.f32[i])) ? ~UINT32_C(0) : UINT32_C(0);
+        r_.u32[i] = (simde_isnanf(a_.f32[i]) || simde_isnanf(b_.f32[i])) ? ~UINT32_C(0) : UINT32_C(0);
       }
 #else
       HEDLEY_UNREACHABLE();
@@ -2367,9 +2367,9 @@ simde_mm256_cmp_ps (simde__m256 a, simde__m256 b, const int imm8)
       r_.i32 = (int32_t SIMDE_VECTOR(sizeof(r_))) (a_.f32 > b_.f32);
       break;
     case SIMDE_CMP_ORD_Q:
-#if defined(SIMDE_HAVE_MATH_H)
+#if defined(simde_isnanf)
       for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
-        r_.u32[i] = (!isnan(a_.f32[i]) && !isnan(b_.f32[i])) ? ~UINT32_C(0) : UINT32_C(0);
+        r_.u32[i] = (!simde_isnanf(a_.f32[i]) && !simde_isnanf(b_.f32[i])) ? ~UINT32_C(0) : UINT32_C(0);
       }
 #else
       HEDLEY_UNREACHABLE();
@@ -2409,9 +2409,9 @@ simde_mm256_cmp_ps (simde__m256 a, simde__m256 b, const int imm8)
       r_.i32 = (int32_t SIMDE_VECTOR(sizeof(r_))) (a_.f32 <= b_.f32);
       break;
     case SIMDE_CMP_UNORD_S:
-#if defined(SIMDE_HAVE_MATH_H)
+#if defined(simde_isnanf)
       for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
-        r_.u32[i] = (isnan(a_.f32[i]) || isnan(b_.f32[i])) ? ~UINT32_C(0) : UINT32_C(0);
+        r_.u32[i] = (simde_isnanf(a_.f32[i]) || simde_isnanf(b_.f32[i])) ? ~UINT32_C(0) : UINT32_C(0);
       }
 #else
       HEDLEY_UNREACHABLE();
@@ -2427,9 +2427,9 @@ simde_mm256_cmp_ps (simde__m256 a, simde__m256 b, const int imm8)
       r_.i32 = (int32_t SIMDE_VECTOR(sizeof(r_))) (a_.f32 > b_.f32);
       break;
     case SIMDE_CMP_ORD_S:
-#if defined(SIMDE_HAVE_MATH_H)
+#if defined(simde_isnanf)
       for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
-        r_.u32[i] = (isnan(a_.f32[i]) || isnan(b_.f32[i])) ? UINT32_C(0) : ~UINT32_C(0);
+        r_.u32[i] = (simde_isnanf(a_.f32[i]) || simde_isnanf(b_.f32[i])) ? UINT32_C(0) : ~UINT32_C(0);
       }
 #else
       HEDLEY_UNREACHABLE();
@@ -2474,8 +2474,8 @@ simde_mm256_cmp_ps (simde__m256 a, simde__m256 b, const int imm8)
         r_.u32[i] = (a_.f32[i] <= b_.f32[i]) ? ~UINT32_C(0) : UINT32_C(0);
         break;
       case SIMDE_CMP_UNORD_Q:
-#if defined(SIMDE_HAVE_MATH_H)
-        r_.u32[i] = (isnan(a_.f32[i]) || isnan(b_.f32[i])) ? ~UINT32_C(0) : UINT32_C(0);
+#if defined(simde_isnanf)
+        r_.u32[i] = (simde_isnanf(a_.f32[i]) || simde_isnanf(b_.f32[i])) ? ~UINT32_C(0) : UINT32_C(0);
 #else
         HEDLEY_UNREACHABLE();
 #endif
@@ -2490,8 +2490,8 @@ simde_mm256_cmp_ps (simde__m256 a, simde__m256 b, const int imm8)
         r_.u32[i] = (a_.f32[i] > b_.f32[i]) ? ~UINT32_C(0) : UINT32_C(0);
         break;
       case SIMDE_CMP_ORD_Q:
-#if defined(SIMDE_HAVE_MATH_H)
-        r_.u32[i] = (!isnan(a_.f32[i]) && !isnan(b_.f32[i])) ? ~UINT32_C(0) : UINT32_C(0);
+#if defined(simde_isnanf)
+        r_.u32[i] = (!simde_isnanf(a_.f32[i]) && !simde_isnanf(b_.f32[i])) ? ~UINT32_C(0) : UINT32_C(0);
 #else
         HEDLEY_UNREACHABLE();
 #endif
@@ -2530,8 +2530,8 @@ simde_mm256_cmp_ps (simde__m256 a, simde__m256 b, const int imm8)
         r_.u32[i] = (a_.f32[i] <= b_.f32[i]) ? ~UINT32_C(0) : UINT32_C(0);
         break;
       case SIMDE_CMP_UNORD_S:
-#if defined(SIMDE_HAVE_MATH_H)
-        r_.u32[i] = (isnan(a_.f32[i]) || isnan(b_.f32[i])) ? ~UINT32_C(0) : UINT32_C(0);
+#if defined(simde_isnanf)
+        r_.u32[i] = (simde_isnanf(a_.f32[i]) || simde_isnanf(b_.f32[i])) ? ~UINT32_C(0) : UINT32_C(0);
 #else
         HEDLEY_UNREACHABLE();
 #endif
@@ -2546,8 +2546,8 @@ simde_mm256_cmp_ps (simde__m256 a, simde__m256 b, const int imm8)
         r_.u32[i] = (a_.f32[i] > b_.f32[i]) ? ~UINT32_C(0) : UINT32_C(0);
         break;
       case SIMDE_CMP_ORD_S:
-#if defined(SIMDE_HAVE_MATH_H)
-        r_.u32[i] = (isnan(a_.f32[i]) || isnan(b_.f32[i])) ? UINT32_C(0) : ~UINT32_C(0);
+#if defined(simde_isnanf)
+        r_.u32[i] = (simde_isnanf(a_.f32[i]) || simde_isnanf(b_.f32[i])) ? UINT32_C(0) : ~UINT32_C(0);
 #else
         HEDLEY_UNREACHABLE();
 #endif
