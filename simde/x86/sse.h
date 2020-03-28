@@ -1711,7 +1711,7 @@ simde_mm_extract_pi16 (simde__m64 a, const int imm8)
 #    define simde_mm_extract_pi16(a, imm8) ( \
          HEDLEY_DIAGNOSTIC_PUSH \
          _Pragma("clang diagnostic ignored \"-Wvector-conversion\"") \
-         ((int16_t) (_mm_extract_pi16((a), (imm8)))) \
+         HEDLEY_STATIC_CAST(int16_t, _mm_extract_pi16((a), (imm8))) \
          HEDLEY_DIAGNOSTIC_POP \
        )
 #  else

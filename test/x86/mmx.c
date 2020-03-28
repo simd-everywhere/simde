@@ -75,10 +75,10 @@ test_simde_mm_set1_pi16(const MunitParameter params[], void* data) {
   (void) params;
   (void) data;
 
-  int16_t v = (int16_t) munit_rand_int_range(SHRT_MIN, SHRT_MAX);
+  int16_t v = HEDLEY_STATIC_CAST(int16_t, munit_rand_int_range(SHRT_MIN, SHRT_MAX));
 
   simde__m64 x = simde_mm_set1_pi16(v);
-  int16_t* r = (int16_t*) &x;
+  int16_t* r = HEDLEY_REINTERPRET_CAST(int16_t*, &x);
 
   simde_mm_empty();
 
@@ -95,10 +95,10 @@ test_simde_mm_set1_pi32(const MunitParameter params[], void* data) {
   (void) params;
   (void) data;
 
-  int32_t v = (int32_t) munit_rand_int_range(INT32_MIN, INT32_MAX);
+  int32_t v = HEDLEY_STATIC_CAST(int32_t, munit_rand_int_range(INT32_MIN, INT32_MAX));
 
   simde__m64 x = simde_mm_set1_pi32(v);
-  int32_t* r = (int32_t*) &x;
+  int32_t* r = HEDLEY_REINTERPRET_CAST(int32_t*, &x);
 
   simde_mm_empty();
 
@@ -114,10 +114,10 @@ test_simde_mm_setr_pi8(const MunitParameter params[], void* data) {
   (void) data;
 
   int8_t d[8 / sizeof(int8_t)];
-  munit_rand_memory(sizeof(d), (uint8_t*) d);
+  munit_rand_memory(sizeof(d), HEDLEY_REINTERPRET_CAST(uint8_t*, d));
 
   simde__m64 x = simde_mm_setr_pi8(d[0], d[1], d[2], d[3], d[4], d[5], d[6], d[7]);
-  int8_t* c = (int8_t*) &x;
+  int8_t* c = HEDLEY_REINTERPRET_CAST(int8_t*, &x);
 
   simde_mm_empty();
 
@@ -139,10 +139,10 @@ test_simde_mm_setr_pi16(const MunitParameter params[], void* data) {
   (void) data;
 
   int16_t d[8 / sizeof(int16_t)];
-  munit_rand_memory(sizeof(d), (uint8_t*) d);
+  munit_rand_memory(sizeof(d), HEDLEY_REINTERPRET_CAST(uint8_t*, d));
 
   simde__m64 x = simde_mm_setr_pi16(d[0], d[1], d[2], d[3]);
-  int16_t* s = (int16_t*) &x;
+  int16_t* s = HEDLEY_REINTERPRET_CAST(int16_t*, &x);
 
   simde_mm_empty();
 
@@ -160,10 +160,10 @@ test_simde_mm_setr_pi32(const MunitParameter params[], void* data) {
   (void) data;
 
   int32_t d[8 / sizeof(int32_t)];
-  munit_rand_memory(sizeof(d), (uint8_t*) d);
+  munit_rand_memory(sizeof(d), HEDLEY_REINTERPRET_CAST(uint8_t*, d));
 
   simde__m64 x = simde_mm_setr_pi32(d[0], d[1]);
-  int32_t* i = (int32_t*) &x;
+  int32_t* i = HEDLEY_REINTERPRET_CAST(int32_t*, &x);
 
   simde_mm_empty();
 

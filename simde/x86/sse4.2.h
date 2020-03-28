@@ -83,7 +83,7 @@ simde_mm_cmpgt_epi64 (simde__m128i a, simde__m128i b) {
   #elif defined(SIMDE_SSE4_2_POWER_ALTIVEC)
     r_.altivec_i64 = (vector signed long long) vec_cmpgt(a_.altivec_i64, b_.altivec_i64);
   #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-    r_.i64 = (__typeof__(r_.i64))(a_.i64 > b_.i64);
+    r_.i64 = HEDLEY_STATIC_CAST(__typeof__(r_.i64), a_.i64 > b_.i64);
   #else
     SIMDE__VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.i64) / sizeof(r_.i64[0])) ; i++) {
