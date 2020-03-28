@@ -349,7 +349,7 @@ simde_mm_shuffle_epi8 (simde__m128i a, simde__m128i b) {
       /* Mask out the bits we're not interested in.  vtbl will result in 0
          for any values outside of [0, 15], so if the high bit is set it
          will return 0, just like in SSSE3. */
-      b_.neon_i8 = vandq_s8(b_.neon_i8, vdupq_n_s8((1 << 7) | 15));
+      b_.neon_i8 = vandq_s8(b_.neon_i8, vdupq_n_s8((int8_t)((1 << 7) | 15)));
 
       /* Convert a from an int8x16_t to an int8x8x2_t */
       int8x8x2_t i = { .val = { vget_low_s8(a_.neon_i8), vget_high_s8(a_.neon_i8) } };
@@ -384,7 +384,7 @@ simde_mm_shuffle_pi8 (simde__m64 a, simde__m64 b) {
       b_ = simde__m64_to_private(b);
 
     #if defined(SIMDE_SSSE3_NEON)
-      b_.neon_i8 = vand_s8(b_.neon_i8, vdup_n_s8((1 << 7) | 7));
+      b_.neon_i8 = vand_s8(b_.neon_i8, vdup_n_s8((int8_t)((1 << 7) | 7)));
       r_.neon_i8 = vtbl1_s8(a_.neon_i8, b_.neon_i8);
     #else
       for (size_t i = 0 ; i < (sizeof(r_.u8) / sizeof(r_.u8[0])) ; i++) {
