@@ -2807,7 +2807,7 @@ simde_mm_sfence (void) {
 #endif
 }
 #if defined(SIMDE_SSE_ENABLE_NATIVE_ALIASES)
-#  define _mm_sfence_ps() simde_mm_sfence_ps()
+#  define _mm_sfence_ps() simde_mm_sfence()
 #endif
 
 #define SIMDE_MM_SHUFFLE(z, y, x, w) (((z) << 6) | ((y) << 4) | ((x) << 2) | (w))
@@ -3558,7 +3558,7 @@ simde_mm_setcsr (uint32_t a) {
 #endif
 }
 #if defined(SIMDE_SSE_ENABLE_NATIVE_ALIASES)
-#  define _mm_setcsr(a) simde_mm_s-etcsr(a)
+#  define _mm_setcsr(a) simde_mm_setcsr(a)
 #endif
 
 #define SIMDE_MM_TRANSPOSE4_PS(row0, row1, row2, row3) \
