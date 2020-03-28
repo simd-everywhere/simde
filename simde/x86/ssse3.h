@@ -280,7 +280,7 @@ simde_mm_alignr_epi8 (simde__m128i a, simde__m128i b, int count) {
     return simde_mm_setzero_si128();
 
   for (size_t i = 0 ; i < (sizeof(r_.i8) / sizeof(r_.i8[0])) ; i++) {
-    const int srcpos = count + i;
+    const int srcpos = count + HEDLEY_STATIC_CAST(int, i);
     if (srcpos > 31) {
       r_.i8[i] = 0;
     } else if (srcpos > 15) {
@@ -315,7 +315,7 @@ simde_mm_alignr_pi8 (simde__m64 a, simde__m64 b, const int count) {
     return simde_mm_setzero_si64();
 
   for (size_t i = 0 ; i < (sizeof(r_.i8) / sizeof(r_.i8[0])) ; i++) {
-    const int srcpos = count + i;
+    const int srcpos = count + HEDLEY_STATIC_CAST(int, i);
     if (srcpos > 15) {
       r_.i8[i] = 0;
     } else if (srcpos > 7) {

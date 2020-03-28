@@ -201,7 +201,7 @@ simde_mm256_alignr_epi8 (simde__m256i a, simde__m256i b, int count) {
   for (size_t h = 0 ; h < (sizeof(r_.m128i) / sizeof(r_.m128i[0])) ; h++) {
     SIMDE__VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.m128i_private[h].i8) / sizeof(r_.m128i_private[h].i8[0])) ; i++) {
-      const int srcpos = count + i;
+      const int srcpos = count + HEDLEY_STATIC_CAST(int, i);
       if (srcpos > 31) {
         r_.m128i_private[h].i8[i] = 0;
       } else if (srcpos > 15) {
@@ -1765,7 +1765,8 @@ simde_mm256_srli_si256 (simde__m256i a, const int imm8) {
   for (size_t h = 0 ; h < (sizeof(r_.m128i_private) / sizeof(r_.m128i_private[0])) ; h++) {
     SIMDE__VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.m128i_private[h].i8) / sizeof(r_.m128i_private[h].i8[0])) ; i++) {
-      r_.m128i_private[h].i8[i] = ((i + imm8) < 16) ? a_.m128i_private[h].i8[i + imm8] : 0;
+      const int e = imm8 + HEDLEY_STATIC_CAST(int, i);
+      r_.m128i_private[h].i8[i] = (e < 16) ? a_.m128i_private[h].i8[e] : 0;
     }
   }
 

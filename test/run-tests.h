@@ -88,14 +88,14 @@ SIMDE__FUNCTION_POSSIBLY_UNUSED
 static simde_float64 random_f64_range(simde_float64 min, simde_float64 max) {
   const simde_float64 range = max - min;
   simde_float64 x = HEDLEY_STATIC_CAST(simde_float64, munit_rand_uint32());
-  x /= ((simde_float32) UINT32_MAX) / range;
+  x /= ((simde_float64) UINT32_MAX) / range;
   x += min;
   return x;
 }
 
 SIMDE__FUNCTION_POSSIBLY_UNUSED
 static simde_float32 random_f32_range(simde_float32 min, simde_float32 max) {
-  return (simde_float32) random_f64_range(min, max);
+  return (simde_float32) random_f64_range((double) min, (double) max);
 }
 
 SIMDE__FUNCTION_POSSIBLY_UNUSED

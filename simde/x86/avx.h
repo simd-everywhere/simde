@@ -745,15 +745,16 @@ simde_x_mm256_set_epu16 (uint16_t e15, uint16_t e14, uint16_t e13, uint16_t e12,
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256i
 simde_x_mm256_set_epu32 (uint32_t e7, uint32_t e6, uint32_t e5, uint32_t e4,
-                       uint32_t e3, uint32_t e2, uint32_t e1, uint32_t e0) {
+                         uint32_t e3, uint32_t e2, uint32_t e1, uint32_t e0) {
 #if defined(SIMDE_AVX_NATIVE)
-  return _mm256_set_epi32(e7, e6, e5, e4, e3, e2, e1, e0);
+  return _mm256_set_epi32(HEDLEY_STATIC_CAST(int32_t, e7), HEDLEY_STATIC_CAST(int32_t, e6), HEDLEY_STATIC_CAST(int32_t, e5), HEDLEY_STATIC_CAST(int32_t, e4),
+                          HEDLEY_STATIC_CAST(int32_t, e3), HEDLEY_STATIC_CAST(int32_t, e2), HEDLEY_STATIC_CAST(int32_t, e1), HEDLEY_STATIC_CAST(int32_t, e0));
 #else
   simde__m256i_private r_;
 
 #if defined(SIMDE_ARCH_X86_SSE2)
-  r_.m128i[0] = simde_mm_set_epi32(e3, e2, e1, e0);
-  r_.m128i[1] = simde_mm_set_epi32(e7, e6, e5, e4);
+  r_.m128i[0] = simde_mm_set_epi32(HEDLEY_STATIC_CAST(int32_t, e3), HEDLEY_STATIC_CAST(int32_t, e2), HEDLEY_STATIC_CAST(int32_t, e1), HEDLEY_STATIC_CAST(int32_t, e0));
+  r_.m128i[1] = simde_mm_set_epi32(HEDLEY_STATIC_CAST(int32_t, e7), HEDLEY_STATIC_CAST(int32_t, e6), HEDLEY_STATIC_CAST(int32_t, e5), HEDLEY_STATIC_CAST(int32_t, e4));
 #else
   r_.u32[ 0] =  e0;
   r_.u32[ 1] =  e1;

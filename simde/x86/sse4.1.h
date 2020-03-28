@@ -201,7 +201,7 @@ simde_mm_blendv_epi8 (simde__m128i a, simde__m128i b, simde__m128i mask) {
   /* https://software.intel.com/en-us/forums/intel-c-compiler/topic/850087 */
   #if defined(HEDLEY_INTEL_VERSION_CHECK)
     __typeof__(mask_.i8) z = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-    mask_.i8 = mask_.i8 < z;
+    mask_.i8 = HEDLEY_STATIC_CAST(__typeof__(mask_.i8), mask_.i8 < z);
   #else
     mask_.i8 >>= (CHAR_BIT * sizeof(mask_.i8[0])) - 1;
   #endif
@@ -313,7 +313,7 @@ simde_x_mm_blendv_epi64 (simde__m128i a, simde__m128i b, simde__m128i mask) {
 #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
   #if defined(HEDLEY_INTEL_VERSION_CHECK)
     __typeof__(mask_.i64) z = { 0, 0 };
-    mask_.i64 = mask_.i64 < z;
+    mask_.i64 = HEDLEY_STATIC_CAST(__typeof__(mask_.i64), mask_.i64 < z);
   #else
     mask_.i64 >>= (CHAR_BIT * sizeof(mask_.i64[0])) - 1;
   #endif
@@ -479,7 +479,7 @@ simde_mm_cmpeq_epi64 (simde__m128i a, simde__m128i b) {
     b_ = simde__m128i_to_private(b);
 
   #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-    r_.i64 = (a_.i64 == b_.i64);
+    r_.i64 = HEDLEY_STATIC_CAST(__typeof__(r_.i64), a_.i64 == b_.i64);
   #elif defined(SIMDE_SSE_POWER_ALTIVEC)
     r_.altivec_i64 = (vector signed long long) vec_cmpeq(a_.altivec_i64, b_.altivec_i64);
   #else

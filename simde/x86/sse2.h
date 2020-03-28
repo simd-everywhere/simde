@@ -958,7 +958,8 @@ simde_mm_bsrli_si128 (simde__m128i a, const int imm8)
 
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r_.i8) / sizeof(r_.i8[0])) ; i++) {
-    r_.i8[i] = ((i + imm8) < 16) ? a_.i8[i + imm8] : 0;
+    const int e = HEDLEY_STATIC_CAST(int, i) + imm8;
+    r_.i8[i] = (e < 16) ? a_.i8[e] : 0;
   }
 
   return simde__m128i_from_private(r_);
