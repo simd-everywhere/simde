@@ -1900,11 +1900,7 @@ simde_mm_load_ps1 (simde_float32 const* mem_addr) {
 #if defined(SIMDE_SSE_NEON)
   r_.neon_f32 = vld1q_dup_f32(mem_addr);
 #else
-  const simde_float32 v = *mem_addr;
-  SIMDE__VECTORIZE
-  for (size_t i = 0 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {
-    r_.f32[i] = v;
-  }
+  r_ = simde__m128_to_private(simde_mm_set1_ps(*mem_addr));
 #endif
 
   return simde__m128_from_private(r_);
