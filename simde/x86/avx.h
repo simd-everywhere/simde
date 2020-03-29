@@ -427,11 +427,15 @@ simde_mm256_setzero_si256 (void) {
   return _mm256_setzero_si256();
 #else
   simde__m256i_private r_;
-
+#if defined(SIMDE_ARCH_X86_SSE2)
+  r_.m128i[0] = simde_mm_setzero_si128();
+  r_.m128i[1] = simde_mm_setzero_si128();
+#else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r_.i32f) / sizeof(r_.i32f[0])) ; i++) {
     r_.i32f[i] = 0;
   }
+#endif
 
   return simde__m256i_from_private(r_);
 #endif
@@ -5165,17 +5169,21 @@ simde_mm256_testz_si256 (simde__m256i a, simde__m256i b) {
 #if defined(SIMDE_AVX_NATIVE)
   return _mm256_testz_si256(a, b);
 #else
-  int_fast32_t r = 0;
   simde__m256i_private
     a_ = simde__m256i_to_private(a),
     b_ = simde__m256i_to_private(b);
 
+#if defined(SIMDE_ARCH_X86_SSE4_1)
+  return simde_mm_testz_si128(a_.m128i[0], b_.m128i[0]) && simde_mm_testz_si128(a_.m128i[1], b_.m128i[1]);
+#else
+  int_fast32_t r = 0;
   SIMDE__VECTORIZE_REDUCTION(|:r)
   for (size_t i = 0 ; i < (sizeof(a_.i32f) / sizeof(a_.i32f[0])) ; i++) {
     r |= a_.i32f[i] & b_.i32f[i];
   }
 
   return HEDLEY_STATIC_CAST(int, !r);
+#endif
 #endif
 }
 #if defined(SIMDE_AVX_ENABLE_NATIVE_ALIASES)
