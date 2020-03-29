@@ -1,0 +1,57 @@
+---
+kind: pipeline
+type: docker
+name: "clang-9 arm32"
+platform:
+  os: linux
+  arch: arm
+steps:
+  - name: test
+    image: ubuntu:bionic
+    environment:
+      CC: clang-9
+      CXX: clang++-9
+    commands:
+    - uname -m
+    - apt-get -yq update
+    - apt-get -yq install clang-9 cmake git-core make
+    - git submodule update --init --recursive
+    - mkdir test/build
+    - cd test/build
+    - cmake ..
+    - make -j
+    - ./run-tests
+trigger:
+  branch:
+    exclude:
+    - wip/*
+
+---
+kind: pipeline
+type: docker
+name: "clang-7 arm32"
+platform:
+  os: linux
+  arch: arm
+steps:
+  - name: test
+    image: ubuntu:bionic
+    environment:
+      CC: clang-7
+      CXX: clang++-7
+    commands:
+    - uname -m
+    - apt-get -yq update
+    - apt-get -yq install clang-7 cmake git-core make
+    - git submodule update --init --recursive
+    - mkdir test/build
+    - cd test/build
+    - cmake ..
+    - make -j
+    - ./run-tests
+    # `make` fails.
+    failure: ignore
+trigger:
+  branch:
+    exclude:
+    - wip/*
