@@ -1872,6 +1872,31 @@ simde_mm256_unpacklo_epi32 (simde__m256i a, simde__m256i b) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256i
+simde_mm256_unpacklo_epi64 (simde__m256i a, simde__m256i b) {
+#if defined(SIMDE_AVX2_NATIVE)
+  return _mm256_unpacklo_epi64(a, b);
+#else
+  simde__m256i_private
+    r_,
+    a_ = simde__m256i_to_private(a),
+    b_ = simde__m256i_to_private(b);
+
+#if defined(SIMDE__SHUFFLE_VECTOR)
+  r_.i64 = SIMDE__SHUFFLE_VECTOR(64, 32, a_.i64, b_.i64, 0, 4, 2, 6);
+#else
+  r_.m128i[0] = simde_mm_unpacklo_epi64(a_.m128i[0], b_.m128i[0]);
+  r_.m128i[1] = simde_mm_unpacklo_epi64(a_.m128i[1], b_.m128i[1]);
+#endif
+
+  return simde__m256i_from_private(r_);
+#endif
+}
+#if defined(SIMDE_AVX2_ENABLE_NATIVE_ALIASES)
+#  define _mm256_unpacklo_epi64(a, b) simde_mm256_unpacklo_epi64(a, b)
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256i
 simde_mm256_unpackhi_epi8 (simde__m256i a, simde__m256i b) {
   #if defined(SIMDE_AVX2_NATIVE)
     return _mm256_unpackhi_epi8(a, b);
