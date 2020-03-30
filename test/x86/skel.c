@@ -2488,7 +2488,7 @@ test_simde_mm512_mask_xxx_ps(const MunitParameter params[], void* data) {
     }
     munit_rand_memory(sizeof(k), (uint8_t*) &k);
 
-    r = simde__m512_to_private(simde_mm512_mask_xxx_ps(simde__m512_from_private(a), simde__m512_from_private(b)));
+    r = simde__m512_to_private(simde_mm512_mask_xxx_ps(k, simde__m512_from_private(a)));
 
     printf("    { simde_mm512_set_ps(SIMDE_FLOAT32_C(%*.2f), SIMDE_FLOAT32_C(%*.2f), SIMDE_FLOAT32_C(%*.2f), SIMDE_FLOAT32_C(%*.2f),\n"
            "                         SIMDE_FLOAT32_C(%*.2f), SIMDE_FLOAT32_C(%*.2f), SIMDE_FLOAT32_C(%*.2f), SIMDE_FLOAT32_C(%*.2f),\n"
@@ -2577,6 +2577,202 @@ test_simde_mm512_mask_xxx_pd(const MunitParameter params[], void* data) {
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m512d r = simde_mm512_mask_xxx_pd(test_vec[i].src, test_vec[i].k, test_vec[i].a);
+    simde_assert_m512d_close(r, test_vec[i].r, 1);
+  }
+
+  return MUNIT_OK;
+}
+
+static MunitResult
+test_simde_mm512_xxx_mov_epi32(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  const struct {
+    simde__mmask16 k;
+    simde__m512i a;
+    simde__m512i r;
+  } test_vec[8] = {
+
+  };
+
+  printf("\n");
+  for (size_t i = 0 ; i < (sizeof(test_vec) / (sizeof(test_vec[0]))) ; i++) {
+    simde__m512i_private a, r;
+    simde__mmask16 k;
+
+    munit_rand_memory(sizeof(k), (uint8_t*) &k);
+    munit_rand_memory(sizeof(a), (uint8_t*) &a);
+
+    r = simde__m512i_to_private(simde_mm512_xxx_mov_epi32(k, simde__m512i_from_private(a)));
+
+    printf("    { UINT16_C(%5" PRIu16 "),\n", k);
+    printf("      simde_mm512_set_epi32(INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "),\n"
+           "                            INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "),\n"
+           "                            INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "),\n"
+           "                            INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 ")),\n",
+           a.i32[15], a.i32[14], a.i32[13], a.i32[12], a.i32[11], a.i32[10], a.i32[ 9], a.i32[ 8],
+           a.i32[ 7], a.i32[ 6], a.i32[ 5], a.i32[ 4], a.i32[ 3], a.i32[ 2], a.i32[ 1], a.i32[ 0]);
+    printf("      simde_mm512_set_epi32(INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "),\n"
+           "                            INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "),\n"
+           "                            INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "),\n"
+           "                            INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 ")) },\n",
+           r.i32[15], r.i32[14], r.i32[13], r.i32[12], r.i32[11], r.i32[10], r.i32[ 9], r.i32[ 8],
+           r.i32[ 7], r.i32[ 6], r.i32[ 5], r.i32[ 4], r.i32[ 3], r.i32[ 2], r.i32[ 1], r.i32[ 0]);
+  }
+  return MUNIT_FAIL;
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    simde__m512i r = simde_mm512_xxx_mov_epi32(test_vec[i].k, test_vec[i].a);
+    simde_assert_m512i_i32(r, ==, test_vec[i].r);
+  }
+
+  return MUNIT_OK;
+}
+
+static MunitResult
+test_simde_mm512_xxx_mov_epi64(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  const struct {
+    simde__mmask8 k;
+    simde__m512i a;
+    simde__m512i r;
+  } test_vec[8] = {
+
+  };
+
+  printf("\n");
+  for (size_t i = 0 ; i < (sizeof(test_vec) / (sizeof(test_vec[0]))) ; i++) {
+    simde__m512i_private a, r;
+    simde__mmask8 k;
+
+    munit_rand_memory(sizeof(k), (uint8_t*) &k);
+    munit_rand_memory(sizeof(a), (uint8_t*) &a);
+
+    r = simde__m512i_to_private(simde_mm512_xxx_mov_epi64(k, simde__m512i_from_private(a)));
+
+    printf("    { UINT8_C(%3" PRIu8 "),\n", k);
+    printf("      simde_mm512_set_epi64(INT64_C(%20" PRId64 "), INT64_C(%20" PRId64 "),\n"
+           "                            INT64_C(%20" PRId64 "), INT64_C(%20" PRId64 "),\n"
+           "                            INT64_C(%20" PRId64 "), INT64_C(%20" PRId64 "),\n"
+           "                            INT64_C(%20" PRId64 "), INT64_C(%20" PRId64 ")),\n",
+           a.i64[7], a.i64[6], a.i64[5], a.i64[4],
+           a.i64[3], a.i64[2], a.i64[1], a.i64[0]);
+    printf("      simde_mm512_set_epi64(INT64_C(%20" PRId64 "), INT64_C(%20" PRId64 "),\n"
+           "                            INT64_C(%20" PRId64 "), INT64_C(%20" PRId64 "),\n"
+           "                            INT64_C(%20" PRId64 "), INT64_C(%20" PRId64 "),\n"
+           "                            INT64_C(%20" PRId64 "), INT64_C(%20" PRId64 ")) },\n",
+           r.i64[7], r.i64[6], r.i64[5], r.i64[4],
+           r.i64[3], r.i64[2], r.i64[1], r.i64[0]);
+  }
+  return MUNIT_FAIL;
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    simde__m512i r = simde_mm512_xxx_mov_epi64(test_vec[i].k, test_vec[i].a);
+    simde_assert_m512i_i64(r, ==, test_vec[i].r);
+  }
+
+  return MUNIT_OK;
+}
+
+static MunitResult
+test_simde_mm512_xxx_mov_ps(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  const struct {
+    simde__mmask16 k;
+    simde__m512 a;
+    simde__m512 r;
+  } test_vec[8] = {
+
+  };
+
+  printf("\n");
+  for (size_t i = 0 ; i < (sizeof(test_vec) / (sizeof(test_vec[0]))) ; i++) {
+    simde__m512_private a, r;
+    simde__mmask16 k;
+
+    for (size_t j = 0 ; j < sizeof(simde__m512) / sizeof(simde_float32) ; j++) {
+      a.f32[j] = (simde_float32) (round(random_f64_range(-1000.0, 1000.0) * 100.0) / 100.0);
+    }
+    munit_rand_memory(sizeof(k), (uint8_t*) &k);
+
+    r = simde__m512_to_private(simde_mm512_xxx_mov_ps(k, simde__m512_from_private(a)));
+
+    printf("    { UINT16_C(%5" PRIu16 "),\n", k);
+    printf("      simde_mm512_set_ps(SIMDE_FLOAT32_C(%*.2f), SIMDE_FLOAT32_C(%*.2f), SIMDE_FLOAT32_C(%*.2f), SIMDE_FLOAT32_C(%*.2f),\n"
+           "                         SIMDE_FLOAT32_C(%*.2f), SIMDE_FLOAT32_C(%*.2f), SIMDE_FLOAT32_C(%*.2f), SIMDE_FLOAT32_C(%*.2f),\n"
+           "                         SIMDE_FLOAT32_C(%*.2f), SIMDE_FLOAT32_C(%*.2f), SIMDE_FLOAT32_C(%*.2f), SIMDE_FLOAT32_C(%*.2f),\n"
+           "                         SIMDE_FLOAT32_C(%*.2f), SIMDE_FLOAT32_C(%*.2f), SIMDE_FLOAT32_C(%*.2f), SIMDE_FLOAT32_C(%*.2f)),\n",
+	         9, a.f32[15], 9, a.f32[14], 9, a.f32[13], 9, a.f32[12],
+	         9, a.f32[11], 9, a.f32[10], 9, a.f32[ 9], 9, a.f32[ 8],
+	         9, a.f32[ 7], 9, a.f32[ 6], 9, a.f32[ 5], 9, a.f32[ 4],
+	         9, a.f32[ 3], 9, a.f32[ 2], 9, a.f32[ 1], 9, a.f32[ 0]);
+    printf("      simde_mm512_set_ps(SIMDE_FLOAT32_C(%*.2f), SIMDE_FLOAT32_C(%*.2f), SIMDE_FLOAT32_C(%*.2f), SIMDE_FLOAT32_C(%*.2f),\n"
+           "                         SIMDE_FLOAT32_C(%*.2f), SIMDE_FLOAT32_C(%*.2f), SIMDE_FLOAT32_C(%*.2f), SIMDE_FLOAT32_C(%*.2f),\n"
+           "                         SIMDE_FLOAT32_C(%*.2f), SIMDE_FLOAT32_C(%*.2f), SIMDE_FLOAT32_C(%*.2f), SIMDE_FLOAT32_C(%*.2f),\n"
+           "                         SIMDE_FLOAT32_C(%*.2f), SIMDE_FLOAT32_C(%*.2f), SIMDE_FLOAT32_C(%*.2f), SIMDE_FLOAT32_C(%*.2f)) },\n",
+	         9, r.f32[15], 9, r.f32[14], 9, r.f32[13], 9, r.f32[12],
+	         9, r.f32[11], 9, r.f32[10], 9, r.f32[ 9], 9, r.f32[ 8],
+	         9, r.f32[ 7], 9, r.f32[ 6], 9, r.f32[ 5], 9, r.f32[ 4],
+	         9, r.f32[ 3], 9, r.f32[ 2], 9, r.f32[ 1], 9, r.f32[ 0]);
+  }
+  return MUNIT_FAIL;
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    simde__m512 r = simde_mm512_xxx_mov_ps(test_vec[i].k, test_vec[i].a);
+    simde_assert_m512_close(r, test_vec[i].r, 1);
+  }
+
+  return MUNIT_OK;
+}
+
+static MunitResult
+test_simde_mm512_xxx_mov_pd(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  const struct {
+    simde__mmask8 k;
+    simde__m512d a;
+    simde__m512d r;
+  } test_vec[8] = {
+
+  };
+
+  printf("\n");
+  for (size_t i = 0 ; i < (sizeof(test_vec) / (sizeof(test_vec[0]))) ; i++) {
+    simde__m512d_private a, r;
+    simde__mmask8 k;
+
+    for (size_t j = 0 ; j < sizeof(simde__m512d) / sizeof(simde_float64) ; j++) {
+      a.f64[j] = round(random_f64_range(-1000.0, 1000.0) * 100.0) / 100.0;
+    }
+    munit_rand_memory(sizeof(k), (uint8_t*) &k);
+
+    r = simde__m512d_to_private(simde_mm512_xxx_mov_pd(k, simde__m512d_from_private(a)));
+
+    printf("    { UINT8_C(%3" PRIu8 "),\n", k);
+    printf("      simde_mm512_set_pd(SIMDE_FLOAT64_C(%*.2f), SIMDE_FLOAT64_C(%*.2f),\n"
+           "                         SIMDE_FLOAT64_C(%*.2f), SIMDE_FLOAT64_C(%*.2f),\n"
+           "                         SIMDE_FLOAT64_C(%*.2f), SIMDE_FLOAT64_C(%*.2f),\n"
+           "                         SIMDE_FLOAT64_C(%*.2f), SIMDE_FLOAT64_C(%*.2f)),\n",
+           8, a.f64[7], 8, a.f64[6], 8, a.f64[5], 8, a.f64[4],
+           8, a.f64[3], 8, a.f64[2], 8, a.f64[1], 8, a.f64[0]);
+    printf("      simde_mm512_set_pd(SIMDE_FLOAT64_C(%*.2f), SIMDE_FLOAT64_C(%*.2f),\n"
+           "                         SIMDE_FLOAT64_C(%*.2f), SIMDE_FLOAT64_C(%*.2f),\n"
+           "                         SIMDE_FLOAT64_C(%*.2f), SIMDE_FLOAT64_C(%*.2f),\n"
+           "                         SIMDE_FLOAT64_C(%*.2f), SIMDE_FLOAT64_C(%*.2f)) },\n",
+           8, r.f64[7], 8, r.f64[6], 8, r.f64[5], 8, r.f64[4],
+           8, r.f64[3], 8, r.f64[2], 8, r.f64[1], 8, r.f64[0]);
+  }
+  return MUNIT_FAIL;
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    simde__m512d r = simde_mm512_xxx_mov_pd(test_vec[i].k, test_vec[i].a);
     simde_assert_m512d_close(r, test_vec[i].r, 1);
   }
 
