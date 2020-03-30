@@ -2340,7 +2340,7 @@ simde_mm_cvtsi32_sd (simde__m128d a, int32_t b) {
   simde__m128d_private r_;
   simde__m128d_private a_ = simde__m128d_to_private(a);
 
-#if defined(SIMDE_SSE2_NEON)
+#if defined(SIMDE_SSE2_NEON) && defined(SIMDE_ARCH_AMD64)
   r_.neon_f64 = vsetq_lane_f64((simde_float64) b, a_.neon_f64, 0);
 #else
   r_.f64[0] = (simde_float64) b;
