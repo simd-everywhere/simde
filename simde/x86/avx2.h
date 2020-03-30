@@ -408,6 +408,31 @@ for (size_t i = 0 ; i < (sizeof(r_.u16) / sizeof(r_.u16[0])) ; i++) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256i
+simde_mm256_blend_epi16(simde__m256i a, simde__m256i b, const int imm8)
+    HEDLEY_REQUIRE_MSG((imm8 & 0xff) == imm8, "imm8 must be in range [0, 255]") {
+#if defined(SIMDE_AVX2_NATIVE)
+  return _mm256_blend_epi16(a, b, imm8);
+#else
+  simde__m256i_private
+    r_,
+    a_ = simde__m256i_to_private(a),
+    b_ = simde__m256i_to_private(b);
+
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r_.i16) / sizeof(r_.i16[0])) ; i++) {
+    r_.i16[i] = ((imm8 >> i%8) & 1) ? b_.i16[i] : a_.i16[i];
+  }
+
+  return simde__m256i_from_private(r_);
+#endif
+}
+#if defined(SIMDE_AVX2_ENABLE_NATIVE_ALIASES)
+#  define _mm256_blend_epi16(a, b, imm8) simde_mm256_blend_epi16(a, b, imm8)
+#endif
+
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256i
 simde_mm256_blend_epi32(simde__m256i a, simde__m256i b, const int imm8)
     HEDLEY_REQUIRE_MSG((imm8 & 0xff) == imm8, "imm8 must be in range [0, 255]") {
 #if defined(SIMDE_AVX2_NATIVE)
