@@ -998,6 +998,247 @@ simde_mm512_set_pd (simde_float64 e7, simde_float64 e6, simde_float64 e5, simde_
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m512i
+simde_mm512_set1_epi8 (int8_t a) {
+  #if defined(SIMDE_AVX512F_NATIVE)
+    return _mm512_set1_epi8(a);
+  #else
+    simde__m512i_private r_;
+
+    SIMDE__VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.i8) / sizeof(r_.i8[0])) ; i++) {
+      r_.i8[i] = a;
+    }
+
+    return simde__m512i_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_AVX512_ENABLE_NATIVE_ALIASES)
+#  define _mm512_set_epi8(a) simde_mm512_set_epi8(a)
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m512i
+simde_mm512_set1_epi16 (int16_t a) {
+  #if defined(SIMDE_AVX512F_NATIVE)
+    return _mm512_set1_epi16(a);
+  #else
+    simde__m512i_private r_;
+
+    SIMDE__VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.i16) / sizeof(r_.i16[0])) ; i++) {
+      r_.i16[i] = a;
+    }
+
+    return simde__m512i_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_AVX512_ENABLE_NATIVE_ALIASES)
+#  define _mm512_set_epi16(a) simde_mm512_set_epi16(a)
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m512i
+simde_mm512_set1_epi32 (int32_t a) {
+  #if defined(SIMDE_AVX512F_NATIVE)
+    return _mm512_set1_epi32(a);
+  #else
+    simde__m512i_private r_;
+
+    SIMDE__VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {
+      r_.i32[i] = a;
+    }
+
+    return simde__m512i_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_AVX512_ENABLE_NATIVE_ALIASES)
+#  define _mm512_set_epi32(a) simde_mm512_set_epi32(a)
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m512i
+simde_mm512_set1_epi64 (int64_t a) {
+  #if defined(SIMDE_AVX512F_NATIVE)
+    return _mm512_set1_epi64(a);
+  #else
+    simde__m512i_private r_;
+
+    SIMDE__VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.i64) / sizeof(r_.i64[0])) ; i++) {
+      r_.i64[i] = a;
+    }
+
+    return simde__m512i_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_AVX512_ENABLE_NATIVE_ALIASES)
+#  define _mm512_set_epi64(a) simde_mm512_set_epi64(a)
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m512i
+simde_x_mm512_set1_epu8 (uint8_t a) {
+  simde__m512i_private r_;
+
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r_.u8) / sizeof(r_.u8[0])) ; i++) {
+    r_.u8[i] = a;
+  }
+
+  return simde__m512i_from_private(r_);
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m512i
+simde_x_mm512_set1_epu16 (uint16_t a) {
+  simde__m512i_private r_;
+
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r_.u16) / sizeof(r_.u16[0])) ; i++) {
+    r_.u16[i] = a;
+  }
+
+  return simde__m512i_from_private(r_);
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m512i
+simde_x_mm512_set1_epu32 (uint32_t a) {
+  simde__m512i_private r_;
+
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r_.u32) / sizeof(r_.u32[0])) ; i++) {
+    r_.u32[i] = a;
+  }
+
+  return simde__m512i_from_private(r_);
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m512i
+simde_x_mm512_set1_epu64 (uint64_t a) {
+  simde__m512i_private r_;
+
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r_.u64) / sizeof(r_.u64[0])) ; i++) {
+    r_.u64[i] = a;
+  }
+
+  return simde__m512i_from_private(r_);
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m512
+simde_mm512_set1_ps (simde_float32 a) {
+  #if defined(SIMDE_AVX512F_NATIVE)
+    return _mm512_set1_ps(a);
+  #else
+    simde__m512_private r_;
+
+    SIMDE__VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
+      r_.f32[i] = a;
+    }
+
+    return simde__m512_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_AVX512_ENABLE_NATIVE_ALIASES)
+#  define _mm512_set_ps(a) simde_mm512_set_ps(a)
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m512d
+simde_mm512_set1_pd (simde_float64 a) {
+  #if defined(SIMDE_AVX512F_NATIVE)
+    return _mm512_set1_pd(a);
+  #else
+    simde__m512d_private r_;
+
+    SIMDE__VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
+      r_.f64[i] = a;
+    }
+
+    return simde__m512d_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_AVX512_ENABLE_NATIVE_ALIASES)
+#  define _mm512_set_pd(a) simde_mm512_set_pd(a)
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m512i
+simde_mm512_setzero_si512(void) {
+  #if defined(SIMDE_AVX512F_NATIVE)
+    return _mm512_setzero_si512();
+  #else
+    simde__m512i r;
+    simde_memset(&r, 0, sizeof(r));
+    return r;
+  #endif
+}
+#define simde_mm512_setzero_epi32() simde_mm512_setzero_si512()
+#if defined(SIMDE_AVX2_ENABLE_NATIVE_ALIASES)
+#  define _mm512_setzero_si512() simde_mm512_setzero_si512()
+#  define _mm512_setzero_epi32() simde_mm512_setzero_si512()
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m512i
+simde_mm512_setone_si512(void) {
+  simde__m512i_private r_;
+
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r_.i32f) / sizeof(r_.i32f[0])) ; i++) {
+    r_.i32f[i] = ~((int_fast32_t) 0);
+  }
+
+  return simde__m512i_from_private(r_);
+}
+#define simde_mm512_setone_epi32() simde_mm512_setone_si512()
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m512
+simde_mm512_setzero_ps(void) {
+  #if defined(SIMDE_AVX512F_NATIVE)
+    return _mm512_setzero_ps();
+  #else
+    return simde_mm512_castsi512_ps(simde_mm512_setzero_si512());
+  #endif
+}
+#if defined(SIMDE_AVX2_ENABLE_NATIVE_ALIASES)
+#  define _mm512_setzero_si512() simde_mm512_setzero_si512()
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m512
+simde_mm512_setone_ps(void) {
+  return simde_mm512_castsi512_ps(simde_mm512_setone_si512());
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m512d
+simde_mm512_setzero_pd(void) {
+  #if defined(SIMDE_AVX512F_NATIVE)
+    return _mm512_setzero_pd();
+  #else
+    return simde_mm512_castsi512_pd(simde_mm512_setzero_si512());
+  #endif
+}
+#if defined(SIMDE_AVX2_ENABLE_NATIVE_ALIASES)
+#  define _mm512_setzero_si512() simde_mm512_setzero_si512()
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m512d
+simde_mm512_setone_pd(void) {
+  return simde_mm512_castsi512_pd(simde_mm512_setone_si512());
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m512i
 simde_mm512_mask_mov_epi32(simde__m512i src, simde__mmask16 k, simde__m512i a) {
   #if defined(SIMDE_AVX512F_NATIVE)
     return _mm512_mask_mov_epi32(src, k, a);
