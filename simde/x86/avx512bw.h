@@ -50,6 +50,10 @@ SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 #    include <altivec.h>
 #  endif
 
+#if !defined(SIMDE_AVX512BW_NATIVE) && defined(SIMDE_ENABLE_NATIVE_ALIASES)
+  #define SIMDE_AVX512BW_ENABLE_NATIVE_ALIASES
+#endif
+
 SIMDE__BEGIN_DECLS
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -75,7 +79,7 @@ simde_mm512_add_epi8 (simde__m512i a, simde__m512i b) {
   return simde__m512i_from_private(r_);
 #endif
 }
-#if defined(SIMDE_AVX2_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_AVX512BW_ENABLE_NATIVE_ALIASES)
 #  define _mm512_add_epi8(a, b) simde_mm512_add_epi8(a, b)
 #endif
 
@@ -102,7 +106,7 @@ simde_mm512_add_epi16 (simde__m512i a, simde__m512i b) {
   return simde__m512i_from_private(r_);
 #endif
 }
-#if defined(SIMDE_AVX2_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_AVX512BW_ENABLE_NATIVE_ALIASES)
 #  define _mm512_add_epi16(a, b) simde_mm512_add_epi16(a, b)
 #endif
 
