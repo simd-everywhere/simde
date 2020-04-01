@@ -244,9 +244,9 @@ typedef union {
   typedef __m128i simde__m128i;
   typedef __m128d simde__m128d;
 #elif defined(SIMDE_SSE2_NEON)
-  typedef __attribute__((neon_vector_type(2))) int64_t simde__m128i;
+   typedef int64x2_t simde__m128i;
 #  if defined(SIMDE_ARCH_AARCH64)
-     typedef __attribute__((neon_vector_type(2))) double simde__m128d;
+     typedef float64x2_t simde__m128d;
 #  elif defined(SIMDE_VECTOR_SUBSCRIPT)
      typedef simde_float64 simde__m128d SIMDE_VECTOR(16) SIMDE_MAY_ALIAS;
 #  else
