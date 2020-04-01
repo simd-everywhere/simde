@@ -2893,7 +2893,7 @@ simde_mm_maskmoveu_si128 (simde__m128i a, simde__m128i mask, int8_t mem_addr[HED
 #endif
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
-#  define _mm_maskmoveu_si128(a, mask, mem_addr) simde_mm_maskmoveu_si128(a, (mask), mem_addr)
+#  define _mm_maskmoveu_si128(a, mask, mem_addr) simde_mm_maskmoveu_si128(a, (mask), HEDLEY_REINTERPRET_CAST(int8_t*, mem_addr))
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
