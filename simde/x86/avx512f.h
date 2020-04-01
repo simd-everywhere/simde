@@ -1418,6 +1418,30 @@ simde_mm512_maskz_mov_pd(simde__mmask8 k, simde__m512d a) {
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
+simde__mmask16
+simde_mm512_mask_test_epi32_mask (simde__mmask16 k1, simde__m512i a, simde__m512i b) {
+  #if defined(SIMDE_AVX512F_NATIVE)
+    return _mm512_mask_test_epi32_mask(k1, a, b);
+  #else
+    simde__m512i_private
+      tmp_,
+      a_ = simde__m512i_to_private(a),
+      b_ = simde__m512i_to_private(b);
+    simde__mmask16 r = 0;
+
+    SIMDE__VECTORIZE_REDUCTION(|:r)
+    for (size_t i = 0 ; i < (sizeof(a_.i32) / sizeof(a_.i32[0])) ; i++) {
+      r |= !!(a_.i32[i] & b_.i32[i]) << i;
+    }
+
+    return r & k1;
+  #endif
+}
+#if defined(SIMDE_AVX2_ENABLE_NATIVE_ALIASES)
+#  define _mm512_mask_test_epi32_mask(a, b) simde_mm512_mask_test_epi32_mask(a, b)
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
 simde__m512i
 simde_mm512_and_si512 (simde__m512i a, simde__m512i b) {
 #if defined(SIMDE_AVX512F_NATIVE)
