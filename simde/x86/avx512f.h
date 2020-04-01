@@ -1672,15 +1672,15 @@ simde_mm512_mask_cmpeq_epi32_mask (simde__mmask16 k1, simde__m512i a, simde__m51
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m512i
-simde_mm512_cvtepi8_epi32 (simde__m512i a) {
+simde_mm512_cvtepi8_epi32 (simde__m128i a) {
 #if defined(SIMDE_AVX512F_NATIVE)
   return _mm512_cvtepi8_epi32(a);
 #else
   simde__m512i_private r_;
-  simde__m512i_private a_ = simde__m512i_to_private(a);
+  simde__m128i_private a_ = simde__m128i_to_private(a);
 
 #if defined(SIMDE__CONVERT_VECTOR)
-  SIMDE__CONVERT_VECTOR(r_.i32, a_.m128i_private[0].i8);
+  SIMDE__CONVERT_VECTOR(r_.i32, a_.i8);
 #else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {
@@ -1697,12 +1697,12 @@ simde_mm512_cvtepi8_epi32 (simde__m512i a) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m512i
-simde_mm512_cvtepi8_epi64 (simde__m512i a) {
+simde_mm512_cvtepi8_epi64 (simde__m128i a) {
 #if defined(SIMDE_AVX512F_NATIVE)
   return _mm512_cvtepi8_epi64(a);
 #else
   simde__m512i_private r_;
-  simde__m512i_private a_ = simde__m512i_to_private(a);
+  simde__m128i_private a_ = simde__m128i_to_private(a);
 
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r_.i64) / sizeof(r_.i64[0])) ; i++) {

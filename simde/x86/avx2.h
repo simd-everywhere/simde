@@ -813,7 +813,7 @@ simde_mm256_cvtepi8_epi32 (simde__m128i a) {
 #endif
 }
 #if defined(SIMDE_AVX2_ENABLE_NATIVE_ALIASES)
-#  define _mm256_cvtepi8_epi32(a) simde_mm256_cvtepi8_epi16(a)
+#  define _mm256_cvtepi8_epi32(a) simde_mm256_cvtepi8_epi32(a)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
