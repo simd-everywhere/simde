@@ -342,6 +342,41 @@ simde__m256d_to_private(simde__m256d v) {
 #define SIMDE_CMP_GT_OQ    30
 #define SIMDE_CMP_TRUE_US  31
 
+#if defined(SIMDE_AVX_ENABLE_NATIVE_ALIASES)
+#define _CMP_EQ_OQ SIMDE_CMP_EQ_OQ
+#define _CMP_LT_OS SIMDE_CMP_LT_OS
+#define _CMP_LE_OS SIMDE_CMP_LE_OS
+#define _CMP_UNORD_Q SIMDE_CMP_UNORD_Q
+#define _CMP_NEQ_UQ SIMDE_CMP_NEQ_UQ
+#define _CMP_NLT_US SIMDE_CMP_NLT_US
+#define _CMP_NLE_US SIMDE_CMP_NLE_US
+#define _CMP_ORD_Q SIMDE_CMP_ORD_Q
+#define _CMP_EQ_UQ SIMDE_CMP_EQ_UQ
+#define _CMP_NGE_US SIMDE_CMP_NGE_US
+#define _CMP_NGT_US SIMDE_CMP_NGT_US
+#define _CMP_FALSE_OQ SIMDE_CMP_FALSE_OQ
+#define _CMP_NEQ_OQ SIMDE_CMP_NEQ_OQ
+#define _CMP_GE_OS SIMDE_CMP_GE_OS
+#define _CMP_GT_OS SIMDE_CMP_GT_OS
+#define _CMP_TRUE_UQ SIMDE_CMP_TRUE_UQ
+#define _CMP_EQ_OS SIMDE_CMP_EQ_OS
+#define _CMP_LT_OQ SIMDE_CMP_LT_OQ
+#define _CMP_LE_OQ SIMDE_CMP_LE_OQ
+#define _CMP_UNORD_S SIMDE_CMP_UNORD_S
+#define _CMP_NEQ_US SIMDE_CMP_NEQ_US
+#define _CMP_NLT_UQ SIMDE_CMP_NLT_UQ
+#define _CMP_NLE_UQ SIMDE_CMP_NLE_UQ
+#define _CMP_ORD_S SIMDE_CMP_ORD_S
+#define _CMP_EQ_US SIMDE_CMP_EQ_US
+#define _CMP_NGE_UQ SIMDE_CMP_NGE_UQ
+#define _CMP_NGT_UQ SIMDE_CMP_NGT_UQ
+#define _CMP_FALSE_OS SIMDE_CMP_FALSE_OS
+#define _CMP_NEQ_OS SIMDE_CMP_NEQ_OS
+#define _CMP_GE_OQ SIMDE_CMP_GE_OQ
+#define _CMP_GT_OQ SIMDE_CMP_GT_OQ
+#define _CMP_TRUE_US SIMDE_CMP_TRUE_US
+#endif
+
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256d
 simde_mm256_castps_pd (simde__m256 a) {
@@ -911,7 +946,7 @@ simde_mm256_set_m128i (simde__m128i e1, simde__m128i e0) {
   simde__m128i_private
     e1_ = simde__m128i_to_private(e1),
     e0_ = simde__m128i_to_private(e0);
-  
+
 #if defined(SIMDE_ARCH_X86_SSE2)
   r_.m128i_private[0] = e0_;
   r_.m128i_private[1] = e1_;
