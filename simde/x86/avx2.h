@@ -1304,7 +1304,7 @@ simde_mm256_min_epu8 (simde__m256i a, simde__m256i b) {
   return simde__m256i_from_private(r_);
 #endif
 }
-#if defined(SIMDE_AVX22_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_AVX2_ENABLE_NATIVE_ALIASES)
 #  define _mm256_min_epu8(a, b) simde_mm256_min_epu8(a, b)
 #endif
 
@@ -1332,7 +1332,7 @@ simde_mm256_min_epu16 (simde__m256i a, simde__m256i b) {
   return simde__m256i_from_private(r_);
 #endif
 }
-#if defined(SIMDE_AVX22_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_AVX2_ENABLE_NATIVE_ALIASES)
 #  define _mm256_min_epu16(a, b) simde_mm256_min_epu16(a, b)
 #endif
 
@@ -1360,7 +1360,7 @@ simde_mm256_min_epu32 (simde__m256i a, simde__m256i b) {
   return simde__m256i_from_private(r_);
 #endif
 }
-#if defined(SIMDE_AVX22_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_AVX2_ENABLE_NATIVE_ALIASES)
 #  define _mm256_min_epu32(a, b) simde_mm256_min_epu32(a, b)
 #endif
 
