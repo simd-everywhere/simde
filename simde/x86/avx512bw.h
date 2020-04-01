@@ -236,6 +236,76 @@ simde_mm512_adds_epu16 (simde__m512i a, simde__m512i b) {
 #  define _mm512_adds_epu16(a, b) simde_mm512_adds_epu16(a, b)
 #endif
 
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m512i
+simde_mm512_shuffle_epi8 (simde__m512i a, simde__m512i b) {
+#if defined(SIMDE_AVX512BW_NATIVE)
+  return _mm512_shuffle_epi8(a, b);
+#else
+  simde__m512i_private
+    r_,
+    a_ = simde__m512i_to_private(a),
+    b_ = simde__m512i_to_private(b);
+
+#if defined(SIMDE_ARCH_X86_AVX2)
+  r_.m256i[0] = simde_mm256_shuffle_epi8(a_.m256i[0], b_.m256i[0]);
+  r_.m256i[1] = simde_mm256_shuffle_epi8(a_.m256i[1], b_.m256i[1]);
+#elif defined(SIMDE_ARCH_X86_SSSE3)
+  r_.m128i[0] = simde_mm_shuffle_epi8(a_.m128i[0], b_.m128i[0]);
+  r_.m128i[1] = simde_mm_shuffle_epi8(a_.m128i[1], b_.m128i[1]);
+  r_.m128i[2] = simde_mm_shuffle_epi8(a_.m128i[2], b_.m128i[2]);
+  r_.m128i[3] = simde_mm_shuffle_epi8(a_.m128i[3], b_.m128i[3]);
+#else
+ SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r_.u8) / sizeof(r_.u8[0])) ; i++) {
+    r_.u8[i] = (b_.u8[i] & 0x80) ? 0 : a_.u8[(b_.u8[i] & 0x0f) + (i & 0x30)];
+  }
+#endif
+
+  return simde__m512i_from_private(r_);
+#endif
+}
+#if defined(SIMDE_AVX512BW_ENABLE_NATIVE_ALIASES)
+#  define _mm512_shuffle_epi8(a, b) simde_mm512_shuffle_epi8(a, b)
+#endif
+
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__mmask64
+simde_mm512_cmpeq_epi8_mask (simde__m512i a, simde__m512i b) {
+#if defined(SIMDE_AVX512BW_NATIVE)
+  return _mm512_cmpeq_epi8_mask(a, b);
+#else
+  simde__m512i_private
+    a_ = simde__m512i_to_private(a),
+    b_ = simde__m512i_to_private(b);
+#if defined(SIMDE_ARCH_X86_AVX2)
+  simde__mmask64 r_;
+
+  // The second cast is absolutely necessary otherwise if the sign bit is set it will be sign extended to 64 bits
+  r_ =              (uint32_t) simde_mm256_movemask_epi8(simde_mm256_cmpeq_epi8(a_.m256i[1], b_.m256i[1]));
+  r_ = (r_ << 32) | (uint32_t) simde_mm256_movemask_epi8(simde_mm256_cmpeq_epi8(a_.m256i[0], b_.m256i[0]));
+#elif defined(SIMDE_ARCH_X86_SSE2)
+  simde__mmask64 r_;
+  
+  r_ =              simde_mm_movemask_epi8(simde_mm_cmpeq_epi8(a_.m128i[3], b_.m128i[3]));
+  r_ = (r_ << 16) | simde_mm_movemask_epi8(simde_mm_cmpeq_epi8(a_.m128i[2], b_.m128i[2]));
+  r_ = (r_ << 16) | simde_mm_movemask_epi8(simde_mm_cmpeq_epi8(a_.m128i[1], b_.m128i[1]));
+  r_ = (r_ << 16) | simde_mm_movemask_epi8(simde_mm_cmpeq_epi8(a_.m128i[0], b_.m128i[0]));
+#else
+  simde__mmask64 r_ = 0;
+
+  for (size_t i = 0 ; i < (sizeof(a_.u8) / sizeof(a_.u8[0])) ; i++) {
+    r_ |= (a_.u8[i] == b_.u8[i]) ? (1ULL << i) : 0;
+  }
+#endif
+  return r_;
+#endif
+}
+#if defined(SIMDE_AVX512BW_ENABLE_NATIVE_ALIASES)
+#  define _mm512_cmpeq_epi8_mask(a, b) simde_mm512_cmpeq_epi8_mask(a, b)
+#endif
+
 SIMDE__END_DECLS
 
 HEDLEY_DIAGNOSTIC_POP
