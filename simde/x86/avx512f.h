@@ -1443,6 +1443,47 @@ simde_mm512_mask_test_epi32_mask (simde__mmask16 k1, simde__m512i a, simde__m512
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m512i
+simde__m512i_from_mmask16 (simde__mmask16 k) {
+  #if defined(SIMDE_AVX512F_NATIVE)
+    /* Should never be reached. */
+    return _mm512_mask_mov_epi32(_mm512_setzero_epi32(), k, _mm512_set1_epi32(~INT32_C(0)));
+  #else
+    simde__m512i_private r_;
+
+    SIMDE__VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {
+      r_.i32[i] = (k & (1 << i)) ? ~INT32_C(0) : INT32_C(0);
+    }
+
+    return simde__m512i_from_private(r_);
+  #endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__mmask16
+simde__m512i_private_to_mmask16 (simde__m512i_private a) {
+  #if defined(SIMDE_AVX512F_NATIVE)
+    HEDLEY_UNREACHABLE_RETURN(0);
+  #else
+    simde__mmask16 r = 0;
+
+    /* Note: using addition instead of a bitwise or for the reduction
+       seems like it should improve things since hardware support for
+       horizontal addition is better than bitwise or.  However, GCC
+       generates the same code, and clang is actually a bit slower.
+       I suspect this can be optimized quite a bit, and this function
+       is probably going to be pretty hot. */
+    SIMDE__VECTORIZE_REDUCTION(|:r)
+    for (size_t i = 0 ; i < (sizeof(a.i32) / sizeof(a.i32[0])) ; i++) {
+      r |= !!(a.i32[i]) << i;
+    }
+
+    return r;
+  #endif
+}
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m512i
 simde_mm512_and_si512 (simde__m512i a, simde__m512i b) {
 #if defined(SIMDE_AVX512F_NATIVE)
   return _mm512_and_si512(a, b);
@@ -1607,6 +1648,27 @@ simde_mm512_add_pd (simde__m512d a, simde__m512d b) {
 #  define _mm512_add_pd(a, b) simde_mm512_add_pd(a, b)
 #endif
 
+SIMDE__FUNCTION_ATTRIBUTES
+simde__mmask16
+simde_mm512_mask_cmpeq_epi32_mask (simde__mmask16 k1, simde__m512i a, simde__m512i b) {
+  #if defined(SIMDE_AVX512F_NATIVE)
+    return _mm512_mask_cmpeq_epi32_mask(k1, a, b);
+  #else
+    simde__m512i_private
+      r_,
+      a_ = simde__m512i_to_private(a),
+      b_ = simde__m512i_to_private(b);
+
+    for (size_t i = 0 ; i < (sizeof(r_.m256i) / sizeof(r_.m256i[0])) ; i++) {
+      r_.m256i[i] = simde_mm256_cmpeq_epi32(a_.m256i[i], b_.m256i[i]);
+    }
+
+    return simde__m512i_private_to_mmask16(r_) & k1;
+  #endif
+}
+#if defined(SIMDE_AVX2_ENABLE_NATIVE_ALIASES)
+#  define _mm512_mask_cmpeq_epi32_mask(k1, a, b) simde_mm512_mask_cmpeq_epi32_mask(k1, a, b)
+#endif
 
 SIMDE__END_DECLS
 
