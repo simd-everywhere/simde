@@ -2817,7 +2817,7 @@ simde_mm_sfence (void) {
 #endif
 }
 #if defined(SIMDE_SSE_ENABLE_NATIVE_ALIASES)
-#  define _mm_sfence_ps() simde_mm_sfence()
+#  define _mm_sfence() simde_mm_sfence()
 #endif
 
 #define SIMDE_MM_SHUFFLE(z, y, x, w) (((z) << 6) | ((y) << 4) | ((x) << 2) | (w))
