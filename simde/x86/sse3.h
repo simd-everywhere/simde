@@ -100,7 +100,7 @@ simde_mm_addsub_ps (simde__m128 a, simde__m128 b) {
     a_ = simde__m128_to_private(a),
     b_ = simde__m128_to_private(b);
 
-  #if defined(SIMDE_SSE3_NEON)
+  #if defined(SIMDE_SSE3_NEON) && defined(SIMDE_ARCH_AARCH64)
     float32x4_t rs = vsubq_f32(a_.neon_f32, b_.neon_f32);
     float32x4_t ra = vaddq_f32(a_.neon_f32, b_.neon_f32);
     return vtrn2q_f32(vreinterpretq_f32_s32(vrev64q_s32(vreinterpretq_s32_f32(rs))), ra);
@@ -161,12 +161,8 @@ simde_mm_hadd_ps (simde__m128 a, simde__m128 b) {
     a_ = simde__m128_to_private(a),
     b_ = simde__m128_to_private(b);
 
-#if defined(SIMDE_SSE3_NEON)
-  #if defined(SIMDE_ARCH_AARCH64)
-    r_.f32 = vpaddq_f32(a_.neon_f32, b_.neon_f32);
-  #else
-    r_.f32 = vaddq_f32(vuzp1q_f32(a_.neon_f32, b_.neon_f32), vuzp2q_f32(a_.neon_f32, b_.neon_f32));
-  #endif
+#if defined(SIMDE_SSE3_NEON) && defined(SIMDE_ARCH_AARCH64)
+  r_.f32 = vpaddq_f32(a_.neon_f32, b_.neon_f32);
 #elif defined(SIMDE_ASSUME_VECTORIZATION) && defined(SIMDE__SHUFFLE_VECTOR)
   r_.f32 =
     SIMDE__SHUFFLE_VECTOR(32, 16, a_.f32, b_.f32, 0, 2, 4, 6) +
@@ -223,7 +219,7 @@ simde_mm_hsub_ps (simde__m128 a, simde__m128 b) {
     a_ = simde__m128_to_private(a),
     b_ = simde__m128_to_private(b);
 
-#if defined(SIMDE_SSE3_NEON)
+#if defined(SIMDE_SSE3_NEON) && defined(SIMDE_ARCH_AARCH64)
   r_.f32 = vsubq_f32(vuzp1q_f32(a_.neon_f32, b_.neon_f32), vuzp2q_f32(a_.neon_f32, b_.neon_f32));
 #elif defined(SIMDE_ASSUME_VECTORIZATION) && defined(SIMDE__SHUFFLE_VECTOR)
   r_.f32 =
