@@ -5969,6 +5969,11 @@ simde_x_mm_not_si128 (simde__m128i a) {
   return simde__m128i_from_private(r_);
 }
 
+#define SIMDE_MM_SHUFFLE2(x, y) (((x) << 1) | (y))
+#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#  define _MM_SHUFFLE2(x, y) SIMDE_MM_SHUFFLE2(x, y)
+#endif
+
 SIMDE__END_DECLS
 
 HEDLEY_DIAGNOSTIC_POP
