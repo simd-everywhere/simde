@@ -397,7 +397,7 @@ simde_mm_ceil_ps (simde__m128 a) {
     r_,
     a_ = simde__m128_to_private(a);
 
-  #if defined(SIMDE_SSE4_1_NEON) && (SIMDE_ARCH_ARM >= 80)
+  #if defined(SIMDE_SSE4_1_NEON) && (SIMDE_ARCH_ARM >= 80) && (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(9,0,0))
     r_.neon_f32 = vrndpq_f32(a_.neon_f32);
   #elif defined(SIMDE_SSE_POWER_ALTIVEC)
     r_.altivec_f32 = vec_ceil(a_.altivec_f32);

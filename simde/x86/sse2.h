@@ -244,7 +244,7 @@ typedef union {
   typedef __m128i simde__m128i;
   typedef __m128d simde__m128d;
 #elif defined(SIMDE_SSE2_NEON)
-   typedef float32x4_t simde__m128i;
+   typedef int64x2_t simde__m128i;
 #  if defined(SIMDE_ARCH_AARCH64)
      typedef float64x2_t simde__m128d;
 #  elif defined(SIMDE_VECTOR_SUBSCRIPT)
@@ -2392,7 +2392,7 @@ simde_mm_cvtsi64_sd (simde__m128d a, int64_t b) {
     r_,
     a_ = simde__m128d_to_private(a);
 
-#if defined(SIMDE_SSE_NEON)
+#if defined(SIMDE_SSE_NEON) && defined(SIMDE_ARCH_AARCH64)
   r_.neon_f64 = vsetq_lane_f64((simde_float64) b, a_.neon_f64, 0);
 #else
   r_.f64[0] = (simde_float64) b;
@@ -2689,7 +2689,7 @@ simde_mm_load_sd (simde_float64 const* mem_addr) {
 #else
   simde__m128d_private r_;
 
-#if defined(SIMDE_SSE2_NEON)
+#if defined(SIMDE_SSE2_NEON) && defined(SIMDE_ARCH_AARCH64)
   r_.neon_f64 = vsetq_lane_f64(*mem_addr, vdupq_n_f64(0), 0);
 #else
   r_.f64[0] = *mem_addr;
@@ -2893,7 +2893,7 @@ simde_mm_maskmoveu_si128 (simde__m128i a, simde__m128i mask, int8_t mem_addr[HED
 #endif
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
-#  define _mm_maskmoveu_si128(a, mask, mem_addr) simde_mm_maskmoveu_si128(a, (mask), mem_addr)
+#  define _mm_maskmoveu_si128(a, mask, mem_addr) simde_mm_maskmoveu_si128(a, (mask), HEDLEY_REINTERPRET_CAST(int8_t*, mem_addr))
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -3886,7 +3886,7 @@ simde__m128d
 simde_mm_set_sd (simde_float64 a) {
 #if defined(SIMDE_SSE2_NATIVE)
   return _mm_set_sd(a);
-#elif defined(SIMDE_SSE2_NEON)
+#elif defined(SIMDE_SSE2_NEON) && defined(SIMDE_ARCH_AARCH64)
   return vsetq_lane_f64(a, vdupq_n_f64(SIMDE_FLOAT32_C(0.0)), 0);
 #else
   return simde_mm_set_pd(SIMDE_FLOAT32_C(0.0), a);
@@ -4834,7 +4834,7 @@ simde_mm_store_pd (simde_float64 mem_addr[HEDLEY_ARRAY_PARAM(2)], simde__m128d a
 #endif
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
-#  define _mm_store_pd(mem_addr, a) simde_mm_store_pd(mem_addr, a)
+#  define _mm_store_pd(mem_addr, a) simde_mm_store_pd(HEDLEY_REINTERPRET_CAST(double*, mem_addr), a)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -4851,10 +4851,10 @@ simde_mm_store1_pd (simde_float64 mem_addr[HEDLEY_ARRAY_PARAM(2)], simde__m128d 
   mem_addr[1] = a_.f64[0];
 #endif
 }
-#define simde_mm_store_pd1(mem_addr, a) simde_mm_store1_pd(mem_addr, a)
+#define simde_mm_store_pd1(mem_addr, a) simde_mm_store1_pd(HEDLEY_REINTERPRET_CAST(double*, mem_addr), a)
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
-#  define _mm_store1_pd(mem_addr, a) simde_mm_store1_pd(mem_addr, a)
-#  define _mm_store_pd1(mem_addr, a) simde_mm_store_pd1(mem_addr, a)
+#  define _mm_store1_pd(mem_addr, a) simde_mm_store1_pd(HEDLEY_REINTERPRET_CAST(double*, mem_addr), a)
+#  define _mm_store_pd1(mem_addr, a) simde_mm_store_pd1(HEDLEY_REINTERPRET_CAST(double*, mem_addr), a)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -4875,7 +4875,7 @@ simde_mm_store_sd (simde_float64* mem_addr, simde__m128d a) {
 #endif
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
-#  define _mm_store_sd(mem_addr, a) simde_mm_store_sd(mem_addr, a)
+#  define _mm_store_sd(mem_addr, a) simde_mm_store_sd(HEDLEY_REINTERPRET_CAST(double*, mem_addr), a)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -4914,7 +4914,7 @@ simde_mm_storeh_pd (simde_float64* mem_addr, simde__m128d a) {
 #endif
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
-#  define _mm_storeh_pd(mem_addr, a) simde_mm_storeh_pd(mem_addr, a)
+#  define _mm_storeh_pd(mem_addr, a) simde_mm_storeh_pd(HEDLEY_REINTERPRET_CAST(double*, mem_addr), a)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -4948,7 +4948,7 @@ simde_mm_storel_pd (simde_float64* mem_addr, simde__m128d a) {
 #endif
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
-#  define _mm_storel_pd(mem_addr, a) simde_mm_storel_pd(mem_addr, a)
+#  define _mm_storel_pd(mem_addr, a) simde_mm_storel_pd(HEDLEY_REINTERPRET_CAST(double*, mem_addr), a)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -4966,7 +4966,7 @@ simde_mm_storer_pd (simde_float64 mem_addr[2], simde__m128d a) {
 #endif
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
-#  define _mm_storer_pd(mem_addr, a) simde_mm_storer_pd(mem_addr, a)
+#  define _mm_storer_pd(mem_addr, a) simde_mm_storer_pd(HEDLEY_REINTERPRET_CAST(double*, mem_addr), a)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -4979,7 +4979,7 @@ simde_mm_storeu_pd (simde_float64* mem_addr, simde__m128d a) {
 #endif
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
-#  define _mm_storeu_pd(mem_addr, a) simde_mm_storeu_pd(mem_addr, a)
+#  define _mm_storeu_pd(mem_addr, a) simde_mm_storeu_pd(HEDLEY_REINTERPRET_CAST(double*, mem_addr), a)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -5013,7 +5013,7 @@ simde_mm_stream_pd (simde_float64 mem_addr[HEDLEY_ARRAY_PARAM(2)], simde__m128d 
 #endif
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
-#  define _mm_stream_pd(mem_addr, a) simde_mm_stream_pd(mem_addr, a)
+#  define _mm_stream_pd(mem_addr, a) simde_mm_stream_pd(HEDLEY_REINTERPRET_CAST(double*, mem_addr), a)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES

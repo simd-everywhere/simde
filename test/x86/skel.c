@@ -1934,7 +1934,7 @@ test_simde_mm512_xxx_epi64(const MunitParameter params[], void* data) {
     munit_rand_memory(sizeof(a), (uint8_t*) &a);
     munit_rand_memory(sizeof(b), (uint8_t*) &b);
 
-    r = simde__m512i_to_private(simde_mm512_add_epi64(simde__m512i_from_private(a), simde__m512i_from_private(b)));
+    r = simde__m512i_to_private(simde_mm512_xxx_epi64(simde__m512i_from_private(a), simde__m512i_from_private(b)));
 
     printf("    { simde_mm512_set_epi64(INT64_C(%20" PRId64 "), INT64_C(%20" PRId64 "),\n"
            "                            INT64_C(%20" PRId64 "), INT64_C(%20" PRId64 "),\n"
