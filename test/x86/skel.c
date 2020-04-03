@@ -2828,3 +2828,53 @@ test_simde_mm512_mask_xxx_epi32_mask(const MunitParameter params[], void* data) 
 
   return MUNIT_OK;
 }
+
+static MunitResult
+test_simde_mm512_mask_xxx_epi64_mask(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  const struct {
+    simde__mmask8 k;
+    simde__m512i a;
+    simde__m512i b;
+    simde__mmask8 r;
+  } test_vec[8] = {
+
+  };
+
+  printf("\n");
+  for (size_t i = 0 ; i < (sizeof(test_vec) / (sizeof(test_vec[0]))) ; i++) {
+    simde__m512i_private a, b;
+    simde__mmask8 k, r;
+
+    k = (simde__mmask8) munit_rand_int_range(0, UINT8_MAX);
+    munit_rand_memory(sizeof(a), (uint8_t*) &a);
+    munit_rand_memory(sizeof(b), (uint8_t*) &b);
+
+    r = simde_mm512_mask_xxx_epi64_mask(k, simde__m512i_from_private(a), simde__m512i_from_private(b));
+
+    printf("    { UINT8_C(%3" PRIu8 "),\n", k);
+    printf("      simde_mm512_set_epi64(INT64_C(%20" PRId64 "), INT64_C(%20" PRId64 "),\n"
+           "                            INT64_C(%20" PRId64 "), INT64_C(%20" PRId64 "),\n"
+           "                            INT64_C(%20" PRId64 "), INT64_C(%20" PRId64 "),\n"
+           "                            INT64_C(%20" PRId64 "), INT64_C(%20" PRId64 ")),\n",
+           a.i64[7], a.i64[6], a.i64[5], a.i64[4],
+           a.i64[3], a.i64[2], a.i64[1], a.i64[0]);
+    printf("      simde_mm512_set_epi64(INT64_C(%20" PRId64 "), INT64_C(%20" PRId64 "),\n"
+           "                            INT64_C(%20" PRId64 "), INT64_C(%20" PRId64 "),\n"
+           "                            INT64_C(%20" PRId64 "), INT64_C(%20" PRId64 "),\n"
+           "                            INT64_C(%20" PRId64 "), INT64_C(%20" PRId64 ")),\n",
+           b.i64[7], b.i64[6], b.i64[5], b.i64[4],
+           b.i64[3], b.i64[2], b.i64[1], b.i64[0]);
+    printf("      UINT8_C(%3" PRIu8 ") },\n", r);
+  }
+  return MUNIT_FAIL;
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    simde__mmask8 r = simde_mm512_mask_xxx_epi64_mask(test_vec[i].k, test_vec[i].a, test_vec[i].b);
+    munit_assert_uint8(r, ==, test_vec[i].r);
+  }
+
+  return MUNIT_OK;
+}
