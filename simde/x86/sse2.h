@@ -1924,7 +1924,8 @@ simde_mm_cvtsd_f64 (simde__m128d a) {
 #if defined(SIMDE_SSE2_NATIVE) && !defined(__PGI)
   return _mm_cvtsd_f64(a);
 #else
-  return simde__m128d_to_private(a).f64[0];
+  simde__m128d_private a_ = simde__m128d_to_private(a);
+  return a_.f64[0];
 #endif
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
@@ -2241,7 +2242,8 @@ simde_mm_cvtsd_si32 (simde__m128d a) {
 #if defined(SIMDE_SSE2_NATIVE)
   return _mm_cvtsd_si32(a);
 #else
-  return (int32_t) (simde__m128d_to_private(a).f64[0]);
+  simde__m128d_private a_ = simde__m128d_to_private(a);
+  return SIMDE_CONVERT_FTOI(int32_t, a_.f64[0]);
 #endif
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
@@ -2258,7 +2260,8 @@ simde_mm_cvtsd_si64 (simde__m128d a) {
     return _mm_cvtsd_si64(a);
   #endif
 #else
-  return (int32_t) (simde__m128d_to_private(a).f64[0]);
+  simde__m128d_private a_ = simde__m128d_to_private(a);
+  return SIMDE_CONVERT_FTOI(int64_t, a_.f64[0]);
 #endif
 }
 #define simde_mm_cvtsd_si64x(a) simde_mm_cvtsd_si64(a)
@@ -2321,7 +2324,8 @@ simde_mm_cvtsi128_si64 (simde__m128i a) {
     return _mm_cvtsi128_si64(a);
   #endif
 #else
-  return simde__m128i_to_private(a).i64[0];
+  simde__m128i_private a_ = simde__m128i_to_private(a);
+  return a_.i64[0];
 #endif
 }
 #define simde_mm_cvtsi128_si64x(a) simde_mm_cvtsi128_si64(a)
@@ -2528,7 +2532,8 @@ simde_mm_cvttsd_si32 (simde__m128d a) {
 #if defined(SIMDE_SSE2_NATIVE)
   return _mm_cvttsd_si32(a);
 #else
-  return SIMDE_CONVERT_FTOI(int32_t, simde__m128d_to_private(a).f64[0]);
+  simde__m128d_private a_ = simde__m128d_to_private(a);
+  return SIMDE_CONVERT_FTOI(int32_t, a_.f64[0]);
 #endif
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
@@ -2545,7 +2550,8 @@ simde_mm_cvttsd_si64 (simde__m128d a) {
     return _mm_cvttsd_si64x(a);
   #endif
 #else
-  return SIMDE_CONVERT_FTOI(int64_t, simde__m128d_to_private(a).f64[0]);
+  simde__m128d_private a_ = simde__m128d_to_private(a);
+  return SIMDE_CONVERT_FTOI(int64_t, a_.f64[0]);
 #endif
 }
 #define simde_mm_cvttsd_si64x(a) simde_mm_cvttsd_si64(a)
@@ -2610,7 +2616,8 @@ SIMDE__FUNCTION_ATTRIBUTES
 int32_t
 simde_mm_extract_epi16 (simde__m128i a, const int imm8)
     HEDLEY_REQUIRE_MSG((imm8 & 7) == imm8, "imm8 must be in range [0, 7]")  {
-  return simde__m128i_to_private(a).u16[imm8 & 7];
+  simde__m128i_private a_ = simde__m128i_to_private(a);
+  return a_.u16[imm8 & 7];
 }
 #if defined(SIMDE_SSE2_NATIVE) && (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(4,6,0))
 #  define simde_mm_extract_epi16(a, imm8) _mm_extract_epi16(a, imm8)
@@ -4007,7 +4014,8 @@ simde_mm_set1_epi64 (simde__m64 a) {
 #if defined(SIMDE_SSE2_NATIVE) && defined(SIMDE_ARCH_X86_MMX)
   return _mm_set1_epi64(a);
 #else
-  return simde_mm_set1_epi64x(simde__m64_to_private(a).i64[0]);
+  simde__m64_private a_ = simde__m64_to_private(a);
+  return simde_mm_set1_epi64x(a_.i64[0]);
 #endif
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)

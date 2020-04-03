@@ -1751,7 +1751,8 @@ SIMDE__FUNCTION_ATTRIBUTES
 int16_t
 simde_mm_extract_pi16 (simde__m64 a, const int imm8)
     HEDLEY_REQUIRE_MSG((imm8 & 3) == imm8, "imm8 must be in range [0, 3]") {
-  return simde__m64_to_private(a).i16[imm8];
+  simde__m64_private a_ = simde__m64_to_private(a);
+  return a_.i16[imm8];
 }
 #if defined(SIMDE_SSE_NATIVE) && defined(SIMDE_ARCH_X86_MMX) && !defined(HEDLEY_PGI_VERSION)
 #  if HEDLEY_HAS_WARNING("-Wvector-conversion")

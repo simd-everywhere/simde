@@ -1062,7 +1062,8 @@ SIMDE__FUNCTION_ATTRIBUTES
 int
 simde_mm256_extract_epi8 (simde__m256i a, const int index)
     HEDLEY_REQUIRE_MSG((index & 31) == index, "index must be in range [0, 31]"){
-  return simde__m256i_to_private(a).i8[index];
+  simde__m256i_private a_ = simde__m256i_to_private(a);
+  return a_.i8[index];
 }
 #if defined(SIMDE_AVX2_ENABLE_NATIVE_ALIASES)
 #  define _mm256_extract_epi8(a, index) simde_mm256_extract_epi8(a, index)
@@ -1072,7 +1073,8 @@ SIMDE__FUNCTION_ATTRIBUTES
 int
 simde_mm256_extract_epi16 (simde__m256i a, const int index)
     HEDLEY_REQUIRE_MSG((index & 0xf) == index, "index must be in range [0, 15]")  {
-  return simde__m256i_to_private(a).i16[index];
+  simde__m256i_private a_ = simde__m256i_to_private(a);
+  return a_.i16[index];
 }
 #if defined(SIMDE_AVX2_ENABLE_NATIVE_ALIASES)
 #  define _mm256_extract_epi16(a, index) simde_mm256_extract_epi16(a, index)
@@ -1082,7 +1084,8 @@ SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm256_extracti128_si256 (simde__m256i a, const int imm8)
     HEDLEY_REQUIRE_MSG((imm8 & 1) == imm8, "imm8 must be 0 or 1") {
-  return simde__m256i_to_private(a).m128i[imm8];
+  simde__m256i_private a_ = simde__m256i_to_private(a);
+  return a_.m128i[imm8];
 }
 #if defined(SIMDE_AVX2_NATIVE)
 #  define simde_mm256_extracti128_si256(a, imm8) _mm256_extracti128_si256(a, imm8)

@@ -1575,7 +1575,8 @@ simde_mm256_castpd256_pd128 (simde__m256d a) {
 #if defined(SIMDE_AVX_NATIVE)
   return _mm256_castpd256_pd128(a);
 #else
-  return simde__m256d_to_private(a).m128d[0];
+  simde__m256d_private a_ = simde__m256d_to_private(a);
+  return a_.m128d[0];
 #endif
 }
 #if defined(SIMDE_AVX_ENABLE_NATIVE_ALIASES)
@@ -1606,7 +1607,8 @@ simde_mm256_castps256_ps128 (simde__m256 a) {
 #if defined(SIMDE_AVX_NATIVE)
   return _mm256_castps256_ps128(a);
 #else
-  return simde__m256_to_private(a).m128[0];
+  simde__m256_private a_ = simde__m256_to_private(a);
+  return a_.m128[0];
 #endif
 }
 #if defined(SIMDE_AVX_ENABLE_NATIVE_ALIASES)
@@ -1637,7 +1639,8 @@ simde_mm256_castsi256_si128 (simde__m256i a) {
 #if defined(SIMDE_AVX_NATIVE)
   return _mm256_castsi256_si128(a);
 #else
-  return simde__m256i_to_private(a).m128i[0];
+  simde__m256i_private a_ = simde__m256i_to_private(a);
+  return a_.m128i[0];
 #endif
 }
 #if defined(SIMDE_AVX_ENABLE_NATIVE_ALIASES)
@@ -2879,7 +2882,8 @@ SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
 simde_mm256_extractf128_pd (simde__m256d a, const int imm8)
     HEDLEY_REQUIRE_MSG((imm8 & 1) == imm8, "imm8 must be 0 or 1") {
-  return simde__m256d_to_private(a).m128d[imm8];
+  simde__m256d_private a_ = simde__m256d_to_private(a);
+  return a_.m128d[imm8];
 }
 #if defined(SIMDE_AVX_NATIVE)
 #  define simde_mm256_extractf128_pd(a, imm8) _mm256_extractf128_pd(a, imm8)
@@ -2892,7 +2896,8 @@ SIMDE__FUNCTION_ATTRIBUTES
 simde__m128
 simde_mm256_extractf128_ps (simde__m256 a, const int imm8)
     HEDLEY_REQUIRE_MSG((imm8 & 1) == imm8, "imm8 must be 0 or 1") {
-  return simde__m256_to_private(a).m128[imm8];
+  simde__m256_private a_ = simde__m256_to_private(a);
+  return a_.m128[imm8];
 }
 #if defined(SIMDE_AVX_NATIVE)
 #  define simde_mm256_extractf128_ps(a, imm8) _mm256_extractf128_ps(a, imm8)
@@ -2905,7 +2910,8 @@ SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm256_extractf128_si256 (simde__m256i a, const int imm8)
     HEDLEY_REQUIRE_MSG((imm8 & 1) == imm8, "imm8 must be 0 or 1") {
-  return simde__m256i_to_private(a).m128i[imm8];
+  simde__m256i_private a_ = simde__m256i_to_private(a);
+  return a_.m128i[imm8];
 }
 #if defined(SIMDE_AVX_NATIVE)
 #  define simde_mm256_extractf128_si256(a, imm8) _mm256_extractf128_si256(a, imm8)
@@ -3179,7 +3185,8 @@ simde__m256i simde_mm256_insertf128_si256(simde__m256i a, simde__m128i b, int im
 SIMDE__FUNCTION_ATTRIBUTES
 int32_t
 simde_mm256_extract_epi32 (simde__m256i a, const int index) {
-  return simde__m256i_to_private(a).i32[index];
+  simde__m256i_private a_ = simde__m256i_to_private(a);
+  return a_.i32[index];
 }
 #if defined(SIMDE_AVX_ENABLE_NATIVE_ALIASES)
 #  define _mm256_extract_epi32(a, index) simde_mm256_extract_epi32(a, index)
@@ -3188,7 +3195,8 @@ simde_mm256_extract_epi32 (simde__m256i a, const int index) {
 SIMDE__FUNCTION_ATTRIBUTES
 int64_t
 simde_mm256_extract_epi64 (simde__m256i a, const int index) {
-  return simde__m256i_to_private(a).i64[index];
+  simde__m256i_private a_ = simde__m256i_to_private(a);
+  return a_.i64[index];
 }
 #if defined(SIMDE_AVX_ENABLE_NATIVE_ALIASES)
 #  define _mm256_extract_epi64(a, index) simde_mm256_extract_epi64(a, index)

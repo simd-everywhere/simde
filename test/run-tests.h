@@ -235,4 +235,8 @@ static void random_f64v(size_t nmemb, simde_float64 v[HEDLEY_ARRAY_PARAM(nmemb)]
 
 HEDLEY_END_C_DECLS
 
+#if defined(HEDLEY_MSVC_VERSION)
+#  pragma warning(disable:4223)
+#endif
+
 #endif /* !defined(SIMDE_RUN_TESTS_H) */

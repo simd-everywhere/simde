@@ -467,7 +467,8 @@ simde_mm512_castpd512_pd128 (simde__m512d a) {
   #if defined(SIMDE_AVX512F_NATIVE)
     return _mm512_castpd512_pd128(a);
   #else
-    return simde__m512d_to_private(a).m128d[0];
+    simde__m512d_private a_ = simde__m512d_to_private(a);
+    return a_.m128d[0];
   #endif
 }
 #if defined(SIMDE_AVX512F_ENABLE_NATIVE_ALIASES)
@@ -480,7 +481,8 @@ simde_mm512_castpd512_pd256 (simde__m512d a) {
   #if defined(SIMDE_AVX512F_NATIVE)
     return _mm512_castpd512_pd256(a);
   #else
-    return simde__m512d_to_private(a).m256d[0];
+    simde__m512d_private a_ = simde__m512d_to_private(a);
+    return a_.m256d[0];
   #endif
 }
 #if defined(SIMDE_AVX512F_ENABLE_NATIVE_ALIASES)
@@ -523,7 +525,8 @@ simde_mm512_castps512_ps128 (simde__m512 a) {
   #if defined(SIMDE_AVX512F_NATIVE)
     return _mm512_castps512_ps128(a);
   #else
-    return simde__m512_to_private(a).m128[0];
+    simde__m512_private a_ = simde__m512_to_private(a);
+    return a_.m128[0];
   #endif
 }
 #if defined(SIMDE_AVX512F_ENABLE_NATIVE_ALIASES)
@@ -536,7 +539,8 @@ simde_mm512_castps512_ps256 (simde__m512 a) {
   #if defined(SIMDE_AVX512F_NATIVE)
     return _mm512_castps512_ps256(a);
   #else
-    return simde__m512_to_private(a).m256[0];
+    simde__m512_private a_ = simde__m512_to_private(a);
+    return a_.m256[0];
   #endif
 }
 #if defined(SIMDE_AVX512F_ENABLE_NATIVE_ALIASES)
@@ -579,7 +583,8 @@ simde_mm512_castsi512_si128 (simde__m512i a) {
   #if defined(SIMDE_AVX512F_NATIVE)
     return _mm512_castsi512_si128(a);
   #else
-    return simde__m512i_to_private(a).m128i[0];
+    simde__m512i_private a_ = simde__m512i_to_private(a);
+    return a_.m128i[0];
   #endif
 }
 #if defined(SIMDE_AVX512F_ENABLE_NATIVE_ALIASES)
@@ -592,7 +597,8 @@ simde_mm512_castsi512_si256 (simde__m512i a) {
   #if defined(SIMDE_AVX512F_NATIVE)
     return _mm512_castsi512_si256(a);
   #else
-    return simde__m512i_to_private(a).m256i[0];
+    simde__m512i_private a_ = simde__m512i_to_private(a);
+    return a_.m256i[0];
   #endif
 }
 #if defined(SIMDE_AVX512F_ENABLE_NATIVE_ALIASES)

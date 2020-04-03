@@ -1927,9 +1927,9 @@ test_simde_mm256_castpd128_pd256(const MunitParameter params[], void* data) {
   };
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
-    simde__m256d r = simde_mm256_castpd128_pd256(test_vec[i].a);
-    simde_assert_m128d_equal(simde__m256d_to_private(r).m128d[0],
-                             simde__m256d_to_private(test_vec[i].r).m128d[0]);
+    simde__m256d_private r = simde__m256d_to_private(simde_mm256_castpd128_pd256(test_vec[i].a));
+    simde__m256d_private expected = simde__m256d_to_private(test_vec[i].r);
+    simde_assert_m128d_equal(r.m128d[0], expected.m128d[0]);
   }
 
   return MUNIT_OK;
