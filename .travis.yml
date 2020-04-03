@@ -153,6 +153,7 @@ jobs:
     - ARCH_FLAGS="/arch:AVX2"
     - CMAKE_GENERATOR="Visual Studio 15 2017"
     - OPTIMIZATION_FLAGS="/Ox"
+    - COMPILER_FLAGS="/W4 /WX"
 
   - name: msvc x86_64
     os: windows
@@ -160,6 +161,7 @@ jobs:
     - ARCH_FLAGS="/arch:AVX2"
     - CMAKE_GENERATOR="Visual Studio 15 2017 Win64"
     - OPTIMIZATION_FLAGS="/Ox"
+    - COMPILER_FLAGS="/W4 /WX"
 
   - name: msvc arm
     os: windows
@@ -168,6 +170,7 @@ jobs:
     - CMAKE_GENERATOR="Visual Studio 15 2017 ARM"
     - RUN_TESTS=false
     - OPTIMIZATION_FLAGS="/Ox"
+    - COMPILER_FLAGS="/W4 /WX"
 
   - name: "gcc-7 amd64"
     compiler: gcc

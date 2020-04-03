@@ -17,7 +17,7 @@ before_build:
       cd test
       mkdir build
       cd build
-      cmake -G "$env:GENERATOR" -DALWAYS_BUILD_NATIVE_TESTS=ON ..
+      cmake -G "$env:GENERATOR" -DALWAYS_BUILD_NATIVE_TESTS=ON -DCMAKE_C_FLAGS="/W4 /WX" -DCMAKE_CXX_FLAGS="/W4 /WX" ..
 
 build_script:
   - ps: |
