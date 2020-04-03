@@ -1204,14 +1204,14 @@ test_simde_mm256_xxx_epu32(const MunitParameter params[], void* data) {
 
     r = simde__m256i_to_private(simde_mm256_xxx_epu32(simde__m256i_from_private(a), simde__m256i_from_private(b)));
 
-    printf("    { simde_x_mm256_set_epu32(UINT32_C(%11" PRId32 "), UINT32_C(%11" PRId32 "), UINT32_C(%11" PRId32 "), UINT32_C(%11" PRId32 "),\n"
-           "                              UINT32_C(%11" PRId32 "), UINT32_C(%11" PRId32 "), UINT32_C(%11" PRId32 "), UINT32_C(%11" PRId32 ")),\n",
+    printf("    { simde_x_mm256_set_epu32(UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "),\n"
+           "                              UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 ")),\n",
            a.u32[7], a.u32[6], a.u32[5], a.u32[4], a.u32[3], a.u32[2], a.u32[1], a.u32[0]);
-    printf("      simde_x_mm256_set_epu32(UINT32_C(%11" PRId32 "), UINT32_C(%11" PRId32 "), UINT32_C(%11" PRId32 "), UINT32_C(%11" PRId32 "),\n"
-           "                              UINT32_C(%11" PRId32 "), UINT32_C(%11" PRId32 "), UINT32_C(%11" PRId32 "), UINT32_C(%11" PRId32 ")),\n",
+    printf("      simde_x_mm256_set_epu32(UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "),\n"
+           "                              UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 ")),\n",
            b.u32[7], b.u32[6], b.u32[5], b.u32[4], b.u32[3], b.u32[2], b.u32[1], b.u32[0]);
-    printf("      simde_x_mm256_set_epu32(UINT32_C(%11" PRId32 "), UINT32_C(%11" PRId32 "), UINT32_C(%11" PRId32 "), UINT32_C(%11" PRId32 "),\n"
-           "                              UINT32_C(%11" PRId32 "), UINT32_C(%11" PRId32 "), UINT32_C(%11" PRId32 "), UINT32_C(%11" PRId32 ")) },\n",
+    printf("      simde_x_mm256_set_epu32(UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "),\n"
+           "                              UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 ")) },\n",
            r.u32[7], r.u32[6], r.u32[5], r.u32[4], r.u32[3], r.u32[2], r.u32[1], r.u32[0]);
   }
   return MUNIT_FAIL;
@@ -2161,22 +2161,22 @@ test_simde_mm512_xxx_epu32(const MunitParameter params[], void* data) {
 
     r = simde__m512i_to_private(simde_mm512_xxx_epu32(simde__m512i_from_private(a), simde__m512i_from_private(b)));
 
-    printf("    { simde_x_mm512_set_epu32(UINT32_C(%11" PRId32 "), UINT32_C(%11" PRId32 "), UINT32_C(%11" PRId32 "), UINT32_C(%11" PRId32 "),\n"
-           "                              UINT32_C(%11" PRId32 "), UINT32_C(%11" PRId32 "), UINT32_C(%11" PRId32 "), UINT32_C(%11" PRId32 "),\n"
-           "                              UINT32_C(%11" PRId32 "), UINT32_C(%11" PRId32 "), UINT32_C(%11" PRId32 "), UINT32_C(%11" PRId32 "),\n"
-           "                              UINT32_C(%11" PRId32 "), UINT32_C(%11" PRId32 "), UINT32_C(%11" PRId32 "), UINT32_C(%11" PRId32 ")),\n",
+    printf("    { simde_x_mm512_set_epu32(UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "),\n"
+           "                              UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "),\n"
+           "                              UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "),\n"
+           "                              UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 ")),\n",
            a.i32[15], a.i32[14], a.i32[13], a.i32[12], a.i32[11], a.i32[10], a.i32[ 9], a.i32[ 8],
            a.i32[ 7], a.i32[ 6], a.i32[ 5], a.i32[ 4], a.i32[ 3], a.i32[ 2], a.i32[ 1], a.i32[ 0]);
-    printf("      simde_x_mm512_set_epu32(UINT32_C(%11" PRId32 "), UINT32_C(%11" PRId32 "), UINT32_C(%11" PRId32 "), UINT32_C(%11" PRId32 "),\n"
-           "                              UINT32_C(%11" PRId32 "), UINT32_C(%11" PRId32 "), UINT32_C(%11" PRId32 "), UINT32_C(%11" PRId32 "),\n"
-           "                              UINT32_C(%11" PRId32 "), UINT32_C(%11" PRId32 "), UINT32_C(%11" PRId32 "), UINT32_C(%11" PRId32 "),\n"
-           "                              UINT32_C(%11" PRId32 "), UINT32_C(%11" PRId32 "), UINT32_C(%11" PRId32 "), UINT32_C(%11" PRId32 ")),\n",
+    printf("      simde_x_mm512_set_epu32(UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "),\n"
+           "                              UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "),\n"
+           "                              UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "),\n"
+           "                              UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 ")),\n",
            b.u32[15], b.u32[14], b.u32[13], b.u32[12], b.u32[11], b.u32[10], b.u32[ 9], b.u32[ 8],
            b.u32[ 7], b.u32[ 6], b.u32[ 5], b.u32[ 4], b.u32[ 3], b.u32[ 2], b.u32[ 1], b.u32[ 0]);
-    printf("      simde_x_mm512_set_epu32(UINT32_C(%11" PRId32 "), UINT32_C(%11" PRId32 "), UINT32_C(%11" PRId32 "), UINT32_C(%11" PRId32 "),\n"
-           "                              UINT32_C(%11" PRId32 "), UINT32_C(%11" PRId32 "), UINT32_C(%11" PRId32 "), UINT32_C(%11" PRId32 "),\n"
-           "                              UINT32_C(%11" PRId32 "), UINT32_C(%11" PRId32 "), UINT32_C(%11" PRId32 "), UINT32_C(%11" PRId32 "),\n"
-           "                              UINT32_C(%11" PRId32 "), UINT32_C(%11" PRId32 "), UINT32_C(%11" PRId32 "), UINT32_C(%11" PRId32 ")) },\n",
+    printf("      simde_x_mm512_set_epu32(UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "),\n"
+           "                              UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "),\n"
+           "                              UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "),\n"
+           "                              UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 ")) },\n",
            r.u32[15], r.u32[14], r.u32[13], r.u32[12], r.u32[11], r.u32[10], r.u32[ 9], r.u32[ 8],
            r.u32[ 7], r.u32[ 6], r.u32[ 5], r.u32[ 4], r.u32[ 3], r.u32[ 2], r.u32[ 1], r.u32[ 0]);
   }
