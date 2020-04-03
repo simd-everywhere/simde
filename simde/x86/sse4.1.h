@@ -1059,12 +1059,29 @@ SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_insert_epi64 (simde__m128i a, int64_t i, const int imm8)
     HEDLEY_REQUIRE_MSG((imm8 & 1) == imm8, "imm8 must be 0 or 1")  {
-  simde__m128i_private
-    r_ = simde__m128i_to_private(a);
+  #if defined(SIMDE_BUG_GCC_94482)
+    simde__m128i_private
+      a_ = simde__m128i_to_private(a);
 
-  r_.i64[imm8] = i;
+    switch(imm8) {
+      case 0:
+        return simde_mm_set_epi64x(a_.i64[1], i);
+        break;
+      case 1:
+        return simde_mm_set_epi64x(i, a_.i64[0]);
+        break;
+      default:
+        HEDLEY_UNREACHABLE();
+        break;
+    }
+  #else
+    simde__m128i_private
+      r_ = simde__m128i_to_private(a);
 
-  return simde__m128i_from_private(r_);
+    r_.i64[imm8] = i;
+
+    return simde__m128i_from_private(r_);
+  #endif
 }
 #if defined(SIMDE_SSE4_1_NATIVE) && defined(SIMDE_ARCH_AMD64)
 #  define simde_mm_insert_epi64(a, i, imm8) _mm_insert_epi64(a, i, imm8)
