@@ -10,6 +10,13 @@
 
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 
+#if defined(HEDLEY_MSVC_VERSION)
+/* Unused function(s) */
+#pragma warning(disable:4505)
+#endif
+
+HEDLEY_DIAGNOSTIC_PUSH
+
 #define SIMDE_TESTS_CONCAT3_EX(a, b, c) a##b##c
 #define SIMDE_TESTS_CONCAT3(a, b, c) SIMDE_TESTS_CONCAT3_EX(a, b, c)
 
@@ -235,8 +242,19 @@ static void random_f64v(size_t nmemb, simde_float64 v[HEDLEY_ARRAY_PARAM(nmemb)]
 
 HEDLEY_END_C_DECLS
 
+HEDLEY_DIAGNOSTIC_POP
+
+#if HEDLEY_HAS_WARNING("-Wpadded")
+#  pragma clang diagnostic ignored "-Wpadded"
+#elif defined(HEDLEY_MSVC_VERSION)
+#  pragma warning(disable:4324)
+#endif
+
 #if defined(HEDLEY_MSVC_VERSION)
-#  pragma warning(disable:4223)
+  /* nonstandard extension used : non-lvalue array converted to pointer */
+  #pragma warning(disable:4223)
+  /* Conditional expression is a constant */
+  #pragma warning(disable:4127)
 #endif
 
 #endif /* !defined(SIMDE_RUN_TESTS_H) */

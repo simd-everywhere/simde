@@ -26,6 +26,10 @@
 
 #if defined(SIMDE_SSE2_NATIVE) || defined(SIMDE_NO_NATIVE) || defined(SIMDE_ALWAYS_BUILD_NATIVE_TESTS)
 
+#if defined(HEDLEY_MSVC_VERSION)
+#  pragma warning(disable:4324)
+#endif
+
 static MunitResult
 test_simde_mm_add_epi8(const MunitParameter params[], void* data) {
   (void) params;

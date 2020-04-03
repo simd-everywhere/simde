@@ -2798,18 +2798,18 @@ simde_mm_loadl_pd (simde__m128d a, simde_float64 const* mem_addr) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
 simde_mm_loadr_pd (simde_float64 const mem_addr[HEDLEY_ARRAY_PARAM(2)]) {
-  simde__m128d_private r_;
-
   simde_assert_aligned(16, mem_addr);
 
 #if defined(SIMDE_SSE2_NATIVE)
   return _mm_loadr_pd(mem_addr);
 #else
+  simde__m128d_private r_;
+
   r_.f64[0] = mem_addr[1];
   r_.f64[1] = mem_addr[0];
-#endif
 
   return simde__m128d_from_private(r_);
+#endif
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_loadr_pd(mem_addr) simde_mm_loadr_pd(mem_addr)
@@ -2835,17 +2835,19 @@ simde_mm_loadu_pd (simde_float64 const mem_addr[HEDLEY_ARRAY_PARAM(2)]) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_loadu_si128 (simde__m128i const* mem_addr) {
-  simde__m128i_private r_;
+  #if defined(SIMDE_SSE2_NATIVE)
+    return _mm_loadu_si128(HEDLEY_STATIC_CAST(__m128i const*, mem_addr));
+  #else
+    simde__m128i_private r_;
 
-#if defined(SIMDE_SSE2_NATIVE)
-  return _mm_loadu_si128(HEDLEY_STATIC_CAST(__m128i const*, mem_addr));
-#elif defined(SIMDE_SSE2_NEON)
-  r_.neon_i32 = vld1q_s32((int32_t const*) mem_addr);
-#else
-  simde_memcpy(&r_, mem_addr, sizeof(r_));
-#endif
+    #if defined(SIMDE_SSE2_NEON)
+      r_.neon_i32 = vld1q_s32((int32_t const*) mem_addr);
+    #else
+      simde_memcpy(&r_, mem_addr, sizeof(r_));
+    #endif
 
-  return simde__m128i_from_private(r_);
+    return simde__m128i_from_private(r_);
+  #endif
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_loadu_si128(mem_addr) simde_mm_loadu_si128(mem_addr)

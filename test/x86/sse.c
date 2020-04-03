@@ -26,6 +26,14 @@
 
 #if defined(SIMDE_SSE_NATIVE) || defined(SIMDE_NO_NATIVE) || defined(SIMDE_ALWAYS_BUILD_NATIVE_TESTS)
 
+#if defined(HEDLEY_MSVC_VERSION)
+#  pragma warning(disable:4223)
+#endif
+
+#if defined(HEDLEY_MSVC_VERSION)
+#  pragma warning(disable:4324)
+#endif
+
 static MunitResult
 test_simde_mm_set_ps(const MunitParameter params[], void* data) {
   (void) params;

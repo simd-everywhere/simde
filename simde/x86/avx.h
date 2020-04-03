@@ -826,25 +826,27 @@ SIMDE__FUNCTION_ATTRIBUTES
 simde__m256
 simde_mm256_set_ps (simde_float32 e7, simde_float32 e6, simde_float32 e5, simde_float32 e4,
                     simde_float32 e3, simde_float32 e2, simde_float32 e1, simde_float32 e0) {
-  simde__m256_private r_;
+  #if defined(SIMDE_AVX_NATIVE)
+    return _mm256_set_ps(e7, e6, e5, e4, e3, e2, e1, e0);
+  #else
+    simde__m256_private r_;
 
-#if defined(SIMDE_AVX_NATIVE)
-  return _mm256_set_ps(e7, e6, e5, e4, e3, e2, e1, e0);
-#elif defined(SIMDE_SSE_NATIVE)
-  r_.m128[0] = simde_mm_set_ps(e3, e2, e1, e0);
-  r_.m128[1] = simde_mm_set_ps(e7, e6, e5, e4);
-#else
-  r_.f32[0] = e0;
-  r_.f32[1] = e1;
-  r_.f32[2] = e2;
-  r_.f32[3] = e3;
-  r_.f32[4] = e4;
-  r_.f32[5] = e5;
-  r_.f32[6] = e6;
-  r_.f32[7] = e7;
-#endif
+    #if defined(SIMDE_SSE_NATIVE)
+      r_.m128[0] = simde_mm_set_ps(e3, e2, e1, e0);
+      r_.m128[1] = simde_mm_set_ps(e7, e6, e5, e4);
+    #else
+      r_.f32[0] = e0;
+      r_.f32[1] = e1;
+      r_.f32[2] = e2;
+      r_.f32[3] = e3;
+      r_.f32[4] = e4;
+      r_.f32[5] = e5;
+      r_.f32[6] = e6;
+      r_.f32[7] = e7;
+    #endif
 
-  return simde__m256_from_private(r_);
+    return simde__m256_from_private(r_);
+  #endif
 }
 #if defined(SIMDE_AVX_ENABLE_NATIVE_ALIASES)
 #  define _mm256_set_ps(e7, e6, e5, e4, e3, e2, e1, e0) \
@@ -2244,6 +2246,9 @@ simde_mm256_cmp_pd (simde__m256d a, simde__m256d b, const int imm8)
     case SIMDE_CMP_TRUE_US:
       r_.i32f = ~(r_.i32f ^ r_.i32f);
       break;
+    default:
+      HEDLEY_UNREACHABLE();
+      break;
   }
 #else
   SIMDE__VECTORIZE
@@ -2356,6 +2361,9 @@ simde_mm256_cmp_pd (simde__m256d a, simde__m256d b, const int imm8)
         break;
       case SIMDE_CMP_TRUE_US:
         r_.u64[i] = ~UINT64_C(0);
+        break;
+      default:
+        HEDLEY_UNREACHABLE();
         break;
     }
   }
@@ -2502,6 +2510,9 @@ simde_mm256_cmp_ps (simde__m256 a, simde__m256 b, const int imm8)
     case SIMDE_CMP_TRUE_US:
       r_.i32 = ~(a_.i32 ^ a_.i32);
       break;
+    default:
+      HEDLEY_UNREACHABLE();
+      break;
   }
 #else
   SIMDE__VECTORIZE
@@ -2618,6 +2629,9 @@ simde_mm256_cmp_ps (simde__m256 a, simde__m256 b, const int imm8)
         break;
       case SIMDE_CMP_TRUE_US:
         r_.u32[i] = ~UINT32_C(0);
+        break;
+      default:
+        HEDLEY_UNREACHABLE();
         break;
     }
   }
@@ -4154,6 +4168,9 @@ simde_mm256_round_ps (simde__m256 a, const int rounding) {
       case SIMDE_MM_FROUND_TO_ZERO:
         r_.f32[i] = truncf(a_.f32[i]);
         break;
+      default:
+        HEDLEY_UNREACHABLE();
+        break;
     }
   }
 #else
@@ -4190,6 +4207,9 @@ simde_mm256_round_pd (simde__m256d a, const int rounding) {
         break;
       case SIMDE_MM_FROUND_TO_ZERO:
         r_.f64[i] = trunc(a_.f64[i]);
+        break;
+      default:
+        HEDLEY_UNREACHABLE();
         break;
     }
   }

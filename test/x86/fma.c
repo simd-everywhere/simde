@@ -27,7 +27,6 @@
 
 #if defined(SIMDE_FMA_NATIVE) || defined(SIMDE_NO_NATIVE) || defined(SIMDE_ALWAYS_BUILD_NATIVE_TESTS)
 
-
 static MunitResult
 test_simde_mm_fmadd_pd(const MunitParameter params[], void* data) {
   (void) params;
