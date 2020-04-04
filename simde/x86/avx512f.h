@@ -1224,7 +1224,7 @@ simde_mm512_set4_epi64 (int64_t d, int64_t c, int64_t b, int64_t a) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m512
-simde_mm512_set_ps (simde_float32 d, simde_float32 c, simde_float32 b, simde_float32 a) {
+simde_mm512_set4_ps (simde_float32 d, simde_float32 c, simde_float32 b, simde_float32 a) {
   simde__m512_private r_;
 
   r_.f32[ 0] = a;
