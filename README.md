@@ -90,6 +90,7 @@ make sense since they will always be green, but here are the links:
 * [AppVeyor](https://ci.appveyor.com/project/quixdb/simde)
 * [GitHub Actions](https://github.com/nemequ/simde/actions)
 * [Azure Pipelines](https://dev.azure.com/simd-everywhere/SIMDe/_build)
+* [Drone CI](https://cloud.drone.io/nemequ/simde)
 
 ## Contributing
 
@@ -303,6 +304,8 @@ tremendously grateful for their support:
    numerous platforms.
  * [AppVeyor](https://www.appveyor.com/) — provides CI testing on
    Windows.
+ * [Drone CI](https://drone.io/) — provides CI testing on ARM 32 bits
+   platform, etc.
  * [IntegriCloud](https://integricloud.com/) — provides access to a very
    fast POWER9 server for developing AltiVec/VMX support.
  * [GCC Compile Farm](https://gcc.gnu.org/wiki/CompileFarm) — provides
