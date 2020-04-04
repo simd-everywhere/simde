@@ -2804,7 +2804,7 @@ test_simde_mm512_mask_xxx_epi32_mask(const MunitParameter params[], void* data) 
 
     r = simde_mm512_mask_xxx_epi32_mask(k, simde__m512i_from_private(a), simde__m512i_from_private(b));
 
-    printf("    { UINT16_C(%5" PRId16 "),\n", k);
+    printf("    { UINT16_C(%5" PRIu16 "),\n", k);
     printf("      simde_mm512_set_epi32(INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "),\n"
            "                            INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "),\n"
            "                            INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "),\n"
@@ -2817,7 +2817,7 @@ test_simde_mm512_mask_xxx_epi32_mask(const MunitParameter params[], void* data) 
            "                            INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 ")),\n",
            b.i32[15], b.i32[14], b.i32[13], b.i32[12], b.i32[11], b.i32[10], b.i32[ 9], b.i32[ 8],
            b.i32[ 7], b.i32[ 6], b.i32[ 5], b.i32[ 4], b.i32[ 3], b.i32[ 2], b.i32[ 1], b.i32[ 0]);
-    printf("      UINT16_C(%5" PRId16 ") },\n", r);
+    printf("      UINT16_C(%5" PRIu16 ") },\n", r);
   }
   return MUNIT_FAIL;
 
