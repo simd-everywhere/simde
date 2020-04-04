@@ -4546,7 +4546,10 @@ simde_mm_srl_epi64 (simde__m128i a, simde__m128i count) {
     return simde_mm_setzero_si128();
   const int s = (int) (count_.u64[0]);
 
-  SIMDE__VECTORIZE
+  /* https://gcc.gnu.org/bugzilla/show_bug.cgi?id=94488 */
+  #if !defined(HEDLEY_GCC_VERSION) || !defined(SIMDE_ARCH_AARCH64)
+    SIMDE__VECTORIZE
+  #endif
   for (size_t i = 0 ; i < (sizeof(r_.u64) / sizeof(r_.u64[0])) ; i++) {
     r_.u64[i] = a_.u64[i] >> s;
   }
