@@ -1404,7 +1404,7 @@ test_simde_mm512_mask_test_epi32_mask(const MunitParameter params[], void* data)
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__mmask16 r = simde_mm512_mask_test_epi32_mask(test_vec[i].k, test_vec[i].a, test_vec[i].b);
-    munit_assert_uint16(HEDLEY_STATIC_CAST(uint16_t, r), ==, HEDLEY_STATIC_CAST(uint16_t, test_vec[i].r));
+    simde_assert_mmask16(HEDLEY_STATIC_CAST(uint16_t, r), ==, HEDLEY_STATIC_CAST(uint16_t, test_vec[i].r));
   }
 
   return MUNIT_OK;
@@ -2201,7 +2201,7 @@ test_simde_mm512_mask_cmpeq_epi32_mask(const MunitParameter params[], void* data
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__mmask16 r = simde_mm512_mask_cmpeq_epi32_mask(test_vec[i].k, test_vec[i].a, test_vec[i].b);
-    munit_assert_uint16(HEDLEY_STATIC_CAST(uint16_t, r), ==, HEDLEY_STATIC_CAST(uint16_t, test_vec[i].r));
+    simde_assert_mmask16(HEDLEY_STATIC_CAST(uint16_t, r), ==, HEDLEY_STATIC_CAST(uint16_t, test_vec[i].r));
   }
 
   return MUNIT_OK;
@@ -2302,7 +2302,7 @@ test_simde_mm512_mask_cmpeq_epi64_mask(const MunitParameter params[], void* data
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__mmask8 r = simde_mm512_mask_cmpeq_epi64_mask(test_vec[i].k, test_vec[i].a, test_vec[i].b);
-    munit_assert_uint8(r, ==, test_vec[i].r);
+    simde_assert_mmask8(r, ==, test_vec[i].r);
   }
 
   return MUNIT_OK;
