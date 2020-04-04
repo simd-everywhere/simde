@@ -1199,7 +1199,7 @@ simde_mm512_set4_epi32 (int32_t d, int32_t c, int32_t b, int32_t a) {
   return simde__m512i_from_private(r_);
 }
 #if defined(SIMDE_AVX512F_ENABLE_NATIVE_ALIASES)
-#  define _mm512_set_epi32(d,c,b,a) simde_mm512_set_epi32(d,c,b,a)
+#  define _mm512_set4_epi32(d,c,b,a) simde_mm512_set4_epi32(d,c,b,a)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -1219,7 +1219,7 @@ simde_mm512_set4_epi64 (int64_t d, int64_t c, int64_t b, int64_t a) {
   return simde__m512i_from_private(r_);
 }
 #if defined(SIMDE_AVX512F_ENABLE_NATIVE_ALIASES)
-#  define _mm512_set_epi64(d,c,b,a) simde_mm512_set_epi64(d,c,b,a)
+#  define _mm512_set4_epi64(d,c,b,a) simde_mm512_set4_epi64(d,c,b,a)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -1247,7 +1247,7 @@ simde_mm512_set_ps (simde_float32 d, simde_float32 c, simde_float32 b, simde_flo
   return simde__m512_from_private(r_);
 }
 #if defined(SIMDE_AVX512F_ENABLE_NATIVE_ALIASES)
-#  define _mm512_set_ps(d,c,b,a) simde_mm512_set_ps(d,c,b,a)
+#  define _mm512_set4_ps(d,c,b,a) simde_mm512_set4_ps(d,c,b,a)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -1267,7 +1267,7 @@ simde_mm512_set4_pd (simde_float64 d, simde_float64 c, simde_float64 b, simde_fl
   return simde__m512d_from_private(r_);
 }
 #if defined(SIMDE_AVX512F_ENABLE_NATIVE_ALIASES)
-#  define _mm512_set_pd(d,c,b,a) simde_mm512_set_pd(d,c,b,a)
+#  define _mm512_set4_pd(d,c,b,a) simde_mm512_set4_pd(d,c,b,a)
 #endif
 
 
