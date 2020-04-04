@@ -433,7 +433,7 @@ HEDLEY_STATIC_ASSERT(sizeof(simde_float64) == 8, "Unable to find 64-bit floating
 
 #if \
   HEDLEY_HAS_WARNING("-Wtautological-compare") || \
-  HEDLEY_GCC_VERSION_CHECK(8,0,0)
+  HEDLEY_GCC_VERSION_CHECK(7,0,0)
 #  if defined(__cplusplus)
 #    if (__cplusplus >= 201402L)
 #      define SIMDE_TAUTOLOGICAL_COMPARE_(expr) \
