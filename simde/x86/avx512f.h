@@ -349,10 +349,16 @@ simde_mm512_broadcast_i32x4 (simde__m128i a) {
 #else
   simde__m512i_private r_;
 
+#if MODIF_CM && defined(SIMDE_ARCH_X86_AVX2)
+  r_.m256i[1] = r_.m256i[0] = simde_mm256_broadcastsi128_si256(a);
+#elif MODIF_CM && defined(SIMDE_ARCH_X86_SSE2)
+  r_.m128i[3] = r_.m128i[2] = r_.m128i[1] = r_.m128i[0] = a;
+#else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r_.m128i) / sizeof(r_.m128i[0])) ; i++) {
     r_.m128i[i] = a;
   }
+#endif
 
   return simde__m512i_from_private(r_);
 #endif
@@ -634,7 +640,7 @@ simde_mm512_load_si512 (simde__m512i const * mem_addr) {
   return _mm512_load_si512((__m512i const*) mem_addr);
 #else
   simde__m512i r;
-  r = *mem_addr;
+  simde_memcpy(&r, mem_addr, sizeof(r));
   return r;
 #endif
 }
@@ -649,7 +655,7 @@ simde_mm512_loadu_si512 (simde__m512i const * mem_addr) {
   return _mm512_loadu_si512((__m512i const*) mem_addr);
 #else
   simde__m512i r;
-  r = *mem_addr;
+  simde_memcpy(&r, mem_addr, sizeof(r));
   return r;
 #endif
 }
@@ -1305,15 +1311,31 @@ simde_mm512_srli_epi64 (simde__m512i a, unsigned int imm8) {
     r_,
     a_ = simde__m512i_to_private(a);
 
-#if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
-  r_.u64 = a_.u64 >> HEDLEY_STATIC_CAST(int32_t, imm8);
+#if defined(SIMDE_ARCH_X86_AVX2)
+  r_.m256i[0] = simde_mm256_srli_epi64(a_.m256i[0], imm8);
+  r_.m256i[1] = simde_mm256_srli_epi64(a_.m256i[1], imm8);
+#elif defined(SIMDE_ARCH_X86_SSE2)
+  r_.m128i[0] = simde_mm_srli_epi64(a_.m128i[0], imm8);
+  r_.m128i[1] = simde_mm_srli_epi64(a_.m128i[1], imm8);
+  r_.m128i[2] = simde_mm_srli_epi64(a_.m128i[2], imm8);
+  r_.m128i[3] = simde_mm_srli_epi64(a_.m128i[3], imm8);
 #else
-  SIMDE__VECTORIZE
-  for (size_t i = 0 ; i < (sizeof(r_.u64) / sizeof(r_.u64[0])) ; i++) {
-    r_.u64[i] = a_.u64[i] >> imm8;
+  // The Intel Intrinsics Guide says that only the 8 LSBits of imm8 are used.
+  // In this case we should do "imm8 &= 0xff" here
+  // However in practice all bits are used.
+  if (imm8 > 63) {
+    simde_memset(&r_, 0, sizeof(r_));
+  } else {
+#if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+    r_.u64 = a_.u64 >> imm8;
+#else
+    SIMDE__VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.u64) / sizeof(r_.u64[0])) ; i++) {
+      r_.u64[i] = a_.u64[i] >> imm8;
+    }
+#endif
   }
 #endif
-
   return simde__m512i_from_private(r_);
 #endif
 }
@@ -1332,7 +1354,15 @@ simde_mm512_xor_si512 (simde__m512i a, simde__m512i b) {
     a_ = simde__m512i_to_private(a),
     b_ = simde__m512i_to_private(b);
 
-#if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+#if defined(SIMDE_ARCH_X86_AVX2)
+  r_.m256i[0] = simde_mm256_xor_si256(a_.m256i[0], b_.m256i[0]);
+  r_.m256i[1] = simde_mm256_xor_si256(a_.m256i[1], b_.m256i[1]);
+#elif defined(SIMDE_ARCH_X86_SSE2)
+  r_.m128i[0] = simde_mm_xor_si128(a_.m128i[0], b_.m128i[0]);
+  r_.m128i[1] = simde_mm_xor_si128(a_.m128i[1], b_.m128i[1]);
+  r_.m128i[2] = simde_mm_xor_si128(a_.m128i[2], b_.m128i[2]);
+  r_.m128i[3] = simde_mm_xor_si128(a_.m128i[3], b_.m128i[3]);
+#elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
   r_.i32f = a_.i32f ^ b_.i32f;
 #else
   SIMDE__VECTORIZE
