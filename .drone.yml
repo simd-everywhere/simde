@@ -6,27 +6,25 @@ platform:
   os: linux
   arch: arm
 steps:
-  - name: test
-    image: ubuntu:bionic
-    environment:
-      CC: clang-9
-      CXX: clang++-9
-    commands:
-    - uname -m
-    - cat /proc/cpuinfo
-    - apt-get -yq update
-    - apt-get -yq install clang-9 cmake git-core
-    - git submodule update --init --recursive
-    - mkdir test/build
-    - cd test/build
-    - cmake .. -DCMAKE_C_FLAGS='-march=armv7a -mfpu=neon' -DCMAKE_CXX_FLAGS='-march=armv7a -mfpu=neon'
-    - make -j VERBOSE=1
-    - ./run-tests
-trigger:
-  branch:
-    exclude:
-    - wip/*
-
+- name: test
+  image: ubuntu:bionic
+  environment:
+    CC: clang-9
+    CXX: clang++-9
+    ARCH_FLAGS: -march=armv7a -mfpu=neon
+  commands:
+  - uname -m
+  - cat /proc/cpuinfo
+  - apt-get -yq update
+  - apt-get -yq install clang-9 ninja-build git-core python3-pip
+  - pip3 install meson
+  - git submodule update --init --recursive
+  - mkdir -p build
+  - cd build
+  - CFLAGS="$ARCH_FLAGS" CXXFLAGS="$ARCH_FLAGS" meson ..
+  - ninja -v
+  - ./test/run-tests
+  
 ---
 kind: pipeline
 type: docker
@@ -35,26 +33,24 @@ platform:
   os: linux
   arch: arm
 steps:
-  - name: test
-    image: ubuntu:bionic
-    environment:
-      CC: clang-9
-      CXX: clang++-9
-    commands:
-    - uname -m
-    - cat /proc/cpuinfo
-    - apt-get -yq update
-    - apt-get -yq install clang-9 cmake git-core
-    - git submodule update --init --recursive
-    - mkdir test/build
-    - cd test/build
-    - cmake .. -DCMAKE_C_FLAGS='-march=armv8a' -DCMAKE_CXX_FLAGS='-march=armv8a'
-    - make -j VERBOSE=1
-    - ./run-tests
-trigger:
-  branch:
-    exclude:
-    - wip/*
+- name: test
+  image: ubuntu:bionic
+  environment:
+    CC: clang-9
+    CXX: clang++-9
+    ARCH_FLAGS: -march=armv8a -mfpu=neon
+  commands:
+  - uname -m
+  - cat /proc/cpuinfo
+  - apt-get -yq update
+  - apt-get -yq install clang-9 ninja-build git-core python3-pip
+  - pip3 install meson
+  - git submodule update --init --recursive
+  - mkdir -p build
+  - cd build
+  - CFLAGS="$ARCH_FLAGS" CXXFLAGS="$ARCH_FLAGS" meson ..
+  - ninja -v
+  - ./test/run-tests
 
 ---
 kind: pipeline
@@ -64,26 +60,24 @@ platform:
   os: linux
   arch: arm
 steps:
-  - name: test
-    image: ubuntu:bionic
-    environment:
-      CC: gcc-8
-      CXX: g++-8
-    commands:
-    - uname -m
-    - cat /proc/cpuinfo
-    - apt-get -yq update
-    - apt-get -yq install gcc-8 g++-8 cmake git-core
-    - git submodule update --init --recursive
-    - mkdir test/build
-    - cd test/build
-    - cmake .. -DCMAKE_C_FLAGS='-march=armv7-a -mfpu=neon' -DCMAKE_CXX_FLAGS='-march=armv7-a -mfpu=neon'
-    - make -j VERBOSE=1
-    - ./run-tests
-trigger:
-  branch:
-    exclude:
-    - wip/*
+- name: test
+  image: ubuntu:bionic
+  environment:
+    CC: gcc-8
+    CXX: g++-8
+    ARCH_FLAGS: -march=armv7-a -mfpu=neon
+  commands:
+  - uname -m
+  - cat /proc/cpuinfo
+  - apt-get -yq update
+  - apt-get -yq install gcc-8 g++-8 ninja-build git-core python3-pip
+  - pip3 install meson
+  - git submodule update --init --recursive
+  - mkdir -p build
+  - cd build
+  - CFLAGS="$ARCH_FLAGS" CXXFLAGS="$ARCH_FLAGS" meson ..
+  - ninja -v
+  - ./test/run-tests
 
 ---
 kind: pipeline
@@ -93,84 +87,24 @@ platform:
   os: linux
   arch: arm
 steps:
-  - name: test
-    image: ubuntu:bionic
-    environment:
-      CC: gcc-8
-      CXX: g++-8
-    commands:
-    - uname -m
-    - cat /proc/cpuinfo
-    - apt-get -yq update
-    - apt-get -yq install gcc-8 g++-8 cmake git-core
-    - git submodule update --init --recursive
-    - mkdir test/build
-    - cd test/build
-    - cmake .. -DCMAKE_C_FLAGS='-march=armv8-a -mfpu=neon' -DCMAKE_CXX_FLAGS='-march=armv8-a -mfpu=neon'
-    - make -j VERBOSE=1
-    - ./run-tests
-trigger:
-  branch:
-    exclude:
-    - wip/*
-
----
-kind: pipeline
-type: docker
-name: "gcc-7 armv7"
-platform:
-  os: linux
-  arch: arm
-steps:
-  - name: test
-    image: ubuntu:bionic
-    environment:
-      CC: gcc-7
-      CXX: g++-7
-    commands:
-    - uname -m
-    - cat /proc/cpuinfo
-    - apt-get -yq update
-    - apt-get -yq install gcc-7 g++-7 cmake git-core
-    - git submodule update --init --recursive
-    - mkdir test/build
-    - cd test/build
-    - cmake .. -DCMAKE_C_FLAGS='-march=armv7-a -mfpu=neon' -DCMAKE_CXX_FLAGS='-march=armv7-a -mfpu=neon'
-    - make -j VERBOSE=1
-    - ./run-tests
-trigger:
-  branch:
-    exclude:
-    - wip/*
-
----
-kind: pipeline
-type: docker
-name: "gcc-7 armv8"
-platform:
-  os: linux
-  arch: arm
-steps:
-  - name: test
-    image: ubuntu:bionic
-    environment:
-      CC: gcc-7
-      CXX: g++-7
-    commands:
-    - uname -m
-    - cat /proc/cpuinfo
-    - apt-get -yq update
-    - apt-get -yq install gcc-7 g++-7 cmake git-core
-    - git submodule update --init --recursive
-    - mkdir test/build
-    - cd test/build
-    - cmake .. -DCMAKE_C_FLAGS='-march=armv8-a -mfpu=neon' -DCMAKE_CXX_FLAGS='-march=armv8-a -mfpu=neon'
-    - make -j VERBOSE=1
-    - ./run-tests
-trigger:
-  branch:
-    exclude:
-    - wip/*
+- name: test
+  image: ubuntu:bionic
+  environment:
+    CC: gcc-8
+    CXX: g++-8
+    ARCH_FLAGS: -march=armv8-a -mfpu=neon
+  commands:
+  - uname -m
+  - cat /proc/cpuinfo
+  - apt-get -yq update
+  - apt-get -yq install gcc-8 g++-8 ninja-build git-core python3-pip
+  - pip3 install meson
+  - git submodule update --init --recursive
+  - mkdir -p build
+  - cd build
+  - CFLAGS="$ARCH_FLAGS" CXXFLAGS="$ARCH_FLAGS" meson ..
+  - ninja -v
+  - ./test/run-tests
 
 ---
 kind: pipeline
@@ -180,27 +114,25 @@ platform:
   os: linux
   arch: arm
 steps:
-  - name: test
-    image: ubuntu:bionic
-    environment:
-      CC: clang-7
-      CXX: clang++-7
-    commands:
-    - uname -m
-    - cat /proc/cpuinfo
-    - apt-get -yq update
-    - apt-get -yq install clang-7 cmake git-core
-    - git submodule update --init --recursive
-    - mkdir test/build
-    - cd test/build
-    - cmake .. -DCMAKE_C_FLAGS='-march=armv7a' -DCMAKE_CXX_FLAGS='-march=armv7a'
-    - make -j VERBOSE=1
-    - ./run-tests
-trigger:
-  branch:
-    exclude:
-    - wip/*
-
+- name: test
+  image: ubuntu:bionic
+  environment:
+    CC: clang-7
+    CXX: clang++-7
+    ARCH_FLAGS: -march=armv7a -mfpu=neon
+  commands:
+  - uname -m
+  - cat /proc/cpuinfo
+  - apt-get -yq update
+  - apt-get -yq install clang-7 ninja-build git-core python3-pip
+  - pip3 install meson
+  - git submodule update --init --recursive
+  - mkdir -p build
+  - cd build
+  - CFLAGS="$ARCH_FLAGS" CXXFLAGS="$ARCH_FLAGS" meson ..
+  - ninja -v
+  - ./test/run-tests
+  
 ---
 kind: pipeline
 type: docker
@@ -209,23 +141,98 @@ platform:
   os: linux
   arch: arm
 steps:
-  - name: test
-    image: ubuntu:bionic
-    environment:
-      CC: clang-7
-      CXX: clang++-7
-    commands:
-    - uname -m
-    - cat /proc/cpuinfo
-    - apt-get -yq update
-    - apt-get -yq install clang-7 cmake git-core
-    - git submodule update --init --recursive
-    - mkdir test/build
-    - cd test/build
-    - cmake .. -DCMAKE_C_FLAGS='-march=armv8a' -DCMAKE_CXX_FLAGS='-march=armv8a'
-    - make -j VERBOSE=1
-    - ./run-tests
-trigger:
-  branch:
-    exclude:
-    - wip/*
+- name: test
+  image: ubuntu:bionic
+  environment:
+    CC: clang-7
+    CXX: clang++-7
+    ARCH_FLAGS: -march=armv8a -mfpu=neon
+  commands:
+  - uname -m
+  - cat /proc/cpuinfo
+  - apt-get -yq update
+  - apt-get -yq install clang-7 ninja-build git-core python3-pip
+  - pip3 install meson
+  - git submodule update --init --recursive
+  - mkdir -p build
+  - cd build
+  - CFLAGS="$ARCH_FLAGS" CXXFLAGS="$ARCH_FLAGS" meson ..
+  - ninja -v
+  - ./test/run-tests
+
+---
+kind: pipeline
+type: docker
+name: "gcc-7 armv7"
+platform:
+  os: linux
+  arch: arm
+steps:
+- name: test
+  image: ubuntu:bionic
+  environment:
+    CC: gcc-7
+    CXX: g++-7
+    ARCH_FLAGS: -march=armv7-a -mfpu=neon
+  commands:
+  - uname -m
+  - cat /proc/cpuinfo
+  - apt-get -yq update
+  - apt-get -yq install gcc-7 g++-7 ninja-build git-core python3-pip
+  - pip3 install meson
+  - git submodule update --init --recursive
+  - mkdir -p build
+  - cd build
+  - CFLAGS="$ARCH_FLAGS" CXXFLAGS="$ARCH_FLAGS" meson ..
+  - ninja -v
+  - ./test/run-tests
+
+---
+kind: pipeline
+type: docker
+name: "gcc-7 armv8"
+platform:
+  os: linux
+  arch: arm
+steps:
+- name: test
+  image: ubuntu:bionic
+  environment:
+    CC: gcc-7
+    CXX: g++-7
+    ARCH_FLAGS: -march=armv8-a -mfpu=neon
+  commands:
+  - uname -m
+  - cat /proc/cpuinfo
+  - apt-get -yq update
+  - apt-get -yq install gcc-7 g++-7 ninja-build git-core python3-pip
+  - pip3 install meson
+  - git submodule update --init --recursive
+  - mkdir -p build
+  - cd build
+  - CFLAGS="$ARCH_FLAGS" CXXFLAGS="$ARCH_FLAGS" meson ..
+  - ninja -v
+  - ./test/run-tests
+
+# ---
+# kind: pipeline
+# type: docker
+# name: "fedora"
+# steps:
+# - name: test
+#   image: fedora:latest
+#   environment:
+#     CC: gcc
+#     CXX: g++
+#     ARCH_FLAGS: -march=native
+#   commands:
+#   - uname -m
+#   - cat /proc/cpuinfo
+#   - dnf install -y gcc gcc-c++ ninja-build git-core python3-pip
+#   - pip3 install meson
+#   - git submodule update --init --recursive
+#   - mkdir -p build
+#   - cd build
+#   - CFLAGS="$ARCH_FLAGS" CXXFLAGS="$ARCH_FLAGS" meson ..
+#   - ninja -v
+#   - ./test/run-tests
