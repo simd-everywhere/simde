@@ -25,6 +25,12 @@
 #define SIMDE_COMMON_H
 
 #include "hedley.h"
+
+#define SIMDE_VERSION_MAJOR 0
+#define SIMDE_VERSION_MINOR 5
+#define SIMDE_VERSON_MICRO 0
+#define SIMDE_VERSION HEDLEY_VERSION_ENCODE(SIMDE_VERSION_MAJOR, SIMDE_VERSION_MINOR, SIMDE_VERSION_MICRO)
+
 #include "simde-arch.h"
 
 #include <stddef.h>
