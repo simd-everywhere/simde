@@ -2209,9 +2209,9 @@ simde_mm512_sub_pd (simde__m512d a, simde__m512d b) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__mmask16
-simde_mm512_mask_cmpeq_epi32_mask (simde__mmask16 k1, simde__m512i a, simde__m512i b) {
+simde_mm512_cmpeq_epi32_mask (simde__m512i a, simde__m512i b) {
   #if defined(SIMDE_AVX512F_NATIVE)
-    return _mm512_mask_cmpeq_epi32_mask(k1, a, b);
+    return _mm512_cmpeq_epi32_mask(a, b);
   #else
     simde__m512i_private
       r_,
@@ -2222,7 +2222,20 @@ simde_mm512_mask_cmpeq_epi32_mask (simde__mmask16 k1, simde__m512i a, simde__m51
       r_.m256i[i] = simde_mm256_cmpeq_epi32(a_.m256i[i], b_.m256i[i]);
     }
 
-    return simde__m512i_private_to_mmask16(r_) & k1;
+    return simde__m512i_private_to_mmask16(r_);
+  #endif
+}
+#if defined(SIMDE_AVX512F_ENABLE_NATIVE_ALIASES)
+#  define _mm512_cmpeq_epi32_mask(a, b) simde_mm512_cmpeq_epi32_mask(a, b)
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__mmask16
+simde_mm512_mask_cmpeq_epi32_mask (simde__mmask16 k1, simde__m512i a, simde__m512i b) {
+  #if defined(SIMDE_AVX512F_NATIVE)
+    return _mm512_mask_cmpeq_epi32_mask(k1, a, b);
+  #else
+    return simde_mm512_cmpeq_epi32_mask(a, b) & k1;
   #endif
 }
 #if defined(SIMDE_AVX512F_ENABLE_NATIVE_ALIASES)
@@ -2231,9 +2244,9 @@ simde_mm512_mask_cmpeq_epi32_mask (simde__mmask16 k1, simde__m512i a, simde__m51
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__mmask8
-simde_mm512_mask_cmpeq_epi64_mask (simde__mmask8 k1, simde__m512i a, simde__m512i b) {
+simde_mm512_cmpeq_epi64_mask (simde__m512i a, simde__m512i b) {
   #if defined(SIMDE_AVX512F_NATIVE)
-    return _mm512_mask_cmpeq_epi64_mask(k1, a, b);
+    return _mm512_cmpeq_epi64_mask(a, b);
   #else
     simde__m512i_private
       r_,
@@ -2244,7 +2257,20 @@ simde_mm512_mask_cmpeq_epi64_mask (simde__mmask8 k1, simde__m512i a, simde__m512
       r_.m256i[i] = simde_mm256_cmpeq_epi64(a_.m256i[i], b_.m256i[i]);
     }
 
-    return simde__m512i_private_to_mmask8(r_) & k1;
+    return simde__m512i_private_to_mmask8(r_);
+  #endif
+}
+#if defined(SIMDE_AVX512F_ENABLE_NATIVE_ALIASES)
+#  define _mm512_cmpeq_epi64_mask(a, b) simde_mm512_cmpeq_epi64_mask(a, b)
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__mmask8
+simde_mm512_mask_cmpeq_epi64_mask (simde__mmask8 k1, simde__m512i a, simde__m512i b) {
+  #if defined(SIMDE_AVX512F_NATIVE)
+    return _mm512_mask_cmpeq_epi64_mask(k1, a, b);
+  #else
+    return simde_mm512_cmpeq_epi64_mask(a, b) & k1;
   #endif
 }
 #if defined(SIMDE_AVX512F_ENABLE_NATIVE_ALIASES)
