@@ -2553,6 +2553,36 @@ simde_mm512_mul_pd (simde__m512d a, simde__m512d b) {
 #  define _mm512_mul_pd(a, b) simde_mm512_mul_pd(a, b)
 #endif
 
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m512i
+simde_mm512_or_si512 (simde__m512i a, simde__m512i b) {
+#if defined(SIMDE_AVX512F_NATIVE)
+  return _mm512_or_si512(a, b);
+#else
+  simde__m512i_private
+    r_,
+    a_ = simde__m512i_to_private(a),
+    b_ = simde__m512i_to_private(b);
+
+#if defined(SIMDE_ARCH_X86_AVX2)
+  r_.m256i[0] = simde_mm256_or_si256(a_.m256i[0], b_.m256i[0]);
+  r_.m256i[1] = simde_mm256_or_si256(a_.m256i[1], b_.m256i[1]);
+#elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+  r_.i32f = a_.i32f | b_.i32f;
+#else
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {
+    r_.i32f[i] = a_.i32f[i] | b_.i32f[i];
+  }
+#endif
+
+  return simde__m512i_from_private(r_);
+#endif
+}
+#if defined(SIMDE_AVX512F_ENABLE_NATIVE_ALIASES)
+#  define _mm512_or_si512(a, b) simde_mm512_or_si512(a, b)
+#endif
+
 SIMDE__END_DECLS
 
 HEDLEY_DIAGNOSTIC_POP
