@@ -4405,15 +4405,13 @@ simde_mm_sll_epi64 (simde__m128i a, simde__m128i count) {
   if (count_.u64[0] > 63)
     return simde_mm_setzero_si128();
 
-#if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && !defined(SIMDE_BUG_GCC_ARM_SHIFT_SCALAR)
-  /* GCC ≤ 7 on AArch64 generates an ICE here */
-  r_.u64 = (a_.u64 << count_.u64[0]);
-#else
-  SIMDE__VECTORIZE
+  const int_fast16_t s = HEDLEY_STATIC_CAST(int_fast16_t, count_.u64[0]);
+  #if !defined(SIMDE_BUG_GCC_94488)
+    SIMDE__VECTORIZE
+  #endif
   for (size_t i = 0 ; i < (sizeof(r_.u64) / sizeof(r_.u64[0])) ; i++) {
-    r_.u64[i] = a_.u64[i] << count_.u64[0];
+    r_.u64[i] = a_.u64[i] << s;
   }
-#endif
 
   return simde__m128i_from_private(r_);
 #endif
@@ -4542,12 +4540,11 @@ simde_mm_srl_epi64 (simde__m128i a, simde__m128i count) {
     a_ = simde__m128i_to_private(a),
     count_ = simde__m128i_to_private(count);
 
-  if (count_.u64[0] > 31)
+  if (count_.u64[0] > 63)
     return simde_mm_setzero_si128();
-  const int s = (int) (count_.u64[0]);
 
-  /* https://gcc.gnu.org/bugzilla/show_bug.cgi?id=94488 */
-  #if !defined(HEDLEY_GCC_VERSION) || !defined(SIMDE_ARCH_AARCH64)
+  const int_fast16_t s = HEDLEY_STATIC_CAST(int_fast16_t, count_.u64[0]);
+  #if !defined(SIMDE_BUG_GCC_94488)
     SIMDE__VECTORIZE
   #endif
   for (size_t i = 0 ; i < (sizeof(r_.u64) / sizeof(r_.u64[0])) ; i++) {
