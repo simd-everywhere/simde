@@ -1661,7 +1661,7 @@ simde_mm512_xor_si512 (simde__m512i a, simde__m512i b) {
     r_.i32f = a_.i32f ^ b_.i32f;
   #else
     SIMDE__VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.i64) / sizeof(r_.i64[0])) ; i++) {
+    for (size_t i = 0 ; i < (sizeof(r_.i32f) / sizeof(r_.i32f[0])) ; i++) {
       r_.i32f[i] = a_.i32f[i] ^ b_.i32f[i];
     }
   #endif
