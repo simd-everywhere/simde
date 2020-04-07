@@ -25,7 +25,6 @@
 #include <test/x86/test-mmx.h>
 
 #if defined(SIMDE_MMX_NATIVE) || defined(SIMDE_NO_NATIVE) || defined(SIMDE_ALWAYS_BUILD_NATIVE_TESTS)
-#endif /* defined(SIMDE_MMX_NATIVE) || defined(SIMDE_NO_NATIVE) || defined(SIMDE_ALWAYS_BUILD_NATIVE_TESTS) */
 
 static MunitResult
 test_simde_mm_set1_pi8(const MunitParameter params[], void* data) {
@@ -2786,7 +2785,6 @@ test_simde_m_to_int64(const MunitParameter params[], void* data) {
   return MUNIT_OK;
 }
 
-#if defined(SIMDE_MMX_NATIVE) || defined(SIMDE_NO_NATIVE) || defined(SIMDE_ALWAYS_BUILD_NATIVE_TESTS)
 #endif /* defined(SIMDE_MMX_NATIVE) || defined(SIMDE_NO_NATIVE) || defined(SIMDE_ALWAYS_BUILD_NATIVE_TESTS) */
 
 HEDLEY_DIAGNOSTIC_PUSH
