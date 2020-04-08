@@ -292,11 +292,5 @@ script:
     fi
   fi
 
-after_success:
-- |
-  if [ "${BUILD_TYPE}" = "Coverage" ]; then
-    bash <(curl -s https://codecov.io/bash) -y "${TRAVIS_BUILD_DIR}"/.codecov.yml ${GCOV}
-  fi
-
 notifications:
   email: false
