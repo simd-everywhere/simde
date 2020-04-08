@@ -201,7 +201,7 @@ simde_mm_blendv_epi8 (simde__m128i a, simde__m128i b, simde__m128i mask) {
   /* https://software.intel.com/en-us/forums/intel-c-compiler/topic/850087 */
   #if defined(HEDLEY_INTEL_VERSION_CHECK)
     __typeof__(mask_.i8) z = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-    mask_.i8 = mask_.i8 < z;
+    mask_.i8 = HEDLEY_STATIC_CAST(__typeof__(mask_.i8), mask_.i8 < z);
   #else
     mask_.i8 >>= (CHAR_BIT * sizeof(mask_.i8[0])) - 1;
   #endif
@@ -313,7 +313,7 @@ simde_x_mm_blendv_epi64 (simde__m128i a, simde__m128i b, simde__m128i mask) {
 #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
   #if defined(HEDLEY_INTEL_VERSION_CHECK)
     __typeof__(mask_.i64) z = { 0, 0 };
-    mask_.i64 = mask_.i64 < z;
+    mask_.i64 = HEDLEY_STATIC_CAST(__typeof__(mask_.i64), mask_.i64 < z);
   #else
     mask_.i64 >>= (CHAR_BIT * sizeof(mask_.i64[0])) - 1;
   #endif
@@ -397,7 +397,7 @@ simde_mm_ceil_ps (simde__m128 a) {
     r_,
     a_ = simde__m128_to_private(a);
 
-  #if defined(SIMDE_SSE4_1_NEON) && (SIMDE_ARCH_ARM >= 80)
+  #if defined(SIMDE_SSE4_1_NEON) && (SIMDE_ARCH_ARM >= 80) && (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(9,0,0))
     r_.neon_f32 = vrndpq_f32(a_.neon_f32);
   #elif defined(SIMDE_SSE_POWER_ALTIVEC)
     r_.altivec_f32 = vec_ceil(a_.altivec_f32);
@@ -479,7 +479,7 @@ simde_mm_cmpeq_epi64 (simde__m128i a, simde__m128i b) {
     b_ = simde__m128i_to_private(b);
 
   #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-    r_.i64 = (a_.i64 == b_.i64);
+    r_.i64 = HEDLEY_STATIC_CAST(__typeof__(r_.i64), a_.i64 == b_.i64);
   #elif defined(SIMDE_SSE_POWER_ALTIVEC)
     r_.altivec_i64 = (vector signed long long) vec_cmpeq(a_.altivec_i64, b_.altivec_i64);
   #else
@@ -1059,12 +1059,29 @@ SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_insert_epi64 (simde__m128i a, int64_t i, const int imm8)
     HEDLEY_REQUIRE_MSG((imm8 & 1) == imm8, "imm8 must be 0 or 1")  {
-  simde__m128i_private
-    r_ = simde__m128i_to_private(a);
+  #if defined(SIMDE_BUG_GCC_94482)
+    simde__m128i_private
+      a_ = simde__m128i_to_private(a);
 
-  r_.i64[imm8] = i;
+    switch(imm8) {
+      case 0:
+        return simde_mm_set_epi64x(a_.i64[1], i);
+        break;
+      case 1:
+        return simde_mm_set_epi64x(i, a_.i64[0]);
+        break;
+      default:
+        HEDLEY_UNREACHABLE();
+        break;
+    }
+  #else
+    simde__m128i_private
+      r_ = simde__m128i_to_private(a);
 
-  return simde__m128i_from_private(r_);
+    r_.i64[imm8] = i;
+
+    return simde__m128i_from_private(r_);
+  #endif
 }
 #if defined(SIMDE_SSE4_1_NATIVE) && defined(SIMDE_ARCH_AMD64)
 #  define simde_mm_insert_epi64(a, i, imm8) _mm_insert_epi64(a, i, imm8)

@@ -1927,9 +1927,9 @@ test_simde_mm256_castpd128_pd256(const MunitParameter params[], void* data) {
   };
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
-    simde__m256d r = simde_mm256_castpd128_pd256(test_vec[i].a);
-    simde_assert_m128d_equal(simde__m256d_to_private(r).m128d[0],
-                             simde__m256d_to_private(test_vec[i].r).m128d[0]);
+    simde__m256d_private r = simde__m256d_to_private(simde_mm256_castpd128_pd256(test_vec[i].a));
+    simde__m256d_private expected = simde__m256d_to_private(test_vec[i].r);
+    simde_assert_m128d_equal(r.m128d[0], expected.m128d[0]);
   }
 
   return MUNIT_OK;
@@ -13192,13 +13192,13 @@ test_simde_mm256_testz_si256(const MunitParameter params[], void* data) {
     { simde_mm256_set_epi64x(INT64_C(-8613849652924649480), INT64_C( 4502213447815150777),
                              INT64_C(  964826197151294912), INT64_C(-2062422363128377394)),
       simde_mm256_set_epi64x(INT64_C(  420430988932892588), INT64_C( 7089052628145876495),
-                             INT64_C( 6277389371060420129), INT64_C( 6288171797713954506)),
+                             INT64_C(  964826197151294912), INT64_C(-2062422363128377394)),
       0 },
     { simde_mm256_set_epi64x(INT64_C( 2313467387214959309), INT64_C( 1954089676203891706),
                              INT64_C(-5992642054331042599), INT64_C( 2987244174038246250)),
-      simde_mm256_set_epi64x(INT64_C( 4914590040986923596), INT64_C(-4074475256917770391),
-                             INT64_C( 7154380515612099887), INT64_C(-8596220394847925030)),
-      0 },
+      simde_mm256_set_epi64x(~INT64_C( 2313467387214959309), ~INT64_C( 1954089676203891706),
+                             ~INT64_C(-5992642054331042599), ~INT64_C( 2987244174038246250)),
+      1 },
     { simde_mm256_set_epi64x(INT64_C(                   0), INT64_C(                   0),
                              INT64_C(                   0), INT64_C(                   0)),
       simde_mm256_set_epi64x(INT64_C(                   0), INT64_C(                   0),

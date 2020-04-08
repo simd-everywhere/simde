@@ -8,7 +8,7 @@
 #define simde_assert_vec_equal(a, b, T) do { \
     const T##_private simde_a_ = T##_to_private(a); \
     const T##_private simde_b_ = T##_to_private(b); \
-    for (int simde_i_ = 0 ; simde_i_ < (int) (sizeof(simde_a_.u32f) / sizeof(simde_a_.u32f[0])) ; simde_i_++) { \
+    for (int simde_i_ = 0 ; simde_i_ < HEDLEY_STATIC_CAST(int, (sizeof(simde_a_.u32f) / sizeof(simde_a_.u32f[0]))) ; simde_i_++) { \
       if (HEDLEY_UNLIKELY(simde_a_.u32f[simde_i_] != simde_b_.u32f[simde_i_])) { \
         munit_errorf("assertion failed: " #a ".u32f[%d] (%" PRIxFAST32 ") != " #b ".u32f[%d] (%" PRIxFAST32 ")", \
             simde_i_, simde_a_.u32f[simde_i_], \
@@ -35,7 +35,7 @@
 #define simde_assert_vec_i(a, op, b, T, accessor, fmt) do { \
       const T##_private simde_a_ = T##_to_private(a); \
       const T##_private simde_b_ = T##_to_private(b); \
-      for (int simde_i_ = 0 ; simde_i_ < (int) (sizeof(simde_a_.accessor) / sizeof(simde_a_.accessor[0])) ; simde_i_++) { \
+      for (int simde_i_ = 0 ; simde_i_ < HEDLEY_STATIC_CAST(int, (sizeof(simde_a_.accessor) / sizeof(simde_a_.accessor[0]))) ; simde_i_++) { \
         if (HEDLEY_UNLIKELY(!(simde_a_.accessor[simde_i_] op simde_b_.accessor[simde_i_]))) { \
           munit_errorf("assertion failed: " #a "." #accessor "[%d] " #op " " #b "." #accessor "[%d] (%" fmt " " #op " %" fmt ")", \
               simde_i_, simde_i_, simde_a_.accessor[simde_i_], simde_b_.accessor[simde_i_]); \
@@ -111,7 +111,7 @@
 #define simde_assert_vec_i_close(a, b, precision, T, accessor, fmt) do { \
       const T##_private simde_a_ = T##_to_private(a); \
       const T##_private simde_b_ = T##_to_private(b); \
-      for (int simde_i_ = 0 ; simde_i_ < (int) (sizeof(simde_a_.accessor) / sizeof(simde_a_.accessor[0])) ; simde_i_++) { \
+      for (int simde_i_ = 0 ; simde_i_ < HEDLEY_STATIC_CAST(int, (sizeof(simde_a_.accessor) / sizeof(simde_a_.accessor[0]))) ; simde_i_++) { \
         if (!((simde_a_.accessor[simde_i_] <= (simde_b_.accessor[simde_i_] + precision)) && (simde_a_.accessor[simde_i_] >= (simde_b_.accessor[simde_i_] - precision)))) { \
           munit_errorf("assertion failed: " #a "." #accessor "[%d] " SIMDE_ALMOST_EQUAL_TO " " #b "." #accessor "[%d] (%" fmt " " SIMDE_ALMOST_EQUAL_TO " %" fmt ")", \
               simde_i_, simde_i_, simde_a_.accessor[simde_i_], simde_b_.accessor[simde_i_]); \

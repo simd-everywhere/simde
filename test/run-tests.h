@@ -10,6 +10,13 @@
 
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 
+#if defined(HEDLEY_MSVC_VERSION)
+/* Unused function(s) */
+#pragma warning(disable:4505)
+#endif
+
+HEDLEY_DIAGNOSTIC_PUSH
+
 #define SIMDE_TESTS_CONCAT3_EX(a, b, c) a##b##c
 #define SIMDE_TESTS_CONCAT3(a, b, c) SIMDE_TESTS_CONCAT3_EX(a, b, c)
 
@@ -79,7 +86,7 @@ SIMDE__FUNCTION_POSSIBLY_UNUSED
 static void random_f32v(size_t nmemb, simde_float32 v[HEDLEY_ARRAY_PARAM(nmemb)]) {
   for (size_t i = 0 ; i < nmemb ; i++) {
     do {
-      munit_rand_memory(sizeof(v[i]), (uint8_t*) &(v[i]));
+      munit_rand_memory(sizeof(v[i]), HEDLEY_REINTERPRET_CAST(uint8_t*, &(v[i])));
     } while (!isnormal(v[i]));
   }
 }
@@ -88,21 +95,21 @@ SIMDE__FUNCTION_POSSIBLY_UNUSED
 static simde_float64 random_f64_range(simde_float64 min, simde_float64 max) {
   const simde_float64 range = max - min;
   simde_float64 x = HEDLEY_STATIC_CAST(simde_float64, munit_rand_uint32());
-  x /= ((simde_float32) UINT32_MAX) / range;
+  x /= HEDLEY_STATIC_CAST(simde_float64, UINT32_MAX) / range;
   x += min;
   return x;
 }
 
 SIMDE__FUNCTION_POSSIBLY_UNUSED
 static simde_float32 random_f32_range(simde_float32 min, simde_float32 max) {
-  return (simde_float32) random_f64_range(min, max);
+  return HEDLEY_STATIC_CAST(simde_float32, random_f64_range(HEDLEY_STATIC_CAST(double, min), HEDLEY_STATIC_CAST(double, max)));
 }
 
 SIMDE__FUNCTION_POSSIBLY_UNUSED
 static void random_f64v(size_t nmemb, simde_float64 v[HEDLEY_ARRAY_PARAM(nmemb)]) {
   for (size_t i = 0 ; i < nmemb ; i++) {
     do {
-      munit_rand_memory(sizeof(v[i]), (uint8_t*) &(v[i]));
+      munit_rand_memory(sizeof(v[i]), HEDLEY_REINTERPRET_CAST(uint8_t*, &(v[i])));
     } while (!isnormal(v[i]));
   }
 }
@@ -234,5 +241,20 @@ static void random_f64v(size_t nmemb, simde_float64 v[HEDLEY_ARRAY_PARAM(nmemb)]
   } while (0)
 
 HEDLEY_END_C_DECLS
+
+HEDLEY_DIAGNOSTIC_POP
+
+#if HEDLEY_HAS_WARNING("-Wpadded")
+#  pragma clang diagnostic ignored "-Wpadded"
+#elif defined(HEDLEY_MSVC_VERSION)
+#  pragma warning(disable:4324)
+#endif
+
+#if defined(HEDLEY_MSVC_VERSION)
+  /* nonstandard extension used : non-lvalue array converted to pointer */
+  #pragma warning(disable:4223)
+  /* Conditional expression is a constant */
+  #pragma warning(disable:4127)
+#endif
 
 #endif /* !defined(SIMDE_RUN_TESTS_H) */
