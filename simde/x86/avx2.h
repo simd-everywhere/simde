@@ -78,11 +78,11 @@ simde_mm256_abs_epi8 (simde__m256i a) {
     a_ = simde__m256i_to_private(a);
 
 #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-  r_.i8 = ( a_.i8 + (a_.i8 >> 7) ) ^ (a_.i8 >> 7);
+  r_.i8 = ( a_.i8 ^ (a_.i8 >> 7) ) - (a_.i8 >> 7);
 #else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r_.i8) / sizeof(r_.i8[0])) ; i++) {
-    r_.i8[i] = ( a_.i8[i] + (a_.i8[i] >> 7) ) ^ (a_.i8[i] >> 7);
+    r_.i8[i] = ( a_.i8[i] ^ (a_.i8[i] >> 7) ) - (a_.i8[i] >> 7);
   }
 #endif
 
@@ -104,11 +104,11 @@ simde_mm256_abs_epi16 (simde__m256i a) {
     a_ = simde__m256i_to_private(a);
 
 #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-  r_.i16 = ( a_.i16 + (a_.i16 >> 15) ) ^ (a_.i16 >> 15);
+  r_.i16 = ( a_.i16 ^ (a_.i16 >> 15) ) - (a_.i16 >> 15);
 #else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r_.i16) / sizeof(r_.i16[0])) ; i++) {
-    r_.i16[i] = ( a_.i16[i] + (a_.i16[i] >> 7) ) ^ (a_.i16[i] >> 7);
+    r_.i16[i] = ( a_.i16[i] ^ (a_.i16[i] >> 7) ) - (a_.i16[i] >> 7);
   }
 #endif
 
@@ -130,11 +130,11 @@ simde_mm256_abs_epi32 (simde__m256i a) {
     a_ = simde__m256i_to_private(a);
 
 #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-  r_.i32 = ( a_.i32 + (a_.i32 >> 31) ) ^ (a_.i32 >> 31);
+  r_.i32 = ( a_.i32 ^ (a_.i32 >> 31) ) - (a_.i32 >> 31);
 #else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r_.i8) / sizeof(r_.i8[0])) ; i++) {
-    r_.i32[i] = ( a_.i32[i] + (a_.i32[i] >> 31) ) ^ (a_.i32[i] >> 31);
+    r_.i32[i] = ( a_.i32[i] ^ (a_.i32[i] >> 31) ) - (a_.i32[i] >> 31);
   }
 #endif
 
