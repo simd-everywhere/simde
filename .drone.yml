@@ -24,7 +24,7 @@ steps:
   - CFLAGS="$ARCH_FLAGS" CXXFLAGS="$ARCH_FLAGS" meson ..
   - ninja -v
   - ./test/run-tests
-  
+
 ---
 kind: pipeline
 type: docker
@@ -236,3 +236,33 @@ steps:
 #   - CFLAGS="$ARCH_FLAGS" CXXFLAGS="$ARCH_FLAGS" meson ..
 #   - ninja -v
 #   - ./test/run-tests
+
+---
+kind: pipeline
+type: docker
+name: "fedora clang arm64 flags"
+platform:
+  os: linux
+  arch: arm64
+steps:
+- name: test
+  image: fedora:rawhide
+  environment:
+    CC: clang
+    CXX: clang++
+  commands:
+  - uname -m
+  - cat /proc/cpuinfo
+  - dnf install -y clang ninja-build git-core python3-pip
+  - pip3 install meson
+  - git submodule update --init --recursive
+  - mkdir -p build
+  - cd build
+  # optflags RPM macro works with gcc.
+  # Some flags and specs are not available with clang.
+  # https://lists.fedoraproject.org/archives/list/packaging@lists.fedoraproject.org/message/W5UFLUADNB4VF3OBUBSNAPOQL6XBCP74/
+  - ARCH_FLAGS=$(rpm -E "%{optflags}" | sed -e 's| -fstack-clash-protection||' -e 's| -specs=[^ ]*||g')
+  - CFLAGS="$ARCH_FLAGS" CXXFLAGS="$ARCH_FLAGS" meson ..
+  - ninja -v
+  - ./test/run-tests
+  failure: ignore
