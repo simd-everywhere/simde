@@ -69,6 +69,84 @@ SIMDE__BEGIN_DECLS
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256i
+simde_mm256_abs_epi8 (simde__m256i a) {
+#if defined(SIMDE_AVX2_NATIVE)
+  return _mm256_abs_epi8(a);
+#else
+  simde__m256i_private
+    r_,
+    a_ = simde__m256i_to_private(a);
+
+#if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+  r_.i8 = ( a_.i8 + (a_.i8 >> 7) ) ^ (a_.i8 >> 7);
+#else
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r_.i8) / sizeof(r_.i8[0])) ; i++) {
+    r_.i8[i] = ( a_.i8[i] + (a_.i8[i] >> 7) ) ^ (a_.i8[i] >> 7);
+  }
+#endif
+
+  return simde__m256i_from_private(r_);
+#endif
+}
+#if defined(SIMDE_AVX2_ENABLE_NATIVE_ALIASES)
+#  define _mm256_abs_epi8(a) simde_mm256_abs_epi8(a)
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256i
+simde_mm256_abs_epi16 (simde__m256i a) {
+#if defined(SIMDE_AVX2_NATIVE)
+  return _mm256_abs_epi16(a);
+#else
+  simde__m256i_private
+    r_,
+    a_ = simde__m256i_to_private(a);
+
+#if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+  r_.i16 = ( a_.i16 + (a_.i16 >> 15) ) ^ (a_.i16 >> 15);
+#else
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r_.i16) / sizeof(r_.i16[0])) ; i++) {
+    r_.i16[i] = ( a_.i16[i] + (a_.i16[i] >> 7) ) ^ (a_.i16[i] >> 7);
+  }
+#endif
+
+  return simde__m256i_from_private(r_);
+#endif
+}
+#if defined(SIMDE_AVX2_ENABLE_NATIVE_ALIASES)
+#  define _mm256_abs_epi16(a) simde_mm256_abs_epi16(a)
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256i
+simde_mm256_abs_epi32 (simde__m256i a) {
+#if defined(SIMDE_AVX2_NATIVE)
+  return _mm256_abs_epi32(a);
+#else
+  simde__m256i_private
+    r_,
+    a_ = simde__m256i_to_private(a);
+
+#if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+  r_.i32 = ( a_.i32 + (a_.i32 >> 31) ) ^ (a_.i32 >> 31);
+#else
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r_.i8) / sizeof(r_.i8[0])) ; i++) {
+    r_.i32[i] = ( a_.i32[i] + (a_.i32[i] >> 31) ) ^ (a_.i32[i] >> 31);
+  }
+#endif
+
+  return simde__m256i_from_private(r_);
+#endif
+}
+#if defined(SIMDE_AVX2_ENABLE_NATIVE_ALIASES)
+#  define _mm256_abs_epi32(a) simde_mm256_abs_epi32(a)
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256i
 simde_mm256_add_epi8 (simde__m256i a, simde__m256i b) {
 #if defined(SIMDE_AVX2_NATIVE)
   return _mm256_add_epi8(a, b);
