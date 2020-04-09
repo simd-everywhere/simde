@@ -1877,6 +1877,29 @@ simde_mm512_mask_test_epi32_mask (simde__mmask16 k1, simde__m512i a, simde__m512
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
+simde__mmask8
+simde_mm512_mask_test_epi64_mask (simde__mmask8 k1, simde__m512i a, simde__m512i b) {
+  #if defined(SIMDE_AVX512F_NATIVE)
+    return _mm512_mask_test_epi64_mask(k1, a, b);
+  #else
+    simde__m512i_private
+      a_ = simde__m512i_to_private(a),
+      b_ = simde__m512i_to_private(b);
+    simde__mmask8 r = 0;
+
+    SIMDE__VECTORIZE_REDUCTION(|:r)
+    for (size_t i = 0 ; i < (sizeof(a_.i64) / sizeof(a_.i64[0])) ; i++) {
+      r |= !!(a_.i64[i] & b_.i64[i]) << i;
+    }
+
+    return r & k1;
+  #endif
+}
+#if defined(SIMDE_AVX512F_ENABLE_NATIVE_ALIASES)
+#  define _mm512_mask_test_epi64_mask(a, b) simde_mm512_mask_test_epi64_mask(a, b)
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
 simde__m512i
 simde__m512i_from_mmask16 (simde__mmask16 k) {
   #if defined(SIMDE_AVX512F_NATIVE)
@@ -2683,6 +2706,19 @@ simde_mm512_mul_ps (simde__m512 a, simde__m512 b) {
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
+simde__m512
+simde_mm512_mask_mul_ps(simde__m512 src, simde__mmask16 k, simde__m512 a, simde__m512 b) {
+#if defined(SIMDE_AVX512F_NATIVE)
+  return _mm512_mask_mul_ps(src, k, a, b);
+#else
+  return simde_mm512_mask_mov_ps(src, k, simde_mm512_mul_ps(a, b));
+#endif
+}
+#if defined(SIMDE_AVX512F_ENABLE_NATIVE_ALIASES)
+#  define _mm512_mask_mul_ps(src, k, a, b) simde_mm512_mask_mul_ps(src, k, a, b)
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
 simde__m512d
 simde_mm512_mul_pd (simde__m512d a, simde__m512d b) {
 #if defined(SIMDE_AVX512F_NATIVE)
@@ -2707,6 +2743,19 @@ simde_mm512_mul_pd (simde__m512d a, simde__m512d b) {
 }
 #if defined(SIMDE_AVX512F_ENABLE_NATIVE_ALIASES)
 #  define _mm512_mul_pd(a, b) simde_mm512_mul_pd(a, b)
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m512d
+simde_mm512_mask_mul_pd(simde__m512d src, simde__mmask8 k, simde__m512d a, simde__m512d b) {
+#if defined(SIMDE_AVX512F_NATIVE)
+  return _mm512_mask_mul_pd(src, k, a, b);
+#else
+  return simde_mm512_mask_mov_pd(src, k, simde_mm512_mul_pd(a, b));
+#endif
+}
+#if defined(SIMDE_AVX512F_ENABLE_NATIVE_ALIASES)
+#  define _mm512_mask_mul_pd(src, k, a, b) simde_mm512_mask_mul_pd(src, k, a, b)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
