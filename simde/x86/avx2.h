@@ -133,7 +133,7 @@ simde_mm256_abs_epi32 (simde__m256i a) {
   r_.i32 = ( a_.i32 ^ (a_.i32 >> 31) ) - (a_.i32 >> 31);
 #else
   SIMDE__VECTORIZE
-  for (size_t i = 0 ; i < (sizeof(r_.i8) / sizeof(r_.i8[0])) ; i++) {
+  for (size_t i = 0 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {
     r_.i32[i] = ( a_.i32[i] ^ (a_.i32[i] >> 31) ) - (a_.i32[i] >> 31);
   }
 #endif
