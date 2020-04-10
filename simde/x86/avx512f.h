@@ -2724,7 +2724,7 @@ simde_mm512_mul_epi32 (simde__m512i a, simde__m512i b) {
   __typeof__(r_.i64) ta, tb;
 
   /* Get even numbered 32-bit values */
-  x.i32 = SIMDE__SHUFFLE_VECTOR(64, 32, a_.i32, b_.i32, 0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30);
+  x.i32 = SIMDE__SHUFFLE_VECTOR(32, 64, a_.i32, b_.i32, 0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30);
   /* Cast to 64 bits */
   SIMDE__CONVERT_VECTOR(ta, x.m256i_private[0].i32);
   SIMDE__CONVERT_VECTOR(tb, x.m256i_private[1].i32);
@@ -2770,7 +2770,7 @@ simde_mm512_mul_epu32 (simde__m512i a, simde__m512i b) {
   simde__m512i_private x;
   __typeof__(r_.u64) ta, tb;
 
-  x.i32 = SIMDE__SHUFFLE_VECTOR(64, 32, a_.u32, b_.u32, 0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30);
+  x.u32 = SIMDE__SHUFFLE_VECTOR(32, 64, a_.u32, b_.u32, 0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30);
   SIMDE__CONVERT_VECTOR(ta, x.m256i_private[0].u32);
   SIMDE__CONVERT_VECTOR(tb, x.m256i_private[1].u32);
   r_.u64 = ta * tb;
@@ -2792,7 +2792,7 @@ simde_mm512_mul_epu32 (simde__m512i a, simde__m512i b) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m512i
-simde_mm512_mask_mul_epu32(simde__m512i src, simde__mmask16 k, simde__m512i a, simde__m512i b) {
+simde_mm512_mask_mul_epu32(simde__m512i src, simde__mmask8 k, simde__m512i a, simde__m512i b) {
 #if defined(SIMDE_AVX512F_NATIVE)
   return _mm512_mask_mul_epu32(src, k, a, b);
 #else
