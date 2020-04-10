@@ -2880,7 +2880,7 @@ simde_mm512_mul_epu32 (simde__m512i a, simde__m512i b) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m512i
-simde_mm512_mask_mul_epu32(simde__m512i src, simde__mmask16 k, simde__m512i a, simde__m512i b) {
+simde_mm512_mask_mul_epu32(simde__m512i src, simde__mmask8 k, simde__m512i a, simde__m512i b) {
 #if defined(SIMDE_AVX512F_NATIVE)
   return _mm512_mask_mul_epu32(src, k, a, b);
 #else
