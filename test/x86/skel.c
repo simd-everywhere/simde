@@ -2165,8 +2165,8 @@ test_simde_mm512_xxx_epu32(const MunitParameter params[], void* data) {
            "                              UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "),\n"
            "                              UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "),\n"
            "                              UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 ")),\n",
-           a.i32[15], a.i32[14], a.i32[13], a.i32[12], a.i32[11], a.i32[10], a.i32[ 9], a.i32[ 8],
-           a.i32[ 7], a.i32[ 6], a.i32[ 5], a.i32[ 4], a.i32[ 3], a.i32[ 2], a.i32[ 1], a.i32[ 0]);
+           a.u32[15], a.u32[14], a.u32[13], a.u32[12], a.u32[11], a.u32[10], a.u32[ 9], a.u32[ 8],
+           a.u32[ 7], a.u32[ 6], a.u32[ 5], a.u32[ 4], a.u32[ 3], a.u32[ 2], a.u32[ 1], a.u32[ 0]);
     printf("      simde_x_mm512_set_epu32(UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "),\n"
            "                              UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "),\n"
            "                              UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "),\n"
@@ -2236,6 +2236,70 @@ test_simde_mm512_xxx_epu64(const MunitParameter params[], void* data) {
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m512i r = simde_mm512_xxx_epu64(test_vec[i].a, test_vec[i].b);
     simde_assert_m512i_i64(r, ==, test_vec[i].r);
+  }
+
+  return MUNIT_OK;
+}
+
+static MunitResult
+test_simde_mm512_mask_xxx_epu32(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  const struct {
+    simde__m512i src;
+    simde__mmask16 k;
+    simde__m512i a;
+    simde__m512i b;
+    simde__m512i r;
+  } test_vec[8] = {
+
+  };
+
+  printf("\n");
+  for (size_t i = 0 ; i < (sizeof(test_vec) / (sizeof(test_vec[0]))) ; i++) {
+    simde__m512i_private src, a, b, r;
+    simde__mmask16 k;
+
+    munit_rand_memory(sizeof(src), (uint8_t*) &src);
+    munit_rand_memory(sizeof(k), (uint8_t*) &k);
+    munit_rand_memory(sizeof(a), (uint8_t*) &a);
+    munit_rand_memory(sizeof(a), (uint8_t*) &b);
+    k &= UINT16_C(0xffff);
+
+    r = simde__m512i_to_private(simde_mm512_mask_xxx_epu32(simde__m512i_from_private(src), k, simde__m512i_from_private(a), simde__m512i_from_private(b)));
+
+    printf("    { simde_x_mm512_set_epu32(UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "),\n"
+           "                              UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "),\n"
+           "                              UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "),\n"
+           "                              UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 ")),\n",
+           src.u32[15], src.u32[14], src.u32[13], src.u32[12], src.u32[11], src.u32[10], src.u32[ 9], src.u32[ 8],
+           src.u32[ 7], src.u32[ 6], src.u32[ 5], src.u32[ 4], src.u32[ 3], src.u32[ 2], src.u32[ 1], src.u32[ 0]);
+    printf("      UINT16_C(%5" PRIu16 "),\n", HEDLEY_STATIC_CAST(uint16_t, k));
+    printf("      simde_x_mm512_set_epu32(UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "),\n"
+           "                              UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "),\n"
+           "                              UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "),\n"
+           "                              UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 ")),\n",
+           a.u32[15], a.u32[14], a.u32[13], a.u32[12], a.u32[11], a.u32[10], a.u32[ 9], a.u32[ 8],
+           a.u32[ 7], a.u32[ 6], a.u32[ 5], a.u32[ 4], a.u32[ 3], a.u32[ 2], a.u32[ 1], a.u32[ 0]);
+    printf("      simde_x_mm512_set_epu32(UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "),\n"
+           "                              UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "),\n"
+           "                              UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "),\n"
+           "                              UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 ")),\n",
+           b.u32[15], b.u32[14], b.u32[13], b.u32[12], b.u32[11], b.u32[10], b.u32[ 9], b.u32[ 8],
+           b.u32[ 7], b.u32[ 6], b.u32[ 5], b.u32[ 4], b.u32[ 3], b.u32[ 2], b.u32[ 1], b.u32[ 0]);
+    printf("      simde_x_mm512_set_epu32(UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "),\n"
+           "                              UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "),\n"
+           "                              UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "),\n"
+           "                              UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 "), UINT32_C(%10" PRIu32 ")) },\n",
+           r.u32[15], r.u32[14], r.u32[13], r.u32[12], r.u32[11], r.u32[10], r.u32[ 9], r.u32[ 8],
+           r.u32[ 7], r.u32[ 6], r.u32[ 5], r.u32[ 4], r.u32[ 3], r.u32[ 2], r.u32[ 1], r.u32[ 0]);
+  }
+  return MUNIT_FAIL;
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    simde__m512i r = simde_mm512_mask_xxx_epu32(test_vec[i].src, test_vec[i].k, test_vec[i].a, test_vec[i].b);
+    simde_assert_m512i_u32(r, ==, test_vec[i].r);
   }
 
   return MUNIT_OK;
