@@ -473,6 +473,52 @@ for (size_t i = 0 ; i < (sizeof(r_.u16) / sizeof(r_.u16[0])) ; i++) {
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
+simde__m256i
+simde_mm256_avg_epu8 (simde__m256i a, simde__m256i b) {
+#if defined(SIMDE_AVX2_NATIVE)
+  return _mm256_avg_epu8(a, b);
+#else
+  simde__m256i_private
+    r_,
+    a_ = simde__m256i_to_private(a),
+    b_ = simde__m256i_to_private(b);
+
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r_.u8) / sizeof(r_.u8[0])) ; i++) {
+    r_.u8[i] = (a_.u8[i] + b_.u8[i] + 1) >> 1;
+  }
+
+  return simde__m256i_from_private(r_);
+#endif
+}
+#if defined(SIMDE_AVX2_ENABLE_NATIVE_ALIASES)
+#  define _mm256_avg_epu8(a, b) simde_mm256_avg_epu8(a, b)
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256i
+simde_mm256_avg_epu16 (simde__m256i a, simde__m256i b) {
+#if defined(SIMDE_AVX2_NATIVE)
+  return _mm256_avg_epu16(a, b);
+#else
+  simde__m256i_private
+    r_,
+    a_ = simde__m256i_to_private(a),
+    b_ = simde__m256i_to_private(b);
+
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r_.u16) / sizeof(r_.u16[0])) ; i++) {
+    r_.u16[i] = (a_.u16[i] + b_.u16[i] + 1) >> 1;
+  }
+
+  return simde__m256i_from_private(r_);
+#endif
+}
+#if defined(SIMDE_AVX2_ENABLE_NATIVE_ALIASES)
+#  define _mm256_avg_epu16(a, b) simde_mm256_avg_epu16(a, b)
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_blend_epi32(simde__m128i a, simde__m128i b, const int imm8)
     HEDLEY_REQUIRE_MSG((imm8 & 0xff) == imm8, "imm8 must be in range [0, 255]") {
