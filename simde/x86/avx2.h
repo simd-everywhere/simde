@@ -1665,7 +1665,7 @@ simde_mm256_permute2x128_si256 (simde__m256i a, simde__m256i b, const int imm8)
   return simde__m256i_from_private(r_);
 }
 #if defined(SIMDE_AVX2_NATIVE)
-#  define simde_mm256_permute2x128_si128(a, b, imm8) _mm256_permute2x128_si128(a, b, imm8)
+#  define simde_mm256_permute2x128_si256(a, b, imm8) _mm256_permute2x128_si256(a, b, imm8)
 #endif
 #if defined(SIMDE_AVX2_ENABLE_NATIVE_ALIASES)
 #  define _mm256_permute2x128_si256(a, b, imm8) simde_mm256_permute2x128_si256(a, b, imm8)

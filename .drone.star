@@ -2,6 +2,28 @@
 # Drone CI Starlark configuration file.
 # https://docs.drone.io/pipeline/scripting/starlark/
 # Run `drone starlark convert --stdout` to verify `.drone.star`.
+def get_test_commands():
+  return [
+    "mkdir -p build",
+    "cd build",
+    'CFLAGS="$ARCH_FLAGS" CXXFLAGS="$ARCH_FLAGS" meson ..',
+    "ninja -v",
+    "./test/run-tests",
+  ]
+
+def get_apt_install_commands(extra_pkgs = []):
+  return [
+    "apt-get -yq update",
+    "apt-get -yq install %s ninja-build git-core python3-pip" % " ".join(extra_pkgs),
+    "pip3 install meson",
+  ]
+
+def get_dnf_install_commands(extra_pkgs = []):
+  return [
+    "dnf install -y %s ninja-build git-core python3-pip" % " ".join(extra_pkgs),
+    "pip3 install meson",
+  ]
+
 def get_default_job():
   return {
     "kind": "pipeline",
@@ -24,16 +46,11 @@ def get_default_job():
         "uname -m",
         "cat /proc/cpuinfo",
       ],
+      "install": [],
       "before_script": [
         "git submodule --quiet update --init --recursive",
       ],
-      "script": [
-        "mkdir -p build",
-        "cd build",
-        'CFLAGS="$ARCH_FLAGS" CXXFLAGS="$ARCH_FLAGS" meson ..',
-        "ninja -v",
-        "./test/run-tests",
-      ]
+      "script": get_test_commands()
     }
   }
 
@@ -53,11 +70,7 @@ def get_jobs():
       }
     ],
     "custom": {
-      "install": [
-        "apt-get -yq update",
-        "apt-get -yq install clang-9 ninja-build git-core python3-pip",
-        "pip3 install meson",
-      ]
+      "install": get_apt_install_commands(["clang-9"])
     }
   }
 
@@ -76,11 +89,7 @@ def get_jobs():
       }
     ],
     "custom": {
-      "install": [
-        "apt-get -yq update",
-        "apt-get -yq install clang-9 ninja-build git-core python3-pip",
-        "pip3 install meson",
-      ]
+      "install": get_apt_install_commands(["clang-9"])
     }
   }
 
@@ -99,11 +108,7 @@ def get_jobs():
       }
     ],
     "custom": {
-      "install": [
-        "apt-get -yq update",
-        "apt-get -yq install gcc-8 g++-8 ninja-build git-core python3-pip",
-        "pip3 install meson",
-      ]
+      "install": get_apt_install_commands(["gcc-8", "g++-8"])
     }
   }
 
@@ -122,11 +127,7 @@ def get_jobs():
       }
     ],
     "custom": {
-      "install": [
-        "apt-get -yq update",
-        "apt-get -yq install gcc-8 g++-8 ninja-build git-core python3-pip",
-        "pip3 install meson",
-      ]
+      "install": get_apt_install_commands(["gcc-8", "g++-8"])
     }
   }
 
@@ -145,11 +146,7 @@ def get_jobs():
       }
     ],
     "custom": {
-      "install": [
-        "apt-get -yq update",
-        "apt-get -yq install clang-7 ninja-build git-core python3-pip",
-        "pip3 install meson",
-      ]
+      "install": get_apt_install_commands(["clang-7"])
     }
   }
 
@@ -168,11 +165,7 @@ def get_jobs():
       }
     ],
     "custom": {
-      "install": [
-        "apt-get -yq update",
-        "apt-get -yq install clang-7 ninja-build git-core python3-pip",
-        "pip3 install meson",
-      ]
+      "install": get_apt_install_commands(["clang-7"])
     }
   }
 
@@ -191,11 +184,7 @@ def get_jobs():
       }
     ],
     "custom": {
-      "install": [
-        "apt-get -yq update",
-        "apt-get -yq install gcc-7 g++-7 ninja-build git-core python3-pip",
-        "pip3 install meson",
-      ]
+      "install": get_apt_install_commands(["gcc-7", "g++-7"])
     }
   }
 
@@ -214,11 +203,7 @@ def get_jobs():
       }
     ],
     "custom": {
-      "install": [
-        "apt-get -yq update",
-        "apt-get -yq install gcc-7 g++-7 ninja-build git-core python3-pip",
-        "pip3 install meson",
-      ]
+      "install": get_apt_install_commands(["gcc-7", "g++-7"])
     }
   }
 
@@ -235,10 +220,7 @@ def get_jobs():
       }
     ],
     "custom": {
-      "install": [
-        "dnf install -y gcc gcc-c++ ninja-build git-core python3-pip",
-        "pip3 install meson",
-      ]
+      "install": get_dnf_install_commands(["gcc", "gcc-c++"])
     }
   }
 
@@ -258,21 +240,13 @@ def get_jobs():
       }
     ],
     "custom": {
-      "install": [
-        "dnf install -y clang ninja-build git-core python3-pip",
-        "pip3 install meson",
-      ],
+      "install": get_dnf_install_commands(["clang"]),
       "script": [
-        "mkdir -p build",
-        "cd build",
         # optflags RPM macro works with gcc.
         # Some flags and specs are not available with clang.
         # https://lists.fedoraproject.org/archives/list/packaging@lists.fedoraproject.org/message/W5UFLUADNB4VF3OBUBSNAPOQL6XBCP74/
         "ARCH_FLAGS=$(rpm -E '%{optflags}' | sed -e 's| -fstack-clash-protection||' -e 's| -specs=[^ ]*||g')",
-        'CFLAGS="$ARCH_FLAGS" CXXFLAGS="$ARCH_FLAGS" meson ..',
-        "ninja -v",
-        "./test/run-tests",
-      ]
+      ] + get_test_commands()
     }
   }
 
@@ -305,10 +279,8 @@ def main(ctx):
         out[key] = value
 
     # Create commands list from custom elements.
-    out["steps"][0]["commands"].extend(out["custom"]["before_install"])
-    out["steps"][0]["commands"].extend(out["custom"]["install"])
-    out["steps"][0]["commands"].extend(out["custom"]["before_script"])
-    out["steps"][0]["commands"].extend(out["custom"]["script"])
+    for element in ["before_install", "install", "before_script", "script"]:
+      out["steps"][0]["commands"].extend(out["custom"][element])
 
     # Remove unused custom element.
     out.pop("custom", None)
