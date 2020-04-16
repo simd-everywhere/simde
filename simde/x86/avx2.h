@@ -626,6 +626,48 @@ simde_mm256_blendv_epi8(simde__m256i a, simde__m256i b, simde__m256i mask) {
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
+simde__m128i
+simde_mm_broadcastb_epi8 (simde__m128i a) {
+#if defined(SIMDE_AVX2_NATIVE)
+  return _mm_broadcastb_epi8(a);
+#else
+  simde__m128i_private r_;
+  simde__m128i_private a_= simde__m128i_to_private(a);
+
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r_.i8) / sizeof(r_.i8[0])) ; i++) {
+    r_.i8[i] = a_.i8[0];
+  }
+
+  return simde__m128i_from_private(r_);
+#endif
+}
+#if defined(SIMDE_AVX2_ENABLE_NATIVE_ALIASES)
+#  define _mm_broadcastb_epi8(a) simde_mm_broadcastb_epi8(a)
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256i
+simde_mm256_broadcastb_epi8 (simde__m128i a) {
+#if defined(SIMDE_AVX2_NATIVE)
+  return _mm256_broadcastb_epi8(a);
+#else
+  simde__m256i_private r_;
+  simde__m128i_private a_= simde__m128i_to_private(a);
+
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r_.i8) / sizeof(r_.i8[0])) ; i++) {
+    r_.i8[i] = a_.i8[0];
+  }
+
+  return simde__m256i_from_private(r_);
+#endif
+}
+#if defined(SIMDE_AVX2_ENABLE_NATIVE_ALIASES)
+#  define _mm256_broadcastb_epi8(a) simde_mm256_broadcastb_epi8(a)
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
 simde__m256i
 simde_mm256_broadcastsi128_si256 (simde__m128i a) {
 #if defined(SIMDE_AVX2_NATIVE)
