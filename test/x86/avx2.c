@@ -4130,6 +4130,204 @@ test_simde_mm256_cmpgt_epi64(const MunitParameter params[], void* data) {
 }
 
 static MunitResult
+test_simde_mm_broadcastb_epi8(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  const struct {
+    simde__m128i a;
+    simde__m128i r;
+  } test_vec[8] = {
+    { simde_mm_set_epi8(INT8_C( -20), INT8_C( 103), INT8_C( -20), INT8_C( 116),
+                        INT8_C(  -9), INT8_C(  73), INT8_C(  44), INT8_C(  79),
+                        INT8_C( -20), INT8_C( -81), INT8_C(-114), INT8_C( -81),
+                        INT8_C(  10), INT8_C(  63), INT8_C( -41), INT8_C(-117)),
+      simde_mm_set_epi8(INT8_C(-117), INT8_C(-117), INT8_C(-117), INT8_C(-117),
+                        INT8_C(-117), INT8_C(-117), INT8_C(-117), INT8_C(-117),
+                        INT8_C(-117), INT8_C(-117), INT8_C(-117), INT8_C(-117),
+                        INT8_C(-117), INT8_C(-117), INT8_C(-117), INT8_C(-117)) },
+    { simde_mm_set_epi8(INT8_C( -22), INT8_C(-124), INT8_C( -97), INT8_C(  -1),
+                        INT8_C(  -4), INT8_C( -87), INT8_C( -49), INT8_C(-124),
+                        INT8_C( -37), INT8_C( -17), INT8_C( -57), INT8_C(   0),
+                        INT8_C(-121), INT8_C(  57), INT8_C(  49), INT8_C(-112)),
+      simde_mm_set_epi8(INT8_C(-112), INT8_C(-112), INT8_C(-112), INT8_C(-112),
+                        INT8_C(-112), INT8_C(-112), INT8_C(-112), INT8_C(-112),
+                        INT8_C(-112), INT8_C(-112), INT8_C(-112), INT8_C(-112),
+                        INT8_C(-112), INT8_C(-112), INT8_C(-112), INT8_C(-112)) },
+    { simde_mm_set_epi8(INT8_C( -37), INT8_C( -43), INT8_C( -30), INT8_C(  45),
+                        INT8_C(  86), INT8_C(-100), INT8_C( -53), INT8_C(  -4),
+                        INT8_C(  54), INT8_C(-107), INT8_C(  40), INT8_C( -68),
+                        INT8_C(  49), INT8_C(  59), INT8_C( -37), INT8_C(  60)),
+      simde_mm_set_epi8(INT8_C(  60), INT8_C(  60), INT8_C(  60), INT8_C(  60),
+                        INT8_C(  60), INT8_C(  60), INT8_C(  60), INT8_C(  60),
+                        INT8_C(  60), INT8_C(  60), INT8_C(  60), INT8_C(  60),
+                        INT8_C(  60), INT8_C(  60), INT8_C(  60), INT8_C(  60)) },
+    { simde_mm_set_epi8(INT8_C(  35), INT8_C( -98), INT8_C( -73), INT8_C(  22),
+                        INT8_C(-127), INT8_C(  78), INT8_C( 125), INT8_C(  84),
+                        INT8_C(-115), INT8_C(-124), INT8_C(-103), INT8_C(  59),
+                        INT8_C(  15), INT8_C( -58), INT8_C(  81), INT8_C(   4)),
+      simde_mm_set_epi8(INT8_C(   4), INT8_C(   4), INT8_C(   4), INT8_C(   4),
+                        INT8_C(   4), INT8_C(   4), INT8_C(   4), INT8_C(   4),
+                        INT8_C(   4), INT8_C(   4), INT8_C(   4), INT8_C(   4),
+                        INT8_C(   4), INT8_C(   4), INT8_C(   4), INT8_C(   4)) },
+    { simde_mm_set_epi8(INT8_C( -56), INT8_C(  88), INT8_C(   1), INT8_C( -59),
+                        INT8_C( -14), INT8_C( -27), INT8_C( -63), INT8_C( -89),
+                        INT8_C( -31), INT8_C( -81), INT8_C( -92), INT8_C( 115),
+                        INT8_C( 106), INT8_C( -49), INT8_C( -19), INT8_C(  92)),
+      simde_mm_set_epi8(INT8_C(  92), INT8_C(  92), INT8_C(  92), INT8_C(  92),
+                        INT8_C(  92), INT8_C(  92), INT8_C(  92), INT8_C(  92),
+                        INT8_C(  92), INT8_C(  92), INT8_C(  92), INT8_C(  92),
+                        INT8_C(  92), INT8_C(  92), INT8_C(  92), INT8_C(  92)) },
+    { simde_mm_set_epi8(INT8_C(   7), INT8_C(  47), INT8_C(  55), INT8_C(  77),
+                        INT8_C(  16), INT8_C( -71), INT8_C(-122), INT8_C( -81),
+                        INT8_C(-120), INT8_C( -64), INT8_C( -77), INT8_C(  13),
+                        INT8_C(  80), INT8_C(-114), INT8_C(-121), INT8_C(  92)),
+      simde_mm_set_epi8(INT8_C(  92), INT8_C(  92), INT8_C(  92), INT8_C(  92),
+                        INT8_C(  92), INT8_C(  92), INT8_C(  92), INT8_C(  92),
+                        INT8_C(  92), INT8_C(  92), INT8_C(  92), INT8_C(  92),
+                        INT8_C(  92), INT8_C(  92), INT8_C(  92), INT8_C(  92)) },
+    { simde_mm_set_epi8(INT8_C(  14), INT8_C( -85), INT8_C(  -8), INT8_C( -80),
+                        INT8_C( -58), INT8_C(  84), INT8_C(  52), INT8_C(-106),
+                        INT8_C( -46), INT8_C( 118), INT8_C( -96), INT8_C(  88),
+                        INT8_C(  35), INT8_C(  50), INT8_C(-112), INT8_C(-112)),
+      simde_mm_set_epi8(INT8_C(-112), INT8_C(-112), INT8_C(-112), INT8_C(-112),
+                        INT8_C(-112), INT8_C(-112), INT8_C(-112), INT8_C(-112),
+                        INT8_C(-112), INT8_C(-112), INT8_C(-112), INT8_C(-112),
+                        INT8_C(-112), INT8_C(-112), INT8_C(-112), INT8_C(-112)) },
+    { simde_mm_set_epi8(INT8_C(  17), INT8_C(  88), INT8_C( -82), INT8_C(-109),
+                        INT8_C(  56), INT8_C(  18), INT8_C(  73), INT8_C( 115),
+                        INT8_C( -99), INT8_C( -71), INT8_C( -92), INT8_C( 121),
+                        INT8_C(  93), INT8_C(  51), INT8_C( -65), INT8_C(  55)),
+      simde_mm_set_epi8(INT8_C(  55), INT8_C(  55), INT8_C(  55), INT8_C(  55),
+                        INT8_C(  55), INT8_C(  55), INT8_C(  55), INT8_C(  55),
+                        INT8_C(  55), INT8_C(  55), INT8_C(  55), INT8_C(  55),
+                        INT8_C(  55), INT8_C(  55), INT8_C(  55), INT8_C(  55)) }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    simde__m128i r = simde_mm_broadcastb_epi8(test_vec[i].a);
+    simde_assert_m128i_i8(r, ==, test_vec[i].r);
+  }
+
+  return MUNIT_OK;
+}
+
+static MunitResult
+test_simde_mm256_broadcastb_epi8(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  const struct {
+    simde__m128i a;
+    simde__m256i r;
+  } test_vec[8] = {
+    { simde_mm_set_epi8(INT8_C( -20), INT8_C( 103), INT8_C( -20), INT8_C( 116),
+                        INT8_C(  -9), INT8_C(  73), INT8_C(  44), INT8_C(  79),
+                        INT8_C( -20), INT8_C( -81), INT8_C(-114), INT8_C( -81),
+                        INT8_C(  10), INT8_C(  63), INT8_C( -41), INT8_C(-117)),
+      simde_mm256_set_epi8(INT8_C(-117), INT8_C(-117), INT8_C(-117), INT8_C(-117),
+                           INT8_C(-117), INT8_C(-117), INT8_C(-117), INT8_C(-117),
+                           INT8_C(-117), INT8_C(-117), INT8_C(-117), INT8_C(-117),
+                           INT8_C(-117), INT8_C(-117), INT8_C(-117), INT8_C(-117),
+                           INT8_C(-117), INT8_C(-117), INT8_C(-117), INT8_C(-117),
+                           INT8_C(-117), INT8_C(-117), INT8_C(-117), INT8_C(-117),
+                           INT8_C(-117), INT8_C(-117), INT8_C(-117), INT8_C(-117),
+                           INT8_C(-117), INT8_C(-117), INT8_C(-117), INT8_C(-117)) },
+    { simde_mm_set_epi8(INT8_C( -22), INT8_C(-124), INT8_C( -97), INT8_C(  -1),
+                        INT8_C(  -4), INT8_C( -87), INT8_C( -49), INT8_C(-124),
+                        INT8_C( -37), INT8_C( -17), INT8_C( -57), INT8_C(   0),
+                        INT8_C(-121), INT8_C(  57), INT8_C(  49), INT8_C(-112)),
+      simde_mm256_set_epi8(INT8_C(-112), INT8_C(-112), INT8_C(-112), INT8_C(-112),
+                           INT8_C(-112), INT8_C(-112), INT8_C(-112), INT8_C(-112),
+                           INT8_C(-112), INT8_C(-112), INT8_C(-112), INT8_C(-112),
+                           INT8_C(-112), INT8_C(-112), INT8_C(-112), INT8_C(-112),
+                           INT8_C(-112), INT8_C(-112), INT8_C(-112), INT8_C(-112),
+                           INT8_C(-112), INT8_C(-112), INT8_C(-112), INT8_C(-112),
+                           INT8_C(-112), INT8_C(-112), INT8_C(-112), INT8_C(-112),
+                           INT8_C(-112), INT8_C(-112), INT8_C(-112), INT8_C(-112)) },
+    { simde_mm_set_epi8(INT8_C( -37), INT8_C( -43), INT8_C( -30), INT8_C(  45),
+                        INT8_C(  86), INT8_C(-100), INT8_C( -53), INT8_C(  -4),
+                        INT8_C(  54), INT8_C(-107), INT8_C(  40), INT8_C( -68),
+                        INT8_C(  49), INT8_C(  59), INT8_C( -37), INT8_C(  60)),
+      simde_mm256_set_epi8(INT8_C(  60), INT8_C(  60), INT8_C(  60), INT8_C(  60),
+                           INT8_C(  60), INT8_C(  60), INT8_C(  60), INT8_C(  60),
+                           INT8_C(  60), INT8_C(  60), INT8_C(  60), INT8_C(  60),
+                           INT8_C(  60), INT8_C(  60), INT8_C(  60), INT8_C(  60),
+                           INT8_C(  60), INT8_C(  60), INT8_C(  60), INT8_C(  60),
+                           INT8_C(  60), INT8_C(  60), INT8_C(  60), INT8_C(  60),
+                           INT8_C(  60), INT8_C(  60), INT8_C(  60), INT8_C(  60),
+                           INT8_C(  60), INT8_C(  60), INT8_C(  60), INT8_C(  60)) },
+    { simde_mm_set_epi8(INT8_C(  35), INT8_C( -98), INT8_C( -73), INT8_C(  22),
+                        INT8_C(-127), INT8_C(  78), INT8_C( 125), INT8_C(  84),
+                        INT8_C(-115), INT8_C(-124), INT8_C(-103), INT8_C(  59),
+                        INT8_C(  15), INT8_C( -58), INT8_C(  81), INT8_C(   4)),
+      simde_mm256_set_epi8(INT8_C(   4), INT8_C(   4), INT8_C(   4), INT8_C(   4),
+                           INT8_C(   4), INT8_C(   4), INT8_C(   4), INT8_C(   4),
+                           INT8_C(   4), INT8_C(   4), INT8_C(   4), INT8_C(   4),
+                           INT8_C(   4), INT8_C(   4), INT8_C(   4), INT8_C(   4),
+                           INT8_C(   4), INT8_C(   4), INT8_C(   4), INT8_C(   4),
+                           INT8_C(   4), INT8_C(   4), INT8_C(   4), INT8_C(   4),
+                           INT8_C(   4), INT8_C(   4), INT8_C(   4), INT8_C(   4),
+                           INT8_C(   4), INT8_C(   4), INT8_C(   4), INT8_C(   4)) },
+    { simde_mm_set_epi8(INT8_C( -56), INT8_C(  88), INT8_C(   1), INT8_C( -59),
+                        INT8_C( -14), INT8_C( -27), INT8_C( -63), INT8_C( -89),
+                        INT8_C( -31), INT8_C( -81), INT8_C( -92), INT8_C( 115),
+                        INT8_C( 106), INT8_C( -49), INT8_C( -19), INT8_C(  92)),
+      simde_mm256_set_epi8(INT8_C(  92), INT8_C(  92), INT8_C(  92), INT8_C(  92),
+                           INT8_C(  92), INT8_C(  92), INT8_C(  92), INT8_C(  92),
+                           INT8_C(  92), INT8_C(  92), INT8_C(  92), INT8_C(  92),
+                           INT8_C(  92), INT8_C(  92), INT8_C(  92), INT8_C(  92),
+                           INT8_C(  92), INT8_C(  92), INT8_C(  92), INT8_C(  92),
+                           INT8_C(  92), INT8_C(  92), INT8_C(  92), INT8_C(  92),
+                           INT8_C(  92), INT8_C(  92), INT8_C(  92), INT8_C(  92),
+                           INT8_C(  92), INT8_C(  92), INT8_C(  92), INT8_C(  92)) },
+    { simde_mm_set_epi8(INT8_C(   7), INT8_C(  47), INT8_C(  55), INT8_C(  77),
+                        INT8_C(  16), INT8_C( -71), INT8_C(-122), INT8_C( -81),
+                        INT8_C(-120), INT8_C( -64), INT8_C( -77), INT8_C(  13),
+                        INT8_C(  80), INT8_C(-114), INT8_C(-121), INT8_C(  92)),
+      simde_mm256_set_epi8(INT8_C(  92), INT8_C(  92), INT8_C(  92), INT8_C(  92),
+                           INT8_C(  92), INT8_C(  92), INT8_C(  92), INT8_C(  92),
+                           INT8_C(  92), INT8_C(  92), INT8_C(  92), INT8_C(  92),
+                           INT8_C(  92), INT8_C(  92), INT8_C(  92), INT8_C(  92),
+                           INT8_C(  92), INT8_C(  92), INT8_C(  92), INT8_C(  92),
+                           INT8_C(  92), INT8_C(  92), INT8_C(  92), INT8_C(  92),
+                           INT8_C(  92), INT8_C(  92), INT8_C(  92), INT8_C(  92),
+                           INT8_C(  92), INT8_C(  92), INT8_C(  92), INT8_C(  92)) },
+    { simde_mm_set_epi8(INT8_C(  14), INT8_C( -85), INT8_C(  -8), INT8_C( -80),
+                        INT8_C( -58), INT8_C(  84), INT8_C(  52), INT8_C(-106),
+                        INT8_C( -46), INT8_C( 118), INT8_C( -96), INT8_C(  88),
+                        INT8_C(  35), INT8_C(  50), INT8_C(-112), INT8_C(-112)),
+      simde_mm256_set_epi8(INT8_C(-112), INT8_C(-112), INT8_C(-112), INT8_C(-112),
+                           INT8_C(-112), INT8_C(-112), INT8_C(-112), INT8_C(-112),
+                           INT8_C(-112), INT8_C(-112), INT8_C(-112), INT8_C(-112),
+                           INT8_C(-112), INT8_C(-112), INT8_C(-112), INT8_C(-112),
+                           INT8_C(-112), INT8_C(-112), INT8_C(-112), INT8_C(-112),
+                           INT8_C(-112), INT8_C(-112), INT8_C(-112), INT8_C(-112),
+                           INT8_C(-112), INT8_C(-112), INT8_C(-112), INT8_C(-112),
+                           INT8_C(-112), INT8_C(-112), INT8_C(-112), INT8_C(-112)) },
+    { simde_mm_set_epi8(INT8_C(  17), INT8_C(  88), INT8_C( -82), INT8_C(-109),
+                        INT8_C(  56), INT8_C(  18), INT8_C(  73), INT8_C( 115),
+                        INT8_C( -99), INT8_C( -71), INT8_C( -92), INT8_C( 121),
+                        INT8_C(  93), INT8_C(  51), INT8_C( -65), INT8_C(  55)),
+      simde_mm256_set_epi8(INT8_C(  55), INT8_C(  55), INT8_C(  55), INT8_C(  55),
+                           INT8_C(  55), INT8_C(  55), INT8_C(  55), INT8_C(  55),
+                           INT8_C(  55), INT8_C(  55), INT8_C(  55), INT8_C(  55),
+                           INT8_C(  55), INT8_C(  55), INT8_C(  55), INT8_C(  55),
+                           INT8_C(  55), INT8_C(  55), INT8_C(  55), INT8_C(  55),
+                           INT8_C(  55), INT8_C(  55), INT8_C(  55), INT8_C(  55),
+                           INT8_C(  55), INT8_C(  55), INT8_C(  55), INT8_C(  55),
+                           INT8_C(  55), INT8_C(  55), INT8_C(  55), INT8_C(  55)) }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    simde__m256i r = simde_mm256_broadcastb_epi8(test_vec[i].a);
+    simde_assert_m256i_i8(r, ==, test_vec[i].r);
+  }
+
+  return MUNIT_OK;
+}
+
+static MunitResult
 test_simde_mm256_broadcastsi128_si256(const MunitParameter params[], void* data) {
   (void) params;
   (void) data;
@@ -9671,6 +9869,8 @@ static MunitTest test_suite_tests[] = {
   SIMDE_TESTS_DEFINE_TEST(mm256_blend_epi32),
   SIMDE_TESTS_DEFINE_TEST(mm256_blendv_epi8),
 
+  SIMDE_TESTS_DEFINE_TEST(mm_broadcastb_epi8),
+  SIMDE_TESTS_DEFINE_TEST(mm256_broadcastb_epi8),
   SIMDE_TESTS_DEFINE_TEST(mm256_broadcastsi128_si256),
 
   SIMDE_TESTS_DEFINE_TEST(mm256_cmpeq_epi8),
