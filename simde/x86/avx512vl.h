@@ -56,7 +56,7 @@ SIMDE__BEGIN_DECLS
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_cvtsepi16_epi8 (simde__m128i a) {
-  #if defined(SIMDE_AVX512VL_NATIVE)
+  #if defined(SIMDE_AVX512VL_NATIVE) && defined(SIMDE_AVX512BW_NATIVE)
     return _mm_cvtsepi16_epi8(a);
   #else
     simde__m128i_private r_ = simde__m128i_to_private(simde_mm_setzero_si128());;
@@ -82,7 +82,7 @@ simde_mm_cvtsepi16_epi8 (simde__m128i a) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm256_cvtsepi16_epi8 (simde__m256i a) {
-  #if defined(SIMDE_AVX512VL_NATIVE)
+  #if defined(SIMDE_AVX512VL_NATIVE) && defined(SIMDE_AVX512BW_NATIVE)
     return _mm256_cvtsepi16_epi8(a);
   #else
     simde__m128i_private r_;
