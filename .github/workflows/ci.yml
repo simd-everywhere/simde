@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        isax: ["", "-msse3", "-mssse3", "-msse4.1", "-msse4.2", "-mavx", "-mfma", "-mavx2"]
+        isax: ["", "-msse3", "-mssse3", "-msse4.1", "-msse4.2", "-mavx", "-mfma", "-mavx2", "-march=native"]
     steps:
     - uses: actions/checkout@v2
     - name: Install APT Dependencies
