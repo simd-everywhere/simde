@@ -1796,6 +1796,32 @@ simde_mm512_abs_epi32(simde__m512i a) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m512i
+simde_mm512_mask_abs_epi32(simde__m512i src, simde__mmask16 k, simde__m512i a) {
+#if defined(SIMDE_AVX512F_NATIVE)
+  return _mm512_mask_abs_epi32(src, k, a);
+#else
+  return simde_mm512_mask_mov_epi32(src, k, simde_mm512_abs_epi32(a));
+#endif
+}
+#if defined(SIMDE_AVX512F_ENABLE_NATIVE_ALIASES)
+#define _mm512_mask_abs_epi32(src, k, a) simde_mm512_mask_abs_epi32(src, k, a)
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m512i
+simde_mm512_maskz_abs_epi32(simde__mmask16 k, simde__m512i a) {
+#if defined(SIMDE_AVX512F_NATIVE)
+  return _mm512_maskz_abs_epi32(k, a);
+#else
+  return simde_mm512_maskz_mov_epi32(k, simde_mm512_abs_epi32(a));
+#endif
+}
+#if defined(SIMDE_AVX512F_ENABLE_NATIVE_ALIASES)
+#define _mm512_maskz_abs_epi32(k, a) simde_mm512_maskz_abs_epi32(k, a)
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m512i
 simde_mm512_abs_epi64(simde__m512i a) {
 #if defined(SIMDE_AVX512F_NATIVE)
   return _mm512_abs_epi64(a);
@@ -1814,6 +1840,32 @@ simde_mm512_abs_epi64(simde__m512i a) {
 }
 #if defined(SIMDE_AVX512F_ENABLE_NATIVE_ALIASES)
 #  define _mm512_abs_epi64(a) simde_mm512_abs_epi64(a)
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m512i
+simde_mm512_mask_abs_epi64(simde__m512i src, simde__mmask8 k, simde__m512i a) {
+#if defined(SIMDE_AVX512F_NATIVE)
+  return _mm512_mask_abs_epi64(src, k, a);
+#else
+  return simde_mm512_mask_mov_epi64(src, k, simde_mm512_abs_epi64(a));
+#endif
+}
+#if defined(SIMDE_AVX512F_ENABLE_NATIVE_ALIASES)
+#define _mm512_mask_abs_epi64(src, k, a) simde_mm512_mask_abs_epi64(src, k, a)
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m512i
+simde_mm512_maskz_abs_epi64(simde__mmask8 k, simde__m512i a) {
+#if defined(SIMDE_AVX512F_NATIVE)
+  return _mm512_maskz_abs_epi64(k, a);
+#else
+  return simde_mm512_maskz_mov_epi64(k, simde_mm512_abs_epi64(a));
+#endif
+}
+#if defined(SIMDE_AVX512F_ENABLE_NATIVE_ALIASES)
+#define _mm512_maskz_abs_epi64(k, a) simde_mm512_maskz_abs_epi64(k, a)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
