@@ -105,32 +105,6 @@ simde_mm256_cvtsepi16_epi8 (simde__m256i a) {
   #define _mm256_cvtsepi16_epi8(a) simde_mm256_cvtsepi16_epi8(a)
 #endif
 
-SIMDE__FUNCTION_ATTRIBUTES
-simde__m256i
-simde_mm512_cvtsepi16_epi8 (simde__m512i a) {
-  #if defined(SIMDE_AVX512VL_NATIVE)
-    return _mm512_cvtsepi16_epi8(a);
-  #else
-    simde__m256i_private r_;
-    simde__m512i_private a_ = simde__m512i_to_private(a);
-
-    SIMDE__VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.i8) / sizeof(r_.i8[0])) ; i++) {
-      r_.i8[i] =
-          (a_.i16[i] < INT8_MIN)
-            ? (INT8_MIN)
-            : ((a_.i16[i] > INT8_MAX)
-              ? (INT8_MAX)
-              : HEDLEY_STATIC_CAST(int8_t, a_.i16[i]));
-    }
-
-    return simde__m256i_from_private(r_);
-  #endif
-}
-#if defined(SIMDE_AVX512VL_ENABLE_NATIVE_ALIASES)
-  #define _mm512_cvtsepi16_epi8(a) simde_mm512_cvtsepi16_epi8(a)
-#endif
-
 SIMDE__END_DECLS
 
 HEDLEY_DIAGNOSTIC_POP
