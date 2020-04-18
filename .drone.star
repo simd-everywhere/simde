@@ -6,8 +6,8 @@ def get_test_commands():
   return [
     "mkdir -p build",
     "cd build",
-    'CFLAGS="$ARCH_FLAGS" CXXFLAGS="$ARCH_FLAGS" meson ..',
-    "ninja -v",
+    'CFLAGS="$ARCH_FLAGS" CXXFLAGS="$ARCH_FLAGS" meson .. || (cat meson-logs/meson-log.txt; false)',
+    '"$(command -v ninja || command -v ninja-build)" -v',
     "./test/run-tests",
   ]
 
@@ -22,6 +22,12 @@ def get_dnf_install_commands(extra_pkgs = []):
   return [
     "dnf install -y %s ninja-build git-core python3-pip" % " ".join(extra_pkgs),
     "pip3 install meson",
+  ]
+
+def get_yum_install_commands(extra_pkgs = []):
+  return [
+    "yum install -y epel-release",
+    "yum install -y %s meson ninja-build git-core" % " ".join(extra_pkgs),
   ]
 
 def get_default_job():
@@ -250,6 +256,24 @@ def get_jobs():
     }
   }
 
+  job_centos7_clang3 = {
+    "name": "centos7 clang3",
+    "steps": [
+      {
+        "image": "centos:7",
+        "environment": {
+          "CC": "clang",
+          "CXX": "clang++",
+        },
+        "failure": "ignore"
+      }
+    ],
+    "custom": {
+      # gcc, gcc-c++ are necessary to build on clang.
+      "install": get_yum_install_commands(["clang", "gcc", "gcc-c++"])
+    }
+  }
+
   return [
     job_clang9_armv7,
     job_clang9_armv8,
@@ -261,6 +285,7 @@ def get_jobs():
     job_gcc7_armv8,
     # job_fedora,
     job_fedora_clang_arm64_flags,
+    job_centos7_clang3,
   ]
 
 def main(ctx):
