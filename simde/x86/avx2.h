@@ -1659,7 +1659,7 @@ simde_mm256_or_si256 (simde__m256i a, simde__m256i b) {
 #endif
 }
 #if defined(SIMDE_AVX2_ENABLE_NATIVE_ALIASES)
-#  define _mm256_or_si256(a, b) simde_mm256_or_si128(a, b)
+#  define _mm256_or_si256(a, b) simde_mm256_or_si256(a, b)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
