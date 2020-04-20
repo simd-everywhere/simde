@@ -31,6 +31,9 @@
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 
+#  if defined(SIMDE_AVX512F_NATIVE)
+#    undef SIMDE_AVX512F_NATIVE
+#  endif
 #  if defined(SIMDE_ARCH_X86_AVX512F) && !defined(SIMDE_AVX512F_NO_NATIVE) && !defined(SIMDE_NO_NATIVE)
 #    define SIMDE_AVX512F_NATIVE
 #  elif defined(SIMDE_ARCH_ARM_NEON) && !defined(SIMDE_AVX512F_NO_NEON) && !defined(SIMDE_NO_NEON)
@@ -274,7 +277,7 @@ typedef union {
 #if !defined(SIMDE_AVX512F_NATIVE) && defined(SIMDE_ENABLE_NATIVE_ALIASES)
   #define SIMDE_AVX512F_ENABLE_NATIVE_ALIASES
   typedef simde__m512 __m512;
-  typedef simde__m512i __m512i;
+  //typedef simde__m512i __m512i;
   typedef simde__m512d __m512d;
 #endif
 
