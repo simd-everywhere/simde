@@ -4315,7 +4315,7 @@ simde_mm256_setr_epi32 (
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256i
-simde_mm256_setr_epi64 (int64_t  e3, int64_t  e2, int64_t  e1, int64_t  e0) {
+simde_mm256_setr_epi64x (int64_t  e3, int64_t  e2, int64_t  e1, int64_t  e0) {
 #if defined(SIMDE_AVX_NATIVE)
   return _mm256_setr_epi64x(e3, e2, e1, e0);
 #else
@@ -4323,8 +4323,8 @@ simde_mm256_setr_epi64 (int64_t  e3, int64_t  e2, int64_t  e1, int64_t  e0) {
 #endif
 }
 #if defined(SIMDE_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_setr_epi64(e3, e2, e1, e0) \
-    simde_mm256_setr_epi64(e3, e2, e1, e0)
+#  define _mm256_setr_epi64x(e3, e2, e1, e0) \
+    simde_mm256_setr_epi64x(e3, e2, e1, e0)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
