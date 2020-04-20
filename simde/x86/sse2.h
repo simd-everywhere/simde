@@ -2902,7 +2902,7 @@ simde_mm_maskmoveu_si128 (simde__m128i a, simde__m128i mask, int8_t mem_addr[HED
 #endif
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
-#  define _mm_maskmoveu_si128(a, mask, mem_addr) simde_mm_maskmoveu_si128(a, (mask), HEDLEY_REINTERPRET_CAST(int8_t*, mem_addr))
+#  define _mm_maskmoveu_si128(a, mask, mem_addr) simde_mm_maskmoveu_si128(a, (mask), SIMDE_CHECKED_REINTERPRET_CAST(int8_t*, char*, mem_addr))
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -5060,7 +5060,7 @@ simde_mm_stream_si64 (int64_t* mem_addr, int64_t a) {
   *mem_addr = a;
 }
 #if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
-#  define _mm_stream_si64(mem_addr, a) simde_mm_stream_si64(mem_addr, a)
+#  define _mm_stream_si64(mem_addr, a) simde_mm_stream_si64(SIMDE_CHECKED_REINTERPRET_CAST(int64_t*, __int64*, mem_addr), a)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES

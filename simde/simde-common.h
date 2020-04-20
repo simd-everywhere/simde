@@ -360,6 +360,32 @@ HEDLEY_STATIC_ASSERT(sizeof(simde_float64) == 8, "Unable to find 64-bit floating
 #  define SIMDE_CONVERT_FTOI(T,v) ((T) (v))
 #endif
 
+/* This behaves like reinterpret_cast<to>(value), except that it will
+   attempt te verify that value is of type "from" or "to". */
+#if defined(__cplusplus)
+  template <typename To, typename From> class SIMDeCheckedReinterpretCastImpl {
+    public:
+      static To convert (To value) { return value; };
+      static To convert (From value) { return reinterpret_cast<To>(value); };
+  };
+  #define SIMDE_CHECKED_REINTERPRET_CAST(to, from, value) (SIMDeCheckedReinterpretCastImpl<to, from>::convert(value))
+#elif \
+    HEDLEY_HAS_BUILTIN(__builtin_types_compatible_p) || \
+    HEDLEY_GCC_VERSION_CHECK(3,4,0) || \
+    HEDLEY_ARM_VERSION_CHECK(5,0,4) || \
+    HEDLEY_CRAY_VERSION_CHECK(8,1,0) || \
+    HEDLEY_INTEL_VERSION_CHECK(13,0,0) || \
+    HEDLEY_IBM_VERSION_CHECK(16,1,0)
+  #define SIMDE_CHECKED_REINTERPRET_CAST(to, from, value) \
+    (__extension__({ \
+      HEDLEY_STATIC_ASSERT(__builtin_types_compatible_p(from, __typeof__(value)) || \
+		    __builtin_types_compatible_p(to, __typeof__(value)), \
+		    "Type of `" #value "` must be either `" #to "` or `" #from "`"); \
+      HEDLEY_REINTERPRET_CAST(to, value); \
+    }))
+#else
+  #define SIMDE_CHECKED_REINTERPRET_CAST(to, from, value) HEDLEY_REINTERPRET_CAST(to, value)
+#endif
 
 #if HEDLEY_HAS_WARNING("-Wfloat-equal")
 #  define SIMDE_DIAGNOSTIC_DISABLE_FLOAT_EQUAL _Pragma("clang diagnostic ignored \"-Wfloat-equal\"")
