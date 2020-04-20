@@ -4582,7 +4582,7 @@ test_simde_mm_maskmoveu_si128(const MunitParameter params[], void* data) {
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     int8_t r[16];
     memcpy(r, test_vec[i].i, 16);
-#if defined SIMDE_SSE2_NATIVE
+#if defined SIMDE_SSE2_NATIVE && defined SIMDE_NATIVE_ALIASES_TESTING
     simde_mm_maskmoveu_si128(test_vec[i].a, test_vec[i].mask, (char *) r);
 #else
     simde_mm_maskmoveu_si128(test_vec[i].a, test_vec[i].mask, r);
@@ -7961,7 +7961,7 @@ test_simde_mm_stream_si64(const MunitParameter params[], void* data) {
 
   for (size_t i = 0 ; i < sizeof(test_vec) / sizeof(test_vec[0]) ; i++) {
     int64_t r;
-#if defined SIMDE_SSE2_NATIVE
+#if defined SIMDE_SSE2_NATIVE && defined SIMDE_NATIVE_ALIASES_TESTING
     simde_mm_stream_si64((long long int*)&r, test_vec[i].a);
 #else
     simde_mm_stream_si64(&r, test_vec[i].a);

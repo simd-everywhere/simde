@@ -3075,7 +3075,7 @@ test_simde_mm_stream_load_si128(const MunitParameter params[], void* data) {
   };
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
-#if defined SIMDE_SSE4_1_NATIVE
+#if defined SIMDE_SSE4_1_NATIVE && defined SIMDE_NATIVE_ALIASES_TESTING
     simde__m128i r = simde_mm_stream_load_si128((__m128i*)&(test_vec[i].a));
 #else
     simde__m128i r = simde_mm_stream_load_si128(&(test_vec[i].a));
