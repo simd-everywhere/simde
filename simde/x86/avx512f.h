@@ -3415,7 +3415,7 @@ simde_mm512_mask_test_epi32_mask (simde__mmask16 k1, simde__m512i a, simde__m512
   #endif
 }
 #if defined(SIMDE_AVX512F_ENABLE_NATIVE_ALIASES)
-  #define _mm512_mask_test_epi32_mask(a, b) simde_mm512_mask_test_epi32_mask(a, b)
+  #define _mm512_mask_test_epi32_mask(k1, a, b) simde_mm512_mask_test_epi32_mask(k1, a, b)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -3438,7 +3438,7 @@ simde_mm512_mask_test_epi64_mask (simde__mmask8 k1, simde__m512i a, simde__m512i
   #endif
 }
 #if defined(SIMDE_AVX512F_ENABLE_NATIVE_ALIASES)
-  #define _mm512_mask_test_epi64_mask(a, b) simde_mm512_mask_test_epi64_mask(a, b)
+  #define _mm512_mask_test_epi64_mask(k1, a, b) simde_mm512_mask_test_epi64_mask(k1, a, b)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES

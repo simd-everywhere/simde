@@ -380,7 +380,7 @@ simde_mm512_cvtsepi16_epi8 (simde__m512i a) {
     return simde__m256i_from_private(r_);
   #endif
 }
-#if defined(SIMDE_AVX512VL_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_AVX512BW_ENABLE_NATIVE_ALIASES)
   #define _mm512_cvtsepi16_epi8(a) simde_mm512_cvtsepi16_epi8(a)
 #endif
 

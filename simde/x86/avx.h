@@ -1490,7 +1490,7 @@ simde_mm256_broadcast_ps (simde__m128 const * mem_addr) {
 #endif
 }
 #if defined(SIMDE_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_broadcast_ps(mem_addr) simde_mm256_broadcast_ps(HEDLEY_REINTERPRET_CAST(float const*, mem_addr))
+#  define _mm256_broadcast_ps(mem_addr) simde_mm256_broadcast_ps(HEDLEY_REINTERPRET_CAST(simde__m128 const*, mem_addr))
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
