@@ -656,31 +656,6 @@ test_simde_mm256_mask_mov_epi32(const MunitParameter params[], void* data) {
                             INT32_C(-1831151558), INT32_C( 1961484348), INT32_C( 1845841537), INT32_C( 1218928521)) }
   };
 
-  // printf("\n");
-  // for (size_t i = 0 ; i < (sizeof(test_vec) / (sizeof(test_vec[0]))) ; i++) {
-  //   simde__m256i_private src, a, r;
-  //   simde__mmask8 k;
-
-  //   munit_rand_memory(sizeof(src), (uint8_t*) &src);
-  //   munit_rand_memory(sizeof(k), (uint8_t*) &k);
-  //   munit_rand_memory(sizeof(a), (uint8_t*) &a);
-  //   k &= UINT8_C(0xff);
-
-  //   r = simde__m256i_to_private(simde_mm256_mask_mov_epi32(simde__m256i_from_private(src), k, simde__m256i_from_private(a)));
-
-  //   printf("    { simde_mm256_set_epi32(INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "),\n"
-  //          "                            INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 ")),\n",
-  //          src.i32[7], src.i32[6], src.i32[5], src.i32[4], src.i32[3], src.i32[2], src.i32[1], src.i32[0]);
-  //   printf("      UINT8_C(%3" PRIu8 "),\n", HEDLEY_STATIC_CAST(uint8_t, k));
-  //   printf("      simde_mm256_set_epi32(INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "),\n"
-  //          "                            INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 ")),\n",
-  //          a.i32[7], a.i32[6], a.i32[5], a.i32[4], a.i32[3], a.i32[2], a.i32[1], a.i32[0]);
-  //   printf("      simde_mm256_set_epi32(INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "),\n"
-  //          "                            INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 ")) },\n",
-  //          r.i32[7], r.i32[6], r.i32[5], r.i32[4], r.i32[3], r.i32[2], r.i32[1], r.i32[0]);
-  // }
-  // return MUNIT_FAIL;
-
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m256i r = simde_mm256_mask_mov_epi32(test_vec[i].src, test_vec[i].k, test_vec[i].a);
     simde_assert_m256i_i32(r, ==, test_vec[i].r);
@@ -757,31 +732,6 @@ test_simde_mm256_mask_mov_epi64(const MunitParameter params[], void* data) {
       simde_mm256_set_epi64x(INT64_C( 6637695700610981441), INT64_C(-2274204535440821687),
                              INT64_C(-3039387732265680328), INT64_C( 5125314073625570095)) }
   };
-
-  // printf("\n");
-  // for (size_t i = 0 ; i < (sizeof(test_vec) / (sizeof(test_vec[0]))) ; i++) {
-  //   simde__m256i_private src, a, r;
-  //   simde__mmask8 k;
-
-  //   munit_rand_memory(sizeof(src), (uint8_t*) &src);
-  //   munit_rand_memory(sizeof(k), (uint8_t*) &k);
-  //   munit_rand_memory(sizeof(a), (uint8_t*) &a);
-  //   k &= UINT8_C(0xff);
-
-  //   r = simde__m256i_to_private(simde_mm256_mask_mov_epi64(simde__m256i_from_private(src), k, simde__m256i_from_private(a)));
-
-  //   printf("    { simde_mm256_set_epi64x(INT64_C(%20" PRId64 "), INT64_C(%20" PRId64 "),\n"
-  //          "                             INT64_C(%20" PRId64 "), INT64_C(%20" PRId64 ")),\n",
-  //          src.i64[3], src.i64[2], src.i64[1], src.i64[0]);
-  //   printf("      UINT8_C(%3" PRIu8 "),\n", HEDLEY_STATIC_CAST(uint8_t, k));
-  //   printf("     simde_mm256_set_epi64x(INT64_C(%20" PRId64 "), INT64_C(%20" PRId64 "),\n"
-  //          "                             INT64_C(%20" PRId64 "), INT64_C(%20" PRId64 ")),\n",
-  //          a.i64[3], a.i64[2], a.i64[1], a.i64[0]);
-  //   printf("      simde_mm256_set_epi64x(INT64_C(%20" PRId64 "), INT64_C(%20" PRId64 "),\n"
-  //          "                             INT64_C(%20" PRId64 "), INT64_C(%20" PRId64 ")) },\n",
-  //          r.i64[3], r.i64[2], r.i64[1], r.i64[0]);
-  // }
-  // return MUNIT_FAIL;
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m256i r = simde_mm256_mask_mov_epi64(test_vec[i].src, test_vec[i].k, test_vec[i].a);
