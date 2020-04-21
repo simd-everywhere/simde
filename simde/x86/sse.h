@@ -2613,16 +2613,34 @@ simde_mm_rsqrt_ps (simde__m128 a) {
 #if defined(SIMDE_SSE_NEON)
   r_.neon_f32 = vrsqrteq_f32(a_.neon_f32);
 #elif defined(__STDC_IEC_559__)
-  /* http://h14s.p5r.org/2012/09/0x5f3759df.html?mwh=1 */
+  /* https://basesandframes.files.wordpress.com/2020/04/even_faster_math_functions_green_2020.pdf
+     Pages 100 - 103 */
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
-    r_.i32[i]  = INT32_C(0x5f3759df) - (a_.i32[i] >> 1);
+    #if SIMDE_ACCURACY_PREFERENCE <= 0
+      r_.i32[i] = INT32_C(0x5F37624F) - (a_.i32[i] >> 1);
+    #else
+      simde_float32 x = a_.f32[i];
+      simde_float32 xhalf = SIMDE_FLOAT32_C(0.5) * x;
+      int32_t ix;
 
-#if SIMDE_ACCURACY_ITERS > 2
-    const float half = SIMDE_FLOAT32_C(0.5) * a_.f32[i];
-    for (int ai = 2 ; ai < SIMDE_ACCURACY_ITERS ; ai++)
-      r_.f32[i] *= SIMDE_FLOAT32_C(1.5) - (half * r_.f32[i] * r_.f32[i]);
-#endif
+      simde_memcpy(&ix, &x, sizeof(ix));
+
+      #if SIMDE_ACCURACY_PREFERENCE == 1
+        ix = INT32_C(0x5F375A82) - (ix >> 1);
+      #else
+        ix = INT32_C(0x5F37599E) - (ix >> 1);
+      #endif
+
+      simde_memcpy(&x, &ix, sizeof(x));
+
+      #if SIMDE_ACCURACY_PREFERENCE >= 2
+        x = x * (SIMDE_FLOAT32_C(1.5008909) - xhalf * x * x);
+      #endif
+      x = x * (SIMDE_FLOAT32_C(1.5008909) - xhalf * x * x);
+
+      r_.f32[i] = x;
+    #endif
   }
 #elif defined(SIMDE_HAVE_MATH_H)
   SIMDE__VECTORIZE
@@ -2654,15 +2672,31 @@ simde_mm_rsqrt_ss (simde__m128 a) {
 
 #if defined(__STDC_IEC_559__)
   {
-    r_.i32[0]  = INT32_C(0x5f3759df) - (a_.i32[0] >> 1);
+    #if SIMDE_ACCURACY_PREFERENCE <= 0
+      r_.i32[0] = INT32_C(0x5F37624F) - (a_.i32[0] >> 1);
+    #else
+      simde_float32 x = a_.f32[0];
+      simde_float32 xhalf = SIMDE_FLOAT32_C(0.5) * x;
+      int32_t ix;
 
-#if SIMDE_ACCURACY_ITERS > 2
-    float half = SIMDE_FLOAT32_C(0.5) * a_.f32[0];
-    for (int ai = 2 ; ai < SIMDE_ACCURACY_ITERS ; ai++)
-      r_.f32[0] *= SIMDE_FLOAT32_C(1.5) - (half * r_.f32[0] * r_.f32[0]);
-#endif
+      simde_memcpy(&ix, &x, sizeof(ix));
+
+      #if SIMDE_ACCURACY_PREFERENCE == 1
+        ix = INT32_C(0x5F375A82) - (ix >> 1);
+      #else
+        ix = INT32_C(0x5F37599E) - (ix >> 1);
+      #endif
+
+      simde_memcpy(&x, &ix, sizeof(x));
+
+      #if SIMDE_ACCURACY_PREFERENCE >= 2
+        x = x * (SIMDE_FLOAT32_C(1.5008909) - xhalf * x * x);
+      #endif
+      x = x * (SIMDE_FLOAT32_C(1.5008909) - xhalf * x * x);
+
+      r_.f32[0] = x;
+    #endif
   }
-  r_.f32[0] = 1.0f / sqrtf(a_.f32[0]);
   r_.f32[1] = a_.f32[1];
   r_.f32[2] = a_.f32[2];
   r_.f32[3] = a_.f32[3];

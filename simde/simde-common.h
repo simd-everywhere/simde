@@ -395,11 +395,14 @@ HEDLEY_STATIC_ASSERT(sizeof(simde_float64) == 8, "Unable to find 64-bit floating
 #  define SIMDE_DIAGNOSTIC_DISABLE_FLOAT_EQUAL
 #endif
 
-/* Some algorithms are iterative, and fewer iterations means less
-   accuracy.  Lower values here will result in faster, but less
-   accurate, calculations for some functions. */
-#if !defined(SIMDE_ACCURACY_ITERS)
-#  define SIMDE_ACCURACY_ITERS 2
+/* Some functions can trade accuracy for speed.  For those functions
+   you can control the trade-off using this macro.  Possible values:
+
+   0: prefer speed
+   1: reasonable trade-offs
+   2: prefer accuracy */
+#if !defined(SIMDE_ACCURACY_PREFERENCE)
+#  define SIMDE_ACCURACY_PREFERENCE 1
 #endif
 
 #if defined(SIMDE__ASSUME_ALIGNED)
