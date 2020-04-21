@@ -2541,36 +2541,34 @@ simde_mm_prefetch (char const* p, int i) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128
 simde_mm_rcp_ps (simde__m128 a) {
-#if defined(SIMDE_SSE_NATIVE)
-  return _mm_rcp_ps(a);
-#else
-  simde__m128_private
-    r_,
-    a_ = simde__m128_to_private(a);
+  #if defined(SIMDE_SSE_NATIVE)
+    return _mm_rcp_ps(a);
+  #else
+    simde__m128_private
+      r_,
+      a_ = simde__m128_to_private(a);
 
-#if defined(SIMDE_SSE_NEON)
-  float32x4_t recip = vrecpeq_f32(a_.neon_f32);
+    #if defined(SIMDE_SSE_NEON)
+      float32x4_t recip = vrecpeq_f32(a_.neon_f32);
 
-#  if !defined(SIMDE_MM_RCP_PS_ITERS)
-#    define SIMDE_MM_RCP_PS_ITERS SIMDE_ACCURACY_ITERS
-#  endif
+      #if SIMDE_ACCURACY_PREFERENCE > 0
+        for (int i = 0; i < SIMDE_ACCURACY_PREFERENCE ; ++i) {
+          recip = vmulq_f32(recip, vrecpsq_f32(recip, a_.neon_f32));
+        }
+      #endif
 
-  for (int i = 0; i < SIMDE_MM_RCP_PS_ITERS ; ++i) {
-    recip = vmulq_f32(recip, vrecpsq_f32(recip, a_.neon_f32));
-  }
+      r_.neon_f32 = recip;
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+      r_.f32 = 1.0f / a_.f32;
+    #else
+      SIMDE__VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
+        r_.f32[i] = 1.0f / a_.f32[i];
+      }
+    #endif
 
-  r_.neon_f32 = recip;
-#elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
-  r_.f32 = 1.0f / a_.f32;
-#else
-  SIMDE__VECTORIZE
-  for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
-    r_.f32[i] = 1.0f / a_.f32[i];
-  }
-#endif
-
-  return simde__m128_from_private(r_);
-#endif
+    return simde__m128_from_private(r_);
+  #endif
 }
 #if defined(SIMDE_SSE_ENABLE_NATIVE_ALIASES)
 #  define _mm_rcp_ps(a) simde_mm_rcp_ps((a))
