@@ -363,12 +363,16 @@ HEDLEY_STATIC_ASSERT(sizeof(simde_float64) == 8, "Unable to find 64-bit floating
 /* This behaves like reinterpret_cast<to>(value), except that it will
    attempt te verify that value is of type "from" or "to". */
 #if defined(__cplusplus)
-  template <typename To, typename From> class SIMDeCheckedReinterpretCastImpl {
-    public:
-      static To convert (To value) { return value; };
-      static To convert (From value) { return reinterpret_cast<To>(value); };
+  namespace SIMDeCheckedReinterpretCastImpl {
+    template <typename To, typename From> static To convert (To value) { return value; };
+    template <typename To, typename From> static To convert (From value) { return reinterpret_cast<To>(value); };
   };
-  #define SIMDE_CHECKED_REINTERPRET_CAST(to, from, value) (SIMDeCheckedReinterpretCastImpl<to, from>::convert(value))
+  namespace SIMDeCheckedStaticCastImpl {
+    template <typename To, typename From> static To convert (To value) { return value; };
+    template <typename To, typename From> static To convert (From value) { return static_cast<To>(value); };
+  };
+  #define SIMDE_CHECKED_REINTERPRET_CAST(to, from, value) (SIMDeCheckedReinterpretCastImpl::convert<to, from>(value))
+  #define SIMDE_CHECKED_STATIC_CAST(to, from, value) (SIMDeCheckedStaticCastImpl::convert<to, from>(value))
 #elif \
     HEDLEY_HAS_BUILTIN(__builtin_types_compatible_p) || \
     HEDLEY_GCC_VERSION_CHECK(3,4,0) || \
@@ -383,8 +387,16 @@ HEDLEY_STATIC_ASSERT(sizeof(simde_float64) == 8, "Unable to find 64-bit floating
 		    "Type of `" #value "` must be either `" #to "` or `" #from "`"); \
       HEDLEY_REINTERPRET_CAST(to, value); \
     }))
+  #define SIMDE_CHECKED_STATIC_CAST(to, from, value) \
+    (__extension__({ \
+      HEDLEY_STATIC_ASSERT(__builtin_types_compatible_p(from, __typeof__(value)) || \
+		    __builtin_types_compatible_p(to, __typeof__(value)), \
+		    "Type of `" #value "` must be either `" #to "` or `" #from "`"); \
+      HEDLEY_STATIC_CAST(to, value); \
+    }))
 #else
   #define SIMDE_CHECKED_REINTERPRET_CAST(to, from, value) HEDLEY_REINTERPRET_CAST(to, value)
+  #define SIMDE_CHECKED_STATIC_CAST(to, from, value) HEDLEY_STATIC_CAST(to, value)
 #endif
 
 #if HEDLEY_HAS_WARNING("-Wfloat-equal")
