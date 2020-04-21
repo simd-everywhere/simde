@@ -394,6 +394,9 @@ HEDLEY_STATIC_ASSERT(sizeof(simde_float64) == 8, "Unable to find 64-bit floating
 		    "Type of `" #value "` must be either `" #to "` or `" #from "`"); \
       HEDLEY_STATIC_CAST(to, value); \
     }))
+#elif defined(__STDC_VERSION__) && __STDC_VERSION__ >= 201112L
+  #define SIMDE_CHECKED_REINTERPRET_CAST(to, from, value) (_Generic((value), to: (value), from: ((to) (value))))
+  #define SIMDE_CHECKED_STATIC_CAST(to, from, value) (_Generic((value), to: (value), from: ((to) (value))))
 #else
   #define SIMDE_CHECKED_REINTERPRET_CAST(to, from, value) HEDLEY_REINTERPRET_CAST(to, value)
   #define SIMDE_CHECKED_STATIC_CAST(to, from, value) HEDLEY_STATIC_CAST(to, value)
