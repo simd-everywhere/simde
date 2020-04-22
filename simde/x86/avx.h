@@ -1490,7 +1490,7 @@ simde_mm256_broadcast_ps (simde__m128 const * mem_addr) {
 #endif
 }
 #if defined(SIMDE_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_broadcast_ps(mem_addr) simde_mm256_broadcast_ps(HEDLEY_REINTERPRET_CAST(float const*, mem_addr))
+#  define _mm256_broadcast_ps(mem_addr) simde_mm256_broadcast_ps(HEDLEY_REINTERPRET_CAST(simde__m128 const*, mem_addr))
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -2772,7 +2772,7 @@ simde_mm256_cvtps_pd (simde__m128 a) {
 
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(a_.f32) / sizeof(a_.f32[0])) ; i++) {
-    r_.f64[i] = a_.f32[i];
+    r_.f64[i] = HEDLEY_STATIC_CAST(double, a_.f32[i]);
   }
 
   return simde__m256d_from_private(r_);
@@ -2819,7 +2819,7 @@ simde_mm256_cvttps_epi32 (simde__m256 a) {
 #if defined(SIMDE_HAVE_MATH_H)
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(a_.f32) / sizeof(a_.f32[0])) ; i++) {
-    r_.i32[i] = SIMDE_CONVERT_FTOI(int32_t, trunc(a_.f32[i]));
+    r_.i32[i] = SIMDE_CONVERT_FTOI(int32_t, truncf(a_.f32[i]));
   }
 #else
   HEDLEY_UNREACHABLE();
@@ -4315,7 +4315,7 @@ simde_mm256_setr_epi32 (
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256i
-simde_mm256_setr_epi64 (int64_t  e3, int64_t  e2, int64_t  e1, int64_t  e0) {
+simde_mm256_setr_epi64x (int64_t  e3, int64_t  e2, int64_t  e1, int64_t  e0) {
 #if defined(SIMDE_AVX_NATIVE)
   return _mm256_setr_epi64x(e3, e2, e1, e0);
 #else
@@ -4323,8 +4323,8 @@ simde_mm256_setr_epi64 (int64_t  e3, int64_t  e2, int64_t  e1, int64_t  e0) {
 #endif
 }
 #if defined(SIMDE_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_setr_epi64(e3, e2, e1, e0) \
-    simde_mm256_setr_epi64(e3, e2, e1, e0)
+#  define _mm256_setr_epi64x(e3, e2, e1, e0) \
+    simde_mm256_setr_epi64x(e3, e2, e1, e0)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES

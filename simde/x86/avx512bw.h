@@ -289,10 +289,10 @@ simde_mm512_cmpeq_epi8_mask (simde__m512i a, simde__m512i b) {
     #elif defined(SIMDE_ARCH_X86_SSE2)
       simde__mmask64 r_;
 
-      r_ =              simde_mm_movemask_epi8(simde_mm_cmpeq_epi8(a_.m128i[3], b_.m128i[3]));
-      r_ = (r_ << 16) | simde_mm_movemask_epi8(simde_mm_cmpeq_epi8(a_.m128i[2], b_.m128i[2]));
-      r_ = (r_ << 16) | simde_mm_movemask_epi8(simde_mm_cmpeq_epi8(a_.m128i[1], b_.m128i[1]));
-      r_ = (r_ << 16) | simde_mm_movemask_epi8(simde_mm_cmpeq_epi8(a_.m128i[0], b_.m128i[0]));
+      r_ =              HEDLEY_STATIC_CAST(simde__mmask64, simde_mm_movemask_epi8(simde_mm_cmpeq_epi8(a_.m128i[3], b_.m128i[3])));
+      r_ = (r_ << 16) | HEDLEY_STATIC_CAST(simde__mmask64, simde_mm_movemask_epi8(simde_mm_cmpeq_epi8(a_.m128i[2], b_.m128i[2])));
+      r_ = (r_ << 16) | HEDLEY_STATIC_CAST(simde__mmask64, simde_mm_movemask_epi8(simde_mm_cmpeq_epi8(a_.m128i[1], b_.m128i[1])));
+      r_ = (r_ << 16) | HEDLEY_STATIC_CAST(simde__mmask64, simde_mm_movemask_epi8(simde_mm_cmpeq_epi8(a_.m128i[0], b_.m128i[0])));
     #else
       simde__mmask64 r_ = 0;
 
@@ -380,7 +380,7 @@ simde_mm512_cvtsepi16_epi8 (simde__m512i a) {
     return simde__m256i_from_private(r_);
   #endif
 }
-#if defined(SIMDE_AVX512VL_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_AVX512BW_ENABLE_NATIVE_ALIASES)
   #define _mm512_cvtsepi16_epi8(a) simde_mm512_cvtsepi16_epi8(a)
 #endif
 

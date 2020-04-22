@@ -1266,7 +1266,7 @@ simde_mm256_madd_epi16 (simde__m256i a, simde__m256i b) {
 #endif
 }
 #if defined(SIMDE_AVX2_ENABLE_NATIVE_ALIASES)
-#  define _mm256_add_epi16(a, b) simde_mm256_add_epi16(a, b)
+#  define _mm256_madd_epi16(a, b) simde_mm256_madd_epi16(a, b)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -2119,7 +2119,7 @@ simde_mm256_srli_si256 (simde__m256i a, const int imm8) {
        simde_mm_bsrli_si128(simde_mm256_extracti128_si256(a, 0), (imm8)))
 #endif
 #if defined(SIMDE_AVX2_ENABLE_NATIVE_ALIASES)
-#  define _mm256_srli_si256(a, imm8) simde_mm_srli_si256(a, imm8)
+#  define _mm256_srli_si256(a, imm8) simde_mm256_srli_si256(a, imm8)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES

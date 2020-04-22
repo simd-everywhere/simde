@@ -10318,7 +10318,7 @@ test_simde_mm256_setr_epi32(const MunitParameter params[], void* data) {
 }
 
 static MunitResult
-test_simde_mm256_setr_epi64(const MunitParameter params[], void* data) {
+test_simde_mm256_setr_epi64x(const MunitParameter params[], void* data) {
   (void) params;
   (void) data;
 
@@ -10361,7 +10361,7 @@ test_simde_mm256_setr_epi64(const MunitParameter params[], void* data) {
   };
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
-    simde__m256i r = simde_mm256_setr_epi64(
+    simde__m256i r = simde_mm256_setr_epi64x(
         test_vec[i].a[ 0], test_vec[i].a[ 1], test_vec[i].a[ 2], test_vec[i].a[ 3]);
     simde_assert_m256i_i64(r, ==, test_vec[i].r);
   }
@@ -13519,6 +13519,13 @@ test_simde_mm256_testnzc_si256(const MunitParameter params[], void* data) {
 HEDLEY_DIAGNOSTIC_PUSH
 HEDLEY_DIAGNOSTIC_DISABLE_CAST_QUAL
 
+#if HEDLEY_HAS_WARNING("-Wold-style-cast")
+  #pragma clang diagnostic ignored "-Wold-style-cast"
+#endif
+#if HEDLEY_HAS_WARNING("-Wzero-as-null-pointer-constant")
+  #pragma clang diagnostic ignored "-Wzero-as-null-pointer-constant"
+#endif
+
 static MunitTest test_suite_tests[] = {
 #if defined(SIMDE_AVX_NATIVE) || defined(SIMDE_NO_NATIVE) || defined(SIMDE_ALWAYS_BUILD_NATIVE_TESTS)
   SIMDE_TESTS_DEFINE_TEST(mm256_set_epi8),
@@ -13669,7 +13676,7 @@ static MunitTest test_suite_tests[] = {
   SIMDE_TESTS_DEFINE_TEST(mm256_setr_epi8),
   SIMDE_TESTS_DEFINE_TEST(mm256_setr_epi16),
   SIMDE_TESTS_DEFINE_TEST(mm256_setr_epi32),
-  SIMDE_TESTS_DEFINE_TEST(mm256_setr_epi64),
+  SIMDE_TESTS_DEFINE_TEST(mm256_setr_epi64x),
   SIMDE_TESTS_DEFINE_TEST(mm256_setr_ps),
   SIMDE_TESTS_DEFINE_TEST(mm256_setr_pd),
   SIMDE_TESTS_DEFINE_TEST(mm256_setr_m128),

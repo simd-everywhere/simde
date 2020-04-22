@@ -17,7 +17,9 @@ before_build:
       cd test
       mkdir build
       cd build
-      cmake -G "$env:GENERATOR" -DALWAYS_BUILD_NATIVE_TESTS=ON -DCMAKE_C_FLAGS="/W4 /WX" -DCMAKE_CXX_FLAGS="/W4 /WX" ..
+      cmake --version
+      cmake -G "$env:GENERATOR" -DALWAYS_BUILD_NATIVE_TESTS=ON -DCMAKE_C_FLAGS="/W4 /WX /wd4054" -DCMAKE_CXX_FLAGS="/W4 /WX /wd4054" ..
+      type CMakeFiles/CMakeError.log
 
 build_script:
   - ps: |

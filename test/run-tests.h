@@ -2,13 +2,16 @@
 #define SIMDE_RUN_TESTS_H
 
 #include  "../simde/hedley.h"
-#include "munit/munit.h"
 #include "../simde/simde-common.h"
+
+SIMDE_DIAGNOSTIC_DISABLE_VLA_
+#include "munit/munit.h"
 
 #include <stdio.h>
 #include <math.h>
 
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
+SIMDE_DIAGNOSTIC_DISABLE_DOUBLE_PROMOTION_
 
 #if defined(HEDLEY_MSVC_VERSION)
 /* Unused function(s) */
@@ -46,8 +49,13 @@ HEDLEY_DIAGNOSTIC_PUSH
   "/" HEDLEY_STRINGIFY(name) "/" HEDLEY_STRINGIFY(SIMDE_TESTS_CURRENT_NATIVE)
 #endif
 
-#define SIMDE_TESTS_DEFINE_TEST(name) \
-  { (char*) SIMDE_TESTS_GENERATE_NAME(name), test_simde_##name, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL }
+#if !defined(__cplusplus)
+  #define SIMDE_TESTS_DEFINE_TEST(name) \
+    { (char*) SIMDE_TESTS_GENERATE_NAME(name), test_simde_##name, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL }
+#else
+  #define SIMDE_TESTS_DEFINE_TEST(name) \
+    { const_cast<char*>(SIMDE_TESTS_GENERATE_NAME(name)), test_simde_##name, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL }
+#endif
 
 HEDLEY_BEGIN_C_DECLS
 
