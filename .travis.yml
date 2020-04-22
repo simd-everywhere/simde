@@ -14,6 +14,7 @@ env:
   - CMAKE_GENERATOR='Ninja'
   - RUN_TESTS=true
   - OPTIMIZATION_FLAGS=''
+  - DIAGNOSTIC_FLAGS='-Wall -Wextra -Werror'
 
 jobs:
   include:
@@ -110,7 +111,7 @@ jobs:
     env:
     - C_COMPILER=icc
     - CXX_COMPILER=icpc
-    - COMPILER_FLAGS='-wd13200 -wd13203'
+    - DIAGNOSTIC_FLAGS='-wd13200 -wd13203'
     install:
     - source /opt/intel/inteloneapi/compiler/latest/env/vars.sh
     addons:
@@ -127,6 +128,7 @@ jobs:
     - CXX_COMPILER=pgc++
     - ARCH_FLAGS="-m64"
     - BUILD_CPP_TESTS=OFF
+    - DIAGNOSTIC_FLAGS=
     install:
     - curl 'https://raw.githubusercontent.com/nemequ/pgi-travis/master/install-pgi.sh' | /bin/sh
 
@@ -153,7 +155,7 @@ jobs:
     - ARCH_FLAGS="/arch:AVX2"
     - CMAKE_GENERATOR="Visual Studio 15 2017"
     - OPTIMIZATION_FLAGS="/Ox"
-    - COMPILER_FLAGS="/W4 /WX"
+    - DIAGNOSTIC_FLAGS="/W4 /WX"
 
   - name: msvc x86_64
     os: windows
@@ -161,7 +163,7 @@ jobs:
     - ARCH_FLAGS="/arch:AVX2"
     - CMAKE_GENERATOR="Visual Studio 15 2017 Win64"
     - OPTIMIZATION_FLAGS="/Ox"
-    - COMPILER_FLAGS="/W4 /WX"
+    - DIAGNOSTIC_FLAGS="/W4 /WX"
 
   - name: msvc arm
     os: windows
@@ -170,12 +172,11 @@ jobs:
     - CMAKE_GENERATOR="Visual Studio 15 2017 ARM"
     - RUN_TESTS=false
     - OPTIMIZATION_FLAGS="/Ox"
-    - COMPILER_FLAGS="/W4 /WX"
+    - DIAGNOSTIC_FLAGS="/W4 /WX"
 
   - name: "gcc-7 amd64"
     compiler: gcc
     arch: amd64
-    env:
 
   - name: "clang-7 amd64"
     arch: amd64
@@ -183,6 +184,9 @@ jobs:
 
   - name: gcc-4.8
     dist: trusty
+    env:
+    # Lots of -Wunused-but-set-variable false positives
+    - DIAGNOSTIC_FLAGS='-Wall -Wextra -Wno-unused-but-set-variable -Werror'
     addons:
       apt:
         packages:
@@ -279,10 +283,10 @@ script:
     -DBUILD_CPP_TESTS=${BUILD_CPP_TESTS} \
     -DCMAKE_CROSSCOMPILING_EMULATOR="${TEST_WRAPPER}" \
     -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON \
-    -DCMAKE_C_FLAGS="${ARCH_FLAGS} ${OPTIMIZATION_FLAGS} ${COMPILER_FLAGS} ${CFLAGS}" \
-    -DCMAKE_CXX_FLAGS="${ARCH_FLAGS} ${OPTIMIZATION_FLAGS} ${COMPILER_FLAGS} ${CXXFLAGS}" \
-    ${CMAKE_ARGS}
-- ${BUILD_WRAPPER} cmake --build .
+    -DCMAKE_C_FLAGS="${ARCH_FLAGS} ${OPTIMIZATION_FLAGS} ${DIAGNOSTIC_FLAGS} ${COMPILER_FLAGS} ${CFLAGS}" \
+    -DCMAKE_CXX_FLAGS="${ARCH_FLAGS} ${OPTIMIZATION_FLAGS} ${DIAGNOSTIC_FLAGS} ${COMPILER_FLAGS} ${CXXFLAGS}" \
+    ${CMAKE_ARGS} || (cat CMakeFiles/CMakeError.log && false) && \
+  ${BUILD_WRAPPER} cmake --build .
 - |
   if [ "${RUN_TESTS}" = "true" ]; then
     if [ "windows" != "${TRAVIS_OS_NAME}" ]; then
