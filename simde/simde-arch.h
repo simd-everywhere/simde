@@ -427,6 +427,12 @@
 #  define SIMDE_ARCH_TMS320 280
 #endif
 
+#if defined(SIMDE_ARCH_POWER)
+  #define SIMDE_ARCH_POWER_CHECK(version) (SIMDE_ARCH_POWER >= (version))
+#else
+  #define SIMDE_ARCH_POWER_CHECK(version) (0)
+#endif
+
 /* WebAssembly */
 #if defined(__wasm__)
 #  define SIMDE_ARCH_WASM 1
