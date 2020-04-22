@@ -3898,7 +3898,7 @@ simde_mm_set_sd (simde_float64 a) {
 #elif defined(SIMDE_SSE2_NEON) && defined(SIMDE_ARCH_AARCH64)
   return vsetq_lane_f64(a, vdupq_n_f64(SIMDE_FLOAT32_C(0.0)), 0);
 #else
-  return simde_mm_set_pd(SIMDE_FLOAT32_C(0.0), a);
+  return simde_mm_set_pd(SIMDE_FLOAT64_C(0.0), a);
 
 #endif
 }

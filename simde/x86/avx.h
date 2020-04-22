@@ -2772,7 +2772,7 @@ simde_mm256_cvtps_pd (simde__m128 a) {
 
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(a_.f32) / sizeof(a_.f32[0])) ; i++) {
-    r_.f64[i] = a_.f32[i];
+    r_.f64[i] = HEDLEY_STATIC_CAST(double, a_.f32[i]);
   }
 
   return simde__m256d_from_private(r_);
@@ -2819,7 +2819,7 @@ simde_mm256_cvttps_epi32 (simde__m256 a) {
 #if defined(SIMDE_HAVE_MATH_H)
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(a_.f32) / sizeof(a_.f32[0])) ; i++) {
-    r_.i32[i] = SIMDE_CONVERT_FTOI(int32_t, trunc(a_.f32[i]));
+    r_.i32[i] = SIMDE_CONVERT_FTOI(int32_t, truncf(a_.f32[i]));
   }
 #else
   HEDLEY_UNREACHABLE();

@@ -151,7 +151,7 @@ simde_mm_cvtsepi16_epi8 (simde__m128i a) {
   #if defined(SIMDE_AVX512VL_NATIVE) && defined(SIMDE_AVX512BW_NATIVE)
     return _mm_cvtsepi16_epi8(a);
   #else
-    simde__m128i_private r_ = simde__m128i_to_private(simde_mm_setzero_si128());;
+    simde__m128i_private r_ = simde__m128i_to_private(simde_mm_setzero_si128());
     simde__m128i_private a_ = simde__m128i_to_private(a);
 
     SIMDE__VECTORIZE
@@ -203,7 +203,7 @@ simde_mm_cvtsepi32_epi8 (simde__m128i a) {
   #if defined(SIMDE_AVX512VL_NATIVE) && defined(SIMDE_AVX512BW_NATIVE)
     return _mm_cvtsepi32_epi8(a);
   #else
-    simde__m128i_private r_ = simde__m128i_to_private(simde_mm_setzero_si128());;
+    simde__m128i_private r_ = simde__m128i_to_private(simde_mm_setzero_si128());
     simde__m128i_private a_ = simde__m128i_to_private(a);
 
     SIMDE__VECTORIZE
@@ -229,7 +229,7 @@ simde_mm_cvtsepi32_epi16 (simde__m128i a) {
   #if defined(SIMDE_AVX512VL_NATIVE) && defined(SIMDE_AVX512BW_NATIVE)
     return _mm_cvtsepi32_epi16(a);
   #else
-    simde__m128i_private r_ = simde__m128i_to_private(simde_mm_setzero_si128());;
+    simde__m128i_private r_ = simde__m128i_to_private(simde_mm_setzero_si128());
     simde__m128i_private a_ = simde__m128i_to_private(a);
 
     SIMDE__VECTORIZE
