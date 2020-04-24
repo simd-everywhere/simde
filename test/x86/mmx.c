@@ -173,6 +173,21 @@ test_simde_mm_setr_pi32(const MunitParameter params[], void* data) {
 }
 
 static MunitResult
+test_simde_mm_setzero_si64(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  simde__m64 a = simde_mm_set1_pi32(0);
+  simde__m64 r = simde_mm_setzero_si64();
+
+  simde_assert_m64_equal(a, r);
+
+  return MUNIT_OK;
+}
+
+
+
+static MunitResult
 test_simde_mm_add_pi8(const MunitParameter params[], void* data) {
   (void) params;
   (void) data;
@@ -2805,6 +2820,8 @@ static MunitTest test_suite_tests[] = {
   SIMDE_TESTS_DEFINE_TEST(mm_setr_pi8),
   SIMDE_TESTS_DEFINE_TEST(mm_setr_pi16),
   SIMDE_TESTS_DEFINE_TEST(mm_setr_pi32),
+  SIMDE_TESTS_DEFINE_TEST(mm_setzero_si64),
+
   SIMDE_TESTS_DEFINE_TEST(mm_add_pi8),
   SIMDE_TESTS_DEFINE_TEST(mm_add_pi16),
   SIMDE_TESTS_DEFINE_TEST(mm_add_pi32),
@@ -2814,23 +2831,29 @@ static MunitTest test_suite_tests[] = {
   SIMDE_TESTS_DEFINE_TEST(mm_adds_pu16),
   SIMDE_TESTS_DEFINE_TEST(mm_and_si64),
   SIMDE_TESTS_DEFINE_TEST(mm_andnot_si64),
+
   SIMDE_TESTS_DEFINE_TEST(mm_cmpeq_pi8),
   SIMDE_TESTS_DEFINE_TEST(mm_cmpeq_pi16),
   SIMDE_TESTS_DEFINE_TEST(mm_cmpeq_pi32),
   SIMDE_TESTS_DEFINE_TEST(mm_cmpgt_pi8),
   SIMDE_TESTS_DEFINE_TEST(mm_cmpgt_pi16),
   SIMDE_TESTS_DEFINE_TEST(mm_cmpgt_pi32),
+
   SIMDE_TESTS_DEFINE_TEST(mm_cvtm64_si64),
   SIMDE_TESTS_DEFINE_TEST(mm_cvtsi32_si64),
   SIMDE_TESTS_DEFINE_TEST(mm_cvtsi64_m64),
   SIMDE_TESTS_DEFINE_TEST(mm_cvtsi64_si32),
+
   SIMDE_TESTS_DEFINE_TEST(mm_madd_pi16),
   SIMDE_TESTS_DEFINE_TEST(mm_mulhi_pi16),
   SIMDE_TESTS_DEFINE_TEST(mm_mullo_pi16),
+
   SIMDE_TESTS_DEFINE_TEST(mm_or_si64),
+
   SIMDE_TESTS_DEFINE_TEST(mm_packs_pi16),
   SIMDE_TESTS_DEFINE_TEST(mm_packs_pi32),
   SIMDE_TESTS_DEFINE_TEST(mm_packs_pu16),
+
   SIMDE_TESTS_DEFINE_TEST(mm_sll_pi16),
   SIMDE_TESTS_DEFINE_TEST(mm_sll_pi32),
   SIMDE_TESTS_DEFINE_TEST(mm_sll_si64),
@@ -2847,20 +2870,25 @@ static MunitTest test_suite_tests[] = {
   SIMDE_TESTS_DEFINE_TEST(mm_srai_pi32),
   SIMDE_TESTS_DEFINE_TEST(mm_sra_pi16),
   SIMDE_TESTS_DEFINE_TEST(mm_sra_pi32),
+
   SIMDE_TESTS_DEFINE_TEST(mm_sub_pi8),
   SIMDE_TESTS_DEFINE_TEST(mm_sub_pi16),
   SIMDE_TESTS_DEFINE_TEST(mm_sub_pi32),
+
   SIMDE_TESTS_DEFINE_TEST(mm_subs_pi8),
   SIMDE_TESTS_DEFINE_TEST(mm_subs_pi16),
   SIMDE_TESTS_DEFINE_TEST(mm_subs_pu8),
   SIMDE_TESTS_DEFINE_TEST(mm_subs_pu16),
+
   SIMDE_TESTS_DEFINE_TEST(mm_unpackhi_pi8),
   SIMDE_TESTS_DEFINE_TEST(mm_unpackhi_pi16),
   SIMDE_TESTS_DEFINE_TEST(mm_unpackhi_pi32),
   SIMDE_TESTS_DEFINE_TEST(mm_unpacklo_pi8),
   SIMDE_TESTS_DEFINE_TEST(mm_unpacklo_pi16),
   SIMDE_TESTS_DEFINE_TEST(mm_unpacklo_pi32),
+
   SIMDE_TESTS_DEFINE_TEST(mm_xor_si64),
+
   SIMDE_TESTS_DEFINE_TEST(m_to_int),
   SIMDE_TESTS_DEFINE_TEST(m_to_int64),
 #endif /* defined(SIMDE_MMX_NATIVE) || defined(SIMDE_NO_NATIVE) || defined(SIMDE_ALWAYS_BUILD_NATIVE_TESTS) */

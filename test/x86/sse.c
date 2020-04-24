@@ -54,6 +54,55 @@ test_simde_mm_set_ps(const MunitParameter params[], void* data) {
 }
 
 static MunitResult
+test_simde_mm_set_ps1(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  const struct {
+    float a;
+    simde__m128 r;
+  } test_vec[8] = {
+    {      0.29f,
+      simde_mm_set_ps(SIMDE_FLOAT32_C(     0.29), SIMDE_FLOAT32_C(     0.29), SIMDE_FLOAT32_C(     0.29), SIMDE_FLOAT32_C(     0.29)) },
+    {      0.14f,
+      simde_mm_set_ps(SIMDE_FLOAT32_C(     0.14), SIMDE_FLOAT32_C(     0.14), SIMDE_FLOAT32_C(     0.14), SIMDE_FLOAT32_C(     0.14)) },
+    {      0.98f,
+      simde_mm_set_ps(SIMDE_FLOAT32_C(     0.98), SIMDE_FLOAT32_C(     0.98), SIMDE_FLOAT32_C(     0.98), SIMDE_FLOAT32_C(     0.98)) },
+    {      0.88f,
+      simde_mm_set_ps(SIMDE_FLOAT32_C(     0.88), SIMDE_FLOAT32_C(     0.88), SIMDE_FLOAT32_C(     0.88), SIMDE_FLOAT32_C(     0.88)) },
+    {      0.92f,
+      simde_mm_set_ps(SIMDE_FLOAT32_C(     0.92), SIMDE_FLOAT32_C(     0.92), SIMDE_FLOAT32_C(     0.92), SIMDE_FLOAT32_C(     0.92)) },
+    {      0.07f,
+      simde_mm_set_ps(SIMDE_FLOAT32_C(     0.07), SIMDE_FLOAT32_C(     0.07), SIMDE_FLOAT32_C(     0.07), SIMDE_FLOAT32_C(     0.07)) },
+    {      0.66f,
+      simde_mm_set_ps(SIMDE_FLOAT32_C(     0.66), SIMDE_FLOAT32_C(     0.66), SIMDE_FLOAT32_C(     0.66), SIMDE_FLOAT32_C(     0.66)) },
+    {      0.47f,
+      simde_mm_set_ps(SIMDE_FLOAT32_C(     0.47), SIMDE_FLOAT32_C(     0.47), SIMDE_FLOAT32_C(     0.47), SIMDE_FLOAT32_C(     0.47)) },
+  };
+
+  // printf("\n");
+  // for (size_t i = 0 ; i < (sizeof(test_vec) / (sizeof(test_vec[0]))) ; i++) {
+  //   float a = munit_rand_float();
+  //   simde__m128_private r;
+
+  //   r = simde__m128_to_private(simde_mm_set_ps1(a));
+
+  //   printf("    { %*.2f,\n", 9, a );
+  //   printf("      simde_mm_set_ps(SIMDE_FLOAT32_C(%*.2f), SIMDE_FLOAT32_C(%*.2f), SIMDE_FLOAT32_C(%*.2f), SIMDE_FLOAT32_C(%*.2f)) },\n",
+	//    9, r.f32[3], 9, r.f32[2], 9, r.f32[1], 9, r.f32[0]);
+  // }
+  // return MUNIT_FAIL;
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    simde__m128 r = simde_mm_set_ps1(test_vec[i].a);
+    simde_assert_m128_close(r, test_vec[i].r, 1);
+  }
+
+  return MUNIT_OK;
+}
+
+
+static MunitResult
 test_simde_mm_set_ss(const MunitParameter params[], void* data) {
   (void) params;
   (void) data;
@@ -4984,6 +5033,7 @@ HEDLEY_DIAGNOSTIC_DISABLE_CAST_QUAL
 static MunitTest test_suite_tests[] = {
 #if defined(SIMDE_SSE_NATIVE) || defined(SIMDE_NO_NATIVE) || defined(SIMDE_ALWAYS_BUILD_NATIVE_TESTS)
   SIMDE_TESTS_DEFINE_TEST(mm_set_ps),
+  SIMDE_TESTS_DEFINE_TEST(mm_set_ps1),
   SIMDE_TESTS_DEFINE_TEST(mm_set1_ps),
   SIMDE_TESTS_DEFINE_TEST(mm_set_ss),
   SIMDE_TESTS_DEFINE_TEST(mm_setr_ps),
