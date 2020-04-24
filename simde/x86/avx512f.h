@@ -1861,6 +1861,76 @@ simde_mm512_maskz_abs_epi64(simde__mmask8 k, simde__m512i a) {
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
+simde__m512
+simde_mm512_abs_ps(simde__m512 v2) {
+#if defined(SIMDE_AVX512F_NATIVE)
+  return _mm512_abs_ps(v2);
+#else
+  simde__m512_private
+    r_,
+    v2_ = simde__m512_to_private(v2);
+
+  SIMDE__VECTORIZE
+  for (size_t i = 0; i < (sizeof(r_.f32) / sizeof(r_.f32[0])); i++) {
+    r_.f32[i] = (v2_.f32[i] < INT64_C(0)) ? -v2_.f32[i] : v2_.f32[i];
+  }
+
+  return simde__m512_from_private(r_);
+#endif
+}
+#if defined(SIMDE_AVX512F_ENABLE_NATIVE_ALIASES)
+#  define _mm512_abs_ps(v2) simde_mm512_abs_ps(v2)
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m512
+simde_mm512_mask_abs_ps(simde__m512 src, simde__mmask16 k, simde__m512 v2) {
+#if defined(SIMDE_AVX512F_NATIVE)
+  return _mm512_mask_abs_ps(src, k, v2);
+#else
+  return simde_mm512_mask_mov_ps(src, k, simde_mm512_abs_ps(v2));
+#endif
+}
+#if defined(SIMDE_AVX512F_ENABLE_NATIVE_ALIASES)
+#define _mm512_mask_abs_ps(src, k, v2) simde_mm512_mask_abs_ps(src, k, v2)
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m512d
+simde_mm512_abs_pd(simde__m512d v2) {
+#if defined(SIMDE_AVX512F_NATIVE)
+  return _mm512_abs_pd(v2);
+#else
+  simde__m512d_private
+    r_,
+    v2_ = simde__m512d_to_private(v2);
+
+  SIMDE__VECTORIZE
+  for (size_t i = 0; i < (sizeof(r_.f64) / sizeof(r_.f64[0])); i++) {
+    r_.f64[i] = (v2_.f64[i] < INT64_C(0)) ? -v2_.f64[i] : v2_.f64[i];
+  }
+
+  return simde__m512d_from_private(r_);
+#endif
+}
+#if defined(SIMDE_AVX512F_ENABLE_NATIVE_ALIASES)
+#  define _mm512_abs_pd(v2) simde_mm512_abs_pd(v2)
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m512d
+simde_mm512_mask_abs_pd(simde__m512d src, simde__mmask8 k, simde__m512d v2) {
+#if defined(SIMDE_AVX512F_NATIVE)
+  return _mm512_mask_abs_pd(src, k, v2);
+#else
+  return simde_mm512_mask_mov_pd(src, k, simde_mm512_abs_pd(v2));
+#endif
+}
+#if defined(SIMDE_AVX512F_ENABLE_NATIVE_ALIASES)
+#define _mm512_mask_abs_pd(src, k, v2) simde_mm512_mask_abs_pd(src, k, v2)
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
 simde__m512i
 simde_mm512_add_epi32 (simde__m512i a, simde__m512i b) {
   #if defined(SIMDE_AVX512F_NATIVE)
