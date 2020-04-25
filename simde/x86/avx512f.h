@@ -2418,6 +2418,75 @@ simde_mm512_maskz_broadcastq_epi64(simde__mmask8 k, simde__m128i a) {
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
+simde__m512
+simde_mm512_broadcastss_ps (simde__m128 a) {
+#if defined(SIMDE_AVX512F_NATIVE)
+  return _mm512_broadcastss_ps(a);
+#else
+  simde__m512_private r_;
+  simde__m128_private a_= simde__m128_to_private(a);
+
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
+    r_.f32[i] = a_.f32[0];
+  }
+
+  return simde__m512_from_private(r_);
+#endif
+}
+#if defined(SIMDE_AVX512F_ENABLE_NATIVE_ALIASES)
+#  define _mm512_broadcastss_ps(a) simde_mm512_broadcastss_ps(a)
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m512
+simde_mm512_mask_broadcastss_ps(simde__m512 src, simde__mmask16 k, simde__m128 a) {
+#if defined(SIMDE_AVX512F_NATIVE)
+  return _mm512_mask_broadcastss_ps(src, k, a);
+#else
+  simde__m512_private
+    src_ = simde__m512_to_private(src),
+    r_;
+  simde__m128_private
+    a_ = simde__m128_to_private(a);
+
+
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
+    r_.f32[i] = ((k >> i) & 1) ? a_.f32[0] : src_.f32[i];
+  }
+
+  return simde__m512_from_private(r_);
+#endif
+}
+#if defined(SIMDE_AVX512F_ENABLE_NATIVE_ALIASES)
+#define _mm512_mask_broadcastss_ps(src, k, a) simde_mm512_mask_broadcastss_ps(src, k, a)
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m512
+simde_mm512_maskz_broadcastss_ps(simde__mmask16 k, simde__m128 a) {
+#if defined(SIMDE_AVX512F_NATIVE)
+  return _mm512_maskz_broadcastss_ps(k, a);
+#else
+  simde__m512_private
+    r_;
+  simde__m128_private
+    a_ = simde__m128_to_private(a);
+
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
+    r_.f32[i] = ((k >> i) & 1) ? a_.f32[0] : INT32_C(0);
+  }
+
+  return simde__m512_from_private(r_);
+#endif
+}
+#if defined(SIMDE_AVX512F_ENABLE_NATIVE_ALIASES)
+#define _mm512_maskz_broadcastss_ps(k, a) simde_mm512_maskz_broadcastss_ps(k, a)
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
 simde__m512d
 simde_mm512_broadcastsd_pd (simde__m128d a) {
 #if defined(SIMDE_AVX512F_NATIVE)
