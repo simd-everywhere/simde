@@ -4737,7 +4737,7 @@ simde_mm256_undefined_ps (void) {
     (!defined(__has_builtin) || HEDLEY_HAS_BUILTIN(__builtin_ia32_undef256))
   r_.n = _mm256_undefined_ps();
 #elif !defined(SIMDE_DIAGNOSTIC_DISABLE_UNINITIALIZED_)
-  r_ = simde_mm256_setzero_ps();
+  r_ = simde__m256_to_private(simde_mm256_setzero_ps());
 #endif
 
   return simde__m256_from_private(r_);
@@ -4757,7 +4757,7 @@ simde_mm256_undefined_pd (void) {
     (!defined(__has_builtin) || HEDLEY_HAS_BUILTIN(__builtin_ia32_undef256))
   r_.n = _mm256_undefined_pd();
 #elif !defined(SIMDE_DIAGNOSTIC_DISABLE_UNINITIALIZED_)
-  r_ = simde_mm256_setzero_pd();
+  r_ = simde__m256d_to_private(simde_mm256_setzero_pd());
 #endif
 
   return simde__m256d_from_private(r_);
@@ -4776,7 +4776,7 @@ simde_mm256_undefined_si256 (void) {
     (!defined(__has_builtin) || HEDLEY_HAS_BUILTIN(__builtin_ia32_undef256))
   r_.n = _mm256_undefined_si256();
 #elif !defined(SIMDE_DIAGNOSTIC_DISABLE_UNINITIALIZED_)
-  r_ = simde_mm256_setzero_si256();
+  r_ = simde__m256i_to_private(simde_mm256_setzero_si256());
 #endif
 
   return simde__m256i_from_private(r_);

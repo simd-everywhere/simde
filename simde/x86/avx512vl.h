@@ -517,6 +517,53 @@ simde_mm_cvtsepi32_epi16 (simde__m128i a) {
   #define _mm_cvtsepi32_epi16(a) simde_mm_cvtsepi32_epi16(a)
 #endif
 
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256i
+simde_mm256_abs_epi64(simde__m256i a) {
+#if defined(SIMDE_AVX512VL_NATIVE)
+  return _mm256_abs_epi64(a);
+#else
+  simde__m256i_private
+    r_,
+    a_ = simde__m256i_to_private(a);
+
+  SIMDE__VECTORIZE
+  for (size_t i = 0; i < (sizeof(r_.i64) / sizeof(r_.i64[0])); i++) {
+    r_.i64[i] = (a_.i64[i] < INT64_C(0)) ? -a_.i64[i] : a_.i64[i];
+  }
+
+  return simde__m256i_from_private(r_);
+#endif
+}
+#if defined(SIMDE_AVX512VL_ENABLE_NATIVE_ALIASES)
+#  define _mm256_abs_epi64(a) simde_mm256_abs_epi64(a)
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256i
+simde_mm256_mask_abs_epi64(simde__m256i src, simde__mmask8 k, simde__m256i a) {
+#if defined(SIMDE_AVX512VL_NATIVE)
+  return _mm256_mask_abs_epi64(src, k, a);
+#else
+  return simde_mm256_mask_mov_epi64(src, k, simde_mm256_abs_epi64(a));
+#endif
+}
+#if defined(SIMDE_AVX512VL_ENABLE_NATIVE_ALIASES)
+#define _mm256_mask_abs_epi64(src, k, a) simde_mm256_mask_abs_epi64(src, k, a)
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256i
+simde_mm256_maskz_abs_epi64(simde__mmask8 k, simde__m256i a) {
+#if defined(SIMDE_AVX512VL_NATIVE)
+  return _mm256_maskz_abs_epi64(k, a);
+#else
+  return simde_mm256_maskz_mov_epi64(k, simde_mm256_abs_epi64(a));
+#endif
+}
+#if defined(SIMDE_AVX512VL_ENABLE_NATIVE_ALIASES)
+#define _mm256_maskz_abs_epi64(k, a) simde_mm256_maskz_abs_epi64(k, a)
+#endif
 
 SIMDE__END_DECLS
 
