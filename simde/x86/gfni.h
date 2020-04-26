@@ -124,7 +124,8 @@ static const uint8_t simde_gf2p8inverse[] =
 	q |= q >> 32;
 	q |= q >> 16;
 	q |= q >> 8;
-	r_.u8[i] = HEDLEY_STATIC_CAST(uint8_t, q) ^ b;
+  q ^= b;
+	r_.u8[i] = HEDLEY_STATIC_CAST(uint8_t, q);
       }
 
       return simde__m128i_from_private(r_);
