@@ -101,6 +101,7 @@ set(TEST_SOURCES_C
   x86/avx512f.c
   x86/avx512bw.c
   x86/avx512vl.c
+  x86/avx512dq.c
   x86/gfni.c
   x86/fma.c
   x86/svml.c
@@ -161,6 +162,7 @@ foreach(tst
       "/x86/avx512f"
       "/x86/avx512bw"
       "/x86/avx512vl"
+      "/x86/avx512dq"
       "/x86/gfni"
       "/x86/svml"
     )
