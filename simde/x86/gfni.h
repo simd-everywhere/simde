@@ -114,7 +114,7 @@ static const uint8_t simde_gf2p8inverse[] =
       SIMDE__VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.u8) / sizeof(r_.u8[0])) ; i++) {
 	q = HEDLEY_STATIC_CAST(uint64_t, x_.u8[i]) * ones;
-	q &= A.u64[i / 8];
+	q &= A_.u64[i / 8];
 	q ^= q >> 4;
 	q ^= q >> 2;
 	q ^= q >> 1;
