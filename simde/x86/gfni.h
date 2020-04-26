@@ -93,15 +93,15 @@ static const uint8_t simde_gf2p8inverse[] =
 
       SIMDE__VECTORIZE
       for (int i = 0 ; i < 8 ; i++) {
-	p = simde_mm_set1_epi16(simde_mm_movemask_epi8(a));
+	p = simde_mm_set1_epi16(HEDLEY_STATIC_CAST(uint16_t, simde_mm_movemask_epi8(a)));
 	p = simde_mm_shuffle_epi8(p, byteSelect);
 	p = simde_mm_xor_si128(r, p);
 	r = simde_mm_blendv_epi8(r, p, x);
 	a = simde_mm_slli_epi64(a, 1);
 	x = simde_mm_slli_epi64(x, 1);
       }
-  
-      return simde_mm_xor_si128(r, simde_mm_set1_epi8(b));
+
+      return simde_mm_xor_si128(r, simde_mm_set1_epi8(HEDLEY_STATIC_CAST(uint8_t, b)));
     #else
       simde__m128i_private
 	r_,
@@ -124,7 +124,7 @@ static const uint8_t simde_gf2p8inverse[] =
 	q |= q >> 32;
 	q |= q >> 16;
 	q |= q >> 8;
-  q ^= b;
+	q ^= b;
 	r_.u8[i] = HEDLEY_STATIC_CAST(uint8_t, q);
       }
 
@@ -214,7 +214,7 @@ static const uint8_t simde_gf2p8inverse[] =
   simde_mm256_mask_gf2p8affine_epi64_epi8 (simde__m256i src, simde__mmask32 k, simde__m256i x, simde__m256i A, int b) {
     simde__m256i_private
       src_ = simde__m256i_to_private(src);
-    
+
     simde__m256i r = simde_mm256_gf2p8affine_epi64_epi8(x, A, b);
     simde__m256i_private r_ = simde__m256i_to_private(r);
 
@@ -419,7 +419,7 @@ static const uint8_t simde_gf2p8inverse[] =
   simde_mm256_mask_gf2p8affineinv_epi64_epi8 (simde__m256i src, simde__mmask32 k, simde__m256i x, simde__m256i A, int b) {
     simde__m256i_private
       src_ = simde__m256i_to_private(src);
-    
+
     simde__m256i r = simde_mm256_gf2p8affineinv_epi64_epi8(x, A, b);
     simde__m256i_private r_ = simde__m256i_to_private(r);
 
@@ -553,7 +553,7 @@ simde__m128i simde_mm_gf2p8mul_epi8 (simde__m128i a, simde__m128i b) {
       r_,
       a_ = simde__m128i_to_private(a),
       b_ = simde__m128i_to_private(b);
- 
+
     SIMDE__VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.u8) / sizeof(r_.u8[0])) ; i++) {
       r_.u8[i] = 0;
@@ -571,7 +571,7 @@ simde__m128i simde_mm_gf2p8mul_epi8 (simde__m128i a, simde__m128i b) {
     }
 
     return simde__m128i_from_private(r_);
-  #endif  
+  #endif
   }
 #if defined(SIMDE_GFNI_ENABLE_NATIVE_ALIASES)
   #define _mm_gf2p8mul_epi8(a, b) simde_mm_gf2p8mul_epi8(a, b)
@@ -655,7 +655,7 @@ simde_mm256_mask_gf2p8mul_epi8 (simde__m256i src, simde__mmask32 k, simde__m256i
   #else
     simde__m256i_private
       src_ = simde__m256i_to_private(src);
-    
+
     simde__m256i r = simde_mm256_gf2p8mul_epi8(a, b);
     simde__m256i_private r_ = simde__m256i_to_private(r);
 
