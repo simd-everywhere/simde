@@ -287,6 +287,9 @@
 #  if defined(__AVX512VL__)
 #    define SIMDE_ARCH_X86_AVX512VL 1
 #  endif
+#  if defined(__GFNI__)
+#    define SIMDE_ARCH_X86_GFNI 1
+#  endif
 #endif
 
 /* Itanium

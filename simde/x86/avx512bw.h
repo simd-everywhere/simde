@@ -375,6 +375,80 @@ simde_mm512_cvtsepi16_epi8 (simde__m512i a) {
   #define _mm512_cvtsepi16_epi8(a) simde_mm512_cvtsepi16_epi8(a)
 #endif
 
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m512i
+simde_mm512_mask_mov_epi8 (simde__m512i src, simde__mmask64 k, simde__m512i a) {
+  simde__m512i_private
+    r_,
+    src_ = simde__m512i_to_private(src),
+    a_ = simde__m512i_to_private(a);
+
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r_.i8) / sizeof(r_.i8[0])) ; i++) {
+    r_.i8[i] = ((k >> i) & 1) ? a_.i8[i] : src_.i8[i];
+  }
+
+  return simde__m512i_from_private(r_);
+}
+#if defined(SIMDE_AVX512BW_NATIVE)
+  #define simde_mm512_mask_mov_epi8(src, k, a) _mm512_mask_mov_epi8(src, k, a)
+#endif
+#if defined(SIMDE_AVX512BW_ENABLE_NATIVE_ALIASES)
+  #define _mm512_mask_mov_epi8(src, k, a) simde_mm512_mask_mov_epi8(src, k, a)
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m512i
+simde_mm512_maskz_mov_epi8 (simde__mmask64 k, simde__m512i a) {
+  simde__m512i_private
+    r_,
+    a_ = simde__m512i_to_private(a);
+
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r_.i8) / sizeof(r_.i8[0])) ; i++) {
+    r_.i8[i] = ((k >> i) & 1) ? a_.i8[i] : INT8_C(0);
+  }
+
+  return simde__m512i_from_private(r_);
+}
+#if defined(SIMDE_AVX512BW_NATIVE)
+  #define simde_mm512_maskz_mov_epi8(k, a) _mm512_maskz_mov_epi8(k, a)
+#endif
+#if defined(SIMDE_AVX512BW_ENABLE_NATIVE_ALIASES)
+  #define _mm512_maskz_mov_epi8(k, a) simde_mm512_maskz_mov_epi8(k, a)
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__mmask64
+simde_mm512_movepi8_mask (simde__m512i a) {
+  simde__m512i_private a_ = simde__m512i_to_private(a);
+  simde__mmask64 r;
+
+  #if defined(SIMDE_ARCH_X86_AVX2)
+    r =             HEDLEY_STATIC_CAST(simde__mmask64, HEDLEY_STATIC_CAST(unsigned int, simde_mm256_movemask_epi8(a_.m256i[1])));
+    r = (r << 32) | HEDLEY_STATIC_CAST(simde__mmask64, HEDLEY_STATIC_CAST(unsigned int, simde_mm256_movemask_epi8(a_.m256i[0])));
+  #elif defined(SIMDE_ARCH_X86_SSE2)
+    r =             HEDLEY_STATIC_CAST(simde__mmask64, HEDLEY_STATIC_CAST(unsigned int, simde_mm_movemask_epi8(a_.m128i[3])));
+    r = (r << 16) | HEDLEY_STATIC_CAST(simde__mmask64, HEDLEY_STATIC_CAST(unsigned int, simde_mm_movemask_epi8(a_.m128i[2])));
+    r = (r << 16) | HEDLEY_STATIC_CAST(simde__mmask64, HEDLEY_STATIC_CAST(unsigned int, simde_mm_movemask_epi8(a_.m128i[1])));
+    r = (r << 16) | HEDLEY_STATIC_CAST(simde__mmask64, HEDLEY_STATIC_CAST(unsigned int, simde_mm_movemask_epi8(a_.m128i[0])));
+  #else
+    r = 0;
+
+    for (size_t i = 0 ; i < (sizeof(a_.i8) / sizeof(a_.i8[0])) ; i++) {
+      r |= (a_.i8[i] < 0) ? (1ULL << i) : 0;
+    }
+  #endif
+
+  return r;
+}
+#if defined(SIMDE_AVX512BW_NATIVE)
+  #define simde_mm512_movepi8_mask(a) _mm512_movepi8_mask(a);
+#endif
+#if defined(SIMDE_AVX512BW_ENABLE_NATIVE_ALIASES)
+  #define _mm512_movepi8_mask(a) simde_mm512_movepi8_mask(a)
+#endif
+
 SIMDE__END_DECLS
 
 HEDLEY_DIAGNOSTIC_POP

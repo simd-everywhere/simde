@@ -22,6 +22,7 @@ install_headers(
 		'simde/x86/avx512dq.h',
 		'simde/x86/avx512f.h',
 		'simde/x86/fma.h',
+		'simde/x86/gfni.h',
 		'simde/x86/mmx.h',
 		'simde/x86/sse.h',
 		'simde/x86/sse2.h',
