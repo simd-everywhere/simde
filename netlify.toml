@@ -9,12 +9,12 @@
 
 [[redirects]]
   from = "/godbolt/simple"
-  to = "https://godbolt.org/z/-twon_"
+  to = "https://godbolt.org/z/Y3XexA"
   status = 302
   force = true
 
 [[redirects]]
   from = "/godbolt/demo"
-  to = "https://godbolt.org/z/8cAgiy"
+  to = "https://godbolt.org/z/v9R-cP"
   status = 302
   force = true
