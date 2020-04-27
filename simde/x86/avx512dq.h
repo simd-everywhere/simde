@@ -113,6 +113,58 @@ simde_mm512_and_ps (simde__m512 a, simde__m512 b) {
 #  define _mm512_and_ps(a, b) simde_mm512_and_ps(a, b)
 #endif
 
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m512
+simde_mm512_mask_and_ps(simde__m512 src, simde__mmask16 k, simde__m512 a, simde__m512 b) {
+#if defined(SIMDE_AVX512DQ_NATIVE)
+  return _mm512_mask_and_ps(src, k, a, b);
+#else
+  return simde_mm512_mask_mov_ps(src, k, simde_mm512_and_ps(a, b));
+#endif
+}
+#if defined(SIMDE_AVX512DQ_ENABLE_NATIVE_ALIASES)
+#define _mm512_mask_and_ps(src, k, a, b) simde_mm512_mask_and_ps(src, k, a, b)
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m512
+simde_mm512_maskz_and_ps(simde__mmask16 k, simde__m512 a, simde__m512 b) {
+#if defined(SIMDE_AVX512DQ_NATIVE)
+  return _mm512_maskz_and_ps(k, a, b);
+#else
+  return simde_mm512_maskz_mov_ps(k, simde_mm512_and_ps(a, b));
+#endif
+}
+#if defined(SIMDE_AVX512DQ_ENABLE_NATIVE_ALIASES)
+#define _mm512_maskz_and_ps(k, a, b) simde_mm512_maskz_and_ps(k, a, b)
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m512d
+simde_mm512_mask_and_pd(simde__m512d src, simde__mmask8 k, simde__m512d a, simde__m512d b) {
+#if defined(SIMDE_AVX512DQ_NATIVE)
+  return _mm512_mask_and_pd(src, k, a, b);
+#else
+  return simde_mm512_mask_mov_pd(src, k, simde_mm512_and_pd(a, b));
+#endif
+}
+#if defined(SIMDE_AVX512DQ_ENABLE_NATIVE_ALIASES)
+#define _mm512_mask_and_pd(src, k, a, b) simde_mm512_mask_and_pd(src, k, a, b)
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m512d
+simde_mm512_maskz_and_pd(simde__mmask8 k, simde__m512d a, simde__m512d b) {
+#if defined(SIMDE_AVX512DQ_NATIVE)
+  return _mm512_maskz_and_pd(k, a, b);
+#else
+  return simde_mm512_maskz_mov_pd(k, simde_mm512_and_pd(a, b));
+#endif
+}
+#if defined(SIMDE_AVX512DQ_ENABLE_NATIVE_ALIASES)
+#define _mm512_maskz_and_pd(k, a, b) simde_mm512_maskz_and_pd(k, a, b)
+#endif
+
 SIMDE__END_DECLS
 
 HEDLEY_DIAGNOSTIC_POP
