@@ -440,7 +440,7 @@ simde_mm512_movepi8_mask (simde__m512i a) {
     r =             HEDLEY_STATIC_CAST(simde__mmask64, HEDLEY_STATIC_CAST(unsigned int, simde_mm_movemask_epi8(a_.m128i[3])));
     r = (r << 16) | HEDLEY_STATIC_CAST(simde__mmask64, HEDLEY_STATIC_CAST(unsigned int, simde_mm_movemask_epi8(a_.m128i[2])));
     r = (r << 16) | HEDLEY_STATIC_CAST(simde__mmask64, HEDLEY_STATIC_CAST(unsigned int, simde_mm_movemask_epi8(a_.m128i[1])));
-    r = (r << 16) | HEDLEY_STATIC_CAST(simde__mmask64, HEDLEY_STATIC_CAST(unsigned int, simde_mm_movemask_epi8(a_.m128i[0]))));
+    r = (r << 16) | HEDLEY_STATIC_CAST(simde__mmask64, HEDLEY_STATIC_CAST(unsigned int, simde_mm_movemask_epi8(a_.m128i[0])));
   #else
     r = 0;
 
