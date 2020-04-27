@@ -165,6 +165,66 @@ simde_mm512_maskz_and_pd(simde__mmask8 k, simde__m512d a, simde__m512d b) {
 #define _mm512_maskz_and_pd(k, a, b) simde_mm512_maskz_and_pd(k, a, b)
 #endif
 
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m512
+simde_mm512_andnot_ps (simde__m512 a, simde__m512 b) {
+#if defined(SIMDE_AVX512DQ_NATIVE)
+  return _mm512_andnot_ps(a, b);
+#else
+  simde__m512_private
+    r_,
+    a_ = simde__m512_to_private(a),
+    b_ = simde__m512_to_private(b);
+
+#if defined(SIMDE_ARCH_X86_AVX)
+  r_.m256[0] = simde_mm256_andnot_ps(a_.m256[0], b_.m256[0]);
+  r_.m256[1] = simde_mm256_andnot_ps(a_.m256[1], b_.m256[1]);
+#elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+  r_.i32f = ~a_.i32f & b_.i32f;
+#else
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r_.i32f) / sizeof(r_.i32f[0])) ; i++) {
+    r_.i32f[i] = ~a_.i32f[i] & b_.i32f[i];
+  }
+#endif
+
+  return simde__m512_from_private(r_);
+#endif
+}
+#if defined(SIMDE_AVX512DQ_ENABLE_NATIVE_ALIASES)
+#  define _mm512_andnot_ps(a, b) simde_mm512_andnot_ps(a, b)
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m512d
+simde_mm512_andnot_pd (simde__m512d a, simde__m512d b) {
+#if defined(SIMDE_AVX512DQ_NATIVE)
+  return _mm512_andnot_pd(a, b);
+#else
+  simde__m512d_private
+    r_,
+    a_ = simde__m512d_to_private(a),
+    b_ = simde__m512d_to_private(b);
+
+#if defined(SIMDE_ARCH_X86_AVX)
+  r_.m256d[0] = simde_mm256_andnot_pd(a_.m256d[0], b_.m256d[0]);
+  r_.m256d[1] = simde_mm256_andnot_pd(a_.m256d[1], b_.m256d[1]);
+#elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+  r_.i32f = ~a_.i32f & b_.i32f;
+#else
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r_.i32f) / sizeof(r_.i32f[0])) ; i++) {
+    r_.i32f[i] = ~a_.i32f[i] & b_.i32f[i];
+  }
+#endif
+
+  return simde__m512d_from_private(r_);
+#endif
+}
+#if defined(SIMDE_AVX512DQ_ENABLE_NATIVE_ALIASES)
+#  define _mm512_andnot_pd(a, b) simde_mm512_andnot_pd(a, b)
+#endif
+
 SIMDE__END_DECLS
 
 HEDLEY_DIAGNOSTIC_POP
