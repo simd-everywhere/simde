@@ -444,8 +444,8 @@ simde_mm512_movepi8_mask (simde__m512i a) {
   #else
     r = 0;
 
-    for (size_t i = 0 ; i < (sizeof(a_.s8) / sizeof(a_.s8[0])) ; i++) {
-      r |= (a_.s8[i] < 0) ? (1ULL << i) : 0;
+    for (size_t i = 0 ; i < (sizeof(a_.i8) / sizeof(a_.i8[0])) ; i++) {
+      r |= (a_.i8[i] < 0) ? (1ULL << i) : 0;
     }
   #endif
 
