@@ -116,7 +116,7 @@ simde_x_mm_gf2p8matrix_multiply_epi64_epi8 (simde__m128i x, simde__m128i A) {
       q = A_.u64[i / 8];
 #if SIMDE_BYTE_ORDER_BE
       /* N.B. CM: must generalize to other compilers */
-      q = __builtin_bswap64A_.u64(q);
+      q = __builtin_bswap64(q);
 #endif
       q &= HEDLEY_STATIC_CAST(uint64_t, x_.u8[i]) * ones;
       q ^= q >> 4;
