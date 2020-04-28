@@ -89,7 +89,9 @@ simde_x_mm_gf2p8matrix_multiply_epi64_epi8 (simde__m128i x, simde__m128i A) {
     a = simde_mm_shuffle_epi8(A, simde_x_mm_set_epu64x(UINT64_C(0x08090A0B0C0D0E0F), UINT64_C(0x0001020304050607)));
     r = simde_mm_setzero_si128();
 
+#if !defined(__INTEL_COMPILER)
     SIMDE__VECTORIZE
+#endif
     for (int i = 0 ; i < 8 ; i++) {
       p = simde_mm_set1_epi16(HEDLEY_STATIC_CAST(uint16_t, simde_mm_movemask_epi8(a)));
       p = simde_mm_shuffle_epi8(p, byteSelect);
