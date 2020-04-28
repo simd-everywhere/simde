@@ -13,6 +13,7 @@ simde_test_x86_sources = [
   'avx512bw.c',
   'avx512vl.c',
   'avx512dq.c',
+  'gfni.c',
   'svml.c'
 ]
 
