@@ -21,6 +21,7 @@
  * Copyright:
  *   2018      Evan Nemerson <evan@nemerson.com>
  *   2019      Michael R. Crusoe <michael.crusoe@gmail.com>
+     2020      Himanshi Mathur <himanshi18037@iiitd.ac.in>
  */
 
 #include "sse4.1.h"
