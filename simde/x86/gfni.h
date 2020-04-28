@@ -111,10 +111,14 @@ simde_x_mm_gf2p8matrix_multiply_epi64_epi8 (simde__m128i x, simde__m128i A) {
 
     SIMDE__VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.u8) / sizeof(r_.u8[0])) ; i++) {
-      q = HEDLEY_STATIC_CAST(uint64_t, x_.u8[i]) * ones;
 
       /* N.B. CM: is this the cause of the big-endian failures? */
-      q &= A_.u64[i / 8];
+      q = A_.u64[i / 8];
+#if SIMDE_BYTE_ORDER_BE
+      /* N.B. CM: must generalize to other compilers */
+      q = __builtin_bswap64A_.u64(q);
+#endif
+      q &= HEDLEY_STATIC_CAST(uint64_t, x_.u8[i]) * ones;
       q ^= q >> 4;
       q ^= q >> 2;
       q ^= q >> 1;
