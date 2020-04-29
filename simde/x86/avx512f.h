@@ -21,6 +21,7 @@
  * Copyright:
  *   2020      Evan Nemerson <evan@nemerson.com>
      2020      Himanshi Mathur <himanshi18037@iiitd.ac.in>
+     2020      Hidayat Khan <huk2209@gmail.com>
  */
 
 #if !defined(SIMDE__AVX512F_H)
