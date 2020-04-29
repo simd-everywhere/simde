@@ -27,12 +27,10 @@
  *   2018      Jeff Daily <jeff.daily@amd.com>
  */
 
-#include "mmx.h"
-#if !defined(SIMDE__SSE2_H)
-#  if !defined(SIMDE__SSE2_H)
-#    define SIMDE__SSE2_H
-#  endif
-#  include "sse.h"
+#if !defined(SIMDE_SSE2_H)
+#define SIMDE_SSE2_H
+
+#include "sse.h"
 
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
@@ -5988,4 +5986,4 @@ SIMDE__END_DECLS
 
 HEDLEY_DIAGNOSTIC_POP
 
-#endif /* !defined(SIMDE__SSE2_H) */
+#endif /* !defined(SIMDE_SSE2_H) */

@@ -21,17 +21,14 @@
  * Copyright:
  *   2018      Evan Nemerson <evan@nemerson.com>
  *   2019      Michael R. Crusoe <michael.crusoe@gmail.com>
-     2020      Himanshi Mathur <himanshi18037@iiitd.ac.in>
-     2020      Hidayat Khan <huk2209@gmail.com>
+ *   2020      Himanshi Mathur <himanshi18037@iiitd.ac.in>
+ *   2020      Hidayat Khan <huk2209@gmail.com>
  */
 
-#include "sse4.1.h"
-#include "sse4.2.h"
-#if !defined(SIMDE__AVX2_H)
-#  if !defined(SIMDE__AVX2_H)
-#    define SIMDE__AVX2_H
-#  endif
-#  include "avx.h"
+#if !defined(SIMDE_AVX2_H)
+#define SIMDE_AVX2_H
+
+#include "avx.h"
 
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
@@ -2401,4 +2398,4 @@ SIMDE__END_DECLS
 
 HEDLEY_DIAGNOSTIC_POP
 
-#endif /* !defined(SIMDE__AVX2_H) */
+#endif /* !defined(SIMDE_AVX2_H) */

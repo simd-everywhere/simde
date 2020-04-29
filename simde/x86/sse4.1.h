@@ -21,11 +21,10 @@
  * SOFTWARE.
  */
 
-#if !defined(SIMDE__SSE4_1_H)
-#  if !defined(SIMDE__SSE4_1_H)
-#    define SIMDE__SSE4_1_H
-#  endif
-#  include "ssse3.h"
+#if !defined(SIMDE_SSE4_1_H)
+#define SIMDE_SSE4_1_H
+
+#include "ssse3.h"
 
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
@@ -1780,4 +1779,4 @@ SIMDE__END_DECLS
 
 HEDLEY_DIAGNOSTIC_POP
 
-#endif /* !defined(SIMDE__SSE4_1_H) */
+#endif /* !defined(SIMDE_SSE4_1_H) */

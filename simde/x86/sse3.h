@@ -22,11 +22,10 @@
  *   2017-2020 Evan Nemerson <evan@nemerson.com>
  */
 
-#if !defined(SIMDE__SSE3_H)
-#  if !defined(SIMDE__SSE3_H)
-#    define SIMDE__SSE3_H
-#  endif
-#  include "sse2.h"
+#if !defined(SIMDE_SSE3_H)
+#define SIMDE_SSE3_H
+
+#include "sse2.h"
 
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
@@ -340,4 +339,4 @@ SIMDE__END_DECLS
 
 HEDLEY_DIAGNOSTIC_POP
 
-#endif /* !defined(SIMDE__SSE3_H) */
+#endif /* !defined(SIMDE_SSE3_H) */

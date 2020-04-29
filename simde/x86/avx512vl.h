@@ -23,8 +23,9 @@
      2020      Himanshi Mathur <himanshi18037@iiitd.ac.in>
  */
 
-#if !defined(SIMDE__AVX512VL_H)
-#define SIMDE__AVX512VL_H
+#if !defined(SIMDE_AVX512VL_H)
+#define SIMDE_AVX512VL_H
+
 #include "avx512bw.h"
 
 HEDLEY_DIAGNOSTIC_PUSH
@@ -674,4 +675,4 @@ SIMDE__END_DECLS
 
 HEDLEY_DIAGNOSTIC_POP
 
-#endif /* !defined(SIMDE__AVX512VL_H) */
+#endif /* !defined(SIMDE_AVX512VL_H) */

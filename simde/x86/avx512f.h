@@ -24,11 +24,10 @@
      2020      Hidayat Khan <huk2209@gmail.com>
  */
 
-#if !defined(SIMDE__AVX512F_H)
-#  if !defined(SIMDE__AVX512F_H)
-#    define SIMDE__AVX512F_H
-#  endif
-#  include "avx2.h"
+#if !defined(SIMDE_AVX512F_H)
+#define SIMDE_AVX512F_H
+
+#include "avx2.h"
 
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
@@ -4157,4 +4156,4 @@ SIMDE__END_DECLS
 
 HEDLEY_DIAGNOSTIC_POP
 
-#endif /* !defined(SIMDE__AVX512F_H) */
+#endif /* !defined(SIMDE_AVX512F_H) */

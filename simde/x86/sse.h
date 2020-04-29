@@ -25,11 +25,10 @@
  *   2015      Ken Fast <kfast@gdeb.com>
  */
 
-#if !defined(SIMDE__SSE_H)
-#  if !defined(SIMDE__SSE_H)
-#    define SIMDE__SSE_H
-#  endif
-#  include "mmx.h"
+#if !defined(SIMDE_SSE_H)
+#define SIMDE_SSE_H
+
+#include "mmx.h"
 
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
@@ -3725,4 +3724,4 @@ SIMDE__END_DECLS
 
 HEDLEY_DIAGNOSTIC_POP
 
-#endif /* !defined(SIMDE__SSE_H) */
+#endif /* !defined(SIMDE_SSE_H) */

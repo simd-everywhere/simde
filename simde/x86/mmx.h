@@ -21,11 +21,10 @@
  * SOFTWARE.
  */
 
-#if !defined(SIMDE__MMX_H)
-#  if !defined(SIMDE__MMX_H)
-#    define SIMDE__MMX_H
-#  endif
-#  include "../simde-common.h"
+#if !defined(SIMDE_MMX_H)
+#define SIMDE_MMX_H
+
+#include "../simde-common.h"
 
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
@@ -2207,4 +2206,4 @@ SIMDE__END_DECLS
 
 HEDLEY_DIAGNOSTIC_POP
 
-#endif /* !defined(SIMDE__MMX_H) */
+#endif /* !defined(SIMDE_MMX_H) */

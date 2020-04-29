@@ -22,13 +22,10 @@
  *   2018      Evan Nemerson <evan@nemerson.com>
  */
 
-#include "sse.h"
-#include "sse2.h"
-#if !defined(SIMDE__AVX_H)
-#  if !defined(SIMDE__AVX_H)
-#    define SIMDE__AVX_H
-#  endif
-#  include "sse4.1.h"
+#if !defined(SIMDE_AVX_H)
+#define SIMDE_AVX_H
+
+#include "sse4.2.h"
 
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
@@ -5382,4 +5379,4 @@ SIMDE__END_DECLS
 
 HEDLEY_DIAGNOSTIC_POP
 
-#endif /* !defined(SIMDE__AVX_H) */
+#endif /* !defined(SIMDE_AVX_H) */

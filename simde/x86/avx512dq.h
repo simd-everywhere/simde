@@ -20,11 +20,12 @@
  *
  * Copyright:
  *   2020      Evan Nemerson <evan@nemerson.com>
-     2020      Himanshi Mathur <himanshi18037@iiitd.ac.in>
+ *   2020      Himanshi Mathur <himanshi18037@iiitd.ac.in>
  */
 
-#if !defined(SIMDE__AVX512DQ_H)
-#define SIMDE__AVX512DQ_H
+#if !defined(SIMDE_AVX512DQ_H)
+#define SIMDE_AVX512DQ_H
+
 #include "avx512bw.h"
 
 HEDLEY_DIAGNOSTIC_PUSH
@@ -230,4 +231,4 @@ SIMDE__END_DECLS
 
 HEDLEY_DIAGNOSTIC_POP
 
-#endif /* !defined(SIMDE__AVX512DQ_H) */
+#endif /* !defined(SIMDE_AVX512DQ_H) */
