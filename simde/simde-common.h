@@ -1,4 +1,4 @@
-/* Copyright (c) 2017-2019 Evan Nemerson <evan@nemerson.com>
+/* Copyright (c) 2017-2020 Evan Nemerson <evan@nemerson.com>
  *
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
@@ -32,6 +32,7 @@
 #define SIMDE_VERSION HEDLEY_VERSION_ENCODE(SIMDE_VERSION_MAJOR, SIMDE_VERSION_MINOR, SIMDE_VERSION_MICRO)
 
 #include "simde-arch.h"
+#include "simde-features.h"
 
 #include <stddef.h>
 

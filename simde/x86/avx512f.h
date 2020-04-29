@@ -32,14 +32,6 @@
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 
-#  if defined(SIMDE_ARCH_X86_AVX512F) && !defined(SIMDE_AVX512F_NO_NATIVE) && !defined(SIMDE_NO_NATIVE)
-#    define SIMDE_AVX512F_NATIVE
-#  elif defined(SIMDE_ARCH_ARM_NEON) && !defined(SIMDE_AVX512F_NO_NEON) && !defined(SIMDE_NO_NEON)
-#    define SIMDE_AVX512F_NEON
-#  elif defined(SIMDE_ARCH_POWER_ALTIVEC)
-#    define SIMDE_AVX512F_POWER_ALTIVEC
-#  endif
-
   /* The problem is that Microsoft doesn't support 64-byte aligned parameters, except for
      __m512/__m512i/__m512d.  Since our private union has an __m512 member it will be 64-byte
      aligned even if we reduce the alignment requirements of other members.

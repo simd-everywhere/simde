@@ -58,7 +58,7 @@ simde_vaddq_s64(simde_int64x2_t a, simde_int64x2_t b) {
   simde_int64x2_t r;
 #if defined(SIMDE_NEON_NATIVE)
   r.n = vaddq_s64(a.n, b.n);
-#elif defined(SIMDE_SSE2_NATIVE)
+#elif defined(SIMDE_NEON_SSE2)
   r.sse = _mm_add_epi64(a.sse, b.sse);
 #else
   SIMDE__VECTORIZE
@@ -110,14 +110,10 @@ SIMDE__FUNCTION_ATTRIBUTES
 simde_int64x2_t
 simde_x_vmulq_s64(simde_int64x2_t a, simde_int64x2_t b) {
   simde_int64x2_t r;
-#if defined(SIMDE_SSE2_NATIVE)
-  r.sse = _mm_mul_epi64(a.sse, b.sse);
-#else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i64) / sizeof(r.i64[0])) ; i++) {
     r.i64[i] = a.i64[i] * b.i64[i];
   }
-#endif
   return r;
 }
 
@@ -127,7 +123,7 @@ simde_vsubq_s64(simde_int64x2_t a, simde_int64x2_t b) {
   simde_int64x2_t r;
 #if defined(SIMDE_NEON_NATIVE)
   r.n = vsubq_s64(a.n, b.n);
-#elif defined(SIMDE_SSE2_NATIVE)
+#elif defined(SIMDE_NEON_SSE2)
   r.sse = _mm_sub_epi64(a.sse, b.sse);
 #else
   SIMDE__VECTORIZE

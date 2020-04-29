@@ -31,17 +31,6 @@ HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 
 #  if defined(SIMDE_AVX_NATIVE)
-#    undef SIMDE_AVX_NATIVE
-#  endif
-#  if defined(SIMDE_ARCH_X86_AVX) && !defined(SIMDE_AVX_NO_NATIVE) && !defined(SIMDE_NO_NATIVE)
-#    define SIMDE_AVX_NATIVE
-#  elif defined(SIMDE_ARCH_ARM_NEON) && !defined(SIMDE_AVX_NO_NEON) && !defined(SIMDE_NO_NEON)
-#    define SIMDE_AVX_NEON
-#  elif defined(SIMDE_ARCH_POWER_ALTIVEC)
-#    define SIMDE_AVX_POWER_ALTIVEC
-#  endif
-
-#  if defined(SIMDE_AVX_NATIVE)
 #    include <immintrin.h>
 #  endif
 

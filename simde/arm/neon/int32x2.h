@@ -55,7 +55,7 @@ simde_vadd_s32(simde_int32x2_t a, simde_int32x2_t b) {
   simde_int32x2_t r;
 #if defined(SIMDE_NEON_NATIVE)
   r.n = vadd_s32(a.n, b.n);
-#elif defined(SIMDE_MMX_NATIVE)
+#elif defined(SIMDE_NEON_MMX)
   r.mmx = _mm_add_pi32(a.mmx, b.mmx);
 #else
   SIMDE__VECTORIZE
@@ -109,8 +109,6 @@ simde_vmul_s32(simde_int32x2_t a, simde_int32x2_t b) {
   simde_int32x2_t r;
 #if defined(SIMDE_NEON_NATIVE)
   r.n = vmul_s32(a.n, b.n);
-#elif defined(SIMDE_MMX_NATIVE)
-  r.mmx = _mm_mul_pi32(a.mmx, b.mmx);
 #else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i32) / sizeof(r.i32[0])) ; i++) {
@@ -126,7 +124,7 @@ simde_vsub_s32(simde_int32x2_t a, simde_int32x2_t b) {
   simde_int32x2_t r;
 #if defined(SIMDE_NEON_NATIVE)
   r.n = vsub_s32(a.n, b.n);
-#elif defined(SIMDE_MMX_NATIVE)
+#elif defined(SIMDE_NEON_MMX)
   r.mmx = _mm_sub_pi32(a.mmx, b.mmx);
 #else
   SIMDE__VECTORIZE

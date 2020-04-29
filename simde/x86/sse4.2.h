@@ -29,17 +29,6 @@
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 
-#  if defined(SIMDE_SSE4_2_NATIVE)
-#    undef SIMDE_SSE4_2_NATIVE
-#  endif
-#  if defined(SIMDE_ARCH_X86_SSE4_2) && !defined(SIMDE_SSE4_2_NO_NATIVE) && !defined(SIMDE_NO_NATIVE)
-#    define SIMDE_SSE4_2_NATIVE
-#  elif defined(SIMDE_ARCH_ARM_NEON) && !defined(SIMDE_SSE4_2_NO_NEON) && !defined(SIMDE_NO_NEON)
-#    define SIMDE_SSE4_2_NEON
-#  elif defined(SIMDE_ARCH_POWER_ALTIVEC)
-#    define SIMDE_SSE4_2_POWER_ALTIVEC
-#  endif
-
 #  if defined(SIMDE_SSE4_2_NATIVE) && !defined(SIMDE_SSE4_1_NATIVE)
 #    if defined(SIMDE_SSE4_2_FORCE_NATIVE)
 #      error Native SSE4.2 support requires native SSE4.1 support

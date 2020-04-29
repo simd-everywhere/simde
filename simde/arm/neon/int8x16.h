@@ -58,7 +58,7 @@ simde_vaddq_s8(simde_int8x16_t a, simde_int8x16_t b) {
   simde_int8x16_t r;
 #if defined(SIMDE_NEON_NATIVE)
   r.n = vaddq_s8(a.n, b.n);
-#elif defined(SIMDE_SSE2_NATIVE)
+#elif defined(SIMDE_NEON_SSE2)
   r.sse = _mm_add_epi8(a.sse, b.sse);
 #else
   SIMDE__VECTORIZE
@@ -116,8 +116,6 @@ simde_vmulq_s8(simde_int8x16_t a, simde_int8x16_t b) {
   simde_int8x16_t r;
 #if defined(SIMDE_NEON_NATIVE)
   r.n = vmulq_s8(a.n, b.n);
-#elif defined(SIMDE_SSE2_NATIVE)
-  r.sse = _mm_mul_epi8(a.sse, b.sse);
 #else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i8) / sizeof(r.i8[0])) ; i++) {
@@ -133,7 +131,7 @@ simde_vsubq_s8(simde_int8x16_t a, simde_int8x16_t b) {
   simde_int8x16_t r;
 #if defined(SIMDE_NEON_NATIVE)
   r.n = vsubq_s8(a.n, b.n);
-#elif defined(SIMDE_SSE2_NATIVE)
+#elif defined(SIMDE_NEON_SSE2)
   r.sse = _mm_sub_epi8(a.sse, b.sse);
 #else
   SIMDE__VECTORIZE

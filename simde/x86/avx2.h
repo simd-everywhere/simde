@@ -33,15 +33,6 @@
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 
-#  if defined(SIMDE_AVX2_NATIVE)
-#    undef SIMDE_AVX2_NATIVE
-#  endif
-#  if defined(SIMDE_ARCH_X86_AVX2) && !defined(SIMDE_AVX2_NO_NATIVE) && !defined(SIMDE_NO_NATIVE)
-#    define SIMDE_AVX2_NATIVE
-#  elif defined(SIMDE_ARCH_ARM_NEON) && !defined(SIMDE_AVX2_NO_NEON) && !defined(SIMDE_NO_NEON)
-#    define SIMDE_AVX2_NEON
-#  endif
-
 #  if defined(SIMDE_AVX2_NATIVE) && !defined(SIMDE_AVX_NATIVE)
 #    if defined(SIMDE_AVX2_FORCE_NATIVE)
 #      error Native AVX2 support requires native AVX support

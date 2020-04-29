@@ -30,17 +30,6 @@
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 
-#  if defined(SIMDE_SSSE3_NATIVE)
-#    undef SIMDE_SSSE3_NATIVE
-#  endif
-#  if defined(SIMDE_ARCH_X86_SSSE3) && !defined(SIMDE_SSSE3_NO_NATIVE) && !defined(SIMDE_NO_NATIVE)
-#    define SIMDE_SSSE3_NATIVE
-#  elif defined(SIMDE_ARCH_ARM_NEON) && !defined(SIMDE_SSSE3_NO_NEON) && !defined(SIMDE_NO_NEON)
-#    define SIMDE_SSSE3_NEON
-#  elif defined(SIMDE_ARCH_POWER_ALTIVEC)
-#    define SIMDE_SSSE3_POWER_ALTIVEC
-#  endif
-
 #  if defined(SIMDE_SSSE3_NATIVE) && !defined(SIMDE_SSE3_NATIVE)
 #    if defined(SIMDE_SSSE3_FORCE_NATIVE)
 #      error Native SSSE3 support requires native SSE3 support

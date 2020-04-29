@@ -30,15 +30,6 @@
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 
-#  if defined(SIMDE_FMA_NATIVE)
-#    undef SIMDE_FMA_NATIVE
-#  endif
-#  if defined(SIMDE_ARCH_X86_GMA) && !defined(SIMDE_FMA_NO_NATIVE) && !defined(SIMDE_NO_NATIVE)
-#    define SIMDE_FMA_NATIVE
-#  elif defined(SIMDE_ARCH_ARM_NEON) && !defined(SIMDE_FMA_NO_NEON) && !defined(SIMDE_NO_NEON)
-#    define SIMDE_FMA_NEON
-#  endif
-
 #  if defined(SIMDE_FMA_NATIVE) && !defined(SIMDE_AVX_NATIVE)
 #    if defined(SIMDE_FMA_FORCE_NATIVE)
 #      error Native FMA support requires native AVX support

@@ -34,19 +34,6 @@ HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 
 #  if defined(SIMDE_SSE_NATIVE)
-#    undef SIMDE_SSE_NATIVE
-#  endif
-#  if defined(SIMDE_ARCH_X86_SSE) && !defined(SIMDE_SSE_NO_NATIVE) && !defined(SIMDE_NO_NATIVE)
-#    define SIMDE_SSE_NATIVE
-#  elif defined(SIMDE_ARCH_ARM_NEON) && !defined(SIMDE_SSE_NO_NEON) && !defined(SIMDE_NO_NEON)
-#    define SIMDE_SSE_NEON
-#  elif defined(SIMDE_ARCH_WASM_SIMD128)
-#    define SIMDE_SSE_WASM_SIMD128
-#  elif defined(SIMDE_ARCH_POWER_ALTIVEC)
-#    define SIMDE_SSE_POWER_ALTIVEC
-#  endif
-
-#  if defined(SIMDE_SSE_NATIVE)
 #    include <xmmintrin.h>
 #  else
 #    if defined(SIMDE_SSE_NEON)
@@ -775,7 +762,7 @@ simde_mm_cmpneq_ps (simde__m128 a, simde__m128 b) {
     r_.neon_u32 = vmvnq_u32(vceqq_f32(a_.neon_f32, b_.neon_f32));
   #elif defined(SIMDE_SSE_WASM_SIMD128)
     r_.wasm_v128 = wasm_f32x4_ne(a_.wasm_v128, b_.wasm_v128);
-  #elif SIMDE_ARCH_POWER_CHECK(900) && !defined(HEDLEY_IBM_VERSION)
+  #elif defined(SIMDE_SSE_POWER_ALTIVEC) && SIMDE_ARCH_POWER_CHECK(900) && !defined(HEDLEY_IBM_VERSION)
     /* vec_cmpne(vector float, vector float) is missing from XL C/C++ v16.1.1,
        though the documentation (table 89 on page 432 of the IBM XL C/C++ for
        Linux Compiler Reference, Version 16.1.1) shows that it should be
