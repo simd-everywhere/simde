@@ -3911,6 +3911,86 @@ simde_mm512_maskz_sub_pd(simde__mmask8 k, simde__m512d a, simde__m512d b) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m512i
+simde_mm512_slli_epi32 (simde__m512i a, unsigned int imm8) {
+  simde__m512i_private
+    r_,
+    a_ = simde__m512i_to_private(a);
+
+  /* The Intel Intrinsics Guide says that only the 8 LSBits of imm8 are
+   * used.  In this case we should do "imm8 &= 0xff".  However in
+   * practice all bits are used. */
+  if (imm8 > 31) {
+    simde_memset(&r_, 0, sizeof(r_));
+  } else {
+    #if defined(SIMDE_ARCH_X86_AVX2)
+      r_.m256i[0] = simde_mm256_slli_epi32(a_.m256i[0], HEDLEY_STATIC_CAST(int, imm8));
+      r_.m256i[1] = simde_mm256_slli_epi32(a_.m256i[1], HEDLEY_STATIC_CAST(int, imm8));
+    #elif defined(SIMDE_ARCH_X86_SSE2)
+      r_.m128i[0] = simde_mm_slli_epi32(a_.m128i[0], HEDLEY_STATIC_CAST(int, imm8));
+      r_.m128i[1] = simde_mm_slli_epi32(a_.m128i[1], HEDLEY_STATIC_CAST(int, imm8));
+      r_.m128i[2] = simde_mm_slli_epi32(a_.m128i[2], HEDLEY_STATIC_CAST(int, imm8));
+      r_.m128i[3] = simde_mm_slli_epi32(a_.m128i[3], HEDLEY_STATIC_CAST(int, imm8));
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+      r_.u32 = a_.u32 << imm8;
+    #else
+      SIMDE__VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.u32) / sizeof(r_.u32[0])) ; i++) {
+        r_.u32[i] = a_.u32[i] << imm8;
+      }
+    #endif
+  }
+
+  return simde__m512i_from_private(r_);
+}
+#if defined(SIMDE_AVX512F_NATIVE)
+  #define simde_mm512_slli_epi32(a, imm8) _mm512_slli_epi32(a, imm8)
+#endif
+#if defined(SIMDE_AVX512F_ENABLE_NATIVE_ALIASES)
+  #define _mm512_slli_epi32(a, imm8) simde_mm512_slli_epi32(a, imm8)
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m512i
+simde_mm512_slli_epi64 (simde__m512i a, unsigned int imm8) {
+  simde__m512i_private
+    r_,
+    a_ = simde__m512i_to_private(a);
+
+  /* The Intel Intrinsics Guide says that only the 8 LSBits of imm8 are
+   * used.  In this case we should do "imm8 &= 0xff".  However in
+   * practice all bits are used. */
+  if (imm8 > 63) {
+    simde_memset(&r_, 0, sizeof(r_));
+  } else {
+    #if defined(SIMDE_ARCH_X86_AVX2)
+      r_.m256i[0] = simde_mm256_slli_epi64(a_.m256i[0], HEDLEY_STATIC_CAST(int, imm8));
+      r_.m256i[1] = simde_mm256_slli_epi64(a_.m256i[1], HEDLEY_STATIC_CAST(int, imm8));
+    #elif defined(SIMDE_ARCH_X86_SSE2)
+      r_.m128i[0] = simde_mm_slli_epi64(a_.m128i[0], HEDLEY_STATIC_CAST(int, imm8));
+      r_.m128i[1] = simde_mm_slli_epi64(a_.m128i[1], HEDLEY_STATIC_CAST(int, imm8));
+      r_.m128i[2] = simde_mm_slli_epi64(a_.m128i[2], HEDLEY_STATIC_CAST(int, imm8));
+      r_.m128i[3] = simde_mm_slli_epi64(a_.m128i[3], HEDLEY_STATIC_CAST(int, imm8));
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+      r_.u64 = a_.u64 << imm8;
+    #else
+      SIMDE__VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.u64) / sizeof(r_.u64[0])) ; i++) {
+        r_.u64[i] = a_.u64[i] << imm8;
+      }
+    #endif
+  }
+
+  return simde__m512i_from_private(r_);
+}
+#if defined(SIMDE_AVX512F_NATIVE)
+  #define simde_mm512_slli_epi64(a, imm8) _mm512_slli_epi64(a, imm8)
+#endif
+#if defined(SIMDE_AVX512F_ENABLE_NATIVE_ALIASES)
+  #define _mm512_slli_epi64(a, imm8) simde_mm512_slli_epi64(a, imm8)
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m512i
 simde_mm512_srli_epi32 (simde__m512i a, unsigned int imm8) {
   #if defined(SIMDE_AVX512F_NATIVE)
     return _mm512_srli_epi32(a, imm8);
