@@ -1,7 +1,6 @@
 language: c
 dist: bionic
 cache: ccache
-dist: bionic
 branches:
   except:
     - /^(wip\/)?(appveyor)(\-.+)?$/
