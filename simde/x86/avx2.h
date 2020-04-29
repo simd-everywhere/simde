@@ -22,6 +22,7 @@
  *   2018      Evan Nemerson <evan@nemerson.com>
  *   2019      Michael R. Crusoe <michael.crusoe@gmail.com>
      2020      Himanshi Mathur <himanshi18037@iiitd.ac.in>
+     2020      Hidayat Khan <huk2209@gmail.com>
  */
 
 #include "sse4.1.h"
