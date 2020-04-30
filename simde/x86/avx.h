@@ -19,7 +19,7 @@
  * SOFTWARE.
  *
  * Copyright:
- *   2018      Evan Nemerson <evan@nemerson.com>
+ *   2018-2020 Evan Nemerson <evan@nemerson.com>
  */
 
 #if !defined(SIMDE_AVX_H)

@@ -20,7 +20,7 @@
  *
  * Copyright:
  *   2020      Evan Nemerson <evan@nemerson.com>
-     2020      Himanshi Mathur <himanshi18037@iiitd.ac.in>
+ *   2020      Himanshi Mathur <himanshi18037@iiitd.ac.in>
  */
 
 #if !defined(SIMDE_AVX512VL_H)
