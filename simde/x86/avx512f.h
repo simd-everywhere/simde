@@ -2229,7 +2229,7 @@ simde_mm512_maskz_andnot_epi32(simde__mmask16 k, simde__m512i a, simde__m512i b)
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m512i
-simde_mm512_mask_andnot_epi64(simde__m512i src, simde__mmask16 k, simde__m512i a, simde__m512i b) {
+simde_mm512_mask_andnot_epi64(simde__m512i src, simde__mmask8 k, simde__m512i a, simde__m512i b) {
 #if defined(SIMDE_AVX512F_NATIVE)
   return _mm512_mask_andnot_epi64(src, k, a, b);
 #else
@@ -2242,7 +2242,7 @@ simde_mm512_mask_andnot_epi64(simde__m512i src, simde__mmask16 k, simde__m512i a
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m512i
-simde_mm512_maskz_andnot_epi64(simde__mmask16 k, simde__m512i a, simde__m512i b) {
+simde_mm512_maskz_andnot_epi64(simde__mmask8 k, simde__m512i a, simde__m512i b) {
 #if defined(SIMDE_AVX512F_NATIVE)
   return _mm512_maskz_andnot_epi64(k, a, b);
 #else
