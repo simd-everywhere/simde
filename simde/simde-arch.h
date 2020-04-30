@@ -6,6 +6,8 @@
  *   details, see the Creative Commons Zero 1.0 Universal license at
  *   <https://creativecommons.org/publicdomain/zero/1.0/>
  *
+ * SPDX-License-Identifier: CC0-1.0
+ *
  * Different compilers define different preprocessor macros for the
  * same architecture.  This is an attempt to provide a single
  * interface which is usable on any compiler.

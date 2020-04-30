@@ -6,6 +6,8 @@
  *   copyright and related or neighboring rights to this code.  For
  *   details, see the Creative Commons Zero 1.0 Universal license at
  *   https://creativecommons.org/publicdomain/zero/1.0/
+ *
+ * SPDX-License-Identifier: CC0-1.0
  */
 
 #if !defined(SIMDE_CHECK_H)
