@@ -2203,7 +2203,7 @@ test_simde_mm512_mask_xxx_epi32(const MunitParameter params[], void* data) {
 }
 
 static MunitResult
-test_simde_mm512_mask_xxx_epi32_mask(const MunitParameter params[], void* data) {
+test_simde_mm512_maskz_xxx_epi32(const MunitParameter params[], void* data) {
   (void) params;
   (void) data;
 
@@ -2211,23 +2211,24 @@ test_simde_mm512_mask_xxx_epi32_mask(const MunitParameter params[], void* data) 
     simde__mmask16 k;
     simde__m512i a;
     simde__m512i b;
-    simde__mmask16 r;
+    simde__m512i r;
   } test_vec[8] = {
 
   };
 
   printf("\n");
   for (size_t i = 0 ; i < (sizeof(test_vec) / (sizeof(test_vec[0]))) ; i++) {
-    simde__m512i_private a, b;
-    simde__mmask16 k, r;
+    simde__m512i_private a, b, r;
+    simde__mmask16 k;
 
-    k = (simde__mmask16) munit_rand_int_range(0, UINT16_MAX);
+    munit_rand_memory(sizeof(k), (uint8_t*) &k);
     munit_rand_memory(sizeof(a), (uint8_t*) &a);
-    munit_rand_memory(sizeof(b), (uint8_t*) &b);
+    munit_rand_memory(sizeof(a), (uint8_t*) &b);
+    k &= UINT16_C(0xffff);
 
-    r = simde_mm512_mask_xxx_epi32_mask(k, simde__m512i_from_private(a), simde__m512i_from_private(b));
+    r = simde__m512i_to_private(simde_mm512_maskz_xxx_epi32(k, simde__m512i_from_private(a), simde__m512i_from_private(b)));
 
-    printf("    { UINT16_C(%5" PRIu16 "),\n", k);
+    printf("    { UINT16_C(%5" PRIu16 "),\n", HEDLEY_STATIC_CAST(uint16_t, k));
     printf("      simde_mm512_set_epi32(INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "),\n"
            "                            INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "),\n"
            "                            INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "),\n"
@@ -2240,13 +2241,18 @@ test_simde_mm512_mask_xxx_epi32_mask(const MunitParameter params[], void* data) 
            "                            INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 ")),\n",
            b.i32[15], b.i32[14], b.i32[13], b.i32[12], b.i32[11], b.i32[10], b.i32[ 9], b.i32[ 8],
            b.i32[ 7], b.i32[ 6], b.i32[ 5], b.i32[ 4], b.i32[ 3], b.i32[ 2], b.i32[ 1], b.i32[ 0]);
-    printf("      UINT16_C(%5" PRIu16 ") },\n", r);
+    printf("      simde_mm512_set_epi32(INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "),\n"
+           "                            INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "),\n"
+           "                            INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "),\n"
+           "                            INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 ")) },\n",
+           r.i32[15], r.i32[14], r.i32[13], r.i32[12], r.i32[11], r.i32[10], r.i32[ 9], r.i32[ 8],
+           r.i32[ 7], r.i32[ 6], r.i32[ 5], r.i32[ 4], r.i32[ 3], r.i32[ 2], r.i32[ 1], r.i32[ 0]);
   }
   return MUNIT_FAIL;
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
-    simde__mmask16 r = simde_mm512_mask_xxx_epi32_mask(test_vec[i].k, test_vec[i].a, test_vec[i].b);
-    simde_assert_mmask16(r, ==, test_vec[i].r);
+    simde__m512i r = simde_mm512_maskz_xxx_epi32(test_vec[i].k, test_vec[i].a, test_vec[i].b);
+    simde_assert_m512i_i32(r, ==, test_vec[i].r);
   }
 
   return MUNIT_OK;
@@ -2368,7 +2374,113 @@ test_simde_mm512_mask_xxx_epi64(const MunitParameter params[], void* data) {
 }
 
 static MunitResult
-test_simde_mm512_mask_xxx_epi64_mask(const MunitParameter params[], void* data) {
+test_simde_mm512_maskz_xxx_epi64(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  const struct {
+    simde__mmask8 k;
+    simde__m512i a;
+    simde__m512i b;
+    simde__m512i r;
+  } test_vec[8] = {
+
+  };
+
+  printf("\n");
+  for (size_t i = 0 ; i < (sizeof(test_vec) / (sizeof(test_vec[0]))) ; i++) {
+    simde__m512i_private a, b, r;
+    simde__mmask8 k;
+
+    munit_rand_memory(sizeof(k), (uint8_t*) &k);
+    munit_rand_memory(sizeof(a), (uint8_t*) &a);
+    munit_rand_memory(sizeof(a), (uint8_t*) &b);
+    k &= UINT8_C(0xff);
+
+    r = simde__m512i_to_private(simde_mm512_maskz_xxx_epi64(k, simde__m512i_from_private(a), simde__m512i_from_private(b)));
+
+    printf("    { UINT8_C(%3" PRIu8 "),\n", HEDLEY_STATIC_CAST(uint8_t, k));
+    printf("      simde_mm512_set_epi64(INT64_C(%20" PRId64 "), INT64_C(%20" PRId64 "),\n"
+           "                            INT64_C(%20" PRId64 "), INT64_C(%20" PRId64 "),\n"
+           "                            INT64_C(%20" PRId64 "), INT64_C(%20" PRId64 "),\n"
+           "                            INT64_C(%20" PRId64 "), INT64_C(%20" PRId64 ")),\n",
+           a.i64[7], a.i64[6], a.i64[5], a.i64[4],
+           a.i64[3], a.i64[2], a.i64[1], a.i64[0]);
+    printf("      simde_mm512_set_epi64(INT64_C(%20" PRId64 "), INT64_C(%20" PRId64 "),\n"
+           "                            INT64_C(%20" PRId64 "), INT64_C(%20" PRId64 "),\n"
+           "                            INT64_C(%20" PRId64 "), INT64_C(%20" PRId64 "),\n"
+           "                            INT64_C(%20" PRId64 "), INT64_C(%20" PRId64 ")),\n",
+           b.i64[7], b.i64[6], b.i64[5], b.i64[4],
+           b.i64[3], b.i64[2], b.i64[1], b.i64[0]);
+    printf("      simde_mm512_set_epi64(INT64_C(%20" PRId64 "), INT64_C(%20" PRId64 "),\n"
+           "                            INT64_C(%20" PRId64 "), INT64_C(%20" PRId64 "),\n"
+           "                            INT64_C(%20" PRId64 "), INT64_C(%20" PRId64 "),\n"
+           "                            INT64_C(%20" PRId64 "), INT64_C(%20" PRId64 ")) },\n",
+           r.i64[7], r.i64[6], r.i64[5], r.i64[4],
+           r.i64[3], r.i64[2], r.i64[1], r.i64[0]);
+  }
+  return MUNIT_FAIL;
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    simde__m512i r = simde_mm512_maskz_xxx_epi64(test_vec[i].k, test_vec[i].a, test_vec[i].b);
+    simde_assert_m512i_i64(r, ==, test_vec[i].r);
+  }
+
+  return MUNIT_OK;
+}
+
+static MunitResult
+test_simde_mm512_maskz_xxx_epi32_mask(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  const struct {
+    simde__mmask16 k;
+    simde__m512i a;
+    simde__m512i b;
+    simde__mmask16 r;
+  } test_vec[8] = {
+
+  };
+
+  printf("\n");
+  for (size_t i = 0 ; i < (sizeof(test_vec) / (sizeof(test_vec[0]))) ; i++) {
+    simde__m512i_private a, b;
+    simde__mmask16 k, r;
+
+    k = (simde__mmask16) munit_rand_int_range(0, UINT16_MAX);
+    munit_rand_memory(sizeof(a), (uint8_t*) &a);
+    munit_rand_memory(sizeof(b), (uint8_t*) &b);
+
+    r = simde_mm512_mask_xxx_epi32_mask(k, simde__m512i_from_private(a), simde__m512i_from_private(b));
+
+    printf("    { UINT16_C(%5" PRIu16 "),\n", k);
+    printf("      simde_mm512_set_epi32(INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "),\n"
+           "                            INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "),\n"
+           "                            INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "),\n"
+           "                            INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 ")),\n",
+           a.i32[15], a.i32[14], a.i32[13], a.i32[12], a.i32[11], a.i32[10], a.i32[ 9], a.i32[ 8],
+           a.i32[ 7], a.i32[ 6], a.i32[ 5], a.i32[ 4], a.i32[ 3], a.i32[ 2], a.i32[ 1], a.i32[ 0]);
+    printf("      simde_mm512_set_epi32(INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "),\n"
+           "                            INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "),\n"
+           "                            INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "),\n"
+           "                            INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 "), INT32_C(%11" PRId32 ")),\n",
+           b.i32[15], b.i32[14], b.i32[13], b.i32[12], b.i32[11], b.i32[10], b.i32[ 9], b.i32[ 8],
+           b.i32[ 7], b.i32[ 6], b.i32[ 5], b.i32[ 4], b.i32[ 3], b.i32[ 2], b.i32[ 1], b.i32[ 0]);
+    printf("      UINT16_C(%5" PRIu16 ") },\n", r);
+  }
+  return MUNIT_FAIL;
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    simde__mmask16 r = simde_mm512_mask_xxx_epi32_mask(test_vec[i].k, test_vec[i].a, test_vec[i].b);
+    simde_assert_mmask16(r, ==, test_vec[i].r);
+  }
+
+  return MUNIT_OK;
+}
+
+static MunitResult
+test_simde_mm512_maskz_xxx_epi64_mask(const MunitParameter params[], void* data) {
   (void) params;
   (void) data;
 
