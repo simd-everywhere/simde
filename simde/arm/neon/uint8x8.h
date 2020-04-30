@@ -82,7 +82,7 @@ simde_vld1_u8 (uint8_t const ptr[8]) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde_uint8x8_t
 simde_x_vload_u8 (uint8_t l0, uint8_t l1, uint8_t l2, uint8_t l3,
-		  uint8_t l4, uint8_t l5, uint8_t l6, uint8_t l7) {
+                  uint8_t l4, uint8_t l5, uint8_t l6, uint8_t l7) {
   uint8_t v[] = { l0, l1, l2, l3, l4, l5, l6, l7 };
   return simde_vld1_u8(v);
 }

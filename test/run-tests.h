@@ -80,7 +80,7 @@ simde_check_double_close(double a, double b, int precision) {
   simde_assert_##VT##_##accessor##_close_ex(int line, const char* file, simde__##VT a, simde__##VT b, int precision) { \
     simde__##VT##_private \
       a_ = simde__##VT##_to_private(a), \
-      b_ = simde__##VT##_to_private(b);	\
+      b_ = simde__##VT##_to_private(b); \
     \
     for (int i = 0 ; i < HEDLEY_STATIC_CAST(int, sizeof(a_.accessor) / sizeof(a_.accessor[0])) ; i++) { \
       if (simde_check_double_close(HEDLEY_STATIC_CAST(double, a_.accessor[i]), HEDLEY_STATIC_CAST(double, b_.accessor[i]), precision)) { \
@@ -140,7 +140,7 @@ static void random_f64v(size_t nmemb, simde_float64 v[HEDLEY_ARRAY_PARAM(nmemb)]
     const T* simde__tmp_b_ = (b); \
     for (size_t simde__i_ = 0 ; simde__i_ < nmemb ; simde__i_++) { \
       if (!(simde__tmp_a_[simde__i_] op simde__tmp_b_[simde__i_])) { \
-	munit_errorf("assertion failed: (" #a ")[%" MUNIT_SIZE_MODIFIER "u] " #op " (" #b ")[%" MUNIT_SIZE_MODIFIER "u] (" prefix "%" fmt suffix " " #op " " prefix "%" fmt suffix ")", simde__i_, simde__i_, simde__tmp_a_[simde__i_], simde__tmp_b_[simde__i_]); \
+        munit_errorf("assertion failed: (" #a ")[%" MUNIT_SIZE_MODIFIER "u] " #op " (" #b ")[%" MUNIT_SIZE_MODIFIER "u] (" prefix "%" fmt suffix " " #op " " prefix "%" fmt suffix ")", simde__i_, simde__i_, simde__tmp_a_[simde__i_], simde__tmp_b_[simde__i_]); \
       } \
     } \
   } while (0)
@@ -180,10 +180,10 @@ static void random_f64v(size_t nmemb, simde_float64 v[HEDLEY_ARRAY_PARAM(nmemb)]
     const T* simde_tmp_b_ = (b); \
     for (size_t simde_i_ = 0 ; simde_i_ < nmemb ; simde_i_++) { \
       const T simde_tmp_diff_ = ((simde_tmp_a_[simde_i_] - simde_tmp_b_[simde_i_]) < 0) ? \
-	(simde_tmp_b_[simde_i_] - simde_tmp_a_[simde_i_]) : \
-	(simde_tmp_a_[simde_i_] - simde_tmp_b_[simde_i_]); \
+      (simde_tmp_b_[simde_i_] - simde_tmp_a_[simde_i_]) : \
+      (simde_tmp_a_[simde_i_] - simde_tmp_b_[simde_i_]); \
       if (MUNIT_UNLIKELY(simde_tmp_diff_ > 1e-##precision)) { \
-	munit_errorf("assertion failed: (" #a ")[%" MUNIT_SIZE_MODIFIER "u] == (" #b ")[%" MUNIT_SIZE_MODIFIER "u] (%." #precision "f == %." #precision "f)", simde_i_, simde_i_, simde_tmp_a_[simde_i_], simde_tmp_b_[simde_i_]); \
+        munit_errorf("assertion failed: (" #a ")[%" MUNIT_SIZE_MODIFIER "u] == (" #b ")[%" MUNIT_SIZE_MODIFIER "u] (%." #precision "f == %." #precision "f)", simde_i_, simde_i_, simde_tmp_a_[simde_i_], simde_tmp_b_[simde_i_]); \
       } \
     } \
   } while (0)
@@ -194,10 +194,10 @@ static void random_f64v(size_t nmemb, simde_float64 v[HEDLEY_ARRAY_PARAM(nmemb)]
     const T* simde_tmp_b_ = (b); \
     for (size_t simde_i_ = 0 ; simde_i_ < nmemb ; simde_i_++) { \
       const T simde_tmp_diff_ = ((simde_tmp_a_[simde_i_] - simde_tmp_b_[simde_i_]) < 0) ? \
-	(simde_tmp_b_[simde_i_] - simde_tmp_a_[simde_i_]) : \
-	(simde_tmp_a_[simde_i_] - simde_tmp_b_[simde_i_]); \
+      (simde_tmp_b_[simde_i_] - simde_tmp_a_[simde_i_]) : \
+      (simde_tmp_a_[simde_i_] - simde_tmp_b_[simde_i_]); \
       if (MUNIT_UNLIKELY(simde_tmp_diff_ > precision)) { \
-	munit_errorf("assertion failed: (" #a ")[%" MUNIT_SIZE_MODIFIER "u] == (" #b ")[%" MUNIT_SIZE_MODIFIER "u] (%" #precision ".1f == %" #precision ".1f)", simde_i_, simde_i_, simde_tmp_a_[simde_i_], simde_tmp_b_[simde_i_]); \
+        munit_errorf("assertion failed: (" #a ")[%" MUNIT_SIZE_MODIFIER "u] == (" #b ")[%" MUNIT_SIZE_MODIFIER "u] (%" #precision ".1f == %" #precision ".1f)", simde_i_, simde_i_, simde_tmp_a_[simde_i_], simde_tmp_b_[simde_i_]); \
       } \
     } \
   } while (0)
@@ -208,10 +208,10 @@ static void random_f64v(size_t nmemb, simde_float64 v[HEDLEY_ARRAY_PARAM(nmemb)]
     const T* simde_tmp_b_ = (b); \
     for (size_t simde_i_ = 0 ; simde_i_ < nmemb ; simde_i_++) { \
       const T simde_tmp_diff_ = ((simde_tmp_a_[simde_i_] - simde_tmp_b_[simde_i_]) < 0) ? \
-	(simde_tmp_b_[simde_i_] - simde_tmp_a_[simde_i_]) : \
-	(simde_tmp_a_[simde_i_] - simde_tmp_b_[simde_i_]); \
+      (simde_tmp_b_[simde_i_] - simde_tmp_a_[simde_i_]) : \
+      (simde_tmp_a_[simde_i_] - simde_tmp_b_[simde_i_]); \
       if (MUNIT_UNLIKELY(simde_tmp_diff_ > precision)) { \
-	munit_errorf("assertion failed: (" #a ")[%" MUNIT_SIZE_MODIFIER "u] == (" #b ")[%" MUNIT_SIZE_MODIFIER "u] (%" #precision ".1f == %" #precision ".1f)", simde_i_, simde_i_, simde_tmp_a_[simde_i_], simde_tmp_b_[simde_i_]); \
+        munit_errorf("assertion failed: (" #a ")[%" MUNIT_SIZE_MODIFIER "u] == (" #b ")[%" MUNIT_SIZE_MODIFIER "u] (%" #precision ".1f == %" #precision ".1f)", simde_i_, simde_i_, simde_tmp_a_[simde_i_], simde_tmp_b_[simde_i_]); \
       } \
     } \
   } while (0)

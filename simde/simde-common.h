@@ -381,15 +381,15 @@ typedef SIMDE_FLOAT64_TYPE simde_float64;
   #define SIMDE_CHECKED_REINTERPRET_CAST(to, from, value) \
     (__extension__({ \
       HEDLEY_STATIC_ASSERT(__builtin_types_compatible_p(from, __typeof__(value)) || \
-		    __builtin_types_compatible_p(to, __typeof__(value)), \
-		    "Type of `" #value "` must be either `" #to "` or `" #from "`"); \
+        __builtin_types_compatible_p(to, __typeof__(value)), \
+        "Type of `" #value "` must be either `" #to "` or `" #from "`"); \
       HEDLEY_REINTERPRET_CAST(to, value); \
     }))
   #define SIMDE_CHECKED_STATIC_CAST(to, from, value) \
     (__extension__({ \
       HEDLEY_STATIC_ASSERT(__builtin_types_compatible_p(from, __typeof__(value)) || \
-		    __builtin_types_compatible_p(to, __typeof__(value)), \
-		    "Type of `" #value "` must be either `" #to "` or `" #from "`"); \
+        __builtin_types_compatible_p(to, __typeof__(value)), \
+        "Type of `" #value "` must be either `" #to "` or `" #from "`"); \
       HEDLEY_STATIC_CAST(to, value); \
     }))
 #elif defined(__STDC_VERSION__) && __STDC_VERSION__ >= 201112L

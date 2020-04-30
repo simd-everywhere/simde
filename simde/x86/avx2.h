@@ -1810,19 +1810,19 @@ simde_mm256_shuffle_epi32 (simde__m256i a, const int imm8) {
 #  define simde_mm256_shufflelo_epi16(a, imm8) (__extension__ ({ \
       const simde__m256i_private simde__tmp_a_ = simde__m256i_to_private(a); \
       simde__m256i_from_private((simde__m256i_private) { .i16 = \
-	      SIMDE__SHUFFLE_VECTOR(16, 32, \
-				  (simde__tmp_a_).i16, \
-				  (simde__tmp_a_).i16, \
-				  (((imm8)     ) & 3), \
-				  (((imm8) >> 2) & 3), \
-				  (((imm8) >> 4) & 3), \
-				  (((imm8) >> 6) & 3), \
-				  4, 5, 6, 7, \
-				  ((((imm8)     ) & 3) + 8), \
-				  ((((imm8) >> 2) & 3) + 8), \
-				  ((((imm8) >> 4) & 3) + 8), \
-				  ((((imm8) >> 6) & 3) + 8), \
-				  12, 13, 14, 15) }); }))
+        SIMDE__SHUFFLE_VECTOR(16, 32, \
+          (simde__tmp_a_).i16, \
+          (simde__tmp_a_).i16, \
+          (((imm8)     ) & 3), \
+          (((imm8) >> 2) & 3), \
+          (((imm8) >> 4) & 3), \
+          (((imm8) >> 6) & 3), \
+          4, 5, 6, 7, \
+          ((((imm8)     ) & 3) + 8), \
+          ((((imm8) >> 2) & 3) + 8), \
+          ((((imm8) >> 4) & 3) + 8), \
+          ((((imm8) >> 6) & 3) + 8), \
+          12, 13, 14, 15) }); }))
 #else
 #  define simde_mm256_shufflelo_epi16(a, imm8) \
      simde_mm256_set_m128i( \

@@ -87,9 +87,9 @@ simde_vld1q_s16 (int16_t const ptr[8]) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde_int16x8_t
 simde_x_vloadq_s16 (int16_t l0, int16_t l1, int16_t l2, int16_t l3,
-		    int16_t l4, int16_t l5, int16_t l6, int16_t l7) {
+                    int16_t l4, int16_t l5, int16_t l6, int16_t l7) {
   int16_t v[] = { l0, l1, l2, l3,
-		  l4, l5, l6, l7 };
+                  l4, l5, l6, l7 };
   return simde_vld1q_s16(v);
 }
 
