@@ -16857,7 +16857,6 @@ static MunitTest test_suite_tests[] = {
   SIMDE_TESTS_DEFINE_TEST(mm512_maskz_set1_epi64),
   SIMDE_TESTS_DEFINE_TEST(mm512_set1_ps),
   SIMDE_TESTS_DEFINE_TEST(mm512_set1_pd),
-  
 
 #endif /* defined(SIMDE_AVX512f_NATIVE) || defined(SIMDE_NO_NATIVE) || defined(SIMDE_ALWAYS_BUILD_NATIVE_TESTS) */
   { NULL, NULL, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL }
