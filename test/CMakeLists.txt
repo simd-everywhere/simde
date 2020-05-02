@@ -145,6 +145,7 @@ foreach(native native emul)
   endif(ALWAYS_BUILD_NATIVE_TESTS)
 
   target_link_libraries(run-tests simde-test-${native})
+  target_add_compiler_flags(simde-test-${native} "-Wno-psabi")
 endforeach(native native emul)
 target_compile_definitions(simde-test-emul PRIVATE SIMDE_NO_NATIVE)
 

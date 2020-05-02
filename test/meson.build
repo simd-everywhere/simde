@@ -35,6 +35,9 @@ foreach omp_arg : ['-fopenmp-simd', '-qopenmp-simd']
 endforeach
 
 simde_native_c_flags = []
+if cc.has_argument('-Wpsabi')
+  simde_native_c_flags += '-Wno-psabi'
+endif
 # if cc.has_argument('-march=native+simd')
 #   simde_native_c_flags += '-march=native+simd'
 # elif cc.has_argument('-march=native')
@@ -42,6 +45,9 @@ simde_native_c_flags = []
 # endif
 
 simde_native_cxx_flags = []
+if cxx.has_argument('-Wpsabi')
+  simde_native_cxx_flags += '-Wno-psabi'
+endif
 # if cxx.has_argument('-march=native+simd')
 #   simde_native_cxx_flags += '-march=native+simd'
 # elif cxx.has_argument('-march=native')
