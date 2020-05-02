@@ -24,193 +24,261 @@
  *   2020      Evan Nemerson <evan@nemerson.com>
  */
 
+/* simde-arch.h is used to determine which features are available according
+   to the compiler.  However, we want to make it possible to forcibly enable
+   or disable APIs */
+
 #if !defined(SIMDE_FEATURES_H)
 #define SIMDE_FEATURES_H
 
-#if !defined(SIMDE_MMX_NATIVE) && !defined(SIMDE_NO_NATIVE) && !defined(SIMDE_MMX_NO_NATIVE)
-  #if defined(SIMDE_ARCH_X86_MMX)
-    #define SIMDE_MMX_NATIVE
-  #elif defined(SIMDE_ARCH_ARM_NEON) && !defined(SIMDE_NO_ARM_NEON) && !defined(SIMDE_MMX_NO_ARM_NEON)
-    #define SIMDE_MMX_NEON
-  #endif
-#endif
+#include "simde-arch.h"
 
-#if !defined(SIMDE_SSE_NATIVE) && !defined(SIMDE_NO_NATIVE) && !defined(SIMDE_SSE_NO_NATIVE)
-  #if defined(SIMDE_ARCH_X86_SSE)
-    #define SIMDE_SSE_NATIVE
-  #elif defined(SIMDE_ARCH_ARM_NEON) && !defined(SIMDE_NO_ARM_NEON) && !defined(SIMDE_SSE_NO_ARM_NEON)
-    #define SIMDE_SSE_NEON
-  #elif defined(SIMDE_ARCH_WASM_SIMD128) && !defined(SIMDE_NO_WASM_SIMD128) && !defined(SIMDE_SSE_NO_WASM_SIMD128)
-    #define SIMDE_SSE_WASM_SIMD128
-  #elif defined(SIMDE_ARCH_POWER_ALTIVEC) && !defined(SIMDE_NO_POWER_ALTIVEC) && !defined(SIMDE_SSE_NO_POWER_ALTIVEC)
-    #define SIMDE_SSE_POWER_ALTIVEC
-  #endif
-#endif
-
-#if !defined(SIMDE_SSE2_NATIVE) && !defined(SIMDE_NO_NATIVE) && !defined(SIMDE_SSE2_NO_NATIVE)
-  #if defined(SIMDE_ARCH_X86_SSE2)
-    #define SIMDE_SSE2_NATIVE
-  #elif defined(SIMDE_ARCH_ARM_NEON) && !defined(SIMDE_NO_ARM_NEON) && !defined(SIMDE_SSE2_NO_ARM_NEON)
-    #define SIMDE_SSE2_NEON
-  #elif defined(SIMDE_ARCH_WASM_SIMD128) && !defined(SIMDE_NO_WASM_SIMD128) && !defined(SIMDE_SSE2_NO_WASM_SIMD128)
-    #define SIMDE_SSE2_WASM_SIMD128
-  #elif defined(SIMDE_ARCH_POWER_ALTIVEC) && !defined(SIMDE_NO_POWER_ALTIVEC) && !defined(SIMDE_SSE2_NO_POWER_ALTIVEC)
-    #define SIMDE_SSE2_POWER_ALTIVEC
-  #endif
-#endif
-
-#if !defined(SIMDE_SSE3_NATIVE) && !defined(SIMDE_NO_NATIVE) && !defined(SIMDE_SSE3_NO_NATIVE)
-  #if defined(SIMDE_ARCH_X86_SSE3)
-    #define SIMDE_SSE3_NATIVE
-  #elif defined(SIMDE_ARCH_ARM_NEON) && !defined(SIMDE_NO_ARM_NEON) && !defined(SIMDE_SSE3_NO_ARM_NEON)
-    #define SIMDE_SSE3_NEON
-  #elif defined(SIMDE_ARCH_WASM_SIMD128) && !defined(SIMDE_NO_WASM_SIMD128) && !defined(SIMDE_SSE3_NO_WASM_SIMD128)
-    #define SIMDE_SSE3_WASM_SIMD128
-  #elif defined(SIMDE_ARCH_POWER_ALTIVEC) && !defined(SIMDE_NO_POWER_ALTIVEC) && !defined(SIMDE_SSE3_NO_POWER_ALTIVEC)
-    #define SIMDE_SSE3_POWER_ALTIVEC
-  #endif
-#endif
-
-#if !defined(SIMDE_SSSE3_NATIVE) && !defined(SIMDE_NO_NATIVE) && !defined(SIMDE_SSSE3_NO_NATIVE)
-  #if defined(SIMDE_ARCH_X86_SSSE3)
-    #define SIMDE_SSSE3_NATIVE
-  #elif defined(SIMDE_ARCH_ARM_NEON) && !defined(SIMDE_NO_ARM_NEON) && !defined(SIMDE_SSSE3_NO_ARM_NEON)
-    #define SIMDE_SSSE3_NEON
-  #elif defined(SIMDE_ARCH_WASM_SIMD128) && !defined(SIMDE_NO_WASM_SIMD128) && !defined(SIMDE_SSSE3_NO_WASM_SIMD128)
-    #define SIMDE_SSSE3_WASM_SIMD128
-  #elif defined(SIMDE_ARCH_POWER_ALTIVEC) && !defined(SIMDE_NO_POWER_ALTIVEC) && !defined(SIMDE_SSSE3_NO_POWER_ALTIVEC)
-    #define SIMDE_SSSE3_POWER_ALTIVEC
-  #endif
-#endif
-
-#if !defined(SIMDE_SSE4_1_NATIVE) && !defined(SIMDE_NO_NATIVE) && !defined(SIMDE_SSE4_1_NO_NATIVE)
-  #if defined(SIMDE_ARCH_X86_SSE4_1)
-    #define SIMDE_SSE4_1_NATIVE
-  #elif defined(SIMDE_ARCH_ARM_NEON) && !defined(SIMDE_NO_ARM_NEON) && !defined(SIMDE_SSE4_1_NO_ARM_NEON)
-    #define SIMDE_SSE4_1_NEON
-  #elif defined(SIMDE_ARCH_WASM_SIMD128) && !defined(SIMDE_NO_WASM_SIMD128) && !defined(SIMDE_SSE4_1_NO_WASM_SIMD128)
-    #define SIMDE_SSE4_1_WASM_SIMD128
-  #elif defined(SIMDE_ARCH_POWER_ALTIVEC) && !defined(SIMDE_NO_POWER_ALTIVEC) && !defined(SIMDE_SSE4_1_NO_POWER_ALTIVEC)
-    #define SIMDE_SSE4_1_POWER_ALTIVEC
-  #endif
-#endif
-
-#if !defined(SIMDE_SSE4_2_NATIVE) && !defined(SIMDE_NO_NATIVE) && !defined(SIMDE_SSE4_2_NO_NATIVE)
-  #if defined(SIMDE_ARCH_X86_SSE4_2)
-    #define SIMDE_SSE4_2_NATIVE
-  #elif defined(SIMDE_ARCH_ARM_NEON) && !defined(SIMDE_NO_ARM_NEON) && !defined(SIMDE_SSE4_2_NO_ARM_NEON)
-    #define SIMDE_SSE4_2_NEON
-  #elif defined(SIMDE_ARCH_WASM_SIMD128) && !defined(SIMDE_NO_WASM_SIMD128) && !defined(SIMDE_SSE4_2_NO_WASM_SIMD128)
-    #define SIMDE_SSE4_2_WASM_SIMD128
-  #elif defined(SIMDE_ARCH_POWER_ALTIVEC) && !defined(SIMDE_NO_POWER_ALTIVEC) && !defined(SIMDE_SSE4_2_NO_POWER_ALTIVEC)
-    #define SIMDE_SSE4_2_POWER_ALTIVEC
-  #endif
-#endif
-
-#if !defined(SIMDE_AVX_NATIVE) && !defined(SIMDE_NO_NATIVE) && !defined(SIMDE_AVX_NO_NATIVE)
-  #if defined(SIMDE_ARCH_X86_AVX)
-    #define SIMDE_AVX_NATIVE
-  #elif defined(SIMDE_ARCH_ARM_NEON) && !defined(SIMDE_NO_ARM_NEON) && !defined(SIMDE_AVX_NO_ARM_NEON)
-    #define SIMDE_AVX_NEON
-  #elif defined(SIMDE_ARCH_WASM_SIMD128) && !defined(SIMDE_NO_WASM_SIMD128) && !defined(SIMDE_AVX_NO_WASM_SIMD128)
-    #define SIMDE_AVX_WASM_SIMD128
-  #elif defined(SIMDE_ARCH_POWER_ALTIVEC) && !defined(SIMDE_NO_POWER_ALTIVEC) && !defined(SIMDE_AVX_NO_POWER_ALTIVEC)
-    #define SIMDE_AVX_POWER_ALTIVEC
-  #endif
-#endif
-
-#if !defined(SIMDE_AVX2_NATIVE) && !defined(SIMDE_NO_NATIVE) && !defined(SIMDE_AVX2_NO_NATIVE)
-  #if defined(SIMDE_ARCH_X86_AVX2)
-    #define SIMDE_AVX2_NATIVE
-  #elif defined(SIMDE_ARCH_ARM_NEON) && !defined(SIMDE_NO_ARM_NEON) && !defined(SIMDE_AVX2_NO_ARM_NEON)
-    #define SIMDE_AVX2_NEON
-  #elif defined(SIMDE_ARCH_WASM_SIMD128) && !defined(SIMDE_NO_WASM_SIMD128) && !defined(SIMDE_AVX2_NO_WASM_SIMD128)
-    #define SIMDE_AVX2_WASM_SIMD128
-  #elif defined(SIMDE_ARCH_POWER_ALTIVEC) && !defined(SIMDE_NO_POWER_ALTIVEC) && !defined(SIMDE_AVX2_NO_POWER_ALTIVEC)
-    #define SIMDE_AVX2_POWER_ALTIVEC
-  #endif
-#endif
-
-#if !defined(SIMDE_FMA_NATIVE) && !defined(SIMDE_NO_NATIVE) && !defined(SIMDE_FMA_NO_NATIVE)
-  #if defined(SIMDE_ARCH_X86_FMA)
-    #define SIMDE_FMA_NATIVE
-  #elif defined(SIMDE_ARCH_ARM_NEON) && !defined(SIMDE_NO_ARM_NEON) && !defined(SIMDE_FMA_NO_ARM_NEON)
-    #define SIMDE_FMA_NEON
-  #elif defined(SIMDE_ARCH_WASM_SIMD128) && !defined(SIMDE_NO_WASM_SIMD128) && !defined(SIMDE_FMA_NO_WASM_SIMD128)
-    #define SIMDE_FMA_WASM_SIMD128
-  #elif defined(SIMDE_ARCH_POWER_ALTIVEC) && !defined(SIMDE_NO_POWER_ALTIVEC) && !defined(SIMDE_FMA_NO_POWER_ALTIVEC)
-    #define SIMDE_FMA_POWER_ALTIVEC
-  #endif
-#endif
-
-#if !defined(SIMDE_AVX512F_NATIVE) && !defined(SIMDE_NO_NATIVE) && !defined(SIMDE_AVX512F_NO_NATIVE)
-  #if defined(SIMDE_ARCH_X86_AVX512F)
-    #define SIMDE_AVX512F_NATIVE
-  #elif defined(SIMDE_ARCH_ARM_NEON) && !defined(SIMDE_NO_ARM_NEON) && !defined(SIMDE_AVX512F_NO_ARM_NEON)
-    #define SIMDE_AVX512F_NEON
-  #elif defined(SIMDE_ARCH_WASM_SIMD128) && !defined(SIMDE_NO_WASM_SIMD128) && !defined(SIMDE_AVX512F_NO_WASM_SIMD128)
-    #define SIMDE_AVX512F_WASM_SIMD128
-  #elif defined(SIMDE_ARCH_POWER_ALTIVEC) && !defined(SIMDE_NO_POWER_ALTIVEC) && !defined(SIMDE_AVX512F_NO_POWER_ALTIVEC)
-    #define SIMDE_AVX512F_POWER_ALTIVEC
-  #endif
-#endif
-
-#if !defined(SIMDE_AVX512BW_NATIVE) && !defined(SIMDE_NO_NATIVE) && !defined(SIMDE_AVX512BW_NO_NATIVE)
-  #if defined(SIMDE_ARCH_X86_AVX512BW)
-    #define SIMDE_AVX512BW_NATIVE
-  #elif defined(SIMDE_ARCH_ARM_NEON) && !defined(SIMDE_NO_ARM_NEON) && !defined(SIMDE_AVX512BW_NO_ARM_NEON)
-    #define SIMDE_AVX512BW_NEON
-  #elif defined(SIMDE_ARCH_WASM_SIMD128) && !defined(SIMDE_NO_WASM_SIMD128) && !defined(SIMDE_AVX512BW_NO_WASM_SIMD128)
-    #define SIMDE_AVX512BW_WASM_SIMD128
-  #elif defined(SIMDE_ARCH_POWER_ALTIVEC) && !defined(SIMDE_NO_POWER_ALTIVEC) && !defined(SIMDE_AVX512BW_NO_POWER_ALTIVEC)
-    #define SIMDE_AVX512BW_POWER_ALTIVEC
-  #endif
-#endif
-
-#if !defined(SIMDE_AVX512VL_NATIVE) && !defined(SIMDE_NO_NATIVE) && !defined(SIMDE_AVX512VL_NO_NATIVE)
-  #if defined(SIMDE_ARCH_X86_AVX512VL)
-    #define SIMDE_AVX512VL_NATIVE
-  #elif defined(SIMDE_ARCH_ARM_NEON) && !defined(SIMDE_NO_ARM_NEON) && !defined(SIMDE_AVX512VL_NO_ARM_NEON)
-    #define SIMDE_AVX512VL_NEON
-  #elif defined(SIMDE_ARCH_WASM_SIMD128) && !defined(SIMDE_NO_WASM_SIMD128) && !defined(SIMDE_AVX512VL_NO_WASM_SIMD128)
-    #define SIMDE_AVX512VL_WASM_SIMD128
-  #elif defined(SIMDE_ARCH_POWER_ALTIVEC) && !defined(SIMDE_NO_POWER_ALTIVEC) && !defined(SIMDE_AVX512VL_NO_POWER_ALTIVEC)
-    #define SIMDE_AVX512VL_POWER_ALTIVEC
-  #endif
-#endif
-
-#if !defined(SIMDE_AVX512DQ_NATIVE) && !defined(SIMDE_NO_NATIVE) && !defined(SIMDE_AVX512DQ_NO_NATIVE)
-  #if defined(SIMDE_ARCH_X86_AVX512DQ)
-    #define SIMDE_AVX512DQ_NATIVE
-  #elif defined(SIMDE_ARCH_ARM_NEON) && !defined(SIMDE_NO_ARM_NEON) && !defined(SIMDE_AVX512DQ_NO_ARM_NEON)
-    #define SIMDE_AVX512DQ_NEON
-  #elif defined(SIMDE_ARCH_WASM_SIMD128) && !defined(SIMDE_NO_WASM_SIMD128) && !defined(SIMDE_AVX512DQ_NO_WASM_SIMD128)
-    #define SIMDE_AVX512DQ_WASM_SIMD128
-  #elif defined(SIMDE_ARCH_POWER_ALTIVEC) && !defined(SIMDE_NO_POWER_ALTIVEC) && !defined(SIMDE_AVX512DQ_NO_POWER_ALTIVEC)
-    #define SIMDE_AVX512DQ_POWER_ALTIVEC
-  #endif
-#endif
-
-#if !defined(SIMDE_SVML_NATIVE) && !defined(SIMDE_NO_NATIVE) && !defined(SIMDE_SVML_NO_NATIVE)
+#if !defined(SIMDE_X86_SVML_NATIVE) && !defined(SIMDE_X86_SVML_NO_NATIVE) && !defined(SIMDE_NO_NATIVE)
   #if defined(SIMDE_ARCH_X86_SVML)
-    #define SIMDE_SVML_NATIVE
-  #elif defined(SIMDE_ARCH_ARM_NEON) && !defined(SIMDE_NO_ARM_NEON) && !defined(SIMDE_SVML_NO_ARM_NEON)
-    #define SIMDE_SVML_NEON
-  #elif defined(SIMDE_ARCH_WASM_SIMD128) && !defined(SIMDE_NO_WASM_SIMD128) && !defined(SIMDE_SVML_NO_WASM_SIMD128)
-    #define SIMDE_SVML_WASM_SIMD128
-  #elif defined(SIMDE_ARCH_POWER_ALTIVEC) && !defined(SIMDE_NO_POWER_ALTIVEC) && !defined(SIMDE_SVML_NO_POWER_ALTIVEC)
-    #define SIMDE_SVML_POWER_ALTIVEC
+    #define SIMDE_X86_SVML_NATIVE
+  #endif
+#endif
+#if defined(SIMDE_X86_SVML_NATIVE) && !defined(SIMDE_X86_AVX512F_NATIVE)
+  #define SIMDE_X86_AVX512F_NATIVE
+#endif
+
+#if !defined(SIMDE_X86_AVX512DQ_NATIVE) && !defined(SIMDE_X86_AVX512DQ_NO_NATIVE) && !defined(SIMDE_NO_NATIVE)
+  #if defined(SIMDE_ARCH_X86_AVX512DQ)
+    #define SIMDE_X86_AVX512DQ_NATIVE
+  #endif
+#endif
+#if defined(SIMDE_X86_AVX512DQ_NATIVE) && !defined(SIMDE_X86_AVX512F_NATIVE)
+  #define SIMDE_X86_AVX512F_NATIVE
+#endif
+
+#if !defined(SIMDE_X86_AVX512VL_NATIVE) && !defined(SIMDE_X86_AVX512VL_NO_NATIVE) && !defined(SIMDE_NO_NATIVE)
+  #if defined(SIMDE_ARCH_X86_AVX512VL)
+    #define SIMDE_X86_AVX512VL_NATIVE
+  #endif
+#endif
+#if defined(SIMDE_X86_AVX512VL_NATIVE) && !defined(SIMDE_X86_AVX512F_NATIVE)
+  #define SIMDE_X86_AVX512F_NATIVE
+#endif
+
+#if !defined(SIMDE_X86_AVX512BW_NATIVE) && !defined(SIMDE_X86_AVX512BW_NO_NATIVE) && !defined(SIMDE_NO_NATIVE)
+  #if defined(SIMDE_ARCH_X86_AVX512BW)
+    #define SIMDE_X86_AVX512BW_NATIVE
+  #endif
+#endif
+#if defined(SIMDE_X86_AVX512BW_NATIVE) && !defined(SIMDE_X86_AVX512F_NATIVE)
+  #define SIMDE_X86_AVX512F_NATIVE
+#endif
+
+#if !defined(SIMDE_X86_AVX512F_NATIVE) && !defined(SIMDE_X86_AVX512F_NO_NATIVE) && !defined(SIMDE_NO_NATIVE)
+  #if defined(SIMDE_ARCH_X86_AVX512F)
+    #define SIMDE_X86_AVX512F_NATIVE
+  #endif
+#endif
+#if defined(SIMDE_X86_AVX512F_NATIVE) && !defined(SIMDE_X86_AVX2_NATIVE)
+  #define SIMDE_X86_AVX2_NATIVE
+#endif
+
+#if !defined(SIMDE_X86_FMA_NATIVE) && !defined(SIMDE_X86_FMA_NO_NATIVE) && !defined(SIMDE_NO_NATIVE)
+  #if defined(SIMDE_ARCH_X86_FMA)
+    #define SIMDE_X86_FMA_NATIVE
+  #endif
+#endif
+#if defined(SIMDE_X86_FMA_NATIVE) && !defined(SIMDE_X86_AVX_NATIVE)
+  #define SIMDE_X86_AVX_NATIVE
+#endif
+
+#if !defined(SIMDE_X86_AVX2_NATIVE) && !defined(SIMDE_X86_AVX2_NO_NATIVE) && !defined(SIMDE_NO_NATIVE)
+  #if defined(SIMDE_ARCH_X86_AVX2)
+    #define SIMDE_X86_AVX2_NATIVE
+  #endif
+#endif
+#if defined(SIMDE_X86_AVX2_NATIVE) && !defined(SIMDE_X86_AVX_NATIVE)
+  #define SIMDE_X86_AVX_NATIVE
+#endif
+
+#if !defined(SIMDE_X86_AVX_NATIVE) && !defined(SIMDE_X86_AVX_NO_NATIVE) && !defined(SIMDE_NO_NATIVE)
+  #if defined(SIMDE_ARCH_X86_AVX)
+    #define SIMDE_X86_AVX_NATIVE
+  #endif
+#endif
+#if defined(SIMDE_X86_AVX_NATIVE) && !defined(SIMDE_X86_SSE4_1_NATIVE)
+  #define SIMDE_X86_SSE4_2_NATIVE
+#endif
+
+#if !defined(SIMDE_X86_SSE4_2_NATIVE) && !defined(SIMDE_X86_SSE4_2_NO_NATIVE) && !defined(SIMDE_NO_NATIVE)
+  #if defined(SIMDE_ARCH_X86_SSE4_2)
+    #define SIMDE_X86_SSE4_2_NATIVE
+  #endif
+#endif
+#if defined(SIMDE_X86_SSE4_2_NATIVE) && !defined(SIMDE_X86_SSE4_1_NATIVE)
+  #define SIMDE_X86_SSE4_1_NATIVE
+#endif
+
+#if !defined(SIMDE_X86_SSE4_1_NATIVE) && !defined(SIMDE_X86_SSE4_1_NO_NATIVE) && !defined(SIMDE_NO_NATIVE)
+  #if defined(SIMDE_ARCH_X86_SSE4_1)
+    #define SIMDE_X86_SSE4_1_NATIVE
+  #endif
+#endif
+#if defined(SIMDE_X86_SSE4_1_NATIVE) && !defined(SIMDE_X86_SSSE3_NATIVE)
+  #define SIMDE_X86_SSSE3_NATIVE
+#endif
+
+#if !defined(SIMDE_X86_SSSE3_NATIVE) && !defined(SIMDE_X86_SSSE3_NO_NATIVE) && !defined(SIMDE_NO_NATIVE)
+  #if defined(SIMDE_ARCH_X86_SSSE3)
+    #define SIMDE_X86_SSSE3_NATIVE
+  #endif
+#endif
+#if defined(SIMDE_X86_SSSE3_NATIVE) && !defined(SIMDE_X86_SSE3_NATIVE)
+  #define SIMDE_X86_SSE3_NATIVE
+#endif
+
+#if !defined(SIMDE_X86_SSE3_NATIVE) && !defined(SIMDE_X86_SSE3_NO_NATIVE) && !defined(SIMDE_NO_NATIVE)
+  #if defined(SIMDE_ARCH_X86_SSE3)
+    #define SIMDE_X86_SSE3_NATIVE
+  #endif
+#endif
+#if defined(SIMDE_X86_SSE3_NATIVE) && !defined(SIMDE_X86_SSE2_NATIVE)
+  #define SIMDE_X86_SSE2_NATIVE
+#endif
+
+#if !defined(SIMDE_X86_SSE2_NATIVE) && !defined(SIMDE_X86_SSE2_NO_NATIVE) && !defined(SIMDE_NO_NATIVE)
+  #if defined(SIMDE_ARCH_X86_SSE2)
+    #define SIMDE_X86_SSE2_NATIVE
+  #endif
+#endif
+#if defined(SIMDE_X86_SSE2_NATIVE) && !defined(SIMDE_X86_SSE_NATIVE)
+  #define SIMDE_X86_SSE_NATIVE
+#endif
+
+#if !defined(SIMDE_X86_SSE_NATIVE) && !defined(SIMDE_X86_SSE_NO_NATIVE) && !defined(SIMDE_NO_NATIVE)
+  #if defined(SIMDE_ARCH_X86_SSE)
+    #define SIMDE_X86_SSE_NATIVE
   #endif
 #endif
 
-#if defined(SIMDE_ARCH_ARM_NEON)
+#if !defined(SIMDE_X86_MMX_NATIVE) && !defined(SIMDE_X86_MMX_NO_NATIVE) && !defined(SIMDE_NO_NATIVE)
+  #if defined(SIMDE_ARCH_X86_MMX)
+    #define SIMDE_X86_MMX_NATIVE
+  #endif
+#endif
+
+#if !defined(SIMDE_X86_GFNI_NATIVE) && !defined(SIMDE_X86_GFNI_NO_NATIVE) && !defined(SIMDE_NO_NATIVE)
+  #if defined(SIMDE_ARCH_X86_GFNI)
+    #define SIMDE_X86_GFNI_NATIVE
+  #endif
+#endif
+
+#if defined(HEDLEY_MSVC_VERSION)
+  #pragma warning(push)
+  #pragma warning(disable:4799)
+#endif
+
+#if \
+    defined(SIMDE_X86_AVX_NATIVE) || \
+    defined(SIMDE_X86_GFNI_NATIVE) || \
+    defined(SIMDE_X86_SVML_NATIVE)
+  #include <immintrin.h>
+#elif defined(SIMDE_X86_SSE4_2_NATIVE)
+  #include <nmmintrin.h>
+#elif defined(SIMDE_X86_SSE4_1_NATIVE)
+  #include <smmintrin.h>
+#elif defined(SIMDE_X86_SSSE3_NATIVE)
+  #include <tmmintrin.h>
+#elif defined(SIMDE_X86_SSE3_NATIVE)
+  #include <pmmintrin.h>
+#elif defined(SIMDE_X86_SSE2_NATIVE)
+  #include <emmintrin.h>
+#elif defined(SIMDE_X86_SSE_NATIVE)
+  #include <xmmintrin.h>
+#elif defined(SIMDE_X86_MMX_NATIVE)
+  #include <mmintrin.h>
+#endif
+
+#if defined(HEDLEY_MSVC_VERSION)
+  #pragma warning(pop)
+#endif
+
+#if !defined(SIMDE_ARM_NEON_A64V8_NATIVE) && !defined(SIMDE_ARM_NEON_A64V8_NO_NATIVE) && !defined(SIMDE_NO_NATIVE)
+  #if defined(SIMDE_ARCH_ARM_NEON) && defined(SIMDE_ARCH_AARCH64) && SIMDE_ARCH_ARM_CHECK(80)
+    #define SIMDE_ARM_NEON_A64V8_NATIVE
+  #endif
+#endif
+#if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && !defined(SIMDE_ARM_NEON_A32V8_NATIVE)
+  #define SIMDE_ARM_NEON_A32V8_NATIVE
+#endif
+
+#if !defined(SIMDE_ARM_NEON_A32V8_NATIVE) && !defined(SIMDE_ARM_NEON_A32V8_NO_NATIVE) && !defined(SIMDE_NO_NATIVE)
+  #if defined(SIMDE_ARCH_ARM_NEON) && SIMDE_ARCH_ARM_CHECK(80)
+    #define SIMDE_ARM_NEON_A32V8_NATIVE
+  #endif
+#endif
+#if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && !defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #define SIMDE_ARM_NEON_A32V7_NATIVE
+#endif
+
+#if !defined(SIMDE_ARM_NEON_A32V7_NATIVE) && !defined(SIMDE_ARM_NEON_A32V7_NO_NATIVE) && !defined(SIMDE_NO_NATIVE)
+  #if defined(SIMDE_ARCH_ARM_NEON) && SIMDE_ARCH_ARM_CHECK(70)
+    #define SIMDE_ARM_NEON_A32V7_NATIVE
+  #endif
+#endif
+#if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #include <arm_neon.h>
-#elif defined(SIMDE_ARCH_WASM_SIMD128)
+#endif
+
+#if !defined(SIMDE_WASM_SIMD128_NATIVE) && !defined(SIMDE_WASM_SIMD128_NO_NATIVE) && !defined(SIMDE_NO_NATIVE)
+  #if defined(SIMDE_ARCH_WASM_SIMD128)
+    #define SIMDE_WASM_SIMD128_NATIVE
+  #endif
+#endif
+#if defined(SIMDE_WASM_SIMD128_NATIVE)
   #if !defined(__wasm_unimplemented_simd128__)
     #define __wasm_unimplemented_simd128__
   #endif
   #include <wasm_simd128.h>
-#elif defined(SIMDE_ARCH_POWER_ALTIVEC)
+#endif
+
+#if !defined(SIMDE_POWER_ALTIVEC_P9_NATIVE) && !defined(SIMDE_POWER_ALTIVEC_P9_NO_NATIVE) && !defined(SIMDE_NO_NATIVE)
+  #if SIMDE_ARCH_POWER_ALTIVEC_CHECK(900)
+    #define SIMDE_POWER_ALTIVEC_P9_NATIVE
+  #endif
+#endif
+#if defined(SIMDE_POWER_ALTIVEC_P9_NATIVE) && !defined(SIMDE_POWER_ALTIVEC_P8)
+  #define SIMDE_POWER_ALTIVEC_P8_NATIVE
+#endif
+
+#if !defined(SIMDE_POWER_ALTIVEC_P8_NATIVE) && !defined(SIMDE_POWER_ALTIVEC_P8_NO_NATIVE) && !defined(SIMDE_NO_NATIVE)
+  #if SIMDE_ARCH_POWER_ALTIVEC_CHECK(800)
+    #define SIMDE_POWER_ALTIVEC_P8_NATIVE
+  #endif
+#endif
+#if defined(SIMDE_POWER_ALTIVEC_P8_NATIVE) && !defined(SIMDE_POWER_ALTIVEC_P7)
+  #define SIMDE_POWER_ALTIVEC_P7_NATIVE
+#endif
+
+#if !defined(SIMDE_POWER_ALTIVEC_P7_NATIVE) && !defined(SIMDE_POWER_ALTIVEC_P7_NO_NATIVE) && !defined(SIMDE_NO_NATIVE)
+  #if SIMDE_ARCH_POWER_ALTIVEC_CHECK(700)
+    #define SIMDE_POWER_ALTIVEC_P6_NATIVE
+  #endif
+#endif
+#if defined(SIMDE_POWER_ALTIVEC_P7_NATIVE) && !defined(SIMDE_POWER_ALTIVEC_P6)
+  #define SIMDE_POWER_ALTIVEC_P8_NATIVE
+#endif
+
+#if !defined(SIMDE_POWER_ALTIVEC_P6_NATIVE) && !defined(SIMDE_POWER_ALTIVEC_P6_NO_NATIVE) && !defined(SIMDE_NO_NATIVE)
+  #if SIMDE_ARCH_POWER_ALTIVEC_CHECK(600)
+    #define SIMDE_POWER_ALTIVEC_P6_NATIVE
+  #endif
+#endif
+#if defined(SIMDE_POWER_ALTIVEC_P6_NATIVE) && !defined(SIMDE_POWER_ALTIVEC_P5)
+  #define SIMDE_POWER_ALTIVEC_P5_NATIVE
+#endif
+
+#if !defined(SIMDE_POWER_ALTIVEC_P5_NATIVE) && !defined(SIMDE_POWER_ALTIVEC_P5_NO_NATIVE) && !defined(SIMDE_NO_NATIVE)
+  #if SIMDE_ARCH_POWER_ALTIVEC_CHECK(500)
+    #define SIMDE_POWER_ALTIVEC_P5_NATIVE
+  #endif
+#endif
+#if defined(SIMDE_POWER_ALTIVEC_P5)
   #include <altivec.h>
 #endif
 

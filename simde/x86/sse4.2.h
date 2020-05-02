@@ -24,44 +24,23 @@
  *   2017      Evan Nemerson <evan@nemerson.com>
  */
 
-#if !defined(SIMDE_SSE4_2_H)
-#define SIMDE_SSE4_2_H
+#if !defined(SIMDE_X86_SSE4_2_H)
+#define SIMDE_X86_SSE4_2_H
 
 #include "sse4.1.h"
 
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
-
-#  if defined(SIMDE_SSE4_2_NATIVE) && !defined(SIMDE_SSE4_1_NATIVE)
-#    if defined(SIMDE_SSE4_2_FORCE_NATIVE)
-#      error Native SSE4.2 support requires native SSE4.1 support
-#    else
-       HEDLEY_WARNING("Native SSE4.2 support requires native SSE4.1 support, disabling")
-#      undef SIMDE_SSE4_2_NATIVE
-#    endif
-#  elif defined(SIMDE_SSE4_2_NEON) && !defined(SIMDE_SSE4_1_NEON)
-     HEDLEY_WARNING("SSE4.2 NEON support requires SSE4.1 NEON support, disabling")
-#    undef SIMDE_SSE4_2_NEON
-#  endif
-
-#  if defined(SIMDE_SSE4_2_NATIVE)
-#    include <nmmintrin.h>
-#  else
-#    if defined(SIMDE_SSE4_1_NEON)
-#      include <arm_neon.h>
-#    endif
-#  endif
-
-#  if !defined(SIMDE_SSE4_2_NATIVE) && defined(SIMDE_ENABLE_NATIVE_ALIASES)
-#    define SIMDE_SSE4_2_ENABLE_NATIVE_ALIASES
-#  endif
-
 SIMDE__BEGIN_DECLS
+
+#if !defined(SIMDE_X86_SSE4_2_NATIVE) && defined(SIMDE_ENABLE_NATIVE_ALIASES)
+#  define SIMDE_X86_SSE4_2_ENABLE_NATIVE_ALIASES
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_cmpgt_epi64 (simde__m128i a, simde__m128i b) {
-#if defined(SIMDE_SSE4_2_NATIVE)
+#if defined(SIMDE_X86_SSE4_2_NATIVE)
   return _mm_cmpgt_epi64(a, b);
 #else
   simde__m128i_private
@@ -69,9 +48,9 @@ simde_mm_cmpgt_epi64 (simde__m128i a, simde__m128i b) {
     a_ = simde__m128i_to_private(a),
     b_ = simde__m128i_to_private(b);
 
-  #if defined(SIMDE_SSE4_2_NEON) && defined(SIMDE_ARCH_AARCH64)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     r_.neon_i64 = vreinterpretq_s64_u64(vcgtq_s64(a_.neon_i64, b_.neon_i64));
-  #elif defined(SIMDE_SSE4_2_POWER_ALTIVEC)
+  #elif defined(SIMDE_POWER_ALTIVEC_P5)
     r_.altivec_i64 = (vector signed long long) vec_cmpgt(a_.altivec_i64, b_.altivec_i64);
   #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
     r_.i64 = HEDLEY_STATIC_CAST(__typeof__(r_.i64), a_.i64 > b_.i64);
@@ -85,7 +64,7 @@ simde_mm_cmpgt_epi64 (simde__m128i a, simde__m128i b) {
   return simde__m128i_from_private(r_);
 #endif
 }
-#if defined(SIMDE_SSE2_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_cmpgt_epi64(a, b) simde_mm_cmpgt_epi64(a, b)
 #endif
 
@@ -93,4 +72,4 @@ SIMDE__END_DECLS
 
 HEDLEY_DIAGNOSTIC_POP
 
-#endif /* !defined(SIMDE_SSE4_2_H) */
+#endif /* !defined(SIMDE_X86_SSE4_2_H) */

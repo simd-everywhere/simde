@@ -24,40 +24,23 @@
  *   2017-2020 Evan Nemerson <evan@nemerson.com>
  */
 
-#if !defined(SIMDE_SSE3_H)
-#define SIMDE_SSE3_H
+#if !defined(SIMDE_X86_SSE3_H)
+#define SIMDE_X86_SSE3_H
 
 #include "sse2.h"
 
-HEDLEY_DIAGNOSTIC_PUSH
-SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
-
-#  if defined(SIMDE_SSE3_NATIVE) && !defined(SIMDE_SSE2_NATIVE)
-#    if defined(SIMDE_SSE3_FORCE_NATIVE)
-#      error Native SSE3 support requires native SSE2 support
-#    else
-       HEDLEY_WARNING("Native SSE3 support requires native SSE2 support, disabling")
-#      undef SIMDE_SSE3_NATIVE
-#    endif
-#  elif defined(SIMDE_SSE3_NEON) && !defined(SIMDE_SSE2_NEON)
-     HEDLEY_WARNING("SSE3 NEON support requires SSE2 NEON support, disabling")
-#    undef SIMDE_SSE3_NEON
-#  endif
-
-#  if defined(SIMDE_SSE3_NATIVE)
-#    include <pmmintrin.h>
-#  endif
-
-#if !defined(SIMDE_SSE3_NATIVE) && defined(SIMDE_ENABLE_NATIVE_ALIASES)
-#  define SIMDE_SSE3_ENABLE_NATIVE_ALIASES
+#if !defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_ENABLE_NATIVE_ALIASES)
+#  define SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES
 #endif
 
+HEDLEY_DIAGNOSTIC_PUSH
+SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 SIMDE__BEGIN_DECLS
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
 simde_mm_addsub_pd (simde__m128d a, simde__m128d b) {
-#if defined(SIMDE_SSE3_NATIVE)
+#if defined(SIMDE_X86_SSE3_NATIVE)
   return _mm_addsub_pd(a, b);
 #else
   simde__m128d_private
@@ -77,14 +60,14 @@ simde_mm_addsub_pd (simde__m128d a, simde__m128d b) {
   return simde__m128d_from_private(r_);
 #endif
 }
-#if defined(SIMDE_SSE3_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_SSE3_ENABLE_NATIVE_ALIASES)
 #  define _mm_addsub_pd(a, b) simde_mm_addsub_pd(a, b)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128
 simde_mm_addsub_ps (simde__m128 a, simde__m128 b) {
-#if defined(SIMDE_SSE3_NATIVE)
+#if defined(SIMDE_X86_SSE3_NATIVE)
   return _mm_addsub_ps(a, b);
 #else
   simde__m128_private
@@ -92,7 +75,7 @@ simde_mm_addsub_ps (simde__m128 a, simde__m128 b) {
     a_ = simde__m128_to_private(a),
     b_ = simde__m128_to_private(b);
 
-  #if defined(SIMDE_SSE3_NEON) && defined(SIMDE_ARCH_AARCH64)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     float32x4_t rs = vsubq_f32(a_.neon_f32, b_.neon_f32);
     float32x4_t ra = vaddq_f32(a_.neon_f32, b_.neon_f32);
     return vtrn2q_f32(vreinterpretq_f32_s32(vrev64q_s32(vreinterpretq_s32_f32(rs))), ra);
@@ -108,14 +91,14 @@ simde_mm_addsub_ps (simde__m128 a, simde__m128 b) {
   return simde__m128_from_private(r_);
 #endif
 }
-#if defined(SIMDE_SSE3_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_SSE3_ENABLE_NATIVE_ALIASES)
 #  define _mm_addsub_ps(a, b) simde_mm_addsub_ps(a, b)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
 simde_mm_hadd_pd (simde__m128d a, simde__m128d b) {
-#if defined(SIMDE_SSE3_NATIVE)
+#if defined(SIMDE_X86_SSE3_NATIVE)
   return _mm_hadd_pd(a, b);
 #else
   simde__m128d_private
@@ -123,7 +106,7 @@ simde_mm_hadd_pd (simde__m128d a, simde__m128d b) {
     a_ = simde__m128d_to_private(a),
     b_ = simde__m128d_to_private(b);
 
-  #if defined(SIMDE_SSE3_NEON) && defined(SIMDE_ARCH_AARCH64)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     simde_float64 res[2] = { vaddvq_f64(a_.neon_f64), vaddvq_f64(b_.neon_f64)};
     r_.neon_f64 = vld1q_f64(res);
   #elif defined(SIMDE_ASSUME_VECTORIZATION) && defined(SIMDE__SHUFFLE_VECTOR)
@@ -138,14 +121,14 @@ simde_mm_hadd_pd (simde__m128d a, simde__m128d b) {
   return simde__m128d_from_private(r_);
 #endif
 }
-#if defined(SIMDE_SSE3_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_SSE3_ENABLE_NATIVE_ALIASES)
 #  define _mm_hadd_pd(a, b) simde_mm_hadd_pd(a, b)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128
 simde_mm_hadd_ps (simde__m128 a, simde__m128 b) {
-#if defined(SIMDE_SSE3_NATIVE)
+#if defined(SIMDE_X86_SSE3_NATIVE)
   return _mm_hadd_ps(a, b);
 #else
   simde__m128_private
@@ -153,7 +136,7 @@ simde_mm_hadd_ps (simde__m128 a, simde__m128 b) {
     a_ = simde__m128_to_private(a),
     b_ = simde__m128_to_private(b);
 
-#if defined(SIMDE_SSE3_NEON) && defined(SIMDE_ARCH_AARCH64)
+#if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
   r_.f32 = vpaddq_f32(a_.neon_f32, b_.neon_f32);
 #elif defined(SIMDE_ASSUME_VECTORIZATION) && defined(SIMDE__SHUFFLE_VECTOR)
   r_.f32 =
@@ -169,14 +152,14 @@ simde_mm_hadd_ps (simde__m128 a, simde__m128 b) {
   return simde__m128_from_private(r_);
 #endif
 }
-#if defined(SIMDE_SSE3_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_SSE3_ENABLE_NATIVE_ALIASES)
 #  define _mm_hadd_ps(a, b) simde_mm_hadd_ps(a, b)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
 simde_mm_hsub_pd (simde__m128d a, simde__m128d b) {
-#if defined(SIMDE_SSE3_NATIVE)
+#if defined(SIMDE_X86_SSE3_NATIVE)
   return _mm_hsub_pd(a, b);
 #else
   simde__m128d_private
@@ -196,14 +179,14 @@ simde_mm_hsub_pd (simde__m128d a, simde__m128d b) {
   return simde__m128d_from_private(r_);
 #endif
 }
-#if defined(SIMDE_SSE3_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_SSE3_ENABLE_NATIVE_ALIASES)
 #  define _mm_hsub_pd(a, b) simde_mm_hsub_pd(a, b)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128
 simde_mm_hsub_ps (simde__m128 a, simde__m128 b) {
-#if defined(SIMDE_SSE3_NATIVE)
+#if defined(SIMDE_X86_SSE3_NATIVE)
   return _mm_hsub_ps(a, b);
 #else
   simde__m128_private
@@ -211,7 +194,7 @@ simde_mm_hsub_ps (simde__m128 a, simde__m128 b) {
     a_ = simde__m128_to_private(a),
     b_ = simde__m128_to_private(b);
 
-#if defined(SIMDE_SSE3_NEON) && defined(SIMDE_ARCH_AARCH64)
+#if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
   r_.f32 = vsubq_f32(vuzp1q_f32(a_.neon_f32, b_.neon_f32), vuzp2q_f32(a_.neon_f32, b_.neon_f32));
 #elif defined(SIMDE_ASSUME_VECTORIZATION) && defined(SIMDE__SHUFFLE_VECTOR)
   r_.f32 =
@@ -227,19 +210,19 @@ simde_mm_hsub_ps (simde__m128 a, simde__m128 b) {
   return simde__m128_from_private(r_);
 #endif
 }
-#if defined(SIMDE_SSE3_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_SSE3_ENABLE_NATIVE_ALIASES)
 #  define _mm_hsub_ps(a, b) simde_mm_hsub_ps(a, b)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_lddqu_si128 (simde__m128i const* mem_addr) {
-#if defined(SIMDE_SSE3_NATIVE)
+#if defined(SIMDE_X86_SSE3_NATIVE)
   return _mm_lddqu_si128(mem_addr);
 #else
   simde__m128i_private r_;
 
-#if defined(SIMDE_SSE3_NEON)
+#if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   r_.neon_i32 = vld1q_s32(HEDLEY_REINTERPRET_CAST(int32_t const*, mem_addr));
 #else
   simde_memcpy(&r_, mem_addr, sizeof(r_));
@@ -248,14 +231,14 @@ simde_mm_lddqu_si128 (simde__m128i const* mem_addr) {
   return simde__m128i_from_private(r_);
 #endif
 }
-#if defined(SIMDE_SSE3_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_SSE3_ENABLE_NATIVE_ALIASES)
 #  define _mm_lddqu_si128(mem_addr) simde_mm_lddqu_si128(mem_addr)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
 simde_mm_movedup_pd (simde__m128d a) {
-#if defined(SIMDE_SSE3_NATIVE)
+#if defined(SIMDE_X86_SSE3_NATIVE)
   return _mm_movedup_pd(a);
 #else
   simde__m128d_private
@@ -272,14 +255,14 @@ simde_mm_movedup_pd (simde__m128d a) {
   return simde__m128d_from_private(r_);
 #endif
 }
-#if defined(SIMDE_SSE3_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_SSE3_ENABLE_NATIVE_ALIASES)
 #  define _mm_movedup_pd(a) simde_mm_movedup_pd(a)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128
 simde_mm_movehdup_ps (simde__m128 a) {
-#if defined(SIMDE_SSE3_NATIVE)
+#if defined(SIMDE_X86_SSE3_NATIVE)
   return _mm_movehdup_ps(a);
 #else
   simde__m128_private
@@ -298,7 +281,7 @@ simde_mm_movehdup_ps (simde__m128 a) {
   return simde__m128_from_private(r_);
 #endif
 }
-#if defined(SIMDE_SSE3_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_SSE3_ENABLE_NATIVE_ALIASES)
 #  define _mm_movehdup_ps(a) simde_mm_movehdup_ps(a)
 #endif
 
@@ -324,7 +307,7 @@ simde_mm_moveldup_ps (simde__m128 a) {
   return simde__m128_from_private(r_);
 #endif
 }
-#if defined(SIMDE_SSE3_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_SSE3_ENABLE_NATIVE_ALIASES)
 #  define _mm_moveldup_ps(a) simde_mm_moveldup_ps(a)
 #endif
 
@@ -332,4 +315,4 @@ SIMDE__END_DECLS
 
 HEDLEY_DIAGNOSTIC_POP
 
-#endif /* !defined(SIMDE_SSE3_H) */
+#endif /* !defined(SIMDE_X86_SSE3_H) */

@@ -25,7 +25,7 @@
 #include <simde/x86/avx512f.h>
 #include <test/x86/test-avx512.h>
 
-#if defined(SIMDE_AVX512F_NATIVE) || defined(SIMDE_NO_NATIVE) || defined(SIMDE_ALWAYS_BUILD_NATIVE_TESTS)
+#if defined(SIMDE_X86_AVX512F_NATIVE) || defined(SIMDE_NO_NATIVE) || defined(SIMDE_ALWAYS_BUILD_NATIVE_TESTS)
 
 static MunitResult
 test_simde_mm512_abs_epi32(const MunitParameter params[], void* data) {
@@ -17389,7 +17389,7 @@ HEDLEY_DIAGNOSTIC_DISABLE_CAST_QUAL
 #endif
 
 static MunitTest test_suite_tests[] = {
-#if defined(SIMDE_AVX512F_NATIVE) || defined(SIMDE_NO_NATIVE) || defined(SIMDE_ALWAYS_BUILD_NATIVE_TESTS)
+#if defined(SIMDE_X86_AVX512F_NATIVE) || defined(SIMDE_NO_NATIVE) || defined(SIMDE_ALWAYS_BUILD_NATIVE_TESTS)
   SIMDE_TESTS_DEFINE_TEST(mm512_abs_epi32),
   SIMDE_TESTS_DEFINE_TEST(mm512_mask_abs_epi32),
   SIMDE_TESTS_DEFINE_TEST(mm512_maskz_abs_epi32),
