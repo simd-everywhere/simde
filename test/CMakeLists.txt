@@ -163,11 +163,8 @@ foreach(tst
       "/x86/avx512f"
       "/x86/avx512bw"
       "/x86/avx512vl"
-<<<<<<< HEAD
       "/x86/avx512dq"
-=======
       "/x86/gfni"
->>>>>>> 243415e... Add gfni support in gfni.[hc]
       "/x86/svml"
     )
   add_test(NAME "${tst}/${variant}" COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:run-tests> "${tst}")
