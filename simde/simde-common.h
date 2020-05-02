@@ -38,6 +38,7 @@
 #include "simde-features.h"
 
 #include <stddef.h>
+#include <stdint.h>
 
 #if \
   HEDLEY_HAS_ATTRIBUTE(aligned) || \
@@ -300,11 +301,99 @@ typedef unsigned __int128 simde_uint128;
 HEDLEY_DIAGNOSTIC_POP
 #endif
 
-#if defined(__BYTE_ORDER__) && defined(__ORDER_LITTLE_ENDIAN__) && defined(__ORDER_BIG_ENDIAN__)
-#  if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
-#    define SIMDE_BYTE_ORDER_LE
-#  else
-#    define SIMDE_BYTE_ORDER_BE
+#if !defined(SIMDE_ENDIAN_LITTLE)
+#  define SIMDE_ENDIAN_LITTLE 1234
+#endif
+#if !defined(SIMDE_ENDIAN_BIG)
+#  define SIMDE_ENDIAN_BIG 4321
+#endif
+
+#if !defined(SIMDE_ENDIAN_ORDER)
+/* GCC (and compilers masquerading as GCC) define  __BYTE_ORDER__. */
+#  if defined(__BYTE_ORDER__) && defined(__ORDER_LITTLE_ENDIAN__) && (__BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__)
+#    define SIMDE_ENDIAN_ORDER SIMDE_ENDIAN_LITTLE
+#  elif defined(__BYTE_ORDER__) && defined(__ORDER_BIG_ENDIAN__) && (__BYTE_ORDER__ == __ORDER_BIG_ENDIAN__)
+#    define SIMDE_ENDIAN_ORDER SIMDE_ENDIAN_BIG
+/* TI defines _BIG_ENDIAN or _LITTLE_ENDIAN */
+#  elif defined(_BIG_ENDIAN)
+#    define SIMDE_ENDIAN_ORDER SIMDE_ENDIAN_BIG
+#  elif defined(_LITTLE_ENDIAN)
+#    define SIMDE_ENDIAN_ORDER SIMDE_ENDIAN_LITTLE
+/* We know the endianness of some common architectures.  Common
+ * architectures not listed (ARM, POWER, MIPS, etc.) here are
+ * bi-endian. */
+#  elif defined(__amd64) || defined(_M_X64) || defined(__i386) || defined(_M_IX86)
+#    define SIMDE_ENDIAN_ORDER SIMDE_ENDIAN_LITTLE
+#  elif defined(__s390x__) || defined(__zarch__)
+#    define SIMDE_ENDIAN_ORDER SIMDE_ENDIAN_BIG
+/* Looks like we'll have to rely on the platform.  If we're missing a
+ * platform, please let us know. */
+#  elif defined(_WIN32)
+#    define SIMDE_ENDIAN_ORDER SIMDE_ENDIAN_LITTLE
+#  elif defined(sun) || defined(__sun) /* Solaris */
+#    include <sys/byteorder.h>
+#    if defined(_LITTLE_ENDIAN)
+#      define SIMDE_ENDIAN_ORDER SIMDE_ENDIAN_LITTLE
+#    elif defined(_BIG_ENDIAN)
+#      define SIMDE_ENDIAN_ORDER SIMDE_ENDIAN_BIG
+#    endif
+#  elif defined(__APPLE__)
+#    include <libkern/OSByteOrder.h>
+#    if defined(__LITTLE_ENDIAN__)
+#      define SIMDE_ENDIAN_ORDER SIMDE_ENDIAN_LITTLE
+#    elif defined(__BIG_ENDIAN__)
+#      define SIMDE_ENDIAN_ORDER SIMDE_ENDIAN_BIG
+#    endif
+#  elif defined(__FreeBSD__) || defined(__NetBSD__) || defined(__OpenBSD__) || defined(__bsdi__) || defined(__DragonFly__) || defined(BSD)
+#    include <machine/endian.h>
+#    if defined(__BYTE_ORDER) && (__BYTE_ORDER == __LITTLE_ENDIAN)
+#      define SIMDE_ENDIAN_ORDER SIMDE_ENDIAN_LITTLE
+#    elif defined(__BYTE_ORDER) && (__BYTE_ORDER == __BIG_ENDIAN)
+#      define SIMDE_ENDIAN_ORDER SIMDE_ENDIAN_BIG
+#    endif
+#  elif defined(__linux__) || defined(__linux) || defined(__gnu_linux__)
+#    include <endian.h>
+#    if defined(__BYTE_ORDER) && defined(__LITTLE_ENDIAN) && (__BYTE_ORDER == __LITTLE_ENDIAN)
+#      define SIMDE_ENDIAN_ORDER SIMDE_ENDIAN_LITTLE
+#    elif defined(__BYTE_ORDER) && defined(__BIG_ENDIAN) && (__BYTE_ORDER == __BIG_ENDIAN)
+#      define SIMDE_ENDIAN_ORDER SIMDE_ENDIAN_BIG
+#    endif
+#  endif
+#endif
+
+#if \
+    HEDLEY_HAS_BUILTIN(__builtin_bswap64) || \
+    HEDLEY_GCC_VERSION_CHECK(4,3,0) || \
+    HEDLEY_IBM_VERSION_CHECK(13,1,0) || \
+    HEDLEY_INTEL_VERSION_CHECK(13,0,0)
+  #define simde_bswap64(v) __builtin_bswap64(v)
+#elif HEDLEY_MSVC_VERSION_CHECK(13,10,0)
+  #define simde_bswap64(v) _byteswap_uint64(v)
+#else
+  SIMDE__FUNCTION_ATTRIBUTES
+  uint64_t
+  simde_bswap64(uint64_t v) {
+    return
+      ((v & (((uint64_t) 0xff) << 56)) >> 56) |
+      ((v & (((uint64_t) 0xff) << 48)) >> 40) |
+      ((v & (((uint64_t) 0xff) << 40)) >> 24) |
+      ((v & (((uint64_t) 0xff) << 32)) >>  8) |
+      ((v & (((uint64_t) 0xff) << 24)) <<  8) |
+      ((v & (((uint64_t) 0xff) << 16)) << 24) |
+      ((v & (((uint64_t) 0xff) <<  8)) << 40) |
+      ((v & (((uint64_t) 0xff)      )) << 56);
+  }
+#endif
+
+#if !defined(SIMDE_ENDIAN_ORDER)
+#  error Unknown byte order; please file a bug
+#else
+#  if SIMDE_ENDIAN_ORDER == SIMDE_ENDIAN_LITTLE
+#    define simde_endian_bswap64_be(value) simde_bswap64(value)
+#    define simde_endian_bswap64_le(value) (value)
+#  elif SIMDE_ENDIAN_ORDER == SIMDE_ENDIAN_BIG
+#    define simde_endian_bswap64_be(value) (value)
+#    define simde_endian_bswap64_le(value) simde_bswap64(value)
 #  endif
 #endif
 
