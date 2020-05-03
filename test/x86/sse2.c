@@ -4617,7 +4617,13 @@ test_simde_mm_maskmoveu_si128(const MunitParameter params[], void* data) {
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     int8_t r[16];
     memcpy(r, test_vec[i].i, 16);
-    simde_mm_maskmoveu_si128(test_vec[i].a, test_vec[i].mask, r);
+
+    #if defined SIMDE_X86_SSE2_NATIVE && defined SIMDE_NATIVE_ALIASES_TESTING
+      simde_mm_maskmoveu_si128(test_vec[i].a, test_vec[i].mask, HEDLEY_REINTERPRET_CAST(char *, r));
+    #else
+      simde_mm_maskmoveu_si128(test_vec[i].a, test_vec[i].mask, r);
+    #endif
+
     simde_assert_typev(int8_t, PRId8, 16, r, ==, test_vec[i].r);
   }
 
@@ -8649,7 +8655,13 @@ test_simde_mm_stream_si64(const MunitParameter params[], void* data) {
 
   for (size_t i = 0 ; i < sizeof(test_vec) / sizeof(test_vec[0]) ; i++) {
     int64_t r;
-    simde_mm_stream_si64(&r, test_vec[i].a);
+
+    #if defined(SIMDE_X86_SSE2_NATIVE) && defined(SIMDE_NATIVE_ALIASES_TESTING)
+      simde_mm_stream_si64(HEDLEY_REINTERPRET_CAST(long long int*, &r), test_vec[i].a);
+    #else
+      simde_mm_stream_si64(&r, test_vec[i].a);
+    #endif
+
     munit_assert_int64(r, ==, test_vec[i].r);
   }
 

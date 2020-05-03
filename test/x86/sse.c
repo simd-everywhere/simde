@@ -3090,7 +3090,11 @@ test_simde_mm_maskmove_si64(const MunitParameter params[], void* data) {
     int8_t r[8];
     memcpy(r, test_vec[i].b, sizeof(r));
 
-    simde_mm_maskmove_si64(test_vec[i].a, test_vec[i].mask, r);
+    #if defined(SIMDE_X86_SSE_NATIVE) && defined(SIMDE_NATIVE_ALIASES_TESTING)
+      simde_mm_maskmove_si64(test_vec[i].a, test_vec[i].mask, HEDLEY_REINTERPRET_CAST(char *, r));
+    #else
+      simde_mm_maskmove_si64(test_vec[i].a, test_vec[i].mask, r);
+    #endif
     simde_assert_int8vx(8, r, ==, test_vec[i].r);
   }
 
