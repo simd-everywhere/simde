@@ -458,30 +458,7 @@ typedef SIMDE_FLOAT64_TYPE simde_float64;
 #  define SIMDE_CONVERT_FTOI(T,v) ((T) (v))
 #endif
 
-#if \
-    !defined(__cplusplus) && ( \
-      HEDLEY_HAS_BUILTIN(__builtin_types_compatible_p) || \
-      HEDLEY_GCC_VERSION_CHECK(3,4,0) || \
-      HEDLEY_ARM_VERSION_CHECK(5,0,4) || \
-      HEDLEY_CRAY_VERSION_CHECK(8,1,0) || \
-      HEDLEY_INTEL_VERSION_CHECK(13,0,0) || \
-      HEDLEY_IBM_VERSION_CHECK(16,1,0) \
-    )
-  #define SIMDE_CHECKED_REINTERPRET_CAST(to, from, value) \
-    (__extension__({ \
-      HEDLEY_STATIC_ASSERT(__builtin_types_compatible_p(from, __typeof__(value)) || \
-        __builtin_types_compatible_p(to, __typeof__(value)), \
-        "Type of `" #value "` must be either `" #to "` or `" #from "`"); \
-      HEDLEY_REINTERPRET_CAST(to, value); \
-    }))
-  #define SIMDE_CHECKED_STATIC_CAST(to, from, value) \
-    (__extension__({ \
-      HEDLEY_STATIC_ASSERT(__builtin_types_compatible_p(from, __typeof__(value)) || \
-        __builtin_types_compatible_p(to, __typeof__(value)), \
-        "Type of `" #value "` must be either `" #to "` or `" #from "`"); \
-      HEDLEY_STATIC_CAST(to, value); \
-    }))
-#elif defined(__STDC_VERSION__) && __STDC_VERSION__ >= 201112L
+#if defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 201112L)
   #define SIMDE_CHECKED_REINTERPRET_CAST(to, from, value) (_Generic((value), to: (value), from: ((to) (value))))
   #define SIMDE_CHECKED_STATIC_CAST(to, from, value) (_Generic((value), to: (value), from: ((to) (value))))
 #else

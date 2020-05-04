@@ -233,10 +233,10 @@ simde_mm256_mask_mov_epi8 (simde__m256i src, simde__mmask32 k, simde__m256i a) {
 
   return simde__m256i_from_private(r_);
 }
-#if defined(SIMDE_AVX512VL_NATIVE) && defined(SIMDE_AVX512BW_NATIVE)
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES) && defined(SIMDE_AVX512BW_NATIVE)
   #define simde_mm256_mask_mov_epi8(src, k, a) _mm256_mask_mov_epi8(src, k, a)
 #endif
-#if defined(SIMDE_AVX512VL_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES)
   #define _mm256_mask_mov_epi8(src, k, a) simde_mm256_mask_mov_epi8(src, k, a)
 #endif
 
@@ -346,10 +346,10 @@ simde_mm256_maskz_mov_epi8 (simde__mmask32 k, simde__m256i a) {
 
   return simde__m256i_from_private(r_);
 }
-#if defined(SIMDE_AVX512VL_NATIVE) && defined(SIMDE_AVX512BW_NATIVE)
+#if defined(SIMDE_X86_AVX512VL_NATIVE) && defined(SIMDE_AVX512BW_NATIVE)
   #define simde_mm256_maskz_mov_epi8(k, a) _mm256_maskz_mov_epi8(k, a)
 #endif
-#if defined(SIMDE_AVX512VL_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES)
   #define _mm256_maskz_mov_epi8(k, a) simde_mm256_maskz_mov_epi8(k, a)
 #endif
 
