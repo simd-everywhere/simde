@@ -124,7 +124,7 @@ simde_mm512_maskz_mov_epi16(simde__mmask32 k, simde__m512i a) {
     return simde__m512i_from_private(r_);
   #endif
 }
-#if defined(SIMDE_X166_AVX512BW_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
   #define _mm512_maskz_mov_epi16(k, a) simde_mm512_maskz_mov_epi16(k, a)
 #endif
 
@@ -536,7 +536,7 @@ simde_mm512_movepi8_mask (simde__m512i a) {
 #if defined(SIMDE_AVX512BW_NATIVE)
   #define simde_mm512_movepi8_mask(a) _mm512_movepi8_mask(a);
 #endif
-#if defined(SIMDE_AVX512BW_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
   #define _mm512_movepi8_mask(a) simde_mm512_movepi8_mask(a)
 #endif
 
