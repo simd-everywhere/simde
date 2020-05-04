@@ -71,7 +71,7 @@ jobs:
     - name: Convert
       run: ./test/native-aliases.sh
     - name: Configure
-      run: mkdir build && cd build && CFLAGS='-DSIMDE_ENABLE_NATIVE_ALIASES -DSIMDE_NATIVE_ALIASES_TESTING' CXXFLAGS='-DSIMDE_ENABLE_NATIVE_ALIASES -DSIMDE_NATIVE_ALIASES_TESTING' ~/.local/bin/meson ..
+      run: mkdir build && cd build && CFLAGS='-march=native -DSIMDE_ENABLE_NATIVE_ALIASES -DSIMDE_NATIVE_ALIASES_TESTING' CXXFLAGS='-march=native -DSIMDE_ENABLE_NATIVE_ALIASES -DSIMDE_NATIVE_ALIASES_TESTING' ~/.local/bin/meson ..
     - name: Build
       run: cd build && ninja -v
     - name: Test
