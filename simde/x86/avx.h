@@ -3178,20 +3178,28 @@ simde__m256i simde_mm256_insertf128_si256(simde__m256i a, simde__m128i b, int im
 
 SIMDE__FUNCTION_ATTRIBUTES
 int32_t
-simde_mm256_extract_epi32 (simde__m256i a, const int index) {
+simde_mm256_extract_epi32 (simde__m256i a, const int index)
+    HEDLEY_REQUIRE_MSG((index & 7) == index, "index must be in range [0, 7]") {
   simde__m256i_private a_ = simde__m256i_to_private(a);
   return a_.i32[index];
 }
+#if defined(SIMDE_X86_AVX_NATIVE)
+  #define simde_mm256_extract_epi32(a, index) _mm256_extract_epi32(a, index)
+#endif
 #if defined(SIMDE_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_extract_epi32(a, index) simde_mm256_extract_epi32(a, index)
+  #define _mm256_extract_epi32(a, index) simde_mm256_extract_epi32(a, index)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 int64_t
-simde_mm256_extract_epi64 (simde__m256i a, const int index) {
+simde_mm256_extract_epi64 (simde__m256i a, const int index)
+    HEDLEY_REQUIRE_MSG((index & 7) == index, "index must be in range [0, 3]") {
   simde__m256i_private a_ = simde__m256i_to_private(a);
   return a_.i64[index];
 }
+#if defined(SIMDE_X86_AVX_NATIVE)
+  #define simde_mm256_extract_epi64(a, index) _mm256_extract_epi64(a, index)
+#endif
 #if defined(SIMDE_AVX_ENABLE_NATIVE_ALIASES)
 #  define _mm256_extract_epi64(a, index) simde_mm256_extract_epi64(a, index)
 #endif

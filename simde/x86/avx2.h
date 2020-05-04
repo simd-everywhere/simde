@@ -1192,6 +1192,9 @@ simde_mm256_extract_epi8 (simde__m256i a, const int index)
   simde__m256i_private a_ = simde__m256i_to_private(a);
   return a_.i8[index];
 }
+#if defined(SIMDE_X86_AVX_NATIVE)
+  #define simde_mm256_extract_epi8(a, index) _mm256_extract_epi8(a, index)
+#endif
 #if defined(SIMDE_X86_AVX2_ENABLE_NATIVE_ALIASES)
 #  define _mm256_extract_epi8(a, index) simde_mm256_extract_epi8(a, index)
 #endif
@@ -1203,6 +1206,9 @@ simde_mm256_extract_epi16 (simde__m256i a, const int index)
   simde__m256i_private a_ = simde__m256i_to_private(a);
   return a_.i16[index];
 }
+#if defined(SIMDE_X86_AVX_NATIVE)
+  #define simde_mm256_extract_epi16(a, index) _mm256_extract_epi16(a, index)
+#endif
 #if defined(SIMDE_X86_AVX2_ENABLE_NATIVE_ALIASES)
 #  define _mm256_extract_epi16(a, index) simde_mm256_extract_epi16(a, index)
 #endif
