@@ -237,6 +237,24 @@ simde_mm_lddqu_si128 (simde__m128i const* mem_addr) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
+simde_mm_loaddup_pd (simde_float64 const* mem_addr) {
+#if defined(SIMDE_X86_SSE3_NATIVE)
+  return _mm_loaddup_pd(mem_addr);
+#else
+  simde__m128d_private r_;
+
+  r_.f64[0] = *mem_addr;
+  r_.f64[1] = *mem_addr;
+
+  return simde__m128d_from_private(r_);
+#endif
+}
+#if defined(SIMDE_X86_SSE3_ENABLE_NATIVE_ALIASES)
+#  define _mm_loaddup_pd(mem_addr) simde_mm_loaddup_pd(mem_addr)
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128d
 simde_mm_movedup_pd (simde__m128d a) {
 #if defined(SIMDE_X86_SSE3_NATIVE)
   return _mm_movedup_pd(a);
