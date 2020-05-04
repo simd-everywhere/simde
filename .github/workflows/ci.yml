@@ -57,3 +57,22 @@ jobs:
       run: cmake --build .
     - name: Test
       run: sde/sde64 -- ./run-tests
+
+  native-aliases:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: recursive
+    - name: Install APT Dependencies
+      run: sudo apt-get update && sudo apt-get -yq install libxml2-utils ninja-build python3-pip python3-setuptools python3-wheel
+    - name: Install pip Dependencies
+      run: pip3 install meson
+    - name: Convert
+      run: ./test/native-aliases.sh
+    - name: Configure
+      run: mkdir build && cd build && CFLAGS='-DSIMDE_ENABLE_NATIVE_ALIASES -DSIMDE_NATIVE_ALIASES_TESTING' CXXFLAGS='-DSIMDE_ENABLE_NATIVE_ALIASES -DSIMDE_NATIVE_ALIASES_TESTING' ~/.local/bin/meson ..
+    - name: Build
+      run: cd build && ninja -v
+    - name: Test
+      run: build/test/run-tests
