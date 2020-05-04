@@ -3076,8 +3076,11 @@ simde_mm256_insert_epi8 (simde__m256i a, int8_t i, const int index)
 
   return simde__m256i_from_private(a_);
 }
+#if defined(SIMDE_X86_AVX_NATIVE)
+  #define simde_mm256_insert_epi8(a, i, index) _mm256_insert_epi8(a, i, index)
+#endif
 #if defined(SIMDE_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_insert_epi8(a, i, imm8) simde_mm256_insert_epi8(a, i, imm8)
+  #define _mm256_insert_epi8(a, i, index) simde_mm256_insert_epi8(a, i, index)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -3090,8 +3093,11 @@ simde_mm256_insert_epi16 (simde__m256i a, int16_t i, const int index)
 
   return simde__m256i_from_private(a_);
 }
+#if defined(SIMDE_X86_AVX_NATIVE)
+  #define simde_mm256_insert_epi16(a, i, index) _mm256_insert_epi16(a, i, index)
+#endif
 #if defined(SIMDE_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_insert_epi16(a, i, imm8) simde_mm256_insert_epi16(a, i, imm8)
+  #define _mm256_insert_epi16(a, i, imm8) simde_mm256_insert_epi16(a, i, imm8)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -3104,8 +3110,11 @@ simde_mm256_insert_epi32 (simde__m256i a, int32_t i, const int index)
 
   return simde__m256i_from_private(a_);
 }
+#if defined(SIMDE_X86_AVX_NATIVE)
+  #define simde_mm256_insert_epi32(a, i, index) _mm256_insert_epi32(a, i, index)
+#endif
 #if defined(SIMDE_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_insert_epi32(a, i, imm8) simde_mm256_insert_epi32(a, i, imm8)
+  #define _mm256_insert_epi32(a, i, index) simde_mm256_insert_epi32(a, i, index)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -3118,8 +3127,11 @@ simde_mm256_insert_epi64 (simde__m256i a, int64_t i, const int index)
 
   return simde__m256i_from_private(a_);
 }
+#if defined(SIMDE_X86_AVX_NATIVE)
+  #define simde_mm256_insert_epi64(a, i, index) _mm256_insert_epi64(a, i, index)
+#endif
 #if defined(SIMDE_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_insert_epi64(a, i, imm8) simde_mm256_insert_epi64(a, i, imm8)
+  #define _mm256_insert_epi64(a, i, index) simde_mm256_insert_epi64(a, i, index)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
