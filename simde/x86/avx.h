@@ -3128,7 +3128,9 @@ simde_mm256_insert_epi64 (simde__m256i a, int64_t i, const int index)
   return simde__m256i_from_private(a_);
 }
 #if defined(SIMDE_X86_AVX_NATIVE)
-  #define simde_mm256_insert_epi64(a, i, index) _mm256_insert_epi64(a, i, index)
+  #if !defined(HEDLEY_MSVC_VERSION) || HEDLEY_MSVC_VERSION_CHECK(19,20,0)
+    #define simde_mm256_insert_epi64(a, i, index) _mm256_insert_epi64(a, i, index)
+  #endif
 #endif
 #if defined(SIMDE_AVX_ENABLE_NATIVE_ALIASES)
   #define _mm256_insert_epi64(a, i, index) simde_mm256_insert_epi64(a, i, index)
@@ -3210,10 +3212,12 @@ simde_mm256_extract_epi64 (simde__m256i a, const int index)
   return a_.i64[index];
 }
 #if defined(SIMDE_X86_AVX_NATIVE)
-  #define simde_mm256_extract_epi64(a, index) _mm256_extract_epi64(a, index)
+  #if !defined(HEDLEY_MSVC_VERSION) || HEDLEY_MSVC_VERSION_CHECK(19,20,0)
+    #define simde_mm256_extract_epi64(a, index) _mm256_extract_epi64(a, index)
+  #endif
 #endif
 #if defined(SIMDE_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_extract_epi64(a, index) simde_mm256_extract_epi64(a, index)
+  #define _mm256_extract_epi64(a, index) simde_mm256_extract_epi64(a, index)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
