@@ -1239,7 +1239,7 @@ simde_mm_setzero_si64 (void) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m64
-simde_mm_setone_si64 (void) {
+simde_x_mm_setone_si64 (void) {
   return simde_mm_set1_pi32(~INT32_C(0));
 }
 

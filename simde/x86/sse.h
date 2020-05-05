@@ -2797,7 +2797,7 @@ HEDLEY_DIAGNOSTIC_POP
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128
-simde_mm_setone_ps (void) {
+simde_x_mm_setone_ps (void) {
   simde__m128 t = simde_mm_setzero_ps();
   return simde_mm_cmpeq_ps(t, t);
 }

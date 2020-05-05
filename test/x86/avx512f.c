@@ -14102,11 +14102,11 @@ test_simde_mm512_setzero_si512(const MunitParameter params[], void* data) {
 }
 
 static MunitResult
-test_simde_mm512_setone_si512(const MunitParameter params[], void* data) {
+test_simde_x_mm512_setone_si512(const MunitParameter params[], void* data) {
   (void) params;
   (void) data;
 
-  simde_assert_m512i_i32(simde_mm512_setone_si512(), ==, simde_mm512_set1_epi32(~INT32_C(0)));
+  simde_assert_m512i_i32(simde_x_mm512_setone_si512(), ==, simde_mm512_set1_epi32(~INT32_C(0)));
 
   return MUNIT_OK;
 }
@@ -18644,7 +18644,7 @@ static MunitTest test_suite_tests[] = {
   SIMDE_TESTS_DEFINE_TEST(mm512_or_si512),
 
   SIMDE_TESTS_DEFINE_TEST(mm512_setzero_si512),
-  SIMDE_TESTS_DEFINE_TEST(mm512_setone_si512),
+  SIMDE_TESTS_DEFINE_TEST(x_mm512_setone_si512),
 
   SIMDE_TESTS_DEFINE_TEST(mm512_sub_epi32),
   SIMDE_TESTS_DEFINE_TEST(mm512_mask_sub_epi32),

@@ -4144,14 +4144,14 @@ HEDLEY_DIAGNOSTIC_POP
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
-simde_mm_setone_pd (void) {
-  return simde_mm_castps_pd(simde_mm_setone_ps());
+simde_x_mm_setone_pd (void) {
+  return simde_mm_castps_pd(simde_x_mm_setone_ps());
 }
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
-simde_mm_setone_si128 (void) {
-  return simde_mm_castps_si128(simde_mm_setone_ps());
+simde_x_mm_setone_si128 (void) {
+  return simde_mm_castps_si128(simde_x_mm_setone_ps());
 }
 
 SIMDE__FUNCTION_ATTRIBUTES

@@ -487,7 +487,7 @@ simde_mm256_setzero_pd (void) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256i
-simde_mm256_setone_si256 (void) {
+simde_x_mm256_setone_si256 (void) {
   simde__m256i_private r_;
 
 #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
@@ -508,14 +508,14 @@ simde_mm256_setone_si256 (void) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256
-simde_m256_setone_ps (void) {
-  return simde_mm256_castsi256_ps(simde_mm256_setone_si256());
+simde_x_m256_setone_ps (void) {
+  return simde_mm256_castsi256_ps(simde_x_mm256_setone_si256());
 }
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256d
-simde_m256_setone_pd (void) {
-  return simde_mm256_castsi256_pd(simde_mm256_setone_si256());
+simde_x_m256_setone_pd (void) {
+  return simde_mm256_castsi256_pd(simde_x_mm256_setone_si256());
 }
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -1732,7 +1732,7 @@ simde_mm_cmp_pd (simde__m128d a, simde__m128d b, const int imm8)
       break;
     case SIMDE_CMP_TRUE_UQ:
     case SIMDE_CMP_TRUE_US:
-      return simde_mm_setone_pd();
+      return simde_x_mm_setone_pd();
       break;
     case SIMDE_CMP_UNORD_Q:
     case SIMDE_CMP_UNORD_S:
@@ -1800,7 +1800,7 @@ simde_mm_cmp_ps (simde__m128 a, simde__m128 b, const int imm8)
       break;
     case SIMDE_CMP_TRUE_UQ:
     case SIMDE_CMP_TRUE_US:
-      return simde_mm_setone_ps();
+      return simde_x_mm_setone_ps();
       break;
     case SIMDE_CMP_UNORD_Q:
     case SIMDE_CMP_UNORD_S:

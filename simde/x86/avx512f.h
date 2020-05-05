@@ -1757,7 +1757,7 @@ simde_mm512_setzero_si512(void) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m512i
-simde_mm512_setone_si512(void) {
+simde_x_mm512_setone_si512(void) {
   simde__m512i_private r_;
 
   SIMDE__VECTORIZE
@@ -1767,7 +1767,7 @@ simde_mm512_setone_si512(void) {
 
   return simde__m512i_from_private(r_);
 }
-#define simde_mm512_setone_epi32() simde_mm512_setone_si512()
+#define simde_x_mm512_setone_epi32() simde_x_mm512_setone_si512()
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m512
@@ -1784,8 +1784,8 @@ simde_mm512_setzero_ps(void) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m512
-simde_mm512_setone_ps(void) {
-  return simde_mm512_castsi512_ps(simde_mm512_setone_si512());
+simde_x_mm512_setone_ps(void) {
+  return simde_mm512_castsi512_ps(simde_x_mm512_setone_si512());
 }
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -1803,8 +1803,8 @@ simde_mm512_setzero_pd(void) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m512d
-simde_mm512_setone_pd(void) {
-  return simde_mm512_castsi512_pd(simde_mm512_setone_si512());
+simde_x_mm512_setone_pd(void) {
+  return simde_mm512_castsi512_pd(simde_x_mm512_setone_si512());
 }
 
 SIMDE__FUNCTION_ATTRIBUTES
