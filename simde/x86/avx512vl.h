@@ -68,7 +68,7 @@ SIMDE__BEGIN_DECLS
 #endif
 
 #if defined(SIMDE_X86_AVX512VL_NATIVE)
-  #define simde_mm256_maskz_mov_epi8(k, a) _mm256_mask_mov_epi8(k, a)
+  #define simde_mm256_maskz_mov_epi8(k, a) _mm256_maskz_mov_epi8(k, a)
 #else
   #define simde_mm256_maskz_mov_epi8(k, a) simde_x_mm256_maskz_mov_epi8(k, a)
 #endif
