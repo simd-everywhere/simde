@@ -23,6 +23,7 @@
  * Copyright:
  *   2020      Evan Nemerson <evan@nemerson.com>
  *   2020      Himanshi Mathur <himanshi18037@iiitd.ac.in>
+ *   2020      Christopher Moore <moore@free.fr>
  */
 
 #if !defined(SIMDE_X86_AVX512VL_H)
@@ -38,27 +39,41 @@ HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 SIMDE__BEGIN_DECLS
 
-SIMDE__FUNCTION_ATTRIBUTES
-simde__m128i
-simde_mm_mask_mov_epi8(simde__m128i src, simde__mmask16 k, simde__m128i a) {
-  #if defined(SIMDE_X86_AVX512VL_NATIVE)
-    return _mm_mask_mov_epi8(src, k, a);
-  #else
-    simde__m128i_private
-      src_ = simde__m128i_to_private(src),
-      a_ = simde__m128i_to_private(a),
-      r_;
-
-    SIMDE__VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.i8) / sizeof(r_.i8[0])) ; i++) {
-      r_.i8[i] = ((k >> i) & 1) ? a_.i8[i] : src_.i8[i];
-    }
-
-    return simde__m128i_from_private(r_);
-  #endif
-}
+/* Import some from avx512bw.h */
+#if defined(SIMDE_X86_AVX512VL_NATIVE)
+  #define simde_mm_mask_mov_epi8(src, k, a) _mm_mask_mov_epi8(src, k, a)
+#else
+  #define simde_mm_mask_mov_epi8(src, k, a) simde_x_mm_mask_mov_epi8(src, k, a)
+#endif
 #if defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES)
   #define _mm_mask_mov_epi8(src, k, a) simde_mm_mask_mov_epi8(src, k, a)
+#endif
+
+#if defined(SIMDE_X86_AVX512VL_NATIVE)
+  #define simde_mm256_mask_mov_epi8(src, k, a) _mm_mas256k_mov_epi8(src, k, a)
+#else
+  #define simde_mm256_mask_mov_epi8(src, k, a) simde_x_mm256_mask_mov_epi8(src, k, a)
+#endif
+#if defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES)
+  #define _m256m_mask_mov_epi8(src, k, a) simde_mm256_mask_mov_epi8(src, k, a)
+#endif
+
+#if defined(SIMDE_X86_AVX512VL_NATIVE)
+  #define simde_mm_maskz_mov_epi8(k, a) _mm_maskz_mov_epi8(k, a)
+#else
+  #define simde_mm_maskz_mov_epi8(k, a) simde_x_mm_maskz_mov_epi8(k, a)
+#endif
+#if defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES)
+  #define _mm_maskz_mov_epi8(k, a) simde_mm_maskz_mov_epi8(k, a)
+#endif
+
+#if defined(SIMDE_X86_AVX512VL_NATIVE)
+  #define simde_mm256_maskz_mov_epi8(k, a) _mm_mas256k_mov_epi8(k, a)
+#else
+  #define simde_mm256_maskz_mov_epi8(k, a) simde_x_mm256_maskz_mov_epi8(k, a)
+#endif
+#if defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES)
+  #define _m256m_maskz_mov_epi8(k, a) simde_mm256_maskz_mov_epi8(k, a)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -132,28 +147,6 @@ simde_mm_mask_mov_epi64(simde__m128i src, simde__mmask8 k, simde__m128i a) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
-simde_mm_maskz_mov_epi8(simde__mmask16 k, simde__m128i a) {
-  #if defined(SIMDE_X86_AVX512VL_NATIVE)
-    return _mm_maskz_mov_epi8(k, a);
-  #else
-    simde__m128i_private
-      a_ = simde__m128i_to_private(a),
-      r_;
-
-    SIMDE__VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.i8) / sizeof(r_.i8[0])) ; i++) {
-      r_.i8[i] = ((k >> i) & 1) ? a_.i8[i] : INT8_C(0);
-    }
-
-    return simde__m128i_from_private(r_);
-  #endif
-}
-#if defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES)
-  #define _mm_maskz_mov_epi8(k, a) simde_mm_maskz_mov_epi8(k, a)
-#endif
-
-SIMDE__FUNCTION_ATTRIBUTES
-simde__m128i
 simde_mm_maskz_mov_epi16(simde__mmask8 k, simde__m128i a) {
   #if defined(SIMDE_X86_AVX512VL_NATIVE)
     return _mm_maskz_mov_epi16(k, a);
@@ -216,28 +209,6 @@ simde_mm_maskz_mov_epi64(simde__mmask8 k, simde__m128i a) {
 }
 #if defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES)
   #define _mm_maskz_mov_epi64(k, a) simde_mm_maskz_mov_epi64(k, a)
-#endif
-
-SIMDE__FUNCTION_ATTRIBUTES
-simde__m256i
-simde_mm256_mask_mov_epi8 (simde__m256i src, simde__mmask32 k, simde__m256i a) {
-  simde__m256i_private
-    r_,
-    src_ = simde__m256i_to_private(src),
-    a_ = simde__m256i_to_private(a);
-
-  SIMDE__VECTORIZE
-  for (size_t i = 0 ; i < (sizeof(r_.i8) / sizeof(r_.i8[0])) ; i++) {
-    r_.i8[i] = ((k >> i) & 1) ? a_.i8[i] : src_.i8[i];
-  }
-
-  return simde__m256i_from_private(r_);
-}
-#if defined(SIMDE_AVX512VL_NATIVE) && defined(SIMDE_AVX512BW_NATIVE)
-  #define simde_mm256_mask_mov_epi8(src, k, a) _mm256_mask_mov_epi8(src, k, a)
-#endif
-#if defined(SIMDE_AVX512VL_ENABLE_NATIVE_ALIASES)
-  #define _mm256_mask_mov_epi8(src, k, a) simde_mm256_mask_mov_epi8(src, k, a)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -330,27 +301,6 @@ simde_mm256_mask_mov_pd(simde__m256d src, simde__mmask8 k, simde__m256d a) {
 }
 #if defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES)
   #define _mm256_mask_mov_pd(src, k, a) simde_mm256_mask_mov_pd(src, k, a)
-#endif
-
-SIMDE__FUNCTION_ATTRIBUTES
-simde__m256i
-simde_mm256_maskz_mov_epi8 (simde__mmask32 k, simde__m256i a) {
-  simde__m256i_private
-    r_,
-    a_ = simde__m256i_to_private(a);
-
-  SIMDE__VECTORIZE
-  for (size_t i = 0 ; i < (sizeof(r_.i8) / sizeof(r_.i8[0])) ; i++) {
-    r_.i8[i] = ((k >> i) & 1) ? a_.i8[i] : INT8_C(0);
-  }
-
-  return simde__m256i_from_private(r_);
-}
-#if defined(SIMDE_AVX512VL_NATIVE) && defined(SIMDE_AVX512BW_NATIVE)
-  #define simde_mm256_maskz_mov_epi8(k, a) _mm256_maskz_mov_epi8(k, a)
-#endif
-#if defined(SIMDE_AVX512VL_ENABLE_NATIVE_ALIASES)
-  #define _mm256_maskz_mov_epi8(k, a) simde_mm256_maskz_mov_epi8(k, a)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
