@@ -30,20 +30,20 @@ jobs:
     - name: Test
       run: ./run-tests
 
-  # emscripten:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #   - uses: actions/checkout@v2
-  #   - name: Install APT dependencies
-  #     run: sudo apt-get install -y ninja-build nodejs
-  #   - name: Dowvload Emscripten
-  #     run: |
-  #       git clone https://github.com/emscripten-core/emsdk.git && \
-  #       emsdk/emsdk install latest && \
-  #       emsdk/emsdk activate latest
-  #   - name: Configure
-  #     run: emsdk/upstream/emscripten/emconfigure cmake test -G "Ninja" -DCMAKE_BUILD_TYPE="Coverage" -DALWAYS_BUILD_NATIVE_TESTS=ON -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON
-  #   - name: Build
-  #     run: emsdk/upstream/emscripten/emmake ninja
-  #   - name: Test
-  #     run: node ./run-tests=
+  SDE:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        arch: ["icelake-server"]
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install APT Dependencies
+      run: sudo add-apt-repository 'ppa:ubuntu-toolchain-r/test' && sudo apt-get update && sudo apt-get install -y ninja-build python3-lxml
+    - name: Download SDE
+      run: cd test && python3 download-sde.py sde.tar.bz2 && tar jxvf sde.tar.bz2
+    - name: Configure
+      run: cmake test -G "Ninja" -DCMAKE_C_COMPILER="clang" -DCMAKE_CXX_COMPILER="clang++" -DCMAKE_BUILD_TYPE="Coverage" -DCMAKE_{C,CXX}_FLAGS="-march=${{ matrix.arch }} -Wall -Wextra -Werror" -DALWAYS_BUILD_NATIVE_TESTS=ON -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON
+    - name: Build
+      run: cmake --build .
+    - name: Test
+      run: test/sde-*/sde64 -- ./run-tests
