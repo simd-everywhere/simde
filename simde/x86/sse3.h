@@ -29,8 +29,8 @@
 
 #include "sse2.h"
 
-#if !defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_ENABLE_NATIVE_ALIASES)
-#  define SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES
+#if !defined(SIMDE_X86_SSE3_NATIVE) && defined(SIMDE_ENABLE_NATIVE_ALIASES)
+#  define SIMDE_X86_SSE3_ENABLE_NATIVE_ALIASES
 #endif
 
 HEDLEY_DIAGNOSTIC_PUSH
@@ -233,6 +233,24 @@ simde_mm_lddqu_si128 (simde__m128i const* mem_addr) {
 }
 #if defined(SIMDE_X86_SSE3_ENABLE_NATIVE_ALIASES)
 #  define _mm_lddqu_si128(mem_addr) simde_mm_lddqu_si128(mem_addr)
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m128d
+simde_mm_loaddup_pd (simde_float64 const* mem_addr) {
+#if defined(SIMDE_X86_SSE3_NATIVE)
+  return _mm_loaddup_pd(mem_addr);
+#else
+  simde__m128d_private r_;
+
+  r_.f64[0] = *mem_addr;
+  r_.f64[1] = *mem_addr;
+
+  return simde__m128d_from_private(r_);
+#endif
+}
+#if defined(SIMDE_X86_SSE3_ENABLE_NATIVE_ALIASES)
+#  define _mm_loaddup_pd(mem_addr) simde_mm_loaddup_pd(mem_addr)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
