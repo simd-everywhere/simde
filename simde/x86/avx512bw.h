@@ -28,7 +28,7 @@
 #if !defined(SIMDE_X86_AVX512BW_H)
 #define SIMDE_X86_AVX512BW_H
 
-#include "avx512f.h"
+#include "avx512vl.h"
 
 #if !defined(SIMDE_X86_AVX512BW_NATIVE) && defined(SIMDE_ENABLE_NATIVE_ALIASES)
 #  define SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES
