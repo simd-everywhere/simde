@@ -498,7 +498,7 @@ simde_mm_add_sd (simde__m128d a, simde__m128d b) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m64
 simde_mm_add_si64 (simde__m64 a, simde__m64 b) {
-#if defined(SIMDE_X86_SSE2_NATIVE) && defined(SIMDE_ARCH_X86_MMX)
+#if defined(SIMDE_X86_SSE2_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
   return _mm_add_si64(a, b);
 #else
   simde__m64_private
@@ -2058,7 +2058,7 @@ simde_mm_cvtpd_epi32 (simde__m128d a) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m64
 simde_mm_cvtpd_pi32 (simde__m128d a) {
-#if defined(SIMDE_X86_SSE2_NATIVE) && defined(SIMDE_ARCH_X86_MMX)
+#if defined(SIMDE_X86_SSE2_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
   return _mm_cvtpd_pi32(a);
 #else
   simde__m64_private r_;
@@ -2110,7 +2110,7 @@ simde_mm_cvtpd_ps (simde__m128d a) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
 simde_mm_cvtpi32_pd (simde__m64 a) {
-#if defined(SIMDE_X86_SSE2_NATIVE) && defined(SIMDE_ARCH_X86_MMX)
+#if defined(SIMDE_X86_SSE2_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
   return _mm_cvtpi32_pd(a);
 #else
   simde__m128d_private r_;
@@ -2441,7 +2441,7 @@ simde_mm_cvttpd_epi32 (simde__m128d a) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m64
 simde_mm_cvttpd_pi32 (simde__m128d a) {
-#if defined(SIMDE_X86_SSE2_NATIVE) && defined(SIMDE_ARCH_X86_MMX)
+#if defined(SIMDE_X86_SSE2_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
   return _mm_cvttpd_pi32(a);
 #else
   simde__m64_private r_;
@@ -2939,7 +2939,7 @@ simde_mm_movemask_pd (simde__m128d a) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m64
 simde_mm_movepi64_pi64 (simde__m128i a) {
-#if defined(SIMDE_X86_SSE2_NATIVE) && defined(SIMDE_ARCH_X86_MMX)
+#if defined(SIMDE_X86_SSE2_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
   return _mm_movepi64_pi64(a);
 #else
   simde__m64_private r_;
@@ -2957,7 +2957,7 @@ simde_mm_movepi64_pi64 (simde__m128i a) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_movpi64_epi64 (simde__m64 a) {
-#if defined(SIMDE_X86_SSE2_NATIVE) && defined(SIMDE_ARCH_X86_MMX)
+#if defined(SIMDE_X86_SSE2_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
   return _mm_movpi64_epi64(a);
 #else
   simde__m128i_private r_;
@@ -3315,7 +3315,7 @@ simde_mm_mul_sd (simde__m128d a, simde__m128d b) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m64
 simde_mm_mul_su32 (simde__m64 a, simde__m64 b) {
-#if defined(SIMDE_X86_SSE2_NATIVE) && defined(SIMDE_ARCH_X86_MMX) && !defined(__PGI)
+#if defined(SIMDE_X86_SSE2_NATIVE) && defined(SIMDE_X86_MMX_NATIVE) && !defined(__PGI)
   return _mm_mul_su32(a, b);
 #else
   simde__m64_private
@@ -3701,7 +3701,7 @@ simde_mm_set_epi32 (int32_t e3, int32_t e2, int32_t e1, int32_t e0) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_set_epi64 (simde__m64 e1, simde__m64 e0) {
-  #if defined(SIMDE_X86_SSE2_NATIVE) && defined(SIMDE_ARCH_X86_MMX)
+  #if defined(SIMDE_X86_SSE2_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
     return _mm_set_epi64(e1, e0);
   #else
     simde__m128i_private r_;
@@ -3975,7 +3975,7 @@ simde_mm_set1_epi64x (int64_t a) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_set1_epi64 (simde__m64 a) {
-#if defined(SIMDE_X86_SSE2_NATIVE) && defined(SIMDE_ARCH_X86_MMX)
+#if defined(SIMDE_X86_SSE2_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
   return _mm_set1_epi64(a);
 #else
   simde__m64_private a_ = simde__m64_to_private(a);
@@ -4060,7 +4060,7 @@ simde_mm_setr_epi32 (int32_t e3, int32_t e2, int32_t e1, int32_t e0) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_setr_epi64 (simde__m64 e1, simde__m64 e0) {
-#if defined(SIMDE_X86_SSE2_NATIVE) && defined(SIMDE_ARCH_X86_MMX)
+#if defined(SIMDE_X86_SSE2_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
   return _mm_setr_epi64(e1, e0);
 #else
   return simde_mm_set_epi64(e0, e1);
@@ -5196,7 +5196,7 @@ simde_mm_sub_sd (simde__m128d a, simde__m128d b) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m64
 simde_mm_sub_si64 (simde__m64 a, simde__m64 b) {
-#if defined(SIMDE_X86_SSE2_NATIVE) && defined(SIMDE_ARCH_X86_MMX)
+#if defined(SIMDE_X86_SSE2_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
   return _mm_sub_si64(a, b);
 #else
   simde__m64_private

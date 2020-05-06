@@ -49,7 +49,7 @@ simde_mm512_and_pd (simde__m512d a, simde__m512d b) {
     a_ = simde__m512d_to_private(a),
     b_ = simde__m512d_to_private(b);
 
-#if defined(SIMDE_ARCH_X86_AVX)
+#if defined(SIMDE_X86_AVX_NATIVE)
   r_.m256d[0] = simde_mm256_and_pd(a_.m256d[0], b_.m256d[0]);
   r_.m256d[1] = simde_mm256_and_pd(a_.m256d[1], b_.m256d[1]);
 #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
@@ -79,7 +79,7 @@ simde_mm512_and_ps (simde__m512 a, simde__m512 b) {
     a_ = simde__m512_to_private(a),
     b_ = simde__m512_to_private(b);
 
-#if defined(SIMDE_ARCH_X86_AVX)
+#if defined(SIMDE_X86_AVX_NATIVE)
   r_.m256[0] = simde_mm256_and_ps(a_.m256[0], b_.m256[0]);
   r_.m256[1] = simde_mm256_and_ps(a_.m256[1], b_.m256[1]);
 #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)

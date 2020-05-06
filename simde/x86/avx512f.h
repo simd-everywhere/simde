@@ -2204,7 +2204,7 @@ simde_mm512_and_si512 (simde__m512i a, simde__m512i b) {
       a_ = simde__m512i_to_private(a),
       b_ = simde__m512i_to_private(b);
 
-    #if defined(SIMDE_ARCH_X86_AVX2)
+    #if defined(SIMDE_X86_AVX2_NATIVE)
       r_.m256i[0] = simde_mm256_and_si256(a_.m256i[0], b_.m256i[0]);
       r_.m256i[1] = simde_mm256_and_si256(a_.m256i[1], b_.m256i[1]);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
@@ -2234,7 +2234,7 @@ simde_mm512_andnot_si512 (simde__m512i a, simde__m512i b) {
       a_ = simde__m512i_to_private(a),
       b_ = simde__m512i_to_private(b);
 
-    #if defined(SIMDE_ARCH_X86_AVX2)
+    #if defined(SIMDE_X86_AVX2_NATIVE)
       r_.m256i[0] = simde_mm256_andnot_si256(a_.m256i[0], b_.m256i[0]);
       r_.m256i[1] = simde_mm256_andnot_si256(a_.m256i[1], b_.m256i[1]);
     #else
@@ -2367,9 +2367,9 @@ simde_mm512_broadcast_i32x4 (simde__m128i a) {
   #else
     simde__m512i_private r_;
 
-    #if defined(SIMDE_ARCH_X86_AVX2)
+    #if defined(SIMDE_X86_AVX2_NATIVE)
       r_.m256i[1] = r_.m256i[0] = simde_mm256_broadcastsi128_si256(a);
-    #elif defined(SIMDE_ARCH_X86_SSE2)
+    #elif defined(SIMDE_X86_SSE2_NATIVE)
       r_.m128i[3] = r_.m128i[2] = r_.m128i[1] = r_.m128i[0] = a;
     #else
       SIMDE__VECTORIZE
@@ -3969,7 +3969,7 @@ simde_mm512_or_si512 (simde__m512i a, simde__m512i b) {
       a_ = simde__m512i_to_private(a),
       b_ = simde__m512i_to_private(b);
 
-    #if defined(SIMDE_ARCH_X86_AVX2)
+    #if defined(SIMDE_X86_AVX2_NATIVE)
       r_.m256i[0] = simde_mm256_or_si256(a_.m256i[0], b_.m256i[0]);
       r_.m256i[1] = simde_mm256_or_si256(a_.m256i[1], b_.m256i[1]);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
@@ -4213,10 +4213,10 @@ simde_mm512_slli_epi32 (simde__m512i a, unsigned int imm8) {
   if (imm8 > 31) {
     simde_memset(&r_, 0, sizeof(r_));
   } else {
-    #if defined(SIMDE_ARCH_X86_AVX2)
+    #if defined(SIMDE_X86_AVX2_NATIVE)
       r_.m256i[0] = simde_mm256_slli_epi32(a_.m256i[0], HEDLEY_STATIC_CAST(int, imm8));
       r_.m256i[1] = simde_mm256_slli_epi32(a_.m256i[1], HEDLEY_STATIC_CAST(int, imm8));
-    #elif defined(SIMDE_ARCH_X86_SSE2)
+    #elif defined(SIMDE_X86_SSE2_NATIVE)
       r_.m128i[0] = simde_mm_slli_epi32(a_.m128i[0], HEDLEY_STATIC_CAST(int, imm8));
       r_.m128i[1] = simde_mm_slli_epi32(a_.m128i[1], HEDLEY_STATIC_CAST(int, imm8));
       r_.m128i[2] = simde_mm_slli_epi32(a_.m128i[2], HEDLEY_STATIC_CAST(int, imm8));
@@ -4253,10 +4253,10 @@ simde_mm512_slli_epi64 (simde__m512i a, unsigned int imm8) {
   if (imm8 > 63) {
     simde_memset(&r_, 0, sizeof(r_));
   } else {
-    #if defined(SIMDE_ARCH_X86_AVX2)
+    #if defined(SIMDE_X86_AVX2_NATIVE)
       r_.m256i[0] = simde_mm256_slli_epi64(a_.m256i[0], HEDLEY_STATIC_CAST(int, imm8));
       r_.m256i[1] = simde_mm256_slli_epi64(a_.m256i[1], HEDLEY_STATIC_CAST(int, imm8));
-    #elif defined(SIMDE_ARCH_X86_SSE2)
+    #elif defined(SIMDE_X86_SSE2_NATIVE)
       r_.m128i[0] = simde_mm_slli_epi64(a_.m128i[0], HEDLEY_STATIC_CAST(int, imm8));
       r_.m128i[1] = simde_mm_slli_epi64(a_.m128i[1], HEDLEY_STATIC_CAST(int, imm8));
       r_.m128i[2] = simde_mm_slli_epi64(a_.m128i[2], HEDLEY_STATIC_CAST(int, imm8));
@@ -4290,10 +4290,10 @@ simde_mm512_srli_epi32 (simde__m512i a, unsigned int imm8) {
       r_,
       a_ = simde__m512i_to_private(a);
 
-    #if defined(SIMDE_ARCH_X86_AVX2)
+    #if defined(SIMDE_X86_AVX2_NATIVE)
       r_.m256i[0] = simde_mm256_srli_epi32(a_.m256i[0], HEDLEY_STATIC_CAST(int, imm8));
       r_.m256i[1] = simde_mm256_srli_epi32(a_.m256i[1], HEDLEY_STATIC_CAST(int, imm8));
-    #elif defined(SIMDE_ARCH_X86_SSE2)
+    #elif defined(SIMDE_X86_SSE2_NATIVE)
       r_.m128i[0] = simde_mm_srli_epi32(a_.m128i[0], HEDLEY_STATIC_CAST(int, imm8));
       r_.m128i[1] = simde_mm_srli_epi32(a_.m128i[1], HEDLEY_STATIC_CAST(int, imm8));
       r_.m128i[2] = simde_mm_srli_epi32(a_.m128i[2], HEDLEY_STATIC_CAST(int, imm8));
@@ -4330,10 +4330,10 @@ simde_mm512_srli_epi64 (simde__m512i a, unsigned int imm8) {
       r_,
       a_ = simde__m512i_to_private(a);
 
-    #if defined(SIMDE_ARCH_X86_AVX2)
+    #if defined(SIMDE_X86_AVX2_NATIVE)
       r_.m256i[0] = simde_mm256_srli_epi64(a_.m256i[0], HEDLEY_STATIC_CAST(int, imm8));
       r_.m256i[1] = simde_mm256_srli_epi64(a_.m256i[1], HEDLEY_STATIC_CAST(int, imm8));
-    #elif defined(SIMDE_ARCH_X86_SSE2)
+    #elif defined(SIMDE_X86_SSE2_NATIVE)
       r_.m128i[0] = simde_mm_srli_epi64(a_.m128i[0], HEDLEY_STATIC_CAST(int, imm8));
       r_.m128i[1] = simde_mm_srli_epi64(a_.m128i[1], HEDLEY_STATIC_CAST(int, imm8));
       r_.m128i[2] = simde_mm_srli_epi64(a_.m128i[2], HEDLEY_STATIC_CAST(int, imm8));
@@ -4420,10 +4420,10 @@ simde_mm512_xor_si512 (simde__m512i a, simde__m512i b) {
       a_ = simde__m512i_to_private(a),
       b_ = simde__m512i_to_private(b);
 
-  #if defined(SIMDE_ARCH_X86_AVX2)
+  #if defined(SIMDE_X86_AVX2_NATIVE)
     r_.m256i[0] = simde_mm256_xor_si256(a_.m256i[0], b_.m256i[0]);
     r_.m256i[1] = simde_mm256_xor_si256(a_.m256i[1], b_.m256i[1]);
-  #elif defined(SIMDE_ARCH_X86_SSE2)
+  #elif defined(SIMDE_X86_SSE2_NATIVE)
     r_.m128i[0] = simde_mm_xor_si128(a_.m128i[0], b_.m128i[0]);
     r_.m128i[1] = simde_mm_xor_si128(a_.m128i[1], b_.m128i[1]);
     r_.m128i[2] = simde_mm_xor_si128(a_.m128i[2], b_.m128i[2]);
