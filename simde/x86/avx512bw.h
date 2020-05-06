@@ -123,7 +123,7 @@ simde_mm256_movm_epi8 (simde__mmask32 k) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256i
-simde_mm256_mask_mov_epi8 (simde__m256i src, simde__mmask64 k, simde__m256i a) {
+simde_mm256_mask_mov_epi8 (simde__m256i src, simde__mmask32 k, simde__m256i a) {
   #if defined(SIMDE_X86_AVX512BW_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
     return _mm256_mask_mov_epi8(src, k, a);
   #elif defined(SIMDE_ARCH_X86_AVX2)
@@ -146,7 +146,7 @@ simde_mm256_mask_mov_epi8 (simde__m256i src, simde__mmask64 k, simde__m256i a) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256i
-simde_mm256_maskz_mov_epi8 (simde__mmask64 k, simde__m256i a) {
+simde_mm256_maskz_mov_epi8 (simde__mmask32 k, simde__m256i a) {
   #if defined(SIMDE_X86_AVX512BW_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
     return _mm256_maskz_mov_epi8(k, a);
   #elif defined(SIMDE_ARCH_X86_AVX2)
