@@ -3199,15 +3199,15 @@ simde_mm_ucomieq_ss (simde__m128 a, simde__m128 b) {
     b_ = simde__m128_to_private(b);
   int r;
 
-#if defined(SIMDE_HAVE_FENV_H)
-  fenv_t envp;
-  int x = feholdexcept(&envp);
-  r = a_.f32[0] == b_.f32[0];
-  if (HEDLEY_LIKELY(x == 0))
-    fesetenv(&envp);
-#else
-  HEDLEY_UNREACHABLE();
-#endif
+  #if defined(SIMDE_HAVE_FENV_H)
+    fenv_t envp;
+    int x = feholdexcept(&envp);
+    r = a_.f32[0] == b_.f32[0];
+    if (HEDLEY_LIKELY(x == 0))
+      fesetenv(&envp);
+  #else
+    r = a_.f32[0] == b_.f32[0];
+  #endif
 
   return r;
 #endif
@@ -3234,7 +3234,7 @@ simde_mm_ucomige_ss (simde__m128 a, simde__m128 b) {
   if (HEDLEY_LIKELY(x == 0))
     fesetenv(&envp);
 #else
-  HEDLEY_UNREACHABLE();
+  r = a_.f32[0] >= b_.f32[0];
 #endif
 
   return r;
@@ -3262,7 +3262,7 @@ simde_mm_ucomigt_ss (simde__m128 a, simde__m128 b) {
   if (HEDLEY_LIKELY(x == 0))
     fesetenv(&envp);
 #else
-  HEDLEY_UNREACHABLE();
+  r = a_.f32[0] > b_.f32[0];
 #endif
 
   return r;
@@ -3290,7 +3290,7 @@ simde_mm_ucomile_ss (simde__m128 a, simde__m128 b) {
   if (HEDLEY_LIKELY(x == 0))
     fesetenv(&envp);
 #else
-  HEDLEY_UNREACHABLE();
+  r = a_.f32[0] <= b_.f32[0];
 #endif
 
   return r;
@@ -3318,7 +3318,7 @@ simde_mm_ucomilt_ss (simde__m128 a, simde__m128 b) {
   if (HEDLEY_LIKELY(x == 0))
     fesetenv(&envp);
 #else
-  HEDLEY_UNREACHABLE();
+  r = a_.f32[0] < b_.f32[0];
 #endif
 
   return r;
@@ -3346,7 +3346,7 @@ simde_mm_ucomineq_ss (simde__m128 a, simde__m128 b) {
   if (HEDLEY_LIKELY(x == 0))
     fesetenv(&envp);
 #else
-  HEDLEY_UNREACHABLE();
+  r = a_.f32[0] != b_.f32[0];
 #endif
 
   return r;

@@ -5369,7 +5369,7 @@ simde_mm_ucomieq_sd (simde__m128d a, simde__m128d b) {
   if (HEDLEY_LIKELY(x == 0))
     fesetenv(&envp);
 #else
-  HEDLEY_UNREACHABLE();
+  r =  a_.f64[0] == b_.f64[0];
 #endif
 
   return r;
@@ -5397,7 +5397,7 @@ simde_mm_ucomige_sd (simde__m128d a, simde__m128d b) {
   if (HEDLEY_LIKELY(x == 0))
     fesetenv(&envp);
 #else
-  HEDLEY_UNREACHABLE();
+  r = a_.f64[0] >= b_.f64[0];
 #endif
 
   return r;
@@ -5425,7 +5425,7 @@ simde_mm_ucomigt_sd (simde__m128d a, simde__m128d b) {
   if (HEDLEY_LIKELY(x == 0))
     fesetenv(&envp);
 #else
-  HEDLEY_UNREACHABLE();
+  r = a_.f64[0] > b_.f64[0];
 #endif
 
   return r;
@@ -5452,11 +5452,11 @@ simde_mm_ucomile_sd (simde__m128d a, simde__m128d b) {
   r = a_.f64[0] <= b_.f64[0];
   if (HEDLEY_LIKELY(x == 0))
     fesetenv(&envp);
-  return r;
 #else
-  HEDLEY_UNREACHABLE();
+  r = a_.f64[0] <= b_.f64[0];
 #endif
 
+  return r;
 #endif
 }
 #if defined(SIMDE_X86_SSE2_ENABLE_NATIVE_ALIASES)
@@ -5481,7 +5481,7 @@ simde_mm_ucomilt_sd (simde__m128d a, simde__m128d b) {
   if (HEDLEY_LIKELY(x == 0))
     fesetenv(&envp);
 #else
-  HEDLEY_UNREACHABLE();
+  r = a_.f64[0] < b_.f64[0];
 #endif
 
   return r;
@@ -5509,7 +5509,7 @@ simde_mm_ucomineq_sd (simde__m128d a, simde__m128d b) {
   if (HEDLEY_LIKELY(x == 0))
     fesetenv(&envp);
 #else
-  HEDLEY_UNREACHABLE();
+  r = a_.f64[0] != b_.f64[0];
 #endif
 
   return r;
