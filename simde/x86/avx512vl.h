@@ -39,43 +39,6 @@ HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 SIMDE__BEGIN_DECLS
 
-/* Import some from avx512bw.h */
-#if defined(SIMDE_X86_AVX512VL_NATIVE)
-  #define simde_mm_mask_mov_epi8(src, k, a) _mm_mask_mov_epi8(src, k, a)
-#else
-  #define simde_mm_mask_mov_epi8(src, k, a) simde_x_mm_mask_mov_epi8(src, k, a)
-#endif
-#if defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES)
-  #define _mm_mask_mov_epi8(src, k, a) simde_mm_mask_mov_epi8(src, k, a)
-#endif
-
-#if defined(SIMDE_X86_AVX512VL_NATIVE)
-  #define simde_mm256_mask_mov_epi8(src, k, a) _mm256_mask_mov_epi8(src, k, a)
-#else
-  #define simde_mm256_mask_mov_epi8(src, k, a) simde_x_mm256_mask_mov_epi8(src, k, a)
-#endif
-#if defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES)
-  #define _m256m_mask_mov_epi8(src, k, a) simde_mm256_mask_mov_epi8(src, k, a)
-#endif
-
-#if defined(SIMDE_X86_AVX512VL_NATIVE)
-  #define simde_mm_maskz_mov_epi8(k, a) _mm_maskz_mov_epi8(k, a)
-#else
-  #define simde_mm_maskz_mov_epi8(k, a) simde_x_mm_maskz_mov_epi8(k, a)
-#endif
-#if defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES)
-  #define _mm_maskz_mov_epi8(k, a) simde_mm_maskz_mov_epi8(k, a)
-#endif
-
-#if defined(SIMDE_X86_AVX512VL_NATIVE)
-  #define simde_mm256_maskz_mov_epi8(k, a) _mm256_maskz_mov_epi8(k, a)
-#else
-  #define simde_mm256_maskz_mov_epi8(k, a) simde_x_mm256_maskz_mov_epi8(k, a)
-#endif
-#if defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES)
-  #define _m256m_maskz_mov_epi8(k, a) simde_mm256_maskz_mov_epi8(k, a)
-#endif
-
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_mask_mov_epi16(simde__m128i src, simde__mmask8 k, simde__m128i a) {
