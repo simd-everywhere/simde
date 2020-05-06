@@ -45,7 +45,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_movm_epi8 (simde__mmask16 k) {
   #if defined(SIMDE_X86_AVX512BW_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
-    return _mm_movm_epi8;
+    return _mm_movm_epi8(k);
   #elif defined(SIMDE_ARCH_X86_SSSE3)
     const simde__m128i zero = simde_mm_setzero_si128();
     const simde__m128i bits = simde_mm_set_epi16(0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80);
@@ -95,7 +95,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 simde__m256i
 simde_mm256_movm_epi8 (simde__mmask32 k) {
   #if defined(SIMDE_X86_AVX512BW_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
-    return _mm256_movm_epi8;
+    return _mm256_movm_epi8(k);
   #elif defined(SIMDE_ARCH_X86_AVX2)
     const simde__m256i zero = simde_mm256_setzero_si256();
     const simde__m256i bits = simde_mm256_broadcastsi128_si256(simde_mm_set_epi16(0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80));
@@ -148,7 +148,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 simde__m256i
 simde_mm256_maskz_mov_epi8 (simde__mmask64 k, simde__m256i a) {
   #if defined(SIMDE_X86_AVX512BW_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
-    return _m256m_maskz_mov_epi8(k, a);
+    return _mm256_maskz_mov_epi8(k, a);
   #elif defined(SIMDE_ARCH_X86_AVX2)
     return simde_mm256_and_si256(a, simde_mm256_movm_epi8(k));
   #else
