@@ -241,8 +241,7 @@ def get_jobs():
         "environment": {
           "CC": "clang",
           "CXX": "clang++",
-        },
-        "failure": "ignore"
+        }
       }
     ],
     "custom": {

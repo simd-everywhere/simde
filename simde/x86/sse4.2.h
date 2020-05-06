@@ -64,7 +64,7 @@ simde_mm_cmpgt_epi64 (simde__m128i a, simde__m128i b) {
   return simde__m128i_from_private(r_);
 #endif
 }
-#if defined(SIMDE_X86_SSE2_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_SSE4_2_ENABLE_NATIVE_ALIASES)
 #  define _mm_cmpgt_epi64(a, b) simde_mm_cmpgt_epi64(a, b)
 #endif
 

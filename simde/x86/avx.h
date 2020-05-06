@@ -89,7 +89,9 @@ typedef union {
   SIMDE_ALIGN(16) vector signed int         altivec_i32[2];
   SIMDE_ALIGN(16) vector signed long long   altivec_i64[2];
   SIMDE_ALIGN(16) vector float              altivec_f32[2];
-  SIMDE_ALIGN(16) vector double             altivec_f64[2];
+  #if defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
+    SIMDE_ALIGN(16) vector double             altivec_f64[2];
+  #endif
 #endif
 } simde__m256_private;
 
@@ -145,7 +147,9 @@ typedef union {
   SIMDE_ALIGN(16) vector signed int         altivec_i32[2];
   SIMDE_ALIGN(16) vector signed long long   altivec_i64[2];
   SIMDE_ALIGN(16) vector float              altivec_f32[2];
-  SIMDE_ALIGN(16) vector double             altivec_f64[2];
+  #if defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
+    SIMDE_ALIGN(16) vector double             altivec_f64[2];
+  #endif
 #endif
 } simde__m256d_private;
 
@@ -201,7 +205,9 @@ typedef union {
   SIMDE_ALIGN(16) vector signed int         altivec_i32[2];
   SIMDE_ALIGN(16) vector signed long long   altivec_i64[2];
   SIMDE_ALIGN(16) vector float              altivec_f32[2];
-  SIMDE_ALIGN(16) vector double             altivec_f64[2];
+  #if defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
+    SIMDE_ALIGN(16) vector double             altivec_f64[2];
+  #endif
 #endif
 } simde__m256i_private;
 
@@ -487,7 +493,7 @@ simde_mm256_setzero_pd (void) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256i
-simde_mm256_setone_si256 (void) {
+simde_x_mm256_setone_si256 (void) {
   simde__m256i_private r_;
 
 #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
@@ -508,14 +514,14 @@ simde_mm256_setone_si256 (void) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256
-simde_m256_setone_ps (void) {
-  return simde_mm256_castsi256_ps(simde_mm256_setone_si256());
+simde_x_m256_setone_ps (void) {
+  return simde_mm256_castsi256_ps(simde_x_mm256_setone_si256());
 }
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256d
-simde_m256_setone_pd (void) {
-  return simde_mm256_castsi256_pd(simde_mm256_setone_si256());
+simde_x_m256_setone_pd (void) {
+  return simde_mm256_castsi256_pd(simde_x_mm256_setone_si256());
 }
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -1337,7 +1343,7 @@ simde_mm256_andnot_pd (simde__m256d a, simde__m256d b) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256
 simde_mm256_blend_ps (simde__m256 a, simde__m256 b, const int imm8)
-    HEDLEY_REQUIRE_MSG((imm8 & 0xff) == imm8, "imm8 must be in range [0, 255]") {
+    SIMDE_REQUIRE_RANGE(imm8, 0, 255) {
   simde__m256_private
     r_,
     a_ = simde__m256_to_private(a),
@@ -1360,7 +1366,7 @@ simde_mm256_blend_ps (simde__m256 a, simde__m256 b, const int imm8)
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256d
 simde_mm256_blend_pd (simde__m256d a, simde__m256d b, const int imm8)
-    HEDLEY_REQUIRE_MSG((imm8 & 0xf) == imm8, "imm8 must be in range [0, 15]") {
+    SIMDE_REQUIRE_RANGE(imm8, 0, 15) {
   simde__m256d_private
     r_,
     a_ = simde__m256d_to_private(a),
@@ -1688,7 +1694,8 @@ SIMDE_DIAGNOSTIC_DISABLE_FLOAT_EQUAL
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
 simde_mm_cmp_pd (simde__m128d a, simde__m128d b, const int imm8)
-    HEDLEY_REQUIRE_MSG((imm8 & 31) == imm8, "imm8 must one of the SIMDE_CMP_* macros (values: [0, 31])") {
+    SIMDE_REQUIRE_CONSTANT(imm8)
+    HEDLEY_REQUIRE_MSG(((imm8 >= 0) && (imm8 <= 31)), "imm8 must be one of the SIMDE_CMP_* macros (values: [0, 31])") {
   switch (imm8) {
     case SIMDE_CMP_EQ_OQ:
     case SIMDE_CMP_EQ_UQ:
@@ -1732,7 +1739,7 @@ simde_mm_cmp_pd (simde__m128d a, simde__m128d b, const int imm8)
       break;
     case SIMDE_CMP_TRUE_UQ:
     case SIMDE_CMP_TRUE_US:
-      return simde_mm_setone_pd();
+      return simde_x_mm_setone_pd();
       break;
     case SIMDE_CMP_UNORD_Q:
     case SIMDE_CMP_UNORD_S:
@@ -1756,7 +1763,8 @@ simde_mm_cmp_pd (simde__m128d a, simde__m128d b, const int imm8)
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128
 simde_mm_cmp_ps (simde__m128 a, simde__m128 b, const int imm8)
-    HEDLEY_REQUIRE_MSG((imm8 & 31) == imm8, "imm8 must one of the SIMDE_CMP_* macros (values: [0, 31])") {
+    SIMDE_REQUIRE_CONSTANT(imm8)
+    HEDLEY_REQUIRE_MSG(((imm8 >= 0) && (imm8 <= 31)), "imm8 must be one of the SIMDE_CMP_* macros (values: [0, 31])") {
   switch (imm8) {
     case SIMDE_CMP_EQ_OQ:
     case SIMDE_CMP_EQ_UQ:
@@ -1800,7 +1808,7 @@ simde_mm_cmp_ps (simde__m128 a, simde__m128 b, const int imm8)
       break;
     case SIMDE_CMP_TRUE_UQ:
     case SIMDE_CMP_TRUE_US:
-      return simde_mm_setone_ps();
+      return simde_x_mm_setone_ps();
       break;
     case SIMDE_CMP_UNORD_Q:
     case SIMDE_CMP_UNORD_S:
@@ -1827,7 +1835,8 @@ simde_mm_cmp_ps (simde__m128 a, simde__m128 b, const int imm8)
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
 simde_mm_cmp_sd (simde__m128d a, simde__m128d b, const int imm8)
-    HEDLEY_REQUIRE_MSG((imm8 & 31) == imm8, "imm8 must one of the SIMDE_CMP_* macros (values: [0, 31])") {
+    SIMDE_REQUIRE_CONSTANT(imm8)
+    HEDLEY_REQUIRE_MSG(((imm8 >= 0) && (imm8 <= 31)), "imm8 must be one of the SIMDE_CMP_* macros (values: [0, 31])") {
   simde__m128d_private
     r_,
     a_ = simde__m128d_to_private(a),
@@ -1961,7 +1970,8 @@ simde_mm_cmp_sd (simde__m128d a, simde__m128d b, const int imm8)
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128
 simde_mm_cmp_ss (simde__m128 a, simde__m128 b, const int imm8)
-    HEDLEY_REQUIRE_MSG((imm8 & 31) == imm8, "imm8 must one of the SIMDE_CMP_* macros (values: [0, 31])") {
+    SIMDE_REQUIRE_CONSTANT(imm8)
+    HEDLEY_REQUIRE_MSG(((imm8 >= 0) && (imm8 <= 31)), "imm8 must be one of the SIMDE_CMP_* macros (values: [0, 31])") {
   simde__m128_private
     r_,
     a_ = simde__m128_to_private(a),
@@ -2097,7 +2107,8 @@ simde_mm_cmp_ss (simde__m128 a, simde__m128 b, const int imm8)
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256d
 simde_mm256_cmp_pd (simde__m256d a, simde__m256d b, const int imm8)
-    HEDLEY_REQUIRE_MSG((imm8 & 31) == imm8, "imm8 must one of the SIMDE_CMP_* macros (values: [0, 31])") {
+    SIMDE_REQUIRE_CONSTANT(imm8)
+    HEDLEY_REQUIRE_MSG(((imm8 >= 0) && (imm8 <= 31)), "imm8 must be one of the SIMDE_CMP_* macros (values: [0, 31])") {
   simde__m256d_private
     r_,
     a_ = simde__m256d_to_private(a),
@@ -2361,8 +2372,9 @@ simde_mm256_cmp_pd (simde__m256d a, simde__m256d b, const int imm8)
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256
 simde_mm256_cmp_ps (simde__m256 a, simde__m256 b, const int imm8)
-    HEDLEY_REQUIRE_MSG((imm8 & 31) == imm8, "imm8 must one of the SIMDE_CMP_* macros (values: [0, 31])") {
-    simde__m256_private
+    SIMDE_REQUIRE_CONSTANT(imm8)
+    HEDLEY_REQUIRE_MSG(((imm8 >= 0) && (imm8 <= 31)), "imm8 must be one of the SIMDE_CMP_* macros (values: [0, 31])") {
+  simde__m256_private
     r_,
     a_ = simde__m256_to_private(a),
     b_ = simde__m256_to_private(b);
@@ -2875,7 +2887,7 @@ simde_mm256_div_pd (simde__m256d a, simde__m256d b) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128d
 simde_mm256_extractf128_pd (simde__m256d a, const int imm8)
-    HEDLEY_REQUIRE_MSG((imm8 & 1) == imm8, "imm8 must be 0 or 1") {
+    SIMDE_REQUIRE_RANGE(imm8, 0, 1) {
   simde__m256d_private a_ = simde__m256d_to_private(a);
   return a_.m128d[imm8];
 }
@@ -2889,7 +2901,7 @@ simde_mm256_extractf128_pd (simde__m256d a, const int imm8)
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128
 simde_mm256_extractf128_ps (simde__m256 a, const int imm8)
-    HEDLEY_REQUIRE_MSG((imm8 & 1) == imm8, "imm8 must be 0 or 1") {
+    SIMDE_REQUIRE_RANGE(imm8, 0, 1) {
   simde__m256_private a_ = simde__m256_to_private(a);
   return a_.m128[imm8];
 }
@@ -2903,7 +2915,7 @@ simde_mm256_extractf128_ps (simde__m256 a, const int imm8)
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm256_extractf128_si256 (simde__m256i a, const int imm8)
-    HEDLEY_REQUIRE_MSG((imm8 & 1) == imm8, "imm8 must be 0 or 1") {
+    SIMDE_REQUIRE_RANGE(imm8, 0, 1) {
   simde__m256i_private a_ = simde__m256i_to_private(a);
   return a_.m128i[imm8];
 }
@@ -3069,62 +3081,76 @@ simde_mm256_hsub_pd (simde__m256d a, simde__m256d b) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256i
 simde_mm256_insert_epi8 (simde__m256i a, int8_t i, const int index)
-    HEDLEY_REQUIRE_MSG((index & 0xff) == index, "index must be in [0, 31]") {
+    SIMDE_REQUIRE_RANGE(index, 0, 31) {
   simde__m256i_private a_ = simde__m256i_to_private(a);
 
   a_.i8[index] = i;
 
   return simde__m256i_from_private(a_);
 }
+#if defined(SIMDE_X86_AVX_NATIVE)
+  #define simde_mm256_insert_epi8(a, i, index) _mm256_insert_epi8(a, i, index)
+#endif
 #if defined(SIMDE_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_insert_epi8(a, i, imm8) simde_mm256_insert_epi8(a, i, imm8)
+  #define _mm256_insert_epi8(a, i, index) simde_mm256_insert_epi8(a, i, index)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256i
 simde_mm256_insert_epi16 (simde__m256i a, int16_t i, const int index)
-    HEDLEY_REQUIRE_MSG((index & 0xff) == index, "index must be in [0, 15]")  {
+    SIMDE_REQUIRE_RANGE(index, 0, 15)  {
   simde__m256i_private a_ = simde__m256i_to_private(a);
 
   a_.i16[index] = i;
 
   return simde__m256i_from_private(a_);
 }
+#if defined(SIMDE_X86_AVX_NATIVE)
+  #define simde_mm256_insert_epi16(a, i, index) _mm256_insert_epi16(a, i, index)
+#endif
 #if defined(SIMDE_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_insert_epi16(a, i, imm8) simde_mm256_insert_epi16(a, i, imm8)
+  #define _mm256_insert_epi16(a, i, imm8) simde_mm256_insert_epi16(a, i, imm8)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256i
 simde_mm256_insert_epi32 (simde__m256i a, int32_t i, const int index)
-    HEDLEY_REQUIRE_MSG((index & 0xff) == index, "index must be in [0, 7]")  {
+    SIMDE_REQUIRE_RANGE(index, 0, 7)  {
   simde__m256i_private a_ = simde__m256i_to_private(a);
 
   a_.i32[index] = i;
 
   return simde__m256i_from_private(a_);
 }
+#if defined(SIMDE_X86_AVX_NATIVE)
+  #define simde_mm256_insert_epi32(a, i, index) _mm256_insert_epi32(a, i, index)
+#endif
 #if defined(SIMDE_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_insert_epi32(a, i, imm8) simde_mm256_insert_epi32(a, i, imm8)
+  #define _mm256_insert_epi32(a, i, index) simde_mm256_insert_epi32(a, i, index)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256i
 simde_mm256_insert_epi64 (simde__m256i a, int64_t i, const int index)
-    HEDLEY_REQUIRE_MSG((index & 0xff) == index, "index must be in [0, 3]")  {
+    SIMDE_REQUIRE_RANGE(index, 0, 3)  {
   simde__m256i_private a_ = simde__m256i_to_private(a);
 
   a_.i64[index] = i;
 
   return simde__m256i_from_private(a_);
 }
+#if defined(SIMDE_X86_AVX_NATIVE)
+  #if !defined(HEDLEY_MSVC_VERSION) || HEDLEY_MSVC_VERSION_CHECK(19,20,0)
+    #define simde_mm256_insert_epi64(a, i, index) _mm256_insert_epi64(a, i, index)
+  #endif
+#endif
 #if defined(SIMDE_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_insert_epi64(a, i, imm8) simde_mm256_insert_epi64(a, i, imm8)
+  #define _mm256_insert_epi64(a, i, index) simde_mm256_insert_epi64(a, i, index)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256d simde_mm256_insertf128_pd(simde__m256d a, simde__m128d b, int imm8)
-    HEDLEY_REQUIRE_MSG((imm8 & 0xff) == imm8, "imm8 must be in [0, 3]") {
+    SIMDE_REQUIRE_RANGE(imm8, 0, 3) {
   simde__m256d_private a_ = simde__m256d_to_private(a);
   simde__m128d_private b_ = simde__m128d_to_private(b);
 
@@ -3138,7 +3164,7 @@ simde__m256d simde_mm256_insertf128_pd(simde__m256d a, simde__m128d b, int imm8)
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256 simde_mm256_insertf128_ps(simde__m256 a, simde__m128 b, int imm8)
-    HEDLEY_REQUIRE_MSG((imm8 & 0xff) == imm8, "imm8 must be in [0, 7]") {
+    SIMDE_REQUIRE_RANGE(imm8, 0, 7) {
   simde__m256_private a_ = simde__m256_to_private(a);
   simde__m128_private b_ = simde__m128_to_private(b);
 
@@ -3152,7 +3178,7 @@ simde__m256 simde_mm256_insertf128_ps(simde__m256 a, simde__m128 b, int imm8)
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256i simde_mm256_insertf128_si256(simde__m256i a, simde__m128i b, int imm8)
-    HEDLEY_REQUIRE_MSG((imm8 & 0xff) == imm8, "imm8 must be in [0, 7]") {
+    SIMDE_REQUIRE_RANGE(imm8, 0, 7) {
   simde__m256i_private a_ = simde__m256i_to_private(a);
   simde__m128i_private b_ = simde__m128i_to_private(b);
 
@@ -3178,22 +3204,32 @@ simde__m256i simde_mm256_insertf128_si256(simde__m256i a, simde__m128i b, int im
 
 SIMDE__FUNCTION_ATTRIBUTES
 int32_t
-simde_mm256_extract_epi32 (simde__m256i a, const int index) {
+simde_mm256_extract_epi32 (simde__m256i a, const int index)
+    SIMDE_REQUIRE_RANGE(index, 0, 7) {
   simde__m256i_private a_ = simde__m256i_to_private(a);
   return a_.i32[index];
 }
+#if defined(SIMDE_X86_AVX_NATIVE)
+  #define simde_mm256_extract_epi32(a, index) _mm256_extract_epi32(a, index)
+#endif
 #if defined(SIMDE_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_extract_epi32(a, index) simde_mm256_extract_epi32(a, index)
+  #define _mm256_extract_epi32(a, index) simde_mm256_extract_epi32(a, index)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 int64_t
-simde_mm256_extract_epi64 (simde__m256i a, const int index) {
+simde_mm256_extract_epi64 (simde__m256i a, const int index)
+    SIMDE_REQUIRE_RANGE(index, 0, 3) {
   simde__m256i_private a_ = simde__m256i_to_private(a);
   return a_.i64[index];
 }
+#if defined(SIMDE_X86_AVX_NATIVE)
+  #if !defined(HEDLEY_MSVC_VERSION) || HEDLEY_MSVC_VERSION_CHECK(19,20,0)
+    #define simde_mm256_extract_epi64(a, index) _mm256_extract_epi64(a, index)
+  #endif
+#endif
 #if defined(SIMDE_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_extract_epi64(a, index) simde_mm256_extract_epi64(a, index)
+  #define _mm256_extract_epi64(a, index) simde_mm256_extract_epi64(a, index)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -4038,7 +4074,7 @@ simde_mm256_permutevar_pd (simde__m256d a, simde__m256i b) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256
 simde_mm256_permute2f128_ps (simde__m256 a, simde__m256 b, const int imm8)
-    HEDLEY_REQUIRE_MSG((imm8 & 0xff) == imm8, "imm8 must be in range [0, 15]") {
+    SIMDE_REQUIRE_RANGE(imm8, 0, 15) {
   simde__m256_private
     r_,
     a_ = simde__m256_to_private(a),
@@ -4059,7 +4095,7 @@ simde_mm256_permute2f128_ps (simde__m256 a, simde__m256 b, const int imm8)
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256d
 simde_mm256_permute2f128_pd (simde__m256d a, simde__m256d b, const int imm8)
-    HEDLEY_REQUIRE_MSG((imm8 & 0xf) == imm8, "imm8 must be in range [0, 15]") {
+    SIMDE_REQUIRE_RANGE(imm8, 0, 15) {
   simde__m256d_private
     r_,
     a_ = simde__m256d_to_private(a),
@@ -4080,7 +4116,7 @@ simde_mm256_permute2f128_pd (simde__m256d a, simde__m256d b, const int imm8)
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256i
 simde_mm256_permute2f128_si256 (simde__m256i a, simde__m256i b, const int imm8)
-    HEDLEY_REQUIRE_MSG((imm8 & 0xf) == imm8, "imm8 must be in range [0, 15]") {
+    SIMDE_REQUIRE_RANGE(imm8, 0, 15) {
   simde__m256i_private
     r_,
     a_ = simde__m256i_to_private(a),
@@ -4372,7 +4408,7 @@ simde_mm256_setr_m128i (simde__m128i lo, simde__m128i hi) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256
 simde_mm256_shuffle_ps (simde__m256 a, simde__m256 b, const int imm8)
-    HEDLEY_REQUIRE_MSG((imm8 & 0xff) == imm8, "imm8 must be in range [0, 255]") {
+    SIMDE_REQUIRE_RANGE(imm8, 0, 255) {
   simde__m256_private
     r_,
     a_ = simde__m256_to_private(a),
@@ -4404,7 +4440,7 @@ simde_mm256_shuffle_ps (simde__m256 a, simde__m256 b, const int imm8)
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256d
 simde_mm256_shuffle_pd (simde__m256d a, simde__m256d b, const int imm8)
-    HEDLEY_REQUIRE_MSG((imm8 & 0xff) == imm8, "imm8 must be in range [0, 15]") {
+    SIMDE_REQUIRE_RANGE(imm8, 0, 15) {
   simde__m256d_private
     r_,
     a_ = simde__m256d_to_private(a),

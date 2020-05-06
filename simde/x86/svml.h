@@ -35,68 +35,16 @@
 
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
-
-#  if defined(SIMDE_SVML_NATIVE)
-#    undef SIMDE_SVML_NATIVE
-#  endif
-#  if defined(__INTEL_COMPILER) && !defined(SIMDE_SVML_NO_NATIVE) && !defined(SIMDE_NO_NATIVE)
-#    define SIMDE_SVML_NATIVE
-#  elif defined(SIMDE_ARCH_ARM_NEON) && !defined(SIMDE_SVML_NO_NEON) && !defined(SIMDE_NO_NEON)
-#    define SIMDE_SVML_NEON
-#  elif defined(SIMDE_ARCH_WASM_SIMD128)
-#    define SIMDE_SVML_WASM_SIMD128
-#  endif
-
-#  if defined(SIMDE_SVML_NATIVE)
-#    if defined(SIMDE_ARCH_X86_SSE)
-#      define SIMDE_SVML_SSE
-#    endif
-#    if defined(SIMDE_ARCH_X86_SSE2)
-#      define SIMDE_SVML_SSE2
-#    endif
-#    if defined(SIMDE_ARCH_X86_SSE3)
-#      define SIMDE_SVML_SSE3
-#    endif
-#    if defined(SIMDE_ARCH_X86_SSSE3)
-#      define SIMDE_SVML_SSSE3
-#    endif
-#    if defined(SIMDE_ARCH_X86_SSE4_1)
-#      define SIMDE_SVML_SSE4_1
-#    endif
-#    if defined(SIMDE_ARCH_X86_SSE4_2)
-#      define SIMDE_SVML_SSE4_2
-#    endif
-#    if defined(SIMDE_ARCH_X86_AVX)
-#      define SIMDE_SVML_SSE
-#    endif
-#    if defined(SIMDE_ARCH_X86_AVX2)
-#      define SIMDE_SVML_SSE
-#    endif
-#  else
-#    if defined(SIMDE_SVML_NEON)
-#      include <arm_neon.h>
-#    endif
-
-#    if defined(SIMDE_SVML_WASM_SIMD128)
-#      if !defined(__wasm_unimplemented_simd128__)
-#        define __wasm_unimplemented_simd128__
-#      endif
-#      include <wasm_simd128.h>
-#    endif
-
-#    if !defined(HEDLEY_INTEL_VERSION) && !defined(HEDLEY_EMSCRIPTEN_VERSION) && defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 201112L) && !defined(__STDC_NO_ATOMICS__)
-#      include <stdatomic.h>
-#    elif defined(_WIN32)
-#      include <windows.h>
-#    endif
-#  endif
-
 SIMDE__BEGIN_DECLS
+
+#if !defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_ENABLE_NATIVE_ALIASES)
+#  define SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES
+#endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_div_epi8 (simde__m128i a, simde__m128i b) {
-  #if defined(SIMDE_SVML_NATIVE) && defined(SIMDE_SVML_SSE2)
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE2_NATIVE)
     return _mm_div_epi8(a, b);
   #else
     simde__m128i_private
@@ -106,7 +54,7 @@ simde_mm_div_epi8 (simde__m128i a, simde__m128i b) {
 
   #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
     r_.i8 = a_.i8 / b_.i8;
-  #elif defined(SIMDE_SVML_WASM_SIMD128)
+  #elif defined(SIMDE_X86_WASM_SIMD128_NATIVE)
     r_.wasm_v128 = wasm_i8x4_div(a_.wasm_v128, b_.wasm_v128);
   #else
     SIMDE__VECTORIZE
@@ -118,14 +66,14 @@ simde_mm_div_epi8 (simde__m128i a, simde__m128i b) {
     return simde__m128i_from_private(r_);
   #endif
 }
-#if defined(SIMDE_SVML_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
 #  define _mm_div_epi8(a, b) simde_mm_div_epi8((a), (b))
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_div_epi16 (simde__m128i a, simde__m128i b) {
-  #if defined(SIMDE_SVML_NATIVE) && defined(SIMDE_SVML_SSE2)
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE2_NATIVE)
     return _mm_div_epi16(a, b);
   #else
     simde__m128i_private
@@ -135,7 +83,7 @@ simde_mm_div_epi16 (simde__m128i a, simde__m128i b) {
 
   #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
     r_.i16 = a_.i16 / b_.i16;
-  #elif defined(SIMDE_SVML_WASM_SIMD128)
+  #elif defined(SIMDE_X86_WASM_SIMD128_NATIVE)
     r_.wasm_v128 = wasm_i16x4_div(a_.wasm_v128, b_.wasm_v128);
   #else
     SIMDE__VECTORIZE
@@ -147,14 +95,14 @@ simde_mm_div_epi16 (simde__m128i a, simde__m128i b) {
     return simde__m128i_from_private(r_);
   #endif
 }
-#if defined(SIMDE_SVML_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
 #  define _mm_div_epi16(a, b) simde_mm_div_epi16((a), (b))
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_div_epi32 (simde__m128i a, simde__m128i b) {
-  #if defined(SIMDE_SVML_NATIVE) && defined(SIMDE_SVML_SSE2)
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE2_NATIVE)
     return _mm_div_epi32(a, b);
   #else
     simde__m128i_private
@@ -164,7 +112,7 @@ simde_mm_div_epi32 (simde__m128i a, simde__m128i b) {
 
   #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
     r_.i32 = a_.i32 / b_.i32;
-  #elif defined(SIMDE_SVML_WASM_SIMD128)
+  #elif defined(SIMDE_X86_WASM_SIMD128_NATIVE)
     r_.wasm_v128 = wasm_i32x4_div(a_.wasm_v128, b_.wasm_v128);
   #else
     SIMDE__VECTORIZE
@@ -176,14 +124,14 @@ simde_mm_div_epi32 (simde__m128i a, simde__m128i b) {
     return simde__m128i_from_private(r_);
   #endif
 }
-#if defined(SIMDE_SVML_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
 #  define _mm_div_epi32(a, b) simde_mm_div_epi32((a), (b))
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_div_epi64 (simde__m128i a, simde__m128i b) {
-  #if defined(SIMDE_SVML_NATIVE) && defined(SIMDE_SVML_SSE2)
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE2_NATIVE)
     return _mm_div_epi64(a, b);
   #else
     simde__m128i_private
@@ -193,7 +141,7 @@ simde_mm_div_epi64 (simde__m128i a, simde__m128i b) {
 
   #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
     r_.i64 = a_.i64 / b_.i64;
-  #elif defined(SIMDE_SVML_WASM_SIMD128)
+  #elif defined(SIMDE_X86_WASM_SIMD128_NATIVE)
     r_.wasm_v128 = wasm_i64x4_div(a_.wasm_v128, b_.wasm_v128);
   #else
     SIMDE__VECTORIZE
@@ -205,14 +153,14 @@ simde_mm_div_epi64 (simde__m128i a, simde__m128i b) {
     return simde__m128i_from_private(r_);
   #endif
 }
-#if defined(SIMDE_SVML_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
 #  define _mm_div_epi64(a, b) simde_mm_div_epi64((a), (b))
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_div_epu8 (simde__m128i a, simde__m128i b) {
-  #if defined(SIMDE_SVML_NATIVE) && defined(SIMDE_SVML_SSE2)
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE2_NATIVE)
     return _mm_div_epu8(a, b);
   #else
     simde__m128i_private
@@ -222,7 +170,7 @@ simde_mm_div_epu8 (simde__m128i a, simde__m128i b) {
 
   #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
     r_.u8 = a_.u8 / b_.u8;
-  #elif defined(SIMDE_SVML_WASM_SIMD128)
+  #elif defined(SIMDE_X86_WASM_SIMD128_NATIVE)
     r_.wasm_v128 =  wasm_u8x16_div(a_.wasm_v128, b_.wasm_v128);
   #else
     SIMDE__VECTORIZE
@@ -234,14 +182,14 @@ simde_mm_div_epu8 (simde__m128i a, simde__m128i b) {
     return simde__m128i_from_private(r_);
   #endif
 }
-#if defined(SIMDE_SVML_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
 #  define _mm_div_epu8(a, b) simde_mm_div_epu8((a), (b))
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_div_epu16 (simde__m128i a, simde__m128i b) {
-  #if defined(SIMDE_SVML_NATIVE) && defined(SIMDE_SVML_SSE2)
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE2_NATIVE)
     return _mm_div_epu16(a, b);
   #else
     simde__m128i_private
@@ -251,7 +199,7 @@ simde_mm_div_epu16 (simde__m128i a, simde__m128i b) {
 
   #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
     r_.u16 = a_.u16 / b_.u16;
-  #elif defined(SIMDE_SVML_WASM_SIMD128)
+  #elif defined(SIMDE_X86_WASM_SIMD128_NATIVE)
     r_.wasm_v128 =  wasm_u16x16_div(a_.wasm_v128, b_.wasm_v128);
   #else
     SIMDE__VECTORIZE
@@ -263,14 +211,14 @@ simde_mm_div_epu16 (simde__m128i a, simde__m128i b) {
     return simde__m128i_from_private(r_);
   #endif
 }
-#if defined(SIMDE_SVML_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
 #  define _mm_div_epu16(a, b) simde_mm_div_epu16((a), (b))
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_div_epu32 (simde__m128i a, simde__m128i b) {
-  #if defined(SIMDE_SVML_NATIVE) && defined(SIMDE_SVML_SSE2)
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE2_NATIVE)
     return _mm_div_epu32(a, b);
   #else
     simde__m128i_private
@@ -280,7 +228,7 @@ simde_mm_div_epu32 (simde__m128i a, simde__m128i b) {
 
   #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
     r_.u32 = a_.u32 / b_.u32;
-  #elif defined(SIMDE_SVML_WASM_SIMD128)
+  #elif defined(SIMDE_X86_WASM_SIMD128_NATIVE)
     r_.wasm_v128 =  wasm_u32x16_div(a_.wasm_v128, b_.wasm_v128);
   #else
     SIMDE__VECTORIZE
@@ -292,14 +240,14 @@ simde_mm_div_epu32 (simde__m128i a, simde__m128i b) {
     return simde__m128i_from_private(r_);
   #endif
 }
-#if defined(SIMDE_SVML_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
 #  define _mm_div_epu32(a, b) simde_mm_div_epu32((a), (b))
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_div_epu64 (simde__m128i a, simde__m128i b) {
-  #if defined(SIMDE_SVML_NATIVE) && defined(SIMDE_SVML_SSE2)
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE2_NATIVE)
     return _mm_div_epu64(a, b);
   #else
     simde__m128i_private
@@ -309,7 +257,7 @@ simde_mm_div_epu64 (simde__m128i a, simde__m128i b) {
 
   #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
     r_.u64 = a_.u64 / b_.u64;
-  #elif defined(SIMDE_SVML_WASM_SIMD128)
+  #elif defined(SIMDE_X86_WASM_SIMD128_NATIVE)
     r_.wasm_v128 =  wasm_u64x16_div(a_.wasm_v128, b_.wasm_v128);
   #else
     SIMDE__VECTORIZE
@@ -321,14 +269,14 @@ simde_mm_div_epu64 (simde__m128i a, simde__m128i b) {
     return simde__m128i_from_private(r_);
   #endif
 }
-#if defined(SIMDE_SVML_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
 #  define _mm_div_epu64(a, b) simde_mm_div_epu64((a), (b))
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256i
 simde_mm256_div_epi8 (simde__m256i a, simde__m256i b) {
-  #if defined(SIMDE_SVML_NATIVE) && defined(SIMDE_SVML_AVX)
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX_NATIVE)
     return _mm256_div_epi32(a, b);
   #else
     simde__m256i_private
@@ -348,14 +296,14 @@ simde_mm256_div_epi8 (simde__m256i a, simde__m256i b) {
     return simde__m256i_from_private(r_);
   #endif
 }
-#if defined(SIMDE_SVML_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
 #  define _mm256_div_epi8(a, b) simde_mm256_div_epi8((a), (b))
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256i
 simde_mm256_div_epi16 (simde__m256i a, simde__m256i b) {
-  #if defined(SIMDE_SVML_NATIVE) && defined(SIMDE_SVML_AVX)
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX_NATIVE)
     return _mm256_div_epi16(a, b);
   #else
     simde__m256i_private
@@ -375,14 +323,14 @@ simde_mm256_div_epi16 (simde__m256i a, simde__m256i b) {
     return simde__m256i_from_private(r_);
   #endif
 }
-#if defined(SIMDE_SVML_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
 #  define _mm256_div_epi16(a, b) simde_mm256_div_epi16((a), (b))
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256i
 simde_mm256_div_epi32 (simde__m256i a, simde__m256i b) {
-  #if defined(SIMDE_SVML_NATIVE) && defined(SIMDE_SVML_AVX)
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX_NATIVE)
     return _mm256_div_epi32(a, b);
   #else
     simde__m256i_private
@@ -402,14 +350,14 @@ simde_mm256_div_epi32 (simde__m256i a, simde__m256i b) {
     return simde__m256i_from_private(r_);
   #endif
 }
-#if defined(SIMDE_SVML_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
 #  define _mm256_div_epi32(a, b) simde_mm256_div_epi32((a), (b))
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256i
 simde_mm256_div_epi64 (simde__m256i a, simde__m256i b) {
-  #if defined(SIMDE_SVML_NATIVE) && defined(SIMDE_SVML_AVX)
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX_NATIVE)
     return _mm256_div_epi64(a, b);
   #else
     simde__m256i_private
@@ -429,14 +377,14 @@ simde_mm256_div_epi64 (simde__m256i a, simde__m256i b) {
     return simde__m256i_from_private(r_);
   #endif
 }
-#if defined(SIMDE_SVML_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
 #  define _mm256_div_epi64(a, b) simde_mm256_div_epi64((a), (b))
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256i
 simde_mm256_div_epu8 (simde__m256i a, simde__m256i b) {
-  #if defined(SIMDE_SVML_NATIVE) && defined(SIMDE_SVML_AVX)
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX_NATIVE)
     return _mm256_div_epi32(a, b);
   #else
     simde__m256i_private
@@ -456,14 +404,14 @@ simde_mm256_div_epu8 (simde__m256i a, simde__m256i b) {
     return simde__m256i_from_private(r_);
   #endif
 }
-#if defined(SIMDE_SVML_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
 #  define _mm256_div_epu8(a, b) simde_mm256_div_epu8((a), (b))
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256i
 simde_mm256_div_epu16 (simde__m256i a, simde__m256i b) {
-  #if defined(SIMDE_SVML_NATIVE) && defined(SIMDE_SVML_AVX)
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX_NATIVE)
     return _mm256_div_epi16(a, b);
   #else
     simde__m256i_private
@@ -483,14 +431,14 @@ simde_mm256_div_epu16 (simde__m256i a, simde__m256i b) {
     return simde__m256i_from_private(r_);
   #endif
 }
-#if defined(SIMDE_SVML_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
 #  define _mm256_div_epu16(a, b) simde_mm256_div_epu16((a), (b))
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256i
 simde_mm256_div_epu32 (simde__m256i a, simde__m256i b) {
-  #if defined(SIMDE_SVML_NATIVE) && defined(SIMDE_SVML_AVX)
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX_NATIVE)
     return _mm256_div_epi32(a, b);
   #else
     simde__m256i_private
@@ -510,14 +458,14 @@ simde_mm256_div_epu32 (simde__m256i a, simde__m256i b) {
     return simde__m256i_from_private(r_);
   #endif
 }
-#if defined(SIMDE_SVML_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
 #  define _mm256_div_epu32(a, b) simde_mm256_div_epu32((a), (b))
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256i
 simde_mm256_div_epu64 (simde__m256i a, simde__m256i b) {
-  #if defined(SIMDE_SVML_NATIVE) && defined(SIMDE_SVML_AVX)
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX_NATIVE)
     return _mm256_div_epi64(a, b);
   #else
     simde__m256i_private
@@ -537,7 +485,7 @@ simde_mm256_div_epu64 (simde__m256i a, simde__m256i b) {
     return simde__m256i_from_private(r_);
   #endif
 }
-#if defined(SIMDE_SVML_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
 #  define _mm256_div_epu64(a, b) simde_mm256_div_epu64((a), (b))
 #endif
 
