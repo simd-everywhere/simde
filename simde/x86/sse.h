@@ -109,7 +109,9 @@ typedef union {
   SIMDE_ALIGN(16) vector signed int         altivec_i32;
   SIMDE_ALIGN(16) vector signed long long   altivec_i64;
   SIMDE_ALIGN(16) vector float              altivec_f32;
-  SIMDE_ALIGN(16) vector double             altivec_f64;
+  #if defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
+    SIMDE_ALIGN(16) vector double             altivec_f64;
+  #endif
 #endif
 } simde__m128_private;
 

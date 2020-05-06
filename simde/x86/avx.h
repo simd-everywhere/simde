@@ -89,7 +89,9 @@ typedef union {
   SIMDE_ALIGN(16) vector signed int         altivec_i32[2];
   SIMDE_ALIGN(16) vector signed long long   altivec_i64[2];
   SIMDE_ALIGN(16) vector float              altivec_f32[2];
-  SIMDE_ALIGN(16) vector double             altivec_f64[2];
+  #if defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
+    SIMDE_ALIGN(16) vector double             altivec_f64[2];
+  #endif
 #endif
 } simde__m256_private;
 
@@ -145,7 +147,9 @@ typedef union {
   SIMDE_ALIGN(16) vector signed int         altivec_i32[2];
   SIMDE_ALIGN(16) vector signed long long   altivec_i64[2];
   SIMDE_ALIGN(16) vector float              altivec_f32[2];
-  SIMDE_ALIGN(16) vector double             altivec_f64[2];
+  #if defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
+    SIMDE_ALIGN(16) vector double             altivec_f64[2];
+  #endif
 #endif
 } simde__m256d_private;
 
@@ -201,7 +205,9 @@ typedef union {
   SIMDE_ALIGN(16) vector signed int         altivec_i32[2];
   SIMDE_ALIGN(16) vector signed long long   altivec_i64[2];
   SIMDE_ALIGN(16) vector float              altivec_f32[2];
-  SIMDE_ALIGN(16) vector double             altivec_f64[2];
+  #if defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
+    SIMDE_ALIGN(16) vector double             altivec_f64[2];
+  #endif
 #endif
 } simde__m256i_private;
 
