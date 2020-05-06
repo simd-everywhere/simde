@@ -1728,7 +1728,7 @@ simde_mm_div_ss (simde__m128 a, simde__m128 b) {
 SIMDE__FUNCTION_ATTRIBUTES
 int16_t
 simde_mm_extract_pi16 (simde__m64 a, const int imm8)
-    HEDLEY_REQUIRE_MSG((imm8 & 3) == imm8, "imm8 must be in range [0, 3]") {
+    SIMDE_REQUIRE_RANGE(imm8, 0, 3) {
   simde__m64_private a_ = simde__m64_to_private(a);
   return a_.i16[imm8];
 }
@@ -1812,7 +1812,7 @@ SIMDE_MM_SET_ROUNDING_MODE(unsigned int a) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m64
 simde_mm_insert_pi16 (simde__m64 a, int16_t i, const int imm8)
-    HEDLEY_REQUIRE_MSG((imm8 & 3) == imm8, "imm8 must be in range [0, 3]") {
+    SIMDE_REQUIRE_RANGE(imm8, 0, 3) {
   simde__m64_private
     r_,
     a_ = simde__m64_to_private(a);
@@ -2853,7 +2853,7 @@ simde_mm_sfence (void) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m64
 simde_mm_shuffle_pi16 (simde__m64 a, const int imm8)
-    HEDLEY_REQUIRE_MSG((imm8 & 0xff) == imm8, "imm8 must be in range [0, 255]") {
+    SIMDE_REQUIRE_RANGE(imm8, 0, 255) {
   simde__m64_private r_;
   simde__m64_private a_ = simde__m64_to_private(a);
 
@@ -2895,7 +2895,7 @@ HEDLEY_DIAGNOSTIC_POP
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128
 simde_mm_shuffle_ps (simde__m128 a, simde__m128 b, const int imm8)
-    HEDLEY_REQUIRE_MSG((imm8 & 0xff) == imm8, "imm8 must be in range [0, 255]") {
+    SIMDE_REQUIRE_RANGE(imm8, 0, 255) {
   simde__m128_private
     r_,
     a_ = simde__m128_to_private(a),

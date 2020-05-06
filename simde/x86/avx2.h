@@ -494,7 +494,7 @@ simde_mm256_avg_epu16 (simde__m256i a, simde__m256i b) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_blend_epi32(simde__m128i a, simde__m128i b, const int imm8)
-    HEDLEY_REQUIRE_MSG((imm8 & 0xff) == imm8, "imm8 must be in range [0, 255]") {
+    SIMDE_REQUIRE_RANGE(imm8, 0, 255) {
   simde__m128i_private
     r_,
     a_ = simde__m128i_to_private(a),
@@ -517,7 +517,7 @@ simde_mm_blend_epi32(simde__m128i a, simde__m128i b, const int imm8)
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256i
 simde_mm256_blend_epi16(simde__m256i a, simde__m256i b, const int imm8)
-    HEDLEY_REQUIRE_MSG((imm8 & 0xff) == imm8, "imm8 must be in range [0, 255]") {
+    SIMDE_REQUIRE_RANGE(imm8, 0, 255) {
   simde__m256i_private
     r_,
     a_ = simde__m256i_to_private(a),
@@ -541,7 +541,7 @@ simde_mm256_blend_epi16(simde__m256i a, simde__m256i b, const int imm8)
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256i
 simde_mm256_blend_epi32(simde__m256i a, simde__m256i b, const int imm8)
-    HEDLEY_REQUIRE_MSG((imm8 & 0xff) == imm8, "imm8 must be in range [0, 255]") {
+    SIMDE_REQUIRE_RANGE(imm8, 0, 255) {
   simde__m256i_private
     r_,
     a_ = simde__m256i_to_private(a),
@@ -1188,7 +1188,7 @@ simde_mm256_cvtepu32_epi64 (simde__m128i a) {
 SIMDE__FUNCTION_ATTRIBUTES
 int
 simde_mm256_extract_epi8 (simde__m256i a, const int index)
-    HEDLEY_REQUIRE_MSG((index & 31) == index, "index must be in range [0, 31]"){
+    SIMDE_REQUIRE_RANGE(index, 0, 31){
   simde__m256i_private a_ = simde__m256i_to_private(a);
   return a_.i8[index];
 }
@@ -1202,7 +1202,7 @@ simde_mm256_extract_epi8 (simde__m256i a, const int index)
 SIMDE__FUNCTION_ATTRIBUTES
 int
 simde_mm256_extract_epi16 (simde__m256i a, const int index)
-    HEDLEY_REQUIRE_MSG((index & 0xf) == index, "index must be in range [0, 15]")  {
+    SIMDE_REQUIRE_RANGE(index, 0, 15)  {
   simde__m256i_private a_ = simde__m256i_to_private(a);
   return a_.i16[index];
 }
@@ -1216,7 +1216,7 @@ simde_mm256_extract_epi16 (simde__m256i a, const int index)
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm256_extracti128_si256 (simde__m256i a, const int imm8)
-    HEDLEY_REQUIRE_MSG((imm8 & 1) == imm8, "imm8 must be 0 or 1") {
+    SIMDE_REQUIRE_RANGE(imm8, 0, 1) {
   simde__m256i_private a_ = simde__m256i_to_private(a);
   return a_.m128i[imm8];
 }
@@ -1674,7 +1674,7 @@ simde_mm256_packs_epi32 (simde__m256i a, simde__m256i b) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256i
 simde_mm256_permute2x128_si256 (simde__m256i a, simde__m256i b, const int imm8)
-    HEDLEY_REQUIRE_MSG((imm8 & 0xff) == imm8, "imm8 must be in range [0, 255]") {
+    SIMDE_REQUIRE_RANGE(imm8, 0, 255) {
   simde__m256i_private
     r_,
     a_ = simde__m256i_to_private(a),
@@ -1695,7 +1695,7 @@ simde_mm256_permute2x128_si256 (simde__m256i a, simde__m256i b, const int imm8)
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256i
 simde_mm256_permute4x64_epi64 (simde__m256i a, const int imm8)
-HEDLEY_REQUIRE_MSG((imm8 & 0xff) == imm8, "imm8 must be in range [0, 255]") {
+SIMDE_REQUIRE_RANGE(imm8, 0, 255) {
   simde__m256i_private
     r_,
     a_ = simde__m256i_to_private(a);
@@ -1823,7 +1823,7 @@ simde_mm256_shuffle_epi32 (simde__m256i a, const int imm8) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256i
 simde_mm256_slli_epi16 (simde__m256i a, const int imm8)
-    HEDLEY_REQUIRE_MSG((imm8 & 15) == imm8, "imm8 must be in range [0, 15]") {
+    SIMDE_REQUIRE_RANGE(imm8, 0, 15) {
   /* Note: There is no consistency in how compilers handle values outside of
      the expected range, hence the discrepancy between what we allow and what
      Intel specifies.  Some compilers will return 0, others seem to just mask
@@ -1858,7 +1858,7 @@ simde_mm256_slli_epi16 (simde__m256i a, const int imm8)
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256i
 simde_mm256_slli_epi32 (simde__m256i a, const int imm8)
-    HEDLEY_REQUIRE_MSG((imm8 & 31) == imm8, "imm8 must be in range [0, 31]") {
+    SIMDE_REQUIRE_RANGE(imm8, 0, 31) {
   simde__m256i_private
     r_,
     a_ = simde__m256i_to_private(a);
@@ -1889,7 +1889,7 @@ simde_mm256_slli_epi32 (simde__m256i a, const int imm8)
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256i
 simde_mm256_slli_epi64 (simde__m256i a, const int imm8)
-    HEDLEY_REQUIRE_MSG((imm8 & 15) == imm8, "imm8 must be in range [0, 63]") {
+    SIMDE_REQUIRE_RANGE(imm8, 0, 63) {
   simde__m256i_private
     r_,
     a_ = simde__m256i_to_private(a);

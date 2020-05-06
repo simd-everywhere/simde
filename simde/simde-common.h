@@ -84,6 +84,37 @@
 #define simde_assert_aligned(alignment, val) \
   simde_assert_int(HEDLEY_REINTERPRET_CAST(uintptr_t, HEDLEY_REINTERPRET_CAST(const void*, (val))) % (alignment), ==, 0)
 
+#if \
+    HEDLEY_HAS_BUILTIN(__builtin_constant_p) || \
+    HEDLEY_GCC_VERSION_CHECK(3,4,0) || \
+    HEDLEY_INTEL_VERSION_CHECK(13,0,0) || \
+    HEDLEY_TINYC_VERSION_CHECK(0,9,19) || \
+    HEDLEY_ARM_VERSION_CHECK(4,1,0) || \
+    HEDLEY_IBM_VERSION_CHECK(13,1,0) || \
+    HEDLEY_TI_CL6X_VERSION_CHECK(6,1,0) || \
+    (HEDLEY_SUNPRO_VERSION_CHECK(5,10,0) && !defined(__cplusplus)) || \
+    HEDLEY_CRAY_VERSION_CHECK(8,1,0)
+  #define SIMDE_CHECK_CONSTANT_(expr) (__builtin_constant_p(expr))
+#elif defined(__cplusplus) && (__cplusplus > 201703L)
+  #include <type_traits>
+  #define SIMDE_CHECK_CONSTANT_(expr) (std::is_constant_evaluated())
+#endif
+
+/* diagnose_if + __builtin_constant_p was broken until clang 9,
+ * which is when __FILE_NAME__ was added. */
+#if defined(SIMDE_CHECK_CONSTANT_) && defined(__FILE_NAME__)
+  #define SIMDE_REQUIRE_CONSTANT(arg) HEDLEY_REQUIRE_MSG(SIMDE_CHECK_CONSTANT_(arg), "`" #arg "' must be constant")
+#else
+  #define SIMDE_REQUIRE_CONSTANT(arg)
+#endif
+
+#define SIMDE_REQUIRE_RANGE(arg, min, max) \
+  HEDLEY_REQUIRE_MSG((((arg) >= (min)) && ((arg) <= (max))), "'" #arg "' must be in [" #min ", " #max "]")
+
+#define SIMDE_REQUIRE_CONSTANT_RANGE(arg, min, max) \
+  SIMDE_REQUIRE_CONSTANT(arg) \
+  SIMDE_REQUIRE_RANGE(arg, min, max)
+
 /* TODO: this should really do something like
    HEDLEY_STATIC_CAST(T, (simde_assert_int(alignment, v), v))
    but I need to think about how to handle it in all compilers...
