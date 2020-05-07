@@ -126,6 +126,9 @@ simde_mm_mask_mov_epi8(simde__m128i src, simde__mmask16 k, simde__m128i a) {
     return _mm_mask_mov_epi8(src, k, a);
   #elif defined(SIMDE_X86_SSE4_1_NATIVE)
     return simde_mm_blendv_epi8(src, a, simde_mm_movm_epi8(k));
+  #elif defined(SIMDE_X86_SSE2_NATIVE)
+    simde__m128i mask = simde_mm_movm_epi8(k);
+    return simde_mm_or_si128(simde_mm_and_si128(mask, a), simde_mm_andnot_si128(mask, src));
   #else
     simde__m128i_private
       src_ = simde__m128i_to_private(src),
