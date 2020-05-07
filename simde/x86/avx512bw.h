@@ -977,7 +977,7 @@ simde_mm512_movepi8_mask (simde__m512i a) {
       r = 0;
 
       for (size_t i = 0 ; i < (sizeof(a_.i8) / sizeof(a_.i8[0])) ; i++) {
-        r_ |= HEDLEY_STATIC_CAST(simde__mmask64, a_.i8[i] < 0) << i;
+        r |= HEDLEY_STATIC_CAST(simde__mmask64, a_.i8[i] < 0) << i;
       }
     #endif
 
