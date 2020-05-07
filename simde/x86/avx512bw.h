@@ -708,51 +708,52 @@ simde_mm512_cmpeq_epi8_mask (simde__m512i a, simde__m512i b) {
     #if defined(SIMDE_ARCH_X86_AVX2)
       simde__mmask64 r_;
 
-      // The second cast is absolutely necessary otherwise if the sign bit is set it will be sign extended to 64 bits
-      r_ =              (uint32_t) simde_mm256_movemask_epi8(simde_mm256_cmpeq_epi8(a_.m256i[1], b_.m256i[1]));
-      r_ = (r_ << 32) | (uint32_t) simde_mm256_movemask_epi8(simde_mm256_cmpeq_epi8(a_.m256i[0], b_.m256i[0]));
+      /* Be careful with the casts otherwise if the sign bit is set it will be sign extended to 64 bits */
+      r_ =              HEDLEY_STATIC_CAST(simde__mmask64, HEDLEY_STATIC_CAST(unsigned int, simde_mm256_movemask_epi8(simde_mm256_cmpeq_epi8(a_.m256i[1], b_.m256i[1]))));
+      r_ = (r_ << 32) | HEDLEY_STATIC_CAST(simde__mmask64, HEDLEY_STATIC_CAST(unsigned int, simde_mm256_movemask_epi8(simde_mm256_cmpeq_epi8(a_.m256i[0], b_.m256i[0]))));
     #elif defined(SIMDE_ARCH_X86_SSE2)
       simde__mmask64 r_;
 
-      r_ =              HEDLEY_STATIC_CAST(simde__mmask64, simde_mm_movemask_epi8(simde_mm_cmpeq_epi8(a_.m128i[3], b_.m128i[3])));
-      r_ = (r_ << 16) | HEDLEY_STATIC_CAST(simde__mmask64, simde_mm_movemask_epi8(simde_mm_cmpeq_epi8(a_.m128i[2], b_.m128i[2])));
-      r_ = (r_ << 16) | HEDLEY_STATIC_CAST(simde__mmask64, simde_mm_movemask_epi8(simde_mm_cmpeq_epi8(a_.m128i[1], b_.m128i[1])));
-      r_ = (r_ << 16) | HEDLEY_STATIC_CAST(simde__mmask64, simde_mm_movemask_epi8(simde_mm_cmpeq_epi8(a_.m128i[0], b_.m128i[0])));
+      r_ =              HEDLEY_STATIC_CAST(simde__mmask64, HEDLEY_STATIC_CAST(unsigned int, simde_mm_movemask_epi8(simde_mm_cmpeq_epi8(a_.m128i[3], b_.m128i[3]))));
+      r_ = (r_ << 16) | HEDLEY_STATIC_CAST(simde__mmask64, HEDLEY_STATIC_CAST(unsigned int, simde_mm_movemask_epi8(simde_mm_cmpeq_epi8(a_.m128i[2], b_.m128i[2]))));
+      r_ = (r_ << 16) | HEDLEY_STATIC_CAST(simde__mmask64, HEDLEY_STATIC_CAST(unsigned int, simde_mm_movemask_epi8(simde_mm_cmpeq_epi8(a_.m128i[1], b_.m128i[1]))));
+      r_ = (r_ << 16) | HEDLEY_STATIC_CAST(simde__mmask64, HEDLEY_STATIC_CAST(unsigned int, simde_mm_movemask_epi8(simde_mm_cmpeq_epi8(a_.m128i[0], b_.m128i[0]))));
     #else
       simde__mmask64 r_ = 0;
 
-      for (size_t i = 0 ; i < (sizeof(a_.u8) / sizeof(a_.u8[0])) ; i++) {
-        r_ |= (a_.u8[i] == b_.u8[i]) ? (UINT64_C(1) << i) : 0;
+      for (size_t i = 0 ; i < (sizeof(a_.i8) / sizeof(a_.i8[0])) ; i++) {
+        r_ |= HEDLEY_STATIC_CAST(simde__mmask64, a_.i8[i] == b_.i8[i]) << i;
       }
-  #endif
+    #endif
 
     return r_;
   #endif
 }
 #if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
-#  define _mm512_cmpeq_epi8_mask(a, b) simde_mm512_cmpeq_epi8_mask(a, b)
+  #define _mm512_cmpeq_epi8_mask(a, b) simde_mm512_cmpeq_epi8_mask(a, b)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__mmask64
 simde_mm512_cmpge_epi8_mask (simde__m512i a, simde__m512i b) {
-  simde__m512i_private
-    a_ = simde__m512i_to_private(a),
-    b_ = simde__m512i_to_private(b);
-  simde__mmask64 r_;
+  #if defined(SIMDE_AVX512BW_NATIVE)
+    return _mm512_cmpge_epi8_mask(a, b);
+  #else
+    simde__m512i_private
+      a_ = simde__m512i_to_private(a),
+      b_ = simde__m512i_to_private(b);
+    simde__mmask64 r_;
 
-  r_ = 0;
+    r_ = 0;
 
-  SIMDE__VECTORIZE
-  for (size_t i = 0 ; i < (sizeof(a_.i8) / sizeof(a_.i8[0])) ; i++) {
-    r_ |= (a_.i8[i] >= b_.i8[i]) ? (UINT64_C(1) << i) : 0;
-  }
+    SIMDE__VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(a_.i8) / sizeof(a_.i8[0])) ; i++) {
+      r_ |= HEDLEY_STATIC_CAST(simde__mmask64, a_.i8[i] >= b_.i8[i]) << i;
+    }
 
-  return r_;
+    return r_;
+  #endif
 }
-#if defined(SIMDE_AVX512BW_NATIVE)
-  #define simde_mm512_cmpge_epi8_mask(a, b) _mm512_cmpge_epi8_mask(a, b)
-#endif
 #if defined(SIMDE_AVX512BW_ENABLE_NATIVE_ALIASES)
   #define _mm512_cmpge_epi8_mask(a, b) simde_mm512_cmpge_epi8_mask(a, b)
 #endif
@@ -760,23 +761,24 @@ simde_mm512_cmpge_epi8_mask (simde__m512i a, simde__m512i b) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__mmask64
 simde_mm512_cmpge_epu8_mask (simde__m512i a, simde__m512i b) {
-  simde__m512i_private
-    a_ = simde__m512i_to_private(a),
-    b_ = simde__m512i_to_private(b);
-  simde__mmask64 r_;
+  #if defined(SIMDE_AVX512BW_NATIVE)
+    return _mm512_cmpge_epu8_mask(a, b);
+  #else
+    simde__m512i_private
+      a_ = simde__m512i_to_private(a),
+      b_ = simde__m512i_to_private(b);
+    simde__mmask64 r_;
 
-  r_ = 0;
+    r_ = 0;
 
-  SIMDE__VECTORIZE
-  for (size_t i = 0 ; i < (sizeof(a_.u8) / sizeof(a_.u8[0])) ; i++) {
-    r_ |= (a_.u8[i] >= b_.u8[i]) ? (UINT64_C(1) << i) : 0;
-  }
+    SIMDE__VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(a_.u8) / sizeof(a_.u8[0])) ; i++) {
+      r_ |= HEDLEY_STATIC_CAST(simde__mmask64, a_.u8[i] >= b_.u8[i]) << i;
+    }
 
-  return r_;
+    return r_;
+  #endif
 }
-#if defined(SIMDE_AVX512BW_NATIVE)
-  #define simde_mm512_cmpge_epu8_mask(a, b) _mm512_cmpge_epu8_mask(a, b)
-#endif
 #if defined(SIMDE_AVX512BW_ENABLE_NATIVE_ALIASES)
   #define _mm512_cmpge_epu8_mask(a, b) simde_mm512_cmpge_epu8_mask(a, b)
 #endif
@@ -784,35 +786,35 @@ simde_mm512_cmpge_epu8_mask (simde__m512i a, simde__m512i b) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__mmask64
 simde_mm512_cmpgt_epi8_mask (simde__m512i a, simde__m512i b) {
-  simde__m512i_private
-    a_ = simde__m512i_to_private(a),
-    b_ = simde__m512i_to_private(b);
-  simde__mmask64 r_;
-
-  #if defined(SIMDE_ARCH_X86_AVX2)
-    // The second cast is absolutely necessary otherwise if the sign bit is set it will be sign extended to 64 bits
-    // N.B. CM: MUST USE HEDLEY
-    r_ =              (uint32_t) simde_mm256_movemask_epi8(simde_mm256_cmpgt_epi8(a_.m256i[1], b_.m256i[1]));
-    r_ = (r_ << 32) | (uint32_t) simde_mm256_movemask_epi8(simde_mm256_cmpgt_epi8(a_.m256i[0], b_.m256i[0]));
-  #elif defined(SIMDE_ARCH_X86_SSE2)
-    r_ =              HEDLEY_STATIC_CAST(simde__mmask64, simde_mm_movemask_epi8(simde_mm_cmpgt_epi8(a_.m128i[3], b_.m128i[3])));
-    r_ = (r_ << 16) | HEDLEY_STATIC_CAST(simde__mmask64, simde_mm_movemask_epi8(simde_mm_cmpgt_epi8(a_.m128i[2], b_.m128i[2])));
-    r_ = (r_ << 16) | HEDLEY_STATIC_CAST(simde__mmask64, simde_mm_movemask_epi8(simde_mm_cmpgt_epi8(a_.m128i[1], b_.m128i[1])));
-    r_ = (r_ << 16) | HEDLEY_STATIC_CAST(simde__mmask64, simde_mm_movemask_epi8(simde_mm_cmpgt_epi8(a_.m128i[0], b_.m128i[0])));
+  #if defined(SIMDE_AVX512BW_NATIVE)
+    return _mm512_cmpgt_epi8_mask(a, b);
   #else
-    r_ = 0;
+    simde__m512i_private
+      a_ = simde__m512i_to_private(a),
+      b_ = simde__m512i_to_private(b);
+    simde__mmask64 r_;
 
-    SIMDE__VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(a_.i8) / sizeof(a_.i8[0])) ; i++) {
-      r_ |= (a_.i8[i] > b_.i8[i]) ? (UINT64_C(1) << i) : 0;
-    }
+    #if defined(SIMDE_ARCH_X86_AVX2)
+      /* Be careful with the casts otherwise if the sign bit is set it will be sign extended to 64 bits */
+      r_ =              HEDLEY_STATIC_CAST(simde__mmask64, HEDLEY_STATIC_CAST(unsigned int, simde_mm256_movemask_epi8(simde_mm256_cmpgt_epi8(a_.m256i[1], b_.m256i[1]))));
+      r_ = (r_ << 32) | HEDLEY_STATIC_CAST(simde__mmask64, HEDLEY_STATIC_CAST(unsigned int, simde_mm256_movemask_epi8(simde_mm256_cmpgt_epi8(a_.m256i[0], b_.m256i[0]))));
+    #elif defined(SIMDE_ARCH_X86_SSE2)
+      r_ =              HEDLEY_STATIC_CAST(simde__mmask64, HEDLEY_STATIC_CAST(unsigned int, simde_mm_movemask_epi8(simde_mm_cmpgt_epi8(a_.m128i[3], b_.m128i[3]))));
+      r_ = (r_ << 16) | HEDLEY_STATIC_CAST(simde__mmask64, HEDLEY_STATIC_CAST(unsigned int, simde_mm_movemask_epi8(simde_mm_cmpgt_epi8(a_.m128i[2], b_.m128i[2]))));
+      r_ = (r_ << 16) | HEDLEY_STATIC_CAST(simde__mmask64, HEDLEY_STATIC_CAST(unsigned int, simde_mm_movemask_epi8(simde_mm_cmpgt_epi8(a_.m128i[1], b_.m128i[1]))));
+      r_ = (r_ << 16) | HEDLEY_STATIC_CAST(simde__mmask64, HEDLEY_STATIC_CAST(unsigned int, simde_mm_movemask_epi8(simde_mm_cmpgt_epi8(a_.m128i[0], b_.m128i[0]))));
+    #else
+      r_ = 0;
+
+      SIMDE__VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(a_.i8) / sizeof(a_.i8[0])) ; i++) {
+        r_ |= HEDLEY_STATIC_CAST(simde__mmask64, a_.i8[i] > b_.i8[i]) << i;
+      }
+    #endif
+
+    return r_;
   #endif
-
-  return r_;
 }
-#if defined(SIMDE_AVX512BW_NATIVE)
-  #define simde_mm512_cmpgt_epi8_mask(a, b) _mm512_cmpgt_epi8_mask(a, b)
-#endif
 #if defined(SIMDE_AVX512BW_ENABLE_NATIVE_ALIASES)
   #define _mm512_cmpgt_epi8_mask(a, b) simde_mm512_cmpgt_epi8_mask(a, b)
 #endif
@@ -820,23 +822,24 @@ simde_mm512_cmpgt_epi8_mask (simde__m512i a, simde__m512i b) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__mmask64
 simde_mm512_cmpgt_epu8_mask (simde__m512i a, simde__m512i b) {
-  simde__m512i_private
-    a_ = simde__m512i_to_private(a),
-    b_ = simde__m512i_to_private(b);
-  simde__mmask64 r_;
+  #if defined(SIMDE_AVX512BW_NATIVE)
+    return _mm512_cmpgt_epu8_mask(a, b);
+  #else
+    simde__m512i_private
+      a_ = simde__m512i_to_private(a),
+      b_ = simde__m512i_to_private(b);
+    simde__mmask64 r_;
 
-  r_ = 0;
+    r_ = 0;
 
-  SIMDE__VECTORIZE
-  for (size_t i = 0 ; i < (sizeof(a_.u8) / sizeof(a_.u8[0])) ; i++) {
-    r_ |= (a_.u8[i] > b_.u8[i]) ? (UINT64_C(1) << i) : 0;
-  }
+    SIMDE__VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(a_.u8) / sizeof(a_.u8[0])) ; i++) {
+      r_ |= HEDLEY_STATIC_CAST(simde__mmask64, a_.u8[i] > b_.u8[i]) << i;
+    }
 
-  return r_;
+    return r_;
+  #endif
 }
-#if defined(SIMDE_AVX512BW_NATIVE)
-  #define simde_mm512_cmpgt_epu8_mask(a, b) _mm512_cmpgt_epu8_mask(a, b)
-#endif
 #if defined(SIMDE_AVX512BW_ENABLE_NATIVE_ALIASES)
   #define _mm512_cmpgt_epu8_mask(a, b) simde_mm512_cmpgt_epu8_mask(a, b)
 #endif
@@ -956,30 +959,31 @@ simde_mm512_cvtsepi16_epi8 (simde__m512i a) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__mmask64
 simde_mm512_movepi8_mask (simde__m512i a) {
-  simde__m512i_private a_ = simde__m512i_to_private(a);
-  simde__mmask64 r;
-
-  #if defined(SIMDE_ARCH_X86_AVX2)
-    r =             HEDLEY_STATIC_CAST(simde__mmask64, HEDLEY_STATIC_CAST(unsigned int, simde_mm256_movemask_epi8(a_.m256i[1])));
-    r = (r << 32) | HEDLEY_STATIC_CAST(simde__mmask64, HEDLEY_STATIC_CAST(unsigned int, simde_mm256_movemask_epi8(a_.m256i[0])));
-  #elif defined(SIMDE_ARCH_X86_SSE2)
-    r =             HEDLEY_STATIC_CAST(simde__mmask64, HEDLEY_STATIC_CAST(unsigned int, simde_mm_movemask_epi8(a_.m128i[3])));
-    r = (r << 16) | HEDLEY_STATIC_CAST(simde__mmask64, HEDLEY_STATIC_CAST(unsigned int, simde_mm_movemask_epi8(a_.m128i[2])));
-    r = (r << 16) | HEDLEY_STATIC_CAST(simde__mmask64, HEDLEY_STATIC_CAST(unsigned int, simde_mm_movemask_epi8(a_.m128i[1])));
-    r = (r << 16) | HEDLEY_STATIC_CAST(simde__mmask64, HEDLEY_STATIC_CAST(unsigned int, simde_mm_movemask_epi8(a_.m128i[0])));
+  #if defined(SIMDE_AVX512BW_NATIVE)
+    return _mm512_movepi8_mask(a);
   #else
-    r = 0;
+    simde__m512i_private a_ = simde__m512i_to_private(a);
+    simde__mmask64 r;
 
-    for (size_t i = 0 ; i < (sizeof(a_.i8) / sizeof(a_.i8[0])) ; i++) {
-      r |= (a_.i8[i] < 0) ? (UINT64_C(1) << i) : 0;
-    }
+    #if defined(SIMDE_ARCH_X86_AVX2)
+      r =             HEDLEY_STATIC_CAST(simde__mmask64, HEDLEY_STATIC_CAST(unsigned int, simde_mm256_movemask_epi8(a_.m256i[1])));
+      r = (r << 32) | HEDLEY_STATIC_CAST(simde__mmask64, HEDLEY_STATIC_CAST(unsigned int, simde_mm256_movemask_epi8(a_.m256i[0])));
+    #elif defined(SIMDE_ARCH_X86_SSE2)
+      r =             HEDLEY_STATIC_CAST(simde__mmask64, HEDLEY_STATIC_CAST(unsigned int, simde_mm_movemask_epi8(a_.m128i[3])));
+      r = (r << 16) | HEDLEY_STATIC_CAST(simde__mmask64, HEDLEY_STATIC_CAST(unsigned int, simde_mm_movemask_epi8(a_.m128i[2])));
+      r = (r << 16) | HEDLEY_STATIC_CAST(simde__mmask64, HEDLEY_STATIC_CAST(unsigned int, simde_mm_movemask_epi8(a_.m128i[1])));
+      r = (r << 16) | HEDLEY_STATIC_CAST(simde__mmask64, HEDLEY_STATIC_CAST(unsigned int, simde_mm_movemask_epi8(a_.m128i[0])));
+    #else
+      r = 0;
+
+      for (size_t i = 0 ; i < (sizeof(a_.i8) / sizeof(a_.i8[0])) ; i++) {
+        r_ |= HEDLEY_STATIC_CAST(simde__mmask64, a_.i8[i] < 0) << i;
+      }
+    #endif
+
+    return r;
   #endif
-
-  return r;
 }
-#if defined(SIMDE_AVX512BW_NATIVE)
-  #define simde_mm512_movepi8_mask(a) _mm512_movepi8_mask(a);
-#endif
 #if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
   #define _mm512_movepi8_mask(a) simde_mm512_movepi8_mask(a)
 #endif
