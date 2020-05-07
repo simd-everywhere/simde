@@ -653,7 +653,7 @@ simde_mm512_cmpeq_epi8_mask (simde__m512i a, simde__m512i b) {
       simde__mmask64 r_ = 0;
 
       for (size_t i = 0 ; i < (sizeof(a_.u8) / sizeof(a_.u8[0])) ; i++) {
-        r_ |= (a_.u8[i] == b_.u8[i]) ? (1ULL << i) : 0;
+        r_ |= (a_.u8[i] == b_.u8[i]) ? (UINT64_C(1) << i) : 0;
       }
     #endif
 
@@ -864,7 +864,7 @@ simde_mm512_movepi8_mask (simde__m512i a) {
     r = 0;
 
     for (size_t i = 0 ; i < (sizeof(a_.i8) / sizeof(a_.i8[0])) ; i++) {
-      r |= (a_.i8[i] < 0) ? (1ULL << i) : 0;
+      r |= (a_.i8[i] < 0) ? (UINT64_C(1) << i) : 0;
     }
   #endif
 
