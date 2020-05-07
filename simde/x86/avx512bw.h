@@ -49,10 +49,8 @@ simde_mm512_mask_mov_epi8(simde__m512i src, simde__mmask64 k, simde__m512i a) {
       a_ = simde__m512i_to_private(a),
       r_;
 
-    SIMDE__VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.i8) / sizeof(r_.i8[0])) ; i++) {
-      r_.i8[i] = ((k >> i) & 1) ? a_.i8[i] : src_.i8[i];
-    }
+    r_.m256i[0] = simde_mm256_mask_mov_epi8(src_.m256i[0], HEDLEY_STATIC_CAST(simde__mmask32, k      ), a_.m256i[0]);
+    r_.m256i[1] = simde_mm256_mask_mov_epi8(src_.m256i[1], HEDLEY_STATIC_CAST(simde__mmask32, k >> 32), a_.m256i[1]);
 
     return simde__m512i_from_private(r_);
   #endif
@@ -71,10 +69,8 @@ simde_mm512_maskz_mov_epi8(simde__mmask64 k, simde__m512i a) {
       a_ = simde__m512i_to_private(a),
       r_;
 
-    SIMDE__VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.i8) / sizeof(r_.i8[0])) ; i++) {
-      r_.i8[i] = ((k >> i) & 1) ? a_.i8[i] : INT8_C(0);
-    }
+    r_.m256i[0] = simde_mm256_maskz_mov_epi8(HEDLEY_STATIC_CAST(simde__mmask32, k      ), a_.m256i[0]);
+    r_.m256i[1] = simde_mm256_maskz_mov_epi8(HEDLEY_STATIC_CAST(simde__mmask32, k >> 32), a_.m256i[1]);
 
     return simde__m512i_from_private(r_);
   #endif
