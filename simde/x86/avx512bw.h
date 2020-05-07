@@ -23,6 +23,7 @@
  * Copyright:
  *   2020      Evan Nemerson <evan@nemerson.com>
  *   2020      Himanshi Mathur <himanshi18037@iiitd.ac.in>
+ *   2020      Christopher Moore <moore@free.fr>
  */
 
 #if !defined(SIMDE_X86_AVX512BW_H)
@@ -416,6 +417,32 @@ simde_mm512_adds_epu8 (simde__m512i a, simde__m512i b) {
     #endif
 
     return simde__m512i_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
+#  define _mm512_adds_epu8(a, b) simde_mm512_adds_epu8(a, b)
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m512i
+simde_mm512_mask_adds_epu8 (simde__m512i src, simde__mmask64 k, simde__m512i a, simde__m512i b) {
+  #if defined(SIMDE_X86_AVX512BW_NATIVE)
+    return _mm512_mask_adds_epu8(src, k, a, b);
+  #else
+    return simde_mm512_mask_mov_epi8(src, k, simde_mm512_adds_epu8(a, b));
+  #endif
+}
+#if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
+#  define _mm512_adds_epu8(a, b) simde_mm512_adds_epu8(a, b)
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m512i
+simde_mm512_maskz_adds_epu8 (simde__mmask64 k, simde__m512i a, simde__m512i b) {
+  #if defined(SIMDE_X86_AVX512BW_NATIVE)
+    return _mm512_maskz_adds_epu8(k, a, b);
+  #else
+    return simde_mm512_maskz_mov_epi8(k, simde_mm512_adds_epu8(a, b));
   #endif
 }
 #if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
