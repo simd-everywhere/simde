@@ -280,6 +280,13 @@
 #endif
 #if defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
   #include <altivec.h>
+  #if defined(SIMDE_ENABLE_NATIVE_ALIASES) && defined (__cplusplus)
+    #if defined(__VEC__) && defined(__ALTIVEC__) && !defined(__APPLE_ALTIVEC__)
+    #  undef vector
+    #  undef pixel
+    #  undef bool
+    #endif
+  #endif
 #endif
 
 #endif /* !defined(SIMDE_FEATURES_H) */
