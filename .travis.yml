@@ -111,7 +111,7 @@ jobs:
     env:
     - C_COMPILER=icc
     - CXX_COMPILER=icpc
-    - DIAGNOSTIC_FLAGS='-wd13200 -wd13203'
+    - DIAGNOSTIC_FLAGS='-wd13200 -wd13203 -wd16219 -Wall'
     install:
     - source /opt/intel/inteloneapi/compiler/latest/env/vars.sh
     addons:
