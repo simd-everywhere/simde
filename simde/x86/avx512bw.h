@@ -106,7 +106,7 @@ simde_mm512_mask_mov_epi16(simde__m512i src, simde__mmask32 k, simde__m512i a) {
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m512i
 simde_mm512_maskz_mov_epi16(simde__mmask32 k, simde__m512i a) {
-  #if defined(SIMDE_X166_AVX512BW_NATIVE)
+  #if defined(SIMDE_X86_AVX512BW_NATIVE)
     return _mm512_maskz_mov_epi16(k, a);
   #else
     simde__m512i_private

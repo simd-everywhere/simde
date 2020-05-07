@@ -13,6 +13,9 @@ jobs:
       run: git diff --check HEAD^
     - name: Tabs
       run: find simde/ -name '*.c' -o -name '*.h' -exec grep -nP '\t' {} + && exit 1 || exit 0
+    # s/8/16/ will result in this if the input in x86.
+    - name: x166
+      run: git grep -i x166 && exit 1 || 0
 
   x86:
     runs-on: ubuntu-latest
