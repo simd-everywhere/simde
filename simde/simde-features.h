@@ -279,14 +279,24 @@
   #endif
 #endif
 #if defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
-  #include <altivec.h>
-  #if defined(SIMDE_ENABLE_NATIVE_ALIASES) && defined (__cplusplus)
-    #if defined(__VEC__) && defined(__ALTIVEC__) && !defined(__APPLE_ALTIVEC__)
-    #  undef vector
-    #  undef pixel
-    #  undef bool
-    #endif
+  /* stdbool.h conflicts with the bool in altivec.h */
+  #if defined(bool) && !defined(SIMDE_POWER_ALTIVEC_NO_UNDEF_BOOL_)
+    #undef bool
   #endif
+  #include <altivec.h>
+  /* GCC allows you to undefinee these macros to prevent conflicts with
+   * standard types as they become context-sensitive keywords. */
+  #if defined(__cplusplus)
+    #if defined(vector)
+      #undef vector
+    #endif
+    #if defined(pixel)
+      #undef pixel
+    #endif
+    #if defined(bool)
+      #undef bool
+    #endif
+  #endif /* defined(__cplusplus) */
 #endif
 
 #endif /* !defined(SIMDE_FEATURES_H) */
