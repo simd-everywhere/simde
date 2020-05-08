@@ -284,7 +284,7 @@
     #undef bool
   #endif
   #include <altivec.h>
-  /* GCC allows you to undefinee these macros to prevent conflicts with
+  /* GCC allows you to undefine these macros to prevent conflicts with
    * standard types as they become context-sensitive keywords. */
   #if defined(__cplusplus)
     #if defined(vector)
