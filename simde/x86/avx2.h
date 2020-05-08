@@ -1868,6 +1868,75 @@ simde_mm256_shuffle_epi32 (simde__m256i a, const int imm8) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256i
+simde_mm256_sign_epi8 (simde__m256i a, simde__m256i b) {
+#if defined(SIMDE_X86_AVX2_NATIVE)
+  return _mm256_sign_epi8(a, b);
+#else
+  simde__m256i_private
+    r_,
+    a_ = simde__m256i_to_private(a),
+    b_ = simde__m256i_to_private(b);
+
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r_.i8) / sizeof(r_.i8[0])) ; i++) {
+    r_.i8[i] = (b_.i8[i] < INT32_C(0)) ? -a_.i8[i] : a_.i8[i];
+  }
+
+  return simde__m256i_from_private(r_);
+#endif
+}
+#if defined(SIMDE_X86_AVX2_ENABLE_NATIVE_ALIASES)
+#  define _mm256_sign_epi8(a) simde_mm256_sign_epi8(a)
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256i
+simde_mm256_sign_epi16 (simde__m256i a, simde__m256i b) {
+#if defined(SIMDE_X86_AVX2_NATIVE)
+  return _mm256_sign_epi16(a, b);
+#else
+  simde__m256i_private
+    r_,
+    a_ = simde__m256i_to_private(a),
+    b_ = simde__m256i_to_private(b);
+
+  SIMDE__VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r_.i16) / sizeof(r_.i16[0])) ; i++) {
+    r_.i16[i] = (b_.i16[i] < INT32_C(0)) ? -a_.i16[i] : a_.i16[i];
+  }
+
+  return simde__m256i_from_private(r_);
+#endif
+}
+#if defined(SIMDE_X86_AVX2_ENABLE_NATIVE_ALIASES)
+#  define _mm256_sign_epi16(a, b) simde_mm256_sign_epi16(a, b)
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256i
+simde_mm256_sign_epi32(simde__m256i a, simde__m256i b) {
+#if defined(SIMDE_X86_AVX2_NATIVE)
+  return _mm256_sign_epi32(a, b);
+#else
+  simde__m256i_private
+    r_,
+    a_ = simde__m256i_to_private(a),
+    b_ = simde__m256i_to_private(b);
+
+  SIMDE__VECTORIZE
+  for (size_t i = 0; i < (sizeof(r_.i32) / sizeof(r_.i32[0])); i++) {
+    r_.i32[i] = (b_.i32[i] < INT32_C(0)) ? -a_.i32[i] : a_.i32[i];
+  }
+
+  return simde__m256i_from_private(r_);
+#endif
+}
+#if defined(SIMDE_X86_AVX2_ENABLE_NATIVE_ALIASES)
+#  define _mm256_sign_epi32(a, b) simde_mm256_sign_epi32(a, b)
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m256i
 simde_mm256_slli_epi16 (simde__m256i a, const int imm8)
     SIMDE_REQUIRE_RANGE(imm8, 0, 15) {
   /* Note: There is no consistency in how compilers handle values outside of
