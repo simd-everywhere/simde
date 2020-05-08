@@ -581,7 +581,7 @@ simde_mm512_shuffle_epi8 (simde__m512i a, simde__m512i b) {
   #if defined(SIMDE_X86_AVX2_NATIVE)
     r_.m256i[0] = simde_mm256_shuffle_epi8(a_.m256i[0], b_.m256i[0]);
     r_.m256i[1] = simde_mm256_shuffle_epi8(a_.m256i[1], b_.m256i[1]);
-  #elif defined(SIMDE_X86_SSSE3_NATIVE)
+  #elif defined(SIMDE_X86_SSSE3_NATIVE) || SIMDE_PREFER_VECTOR_SIZE(128)
     r_.m128i[0] = simde_mm_shuffle_epi8(a_.m128i[0], b_.m128i[0]);
     r_.m128i[1] = simde_mm_shuffle_epi8(a_.m128i[1], b_.m128i[1]);
     r_.m128i[2] = simde_mm_shuffle_epi8(a_.m128i[2], b_.m128i[2]);

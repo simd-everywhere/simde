@@ -1173,7 +1173,7 @@ simde_mm256_addsub_ps (simde__m256 a, simde__m256 b) {
     a_ = simde__m256_to_private(a),
     b_ = simde__m256_to_private(b);
 
-#if defined(SIMDE_X86_SSE3_NATIVE)
+#if defined(SIMDE_X86_SSE3_NATIVE) || SIMDE_PREFER_VECTOR_SIZE(128)
   r_.m128[0] = simde_mm_addsub_ps(a_.m128[0], b_.m128[0]);
   r_.m128[1] = simde_mm_addsub_ps(a_.m128[1], b_.m128[1]);
 #else
@@ -1202,7 +1202,7 @@ simde_mm256_addsub_pd (simde__m256d a, simde__m256d b) {
     a_ = simde__m256d_to_private(a),
     b_ = simde__m256d_to_private(b);
 
-#if defined(SIMDE_X86_SSE3_NATIVE)
+#if defined(SIMDE_X86_SSE3_NATIVE) || SIMDE_PREFER_VECTOR_SIZE(128)
   r_.m128d[0] = simde_mm_addsub_pd(a_.m128d[0], b_.m128d[0]);
   r_.m128d[1] = simde_mm_addsub_pd(a_.m128d[1], b_.m128d[1]);
 #else
@@ -1397,7 +1397,7 @@ simde_mm256_blendv_ps (simde__m256 a, simde__m256 b, simde__m256 mask) {
     b_ = simde__m256_to_private(b),
     mask_ = simde__m256_to_private(mask);
 
-#if defined(SIMDE_X86_SSE4_1_NATIVE)
+#if defined(SIMDE_X86_SSE4_1_NATIVE) || SIMDE_PREFER_VECTOR_SIZE(128)
   r_.m128[0] = simde_mm_blendv_ps(a_.m128[0], b_.m128[0], mask_.m128[0]);
   r_.m128[1] = simde_mm_blendv_ps(a_.m128[1], b_.m128[1], mask_.m128[1]);
 #else
@@ -1426,7 +1426,7 @@ simde_mm256_blendv_pd (simde__m256d a, simde__m256d b, simde__m256d mask) {
     b_ = simde__m256d_to_private(b),
     mask_ = simde__m256d_to_private(mask);
 
-#if defined(SIMDE_X86_SSE4_1_NATIVE)
+#if defined(SIMDE_X86_SSE4_1_NATIVE) || SIMDE_PREFER_VECTOR_SIZE(128)
   r_.m128d[0] = simde_mm_blendv_pd(a_.m128d[0], b_.m128d[0], mask_.m128d[0]);
   r_.m128d[1] = simde_mm_blendv_pd(a_.m128d[1], b_.m128d[1], mask_.m128d[1]);
 #else
@@ -5253,7 +5253,7 @@ simde_mm256_testz_si256 (simde__m256i a, simde__m256i b) {
     a_ = simde__m256i_to_private(a),
     b_ = simde__m256i_to_private(b);
 
-#if defined(SIMDE_X86_SSE4_1_NATIVE)
+#if defined(SIMDE_X86_SSE4_1_NATIVE) || SIMDE_PREFER_VECTOR_SIZE(128)
   r = simde_mm_testz_si128(a_.m128i[0], b_.m128i[0]) && simde_mm_testz_si128(a_.m128i[1], b_.m128i[1]);
 #else
   SIMDE__VECTORIZE_REDUCTION(|:r)

@@ -255,7 +255,7 @@ simde_mm256_alignr_epi8 (simde__m256i a, simde__m256i b, int count) {
 }
 #if defined(SIMDE_X86_AVX2_NATIVE)
 #  define simde_mm256_alignr_epi8(a, b, count) _mm256_alignr_epi8(a, b, count)
-#elif defined(SIMDE_X86_SSSE3_NATIVE)
+#elif defined(SIMDE_X86_SSSE3_NATIVE) || SIMDE_PREFER_VECTOR_SIZE(128)
 #  define simde_mm256_alignr_epi8(a, b, count) \
       simde_mm256_set_m128i( \
           simde_mm_alignr_epi8(simde_mm256_extracti128_si256(a, 1), simde_mm256_extracti128_si256(b, 1), (count)), \
@@ -574,7 +574,7 @@ simde_mm256_blendv_epi8(simde__m256i a, simde__m256i b, simde__m256i mask) {
     b_ = simde__m256i_to_private(b),
     mask_ = simde__m256i_to_private(mask);
 
-#if defined(SIMDE_X86_SSE4_1_NATIVE)
+#if defined(SIMDE_X86_SSE4_1_NATIVE) || SIMDE_PREFER_VECTOR_SIZE(128)
   r_.m128i_private[0] = simde__m128i_to_private(simde_mm_blendv_epi8(simde__m128i_from_private(a_.m128i_private[0]), simde__m128i_from_private(b_.m128i_private[0]), simde__m128i_from_private(mask_.m128i_private[0])));
   r_.m128i_private[1] = simde__m128i_to_private(simde_mm_blendv_epi8(simde__m128i_from_private(a_.m128i_private[1]), simde__m128i_from_private(b_.m128i_private[1]), simde__m128i_from_private(mask_.m128i_private[1])));
 #else
@@ -1259,7 +1259,7 @@ simde_mm256_max_epi8 (simde__m256i a, simde__m256i b) {
     a_ = simde__m256i_to_private(a),
     b_ = simde__m256i_to_private(b);
 
-#if defined(SIMDE_X86_SSE4_1_NATIVE)
+#if defined(SIMDE_X86_SSE4_1_NATIVE) || SIMDE_PREFER_VECTOR_SIZE(128)
   r_.m128i[0] = simde_mm_max_epi8(a_.m128i[0], b_.m128i[0]);
   r_.m128i[1] = simde_mm_max_epi8(a_.m128i[1], b_.m128i[1]);
 #else
@@ -1399,7 +1399,7 @@ simde_mm256_max_epi32 (simde__m256i a, simde__m256i b) {
     a_ = simde__m256i_to_private(a),
     b_ = simde__m256i_to_private(b);
 
-#if defined(SIMDE_X86_SSE4_1_NATIVE)
+#if defined(SIMDE_X86_SSE4_1_NATIVE) || SIMDE_PREFER_VECTOR_SIZE(128)
   r_.m128i[0] = simde_mm_max_epi32(a_.m128i[0], b_.m128i[0]);
   r_.m128i[1] = simde_mm_max_epi32(a_.m128i[1], b_.m128i[1]);
 #else
@@ -1427,7 +1427,7 @@ simde_mm256_min_epi8 (simde__m256i a, simde__m256i b) {
     a_ = simde__m256i_to_private(a),
     b_ = simde__m256i_to_private(b);
 
-#if defined(SIMDE_X86_SSE4_1_NATIVE)
+#if defined(SIMDE_X86_SSE4_1_NATIVE) || SIMDE_PREFER_VECTOR_SIZE(128)
   r_.m128i[0] = simde_mm_min_epi8(a_.m128i[0], b_.m128i[0]);
   r_.m128i[1] = simde_mm_min_epi8(a_.m128i[1], b_.m128i[1]);
 #else
@@ -1483,7 +1483,7 @@ simde_mm256_min_epi32 (simde__m256i a, simde__m256i b) {
     a_ = simde__m256i_to_private(a),
     b_ = simde__m256i_to_private(b);
 
-#if defined(SIMDE_X86_SSE4_1_NATIVE)
+#if defined(SIMDE_X86_SSE4_1_NATIVE) || SIMDE_PREFER_VECTOR_SIZE(128)
   r_.m128i[0] = simde_mm_min_epi32(a_.m128i[0], b_.m128i[0]);
   r_.m128i[1] = simde_mm_min_epi32(a_.m128i[1], b_.m128i[1]);
 #else
@@ -1771,7 +1771,7 @@ simde_mm256_shuffle_epi8 (simde__m256i a, simde__m256i b) {
     a_ = simde__m256i_to_private(a),
     b_ = simde__m256i_to_private(b);
 
-#if defined(SIMDE_X86_SSSE3_NATIVE)
+#if defined(SIMDE_X86_SSSE3_NATIVE) || SIMDE_PREFER_VECTOR_SIZE(128)
   r_.m128i[0] = simde_mm_shuffle_epi8(a_.m128i[0], b_.m128i[0]);
   r_.m128i[1] = simde_mm_shuffle_epi8(a_.m128i[1], b_.m128i[1]);
 #else

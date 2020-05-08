@@ -44,7 +44,7 @@ simde__m128i
 simde_mm_movm_epi8 (simde__mmask16 k) {
   #if defined(SIMDE_X86_AVX512BW_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
     return _mm_movm_epi8(k);
-  #elif defined(SIMDE_X86_SSSE3_NATIVE)
+  #elif defined(SIMDE_X86_SSSE3_NATIVE) || SIMDE_PREFER_VECTOR_SIZE(128)
     const simde__m128i zero = simde_mm_setzero_si128();
     const simde__m128i bits = simde_mm_set_epi16(0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80);
     const simde__m128i shuffle = simde_mm_set_epi8(15, 13, 11, 9, 7, 5, 3, 1, 14, 12, 10, 8, 6, 4, 2, 0);
@@ -124,7 +124,7 @@ simde__m128i
 simde_mm_mask_mov_epi8(simde__m128i src, simde__mmask16 k, simde__m128i a) {
   #if defined(SIMDE_X86_AVX512VL_NATIVE) && defined(SIMDE_X86_AVX512BW_NATIVE)
     return _mm_mask_mov_epi8(src, k, a);
-  #elif defined(SIMDE_X86_SSE4_1_NATIVE)
+  #elif defined(SIMDE_X86_SSE4_1_NATIVE) || SIMDE_PREFER_VECTOR_SIZE(128)
     return simde_mm_blendv_epi8(src, a, simde_mm_movm_epi8(k));
   #else
     simde__m128i_private
