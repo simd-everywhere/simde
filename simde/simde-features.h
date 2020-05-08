@@ -168,6 +168,12 @@
   #endif
 #endif
 
+#if !defined(SIMDE_X86_SVML_NATIVE) && !defined(SIMDE_X86_SVML_NO_NATIVE) && !defined(SIMDE_NO_NATIVE)
+  #if defined(__INTEL_COMPILER)
+    #define SIMDE_X86_SVML_NATIVE
+  #endif
+#endif
+
 #if defined(HEDLEY_MSVC_VERSION)
   #pragma warning(push)
   #pragma warning(disable:4799)

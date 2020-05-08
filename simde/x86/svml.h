@@ -277,7 +277,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 simde__m256i
 simde_mm256_div_epi8 (simde__m256i a, simde__m256i b) {
   #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX_NATIVE)
-    return _mm256_div_epi32(a, b);
+    return _mm256_div_epi8(a, b);
   #else
     simde__m256i_private
       r_,
@@ -385,7 +385,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 simde__m256i
 simde_mm256_div_epu8 (simde__m256i a, simde__m256i b) {
   #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX_NATIVE)
-    return _mm256_div_epi32(a, b);
+    return _mm256_div_epu8(a, b);
   #else
     simde__m256i_private
       r_,
@@ -412,7 +412,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 simde__m256i
 simde_mm256_div_epu16 (simde__m256i a, simde__m256i b) {
   #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX_NATIVE)
-    return _mm256_div_epi16(a, b);
+    return _mm256_div_epu16(a, b);
   #else
     simde__m256i_private
       r_,
@@ -439,7 +439,7 @@ SIMDE__FUNCTION_ATTRIBUTES
 simde__m256i
 simde_mm256_div_epu32 (simde__m256i a, simde__m256i b) {
   #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX_NATIVE)
-    return _mm256_div_epi32(a, b);
+    return _mm256_div_epu32(a, b);
   #else
     simde__m256i_private
       r_,
