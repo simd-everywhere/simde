@@ -16,6 +16,8 @@ jobs:
     # s/8/16/ will result in this if the input in x86.
     - name: Bad substitutions
       run: git grep -i 'x''1''6''6' && exit 1 || exit 0
+    - name: Incorrect assertions in test/
+      run: grep -PR '(?<=[^a-zA-Z0-9_])simde_assert_u?int(8|16|32|64)(?>[^a-zA-Z0-9_])' test/
 
   x86:
     runs-on: ubuntu-latest

@@ -6504,7 +6504,7 @@ test_simde_mm256_movemask_epi8(const MunitParameter params[], void* data) {
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     int32_t r = simde_mm256_movemask_epi8(test_vec[i].a);
-    simde_assert_int32(r, ==, test_vec[i].r);
+    munit_assert_int32(r, ==, test_vec[i].r);
   }
 
   return MUNIT_OK;
