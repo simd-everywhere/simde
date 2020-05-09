@@ -38,6 +38,204 @@ SIMDE__BEGIN_DECLS
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
+int
+simde_mm_cmpestra(simde__m128i a, int la, simde__m128i b, int lb, const int imm8){
+#if defined(SIMDE_X86_SSE4_2_NATIVE)
+  return _mm_cmpestra(a, la, b, lb, imm8);
+#else
+  simde__m128i_private
+  BoolRes_ = simde__m128i_to_private(simde_mm_setzero_si128()),
+  a_ = simde__m128i_to_private(a),
+  b_ = simde__m128i_to_private(b);
+  if(imm8&1){
+    int UpperBound = (128 / 16) - 1;
+    int aInvalid = 0;
+    int bInvalid = 0;
+    SIMDE__VECTORIZE
+    for (size_t i = 0 ; i < (UpperBound) ; i++) {
+      for(size_t j = 0; j< (UpperBound) ; j++)
+      {
+        int bitvalue = ( (a_.i16[i]==b_.i16[j]) ? 1 : 0 );
+        BoolRes_.i16[i] |= ( ( bitvalue ) << j);
+        if(i == la)
+          aInvalid = 1;
+        if(j == lb)
+          bInvalid = 1;
+        switch( ((imm8 & 12)>>2) ){
+          case 0:
+            break;
+          case 1:
+            break;
+          case 2:
+            if(aInvalid && bInvalid)
+              BoolRes_.i16[i] |= (1<<j);
+            break;
+          case 3:
+            if(aInvalid && !bInvalid)
+              BoolRes_.i16[i] |= (1<<j);
+            else if(aInvalid && bInvalid)
+              BoolRes_.i16[i] |= (1<<j);
+            break;
+        }
+      }
+    }
+    int16_t IntRes1 = 0;
+    int16_t IntRes2 = 0;
+    switch( ((imm8 & 12)>>2) ) {
+      case 0:
+        SIMDE__VECTORIZE
+        for (size_t i = 0 ; i < (UpperBound) ; i++){
+          for (size_t j = 0 ; j < (UpperBound) ; j++){
+            IntRes1 |= ( ((BoolRes_.i16[i] >> j)&1) << i) ;
+          }
+        }
+        break;
+      case 1:
+        SIMDE__VECTORIZE
+        for (size_t i = 0 ; i < (UpperBound) ; i++){
+          for (size_t j = 0 ; j < (UpperBound) ; j++){
+            IntRes1 |= ( ( ((BoolRes_.i16[i] >> j)&1) & ( (BoolRes_.i16[i] >> (j+1))&1)  ) << i);
+            j+=2;
+          }
+        }
+        break;
+      case 2:
+        SIMDE__VECTORIZE
+        for (size_t i = 0 ; i < (UpperBound) ; i++){
+          for (size_t j = 0 ; j < (UpperBound) ; j++){
+            IntRes1 |= ( ((BoolRes_.i16[i] >> i)&1) << i);
+          }
+        }
+        break;
+      case 3:
+        IntRes1 = (imm8 & 1) ? 0xff : 0xffff;
+        SIMDE__VECTORIZE
+        for (size_t i = 0 ; i < (UpperBound) ; i++){
+          size_t k=i;
+          for (size_t j = 0 ; j < (UpperBound-i) ; j++){
+            IntRes1 &=  ( ( (BoolRes_.i16[k] >> j)&1 ) << i) ;
+            k+=1;
+          }
+        }
+    }
+    for(size_t i = 0; i < (UpperBound) ; i++){
+      if((imm8>>4)&1){
+        if((imm8>>5)&1) {
+          if (i >= lb) {
+            IntRes2 |= ( ((IntRes1>>i)&1) << i);
+          }
+          else {
+            IntRes2 |= ( ( ((IntRes1>>i)&1)^(-1)) << i);
+          }
+        }
+        else{
+          IntRes2 |= ( ( ((IntRes1>>i)&1)^(-1)) << i);
+        }
+      }
+      else{
+        IntRes2 |= ( ((IntRes1>>i)&1) << i);
+      }
+    }
+    return ( (IntRes2==0) & (lb > UpperBound) );
+  }
+  else{
+    int UpperBound = (128 / 8) - 1;
+    int aInvalid = 0;
+    int bInvalid = 0;
+    SIMDE__VECTORIZE
+    for (size_t i = 0 ; i < (UpperBound) ; i++) {
+      for(size_t j = 0; j< (UpperBound) ; j++)
+      {
+        int bitvalue = ( (a_.i8[i]==b_.i8[j]) ? 1 : 0 );
+        BoolRes_.i8[i] |= ( ( bitvalue ) << j);
+        if(i == la)
+          aInvalid = 1;
+        if(j == lb)
+          bInvalid = 1;
+        switch( ((imm8 & 12)>>2) ){
+          case 0:
+            break;
+          case 1:
+            break;
+          case 2:
+            if(aInvalid && bInvalid)
+              BoolRes_.i8[i] |= (1<<j);
+            break;
+          case 3:
+            if(aInvalid && !bInvalid)
+              BoolRes_.i8[i] |= (1<<j);
+            else if(aInvalid && bInvalid)
+              BoolRes_.i8[i] |= (1<<j);
+            break;
+        }
+      }
+    }
+    int8_t IntRes1 = 0;
+    int8_t IntRes2 = 0;
+    switch( ((imm8 & 12)>>2) ) {
+      case 0:
+        SIMDE__VECTORIZE
+        for (size_t i = 0 ; i < (UpperBound) ; i++){
+          for (size_t j = 0 ; j < (UpperBound) ; j++){
+            IntRes1 |= ( ((BoolRes_.i8[i] >> j)&1) << i) ;
+          }
+        }
+        break;
+      case 1:
+        SIMDE__VECTORIZE
+        for (size_t i = 0 ; i < (UpperBound) ; i++){
+          for (size_t j = 0 ; j < (UpperBound) ; j++){
+            IntRes1 |= ( ( ((BoolRes_.i8[i] >> j)&1) & ( (BoolRes_.i8[i] >> (j+1))&1)  ) << i);
+            j+=2;
+          }
+        }
+        break;
+      case 2:
+        SIMDE__VECTORIZE
+        for (size_t i = 0 ; i < (UpperBound) ; i++){
+          for (size_t j = 0 ; j < (UpperBound) ; j++){
+            IntRes1 |= ( ((BoolRes_.i8[i] >> i)&1) << i);
+          }
+        }
+        break;
+      case 3:
+        IntRes1 = (imm8 & 1) ? 0xff : 0xffff;
+        SIMDE__VECTORIZE
+        for (size_t i = 0 ; i < (UpperBound) ; i++){
+          size_t k=i;
+          for (size_t j = 0 ; j < (UpperBound-i) ; j++){
+            IntRes1 &=  ( ( (BoolRes_.i8[k] >> j)&1 ) << i) ;
+            k+=1;
+          }
+        }
+    }
+    for(size_t i = 0; i < (UpperBound) ; i++){
+      if((imm8>>4)&1){
+        if((imm8>>5)&1) {
+          if (i >= lb) {
+            IntRes2 |= ( ((IntRes1>>i)&1) << i);
+          }
+          else {
+            IntRes2 |= ( ( ((IntRes1>>i)&1)^(-1)) << i);
+          }
+        }
+        else{
+          IntRes2 |= ( ( ((IntRes1>>i)&1)^(-1)) << i);
+        }
+      }
+      else{
+        IntRes2 |= ( ((IntRes1>>i)&1) << i);
+      }
+    }
+    return ( (IntRes2==0) & (lb > UpperBound) );
+  }
+#endif
+}
+#if defined(SIMDE_X86_SSE4_2_ENABLE_NATIVE_ALIASES)
+#  define _mm_cmpestra(a, la, b, lb, imm8) simde_mm_cmpestra(a, la, b, lb, imm8)
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_cmpgt_epi64 (simde__m128i a, simde__m128i b) {
 #if defined(SIMDE_X86_SSE4_2_NATIVE)
