@@ -201,6 +201,19 @@ simde_mm512_abs_epi8 (simde__m512i a) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m512i
+simde_mm512_mask_abs_epi8 (simde__m512i src, simde__mmask64 k, simde__m512i a) {
+  #if defined(SIMDE_X86_AVX512BW_NATIVE)
+    return _mm512_mask_abs_epi8(src, k, a);
+  #else
+    return simde_mm512_mask_mov_epi8(src, k, simde_mm512_abs_epi8(a));
+  #endif
+}
+#if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
+  #define _mm512_mask_abs_epi8(src, k, a) simde_mm512_mask_abs_epi8(src, k, a)
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m512i
 simde_mm512_abs_epi16 (simde__m512i a) {
 #if defined(SIMDE_X86_AVX512BW_NATIVE)
   return _mm512_abs_epi16(a);
@@ -500,6 +513,19 @@ simde_mm512_avg_epu8 (simde__m512i a, simde__m512i b) {
 }
 #if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
 #  define _mm512_avg_epu8(a, b) simde_mm512_avg_epu8(a, b)
+#endif
+
+SIMDE__FUNCTION_ATTRIBUTES
+simde__m512i
+simde_mm512_mask_avg_epu8 (simde__m512i src, simde__mmask64 k, simde__m512i a, simde__m512i b) {
+  #if defined(SIMDE_X86_AVX512BW_NATIVE)
+    return _mm512_mask_avg_epu8(src, k, a, b);
+  #else
+    return simde_mm512_mask_mov_epi8(src, k, simde_mm512_avg_epu8(a, b));
+  #endif
+}
+#if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
+  #define _mm512_mask_avg_epu8(src, k, a, b) simde_mm512_mask_avg_epu8(src, k, a, b)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
