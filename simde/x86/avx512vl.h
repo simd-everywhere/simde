@@ -34,6 +34,9 @@
 #if !defined(SIMDE_X86_AVX512VL_NATIVE) && defined(SIMDE_ENABLE_NATIVE_ALIASES)
 #  define SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES
 #endif
+#if !defined(SIMDE_X86_AVX512BW_NATIVE) && defined(SIMDE_ENABLE_NATIVE_ALIASES)
+#  define SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES
+#endif
 
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
@@ -67,7 +70,7 @@ simde_mm_movm_epi8 (simde__mmask16 k) {
     return simde__m128i_from_private(r_);
   #endif
 }
-#if defined(SIMDE_AVX512BW_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES) && defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES)
   #define _mm_movm_epi8(k) simde_mm_movm_epi8(k)
 #endif
 
@@ -97,7 +100,7 @@ simde_mm256_movm_epi8 (simde__mmask32 k) {
     return simde__m256i_from_private(r_);
   #endif
 }
-#if defined(SIMDE_AVX512BW_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
   #define _mm256_movm_epi8(k) simde_mm256_movm_epi8(k)
 #endif
 
@@ -115,7 +118,7 @@ simde_mm512_movm_epi8 (simde__mmask64 k) {
     return simde__m512i_from_private(r_);
   #endif
 }
-#if defined(SIMDE_AVX512BW_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
   #define _mm512_movm_epi8(k) simde_mm512_movm_epi8(k)
 #endif
 

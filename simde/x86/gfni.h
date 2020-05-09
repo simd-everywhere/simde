@@ -35,7 +35,7 @@ SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 SIMDE__BEGIN_DECLS
 
 #if !defined(SIMDE_X86_GFNI_NATIVE) && defined(SIMDE_ENABLE_NATIVE_ALIASES)
-  #define SIMDE_GFNI_ENABLE_NATIVE_ALIASES
+  #define SIMDE_X86_GFNI_ENABLE_NATIVE_ALIASES
 #endif
 
 /* Computing the inverse of an GF elemment is expensive so use a LUT */
@@ -120,7 +120,7 @@ simde_x_mm_gf2p8matrix_multiply_epi64_epi8 (simde__m128i x, simde__m128i A) {
 #else
   #define simde_mm_gf2p8affine_epi64_epi8(x, A, b) simde_mm_xor_si128(simde_x_mm_gf2p8matrix_multiply_epi64_epi8(x, A), simde_mm_set1_epi8(HEDLEY_STATIC_CAST(uint8_t, b)))
 #endif
-#if defined(SIMDE_GFNI_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_GFNI_ENABLE_NATIVE_ALIASES)
   #define _mm_gf2p8affine_epi64_epi8(x, A, b) simde_mm_gf2p8affine_epi64_epi8(x, A, b)
 #endif
 
@@ -147,7 +147,7 @@ simde_x_mm256_gf2p8matrix_multiply_epi64_epi8 (simde__m256i x, simde__m256i A) {
 #else
   #define simde_mm256_gf2p8affine_epi64_epi8(x, A, b) simde_mm256_xor_si256(simde_x_mm256_gf2p8matrix_multiply_epi64_epi8(x, A), simde_mm256_set1_epi8(HEDLEY_STATIC_CAST(uint8_t, b)))
 #endif
-#if defined(SIMDE_GFNI_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_GFNI_ENABLE_NATIVE_ALIASES)
   #define _mm256_gf2p8affine_epi64_epi8(x, A, b) simde_mm256_gf2p8affine_epi64_epi8(x, A, b)
 #endif
 
@@ -174,7 +174,7 @@ simde_x_mm512_gf2p8matrix_multiply_epi64_epi8 (simde__m512i x, simde__m512i A) {
 #else
   #define simde_mm512_gf2p8affine_epi64_epi8(x, A, b) simde_mm512_xor_si512(simde_x_mm512_gf2p8matrix_multiply_epi64_epi8(x, A), simde_mm512_set1_epi8(HEDLEY_STATIC_CAST(uint8_t, b)))
 #endif
-#if defined(SIMDE_GFNI_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_GFNI_ENABLE_NATIVE_ALIASES)
   #define _mm512_gf2p8affine_epi64_epi8(x, A, b) simde_mm512_gf2p8affine_epi64_epi8(x, A, b)
 #endif
 
@@ -183,7 +183,7 @@ simde_x_mm512_gf2p8matrix_multiply_epi64_epi8 (simde__m512i x, simde__m512i A) {
 #else
   #define simde_mm_mask_gf2p8affine_epi64_epi8(src, k, x, A, b) simde_mm_mask_mov_epi8(src, k, simde_mm_gf2p8affine_epi64_epi8(x, A, b))
 #endif
-#if defined(SIMDE_GFNI_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_GFNI_ENABLE_NATIVE_ALIASES)
   #define _mm_mask_gf2p8affine_epi64_epi8(src, k, x, A, b) simde_mm_mask_gf2p8affine_epi64_epi8(src, k, x, A, b)
 #endif
 
@@ -192,7 +192,7 @@ simde_x_mm512_gf2p8matrix_multiply_epi64_epi8 (simde__m512i x, simde__m512i A) {
 #else
   #define simde_mm256_mask_gf2p8affine_epi64_epi8(src, k, x, A, b) simde_mm256_mask_mov_epi8(src, k, simde_mm256_gf2p8affine_epi64_epi8(x, A, b))
 #endif
-#if defined(SIMDE_GFNI_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_GFNI_ENABLE_NATIVE_ALIASES)
   #define _mm256_mask_gf2p8affine_epi64_epi8(src, k, x, A, b) simde_mm256_mask_gf2p8affine_epi64_epi8(src, k, x, A, b)
 #endif
 
@@ -201,7 +201,7 @@ simde_x_mm512_gf2p8matrix_multiply_epi64_epi8 (simde__m512i x, simde__m512i A) {
 #else
   #define simde_mm512_mask_gf2p8affine_epi64_epi8(src, k, x, A, b) simde_mm512_mask_mov_epi8(src, k, simde_mm512_gf2p8affine_epi64_epi8(x, A, b))
 #endif
-#if defined(SIMDE_GFNI_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_GFNI_ENABLE_NATIVE_ALIASES)
   #define _mm512_mask_gf2p8affine_epi64_epi8(src, k, x, A, b) simde_mm512_mask_gf2p8affine_epi64_epi8(src, k, x, A, b)
 #endif
 
@@ -210,7 +210,7 @@ simde_x_mm512_gf2p8matrix_multiply_epi64_epi8 (simde__m512i x, simde__m512i A) {
 #else
   #define simde_mm_maskz_gf2p8affine_epi64_epi8(k, x, A, b) simde_mm_maskz_mov_epi8(k, simde_mm_gf2p8affine_epi64_epi8(x, A, b))
 #endif
-#if defined(SIMDE_GFNI_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_GFNI_ENABLE_NATIVE_ALIASES)
   #define _mm_maskz_gf2p8affine_epi64_epi8(k, x, A, b) simde_mm_maskz_gf2p8affine_epi64_epi8(k, x, A, b)
 #endif
 
@@ -219,7 +219,7 @@ simde_x_mm512_gf2p8matrix_multiply_epi64_epi8 (simde__m512i x, simde__m512i A) {
 #else
   #define simde_mm256_maskz_gf2p8affine_epi64_epi8(k, x, A, b) simde_mm256_maskz_mov_epi8(k, simde_mm256_gf2p8affine_epi64_epi8(x, A, b))
 #endif
-#if defined(SIMDE_GFNI_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_GFNI_ENABLE_NATIVE_ALIASES)
   #define _mm256_maskz_gf2p8affine_epi64_epi8(k, x, A, b) simde_mm256_maskz_gf2p8affine_epi64_epi8(k, x, A, b)
 #endif
 
@@ -228,7 +228,7 @@ simde_x_mm512_gf2p8matrix_multiply_epi64_epi8 (simde__m512i x, simde__m512i A) {
 #else
   #define simde_mm512_maskz_gf2p8affine_epi64_epi8(k, x, A, b) simde_mm512_maskz_mov_epi8(k, simde_mm512_gf2p8affine_epi64_epi8(x, A, b))
 #endif
-#if defined(SIMDE_GFNI_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_GFNI_ENABLE_NATIVE_ALIASES)
   #define _mm512_maskz_gf2p8affine_epi64_epi8(k, x, A, b) simde_mm512_maskz_gf2p8affine_epi64_epi8(k, x, A, b)
 #endif
 
@@ -256,7 +256,7 @@ simde_x_mm_gf2p8matrix_multiply_inverse_epi64_epi8 (simde__m128i x, simde__m128i
 #else
   #define simde_mm_gf2p8affineinv_epi64_epi8(x, A, b) simde_mm_xor_si128(simde_x_mm_gf2p8matrix_multiply_inverse_epi64_epi8(x, A), simde_mm_set1_epi8(HEDLEY_STATIC_CAST(uint8_t, b)))
 #endif
-#if defined(SIMDE_GFNI_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_GFNI_ENABLE_NATIVE_ALIASES)
   #define _mm_gf2p8affineinv_epi64_epi8(x, A, b) simde_mm_gf2p8affineinv_epi64_epi8(x, A, b)
 #endif
 
@@ -283,7 +283,7 @@ simde_x_mm256_gf2p8matrix_multiply_inverse_epi64_epi8 (simde__m256i x, simde__m2
 #else
   #define simde_mm256_gf2p8affineinv_epi64_epi8(x, A, b) simde_mm256_xor_si256(simde_x_mm256_gf2p8matrix_multiply_inverse_epi64_epi8(x, A), simde_mm256_set1_epi8(HEDLEY_STATIC_CAST(uint8_t, b)))
 #endif
-#if defined(SIMDE_GFNI_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_GFNI_ENABLE_NATIVE_ALIASES)
   #define _mm256_gf2p8affineinv_epi64_epi8(x, A, b) simde_mm256_gf2p8affineinv_epi64_epi8(x, A, b)
 #endif
 
@@ -310,7 +310,7 @@ simde_x_mm512_gf2p8matrix_multiply_inverse_epi64_epi8 (simde__m512i x, simde__m5
 #else
   #define simde_mm512_gf2p8affineinv_epi64_epi8(x, A, b) simde_mm512_xor_si512(simde_x_mm512_gf2p8matrix_multiply_inverse_epi64_epi8(x, A), simde_mm512_set1_epi8(HEDLEY_STATIC_CAST(uint8_t, b)))
 #endif
-#if defined(SIMDE_GFNI_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_GFNI_ENABLE_NATIVE_ALIASES)
   #define _mm512_gf2p8affineinv_epi64_epi8(x, A, b) simde_mm512_gf2p8affineinv_epi64_epi8(x, A, b)
 #endif
 
@@ -319,7 +319,7 @@ simde_x_mm512_gf2p8matrix_multiply_inverse_epi64_epi8 (simde__m512i x, simde__m5
 #else
   #define simde_mm_mask_gf2p8affineinv_epi64_epi8(src, k, x, A, b) simde_mm_mask_mov_epi8(src, k, simde_mm_gf2p8affineinv_epi64_epi8(x, A, b))
 #endif
-#if defined(SIMDE_GFNI_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_GFNI_ENABLE_NATIVE_ALIASES)
   #define _mm_mask_gf2p8affineinv_epi64_epi8(src, k, x, A, b) simde_mm_mask_gf2p8affineinv_epi64_epi8(src, k, x, A, b)
 #endif
 
@@ -328,7 +328,7 @@ simde_x_mm512_gf2p8matrix_multiply_inverse_epi64_epi8 (simde__m512i x, simde__m5
 #else
   #define simde_mm256_mask_gf2p8affineinv_epi64_epi8(src, k, x, A, b) simde_mm256_mask_mov_epi8(src, k, simde_mm256_gf2p8affineinv_epi64_epi8(x, A, b))
 #endif
-#if defined(SIMDE_GFNI_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_GFNI_ENABLE_NATIVE_ALIASES)
   #define _mm256_mask_gf2p8affineinv_epi64_epi8(src, k, x, A, b) simde_mm256_mask_gf2p8affineinv_epi64_epi8(src, k, x, A, b)
 #endif
 
@@ -337,7 +337,7 @@ simde_x_mm512_gf2p8matrix_multiply_inverse_epi64_epi8 (simde__m512i x, simde__m5
 #else
   #define simde_mm512_mask_gf2p8affineinv_epi64_epi8(src, k, x, A, b) simde_mm512_mask_mov_epi8(src, k, simde_mm512_gf2p8affineinv_epi64_epi8(x, A, b))
 #endif
-#if defined(SIMDE_GFNI_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_GFNI_ENABLE_NATIVE_ALIASES)
   #define _mm512_mask_gf2p8affineinv_epi64_epi8(src, k, x, A, b) simde_mm512_mask_gf2p8affineinv_epi64_epi8(src, k, x, A, b)
 #endif
 
@@ -346,7 +346,7 @@ simde_x_mm512_gf2p8matrix_multiply_inverse_epi64_epi8 (simde__m512i x, simde__m5
 #else
   #define simde_mm_maskz_gf2p8affineinv_epi64_epi8(k, x, A, b) simde_mm_maskz_mov_epi8(k, simde_mm_gf2p8affineinv_epi64_epi8(x, A, b))
 #endif
-#if defined(SIMDE_GFNI_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_GFNI_ENABLE_NATIVE_ALIASES)
   #define _mm_maskz_gf2p8affineinv_epi64_epi8(k, x, A, b) simde_mm_maskz_gf2p8affineinv_epi64_epi8(k, x, A, b)
 #endif
 
@@ -355,7 +355,7 @@ simde_x_mm512_gf2p8matrix_multiply_inverse_epi64_epi8 (simde__m512i x, simde__m5
 #else
   #define simde_mm256_maskz_gf2p8affineinv_epi64_epi8(k, x, A, b) simde_mm256_maskz_mov_epi8(k, simde_mm256_gf2p8affineinv_epi64_epi8(x, A, b))
 #endif
-#if defined(SIMDE_GFNI_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_GFNI_ENABLE_NATIVE_ALIASES)
   #define _mm256_maskz_gf2p8affineinv_epi64_epi8(k, x, A, b) simde_mm256_maskz_gf2p8affineinv_epi64_epi8(k, x, A, b)
 #endif
 
@@ -364,7 +364,7 @@ simde_x_mm512_gf2p8matrix_multiply_inverse_epi64_epi8 (simde__m512i x, simde__m5
 #else
   #define simde_mm512_maskz_gf2p8affineinv_epi64_epi8(k, x, A, b) simde_mm512_maskz_mov_epi8(k, simde_mm512_gf2p8affineinv_epi64_epi8(x, A, b))
 #endif
-#if defined(SIMDE_GFNI_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_GFNI_ENABLE_NATIVE_ALIASES)
   #define _mm512_maskz_gf2p8affineinv_epi64_epi8(k, x, A, b) simde_mm512_maskz_gf2p8affineinv_epi64_epi8(k, x, A, b)
 #endif
 
@@ -425,7 +425,7 @@ simde__m128i simde_mm_gf2p8mul_epi8 (simde__m128i a, simde__m128i b) {
 #if defined(SIMDE_X86_GFNI_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
   #define simde_mm_gf2p8mul_epi8(a, b) _mm_gf2p8mul_epi8(a, b);
 #endif
-#if defined(SIMDE_GFNI_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_GFNI_ENABLE_NATIVE_ALIASES)
   #define _mm_gf2p8mul_epi8(a, b) simde_mm_gf2p8mul_epi8(a, b)
 #endif
 
@@ -449,7 +449,7 @@ simde_mm256_gf2p8mul_epi8 (simde__m256i a, simde__m256i b) {
 #if defined(SIMDE_X86_GFNI_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
   #define simde_mm256_gf2p8mul_epi8(a, b) _mm256_gf2p8mul_epi8(a, b);
 #endif
-#if defined(SIMDE_GFNI_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_GFNI_ENABLE_NATIVE_ALIASES)
   #define _mm256_gf2p8mul_epi8(a, b) simde_mm256_gf2p8mul_epi8(a, b)
 #endif
 
@@ -473,7 +473,7 @@ simde_mm512_gf2p8mul_epi8 (simde__m512i a, simde__m512i b) {
 #if defined(SIMDE_X86_GFNI_NATIVE) && defined(SIMDE_X86_AVX512F_NATIVE)
   #define simde_mm512_gf2p8mul_epi8(a, b) _mm512_gf2p8mul_epi8(a, b)
 #endif
-#if defined(SIMDE_GFNI_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_GFNI_ENABLE_NATIVE_ALIASES)
   #define _mm512_gf2p8mul_epi8(a, b) simde_mm512_gf2p8mul_epi8(a, b)
 #endif
 
@@ -482,7 +482,7 @@ simde_mm512_gf2p8mul_epi8 (simde__m512i a, simde__m512i b) {
 #else
   #define simde_mm_mask_gf2p8mul_epi8(src, k, a, b) simde_mm_mask_mov_epi8(src, k, simde_mm_gf2p8mul_epi8(a, b))
 #endif
-#if defined(SIMDE_GFNI_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_GFNI_ENABLE_NATIVE_ALIASES)
   #define _mm_mask_gf2p8mul_epi8(src, k, a, b) simde_mm_mask_gf2p8mul_epi8(src, k, a, b)
 #endif
 
@@ -491,7 +491,7 @@ simde_mm512_gf2p8mul_epi8 (simde__m512i a, simde__m512i b) {
 #else
   #define simde_mm256_mask_gf2p8mul_epi8(src, k, a, b) simde_mm256_mask_mov_epi8(src, k, simde_mm256_gf2p8mul_epi8(a, b))
 #endif
-#if defined(SIMDE_GFNI_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_GFNI_ENABLE_NATIVE_ALIASES)
   #define _mm256_mask_gf2p8mul_epi8(src, k, a, b) simde_mm256_mask_gf2p8mul_epi8(src, k, a, b)
 #endif
 
@@ -500,7 +500,7 @@ simde_mm512_gf2p8mul_epi8 (simde__m512i a, simde__m512i b) {
 #else
   #define simde_mm512_mask_gf2p8mul_epi8(src, k, a, b) simde_mm512_mask_mov_epi8(src, k, simde_mm512_gf2p8mul_epi8(a, b))
 #endif
-#if defined(SIMDE_GFNI_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_GFNI_ENABLE_NATIVE_ALIASES)
   #define _mm512_mask_gf2p8mul_epi8(src, k, a, b) simde_mm512_mask_gf2p8mul_epi8(src, k, a, b)
 #endif
 
@@ -509,7 +509,7 @@ simde_mm512_gf2p8mul_epi8 (simde__m512i a, simde__m512i b) {
 #else
   #define simde_mm_maskz_gf2p8mul_epi8(k, a, b) simde_mm_maskz_mov_epi8(k, simde_mm_gf2p8mul_epi8(a, b))
 #endif
-#if defined(SIMDE_GFNI_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_GFNI_ENABLE_NATIVE_ALIASES)
   #define _mm_maskz_gf2p8mul_epi8(k, a, b) simde_mm_maskz_gf2p8mul_epi8(k, a, b)
 #endif
 
@@ -518,7 +518,7 @@ simde_mm512_gf2p8mul_epi8 (simde__m512i a, simde__m512i b) {
 #else
   #define simde_mm256_maskz_gf2p8mul_epi8(k, a, b) simde_mm256_maskz_mov_epi8(k, simde_mm256_gf2p8mul_epi8(a, b))
 #endif
-#if defined(SIMDE_GFNI_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_GFNI_ENABLE_NATIVE_ALIASES)
   #define _mm256_maskz_gf2p8mul_epi8(k, a, b) simde_mm256_maskz_gf2p8mul_epi8(k, a, b)
 #endif
 
@@ -527,7 +527,7 @@ simde_mm512_gf2p8mul_epi8 (simde__m512i a, simde__m512i b) {
 #else
   #define simde_mm512_maskz_gf2p8mul_epi8(k, a, b) simde_mm512_maskz_mov_epi8(k, simde_mm512_gf2p8mul_epi8(a, b))
 #endif
-#if defined(SIMDE_GFNI_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_GFNI_ENABLE_NATIVE_ALIASES)
   #define _mm512_maskz_gf2p8mul_epi8(k, a, b) simde_mm512_maskz_gf2p8mul_epi8(k, a, b)
 #endif
 

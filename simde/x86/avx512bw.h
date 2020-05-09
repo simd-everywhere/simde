@@ -31,10 +31,6 @@
 
 #include "avx512vl.h"
 
-#if !defined(SIMDE_X86_AVX512BW_NATIVE) && defined(SIMDE_ENABLE_NATIVE_ALIASES)
-#  define SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES
-#endif
-
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 SIMDE__BEGIN_DECLS
@@ -867,7 +863,7 @@ simde_mm512_cmple_epi8_mask (simde__m512i a, simde__m512i b) {
     return r;
   #endif
 }
-#if defined(SIMDE_AVX512BW_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
   #define _mm512_cmple_epi8_mask(a, b) simde_mm512_cmple_epi8_mask(a, b)
 #endif
 
@@ -897,7 +893,7 @@ simde_mm512_cmple_epu8_mask (simde__m512i a, simde__m512i b) {
     return r;
   #endif
 }
-#if defined(SIMDE_AVX512BW_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
   #define _mm512_cmple_epu8_mask(a, b) simde_mm512_cmple_epu8_mask(a, b)
 #endif
 
@@ -927,7 +923,7 @@ simde_mm512_cmplt_epi8_mask (simde__m512i a, simde__m512i b) {
     return r;
   #endif
 }
-#if defined(SIMDE_AVX512BW_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
   #define _mm512_cmplt_epi8_mask(a, b) simde_mm512_cmplt_epi8_mask(a, b)
 #endif
 
@@ -957,7 +953,7 @@ simde_mm512_cmplt_epu8_mask (simde__m512i a, simde__m512i b) {
     return r;
   #endif
 }
-#if defined(SIMDE_AVX512BW_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
   #define _mm512_cmplt_epu8_mask(a, b) simde_mm512_cmplt_epu8_mask(a, b)
 #endif
 

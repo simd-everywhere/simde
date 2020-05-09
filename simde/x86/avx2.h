@@ -1886,7 +1886,7 @@ simde_mm256_sign_epi8 (simde__m256i a, simde__m256i b) {
 #endif
 }
 #if defined(SIMDE_X86_AVX2_ENABLE_NATIVE_ALIASES)
-#  define _mm256_sign_epi8(a) simde_mm256_sign_epi8(a)
+#  define _mm256_sign_epi8(a, b) simde_mm256_sign_epi8(a, b)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
