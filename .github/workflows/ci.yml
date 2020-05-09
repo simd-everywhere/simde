@@ -65,13 +65,13 @@ jobs:
       with:
         submodules: recursive
     - name: Install APT Dependencies
-      run: sudo apt-get update && sudo apt-get -yq install libxml2-utils ninja-build python3-pip python3-setuptools python3-wheel
+      run: sudo add-apt-repository ppa:ubuntu-toolchain-r/test && sudo apt-get update && sudo apt-get -yq install libxml2-utils ninja-build python3-pip python3-setuptools python3-wheel gcc-10 g++-10
     - name: Install pip Dependencies
       run: pip3 install meson
     - name: Convert
       run: ./test/native-aliases.sh
     - name: Configure
-      run: mkdir build && cd build && CFLAGS='-march=native -DSIMDE_ENABLE_NATIVE_ALIASES -DSIMDE_NATIVE_ALIASES_TESTING' CXXFLAGS='-march=native -DSIMDE_ENABLE_NATIVE_ALIASES -DSIMDE_NATIVE_ALIASES_TESTING' ~/.local/bin/meson ..
+      run: mkdir build && cd build && CC='gcc-10' CXX='g++-10' CFLAGS='-march=native -DSIMDE_ENABLE_NATIVE_ALIASES -DSIMDE_NATIVE_ALIASES_TESTING' CXXFLAGS='-march=native -DSIMDE_ENABLE_NATIVE_ALIASES -DSIMDE_NATIVE_ALIASES_TESTING' ~/.local/bin/meson ..
     - name: Build
       run: cd build && ninja -v
     - name: Test
