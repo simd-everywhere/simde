@@ -243,7 +243,20 @@ typedef union {
 #endif
 } simde__m512i_private;
 
-#if defined(SIMDE_X86_AVX512F_NATIVE)
+/* Intel uses the same header (immintrin.h) for everything AVX and
+ * later.  If native aliases are enabled, and the machine has native
+ * support for AVX imintrin.h will already have been included, which
+ * means simde__m512* will already have been defined.  So, even
+ * if the machine doesn't support AVX512F we need to use the native
+ * type; it has already been defined.
+ *
+ * However, we also can't just assume that including immintrin.h does
+ * actually define these.  It could be a compiler which supports AVX
+ * but not AVX512F, such as GCC < 4.9 or VS < 2017.  That's why we
+ * check to see if _MM_CMPINT_EQ is defined; it's part of AVX512F,
+ * so we assume that if it's present AVX-512F has already been
+ * declared. */
+#if defined(SIMDE_X86_AVX_NATIVE) && defined(_MM_CMPINT_EQ)
   typedef __m512 simde__m512;
   typedef __m512i simde__m512i;
   typedef __m512d simde__m512d;
