@@ -65,7 +65,8 @@ simde_mm512_and_pd (simde__m512d a, simde__m512d b) {
 #endif
 }
 #if defined(SIMDE_X86_AVX512DQ_ENABLE_NATIVE_ALIASES)
-#  define _mm512_and_pd(a, b) simde_mm512_and_pd(a, b)
+  #undef _mm512_and_pd
+  #define _mm512_and_pd(a, b) simde_mm512_and_pd(a, b)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -95,7 +96,8 @@ simde_mm512_and_ps (simde__m512 a, simde__m512 b) {
 #endif
 }
 #if defined(SIMDE_X86_AVX512DQ_ENABLE_NATIVE_ALIASES)
-#  define _mm512_and_ps(a, b) simde_mm512_and_ps(a, b)
+  #undef _mm512_and_ps
+  #define _mm512_and_ps(a, b) simde_mm512_and_ps(a, b)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -156,7 +158,8 @@ simde_mm512_maskz_and_pd(simde__mmask8 k, simde__m512d a, simde__m512d b) {
   #define simde_mm512_andnot_ps(a, b) simde_mm512_castsi512_ps(simde_mm512_andnot_si512(simde_mm512_castps_si512(a), simde_mm512_castps_si512(b)))
 #endif
 #if defined(SIMDE_X86_AVX512DQ_ENABLE_NATIVE_ALIASES)
-#  define _mm512_andnot_ps(a, b) simde_mm512_andnot_ps(a, b)
+  #undef _mm512_andnot_ps
+  #define _mm512_andnot_ps(a, b) simde_mm512_andnot_ps(a, b)
 #endif
 
 #if defined(SIMDE_X86_AVX512DQ_NATIVE)
@@ -183,7 +186,8 @@ simde_mm512_maskz_and_pd(simde__mmask8 k, simde__m512d a, simde__m512d b) {
   #define simde_mm512_andnot_pd(a, b) simde_mm512_castsi512_pd(simde_mm512_andnot_si512(simde_mm512_castpd_si512(a), simde_mm512_castpd_si512(b)))
 #endif
 #if defined(SIMDE_X86_AVX512DQ_ENABLE_NATIVE_ALIASES)
-#  define _mm512_andnot_pd(a, b) simde_mm512_andnot_pd(a, b)
+  #undef _mm512_andnot_pd
+  #define _mm512_andnot_pd(a, b) simde_mm512_andnot_pd(a, b)
 #endif
 
 #if defined(SIMDE_X86_AVX512DQ_NATIVE)

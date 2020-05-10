@@ -53,6 +53,7 @@ simde_mm512_mask_mov_epi8(simde__m512i src, simde__mmask64 k, simde__m512i a) {
   #endif
 }
 #if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_mask_mov_epi8
   #define _mm512_mask_mov_epi8(src, k, a) simde_mm512_mask_mov_epi8(src, k, a)
 #endif
 
@@ -73,6 +74,7 @@ simde_mm512_maskz_mov_epi8(simde__mmask64 k, simde__m512i a) {
   #endif
 }
 #if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_maskz_mov_epi8
   #define _mm512_maskz_mov_epi8(k, a) simde_mm512_maskz_mov_epi8(k, a)
 #endif
 
@@ -96,6 +98,7 @@ simde_mm512_mask_mov_epi16(simde__m512i src, simde__mmask32 k, simde__m512i a) {
   #endif
 }
 #if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_mask_mov_epi16
   #define _mm512_mask_mov_epi16(src, k, a) simde_mm512_mask_mov_epi16(src, k, a)
 #endif
 
@@ -118,6 +121,7 @@ simde_mm512_maskz_mov_epi16(simde__mmask32 k, simde__m512i a) {
   #endif
 }
 #if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_maskz_mov_epi16
   #define _mm512_maskz_mov_epi16(k, a) simde_mm512_maskz_mov_epi16(k, a)
 #endif
 
@@ -149,6 +153,7 @@ simde_mm512_movepi8_mask (simde__m512i a) {
   #define simde_mm512_movepi8_mask(a) _mm512_movepi8_mask(a);
 #endif
 #if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_movepi8_mask
   #define _mm512_movepi8_mask(a) simde_mm512_movepi8_mask(a)
 #endif
 
@@ -223,7 +228,8 @@ simde_mm512_abs_epi8 (simde__m512i a) {
 #endif
 }
 #if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
-#  define _mm512_abs_epi8(a) simde_mm512_abs_epi8(a)
+  #undef _mm512_abs_epi8
+  #define _mm512_abs_epi8(a) simde_mm512_abs_epi8(a)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -236,6 +242,7 @@ simde_mm512_mask_abs_epi8 (simde__m512i src, simde__mmask64 k, simde__m512i a) {
   #endif
 }
 #if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_mask_abs_epi8
   #define _mm512_mask_abs_epi8(src, k, a) simde_mm512_mask_abs_epi8(src, k, a)
 #endif
 
@@ -258,7 +265,8 @@ simde_mm512_abs_epi16 (simde__m512i a) {
 #endif
 }
 #if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
-#  define _mm512_abs_epi16(a) simde_mm512_abs_epi16(a)
+  #undef _mm512_abs_epi16
+  #define _mm512_abs_epi16(a) simde_mm512_abs_epi16(a)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -285,7 +293,8 @@ simde_mm512_add_epi8 (simde__m512i a, simde__m512i b) {
   #endif
 }
 #if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
-#  define _mm512_add_epi8(a, b) simde_mm512_add_epi8(a, b)
+  #undef _mm512_add_epi8
+  #define _mm512_add_epi8(a, b) simde_mm512_add_epi8(a, b)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -298,6 +307,7 @@ simde_mm512_mask_add_epi8 (simde__m512i src, simde__mmask64 k, simde__m512i a, s
   #endif
 }
 #if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_mask_add_epi8
   #define _mm512_mask_add_epi8(src, k, a, b) simde_mm512_mask_add_epi8(src, k, a, b)
 #endif
 
@@ -311,6 +321,7 @@ simde_mm512_maskz_add_epi8 (simde__mmask64 k, simde__m512i a, simde__m512i b) {
   #endif
 }
 #if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_maskz_add_epi8
   #define _mm512_maskz_add_epi8(k, a, b) simde_mm512_maskz_add_epi8(k, a, b)
 #endif
 
@@ -338,7 +349,8 @@ simde_mm512_add_epi16 (simde__m512i a, simde__m512i b) {
   #endif
 }
 #if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
-#  define _mm512_add_epi16(a, b) simde_mm512_add_epi16(a, b)
+  #undef _mm512_add_epi16
+  #define _mm512_add_epi16(a, b) simde_mm512_add_epi16(a, b)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -371,7 +383,8 @@ simde_mm512_adds_epi8 (simde__m512i a, simde__m512i b) {
   #endif
 }
 #if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
-#  define _mm512_adds_epi8(a, b) simde_mm512_adds_epi8(a, b)
+  #undef _mm512_adds_epi8
+  #define _mm512_adds_epi8(a, b) simde_mm512_adds_epi8(a, b)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -384,6 +397,7 @@ simde_mm512_mask_adds_epi8 (simde__m512i src, simde__mmask64 k, simde__m512i a, 
   #endif
 }
 #if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_mask_adds_epi8
   #define _mm512_mask_adds_epi8(src, k, a, b) simde_mm512_mask_adds_epi8(src, k, a, b)
 #endif
 
@@ -397,6 +411,7 @@ simde_mm512_maskz_adds_epi8 (simde__mmask64 k, simde__m512i a, simde__m512i b) {
   #endif
 }
 #if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_maskz_adds_epi8
   #define _mm512_maskz_adds_epi8(k, a, b) simde_mm512_maskz_adds_epi8(k, a, b)
 #endif
 
@@ -430,7 +445,8 @@ simde_mm512_adds_epi16 (simde__m512i a, simde__m512i b) {
   #endif
 }
 #if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
-#  define _mm512_adds_epi16(a, b) simde_mm512_adds_epi16(a, b)
+  #undef _mm512_adds_epi16
+  #define _mm512_adds_epi16(a, b) simde_mm512_adds_epi16(a, b)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -460,7 +476,8 @@ simde_mm512_adds_epu8 (simde__m512i a, simde__m512i b) {
   #endif
 }
 #if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
-#  define _mm512_adds_epu8(a, b) simde_mm512_adds_epu8(a, b)
+  #undef _mm512_adds_epu8
+  #define _mm512_adds_epu8(a, b) simde_mm512_adds_epu8(a, b)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -473,6 +490,7 @@ simde_mm512_mask_adds_epu8 (simde__m512i src, simde__mmask64 k, simde__m512i a, 
   #endif
 }
 #if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_mask_adds_epu8
   #define _mm512_mask_adds_epu8(src, k, a, b) simde_mm512_mask_adds_epu8(src, k, a, b)
 #endif
 
@@ -486,6 +504,7 @@ simde_mm512_maskz_adds_epu8 (simde__mmask64 k, simde__m512i a, simde__m512i b) {
   #endif
 }
 #if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_maskz_adds_epu8
   #define _mm512_maskz_adds_epu8(k, a, b) simde_mm512_maskz_adds_epu8(k, a, b)
 #endif
 
@@ -516,7 +535,8 @@ simde_mm512_adds_epu16 (simde__m512i a, simde__m512i b) {
   #endif
 }
 #if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
-#  define _mm512_adds_epu16(a, b) simde_mm512_adds_epu16(a, b)
+  #undef _mm512_adds_epu16
+  #define _mm512_adds_epu16(a, b) simde_mm512_adds_epu16(a, b)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -539,7 +559,8 @@ simde_mm512_avg_epu8 (simde__m512i a, simde__m512i b) {
 #endif
 }
 #if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
-#  define _mm512_avg_epu8(a, b) simde_mm512_avg_epu8(a, b)
+  #undef _mm512_avg_epu8
+  #define _mm512_avg_epu8(a, b) simde_mm512_avg_epu8(a, b)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -552,6 +573,7 @@ simde_mm512_mask_avg_epu8 (simde__m512i src, simde__mmask64 k, simde__m512i a, s
   #endif
 }
 #if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_mask_avg_epu8
   #define _mm512_mask_avg_epu8(src, k, a, b) simde_mm512_mask_avg_epu8(src, k, a, b)
 #endif
 
@@ -575,7 +597,8 @@ simde_mm512_avg_epu16 (simde__m512i a, simde__m512i b) {
 #endif
 }
 #if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
-#  define _mm512_avg_epu16(a, b) simde_mm512_avg_epu16(a, b)
+  #undef _mm512_avg_epu16
+  #define _mm512_avg_epu16(a, b) simde_mm512_avg_epu16(a, b)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -589,7 +612,8 @@ simde_mm512_broadcastb_epi8 (simde__m128i a) {
 #endif
 }
 #if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
-#  define _mm512_broadcastb_epi8(a) simde_mm512_broadcastb_epi8(a)
+  #undef _mm512_broadcastb_epi8
+  #define _mm512_broadcastb_epi8(a) simde_mm512_broadcastb_epi8(a)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -603,7 +627,8 @@ simde_mm512_broadcastw_epi16 (simde__m128i a) {
 #endif
 }
 #if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
-#  define _mm512_broadcastw_epi16(a) simde_mm512_broadcastw_epi16(a)
+  #undef _mm512_broadcastw_epi16
+  #define _mm512_broadcastw_epi16(a) simde_mm512_broadcastw_epi16(a)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -636,7 +661,8 @@ simde_mm512_shuffle_epi8 (simde__m512i a, simde__m512i b) {
 #endif
 }
 #if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
-#  define _mm512_shuffle_epi8(a, b) simde_mm512_shuffle_epi8(a, b)
+  #undef _mm512_shuffle_epi8
+  #define _mm512_shuffle_epi8(a, b) simde_mm512_shuffle_epi8(a, b)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -649,6 +675,7 @@ simde_mm512_mask_shuffle_epi8 (simde__m512i src, simde__mmask64 k, simde__m512i 
   #endif
 }
 #if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_mask_shuffle_epi8
   #define _mm512_mask_shuffle_epi8(src, k, a, b) simde_mm512_mask_shuffle_epi8(src, k, a, b)
 #endif
 
@@ -662,6 +689,7 @@ simde_mm512_maskz_shuffle_epi8 (simde__mmask64 k, simde__m512i a, simde__m512i b
   #endif
 }
 #if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_maskz_shuffle_epi8
   #define _mm512_maskz_shuffle_epi8(k, a, b) simde_mm512_maskz_shuffle_epi8(k, a, b)
 #endif
 
@@ -703,7 +731,8 @@ simde_mm512_cmpeq_epi8_mask (simde__m512i a, simde__m512i b) {
   #endif
 }
 #if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
-#  define _mm512_cmpeq_epi8_mask(a, b) simde_mm512_cmpeq_epi8_mask(a, b)
+  #undef _mm512_cmpeq_epi8_mask
+  #define _mm512_cmpeq_epi8_mask(a, b) simde_mm512_cmpeq_epi8_mask(a, b)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -733,6 +762,7 @@ simde_mm512_cmpge_epi8_mask (simde__m512i a, simde__m512i b) {
   #endif
 }
 #if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_cmpge_epi8_mask
   #define _mm512_cmpge_epi8_mask(a, b) simde_mm512_cmpge_epi8_mask(a, b)
 #endif
 
@@ -763,6 +793,7 @@ simde_mm512_cmpge_epu8_mask (simde__m512i a, simde__m512i b) {
   #endif
 }
 #if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_cmpge_epu8_mask
   #define _mm512_cmpge_epu8_mask(a, b) simde_mm512_cmpge_epu8_mask(a, b)
 #endif
 
@@ -804,6 +835,7 @@ simde_mm512_cmpgt_epi8_mask (simde__m512i a, simde__m512i b) {
   #endif
 }
 #if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_cmpgt_epi8_mask
   #define _mm512_cmpgt_epi8_mask(a, b) simde_mm512_cmpgt_epi8_mask(a, b)
 #endif
 
@@ -834,6 +866,7 @@ simde_mm512_cmpgt_epu8_mask (simde__m512i a, simde__m512i b) {
   #endif
 }
 #if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_cmpgt_epu8_mask
   #define _mm512_cmpgt_epu8_mask(a, b) simde_mm512_cmpgt_epu8_mask(a, b)
 #endif
 
@@ -864,6 +897,7 @@ simde_mm512_cmple_epi8_mask (simde__m512i a, simde__m512i b) {
   #endif
 }
 #if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_cmple_epi8_mask
   #define _mm512_cmple_epi8_mask(a, b) simde_mm512_cmple_epi8_mask(a, b)
 #endif
 
@@ -894,6 +928,7 @@ simde_mm512_cmple_epu8_mask (simde__m512i a, simde__m512i b) {
   #endif
 }
 #if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_cmple_epu8_mask
   #define _mm512_cmple_epu8_mask(a, b) simde_mm512_cmple_epu8_mask(a, b)
 #endif
 
@@ -924,6 +959,7 @@ simde_mm512_cmplt_epi8_mask (simde__m512i a, simde__m512i b) {
   #endif
 }
 #if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_cmplt_epi8_mask
   #define _mm512_cmplt_epi8_mask(a, b) simde_mm512_cmplt_epi8_mask(a, b)
 #endif
 
@@ -954,6 +990,7 @@ simde_mm512_cmplt_epu8_mask (simde__m512i a, simde__m512i b) {
   #endif
 }
 #if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_cmplt_epu8_mask
   #define _mm512_cmplt_epu8_mask(a, b) simde_mm512_cmplt_epu8_mask(a, b)
 #endif
 
@@ -979,7 +1016,8 @@ simde_mm512_cvtepi16_epi8 (simde__m512i a) {
   #endif
 }
 #if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
-#  define _mm512_cvtepi16_epi8(a) simde_mm512_cvtepi16_epi8(a)
+  #undef _mm512_cvtepi16_epi8
+  #define _mm512_cvtepi16_epi8(a) simde_mm512_cvtepi16_epi8(a)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -1004,7 +1042,8 @@ simde_mm512_cvtepi8_epi16 (simde__m256i a) {
   #endif
 }
 #if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
-#  define _mm512_cvtepi8_epi16(a) simde_mm512_cvtepi8_epi16(a)
+  #undef _mm512_cvtepi8_epi16
+  #define _mm512_cvtepi8_epi16(a) simde_mm512_cvtepi8_epi16(a)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -1030,6 +1069,7 @@ simde_mm512_cvtsepi16_epi8 (simde__m512i a) {
   #endif
 }
 #if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_cvtsepi16_epi8
   #define _mm512_cvtsepi16_epi8(a) simde_mm512_cvtsepi16_epi8(a)
 #endif
 
@@ -1057,7 +1097,8 @@ simde_mm512_sub_epi8 (simde__m512i a, simde__m512i b) {
   #endif
 }
 #if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
-#  define _mm512_sub_epi8(a, b) simde_mm512_sub_epi8(a, b)
+  #undef _mm512_sub_epi8
+  #define _mm512_sub_epi8(a, b) simde_mm512_sub_epi8(a, b)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -1084,7 +1125,8 @@ simde_mm512_sub_epi16 (simde__m512i a, simde__m512i b) {
   #endif
 }
 #if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
-#  define _mm512_sub_epi16(a, b) simde_mm512_sub_epi16(a, b)
+  #undef _mm512_sub_epi16
+  #define _mm512_sub_epi16(a, b) simde_mm512_sub_epi16(a, b)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -1117,7 +1159,8 @@ simde_mm512_subs_epi8 (simde__m512i a, simde__m512i b) {
   #endif
 }
 #if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
-#  define _mm512_subs_epi8(a, b) simde_mm512_subs_epi8(a, b)
+  #undef _mm512_subs_epi8
+  #define _mm512_subs_epi8(a, b) simde_mm512_subs_epi8(a, b)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -1150,7 +1193,8 @@ simde_mm512_subs_epi16 (simde__m512i a, simde__m512i b) {
   #endif
 }
 #if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
-#  define _mm512_subs_epi16(a, b) simde_mm512_subs_epi16(a, b)
+  #undef _mm512_subs_epi16
+  #define _mm512_subs_epi16(a, b) simde_mm512_subs_epi16(a, b)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -1180,7 +1224,8 @@ simde_mm512_subs_epu8 (simde__m512i a, simde__m512i b) {
   #endif
 }
 #if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
-#  define _mm512_subs_epu8(a, b) simde_mm512_subs_epu8(a, b)
+  #undef _mm512_subs_epu8
+  #define _mm512_subs_epu8(a, b) simde_mm512_subs_epu8(a, b)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -1210,7 +1255,8 @@ simde_mm512_subs_epu16 (simde__m512i a, simde__m512i b) {
   #endif
 }
 #if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
-#  define _mm512_subs_epu16(a, b) simde_mm512_subs_epu16(a, b)
+  #undef _mm512_subs_epu16
+  #define _mm512_subs_epu16(a, b) simde_mm512_subs_epu16(a, b)
 #endif
 
 SIMDE__END_DECLS

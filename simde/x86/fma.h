@@ -51,7 +51,8 @@ simde_mm_fmadd_pd (simde__m128d a, simde__m128d b, simde__m128d c) {
 #endif
 }
 #if defined(SIMDE_X86_FMA_ENABLE_NATIVE_ALIASES)
-#  define _mm_fmadd_pd(a, b, c) simde_mm_fmadd_pd(a, b, c)
+  #undef _mm_fmadd_pd
+  #define _mm_fmadd_pd(a, b, c) simde_mm_fmadd_pd(a, b, c)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -64,7 +65,8 @@ simde_mm256_fmadd_pd (simde__m256d a, simde__m256d b, simde__m256d c) {
 #endif
 }
 #if defined(SIMDE_X86_FMA_ENABLE_NATIVE_ALIASES)
-#  define _mm256_fmadd_pd(a, b, c) simde_mm256_fmadd_pd(a, b, c)
+  #undef _mm256_fmadd_pd
+  #define _mm256_fmadd_pd(a, b, c) simde_mm256_fmadd_pd(a, b, c)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -77,7 +79,8 @@ simde_mm_fmadd_ps (simde__m128 a, simde__m128 b, simde__m128 c) {
 #endif
 }
 #if defined(SIMDE_X86_FMA_ENABLE_NATIVE_ALIASES)
-#  define _mm_fmadd_ps(a, b, c) simde_mm_fmadd_ps(a, b, c)
+  #undef _mm_fmadd_ps
+  #define _mm_fmadd_ps(a, b, c) simde_mm_fmadd_ps(a, b, c)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -90,7 +93,8 @@ simde_mm256_fmadd_ps (simde__m256 a, simde__m256 b, simde__m256 c) {
 #endif
 }
 #if defined(SIMDE_X86_FMA_ENABLE_NATIVE_ALIASES)
-#  define _mm256_fmadd_ps(a, b, c) simde_mm256_fmadd_ps(a, b, c)
+  #undef _mm256_fmadd_ps
+  #define _mm256_fmadd_ps(a, b, c) simde_mm256_fmadd_ps(a, b, c)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -103,7 +107,8 @@ simde_mm_fmadd_sd (simde__m128d a, simde__m128d b, simde__m128d c) {
 #endif
 }
 #if defined(SIMDE_X86_FMA_ENABLE_NATIVE_ALIASES)
-#  define _mm_fmadd_sd(a, b, c) simde_mm_fmadd_sd(a, b, c)
+  #undef _mm_fmadd_sd
+  #define _mm_fmadd_sd(a, b, c) simde_mm_fmadd_sd(a, b, c)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -116,7 +121,8 @@ simde_mm_fmadd_ss (simde__m128 a, simde__m128 b, simde__m128 c) {
 #endif
 }
 #if defined(SIMDE_X86_FMA_ENABLE_NATIVE_ALIASES)
-#  define _mm_fmadd_ss(a, b, c) simde_mm_fmadd_ss(a, b, c)
+  #undef _mm_fmadd_ss
+  #define _mm_fmadd_ss(a, b, c) simde_mm_fmadd_ss(a, b, c)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -129,7 +135,8 @@ simde_mm_fmaddsub_pd (simde__m128d a, simde__m128d b, simde__m128d c) {
 #endif
 }
 #if defined(SIMDE_X86_FMA_ENABLE_NATIVE_ALIASES)
-#  define _mm_fmaddsub_pd(a, b, c) simde_mm_fmaddsub_pd(a, b, c)
+  #undef _mm_fmaddsub_pd
+  #define _mm_fmaddsub_pd(a, b, c) simde_mm_fmaddsub_pd(a, b, c)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -142,7 +149,8 @@ simde_mm256_fmaddsub_pd (simde__m256d a, simde__m256d b, simde__m256d c) {
 #endif
 }
 #if defined(SIMDE_X86_FMA_ENABLE_NATIVE_ALIASES)
-#  define _mm256_fmaddsub_pd(a, b, c) simde_mm256_fmaddsub_pd(a, b, c)
+  #undef _mm256_fmaddsub_pd
+  #define _mm256_fmaddsub_pd(a, b, c) simde_mm256_fmaddsub_pd(a, b, c)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -155,7 +163,8 @@ simde_mm_fmaddsub_ps (simde__m128 a, simde__m128 b, simde__m128 c) {
 #endif
 }
 #if defined(SIMDE_X86_FMA_ENABLE_NATIVE_ALIASES)
-#  define _mm_fmaddsub_ps(a, b, c) simde_mm_fmaddsub_ps(a, b, c)
+  #undef _mm_fmaddsub_ps
+  #define _mm_fmaddsub_ps(a, b, c) simde_mm_fmaddsub_ps(a, b, c)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -168,7 +177,8 @@ simde_mm256_fmaddsub_ps (simde__m256 a, simde__m256 b, simde__m256 c) {
 #endif
 }
 #if defined(SIMDE_X86_FMA_ENABLE_NATIVE_ALIASES)
-#  define _mm256_fmaddsub_ps(a, b, c) simde_mm256_fmaddsub_ps(a, b, c)
+  #undef _mm256_fmaddsub_ps
+  #define _mm256_fmaddsub_ps(a, b, c) simde_mm256_fmaddsub_ps(a, b, c)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -181,7 +191,8 @@ simde_mm_fmsub_pd (simde__m128d a, simde__m128d b, simde__m128d c) {
 #endif
 }
 #if defined(SIMDE_X86_FMA_ENABLE_NATIVE_ALIASES)
-#  define _mm_fmsub_pd(a, b, c) simde_mm_fmsub_pd(a, b, c)
+  #undef _mm_fmsub_pd
+  #define _mm_fmsub_pd(a, b, c) simde_mm_fmsub_pd(a, b, c)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -194,7 +205,8 @@ simde_mm256_fmsub_pd (simde__m256d a, simde__m256d b, simde__m256d c) {
 #endif
 }
 #if defined(SIMDE_X86_FMA_ENABLE_NATIVE_ALIASES)
-#  define _mm256_fmsub_pd(a, b, c) simde_mm256_fmsub_pd(a, b, c)
+  #undef _mm256_fmsub_pd
+  #define _mm256_fmsub_pd(a, b, c) simde_mm256_fmsub_pd(a, b, c)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -207,7 +219,8 @@ simde_mm_fmsub_ps (simde__m128 a, simde__m128 b, simde__m128 c) {
 #endif
 }
 #if defined(SIMDE_X86_FMA_ENABLE_NATIVE_ALIASES)
-#  define _mm_fmsub_ps(a, b, c) simde_mm_fmsub_ps(a, b, c)
+  #undef _mm_fmsub_ps
+  #define _mm_fmsub_ps(a, b, c) simde_mm_fmsub_ps(a, b, c)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -220,7 +233,8 @@ simde_mm256_fmsub_ps (simde__m256 a, simde__m256 b, simde__m256 c) {
 #endif
 }
 #if defined(SIMDE_X86_FMA_ENABLE_NATIVE_ALIASES)
-#  define _mm256_fmsub_ps(a, b, c) simde_mm256_fmsub_ps(a, b, c)
+  #undef _mm256_fmsub_ps
+  #define _mm256_fmsub_ps(a, b, c) simde_mm256_fmsub_ps(a, b, c)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -233,7 +247,8 @@ simde_mm_fmsub_sd (simde__m128d a, simde__m128d b, simde__m128d c) {
 #endif
 }
 #if defined(SIMDE_X86_FMA_ENABLE_NATIVE_ALIASES)
-#  define _mm_fmsub_sd(a, b, c) simde_mm_fmsub_sd(a, b, c)
+  #undef _mm_fmsub_sd
+  #define _mm_fmsub_sd(a, b, c) simde_mm_fmsub_sd(a, b, c)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -246,7 +261,8 @@ simde_mm_fmsub_ss (simde__m128 a, simde__m128 b, simde__m128 c) {
 #endif
 }
 #if defined(SIMDE_X86_FMA_ENABLE_NATIVE_ALIASES)
-#  define _mm_fmsub_ss(a, b, c) simde_mm_fmsub_ss(a, b, c)
+  #undef _mm_fmsub_ss
+  #define _mm_fmsub_ss(a, b, c) simde_mm_fmsub_ss(a, b, c)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -271,7 +287,8 @@ simde_mm_fmsubadd_pd (simde__m128d a, simde__m128d b, simde__m128d c) {
 #endif
 }
 #if defined(SIMDE_X86_FMA_ENABLE_NATIVE_ALIASES)
-#  define _mm_fmsubadd_pd(a, b, c) simde_mm_fmsubadd_pd(a, b, c)
+  #undef _mm_fmsubadd_pd
+  #define _mm_fmsubadd_pd(a, b, c) simde_mm_fmsubadd_pd(a, b, c)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -296,7 +313,8 @@ simde_mm256_fmsubadd_pd (simde__m256d a, simde__m256d b, simde__m256d c) {
 #endif
 }
 #if defined(SIMDE_X86_FMA_ENABLE_NATIVE_ALIASES)
-#  define _mm256_fmsubadd_pd(a, b, c) simde_mm256_fmsubadd_pd(a, b, c)
+  #undef _mm256_fmsubadd_pd
+  #define _mm256_fmsubadd_pd(a, b, c) simde_mm256_fmsubadd_pd(a, b, c)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -321,7 +339,8 @@ simde_mm_fmsubadd_ps (simde__m128 a, simde__m128 b, simde__m128 c) {
 #endif
 }
 #if defined(SIMDE_X86_FMA_ENABLE_NATIVE_ALIASES)
-#  define _mm_fmsubadd_ps(a, b, c) simde_mm_fmsubadd_ps(a, b, c)
+  #undef _mm_fmsubadd_ps
+  #define _mm_fmsubadd_ps(a, b, c) simde_mm_fmsubadd_ps(a, b, c)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -346,7 +365,8 @@ simde_mm256_fmsubadd_ps (simde__m256 a, simde__m256 b, simde__m256 c) {
 #endif
 }
 #if defined(SIMDE_X86_FMA_ENABLE_NATIVE_ALIASES)
-#  define _mm256_fmsubadd_ps(a, b, c) simde_mm256_fmsubadd_ps(a, b, c)
+  #undef _mm256_fmsubadd_ps
+  #define _mm256_fmsubadd_ps(a, b, c) simde_mm256_fmsubadd_ps(a, b, c)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -370,7 +390,8 @@ simde_mm_fnmadd_pd (simde__m128d a, simde__m128d b, simde__m128d c) {
 #endif
 }
 #if defined(SIMDE_X86_FMA_ENABLE_NATIVE_ALIASES)
-#  define _mm_fnmadd_pd(a, b, c) simde_mm_fnmadd_pd(a, b, c)
+  #undef _mm_fnmadd_pd
+  #define _mm_fnmadd_pd(a, b, c) simde_mm_fnmadd_pd(a, b, c)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -394,7 +415,8 @@ simde_mm256_fnmadd_pd (simde__m256d a, simde__m256d b, simde__m256d c) {
 #endif
 }
 #if defined(SIMDE_X86_FMA_ENABLE_NATIVE_ALIASES)
-#  define _mm256_fnmadd_pd(a, b, c) simde_mm256_fnmadd_pd(a, b, c)
+  #undef _mm256_fnmadd_pd
+  #define _mm256_fnmadd_pd(a, b, c) simde_mm256_fnmadd_pd(a, b, c)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -418,7 +440,8 @@ simde_mm_fnmadd_ps (simde__m128 a, simde__m128 b, simde__m128 c) {
 #endif
 }
 #if defined(SIMDE_X86_FMA_ENABLE_NATIVE_ALIASES)
-#  define _mm_fnmadd_ps(a, b, c) simde_mm_fnmadd_ps(a, b, c)
+  #undef _mm_fnmadd_ps
+  #define _mm_fnmadd_ps(a, b, c) simde_mm_fnmadd_ps(a, b, c)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -442,7 +465,8 @@ simde_mm256_fnmadd_ps (simde__m256 a, simde__m256 b, simde__m256 c) {
 #endif
 }
 #if defined(SIMDE_X86_FMA_ENABLE_NATIVE_ALIASES)
-#  define _mm256_fnmadd_ps(a, b, c) simde_mm256_fnmadd_ps(a, b, c)
+  #undef _mm256_fnmadd_ps
+  #define _mm256_fnmadd_ps(a, b, c) simde_mm256_fnmadd_ps(a, b, c)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -464,7 +488,8 @@ simde_mm_fnmadd_sd (simde__m128d a, simde__m128d b, simde__m128d c) {
 #endif
 }
 #if defined(SIMDE_X86_FMA_ENABLE_NATIVE_ALIASES)
-#  define _mm_fnmadd_sd(a, b, c) simde_mm_fnmadd_sd(a, b, c)
+  #undef _mm_fnmadd_sd
+  #define _mm_fnmadd_sd(a, b, c) simde_mm_fnmadd_sd(a, b, c)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -486,7 +511,8 @@ simde_mm_fnmadd_ss (simde__m128 a, simde__m128 b, simde__m128 c) {
 #endif
 }
 #if defined(SIMDE_X86_FMA_ENABLE_NATIVE_ALIASES)
-#  define _mm_fnmadd_ss(a, b, c) simde_mm_fnmadd_ss(a, b, c)
+  #undef _mm_fnmadd_ss
+  #define _mm_fnmadd_ss(a, b, c) simde_mm_fnmadd_ss(a, b, c)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -510,7 +536,8 @@ simde_mm_fnmsub_pd (simde__m128d a, simde__m128d b, simde__m128d c) {
 #endif
 }
 #if defined(SIMDE_X86_FMA_ENABLE_NATIVE_ALIASES)
-#  define _mm_fnmsub_pd(a, b, c) simde_mm_fnmsub_pd(a, b, c)
+  #undef _mm_fnmsub_pd
+  #define _mm_fnmsub_pd(a, b, c) simde_mm_fnmsub_pd(a, b, c)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -534,7 +561,8 @@ simde_mm256_fnmsub_pd (simde__m256d a, simde__m256d b, simde__m256d c) {
 #endif
 }
 #if defined(SIMDE_X86_FMA_ENABLE_NATIVE_ALIASES)
-#  define _mm256_fnmsub_pd(a, b, c) simde_mm256_fnmsub_pd(a, b, c)
+  #undef _mm256_fnmsub_pd
+  #define _mm256_fnmsub_pd(a, b, c) simde_mm256_fnmsub_pd(a, b, c)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -558,7 +586,8 @@ simde_mm_fnmsub_ps (simde__m128 a, simde__m128 b, simde__m128 c) {
 #endif
 }
 #if defined(SIMDE_X86_FMA_ENABLE_NATIVE_ALIASES)
-#  define _mm_fnmsub_ps(a, b, c) simde_mm_fnmsub_ps(a, b, c)
+  #undef _mm_fnmsub_ps
+  #define _mm_fnmsub_ps(a, b, c) simde_mm_fnmsub_ps(a, b, c)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -582,7 +611,8 @@ simde_mm256_fnmsub_ps (simde__m256 a, simde__m256 b, simde__m256 c) {
 #endif
 }
 #if defined(SIMDE_X86_FMA_ENABLE_NATIVE_ALIASES)
-#  define _mm256_fnmsub_ps(a, b, c) simde_mm256_fnmsub_ps(a, b, c)
+  #undef _mm256_fnmsub_ps
+  #define _mm256_fnmsub_ps(a, b, c) simde_mm256_fnmsub_ps(a, b, c)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -604,7 +634,8 @@ simde_mm_fnmsub_sd (simde__m128d a, simde__m128d b, simde__m128d c) {
 #endif
 }
 #if defined(SIMDE_X86_FMA_ENABLE_NATIVE_ALIASES)
-#  define _mm_fnmsub_sd(a, b, c) simde_mm_fnmsub_sd(a, b, c)
+  #undef _mm_fnmsub_sd
+  #define _mm_fnmsub_sd(a, b, c) simde_mm_fnmsub_sd(a, b, c)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
@@ -626,7 +657,8 @@ simde_mm_fnmsub_ss (simde__m128 a, simde__m128 b, simde__m128 c) {
 #endif
 }
 #if defined(SIMDE_X86_FMA_ENABLE_NATIVE_ALIASES)
-#  define _mm_fnmsub_ss(a, b, c) simde_mm_fnmsub_ss(a, b, c)
+  #undef _mm_fnmsub_ss
+  #define _mm_fnmsub_ss(a, b, c) simde_mm_fnmsub_ss(a, b, c)
 #endif
 
 SIMDE__END_DECLS
