@@ -100,17 +100,17 @@ typedef union {
 #elif defined(SIMDE_WASM_SIMD128_NATIVE)
   SIMDE_ALIGN(16) v128_t         wasm_v128;
 #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
-  SIMDE_ALIGN(16) vector unsigned char      altivec_u8;
-  SIMDE_ALIGN(16) vector unsigned short     altivec_u16;
-  SIMDE_ALIGN(16) vector unsigned int       altivec_u32;
-  SIMDE_ALIGN(16) vector unsigned long long altivec_u64;
-  SIMDE_ALIGN(16) vector signed char        altivec_i8;
-  SIMDE_ALIGN(16) vector signed short       altivec_i16;
-  SIMDE_ALIGN(16) vector signed int         altivec_i32;
-  SIMDE_ALIGN(16) vector signed long long   altivec_i64;
-  SIMDE_ALIGN(16) vector float              altivec_f32;
+  SIMDE_ALIGN(16) SIMDE_POWER_ALTIVEC_VECTOR(unsigned char)      altivec_u8;
+  SIMDE_ALIGN(16) SIMDE_POWER_ALTIVEC_VECTOR(unsigned short)     altivec_u16;
+  SIMDE_ALIGN(16) SIMDE_POWER_ALTIVEC_VECTOR(unsigned int)       altivec_u32;
+  SIMDE_ALIGN(16) SIMDE_POWER_ALTIVEC_VECTOR(unsigned long long) altivec_u64;
+  SIMDE_ALIGN(16) SIMDE_POWER_ALTIVEC_VECTOR(signed char)        altivec_i8;
+  SIMDE_ALIGN(16) SIMDE_POWER_ALTIVEC_VECTOR(signed short)       altivec_i16;
+  SIMDE_ALIGN(16) SIMDE_POWER_ALTIVEC_VECTOR(signed int)         altivec_i32;
+  SIMDE_ALIGN(16) SIMDE_POWER_ALTIVEC_VECTOR(signed long long)   altivec_i64;
+  SIMDE_ALIGN(16) SIMDE_POWER_ALTIVEC_VECTOR(float)              altivec_f32;
   #if defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
-    SIMDE_ALIGN(16) vector double             altivec_f64;
+    SIMDE_ALIGN(16) SIMDE_POWER_ALTIVEC_VECTOR(double)             altivec_f64;
   #endif
 #endif
 } simde__m128_private;
@@ -122,7 +122,7 @@ typedef union {
 #elif defined(SIMDE_WASM_SIMD128_NATIVE)
    typedef v128_t simde__m128;
 #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
-   typedef vector float simde__m128;
+   typedef SIMDE_POWER_ALTIVEC_VECTOR(float) simde__m128;
 #elif defined(SIMDE_VECTOR_SUBSCRIPT)
   typedef simde_float32 simde__m128 SIMDE_ALIGN(16) SIMDE_VECTOR(16) SIMDE_MAY_ALIAS;
 #else
@@ -219,7 +219,7 @@ simde_mm_move_ss (simde__m128 a, simde__m128 b) {
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   r_.neon_f32 = vsetq_lane_f32(vgetq_lane_f32(b_.neon_f32, 0), a_.neon_f32, 0);
 #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
-  vector unsigned char m = {
+  SIMDE_POWER_ALTIVEC_VECTOR(unsigned char) m = {
     16, 17, 18, 19,
      4,  5,  6,  7,
      8,  9, 10, 11,
@@ -456,7 +456,7 @@ simde_mm_cmpeq_ps (simde__m128 a, simde__m128 b) {
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
     r_.wasm_v128 = wasm_f32x4_eq(a_.wasm_v128, b_.wasm_v128);
   #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
-    r_.altivec_f32 = (vector float) vec_cmpeq(a_.altivec_f32, b_.altivec_f32);
+    r_.altivec_f32 = (SIMDE_POWER_ALTIVEC_VECTOR(float)) vec_cmpeq(a_.altivec_f32, b_.altivec_f32);
   #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
     r_.i32 = HEDLEY_STATIC_CAST(__typeof__(r_.i32), a_.f32 == b_.f32);
   #else
@@ -515,7 +515,7 @@ simde_mm_cmpge_ps (simde__m128 a, simde__m128 b) {
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
     r_.wasm_v128 = wasm_f32x4_ge(a_.wasm_v128, b_.wasm_v128);
   #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
-    r_.altivec_f32 = (vector float) vec_cmpge(a_.altivec_f32, b_.altivec_f32);
+    r_.altivec_f32 = (SIMDE_POWER_ALTIVEC_VECTOR(float)) vec_cmpge(a_.altivec_f32, b_.altivec_f32);
   #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
     r_.i32 = (__typeof__(r_.i32)) (a_.f32 >= b_.f32);
   #else
@@ -574,7 +574,7 @@ simde_mm_cmpgt_ps (simde__m128 a, simde__m128 b) {
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
     r_.wasm_v128 = wasm_f32x4_gt(a_.wasm_v128, b_.wasm_v128);
   #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
-    r_.altivec_f32 = (vector float) vec_cmpgt(a_.altivec_f32, b_.altivec_f32);
+    r_.altivec_f32 = (SIMDE_POWER_ALTIVEC_VECTOR(float)) vec_cmpgt(a_.altivec_f32, b_.altivec_f32);
   #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
     r_.i32 = (__typeof__(r_.i32)) (a_.f32 > b_.f32);
   #else
@@ -633,7 +633,7 @@ simde_mm_cmple_ps (simde__m128 a, simde__m128 b) {
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
     r_.wasm_v128 = wasm_f32x4_le(a_.wasm_v128, b_.wasm_v128);
   #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
-    r_.altivec_f32 = (vector float) vec_cmple(a_.altivec_f32, b_.altivec_f32);
+    r_.altivec_f32 = (SIMDE_POWER_ALTIVEC_VECTOR(float)) vec_cmple(a_.altivec_f32, b_.altivec_f32);
   #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
     r_.i32 = (__typeof__(r_.i32)) (a_.f32 <= b_.f32);
   #else
@@ -692,7 +692,7 @@ simde_mm_cmplt_ps (simde__m128 a, simde__m128 b) {
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
     r_.wasm_v128 = wasm_f32x4_lt(a_.wasm_v128, b_.wasm_v128);
   #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
-    r_.altivec_f32 = (vector float) vec_cmplt(a_.altivec_f32, b_.altivec_f32);
+    r_.altivec_f32 = (SIMDE_POWER_ALTIVEC_VECTOR(float)) vec_cmplt(a_.altivec_f32, b_.altivec_f32);
   #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
     r_.i32 = (__typeof__(r_.i32)) (a_.f32 < b_.f32);
   #else
@@ -755,7 +755,7 @@ simde_mm_cmpneq_ps (simde__m128 a, simde__m128 b) {
        though the documentation (table 89 on page 432 of the IBM XL C/C++ for
        Linux Compiler Reference, Version 16.1.1) shows that it should be
        present.  Both GCC and clang support it. */
-    r_.altivec_f32 = (vector float) vec_cmpne(a_.altivec_f32, b_.altivec_f32);
+    r_.altivec_f32 = (SIMDE_POWER_ALTIVEC_VECTOR(float)) vec_cmpne(a_.altivec_f32, b_.altivec_f32);
   #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
     r_.i32 = (__typeof__(r_.i32)) (a_.f32 != b_.f32);
   #else
