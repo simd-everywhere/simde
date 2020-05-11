@@ -550,7 +550,7 @@ simde_mm_cvtepu8_epi16 (simde__m128i a) {
     r_,
     a_ = simde__m128i_to_private(a);
 
-  #if defined(SIMDE__CONVERT_VECTOR) && !defined(SIMDE_BUG_CLANG_45541)
+  #if defined(SIMDE__CONVERT_VECTOR) && !defined(SIMDE_BUG_CLANG_45541) && (!defined(SIMDE_ARCH_POWER) || !defined(__clang__))
     SIMDE__CONVERT_VECTOR(r_.i16, a_.m64_private[0].u8);
   #else
     SIMDE__VECTORIZE
@@ -652,7 +652,7 @@ simde_mm_cvtepu16_epi32 (simde__m128i a) {
     r_,
     a_ = simde__m128i_to_private(a);
 
-  #if defined(SIMDE__CONVERT_VECTOR) && !defined(SIMDE_BUG_CLANG_45541)
+  #if defined(SIMDE__CONVERT_VECTOR) && !defined(SIMDE_BUG_CLANG_45541) && (!defined(SIMDE_ARCH_POWER) || !defined(__clang__))
     SIMDE__CONVERT_VECTOR(r_.i32, a_.m64_private[0].u16);
   #else
     SIMDE__VECTORIZE
