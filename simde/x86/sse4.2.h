@@ -61,8 +61,8 @@ simde_mm_cmpestra_8_(simde__m128i a, int la, simde__m128i b, int lb, const int i
   const int upper_bound = (128 / 8) - 1;
   int a_invalid = 0;
   int b_invalid = 0;
-  for (size_t i = 0 ; i < (upper_bound) ; i++) {
-    for(size_t j = 0; j< (upper_bound) ; j++){
+  for(int i = 0 ; i < (upper_bound) ; i++) {
+    for(int j = 0; j< (upper_bound) ; j++){
       int bitvalue = ((a_.i8[i] == b_.i8[j]) ? 1 : 0);
       bool_res_.i8[i] |= (( bitvalue ) << j);
       if(i == la)
@@ -91,44 +91,44 @@ simde_mm_cmpestra_8_(simde__m128i a, int la, simde__m128i b, int lb, const int i
   int8_t int_res_2 = 0;
   switch(cmp_op) {
     case SIMDE_SIDD_CMP_EQUAL_ANY:
-      for(size_t i = 0 ; i < (upper_bound) ; i++){
+      for(int i = 0 ; i < (upper_bound) ; i++){
         SIMDE__VECTORIZE_REDUCTION(|:int_res_1)
-        for (size_t j = 0 ; j < (upper_bound) ; j++){
+        for(int j = 0 ; j < (upper_bound) ; j++){
           int_res_1 |= (((bool_res_.i8[i] >> j) & 1) << i);
         }
       }
       break;
     case SIMDE_SIDD_CMP_RANGES:
-      for(size_t i = 0 ; i < (upper_bound) ; i++){
+      for(int i = 0 ; i < (upper_bound) ; i++){
         SIMDE__VECTORIZE_REDUCTION(|:int_res_1)
-        for (size_t j = 0 ; j < (upper_bound) ; j++){
+        for(int j = 0 ; j < (upper_bound) ; j++){
           int_res_1 |= ((((bool_res_.i8[i] >> j) & 1) & ((bool_res_.i8[i] >> (j + 1)) & 1)) << i);
           j += 2;
         }
       }
       break;
     case SIMDE_SIDD_CMP_EQUAL_EACH:
-      for (size_t i = 0 ; i < (upper_bound) ; i++){
+      for(int i = 0 ; i < (upper_bound) ; i++){
         SIMDE__VECTORIZE_REDUCTION(|:int_res_1)
-        for (size_t j = 0 ; j < (upper_bound) ; j++){
+        for(int j = 0 ; j < (upper_bound) ; j++){
           int_res_1 |= (((bool_res_.i8[i] >> i) & 1) << i);
         }
       }
       break;
     case SIMDE_SIDD_CMP_EQUAL_ORDERED:
       int_res_1 = (imm8 & 1) ? 0xff : 0xffff;
-      for(size_t i = 0 ; i < (upper_bound) ; i++){
-        size_t k = i;
+      for(int i = 0 ; i < (upper_bound) ; i++){
+        int k = i;
         SIMDE__VECTORIZE_REDUCTION(|:int_res_1)
-        for (size_t j = 0 ; j < (upper_bound-i) ; j++){
+        for(int j = 0 ; j < (upper_bound-i) ; j++){
           int_res_1 &=  (((bool_res_.i8[k] >> j) & 1 ) << i) ;
           k += 1;
         }
       }
   }
-  for(size_t i = 0; i < (upper_bound) ; i++){
-    if((imm8 >> 4) & 1){
-      if((imm8 >> 5) & 1) {
+  for(int i = 0; i < (upper_bound) ; i++){
+    if(polarity & 1){
+      if((polarity >> 1) & 1) {
         if (i >= lb) {
           int_res_2 |= (((int_res_1 >> i) & 1) << i);
         }
@@ -159,8 +159,8 @@ simde_mm_cmpestra_16_(simde__m128i a, int la, simde__m128i b, int lb, const int 
   const int upper_bound = (128 / 16) - 1;
   int a_invalid = 0;
   int b_invalid = 0;
-  for(size_t i = 0 ; i < (upper_bound) ; i++) {
-    for(size_t j = 0; j< (upper_bound) ; j++)
+  for(int i = 0 ; i < (upper_bound) ; i++) {
+    for(int j = 0; j< (upper_bound) ; j++)
     {
       int bitvalue = ((a_.i16[i] == b_.i16[j]) ? 1 : 0);
       bool_res_.i16[i] |= ((bitvalue) << j);
@@ -190,44 +190,44 @@ simde_mm_cmpestra_16_(simde__m128i a, int la, simde__m128i b, int lb, const int 
   int16_t int_res_2 = 0;
   switch(cmp_op) {
     case SIMDE_SIDD_CMP_EQUAL_ANY:
-      for(size_t i = 0 ; i < (upper_bound) ; i++){
+      for(int i = 0 ; i < (upper_bound) ; i++){
         SIMDE__VECTORIZE_REDUCTION(|:int_res_1)
-        for (size_t j = 0 ; j < (upper_bound) ; j++){
+        for (int j = 0 ; j < (upper_bound) ; j++){
           int_res_1 |= (((bool_res_.i16[i] >> j) & 1) << i) ;
         }
       }
       break;
     case SIMDE_SIDD_CMP_RANGES:
-      for(size_t i = 0 ; i < (upper_bound) ; i++){
+      for(int i = 0 ; i < (upper_bound) ; i++){
         SIMDE__VECTORIZE_REDUCTION(|:int_res_1)
-        for(size_t j = 0 ; j < (upper_bound) ; j++){
+        for(int j = 0 ; j < (upper_bound) ; j++){
           int_res_1 |= ((((bool_res_.i16[i] >> j) & 1) & ((bool_res_.i16[i] >> (j + 1)) & 1)) << i);
           j += 2;
         }
       }
       break;
     case SIMDE_SIDD_CMP_EQUAL_EACH:
-      for (size_t i = 0 ; i < (upper_bound) ; i++){
+      for(int i = 0 ; i < (upper_bound) ; i++){
         SIMDE__VECTORIZE_REDUCTION(|:int_res_1)
-        for (size_t j = 0 ; j < (upper_bound) ; j++){
+        for(int j = 0 ; j < (upper_bound) ; j++){
           int_res_1 |= (((bool_res_.i16[i] >> i) & 1) << i);
         }
       }
       break;
     case SIMDE_SIDD_CMP_EQUAL_ORDERED:
       int_res_1 = (imm8 & 1) ? 0xff : 0xffff;
-      for(size_t i = 0 ; i < (upper_bound) ; i++){
-        size_t k = i;
+      for(int i = 0 ; i < (upper_bound) ; i++){
+        int k = i;
         SIMDE__VECTORIZE_REDUCTION(|:int_res_1)
-        for(size_t j = 0 ; j < (upper_bound-i) ; j++){
+        for(int j = 0 ; j < (upper_bound-i) ; j++){
           int_res_1 &= (((bool_res_.i16[k] >> j) & 1) << i) ;
           k += 1;
         }
       }
   }
-  for(size_t i = 0; i < (upper_bound) ; i++){
-    if((imm8 >> 4) & 1){
-      if((imm8 >> 5) & 1) {
+  for(int i = 0; i < (upper_bound) ; i++){
+    if(polarity & 1){
+      if((polarity >> 1) & 1) {
         if (i >= lb) {
           int_res_2 |= (((int_res_1 >> i) & 1) << i);
         }
