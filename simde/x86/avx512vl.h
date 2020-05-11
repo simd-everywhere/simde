@@ -219,14 +219,13 @@ simde__m128i
 simde_mm_movm_epi32 (simde__mmask8 k) {
   #if defined(SIMDE_X86_AVX512BW_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
     return _mm_movm_epi32(k);
-  #elif 0
-    /* _mm_mullo_epi32 doesn't exist: maybe use AVX2 later and reduce */
+  #elif defined(SIMDE_X86_SSE2_NATIVE)
     const simde__m128i zero = simde_mm_setzero_si128();
-    const simde__m128i bits = simde_mm_set_epi32(0x10000000, 0x20000000, 0x40000000, 0x80000000);
+    const simde__m128i bits = simde_mm_set_epi32(0x10000000, 0x20000000, 0x40000000, INT32_MIN /* 0x80000000 */);
     simde__m128i r;
 
-    r = simde_mm_set1_epi32(HEDLEY_STATIC_CAST(short, k));
-    r = simde_mm_mullo_epi32(r, bits);
+    r = simde_mm_set1_epi16(HEDLEY_STATIC_CAST(short, k));
+    r = simde_mm_mullo_epi16(r, bits);
     r = simde_mm_cmpgt_epi32(zero, r);
 
     return r;
@@ -251,6 +250,11 @@ simde__m128i
 simde_mm_mask_mov_epi32(simde__m128i src, simde__mmask8 k, simde__m128i a) {
   #if defined(SIMDE_X86_AVX512VL_NATIVE)
     return _mm_mask_mov_epi32(src, k, a);
+  #elif defined(SIMDE_X86_SSE4_1_NATIVE)
+    return simde_mm_blendv_epi8(src, a, simde_mm_movm_epi32(k));
+  #elif defined(SIMDE_X86_SSE2_NATIVE)
+    simde__m128i mask = simde_mm_movm_epi32(k);
+    return simde_mm_or_si128(simde_mm_and_si128(mask, a), simde_mm_andnot_si128(mask, src));
   #else
     simde__m128i_private
       src_ = simde__m128i_to_private(src),
@@ -349,8 +353,7 @@ simde__m128i
 simde_mm_maskz_mov_epi32(simde__mmask8 k, simde__m128i a) {
   #if defined(SIMDE_X86_AVX512VL_NATIVE)
     return _mm_maskz_mov_epi32(k, a);
-  #elif 0
-    /* For the moment there is no useful fallback for this */
+  #elif defined(SIMDE_X86_SSE2_NATIVE)
     return simde_mm_and_si128(a, simde_mm_movm_epi32(k));
   #else
     simde__m128i_private
@@ -468,8 +471,7 @@ simde_mm256_mask_mov_epi32(simde__m256i src, simde__mmask8 k, simde__m256i a) {
       a_ = simde__m256i_to_private(a),
       r_;
 
-    #if defined(SIMDE_X86_SSE2_NATIVE) && 0
-      /* No useful fallback */
+    #if defined(SIMDE_X86_SSE2_NATIVE)
       r_.m128i[0] = simde_mm_mask_mov_epi32(src_.m128i[0], k     , a_.m128i[0]);
       r_.m128i[1] = simde_mm_mask_mov_epi32(src_.m128i[1], k >> 4, a_.m128i[1]);
     #else
@@ -602,10 +604,15 @@ simde_mm256_maskz_mov_epi32(simde__mmask8 k, simde__m256i a) {
       a_ = simde__m256i_to_private(a),
       r_;
 
-    SIMDE__VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {
-      r_.i32[i] = ((k >> i) & 1) ? a_.i32[i] : INT32_C(0);
-    }
+    #if defined(SIMDE_X86_SSE2_NATIVE)
+      r_.m128i[0] = simde_mm_maskz_mov_epi32(k     , a_.m128i[0]);
+      r_.m128i[1] = simde_mm_maskz_mov_epi32(k >> 4, a_.m128i[1]);
+    #else
+      SIMDE__VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {
+        r_.i32[i] = ((k >> i) & 1) ? a_.i32[i] : INT32_C(0);
+      }
+    #endif
 
     return simde__m256i_from_private(r_);
   #endif
