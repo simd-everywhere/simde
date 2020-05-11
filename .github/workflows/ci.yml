@@ -76,3 +76,18 @@ jobs:
       run: cd build && ninja -v
     - name: Test
       run: build/test/run-tests
+
+  ubuntu-xenial:
+    runs-on: ubuntu-16.04
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: recursive
+    - name: Install APT Dependencies
+      run: sudo add-apt-repository ppa:ubuntu-toolchain-r/test && sudo apt-get update && sudo apt-get -yq install ninja-build
+    - name: Configure
+      run: mkdir test/build && cd test/build && cmake -G Ninja -DCMAKE_{C,CXX}_FLAGS='-Wall -Werror' CXXFLAGS='-march=native -Wall -Werror' ..
+    - name: Build
+      run: cd test/build && ninja -v
+    - name: Test
+      run: test/build/run-tests
