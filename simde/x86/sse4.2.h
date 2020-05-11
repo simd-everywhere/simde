@@ -87,8 +87,8 @@ simde_mm_cmpestra_8_(simde__m128i a, int la, simde__m128i b, int lb, const int i
       }
     }
   }
-  int8_t int_res_1 = 0;
-  int8_t int_res_2 = 0;
+  int32_t int_res_1 = 0;
+  int32_t int_res_2 = 0;
   switch(cmp_op) {
     case SIMDE_SIDD_CMP_EQUAL_ANY:
       for(int i = 0 ; i < (upper_bound) ; i++){
@@ -186,8 +186,8 @@ simde_mm_cmpestra_16_(simde__m128i a, int la, simde__m128i b, int lb, const int 
       }
     }
   }
-  int16_t int_res_1 = 0;
-  int16_t int_res_2 = 0;
+  int32_t int_res_1 = 0;
+  int32_t int_res_2 = 0;
   switch(cmp_op) {
     case SIMDE_SIDD_CMP_EQUAL_ANY:
       for(int i = 0 ; i < (upper_bound) ; i++){
