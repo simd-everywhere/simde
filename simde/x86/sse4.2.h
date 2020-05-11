@@ -249,16 +249,15 @@ simde_mm_cmpestra_16_(simde__m128i a, int la, simde__m128i b, int lb, const int 
 SIMDE__FUNCTION_ATTRIBUTES
 int
 simde_mm_cmpestra(simde__m128i a, int la, simde__m128i b, int lb, const int imm8){
-#if defined(SIMDE_X86_SSE4_2_NATIVE)
-  return _mm_cmpestra(a, la, b, lb, imm8);
-#else
   const int character_type = imm8 & 0x03;
   if(character_type & 1)
     return simde_mm_cmpestra_8_(a, la, b, lb, imm8);
   else
     return simde_mm_cmpestra_16_(a, la, b, lb, imm8);
-#endif
 }
+#if defined(SIMDE_X86_SSE4_2_NATIVE)
+#  define simde_mm_cmpestra(a, la, b, lb, imm8) _mm_cmpestra(a, la, b, lb, imm8)
+#endif
 #if defined(SIMDE_X86_SSE4_2_ENABLE_NATIVE_ALIASES)
 #  define _mm_cmpestra(a, la, b, lb, imm8) simde_mm_cmpestra(a, la, b, lb, imm8)
 #endif
