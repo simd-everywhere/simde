@@ -161,7 +161,7 @@ simde_mm_movm_epi16 (simde__mmask8 k) {
     return _mm_movm_epi16(k);
   #elif defined(SIMDE_X86_SSE2_NATIVE)
     const simde__m128i zero = simde_mm_setzero_si128();
-    const simde__m128i bits = simde_mm_set_epi16(0x0100, 0x0200, 0x0400, 0x0800, 0x1000, 0x2000, 0x4000, 0x8000);
+    const simde__m128i bits = simde_mm_set_epi16(0x0100, 0x0200, 0x0400, 0x0800, 0x1000, 0x2000, 0x4000, INT16_MIN /* 0x8000 */);
     simde__m128i r;
 
     r = simde_mm_set1_epi16(HEDLEY_STATIC_CAST(short, k));
