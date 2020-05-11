@@ -69,7 +69,7 @@ simde_mm_cmpestra_8_(simde__m128i a, int la, simde__m128i b, int lb, const int i
         a_invalid = 1;
       if(j == lb)
         b_invalid = 1;
-      switch(((imm8 & 12) >> 2)){
+      switch(cmp_op){
         case SIMDE_SIDD_CMP_EQUAL_ANY:
           break;
         case SIMDE_SIDD_CMP_RANGES:
@@ -89,7 +89,7 @@ simde_mm_cmpestra_8_(simde__m128i a, int la, simde__m128i b, int lb, const int i
   }
   int8_t int_res_1 = 0;
   int8_t int_res_2 = 0;
-  switch( ((imm8 & 12) >> 2) ) {
+  switch(cmp_op) {
     case SIMDE_SIDD_CMP_EQUAL_ANY:
       for(size_t i = 0 ; i < (upper_bound) ; i++){
         SIMDE__VECTORIZE_REDUCTION(|:int_res_1)
@@ -168,7 +168,7 @@ simde_mm_cmpestra_16_(simde__m128i a, int la, simde__m128i b, int lb, const int 
         a_invalid = 1;
       if(j == lb)
         b_invalid = 1;
-      switch(((imm8 & 12) >> 2)){
+      switch(cmp_op){
         case SIMDE_SIDD_CMP_EQUAL_ANY:
           break;
         case SIMDE_SIDD_CMP_RANGES:
@@ -188,7 +188,7 @@ simde_mm_cmpestra_16_(simde__m128i a, int la, simde__m128i b, int lb, const int 
   }
   int16_t int_res_1 = 0;
   int16_t int_res_2 = 0;
-  switch(((imm8 & 12) >> 2)) {
+  switch(cmp_op) {
     case SIMDE_SIDD_CMP_EQUAL_ANY:
       for(size_t i = 0 ; i < (upper_bound) ; i++){
         SIMDE__VECTORIZE_REDUCTION(|:int_res_1)
