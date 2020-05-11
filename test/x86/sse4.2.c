@@ -29,7 +29,7 @@
 #if defined(SIMDE_X86_SSE4_2_NATIVE) || defined(SIMDE_NO_NATIVE) || defined(SIMDE_ALWAYS_BUILD_NATIVE_TESTS)
 
 static MunitResult
-test_simde_mm_odd_cmpestra(const MunitParameter params[], void* data) {
+test_simde_mm_cmpestra_16(const MunitParameter params[], void* data) {
   (void) params;
   (void) data;
 
@@ -79,7 +79,7 @@ test_simde_mm_odd_cmpestra(const MunitParameter params[], void* data) {
 }
 
 static MunitResult
-test_simde_mm_even_cmpestra(const MunitParameter params[], void* data) {
+test_simde_mm_cmpestra_8(const MunitParameter params[], void* data) {
   (void) params;
   (void) data;
 
