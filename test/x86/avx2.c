@@ -12467,7 +12467,6 @@ static MunitTest test_suite_tests[] = {
   SIMDE_TESTS_DEFINE_TEST(mm256_shuffle_epi8),
   SIMDE_TESTS_DEFINE_TEST(mm256_shuffle_epi32),
   SIMDE_TESTS_DEFINE_TEST(mm256_shufflelo_epi16),
-  SIMDE_TESTS_DEFINE_TEST(mm256_shuffle_epi8),
 
   SIMDE_TESTS_DEFINE_TEST(mm256_sign_epi8),
   SIMDE_TESTS_DEFINE_TEST(mm256_sign_epi16),
