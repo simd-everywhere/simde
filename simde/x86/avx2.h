@@ -2115,7 +2115,7 @@ simde_mm_sllv_epi32 (simde__m128i a, simde__m128i b) {
     b_ = simde__m128i_to_private(b),
     r_;
 
-#if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && 0
+#if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
   r_.u32 = (b_.u32 < 32) ? (a_.i32 << b_.u32) : 0;
 #else
   SIMDE__VECTORIZE
@@ -2142,7 +2142,7 @@ simde_mm256_sllv_epi32 (simde__m256i a, simde__m256i b) {
     b_ = simde__m256i_to_private(b),
     r_;
 
-#if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && 0
+#if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
   r_.u32 = (b_.u32 < 32) ? (a_.u32 << b_.u32) : 0;
 #else
   SIMDE__VECTORIZE
@@ -2169,7 +2169,7 @@ simde_mm_sllv_epi64 (simde__m128i a, simde__m128i b) {
     b_ = simde__m128i_to_private(b),
     r_;
 
-#if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && 0
+#if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
   r_.u64 = (b_.u64 < 64) ? (a_.u64 << b_.u64) : 0;
 #else
   SIMDE__VECTORIZE
@@ -2196,7 +2196,7 @@ simde_mm256_sllv_epi64 (simde__m256i a, simde__m256i b) {
     b_ = simde__m256i_to_private(b),
     r_;
 
-#if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && 0
+#if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
   r_.u64 = (b_.u64 < 64) ? (a_.u64 << b_.u64) : 0;
 #else
   SIMDE__VECTORIZE
@@ -2423,7 +2423,7 @@ simde_mm_srlv_epi32 (simde__m128i a, simde__m128i b) {
     b_ = simde__m128i_to_private(b),
     r_;
 
-#if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && 0
+#if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
   r_.u32 = (b_.u32 < 32) ? (a_.u32 >> b_.u32) : 0;
 #else
   SIMDE__VECTORIZE
@@ -2450,7 +2450,7 @@ simde_mm256_srlv_epi32 (simde__m256i a, simde__m256i b) {
     b_ = simde__m256i_to_private(b),
     r_;
 
-#if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && 0
+#if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
   r_.u32 = (b_.u32 < 32) ? (a_.u32 >> b_.u32) : 0;
 #else
   SIMDE__VECTORIZE
@@ -2477,7 +2477,7 @@ simde_mm_srlv_epi64 (simde__m128i a, simde__m128i b) {
     b_ = simde__m128i_to_private(b),
     r_;
 
-#if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && 0
+#if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
   r_.u64 = (b_.u64 < 64) ? (a_.u64 >> b_.u64) : 0;
 #else
   SIMDE__VECTORIZE
@@ -2504,7 +2504,7 @@ simde_mm256_srlv_epi64 (simde__m256i a, simde__m256i b) {
     b_ = simde__m256i_to_private(b),
     r_;
 
-#if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && 0
+#if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
   r_.u64 = (b_.u64 < 64) ? (a_.u64 >> b_.u64) : 0;
 #else
   SIMDE__VECTORIZE
