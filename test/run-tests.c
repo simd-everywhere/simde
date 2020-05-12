@@ -1,4 +1,3 @@
-#include "munit/munit.h"
 #include "x86/test-x86.h"
 #include "arm/test-arm.h"
 #include "../simde/simde-common.h"

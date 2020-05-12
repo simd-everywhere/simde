@@ -128,30 +128,31 @@ simde_mm512_maskz_mov_epi16(simde__mmask32 k, simde__m512i a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__mmask64
 simde_mm512_movepi8_mask (simde__m512i a) {
-  simde__m512i_private a_ = simde__m512i_to_private(a);
-  simde__mmask64 r;
-
-  #if defined(SIMDE_X86_AVX2_NATIVE)
-    r =             HEDLEY_STATIC_CAST(simde__mmask64, HEDLEY_STATIC_CAST(unsigned int, simde_mm256_movemask_epi8(a_.m256i[1])));
-    r = (r << 32) | HEDLEY_STATIC_CAST(simde__mmask64, HEDLEY_STATIC_CAST(unsigned int, simde_mm256_movemask_epi8(a_.m256i[0])));
-  #elif defined(SIMDE_X86_SSE2_NATIVE)
-    r =             HEDLEY_STATIC_CAST(simde__mmask64, HEDLEY_STATIC_CAST(unsigned int, simde_mm_movemask_epi8(a_.m128i[3])));
-    r = (r << 16) | HEDLEY_STATIC_CAST(simde__mmask64, HEDLEY_STATIC_CAST(unsigned int, simde_mm_movemask_epi8(a_.m128i[2])));
-    r = (r << 16) | HEDLEY_STATIC_CAST(simde__mmask64, HEDLEY_STATIC_CAST(unsigned int, simde_mm_movemask_epi8(a_.m128i[1])));
-    r = (r << 16) | HEDLEY_STATIC_CAST(simde__mmask64, HEDLEY_STATIC_CAST(unsigned int, simde_mm_movemask_epi8(a_.m128i[0])));
+  #if defined(SIMDE_X86_AVX512BW_NATIVE)
+    return _mm512_movepi8_mask(a);
   #else
-    r = 0;
+    simde__m512i_private a_ = simde__m512i_to_private(a);
+    simde__mmask64 r;
 
-    for (size_t i = 0 ; i < (sizeof(a_.i8) / sizeof(a_.i8[0])) ; i++) {
-      r |= (a_.i8[i] < 0) ? (UINT64_C(1) << i) : 0;
-    }
+    #if defined(SIMDE_X86_AVX2_NATIVE)
+      r =             HEDLEY_STATIC_CAST(simde__mmask64, HEDLEY_STATIC_CAST(unsigned int, simde_mm256_movemask_epi8(a_.m256i[1])));
+      r = (r << 32) | HEDLEY_STATIC_CAST(simde__mmask64, HEDLEY_STATIC_CAST(unsigned int, simde_mm256_movemask_epi8(a_.m256i[0])));
+    #elif defined(SIMDE_X86_SSE2_NATIVE)
+      r =             HEDLEY_STATIC_CAST(simde__mmask64, HEDLEY_STATIC_CAST(unsigned int, simde_mm_movemask_epi8(a_.m128i[3])));
+      r = (r << 16) | HEDLEY_STATIC_CAST(simde__mmask64, HEDLEY_STATIC_CAST(unsigned int, simde_mm_movemask_epi8(a_.m128i[2])));
+      r = (r << 16) | HEDLEY_STATIC_CAST(simde__mmask64, HEDLEY_STATIC_CAST(unsigned int, simde_mm_movemask_epi8(a_.m128i[1])));
+      r = (r << 16) | HEDLEY_STATIC_CAST(simde__mmask64, HEDLEY_STATIC_CAST(unsigned int, simde_mm_movemask_epi8(a_.m128i[0])));
+    #else
+      r = 0;
+
+      for (size_t i = 0 ; i < (sizeof(a_.i8) / sizeof(a_.i8[0])) ; i++) {
+        r |= (a_.i8[i] < 0) ? (UINT64_C(1) << i) : 0;
+      }
+    #endif
+
+    return r;
   #endif
-
-  return r;
 }
-#if defined(SIMDE_X86_AVX512BW_NATIVE)
-  #define simde_mm512_movepi8_mask(a) _mm512_movepi8_mask(a);
-#endif
 #if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
   #undef _mm512_movepi8_mask
   #define _mm512_movepi8_mask(a) simde_mm512_movepi8_mask(a)
@@ -744,7 +745,7 @@ simde_mm512_cmpeq_epi8_mask (simde__m512i a, simde__m512i b) {
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       simde__m512i_private tmp;
 
-      tmp.i8 = a_.i8 == b_.i8;
+      tmp.i8 = HEDLEY_STATIC_CAST(__typeof__(tmp.i8), a_.i8 == b_.i8);
       r = simde_mm512_movepi8_mask(simde__m512i_from_private(tmp));
     #else
       r = 0;
@@ -777,7 +778,7 @@ simde_mm512_cmpge_epi8_mask (simde__m512i a, simde__m512i b) {
     #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       simde__m512i_private tmp;
 
-      tmp.i8 = a_.i8 >= b_.i8;
+      tmp.i8 = HEDLEY_STATIC_CAST(__typeof__(tmp.i8), a_.i8 >= b_.i8);
       r = simde_mm512_movepi8_mask(simde__m512i_from_private(tmp));
     #else
       SIMDE_VECTORIZE_REDUCTION(|:r)
@@ -808,7 +809,7 @@ simde_mm512_cmpge_epu8_mask (simde__m512i a, simde__m512i b) {
     #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       simde__m512i_private tmp;
 
-      tmp.i8 = a_.u8 >= b_.u8;
+      tmp.i8 = HEDLEY_STATIC_CAST(__typeof__(tmp.i8), a_.u8 >= b_.u8);
       r = simde_mm512_movepi8_mask(simde__m512i_from_private(tmp));
     #else
       SIMDE_VECTORIZE_REDUCTION(|:r)
@@ -848,7 +849,7 @@ simde_mm512_cmpgt_epi8_mask (simde__m512i a, simde__m512i b) {
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       simde__m512i_private tmp;
 
-      tmp.i8 = a_.i8 > b_.i8;
+      tmp.i8 = HEDLEY_STATIC_CAST(__typeof__(tmp.i8), a_.i8 > b_.i8);
       r = simde_mm512_movepi8_mask(simde__m512i_from_private(tmp));
     #else
       r = 0;
@@ -881,7 +882,7 @@ simde_mm512_cmpgt_epu8_mask (simde__m512i a, simde__m512i b) {
     #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       simde__m512i_private tmp;
 
-      tmp.i8 = a_.u8 > b_.u8;
+      tmp.i8 = HEDLEY_STATIC_CAST(__typeof__(tmp.i8), a_.u8 > b_.u8);
       r = simde_mm512_movepi8_mask(simde__m512i_from_private(tmp));
     #else
       SIMDE_VECTORIZE_REDUCTION(|:r)
@@ -912,7 +913,7 @@ simde_mm512_cmple_epi8_mask (simde__m512i a, simde__m512i b) {
     #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       simde__m512i_private tmp;
 
-      tmp.i8 = a_.i8 <= b_.i8;
+      tmp.i8 = HEDLEY_STATIC_CAST(__typeof__(tmp.i8), a_.i8 <= b_.i8);
       r = simde_mm512_movepi8_mask(simde__m512i_from_private(tmp));
     #else
       SIMDE_VECTORIZE_REDUCTION(|:r)
@@ -943,7 +944,7 @@ simde_mm512_cmple_epu8_mask (simde__m512i a, simde__m512i b) {
     #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       simde__m512i_private tmp;
 
-      tmp.i8 = a_.u8 <= b_.u8;
+      tmp.i8 = HEDLEY_STATIC_CAST(__typeof__(tmp.i8), a_.u8 <= b_.u8);
       r = simde_mm512_movepi8_mask(simde__m512i_from_private(tmp));
     #else
       SIMDE_VECTORIZE_REDUCTION(|:r)
@@ -974,7 +975,7 @@ simde_mm512_cmplt_epi8_mask (simde__m512i a, simde__m512i b) {
     #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       simde__m512i_private tmp;
 
-      tmp.i8 = a_.i8 < b_.i8;
+      tmp.i8 = HEDLEY_STATIC_CAST(__typeof__(tmp.i8), a_.i8 < b_.i8);
       r = simde_mm512_movepi8_mask(simde__m512i_from_private(tmp));
     #else
       SIMDE_VECTORIZE_REDUCTION(|:r)
@@ -1005,7 +1006,7 @@ simde_mm512_cmplt_epu8_mask (simde__m512i a, simde__m512i b) {
     #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       simde__m512i_private tmp;
 
-      tmp.i8 = a_.u8 < b_.u8;
+      tmp.i8 = HEDLEY_STATIC_CAST(__typeof__(tmp.i8), a_.u8 < b_.u8);
       r = simde_mm512_movepi8_mask(simde__m512i_from_private(tmp));
     #else
       SIMDE_VECTORIZE_REDUCTION(|:r)

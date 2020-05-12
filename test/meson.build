@@ -10,7 +10,11 @@ if cc.has_function('clock_gettime')
   endif
   munit_deps += librt_dep
 endif
-munit = static_library('munit', 'munit/munit.c', dependencies: munit_deps)
+munit_cflags = []
+if cc.has_argument('-w')
+  munit_cflags += '-w'
+endif
+munit = static_library('munit', 'munit/munit.c', dependencies: munit_deps, c_args: munit_cflags)
 
 simde_c_defs = []
 simde_cxx_defs = []
