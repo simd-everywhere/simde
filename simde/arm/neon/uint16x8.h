@@ -21,12 +21,12 @@
  * SOFTWARE.
  */
 
-#if !defined(SIMDE__INSIDE_NEON_H)
+#if !defined(SIMDE_INSIDE_NEON_H)
 #  error Do not include simde/arm/neon/uint16x8.h directly; use simde/arm/neon.h.
 #endif
 
-#if !defined(SIMDE__NEON_UINT16X8_H)
-#define SIMDE__NEON_UINT16X8_H
+#if !defined(SIMDE_NEON_UINT16X8_H)
+#define SIMDE_NEON_UINT16X8_H
 
 typedef union {
 #if defined(SIMDE_VECTOR_SUBSCRIPT)
@@ -52,14 +52,14 @@ HEDLEY_STATIC_ASSERT(sizeof(uint16x8_t) == sizeof(simde_uint16x8_t), "uint16x8_t
 #endif
 HEDLEY_STATIC_ASSERT(16 == sizeof(simde_uint16x8_t), "simde_uint16x8_t size incorrect");
 
-SIMDE__FUNCTION_ATTRIBUTES
+SIMDE_FUNCTION_ATTRIBUTES
 simde_uint16x8_t
 simde_vaddq_u16(simde_uint16x8_t a, simde_uint16x8_t b) {
   simde_uint16x8_t r;
 #if defined(SIMDE_NEON_NATIVE)
   r.n = vaddq_u16(a.n, b.n);
 #else
-  SIMDE__VECTORIZE
+  SIMDE_VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.u16) / sizeof(r.u16[0])) ; i++) {
     r.u16[i] = a.u16[i] + b.u16[i];
   }
@@ -67,14 +67,14 @@ simde_vaddq_u16(simde_uint16x8_t a, simde_uint16x8_t b) {
   return r;
 }
 
-SIMDE__FUNCTION_ATTRIBUTES
+SIMDE_FUNCTION_ATTRIBUTES
 simde_uint16x8_t
 simde_vld1q_u16 (uint16_t const ptr[8]) {
   simde_uint16x8_t r;
 #if defined(SIMDE_NEON_NATIVE)
   r.n = vld1q_u16(ptr);
 #else
-  SIMDE__VECTORIZE
+  SIMDE_VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.u16) / sizeof(r.u16[0])) ; i++) {
     r.u16[i] = ptr[i];
   }
@@ -82,7 +82,7 @@ simde_vld1q_u16 (uint16_t const ptr[8]) {
   return r;
 }
 
-SIMDE__FUNCTION_ATTRIBUTES
+SIMDE_FUNCTION_ATTRIBUTES
 simde_uint16x8_t
 simde_x_vloadq_u16 (uint16_t l0, uint16_t l1, uint16_t l2, uint16_t l3,
                     uint16_t l4, uint16_t l5, uint16_t l6, uint16_t l7) {
@@ -90,14 +90,14 @@ simde_x_vloadq_u16 (uint16_t l0, uint16_t l1, uint16_t l2, uint16_t l3,
   return simde_vld1q_u16(v);
 }
 
-SIMDE__FUNCTION_ATTRIBUTES
+SIMDE_FUNCTION_ATTRIBUTES
 simde_uint16x8_t
 simde_vdupq_n_u16 (uint16_t value) {
   simde_uint16x8_t r;
 #if defined(SIMDE_NEON_NATIVE)
   r.n = vdupq_n_u16(value);
 #else
-  SIMDE__VECTORIZE
+  SIMDE_VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.u16) / sizeof(r.u16[0])) ; i++) {
     r.u16[i] = value;
   }
@@ -105,14 +105,14 @@ simde_vdupq_n_u16 (uint16_t value) {
   return r;
 }
 
-SIMDE__FUNCTION_ATTRIBUTES
+SIMDE_FUNCTION_ATTRIBUTES
 simde_uint16x8_t
 simde_vmulq_u16(simde_uint16x8_t a, simde_uint16x8_t b) {
   simde_uint16x8_t r;
 #if defined(SIMDE_NEON_NATIVE)
   r.n = vmulq_u16(a.n, b.n);
 #else
-  SIMDE__VECTORIZE
+  SIMDE_VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.u16) / sizeof(r.u16[0])) ; i++) {
     r.u16[i] = a.u16[i] * b.u16[i];
   }
@@ -120,14 +120,14 @@ simde_vmulq_u16(simde_uint16x8_t a, simde_uint16x8_t b) {
   return r;
 }
 
-SIMDE__FUNCTION_ATTRIBUTES
+SIMDE_FUNCTION_ATTRIBUTES
 simde_uint16x8_t
 simde_vsubq_u16(simde_uint16x8_t a, simde_uint16x8_t b) {
   simde_uint16x8_t r;
 #if defined(SIMDE_NEON_NATIVE)
   r.n = vsubq_u16(a.n, b.n);
 #else
-  SIMDE__VECTORIZE
+  SIMDE_VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.u16) / sizeof(r.u16[0])) ; i++) {
     r.u16[i] = a.u16[i] - b.u16[i];
   }

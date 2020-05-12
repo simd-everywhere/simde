@@ -21,12 +21,12 @@
  * SOFTWARE.
  */
 
-#if !defined(SIMDE__INSIDE_NEON_H)
+#if !defined(SIMDE_INSIDE_NEON_H)
 #  error Do not include simde/arm/neon/int32x2.h directly; use simde/arm/neon.h.
 #endif
 
-#if !defined(SIMDE__NEON_FLOAT32X2_H)
-#define SIMDE__NEON_FLOAT32X2_H
+#if !defined(SIMDE_NEON_FLOAT32X2_H)
+#define SIMDE_NEON_FLOAT32X2_H
 
 typedef union {
 #if defined(SIMDE_VECTOR_SUBSCRIPT)
@@ -49,14 +49,14 @@ HEDLEY_STATIC_ASSERT(sizeof(float32x2_t) == sizeof(simde_float32x2_t), "float32x
 #endif
 HEDLEY_STATIC_ASSERT(8 == sizeof(simde_float32x2_t), "simde_float32x2_t size incorrect");
 
-SIMDE__FUNCTION_ATTRIBUTES
+SIMDE_FUNCTION_ATTRIBUTES
 simde_float32x2_t
 simde_vadd_f32(simde_float32x2_t a, simde_float32x2_t b) {
   simde_float32x2_t r;
 #if defined(SIMDE_NEON_NATIVE)
   r.n = vadd_f32(a.n, b.n);
 #else
-  SIMDE__VECTORIZE
+  SIMDE_VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
     r.f32[i] = a.f32[i] + b.f32[i];
   }
@@ -64,14 +64,14 @@ simde_vadd_f32(simde_float32x2_t a, simde_float32x2_t b) {
   return r;
 }
 
-SIMDE__FUNCTION_ATTRIBUTES
+SIMDE_FUNCTION_ATTRIBUTES
 simde_float32x2_t
 simde_vld1_f32 (simde_float32 const ptr[2]) {
   simde_float32x2_t r;
 #if defined(SIMDE_NEON_NATIVE)
   r.n = vld1_f32(ptr);
 #else
-  SIMDE__VECTORIZE
+  SIMDE_VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
     r.f32[i] = ptr[i];
   }
@@ -79,21 +79,21 @@ simde_vld1_f32 (simde_float32 const ptr[2]) {
   return r;
 }
 
-SIMDE__FUNCTION_ATTRIBUTES
+SIMDE_FUNCTION_ATTRIBUTES
 simde_float32x2_t
 simde_x_vload_f32 (simde_float32 l0, simde_float32 l1) {
   simde_float32 v[] = { l0, l1 };
   return simde_vld1_f32(v);
 }
 
-SIMDE__FUNCTION_ATTRIBUTES
+SIMDE_FUNCTION_ATTRIBUTES
 simde_float32x2_t
 simde_vdup_n_f32 (simde_float32 value) {
   simde_float32x2_t r;
 #if defined(SIMDE_NEON_NATIVE)
   r.n = vdup_n_f32(value);
 #else
-  SIMDE__VECTORIZE
+  SIMDE_VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
     r.f32[i] = value;
   }
@@ -101,14 +101,14 @@ simde_vdup_n_f32 (simde_float32 value) {
   return r;
 }
 
-SIMDE__FUNCTION_ATTRIBUTES
+SIMDE_FUNCTION_ATTRIBUTES
 simde_float32x2_t
 simde_vmul_f32(simde_float32x2_t a, simde_float32x2_t b) {
   simde_float32x2_t r;
 #if defined(SIMDE_NEON_NATIVE)
   r.n = vmul_f32(a.n, b.n);
 #else
-  SIMDE__VECTORIZE
+  SIMDE_VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
     r.f32[i] = a.f32[i] * b.f32[i];
   }
@@ -116,14 +116,14 @@ simde_vmul_f32(simde_float32x2_t a, simde_float32x2_t b) {
   return r;
 }
 
-SIMDE__FUNCTION_ATTRIBUTES
+SIMDE_FUNCTION_ATTRIBUTES
 simde_float32x2_t
 simde_vsub_f32(simde_float32x2_t a, simde_float32x2_t b) {
   simde_float32x2_t r;
 #if defined(SIMDE_NEON_NATIVE)
   r.n = vsub_f32(a.n, b.n);
 #else
-  SIMDE__VECTORIZE
+  SIMDE_VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.f32) / sizeof(r.f32[0])) ; i++) {
     r.f32[i] = a.f32[i] - b.f32[i];
   }

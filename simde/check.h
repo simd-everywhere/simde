@@ -34,11 +34,11 @@
 #endif
 
 #if defined(_MSC_VER) &&  (_MSC_VER >= 1500)
-#  define SIMDE__PUSH_DISABLE_MSVC_C4127 __pragma(warning(push)) __pragma(warning(disable:4127))
-#  define SIMDE__POP_DISABLE_MSVC_C4127 __pragma(warning(pop))
+#  define SIMDE_PUSH_DISABLE_MSVC_C4127_ __pragma(warning(push)) __pragma(warning(disable:4127))
+#  define SIMDE_POP_DISABLE_MSVC_C4127_ __pragma(warning(pop))
 #else
-#  define SIMDE__PUSH_DISABLE_MSVC_C4127
-#  define SIMDE__POP_DISABLE_MSVC_C4127
+#  define SIMDE_PUSH_DISABLE_MSVC_C4127_
+#  define SIMDE_POP_DISABLE_MSVC_C4127_
 #endif
 
 #if !defined(simde_errorf)
@@ -102,27 +102,27 @@
       if (!HEDLEY_LIKELY(expr)) { \
         simde_error("assertion failed: " #expr "\n"); \
       } \
-      SIMDE__PUSH_DISABLE_MSVC_C4127 \
+      SIMDE_PUSH_DISABLE_MSVC_C4127_ \
     } while (0) \
-    SIMDE__POP_DISABLE_MSVC_C4127
+    SIMDE_POP_DISABLE_MSVC_C4127_
 
 #  define simde_assert_true(expr) \
     do { \
       if (!HEDLEY_LIKELY(expr)) { \
         simde_error("assertion failed: " #expr " is not true\n"); \
       } \
-      SIMDE__PUSH_DISABLE_MSVC_C4127 \
+      SIMDE_PUSH_DISABLE_MSVC_C4127_ \
     } while (0) \
-    SIMDE__POP_DISABLE_MSVC_C4127
+    SIMDE_POP_DISABLE_MSVC_C4127_
 
 #  define simde_assert_false(expr) \
     do { \
       if (!HEDLEY_LIKELY(!(expr))) { \
         simde_error("assertion failed: " #expr " is not false\n"); \
       } \
-      SIMDE__PUSH_DISABLE_MSVC_C4127 \
+      SIMDE_PUSH_DISABLE_MSVC_C4127_ \
     } while (0) \
-    SIMDE__POP_DISABLE_MSVC_C4127
+    SIMDE_POP_DISABLE_MSVC_C4127_
 
 #  define simde_assert_type_full(prefix, suffix, T, fmt, a, op, b)   \
     do { \
@@ -132,9 +132,9 @@
         simde_errorf("assertion failed: %s %s %s (" prefix "%" fmt suffix " %s " prefix "%" fmt suffix ")\n", \
                      #a, #op, #b, simde_tmp_a_, #op, simde_tmp_b_); \
       } \
-      SIMDE__PUSH_DISABLE_MSVC_C4127 \
+      SIMDE_PUSH_DISABLE_MSVC_C4127_ \
     } while (0) \
-    SIMDE__POP_DISABLE_MSVC_C4127
+    SIMDE_POP_DISABLE_MSVC_C4127_
 
 #  define simde_assert_double_equal(a, b, precision) \
     do { \
@@ -147,9 +147,9 @@
         simde_errorf("assertion failed: %s == %s (%0." #precision "g == %0." #precision "g)\n", \
                      #a, #b, simde_tmp_a_, simde_tmp_b_); \
       } \
-      SIMDE__PUSH_DISABLE_MSVC_C4127 \
+      SIMDE_PUSH_DISABLE_MSVC_C4127_ \
     } while (0) \
-    SIMDE__POP_DISABLE_MSVC_C4127
+    SIMDE_POP_DISABLE_MSVC_C4127_
 
 #  include <string.h>
 #  define simde_assert_string_equal(a, b) \
@@ -160,9 +160,9 @@
         simde_errorf("assertion failed: string %s == %s (\"%s\" == \"%s\")\n", \
                      #a, #b, simde_tmp_a_, simde_tmp_b_); \
       } \
-      SIMDE__PUSH_DISABLE_MSVC_C4127 \
+      SIMDE_PUSH_DISABLE_MSVC_C4127_ \
     } while (0) \
-    SIMDE__POP_DISABLE_MSVC_C4127
+    SIMDE_POP_DISABLE_MSVC_C4127_
 
 #  define simde_assert_string_not_equal(a, b) \
     do { \
@@ -172,9 +172,9 @@
         simde_errorf("assertion failed: string %s != %s (\"%s\" == \"%s\")\n", \
                      #a, #b, simde_tmp_a_, simde_tmp_b_); \
       } \
-      SIMDE__PUSH_DISABLE_MSVC_C4127 \
+      SIMDE_PUSH_DISABLE_MSVC_C4127_ \
     } while (0) \
-    SIMDE__POP_DISABLE_MSVC_C4127
+    SIMDE_POP_DISABLE_MSVC_C4127_
 
 #  define simde_assert_memory_equal(size, a, b) \
     do { \
@@ -191,9 +191,9 @@
           } \
         } \
       } \
-      SIMDE__PUSH_DISABLE_MSVC_C4127 \
+      SIMDE_PUSH_DISABLE_MSVC_C4127_ \
     } while (0) \
-    SIMDE__POP_DISABLE_MSVC_C4127
+    SIMDE_POP_DISABLE_MSVC_C4127_
 
 #  define simde_assert_memory_not_equal(size, a, b) \
     do { \
@@ -204,9 +204,9 @@
         simde_errorf("assertion failed: memory %s != %s (%" SIMDE_SIZE_MODIFIER "u bytes)\n", \
                      #a, #b, simde_tmp_size_); \
       } \
-      SIMDE__PUSH_DISABLE_MSVC_C4127 \
+      SIMDE_PUSH_DISABLE_MSVC_C4127_ \
     } while (0) \
-    SIMDE__POP_DISABLE_MSVC_C4127
+    SIMDE_POP_DISABLE_MSVC_C4127_
 #endif
 
 #define simde_assert_type(T, fmt, a, op, b) \

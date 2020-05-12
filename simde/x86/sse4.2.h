@@ -31,13 +31,13 @@
 
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
-SIMDE__BEGIN_DECLS
+SIMDE_BEGIN_DECLS_
 
 #if !defined(SIMDE_X86_SSE4_2_NATIVE) && defined(SIMDE_ENABLE_NATIVE_ALIASES)
 #  define SIMDE_X86_SSE4_2_ENABLE_NATIVE_ALIASES
 #endif
 
-SIMDE__FUNCTION_ATTRIBUTES
+SIMDE_FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_cmpgt_epi64 (simde__m128i a, simde__m128i b) {
 #if defined(SIMDE_X86_SSE4_2_NATIVE)
@@ -55,7 +55,7 @@ simde_mm_cmpgt_epi64 (simde__m128i a, simde__m128i b) {
   #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
     r_.i64 = HEDLEY_STATIC_CAST(__typeof__(r_.i64), a_.i64 > b_.i64);
   #else
-    SIMDE__VECTORIZE
+    SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.i64) / sizeof(r_.i64[0])) ; i++) {
       r_.i64[i] = (a_.i64[i] > b_.i64[i]) ? ~INT64_C(0) : INT64_C(0);
     }
@@ -68,7 +68,7 @@ simde_mm_cmpgt_epi64 (simde__m128i a, simde__m128i b) {
 #  define _mm_cmpgt_epi64(a, b) simde_mm_cmpgt_epi64(a, b)
 #endif
 
-SIMDE__END_DECLS
+SIMDE_END_DECLS_
 
 HEDLEY_DIAGNOSTIC_POP
 

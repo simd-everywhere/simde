@@ -21,12 +21,12 @@
  * SOFTWARE.
  */
 
-#if !defined(SIMDE__INSIDE_NEON_H)
+#if !defined(SIMDE_INSIDE_NEON_H)
 #  error Do not include simde/arm/neon/int64x1.h directly; use simde/arm/neon.h.
 #endif
 
-#if !defined(SIMDE__NEON_INT64X1_H)
-#define SIMDE__NEON_INT64X1_H
+#if !defined(SIMDE_NEON_INT64X1_H)
+#define SIMDE_NEON_INT64X1_H
 
 typedef union {
 #if defined(SIMDE_VECTOR_SUBSCRIPT)
@@ -49,14 +49,14 @@ HEDLEY_STATIC_ASSERT(sizeof(int64x1_t) == sizeof(simde_int64x1_t), "int64x1_t si
 #endif
 HEDLEY_STATIC_ASSERT(8 == sizeof(simde_int64x1_t), "simde_int64x1_t size incorrect");
 
-SIMDE__FUNCTION_ATTRIBUTES
+SIMDE_FUNCTION_ATTRIBUTES
 simde_int64x1_t
 simde_vadd_s64(simde_int64x1_t a, simde_int64x1_t b) {
   simde_int64x1_t r;
 #if defined(SIMDE_NEON_NATIVE)
   r.n = vadd_s64(a.n, b.n);
 #else
-  SIMDE__VECTORIZE
+  SIMDE_VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i64) / sizeof(r.i64[0])) ; i++) {
     r.i64[i] = a.i64[i] + b.i64[i];
   }
@@ -64,14 +64,14 @@ simde_vadd_s64(simde_int64x1_t a, simde_int64x1_t b) {
   return r;
 }
 
-SIMDE__FUNCTION_ATTRIBUTES
+SIMDE_FUNCTION_ATTRIBUTES
 simde_int64x1_t
 simde_vld1_s64 (int64_t const ptr[1]) {
   simde_int64x1_t r;
 #if defined(SIMDE_NEON_NATIVE)
   r.n = vld1_s64(ptr);
 #else
-  SIMDE__VECTORIZE
+  SIMDE_VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i64) / sizeof(r.i64[0])) ; i++) {
     r.i64[i] = ptr[i];
   }
@@ -79,20 +79,20 @@ simde_vld1_s64 (int64_t const ptr[1]) {
   return r;
 }
 
-SIMDE__FUNCTION_ATTRIBUTES
+SIMDE_FUNCTION_ATTRIBUTES
 simde_int64x1_t
 simde_x_vload_s64 (int64_t l0) {
   return simde_vld1_s64(&l0);
 }
 
-SIMDE__FUNCTION_ATTRIBUTES
+SIMDE_FUNCTION_ATTRIBUTES
 simde_int64x1_t
 simde_vdup_n_s64 (int64_t value) {
   simde_int64x1_t r;
 #if defined(SIMDE_NEON_NATIVE)
   r.n = vdup_n_s64(value);
 #else
-  SIMDE__VECTORIZE
+  SIMDE_VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i64) / sizeof(r.i64[0])) ; i++) {
     r.i64[i] = value;
   }
@@ -100,12 +100,12 @@ simde_vdup_n_s64 (int64_t value) {
   return r;
 }
 
-SIMDE__FUNCTION_ATTRIBUTES
+SIMDE_FUNCTION_ATTRIBUTES
 simde_int64x1_t
 simde_x_vmul_s64(simde_int64x1_t a, simde_int64x1_t b) {
   simde_int64x1_t r;
 
-  SIMDE__VECTORIZE
+  SIMDE_VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i64) / sizeof(r.i64[0])) ; i++) {
     r.i64[i] = a.i64[i] * b.i64[i];
   }
@@ -113,14 +113,14 @@ simde_x_vmul_s64(simde_int64x1_t a, simde_int64x1_t b) {
   return r;
 }
 
-SIMDE__FUNCTION_ATTRIBUTES
+SIMDE_FUNCTION_ATTRIBUTES
 simde_int64x1_t
 simde_vsub_s64(simde_int64x1_t a, simde_int64x1_t b) {
   simde_int64x1_t r;
 #if defined(SIMDE_NEON_NATIVE)
   r.n = vsub_s64(a.n, b.n);
 #else
-  SIMDE__VECTORIZE
+  SIMDE_VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i64) / sizeof(r.i64[0])) ; i++) {
     r.i64[i] = a.i64[i] - b.i64[i];
   }

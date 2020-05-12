@@ -193,12 +193,12 @@
 #        pragma clang diagnostic push
 #        pragma clang diagnostic ignored "-Wc++98-compat-pedantic"
 #      endif
-#      define SIMDE__SHUFFLE_VECTOR(elem_size, vec_size, a, b, ...) __builtin_shufflevector(a, b, __VA_ARGS__)
+#      define SIMDE_SHUFFLE_VECTOR_(elem_size, vec_size, a, b, ...) __builtin_shufflevector(a, b, __VA_ARGS__)
 #      if HEDLEY_HAS_WARNING("-Wc++98-compat-pedantic")
 #        pragma clang diagnostic pop
 #      endif
 #    elif HEDLEY_GCC_HAS_BUILTIN(__builtin_shuffle,4,7,0) && !defined(__INTEL_COMPILER)
-#      define SIMDE__SHUFFLE_VECTOR(elem_size, vec_size, a, b, ...) (__extension__ ({ \
+#      define SIMDE_SHUFFLE_VECTOR_(elem_size, vec_size, a, b, ...) (__extension__ ({ \
          int##elem_size##_t SIMDE_VECTOR(vec_size) simde_shuffle_ = { __VA_ARGS__ }; \
            __builtin_shuffle(a, b, simde_shuffle_); \
          }))
@@ -211,13 +211,13 @@
 #    if HEDLEY_HAS_BUILTIN(__builtin_convertvector) || HEDLEY_GCC_VERSION_CHECK(9,0,0)
 #      if HEDLEY_GCC_VERSION_CHECK(9,0,0) && !HEDLEY_GCC_VERSION_CHECK(9,3,0)
          /* https://gcc.gnu.org/bugzilla/show_bug.cgi?id=93557 */
-#        define SIMDE__CONVERT_VECTOR(to, from) ((to) = (__extension__({ \
+#        define SIMDE_CONVERT_VECTOR_(to, from) ((to) = (__extension__({ \
              __typeof__(from) from_ = (from); \
              ((void) from_); \
              __builtin_convertvector(from_, __typeof__(to)); \
            })))
 #      else
-#        define SIMDE__CONVERT_VECTOR(to, from) ((to) = __builtin_convertvector((from), __typeof__(to)))
+#        define SIMDE_CONVERT_VECTOR_(to, from) ((to) = __builtin_convertvector((from), __typeof__(to)))
 #      endif
 #    endif
 #  endif
@@ -247,53 +247,53 @@
 #endif
 
 #if defined(SIMDE_ENABLE_OPENMP)
-#  define SIMDE__VECTORIZE _Pragma("omp simd")
-#  define SIMDE__VECTORIZE_SAFELEN(l) HEDLEY_PRAGMA(omp simd safelen(l))
-#  define SIMDE__VECTORIZE_REDUCTION(r) HEDLEY_PRAGMA(omp simd reduction(r))
-#  define SIMDE__VECTORIZE_ALIGNED(a) HEDLEY_PRAGMA(omp simd aligned(a))
+#  define SIMDE_VECTORIZE _Pragma("omp simd")
+#  define SIMDE_VECTORIZE_SAFELEN(l) HEDLEY_PRAGMA(omp simd safelen(l))
+#  define SIMDE_VECTORIZE_REDUCTION(r) HEDLEY_PRAGMA(omp simd reduction(r))
+#  define SIMDE_VECTORIZE_ALIGNED(a) HEDLEY_PRAGMA(omp simd aligned(a))
 #elif defined(SIMDE_ENABLE_CILKPLUS)
-#  define SIMDE__VECTORIZE _Pragma("simd")
-#  define SIMDE__VECTORIZE_SAFELEN(l) HEDLEY_PRAGMA(simd vectorlength(l))
-#  define SIMDE__VECTORIZE_REDUCTION(r) HEDLEY_PRAGMA(simd reduction(r))
-#  define SIMDE__VECTORIZE_ALIGNED(a) HEDLEY_PRAGMA(simd aligned(a))
+#  define SIMDE_VECTORIZE _Pragma("simd")
+#  define SIMDE_VECTORIZE_SAFELEN(l) HEDLEY_PRAGMA(simd vectorlength(l))
+#  define SIMDE_VECTORIZE_REDUCTION(r) HEDLEY_PRAGMA(simd reduction(r))
+#  define SIMDE_VECTORIZE_ALIGNED(a) HEDLEY_PRAGMA(simd aligned(a))
 #elif defined(__clang__) && !defined(HEDLEY_IBM_VERSION)
-#  define SIMDE__VECTORIZE _Pragma("clang loop vectorize(enable)")
-#  define SIMDE__VECTORIZE_SAFELEN(l) HEDLEY_PRAGMA(clang loop vectorize_width(l))
-#  define SIMDE__VECTORIZE_REDUCTION(r) SIMDE__VECTORIZE
-#  define SIMDE__VECTORIZE_ALIGNED(a)
+#  define SIMDE_VECTORIZE _Pragma("clang loop vectorize(enable)")
+#  define SIMDE_VECTORIZE_SAFELEN(l) HEDLEY_PRAGMA(clang loop vectorize_width(l))
+#  define SIMDE_VECTORIZE_REDUCTION(r) SIMDE_VECTORIZE
+#  define SIMDE_VECTORIZE_ALIGNED(a)
 #elif HEDLEY_GCC_VERSION_CHECK(4,9,0)
-#  define SIMDE__VECTORIZE _Pragma("GCC ivdep")
-#  define SIMDE__VECTORIZE_SAFELEN(l) SIMDE__VECTORIZE
-#  define SIMDE__VECTORIZE_REDUCTION(r) SIMDE__VECTORIZE
-#  define SIMDE__VECTORIZE_ALIGNED(a)
+#  define SIMDE_VECTORIZE _Pragma("GCC ivdep")
+#  define SIMDE_VECTORIZE_SAFELEN(l) SIMDE_VECTORIZE
+#  define SIMDE_VECTORIZE_REDUCTION(r) SIMDE_VECTORIZE
+#  define SIMDE_VECTORIZE_ALIGNED(a)
 #elif HEDLEY_CRAY_VERSION_CHECK(5,0,0)
-#  define SIMDE__VECTORIZE _Pragma("_CRI ivdep")
-#  define SIMDE__VECTORIZE_SAFELEN(l) SIMDE__VECTORIZE
-#  define SIMDE__VECTORIZE_REDUCTION(r) SIMDE__VECTORIZE
-#  define SIMDE__VECTORIZE_ALIGNED(a)
+#  define SIMDE_VECTORIZE _Pragma("_CRI ivdep")
+#  define SIMDE_VECTORIZE_SAFELEN(l) SIMDE_VECTORIZE
+#  define SIMDE_VECTORIZE_REDUCTION(r) SIMDE_VECTORIZE
+#  define SIMDE_VECTORIZE_ALIGNED(a)
 #else
-#  define SIMDE__VECTORIZE
-#  define SIMDE__VECTORIZE_SAFELEN(l)
-#  define SIMDE__VECTORIZE_REDUCTION(r)
-#  define SIMDE__VECTORIZE_ALIGNED(a)
+#  define SIMDE_VECTORIZE
+#  define SIMDE_VECTORIZE_SAFELEN(l)
+#  define SIMDE_VECTORIZE_REDUCTION(r)
+#  define SIMDE_VECTORIZE_ALIGNED(a)
 #endif
 
-#define SIMDE__MASK_NZ(v, mask) (((v) & (mask)) | !((v) & (mask)))
+#define SIMDE_MASK_NZ_(v, mask) (((v) & (mask)) | !((v) & (mask)))
 
 /* Intended for checking coverage, you should never use this in
    production. */
 #if defined(SIMDE_NO_INLINE)
-#  define SIMDE__FUNCTION_ATTRIBUTES HEDLEY_NEVER_INLINE static
+#  define SIMDE_FUNCTION_ATTRIBUTES HEDLEY_NEVER_INLINE static
 #else
-#  define SIMDE__FUNCTION_ATTRIBUTES HEDLEY_ALWAYS_INLINE static
+#  define SIMDE_FUNCTION_ATTRIBUTES HEDLEY_ALWAYS_INLINE static
 #endif
 
 #if \
     HEDLEY_HAS_ATTRIBUTE(unused) || \
     HEDLEY_GCC_VERSION_CHECK(2,95,0)
-#  define SIMDE__FUNCTION_POSSIBLY_UNUSED __attribute__((__unused__))
+#  define SIMDE_FUNCTION_POSSIBLY_UNUSED_ __attribute__((__unused__))
 #else
-#  define SIMDE__FUNCTION_POSSIBLY_UNUSED
+#  define SIMDE_FUNCTION_POSSIBLY_UNUSED_
 #endif
 
 #if HEDLEY_HAS_WARNING("-Wused-but-marked-unused")
@@ -303,14 +303,14 @@
 #endif
 
 #if defined(_MSC_VER)
-#  define SIMDE__BEGIN_DECLS HEDLEY_DIAGNOSTIC_PUSH __pragma(warning(disable:4996 4204)) HEDLEY_BEGIN_C_DECLS
-#  define SIMDE__END_DECLS HEDLEY_DIAGNOSTIC_POP HEDLEY_END_C_DECLS
+#  define SIMDE_BEGIN_DECLS_ HEDLEY_DIAGNOSTIC_PUSH __pragma(warning(disable:4996 4204)) HEDLEY_BEGIN_C_DECLS
+#  define SIMDE_END_DECLS_ HEDLEY_DIAGNOSTIC_POP HEDLEY_END_C_DECLS
 #else
-#  define SIMDE__BEGIN_DECLS \
+#  define SIMDE_BEGIN_DECLS_ \
      HEDLEY_DIAGNOSTIC_PUSH \
      SIMDE_DIAGNOSTIC_DISABLE_USED_BUT_MARKED_UNUSED \
      HEDLEY_BEGIN_C_DECLS
-#  define SIMDE__END_DECLS \
+#  define SIMDE_END_DECLS_ \
      HEDLEY_END_C_DECLS \
      HEDLEY_DIAGNOSTIC_POP
 #endif
@@ -324,7 +324,7 @@
 #endif
 
 #if defined(__SIZEOF_INT128__)
-#  define SIMDE__HAVE_INT128
+#  define SIMDE_HAVE_INT128_
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DIAGNOSTIC_DISABLE_INT128
 typedef __int128 simde_int128;
@@ -401,7 +401,7 @@ HEDLEY_DIAGNOSTIC_POP
 #elif HEDLEY_MSVC_VERSION_CHECK(13,10,0)
   #define simde_bswap64(v) _byteswap_uint64(v)
 #else
-  SIMDE__FUNCTION_ATTRIBUTES
+  SIMDE_FUNCTION_ATTRIBUTES
   uint64_t
   simde_bswap64(uint64_t v) {
     return
@@ -515,7 +515,7 @@ typedef SIMDE_FLOAT64_TYPE simde_float64;
 #  define SIMDE_ACCURACY_PREFERENCE 1
 #endif
 
-/* SIMDE__ASSUME_ALIGNED
+/* SIMDE_ASSUME_ALIGNED_
  *
  * Attempt to inform the compiler that ptr is aligned to align byte
  * boundaries.
@@ -524,21 +524,21 @@ typedef SIMDE_FLOAT64_TYPE simde_float64;
  * in the future to look a bit more like `std::assume_aligned` in,
  * C++20.
  */
-#if defined(SIMDE__ASSUME_ALIGNED)
-#  undef SIMDE__ASSUME_ALIGNED
+#if defined(SIMDE_ASSUME_ALIGNED_)
+#  undef SIMDE_ASSUME_ALIGNED_
 #endif
 #if HEDLEY_INTEL_VERSION_CHECK(9,0,0)
-#  define SIMDE__ASSUME_ALIGNED(ptr, align) __assume_aligned(ptr, align)
+#  define SIMDE_ASSUME_ALIGNED_(ptr, align) __assume_aligned(ptr, align)
 #elif HEDLEY_MSVC_VERSION_CHECK(13,10,0)
-#  define SIMDE__ASSUME_ALIGNED(ptr, align) __assume((((char*) ptr) - ((char*) 0)) % (align) == 0)
+#  define SIMDE_ASSUME_ALIGNED_(ptr, align) __assume((((char*) ptr) - ((char*) 0)) % (align) == 0)
 #elif HEDLEY_GCC_HAS_BUILTIN(__builtin_assume_aligned,4,7,0)
-#  define SIMDE__ASSUME_ALIGNED(ptr, align) (ptr = (__typeof__(ptr)) __builtin_assume_aligned((ptr), align))
+#  define SIMDE_ASSUME_ALIGNED_(ptr, align) (ptr = (__typeof__(ptr)) __builtin_assume_aligned((ptr), align))
 #elif HEDLEY_CLANG_HAS_BUILTIN(__builtin_assume)
-#  define SIMDE__ASSUME_ALIGNED(ptr, align) __builtin_assume((((char*) ptr) - ((char*) 0)) % (align) == 0)
+#  define SIMDE_ASSUME_ALIGNED_(ptr, align) __builtin_assume((((char*) ptr) - ((char*) 0)) % (align) == 0)
 #elif HEDLEY_GCC_HAS_BUILTIN(__builtin_unreachable,4,5,0)
-#  define SIMDE__ASSUME_ALIGNED(ptr, align) ((((char*) ptr) - ((char*) 0)) % (align) == 0) ? (1) : (__builtin_unreachable(), 0)
+#  define SIMDE_ASSUME_ALIGNED_(ptr, align) ((((char*) ptr) - ((char*) 0)) % (align) == 0) ? (1) : (__builtin_unreachable(), 0)
 #else
-#  define SIMDE__ASSUME_ALIGNED(ptr, align)
+#  define SIMDE_ASSUME_ALIGNED_(ptr, align)
 #endif
 
 /**********************************************************************
@@ -762,7 +762,7 @@ typedef SIMDE_FLOAT64_TYPE simde_float64;
      * adding your compiler to the checks for __builtin_memcpy and/or
      * __builtin_memset. */
     #if !defined(simde_memcpy)
-      SIMDE__FUNCTION_ATTRIBUTES
+      SIMDE_FUNCTION_ATTRIBUTES
       void
       simde_memcpy_(void* dest, const void* src, size_t len) {
         char* dest_ = HEDLEY_STATIC_CAST(char*, dest);
@@ -775,7 +775,7 @@ typedef SIMDE_FLOAT64_TYPE simde_float64;
     #endif
 
     #if !defined(simde_memset)
-      SIMDE__FUNCTION_ATTRIBUTES
+      SIMDE_FUNCTION_ATTRIBUTES
       void
       simde_memset_(void* s, int c, size_t len) {
         char* s_ = HEDLEY_STATIC_CAST(char*, s);

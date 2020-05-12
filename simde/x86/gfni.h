@@ -32,7 +32,7 @@
 
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
-SIMDE__BEGIN_DECLS
+SIMDE_BEGIN_DECLS_
 
 #if !defined(SIMDE_X86_GFNI_NATIVE) && defined(SIMDE_ENABLE_NATIVE_ALIASES)
   #define SIMDE_X86_GFNI_ENABLE_NATIVE_ALIASES
@@ -61,7 +61,7 @@ static const uint8_t simde_gf2p8inverse[] =
 
 /* In all the *affine* intrinsics the argument b must be a compile-time constant so use macros and simde_x_mm* helper functions * */
 
-SIMDE__FUNCTION_ATTRIBUTES
+SIMDE_FUNCTION_ATTRIBUTES
 simde__m128i
 simde_x_mm_gf2p8matrix_multiply_epi64_epi8 (simde__m128i x, simde__m128i A) {
   #if defined(SIMDE_X86_SSE4_1_NATIVE)
@@ -72,7 +72,7 @@ simde_x_mm_gf2p8matrix_multiply_epi64_epi8 (simde__m128i x, simde__m128i A) {
     r = simde_mm_setzero_si128();
 
 #if !defined(__INTEL_COMPILER)
-    SIMDE__VECTORIZE
+    SIMDE_VECTORIZE
 #endif
     for (int i = 0 ; i < 8 ; i++) {
       p = simde_mm_set1_epi16(HEDLEY_STATIC_CAST(uint16_t, simde_mm_movemask_epi8(a)));
@@ -94,7 +94,7 @@ simde_x_mm_gf2p8matrix_multiply_epi64_epi8 (simde__m128i x, simde__m128i A) {
     uint64_t q;
 
 #if !defined(__INTEL_COMPILER)
-    SIMDE__VECTORIZE
+    SIMDE_VECTORIZE
 #endif
     for (size_t i = 0 ; i < (sizeof(r_.u8) / sizeof(r_.u8[0])) ; i++) {
       q = simde_endian_bswap64_le(A_.u64[i / 8]);
@@ -115,7 +115,7 @@ simde_x_mm_gf2p8matrix_multiply_epi64_epi8 (simde__m128i x, simde__m128i A) {
   #endif
 }
 
-SIMDE__FUNCTION_ATTRIBUTES
+SIMDE_FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_gf2p8affine_epi64_epi8 (simde__m128i x, simde__m128i A, int b)
     SIMDE_REQUIRE_CONSTANT_RANGE(b, 0, 255) {
@@ -129,7 +129,7 @@ simde_mm_gf2p8affine_epi64_epi8 (simde__m128i x, simde__m128i A, int b)
   #define _mm_gf2p8affine_epi64_epi8(x, A, b) simde_mm_gf2p8affine_epi64_epi8(x, A, b)
 #endif
 
-SIMDE__FUNCTION_ATTRIBUTES
+SIMDE_FUNCTION_ATTRIBUTES
 simde__m256i
 simde_x_mm256_gf2p8matrix_multiply_epi64_epi8 (simde__m256i x, simde__m256i A) {
   simde__m256i_private
@@ -138,7 +138,7 @@ simde_x_mm256_gf2p8matrix_multiply_epi64_epi8 (simde__m256i x, simde__m256i A) {
     A_ = simde__m256i_to_private(A);
 
   #if !defined(__INTEL_COMPILER)
-    SIMDE__VECTORIZE
+    SIMDE_VECTORIZE
   #endif
   for (size_t i = 0 ; i < (sizeof(r_.m128i) / sizeof(r_.m128i[0])) ; i++) {
     r_.m128i[i] = simde_x_mm_gf2p8matrix_multiply_epi64_epi8(x_.m128i[i], A_.m128i[i]);
@@ -147,7 +147,7 @@ simde_x_mm256_gf2p8matrix_multiply_epi64_epi8 (simde__m256i x, simde__m256i A) {
   return simde__m256i_from_private(r_);
 }
 
-SIMDE__FUNCTION_ATTRIBUTES
+SIMDE_FUNCTION_ATTRIBUTES
 simde__m256i
 simde_mm256_gf2p8affine_epi64_epi8 (simde__m256i x, simde__m256i A, int b)
     SIMDE_REQUIRE_CONSTANT_RANGE(b, 0, 255) {
@@ -161,7 +161,7 @@ simde_mm256_gf2p8affine_epi64_epi8 (simde__m256i x, simde__m256i A, int b)
   #define _mm256_gf2p8affine_epi64_epi8(x, A, b) simde_mm256_gf2p8affine_epi64_epi8(x, A, b)
 #endif
 
-SIMDE__FUNCTION_ATTRIBUTES
+SIMDE_FUNCTION_ATTRIBUTES
 simde__m512i
 simde_x_mm512_gf2p8matrix_multiply_epi64_epi8 (simde__m512i x, simde__m512i A) {
   simde__m512i_private
@@ -170,7 +170,7 @@ simde_x_mm512_gf2p8matrix_multiply_epi64_epi8 (simde__m512i x, simde__m512i A) {
     A_ = simde__m512i_to_private(A);
 
   #if !defined(__INTEL_COMPILER)
-    SIMDE__VECTORIZE
+    SIMDE_VECTORIZE
   #endif
   for (size_t i = 0 ; i < (sizeof(r_.m128i) / sizeof(r_.m128i[0])) ; i++) {
     r_.m128i[i] = simde_x_mm_gf2p8matrix_multiply_epi64_epi8(x_.m128i[i], A_.m128i[i]);
@@ -179,7 +179,7 @@ simde_x_mm512_gf2p8matrix_multiply_epi64_epi8 (simde__m512i x, simde__m512i A) {
   return simde__m512i_from_private(r_);
 }
 
-SIMDE__FUNCTION_ATTRIBUTES
+SIMDE_FUNCTION_ATTRIBUTES
 simde__m512i
 simde_mm512_gf2p8affine_epi64_epi8 (simde__m512i x, simde__m512i A, int b)
     SIMDE_REQUIRE_CONSTANT_RANGE(b, 0, 255) {
@@ -253,7 +253,7 @@ simde_mm512_gf2p8affine_epi64_epi8 (simde__m512i x, simde__m512i A, int b)
   #define _mm512_maskz_gf2p8affine_epi64_epi8(k, x, A, b) simde_mm512_maskz_gf2p8affine_epi64_epi8(k, x, A, b)
 #endif
 
-SIMDE__FUNCTION_ATTRIBUTES
+SIMDE_FUNCTION_ATTRIBUTES
 simde__m128i
 simde_x_mm_gf2p8matrix_multiply_inverse_epi64_epi8 (simde__m128i x, simde__m128i A) {
   simde__m128i_private
@@ -261,7 +261,7 @@ simde_x_mm_gf2p8matrix_multiply_inverse_epi64_epi8 (simde__m128i x, simde__m128i
     x_ = simde__m128i_to_private(x);
 
   #if !defined(__INTEL_COMPILER)
-    SIMDE__VECTORIZE
+    SIMDE_VECTORIZE
   #endif
   for (size_t i = 0 ; i < (sizeof(inv_.u8) / sizeof(inv_.u8[0])) ; i++) {
     inv_.u8[i] = simde_gf2p8inverse[x_.u8[i]];
@@ -272,7 +272,7 @@ simde_x_mm_gf2p8matrix_multiply_inverse_epi64_epi8 (simde__m128i x, simde__m128i
   return simde_x_mm_gf2p8matrix_multiply_epi64_epi8(inv, A);
 }
 
-SIMDE__FUNCTION_ATTRIBUTES
+SIMDE_FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_gf2p8affineinv_epi64_epi8 (simde__m128i x, simde__m128i A, int b)
     SIMDE_REQUIRE_CONSTANT_RANGE(b, 0, 255) {
@@ -286,7 +286,7 @@ simde_mm_gf2p8affineinv_epi64_epi8 (simde__m128i x, simde__m128i A, int b)
   #define _mm_gf2p8affineinv_epi64_epi8(x, A, b) simde_mm_gf2p8affineinv_epi64_epi8(x, A, b)
 #endif
 
-SIMDE__FUNCTION_ATTRIBUTES
+SIMDE_FUNCTION_ATTRIBUTES
 simde__m256i
 simde_x_mm256_gf2p8matrix_multiply_inverse_epi64_epi8 (simde__m256i x, simde__m256i A) {
   simde__m256i_private
@@ -295,7 +295,7 @@ simde_x_mm256_gf2p8matrix_multiply_inverse_epi64_epi8 (simde__m256i x, simde__m2
     A_ = simde__m256i_to_private(A);
 
   #if !defined(__INTEL_COMPILER)
-    SIMDE__VECTORIZE
+    SIMDE_VECTORIZE
   #endif
   for (size_t i = 0 ; i < (sizeof(r_.m128i) / sizeof(r_.m128i[0])) ; i++) {
     r_.m128i[i] = simde_x_mm_gf2p8matrix_multiply_inverse_epi64_epi8(x_.m128i[i], A_.m128i[i]);
@@ -304,7 +304,7 @@ simde_x_mm256_gf2p8matrix_multiply_inverse_epi64_epi8 (simde__m256i x, simde__m2
   return simde__m256i_from_private(r_);
 }
 
-SIMDE__FUNCTION_ATTRIBUTES
+SIMDE_FUNCTION_ATTRIBUTES
 simde__m256i
 simde_mm256_gf2p8affineinv_epi64_epi8 (simde__m256i x, simde__m256i A, int b)
     SIMDE_REQUIRE_CONSTANT_RANGE(b, 0, 255) {
@@ -318,7 +318,7 @@ simde_mm256_gf2p8affineinv_epi64_epi8 (simde__m256i x, simde__m256i A, int b)
   #define _mm256_gf2p8affineinv_epi64_epi8(x, A, b) simde_mm256_gf2p8affineinv_epi64_epi8(x, A, b)
 #endif
 
-SIMDE__FUNCTION_ATTRIBUTES
+SIMDE_FUNCTION_ATTRIBUTES
 simde__m512i
 simde_x_mm512_gf2p8matrix_multiply_inverse_epi64_epi8 (simde__m512i x, simde__m512i A) {
   simde__m512i_private
@@ -327,7 +327,7 @@ simde_x_mm512_gf2p8matrix_multiply_inverse_epi64_epi8 (simde__m512i x, simde__m5
     A_ = simde__m512i_to_private(A);
 
   #if !defined(__INTEL_COMPILER)
-    SIMDE__VECTORIZE
+    SIMDE_VECTORIZE
   #endif
   for (size_t i = 0 ; i < (sizeof(r_.m128i) / sizeof(r_.m128i[0])) ; i++) {
     r_.m128i[i] = simde_x_mm_gf2p8matrix_multiply_inverse_epi64_epi8(x_.m128i[i], A_.m128i[i]);
@@ -336,7 +336,7 @@ simde_x_mm512_gf2p8matrix_multiply_inverse_epi64_epi8 (simde__m512i x, simde__m5
   return simde__m512i_from_private(r_);
 }
 
-SIMDE__FUNCTION_ATTRIBUTES
+SIMDE_FUNCTION_ATTRIBUTES
 simde__m512i
 simde_mm512_gf2p8affineinv_epi64_epi8 (simde__m512i x, simde__m512i A, int b)
     SIMDE_REQUIRE_CONSTANT_RANGE(b, 0, 255) {
@@ -410,7 +410,7 @@ simde_mm512_gf2p8affineinv_epi64_epi8 (simde__m512i x, simde__m512i A, int b)
   #define _mm512_maskz_gf2p8affineinv_epi64_epi8(k, x, A, b) simde_mm512_maskz_gf2p8affineinv_epi64_epi8(k, x, A, b)
 #endif
 
-SIMDE__FUNCTION_ATTRIBUTES
+SIMDE_FUNCTION_ATTRIBUTES
 simde__m128i simde_mm_gf2p8mul_epi8 (simde__m128i a, simde__m128i b) {
   #if defined(SIMDE_X86_SSE2_NATIVE)
     simde__m128i r, t;
@@ -444,7 +444,7 @@ simde__m128i simde_mm_gf2p8mul_epi8 (simde__m128i a, simde__m128i b) {
     /* The field generator polynomial is 0x11B but we drop the 0x100 bit */
     const uint8_t fgp = 0x1B;
 
-    SIMDE__VECTORIZE
+    SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.u8) / sizeof(r_.u8[0])) ; i++) {
       r_.u8[i] = 0;
       while ((a_.u8[i] != 0) && (b_.u8[i] != 0)) {
@@ -471,7 +471,7 @@ simde__m128i simde_mm_gf2p8mul_epi8 (simde__m128i a, simde__m128i b) {
   #define _mm_gf2p8mul_epi8(a, b) simde_mm_gf2p8mul_epi8(a, b)
 #endif
 
-SIMDE__FUNCTION_ATTRIBUTES
+SIMDE_FUNCTION_ATTRIBUTES
 simde__m256i
 simde_mm256_gf2p8mul_epi8 (simde__m256i a, simde__m256i b) {
   simde__m256i_private
@@ -480,7 +480,7 @@ simde_mm256_gf2p8mul_epi8 (simde__m256i a, simde__m256i b) {
     b_ = simde__m256i_to_private(b);
 
   #if !defined(__INTEL_COMPILER)
-    SIMDE__VECTORIZE
+    SIMDE_VECTORIZE
   #endif
   for (size_t i = 0 ; i < (sizeof(r_.m128i) / sizeof(r_.m128i[0])) ; i++) {
     r_.m128i[i] = simde_mm_gf2p8mul_epi8(a_.m128i[i], b_.m128i[i]);
@@ -496,7 +496,7 @@ simde_mm256_gf2p8mul_epi8 (simde__m256i a, simde__m256i b) {
   #define _mm256_gf2p8mul_epi8(a, b) simde_mm256_gf2p8mul_epi8(a, b)
 #endif
 
-SIMDE__FUNCTION_ATTRIBUTES
+SIMDE_FUNCTION_ATTRIBUTES
 simde__m512i
 simde_mm512_gf2p8mul_epi8 (simde__m512i a, simde__m512i b) {
   simde__m512i_private
@@ -505,7 +505,7 @@ simde_mm512_gf2p8mul_epi8 (simde__m512i a, simde__m512i b) {
     b_ = simde__m512i_to_private(b);
 
 #if !defined(__INTEL_COMPILER)
-  SIMDE__VECTORIZE
+  SIMDE_VECTORIZE
 #endif
   for (size_t i = 0 ; i < (sizeof(r_.m128i) / sizeof(r_.m128i[0])) ; i++) {
     r_.m128i[i] = simde_mm_gf2p8mul_epi8(a_.m128i[i], b_.m128i[i]);
@@ -581,7 +581,7 @@ simde_mm512_gf2p8mul_epi8 (simde__m512i a, simde__m512i b) {
   #define _mm512_maskz_gf2p8mul_epi8(k, a, b) simde_mm512_maskz_gf2p8mul_epi8(k, a, b)
 #endif
 
-SIMDE__END_DECLS
+SIMDE_END_DECLS_
 
 HEDLEY_DIAGNOSTIC_POP
 
