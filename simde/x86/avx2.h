@@ -2290,7 +2290,7 @@ simde_mm256_srli_epi16 (simde__m256i a, const int imm8) {
     r_,
     a_ = simde__m256i_to_private(a);
 
-  if (HEDLEY_STATIC_CAST(const unsigned int, imm8) > 15) {
+  if (HEDLEY_STATIC_CAST(unsigned int, imm8) > 15) {
     memset(&r_, 0, sizeof(r_));
   } else {
     #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
