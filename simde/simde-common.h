@@ -515,6 +515,15 @@ typedef SIMDE_FLOAT64_TYPE simde_float64;
 #  define SIMDE_ACCURACY_PREFERENCE 1
 #endif
 
+/* SIMDE__ASSUME_ALIGNED
+ *
+ * Attempt to inform the compiler that ptr is aligned to align byte
+ * boundaries.
+ *
+ * This is an internal macro, and there is a good chance it will change
+ * in the future to look a bit more like `std::assume_aligned` in,
+ * C++20.
+ */
 #if defined(SIMDE__ASSUME_ALIGNED)
 #  undef SIMDE__ASSUME_ALIGNED
 #endif
@@ -532,6 +541,13 @@ typedef SIMDE_FLOAT64_TYPE simde_float64;
 #  define SIMDE__ASSUME_ALIGNED(ptr, align)
 #endif
 
+/**********************************************************************
+ * Diagnostics to disable.
+ *
+ * It's usually better to resolve the warning by changing the code,
+ * but sometimes that's not practical.
+ */
+
 /* This is only to help us implement functions like _mm_undefined_ps. */
 #if defined(SIMDE_DIAGNOSTIC_DISABLE_UNINITIALIZED_)
 #  undef SIMDE_DIAGNOSTIC_DISABLE_UNINITIALIZED_
@@ -548,24 +564,33 @@ typedef SIMDE_FLOAT64_TYPE simde_float64;
 #  define SIMDE_DIAGNOSTIC_DISABLE_UNINITIALIZED_ _Pragma("error_messages(off,SEC_UNINITIALIZED_MEM_READ,SEC_UNDEFINED_RETURN_VALUE)")
 #elif HEDLEY_SUNPRO_VERSION_CHECK(5,12,0) && defined(__cplusplus)
 #  define SIMDE_DIAGNOSTIC_DISABLE_UNINITIALIZED_ _Pragma("error_messages(off,unassigned)")
-/* #elif \
+#elif \
      HEDLEY_TI_VERSION_CHECK(16,9,9) || \
      HEDLEY_TI_CL6X_VERSION_CHECK(8,0,0) || \
      HEDLEY_TI_CL7X_VERSION_CHECK(1,2,0) || \
      HEDLEY_TI_CLPRU_VERSION_CHECK(2,3,2)
-#  define SIMDE_DIAGNOSTIC_DISABLE_UNINITIALIZED_ _Pragma("diag_suppress 551") */
+#  define SIMDE_DIAGNOSTIC_DISABLE_UNINITIALIZED_ _Pragma("diag_suppress 551")
 #elif HEDLEY_INTEL_VERSION_CHECK(13,0,0)
 #  define SIMDE_DIAGNOSTIC_DISABLE_UNINITIALIZED_ _Pragma("warning(disable:592)")
 #elif HEDLEY_MSVC_VERSION_CHECK(19,0,0) && !defined(__MSVC_RUNTIME_CHECKS)
 #  define SIMDE_DIAGNOSTIC_DISABLE_UNINITIALIZED_ __pragma(warning(disable:4700))
 #endif
 
+/* GCC emits a lot of "notes" about the ABI being different for things
+ * in newer versions of GCC.  We don't really care because all our
+ * functions are inlined and don't generate ABI. */
 #if HEDLEY_GCC_VERSION_CHECK(7,0,0)
 #  define SIMDE_DIAGNOSTIC_DISABLE_PSABI_ _Pragma("GCC diagnostic ignored \"-Wpsabi\"")
 #else
 #  define SIMDE_DIAGNOSTIC_DISABLE_PSABI_
 #endif
 
+/* Since MMX uses x87 FP registers, you're supposed to call _mm_empty()
+ * after each MMX function before any floating point instructions.
+ * Some compilers warn about functions which use MMX functions but
+ * don't call _mm_empty().  However, since SIMDe is implementyng the
+ * MMX API we shouldn't be calling _mm_empty(); we leave it to the
+ * caller to invoke simde_mm_empty(). */
 #if HEDLEY_INTEL_VERSION_CHECK(19,0,0)
 #  define SIMDE_DIAGNOSTIC_DISABLE_NO_EMMS_INSTRUCTION_ _Pragma("warning(disable:13200 13203)")
 #elif defined(HEDLEY_MSVC_VERSION)
@@ -574,6 +599,11 @@ typedef SIMDE_FLOAT64_TYPE simde_float64;
 #  define SIMDE_DIAGNOSTIC_DISABLE_NO_EMMS_INSTRUCTION_
 #endif
 
+/* Intel is pushing people to use OpenMP SIMD instead of Cilk+, so they
+ * emit a diagnostic if you use #pragma simd instead of
+ * #pragma omp simd.  SIMDe supports OpenMP SIMD, you just need to
+ * compile with -qopenmp or -qopenmp-simd and define
+ * SIMDE_ENABLE_OPENMP.  Cilk+ is just a fallback. */
 #if HEDLEY_INTEL_VERSION_CHECK(18,0,0)
 #  define SIMDE_DIAGNOSTIC_DISABLE_SIMD_PRAGMA_DEPRECATED_ _Pragma("warning(disable:3948)")
 #else
