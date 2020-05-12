@@ -2116,7 +2116,7 @@ simde_mm_sllv_epi32 (simde__m128i a, simde__m128i b) {
     r_;
 
 #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
-  r_.u32 = (b_.u32 < 32) ? (a_.i32 << b_.u32) : 0;
+  r_.u32 = (b_.u32 < 32) & (a_.u32 << b_.u32);
 #else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r_.u32) / sizeof(r_.u32[0])) ; i++) {
@@ -2143,7 +2143,7 @@ simde_mm256_sllv_epi32 (simde__m256i a, simde__m256i b) {
     r_;
 
 #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
-  r_.u32 = (b_.u32 < 32) ? (a_.u32 << b_.u32) : 0;
+  r_.u32 = (b_.u32 < 32) & (a_.u32 << b_.u32);
 #else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r_.u32) / sizeof(r_.u32[0])) ; i++) {
@@ -2170,7 +2170,7 @@ simde_mm_sllv_epi64 (simde__m128i a, simde__m128i b) {
     r_;
 
 #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
-  r_.u64 = (b_.u64 < 64) ? (a_.u64 << b_.u64) : 0;
+  r_.u64 = (b_.u64 < 64) & (a_.u64 << b_.u64);
 #else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r_.u64) / sizeof(r_.u64[0])) ; i++) {
@@ -2197,7 +2197,7 @@ simde_mm256_sllv_epi64 (simde__m256i a, simde__m256i b) {
     r_;
 
 #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
-  r_.u64 = (b_.u64 < 64) ? (a_.u64 << b_.u64) : 0;
+  r_.u64 = (b_.u64 < 64) & (a_.u64 << b_.u64);
 #else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r_.u64) / sizeof(r_.u64[0])) ; i++) {
@@ -2424,7 +2424,7 @@ simde_mm_srlv_epi32 (simde__m128i a, simde__m128i b) {
     r_;
 
 #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
-  r_.u32 = (b_.u32 < 32) ? (a_.u32 >> b_.u32) : 0;
+  r_.u32 = (b_.u32 < 32) & (a_.u32 >> b_.u32);
 #else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r_.u32) / sizeof(r_.u32[0])) ; i++) {
@@ -2451,7 +2451,7 @@ simde_mm256_srlv_epi32 (simde__m256i a, simde__m256i b) {
     r_;
 
 #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
-  r_.u32 = (b_.u32 < 32) ? (a_.u32 >> b_.u32) : 0;
+  r_.u32 = (b_.u32 < 32) & (a_.u32 >> b_.u32);
 #else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r_.u32) / sizeof(r_.u32[0])) ; i++) {
@@ -2478,7 +2478,7 @@ simde_mm_srlv_epi64 (simde__m128i a, simde__m128i b) {
     r_;
 
 #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
-  r_.u64 = (b_.u64 < 64) ? (a_.u64 >> b_.u64) : 0;
+  r_.u64 = (b_.u64 < 64) & (a_.u64 >> b_.u64);
 #else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r_.u64) / sizeof(r_.u64[0])) ; i++) {
@@ -2505,7 +2505,7 @@ simde_mm256_srlv_epi64 (simde__m256i a, simde__m256i b) {
     r_;
 
 #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
-  r_.u64 = (b_.u64 < 64) ? (a_.u64 >> b_.u64) : 0;
+  r_.u64 = (b_.u64 < 64) & (a_.u64 >> b_.u64);
 #else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r_.u64) / sizeof(r_.u64[0])) ; i++) {
