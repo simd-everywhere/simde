@@ -5,7 +5,15 @@
 #include "../simde/simde-common.h"
 
 SIMDE_DIAGNOSTIC_DISABLE_VLA_
+HEDLEY_DIAGNOSTIC_PUSH
+#if HEDLEY_HAS_WARNING("-Wc++98-compat-pedantic") && defined(__cplusplus)
+#  pragma clang diagnostic ignored "-Wc++98-compat-pedantic"
+#endif
+#if HEDLEY_HAS_WARNING("-Wpadded")
+#  pragma clang diagnostic ignored "-Wpadded"
+#endif
 #include "munit/munit.h"
+HEDLEY_DIAGNOSTIC_POP
 
 #include <stdio.h>
 #include <math.h>
@@ -15,6 +23,9 @@ SIMDE_DIAGNOSTIC_DISABLE_DOUBLE_PROMOTION_
 
 #if HEDLEY_HAS_WARNING("-Wold-style-cast")
   #pragma clang diagnostic ignored "-Wold-style-cast"
+#endif
+#if HEDLEY_HAS_WARNING("-Wzero-as-null-pointer-constant")
+  #pragma clang diagnostic ignored "-Wzero-as-null-pointer-constant"
 #endif
 
 #if defined(HEDLEY_MSVC_VERSION)
