@@ -285,14 +285,14 @@ simde_mm_cmpestra_16_(simde__m128i a, int la, simde__m128i b, int lb, const int 
   return !int_res_2 & (lb > upper_bound);
 }
 
-#if defined(SIMDE_X86_SSE4_2_NATIVE)
-#  define simde_mm_cmpestra(a, la, b, lb, imm8) _mm_cmpestra(a, la, b, lb, imm8)
-#endif
-#if defined(SIMDE_X86_SSE4_2_ENABLE_NATIVE_ALIASES)
 #  define simde_mm_cmpestra(a, la, b, lb, imm8) \
      (((imm8) & SIMDE_SIDD_UWORD_OPS) \
        ? simde_mm_cmpestra_16_((a), (la), (b), (lb), (imm8)) \
        : simde_mm_cmpestra_8_((a), (la), (b), (lb), (imm8)))
+#if defined(SIMDE_X86_SSE4_2_NATIVE)
+#  define simde_mm_cmpestra(a, la, b, lb, imm8) _mm_cmpestra(a, la, b, lb, imm8)
+#endif
+#if defined(SIMDE_X86_SSE4_2_ENABLE_NATIVE_ALIASES)
 #  define _mm_cmpestra(a, la, b, lb, imm8) simde_mm_cmpestra(a, la, b, lb, imm8)
 #endif
 
