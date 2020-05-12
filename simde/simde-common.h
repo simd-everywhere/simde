@@ -532,7 +532,7 @@ typedef SIMDE_FLOAT64_TYPE simde_float64;
 #elif HEDLEY_MSVC_VERSION_CHECK(13,10,0)
 #  define SIMDE_ASSUME_ALIGNED_(ptr, align) __assume((((char*) ptr) - ((char*) 0)) % (align) == 0)
 #elif HEDLEY_GCC_HAS_BUILTIN(__builtin_assume_aligned,4,7,0)
-#  define SIMDE_ASSUME_ALIGNED_(ptr, align) (ptr = (__typeof__(ptr)) __builtin_assume_aligned((ptr), align))
+#  define SIMDE_ASSUME_ALIGNED_(ptr, align) (ptr = HEDLEY_REINTERPRET_CAST(__typeof__(ptr), __builtin_assume_aligned((ptr), align)))
 #elif HEDLEY_CLANG_HAS_BUILTIN(__builtin_assume)
 #  define SIMDE_ASSUME_ALIGNED_(ptr, align) __builtin_assume((((char*) ptr) - ((char*) 0)) % (align) == 0)
 #elif HEDLEY_GCC_HAS_BUILTIN(__builtin_unreachable,4,5,0)

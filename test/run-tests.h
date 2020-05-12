@@ -13,6 +13,10 @@ SIMDE_DIAGNOSTIC_DISABLE_VLA_
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 SIMDE_DIAGNOSTIC_DISABLE_DOUBLE_PROMOTION_
 
+#if HEDLEY_HAS_WARNING("-Wold-style-cast")
+  #pragma clang diagnostic ignored "-Wold-style-cast"
+#endif
+
 #if defined(HEDLEY_MSVC_VERSION)
 /* Unused function(s) */
 #pragma warning(disable:4505)
