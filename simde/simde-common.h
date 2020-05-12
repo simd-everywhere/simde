@@ -581,33 +581,6 @@ typedef SIMDE_FLOAT64_TYPE simde_float64;
 #endif
 
 #if \
-  HEDLEY_HAS_WARNING("-Wtautological-compare") || \
-  HEDLEY_GCC_VERSION_CHECK(7,0,0)
-#  if defined(__cplusplus)
-#    if (__cplusplus >= 201402L)
-#      define SIMDE_TAUTOLOGICAL_COMPARE_(expr) \
-        (([](auto expr_){ \
-          HEDLEY_DIAGNOSTIC_PUSH \
-          _Pragma("GCC diagnostic ignored \"-Wtautological-compare\"") \
-          return (expr_); \
-          HEDLEY_DIAGNOSTIC_POP \
-        })(expr))
-#    endif
-#  else
-#    define SIMDE_TAUTOLOGICAL_COMPARE_(expr) \
-       (__extension__ ({ \
-         HEDLEY_DIAGNOSTIC_PUSH \
-         _Pragma("GCC diagnostic ignored \"-Wtautological-compare\"") \
-         (expr); \
-         HEDLEY_DIAGNOSTIC_POP \
-     }))
-#  endif
-#endif
-#if !defined(SIMDE_TAUTOLOGICAL_COMPARE_)
-#  define SIMDE_TAUTOLOGICAL_COMPARE_(expr) (expr)
-#endif
-
-#if \
   defined(HEDLEY_MSVC_VERSION)
 #  define SIMDE_DIAGNOSTIC_DISABLE_NON_CONSTANT_AGGREGATE_INITIALIZER_ __pragma(warning(disable:4204))
 #else

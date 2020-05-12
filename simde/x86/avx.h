@@ -514,13 +514,13 @@ simde_x_mm256_setone_si256 (void) {
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256
-simde_x_m256_setone_ps (void) {
+simde_x_mm256_setone_ps (void) {
   return simde_mm256_castsi256_ps(simde_x_mm256_setone_si256());
 }
 
 SIMDE__FUNCTION_ATTRIBUTES
 simde__m256d
-simde_x_m256_setone_pd (void) {
+simde_x_mm256_setone_pd (void) {
   return simde_mm256_castsi256_pd(simde_x_mm256_setone_si256());
 }
 
@@ -2163,7 +2163,7 @@ simde_mm256_cmp_pd (simde__m256d a, simde__m256d b, const int imm8)
       r_.i64 = HEDLEY_STATIC_CAST(__typeof__(r_.i64), (a_.f64 <= b_.f64));
       break;
     case SIMDE_CMP_FALSE_OQ:
-      r_.i64 = HEDLEY_STATIC_CAST(__typeof__(r_.i64), SIMDE_TAUTOLOGICAL_COMPARE_(a_.i64 != a_.i64));
+      r_ = simde__m256d_to_private(simde_mm256_setzero_pd());
       break;
     case SIMDE_CMP_NEQ_OQ:
       r_.i64 = HEDLEY_STATIC_CAST(__typeof__(r_.i64), (a_.f64 != b_.f64));
@@ -2175,7 +2175,7 @@ simde_mm256_cmp_pd (simde__m256d a, simde__m256d b, const int imm8)
       r_.i64 = HEDLEY_STATIC_CAST(__typeof__(r_.i64), (a_.f64 > b_.f64));
       break;
     case SIMDE_CMP_TRUE_UQ:
-      r_.i64 = HEDLEY_STATIC_CAST(__typeof__(r_.i64), SIMDE_TAUTOLOGICAL_COMPARE_(a_.i64 == a_.i64));
+      r_ = simde__m256d_to_private(simde_x_mm256_setone_pd());
       break;
     case SIMDE_CMP_EQ_OS:
       r_.i64 = HEDLEY_STATIC_CAST(__typeof__(r_.i64), (a_.f64 == b_.f64));
@@ -2223,7 +2223,7 @@ simde_mm256_cmp_pd (simde__m256d a, simde__m256d b, const int imm8)
       r_.i64 = HEDLEY_STATIC_CAST(__typeof__(r_.i64), (a_.f64 <= b_.f64));
       break;
     case SIMDE_CMP_FALSE_OS:
-      r_.i32f = (a_.i32f ^ a_.i32f);
+      r_ = simde__m256d_to_private(simde_mm256_setzero_pd());
       break;
     case SIMDE_CMP_NEQ_OS:
       r_.i64 = HEDLEY_STATIC_CAST(__typeof__(r_.i64), (a_.f64 != b_.f64));
@@ -2235,7 +2235,7 @@ simde_mm256_cmp_pd (simde__m256d a, simde__m256d b, const int imm8)
       r_.i64 = HEDLEY_STATIC_CAST(__typeof__(r_.i64), (a_.f64 > b_.f64));
       break;
     case SIMDE_CMP_TRUE_US:
-      r_.i32f = ~(r_.i32f ^ r_.i32f);
+      r_ = simde__m256d_to_private(simde_x_mm256_setone_pd());
       break;
     default:
       HEDLEY_UNREACHABLE();
@@ -2428,7 +2428,7 @@ simde_mm256_cmp_ps (simde__m256 a, simde__m256 b, const int imm8)
       r_.i32 = HEDLEY_STATIC_CAST(__typeof__(r_.i32), (a_.f32 <= b_.f32));
       break;
     case SIMDE_CMP_FALSE_OQ:
-      r_.i32 = HEDLEY_STATIC_CAST(__typeof__(r_.i32), SIMDE_TAUTOLOGICAL_COMPARE_(a_.i32 != a_.i32));
+      r_ = simde__m256_to_private(simde_mm256_setzero_ps());
       break;
     case SIMDE_CMP_NEQ_OQ:
       r_.i32 = HEDLEY_STATIC_CAST(__typeof__(r_.i32), (a_.f32 != b_.f32));
@@ -2440,7 +2440,7 @@ simde_mm256_cmp_ps (simde__m256 a, simde__m256 b, const int imm8)
       r_.i32 = HEDLEY_STATIC_CAST(__typeof__(r_.i32), (a_.f32 > b_.f32));
       break;
     case SIMDE_CMP_TRUE_UQ:
-      r_.i32 = HEDLEY_STATIC_CAST(__typeof__(r_.i32), SIMDE_TAUTOLOGICAL_COMPARE_(a_.i32 == a_.i32));
+      r_ = simde__m256_to_private(simde_x_mm256_setone_ps());
       break;
     case SIMDE_CMP_EQ_OS:
       r_.i32 = HEDLEY_STATIC_CAST(__typeof__(r_.i32), (a_.f32 == b_.f32));
@@ -2488,7 +2488,7 @@ simde_mm256_cmp_ps (simde__m256 a, simde__m256 b, const int imm8)
       r_.i32 = HEDLEY_STATIC_CAST(__typeof__(r_.i32), (a_.f32 <= b_.f32));
       break;
     case SIMDE_CMP_FALSE_OS:
-      r_.i32 = (a_.i32 ^ a_.i32);
+      r_ = simde__m256_to_private(simde_mm256_setzero_ps());
       break;
     case SIMDE_CMP_NEQ_OS:
       r_.i32 = HEDLEY_STATIC_CAST(__typeof__(r_.i32), (a_.f32 != b_.f32));
@@ -2500,7 +2500,7 @@ simde_mm256_cmp_ps (simde__m256 a, simde__m256 b, const int imm8)
       r_.i32 = HEDLEY_STATIC_CAST(__typeof__(r_.i32), (a_.f32 > b_.f32));
       break;
     case SIMDE_CMP_TRUE_US:
-      r_.i32 = ~(a_.i32 ^ a_.i32);
+      r_ = simde__m256_to_private(simde_x_mm256_setone_ps());
       break;
     default:
       HEDLEY_UNREACHABLE();
