@@ -2827,10 +2827,10 @@ test_simde_mm512_xxx_epu64(const MunitParameter params[], void* data) {
     simde__m512i a;
     simde__m512i b;
     simde__m512i r;
-  } test_vec[8] = {
+    test_vec[8] = {
 
   };
-
+  }
   printf("\n");
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m512i_private a, b, r;
@@ -2841,11 +2841,11 @@ test_simde_mm512_xxx_epu64(const MunitParameter params[], void* data) {
     r = simde__m512i_to_private(simde_mm512_xxx_epu64(simde__m512i_from_private(a), simde__m512i_from_private(b)));
 
     printf("    { simde_x_mm512_set_epu64(UINT64_C(%20" PRIu64 "), UINT64_C(%20" PRIu64 "),\n"
-           "                              UINT64_C(%20" PRIu64 "), UINT64_C(%20" PRIu64 "),\n",
-           "                              UINT64_C(%20" PRIu64 "), UINT64_C(%20" PRIu64 "),\n",
-           "                              UINT64_C(%20" PRIu64 "), UINT64_C(%20" PRIu64 ")) },\n",
-           a.i64[7], a.i64[6], a.i64[5], a.i64[4],
-           a.i64[3], a.i64[2], a.i64[1], a.i64[0]);
+           "                              UINT64_C(%20" PRIu64 "), UINT64_C(%20" PRIu64 "),\n"
+           "                              UINT64_C(%20" PRIu64 "), UINT64_C(%20" PRIu64 "),\n"
+           "                              UINT64_C(%20" PRIu64 "), UINT64_C(%20" PRIu64 ")),\n",
+           a.u64[7], a.u64[6], a.u64[5], a.u64[4],
+           a.u64[3], a.u64[2], a.u64[1], a.u64[0]);
     printf("      simde_x_mm512_set_epu64(UINT64_C(%20" PRIu64 "), UINT64_C(%20" PRIu64 "),\n"
            "                              UINT64_C(%20" PRIu64 "), UINT64_C(%20" PRIu64 "),\n"
            "                              UINT64_C(%20" PRIu64 "), UINT64_C(%20" PRIu64 "),\n"
@@ -2863,7 +2863,7 @@ test_simde_mm512_xxx_epu64(const MunitParameter params[], void* data) {
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m512i r = simde_mm512_xxx_epu64(test_vec[i].a, test_vec[i].b);
-    simde_assert_m512i_i64(r, ==, test_vec[i].r);
+    simde_assert_m512i_u64(r, ==, test_vec[i].r);
   }
 
   return MUNIT_OK;
