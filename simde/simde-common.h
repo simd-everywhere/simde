@@ -61,7 +61,11 @@
 #  define SIMDE_ALIGN(alignment)
 #endif
 
-#if \
+#if HEDLEY_GNUC_VERSION_CHECK(2,95,0) || \
+    HEDLEY_ARM_VERSION_CHECK(4,1,0) || \
+    HEDLEY_IBM_VERSION_CHECK(11,1,0)
+#  define SIMDE_ALIGN_OF(T) (__alignof__(T))
+#elif \
   (defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 201112L)) || \
   HEDLEY_HAS_FEATURE(c11_alignof)
 #  define SIMDE_ALIGN_OF(T) (_Alignof(T))
@@ -69,10 +73,6 @@
   (defined(__cplusplus) && (__cplusplus >= 201103L)) || \
   HEDLEY_HAS_FEATURE(cxx_alignof)
 #  define SIMDE_ALIGN_OF(T) (alignof(T))
-#elif HEDLEY_GCC_VERSION_CHECK(2,95,0) || \
-    HEDLEY_ARM_VERSION_CHECK(4,1,0) || \
-    HEDLEY_IBM_VERSION_CHECK(11,1,0)
-#  define SIMDE_ALIGN_OF(T) (__alignof__(T))
 #endif
 
 #if defined(SIMDE_ALIGN_OF)
