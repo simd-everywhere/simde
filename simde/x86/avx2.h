@@ -2221,13 +2221,16 @@ simde_mm256_srai_epi16 (simde__m256i a, const int imm8) {
   simde__m256i_private
     r_,
     a_ = simde__m256i_to_private(a);
+  unsigned int shift = HEDLEY_STATIC_CAST(unsigned int, imm8);
 
-#if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
-  r_.i16 = a_.i16 >> HEDLEY_STATIC_CAST(int16_t, imm8);
+  if (shift > 15) shift = 15;
+
+#if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && 0
+  r_.i16 = a_.i16 >> HEDLEY_STATIC_CAST(int16_t, shift);
 #else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r_.i16) / sizeof(r_.i16[0])) ; i++) {
-    r_.i16[i] = a_.i16[i] >> imm8;
+    r_.i16[i] = a_.i16[i] >> shift;
   }
 #endif
 
@@ -2252,13 +2255,16 @@ simde_mm256_srai_epi32 (simde__m256i a, const int imm8) {
   simde__m256i_private
     r_,
     a_ = simde__m256i_to_private(a);
+  unsigned int shift = HEDLEY_STATIC_CAST(unsigned int, imm8);
 
-#if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
-  r_.i32 = a_.i32 >> HEDLEY_STATIC_CAST(int16_t, imm8);
+  if (shift > 31) shift = 31;
+
+#if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && 0
+  r_.i32 = a_.i32 >> HEDLEY_STATIC_CAST(int16_t, shift);
 #else
   SIMDE__VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {
-    r_.i32[i] = a_.i32[i] >> imm8;
+    r_.i32[i] = a_.i32[i] >> shift;
   }
 #endif
 
