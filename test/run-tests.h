@@ -110,7 +110,7 @@ static void random_f32v(size_t nmemb, simde_float32 v[HEDLEY_ARRAY_PARAM(nmemb)]
   for (size_t i = 0 ; i < nmemb ; i++) {
     do {
       munit_rand_memory(sizeof(v[i]), HEDLEY_REINTERPRET_CAST(uint8_t*, &(v[i])));
-    } while (!isnormal(v[i]));
+    } while (!simde_isnormal(v[i]));
   }
 }
 
@@ -133,7 +133,7 @@ static void random_f64v(size_t nmemb, simde_float64 v[HEDLEY_ARRAY_PARAM(nmemb)]
   for (size_t i = 0 ; i < nmemb ; i++) {
     do {
       munit_rand_memory(sizeof(v[i]), HEDLEY_REINTERPRET_CAST(uint8_t*, &(v[i])));
-    } while (!isnormal(v[i]));
+    } while (!simde_isnormal(v[i]));
   }
 }
 

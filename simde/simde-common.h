@@ -845,6 +845,21 @@ typedef SIMDE_FLOAT64_TYPE simde_float64;
   #endif
 #endif
 
+#if !defined(simde_isnormal)
+  #if defined(isnormal)
+    #define simde_isnormal(v) isnormal(v)
+  #elif defined(__cplusplus) && defined(HUGE_VAL)
+    #define simde_isnormal(v) std::isnormal(v)
+  #elif \
+      HEDLEY_HAS_BUILTIN(__builtin_isnormal) || \
+      HEDLEY_GCC_VERSION_CHECK(4,3,0) || \
+      HEDLEY_ARM_VERSION_CHECK(4,1,0) || \
+      HEDLEY_INTEL_VERSION_CHECK(13,0,0) || \
+      HEDLEY_IBM_VERSION_CHECK(16,1,0)
+    #define simde_isnormal(v) __builtin_isnormal(v)
+  #endif
+#endif
+
 #if defined(__has_include)
 #  if __has_include(<fenv.h>)
 #    include <fenv.h>
