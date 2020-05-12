@@ -803,12 +803,22 @@ typedef SIMDE_FLOAT64_TYPE simde_float64;
 
 #if !defined(SIMDE_NO_MATH_H)
   #define SIMDE_HAVE_MATH_H
-  #include <math.h>
+  #if defined(__cplusplus)
+    #include <cmath>
+  #else
+    #include <math.h>
+  #endif
 #endif
 
 #if !defined(simde_isnan)
-  #if !defined(SIMDE_NO_MATH_H)
+  #if defined(isnan)
     #define simde_isnan(v) isnan(v)
+  #elif defined(__cplusplus) && defined(HUGE_VAL)
+    /* Including <cmath> will undefine isnan, so we need to use
+      * std::isnan.  However, we can't just use std::isnan in C++
+      * because if <cmath> hasn't been included but <math.h> has
+      * we'll have isnan but not std::isnan */
+    #define simde_isnan(v) std::isnan(v)
   #elif \
       HEDLEY_HAS_BUILTIN(__builtin_isnan) || \
       HEDLEY_GCC_VERSION_CHECK(4,4,0) || \
@@ -820,15 +830,18 @@ typedef SIMDE_FLOAT64_TYPE simde_float64;
 #endif
 
 #if !defined(simde_isnanf)
-  #if !defined(SIMDE_NO_MATH_H)
-    #define simde_isnanf(v) isnan(v)
+  #if defined(isnanf)
+    #define simde_isnanf(v) isnanf(v)
   #elif \
       HEDLEY_HAS_BUILTIN(__builtin_isnanf) || \
       HEDLEY_GCC_VERSION_CHECK(4,4,0) || \
       HEDLEY_ARM_VERSION_CHECK(4,1,0) || \
-      HEDLEY_INTEL_VERSION_CHECK(13,0,0) || \
-      HEDLEY_IBM_VERSION_CHECK(13,1,0)
+      HEDLEY_INTEL_VERSION_CHECK(13,0,0)
+    /* Note: XL C/C++ implements __builtin_isnan but not
+     * __builtin_isnanf. */
     #define simde_isnanf(v) __builtin_isnanf(v)
+  #elif defined(simde_isnan)
+    #define simde_isnanf(v) simde_isnan(v)
   #endif
 #endif
 
