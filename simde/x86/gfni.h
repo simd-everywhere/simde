@@ -452,7 +452,7 @@ simde__m128i simde_mm_gf2p8mul_epi8 (simde__m128i a, simde__m128i b) {
           r_.u8[i] ^= a_.u8[i];
 
         if (a_.u8[i] & 0x80)
-          a_.u8[i] = (a_.u8[i] << 1) ^ fgp;
+          a_.u8[i] = HEDLEY_STATIC_CAST(uint8_t, (a_.u8[i] << 1) ^ fgp);
         else
           a_.u8[i] <<= 1;
 
