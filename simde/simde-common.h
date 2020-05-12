@@ -803,10 +803,12 @@ typedef SIMDE_FLOAT64_TYPE simde_float64;
 
 #if !defined(SIMDE_NO_MATH_H)
   #define SIMDE_HAVE_MATH_H
-  #if defined(__cplusplus)
-    #include <cmath>
-  #else
-    #include <math.h>
+  #if !defined(HUGE_VAL)
+    #if defined(__cplusplus)
+      #include <cmath>
+    #else
+      #include <math.h>
+    #endif
   #endif
 #endif
 
