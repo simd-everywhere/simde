@@ -64,7 +64,7 @@ simde_mm_movm_epi8 (simde__mmask16 k) {
 
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.i8) / sizeof(r_.i8[0])) ; i++) {
-      r_.i8[i] = ((k >> i) & 1) ? INT8_C(0xFF) : INT8_C(0);
+      r_.i8[i] = ((k >> i) & 1) ? ~INT8_C(0) : INT8_C(0);
     }
 
     return simde__m128i_from_private(r_);
@@ -174,7 +174,7 @@ simde_mm_movm_epi16 (simde__mmask8 k) {
 
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.i16) / sizeof(r_.i16[0])) ; i++) {
-      r_.i16[i] = ((k >> i) & 1) ? INT16_C(0xFFFF) : INT16_C(0);
+      r_.i16[i] = ((k >> i) & 1) ? ~INT16_C(0) : INT16_C(0);
     }
 
     return simde__m128i_from_private(r_);
@@ -210,7 +210,7 @@ simde_mm256_movm_epi16 (simde__mmask16 k) {
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.i16) / sizeof(r_.i16[0])) ; i++) {
-        r_.i16[i] = ((k >> i) & 1) ? INT16_C(0xFFFF) : INT16_C(0);
+        r_.i16[i] = ((k >> i) & 1) ? ~INT16_C(0) : INT16_C(0);
       }
     #endif
 
@@ -271,7 +271,7 @@ simde_mm_movm_epi32 (simde__mmask8 k) {
 
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {
-      r_.i32[i] = ((k >> i) & 1) ? INT32_C(0xFFFFFFFF) : INT32_C(0);
+      r_.i32[i] = ((k >> i) & 1) ? ~INT32_C(0) : INT32_C(0);
     }
 
     return simde__m128i_from_private(r_);
@@ -515,7 +515,7 @@ simde_mm256_movm_epi32 (simde__mmask8 k) {
 
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {
-      r_.i32[i] = ((k >> i) & 1) ? INT32_C(0xFFFFFFFF) : INT32_C(0);
+      r_.i32[i] = ((k >> i) & 1) ? ~INT32_C(0) : INT32_C(0);
     }
 
     return simde__m256i_from_private(r_);

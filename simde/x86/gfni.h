@@ -119,7 +119,7 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_gf2p8affine_epi64_epi8 (simde__m128i x, simde__m128i A, int b)
     SIMDE_REQUIRE_CONSTANT_RANGE(b, 0, 255) {
-  return simde_mm_xor_si128(simde_x_mm_gf2p8matrix_multiply_epi64_epi8(x, A), simde_mm_set1_epi8(HEDLEY_STATIC_CAST(uint8_t, b)));
+  return simde_mm_xor_si128(simde_x_mm_gf2p8matrix_multiply_epi64_epi8(x, A), simde_mm_set1_epi8(HEDLEY_STATIC_CAST(int8_t, b)));
 }
 #if defined(SIMDE_X86_GFNI_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
   #define simde_mm_gf2p8affine_epi64_epi8(x, A, b) _mm_gf2p8affine_epi64_epi8(x, A, b)
@@ -151,7 +151,7 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde__m256i
 simde_mm256_gf2p8affine_epi64_epi8 (simde__m256i x, simde__m256i A, int b)
     SIMDE_REQUIRE_CONSTANT_RANGE(b, 0, 255) {
-  return simde_mm256_xor_si256(simde_x_mm256_gf2p8matrix_multiply_epi64_epi8(x, A), simde_mm256_set1_epi8(HEDLEY_STATIC_CAST(uint8_t, b)));
+  return simde_mm256_xor_si256(simde_x_mm256_gf2p8matrix_multiply_epi64_epi8(x, A), simde_mm256_set1_epi8(HEDLEY_STATIC_CAST(int8_t, b)));
 }
 #if defined(SIMDE_X86_GFNI_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
   #define simde_mm256_gf2p8affine_epi64_epi8(x, A, b) _mm256_gf2p8affine_epi64_epi8(x, A, b)
@@ -183,7 +183,7 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde__m512i
 simde_mm512_gf2p8affine_epi64_epi8 (simde__m512i x, simde__m512i A, int b)
     SIMDE_REQUIRE_CONSTANT_RANGE(b, 0, 255) {
-  return simde_mm512_xor_si512(simde_x_mm512_gf2p8matrix_multiply_epi64_epi8(x, A), simde_mm512_set1_epi8(HEDLEY_STATIC_CAST(uint8_t, b)));
+  return simde_mm512_xor_si512(simde_x_mm512_gf2p8matrix_multiply_epi64_epi8(x, A), simde_mm512_set1_epi8(HEDLEY_STATIC_CAST(int8_t, b)));
 }
 #if defined(SIMDE_X86_GFNI_NATIVE) && defined(SIMDE_X86_AVX512F_NATIVE)
   #define simde_mm512_gf2p8affine_epi64_epi8(x, A, b) _mm512_gf2p8affine_epi64_epi8(x, A, b)
@@ -276,7 +276,7 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_gf2p8affineinv_epi64_epi8 (simde__m128i x, simde__m128i A, int b)
     SIMDE_REQUIRE_CONSTANT_RANGE(b, 0, 255) {
-  return simde_mm_xor_si128(simde_x_mm_gf2p8matrix_multiply_inverse_epi64_epi8(x, A), simde_mm_set1_epi8(HEDLEY_STATIC_CAST(uint8_t, b)));
+  return simde_mm_xor_si128(simde_x_mm_gf2p8matrix_multiply_inverse_epi64_epi8(x, A), simde_mm_set1_epi8(HEDLEY_STATIC_CAST(int8_t, b)));
 }
 #if defined(SIMDE_X86_GFNI_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
   #define simde_mm_gf2p8affineinv_epi64_epi8(x, A, b) _mm_gf2p8affineinv_epi64_epi8(x, A, b)
@@ -308,7 +308,7 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde__m256i
 simde_mm256_gf2p8affineinv_epi64_epi8 (simde__m256i x, simde__m256i A, int b)
     SIMDE_REQUIRE_CONSTANT_RANGE(b, 0, 255) {
-  return simde_mm256_xor_si256(simde_x_mm256_gf2p8matrix_multiply_inverse_epi64_epi8(x, A), simde_mm256_set1_epi8(HEDLEY_STATIC_CAST(uint8_t, b)));
+  return simde_mm256_xor_si256(simde_x_mm256_gf2p8matrix_multiply_inverse_epi64_epi8(x, A), simde_mm256_set1_epi8(HEDLEY_STATIC_CAST(int8_t, b)));
 }
 #if defined(SIMDE_X86_GFNI_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
   #define simde_mm256_gf2p8affineinv_epi64_epi8(x, A, b) _mm256_gf2p8affineinv_epi64_epi8(x, A, b)
@@ -340,7 +340,7 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde__m512i
 simde_mm512_gf2p8affineinv_epi64_epi8 (simde__m512i x, simde__m512i A, int b)
     SIMDE_REQUIRE_CONSTANT_RANGE(b, 0, 255) {
-  return simde_mm512_xor_si512(simde_x_mm512_gf2p8matrix_multiply_inverse_epi64_epi8(x, A), simde_mm512_set1_epi8(HEDLEY_STATIC_CAST(uint8_t, b)));
+  return simde_mm512_xor_si512(simde_x_mm512_gf2p8matrix_multiply_inverse_epi64_epi8(x, A), simde_mm512_set1_epi8(HEDLEY_STATIC_CAST(int8_t, b)));
 }
 #if defined(SIMDE_X86_GFNI_NATIVE) && defined(SIMDE_X86_AVX512F_NATIVE)
   #define simde_mm512_gf2p8affineinv_epi64_epi8(x, A, b) _mm512_gf2p8affineinv_epi64_epi8(x, A, b)
