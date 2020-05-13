@@ -128,31 +128,30 @@ simde_mm512_maskz_mov_epi16(simde__mmask32 k, simde__m512i a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__mmask64
 simde_mm512_movepi8_mask (simde__m512i a) {
-  #if defined(SIMDE_X86_AVX512BW_NATIVE)
-    return _mm512_movepi8_mask(a);
+  simde__m512i_private a_ = simde__m512i_to_private(a);
+  simde__mmask64 r;
+
+  #if defined(SIMDE_X86_AVX2_NATIVE)
+    r =             HEDLEY_STATIC_CAST(simde__mmask64, HEDLEY_STATIC_CAST(unsigned int, simde_mm256_movemask_epi8(a_.m256i[1])));
+    r = (r << 32) | HEDLEY_STATIC_CAST(simde__mmask64, HEDLEY_STATIC_CAST(unsigned int, simde_mm256_movemask_epi8(a_.m256i[0])));
+  #elif defined(SIMDE_X86_SSE2_NATIVE)
+    r =             HEDLEY_STATIC_CAST(simde__mmask64, HEDLEY_STATIC_CAST(unsigned int, simde_mm_movemask_epi8(a_.m128i[3])));
+    r = (r << 16) | HEDLEY_STATIC_CAST(simde__mmask64, HEDLEY_STATIC_CAST(unsigned int, simde_mm_movemask_epi8(a_.m128i[2])));
+    r = (r << 16) | HEDLEY_STATIC_CAST(simde__mmask64, HEDLEY_STATIC_CAST(unsigned int, simde_mm_movemask_epi8(a_.m128i[1])));
+    r = (r << 16) | HEDLEY_STATIC_CAST(simde__mmask64, HEDLEY_STATIC_CAST(unsigned int, simde_mm_movemask_epi8(a_.m128i[0])));
   #else
-    simde__m512i_private a_ = simde__m512i_to_private(a);
-    simde__mmask64 r;
+    r = 0;
 
-    #if defined(SIMDE_X86_AVX2_NATIVE)
-      r =             HEDLEY_STATIC_CAST(simde__mmask64, HEDLEY_STATIC_CAST(unsigned int, simde_mm256_movemask_epi8(a_.m256i[1])));
-      r = (r << 32) | HEDLEY_STATIC_CAST(simde__mmask64, HEDLEY_STATIC_CAST(unsigned int, simde_mm256_movemask_epi8(a_.m256i[0])));
-    #elif defined(SIMDE_X86_SSE2_NATIVE)
-      r =             HEDLEY_STATIC_CAST(simde__mmask64, HEDLEY_STATIC_CAST(unsigned int, simde_mm_movemask_epi8(a_.m128i[3])));
-      r = (r << 16) | HEDLEY_STATIC_CAST(simde__mmask64, HEDLEY_STATIC_CAST(unsigned int, simde_mm_movemask_epi8(a_.m128i[2])));
-      r = (r << 16) | HEDLEY_STATIC_CAST(simde__mmask64, HEDLEY_STATIC_CAST(unsigned int, simde_mm_movemask_epi8(a_.m128i[1])));
-      r = (r << 16) | HEDLEY_STATIC_CAST(simde__mmask64, HEDLEY_STATIC_CAST(unsigned int, simde_mm_movemask_epi8(a_.m128i[0])));
-    #else
-      r = 0;
-
-      for (size_t i = 0 ; i < (sizeof(a_.i8) / sizeof(a_.i8[0])) ; i++) {
-        r |= (a_.i8[i] < 0) ? (UINT64_C(1) << i) : 0;
-      }
-    #endif
-
-    return r;
+    for (size_t i = 0 ; i < (sizeof(a_.i8) / sizeof(a_.i8[0])) ; i++) {
+      r |= (a_.i8[i] < 0) ? (UINT64_C(1) << i) : 0;
+    }
   #endif
+
+  return r;
 }
+#if defined(SIMDE_X86_AVX512BW_NATIVE)
+  #define simde_mm512_movepi8_mask(a) _mm512_movepi8_mask(a);
+#endif
 #if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
   #undef _mm512_movepi8_mask
   #define _mm512_movepi8_mask(a) simde_mm512_movepi8_mask(a)
