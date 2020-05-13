@@ -150,7 +150,7 @@ simde_mm512_movepi8_mask (simde__m512i a) {
   return r;
 }
 #if defined(SIMDE_X86_AVX512BW_NATIVE)
-  #define simde_mm512_movepi8_mask(a) _mm512_movepi8_mask(a);
+  #define simde_mm512_movepi8_mask(a) _mm512_movepi8_mask(a)
 #endif
 #if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
   #undef _mm512_movepi8_mask
