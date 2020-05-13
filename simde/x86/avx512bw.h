@@ -451,7 +451,7 @@ simde_mm512_adds_epi16 (simde__m512i a, simde__m512i b) {
           const int32_t tmp =
             HEDLEY_STATIC_CAST(int32_t, a_.i16[i]) +
             HEDLEY_STATIC_CAST(int32_t, b_.i16[i]);
-          r_.i16[i] = HEDLEY_STATIC_CAST(int32_t, ((tmp < INT16_MAX) ? ((tmp > INT16_MIN) ? tmp : INT16_MIN) : INT16_MAX));
+          r_.i16[i] = HEDLEY_STATIC_CAST(int16_t, ((tmp < INT16_MAX) ? ((tmp > INT16_MIN) ? tmp : INT16_MIN) : INT16_MAX));
         }
       #endif
 
@@ -1213,7 +1213,7 @@ simde_mm512_subs_epi16 (simde__m512i a, simde__m512i b) {
           const int32_t tmp =
             HEDLEY_STATIC_CAST(int32_t, a_.i16[i]) -
             HEDLEY_STATIC_CAST(int32_t, b_.i16[i]);
-          r_.i16[i] = HEDLEY_STATIC_CAST(int32_t, ((tmp < INT16_MAX) ? ((tmp > INT16_MIN) ? tmp : INT16_MIN) : INT16_MAX));
+          r_.i16[i] = HEDLEY_STATIC_CAST(int16_t, ((tmp < INT16_MAX) ? ((tmp > INT16_MIN) ? tmp : INT16_MIN) : INT16_MAX));
         }
       #endif
 
