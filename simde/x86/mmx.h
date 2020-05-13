@@ -230,9 +230,10 @@ simde_mm_adds_pi8 (simde__m64 a, simde__m64 b) {
 #if defined(SIMDE_X86_MMX_NATIVE)
   return _mm_adds_pi8(a, b);
 #else
-  simde__m64_private r_;
-  simde__m64_private a_ = simde__m64_to_private(a);
-  simde__m64_private b_ = simde__m64_to_private(b);
+  simde__m64_private
+    r_,
+    a_ = simde__m64_to_private(a),
+    b_ = simde__m64_to_private(b);
 
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   r_.neon_i8 = vqadd_s8(a_.neon_i8, b_.neon_i8);

@@ -1860,7 +1860,7 @@ simde_mm_load_ps (simde_float32 const mem_addr[HEDLEY_ARRAY_PARAM(4)]) {
 #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
   r_.altivec_f32 = vec_ld(0, mem_addr);
 #else
-  r_ = *SIMDE_CAST_ALIGN(16, simde__m128_private const*, mem_addr);
+  r_ = *SIMDE_ALIGN_CAST(simde__m128_private const*, mem_addr);
 #endif
 
   return simde__m128_from_private(r_);
@@ -3496,10 +3496,9 @@ simde_mm_stream_ps (simde_float32 mem_addr[4], simde__m128 a) {
   simde__m128_private a_ = simde__m128_to_private(a);
 
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-  vst1q_f32(mem_addr, a_.neon_f32);
+  vst1q_f32(SIMDE_ASSUME_ALIGNED(16, mem_addr), a_.neon_f32);
 #else
-  SIMDE_ASSUME_ALIGNED_(mem_addr, 16);
-  simde_memcpy(mem_addr, &a_, sizeof(a_));
+  simde_memcpy(SIMDE_ASSUME_ALIGNED(16, mem_addr), &a_, sizeof(a_));
 #endif
 #endif
 }

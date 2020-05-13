@@ -3258,7 +3258,7 @@ simde_mm256_load_pd (const double a[HEDLEY_ARRAY_PARAM(4)]) {
   return _mm256_load_pd(a);
 #else
   simde__m256d r;
-  r = *SIMDE_CAST_ALIGN(32, simde__m256d const*, a);
+  r = *SIMDE_ALIGN_CAST(simde__m256d const*, SIMDE_ASSUME_ALIGNED(32, a));
   return r;
 #endif
 }
@@ -3275,7 +3275,7 @@ simde_mm256_load_ps (const float a[HEDLEY_ARRAY_PARAM(8)]) {
   return _mm256_load_ps(a);
 #else
   simde__m256 r;
-  r = *SIMDE_CAST_ALIGN(32, simde__m256 const*, a);
+  r = *SIMDE_ALIGN_CAST( simde__m256 const*, SIMDE_ASSUME_ALIGNED(32, a));
   return r;
 #endif
 }
@@ -4526,7 +4526,7 @@ simde_mm256_store_ps (simde_float32 mem_addr[8], simde__m256 a) {
 #if defined(SIMDE_X86_AVX_NATIVE)
   _mm256_store_ps(mem_addr, a);
 #else
-  *SIMDE_CAST_ALIGN(32, simde__m256*, mem_addr) = a;
+  *SIMDE_ALIGN_CAST(simde__m256*, SIMDE_ASSUME_ALIGNED(32, mem_addr)) = a;
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
@@ -4541,7 +4541,7 @@ simde_mm256_store_pd (simde_float64 mem_addr[4], simde__m256d a) {
 #if defined(SIMDE_X86_AVX_NATIVE)
   _mm256_store_pd(mem_addr, a);
 #else
-  *SIMDE_CAST_ALIGN(32, simde__m256d*, mem_addr) =  a;
+  *SIMDE_ALIGN_CAST(simde__m256d*, SIMDE_ASSUME_ALIGNED(32, mem_addr)) =  a;
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
@@ -4640,7 +4640,7 @@ simde_mm256_stream_ps (simde_float32 mem_addr[8], simde__m256 a) {
 #if defined(SIMDE_X86_AVX_NATIVE)
   _mm256_stream_ps(mem_addr, a);
 #else
-  *SIMDE_CAST_ALIGN(32, simde__m256*, mem_addr) = a;
+  *SIMDE_ALIGN_CAST(simde__m256*, SIMDE_ASSUME_ALIGNED(32, mem_addr)) = a;
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
@@ -4655,7 +4655,7 @@ simde_mm256_stream_pd (simde_float64 mem_addr[4], simde__m256d a) {
 #if defined(SIMDE_X86_AVX_NATIVE)
   _mm256_stream_pd(mem_addr, a);
 #else
-  *SIMDE_CAST_ALIGN(32, simde__m256d*, mem_addr) =  a;
+  *SIMDE_ALIGN_CAST(simde__m256d*, SIMDE_ASSUME_ALIGNED(32, mem_addr)) =  a;
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)

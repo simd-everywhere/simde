@@ -115,20 +115,36 @@
   SIMDE_REQUIRE_CONSTANT(arg) \
   SIMDE_REQUIRE_RANGE(arg, min, max)
 
-/* TODO: this should really do something like
-   HEDLEY_STATIC_CAST(T, (simde_assert_int(alignment, v), v))
-   but I need to think about how to handle it in all compilers...
-   may end up moving to Hedley, too. */
-#if HEDLEY_HAS_BUILTIN(__builtin_assume_aligned)
-#  define SIMDE_CAST_ALIGN(alignment, T, v) HEDLEY_REINTERPRET_CAST(T, __builtin_assume_aligned(v, alignment))
-#elif HEDLEY_HAS_WARNING("-Wcast-align")
-#  define SIMDE_CAST_ALIGN(alignment, T, v) \
-    HEDLEY_DIAGNOSTIC_PUSH \
-    _Pragma("clang diagnostic ignored \"-Wcast-align\"") \
-    HEDLEY_REINTERPRET_CAST(T, (v)) \
-    HEDLEY_DIAGNOSTIC_POP
+/* SIMDE_ASSUME_ALIGNED allows you to (try to) tell the compiler
+ * that a pointer is aligned to an `alignment`-byte boundary. */
+#if \
+    HEDLEY_HAS_BUILTIN(__builtin_assume_aligned) || \
+    HEDLEY_GCC_VERSION_CHECK(4,7,0)
+  #define SIMDE_ASSUME_ALIGNED(alignment, v) HEDLEY_REINTERPRET_CAST(__typeof__(v), __builtin_assume_aligned(v, alignment))
+#elif defined(__cplusplus) && (__cplusplus > 201703L)
+  #define SIMDE_ASSUME_ALIGNED(alignment, v) std::assume_aligned<alignment>(v)
+#elif HEDLEY_INTEL_VERSION_CHECK(13,0,0)
+  #define SIMDE_ASSUME_ALIGNED(alignment, v) (__extension__ ({ \
+      __typeof__(v) simde_assume_aligned_t_ = (v); \
+      __assume_aligned(simde_assume_aligned_t_, alignment); \
+      simde_assmue_aligned_t_; \
+    }))
 #else
-#  define SIMDE_CAST_ALIGN(alignment, T, v) HEDLEY_REINTERPRET_CAST(T, (v))
+  #define SIMDE_ASSUME_ALIGNED(alignment, v) (v)
+#endif
+
+/* SIMDE_ALIGN_CAST allows you to convert to a type with greater
+ * aligment requirements without triggering a warning. */
+#if HEDLEY_HAS_WARNING("-Wcast-align")
+  #define SIMDE_ALIGN_CAST(T, v) (__extension__({ \
+      HEDLEY_DIAGNOSTIC_PUSH \
+      _Pragma("clang diagnostic ignored \"-Wcast-align\"") \
+      T simde_r_ = HEDLEY_REINTERPRET_CAST(T, v); \
+      HEDLEY_DIAGNOSTIC_POP \
+      simde_r_; \
+    }))
+#else
+  #define SIMDE_ALIGN_CAST(T, v) HEDLEY_REINTERPRET_CAST(T, v)
 #endif
 
 #if \
@@ -515,32 +531,6 @@ typedef SIMDE_FLOAT64_TYPE simde_float64;
 #  define SIMDE_ACCURACY_PREFERENCE 1
 #endif
 
-/* SIMDE_ASSUME_ALIGNED_
- *
- * Attempt to inform the compiler that ptr is aligned to align byte
- * boundaries.
- *
- * This is an internal macro, and there is a good chance it will change
- * in the future to look a bit more like `std::assume_aligned` in,
- * C++20.
- */
-#if defined(SIMDE_ASSUME_ALIGNED_)
-#  undef SIMDE_ASSUME_ALIGNED_
-#endif
-#if HEDLEY_INTEL_VERSION_CHECK(9,0,0)
-#  define SIMDE_ASSUME_ALIGNED_(ptr, align) __assume_aligned(ptr, align)
-#elif HEDLEY_MSVC_VERSION_CHECK(13,10,0)
-#  define SIMDE_ASSUME_ALIGNED_(ptr, align) __assume((((char*) ptr) - ((char*) 0)) % (align) == 0)
-#elif HEDLEY_GCC_HAS_BUILTIN(__builtin_assume_aligned,4,7,0)
-#  define SIMDE_ASSUME_ALIGNED_(ptr, align) (ptr = HEDLEY_REINTERPRET_CAST(__typeof__(ptr), __builtin_assume_aligned((ptr), align)))
-#elif HEDLEY_CLANG_HAS_BUILTIN(__builtin_assume)
-#  define SIMDE_ASSUME_ALIGNED_(ptr, align) __builtin_assume((((char*) ptr) - ((char*) 0)) % (align) == 0)
-#elif HEDLEY_GCC_HAS_BUILTIN(__builtin_unreachable,4,5,0)
-#  define SIMDE_ASSUME_ALIGNED_(ptr, align) ((((char*) ptr) - ((char*) 0)) % (align) == 0) ? (1) : (__builtin_unreachable(), 0)
-#else
-#  define SIMDE_ASSUME_ALIGNED_(ptr, align)
-#endif
-
 /**********************************************************************
  * Diagnostics to disable.
  *
@@ -630,12 +620,6 @@ typedef SIMDE_FLOAT64_TYPE simde_float64;
 #  define SIMDE_DIAGNOSTIC_DISABLE_FLOAT_EQUAL_ _Pragma("GCC diagnostic ignored \"-Wfloat-equal\"")
 #else
 #  define SIMDE_DIAGNOSTIC_DISABLE_FLOAT_EQUAL_
-#endif
-
-#if HEDLEY_HAS_WARNING("-Wcast-align")
-#  define SIMDE_DIAGNOSTIC_DISABLE_CAST_ALIGN_ _Pragma("clang diagnostic ignored \"-Wcast-align\"")
-#else
-#  define SIMDE_DIAGNOSTIC_DISABLE_CAST_ALIGN_
 #endif
 
 #if HEDLEY_HAS_WARNING("-Wextra-semi")

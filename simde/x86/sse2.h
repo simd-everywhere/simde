@@ -2618,9 +2618,9 @@ simde_mm_load_pd (simde_float64 const mem_addr[HEDLEY_ARRAY_PARAM(2)]) {
   simde__m128d_private r_;
 
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-  r_.neon_u32 = vld1q_u32((uint32_t const*) mem_addr);
+  r_.neon_u32 = vld1q_u32(HEDLEY_REINTERPRET_CAST(uint32_t const*, mem_addr));
 #else
-  r_ = *SIMDE_CAST_ALIGN(16, simde__m128d_private const*, mem_addr);
+  r_ = *SIMDE_ALIGN_CAST(simde__m128d_private const*, mem_addr);
 #endif
 
   return simde__m128d_from_private(r_);
@@ -4861,8 +4861,7 @@ simde_mm_store_si128 (simde__m128i* mem_addr, simde__m128i a) {
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   vst1q_s32(HEDLEY_REINTERPRET_CAST(int32_t*, mem_addr), a_.neon_i32);
 #else
-  SIMDE_ASSUME_ALIGNED_(mem_addr, 16);
-  simde_memcpy(mem_addr, &a_, sizeof(a_));
+  simde_memcpy(SIMDE_ASSUME_ALIGNED(16, mem_addr), &a_, sizeof(a_));
 #endif
 #endif
 }
