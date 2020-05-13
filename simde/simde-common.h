@@ -607,6 +607,11 @@ typedef SIMDE_FLOAT64_TYPE simde_float64;
 #  define SIMDE_DIAGNOSTIC_DISABLE_NON_CONSTANT_AGGREGATE_INITIALIZER_
 #endif
 
+/* This warning needs a lot of work.  It is triggered if all you do is
+ * pass the value to memcpy/__builtin_memcpy, or if you initialize a
+ * member of the union, even if that member takes up the entire union.
+ * Last tested with clang-10, hopefully things will improve in the
+ * future; if clang fixes this I'd love to enable it. */
 #if \
   HEDLEY_HAS_WARNING("-Wconditional-uninitialized")
 #  define SIMDE_DIAGNOSTIC_DISABLE_CONDITIONAL_UNINITIALIZED_ _Pragma("clang diagnostic ignored \"-Wconditional-uninitialized\"")
@@ -614,6 +619,14 @@ typedef SIMDE_FLOAT64_TYPE simde_float64;
 #  define SIMDE_DIAGNOSTIC_DISABLE_CONDITIONAL_UNINITIALIZED_
 #endif
 
+/* This warning is meant to catch things like `0.3 + 0.4 == 0.7`, which
+ * will is false.  However, SIMDe uses these operations exclusively
+ * for things like _mm_cmpeq_ps, for which we really do want to check
+ * for equality (or inequality).
+ *
+ * If someone wants to put together a SIMDE_FLOAT_EQUAL(a, op, b) macro
+ * which just wraps a check in some code do disable this diagnostic I'd
+ * be happy to accept it. */
 #if \
   HEDLEY_HAS_WARNING("-Wfloat-equal") || \
   HEDLEY_GCC_VERSION_CHECK(3,0,0)
