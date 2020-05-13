@@ -2043,7 +2043,7 @@ simde_mm_cvtpd_epi32 (simde__m128d a) {
 #else
   SIMDE_VECTORIZE
   for (size_t i = 0 ; i < (sizeof(a_.f64) / sizeof(a_.f64[0])) ; i++) {
-    r_.i32[i] = (int32_t) a_.f64[i];
+    r_.i32[i] = HEDLEY_STATIC_CAST(int32_t, a_.f64[i]);
   }
   simde_memset(&(r_.m64_private[1]), 0, sizeof(r_.m64_private[1]));
 #endif
@@ -2069,7 +2069,7 @@ simde_mm_cvtpd_pi32 (simde__m128d a) {
 #else
   SIMDE_VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {
-    r_.i32[i] = (int32_t) a_.f64[i];
+    r_.i32[i] = HEDLEY_STATIC_CAST(int32_t, a_.f64[i]);
   }
 #endif
 
@@ -2162,7 +2162,7 @@ simde_mm_cvtps_epi32 (simde__m128 a) {
 #else
   SIMDE_VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {
-    r_.i32[i] = (int32_t) a_.f32[i];
+    r_.i32[i] = HEDLEY_STATIC_CAST(int32_t, a_.f32[i]);
   }
 #endif
 
@@ -2584,7 +2584,7 @@ simde_mm_extract_epi16 (simde__m128i a, const int imm8)
 #if defined(SIMDE_X86_SSE2_NATIVE) && (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(4,6,0))
 #  define simde_mm_extract_epi16(a, imm8) _mm_extract_epi16(a, imm8)
 #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-#  define simde_mm_extract_epi16(a, imm8) (vgetq_lane_s16(simde__m128i_to_private(a).neon_i16, (imm8)) & ((int32_t) UINT32_C(0x0000ffff)))
+#  define simde_mm_extract_epi16(a, imm8) (vgetq_lane_s16(simde__m128i_to_private(a).neon_i16, (imm8)) & (UINT32_C(0x0000ffff)))
 #endif
 #if defined(SIMDE_X86_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_extract_epi16(a, imm8) simde_mm_extract_epi16(a, imm8)
@@ -4312,7 +4312,7 @@ simde_mm_sll_epi16 (simde__m128i a, simde__m128i count) {
   #else
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.u16) / sizeof(r_.u16[0])) ; i++) {
-      r_.u16[i] = (uint16_t) (a_.u16[i] << count_.u64[0]);
+      r_.u16[i] = HEDLEY_STATIC_CAST(uint16_t, (a_.u16[i] << count_.u64[0]));
     }
   #endif
 
@@ -4342,7 +4342,7 @@ simde_mm_sll_epi32 (simde__m128i a, simde__m128i count) {
 #else
   SIMDE_VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r_.u32) / sizeof(r_.u32[0])) ; i++) {
-    r_.u32[i] = (uint32_t) (a_.u32[i] << count_.u64[0]);
+    r_.u32[i] = HEDLEY_STATIC_CAST(uint32_t, (a_.u32[i] << count_.u64[0]));
   }
 #endif
 

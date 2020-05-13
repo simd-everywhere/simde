@@ -1266,7 +1266,7 @@ simde_mm_sll_pi16 (simde__m64 a, simde__m64 count) {
 
   SIMDE_VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r_.u16) / sizeof(r_.u16[0])) ; i++) {
-    r_.u16[i] = (uint16_t) (a_.u16[i] << count_.u64[0]);
+    r_.u16[i] = HEDLEY_STATIC_CAST(uint16_t, a_.u16[i] << count_.u64[0]);
   }
 #endif
 
@@ -1330,7 +1330,7 @@ simde_mm_slli_pi16 (simde__m64 a, int count) {
 #else
   SIMDE_VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r_.u16) / sizeof(r_.u16[0])) ; i++) {
-    r_.u16[i] = (uint16_t) (a_.u16[i] << count);
+    r_.u16[i] = HEDLEY_STATIC_CAST(uint16_t, a_.u16[i] << count);
   }
 #endif
 

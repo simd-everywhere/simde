@@ -1744,10 +1744,10 @@ simde_mm_extract_pi16 (simde__m64 a, const int imm8)
          HEDLEY_DIAGNOSTIC_POP \
        )
 #  else
-#    define simde_mm_extract_pi16(a, imm8) ((int16_t) (_mm_extract_pi16(a, imm8)))
+#    define simde_mm_extract_pi16(a, imm8) HEDLEY_STATIC_CAST(int16_t, _mm_extract_pi16(a, imm8))
 #  endif
 #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-#  define simde_mm_extract_pi16(a, imm8) ((int16_t) (vget_lane_s16(simde__m64_to_private(a).neon_i16, imm8)))
+#  define simde_mm_extract_pi16(a, imm8) HEDLEY_STATIC_CAST(int16_t, vget_lane_s16(simde__m64_to_private(a).neon_i16, imm8))
 #endif
 #define simde_m_pextrw(a, imm8) simde_mm_extract_pi16(a, imm8)
 
