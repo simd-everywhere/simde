@@ -127,9 +127,12 @@ simde_mm_div_epi32 (simde__m128i a, simde__m128i b) {
     return simde__m128i_from_private(r_);
   #endif
 }
+#define simde_mm_idiv_epi32(a, b) simde_mm_div_epi32(a, b)
 #if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
   #undef _mm_div_epi32
-  #define _mm_div_epi32(a, b) simde_mm_div_epi32((a), (b))
+  #define _mm_div_epi32(a, b) simde_mm_div_epi32(a, b)
+  #undef _mm_idiv_epi32
+  #define _mm_idiv_epi32(a, b) simde_mm_div_epi32(a, b)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -247,9 +250,12 @@ simde_mm_div_epu32 (simde__m128i a, simde__m128i b) {
     return simde__m128i_from_private(r_);
   #endif
 }
+#define simde_mm_udiv_epu32(a, b) simde_mm_div_epu32(a, b)
 #if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
   #undef _mm_div_epu32
-  #define _mm_div_epu32(a, b) simde_mm_div_epu32((a), (b))
+  #define _mm_div_epu32(a, b) simde_mm_div_epu32(a, b)
+  #undef _mm_udiv_epu32
+  #define _mm_udiv_epu32(a, b) simde_mm_div_epu32(a, b)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -361,9 +367,12 @@ simde_mm256_div_epi32 (simde__m256i a, simde__m256i b) {
     return simde__m256i_from_private(r_);
   #endif
 }
+#define simde_mm256_idiv_epi32(a, b) simde_mm256_div_epi32(a, b)
 #if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
   #undef _mm256_div_epi32
-  #define _mm256_div_epi32(a, b) simde_mm256_div_epi32((a), (b))
+  #define _mm256_div_epi32(a, b) simde_mm256_div_epi32(a, b)
+  #undef _mm256_idiv_epi32
+  #define _mm256_idiv_epi32(a, b) simde_mm256_div_epi32(a, b)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -473,9 +482,12 @@ simde_mm256_div_epu32 (simde__m256i a, simde__m256i b) {
     return simde__m256i_from_private(r_);
   #endif
 }
+#define simde_mm256_udiv_epu32(a, b) simde_mm256_div_epu32(a, b)
 #if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
   #undef _mm256_div_epu32
-  #define _mm256_div_epu32(a, b) simde_mm256_div_epu32((a), (b))
+  #define _mm256_div_epu32(a, b) simde_mm256_div_epu32(a, b)
+  #undef _mm256_udiv_epu32
+  #define _mm256_udiv_epu32(a, b) simde_mm256_div_epu32(a, b)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
