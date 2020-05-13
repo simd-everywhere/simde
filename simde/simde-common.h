@@ -812,12 +812,6 @@ typedef SIMDE_FLOAT64_TYPE simde_float64;
 #if !defined(simde_isnan)
   #if defined(isnan)
     #define simde_isnan(v) isnan(v)
-  #elif defined(__cplusplus) && defined(HUGE_VAL)
-    /* Including <cmath> will undefine isnan, so we need to use
-      * std::isnan.  However, we can't just use std::isnan in C++
-      * because if <cmath> hasn't been included but <math.h> has
-      * we'll have isnan but not std::isnan */
-    #define simde_isnan(v) std::isnan(v)
   #elif \
       HEDLEY_HAS_BUILTIN(__builtin_isnan) || \
       HEDLEY_GCC_VERSION_CHECK(4,4,0) || \
@@ -825,6 +819,16 @@ typedef SIMDE_FLOAT64_TYPE simde_float64;
       HEDLEY_INTEL_VERSION_CHECK(13,0,0) || \
       HEDLEY_IBM_VERSION_CHECK(13,1,0)
     #define simde_isnan(v) __builtin_isnan(v)
+  #elif defined(__cplusplus) && defined(HUGE_VAL)
+    /* Including <cmath> will undefine isnan, so we need to use
+      * std::isnan.  However, we can't just use std::isnan in C++
+      * because if <cmath> hasn't been included but <math.h> has we'll
+      * have isnan but not std::isnan.  Unfortunately, it seems some
+      * implementations are buggy and define HUGE_VAL somehow but don't
+      * define isnan or std::isnan.  If you run into one of these
+      * please let us know so we can try to figure out how to detect
+      * it. */
+    #define simde_isnan(v) std::isnan(v)
   #endif
 #endif
 
