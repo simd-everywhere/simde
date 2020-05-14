@@ -464,7 +464,7 @@ simde__m128i simde_mm_gf2p8mul_epi8 (simde__m128i a, simde__m128i b) {
   #endif
 }
 #if defined(SIMDE_X86_GFNI_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
-  #define simde_mm_gf2p8mul_epi8(a, b) _mm_gf2p8mul_epi8(a, b);
+  #define simde_mm_gf2p8mul_epi8(a, b) _mm_gf2p8mul_epi8(a, b)
 #endif
 #if defined(SIMDE_X86_GFNI_ENABLE_NATIVE_ALIASES)
   #undef _mm_gf2p8mul_epi8
@@ -489,7 +489,7 @@ simde_mm256_gf2p8mul_epi8 (simde__m256i a, simde__m256i b) {
   return simde__m256i_from_private(r_);
 }
 #if defined(SIMDE_X86_GFNI_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
-  #define simde_mm256_gf2p8mul_epi8(a, b) _mm256_gf2p8mul_epi8(a, b);
+  #define simde_mm256_gf2p8mul_epi8(a, b) _mm256_gf2p8mul_epi8(a, b)
 #endif
 #if defined(SIMDE_X86_GFNI_ENABLE_NATIVE_ALIASES)
   #undef _mm256_gf2p8mul_epi8
