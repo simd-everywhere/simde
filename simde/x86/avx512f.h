@@ -253,10 +253,18 @@ typedef union {
  * However, we also can't just assume that including immintrin.h does
  * actually define these.  It could be a compiler which supports AVX
  * but not AVX512F, such as GCC < 4.9 or VS < 2017.  That's why we
- * check to see if _MM_CMPINT_EQ is defined; it's part of AVX512F,
+ * check to see if _MM_CMPINT_GE is defined; it's part of AVX512F,
  * so we assume that if it's present AVX-512F has already been
- * declared. */
-#if defined(SIMDE_X86_AVX_NATIVE) && defined(_MM_CMPINT_EQ)
+ * declared.
+ *
+ * Note that the choice of _MM_CMPINT_GE is deliberate; while GCC
+ * uses the preprocessor to define all the _MM_CMPINT_* members,
+ * in most compilers they are simply normal enum members.  However,
+ * all compilers I've looked at use an object-like macro for
+ * _MM_CMPINT_GE, which is defined to _MM_CMPINT_NLT.  _MM_CMPINT_NLT
+ * is included in case a compiler does the reverse, though I haven't
+ * run into one which does. */
+#if defined(_MM_CMPINT_GE) || defined(_MM_CMPINT_NLT)
   typedef __m512 simde__m512;
   typedef __m512i simde__m512i;
   typedef __m512d simde__m512d;
