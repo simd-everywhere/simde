@@ -56,7 +56,7 @@
 #  endif
 #endif
 #if defined(SIMDE_ARCH_ALPHA)
-#  define SIMDE_ARCH_ALPHA_CHECK(version) ((version) >= SIMDE_ARCH_ALPHA)
+#  define SIMDE_ARCH_ALPHA_CHECK(version) ((version) <= SIMDE_ARCH_ALPHA)
 #else
 #  define SIMDE_ARCH_ALPHA_CHECK(version) (0)
 #endif
@@ -99,7 +99,7 @@
 #  define SIMDE_ARCH_ARM 1
 #endif
 #if defined(SIMDE_ARCH_ARM  )
-#  define SIMDE_ARCH_ARM_CHECK(version) ((version) >= SIMDE_ARCH_ARM)
+#  define SIMDE_ARCH_ARM_CHECK(version) ((version) <= SIMDE_ARCH_ARM)
 #else
 #  define SIMDE_ARCH_ARM_CHECK(version) (0)
 #endif
@@ -110,7 +110,7 @@
 #  define SIMDE_ARCH_AARCH64 1000
 #endif
 #if defined(SIMDE_ARCH_AARCH64)
-#  define SIMDE_ARCH_AARCH64_CHECK(version) ((version) >= SIMDE_ARCH_AARCH64)
+#  define SIMDE_ARCH_AARCH64_CHECK(version) ((version) <= SIMDE_ARCH_AARCH64)
 #else
 #  define SIMDE_ARCH_AARCH64_CHECK(version) (0)
 #endif
@@ -152,7 +152,7 @@
 #  define SIMDE_ARCH_CONVEX 1
 #endif
 #if defined(SIMDE_ARCH_CONVEX)
-#  define SIMDE_ARCH_CONVEX_CHECK(version) ((version) >= SIMDE_ARCH_CONVEX)
+#  define SIMDE_ARCH_CONVEX_CHECK(version) ((version) <= SIMDE_ARCH_CONVEX)
 #else
 #  define SIMDE_ARCH_CONVEX_CHECK(version) (0)
 #endif
@@ -187,7 +187,7 @@
 #  define SIMDE_ARCH_HPPA 1
 #endif
 #if defined(SIMDE_ARCH_HPPA)
-#  define SIMDE_ARCH_HPPA_CHECK(version) ((version) >= SIMDE_ARCH_HPPA)
+#  define SIMDE_ARCH_HPPA_CHECK(version) ((version) <= SIMDE_ARCH_HPPA)
 #else
 #  define SIMDE_ARCH_HPPA_CHECK(version) (0)
 #endif
@@ -210,7 +210,7 @@
 #  define SIMDE_ARCH_X86 3
 #endif
 #if defined(SIMDE_ARCH_X86)
-#  define SIMDE_ARCH_X86_CHECK(version) ((version) >= SIMDE_ARCH_X86)
+#  define SIMDE_ARCH_X86_CHECK(version) ((version) <= SIMDE_ARCH_X86)
 #else
 #  define SIMDE_ARCH_X86_CHECK(version) (0)
 #endif
@@ -320,7 +320,7 @@
 #  define SIMDE_ARCH_M68K 68000
 #endif
 #if defined(SIMDE_ARCH_M68K)
-#  define SIMDE_ARCH_M68K_CHECK(version) ((version) >= SIMDE_ARCH_M68K)
+#  define SIMDE_ARCH_M68K_CHECK(version) ((version) <= SIMDE_ARCH_M68K)
 #else
 #  define SIMDE_ARCH_M68K_CHECK(version) (0)
 #endif
@@ -353,7 +353,7 @@
 #  define SIMDE_ARCH_MIPS 1
 #endif
 #if defined(SIMDE_ARCH_MIPS)
-#  define SIMDE_ARCH_MIPS_CHECK(version) ((version) >= SIMDE_ARCH_MIPS)
+#  define SIMDE_ARCH_MIPS_CHECK(version) ((version) <= SIMDE_ARCH_MIPS)
 #else
 #  define SIMDE_ARCH_MIPS_CHECK(version) (0)
 #endif
@@ -398,7 +398,7 @@
 #  define SIMDE_ARCH_POWER 1
 #endif
 #if defined(SIMDE_ARCH_POWER)
-  #define SIMDE_ARCH_POWER_CHECK(version) ((version) >= SIMDE_ARCH_POWER)
+  #define SIMDE_ARCH_POWER_CHECK(version) ((version) <= SIMDE_ARCH_POWER)
 #else
   #define SIMDE_ARCH_POWER_CHECK(version) (0)
 #endif
@@ -407,7 +407,7 @@
 #  define SIMDE_ARCH_POWER_ALTIVEC SIMDE_ARCH_POWER
 #endif
 #if defined(SIMDE_ARCH_POWER)
-  #define SIMDE_ARCH_POWER_ALTIVEC_CHECK(version) ((version) >= SIMDE_ARCH_POWER)
+  #define SIMDE_ARCH_POWER_ALTIVEC_CHECK(version) ((version) <= SIMDE_ARCH_POWER)
 #else
   #define SIMDE_ARCH_POWER_ALTIVEC_CHECK(version) (0)
 #endif
@@ -436,7 +436,7 @@
 #  define SIMDE_ARCH_SPARC 1
 #endif
 #if defined(SIMDE_ARCH_SPARC)
-  #define SIMDE_ARCH_SPARC_CHECK(version) ((version) >= SIMDE_ARCH_SPARC)
+  #define SIMDE_ARCH_SPARC_CHECK(version) ((version) <= SIMDE_ARCH_SPARC)
 #else
   #define SIMDE_ARCH_SPARC_CHECK(version) (0)
 #endif
@@ -487,7 +487,7 @@
 #  define SIMDE_ARCH_TMS320 280
 #endif
 #if defined(SIMDE_ARCH_TMS320)
-  #define SIMDE_ARCH_TMS320_CHECK(version) ((version) >= SIMDE_ARCH_TMS320)
+  #define SIMDE_ARCH_TMS320_CHECK(version) ((version) <= SIMDE_ARCH_TMS320)
 #else
   #define SIMDE_ARCH_TMS320_CHECK(version) (0)
 #endif
