@@ -4022,6 +4022,30 @@ simde_mm_set1_epi64 (simde__m64 a) {
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
+simde__m128i
+simde_x_mm_set1_epu8 (uint8_t value) {
+  return simde_mm_set1_epi8(HEDLEY_STATIC_CAST(int8_t, value));
+}
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m128i
+simde_x_mm_set1_epu16 (uint16_t value) {
+  return simde_mm_set1_epi16(HEDLEY_STATIC_CAST(int16_t, value));
+}
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m128i
+simde_x_mm_set1_epu32 (uint32_t value) {
+  return simde_mm_set1_epi32(HEDLEY_STATIC_CAST(int32_t, value));
+}
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m128i
+simde_x_mm_set1_epu64 (uint64_t value) {
+  return simde_mm_set1_epi64x(HEDLEY_STATIC_CAST(int64_t, value));
+}
+
+SIMDE_FUNCTION_ATTRIBUTES
 simde__m128d
 simde_mm_set1_pd (simde_float64 a) {
 #if defined(SIMDE_X86_SSE2_NATIVE)
