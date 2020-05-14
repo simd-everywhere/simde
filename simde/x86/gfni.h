@@ -75,7 +75,7 @@ simde_x_mm_gf2p8matrix_multiply_epi64_epi8 (simde__m128i x, simde__m128i A) {
     SIMDE_VECTORIZE
 #endif
     for (int i = 0 ; i < 8 ; i++) {
-      p = simde_mm_set1_epi16(HEDLEY_STATIC_CAST(uint16_t, simde_mm_movemask_epi8(a)));
+      p = simde_x_mm_set1_epu16(HEDLEY_STATIC_CAST(uint16_t, simde_mm_movemask_epi8(a)));
       p = simde_mm_shuffle_epi8(p, byteSelect);
       p = simde_mm_xor_si128(r, p);
       r = simde_mm_blendv_epi8(r, p, x);
