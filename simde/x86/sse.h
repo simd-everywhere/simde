@@ -157,6 +157,21 @@ simde__m128_to_private(simde__m128 v) {
   return r;
 }
 
+#if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  SIMDE_X86_GENERATE_CONVERSION_FUNCTION(m128, int8x16_t, neon, i8)
+  SIMDE_X86_GENERATE_CONVERSION_FUNCTION(m128, int16x8_t, neon, i16)
+  SIMDE_X86_GENERATE_CONVERSION_FUNCTION(m128, int32x4_t, neon, i32)
+  SIMDE_X86_GENERATE_CONVERSION_FUNCTION(m128, int64x2_t, neon, i64)
+  SIMDE_X86_GENERATE_CONVERSION_FUNCTION(m128, uint8x16_t, neon, u8)
+  SIMDE_X86_GENERATE_CONVERSION_FUNCTION(m128, uint16x8_t, neon, u16)
+  SIMDE_X86_GENERATE_CONVERSION_FUNCTION(m128, uint32x4_t, neon, u32)
+  SIMDE_X86_GENERATE_CONVERSION_FUNCTION(m128, uint64x2_t, neon, u64)
+  SIMDE_X86_GENERATE_CONVERSION_FUNCTION(m128, float32x4_t, neon, f32)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+    SIMDE_X86_GENERATE_CONVERSION_FUNCTION(m128, float64x2_t, neon, f64)
+  #endif
+#endif /* defined(SIMDE_ARM_NEON_A32V7_NATIVE) */
+
 #if defined(SIMDE_DIAGNOSTIC_DISABLE_UNINITIALIZED_)
   HEDLEY_DIAGNOSTIC_POP
 #endif
@@ -1837,7 +1852,7 @@ simde_mm_insert_pi16 (simde__m64 a, int16_t i, const int imm8)
 #    define simde_mm_insert_pi16(a, i, imm8) _mm_insert_pi16(a, i, imm8)
 #  endif
 #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-#  define simde_mm_insert_pi16(a, i, imm8) simde__m64_from_private((simde__m64_private) { .neon_i16 = vset_lane_s16(i, simde__m64_to_private(a).neon_i16, (imm8)) })
+#  define simde_mm_insert_pi16(a, i, imm8) simde__m64_from_neon_i16(vset_lane_s16((i), simde__m64_to_neon_i16(a), (imm8)))
 #endif
 #define simde_m_pinsrw(a, i, imm8) (simde_mm_insert_pi16(a, i, imm8))
 #if defined(SIMDE_X86_SSE_ENABLE_NATIVE_ALIASES)

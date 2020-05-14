@@ -277,6 +277,36 @@ simde__m128d_to_private(simde__m128d v) {
   return r;
 }
 
+#if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  SIMDE_X86_GENERATE_CONVERSION_FUNCTION(m128i, int8x16_t, neon, i8)
+  SIMDE_X86_GENERATE_CONVERSION_FUNCTION(m128i, int16x8_t, neon, i16)
+  SIMDE_X86_GENERATE_CONVERSION_FUNCTION(m128i, int32x4_t, neon, i32)
+  SIMDE_X86_GENERATE_CONVERSION_FUNCTION(m128i, int64x2_t, neon, i64)
+  SIMDE_X86_GENERATE_CONVERSION_FUNCTION(m128i, uint8x16_t, neon, u8)
+  SIMDE_X86_GENERATE_CONVERSION_FUNCTION(m128i, uint16x8_t, neon, u16)
+  SIMDE_X86_GENERATE_CONVERSION_FUNCTION(m128i, uint32x4_t, neon, u32)
+  SIMDE_X86_GENERATE_CONVERSION_FUNCTION(m128i, uint64x2_t, neon, u64)
+  SIMDE_X86_GENERATE_CONVERSION_FUNCTION(m128i, float32x4_t, neon, f32)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+    SIMDE_X86_GENERATE_CONVERSION_FUNCTION(m128i, float64x2_t, neon, f64)
+  #endif
+#endif /* defined(SIMDE_ARM_NEON_A32V7_NATIVE) */
+
+#if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  SIMDE_X86_GENERATE_CONVERSION_FUNCTION(m128d, int8x16_t, neon, i8)
+  SIMDE_X86_GENERATE_CONVERSION_FUNCTION(m128d, int16x8_t, neon, i16)
+  SIMDE_X86_GENERATE_CONVERSION_FUNCTION(m128d, int32x4_t, neon, i32)
+  SIMDE_X86_GENERATE_CONVERSION_FUNCTION(m128d, int64x2_t, neon, i64)
+  SIMDE_X86_GENERATE_CONVERSION_FUNCTION(m128d, uint8x16_t, neon, u8)
+  SIMDE_X86_GENERATE_CONVERSION_FUNCTION(m128d, uint16x8_t, neon, u16)
+  SIMDE_X86_GENERATE_CONVERSION_FUNCTION(m128d, uint32x4_t, neon, u32)
+  SIMDE_X86_GENERATE_CONVERSION_FUNCTION(m128d, uint64x2_t, neon, u64)
+  SIMDE_X86_GENERATE_CONVERSION_FUNCTION(m128d, float32x4_t, neon, f32)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+    SIMDE_X86_GENERATE_CONVERSION_FUNCTION(m128d, float64x2_t, neon, f64)
+  #endif
+#endif /* defined(SIMDE_ARM_NEON_A32V7_NATIVE) */
+
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_add_epi8 (simde__m128i a, simde__m128i b) {
@@ -878,7 +908,7 @@ simde_mm_bslli_si128 (simde__m128i a, const int imm8)
 #  define simde_mm_bslli_si128(a, imm8) _mm_slli_si128(a, imm8)
 #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
 #  define simde_mm_bslli_si128(a, imm8) \
-  simde__m128i_from_private((simde__m128i_private) { .neon_i8 = (((imm8) <= 0) ? (simde__m128i_to_private(a).neon_i8) : (((imm8) > 15) ? (vdupq_n_s8(0)) : (vextq_s8(vdupq_n_s8(0), simde__m128i_to_private(a).neon_i8, 16 - (imm8))))) })
+  simde__m128i_from_neon_i8(((imm8) <= 0) ? simde__m128i_to_neon_i8(a) : (((imm8) > 15) ? (vdupq_n_s8(0)) : (vextq_s8(vdupq_n_s8(0), simde__m128i_to_neon_i8(a), 16 - (imm8)))))
 #endif
 #define simde_mm_slli_si128(a, imm8) simde_mm_bslli_si128(a, imm8)
 #if defined(SIMDE_X86_SSE2_ENABLE_NATIVE_ALIASES)
@@ -930,7 +960,7 @@ simde_mm_bsrli_si128 (simde__m128i a, const int imm8)
 #  define simde_mm_bsrli_si128(a, imm8) _mm_srli_si128(a, imm8)
 #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
 #  define simde_mm_bsrli_si128(a, imm8) \
-  simde__m128i_from_private((simde__m128i_private) { .neon_i8 = (((imm8) & ~15) ? vdupq_n_s8(0) : vextq_s8(simde__m128i_to_private(a).neon_i8, vdupq_n_s8(0), SIMDE_MASK_NZ_(imm8, 15))) })
+  simde__m128i_from_neon_i8(((imm8) & ~15) ? vdupq_n_s8(0) : vextq_s8(simde__m128i_to_private(a).neon_i8, vdupq_n_s8(0), SIMDE_MASK_NZ_(imm8, 15)))
 #endif
 #define simde_mm_srli_si128(a, imm8) simde_mm_bsrli_si128((a), (imm8))
 #if defined(SIMDE_X86_SSE2_ENABLE_NATIVE_ALIASES)
@@ -2601,7 +2631,7 @@ simde_mm_insert_epi16 (simde__m128i a, int16_t i, const int imm8)
 #if defined(SIMDE_X86_SSE2_NATIVE) && !defined(__PGI)
 #  define simde_mm_insert_epi16(a, i, imm8) _mm_insert_epi16((a), (i), (imm8))
 #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-#  define simde_mm_insert_epi16(a, i, imm8) simde__m128i_from_private(((simde__m128i_private) { .neon_i16 = vsetq_lane_s16((i), simde__m128i_to_private(a).neon_i16, (imm8)) }))
+#  define simde_mm_insert_epi16(a, i, imm8) simde__m128i_from_neon_i16(vsetq_lane_s16((i), simde__m128i_to_neon_i16(a), (imm8)))
 #endif
 #if defined(SIMDE_X86_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_insert_epi16(a, i, imm8) simde_mm_insert_epi16(a, i, imm8)
@@ -4562,7 +4592,8 @@ simde_mm_srai_epi32 (simde__m128i a, const int imm8)
 #if defined(SIMDE_X86_SSE2_NATIVE)
 #  define simde_mm_srai_epi32(a, imm8) _mm_srai_epi32((a), (imm8))
 #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-#  define simde_mm_srai_epi32(a, imm8) simde__m128i_from_private(((simde__m128i_private) { .neon_i32 = ((imm8) <= 0) ? simde__m128i_to_private(a).neon_i32 : (((imm8) > 31) ? (vshrq_n_s32(vshrq_n_s32(simde__m128i_to_private(a).neon_i32, 16), 16)) : (vshrq_n_s32(simde__m128i_to_private(a).neon_i32, (imm8)))) }))
+#  define simde_mm_srai_epi32(a, imm8) \
+  simde__m128i_from_neon_i32(((imm8) <= 0) ? simde__m128i_to_neon_i32(a) : (((imm8) > 31) ? (vshrq_n_s32(vshrq_n_s32(simde__m128i_to_neon_i32(a), 16), 16)) : (vshrq_n_s32(simde__m128i_to_neon_i32(a), (imm8)))))
 #endif
 #if defined(SIMDE_X86_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_srai_epi32(a, imm8) simde_mm_srai_epi32(a, imm8)
@@ -4641,7 +4672,7 @@ simde_mm_slli_epi16 (simde__m128i a, const int imm8)
 #  define simde_mm_slli_epi16(a, imm8) _mm_slli_epi16(a, imm8)
 #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
 #  define simde_mm_slli_epi16(a, imm8) \
-  simde__m128i_from_private(((simde__m128i_private) { .neon_i16 = ((imm8) <= 0) ? (simde__m128i_to_private(a).neon_i16) : (((imm8) > 31) ? (vdupq_n_s16(0)) : (vshlq_n_s16(simde__m128i_to_private(a).neon_i16, (imm8)))) }))
+  simde__m128i_from_neon_i16(((imm8) <= 0) ? simde__m128i_to_neon_i16(a) : (((imm8) > 31) ? (vdupq_n_s16(0)) : (vshlq_n_s16(simde__m128i_to_neon_i16(a), (imm8)))))
 #endif
 #if defined(SIMDE_X86_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_slli_epi16(a, imm8) simde_mm_slli_epi16(a, imm8)
@@ -4670,7 +4701,7 @@ simde_mm_slli_epi32 (simde__m128i a, const int imm8)
 #  define simde_mm_slli_epi32(a, imm8) _mm_slli_epi32(a, imm8)
 #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
 #  define simde_mm_slli_epi32(a, imm8) \
-  simde__m128i_from_private(((simde__m128i_private) { .neon_i32 = ((imm8) <= 0) ? (simde__m128i_to_private(a).neon_i32) : (((imm8) > 31) ? (vdupq_n_s32(0)) : (vshlq_n_s32(simde__m128i_to_private(a).neon_i32, (imm8)))) }))
+  simde__m128i_from_neon_i32(((imm8) <= 0) ? simde__m128i_to_neon_i32(a) : (((imm8) > 31) ? (vdupq_n_s32(0)) : (vshlq_n_s32(simde__m128i_to_neon_i32(a), (imm8)))))
 #endif
 #if defined(SIMDE_X86_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_slli_epi32(a, imm8) simde_mm_slli_epi32(a, imm8)
@@ -4725,7 +4756,7 @@ simde_mm_srli_epi16 (simde__m128i a, const int imm8)
 #  define simde_mm_srli_epi16(a, imm8) _mm_srli_epi16(a, imm8)
 #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
 #  define simde_mm_srli_epi16(a, imm8) \
-  simde__m128i_from_private(((simde__m128i_private) { .neon_u16 = ((((imm8) > 15) || ((imm8) < 0)) ? (vdupq_n_u16(0)) : ((((imm8) == 0) ? (simde__m128i_to_private(a).neon_u16) : (vshrq_n_u16(simde__m128i_to_private(a).neon_u16, SIMDE_MASK_NZ_((imm8), 15)))))) }))
+  simde__m128i_from_neon_u16(((((imm8) > 15) || ((imm8) < 0)) ? (vdupq_n_u16(0)) : ((((imm8) == 0) ? simde__m128i_to_neon_u16(a) : (vshrq_n_u16(simde__m128i_to_neon_u16(a), SIMDE_MASK_NZ_((imm8), 15)))))))
 #endif
 #if defined(SIMDE_X86_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_srli_epi16(a, imm8) simde_mm_srli_epi16(a, imm8)
@@ -4754,7 +4785,7 @@ simde_mm_srli_epi32 (simde__m128i a, const int imm8)
 #  define simde_mm_srli_epi32(a, imm8) _mm_srli_epi32(a, imm8)
 #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
 #  define simde_mm_srli_epi32(a, imm8) \
-  simde__m128i_from_private(((simde__m128i_private) { .neon_u32 = ((((imm8) > 31) || ((imm8) < 0)) ? (vdupq_n_u32(0)) : ((((imm8) == 0) ? (simde__m128i_to_private(a).neon_u32) : (vshrq_n_u32(simde__m128i_to_private(a).neon_u32, SIMDE_MASK_NZ_((imm8), 31)))))) }))
+  simde__m128i_from_neon_u32((((imm8) > 31) || ((imm8) < 0)) ? (vdupq_n_u32(0)) : ((((imm8) == 0) ? simde__m128i_to_neon_u32(a) : (vshrq_n_u32(simde__m128i_to_neon_u32(a), SIMDE_MASK_NZ_((imm8), 31))))))
 #endif
 #if defined(SIMDE_X86_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_srli_epi32(a, imm8) simde_mm_srli_epi32(a, imm8)
@@ -4786,7 +4817,7 @@ simde_mm_srli_epi64 (simde__m128i a, const int imm8)
 #  define simde_mm_srli_epi64(a, imm8) _mm_srli_epi64(a, imm8)
 #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
 #  define simde_mm_srli_epi64(a, imm8) \
-  simde__m128i_from_private(((simde__m128i_private) { .neon_u64 = ((((imm8) > 63) || ((imm8) < 0)) ? (vdupq_n_u64(0)) : ((((imm8) == 0) ? (simde__m128i_to_private(a).neon_u64) : (vshrq_n_u64(simde__m128i_to_private(a).neon_u64, SIMDE_MASK_NZ_((imm8), 63)))))) }))
+  simde__m128i_from_neon_u64((((imm8) > 63) || ((imm8) < 0)) ? (vdupq_n_u64(0)) : ((((imm8) == 0) ? simde__m128i_to_neon_u64(a) : (vshrq_n_u64(simde__m128i_to_neon_u64(a), SIMDE_MASK_NZ_((imm8), 63))))))
 #endif
 #if defined(SIMDE_X86_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_srli_epi64(a, imm8) simde_mm_srli_epi64(a, imm8)

@@ -134,6 +134,34 @@ simde__m64_to_private(simde__m64 v) {
   return r;
 }
 
+#define SIMDE_X86_GENERATE_CONVERSION_FUNCTION(simde_type, source_type, isax, fragment) \
+  SIMDE_FUNCTION_ATTRIBUTES \
+  simde__##simde_type \
+  simde__##simde_type##_from_##isax##_##fragment(source_type value) { \
+    simde__##simde_type##_private r_; \
+    r_.isax##_##fragment = value; \
+    return simde__##simde_type##_from_private(r_); \
+  } \
+  \
+  SIMDE_FUNCTION_ATTRIBUTES \
+  source_type \
+  simde__##simde_type##_to_##isax##_##fragment(simde__##simde_type value) { \
+    simde__##simde_type##_private r_ = simde__##simde_type##_to_private(value); \
+    return r_.isax##_##fragment; \
+  }
+
+#if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  SIMDE_X86_GENERATE_CONVERSION_FUNCTION(m64, int8x8_t, neon, i8)
+  SIMDE_X86_GENERATE_CONVERSION_FUNCTION(m64, int16x4_t, neon, i16)
+  SIMDE_X86_GENERATE_CONVERSION_FUNCTION(m64, int32x2_t, neon, i32)
+  SIMDE_X86_GENERATE_CONVERSION_FUNCTION(m64, int64x1_t, neon, i64)
+  SIMDE_X86_GENERATE_CONVERSION_FUNCTION(m64, uint8x8_t, neon, u8)
+  SIMDE_X86_GENERATE_CONVERSION_FUNCTION(m64, uint16x4_t, neon, u16)
+  SIMDE_X86_GENERATE_CONVERSION_FUNCTION(m64, uint32x2_t, neon, u32)
+  SIMDE_X86_GENERATE_CONVERSION_FUNCTION(m64, uint64x1_t, neon, u64)
+  SIMDE_X86_GENERATE_CONVERSION_FUNCTION(m64, float32x2_t, neon, f32)
+#endif /* defined(SIMDE_ARM_NEON_A32V7_NATIVE) */
+
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m64
 simde_mm_add_pi8 (simde__m64 a, simde__m64 b) {
