@@ -4453,7 +4453,7 @@ simde_mm512_slli_epi32 (simde__m512i a, unsigned int imm8) {
   return simde__m512i_from_private(r_);
 }
 #if defined(SIMDE_X86_AVX512F_NATIVE)
-  #define simde_mm512_slli_epi32(a, imm8) _mm512_slli_epi32(a, imm8)
+  #define simde_mm512_slli_epi32(a, imm8) SIMDE_BUG_IGNORE_SIGN_CONVERSION(_mm512_slli_epi32(a, imm8))
 #endif
 #if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
   #undef _mm512_slli_epi32
@@ -4505,7 +4505,7 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde__m512i
 simde_mm512_srli_epi32 (simde__m512i a, unsigned int imm8) {
   #if defined(SIMDE_X86_AVX512F_NATIVE)
-    return _mm512_srli_epi32(a, imm8);
+    return SIMDE_BUG_IGNORE_SIGN_CONVERSION(_mm512_srli_epi32(a, imm8));
   #else
     simde__m512i_private
       r_,
