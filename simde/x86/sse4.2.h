@@ -76,7 +76,8 @@ SIMDE__BEGIN_DECLS
 
 SIMDE__FUNCTION_ATTRIBUTES
 int
-simde_mm_cmpestra_8_(simde__m128i a, int la, simde__m128i b, int lb, const int imm8) {
+simde_mm_cmpestra_8_(simde__m128i a, int la, simde__m128i b, int lb, const int imm8)
+  SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 127) {
   const int cmp_op = imm8 & 0x06;
   const int polarity = imm8 & 0x30;
   simde__m128i_private
@@ -181,7 +182,8 @@ simde_mm_cmpestra_8_(simde__m128i a, int la, simde__m128i b, int lb, const int i
 
 SIMDE__FUNCTION_ATTRIBUTES
 int
-simde_mm_cmpestra_16_(simde__m128i a, int la, simde__m128i b, int lb, const int imm8) {
+simde_mm_cmpestra_16_(simde__m128i a, int la, simde__m128i b, int lb, const int imm8)
+  SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 127) {
   const int cmp_op = imm8 & 0x06;
   const int polarity = imm8 & 0x30;
   simde__m128i_private
@@ -286,20 +288,15 @@ simde_mm_cmpestra_16_(simde__m128i a, int la, simde__m128i b, int lb, const int 
 }
 
 #if defined(SIMDE_X86_SSE4_2_NATIVE)
-  #define simde_mm_cmpestra(a, la, b, lb, imm8) \
-     SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 0x7f) \
-     _mm_cmpestra(a, la, b, lb, imm8)
+  #define simde_mm_cmpestra(a, la, b, lb, imm8) _mm_cmpestra(a, la, b, lb, imm8)
 #else
   #define simde_mm_cmpestra(a, la, b, lb, imm8) \
-     SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 0x7f) \
      (((imm8) & SIMDE_SIDD_UWORD_OPS) \
        ? simde_mm_cmpestra_16_((a), (la), (b), (lb), (imm8)) \
        : simde_mm_cmpestra_8_((a), (la), (b), (lb), (imm8)))
 #endif
 #if defined(SIMDE_X86_SSE4_2_ENABLE_NATIVE_ALIASES)
-  #define _mm_cmpestra(a, la, b, lb, imm8) \
-     SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 0x7f) \
-     simde_mm_cmpestra(a, la, b, lb, imm8)
+  #define _mm_cmpestra(a, la, b, lb, imm8) simde_mm_cmpestra(a, la, b, lb, imm8)
 #endif
 
 SIMDE__FUNCTION_ATTRIBUTES
