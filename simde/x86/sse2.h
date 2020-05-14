@@ -3776,68 +3776,73 @@ simde_x_mm_set_epu8 (uint8_t e15, uint8_t e14, uint8_t e13, uint8_t e12,
          uint8_t e11, uint8_t e10, uint8_t  e9, uint8_t  e8,
          uint8_t  e7, uint8_t  e6, uint8_t  e5, uint8_t  e4,
          uint8_t  e3, uint8_t  e2, uint8_t  e1, uint8_t  e0) {
-  simde__m128i_private r_;
+  #if defined(SIMDE_X86_SSE2_NATIVE)
+    return _mm_set_epi8(
+      HEDLEY_STATIC_CAST(char, e15), HEDLEY_STATIC_CAST(char, e14), HEDLEY_STATIC_CAST(char, e13), HEDLEY_STATIC_CAST(char, e12),
+      HEDLEY_STATIC_CAST(char, e11), HEDLEY_STATIC_CAST(char, e10), HEDLEY_STATIC_CAST(char,  e9), HEDLEY_STATIC_CAST(char,  e8),
+      HEDLEY_STATIC_CAST(char,  e7), HEDLEY_STATIC_CAST(char,  e6), HEDLEY_STATIC_CAST(char,  e5), HEDLEY_STATIC_CAST(char,  e4),
+      HEDLEY_STATIC_CAST(char,  e3), HEDLEY_STATIC_CAST(char,  e2), HEDLEY_STATIC_CAST(char,  e1), HEDLEY_STATIC_CAST(char,  e0));
+  #else
+    simde__m128i_private r_;
 
-  r_.u8[ 0] =  e0;
-  r_.u8[ 1] =  e1;
-  r_.u8[ 2] =  e2;
-  r_.u8[ 3] =  e3;
-  r_.u8[ 4] =  e4;
-  r_.u8[ 5] =  e5;
-  r_.u8[ 6] =  e6;
-  r_.u8[ 7] =  e7;
-  r_.u8[ 8] =  e8;
-  r_.u8[ 9] =  e9;
-  r_.u8[10] = e10;
-  r_.u8[11] = e11;
-  r_.u8[12] = e12;
-  r_.u8[13] = e13;
-  r_.u8[14] = e14;
-  r_.u8[15] = e15;
+    r_.u8[ 0] =  e0; r_.u8[ 1] =  e1; r_.u8[ 2] =  e2; r_.u8[ 3] =  e3;
+    r_.u8[ 4] =  e4; r_.u8[ 5] =  e5; r_.u8[ 6] =  e6; r_.u8[ 7] =  e7;
+    r_.u8[ 8] =  e8; r_.u8[ 9] =  e9; r_.u8[10] = e10; r_.u8[11] = e11;
+    r_.u8[12] = e12; r_.u8[13] = e13; r_.u8[14] = e14; r_.u8[15] = e15;
 
-  return simde__m128i_from_private(r_);
+    return simde__m128i_from_private(r_);
+  #endif
 }
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128i
 simde_x_mm_set_epu16 (uint16_t e7, uint16_t e6, uint16_t e5, uint16_t e4,
           uint16_t e3, uint16_t e2, uint16_t e1, uint16_t e0) {
-  simde__m128i_private r_;
+  #if defined(SIMDE_X86_SSE2_NATIVE)
+    return _mm_set_epi16(
+      HEDLEY_STATIC_CAST(short,  e7), HEDLEY_STATIC_CAST(short,  e6), HEDLEY_STATIC_CAST(short,  e5), HEDLEY_STATIC_CAST(short,  e4),
+      HEDLEY_STATIC_CAST(short,  e3), HEDLEY_STATIC_CAST(short,  e2), HEDLEY_STATIC_CAST(short,  e1), HEDLEY_STATIC_CAST(short,  e0));
+  #else
+    simde__m128i_private r_;
 
-  r_.u16[0] = e0;
-  r_.u16[1] = e1;
-  r_.u16[2] = e2;
-  r_.u16[3] = e3;
-  r_.u16[4] = e4;
-  r_.u16[5] = e5;
-  r_.u16[6] = e6;
-  r_.u16[7] = e7;
+    r_.u16[0] = e0; r_.u16[1] = e1; r_.u16[2] = e2; r_.u16[3] = e3;
+    r_.u16[4] = e4; r_.u16[5] = e5; r_.u16[6] = e6; r_.u16[7] = e7;
 
-  return simde__m128i_from_private(r_);
+    return simde__m128i_from_private(r_);
+  #endif
 }
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128i
 simde_x_mm_set_epu32 (uint32_t e3, uint32_t e2, uint32_t e1, uint32_t e0) {
-  simde__m128i_private r_;
+  #if defined(SIMDE_X86_SSE2_NATIVE)
+    return _mm_set_epi32(
+      HEDLEY_STATIC_CAST(int,  e3), HEDLEY_STATIC_CAST(int,  e2), HEDLEY_STATIC_CAST(int,  e1), HEDLEY_STATIC_CAST(int,  e0));
+  #else
+    simde__m128i_private r_;
 
-  r_.u32[0] = e0;
-  r_.u32[1] = e1;
-  r_.u32[2] = e2;
-  r_.u32[3] = e3;
+    r_.u32[0] = e0;
+    r_.u32[1] = e1;
+    r_.u32[2] = e2;
+    r_.u32[3] = e3;
 
-  return simde__m128i_from_private(r_);
+    return simde__m128i_from_private(r_);
+  #endif
 }
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128i
 simde_x_mm_set_epu64x (uint64_t e1, uint64_t e0) {
-  simde__m128i_private r_;
+  #if defined(SIMDE_X86_SSE2_NATIVE) && (!defined(HEDLEY_MSVC_VERSION) || HEDLEY_MSVC_VERSION_CHECK(19,0,0))
+    return _mm_set_epi64x(HEDLEY_STATIC_CAST(int64_t,  e1), HEDLEY_STATIC_CAST(int64_t,  e0));
+  #else
+    simde__m128i_private r_;
 
-  r_.u64[0] = e0;
-  r_.u64[1] = e1;
+    r_.u64[0] = e0;
+    r_.u64[1] = e1;
 
-  return simde__m128i_from_private(r_);
+    return simde__m128i_from_private(r_);
+  #endif
 }
 
 SIMDE_FUNCTION_ATTRIBUTES
