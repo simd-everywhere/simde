@@ -2024,7 +2024,7 @@ simde_mm256_slli_epi16 (simde__m256i a, const int imm8)
 #else
   SIMDE_VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r_.i16) / sizeof(r_.i16[0])) ; i++) {
-    r_.i16[i] = a_.i16[i] << (imm8 & 0xff);
+    r_.i16[i] = HEDLEY_STATIC_CAST(int16_t, a_.i16[i] << (imm8 & 0xff));
   }
 #endif
 

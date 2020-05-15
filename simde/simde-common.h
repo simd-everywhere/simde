@@ -693,6 +693,16 @@ typedef SIMDE_FLOAT64_TYPE simde_float64;
   #define SIMDE_DIAGNOSTIC_DISABLE_BUGGY_UNUSED_BUT_SET_VARIBALE
 #endif
 
+/* Some compilers, such as clang, may use `long long` for 64-bit
+ * integers, but `long long` triggers a diagnostic with
+ * -Wc++98-compat-pedantic which says 'long long' is incompatible with
+ * C++98. */
+#if HEDLEY_HAS_WARNING("-Wc++98-compat-pedantic")
+  #define SIMDE_DIAGNOSTIC_DISABLE_CPP98_COMPAT_PEDANTIC _Pragma("clang diagnostic ignored \"-Wc++98-compat-pedantic\"")
+#else
+  #define SIMDE_DIAGNOSTIC_DISABLE_CPP98_COMPAT_PEDANTIC
+#endif
+
 #define SIMDE_DISABLE_UNWANTED_DIAGNOSTICS \
   SIMDE_DIAGNOSTIC_DISABLE_PSABI_ \
   SIMDE_DIAGNOSTIC_DISABLE_NO_EMMS_INSTRUCTION_ \
@@ -705,6 +715,7 @@ typedef SIMDE_FLOAT64_TYPE simde_float64;
   SIMDE_DIAGNOSTIC_DISABLE_USED_BUT_MARKED_UNUSED_ \
   SIMDE_DIAGNOSTIC_DISABLE_UNUSED_FUNCTION_ \
   SIMDE_DIAGNOSTIC_DISABLE_PASS_FAILED_ \
+  SIMDE_DIAGNOSTIC_DISABLE_CPP98_COMPAT_PEDANTIC \
   SIMDE_DIAGNOSTIC_DISABLE_BUGGY_UNUSED_BUT_SET_VARIBALE
 
 #if defined(__STDC_HOSTED__)
@@ -929,6 +940,23 @@ typedef SIMDE_FLOAT64_TYPE simde_float64;
 #    define SIMDE_BUG_EMSCRIPTEN_MISSING_IMPL /* Placeholder for (as yet) unfiled issues. */
 #    define SIMDE_BUG_EMSCRIPTEN_5242
 #  endif
+#endif
+
+/* GCC and Clang both have the same issue:
+ * https://gcc.gnu.org/bugzilla/show_bug.cgi?id=95144
+ * https://bugs.llvm.org/show_bug.cgi?id=45931
+ */
+#if HEDLEY_HAS_WARNING("-Wsign-conversion") || HEDLEY_GCC_VERSION_CHECK(4,3,0)
+#  define SIMDE_BUG_IGNORE_SIGN_CONVERSION(expr) (__extension__ ({ \
+       HEDLEY_DIAGNOSTIC_PUSH  \
+       HEDLEY_DIAGNOSTIC_POP  \
+       _Pragma("GCC diagnostic ignored \"-Wsign-conversion\"") \
+       __typeof__(expr) simde_bug_ignore_sign_conversion_v_= (expr); \
+       HEDLEY_DIAGNOSTIC_PUSH  \
+       simde_bug_ignore_sign_conversion_v_; \
+     }))
+#else
+#  define SIMDE_BUG_IGNORE_SIGN_CONVERSION(expr) (expr)
 #endif
 
 #endif /* !defined(SIMDE_COMMON_H) */

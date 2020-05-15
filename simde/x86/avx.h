@@ -3289,7 +3289,7 @@ simde_mm256_load_si256 (simde__m256i const * mem_addr) {
   simde_assert_aligned(32, mem_addr);
 
 #if defined(SIMDE_X86_AVX_NATIVE)
-  return _mm256_load_si256((__m256i const*) mem_addr);
+  return _mm256_load_si256(HEDLEY_REINTERPRET_CAST(__m256i const*, mem_addr));
 #else
   simde__m256i r;
   r = *mem_addr;
