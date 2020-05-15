@@ -5,35 +5,39 @@
 #include "../simde/simde-common.h"
 
 SIMDE_DIAGNOSTIC_DISABLE_VLA_
-HEDLEY_DIAGNOSTIC_PUSH
 #if HEDLEY_HAS_WARNING("-Wc++98-compat-pedantic") && defined(__cplusplus)
 #  pragma clang diagnostic ignored "-Wc++98-compat-pedantic"
 #endif
 #if HEDLEY_HAS_WARNING("-Wpadded")
 #  pragma clang diagnostic ignored "-Wpadded"
 #endif
-#include "munit/munit.h"
-HEDLEY_DIAGNOSTIC_POP
-
-#include <stdio.h>
-#include <math.h>
-
-SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
-SIMDE_DIAGNOSTIC_DISABLE_DOUBLE_PROMOTION_
-
+#if HEDLEY_HAS_WARNING("-Wdouble-promotion")
+#  pragma clang diagnostic ignored "-Wdouble-promotion"
+#endif
 #if HEDLEY_HAS_WARNING("-Wold-style-cast")
   #pragma clang diagnostic ignored "-Wold-style-cast"
 #endif
 #if HEDLEY_HAS_WARNING("-Wzero-as-null-pointer-constant")
   #pragma clang diagnostic ignored "-Wzero-as-null-pointer-constant"
 #endif
+#if HEDLEY_HAS_WARNING("-Wc++98-compat-pedantic")
+  #pragma clang diagnostic ignored "-Wc++98-compat-pedantic"
+#endif
+#if HEDLEY_HAS_WARNING("-Wvariadic-macros") || HEDLEY_GCC_VERSION_CHECK(4,0,0)
+  #pragma GCC diagnostic ignored "-Wvariadic-macros"
+#endif
+
+#include "munit/munit.h"
+
+#include <stdio.h>
+#include <math.h>
+
+SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 
 #if defined(HEDLEY_MSVC_VERSION)
 /* Unused function(s) */
 #pragma warning(disable:4505)
 #endif
-
-HEDLEY_DIAGNOSTIC_PUSH
 
 #define SIMDE_TESTS_CONCAT3_EX(a, b, c) a##b##c
 #define SIMDE_TESTS_CONCAT3(a, b, c) SIMDE_TESTS_CONCAT3_EX(a, b, c)
@@ -99,7 +103,7 @@ simde_check_double_close(double a, double b, int precision) {
     \
     for (int i = 0 ; i < HEDLEY_STATIC_CAST(int, sizeof(a_.accessor) / sizeof(a_.accessor[0])) ; i++) { \
       if (simde_check_double_close(HEDLEY_STATIC_CAST(double, a_.accessor[i]), HEDLEY_STATIC_CAST(double, b_.accessor[i]), precision)) { \
-        fprintf(stderr, "%s:%d: assertion failed[%d]: %g " SIMDE_ALMOST_EQUAL_TO " %g (precision: 1e-%d)\n", file, line, i, a_.accessor[i], b_.accessor[i], precision); \
+        fprintf(stderr, "%s:%d: assertion failed[%d]: %g " SIMDE_ALMOST_EQUAL_TO " %g (precision: 1e-%d)\n", file, line, i, HEDLEY_STATIC_CAST(double, a_.accessor[i]), HEDLEY_STATIC_CAST(double, b_.accessor[i]), precision); \
         abort(); \
       } \
     } \
@@ -264,8 +268,6 @@ static void random_f64v(size_t nmemb, simde_float64 v[HEDLEY_ARRAY_PARAM(nmemb)]
   } while (0)
 
 HEDLEY_END_C_DECLS
-
-HEDLEY_DIAGNOSTIC_POP
 
 #if HEDLEY_HAS_WARNING("-Wpadded")
 #  pragma clang diagnostic ignored "-Wpadded"
