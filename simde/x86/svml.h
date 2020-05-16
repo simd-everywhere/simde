@@ -601,6 +601,20 @@ simde_mm512_div_epi32 (simde__m512i a, simde__m512i b) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m512i
+simde_mm512_mask_div_epi32(simde__m512i src, simde__mmask16 k, simde__m512i a, simde__m512i b) {
+  #if defined(SIMDE_X86_SVML_NATIVE)
+    return _mm512_mask_div_epi32(src, k, a, b);
+  #else
+    return simde_mm512_mask_mov_epi32(src, k, simde_mm512_div_epi32(a, b));
+  #endif
+}
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_mask_div_epi32
+  #define _mm512_mask_div_epi32(src, k, a, b) simde_mm512_mask_div_epi32(src, k, a, b)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512i
 simde_mm512_div_epi64 (simde__m512i a, simde__m512i b) {
   #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX512F_NATIVE)
     return _mm512_div_epi64(a, b);
@@ -709,6 +723,20 @@ simde_mm512_div_epu32 (simde__m512i a, simde__m512i b) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m512i
+simde_mm512_mask_div_epu32(simde__m512i src, simde__mmask16 k, simde__m512i a, simde__m512i b) {
+  #if defined(SIMDE_X86_SVML_NATIVE)
+    return _mm512_mask_div_epu32(src, k, a, b);
+  #else
+    return simde_mm512_mask_mov_epi32(src, k, simde_mm512_div_epu32(a, b));
+  #endif
+}
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_mask_div_epu32
+  #define _mm512_mask_div_epu32(src, k, a, b) simde_mm512_mask_div_epu32(src, k, a, b)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512i
 simde_mm512_div_epu64 (simde__m512i a, simde__m512i b) {
   #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX_NATIVE)
     return _mm512_div_epu64(a, b);
@@ -813,9 +841,12 @@ simde_mm_rem_epi32 (simde__m128i a, simde__m128i b) {
     return simde__m128i_from_private(r_);
   #endif
 }
+#define simde_mm_irem_epi32(a, b) simde_mm_rem_epi32(a, b)
 #if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
   #undef _mm_rem_epi32
-  #define _mm_rem_epi32(a, b) simde_mm_rem_epi32((a), (b))
+  #define _mm_rem_epi32(a, b) simde_mm_rem_epi32(a, b)
+  #undef _mm_irem_epi32
+  #define _mm_irem_epi32(a, b) simde_mm_rem_epi32(a, b)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -925,9 +956,12 @@ simde_mm_rem_epu32 (simde__m128i a, simde__m128i b) {
     return simde__m128i_from_private(r_);
   #endif
 }
+#define simde_mm_urem_epu32(a, b) simde_mm_rem_epu32(a, b)
 #if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
   #undef _mm_rem_epu32
-  #define _mm_rem_epu32(a, b) simde_mm_rem_epu32((a), (b))
+  #define _mm_rem_epu32(a, b) simde_mm_rem_epu32(a, b)
+  #undef _mm_urem_epu32
+  #define _mm_urem_epu32(a, b) simde_mm_rem_epu32(a, b)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -1037,9 +1071,12 @@ simde_mm256_rem_epi32 (simde__m256i a, simde__m256i b) {
     return simde__m256i_from_private(r_);
   #endif
 }
+#define simde_mm256_irem_epi32(a, b) simde_mm256_rem_epi32(a, b)
 #if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
   #undef _mm256_rem_epi32
-  #define _mm256_rem_epi32(a, b) simde_mm256_rem_epi32((a), (b))
+  #define _mm256_rem_epi32(a, b) simde_mm256_rem_epi32(a, b)
+  #undef _mm256_irem_epi32
+  #define _mm256_irem_epi32(a, b) simde_mm256_rem_epi32(a, b)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -1149,9 +1186,12 @@ simde_mm256_rem_epu32 (simde__m256i a, simde__m256i b) {
     return simde__m256i_from_private(r_);
   #endif
 }
+#define simde_mm256_urem_epu32(a, b) simde_mm256_rem_epu32(a, b)
 #if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
   #undef _mm256_rem_epu32
-  #define _mm256_rem_epu32(a, b) simde_mm256_rem_epu32((a), (b))
+  #define _mm256_rem_epu32(a, b) simde_mm256_rem_epu32(a, b)
+  #undef _mm256_urem_epu32
+  #define _mm256_urem_epu32(a, b) simde_mm256_rem_epu32(a, b)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -1265,6 +1305,20 @@ simde_mm512_rem_epi32 (simde__m512i a, simde__m512i b) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m512i
+simde_mm512_mask_rem_epi32(simde__m512i src, simde__mmask16 k, simde__m512i a, simde__m512i b) {
+  #if defined(SIMDE_X86_SVML_NATIVE)
+    return _mm512_mask_rem_epi32(src, k, a, b);
+  #else
+    return simde_mm512_mask_mov_epi32(src, k, simde_mm512_rem_epi32(a, b));
+  #endif
+}
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_mask_rem_epi32
+  #define _mm512_mask_rem_epi32(src, k, a, b) simde_mm512_mask_rem_epi32(src, k, a, b)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512i
 simde_mm512_rem_epi64 (simde__m512i a, simde__m512i b) {
   #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX512F_NATIVE)
     return _mm512_rem_epi64(a, b);
@@ -1369,6 +1423,20 @@ simde_mm512_rem_epu32 (simde__m512i a, simde__m512i b) {
 }
 #if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
 #  define _mm512_rem_epu32(a, b) simde_mm512_rem_epu32((a), (b))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512i
+simde_mm512_mask_rem_epu32(simde__m512i src, simde__mmask16 k, simde__m512i a, simde__m512i b) {
+  #if defined(SIMDE_X86_SVML_NATIVE)
+    return _mm512_mask_rem_epu32(src, k, a, b);
+  #else
+    return simde_mm512_mask_mov_epi32(src, k, simde_mm512_rem_epu32(a, b));
+  #endif
+}
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_mask_rem_epu32
+  #define _mm512_mask_rem_epu32(src, k, a, b) simde_mm512_mask_rem_epu32(src, k, a, b)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
