@@ -1894,10 +1894,10 @@ simde_mm_cmpord_pd (simde__m128d a, simde__m128d b) {
     a_ = simde__m128d_to_private(a),
     b_ = simde__m128d_to_private(b);
 
-#if defined(simde_isnan)
+#if defined(simde_math_isnan)
   SIMDE_VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
-    r_.u64[i] = (!simde_isnan(a_.f64[i]) && !simde_isnan(b_.f64[i])) ? ~UINT64_C(0) : UINT64_C(0);
+    r_.u64[i] = (!simde_math_isnan(a_.f64[i]) && !simde_math_isnan(b_.f64[i])) ? ~UINT64_C(0) : UINT64_C(0);
   }
 #else
   HEDLEY_UNREACHABLE();
@@ -1937,8 +1937,8 @@ simde_mm_cmpord_sd (simde__m128d a, simde__m128d b) {
     a_ = simde__m128d_to_private(a),
     b_ = simde__m128d_to_private(b);
 
-#if defined(simde_isnan)
-  r_.u64[0] = (!simde_isnan(a_.f64[0]) && !simde_isnan(b_.f64[0])) ? ~UINT64_C(0) : UINT64_C(0);
+#if defined(simde_math_isnan)
+  r_.u64[0] = (!simde_math_isnan(a_.f64[0]) && !simde_math_isnan(b_.f64[0])) ? ~UINT64_C(0) : UINT64_C(0);
   r_.u64[1] = a_.u64[1];
 #else
   HEDLEY_UNREACHABLE();
@@ -1962,10 +1962,10 @@ simde_mm_cmpunord_pd (simde__m128d a, simde__m128d b) {
     a_ = simde__m128d_to_private(a),
     b_ = simde__m128d_to_private(b);
 
-#if defined(simde_isnan)
+#if defined(simde_math_isnan)
   SIMDE_VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
-    r_.u64[i] = (simde_isnan(a_.f64[i]) || simde_isnan(b_.f64[i])) ? ~UINT64_C(0) : UINT64_C(0);
+    r_.u64[i] = (simde_math_isnan(a_.f64[i]) || simde_math_isnan(b_.f64[i])) ? ~UINT64_C(0) : UINT64_C(0);
   }
 #else
   HEDLEY_UNREACHABLE();
@@ -1991,8 +1991,8 @@ simde_mm_cmpunord_sd (simde__m128d a, simde__m128d b) {
     a_ = simde__m128d_to_private(a),
     b_ = simde__m128d_to_private(b);
 
-#if defined(simde_isnan)
-  r_.u64[0] = (simde_isnan(a_.f64[0]) || simde_isnan(b_.f64[0])) ? ~UINT64_C(0) : UINT64_C(0);
+#if defined(simde_math_isnan)
+  r_.u64[0] = (simde_math_isnan(a_.f64[0]) || simde_math_isnan(b_.f64[0])) ? ~UINT64_C(0) : UINT64_C(0);
   r_.u64[1] = a_.u64[1];
 
 #else
@@ -4444,26 +4444,26 @@ simde_mm_sll_epi64 (simde__m128i a, simde__m128i count) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128d
 simde_mm_sqrt_pd (simde__m128d a) {
-#if defined(SIMDE_X86_SSE2_NATIVE)
-  return _mm_sqrt_pd(a);
-#else
-  simde__m128d_private
-    r_,
-    a_ = simde__m128d_to_private(a);
+  #if defined(SIMDE_X86_SSE2_NATIVE)
+    return _mm_sqrt_pd(a);
+  #else
+    simde__m128d_private
+      r_,
+      a_ = simde__m128d_to_private(a);
 
-#if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
-  r_.neon_f64 = vsqrtq_f64(a_.neon_f64);
-#elif defined(SIMDE_HAVE_MATH_H)
-  SIMDE_VECTORIZE
-  for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
-    r_.f64[i] = sqrt(a_.f64[i]);
-  }
-#else
-  HEDLEY_UNREACHABLE();
-#endif
+    #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+      r_.neon_f64 = vsqrtq_f64(a_.neon_f64);
+    #elif defined(simde_math_sqrt)
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
+        r_.f64[i] = simde_math_sqrt(a_.f64[i]);
+      }
+    #else
+      HEDLEY_UNREACHABLE();
+    #endif
 
-  return simde__m128d_from_private(r_);
-#endif
+    return simde__m128d_from_private(r_);
+  #endif
 }
 #if defined(SIMDE_X86_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_sqrt_pd(a) simde_mm_sqrt_pd(a)
@@ -4472,25 +4472,25 @@ simde_mm_sqrt_pd (simde__m128d a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128d
 simde_mm_sqrt_sd (simde__m128d a, simde__m128d b) {
-#if defined(SIMDE_X86_SSE2_NATIVE)
-  return _mm_sqrt_sd(a, b);
-#elif defined(SIMDE_ASSUME_VECTORIZATION)
-  return simde_mm_move_sd(a, simde_mm_sqrt_pd(b));
-#else
-  simde__m128d_private
-    r_,
-    a_ = simde__m128d_to_private(a),
-    b_ = simde__m128d_to_private(b);
+  #if defined(SIMDE_X86_SSE2_NATIVE)
+    return _mm_sqrt_sd(a, b);
+  #elif defined(SIMDE_ASSUME_VECTORIZATION)
+    return simde_mm_move_sd(a, simde_mm_sqrt_pd(b));
+  #else
+    simde__m128d_private
+      r_,
+      a_ = simde__m128d_to_private(a),
+      b_ = simde__m128d_to_private(b);
 
-#if defined(SIMDE_HAVE_MATH_H)
-  r_.f64[0] = sqrt(b_.f64[0]);
-  r_.f64[1] = a_.f64[1];
-#else
-  HEDLEY_UNREACHABLE();
-#endif
+    #if defined(simde_math_sqrt)
+      r_.f64[0] = simde_math_sqrt(b_.f64[0]);
+      r_.f64[1] = a_.f64[1];
+    #else
+      HEDLEY_UNREACHABLE();
+    #endif
 
-  return simde__m128d_from_private(r_);
-#endif
+    return simde__m128d_from_private(r_);
+  #endif
 }
 #if defined(SIMDE_X86_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_sqrt_sd(a, b) simde_mm_sqrt_sd(a, b)

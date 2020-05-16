@@ -615,85 +615,36 @@ typedef SIMDE_FLOAT64_TYPE simde_float64;
   #endif /* !defined(SIMDE_NO_STRING_H) && (SIMDE_STDC_HOSTED == 1) */
 #endif /* !defined(simde_memcpy) || !defined(simde_memset) */
 
-#if !defined(SIMDE_NO_MATH_H)
-  #if defined(HUGE_VAL)
-    /* <math.h> has already been included */
-  #elif defined(__has_include)
-    #if !__has_include(<math.h>)
-      #define SIMDE_NO_MATH_H
-    #endif
-  #elif SIMDE_STDC_HOSTED == 0
-    #define SIMDE_NO_MATH_H
+#include "simde-math.h"
+
+#if defined(FE_ALL_EXCEPT)
+  #define SIMDE_HAVE_FENV_H
+#elif defined(__has_include)
+  #if __has_include(<fenv.h>)
+    #include <fenv.h>
+    #define SIMDE_HAVE_FENV_H
   #endif
+#elif SIMDE_STDC_HOSTED == 1
+  #include <fenv.h>
+  #define SIMDE_HAVE_FENV_H
 #endif
 
-#if !defined(SIMDE_NO_MATH_H)
-  #define SIMDE_HAVE_MATH_H
-  #if !defined(HUGE_VAL)
-    #if defined(__cplusplus)
-      #include <cmath>
-    #else
-      #include <math.h>
-    #endif
+#if defined(EXIT_FAILURE)
+  #define SIMDE_HAVE_STDLIB_H
+#elif defined(__has_include)
+  #if __has_include(<stdlib.h>)
+    #include <stdlib.h>
+    #define SIMDE_HAVE_STDLIB_H
   #endif
-#endif
-
-#if !defined(simde_isnan)
-  #if defined(isnan)
-    #define simde_isnan(v) isnan(v)
-  #elif \
-      HEDLEY_HAS_BUILTIN(__builtin_isnan) || \
-      HEDLEY_GCC_VERSION_CHECK(4,4,0) || \
-      HEDLEY_ARM_VERSION_CHECK(4,1,0) || \
-      HEDLEY_INTEL_VERSION_CHECK(13,0,0) || \
-      HEDLEY_IBM_VERSION_CHECK(13,1,0)
-    #define simde_isnan(v) __builtin_isnan(v)
-  #elif defined(__cplusplus) && defined(HUGE_VAL)
-    /* Including <cmath> will undefine isnan, so we need to use
-      * std::isnan.  However, we can't just use std::isnan in C++
-      * because if <cmath> hasn't been included but <math.h> has we'll
-      * have isnan but not std::isnan.  Unfortunately, it seems some
-      * implementations are buggy and define HUGE_VAL somehow but don't
-      * define isnan or std::isnan.  If you run into one of these
-      * please let us know so we can try to figure out how to detect
-      * it. */
-    #define simde_isnan(v) std::isnan(v)
-  #endif
-#endif
-
-#if !defined(simde_isnanf)
-  #if defined(isnanf)
-    #define simde_isnanf(v) isnanf(v)
-  #elif \
-      HEDLEY_HAS_BUILTIN(__builtin_isnanf) || \
-      HEDLEY_GCC_VERSION_CHECK(4,4,0) || \
-      HEDLEY_ARM_VERSION_CHECK(4,1,0) || \
-      HEDLEY_INTEL_VERSION_CHECK(13,0,0)
-    /* Note: XL C/C++ implements __builtin_isnan but not
-     * __builtin_isnanf. */
-    #define simde_isnanf(v) __builtin_isnanf(v)
-  #elif defined(simde_isnan)
-    #define simde_isnanf(v) simde_isnan(v)
-  #endif
-#endif
-
-#if !defined(simde_isnormal)
-  #if defined(isnormal)
-    #define simde_isnormal(v) isnormal(v)
-  #elif defined(__cplusplus) && defined(HUGE_VAL)
-    #define simde_isnormal(v) std::isnormal(v)
-  #elif \
-      HEDLEY_HAS_BUILTIN(__builtin_isnormal) || \
-      HEDLEY_GCC_VERSION_CHECK(4,3,0) || \
-      HEDLEY_ARM_VERSION_CHECK(4,1,0) || \
-      HEDLEY_INTEL_VERSION_CHECK(13,0,0) || \
-      HEDLEY_IBM_VERSION_CHECK(16,1,0)
-    #define simde_isnormal(v) __builtin_isnormal(v)
-  #endif
+#elif SIMDE_STDC_HOSTED == 1
+  #include <stdlib.h>
+  #define SIMDE_HAVE_STDLIB_H
 #endif
 
 #if defined(__has_include)
-#  if __has_include(<fenv.h>)
+#  if defined(__cplusplus) && (__cplusplus >= 201103L) && __has_include(<cfenv>)
+#    include <cfenv>
+#  elif __has_include(<fenv.h>)
 #    include <fenv.h>
 #  endif
 #  if __has_include(<stdlib.h>)
@@ -702,20 +653,6 @@ typedef SIMDE_FLOAT64_TYPE simde_float64;
 #elif SIMDE_STDC_HOSTED == 1
 #  include <stdlib.h>
 #  include <fenv.h>
-#endif
-
-#if defined(SIMDE_HAVE_FENV_H)
-#  include <fenv.h>
-#endif
-#if defined(SIMDE_HAVE_STDLIB_H)
-#  include <stdlib.h>
-#endif
-
-#if !defined(SIMDE_HAVE_FENV_H) && defined(FE_DIVBYZERO)
-#  define SIMDE_HAVE_FENV_H
-#endif
-#if !defined(SIMDE_HAVE_STDLIB_H) && defined(EXIT_SUCCESS)
-#  define SIMDE_HAVE_STDLIB_H
 #endif
 
 #include "check.h"
