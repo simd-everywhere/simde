@@ -261,7 +261,7 @@ jobs:
       jsvu --os=linux64 --engines=v8
 
   allow_failures:
-  # - name: emscripten    
+  - name: emscripten
 
 before_install:
 - |
