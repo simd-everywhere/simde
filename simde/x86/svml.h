@@ -851,6 +851,25 @@ simde_mm_rem_epi32 (simde__m128i a, simde__m128i b) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128i
+simde_mm_idivrem_epi32 (simde__m128i * mem_addr, simde__m128i a, simde__m128i b) {
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE2_NATIVE)
+    return _mm_idivrem_epi32(mem_addr, a, b);
+  #else
+    simde__m128i r;
+
+    r = simde_mm_div_epi32(a, b);
+    *mem_addr = simde_mm_sub_epi32(a, simde_mm_mullo_epi32(r, b));
+
+    return r;
+  #endif
+}
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
+  #undef _mm_idivrem_epi32
+  #define _mm_idivrem_epi32(mem_addr, a, b) simde_mm_idivrem_epi32((mem_addr),(a), (b))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m128i
 simde_mm_rem_epi64 (simde__m128i a, simde__m128i b) {
   #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE2_NATIVE)
     return _mm_rem_epi64(a, b);
@@ -962,6 +981,25 @@ simde_mm_rem_epu32 (simde__m128i a, simde__m128i b) {
   #define _mm_rem_epu32(a, b) simde_mm_rem_epu32(a, b)
   #undef _mm_urem_epu32
   #define _mm_urem_epu32(a, b) simde_mm_rem_epu32(a, b)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m128i
+simde_mm_udivrem_epi32 (simde__m128i * mem_addr, simde__m128i a, simde__m128i b) {
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE2_NATIVE)
+    return _mm_udivrem_epi32(mem_addr, a, b);
+  #else
+    simde__m128i r;
+
+    r = simde_mm_div_epu32(a, b);
+    *mem_addr = simde_x_mm_sub_epu32(a, simde_x_mm_mullo_epu32(r, b));
+
+    return r;
+  #endif
+}
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
+  #undef _mm_udivrem_epi32
+  #define _mm_udivrem_epi32(mem_addr, a, b) simde_mm_udivrem_epi32((mem_addr),(a), (b))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
