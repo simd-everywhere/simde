@@ -232,7 +232,8 @@ jobs:
       local_dir: amalgamated
       github_token: $GITHUB_TOKEN
       skip_cleanup: true
-
+      keep_history: true
+  
   - name: emscripten
     if: branch != master OR type == pull_request
     compiler: emcc
