@@ -50,6 +50,22 @@ jobs:
         packages:
         - clang-10
 
+  - name: "clang-3.8"
+    if: branch != master OR type == pull_request
+    compiler: clang-3.8
+    dist: xenial
+    env:
+    - C_COMPILER=clang-3.8
+    - CXX_COMPILER=clang++-3.8
+    - COMPILER_FLAGS='-fsanitize=address,undefined'
+    - DIAGNOSTIC_FLAGS='-Weverything -Werror'
+    - ARCH_FLAGS='-mavx2'
+    addons:
+      apt:
+        packages:
+        - clang-3.8
+        - libc++-dev
+
   - name: "gcc-8 x86"
     if: branch != master OR type == pull_request
     arch: amd64
@@ -233,7 +249,7 @@ jobs:
       github_token: $GITHUB_TOKEN
       skip_cleanup: true
       keep_history: true
-  
+
   - name: emscripten
     if: branch != master OR type == pull_request
     compiler: emcc
