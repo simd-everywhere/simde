@@ -1119,6 +1119,25 @@ simde_mm256_rem_epi32 (simde__m256i a, simde__m256i b) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m256i
+simde_mm256_idivrem_epi32 (simde__m256i * mem_addr, simde__m256i a, simde__m256i b) {
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE2_NATIVE)
+    return _mm256_idivrem_epi32(mem_addr, a, b);
+  #else
+    simde__m256i r;
+
+    r = simde_mm256_div_epi32(a, b);
+    *mem_addr = simde_mm256_sub_epi32(a, simde_mm256_mullo_epi32(r, b));
+
+    return r;
+  #endif
+}
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_idivrem_epi32
+  #define _mm256_idivrem_epi32(mem_addr, a, b) simde_mm256_idivrem_epi32((mem_addr),(a), (b))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256i
 simde_mm256_rem_epi64 (simde__m256i a, simde__m256i b) {
   #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX_NATIVE)
     return _mm256_rem_epi64(a, b);
@@ -1230,6 +1249,25 @@ simde_mm256_rem_epu32 (simde__m256i a, simde__m256i b) {
   #define _mm256_rem_epu32(a, b) simde_mm256_rem_epu32(a, b)
   #undef _mm256_urem_epu32
   #define _mm256_urem_epu32(a, b) simde_mm256_rem_epu32(a, b)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256i
+simde_mm256_udivrem_epi32 (simde__m256i * mem_addr, simde__m256i a, simde__m256i b) {
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE2_NATIVE)
+    return _mm256_udivrem_epi32(mem_addr, a, b);
+  #else
+    simde__m256i r;
+
+    r = simde_mm256_div_epu32(a, b);
+    *mem_addr = simde_x_mm256_sub_epu32(a, simde_x_mm256_mullo_epu32(r, b));
+
+    return r;
+  #endif
+}
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_udivrem_epi32
+  #define _mm256_udivrem_epi32(mem_addr, a, b) simde_mm256_udivrem_epi32((mem_addr),(a), (b))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
