@@ -161,6 +161,46 @@ simde_mm_cmpgt_epi64 (simde__m128i a, simde__m128i b) {
 #  define _mm_cmpgt_epi64(a, b) simde_mm_cmpgt_epi64(a, b)
 #endif
 
+SIMDE_FUNCTION_ATTRIBUTES
+int
+simde_mm_cmpistrs_8_(simde__m128i a) {
+  simde__m128i_private a_= simde__m128i_to_private(a);
+  const int upper_bound = (128 / 8) - 1;
+  int a_invalid = 0;
+  SIMDE_VECTORIZE
+  for (int i = 0 ; i < upper_bound ; i++) {
+    if(!a_.i8[i])
+      a_invalid = 1;
+  }
+  return a_invalid;
+}
+
+SIMDE_FUNCTION_ATTRIBUTES
+int
+simde_mm_cmpistrs_16_(simde__m128i a) {
+  simde__m128i_private a_= simde__m128i_to_private(a);
+  const int upper_bound = (128 / 16) - 1;
+  int a_invalid = 0;
+  SIMDE_VECTORIZE
+  for (int i = 0 ; i < upper_bound ; i++) {
+    if(!a_.i16[i])
+      a_invalid = 1;
+  }
+  return a_invalid;
+}
+
+#if defined(SIMDE_X86_SSE4_2_NATIVE)
+  #define simde_mm_cmpistrs(a, b, imm8) _mm_cmpistrs(a, b, imm8)
+#else
+  #define simde_mm_cmpistrs(a, b, imm8) \
+     (((imm8) & SIMDE_SIDD_UWORD_OPS) \
+       ? simde_mm_cmpistrs_16_((a)) \
+       : simde_mm_cmpistrs_8_((a)))
+#endif
+#if defined(SIMDE_X86_SSE4_2_ENABLE_NATIVE_ALIASES)
+  #define _mm_cmpistrs(a, b, imm8) simde_mm_cmpistrs(a, b, imm8)
+#endif
+
 SIMDE_END_DECLS_
 
 HEDLEY_DIAGNOSTIC_POP
