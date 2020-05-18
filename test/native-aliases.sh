@@ -19,8 +19,6 @@ if [ ! -e iig.xml ]; then
 fi
 
 PATTERN="$(xmllint --xpath '//intrinsic/@name' iig.xml | grep -Po '(?<=")[^"]+' | xargs printf '%s|' | rev | cut -c 2- | rev)"
+echo "s/([^_])simde(${PATTERN})/\1\2/g" > pattern
 
-for file in x86/*.c; do
-  echo "${file}..."
-  sed -i -E -e "s/([^_])simde(${PATTERN})/\1\2/g" "$file";
-done
+ls x86/*.c | xargs -n1 -P$(nproc) sed -i -E -f pattern

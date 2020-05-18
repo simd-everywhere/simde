@@ -74,6 +74,22 @@
 #  define HEDLEY_GNUC_VERSION_CHECK(major,minor,patch) (0)
 #endif
 
+#if defined(HEDLEY_CLANG_VERSION)
+#  undef HEDLEY_CLANG_VERSION
+#endif
+#if defined(__clang__) && defined(__clang_patchlevel__)
+#  define HEDLEY_CLANG_VERSION HEDLEY_VERSION_ENCODE(__clang_major__, __clang_minor__, __clang_patchlevel__)
+#endif
+
+#if defined(HEDLEY_CLANG_VERSION_CHECK)
+#  undef HEDLEY_CLANG_VERSION_CHECK
+#endif
+#if defined(HEDLEY_CLANG_VERSION)
+#  define HEDLEY_CLANG_VERSION_CHECK(major,minor,patch) (HEDLEY_CLANG_VERSION >= HEDLEY_VERSION_ENCODE(major, minor, patch))
+#else
+#  define HEDLEY_CLANG_VERSION_CHECK(major,minor,patch) (0)
+#endif
+
 #if defined(HEDLEY_MSVC_VERSION)
 #  undef HEDLEY_MSVC_VERSION
 #endif

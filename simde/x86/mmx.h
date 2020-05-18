@@ -614,7 +614,7 @@ simde_mm_cvtm64_si64 (simde__m64 a) {
   return _mm_cvtm64_si64(a);
 #else
   simde__m64_private a_ = simde__m64_to_private(a);
-  
+
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vget_lane_s64(a_.neon_i64, 0);
   #else

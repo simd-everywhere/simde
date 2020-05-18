@@ -161,7 +161,7 @@
 /*  Lots of compilers support GCC-style vector extensions, but many
     don't support all the features.  Define different macros depending
     on support for
-    
+
     * SIMDE_VECTOR - Declaring a vector.
     * SIMDE_VECTOR_OPS - basic operations (binary and unary).
     * SIMDE_VECTOR_SCALAR - For binary operators, the second argument
@@ -169,7 +169,7 @@
         had been broadcast to all lanes of a vector.
     * SIMDE_VECTOR_SUBSCRIPT - Supports array subscript notation for
         extracting/inserting a single element.=
-    
+
     SIMDE_VECTOR can be assumed if any others are defined, the
     others are independent. */
 #if !defined(SIMDE_NO_VECTOR)
@@ -689,6 +689,9 @@ typedef SIMDE_FLOAT64_TYPE simde_float64;
 #  elif defined(__clang__)
 #    if defined(SIMDE_ARCH_AARCH64)
 #      define SIMDE_BUG_CLANG_45541
+#    endif
+#    if !HEDLEY_CLANG_VERSION_CHECK(3,9,0)
+#      define SIMDE_BUG_CLANG_MISSING_SIMD  /* TODO: find relevant bug or commit */
 #    endif
 #  endif
 #  if defined(HEDLEY_EMSCRIPTEN_VERSION)
