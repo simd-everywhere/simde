@@ -41,7 +41,7 @@
 
 #include "hedley.h"
 
-#if defined(__has_builtin) && 0
+#if defined(__has_builtin)
   #define SIMDE_MATH_BUILTIN_LIBM(func) __has_builtin(__builtin_##func)
 #elif \
     HEDLEY_INTEL_VERSION_CHECK(13,0,0) || \
@@ -113,7 +113,7 @@
 #endif
 
 #if !defined(simde_math_isnormal)
-  #if SIMDE_MATH_BUILTIN_LIBM(isnnormal)
+  #if SIMDE_MATH_BUILTIN_LIBM(isnormal)
     #define simde_math_isnormal(v) __builtin_isnormal(v)
   #elif defined(isnormal) || defined(SIMDE_MATH_HAVE_MATH_H)
     #define simde_math_isnormal(v) isnormal(v)
