@@ -1,7 +1,18 @@
 # xenial with gcc 5.4
 FROM ubuntu:16.04
-RUN apt-get update && apt-get install --no-install-recommends -y gcc g++ cmake make clang libxml2-utils ninja-build python3-pip python3-setuptools python3-wheel
-RUN pip3 install meson
+RUN apt-get update && apt-get install --no-install-recommends -y \
+  clang \
+  cmake \
+  gcc \
+  g++ \
+  libomp-dev \
+  libxml2-utils \
+  make \
+  ninja-build \
+  python3-pip \
+  python3-setuptools \
+  python3-wheel
+RUN pip3 install meson==0.50.0
 COPY . /simde
 # WORKDIR /simde/test
 # RUN mkdir -p /simde/test/build_ubuntu16.04_clang
@@ -17,6 +28,6 @@ WORKDIR /simde/
 RUN bash ./test/native-aliases.sh
 RUN mkdir -p /simde/build_ubuntu16.04_clang_native
 WORKDIR /simde/build_ubuntu16.04_clang_native
-RUN CC=/usr/bin/clang CXX=/usr/bin/clang++ CFLAGS="-Wall -Wextra -march=native -DSIMDE_ENABLE_NATIVE_ALIASES -DSIMDE_NATIVE_ALIASES_TESTING" CXXFLAGS="-Wall -Wextra -march=native -DSIMDE_ENABLE_NATIVE_ALIASES -DSIMDE_NATIVE_ALIASES_TESTING"  meson .. \
+RUN CC=/usr/bin/clang CXX=/usr/bin/clang++ CFLAGS="-Wall -Wextra -DSIMDE_ENABLE_NATIVE_ALIASES -DSIMDE_NATIVE_ALIASES_TESTING" CXXFLAGS="-Wall -Wextra -DSIMDE_ENABLE_NATIVE_ALIASES -DSIMDE_NATIVE_ALIASES_TESTING"  meson .. \
  && ninja && ./test/run-tests
 
