@@ -251,7 +251,7 @@ simde_x_mm_blendv_epi32 (simde__m128i a, simde__m128i b, simde__m128i mask) {
 #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
   #if defined(HEDLEY_INTEL_VERSION_CHECK)
     __typeof__(mask_.i32) z = { 0, 0, 0, 0 };
-    mask_.i32 = mask_.i32 < z;
+    mask_.i32 = HEDLEY_STATIC_CAST(__typeof__(mask_.i32), mask_.i32 < z);
   #else
     mask_.i32 >>= (CHAR_BIT * sizeof(mask_.i32[0])) - 1;
   #endif

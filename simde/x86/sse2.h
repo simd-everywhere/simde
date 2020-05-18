@@ -1275,7 +1275,7 @@ simde_mm_cmpeq_epi32 (simde__m128i a, simde__m128i b) {
   #elif defined(SIMDE_POWER_ALTIVEC_P5)
     r_.altivec_i32 = (SIMDE_POWER_ALTIVEC_VECTOR(signed int)) vec_cmpeq(a_.altivec_i32, b_.altivec_i32);
   #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-    r_.i32 = (a_.i32 == b_.i32);
+    r_.i32 = HEDLEY_STATIC_CAST(__typeof__(r_.i32), a_.i32 == b_.i32);
   #else
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {
