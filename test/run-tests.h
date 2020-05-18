@@ -26,6 +26,9 @@ SIMDE_DIAGNOSTIC_DISABLE_VLA_
 #if HEDLEY_HAS_WARNING("-Wvariadic-macros") || HEDLEY_GCC_VERSION_CHECK(4,0,0)
   #pragma GCC diagnostic ignored "-Wvariadic-macros"
 #endif
+#if HEDLEY_HAS_WARNING("-Wreserved-id-macro")
+  #pragma clang diagnostic ignored "-Wreserved-id-macro"
+#endif
 
 #include "munit/munit.h"
 
