@@ -1,0 +1,9 @@
+FROM debian:bullseye-slim
+RUN apt-get update && apt-get install -y gcc-9-aarch64-linux-gnu g++-aarch64-linux-gnu qemu-user-static cmake binfmt-support
+COPY . /simde
+WORKDIR /simde
+RUN mkdir -p test/build_arm64
+WORKDIR /simde/test/build_arm64
+RUN CC=/usr/bin/aarch64-linux-gnu-gcc-9 CXX=/usr/bin/aarch64-linux-gnu-g++-9 cmake -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON -DCMAKE_C_FLAGS="-Wall -Wextra -Werror -pedantic -std=c11 -fopenmp -fno-exceptions" -DCMAKE_CXX_FLAGS="-Wall -Wextra -Werror -pedantic -std=c++0x -fopenmp -fno-exceptions" ../ && \
+  make -j$(nproc)
+RUN QEMU_LD_PREFIX=/usr/aarch64-linux-gnu/ /usr/bin/qemu-aarch64-static ./run-tests
