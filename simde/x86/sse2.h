@@ -1575,6 +1575,8 @@ simde_mm_cmple_pd (simde__m128d a, simde__m128d b) {
     r_.i64 = HEDLEY_STATIC_CAST(__typeof__(r_.i64), (a_.f64 <= b_.f64));
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
     r_.wasm_v128 = wasm_f64x2_le(a_.wasm_v128, b_.wasm_v128);
+  #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+    r_.altivec_f64 = (SIMDE_POWER_ALTIVEC_VECTOR(double)) vec_cmple(a_.altivec_f64, b_.altivec_f64);
   #else
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
