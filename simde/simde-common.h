@@ -690,9 +690,6 @@ typedef SIMDE_FLOAT64_TYPE simde_float64;
 #    if defined(SIMDE_ARCH_AARCH64)
 #      define SIMDE_BUG_CLANG_45541
 #    endif
-#    if !HEDLEY_CLANG_VERSION_CHECK(3,9,0)
-#      define SIMDE_BUG_CLANG_MISSING_SIMD  /* TODO: find relevant bug or commit */
-#    endif
 #  endif
 #  if defined(HEDLEY_EMSCRIPTEN_VERSION)
 #    define SIMDE_BUG_EMSCRIPTEN_MISSING_IMPL /* Placeholder for (as yet) unfiled issues. */
