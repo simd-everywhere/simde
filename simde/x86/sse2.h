@@ -2673,19 +2673,21 @@ simde__m128d
 simde_mm_load_pd (simde_float64 const mem_addr[HEDLEY_ARRAY_PARAM(2)]) {
   simde_assert_aligned(16, mem_addr);
 
-#if defined(SIMDE_X86_SSE2_NATIVE)
-  return _mm_load_pd(mem_addr);
-#else
-  simde__m128d_private r_;
+  #if defined(SIMDE_X86_SSE2_NATIVE)
+    return _mm_load_pd(mem_addr);
+  #else
+    simde__m128d_private r_;
 
-#if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-  r_.neon_u32 = vld1q_u32(HEDLEY_REINTERPRET_CAST(uint32_t const*, mem_addr));
-#else
-  r_ = *SIMDE_ALIGN_CAST(simde__m128d_private const*, mem_addr);
-#endif
+    #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+      r_.neon_u32 = vld1q_u32(HEDLEY_REINTERPRET_CAST(uint32_t const*, mem_addr));
+    #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+      r_.altivec_f64 = vec_ld(0, HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(double) const*, mem_addr));
+    #else
+      r_ = *SIMDE_ALIGN_CAST(simde__m128d_private const*, mem_addr);
+    #endif
 
-  return simde__m128d_from_private(r_);
-#endif
+    return simde__m128d_from_private(r_);
+  #endif
 }
 #if defined(SIMDE_X86_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_load_pd(mem_addr) simde_mm_load_pd(mem_addr)
@@ -2738,15 +2740,21 @@ simde__m128i
 simde_mm_load_si128 (simde__m128i const* mem_addr) {
   simde_assert_aligned(16, mem_addr);
 
-#if defined(SIMDE_X86_SSE2_NATIVE)
-  return _mm_load_si128(HEDLEY_REINTERPRET_CAST(__m128i const*, mem_addr));
-#elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-  simde__m128i_private r_;
-  r_.neon_i32 = vld1q_s32((int32_t const*) mem_addr);
-  return simde__m128i_from_private(r_);
-#else
-  return *mem_addr;
-#endif
+  #if defined(SIMDE_X86_SSE2_NATIVE)
+    return _mm_load_si128(HEDLEY_REINTERPRET_CAST(__m128i const*, mem_addr));
+  #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    simde__m128i_private r_;
+
+    #if defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+      r_.altivec_i32 = vec_ld(0, HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(int) const*, mem_addr));
+    #else
+      r_.neon_i32 = vld1q_s32((int32_t const*) mem_addr);
+    #endif
+
+    return simde__m128i_from_private(r_);
+  #else
+    return *mem_addr;
+  #endif
 }
 #if defined(SIMDE_X86_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_load_si128(mem_addr) simde_mm_load_si128(mem_addr)
