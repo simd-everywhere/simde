@@ -343,33 +343,53 @@ simde_mm_round_pd (simde__m128d a, int rounding)
     #if defined(simde_math_nearbyint)
       case SIMDE_MM_FROUND_TO_NEAREST_INT:
       case SIMDE_MM_FROUND_CUR_DIRECTION:
-        for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
-          r_.f64[i] = simde_math_nearbyint(a_.f64[i]);
-        }
+        #if defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+          r_.altivec_f64 = (SIMDE_POWER_ALTIVEC_VECTOR(double)) vec_round(a_.altivec_f64);
+        #else
+          SIMDE_VECTORIZE
+          for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
+            r_.f64[i] = simde_math_nearbyint(a_.f64[i]);
+          }
+        #endif
         break;
     #endif
 
     #if defined(simde_math_floor)
       case SIMDE_MM_FROUND_TO_NEG_INF:
-        for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
-          r_.f64[i] = simde_math_floor(a_.f64[i]);
-        }
+        #if defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+          r_.altivec_f64 = (SIMDE_POWER_ALTIVEC_VECTOR(double)) vec_floor(a_.altivec_f64);
+        #else
+          SIMDE_VECTORIZE
+          for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
+            r_.f64[i] = simde_math_floor(a_.f64[i]);
+          }
+        #endif
         break;
     #endif
 
     #if defined(simde_math_ceil)
       case SIMDE_MM_FROUND_TO_POS_INF:
-        for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
-          r_.f64[i] = simde_math_ceil(a_.f64[i]);
-        }
+        #if defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+          r_.altivec_f64 = (SIMDE_POWER_ALTIVEC_VECTOR(double)) vec_ceil(a_.altivec_f64);
+        #else
+          SIMDE_VECTORIZE
+          for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
+            r_.f64[i] = simde_math_ceil(a_.f64[i]);
+          }
+        #endif
         break;
     #endif
 
     #if defined(simde_math_trunc)
       case SIMDE_MM_FROUND_TO_ZERO:
-        for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
-          r_.f64[i] = simde_math_trunc(a_.f64[i]);
-        }
+        #if defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+          r_.altivec_f64 = (SIMDE_POWER_ALTIVEC_VECTOR(double)) vec_trunc(a_.altivec_f64);
+        #else
+          SIMDE_VECTORIZE
+          for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
+            r_.f64[i] = simde_math_trunc(a_.f64[i]);
+          }
+        #endif
         break;
     #endif
 
@@ -398,33 +418,49 @@ simde_mm_round_ps (simde__m128 a, int rounding)
     #if defined(simde_math_nearbyintf)
       case SIMDE_MM_FROUND_TO_NEAREST_INT:
       case SIMDE_MM_FROUND_CUR_DIRECTION:
-        for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
-          r_.f32[i] = simde_math_nearbyintf(a_.f32[i]);
-        }
+        #if defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+          r_.altivec_f32 = (SIMDE_POWER_ALTIVEC_VECTOR(float)) vec_round(a_.altivec_f64);
+        #else
+          for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
+            r_.f32[i] = simde_math_nearbyintf(a_.f32[i]);
+          }
+        #endif
         break;
     #endif
 
     #if defined(simde_math_floorf)
       case SIMDE_MM_FROUND_TO_NEG_INF:
-        for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
-          r_.f32[i] = simde_math_floorf(a_.f32[i]);
-        }
+        #if defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+          r_.altivec_f32 = (SIMDE_POWER_ALTIVEC_VECTOR(float)) vec_floor(a_.altivec_f32);
+        #else
+          for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
+            r_.f32[i] = simde_math_floorf(a_.f32[i]);
+          }
+        #endif
         break;
     #endif
 
     #if defined(simde_math_ceilf)
       case SIMDE_MM_FROUND_TO_POS_INF:
-        for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
-          r_.f32[i] = simde_math_ceilf(a_.f32[i]);
-        }
+        #if defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+          r_.altivec_f32 = (SIMDE_POWER_ALTIVEC_VECTOR(float)) vec_ceil(a_.altivec_f32);
+        #else
+          for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
+            r_.f32[i] = simde_math_ceilf(a_.f32[i]);
+          }
+        #endif
         break;
     #endif
 
     #if defined(simde_math_truncf)
       case SIMDE_MM_FROUND_TO_ZERO:
-        for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
-          r_.f32[i] = simde_math_truncf(a_.f32[i]);
-        }
+        #if defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+          r_.altivec_f32 = (SIMDE_POWER_ALTIVEC_VECTOR(float)) vec_trunc(a_.altivec_f32);
+        #else
+          for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
+            r_.f32[i] = simde_math_truncf(a_.f32[i]);
+          }
+        #endif
         break;
     #endif
 
