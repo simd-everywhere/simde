@@ -54,7 +54,12 @@
 
 #if defined(HUGE_VAL)
   /* Looks like <math.h> or <cmath> has already been included. */
-  #if defined(isnan)
+
+  /* The math.h from libc++ (yes, the C header from the C++ standard
+   * library) will define an isnan function, but not an isnan macro
+   * like the C standard requires.  So, we detect the header guards
+   * macro libc++ uses. */
+  #if defined(isnan) || (defined(_LIBCPP_MATH_H) && !defined(_LIBCPP_CMATH))
     #define SIMDE_MATH_HAVE_MATH_H
   #elif defined(__cplusplus)
     #define SIMDE_MATH_HAVE_CMATH

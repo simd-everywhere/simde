@@ -318,7 +318,9 @@ simde_mm_shuffle_epi8 (simde__m128i a, simde__m128i b) {
       b_.neon_i8 = vandq_s8(b_.neon_i8, vdupq_n_s8(HEDLEY_STATIC_CAST(int8_t, (1 << 7) | 15)));
 
       /* Convert a from an int8x16_t to an int8x8x2_t */
-      int8x8x2_t i = { .val = { vget_low_s8(a_.neon_i8), vget_high_s8(a_.neon_i8) } };
+      int8x8x2_t i;
+      i.val[0] = vget_low_s8(a_.neon_i8);
+      i.val[1] = vget_high_s8(a_.neon_i8);
 
       /* Table lookups */
       int8x8_t l = vtbl2_s8(i, vget_low_s8(b_.neon_i8));
