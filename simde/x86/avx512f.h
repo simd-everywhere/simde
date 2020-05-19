@@ -116,7 +116,7 @@ typedef union {
 
 #if defined(SIMDE_X86_AVX512F_NATIVE)
   SIMDE_AVX512_ALIGN __m512         n;
-#elif defined(SIMDE_POWER_ALTIVEC_P5)
+#elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
   SIMDE_ALIGN(16) vector unsigned char      altivec_u8[4];
   SIMDE_ALIGN(16) vector unsigned short     altivec_u16[4];
   SIMDE_ALIGN(16) vector unsigned int       altivec_u32[4];
@@ -176,7 +176,7 @@ typedef union {
 
 #if defined(SIMDE_X86_AVX512F_NATIVE)
   SIMDE_AVX512_ALIGN __m512d        n;
-#elif defined(SIMDE_POWER_ALTIVEC_P5)
+#elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
   SIMDE_ALIGN(16) vector unsigned char      altivec_u8[4];
   SIMDE_ALIGN(16) vector unsigned short     altivec_u16[4];
   SIMDE_ALIGN(16) vector unsigned int       altivec_u32[4];
@@ -236,7 +236,7 @@ typedef union {
 
 #if defined(SIMDE_X86_AVX512F_NATIVE)
   SIMDE_AVX512_ALIGN __m512i        n;
-#elif defined(SIMDE_POWER_ALTIVEC_P5)
+#elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
   SIMDE_ALIGN(16) vector unsigned char      altivec_u8[4];
   SIMDE_ALIGN(16) vector unsigned short     altivec_u16[4];
   SIMDE_ALIGN(16) vector unsigned int       altivec_u32[4];

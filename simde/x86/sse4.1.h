@@ -522,7 +522,7 @@ simde_mm_cmpeq_epi64 (simde__m128i a, simde__m128i b) {
 
   #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
     r_.i64 = HEDLEY_STATIC_CAST(__typeof__(r_.i64), a_.i64 == b_.i64);
-  #elif defined(SIMDE_POWER_ALTIVEC_P5)
+  #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
     r_.altivec_i64 = (vector signed long long) vec_cmpeq(a_.altivec_i64, b_.altivec_i64);
   #else
     SIMDE_VECTORIZE
