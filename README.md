@@ -1,7 +1,10 @@
 # SIMD Everywhere
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+[![All Contributors](https://img.shields.io/badge/all_contributors-16-orange.svg?style=flat-square)](#contributors-)
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
 [![Gitter chat](https://badges.gitter.im/gitterHQ/gitter.png)](https://gitter.im/simd-everywhere/community)
 
-The SIMDe header-only library provides fast, portable implementations of 
+The SIMDe header-only library provides fast, portable implementations of
 [SIMD intrinsics](https://en.wikipedia.org/wiki/SIMD) on hardware which
 doesn't natively support them, such as calling [SSE](https://en.wikipedia.org/wiki/Streaming_SIMD_Extensions)
 functions on ARM.  There is no performance penalty if the hardware
@@ -331,3 +334,41 @@ development in any way.
 
 SIMDe is distributed under an MIT-style license; see COPYING for
 details.
+
+## Contributors ✨
+
+Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tr>
+    <td align="center"><a href="https://nemequ.github.io/"><img src="https://avatars0.githubusercontent.com/u/1151?v=4" width="100px;" alt=""/><br /><sub><b>Evan Nemerson</b></sub></a><br /><a href="https://github.com/nemequ/simde/commits?author=nemequ" title="Code">💻</a> <a href="#content-nemequ" title="Content">🖋</a> <a href="https://github.com/nemequ/simde/commits?author=nemequ" title="Documentation">📖</a> <a href="#example-nemequ" title="Examples">💡</a> <a href="#ideas-nemequ" title="Ideas, Planning, & Feedback">🤔</a> <a href="#question-nemequ" title="Answering Questions">💬</a> <a href="https://github.com/nemequ/simde/pulls?q=is%3Apr+reviewed-by%3Anemequ" title="Reviewed Pull Requests">👀</a> <a href="https://github.com/nemequ/simde/commits?author=nemequ" title="Tests">⚠️</a> <a href="#tutorial-nemequ" title="Tutorials">✅</a> <a href="#talk-nemequ" title="Talks">📢</a> <a href="https://github.com/nemequ/simde/issues?q=author%3Anemequ" title="Bug reports">🐛</a> <a href="#infra-nemequ" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a> <a href="#maintenance-nemequ" title="Maintenance">🚧</a> <a href="#projectManagement-nemequ" title="Project Management">📆</a></td>
+    <td align="center"><a href="https://orcid.org/0000-0002-2961-9670"><img src="https://avatars3.githubusercontent.com/u/1330696?v=4" width="100px;" alt=""/><br /><sub><b>Michael R. Crusoe</b></sub></a><br /><a href="https://github.com/nemequ/simde/issues?q=author%3Amr-c" title="Bug reports">🐛</a> <a href="https://github.com/nemequ/simde/commits?author=mr-c" title="Code">💻</a> <a href="#eventOrganizing-mr-c" title="Event Organizing">📋</a> <a href="#fundingFinding-mr-c" title="Funding Finding">🔍</a> <a href="#ideas-mr-c" title="Ideas, Planning, & Feedback">🤔</a> <a href="#infra-mr-c" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a> <a href="#platform-mr-c" title="Packaging/porting to new platform">📦</a> <a href="https://github.com/nemequ/simde/commits?author=mr-c" title="Tests">⚠️</a></td>
+    <td align="center"><a href="https://github.com/himanshi18037"><img src="https://avatars1.githubusercontent.com/u/43923076?v=4" width="100px;" alt=""/><br /><sub><b>HIMANSHI MATHUR</b></sub></a><br /><a href="https://github.com/nemequ/simde/commits?author=himanshi18037" title="Code">💻</a> <a href="https://github.com/nemequ/simde/commits?author=himanshi18037" title="Tests">⚠️</a></td>
+    <td align="center"><a href="https://github.com/masterchef2209"><img src="https://avatars0.githubusercontent.com/u/27916352?v=4" width="100px;" alt=""/><br /><sub><b>Hidayat Khan</b></sub></a><br /><a href="https://github.com/nemequ/simde/commits?author=masterchef2209" title="Code">💻</a> <a href="https://github.com/nemequ/simde/commits?author=masterchef2209" title="Tests">⚠️</a></td>
+    <td align="center"><a href="https://github.com/rosbif"><img src="https://avatars1.githubusercontent.com/u/553899?v=4" width="100px;" alt=""/><br /><sub><b>rosbif</b></sub></a><br /><a href="https://github.com/nemequ/simde/commits?author=rosbif" title="Code">💻</a> <a href="https://github.com/nemequ/simde/commits?author=rosbif" title="Tests">⚠️</a> <a href="https://github.com/nemequ/simde/issues?q=author%3Arosbif" title="Bug reports">🐛</a> <a href="#ideas-rosbif" title="Ideas, Planning, & Feedback">🤔</a></td>
+    <td align="center"><a href="http://junaruga.hatenablog.com/"><img src="https://avatars2.githubusercontent.com/u/121989?v=4" width="100px;" alt=""/><br /><sub><b>Jun Aruga</b></sub></a><br /><a href="https://github.com/nemequ/simde/commits?author=junaruga" title="Code">💻</a> <a href="#ideas-junaruga" title="Ideas, Planning, & Feedback">🤔</a> <a href="#platform-junaruga" title="Packaging/porting to new platform">📦</a> <a href="#infra-junaruga" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a> <a href="#maintenance-junaruga" title="Maintenance">🚧</a> <a href="https://github.com/nemequ/simde/commits?author=junaruga" title="Tests">⚠️</a> <a href="https://github.com/nemequ/simde/issues?q=author%3Ajunaruga" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="https://github.com/marmeladema"><img src="https://avatars2.githubusercontent.com/u/1629419?v=4" width="100px;" alt=""/><br /><sub><b>Élie ROUDNINSKI</b></sub></a><br /><a href="https://github.com/nemequ/simde/commits?author=marmeladema" title="Code">💻</a> <a href="https://github.com/nemequ/simde/commits?author=marmeladema" title="Tests">⚠️</a></td>
+  </tr>
+  <tr>
+    <td align="center"><a href="http://www.bache.name"><img src="https://avatars3.githubusercontent.com/u/7937081?v=4" width="100px;" alt=""/><br /><sub><b>Jesper Storm Bache</b></sub></a><br /><a href="https://github.com/nemequ/simde/commits?author=jsbache" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/jeffdaily"><img src="https://avatars1.githubusercontent.com/u/904248?v=4" width="100px;" alt=""/><br /><sub><b>Jeff Daily</b></sub></a><br /><a href="https://github.com/nemequ/simde/commits?author=jeffdaily" title="Code">💻</a> <a href="#infra-jeffdaily" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
+    <td align="center"><a href="https://github.com/yekm"><img src="https://avatars2.githubusercontent.com/u/205196?v=4" width="100px;" alt=""/><br /><sub><b>Pavel</b></sub></a><br /><a href="https://github.com/nemequ/simde/commits?author=yekm" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/sabarishbollapragada"><img src="https://avatars3.githubusercontent.com/u/36379720?v=4" width="100px;" alt=""/><br /><sub><b>Sabarish Bollapragada</b></sub></a><br /><a href="https://github.com/nemequ/simde/commits?author=sabarishbollapragada" title="Code">💻</a></td>
+    <td align="center"><a href="http://www.thegavinli.com/"><img src="https://avatars2.githubusercontent.com/u/371529?v=4" width="100px;" alt=""/><br /><sub><b>Gavin Li</b></sub></a><br /><a href="https://github.com/nemequ/simde/commits?author=gh2o" title="Code">💻</a></td>
+    <td align="center"><a href="http://www.yiningkarlli.com"><img src="https://avatars0.githubusercontent.com/u/1057198?v=4" width="100px;" alt=""/><br /><sub><b>Yining Karl Li</b></sub></a><br /><a href="https://github.com/nemequ/simde/commits?author=betajippity" title="Code">💻</a></td>
+    <td align="center"><a href="https://www.facebook.com/anirbandey303"><img src="https://avatars1.githubusercontent.com/u/29774651?v=4" width="100px;" alt=""/><br /><sub><b>Anirban Dey</b></sub></a><br /><a href="https://github.com/nemequ/simde/commits?author=anirbandey303" title="Documentation">📖</a></td>
+  </tr>
+  <tr>
+    <td align="center"><a href="https://github.com/Un1Gfn"><img src="https://avatars3.githubusercontent.com/u/28521292?v=4" width="100px;" alt=""/><br /><sub><b>Darren Ng</b></sub></a><br /><a href="https://github.com/nemequ/simde/commits?author=Un1Gfn" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://github.com/FaresSalem"><img src="https://avatars0.githubusercontent.com/u/7736245?v=4" width="100px;" alt=""/><br /><sub><b>FaresSalem</b></sub></a><br /><a href="https://github.com/nemequ/simde/commits?author=FaresSalem" title="Documentation">📖</a></td>
+  </tr>
+</table>
+
+<!-- markdownlint-enable -->
+<!-- prettier-ignore-end -->
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind are welcome!
