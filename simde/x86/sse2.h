@@ -2343,7 +2343,7 @@ simde_mm_cvtsi128_si64 (simde__m128i a) {
   #endif
 #else
   simde__m128i_private a_ = simde__m128i_to_private(a);
-#if defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+#if defined(SIMDE_POWER_ALTIVEC_P5_NATIVE) && !defined(HEDLEY_IBM_VERSION)
   return vec_extract(a_.i64, 0);
 #endif
   return a_.i64[0];
@@ -2680,7 +2680,7 @@ simde_mm_load_pd (simde_float64 const mem_addr[HEDLEY_ARRAY_PARAM(2)]) {
 
     #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       r_.neon_u32 = vld1q_u32(HEDLEY_REINTERPRET_CAST(uint32_t const*, mem_addr));
-    #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+    #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE) && !defined(HEDLEY_IBM_VERSION)
       r_.altivec_f64 = vec_ld(0, HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(double) const*, mem_addr));
     #else
       r_ = *SIMDE_ALIGN_CAST(simde__m128d_private const*, mem_addr);
@@ -2970,7 +2970,7 @@ simde_mm_movemask_epi8 (simde__m128i a) {
   hi = vpadd_u8(hi, hi);
 
   r = ((hi[0] << 8) | (lo[0] & 0xFF));
-#elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+#elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE) && !defined(HEDLEY_IBM_VERSION)
   static const SIMDE_POWER_ALTIVEC_VECTOR(unsigned char) perm = {120, 112, 104, 96, 88, 80, 72, 64, 56, 48, 40, 32, 24, 16, 8, 0};
   r = vec_extract(vec_vbpermq(a_.altivec_u8, perm), 2);
 #else
