@@ -3940,7 +3940,7 @@ simde_mm_set_pd1 (simde_float64 a) {
 #endif
 }
 #if defined(SIMDE_X86_SSE2_ENABLE_NATIVE_ALIASES)
-#  define _mm_set_pd1(a) simde_mm_set_pd1(a)
+#  define _mm_set_pd1(a) simde_mm_set1_pd(a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
