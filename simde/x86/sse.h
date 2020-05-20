@@ -2080,25 +2080,25 @@ simde_mm_maskmove_si64 (simde__m64 a, simde__m64 mask, int8_t* mem_addr) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m64
 simde_mm_max_pi16 (simde__m64 a, simde__m64 b) {
-#if defined(SIMDE_X86_SSE_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
-  return _mm_max_pi16(a, b);
-#else
-  simde__m64_private
-    r_,
-    a_ = simde__m64_to_private(a),
-    b_ = simde__m64_to_private(b);
+  #if defined(SIMDE_X86_SSE_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
+    return _mm_max_pi16(a, b);
+  #else
+    simde__m64_private
+      r_,
+      a_ = simde__m64_to_private(a),
+      b_ = simde__m64_to_private(b);
 
-#if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-  r_.neon_i16 = vmax_s16(a_.neon_i16, b_.neon_i16);
-#else
-  SIMDE_VECTORIZE
-  for (size_t i = 0 ; i < (sizeof(r_.i16) / sizeof(r_.i16[0])) ; i++) {
-    r_.i16[i] = (a_.i16[i] > b_.i16[i]) ? a_.i16[i] : b_.i16[i];
-  }
-#endif
+    #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+      r_.neon_i16 = vmax_s16(a_.neon_i16, b_.neon_i16);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.i16) / sizeof(r_.i16[0])) ; i++) {
+        r_.i16[i] = (a_.i16[i] > b_.i16[i]) ? a_.i16[i] : b_.i16[i];
+      }
+    #endif
 
-  return simde__m64_from_private(r_);
-#endif
+    return simde__m64_from_private(r_);
+  #endif
 }
 #define simde_m_pmaxsw(a, b) simde_mm_max_pi16(a, b)
 #if defined(SIMDE_X86_SSE_ENABLE_NATIVE_ALIASES)
@@ -2109,27 +2109,27 @@ simde_mm_max_pi16 (simde__m64 a, simde__m64 b) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128
 simde_mm_max_ps (simde__m128 a, simde__m128 b) {
-#if defined(SIMDE_X86_SSE_NATIVE)
-  return _mm_max_ps(a, b);
-#else
-  simde__m128_private
-    r_,
-    a_ = simde__m128_to_private(a),
-    b_ = simde__m128_to_private(b);
+  #if defined(SIMDE_X86_SSE_NATIVE)
+    return _mm_max_ps(a, b);
+  #else
+    simde__m128_private
+      r_,
+      a_ = simde__m128_to_private(a),
+      b_ = simde__m128_to_private(b);
 
-#if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-  r_.neon_f32 = vmaxq_f32(a_.neon_f32, b_.neon_f32);
-#elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
-  r_.altivec_f32 = vec_max(a_.altivec_f32, b_.altivec_f32);
-#else
-  SIMDE_VECTORIZE
-  for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
-    r_.f32[i] = (a_.f32[i] > b_.f32[i]) ? a_.f32[i] : b_.f32[i];
-  }
-#endif
+    #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+      r_.neon_f32 = vmaxq_f32(a_.neon_f32, b_.neon_f32);
+    #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+      r_.altivec_f32 = vec_max(a_.altivec_f32, b_.altivec_f32);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
+        r_.f32[i] = (a_.f32[i] > b_.f32[i]) ? a_.f32[i] : b_.f32[i];
+      }
+    #endif
 
-  return simde__m128_from_private(r_);
-#endif
+    return simde__m128_from_private(r_);
+  #endif
 }
 #if defined(SIMDE_X86_SSE_ENABLE_NATIVE_ALIASES)
 #  define _mm_max_ps(a, b) simde_mm_max_ps((a), (b))
