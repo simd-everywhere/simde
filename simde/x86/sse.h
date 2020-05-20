@@ -1627,6 +1627,7 @@ simde_mm_cvtt_ss2si (simde__m128 a) {
 #endif
 #endif
 }
+#define simde_mm_cvttss_si32(a) simde_mm_cvtt_ss2si((a))
 #if defined(SIMDE_X86_SSE_ENABLE_NATIVE_ALIASES)
 #  define _mm_cvtt_ss2si(a) simde_mm_cvtt_ss2si((a))
 #  define _mm_cvttss_si32(a) simde_mm_cvtt_ss2si((a))
