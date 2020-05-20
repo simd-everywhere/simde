@@ -17,10 +17,11 @@ install_headers(
 		'simde/simde-common.h',
 
 		'simde/x86/avx2.h',
+		'simde/x86/avx512f.h',
 		'simde/x86/avx512bw.h',
 		'simde/x86/avx512vl.h',
 		'simde/x86/avx512dq.h',
-		'simde/x86/avx512f.h',
+		'simde/x86/avx512cd.h',
 		'simde/x86/fma.h',
 		'simde/x86/gfni.h',
 		'simde/x86/mmx.h',
