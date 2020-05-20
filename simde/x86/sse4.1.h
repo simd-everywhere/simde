@@ -1077,7 +1077,14 @@ simde_mm_insert_epi8 (simde__m128i a, int i, const int imm8)
   return simde__m128i_from_private(r_);
 }
 #if defined(SIMDE_X86_SSE4_1_NATIVE)
-#  define simde_mm_insert_epi8(a, i, imm8) _mm_insert_epi8(a, i, imm8)
+  /* clang-3.8 returns an incompatible type, so we need the cast.  MSVC
+   * can't handle the cast ("error C2440: 'type cast': cannot convert
+   * from '__m128i' to '__m128i'").  */
+  #if defined(__clang__)
+    #define simde_mm_insert_epi8(a, i, imm8) HEDLEY_STATIC_CAST(__m128i, _mm_insert_epi8(a, i, imm8))
+  #else
+    #define simde_mm_insert_epi8(a, i, imm8) _mm_insert_epi8(a, i, imm8)
+  #endif
 #endif
 #if defined(SIMDE_X86_SSE4_1_ENABLE_NATIVE_ALIASES)
 #  define _mm_insert_epi8(a, i, imm8) simde_mm_insert_epi8(a, i, imm8)
@@ -1095,7 +1102,11 @@ simde_mm_insert_epi32 (simde__m128i a, int i, const int imm8)
   return simde__m128i_from_private(r_);
 }
 #if defined(SIMDE_X86_SSE4_1_NATIVE)
-#  define simde_mm_insert_epi32(a, i, imm8) _mm_insert_epi32(a, i, imm8)
+  #if defined(__clang__)
+    #define simde_mm_insert_epi32(a, i, imm8) HEDLEY_STATIC_CAST(__m128i, _mm_insert_epi32(a, i, imm8))
+  #else
+    #define simde_mm_insert_epi32(a, i, imm8) _mm_insert_epi32(a, i, imm8)
+  #endif
 #endif
 #if defined(SIMDE_X86_SSE4_1_ENABLE_NATIVE_ALIASES)
 #  define _mm_insert_epi32(a, i, imm8) simde_mm_insert_epi32(a, i, imm8)
