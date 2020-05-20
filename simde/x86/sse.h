@@ -1769,6 +1769,9 @@ simde_mm_extract_pi16 (simde__m64 a, const int imm8)
 #  define simde_mm_extract_pi16(a, imm8) HEDLEY_STATIC_CAST(int16_t, vget_lane_s16(simde__m64_to_private(a).neon_i16, imm8))
 #endif
 #define simde_m_pextrw(a, imm8) simde_mm_extract_pi16(a, imm8)
+#if defined(SIMDE_X86_SSE_ENABLE_NATIVE_ALIASES)
+#  define _mm_extract_pi16(a, imm8) simde_mm_extract_pi16((a), (imm8))
+#endif
 
 enum {
 #if defined(SIMDE_X86_SSE_NATIVE)
@@ -1814,7 +1817,7 @@ SIMDE_MM_GET_ROUNDING_MODE(void) {
   #endif
 }
 #if defined(SIMDE_X86_SSE_ENABLE_NATIVE_ALIASES)
-#  define _mm_extract_pi16(a, imm8) simde_mm_extract_pi16((a), imm8)
+#  define _MM_GET_ROUNDING_MODE() SIMDE_MM_GET_ROUNDING_MODE()
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
