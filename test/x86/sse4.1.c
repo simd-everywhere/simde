@@ -25,7 +25,7 @@
 #include <simde/x86/sse4.1.h>
 #include <test/x86/test-sse2.h>
 
-#if defined(SIMDE_SSE4_1_NATIVE) || defined(SIMDE_NO_NATIVE) || defined(SIMDE_ALWAYS_BUILD_NATIVE_TESTS)
+#if defined(SIMDE_X86_SSE4_1_NATIVE) || defined(SIMDE_NO_NATIVE) || defined(SIMDE_ALWAYS_BUILD_NATIVE_TESTS)
 
 static MunitResult
 test_simde_mm_blendv_epi8(const MunitParameter params[], void* data) {
@@ -2754,6 +2754,50 @@ test_simde_mm_mullo_epi32(const MunitParameter params[], void* data) {
 }
 
 static MunitResult
+test_simde_x_mm_mullo_epu32(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  const struct {
+    simde__m128i a;
+    simde__m128i b;
+    simde__m128i r;
+  } test_vec[8] = {
+    { simde_x_mm_set_epu32(UINT32_C(3025185092), UINT32_C(1071139209), UINT32_C(4112016578), UINT32_C(2016123065)),
+      simde_x_mm_set_epu32(UINT32_C( 290328727), UINT32_C(2226082336), UINT32_C( 501526514), UINT32_C(1649328035)),
+      simde_x_mm_set_epu32(UINT32_C(2095060764), UINT32_C( 725488416), UINT32_C( 347594084), UINT32_C(1695696075)) },
+    { simde_x_mm_set_epu32(UINT32_C(3106040714), UINT32_C(3664680000), UINT32_C( 790276509), UINT32_C(3508971009)),
+      simde_x_mm_set_epu32(UINT32_C(1699381529), UINT32_C( 875841923), UINT32_C(3450881837), UINT32_C(1814797908)),
+      simde_x_mm_set_epu32(UINT32_C(4101048954), UINT32_C(1809587392), UINT32_C(  27941785), UINT32_C(3377337940)) },
+    { simde_x_mm_set_epu32(UINT32_C(2893750485), UINT32_C(1249313952), UINT32_C(3305249000), UINT32_C(2880865177)),
+      simde_x_mm_set_epu32(UINT32_C(  24592541), UINT32_C( 966747003), UINT32_C(3635146633), UINT32_C(4165399857)),
+      simde_x_mm_set_epu32(UINT32_C(2814075553), UINT32_C(1297684704), UINT32_C(3327650856), UINT32_C(3182861641)) },
+    { simde_x_mm_set_epu32(UINT32_C( 189392542), UINT32_C(3720757090), UINT32_C(3597240564), UINT32_C(1088106434)),
+      simde_x_mm_set_epu32(UINT32_C(3260872370), UINT32_C(1980368114), UINT32_C(4105157694), UINT32_C(  87964330)),
+      simde_x_mm_set_epu32(UINT32_C(2043031004), UINT32_C(1681486500), UINT32_C(2632866584), UINT32_C( 358329044)) },
+    { simde_x_mm_set_epu32(UINT32_C(3751593359), UINT32_C( 552022460), UINT32_C(2369123294), UINT32_C(1803067683)),
+      simde_x_mm_set_epu32(UINT32_C(3768762282), UINT32_C(1316515183), UINT32_C(3641532283), UINT32_C(3816235830)),
+      simde_x_mm_set_epu32(UINT32_C(2583618038), UINT32_C(1284217988), UINT32_C(1857129898), UINT32_C( 431933026)) },
+    { simde_x_mm_set_epu32(UINT32_C(1492473270), UINT32_C(1074984006), UINT32_C(4252907716), UINT32_C(1202847242)),
+      simde_x_mm_set_epu32(UINT32_C(3343508230), UINT32_C(2110123114), UINT32_C( 454026106), UINT32_C( 903743904)),
+      simde_x_mm_set_epu32(UINT32_C(2342937668), UINT32_C( 686271740), UINT32_C(3120093544), UINT32_C(1876500544)) },
+    { simde_x_mm_set_epu32(UINT32_C( 998872003), UINT32_C(1287827774), UINT32_C( 838516167), UINT32_C( 572896344)),
+      simde_x_mm_set_epu32(UINT32_C(1333196355), UINT32_C(3474739513), UINT32_C(2465428766), UINT32_C( 183148961)),
+      simde_x_mm_set_epu32(UINT32_C( 299961865), UINT32_C( 909513934), UINT32_C( 369307730), UINT32_C(2022818648)) },
+    { simde_x_mm_set_epu32(UINT32_C(2381114005), UINT32_C(  17395766), UINT32_C(1942367476), UINT32_C( 903009655)),
+      simde_x_mm_set_epu32(UINT32_C(2255462391), UINT32_C( 872948613), UINT32_C(1238590873), UINT32_C(2084494234)),
+      simde_x_mm_set_epu32(UINT32_C(3387154627), UINT32_C(1307487758), UINT32_C(  38347220), UINT32_C( 339949206)) }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    simde__m128i r = simde_x_mm_mullo_epu32(test_vec[i].a, test_vec[i].b);
+    simde_assert_m128i_u32(r, ==, test_vec[i].r);
+  }
+
+  return MUNIT_OK;
+}
+
+static MunitResult
 test_simde_mm_packus_epi32(const MunitParameter params[], void* data) {
   (void) params;
   (void) data;
@@ -3075,7 +3119,11 @@ test_simde_mm_stream_load_si128(const MunitParameter params[], void* data) {
   };
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
-    simde__m128i r = simde_mm_stream_load_si128(&(test_vec[i].a));
+    #if defined(SIMDE_X86_SSE4_1_NATIVE) && defined(SIMDE_NATIVE_ALIASES_TESTING)
+      simde__m128i r = simde_mm_stream_load_si128((__m128i*)&(test_vec[i].a));
+    #else
+      simde__m128i r = simde_mm_stream_load_si128(&(test_vec[i].a));
+    #endif
     simde_assert_m128i_i32(r, ==, test_vec[i].r);
   }
 
@@ -3337,13 +3385,20 @@ test_simde_mm_testz_si128(const MunitParameter params[], void* data) {
   return MUNIT_OK;
 }
 
-#endif /* defined(SIMDE_SSE4_1_NATIVE) || defined(SIMDE_NO_NATIVE) || defined(SIMDE_ALWAYS_BUILD_NATIVE_TESTS) */
+#endif /* defined(SIMDE_X86_SSE4_1_NATIVE) || defined(SIMDE_NO_NATIVE) || defined(SIMDE_ALWAYS_BUILD_NATIVE_TESTS) */
 
 HEDLEY_DIAGNOSTIC_PUSH
 HEDLEY_DIAGNOSTIC_DISABLE_CAST_QUAL
 
+#if HEDLEY_HAS_WARNING("-Wold-style-cast")
+  #pragma clang diagnostic ignored "-Wold-style-cast"
+#endif
+#if HEDLEY_HAS_WARNING("-Wzero-as-null-pointer-constant")
+  #pragma clang diagnostic ignored "-Wzero-as-null-pointer-constant"
+#endif
+
 static MunitTest test_suite_tests[] = {
-#if defined(SIMDE_SSE4_1_NATIVE) || defined(SIMDE_NO_NATIVE) || defined(SIMDE_ALWAYS_BUILD_NATIVE_TESTS)
+#if defined(SIMDE_X86_SSE4_1_NATIVE) || defined(SIMDE_NO_NATIVE) || defined(SIMDE_ALWAYS_BUILD_NATIVE_TESTS)
   SIMDE_TESTS_DEFINE_TEST(mm_blend_epi16),
   SIMDE_TESTS_DEFINE_TEST(mm_blend_pd),
   SIMDE_TESTS_DEFINE_TEST(mm_blend_ps),
@@ -3408,6 +3463,7 @@ static MunitTest test_suite_tests[] = {
 
   SIMDE_TESTS_DEFINE_TEST(mm_mul_epi32),
   SIMDE_TESTS_DEFINE_TEST(mm_mullo_epi32),
+  SIMDE_TESTS_DEFINE_TEST(x_mm_mullo_epu32),
 
   SIMDE_TESTS_DEFINE_TEST(mm_packus_epi32),
 
@@ -3424,7 +3480,7 @@ static MunitTest test_suite_tests[] = {
   SIMDE_TESTS_DEFINE_TEST(mm_testc_si128),
   SIMDE_TESTS_DEFINE_TEST(mm_testnzc_si128),
   SIMDE_TESTS_DEFINE_TEST(mm_testz_si128),
-#endif /* defined(SIMDE_SSE4_1_NATIVE) || defined(SIMDE_NO_NATIVE) || defined(SIMDE_ALWAYS_BUILD_NATIVE_TESTS) */
+#endif /* defined(SIMDE_X86_SSE4_1_NATIVE) || defined(SIMDE_NO_NATIVE) || defined(SIMDE_ALWAYS_BUILD_NATIVE_TESTS) */
 
   { NULL, NULL, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL }
 };

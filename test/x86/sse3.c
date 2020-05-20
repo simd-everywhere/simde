@@ -25,7 +25,7 @@
 #include <simde/x86/sse3.h>
 #include <test/x86/test-sse2.h>
 
-#if defined(SIMDE_SSE3_NATIVE) || defined(SIMDE_NO_NATIVE) || defined(SIMDE_ALWAYS_BUILD_NATIVE_TESTS)
+#if defined(SIMDE_X86_SSE3_NATIVE) || defined(SIMDE_NO_NATIVE) || defined(SIMDE_ALWAYS_BUILD_NATIVE_TESTS)
 
 static MunitResult
 test_simde_mm_addsub_pd(const MunitParameter params[], void* data) {
@@ -343,6 +343,33 @@ test_simde_mm_lddqu_si128(const MunitParameter params[], void* data) {
 }
 
 static MunitResult
+test_simde_mm_loaddup_pd(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  const struct {
+    simde_float64 a;
+    simde__m128d r;
+  } test_vec[8] = {
+    {SIMDE_FLOAT64_C( -639.28), simde_mm_set_pd(SIMDE_FLOAT64_C(-639.28), SIMDE_FLOAT64_C(-639.28)) },
+    {SIMDE_FLOAT64_C(  754.31), simde_mm_set_pd(SIMDE_FLOAT64_C( 754.31), SIMDE_FLOAT64_C( 754.31)) },
+    {SIMDE_FLOAT64_C( -143.09), simde_mm_set_pd(SIMDE_FLOAT64_C(-143.09), SIMDE_FLOAT64_C(-143.09)) },
+    {SIMDE_FLOAT64_C( -509.95), simde_mm_set_pd(SIMDE_FLOAT64_C(-509.95), SIMDE_FLOAT64_C(-509.95)) },
+    {SIMDE_FLOAT64_C(  357.11), simde_mm_set_pd(SIMDE_FLOAT64_C( 357.11), SIMDE_FLOAT64_C( 357.11)) },
+    {SIMDE_FLOAT64_C(  414.83), simde_mm_set_pd(SIMDE_FLOAT64_C( 414.83), SIMDE_FLOAT64_C( 414.83)) },
+    {SIMDE_FLOAT64_C(  416.46), simde_mm_set_pd(SIMDE_FLOAT64_C( 416.46), SIMDE_FLOAT64_C( 416.46)) },
+    {SIMDE_FLOAT64_C(  167.42), simde_mm_set_pd(SIMDE_FLOAT64_C( 167.42), SIMDE_FLOAT64_C( 167.42)) }
+  };
+
+ for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    simde__m128d r = simde_mm_loaddup_pd(&test_vec[i].a);
+    simde_assert_m128d_close(r, test_vec[i].r, 1);
+  }
+
+  return MUNIT_OK;
+}
+
+static MunitResult
 test_simde_mm_movedup_pd(const MunitParameter params[], void* data) {
   (void) params;
   (void) data;
@@ -447,13 +474,20 @@ test_simde_mm_moveldup_ps(const MunitParameter params[], void* data) {
   return MUNIT_OK;
 }
 
-#endif /* defined(SIMDE_SSE3_NATIVE) || defined(SIMDE_NO_NATIVE) || defined(SIMDE_ALWAYS_BUILD_NATIVE_TESTS) */
+#endif /* defined(SIMDE_X86_SSE3_NATIVE) || defined(SIMDE_NO_NATIVE) || defined(SIMDE_ALWAYS_BUILD_NATIVE_TESTS) */
 
 HEDLEY_DIAGNOSTIC_PUSH
 HEDLEY_DIAGNOSTIC_DISABLE_CAST_QUAL
 
+#if HEDLEY_HAS_WARNING("-Wold-style-cast")
+  #pragma clang diagnostic ignored "-Wold-style-cast"
+#endif
+#if HEDLEY_HAS_WARNING("-Wzero-as-null-pointer-constant")
+  #pragma clang diagnostic ignored "-Wzero-as-null-pointer-constant"
+#endif
+
 static MunitTest test_suite_tests[] = {
-#if defined(SIMDE_SSE3_NATIVE) || defined(SIMDE_NO_NATIVE) || defined(SIMDE_ALWAYS_BUILD_NATIVE_TESTS)
+#if defined(SIMDE_X86_SSE3_NATIVE) || defined(SIMDE_NO_NATIVE) || defined(SIMDE_ALWAYS_BUILD_NATIVE_TESTS)
   SIMDE_TESTS_DEFINE_TEST(mm_addsub_pd),
   SIMDE_TESTS_DEFINE_TEST(mm_addsub_ps),
   SIMDE_TESTS_DEFINE_TEST(mm_hadd_pd),
@@ -461,10 +495,11 @@ static MunitTest test_suite_tests[] = {
   SIMDE_TESTS_DEFINE_TEST(mm_hsub_pd),
   SIMDE_TESTS_DEFINE_TEST(mm_hsub_ps),
   SIMDE_TESTS_DEFINE_TEST(mm_lddqu_si128),
+  SIMDE_TESTS_DEFINE_TEST(mm_loaddup_pd),
   SIMDE_TESTS_DEFINE_TEST(mm_movedup_pd),
   SIMDE_TESTS_DEFINE_TEST(mm_movehdup_ps),
   SIMDE_TESTS_DEFINE_TEST(mm_moveldup_ps),
-#endif /* defined(SIMDE_SSE3_NATIVE) || defined(SIMDE_NO_NATIVE) || defined(SIMDE_ALWAYS_BUILD_NATIVE_TESTS) */
+#endif /* defined(SIMDE_X86_SSE3_NATIVE) || defined(SIMDE_NO_NATIVE) || defined(SIMDE_ALWAYS_BUILD_NATIVE_TESTS) */
 
   { NULL, NULL, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL }
 };

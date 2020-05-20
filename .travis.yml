@@ -1,10 +1,9 @@
 language: c
 dist: bionic
 cache: ccache
-dist: bionic
 branches:
   except:
-    - /^(wip\/)?(appveyor)(\-.+)?$/
+    - /^(wip\/)?(appveyor|drone|gh\-actions|azure|circleci)(\-.+)?$/
 
 env:
   global:
@@ -14,10 +13,12 @@ env:
   - CMAKE_GENERATOR='Ninja'
   - RUN_TESTS=true
   - OPTIMIZATION_FLAGS=''
+  - DIAGNOSTIC_FLAGS='-Wall -Wextra -Werror'
 
 jobs:
   include:
   - name: "gcc-9"
+    if: branch != master OR type == pull_request
     compiler: gcc-9
     env:
     - C_COMPILER=gcc-9
@@ -34,11 +35,13 @@ jobs:
         - g++-9
 
   - name: "clang-10"
+    if: branch != master OR type == pull_request
     compiler: clang-10
     env:
     - C_COMPILER=clang-10
     - CXX_COMPILER=clang++-10
     - COMPILER_FLAGS='-fsanitize=address,undefined'
+    - DIAGNOSTIC_FLAGS='-Weverything -Werror'
     addons:
       apt:
         sources:
@@ -48,6 +51,7 @@ jobs:
         - clang-10
 
   - name: "gcc-8 x86"
+    if: branch != master OR type == pull_request
     arch: amd64
     compiler: gcc-8
     env:
@@ -66,9 +70,11 @@ jobs:
         - binutils-i686-linux-gnu:i386
 
   - name: "aarch64"
+    if: branch != master OR type == pull_request
     arch: arm64
 
   - name: "ppc64le"
+    if: branch != master OR type == pull_request
     arch: ppc64le
     env:
     - ARCH_FLAGS="-mcpu=native"
@@ -79,11 +85,13 @@ jobs:
         - g++
 
   - name: "-DSIMDE_NO_SHUFFLE_VECTOR"
+    if: branch != master OR type == pull_request
     env:
     - COMPILER_FLAGS=-DSIMDE_NO_SHUFFLE_VECTOR
     - OPTIMIZATION_FLAGS=''
 
   - name: "armv8-a"
+    if: branch != master OR type == pull_request
     arch: arm64
     env:
     - C_COMPILER=arm-linux-gnueabihf-gcc
@@ -95,6 +103,7 @@ jobs:
     - sudo apt-get -y install crossbuild-essential-armhf libc6:armhf libstdc++6:armhf
 
   - name: "armv7-a"
+    if: branch != master OR type == pull_request
     arch: arm64
     env:
     - C_COMPILER=arm-linux-gnueabihf-gcc
@@ -106,11 +115,12 @@ jobs:
     - sudo apt-get -y install crossbuild-essential-armhf libc6:armhf libstdc++6:armhf
 
   - name: icc
+    if: branch != master OR type == pull_request
     compiler: icc
     env:
     - C_COMPILER=icc
     - CXX_COMPILER=icpc
-    - COMPILER_FLAGS='-wd13200 -wd13203'
+    - DIAGNOSTIC_FLAGS='-wd13200 -wd13203 -wd16219 -Wall'
     install:
     - source /opt/intel/inteloneapi/compiler/latest/env/vars.sh
     addons:
@@ -122,15 +132,18 @@ jobs:
         - intel-oneapi-icc
 
   - name: "pgcc"
+    if: branch != master OR type == pull_request
     env:
     - C_COMPILER=pgcc
     - CXX_COMPILER=pgc++
     - ARCH_FLAGS="-m64"
     - BUILD_CPP_TESTS=OFF
+    - DIAGNOSTIC_FLAGS=
     install:
     - curl 'https://raw.githubusercontent.com/nemequ/pgi-travis/master/install-pgi.sh' | /bin/sh
 
   - name: "xlc"
+    if: branch != master OR type == pull_request
     arch: ppc64le
     install:
     - wget -q https://public.dhe.ibm.com/software/server/POWER/Linux/xl-compiler/eval/ppc64le/ubuntu/public.gpg -O- | sudo apt-key add -
@@ -145,41 +158,53 @@ jobs:
     - CXX_COMPILER=xlc++
 
   - name: osx
+    if: branch != master OR type == pull_request
     os: osx
 
   - name: msvc x86
+    if: branch != master OR type == pull_request
     os: windows
     env:
     - ARCH_FLAGS="/arch:AVX2"
     - CMAKE_GENERATOR="Visual Studio 15 2017"
     - OPTIMIZATION_FLAGS="/Ox"
+    - DIAGNOSTIC_FLAGS="/W4 /WX"
 
   - name: msvc x86_64
+    if: branch != master OR type == pull_request
     os: windows
     env:
     - ARCH_FLAGS="/arch:AVX2"
     - CMAKE_GENERATOR="Visual Studio 15 2017 Win64"
     - OPTIMIZATION_FLAGS="/Ox"
+    - DIAGNOSTIC_FLAGS="/W4 /WX"
 
   - name: msvc arm
+    if: branch != master OR type == pull_request
     os: windows
     env:
     - ARCH_FLAGS=""
     - CMAKE_GENERATOR="Visual Studio 15 2017 ARM"
     - RUN_TESTS=false
     - OPTIMIZATION_FLAGS="/Ox"
+    - DIAGNOSTIC_FLAGS="/W4 /WX"
 
   - name: "gcc-7 amd64"
+    if: branch != master OR type == pull_request
     compiler: gcc
     arch: amd64
-    env:
 
   - name: "clang-7 amd64"
+    if: branch != master OR type == pull_request
     arch: amd64
     compiler: clang
 
   - name: gcc-4.8
+    if: branch != master OR type == pull_request
     dist: trusty
+    env:
+    # Lots of -Wunused-but-set-variable false positives
+    - DIAGNOSTIC_FLAGS='-Wall -Wextra -Wno-unused-but-set-variable -Werror'
     addons:
       apt:
         packages:
@@ -188,6 +213,7 @@ jobs:
         - kalakris-cmake
 
   - name: s390x
+    if: branch != master OR type == pull_request
     arch: s390x
 
   - name: amalgamate
@@ -207,8 +233,9 @@ jobs:
       github_token: $GITHUB_TOKEN
       skip_cleanup: true
       keep_history: true
-
+  
   - name: emscripten
+    if: branch != master OR type == pull_request
     compiler: emcc
     env:
     - ARCH_FLAGS="-msimd128"
@@ -235,7 +262,7 @@ jobs:
       jsvu --os=linux64 --engines=v8
 
   allow_failures:
-  # - name: emscripten    
+  - name: emscripten
 
 before_install:
 - |
@@ -276,10 +303,10 @@ script:
     -DBUILD_CPP_TESTS=${BUILD_CPP_TESTS} \
     -DCMAKE_CROSSCOMPILING_EMULATOR="${TEST_WRAPPER}" \
     -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON \
-    -DCMAKE_C_FLAGS="${ARCH_FLAGS} ${OPTIMIZATION_FLAGS} ${COMPILER_FLAGS} ${CFLAGS}" \
-    -DCMAKE_CXX_FLAGS="${ARCH_FLAGS} ${OPTIMIZATION_FLAGS} ${COMPILER_FLAGS} ${CXXFLAGS}" \
-    ${CMAKE_ARGS}
-- ${BUILD_WRAPPER} cmake --build .
+    -DCMAKE_C_FLAGS="${ARCH_FLAGS} ${OPTIMIZATION_FLAGS} ${DIAGNOSTIC_FLAGS} ${COMPILER_FLAGS} ${CFLAGS}" \
+    -DCMAKE_CXX_FLAGS="${ARCH_FLAGS} ${OPTIMIZATION_FLAGS} ${DIAGNOSTIC_FLAGS} ${COMPILER_FLAGS} ${CXXFLAGS}" \
+    ${CMAKE_ARGS} || (cat CMakeFiles/CMakeError.log && false) && \
+  ${BUILD_WRAPPER} cmake --build .
 - |
   if [ "${RUN_TESTS}" = "true" ]; then
     if [ "windows" != "${TRAVIS_OS_NAME}" ]; then
@@ -287,12 +314,6 @@ script:
     else
       ctest --output-on-failure --interactive-debug-mode 0 -C Debug -V
     fi
-  fi
-
-after_success:
-- |
-  if [ "${BUILD_TYPE}" = "Coverage" ]; then
-    bash <(curl -s https://codecov.io/bash) -y "${TRAVIS_BUILD_DIR}"/.codecov.yml ${GCOV}
   fi
 
 notifications:

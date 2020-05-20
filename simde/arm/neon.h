@@ -21,10 +21,10 @@
  * SOFTWARE.
  */
 
-#if !defined(SIMDE__NEON_H)
-#  define SIMDE__INSIDE_NEON_H
-#  if !defined(SIMDE__NEON_H)
-#    define SIMDE__NEON_H
+#if !defined(SIMDE_NEON_H)
+#  define SIMDE_INSIDE_NEON_H
+#  if !defined(SIMDE_NEON_H)
+#    define SIMDE_NEON_H
 #  endif
 #  include "../simde-common.h"
 
@@ -58,7 +58,7 @@
 #  endif
 #  include <stdint.h>
 
-SIMDE__BEGIN_DECLS
+SIMDE_BEGIN_DECLS_
 
 #include "neon/int8x8.h"
 #include "neon/int16x4.h"
@@ -82,7 +82,7 @@ SIMDE__BEGIN_DECLS
 #include "neon/float32x4.h"
 #include "neon/float64x2.h"
 
-SIMDE__FUNCTION_ATTRIBUTES
+SIMDE_FUNCTION_ATTRIBUTES
 int8_t
 simde_vget_lane_s8(simde_int8x8_t v, const int lane) {
   return v.i8[lane];
@@ -91,7 +91,7 @@ simde_vget_lane_s8(simde_int8x8_t v, const int lane) {
 #  define simde_vget_lane_s8(v, lane) vget_lane_s8(v.n, lane)
 #endif
 
-SIMDE__END_DECLS
+SIMDE_END_DECLS_
 
-#undef SIMDE__INSIDE_NEON_H
-#endif /* !defined(SIMDE__NEON_H) */
+#undef SIMDE_INSIDE_NEON_H
+#endif /* !defined(SIMDE_NEON_H) */

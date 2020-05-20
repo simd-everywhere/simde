@@ -3,43 +3,93 @@ name: CI
 on: [push, pull_request]
 
 jobs:
+  formatting:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 2
+    - name: Trailing whitespace
+      run: git diff --check HEAD^
+    - name: Tabs
+      run: find simde/ -name '*.c' -o -name '*.h' -exec grep -nP '\t' {} + && exit 1 || exit 0
+    # s/8/16/ will result in this if the input in x86.
+    - name: Bad substitutions
+      run: git grep -i 'x''1''6''6' && exit 1 || exit 0
+    - name: Incorrect assertions in test/
+      run: grep -PR '(?<=[^a-zA-Z0-9_])simde_assert_u?int(8|16|32|64)(?>[^a-zA-Z0-9_])' test/ && exit 1 || exit 0
+    - name: Executable sources
+      run: find \( -name '*.c' -o -name '*.h' \) -executable | grep -q '.' && exit 1 || exit 0
+
   x86:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        isax: ["", "-msse3", "-mssse3", "-msse4.1", "-msse4.2", "-mavx", "-mfma", "-mavx2"]
+        isax: ["", "-msse3", "-mssse3", "-msse4.1", "-msse4.2", "-mavx", "-mfma", "-mavx2", "-march=native"]
     steps:
     - uses: actions/checkout@v2
     - name: Install APT Dependencies
       run: sudo add-apt-repository 'ppa:ubuntu-toolchain-r/test' && sudo apt-get update && sudo apt-get install -y ninja-build
     - name: Configure
-      run: cmake test -G "Ninja" -DCMAKE_BUILD_TYPE="Coverage" -DCMAKE_{C,CXX}_FLAGS="${{ matrix.isax }}" -DALWAYS_BUILD_NATIVE_TESTS=ON -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON
+      run: cmake test -G "Ninja" -DCMAKE_BUILD_TYPE="Coverage" -DCMAKE_{C,CXX}_FLAGS="${{ matrix.isax }} -Wall -Wextra -Werror" -DALWAYS_BUILD_NATIVE_TESTS=ON -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON
     - name: Build
       run: cmake --build .
     - name: Test
       run: ./run-tests
-    - uses: codecov/codecov-action@v1
-      with:
-        token: ${{ secrets.CODECOV_TOKEN }}
-        yml: ./.codecov.yml
-        fail_ci_if_error: false
 
-  # emscripten:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #   - uses: actions/checkout@v2
-  #   - name: Install APT dependencies
-  #     run: sudo apt-get install -y ninja-build nodejs
-  #   - name: Dowvload Emscripten
-  #     run: |
-  #       git clone https://github.com/emscripten-core/emsdk.git && \
-  #       emsdk/emsdk install latest && \
-  #       emsdk/emsdk activate latest
-  #   - name: Configure
-  #     run: emsdk/upstream/emscripten/emconfigure cmake test -G "Ninja" -DCMAKE_BUILD_TYPE="Coverage" -DALWAYS_BUILD_NATIVE_TESTS=ON -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON
-  #   - name: Build
-  #     run: emsdk/upstream/emscripten/emmake ninja
-  #   - name: Test
-  #     run: node ./run-tests
-  #   - name: Upload Coverage Data
-  #     run: bash <(curl -s https://codecov.io/bash) -y ./.codecov.yml
+  SDE:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        arch: ["icelake-server"]
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install APT Dependencies
+      run: sudo add-apt-repository 'ppa:ubuntu-toolchain-r/test' && sudo apt-get update && sudo apt-get install -y ninja-build
+    - name: Download SDE
+      run: |
+        mkdir sde && \
+        curl -sL 'https://software.intel.com/content/www/us/en/develop/articles/pre-release-license-agreement-for-intel-software-development-emulator-accept-end-user-license-agreement-and-download.html' \
+          | grep -oP 'https?://software.intel.com/content/dam/develop/external/us/en/protected/sde-external-([0-9\.\-]+)-lin.tar.bz2' \
+          | xargs curl -sL \
+          | tar --strip-components 1 -jxvC sde
+    - name: Configure
+      run: cmake test -G "Ninja" -DCMAKE_C_COMPILER="clang" -DCMAKE_CXX_COMPILER="clang++" -DCMAKE_BUILD_TYPE="Coverage" -DCMAKE_{C,CXX}_FLAGS="-march=${{ matrix.arch }} -Wall -Wextra -Werror" -DALWAYS_BUILD_NATIVE_TESTS=ON -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON
+    - name: Build
+      run: cmake --build .
+    - name: Test
+      run: sde/sde64 -- ./run-tests
+
+  native-aliases:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: recursive
+    - name: Install APT Dependencies
+      run: sudo add-apt-repository ppa:ubuntu-toolchain-r/test && sudo apt-get update && sudo apt-get -yq install libxml2-utils ninja-build python3-pip python3-setuptools python3-wheel gcc-10 g++-10
+    - name: Install pip Dependencies
+      run: pip3 install meson
+    - name: Convert
+      run: ./test/native-aliases.sh
+    - name: Configure
+      run: mkdir build && cd build && CC='gcc-10' CXX='g++-10' CFLAGS='-march=native -DSIMDE_ENABLE_NATIVE_ALIASES -DSIMDE_NATIVE_ALIASES_TESTING' CXXFLAGS='-march=native -DSIMDE_ENABLE_NATIVE_ALIASES -DSIMDE_NATIVE_ALIASES_TESTING' ~/.local/bin/meson ..
+    - name: Build
+      run: cd build && ninja -v
+    - name: Test
+      run: build/test/run-tests
+
+  ubuntu-xenial:
+    runs-on: ubuntu-16.04
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: recursive
+    - name: Install APT Dependencies
+      run: sudo add-apt-repository ppa:ubuntu-toolchain-r/test && sudo apt-get update && sudo apt-get -yq install ninja-build
+    - name: Configure
+      run: mkdir test/build && cd test/build && cmake -G Ninja -DCMAKE_{C,CXX}_FLAGS='-Wall -Werror' CXXFLAGS='-march=native -Wall -Werror' ..
+    - name: Build
+      run: cd test/build && ninja -v
+    - name: Test
+      run: test/build/run-tests

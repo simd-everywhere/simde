@@ -1,4 +1,6 @@
-/* Permission is hereby granted, free of charge, to any person
+/* SPDX-License-Identifier: MIT
+ *
+ * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
  * files (the "Software"), to deal in the Software without
  * restriction, including without limitation the rights to use, copy,
@@ -22,260 +24,271 @@
  *   2019      Evan Nemerson <evan@nemerson.com>
  */
 
-#include "sse.h"
-#include "sse2.h"
-#if !defined(SIMDE__FMA_H)
-#  if !defined(SIMDE__FMA_H)
-#    define SIMDE__FMA_H
-#  endif
-#  include "avx.h"
+#if !defined(SIMDE_X86_FMA_H)
+#define SIMDE_X86_FMA_H
+
+#if !defined(SIMDE_X86_FMA_NATIVE) && defined(SIMDE_ENABLE_NATIVE_ALIASES)
+#  define SIMDE_X86_FMA_ENABLE_NATIVE_ALIASES
+#endif
+
+#include "avx.h"
+
+#if !defined(SIMDE_X86_FMA_NATIVE) && defined(SIMDE_ENABLE_NATIVE_ALIASES)
+#  define SIMDE_X86_FMA_ENABLE_NATIVE_ALIASES
+#endif
 
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
+SIMDE_BEGIN_DECLS_
 
-#  if defined(SIMDE_FMA_NATIVE)
-#    undef SIMDE_FMA_NATIVE
-#  endif
-#  if defined(SIMDE_ARCH_X86_GMA) && !defined(SIMDE_FMA_NO_NATIVE) && !defined(SIMDE_NO_NATIVE)
-#    define SIMDE_FMA_NATIVE
-#  elif defined(SIMDE_ARCH_ARM_NEON) && !defined(SIMDE_FMA_NO_NEON) && !defined(SIMDE_NO_NEON)
-#    define SIMDE_FMA_NEON
-#  endif
-
-#  if defined(SIMDE_FMA_NATIVE) && !defined(SIMDE_AVX_NATIVE)
-#    if defined(SIMDE_FMA_FORCE_NATIVE)
-#      error Native FMA support requires native AVX support
-#    else
-       HEDLEY_WARNING("Native FMA support requires native AVX support, disabling")
-#      undef SIMDE_FMA_NATIVE
-#    endif
-#  elif defined(SIMDE_FMA_NEON) && !defined(SIMDE_AVX_NEON)
-     HEDLEY_WARNING("FMA NEON support requires AVX NEON support, disabling")
-#    undef SIMDE_AVX_NEON
-#  endif
-
-#  if defined(SIMDE_FMA_NATIVE)
-#    include <immintrin.h>
-#  endif
-
-#  if !defined(SIMDE_FMA_NATIVE) && defined(SIMDE_ENABLE_NATIVE_ALIASES)
-#    define SIMDE_FMA_ENABLE_NATIVE_ALIASES
-#  endif
-
-SIMDE__BEGIN_DECLS
-
-SIMDE__FUNCTION_ATTRIBUTES
+SIMDE_FUNCTION_ATTRIBUTES
 simde__m128d
 simde_mm_fmadd_pd (simde__m128d a, simde__m128d b, simde__m128d c) {
-#if defined(SIMDE_FMA_NATIVE)
-  return _mm_fmadd_pd(a, b, c);
-#else
-  return simde_mm_add_pd(simde_mm_mul_pd(a, b), c);
-#endif
+  #if defined(SIMDE_X86_FMA_NATIVE)
+    return _mm_fmadd_pd(a, b, c);
+  #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+    simde__m128d_private
+      a_ = simde__m128d_to_private(a),
+      b_ = simde__m128d_to_private(b),
+      c_ = simde__m128d_to_private(c),
+      r_;
+
+    r_.altivec_f64 = vec_madd(a_.altivec_f64, b_.altivec_f64, c_.altivec_f64);
+
+    return simde__m128d_from_private(r_);
+  #else
+    return simde_mm_add_pd(simde_mm_mul_pd(a, b), c);
+  #endif
 }
-#if defined(SIMDE_FMA_ENABLE_NATIVE_ALIASES)
-#  define _mm_fmadd_pd(a, b, c) simde_mm_fmadd_pd(a, b, c)
+#if defined(SIMDE_X86_FMA_ENABLE_NATIVE_ALIASES)
+  #undef _mm_fmadd_pd
+  #define _mm_fmadd_pd(a, b, c) simde_mm_fmadd_pd(a, b, c)
 #endif
 
-SIMDE__FUNCTION_ATTRIBUTES
+SIMDE_FUNCTION_ATTRIBUTES
 simde__m256d
 simde_mm256_fmadd_pd (simde__m256d a, simde__m256d b, simde__m256d c) {
-#if defined(SIMDE_FMA_NATIVE)
+#if defined(SIMDE_X86_FMA_NATIVE)
   return _mm256_fmadd_pd(a, b, c);
 #else
   return simde_mm256_add_pd(simde_mm256_mul_pd(a, b), c);
 #endif
 }
-#if defined(SIMDE_FMA_ENABLE_NATIVE_ALIASES)
-#  define _mm_fmadd_pd(a, b, c) simde_mm_fmadd_pd(a, b, c)
+#if defined(SIMDE_X86_FMA_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_fmadd_pd
+  #define _mm256_fmadd_pd(a, b, c) simde_mm256_fmadd_pd(a, b, c)
 #endif
 
-SIMDE__FUNCTION_ATTRIBUTES
+SIMDE_FUNCTION_ATTRIBUTES
 simde__m128
 simde_mm_fmadd_ps (simde__m128 a, simde__m128 b, simde__m128 c) {
-#if defined(SIMDE_FMA_NATIVE)
-  return _mm_fmadd_ps(a, b, c);
-#else
-  return simde_mm_add_ps(simde_mm_mul_ps(a, b), c);
-#endif
+  #if defined(SIMDE_X86_FMA_NATIVE)
+    return _mm_fmadd_ps(a, b, c);
+  #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+    simde__m128_private
+      a_ = simde__m128_to_private(a),
+      b_ = simde__m128_to_private(b),
+      c_ = simde__m128_to_private(c),
+      r_;
+
+    r_.altivec_f32 = vec_madd(a_.altivec_f32, b_.altivec_f32, c_.altivec_f32);
+
+    return simde__m128_from_private(r_);
+  #else
+    return simde_mm_add_ps(simde_mm_mul_ps(a, b), c);
+  #endif
 }
-#if defined(SIMDE_FMA_ENABLE_NATIVE_ALIASES)
-#  define _mm_fmadd_ps(a, b, c) simde_mm_fmadd_ps(a, b, c)
+#if defined(SIMDE_X86_FMA_ENABLE_NATIVE_ALIASES)
+  #undef _mm_fmadd_ps
+  #define _mm_fmadd_ps(a, b, c) simde_mm_fmadd_ps(a, b, c)
 #endif
 
-SIMDE__FUNCTION_ATTRIBUTES
+SIMDE_FUNCTION_ATTRIBUTES
 simde__m256
 simde_mm256_fmadd_ps (simde__m256 a, simde__m256 b, simde__m256 c) {
-#if defined(SIMDE_FMA_NATIVE)
+#if defined(SIMDE_X86_FMA_NATIVE)
   return _mm256_fmadd_ps(a, b, c);
 #else
   return simde_mm256_add_ps(simde_mm256_mul_ps(a, b), c);
 #endif
 }
-#if defined(SIMDE_FMA_ENABLE_NATIVE_ALIASES)
-#  define _mm_fmadd_ps(a, b, c) simde_mm_fmadd_ps(a, b, c)
+#if defined(SIMDE_X86_FMA_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_fmadd_ps
+  #define _mm256_fmadd_ps(a, b, c) simde_mm256_fmadd_ps(a, b, c)
 #endif
 
-SIMDE__FUNCTION_ATTRIBUTES
+SIMDE_FUNCTION_ATTRIBUTES
 simde__m128d
 simde_mm_fmadd_sd (simde__m128d a, simde__m128d b, simde__m128d c) {
-#if defined(SIMDE_FMA_NATIVE)
+#if defined(SIMDE_X86_FMA_NATIVE)
   return _mm_fmadd_sd(a, b, c);
 #else
   return simde_mm_add_sd(simde_mm_mul_sd(a, b), c);
 #endif
 }
-#if defined(SIMDE_FMA_ENABLE_NATIVE_ALIASES)
-#  define _mm_fmadd_sd(a, b, c) simde_mm_fmadd_sd(a, b, c)
+#if defined(SIMDE_X86_FMA_ENABLE_NATIVE_ALIASES)
+  #undef _mm_fmadd_sd
+  #define _mm_fmadd_sd(a, b, c) simde_mm_fmadd_sd(a, b, c)
 #endif
 
-SIMDE__FUNCTION_ATTRIBUTES
+SIMDE_FUNCTION_ATTRIBUTES
 simde__m128
 simde_mm_fmadd_ss (simde__m128 a, simde__m128 b, simde__m128 c) {
-#if defined(SIMDE_FMA_NATIVE)
+#if defined(SIMDE_X86_FMA_NATIVE)
   return _mm_fmadd_ss(a, b, c);
 #else
   return simde_mm_add_ss(simde_mm_mul_ss(a, b), c);
 #endif
 }
-#if defined(SIMDE_FMA_ENABLE_NATIVE_ALIASES)
-#  define _mm_fmadd_ss(a, b, c) simde_mm_fmadd_ss(a, b, c)
+#if defined(SIMDE_X86_FMA_ENABLE_NATIVE_ALIASES)
+  #undef _mm_fmadd_ss
+  #define _mm_fmadd_ss(a, b, c) simde_mm_fmadd_ss(a, b, c)
 #endif
 
-SIMDE__FUNCTION_ATTRIBUTES
+SIMDE_FUNCTION_ATTRIBUTES
 simde__m128d
 simde_mm_fmaddsub_pd (simde__m128d a, simde__m128d b, simde__m128d c) {
-#if defined(SIMDE_FMA_NATIVE)
+#if defined(SIMDE_X86_FMA_NATIVE)
   return _mm_fmaddsub_pd(a, b, c);
 #else
   return simde_mm_addsub_pd(simde_mm_mul_pd(a, b), c);
 #endif
 }
-#if defined(SIMDE_FMA_ENABLE_NATIVE_ALIASES)
-#  define _mm_fmaddsub_pd(a, b, c) simde_mm_fmaddsub_pd(a, b, c)
+#if defined(SIMDE_X86_FMA_ENABLE_NATIVE_ALIASES)
+  #undef _mm_fmaddsub_pd
+  #define _mm_fmaddsub_pd(a, b, c) simde_mm_fmaddsub_pd(a, b, c)
 #endif
 
-SIMDE__FUNCTION_ATTRIBUTES
+SIMDE_FUNCTION_ATTRIBUTES
 simde__m256d
 simde_mm256_fmaddsub_pd (simde__m256d a, simde__m256d b, simde__m256d c) {
-#if defined(SIMDE_FMA_NATIVE)
+#if defined(SIMDE_X86_FMA_NATIVE)
   return _mm256_fmaddsub_pd(a, b, c);
 #else
   return simde_mm256_addsub_pd(simde_mm256_mul_pd(a, b), c);
 #endif
 }
-#if defined(SIMDE_FMA_ENABLE_NATIVE_ALIASES)
-#  define _mm_fmaddsub_pd(a, b, c) simde_mm_fmaddsub_pd(a, b, c)
+#if defined(SIMDE_X86_FMA_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_fmaddsub_pd
+  #define _mm256_fmaddsub_pd(a, b, c) simde_mm256_fmaddsub_pd(a, b, c)
 #endif
 
-SIMDE__FUNCTION_ATTRIBUTES
+SIMDE_FUNCTION_ATTRIBUTES
 simde__m128
 simde_mm_fmaddsub_ps (simde__m128 a, simde__m128 b, simde__m128 c) {
-#if defined(SIMDE_FMA_NATIVE)
+#if defined(SIMDE_X86_FMA_NATIVE)
   return _mm_fmaddsub_ps(a, b, c);
 #else
   return simde_mm_addsub_ps(simde_mm_mul_ps(a, b), c);
 #endif
 }
-#if defined(SIMDE_FMA_ENABLE_NATIVE_ALIASES)
-#  define _mm_fmaddsub_ps(a, b, c) simde_mm_fmaddsub_ps(a, b, c)
+#if defined(SIMDE_X86_FMA_ENABLE_NATIVE_ALIASES)
+  #undef _mm_fmaddsub_ps
+  #define _mm_fmaddsub_ps(a, b, c) simde_mm_fmaddsub_ps(a, b, c)
 #endif
 
-SIMDE__FUNCTION_ATTRIBUTES
+SIMDE_FUNCTION_ATTRIBUTES
 simde__m256
 simde_mm256_fmaddsub_ps (simde__m256 a, simde__m256 b, simde__m256 c) {
-#if defined(SIMDE_FMA_NATIVE)
+#if defined(SIMDE_X86_FMA_NATIVE)
   return _mm256_fmaddsub_ps(a, b, c);
 #else
   return simde_mm256_addsub_ps(simde_mm256_mul_ps(a, b), c);
 #endif
 }
-#if defined(SIMDE_FMA_ENABLE_NATIVE_ALIASES)
-#  define _mm_fmaddsub_ps(a, b, c) simde_mm_fmaddsub_ps(a, b, c)
+#if defined(SIMDE_X86_FMA_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_fmaddsub_ps
+  #define _mm256_fmaddsub_ps(a, b, c) simde_mm256_fmaddsub_ps(a, b, c)
 #endif
 
-SIMDE__FUNCTION_ATTRIBUTES
+SIMDE_FUNCTION_ATTRIBUTES
 simde__m128d
 simde_mm_fmsub_pd (simde__m128d a, simde__m128d b, simde__m128d c) {
-#if defined(SIMDE_FMA_NATIVE)
+#if defined(SIMDE_X86_FMA_NATIVE)
   return _mm_fmsub_pd(a, b, c);
 #else
   return simde_mm_sub_pd(simde_mm_mul_pd(a, b), c);
 #endif
 }
-#if defined(SIMDE_FMA_ENABLE_NATIVE_ALIASES)
-#  define _mm_fmsub_pd(a, b, c) simde_mm_fmsub_pd(a, b, c)
+#if defined(SIMDE_X86_FMA_ENABLE_NATIVE_ALIASES)
+  #undef _mm_fmsub_pd
+  #define _mm_fmsub_pd(a, b, c) simde_mm_fmsub_pd(a, b, c)
 #endif
 
-SIMDE__FUNCTION_ATTRIBUTES
+SIMDE_FUNCTION_ATTRIBUTES
 simde__m256d
 simde_mm256_fmsub_pd (simde__m256d a, simde__m256d b, simde__m256d c) {
-#if defined(SIMDE_FMA_NATIVE)
+#if defined(SIMDE_X86_FMA_NATIVE)
   return _mm256_fmsub_pd(a, b, c);
 #else
   return simde_mm256_sub_pd(simde_mm256_mul_pd(a, b), c);
 #endif
 }
-#if defined(SIMDE_FMA_ENABLE_NATIVE_ALIASES)
-#  define _mm_fmsub_pd(a, b, c) simde_mm_fmsub_pd(a, b, c)
+#if defined(SIMDE_X86_FMA_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_fmsub_pd
+  #define _mm256_fmsub_pd(a, b, c) simde_mm256_fmsub_pd(a, b, c)
 #endif
 
-SIMDE__FUNCTION_ATTRIBUTES
+SIMDE_FUNCTION_ATTRIBUTES
 simde__m128
 simde_mm_fmsub_ps (simde__m128 a, simde__m128 b, simde__m128 c) {
-#if defined(SIMDE_FMA_NATIVE)
+#if defined(SIMDE_X86_FMA_NATIVE)
   return _mm_fmsub_ps(a, b, c);
 #else
   return simde_mm_sub_ps(simde_mm_mul_ps(a, b), c);
 #endif
 }
-#if defined(SIMDE_FMA_ENABLE_NATIVE_ALIASES)
-#  define _mm_fmsub_ps(a, b, c) simde_mm_fmsub_ps(a, b, c)
+#if defined(SIMDE_X86_FMA_ENABLE_NATIVE_ALIASES)
+  #undef _mm_fmsub_ps
+  #define _mm_fmsub_ps(a, b, c) simde_mm_fmsub_ps(a, b, c)
 #endif
 
-SIMDE__FUNCTION_ATTRIBUTES
+SIMDE_FUNCTION_ATTRIBUTES
 simde__m256
 simde_mm256_fmsub_ps (simde__m256 a, simde__m256 b, simde__m256 c) {
-#if defined(SIMDE_FMA_NATIVE)
+#if defined(SIMDE_X86_FMA_NATIVE)
   return _mm256_fmsub_ps(a, b, c);
 #else
   return simde_mm256_sub_ps(simde_mm256_mul_ps(a, b), c);
 #endif
 }
-#if defined(SIMDE_FMA_ENABLE_NATIVE_ALIASES)
-#  define _mm_fmsub_ps(a, b, c) simde_mm_fmsub_ps(a, b, c)
+#if defined(SIMDE_X86_FMA_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_fmsub_ps
+  #define _mm256_fmsub_ps(a, b, c) simde_mm256_fmsub_ps(a, b, c)
 #endif
 
-SIMDE__FUNCTION_ATTRIBUTES
+SIMDE_FUNCTION_ATTRIBUTES
 simde__m128d
 simde_mm_fmsub_sd (simde__m128d a, simde__m128d b, simde__m128d c) {
-#if defined(SIMDE_FMA_NATIVE)
+#if defined(SIMDE_X86_FMA_NATIVE)
   return _mm_fmsub_sd(a, b, c);
 #else
   return simde_mm_sub_sd(simde_mm_mul_sd(a, b), c);
 #endif
 }
-#if defined(SIMDE_FMA_ENABLE_NATIVE_ALIASES)
-#  define _mm_fmsub_sd(a, b, c) simde_mm_fmsub_sd(a, b, c)
+#if defined(SIMDE_X86_FMA_ENABLE_NATIVE_ALIASES)
+  #undef _mm_fmsub_sd
+  #define _mm_fmsub_sd(a, b, c) simde_mm_fmsub_sd(a, b, c)
 #endif
 
-SIMDE__FUNCTION_ATTRIBUTES
+SIMDE_FUNCTION_ATTRIBUTES
 simde__m128
 simde_mm_fmsub_ss (simde__m128 a, simde__m128 b, simde__m128 c) {
-#if defined(SIMDE_FMA_NATIVE)
+#if defined(SIMDE_X86_FMA_NATIVE)
   return _mm_fmsub_ss(a, b, c);
 #else
   return simde_mm_sub_ss(simde_mm_mul_ss(a, b), c);
 #endif
 }
-#if defined(SIMDE_FMA_ENABLE_NATIVE_ALIASES)
-#  define _mm_fmsub_ss(a, b, c) simde_mm_fmsub_ss(a, b, c)
+#if defined(SIMDE_X86_FMA_ENABLE_NATIVE_ALIASES)
+  #undef _mm_fmsub_ss
+  #define _mm_fmsub_ss(a, b, c) simde_mm_fmsub_ss(a, b, c)
 #endif
 
-SIMDE__FUNCTION_ATTRIBUTES
+SIMDE_FUNCTION_ATTRIBUTES
 simde__m128d
 simde_mm_fmsubadd_pd (simde__m128d a, simde__m128d b, simde__m128d c) {
-#if defined(SIMDE_FMA_NATIVE)
+#if defined(SIMDE_X86_FMA_NATIVE)
   return _mm_fmsubadd_pd(a, b, c);
 #else
   simde__m128d_private
@@ -284,7 +297,7 @@ simde_mm_fmsubadd_pd (simde__m128d a, simde__m128d b, simde__m128d c) {
     b_ = simde__m128d_to_private(b),
     c_ = simde__m128d_to_private(c);
 
-  SIMDE__VECTORIZE
+  SIMDE_VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i += 2) {
     r_.f64[  i  ] = (a_.f64[  i  ] * b_.f64[  i  ]) + c_.f64[  i  ];
     r_.f64[i + 1] = (a_.f64[i + 1] * b_.f64[i + 1]) - c_.f64[i + 1];
@@ -293,14 +306,15 @@ simde_mm_fmsubadd_pd (simde__m128d a, simde__m128d b, simde__m128d c) {
   return simde__m128d_from_private(r_);
 #endif
 }
-#if defined(SIMDE_FMA_ENABLE_NATIVE_ALIASES)
-#  define _mm_fmsubadd_pd(a, b, c) simde_mm_fmsubadd_pd(a, b, c)
+#if defined(SIMDE_X86_FMA_ENABLE_NATIVE_ALIASES)
+  #undef _mm_fmsubadd_pd
+  #define _mm_fmsubadd_pd(a, b, c) simde_mm_fmsubadd_pd(a, b, c)
 #endif
 
-SIMDE__FUNCTION_ATTRIBUTES
+SIMDE_FUNCTION_ATTRIBUTES
 simde__m256d
 simde_mm256_fmsubadd_pd (simde__m256d a, simde__m256d b, simde__m256d c) {
-#if defined(SIMDE_FMA_NATIVE)
+#if defined(SIMDE_X86_FMA_NATIVE)
   return _mm256_fmsubadd_pd(a, b, c);
 #else
   simde__m256d_private
@@ -309,7 +323,7 @@ simde_mm256_fmsubadd_pd (simde__m256d a, simde__m256d b, simde__m256d c) {
     b_ = simde__m256d_to_private(b),
     c_ = simde__m256d_to_private(c);
 
-  SIMDE__VECTORIZE
+  SIMDE_VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i += 2) {
     r_.f64[  i  ] = (a_.f64[  i  ] * b_.f64[  i  ]) + c_.f64[  i  ];
     r_.f64[i + 1] = (a_.f64[i + 1] * b_.f64[i + 1]) - c_.f64[i + 1];
@@ -318,14 +332,15 @@ simde_mm256_fmsubadd_pd (simde__m256d a, simde__m256d b, simde__m256d c) {
   return simde__m256d_from_private(r_);
 #endif
 }
-#if defined(SIMDE_FMA_ENABLE_NATIVE_ALIASES)
-#  define _mm_fmsubadd_pd(a, b, c) simde_mm_fmsubadd_pd(a, b, c)
+#if defined(SIMDE_X86_FMA_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_fmsubadd_pd
+  #define _mm256_fmsubadd_pd(a, b, c) simde_mm256_fmsubadd_pd(a, b, c)
 #endif
 
-SIMDE__FUNCTION_ATTRIBUTES
+SIMDE_FUNCTION_ATTRIBUTES
 simde__m128
 simde_mm_fmsubadd_ps (simde__m128 a, simde__m128 b, simde__m128 c) {
-#if defined(SIMDE_FMA_NATIVE)
+#if defined(SIMDE_X86_FMA_NATIVE)
   return _mm_fmsubadd_ps(a, b, c);
 #else
   simde__m128_private
@@ -334,7 +349,7 @@ simde_mm_fmsubadd_ps (simde__m128 a, simde__m128 b, simde__m128 c) {
     b_ = simde__m128_to_private(b),
     c_ = simde__m128_to_private(c);
 
-  SIMDE__VECTORIZE
+  SIMDE_VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i += 2) {
     r_.f32[  i  ] = (a_.f32[  i  ] * b_.f32[  i  ]) + c_.f32[  i  ];
     r_.f32[i + 1] = (a_.f32[i + 1] * b_.f32[i + 1]) - c_.f32[i + 1];
@@ -343,14 +358,15 @@ simde_mm_fmsubadd_ps (simde__m128 a, simde__m128 b, simde__m128 c) {
   return simde__m128_from_private(r_);
 #endif
 }
-#if defined(SIMDE_FMA_ENABLE_NATIVE_ALIASES)
-#  define _mm_fmsubadd_ps(a, b, c) simde_mm_fmsubadd_ps(a, b, c)
+#if defined(SIMDE_X86_FMA_ENABLE_NATIVE_ALIASES)
+  #undef _mm_fmsubadd_ps
+  #define _mm_fmsubadd_ps(a, b, c) simde_mm_fmsubadd_ps(a, b, c)
 #endif
 
-SIMDE__FUNCTION_ATTRIBUTES
+SIMDE_FUNCTION_ATTRIBUTES
 simde__m256
 simde_mm256_fmsubadd_ps (simde__m256 a, simde__m256 b, simde__m256 c) {
-#if defined(SIMDE_FMA_NATIVE)
+#if defined(SIMDE_X86_FMA_NATIVE)
   return _mm256_fmsubadd_ps(a, b, c);
 #else
   simde__m256_private
@@ -359,7 +375,7 @@ simde_mm256_fmsubadd_ps (simde__m256 a, simde__m256 b, simde__m256 c) {
     b_ = simde__m256_to_private(b),
     c_ = simde__m256_to_private(c);
 
-  SIMDE__VECTORIZE
+  SIMDE_VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i += 2) {
     r_.f32[  i  ] = (a_.f32[  i  ] * b_.f32[  i  ]) + c_.f32[  i  ];
     r_.f32[i + 1] = (a_.f32[i + 1] * b_.f32[i + 1]) - c_.f32[i + 1];
@@ -368,14 +384,15 @@ simde_mm256_fmsubadd_ps (simde__m256 a, simde__m256 b, simde__m256 c) {
   return simde__m256_from_private(r_);
 #endif
 }
-#if defined(SIMDE_FMA_ENABLE_NATIVE_ALIASES)
-#  define _mm_fmsubadd_ps(a, b, c) simde_mm_fmsubadd_ps(a, b, c)
+#if defined(SIMDE_X86_FMA_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_fmsubadd_ps
+  #define _mm256_fmsubadd_ps(a, b, c) simde_mm256_fmsubadd_ps(a, b, c)
 #endif
 
-SIMDE__FUNCTION_ATTRIBUTES
+SIMDE_FUNCTION_ATTRIBUTES
 simde__m128d
 simde_mm_fnmadd_pd (simde__m128d a, simde__m128d b, simde__m128d c) {
-#if defined(SIMDE_FMA_NATIVE)
+#if defined(SIMDE_X86_FMA_NATIVE)
   return _mm_fnmadd_pd(a, b, c);
 #else
   simde__m128d_private
@@ -384,7 +401,7 @@ simde_mm_fnmadd_pd (simde__m128d a, simde__m128d b, simde__m128d c) {
     b_ = simde__m128d_to_private(b),
     c_ = simde__m128d_to_private(c);
 
-  SIMDE__VECTORIZE
+  SIMDE_VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
     r_.f64[i] = -(a_.f64[i] * b_.f64[i]) + c_.f64[i];
   }
@@ -392,14 +409,15 @@ simde_mm_fnmadd_pd (simde__m128d a, simde__m128d b, simde__m128d c) {
   return simde__m128d_from_private(r_);
 #endif
 }
-#if defined(SIMDE_FMA_ENABLE_NATIVE_ALIASES)
-#  define _mm_fnmadd_pd(a, b, c) simde_mm_fnmadd_pd(a, b, c)
+#if defined(SIMDE_X86_FMA_ENABLE_NATIVE_ALIASES)
+  #undef _mm_fnmadd_pd
+  #define _mm_fnmadd_pd(a, b, c) simde_mm_fnmadd_pd(a, b, c)
 #endif
 
-SIMDE__FUNCTION_ATTRIBUTES
+SIMDE_FUNCTION_ATTRIBUTES
 simde__m256d
 simde_mm256_fnmadd_pd (simde__m256d a, simde__m256d b, simde__m256d c) {
-#if defined(SIMDE_FMA_NATIVE)
+#if defined(SIMDE_X86_FMA_NATIVE)
   return _mm256_fnmadd_pd(a, b, c);
 #else
   simde__m256d_private
@@ -408,7 +426,7 @@ simde_mm256_fnmadd_pd (simde__m256d a, simde__m256d b, simde__m256d c) {
     b_ = simde__m256d_to_private(b),
     c_ = simde__m256d_to_private(c);
 
-  SIMDE__VECTORIZE
+  SIMDE_VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
     r_.f64[i] = -(a_.f64[i] * b_.f64[i]) + c_.f64[i];
   }
@@ -416,14 +434,15 @@ simde_mm256_fnmadd_pd (simde__m256d a, simde__m256d b, simde__m256d c) {
   return simde__m256d_from_private(r_);
 #endif
 }
-#if defined(SIMDE_FMA_ENABLE_NATIVE_ALIASES)
-#  define _mm_fnmadd_pd(a, b, c) simde_mm_fnmadd_pd(a, b, c)
+#if defined(SIMDE_X86_FMA_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_fnmadd_pd
+  #define _mm256_fnmadd_pd(a, b, c) simde_mm256_fnmadd_pd(a, b, c)
 #endif
 
-SIMDE__FUNCTION_ATTRIBUTES
+SIMDE_FUNCTION_ATTRIBUTES
 simde__m128
 simde_mm_fnmadd_ps (simde__m128 a, simde__m128 b, simde__m128 c) {
-#if defined(SIMDE_FMA_NATIVE)
+#if defined(SIMDE_X86_FMA_NATIVE)
   return _mm_fnmadd_ps(a, b, c);
 #else
   simde__m128_private
@@ -432,7 +451,7 @@ simde_mm_fnmadd_ps (simde__m128 a, simde__m128 b, simde__m128 c) {
     b_ = simde__m128_to_private(b),
     c_ = simde__m128_to_private(c);
 
-  SIMDE__VECTORIZE
+  SIMDE_VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
     r_.f32[i] = -(a_.f32[i] * b_.f32[i]) + c_.f32[i];
   }
@@ -440,14 +459,15 @@ simde_mm_fnmadd_ps (simde__m128 a, simde__m128 b, simde__m128 c) {
   return simde__m128_from_private(r_);
 #endif
 }
-#if defined(SIMDE_FMA_ENABLE_NATIVE_ALIASES)
-#  define _mm_fnmadd_ps(a, b, c) simde_mm_fnmadd_ps(a, b, c)
+#if defined(SIMDE_X86_FMA_ENABLE_NATIVE_ALIASES)
+  #undef _mm_fnmadd_ps
+  #define _mm_fnmadd_ps(a, b, c) simde_mm_fnmadd_ps(a, b, c)
 #endif
 
-SIMDE__FUNCTION_ATTRIBUTES
+SIMDE_FUNCTION_ATTRIBUTES
 simde__m256
 simde_mm256_fnmadd_ps (simde__m256 a, simde__m256 b, simde__m256 c) {
-#if defined(SIMDE_FMA_NATIVE)
+#if defined(SIMDE_X86_FMA_NATIVE)
   return _mm256_fnmadd_ps(a, b, c);
 #else
   simde__m256_private
@@ -456,7 +476,7 @@ simde_mm256_fnmadd_ps (simde__m256 a, simde__m256 b, simde__m256 c) {
     b_ = simde__m256_to_private(b),
     c_ = simde__m256_to_private(c);
 
-  SIMDE__VECTORIZE
+  SIMDE_VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
     r_.f32[i] = -(a_.f32[i] * b_.f32[i]) + c_.f32[i];
   }
@@ -464,14 +484,15 @@ simde_mm256_fnmadd_ps (simde__m256 a, simde__m256 b, simde__m256 c) {
   return simde__m256_from_private(r_);
 #endif
 }
-#if defined(SIMDE_FMA_ENABLE_NATIVE_ALIASES)
-#  define _mm_fnmadd_ps(a, b, c) simde_mm_fnmadd_ps(a, b, c)
+#if defined(SIMDE_X86_FMA_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_fnmadd_ps
+  #define _mm256_fnmadd_ps(a, b, c) simde_mm256_fnmadd_ps(a, b, c)
 #endif
 
-SIMDE__FUNCTION_ATTRIBUTES
+SIMDE_FUNCTION_ATTRIBUTES
 simde__m128d
 simde_mm_fnmadd_sd (simde__m128d a, simde__m128d b, simde__m128d c) {
-#if defined(SIMDE_FMA_NATIVE)
+#if defined(SIMDE_X86_FMA_NATIVE)
   return _mm_fnmadd_sd(a, b, c);
 #else
   simde__m128d_private
@@ -486,14 +507,15 @@ simde_mm_fnmadd_sd (simde__m128d a, simde__m128d b, simde__m128d c) {
   return simde__m128d_from_private(r_);
 #endif
 }
-#if defined(SIMDE_FMA_ENABLE_NATIVE_ALIASES)
-#  define _mm_fnmadd_sd(a, b, c) simde_mm_fnmadd_sd(a, b, c)
+#if defined(SIMDE_X86_FMA_ENABLE_NATIVE_ALIASES)
+  #undef _mm_fnmadd_sd
+  #define _mm_fnmadd_sd(a, b, c) simde_mm_fnmadd_sd(a, b, c)
 #endif
 
-SIMDE__FUNCTION_ATTRIBUTES
+SIMDE_FUNCTION_ATTRIBUTES
 simde__m128
 simde_mm_fnmadd_ss (simde__m128 a, simde__m128 b, simde__m128 c) {
-#if defined(SIMDE_FMA_NATIVE)
+#if defined(SIMDE_X86_FMA_NATIVE)
   return _mm_fnmadd_ss(a, b, c);
 #else
   simde__m128_private
@@ -508,14 +530,15 @@ simde_mm_fnmadd_ss (simde__m128 a, simde__m128 b, simde__m128 c) {
   return simde__m128_from_private(r_);
 #endif
 }
-#if defined(SIMDE_FMA_ENABLE_NATIVE_ALIASES)
-#  define _mm_fnmadd_ss(a, b, c) simde_mm_fnmadd_ss(a, b, c)
+#if defined(SIMDE_X86_FMA_ENABLE_NATIVE_ALIASES)
+  #undef _mm_fnmadd_ss
+  #define _mm_fnmadd_ss(a, b, c) simde_mm_fnmadd_ss(a, b, c)
 #endif
 
-SIMDE__FUNCTION_ATTRIBUTES
+SIMDE_FUNCTION_ATTRIBUTES
 simde__m128d
 simde_mm_fnmsub_pd (simde__m128d a, simde__m128d b, simde__m128d c) {
-#if defined(SIMDE_FMA_NATIVE)
+#if defined(SIMDE_X86_FMA_NATIVE)
   return _mm_fnmsub_pd(a, b, c);
 #else
   simde__m128d_private
@@ -524,7 +547,7 @@ simde_mm_fnmsub_pd (simde__m128d a, simde__m128d b, simde__m128d c) {
     b_ = simde__m128d_to_private(b),
     c_ = simde__m128d_to_private(c);
 
-  SIMDE__VECTORIZE
+  SIMDE_VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
     r_.f64[i] = -(a_.f64[i] * b_.f64[i]) - c_.f64[i];
   }
@@ -532,14 +555,15 @@ simde_mm_fnmsub_pd (simde__m128d a, simde__m128d b, simde__m128d c) {
   return simde__m128d_from_private(r_);
 #endif
 }
-#if defined(SIMDE_FMA_ENABLE_NATIVE_ALIASES)
-#  define _mm_fnmsub_pd(a, b, c) simde_mm_fnmsub_pd(a, b, c)
+#if defined(SIMDE_X86_FMA_ENABLE_NATIVE_ALIASES)
+  #undef _mm_fnmsub_pd
+  #define _mm_fnmsub_pd(a, b, c) simde_mm_fnmsub_pd(a, b, c)
 #endif
 
-SIMDE__FUNCTION_ATTRIBUTES
+SIMDE_FUNCTION_ATTRIBUTES
 simde__m256d
 simde_mm256_fnmsub_pd (simde__m256d a, simde__m256d b, simde__m256d c) {
-#if defined(SIMDE_FMA_NATIVE)
+#if defined(SIMDE_X86_FMA_NATIVE)
   return _mm256_fnmsub_pd(a, b, c);
 #else
   simde__m256d_private
@@ -548,7 +572,7 @@ simde_mm256_fnmsub_pd (simde__m256d a, simde__m256d b, simde__m256d c) {
     b_ = simde__m256d_to_private(b),
     c_ = simde__m256d_to_private(c);
 
-  SIMDE__VECTORIZE
+  SIMDE_VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
     r_.f64[i] = -(a_.f64[i] * b_.f64[i]) - c_.f64[i];
   }
@@ -556,14 +580,15 @@ simde_mm256_fnmsub_pd (simde__m256d a, simde__m256d b, simde__m256d c) {
   return simde__m256d_from_private(r_);
 #endif
 }
-#if defined(SIMDE_FMA_ENABLE_NATIVE_ALIASES)
-#  define _mm_fnmsub_pd(a, b, c) simde_mm_fnmsub_pd(a, b, c)
+#if defined(SIMDE_X86_FMA_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_fnmsub_pd
+  #define _mm256_fnmsub_pd(a, b, c) simde_mm256_fnmsub_pd(a, b, c)
 #endif
 
-SIMDE__FUNCTION_ATTRIBUTES
+SIMDE_FUNCTION_ATTRIBUTES
 simde__m128
 simde_mm_fnmsub_ps (simde__m128 a, simde__m128 b, simde__m128 c) {
-#if defined(SIMDE_FMA_NATIVE)
+#if defined(SIMDE_X86_FMA_NATIVE)
   return _mm_fnmsub_ps(a, b, c);
 #else
   simde__m128_private
@@ -572,7 +597,7 @@ simde_mm_fnmsub_ps (simde__m128 a, simde__m128 b, simde__m128 c) {
     b_ = simde__m128_to_private(b),
     c_ = simde__m128_to_private(c);
 
-  SIMDE__VECTORIZE
+  SIMDE_VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
     r_.f32[i] = -(a_.f32[i] * b_.f32[i]) - c_.f32[i];
   }
@@ -580,14 +605,15 @@ simde_mm_fnmsub_ps (simde__m128 a, simde__m128 b, simde__m128 c) {
   return simde__m128_from_private(r_);
 #endif
 }
-#if defined(SIMDE_FMA_ENABLE_NATIVE_ALIASES)
-#  define _mm_fnmsub_ps(a, b, c) simde_mm_fnmsub_ps(a, b, c)
+#if defined(SIMDE_X86_FMA_ENABLE_NATIVE_ALIASES)
+  #undef _mm_fnmsub_ps
+  #define _mm_fnmsub_ps(a, b, c) simde_mm_fnmsub_ps(a, b, c)
 #endif
 
-SIMDE__FUNCTION_ATTRIBUTES
+SIMDE_FUNCTION_ATTRIBUTES
 simde__m256
 simde_mm256_fnmsub_ps (simde__m256 a, simde__m256 b, simde__m256 c) {
-#if defined(SIMDE_FMA_NATIVE)
+#if defined(SIMDE_X86_FMA_NATIVE)
   return _mm256_fnmsub_ps(a, b, c);
 #else
   simde__m256_private
@@ -596,7 +622,7 @@ simde_mm256_fnmsub_ps (simde__m256 a, simde__m256 b, simde__m256 c) {
     b_ = simde__m256_to_private(b),
     c_ = simde__m256_to_private(c);
 
-  SIMDE__VECTORIZE
+  SIMDE_VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
     r_.f32[i] = -(a_.f32[i] * b_.f32[i]) - c_.f32[i];
   }
@@ -604,14 +630,15 @@ simde_mm256_fnmsub_ps (simde__m256 a, simde__m256 b, simde__m256 c) {
   return simde__m256_from_private(r_);
 #endif
 }
-#if defined(SIMDE_FMA_ENABLE_NATIVE_ALIASES)
-#  define _mm_fnmsub_ps(a, b, c) simde_mm_fnmsub_ps(a, b, c)
+#if defined(SIMDE_X86_FMA_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_fnmsub_ps
+  #define _mm256_fnmsub_ps(a, b, c) simde_mm256_fnmsub_ps(a, b, c)
 #endif
 
-SIMDE__FUNCTION_ATTRIBUTES
+SIMDE_FUNCTION_ATTRIBUTES
 simde__m128d
 simde_mm_fnmsub_sd (simde__m128d a, simde__m128d b, simde__m128d c) {
-#if defined(SIMDE_FMA_NATIVE)
+#if defined(SIMDE_X86_FMA_NATIVE)
   return _mm_fnmsub_sd(a, b, c);
 #else
   simde__m128d_private
@@ -626,14 +653,15 @@ simde_mm_fnmsub_sd (simde__m128d a, simde__m128d b, simde__m128d c) {
   return simde__m128d_from_private(r_);
 #endif
 }
-#if defined(SIMDE_FMA_ENABLE_NATIVE_ALIASES)
-#  define _mm_fnmsub_sd(a, b, c) simde_mm_fnmsub_sd(a, b, c)
+#if defined(SIMDE_X86_FMA_ENABLE_NATIVE_ALIASES)
+  #undef _mm_fnmsub_sd
+  #define _mm_fnmsub_sd(a, b, c) simde_mm_fnmsub_sd(a, b, c)
 #endif
 
-SIMDE__FUNCTION_ATTRIBUTES
+SIMDE_FUNCTION_ATTRIBUTES
 simde__m128
 simde_mm_fnmsub_ss (simde__m128 a, simde__m128 b, simde__m128 c) {
-#if defined(SIMDE_FMA_NATIVE)
+#if defined(SIMDE_X86_FMA_NATIVE)
   return _mm_fnmsub_ss(a, b, c);
 #else
   simde__m128_private
@@ -648,12 +676,13 @@ simde_mm_fnmsub_ss (simde__m128 a, simde__m128 b, simde__m128 c) {
   return simde__m128_from_private(r_);
 #endif
 }
-#if defined(SIMDE_FMA_ENABLE_NATIVE_ALIASES)
-#  define _mm_fnmsub_ss(a, b, c) simde_mm_fnmsub_ss(a, b, c)
+#if defined(SIMDE_X86_FMA_ENABLE_NATIVE_ALIASES)
+  #undef _mm_fnmsub_ss
+  #define _mm_fnmsub_ss(a, b, c) simde_mm_fnmsub_ss(a, b, c)
 #endif
 
-SIMDE__END_DECLS
+SIMDE_END_DECLS_
 
 HEDLEY_DIAGNOSTIC_POP
 
-#endif /* !defined(SIMDE__FMA_H) */
+#endif /* !defined(SIMDE_X86_FMA_H) */

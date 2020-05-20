@@ -1,0 +1,9 @@
+# xenial with gcc 5.4
+FROM ubuntu:16.04
+RUN apt-get update && apt-get install --no-install-recommends -y gcc g++ cmake make
+COPY . /simde
+WORKDIR /simde/test
+RUN mkdir -p build_ubuntu16.04
+WORKDIR /simde/test/build_ubuntu16.04
+RUN CC=/usr/bin/gcc CXX=/usr/bin/g++ cmake -DCMAKE_C_FLAGS="-Wall -Wextra -Werror -Werror=unused-but-set-variable" -DCMAKE_CXX_FLAGS="-Wall -Wextra -Werror -Werror=unused-but-set-variable"  .. \
+ && make -j $(nproc) && ./run-tests

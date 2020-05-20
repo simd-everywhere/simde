@@ -79,7 +79,7 @@ SIMDE_TESTS_GENERATE_SUITE_GETTERS(sub);
 #include <math.h>
 
 #define SIMDE_NEON_GEN_RAND_ARRAY_FUNC(L, N, V)	\
-  SIMDE__FUNCTION_ATTRIBUTES \
+  SIMDE_FUNCTION_ATTRIBUTES \
   simde_float##L##x##N##_t \
   simde_neon_random_float##L##x##N(void) { \
     simde_float##L v[sizeof(simde_float##L##x##N##_t) / sizeof(simde_float##L)]; \
@@ -89,7 +89,7 @@ SIMDE_TESTS_GENERATE_SUITE_GETTERS(sub);
     return simde_vld1##V##_f##L(v); \
   }
 
-SIMDE__FUNCTION_ATTRIBUTES
+SIMDE_FUNCTION_ATTRIBUTES
 simde_float32x2_t
 simde_neon_random_float32x2(void) {
   simde_float32 v[sizeof(simde_float32x2_t) / sizeof(simde_float32)];
@@ -99,7 +99,7 @@ simde_neon_random_float32x2(void) {
   return simde_vld1_f32(v);
 }
 
-SIMDE__FUNCTION_ATTRIBUTES
+SIMDE_FUNCTION_ATTRIBUTES
 simde_float64x1_t
 simde_neon_random_float64x1(void) {
   simde_float64 v[sizeof(simde_float64x1_t) / sizeof(simde_float64)];
@@ -109,7 +109,7 @@ simde_neon_random_float64x1(void) {
   return simde_vld1_f64(v);
 }
 
-SIMDE__FUNCTION_ATTRIBUTES
+SIMDE_FUNCTION_ATTRIBUTES
 simde_float32x4_t
 simde_neon_random_float32x4(void) {
   simde_float32 v[sizeof(simde_float32x4_t) / sizeof(simde_float32)];
@@ -119,7 +119,7 @@ simde_neon_random_float32x4(void) {
   return simde_vld1q_f32(v);
 }
 
-SIMDE__FUNCTION_ATTRIBUTES
+SIMDE_FUNCTION_ATTRIBUTES
 simde_float64x2_t
 simde_neon_random_float64x2(void) {
   simde_float64 v[sizeof(simde_float64x2_t) / sizeof(simde_float64)];

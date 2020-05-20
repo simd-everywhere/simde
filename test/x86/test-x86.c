@@ -19,7 +19,7 @@
 
 MunitSuite*
 simde_tests_x86_get_suite(void) {
-  static MunitSuite children[(13 * SUITES_PER_ISAX) + 1];
+  static MunitSuite children[(16 * SUITES_PER_ISAX) + 1];
   static MunitSuite suite = { "/x86", NULL, children, 1, MUNIT_SUITE_OPTION_NONE };
   static const MunitSuite empty = { NULL, NULL, NULL, 1, MUNIT_SUITE_OPTION_NONE };
 
@@ -37,6 +37,9 @@ simde_tests_x86_get_suite(void) {
   SET_CHILDREN_FOR_ARCH(avx2);
   SET_CHILDREN_FOR_ARCH(avx512f);
   SET_CHILDREN_FOR_ARCH(avx512bw);
+  SET_CHILDREN_FOR_ARCH(avx512vl);
+  SET_CHILDREN_FOR_ARCH(avx512dq);
+  SET_CHILDREN_FOR_ARCH(gfni);
   SET_CHILDREN_FOR_ARCH(svml);
 
   children[i++] = empty;

@@ -1,5 +1,8 @@
 environment:
   matrix:
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+      GENERATOR: Visual Studio 16 2019
+      ARCH: x64
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
       GENERATOR: Visual Studio 15 2017 Win64
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
@@ -17,7 +20,13 @@ before_build:
       cd test
       mkdir build
       cd build
-      cmake -G "$env:GENERATOR" -DALWAYS_BUILD_NATIVE_TESTS=ON ..
+      cmake --version
+      if ($env:ARCH -is "String") {
+        cmake -G "$env:GENERATOR" -A $env:ARCH -DCMAKE_C_FLAGS="/W4 /WX /wd4054" -DCMAKE_CXX_FLAGS="/W4 /WX /wd4054" ..
+      } else {
+        cmake -G "$env:GENERATOR" -DCMAKE_C_FLAGS="/W4 /WX /wd4054" -DCMAKE_CXX_FLAGS="/W4 /WX /wd4054" ..
+      }
+      type CMakeFiles/CMakeError.log
 
 build_script:
   - ps: |
@@ -26,4 +35,3 @@ build_script:
 test_script:
   - ps: |
       if("$env:RUN_TESTS" -ne "no") { ctest --output-on-failure --interactive-debug-mode 0 -C Debug -V }
- 

@@ -38,15 +38,15 @@ endif()
 
 add_library(munit STATIC munit/munit.c)
 
-include(CheckFunctionExists)
-check_function_exists(clock_gettime CLOCK_GETTIME_RES)
+include(CheckSymbolExists)
+check_symbol_exists(clock_gettime "time.h" CLOCK_GETTIME_RES)
 if(CLOCK_GETTIME_RES)
   set(CLOCK_GETTIME_EXISTS yes)
 else()
   set(orig_req_libs "${CMAKE_REQUIRED_LIBRARIES}")
   set(CMAKE_REQUIRED_LIBRARIES "${CMAKE_REQUIRED_LIBRARIES};rt")
 
-  check_function_exists(clock_gettime CLOCK_GETTIME_LIBRT_RES)
+  check_symbol_exists(clock_gettime "time.h" CLOCK_GETTIME_LIBRT_RES)
   if(CLOCK_GETTIME_LIBRT_RES)
     set(CLOCK_GETTIME_EXISTS yes)
     set(CLOCK_GETTIME_LIBRARY "rt")
@@ -56,11 +56,11 @@ else()
   unset(orig_req_libs)
 endif()
 
-check_function_exists(fegetround FEGETROUND_EXISTS)
+check_symbol_exists(fegetround "fenv.h" FEGETROUND_EXISTS)
 if(NOT FEGETROUND_EXISTS)
   unset(FEGETROUND_EXISTS CACHE)
   list(APPEND CMAKE_REQUIRED_LIBRARIES m)
-  check_function_exists(fegetround FEGETROUND_EXISTS)
+  check_symbol_exists(fegetround "fenv.h" FEGETROUND_EXISTS)
   if(FEGETROUND_EXISTS)
     set(NEED_LIBM True)
   else()
@@ -100,6 +100,9 @@ set(TEST_SOURCES_C
   x86/avx2.c
   x86/avx512f.c
   x86/avx512bw.c
+  x86/avx512vl.c
+  x86/avx512dq.c
+  x86/gfni.c
   x86/fma.c
   x86/svml.c
 
@@ -142,6 +145,7 @@ foreach(native native emul)
   endif(ALWAYS_BUILD_NATIVE_TESTS)
 
   target_link_libraries(run-tests simde-test-${native})
+  target_add_compiler_flags(simde-test-${native} "-Wno-psabi")
 endforeach(native native emul)
 target_compile_definitions(simde-test-emul PRIVATE SIMDE_NO_NATIVE)
 
@@ -158,6 +162,9 @@ foreach(tst
       "/x86/avx2"
       "/x86/avx512f"
       "/x86/avx512bw"
+      "/x86/avx512vl"
+      "/x86/avx512dq"
+      "/x86/gfni"
       "/x86/svml"
     )
   add_test(NAME "${tst}/${variant}" COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:run-tests> "${tst}")

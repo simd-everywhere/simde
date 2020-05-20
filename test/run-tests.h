@@ -2,13 +2,45 @@
 #define SIMDE_RUN_TESTS_H
 
 #include  "../simde/hedley.h"
-#include "munit/munit.h"
 #include "../simde/simde-common.h"
+
+SIMDE_DIAGNOSTIC_DISABLE_VLA_
+#if HEDLEY_HAS_WARNING("-Wc++98-compat-pedantic") && defined(__cplusplus)
+#  pragma clang diagnostic ignored "-Wc++98-compat-pedantic"
+#endif
+#if HEDLEY_HAS_WARNING("-Wpadded")
+#  pragma clang diagnostic ignored "-Wpadded"
+#endif
+#if HEDLEY_HAS_WARNING("-Wdouble-promotion")
+#  pragma clang diagnostic ignored "-Wdouble-promotion"
+#endif
+#if HEDLEY_HAS_WARNING("-Wold-style-cast")
+  #pragma clang diagnostic ignored "-Wold-style-cast"
+#endif
+#if HEDLEY_HAS_WARNING("-Wzero-as-null-pointer-constant")
+  #pragma clang diagnostic ignored "-Wzero-as-null-pointer-constant"
+#endif
+#if HEDLEY_HAS_WARNING("-Wc++98-compat-pedantic")
+  #pragma clang diagnostic ignored "-Wc++98-compat-pedantic"
+#endif
+#if HEDLEY_HAS_WARNING("-Wvariadic-macros") || HEDLEY_GCC_VERSION_CHECK(4,0,0)
+  #pragma GCC diagnostic ignored "-Wvariadic-macros"
+#endif
+#if HEDLEY_HAS_WARNING("-Wreserved-id-macro")
+  #pragma clang diagnostic ignored "-Wreserved-id-macro"
+#endif
+
+#include "munit/munit.h"
 
 #include <stdio.h>
 #include <math.h>
 
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
+
+#if defined(HEDLEY_MSVC_VERSION)
+/* Unused function(s) */
+#pragma warning(disable:4505)
+#endif
 
 #define SIMDE_TESTS_CONCAT3_EX(a, b, c) a##b##c
 #define SIMDE_TESTS_CONCAT3(a, b, c) SIMDE_TESTS_CONCAT3_EX(a, b, c)
@@ -39,8 +71,13 @@ SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
   "/" HEDLEY_STRINGIFY(name) "/" HEDLEY_STRINGIFY(SIMDE_TESTS_CURRENT_NATIVE)
 #endif
 
-#define SIMDE_TESTS_DEFINE_TEST(name) \
-  { (char*) SIMDE_TESTS_GENERATE_NAME(name), test_simde_##name, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL }
+#if !defined(__cplusplus)
+  #define SIMDE_TESTS_DEFINE_TEST(name) \
+    { (char*) SIMDE_TESTS_GENERATE_NAME(name), test_simde_##name, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL }
+#else
+  #define SIMDE_TESTS_DEFINE_TEST(name) \
+    { const_cast<char*>(SIMDE_TESTS_GENERATE_NAME(name)), test_simde_##name, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL }
+#endif
 
 HEDLEY_BEGIN_C_DECLS
 
@@ -50,10 +87,10 @@ HEDLEY_BEGIN_C_DECLS
 #  define SIMDE_ALMOST_EQUAL_TO "~=~"
 #endif
 
-SIMDE__FUNCTION_POSSIBLY_UNUSED
+SIMDE_FUNCTION_POSSIBLY_UNUSED_
 static int
 simde_check_double_close(double a, double b, int precision) {
-  const double r = 1.0 * pow(10, HEDLEY_STATIC_CAST(double, precision));
+  const double r = 1.0 * pow(10, -HEDLEY_STATIC_CAST(double, precision));
   return
     HEDLEY_UNLIKELY(a < (b - r)) ||
     HEDLEY_UNLIKELY(a > (b + r));
@@ -65,26 +102,26 @@ simde_check_double_close(double a, double b, int precision) {
   simde_assert_##VT##_##accessor##_close_ex(int line, const char* file, simde__##VT a, simde__##VT b, int precision) { \
     simde__##VT##_private \
       a_ = simde__##VT##_to_private(a), \
-      b_ = simde__##VT##_to_private(b);	\
+      b_ = simde__##VT##_to_private(b); \
     \
     for (int i = 0 ; i < HEDLEY_STATIC_CAST(int, sizeof(a_.accessor) / sizeof(a_.accessor[0])) ; i++) { \
       if (simde_check_double_close(HEDLEY_STATIC_CAST(double, a_.accessor[i]), HEDLEY_STATIC_CAST(double, b_.accessor[i]), precision)) { \
-        fprintf(stderr, "%s:%d: assertion failed[%d]: %g " SIMDE_ALMOST_EQUAL_TO " %g (precision: 1e-%d)\n", file, line, i, a_.accessor[i], b_.accessor[i], precision); \
+        fprintf(stderr, "%s:%d: assertion failed[%d]: %g " SIMDE_ALMOST_EQUAL_TO " %g (precision: 1e-%d)\n", file, line, i, HEDLEY_STATIC_CAST(double, a_.accessor[i]), HEDLEY_STATIC_CAST(double, b_.accessor[i]), precision); \
         abort(); \
       } \
     } \
   }
 
-SIMDE__FUNCTION_POSSIBLY_UNUSED
+SIMDE_FUNCTION_POSSIBLY_UNUSED_
 static void random_f32v(size_t nmemb, simde_float32 v[HEDLEY_ARRAY_PARAM(nmemb)]) {
   for (size_t i = 0 ; i < nmemb ; i++) {
     do {
       munit_rand_memory(sizeof(v[i]), HEDLEY_REINTERPRET_CAST(uint8_t*, &(v[i])));
-    } while (!isnormal(v[i]));
+    } while (!simde_math_isnormal(v[i]));
   }
 }
 
-SIMDE__FUNCTION_POSSIBLY_UNUSED
+SIMDE_FUNCTION_POSSIBLY_UNUSED_
 static simde_float64 random_f64_range(simde_float64 min, simde_float64 max) {
   const simde_float64 range = max - min;
   simde_float64 x = HEDLEY_STATIC_CAST(simde_float64, munit_rand_uint32());
@@ -93,17 +130,17 @@ static simde_float64 random_f64_range(simde_float64 min, simde_float64 max) {
   return x;
 }
 
-SIMDE__FUNCTION_POSSIBLY_UNUSED
+SIMDE_FUNCTION_POSSIBLY_UNUSED_
 static simde_float32 random_f32_range(simde_float32 min, simde_float32 max) {
   return HEDLEY_STATIC_CAST(simde_float32, random_f64_range(HEDLEY_STATIC_CAST(double, min), HEDLEY_STATIC_CAST(double, max)));
 }
 
-SIMDE__FUNCTION_POSSIBLY_UNUSED
+SIMDE_FUNCTION_POSSIBLY_UNUSED_
 static void random_f64v(size_t nmemb, simde_float64 v[HEDLEY_ARRAY_PARAM(nmemb)]) {
   for (size_t i = 0 ; i < nmemb ; i++) {
     do {
       munit_rand_memory(sizeof(v[i]), HEDLEY_REINTERPRET_CAST(uint8_t*, &(v[i])));
-    } while (!isnormal(v[i]));
+    } while (!simde_math_isnormal(v[i]));
   }
 }
 
@@ -125,7 +162,7 @@ static void random_f64v(size_t nmemb, simde_float64 v[HEDLEY_ARRAY_PARAM(nmemb)]
     const T* simde__tmp_b_ = (b); \
     for (size_t simde__i_ = 0 ; simde__i_ < nmemb ; simde__i_++) { \
       if (!(simde__tmp_a_[simde__i_] op simde__tmp_b_[simde__i_])) { \
-	munit_errorf("assertion failed: (" #a ")[%" MUNIT_SIZE_MODIFIER "u] " #op " (" #b ")[%" MUNIT_SIZE_MODIFIER "u] (" prefix "%" fmt suffix " " #op " " prefix "%" fmt suffix ")", simde__i_, simde__i_, simde__tmp_a_[simde__i_], simde__tmp_b_[simde__i_]); \
+        munit_errorf("assertion failed: (" #a ")[%" MUNIT_SIZE_MODIFIER "u] " #op " (" #b ")[%" MUNIT_SIZE_MODIFIER "u] (" prefix "%" fmt suffix " " #op " " prefix "%" fmt suffix ")", simde__i_, simde__i_, simde__tmp_a_[simde__i_], simde__tmp_b_[simde__i_]); \
       } \
     } \
   } while (0)
@@ -165,10 +202,10 @@ static void random_f64v(size_t nmemb, simde_float64 v[HEDLEY_ARRAY_PARAM(nmemb)]
     const T* simde_tmp_b_ = (b); \
     for (size_t simde_i_ = 0 ; simde_i_ < nmemb ; simde_i_++) { \
       const T simde_tmp_diff_ = ((simde_tmp_a_[simde_i_] - simde_tmp_b_[simde_i_]) < 0) ? \
-	(simde_tmp_b_[simde_i_] - simde_tmp_a_[simde_i_]) : \
-	(simde_tmp_a_[simde_i_] - simde_tmp_b_[simde_i_]); \
+      (simde_tmp_b_[simde_i_] - simde_tmp_a_[simde_i_]) : \
+      (simde_tmp_a_[simde_i_] - simde_tmp_b_[simde_i_]); \
       if (MUNIT_UNLIKELY(simde_tmp_diff_ > 1e-##precision)) { \
-	munit_errorf("assertion failed: (" #a ")[%" MUNIT_SIZE_MODIFIER "u] == (" #b ")[%" MUNIT_SIZE_MODIFIER "u] (%." #precision "f == %." #precision "f)", simde_i_, simde_i_, simde_tmp_a_[simde_i_], simde_tmp_b_[simde_i_]); \
+        munit_errorf("assertion failed: (" #a ")[%" MUNIT_SIZE_MODIFIER "u] == (" #b ")[%" MUNIT_SIZE_MODIFIER "u] (%." #precision "f == %." #precision "f)", simde_i_, simde_i_, simde_tmp_a_[simde_i_], simde_tmp_b_[simde_i_]); \
       } \
     } \
   } while (0)
@@ -179,10 +216,10 @@ static void random_f64v(size_t nmemb, simde_float64 v[HEDLEY_ARRAY_PARAM(nmemb)]
     const T* simde_tmp_b_ = (b); \
     for (size_t simde_i_ = 0 ; simde_i_ < nmemb ; simde_i_++) { \
       const T simde_tmp_diff_ = ((simde_tmp_a_[simde_i_] - simde_tmp_b_[simde_i_]) < 0) ? \
-	(simde_tmp_b_[simde_i_] - simde_tmp_a_[simde_i_]) : \
-	(simde_tmp_a_[simde_i_] - simde_tmp_b_[simde_i_]); \
+      (simde_tmp_b_[simde_i_] - simde_tmp_a_[simde_i_]) : \
+      (simde_tmp_a_[simde_i_] - simde_tmp_b_[simde_i_]); \
       if (MUNIT_UNLIKELY(simde_tmp_diff_ > precision)) { \
-	munit_errorf("assertion failed: (" #a ")[%" MUNIT_SIZE_MODIFIER "u] == (" #b ")[%" MUNIT_SIZE_MODIFIER "u] (%" #precision ".1f == %" #precision ".1f)", simde_i_, simde_i_, simde_tmp_a_[simde_i_], simde_tmp_b_[simde_i_]); \
+        munit_errorf("assertion failed: (" #a ")[%" MUNIT_SIZE_MODIFIER "u] == (" #b ")[%" MUNIT_SIZE_MODIFIER "u] (%" #precision ".1f == %" #precision ".1f)", simde_i_, simde_i_, simde_tmp_a_[simde_i_], simde_tmp_b_[simde_i_]); \
       } \
     } \
   } while (0)
@@ -193,10 +230,10 @@ static void random_f64v(size_t nmemb, simde_float64 v[HEDLEY_ARRAY_PARAM(nmemb)]
     const T* simde_tmp_b_ = (b); \
     for (size_t simde_i_ = 0 ; simde_i_ < nmemb ; simde_i_++) { \
       const T simde_tmp_diff_ = ((simde_tmp_a_[simde_i_] - simde_tmp_b_[simde_i_]) < 0) ? \
-	(simde_tmp_b_[simde_i_] - simde_tmp_a_[simde_i_]) : \
-	(simde_tmp_a_[simde_i_] - simde_tmp_b_[simde_i_]); \
+      (simde_tmp_b_[simde_i_] - simde_tmp_a_[simde_i_]) : \
+      (simde_tmp_a_[simde_i_] - simde_tmp_b_[simde_i_]); \
       if (MUNIT_UNLIKELY(simde_tmp_diff_ > precision)) { \
-	munit_errorf("assertion failed: (" #a ")[%" MUNIT_SIZE_MODIFIER "u] == (" #b ")[%" MUNIT_SIZE_MODIFIER "u] (%" #precision ".1f == %" #precision ".1f)", simde_i_, simde_i_, simde_tmp_a_[simde_i_], simde_tmp_b_[simde_i_]); \
+        munit_errorf("assertion failed: (" #a ")[%" MUNIT_SIZE_MODIFIER "u] == (" #b ")[%" MUNIT_SIZE_MODIFIER "u] (%" #precision ".1f == %" #precision ".1f)", simde_i_, simde_i_, simde_tmp_a_[simde_i_], simde_tmp_b_[simde_i_]); \
       } \
     } \
   } while (0)
@@ -234,5 +271,18 @@ static void random_f64v(size_t nmemb, simde_float64 v[HEDLEY_ARRAY_PARAM(nmemb)]
   } while (0)
 
 HEDLEY_END_C_DECLS
+
+#if HEDLEY_HAS_WARNING("-Wpadded")
+#  pragma clang diagnostic ignored "-Wpadded"
+#elif defined(HEDLEY_MSVC_VERSION)
+#  pragma warning(disable:4324)
+#endif
+
+#if defined(HEDLEY_MSVC_VERSION)
+  /* nonstandard extension used : non-lvalue array converted to pointer */
+  #pragma warning(disable:4223)
+  /* Conditional expression is a constant */
+  #pragma warning(disable:4127)
+#endif
 
 #endif /* !defined(SIMDE_RUN_TESTS_H) */
