@@ -1,0 +1,192 @@
+{
+  "projectName": "simde",
+  "projectOwner": "nemequ",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": true,
+  "commitConvention": "none",
+  "contributors": [
+    {
+      "login": "nemequ",
+      "name": "Evan Nemerson",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/1151?v=4",
+      "profile": "https://nemequ.github.io/",
+      "contributions": [
+        "code",
+        "content",
+        "doc",
+        "example",
+        "ideas",
+        "question",
+        "review",
+        "test",
+        "tutorial",
+        "talk",
+        "bug",
+        "infra",
+        "maintenance",
+        "projectManagement"
+      ]
+    },
+    {
+      "login": "mr-c",
+      "name": "Michael R. Crusoe",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/1330696?v=4",
+      "profile": "https://orcid.org/0000-0002-2961-9670",
+      "contributions": [
+        "bug",
+        "code",
+        "eventOrganizing",
+        "fundingFinding",
+        "ideas",
+        "infra",
+        "platform",
+        "test"
+      ]
+    },
+    {
+      "login": "himanshi18037",
+      "name": "HIMANSHI MATHUR",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/43923076?v=4",
+      "profile": "https://github.com/himanshi18037",
+      "contributions": [
+        "code",
+        "test"
+      ]
+    },
+    {
+      "login": "masterchef2209",
+      "name": "Hidayat Khan",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/27916352?v=4",
+      "profile": "https://github.com/masterchef2209",
+      "contributions": [
+        "code",
+        "test"
+      ]
+    },
+    {
+      "login": "rosbif",
+      "name": "rosbif",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/553899?v=4",
+      "profile": "https://github.com/rosbif",
+      "contributions": [
+        "code",
+        "test",
+        "bug",
+        "ideas"
+      ]
+    },
+    {
+      "login": "junaruga",
+      "name": "Jun Aruga",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/121989?v=4",
+      "profile": "http://junaruga.hatenablog.com/",
+      "contributions": [
+        "code",
+        "ideas",
+        "platform",
+        "infra",
+        "maintenance",
+        "test",
+        "bug"
+      ]
+    },
+    {
+      "login": "marmeladema",
+      "name": "Élie ROUDNINSKI",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/1629419?v=4",
+      "profile": "https://github.com/marmeladema",
+      "contributions": [
+        "code",
+        "test"
+      ]
+    },
+    {
+      "login": "jsbache",
+      "name": "Jesper Storm Bache",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/7937081?v=4",
+      "profile": "http://www.bache.name",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "jeffdaily",
+      "name": "Jeff Daily",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/904248?v=4",
+      "profile": "https://github.com/jeffdaily",
+      "contributions": [
+        "code",
+        "infra"
+      ]
+    },
+    {
+      "login": "yekm",
+      "name": "Pavel",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/205196?v=4",
+      "profile": "https://github.com/yekm",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "sabarishbollapragada",
+      "name": "Sabarish Bollapragada",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/36379720?v=4",
+      "profile": "https://github.com/sabarishbollapragada",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "gh2o",
+      "name": "Gavin Li",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/371529?v=4",
+      "profile": "http://www.thegavinli.com/",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "betajippity",
+      "name": "Yining Karl Li",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/1057198?v=4",
+      "profile": "http://www.yiningkarlli.com",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "anirbandey303",
+      "name": "Anirban Dey",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/29774651?v=4",
+      "profile": "https://www.facebook.com/anirbandey303",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "Un1Gfn",
+      "name": "Darren Ng",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/28521292?v=4",
+      "profile": "https://github.com/Un1Gfn",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "FaresSalem",
+      "name": "FaresSalem",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/7736245?v=4",
+      "profile": "https://github.com/FaresSalem",
+      "contributions": [
+        "doc"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7
+}

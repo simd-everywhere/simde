@@ -17,6 +17,7 @@
 #  define SIMDE_NDEBUG 1
 #endif
 
+#include "hedley.h"
 #include <stdint.h>
 
 #if !defined(_WIN32)
@@ -58,23 +59,21 @@
 
 #  include "debug-trap.h"
 
-#  if HEDLEY_HAS_WARNING("-Wc++98-compat-pedantic")
-#    pragma clang diagnostic push
-#    pragma clang diagnostic ignored "-Wc++98-compat-pedantic"
-#  endif
+   HEDLEY_DIAGNOSTIC_PUSH
+   SIMDE_DIAGNOSTIC_DISABLE_VARIADIC_MACROS_
 #  if defined(EOF)
 #    define simde_errorf(format, ...) (fprintf(stderr, format, __VA_ARGS__), abort())
 #  else
 #    define simde_errorf(format, ...) (simde_trap())
 #  endif
-#  if HEDLEY_HAS_WARNING("-Wc++98-compat-pedantic")
-#    pragma clang diagnostic pop
-#  endif
+   HEDLEY_DIAGNOSTIC_POP
 #endif
 
 #define simde_error(msg) simde_errorf("%s", msg)
 
-#if defined(SIMDE_NDEBUG)
+#if defined(SIMDE_NDEBUG) || \
+    (defined(__cplusplus) && (__cplusplus < 201103L)) || \
+    (defined(__STDC__) && (__STDC__ < 199901L))
 #  if defined(SIMDE_CHECK_FAIL_DEFINED)
 #    define simde_assert(expr)
 #  else
