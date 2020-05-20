@@ -241,6 +241,8 @@ simde_mm_move_ss (simde__m128 a, simde__m128 b) {
     12, 13, 14, 15
   };
   r_.altivec_f32 = vec_perm(a_.altivec_f32, b_.altivec_f32, m);
+#elif defined(SIMDE_WASM_SIMD128_NATIVE)
+  r_.wasm_v128 = wasm_v8x16_shuffle(b_.wasm_v128, a_.wasm_v128, 0, 1, 2, 3, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31);
 #elif defined(SIMDE_SHUFFLE_VECTOR_)
   r_.f32 = SIMDE_SHUFFLE_VECTOR_(32, 16, a_.f32, b_.f32, 4, 1, 2, 3);
 #else
@@ -493,9 +495,6 @@ simde__m128
 simde_mm_cmpeq_ss (simde__m128 a, simde__m128 b) {
 #if defined(SIMDE_X86_SSE_NATIVE)
   return _mm_cmpeq_ss(a, b);
-#elif defined(SIMDE_WASM_SIMD128_NATIVE)
-  return wasm_v8x16_shuffle(wasm_f32x4_eq(a, b), a, 0, 1, 2, 3, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31);
-
 #elif defined(SIMDE_ASSUME_VECTORIZATION)
   return simde_mm_move_ss(a, simde_mm_cmpeq_ps(a, b));
 #else
@@ -555,8 +554,6 @@ simde__m128
 simde_mm_cmpge_ss (simde__m128 a, simde__m128 b) {
 #if defined(SIMDE_X86_SSE_NATIVE) && !defined(__PGI)
   return _mm_cmpge_ss(a, b);
-#elif defined(SIMDE_WASM_SIMD128_NATIVE)
-  return wasm_v8x16_shuffle(wasm_f32x4_ge(a, b), a, 0, 1, 2, 3, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31);
 #elif defined(SIMDE_ASSUME_VECTORIZATION)
   return simde_mm_move_ss(a, simde_mm_cmpge_ps(a, b));
 #else
@@ -616,8 +613,6 @@ simde__m128
 simde_mm_cmpgt_ss (simde__m128 a, simde__m128 b) {
 #if defined(SIMDE_X86_SSE_NATIVE) && !defined(__PGI)
   return _mm_cmpgt_ss(a, b);
-#elif defined(SIMDE_WASM_SIMD128_NATIVE)
-  return wasm_v8x16_shuffle(wasm_f32x4_gt(a, b), a, 0, 1, 2, 3, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31);
 #elif defined(SIMDE_ASSUME_VECTORIZATION)
   return simde_mm_move_ss(a, simde_mm_cmpgt_ps(a, b));
 #else
@@ -677,8 +672,6 @@ simde__m128
 simde_mm_cmple_ss (simde__m128 a, simde__m128 b) {
 #if defined(SIMDE_X86_SSE_NATIVE)
   return _mm_cmple_ss(a, b);
-#elif defined(SIMDE_WASM_SIMD128_NATIVE)
-  return wasm_v8x16_shuffle(wasm_f32x4_le(a, b), a, 0, 1, 2, 3, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31);
 #elif defined(SIMDE_ASSUME_VECTORIZATION)
   return simde_mm_move_ss(a, simde_mm_cmple_ps(a, b));
 #else
@@ -738,8 +731,6 @@ simde__m128
 simde_mm_cmplt_ss (simde__m128 a, simde__m128 b) {
 #if defined(SIMDE_X86_SSE_NATIVE)
   return _mm_cmplt_ss(a, b);
-#elif defined(SIMDE_WASM_SIMD128_NATIVE)
-  return wasm_v8x16_shuffle(wasm_f32x4_lt(a, b), a, 0, 1, 2, 3, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31);
 #elif defined(SIMDE_ASSUME_VECTORIZATION)
   return simde_mm_move_ss(a, simde_mm_cmplt_ps(a, b));
 #else
@@ -803,8 +794,6 @@ simde__m128
 simde_mm_cmpneq_ss (simde__m128 a, simde__m128 b) {
 #if defined(SIMDE_X86_SSE_NATIVE)
   return _mm_cmpneq_ss(a, b);
-#elif defined(SIMDE_WASM_SIMD128_NATIVE)
-  return wasm_v8x16_shuffle(wasm_f32x4_ne(a, b), a, 0, 1, 2, 3, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31);
 #elif defined(SIMDE_ASSUME_VECTORIZATION)
   return simde_mm_move_ss(a, simde_mm_cmpneq_ps(a, b));
 #else
@@ -904,7 +893,7 @@ simde_mm_cmpord_ps (simde__m128 a, simde__m128 b) {
 #if defined(SIMDE_X86_SSE_NATIVE)
   return _mm_cmpord_ps(a, b);
 #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-  return wasm_v128_and(wasm_f32x4_eq(a, a), wasm_f32x4_eq(b, b));
+  return wasm_v128_and(wasm_f32x4_eq(a, a), wasm_f32x4_eq(b, b)); 
 #else
   simde__m128_private
     r_,
@@ -968,8 +957,6 @@ simde__m128
 simde_mm_cmpunord_ss (simde__m128 a, simde__m128 b) {
 #if defined(SIMDE_X86_SSE_NATIVE) && !defined(__PGI)
   return _mm_cmpunord_ss(a, b);
-#elif defined(SIMDE_WASM_SIMD128_NATIVE)
-  return wasm_v8x16_shuffle(wasm_v128_or(wasm_f32x4_eq(a, a), wasm_f32x4_eq(b, b)), a, 0, 1, 2, 3, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31);
 #elif defined(SIMDE_ASSUME_VECTORIZATION)
   return simde_mm_move_ss(a, simde_mm_cmpunord_ps(a, b));
 #else
@@ -1676,8 +1663,6 @@ simde__m128
 simde_mm_cmpord_ss (simde__m128 a, simde__m128 b) {
 #if defined(SIMDE_X86_SSE_NATIVE)
   return _mm_cmpord_ss(a, b);
-#elif defined(SIMDE_WASM_SIMD128_NATIVE)
-  return wasm_v8x16_shuffle(wasm_v128_and(wasm_f32x4_eq(a, a), wasm_f32x4_eq(b, b)), a, 0, 1, 2, 3, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31);
 #elif defined(SIMDE_ASSUME_VECTORIZATION)
   return simde_mm_move_ss(a, simde_mm_cmpord_ps(a, b));
 #else
@@ -3206,8 +3191,6 @@ simde_mm_sub_ss (simde__m128 a, simde__m128 b) {
   return _mm_sub_ss(a, b);
 #elif defined(SIMDE_ASSUME_VECTORIZATION)
   return simde_mm_move_ss(a, simde_mm_sub_ps(a, b));
-#elif defined(SIMDE_WASM_SIMD128_NATIVE)
-  return wasm_v8x16_shuffle(wasm_f32x4_sub(a, b), a, 0, 1, 2, 3, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31);
 #else
   simde__m128_private
     r_,
@@ -3222,6 +3205,7 @@ simde_mm_sub_ss (simde__m128 a, simde__m128 b) {
   return simde__m128_from_private(r_);
 #endif
 }
+
 #if defined(SIMDE_X86_SSE_ENABLE_NATIVE_ALIASES)
 #  define _mm_sub_ss(a, b) simde_mm_sub_ss((a), (b))
 #endif
