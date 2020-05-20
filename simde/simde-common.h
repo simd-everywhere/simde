@@ -128,7 +128,7 @@
   #define SIMDE_ASSUME_ALIGNED(alignment, v) (__extension__ ({ \
       __typeof__(v) simde_assume_aligned_t_ = (v); \
       __assume_aligned(simde_assume_aligned_t_, alignment); \
-      simde_assmue_aligned_t_; \
+      simde_assume_aligned_t_; \
     }))
 #else
   #define SIMDE_ASSUME_ALIGNED(alignment, v) (v)
@@ -689,6 +689,9 @@ typedef SIMDE_FLOAT64_TYPE simde_float64;
 #    endif
 #    if defined(SIMDE_ARCH_AARCH64)
 #      define SIMDE_BUG_GCC_94488
+#    endif
+#    if defined(SIMDE_ARCH_POWER)
+#      define SIMDE_BUG_GCC_95227
 #    endif
 #  elif defined(__clang__)
 #    if defined(SIMDE_ARCH_AARCH64)

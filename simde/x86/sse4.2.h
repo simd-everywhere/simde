@@ -143,7 +143,7 @@ simde_mm_cmpgt_epi64 (simde__m128i a, simde__m128i b) {
 
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     r_.neon_i64 = vreinterpretq_s64_u64(vcgtq_s64(a_.neon_i64, b_.neon_i64));
-  #elif defined(SIMDE_POWER_ALTIVEC_P5)
+  #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
     r_.altivec_i64 = (vector signed long long) vec_cmpgt(a_.altivec_i64, b_.altivec_i64);
   #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
     r_.i64 = HEDLEY_STATIC_CAST(__typeof__(r_.i64), a_.i64 > b_.i64);
@@ -199,6 +199,46 @@ simde_mm_cmpistrs_16_(simde__m128i a) {
 #endif
 #if defined(SIMDE_X86_SSE4_2_ENABLE_NATIVE_ALIASES)
   #define _mm_cmpistrs(a, b, imm8) simde_mm_cmpistrs(a, b, imm8)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+int
+simde_mm_cmpistrz_8_(simde__m128i b) {
+  simde__m128i_private b_= simde__m128i_to_private(b);
+  const int upper_bound = (128 / 8) - 1;
+  int b_invalid = 0;
+  SIMDE_VECTORIZE
+  for (int i = 0 ; i < upper_bound ; i++) {
+    if(!b_.i8[i])
+      b_invalid = 1;
+  }
+  return b_invalid;
+}
+
+SIMDE_FUNCTION_ATTRIBUTES
+int
+simde_mm_cmpistrz_16_(simde__m128i b) {
+  simde__m128i_private b_= simde__m128i_to_private(b);
+  const int upper_bound = (128 / 16) - 1;
+  int b_invalid = 0;
+  SIMDE_VECTORIZE
+  for (int i = 0 ; i < upper_bound ; i++) {
+    if(!b_.i16[i])
+      b_invalid = 1;
+  }
+  return b_invalid;
+}
+
+#if defined(SIMDE_X86_SSE4_2_NATIVE)
+  #define simde_mm_cmpistrz(a, b, imm8) _mm_cmpistrz(a, b, imm8)
+#else
+  #define simde_mm_cmpistrz(a, b, imm8) \
+     (((imm8) & SIMDE_SIDD_UWORD_OPS) \
+       ? simde_mm_cmpistrz_16_((b)) \
+       : simde_mm_cmpistrz_8_((b)))
+#endif
+#if defined(SIMDE_X86_SSE4_2_ENABLE_NATIVE_ALIASES)
+  #define _mm_cmpistrz(a, b, imm8) simde_mm_cmpistrz(a, b, imm8)
 #endif
 
 SIMDE_END_DECLS_

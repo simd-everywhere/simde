@@ -1542,6 +1542,95 @@ simde_mm512_rem_epu64 (simde__m512i a, simde__m512i b) {
 #  define _mm512_rem_epu64(a, b) simde_mm512_rem_epu64((a), (b))
 #endif
 
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m128
+simde_mm_sin_ps (simde__m128 a) {
+#if defined(SIMDE_X86_SVML_NATIVE)
+  return _mm_sin_ps(a);
+#else
+  simde__m128_private
+    r_,
+    a_ = simde__m128_to_private(a);
+
+  SIMDE_VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
+    r_.f32[i] =  simde_math_sinf(a_.f32[i]);
+  }
+
+  return simde__m128_from_private(r_);
+#endif
+}
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
+#  define _mm_sin_ps(a) simde_mm_sin_ps(a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m128d
+simde_mm_sin_pd (simde__m128d a) {
+#if defined(SIMDE_X86_SVML_NATIVE)
+  return _mm_sin_pd(a);
+#else
+  simde__m128d_private
+    r_,
+    a_ = simde__m128d_to_private(a);
+
+  SIMDE_VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
+    r_.f64[i] =  simde_math_sin(a_.f64[i]);
+  }
+
+  return simde__m128d_from_private(r_);
+#endif
+}
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
+#  define _mm_sin_pd(a) simde_mm_sin_pd(a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256
+simde_mm256_sin_ps (simde__m256 a) {
+#if defined(SIMDE_X86_SVML_NATIVE)
+  return _mm256_sin_ps(a);
+#else
+  simde__m256_private
+    r_,
+    a_ = simde__m256_to_private(a);
+
+  SIMDE_VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
+    r_.f32[i] =  simde_math_sinf(a_.f32[i]);
+  }
+
+  return simde__m256_from_private(r_);
+#endif
+}
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
+#  define _mm256_sin_ps(a) simde_mm256_sin_ps(a)
+#endif
+
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256d
+simde_mm256_sin_pd (simde__m256d a) {
+#if defined(SIMDE_X86_SVML_NATIVE)
+  return _mm256_sin_pd(a);
+#else
+  simde__m256d_private
+    r_,
+    a_ = simde__m256d_to_private(a);
+
+  SIMDE_VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
+    r_.f64[i] =  simde_math_sin(a_.f64[i]);
+  }
+
+  return simde__m256d_from_private(r_);
+#endif
+}
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
+#  define _mm256_sin_pd(a) simde_mm256_sin_pd(a)
+#endif
+
 SIMDE_END_DECLS_
 
 HEDLEY_DIAGNOSTIC_POP
