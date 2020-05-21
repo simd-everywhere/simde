@@ -939,14 +939,18 @@ simde_mm_cmpunord_ps (simde__m128 a, simde__m128 b) {
     a_ = simde__m128_to_private(a),
     b_ = simde__m128_to_private(b);
 
-#if defined(simde_math_isnanf)
-  SIMDE_VECTORIZE
-  for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
-    r_.u32[i] = (simde_math_isnanf(a_.f32[i]) || simde_math_isnanf(b_.f32[i])) ? ~UINT32_C(0) : UINT32_C(0);
-  }
-#else
-  HEDLEY_UNREACHABLE();
-#endif
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    uint32x4_t ceqaa = vceqq_f32(a_.neon_f32, a_.neon_f32);
+    uint32x4_t ceqbb = vceqq_f32(b_.neon_f32, b_.neon_f32);
+    r_.neon_u32 = vmvnq_u32(vandq_u32(ceqaa, ceqbb));
+  #elif defined(simde_math_isnanf)
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
+      r_.u32[i] = (simde_math_isnanf(a_.f32[i]) || simde_math_isnanf(b_.f32[i])) ? ~UINT32_C(0) : UINT32_C(0);
+    }
+  #else
+    HEDLEY_UNREACHABLE();
+  #endif
 
   return simde__m128_from_private(r_);
 #endif
