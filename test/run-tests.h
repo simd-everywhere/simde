@@ -90,7 +90,7 @@ HEDLEY_BEGIN_C_DECLS
 SIMDE_FUNCTION_POSSIBLY_UNUSED_
 static int
 simde_check_double_close(double a, double b, int precision) {
-  const double r = 1.0 * pow(10, HEDLEY_STATIC_CAST(double, precision));
+  const double r = 1.0 * pow(10, -HEDLEY_STATIC_CAST(double, precision));
   return
     HEDLEY_UNLIKELY(a < (b - r)) ||
     HEDLEY_UNLIKELY(a > (b + r));

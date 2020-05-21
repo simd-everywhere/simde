@@ -49,7 +49,7 @@ simde_mm_abs_epi8 (simde__m128i a) {
 
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     r_.neon_i8 = vabsq_s8(a_.neon_i8);
-#elif defined(SIMDE_POWER_ALTIVEC_P5)
+#elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
   r_.altivec_i8 = vec_abs(a_.altivec_i8);
   #else
     SIMDE_VECTORIZE
@@ -77,7 +77,7 @@ simde_mm_abs_epi16 (simde__m128i a) {
 
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     r_.neon_i16 = vabsq_s16(a_.neon_i16);
-  #elif defined(SIMDE_POWER_ALTIVEC_P5)
+  #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
     r_.altivec_i16 = vec_abs(a_.altivec_i16);
   #else
     SIMDE_VECTORIZE
@@ -105,7 +105,7 @@ simde_mm_abs_epi32 (simde__m128i a) {
 
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     r_.neon_i32 = vabsq_s32(a_.neon_i32);
-  #elif defined(SIMDE_POWER_ALTIVEC_P5)
+  #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
     r_.altivec_i32 = vec_abs(a_.altivec_i32);
   #else
     SIMDE_VECTORIZE
@@ -327,6 +327,8 @@ simde_mm_shuffle_epi8 (simde__m128i a, simde__m128i b) {
       int8x8_t h = vtbl2_s8(i, vget_high_s8(b_.neon_i8));
 
       r_.neon_i8 = vcombine_s8(l, h);
+    #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+      r_.altivec_u8 = vec_perm(a_.altivec_u8, vec_splats((unsigned char)0), b_.altivec_u8);
     #else
       for (size_t i = 0 ; i < (sizeof(r_.i8) / sizeof(r_.i8[0])) ; i++) {
         r_.i8[i] = a_.i8[b_.i8[i] & 15] & (~(b_.i8[i]) >> 7);

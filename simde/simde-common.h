@@ -128,7 +128,7 @@
   #define SIMDE_ASSUME_ALIGNED(alignment, v) (__extension__ ({ \
       __typeof__(v) simde_assume_aligned_t_ = (v); \
       __assume_aligned(simde_assume_aligned_t_, alignment); \
-      simde_assmue_aligned_t_; \
+      simde_assume_aligned_t_; \
     }))
 #else
   #define SIMDE_ASSUME_ALIGNED(alignment, v) (v)
@@ -161,7 +161,7 @@
 /*  Lots of compilers support GCC-style vector extensions, but many
     don't support all the features.  Define different macros depending
     on support for
-    
+
     * SIMDE_VECTOR - Declaring a vector.
     * SIMDE_VECTOR_OPS - basic operations (binary and unary).
     * SIMDE_VECTOR_SCALAR - For binary operators, the second argument
@@ -169,7 +169,7 @@
         had been broadcast to all lanes of a vector.
     * SIMDE_VECTOR_SUBSCRIPT - Supports array subscript notation for
         extracting/inserting a single element.=
-    
+
     SIMDE_VECTOR can be assumed if any others are defined, the
     others are independent. */
 #if !defined(SIMDE_NO_VECTOR)
@@ -495,7 +495,7 @@ typedef SIMDE_FLOAT64_TYPE simde_float64;
    SIMDE_ASSUME_VECTORIZATION if you want to force SIMDe to use the
    vectorized version. */
 #if !defined(SIMDE_NO_ASSUME_VECTORIZATION) && !defined(SIMDE_ASSUME_VECTORIZATION)
-#  if defined(__SSE__) || defined(__ARM_NEON) || defined(__mips_msa) || defined(__ALTIVEC__)
+#  if defined(__SSE__) || defined(__ARM_NEON) || defined(__mips_msa) || defined(__ALTIVEC__) || defined(__wasm_simd128__)
 #    define SIMDE_ASSUME_VECTORIZATION
 #  endif
 #endif
@@ -674,8 +674,12 @@ typedef SIMDE_FLOAT64_TYPE simde_float64;
 #    if !HEDLEY_GCC_VERSION_CHECK(4,6,0)
 #      define SIMDE_BUG_GCC_BAD_MM_EXTRACT_EPI8 /* TODO: find relevant bug or commit */
 #    endif
+#    if !HEDLEY_GCC_VERSION_CHECK(8,0,0)
+#      define SIMDE_BUG_GCC_REV_247851
+#    endif
 #    if !HEDLEY_GCC_VERSION_CHECK(10,0,0)
 #      define SIMDE_BUG_GCC_REV_274313
+#      define SIMDE_BUG_GCC_91341
 #    endif
 #    if !HEDLEY_GCC_VERSION_CHECK(9,0,0) && defined(SIMDE_ARCH_AARCH64)
 #      define SIMDE_BUG_GCC_ARM_SHIFT_SCALAR
@@ -683,8 +687,11 @@ typedef SIMDE_FLOAT64_TYPE simde_float64;
 #    if defined(SIMDE_ARCH_X86) && !defined(SIMDE_ARCH_AMD64)
 #      define SIMDE_BUG_GCC_94482
 #    endif
-#    if defined(SIMDE_ARCH_AARCH64)
+#    if !HEDLEY_GCC_VERSION_CHECK(9,4,0) && defined(SIMDE_ARCH_AARCH64)
 #      define SIMDE_BUG_GCC_94488
+#    endif
+#    if defined(SIMDE_ARCH_POWER)
+#      define SIMDE_BUG_GCC_95227
 #    endif
 #  elif defined(__clang__)
 #    if defined(SIMDE_ARCH_AARCH64)
