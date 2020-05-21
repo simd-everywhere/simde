@@ -168,7 +168,7 @@ simde_mm_cmpistrs_8_(simde__m128i a) {
   const int upper_bound = (128 / 8) - 1;
   int a_invalid = 0;
   SIMDE_VECTORIZE
-  for (int i = 0 ; i < upper_bound ; i++) {
+  for (int i = 0 ; i <= upper_bound ; i++) {
     if(!a_.i8[i])
       a_invalid = 1;
   }
@@ -182,7 +182,7 @@ simde_mm_cmpistrs_16_(simde__m128i a) {
   const int upper_bound = (128 / 16) - 1;
   int a_invalid = 0;
   SIMDE_VECTORIZE
-  for (int i = 0 ; i < upper_bound ; i++) {
+  for (int i = 0 ; i <= upper_bound ; i++) {
     if(!a_.i16[i])
       a_invalid = 1;
   }
@@ -208,7 +208,7 @@ simde_mm_cmpistrz_8_(simde__m128i b) {
   const int upper_bound = (128 / 8) - 1;
   int b_invalid = 0;
   SIMDE_VECTORIZE
-  for (int i = 0 ; i < upper_bound ; i++) {
+  for (int i = 0 ; i <= upper_bound ; i++) {
     if(!b_.i8[i])
       b_invalid = 1;
   }
@@ -222,7 +222,7 @@ simde_mm_cmpistrz_16_(simde__m128i b) {
   const int upper_bound = (128 / 16) - 1;
   int b_invalid = 0;
   SIMDE_VECTORIZE
-  for (int i = 0 ; i < upper_bound ; i++) {
+  for (int i = 0 ; i <= upper_bound ; i++) {
     if(!b_.i16[i])
       b_invalid = 1;
   }
