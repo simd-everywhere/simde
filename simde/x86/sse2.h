@@ -4920,7 +4920,7 @@ simde_mm_srli_epi64 (simde__m128i a, const int imm8)
 
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   r_.neon_u64 = vshrq_n_u64(a_.neon_u64, imm8);
-#elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+#elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && !defined(SIMDE_BUG_GCC_94488)
   r_.u64 = a_.u64 >> imm8;
 #else
   SIMDE_VECTORIZE
