@@ -495,7 +495,7 @@ typedef SIMDE_FLOAT64_TYPE simde_float64;
    SIMDE_ASSUME_VECTORIZATION if you want to force SIMDe to use the
    vectorized version. */
 #if !defined(SIMDE_NO_ASSUME_VECTORIZATION) && !defined(SIMDE_ASSUME_VECTORIZATION)
-#  if defined(__SSE__) || defined(__ARM_NEON) || defined(__mips_msa) || defined(__ALTIVEC__)
+#  if defined(__SSE__) || defined(__ARM_NEON) || defined(__mips_msa) || defined(__ALTIVEC__) || defined(__wasm_simd128__)
 #    define SIMDE_ASSUME_VECTORIZATION
 #  endif
 #endif
