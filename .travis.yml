@@ -277,8 +277,8 @@ jobs:
       npm install jsvu -g
       jsvu --os=linux64 --engines=v8
 
-  allow_failures:
-  - name: emscripten
+  # allow_failures:
+  # - name: emscripten
 
 before_install:
 - |
