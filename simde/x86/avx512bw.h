@@ -614,6 +614,34 @@ simde_mm512_broadcastb_epi8 (simde__m128i a) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m512i
+simde_mm512_mask_broadcastb_epi8 (simde__m512i src, simde__mmask64 k, simde__m128i a) {
+  #if defined(SIMDE_X86_AVX512BW_NATIVE)
+    return _mm512_mask_broadcastb_epi8(src, k, a);
+  #else
+    return simde_mm512_mask_mov_epi8(src, k, simde_mm512_broadcastb_epi8(a));
+  #endif
+}
+#if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_mask_broadcastb_epi8
+  #define _mm512_mask_broadcastb_epi8(src, k, a) simde_mm512_mask_broadcastb_epi8(src, k, a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512i
+simde_mm512_maskz_broadcastb_epi8 (simde__mmask64 k, simde__m128i a) {
+  #if defined(SIMDE_X86_AVX512BW_NATIVE)
+    return _mm512_maskz_broadcastb_epi8(k, a);
+  #else
+    return simde_mm512_maskz_mov_epi8(k, simde_mm512_broadcastb_epi8(a));
+  #endif
+}
+#if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_maskz_broadcastb_epi8
+  #define _mm512_maskz_broadcastb_epi8(k, a) simde_mm512_maskz_broadcastb_epi8(k, a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512i
 simde_mm512_broadcastw_epi16 (simde__m128i a) {
 #if defined(SIMDE_X86_AVX512BW_NATIVE)
   return _mm512_broadcastw_epi16(a);
