@@ -45,6 +45,9 @@ typedef union {
 #if defined(SIMDE_NEON_SSE2)
   __m128i         sse;
 #endif
+#if defined(SIMDE_NEON_WASM_SIMD128)
+  v128_t         v128;
+#endif
 } simde_int8x16_t;
 
 #if defined(SIMDE_NEON_NATIVE)
@@ -60,6 +63,8 @@ simde_vaddq_s8(simde_int8x16_t a, simde_int8x16_t b) {
   r.n = vaddq_s8(a.n, b.n);
 #elif defined(SIMDE_NEON_SSE2)
   r.sse = _mm_add_epi8(a.sse, b.sse);
+#elif defined(SIMDE_NEON_WASM_SIMD128)
+  r.v128 = wasm_i8x16_add(a.v128, b.v128);
 #else
   SIMDE_VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i8) / sizeof(r.i8[0])) ; i++) {
@@ -101,6 +106,8 @@ simde_vdupq_n_s8 (int8_t value) {
   simde_int8x16_t r;
 #if defined(SIMDE_NEON_NATIVE)
   r.n = vdupq_n_s8(value);
+#elif defined(SIMDE_NEON_WASM_SIMD128)
+  r.v128 = wasm_i8x16_splat(value);
 #else
   SIMDE_VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i8) / sizeof(r.i8[0])) ; i++) {
@@ -116,6 +123,8 @@ simde_vmulq_s8(simde_int8x16_t a, simde_int8x16_t b) {
   simde_int8x16_t r;
 #if defined(SIMDE_NEON_NATIVE)
   r.n = vmulq_s8(a.n, b.n);
+#elif defined(SIMDE_NEON_WASM_SIMD128)
+  r.v128 = wasm_i8x16_mul(a.v128, b.v128);
 #else
   SIMDE_VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i8) / sizeof(r.i8[0])) ; i++) {
@@ -133,6 +142,8 @@ simde_vsubq_s8(simde_int8x16_t a, simde_int8x16_t b) {
   r.n = vsubq_s8(a.n, b.n);
 #elif defined(SIMDE_NEON_SSE2)
   r.sse = _mm_sub_epi8(a.sse, b.sse);
+#elif defined(SIMDE_NEON_WASM_SIMD128)
+  r.v128 = wasm_i8x16_sub(a.v128, b.v128);
 #else
   SIMDE_VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r.i8) / sizeof(r.i8[0])) ; i++) {

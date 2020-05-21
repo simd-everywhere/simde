@@ -52,6 +52,11 @@
 #    define SIMDE_NEON_SSE2
 #    include <emmintrin.h>
 #  endif
+#  if defined(__wasm_simd128__) && !defined(SIMDE_NEON_NO_WASM_SIMD128) && !defined(SIMDE_NO_WASM_SIMD128)
+#    define SIMDE_NEON_WASM_SIMD128
+#    include <wasm_simd128.h>
+#  endif
+
 
 #  if defined(SIMDE_NEON_NATIVE)
 #    include <arm_neon.h>
