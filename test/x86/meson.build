@@ -32,5 +32,5 @@ simde_tests_x86_native = static_library('simde-tests-x86-native', simde_test_x86
   cpp_args: simde_cxx_args + simde_cxx_defs + simde_native_cxx_flags,
   include_directories: simde_include_dir)
 
-simde_tests_x86 = static_library('simde-tests-x86', 'test-x86.c',
+simde_tests_x86 = static_library('simde-tests-x86', 'run-tests.c',
   link_with: [simde_tests_x86_emul, simde_tests_x86_native])

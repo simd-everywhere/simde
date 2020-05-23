@@ -25,11 +25,8 @@
 #include <simde/x86/avx2.h>
 #include <test/x86/test-avx.h>
 
-static MunitResult
-test_simde_mm256_abs_epi8(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_abs_epi8(void) {
   const struct {
     simde__m256i a;
     simde__m256i r;
@@ -169,14 +166,11 @@ test_simde_mm256_abs_epi8(const MunitParameter params[], void* data) {
     simde_assert_m256i_i8(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_abs_epi16(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_abs_epi16(void) {
   const struct {
     simde__m256i a;
     simde__m256i r;
@@ -252,14 +246,11 @@ test_simde_mm256_abs_epi16(const MunitParameter params[], void* data) {
     simde_assert_m256i_i16(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_abs_epi32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_abs_epi32(void) {
   const struct {
     simde__m256i a;
     simde__m256i r;
@@ -303,14 +294,11 @@ test_simde_mm256_abs_epi32(const MunitParameter params[], void* data) {
     simde_assert_m256i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_add_epi8(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_add_epi8(void) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -515,14 +503,11 @@ test_simde_mm256_add_epi8(const MunitParameter params[], void* data) {
     simde_assert_m256i_i8(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_add_epi16(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_add_epi16(void) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -631,14 +616,11 @@ test_simde_mm256_add_epi16(const MunitParameter params[], void* data) {
     simde_assert_m256i_i16(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_add_epi32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_add_epi32(void) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -699,14 +681,11 @@ test_simde_mm256_add_epi32(const MunitParameter params[], void* data) {
     simde_assert_m256i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_add_epi64(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_add_epi64(void) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -767,14 +746,11 @@ test_simde_mm256_add_epi64(const MunitParameter params[], void* data) {
     simde_assert_m256i_i64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_alignr_epi8_case0(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_alignr_epi8_case0(void) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -979,14 +955,11 @@ test_simde_mm256_alignr_epi8_case0(const MunitParameter params[], void* data) {
     simde_assert_m256i_i8(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_alignr_epi8_case1(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_alignr_epi8_case1(void) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -1191,14 +1164,11 @@ test_simde_mm256_alignr_epi8_case1(const MunitParameter params[], void* data) {
     simde_assert_m256i_i8(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_alignr_epi8_case2(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_alignr_epi8_case2(void) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -1403,14 +1373,11 @@ test_simde_mm256_alignr_epi8_case2(const MunitParameter params[], void* data) {
     simde_assert_m256i_i8(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_alignr_epi8_case3(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_alignr_epi8_case3(void) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -1615,14 +1582,11 @@ test_simde_mm256_alignr_epi8_case3(const MunitParameter params[], void* data) {
     simde_assert_m256i_i8(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_and_si256(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_and_si256(void) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -1683,14 +1647,11 @@ test_simde_mm256_and_si256(const MunitParameter params[], void* data) {
     simde_assert_m256i_i64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_andnot_si256(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_andnot_si256(void) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -1751,14 +1712,11 @@ test_simde_mm256_andnot_si256(const MunitParameter params[], void* data) {
     simde_assert_m256i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_adds_epi8(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_adds_epi8(void) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -1963,14 +1921,11 @@ test_simde_mm256_adds_epi8(const MunitParameter params[], void* data) {
     simde_assert_m256i_i8(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_adds_epi16(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_adds_epi16(void) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -2079,14 +2034,11 @@ test_simde_mm256_adds_epi16(const MunitParameter params[], void* data) {
     simde_assert_m256i_i16(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_adds_epu8(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_adds_epu8(void) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -2291,14 +2243,11 @@ test_simde_mm256_adds_epu8(const MunitParameter params[], void* data) {
     simde_assert_m256i_u8(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_adds_epu16(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_adds_epu16(void) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -2407,14 +2356,11 @@ test_simde_mm256_adds_epu16(const MunitParameter params[], void* data) {
     simde_assert_m256i_u16(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_avg_epu8(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_avg_epu8(void) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -2619,14 +2565,11 @@ test_simde_mm256_avg_epu8(const MunitParameter params[], void* data) {
     simde_assert_m256i_u8(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_avg_epu16(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_avg_epu16(void) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -2735,14 +2678,11 @@ test_simde_mm256_avg_epu16(const MunitParameter params[], void* data) {
     simde_assert_m256i_u16(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_blend_epi16(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_blend_epi16(void) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -2851,14 +2791,11 @@ test_simde_mm256_blend_epi16(const MunitParameter params[], void* data) {
     simde_assert_m256i_i16(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_blend_epi32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_blend_epi32(void) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -2919,14 +2856,11 @@ test_simde_mm256_blend_epi32(const MunitParameter params[], void* data) {
     simde_assert_m256i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_blendv_epi8(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_blendv_epi8(void) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -3196,14 +3130,11 @@ test_simde_mm256_blendv_epi8(const MunitParameter params[], void* data) {
     simde_assert_m256i_i8(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_cmpeq_epi8(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_cmpeq_epi8(void) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -3408,14 +3339,11 @@ test_simde_mm256_cmpeq_epi8(const MunitParameter params[], void* data) {
     simde_assert_m256i_i8(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_cmpeq_epi16(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_cmpeq_epi16(void) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -3524,14 +3452,11 @@ test_simde_mm256_cmpeq_epi16(const MunitParameter params[], void* data) {
     simde_assert_m256i_i16(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_cmpeq_epi32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_cmpeq_epi32(void) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -3592,14 +3517,11 @@ test_simde_mm256_cmpeq_epi32(const MunitParameter params[], void* data) {
     simde_assert_m256i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_cmpeq_epi64(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_cmpeq_epi64(void) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -3660,14 +3582,11 @@ test_simde_mm256_cmpeq_epi64(const MunitParameter params[], void* data) {
     simde_assert_m256i_i64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_cmpgt_epi8(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_cmpgt_epi8(void) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -3872,14 +3791,11 @@ test_simde_mm256_cmpgt_epi8(const MunitParameter params[], void* data) {
     simde_assert_m256i_i8(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_cmpgt_epi16(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_cmpgt_epi16(void) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -3988,14 +3904,11 @@ test_simde_mm256_cmpgt_epi16(const MunitParameter params[], void* data) {
     simde_assert_m256i_i16(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_cmpgt_epi32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_cmpgt_epi32(void) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -4056,14 +3969,11 @@ test_simde_mm256_cmpgt_epi32(const MunitParameter params[], void* data) {
     simde_assert_m256i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_cmpgt_epi64(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_cmpgt_epi64(void) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -4124,14 +4034,11 @@ test_simde_mm256_cmpgt_epi64(const MunitParameter params[], void* data) {
     simde_assert_m256i_i64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm_broadcastb_epi8(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm_broadcastb_epi8(void) {
   const struct {
     simde__m128i a;
     simde__m128i r;
@@ -4207,14 +4114,11 @@ test_simde_mm_broadcastb_epi8(const MunitParameter params[], void* data) {
     simde_assert_m128i_i8(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_broadcastb_epi8(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_broadcastb_epi8(void) {
   const struct {
     simde__m128i a;
     simde__m256i r;
@@ -4322,14 +4226,11 @@ test_simde_mm256_broadcastb_epi8(const MunitParameter params[], void* data) {
     simde_assert_m256i_i8(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm_broadcastw_epi16(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm_broadcastw_epi16(void) {
   const struct {
     simde__m128i a;
     simde__m128i r;
@@ -4373,14 +4274,11 @@ test_simde_mm_broadcastw_epi16(const MunitParameter params[], void* data) {
     simde_assert_m128i_i16(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_broadcastw_epi16(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_broadcastw_epi16(void) {
   const struct {
     simde__m128i a;
     simde__m256i r;
@@ -4440,14 +4338,11 @@ test_simde_mm256_broadcastw_epi16(const MunitParameter params[], void* data) {
     simde_assert_m256i_i16(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm_broadcastd_epi32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm_broadcastd_epi32(void) {
   const struct {
     simde__m128i a;
     simde__m128i r;
@@ -4475,14 +4370,11 @@ test_simde_mm_broadcastd_epi32(const MunitParameter params[], void* data) {
     simde_assert_m128i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_broadcastd_epi32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_broadcastd_epi32(void) {
   const struct {
     simde__m128i a;
     simde__m256i r;
@@ -4518,14 +4410,11 @@ test_simde_mm256_broadcastd_epi32(const MunitParameter params[], void* data) {
     simde_assert_m256i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm_broadcastq_epi64(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm_broadcastq_epi64(void) {
   const struct {
     simde__m128i a;
     simde__m128i r;
@@ -4553,14 +4442,11 @@ test_simde_mm_broadcastq_epi64(const MunitParameter params[], void* data) {
     simde_assert_m128i_i64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_broadcastq_epi64(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_broadcastq_epi64(void) {
   const struct {
     simde__m128i a;
     simde__m256i r;
@@ -4596,14 +4482,11 @@ test_simde_mm256_broadcastq_epi64(const MunitParameter params[], void* data) {
     simde_assert_m256i_i64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm_broadcastss_ps(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm_broadcastss_ps(void) {
   const struct {
     simde__m128 a;
     simde__m128 r;
@@ -4631,14 +4514,11 @@ test_simde_mm_broadcastss_ps(const MunitParameter params[], void* data) {
     simde_assert_m128_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_broadcastss_ps(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_broadcastss_ps(void) {
   const struct {
     simde__m128 a;
     simde__m256 r;
@@ -4690,14 +4570,11 @@ test_simde_mm256_broadcastss_ps(const MunitParameter params[], void* data) {
     simde_assert_m256_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm_broadcastsd_pd(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm_broadcastsd_pd(void) {
   const struct {
     simde__m128d a;
     simde__m128d r;
@@ -4729,14 +4606,11 @@ test_simde_mm_broadcastsd_pd(const MunitParameter params[], void* data) {
     simde_assert_m128d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_broadcastsd_pd(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_broadcastsd_pd(void) {
   const struct {
     simde__m128d a;
     simde__m256d r;
@@ -4772,14 +4646,11 @@ test_simde_mm256_broadcastsd_pd(const MunitParameter params[], void* data) {
     simde_assert_m256d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_broadcastsi128_si256(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_broadcastsi128_si256(void) {
   const struct {
     simde__m128i a;
     simde__m256i r;
@@ -4815,14 +4686,11 @@ test_simde_mm256_broadcastsi128_si256(const MunitParameter params[], void* data)
     simde_assert_m256i_i64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_cvtepi8_epi16(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_cvtepi8_epi16(void) {
   const struct {
     simde__m128i a;
     simde__m256i r;
@@ -4898,14 +4766,11 @@ test_simde_mm256_cvtepi8_epi16(const MunitParameter params[], void* data) {
     simde_assert_m256i_i16(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_cvtepi8_epi32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_cvtepi8_epi32(void) {
   const struct {
     simde__m128i a;
     simde__m256i r;
@@ -4965,14 +4830,11 @@ test_simde_mm256_cvtepi8_epi32(const MunitParameter params[], void* data) {
     simde_assert_m256i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_cvtepi8_epi64(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_cvtepi8_epi64(void) {
   const struct {
     simde__m128i a;
     simde__m256i r;
@@ -5032,15 +4894,12 @@ test_simde_mm256_cvtepi8_epi64(const MunitParameter params[], void* data) {
     simde_assert_m256i_i64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 
-static MunitResult
-test_simde_mm256_cvtepi16_epi32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_cvtepi16_epi32(void) {
   const struct {
     simde__m128i a;
     simde__m256i r;
@@ -5084,14 +4943,11 @@ test_simde_mm256_cvtepi16_epi32(const MunitParameter params[], void* data) {
     simde_assert_m256i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_cvtepi16_epi64(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_cvtepi16_epi64(void) {
   const struct {
     simde__m128i a;
     simde__m256i r;
@@ -5135,14 +4991,11 @@ test_simde_mm256_cvtepi16_epi64(const MunitParameter params[], void* data) {
     simde_assert_m256i_i64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_cvtepi32_epi64(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_cvtepi32_epi64(void) {
   const struct {
     simde__m128i a;
     simde__m256i r;
@@ -5178,14 +5031,11 @@ test_simde_mm256_cvtepi32_epi64(const MunitParameter params[], void* data) {
     simde_assert_m256i_i64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_cvtepu8_epi16(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_cvtepu8_epi16(void) {
   const struct {
     simde__m128i a;
     simde__m256i r;
@@ -5261,14 +5111,11 @@ test_simde_mm256_cvtepu8_epi16(const MunitParameter params[], void* data) {
     simde_assert_m256i_i16(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_cvtepu8_epi32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_cvtepu8_epi32(void) {
   const struct {
     simde__m128i a;
     simde__m256i r;
@@ -5328,14 +5175,11 @@ test_simde_mm256_cvtepu8_epi32(const MunitParameter params[], void* data) {
     simde_assert_m256i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_cvtepu8_epi64(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_cvtepu8_epi64(void) {
   const struct {
     simde__m128i a;
     simde__m256i r;
@@ -5395,14 +5239,11 @@ test_simde_mm256_cvtepu8_epi64(const MunitParameter params[], void* data) {
     simde_assert_m256i_i64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_cvtepu16_epi32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_cvtepu16_epi32(void) {
   const struct {
     simde__m128i a;
     simde__m256i r;
@@ -5446,14 +5287,11 @@ test_simde_mm256_cvtepu16_epi32(const MunitParameter params[], void* data) {
     simde_assert_m256i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_cvtepu16_epi64(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_cvtepu16_epi64(void) {
   const struct {
     simde__m128i a;
     simde__m256i r;
@@ -5497,14 +5335,11 @@ test_simde_mm256_cvtepu16_epi64(const MunitParameter params[], void* data) {
     simde_assert_m256i_i64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_cvtepu32_epi64(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_cvtepu32_epi64(void) {
   const struct {
     simde__m128i a;
     simde__m256i r;
@@ -5540,14 +5375,11 @@ test_simde_mm256_cvtepu32_epi64(const MunitParameter params[], void* data) {
     simde_assert_m256i_i64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_extract_epi8(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_extract_epi8(void) {
   simde__m256i a;
 
   a = simde_mm256_set_epi8(INT8_C( 109), INT8_C( -15), INT8_C(  -7), INT8_C(  79),
@@ -5630,14 +5462,11 @@ test_simde_mm256_extract_epi8(const MunitParameter params[], void* data) {
                            INT8_C(  75), INT8_C(  72), INT8_C( -87), INT8_C(  47));
   munit_assert_int8(HEDLEY_STATIC_CAST(int8_t, simde_mm256_extract_epi8(a, 27)), ==, INT8_C(-104));
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_extract_epi16(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_extract_epi16(void) {
   simde__m256i a;
 
   a = simde_mm256_set_epi16(INT16_C( -9152), INT16_C(-17321), INT16_C( -3541), INT16_C( 31629),
@@ -5688,14 +5517,11 @@ test_simde_mm256_extract_epi16(const MunitParameter params[], void* data) {
                             INT16_C(  5480), INT16_C( 22577), INT16_C(-15668), INT16_C(-16497));
   munit_assert_int16(HEDLEY_STATIC_CAST(int16_t, simde_mm256_extract_epi16(a,  0)), ==, INT16_C(-16497));
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_extracti128_si256(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_extracti128_si256(void) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -5759,14 +5585,11 @@ test_simde_mm256_extracti128_si256(const MunitParameter params[], void* data) {
     simde_assert_m128i_i32(rb, ==, test_vec[i].rb);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_hadd_epi16(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_hadd_epi16(void) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -5875,14 +5698,11 @@ test_simde_mm256_hadd_epi16(const MunitParameter params[], void* data) {
     simde_assert_m256i_i16(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_hadd_epi32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_hadd_epi32(void) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -5943,14 +5763,11 @@ test_simde_mm256_hadd_epi32(const MunitParameter params[], void* data) {
     simde_assert_m256i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_hsub_epi16(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_hsub_epi16(void) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -6059,14 +5876,11 @@ test_simde_mm256_hsub_epi16(const MunitParameter params[], void* data) {
     simde_assert_m256i_i16(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_hsub_epi32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_hsub_epi32(void) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -6127,14 +5941,11 @@ test_simde_mm256_hsub_epi32(const MunitParameter params[], void* data) {
     simde_assert_m256i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_madd_epi16(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_madd_epi16(void) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -6227,14 +6038,11 @@ test_simde_mm256_madd_epi16(const MunitParameter params[], void* data) {
     simde_assert_m256i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_max_epi8(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_max_epi8(void) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -6440,14 +6248,11 @@ test_simde_mm256_max_epi8(const MunitParameter params[], void* data) {
     simde_assert_m256i_i8(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_max_epu8(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_max_epu8(void) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -6652,14 +6457,11 @@ test_simde_mm256_max_epu8(const MunitParameter params[], void* data) {
     simde_assert_m256i_u8(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_max_epi16(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_max_epi16(void) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -6768,14 +6570,11 @@ test_simde_mm256_max_epi16(const MunitParameter params[], void* data) {
     simde_assert_m256i_i16(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_max_epi32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_max_epi32(void) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -6836,14 +6635,11 @@ test_simde_mm256_max_epi32(const MunitParameter params[], void* data) {
     simde_assert_m256i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_min_epu8(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_min_epu8(void) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -7048,14 +6844,11 @@ test_simde_mm256_min_epu8(const MunitParameter params[], void* data) {
     simde_assert_m256i_u8(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_min_epu16(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_min_epu16(void) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -7164,14 +6957,11 @@ test_simde_mm256_min_epu16(const MunitParameter params[], void* data) {
     simde_assert_m256i_u16(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_min_epu32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_min_epu32(void) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -7232,14 +7022,11 @@ test_simde_mm256_min_epu32(const MunitParameter params[], void* data) {
     simde_assert_m256i_u32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_movemask_epi8(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_movemask_epi8(void) {
   const struct {
     simde__m256i a;
     int32_t r;
@@ -7323,14 +7110,11 @@ test_simde_mm256_movemask_epi8(const MunitParameter params[], void* data) {
     munit_assert_int32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_mullo_epi16(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_mullo_epi16(void) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -7439,14 +7223,11 @@ test_simde_mm256_mullo_epi16(const MunitParameter params[], void* data) {
     simde_assert_m256i_i16(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_mullo_epi32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_mullo_epi32(void) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -7507,14 +7288,11 @@ test_simde_mm256_mullo_epi32(const MunitParameter params[], void* data) {
     simde_assert_m256i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_x_mm256_mullo_epu32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_x_mm256_mullo_epu32(void) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -7575,14 +7353,11 @@ test_simde_x_mm256_mullo_epu32(const MunitParameter params[], void* data) {
     simde_assert_m256i_u32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_or_si256(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_or_si256(void) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -7643,14 +7418,11 @@ test_simde_mm256_or_si256(const MunitParameter params[], void* data) {
     simde_assert_m256i_i64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_packs_epi32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_packs_epi32(void) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -7727,14 +7499,11 @@ test_simde_mm256_packs_epi32(const MunitParameter params[], void* data) {
     simde_assert_m256i_i16(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_permute4x64_epi64(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_permute4x64_epi64(void) {
   const struct {
     simde__m256i a;
     simde__m256i r;
@@ -7778,14 +7547,11 @@ test_simde_mm256_permute4x64_epi64(const MunitParameter params[], void* data) {
     simde_assert_m256i_i64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_permute4x64_pd(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_permute4x64_pd(void) {
   const struct {
     simde__m256d a;
     simde__m256d r;
@@ -7829,14 +7595,11 @@ test_simde_mm256_permute4x64_pd(const MunitParameter params[], void* data) {
     simde_assert_m256d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_permute2x128_si256(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_permute2x128_si256(void) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -7918,14 +7681,11 @@ test_simde_mm256_permute2x128_si256(const MunitParameter params[], void* data) {
     simde_assert_m256i_i64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_shuffle_epi8(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_shuffle_epi8(void) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -8130,14 +7890,11 @@ test_simde_mm256_shuffle_epi8(const MunitParameter params[], void* data) {
     simde_assert_m256i_u8(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_shuffle_epi32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_shuffle_epi32(void) {
   const struct {
     simde__m256i a;
     simde__m256i r;
@@ -8181,14 +7938,11 @@ test_simde_mm256_shuffle_epi32(const MunitParameter params[], void* data) {
     simde_assert_m256i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_shufflelo_epi16(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_shufflelo_epi16(void) {
   const struct {
     simde__m256i a;
     simde__m256i r;
@@ -8264,14 +8018,11 @@ test_simde_mm256_shufflelo_epi16(const MunitParameter params[], void* data) {
     simde_assert_m256i_i16(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_sign_epi8(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_sign_epi8(void) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -8476,14 +8227,11 @@ test_simde_mm256_sign_epi8(const MunitParameter params[], void* data) {
     simde_assert_m256i_i8(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_sign_epi16(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_sign_epi16(void) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -8592,14 +8340,11 @@ test_simde_mm256_sign_epi16(const MunitParameter params[], void* data) {
     simde_assert_m256i_i16(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_sign_epi32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_sign_epi32(void) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -8660,14 +8405,11 @@ test_simde_mm256_sign_epi32(const MunitParameter params[], void* data) {
     simde_assert_m256i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_slli_epi16(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_slli_epi16(void) {
   const struct {
     simde__m256i a;
     simde__m256i r;
@@ -8852,14 +8594,11 @@ test_simde_mm256_slli_epi16(const MunitParameter params[], void* data) {
   r = simde_mm256_slli_epi16(test_vec[15].a, 15);
   simde_assert_m256i_i16(r, ==, test_vec[15].r);
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_slli_epi32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_slli_epi32(void) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -8920,14 +8659,11 @@ test_simde_mm256_slli_epi32(const MunitParameter params[], void* data) {
     simde_assert_m256i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_slli_epi64(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_slli_epi64(void) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -8988,14 +8724,11 @@ test_simde_mm256_slli_epi64(const MunitParameter params[], void* data) {
     simde_assert_m256i_i64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm_sllv_epi32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm_sllv_epi32(void) {
   const struct {
     simde__m128i a;
     simde__m128i b;
@@ -9032,14 +8765,11 @@ test_simde_mm_sllv_epi32(const MunitParameter params[], void* data) {
     simde_assert_m128i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_sllv_epi32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_sllv_epi32(void) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -9100,14 +8830,11 @@ test_simde_mm256_sllv_epi32(const MunitParameter params[], void* data) {
     simde_assert_m256i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm_sllv_epi64(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm_sllv_epi64(void) {
   const struct {
     simde__m128i a;
     simde__m128i b;
@@ -9144,14 +8871,11 @@ test_simde_mm_sllv_epi64(const MunitParameter params[], void* data) {
     simde_assert_m128i_i64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_sllv_epi64(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_sllv_epi64(void) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -9212,14 +8936,11 @@ test_simde_mm256_sllv_epi64(const MunitParameter params[], void* data) {
     simde_assert_m256i_i64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_srai_epi16(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_srai_epi16(void) {
   const struct {
     simde__m256i a;
     simde__m256i r1;
@@ -9543,14 +9264,11 @@ test_simde_mm256_srai_epi16(const MunitParameter params[], void* data) {
     simde_assert_m256i_i16(r, ==, test_vec[i].r24);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_srai_epi32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_srai_epi32(void) {
   const struct {
     simde__m256i a;
     simde__m256i r1;
@@ -9730,14 +9448,11 @@ test_simde_mm256_srai_epi32(const MunitParameter params[], void* data) {
     simde_assert_m256i_i32(r, ==, test_vec[i].r55);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_srli_epi16(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_srli_epi16(void) {
   const struct {
     simde__m256i a;
     simde__m256i r1;
@@ -10061,14 +9776,11 @@ test_simde_mm256_srli_epi16(const MunitParameter params[], void* data) {
     simde_assert_m256i_i16(r, ==, test_vec[i].r24);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_srli_epi32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_srli_epi32(void) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -10129,14 +9841,11 @@ test_simde_mm256_srli_epi32(const MunitParameter params[], void* data) {
     simde_assert_m256i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_srli_epi64(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_srli_epi64(void) {
   const struct {
     simde__m256i a;
     simde__m256i r;
@@ -10180,14 +9889,11 @@ test_simde_mm256_srli_epi64(const MunitParameter params[], void* data) {
     simde_assert_m256i_u64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_srli_si256(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_srli_si256(void) {
   const struct {
     simde__m256i a;
     simde__m256i r;
@@ -10327,14 +10033,11 @@ test_simde_mm256_srli_si256(const MunitParameter params[], void* data) {
     simde_assert_m256i_i8(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm_srlv_epi32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm_srlv_epi32(void) {
   const struct {
     simde__m128i a;
     simde__m128i b;
@@ -10371,14 +10074,11 @@ test_simde_mm_srlv_epi32(const MunitParameter params[], void* data) {
     simde_assert_m128i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_srlv_epi32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_srlv_epi32(void) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -10439,14 +10139,11 @@ test_simde_mm256_srlv_epi32(const MunitParameter params[], void* data) {
     simde_assert_m256i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm_srlv_epi64(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm_srlv_epi64(void) {
   const struct {
     simde__m128i a;
     simde__m128i b;
@@ -10483,14 +10180,11 @@ for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde_assert_m128i_i64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_srlv_epi64(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_srlv_epi64(void) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -10551,14 +10245,11 @@ test_simde_mm256_srlv_epi64(const MunitParameter params[], void* data) {
     simde_assert_m256i_i64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_sub_epi8(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_sub_epi8(void) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -10763,14 +10454,11 @@ test_simde_mm256_sub_epi8(const MunitParameter params[], void* data) {
     simde_assert_m256i_i8(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_sub_epi16(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_sub_epi16(void) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -10879,14 +10567,11 @@ test_simde_mm256_sub_epi16(const MunitParameter params[], void* data) {
     simde_assert_m256i_i16(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_sub_epi32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_sub_epi32(void) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -10947,14 +10632,11 @@ test_simde_mm256_sub_epi32(const MunitParameter params[], void* data) {
     simde_assert_m256i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_sub_epi64(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_sub_epi64(void) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -11015,14 +10697,11 @@ test_simde_mm256_sub_epi64(const MunitParameter params[], void* data) {
     simde_assert_m256i_i64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_x_mm256_sub_epu32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_x_mm256_sub_epu32(void) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -11083,14 +10762,11 @@ test_simde_x_mm256_sub_epu32(const MunitParameter params[], void* data) {
     simde_assert_m256i_u32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_subs_epi8(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_subs_epi8(void) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -11295,14 +10971,11 @@ test_simde_mm256_subs_epi8(const MunitParameter params[], void* data) {
     simde_assert_m256i_i8(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_subs_epi16(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_subs_epi16(void) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -11411,14 +11084,11 @@ test_simde_mm256_subs_epi16(const MunitParameter params[], void* data) {
     simde_assert_m256i_i16(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_subs_epu8(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_subs_epu8(void) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -11623,14 +11293,11 @@ test_simde_mm256_subs_epu8(const MunitParameter params[], void* data) {
     simde_assert_m256i_u8(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_subs_epu16(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_subs_epu16(void) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -11739,14 +11406,11 @@ test_simde_mm256_subs_epu16(const MunitParameter params[], void* data) {
     simde_assert_m256i_u16(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_unpacklo_epi8(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_unpacklo_epi8(void) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -11951,14 +11615,11 @@ test_simde_mm256_unpacklo_epi8(const MunitParameter params[], void* data) {
     simde_assert_m256i_i8(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_unpacklo_epi16(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_unpacklo_epi16(void) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -12067,14 +11728,11 @@ test_simde_mm256_unpacklo_epi16(const MunitParameter params[], void* data) {
     simde_assert_m256i_i16(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_unpacklo_epi32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_unpacklo_epi32(void) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -12135,14 +11793,11 @@ test_simde_mm256_unpacklo_epi32(const MunitParameter params[], void* data) {
     simde_assert_m256i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_unpacklo_epi64(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_unpacklo_epi64(void) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -12203,14 +11858,11 @@ test_simde_mm256_unpacklo_epi64(const MunitParameter params[], void* data) {
     simde_assert_m256i_i64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_unpackhi_epi8(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_unpackhi_epi8(void) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -12415,14 +12067,11 @@ test_simde_mm256_unpackhi_epi8(const MunitParameter params[], void* data) {
     simde_assert_m256i_i8(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_unpackhi_epi16(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_unpackhi_epi16(void) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -12531,14 +12180,11 @@ test_simde_mm256_unpackhi_epi16(const MunitParameter params[], void* data) {
     simde_assert_m256i_i16(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_unpackhi_epi32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_unpackhi_epi32(void) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -12599,14 +12245,11 @@ test_simde_mm256_unpackhi_epi32(const MunitParameter params[], void* data) {
     simde_assert_m256i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_unpackhi_epi64(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_unpackhi_epi64(void) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -12667,14 +12310,11 @@ test_simde_mm256_unpackhi_epi64(const MunitParameter params[], void* data) {
     simde_assert_m256i_i64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_xor_si256(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_xor_si256(void) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -12735,14 +12375,11 @@ test_simde_mm256_xor_si256(const MunitParameter params[], void* data) {
     simde_assert_m256i_i64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_max_epu16(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_max_epu16(void) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -12852,14 +12489,11 @@ test_simde_mm256_max_epu16(const MunitParameter params[], void* data) {
     simde_assert_m256i_u16(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_max_epu32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_max_epu32(void) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -12920,14 +12554,11 @@ test_simde_mm256_max_epu32(const MunitParameter params[], void* data) {
     simde_assert_m256i_u32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm_blend_epi32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm_blend_epi32(void) {
   const struct {
     simde__m128i a;
     simde__m128i b;
@@ -12964,14 +12595,11 @@ test_simde_mm_blend_epi32(const MunitParameter params[], void* data) {
     simde_assert_m128i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_min_epi8(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_min_epi8(void) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -13176,14 +12804,11 @@ test_simde_mm256_min_epi8(const MunitParameter params[], void* data) {
     simde_assert_m256i_i8(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_min_epi16(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_min_epi16(void) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -13292,14 +12917,11 @@ test_simde_mm256_min_epi16(const MunitParameter params[], void* data) {
     simde_assert_m256i_i16(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_min_epi32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_min_epi32(void) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -13360,194 +12982,169 @@ test_simde_mm256_min_epi32(const MunitParameter params[], void* data) {
     simde_assert_m256i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-HEDLEY_DIAGNOSTIC_PUSH
-HEDLEY_DIAGNOSTIC_DISABLE_CAST_QUAL
+SIMDE_TEST_FUNC_LIST_BEGIN
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_abs_epi8)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_abs_epi16)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_abs_epi32)
 
-#if HEDLEY_HAS_WARNING("-Wold-style-cast")
-  #pragma clang diagnostic ignored "-Wold-style-cast"
-#endif
-#if HEDLEY_HAS_WARNING("-Wzero-as-null-pointer-constant")
-  #pragma clang diagnostic ignored "-Wzero-as-null-pointer-constant"
-#endif
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_add_epi8)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_add_epi16)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_add_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_add_epi64)
 
-static MunitTest test_suite_tests[] = {
-  SIMDE_TESTS_DEFINE_TEST(mm256_abs_epi8),
-  SIMDE_TESTS_DEFINE_TEST(mm256_abs_epi16),
-  SIMDE_TESTS_DEFINE_TEST(mm256_abs_epi32),
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_adds_epi8)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_adds_epi16)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_adds_epu8)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_adds_epu16)
 
-  SIMDE_TESTS_DEFINE_TEST(mm256_add_epi8),
-  SIMDE_TESTS_DEFINE_TEST(mm256_add_epi16),
-  SIMDE_TESTS_DEFINE_TEST(mm256_add_epi32),
-  SIMDE_TESTS_DEFINE_TEST(mm256_add_epi64),
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_alignr_epi8_case0)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_alignr_epi8_case1)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_alignr_epi8_case2)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_alignr_epi8_case3)
 
-  SIMDE_TESTS_DEFINE_TEST(mm256_adds_epi8),
-  SIMDE_TESTS_DEFINE_TEST(mm256_adds_epi16),
-  SIMDE_TESTS_DEFINE_TEST(mm256_adds_epu8),
-  SIMDE_TESTS_DEFINE_TEST(mm256_adds_epu16),
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_and_si256)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_andnot_si256)
 
-  SIMDE_TESTS_DEFINE_TEST(mm256_alignr_epi8_case0),
-  SIMDE_TESTS_DEFINE_TEST(mm256_alignr_epi8_case1),
-  SIMDE_TESTS_DEFINE_TEST(mm256_alignr_epi8_case2),
-  SIMDE_TESTS_DEFINE_TEST(mm256_alignr_epi8_case3),
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_avg_epu8)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_avg_epu16)
 
-  SIMDE_TESTS_DEFINE_TEST(mm256_and_si256),
-  SIMDE_TESTS_DEFINE_TEST(mm256_andnot_si256),
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm_blend_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_blend_epi16)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_blend_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_blendv_epi8)
 
-  SIMDE_TESTS_DEFINE_TEST(mm256_avg_epu8),
-  SIMDE_TESTS_DEFINE_TEST(mm256_avg_epu16),
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm_broadcastb_epi8)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_broadcastb_epi8)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm_broadcastw_epi16)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_broadcastw_epi16)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm_broadcastd_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_broadcastd_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm_broadcastq_epi64)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_broadcastq_epi64)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm_broadcastss_ps)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_broadcastss_ps)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm_broadcastsd_pd)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_broadcastsd_pd)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_broadcastsi128_si256)
 
-  SIMDE_TESTS_DEFINE_TEST(mm_blend_epi32),
-  SIMDE_TESTS_DEFINE_TEST(mm256_blend_epi16),
-  SIMDE_TESTS_DEFINE_TEST(mm256_blend_epi32),
-  SIMDE_TESTS_DEFINE_TEST(mm256_blendv_epi8),
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_cmpeq_epi8)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_cmpeq_epi16)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_cmpeq_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_cmpeq_epi64)
 
-  SIMDE_TESTS_DEFINE_TEST(mm_broadcastb_epi8),
-  SIMDE_TESTS_DEFINE_TEST(mm256_broadcastb_epi8),
-  SIMDE_TESTS_DEFINE_TEST(mm_broadcastw_epi16),
-  SIMDE_TESTS_DEFINE_TEST(mm256_broadcastw_epi16),
-  SIMDE_TESTS_DEFINE_TEST(mm_broadcastd_epi32),
-  SIMDE_TESTS_DEFINE_TEST(mm256_broadcastd_epi32),
-  SIMDE_TESTS_DEFINE_TEST(mm_broadcastq_epi64),
-  SIMDE_TESTS_DEFINE_TEST(mm256_broadcastq_epi64),
-  SIMDE_TESTS_DEFINE_TEST(mm_broadcastss_ps),
-  SIMDE_TESTS_DEFINE_TEST(mm256_broadcastss_ps),
-  SIMDE_TESTS_DEFINE_TEST(mm_broadcastsd_pd),
-  SIMDE_TESTS_DEFINE_TEST(mm256_broadcastsd_pd),
-  SIMDE_TESTS_DEFINE_TEST(mm256_broadcastsi128_si256),
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_cmpgt_epi8)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_cmpgt_epi16)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_cmpgt_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_cmpgt_epi64)
 
-  SIMDE_TESTS_DEFINE_TEST(mm256_cmpeq_epi8),
-  SIMDE_TESTS_DEFINE_TEST(mm256_cmpeq_epi16),
-  SIMDE_TESTS_DEFINE_TEST(mm256_cmpeq_epi32),
-  SIMDE_TESTS_DEFINE_TEST(mm256_cmpeq_epi64),
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_cvtepi8_epi16)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_cvtepi8_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_cvtepi8_epi64)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_cvtepi16_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_cvtepi16_epi64)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_cvtepi32_epi64)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_cvtepu8_epi16)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_cvtepu8_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_cvtepu8_epi64)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_cvtepu16_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_cvtepu16_epi64)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_cvtepu32_epi64)
 
-  SIMDE_TESTS_DEFINE_TEST(mm256_cmpgt_epi8),
-  SIMDE_TESTS_DEFINE_TEST(mm256_cmpgt_epi16),
-  SIMDE_TESTS_DEFINE_TEST(mm256_cmpgt_epi32),
-  SIMDE_TESTS_DEFINE_TEST(mm256_cmpgt_epi64),
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_extract_epi8)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_extract_epi16)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_extracti128_si256)
 
-  SIMDE_TESTS_DEFINE_TEST(mm256_cvtepi8_epi16),
-  SIMDE_TESTS_DEFINE_TEST(mm256_cvtepi8_epi32),
-  SIMDE_TESTS_DEFINE_TEST(mm256_cvtepi8_epi64),
-  SIMDE_TESTS_DEFINE_TEST(mm256_cvtepi16_epi32),
-  SIMDE_TESTS_DEFINE_TEST(mm256_cvtepi16_epi64),
-  SIMDE_TESTS_DEFINE_TEST(mm256_cvtepi32_epi64),
-  SIMDE_TESTS_DEFINE_TEST(mm256_cvtepu8_epi16),
-  SIMDE_TESTS_DEFINE_TEST(mm256_cvtepu8_epi32),
-  SIMDE_TESTS_DEFINE_TEST(mm256_cvtepu8_epi64),
-  SIMDE_TESTS_DEFINE_TEST(mm256_cvtepu16_epi32),
-  SIMDE_TESTS_DEFINE_TEST(mm256_cvtepu16_epi64),
-  SIMDE_TESTS_DEFINE_TEST(mm256_cvtepu32_epi64),
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_hadd_epi16)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_hadd_epi32)
 
-  SIMDE_TESTS_DEFINE_TEST(mm256_extract_epi8),
-  SIMDE_TESTS_DEFINE_TEST(mm256_extract_epi16),
-  SIMDE_TESTS_DEFINE_TEST(mm256_extracti128_si256),
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_hsub_epi16)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_hsub_epi32)
 
-  SIMDE_TESTS_DEFINE_TEST(mm256_hadd_epi16),
-  SIMDE_TESTS_DEFINE_TEST(mm256_hadd_epi32),
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_madd_epi16)
 
-  SIMDE_TESTS_DEFINE_TEST(mm256_hsub_epi16),
-  SIMDE_TESTS_DEFINE_TEST(mm256_hsub_epi32),
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_max_epi8)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_max_epi16)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_max_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_max_epu8)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_max_epu16)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_max_epu32)
 
-  SIMDE_TESTS_DEFINE_TEST(mm256_madd_epi16),
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_min_epi8)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_min_epi16)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_min_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_min_epu8)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_min_epu16)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_min_epu32)
 
-  SIMDE_TESTS_DEFINE_TEST(mm256_max_epi8),
-  SIMDE_TESTS_DEFINE_TEST(mm256_max_epi16),
-  SIMDE_TESTS_DEFINE_TEST(mm256_max_epi32),
-  SIMDE_TESTS_DEFINE_TEST(mm256_max_epu8),
-  SIMDE_TESTS_DEFINE_TEST(mm256_max_epu16),
-  SIMDE_TESTS_DEFINE_TEST(mm256_max_epu32),
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_movemask_epi8)
 
-  SIMDE_TESTS_DEFINE_TEST(mm256_min_epi8),
-  SIMDE_TESTS_DEFINE_TEST(mm256_min_epi16),
-  SIMDE_TESTS_DEFINE_TEST(mm256_min_epi32),
-  SIMDE_TESTS_DEFINE_TEST(mm256_min_epu8),
-  SIMDE_TESTS_DEFINE_TEST(mm256_min_epu16),
-  SIMDE_TESTS_DEFINE_TEST(mm256_min_epu32),
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_mullo_epi16)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_mullo_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(x_mm256_mullo_epu32)
 
-  SIMDE_TESTS_DEFINE_TEST(mm256_movemask_epi8),
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_or_si256)
 
-  SIMDE_TESTS_DEFINE_TEST(mm256_mullo_epi16),
-  SIMDE_TESTS_DEFINE_TEST(mm256_mullo_epi32),
-  SIMDE_TESTS_DEFINE_TEST(x_mm256_mullo_epu32),
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_packs_epi32)
 
-  SIMDE_TESTS_DEFINE_TEST(mm256_or_si256),
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_permute4x64_epi64)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_permute4x64_pd)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_permute2x128_si256)
 
-  SIMDE_TESTS_DEFINE_TEST(mm256_packs_epi32),
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_shuffle_epi8)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_shuffle_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_shufflelo_epi16)
 
-  SIMDE_TESTS_DEFINE_TEST(mm256_permute4x64_epi64),
-  SIMDE_TESTS_DEFINE_TEST(mm256_permute4x64_pd),
-  SIMDE_TESTS_DEFINE_TEST(mm256_permute2x128_si256),
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_sign_epi8)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_sign_epi16)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_sign_epi32)
 
-  SIMDE_TESTS_DEFINE_TEST(mm256_shuffle_epi8),
-  SIMDE_TESTS_DEFINE_TEST(mm256_shuffle_epi32),
-  SIMDE_TESTS_DEFINE_TEST(mm256_shufflelo_epi16),
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_slli_epi16)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_slli_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_slli_epi64)
 
-  SIMDE_TESTS_DEFINE_TEST(mm256_sign_epi8),
-  SIMDE_TESTS_DEFINE_TEST(mm256_sign_epi16),
-  SIMDE_TESTS_DEFINE_TEST(mm256_sign_epi32),
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm_sllv_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_sllv_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm_sllv_epi64)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_sllv_epi64)
 
-  SIMDE_TESTS_DEFINE_TEST(mm256_slli_epi16),
-  SIMDE_TESTS_DEFINE_TEST(mm256_slli_epi32),
-  SIMDE_TESTS_DEFINE_TEST(mm256_slli_epi64),
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_srai_epi16)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_srai_epi32)
 
-  SIMDE_TESTS_DEFINE_TEST(mm_sllv_epi32),
-  SIMDE_TESTS_DEFINE_TEST(mm256_sllv_epi32),
-  SIMDE_TESTS_DEFINE_TEST(mm_sllv_epi64),
-  SIMDE_TESTS_DEFINE_TEST(mm256_sllv_epi64),
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_srli_epi16)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_srli_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_srli_epi64)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_srli_si256)
 
-  SIMDE_TESTS_DEFINE_TEST(mm256_srai_epi16),
-  SIMDE_TESTS_DEFINE_TEST(mm256_srai_epi32),
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm_srlv_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_srlv_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm_srlv_epi64)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_srlv_epi64)
 
-  SIMDE_TESTS_DEFINE_TEST(mm256_srli_epi16),
-  SIMDE_TESTS_DEFINE_TEST(mm256_srli_epi32),
-  SIMDE_TESTS_DEFINE_TEST(mm256_srli_epi64),
-  SIMDE_TESTS_DEFINE_TEST(mm256_srli_si256),
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_sub_epi8)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_sub_epi16)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_sub_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_sub_epi64)
+  SIMDE_TEST_FUNC_LIST_ENTRY(x_mm256_sub_epu32)
 
-  SIMDE_TESTS_DEFINE_TEST(mm_srlv_epi32),
-  SIMDE_TESTS_DEFINE_TEST(mm256_srlv_epi32),
-  SIMDE_TESTS_DEFINE_TEST(mm_srlv_epi64),
-  SIMDE_TESTS_DEFINE_TEST(mm256_srlv_epi64),
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_subs_epi8)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_subs_epi16)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_subs_epu8)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_subs_epu16)
 
-  SIMDE_TESTS_DEFINE_TEST(mm256_sub_epi8),
-  SIMDE_TESTS_DEFINE_TEST(mm256_sub_epi16),
-  SIMDE_TESTS_DEFINE_TEST(mm256_sub_epi32),
-  SIMDE_TESTS_DEFINE_TEST(mm256_sub_epi64),
-  SIMDE_TESTS_DEFINE_TEST(x_mm256_sub_epu32),
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_unpacklo_epi8)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_unpacklo_epi16)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_unpacklo_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_unpacklo_epi64)
 
-  SIMDE_TESTS_DEFINE_TEST(mm256_subs_epi8),
-  SIMDE_TESTS_DEFINE_TEST(mm256_subs_epi16),
-  SIMDE_TESTS_DEFINE_TEST(mm256_subs_epu8),
-  SIMDE_TESTS_DEFINE_TEST(mm256_subs_epu16),
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_unpackhi_epi8)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_unpackhi_epi16)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_unpackhi_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_unpackhi_epi64)
 
-  SIMDE_TESTS_DEFINE_TEST(mm256_unpacklo_epi8),
-  SIMDE_TESTS_DEFINE_TEST(mm256_unpacklo_epi16),
-  SIMDE_TESTS_DEFINE_TEST(mm256_unpacklo_epi32),
-  SIMDE_TESTS_DEFINE_TEST(mm256_unpacklo_epi64),
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_xor_si256)
+SIMDE_TEST_FUNC_LIST_END
 
-  SIMDE_TESTS_DEFINE_TEST(mm256_unpackhi_epi8),
-  SIMDE_TESTS_DEFINE_TEST(mm256_unpackhi_epi16),
-  SIMDE_TESTS_DEFINE_TEST(mm256_unpackhi_epi32),
-  SIMDE_TESTS_DEFINE_TEST(mm256_unpackhi_epi64),
-
-  SIMDE_TESTS_DEFINE_TEST(mm256_xor_si256),
-  { NULL, NULL, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL }
-};
-
-HEDLEY_C_DECL MunitSuite* SIMDE_TESTS_GENERATE_SYMBOL(suite)(void) {
-  static MunitSuite suite = { (char*) "/" HEDLEY_STRINGIFY(SIMDE_TESTS_CURRENT_ISAX), test_suite_tests, NULL, 1, MUNIT_SUITE_OPTION_NONE };
-
-  return &suite;
-}
-
-#if defined(SIMDE_TESTS_SINGLE_ISAX)
-int main(int argc, char* argv[HEDLEY_ARRAY_PARAM(argc + 1)]) {
-  static MunitSuite suite = { "", test_suite_tests, NULL, 1, MUNIT_SUITE_OPTION_NONE };
-
-  return munit_suite_main(&suite, NULL, argc, argv);
-}
-#endif /* defined(SIMDE_TESTS_SINGLE_ISAX) */
-
-HEDLEY_DIAGNOSTIC_POP
+#include <test/x86/test-x86-footer.h>

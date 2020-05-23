@@ -26,11 +26,8 @@
 #include <simde/x86/avx512f.h>
 #include <test/x86/test-avx512.h>
 
-static MunitResult
-test_simde_mm512_abs_epi32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_abs_epi32(void) {
   const struct {
     simde__m512i a;
     simde__m512i r;
@@ -106,14 +103,11 @@ test_simde_mm512_abs_epi32(const MunitParameter params[], void* data) {
     simde_assert_m512i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_mask_abs_epi32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_mask_abs_epi32(void) {
   const struct {
     simde__m512i src;
     simde__mmask16 k;
@@ -231,14 +225,11 @@ test_simde_mm512_mask_abs_epi32(const MunitParameter params[], void* data) {
     simde_assert_m512i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_maskz_abs_epi32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_maskz_abs_epi32(void) {
   const struct {
     simde__mmask16 k;
     simde__m512i a;
@@ -323,14 +314,11 @@ test_simde_mm512_maskz_abs_epi32(const MunitParameter params[], void* data) {
     simde_assert_m512i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_abs_epi64(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_abs_epi64(void) {
   const struct {
     simde__m512i a;
     simde__m512i r;
@@ -406,14 +394,11 @@ test_simde_mm512_abs_epi64(const MunitParameter params[], void* data) {
     simde_assert_m512i_i64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_mask_abs_epi64(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_mask_abs_epi64(void) {
   const struct {
     simde__m512i src;
     simde__mmask8 k;
@@ -531,14 +516,11 @@ test_simde_mm512_mask_abs_epi64(const MunitParameter params[], void* data) {
     simde_assert_m512i_i64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_maskz_abs_epi64(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_maskz_abs_epi64(void) {
   const struct {
     simde__mmask8 k;
     simde__m512i a;
@@ -623,14 +605,11 @@ test_simde_mm512_maskz_abs_epi64(const MunitParameter params[], void* data) {
     simde_assert_m512i_i64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_abs_ps(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_abs_ps(void) {
   const struct {
     simde__m512 a;
     simde__m512 r;
@@ -706,14 +685,11 @@ test_simde_mm512_abs_ps(const MunitParameter params[], void* data) {
     simde_assert_m512_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_mask_abs_ps(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_mask_abs_ps(void) {
   const struct {
     simde__m512 src;
     simde__mmask16 k;
@@ -831,14 +807,11 @@ test_simde_mm512_mask_abs_ps(const MunitParameter params[], void* data) {
     simde_assert_m512_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_abs_pd(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_abs_pd(void) {
   const struct {
     simde__m512d a;
     simde__m512d r;
@@ -914,14 +887,11 @@ test_simde_mm512_abs_pd(const MunitParameter params[], void* data) {
     simde_assert_m512d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_mask_abs_pd(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_mask_abs_pd(void) {
   const struct {
     simde__m512d src;
     simde__mmask8 k;
@@ -1039,14 +1009,11 @@ test_simde_mm512_mask_abs_pd(const MunitParameter params[], void* data) {
     simde_assert_m512d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_add_epi32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_add_epi32(void) {
   const struct {
     simde__m512i a;
     simde__m512i b;
@@ -1155,14 +1122,11 @@ test_simde_mm512_add_epi32(const MunitParameter params[], void* data) {
     simde_assert_m512i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_mask_add_epi32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_mask_add_epi32(void) {
   const struct {
     simde__m512i src;
     simde__mmask16 k;
@@ -1313,14 +1277,11 @@ test_simde_mm512_mask_add_epi32(const MunitParameter params[], void* data) {
     simde_assert_m512i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_maskz_add_epi32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_maskz_add_epi32(void) {
   const struct {
     simde__mmask16 k;
     simde__m512i a;
@@ -1438,14 +1399,11 @@ test_simde_mm512_maskz_add_epi32(const MunitParameter params[], void* data) {
     simde_assert_m512i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_add_epi64(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_add_epi64(void) {
   const struct {
     simde__m512i a;
     simde__m512i b;
@@ -1554,14 +1512,11 @@ test_simde_mm512_add_epi64(const MunitParameter params[], void* data) {
     simde_assert_m512i_i64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_mask_add_epi64(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_mask_add_epi64(void) {
   const struct {
     simde__m512i src;
     simde__mmask8 k;
@@ -1712,14 +1667,11 @@ test_simde_mm512_mask_add_epi64(const MunitParameter params[], void* data) {
     simde_assert_m512i_i64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_maskz_add_epi64(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_maskz_add_epi64(void) {
   const struct {
     simde__mmask8 k;
     simde__m512i a;
@@ -1837,14 +1789,11 @@ test_simde_mm512_maskz_add_epi64(const MunitParameter params[], void* data) {
     simde_assert_m512i_i64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_add_ps(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_add_ps(void) {
   const struct {
     simde__m512 a;
     simde__m512 b;
@@ -1953,14 +1902,11 @@ test_simde_mm512_add_ps(const MunitParameter params[], void* data) {
     simde_assert_m512_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_mask_add_ps(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_mask_add_ps(void) {
   const struct {
     simde__m512 src;
     simde__mmask16 k;
@@ -2111,14 +2057,11 @@ test_simde_mm512_mask_add_ps(const MunitParameter params[], void* data) {
     simde_assert_m512_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_maskz_add_ps(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_maskz_add_ps(void) {
   const struct {
     simde__mmask16 k;
     simde__m512 a;
@@ -2236,14 +2179,11 @@ test_simde_mm512_maskz_add_ps(const MunitParameter params[], void* data) {
     simde_assert_m512_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_add_pd(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_add_pd(void) {
   const struct {
     simde__m512d a;
     simde__m512d b;
@@ -2352,14 +2292,11 @@ test_simde_mm512_add_pd(const MunitParameter params[], void* data) {
     simde_assert_m512d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_mask_add_pd(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_mask_add_pd(void) {
   const struct {
     simde__m512d src;
     simde__mmask8 k;
@@ -2510,14 +2447,11 @@ test_simde_mm512_mask_add_pd(const MunitParameter params[], void* data) {
     simde_assert_m512d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_maskz_add_pd(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_maskz_add_pd(void) {
   const struct {
     simde__mmask8 k;
     simde__m512d a;
@@ -2635,14 +2569,11 @@ test_simde_mm512_maskz_add_pd(const MunitParameter params[], void* data) {
     simde_assert_m512d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_and_epi32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_and_epi32(void) {
   const struct {
     simde__m512i a;
     simde__m512i b;
@@ -2751,14 +2682,11 @@ test_simde_mm512_and_epi32(const MunitParameter params[], void* data) {
     simde_assert_m512i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_mask_and_epi32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_mask_and_epi32(void) {
   const struct {
     simde__m512i src;
     simde__mmask16 k;
@@ -2909,14 +2837,11 @@ test_simde_mm512_mask_and_epi32(const MunitParameter params[], void* data) {
     simde_assert_m512i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_maskz_and_epi32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_maskz_and_epi32(void) {
   const struct {
     simde__mmask16 k;
     simde__m512i a;
@@ -3034,14 +2959,11 @@ test_simde_mm512_maskz_and_epi32(const MunitParameter params[], void* data) {
     simde_assert_m512i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_and_epi64(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_and_epi64(void) {
   const struct {
     simde__m512i a;
     simde__m512i b;
@@ -3150,14 +3072,11 @@ test_simde_mm512_and_epi64(const MunitParameter params[], void* data) {
     simde_assert_m512i_i64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_mask_and_epi64(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_mask_and_epi64(void) {
   const struct {
     simde__m512i src;
     simde__mmask8 k;
@@ -3308,14 +3227,11 @@ test_simde_mm512_mask_and_epi64(const MunitParameter params[], void* data) {
     simde_assert_m512i_i64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_maskz_and_epi64(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_maskz_and_epi64(void) {
   const struct {
     simde__mmask8 k;
     simde__m512i a;
@@ -3433,14 +3349,11 @@ test_simde_mm512_maskz_and_epi64(const MunitParameter params[], void* data) {
     simde_assert_m512i_i64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_and_si512(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_and_si512(void) {
   const struct {
     simde__m512i a;
     simde__m512i b;
@@ -3549,14 +3462,11 @@ test_simde_mm512_and_si512(const MunitParameter params[], void* data) {
     simde_assert_m512i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_andnot_si512(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_andnot_si512(void) {
   const struct {
     simde__m512i a;
     simde__m512i b;
@@ -3665,14 +3575,11 @@ test_simde_mm512_andnot_si512(const MunitParameter params[], void* data) {
     simde_assert_m512i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_andnot_epi32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_andnot_epi32(void) {
   const struct {
     simde__m512i a;
     simde__m512i b;
@@ -3781,14 +3688,11 @@ test_simde_mm512_andnot_epi32(const MunitParameter params[], void* data) {
     simde_assert_m512i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_mask_andnot_epi32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_mask_andnot_epi32(void) {
   const struct {
     simde__m512i src;
     simde__mmask16 k;
@@ -3939,14 +3843,11 @@ test_simde_mm512_mask_andnot_epi32(const MunitParameter params[], void* data) {
     simde_assert_m512i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_maskz_andnot_epi32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_maskz_andnot_epi32(void) {
   const struct {
     simde__mmask16 k;
     simde__m512i a;
@@ -4064,14 +3965,11 @@ test_simde_mm512_maskz_andnot_epi32(const MunitParameter params[], void* data) {
     simde_assert_m512i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_andnot_epi64(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_andnot_epi64(void) {
   const struct {
     simde__m512i a;
     simde__m512i b;
@@ -4180,14 +4078,11 @@ test_simde_mm512_andnot_epi64(const MunitParameter params[], void* data) {
     simde_assert_m512i_i64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_mask_andnot_epi64(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_mask_andnot_epi64(void) {
   const struct {
     simde__m512i src;
     simde__mmask8 k;
@@ -4338,14 +4233,11 @@ test_simde_mm512_mask_andnot_epi64(const MunitParameter params[], void* data) {
     simde_assert_m512i_i64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_maskz_andnot_epi64(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_maskz_andnot_epi64(void) {
   const struct {
     simde__mmask8 k;
     simde__m512i a;
@@ -4463,14 +4355,11 @@ test_simde_mm512_maskz_andnot_epi64(const MunitParameter params[], void* data) {
     simde_assert_m512i_i64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_mask_blend_epi32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_mask_blend_epi32(void) {
   const struct {
     simde__mmask16 k;
     simde__m512i a;
@@ -4588,14 +4477,11 @@ test_simde_mm512_mask_blend_epi32(const MunitParameter params[], void* data) {
     simde_assert_m512i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_mask_blend_epi64(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_mask_blend_epi64(void) {
   const struct {
     simde__mmask8 k;
     simde__m512i a;
@@ -4713,14 +4599,11 @@ test_simde_mm512_mask_blend_epi64(const MunitParameter params[], void* data) {
     simde_assert_m512i_i64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_mask_blend_ps(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_mask_blend_ps(void) {
   const struct {
     simde__mmask16 k;
     simde__m512 a;
@@ -4838,14 +4721,11 @@ test_simde_mm512_mask_blend_ps(const MunitParameter params[], void* data) {
     simde_assert_m512_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_mask_blend_pd(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_mask_blend_pd(void) {
   const struct {
     simde__mmask8 k;
     simde__m512d a;
@@ -4963,14 +4843,11 @@ test_simde_mm512_mask_blend_pd(const MunitParameter params[], void* data) {
     simde_assert_m512d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_broadcast_f32x4(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_broadcast_f32x4(void) {
   const struct {
     simde__m128 a;
     simde__m512 r;
@@ -5022,14 +4899,11 @@ test_simde_mm512_broadcast_f32x4(const MunitParameter params[], void* data) {
     simde_assert_m512_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_mask_broadcast_f32x4(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_mask_broadcast_f32x4(void) {
   const struct {
     simde__m512 src;
     simde__mmask16 k;
@@ -5123,14 +4997,11 @@ test_simde_mm512_mask_broadcast_f32x4(const MunitParameter params[], void* data)
     simde_assert_m512_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_maskz_broadcast_f32x4(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_maskz_broadcast_f32x4(void) {
   const struct {
     simde__mmask16 k;
     simde__m128 a;
@@ -5191,14 +5062,11 @@ test_simde_mm512_maskz_broadcast_f32x4(const MunitParameter params[], void* data
     simde_assert_m512_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_broadcast_f64x4(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_broadcast_f64x4(void) {
   const struct {
     simde__m256d a;
     simde__m512d r;
@@ -5258,14 +5126,11 @@ test_simde_mm512_broadcast_f64x4(const MunitParameter params[], void* data) {
     simde_assert_m512d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_mask_broadcast_f64x4(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_mask_broadcast_f64x4(void) {
   const struct {
     simde__m512d src;
     simde__mmask8 k;
@@ -5367,14 +5232,11 @@ test_simde_mm512_mask_broadcast_f64x4(const MunitParameter params[], void* data)
     simde_assert_m512d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_maskz_broadcast_f64x4(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_maskz_broadcast_f64x4(void) {
   const struct {
     simde__mmask8 k;
     simde__m256d a;
@@ -5443,14 +5305,11 @@ test_simde_mm512_maskz_broadcast_f64x4(const MunitParameter params[], void* data
     simde_assert_m512d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_broadcast_i32x4(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_broadcast_i32x4(void) {
   const struct {
     simde__m128i a;
     simde__m512i r;
@@ -5502,14 +5361,11 @@ test_simde_mm512_broadcast_i32x4(const MunitParameter params[], void* data) {
     simde_assert_m512i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_mask_broadcast_i32x4(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_mask_broadcast_i32x4(void) {
   const struct {
     simde__m512i src;
     simde__mmask16 k;
@@ -5603,14 +5459,11 @@ test_simde_mm512_mask_broadcast_i32x4(const MunitParameter params[], void* data)
     simde_assert_m512i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_maskz_broadcast_i32x4(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_maskz_broadcast_i32x4(void) {
   const struct {
     simde__mmask16 k;
     simde__m128i a;
@@ -5671,14 +5524,11 @@ test_simde_mm512_maskz_broadcast_i32x4(const MunitParameter params[], void* data
     simde_assert_m512i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_broadcast_i64x4(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_broadcast_i64x4(void) {
   const struct {
     simde__m256i a;
     simde__m512i r;
@@ -5738,14 +5588,11 @@ test_simde_mm512_broadcast_i64x4(const MunitParameter params[], void* data) {
     simde_assert_m512i_i64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_mask_broadcast_i64x4(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_mask_broadcast_i64x4(void) {
   const struct {
     simde__m512i src;
     simde__mmask8 k;
@@ -5847,14 +5694,11 @@ test_simde_mm512_mask_broadcast_i64x4(const MunitParameter params[], void* data)
     simde_assert_m512i_i64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_maskz_broadcast_i64x4(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_maskz_broadcast_i64x4(void) {
   const struct {
     simde__mmask8 k;
     simde__m256i a;
@@ -5923,14 +5767,11 @@ test_simde_mm512_maskz_broadcast_i64x4(const MunitParameter params[], void* data
     simde_assert_m512i_i64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_broadcastd_epi32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_broadcastd_epi32(void) {
   const struct {
     simde__m128i a;
     simde__m512i r;
@@ -5982,14 +5823,11 @@ test_simde_mm512_broadcastd_epi32(const MunitParameter params[], void* data) {
     simde_assert_m512i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_mask_broadcastd_epi32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_mask_broadcastd_epi32(void) {
   const struct {
     simde__m512i src;
     simde__mmask16 k;
@@ -6083,14 +5921,11 @@ test_simde_mm512_mask_broadcastd_epi32(const MunitParameter params[], void* data
     simde_assert_m512i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_maskz_broadcastd_epi32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_maskz_broadcastd_epi32(void) {
   const struct {
     simde__mmask16 k;
     simde__m128i a;
@@ -6151,14 +5986,11 @@ test_simde_mm512_maskz_broadcastd_epi32(const MunitParameter params[], void* dat
     simde_assert_m512i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_broadcastq_epi64(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_broadcastq_epi64(void) {
   const struct {
     simde__m128i a;
     simde__m512i r;
@@ -6210,14 +6042,11 @@ test_simde_mm512_broadcastq_epi64(const MunitParameter params[], void* data) {
     simde_assert_m512i_i64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_mask_broadcastq_epi64(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_mask_broadcastq_epi64(void) {
   const struct {
     simde__m512i src;
     simde__mmask8 k;
@@ -6311,14 +6140,11 @@ test_simde_mm512_mask_broadcastq_epi64(const MunitParameter params[], void* data
     simde_assert_m512i_i64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_maskz_broadcastq_epi64(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_maskz_broadcastq_epi64(void) {
   const struct {
     simde__mmask8 k;
     simde__m128i a;
@@ -6379,14 +6205,11 @@ test_simde_mm512_maskz_broadcastq_epi64(const MunitParameter params[], void* dat
     simde_assert_m512i_i64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_broadcastss_ps(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_broadcastss_ps(void) {
   const struct {
     simde__m128 a;
     simde__m512 r;
@@ -6438,14 +6261,11 @@ test_simde_mm512_broadcastss_ps(const MunitParameter params[], void* data) {
     simde_assert_m512_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_mask_broadcastss_ps(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_mask_broadcastss_ps(void) {
   const struct {
     simde__m512 src;
     simde__mmask16 k;
@@ -6539,14 +6359,11 @@ test_simde_mm512_mask_broadcastss_ps(const MunitParameter params[], void* data) 
     simde_assert_m512_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_maskz_broadcastss_ps(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_maskz_broadcastss_ps(void) {
   const struct {
     simde__mmask16 k;
     simde__m128 a;
@@ -6607,14 +6424,11 @@ test_simde_mm512_maskz_broadcastss_ps(const MunitParameter params[], void* data)
     simde_assert_m512_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_broadcastsd_pd(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_broadcastsd_pd(void) {
   const struct {
     simde__m128d a;
     simde__m512d r;
@@ -6666,14 +6480,11 @@ test_simde_mm512_broadcastsd_pd(const MunitParameter params[], void* data) {
     simde_assert_m512d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_mask_broadcastsd_pd(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_mask_broadcastsd_pd(void) {
   const struct {
     simde__m512d src;
     simde__mmask8 k;
@@ -6767,14 +6578,11 @@ test_simde_mm512_mask_broadcastsd_pd(const MunitParameter params[], void* data) 
     simde_assert_m512d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_maskz_broadcastsd_pd(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_maskz_broadcastsd_pd(void) {
   const struct {
     simde__mmask8 k;
     simde__m128d a;
@@ -6835,14 +6643,11 @@ test_simde_mm512_maskz_broadcastsd_pd(const MunitParameter params[], void* data)
     simde_assert_m512d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_castpd512_pd128(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_castpd512_pd128(void) {
   const struct {
     simde__m512d a;
     simde__m128d r;
@@ -6894,14 +6699,11 @@ test_simde_mm512_castpd512_pd128(const MunitParameter params[], void* data) {
     simde_assert_m128d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_castpd512_pd256(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_castpd512_pd256(void) {
   const struct {
     simde__m512d a;
     simde__m256d r;
@@ -6961,14 +6763,11 @@ test_simde_mm512_castpd512_pd256(const MunitParameter params[], void* data) {
     simde_assert_m256d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_castpd128_pd512(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_castpd128_pd512(void) {
   const struct {
     simde__m128d a;
     simde__m512d r;
@@ -7021,14 +6820,11 @@ test_simde_mm512_castpd128_pd512(const MunitParameter params[], void* data) {
     simde_assert_m512d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_castpd256_pd512(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_castpd256_pd512(void) {
   const struct {
     simde__m256d a;
     simde__m512d r;
@@ -7089,14 +6885,11 @@ test_simde_mm512_castpd256_pd512(const MunitParameter params[], void* data) {
     simde_assert_m512d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_castps512_ps128(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_castps512_ps128(void) {
   const struct {
     simde__m512 a;
     simde__m128 r;
@@ -7148,14 +6941,11 @@ test_simde_mm512_castps512_ps128(const MunitParameter params[], void* data) {
     simde_assert_m128_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_castps512_ps256(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_castps512_ps256(void) {
   const struct {
     simde__m512 a;
     simde__m256 r;
@@ -7231,14 +7021,11 @@ test_simde_mm512_castps512_ps256(const MunitParameter params[], void* data) {
     simde_assert_m256_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_castps_pd(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_castps_pd(void) {
   const struct {
     simde__m512 a;
     simde__m512 r;
@@ -7313,14 +7100,11 @@ test_simde_mm512_castps_pd(const MunitParameter params[], void* data) {
   simde_assert_m512_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_castsi512_ps(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_castsi512_ps(void) {
   const struct {
     simde__m512i a;
     simde__m512i r;
@@ -7396,14 +7180,11 @@ test_simde_mm512_castsi512_ps(const MunitParameter params[], void* data) {
     simde_assert_m512i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_castpd_ps(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_castpd_ps(void) {
   const struct {
     simde__m512d a;
     simde__m512d r;
@@ -7479,14 +7260,11 @@ test_simde_mm512_castpd_ps(const MunitParameter params[], void* data) {
   simde_assert_m512d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_castpd_si512(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_castpd_si512(void) {
   const struct {
     simde__m512i a;
     simde__m512i r;
@@ -7562,14 +7340,11 @@ test_simde_mm512_castpd_si512(const MunitParameter params[], void* data) {
     simde_assert_m512i_i64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_castsi512_pd(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_castsi512_pd(void) {
   const struct {
     simde__m512i a;
     simde__m512i r;
@@ -7645,14 +7420,11 @@ test_simde_mm512_castsi512_pd(const MunitParameter params[], void* data) {
     simde_assert_m512i_i64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_castsi128_si512(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_castsi128_si512(void) {
   const struct {
     simde__m128i a;
     simde__m512i r;
@@ -7705,14 +7477,11 @@ test_simde_mm512_castsi128_si512(const MunitParameter params[], void* data) {
     simde_assert_m512i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_castsi256_si512(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_castsi256_si512(void) {
   const struct {
     simde__m256i a;
     simde__m512i r;
@@ -7773,14 +7542,11 @@ test_simde_mm512_castsi256_si512(const MunitParameter params[], void* data) {
     simde_assert_m512i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_castps_si512(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_castps_si512(void) {
   const struct {
     simde__m512i a;
     simde__m512i r;
@@ -7856,14 +7622,11 @@ test_simde_mm512_castps_si512(const MunitParameter params[], void* data) {
     simde_assert_m512i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_castps128_ps512(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_castps128_ps512(void) {
   const struct {
     simde__m128 a;
     simde__m512 r;
@@ -7916,14 +7679,11 @@ test_simde_mm512_castps128_ps512(const MunitParameter params[], void* data) {
     simde_assert_m512_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_castps256_ps512(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_castps256_ps512(void) {
   const struct {
     simde__m256 a;
     simde__m512 r;
@@ -8000,14 +7760,11 @@ test_simde_mm512_castps256_ps512(const MunitParameter params[], void* data) {
     simde_assert_m512_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_castsi512_si128(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_castsi512_si128(void) {
   const struct {
     simde__m512i a;
     simde__m128i r;
@@ -8059,14 +7816,11 @@ test_simde_mm512_castsi512_si128(const MunitParameter params[], void* data) {
     simde_assert_m128i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_castsi512_si256(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_castsi512_si256(void) {
   const struct {
     simde__m512i a;
     simde__m256i r;
@@ -8126,14 +7880,11 @@ test_simde_mm512_castsi512_si256(const MunitParameter params[], void* data) {
     simde_assert_m256i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_cmpgt_epi32_mask(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_cmpgt_epi32_mask(void) {
   const struct {
     simde__m512i a;
     simde__m512i b;
@@ -8218,14 +7969,11 @@ test_simde_mm512_cmpgt_epi32_mask(const MunitParameter params[], void* data) {
     simde_assert_mmask16(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_mask_cmpgt_epi32_mask(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_mask_cmpgt_epi32_mask(void) {
   const struct {
     simde__mmask16 k;
     simde__m512i a;
@@ -8319,14 +8067,11 @@ test_simde_mm512_mask_cmpgt_epi32_mask(const MunitParameter params[], void* data
     simde_assert_mmask16(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_cmpgt_epi64_mask(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_cmpgt_epi64_mask(void) {
   const struct {
     simde__m512i a;
     simde__m512i b;
@@ -8411,14 +8156,11 @@ test_simde_mm512_cmpgt_epi64_mask(const MunitParameter params[], void* data) {
     simde_assert_mmask8(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_mask_cmpgt_epi64_mask(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_mask_cmpgt_epi64_mask(void) {
   const struct {
     simde__mmask8 k;
     simde__m512i a;
@@ -8512,14 +8254,11 @@ test_simde_mm512_mask_cmpgt_epi64_mask(const MunitParameter params[], void* data
     simde_assert_mmask8(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_cmpeq_epi32_mask(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_cmpeq_epi32_mask(void) {
   const struct {
     simde__m512i a;
     simde__m512i b;
@@ -8604,14 +8343,11 @@ test_simde_mm512_cmpeq_epi32_mask(const MunitParameter params[], void* data) {
     simde_assert_mmask16(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_mask_cmpeq_epi32_mask(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_mask_cmpeq_epi32_mask(void) {
   const struct {
     simde__mmask16 k;
     simde__m512i a;
@@ -8705,14 +8441,11 @@ test_simde_mm512_mask_cmpeq_epi32_mask(const MunitParameter params[], void* data
     simde_assert_mmask16(HEDLEY_STATIC_CAST(uint16_t, r), ==, HEDLEY_STATIC_CAST(uint16_t, test_vec[i].r));
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_cmpeq_epi64_mask(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_cmpeq_epi64_mask(void) {
   const struct {
     simde__m512i a;
     simde__m512i b;
@@ -8797,14 +8530,11 @@ test_simde_mm512_cmpeq_epi64_mask(const MunitParameter params[], void* data) {
     simde_assert_mmask8(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_mask_cmpeq_epi64_mask(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_mask_cmpeq_epi64_mask(void) {
   const struct {
     simde__mmask8 k;
     simde__m512i a;
@@ -8898,14 +8628,11 @@ test_simde_mm512_mask_cmpeq_epi64_mask(const MunitParameter params[], void* data
     simde_assert_mmask8(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_cvtepi8_epi32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_cvtepi8_epi32(void) {
   const struct {
     simde__m128i a;
     simde__m512i r;
@@ -8981,14 +8708,11 @@ test_simde_mm512_cvtepi8_epi32(const MunitParameter params[], void* data) {
     simde_assert_m512i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_mask_cvtepi8_epi32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_mask_cvtepi8_epi32(void) {
   const struct {
     simde__m512i src;
     simde__mmask16 k;
@@ -9106,14 +8830,11 @@ test_simde_mm512_mask_cvtepi8_epi32(const MunitParameter params[], void* data) {
     simde_assert_m512i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_maskz_cvtepi8_epi32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_maskz_cvtepi8_epi32(void) {
   const struct {
     simde__mmask16 k;
     simde__m128i a;
@@ -9198,14 +8919,11 @@ test_simde_mm512_maskz_cvtepi8_epi32(const MunitParameter params[], void* data) 
     simde_assert_m512i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_cvtepi8_epi64(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_cvtepi8_epi64(void) {
   const struct {
     simde__m128i a;
     simde__m512i r;
@@ -9281,14 +8999,11 @@ test_simde_mm512_cvtepi8_epi64(const MunitParameter params[], void* data) {
     simde_assert_m512i_i64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_mask_cvtepi8_epi64(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_mask_cvtepi8_epi64(void) {
   const struct {
     simde__m512i src;
     simde__mmask8 k;
@@ -9406,14 +9121,11 @@ test_simde_mm512_mask_cvtepi8_epi64(const MunitParameter params[], void* data) {
     simde_assert_m512i_i64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_maskz_cvtepi8_epi64(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_maskz_cvtepi8_epi64(void) {
   const struct {
     simde__mmask8 k;
     simde__m128i a;
@@ -9498,14 +9210,11 @@ test_simde_mm512_maskz_cvtepi8_epi64(const MunitParameter params[], void* data) 
     simde_assert_m512i_i64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_cvtepi32_epi8(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_cvtepi32_epi8(void) {
   const struct {
     simde__m512i a;
     simde__m128i r;
@@ -9581,14 +9290,11 @@ test_simde_mm512_cvtepi32_epi8(const MunitParameter params[], void* data) {
     simde_assert_m128i_i8(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_mask_cvtepi32_epi8(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_mask_cvtepi32_epi8(void) {
   const struct {
     simde__m128i src;
     simde__mmask16 k;
@@ -9706,14 +9412,11 @@ test_simde_mm512_mask_cvtepi32_epi8(const MunitParameter params[], void* data) {
     simde_assert_m128i_i8(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_maskz_cvtepi32_epi8(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_maskz_cvtepi32_epi8(void) {
   const struct {
     simde__mmask16 k;
     simde__m512i a;
@@ -9798,14 +9501,11 @@ test_simde_mm512_maskz_cvtepi32_epi8(const MunitParameter params[], void* data) 
     simde_assert_m128i_i8(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_cvtepi32_epi16(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_cvtepi32_epi16(void) {
   const struct {
     simde__m512i a;
     simde__m256i r;
@@ -9881,14 +9581,11 @@ test_simde_mm512_cvtepi32_epi16(const MunitParameter params[], void* data) {
     simde_assert_m256i_i16(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_mask_cvtepi32_epi16(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_mask_cvtepi32_epi16(void) {
   const struct {
     simde__m256i src;
     simde__mmask16 k;
@@ -10006,14 +9703,11 @@ test_simde_mm512_mask_cvtepi32_epi16(const MunitParameter params[], void* data) 
     simde_assert_m256i_i16(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_maskz_cvtepi32_epi16(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_maskz_cvtepi32_epi16(void) {
   const struct {
     simde__mmask16 k;
     simde__m512i a;
@@ -10098,14 +9792,11 @@ test_simde_mm512_maskz_cvtepi32_epi16(const MunitParameter params[], void* data)
     simde_assert_m256i_i16(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_cvtepi64_epi8(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_cvtepi64_epi8(void) {
   const struct {
     simde__m512i a;
     simde__m128i r;
@@ -10181,14 +9872,11 @@ test_simde_mm512_cvtepi64_epi8(const MunitParameter params[], void* data) {
     simde_assert_m128i_i8(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_mask_cvtepi64_epi8(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_mask_cvtepi64_epi8(void) {
   const struct {
     simde__m128i src;
     simde__mmask8 k;
@@ -10306,14 +9994,11 @@ test_simde_mm512_mask_cvtepi64_epi8(const MunitParameter params[], void* data) {
     simde_assert_m128i_i8(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_maskz_cvtepi64_epi8(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_maskz_cvtepi64_epi8(void) {
   const struct {
     simde__mmask8 k;
     simde__m512i a;
@@ -10398,14 +10083,11 @@ test_simde_mm512_maskz_cvtepi64_epi8(const MunitParameter params[], void* data) 
     simde_assert_m128i_i8(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_cvtepi64_epi16(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_cvtepi64_epi16(void) {
   const struct {
     simde__m512i a;
     simde__m128i r;
@@ -10465,14 +10147,11 @@ test_simde_mm512_cvtepi64_epi16(const MunitParameter params[], void* data) {
     simde_assert_m128i_i16(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_mask_cvtepi64_epi16(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_mask_cvtepi64_epi16(void) {
   const struct {
     simde__m128i src;
     simde__mmask8 k;
@@ -10558,14 +10237,11 @@ test_simde_mm512_mask_cvtepi64_epi16(const MunitParameter params[], void* data) 
     simde_assert_m128i_i16(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_maskz_cvtepi64_epi16(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_maskz_cvtepi64_epi16(void) {
   const struct {
     simde__mmask8 k;
     simde__m512i a;
@@ -10634,14 +10310,11 @@ test_simde_mm512_maskz_cvtepi64_epi16(const MunitParameter params[], void* data)
     simde_assert_m128i_i16(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_cvtsepi32_epi8(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_cvtsepi32_epi8(void) {
   const struct {
     simde__m512i a;
     simde__m128i r;
@@ -10717,14 +10390,11 @@ test_simde_mm512_cvtsepi32_epi8(const MunitParameter params[], void* data) {
     simde_assert_m128i_i8(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_mask_cvtsepi32_epi8(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_mask_cvtsepi32_epi8(void) {
   const struct {
     simde__m128i src;
     simde__mmask16 k;
@@ -10842,14 +10512,11 @@ test_simde_mm512_mask_cvtsepi32_epi8(const MunitParameter params[], void* data) 
     simde_assert_m128i_i8(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_maskz_cvtsepi32_epi8(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_maskz_cvtsepi32_epi8(void) {
   const struct {
     simde__mmask16 k;
     simde__m512i a;
@@ -10934,14 +10601,11 @@ test_simde_mm512_maskz_cvtsepi32_epi8(const MunitParameter params[], void* data)
     simde_assert_m128i_i8(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_cvtepi64_epi32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_cvtepi64_epi32(void) {
   const struct {
     simde__m512i a;
     simde__m256i r;
@@ -11001,14 +10665,11 @@ test_simde_mm512_cvtepi64_epi32(const MunitParameter params[], void* data) {
     simde_assert_m256i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_mask_cvtepi64_epi32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_mask_cvtepi64_epi32(void) {
   const struct {
     simde__m256i src;
     simde__mmask8 k;
@@ -11094,14 +10755,11 @@ test_simde_mm512_mask_cvtepi64_epi32(const MunitParameter params[], void* data) 
     simde_assert_m256i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_maskz_cvtepi64_epi32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_maskz_cvtepi64_epi32(void) {
   const struct {
     simde__mmask8 k;
     simde__m512i a;
@@ -11170,14 +10828,11 @@ test_simde_mm512_maskz_cvtepi64_epi32(const MunitParameter params[], void* data)
     simde_assert_m256i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_cvtsepi32_epi16(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_cvtsepi32_epi16(void) {
   const struct {
     simde__m512i a;
     simde__m256i r;
@@ -11253,14 +10908,11 @@ test_simde_mm512_cvtsepi32_epi16(const MunitParameter params[], void* data) {
     simde_assert_m256i_i16(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_mask_cvtsepi32_epi16(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_mask_cvtsepi32_epi16(void) {
   const struct {
     simde__m256i src;
     simde__mmask16 k;
@@ -11378,14 +11030,11 @@ test_simde_mm512_mask_cvtsepi32_epi16(const MunitParameter params[], void* data)
     simde_assert_m256i_i16(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_maskz_cvtsepi32_epi16(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_maskz_cvtsepi32_epi16(void) {
   const struct {
     simde__mmask16 k;
     simde__m512i a;
@@ -11470,14 +11119,11 @@ test_simde_mm512_maskz_cvtsepi32_epi16(const MunitParameter params[], void* data
     simde_assert_m256i_i16(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_cvtsepi64_epi8(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_cvtsepi64_epi8(void) {
   const struct {
     simde__m512i a;
     simde__m128i r;
@@ -11553,14 +11199,11 @@ test_simde_mm512_cvtsepi64_epi8(const MunitParameter params[], void* data) {
     simde_assert_m128i_i8(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_mask_cvtsepi64_epi8(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_mask_cvtsepi64_epi8(void) {
   const struct {
     simde__m128i src;
     simde__mmask8 k;
@@ -11678,14 +11321,11 @@ test_simde_mm512_mask_cvtsepi64_epi8(const MunitParameter params[], void* data) 
     simde_assert_m128i_i8(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_maskz_cvtsepi64_epi8(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_maskz_cvtsepi64_epi8(void) {
   const struct {
     simde__mmask8 k;
     simde__m512i a;
@@ -11770,14 +11410,11 @@ test_simde_mm512_maskz_cvtsepi64_epi8(const MunitParameter params[], void* data)
     simde_assert_m128i_i8(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_cvtsepi64_epi16(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_cvtsepi64_epi16(void) {
   const struct {
     simde__m512i a;
     simde__m128i r;
@@ -11837,14 +11474,11 @@ test_simde_mm512_cvtsepi64_epi16(const MunitParameter params[], void* data) {
     simde_assert_m128i_i16(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_mask_cvtsepi64_epi16(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_mask_cvtsepi64_epi16(void) {
   const struct {
     simde__m128i src;
     simde__mmask8 k;
@@ -11930,14 +11564,11 @@ test_simde_mm512_mask_cvtsepi64_epi16(const MunitParameter params[], void* data)
     simde_assert_m128i_i16(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_maskz_cvtsepi64_epi16(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_maskz_cvtsepi64_epi16(void) {
   const struct {
     simde__mmask8 k;
     simde__m512i a;
@@ -12006,14 +11637,11 @@ test_simde_mm512_maskz_cvtsepi64_epi16(const MunitParameter params[], void* data
     simde_assert_m128i_i16(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_div_ps(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_div_ps(void) {
   const struct {
     simde__m512 a;
     simde__m512 b;
@@ -12122,14 +11750,11 @@ test_simde_mm512_div_ps(const MunitParameter params[], void* data) {
     simde_assert_m512_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_cvtsepi64_epi32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_cvtsepi64_epi32(void) {
   const struct {
     simde__m512i a;
     simde__m256i r;
@@ -12189,14 +11814,11 @@ test_simde_mm512_cvtsepi64_epi32(const MunitParameter params[], void* data) {
     simde_assert_m256i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_mask_cvtsepi64_epi32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_mask_cvtsepi64_epi32(void) {
   const struct {
     simde__m256i src;
     simde__mmask8 k;
@@ -12282,14 +11904,11 @@ test_simde_mm512_mask_cvtsepi64_epi32(const MunitParameter params[], void* data)
     simde_assert_m256i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_maskz_cvtsepi64_epi32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_maskz_cvtsepi64_epi32(void) {
   const struct {
     simde__mmask8 k;
     simde__m512i a;
@@ -12358,14 +11977,11 @@ test_simde_mm512_maskz_cvtsepi64_epi32(const MunitParameter params[], void* data
     simde_assert_m256i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_mask_div_ps(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_mask_div_ps(void) {
   const struct {
     simde__m512 src;
     simde__mmask16 k;
@@ -12516,14 +12132,11 @@ test_simde_mm512_mask_div_ps(const MunitParameter params[], void* data) {
     simde_assert_m512_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_maskz_div_ps(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_maskz_div_ps(void) {
   const struct {
     simde__mmask16 k;
     simde__m512 a;
@@ -12641,14 +12254,11 @@ test_simde_mm512_maskz_div_ps(const MunitParameter params[], void* data) {
     simde_assert_m512_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_div_pd(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_div_pd(void) {
   const struct {
     simde__m512d a;
     simde__m512d b;
@@ -12757,14 +12367,11 @@ test_simde_mm512_div_pd(const MunitParameter params[], void* data) {
     simde_assert_m512d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_mask_div_pd(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_mask_div_pd(void) {
   const struct {
     simde__m512d src;
     simde__mmask8 k;
@@ -12915,14 +12522,11 @@ test_simde_mm512_mask_div_pd(const MunitParameter params[], void* data) {
     simde_assert_m512d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_maskz_div_pd(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_maskz_div_pd(void) {
   const struct {
     simde__mmask8 k;
     simde__m512d a;
@@ -13040,14 +12644,11 @@ test_simde_mm512_maskz_div_pd(const MunitParameter params[], void* data) {
     simde_assert_m512d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_extractf32x4_ps(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_extractf32x4_ps(void) {
   const struct {
     simde__m512 a;
     simde__m128 r0;
@@ -13133,14 +12734,11 @@ test_simde_mm512_extractf32x4_ps(const MunitParameter params[], void* data) {
     simde_assert_m128_close(r, test_vec[i].r3, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_mask_extractf32x4_ps(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_mask_extractf32x4_ps(void) {
   const struct {
     simde__m128 src;
     simde__mmask8 k;
@@ -13247,11 +12845,8 @@ test_simde_mm512_mask_extractf32x4_ps(const MunitParameter params[], void* data)
   return MUNIT_OK;
 }
 
-static MunitResult
-test_simde_mm512_maskz_extractf32x4_ps(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_maskz_extractf32x4_ps(void) {
   const struct {
     simde__mmask8 k;
     simde__m512 a;
@@ -13349,11 +12944,8 @@ test_simde_mm512_maskz_extractf32x4_ps(const MunitParameter params[], void* data
   return MUNIT_OK;
 }
 
-static MunitResult
-test_simde_mm512_extractf64x4_pd(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_extractf64x4_pd(void) {
   const struct {
     simde__m512d a;
     simde__m256d r0;
@@ -13433,14 +13025,11 @@ test_simde_mm512_extractf64x4_pd(const MunitParameter params[], void* data) {
     simde_assert_m256d_close(r, test_vec[i].r1, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_mask_extractf64x4_pd(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_mask_extractf64x4_pd(void) {
   const struct {
     simde__m256d src;
     simde__mmask8 k;
@@ -13549,11 +13138,8 @@ test_simde_mm512_mask_extractf64x4_pd(const MunitParameter params[], void* data)
   return MUNIT_OK;
 }
 
-static MunitResult
-test_simde_mm512_maskz_extractf64x4_pd(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_maskz_extractf64x4_pd(void) {
   const struct {
     simde__mmask8 k;
     simde__m512d a;
@@ -13645,11 +13231,8 @@ test_simde_mm512_maskz_extractf64x4_pd(const MunitParameter params[], void* data
   return MUNIT_OK;
 }
 
-static MunitResult
-test_simde_mm512_extracti32x4_epi32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_extracti32x4_epi32(void) {
   const struct {
     simde__m512i a;
     simde__m128i r0;
@@ -13735,14 +13318,11 @@ test_simde_mm512_extracti32x4_epi32(const MunitParameter params[], void* data) {
     simde_assert_m128i_i32(r, ==, test_vec[i].r3);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_mask_extracti32x4_epi32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_mask_extracti32x4_epi32(void) {
   const struct {
     simde__m128i src;
     simde__mmask8 k;
@@ -13849,11 +13429,8 @@ test_simde_mm512_mask_extracti32x4_epi32(const MunitParameter params[], void* da
   return MUNIT_OK;
 }
 
-static MunitResult
-test_simde_mm512_maskz_extracti32x4_epi32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_maskz_extracti32x4_epi32(void) {
   const struct {
     simde__mmask8 k;
     simde__m512i a;
@@ -13951,11 +13528,8 @@ test_simde_mm512_maskz_extracti32x4_epi32(const MunitParameter params[], void* d
   return MUNIT_OK;
 }
 
-static MunitResult
-test_simde_mm512_extracti64x4_epi64(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_extracti64x4_epi64(void) {
   const struct {
     simde__m512i a;
     simde__m256i r0;
@@ -14035,14 +13609,11 @@ test_simde_mm512_extracti64x4_epi64(const MunitParameter params[], void* data) {
     simde_assert_m256i_i64(r, ==, test_vec[i].r1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_mask_extracti64x4_epi64(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_mask_extracti64x4_epi64(void) {
   const struct {
     simde__m256i src;
     simde__mmask8 k;
@@ -14151,11 +13722,8 @@ test_simde_mm512_mask_extracti64x4_epi64(const MunitParameter params[], void* da
   return MUNIT_OK;
 }
 
-static MunitResult
-test_simde_mm512_maskz_extracti64x4_epi64(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_maskz_extracti64x4_epi64(void) {
   const struct {
     simde__mmask8 k;
     simde__m512i a;
@@ -14247,11 +13815,8 @@ test_simde_mm512_maskz_extracti64x4_epi64(const MunitParameter params[], void* d
   return MUNIT_OK;
 }
 
-static MunitResult
-test_simde_mm512_insertf32x4(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_insertf32x4(void) {
   const struct {
     simde__m512 a;
     simde__m128 b;
@@ -14442,14 +14007,11 @@ test_simde_mm512_insertf32x4(const MunitParameter params[], void* data) {
     simde_assert_m512_close(r, test_vec[i].r3, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_mask_insertf32x4(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_mask_insertf32x4(void) {
   const struct {
     simde__m512 src;
     simde__mmask16 k;
@@ -14685,11 +14247,8 @@ test_simde_mm512_mask_insertf32x4(const MunitParameter params[], void* data) {
   return MUNIT_OK;
 }
 
-static MunitResult
-test_simde_mm512_maskz_insertf32x4(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_maskz_insertf32x4(void) {
   const struct {
     simde__mmask16 k;
     simde__m512 a;
@@ -14892,11 +14451,8 @@ test_simde_mm512_maskz_insertf32x4(const MunitParameter params[], void* data) {
   return MUNIT_OK;
 }
 
-static MunitResult
-test_simde_mm512_insertf64x4(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_insertf64x4(void) {
   const struct {
     simde__m512d a;
     simde__m256d b;
@@ -15025,14 +14581,11 @@ test_simde_mm512_insertf64x4(const MunitParameter params[], void* data) {
     simde_assert_m512d_close(r, test_vec[i].r1, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_mask_insertf64x4(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_mask_insertf64x4(void) {
   const struct {
     simde__m512d src;
     simde__mmask8 k;
@@ -15206,11 +14759,8 @@ test_simde_mm512_mask_insertf64x4(const MunitParameter params[], void* data) {
   return MUNIT_OK;
 }
 
-static MunitResult
-test_simde_mm512_maskz_insertf64x4(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_maskz_insertf64x4(void) {
   const struct {
     simde__mmask8 k;
     simde__m512d a;
@@ -15351,11 +14901,8 @@ test_simde_mm512_maskz_insertf64x4(const MunitParameter params[], void* data) {
   return MUNIT_OK;
 }
 
-static MunitResult
-test_simde_mm512_inserti32x4(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_inserti32x4(void) {
   const struct {
     simde__m512i a;
     simde__m128i b;
@@ -15549,11 +15096,8 @@ test_simde_mm512_inserti32x4(const MunitParameter params[], void* data) {
   return MUNIT_OK;
 }
 
-static MunitResult
-test_simde_mm512_mask_inserti32x4(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_mask_inserti32x4(void) {
   const struct {
     simde__m512i src;
     simde__mmask16 k;
@@ -15789,11 +15333,8 @@ test_simde_mm512_mask_inserti32x4(const MunitParameter params[], void* data) {
   return MUNIT_OK;
 }
 
-static MunitResult
-test_simde_mm512_maskz_inserti32x4(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_maskz_inserti32x4(void) {
   const struct {
     simde__mmask16 k;
     simde__m512i a;
@@ -15993,14 +15534,11 @@ test_simde_mm512_maskz_inserti32x4(const MunitParameter params[], void* data) {
     simde_assert_m512i_i32(r, ==, test_vec[i].r3);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_inserti64x4(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_inserti64x4(void) {
   const struct {
     simde__m512i a;
     simde__m256i b;
@@ -16129,14 +15667,11 @@ test_simde_mm512_inserti64x4(const MunitParameter params[], void* data) {
     simde_assert_m512i_i64(r, ==, test_vec[i].r1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_mask_inserti64x4(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_mask_inserti64x4(void) {
   const struct {
     simde__m512i src;
     simde__mmask8 k;
@@ -16310,11 +15845,8 @@ test_simde_mm512_mask_inserti64x4(const MunitParameter params[], void* data) {
   return MUNIT_OK;
 }
 
-static MunitResult
-test_simde_mm512_maskz_inserti64x4(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_maskz_inserti64x4(void) {
   const struct {
     simde__mmask8 k;
     simde__m512i a;
@@ -16455,11 +15987,8 @@ test_simde_mm512_maskz_inserti64x4(const MunitParameter params[], void* data) {
   return MUNIT_OK;
 }
 
-static MunitResult
-test_simde_mm512_load_si512(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_load_si512(void) {
   const struct {
     simde__m512i a;
     simde__m512i r;
@@ -16535,14 +16064,11 @@ test_simde_mm512_load_si512(const MunitParameter params[], void* data) {
     simde_assert_m512i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_loadu_si512(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_loadu_si512(void) {
   const struct {
     simde__m512i a;
     simde__m512i r;
@@ -16618,14 +16144,11 @@ test_simde_mm512_loadu_si512(const MunitParameter params[], void* data) {
     simde_assert_m512i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm_mask_mov_epi8(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm_mask_mov_epi8(void) {
   const struct {
     simde__m128i src;
     simde__mmask16 k;
@@ -16743,14 +16266,11 @@ test_simde_mm_mask_mov_epi8(const MunitParameter params[], void* data) {
     simde_assert_m128i_i8(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm_mask_mov_epi16(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm_mask_mov_epi16(void) {
   const struct {
     simde__m128i src;
     simde__mmask8 k;
@@ -16820,14 +16340,11 @@ test_simde_mm_mask_mov_epi16(const MunitParameter params[], void* data) {
     simde_assert_m128i_i16(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm_mask_mov_epi32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm_mask_mov_epi32(void) {
   const struct {
     simde__m128i src;
     simde__mmask8 k;
@@ -16873,14 +16390,11 @@ test_simde_mm_mask_mov_epi32(const MunitParameter params[], void* data) {
     simde_assert_m128i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm_mask_mov_epi64(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm_mask_mov_epi64(void) {
   const struct {
     simde__m128i src;
     simde__mmask8 k;
@@ -16926,14 +16440,11 @@ test_simde_mm_mask_mov_epi64(const MunitParameter params[], void* data) {
     simde_assert_m128i_i64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm_mask_mov_pd(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm_mask_mov_pd(void) {
   const struct {
     simde__m128d src;
     simde__mmask8 k;
@@ -16979,14 +16490,11 @@ test_simde_mm_mask_mov_pd(const MunitParameter params[], void* data) {
     simde_assert_m128d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm_mask_mov_ps(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm_mask_mov_ps(void) {
   const struct {
     simde__m128 src;
     simde__mmask8 k;
@@ -17032,14 +16540,11 @@ test_simde_mm_mask_mov_ps(const MunitParameter params[], void* data) {
     simde_assert_m128_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_mask_mov_epi8(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_mask_mov_epi8(void) {
   const struct {
     simde__m256i src;
     simde__mmask32 k;
@@ -17253,14 +16758,11 @@ test_simde_mm256_mask_mov_epi8(const MunitParameter params[], void* data) {
     simde_assert_m256i_i8(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_mask_mov_epi16(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_mask_mov_epi16(void) {
   const struct {
     simde__m256i src;
     simde__mmask16 k;
@@ -17378,14 +16880,11 @@ test_simde_mm256_mask_mov_epi16(const MunitParameter params[], void* data) {
     simde_assert_m256i_i16(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_mask_mov_epi32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_mask_mov_epi32(void) {
   const struct {
     simde__m256i src;
     simde__mmask8 k;
@@ -17455,14 +16954,11 @@ test_simde_mm256_mask_mov_epi32(const MunitParameter params[], void* data) {
     simde_assert_m256i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_mask_mov_epi64(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_mask_mov_epi64(void) {
   const struct {
     simde__m256i src;
     simde__mmask8 k;
@@ -17532,14 +17028,11 @@ test_simde_mm256_mask_mov_epi64(const MunitParameter params[], void* data) {
     simde_assert_m256i_i64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_mask_mov_pd(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_mask_mov_pd(void) {
   const struct {
     simde__m256d src;
     simde__mmask8 k;
@@ -17609,14 +17102,11 @@ test_simde_mm256_mask_mov_pd(const MunitParameter params[], void* data) {
     simde_assert_m256d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_mask_mov_ps(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_mask_mov_ps(void) {
   const struct {
     simde__m256 src;
     simde__mmask8 k;
@@ -17734,14 +17224,11 @@ test_simde_mm256_mask_mov_ps(const MunitParameter params[], void* data) {
     simde_assert_m256_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_mask_mov_epi8(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_mask_mov_epi8(void) {
   const struct {
     simde__m512i src;
     simde__mmask64 k;
@@ -18147,14 +17634,11 @@ test_simde_mm512_mask_mov_epi8(const MunitParameter params[], void* data) {
     simde_assert_m512i_i8(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_mask_mov_epi16(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_mask_mov_epi16(void) {
   const struct {
     simde__m512i src;
     simde__mmask32 k;
@@ -18368,14 +17852,11 @@ test_simde_mm512_mask_mov_epi16(const MunitParameter params[], void* data) {
     simde_assert_m512i_i16(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_mask_mov_epi32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_mask_mov_epi32(void) {
   const struct {
     simde__m512i src;
     simde__mmask16 k;
@@ -18493,14 +17974,11 @@ test_simde_mm512_mask_mov_epi32(const MunitParameter params[], void* data) {
     simde_assert_m512i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_mask_mov_epi64(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_mask_mov_epi64(void) {
   const struct {
     simde__m512i src;
     simde__mmask8 k;
@@ -18618,14 +18096,11 @@ test_simde_mm512_mask_mov_epi64(const MunitParameter params[], void* data) {
     simde_assert_m512i_i64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_mask_mov_pd(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_mask_mov_pd(void) {
   const struct {
     simde__m512d src;
     simde__mmask8 k;
@@ -18743,14 +18218,11 @@ test_simde_mm512_mask_mov_pd(const MunitParameter params[], void* data) {
     simde_assert_m512d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_mask_mov_ps(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_mask_mov_ps(void) {
   const struct {
     simde__m512 src;
     simde__mmask16 k;
@@ -18868,14 +18340,11 @@ test_simde_mm512_mask_mov_ps(const MunitParameter params[], void* data) {
     simde_assert_m512_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm_maskz_mov_epi8(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm_maskz_mov_epi8(void) {
   const struct {
     simde__mmask16 k;
     simde__m128i a;
@@ -18960,14 +18429,11 @@ test_simde_mm_maskz_mov_epi8(const MunitParameter params[], void* data) {
     simde_assert_m128i_i8(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm_maskz_mov_epi16(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm_maskz_mov_epi16(void) {
   const struct {
     simde__mmask8 k;
     simde__m128i a;
@@ -19020,14 +18486,11 @@ test_simde_mm_maskz_mov_epi16(const MunitParameter params[], void* data) {
     simde_assert_m128i_i16(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm_maskz_mov_epi32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm_maskz_mov_epi32(void) {
   const struct {
     simde__mmask8 k;
     simde__m128i a;
@@ -19064,14 +18527,11 @@ test_simde_mm_maskz_mov_epi32(const MunitParameter params[], void* data) {
     simde_assert_m128i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm_maskz_mov_epi64(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm_maskz_mov_epi64(void) {
   const struct {
     simde__mmask8 k;
     simde__m128i a;
@@ -19108,14 +18568,11 @@ test_simde_mm_maskz_mov_epi64(const MunitParameter params[], void* data) {
     simde_assert_m128i_i64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm_maskz_mov_pd(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm_maskz_mov_pd(void) {
   const struct {
     simde__mmask8 k;
     simde__m128d a;
@@ -19152,14 +18609,11 @@ test_simde_mm_maskz_mov_pd(const MunitParameter params[], void* data) {
     simde_assert_m128d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm_maskz_mov_ps(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm_maskz_mov_ps(void) {
   const struct {
     simde__mmask8 k;
     simde__m128 a;
@@ -19196,14 +18650,11 @@ test_simde_mm_maskz_mov_ps(const MunitParameter params[], void* data) {
     simde_assert_m128_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_maskz_mov_epi8(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_maskz_mov_epi8(void) {
   const struct {
     simde__mmask32 k;
     simde__m256i a;
@@ -19352,14 +18803,11 @@ test_simde_mm256_maskz_mov_epi8(const MunitParameter params[], void* data) {
     simde_assert_m256i_i8(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_maskz_mov_epi16(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_maskz_mov_epi16(void) {
   const struct {
     simde__mmask16 k;
     simde__m256i a;
@@ -19444,14 +18892,11 @@ test_simde_mm256_maskz_mov_epi16(const MunitParameter params[], void* data) {
     simde_assert_m256i_i16(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_maskz_mov_epi32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_maskz_mov_epi32(void) {
   const struct {
     simde__mmask8 k;
     simde__m256i a;
@@ -19504,14 +18949,11 @@ test_simde_mm256_maskz_mov_epi32(const MunitParameter params[], void* data) {
     simde_assert_m256i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_maskz_mov_epi64(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_maskz_mov_epi64(void) {
   const struct {
     simde__mmask8 k;
     simde__m256i a;
@@ -19564,14 +19006,11 @@ test_simde_mm256_maskz_mov_epi64(const MunitParameter params[], void* data) {
     simde_assert_m256i_i64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_maskz_mov_pd(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_maskz_mov_pd(void) {
   const struct {
     simde__mmask8 k;
     simde__m256d a;
@@ -19624,14 +19063,11 @@ test_simde_mm256_maskz_mov_pd(const MunitParameter params[], void* data) {
     simde_assert_m256d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_maskz_mov_ps(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_maskz_mov_ps(void) {
   const struct {
     simde__mmask8 k;
     simde__m256 a;
@@ -19716,14 +19152,11 @@ test_simde_mm256_maskz_mov_ps(const MunitParameter params[], void* data) {
     simde_assert_m256_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_maskz_mov_epi8(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_maskz_mov_epi8(void) {
   const struct {
     simde__mmask64 k;
     simde__m512i a;
@@ -20000,14 +19433,11 @@ test_simde_mm512_maskz_mov_epi8(const MunitParameter params[], void* data) {
     simde_assert_m512i_i8(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_maskz_mov_epi16(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_maskz_mov_epi16(void) {
   const struct {
     simde__mmask32 k;
     simde__m512i a;
@@ -20156,14 +19586,11 @@ test_simde_mm512_maskz_mov_epi16(const MunitParameter params[], void* data) {
     simde_assert_m512i_i16(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_maskz_mov_epi32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_maskz_mov_epi32(void) {
   const struct {
     simde__mmask16 k;
     simde__m512i a;
@@ -20248,14 +19675,11 @@ test_simde_mm512_maskz_mov_epi32(const MunitParameter params[], void* data) {
     simde_assert_m512i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_maskz_mov_epi64(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_maskz_mov_epi64(void) {
   const struct {
     simde__mmask8 k;
     simde__m512i a;
@@ -20340,14 +19764,11 @@ test_simde_mm512_maskz_mov_epi64(const MunitParameter params[], void* data) {
     simde_assert_m512i_i64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_maskz_mov_pd(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_maskz_mov_pd(void) {
   const struct {
     simde__mmask8 k;
     simde__m512d a;
@@ -20432,14 +19853,11 @@ test_simde_mm512_maskz_mov_pd(const MunitParameter params[], void* data) {
     simde_assert_m512d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_maskz_mov_ps(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_maskz_mov_ps(void) {
   const struct {
     simde__mmask16 k;
     simde__m512 a;
@@ -20524,14 +19942,11 @@ test_simde_mm512_maskz_mov_ps(const MunitParameter params[], void* data) {
     simde_assert_m512_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_movepi8_mask(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_movepi8_mask(void) {
   const struct {
     simde__m512i a;
     simde__mmask64 r;
@@ -20679,14 +20094,11 @@ test_simde_mm512_movepi8_mask(const MunitParameter params[], void* data) {
     simde_assert_mmask64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_movepi16_mask(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_movepi16_mask(void) {
   const struct {
     simde__m512i a;
     simde__mmask32 r;
@@ -20770,14 +20182,11 @@ test_simde_mm512_movepi16_mask(const MunitParameter params[], void* data) {
     simde_assert_mmask32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_movepi32_mask(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_movepi32_mask(void) {
   const struct {
     simde__m512i a;
     simde__mmask16 r;
@@ -20829,14 +20238,11 @@ test_simde_mm512_movepi32_mask(const MunitParameter params[], void* data) {
     simde_assert_mmask16(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_movepi64_mask(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_movepi64_mask(void) {
   const struct {
     simde__m512i a;
     simde__mmask8 r;
@@ -20888,14 +20294,11 @@ test_simde_mm512_movepi64_mask(const MunitParameter params[], void* data) {
     simde_assert_mmask8(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm_movm_epi8(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm_movm_epi8(void) {
   const struct {
     simde__mmask16 k;
     simde__m128i r;
@@ -20947,14 +20350,11 @@ test_simde_mm_movm_epi8(const MunitParameter params[], void* data) {
     simde_assert_m128i_i8(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_movm_epi8(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_movm_epi8(void) {
   const struct {
     simde__mmask32 k;
     simde__m256i r;
@@ -21038,14 +20438,11 @@ test_simde_mm256_movm_epi8(const MunitParameter params[], void* data) {
     simde_assert_m256i_i8(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_movm_epi8(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_movm_epi8(void) {
   const struct {
     simde__mmask64 k;
     simde__m512i r;
@@ -21193,14 +20590,11 @@ test_simde_mm512_movm_epi8(const MunitParameter params[], void* data) {
     simde_assert_m512i_i8(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm_movm_epi16(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm_movm_epi16(void) {
   const struct {
     simde__mmask8 k;
     simde__m128i r;
@@ -21236,14 +20630,11 @@ test_simde_mm_movm_epi16(const MunitParameter params[], void* data) {
     simde_assert_m128i_i16(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_movm_epi16(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_movm_epi16(void) {
   const struct {
     simde__mmask16 k;
     simde__m256i r;
@@ -21295,14 +20686,11 @@ test_simde_mm256_movm_epi16(const MunitParameter params[], void* data) {
     simde_assert_m256i_i16(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_movm_epi16(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_movm_epi16(void) {
   const struct {
     simde__mmask32 k;
     simde__m512i r;
@@ -21386,14 +20774,11 @@ test_simde_mm512_movm_epi16(const MunitParameter params[], void* data) {
     simde_assert_m512i_i16(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm_movm_epi32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm_movm_epi32(void) {
   const struct {
     simde__mmask8 k;
     simde__m128i r;
@@ -21421,14 +20806,11 @@ test_simde_mm_movm_epi32(const MunitParameter params[], void* data) {
     simde_assert_m128i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_movm_epi32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_movm_epi32(void) {
   const struct {
     simde__mmask8 k;
     simde__m256i r;
@@ -21464,14 +20846,11 @@ test_simde_mm256_movm_epi32(const MunitParameter params[], void* data) {
     simde_assert_m256i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_movm_epi32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_movm_epi32(void) {
   const struct {
     simde__mmask16 k;
     simde__m512i r;
@@ -21523,14 +20902,11 @@ test_simde_mm512_movm_epi32(const MunitParameter params[], void* data) {
     simde_assert_m512i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm_movm_epi64(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm_movm_epi64(void) {
   const struct {
     simde__mmask8 k;
     simde__m128i r;
@@ -21558,14 +20934,11 @@ test_simde_mm_movm_epi64(const MunitParameter params[], void* data) {
     simde_assert_m128i_i64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_movm_epi64(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_movm_epi64(void) {
   const struct {
     simde__mmask8 k;
     simde__m256i r;
@@ -21601,14 +20974,11 @@ test_simde_mm256_movm_epi64(const MunitParameter params[], void* data) {
     simde_assert_m256i_i64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_movm_epi64(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_movm_epi64(void) {
   const struct {
     simde__mmask8 k;
     simde__m512i r;
@@ -21660,14 +21030,11 @@ test_simde_mm512_movm_epi64(const MunitParameter params[], void* data) {
     simde_assert_m512i_i64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_mul_epi32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_mul_epi32(void) {
   const struct {
     simde__m512i a;
     simde__m512i b;
@@ -21776,14 +21143,11 @@ test_simde_mm512_mul_epi32(const MunitParameter params[], void* data) {
     simde_assert_m512i_i64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_mask_mul_epi32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_mask_mul_epi32(void) {
   const struct {
     simde__m512i src;
     simde__mmask8 k;
@@ -21934,14 +21298,11 @@ test_simde_mm512_mask_mul_epi32(const MunitParameter params[], void* data) {
     simde_assert_m512i_i64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_maskz_mul_epi32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_maskz_mul_epi32(void) {
   const struct {
     simde__mmask8 k;
     simde__m512i a;
@@ -22059,14 +21420,11 @@ test_simde_mm512_maskz_mul_epi32(const MunitParameter params[], void* data) {
     simde_assert_m512i_i64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_maskz_mul_epu32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_maskz_mul_epu32(void) {
   const struct {
     simde__mmask8 k;
     simde__m512i a;
@@ -22184,14 +21542,11 @@ test_simde_mm512_maskz_mul_epu32(const MunitParameter params[], void* data) {
     simde_assert_m512i_u64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_mul_epu32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_mul_epu32(void) {
   const struct {
     simde__m512i a;
     simde__m512i b;
@@ -22300,14 +21655,11 @@ test_simde_mm512_mul_epu32(const MunitParameter params[], void* data) {
     simde_assert_m512i_u64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_mask_mul_epu32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_mask_mul_epu32(void) {
   const struct {
     simde__m512i src;
     simde__mmask8 k;
@@ -22458,14 +21810,11 @@ test_simde_mm512_mask_mul_epu32(const MunitParameter params[], void* data) {
     simde_assert_m512i_u64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_mul_ps(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_mul_ps(void) {
   const struct {
     simde__m512 a;
     simde__m512 b;
@@ -22574,14 +21923,11 @@ test_simde_mm512_mul_ps(const MunitParameter params[], void* data) {
     simde_assert_m512_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_mask_mul_ps(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_mask_mul_ps(void) {
   const struct {
     simde__m512 src;
     simde__mmask16 k;
@@ -22732,14 +22078,11 @@ test_simde_mm512_mask_mul_ps(const MunitParameter params[], void* data) {
     simde_assert_m512_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_maskz_mul_ps(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_maskz_mul_ps(void) {
   const struct {
     simde__mmask16 k;
     simde__m512 a;
@@ -22857,14 +22200,11 @@ test_simde_mm512_maskz_mul_ps(const MunitParameter params[], void* data) {
     simde_assert_m512_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_mul_pd(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_mul_pd(void) {
   const struct {
     simde__m512d a;
     simde__m512d b;
@@ -22973,14 +22313,11 @@ test_simde_mm512_mul_pd(const MunitParameter params[], void* data) {
     simde_assert_m512d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_mask_mul_pd(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_mask_mul_pd(void) {
   const struct {
     simde__m512d src;
     simde__mmask8 k;
@@ -23131,14 +22468,11 @@ test_simde_mm512_mask_mul_pd(const MunitParameter params[], void* data) {
     simde_assert_m512d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_maskz_mul_pd(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_maskz_mul_pd(void) {
   const struct {
     simde__mmask8 k;
     simde__m512d a;
@@ -23256,14 +22590,11 @@ test_simde_mm512_maskz_mul_pd(const MunitParameter params[], void* data) {
     simde_assert_m512d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_or_si512(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_or_si512(void) {
   const struct {
     simde__m512i a;
     simde__m512i b;
@@ -23372,14 +22703,11 @@ test_simde_mm512_or_si512(const MunitParameter params[], void* data) {
     simde_assert_m512i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_permutexvar_epi32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_permutexvar_epi32(void) {
   const struct {
     simde__m512i idx;
     simde__m512i a;
@@ -23488,14 +22816,11 @@ test_simde_mm512_permutexvar_epi32(const MunitParameter params[], void* data) {
     simde_assert_m512i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_mask_permutexvar_epi32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_mask_permutexvar_epi32(void) {
   const struct {
     simde__m512i src;
     simde__mmask16 k;
@@ -23649,11 +22974,8 @@ test_simde_mm512_mask_permutexvar_epi32(const MunitParameter params[], void* dat
   return MUNIT_OK;
 }
 
-static MunitResult
-test_simde_mm512_maskz_permutexvar_epi32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_maskz_permutexvar_epi32(void) {
   const struct {
     simde__mmask16 k;
     simde__m512i idx;
@@ -23774,11 +23096,8 @@ test_simde_mm512_maskz_permutexvar_epi32(const MunitParameter params[], void* da
   return MUNIT_OK;
 }
 
-static MunitResult
-test_simde_mm512_permutexvar_epi64(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_permutexvar_epi64(void) {
   const struct {
     simde__m512i idx;
     simde__m512i a;
@@ -23887,14 +23206,11 @@ test_simde_mm512_permutexvar_epi64(const MunitParameter params[], void* data) {
     simde_assert_m512i_i64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_mask_permutexvar_epi64(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_mask_permutexvar_epi64(void) {
   const struct {
     simde__m512i src;
     simde__mmask8 k;
@@ -24048,11 +23364,8 @@ test_simde_mm512_mask_permutexvar_epi64(const MunitParameter params[], void* dat
   return MUNIT_OK;
 }
 
-static MunitResult
-test_simde_mm512_maskz_permutexvar_epi64(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_maskz_permutexvar_epi64(void) {
   const struct {
     simde__mmask8 k;
     simde__m512i idx;
@@ -24173,11 +23486,8 @@ test_simde_mm512_maskz_permutexvar_epi64(const MunitParameter params[], void* da
   return MUNIT_OK;
 }
 
-static MunitResult
-test_simde_mm512_permutexvar_pd(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_permutexvar_pd(void) {
   const struct {
     simde__m512i idx;
     simde__m512d a;
@@ -24286,14 +23596,11 @@ test_simde_mm512_permutexvar_pd(const MunitParameter params[], void* data) {
     simde_assert_m512d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_mask_permutexvar_pd(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_mask_permutexvar_pd(void) {
   const struct {
     simde__m512d src;
     simde__mmask8 k;
@@ -24447,11 +23754,8 @@ test_simde_mm512_mask_permutexvar_pd(const MunitParameter params[], void* data) 
   return MUNIT_OK;
 }
 
-static MunitResult
-test_simde_mm512_maskz_permutexvar_pd(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_maskz_permutexvar_pd(void) {
   const struct {
     simde__mmask8 k;
     simde__m512i idx;
@@ -24572,11 +23876,8 @@ test_simde_mm512_maskz_permutexvar_pd(const MunitParameter params[], void* data)
   return MUNIT_OK;
 }
 
-static MunitResult
-test_simde_mm512_permutexvar_ps(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_permutexvar_ps(void) {
   const struct {
     simde__m512i idx;
     simde__m512 a;
@@ -24685,14 +23986,11 @@ test_simde_mm512_permutexvar_ps(const MunitParameter params[], void* data) {
     simde_assert_m512_close(r, test_vec[i].r, 1);
  }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_mask_permutexvar_ps(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_mask_permutexvar_ps(void) {
   const struct {
     simde__m512 src;
     simde__mmask16 k;
@@ -24846,11 +24144,8 @@ test_simde_mm512_mask_permutexvar_ps(const MunitParameter params[], void* data) 
   return MUNIT_OK;
 }
 
-static MunitResult
-test_simde_mm512_maskz_permutexvar_ps(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_maskz_permutexvar_ps(void) {
   const struct {
     simde__mmask16 k;
     simde__m512i idx;
@@ -24971,11 +24266,8 @@ test_simde_mm512_maskz_permutexvar_ps(const MunitParameter params[], void* data)
   return MUNIT_OK;
 }
 
-static MunitResult
-test_simde_mm512_permutex2var_epi32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_permutex2var_epi32(void) {
   const struct {
     simde__m512i a;
     simde__m512i idx;
@@ -25117,14 +24409,11 @@ test_simde_mm512_permutex2var_epi32(const MunitParameter params[], void* data) {
     simde_assert_m512i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_mask_permutex2var_epi32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_mask_permutex2var_epi32(void) {
   const struct {
     simde__m512i a;
     simde__mmask16 k;
@@ -25278,11 +24567,8 @@ test_simde_mm512_mask_permutex2var_epi32(const MunitParameter params[], void* da
   return MUNIT_OK;
 }
 
-static MunitResult
-test_simde_mm512_mask2_permutex2var_epi32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_mask2_permutex2var_epi32(void) {
   const struct {
     simde__m512i a;
     simde__m512i idx;
@@ -25436,11 +24722,8 @@ test_simde_mm512_mask2_permutex2var_epi32(const MunitParameter params[], void* d
   return MUNIT_OK;
 }
 
-static MunitResult
-test_simde_mm512_maskz_permutex2var_epi32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_maskz_permutex2var_epi32(void) {
   const struct {
     simde__mmask16 k;
     simde__m512i a;
@@ -25594,11 +24877,8 @@ test_simde_mm512_maskz_permutex2var_epi32(const MunitParameter params[], void* d
   return MUNIT_OK;
 }
 
-static MunitResult
-test_simde_mm512_permutex2var_epi64(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_permutex2var_epi64(void) {
   const struct {
     simde__m512i a;
     simde__m512i idx;
@@ -25740,14 +25020,11 @@ test_simde_mm512_permutex2var_epi64(const MunitParameter params[], void* data) {
     simde_assert_m512i_i64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_mask_permutex2var_epi64(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_mask_permutex2var_epi64(void) {
   const struct {
     simde__m512i a;
     simde__mmask8 k;
@@ -25901,11 +25178,8 @@ test_simde_mm512_mask_permutex2var_epi64(const MunitParameter params[], void* da
   return MUNIT_OK;
 }
 
-static MunitResult
-test_simde_mm512_mask2_permutex2var_epi64(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_mask2_permutex2var_epi64(void) {
   const struct {
     simde__m512i a;
     simde__m512i idx;
@@ -26059,11 +25333,8 @@ test_simde_mm512_mask2_permutex2var_epi64(const MunitParameter params[], void* d
   return MUNIT_OK;
 }
 
-static MunitResult
-test_simde_mm512_maskz_permutex2var_epi64(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_maskz_permutex2var_epi64(void) {
   const struct {
     simde__mmask8 k;
     simde__m512i a;
@@ -26217,11 +25488,8 @@ test_simde_mm512_maskz_permutex2var_epi64(const MunitParameter params[], void* d
   return MUNIT_OK;
 }
 
-static MunitResult
-test_simde_mm512_permutex2var_pd(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_permutex2var_pd(void) {
   const struct {
     simde__m512d a;
     simde__m512i idx;
@@ -26363,14 +25631,11 @@ test_simde_mm512_permutex2var_pd(const MunitParameter params[], void* data) {
     simde_assert_m512d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_mask_permutex2var_pd(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_mask_permutex2var_pd(void) {
   const struct {
     simde__m512d a;
     simde__mmask8 k;
@@ -26524,11 +25789,8 @@ test_simde_mm512_mask_permutex2var_pd(const MunitParameter params[], void* data)
   return MUNIT_OK;
 }
 
-static MunitResult
-test_simde_mm512_mask2_permutex2var_pd(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_mask2_permutex2var_pd(void) {
   const struct {
     simde__m512d a;
     simde__m512i idx;
@@ -26682,11 +25944,8 @@ test_simde_mm512_mask2_permutex2var_pd(const MunitParameter params[], void* data
   return MUNIT_OK;
 }
 
-static MunitResult
-test_simde_mm512_maskz_permutex2var_pd(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_maskz_permutex2var_pd(void) {
   const struct {
     simde__mmask8 k;
     simde__m512d a;
@@ -26840,11 +26099,8 @@ test_simde_mm512_maskz_permutex2var_pd(const MunitParameter params[], void* data
   return MUNIT_OK;
 }
 
-static MunitResult
-test_simde_mm512_permutex2var_ps(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_permutex2var_ps(void) {
   const struct {
     simde__m512 a;
     simde__m512i idx;
@@ -26986,14 +26242,11 @@ test_simde_mm512_permutex2var_ps(const MunitParameter params[], void* data) {
     simde_assert_m512_close(r, test_vec[i].r, 1);
  }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_mask_permutex2var_ps(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_mask_permutex2var_ps(void) {
   const struct {
     simde__m512 a;
     simde__mmask16 k;
@@ -27147,11 +26400,8 @@ test_simde_mm512_mask_permutex2var_ps(const MunitParameter params[], void* data)
   return MUNIT_OK;
 }
 
-static MunitResult
-test_simde_mm512_mask2_permutex2var_ps(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_mask2_permutex2var_ps(void) {
   const struct {
     simde__m512 a;
     simde__m512i idx;
@@ -27305,11 +26555,8 @@ test_simde_mm512_mask2_permutex2var_ps(const MunitParameter params[], void* data
   return MUNIT_OK;
 }
 
-static MunitResult
-test_simde_mm512_maskz_permutex2var_ps(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_maskz_permutex2var_ps(void) {
   const struct {
     simde__mmask16 k;
     simde__m512 a;
@@ -27463,31 +26710,22 @@ test_simde_mm512_maskz_permutex2var_ps(const MunitParameter params[], void* data
   return MUNIT_OK;
 }
 
-static MunitResult
-test_simde_mm512_setzero_si512(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_setzero_si512(void) {
   simde_assert_m512i_i32(simde_mm512_setzero_si512(), ==, simde_mm512_set1_epi32(INT32_C(0)));
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_x_mm512_setone_si512(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_x_mm512_setone_si512(void) {
   simde_assert_m512i_i32(simde_x_mm512_setone_si512(), ==, simde_mm512_set1_epi32(~INT32_C(0)));
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_sub_epi32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_sub_epi32(void) {
   const struct {
     simde__m512i a;
     simde__m512i b;
@@ -27596,14 +26834,11 @@ test_simde_mm512_sub_epi32(const MunitParameter params[], void* data) {
     simde_assert_m512i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_sub_epi64(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_sub_epi64(void) {
   const struct {
     simde__m512i a;
     simde__m512i b;
@@ -27712,14 +26947,11 @@ test_simde_mm512_sub_epi64(const MunitParameter params[], void* data) {
     simde_assert_m512i_i64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_sub_ps(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_sub_ps(void) {
   const struct {
     simde__m512 a;
     simde__m512 b;
@@ -27828,14 +27060,11 @@ test_simde_mm512_sub_ps(const MunitParameter params[], void* data) {
     simde_assert_m512_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_sub_pd(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_sub_pd(void) {
   const struct {
     simde__m512d a;
     simde__m512d b;
@@ -27944,14 +27173,11 @@ test_simde_mm512_sub_pd(const MunitParameter params[], void* data) {
     simde_assert_m512d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_mask_sub_epi32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_mask_sub_epi32(void) {
   const struct {
     simde__m512i src;
     simde__mmask16 k;
@@ -28102,14 +27328,11 @@ test_simde_mm512_mask_sub_epi32(const MunitParameter params[], void* data) {
     simde_assert_m512i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_mask_sub_epi64(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_mask_sub_epi64(void) {
   const struct {
     simde__m512i src;
     simde__mmask8 k;
@@ -28260,14 +27483,11 @@ test_simde_mm512_mask_sub_epi64(const MunitParameter params[], void* data) {
     simde_assert_m512i_i64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_mask_sub_ps(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_mask_sub_ps(void) {
   const struct {
     simde__m512 src;
     simde__mmask16 k;
@@ -28418,14 +27638,11 @@ test_simde_mm512_mask_sub_ps(const MunitParameter params[], void* data) {
     simde_assert_m512_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_mask_sub_pd(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_mask_sub_pd(void) {
   const struct {
     simde__m512d src;
     simde__mmask8 k;
@@ -28576,14 +27793,11 @@ test_simde_mm512_mask_sub_pd(const MunitParameter params[], void* data) {
     simde_assert_m512d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_maskz_sub_epi32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_maskz_sub_epi32(void) {
   const struct {
     simde__mmask16 k;
     simde__m512i a;
@@ -28701,14 +27915,11 @@ test_simde_mm512_maskz_sub_epi32(const MunitParameter params[], void* data) {
     simde_assert_m512i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_maskz_sub_epi64(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_maskz_sub_epi64(void) {
   const struct {
     simde__mmask8 k;
     simde__m512i a;
@@ -28826,14 +28037,11 @@ test_simde_mm512_maskz_sub_epi64(const MunitParameter params[], void* data) {
     simde_assert_m512i_i64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_maskz_sub_ps(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_maskz_sub_ps(void) {
   const struct {
     simde__mmask16 k;
     simde__m512 a;
@@ -28951,14 +28159,11 @@ test_simde_mm512_maskz_sub_ps(const MunitParameter params[], void* data) {
     simde_assert_m512_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_maskz_sub_pd(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_maskz_sub_pd(void) {
   const struct {
     simde__mmask8 k;
     simde__m512d a;
@@ -29076,14 +28281,11 @@ test_simde_mm512_maskz_sub_pd(const MunitParameter params[], void* data) {
     simde_assert_m512d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_slli_epi32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_slli_epi32(void) {
   const struct {
     simde__m512i a;
     unsigned int b;
@@ -29168,14 +28370,11 @@ test_simde_mm512_slli_epi32(const MunitParameter params[], void* data) {
     simde_assert_m512i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_slli_epi64(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_slli_epi64(void) {
   const struct {
     simde__m512i a;
     unsigned int b;
@@ -29260,14 +28459,11 @@ test_simde_mm512_slli_epi64(const MunitParameter params[], void* data) {
     simde_assert_m512i_i64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_srli_epi32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_srli_epi32(void) {
   const struct {
     simde__m512i a;
     unsigned int imm8;
@@ -29352,14 +28548,11 @@ test_simde_mm512_srli_epi32(const MunitParameter params[], void* data) {
     simde_assert_m512i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_srli_epi64(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_srli_epi64(void) {
   const struct {
     simde__m512i a;
     unsigned int b;
@@ -29444,14 +28637,11 @@ test_simde_mm512_srli_epi64(const MunitParameter params[], void* data) {
     simde_assert_m512i_i64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_mask_test_epi32_mask(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_mask_test_epi32_mask(void) {
   const struct {
     simde__mmask16 k;
     simde__m512i a;
@@ -29545,14 +28735,11 @@ test_simde_mm512_mask_test_epi32_mask(const MunitParameter params[], void* data)
     simde_assert_mmask16(HEDLEY_STATIC_CAST(uint16_t, r), ==, HEDLEY_STATIC_CAST(uint16_t, test_vec[i].r));
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_mask_test_epi64_mask(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_mask_test_epi64_mask(void) {
   const struct {
     simde__mmask8 k;
     simde__m512i a;
@@ -29646,14 +28833,11 @@ test_simde_mm512_mask_test_epi64_mask(const MunitParameter params[], void* data)
     simde_assert_mmask8(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_xor_si512(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_xor_si512(void) {
   const struct {
     simde__m512i a;
     simde__m512i b;
@@ -29762,14 +28946,11 @@ test_simde_mm512_xor_si512(const MunitParameter params[], void* data) {
     simde_assert_m512i_u64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_set1_epi8(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_set1_epi8(void) {
   const struct {
     int8_t a;
     simde__m512i r;
@@ -29918,14 +29099,11 @@ test_simde_mm512_set1_epi8(const MunitParameter params[], void* data) {
     simde_assert_m512i_i8(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_set1_epi16(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_set1_epi16(void) {
   const struct {
     int16_t a;
     simde__m512i r;
@@ -30009,14 +29187,11 @@ test_simde_mm512_set1_epi16(const MunitParameter params[], void* data) {
     simde_assert_m512i_i16(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_set1_epi32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_set1_epi32(void) {
   const struct {
     int32_t a;
     simde__m512i r;
@@ -30068,14 +29243,11 @@ test_simde_mm512_set1_epi32(const MunitParameter params[], void* data) {
     simde_assert_m512i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_mask_set1_epi32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_mask_set1_epi32(void) {
   const struct {
     simde__m512i src;
     simde__mmask16 k;
@@ -30169,14 +29341,11 @@ test_simde_mm512_mask_set1_epi32(const MunitParameter params[], void* data) {
     simde_assert_m512i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_maskz_set1_epi32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_maskz_set1_epi32(void) {
   const struct {
     simde__mmask16 k;
     int32_t a;
@@ -30237,14 +29406,11 @@ test_simde_mm512_maskz_set1_epi32(const MunitParameter params[], void* data) {
     simde_assert_m512i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_set1_epi64(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_set1_epi64(void) {
   const struct {
     int64_t a;
     simde__m512i r;
@@ -30296,14 +29462,11 @@ test_simde_mm512_set1_epi64(const MunitParameter params[], void* data) {
     simde_assert_m512i_i64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_mask_set1_epi64(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_mask_set1_epi64(void) {
   const struct {
     simde__m512i src;
     simde__mmask8 k;
@@ -30397,14 +29560,11 @@ test_simde_mm512_mask_set1_epi64(const MunitParameter params[], void* data) {
     simde_assert_m512i_i64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_maskz_set1_epi64(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_maskz_set1_epi64(void) {
   const struct {
     simde__mmask8 k;
     int64_t a;
@@ -30465,14 +29625,11 @@ test_simde_mm512_maskz_set1_epi64(const MunitParameter params[], void* data) {
     simde_assert_m512i_i64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_set1_ps(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_set1_ps(void) {
   const struct {
     simde_float32 a;
     simde__m512 r;
@@ -30524,14 +29681,11 @@ test_simde_mm512_set1_ps(const MunitParameter params[], void* data) {
     simde_assert_m512_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_set1_pd(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_set1_pd(void) {
   const struct {
     simde_float64 a;
     simde__m512d r;
@@ -30583,14 +29737,11 @@ test_simde_mm512_set1_pd(const MunitParameter params[], void* data) {
     simde_assert_m512d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_set4_epi32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_set4_epi32(void) {
   const struct {
     int32_t d; int32_t c; int32_t b; int32_t a;
     simde__m512i r;
@@ -30666,14 +29817,11 @@ test_simde_mm512_set4_epi32(const MunitParameter params[], void* data) {
     simde_assert_m512i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_set4_epi64(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_set4_epi64(void) {
   const struct {
     int64_t d; int64_t c; int64_t b; int64_t a;
     simde__m512i r;
@@ -30749,14 +29897,11 @@ test_simde_mm512_set4_epi64(const MunitParameter params[], void* data) {
     simde_assert_m512i_i64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_set4_ps(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_set4_ps(void) {
   const struct {
     simde_float32 d; simde_float32 c; simde_float32 b; simde_float32 a;
     simde__m512 r;
@@ -30832,14 +29977,11 @@ test_simde_mm512_set4_ps(const MunitParameter params[], void* data) {
     simde_assert_m512_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_set4_pd(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_set4_pd(void) {
   const struct {
     simde_float64 d; simde_float64 c; simde_float64 b; simde_float64 a;
     simde__m512d r;
@@ -30915,14 +30057,11 @@ test_simde_mm512_set4_pd(const MunitParameter params[], void* data) {
     simde_assert_m512d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_setr4_epi32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_setr4_epi32(void) {
   const struct {
     int32_t d; int32_t c; int32_t b; int32_t a;
     simde__m512i r;
@@ -30998,14 +30137,11 @@ test_simde_mm512_setr4_epi32(const MunitParameter params[], void* data) {
     simde_assert_m512i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_setr4_epi64(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_setr4_epi64(void) {
   const struct {
     int64_t d; int64_t c; int64_t b; int64_t a;
     simde__m512i r;
@@ -31081,14 +30217,11 @@ test_simde_mm512_setr4_epi64(const MunitParameter params[], void* data) {
     simde_assert_m512i_i64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_setr4_ps(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_setr4_ps(void) {
   const struct {
     simde_float32 d; simde_float32 c; simde_float32 b; simde_float32 a;
     simde__m512 r;
@@ -31164,14 +30297,11 @@ test_simde_mm512_setr4_ps(const MunitParameter params[], void* data) {
     simde_assert_m512_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_setr4_pd(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_setr4_pd(void) {
   const struct {
     simde_float64  d; simde_float64  c; simde_float64  b; simde_float64  a;
     simde__m512d r;
@@ -31247,14 +30377,11 @@ test_simde_mm512_setr4_pd(const MunitParameter params[], void* data) {
     simde_assert_m512d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_setr_epi32(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_setr_epi32(void) {
   const struct {
     int32_t e15; int32_t e14; int32_t e13; int32_t e12; int32_t e11; int32_t e10; int32_t  e9; int32_t  e8;
     int32_t  e7; int32_t  e6; int32_t  e5; int32_t  e4; int32_t  e3; int32_t  e2; int32_t  e1; int32_t  e0;
@@ -31428,14 +30555,11 @@ test_simde_mm512_setr_epi32(const MunitParameter params[], void* data) {
     simde_assert_m512i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_setr_epi64(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_setr_epi64(void) {
   const struct {
      int64_t e7; int64_t e6; int64_t e5; int64_t e4; int64_t e3; int64_t e2; int64_t e1; int64_t e0;
     simde__m512i r;
@@ -31543,14 +30667,11 @@ test_simde_mm512_setr_epi64(const MunitParameter params[], void* data) {
     simde_assert_m512i_i64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_setr_ps(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_setr_ps(void) {
   const struct {
     simde_float32 e15; simde_float32 e14; simde_float32 e13; simde_float32 e12;
     simde_float32 e11; simde_float32 e10; simde_float32  e9; simde_float32  e8;
@@ -31727,14 +30848,11 @@ test_simde_mm512_setr_ps(const MunitParameter params[], void* data) {
     simde_assert_m512_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm512_setr_pd(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm512_setr_pd(void) {
   const struct {
     simde_float64  e7; simde_float64  e6; simde_float64  e5; simde_float64  e4;
     simde_float64  e3; simde_float64  e2; simde_float64  e1; simde_float64  e0;
@@ -31857,353 +30975,337 @@ HEDLEY_DIAGNOSTIC_DISABLE_CAST_QUAL
 #endif
 
 static MunitTest test_suite_tests[] = {
-  SIMDE_TESTS_DEFINE_TEST(mm512_abs_epi32),
-  SIMDE_TESTS_DEFINE_TEST(mm512_mask_abs_epi32),
-  SIMDE_TESTS_DEFINE_TEST(mm512_maskz_abs_epi32),
-  SIMDE_TESTS_DEFINE_TEST(mm512_abs_epi64),
-  SIMDE_TESTS_DEFINE_TEST(mm512_mask_abs_epi64),
-  SIMDE_TESTS_DEFINE_TEST(mm512_maskz_abs_epi64),
-  SIMDE_TESTS_DEFINE_TEST(mm512_abs_ps),
-  SIMDE_TESTS_DEFINE_TEST(mm512_mask_abs_ps),
-  SIMDE_TESTS_DEFINE_TEST(mm512_abs_pd),
-  SIMDE_TESTS_DEFINE_TEST(mm512_mask_abs_pd),
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_abs_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_abs_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_maskz_abs_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_abs_epi64)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_abs_epi64)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_maskz_abs_epi64)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_abs_ps)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_abs_ps)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_abs_pd)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_abs_pd)
 
-  SIMDE_TESTS_DEFINE_TEST(mm512_add_epi32),
-  SIMDE_TESTS_DEFINE_TEST(mm512_mask_add_epi32),
-  SIMDE_TESTS_DEFINE_TEST(mm512_maskz_add_epi32),
-  SIMDE_TESTS_DEFINE_TEST(mm512_add_epi64),
-  SIMDE_TESTS_DEFINE_TEST(mm512_mask_add_epi64),
-  SIMDE_TESTS_DEFINE_TEST(mm512_maskz_add_epi64),
-  SIMDE_TESTS_DEFINE_TEST(mm512_add_ps),
-  SIMDE_TESTS_DEFINE_TEST(mm512_mask_add_ps),
-  SIMDE_TESTS_DEFINE_TEST(mm512_maskz_add_ps),
-  SIMDE_TESTS_DEFINE_TEST(mm512_add_pd),
-  SIMDE_TESTS_DEFINE_TEST(mm512_mask_add_pd),
-  SIMDE_TESTS_DEFINE_TEST(mm512_maskz_add_pd),
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_add_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_add_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_maskz_add_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_add_epi64)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_add_epi64)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_maskz_add_epi64)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_add_ps)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_add_ps)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_maskz_add_ps)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_add_pd)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_add_pd)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_maskz_add_pd)
 
-  SIMDE_TESTS_DEFINE_TEST(mm512_and_epi32),
-  SIMDE_TESTS_DEFINE_TEST(mm512_mask_and_epi32),
-  SIMDE_TESTS_DEFINE_TEST(mm512_maskz_and_epi32),
-  SIMDE_TESTS_DEFINE_TEST(mm512_and_epi64),
-  SIMDE_TESTS_DEFINE_TEST(mm512_mask_and_epi64),
-  SIMDE_TESTS_DEFINE_TEST(mm512_maskz_and_epi64),
-  SIMDE_TESTS_DEFINE_TEST(mm512_and_si512),
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_and_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_and_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_maskz_and_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_and_epi64)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_and_epi64)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_maskz_and_epi64)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_and_si512)
 
-  SIMDE_TESTS_DEFINE_TEST(mm512_andnot_si512),
-  SIMDE_TESTS_DEFINE_TEST(mm512_andnot_epi32),
-  SIMDE_TESTS_DEFINE_TEST(mm512_mask_andnot_epi32),
-  SIMDE_TESTS_DEFINE_TEST(mm512_maskz_andnot_epi32),
-  SIMDE_TESTS_DEFINE_TEST(mm512_andnot_epi64),
-  SIMDE_TESTS_DEFINE_TEST(mm512_mask_andnot_epi64),
-  SIMDE_TESTS_DEFINE_TEST(mm512_maskz_andnot_epi64),
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_andnot_si512)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_andnot_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_andnot_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_maskz_andnot_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_andnot_epi64)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_andnot_epi64)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_maskz_andnot_epi64)
 
-  SIMDE_TESTS_DEFINE_TEST(mm512_mask_blend_epi32),
-  SIMDE_TESTS_DEFINE_TEST(mm512_mask_blend_epi64),
-  SIMDE_TESTS_DEFINE_TEST(mm512_mask_blend_ps),
-  SIMDE_TESTS_DEFINE_TEST(mm512_mask_blend_pd),
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_blend_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_blend_epi64)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_blend_ps)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_blend_pd)
 
-  SIMDE_TESTS_DEFINE_TEST(mm512_broadcast_f32x4),
-  SIMDE_TESTS_DEFINE_TEST(mm512_mask_broadcast_f32x4),
-  SIMDE_TESTS_DEFINE_TEST(mm512_maskz_broadcast_f32x4),
-  SIMDE_TESTS_DEFINE_TEST(mm512_broadcast_f64x4),
-  SIMDE_TESTS_DEFINE_TEST(mm512_mask_broadcast_f64x4),
-  SIMDE_TESTS_DEFINE_TEST(mm512_maskz_broadcast_f64x4),
-  SIMDE_TESTS_DEFINE_TEST(mm512_broadcast_i32x4),
-  SIMDE_TESTS_DEFINE_TEST(mm512_mask_broadcast_i32x4),
-  SIMDE_TESTS_DEFINE_TEST(mm512_maskz_broadcast_i32x4),
-  SIMDE_TESTS_DEFINE_TEST(mm512_broadcast_i64x4),
-  SIMDE_TESTS_DEFINE_TEST(mm512_mask_broadcast_i64x4),
-  SIMDE_TESTS_DEFINE_TEST(mm512_maskz_broadcast_i64x4),
-  SIMDE_TESTS_DEFINE_TEST(mm512_broadcastd_epi32),
-  SIMDE_TESTS_DEFINE_TEST(mm512_mask_broadcastd_epi32),
-  SIMDE_TESTS_DEFINE_TEST(mm512_maskz_broadcastd_epi32),
-  SIMDE_TESTS_DEFINE_TEST(mm512_broadcastq_epi64),
-  SIMDE_TESTS_DEFINE_TEST(mm512_mask_broadcastq_epi64),
-  SIMDE_TESTS_DEFINE_TEST(mm512_maskz_broadcastq_epi64),
-  SIMDE_TESTS_DEFINE_TEST(mm512_broadcastss_ps),
-  SIMDE_TESTS_DEFINE_TEST(mm512_mask_broadcastss_ps),
-  SIMDE_TESTS_DEFINE_TEST(mm512_maskz_broadcastss_ps),
-  SIMDE_TESTS_DEFINE_TEST(mm512_broadcastsd_pd),
-  SIMDE_TESTS_DEFINE_TEST(mm512_mask_broadcastsd_pd),
-  SIMDE_TESTS_DEFINE_TEST(mm512_maskz_broadcastsd_pd),
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_broadcast_f32x4)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_broadcast_f32x4)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_maskz_broadcast_f32x4)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_broadcast_f64x4)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_broadcast_f64x4)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_maskz_broadcast_f64x4)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_broadcast_i32x4)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_broadcast_i32x4)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_maskz_broadcast_i32x4)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_broadcast_i64x4)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_broadcast_i64x4)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_maskz_broadcast_i64x4)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_broadcastd_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_broadcastd_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_maskz_broadcastd_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_broadcastq_epi64)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_broadcastq_epi64)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_maskz_broadcastq_epi64)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_broadcastss_ps)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_broadcastss_ps)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_maskz_broadcastss_ps)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_broadcastsd_pd)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_broadcastsd_pd)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_maskz_broadcastsd_pd)
 
-  SIMDE_TESTS_DEFINE_TEST(mm512_castpd512_pd128),
-  SIMDE_TESTS_DEFINE_TEST(mm512_castpd512_pd256),
-  SIMDE_TESTS_DEFINE_TEST(mm512_castpd128_pd512),
-  SIMDE_TESTS_DEFINE_TEST(mm512_castpd256_pd512),
-  SIMDE_TESTS_DEFINE_TEST(mm512_castpd_si512),
-  SIMDE_TESTS_DEFINE_TEST(mm512_castps_pd),
-  SIMDE_TESTS_DEFINE_TEST(mm512_castpd_ps),
-  SIMDE_TESTS_DEFINE_TEST(mm512_castps_si512),
-  SIMDE_TESTS_DEFINE_TEST(mm512_castps128_ps512),
-  SIMDE_TESTS_DEFINE_TEST(mm512_castps256_ps512),
-  SIMDE_TESTS_DEFINE_TEST(mm512_castps512_ps128),
-  SIMDE_TESTS_DEFINE_TEST(mm512_castps512_ps256),
-  SIMDE_TESTS_DEFINE_TEST(mm512_castsi512_si128),
-  SIMDE_TESTS_DEFINE_TEST(mm512_castsi128_si512),
-  SIMDE_TESTS_DEFINE_TEST(mm512_castsi512_si256),
-  SIMDE_TESTS_DEFINE_TEST(mm512_castsi256_si512),
-  SIMDE_TESTS_DEFINE_TEST(mm512_castsi512_ps),
-  SIMDE_TESTS_DEFINE_TEST(mm512_castsi512_pd),
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_castpd512_pd128)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_castpd512_pd256)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_castpd128_pd512)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_castpd256_pd512)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_castpd_si512)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_castps_pd)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_castpd_ps)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_castps_si512)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_castps128_ps512)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_castps256_ps512)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_castps512_ps128)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_castps512_ps256)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_castsi512_si128)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_castsi128_si512)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_castsi512_si256)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_castsi256_si512)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_castsi512_ps)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_castsi512_pd)
 
-  SIMDE_TESTS_DEFINE_TEST(mm512_cmpeq_epi32_mask),
-  SIMDE_TESTS_DEFINE_TEST(mm512_mask_cmpeq_epi32_mask),
-  SIMDE_TESTS_DEFINE_TEST(mm512_cmpeq_epi64_mask),
-  SIMDE_TESTS_DEFINE_TEST(mm512_mask_cmpeq_epi64_mask),
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_cmpeq_epi32_mask)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_cmpeq_epi32_mask)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_cmpeq_epi64_mask)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_cmpeq_epi64_mask)
 
-  SIMDE_TESTS_DEFINE_TEST(mm512_cmpgt_epi32_mask),
-  SIMDE_TESTS_DEFINE_TEST(mm512_mask_cmpgt_epi32_mask),
-  SIMDE_TESTS_DEFINE_TEST(mm512_cmpgt_epi64_mask),
-  SIMDE_TESTS_DEFINE_TEST(mm512_mask_cmpgt_epi64_mask),
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_cmpgt_epi32_mask)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_cmpgt_epi32_mask)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_cmpgt_epi64_mask)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_cmpgt_epi64_mask)
 
-  SIMDE_TESTS_DEFINE_TEST(mm512_cvtepi8_epi32),
-  SIMDE_TESTS_DEFINE_TEST(mm512_mask_cvtepi8_epi32),
-  SIMDE_TESTS_DEFINE_TEST(mm512_maskz_cvtepi8_epi32),
-  SIMDE_TESTS_DEFINE_TEST(mm512_cvtepi8_epi64),
-  SIMDE_TESTS_DEFINE_TEST(mm512_mask_cvtepi8_epi64),
-  SIMDE_TESTS_DEFINE_TEST(mm512_maskz_cvtepi8_epi64),
-  SIMDE_TESTS_DEFINE_TEST(mm512_cvtepi32_epi8),
-  SIMDE_TESTS_DEFINE_TEST(mm512_mask_cvtepi32_epi8),
-  SIMDE_TESTS_DEFINE_TEST(mm512_maskz_cvtepi32_epi8),
-  SIMDE_TESTS_DEFINE_TEST(mm512_cvtepi32_epi16),
-  SIMDE_TESTS_DEFINE_TEST(mm512_mask_cvtepi32_epi16),
-  SIMDE_TESTS_DEFINE_TEST(mm512_maskz_cvtepi32_epi16),
-  SIMDE_TESTS_DEFINE_TEST(mm512_cvtepi64_epi8),
-  SIMDE_TESTS_DEFINE_TEST(mm512_mask_cvtepi64_epi8),
-  SIMDE_TESTS_DEFINE_TEST(mm512_maskz_cvtepi64_epi8),
-  SIMDE_TESTS_DEFINE_TEST(mm512_cvtepi64_epi16),
-  SIMDE_TESTS_DEFINE_TEST(mm512_mask_cvtepi64_epi16),
-  SIMDE_TESTS_DEFINE_TEST(mm512_maskz_cvtepi64_epi16),
-  SIMDE_TESTS_DEFINE_TEST(mm512_cvtepi64_epi32),
-  SIMDE_TESTS_DEFINE_TEST(mm512_mask_cvtepi64_epi32),
-  SIMDE_TESTS_DEFINE_TEST(mm512_maskz_cvtepi64_epi32),
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_cvtepi8_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_cvtepi8_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_maskz_cvtepi8_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_cvtepi8_epi64)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_cvtepi8_epi64)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_maskz_cvtepi8_epi64)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_cvtepi32_epi8)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_cvtepi32_epi8)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_maskz_cvtepi32_epi8)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_cvtepi32_epi16)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_cvtepi32_epi16)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_maskz_cvtepi32_epi16)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_cvtepi64_epi8)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_cvtepi64_epi8)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_maskz_cvtepi64_epi8)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_cvtepi64_epi16)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_cvtepi64_epi16)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_maskz_cvtepi64_epi16)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_cvtepi64_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_cvtepi64_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_maskz_cvtepi64_epi32)
 
-  SIMDE_TESTS_DEFINE_TEST(mm512_cvtsepi32_epi8),
-  SIMDE_TESTS_DEFINE_TEST(mm512_mask_cvtsepi32_epi8),
-  SIMDE_TESTS_DEFINE_TEST(mm512_maskz_cvtsepi32_epi8),
-  SIMDE_TESTS_DEFINE_TEST(mm512_cvtsepi32_epi16),
-  SIMDE_TESTS_DEFINE_TEST(mm512_mask_cvtsepi32_epi16),
-  SIMDE_TESTS_DEFINE_TEST(mm512_maskz_cvtsepi32_epi16),
-  SIMDE_TESTS_DEFINE_TEST(mm512_cvtsepi64_epi8),
-  SIMDE_TESTS_DEFINE_TEST(mm512_mask_cvtsepi64_epi8),
-  SIMDE_TESTS_DEFINE_TEST(mm512_maskz_cvtsepi64_epi8),
-  SIMDE_TESTS_DEFINE_TEST(mm512_cvtsepi64_epi16),
-  SIMDE_TESTS_DEFINE_TEST(mm512_mask_cvtsepi64_epi16),
-  SIMDE_TESTS_DEFINE_TEST(mm512_maskz_cvtsepi64_epi16),
-  SIMDE_TESTS_DEFINE_TEST(mm512_cvtsepi64_epi32),
-  SIMDE_TESTS_DEFINE_TEST(mm512_mask_cvtsepi64_epi32),
-  SIMDE_TESTS_DEFINE_TEST(mm512_maskz_cvtsepi64_epi32),
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_cvtsepi32_epi8)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_cvtsepi32_epi8)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_maskz_cvtsepi32_epi8)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_cvtsepi32_epi16)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_cvtsepi32_epi16)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_maskz_cvtsepi32_epi16)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_cvtsepi64_epi8)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_cvtsepi64_epi8)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_maskz_cvtsepi64_epi8)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_cvtsepi64_epi16)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_cvtsepi64_epi16)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_maskz_cvtsepi64_epi16)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_cvtsepi64_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_cvtsepi64_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_maskz_cvtsepi64_epi32)
 
-  SIMDE_TESTS_DEFINE_TEST(mm512_div_ps),
-  SIMDE_TESTS_DEFINE_TEST(mm512_mask_div_ps),
-  SIMDE_TESTS_DEFINE_TEST(mm512_maskz_div_ps),
-  SIMDE_TESTS_DEFINE_TEST(mm512_div_pd),
-  SIMDE_TESTS_DEFINE_TEST(mm512_mask_div_pd),
-  SIMDE_TESTS_DEFINE_TEST(mm512_maskz_div_pd),
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_div_ps)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_div_ps)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_maskz_div_ps)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_div_pd)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_div_pd)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_maskz_div_pd)
 
-  SIMDE_TESTS_DEFINE_TEST(mm512_extractf32x4_ps),
-  SIMDE_TESTS_DEFINE_TEST(mm512_mask_extractf32x4_ps),
-  SIMDE_TESTS_DEFINE_TEST(mm512_maskz_extractf32x4_ps),
-  SIMDE_TESTS_DEFINE_TEST(mm512_extractf64x4_pd),
-  SIMDE_TESTS_DEFINE_TEST(mm512_mask_extractf64x4_pd),
-  SIMDE_TESTS_DEFINE_TEST(mm512_maskz_extractf64x4_pd),
-  SIMDE_TESTS_DEFINE_TEST(mm512_extracti32x4_epi32),
-  SIMDE_TESTS_DEFINE_TEST(mm512_mask_extracti32x4_epi32),
-  SIMDE_TESTS_DEFINE_TEST(mm512_maskz_extracti32x4_epi32),
-  SIMDE_TESTS_DEFINE_TEST(mm512_extracti64x4_epi64),
-  SIMDE_TESTS_DEFINE_TEST(mm512_mask_extracti64x4_epi64),
-  SIMDE_TESTS_DEFINE_TEST(mm512_maskz_extracti64x4_epi64),
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_extractf32x4_ps)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_extractf32x4_ps)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_maskz_extractf32x4_ps)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_extractf64x4_pd)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_extractf64x4_pd)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_maskz_extractf64x4_pd)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_extracti32x4_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_extracti32x4_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_maskz_extracti32x4_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_extracti64x4_epi64)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_extracti64x4_epi64)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_maskz_extracti64x4_epi64)
 
-  SIMDE_TESTS_DEFINE_TEST(mm512_insertf32x4),
-  SIMDE_TESTS_DEFINE_TEST(mm512_mask_insertf32x4),
-  SIMDE_TESTS_DEFINE_TEST(mm512_maskz_insertf32x4),
-  SIMDE_TESTS_DEFINE_TEST(mm512_insertf64x4),
-  SIMDE_TESTS_DEFINE_TEST(mm512_mask_insertf64x4),
-  SIMDE_TESTS_DEFINE_TEST(mm512_maskz_insertf64x4),
-  SIMDE_TESTS_DEFINE_TEST(mm512_inserti32x4),
-  SIMDE_TESTS_DEFINE_TEST(mm512_mask_inserti32x4),
-  SIMDE_TESTS_DEFINE_TEST(mm512_maskz_inserti32x4),
-  SIMDE_TESTS_DEFINE_TEST(mm512_inserti64x4),
-  SIMDE_TESTS_DEFINE_TEST(mm512_mask_inserti64x4),
-  SIMDE_TESTS_DEFINE_TEST(mm512_maskz_inserti64x4),
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_insertf32x4)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_insertf32x4)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_maskz_insertf32x4)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_insertf64x4)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_insertf64x4)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_maskz_insertf64x4)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_inserti32x4)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_inserti32x4)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_maskz_inserti32x4)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_inserti64x4)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_inserti64x4)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_maskz_inserti64x4)
 
-  SIMDE_TESTS_DEFINE_TEST(mm512_load_si512),
-  SIMDE_TESTS_DEFINE_TEST(mm512_loadu_si512),
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_load_si512)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_loadu_si512)
 
-  SIMDE_TESTS_DEFINE_TEST(mm_mask_mov_epi8),
-  SIMDE_TESTS_DEFINE_TEST(mm_mask_mov_epi16),
-  SIMDE_TESTS_DEFINE_TEST(mm_mask_mov_epi32),
-  SIMDE_TESTS_DEFINE_TEST(mm_mask_mov_epi64),
-  SIMDE_TESTS_DEFINE_TEST(mm_mask_mov_pd),
-  SIMDE_TESTS_DEFINE_TEST(mm_mask_mov_ps),
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm_mask_mov_epi8)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm_mask_mov_epi16)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm_mask_mov_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm_mask_mov_epi64)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm_mask_mov_pd)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm_mask_mov_ps)
 
-  SIMDE_TESTS_DEFINE_TEST(mm256_mask_mov_epi8),
-  SIMDE_TESTS_DEFINE_TEST(mm256_mask_mov_epi16),
-  SIMDE_TESTS_DEFINE_TEST(mm256_mask_mov_epi32),
-  SIMDE_TESTS_DEFINE_TEST(mm256_mask_mov_epi64),
-  SIMDE_TESTS_DEFINE_TEST(mm256_mask_mov_pd),
-  SIMDE_TESTS_DEFINE_TEST(mm256_mask_mov_ps),
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_mask_mov_epi8)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_mask_mov_epi16)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_mask_mov_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_mask_mov_epi64)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_mask_mov_pd)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_mask_mov_ps)
 
-  SIMDE_TESTS_DEFINE_TEST(mm512_mask_mov_epi8),
-  SIMDE_TESTS_DEFINE_TEST(mm512_mask_mov_epi16),
-  SIMDE_TESTS_DEFINE_TEST(mm512_mask_mov_epi32),
-  SIMDE_TESTS_DEFINE_TEST(mm512_mask_mov_epi64),
-  SIMDE_TESTS_DEFINE_TEST(mm512_mask_mov_pd),
-  SIMDE_TESTS_DEFINE_TEST(mm512_mask_mov_ps),
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_mov_epi8)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_mov_epi16)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_mov_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_mov_epi64)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_mov_pd)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_mov_ps)
 
-  SIMDE_TESTS_DEFINE_TEST(mm_maskz_mov_epi8),
-  SIMDE_TESTS_DEFINE_TEST(mm_maskz_mov_epi16),
-  SIMDE_TESTS_DEFINE_TEST(mm_maskz_mov_epi32),
-  SIMDE_TESTS_DEFINE_TEST(mm_maskz_mov_epi64),
-  SIMDE_TESTS_DEFINE_TEST(mm_maskz_mov_pd),
-  SIMDE_TESTS_DEFINE_TEST(mm_maskz_mov_ps),
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm_maskz_mov_epi8)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm_maskz_mov_epi16)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm_maskz_mov_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm_maskz_mov_epi64)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm_maskz_mov_pd)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm_maskz_mov_ps)
 
-  SIMDE_TESTS_DEFINE_TEST(mm256_maskz_mov_epi8),
-  SIMDE_TESTS_DEFINE_TEST(mm256_maskz_mov_epi16),
-  SIMDE_TESTS_DEFINE_TEST(mm256_maskz_mov_epi32),
-  SIMDE_TESTS_DEFINE_TEST(mm256_maskz_mov_epi64),
-  SIMDE_TESTS_DEFINE_TEST(mm256_maskz_mov_pd),
-  SIMDE_TESTS_DEFINE_TEST(mm256_maskz_mov_ps),
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_maskz_mov_epi8)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_maskz_mov_epi16)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_maskz_mov_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_maskz_mov_epi64)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_maskz_mov_pd)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_maskz_mov_ps)
 
-  SIMDE_TESTS_DEFINE_TEST(mm512_maskz_mov_epi8),
-  SIMDE_TESTS_DEFINE_TEST(mm512_maskz_mov_epi16),
-  SIMDE_TESTS_DEFINE_TEST(mm512_maskz_mov_epi32),
-  SIMDE_TESTS_DEFINE_TEST(mm512_maskz_mov_epi64),
-  SIMDE_TESTS_DEFINE_TEST(mm512_maskz_mov_pd),
-  SIMDE_TESTS_DEFINE_TEST(mm512_maskz_mov_ps),
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_maskz_mov_epi8)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_maskz_mov_epi16)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_maskz_mov_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_maskz_mov_epi64)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_maskz_mov_pd)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_maskz_mov_ps)
 
-  SIMDE_TESTS_DEFINE_TEST(mm_movm_epi8),
-  SIMDE_TESTS_DEFINE_TEST(mm256_movm_epi8),
-  SIMDE_TESTS_DEFINE_TEST(mm512_movm_epi8),
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm_movm_epi8)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_movm_epi8)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_movm_epi8)
 
-  SIMDE_TESTS_DEFINE_TEST(mm_movm_epi16),
-  SIMDE_TESTS_DEFINE_TEST(mm256_movm_epi16),
-  SIMDE_TESTS_DEFINE_TEST(mm512_movm_epi16),
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm_movm_epi16)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_movm_epi16)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_movm_epi16)
 
-  SIMDE_TESTS_DEFINE_TEST(mm_movm_epi32),
-  SIMDE_TESTS_DEFINE_TEST(mm256_movm_epi32),
-  SIMDE_TESTS_DEFINE_TEST(mm512_movm_epi32),
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm_movm_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_movm_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_movm_epi32)
 
-  SIMDE_TESTS_DEFINE_TEST(mm_movm_epi64),
-  SIMDE_TESTS_DEFINE_TEST(mm256_movm_epi64),
-  SIMDE_TESTS_DEFINE_TEST(mm512_movm_epi64),
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm_movm_epi64)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_movm_epi64)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_movm_epi64)
 
-  SIMDE_TESTS_DEFINE_TEST(mm512_movepi8_mask),
-  SIMDE_TESTS_DEFINE_TEST(mm512_movepi16_mask),
-  SIMDE_TESTS_DEFINE_TEST(mm512_movepi32_mask),
-  SIMDE_TESTS_DEFINE_TEST(mm512_movepi64_mask),
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_movepi8_mask)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_movepi16_mask)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_movepi32_mask)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_movepi64_mask)
 
-  SIMDE_TESTS_DEFINE_TEST(mm512_mul_epi32),
-  SIMDE_TESTS_DEFINE_TEST(mm512_mask_mul_epi32),
-  SIMDE_TESTS_DEFINE_TEST(mm512_maskz_mul_epi32),
-  SIMDE_TESTS_DEFINE_TEST(mm512_mul_epu32),
-  SIMDE_TESTS_DEFINE_TEST(mm512_mask_mul_epu32),
-  SIMDE_TESTS_DEFINE_TEST(mm512_maskz_mul_epu32),
-  SIMDE_TESTS_DEFINE_TEST(mm512_mul_ps),
-  SIMDE_TESTS_DEFINE_TEST(mm512_mask_mul_ps),
-  SIMDE_TESTS_DEFINE_TEST(mm512_maskz_mul_ps),
-  SIMDE_TESTS_DEFINE_TEST(mm512_mul_pd),
-  SIMDE_TESTS_DEFINE_TEST(mm512_mask_mul_pd),
-  SIMDE_TESTS_DEFINE_TEST(mm512_maskz_mul_pd),
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mul_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_mul_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_maskz_mul_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mul_epu32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_mul_epu32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_maskz_mul_epu32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mul_ps)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_mul_ps)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_maskz_mul_ps)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mul_pd)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_mul_pd)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_maskz_mul_pd)
 
-  SIMDE_TESTS_DEFINE_TEST(mm512_or_si512),
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_or_si512)
 
-  SIMDE_TESTS_DEFINE_TEST(mm512_permutexvar_epi32),
-  SIMDE_TESTS_DEFINE_TEST(mm512_mask_permutexvar_epi32),
-  SIMDE_TESTS_DEFINE_TEST(mm512_maskz_permutexvar_epi32),
-  SIMDE_TESTS_DEFINE_TEST(mm512_permutexvar_epi64),
-  SIMDE_TESTS_DEFINE_TEST(mm512_mask_permutexvar_epi64),
-  SIMDE_TESTS_DEFINE_TEST(mm512_maskz_permutexvar_epi64),
-  SIMDE_TESTS_DEFINE_TEST(mm512_permutexvar_pd),
-  SIMDE_TESTS_DEFINE_TEST(mm512_mask_permutexvar_pd),
-  SIMDE_TESTS_DEFINE_TEST(mm512_maskz_permutexvar_pd),
-  SIMDE_TESTS_DEFINE_TEST(mm512_permutexvar_ps),
-  SIMDE_TESTS_DEFINE_TEST(mm512_mask_permutexvar_ps),
-  SIMDE_TESTS_DEFINE_TEST(mm512_maskz_permutexvar_ps),
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_permutexvar_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_permutexvar_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_maskz_permutexvar_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_permutexvar_epi64)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_permutexvar_epi64)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_maskz_permutexvar_epi64)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_permutexvar_pd)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_permutexvar_pd)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_maskz_permutexvar_pd)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_permutexvar_ps)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_permutexvar_ps)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_maskz_permutexvar_ps)
 
-  SIMDE_TESTS_DEFINE_TEST(mm512_permutex2var_epi32),
-  SIMDE_TESTS_DEFINE_TEST(mm512_mask_permutex2var_epi32),
-  SIMDE_TESTS_DEFINE_TEST(mm512_mask2_permutex2var_epi32),
-  SIMDE_TESTS_DEFINE_TEST(mm512_maskz_permutex2var_epi32),
-  SIMDE_TESTS_DEFINE_TEST(mm512_permutex2var_epi64),
-  SIMDE_TESTS_DEFINE_TEST(mm512_mask_permutex2var_epi64),
-  SIMDE_TESTS_DEFINE_TEST(mm512_mask2_permutex2var_epi64),
-  SIMDE_TESTS_DEFINE_TEST(mm512_maskz_permutex2var_epi64),
-  SIMDE_TESTS_DEFINE_TEST(mm512_permutex2var_pd),
-  SIMDE_TESTS_DEFINE_TEST(mm512_mask_permutex2var_pd),
-  SIMDE_TESTS_DEFINE_TEST(mm512_mask2_permutex2var_pd),
-  SIMDE_TESTS_DEFINE_TEST(mm512_maskz_permutex2var_pd),
-  SIMDE_TESTS_DEFINE_TEST(mm512_permutex2var_ps),
-  SIMDE_TESTS_DEFINE_TEST(mm512_mask_permutex2var_ps),
-  SIMDE_TESTS_DEFINE_TEST(mm512_mask2_permutex2var_ps),
-  SIMDE_TESTS_DEFINE_TEST(mm512_maskz_permutex2var_ps),
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_permutex2var_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_permutex2var_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask2_permutex2var_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_maskz_permutex2var_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_permutex2var_epi64)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_permutex2var_epi64)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask2_permutex2var_epi64)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_maskz_permutex2var_epi64)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_permutex2var_pd)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_permutex2var_pd)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask2_permutex2var_pd)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_maskz_permutex2var_pd)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_permutex2var_ps)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_permutex2var_ps)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask2_permutex2var_ps)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_maskz_permutex2var_ps)
 
-  SIMDE_TESTS_DEFINE_TEST(mm512_setzero_si512),
-  SIMDE_TESTS_DEFINE_TEST(x_mm512_setone_si512),
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_setzero_si512)
+  SIMDE_TEST_FUNC_LIST_ENTRY(x_mm512_setone_si512)
 
-  SIMDE_TESTS_DEFINE_TEST(mm512_sub_epi32),
-  SIMDE_TESTS_DEFINE_TEST(mm512_mask_sub_epi32),
-  SIMDE_TESTS_DEFINE_TEST(mm512_maskz_sub_epi32),
-  SIMDE_TESTS_DEFINE_TEST(mm512_sub_epi64),
-  SIMDE_TESTS_DEFINE_TEST(mm512_mask_sub_epi64),
-  SIMDE_TESTS_DEFINE_TEST(mm512_maskz_sub_epi64),
-  SIMDE_TESTS_DEFINE_TEST(mm512_sub_ps),
-  SIMDE_TESTS_DEFINE_TEST(mm512_mask_sub_ps),
-  SIMDE_TESTS_DEFINE_TEST(mm512_maskz_sub_ps),
-  SIMDE_TESTS_DEFINE_TEST(mm512_sub_pd),
-  SIMDE_TESTS_DEFINE_TEST(mm512_mask_sub_pd),
-  SIMDE_TESTS_DEFINE_TEST(mm512_maskz_sub_pd),
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_sub_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_sub_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_maskz_sub_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_sub_epi64)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_sub_epi64)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_maskz_sub_epi64)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_sub_ps)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_sub_ps)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_maskz_sub_ps)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_sub_pd)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_sub_pd)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_maskz_sub_pd)
 
-  SIMDE_TESTS_DEFINE_TEST(mm512_slli_epi32),
-  SIMDE_TESTS_DEFINE_TEST(mm512_slli_epi64),
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_slli_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_slli_epi64)
 
-  SIMDE_TESTS_DEFINE_TEST(mm512_srli_epi32),
-  SIMDE_TESTS_DEFINE_TEST(mm512_srli_epi64),
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_srli_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_srli_epi64)
 
-  SIMDE_TESTS_DEFINE_TEST(mm512_mask_test_epi32_mask),
-  SIMDE_TESTS_DEFINE_TEST(mm512_mask_test_epi64_mask),
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_test_epi32_mask)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_test_epi64_mask)
 
-  SIMDE_TESTS_DEFINE_TEST(mm512_xor_si512),
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_xor_si512)
 
-  SIMDE_TESTS_DEFINE_TEST(mm512_set1_epi8),
-  SIMDE_TESTS_DEFINE_TEST(mm512_set1_epi16),
-  SIMDE_TESTS_DEFINE_TEST(mm512_set1_epi32),
-  SIMDE_TESTS_DEFINE_TEST(mm512_mask_set1_epi32),
-  SIMDE_TESTS_DEFINE_TEST(mm512_maskz_set1_epi32),
-  SIMDE_TESTS_DEFINE_TEST(mm512_set1_epi64),
-  SIMDE_TESTS_DEFINE_TEST(mm512_mask_set1_epi64),
-  SIMDE_TESTS_DEFINE_TEST(mm512_maskz_set1_epi64),
-  SIMDE_TESTS_DEFINE_TEST(mm512_set1_ps),
-  SIMDE_TESTS_DEFINE_TEST(mm512_set1_pd),
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_set1_epi8)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_set1_epi16)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_set1_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_set1_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_maskz_set1_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_set1_epi64)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_set1_epi64)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_maskz_set1_epi64)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_set1_ps)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_set1_pd)
 
-  SIMDE_TESTS_DEFINE_TEST(mm512_set4_epi32),
-  SIMDE_TESTS_DEFINE_TEST(mm512_set4_epi64),
-  SIMDE_TESTS_DEFINE_TEST(mm512_set4_ps),
-  SIMDE_TESTS_DEFINE_TEST(mm512_set4_pd),
-  SIMDE_TESTS_DEFINE_TEST(mm512_setr4_epi32),
-  SIMDE_TESTS_DEFINE_TEST(mm512_setr4_epi64),
-  SIMDE_TESTS_DEFINE_TEST(mm512_setr4_ps),
-  SIMDE_TESTS_DEFINE_TEST(mm512_setr4_pd ),
-  SIMDE_TESTS_DEFINE_TEST(mm512_setr_epi32),
-  SIMDE_TESTS_DEFINE_TEST(mm512_setr_epi64),
-  SIMDE_TESTS_DEFINE_TEST(mm512_setr_ps),
-  SIMDE_TESTS_DEFINE_TEST(mm512_setr_pd),
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_set4_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_set4_epi64)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_set4_ps)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_set4_pd)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_setr4_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_setr4_epi64)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_setr4_ps)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_setr4_pd )
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_setr_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_setr_epi64)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_setr_ps)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_setr_pd)
+SIMDE_TEST_FUNC_LIST_END
 
-  { NULL, NULL, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL }
-};
-
-HEDLEY_C_DECL MunitSuite* SIMDE_TESTS_GENERATE_SYMBOL(suite)(void) {
-  static MunitSuite suite = { (char*) "/" HEDLEY_STRINGIFY(SIMDE_TESTS_CURRENT_ISAX), test_suite_tests, NULL, 1, MUNIT_SUITE_OPTION_NONE };
-
-  return &suite;
-}
-
-#if defined(SIMDE_TESTS_SINGLE_ISAX)
-int main(int argc, char* argv[HEDLEY_ARRAY_PARAM(argc + 1)]) {
-  static MunitSuite suite = { "", test_suite_tests, NULL, 1, MUNIT_SUITE_OPTION_NONE };
-
-  return munit_suite_main(&suite, NULL, argc, argv);
-}
-#endif /* defined(SIMDE_TESTS_SINGLE_ISAX) */
-
-HEDLEY_DIAGNOSTIC_POP
+#include <test/x86/test-x86-footer.h>

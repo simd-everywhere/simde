@@ -16,11 +16,14 @@ if cc.has_argument('-w')
 endif
 munit = static_library('munit', 'munit/munit.c', dependencies: munit_deps, c_args: munit_cflags)
 
+cc = meson.get_compiler('c')
+libm = cc.find_library('m', required : false)
+
 simde_c_defs = []
 simde_cxx_defs = []
 simde_c_args = []
 simde_cxx_args = []
-simde_deps = []
+simde_deps = [libm]
 
 c_openmp_simd = false
 cxx_openmp_simd = false
@@ -68,7 +71,7 @@ subdir('x86')
 subdir('arm')
 
 executable('run-tests', 'run-tests.c',
-           link_with: [munit, simde_tests_x86, simde_tests_arm],
+           link_with: [munit, simde_tests_arm, simde_tests_x86],
            dependencies: simde_deps,
            c_args: simde_c_args + simde_c_defs + simde_native_c_flags,
            cpp_args: simde_cxx_args + simde_cxx_defs + simde_native_cxx_flags)

@@ -22,14 +22,11 @@
  */
 
 #define SIMDE_TESTS_CURRENT_ISAX sse4_2
-#include <test/x86/test-x86-internal.h>
+#include <test/x86/test-sse2.h>
 #include <simde/x86/sse4.2.h>
 
-static MunitResult
-test_simde_mm_cmpestrs_8(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-  const struct {
+static int
+test_simde_mm_cmpestrs_8(void) {  const struct {
     simde__m128i a;
     int la;
     simde__m128i b;
@@ -130,14 +127,11 @@ test_simde_mm_cmpestrs_8(const MunitParameter params[], void* data) {
     int r = simde_mm_cmpestrs(test_vec[i].a, test_vec[i].la, test_vec[i].b, test_vec[i].lb, 0);
     munit_assert_int(r, ==, test_vec[i].r);
   }
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm_cmpestrs_16(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-  const struct {
+static int
+test_simde_mm_cmpestrs_16(void) {  const struct {
     simde__m128i a;
     int la;
     simde__m128i b;
@@ -206,14 +200,11 @@ test_simde_mm_cmpestrs_16(const MunitParameter params[], void* data) {
     int r = simde_mm_cmpestrs(test_vec[i].a, test_vec[i].la, test_vec[i].b, test_vec[i].lb, 1);
     munit_assert_int(r, ==, test_vec[i].r);
   }
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm_cmpestrz_8(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm_cmpestrz_8(void) {
   const struct {
     simde__m128i a;
     int la;
@@ -316,14 +307,11 @@ test_simde_mm_cmpestrz_8(const MunitParameter params[], void* data) {
     munit_assert_int(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm_cmpestrz_16(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm_cmpestrz_16(void) {
   const struct {
     simde__m128i a;
     int la;
@@ -394,14 +382,11 @@ test_simde_mm_cmpestrz_16(const MunitParameter params[], void* data) {
     munit_assert_int(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm_cmpgt_epi64(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm_cmpgt_epi64(void) {
   const struct {
     simde__m128i a;
     simde__m128i b;
@@ -438,14 +423,11 @@ test_simde_mm_cmpgt_epi64(const MunitParameter params[], void* data) {
     simde_assert_m128i_i64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm_cmpistrs_8(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm_cmpistrs_8(void) {
   const struct {
     simde__m128i a;
     simde__m128i b;
@@ -611,13 +593,10 @@ test_simde_mm_cmpistrs_8(const MunitParameter params[], void* data) {
     munit_assert_int(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
-static MunitResult
-test_simde_mm_cmpistrs_16(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm_cmpistrs_16(void) {
   const struct {
     simde__m128i a;
     simde__m128i b;
@@ -675,14 +654,11 @@ test_simde_mm_cmpistrs_16(const MunitParameter params[], void* data) {
     munit_assert_int(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm_cmpistrz_8(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm_cmpistrz_8(void) {
   const struct {
     simde__m128i a;
     simde__m128i b;
@@ -848,14 +824,11 @@ test_simde_mm_cmpistrz_8(const MunitParameter params[], void* data) {
     munit_assert_int(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm_cmpistrz_16(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm_cmpistrz_16(void) {
   const struct {
     simde__m128i a;
     simde__m128i b;
@@ -913,45 +886,19 @@ test_simde_mm_cmpistrz_16(const MunitParameter params[], void* data) {
     munit_assert_int(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-HEDLEY_DIAGNOSTIC_PUSH
-HEDLEY_DIAGNOSTIC_DISABLE_CAST_QUAL
+SIMDE_TEST_FUNC_LIST_BEGIN
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm_cmpestrs_8)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm_cmpestrs_16)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm_cmpestrz_8)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm_cmpestrz_16)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm_cmpgt_epi64)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm_cmpistrs_8)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm_cmpistrs_16)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm_cmpistrz_8)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm_cmpistrz_16)
+SIMDE_TEST_FUNC_LIST_END
 
-#if HEDLEY_HAS_WARNING("-Wold-style-cast")
-  #pragma clang diagnostic ignored "-Wold-style-cast"
-#endif
-#if HEDLEY_HAS_WARNING("-Wzero-as-null-pointer-constant")
-  #pragma clang diagnostic ignored "-Wzero-as-null-pointer-constant"
-#endif
-
-static MunitTest test_suite_tests[] = {
-  SIMDE_TESTS_DEFINE_TEST(mm_cmpestrs_8),
-  SIMDE_TESTS_DEFINE_TEST(mm_cmpestrs_16),
-  SIMDE_TESTS_DEFINE_TEST(mm_cmpestrz_8),
-  SIMDE_TESTS_DEFINE_TEST(mm_cmpestrz_16),
-  SIMDE_TESTS_DEFINE_TEST(mm_cmpgt_epi64),
-  SIMDE_TESTS_DEFINE_TEST(mm_cmpistrs_8),
-  SIMDE_TESTS_DEFINE_TEST(mm_cmpistrs_16),
-  SIMDE_TESTS_DEFINE_TEST(mm_cmpistrz_8),
-  SIMDE_TESTS_DEFINE_TEST(mm_cmpistrz_16),
-
-  { NULL, NULL, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL }
-};
-
-HEDLEY_C_DECL MunitSuite* SIMDE_TESTS_GENERATE_SYMBOL(suite)(void) {
-  static MunitSuite suite = { (char*) "/" HEDLEY_STRINGIFY(SIMDE_TESTS_CURRENT_ISAX), test_suite_tests, NULL, 1, MUNIT_SUITE_OPTION_NONE };
-
-  return &suite;
-}
-
-#if defined(SIMDE_TESTS_SINGLE_ISAX)
-int main(int argc, char* argv[HEDLEY_ARRAY_PARAM(argc + 1)]) {
-  static MunitSuite suite = { "", test_suite_tests, NULL, 1, MUNIT_SUITE_OPTION_NONE };
-
-  return munit_suite_main(&suite, NULL, argc, argv);
-}
-#endif /* defined(SIMDE_TESTS_SINGLE_ISAX) */
-
-HEDLEY_DIAGNOSTIC_POP
+#include <test/x86/test-x86-footer.h>

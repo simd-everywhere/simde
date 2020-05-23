@@ -106,16 +106,14 @@ set(TEST_SOURCES_C
   x86/fma.c
   x86/svml.c
 
-  arm/neon/vadd.c
-  arm/neon/vdup_n.c
-  arm/neon/vmul.c
-  arm/neon/vsub.c)
+  arm/neon/add.c
+  arm/neon/sub.c)
 
 set(TEST_RUNNER_SOURCES
   run-tests.c
-  x86/test-x86.c
-  arm/neon/test-neon.c
-  arm/test-arm.c)
+  x86/run-tests.c
+  arm/run-tests.c
+  arm/neon/run-tests.c)
 add_executable(run-tests ${TEST_RUNNER_SOURCES})
 set_property(TARGET run-tests PROPERTY C_STANDARD "99")
 target_link_libraries(run-tests munit)
@@ -151,8 +149,8 @@ foreach(tst
       "/x86/sse2"
       "/x86/sse3"
       "/x86/ssse3"
-      "/x86/sse4.1"
-      "/x86/sse4.2"
+      "/x86/sse4_1"
+      "/x86/sse4_2"
       "/x86/avx"
       "/x86/fma"
       "/x86/avx2"

@@ -1373,14 +1373,12 @@ simde_mm_cvtps_pi16 (simde__m128 a) {
   simde__m64_private r_;
   simde__m128_private a_ = simde__m128_to_private(a);
 
-  #if defined(SIMDE_CONVERT_VECTOR_)
-    SIMDE_CONVERT_VECTOR_(r_.i16, a_.f32);
-  #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-    r_.neon_i16 = vmovn_s32(vcvtq_s32_f32(a_.neon_f32));
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && !defined(SIMDE_BUG_GCC_95399)
+    r_.neon_i16 = vmovn_s32(vcvtq_s32_f32(vrndiq_f32(a_.neon_f32)));
   #else
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.i16) / sizeof(r_.i16[0])) ; i++) {
-      r_.i16[i] = SIMDE_CONVERT_FTOI(int16_t, a_.f32[i]);
+      r_.i16[i] = SIMDE_CONVERT_FTOI(int16_t, simde_math_roundf(a_.f32[i]));
     }
   #endif
 
@@ -1400,16 +1398,14 @@ simde_mm_cvtps_pi32 (simde__m128 a) {
   simde__m64_private r_;
   simde__m128_private a_ = simde__m128_to_private(a);
 
-#if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-  r_.neon_i32 = vcvt_s32_f32(vget_low_f32(a_.neon_f32));
-#elif defined(SIMDE_CONVERT_VECTOR_)
-  SIMDE_CONVERT_VECTOR_(r_.i32, a_.m64_private[0].f32);
-#else
-  SIMDE_VECTORIZE
-  for (size_t i = 0 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {
-    r_.i32[i] = SIMDE_CONVERT_FTOI(int32_t, a_.f32[i]);
-  }
-#endif
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && !defined(SIMDE_BUG_GCC_95399)
+    r_.neon_i32 = vcvt_s32_f32(vget_low_f32(vrndiq_f32(a_.neon_f32)));
+  #else
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {
+      r_.i32[i] = SIMDE_CONVERT_FTOI(int32_t, simde_math_roundf(a_.f32[i]));
+    }
+  #endif
 
   return simde__m64_from_private(r_);
 #endif
@@ -1421,26 +1417,35 @@ simde_mm_cvtps_pi32 (simde__m128 a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m64
 simde_mm_cvtps_pi8 (simde__m128 a) {
-#if defined(SIMDE_X86_SSE_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
-  return _mm_cvtps_pi8(a);
-#else
-  simde__m64_private r_;
-  simde__m128_private a_ = simde__m128_to_private(a);
+  #if defined(SIMDE_X86_SSE_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
+    return _mm_cvtps_pi8(a);
+  #else
+    simde__m64_private r_;
+    simde__m128_private a_ = simde__m128_to_private(a);
 
-#if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-  int16x4_t b = vmovn_s32(vcvtq_s32_f32(a_.neon_f32));
-  int16x8_t c = vcombine_s16(b, vmov_n_s16(0));
-  r_.neon_i8 = vmovn_s16(c);
-#else
-  SIMDE_VECTORIZE
-  for (size_t i = 0 ; i < (sizeof(a_.f32) / sizeof(a_.f32[0])) ; i++) {
-    r_.i8[i] = SIMDE_CONVERT_FTOI(int8_t, a_.f32[i]);
-  }
-  /* Note: the upper half is undefined */
-#endif
+    #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && !defined(SIMDE_BUG_GCC_95471)
+      /* Clamp the input to [INT8_MIN, INT8_MAX], round, convert to i32, narrow to
+      * i16, combine with an all-zero vector of i16 (which will become the upper
+      * half), narrow to i8. */
+      float32x4_t max = vdupq_n_f32(HEDLEY_STATIC_CAST(simde_float32, INT8_MAX));
+      float32x4_t min = vdupq_n_f32(HEDLEY_STATIC_CAST(simde_float32, INT8_MIN));
+      float32x4_t values = vrndnq_f32(vmaxq_f32(vminq_f32(max, a_.neon_f32), min));
+      r_.neon_i8 = vmovn_s16(vcombine_s16(vmovn_s32(vcvtq_s32_f32(values)), vdup_n_s16(0)));
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(a_.f32) / sizeof(a_.f32[0])) ; i++) {
+        if (a_.f32[i] > HEDLEY_STATIC_CAST(simde_float32, INT8_MAX))
+          r_.i8[i] = INT8_MAX;
+        else if (a_.f32[i] <  HEDLEY_STATIC_CAST(simde_float32, INT8_MIN))
+          r_.i8[i] = INT8_MIN;
+        else
+          r_.i8[i] = SIMDE_CONVERT_FTOI(int8_t, simde_math_roundf(a_.f32[i]));
+      }
+      /* Note: the upper half is undefined */
+    #endif
 
-  return simde__m64_from_private(r_);
-#endif
+    return simde__m64_from_private(r_);
+  #endif
 }
 #if defined(SIMDE_X86_SSE_ENABLE_NATIVE_ALIASES)
 #  define _mm_cvtps_pi8(a) simde_mm_cvtps_pi8((a))
@@ -1590,9 +1595,9 @@ simde_mm_cvtss_si64 (simde__m128 a) {
 #else
   simde__m128_private a_ = simde__m128_to_private(a);
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-    return SIMDE_CONVERT_FTOI(int64_t, vgetq_lane_f32(a_.neon_f32, 0));
+    return SIMDE_CONVERT_FTOI(int64_t, simde_math_roundf(vgetq_lane_f32(a_.neon_f32, 0)));
   #else
-    return SIMDE_CONVERT_FTOI(int64_t, a_.f32[0]);
+    return SIMDE_CONVERT_FTOI(int64_t, simde_math_roundf(a_.f32[0]));
   #endif
 #endif
 }

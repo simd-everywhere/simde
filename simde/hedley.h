@@ -10,11 +10,11 @@
  * SPDX-License-Identifier: CC0-1.0
  */
 
-#if !defined(HEDLEY_VERSION) || (HEDLEY_VERSION < 12)
+#if !defined(HEDLEY_VERSION) || (HEDLEY_VERSION < 14)
 #if defined(HEDLEY_VERSION)
 #  undef HEDLEY_VERSION
 #endif
-#define HEDLEY_VERSION 12
+#define HEDLEY_VERSION 14
 
 #if defined(HEDLEY_STRINGIFY_EX)
 #  undef HEDLEY_STRINGIFY_EX
@@ -35,6 +35,16 @@
 #  undef HEDLEY_CONCAT
 #endif
 #define HEDLEY_CONCAT(a,b) HEDLEY_CONCAT_EX(a,b)
+
+#if defined(HEDLEY_CONCAT3_EX)
+#  undef HEDLEY_CONCAT3_EX
+#endif
+#define HEDLEY_CONCAT3_EX(a,b,c) a##b##c
+
+#if defined(HEDLEY_CONCAT3)
+#  undef HEDLEY_CONCAT3
+#endif
+#define HEDLEY_CONCAT3(a,b,c) HEDLEY_CONCAT3_EX(a,b,c)
 
 #if defined(HEDLEY_VERSION_ENCODE)
 #  undef HEDLEY_VERSION_ENCODE
@@ -928,7 +938,10 @@
 #if defined(HEDLEY_DEPRECATED_FOR)
 #  undef HEDLEY_DEPRECATED_FOR
 #endif
-#if defined(__cplusplus) && (__cplusplus >= 201402L)
+#if HEDLEY_MSVC_VERSION_CHECK(14,0,0)
+#  define HEDLEY_DEPRECATED(since) __declspec(deprecated("Since " # since))
+#  define HEDLEY_DEPRECATED_FOR(since, replacement) __declspec(deprecated("Since " #since "; use " #replacement))
+#elif defined(__cplusplus) && (__cplusplus >= 201402L)
 #  define HEDLEY_DEPRECATED(since) HEDLEY_DIAGNOSTIC_DISABLE_CPP98_COMPAT_WRAP_([[deprecated("Since " #since)]])
 #  define HEDLEY_DEPRECATED_FOR(since, replacement) HEDLEY_DIAGNOSTIC_DISABLE_CPP98_COMPAT_WRAP_([[deprecated("Since " #since "; use " #replacement)]])
 #elif \
@@ -962,9 +975,6 @@
   HEDLEY_TI_CLPRU_VERSION_CHECK(2,1,0)
 #  define HEDLEY_DEPRECATED(since) __attribute__((__deprecated__))
 #  define HEDLEY_DEPRECATED_FOR(since, replacement) __attribute__((__deprecated__))
-#elif HEDLEY_MSVC_VERSION_CHECK(14,0,0)
-#  define HEDLEY_DEPRECATED(since) __declspec(deprecated("Since " # since))
-#  define HEDLEY_DEPRECATED_FOR(since, replacement) __declspec(deprecated("Since " #since "; use " #replacement))
 #elif \
   HEDLEY_MSVC_VERSION_CHECK(13,10,0) || \
   HEDLEY_PELLES_VERSION_CHECK(6,50,0)
@@ -1566,7 +1576,9 @@ HEDLEY_DIAGNOSTIC_POP
 #if defined(HEDLEY_FALL_THROUGH)
 # undef HEDLEY_FALL_THROUGH
 #endif
-#if HEDLEY_GNUC_HAS_ATTRIBUTE(fallthrough,7,0,0) && !defined(HEDLEY_PGI_VERSION)
+#if \
+  HEDLEY_HAS_ATTRIBUTE(fallthrough) || \
+  HEDLEY_GCC_VERSION_CHECK(7,0,0)
 #  define HEDLEY_FALL_THROUGH __attribute__((__fallthrough__))
 #elif HEDLEY_HAS_CPP_ATTRIBUTE_NS(clang,fallthrough)
 #  define HEDLEY_FALL_THROUGH HEDLEY_DIAGNOSTIC_DISABLE_CPP98_COMPAT_WRAP_([[clang::fallthrough]])
@@ -1825,6 +1837,8 @@ HEDLEY_DIAGNOSTIC_POP
 #endif
 #if HEDLEY_HAS_ATTRIBUTE(flag_enum)
 #  define HEDLEY_FLAGS __attribute__((__flag_enum__))
+#else
+#  define HEDLEY_FLAGS
 #endif
 
 #if defined(HEDLEY_FLAGS_CAST)

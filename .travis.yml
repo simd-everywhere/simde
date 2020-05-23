@@ -41,7 +41,7 @@ jobs:
     - C_COMPILER=clang-10
     - CXX_COMPILER=clang++-10
     - COMPILER_FLAGS='-fsanitize=address,undefined'
-    - DIAGNOSTIC_FLAGS='-Weverything -Werror'
+    - DIAGNOSTIC_FLAGS='-Weverything -Werror -Wno-c++98-compat-pedantic -Wno-newline-eof'
     addons:
       apt:
         sources:
@@ -58,7 +58,7 @@ jobs:
     - C_COMPILER=clang-3.8
     - CXX_COMPILER=clang++-3.8
     - COMPILER_FLAGS='-fsanitize=address,undefined'
-    - DIAGNOSTIC_FLAGS='-Weverything -Werror'
+    - DIAGNOSTIC_FLAGS='-Weverything -Werror -Wno-c++98-compat-pedantic -Wno-newline-eof'
     - ARCH_FLAGS='-mavx2'
     addons:
       apt:
@@ -88,17 +88,30 @@ jobs:
   - name: "aarch64"
     if: branch != master OR type == pull_request
     arch: arm64
+    env:
+    - ARCH_FLAGS="-march=armv8-a+simd"
 
   - name: "ppc64le"
     if: branch != master OR type == pull_request
     arch: ppc64le
+    compiler: gcc-10
     env:
     - ARCH_FLAGS="-mcpu=native"
+    - C_COMPILER=gcc-10
+    - CXX_COMPILER=g++-10
     addons:
       apt:
         packages:
-        - gcc
-        - g++
+        - gcc-10
+        - g++-10
+    addons:
+      apt:
+        sources:
+        - sourceline: "ppa:ubuntu-toolchain-r/test"
+          key_url: https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x60c317803a41ba51845e371a1e9377a2ba9ef27f
+        packages:
+        - gcc-10
+        - g++-10
 
   - name: "-DSIMDE_NO_SHUFFLE_VECTOR"
     if: branch != master OR type == pull_request
@@ -181,7 +194,7 @@ jobs:
     if: branch != master OR type == pull_request
     os: windows
     env:
-    - ARCH_FLAGS="/arch:AVX2"
+    - ARCH_FLAGS=""
     - CMAKE_GENERATOR="Visual Studio 15 2017"
     - OPTIMIZATION_FLAGS="/Ox"
     - DIAGNOSTIC_FLAGS="/W4 /WX"

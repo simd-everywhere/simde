@@ -136,10 +136,10 @@
 
 /* SIMDE_ALIGN_CAST allows you to convert to a type with greater
  * aligment requirements without triggering a warning. */
-#if HEDLEY_HAS_WARNING("-Wcast-align")
+#if HEDLEY_HAS_WARNING("-Wcast-align") || defined(__clang__) || HEDLEY_GCC_VERSION_CHECK(3,4,0)
   #define SIMDE_ALIGN_CAST(T, v) (__extension__({ \
       HEDLEY_DIAGNOSTIC_PUSH \
-      _Pragma("clang diagnostic ignored \"-Wcast-align\"") \
+      _Pragma("GCC diagnostic ignored \"-Wcast-align\"") \
       T simde_r_ = HEDLEY_REINTERPRET_CAST(T, v); \
       HEDLEY_DIAGNOSTIC_POP \
       simde_r_; \
@@ -689,6 +689,10 @@ typedef SIMDE_FLOAT64_TYPE simde_float64;
 #    endif
 #    if !HEDLEY_GCC_VERSION_CHECK(9,4,0) && defined(SIMDE_ARCH_AARCH64)
 #      define SIMDE_BUG_GCC_94488
+#    endif
+#    if defined(SIMDE_ARCH_ARM)
+#      define SIMDE_BUG_GCC_95399
+#      define SIMDE_BUG_GCC_95471
 #    endif
 #    if defined(SIMDE_ARCH_POWER)
 #      define SIMDE_BUG_GCC_95227

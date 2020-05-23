@@ -1,13 +1,12 @@
+#if !defined(SIMDE_TEST_X86_TEST_SSE_H)
+#define SIMDE_TEST_X86_TEST_SSE_H
+
+#include "test-x86.h"
+#include "test-mmx.h"
 #include "../../simde/x86/sse.h"
 
-#include "test-mmx.h"
+SIMDE_TEST_X86_GENERATE_FLOAT_TYPE_FUNCS_(__m128, 32, 4)
 
-#if !defined(SIMDE_TEST_X86_SSE)
-#define SIMDE_TEST_X86_SSE
+#define simde_test_x86_assert_equal_f32x4(a, b, precision) simde_test_x86_assert_equal_f32x4_(a, b, 1e-##precision##f, __FILE__, __LINE__, #a, #b)
 
-SIMDE_TEST_DEFINE_ASSERT_VEC_CLOSE(m128, f32)
-
-#define simde_assert_m128_close(a, b, precision) \
-  simde_assert_m128_f32_close_ex(__LINE__, __FILE__, a, b, precision)
-
-#endif /* !defined(SIMDE_TEST_X86_SSE) */
+#endif /* !defined(SIMDE_TEST_X86_TEST_SSE_H) */

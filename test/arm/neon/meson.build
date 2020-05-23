@@ -1,8 +1,6 @@
 simde_test_arm_neon_sources = [
-  'vadd.c',
-  'vdup_n.c',
-  'vmul.c',
-  'vsub.c'
+  'add.c',
+  'sub.c',
 ]
 
 foreach src : simde_test_arm_neon_sources
@@ -19,5 +17,5 @@ simde_tests_arm_neon_native = static_library('simde-tests-arm-neon-native', simd
   cpp_args: simde_c_args + simde_c_defs + simde_native_c_flags + simde_native_cxx_flags,
   include_directories: simde_include_dir)
 
-simde_tests_arm_neon = static_library('simde-tests-neon', 'test-neon.c',
+simde_tests_arm_neon = static_library('simde-tests-neon', 'run-tests.c',
   link_with: [simde_tests_arm_neon_emul, simde_tests_arm_neon_native])

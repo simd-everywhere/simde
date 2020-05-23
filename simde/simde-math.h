@@ -91,8 +91,94 @@
   #endif
 #endif
 
+#if !defined(SIMDE_MATH_INFINITY)
+  #if \
+      HEDLEY_HAS_BUILTIN(__builtin_inf) || \
+      HEDLEY_GCC_VERSION_CHECK(3,3,0) || \
+      HEDLEY_INTEL_VERSION_CHECK(13,0,0) || \
+      HEDLEY_ARM_VERSION_CHECK(4,1,0) || \
+      HEDLEY_CRAY_VERSION_CHECK(8,1,0)
+    #define SIMDE_MATH_INFINITY (__builtin_inf())
+  #elif defined(INFINITY)
+    #define SIMDE_MATH_INFINITY INFINITY
+  #endif
+#endif
+
+#if !defined(SIMDE_INFINITYF)
+  #if \
+      HEDLEY_HAS_BUILTIN(__builtin_inff) || \
+      HEDLEY_GCC_VERSION_CHECK(3,3,0) || \
+      HEDLEY_INTEL_VERSION_CHECK(13,0,0) || \
+      HEDLEY_CRAY_VERSION_CHECK(8,1,0) || \
+      HEDLEY_IBM_VERSION_CHECK(13,1,0)
+    #define SIMDE_MATH_INFINITYF (__builtin_inff())
+  #elif defined(INFINITYF)
+    #define SIMDE_MATH_INFINITYF INFINITYF
+  #elif defined(SIMDE_MATH_INFINITY)
+    #define SIMDE_MATH_INFINITYF HEDLEY_STATIC_CAST(float, SIMDE_MATH_INFINITY)
+  #endif
+#endif
+
+#if !defined(SIMDE_MATH_NAN)
+  #if \
+      HEDLEY_HAS_BUILTIN(__builtin_nan) || \
+      HEDLEY_GCC_VERSION_CHECK(3,3,0) || \
+      HEDLEY_INTEL_VERSION_CHECK(13,0,0) || \
+      HEDLEY_ARM_VERSION_CHECK(4,1,0) || \
+      HEDLEY_CRAY_VERSION_CHECK(8,1,0) || \
+      HEDLEY_IBM_VERSION_CHECK(13,1,0)
+    #define SIMDE_MATH_NAN (__builtin_nan(""))
+  #elif defined(NAN)
+    #define SIMDE_MATH_NAN NAN
+  #endif
+#endif
+
+#if !defined(SIMDE_NANF)
+  #if \
+      HEDLEY_HAS_BUILTIN(__builtin_nanf) || \
+      HEDLEY_GCC_VERSION_CHECK(3,3,0) || \
+      HEDLEY_INTEL_VERSION_CHECK(13,0,0) || \
+      HEDLEY_ARM_VERSION_CHECK(4,1,0) || \
+      HEDLEY_CRAY_VERSION_CHECK(8,1,0)
+    #define SIMDE_MATH_NANF (__builtin_nanf(""))
+  #elif defined(NANF)
+    #define SIMDE_MATH_NANF NANF
+  #elif defined(SIMDE_MATH_NAN)
+    #define SIMDE_MATH_NANF HEDLEY_STATIC_CAST(float, SIMDE_MATH_NAN)
+  #endif
+#endif
+
+#if !defined(SIMDE_MATH_PI)
+  #if defined(M_PI)
+    #define SIMDE_MATH_PI M_PI
+  #else
+    #define SIMDE_MATH_PI 3.14159265358979323846
+  #endif
+#endif
 
 /*** Classification macros from C99 ***/
+
+#if !defined(simde_math_isinf)
+  #if SIMDE_MATH_BUILTIN_LIBM(isinf)
+    #define simde_math_isinf(v) __builtin_isinf(v)
+  #elif defined(isinf) || defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_isinf(v) isinf(v)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_isinf(v) std::isinf(v)
+  #endif
+#endif
+
+#if !defined(simde_math_isinff)
+  #if HEDLEY_HAS_BUILTIN(__builtin_isinff) || \
+      HEDLEY_INTEL_VERSION_CHECK(13,0,0) || \
+      HEDLEY_ARM_VERSION_CHECK(4,1,0)
+    #define simde_math_isinff(v) __builtin_isinff(v)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_isinff(v) std::isinf(v)
+  #elif defined(simde_math_isinf)
+    #define simde_math_isinff(v) simde_math_isinf(HEDLEY_STATIC_CAST(double, v))
+  #endif
+#endif
 
 #if !defined(simde_math_isnan)
   #if SIMDE_MATH_BUILTIN_LIBM(isnan)
@@ -609,12 +695,6 @@
   #elif defined(SIMDE_MATH_HAVE_MATH_H)
     #define simde_math_truncf(v) truncf(v)
   #endif
-#endif
-
-#if defined(M_PI)
-  #define SIMDE_MATH_PI M_PI
-#else
-  #define SIMDE_MATH_PI 3.14159265358979323846
 #endif
 
 /*** Additional functions not in libm ***/

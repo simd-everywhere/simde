@@ -25,11 +25,8 @@
 #include <simde/x86/avx512vl.h>
 #include <test/x86/test-avx512.h>
 
-static MunitResult
-test_simde_mm_cvtsepi16_epi8(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm_cvtsepi16_epi8(void) {
   const struct {
     simde__m128i a;
     simde__m128i r;
@@ -89,14 +86,11 @@ test_simde_mm_cvtsepi16_epi8(const MunitParameter params[], void* data) {
     simde_assert_m128i_i8(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_cvtsepi16_epi8(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_cvtsepi16_epi8(void) {
   const struct {
     simde__m256i a;
     simde__m128i r;
@@ -172,14 +166,11 @@ test_simde_mm256_cvtsepi16_epi8(const MunitParameter params[], void* data) {
     simde_assert_m128i_i8(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm_cvtsepi32_epi8(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm_cvtsepi32_epi8(void) {
   const struct {
     simde__m128i a;
     simde__m128i r;
@@ -231,14 +222,11 @@ test_simde_mm_cvtsepi32_epi8(const MunitParameter params[], void* data) {
     simde_assert_m128i_i8(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_cvtsepi32_epi8(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_cvtsepi32_epi8(void) {
   const struct {
     simde__m256i a;
     simde__m128i r;
@@ -298,14 +286,11 @@ test_simde_mm256_cvtsepi32_epi8(const MunitParameter params[], void* data) {
     simde_assert_m128i_i8(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm_cvtsepi32_epi16(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm_cvtsepi32_epi16(void) {
   const struct {
     simde__m128i a;
     simde__m128i r;
@@ -341,14 +326,11 @@ test_simde_mm_cvtsepi32_epi16(const MunitParameter params[], void* data) {
     simde_assert_m128i_i16(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_cvtsepi32_epi16(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_cvtsepi32_epi16(void) {
   const struct {
     simde__m256i a;
     simde__m128i r;
@@ -392,14 +374,11 @@ test_simde_mm256_cvtsepi32_epi16(const MunitParameter params[], void* data) {
     simde_assert_m128i_i16(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm_cvtsepi64_epi8(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm_cvtsepi64_epi8(void) {
   const struct {
     simde__m128i a;
     simde__m128i r;
@@ -451,14 +430,11 @@ test_simde_mm_cvtsepi64_epi8(const MunitParameter params[], void* data) {
     simde_assert_m128i_i8(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_cvtsepi64_epi8(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_cvtsepi64_epi8(void) {
   const struct {
     simde__m256i a;
     simde__m128i r;
@@ -518,14 +494,11 @@ test_simde_mm256_cvtsepi64_epi8(const MunitParameter params[], void* data) {
     simde_assert_m128i_i8(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_abs_epi64(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_abs_epi64(void) {
   const struct {
     simde__m256i a;
     simde__m256i r;
@@ -569,14 +542,11 @@ test_simde_mm256_abs_epi64(const MunitParameter params[], void* data) {
     simde_assert_m256i_i64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_mask_abs_epi64(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_mask_abs_epi64(void) {
   const struct {
     simde__m256i src;
     simde__mmask8 k;
@@ -646,14 +616,11 @@ test_simde_mm256_mask_abs_epi64(const MunitParameter params[], void* data) {
     simde_assert_m256i_i64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_maskz_abs_epi64(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_maskz_abs_epi64(void) {
   const struct {
     simde__mmask8 k;
     simde__m256i a;
@@ -706,48 +673,22 @@ test_simde_mm256_maskz_abs_epi64(const MunitParameter params[], void* data) {
     simde_assert_m256i_i64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-HEDLEY_DIAGNOSTIC_PUSH
-HEDLEY_DIAGNOSTIC_DISABLE_CAST_QUAL
+SIMDE_TEST_FUNC_LIST_BEGIN
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm_cvtsepi16_epi8)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_cvtsepi16_epi8)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm_cvtsepi32_epi8)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_cvtsepi32_epi8)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm_cvtsepi32_epi16)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_cvtsepi32_epi16)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm_cvtsepi64_epi8)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_cvtsepi64_epi8)
 
-#if HEDLEY_HAS_WARNING("-Wold-style-cast")
-  #pragma clang diagnostic ignored "-Wold-style-cast"
-#endif
-#if HEDLEY_HAS_WARNING("-Wzero-as-null-pointer-constant")
-  #pragma clang diagnostic ignored "-Wzero-as-null-pointer-constant"
-#endif
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_abs_epi64)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_mask_abs_epi64)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_maskz_abs_epi64)
+SIMDE_TEST_FUNC_LIST_END
 
-static MunitTest test_suite_tests[] = {
-  SIMDE_TESTS_DEFINE_TEST(mm_cvtsepi16_epi8),
-  SIMDE_TESTS_DEFINE_TEST(mm256_cvtsepi16_epi8),
-  SIMDE_TESTS_DEFINE_TEST(mm_cvtsepi32_epi8),
-  SIMDE_TESTS_DEFINE_TEST(mm256_cvtsepi32_epi8),
-  SIMDE_TESTS_DEFINE_TEST(mm_cvtsepi32_epi16),
-  SIMDE_TESTS_DEFINE_TEST(mm256_cvtsepi32_epi16),
-  SIMDE_TESTS_DEFINE_TEST(mm_cvtsepi64_epi8),
-  SIMDE_TESTS_DEFINE_TEST(mm256_cvtsepi64_epi8),
-
-  SIMDE_TESTS_DEFINE_TEST(mm256_abs_epi64),
-  SIMDE_TESTS_DEFINE_TEST(mm256_mask_abs_epi64),
-  SIMDE_TESTS_DEFINE_TEST(mm256_maskz_abs_epi64),
-
-  { NULL, NULL, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL }
-};
-
-HEDLEY_C_DECL MunitSuite* SIMDE_TESTS_GENERATE_SYMBOL(suite)(void) {
-  static MunitSuite suite = { (char*) "/" HEDLEY_STRINGIFY(SIMDE_TESTS_CURRENT_ISAX), test_suite_tests, NULL, 1, MUNIT_SUITE_OPTION_NONE };
-
-  return &suite;
-}
-
-#if defined(SIMDE_TESTS_SINGLE_ISAX)
-int main(int argc, char* argv[HEDLEY_ARRAY_PARAM(argc + 1)]) {
-  static MunitSuite suite = { "", test_suite_tests, NULL, 1, MUNIT_SUITE_OPTION_NONE };
-
-  return munit_suite_main(&suite, NULL, argc, argv);
-}
-#endif /* defined(SIMDE_TESTS_SINGLE_ISAX) */
-
-HEDLEY_DIAGNOSTIC_POP
+#include <test/x86/test-x86-footer.h>
