@@ -271,6 +271,26 @@
   #endif
 #endif
 
+#if !defined(simde_math_cos)
+  #if SIMDE_MATH_BUILTIN_LIBM(cos)
+    #define simde_math_cos(v) __builtin_cos(v)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_cos(v) std::cos(v)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_cos(v) cos(v)
+  #endif
+#endif
+
+#if !defined(simde_math_cosf)
+  #if SIMDE_MATH_BUILTIN_LIBM(cosf)
+    #define simde_math_cosf(v) __builtin_cosf(v)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_cosf(v) std::cos(v)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_cosf(v) cosf(v)
+  #endif
+#endif
+
 #if !defined(simde_math_sqrt)
   #if SIMDE_MATH_BUILTIN_LIBM(sqrt)
     #define simde_math_sqrt(v) __builtin_sqrt(v)
