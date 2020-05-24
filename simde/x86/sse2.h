@@ -4574,11 +4574,11 @@ simde_mm_srl_epi16 (simde__m128i a, simde__m128i count) {
 #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-# define simde_mm_srl_epi16 (a, count) \
-  simde__m128i_from_neon_u16(vshrq_n_u16(simde__m128i_to_neon_u16, (simde__m128i_to_private(count).u64[0] > 63) ? 64 : HEDLEY_STATIC_CAST(int, simde__m128i_to_private(count).u64[0])))
+  #define simde_mm_srl_epi16(a, count) \
+    simde__m128i_from_neon_u16(vshrq_n_u16(simde__m128i_to_neon_u16(a), (simde__m128i_to_private(count).u64[0] > 63) ? 64 : HEDLEY_STATIC_CAST(int, simde__m128i_to_private(count).u64[0])))
 #endif
 #if defined(SIMDE_X86_SSE2_ENABLE_NATIVE_ALIASES)
-#  define _mm_srl_epi16(a, count) (simde_mm_srl_epi16(a, (count)))
+  #define _mm_srl_epi16(a, count) (simde_mm_srl_epi16(a, (count)))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -4603,8 +4603,8 @@ simde_mm_srl_epi32 (simde__m128i a, simde__m128i count) {
 #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-# define simde_mm_srl_epi32 (a, count) \
-  simde__m128i_from_neon_u32(vshrq_n_u32(simde__m128i_to_neon_u32, (simde__m128i_to_private(count).u64[0] > 63) ? 64 : HEDLEY_STATIC_CAST(int, simde__m128i_to_private(count).u64[0])))
+# define simde_mm_srl_epi32(a, count) \
+  simde__m128i_from_neon_u32(vshrq_n_u32(simde__m128i_to_neon_u32(a), (simde__m128i_to_private(count).u64[0] > 63) ? 64 : HEDLEY_STATIC_CAST(int, simde__m128i_to_private(count).u64[0])))
 #endif
 #if defined(SIMDE_X86_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_srl_epi32(a, count) (simde_mm_srl_epi32(a, (count)))
@@ -4659,8 +4659,7 @@ simde_mm_srai_epi16 (simde__m128i a, const int imm8)
 #if defined(SIMDE_X86_SSE2_NATIVE)
 #  define simde_mm_srai_epi16(a, imm8) _mm_srai_epi16((a), (imm8))
 #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-# define simde_mm_srai_epi16 (a, imm8) \
-  simde__m128i_from_neon_i32(vshlq_n_s32(simde__m128i_to_neon_i32(a), (imm8)))
+#  define simde_mm_srai_epi16(a, imm8) simde__m128i_from_neon_i16(vshlq_n_s16(simde__m128i_to_neon_i16(a), -((imm8 < 16) ? imm8 : 15)))
 #endif
 #if defined(SIMDE_X86_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_srai_epi16(a, imm8) simde_mm_srai_epi16(a, imm8)
@@ -4684,8 +4683,7 @@ simde_mm_srai_epi32 (simde__m128i a, const int imm8)
 #if defined(SIMDE_X86_SSE2_NATIVE)
 #  define simde_mm_srai_epi32(a, imm8) _mm_srai_epi32((a), (imm8))
 #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-#  define simde_mm_srai_epi32(a, imm8) \
-  simde__m128i_from_neon_i32(vshlq_n_s32(simde__m128i_to_neon_i32(a), (imm8)))
+#  define simde_mm_srai_epi32(a, imm8) simde__m128i_from_neon_i32(vshlq_n_s32(simde__m128i_to_neon_i32(a), -((imm8 < 32) ? imm8 : 31)))
 #endif
 #if defined(SIMDE_X86_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_srai_epi32(a, imm8) simde_mm_srai_epi32(a, imm8)
@@ -4704,18 +4702,18 @@ simde_mm_sra_epi16 (simde__m128i a, simde__m128i count) {
 
   const int cnt = HEDLEY_STATIC_CAST(int, (count_.i64[0] > 15 ? 15 : count_.i64[0]));
 
-  SIMDE_VECTORIZE
-  for (size_t i = 0 ; i < (sizeof(r_.i16) / sizeof(r_.i16[0])) ; i++) {
-    r_.i16[i] = a_.i16[i] >> cnt;
-  }
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    r_.neon_i16 = vshlq_n_s16(a_.neon_i16, -cnt);
+  #else
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.i16) / sizeof(r_.i16[0])) ; i++) {
+      r_.i16[i] = a_.i16[i] >> cnt;
+    }
+  #endif
 
   return simde__m128i_from_private(r_);
 #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-#  define simde_mm_sra_epi16(a, count) \
-  simde__m128i_from_neon_i32(vshlq_n_s32(simde__m128i_to_neon_i32(a), HEDLEY_STATIC_CAST(int, (simde__m128i_to_private(count).i64[0] > 15 ? 15 : simde__m128i_to_private(count).i64[0]))))
-#endif
 #if defined(SIMDE_X86_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_sra_epi16(a, count) (simde_mm_sra_epi16(a, count))
 #endif
@@ -4733,18 +4731,18 @@ simde_mm_sra_epi32 (simde__m128i a, simde__m128i count) {
 
   const int cnt = count_.u64[0] > 31 ? 31 : HEDLEY_STATIC_CAST(int, count_.u64[0]);
 
-  SIMDE_VECTORIZE
-  for (size_t i = 0 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {
-    r_.i32[i] = a_.i32[i] >> cnt;
-  }
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    r_.neon_i32 = vshlq_n_s32(a_.neon_i32, -cnt);
+  #else
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {
+      r_.i32[i] = a_.i32[i] >> cnt;
+    }
+  #endif
 
   return simde__m128i_from_private(r_);
 #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-#  define simde_mm_sra_epi32(a, count) \
-  simde__m128i_from_neon_i32(vshlq_n_s32(simde__m128i_to_neon_i32(a), simde__m128i_to_private(count).u64[0] > 31 ? 31 : HEDLEY_STATIC_CAST(int, (simde__m128i_to_private(count).u64[0]))))
-#endif
 #if defined(SIMDE_X86_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_sra_epi32(a, count) (simde_mm_sra_epi32(a, (count)))
 #endif
