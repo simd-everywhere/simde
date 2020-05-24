@@ -61,7 +61,8 @@ simde_mm_cos_ps (simde__m128 a) {
 #endif
 }
 #if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
-#  define _mm_cos_ps(a) simde_mm_cos_ps(a)
+  #undef _mm_cos_ps
+  #define _mm_cos_ps(a) simde_mm_cos_ps(a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -83,7 +84,8 @@ simde_mm_cos_pd (simde__m128d a) {
 #endif
 }
 #if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
-#  define _mm_cos_pd(a) simde_mm_cos_pd(a)
+  #undef _mm_cos_pd
+  #define _mm_cos_pd(a) simde_mm_cos_pd(a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -105,7 +107,8 @@ simde_mm256_cos_ps (simde__m256 a) {
 #endif
 }
 #if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
-#  define _mm256_cos_ps(a) simde_mm256_cos_ps(a)
+  #undef _mm256_cos_ps
+  #define _mm256_cos_ps(a) simde_mm256_cos_ps(a)
 #endif
 
 
@@ -128,7 +131,8 @@ simde_mm256_cos_pd (simde__m256d a) {
 #endif
 }
 #if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
-#  define _mm256_cos_pd(a) simde_mm256_cos_pd(a)
+  #undef _mm256_cos_pd
+  #define _mm256_cos_pd(a) simde_mm256_cos_pd(a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -150,7 +154,8 @@ simde_mm512_cos_ps (simde__m512 a) {
 #endif
 }
 #if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
-#  define _mm512_cos_ps(a) simde_mm512_cos_ps(a)
+  #undef _mm512_cos_ps
+  #define _mm512_cos_ps(a) simde_mm512_cos_ps(a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -172,7 +177,8 @@ simde_mm512_cos_pd (simde__m512d a) {
 #endif
 }
 #if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
-#  define _mm512_cos_pd(a) simde_mm512_cos_pd(a)
+  #undef _mm512_cos_pd
+  #define _mm512_cos_pd(a) simde_mm512_cos_pd(a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -703,7 +709,8 @@ simde_mm512_div_epi8 (simde__m512i a, simde__m512i b) {
   #endif
 }
 #if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
-#  define _mm512_div_epi8(a, b) simde_mm512_div_epi8((a), (b))
+  #undef _mm512_div_epi8
+  #define _mm512_div_epi8(a, b) simde_mm512_div_epi8((a), (b))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -730,7 +737,8 @@ simde_mm512_div_epi16 (simde__m512i a, simde__m512i b) {
   #endif
 }
 #if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
-#  define _mm512_div_epi16(a, b) simde_mm512_div_epi16((a), (b))
+  #undef _mm512_div_epi16
+  #define _mm512_div_epi16(a, b) simde_mm512_div_epi16((a), (b))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -757,7 +765,8 @@ simde_mm512_div_epi32 (simde__m512i a, simde__m512i b) {
   #endif
 }
 #if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
-#  define _mm512_div_epi32(a, b) simde_mm512_div_epi32((a), (b))
+  #undef _mm512_div_epi32
+  #define _mm512_div_epi32(a, b) simde_mm512_div_epi32((a), (b))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -798,7 +807,8 @@ simde_mm512_div_epi64 (simde__m512i a, simde__m512i b) {
   #endif
 }
 #if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
-#  define _mm512_div_epi64(a, b) simde_mm512_div_epi64((a), (b))
+  #undef _mm512_div_epi64
+  #define _mm512_div_epi64(a, b) simde_mm512_div_epi64((a), (b))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -825,7 +835,8 @@ simde_mm512_div_epu8 (simde__m512i a, simde__m512i b) {
   #endif
 }
 #if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
-#  define _mm512_div_epu8(a, b) simde_mm512_div_epu8((a), (b))
+  #undef _mm512_div_epu8
+  #define _mm512_div_epu8(a, b) simde_mm512_div_epu8((a), (b))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -852,7 +863,8 @@ simde_mm512_div_epu16 (simde__m512i a, simde__m512i b) {
   #endif
 }
 #if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
-#  define _mm512_div_epu16(a, b) simde_mm512_div_epu16((a), (b))
+  #undef _mm512_div_epu16
+  #define _mm512_div_epu16(a, b) simde_mm512_div_epu16((a), (b))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -879,7 +891,8 @@ simde_mm512_div_epu32 (simde__m512i a, simde__m512i b) {
   #endif
 }
 #if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
-#  define _mm512_div_epu32(a, b) simde_mm512_div_epu32((a), (b))
+  #undef _mm512_div_epu32
+  #define _mm512_div_epu32(a, b) simde_mm512_div_epu32((a), (b))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -920,7 +933,8 @@ simde_mm512_div_epu64 (simde__m512i a, simde__m512i b) {
   #endif
 }
 #if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
-#  define _mm512_div_epu64(a, b) simde_mm512_div_epu64((a), (b))
+  #undef _mm512_div_epu64
+  #define _mm512_div_epu64(a, b) simde_mm512_div_epu64((a), (b))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -1445,7 +1459,8 @@ simde_mm512_rem_epi8 (simde__m512i a, simde__m512i b) {
   #endif
 }
 #if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
-#  define _mm512_rem_epi8(a, b) simde_mm512_rem_epi8((a), (b))
+  #undef _mm512_rem_epi8
+  #define _mm512_rem_epi8(a, b) simde_mm512_rem_epi8((a), (b))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -1472,7 +1487,8 @@ simde_mm512_rem_epi16 (simde__m512i a, simde__m512i b) {
   #endif
 }
 #if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
-#  define _mm512_rem_epi16(a, b) simde_mm512_rem_epi16((a), (b))
+  #undef _mm512_rem_epi16
+  #define _mm512_rem_epi16(a, b) simde_mm512_rem_epi16((a), (b))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -1499,7 +1515,8 @@ simde_mm512_rem_epi32 (simde__m512i a, simde__m512i b) {
   #endif
 }
 #if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
-#  define _mm512_rem_epi32(a, b) simde_mm512_rem_epi32((a), (b))
+  #undef _mm512_rem_epi32
+  #define _mm512_rem_epi32(a, b) simde_mm512_rem_epi32((a), (b))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -1540,7 +1557,8 @@ simde_mm512_rem_epi64 (simde__m512i a, simde__m512i b) {
   #endif
 }
 #if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
-#  define _mm512_rem_epi64(a, b) simde_mm512_rem_epi64((a), (b))
+  #undef _mm512_rem_epi64
+  #define _mm512_rem_epi64(a, b) simde_mm512_rem_epi64((a), (b))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -1567,7 +1585,8 @@ simde_mm512_rem_epu8 (simde__m512i a, simde__m512i b) {
   #endif
 }
 #if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
-#  define _mm512_rem_epu8(a, b) simde_mm512_rem_epu8((a), (b))
+  #undef _mm512_rem_epu8
+  #define _mm512_rem_epu8(a, b) simde_mm512_rem_epu8((a), (b))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -1594,7 +1613,8 @@ simde_mm512_rem_epu16 (simde__m512i a, simde__m512i b) {
   #endif
 }
 #if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
-#  define _mm512_rem_epu16(a, b) simde_mm512_rem_epu16((a), (b))
+  #undef _mm512_rem_epu16
+  #define _mm512_rem_epu16(a, b) simde_mm512_rem_epu16((a), (b))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -1621,7 +1641,8 @@ simde_mm512_rem_epu32 (simde__m512i a, simde__m512i b) {
   #endif
 }
 #if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
-#  define _mm512_rem_epu32(a, b) simde_mm512_rem_epu32((a), (b))
+  #undef _mm512_rem_epu32
+  #define _mm512_rem_epu32(a, b) simde_mm512_rem_epu32((a), (b))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -1662,7 +1683,8 @@ simde_mm512_rem_epu64 (simde__m512i a, simde__m512i b) {
   #endif
 }
 #if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
-#  define _mm512_rem_epu64(a, b) simde_mm512_rem_epu64((a), (b))
+  #undef _mm512_rem_epu64
+  #define _mm512_rem_epu64(a, b) simde_mm512_rem_epu64((a), (b))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -1684,7 +1706,8 @@ simde_mm_sin_ps (simde__m128 a) {
 #endif
 }
 #if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
-#  define _mm_sin_ps(a) simde_mm_sin_ps(a)
+  #undef _mm_sin_ps
+  #define _mm_sin_ps(a) simde_mm_sin_ps(a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -1706,7 +1729,8 @@ simde_mm_sin_pd (simde__m128d a) {
 #endif
 }
 #if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
-#  define _mm_sin_pd(a) simde_mm_sin_pd(a)
+  #undef _mm_sin_pd
+  #define _mm_sin_pd(a) simde_mm_sin_pd(a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -1728,7 +1752,8 @@ simde_mm256_sin_ps (simde__m256 a) {
 #endif
 }
 #if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
-#  define _mm256_sin_ps(a) simde_mm256_sin_ps(a)
+  #undef _mm256_sin_ps
+  #define _mm256_sin_ps(a) simde_mm256_sin_ps(a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -1750,7 +1775,8 @@ simde_mm256_sin_pd (simde__m256d a) {
 #endif
 }
 #if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
-#  define _mm256_sin_pd(a) simde_mm256_sin_pd(a)
+  #undef _mm256_sin_pd
+  #define _mm256_sin_pd(a) simde_mm256_sin_pd(a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -1772,7 +1798,8 @@ simde_mm512_sin_ps (simde__m512 a) {
   #endif
 }
 #if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
-#  define _mm512_sin_ps(a) simde_mm512_sin_ps(a)
+  #undef _mm512_sin_ps
+  #define _mm512_sin_ps(a) simde_mm512_sin_ps(a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -1794,7 +1821,8 @@ simde_mm512_sin_pd (simde__m512d a) {
   #endif
 }
 #if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
-#  define _mm512_sin_pd(a) simde_mm512_sin_pd(a)
+  #undef _mm512_sin_pd
+  #define _mm512_sin_pd(a) simde_mm512_sin_pd(a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
