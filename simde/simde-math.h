@@ -311,6 +311,26 @@
   #endif
 #endif
 
+#if !defined(simde_math_tan)
+  #if SIMDE_MATH_BUILTIN_LIBM(tan)
+    #define simde_math_tan(v) __builtin_tan(v)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_tan(v) std::tan(v)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_tan(v) tan(v)
+  #endif
+#endif
+
+#if !defined(simde_math_tanf)
+  #if SIMDE_MATH_BUILTIN_LIBM(tanf)
+    #define simde_math_tanf(v) __builtin_tanf(v)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_tanf(v) std::tan(v)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_tanf(v) tanf(v)
+  #endif
+#endif
+
 #if !defined(simde_math_trunc)
   #if SIMDE_MATH_BUILTIN_LIBM(trunc)
     #define simde_math_trunc(v) __builtin_trunc(v)
