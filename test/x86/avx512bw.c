@@ -25,8 +25,6 @@
 #include <simde/x86/avx512bw.h>
 #include <test/x86/test-avx512.h>
 
-#if defined(SIMDE_X86_AVX512BW_NATIVE) || defined(SIMDE_NO_NATIVE) || defined(SIMDE_ALWAYS_BUILD_NATIVE_TESTS)
-
 static MunitResult
 test_simde_mm512_mask_set1_epi8(const MunitParameter params[], void* data) {
   (void) params;
@@ -19832,8 +19830,6 @@ test_simde_mm512_subs_epu16(const MunitParameter params[], void* data) {
   return MUNIT_OK;
 }
 
-#endif /* defined(SIMDE_avx512bw_NATIVE) || defined(SIMDE_NO_NATIVE) || defined(SIMDE_ALWAYS_BUILD_NATIVE_TESTS) */
-
 HEDLEY_DIAGNOSTIC_PUSH
 HEDLEY_DIAGNOSTIC_DISABLE_CAST_QUAL
 
@@ -19845,8 +19841,6 @@ HEDLEY_DIAGNOSTIC_DISABLE_CAST_QUAL
 #endif
 
 static MunitTest test_suite_tests[] = {
-#if defined(SIMDE_X86_AVX512BW_NATIVE) || defined(SIMDE_NO_NATIVE) || defined(SIMDE_ALWAYS_BUILD_NATIVE_TESTS)
-
   SIMDE_TESTS_DEFINE_TEST(mm512_mask_set1_epi8),
   SIMDE_TESTS_DEFINE_TEST(mm512_mask_set1_epi16),
   SIMDE_TESTS_DEFINE_TEST(mm512_maskz_set1_epi8),
@@ -19923,7 +19917,6 @@ static MunitTest test_suite_tests[] = {
   SIMDE_TESTS_DEFINE_TEST(mm512_maskz_subs_epu8),
   SIMDE_TESTS_DEFINE_TEST(mm512_subs_epu16),
 
-#endif /* defined(SIMDE_AVX512bw_NATIVE) || defined(SIMDE_NO_NATIVE) || defined(SIMDE_ALWAYS_BUILD_NATIVE_TESTS) */
   { NULL, NULL, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL }
 };
 

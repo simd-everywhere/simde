@@ -25,8 +25,6 @@
 #include <simde/x86/avx.h>
 #include <test/x86/test-avx.h>
 
-#if defined(SIMDE_X86_AVX_NATIVE) || defined(SIMDE_NO_NATIVE) || defined(SIMDE_ALWAYS_BUILD_NATIVE_TESTS)
-
 static simde_float32 u32_to_f32(uint32_t u32) {
   simde_float32 f32;
   memcpy(&f32, &u32, sizeof(f32));
@@ -14267,8 +14265,6 @@ test_simde_mm256_testnzc_si256(const MunitParameter params[], void* data) {
   return MUNIT_OK;
 }
 
-#endif /* !defined(SIMDE_X86_AVX_NATIVE) || defined(SIMDE_NO_NATIVE) || defined(SIMDE_ALWAYS_BUILD_NATIVE_TESTS) */
-
 HEDLEY_DIAGNOSTIC_PUSH
 HEDLEY_DIAGNOSTIC_DISABLE_CAST_QUAL
 
@@ -14280,7 +14276,6 @@ HEDLEY_DIAGNOSTIC_DISABLE_CAST_QUAL
 #endif
 
 static MunitTest test_suite_tests[] = {
-#if defined(SIMDE_X86_AVX_NATIVE) || defined(SIMDE_NO_NATIVE) || defined(SIMDE_ALWAYS_BUILD_NATIVE_TESTS)
   SIMDE_TESTS_DEFINE_TEST(mm256_set_epi8),
   SIMDE_TESTS_DEFINE_TEST(mm256_set_epi16),
   SIMDE_TESTS_DEFINE_TEST(mm256_set_epi32),
@@ -14503,7 +14498,6 @@ static MunitTest test_suite_tests[] = {
   SIMDE_TESTS_DEFINE_TEST(mm256_zextps128_ps256),
   SIMDE_TESTS_DEFINE_TEST(mm256_zextpd128_pd256),
   SIMDE_TESTS_DEFINE_TEST(mm256_zextsi128_si256),
-#endif /* !defined(SIMDE_X86_AVX_NATIVE) || defined(SIMDE_NO_NATIVE) || defined(SIMDE_ALWAYS_BUILD_NATIVE_TESTS) */
 
   { NULL, NULL, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL }
 };

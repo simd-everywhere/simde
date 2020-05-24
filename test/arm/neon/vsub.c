@@ -25,8 +25,6 @@
 #include <test/arm/neon/test-neon-internal.h>
 #include <simde/arm/neon.h>
 
-#if defined(SIMDE_NEON_NATIVE) || defined(SIMDE_NO_NATIVE) || defined(SIMDE_ALWAYS_BUILD_NATIVE_TESTS)
-
 static MunitResult
 test_simde_vsub_s8(const MunitParameter params[], void* data) {
   (void) params;
@@ -1219,13 +1217,10 @@ test_simde_vsubq_f64(const MunitParameter params[], void* data) {
   return MUNIT_OK;
 }
 
-#endif /* defined(SIMDE_NEON_NATIVE) || defined(SIMDE_NO_NATIVE) || defined(SIMDE_ALWAYS_BUILD_NATIVE_TESTS) */
-
 HEDLEY_DIAGNOSTIC_PUSH
 HEDLEY_DIAGNOSTIC_DISABLE_CAST_QUAL
 
 static MunitTest test_suite_tests[] = {
-#if defined(SIMDE_NEON_NATIVE) || defined(SIMDE_NO_NATIVE) || defined(SIMDE_ALWAYS_BUILD_NATIVE_TESTS)
   SIMDE_TESTS_NEON_DEFINE_TEST(s8),
   SIMDE_TESTS_NEON_DEFINE_TEST(s16),
   SIMDE_TESTS_NEON_DEFINE_TEST(s32),
@@ -1246,7 +1241,6 @@ static MunitTest test_suite_tests[] = {
   SIMDE_TESTS_NEON_DEFINE_TEST_FULL(q, u64),
   SIMDE_TESTS_NEON_DEFINE_TEST_FULL(q, f32),
   SIMDE_TESTS_NEON_DEFINE_TEST_FULL(q, f64),
-#endif /* defined(SIMDE_NEON_NATIVE) || defined(SIMDE_NO_NATIVE) || defined(SIMDE_ALWAYS_BUILD_NATIVE_TESTS) */
 
   { NULL, NULL, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL }
 };

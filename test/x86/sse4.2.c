@@ -25,8 +25,6 @@
 #include <test/x86/test-x86-internal.h>
 #include <simde/x86/sse4.2.h>
 
-#if defined(SIMDE_X86_SSE4_2_NATIVE) || defined(SIMDE_NO_NATIVE) || defined(SIMDE_ALWAYS_BUILD_NATIVE_TESTS)
-
 static MunitResult
 test_simde_mm_cmpestrs_8(const MunitParameter params[], void* data) {
   (void) params;
@@ -918,8 +916,6 @@ test_simde_mm_cmpistrz_16(const MunitParameter params[], void* data) {
   return MUNIT_OK;
 }
 
-#endif /* defined(SIMDE_X86_SSE4_2_NATIVE) || defined(SIMDE_NO_NATIVE) || defined(SIMDE_ALWAYS_BUILD_NATIVE_TESTS) */
-
 HEDLEY_DIAGNOSTIC_PUSH
 HEDLEY_DIAGNOSTIC_DISABLE_CAST_QUAL
 
@@ -931,7 +927,6 @@ HEDLEY_DIAGNOSTIC_DISABLE_CAST_QUAL
 #endif
 
 static MunitTest test_suite_tests[] = {
-#if defined(SIMDE_X86_SSE4_2_NATIVE) || defined(SIMDE_NO_NATIVE) || defined(SIMDE_ALWAYS_BUILD_NATIVE_TESTS)
   SIMDE_TESTS_DEFINE_TEST(mm_cmpestrs_8),
   SIMDE_TESTS_DEFINE_TEST(mm_cmpestrs_16),
   SIMDE_TESTS_DEFINE_TEST(mm_cmpestrz_8),
@@ -941,7 +936,6 @@ static MunitTest test_suite_tests[] = {
   SIMDE_TESTS_DEFINE_TEST(mm_cmpistrs_16),
   SIMDE_TESTS_DEFINE_TEST(mm_cmpistrz_8),
   SIMDE_TESTS_DEFINE_TEST(mm_cmpistrz_16),
-#endif /* defined(SIMDE_X86_SSE4_2_NATIVE) || defined(SIMDE_NO_NATIVE) || defined(SIMDE_ALWAYS_BUILD_NATIVE_TESTS) */
 
   { NULL, NULL, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL }
 };

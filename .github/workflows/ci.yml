@@ -31,7 +31,7 @@ jobs:
     - name: Install APT Dependencies
       run: sudo add-apt-repository 'ppa:ubuntu-toolchain-r/test' && sudo apt-get update && sudo apt-get install -y ninja-build
     - name: Configure
-      run: cmake test -G "Ninja" -DCMAKE_BUILD_TYPE="Coverage" -DCMAKE_{C,CXX}_FLAGS="${{ matrix.isax }} -Wall -Wextra -Werror" -DALWAYS_BUILD_NATIVE_TESTS=ON -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON
+      run: cmake test -G "Ninja" -DCMAKE_BUILD_TYPE="Coverage" -DCMAKE_{C,CXX}_FLAGS="${{ matrix.isax }} -Wall -Wextra -Werror" -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON
     - name: Build
       run: cmake --build .
     - name: Test
@@ -54,7 +54,7 @@ jobs:
           | xargs curl -sL \
           | tar --strip-components 1 -jxvC sde
     - name: Configure
-      run: cmake test -G "Ninja" -DCMAKE_C_COMPILER="clang" -DCMAKE_CXX_COMPILER="clang++" -DCMAKE_BUILD_TYPE="Coverage" -DCMAKE_{C,CXX}_FLAGS="-march=${{ matrix.arch }} -Wall -Wextra -Werror" -DALWAYS_BUILD_NATIVE_TESTS=ON -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON
+      run: cmake test -G "Ninja" -DCMAKE_C_COMPILER="clang" -DCMAKE_CXX_COMPILER="clang++" -DCMAKE_BUILD_TYPE="Coverage" -DCMAKE_{C,CXX}_FLAGS="-march=${{ matrix.arch }} -Wall -Wextra -Werror" -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON
     - name: Build
       run: cmake --build .
     - name: Test

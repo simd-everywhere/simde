@@ -8,7 +8,6 @@ include (ExtraWarningFlags)
 enable_testing()
 
 option(BUILD_CPP_TESTS "Build C++ tests" ON)
-option(ALWAYS_BUILD_NATIVE_TESTS "Build 'native' tests even if the native instructions aren't available" OFF)
 
 if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/munit/munit.c")
   find_program(GIT git)
@@ -140,10 +139,6 @@ foreach(native native emul)
 
   target_include_directories(simde-test-${native} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/..")
   set_property(TARGET simde-test-${native} PROPERTY C_STANDARD "99")
-
-  if(ALWAYS_BUILD_NATIVE_TESTS)
-    target_compile_definitions(simde-test-${native} PRIVATE SIMDE_ALWAYS_BUILD_NATIVE_TESTS)
-  endif(ALWAYS_BUILD_NATIVE_TESTS)
 
   target_link_libraries(run-tests simde-test-${native})
   target_add_compiler_flags(simde-test-${native} "-Wno-psabi")
