@@ -43,6 +43,167 @@ SIMDE_BEGIN_DECLS_
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
+simde__m128
+simde_mm_cos_ps (simde__m128 a) {
+#if defined(SIMDE_X86_SVML_NATIVE)
+  return _mm_cos_ps(a);
+#else
+  simde__m128_private
+    r_,
+    a_ = simde__m128_to_private(a);
+
+  SIMDE_VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
+    r_.f32[i] =  simde_math_cosf(a_.f32[i]);
+  }
+
+  return simde__m128_from_private(r_);
+#endif
+}
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
+#  define _mm_cos_ps(a) simde_mm_cos_ps(a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m128d
+simde_mm_cos_pd (simde__m128d a) {
+#if defined(SIMDE_X86_SVML_NATIVE)
+  return _mm_cos_pd(a);
+#else
+  simde__m128d_private
+    r_,
+    a_ = simde__m128d_to_private(a);
+
+  SIMDE_VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
+    r_.f64[i] =  simde_math_cos(a_.f64[i]);
+  }
+
+  return simde__m128d_from_private(r_);
+#endif
+}
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
+#  define _mm_cos_pd(a) simde_mm_cos_pd(a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256
+simde_mm256_cos_ps (simde__m256 a) {
+#if defined(SIMDE_X86_SVML_NATIVE)
+  return _mm256_cos_ps(a);
+#else
+  simde__m256_private
+    r_,
+    a_ = simde__m256_to_private(a);
+
+  SIMDE_VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
+    r_.f32[i] =  simde_math_cosf(a_.f32[i]);
+  }
+
+  return simde__m256_from_private(r_);
+#endif
+}
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
+#  define _mm256_cos_ps(a) simde_mm256_cos_ps(a)
+#endif
+
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256d
+simde_mm256_cos_pd (simde__m256d a) {
+#if defined(SIMDE_X86_SVML_NATIVE)
+  return _mm256_cos_pd(a);
+#else
+  simde__m256d_private
+    r_,
+    a_ = simde__m256d_to_private(a);
+
+  SIMDE_VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
+    r_.f64[i] =  simde_math_cos(a_.f64[i]);
+  }
+
+  return simde__m256d_from_private(r_);
+#endif
+}
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
+#  define _mm256_cos_pd(a) simde_mm256_cos_pd(a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512
+simde_mm512_cos_ps (simde__m512 a) {
+#if defined(SIMDE_X86_SVML_NATIVE)
+  return _mm512_cos_ps(a);
+#else
+  simde__m512_private
+    r_,
+    a_ = simde__m512_to_private(a);
+
+  SIMDE_VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
+    r_.f32[i] =  simde_math_cosf(a_.f32[i]);
+  }
+
+  return simde__m512_from_private(r_);
+#endif
+}
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
+#  define _mm512_cos_ps(a) simde_mm512_cos_ps(a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512d
+simde_mm512_cos_pd (simde__m512d a) {
+#if defined(SIMDE_X86_SVML_NATIVE)
+  return _mm512_cos_pd(a);
+#else
+  simde__m512d_private
+    r_,
+    a_ = simde__m512d_to_private(a);
+
+  SIMDE_VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
+    r_.f64[i] =  simde_math_cos(a_.f64[i]);
+  }
+
+  return simde__m512d_from_private(r_);
+#endif
+}
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
+#  define _mm512_cos_pd(a) simde_mm512_cos_pd(a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512
+simde_mm512_mask_cos_ps(simde__m512 src, simde__mmask16 k, simde__m512 a) {
+  #if defined(SIMDE_X86_SVML_NATIVE)
+    return _mm512_mask_cos_ps(src, k, a);
+  #else
+    return simde_mm512_mask_mov_ps(src, k, simde_mm512_cos_ps(a));
+  #endif
+}
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_mask_cos_ps
+  #define _mm512_mask_cos_ps(src, k, a) simde_mm512_mask_cos_ps(src, k, a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512d
+simde_mm512_mask_cos_pd(simde__m512d src, simde__mmask8 k, simde__m512d a) {
+  #if defined(SIMDE_X86_SVML_NATIVE)
+    return _mm512_mask_cos_pd(src, k, a);
+  #else
+    return simde_mm512_mask_mov_pd(src, k, simde_mm512_cos_pd(a));
+  #endif
+}
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_mask_cos_pd
+  #define _mm512_mask_cos_pd(src, k, a) simde_mm512_mask_cos_pd(src, k, a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_div_epi8 (simde__m128i a, simde__m128i b) {
   #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE2_NATIVE)
@@ -764,6 +925,44 @@ simde_mm512_div_epu64 (simde__m512i a, simde__m512i b) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128i
+simde_mm_idivrem_epi32 (simde__m128i * mem_addr, simde__m128i a, simde__m128i b) {
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE2_NATIVE)
+    return _mm_idivrem_epi32(mem_addr, a, b);
+  #else
+    simde__m128i r;
+
+    r = simde_mm_div_epi32(a, b);
+    *mem_addr = simde_mm_sub_epi32(a, simde_mm_mullo_epi32(r, b));
+
+    return r;
+  #endif
+}
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
+  #undef _mm_idivrem_epi32
+  #define _mm_idivrem_epi32(mem_addr, a, b) simde_mm_idivrem_epi32((mem_addr),(a), (b))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256i
+simde_mm256_idivrem_epi32 (simde__m256i * mem_addr, simde__m256i a, simde__m256i b) {
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE2_NATIVE)
+    return _mm256_idivrem_epi32(mem_addr, a, b);
+  #else
+    simde__m256i r;
+
+    r = simde_mm256_div_epi32(a, b);
+    *mem_addr = simde_mm256_sub_epi32(a, simde_mm256_mullo_epi32(r, b));
+
+    return r;
+  #endif
+}
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_idivrem_epi32
+  #define _mm256_idivrem_epi32(mem_addr, a, b) simde_mm256_idivrem_epi32((mem_addr),(a), (b))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m128i
 simde_mm_rem_epi8 (simde__m128i a, simde__m128i b) {
   #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE2_NATIVE)
     return _mm_rem_epi8(a, b);
@@ -847,25 +1046,6 @@ simde_mm_rem_epi32 (simde__m128i a, simde__m128i b) {
   #define _mm_rem_epi32(a, b) simde_mm_rem_epi32(a, b)
   #undef _mm_irem_epi32
   #define _mm_irem_epi32(a, b) simde_mm_rem_epi32(a, b)
-#endif
-
-SIMDE_FUNCTION_ATTRIBUTES
-simde__m128i
-simde_mm_idivrem_epi32 (simde__m128i * mem_addr, simde__m128i a, simde__m128i b) {
-  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE2_NATIVE)
-    return _mm_idivrem_epi32(mem_addr, a, b);
-  #else
-    simde__m128i r;
-
-    r = simde_mm_div_epi32(a, b);
-    *mem_addr = simde_mm_sub_epi32(a, simde_mm_mullo_epi32(r, b));
-
-    return r;
-  #endif
-}
-#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
-  #undef _mm_idivrem_epi32
-  #define _mm_idivrem_epi32(mem_addr, a, b) simde_mm_idivrem_epi32((mem_addr),(a), (b))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -985,25 +1165,6 @@ simde_mm_rem_epu32 (simde__m128i a, simde__m128i b) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128i
-simde_mm_udivrem_epi32 (simde__m128i * mem_addr, simde__m128i a, simde__m128i b) {
-  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE2_NATIVE)
-    return _mm_udivrem_epi32(mem_addr, a, b);
-  #else
-    simde__m128i r;
-
-    r = simde_mm_div_epu32(a, b);
-    *mem_addr = simde_x_mm_sub_epu32(a, simde_x_mm_mullo_epu32(r, b));
-
-    return r;
-  #endif
-}
-#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
-  #undef _mm_udivrem_epi32
-  #define _mm_udivrem_epi32(mem_addr, a, b) simde_mm_udivrem_epi32((mem_addr),(a), (b))
-#endif
-
-SIMDE_FUNCTION_ATTRIBUTES
-simde__m128i
 simde_mm_rem_epu64 (simde__m128i a, simde__m128i b) {
   #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE2_NATIVE)
     return _mm_rem_epu64(a, b);
@@ -1119,25 +1280,6 @@ simde_mm256_rem_epi32 (simde__m256i a, simde__m256i b) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m256i
-simde_mm256_idivrem_epi32 (simde__m256i * mem_addr, simde__m256i a, simde__m256i b) {
-  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE2_NATIVE)
-    return _mm256_idivrem_epi32(mem_addr, a, b);
-  #else
-    simde__m256i r;
-
-    r = simde_mm256_div_epi32(a, b);
-    *mem_addr = simde_mm256_sub_epi32(a, simde_mm256_mullo_epi32(r, b));
-
-    return r;
-  #endif
-}
-#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
-  #undef _mm256_idivrem_epi32
-  #define _mm256_idivrem_epi32(mem_addr, a, b) simde_mm256_idivrem_epi32((mem_addr),(a), (b))
-#endif
-
-SIMDE_FUNCTION_ATTRIBUTES
-simde__m256i
 simde_mm256_rem_epi64 (simde__m256i a, simde__m256i b) {
   #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX_NATIVE)
     return _mm256_rem_epi64(a, b);
@@ -1249,25 +1391,6 @@ simde_mm256_rem_epu32 (simde__m256i a, simde__m256i b) {
   #define _mm256_rem_epu32(a, b) simde_mm256_rem_epu32(a, b)
   #undef _mm256_urem_epu32
   #define _mm256_urem_epu32(a, b) simde_mm256_rem_epu32(a, b)
-#endif
-
-SIMDE_FUNCTION_ATTRIBUTES
-simde__m256i
-simde_mm256_udivrem_epi32 (simde__m256i * mem_addr, simde__m256i a, simde__m256i b) {
-  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE2_NATIVE)
-    return _mm256_udivrem_epi32(mem_addr, a, b);
-  #else
-    simde__m256i r;
-
-    r = simde_mm256_div_epu32(a, b);
-    *mem_addr = simde_x_mm256_sub_epu32(a, simde_x_mm256_mullo_epu32(r, b));
-
-    return r;
-  #endif
-}
-#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
-  #undef _mm256_udivrem_epi32
-  #define _mm256_udivrem_epi32(mem_addr, a, b) simde_mm256_udivrem_epi32((mem_addr),(a), (b))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -1608,7 +1731,6 @@ simde_mm256_sin_ps (simde__m256 a) {
 #  define _mm256_sin_ps(a) simde_mm256_sin_ps(a)
 #endif
 
-
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m256d
 simde_mm256_sin_pd (simde__m256d a) {
@@ -1632,164 +1754,41 @@ simde_mm256_sin_pd (simde__m256d a) {
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
-simde__m128
-simde_mm_cos_ps (simde__m128 a) {
-#if defined(SIMDE_X86_SVML_NATIVE)
-  return _mm_cos_ps(a);
-#else
-  simde__m128_private
-    r_,
-    a_ = simde__m128_to_private(a);
-
-  SIMDE_VECTORIZE
-  for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
-    r_.f32[i] =  simde_math_cosf(a_.f32[i]);
-  }
-
-  return simde__m128_from_private(r_);
-#endif
-}
-#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
-#  define _mm_cos_ps(a) simde_mm_cos_ps(a)
-#endif
-
-SIMDE_FUNCTION_ATTRIBUTES
-simde__m128d
-simde_mm_cos_pd (simde__m128d a) {
-#if defined(SIMDE_X86_SVML_NATIVE)
-  return _mm_cos_pd(a);
-#else
-  simde__m128d_private
-    r_,
-    a_ = simde__m128d_to_private(a);
-
-  SIMDE_VECTORIZE
-  for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
-    r_.f64[i] =  simde_math_cos(a_.f64[i]);
-  }
-
-  return simde__m128d_from_private(r_);
-#endif
-}
-#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
-#  define _mm_cos_pd(a) simde_mm_cos_pd(a)
-#endif
-
-SIMDE_FUNCTION_ATTRIBUTES
-simde__m256
-simde_mm256_cos_ps (simde__m256 a) {
-#if defined(SIMDE_X86_SVML_NATIVE)
-  return _mm256_cos_ps(a);
-#else
-  simde__m256_private
-    r_,
-    a_ = simde__m256_to_private(a);
-
-  SIMDE_VECTORIZE
-  for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
-    r_.f32[i] =  simde_math_cosf(a_.f32[i]);
-  }
-
-  return simde__m256_from_private(r_);
-#endif
-}
-#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
-#  define _mm256_cos_ps(a) simde_mm256_cos_ps(a)
-#endif
-
-
-SIMDE_FUNCTION_ATTRIBUTES
-simde__m256d
-simde_mm256_cos_pd (simde__m256d a) {
-#if defined(SIMDE_X86_SVML_NATIVE)
-  return _mm256_cos_pd(a);
-#else
-  simde__m256d_private
-    r_,
-    a_ = simde__m256d_to_private(a);
-
-  SIMDE_VECTORIZE
-  for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
-    r_.f64[i] =  simde_math_cos(a_.f64[i]);
-  }
-
-  return simde__m256d_from_private(r_);
-#endif
-}
-#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
-#  define _mm256_cos_pd(a) simde_mm256_cos_pd(a)
-#endif
-
-SIMDE_FUNCTION_ATTRIBUTES
-simde__m512
-simde_mm512_cos_ps (simde__m512 a) {
-#if defined(SIMDE_X86_SVML_NATIVE)
-  return _mm512_cos_ps(a);
-#else
-  simde__m512_private
-    r_,
-    a_ = simde__m512_to_private(a);
-
-  SIMDE_VECTORIZE
-  for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
-    r_.f32[i] =  simde_math_cosf(a_.f32[i]);
-  }
-
-  return simde__m512_from_private(r_);
-#endif
-}
-#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
-#  define _mm512_cos_ps(a) simde_mm512_cos_ps(a)
-#endif
-
-SIMDE_FUNCTION_ATTRIBUTES
-simde__m512d
-simde_mm512_cos_pd (simde__m512d a) {
-#if defined(SIMDE_X86_SVML_NATIVE)
-  return _mm512_cos_pd(a);
-#else
-  simde__m512d_private
-    r_,
-    a_ = simde__m512d_to_private(a);
-
-  SIMDE_VECTORIZE
-  for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
-    r_.f64[i] =  simde_math_cos(a_.f64[i]);
-  }
-
-  return simde__m512d_from_private(r_);
-#endif
-}
-#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
-#  define _mm512_cos_pd(a) simde_mm512_cos_pd(a)
-#endif
-
-SIMDE_FUNCTION_ATTRIBUTES
-simde__m512
-simde_mm512_mask_cos_ps(simde__m512 src, simde__mmask16 k, simde__m512 a) {
-  #if defined(SIMDE_X86_SVML_NATIVE)
-    return _mm512_mask_cos_ps(src, k, a);
+simde__m128i
+simde_mm_udivrem_epi32 (simde__m128i * mem_addr, simde__m128i a, simde__m128i b) {
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE2_NATIVE)
+    return _mm_udivrem_epi32(mem_addr, a, b);
   #else
-    return simde_mm512_mask_mov_ps(src, k, simde_mm512_cos_ps(a));
+    simde__m128i r;
+
+    r = simde_mm_div_epu32(a, b);
+    *mem_addr = simde_x_mm_sub_epu32(a, simde_x_mm_mullo_epu32(r, b));
+
+    return r;
   #endif
 }
 #if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
-  #undef _mm512_mask_cos_ps
-  #define _mm512_mask_cos_ps(src, k, a) simde_mm512_mask_cos_ps(src, k, a)
+  #undef _mm_udivrem_epi32
+  #define _mm_udivrem_epi32(mem_addr, a, b) simde_mm_udivrem_epi32((mem_addr),(a), (b))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
-simde__m512d
-simde_mm512_mask_cos_pd(simde__m512d src, simde__mmask8 k, simde__m512d a) {
-  #if defined(SIMDE_X86_SVML_NATIVE)
-    return _mm512_mask_cos_pd(src, k, a);
+simde__m256i
+simde_mm256_udivrem_epi32 (simde__m256i * mem_addr, simde__m256i a, simde__m256i b) {
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE2_NATIVE)
+    return _mm256_udivrem_epi32(mem_addr, a, b);
   #else
-    return simde_mm512_mask_mov_pd(src, k, simde_mm512_cos_pd(a));
+    simde__m256i r;
+
+    r = simde_mm256_div_epu32(a, b);
+    *mem_addr = simde_x_mm256_sub_epu32(a, simde_x_mm256_mullo_epu32(r, b));
+
+    return r;
   #endif
 }
 #if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
-  #undef _mm512_mask_cos_pd
-  #define _mm512_mask_cos_pd(src, k, a) simde_mm512_mask_cos_pd(src, k, a)
+  #undef _mm256_udivrem_epi32
+  #define _mm256_udivrem_epi32(mem_addr, a, b) simde_mm256_udivrem_epi32((mem_addr),(a), (b))
 #endif
 
 SIMDE_END_DECLS_
