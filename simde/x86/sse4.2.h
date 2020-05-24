@@ -273,6 +273,56 @@ simde_mm_cmpistrz_16_(simde__m128i b) {
   #define _mm_cmpistrz(a, b, imm8) simde_mm_cmpistrz(a, b, imm8)
 #endif
 
+SIMDE_FUNCTION_ATTRIBUTES
+int64_t
+simde_mm_crc32_bitreflection_(int32_t v) {
+  static const unsigned char BitReverseTable256[256] =
+  {
+  #   define R2(n)     n,     n + 2*64,     n + 1*64,     n + 3*64
+  #   define R4(n) R2(n), R2(n + 2*16), R2(n + 1*16), R2(n + 3*16)
+  #   define R6(n) R4(n), R4(n + 2*4 ), R4(n + 1*4 ), R4(n + 3*4 )
+      R6(0), R6(2), R6(1), R6(3)
+  };
+  int64_t c = (BitReverseTable256[v & 0xff] << 24) |
+    (BitReverseTable256[(v >> 8) & 0xff] << 16) |
+    (BitReverseTable256[(v >> 16) & 0xff] << 8) |
+    (BitReverseTable256[(v >> 24) & 0xff]);
+  return c;
+}
+
+SIMDE_FUNCTION_ATTRIBUTES
+int64_t
+simde_mm_crc32_mod2div_(int64_t dividend, int64_t divisor){
+  int64_t remainder = dividend;
+  int64_t sdata = simde_math_floor(simde_math_log2(dividend)) + 1;
+  int64_t sdiv = simde_math_floor(simde_math_log2(divisor)) + 1;
+  divisor <<= (sdata-sdiv);
+  int64_t leftdigit = 1LL << (sdata-1);
+  for(int bit = 0; bit < (sdata-sdiv+1) ; bit++){
+    if(remainder & leftdigit)
+    {
+      remainder ^= divisor;
+    }
+    remainder = (remainder << 1);
+  }
+  return (remainder >> (sdata-sdiv+1));
+}
+
+SIMDE_FUNCTION_ATTRIBUTES
+unsigned int
+simde_mm_crc32_u8(uint32_t crc, uint8_t v) {
+#if defined(SIMDE_X86_SSE4_2_NATIVE)
+  return _mm_crc32_u8(crc, v);
+#else
+int64_t tmp = (simde_mm_crc32_bitreflection_(v) << 32)  ^ (simde_mm_crc32_bitreflection_(crc) << 8);
+tmp = simde_mm_crc32_mod2div_(tmp, INT64_C(0x11EDC6F41));
+return HEDLEY_STATIC_CAST(int32_t, simde_mm_crc32_bitreflection_(tmp));
+#endif
+}
+#if defined(SIMDE_X86_SSE4_2_ENABLE_NATIVE_ALIASES)
+#  define _mm_crc32_u8(crc, v) simde_mm_crc32_u8(crc, v)
+#endif
+
 SIMDE_END_DECLS_
 
 HEDLEY_DIAGNOSTIC_POP
