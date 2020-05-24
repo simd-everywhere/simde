@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -e
 
 # Convert SIMDe test cases to strip the simde_ prefix to test native
 # aliases.
