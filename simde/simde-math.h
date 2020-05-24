@@ -171,6 +171,26 @@
   #endif
 #endif
 
+#if !defined(simde_math_cos)
+  #if SIMDE_MATH_BUILTIN_LIBM(cos)
+    #define simde_math_cos(v) __builtin_cos(v)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_cos(v) std::cos(v)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_cos(v) cos(v)
+  #endif
+#endif
+
+#if !defined(simde_math_cosf)
+  #if SIMDE_MATH_BUILTIN_LIBM(cosf)
+    #define simde_math_cosf(v) __builtin_cosf(v)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_cosf(v) std::cos(v)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_cosf(v) cosf(v)
+  #endif
+#endif
+
 #if !defined(simde_math_exp)
   #if SIMDE_MATH_BUILTIN_LIBM(exp)
     #define simde_math_exp(v) __builtin_exp(v)
@@ -271,25 +291,6 @@
   #endif
 #endif
 
-#if !defined(simde_math_cos)
-  #if SIMDE_MATH_BUILTIN_LIBM(cos)
-    #define simde_math_cos(v) __builtin_cos(v)
-  #elif defined(SIMDE_MATH_HAVE_CMATH)
-    #define simde_math_cos(v) std::cos(v)
-  #elif defined(SIMDE_MATH_HAVE_MATH_H)
-    #define simde_math_cos(v) cos(v)
-  #endif
-#endif
-
-#if !defined(simde_math_cosf)
-  #if SIMDE_MATH_BUILTIN_LIBM(cosf)
-    #define simde_math_cosf(v) __builtin_cosf(v)
-  #elif defined(SIMDE_MATH_HAVE_CMATH)
-    #define simde_math_cosf(v) std::cos(v)
-  #elif defined(SIMDE_MATH_HAVE_MATH_H)
-    #define simde_math_cosf(v) cosf(v)
-  #endif
-#endif
 
 #if !defined(simde_math_sqrt)
   #if SIMDE_MATH_BUILTIN_LIBM(sqrt)
@@ -308,6 +309,26 @@
     #define simde_math_sqrtf(v) std::sqrt(v)
   #elif defined(SIMDE_MATH_HAVE_MATH_H)
     #define simde_math_sqrtf(v) sqrtf(v)
+  #endif
+#endif
+
+#if !defined(simde_math_tan)
+  #if SIMDE_MATH_BUILTIN_LIBM(tan)
+    #define simde_math_tan(v) __builtin_tan(v)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_tan(v) std::tan(v)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_tan(v) tan(v)
+  #endif
+#endif
+
+#if !defined(simde_math_tanf)
+  #if SIMDE_MATH_BUILTIN_LIBM(tanf)
+    #define simde_math_tanf(v) __builtin_tanf(v)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_tanf(v) std::tan(v)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_tanf(v) tanf(v)
   #endif
 #endif
 
