@@ -22,6 +22,7 @@
  *
  * Copyright:
  *   2017      Evan Nemerson <evan@nemerson.com>
+ *   2020      Hidayat Khan <huk2209@gmail.com>
  */
 
 #if !defined(SIMDE_X86_SSE4_2_H)

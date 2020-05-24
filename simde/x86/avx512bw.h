@@ -24,6 +24,7 @@
  *   2020      Evan Nemerson <evan@nemerson.com>
  *   2020      Himanshi Mathur <himanshi18037@iiitd.ac.in>
  *   2020      Christopher Moore <moore@free.fr>
+ *   2020      Hidayat Khan <huk2209@gmail.com>
  */
 
 #if !defined(SIMDE_X86_AVX512BW_H)
