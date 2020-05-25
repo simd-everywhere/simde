@@ -147,16 +147,16 @@ jobs:
         packages:
         - intel-oneapi-icc
 
-  - name: "pgcc"
-    if: branch != master OR type == pull_request
-    env:
-    - C_COMPILER=pgcc
-    - CXX_COMPILER=pgc++
-    - ARCH_FLAGS="-m64"
-    - BUILD_CPP_TESTS=OFF
-    - DIAGNOSTIC_FLAGS=
-    install:
-    - curl 'https://raw.githubusercontent.com/nemequ/pgi-travis/master/install-pgi.sh' | /bin/sh
+  # - name: "pgcc"
+  #   if: branch != master OR type == pull_request
+  #   env:
+  #   - C_COMPILER=pgcc
+  #   - CXX_COMPILER=pgc++
+  #   - ARCH_FLAGS="-m64"
+  #   - BUILD_CPP_TESTS=OFF
+  #   - DIAGNOSTIC_FLAGS=
+  #   install:
+  #   - curl 'https://raw.githubusercontent.com/nemequ/pgi-travis/master/install-pgi.sh' | /bin/sh
 
   - name: "xlc"
     if: branch != master OR type == pull_request
