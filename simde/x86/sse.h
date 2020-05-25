@@ -932,7 +932,7 @@ simde_mm_cmpunord_ps (simde__m128 a, simde__m128 b) {
 #if defined(SIMDE_X86_SSE_NATIVE)
   return _mm_cmpunord_ps(a, b);
 #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-  return wasm_v128_or(wasm_f32x4_eq(a, a), wasm_f32x4_eq(b, b));
+  return wasm_v128_or(wasm_f32x4_ne(a, a), wasm_f32x4_ne(b, b));
 #else
   simde__m128_private
     r_,
