@@ -171,6 +171,46 @@
   #endif
 #endif
 
+#if !defined(simde_math_cos)
+  #if SIMDE_MATH_BUILTIN_LIBM(cos)
+    #define simde_math_cos(v) __builtin_cos(v)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_cos(v) std::cos(v)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_cos(v) cos(v)
+  #endif
+#endif
+
+#if !defined(simde_math_cosf)
+  #if SIMDE_MATH_BUILTIN_LIBM(cosf)
+    #define simde_math_cosf(v) __builtin_cosf(v)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_cosf(v) std::cos(v)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_cosf(v) cosf(v)
+  #endif
+#endif
+
+#if !defined(simde_math_cosh)
+  #if SIMDE_MATH_BUILTIN_LIBM(cosh)
+    #define simde_math_cosh(v) __builtin_cosh(v)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_cosh(v) std::cosh(v)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_cosh(v) cosh(v)
+  #endif
+#endif
+
+#if !defined(simde_math_coshf)
+  #if SIMDE_MATH_BUILTIN_LIBM(coshf)
+    #define simde_math_coshf(v) __builtin_coshf(v)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_coshf(v) std::cosh(v)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_coshf(v) coshf(v)
+  #endif
+#endif
+
 #if !defined(simde_math_exp)
   #if SIMDE_MATH_BUILTIN_LIBM(exp)
     #define simde_math_exp(v) __builtin_exp(v)
@@ -271,23 +311,23 @@
   #endif
 #endif
 
-#if !defined(simde_math_cos)
-  #if SIMDE_MATH_BUILTIN_LIBM(cos)
-    #define simde_math_cos(v) __builtin_cos(v)
+#if !defined(simde_math_sinh)
+  #if SIMDE_MATH_BUILTIN_LIBM(sinh)
+    #define simde_math_sinh(v) __builtin_sinh(v)
   #elif defined(SIMDE_MATH_HAVE_CMATH)
-    #define simde_math_cos(v) std::cos(v)
+    #define simde_math_sinh(v) std::sinh(v)
   #elif defined(SIMDE_MATH_HAVE_MATH_H)
-    #define simde_math_cos(v) cos(v)
+    #define simde_math_sinh(v) sinh(v)
   #endif
 #endif
 
-#if !defined(simde_math_cosf)
-  #if SIMDE_MATH_BUILTIN_LIBM(cosf)
-    #define simde_math_cosf(v) __builtin_cosf(v)
+#if !defined(simde_math_sinhf)
+  #if SIMDE_MATH_BUILTIN_LIBM(sinhf)
+    #define simde_math_sinhf(v) __builtin_sinhf(v)
   #elif defined(SIMDE_MATH_HAVE_CMATH)
-    #define simde_math_cosf(v) std::cos(v)
+    #define simde_math_sinhf(v) std::sinh(v)
   #elif defined(SIMDE_MATH_HAVE_MATH_H)
-    #define simde_math_cosf(v) cosf(v)
+    #define simde_math_sinhf(v) sinhf(v)
   #endif
 #endif
 
@@ -308,6 +348,26 @@
     #define simde_math_sqrtf(v) std::sqrt(v)
   #elif defined(SIMDE_MATH_HAVE_MATH_H)
     #define simde_math_sqrtf(v) sqrtf(v)
+  #endif
+#endif
+
+#if !defined(simde_math_tanh)
+  #if SIMDE_MATH_BUILTIN_LIBM(tanh)
+    #define simde_math_tanh(v) __builtin_tanh(v)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_tanh(v) std::tanh(v)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_tanh(v) tanh(v)
+  #endif
+#endif
+
+#if !defined(simde_math_tanhf)
+  #if SIMDE_MATH_BUILTIN_LIBM(tanhf)
+    #define simde_math_tanhf(v) __builtin_tanhf(v)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_tanhf(v) std::tanh(v)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_tanhf(v) tanhf(v)
   #endif
 #endif
 
