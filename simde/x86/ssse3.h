@@ -328,7 +328,15 @@ simde_mm_shuffle_epi8 (simde__m128i a, simde__m128i b) {
 
       r_.neon_i8 = vcombine_s8(l, h);
     #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
-      r_.altivec_u8 = vec_perm(a_.altivec_u8, vec_splats((unsigned char)0), b_.altivec_u8);
+      /* If the most significant bit in b is set, we need to return
+       * 0; this is 0 if MSB is set, ~0 otherwise. */
+      SIMDE_POWER_ALTIVEC_VECTOR(unsigned char) msb_mask =
+        HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned char), vec_cmplt(b_.altivec_u8, vec_splats(HEDLEY_STATIC_CAST(unsigned char, 128))));
+      /* Mask off all but the 4 least significant bits of b. */
+      SIMDE_POWER_ALTIVEC_VECTOR(unsigned char) b_ls4b =
+        HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned char), vec_and(b_.altivec_u8, vec_splats(HEDLEY_STATIC_CAST(unsigned char, 15))));
+      SIMDE_POWER_ALTIVEC_VECTOR(unsigned char) res = vec_perm(a_.altivec_u8, a_.altivec_u8, b_ls4b);
+      r_.altivec_u8 = vec_and(res, msb_mask);
     #else
       for (size_t i = 0 ; i < (sizeof(r_.i8) / sizeof(r_.i8[0])) ; i++) {
         r_.i8[i] = a_.i8[b_.i8[i] & 15] & (~(b_.i8[i]) >> 7);

@@ -419,7 +419,7 @@ simde_mm_round_ps (simde__m128 a, int rounding)
       case SIMDE_MM_FROUND_TO_NEAREST_INT:
       case SIMDE_MM_FROUND_CUR_DIRECTION:
         #if defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
-          r_.altivec_f32 = (SIMDE_POWER_ALTIVEC_VECTOR(float)) vec_round(a_.altivec_f64);
+          r_.altivec_f32 = (SIMDE_POWER_ALTIVEC_VECTOR(float)) vec_round(a_.altivec_f32);
         #else
           for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
             r_.f32[i] = simde_math_nearbyintf(a_.f32[i]);
@@ -938,14 +938,20 @@ simde_mm_extract_epi8 (simde__m128i a, const int imm8)
   simde__m128i_private
     a_ = simde__m128i_to_private(a);
 
-  return a_.i8[imm8&15];
+  #if defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+    #if defined(SIMDE_BUG_GCC_95227)
+      (void) a_;
+      (void) imm8;
+    #endif
+    return vec_extract(a_.altivec_i8, imm8);
+  #else
+    return a_.i8[imm8 & 15];
+  #endif
 }
 #if defined(SIMDE_X86_SSE4_1_NATIVE) && !defined(SIMDE_BUG_GCC_BAD_MM_EXTRACT_EPI8)
 #  define simde_mm_extract_epi8(a, imm8) HEDLEY_STATIC_CAST(int8_t, _mm_extract_epi8(a, imm8))
 #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
 #  define simde_mm_extract_epi8(a, imm8) vgetq_lane_s8(simde__m128i_to_private(a).neon_i8, imm8)
-#elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
-#  define simde_mm_extract_epi8(a, imm8) HEDLEY_STATIC_CAST(int8_t, vec_extract(simde__m128i_to_private(a).altivec_i8, imm8))
 #endif
 #if defined(SIMDE_X86_SSE4_1_ENABLE_NATIVE_ALIASES)
 #  define _mm_extract_epi8(a, imm8) HEDLEY_STATIC_CAST(int, simde_mm_extract_epi8(a, imm8))
@@ -961,7 +967,15 @@ simde_mm_extract_epi32 (simde__m128i a, const int imm8)
   simde__m128i_private
     a_ = simde__m128i_to_private(a);
 
-  return a_.i32[imm8&3];
+  #if defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+    #if defined(SIMDE_BUG_GCC_95227)
+      (void) a_;
+      (void) imm8;
+    #endif
+    return vec_extract(a_.altivec_i32, imm8);
+  #else
+    return a_.i32[imm8 & 3];
+  #endif
 }
 #if defined(SIMDE_X86_SSE4_1_NATIVE)
 #  define simde_mm_extract_epi32(a, imm8) _mm_extract_epi32(a, imm8)
@@ -984,7 +998,15 @@ simde_mm_extract_epi64 (simde__m128i a, const int imm8)
   simde__m128i_private
     a_ = simde__m128i_to_private(a);
 
-  return a_.i64[imm8&1];
+  #if defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+    #if defined(SIMDE_BUG_GCC_95227)
+      (void) a_;
+      (void) imm8;
+    #endif
+    return vec_extract(a_.altivec_i64, imm8);
+  #else
+    return a_.i64[imm8 & 1];
+  #endif
 }
 #if defined(SIMDE_X86_SSE4_1_NATIVE) && defined(SIMDE_ARCH_AMD64)
 #  define simde_mm_extract_epi64(a, imm8) _mm_extract_epi64(a, imm8)
