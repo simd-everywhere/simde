@@ -2059,7 +2059,7 @@ simde_mm256_slli_epi16 (simde__m256i a, const int imm8)
          simde_mm_slli_epi16(simde_mm256_extracti128_si256(a, 0), (imm8)))
 #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
 #  define simde_mm256_slli_epi16(a, imm8) \
-     vec_sl(simde__m256i_to_private(a).i16, vec_splats(imm8))
+     simde__m256i_from_altivec_i16(vec_sl(simde__m256i_to_private(a).i16, vec_splats(imm8)))
 #endif
 #if defined(SIMDE_X86_AVX2_ENABLE_NATIVE_ALIASES)
   #undef _mm256_slli_epi16
@@ -2094,7 +2094,7 @@ simde_mm256_slli_epi32 (simde__m256i a, const int imm8)
          simde_mm_slli_epi32(simde_mm256_extracti128_si256(a, 0), (imm8)))
 #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
 #  define simde_mm256_slli_epi32(a, imm8) \
-     vec_sl(simde__m256i_to_private(a).i32, vec_splats(imm8))
+     simde__m256i_from_altivec_i32(vec_sl(simde__m256i_to_private(a).i32, vec_splats(imm8)))
 #endif
 #if defined(SIMDE_X86_AVX2_ENABLE_NATIVE_ALIASES)
   #undef _mm256_slli_epi32
@@ -2340,7 +2340,7 @@ simde_mm256_srli_epi16 (simde__m256i a, const int imm8) {
          simde_mm_srli_epi16(simde_mm256_extracti128_si256(a, 0), (imm8)))
 #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
 #  define simde_mm256_srli_epi16(a, imm8) \
-     vec_sr(simde__m256i_to_private(a).i16, vec_splats(imm8))
+     simde__m256i_from_altivec_i16(vec_sr(simde__m256i_to_private(a).i16, vec_splats(imm8)))
 #endif
 #if defined(SIMDE_X86_AVX2_ENABLE_NATIVE_ALIASES)
   #undef _mm256_srli_epi16
@@ -2374,7 +2374,7 @@ simde_mm256_srli_epi32 (simde__m256i a, const int imm8) {
          simde_mm_srli_epi32(simde_mm256_extracti128_si256(a, 0), (imm8)))
 #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
 #  define simde_mm256_srli_epi32(a, imm8) \
-     vec_sr(simde__m256i_to_private(a).i32, vec_splats(imm8))
+     simde__m256i_from_altivec_i32(vec_sr(simde__m256i_to_private(a).i32, vec_splats(imm8)))
 #endif
 #if defined(SIMDE_X86_AVX2_ENABLE_NATIVE_ALIASES)
   #undef _mm256_srli_epi32

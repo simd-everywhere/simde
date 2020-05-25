@@ -911,7 +911,7 @@ simde_mm_bslli_si128 (simde__m128i a, const int imm8)
   simde__m128i_from_neon_i8(((imm8) <= 0) ? simde__m128i_to_neon_i8(a) : (((imm8) > 15) ? (vdupq_n_s8(0)) : (vextq_s8(vdupq_n_s8(0), simde__m128i_to_neon_i8(a), 16 - (imm8)))))
 #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
 #  define simde_mm_bslli_si128(a, imm8) \
-  vec_slo(simde__m128i_to_private(a).altivec_u8, vec_splats((char)(imm8 << 3)))
+  simde__m128i_from_alitvec_u8(vec_slo(simde__m128i_to_private(a).altivec_u8, vec_splats((char)(imm8 << 3))))
 #endif
 #define simde_mm_slli_si128(a, imm8) simde_mm_bslli_si128(a, imm8)
 #if defined(SIMDE_X86_SSE2_ENABLE_NATIVE_ALIASES)
@@ -966,7 +966,7 @@ simde_mm_bsrli_si128 (simde__m128i a, const int imm8)
   simde__m128i_from_neon_i8(((imm8) & ~15) ? vdupq_n_s8(0) : vextq_s8(simde__m128i_to_private(a).neon_i8, vdupq_n_s8(0), SIMDE_MASK_NZ_(imm8, 15)))
 #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
 #  define simde_mm_bsrli_si128(a, imm8) \
-  vec_sro(simde__m128i_to_private(a).altivec_u8, vec_splats((char)(imm8 << 3)))
+  simde__m128i_from_altivec_u8(vec_sro(simde__m128i_to_private(a).altivec_u8, vec_splats((char)(imm8 << 3))))
 #endif
 #define simde_mm_srli_si128(a, imm8) simde_mm_bsrli_si128((a), (imm8))
 #if defined(SIMDE_X86_SSE2_ENABLE_NATIVE_ALIASES)
