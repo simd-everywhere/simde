@@ -663,6 +663,214 @@ simde_mm256_broadcastb_epi8 (simde__m128i a) {
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
+simde__m128i
+simde_mm_broadcastw_epi16 (simde__m128i a) {
+#if defined(SIMDE_X86_AVX2_NATIVE)
+  return _mm_broadcastw_epi16(a);
+#else
+  simde__m128i_private r_;
+  simde__m128i_private a_= simde__m128i_to_private(a);
+
+  SIMDE_VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r_.i16) / sizeof(r_.i16[0])) ; i++) {
+    r_.i16[i] = a_.i16[0];
+  }
+
+  return simde__m128i_from_private(r_);
+#endif
+}
+#if defined(SIMDE_X86_AVX2_ENABLE_NATIVE_ALIASES)
+  #undef _mm_broadcastw_epi16
+  #define _mm_broadcastw_epi16(a) simde_mm_broadcastw_epi16(a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256i
+simde_mm256_broadcastw_epi16 (simde__m128i a) {
+#if defined(SIMDE_X86_AVX2_NATIVE)
+  return _mm256_broadcastw_epi16(a);
+#else
+  simde__m256i_private r_;
+  simde__m128i_private a_= simde__m128i_to_private(a);
+
+  SIMDE_VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r_.i16) / sizeof(r_.i16[0])) ; i++) {
+    r_.i16[i] = a_.i16[0];
+  }
+
+  return simde__m256i_from_private(r_);
+#endif
+}
+#if defined(SIMDE_X86_AVX2_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_broadcastw_epi16
+  #define _mm256_broadcastw_epi16(a) simde_mm256_broadcastw_epi16(a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m128i
+simde_mm_broadcastd_epi32 (simde__m128i a) {
+#if defined(SIMDE_X86_AVX2_NATIVE)
+  return _mm_broadcastd_epi32(a);
+#else
+  simde__m128i_private r_;
+  simde__m128i_private a_= simde__m128i_to_private(a);
+
+  SIMDE_VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {
+    r_.i32[i] = a_.i32[0];
+  }
+
+  return simde__m128i_from_private(r_);
+#endif
+}
+#if defined(SIMDE_X86_AVX2_ENABLE_NATIVE_ALIASES)
+  #undef _mm_broadcastd_epi32
+  #define _mm_broadcastd_epi32(a) simde_mm_broadcastd_epi32(a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256i
+simde_mm256_broadcastd_epi32 (simde__m128i a) {
+#if defined(SIMDE_X86_AVX2_NATIVE)
+  return _mm256_broadcastd_epi32(a);
+#else
+  simde__m256i_private r_;
+  simde__m128i_private a_= simde__m128i_to_private(a);
+
+  SIMDE_VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {
+    r_.i32[i] = a_.i32[0];
+  }
+
+  return simde__m256i_from_private(r_);
+#endif
+}
+#if defined(SIMDE_X86_AVX2_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_broadcastd_epi32
+  #define _mm256_broadcastd_epi32(a) simde_mm256_broadcastd_epi32(a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m128i
+simde_mm_broadcastq_epi64 (simde__m128i a) {
+#if defined(SIMDE_X86_AVX2_NATIVE)
+  return _mm_broadcastq_epi64(a);
+#else
+  simde__m128i_private r_;
+  simde__m128i_private a_= simde__m128i_to_private(a);
+
+  SIMDE_VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r_.i64) / sizeof(r_.i64[0])) ; i++) {
+    r_.i64[i] = a_.i64[0];
+  }
+
+  return simde__m128i_from_private(r_);
+#endif
+}
+#if defined(SIMDE_X86_AVX2_ENABLE_NATIVE_ALIASES)
+  #undef _mm_broadcastq_epi64
+  #define _mm_broadcastq_epi64(a) simde_mm_broadcastq_epi64(a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256i
+simde_mm256_broadcastq_epi64 (simde__m128i a) {
+#if defined(SIMDE_X86_AVX2_NATIVE)
+  return _mm256_broadcastq_epi64(a);
+#else
+  simde__m256i_private r_;
+  simde__m128i_private a_= simde__m128i_to_private(a);
+
+  SIMDE_VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r_.i64) / sizeof(r_.i64[0])) ; i++) {
+    r_.i64[i] = a_.i64[0];
+  }
+
+  return simde__m256i_from_private(r_);
+#endif
+}
+#if defined(SIMDE_X86_AVX2_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_broadcastq_epi64
+  #define _mm256_broadcastq_epi64(a) simde_mm256_broadcastq_epi64(a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m128
+simde_mm_broadcastss_ps (simde__m128 a) {
+#if defined(SIMDE_X86_AVX2_NATIVE)
+  return _mm_broadcastss_ps(a);
+#else
+  simde__m128_private r_;
+  simde__m128_private a_= simde__m128_to_private(a);
+
+  SIMDE_VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
+    r_.f32[i] = a_.f32[0];
+  }
+
+  return simde__m128_from_private(r_);
+#endif
+}
+#if defined(SIMDE_X86_AVX2_ENABLE_NATIVE_ALIASES)
+  #undef _mm_broadcastss_ps
+  #define _mm_broadcastss_ps(a) simde_mm_broadcastss_ps(a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256
+simde_mm256_broadcastss_ps (simde__m128 a) {
+#if defined(SIMDE_X86_AVX2_NATIVE)
+  return _mm256_broadcastss_ps(a);
+#else
+  simde__m256_private r_;
+  simde__m128_private a_= simde__m128_to_private(a);
+
+  SIMDE_VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
+    r_.f32[i] = a_.f32[0];
+  }
+
+  return simde__m256_from_private(r_);
+#endif
+}
+#if defined(SIMDE_X86_AVX2_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_broadcastss_ps
+  #define _mm256_broadcastss_ps(a) simde_mm256_broadcastss_ps(a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m128d
+simde_mm_broadcastsd_pd (simde__m128d a) {
+  return simde_mm_movedup_pd(a);
+}
+#if defined(SIMDE_X86_AVX2_ENABLE_NATIVE_ALIASES)
+  #undef _mm_broadcastsd_pd
+  #define _mm_broadcastsd_pd(a) simde_mm_broadcastsd_pd(a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256d
+simde_mm256_broadcastsd_pd (simde__m128d a) {
+#if defined(SIMDE_X86_AVX2_NATIVE)
+  return _mm256_broadcastsd_pd(a);
+#else
+  simde__m256d_private r_;
+  simde__m128d_private a_= simde__m128d_to_private(a);
+
+  SIMDE_VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
+    r_.f64[i] = a_.f64[0];
+  }
+
+  return simde__m256d_from_private(r_);
+#endif
+}
+#if defined(SIMDE_X86_AVX2_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_broadcastsd_pd
+  #define _mm256_broadcastsd_pd(a) simde_mm256_broadcastsd_pd(a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
 simde__m256i
 simde_mm256_broadcastsi128_si256 (simde__m128i a) {
 #if defined(SIMDE_X86_AVX2_NATIVE)
