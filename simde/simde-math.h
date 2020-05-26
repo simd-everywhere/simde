@@ -411,6 +411,12 @@
   #endif
 #endif
 
+#if defined(M_PI)
+  #define SIMDE_MATH_PI M_PI
+#else
+  #define SIMDE_MATH_PI 3.14159265358979323846
+#endif
+
 /*** Additional functions not in libm ***/
 
 #if defined(simde_math_fabs) && defined(simde_math_sqrt) && defined(simde_math_exp)
@@ -462,5 +468,29 @@
   }
   #define simde_math_cdfnormf simde_math_cdfnormf
 #endif
+
+static HEDLEY_INLINE
+double
+simde_math_rad2deg(double radians) {
+ return radians * (180.0 /SIMDE_MATH_PI);
+}
+
+static HEDLEY_INLINE
+double
+simde_math_deg2rad(double degrees) {
+  return degrees * ( SIMDE_MATH_PI / 180.0 );
+}
+
+static HEDLEY_INLINE
+float
+simde_math_rad2degf(float radians) {
+    return radians * (180.0f /HEDLEY_STATIC_CAST(float, SIMDE_MATH_PI));
+}
+
+static HEDLEY_INLINE
+float
+simde_math_deg2radf(float degrees) {
+    return degrees * ( HEDLEY_STATIC_CAST(float, SIMDE_MATH_PI) / 180.0f );
+}
 
 #endif /* !defined(SIMDE_MATH_H) */
