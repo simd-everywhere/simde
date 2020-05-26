@@ -7332,6 +7332,57 @@ test_simde_mm256_permute4x64_epi64(const MunitParameter params[], void* data) {
 }
 
 static MunitResult
+test_simde_mm256_permute4x64_pd(const MunitParameter params[], void* data) {
+  (void) params;
+  (void) data;
+
+  const struct {
+    simde__m256d a;
+    simde__m256d r;
+  } test_vec[8] = {
+    { simde_mm256_set_pd(SIMDE_FLOAT64_C( -641.76), SIMDE_FLOAT64_C(  477.18),
+                         SIMDE_FLOAT64_C(  278.49), SIMDE_FLOAT64_C(  569.18)),
+      simde_mm256_set_pd(SIMDE_FLOAT64_C(  569.18), SIMDE_FLOAT64_C(  569.18),
+                         SIMDE_FLOAT64_C( -641.76), SIMDE_FLOAT64_C(  278.49)) },
+    { simde_mm256_set_pd(SIMDE_FLOAT64_C( -489.82), SIMDE_FLOAT64_C( -641.14),
+                         SIMDE_FLOAT64_C( -951.91), SIMDE_FLOAT64_C(  935.01)),
+      simde_mm256_set_pd(SIMDE_FLOAT64_C(  935.01), SIMDE_FLOAT64_C(  935.01),
+                         SIMDE_FLOAT64_C( -489.82), SIMDE_FLOAT64_C( -951.91)) },
+    { simde_mm256_set_pd(SIMDE_FLOAT64_C( -602.75), SIMDE_FLOAT64_C(  339.47),
+                         SIMDE_FLOAT64_C( -820.66), SIMDE_FLOAT64_C( -740.61)),
+      simde_mm256_set_pd(SIMDE_FLOAT64_C( -740.61), SIMDE_FLOAT64_C( -740.61),
+                         SIMDE_FLOAT64_C( -602.75), SIMDE_FLOAT64_C( -820.66)) },
+    { simde_mm256_set_pd(SIMDE_FLOAT64_C( -303.98), SIMDE_FLOAT64_C( -350.58),
+                         SIMDE_FLOAT64_C( -574.59), SIMDE_FLOAT64_C(  850.86)),
+      simde_mm256_set_pd(SIMDE_FLOAT64_C(  850.86), SIMDE_FLOAT64_C(  850.86),
+                         SIMDE_FLOAT64_C( -303.98), SIMDE_FLOAT64_C( -574.59)) },
+    { simde_mm256_set_pd(SIMDE_FLOAT64_C( -623.12), SIMDE_FLOAT64_C( -143.91),
+                         SIMDE_FLOAT64_C( -840.93), SIMDE_FLOAT64_C(  411.53)),
+      simde_mm256_set_pd(SIMDE_FLOAT64_C(  411.53), SIMDE_FLOAT64_C(  411.53),
+                         SIMDE_FLOAT64_C( -623.12), SIMDE_FLOAT64_C( -840.93)) },
+    { simde_mm256_set_pd(SIMDE_FLOAT64_C( -167.73), SIMDE_FLOAT64_C( -215.71),
+                         SIMDE_FLOAT64_C( -717.06), SIMDE_FLOAT64_C( -432.13)),
+      simde_mm256_set_pd(SIMDE_FLOAT64_C( -432.13), SIMDE_FLOAT64_C( -432.13),
+                         SIMDE_FLOAT64_C( -167.73), SIMDE_FLOAT64_C( -717.06)) },
+    { simde_mm256_set_pd(SIMDE_FLOAT64_C(  572.27), SIMDE_FLOAT64_C( -942.37),
+                         SIMDE_FLOAT64_C(  905.44), SIMDE_FLOAT64_C( -810.45)),
+      simde_mm256_set_pd(SIMDE_FLOAT64_C( -810.45), SIMDE_FLOAT64_C( -810.45),
+                         SIMDE_FLOAT64_C(  572.27), SIMDE_FLOAT64_C(  905.44)) },
+    { simde_mm256_set_pd(SIMDE_FLOAT64_C( -340.56), SIMDE_FLOAT64_C(  537.41),
+                         SIMDE_FLOAT64_C( -960.96), SIMDE_FLOAT64_C( -230.88)),
+      simde_mm256_set_pd(SIMDE_FLOAT64_C( -230.88), SIMDE_FLOAT64_C( -230.88),
+                         SIMDE_FLOAT64_C( -340.56), SIMDE_FLOAT64_C( -960.96)) }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    simde__m256d r = simde_mm256_permute4x64_pd(test_vec[i].a, 13);
+    simde_assert_m256d_close(r, test_vec[i].r, 1);
+  }
+
+  return MUNIT_OK;
+}
+
+static MunitResult
 test_simde_mm256_permute2x128_si256(const MunitParameter params[], void* data) {
   (void) params;
   (void) data;
@@ -12967,6 +13018,7 @@ static MunitTest test_suite_tests[] = {
   SIMDE_TESTS_DEFINE_TEST(mm256_packs_epi32),
 
   SIMDE_TESTS_DEFINE_TEST(mm256_permute4x64_epi64),
+  SIMDE_TESTS_DEFINE_TEST(mm256_permute4x64_pd),
   SIMDE_TESTS_DEFINE_TEST(mm256_permute2x128_si256),
 
   SIMDE_TESTS_DEFINE_TEST(mm256_shuffle_epi8),
