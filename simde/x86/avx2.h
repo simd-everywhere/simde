@@ -1971,6 +1971,29 @@ SIMDE_REQUIRE_RANGE(imm8, 0, 255) {
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
+simde__m256d
+simde_mm256_permute4x64_pd (simde__m256d a, const int imm8)
+SIMDE_REQUIRE_RANGE(imm8, 0, 255) {
+  simde__m256d_private
+    r_,
+    a_ = simde__m256d_to_private(a);
+
+  r_.f64[0] = (imm8 & 0x02) ? a_.f64[((imm8     ) & 1)+2] : a_.f64[(imm8     ) & 1];
+  r_.f64[1] = (imm8 & 0x08) ? a_.f64[((imm8 >> 2  ) & 1)+2] : a_.f64[(imm8 >> 2  ) & 1];
+  r_.f64[2] = (imm8 & 0x20) ? a_.f64[((imm8 >> 4  ) & 1)+2] : a_.f64[(imm8 >> 4  ) & 1];
+  r_.f64[3] = (imm8 & 0x80) ? a_.f64[((imm8 >> 6  ) & 1)+2] : a_.f64[(imm8 >> 6  ) & 1];
+
+  return simde__m256d_from_private(r_);
+}
+#if defined(SIMDE_X86_AVX2_NATIVE)
+#  define simde_mm256_permute4x64_pd(a, imm8) _mm256_permute4x64_pd(a, imm8)
+#endif
+#if defined(SIMDE_X86_AVX2_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_permute4x64_pd
+  #define _mm256_permute4x64_pd(a, imm8) simde_mm256_permute4x64_pd(a, imm8)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
 simde__m256i
 simde_mm256_shuffle_epi8 (simde__m256i a, simde__m256i b) {
 #if defined(SIMDE_X86_AVX2_NATIVE)
