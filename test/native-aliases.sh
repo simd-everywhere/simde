@@ -15,7 +15,8 @@
 cd "$(dirname "${0}")"
 
 if [ ! -e iig.xml ]; then
-  curl "https://software.intel.com/sites/landingpage/IntrinsicsGuide/files/data-3.5.0.xml" > iig.xml
+  VERSION="$(curl -s 'https://software.intel.com/sites/landingpage/IntrinsicsGuide/' | grep -Po '(?<=intrinsicsguide.min.js\?)([0-9\.]+)')"
+  curl "https://software.intel.com/sites/landingpage/IntrinsicsGuide/files/data-${VERSION}.xml" > iig.xml
 fi
 
 PATTERN="$(xmllint --xpath '//intrinsic/@name' iig.xml | grep -Po '(?<=")[^"]+' | xargs printf '%s|' | rev | cut -c 2- | rev)"
