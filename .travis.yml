@@ -249,6 +249,27 @@ jobs:
       github_token: $GITHUB_TOKEN
       skip_cleanup: true
       keep_history: true
+      name: SIMDe
+      email: simde@googlegroups.com
+      on:
+        repo: nemequ/simde
+
+  - name: push-to-no-tests
+    if: branch = master AND type != pull_request
+    script:
+    - tail -n +4 .no-test-readme.md > simde/README.md
+    deploy:
+      provider: pages
+      target_branch: master
+      repo: nemequ/simde-no-tests
+      github_token: $GITHUB_TOKEN
+      local_dir: simde
+      skip_cleanup: true
+      keep_history: true
+      name: SIMDe
+      email: simde@googlegroups.com
+      on:
+        repo: nemequ/simde
 
   - name: emscripten
     if: branch != master OR type == pull_request
