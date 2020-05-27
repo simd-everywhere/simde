@@ -4447,7 +4447,9 @@ simde_mm512_permutexvar_epi32 (simde__m512i idx, simde__m512i a) {
       a_ = simde__m512i_to_private(a),
       r_;
 
-    SIMDE_VECTORIZE
+    #if !defined(__INTEL_COMPILER)
+      SIMDE_VECTORIZE
+    #endif
     for (size_t i = 0 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {
       r_.i32[i] = a_.i32[idx_.i32[i] & 0x0F];
     }
@@ -4471,7 +4473,9 @@ simde_mm512_permutexvar_epi64 (simde__m512i idx, simde__m512i a) {
       a_ = simde__m512i_to_private(a),
       r_;
 
-    SIMDE_VECTORIZE
+    #if !defined(__INTEL_COMPILER)
+      SIMDE_VECTORIZE
+    #endif
     for (size_t i = 0 ; i < (sizeof(r_.i64) / sizeof(r_.i64[0])) ; i++) {
       r_.i64[i] = a_.i64[idx_.i64[i] & 7];
     }
@@ -4495,7 +4499,9 @@ simde_mm512_permutexvar_pd (simde__m512i idx, simde__m512d a) {
       a_ = simde__m512d_to_private(a),
       r_;
 
-    SIMDE_VECTORIZE
+    #if !defined(__INTEL_COMPILER)
+      SIMDE_VECTORIZE
+    #endif
     for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
       r_.f64[i] = a_.f64[idx_.i64[i] & 7];
     }
@@ -4519,7 +4525,9 @@ simde_mm512_permutexvar_ps (simde__m512i idx, simde__m512 a) {
       a_ = simde__m512_to_private(a),
       r_;
 
-    SIMDE_VECTORIZE
+    #if !defined(__INTEL_COMPILER)
+      SIMDE_VECTORIZE
+    #endif
     for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
       r_.f32[i] = a_.f32[idx_.i32[i] & 0x0F];
     }
