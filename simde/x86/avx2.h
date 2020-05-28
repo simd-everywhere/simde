@@ -2686,7 +2686,7 @@ simde_mm256_srli_epi16 (simde__m256i a, const int imm8)
     }
   #else
     if (HEDLEY_STATIC_CAST(unsigned int, imm8) > 15) {
-      memset(&r_, 0, sizeof(r_));
+      simde_memset(&r_, 0, sizeof(r_));
     } else {
       #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
         r_.u16 = a_.u16 >> HEDLEY_STATIC_CAST(int16_t, imm8);

@@ -4520,7 +4520,7 @@ test_simde_mm_maskmoveu_si128(const MunitParameter params[], void* data) {
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     int8_t r[16];
-    memcpy(r, test_vec[i].i, 16);
+    simde_memcpy(r, test_vec[i].i, 16);
 
     #if defined SIMDE_X86_SSE2_NATIVE && defined SIMDE_NATIVE_ALIASES_TESTING
       simde_mm_maskmoveu_si128(test_vec[i].a, test_vec[i].mask, HEDLEY_REINTERPRET_CAST(char *, r));
@@ -8082,7 +8082,7 @@ test_simde_mm_store_sd(const MunitParameter params[], void* data) {
 
   for (size_t i = 0 ; i < sizeof(test_vec) / sizeof(test_vec[0]) ; i++) {
     simde_float64 SIMDE_ALIGN(16) r[2];
-    memcpy(r, &(test_vec[i].b), sizeof(test_vec[i].b));
+    simde_memcpy(r, &(test_vec[i].b), sizeof(test_vec[i].b));
     simde_mm_store_sd(r, test_vec[i].a);
     simde_assert_f32v_equal(simde_float64, 2, test_vec[i].r, r, 4);
   }
@@ -8164,7 +8164,7 @@ test_simde_mm_storeh_pd(const MunitParameter params[], void* data) {
 
   for (size_t i = 0 ; i < sizeof(test_vec) / sizeof(test_vec[0]) ; i++) {
     SIMDE_ALIGN(16) simde_float64 r[2];
-    memcpy(r, &(test_vec[i].b), sizeof(test_vec[i].b));
+    simde_memcpy(r, &(test_vec[i].b), sizeof(test_vec[i].b));
     simde_mm_storeh_pd(r, test_vec[i].a);
     simde_assert_f32v_equal(simde_float64, 2, test_vec[i].r, r, 4);
   }
@@ -8210,7 +8210,7 @@ test_simde_mm_storel_epi64(const MunitParameter params[], void* data) {
 
   for (size_t i = 0 ; i < sizeof(test_vec) / sizeof(test_vec[0]) ; i++) {
     simde__m128i r;
-    memcpy(&r, &(test_vec[i].b), sizeof(r));
+    simde_memcpy(&r, &(test_vec[i].b), sizeof(r));
     simde_mm_storel_epi64(&r, test_vec[i].a);
     simde_assert_m128i_i64(r, ==, test_vec[i].r);
   }
@@ -8256,7 +8256,7 @@ test_simde_mm_storel_pd(const MunitParameter params[], void* data) {
 
   for (size_t i = 0 ; i < sizeof(test_vec) / sizeof(test_vec[0]) ; i++) {
     SIMDE_ALIGN(16) simde_float64 r[2];
-    memcpy(r, &(test_vec[i].b), sizeof(test_vec[i].b));
+    simde_memcpy(r, &(test_vec[i].b), sizeof(test_vec[i].b));
     simde_mm_storel_pd(r, test_vec[i].a);
     simde_assert_f32v_equal(simde_float64, 2, test_vec[i].r, r, 4);
   }
@@ -8302,7 +8302,7 @@ test_simde_mm_storer_pd(const MunitParameter params[], void* data) {
 
   for (size_t i = 0 ; i < sizeof(test_vec) / sizeof(test_vec[0]) ; i++) {
     SIMDE_ALIGN(16) simde_float64 r[2];
-    memcpy(r, &(test_vec[i].b), sizeof(test_vec[i].b));
+    simde_memcpy(r, &(test_vec[i].b), sizeof(test_vec[i].b));
     simde_mm_storer_pd(r, test_vec[i].a);
     simde_assert_f32v_equal(simde_float64, 2, test_vec[i].r, r, 4);
   }
@@ -8348,7 +8348,7 @@ test_simde_mm_storeu_pd(const MunitParameter params[], void* data) {
 
   for (size_t i = 0 ; i < sizeof(test_vec) / sizeof(test_vec[0]) ; i++) {
     SIMDE_ALIGN(16) simde_float64 r[2];
-    memcpy(r, &(test_vec[i].b), sizeof(test_vec[i].b));
+    simde_memcpy(r, &(test_vec[i].b), sizeof(test_vec[i].b));
     simde_mm_storeu_pd(r, test_vec[i].a);
     simde_assert_f32v_equal(simde_float64, 2, test_vec[i].r, r, 4);
   }

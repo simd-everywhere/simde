@@ -3080,7 +3080,7 @@ test_simde_mm_maskmove_si64(const MunitParameter params[], void* data) {
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     int8_t r[8];
-    memcpy(r, test_vec[i].b, sizeof(r));
+    simde_memcpy(r, test_vec[i].b, sizeof(r));
 
     #if defined(SIMDE_X86_SSE_NATIVE) && defined(SIMDE_NATIVE_ALIASES_TESTING)
       simde_mm_maskmove_si64(test_vec[i].a, test_vec[i].mask, HEDLEY_REINTERPRET_CAST(char *, r));

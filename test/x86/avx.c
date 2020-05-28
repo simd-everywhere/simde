@@ -27,13 +27,13 @@
 
 static simde_float32 u32_to_f32(uint32_t u32) {
   simde_float32 f32;
-  memcpy(&f32, &u32, sizeof(f32));
+  simde_memcpy(&f32, &u32, sizeof(f32));
   return f32;
 }
 
 static simde_float64 u64_to_f64(uint64_t u64) {
   simde_float64 f64;
-  memcpy(&f64, &u64, sizeof(f64));
+  simde_memcpy(&f64, &u64, sizeof(f64));
   return f64;
 }
 
@@ -7816,7 +7816,7 @@ test_simde_mm_maskstore_pd(const MunitParameter params[], void* data) {
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     double r[2] = { test_vec[i].ri[0], test_vec[i].ri[1], };
-    memcpy(r, test_vec[i].ri, sizeof(r));
+    simde_memcpy(r, test_vec[i].ri, sizeof(r));
     simde_mm_maskstore_pd(r, test_vec[i].mask, test_vec[i].a);
     simde_assert_f32v_equal(simde_float64, sizeof(r) / sizeof(r[0]), r, test_vec[i].ro, 1);
   }
@@ -7903,7 +7903,7 @@ test_simde_mm256_maskstore_pd(const MunitParameter params[], void* data) {
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde_float64 r[4];
-    memcpy(r, test_vec[i].ri, sizeof(r));
+    simde_memcpy(r, test_vec[i].ri, sizeof(r));
     simde_mm256_maskstore_pd(r, test_vec[i].mask, test_vec[i].a);
     simde_assert_f32v_equal(simde_float64, sizeof(r) / sizeof(r[0]), r, test_vec[i].ro, 1);
   }
@@ -7958,7 +7958,7 @@ test_simde_mm_maskstore_ps(const MunitParameter params[], void* data) {
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde_float32 r[4];
-    memcpy(r, test_vec[i].ri, sizeof(r));
+    simde_memcpy(r, test_vec[i].ri, sizeof(r));
     simde_mm_maskstore_ps(r, test_vec[i].mask, test_vec[i].a);
     simde_assert_f32v_equal(simde_float32, sizeof(r) / sizeof(r[0]), r, test_vec[i].ro, 1);
     simde_assert_f32v_close(simde_float32, 4, r, test_vec[i].ro, 1);
@@ -8094,7 +8094,7 @@ test_simde_mm256_maskstore_ps(const MunitParameter params[], void* data) {
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde_float32 r[8];
-    memcpy(r, test_vec[i].ri, sizeof(r));
+    simde_memcpy(r, test_vec[i].ri, sizeof(r));
     simde_mm256_maskstore_ps(r, test_vec[i].mask, test_vec[i].a);
     simde_assert_f32v_equal(simde_float32, sizeof(r) / sizeof(r[0]), r, test_vec[i].ro, 1);
   }

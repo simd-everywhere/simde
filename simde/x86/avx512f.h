@@ -479,7 +479,7 @@ simde_mm512_castpd_ps (simde__m512d a) {
     return _mm512_castpd_ps(a);
   #else
     simde__m512 r;
-    memcpy(&r, &a, sizeof(r));
+    simde_memcpy(&r, &a, sizeof(r));
     return r;
   #endif
 }
@@ -495,7 +495,7 @@ simde_mm512_castpd_si512 (simde__m512d a) {
     return _mm512_castpd_si512(a);
   #else
     simde__m512i r;
-    memcpy(&r, &a, sizeof(r));
+    simde_memcpy(&r, &a, sizeof(r));
     return r;
   #endif
 }
@@ -511,7 +511,7 @@ simde_mm512_castps_pd (simde__m512 a) {
     return _mm512_castps_pd(a);
   #else
     simde__m512d r;
-    memcpy(&r, &a, sizeof(r));
+    simde_memcpy(&r, &a, sizeof(r));
     return r;
   #endif
 }
@@ -527,7 +527,7 @@ simde_mm512_castps_si512 (simde__m512 a) {
     return _mm512_castps_si512(a);
   #else
     simde__m512i r;
-    memcpy(&r, &a, sizeof(r));
+    simde_memcpy(&r, &a, sizeof(r));
     return r;
   #endif
 }
@@ -543,7 +543,7 @@ simde_mm512_castsi512_ps (simde__m512i a) {
     return _mm512_castsi512_ps(a);
   #else
     simde__m512 r;
-    memcpy(&r, &a, sizeof(r));
+    simde_memcpy(&r, &a, sizeof(r));
     return r;
   #endif
 }
@@ -559,7 +559,7 @@ simde_mm512_castsi512_pd (simde__m512i a) {
     return _mm512_castsi512_pd(a);
   #else
     simde__m512d r;
-    memcpy(&r, &a, sizeof(r));
+    simde_memcpy(&r, &a, sizeof(r));
     return r;
   #endif
 }
@@ -763,7 +763,7 @@ simde_mm512_load_si512 (simde__m512i const * mem_addr) {
     return _mm512_load_si512(HEDLEY_REINTERPRET_CAST(__m512i const*, mem_addr));
   #elif defined(SIMDE_ARCH_AARCH64) && (defined(HEDLEY_GCC_VERSION) && !HEDLEY_GCC_VERSION_CHECK(8,0,0))
     simde__m512i r;
-    memcpy(&r, mem_addr, sizeof(r));
+    simde_memcpy(&r, mem_addr, sizeof(r));
     return r;
   #else
     return *mem_addr;

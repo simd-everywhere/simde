@@ -1231,10 +1231,10 @@ simde_mm_cvt_ss2si (simde__m128 a) {
 #else
   simde__m128_private a_ = simde__m128_to_private(a);
 
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-    return SIMDE_CONVERT_FTOI(int32_t, nearbyintf(vgetq_lane_f32(a_.neon_f32, 0)));
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && !defined(SIMDE_BUG_GCC_95399)
+    return vgetq_lane_s32(vcvtnq_s32_f32(a_.neon_f32), 0);
   #elif defined(simde_math_nearbyintf)
-    return SIMDE_CONVERT_FTOI(int32_t, nearbyintf(a_.f32[0]));
+    return SIMDE_CONVERT_FTOI(int32_t, simde_math_nearbyintf(a_.f32[0]));
   #else
     HEDLEY_UNREACHABLE();
   #endif
@@ -1833,11 +1833,11 @@ SIMDE_MM_GET_ROUNDING_MODE(void) {
 SIMDE_FUNCTION_ATTRIBUTES
 void
 SIMDE_MM_SET_ROUNDING_MODE(unsigned int a) {
-#if defined(SIMDE_X86_SSE_NATIVE)
-  _MM_SET_ROUNDING_MODE(a);
-#else
-  fesetround(HEDLEY_STATIC_CAST(int, a));
-#endif
+  #if defined(SIMDE_X86_SSE_NATIVE)
+    _MM_SET_ROUNDING_MODE(a);
+  #elif defined(SIMDE_HAVE_FENV_H)
+    fesetround(HEDLEY_STATIC_CAST(int, a));
+  #endif
 }
 #if defined(SIMDE_X86_SSE_ENABLE_NATIVE_ALIASES)
 #  define _MM_SET_ROUNDING_MODE(a) SIMDE_MM_SET_ROUNDING_MODE(a)

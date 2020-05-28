@@ -3442,7 +3442,7 @@ simde_mm_maskload_pd (const simde_float64 mem_addr[HEDLEY_ARRAY_PARAM(4)], simde
   SIMDE_VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
     int64_t tmp;
-    memcpy(&tmp, &(mem_addr[i]), sizeof(simde_float64));
+    simde_memcpy(&tmp, &(mem_addr[i]), sizeof(simde_float64));
     r_.i64[i] = tmp & (mask_.i64[i] >> 63);
   }
 
