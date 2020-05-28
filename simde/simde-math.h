@@ -151,6 +151,66 @@
   #endif
 #endif
 
+#if !defined(simde_math_acos)
+  #if SIMDE_MATH_BUILTIN_LIBM(acos)
+    #define simde_math_acos(v) __builtin_acos(v)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_acos(v) std::acos(v)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_acos(v) acos(v)
+  #endif
+#endif
+
+#if !defined(simde_math_acosf)
+  #if SIMDE_MATH_BUILTIN_LIBM(acosf)
+    #define simde_math_acosf(v) __builtin_acosf(v)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_acosf(v) std::acos(v)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_acosf(v) acosf(v)
+  #endif
+#endif
+
+#if !defined(simde_math_asin)
+  #if SIMDE_MATH_BUILTIN_LIBM(asin)
+    #define simde_math_asin(v) __builtin_asin(v)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_asin(v) std::asin(v)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_asin(v) asin(v)
+  #endif
+#endif
+
+#if !defined(simde_math_asinf)
+  #if SIMDE_MATH_BUILTIN_LIBM(asinf)
+    #define simde_math_asinf(v) __builtin_asinf(v)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_asinf(v) std::asin(v)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_asinf(v) asinf(v)
+  #endif
+#endif
+
+#if !defined(simde_math_atan)
+  #if SIMDE_MATH_BUILTIN_LIBM(atan)
+    #define simde_math_atan(v) __builtin_atan(v)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_atan(v) std::atan(v)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_atan(v) atan(v)
+  #endif
+#endif
+
+#if !defined(simde_math_atanf)
+  #if SIMDE_MATH_BUILTIN_LIBM(atanf)
+    #define simde_math_atanf(v) __builtin_atanf(v)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_atanf(v) std::atan(v)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_atanf(v) atanf(v)
+  #endif
+#endif
+
 #if !defined(simde_math_ceil)
   #if SIMDE_MATH_BUILTIN_LIBM(ceil)
     #define simde_math_ceil(v) __builtin_ceil(v)
