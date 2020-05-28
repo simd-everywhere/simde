@@ -34,16 +34,22 @@ jobs:
       with:
         submodules: recursive
     - name: Install APT Dependencies
-      run: sudo add-apt-repository 'ppa:ubuntu-toolchain-r/test' && sudo apt-get update && sudo apt-get install -y ninja-build ninja-build python3-pip python3-setuptools python3-wheel parallel
+      run: sudo add-apt-repository 'ppa:ubuntu-toolchain-r/test' && sudo apt-get update && sudo apt-get install -y ninja-build ninja-build python3-pip python3-setuptools python3-wheel parallel gcovr
     - name: Install pip Dependencies
       run: pip3 install meson
     - name: Configure
-      run: ~/.local/bin/meson setup build
+      run: ~/.local/bin/meson setup build -Db_coverage=true
     - name: Build
       run: ninja -C build -v
     - name: Test
       run: |
         ./build/test/run-tests --list | grep -oP '^/([^\/]+)/([^\/]+)' | sort -u | xargs parallel ./build/test/run-tests --color always {} :::
+    - name: Coverage Report
+      run: ninja -C build -v coverage-xml
+    - name: CodeCov.io
+      uses: codecov/codecov-action@v1
+      with:
+        file: ./build/meson-logs/coverage.xml
 
   SDE:
     runs-on: ubuntu-latest
@@ -60,7 +66,7 @@ jobs:
       with:
         submodules: recursive
     - name: Install APT Dependencies
-      run: sudo add-apt-repository 'ppa:ubuntu-toolchain-r/test' && sudo apt-get update && sudo apt-get install -y ninja-build ninja-build python3-pip python3-setuptools python3-wheel parallel
+      run: sudo add-apt-repository 'ppa:ubuntu-toolchain-r/test' && sudo apt-get update && sudo apt-get install -y ninja-build ninja-build python3-pip python3-setuptools python3-wheel parallel gcovr
     - name: Install pip Dependencies
       run: pip3 install meson
     - name: Download SDE
@@ -71,12 +77,18 @@ jobs:
           | xargs curl -sL \
           | tar --strip-components 1 -jxvC sde
     - name: Configure
-      run: ~/.local/bin/meson setup build
+      run: ~/.local/bin/meson setup build -Db_coverage=true
     - name: Build
       run: ninja -C build -v
     - name: Test
       run: |
         sde/sde64 -- ./build/test/run-tests --list | grep -oP '^/([^\/]+)/([^\/]+)' | sort -u | xargs parallel sde/sde64 -- ./build/test/run-tests --color always {} :::
+    - name: Coverage Report
+      run: ninja -C build -v coverage-xml
+    - name: CodeCov.io
+      uses: codecov/codecov-action@v1
+      with:
+        file: ./build/meson-logs/coverage.xml
 
   native-aliases:
     runs-on: ubuntu-latest
@@ -90,18 +102,24 @@ jobs:
       with:
         submodules: recursive
     - name: Install APT Dependencies
-      run: sudo add-apt-repository ppa:ubuntu-toolchain-r/test && sudo apt-get update && sudo apt-get -yq install libxml2-utils ninja-build python3-pip python3-setuptools python3-wheel gcc-10 g++-10 parallel
+      run: sudo add-apt-repository ppa:ubuntu-toolchain-r/test && sudo apt-get update && sudo apt-get -yq install libxml2-utils ninja-build python3-pip python3-setuptools python3-wheel gcc-10 g++-10 parallel gcovr
     - name: Install pip Dependencies
       run: pip3 install meson
     - name: Convert
       run: ./test/native-aliases.sh
     - name: Configure
-      run: ~/.local/bin/meson setup build
+      run: ~/.local/bin/meson setup build -Db_coverage=true
     - name: Build
       run: ninja -C build -v
     - name: Test
       run: |
         ./build/test/run-tests --list | grep -oP '^/([^\/]+)/([^\/]+)' | sort -u | xargs parallel ./build/test/run-tests --color always {} :::
+    - name: Coverage Report
+      run: ninja -C build -v coverage-xml
+    - name: CodeCov.io
+      uses: codecov/codecov-action@v1
+      with:
+        file: ./build/meson-logs/coverage.xml
 
   ubuntu-xenial:
     runs-on: ubuntu-16.04
