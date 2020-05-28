@@ -13,7 +13,7 @@ jobs:
       run: git diff --check HEAD^
     - name: Tabs
       run: find simde/ -name '*.c' -o -name '*.h' -exec grep -nP '\t' {} + && exit 1 || exit 0
-    # s/8/16/ will result in this if the input in x86.
+    # s/8/16/ will result in this if the input is x86.
     - name: Bad substitutions
       run: git grep -i 'x''1''6''6' && exit 1 || exit 0
     - name: Incorrect assertions in test/
@@ -26,27 +26,43 @@ jobs:
     strategy:
       matrix:
         isax: ["", "-msse3", "-mssse3", "-msse4.1", "-msse4.2", "-mavx", "-mfma", "-mavx2", "-march=native"]
+    env:
+      CFLAGS: -Wall -Wextra -Werror ${{ matrix.isax }}
+      CXXFLAGS: -Wall -Wextra -Werror ${{ matrix.isax }}
     steps:
     - uses: actions/checkout@v2
+      with:
+        submodules: recursive
     - name: Install APT Dependencies
-      run: sudo add-apt-repository 'ppa:ubuntu-toolchain-r/test' && sudo apt-get update && sudo apt-get install -y ninja-build parallel
+      run: sudo add-apt-repository 'ppa:ubuntu-toolchain-r/test' && sudo apt-get update && sudo apt-get install -y ninja-build ninja-build python3-pip python3-setuptools python3-wheel parallel
+    - name: Install pip Dependencies
+      run: pip3 install meson
     - name: Configure
-      run: cmake test -G "Ninja" -DCMAKE_BUILD_TYPE="Coverage" -DCMAKE_{C,CXX}_FLAGS="${{ matrix.isax }} -Wall -Wextra -Werror" -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON
+      run: ~/.local/bin/meson setup build
     - name: Build
-      run: cmake --build .
+      run: ninja -C build -v
     - name: Test
       run: |
-        ./run-tests --list | grep -oP '^/([^\/]+)/([^\/]+)' | sort -u | xargs parallel ./run-tests --color always {} :::
+        ./build/test/run-tests --list | grep -oP '^/([^\/]+)/([^\/]+)' | sort -u | xargs parallel ./build/test/run-tests --color always {} :::
 
   SDE:
     runs-on: ubuntu-latest
     strategy:
       matrix:
         arch: ["icelake-server"]
+    env:
+      CC: clang
+      CXX: clang++
+      CFLAGS: -march=icelake-server -Wall -Wextra -Werror
+      CXXFLAGS: -march=icelake-server -Wall -Wextra -Werror
     steps:
     - uses: actions/checkout@v2
+      with:
+        submodules: recursive
     - name: Install APT Dependencies
-      run: sudo add-apt-repository 'ppa:ubuntu-toolchain-r/test' && sudo apt-get update && sudo apt-get install -y ninja-build parallel
+      run: sudo add-apt-repository 'ppa:ubuntu-toolchain-r/test' && sudo apt-get update && sudo apt-get install -y ninja-build ninja-build python3-pip python3-setuptools python3-wheel parallel
+    - name: Install pip Dependencies
+      run: pip3 install meson
     - name: Download SDE
       run: |
         mkdir sde && \
@@ -55,15 +71,20 @@ jobs:
           | xargs curl -sL \
           | tar --strip-components 1 -jxvC sde
     - name: Configure
-      run: cmake test -G "Ninja" -DCMAKE_C_COMPILER="clang" -DCMAKE_CXX_COMPILER="clang++" -DCMAKE_BUILD_TYPE="Coverage" -DCMAKE_{C,CXX}_FLAGS="-march=${{ matrix.arch }} -Wall -Wextra -Werror" -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON
+      run: ~/.local/bin/meson setup build
     - name: Build
-      run: cmake --build .
+      run: ninja -C build -v
     - name: Test
       run: |
-        sde/sde64 -- ./run-tests --list | grep -oP '^/([^\/]+)/([^\/]+)' | sort -u | xargs parallel sde/sde64 -- ./run-tests --color always {} :::
+        sde/sde64 -- ./build/test/run-tests --list | grep -oP '^/([^\/]+)/([^\/]+)' | sort -u | xargs parallel sde/sde64 -- ./build/test/run-tests --color always {} :::
 
   native-aliases:
     runs-on: ubuntu-latest
+    env:
+      CC: gcc-10
+      CXX: g++-10
+      CFLAGS: -DSIMDE_ENABLE_NATIVE_ALIASES -DSIMDE_NATIVE_ALIASES_TESTING -march=native -Wall -Wextra -Werror
+      CXXFLAGS: -DSIMDE_ENABLE_NATIVE_ALIASES -DSIMDE_NATIVE_ALIASES_TESTING -march=native -Wall -Wextra -Werror
     steps:
     - uses: actions/checkout@v2
       with:
@@ -75,15 +96,18 @@ jobs:
     - name: Convert
       run: ./test/native-aliases.sh
     - name: Configure
-      run: mkdir build && cd build && CC='gcc-10' CXX='g++-10' CFLAGS='-march=native -DSIMDE_ENABLE_NATIVE_ALIASES -DSIMDE_NATIVE_ALIASES_TESTING' CXXFLAGS='-march=native -DSIMDE_ENABLE_NATIVE_ALIASES -DSIMDE_NATIVE_ALIASES_TESTING' ~/.local/bin/meson ..
+      run: ~/.local/bin/meson setup build
     - name: Build
-      run: cd build && ninja -v
+      run: ninja -C build -v
     - name: Test
       run: |
         ./build/test/run-tests --list | grep -oP '^/([^\/]+)/([^\/]+)' | sort -u | xargs parallel ./build/test/run-tests --color always {} :::
 
   ubuntu-xenial:
     runs-on: ubuntu-16.04
+    env:
+      CFLAGS: -mavx2 -Wall -Wextra -Werror
+      CXXFLAGS: -mavx2 -Wall -Wextra -Werror
     steps:
     - uses: actions/checkout@v2
       with:
@@ -91,7 +115,9 @@ jobs:
     - name: Install APT Dependencies
       run: sudo add-apt-repository ppa:ubuntu-toolchain-r/test && sudo apt-get update && sudo apt-get -yq install ninja-build parallel
     - name: Configure
-      run: mkdir test/build && cd test/build && cmake -G Ninja -DCMAKE_{C,CXX}_FLAGS='-Wall -Werror' CXXFLAGS='-march=native -Wall -Werror' ..
+      run: mkdir test/build && cd test/build && cmake -G Ninja ..
     - name: Build
+      run: ninja -C test/build -v
+    - name: Test
       run: |
-        ./build/test/run-tests --list | grep -oP '^/([^\/]+)/([^\/]+)' | sort -u | xargs parallel ./build/test/run-tests --color always {} :::
+        ./test/build/run-tests --list | grep -oP '^/([^\/]+)/([^\/]+)' | sort -u | xargs parallel ./test/build/run-tests --color always {} :::
