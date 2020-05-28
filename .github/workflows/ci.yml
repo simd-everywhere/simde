@@ -29,13 +29,14 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Install APT Dependencies
-      run: sudo add-apt-repository 'ppa:ubuntu-toolchain-r/test' && sudo apt-get update && sudo apt-get install -y ninja-build
+      run: sudo add-apt-repository 'ppa:ubuntu-toolchain-r/test' && sudo apt-get update && sudo apt-get install -y ninja-build parallel
     - name: Configure
       run: cmake test -G "Ninja" -DCMAKE_BUILD_TYPE="Coverage" -DCMAKE_{C,CXX}_FLAGS="${{ matrix.isax }} -Wall -Wextra -Werror" -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON
     - name: Build
       run: cmake --build .
     - name: Test
-      run: ./run-tests
+      run: |
+        ./run-tests --list | grep -oP '^/([^\/]+)/([^\/]+)' | sort -u | xargs parallel ./run-tests --color always {} :::
 
   SDE:
     runs-on: ubuntu-latest
@@ -45,7 +46,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Install APT Dependencies
-      run: sudo add-apt-repository 'ppa:ubuntu-toolchain-r/test' && sudo apt-get update && sudo apt-get install -y ninja-build
+      run: sudo add-apt-repository 'ppa:ubuntu-toolchain-r/test' && sudo apt-get update && sudo apt-get install -y ninja-build parallel
     - name: Download SDE
       run: |
         mkdir sde && \
@@ -58,7 +59,8 @@ jobs:
     - name: Build
       run: cmake --build .
     - name: Test
-      run: sde/sde64 -- ./run-tests
+      run: |
+        sde/sde64 -- ./run-tests --list | grep -oP '^/([^\/]+)/([^\/]+)' | sort -u | xargs parallel sde/sde64 -- ./run-tests --color always {} :::
 
   native-aliases:
     runs-on: ubuntu-latest
@@ -67,7 +69,7 @@ jobs:
       with:
         submodules: recursive
     - name: Install APT Dependencies
-      run: sudo add-apt-repository ppa:ubuntu-toolchain-r/test && sudo apt-get update && sudo apt-get -yq install libxml2-utils ninja-build python3-pip python3-setuptools python3-wheel gcc-10 g++-10
+      run: sudo add-apt-repository ppa:ubuntu-toolchain-r/test && sudo apt-get update && sudo apt-get -yq install libxml2-utils ninja-build python3-pip python3-setuptools python3-wheel gcc-10 g++-10 parallel
     - name: Install pip Dependencies
       run: pip3 install meson
     - name: Convert
@@ -77,7 +79,8 @@ jobs:
     - name: Build
       run: cd build && ninja -v
     - name: Test
-      run: build/test/run-tests
+      run: |
+        ./build/test/run-tests --list | grep -oP '^/([^\/]+)/([^\/]+)' | sort -u | xargs parallel ./build/test/run-tests --color always {} :::
 
   ubuntu-xenial:
     runs-on: ubuntu-16.04
@@ -86,10 +89,9 @@ jobs:
       with:
         submodules: recursive
     - name: Install APT Dependencies
-      run: sudo add-apt-repository ppa:ubuntu-toolchain-r/test && sudo apt-get update && sudo apt-get -yq install ninja-build
+      run: sudo add-apt-repository ppa:ubuntu-toolchain-r/test && sudo apt-get update && sudo apt-get -yq install ninja-build parallel
     - name: Configure
       run: mkdir test/build && cd test/build && cmake -G Ninja -DCMAKE_{C,CXX}_FLAGS='-Wall -Werror' CXXFLAGS='-march=native -Wall -Werror' ..
     - name: Build
-      run: cd test/build && ninja -v
-    - name: Test
-      run: test/build/run-tests
+      run: |
+        ./build/test/run-tests --list | grep -oP '^/([^\/]+)/([^\/]+)' | sort -u | xargs parallel ./build/test/run-tests --color always {} :::

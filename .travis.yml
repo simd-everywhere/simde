@@ -306,7 +306,7 @@ before_install:
   if [ "${CMAKE_GENERATOR}" = "Ninja" ]; then
     case "${TRAVIS_OS_NAME}" in
       "linux")
-        sudo apt-get install -y ninja-build
+        sudo apt-get install -y ninja-build parallel
         ;;
       "osx")
         brew install ninja
@@ -347,7 +347,13 @@ script:
 - |
   if [ "${RUN_TESTS}" = "true" ]; then
     if [ "windows" != "${TRAVIS_OS_NAME}" ]; then
-      ${TEST_WRAPPER} ./run-tests${EXECUTABLE_EXTENSION}
+      if command -v parallel; then
+        echo Parallel tests
+        ${TEST_WRAPPER} ./test/run-tests${EXECUTABLE_EXTENSION} --list | grep -oP '^/([^\/]+)/([^\/]+)' | sort -u | xargs parallel ${TEST_WRAPPER} ./test/run-tests${EXECUTABLE_EXTENSION} --color always {} :::
+      else
+        echo Serial tests
+        ${TEST_WRAPPER} ./run-tests${EXECUTABLE_EXTENSION}
+      fi
     else
       ctest --output-on-failure --interactive-debug-mode 0 -C Debug -V
     fi

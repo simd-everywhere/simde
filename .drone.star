@@ -8,26 +8,26 @@ def get_test_commands():
     "cd build",
     'CFLAGS="$ARCH_FLAGS" CXXFLAGS="$ARCH_FLAGS" meson .. || (cat meson-logs/meson-log.txt; false)',
     '"$(command -v ninja || command -v ninja-build)" -v',
-    "./test/run-tests",
+    './test/run-tests --list | grep -oP "^/([^/]+)/([^/]+)" | sort -u | xargs parallel ./test/run-tests --color always {} :::',
   ]
 
 def get_apt_install_commands(extra_pkgs = []):
   return [
     "apt-get -yq update",
-    "apt-get -yq install %s ninja-build git-core python3-pip" % " ".join(extra_pkgs),
+    "apt-get -yq install %s ninja-build git-core python3-pip parallel" % " ".join(extra_pkgs),
     "pip3 install meson",
   ]
 
 def get_dnf_install_commands(extra_pkgs = []):
   return [
-    "dnf install -y %s ninja-build git-core python3-pip" % " ".join(extra_pkgs),
+    "dnf install -y %s ninja-build git-core python3-pip parallel findutils" % " ".join(extra_pkgs),
     "pip3 install meson",
   ]
 
 def get_yum_install_commands(extra_pkgs = []):
   return [
     "yum install -y epel-release",
-    "yum install -y %s meson ninja-build git-core" % " ".join(extra_pkgs),
+    "yum install -y %s meson ninja-build git-core parallel" % " ".join(extra_pkgs),
   ]
 
 def get_default_job():
