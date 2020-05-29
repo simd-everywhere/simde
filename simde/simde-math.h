@@ -351,6 +351,26 @@
   #endif
 #endif
 
+#if !defined(simde_math_round)
+  #if SIMDE_MATH_BUILTIN_LIBM(round)
+    #define simde_math_round(v) __builtin_round(v)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_round(v) std::round(v)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_round(v) round(v)
+  #endif
+#endif
+
+#if !defined(simde_math_roundf)
+  #if SIMDE_MATH_BUILTIN_LIBM(roundf)
+    #define simde_math_roundf(v) __builtin_roundf(v)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_roundf(v) std::round(v)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_roundf(v) roundf(v)
+  #endif
+#endif
+
 #if !defined(simde_math_sin)
   #if SIMDE_MATH_BUILTIN_LIBM(sin)
     #define simde_math_sin(v) __builtin_sin(v)

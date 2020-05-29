@@ -24,6 +24,7 @@
  *   2018-2020 Evan Nemerson <evan@nemerson.com>
  */
 
+#include "sse.h"
 #if !defined(SIMDE_AVX_H)
 #define SIMDE_AVX_H
 
@@ -1643,8 +1644,7 @@ simde_mm256_round_ps (simde__m256 a, const int rounding) {
     a_ = simde__m256_to_private(a);
 
   switch (rounding & ~SIMDE_MM_FROUND_NO_EXC) {
-    #if defined(simde_math_nearbyint)
-      case SIMDE_MM_FROUND_TO_NEAREST_INT:
+    #if defined(simde_math_nearbyintf)
       case SIMDE_MM_FROUND_CUR_DIRECTION:
         for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
           r_.f32[i] = simde_math_nearbyintf(a_.f32[i]);
@@ -1652,7 +1652,15 @@ simde_mm256_round_ps (simde__m256 a, const int rounding) {
         break;
     #endif
 
-    #if defined(simde_math_floor)
+    #if defined(simde_math_roundf)
+      case SIMDE_MM_FROUND_TO_NEAREST_INT:
+        for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
+          r_.f32[i] = simde_math_roundf(a_.f32[i]);
+        }
+        break;
+    #endif
+
+    #if defined(simde_math_floorf)
       case SIMDE_MM_FROUND_TO_NEG_INF:
         for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
           r_.f32[i] = simde_math_floorf(a_.f32[i]);
@@ -1660,7 +1668,7 @@ simde_mm256_round_ps (simde__m256 a, const int rounding) {
         break;
     #endif
 
-    #if defined(simde_math_ceil)
+    #if defined(simde_math_ceilf)
       case SIMDE_MM_FROUND_TO_POS_INF:
         for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
           r_.f32[i] = simde_math_ceilf(a_.f32[i]);
@@ -1668,7 +1676,7 @@ simde_mm256_round_ps (simde__m256 a, const int rounding) {
         break;
     #endif
 
-    #if defined(simde_math_trunc)
+    #if defined(simde_math_truncf)
       case SIMDE_MM_FROUND_TO_ZERO:
         for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
           r_.f32[i] = simde_math_truncf(a_.f32[i]);
@@ -1698,10 +1706,17 @@ simde_mm256_round_pd (simde__m256d a, const int rounding) {
 
   switch (rounding & ~SIMDE_MM_FROUND_NO_EXC) {
     #if defined(simde_math_nearbyint)
-      case SIMDE_MM_FROUND_TO_NEAREST_INT:
       case SIMDE_MM_FROUND_CUR_DIRECTION:
         for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
           r_.f64[i] = simde_math_nearbyint(a_.f64[i]);
+        }
+        break;
+    #endif
+
+    #if defined(simde_math_round)
+      case SIMDE_MM_FROUND_TO_NEAREST_INT:
+        for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
+          r_.f64[i] = simde_math_round(a_.f64[i]);
         }
         break;
     #endif

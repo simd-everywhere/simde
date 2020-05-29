@@ -24,6 +24,7 @@
  *   2017-2020 Evan Nemerson <evan@nemerson.com>
  */
 
+#include "sse.h"
 #if !defined(SIMDE_X86_SSE4_1_H)
 #define SIMDE_X86_SSE4_1_H
 
@@ -339,59 +340,83 @@ simde_mm_round_pd (simde__m128d a, int rounding)
     r_,
     a_ = simde__m128d_to_private(a);
 
+  /* For architectures which lack a current direction SIMD instruction. */
+  #if defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+    if ((rounding & 3) == SIMDE_MM_FROUND_CUR_DIRECTION)
+      rounding = HEDLEY_STATIC_CAST(int, SIMDE_MM_GET_ROUNDING_MODE()) << 13;
+  #endif
+
   switch (rounding & ~SIMDE_MM_FROUND_NO_EXC) {
-    #if defined(simde_math_nearbyint)
-      case SIMDE_MM_FROUND_TO_NEAREST_INT:
-      case SIMDE_MM_FROUND_CUR_DIRECTION:
-        #if defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
-          r_.altivec_f64 = (SIMDE_POWER_ALTIVEC_VECTOR(double)) vec_round(a_.altivec_f64);
-        #else
-          SIMDE_VECTORIZE
-          for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
-            r_.f64[i] = simde_math_nearbyint(a_.f64[i]);
-          }
-        #endif
-        break;
-    #endif
+    case SIMDE_MM_FROUND_CUR_DIRECTION:
+      #if defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+        r_.altivec_f64 = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(double), vec_round(a_.altivec_f64));
+      #elif defined(SIMDE_ARM_NEON_A64V8_NATIVE) && 0
+        r_.neon_f64 = vrndiq_f64(a_.neon_f64);
+      #elif defined(simde_math_nearbyint)
+        SIMDE_VECTORIZE
+        for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
+          r_.f64[i] = simde_math_nearbyint(a_.f64[i]);
+        }
+      #else
+        HEDLEY_UNREACHABLE_RETURN(simde_mm_undefined_pd());
+      #endif
+      break;
 
-    #if defined(simde_math_floor)
-      case SIMDE_MM_FROUND_TO_NEG_INF:
-        #if defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
-          r_.altivec_f64 = (SIMDE_POWER_ALTIVEC_VECTOR(double)) vec_floor(a_.altivec_f64);
-        #else
-          SIMDE_VECTORIZE
-          for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
-            r_.f64[i] = simde_math_floor(a_.f64[i]);
-          }
-        #endif
-        break;
-    #endif
+    case SIMDE_MM_FROUND_TO_NEAREST_INT:
+      #if defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+        r_.altivec_f64 = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(double), vec_round(a_.altivec_f64));
+      #elif defined(SIMDE_ARM_NEON_A64V8_NATIVE) && 0
+        r_.neon_f64 = vrndaq_f64(a_.neon_f64);
+      #elif defined(simde_math_round)
+        SIMDE_VECTORIZE
+        for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
+          r_.f64[i] = simde_math_round(a_.f64[i]);
+        }
+      #else
+        HEDLEY_UNREACHABLE_RETURN(simde_mm_undefined_pd());
+      #endif
+      break;
 
-    #if defined(simde_math_ceil)
-      case SIMDE_MM_FROUND_TO_POS_INF:
-        #if defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
-          r_.altivec_f64 = (SIMDE_POWER_ALTIVEC_VECTOR(double)) vec_ceil(a_.altivec_f64);
-        #else
-          SIMDE_VECTORIZE
-          for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
-            r_.f64[i] = simde_math_ceil(a_.f64[i]);
-          }
-        #endif
-        break;
-    #endif
+    case SIMDE_MM_FROUND_TO_NEG_INF:
+      #if defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+        r_.altivec_f64 = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(double), vec_floor(a_.altivec_f64));
+      #elif defined(SIMDE_ARM_NEON_A64V8_NATIVE) && 0
+        r_.neon_f64 = vrndmq_f64(a_.neon_f64);
+      #else
+        SIMDE_VECTORIZE
+        for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
+          r_.f64[i] = simde_math_floor(a_.f64[i]);
+        }
+      #endif
+      break;
 
-    #if defined(simde_math_trunc)
-      case SIMDE_MM_FROUND_TO_ZERO:
-        #if defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
-          r_.altivec_f64 = (SIMDE_POWER_ALTIVEC_VECTOR(double)) vec_trunc(a_.altivec_f64);
-        #else
-          SIMDE_VECTORIZE
-          for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
-            r_.f64[i] = simde_math_trunc(a_.f64[i]);
-          }
-        #endif
-        break;
-    #endif
+    case SIMDE_MM_FROUND_TO_POS_INF:
+      #if defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+        r_.altivec_f64 = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(double), vec_ceil(a_.altivec_f64));
+      #elif defined(SIMDE_ARM_NEON_A64V8_NATIVE) && 0
+        r_.neon_f64 = vrndpq_f64(a_.neon_f64);
+      #elif defined(simde_math_ceil)
+        SIMDE_VECTORIZE
+        for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
+          r_.f64[i] = simde_math_ceil(a_.f64[i]);
+        }
+      #else
+        HEDLEY_UNREACHABLE_RETURN(simde_mm_undefined_pd());
+      #endif
+      break;
+
+    case SIMDE_MM_FROUND_TO_ZERO:
+      #if defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+        r_.altivec_f64 = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(double), vec_trunc(a_.altivec_f64));
+      #elif defined(SIMDE_ARM_NEON_A64V8_NATIVE) && 0
+        r_.neon_f64 = vrndq_f64(a_.neon_f64);
+      #else
+        SIMDE_VECTORIZE
+        for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
+          r_.f64[i] = simde_math_trunc(a_.f64[i]);
+        }
+      #endif
+      break;
 
     default:
       HEDLEY_UNREACHABLE_RETURN(simde_mm_undefined_pd());
@@ -414,55 +439,87 @@ simde_mm_round_ps (simde__m128 a, int rounding)
     r_,
     a_ = simde__m128_to_private(a);
 
+  /* For architectures which lack a current direction SIMD instruction. */
+  #if defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+    if ((rounding & 3) == SIMDE_MM_FROUND_CUR_DIRECTION)
+      rounding = HEDLEY_STATIC_CAST(int, SIMDE_MM_GET_ROUNDING_MODE()) << 13;
+  #endif
+
   switch (rounding & ~SIMDE_MM_FROUND_NO_EXC) {
-    #if defined(simde_math_nearbyintf)
-      case SIMDE_MM_FROUND_TO_NEAREST_INT:
-      case SIMDE_MM_FROUND_CUR_DIRECTION:
-        #if defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
-          r_.altivec_f32 = (SIMDE_POWER_ALTIVEC_VECTOR(float)) vec_round(a_.altivec_f32);
-        #else
-          for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
-            r_.f32[i] = simde_math_nearbyintf(a_.f32[i]);
-          }
-        #endif
-        break;
-    #endif
+    case SIMDE_MM_FROUND_CUR_DIRECTION:
+      #if defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+        r_.altivec_f32 = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(float), vec_round(a_.altivec_f32));
+      #elif defined(SIMDE_ARM_NEON_A32V8_NATIVE) && 0
+        r_.neon_f32 = vrndiq_f32(a_.neon_f32);
+      #elif defined(simde_math_nearbyintf)
+        SIMDE_VECTORIZE
+        for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
+          r_.f32[i] = simde_math_nearbyintf(a_.f32[i]);
+        }
+      #else
+        HEDLEY_UNREACHABLE_RETURN(simde_mm_undefined_pd());
+      #endif
+      break;
 
-    #if defined(simde_math_floorf)
-      case SIMDE_MM_FROUND_TO_NEG_INF:
-        #if defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
-          r_.altivec_f32 = (SIMDE_POWER_ALTIVEC_VECTOR(float)) vec_floor(a_.altivec_f32);
-        #else
-          for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
-            r_.f32[i] = simde_math_floorf(a_.f32[i]);
-          }
-        #endif
-        break;
-    #endif
+    case SIMDE_MM_FROUND_TO_NEAREST_INT:
+      #if defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+        r_.altivec_f32 = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(float), vec_round(a_.altivec_f32));
+      #elif defined(SIMDE_ARM_NEON_A32V8_NATIVE) && 0
+        r_.neon_f32 = vrndaq_f32(a_.neon_f32);
+      #elif defined(simde_math_roundf)
+        SIMDE_VECTORIZE
+        for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
+          r_.f32[i] = simde_math_roundf(a_.f32[i]);
+        }
+      #else
+        HEDLEY_UNREACHABLE_RETURN(simde_mm_undefined_pd());
+      #endif
+      break;
 
-    #if defined(simde_math_ceilf)
-      case SIMDE_MM_FROUND_TO_POS_INF:
-        #if defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
-          r_.altivec_f32 = (SIMDE_POWER_ALTIVEC_VECTOR(float)) vec_ceil(a_.altivec_f32);
-        #else
-          for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
-            r_.f32[i] = simde_math_ceilf(a_.f32[i]);
-          }
-        #endif
-        break;
-    #endif
+    case SIMDE_MM_FROUND_TO_NEG_INF:
+      #if defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+        r_.altivec_f32 = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(float), vec_floor(a_.altivec_f32));
+      #elif defined(SIMDE_ARM_NEON_A32V8_NATIVE) && 0
+        r_.neon_f32 = vrndmq_f32(a_.neon_f32);
+      #elif defined(simde_math_floorf)
+        SIMDE_VECTORIZE
+        for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
+          r_.f32[i] = simde_math_floorf(a_.f32[i]);
+        }
+      #else
+        HEDLEY_UNREACHABLE_RETURN(simde_mm_undefined_pd());
+      #endif
+      break;
 
-    #if defined(simde_math_truncf)
-      case SIMDE_MM_FROUND_TO_ZERO:
-        #if defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
-          r_.altivec_f32 = (SIMDE_POWER_ALTIVEC_VECTOR(float)) vec_trunc(a_.altivec_f32);
-        #else
-          for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
-            r_.f32[i] = simde_math_truncf(a_.f32[i]);
-          }
-        #endif
-        break;
-    #endif
+    case SIMDE_MM_FROUND_TO_POS_INF:
+      #if defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+        r_.altivec_f32 = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(float), vec_ceil(a_.altivec_f32));
+      #elif defined(SIMDE_ARM_NEON_A32V8_NATIVE) && 0
+        r_.neon_f32 = vrndpq_f32(a_.neon_f32);
+      #elif defined(simde_math_ceilf)
+        SIMDE_VECTORIZE
+        for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
+          r_.f32[i] = simde_math_ceilf(a_.f32[i]);
+        }
+      #else
+        HEDLEY_UNREACHABLE_RETURN(simde_mm_undefined_pd());
+      #endif
+      break;
+
+    case SIMDE_MM_FROUND_TO_ZERO:
+      #if defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+        r_.altivec_f32 = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(float), vec_trunc(a_.altivec_f32));
+      #elif defined(SIMDE_ARM_NEON_A32V8_NATIVE) && 0
+        r_.neon_f32 = vrndq_f32(a_.neon_f32);
+      #elif defined(simde_math_truncf)
+        SIMDE_VECTORIZE
+        for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
+          r_.f32[i] = simde_math_truncf(a_.f32[i]);
+        }
+      #else
+        HEDLEY_UNREACHABLE_RETURN(simde_mm_undefined_pd());
+      #endif
+      break;
 
     default:
       HEDLEY_UNREACHABLE_RETURN(simde_mm_undefined_pd());
