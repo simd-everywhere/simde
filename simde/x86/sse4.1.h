@@ -342,7 +342,7 @@ simde_mm_round_pd (simde__m128d a, int rounding)
 
   /* For architectures which lack a current direction SIMD instruction. */
   #if defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
-    if ((rounding & 3) == SIMDE_MM_FROUND_CUR_DIRECTION)
+    if ((rounding & 7) == SIMDE_MM_FROUND_CUR_DIRECTION)
       rounding = HEDLEY_STATIC_CAST(int, SIMDE_MM_GET_ROUNDING_MODE()) << 13;
   #endif
 
@@ -441,7 +441,7 @@ simde_mm_round_ps (simde__m128 a, int rounding)
 
   /* For architectures which lack a current direction SIMD instruction. */
   #if defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
-    if ((rounding & 3) == SIMDE_MM_FROUND_CUR_DIRECTION)
+    if ((rounding & 7) == SIMDE_MM_FROUND_CUR_DIRECTION)
       rounding = HEDLEY_STATIC_CAST(int, SIMDE_MM_GET_ROUNDING_MODE()) << 13;
   #endif
 
