@@ -14,7 +14,7 @@ env:
   - RUN_TESTS=true
   - OPTIMIZATION_FLAGS=''
   - DIAGNOSTIC_FLAGS='-Wall -Wextra -Werror'
-
+  - TEST_ARG_SEPARATOR=""
 jobs:
   include:
   - name: "gcc-9"
@@ -244,6 +244,7 @@ jobs:
     - EXECUTABLE_EXTENSION=.js
     - TEST_WRAPPER="${HOME}/.jsvu/v8 --experimental-wasm-simd"
     - OPTIMIZATION_FLAGS="-O3"
+    - TEST_ARG_SEPARATOR="--"
     addons:
       apt:
         packages:
@@ -353,14 +354,12 @@ script:
   if [ "${RUN_TESTS}" = "true" ]; then
     if [ "windows" != "${TRAVIS_OS_NAME}" ]; then
       if command -v parallel; then
-        echo Parallel tests
-        ${TEST_WRAPPER} ./test/run-tests${EXECUTABLE_EXTENSION} --list | grep -oP '^/([^\/]+)/([^\/]+)' | sort -u | xargs parallel ${TEST_WRAPPER} ./test/run-tests${EXECUTABLE_EXTENSION} --color always {} :::
+        ${TEST_WRAPPER} ./run-tests${EXECUTABLE_EXTENSION} --list | grep -oP '^/([^\/]+)/([^\/]+)' | sort -u | xargs parallel ${TEST_WRAPPER} ./run-tests${EXECUTABLE_EXTENSION} ${TEST_ARG_SEPARATOR} {} ::: || exit 1
       else
-        echo Serial tests
-        ${TEST_WRAPPER} ./run-tests${EXECUTABLE_EXTENSION}
+        ${TEST_WRAPPER} ./run-tests${EXECUTABLE_EXTENSION} || exit 1
       fi
     else
-      ctest --output-on-failure --interactive-debug-mode 0 -C Debug -V
+      ctest --output-on-failure --interactive-debug-mode 0 -C Debug -V || exit 1
     fi
   fi
 
