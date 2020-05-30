@@ -926,8 +926,8 @@ simde_mm512_movm_epi32 (simde__mmask16 k) {
     simde__m512i_private r_;
 
     #if defined(SIMDE_X86_SSE2_NATIVE)
-      r_.m256i[0] = simde_mm256_movm_epi32(k     );
-      r_.m256i[1] = simde_mm256_movm_epi32(k >> 8);
+    r_.m256i[0] = simde_mm256_movm_epi32(HEDLEY_STATIC_CAST(simde__mmask8, k     ));
+    r_.m256i[1] = simde_mm256_movm_epi32(HEDLEY_STATIC_CAST(simde__mmask8, k >> 8));
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {
