@@ -211,6 +211,26 @@
   #endif
 #endif
 
+#if !defined(simde_math_asinh)
+  #if SIMDE_MATH_BUILTIN_LIBM(asinh)
+    #define simde_math_asinh(v) __builtin_asinh(v)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_asinh(v) std::asinh(v)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_asinh(v) asinh(v)
+  #endif
+#endif
+
+#if !defined(simde_math_asinhf)
+  #if SIMDE_MATH_BUILTIN_LIBM(asinhf)
+    #define simde_math_asinhf(v) __builtin_asinhf(v)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_asinhf(v) std::asinh(v)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_asinhf(v) asinhf(v)
+  #endif
+#endif
+
 #if !defined(simde_math_atan)
   #if SIMDE_MATH_BUILTIN_LIBM(atan)
     #define simde_math_atan(v) __builtin_atan(v)
@@ -228,6 +248,26 @@
     #define simde_math_atanf(v) std::atan(v)
   #elif defined(SIMDE_MATH_HAVE_MATH_H)
     #define simde_math_atanf(v) atanf(v)
+  #endif
+#endif
+
+#if !defined(simde_math_atanh)
+  #if SIMDE_MATH_BUILTIN_LIBM(atanh)
+    #define simde_math_atanh(v) __builtin_atanh(v)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_atanh(v) std::atanh(v)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_atanh(v) atanh(v)
+  #endif
+#endif
+
+#if !defined(simde_math_atanhf)
+  #if SIMDE_MATH_BUILTIN_LIBM(atanhf)
+    #define simde_math_atanhf(v) __builtin_atanhf(v)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_atanhf(v) std::atanh(v)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_atanhf(v) atanhf(v)
   #endif
 #endif
 
