@@ -232,45 +232,6 @@ jobs:
     if: branch != master OR type == pull_request
     arch: s390x
 
-  - name: amalgamate
-    if: branch = master AND type != pull_request
-    script:
-    - |
-      if [ ! -e amalgamated/x86 ]; then
-        mkdir -p amalgamated/x86;
-        (cd simde && for header in x86/*.h; do
-          ../amalgamate.py "$header" > ../amalgamated/"$header"
-        done);
-      fi
-    deploy:
-      provider: pages
-      target_branch: amalgamated
-      local_dir: amalgamated
-      github_token: $GITHUB_TOKEN
-      skip_cleanup: true
-      keep_history: true
-      name: SIMDe
-      email: simde@googlegroups.com
-      on:
-        repo: nemequ/simde
-
-  - name: push-to-no-tests
-    if: branch = master AND type != pull_request
-    script:
-    - tail -n +4 .no-test-readme.md > simde/README.md
-    deploy:
-      provider: pages
-      target_branch: master
-      repo: nemequ/simde-no-tests
-      github_token: $GITHUB_TOKEN
-      local_dir: simde
-      skip_cleanup: true
-      keep_history: true
-      name: SIMDe
-      email: simde@googlegroups.com
-      on:
-        repo: nemequ/simde
-
   - name: emscripten
     if: branch != master OR type == pull_request
     compiler: emcc
@@ -297,6 +258,50 @@ jobs:
     - |
       npm install jsvu -g
       jsvu --os=linux64 --engines=v8
+
+  ##
+  ## Special builds to deploy from master
+  ##
+
+  - name: amalgamate
+    if: branch = master AND type != pull_request
+    script:
+    - |
+      if [ ! -e amalgamated/x86 ]; then
+        mkdir -p amalgamated/x86;
+        (cd simde && for header in x86/*.h; do
+          ../amalgamate.py "$header" > ../amalgamated/"$header"
+        done);
+      fi
+    deploy:
+      provider: pages
+      target_branch: amalgamated
+      local_dir: amalgamated
+      github_token: $GITHUB_TOKEN
+      skip_cleanup: true
+      keep_history: true
+      name: SIMDe
+      email: simde@googlegroups.com
+      on:
+        repo: nemequ/simde
+
+  - name: push-to-no-tests
+    if: branch = master AND type != pull_request AND repo = nemequ/simde
+    addons:
+      apt:
+        packages:
+        - python3-pip
+        - python3-setuptools
+    before_install:
+    - git fetch --unshallow
+    - pip3 install git-filter-repo
+    script:
+    - |
+      git filter-repo --force --path-rename COPYING:.no-test/COPYING && \
+      git filter-repo --path-rename '.no-test/':'simde/' && \
+      git filter-repo --subdirectory-filter simde
+    after_script:
+    - git push -q "https://${NO_TESTS_TOKEN}@github.com/nemequ/simde-no-tests" master
 
   # allow_failures:
   # - name: emscripten

@@ -1,6 +1,3 @@
-# DOES NOT APPLY TO THIS REPO
-## This is for https://github.com/nemequ/simde-no-tests
-
 # SIMDe Without Test Cases
 
 This repository contains only the core of
