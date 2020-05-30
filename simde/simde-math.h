@@ -171,6 +171,26 @@
   #endif
 #endif
 
+#if !defined(simde_math_acosh)
+  #if SIMDE_MATH_BUILTIN_LIBM(acosh)
+    #define simde_math_acosh(v) __builtin_acosh(v)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_acosh(v) std::acosh(v)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_acosh(v) acosh(v)
+  #endif
+#endif
+
+#if !defined(simde_math_acoshf)
+  #if SIMDE_MATH_BUILTIN_LIBM(acoshf)
+    #define simde_math_acoshf(v) __builtin_acoshf(v)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_acoshf(v) std::acosh(v)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_acoshf(v) acoshf(v)
+  #endif
+#endif
+
 #if !defined(simde_math_asin)
   #if SIMDE_MATH_BUILTIN_LIBM(asin)
     #define simde_math_asin(v) __builtin_asin(v)
