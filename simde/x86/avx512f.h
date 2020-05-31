@@ -6177,7 +6177,7 @@ simde_mm512_permutex2var_epi64 (simde__m512i a, simde__m512i idx, simde__m512i b
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m512i
-simde_mm512_mask_permutex2var_epi64 (simde__m512i a, simde__mmask16 k, simde__m512i idx, simde__m512i b) {
+simde_mm512_mask_permutex2var_epi64 (simde__m512i a, simde__mmask8 k, simde__m512i idx, simde__m512i b) {
   #if defined(SIMDE_X86_AVX512BW_NATIVE)
     return _mm512_mask_permutex2var_epi64(a, k, idx, b);
   #else
@@ -6191,7 +6191,7 @@ simde_mm512_mask_permutex2var_epi64 (simde__m512i a, simde__mmask16 k, simde__m5
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m512i
-simde_mm512_mask2_permutex2var_epi64 (simde__m512i a, simde__m512i idx, simde__mmask16 k, simde__m512i b) {
+simde_mm512_mask2_permutex2var_epi64 (simde__m512i a, simde__m512i idx, simde__mmask8 k, simde__m512i b) {
   #if defined(SIMDE_X86_AVX512BW_NATIVE)
     return _mm512_mask2_permutex2var_epi64(a, idx, k, b);
   #else
@@ -6205,7 +6205,7 @@ simde_mm512_mask2_permutex2var_epi64 (simde__m512i a, simde__m512i idx, simde__m
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m512i
-simde_mm512_maskz_permutex2var_epi64 (simde__mmask16 k, simde__m512i a, simde__m512i idx, simde__m512i b) {
+simde_mm512_maskz_permutex2var_epi64 (simde__mmask8 k, simde__m512i a, simde__m512i idx, simde__m512i b) {
   #if defined(SIMDE_X86_AVX512BW_NATIVE)
     return _mm512_maskz_permutex2var_epi64(k, a, idx, b);
   #else
@@ -6244,7 +6244,7 @@ simde_mm512_permutex2var_pd (simde__m512d a, simde__m512i idx, simde__m512d b) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m512d
-simde_mm512_mask_permutex2var_pd (simde__m512d a, simde__mmask16 k, simde__m512i idx, simde__m512d b) {
+simde_mm512_mask_permutex2var_pd (simde__m512d a, simde__mmask8 k, simde__m512i idx, simde__m512d b) {
   #if defined(SIMDE_X86_AVX512BW_NATIVE)
     return _mm512_mask_permutex2var_pd(a, k, idx, b);
   #else
@@ -6258,7 +6258,7 @@ simde_mm512_mask_permutex2var_pd (simde__m512d a, simde__mmask16 k, simde__m512i
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m512d
-simde_mm512_mask2_permutex2var_pd (simde__m512d a, simde__m512i idx, simde__mmask16 k, simde__m512d b) {
+simde_mm512_mask2_permutex2var_pd (simde__m512d a, simde__m512i idx, simde__mmask8 k, simde__m512d b) {
   #if defined(SIMDE_X86_AVX512BW_NATIVE)
     return _mm512_mask2_permutex2var_pd(a, idx, k, b);
   #else
@@ -6272,7 +6272,7 @@ simde_mm512_mask2_permutex2var_pd (simde__m512d a, simde__m512i idx, simde__mmas
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m512d
-simde_mm512_maskz_permutex2var_pd (simde__mmask16 k, simde__m512d a, simde__m512i idx, simde__m512d b) {
+simde_mm512_maskz_permutex2var_pd (simde__mmask8 k, simde__m512d a, simde__m512i idx, simde__m512d b) {
   #if defined(SIMDE_X86_AVX512BW_NATIVE)
     return _mm512_maskz_permutex2var_pd(k, a, idx, b);
   #else
