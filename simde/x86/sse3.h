@@ -136,18 +136,24 @@ simde_mm_hadd_ps (simde__m128 a, simde__m128 b) {
     a_ = simde__m128_to_private(a),
     b_ = simde__m128_to_private(b);
 
-#if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
-  r_.f32 = vpaddq_f32(a_.neon_f32, b_.neon_f32);
-#elif defined(SIMDE_ASSUME_VECTORIZATION) && defined(SIMDE_SHUFFLE_VECTOR_)
-  r_.f32 =
-    SIMDE_SHUFFLE_VECTOR_(32, 16, a_.f32, b_.f32, 0, 2, 4, 6) +
-    SIMDE_SHUFFLE_VECTOR_(32, 16, a_.f32, b_.f32, 1, 3, 5, 7);
-#else
-  r_.f32[0] = a_.f32[0] + a_.f32[1];
-  r_.f32[1] = a_.f32[2] + a_.f32[3];
-  r_.f32[2] = b_.f32[0] + b_.f32[1];
-  r_.f32[3] = b_.f32[2] + b_.f32[3];
-#endif
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+    r_.f32 = vpaddq_f32(a_.neon_f32, b_.neon_f32);
+  #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    float32x2_t a10 = vget_low_f32(a_.neon_f32);
+    float32x2_t a32 = vget_high_f32(a_.neon_f32);
+    float32x2_t b10 = vget_low_f32(b_.neon_f32);
+    float32x2_t b32 = vget_high_f32(b_.neon_f32);
+    r_.neon_f32 = vcombine_f32(vpadd_f32(a10, a32), vpadd_f32(b10, b32));
+  #elif defined(SIMDE_ASSUME_VECTORIZATION) && defined(SIMDE_SHUFFLE_VECTOR_)
+    r_.f32 =
+      SIMDE_SHUFFLE_VECTOR_(32, 16, a_.f32, b_.f32, 0, 2, 4, 6) +
+      SIMDE_SHUFFLE_VECTOR_(32, 16, a_.f32, b_.f32, 1, 3, 5, 7);
+  #else
+    r_.f32[0] = a_.f32[0] + a_.f32[1];
+    r_.f32[1] = a_.f32[2] + a_.f32[3];
+    r_.f32[2] = b_.f32[0] + b_.f32[1];
+    r_.f32[3] = b_.f32[2] + b_.f32[3];
+  #endif
 
   return simde__m128_from_private(r_);
 #endif
