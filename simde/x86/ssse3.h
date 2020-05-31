@@ -264,6 +264,9 @@ simde_mm_alignr_epi8 (simde__m128i a, simde__m128i b, int count) {
 }
 #if defined(SIMDE_X86_SSSE3_NATIVE)
 #  define simde_mm_alignr_epi8(a, b, count) _mm_alignr_epi8(a, b, count)
+// #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+// #  define simde_mm_alignr_epi8(a, b, count) simde__m128i_from_neon_i8(vextq_s8((int8x16_t) (b), (int8x16_t) (a), (count)))
+// doesn't work with count > 15 (the tests use 17)
 #endif
 #if defined(SIMDE_X86_SSSE3_ENABLE_NATIVE_ALIASES)
 #  define _mm_alignr_epi8(a, b, count) simde_mm_alignr_epi8(a, b, count)
