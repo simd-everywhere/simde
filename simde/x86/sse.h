@@ -1753,7 +1753,7 @@ simde_mm_div_ss (simde__m128 a, simde__m128 b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     float32_t value =
             vgetq_lane_f32(simde__m128_to_private(simde_mm_div_ps(a, b)).neon_f32, 0);
-    r_.neon_f32 = vsetq_lane_f32(value, vreinterpretq_f32_m128(a), 0);
+    r_.neon_f32 = vsetq_lane_f32(value, a_.neon_f32, 0);
   #else
     r_.f32[0] = a_.f32[0] / b_.f32[0];
     SIMDE_VECTORIZE

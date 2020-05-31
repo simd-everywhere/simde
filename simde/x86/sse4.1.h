@@ -300,7 +300,7 @@ simde_x_mm_blendv_epi64 (simde__m128i a, simde__m128i b, simde__m128i mask) {
     mask_ = simde__m128i_to_private(mask);
 
 #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
-  mask_.i64 = vreinterpretq_s64_u64(vcltq_s64(mask_.i64, vdupq_n_s64(UINT64_C(0))));
+  mask_.u64 = vcltq_s64(mask_.i64, vdupq_n_s64(UINT64_C(0)));
   r_.neon_i64 = vbslq_s64(mask_.neon_u64, b_.neon_i64, a_.neon_i64);
 #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
   #if defined(HEDLEY_INTEL_VERSION_CHECK)

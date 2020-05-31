@@ -1361,7 +1361,7 @@ simde_mm_cmpeq_pd (simde__m128d a, simde__m128d b) {
     b_ = simde__m128d_to_private(b);
 
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
-    r_.neon_i64 = vreinterpretq_s64_u64(vceqq_s64(vreinterpretq_s64_f64(b_.neon_f64), vreinterpretq_s64_f64(a_.neon_f64)));
+    r_.neon_u64 = vceqq_s64(b_.neon_i64, a_.neon_i64);
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
     r_.wasm_v128 = wasm_f64x2_eq(a_.wasm_v128, b_.wasm_v128);
   #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
@@ -1417,7 +1417,7 @@ simde_mm_cmpneq_pd (simde__m128d a, simde__m128d b) {
     b_ = simde__m128d_to_private(b);
 
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-    r_.neon_f32 = vreinterpretq_f32_u16(vmvnq_u16(vceqq_s16(b_.neon_i16, a_.neon_i16)));
+    r_.neon_u16 = vmvnq_u16(vceqq_s16(b_.neon_i16, a_.neon_i16));
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
     r_.wasm_v128 = wasm_f64x2_ne(a_.wasm_v128, b_.wasm_v128);
   #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
@@ -1505,7 +1505,7 @@ simde_mm_cmplt_epi16 (simde__m128i a, simde__m128i b) {
     b_ = simde__m128i_to_private(b);
 
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-    r_.neon_i16 = vreinterpretq_s16_u16(vcltq_s16(a_.neon_i16, b_.neon_i16));
+    r_.neon_u16 = vcltq_s16(a_.neon_i16, b_.neon_i16);
   #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
     r_.altivec_i16 = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(signed short), vec_cmplt(a_.altivec_i16, b_.altivec_i16));
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
