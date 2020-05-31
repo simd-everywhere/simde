@@ -241,6 +241,26 @@
   #endif
 #endif
 
+#if !defined(simde_math_atan2)
+  #if SIMDE_MATH_BUILTIN_LIBM(atan2)
+    #define simde_math_atan2(y, x) __builtin_atan2(y, x)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_atan2(y, x) std::atan2(y, x)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_atan2(y, x) atan2(y, x)
+  #endif
+#endif
+
+#if !defined(simde_math_atan2f)
+  #if SIMDE_MATH_BUILTIN_LIBM(atan2f)
+    #define simde_math_atan2f(y, x) __builtin_atan2f(y, x)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_atan2f(y, x) std::atan2(y, x)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_atan2f(y, x) atan2f(y, x)
+  #endif
+#endif
+
 #if !defined(simde_math_atanf)
   #if SIMDE_MATH_BUILTIN_LIBM(atanf)
     #define simde_math_atanf(v) __builtin_atanf(v)
