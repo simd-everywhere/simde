@@ -411,6 +411,26 @@
   #endif
 #endif
 
+#if !defined(simde_math_log10)
+  #if SIMDE_MATH_BUILTIN_LIBM(log10)
+    #define simde_math_log10(v) __builtin_log10(v)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_log10(v) std::log10(v)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_log10(v) log10(v)
+  #endif
+#endif
+
+#if !defined(simde_math_log10f)
+  #if SIMDE_MATH_BUILTIN_LIBM(log10f)
+    #define simde_math_log10f(v) __builtin_log10f(v)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_log10f(v) std::log10(v)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_log10f(v) log10f(v)
+  #endif
+#endif
+
 #if !defined(simde_math_nearbyint)
   #if SIMDE_MATH_BUILTIN_LIBM(nearbyint)
     #define simde_math_nearbyint(v) __builtin_nearbyint(v)
