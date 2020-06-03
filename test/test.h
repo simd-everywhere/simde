@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <inttypes.h>
+#include <stdarg.h>
 
 typedef enum SimdeTestVecPos {
   SIMDE_TEST_VEC_POS_FIRST  =  1,
@@ -24,182 +25,137 @@ SIMDE_DIAGNOSTIC_DISABLE_NON_CONSTANT_AGGREGATE_INITIALIZER_
 SIMDE_DIAGNOSTIC_DISABLE_C99_EXTENSIONS_
 SIMDE_DIAGNOSTIC_DISABLE_NO_EMMS_INSTRUCTION_
 
+HEDLEY_PRINTF_FORMAT(1, 2)
+static void
+simde_test_debug_printf_(const char* format, ...) {
+  va_list ap;
+
+  va_start(ap, format);
+  vfprintf(stderr, format, ap);
+  va_end(ap);
+  fflush(stderr);
+
+  #if defined(HEDLEY_EMSCRIPTEN_VERSION)
+    abort();
+  #else
+    simde_trap();
+  #endif
+}
+
+HEDLEY_PRINTF_FORMAT(3, 4)
+static void
+simde_test_codegen_snprintf_(char* str, size_t size, const char* format, ...) {
+  va_list ap;
+  int w;
+
+  va_start(ap, format);
+  w = vsnprintf(str, size, format, ap);
+  va_end(ap);
+
+  if (w > HEDLEY_STATIC_CAST(int, size)) {
+    simde_test_debug_printf_("Not enough space to write value (given %zu bytes, need %d bytes)\n", size, w + 1);
+  }
+}
+
 static void
 simde_test_codegen_f32(size_t buf_len, char buf[HEDLEY_ARRAY_PARAM(buf_len)], simde_float32 value) {
-  int written = 0;
-
   if (simde_math_isnan(value)) {
-    written = snprintf(buf, buf_len, "%25s", "SIMDE_MATH_NANF");
+    simde_test_codegen_snprintf_(buf, buf_len, "%25s", "SIMDE_MATH_NANF");
   } else if (simde_math_isinf(value)) {
-    written = snprintf(buf, buf_len, "%5cSIMDE_MATH_INFINITYF", value < 0 ? '-' : ' ');
+    simde_test_codegen_snprintf_(buf, buf_len, "%5cSIMDE_MATH_INFINITYF", value < 0 ? '-' : ' ');
   } else {
-    written = snprintf(buf, buf_len, "SIMDE_FLOAT32_C(%9.2f)", HEDLEY_STATIC_CAST(double, value));
-  }
-
-  if (written > HEDLEY_STATIC_CAST(int, buf_len)) {
-    fprintf(stderr, "Not enough space to write value (given %zu bytes, need %d bytes)\n", buf_len, written + 1);
-    simde_trap();
+    simde_test_codegen_snprintf_(buf, buf_len, "SIMDE_FLOAT32_C(%9.2f)", HEDLEY_STATIC_CAST(double, value));
   }
 }
 
 static void
 simde_test_codegen_f64(size_t buf_len, char buf[HEDLEY_ARRAY_PARAM(buf_len)], simde_float64 value) {
-  int written = 0;
-
   if (simde_math_isnan(value)) {
-    written = snprintf(buf, buf_len, "%26s", "NAN");
+    simde_test_codegen_snprintf_(buf, buf_len, "%26s", "NAN");
   } else if (simde_math_isinf(value)) {
-    written = snprintf(buf, buf_len, "%7cSIMDE_MATH_INFINITY", value < 0 ? '-' : ' ');
+    simde_test_codegen_snprintf_(buf, buf_len, "%7cSIMDE_MATH_INFINITY", value < 0 ? '-' : ' ');
   } else {
-    written = snprintf(buf, buf_len, "SIMDE_FLOAT64_C(%9.2f)", HEDLEY_STATIC_CAST(double, value));
-  }
-
-  if (written > HEDLEY_STATIC_CAST(int, buf_len)) {
-    fprintf(stderr, "Not enough space to write value (given %zu bytes, need %d bytes)\n", buf_len, written + 1);
-    simde_trap();
+    simde_test_codegen_snprintf_(buf, buf_len, "SIMDE_FLOAT64_C(%9.2f)", HEDLEY_STATIC_CAST(double, value));
   }
 }
 
 static void
 simde_test_codegen_i8(size_t buf_len, char buf[HEDLEY_ARRAY_PARAM(buf_len)], int8_t value) {
-  int written;
-
   if (value == INT8_MIN) {
-    written = snprintf(buf, buf_len, "     INT8_MIN");
+    simde_test_codegen_snprintf_(buf, buf_len, "     INT8_MIN");
   } else if (value == INT8_MAX) {
-    written = snprintf(buf, buf_len, "     INT8_MAX");
+    simde_test_codegen_snprintf_(buf, buf_len, "     INT8_MAX");
   } else {
-    written = snprintf(buf, buf_len, "%cINT8_C(%4" PRId8 ")", (value < 0) ? '-' : ' ', HEDLEY_STATIC_CAST(int8_t, (value < 0) ? -value : value));
-  }
-
-  if (written > HEDLEY_STATIC_CAST(int, buf_len)) {
-    fprintf(stderr, "Not enough space to write value (given %zu bytes, need %d bytes)\n", buf_len, written + 1);
-    simde_trap();
+    simde_test_codegen_snprintf_(buf, buf_len, "%cINT8_C(%4" PRId8 ")", (value < 0) ? '-' : ' ', HEDLEY_STATIC_CAST(int8_t, (value < 0) ? -value : value));
   }
 }
 
 static void
 simde_test_codegen_i16(size_t buf_len, char buf[HEDLEY_ARRAY_PARAM(buf_len)], int16_t value) {
-  int written;
-
   if (value == INT16_MIN) {
-    written = snprintf(buf, buf_len, "%15s", "INT16_MIN");
+    simde_test_codegen_snprintf_(buf, buf_len, "%15s", "INT16_MIN");
   } else if (value == INT16_MAX) {
-    written = snprintf(buf, buf_len, "%15s", "INT16_MAX");
+    simde_test_codegen_snprintf_(buf, buf_len, "%15s", "INT16_MAX");
   } else {
-    written = snprintf(buf, buf_len, "%cINT16_C(%6" PRId16 ")", (value < 0) ? '-' : ' ', HEDLEY_STATIC_CAST(int16_t, (value < 0) ? -value : value));
-  }
-
-  if (written > HEDLEY_STATIC_CAST(int, buf_len)) {
-    fprintf(stderr, "Not enough space to write value (given %zu bytes, need %d bytes)\n", buf_len, written + 1);
-    fflush(stderr);
-    simde_trap();
+    simde_test_codegen_snprintf_(buf, buf_len, "%cINT16_C(%6" PRId16 ")", (value < 0) ? '-' : ' ', HEDLEY_STATIC_CAST(int16_t, (value < 0) ? -value : value));
   }
 }
 
 static void
 simde_test_codegen_i32(size_t buf_len, char buf[HEDLEY_ARRAY_PARAM(buf_len)], int32_t value) {
-  int written;
-
   if (value == INT32_MIN) {
-    written = snprintf(buf, buf_len, "%20s", "INT32_MIN");
+    simde_test_codegen_snprintf_(buf, buf_len, "%20s", "INT32_MIN");
   } else if (value == INT32_MAX) {
-    written = snprintf(buf, buf_len, "%20s", "INT32_MAX");
+    simde_test_codegen_snprintf_(buf, buf_len, "%20s", "INT32_MAX");
   } else {
-    written = snprintf(buf, buf_len, "%cINT32_C(%12" PRId32 ")", (value < 0) ? '-' : ' ', HEDLEY_STATIC_CAST(int32_t, (value < 0) ? -value : value));
-  }
-
-  if (written > HEDLEY_STATIC_CAST(int, buf_len)) {
-    fprintf(stderr, "Not enough space to write value (given %zu bytes, need %d bytes)\n", buf_len, written + 1);
-    fflush(stderr);
-    simde_trap();
+    simde_test_codegen_snprintf_(buf, buf_len, "%cINT32_C(%12" PRId32 ")", (value < 0) ? '-' : ' ', HEDLEY_STATIC_CAST(int32_t, (value < 0) ? -value : value));
   }
 }
 
 static void
 simde_test_codegen_i64(size_t buf_len, char buf[HEDLEY_ARRAY_PARAM(buf_len)], int64_t value) {
-  int written;
-
   if (value == INT64_MIN) {
-    written = snprintf(buf, buf_len, "%29s", "INT64_MIN");
+    simde_test_codegen_snprintf_(buf, buf_len, "%29s", "INT64_MIN");
   } else if (value == INT64_MAX) {
-    written = snprintf(buf, buf_len, "%29s", "INT64_MAX");
+    simde_test_codegen_snprintf_(buf, buf_len, "%29s", "INT64_MAX");
   } else {
-    written = snprintf(buf, buf_len, "%cINT64_C(%20" PRId64 ")", (value < 0) ? '-' : ' ', HEDLEY_STATIC_CAST(int64_t, (value < 0) ? -value : value));
-  }
-
-  if (written > HEDLEY_STATIC_CAST(int, buf_len)) {
-    fprintf(stderr, "Not enough space to write value (given %zu bytes, need %d bytes)\n", buf_len, written + 1);
-    fflush(stderr);
-    simde_trap();
+    simde_test_codegen_snprintf_(buf, buf_len, "%cINT64_C(%20" PRId64 ")", (value < 0) ? '-' : ' ', HEDLEY_STATIC_CAST(int64_t, (value < 0) ? -value : value));
   }
 }
 
 static void
 simde_test_codegen_u8(size_t buf_len, char buf[HEDLEY_ARRAY_PARAM(buf_len)], uint8_t value) {
-  int written;
-
   if (value == UINT8_MAX) {
-    written = snprintf(buf, buf_len, "   UINT8_MAX");
+    simde_test_codegen_snprintf_(buf, buf_len, "   UINT8_MAX");
   } else {
-    written = snprintf(buf, buf_len, "UINT8_C(%3" PRIu8 ")", value);
-  }
-
-  if (written > HEDLEY_STATIC_CAST(int, buf_len)) {
-    fprintf(stderr, "Not enough space to write value (given %zu bytes, need %d bytes)\n", buf_len, written + 1);
-    fflush(stderr);
-    simde_trap();
+    simde_test_codegen_snprintf_(buf, buf_len, "UINT8_C(%3" PRIu8 ")", value);
   }
 }
 
 static void
 simde_test_codegen_u16(size_t buf_len, char buf[HEDLEY_ARRAY_PARAM(buf_len)], uint16_t value) {
-  int written;
-
   if (value == UINT16_MAX) {
-    written = snprintf(buf, buf_len, "%15s", "UINT16_MAX");
+    simde_test_codegen_snprintf_(buf, buf_len, "%15s", "UINT16_MAX");
   } else {
-    written = snprintf(buf, buf_len, "UINT16_C(%5" PRIu16 ")", value);
-  }
-
-  if (written > HEDLEY_STATIC_CAST(int, buf_len)) {
-    fprintf(stderr, "Not enough space to write value (given %zu bytes, need %d bytes)\n", buf_len, written + 1);
-    fflush(stderr);
-    simde_trap();
+    simde_test_codegen_snprintf_(buf, buf_len, "UINT16_C(%5" PRIu16 ")", value);
   }
 }
 
 static void
 simde_test_codegen_u32(size_t buf_len, char buf[HEDLEY_ARRAY_PARAM(buf_len)], uint32_t value) {
-  int written;
-
   if (value == UINT32_MAX) {
-    written = snprintf(buf, buf_len, "%20s", "UINT32_MAX");
+    simde_test_codegen_snprintf_(buf, buf_len, "%20s", "UINT32_MAX");
   } else {
-    written = snprintf(buf, buf_len, "UINT32_C(%10" PRIu32 ")", value);
-  }
-
-  if (written > HEDLEY_STATIC_CAST(int, buf_len)) {
-    fprintf(stderr, "Not enough space to write value (given %zu bytes, need %d bytes)\n", buf_len, written + 1);
-    fflush(stderr);
-    simde_trap();
+    simde_test_codegen_snprintf_(buf, buf_len, "UINT32_C(%10" PRIu32 ")", value);
   }
 }
 
 static void
 simde_test_codegen_u64(size_t buf_len, char buf[HEDLEY_ARRAY_PARAM(buf_len)], uint64_t value) {
-  int written;
-
   if (value == UINT64_MAX) {
-    written = snprintf(buf, buf_len, "%29s", "UINT64_MAX");
+    simde_test_codegen_snprintf_(buf, buf_len, "%29s", "UINT64_MAX");
   } else {
-    written = snprintf(buf, buf_len, "UINT64_C(%20" PRIu64 ")", value);
-  }
-
-  if (written > HEDLEY_STATIC_CAST(int, buf_len)) {
-    fprintf(stderr, "Not enough space to write value (given %zu bytes, need %d bytes)\n", buf_len, written + 1);
-    fflush(stderr);
-    simde_trap();
+    simde_test_codegen_snprintf_(buf, buf_len, "UINT64_C(%20" PRIu64 ")", value);
   }
 }
 
@@ -337,7 +293,7 @@ simde_assert_equal_vf32_(
     const char* filename, int line, const char* astr, const char* bstr) {
   for (size_t i = 0 ; i < vec_len ; i++) {
     if (HEDLEY_UNLIKELY(!simde_test_equal_f32(a[i], b[i], slop))) {
-      fprintf(stderr, "%s:%d: assertion failed: %s[%zu] ~= %s[%zu] (%f ~= %f)\n",
+      simde_test_debug_printf_("%s:%d: assertion failed: %s[%zu] ~= %s[%zu] (%f ~= %f)\n",
               filename, line, astr, i, bstr, i, HEDLEY_STATIC_CAST(double, a[i]), HEDLEY_STATIC_CAST(double, b[i]));
       #if !defined(SIMDE_TEST_ASSERTION_FAILURES_NON_FATAL)
         simde_trap();
@@ -356,7 +312,7 @@ simde_assert_equal_vf64_(
     const char* filename, int line, const char* astr, const char* bstr) {
   for (size_t i = 0 ; i < vec_len ; i++) {
     if (HEDLEY_UNLIKELY(!simde_test_equal_f64(a[i], b[i], slop))) {
-      fprintf(stderr, "%s:%d: assertion failed: %s[%zu] ~= %s[%zu] (%f ~= %f)\n",
+      simde_test_debug_printf_("%s:%d: assertion failed: %s[%zu] ~= %s[%zu] (%f ~= %f)\n",
               filename, line, astr, i, bstr, i, HEDLEY_STATIC_CAST(double, a[i]), HEDLEY_STATIC_CAST(double, b[i]));
       #if !defined(SIMDE_TEST_ASSERTION_FAILURES_NON_FATAL)
         simde_trap();
@@ -377,7 +333,7 @@ simde_assert_equal_vf64_(
         const char* filename, int line, const char* astr, const char* bstr) { \
       for (size_t i = 0 ; i < vec_len ; i++) { \
         if (HEDLEY_UNLIKELY(a[i] != b[i])) { \
-          fprintf(stderr, "%s:%d: assertion failed: %s[%zu] != %s[%zu] (%" fmt " != %" fmt ")\n", \
+          simde_test_debug_printf_("%s:%d: assertion failed: %s[%zu] != %s[%zu] (%" fmt " != %" fmt ")\n", \
                 filename, line, astr, i, bstr, i, a[i], b[i]); \
           simde_trap(); \
         } \
@@ -392,7 +348,7 @@ simde_assert_equal_vf64_(
         const char* filename, int line, const char* astr, const char* bstr) { \
       for (size_t i = 0 ; i < vec_len ; i++) { \
         if (HEDLEY_UNLIKELY(a[i] != b[i])) { \
-          fprintf(stderr, "%s:%d: assertion failed: %s[%zu] != %s[%zu] (%" fmt " != %" fmt ")\n", \
+          simde_test_debug_printf_("%s:%d: assertion failed: %s[%zu] != %s[%zu] (%" fmt " != %" fmt ")\n", \
                 filename, line, astr, i, bstr, i, a[i], b[i]); \
           return 0; \
         } \
