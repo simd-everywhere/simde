@@ -431,6 +431,26 @@
   #endif
 #endif
 
+#if !defined(simde_math_log)
+  #if SIMDE_MATH_BUILTIN_LIBM(log)
+    #define simde_math_log(v) __builtin_log(v)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_log(v) std::log(v)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_log(v) log(v)
+  #endif
+#endif
+
+#if !defined(simde_math_logf)
+  #if SIMDE_MATH_BUILTIN_LIBM(logf)
+    #define simde_math_logf(v) __builtin_logf(v)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_logf(v) std::log(v)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_logf(v) logf(v)
+  #endif
+#endif
+
 #if !defined(simde_math_round)
   #if SIMDE_MATH_BUILTIN_LIBM(round)
     #define simde_math_round(v) __builtin_round(v)
