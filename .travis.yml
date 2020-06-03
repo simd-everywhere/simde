@@ -317,8 +317,8 @@ jobs:
     after_script:
     - git push -q "https://${NO_TESTS_TOKEN}@github.com/nemequ/simde-no-tests" master
 
-  # allow_failures:
-  # - name: emscripten
+  allow_failures:
+  - name: msvc x86
 
 before_install:
 - |
