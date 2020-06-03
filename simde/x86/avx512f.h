@@ -5465,7 +5465,7 @@ simde_mm512_insertf32x4 (simde__m512 a, simde__m128 b, int imm8)
   #define _mm512_insertf32x4(a, b, imm8) simde_mm512_insertf32x4(a, b, imm8)
 #endif
 
-#if defined(SIMDE_X86_AVX512F_NATIVE)
+#if defined(SIMDE_X86_AVX512F_NATIVE) && (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(8,0,0))
   #define simde_mm512_mask_insertf32x4(src, k, a, b, imm8) _mm512_mask_insertf32x4(src, k, a, b, imm8)
 #else
   #define simde_mm512_mask_insertf32x4(src, k, a, b, imm8) simde_mm512_mask_mov_ps(src, k, simde_mm512_insertf32x4(a, b, imm8))
@@ -5475,7 +5475,7 @@ simde_mm512_insertf32x4 (simde__m512 a, simde__m128 b, int imm8)
   #define _mm512_mask_insertf32x4(src, k, a, b, imm8) simde_mm512_mask_insertf32x4(src, k, a, b, imm8)
 #endif
 
-#if defined(SIMDE_X86_AVX512F_NATIVE)
+#if defined(SIMDE_X86_AVX512F_NATIVE) && (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(8,0,0))
   #define simde_mm512_maskz_insertf32x4(k, a, b, imm8) _mm512_maskz_insertf32x4(k, a, b, imm8)
 #else
   #define simde_mm512_maskz_insertf32x4(k, a, b, imm8) simde_mm512_maskz_mov_ps(k, simde_mm512_insertf32x4(a, b, imm8))
@@ -5541,7 +5541,7 @@ simde_mm512_inserti32x4 (simde__m512i a, simde__m128i b, int imm8)
   #define _mm512_inserti32x4(a, b, imm8) simde_mm512_inserti32x4(a, b, imm8)
 #endif
 
-#if defined(SIMDE_X86_AVX512F_NATIVE)
+#if defined(SIMDE_X86_AVX512F_NATIVE) && (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(8,0,0))
   #define simde_mm512_mask_inserti32x4(src, k, a, b, imm8) _mm512_mask_inserti32x4(src, k, a, b, imm8)
 #else
   #define simde_mm512_mask_inserti32x4(src, k, a, b, imm8) simde_mm512_mask_mov_epi32(src, k, simde_mm512_inserti32x4(a, b, imm8))
@@ -5551,7 +5551,7 @@ simde_mm512_inserti32x4 (simde__m512i a, simde__m128i b, int imm8)
   #define _mm512_mask_inserti32x4(src, k, a, b, imm8) simde_mm512_mask_inserti32x4(src, k, a, b, imm8)
 #endif
 
-#if defined(SIMDE_X86_AVX512F_NATIVE)
+#if defined(SIMDE_X86_AVX512F_NATIVE) && (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(8,0,0))
   #define simde_mm512_maskz_inserti32x4(k, a, b, imm8) _mm512_maskz_inserti32x4(k, a, b, imm8)
 #else
   #define simde_mm512_maskz_inserti32x4(k, a, b, imm8) simde_mm512_maskz_mov_epi32(k, simde_mm512_inserti32x4(a, b, imm8))
