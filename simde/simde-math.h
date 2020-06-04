@@ -257,6 +257,26 @@
   #endif
 #endif
 
+#if !defined(simde_math_cbrt)
+  #if SIMDE_MATH_BUILTIN_LIBM(cbrt)
+    #define simde_math_cbrt(v) __builtin_cbrt(v)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_cbrt(v) std::cbrt(v)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_cbrt(v) cbrt(v)
+  #endif
+#endif
+
+#if !defined(simde_math_cbrtf)
+  #if SIMDE_MATH_BUILTIN_LIBM(cbrtf)
+    #define simde_math_cbrtf(v) __builtin_cbrtf(v)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_cbrtf(v) std::cbrt(v)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_cbrtf(v) cbrtf(v)
+  #endif
+#endif
+
 #if !defined(simde_math_acosh)
   #if SIMDE_MATH_BUILTIN_LIBM(acosh)
     #define simde_math_acosh(v) __builtin_acosh(v)
