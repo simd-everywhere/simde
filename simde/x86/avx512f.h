@@ -2037,12 +2037,10 @@ simde_mm512_load_si512 (void const * mem_addr) {
 
   #if defined(SIMDE_X86_AVX512F_NATIVE)
     return _mm512_load_si512(HEDLEY_REINTERPRET_CAST(void const*, mem_addr));
-  #elif defined(SIMDE_ARCH_AARCH64) && (defined(HEDLEY_GCC_VERSION) && !HEDLEY_GCC_VERSION_CHECK(8,0,0))
-    simde__m512i r;
-    simde_memcpy(&r, mem_addr, sizeof(r));
-    return r;
   #else
-    return *SIMDE_ALIGN_CAST(simde__m512i const*, mem_addr);
+    simde__m512i r;
+    simde_memcpy(&r, SIMDE_ASSUME_ALIGNED(64, mem_addr), sizeof(r));
+    return r;
   #endif
 }
 #define simde_mm512_load_epi8(mem_addr) simde_mm512_load_si512(mem_addr)
