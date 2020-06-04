@@ -16,6 +16,24 @@ SIMDE_TEST_X86_GENERATE_UINT_TYPE_FUNCS_(__m512i, 16, 32)
 SIMDE_TEST_X86_GENERATE_UINT_TYPE_FUNCS_(__m512i, 32, 16)
 SIMDE_TEST_X86_GENERATE_UINT_TYPE_FUNCS_(__m512i, 64, 8)
 
+#define SIMDE_TEST_X86_GENERATE_MASK_FUNCS_(EL) \
+  static simde__mmask##EL \
+  simde_test_x86_random_mmask##EL(void) { \
+    simde__mmask##EL r; \
+    simde_codegen_random_memory(sizeof(r), HEDLEY_REINTERPRET_CAST(uint8_t*, &r)); \
+    return r & HEDLEY_STATIC_CAST(uint##EL##_t, ~HEDLEY_STATIC_CAST(uint##EL##_t, 0)); \
+  } \
+ \
+  static void \
+  simde_test_x86_write_mmask##EL(int indent, simde__mmask16 value, SimdeTestVecPos pos) { \
+    simde_test_codegen_write_u##EL(indent, HEDLEY_STATIC_CAST(uint##EL##_t, value), pos); \
+  }
+
+SIMDE_TEST_X86_GENERATE_MASK_FUNCS_(8)
+SIMDE_TEST_X86_GENERATE_MASK_FUNCS_(16)
+SIMDE_TEST_X86_GENERATE_MASK_FUNCS_(32)
+SIMDE_TEST_X86_GENERATE_MASK_FUNCS_(64)
+
 #define simde_test_x86_assert_equal_f32x16(a, b, precision) simde_test_x86_assert_equal_f32x16_(a, b, 1e-##precision##f, __FILE__, __LINE__, #a, #b)
 #define simde_test_x86_assert_equal_f64x8(a, b, precision) simde_test_x86_assert_equal_f64x8_(a, b, 1e-##precision, __FILE__, __LINE__, #a, #b)
 #define simde_test_x86_assert_equal_i8x64(a, b) simde_test_x86_assert_equal_i8x64_(a, b, __FILE__, __LINE__, #a, #b)

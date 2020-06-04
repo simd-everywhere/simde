@@ -1999,39 +1999,95 @@ simde_mm512_movepi64_mask (simde__m512i a) {
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
+simde__m512
+simde_mm512_loadu_ps (void const * mem_addr) {
+  #if defined(SIMDE_X86_AVX512F_NATIVE)
+    return _mm512_loadu_ps(mem_addr);
+  #else
+    simde__m512 r;
+    simde_memcpy(&r, mem_addr, sizeof(r));
+    return r;
+  #endif
+}
+#if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_loadu_ps
+  #define _mm512_loadu_ps(a) simde_mm512_loadu_ps(a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512d
+simde_mm512_loadu_pd (void const * mem_addr) {
+  #if defined(SIMDE_X86_AVX512F_NATIVE)
+    return _mm512_loadu_pd(mem_addr);
+  #else
+    simde__m512d r;
+    simde_memcpy(&r, mem_addr, sizeof(r));
+    return r;
+  #endif
+}
+#if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_loadu_pd
+  #define _mm512_loadu_pd(a) simde_mm512_loadu_pd(a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
 simde__m512i
-simde_mm512_load_si512 (simde__m512i const * mem_addr) {
+simde_mm512_load_si512 (void const * mem_addr) {
   simde_assert_aligned(64, mem_addr);
 
   #if defined(SIMDE_X86_AVX512F_NATIVE)
-    return _mm512_load_si512(HEDLEY_REINTERPRET_CAST(__m512i const*, mem_addr));
+    return _mm512_load_si512(HEDLEY_REINTERPRET_CAST(void const*, mem_addr));
   #elif defined(SIMDE_ARCH_AARCH64) && (defined(HEDLEY_GCC_VERSION) && !HEDLEY_GCC_VERSION_CHECK(8,0,0))
     simde__m512i r;
     simde_memcpy(&r, mem_addr, sizeof(r));
     return r;
   #else
-    return *mem_addr;
+    return *SIMDE_ALIGN_CAST(simde__m512i const*, mem_addr);
   #endif
 }
+#define simde_mm512_load_epi8(mem_addr) simde_mm512_load_si512(mem_addr)
+#define simde_mm512_load_epi16(mem_addr) simde_mm512_load_si512(mem_addr)
+#define simde_mm512_load_epi32(mem_addr) simde_mm512_load_si512(mem_addr)
+#define simde_mm512_load_epi64(mem_addr) simde_mm512_load_si512(mem_addr)
 #if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_load_epi8
+  #undef _mm512_load_epi16
+  #undef _mm512_load_epi32
+  #undef _mm512_load_epi64
   #undef _mm512_load_si512
   #define _mm512_load_si512(a) simde_mm512_load_si512(a)
+  #define _mm512_load_epi8(a) simde_mm512_load_si512(a)
+  #define _mm512_load_epi16(a) simde_mm512_load_si512(a)
+  #define _mm512_load_epi32(a) simde_mm512_load_si512(a)
+  #define _mm512_load_epi64(a) simde_mm512_load_si512(a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m512i
-simde_mm512_loadu_si512 (simde__m512i const * mem_addr) {
+simde_mm512_loadu_si512 (void const * mem_addr) {
   #if defined(SIMDE_X86_AVX512F_NATIVE)
-    return _mm512_loadu_si512(HEDLEY_REINTERPRET_CAST(__m512i const*, mem_addr));
+    return _mm512_loadu_si512(HEDLEY_REINTERPRET_CAST(void const*, mem_addr));
   #else
     simde__m512i r;
     simde_memcpy(&r, mem_addr, sizeof(r));
     return r;
   #endif
 }
+#define simde_mm512_loadu_epi8(mem_addr) simde_mm512_loadu_si512(mem_addr)
+#define simde_mm512_loadu_epi16(mem_addr) simde_mm512_loadu_si512(mem_addr)
+#define simde_mm512_loadu_epi32(mem_addr) simde_mm512_loadu_si512(mem_addr)
+#define simde_mm512_loadu_epi64(mem_addr) simde_mm512_loadu_si512(mem_addr)
 #if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_loadu_epi8
+  #undef _mm512_loadu_epi16
+  #undef _mm512_loadu_epi32
+  #undef _mm512_loadu_epi64
   #undef _mm512_loadu_si512
   #define _mm512_loadu_si512(a) simde_mm512_loadu_si512(a)
+  #define _mm512_loadu_epi8(a) simde_mm512_loadu_si512(a)
+  #define _mm512_loadu_epi16(a) simde_mm512_loadu_si512(a)
+  #define _mm512_loadu_epi32(a) simde_mm512_loadu_si512(a)
+  #define _mm512_loadu_epi64(a) simde_mm512_loadu_si512(a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES

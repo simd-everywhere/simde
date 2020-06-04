@@ -237,7 +237,7 @@ simde_codegen_random_vf64(size_t elem_count, simde_float64 values[HEDLEY_ARRAY_P
  \
       char buf[53]; \
       simde_test_codegen_##symbol_identifier(sizeof(buf), buf, values[i]); \
-      printf("%s", buf); \
+      fputs(buf, stdout); \
     } \
     fputs(" }", stdout); \
  \
@@ -264,6 +264,50 @@ SIMDE_TEST_CODEGEN_GENERATE_WRITE_VECTOR_FUNC_(uint8_t, u8, 8)
 SIMDE_TEST_CODEGEN_GENERATE_WRITE_VECTOR_FUNC_(uint16_t, u16, 8)
 SIMDE_TEST_CODEGEN_GENERATE_WRITE_VECTOR_FUNC_(uint32_t, u32, 8)
 SIMDE_TEST_CODEGEN_GENERATE_WRITE_VECTOR_FUNC_(uint64_t, u64, 4)
+
+#define SIMDE_TEST_CODEGEN_WRITE_SCALAR_FUNC_(T, symbol_identifier) \
+  static void \
+  simde_test_codegen_write_##symbol_identifier(int indent, T value, SimdeTestVecPos pos) { \
+    switch (pos) { \
+      case SIMDE_TEST_VEC_POS_FIRST: \
+        simde_test_codegen_write_indent(indent); \
+        indent++; \
+        fputs("{ ", stdout); \
+        break; \
+      case SIMDE_TEST_VEC_POS_MIDDLE: \
+      case SIMDE_TEST_VEC_POS_LAST: \
+        indent++; \
+        simde_test_codegen_write_indent(indent); \
+        break; \
+    } \
+ \
+    { \
+      char buf[53]; \
+      simde_test_codegen_##symbol_identifier(sizeof(buf), buf, value); \
+      fputs(buf, stdout); \
+    } \
+ \
+    switch (pos) { \
+      case SIMDE_TEST_VEC_POS_FIRST: \
+      case SIMDE_TEST_VEC_POS_MIDDLE: \
+        fputc(',', stdout); \
+        break; \
+      case SIMDE_TEST_VEC_POS_LAST: \
+        fputs(" },", stdout); \
+        break; \
+    } \
+ \
+    fputc('\n', stdout); \
+  }
+
+SIMDE_TEST_CODEGEN_WRITE_SCALAR_FUNC_(int8_t,    i8)
+SIMDE_TEST_CODEGEN_WRITE_SCALAR_FUNC_(int16_t,  i16)
+SIMDE_TEST_CODEGEN_WRITE_SCALAR_FUNC_(int32_t,  i32)
+SIMDE_TEST_CODEGEN_WRITE_SCALAR_FUNC_(int64_t,  i64)
+SIMDE_TEST_CODEGEN_WRITE_SCALAR_FUNC_(uint8_t,   u8)
+SIMDE_TEST_CODEGEN_WRITE_SCALAR_FUNC_(uint16_t, u16)
+SIMDE_TEST_CODEGEN_WRITE_SCALAR_FUNC_(uint32_t, u32)
+SIMDE_TEST_CODEGEN_WRITE_SCALAR_FUNC_(uint64_t, u64)
 
 static int
 simde_test_equal_f32(simde_float32 a, simde_float32 b, simde_float32 slop) {
