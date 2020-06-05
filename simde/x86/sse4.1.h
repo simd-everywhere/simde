@@ -1709,15 +1709,18 @@ simde_mm_packus_epi32 (simde__m128i a, simde__m128i b) {
     a_ = simde__m128i_to_private(a),
     b_ = simde__m128i_to_private(b);
 
-  // #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-  //   r_.neon_u16 = vcombine_u16(vqmovn_u32(a_.neon_u32), vqmovn_u32(b_.neon_u32));
-  // sse4.1.cpp:2844: assertion failed: r.i32[0] == test_vec[i].r.i32[0] (-1 == 65535)
-  //#else
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    const int32x4_t z = vdupq_n_s32(0);
+    r_.neon_u16 = vcombine_u16(
+        vqmovn_u32(vreinterpretq_u32_s32(vmaxq_s32(z, a_.neon_i32))),
+        vqmovn_u32(vreinterpretq_u32_s32(vmaxq_s32(z, b_.neon_i32))));
+  #else
     for (size_t i = 0 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {
       r_.u16[i + 0] = (a_.i32[i] < 0) ? UINT16_C(0) : ((a_.i32[i] > UINT16_MAX) ? (UINT16_MAX) : HEDLEY_STATIC_CAST(uint16_t, a_.i32[i]));
       r_.u16[i + 4] = (b_.i32[i] < 0) ? UINT16_C(0) : ((b_.i32[i] > UINT16_MAX) ? (UINT16_MAX) : HEDLEY_STATIC_CAST(uint16_t, b_.i32[i]));
     }
-  //#endif
+  #endif
+
   return simde__m128i_from_private(r_);
 #endif
 }

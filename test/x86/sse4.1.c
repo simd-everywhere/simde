@@ -2682,7 +2682,7 @@ test_simde_mm_packus_epi32(void) {
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m128i r = simde_mm_packus_epi32(test_vec[i].a, test_vec[i].b);
-    simde_assert_m128i_i32(r, ==, test_vec[i].r);
+    simde_assert_m128i_u16(r, ==, test_vec[i].r);
   }
 
   return 0;
