@@ -287,6 +287,11 @@ jobs:
           ../amalgamate.py "$header" > ../amalgamated/"$header"
         done);
       fi
+    - |
+      if [ ! -e amalgamated/arm]; then
+        mkdir -p amalgamated/arm
+        (cd simde/arm && ../../amalgamate.py neon.h > ../../amalgamated/neon.h)
+      fi
     deploy:
       provider: pages
       target_branch: amalgamated
