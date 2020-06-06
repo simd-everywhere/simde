@@ -29,4 +29,9 @@
 
 #include "neon/types.h"
 
+#include "neon/add.h"
+#include "neon/ld1.h"
+#include "neon/st1.h"
+#include "neon/sub.h"
+
 #endif /* SIMDE_ARM_NEON_H */
