@@ -2109,6 +2109,7 @@ simde_mm_maskmove_si64 (simde__m64 a, simde__m64 mask, int8_t* mem_addr) {
 #define simde_m_maskmovq(a, mask, mem_addr) simde_mm_maskmove_si64(a, mask, mem_addr)
 #if defined(SIMDE_X86_SSE_ENABLE_NATIVE_ALIASES)
 #  define _mm_maskmove_si64(a, mask, mem_addr) simde_mm_maskmove_si64((a), (mask), SIMDE_CHECKED_REINTERPRET_CAST(int8_t*, char*, (mem_addr)))
+#  define _m_maskmovq(a, mask, mem_addr) simde_mm_maskmove_si64((a), (mask), SIMDE_CHECKED_REINTERPRET_CAST(int8_t*, char*, (mem_addr)))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -2539,6 +2540,7 @@ simde_mm_mulhi_pu16 (simde__m64 a, simde__m64 b) {
 #define simde_m_pmulhuw(a, b) simde_mm_mulhi_pu16(a, b)
 #if defined(SIMDE_X86_SSE_ENABLE_NATIVE_ALIASES)
 #  define _mm_mulhi_pu16(a, b) simde_mm_mulhi_pu16(a, b)
+#  define _m_pmulhuw(a, b) simde_mm_mulhi_pu16(a, b)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
