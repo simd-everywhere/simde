@@ -107,6 +107,7 @@ set(TEST_SOURCES_C
   x86/svml.c
 
   arm/neon/add.c
+  arm/neon/min.c
   arm/neon/sub.c)
 
 set(TEST_RUNNER_SOURCES
