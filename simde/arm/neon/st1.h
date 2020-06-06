@@ -338,4 +338,4 @@ simde_vst1q_u64(uint64_t ptr[HEDLEY_ARRAY_PARAM(8)], simde_uint64x2_t val) {
 SIMDE_END_DECLS_
 HEDLEY_DIAGNOSTIC_POP
 
-#endif /* SIMDE_ARM_NEON_TYPES_H */
+#endif /* !defined(SIMDE_ARM_NEON_ST1_H) */

@@ -650,4 +650,4 @@ simde_vaddq_u64(simde_uint64x2_t a, simde_uint64x2_t b) {
 SIMDE_END_DECLS_
 HEDLEY_DIAGNOSTIC_POP
 
-#endif /* SIMDE_ARM_NEON_TYPES_H */
+#endif /* !defined(SIMDE_ARM_NEON_ADD_H) */
