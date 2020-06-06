@@ -77,7 +77,7 @@ simde_test_codegen_snprintf_(char* str, size_t size, const char* format, ...) {
 static void
 simde_test_codegen_f32(size_t buf_len, char buf[HEDLEY_ARRAY_PARAM(buf_len)], simde_float32 value) {
   if (simde_math_isnan(value)) {
-    simde_test_codegen_snprintf_(buf, buf_len, "%25s", "SIMDE_MATH_NANF");
+    simde_test_codegen_snprintf_(buf, buf_len, "           SIMDE_MATH_NANF");
   } else if (simde_math_isinf(value)) {
     simde_test_codegen_snprintf_(buf, buf_len, "%5cSIMDE_MATH_INFINITYF", value < 0 ? '-' : ' ');
   } else {
@@ -88,7 +88,7 @@ simde_test_codegen_f32(size_t buf_len, char buf[HEDLEY_ARRAY_PARAM(buf_len)], si
 static void
 simde_test_codegen_f64(size_t buf_len, char buf[HEDLEY_ARRAY_PARAM(buf_len)], simde_float64 value) {
   if (simde_math_isnan(value)) {
-    simde_test_codegen_snprintf_(buf, buf_len, "%26s", "NAN");
+    simde_test_codegen_snprintf_(buf, buf_len, "            SIMDE_MATH_NAN");
   } else if (simde_math_isinf(value)) {
     simde_test_codegen_snprintf_(buf, buf_len, "%7cSIMDE_MATH_INFINITY", value < 0 ? '-' : ' ');
   } else {
