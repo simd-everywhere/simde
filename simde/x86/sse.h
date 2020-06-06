@@ -2425,9 +2425,10 @@ simde_mm_movemask_pi8 (simde__m64 a) {
   return r;
 #endif
 }
-#define simde_m_pmovmskb(a, b) simde_mm_movemask_pi8(a, b)
+#define simde_m_pmovmskb(a) simde_mm_movemask_pi8(a)
 #if defined(SIMDE_X86_SSE_ENABLE_NATIVE_ALIASES)
 #  define _mm_movemask_pi8(a) simde_mm_movemask_pi8(a)
+#  define _m_pmovmskb(a) simde_mm_movemask_pi8(a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
