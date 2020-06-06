@@ -134,6 +134,12 @@
   #define SIMDE_ASSUME_ALIGNED(alignment, v) (v)
 #endif
 
+#if defined(SIMDE_ALIGN_OF)
+  #define SIMDE_ASSUME_ALIGNED_AS(T, v) SIMDE_ASSUME_ALIGNED(SIMDE_ALIGN_OF(T), v)
+#else
+  #define SIMDE_ASSUME_ALIGNED_AS(T, v) (v)
+#endif
+
 /* SIMDE_ALIGN_CAST allows you to convert to a type with greater
  * aligment requirements without triggering a warning. */
 #if HEDLEY_HAS_WARNING("-Wcast-align") || defined(__clang__) || HEDLEY_GCC_VERSION_CHECK(3,4,0)

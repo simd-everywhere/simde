@@ -2033,13 +2033,11 @@ simde_mm512_loadu_pd (void const * mem_addr) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m512i
 simde_mm512_load_si512 (void const * mem_addr) {
-  simde_assert_aligned(64, mem_addr);
-
   #if defined(SIMDE_X86_AVX512F_NATIVE)
     return _mm512_load_si512(HEDLEY_REINTERPRET_CAST(void const*, mem_addr));
   #else
     simde__m512i r;
-    simde_memcpy(&r, SIMDE_ASSUME_ALIGNED(64, mem_addr), sizeof(r));
+    simde_memcpy(&r, SIMDE_ASSUME_ALIGNED_AS(simde__m512i, mem_addr), sizeof(r));
     return r;
   #endif
 }
