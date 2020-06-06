@@ -20,6 +20,8 @@ jobs:
       run: grep -PR '(?<=[^a-zA-Z0-9_])simde_assert_u?int(8|16|32|64)(?>[^a-zA-Z0-9_])' test/ && exit 1 || exit 0
     - name: Executable sources
       run: find \( -name '*.c' -o -name '*.h' \) -executable | grep -q '.' && exit 1 || exit 0
+    - name: Missing NEON includes
+      run: for f in simde/arm/neon/*.h; do grep -q "include \"neon/$(basename "$f")\"" simde/arm/neon.h || (echo "Missing $f" && exit 1); done
 
   x86:
     runs-on: ubuntu-latest
