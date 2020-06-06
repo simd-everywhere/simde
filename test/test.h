@@ -24,6 +24,8 @@ SIMDE_DIAGNOSTIC_DISABLE_CAST_FUNCTION_TYPE_
 SIMDE_DIAGNOSTIC_DISABLE_NON_CONSTANT_AGGREGATE_INITIALIZER_
 SIMDE_DIAGNOSTIC_DISABLE_C99_EXTENSIONS_
 SIMDE_DIAGNOSTIC_DISABLE_NO_EMMS_INSTRUCTION_
+SIMDE_DIAGNOSTIC_DISABLE_CPP98_COMPAT_PEDANTIC_
+SIMDE_DIAGNOSTIC_DISABLE_ANNEX_K_
 
 #if \
     HEDLEY_HAS_BUILTIN(__builtin_abort) || \
@@ -185,9 +187,26 @@ static int simde_codegen_rand(void) {
   /* Single-threaded programs are so nice */
   static int is_init = 0;
   if (HEDLEY_UNLIKELY(!is_init)) {
-    srand(HEDLEY_STATIC_CAST(unsigned int, time(NULL)));
-    is_init = 1;
+    FILE* fp = fopen("/dev/urandom", "r");
+    if (fp == NULL)
+      fp = fopen("/dev/random", "r");
+
+    if (fp != NULL) {
+      unsigned int seed;
+      size_t nread = fread(&seed, sizeof(seed), 1, fp);
+      fclose(fp);
+      if (nread == 1) {
+        srand(seed);
+        is_init = 1;
+      }
+    }
+
+    if (!is_init) {
+      srand(HEDLEY_STATIC_CAST(unsigned int, time(NULL)));
+      is_init = 1;
+    }
   }
+
   return rand();
 }
 

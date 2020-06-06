@@ -259,6 +259,15 @@
   #define SIMDE_DIAGNOSTIC_DISABLE_BUGGY_UNUSED_BUT_SET_VARIBALE_
 #endif
 
+/* This is the warning that you normally define _CRT_SECURE_NO_WARNINGS
+ * to silence, but you have to do that before including anything and
+ * that would require reordering includes. */
+#if defined(_MSC_VER)
+  #define SIMDE_DIAGNOSTIC_DISABLE_ANNEX_K_ __pragma(warning(disable:4996))
+#else
+  #define SIMDE_DIAGNOSTIC_DISABLE_ANNEX_K_
+#endif
+
 /* Some compilers, such as clang, may use `long long` for 64-bit
  * integers, but `long long` triggers a diagnostic with
  * -Wc++98-compat-pedantic which says 'long long' is incompatible with
