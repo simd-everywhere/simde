@@ -901,7 +901,7 @@ simde_mm_setzero_si128 (void) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_bslli_si128 (simde__m128i a, const int imm8)
-    SIMDE_REQUIRE_RANGE(imm8, 0, 255)  {
+    SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 255)  {
   simde__m128i_private
     r_,
     a_ = simde__m128i_to_private(a);
@@ -966,7 +966,7 @@ simde_mm_bslli_si128 (simde__m128i a, const int imm8)
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_bsrli_si128 (simde__m128i a, const int imm8)
-    SIMDE_REQUIRE_RANGE(imm8, 0, 255)  {
+    SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 255)  {
   simde__m128i_private
     r_,
     a_ = simde__m128i_to_private(a);

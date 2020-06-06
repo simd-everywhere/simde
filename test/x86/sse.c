@@ -2164,7 +2164,7 @@ test_simde_mm_cvtps_pi8(void) {
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
     simde__m64 r = simde_mm_cvtps_pi8(simde_mm_loadu_ps(test_vec[i].a));
-    
+
     /* The upper half is undefined */
     int8_t r_[8];
     simde_memcpy(r_, &r, sizeof(r));
