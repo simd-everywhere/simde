@@ -540,8 +540,8 @@ typedef SIMDE_FLOAT64_TYPE simde_float64;
 #  define SIMDE_STDC_HOSTED __STDC_HOSTED__
 #else
 #  if \
-     defined(HEDLEY_PGI_VERSION_CHECK) || \
-     defined(HEDLEY_MSVC_VERSION_CHECK)
+     defined(HEDLEY_PGI_VERSION) || \
+     defined(HEDLEY_MSVC_VERSION)
 #    define SIMDE_STDC_HOSTED 1
 #  else
 #    define SIMDE_STDC_HOSTED 0

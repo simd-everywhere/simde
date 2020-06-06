@@ -25,6 +25,18 @@ SIMDE_DIAGNOSTIC_DISABLE_NON_CONSTANT_AGGREGATE_INITIALIZER_
 SIMDE_DIAGNOSTIC_DISABLE_C99_EXTENSIONS_
 SIMDE_DIAGNOSTIC_DISABLE_NO_EMMS_INSTRUCTION_
 
+#if \
+    HEDLEY_HAS_BUILTIN(__builtin_abort) || \
+    HEDLEY_GCC_VERSION_CHECK(3,4,6) || \
+    HEDLEY_ARM_VERSION_CHECK(4,1,0)
+  #define simde_abort() __builtin_abort()
+#elif defined(SIMDE_HAVE_STDLIB_H)
+  #define simde_abort() abort()
+#endif
+
+#if !defined(SIMDE_DEBUG)
+  HEDLEY_NO_RETURN
+#endif
 HEDLEY_PRINTF_FORMAT(1, 2)
 static void
 simde_test_debug_printf_(const char* format, ...) {
@@ -35,10 +47,13 @@ simde_test_debug_printf_(const char* format, ...) {
   va_end(ap);
   fflush(stderr);
 
-  #if defined(HEDLEY_EMSCRIPTEN_VERSION)
-    abort();
-  #else
+  /* Debug trap is great for local development where you can attach a
+   * debugger, but processes exiting with a SIGTRAP seem to be rather
+   * confusing for CI. */
+  #if defined(SIMDE_DEBUG)
     simde_trap();
+  #else
+    simde_abort();
   #endif
 }
 
@@ -339,11 +354,6 @@ simde_assert_equal_vf32_(
     if (HEDLEY_UNLIKELY(!simde_test_equal_f32(a[i], b[i], slop))) {
       simde_test_debug_printf_("%s:%d: assertion failed: %s[%zu] ~= %s[%zu] (%f ~= %f)\n",
               filename, line, astr, i, bstr, i, HEDLEY_STATIC_CAST(double, a[i]), HEDLEY_STATIC_CAST(double, b[i]));
-      #if !defined(SIMDE_TEST_ASSERTION_FAILURES_NON_FATAL)
-        simde_trap();
-      #else
-        return 0;
-      #endif
     }
   }
   return 1;
@@ -358,11 +368,6 @@ simde_assert_equal_vf64_(
     if (HEDLEY_UNLIKELY(!simde_test_equal_f64(a[i], b[i], slop))) {
       simde_test_debug_printf_("%s:%d: assertion failed: %s[%zu] ~= %s[%zu] (%f ~= %f)\n",
               filename, line, astr, i, bstr, i, HEDLEY_STATIC_CAST(double, a[i]), HEDLEY_STATIC_CAST(double, b[i]));
-      #if !defined(SIMDE_TEST_ASSERTION_FAILURES_NON_FATAL)
-        simde_trap();
-      #else
-        return 0;
-      #endif
     }
   }
   return 1;
@@ -379,7 +384,6 @@ simde_assert_equal_vf64_(
         if (HEDLEY_UNLIKELY(a[i] != b[i])) { \
           simde_test_debug_printf_("%s:%d: assertion failed: %s[%zu] != %s[%zu] (%" fmt " != %" fmt ")\n", \
                 filename, line, astr, i, bstr, i, a[i], b[i]); \
-          simde_trap(); \
         } \
       } \
       return 1; \
@@ -394,7 +398,6 @@ simde_assert_equal_vf64_(
         if (HEDLEY_UNLIKELY(a[i] != b[i])) { \
           simde_test_debug_printf_("%s:%d: assertion failed: %s[%zu] != %s[%zu] (%" fmt " != %" fmt ")\n", \
                 filename, line, astr, i, bstr, i, a[i], b[i]); \
-          return 0; \
         } \
       } \
       return 1; \
