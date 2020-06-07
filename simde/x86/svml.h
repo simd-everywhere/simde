@@ -4365,6 +4365,90 @@ simde_mm512_mask_sinh_pd(simde__m512d src, simde__mmask8 k, simde__m512d a) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128
+simde_mm_svml_sqrt_ps (simde__m128 a) {
+  #if defined(SIMDE_X86_SVML_NATIVE)
+    return _mm_svml_sqrt_ps(a);
+  #else
+    return simde_mm_sqrt_ps(a);
+  #endif
+}
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
+  #undef _mm_svml_sqrt_ps
+  #define _mm_svml_sqrt_ps(a) simde_mm_svml_sqrt_ps(a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m128d
+simde_mm_svml_sqrt_pd (simde__m128d a) {
+  #if defined(SIMDE_X86_SVML_NATIVE)
+    return _mm_svml_sqrt_pd(a);
+  #else
+    return simde_mm_sqrt_pd(a);
+  #endif
+}
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
+  #undef _mm_svml_sqrt_pd
+  #define _mm_svml_sqrt_pd(a) simde_mm_svml_sqrt_pd(a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256
+simde_mm256_svml_sqrt_ps (simde__m256 a) {
+  #if defined(SIMDE_X86_SVML_NATIVE)
+    return _mm256_svml_sqrt_ps(a);
+  #else
+    return simde_mm256_sqrt_ps(a);
+  #endif
+}
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_svml_sqrt_ps
+  #define _mm256_svml_sqrt_ps(a) simde_mm256_svml_sqrt_ps(a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256d
+simde_mm256_svml_sqrt_pd (simde__m256d a) {
+  #if defined(SIMDE_X86_SVML_NATIVE)
+    return _mm256_svml_sqrt_pd(a);
+  #else
+    return simde_mm256_sqrt_pd(a);
+  #endif
+}
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_svml_sqrt_pd
+  #define _mm256_svml_sqrt_pd(a) simde_mm256_svml_sqrt_pd(a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512
+simde_mm512_svml_sqrt_ps (simde__m512 a) {
+  #if defined(SIMDE_X86_SVML_NATIVE)
+    return _mm512_svml_sqrt_ps(a);
+  #else
+    return simde_mm512_sqrt_ps(a);
+  #endif
+}
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_svml_sqrt_ps
+  #define _mm512_svml_sqrt_ps(a) simde_mm512_svml_sqrt_ps(a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512d
+simde_mm512_svml_sqrt_pd (simde__m512d a) {
+  #if defined(SIMDE_X86_SVML_NATIVE)
+    return _mm512_svml_sqrt_pd(a);
+  #else
+    return simde_mm512_sqrt_pd(a);
+  #endif
+}
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_svml_sqrt_pd
+  #define _mm512_svml_sqrt_pd(a) simde_mm512_svml_sqrt_pd(a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m128
 simde_mm_tan_ps (simde__m128 a) {
   #if defined(SIMDE_X86_SVML_NATIVE)
     return _mm_tan_ps(a);
