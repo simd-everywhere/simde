@@ -891,6 +891,49 @@ test_simde_mm_cmpistrz_16(void) {
   return 0;
 }
 
+static int
+test_simde_mm_crc32_u8 (void) {
+  static const struct {
+    uint32_t crc;
+    uint8_t v;
+    unsigned int r;
+  } test_vec[] = {
+    { UINT32_C(3488119326),
+      UINT8_C(233),
+      UINT32_C( 661382116) },
+    { UINT32_C(4181338815),
+      UINT8_C(106),
+      UINT32_C(3873165213) },
+    { UINT32_C(3611029619),
+      UINT8_C(190),
+      UINT32_C(2087866855) },
+    { UINT32_C(3633137044),
+      UINT8_C(206),
+      UINT32_C( 975142830) },
+    { UINT32_C(3701195429),
+      UINT8_C( 59),
+      UINT32_C(1041029362) },
+    { UINT32_C(1574265292),
+      UINT8_C( 54),
+      UINT32_C(2563871276) },
+    { UINT32_C( 464550963),
+      UINT8_C( 75),
+      UINT32_C(4217027774) },
+    { UINT32_C(3547716249),
+      UINT8_C(211),
+      UINT32_C( 709509214) }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
+    uint32_t crc = test_vec[i].crc;
+    uint8_t v = test_vec[i].v;
+    uint32_t r = simde_mm_crc32_u8(crc, v);
+    munit_assert_uint32(r, ==, test_vec[i].r);
+  }
+
+  return 0;
+}
+
 SIMDE_TEST_FUNC_LIST_BEGIN
   SIMDE_TEST_FUNC_LIST_ENTRY(mm_cmpestrs_8)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm_cmpestrs_16)
@@ -901,6 +944,7 @@ SIMDE_TEST_FUNC_LIST_BEGIN
   SIMDE_TEST_FUNC_LIST_ENTRY(mm_cmpistrs_16)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm_cmpistrz_8)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm_cmpistrz_16)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm_crc32_u8)
 SIMDE_TEST_FUNC_LIST_END
 
 #include <test/x86/test-x86-footer.h>
