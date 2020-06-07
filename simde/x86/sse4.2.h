@@ -269,6 +269,27 @@ simde_mm_cmpistrz_16_(simde__m128i b) {
   #define _mm_cmpistrz(a, b, imm8) simde_mm_cmpistrz(a, b, imm8)
 #endif
 
+SIMDE_FUNCTION_ATTRIBUTES
+uint32_t
+simde_mm_crc32_u8(uint32_t prevcrc, uint8_t v) {
+  #if defined(SIMDE_X86_SSE4_2_NATIVE)
+    return _mm_crc32_u8(prevcrc, v);
+  #else
+    uint32_t crc = prevcrc;
+    crc ^= v;
+    for(int bit = 0 ; bit < 8 ; bit++) {
+      if (crc & 1)
+        crc = (crc >> 1) ^ UINT32_C(0x82f63b78);
+      else
+        crc = (crc >> 1);
+    }
+    return crc;
+  #endif
+}
+#if defined(SIMDE_X86_SSE4_2_ENABLE_NATIVE_ALIASES)
+  #define _mm_crc32_u8(prevcrc, v) simde_mm_crc32_u8(prevcrc, v)
+#endif
+
 SIMDE_END_DECLS_
 
 HEDLEY_DIAGNOSTIC_POP
