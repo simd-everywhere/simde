@@ -1900,37 +1900,32 @@ test_simde_mm_cvt_pi2ps(void) {
 
 static int
 test_simde_mm_cvt_ps2pi(void) {
-  const unsigned int orig_round = SIMDE_MM_GET_ROUNDING_MODE();
   const struct {
     simde__m128 a;
     simde__m64 r;
   } test_vec[8] = {
     { simde_mm_set_ps(SIMDE_FLOAT32_C(   585.40), SIMDE_FLOAT32_C(  -596.31), SIMDE_FLOAT32_C(   -33.58), SIMDE_FLOAT32_C(  -973.52)),
-      simde_mm_set_pi32(INT32_C(        -33), INT32_C(       -973)) },
+      simde_mm_set_pi32(INT32_C(        -34), INT32_C(       -974)) },
     { simde_mm_set_ps(SIMDE_FLOAT32_C(   461.40), SIMDE_FLOAT32_C(  -885.65), SIMDE_FLOAT32_C(  -130.70), SIMDE_FLOAT32_C(   767.11)),
-      simde_mm_set_pi32(INT32_C(       -130), INT32_C(        767)) },
+      simde_mm_set_pi32(INT32_C(       -131), INT32_C(        767)) },
     { simde_mm_set_ps(SIMDE_FLOAT32_C(   667.28), SIMDE_FLOAT32_C(   289.45), SIMDE_FLOAT32_C(   167.11), SIMDE_FLOAT32_C(  -820.87)),
-      simde_mm_set_pi32(INT32_C(        167), INT32_C(       -820)) },
+      simde_mm_set_pi32(INT32_C(        167), INT32_C(       -821)) },
     { simde_mm_set_ps(SIMDE_FLOAT32_C(  -445.67), SIMDE_FLOAT32_C(   116.25), SIMDE_FLOAT32_C(   836.77), SIMDE_FLOAT32_C(  -145.00)),
-      simde_mm_set_pi32(INT32_C(        836), INT32_C(       -145)) },
+      simde_mm_set_pi32(INT32_C(        837), INT32_C(       -145)) },
     { simde_mm_set_ps(SIMDE_FLOAT32_C(   457.72), SIMDE_FLOAT32_C(  -725.98), SIMDE_FLOAT32_C(  -428.45), SIMDE_FLOAT32_C(   251.28)),
       simde_mm_set_pi32(INT32_C(       -428), INT32_C(        251)) },
     { simde_mm_set_ps(SIMDE_FLOAT32_C(   776.17), SIMDE_FLOAT32_C(   285.46), SIMDE_FLOAT32_C(  -148.62), SIMDE_FLOAT32_C(   251.11)),
-      simde_mm_set_pi32(INT32_C(       -148), INT32_C(        251)) },
+      simde_mm_set_pi32(INT32_C(       -149), INT32_C(        251)) },
     { simde_mm_set_ps(SIMDE_FLOAT32_C(  -758.68), SIMDE_FLOAT32_C(  -834.46), SIMDE_FLOAT32_C(   247.62), SIMDE_FLOAT32_C(   252.25)),
-      simde_mm_set_pi32(INT32_C(        247), INT32_C(        252)) },
+      simde_mm_set_pi32(INT32_C(        248), INT32_C(        252)) },
     { simde_mm_set_ps(SIMDE_FLOAT32_C(   185.27), SIMDE_FLOAT32_C(   -33.00), SIMDE_FLOAT32_C(   323.39), SIMDE_FLOAT32_C(   851.62)),
-      simde_mm_set_pi32(INT32_C(        323), INT32_C(        851)) }
+      simde_mm_set_pi32(INT32_C(        323), INT32_C(        852)) }
   };
-
-  SIMDE_MM_SET_ROUNDING_MODE(SIMDE_MM_ROUND_TOWARD_ZERO);
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m64 r = simde_mm_cvt_ps2pi(test_vec[i].a);
     simde_test_x86_assert_equal_i32x2(r, test_vec[i].r);
   }
-
-  SIMDE_MM_SET_ROUNDING_MODE(orig_round);
 
   return 0;
 }
@@ -1978,22 +1973,20 @@ test_simde_mm_cvt_si2ss(void) {
 
 static int
 test_simde_mm_cvt_ss2si(void) {
-  const unsigned int orig_round = SIMDE_MM_GET_ROUNDING_MODE();
-
   const struct {
     simde__m128 a;
     int32_t r;
   } test_vec[8] = {
     { simde_mm_set_ps(SIMDE_FLOAT32_C(  -664.74), SIMDE_FLOAT32_C(  -351.36), SIMDE_FLOAT32_C(   921.54), SIMDE_FLOAT32_C(  -369.61)),
-      -369 },
+      -370 },
     { simde_mm_set_ps(SIMDE_FLOAT32_C(   771.32), SIMDE_FLOAT32_C(    26.79), SIMDE_FLOAT32_C(   121.70), SIMDE_FLOAT32_C(   126.41)),
       126 },
     { simde_mm_set_ps(SIMDE_FLOAT32_C(   672.24), SIMDE_FLOAT32_C(  -228.21), SIMDE_FLOAT32_C(  -487.97), SIMDE_FLOAT32_C(   370.22)),
       370 },
     { simde_mm_set_ps(SIMDE_FLOAT32_C(   -93.41), SIMDE_FLOAT32_C(  -359.95), SIMDE_FLOAT32_C(  -336.38), SIMDE_FLOAT32_C(   627.55)),
-      627 },
+      628 },
     { simde_mm_set_ps(SIMDE_FLOAT32_C(  -867.28), SIMDE_FLOAT32_C(  -790.69), SIMDE_FLOAT32_C(    18.38), SIMDE_FLOAT32_C(  -425.80)),
-      -425 },
+      -426 },
     { simde_mm_set_ps(SIMDE_FLOAT32_C(  -104.96), SIMDE_FLOAT32_C(  -928.48), SIMDE_FLOAT32_C(   913.27), SIMDE_FLOAT32_C(  -917.48)),
       -917 },
     { simde_mm_set_ps(SIMDE_FLOAT32_C(  -346.94), SIMDE_FLOAT32_C(  -701.32), SIMDE_FLOAT32_C(   578.50), SIMDE_FLOAT32_C(  -817.36)),
@@ -2002,14 +1995,10 @@ test_simde_mm_cvt_ss2si(void) {
       222 }
   };
 
-  SIMDE_MM_SET_ROUNDING_MODE(SIMDE_MM_ROUND_TOWARD_ZERO);
-
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     int32_t r = simde_mm_cvt_ss2si(test_vec[i].a);
     munit_assert_int32(r, ==, test_vec[i].r);
   }
-
-  SIMDE_MM_SET_ROUNDING_MODE(orig_round);
 
   return 0;
 }

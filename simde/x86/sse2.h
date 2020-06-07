@@ -2138,7 +2138,7 @@ simde_mm_cvtpd_epi32 (simde__m128d a) {
 
   SIMDE_VECTORIZE
   for (size_t i = 0 ; i < (sizeof(a_.f64) / sizeof(a_.f64[0])) ; i++) {
-    r_.i32[i] = SIMDE_CONVERT_FTOI(int32_t, simde_math_round(a_.f64[i]));
+    r_.i32[i] = SIMDE_CONVERT_FTOI(int32_t, simde_math_nearbyint(a_.f64[i]));
   }
   simde_memset(&(r_.m64_private[1]), 0, sizeof(r_.m64_private[1]));
 
@@ -2160,7 +2160,7 @@ simde_mm_cvtpd_pi32 (simde__m128d a) {
 
   SIMDE_VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {
-    r_.i32[i] = HEDLEY_STATIC_CAST(int32_t, simde_math_round(a_.f64[i]));
+    r_.i32[i] = HEDLEY_STATIC_CAST(int32_t, simde_math_nearbyint(a_.f64[i]));
   }
 
   return simde__m64_from_private(r_);

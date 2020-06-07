@@ -27,19 +27,12 @@
 /* Attempt to find math functions.  Functions may be in <cmath>,
  * <math.h>, compiler built-ins/intrinsics, or platform/architecture
  * specific headers.  In some cases, especially those not built in to
- * libm, we may need to define our own implementations.
- *
- * Including <cmath> will undefine isnan, so we need to use
- * std::isnan.  However, we can't just use std::isnan in C++ because
- * if <cmath> hasn't been included but <math.h> has we'll have isnan
- * but not std::isnan.  Unfortunately, it seems some implementations
- * are buggy and define HUGE_VAL somehow but don't define isnan or
- * std::isnan.  If you run into one of these please let us know so we
- * can try to figure out how to detect it. */
+ * libm, we may need to define our own implementations. */
 
 #if !defined(SIMDE_MATH_H)
 
 #include "hedley.h"
+#include "simde-features.h"
 
 #if defined(__has_builtin)
   #define SIMDE_MATH_BUILTIN_LIBM(func) __has_builtin(__builtin_##func)

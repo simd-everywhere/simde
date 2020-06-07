@@ -34,12 +34,13 @@
 #define SIMDE_VERSION_MICRO 0
 #define SIMDE_VERSION HEDLEY_VERSION_ENCODE(SIMDE_VERSION_MAJOR, SIMDE_VERSION_MINOR, SIMDE_VERSION_MICRO)
 
+#include <stddef.h>
+#include <stdint.h>
+
 #include "simde-arch.h"
 #include "simde-features.h"
 #include "simde-diagnostic.h"
-
-#include <stddef.h>
-#include <stdint.h>
+#include "simde-math.h"
 
 #if \
   HEDLEY_HAS_ATTRIBUTE(aligned) || \
@@ -115,6 +116,34 @@
 #define SIMDE_REQUIRE_CONSTANT_RANGE(arg, min, max) \
   SIMDE_REQUIRE_CONSTANT(arg) \
   SIMDE_REQUIRE_RANGE(arg, min, max)
+
+/* A copy of HEDLEY_STATIC_ASSERT, except we don't define an empty
+ * fallback if we can't find an implementation; instead we have to
+ * check if SIMDE_STATIC_ASSERT is defined before using it. */
+#if \
+  !defined(__cplusplus) && ( \
+      (defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 201112L)) || \
+      HEDLEY_HAS_FEATURE(c_static_assert) || \
+      HEDLEY_GCC_VERSION_CHECK(6,0,0) || \
+      HEDLEY_INTEL_VERSION_CHECK(13,0,0) || \
+      defined(_Static_assert) \
+    )
+#  define SIMDE_STATIC_ASSERT(expr, message) _Static_assert(expr, message)
+#elif \
+  (defined(__cplusplus) && (__cplusplus >= 201103L)) || \
+  HEDLEY_MSVC_VERSION_CHECK(16,0,0)
+#  define SIMDE_STATIC_ASSERT(expr, message) HEDLEY_DIAGNOSTIC_DISABLE_CPP98_COMPAT_WRAP_(static_assert(expr, message))
+#endif
+
+/* Similar to SIMDE_REQUIRE_CONSTANT_RANGE, but for use in macros. */
+#if defined(SIMDE_STATIC_ASSERT)
+  #define SIMDE_VALIDATE_CONSTANT_RANGE(value, min, max) \
+    ( SIMDE_STATIC_ASSERT(SIMDE_CHECK_CONSTANT(value), "`" #value "` must be constant"), \
+      SIMDE_STATIC_ASSERT(((value) > ()) && (), "'" #value "' must be in [" #min ", " #max "]"), \
+      (value) )
+#else
+  #define SIMDE_VALIDATE_CONSTANT_RANGE(value, min, max) (value)
+#endif
 
 /* SIMDE_ASSUME_ALIGNED allows you to (try to) tell the compiler
  * that a pointer is aligned to an `alignment`-byte boundary. */
@@ -620,8 +649,6 @@ typedef SIMDE_FLOAT64_TYPE simde_float64;
     #endif
   #endif /* !defined(SIMDE_NO_STRING_H) && (SIMDE_STDC_HOSTED == 1) */
 #endif /* !defined(simde_memcpy) || !defined(simde_memset) */
-
-#include "simde-math.h"
 
 #if defined(FE_ALL_EXCEPT)
   #define SIMDE_HAVE_FENV_H

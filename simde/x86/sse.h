@@ -167,8 +167,295 @@ simde__m128_to_private(simde__m128 v) {
   #endif
 #endif /* defined(SIMDE_ARM_NEON_A32V7_NATIVE) */
 
-#if defined(SIMDE_DIAGNOSTIC_DISABLE_UNINITIALIZED_)
-  HEDLEY_DIAGNOSTIC_POP
+enum {
+#if defined(SIMDE_X86_SSE_NATIVE)
+  SIMDE_MM_ROUND_NEAREST     = _MM_ROUND_NEAREST,
+  SIMDE_MM_ROUND_DOWN        = _MM_ROUND_DOWN,
+  SIMDE_MM_ROUND_UP          = _MM_ROUND_UP,
+  SIMDE_MM_ROUND_TOWARD_ZERO = _MM_ROUND_TOWARD_ZERO
+#else
+  SIMDE_MM_ROUND_NEAREST     = 0x0000,
+  SIMDE_MM_ROUND_DOWN        = 0x2000,
+  SIMDE_MM_ROUND_UP          = 0x4000,
+  SIMDE_MM_ROUND_TOWARD_ZERO = 0x6000
+#endif
+};
+
+#if defined(SIMDE_X86_SSE4_1_NATIVE)
+#  define SIMDE_MM_FROUND_TO_NEAREST_INT _MM_FROUND_TO_NEAREST_INT
+#  define SIMDE_MM_FROUND_TO_NEG_INF     _MM_FROUND_TO_NEG_INF
+#  define SIMDE_MM_FROUND_TO_POS_INF     _MM_FROUND_TO_POS_INF
+#  define SIMDE_MM_FROUND_TO_ZERO        _MM_FROUND_TO_ZERO
+#  define SIMDE_MM_FROUND_CUR_DIRECTION  _MM_FROUND_CUR_DIRECTION
+
+#  define SIMDE_MM_FROUND_RAISE_EXC      _MM_FROUND_RAISE_EXC
+#  define SIMDE_MM_FROUND_NO_EXC         _MM_FROUND_NO_EXC
+#else
+#  define SIMDE_MM_FROUND_TO_NEAREST_INT 0x00
+#  define SIMDE_MM_FROUND_TO_NEG_INF     0x01
+#  define SIMDE_MM_FROUND_TO_POS_INF     0x02
+#  define SIMDE_MM_FROUND_TO_ZERO        0x03
+#  define SIMDE_MM_FROUND_CUR_DIRECTION  0x04
+
+#  define SIMDE_MM_FROUND_RAISE_EXC      0x00
+#  define SIMDE_MM_FROUND_NO_EXC         0x08
+#endif
+
+#define SIMDE_MM_FROUND_NINT \
+  (SIMDE_MM_FROUND_TO_NEAREST_INT | SIMDE_MM_FROUND_RAISE_EXC)
+#define SIMDE_MM_FROUND_FLOOR \
+  (SIMDE_MM_FROUND_TO_NEG_INF | SIMDE_MM_FROUND_RAISE_EXC)
+#define SIMDE_MM_FROUND_CEIL \
+  (SIMDE_MM_FROUND_TO_POS_INF | SIMDE_MM_FROUND_RAISE_EXC)
+#define SIMDE_MM_FROUND_TRUNC \
+  (SIMDE_MM_FROUND_TO_ZERO | SIMDE_MM_FROUND_RAISE_EXC)
+#define SIMDE_MM_FROUND_RINT \
+  (SIMDE_MM_FROUND_CUR_DIRECTION | SIMDE_MM_FROUND_RAISE_EXC)
+#define SIMDE_MM_FROUND_NEARBYINT \
+  (SIMDE_MM_FROUND_CUR_DIRECTION | SIMDE_MM_FROUND_NO_EXC)
+
+#if defined(SIMDE_X86_SSE4_1_ENABLE_NATIVE_ALIASES)
+#  define _MM_FROUND_TO_NEAREST_INT SIMDE_MM_FROUND_TO_NEAREST_INT
+#  define _MM_FROUND_TO_NEG_INF SIMDE_MM_FROUND_TO_NEG_INF
+#  define _MM_FROUND_TO_POS_INF SIMDE_MM_FROUND_TO_POS_INF
+#  define _MM_FROUND_TO_ZERO SIMDE_MM_FROUND_TO_ZERO
+#  define _MM_FROUND_CUR_DIRECTION SIMDE_MM_FROUND_CUR_DIRECTION
+#  define _MM_FROUND_RAISE_EXC SIMDE_MM_FROUND_RAISE_EXC
+#  define _MM_FROUND_NINT SIMDE_MM_FROUND_NINT
+#  define _MM_FROUND_FLOOR SIMDE_MM_FROUND_FLOOR
+#  define _MM_FROUND_CEIL SIMDE_MM_FROUND_CEIL
+#  define _MM_FROUND_TRUNC SIMDE_MM_FROUND_TRUNC
+#  define _MM_FROUND_RINT SIMDE_MM_FROUND_RINT
+#  define _MM_FROUND_NEARBYINT SIMDE_MM_FROUND_NEARBYINT
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+unsigned int
+SIMDE_MM_GET_ROUNDING_MODE(void) {
+  #if defined(SIMDE_X86_SSE_NATIVE)
+    return _MM_GET_ROUNDING_MODE();
+  #elif defined(SIMDE_HAVE_FENV_H)
+    unsigned int vfe_mode;
+
+    switch (fegetround()) {
+      #if defined(FE_TONEAREST)
+        case FE_TONEAREST:
+          vfe_mode = SIMDE_MM_ROUND_NEAREST;
+          break;
+      #endif
+
+      #if defined(FE_TOWARDZERO)
+        case FE_TOWARDZERO:
+          vfe_mode = SIMDE_MM_ROUND_DOWN;
+          break;
+      #endif
+
+      #if defined(FE_UPWARD)
+        case FE_UPWARD:
+          vfe_mode = SIMDE_MM_ROUND_UP;
+          break;
+      #endif
+
+      #if defined(FE_DOWNWARD)
+        case FE_DOWNWARD:
+          vfe_mode = SIMDE_MM_ROUND_TOWARD_ZERO;
+          break;
+      #endif
+
+      default:
+        vfe_mode = SIMDE_MM_ROUND_NEAREST;
+        break;
+    }
+
+    return vfe_mode;
+  #else
+    return SIMDE_MM_ROUND_NEAREST;
+  #endif
+}
+#if defined(SIMDE_X86_SSE_ENABLE_NATIVE_ALIASES)
+  #define _MM_GET_ROUNDING_MODE() SIMDE_MM_GET_ROUNDING_MODE()
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+void
+SIMDE_MM_SET_ROUNDING_MODE(unsigned int a) {
+  #if defined(SIMDE_X86_SSE_NATIVE)
+    _MM_SET_ROUNDING_MODE(a);
+  #elif defined(SIMDE_HAVE_FENV_H)
+    int fe_mode = FE_TONEAREST;
+
+    switch (a) {
+      #if defined(FE_TONEAREST)
+        case SIMDE_MM_ROUND_NEAREST:
+          fe_mode = FE_TONEAREST;
+          break;
+      #endif
+
+      #if defined(FE_TOWARDZERO)
+        case SIMDE_MM_ROUND_TOWARD_ZERO:
+          fe_mode = FE_TOWARDZERO;
+          break;
+      #endif
+
+      #if defined(FE_DOWNWARD)
+        case SIMDE_MM_ROUND_DOWN:
+          fe_mode = FE_DOWNWARD;
+          break;
+      #endif
+
+      #if defined(FE_UPWARD)
+        case SIMDE_MM_ROUND_UP:
+          fe_mode = FE_UPWARD;
+          break;
+      #endif
+
+      default:
+        return;
+    }
+
+    fesetround(fe_mode);
+  #else
+    (void) a;
+  #endif
+}
+#if defined(SIMDE_X86_SSE_ENABLE_NATIVE_ALIASES)
+  #define _MM_SET_ROUNDING_MODE(a) SIMDE_MM_SET_ROUNDING_MODE(a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+uint32_t
+simde_mm_getcsr (void) {
+  #if defined(SIMDE_X86_SSE_NATIVE)
+    return _mm_getcsr();
+  #else
+    return SIMDE_MM_GET_ROUNDING_MODE();
+  #endif
+}
+#if defined(SIMDE_X86_SSE_ENABLE_NATIVE_ALIASES)
+  #define _mm_getcsr() simde_mm_getcsr()
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+void
+simde_mm_setcsr (uint32_t a) {
+  #if defined(SIMDE_X86_SSE_NATIVE)
+    _mm_setcsr(a);
+  #else
+    SIMDE_MM_SET_ROUNDING_MODE(HEDLEY_STATIC_CAST(unsigned int, a));
+  #endif
+}
+#if defined(SIMDE_X86_SSE_ENABLE_NATIVE_ALIASES)
+  #define _mm_setcsr(a) simde_mm_setcsr(a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m128
+simde_mm_round_ps (simde__m128 a, int rounding)
+    SIMDE_REQUIRE_CONSTANT_RANGE(rounding, 0, 15) {
+  simde__m128_private
+    r_,
+    a_ = simde__m128_to_private(a);
+
+  /* For architectures which lack a current direction SIMD instruction.
+   *
+   * Note that NEON actually has a current rounding mode instruction,
+   * but in ARMv8+ the rounding mode is ignored and nearest is always
+   * used, so we treat ARMv7 as having a rounding mode but ARMv8 as
+   * not. */
+  #if \
+      defined(SIMDE_POWER_ALTIVEC_P5_NATIVE) || \
+      defined(SIMDE_ARM_NEON_A32V8)
+    if ((rounding & 7) == SIMDE_MM_FROUND_CUR_DIRECTION)
+      rounding = HEDLEY_STATIC_CAST(int, SIMDE_MM_GET_ROUNDING_MODE()) << 13;
+  #endif
+
+  switch (rounding & ~SIMDE_MM_FROUND_NO_EXC) {
+    case SIMDE_MM_FROUND_CUR_DIRECTION:
+      #if defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+        r_.altivec_f32 = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(float), vec_round(a_.altivec_f32));
+      #elif defined(SIMDE_ARM_NEON_A32V8_NATIVE) && 0
+        r_.neon_f32 = vrndiq_f32(a_.neon_f32);
+      #elif defined(simde_math_nearbyintf)
+        SIMDE_VECTORIZE
+        for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
+          r_.f32[i] = simde_math_nearbyintf(a_.f32[i]);
+        }
+      #else
+        HEDLEY_UNREACHABLE_RETURN(simde_mm_undefined_pd());
+      #endif
+      break;
+
+    case SIMDE_MM_FROUND_TO_NEAREST_INT:
+      #if defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+        r_.altivec_f32 = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(float), vec_round(a_.altivec_f32));
+      #elif defined(SIMDE_ARM_NEON_A32V8_NATIVE) && 0
+        r_.neon_f32 = vrndaq_f32(a_.neon_f32);
+      #elif defined(simde_math_roundf)
+        SIMDE_VECTORIZE
+        for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
+          r_.f32[i] = simde_math_roundf(a_.f32[i]);
+        }
+      #else
+        HEDLEY_UNREACHABLE_RETURN(simde_mm_undefined_pd());
+      #endif
+      break;
+
+    case SIMDE_MM_FROUND_TO_NEG_INF:
+      #if defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+        r_.altivec_f32 = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(float), vec_floor(a_.altivec_f32));
+      #elif defined(SIMDE_ARM_NEON_A32V8_NATIVE) && 0
+        r_.neon_f32 = vrndmq_f32(a_.neon_f32);
+      #elif defined(simde_math_floorf)
+        SIMDE_VECTORIZE
+        for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
+          r_.f32[i] = simde_math_floorf(a_.f32[i]);
+        }
+      #else
+        HEDLEY_UNREACHABLE_RETURN(simde_mm_undefined_pd());
+      #endif
+      break;
+
+    case SIMDE_MM_FROUND_TO_POS_INF:
+      #if defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+        r_.altivec_f32 = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(float), vec_ceil(a_.altivec_f32));
+      #elif defined(SIMDE_ARM_NEON_A32V8_NATIVE) && 0
+        r_.neon_f32 = vrndpq_f32(a_.neon_f32);
+      #elif defined(simde_math_ceilf)
+        SIMDE_VECTORIZE
+        for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
+          r_.f32[i] = simde_math_ceilf(a_.f32[i]);
+        }
+      #else
+        HEDLEY_UNREACHABLE_RETURN(simde_mm_undefined_pd());
+      #endif
+      break;
+
+    case SIMDE_MM_FROUND_TO_ZERO:
+      #if defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+        r_.altivec_f32 = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(float), vec_trunc(a_.altivec_f32));
+      #elif defined(SIMDE_ARM_NEON_A32V8_NATIVE) && 0
+        r_.neon_f32 = vrndq_f32(a_.neon_f32);
+      #elif defined(simde_math_truncf)
+        SIMDE_VECTORIZE
+        for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
+          r_.f32[i] = simde_math_truncf(a_.f32[i]);
+        }
+      #else
+        HEDLEY_UNREACHABLE_RETURN(simde_mm_undefined_pd());
+      #endif
+      break;
+
+    default:
+      HEDLEY_UNREACHABLE_RETURN(simde_mm_undefined_pd());
+  }
+
+  return simde__m128_from_private(r_);
+}
+#if defined(SIMDE_X86_SSE4_1_NATIVE)
+  #define simde_mm_round_ps(a, rounding) _mm_round_ps(a, rounding)
+#endif
+#if defined(SIMDE_X86_SSE4_1_ENABLE_NATIVE_ALIASES)
+  #define _mm_round_ps(a, rounding) simde_mm_round_ps(a, rounding)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -1169,31 +1456,34 @@ simde_mm_cvt_pi2ps (simde__m128 a, simde__m64 b) {
 #endif
 }
 #if defined(SIMDE_X86_SSE_ENABLE_NATIVE_ALIASES)
-#  define _mm_cvt_pi2ps(a, b) simde_mm_cvt_pi2ps((a), b)
+#  define _mm_cvt_pi2ps(a, b) simde_mm_cvt_pi2ps((a), (b))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m64
 simde_mm_cvt_ps2pi (simde__m128 a) {
-#if defined(SIMDE_X86_SSE_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
-  return _mm_cvt_ps2pi(a);
-#else
-  simde__m64_private r_;
-  simde__m128_private a_ = simde__m128_to_private(a);
+  #if defined(SIMDE_X86_SSE_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
+    return _mm_cvt_ps2pi(a);
+  #else
+    simde__m64_private r_;
+    simde__m128_private a_;
 
-#if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-  r_.neon_i32 = vcvt_s32_f32(vget_low_f32(a_.neon_f32));
-#elif defined(SIMDE_CONVERT_VECTOR_) && !defined(__clang__)
-  SIMDE_CONVERT_VECTOR_(r_.i32, a_.m64_private[0].f32);
-#else
-  SIMDE_VECTORIZE
-  for (size_t i = 0 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {
-    r_.i32[i] = HEDLEY_STATIC_CAST(int32_t, a_.f32[i]);
-  }
-#endif
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    a_ = simde__m128_to_private(simde_mm_round_ps(a, SIMDE_MM_FROUND_CUR_DIRECTION));
+    r_.neon_i32 = vcvt_s32_f32(vget_low_f32(a_.neon_f32));
+  #elif defined(SIMDE_CONVERT_VECTOR_) && !defined(__clang__) && 0
+    SIMDE_CONVERT_VECTOR_(r_.i32, a_.m64_private[0].f32);
+  #else
+    a_ = simde__m128_to_private(a);
 
-  return simde__m64_from_private(r_);
-#endif
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {
+      r_.i32[i] = HEDLEY_STATIC_CAST(int32_t, simde_math_nearbyintf(a_.f32[i]));
+    }
+  #endif
+
+    return simde__m64_from_private(r_);
+  #endif
 }
 #if defined(SIMDE_X86_SSE_ENABLE_NATIVE_ALIASES)
 #  define _mm_cvt_ps2pi(a) simde_mm_cvt_ps2pi((a))
@@ -1228,19 +1518,14 @@ simde_mm_cvt_si2ss (simde__m128 a, int32_t b) {
 SIMDE_FUNCTION_ATTRIBUTES
 int32_t
 simde_mm_cvt_ss2si (simde__m128 a) {
-#if defined(SIMDE_X86_SSE_NATIVE)
-  return _mm_cvt_ss2si(a);
-#else
-  simde__m128_private a_ = simde__m128_to_private(a);
-
-  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && !defined(SIMDE_BUG_GCC_95399)
-    return vgetq_lane_s32(vcvtnq_s32_f32(a_.neon_f32), 0);
-  #elif defined(simde_math_nearbyintf)
-    return SIMDE_CONVERT_FTOI(int32_t, simde_math_nearbyintf(a_.f32[0]));
+  #if defined(SIMDE_X86_SSE_NATIVE)
+    return _mm_cvt_ss2si(a);
+  #elif defined(SIMDE_ARM_NEON_A32V8_NATIVE) && !defined(SIMDE_BUG_GCC_95399)
+    return vgetq_lane_s32(vcvtnq_s32_f32(simde__m128_to_neon_f32(a), 0));
   #else
-    HEDLEY_UNREACHABLE();
+    simde__m128_private a_ = simde__m128_to_private(simde_mm_round_ps(a, SIMDE_MM_FROUND_CUR_DIRECTION));
+    return SIMDE_CONVERT_FTOI(int32_t, a_.f32[0]);
   #endif
-#endif
 }
 #if defined(SIMDE_X86_SSE_ENABLE_NATIVE_ALIASES)
 #  define _mm_cvt_ss2si(a) simde_mm_cvt_ss2si((a))
@@ -1795,66 +2080,6 @@ simde_mm_extract_pi16 (simde__m64 a, const int imm8)
 #if defined(SIMDE_X86_SSE_ENABLE_NATIVE_ALIASES)
 #  define _mm_extract_pi16(a, imm8) simde_mm_extract_pi16((a), (imm8))
 #  define _m_pextrw(a, imm8) simde_mm_extract_pi16((a), (imm8))
-#endif
-
-enum {
-#if defined(SIMDE_X86_SSE_NATIVE)
-  SIMDE_MM_ROUND_NEAREST     = _MM_ROUND_NEAREST,
-  SIMDE_MM_ROUND_DOWN        = _MM_ROUND_DOWN,
-  SIMDE_MM_ROUND_UP          = _MM_ROUND_UP,
-  SIMDE_MM_ROUND_TOWARD_ZERO = _MM_ROUND_TOWARD_ZERO
-#else
-  SIMDE_MM_ROUND_NEAREST
-#if defined(FE_TONEAREST)
-  = FE_TONEAREST
-#endif
-  ,
-
-  SIMDE_MM_ROUND_DOWN
-#if defined(FE_DOWNWARD)
-  = FE_DOWNWARD
-#endif
-  ,
-
-  SIMDE_MM_ROUND_UP
-#if defined(FE_UPWARD)
-  = FE_UPWARD
-#endif
-  ,
-
-  SIMDE_MM_ROUND_TOWARD_ZERO
-#if defined(FE_TOWARDZERO)
-  = FE_TOWARDZERO
-#endif
-#endif
-};
-
-SIMDE_FUNCTION_ATTRIBUTES
-unsigned int
-SIMDE_MM_GET_ROUNDING_MODE(void) {
-  #if defined(SIMDE_X86_SSE_NATIVE)
-    return _MM_GET_ROUNDING_MODE();
-  #elif defined(SIMDE_HAVE_FENV_H)
-    return HEDLEY_STATIC_CAST(unsigned int, fegetround());
-  #else
-    HEDLEY_UNREACHABLE();
-  #endif
-}
-#if defined(SIMDE_X86_SSE_ENABLE_NATIVE_ALIASES)
-#  define _MM_GET_ROUNDING_MODE() SIMDE_MM_GET_ROUNDING_MODE()
-#endif
-
-SIMDE_FUNCTION_ATTRIBUTES
-void
-SIMDE_MM_SET_ROUNDING_MODE(unsigned int a) {
-  #if defined(SIMDE_X86_SSE_NATIVE)
-    _MM_SET_ROUNDING_MODE(a);
-  #elif defined(SIMDE_HAVE_FENV_H)
-    fesetround(HEDLEY_STATIC_CAST(int, a));
-  #endif
-}
-#if defined(SIMDE_X86_SSE_ENABLE_NATIVE_ALIASES)
-#  define _MM_SET_ROUNDING_MODE(a) SIMDE_MM_SET_ROUNDING_MODE(a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -3634,83 +3859,6 @@ simde_mm_stream_ps (simde_float32 mem_addr[4], simde__m128 a) {
 }
 #if defined(SIMDE_X86_SSE_ENABLE_NATIVE_ALIASES)
 #  define _mm_stream_ps(mem_addr, a) simde_mm_stream_ps(SIMDE_CHECKED_REINTERPRET_CAST(float*, simde_float32*, mem_addr), (a))
-#endif
-
-SIMDE_FUNCTION_ATTRIBUTES
-uint32_t
-simde_mm_getcsr (void) {
-#if defined(SIMDE_X86_SSE_NATIVE)
-  return _mm_getcsr();
-#else
-  uint32_t r = 0;
-
-#if defined(SIMDE_HAVE_FENV_H)
-  int rounding_mode = fegetround();
-
-  switch(rounding_mode) {
-#if defined(FE_TONEAREST)
-    case FE_TONEAREST:
-      break;
-#endif
-#if defined(FE_UPWARD)
-    case FE_UPWARD:
-      r |= 2 << 13;
-      break;
-#endif
-#if defined(FE_DOWNWARD)
-    case FE_DOWNWARD:
-      r |= 1 << 13;
-      break;
-#endif
-#if defined(FE_TOWARDZERO)
-    case FE_TOWARDZERO:
-      r = 3 << 13;
-      break;
-#endif
-  }
-#else
-  HEDLEY_UNREACHABLE();
-#endif
-
-  return r;
-#endif
-}
-#if defined(SIMDE_X86_SSE_ENABLE_NATIVE_ALIASES)
-#  define _mm_getcsr() simde_mm_getcsr()
-#endif
-
-SIMDE_FUNCTION_ATTRIBUTES
-void
-simde_mm_setcsr (uint32_t a) {
-#if defined(SIMDE_X86_SSE_NATIVE)
-  _mm_setcsr(a);
-#else
-  switch((a >> 13) & 3) {
-#if defined(FE_TONEAREST)
-    case 0:
-      fesetround(FE_TONEAREST);
-#endif
-#if defined(FE_DOWNWARD)
-      break;
-    case 1:
-      fesetround(FE_DOWNWARD);
-#endif
-#if defined(FE_UPWARD)
-      break;
-    case 2:
-      fesetround(FE_UPWARD);
-#endif
-#if defined(FE_TOWARDZERO)
-      break;
-    case 3:
-      fesetround(FE_TOWARDZERO);
-      break;
-#endif
-  }
-#endif
-}
-#if defined(SIMDE_X86_SSE_ENABLE_NATIVE_ALIASES)
-#  define _mm_setcsr(a) simde_mm_setcsr(a)
 #endif
 
 #define SIMDE_MM_TRANSPOSE4_PS(row0, row1, row2, row3) \
