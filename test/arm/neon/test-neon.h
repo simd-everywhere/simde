@@ -9,7 +9,7 @@
   static simde_##NT \
   simde_test_arm_neon_random_##symbol_identifier##x##element_count(void) { \
     simde_##NT v; \
-    simde_codegen_random_memory(sizeof(v), HEDLEY_REINTERPRET_CAST(uint8_t*, &v)); \
+    simde_test_codegen_random_memory(sizeof(v), HEDLEY_REINTERPRET_CAST(uint8_t*, &v)); \
     return v; \
   } \
  \
@@ -38,7 +38,7 @@
   static simde_##NT \
   simde_test_arm_neon_random_##symbol_identifier##x##element_count(ET min, ET max) { \
     SET v[sizeof(simde_##NT) / sizeof(ET)]; \
-    simde_codegen_random_v##symbol_identifier(sizeof(v) / sizeof(v[0]), v, HEDLEY_STATIC_CAST(SET, min), HEDLEY_STATIC_CAST(SET, max)); \
+    simde_test_codegen_random_v##symbol_identifier(sizeof(v) / sizeof(v[0]), v, HEDLEY_STATIC_CAST(SET, min), HEDLEY_STATIC_CAST(SET, max)); \
     return simde_vld1##modifier##_##symbol_identifier(HEDLEY_REINTERPRET_CAST(ET*, v)); \
   } \
  \

@@ -20,7 +20,7 @@ SIMDE_TEST_X86_GENERATE_UINT_TYPE_FUNCS_(__m512i, 64, 8)
   static simde__mmask##EL \
   simde_test_x86_random_mmask##EL(void) { \
     simde__mmask##EL r; \
-    simde_codegen_random_memory(sizeof(r), HEDLEY_REINTERPRET_CAST(uint8_t*, &r)); \
+    simde_test_codegen_random_memory(sizeof(r), HEDLEY_REINTERPRET_CAST(uint8_t*, &r)); \
     return r & HEDLEY_STATIC_CAST(uint##EL##_t, ~HEDLEY_STATIC_CAST(uint##EL##_t, 0)); \
   } \
  \

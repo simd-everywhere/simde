@@ -7,7 +7,7 @@
   static simde##NT \
   simde_test_x86_random_f##EL##x##EC(simde_float##EL min, simde_float##EL max) { \
     simde_float##EL values[sizeof(simde##NT) / sizeof(simde_float##EL)]; \
-    simde_codegen_random_vf##EL(sizeof(values) / sizeof(values[0]), values, min, max); \
+    simde_test_codegen_random_vf##EL(sizeof(values) / sizeof(values[0]), values, min, max); \
     simde##NT r; \
     simde_memcpy(&r, values, sizeof(r)); \
     return r; \
@@ -37,7 +37,7 @@
   static simde##NT \
   simde_test_x86_random_i##EL##x##EC(void) { \
     simde##NT v; \
-    simde_codegen_random_memory(sizeof(v), HEDLEY_REINTERPRET_CAST(uint8_t*, &v)); \
+    simde_test_codegen_random_memory(sizeof(v), HEDLEY_REINTERPRET_CAST(uint8_t*, &v)); \
     return v; \
   } \
  \
@@ -61,7 +61,7 @@
   static simde##NT \
   simde_test_x86_random_u##EL##x##EC(void) { \
     simde##NT v; \
-    simde_codegen_random_memory(sizeof(v), HEDLEY_REINTERPRET_CAST(uint8_t*, &v)); \
+    simde_test_codegen_random_memory(sizeof(v), HEDLEY_REINTERPRET_CAST(uint8_t*, &v)); \
     return v; \
   } \
  \
