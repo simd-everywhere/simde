@@ -162,6 +162,7 @@ foreach(tst
       "/x86/avx512dq"
       "/x86/gfni"
       "/x86/svml"
+      "/arm"
     )
   add_test(NAME "${tst}/${variant}" COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:run-tests> "${tst}")
 endforeach()
