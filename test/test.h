@@ -183,7 +183,7 @@ simde_test_codegen_write_indent(int indent) {
   }
 }
 
-static int simde_codegen_rand(void) {
+static int simde_test_codegen_rand(void) {
   /* Single-threaded programs are so nice */
   static int is_init = 0;
   if (HEDLEY_UNLIKELY(!is_init)) {
@@ -211,35 +211,51 @@ static int simde_codegen_rand(void) {
 }
 
 static void
-simde_codegen_random_memory(size_t buf_len, uint8_t buf[HEDLEY_ARRAY_PARAM(buf_len)]) {
+simde_test_codegen_random_memory(size_t buf_len, uint8_t buf[HEDLEY_ARRAY_PARAM(buf_len)]) {
   for (size_t i = 0 ; i < buf_len ; i++) {
-    buf[i] = HEDLEY_STATIC_CAST(uint8_t, simde_codegen_rand() & 0xff);
+    buf[i] = HEDLEY_STATIC_CAST(uint8_t, simde_test_codegen_rand() & 0xff);
   }
 }
 
 static simde_float32
-simde_codegen_random_f32(simde_float32 min, simde_float32 max) {
-  return (HEDLEY_STATIC_CAST(simde_float32, simde_codegen_rand()) / (HEDLEY_STATIC_CAST(simde_float32, RAND_MAX) / (max - min))) + min;
+simde_test_codegen_random_f32(simde_float32 min, simde_float32 max) {
+  return (HEDLEY_STATIC_CAST(simde_float32, simde_test_codegen_rand()) / (HEDLEY_STATIC_CAST(simde_float32, RAND_MAX) / (max - min))) + min;
 }
 
 static simde_float64
-simde_codegen_random_f64(simde_float64 min, simde_float64 max) {
-  return (HEDLEY_STATIC_CAST(simde_float64, simde_codegen_rand()) / (HEDLEY_STATIC_CAST(simde_float64, RAND_MAX) / (max - min))) + min;
+simde_test_codegen_random_f64(simde_float64 min, simde_float64 max) {
+  return (HEDLEY_STATIC_CAST(simde_float64, simde_test_codegen_rand()) / (HEDLEY_STATIC_CAST(simde_float64, RAND_MAX) / (max - min))) + min;
 }
 
 static void
-simde_codegen_random_vf32(size_t elem_count, simde_float32 values[HEDLEY_ARRAY_PARAM(elem_count)], simde_float32 min, simde_float32 max) {
+simde_test_codegen_random_vf32(size_t elem_count, simde_float32 values[HEDLEY_ARRAY_PARAM(elem_count)], simde_float32 min, simde_float32 max) {
   for (size_t i = 0 ; i < elem_count ; i++) {
-    values[i] = simde_codegen_random_f32(min, max);
+    values[i] = simde_test_codegen_random_f32(min, max);
   }
 }
 
 static void
-simde_codegen_random_vf64(size_t elem_count, simde_float64 values[HEDLEY_ARRAY_PARAM(elem_count)], simde_float64 min, simde_float64 max) {
+simde_test_codegen_random_vf64(size_t elem_count, simde_float64 values[HEDLEY_ARRAY_PARAM(elem_count)], simde_float64 min, simde_float64 max) {
   for (size_t i = 0 ; i < elem_count ; i++) {
-    values[i] = simde_codegen_random_f64(min, max);
+    values[i] = simde_test_codegen_random_f64(min, max);
   }
 }
+
+#define SIMDE_TEST_CODEGEN_GENERATE_RANDOM_INT_FUNC_(T, symbol_identifier) \
+  static T simde_test_codegen_random_##symbol_identifier(void) { \
+    T r; \
+    simde_test_codegen_random_memory(sizeof(r), HEDLEY_REINTERPRET_CAST(uint8_t*, &r)); \
+    return r; \
+  }
+
+SIMDE_TEST_CODEGEN_GENERATE_RANDOM_INT_FUNC_(int8_t,    i8)
+SIMDE_TEST_CODEGEN_GENERATE_RANDOM_INT_FUNC_(int16_t,  i16)
+SIMDE_TEST_CODEGEN_GENERATE_RANDOM_INT_FUNC_(int32_t,  i32)
+SIMDE_TEST_CODEGEN_GENERATE_RANDOM_INT_FUNC_(int64_t,  i64)
+SIMDE_TEST_CODEGEN_GENERATE_RANDOM_INT_FUNC_(uint8_t,   u8)
+SIMDE_TEST_CODEGEN_GENERATE_RANDOM_INT_FUNC_(uint16_t, u16)
+SIMDE_TEST_CODEGEN_GENERATE_RANDOM_INT_FUNC_(uint32_t, u32)
+SIMDE_TEST_CODEGEN_GENERATE_RANDOM_INT_FUNC_(uint64_t, u64)
 
 #define SIMDE_TEST_CODEGEN_GENERATE_WRITE_VECTOR_FUNC_(T, symbol_identifier, elements_per_line) \
   static void \
