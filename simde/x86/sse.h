@@ -2951,7 +2951,7 @@ HEDLEY_DIAGNOSTIC_PUSH
 HEDLEY_DIAGNOSTIC_POP
 }
 #endif
-#if defined(SIMDE_X86_SSE_NATIVE) && !defined(__PGI)
+#if defined(SIMDE_X86_SSE_NATIVE) && defined(SIMDE_X86_MMX_NATIVE) && !defined(__PGI)
 #  define simde_m_pshufw(a, imm8) _m_pshufw(a, imm8)
 #else
 #  define simde_m_pshufw(a, imm8) simde_mm_shuffle_pi16(a, imm8)
