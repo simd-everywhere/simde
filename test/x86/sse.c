@@ -2607,6 +2607,39 @@ test_simde_mm_extract_pi16(void) {
 }
 
 static int
+test_simde_m_pextrw(void) {
+  const struct {
+    simde__m64 a;
+    int16_t r;
+  } test_vec[8] = {
+    { simde_mm_set_pi16(INT16_C(-14353), INT16_C( 22942), INT16_C(-17535), INT16_C( 13021)),
+      13021 },
+    { simde_mm_set_pi16(INT16_C(-11477), INT16_C( 26597), INT16_C( 17199), INT16_C(-30275)),
+      17199 },
+    { simde_mm_set_pi16(INT16_C( 24440), INT16_C(-12101), INT16_C(-13621), INT16_C(-14757)),
+      -12101 },
+    { simde_mm_set_pi16(INT16_C(-23205), INT16_C(-26140), INT16_C(-19797), INT16_C( 24953)),
+      -23205 }
+  };
+
+  int16_t r;
+
+  r = simde_m_pextrw(test_vec[0].a, 0);
+  munit_assert_int16(test_vec[0].r, ==, r);
+
+  r = simde_m_pextrw(test_vec[1].a, 1);
+  munit_assert_int16(test_vec[1].r, ==, r);
+
+  r = simde_m_pextrw(test_vec[2].a, 2);
+  munit_assert_int16(test_vec[2].r, ==, r);
+
+  r = simde_m_pextrw(test_vec[3].a, 3);
+  munit_assert_int16(test_vec[3].r, ==, r);
+
+  return 0;
+}
+
+static int
 test_simde_mm_insert_pi16(void) {
   const struct {
     simde__m64 a;
