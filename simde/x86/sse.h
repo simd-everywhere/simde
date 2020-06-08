@@ -3264,11 +3264,14 @@ simde_mm_sqrt_ps (simde__m128 a) {
     r_,
     a_ = simde__m128_to_private(a);
 
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-    float32x4_t recipsq = vrsqrteq_f32(a_.neon_f32);
-    float32x4_t sq = vrecpeq_f32(recipsq);
-    /* ??? use step versions of both sqrt and recip for better accuracy? */
-    r_.neon_f32 = sq;
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+    r_.neon_f32 = vsqrtq_f32(a_.neon_f32);
+  #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    float32x4_t est = vrsqrteq_f32(a_.neon_f32);
+    for (int i = 0 ; i <= SIMDE_ACCURACY_PREFERENCE ; i++) {
+      est = vmulq_f32(vrsqrtsq_f32(vmulq_f32(a_.neon_f32, est), est), est);
+    }
+    r_.neon_f32 = vmulq_f32(a_.neon_f32, est);
   #elif defined(simde_math_sqrt)
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < sizeof(r_.f32) / sizeof(r_.f32[0]) ; i++) {
