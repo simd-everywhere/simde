@@ -272,6 +272,31 @@ SIMDE_ARM_NEON_TYPE_FLOAT_DEFINE_(64, 2, 16)
   typedef simde_float64 simde_float64_t;
 #endif
 
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+  typedef simde_int8x8_t    int8x8_t;
+  typedef simde_int16x4_t   int16x4_t;
+  typedef simde_int32x2_t   int32x2_t;
+  typedef simde_int64x1_t   int64x1_t;
+  typedef simde_uint8x8_t   uint8x8_t;
+  typedef simde_uint16x4_t  uint16x4_t;
+  typedef simde_uint32x2_t  uint32x2_t;
+  typedef simde_uint64x1_t  uint64x1_t;
+  typedef simde_float32x2_t float32x2_t;
+  typedef simde_int8x16_t   int8x16_t;
+  typedef simde_int16x8_t   int16x8_t;
+  typedef simde_int32x4_t   int32x4_t;
+  typedef simde_int64x2_t   int64x2_t;
+  typedef simde_uint8x16_t  uint8x16_t;
+  typedef simde_uint16x8_t  uint16x8_t;
+  typedef simde_uint32x4_t  uint32x4_t;
+  typedef simde_uint64x2_t  uint64x2_t;
+  typedef simde_float32x4_t float32x4_t;
+#endif
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  typedef simde_float64x1_t float64x1_t;
+  typedef simde_float64x2_t float64x2_t;
+#endif
+
 #define SIMDE_ARM_NEON_TYPE_DEFINE_CONVERSIONS_(T) \
   SIMDE_FUNCTION_ATTRIBUTES simde_##T##_private simde_##T##_to_private (simde_##T##_t value) { simde_##T##_private to; simde_memcpy(&to, &value, sizeof(to)); return to; } \
   SIMDE_FUNCTION_ATTRIBUTES simde_##T##_t simde_##T##_from_private (simde_##T##_private value) { simde_##T##_t to; simde_memcpy(&to, &value, sizeof(to)); return to; }
