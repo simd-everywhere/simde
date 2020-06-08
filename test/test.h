@@ -482,6 +482,7 @@ SIMDE_TEST_GENERATE_ASSERT_EQUAL_FUNC_(uint64_t, u64, PRIu64)
  * test suite.  It doesn't use munit, or any other dependencies so
  * it's easy to use with creduce. */
 #if defined(SIMDE_TEST_BARE)
+  typedef int (* SimdeTestFunc)(void);
   #define SIMDE_TEST_FUNC_LIST_BEGIN static SimdeTestFunc test_suite_tests[] = {
   #define SIMDE_TEST_FUNC_LIST_ENTRY(name) test_simde_##name,
   #define SIMDE_TEST_FUNC_LIST_END };

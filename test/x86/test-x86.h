@@ -3,7 +3,7 @@
 
 #include "../test.h"
 
-#define SIMDE_TEST_X86_GENERATE_FLOAT_TYPE_FUNCS_(NT, EL, EC) \
+#define SIMDE_TEST_X86_GENERATE_FLOAT_TYPE_FUNCS_(NT, EL, EC, SF) \
   static simde##NT \
   simde_test_x86_random_f##EL##x##EC(simde_float##EL min, simde_float##EL max) { \
     simde_float##EL values[sizeof(simde##NT) / sizeof(simde_float##EL)]; \
@@ -16,7 +16,7 @@
   static void \
   simde_test_x86_write_f##EL##x##EC(int indent, simde##NT value, SimdeTestVecPos pos) { \
     simde_float##EL values[sizeof(value) / sizeof(simde_float##EL)]; \
-    simde_memcpy(values, &value, sizeof(value)); \
+    SF(values, value); \
     simde_test_codegen_write_vf##EL(indent, sizeof(values) / sizeof(values[0]), values, pos); \
   } \
  \
@@ -27,13 +27,13 @@
       a_[sizeof(a) / sizeof(simde_float##EL)], \
       b_[sizeof(a) / sizeof(simde_float##EL)]; \
  \
-    simde_memcpy(a_, &a, sizeof(a)); \
-    simde_memcpy(b_, &b, sizeof(b)); \
+    SF(a_, a); \
+    SF(b_, b); \
  \
     return simde_assert_equal_vf##EL##_(sizeof(a_) / sizeof(a_[0]), a_, b_, slop, filename, line, astr, bstr); \
   }
 
-#define SIMDE_TEST_X86_GENERATE_INT_TYPE_FUNCS_(NT, EL, EC) \
+#define SIMDE_TEST_X86_GENERATE_INT_TYPE_FUNCS_(NT, EL, EC, SF) \
   static simde##NT \
   simde_test_x86_random_i##EL##x##EC(void) { \
     simde##NT v; \
@@ -44,7 +44,7 @@
   static void \
   simde_test_x86_write_i##EL##x##EC(int indent, simde##NT value, SimdeTestVecPos pos) { \
     int##EL##_t value_[sizeof(value) / sizeof(int##EL##_t)]; \
-    simde_memcpy(value_, &value, sizeof(value)); \
+    SF(SIMDE_ALIGN_CAST(simde##NT*, value_), value); \
     simde_test_codegen_write_vi##EL(indent, sizeof(value_) / sizeof(value_[0]), value_, pos); \
   } \
  \
@@ -52,12 +52,12 @@
   simde_test_x86_assert_equal_i##EL##x##EC##_(simde##NT a, simde##NT b, \
       const char* filename, int line, const char* astr, const char* bstr) { \
     int##EL##_t a_[sizeof(a) / sizeof(int##EL##_t)], b_[sizeof(a) / sizeof(int##EL##_t)]; \
-    simde_memcpy(a_, &a, sizeof(a)); \
-    simde_memcpy(b_, &b, sizeof(b)); \
+    SF(SIMDE_ALIGN_CAST(simde##NT*, a_), a); \
+    SF(SIMDE_ALIGN_CAST(simde##NT*, b_), b); \
     return simde_assert_equal_vi##EL##_(sizeof(a_) / sizeof(a_[0]), a_, b_, filename, line, astr, bstr); \
   }
 
-#define SIMDE_TEST_X86_GENERATE_UINT_TYPE_FUNCS_(NT, EL, EC) \
+#define SIMDE_TEST_X86_GENERATE_UINT_TYPE_FUNCS_(NT, EL, EC, SF) \
   static simde##NT \
   simde_test_x86_random_u##EL##x##EC(void) { \
     simde##NT v; \
@@ -68,7 +68,7 @@
   static void \
   simde_test_x86_write_u##EL##x##EC(int indent, simde##NT value, SimdeTestVecPos pos) { \
     uint##EL##_t value_[sizeof(value) / sizeof(int##EL##_t)]; \
-    simde_memcpy(value_, &value, sizeof(value)); \
+    SF(SIMDE_ALIGN_CAST(simde##NT*, value_), value); \
     simde_test_codegen_write_vu##EL(indent, sizeof(value_) / sizeof(value_[0]), value_, pos); \
   } \
  \
@@ -76,8 +76,8 @@
   simde_test_x86_assert_equal_u##EL##x##EC##_(simde##NT a, simde##NT b, \
       const char* filename, int line, const char* astr, const char* bstr) { \
     uint##EL##_t a_[sizeof(a) / sizeof(int##EL##_t)], b_[sizeof(a) / sizeof(int##EL##_t)]; \
-    simde_memcpy(a_, &a, sizeof(a)); \
-    simde_memcpy(b_, &b, sizeof(b)); \
+    SF(SIMDE_ALIGN_CAST(simde##NT*, a_), a); \
+    SF(SIMDE_ALIGN_CAST(simde##NT*, b_), b); \
     return simde_assert_equal_vu##EL##_(sizeof(a_) / sizeof(a_[0]), a_, b_, filename, line, astr, bstr); \
   }
 
