@@ -1279,6 +1279,18 @@ simde_x_mm_loadu_si64 (const void* mem_addr) {
 }
 
 SIMDE_FUNCTION_ATTRIBUTES
+void
+simde_x_mm_store_si64 (void* mem_addr, simde__m64 value) {
+  simde_memcpy(SIMDE_ASSUME_ALIGNED_AS(simde__m64, mem_addr), &value, sizeof(value));
+}
+
+SIMDE_FUNCTION_ATTRIBUTES
+void
+simde_x_mm_storeu_si64 (void* mem_addr, simde__m64 value) {
+  simde_memcpy(mem_addr, &value, sizeof(value));
+}
+
+SIMDE_FUNCTION_ATTRIBUTES
 simde__m64
 simde_x_mm_setone_si64 (void) {
   return simde_mm_set1_pi32(~INT32_C(0));

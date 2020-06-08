@@ -2071,6 +2071,114 @@ simde_mm512_loadu_si512 (void const * mem_addr) {
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
+void
+simde_mm512_store_ps (void * mem_addr, simde__m512 a) {
+  #if defined(SIMDE_X86_AVX512F_NATIVE)
+    _mm512_store_ps(mem_addr, a);
+  #else
+    simde_memcpy(SIMDE_ASSUME_ALIGNED_AS(simde__m512, mem_addr), &a, sizeof(a));
+  #endif
+}
+#if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_store_ps
+  #define _mm512_store_ps(mem_addr, a) simde_mm512_store_ps(mem_addr, a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+void
+simde_mm512_storeu_ps (void * mem_addr, simde__m512 a) {
+  #if defined(SIMDE_X86_AVX512F_NATIVE)
+    _mm512_storeu_ps(mem_addr, a);
+  #else
+    simde_memcpy(mem_addr, &a, sizeof(a));
+  #endif
+}
+#if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_storeu_ps
+  #define _mm512_storeu_ps(mem_addr, a) simde_mm512_storeu_ps(mem_addr, a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+void
+simde_mm512_store_pd (void * mem_addr, simde__m512d a) {
+  #if defined(SIMDE_X86_AVX512F_NATIVE)
+    _mm512_store_pd(mem_addr, a);
+  #else
+    simde_memcpy(SIMDE_ASSUME_ALIGNED_AS(simde__m512d, mem_addr), &a, sizeof(a));
+  #endif
+}
+#if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_store_pd
+  #define _mm512_store_pd(mem_addr, a) simde_mm512_store_pd(mem_addr, a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+void
+simde_mm512_storeu_pd (void * mem_addr, simde__m512d a) {
+  #if defined(SIMDE_X86_AVX512F_NATIVE)
+    _mm512_storeu_pd(mem_addr, a);
+  #else
+    simde_memcpy(mem_addr, &a, sizeof(a));
+  #endif
+}
+#if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_storeu_pd
+  #define _mm512_storeu_pd(mem_addr, a) simde_mm512_storeu_pd(mem_addr, a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+void
+simde_mm512_store_si512 (void * mem_addr, simde__m512i a) {
+  #if defined(SIMDE_X86_AVX512F_NATIVE)
+    _mm512_store_si512(HEDLEY_REINTERPRET_CAST(void*, mem_addr), a);
+  #else
+    simde_memcpy(SIMDE_ASSUME_ALIGNED_AS(simde__m512i, mem_addr), &a, sizeof(a));
+  #endif
+}
+#define simde_mm512_store_epi8(mem_addr, a) simde_mm512_store_si512(mem_addr, a)
+#define simde_mm512_store_epi16(mem_addr, a) simde_mm512_store_si512(mem_addr, a)
+#define simde_mm512_store_epi32(mem_addr, a) simde_mm512_store_si512(mem_addr, a)
+#define simde_mm512_store_epi64(mem_addr, a) simde_mm512_store_si512(mem_addr, a)
+#if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_store_epi8
+  #undef _mm512_store_epi16
+  #undef _mm512_store_epi32
+  #undef _mm512_store_epi64
+  #undef _mm512_store_si512
+  #define _mm512_store_si512(mem_addr, a) simde_mm512_store_si512(mem_addr, a)
+  #define _mm512_store_epi8(mem_addr, a) simde_mm512_store_si512(mem_addr, a)
+  #define _mm512_store_epi16(mem_addr, a) simde_mm512_store_si512(mem_addr, a)
+  #define _mm512_store_epi32(mem_addr, a) simde_mm512_store_si512(mem_addr, a)
+  #define _mm512_store_epi64(mem_addr, a) simde_mm512_store_si512(mem_addr, a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+void
+simde_mm512_storeu_si512 (void * mem_addr, simde__m512i a) {
+  #if defined(SIMDE_X86_AVX512F_NATIVE)
+    _mm512_storeu_si512(HEDLEY_REINTERPRET_CAST(void*, mem_addr), a);
+  #else
+    simde_memcpy(mem_addr, &a, sizeof(a));
+  #endif
+}
+#define simde_mm512_storeu_epi8(mem_addr, a) simde_mm512_storeu_si512(mem_addr, a)
+#define simde_mm512_storeu_epi16(mem_addr, a) simde_mm512_storeu_si512(mem_addr, a)
+#define simde_mm512_storeu_epi32(mem_addr, a) simde_mm512_storeu_si512(mem_addr, a)
+#define simde_mm512_storeu_epi64(mem_addr, a) simde_mm512_storeu_si512(mem_addr, a)
+#if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_storeu_epi8
+  #undef _mm512_storeu_epi16
+  #undef _mm512_storeu_epi32
+  #undef _mm512_storeu_epi64
+  #undef _mm512_storeu_si512
+  #define _mm512_storeu_si512(mem_addr, a) simde_mm512_storeu_si512(mem_addr, a)
+  #define _mm512_storeu_epi8(mem_addr, a) simde_mm512_storeu_si512(mem_addr, a)
+  #define _mm512_storeu_epi16(mem_addr, a) simde_mm512_storeu_si512(mem_addr, a)
+  #define _mm512_storeu_epi32(mem_addr, a) simde_mm512_storeu_si512(mem_addr, a)
+  #define _mm512_storeu_epi64(mem_addr, a) simde_mm512_storeu_si512(mem_addr, a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
 simde__m512i
 simde_mm512_set_epi8 (int8_t e63, int8_t e62, int8_t e61, int8_t e60, int8_t e59, int8_t e58, int8_t e57, int8_t e56,
                       int8_t e55, int8_t e54, int8_t e53, int8_t e52, int8_t e51, int8_t e50, int8_t e49, int8_t e48,
