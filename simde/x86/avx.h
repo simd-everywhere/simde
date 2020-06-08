@@ -2859,6 +2859,60 @@ simde_mm256_cvtps_pd (simde__m128 a) {
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
+simde_float64
+simde_mm256_cvtsd_f64 (simde__m256d a) {
+#if defined(SIMDE_X86_AVX_NATIVE) && ( \
+    SIMDE_DETECT_CLANG_VERSION_CHECK(3,9,0) || \
+    HEDLEY_GCC_VERSION_CHECK(7,0,0) || \
+    HEDLEY_INTEL_VERSION_CHECK(13,0,0) || \
+    HEDLEY_MSVC_VERSION_CHECK(19,14,0))
+  return _mm256_cvtsd_f64(a);
+#else
+  simde__m256d_private a_ = simde__m256d_to_private(a);
+  return a_.f64[0];
+#endif
+}
+#if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
+#  define _mm256_cvtsd_f64(a) simde_mm256_cvtsd_f64(a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+int32_t
+simde_mm256_cvtsi256_si32 (simde__m256i a) {
+#if defined(SIMDE_X86_AVX_NATIVE) && ( \
+    SIMDE_DETECT_CLANG_VERSION_CHECK(3,9,0) || \
+    HEDLEY_INTEL_VERSION_CHECK(13,0,0) || \
+    HEDLEY_MSVC_VERSION_CHECK(19,14,0))
+  return _mm256_cvtsi256_si32(a);
+#else
+  simde__m256i_private a_ = simde__m256i_to_private(a);
+  return a_.i32[0];
+#endif
+}
+#if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
+#  define _mm256_cvtsi256_si32(a) simde_mm256_cvtsi256_si32(a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_float32
+simde_mm256_cvtss_f32 (simde__m256 a) {
+#if defined(SIMDE_X86_AVX_NATIVE) && ( \
+    SIMDE_DETECT_CLANG_VERSION_CHECK(3,9,0) || \
+    HEDLEY_GCC_VERSION_CHECK(7,0,0) || \
+    HEDLEY_INTEL_VERSION_CHECK(13,0,0) || \
+    HEDLEY_MSVC_VERSION_CHECK(19,14,0))
+  return _mm256_cvtss_f32(a);
+#else
+  simde__m256_private a_ = simde__m256_to_private(a);
+  return a_.f32[0];
+#endif
+}
+#if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
+#  define _mm256_cvtss_f32(a) simde_mm256_cvtss_f32(a)
+#endif
+
+
+SIMDE_FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm256_cvttpd_epi32 (simde__m256d a) {
 #if defined(SIMDE_X86_AVX_NATIVE)

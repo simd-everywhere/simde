@@ -19,7 +19,7 @@ if [ ! -e iig.xml ]; then
   curl "https://software.intel.com/sites/landingpage/IntrinsicsGuide/files/data-${VERSION}.xml" > iig.xml
 fi
 
-PATTERN="$(xmllint --xpath '//intrinsic/@name' iig.xml | grep -Po '(?<=")[^"]+' | grep -Pv '^_mm512_loadu_epi' | xargs printf '%s|' | rev | cut -c 2- | rev)"
+PATTERN="$(xmllint --xpath '//intrinsic/@name' iig.xml | grep -Po '(?<=")[^"]+' | grep -Pv '^(_mm256_cvtsi256_si32|_mm512_loadu_epi.+)$' | xargs printf '%s|' | rev | cut -c 2- | rev)"
 echo "s/([^_])simde(${PATTERN})/\1\2/g" > pattern
 
 ls x86/*.c | xargs -n1 -P$(nproc) sed -i -E -f pattern
