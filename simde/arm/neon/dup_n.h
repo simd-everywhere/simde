@@ -74,7 +74,7 @@ simde_vdup_n_f64(double value) {
 }
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
   #undef vdup_n_f64
-  #define vdup_n_f64(f64 value) simde_vdup_n_f64(f64 value), (b))
+  #define vdup_n_f64(value) simde_vdup_n_f64((value))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
