@@ -42,6 +42,66 @@
 #include "simde-diagnostic.h"
 #include "simde-math.h"
 
+/* In some situations, SIMDe has to make large performance sacrifices
+ * for small increases in how faithfully it reproduces an API, but
+ * only a relatively small number of users will actually need the API
+ * to be completely accurate.  The SIMDE_FAST_* options can be used to
+ * disable these trade-offs.
+ *
+ * They can be enabled by passing -DSIMDE_FAST_MATH to the compiler, or
+ * the individual defines (e.g., -DSIMDE_FAST_NANS) if you only want to
+ * enable some optimizations.  Using -ffast-math and/or
+ * -ffinite-math-only will also enable the relevant options.  If you
+ * don't want that you can pass -DSIMDE_NO_FAST_* to disable them. */
+
+/* Most programs avoid NaNs by never passing values which can result in
+ * a NaN; for example, if you only pass non-negative values to the sqrt
+ * functions, it won't generate a NaN.  On some platforms, similar
+ * functions handle NaNs differently; for example, the _mm_min_ps SSE
+ * function will return 0.0 if you pass it (0.0, NaN), but the NEON
+ * vminq_f32 function will return NaN.  Making them behave like one
+ * another is expensive; it requires generating a mask of all lanes
+ * with NaNs, then performing the operation (e.g., vminq_f32), then
+ * blending together the result with another vector using the mask.
+ *
+ * If you don't want SIMDe to worry about the differences between how
+ * NaNs are handled on the two platforms, define this (or pass
+ * -ffinite-math-only) */
+#if !defined(SIMDE_FAST_MATH) && !defined(SIMDE_NO_FAST_MATH) && defined(__FAST_MATH__)
+  #define SIMDE_FAST_MATH
+#endif
+
+#if !defined(SIMDE_FAST_NANS) && !defined(SIMDE_NO_FAST_NANS)
+  #if defined(SIMDE_FAST_MATH)
+    #define SIMDE_FAST_NANS
+  #elif defined(__FINITE_MATH_ONLY__)
+    #if __FINITE_MATH_ONLY__
+      #define SIMDE_FAST_NANS
+    #endif
+  #endif
+#endif
+
+/* Many functions are defined as using the current rounding mode
+ * (i.e., the SIMD version of fegetround()) when converting to
+ * an integer.  For example, _mm_cvtpd_epi32.  Unfortunately,
+ * on some platforms (such as ARMv8+ where round-to-nearest is
+ * always used, regardless of the FPSCR register) this means we
+ * have to first query the current rounding mode, then choose
+ * the proper function (rounnd
+ , ceil, floor, etc.) */
+#if !defined(SIMDE_FAST_ROUND_MODE) && !defined(SIMDE_NO_FAST_ROUND_MODE) && defined(SIMDE_FAST_MATH)
+  #define SIMDE_FAST_ROUND_MODE
+#endif
+
+/* This controls how ties are rounded.  For example, does 10.5 round to
+ * 10 or 11?  IEEE 754 specifies round-towards-even, but bun ARMv7 (for
+ * example) doesn't support it and it must be emulated (which is rather
+ * slow).  If you're okay with just using the default for whatever arch
+ * you're on, you should definitely define this. */
+#if !defined(SIMDE_FAST_ROUND_TIES) && !defined(SIMDE_NO_FAST_ROUND_TIES) && defined(SIMDE_FAST_MATH)
+  #define SIMDE_FAST_ROUND_TIES
+#endif
+
 #if \
   HEDLEY_HAS_ATTRIBUTE(aligned) || \
   HEDLEY_GCC_VERSION_CHECK(2,95,0) || \

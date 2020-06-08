@@ -676,6 +676,68 @@ simde_mm_andnot_ps (simde__m128 a, simde__m128 b) {
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
+simde__m128
+simde_mm_xor_ps (simde__m128 a, simde__m128 b) {
+#if defined(SIMDE_X86_SSE_NATIVE)
+  return _mm_xor_ps(a, b);
+#else
+  simde__m128_private
+    r_,
+    a_ = simde__m128_to_private(a),
+    b_ = simde__m128_to_private(b);
+
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    r_.neon_i32 = veorq_s32(a_.neon_i32, b_.neon_i32);
+  #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+    r_.altivec_i32 = vec_xor(a_.altivec_i32, b_.altivec_i32);
+  #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+    r_.i32f = a_.i32f ^ b_.i32f;
+  #else
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.u32) / sizeof(r_.u32[0])) ; i++) {
+      r_.u32[i] = a_.u32[i] ^ b_.u32[i];
+    }
+  #endif
+
+  return simde__m128_from_private(r_);
+#endif
+}
+#if defined(SIMDE_X86_SSE_ENABLE_NATIVE_ALIASES)
+#  define _mm_xor_ps(a, b) simde_mm_xor_ps((a), (b))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m128
+simde_mm_or_ps (simde__m128 a, simde__m128 b) {
+#if defined(SIMDE_X86_SSE_NATIVE)
+  return _mm_or_ps(a, b);
+#else
+  simde__m128_private
+    r_,
+    a_ = simde__m128_to_private(a),
+    b_ = simde__m128_to_private(b);
+
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    r_.neon_i32 = vorrq_s32(a_.neon_i32, b_.neon_i32);
+  #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+    r_.altivec_i32 = vec_or(a_.altivec_i32, b_.altivec_i32);
+  #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+    r_.i32f = a_.i32f | b_.i32f;
+  #else
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.u32) / sizeof(r_.u32[0])) ; i++) {
+      r_.u32[i] = a_.u32[i] | b_.u32[i];
+    }
+  #endif
+
+  return simde__m128_from_private(r_);
+#endif
+}
+#if defined(SIMDE_X86_SSE_ENABLE_NATIVE_ALIASES)
+#  define _mm_or_ps(a, b) simde_mm_or_ps((a), (b))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
 simde__m64
 simde_mm_avg_pu16 (simde__m64 a, simde__m64 b) {
 #if defined(SIMDE_X86_SSE_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
@@ -2481,27 +2543,35 @@ simde_mm_min_pi16 (simde__m64 a, simde__m64 b) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128
 simde_mm_min_ps (simde__m128 a, simde__m128 b) {
-#if defined(SIMDE_X86_SSE_NATIVE)
-  return _mm_min_ps(a, b);
-#else
-  simde__m128_private
-    r_,
-    a_ = simde__m128_to_private(a),
-    b_ = simde__m128_to_private(b);
+  #if defined(SIMDE_X86_SSE_NATIVE)
+    return _mm_min_ps(a, b);
+  #elif defined(SIMDE_FAST_NANS) && defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    return simde__m128_from_neon_f32(vminq_f32(simde__m128_to_neon_f32(a), simde__m128_to_neon_f32(b)));
+  #elif defined(SIMDE_FAST_NANS) && defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+    simde__m128_private
+      r_,
+      a_ = simde__m128_to_private(a),
+      b_ = simde__m128_to_private(b);
 
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-    r_.neon_f32 = vminq_f32(a_.neon_f32, b_.neon_f32);
-  #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
     r_.altivec_f32 = vec_min(a_.altivec_f32, b_.altivec_f32);
+
+    return simde__m128_from_private(r_);
+  #elif defined(SIMDE_ASSUME_VECTORIZATION)
+    simde__m128 mask = simde_mm_cmplt_ps(a, b);
+    return simde_mm_or_ps(simde_mm_and_ps(mask, a), simde_mm_andnot_ps(mask, b));
   #else
+    simde__m128_private
+      r_,
+      a_ = simde__m128_to_private(a),
+      b_ = simde__m128_to_private(b);
+
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
       r_.f32[i] = (a_.f32[i] < b_.f32[i]) ? a_.f32[i] : b_.f32[i];
     }
-  #endif
 
-  return simde__m128_from_private(r_);
-#endif
+    return simde__m128_from_private(r_);
+  #endif
 }
 #if defined(SIMDE_X86_SSE_ENABLE_NATIVE_ALIASES)
 #  define _mm_min_ps(a, b) simde_mm_min_ps((a), (b))
@@ -2761,37 +2831,6 @@ simde_mm_mulhi_pu16 (simde__m64 a, simde__m64 b) {
 #if defined(SIMDE_X86_SSE_ENABLE_NATIVE_ALIASES)
 #  define _mm_mulhi_pu16(a, b) simde_mm_mulhi_pu16(a, b)
 #  define _m_pmulhuw(a, b) simde_mm_mulhi_pu16(a, b)
-#endif
-
-SIMDE_FUNCTION_ATTRIBUTES
-simde__m128
-simde_mm_or_ps (simde__m128 a, simde__m128 b) {
-#if defined(SIMDE_X86_SSE_NATIVE)
-  return _mm_or_ps(a, b);
-#else
-  simde__m128_private
-    r_,
-    a_ = simde__m128_to_private(a),
-    b_ = simde__m128_to_private(b);
-
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-    r_.neon_i32 = vorrq_s32(a_.neon_i32, b_.neon_i32);
-  #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
-    r_.altivec_i32 = vec_or(a_.altivec_i32, b_.altivec_i32);
-  #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-    r_.i32f = a_.i32f | b_.i32f;
-  #else
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.u32) / sizeof(r_.u32[0])) ; i++) {
-      r_.u32[i] = a_.u32[i] | b_.u32[i];
-    }
-  #endif
-
-  return simde__m128_from_private(r_);
-#endif
-}
-#if defined(SIMDE_X86_SSE_ENABLE_NATIVE_ALIASES)
-#  define _mm_or_ps(a, b) simde_mm_or_ps((a), (b))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -3786,37 +3825,6 @@ simde_mm_unpacklo_ps (simde__m128 a, simde__m128 b) {
 }
 #if defined(SIMDE_X86_SSE_ENABLE_NATIVE_ALIASES)
 #  define _mm_unpacklo_ps(a, b) simde_mm_unpacklo_ps((a), (b))
-#endif
-
-SIMDE_FUNCTION_ATTRIBUTES
-simde__m128
-simde_mm_xor_ps (simde__m128 a, simde__m128 b) {
-#if defined(SIMDE_X86_SSE_NATIVE)
-  return _mm_xor_ps(a, b);
-#else
-  simde__m128_private
-    r_,
-    a_ = simde__m128_to_private(a),
-    b_ = simde__m128_to_private(b);
-
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-    r_.neon_i32 = veorq_s32(a_.neon_i32, b_.neon_i32);
-  #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
-    r_.altivec_i32 = vec_xor(a_.altivec_i32, b_.altivec_i32);
-  #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-    r_.i32f = a_.i32f ^ b_.i32f;
-  #else
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.u32) / sizeof(r_.u32[0])) ; i++) {
-      r_.u32[i] = a_.u32[i] ^ b_.u32[i];
-    }
-  #endif
-
-  return simde__m128_from_private(r_);
-#endif
-}
-#if defined(SIMDE_X86_SSE_ENABLE_NATIVE_ALIASES)
-#  define _mm_xor_ps(a, b) simde_mm_xor_ps((a), (b))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
