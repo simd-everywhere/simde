@@ -32,10 +32,6 @@
 
 #include "mmx.h"
 
-#if !defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_ENABLE_NATIVE_ALIASES)
-#  define SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES
-#endif
-
 #if defined(_WIN32)
   #include <windows.h>
 #endif
@@ -129,8 +125,7 @@ typedef union {
   typedef simde__m128_private simde__m128;
 #endif
 
-#if !defined(SIMDE_X86_SSE_NATIVE) && defined(SIMDE_ENABLE_NATIVE_ALIASES)
-  #define SIMDE_X86_SSE_ENABLE_NATIVE_ALIASES
+#if defined(SIMDE_X86_SSE_ENABLE_NATIVE_ALIASES)
   typedef simde__m128 __m128;
 #endif
 

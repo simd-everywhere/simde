@@ -34,10 +34,6 @@
 
 #include "sse.h"
 
-#if !defined(SIMDE_X86_SSE2_NATIVE) && defined(SIMDE_ENABLE_NATIVE_ALIASES)
-#  define SIMDE_X86_SSE2_ENABLE_NATIVE_ALIASES
-#endif
-
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 SIMDE_BEGIN_DECLS_
@@ -228,8 +224,7 @@ typedef union {
   typedef simde__m128d_private simde__m128d;
 #endif
 
-#if !defined(SIMDE_X86_SSE2_NATIVE) && defined(SIMDE_ENABLE_NATIVE_ALIASES)
-  #define SIMDE_X86_SSE2_ENABLE_NATIVE_ALIASES
+#if defined(SIMDE_X86_SSE2_ENABLE_NATIVE_ALIASES)
   typedef simde__m128i __m128i;
   typedef simde__m128d __m128d;
 #endif

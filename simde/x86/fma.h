@@ -27,10 +27,6 @@
 #if !defined(SIMDE_X86_FMA_H)
 #define SIMDE_X86_FMA_H
 
-#if !defined(SIMDE_X86_FMA_NATIVE) && defined(SIMDE_ENABLE_NATIVE_ALIASES)
-#  define SIMDE_X86_FMA_ENABLE_NATIVE_ALIASES
-#endif
-
 #include "avx.h"
 
 #if !defined(SIMDE_X86_FMA_NATIVE) && defined(SIMDE_ENABLE_NATIVE_ALIASES)

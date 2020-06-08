@@ -321,4 +321,66 @@
   #endif /* defined(__cplusplus) */
 #endif
 
+/* Native aliases */
+#if defined(SIMDE_ENABLE_NATIVE_ALIASES)
+  #if !defined(SIMDE_X86_MMX_NATIVE)
+    #define SIMDE_X86_MMX_ENABLE_NATIVE_ALIASES
+  #endif
+  #if !defined(SIMDE_X86_SSE_NATIVE)
+    #define SIMDE_X86_SSE_ENABLE_NATIVE_ALIASES
+  #endif
+  #if !defined(SIMDE_X86_SSE2_NATIVE)
+    #define SIMDE_X86_SSE2_ENABLE_NATIVE_ALIASES
+  #endif
+  #if !defined(SIMDE_X86_SSE3_NATIVE)
+    #define SIMDE_X86_SSE3_ENABLE_NATIVE_ALIASES
+  #endif
+  #if !defined(SIMDE_X86_SSSE3_NATIVE)
+    #define SIMDE_X86_SSSE3_ENABLE_NATIVE_ALIASES
+  #endif
+  #if !defined(SIMDE_X86_SSE4_1_NATIVE)
+    #define SIMDE_X86_SSE4_1_ENABLE_NATIVE_ALIASES
+  #endif
+  #if !defined(SIMDE_X86_SSE4_2_NATIVE)
+    #define SIMDE_X86_SSE4_2_ENABLE_NATIVE_ALIASES
+  #endif
+  #if !defined(SIMDE_X86_AVX_NATIVE)
+    #define SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES
+  #endif
+  #if !defined(SIMDE_X86_AVX2_NATIVE)
+    #define SIMDE_X86_AVX2_ENABLE_NATIVE_ALIASES
+  #endif
+  #if !defined(SIMDE_X86_FMA_NATIVE)
+    #define SIMDE_X86_FMA_ENABLE_NATIVE_ALIASES
+  #endif
+  #if !defined(SIMDE_X86_AVX512F_NATIVE)
+    #define SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES
+  #endif
+  #if !defined(SIMDE_X86_AVX512VL_NATIVE)
+    #define SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES
+  #endif
+  #if !defined(SIMDE_X86_AVX512BW_NATIVE)
+    #define SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES
+  #endif
+  #if !defined(SIMDE_X86_AVX512DQ_NATIVE)
+    #define SIMDE_X86_AVX512DQ_ENABLE_NATIVE_ALIASES
+  #endif
+  #if !defined(SIMDE_X86_AVX512CD_NATIVE)
+    #define SIMDE_X86_AVX512CD_ENABLE_NATIVE_ALIASES
+  #endif
+  #if !defined(SIMDE_X86_GFNI_NATIVE)
+    #define SIMDE_X86_GFNI_ENABLE_NATIVE_ALIASES
+  #endif
+
+  #if !defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    #define SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES
+  #endif
+  #if !defined(SIMDE_ARM_NEON_A32V8_NATIVE)
+    #define SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES
+  #endif
+  #if !defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+    #define SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES
+  #endif
+#endif
+
 #endif /* !defined(SIMDE_FEATURES_H) */
