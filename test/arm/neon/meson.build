@@ -3,6 +3,7 @@ simde_test_arm_neon_sources = [
   'min.c',
   'pmin.c',
   'sub.c',
+  'dup_n.c',
 ]
 
 foreach src : simde_test_arm_neon_sources
