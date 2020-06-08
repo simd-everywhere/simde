@@ -186,6 +186,15 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "GorePradnyesh",
+      "name": "Pradnyesh Gore",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/843197?v=4",
+      "profile": "https://github.com/GorePradnyesh",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7
