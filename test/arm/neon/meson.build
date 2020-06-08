@@ -1,6 +1,9 @@
 simde_test_arm_neon_sources = [
   'add.c',
+  'and.c',
+  'eor.c',
   'min.c',
+  'orr.c',
   'pmin.c',
   'sub.c',
 ]
