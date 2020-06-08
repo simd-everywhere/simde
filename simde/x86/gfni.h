@@ -34,10 +34,6 @@ HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 SIMDE_BEGIN_DECLS_
 
-#if !defined(SIMDE_X86_GFNI_NATIVE) && defined(SIMDE_ENABLE_NATIVE_ALIASES)
-  #define SIMDE_X86_GFNI_ENABLE_NATIVE_ALIASES
-#endif
-
 /* In all the *gf2p8affine* intrinsics the argument b must be a compile-time constant so we must use macros and simde_x_mm* helper functions */
 
 /* N.B. The _mm*gf2p8affineinv_epi64_epi8 and _mm*gf2p8mul_epi8 intrinsics are for a Field Generator Polynomial (FGP) (aka reduction polynomial) of 0x11B */

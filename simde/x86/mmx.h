@@ -29,10 +29,6 @@
 
 #include "../simde-common.h"
 
-#if !defined(SIMDE_X86_MMX_NATIVE) && defined(SIMDE_ENABLE_NATIVE_ALIASES)
-#  define SIMDE_X86_MMX_ENABLE_NATIVE_ALIASES
-#endif
-
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 
@@ -219,7 +215,7 @@ simde_mm_add_pi16 (simde__m64 a, simde__m64 b) {
 #define simde_m_paddw(a, b) simde_mm_add_pi16(a, b)
 #if defined(SIMDE_X86_MMX_ENABLE_NATIVE_ALIASES)
 #  define _mm_add_pi16(a, b) simde_mm_add_pi16(a, b)
-#  define _m_add_paddw(a, b) simde_mm_add_pi16(a, b)
+#  define _m_paddw(a, b) simde_mm_add_pi16(a, b)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -249,7 +245,7 @@ simde_mm_add_pi32 (simde__m64 a, simde__m64 b) {
 #define simde_m_paddd(a, b) simde_mm_add_pi32(a, b)
 #if defined(SIMDE_X86_MMX_ENABLE_NATIVE_ALIASES)
 #  define _mm_add_pi32(a, b) simde_mm_add_pi32(a, b)
-#  define _m_add_paddd(a, b) simde_mm_add_pi32(a, b)
+#  define _m_paddd(a, b) simde_mm_add_pi32(a, b)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -284,7 +280,7 @@ simde_mm_adds_pi8 (simde__m64 a, simde__m64 b) {
 #define simde_m_paddsb(a, b) simde_mm_adds_pi8(a, b)
 #if defined(SIMDE_X86_MMX_ENABLE_NATIVE_ALIASES)
 #  define _mm_adds_pi8(a, b) simde_mm_adds_pi8(a, b)
-#  define _m_add_paddsb(a, b) simde_mm_adds_pi8(a, b)
+#  define _m_paddsb(a, b) simde_mm_adds_pi8(a, b)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -868,7 +864,7 @@ simde_mm_packs_pi16 (simde__m64 a, simde__m64 b) {
 #define simde_m_packsswb(a, b) simde_mm_packs_pi16(a, b)
 #if defined(SIMDE_X86_MMX_ENABLE_NATIVE_ALIASES)
 #  define _mm_packs_pi16(a, b) simde_mm_packs_pi16(a, b)
-#  define _m_packsswb(a, b) mm_packs_pi16(a, b)
+#  define _m_packsswb(a, b) simde_mm_packs_pi16(a, b)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -1265,6 +1261,22 @@ simde_mm_setzero_si64 (void) {
 #if defined(SIMDE_X86_MMX_ENABLE_NATIVE_ALIASES)
 #  define _mm_setzero_si64() simde_mm_setzero_si64()
 #endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m64
+simde_x_mm_load_si64 (const void* mem_addr) {
+  simde__m64 r;
+  simde_memcpy(&r, SIMDE_ASSUME_ALIGNED_AS(simde__m64, mem_addr), sizeof(r));
+  return r;
+}
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m64
+simde_x_mm_loadu_si64 (const void* mem_addr) {
+  simde__m64 r;
+  simde_memcpy(&r, mem_addr, sizeof(r));
+  return r;
+}
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m64
@@ -1699,7 +1711,7 @@ simde_mm_srai_pi32 (simde__m64 a, int count) {
 #define simde_m_psradi(a, count) simde_mm_srai_pi32(a, count)
 #if defined(SIMDE_X86_MMX_ENABLE_NATIVE_ALIASES)
 #  define _mm_srai_pi32(a, count) simde_mm_srai_pi32(a, count)
-#  define _m_srai_pi32(a, count) simde_mm_srai_pi32(a, count)
+#  define _m_psradi(a, count) simde_mm_srai_pi32(a, count)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES

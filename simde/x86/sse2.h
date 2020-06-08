@@ -34,10 +34,6 @@
 
 #include "sse.h"
 
-#if !defined(SIMDE_X86_SSE2_NATIVE) && defined(SIMDE_ENABLE_NATIVE_ALIASES)
-#  define SIMDE_X86_SSE2_ENABLE_NATIVE_ALIASES
-#endif
-
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 SIMDE_BEGIN_DECLS_
@@ -228,8 +224,7 @@ typedef union {
   typedef simde__m128d_private simde__m128d;
 #endif
 
-#if !defined(SIMDE_X86_SSE2_NATIVE) && defined(SIMDE_ENABLE_NATIVE_ALIASES)
-  #define SIMDE_X86_SSE2_ENABLE_NATIVE_ALIASES
+#if defined(SIMDE_X86_SSE2_ENABLE_NATIVE_ALIASES)
   typedef simde__m128i __m128i;
   typedef simde__m128d __m128d;
 #endif
@@ -901,7 +896,7 @@ simde_mm_setzero_si128 (void) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_bslli_si128 (simde__m128i a, const int imm8)
-    SIMDE_REQUIRE_RANGE(imm8, 0, 255)  {
+    SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 255)  {
   simde__m128i_private
     r_,
     a_ = simde__m128i_to_private(a);
@@ -966,7 +961,7 @@ simde_mm_bslli_si128 (simde__m128i a, const int imm8)
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_bsrli_si128 (simde__m128i a, const int imm8)
-    SIMDE_REQUIRE_RANGE(imm8, 0, 255)  {
+    SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 255)  {
   simde__m128i_private
     r_,
     a_ = simde__m128i_to_private(a);
@@ -2143,7 +2138,7 @@ simde_mm_cvtpd_epi32 (simde__m128d a) {
 
   SIMDE_VECTORIZE
   for (size_t i = 0 ; i < (sizeof(a_.f64) / sizeof(a_.f64[0])) ; i++) {
-    r_.i32[i] = SIMDE_CONVERT_FTOI(int32_t, simde_math_round(a_.f64[i]));
+    r_.i32[i] = SIMDE_CONVERT_FTOI(int32_t, simde_math_nearbyint(a_.f64[i]));
   }
   simde_memset(&(r_.m64_private[1]), 0, sizeof(r_.m64_private[1]));
 
@@ -2165,7 +2160,7 @@ simde_mm_cvtpd_pi32 (simde__m128d a) {
 
   SIMDE_VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {
-    r_.i32[i] = HEDLEY_STATIC_CAST(int32_t, simde_math_round(a_.f64[i]));
+    r_.i32[i] = HEDLEY_STATIC_CAST(int32_t, simde_math_nearbyint(a_.f64[i]));
   }
 
   return simde__m64_from_private(r_);

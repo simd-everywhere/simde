@@ -30,10 +30,6 @@
 
 #include "sse4.2.h"
 
-#if !defined(SIMDE_X86_AVX_NATIVE) && defined(SIMDE_ENABLE_NATIVE_ALIASES)
-#  define SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES
-#endif
-
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 SIMDE_BEGIN_DECLS_
@@ -226,8 +222,7 @@ typedef union {
   typedef simde__m256d_private simde__m256d;
 #endif
 
-#if !defined(SIMDE_X86_AVX_NATIVE) && defined(SIMDE_ENABLE_NATIVE_ALIASES)
-  #define SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES
+#if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
   typedef simde__m256 __m256;
   typedef simde__m256i __m256i;
   typedef simde__m256d __m256d;
