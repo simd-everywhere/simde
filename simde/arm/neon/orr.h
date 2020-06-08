@@ -284,7 +284,7 @@ simde_vorrq_s8(simde_int8x16_t a, simde_int8x16_t b) {
   #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
     return vec_or(a, b);
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    return wasm_i8x16_or(a, b);
+    return wasm_v128_or(a, b);
   #else
     simde_int8x16_private
       r_,
@@ -318,7 +318,7 @@ simde_vorrq_s16(simde_int16x8_t a, simde_int16x8_t b) {
   #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
     return vec_or(a, b);
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    return wasm_i16x8_or(a, b);
+    return wasm_v128_or(a, b);
   #else
     simde_int16x8_private
       r_,
@@ -352,7 +352,7 @@ simde_vorrq_s32(simde_int32x4_t a, simde_int32x4_t b) {
   #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
     return vec_or(a, b);
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    return wasm_i32x4_or(a, b);
+    return wasm_v128_or(a, b);
   #else
     simde_int32x4_private
       r_,
@@ -386,7 +386,7 @@ simde_vorrq_s64(simde_int64x2_t a, simde_int64x2_t b) {
   #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
     return vec_or(a, b);
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    return wasm_i64x2_or(a, b);
+    return wasm_v128_or(a, b);
   #else
     simde_int64x2_private
       r_,
@@ -419,6 +419,8 @@ simde_vorrq_u8(simde_uint8x16_t a, simde_uint8x16_t b) {
     return _mm_or_si128(a, b);
   #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
     return vec_or(a, b);
+  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+    return wasm_v128_or(a, b);
   #else
     simde_uint8x16_private
       r_,
@@ -451,6 +453,8 @@ simde_vorrq_u16(simde_uint16x8_t a, simde_uint16x8_t b) {
     return _mm_or_si128(a, b);
   #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
     return vec_or(a, b);
+  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+    return wasm_v128_or(a, b);
   #else
     simde_uint16x8_private
       r_,
@@ -483,6 +487,8 @@ simde_vorrq_u32(simde_uint32x4_t a, simde_uint32x4_t b) {
     return _mm_or_si128(a, b);
   #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
     return vec_or(a, b);
+  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+    return wasm_v128_or(a, b);
   #else
     simde_uint32x4_private
       r_,
@@ -515,6 +521,8 @@ simde_vorrq_u64(simde_uint64x2_t a, simde_uint64x2_t b) {
     return _mm_or_si128(a, b);
   #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
     return vec_or(a, b);
+  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+    return wasm_v128_or(a, b);
   #else
     simde_uint64x2_private
       r_,
