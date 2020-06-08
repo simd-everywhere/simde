@@ -37,6 +37,7 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#include "simde-detect-clang.h"
 #include "simde-arch.h"
 #include "simde-features.h"
 #include "simde-diagnostic.h"
