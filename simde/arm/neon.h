@@ -30,8 +30,11 @@
 #include "neon/types.h"
 
 #include "neon/add.h"
+#include "neon/and.h"
+#include "neon/eor.h"
 #include "neon/ld1.h"
 #include "neon/min.h"
+#include "neon/orr.h"
 #include "neon/pmin.h"
 #include "neon/st1.h"
 #include "neon/sub.h"
