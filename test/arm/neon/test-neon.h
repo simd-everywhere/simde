@@ -23,7 +23,7 @@
  \
   } \
  \
-  static int \
+  static void \
   simde_test_arm_neon_assert_equal_##symbol_identifier##x##element_count##_(simde_##NT a, simde_##NT b, \
       const char* filename, int line, const char* astr, const char* bstr) { \
     ET a_[sizeof(a) / sizeof(ET)], b_[sizeof(b) / sizeof(ET)]; \
@@ -31,7 +31,7 @@
     simde_vst1##modifier##_##neon_identifier(a_, a); \
     simde_vst1##modifier##_##neon_identifier(b_, b); \
  \
-    return simde_assert_equal_v##symbol_identifier##_(sizeof(a_) / sizeof(a_[0]), a_, b_, filename, line, astr, bstr); \
+    simde_assert_equal_v##symbol_identifier##_(sizeof(a_) / sizeof(a_[0]), a_, b_, filename, line, astr, bstr); \
   }
 
 #define SIMDE_TEST_ARM_NEON_GENERATE_FLOAT_TYPE_FUNCS_(NT, ET, SET, element_count, modifier, symbol_identifier) \
@@ -49,7 +49,7 @@
     simde_test_codegen_write_v##symbol_identifier(indent, sizeof(value_) / sizeof(value_[0]), value_, pos); \
   } \
  \
-  static int \
+  static void \
   simde_test_arm_neon_assert_equal_##symbol_identifier##x##element_count##_(simde_##NT a, simde_##NT b, ET slop, \
       const char* filename, int line, const char* astr, const char* bstr) { \
     SET a_[sizeof(a) / sizeof(ET)], b_[sizeof(b) / sizeof(ET)]; \
@@ -57,7 +57,7 @@
     simde_vst1##modifier##_##symbol_identifier(a_, a); \
     simde_vst1##modifier##_##symbol_identifier(b_, b); \
  \
-    return simde_assert_equal_v##symbol_identifier##_(sizeof(a_) / sizeof(ET), HEDLEY_REINTERPRET_CAST(SET*, a_), HEDLEY_REINTERPRET_CAST(SET*, b_), slop, filename, line, astr, bstr); \
+    simde_assert_equal_v##symbol_identifier##_(sizeof(a_) / sizeof(ET), HEDLEY_REINTERPRET_CAST(SET*, a_), HEDLEY_REINTERPRET_CAST(SET*, b_), slop, filename, line, astr, bstr); \
   }
 
 HEDLEY_DIAGNOSTIC_PUSH

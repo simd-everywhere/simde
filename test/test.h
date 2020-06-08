@@ -381,7 +381,7 @@ simde_test_equal_f64(simde_float64 a, simde_float64 b, simde_float64 slop) {
   }
 }
 
-static int
+static void
 simde_assert_equal_vf32_(
     size_t vec_len, simde_float32 const a[HEDLEY_ARRAY_PARAM(vec_len)], simde_float32 const b[HEDLEY_ARRAY_PARAM(vec_len)], simde_float32 slop,
     const char* filename, int line, const char* astr, const char* bstr) {
@@ -391,11 +391,20 @@ simde_assert_equal_vf32_(
               filename, line, astr, i, bstr, i, HEDLEY_STATIC_CAST(double, a[i]), HEDLEY_STATIC_CAST(double, b[i]));
     }
   }
-  return 1;
 }
 #define simde_assert_equal_vf32(vec_len, a, b, precision) simde_assert_equal_vf32_(vec_len, a, b, 1e-##precision##f, __FILE__, __LINE__, #a, #b)
 
-static int
+static void
+simde_assert_equal_f32_(simde_float32 a, simde_float32 b, simde_float32 slop,
+    const char* filename, int line, const char* astr, const char* bstr) {
+  if (HEDLEY_UNLIKELY(!simde_test_equal_f32(a, b, slop))) {
+    simde_test_debug_printf_("%s:%d: assertion failed: %s ~= %s (%f ~= %f)\n",
+        filename, line, astr, bstr, HEDLEY_STATIC_CAST(double, a), HEDLEY_STATIC_CAST(double, b));
+  }
+}
+#define simde_assert_equal_f32(a, b, precision) simde_assert_equal_f32_(a, b, 1e-##precision##f, __FILE__, __LINE__, #a, #b)
+
+static void
 simde_assert_equal_vf64_(
     size_t vec_len, simde_float64 const a[HEDLEY_ARRAY_PARAM(vec_len)], simde_float64 const b[HEDLEY_ARRAY_PARAM(vec_len)], simde_float64 slop,
     const char* filename, int line, const char* astr, const char* bstr) {
@@ -405,39 +414,48 @@ simde_assert_equal_vf64_(
               filename, line, astr, i, bstr, i, HEDLEY_STATIC_CAST(double, a[i]), HEDLEY_STATIC_CAST(double, b[i]));
     }
   }
-  return 1;
 }
 #define simde_assert_equal_vf64(vec_len, a, b, precision) simde_assert_equal_vf64_(vec_len, a, b, 1e-##precision, __FILE__, __LINE__, #a, #b)
 
-#if !defined(SIMDE_TEST_ASSERTION_FAILURES_NON_FATAL)
-  #define SIMDE_TEST_GENERATE_ASSERT_EQUAL_FUNC_(T, symbol_identifier, fmt) \
-    static int \
-    simde_assert_equal_v##symbol_identifier##_( \
-        size_t vec_len, T const a[HEDLEY_ARRAY_PARAM(vec_len)], T const b[HEDLEY_ARRAY_PARAM(vec_len)], \
-        const char* filename, int line, const char* astr, const char* bstr) { \
-      for (size_t i = 0 ; i < vec_len ; i++) { \
-        if (HEDLEY_UNLIKELY(a[i] != b[i])) { \
-          simde_test_debug_printf_("%s:%d: assertion failed: %s[%zu] != %s[%zu] (%" fmt " != %" fmt ")\n", \
-                filename, line, astr, i, bstr, i, a[i], b[i]); \
-        } \
+static void
+simde_assert_equal_f64_(simde_float64 a, simde_float64 b, simde_float64 slop,
+    const char* filename, int line, const char* astr, const char* bstr) {
+  if (HEDLEY_UNLIKELY(!simde_test_equal_f64(a, b, slop))) {
+    simde_test_debug_printf_("%s:%d: assertion failed: %s ~= %s (%f ~= %f)\n",
+        filename, line, astr, bstr, a, b);
+  }
+}
+#define simde_assert_equal_f64(a, b, precision) simde_assert_equal_f64_(a, b, 1e-##precision, __FILE__, __LINE__, #a, #b)
+
+#define SIMDE_TEST_GENERATE_ASSERT_EQUAL_FUNC_(T, symbol_identifier, fmt) \
+  static void \
+  simde_assert_equal_v##symbol_identifier##_( \
+      size_t vec_len, const T a[HEDLEY_ARRAY_PARAM(vec_len)], const T b[HEDLEY_ARRAY_PARAM(vec_len)], \
+      const char* filename, int line, const char* astr, const char* bstr) { \
+    for (size_t i = 0 ; i < vec_len ; i++) { \
+      if (HEDLEY_UNLIKELY(a[i] != b[i])) { \
+        simde_test_debug_printf_("%s:%d: assertion failed: %s[%zu] != %s[%zu] (%" fmt " != %" fmt ")\n", \
+              filename, line, astr, i, bstr, i, a[i], b[i]); \
       } \
-      return 1; \
-    }
-#else
-  #define SIMDE_TEST_GENERATE_ASSERT_EQUAL_FUNC_(T, symbol_identifier, fmt) \
-    static int \
-    simde_assert_equal_v##symbol_identifier##_( \
-        size_t vec_len, T a[HEDLEY_ARRAY_PARAM(vec_len)], T b[HEDLEY_ARRAY_PARAM(vec_len)], \
-        const char* filename, int line, const char* astr, const char* bstr) { \
-      for (size_t i = 0 ; i < vec_len ; i++) { \
-        if (HEDLEY_UNLIKELY(a[i] != b[i])) { \
-          simde_test_debug_printf_("%s:%d: assertion failed: %s[%zu] != %s[%zu] (%" fmt " != %" fmt ")\n", \
-                filename, line, astr, i, bstr, i, a[i], b[i]); \
-        } \
-      } \
-      return 1; \
-    }
-#endif
+    } \
+  } \
+  \
+  static void \
+  simde_assert_equal_##symbol_identifier##_(T a, T b, \
+      const char* filename, int line, const char* astr, const char* bstr) { \
+    if (HEDLEY_UNLIKELY(a != b)) { \
+      simde_test_debug_printf_("%s:%d: assertion failed: %s != %s (%" fmt " != %" fmt ")\n", \
+            filename, line, astr, bstr, a, b); \
+    } \
+  }
+
+static void
+simde_assert_equal_i_(int a, int b, const char* filename, int line, const char* astr, const char* bstr) {
+  if (HEDLEY_UNLIKELY(a != b)) {
+    simde_test_debug_printf_("%s:%d: assertion failed: %s != %s (%d != %d)\n",
+          filename, line, astr, bstr, a, b);
+  }
+}
 
 SIMDE_TEST_GENERATE_ASSERT_EQUAL_FUNC_(int8_t,    i8,  PRId8)
 SIMDE_TEST_GENERATE_ASSERT_EQUAL_FUNC_(int16_t,  i16, PRId16)
@@ -456,6 +474,16 @@ SIMDE_TEST_GENERATE_ASSERT_EQUAL_FUNC_(uint64_t, u64, PRIu64)
 #define simde_assert_equal_vu16(vec_len, a, b) simde_assert_equal_vu16_(vec_len, a, b, __FILE__, __LINE__, #a, #b)
 #define simde_assert_equal_vu32(vec_len, a, b) simde_assert_equal_vu32_(vec_len, a, b, __FILE__, __LINE__, #a, #b)
 #define simde_assert_equal_vu64(vec_len, a, b) simde_assert_equal_vu64_(vec_len, a, b, __FILE__, __LINE__, #a, #b)
+
+#define simde_assert_equal_i8(a, b) simde_assert_equal_i8_(a, b, __FILE__, __LINE__, #a, #b)
+#define simde_assert_equal_i16(a, b) simde_assert_equal_i16_(a, b, __FILE__, __LINE__, #a, #b)
+#define simde_assert_equal_i32(a, b) simde_assert_equal_i32_(a, b, __FILE__, __LINE__, #a, #b)
+#define simde_assert_equal_i64(a, b) simde_assert_equal_i64_(a, b, __FILE__, __LINE__, #a, #b)
+#define simde_assert_equal_u8(a, b) simde_assert_equal_u8_(a, b, __FILE__, __LINE__, #a, #b)
+#define simde_assert_equal_u16(a, b) simde_assert_equal_u16_(a, b, __FILE__, __LINE__, #a, #b)
+#define simde_assert_equal_u32(a, b) simde_assert_equal_u32_(a, b, __FILE__, __LINE__, #a, #b)
+#define simde_assert_equal_u64(a, b) simde_assert_equal_u64_(a, b, __FILE__, __LINE__, #a, #b)
+#define simde_assert_equal_i(a, b) simde_assert_equal_i_(a, b, __FILE__, __LINE__, #a, #b)
 
 /* Since each test is compiled in 4 different versions (C/C++ and
  * native/emul), we need to be able to generate different symbols

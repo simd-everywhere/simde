@@ -20,7 +20,7 @@
     simde_test_codegen_write_vf##EL(indent, sizeof(values) / sizeof(values[0]), values, pos); \
   } \
  \
-  static int \
+  static void \
   simde_test_x86_assert_equal_f##EL##x##EC##_(simde##NT a, simde##NT b, simde_float##EL slop, \
       const char* filename, int line, const char* astr, const char* bstr) { \
     simde_float##EL \
@@ -30,7 +30,7 @@
     SF(a_, a); \
     SF(b_, b); \
  \
-    return simde_assert_equal_vf##EL##_(sizeof(a_) / sizeof(a_[0]), a_, b_, slop, filename, line, astr, bstr); \
+    simde_assert_equal_vf##EL##_(sizeof(a_) / sizeof(a_[0]), a_, b_, slop, filename, line, astr, bstr); \
   }
 
 #define SIMDE_TEST_X86_GENERATE_INT_TYPE_FUNCS_(NT, EL, EC, SF) \
@@ -48,13 +48,13 @@
     simde_test_codegen_write_vi##EL(indent, sizeof(value_) / sizeof(value_[0]), value_, pos); \
   } \
  \
-  static int \
+  static void \
   simde_test_x86_assert_equal_i##EL##x##EC##_(simde##NT a, simde##NT b, \
       const char* filename, int line, const char* astr, const char* bstr) { \
     int##EL##_t a_[sizeof(a) / sizeof(int##EL##_t)], b_[sizeof(a) / sizeof(int##EL##_t)]; \
     SF(SIMDE_ALIGN_CAST(simde##NT*, a_), a); \
     SF(SIMDE_ALIGN_CAST(simde##NT*, b_), b); \
-    return simde_assert_equal_vi##EL##_(sizeof(a_) / sizeof(a_[0]), a_, b_, filename, line, astr, bstr); \
+    simde_assert_equal_vi##EL##_(sizeof(a_) / sizeof(a_[0]), a_, b_, filename, line, astr, bstr); \
   }
 
 #define SIMDE_TEST_X86_GENERATE_UINT_TYPE_FUNCS_(NT, EL, EC, SF) \
@@ -72,13 +72,13 @@
     simde_test_codegen_write_vu##EL(indent, sizeof(value_) / sizeof(value_[0]), value_, pos); \
   } \
  \
-  static int \
+  static void \
   simde_test_x86_assert_equal_u##EL##x##EC##_(simde##NT a, simde##NT b, \
       const char* filename, int line, const char* astr, const char* bstr) { \
     uint##EL##_t a_[sizeof(a) / sizeof(int##EL##_t)], b_[sizeof(a) / sizeof(int##EL##_t)]; \
     SF(SIMDE_ALIGN_CAST(simde##NT*, a_), a); \
     SF(SIMDE_ALIGN_CAST(simde##NT*, b_), b); \
-    return simde_assert_equal_vu##EL##_(sizeof(a_) / sizeof(a_[0]), a_, b_, filename, line, astr, bstr); \
+    simde_assert_equal_vu##EL##_(sizeof(a_) / sizeof(a_[0]), a_, b_, filename, line, astr, bstr); \
   }
 
 /* For compatibility only.  Note that the operator is assumed to be == */
@@ -133,10 +133,10 @@
 #define simde_assert_m512d_equal(a, b) simde_test_x86_assert_equal_i32x16(simde_mm_castpd_si512(a), simde_mm_castpd_si512(b))
 #define simde_assert_m512i_equal(a, b) simde_test_x86_assert_equal_i32x16(a, b)
 
-#define simde_assert_mmask8(a, op, b) munit_assert_int8(SIMDE_CHECKED_STATIC_CAST(int8_t, simde__mmask8, a), op, SIMDE_CHECKED_STATIC_CAST(int8_t, simde__mmask8, b))
-#define simde_assert_mmask16(a, op, b) munit_assert_int16(SIMDE_CHECKED_STATIC_CAST(int16_t, simde__mmask16, a), op, SIMDE_CHECKED_STATIC_CAST(int16_t, simde__mmask16, a))
-#define simde_assert_mmask32(a, op, b) munit_assert_int32(SIMDE_CHECKED_STATIC_CAST(int32_t, simde__mmask32, a), op, SIMDE_CHECKED_STATIC_CAST(int32_t, simde__mmask32, a))
-#define simde_assert_mmask64(a, op, b) munit_assert_int64(SIMDE_CHECKED_STATIC_CAST(int64_t, simde__mmask64, a), op, SIMDE_CHECKED_STATIC_CAST(int64_t, simde__mmask64, a))
+#define simde_assert_mmask8(a, op, b) simde_assert_equal_u8(SIMDE_CHECKED_STATIC_CAST(uint8_t, simde__mmask8, a), SIMDE_CHECKED_STATIC_CAST(uint8_t, simde__mmask8, a))
+#define simde_assert_mmask16(a, op, b) simde_assert_equal_u16(SIMDE_CHECKED_STATIC_CAST(uint16_t, simde__mmask16, a), SIMDE_CHECKED_STATIC_CAST(uint16_t, simde__mmask16, a))
+#define simde_assert_mmask32(a, op, b) simde_assert_equal_u32(SIMDE_CHECKED_STATIC_CAST(uint32_t, simde__mmask32, a), SIMDE_CHECKED_STATIC_CAST(uint32_t, simde__mmask32, a))
+#define simde_assert_mmask64(a, op, b) simde_assert_equal_u64(SIMDE_CHECKED_STATIC_CAST(uint64_t, simde__mmask64, a), SIMDE_CHECKED_STATIC_CAST(uint64_t, simde__mmask64, a))
 
 #if !defined(SIMDE_TEST_BARE)
   #define SIMDE_TEST_DECLARE_SUITE(name) SIMDE_TEST_SUITE_DECLARE_GETTERS(HEDLEY_CONCAT(simde_test_x86_get_suite_,name))

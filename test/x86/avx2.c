@@ -5207,7 +5207,7 @@ test_simde_mm256_extract_epi8(void) {
                            INT8_C(  38), INT8_C( -24), INT8_C( -54), INT8_C(  83),
                            INT8_C(  41), INT8_C(  48), INT8_C(-118), INT8_C(  66),
                            INT8_C( -73), INT8_C( 110), INT8_C(  47), INT8_C(  78));
-  munit_assert_int8(HEDLEY_STATIC_CAST(int8_t, simde_mm256_extract_epi8(a,  1)), ==, INT8_C(  47));
+  simde_assert_equal_i8(HEDLEY_STATIC_CAST(int8_t, simde_mm256_extract_epi8(a,  1)), INT8_C(  47));
 
   a = simde_mm256_set_epi8(INT8_C(   9), INT8_C(  60), INT8_C( -76), INT8_C(  57),
                            INT8_C( 106), INT8_C( -35), INT8_C( -51), INT8_C(  33),
@@ -5217,7 +5217,7 @@ test_simde_mm256_extract_epi8(void) {
                            INT8_C(-113), INT8_C(  32), INT8_C(-107), INT8_C( -55),
                            INT8_C(  87), INT8_C(  74), INT8_C(  33), INT8_C(  32),
                            INT8_C( -83), INT8_C( -97), INT8_C(  40), INT8_C(-118));
-  munit_assert_int8(HEDLEY_STATIC_CAST(int8_t, simde_mm256_extract_epi8(a, 12)), ==, INT8_C(  12));
+  simde_assert_equal_i8(HEDLEY_STATIC_CAST(int8_t, simde_mm256_extract_epi8(a, 12)), INT8_C(  12));
 
   a = simde_mm256_set_epi8(INT8_C(  53), INT8_C( -56), INT8_C( -74), INT8_C(  14),
                            INT8_C(  84), INT8_C(  78), INT8_C(  58), INT8_C(  56),
@@ -5227,7 +5227,7 @@ test_simde_mm256_extract_epi8(void) {
                            INT8_C(-108), INT8_C( 110), INT8_C( -80), INT8_C( -37),
                            INT8_C( -87), INT8_C( -76), INT8_C( -93), INT8_C( -39),
                            INT8_C(   5), INT8_C(  40), INT8_C( 106), INT8_C( -44));
-  munit_assert_int8(HEDLEY_STATIC_CAST(int8_t, simde_mm256_extract_epi8(a,  2)), ==, INT8_C(  40));
+  simde_assert_equal_i8(HEDLEY_STATIC_CAST(int8_t, simde_mm256_extract_epi8(a,  2)), INT8_C(  40));
 
   a = simde_mm256_set_epi8(INT8_C( -54), INT8_C( -60), INT8_C(   8), INT8_C(-114),
                            INT8_C( -71), INT8_C(  78), INT8_C( -79), INT8_C(  48),
@@ -5237,7 +5237,7 @@ test_simde_mm256_extract_epi8(void) {
                            INT8_C(  87), INT8_C( 123), INT8_C( 124), INT8_C( -89),
                            INT8_C(  14), INT8_C( -48), INT8_C(  73), INT8_C(  34),
                            INT8_C( -22), INT8_C( -74), INT8_C(   4), INT8_C( -22));
-  munit_assert_int8(HEDLEY_STATIC_CAST(int8_t, simde_mm256_extract_epi8(a,  1)), ==, INT8_C(   4));
+  simde_assert_equal_i8(HEDLEY_STATIC_CAST(int8_t, simde_mm256_extract_epi8(a,  1)), INT8_C(   4));
 
   a = simde_mm256_set_epi8(INT8_C( -34), INT8_C(  20), INT8_C(  68), INT8_C( -53),
                            INT8_C(  24), INT8_C( -70), INT8_C( -82), INT8_C(  20),
@@ -5247,7 +5247,7 @@ test_simde_mm256_extract_epi8(void) {
                            INT8_C( -18), INT8_C( -26), INT8_C( -89), INT8_C(  39),
                            INT8_C( -79), INT8_C( 100), INT8_C( -39), INT8_C(  76),
                            INT8_C( -51), INT8_C( -31), INT8_C(  26), INT8_C( -70));
-  munit_assert_int8(HEDLEY_STATIC_CAST(int8_t, simde_mm256_extract_epi8(a, 27)), ==, INT8_C(  24));
+  simde_assert_equal_i8(HEDLEY_STATIC_CAST(int8_t, simde_mm256_extract_epi8(a, 27)), INT8_C(  24));
 
   a = simde_mm256_set_epi8(INT8_C( -85), INT8_C( -44), INT8_C( 101), INT8_C( 109),
                            INT8_C(  58), INT8_C(  71), INT8_C(  75), INT8_C(  93),
@@ -5257,7 +5257,7 @@ test_simde_mm256_extract_epi8(void) {
                            INT8_C( -80), INT8_C( -54), INT8_C(-107), INT8_C( -58),
                            INT8_C( -42), INT8_C( -79), INT8_C(  59), INT8_C( -50),
                            INT8_C(  63), INT8_C(-125), INT8_C( -96), INT8_C( -58));
-  munit_assert_int8(HEDLEY_STATIC_CAST(int8_t, simde_mm256_extract_epi8(a, 11)), ==, INT8_C( -80));
+  simde_assert_equal_i8(HEDLEY_STATIC_CAST(int8_t, simde_mm256_extract_epi8(a, 11)), INT8_C( -80));
 
   a = simde_mm256_set_epi8(INT8_C(  71), INT8_C(  18), INT8_C(  82), INT8_C( -74),
                            INT8_C(   9), INT8_C(  -6), INT8_C( -94), INT8_C( -46),
@@ -5267,7 +5267,7 @@ test_simde_mm256_extract_epi8(void) {
                            INT8_C( 107), INT8_C( -99), INT8_C(  37), INT8_C(   5),
                            INT8_C( 107), INT8_C(-118), INT8_C( 119), INT8_C( -11),
                            INT8_C(  84), INT8_C(   8), INT8_C(  15), INT8_C(-102));
-  munit_assert_int8(HEDLEY_STATIC_CAST(int8_t, simde_mm256_extract_epi8(a,  9)), ==, INT8_C(  37));
+  simde_assert_equal_i8(HEDLEY_STATIC_CAST(int8_t, simde_mm256_extract_epi8(a,  9)), INT8_C(  37));
 
   a = simde_mm256_set_epi8(INT8_C(  84), INT8_C(-100), INT8_C( 116), INT8_C( -53),
                            INT8_C(-104), INT8_C(  52), INT8_C(  51), INT8_C(  60),
@@ -5277,7 +5277,7 @@ test_simde_mm256_extract_epi8(void) {
                            INT8_C(  23), INT8_C(  89), INT8_C( 112), INT8_C(  -7),
                            INT8_C( -66), INT8_C(  78), INT8_C(  88), INT8_C(   5),
                            INT8_C(  75), INT8_C(  72), INT8_C( -87), INT8_C(  47));
-  munit_assert_int8(HEDLEY_STATIC_CAST(int8_t, simde_mm256_extract_epi8(a, 27)), ==, INT8_C(-104));
+  simde_assert_equal_i8(HEDLEY_STATIC_CAST(int8_t, simde_mm256_extract_epi8(a, 27)), INT8_C(-104));
 
   return 0;
 }
@@ -5290,49 +5290,49 @@ test_simde_mm256_extract_epi16(void) {
                             INT16_C(  4310), INT16_C(-20495), INT16_C(-28807), INT16_C(-17056),
                             INT16_C(-19221), INT16_C( 32236), INT16_C(-26695), INT16_C( -3004),
                             INT16_C( -4570), INT16_C(-14787), INT16_C(  7635), INT16_C(-23471));
-  munit_assert_int16(HEDLEY_STATIC_CAST(int16_t, simde_mm256_extract_epi16(a,  4)), ==, INT16_C( -3004));
+  simde_assert_equal_i16(HEDLEY_STATIC_CAST(int16_t, simde_mm256_extract_epi16(a,  4)), INT16_C( -3004));
 
   a = simde_mm256_set_epi16(INT16_C( 10010), INT16_C(  6255), INT16_C(-20985), INT16_C( 25937),
                             INT16_C(   187), INT16_C(-14746), INT16_C(  4260), INT16_C( -5314),
                             INT16_C( 21499), INT16_C(-10726), INT16_C(-28550), INT16_C(-26957),
                             INT16_C( 25383), INT16_C(-32368), INT16_C(-28215), INT16_C(-29614));
-  munit_assert_int16(HEDLEY_STATIC_CAST(int16_t, simde_mm256_extract_epi16(a,  3)), ==, INT16_C( 25383));
+  simde_assert_equal_i16(HEDLEY_STATIC_CAST(int16_t, simde_mm256_extract_epi16(a,  3)), INT16_C( 25383));
 
   a = simde_mm256_set_epi16(INT16_C( -9332), INT16_C( -3776), INT16_C(  -659), INT16_C(-11998),
                             INT16_C(-22530), INT16_C( 30025), INT16_C( -7620), INT16_C( -4652),
                             INT16_C( 12144), INT16_C(  2985), INT16_C(-29351), INT16_C(  7652),
                             INT16_C( 29358), INT16_C( -2482), INT16_C(  2031), INT16_C(-18027));
-  munit_assert_int16(HEDLEY_STATIC_CAST(int16_t, simde_mm256_extract_epi16(a, 12)), ==, INT16_C(-11998));
+  simde_assert_equal_i16(HEDLEY_STATIC_CAST(int16_t, simde_mm256_extract_epi16(a, 12)), INT16_C(-11998));
 
   a = simde_mm256_set_epi16(INT16_C(  5566), INT16_C( 26716), INT16_C(-28005), INT16_C(-20328),
                             INT16_C(-22447), INT16_C(-29429), INT16_C( 18844), INT16_C(-28207),
                             INT16_C( 13304), INT16_C( 29506), INT16_C( 26640), INT16_C(-30988),
                             INT16_C(  7094), INT16_C( 15837), INT16_C( 17850), INT16_C( -4007));
-  munit_assert_int16(HEDLEY_STATIC_CAST(int16_t, simde_mm256_extract_epi16(a,  8)), ==, INT16_C(-28207));
+  simde_assert_equal_i16(HEDLEY_STATIC_CAST(int16_t, simde_mm256_extract_epi16(a,  8)), INT16_C(-28207));
 
   a = simde_mm256_set_epi16(INT16_C(-22807), INT16_C( 19457), INT16_C(-27368), INT16_C(-30791),
                             INT16_C( -9280), INT16_C(-12893), INT16_C(-14741), INT16_C( -5696),
                             INT16_C(  4897), INT16_C( 24376), INT16_C(-27876), INT16_C( 29206),
                             INT16_C(-29469), INT16_C(-22113), INT16_C( 23067), INT16_C(  6063));
-  munit_assert_int16(HEDLEY_STATIC_CAST(int16_t, simde_mm256_extract_epi16(a,  3)), ==, INT16_C(-29469));
+  simde_assert_equal_i16(HEDLEY_STATIC_CAST(int16_t, simde_mm256_extract_epi16(a,  3)), INT16_C(-29469));
 
   a = simde_mm256_set_epi16(INT16_C( -6124), INT16_C(  1398), INT16_C(   383), INT16_C(  1785),
                             INT16_C(-30725), INT16_C(-20290), INT16_C( 11961), INT16_C(-25919),
                             INT16_C(-25742), INT16_C(-31321), INT16_C( -6067), INT16_C( 17059),
                             INT16_C( 16943), INT16_C( 31917), INT16_C( 18056), INT16_C(-23274));
-  munit_assert_int16(HEDLEY_STATIC_CAST(int16_t, simde_mm256_extract_epi16(a,  7)), ==, INT16_C(-25742));
+  simde_assert_equal_i16(HEDLEY_STATIC_CAST(int16_t, simde_mm256_extract_epi16(a,  7)), INT16_C(-25742));
 
   a = simde_mm256_set_epi16(INT16_C( 29739), INT16_C(-15442), INT16_C(-18760), INT16_C(  3107),
                             INT16_C(-25745), INT16_C(    -8), INT16_C( -5543), INT16_C(  3310),
                             INT16_C( 13765), INT16_C(-29431), INT16_C( 31912), INT16_C( 20910),
                             INT16_C(-32282), INT16_C(  8881), INT16_C(-19453), INT16_C(-25360));
-  munit_assert_int16(HEDLEY_STATIC_CAST(int16_t, simde_mm256_extract_epi16(a,  0)), ==, INT16_C(-25360));
+  simde_assert_equal_i16(HEDLEY_STATIC_CAST(int16_t, simde_mm256_extract_epi16(a,  0)), INT16_C(-25360));
 
   a = simde_mm256_set_epi16(INT16_C( 19041), INT16_C( 28526), INT16_C(   632), INT16_C( 12890),
                             INT16_C( -9054), INT16_C(  9044), INT16_C(-24624), INT16_C(-18390),
                             INT16_C( -7692), INT16_C( 20879), INT16_C(  2760), INT16_C( 29306),
                             INT16_C(  5480), INT16_C( 22577), INT16_C(-15668), INT16_C(-16497));
-  munit_assert_int16(HEDLEY_STATIC_CAST(int16_t, simde_mm256_extract_epi16(a,  0)), ==, INT16_C(-16497));
+  simde_assert_equal_i16(HEDLEY_STATIC_CAST(int16_t, simde_mm256_extract_epi16(a,  0)), INT16_C(-16497));
 
   return 0;
 }
@@ -6924,7 +6924,7 @@ test_simde_mm256_movemask_epi8(void) {
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     int32_t r = simde_mm256_movemask_epi8(test_vec[i].a);
-    munit_assert_int32(r, ==, test_vec[i].r);
+    simde_assert_equal_i32(r, test_vec[i].r);
   }
 
   return 0;

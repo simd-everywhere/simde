@@ -1471,7 +1471,7 @@ test_simde_mm_extract_epi8(void) {
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     int8_t r = simde_mm_extract_epi8(test_vec[i].a, 2);
-    munit_assert_int8(r, ==, test_vec[i].r);
+    simde_assert_equal_i8(r, test_vec[i].r);
   }
 
   return 0;
@@ -1503,7 +1503,7 @@ test_simde_mm_extract_epi32(void) {
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     int32_t r = simde_mm_extract_epi32(test_vec[i].a, 2);
-    munit_assert_int32(r, ==, test_vec[i].r);
+    simde_assert_equal_i32(r, test_vec[i].r);
   }
 
   return 0;
@@ -1535,7 +1535,7 @@ test_simde_mm_extract_epi64(void) {
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     int64_t r = simde_mm_extract_epi64(test_vec[i].a, 1);
-    munit_assert_int64(r, ==, test_vec[i].r);
+    simde_assert_equal_i64(r, test_vec[i].r);
   }
 
   return 0;
@@ -2980,7 +2980,7 @@ test_simde_mm_test_all_ones(void) {
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     int r = simde_mm_test_all_ones(test_vec[i].a);
-    munit_assert_int(r, ==, test_vec[i].r);
+    simde_assert_equal_i(r, test_vec[i].r);
   }
 
   return 0;
@@ -3021,7 +3021,7 @@ test_simde_mm_test_all_zeros(void) {
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     int r = simde_mm_test_all_zeros(test_vec[i].a, test_vec[i].b);
-    munit_assert_int(r, ==, test_vec[i].r);
+    simde_assert_equal_i(r, test_vec[i].r);
   }
 
   return 0;
@@ -3062,7 +3062,7 @@ test_simde_mm_test_mix_ones_zeros(void) {
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     int r = simde_mm_test_mix_ones_zeros(test_vec[i].a, test_vec[i].b);
-    munit_assert_int(r, ==, test_vec[i].r);
+    simde_assert_equal_i(r, test_vec[i].r);
   }
 
   return 0;
@@ -3103,7 +3103,7 @@ test_simde_mm_testc_si128(void) {
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     int r = simde_mm_testc_si128(test_vec[i].a, test_vec[i].b);
-    munit_assert_int(r, ==, test_vec[i].r);
+    simde_assert_equal_i(r, test_vec[i].r);
   }
 
   return 0;
@@ -3144,7 +3144,7 @@ test_simde_mm_testnzc_si128(void) {
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     int r = simde_mm_testnzc_si128(test_vec[i].a, test_vec[i].b);
-    munit_assert_int(r, ==, test_vec[i].r);
+    simde_assert_equal_i(r, test_vec[i].r);
   }
 
   return 0;
@@ -3185,7 +3185,7 @@ test_simde_mm_testz_si128(void) {
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     int r = simde_mm_testz_si128(test_vec[i].a, test_vec[i].b);
-    munit_assert_int(r, ==, test_vec[i].r);
+    simde_assert_equal_i(r, test_vec[i].r);
   }
 
   return 0;
