@@ -177,34 +177,6 @@ simde_vmul_s32(simde_int32x2_t a, simde_int32x2_t b) {
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
-simde_int64x1_t
-simde_vmul_s64(simde_int64x1_t a, simde_int64x1_t b) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-    return vmul_s64(a, b);
-  #else
-    simde_int64x1_private
-      r_,
-      a_ = simde_int64x1_to_private(a),
-      b_ = simde_int64x1_to_private(b);
-
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-      r_.values = a_.values * b_.values;
-    #else
-      SIMDE_VECTORIZE
-      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-        r_.values[i] = a_.values[i] * b_.values[i];
-      }
-    #endif
-
-    return simde_int64x1_from_private(r_);
-  #endif
-}
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
-  #undef vmul_s64
-  #define vmul_s64(a, b) simde_vmul_s64((a), (b))
-#endif
-
-SIMDE_FUNCTION_ATTRIBUTES
 simde_uint8x8_t
 simde_vmul_u8(simde_uint8x8_t a, simde_uint8x8_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
@@ -286,34 +258,6 @@ simde_vmul_u32(simde_uint32x2_t a, simde_uint32x2_t b) {
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vmul_u32
   #define vmul_u32(a, b) simde_vmul_u32((a), (b))
-#endif
-
-SIMDE_FUNCTION_ATTRIBUTES
-simde_uint64x1_t
-simde_vmul_u64(simde_uint64x1_t a, simde_uint64x1_t b) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-    return vmul_u64(a, b);
-  #else
-    simde_uint64x1_private
-      r_,
-      a_ = simde_uint64x1_to_private(a),
-      b_ = simde_uint64x1_to_private(b);
-
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-      r_.values = a_.values * b_.values;
-    #else
-      SIMDE_VECTORIZE
-      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-        r_.values[i] = a_.values[i] * b_.values[i];
-      }
-    #endif
-
-    return simde_uint64x1_from_private(r_);
-  #endif
-}
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
-  #undef vmul_u64
-  #define vmul_u64(a, b) simde_vmul_u64((a), (b))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -472,35 +416,6 @@ simde_vmulq_s32(simde_int32x4_t a, simde_int32x4_t b) {
   #define vmulq_s32(a, b) simde_vmulq_s32((a), (b))
 #endif
 
-SIMDE_FUNCTION_ATTRIBUTES
-simde_int64x2_t
-simde_vmulq_s64(simde_int64x2_t a, simde_int64x2_t b) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-    return vmulq_s64(a, b);
-  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    return wasm_i64x2_mul(a, b);
-  #else
-    simde_int64x2_private
-      r_,
-      a_ = simde_int64x2_to_private(a),
-      b_ = simde_int64x2_to_private(b);
-
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-      r_.values = a_.values * b_.values;
-    #else
-      SIMDE_VECTORIZE
-      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-        r_.values[i] = a_.values[i] * b_.values[i];
-      }
-    #endif
-
-    return simde_int64x2_from_private(r_);
-  #endif
-}
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
-  #undef vmulq_s64
-  #define vmulq_s64(a, b) simde_vmulq_s64((a), (b))
-#endif
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde_uint8x16_t
@@ -590,36 +505,6 @@ simde_vmulq_u32(simde_uint32x4_t a, simde_uint32x4_t b) {
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vmulq_u32
   #define vmulq_u32(a, b) simde_vmulq_u32((a), (b))
-#endif
-
-SIMDE_FUNCTION_ATTRIBUTES
-simde_uint64x2_t
-simde_vmulq_u64(simde_uint64x2_t a, simde_uint64x2_t b) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-    return vmulq_u64(a, b);
-  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    return wasm_i64x2_mul(a, b);
-  #else
-    simde_uint64x2_private
-      r_,
-      a_ = simde_uint64x2_to_private(a),
-      b_ = simde_uint64x2_to_private(b);
-
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-      r_.values = a_.values * b_.values;
-    #else
-      SIMDE_VECTORIZE
-      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-        r_.values[i] = a_.values[i] * b_.values[i];
-      }
-    #endif
-
-    return simde_uint64x2_from_private(r_);
-  #endif
-}
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
-  #undef vmulq_u64
-  #define vmulq_u64(a, b) simde_vmulq_u64((a), (b))
 #endif
 
 SIMDE_END_DECLS_
