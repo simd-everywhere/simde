@@ -398,7 +398,7 @@ simde_int64x2_t
 simde_vdupq_n_s64(int64_t value) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vdupq_n_s64(value);
-  #elif defined(SIMDE_X86_SSE2_NATIVE)
+  #elif defined(SIMDE_X86_SSE2_NATIVE) && (!defined(HEDLEY_MSVC_VERSION) || HEDLEY_MSVC_VERSION_CHECK(19,0,0))
     return _mm_set1_epi64x(value);
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_i64x2_splat(value);
@@ -506,7 +506,7 @@ simde_uint64x2_t
 simde_vdupq_n_u64(uint64_t value) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vdupq_n_u64(value);
-  #elif defined(SIMDE_X86_SSE2_NATIVE)
+  #elif defined(SIMDE_X86_SSE2_NATIVE) && (!defined(HEDLEY_MSVC_VERSION) || HEDLEY_MSVC_VERSION_CHECK(19,0,0))
     return _mm_set1_epi64x(HEDLEY_STATIC_CAST(int64_t, value));
   #elif defined (SIMDE_WASM_SIMD128_NATIVE)
     return wasm_i64x2_splat(HEDLEY_STATIC_CAST(int64_t, value));
