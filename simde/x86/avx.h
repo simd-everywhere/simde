@@ -1447,8 +1447,9 @@ simde_mm256_broadcast_pd (simde__m128d const * mem_addr) {
 #else
   simde__m256d_private r_;
 
-  r_.m128d_private[0] = *HEDLEY_REINTERPRET_CAST(simde__m128d_private const*, mem_addr);
-  r_.m128d_private[1] = *HEDLEY_REINTERPRET_CAST(simde__m128d_private const*, mem_addr);
+  simde__m128d tmp = simde_mm_loadu_pd(HEDLEY_REINTERPRET_CAST(simde_float64 const*, mem_addr));
+  r_.m128d[0] = tmp;
+  r_.m128d[1] = tmp;
 
   return simde__m256d_from_private(r_);
 #endif
@@ -1465,8 +1466,9 @@ simde_mm256_broadcast_ps (simde__m128 const * mem_addr) {
 #else
   simde__m256_private r_;
 
-  r_.m128_private[0] = *HEDLEY_REINTERPRET_CAST(simde__m128_private const*, mem_addr);
-  r_.m128_private[1] = *HEDLEY_REINTERPRET_CAST(simde__m128_private const*, mem_addr);
+  simde__m128 tmp = simde_mm_loadu_ps(HEDLEY_REINTERPRET_CAST(simde_float32 const*, mem_addr));
+  r_.m128[0] = tmp;
+  r_.m128[1] = tmp;
 
   return simde__m256_from_private(r_);
 #endif
