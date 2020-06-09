@@ -107,6 +107,8 @@ set(TEST_SOURCES_C
   x86/svml.c
 
   arm/neon/add.c
+  arm/neon/get_high.c
+  arm/neon/get_low.c
   arm/neon/min.c
   arm/neon/pmin.c
   arm/neon/sub.c)

@@ -30,6 +30,8 @@
 #include "neon/types.h"
 
 #include "neon/add.h"
+#include "neon/get_high.h"
+#include "neon/get_low.h"
 #include "neon/ld1.h"
 #include "neon/min.h"
 #include "neon/pmin.h"
