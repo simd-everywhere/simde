@@ -255,7 +255,7 @@ jobs:
     - CONFIGURE_WRAPPER=emcmake
     - BUILD_WRAPPER=emmake
     - EXECUTABLE_EXTENSION=.js
-    - TEST_WRAPPER="${HOME}/.jsvu/v8 --experimental-wasm-simd"
+    - TEST_WRAPPER="${HOME}/.jsvu/v8 --experimental-wasm-simd --wasm-simd-post-mvp"
     - OPTIMIZATION_FLAGS="-O3"
     - TEST_ARG_SEPARATOR="--"
     - DIAGNOSTIC_FLAGS='-Weverything'
