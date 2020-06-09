@@ -32,6 +32,8 @@
 #include "neon/add.h"
 #include "neon/and.h"
 #include "neon/eor.h"
+#include "neon/get_high.h"
+#include "neon/get_low.h"
 #include "neon/ld1.h"
 #include "neon/min.h"
 #include "neon/orr.h"

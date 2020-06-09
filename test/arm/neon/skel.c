@@ -208,9 +208,9 @@ test_simde_vxxx_s64 (void) {
 static int
 test_simde_vxxx_u8 (void) {
   struct {
-    uint8_t a[16];
-    uint8_t b[16];
-    uint8_t r[16];
+    uint8_t a[8];
+    uint8_t b[8];
+    uint8_t r[8];
   } test_vec[] = {
 
   };
