@@ -111,6 +111,7 @@ set(TEST_SOURCES_C
   arm/neon/dup_n.c
   arm/neon/eor.c
   arm/neon/min.c
+  arm/neon/mla.c
   arm/neon/orr.c
   arm/neon/pmin.c
   arm/neon/sub.c)
