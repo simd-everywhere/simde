@@ -280,10 +280,10 @@ typedef union {
     typedef simde__m512d_private simde__m512d;
   #endif
 
-  typedef uint_fast8_t simde__mmask8;
-  typedef uint_fast16_t simde__mmask16;
-  typedef uint_fast32_t simde__mmask32;
-  typedef uint_fast64_t simde__mmask64;
+  typedef uint8_t simde__mmask8;
+  typedef uint16_t simde__mmask16;
+  typedef uint32_t simde__mmask32;
+  typedef uint64_t simde__mmask64;
 #endif
 
 #if !defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_ENABLE_NATIVE_ALIASES)
