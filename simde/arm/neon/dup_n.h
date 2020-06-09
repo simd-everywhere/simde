@@ -172,7 +172,7 @@ simde_vdup_n_u8(uint8_t value) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vdup_n_u8(value);
   #elif defined(SIMDE_X86_MMX_NATIVE)
-    return _mm_set1_pi8(value);
+    return _mm_set1_pi8(HEDLEY_STATIC_CAST(int8_t, value));
   #else
     simde_uint8x8_private r_;
 
@@ -195,7 +195,7 @@ simde_vdup_n_u16(uint16_t value) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vdup_n_u16(value);
   #elif defined(SIMDE_X86_MMX_NATIVE)
-    return _mm_set1_pi16(value);
+    return _mm_set1_pi16(HEDLEY_STATIC_CAST(int16_t, value));
   #else
     simde_uint16x4_private r_;
 
@@ -218,7 +218,7 @@ simde_vdup_n_u32(uint32_t value) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vdup_n_u32(value);
   #elif defined(SIMDE_X86_MMX_NATIVE)
-    return _mm_set1_pi32(value);
+    return _mm_set1_pi32(HEDLEY_STATIC_CAST(int32_t, value));
   #else
     simde_uint32x2_private r_;
 
@@ -412,9 +412,9 @@ simde_vdupq_n_u8(uint8_t value) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vdupq_n_u8(value);
   #elif defined(SIMDE_X86_SSE2_NATIVE)
-    return _mm_set1_epi8(value);
+    return _mm_set1_epi8(HEDLEY_STATIC_CAST(int8_t, value));
   #elif defined (SIMDE_WASM_SIMD128_NATIVE)
-    return wasm_i8x16_splat(value);
+    return wasm_i8x16_splat(HEDLEY_STATIC_CAST(int8_t, value));
   #else
     simde_uint8x16_private r_;
 
@@ -437,9 +437,9 @@ simde_vdupq_n_u16(uint16_t value) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vdupq_n_u16(value);
   #elif defined(SIMDE_X86_SSE2_NATIVE)
-    return _mm_set1_epi16(value);
+    return _mm_set1_epi16(HEDLEY_STATIC_CAST(int16_t, value));
   #elif defined (SIMDE_WASM_SIMD128_NATIVE)
-    return wasm_i16x8_splat(value);
+    return wasm_i16x8_splat(HEDLEY_STATIC_CAST(int16_t, value));
   #else
     simde_uint16x8_private r_;
 
@@ -462,9 +462,9 @@ simde_vdupq_n_u32(uint32_t value) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vdupq_n_u32(value);
   #elif defined(SIMDE_X86_SSE2_NATIVE)
-    return _mm_set1_epi32(value);
+    return _mm_set1_epi32(HEDLEY_STATIC_CAST(int32_t, value));
   #elif defined (SIMDE_WASM_SIMD128_NATIVE)
-    return wasm_i32x4_splat(value);
+    return wasm_i32x4_splat(HEDLEY_STATIC_CAST(int32_t, value));
   #else
     simde_uint32x4_private r_;
 
@@ -487,9 +487,9 @@ simde_vdupq_n_u64(uint64_t value) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vdupq_n_u64(value);
   #elif defined(SIMDE_X86_SSE2_NATIVE)
-    return _mm_set1_epi64x(value);
+    return _mm_set1_epi64x(HEDLEY_STATIC_CAST(int64_t, value));
   #elif defined (SIMDE_WASM_SIMD128_NATIVE)
-    return wasm_i64x2_splat(value);
+    return wasm_i64x2_splat(HEDLEY_STATIC_CAST(int64_t, value));
   #else
     simde_uint64x2_private r_;
 
