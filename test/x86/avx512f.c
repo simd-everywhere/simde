@@ -12391,7 +12391,7 @@ test_simde_mm512_mask_extractf32x4_ps(void) {
     simde_assert_m128_close(r, test_vec[i].r3, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -12490,7 +12490,7 @@ test_simde_mm512_maskz_extractf32x4_ps(void) {
     simde_assert_m128_close(r, test_vec[i].r3, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -12684,7 +12684,7 @@ test_simde_mm512_mask_extractf64x4_pd(void) {
     simde_assert_m256d_close(r, test_vec[i].r1, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -12777,7 +12777,7 @@ test_simde_mm512_maskz_extractf64x4_pd(void) {
     simde_assert_m256d_close(r, test_vec[i].r1, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -12975,7 +12975,7 @@ test_simde_mm512_mask_extracti32x4_epi32(void) {
     simde_assert_m128i_i32(r, ==, test_vec[i].r3);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -13074,7 +13074,7 @@ test_simde_mm512_maskz_extracti32x4_epi32(void) {
     simde_assert_m128i_i32(r, ==, test_vec[i].r3);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -13268,7 +13268,7 @@ test_simde_mm512_mask_extracti64x4_epi64(void) {
     simde_assert_m256i_i64(r, ==, test_vec[i].r1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -13361,7 +13361,7 @@ test_simde_mm512_maskz_extracti64x4_epi64(void) {
     simde_assert_m256i_i64(r, ==, test_vec[i].r1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -13793,7 +13793,7 @@ test_simde_mm512_mask_insertf32x4(void) {
     simde_assert_m512_close(r, test_vec[i].r3, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -13997,7 +13997,7 @@ test_simde_mm512_maskz_insertf32x4(void) {
     simde_assert_m512_close(r, test_vec[i].r3, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -14305,7 +14305,7 @@ test_simde_mm512_mask_insertf64x4(void) {
     simde_assert_m512d_close(r, test_vec[i].r1, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -14447,7 +14447,7 @@ test_simde_mm512_maskz_insertf64x4(void) {
     simde_assert_m512d_close(r, test_vec[i].r1, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -14642,7 +14642,7 @@ test_simde_mm512_inserti32x4(void) {
     simde_assert_m512i_i32(r, ==, test_vec[i].r3);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -14879,7 +14879,7 @@ test_simde_mm512_mask_inserti32x4(void) {
     simde_assert_m512i_i32(r, ==, test_vec[i].r3);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -15391,7 +15391,7 @@ test_simde_mm512_mask_inserti64x4(void) {
     simde_assert_m512i_i64(r, ==, test_vec[i].r1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -15533,7 +15533,7 @@ test_simde_mm512_maskz_inserti64x4(void) {
     simde_assert_m512i_i64(r, ==, test_vec[i].r1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -22520,7 +22520,7 @@ test_simde_mm512_mask_permutexvar_epi32(void) {
     simde_assert_m512i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -22642,7 +22642,7 @@ test_simde_mm512_maskz_permutexvar_epi32(void) {
     simde_assert_m512i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -22910,7 +22910,7 @@ test_simde_mm512_mask_permutexvar_epi64(void) {
     simde_assert_m512i_i64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -23032,7 +23032,7 @@ test_simde_mm512_maskz_permutexvar_epi64(void) {
     simde_assert_m512i_i64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -23300,7 +23300,7 @@ test_simde_mm512_mask_permutexvar_pd(void) {
     simde_assert_m512d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -23422,7 +23422,7 @@ test_simde_mm512_maskz_permutexvar_pd(void) {
     simde_assert_m512d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -23690,7 +23690,7 @@ test_simde_mm512_mask_permutexvar_ps(void) {
     simde_assert_m512_close(r, test_vec[i].r, 1);
  }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -23812,7 +23812,7 @@ test_simde_mm512_maskz_permutexvar_ps(void) {
     simde_assert_m512_close(r, test_vec[i].r, 1);
  }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -24113,7 +24113,7 @@ test_simde_mm512_mask_permutex2var_epi32(void) {
     simde_assert_m512i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -24268,7 +24268,7 @@ test_simde_mm512_mask2_permutex2var_epi32(void) {
     simde_assert_m512i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -24423,7 +24423,7 @@ test_simde_mm512_maskz_permutex2var_epi32(void) {
     simde_assert_m512i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -24724,7 +24724,7 @@ test_simde_mm512_mask_permutex2var_epi64(void) {
     simde_assert_m512i_i64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -24879,7 +24879,7 @@ test_simde_mm512_mask2_permutex2var_epi64(void) {
     simde_assert_m512i_i64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -25034,7 +25034,7 @@ test_simde_mm512_maskz_permutex2var_epi64(void) {
     simde_assert_m512i_i64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -25335,7 +25335,7 @@ test_simde_mm512_mask_permutex2var_pd(void) {
     simde_assert_m512d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -25490,7 +25490,7 @@ test_simde_mm512_mask2_permutex2var_pd(void) {
     simde_assert_m512d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -25645,7 +25645,7 @@ test_simde_mm512_maskz_permutex2var_pd(void) {
     simde_assert_m512d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -25946,7 +25946,7 @@ test_simde_mm512_mask_permutex2var_ps(void) {
     simde_assert_m512_close(r, test_vec[i].r, 1);
  }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -26101,7 +26101,7 @@ test_simde_mm512_mask2_permutex2var_ps(void) {
     simde_assert_m512_close(r, test_vec[i].r, 1);
  }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -26256,7 +26256,7 @@ test_simde_mm512_maskz_permutex2var_ps(void) {
     simde_assert_m512_close(r, test_vec[i].r, 1);
  }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -30853,7 +30853,7 @@ test_simde_mm512_setr_pd(void) {
     simde_assert_m512d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 HEDLEY_DIAGNOSTIC_PUSH

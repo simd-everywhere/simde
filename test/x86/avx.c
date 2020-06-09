@@ -55,7 +55,7 @@ test_simde_mm256_set_epi8(void) {
     simde_test_x86_assert_equal_i8x32(simde_x_mm256_loadu_epi8(a), r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -71,7 +71,7 @@ test_simde_mm256_set_epi16(void) {
     simde_test_x86_assert_equal_i16x16(simde_x_mm256_loadu_epi16(a), r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -86,7 +86,7 @@ test_simde_mm256_set_epi32(void) {
     simde_test_x86_assert_equal_i32x8(simde_x_mm256_loadu_epi32(a), r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -101,7 +101,7 @@ test_simde_mm256_set_epi64x(void) {
     simde_test_x86_assert_equal_i64x4(simde_x_mm256_loadu_epi64(a), r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -416,7 +416,7 @@ test_simde_mm256_set1_epi8(void) {
     simde_assert_m256i_i8(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -472,7 +472,7 @@ test_simde_mm256_set1_epi16(void) {
     simde_assert_m256i_i16(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -512,7 +512,7 @@ test_simde_mm256_set1_epi32(void) {
     simde_assert_m256i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -552,7 +552,7 @@ test_simde_mm256_set1_epi64x(void) {
     simde_assert_m256i_i64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -608,7 +608,7 @@ test_simde_mm256_set1_ps(void) {
     simde_assert_m256_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -648,7 +648,7 @@ test_simde_mm256_set1_pd(void) {
     simde_assert_m256d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -871,7 +871,7 @@ test_simde_mm256_addsub_ps(void) {
     simde_assert_m256_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -936,7 +936,7 @@ test_simde_mm256_addsub_pd(void) {
     simde_assert_m256d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -1049,7 +1049,7 @@ test_simde_mm256_and_ps(void) {
     simde_assert_m256_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -1114,7 +1114,7 @@ test_simde_mm256_and_pd(void) {
     simde_assert_m256d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -1179,7 +1179,7 @@ test_simde_mm256_andnot_ps(void) {
     simde_assert_m256i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -1244,7 +1244,7 @@ test_simde_mm256_andnot_pd(void) {
     simde_assert_m256i_i64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -1324,7 +1324,7 @@ test_simde_mm256_castps_pd(void) {
     simde_assert_m256_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -1372,7 +1372,7 @@ test_simde_mm256_castpd_ps(void) {
     simde_assert_m256d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -1429,7 +1429,7 @@ test_simde_mm256_castps128_ps256(void) {
     simde_assert_m128_equal(r.m128[0], expected.m128[0]);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -1485,7 +1485,7 @@ test_simde_mm256_castps256_ps128(void) {
     simde_assert_m128_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -1533,7 +1533,7 @@ test_simde_mm256_castps_si256(void) {
     simde_assert_m256i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -1581,7 +1581,7 @@ test_simde_mm256_castpd_si256(void) {
     simde_assert_m256i_i64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -1622,7 +1622,7 @@ test_simde_mm256_castsi128_si256(void) {
     simde_assert_m128i_equal(r, e);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -1662,7 +1662,7 @@ test_simde_mm256_castsi256_si128(void) {
     simde_assert_m128i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -1710,7 +1710,7 @@ test_simde_mm256_castsi256_ps(void) {
     simde_assert_m256i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -1758,7 +1758,7 @@ test_simde_mm256_castsi256_pd(void) {
     simde_assert_m256i_i64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -1871,7 +1871,7 @@ test_simde_mm256_blend_ps(void) {
     simde_assert_m256_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -1936,7 +1936,7 @@ test_simde_mm256_blend_pd(void) {
     simde_assert_m256d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -2082,7 +2082,7 @@ test_simde_mm256_blendv_ps(void) {
     simde_assert_m256_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -2164,7 +2164,7 @@ test_simde_mm256_blendv_pd(void) {
     simde_assert_m256d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -2277,7 +2277,7 @@ test_simde_mm256_broadcast_sd(void) {
     simde_assert_m256d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -2309,7 +2309,7 @@ test_simde_mm_broadcast_ss(void) {
     simde_assert_m128_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -2365,7 +2365,7 @@ test_simde_mm256_broadcast_ss(void) {
     simde_assert_m256_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -2406,7 +2406,7 @@ test_simde_mm256_castpd128_pd256(void) {
     simde_assert_m128d_equal(r.m128d[0], expected.m128d[0]);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -2446,7 +2446,7 @@ test_simde_mm256_castpd256_pd128(void) {
     simde_assert_m128i_equal(simde_mm_castpd_si128(r), simde_mm_castpd_si128(test_vec[i].r));
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -2494,7 +2494,7 @@ test_simde_mm256_ceil_pd(void) {
     simde_assert_m256d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -2574,7 +2574,7 @@ test_simde_mm256_ceil_ps(void) {
     simde_assert_m256_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -3196,7 +3196,7 @@ test_simde_mm_cmp_pd(void) {
     simde_assert_m128d_equal(r, test_vec[31 * 5].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -3395,7 +3395,7 @@ test_simde_mm_cmp_ps(void) {
   r = simde_mm_cmp_ps(a, b, SIMDE_CMP_TRUE_US);
   simde_assert_m128i_u32(simde_mm_castps_si128(r), ==, simde_mm_castps_si128(e));
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -3594,7 +3594,7 @@ test_simde_mm_cmp_sd(void) {
   r = simde_mm_cmp_sd(a, b, 31);
   simde_assert_m128i_u64(simde_mm_castpd_si128(r), ==, simde_mm_castpd_si128(e));
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -3793,7 +3793,7 @@ test_simde_mm_cmp_ss(void) {
   r = simde_mm_cmp_ss(a, b, 31);
   simde_assert_m128i_u32(simde_mm_castps_si128(r), ==, simde_mm_castps_si128(e));
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -4088,7 +4088,7 @@ test_simde_mm256_cmp_pd(void) {
   r = simde_mm256_cmp_pd(a, b, 31);
   simde_assert_m256i_equal(simde_mm256_castpd_si256(r), simde_mm256_castpd_si256(e));
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -4575,7 +4575,7 @@ test_simde_mm256_cmp_ps(void) {
   r = simde_mm256_cmp_ps(a, b, 31);
   simde_assert_m256i_equal(simde_mm256_castps_si256(r), simde_mm256_castps_si256(e));
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -4615,7 +4615,7 @@ test_simde_mm256_cvtepi32_pd(void) {
     simde_assert_m256d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -4679,7 +4679,7 @@ test_simde_mm256_cvtepi32_ps(void) {
     simde_assert_m256_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -4719,7 +4719,7 @@ test_simde_mm256_cvtpd_epi32(void) {
     simde_assert_m128i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -4759,7 +4759,7 @@ test_simde_mm256_cvtpd_ps(void) {
     simde_assert_m128_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -4823,7 +4823,7 @@ test_simde_mm256_cvtps_epi32(void) {
     simde_assert_m256i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -4863,7 +4863,7 @@ test_simde_mm256_cvtps_pd(void) {
     simde_assert_m256d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -5009,7 +5009,7 @@ test_simde_mm256_cvttpd_epi32(void) {
     simde_assert_m128i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -5073,7 +5073,7 @@ test_simde_mm256_cvttps_epi32(void) {
     simde_assert_m256i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -5185,7 +5185,7 @@ test_simde_mm256_div_ps(void) {
     simde_assert_m256_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -5250,7 +5250,7 @@ test_simde_mm256_div_pd(void) {
     simde_assert_m256d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -5330,7 +5330,7 @@ test_simde_mm256_floor_ps(void) {
     simde_assert_m256_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -5398,7 +5398,7 @@ test_simde_mm256_extractf128_pd(void) {
     simde_assert_m128d_equal(rb, test_vec[i].rb);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -5498,7 +5498,7 @@ test_simde_mm256_extractf128_ps(void) {
     simde_assert_m128_close(rb, test_vec[i].rb, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -5566,7 +5566,7 @@ test_simde_mm256_extractf128_si256(void) {
     simde_assert_m128i_i32(rb, ==, test_vec[i].rb);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -5614,7 +5614,7 @@ test_simde_mm256_floor_pd(void) {
     simde_assert_m256d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -5727,7 +5727,7 @@ test_simde_mm256_hadd_ps(void) {
     simde_assert_m256_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -5792,7 +5792,7 @@ test_simde_mm256_hadd_pd(void) {
     simde_assert_m256d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -5905,7 +5905,7 @@ test_simde_mm256_hsub_ps(void) {
     simde_assert_m256_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -5970,7 +5970,7 @@ test_simde_mm256_hsub_pd(void) {
     simde_assert_m256d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -6083,7 +6083,7 @@ test_simde_mm256_dp_ps(void) {
     simde_assert_m256_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -6122,7 +6122,7 @@ test_simde_mm256_extract_epi32(void) {
                             INT32_C(-1364763213), INT32_C(  217047214), INT32_C( 1964050600), INT32_C(-1022338452));
   simde_assert_equal_i32(simde_mm256_extract_epi32(a, 7), INT32_C(-541300758));
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -6161,7 +6161,7 @@ test_simde_mm256_extract_epi64(void) {
                              INT64_C(   28110904629261106), INT64_C(-2611039926221160636));
   simde_assert_equal_i64(simde_mm256_extract_epi64(a, 3), INT64_C(-5169157996131687226));
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -6320,7 +6320,7 @@ test_simde_mm256_insert_epi8(void) {
                            INT8_C( -78), INT8_C( -81), INT8_C(  40), INT8_C( -98));
   simde_assert_m256i_i8(r, ==, e);
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -6415,7 +6415,7 @@ test_simde_mm256_insert_epi16(void) {
                             INT16_C(-18143), INT16_C( 23566), INT16_C(-32412), INT16_C(-20606));
   simde_assert_m256i_i16(r, ==, e);
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -6486,7 +6486,7 @@ test_simde_mm256_insert_epi32(void) {
                             INT32_C(-2067091063), INT32_C( 1069015288), INT32_C(  896343144), INT32_C( 1078737418));
   simde_assert_m256i_i32(r, ==, e);
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -6549,7 +6549,7 @@ test_simde_mm256_insert_epi64(void) {
                              INT64_C( 8511510589800984870), INT64_C( 7232381223726455225));
   simde_assert_m256i_i64(r, ==, e);
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -6681,7 +6681,7 @@ test_simde_mm256_insertf128_ps(void) {
     simde_assert_m256_close(rb, test_vec[i].rb, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -6757,7 +6757,7 @@ test_simde_mm256_insertf128_pd(void) {
     simde_assert_m256d_close(rb, test_vec[i].rb, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -6833,7 +6833,7 @@ test_simde_mm256_insertf128_si256(void) {
     simde_assert_m256i_i32(rb, ==, test_vec[i].rb);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -6881,7 +6881,7 @@ test_simde_mm256_lddqu_si256(void) {
     simde_assert_m256i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -6921,7 +6921,7 @@ test_simde_mm256_load_pd(void) {
     simde_assert_m256d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -7001,7 +7001,7 @@ test_simde_mm256_load_ps(void) {
     simde_assert_m256_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -7049,7 +7049,7 @@ test_simde_mm256_load_si256(void) {
     simde_assert_m256i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -7097,7 +7097,7 @@ test_simde_mm256_loadu_pd(void) {
     simde_assert_m256d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -7177,7 +7177,7 @@ test_simde_mm256_loadu_ps(void) {
     simde_assert_m256_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -7225,7 +7225,7 @@ test_simde_mm256_loadu_si256(void) {
     simde_assert_m256i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -7290,7 +7290,7 @@ test_simde_mm256_loadu2_m128(void) {
     simde_assert_m256_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -7339,7 +7339,7 @@ test_simde_mm256_loadu2_m128d(void) {
     simde_assert_m256d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -7388,7 +7388,7 @@ test_simde_mm256_loadu2_m128i(void) {
     simde_assert_m256i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -7624,7 +7624,7 @@ test_simde_mm_maskstore_pd(void) {
     simde_assert_equal_vf64(sizeof(r) / sizeof(r[0]), r, test_vec[i].ro, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -7708,7 +7708,7 @@ test_simde_mm256_maskstore_pd(void) {
     simde_assert_equal_vf64(sizeof(r) / sizeof(r[0]), r, test_vec[i].ro, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -7760,7 +7760,7 @@ test_simde_mm_maskstore_ps(void) {
     simde_assert_equal_vf32(sizeof(r) / sizeof(r[0]), r, test_vec[i].ro, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -7892,7 +7892,7 @@ test_simde_mm256_maskstore_ps(void) {
     simde_assert_equal_vf32(sizeof(r) / sizeof(r[0]), r, test_vec[i].ro, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -8005,7 +8005,7 @@ test_simde_mm256_min_ps(void) {
     simde_assert_m256_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -8070,7 +8070,7 @@ test_simde_mm256_min_pd(void) {
     simde_assert_m256d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -8183,7 +8183,7 @@ test_simde_mm256_max_ps(void) {
     simde_assert_m256_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -8248,7 +8248,7 @@ test_simde_mm256_max_pd(void) {
     simde_assert_m256d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -8296,7 +8296,7 @@ test_simde_mm256_movedup_pd(void) {
     simde_assert_m256d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -8376,7 +8376,7 @@ test_simde_mm256_movehdup_ps(void) {
     simde_assert_m256_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -8456,7 +8456,7 @@ test_simde_mm256_moveldup_ps(void) {
     simde_assert_m256_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -8496,7 +8496,7 @@ test_simde_mm256_movemask_ps(void) {
     simde_assert_equal_i(r, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -8536,7 +8536,7 @@ test_simde_mm256_movemask_pd(void) {
     simde_assert_equal_i(r, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -8649,7 +8649,7 @@ test_simde_mm256_mul_ps(void) {
     simde_assert_m256_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -8714,7 +8714,7 @@ test_simde_mm256_mul_pd(void) {
     simde_assert_m256d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -8827,7 +8827,7 @@ test_simde_mm256_or_ps(void) {
     simde_assert_m256_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -8892,7 +8892,7 @@ test_simde_mm256_or_pd(void) {
     simde_assert_m256i_equal(r, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -9001,7 +9001,7 @@ test_simde_mm256_permute_ps(void) {
     simde_assert_m256_close(r, test_vec[i].p[7].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -9126,7 +9126,7 @@ test_simde_mm_permute_pd(void) {
     simde_assert_m128d_close(r, test_vec[i].p[3].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -9187,7 +9187,7 @@ test_simde_mm_permute_ps(void) {
   r = simde_mm_permute_ps(test_vec[7].a, 169);
   simde_assert_m128_equal(r, test_vec[7].r);
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -9342,7 +9342,7 @@ test_simde_mm256_permute_pd(void) {
     simde_assert_m256d_close(r, test_vec[i].r[3], 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -9383,7 +9383,7 @@ test_simde_mm_permutevar_ps(void) {
     simde_assert_m128_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -9424,7 +9424,7 @@ test_simde_mm_permutevar_pd(void) {
     simde_assert_m128d_equal(r, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -9521,7 +9521,7 @@ test_simde_mm256_permutevar_ps(void) {
     simde_assert_m256_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -9586,7 +9586,7 @@ test_simde_mm256_permutevar_pd(void) {
     simde_assert_m256d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -9840,7 +9840,7 @@ test_simde_mm256_permute2f128_ps(void) {
   r = simde_mm256_permute2f128_ps(test_vec[0xf].a, test_vec[0xf].b, 0xf);
   simde_assert_m256_close(r, test_vec[0xf].r, 1);
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -9920,7 +9920,7 @@ test_simde_mm256_rcp_ps(void) {
     simde_assert_m256_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -10110,7 +10110,7 @@ test_simde_mm256_round_ps(void) {
     simde_assert_m256_close(r, test_vec[i].truncate, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -10220,7 +10220,7 @@ test_simde_mm256_round_pd(void) {
     simde_assert_m256d_close(r, test_vec[i].truncate, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -10300,7 +10300,7 @@ test_simde_mm256_rsqrt_ps(void) {
     simde_assert_m256_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -10452,7 +10452,7 @@ test_simde_mm256_setr_epi8(void) {
     simde_assert_m256i_i8(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -10536,7 +10536,7 @@ test_simde_mm256_setr_epi16(void) {
     simde_assert_m256i_i16(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -10586,7 +10586,7 @@ test_simde_mm256_setr_epi32(void) {
     simde_assert_m256i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -10635,7 +10635,7 @@ test_simde_mm256_setr_epi64x(void) {
     simde_assert_m256i_i64(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -10717,7 +10717,7 @@ test_simde_mm256_setr_ps(void) {
     simde_assert_m256_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -10766,7 +10766,7 @@ test_simde_mm256_setr_pd(void) {
     simde_assert_m256d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -10831,7 +10831,7 @@ test_simde_mm256_setr_m128(void) {
     simde_assert_m256_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -10880,7 +10880,7 @@ test_simde_mm256_setr_m128d(void) {
     simde_assert_m256d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -10929,7 +10929,7 @@ test_simde_mm256_setr_m128i(void) {
     simde_assert_m256i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -11080,7 +11080,7 @@ test_simde_mm256_shuffle_ps(void) {
     simde_assert_m256_close(r, test_vec[i].r2, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -11167,7 +11167,7 @@ test_simde_mm256_shuffle_pd(void) {
     simde_assert_m256d_close(r, test_vec[i].r2, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -11247,7 +11247,7 @@ test_simde_mm256_sqrt_ps(void) {
     simde_assert_m256_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -11261,7 +11261,7 @@ test_simde_mm256_setzero_ps(void) {
   simde__m256 res = simde_mm256_setzero_ps();
   simde_assert_m256_close(r, res, 1);
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -11273,7 +11273,7 @@ test_simde_mm256_setzero_pd(void) {
   simde__m256d res = simde_mm256_setzero_pd();
   simde_assert_m256d_close(r, res, 1);
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -11285,7 +11285,7 @@ test_simde_mm256_setzero_si256(void) {
   simde__m256i res = simde_mm256_setzero_si256();
   simde_assert_m256i_i32(r, ==, res);
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -11333,7 +11333,7 @@ test_simde_mm256_sqrt_pd(void) {
     simde_assert_m256d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -11414,7 +11414,7 @@ test_simde_mm256_store_ps(void) {
     simde_assert_equal_vf32(sizeof(r) / sizeof(r[0]), r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -11463,7 +11463,7 @@ test_simde_mm256_store_pd(void) {
     simde_assert_equal_vf64(sizeof(r) / sizeof(r[0]), r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -11512,7 +11512,7 @@ test_simde_mm256_store_si256(void) {
     simde_assert_m256i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -11593,7 +11593,7 @@ test_simde_mm256_storeu_ps(void) {
     simde_assert_equal_vf32(sizeof(r) / sizeof(r[0]), r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -11642,7 +11642,7 @@ test_simde_mm256_storeu_pd(void) {
     simde_assert_equal_vf64(sizeof(r) / sizeof(r[0]), r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -11691,7 +11691,7 @@ test_simde_mm256_storeu_si256(void) {
     simde_assert_m256i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -11743,7 +11743,7 @@ test_simde_mm256_storeu2_m128d(void) {
     simde_assert_equal_vf64(sizeof(hi) / sizeof(hi[0]), hi, test_vec[i].hi, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -11827,7 +11827,7 @@ test_simde_mm256_storeu2_m128(void) {
     simde_assert_equal_vf32(sizeof(hi) / sizeof(hi[0]), hi, test_vec[i].hi, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -11878,7 +11878,7 @@ test_simde_mm256_storeu2_m128i(void) {
     simde_test_x86_assert_equal_i32x4(hi, test_vec[i].hi);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -11959,7 +11959,7 @@ test_simde_mm256_stream_ps(void) {
     simde_assert_equal_vf32(sizeof(r) / sizeof(r[0]), r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -12008,7 +12008,7 @@ test_simde_mm256_stream_pd(void) {
     simde_assert_equal_vf64(sizeof(r) / sizeof(r[0]), r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -12057,7 +12057,7 @@ test_simde_mm256_stream_si256(void) {
     simde_assert_m256i_i32(r, ==, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -12170,7 +12170,7 @@ test_simde_mm256_sub_ps(void) {
     simde_assert_m256_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -12235,7 +12235,7 @@ test_simde_mm256_sub_pd(void) {
     simde_assert_m256d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -12248,7 +12248,7 @@ test_simde_mm256_undefined_ps(void) {
 
   simde_assert_m256_close(r, e, 1);
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -12261,7 +12261,7 @@ test_simde_mm256_undefined_pd(void) {
 
   simde_assert_m256d_close(r, e, 1);
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -12273,7 +12273,7 @@ test_simde_mm256_undefined_si256(void) {
   r = simde_mm256_xor_pd(r, r);
 
   simde_assert_m256i_equal(simde_mm256_castpd_si256(r), simde_mm256_castpd_si256(e));
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -12386,7 +12386,7 @@ test_simde_mm256_unpackhi_ps(void) {
     simde_assert_m256_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -12451,7 +12451,7 @@ test_simde_mm256_unpackhi_pd(void) {
     simde_assert_m256d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -12564,7 +12564,7 @@ test_simde_mm256_unpacklo_ps(void) {
     simde_assert_m256_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -12629,7 +12629,7 @@ test_simde_mm256_unpacklo_pd(void) {
     simde_assert_m256d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -12694,7 +12694,7 @@ test_simde_mm256_xor_pd(void) {
     simde_assert_m256d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -12807,7 +12807,7 @@ test_simde_mm256_xor_ps(void) {
     simde_assert_m256_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 
@@ -12872,7 +12872,7 @@ test_simde_mm256_zextps128_ps256(void) {
     simde_assert_m256_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -12912,7 +12912,7 @@ test_simde_mm256_zextpd128_pd256(void) {
     simde_assert_m256d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -12986,7 +12986,7 @@ test_simde_mm_testc_ps(void) {
     simde_assert_equal_i(r, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -13026,7 +13026,7 @@ test_simde_mm_testc_pd(void) {
     simde_assert_equal_i(r, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -13115,7 +13115,7 @@ test_simde_mm256_testc_ps(void) {
     simde_assert_equal_i(r, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -13172,7 +13172,7 @@ test_simde_mm256_testc_pd(void) {
     simde_assert_equal_i(r, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -13229,7 +13229,7 @@ test_simde_mm256_testc_si256(void) {
     simde_assert_equal_i(r, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -13270,7 +13270,7 @@ test_simde_mm_testz_ps(void) {
     simde_assert_equal_i(r, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -13311,7 +13311,7 @@ test_simde_mm_testz_pd(void) {
     simde_assert_equal_i(r, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -13400,7 +13400,7 @@ test_simde_mm256_testz_ps(void) {
     simde_assert_equal_i(r, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -13457,7 +13457,7 @@ test_simde_mm256_testz_pd(void) {
     simde_assert_equal_i(r, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -13514,7 +13514,7 @@ test_simde_mm256_testz_si256(void) {
     simde_assert_equal_i(r, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -13555,7 +13555,7 @@ test_simde_mm_testnzc_ps(void) {
     simde_assert_equal_i(r, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -13596,7 +13596,7 @@ test_simde_mm_testnzc_pd(void) {
     simde_assert_equal_i(r, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -13685,7 +13685,7 @@ test_simde_mm256_testnzc_ps(void) {
     simde_assert_equal_i(r, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -13742,7 +13742,7 @@ test_simde_mm256_testnzc_pd(void) {
     simde_assert_equal_i(r, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 static int
@@ -13799,7 +13799,7 @@ test_simde_mm256_testnzc_si256(void) {
     simde_assert_equal_i(r, test_vec[i].r);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
 SIMDE_TEST_FUNC_LIST_BEGIN
