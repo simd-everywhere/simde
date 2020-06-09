@@ -32,6 +32,7 @@
 #define SIMDE_FEATURES_H
 
 #include "simde-arch.h"
+#include "simde-diagnostic.h"
 
 #if !defined(SIMDE_X86_SVML_NATIVE) && !defined(SIMDE_X86_SVML_NO_NATIVE) && !defined(SIMDE_NO_NATIVE)
   #if defined(SIMDE_ARCH_X86_SVML)
@@ -247,7 +248,10 @@
 #endif
 #if defined(SIMDE_WASM_SIMD128_NATIVE)
   #if !defined(__wasm_unimplemented_simd128__)
+    HEDLEY_DIAGNOSTIC_PUSH
+    SIMDE_DIAGNOSTIC_DISABLE_RESERVED_ID_MACRO_
     #define __wasm_unimplemented_simd128__
+    HEDLEY_DIAGNOSTIC_POP
   #endif
   #include <wasm_simd128.h>
 #endif

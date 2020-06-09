@@ -176,6 +176,17 @@
   #define SIMDE_DIAGNOSTIC_DISABLE_VARIADIC_MACROS_
 #endif
 
+/* emscripten requires us to use a __wasm_unimplemented_simd128__ macro
+ * before we can access certain SIMD intrinsics, but this diagnostic
+ * warns about it being a reserved name.  It is a reserved name, but
+ * it's reserved for the compiler and we are using it to convey
+ * information to the compiler. */
+#if HEDLEY_HAS_WARNING("-Wdouble-promotion")
+  #define SIMDE_DIAGNOSTIC_DISABLE_RESERVED_ID_MACRO_ _Pragma("clang diagnostic ignored \"-Wreserved-id-macro\"")
+#else
+  #define SIMDE_DIAGNOSTIC_DISABLE_RESERVED_ID_MACRO_
+#endif
+
 /* Triggered when assigning a float to a double implicitly.  We use
  * explicit casts in SIMDe, this is only used in the test suite. */
 #if HEDLEY_HAS_WARNING("-Wdouble-promotion")
@@ -276,6 +287,14 @@
   #define SIMDE_DIAGNOSTIC_DISABLE_CPP98_COMPAT_PEDANTIC_ _Pragma("clang diagnostic ignored \"-Wc++98-compat-pedantic\"")
 #else
   #define SIMDE_DIAGNOSTIC_DISABLE_CPP98_COMPAT_PEDANTIC_
+#endif
+
+/* emscripten emits this whenever stdin/stdout/stderr is used in a
+ * macro. */
+#if HEDLEY_HAS_WARNING("-Wdisabled-macro-expansion")
+  #define SIMDE_DIAGNOSTIC_DISABLE_DISABLED_MACRO_EXPANSION_ _Pragma("clang diagnostic ignored \"-Wdisabled-macro-expansion\"")
+#else
+  #define SIMDE_DIAGNOSTIC_DISABLE_DISABLED_MACRO_EXPANSION_
 #endif
 
 #define SIMDE_DISABLE_UNWANTED_DIAGNOSTICS \
