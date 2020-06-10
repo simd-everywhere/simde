@@ -220,12 +220,14 @@ simde_test_codegen_random_memory(size_t buf_len, uint8_t buf[HEDLEY_ARRAY_PARAM(
 
 static simde_float32
 simde_test_codegen_random_f32(simde_float32 min, simde_float32 max) {
-  return (HEDLEY_STATIC_CAST(simde_float32, simde_test_codegen_rand()) / (HEDLEY_STATIC_CAST(simde_float32, RAND_MAX) / (max - min))) + min;
+  simde_float32 v = (HEDLEY_STATIC_CAST(simde_float32, simde_test_codegen_rand()) / (HEDLEY_STATIC_CAST(simde_float32, RAND_MAX) / (max - min))) + min;
+  return simde_math_roundf(v * SIMDE_FLOAT32_C(100.0)) / SIMDE_FLOAT32_C(100.0);
 }
 
 static simde_float64
 simde_test_codegen_random_f64(simde_float64 min, simde_float64 max) {
-  return (HEDLEY_STATIC_CAST(simde_float64, simde_test_codegen_rand()) / (HEDLEY_STATIC_CAST(simde_float64, RAND_MAX) / (max - min))) + min;
+  simde_float64 v = (HEDLEY_STATIC_CAST(simde_float64, simde_test_codegen_rand()) / (HEDLEY_STATIC_CAST(simde_float64, RAND_MAX) / (max - min))) + min;
+  return simde_math_round(v * SIMDE_FLOAT64_C(100.0)) / SIMDE_FLOAT64_C(100.0);
 }
 
 static void
