@@ -367,7 +367,7 @@ simde_vaddq_f64(simde_float64x2_t a, simde_float64x2_t b) {
   #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
     return vec_add(a, b);
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    return wasm_f32x4_add(a, b);
+    return wasm_f64x2_add(a, b);
   #else
     simde_float64x2_private
       r_,
