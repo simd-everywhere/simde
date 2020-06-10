@@ -35,6 +35,7 @@
 #include "neon/ld1.h"
 #include "neon/min.h"
 #include "neon/orr.h"
+#include "neon/padd.h"
 #include "neon/pmin.h"
 #include "neon/st1.h"
 #include "neon/sub.h"
