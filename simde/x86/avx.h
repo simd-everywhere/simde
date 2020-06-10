@@ -3555,20 +3555,25 @@ simde_mm256_loadu2_m128i (const simde__m128i* hiaddr, const simde__m128i* loaddr
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128d
 simde_mm_maskload_pd (const simde_float64 mem_addr[HEDLEY_ARRAY_PARAM(4)], simde__m128i mask) {
-#if defined(SIMDE_X86_AVX_NATIVE)
-  return _mm_maskload_pd(mem_addr, mask);
-#else
-  simde__m128d_private r_;
-  simde__m128i_private mask_ = simde__m128i_to_private(mask);
+  #if defined(SIMDE_X86_AVX_NATIVE)
+    return _mm_maskload_pd(mem_addr, mask);
+  #else
+    simde__m128d_private
+      mem_ = simde__m128d_to_private(simde_mm_loadu_pd(mem_addr)),
+      r_;
+    simde__m128i_private mask_ = simde__m128i_to_private(mask);
 
-  r_ = simde__m128d_to_private(simde_mm_loadu_pd(mem_addr));
-  SIMDE_VECTORIZE
-  for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
-    r_.i64[i] &= mask_.i64[i] >> 63;
-  }
+    #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+      r_.neon_i64 = vandq_s64(mem_.neon_i64, vshrq_n_s64(mask_.neon_i64, 63));
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
+        r_.i64[i] = mem_.i64[i] & (mask_.i64[i] >> 63);
+      }
+    #endif
 
-  return simde__m128d_from_private(r_);
-#endif
+    return simde__m128d_from_private(r_);
+  #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
 #  define _mm_maskload_pd(mem_addr, mask) simde_mm_maskload_pd(HEDLEY_REINTERPRET_CAST(double const*, mem_addr), mask)
@@ -3599,20 +3604,25 @@ simde_mm256_maskload_pd (const simde_float64 mem_addr[HEDLEY_ARRAY_PARAM(4)], si
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128
 simde_mm_maskload_ps (const simde_float32 mem_addr[HEDLEY_ARRAY_PARAM(4)], simde__m128i mask) {
-#if defined(SIMDE_X86_AVX_NATIVE)
-  return _mm_maskload_ps(mem_addr, mask);
-#else
-  simde__m128_private r_;
-  simde__m128i_private mask_ = simde__m128i_to_private(mask);
+  #if defined(SIMDE_X86_AVX_NATIVE)
+    return _mm_maskload_ps(mem_addr, mask);
+  #else
+    simde__m128_private
+      mem_ = simde__m128_to_private(simde_mm_loadu_ps(mem_addr)),
+      r_;
+    simde__m128i_private mask_ = simde__m128i_to_private(mask);
 
-  r_ = simde__m128_to_private(simde_mm_loadu_ps(mem_addr));
-  SIMDE_VECTORIZE
-  for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
-    r_.i32[i] &= mask_.i32[i] >> 31;
-  }
+    #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+      r_.neon_i32 = vandq_s32(mem_.neon_i32, vshrq_n_s32(mask_.neon_i32, 31));
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {
+        r_.i32[i] = mem_.i32[i] & (mask_.i32[i] >> 31);
+      }
+    #endif
 
-  return simde__m128_from_private(r_);
-#endif
+    return simde__m128_from_private(r_);
+  #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
 #  define _mm_maskload_ps(mem_addr, mask) simde_mm_maskload_ps(HEDLEY_REINTERPRET_CAST(float const*, mem_addr), mask)
