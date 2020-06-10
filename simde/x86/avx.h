@@ -3561,11 +3561,10 @@ simde_mm_maskload_pd (const simde_float64 mem_addr[HEDLEY_ARRAY_PARAM(4)], simde
   simde__m128d_private r_;
   simde__m128i_private mask_ = simde__m128i_to_private(mask);
 
+  r_ = simde__m128d_to_private(simde_mm_loadu_pd(mem_addr));
   SIMDE_VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
-    int64_t tmp;
-    simde_memcpy(&tmp, &(mem_addr[i]), sizeof(simde_float64));
-    r_.i64[i] = tmp & (mask_.i64[i] >> 63);
+    r_.i64[i] &= mask_.i64[i] >> 63;
   }
 
   return simde__m128d_from_private(r_);
@@ -3584,9 +3583,10 @@ simde_mm256_maskload_pd (const simde_float64 mem_addr[HEDLEY_ARRAY_PARAM(4)], si
   simde__m256d_private r_;
   simde__m256i_private mask_ = simde__m256i_to_private(mask);
 
+  r_ = simde__m256d_to_private(simde_mm256_loadu_pd(mem_addr));
   SIMDE_VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
-    r_.i64[i] = HEDLEY_REINTERPRET_CAST(int64_t const*, mem_addr)[i] & (mask_.i64[i] >> 63);
+    r_.i64[i] &= mask_.i64[i] >> 63;
   }
 
   return simde__m256d_from_private(r_);
@@ -3605,9 +3605,10 @@ simde_mm_maskload_ps (const simde_float32 mem_addr[HEDLEY_ARRAY_PARAM(4)], simde
   simde__m128_private r_;
   simde__m128i_private mask_ = simde__m128i_to_private(mask);
 
+  r_ = simde__m128_to_private(simde_mm_loadu_ps(mem_addr));
   SIMDE_VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
-    r_.i32[i] = HEDLEY_REINTERPRET_CAST(int32_t const*, mem_addr)[i] & (mask_.i32[i] >> 31);
+    r_.i32[i] &= mask_.i32[i] >> 31;
   }
 
   return simde__m128_from_private(r_);
@@ -3626,9 +3627,10 @@ simde_mm256_maskload_ps (const simde_float32 mem_addr[HEDLEY_ARRAY_PARAM(4)], si
   simde__m256_private r_;
   simde__m256i_private mask_ = simde__m256i_to_private(mask);
 
+  r_ = simde__m256_to_private(simde_mm256_loadu_ps(mem_addr));
   SIMDE_VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
-    r_.i32[i] = HEDLEY_REINTERPRET_CAST(int32_t const*, mem_addr)[i] & (mask_.i32[i] >> 31);
+    r_.i32[i] &= mask_.i32[i] >> 31;
   }
 
   return simde__m256_from_private(r_);
