@@ -15,11 +15,9 @@ test_simde_vxxx_f32 (void) {
 
   fputc('\n', stdout);
   for (int i = 0 ; i < 8 ; i++) {
-    simde_float32x2_t a, b, r;
-
-    a = simde_test_arm_neon_random_f32x2(-1000.0f, 1000.0f),
-    b = simde_test_arm_neon_random_f32x2(-1000.0f, 1000.0f),
-    r = simde_vxxx_f32(a, b);
+    simde_float32x2_t a = simde_test_arm_neon_random_f32x2(-1000.0f, 1000.0f);
+    simde_float32x2_t b = simde_test_arm_neon_random_f32x2(-1000.0f, 1000.0f);
+    simde_float32x2_t r = simde_vxxx_f32(a, b);
 
     simde_test_arm_neon_write_f32x2(2, a, SIMDE_TEST_VEC_POS_FIRST);
     simde_test_arm_neon_write_f32x2(2, b, SIMDE_TEST_VEC_POS_MIDDLE);
@@ -28,11 +26,9 @@ test_simde_vxxx_f32 (void) {
   return 1;
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
-    simde_float32x2_t a, b, r;
-
-    a = simde_vld1_f32(test_vec[i].a);
-    b = simde_vld1_f32(test_vec[i].b);
-    r = simde_vxxx_f32(a, b);
+    simde_float32x2_t a = simde_vld1_f32(test_vec[i].a);
+    simde_float32x2_t b = simde_vld1_f32(test_vec[i].b);
+    simde_float32x2_t r = simde_vxxx_f32(a, b);
 
     simde_test_arm_neon_assert_equal_f32x2(r, simde_vld1_f32(test_vec[i].r), 1);
   }
