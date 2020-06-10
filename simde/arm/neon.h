@@ -42,6 +42,8 @@
 #include "neon/mull.h"
 #include "neon/orr.h"
 #include "neon/pmin.h"
+#include "neon/shl_n.h"
+#include "neon/shr_n.h"
 #include "neon/st1.h"
 #include "neon/sub.h"
 #include "neon/uzp1.h"
