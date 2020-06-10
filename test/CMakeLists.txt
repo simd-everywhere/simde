@@ -110,6 +110,7 @@ set(TEST_SOURCES_C
   arm/neon/and.c
   arm/neon/dup_n.c
   arm/neon/eor.c
+  arm/neon/get_lane.c
   arm/neon/min.c
   arm/neon/orr.c
   arm/neon/pmin.c
