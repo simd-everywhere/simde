@@ -36,6 +36,7 @@
 #include "neon/get_low.h"
 #include "neon/ld1.h"
 #include "neon/min.h"
+#include "neon/mul.h"
 #include "neon/orr.h"
 #include "neon/pmin.h"
 #include "neon/st1.h"
