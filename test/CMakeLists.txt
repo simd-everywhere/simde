@@ -113,6 +113,7 @@ set(TEST_SOURCES_C
   arm/neon/min.c
   arm/neon/orr.c
   arm/neon/pmin.c
+  arm/neon/shl.c
   arm/neon/sub.c)
 
 set(TEST_RUNNER_SOURCES
