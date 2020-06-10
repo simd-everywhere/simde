@@ -7,7 +7,6 @@ branches:
 
 env:
   global:
-  - BUILD_TYPE="Coverage"
   - ARCH_FLAGS="-march=native"
   - BUILD_CPP_TESTS=ON
   - CMAKE_GENERATOR='Ninja'
@@ -99,6 +98,7 @@ jobs:
     - ARCH_FLAGS="-mcpu=native"
     - C_COMPILER=gcc-10
     - CXX_COMPILER=g++-10
+    - OPTIMIZATION_FLAGS=-O2
     addons:
       apt:
         packages:
@@ -361,7 +361,6 @@ script:
 - |
   ${CONFIGURE_WRAPPER} cmake .. \
     -G "${CMAKE_GENERATOR}" \
-    -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
     -DBUILD_CPP_TESTS=${BUILD_CPP_TESTS} \
     -DCMAKE_CROSSCOMPILING_EMULATOR="${TEST_WRAPPER}" \
     -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON \
