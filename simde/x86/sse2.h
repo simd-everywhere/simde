@@ -2839,17 +2839,18 @@ simde_mm_loadh_pd (simde__m128d a, simde_float64 const* mem_addr) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_loadl_epi64 (simde__m128i const* mem_addr) {
-  simde_assert_aligned(16, mem_addr);
-
 #if defined(SIMDE_X86_SSE2_NATIVE)
-  return _mm_loadl_epi64(HEDLEY_REINTERPRET_CAST(__m128i const*, mem_addr));
+  return _mm_loadl_epi64(mem_addr);
 #else
   simde__m128i_private r_;
 
+  int64_t value;
+  simde_memcpy(&value, mem_addr, sizeof(value));
+
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-    r_.neon_i32 = vcombine_s32(vld1_s32((int32_t const *) mem_addr), vcreate_s32(0));
+    r_.neon_i64 = vcombine_s64(vld1_s64(HEDLEY_REINTERPRET_CAST(int64_t const *, mem_addr)), vdup_n_s64(0));
   #else
-    r_.i64[0] = *HEDLEY_REINTERPRET_CAST(int64_t const*, mem_addr);
+    r_.i64[0] = value;
     r_.i64[1] = 0;
   #endif
 
