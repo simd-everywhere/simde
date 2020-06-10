@@ -587,7 +587,7 @@ test_simde_vgetq_lane_s8 (void) {
     simde_int8x16_t a = simde_vld1q_s8(test_vec[i].a);
     int b = test_vec[i].b;
     int8_t r = simde_vgetq_lane_s8(a, b);
-    
+
     simde_assert_equal_i8(r, test_vec[i].r);
   }
 
