@@ -7425,7 +7425,7 @@ test_simde_mm_maskload_pd (void) {
   };
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
-    simde__m128i mask = simde_mm_loadu_si128(SIMDE_ALIGN_CAST(const simde__m128i*, test_vec[i].mask));
+    simde__m128i mask = simde_x_mm_loadu_epi64(test_vec[i].mask);
     simde__m128d r = simde_mm_maskload_pd(test_vec[i].mem_addr, mask);
     simde_test_x86_assert_equal_f64x2(r, simde_mm_loadu_pd(test_vec[i].r), 1);
   }
@@ -12940,7 +12940,7 @@ test_simde_mm256_zextsi128_si256 (void) {
   };
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
-    simde__m128i a = simde_mm_loadu_si128(SIMDE_ALIGN_CAST(simde__m128i const*, test_vec[i].a));
+    simde__m128i a = simde_x_mm_loadu_epi64(test_vec[i].a);
     simde__m256i r = simde_mm256_zextsi128_si256(a);
     simde_test_x86_assert_equal_i64x4(r, simde_x_mm256_loadu_epi64(test_vec[i].r));
   }
