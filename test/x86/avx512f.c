@@ -30856,17 +30856,7 @@ test_simde_mm512_setr_pd(void) {
   return 0;
 }
 
-HEDLEY_DIAGNOSTIC_PUSH
-HEDLEY_DIAGNOSTIC_DISABLE_CAST_QUAL
-
-#if HEDLEY_HAS_WARNING("-Wold-style-cast")
-  #pragma clang diagnostic ignored "-Wold-style-cast"
-#endif
-#if HEDLEY_HAS_WARNING("-Wzero-as-null-pointer-constant")
-  #pragma clang diagnostic ignored "-Wzero-as-null-pointer-constant"
-#endif
-
-static MunitTest test_suite_tests[] = {
+SIMDE_TEST_FUNC_LIST_BEGIN
   SIMDE_TEST_FUNC_LIST_ENTRY(mm512_abs_epi32)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_abs_epi32)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm512_maskz_abs_epi32)
