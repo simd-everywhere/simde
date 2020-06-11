@@ -56,7 +56,7 @@ simde_vshr_n_s8 (const simde_int8x8_t a, const int32_t b)
 }
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vshr_n_s8(a, b) vshr_n_s8((a), (b))
-#elif defined(SIMDE_X86_MMX_NATIVE) /* N.B. CM: untested */
+#elif defined(SIMDE_X86_MMX_NATIVE)
   #define simde_vshr_n_s8(a, b) \
     _mm_or_si64(_mm_andnot_si64(_mm_set1_pi16(0x00FF), _mm_srai_pi16((a), (b))), \
                 _mm_and_si64(_mm_set1_pi16(0x00FF), _mm_srai_pi16(_mm_slli_pi16((a), 8), 8 + (b))))
@@ -148,8 +148,6 @@ simde_vshr_n_s64 (const simde_int64x1_t a, const int32_t b)
 }
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vshr_n_s64(a, b) vshr_n_s64((a), (b))
-#elif defined(SIMDE_X86_MMX_NATIVE) && 0 /* BAD */
-  #define simde_vshr_n_s64(a, b) _mm_srli_si64((a), (b))
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vshr_n_s64
@@ -311,12 +309,12 @@ simde_vshrq_n_s8 (const simde_int8x16_t a, const int32_t b)
 }
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vshrq_n_s8(a, b) vshrq_n_s8((a), (b))
-#elif defined(SIMDE_X86_SSE4_1_NATIVE) /* N.B. CM: untested */
+#elif defined(SIMDE_X86_SSE4_1_NATIVE)
   #define simde_vshrq_n_s8(a, b) \
     _mm_blendv_epi8(_mm_srai_epi16((a), (b)), \
                     _mm_srai_epi16(_mm_slli_epi16((a), 8), 8 + (b)), \
                     _mm_set1_epi16(0x00FF))
-#elif defined(SIMDE_X86_SSE2_NATIVE) /* N.B. CM: untested */
+#elif defined(SIMDE_X86_SSE2_NATIVE)
   #define simde_vshrq_n_s8(a, b) \
     _mm_or_si128(_mm_andnot_si128(_mm_set1_epi16(0x00FF), _mm_srai_epi16((a), (b))), \
                  _mm_and_si128(_mm_set1_epi16(0x00FF), _mm_srai_epi16(_mm_slli_epi16((a), 8), 8 + (b))))
@@ -398,7 +396,7 @@ simde_vshrq_n_s32 (const simde_int32x4_t a, const int32_t b)
 #elif defined(SIMDE_WASM_SIMD128_NATIVE)
   /* N.B. CM: WASM seems to take the shift count modulo the element size in bits */
   /* It doesn't seem to require an constant shift count but use macro just in case */
-  #define simde_vshrq_n_s32(a, b) wasm_i32x4_shr((a), ((b) == 32) ? 31 : (b)))
+  #define simde_vshrq_n_s32(a, b) wasm_i32x4_shr((a), ((b) == 32) ? 31 : (b))
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vshrq_n_s32
@@ -427,15 +425,13 @@ simde_vshrq_n_s64 (const simde_int64x2_t a, const int32_t b)
 }
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vshrq_n_s64(a, b) vshrq_n_s64((a), (b))
-#elif defined(SIMDE_X86_SSE2_NATIVE) && 0 /* BAD */
-  #define simde_vshrq_n_s64(a, b) _mm_srli_epi64((a), (b))
 #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
   #define simde_vshrq_n_s64(a, b) \
     vec_sra((a), vec_splats(HEDLEY_STATIC_CAST(unsigned long long, ((b) == 64) ? 63 : (b))))
 #elif defined(SIMDE_WASM_SIMD128_NATIVE)
   /* N.B. CM: WASM seems to take the shift count modulo the element size in bits */
   /* It doesn't seem to require an constant shift count but use macro just in case */
-  #define simde_vshrq_n_s64(a, b) wasm_i64x2_shr((a), ((b) == 64) ? 63 : (b)))
+  #define simde_vshrq_n_s64(a, b) wasm_i64x2_shr((a), ((b) == 64) ? 63 : (b))
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vshrq_n_s64
@@ -472,12 +468,12 @@ simde_vshrq_n_u8 (const simde_uint8x16_t a, const int32_t b)
     _mm_and_si128(_mm_srli_epi64((a), (b)), _mm_set1_epi8((1 << (8 - (b))) - 1))
 #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
   #define simde_vshrq_n_u8(a, b) \
-    (((b == 8) ? vec_splat_u8(0) : vec_sr((a), vec_splat_u8(b))))
+    (((b) == 8) ? vec_splat_u8(0) : vec_sr((a), vec_splat_u8(b)))
 #elif defined(SIMDE_WASM_SIMD128_NATIVE)
   /* N.B. CM: WASM seems to take the shift count modulo the element size in bits */
   /* It doesn't seem to require an constant shift count but use macro just in case */
   #define simde_vshrq_n_u8(a, b) \
-    (((b == 8) ? wasm_i8x16_splat(0) : wasm_u8x16_shr((a), (b))))
+    (((b) == 8) ? wasm_i8x16_splat(0) : wasm_u8x16_shr((a), (b)))
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vshrq_n_u8
@@ -513,12 +509,12 @@ simde_vshrq_n_u16 (const simde_uint16x8_t a, const int32_t b)
   #define simde_vshrq_n_u16(a, b) _mm_srli_epi16((a), (b))
 #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
   #define simde_vshrq_n_u16(a, b) \
-    (((b) == 16) ? vec_splat_u16(0) : vec_sr((a), vec_splat_u16(b))))
+    (((b) == 16) ? vec_splat_u16(0) : vec_sr((a), vec_splat_u16(b)))
 #elif defined(SIMDE_WASM_SIMD128_NATIVE)
   /* N.B. CM: WASM seems to take the shift count modulo the element size in bits */
   /* It doesn't seem to require an constant shift count but use macro just in case */
   #define simde_vshrq_n_u16(a, b) \
-    (((b) == 16) ? wasm_i16x8_splat(0) : wasm_u16x8_shr((a), (b))))
+    (((b) == 16) ? wasm_i16x8_splat(0) : wasm_u16x8_shr((a), (b)))
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vshrq_n_u16
@@ -559,7 +555,7 @@ simde_vshrq_n_u32 (const simde_uint32x4_t a, const int32_t b)
   /* N.B. CM: WASM seems to take the shift count modulo the element size in bits */
   /* It doesn't seem to require an constant shift count but use macro just in case */
   #define simde_vshrq_n_u32(a, b) \
-    (((b) == 32) ? wasm_i32x4_splat(0) : wasm_u32x4_shr((a), (b))))
+    (((b) == 32) ? wasm_i32x4_splat(0) : wasm_u32x4_shr((a), (b)))
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vshrq_n_u32
@@ -595,12 +591,12 @@ simde_vshrq_n_u64 (const simde_uint64x2_t a, const int32_t b)
   #define simde_vshrq_n_u64(a, b) _mm_srli_epi64((a), (b))
 #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
   #define simde_vshrq_n_u64(a, b) \
-    (((b) == 64) ? vec_splat_u64(0) : vec_sr((a), vec_splats(HEDLEY_STATIC_CAST(unsigned long long, (b)))))
+    (((b) == 64) ? vec_splats(HEDLEY_STATIC_CAST(unsigned long long, 0)) : vec_sr((a), vec_splats(HEDLEY_STATIC_CAST(unsigned long long, (b)))))
 #elif defined(SIMDE_WASM_SIMD128_NATIVE)
   /* N.B. CM: WASM seems to take the shift count modulo the element size in bits */
   /* It doesn't seem to require an constant shift count but use macro just in case */
   #define simde_vshrq_n_u64(a, b) \
-    (((b) == 64) ? wasm_i64x2_splat(0) : wasm_u64x2_shr((a), (b))))
+    (((b) == 64) ? wasm_i64x2_splat(0) : wasm_u64x2_shr((a), (b)))
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vshrq_n_u64
