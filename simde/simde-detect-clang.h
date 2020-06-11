@@ -43,10 +43,9 @@
  * There are two function-like macros which I suggest you use;
  * SIMDE_DETECT_CLANG_VERSION_CHECK will return true if you are running
  * a particular version of clang or older.
- * SIMDE_DETECT_CLANG_VERSION_NOT will return true if you are running a
- * version of clang *prior to* the specified version.  The latter is
- * useful for selecting fallback paths for versions of clang known to
- * be buggy.
+ * SIMDE_DETECT_CLANG_VERSION_NOT will return true if you are not using
+ * clang or if the version you are using is greater than or equal to the
+ * version specified.
  *
  * Right now it only goes back to 3.8, but I'm happy to accept patches
  * to go back further.  And, of course, newer versions are welcome if
@@ -85,10 +84,10 @@
 
 #if defined(SIMDE_DETECT_CLANG_VERSION)
 #  define SIMDE_DETECT_CLANG_VERSION_CHECK(major, minor, revision) (SIMDE_DETECT_CLANG_VERSION >= ((major * 10000) + (minor * 1000) + (revision)))
-#  define SIMDE_DETECT_CLANG_VERSION_NOT(major, minor, revision) (SIMDE_DETECT_CLANG_VERSION < ((major * 10000) + (minor * 1000) + (revision)))
+#  define SIMDE_DETECT_CLANG_VERSION_NOT(major, minor, revision) SIMDE_DETECT_CLANG_VERSION_CHECK(major, minor, revision)
 #else
 #  define SIMDE_DETECT_CLANG_VERSION_CHECK(major, minor, revision) (0)
-#  define SIMDE_DETECT_CLANG_VERSION_NOT(major, minor, revision) (0)
+#  define SIMDE_DETECT_CLANG_VERSION_NOT(major, minor, revision) (1)
 #endif
 
 #endif /* !defined(SIMDE_DETECT_CLANG_H) */
