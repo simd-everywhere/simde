@@ -38,6 +38,7 @@
 #include "neon/min.h"
 #include "neon/mla.h"
 #include "neon/mul.h"
+#include "neon/mull.h"
 #include "neon/orr.h"
 #include "neon/pmin.h"
 #include "neon/st1.h"
