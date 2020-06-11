@@ -43,11 +43,11 @@ simde_vshl_n_s8 (const simde_int8x8_t a, const int32_t b)
     a_ = simde_int8x8_to_private(a);
 
   #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
-    r_.values = a_.values << b;
+    r_.values = a_.values << HEDLEY_STATIC_CAST(int8_t, b);
   #else
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = a_.values[i] << b;
+      r_.values[i] = a_.values[i] << HEDLEY_STATIC_CAST(int8_t, b);
     }
   #endif
 
@@ -55,9 +55,9 @@ simde_vshl_n_s8 (const simde_int8x8_t a, const int32_t b)
 }
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vshl_n_s8(a, b) vshl_n_s8((a), (b))
-#elif defined(SIMDE_X86_SSE2_NATIVE)
+#elif defined(SIMDE_X86_MMX_NATIVE)
   #define simde_vshl_n_s8(a, b) \
-    _mm_and_si64(_mm_slli_si64((a), (b)), _mm_set1_pi8(0xFF & ~((1 << b) - 1)))
+    _mm_andnot_si64(_mm_set1_pi8((1 << b) - 1), _mm_slli_si64((a), (b)))
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vshl_n_s8
@@ -73,11 +73,11 @@ simde_vshl_n_s16 (const simde_int16x4_t a, const int32_t b)
     a_ = simde_int16x4_to_private(a);
 
   #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
-    r_.values = a_.values << b;
+    r_.values = a_.values << HEDLEY_STATIC_CAST(int16_t, b);
   #else
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = a_.values[i] << b;
+      r_.values[i] = a_.values[i] << HEDLEY_STATIC_CAST(int16_t, b);
     }
   #endif
 
@@ -85,7 +85,7 @@ simde_vshl_n_s16 (const simde_int16x4_t a, const int32_t b)
 }
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vshl_n_s16(a, b) vshl_n_s16((a), (b))
-#elif defined(SIMDE_X86_SSE2_NATIVE)
+#elif defined(SIMDE_X86_MMX_NATIVE)
   #define simde_vshl_n_s16(a, b) _mm_slli_pi16((a), (b))
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
@@ -114,7 +114,7 @@ simde_vshl_n_s32 (const simde_int32x2_t a, const int32_t b)
 }
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vshl_n_s32(a, b) vshl_n_s32((a), (b))
-#elif defined(SIMDE_X86_SSE2_NATIVE)
+#elif defined(SIMDE_X86_MMX_NATIVE)
   #define simde_vshl_n_s32(a, b) _mm_slli_pi32((a), (b))
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
@@ -143,7 +143,7 @@ simde_vshl_n_s64 (const simde_int64x1_t a, const int32_t b)
 }
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vshl_n_s64(a, b) vshl_n_s64((a), (b))
-#elif defined(SIMDE_X86_SSE2_NATIVE)
+#elif defined(SIMDE_X86_MMX_NATIVE)
   #define simde_vshl_n_s64(a, b) _mm_slli_si64((a), (b))
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
@@ -160,11 +160,11 @@ simde_vshl_n_u8 (const simde_uint8x8_t a, const int32_t b)
     a_ = simde_uint8x8_to_private(a);
 
   #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
-    r_.values = a_.values << b;
+    r_.values = a_.values << HEDLEY_STATIC_CAST(uint8_t, b);
   #else
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = a_.values[i] << b;
+      r_.values[i] = a_.values[i] << HEDLEY_STATIC_CAST(uint8_t, b);
     }
   #endif
 
@@ -172,9 +172,9 @@ simde_vshl_n_u8 (const simde_uint8x8_t a, const int32_t b)
 }
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vshl_n_u8(a, b) vshl_n_u8((a), (b))
-#elif defined(SIMDE_X86_SSE2_NATIVE)
+#elif defined(SIMDE_X86_MMX_NATIVE)
   #define simde_vshl_n_u8(a, b) \
-    _mm_and_si64(_mm_slli_si64((a), (b)), _mm_set1_pi8(0xFF & ~((1 << b) - 1)))
+    _mm_andnot_si64(_mm_set1_pi8((1 << b) - 1), _mm_slli_si64((a), (b)))
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vshl_n_u8
@@ -190,11 +190,11 @@ simde_vshl_n_u16 (const simde_uint16x4_t a, const int32_t b)
     a_ = simde_uint16x4_to_private(a);
 
   #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
-    r_.values = a_.values << b;
+    r_.values = a_.values << HEDLEY_STATIC_CAST(uint16_t, b);
   #else
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = a_.values[i] << b;
+      r_.values[i] = a_.values[i] << HEDLEY_STATIC_CAST(uint16_t, b);
     }
   #endif
 
@@ -202,7 +202,7 @@ simde_vshl_n_u16 (const simde_uint16x4_t a, const int32_t b)
 }
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vshl_n_u16(a, b) vshl_n_u16((a), (b))
-#elif defined(SIMDE_X86_SSE2_NATIVE)
+#elif defined(SIMDE_X86_MMX_NATIVE)
   #define simde_vshl_n_u16(a, b) _mm_slli_pi16((a), (b))
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
@@ -231,7 +231,7 @@ simde_vshl_n_u32 (const simde_uint32x2_t a, const int32_t b)
 }
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vshl_n_u32(a, b) vshl_n_u32((a), (b))
-#elif defined(SIMDE_X86_SSE2_NATIVE)
+#elif defined(SIMDE_X86_MMX_NATIVE)
   #define simde_vshl_n_u32(a, b) _mm_slli_pi32((a), (b))
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
@@ -260,7 +260,7 @@ simde_vshl_n_u64 (const simde_uint64x1_t a, const int32_t b)
 }
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vshl_n_u64(a, b) vshl_n_u64((a), (b))
-#elif defined(SIMDE_X86_SSE2_NATIVE)
+#elif defined(SIMDE_X86_MMX_NATIVE)
   #define simde_vshl_n_u64(a, b) _mm_slli_si64((a), (b))
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
@@ -277,11 +277,11 @@ simde_vshlq_n_s8 (const simde_int8x16_t a, const int32_t b)
     a_ = simde_int8x16_to_private(a);
 
   #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
-    r_.values = a_.values << b;
+    r_.values = a_.values << HEDLEY_STATIC_CAST(int8_t, b);
   #else
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = a_.values[i] << b;
+      r_.values[i] = a_.values[i] << HEDLEY_STATIC_CAST(int8_t, b);
     }
   #endif
 
@@ -291,9 +291,9 @@ simde_vshlq_n_s8 (const simde_int8x16_t a, const int32_t b)
   #define simde_vshlq_n_s8(a, b) vshlq_n_s8((a), (b))
 #elif defined(SIMDE_X86_SSE2_NATIVE)
   #define simde_vshlq_n_s8(a, b) \
-    _mm_and_si128(_mm_slli_epi64((a), (b)), _mm_set1_epi8(0xFF & ~((1 << b) - 1)))
+    _mm_andnot_si128(_mm_set1_epi8((1 << b) - 1), _mm_slli_epi64((a), (b)))
 #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
-  #define simde_vshlq_n_s8(a, b) vec_sl((a), vec_splat_s8(b))
+  #define simde_vshlq_n_s8(a, b) vec_sl((a), vec_splat_u8(b))
 #elif defined(SIMDE_WASM_SIMD128_NATIVE)
   /* N.B. CM: WASM doesn't seem to require an constant shift count but use macro just in case */
   #define simde_vshlq_n_s8(a, b) wasm_i8x16_shl((a), (b))
@@ -312,11 +312,11 @@ simde_vshlq_n_s16 (const simde_int16x8_t a, const int32_t b)
     a_ = simde_int16x8_to_private(a);
 
   #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
-    r_.values = a_.values << b;
+    r_.values = a_.values << HEDLEY_STATIC_CAST(int16_t, b);
   #else
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = a_.values[i] << b;
+      r_.values[i] = a_.values[i] << HEDLEY_STATIC_CAST(int16_t, b);
     }
   #endif
 
@@ -327,7 +327,7 @@ simde_vshlq_n_s16 (const simde_int16x8_t a, const int32_t b)
 #elif defined(SIMDE_X86_SSE2_NATIVE)
   #define simde_vshlq_n_s16(a, b) _mm_slli_epi16((a), (b))
 #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
-  #define simde_vshl_n_s16(a, b) vec_sl((a), vec_splat_s16(b))
+  #define simde_vshl_n_s16(a, b) vec_sl((a), vec_splat_u16(b))
 #elif defined(SIMDE_WASM_SIMD128_NATIVE)
   /* N.B. CM: WASM doesn't seem to require an constant shift count but use macro just in case */
   #define simde_vshlq_n_s16(a, b) wasm_i16x8_shl((a), (b))
@@ -416,11 +416,11 @@ simde_vshlq_n_u8 (const simde_uint8x16_t a, const int32_t b)
     a_ = simde_uint8x16_to_private(a);
 
   #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
-    r_.values = a_.values << b;
+    r_.values = a_.values << HEDLEY_STATIC_CAST(uint8_t, b);
   #else
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = a_.values[i] << b;
+      r_.values[i] = a_.values[i] << HEDLEY_STATIC_CAST(uint8_t, b);
     }
   #endif
 
@@ -430,7 +430,7 @@ simde_vshlq_n_u8 (const simde_uint8x16_t a, const int32_t b)
   #define simde_vshlq_n_u8(a, b) vshlq_n_u8((a), (b))
 #elif defined(SIMDE_X86_SSE2_NATIVE)
   #define simde_vshlq_n_u8(a, b) \
-    _mm_and_si128(_mm_slli_epi64((a), (b)), _mm_set1_epi8(0xFF & ~((1 << b) - 1)))
+    _mm_andnot_si128(_mm_set1_epi8((1 << b) - 1), _mm_slli_epi64((a), (b)))
 #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
   #define simde_vshlq_n_u8(a, b) vec_sl((a), vec_splat_u8(b))
 #elif defined(SIMDE_WASM_SIMD128_NATIVE)
@@ -451,11 +451,11 @@ simde_vshlq_n_u16 (const simde_uint16x8_t a, const int32_t b)
     a_ = simde_uint16x8_to_private(a);
 
   #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
-    r_.values = a_.values << b;
+    r_.values = a_.values << HEDLEY_STATIC_CAST(uint16_t, b);
   #else
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = a_.values[i] << b;
+      r_.values[i] = a_.values[i] << HEDLEY_STATIC_CAST(uint16_t, b);
     }
   #endif
 
