@@ -277,6 +277,10 @@ simde_float32x4_t
 simde_vpminq_f32(simde_float32x4_t a, simde_float32x4_t b) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vpminq_f32(a, b);
+  #elif defined(SIMDE_X86_SSE_NATIVE)
+    __m128 e = _mm_shuffle_ps(a, b, _MM_SHUFFLE(2, 0, 2, 0));
+    __m128 o = _mm_shuffle_ps(a, b, _MM_SHUFFLE(3, 1, 3, 1));
+    return _mm_min_ps(e, o);
   #else
     simde_float32x4_private
       r_,
@@ -311,6 +315,10 @@ simde_float64x2_t
 simde_vpminq_f64(simde_float64x2_t a, simde_float64x2_t b) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vpminq_f64(a, b);
+  #elif defined(SIMDE_X86_SSE2_NATIVE)
+    __m128d e = _mm_unpacklo_pd(a, b);
+    __m128d o = _mm_unpackhi_pd(a, b);
+    return _mm_min_pd(e, o);
   #else
     simde_float64x2_private
       r_,
