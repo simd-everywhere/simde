@@ -12,6 +12,8 @@ simde_test_arm_neon_sources = [
   'orr.c',
   'pmin.c',
   'sub.c',
+  'uzp1.c',
+  'uzp2.c',
 ]
 
 foreach src : simde_test_arm_neon_sources

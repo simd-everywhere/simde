@@ -31,6 +31,7 @@
 
 #include "neon/add.h"
 #include "neon/and.h"
+#include "neon/dup_n.h"
 #include "neon/eor.h"
 #include "neon/get_high.h"
 #include "neon/get_low.h"
@@ -43,6 +44,7 @@
 #include "neon/pmin.h"
 #include "neon/st1.h"
 #include "neon/sub.h"
-#include "neon/dup_n.h"
+#include "neon/uzp1.h"
+#include "neon/uzp2.h"
 
 #endif /* SIMDE_ARM_NEON_H */

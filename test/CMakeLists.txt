@@ -118,7 +118,11 @@ set(TEST_SOURCES_C
   arm/neon/mull.c
   arm/neon/orr.c
   arm/neon/pmin.c
-  arm/neon/sub.c)
+  arm/neon/shl_n.c
+  arm/neon/shr_n.c
+  arm/neon/sub.c
+  arm/neon/uzp1.c
+  arm/neon/uzp2.c)
 
 set(TEST_RUNNER_SOURCES
   run-tests.c
