@@ -36,6 +36,8 @@
 #include "neon/min.h"
 #include "neon/orr.h"
 #include "neon/pmin.h"
+#include "neon/shl.h"
+#include "neon/shr.h"
 #include "neon/st1.h"
 #include "neon/sub.h"
 #include "neon/dup_n.h"
