@@ -2049,7 +2049,19 @@ simde_mm512_loadu_si512 (void const * mem_addr) {
     return _mm512_loadu_si512(HEDLEY_REINTERPRET_CAST(void const*, mem_addr));
   #else
     simde__m512i r;
-    simde_memcpy(&r, mem_addr, sizeof(r));
+
+    #if HEDLEY_GNUC_HAS_ATTRIBUTE(may_alias,3,3,0)
+      HEDLEY_DIAGNOSTIC_PUSH
+      SIMDE_DIAGNOSTIC_DISABLE_PACKED_
+      struct simde_mm512_loadu_si512_s {
+        __typeof__(r) v;
+      } __attribute__((__packed__, __may_alias__));
+      r = HEDLEY_REINTERPRET_CAST(const struct simde_mm512_loadu_si512_s *, mem_addr)->v;
+      HEDLEY_DIAGNOSTIC_POP
+    #else
+      simde_memcpy(&r, mem_addr, sizeof(r));
+    #endif
+
     return r;
   #endif
 }

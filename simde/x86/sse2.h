@@ -2992,14 +2992,24 @@ simde_x_mm_loadu_epi64(int64_t const* mem_addr) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128i
-simde_mm_loadu_si128 (simde__m128i const* mem_addr) {
+simde_mm_loadu_si128 (void const* mem_addr) {
   #if defined(SIMDE_X86_SSE2_NATIVE)
     return _mm_loadu_si128(HEDLEY_STATIC_CAST(__m128i const*, mem_addr));
   #else
     simde__m128i_private r_;
 
-    #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-      r_.neon_i32 = vld1q_s32((int32_t const*) mem_addr);
+    #if HEDLEY_GNUC_HAS_ATTRIBUTE(may_alias,3,3,0)
+      HEDLEY_DIAGNOSTIC_PUSH
+      SIMDE_DIAGNOSTIC_DISABLE_PACKED_
+      struct simde_mm_loadu_si128_s {
+        __typeof__(r_) v;
+      } __attribute__((__packed__, __may_alias__));
+      r_ = HEDLEY_REINTERPRET_CAST(const struct simde_mm_loadu_si128_s *, mem_addr)->v;
+      HEDLEY_DIAGNOSTIC_POP
+    #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+      /* Note that this is a lower priority than the struct above since
+       * clang assumes mem_addr is aligned (since it is a __m128i*). */
+      r_.neon_i32 = vld1q_s32(HEDLEY_REINTERPRET_CAST(int32_t const*, mem_addr));
     #else
       simde_memcpy(&r_, mem_addr, sizeof(r_));
     #endif

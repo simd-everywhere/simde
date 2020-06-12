@@ -4118,8 +4118,8 @@ test_simde_mm_or_ps(SIMDE_MUNIT_TEST_ARGS) {
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
     simde__m128i
-      a = simde_mm_loadu_si128(SIMDE_ALIGN_CAST(simde__m128i*, test_vec[i].a)),
-      b = simde_mm_loadu_si128(SIMDE_ALIGN_CAST(simde__m128i*, test_vec[i].b)),
+      a = simde_x_mm_loadu_epi32(test_vec[i].a),
+      b = simde_x_mm_loadu_epi32(test_vec[i].b),
       r = simde_mm_castps_si128(simde_mm_or_ps(simde_mm_castsi128_ps(a), simde_mm_castsi128_ps(b)));
     simde_test_x86_assert_equal_i32x4(r, simde_x_mm_loadu_epi32(test_vec[i].r));
   }
@@ -5235,8 +5235,8 @@ test_simde_mm_xor_ps(SIMDE_MUNIT_TEST_ARGS) {
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
     simde__m128i
-      a = simde_mm_loadu_si128(SIMDE_ALIGN_CAST(simde__m128i const*, test_vec[i].a)),
-      b = simde_mm_loadu_si128(SIMDE_ALIGN_CAST(simde__m128i const*, test_vec[i].b)),
+      a = simde_x_mm_loadu_epi32(test_vec[i].a),
+      b = simde_x_mm_loadu_epi32(test_vec[i].b),
       r = simde_mm_castps_si128(simde_mm_xor_ps(simde_mm_castsi128_ps(a), simde_mm_castsi128_ps(b))),
       e = simde_x_mm_loadu_epi32(test_vec[i].r);
     simde_test_x86_assert_equal_i32x4(r, e);

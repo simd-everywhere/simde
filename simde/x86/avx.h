@@ -3494,17 +3494,29 @@ simde_mm256_loadu_ps (const float a[HEDLEY_ARRAY_PARAM(8)]) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m256i
-simde_mm256_loadu_si256 (simde__m256i const * a) {
-#if defined(SIMDE_X86_AVX_NATIVE)
-  return _mm256_loadu_si256(a);
-#else
-  simde__m256i r;
-  simde_memcpy(&r, a, sizeof(r));
-  return r;
-#endif
+simde_mm256_loadu_si256 (void const * mem_addr) {
+  #if defined(SIMDE_X86_AVX_NATIVE)
+    return _mm256_loadu_si256(SIMDE_ALIGN_CAST(const __m256i*, mem_addr));
+  #else
+    simde__m256i r;
+
+    #if HEDLEY_GNUC_HAS_ATTRIBUTE(may_alias,3,3,0)
+      HEDLEY_DIAGNOSTIC_PUSH
+      SIMDE_DIAGNOSTIC_DISABLE_PACKED_
+      struct simde_mm256_loadu_si256_s {
+        __typeof__(r) v;
+      } __attribute__((__packed__, __may_alias__));
+      r = HEDLEY_REINTERPRET_CAST(const struct simde_mm256_loadu_si256_s *, mem_addr)->v;
+      HEDLEY_DIAGNOSTIC_POP
+    #else
+      simde_memcpy(&r, mem_addr, sizeof(r));
+    #endif
+
+    return r;
+  #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_loadu_si256(a) simde_mm256_loadu_si256(a)
+#  define _mm256_loadu_si256(mem_addr) simde_mm256_loadu_si256(mem_addr)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES

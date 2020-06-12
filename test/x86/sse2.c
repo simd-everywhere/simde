@@ -3994,33 +3994,27 @@ test_simde_mm_loadu_pd(SIMDE_MUNIT_TEST_ARGS) {
 }
 
 static int
-test_simde_mm_loadu_si128(SIMDE_MUNIT_TEST_ARGS) {
-  const struct {
-    simde__m128i a;
-    simde__m128i r;
-  } test_vec[8] = {
-    { simde_mm_set_epi32(INT32_C(-1538587633), INT32_C( 1769380496), INT32_C(-2023785418), INT32_C(-1729331330)),
-      simde_mm_set_epi32(INT32_C(-1538587633), INT32_C( 1769380496), INT32_C(-2023785418), INT32_C(-1729331330)) },
-    { simde_mm_set_epi32(INT32_C(  683658674), INT32_C( -272282451), INT32_C( -869014611), INT32_C( -138507219)),
-      simde_mm_set_epi32(INT32_C(  683658674), INT32_C( -272282451), INT32_C( -869014611), INT32_C( -138507219)) },
-    { simde_mm_set_epi32(INT32_C(   91205327), INT32_C(  490922736), INT32_C(-1027840667), INT32_C( -176944495)),
-      simde_mm_set_epi32(INT32_C(   91205327), INT32_C(  490922736), INT32_C(-1027840667), INT32_C( -176944495)) },
-    { simde_mm_set_epi32(INT32_C(-1717325090), INT32_C(-2087568357), INT32_C(-1247194597), INT32_C( 2013217211)),
-      simde_mm_set_epi32(INT32_C(-1717325090), INT32_C(-2087568357), INT32_C(-1247194597), INT32_C( 2013217211)) },
-    { simde_mm_set_epi32(INT32_C(  -71964779), INT32_C(  991285765), INT32_C( -740413325), INT32_C(  781513152)),
-      simde_mm_set_epi32(INT32_C(  -71964779), INT32_C(  991285765), INT32_C( -740413325), INT32_C(  781513152)) },
-    { simde_mm_set_epi32(INT32_C( -667758201), INT32_C( 1406497890), INT32_C( 2124206329), INT32_C(  367090944)),
-      simde_mm_set_epi32(INT32_C( -667758201), INT32_C( 1406497890), INT32_C( 2124206329), INT32_C(  367090944)) },
-    { simde_mm_set_epi32(INT32_C(  145405807), INT32_C( 2005056075), INT32_C(  -13890329), INT32_C(-1559659219)),
-      simde_mm_set_epi32(INT32_C(  145405807), INT32_C( 2005056075), INT32_C(  -13890329), INT32_C(-1559659219)) },
-    { simde_mm_set_epi32(INT32_C(  973704080), INT32_C( 1654460219), INT32_C(-1187284768), INT32_C(  306325074)),
-      simde_mm_set_epi32(INT32_C(  973704080), INT32_C( 1654460219), INT32_C(-1187284768), INT32_C(  306325074)) }
+test_simde_mm_loadu_si128 (SIMDE_MUNIT_TEST_ARGS) {
+  #if !defined(__clang__) || !defined(SIMDE_ARCH_ARM)
+  static const struct {
+    const int32_t a[4];
+  } test_vec[] = {
+    { { -INT32_C(   431648212),  INT32_C(   784010008), -INT32_C(  1621020084),  INT32_C(  1563595920) } },
+    { { -INT32_C(  2020743978),  INT32_C(   642031476), -INT32_C(  1168838661), -INT32_C(    71485745) } },
+    { { -INT32_C(   505281848),  INT32_C(  1510972686),  INT32_C(  1626960080), -INT32_C(   608359675) } },
+    { { -INT32_C(  2073933297), -INT32_C(   441800983),  INT32_C(  1688206997), -INT32_C(    44016587) } },
+    { {  INT32_C(  1843282527), -INT32_C(  1345851937),  INT32_C(  1661976670), -INT32_C(    79770388) } },
+    { {  INT32_C(     8364054), -INT32_C(   605738426),  INT32_C(  1564443688),  INT32_C(  1079746529) } },
+    { { -INT32_C(  1045612063), -INT32_C(  2056227801),  INT32_C(   552108084),  INT32_C(  1662789196) } },
+    { {  INT32_C(   207854534), -INT32_C(   286832443), -INT32_C(  1387583796), -INT32_C(  1477597498) } }
   };
 
-  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
-    simde__m128i r = simde_mm_loadu_si128(&test_vec[i].a);
-    simde_assert_m128i_i64(r, ==, test_vec[i].r);
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
+    int32_t r[4];
+    simde_mm_storeu_si128(SIMDE_ALIGN_CAST(simde__m128i*, r), simde_mm_loadu_si128(SIMDE_ALIGN_CAST(const simde__m128i*, test_vec[i].a)));
+    simde_assert_equal_vi32(sizeof(r) / sizeof(r[0]), r, test_vec[i].a);
   }
+  #endif
 
   return 0;
 }

@@ -187,6 +187,16 @@
   #define SIMDE_DIAGNOSTIC_DISABLE_RESERVED_ID_MACRO_
 #endif
 
+/* clang 3.8 warns about the packed attribute being unnecessary when
+ * used in the _mm_loadu_* functions.  That *may* be true for version
+ * 3.8, but for later versions it is crucial in order to make unaligned
+ * access safe. */
+#if HEDLEY_HAS_WARNING("-Wpacked")
+  #define SIMDE_DIAGNOSTIC_DISABLE_PACKED_ _Pragma("clang diagnostic ignored \"-Wpacked\"")
+#else
+  #define SIMDE_DIAGNOSTIC_DISABLE_PACKED_
+#endif
+
 /* Triggered when assigning a float to a double implicitly.  We use
  * explicit casts in SIMDe, this is only used in the test suite. */
 #if HEDLEY_HAS_WARNING("-Wdouble-promotion")
