@@ -79,6 +79,7 @@
     #include <cmath>
     HEDLEY_DIAGNOSTIC_POP
   #else
+    #define _GNU_SOURCE
     #define SIMDE_MATH_HAVE_MATH_H
     #include <math.h>
   #endif
@@ -470,23 +471,23 @@
   #endif
 #endif
 
-#if !defined(simde_math_fabs)
-  #if SIMDE_MATH_BUILTIN_LIBM(fabs)
-    #define simde_math_fabs(v) __builtin_fabs(v)
+#if !defined(simde_math_exp2)
+  #if SIMDE_MATH_BUILTIN_LIBM(exp2)
+    #define simde_math_exp2(v) __builtin_exp2(v)
   #elif defined(SIMDE_MATH_HAVE_CMATH)
-    #define simde_math_fabs(v) std::fabs(v)
+    #define simde_math_exp2(v) std::exp2(v)
   #elif defined(SIMDE_MATH_HAVE_MATH_H)
-    #define simde_math_fabs(v) fabs(v)
+    #define simde_math_exp2(v) exp2(v)
   #endif
 #endif
 
-#if !defined(simde_math_fabsf)
-  #if SIMDE_MATH_BUILTIN_LIBM(fabsf)
-    #define simde_math_fabsf(v) __builtin_fabsf(v)
+#if !defined(simde_math_exp2f)
+  #if SIMDE_MATH_BUILTIN_LIBM(exp2f)
+    #define simde_math_exp2f(v) __builtin_exp2f(v)
   #elif defined(SIMDE_MATH_HAVE_CMATH)
-    #define simde_math_fabsf(v) std::fabs(v)
+    #define simde_math_exp2f(v) std::exp2(v)
   #elif defined(SIMDE_MATH_HAVE_MATH_H)
-    #define simde_math_fabsf(v) fabsf(v)
+    #define simde_math_exp2f(v) exp2f(v)
   #endif
 #endif
 
@@ -510,6 +511,22 @@
   #endif
 #endif
 
+#if HEDLEY_HAS_BUILTIN(__builtin_exp10) ||  HEDLEY_GCC_VERSION_CHECK(3,4,0)
+  #  define simde_math_exp10(v) __builtin_exp10(v)
+#elif defined(__GLIBC__) && ((__GLIBC__ > 2) || ((__GLIBC__ == 2) &&  (__GLIBC_MINOR__ >= 1)))  
+  #  define simde_math_exp10(v) exp10(v)
+#else
+#  define simde_math_exp10(v) pow(10.0, (v))
+#endif
+
+#if HEDLEY_HAS_BUILTIN(__builtin_exp10f) ||  HEDLEY_GCC_VERSION_CHECK(3,4,0)
+  #  define simde_math_exp10f(v) __builtin_exp10f(v)
+#elif defined(__GLIBC__) && ((__GLIBC__ > 2) || ((__GLIBC__ == 2) &&  (__GLIBC_MINOR__ >= 1)))  
+  #  define simde_math_exp10f(v) exp10f(v)
+#else
+#  define simde_math_exp10f(v) powf(10.0, (v))
+#endif
+
 #if !defined(simde_math_log)
   #if SIMDE_MATH_BUILTIN_LIBM(log)
     #define simde_math_log(v) __builtin_log(v)
@@ -527,6 +544,26 @@
     #define simde_math_logf(v) std::log(v)
   #elif defined(SIMDE_MATH_HAVE_MATH_H)
     #define simde_math_logf(v) logf(v)
+  #endif
+#endif
+
+#if !defined(simde_math_logb)
+  #if SIMDE_MATH_BUILTIN_LIBM(logb)
+    #define simde_math_logb(v) __builtin_logb(v)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_logb(v) std::logb(v)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_logb(v) logb(v)
+  #endif
+#endif
+
+#if !defined(simde_math_logbf)
+  #if SIMDE_MATH_BUILTIN_LIBM(logbf)
+    #define simde_math_logbf(v) __builtin_logbf(v)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_logbf(v) std::logb(v)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_logbf(v) logbf(v)
   #endif
 #endif
 
