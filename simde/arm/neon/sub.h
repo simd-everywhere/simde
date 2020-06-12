@@ -339,7 +339,7 @@ simde_vsubq_f32(simde_float32x4_t a, simde_float32x4_t b) {
     r_ = vec_sub(a_, b_);
     return r_;
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    return wasm_i32x4_sub(a, b);
+    return wasm_f32x4_sub(a, b);
   #else
     simde_float32x4_private
       r_,
@@ -373,7 +373,7 @@ simde_vsubq_f64(simde_float64x2_t a, simde_float64x2_t b) {
   #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
     return vec_sub(a, b);
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    return wasm_i32x4_sub(a, b);
+    return wasm_f64x2_sub(a, b);
   #else
     simde_float64x2_private
       r_,
@@ -509,7 +509,7 @@ simde_vsubq_s64(simde_int64x2_t a, simde_int64x2_t b) {
   #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
     return vec_sub(a, b);
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    return wasm_i32x4_sub(a, b);
+    return wasm_i64x2_sub(a, b);
   #else
     simde_int64x2_private
       r_,
