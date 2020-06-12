@@ -592,7 +592,7 @@ test_simde_vuzp2q_s8 (void) {
     simde_int8x16_t a = simde_vld1q_s8(test_vec[i].a);
     simde_int8x16_t b = simde_vld1q_s8(test_vec[i].b);
     simde_int8x16_t r = simde_vuzp2q_s8(a, b);
-    
+
     simde_test_arm_neon_assert_equal_i8x16(r, simde_vld1q_s8(test_vec[i].r));
   }
 
