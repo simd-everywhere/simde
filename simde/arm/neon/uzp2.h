@@ -256,8 +256,6 @@ simde_float32x4_t
 simde_vuzp2q_f32(simde_float32x4_t a, simde_float32x4_t b) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vuzp2q_f32(a, b);
-  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    return wasm_f32x4_uzp2(a, b);
   #else
     simde_float32x4_private
       r_,
