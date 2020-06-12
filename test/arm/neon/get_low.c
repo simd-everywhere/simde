@@ -4,7 +4,7 @@
 #include <simde/arm/neon/get_low.h>
 
 static int
-test_simde_vget_low_f32 (void) {
+test_simde_vget_low_f32 (SIMDE_MUNIT_TEST_ARGS) {
   struct {
     simde_float32 a[4];
     simde_float32 r[2];
@@ -42,7 +42,7 @@ test_simde_vget_low_f32 (void) {
 }
 
 static int
-test_simde_vget_low_f64 (void) {
+test_simde_vget_low_f64 (SIMDE_MUNIT_TEST_ARGS) {
   struct {
     simde_float64 a[2];
     simde_float64 r[1];
@@ -77,7 +77,7 @@ test_simde_vget_low_f64 (void) {
 }
 
 static int
-test_simde_vget_low_s8 (void) {
+test_simde_vget_low_s8 (SIMDE_MUNIT_TEST_ARGS) {
   struct {
     int8_t a[16];
     int8_t r[8];
@@ -120,7 +120,7 @@ test_simde_vget_low_s8 (void) {
 }
 
 static int
-test_simde_vget_low_s16 (void) {
+test_simde_vget_low_s16 (SIMDE_MUNIT_TEST_ARGS) {
   struct {
     int16_t a[8];
     int16_t r[4];
@@ -155,7 +155,7 @@ test_simde_vget_low_s16 (void) {
 }
 
 static int
-test_simde_vget_low_s32 (void) {
+test_simde_vget_low_s32 (SIMDE_MUNIT_TEST_ARGS) {
   struct {
     int32_t a[4];
     int32_t r[2];
@@ -190,7 +190,7 @@ test_simde_vget_low_s32 (void) {
 }
 
 static int
-test_simde_vget_low_s64 (void) {
+test_simde_vget_low_s64 (SIMDE_MUNIT_TEST_ARGS) {
   struct {
     int64_t a[2];
     int64_t r[1];
@@ -225,7 +225,7 @@ test_simde_vget_low_s64 (void) {
 }
 
 static int
-test_simde_vget_low_u8 (void) {
+test_simde_vget_low_u8 (SIMDE_MUNIT_TEST_ARGS) {
   struct {
     uint8_t a[16];
     uint8_t r[8];
@@ -268,7 +268,7 @@ test_simde_vget_low_u8 (void) {
 }
 
 static int
-test_simde_vget_low_u16 (void) {
+test_simde_vget_low_u16 (SIMDE_MUNIT_TEST_ARGS) {
   struct {
     uint16_t a[8];
     uint16_t r[4];
@@ -302,7 +302,7 @@ test_simde_vget_low_u16 (void) {
 }
 
 static int
-test_simde_vget_low_u32 (void) {
+test_simde_vget_low_u32 (SIMDE_MUNIT_TEST_ARGS) {
   struct {
     uint32_t a[4];
     uint32_t r[2];
@@ -336,7 +336,7 @@ test_simde_vget_low_u32 (void) {
 }
 
 static int
-test_simde_vget_low_u64 (void) {
+test_simde_vget_low_u64 (SIMDE_MUNIT_TEST_ARGS) {
   struct {
     uint64_t a[2];
     uint64_t r[1];

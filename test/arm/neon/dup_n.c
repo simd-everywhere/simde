@@ -4,7 +4,7 @@
 #include <simde/arm/neon/dup_n.h>
 
 static int
-test_simde_vdup_n_f32 (void) {
+test_simde_vdup_n_f32 (SIMDE_MUNIT_TEST_ARGS) {
   struct {
     simde_float32 a;
     simde_float32 r[2];
@@ -42,7 +42,7 @@ test_simde_vdup_n_f32 (void) {
 }
 
 static int
-test_simde_vdup_n_f64 (void) {
+test_simde_vdup_n_f64 (SIMDE_MUNIT_TEST_ARGS) {
   struct {
     double a;
     simde_float64 r[1];
@@ -77,7 +77,7 @@ test_simde_vdup_n_f64 (void) {
 }
 
 static int
-test_simde_vdup_n_s8 (void) {
+test_simde_vdup_n_s8 (SIMDE_MUNIT_TEST_ARGS) {
   struct {
     int8_t a;
     int8_t r[8];
@@ -112,7 +112,7 @@ test_simde_vdup_n_s8 (void) {
 }
 
 static int
-test_simde_vdup_n_s16 (void) {
+test_simde_vdup_n_s16 (SIMDE_MUNIT_TEST_ARGS) {
   struct {
     int16_t a;
     int16_t r[4];
@@ -147,7 +147,7 @@ test_simde_vdup_n_s16 (void) {
 }
 
 static int
-test_simde_vdup_n_s32 (void) {
+test_simde_vdup_n_s32 (SIMDE_MUNIT_TEST_ARGS) {
   struct {
     int32_t a;
     int32_t r[2];
@@ -182,7 +182,7 @@ test_simde_vdup_n_s32 (void) {
 }
 
 static int
-test_simde_vdup_n_s64 (void) {
+test_simde_vdup_n_s64 (SIMDE_MUNIT_TEST_ARGS) {
   struct {
     int64_t a;
     int64_t r[1];
@@ -217,7 +217,7 @@ test_simde_vdup_n_s64 (void) {
 }
 
 static int
-test_simde_vdup_n_u8 (void) {
+test_simde_vdup_n_u8 (SIMDE_MUNIT_TEST_ARGS) {
   struct {
     uint8_t a;
     uint8_t r[16];
@@ -252,7 +252,7 @@ test_simde_vdup_n_u8 (void) {
 }
 
 static int
-test_simde_vdup_n_u16 (void) {
+test_simde_vdup_n_u16 (SIMDE_MUNIT_TEST_ARGS) {
   struct {
     uint16_t a;
     uint16_t r[4];
@@ -286,7 +286,7 @@ test_simde_vdup_n_u16 (void) {
 }
 
 static int
-test_simde_vdup_n_u32 (void) {
+test_simde_vdup_n_u32 (SIMDE_MUNIT_TEST_ARGS) {
   struct {
     uint32_t a;
     uint32_t r[2];
@@ -320,7 +320,7 @@ test_simde_vdup_n_u32 (void) {
 }
 
 static int
-test_simde_vdup_n_u64 (void) {
+test_simde_vdup_n_u64 (SIMDE_MUNIT_TEST_ARGS) {
   struct {
     uint64_t a;
     uint64_t r[1];
@@ -354,7 +354,7 @@ test_simde_vdup_n_u64 (void) {
 }
 
 static int
-test_simde_vdupq_n_f32 (void) {
+test_simde_vdupq_n_f32 (SIMDE_MUNIT_TEST_ARGS) {
   struct {
     simde_float32 a;
     simde_float32 r[4];
@@ -388,7 +388,7 @@ test_simde_vdupq_n_f32 (void) {
 }
 
 static int
-test_simde_vdupq_n_f64 (void) {
+test_simde_vdupq_n_f64 (SIMDE_MUNIT_TEST_ARGS) {
   struct {
     simde_float64 a;
     simde_float64 r[2];
@@ -423,7 +423,7 @@ test_simde_vdupq_n_f64 (void) {
 }
 
 static int
-test_simde_vdupq_n_s8 (void) {
+test_simde_vdupq_n_s8 (SIMDE_MUNIT_TEST_ARGS) {
   struct {
     int8_t a;
     int8_t r[16];
@@ -466,7 +466,7 @@ test_simde_vdupq_n_s8 (void) {
 }
 
 static int
-test_simde_vdupq_n_s16 (void) {
+test_simde_vdupq_n_s16 (SIMDE_MUNIT_TEST_ARGS) {
   struct {
     int16_t a;
     int16_t r[8];
@@ -501,7 +501,7 @@ test_simde_vdupq_n_s16 (void) {
 }
 
 static int
-test_simde_vdupq_n_s32 (void) {
+test_simde_vdupq_n_s32 (SIMDE_MUNIT_TEST_ARGS) {
   struct {
     int32_t a;
     int32_t r[4];
@@ -535,7 +535,7 @@ test_simde_vdupq_n_s32 (void) {
 }
 
 static int
-test_simde_vdupq_n_s64 (void) {
+test_simde_vdupq_n_s64 (SIMDE_MUNIT_TEST_ARGS) {
   struct {
     int64_t a;
     int64_t r[2];
@@ -569,7 +569,7 @@ test_simde_vdupq_n_s64 (void) {
 }
 
 static int
-test_simde_vdupq_n_u8 (void) {
+test_simde_vdupq_n_u8 (SIMDE_MUNIT_TEST_ARGS) {
   struct {
     uint8_t a;
     uint8_t r[16];
@@ -612,7 +612,7 @@ test_simde_vdupq_n_u8 (void) {
 }
 
 static int
-test_simde_vdupq_n_u16 (void) {
+test_simde_vdupq_n_u16 (SIMDE_MUNIT_TEST_ARGS) {
   struct {
     uint16_t a;
     uint16_t r[8];
@@ -646,7 +646,7 @@ test_simde_vdupq_n_u16 (void) {
 }
 
 static int
-test_simde_vdupq_n_u32 (void) {
+test_simde_vdupq_n_u32 (SIMDE_MUNIT_TEST_ARGS) {
   struct {
     uint32_t a;
     uint32_t r[4];
@@ -681,7 +681,7 @@ test_simde_vdupq_n_u32 (void) {
 }
 
 static int
-test_simde_vdupq_n_u64 (void) {
+test_simde_vdupq_n_u64 (SIMDE_MUNIT_TEST_ARGS) {
   struct {
     uint64_t a;
     uint64_t r[2];

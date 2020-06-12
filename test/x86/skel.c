@@ -2,7 +2,7 @@
    process of creating new tests for SSE functions. */
 
 static int
-test_simde_mm_xxx_ps (void) {
+test_simde_mm_xxx_ps (SIMDE_MUNIT_TEST_ARGS) {
 #if 0
   static const struct {
     const simde_float32 a[4];
@@ -36,7 +36,7 @@ test_simde_mm_xxx_ps (void) {
 }
 
 static int
-test_simde_mm_xxx_pd (void) {
+test_simde_mm_xxx_pd (SIMDE_MUNIT_TEST_ARGS) {
 #if 0
   static const struct {
     const simde_float64 a[2];
@@ -69,7 +69,7 @@ test_simde_mm_xxx_pd (void) {
 }
 
 static int
-test_simde_mm_xxx_epi8 (void) {
+test_simde_mm_xxx_epi8 (SIMDE_MUNIT_TEST_ARGS) {
 #if 0
   static const struct {
     const int8_t a[16];
@@ -103,7 +103,7 @@ test_simde_mm_xxx_epi8 (void) {
 }
 
 static int
-test_simde_mm_xxx_epi16 (void) {
+test_simde_mm_xxx_epi16 (SIMDE_MUNIT_TEST_ARGS) {
 #if 0
   static const struct {
     const int16_t a[8];
@@ -137,7 +137,7 @@ test_simde_mm_xxx_epi16 (void) {
 }
 
 static int
-test_simde_mm_xxx_epi32 (void) {
+test_simde_mm_xxx_epi32 (SIMDE_MUNIT_TEST_ARGS) {
 #if 0
   static const struct {
     const int32_t a[4];
@@ -171,7 +171,7 @@ test_simde_mm_xxx_epi32 (void) {
 }
 
 static int
-test_simde_mm_xxx_epi64 (void) {
+test_simde_mm_xxx_epi64 (SIMDE_MUNIT_TEST_ARGS) {
 #if 0
   static const struct {
     const int64_t a[2];
@@ -219,7 +219,7 @@ test_simde_mm_xxx_epi64 (void) {
 
 
 static int
-test_simde_mm256_xxx_ps (void) {
+test_simde_mm256_xxx_ps (SIMDE_MUNIT_TEST_ARGS) {
 #if 0
   static const struct {
     const simde_float32 a[8];
@@ -253,7 +253,7 @@ test_simde_mm256_xxx_ps (void) {
 }
 
 static int
-test_simde_mm256_xxx_pd (void) {
+test_simde_mm256_xxx_pd (SIMDE_MUNIT_TEST_ARGS) {
 #if 0
   static const struct {
     const simde_float64 a[4];
@@ -287,7 +287,7 @@ test_simde_mm256_xxx_pd (void) {
 }
 
 static int
-test_simde_mm256_xxx_epi8 (void) {
+test_simde_mm256_xxx_epi8 (SIMDE_MUNIT_TEST_ARGS) {
 #if 0
   static const struct {
     const int8_t a[32];
@@ -321,7 +321,7 @@ test_simde_mm256_xxx_epi8 (void) {
 }
 
 static int
-test_simde_mm256_xxx_epi16 (void) {
+test_simde_mm256_xxx_epi16 (SIMDE_MUNIT_TEST_ARGS) {
 #if 0
   static const struct {
     const int16_t a[16];
@@ -355,7 +355,7 @@ test_simde_mm256_xxx_epi16 (void) {
 }
 
 static int
-test_simde_mm256_xxx_epi32 (void) {
+test_simde_mm256_xxx_epi32 (SIMDE_MUNIT_TEST_ARGS) {
 #if 0
   static const struct {
     const int32_t a[8];
@@ -389,7 +389,7 @@ test_simde_mm256_xxx_epi32 (void) {
 }
 
 static int
-test_simde_mm256_xxx_epi64 (void) {
+test_simde_mm256_xxx_epi64 (SIMDE_MUNIT_TEST_ARGS) {
 #if 0
   static const struct {
     const int64_t a[4];
@@ -439,7 +439,7 @@ test_simde_mm256_xxx_epi64 (void) {
 
 
 static int
-test_simde_mm512_xxx_ps (void) {
+test_simde_mm512_xxx_ps (SIMDE_MUNIT_TEST_ARGS) {
 #if 0
   static const struct {
     const simde_float32 a[16];
@@ -473,7 +473,7 @@ test_simde_mm512_xxx_ps (void) {
 }
 
 static int
-test_simde_mm512_mask_xxx_ps (void) {
+test_simde_mm512_mask_xxx_ps (SIMDE_MUNIT_TEST_ARGS) {
 #if 0
   static const struct {
     const simde_float32 src[16];
@@ -514,7 +514,7 @@ test_simde_mm512_mask_xxx_ps (void) {
 }
 
 static int
-test_simde_mm512_maskz_xxx_ps (void) {
+test_simde_mm512_maskz_xxx_ps (SIMDE_MUNIT_TEST_ARGS) {
 #if 0
   static const struct {
     const simde__mmask16 k;
@@ -551,7 +551,7 @@ test_simde_mm512_maskz_xxx_ps (void) {
 }
 
 static int
-test_simde_mm512_xxx_pd (void) {
+test_simde_mm512_xxx_pd (SIMDE_MUNIT_TEST_ARGS) {
 #if 0
   static const struct {
     const simde_float64 a[8];
@@ -585,7 +585,7 @@ test_simde_mm512_xxx_pd (void) {
 }
 
 static int
-test_simde_mm512_mask_xxx_pd (void) {
+test_simde_mm512_mask_xxx_pd (SIMDE_MUNIT_TEST_ARGS) {
 #if 0
   static const struct {
     const simde_float64 src[8];
@@ -626,7 +626,7 @@ test_simde_mm512_mask_xxx_pd (void) {
 }
 
 static int
-test_simde_mm512_maskz_xxx_pd (void) {
+test_simde_mm512_maskz_xxx_pd (SIMDE_MUNIT_TEST_ARGS) {
 #if 0
   static const struct {
     const simde__mmask8 k;
@@ -663,7 +663,7 @@ test_simde_mm512_maskz_xxx_pd (void) {
 }
 
 static int
-test_simde_mm512_xxx_epi8 (void) {
+test_simde_mm512_xxx_epi8 (SIMDE_MUNIT_TEST_ARGS) {
 #if 0
   static const struct {
     const int8_t a[64];
@@ -697,7 +697,7 @@ test_simde_mm512_xxx_epi8 (void) {
 }
 
 static int
-test_simde_mm512_mask_xxx_epi8 (void) {
+test_simde_mm512_mask_xxx_epi8 (SIMDE_MUNIT_TEST_ARGS) {
 #if 0
   static const struct {
     const int8_t src[64];
@@ -738,7 +738,7 @@ test_simde_mm512_mask_xxx_epi8 (void) {
 }
 
 static int
-test_simde_mm512_maskz_xxx_epi8 (void) {
+test_simde_mm512_maskz_xxx_epi8 (SIMDE_MUNIT_TEST_ARGS) {
 #if 0
   static const struct {
     const simde__mmask64 k;
@@ -775,7 +775,7 @@ test_simde_mm512_maskz_xxx_epi8 (void) {
 }
 
 static int
-test_simde_mm512_xxx_epi16 (void) {
+test_simde_mm512_xxx_epi16 (SIMDE_MUNIT_TEST_ARGS) {
 #if 0
   static const struct {
     const int16_t a[32];
@@ -809,7 +809,7 @@ test_simde_mm512_xxx_epi16 (void) {
 }
 
 static int
-test_simde_mm512_mask_xxx_epi16 (void) {
+test_simde_mm512_mask_xxx_epi16 (SIMDE_MUNIT_TEST_ARGS) {
 #if 0
   static const struct {
     const int16_t src[32];
@@ -850,7 +850,7 @@ test_simde_mm512_mask_xxx_epi16 (void) {
 }
 
 static int
-test_simde_mm512_maskz_xxx_epi16 (void) {
+test_simde_mm512_maskz_xxx_epi16 (SIMDE_MUNIT_TEST_ARGS) {
 #if 0
   static const struct {
     const simde__mmask32 k;
@@ -887,7 +887,7 @@ test_simde_mm512_maskz_xxx_epi16 (void) {
 }
 
 static int
-test_simde_mm512_xxx_epi32 (void) {
+test_simde_mm512_xxx_epi32 (SIMDE_MUNIT_TEST_ARGS) {
 #if 0
   static const struct {
     const int32_t a[16];
@@ -921,7 +921,7 @@ test_simde_mm512_xxx_epi32 (void) {
 }
 
 static int
-test_simde_mm512_mask_xxx_epi32 (void) {
+test_simde_mm512_mask_xxx_epi32 (SIMDE_MUNIT_TEST_ARGS) {
 #if 0
   static const struct {
     const int32_t src[16];
@@ -962,7 +962,7 @@ test_simde_mm512_mask_xxx_epi32 (void) {
 }
 
 static int
-test_simde_mm512_maskz_xxx_epi32 (void) {
+test_simde_mm512_maskz_xxx_epi32 (SIMDE_MUNIT_TEST_ARGS) {
 #if 0
   static const struct {
     const simde__mmask16 k;
@@ -999,7 +999,7 @@ test_simde_mm512_maskz_xxx_epi32 (void) {
 }
 
 static int
-test_simde_mm512_xxx_epi64 (void) {
+test_simde_mm512_xxx_epi64 (SIMDE_MUNIT_TEST_ARGS) {
 #if 0
   static const struct {
     const int64_t a[8];
@@ -1033,7 +1033,7 @@ test_simde_mm512_xxx_epi64 (void) {
 }
 
 static int
-test_simde_mm512_mask_xxx_epi64 (void) {
+test_simde_mm512_mask_xxx_epi64 (SIMDE_MUNIT_TEST_ARGS) {
 #if 0
   static const struct {
     const int32_t src[16];
@@ -1074,7 +1074,7 @@ test_simde_mm512_mask_xxx_epi64 (void) {
 }
 
 static int
-test_simde_mm512_maskz_xxx_epi64 (void) {
+test_simde_mm512_maskz_xxx_epi64 (SIMDE_MUNIT_TEST_ARGS) {
 #if 0
   static const struct {
     const simde__mmask8 k;

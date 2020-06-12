@@ -26,7 +26,7 @@
 #include <simde/x86/sse4.2.h>
 
 static int
-test_simde_mm_cmpestrs_8(void) {
+test_simde_mm_cmpestrs_8(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m128i a;
     int la;
@@ -132,7 +132,7 @@ test_simde_mm_cmpestrs_8(void) {
 }
 
 static int
-test_simde_mm_cmpestrs_16(void) {
+test_simde_mm_cmpestrs_16(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m128i a;
     int la;
@@ -206,7 +206,7 @@ test_simde_mm_cmpestrs_16(void) {
 }
 
 static int
-test_simde_mm_cmpestrz_8(void) {
+test_simde_mm_cmpestrz_8(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m128i a;
     int la;
@@ -313,7 +313,7 @@ test_simde_mm_cmpestrz_8(void) {
 }
 
 static int
-test_simde_mm_cmpestrz_16(void) {
+test_simde_mm_cmpestrz_16(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m128i a;
     int la;
@@ -388,7 +388,7 @@ test_simde_mm_cmpestrz_16(void) {
 }
 
 static int
-test_simde_mm_cmpgt_epi64(void) {
+test_simde_mm_cmpgt_epi64(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m128i a;
     simde__m128i b;
@@ -429,7 +429,7 @@ test_simde_mm_cmpgt_epi64(void) {
 }
 
 static int
-test_simde_mm_cmpistrs_8(void) {
+test_simde_mm_cmpistrs_8(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m128i a;
     simde__m128i b;
@@ -598,7 +598,7 @@ test_simde_mm_cmpistrs_8(void) {
   return 0;
 }
 static int
-test_simde_mm_cmpistrs_16(void) {
+test_simde_mm_cmpistrs_16(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m128i a;
     simde__m128i b;
@@ -660,7 +660,7 @@ test_simde_mm_cmpistrs_16(void) {
 }
 
 static int
-test_simde_mm_cmpistrz_8(void) {
+test_simde_mm_cmpistrz_8(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m128i a;
     simde__m128i b;
@@ -830,7 +830,7 @@ test_simde_mm_cmpistrz_8(void) {
 }
 
 static int
-test_simde_mm_cmpistrz_16(void) {
+test_simde_mm_cmpistrz_16(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m128i a;
     simde__m128i b;

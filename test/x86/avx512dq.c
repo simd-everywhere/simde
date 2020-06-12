@@ -26,7 +26,7 @@
 #include <test/x86/test-avx512.h>
 
 static int
-test_simde_mm512_and_ps(void) {
+test_simde_mm512_and_ps(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m512 a;
     simde__m512 b;
@@ -139,7 +139,7 @@ test_simde_mm512_and_ps(void) {
 }
 
 static int
-test_simde_mm512_and_pd(void) {
+test_simde_mm512_and_pd(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m512d a;
     simde__m512d b;
@@ -252,7 +252,7 @@ test_simde_mm512_and_pd(void) {
 }
 
 static int
-test_simde_mm512_mask_and_ps(void) {
+test_simde_mm512_mask_and_ps(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m512 src;
     simde__mmask16 k;
@@ -407,7 +407,7 @@ test_simde_mm512_mask_and_ps(void) {
 }
 
 static int
-test_simde_mm512_mask_and_pd(void) {
+test_simde_mm512_mask_and_pd(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m512d src;
     simde__mmask8 k;
@@ -562,7 +562,7 @@ test_simde_mm512_mask_and_pd(void) {
 }
 
 static int
-test_simde_mm512_maskz_and_ps(void) {
+test_simde_mm512_maskz_and_ps(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__mmask16 k;
     simde__m512 a;
@@ -684,7 +684,7 @@ test_simde_mm512_maskz_and_ps(void) {
 }
 
 static int
-test_simde_mm512_maskz_and_pd(void) {
+test_simde_mm512_maskz_and_pd(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__mmask8 k;
     simde__m512d a;
@@ -806,7 +806,7 @@ test_simde_mm512_maskz_and_pd(void) {
 }
 
 static int
-test_simde_mm512_andnot_ps(void) {
+test_simde_mm512_andnot_ps(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m512i a;
     simde__m512i b;
@@ -919,7 +919,7 @@ test_simde_mm512_andnot_ps(void) {
 }
 
 static int
-test_simde_mm512_andnot_pd(void) {
+test_simde_mm512_andnot_pd(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m512i a;
     simde__m512i b;
@@ -1032,7 +1032,7 @@ test_simde_mm512_andnot_pd(void) {
 }
 
 static int
-test_simde_mm512_mask_andnot_ps(void) {
+test_simde_mm512_mask_andnot_ps(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m512i src;
     simde__mmask16 k;
@@ -1187,7 +1187,7 @@ test_simde_mm512_mask_andnot_ps(void) {
 }
 
 static int
-test_simde_mm512_maskz_andnot_ps(void) {
+test_simde_mm512_maskz_andnot_ps(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__mmask16 k;
     simde__m512i a;
@@ -1309,7 +1309,7 @@ test_simde_mm512_maskz_andnot_ps(void) {
 }
 
 static int
-test_simde_mm512_mask_andnot_pd(void) {
+test_simde_mm512_mask_andnot_pd(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m512i src;
     simde__mmask8 k;
@@ -1464,7 +1464,7 @@ test_simde_mm512_mask_andnot_pd(void) {
 }
 
 static int
-test_simde_mm512_maskz_andnot_pd(void) {
+test_simde_mm512_maskz_andnot_pd(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__mmask8 k;
     simde__m512i a;

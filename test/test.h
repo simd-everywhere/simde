@@ -519,6 +519,7 @@ SIMDE_TEST_GENERATE_ASSERT_EQUAL_FUNC_(uint64_t, u64, PRIu64)
   #define SIMDE_TEST_FUNC_LIST_BEGIN static SimdeTestFunc test_suite_tests[] = {
   #define SIMDE_TEST_FUNC_LIST_ENTRY(name) test_simde_##name,
   #define SIMDE_TEST_FUNC_LIST_END };
+  #define SIMDE_MUNIT_TEST_ARGS void
 #else
   HEDLEY_DIAGNOSTIC_PUSH
   SIMDE_DIAGNOSTIC_DISABLE_CPP98_COMPAT_PEDANTIC_
@@ -526,6 +527,16 @@ SIMDE_TEST_GENERATE_ASSERT_EQUAL_FUNC_(uint64_t, u64, PRIu64)
   SIMDE_DIAGNOSTIC_DISABLE_VARIADIC_MACROS_
   #include "munit/munit.h"
   HEDLEY_DIAGNOSTIC_POP
+
+  #if \
+      HEDLEY_HAS_ATTRIBUTE(unused) || \
+      HEDLEY_GCC_VERSION_CHECK(3,1,0)
+    #define SIMDE_MUNIT_TEST_ARGS __attribute__((__unused__)) const MunitParameter params[], __attribute__((__unused__)) void* data
+  #else
+    /* Compilers other than emscripten are fine with casting away
+     * arguments. */
+    #define SIMDE_MUNIT_TEST_ARGS void
+  #endif
 
   #define SIMDE_TEST_FUNC_LIST_BEGIN static MunitTest test_suite_tests[] = {
   #if defined(__cplusplus)

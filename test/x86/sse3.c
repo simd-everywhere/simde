@@ -26,7 +26,7 @@
 #include <test/x86/test-sse2.h>
 
 static int
-test_simde_mm_addsub_pd(void) {
+test_simde_mm_addsub_pd(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m128d a;
     simde__m128d b;
@@ -67,7 +67,7 @@ test_simde_mm_addsub_pd(void) {
 }
 
 static int
-test_simde_mm_addsub_ps(void) {
+test_simde_mm_addsub_ps(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m128 a;
     simde__m128 b;
@@ -108,7 +108,7 @@ test_simde_mm_addsub_ps(void) {
 }
 
 static int
-test_simde_mm_hadd_pd(void) {
+test_simde_mm_hadd_pd(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m128d a;
     simde__m128d b;
@@ -149,7 +149,7 @@ test_simde_mm_hadd_pd(void) {
 }
 
 static int
-test_simde_mm_hadd_ps(void) {
+test_simde_mm_hadd_ps(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m128 a;
     simde__m128 b;
@@ -190,7 +190,7 @@ test_simde_mm_hadd_ps(void) {
 }
 
 static int
-test_simde_mm_hsub_pd(void) {
+test_simde_mm_hsub_pd(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m128d a;
     simde__m128d b;
@@ -231,7 +231,7 @@ test_simde_mm_hsub_pd(void) {
 }
 
 static int
-test_simde_mm_hsub_ps(void) {
+test_simde_mm_hsub_ps(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m128 a;
     simde__m128 b;
@@ -272,7 +272,7 @@ test_simde_mm_hsub_ps(void) {
 }
 
 static int
-test_simde_mm_lddqu_si128(void) {
+test_simde_mm_lddqu_si128(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m128i a;
     simde__m128i r;
@@ -320,7 +320,7 @@ test_simde_mm_lddqu_si128(void) {
 }
 
 static int
-test_simde_mm_loaddup_pd(void) {
+test_simde_mm_loaddup_pd(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde_float64 a;
     simde__m128d r;
@@ -344,7 +344,7 @@ test_simde_mm_loaddup_pd(void) {
 }
 
 static int
-test_simde_mm_movedup_pd(void) {
+test_simde_mm_movedup_pd(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m128d a;
     simde__m128d r;
@@ -376,7 +376,7 @@ test_simde_mm_movedup_pd(void) {
 }
 
 static int
-test_simde_mm_movehdup_ps(void) {
+test_simde_mm_movehdup_ps(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m128 a;
     simde__m128 r;
@@ -408,7 +408,7 @@ test_simde_mm_movehdup_ps(void) {
 }
 
 static int
-test_simde_mm_moveldup_ps(void) {
+test_simde_mm_moveldup_ps(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m128 a;
     simde__m128 r;

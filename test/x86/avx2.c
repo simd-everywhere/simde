@@ -26,7 +26,7 @@
 #include <test/x86/test-avx.h>
 
 static int
-test_simde_mm256_abs_epi8(void) {
+test_simde_mm256_abs_epi8(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m256i r;
@@ -170,7 +170,7 @@ test_simde_mm256_abs_epi8(void) {
 }
 
 static int
-test_simde_mm256_abs_epi16(void) {
+test_simde_mm256_abs_epi16(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m256i r;
@@ -250,7 +250,7 @@ test_simde_mm256_abs_epi16(void) {
 }
 
 static int
-test_simde_mm256_abs_epi32(void) {
+test_simde_mm256_abs_epi32(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m256i r;
@@ -298,7 +298,7 @@ test_simde_mm256_abs_epi32(void) {
 }
 
 static int
-test_simde_mm256_add_epi8 (void) {
+test_simde_mm256_add_epi8 (SIMDE_MUNIT_TEST_ARGS) {
   struct {
     int8_t a[32];
     int8_t b[32];
@@ -413,7 +413,7 @@ test_simde_mm256_add_epi8 (void) {
 }
 
 static int
-test_simde_mm256_add_epi16 (void) {
+test_simde_mm256_add_epi16 (SIMDE_MUNIT_TEST_ARGS) {
   struct {
     int16_t a[16];
     int16_t b[16];
@@ -480,7 +480,7 @@ test_simde_mm256_add_epi16 (void) {
 }
 
 static int
-test_simde_mm256_add_epi32 (void) {
+test_simde_mm256_add_epi32 (SIMDE_MUNIT_TEST_ARGS) {
   struct {
     int32_t a[8];
     int32_t b[8];
@@ -524,7 +524,7 @@ test_simde_mm256_add_epi32 (void) {
 }
 
 static int
-test_simde_mm256_add_epi64 (void) {
+test_simde_mm256_add_epi64 (SIMDE_MUNIT_TEST_ARGS) {
   struct {
     int64_t a[4];
     int64_t b[4];
@@ -567,7 +567,7 @@ test_simde_mm256_add_epi64 (void) {
 }
 
 static int
-test_simde_mm256_alignr_epi8_case0(void) {
+test_simde_mm256_alignr_epi8_case0(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -776,7 +776,7 @@ test_simde_mm256_alignr_epi8_case0(void) {
 }
 
 static int
-test_simde_mm256_alignr_epi8_case1(void) {
+test_simde_mm256_alignr_epi8_case1(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -985,7 +985,7 @@ test_simde_mm256_alignr_epi8_case1(void) {
 }
 
 static int
-test_simde_mm256_alignr_epi8_case2(void) {
+test_simde_mm256_alignr_epi8_case2(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -1194,7 +1194,7 @@ test_simde_mm256_alignr_epi8_case2(void) {
 }
 
 static int
-test_simde_mm256_alignr_epi8_case3(void) {
+test_simde_mm256_alignr_epi8_case3(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -1403,7 +1403,7 @@ test_simde_mm256_alignr_epi8_case3(void) {
 }
 
 static int
-test_simde_mm256_and_si256(void) {
+test_simde_mm256_and_si256(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -1468,7 +1468,7 @@ test_simde_mm256_and_si256(void) {
 }
 
 static int
-test_simde_mm256_andnot_si256(void) {
+test_simde_mm256_andnot_si256(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -1533,7 +1533,7 @@ test_simde_mm256_andnot_si256(void) {
 }
 
 static int
-test_simde_mm256_adds_epi8(void) {
+test_simde_mm256_adds_epi8(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -1742,7 +1742,7 @@ test_simde_mm256_adds_epi8(void) {
 }
 
 static int
-test_simde_mm256_adds_epi16(void) {
+test_simde_mm256_adds_epi16(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -1855,7 +1855,7 @@ test_simde_mm256_adds_epi16(void) {
 }
 
 static int
-test_simde_mm256_adds_epu8(void) {
+test_simde_mm256_adds_epu8(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -2064,7 +2064,7 @@ test_simde_mm256_adds_epu8(void) {
 }
 
 static int
-test_simde_mm256_adds_epu16(void) {
+test_simde_mm256_adds_epu16(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -2177,7 +2177,7 @@ test_simde_mm256_adds_epu16(void) {
 }
 
 static int
-test_simde_mm256_avg_epu8(void) {
+test_simde_mm256_avg_epu8(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -2386,7 +2386,7 @@ test_simde_mm256_avg_epu8(void) {
 }
 
 static int
-test_simde_mm256_avg_epu16(void) {
+test_simde_mm256_avg_epu16(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -2499,7 +2499,7 @@ test_simde_mm256_avg_epu16(void) {
 }
 
 static int
-test_simde_mm256_blend_epi16(void) {
+test_simde_mm256_blend_epi16(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -2612,7 +2612,7 @@ test_simde_mm256_blend_epi16(void) {
 }
 
 static int
-test_simde_mm256_blend_epi32(void) {
+test_simde_mm256_blend_epi32(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -2677,7 +2677,7 @@ test_simde_mm256_blend_epi32(void) {
 }
 
 static int
-test_simde_mm256_blendv_epi8(void) {
+test_simde_mm256_blendv_epi8(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -2951,7 +2951,7 @@ test_simde_mm256_blendv_epi8(void) {
 }
 
 static int
-test_simde_mm256_cmpeq_epi8(void) {
+test_simde_mm256_cmpeq_epi8(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -3160,7 +3160,7 @@ test_simde_mm256_cmpeq_epi8(void) {
 }
 
 static int
-test_simde_mm256_cmpeq_epi16(void) {
+test_simde_mm256_cmpeq_epi16(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -3273,7 +3273,7 @@ test_simde_mm256_cmpeq_epi16(void) {
 }
 
 static int
-test_simde_mm256_cmpeq_epi32(void) {
+test_simde_mm256_cmpeq_epi32(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -3338,7 +3338,7 @@ test_simde_mm256_cmpeq_epi32(void) {
 }
 
 static int
-test_simde_mm256_cmpeq_epi64(void) {
+test_simde_mm256_cmpeq_epi64(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -3403,7 +3403,7 @@ test_simde_mm256_cmpeq_epi64(void) {
 }
 
 static int
-test_simde_mm256_cmpgt_epi8(void) {
+test_simde_mm256_cmpgt_epi8(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -3612,7 +3612,7 @@ test_simde_mm256_cmpgt_epi8(void) {
 }
 
 static int
-test_simde_mm256_cmpgt_epi16(void) {
+test_simde_mm256_cmpgt_epi16(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -3725,7 +3725,7 @@ test_simde_mm256_cmpgt_epi16(void) {
 }
 
 static int
-test_simde_mm256_cmpgt_epi32(void) {
+test_simde_mm256_cmpgt_epi32(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -3790,7 +3790,7 @@ test_simde_mm256_cmpgt_epi32(void) {
 }
 
 static int
-test_simde_mm256_cmpgt_epi64(void) {
+test_simde_mm256_cmpgt_epi64(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -3855,7 +3855,7 @@ test_simde_mm256_cmpgt_epi64(void) {
 }
 
 static int
-test_simde_mm_broadcastb_epi8(void) {
+test_simde_mm_broadcastb_epi8(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m128i a;
     simde__m128i r;
@@ -3935,7 +3935,7 @@ test_simde_mm_broadcastb_epi8(void) {
 }
 
 static int
-test_simde_mm256_broadcastb_epi8(void) {
+test_simde_mm256_broadcastb_epi8(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m128i a;
     simde__m256i r;
@@ -4047,7 +4047,7 @@ test_simde_mm256_broadcastb_epi8(void) {
 }
 
 static int
-test_simde_mm_broadcastw_epi16(void) {
+test_simde_mm_broadcastw_epi16(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m128i a;
     simde__m128i r;
@@ -4095,7 +4095,7 @@ test_simde_mm_broadcastw_epi16(void) {
 }
 
 static int
-test_simde_mm256_broadcastw_epi16(void) {
+test_simde_mm256_broadcastw_epi16(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m128i a;
     simde__m256i r;
@@ -4159,7 +4159,7 @@ test_simde_mm256_broadcastw_epi16(void) {
 }
 
 static int
-test_simde_mm_broadcastd_epi32(void) {
+test_simde_mm_broadcastd_epi32(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m128i a;
     simde__m128i r;
@@ -4191,7 +4191,7 @@ test_simde_mm_broadcastd_epi32(void) {
 }
 
 static int
-test_simde_mm256_broadcastd_epi32(void) {
+test_simde_mm256_broadcastd_epi32(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m128i a;
     simde__m256i r;
@@ -4231,7 +4231,7 @@ test_simde_mm256_broadcastd_epi32(void) {
 }
 
 static int
-test_simde_mm_broadcastq_epi64(void) {
+test_simde_mm_broadcastq_epi64(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m128i a;
     simde__m128i r;
@@ -4263,7 +4263,7 @@ test_simde_mm_broadcastq_epi64(void) {
 }
 
 static int
-test_simde_mm256_broadcastq_epi64(void) {
+test_simde_mm256_broadcastq_epi64(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m128i a;
     simde__m256i r;
@@ -4303,7 +4303,7 @@ test_simde_mm256_broadcastq_epi64(void) {
 }
 
 static int
-test_simde_mm_broadcastss_ps(void) {
+test_simde_mm_broadcastss_ps(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m128 a;
     simde__m128 r;
@@ -4335,7 +4335,7 @@ test_simde_mm_broadcastss_ps(void) {
 }
 
 static int
-test_simde_mm256_broadcastss_ps(void) {
+test_simde_mm256_broadcastss_ps(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m128 a;
     simde__m256 r;
@@ -4391,7 +4391,7 @@ test_simde_mm256_broadcastss_ps(void) {
 }
 
 static int
-test_simde_mm_broadcastsd_pd(void) {
+test_simde_mm_broadcastsd_pd(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m128d a;
     simde__m128d r;
@@ -4427,7 +4427,7 @@ test_simde_mm_broadcastsd_pd(void) {
 }
 
 static int
-test_simde_mm256_broadcastsd_pd(void) {
+test_simde_mm256_broadcastsd_pd(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m128d a;
     simde__m256d r;
@@ -4467,7 +4467,7 @@ test_simde_mm256_broadcastsd_pd(void) {
 }
 
 static int
-test_simde_mm256_broadcastsi128_si256(void) {
+test_simde_mm256_broadcastsi128_si256(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m128i a;
     simde__m256i r;
@@ -4507,7 +4507,7 @@ test_simde_mm256_broadcastsi128_si256(void) {
 }
 
 static int
-test_simde_mm256_cvtepi8_epi16(void) {
+test_simde_mm256_cvtepi8_epi16(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m128i a;
     simde__m256i r;
@@ -4587,7 +4587,7 @@ test_simde_mm256_cvtepi8_epi16(void) {
 }
 
 static int
-test_simde_mm256_cvtepi8_epi32(void) {
+test_simde_mm256_cvtepi8_epi32(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m128i a;
     simde__m256i r;
@@ -4651,7 +4651,7 @@ test_simde_mm256_cvtepi8_epi32(void) {
 }
 
 static int
-test_simde_mm256_cvtepi8_epi64(void) {
+test_simde_mm256_cvtepi8_epi64(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m128i a;
     simde__m256i r;
@@ -4716,7 +4716,7 @@ test_simde_mm256_cvtepi8_epi64(void) {
 
 
 static int
-test_simde_mm256_cvtepi16_epi32(void) {
+test_simde_mm256_cvtepi16_epi32(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m128i a;
     simde__m256i r;
@@ -4764,7 +4764,7 @@ test_simde_mm256_cvtepi16_epi32(void) {
 }
 
 static int
-test_simde_mm256_cvtepi16_epi64(void) {
+test_simde_mm256_cvtepi16_epi64(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m128i a;
     simde__m256i r;
@@ -4812,7 +4812,7 @@ test_simde_mm256_cvtepi16_epi64(void) {
 }
 
 static int
-test_simde_mm256_cvtepi32_epi64(void) {
+test_simde_mm256_cvtepi32_epi64(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m128i a;
     simde__m256i r;
@@ -4852,7 +4852,7 @@ test_simde_mm256_cvtepi32_epi64(void) {
 }
 
 static int
-test_simde_mm256_cvtepu8_epi16(void) {
+test_simde_mm256_cvtepu8_epi16(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m128i a;
     simde__m256i r;
@@ -4932,7 +4932,7 @@ test_simde_mm256_cvtepu8_epi16(void) {
 }
 
 static int
-test_simde_mm256_cvtepu8_epi32(void) {
+test_simde_mm256_cvtepu8_epi32(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m128i a;
     simde__m256i r;
@@ -4996,7 +4996,7 @@ test_simde_mm256_cvtepu8_epi32(void) {
 }
 
 static int
-test_simde_mm256_cvtepu8_epi64(void) {
+test_simde_mm256_cvtepu8_epi64(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m128i a;
     simde__m256i r;
@@ -5060,7 +5060,7 @@ test_simde_mm256_cvtepu8_epi64(void) {
 }
 
 static int
-test_simde_mm256_cvtepu16_epi32(void) {
+test_simde_mm256_cvtepu16_epi32(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m128i a;
     simde__m256i r;
@@ -5108,7 +5108,7 @@ test_simde_mm256_cvtepu16_epi32(void) {
 }
 
 static int
-test_simde_mm256_cvtepu16_epi64(void) {
+test_simde_mm256_cvtepu16_epi64(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m128i a;
     simde__m256i r;
@@ -5156,7 +5156,7 @@ test_simde_mm256_cvtepu16_epi64(void) {
 }
 
 static int
-test_simde_mm256_cvtepu32_epi64(void) {
+test_simde_mm256_cvtepu32_epi64(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m128i a;
     simde__m256i r;
@@ -5196,7 +5196,7 @@ test_simde_mm256_cvtepu32_epi64(void) {
 }
 
 static int
-test_simde_mm256_extract_epi8(void) {
+test_simde_mm256_extract_epi8(SIMDE_MUNIT_TEST_ARGS) {
   simde__m256i a;
 
   a = simde_mm256_set_epi8(INT8_C( 109), INT8_C( -15), INT8_C(  -7), INT8_C(  79),
@@ -5283,7 +5283,7 @@ test_simde_mm256_extract_epi8(void) {
 }
 
 static int
-test_simde_mm256_extract_epi16(void) {
+test_simde_mm256_extract_epi16(SIMDE_MUNIT_TEST_ARGS) {
   simde__m256i a;
 
   a = simde_mm256_set_epi16(INT16_C( -9152), INT16_C(-17321), INT16_C( -3541), INT16_C( 31629),
@@ -5338,7 +5338,7 @@ test_simde_mm256_extract_epi16(void) {
 }
 
 static int
-test_simde_mm256_extracti128_si256(void) {
+test_simde_mm256_extracti128_si256(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -5406,7 +5406,7 @@ test_simde_mm256_extracti128_si256(void) {
 }
 
 static int
-test_simde_mm256_hadd_epi16(void) {
+test_simde_mm256_hadd_epi16(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -5519,7 +5519,7 @@ test_simde_mm256_hadd_epi16(void) {
 }
 
 static int
-test_simde_mm256_hadd_epi32(void) {
+test_simde_mm256_hadd_epi32(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -5584,7 +5584,7 @@ test_simde_mm256_hadd_epi32(void) {
 }
 
 static int
-test_simde_mm256_hsub_epi16(void) {
+test_simde_mm256_hsub_epi16(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -5697,7 +5697,7 @@ test_simde_mm256_hsub_epi16(void) {
 }
 
 static int
-test_simde_mm256_hsub_epi32(void) {
+test_simde_mm256_hsub_epi32(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -5762,7 +5762,7 @@ test_simde_mm256_hsub_epi32(void) {
 }
 
 static int
-test_simde_mm256_madd_epi16(void) {
+test_simde_mm256_madd_epi16(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -5859,7 +5859,7 @@ test_simde_mm256_madd_epi16(void) {
 }
 
 static int
-test_simde_mm256_max_epi8(void) {
+test_simde_mm256_max_epi8(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -6069,7 +6069,7 @@ test_simde_mm256_max_epi8(void) {
 }
 
 static int
-test_simde_mm256_max_epu8(void) {
+test_simde_mm256_max_epu8(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -6278,7 +6278,7 @@ test_simde_mm256_max_epu8(void) {
 }
 
 static int
-test_simde_mm256_max_epi16(void) {
+test_simde_mm256_max_epi16(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -6391,7 +6391,7 @@ test_simde_mm256_max_epi16(void) {
 }
 
 static int
-test_simde_mm256_max_epi32(void) {
+test_simde_mm256_max_epi32(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -6456,7 +6456,7 @@ test_simde_mm256_max_epi32(void) {
 }
 
 static int
-test_simde_mm256_min_epu8(void) {
+test_simde_mm256_min_epu8(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -6665,7 +6665,7 @@ test_simde_mm256_min_epu8(void) {
 }
 
 static int
-test_simde_mm256_min_epu16(void) {
+test_simde_mm256_min_epu16(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -6778,7 +6778,7 @@ test_simde_mm256_min_epu16(void) {
 }
 
 static int
-test_simde_mm256_min_epu32(void) {
+test_simde_mm256_min_epu32(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -6843,7 +6843,7 @@ test_simde_mm256_min_epu32(void) {
 }
 
 static int
-test_simde_mm256_movemask_epi8(void) {
+test_simde_mm256_movemask_epi8(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     int32_t r;
@@ -6931,7 +6931,7 @@ test_simde_mm256_movemask_epi8(void) {
 }
 
 static int
-test_simde_mm256_mullo_epi16(void) {
+test_simde_mm256_mullo_epi16(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -7044,7 +7044,7 @@ test_simde_mm256_mullo_epi16(void) {
 }
 
 static int
-test_simde_mm256_mullo_epi32(void) {
+test_simde_mm256_mullo_epi32(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -7109,7 +7109,7 @@ test_simde_mm256_mullo_epi32(void) {
 }
 
 static int
-test_simde_x_mm256_mullo_epu32(void) {
+test_simde_x_mm256_mullo_epu32(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -7174,7 +7174,7 @@ test_simde_x_mm256_mullo_epu32(void) {
 }
 
 static int
-test_simde_mm256_or_si256(void) {
+test_simde_mm256_or_si256(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -7239,7 +7239,7 @@ test_simde_mm256_or_si256(void) {
 }
 
 static int
-test_simde_mm256_packs_epi32(void) {
+test_simde_mm256_packs_epi32(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -7320,7 +7320,7 @@ test_simde_mm256_packs_epi32(void) {
 }
 
 static int
-test_simde_mm256_permute4x64_epi64(void) {
+test_simde_mm256_permute4x64_epi64(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m256i r;
@@ -7368,7 +7368,7 @@ test_simde_mm256_permute4x64_epi64(void) {
 }
 
 static int
-test_simde_mm256_permute4x64_pd(void) {
+test_simde_mm256_permute4x64_pd(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256d a;
     simde__m256d r;
@@ -7416,7 +7416,7 @@ test_simde_mm256_permute4x64_pd(void) {
 }
 
 static int
-test_simde_mm256_permute2x128_si256(void) {
+test_simde_mm256_permute2x128_si256(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -7502,7 +7502,7 @@ test_simde_mm256_permute2x128_si256(void) {
 }
 
 static int
-test_simde_mm256_shuffle_epi8(void) {
+test_simde_mm256_shuffle_epi8(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -7711,7 +7711,7 @@ test_simde_mm256_shuffle_epi8(void) {
 }
 
 static int
-test_simde_mm256_shuffle_epi32(void) {
+test_simde_mm256_shuffle_epi32(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m256i r;
@@ -7759,7 +7759,7 @@ test_simde_mm256_shuffle_epi32(void) {
 }
 
 static int
-test_simde_mm256_shufflelo_epi16(void) {
+test_simde_mm256_shufflelo_epi16(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m256i r;
@@ -7839,7 +7839,7 @@ test_simde_mm256_shufflelo_epi16(void) {
 }
 
 static int
-test_simde_mm256_sign_epi8(void) {
+test_simde_mm256_sign_epi8(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -8048,7 +8048,7 @@ test_simde_mm256_sign_epi8(void) {
 }
 
 static int
-test_simde_mm256_sign_epi16(void) {
+test_simde_mm256_sign_epi16(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -8161,7 +8161,7 @@ test_simde_mm256_sign_epi16(void) {
 }
 
 static int
-test_simde_mm256_sign_epi32(void) {
+test_simde_mm256_sign_epi32(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -8226,7 +8226,7 @@ test_simde_mm256_sign_epi32(void) {
 }
 
 static int
-test_simde_mm256_slli_epi16(void) {
+test_simde_mm256_slli_epi16(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m256i r;
@@ -8415,7 +8415,7 @@ test_simde_mm256_slli_epi16(void) {
 }
 
 static int
-test_simde_mm256_slli_epi32(void) {
+test_simde_mm256_slli_epi32(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -8480,7 +8480,7 @@ test_simde_mm256_slli_epi32(void) {
 }
 
 static int
-test_simde_mm256_slli_epi64(void) {
+test_simde_mm256_slli_epi64(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -8545,7 +8545,7 @@ test_simde_mm256_slli_epi64(void) {
 }
 
 static int
-test_simde_mm_sllv_epi32(void) {
+test_simde_mm_sllv_epi32(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m128i a;
     simde__m128i b;
@@ -8586,7 +8586,7 @@ test_simde_mm_sllv_epi32(void) {
 }
 
 static int
-test_simde_mm256_sllv_epi32(void) {
+test_simde_mm256_sllv_epi32(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -8651,7 +8651,7 @@ test_simde_mm256_sllv_epi32(void) {
 }
 
 static int
-test_simde_mm_sllv_epi64(void) {
+test_simde_mm_sllv_epi64(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m128i a;
     simde__m128i b;
@@ -8692,7 +8692,7 @@ test_simde_mm_sllv_epi64(void) {
 }
 
 static int
-test_simde_mm256_sllv_epi64(void) {
+test_simde_mm256_sllv_epi64(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -8757,7 +8757,7 @@ test_simde_mm256_sllv_epi64(void) {
 }
 
 static int
-test_simde_mm256_srai_epi16(void) {
+test_simde_mm256_srai_epi16(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m256i r1;
@@ -9085,7 +9085,7 @@ test_simde_mm256_srai_epi16(void) {
 }
 
 static int
-test_simde_mm256_srai_epi32(void) {
+test_simde_mm256_srai_epi32(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m256i r1;
@@ -9269,7 +9269,7 @@ test_simde_mm256_srai_epi32(void) {
 }
 
 static int
-test_simde_mm256_srli_epi16(void) {
+test_simde_mm256_srli_epi16(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m256i r1;
@@ -9597,7 +9597,7 @@ test_simde_mm256_srli_epi16(void) {
 }
 
 static int
-test_simde_mm256_srli_epi32(void) {
+test_simde_mm256_srli_epi32(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -9662,7 +9662,7 @@ test_simde_mm256_srli_epi32(void) {
 }
 
 static int
-test_simde_mm256_srli_epi64(void) {
+test_simde_mm256_srli_epi64(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m256i r;
@@ -9710,7 +9710,7 @@ test_simde_mm256_srli_epi64(void) {
 }
 
 static int
-test_simde_mm256_srli_si256(void) {
+test_simde_mm256_srli_si256(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m256i r;
@@ -9854,7 +9854,7 @@ test_simde_mm256_srli_si256(void) {
 }
 
 static int
-test_simde_mm_srlv_epi32(void) {
+test_simde_mm_srlv_epi32(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m128i a;
     simde__m128i b;
@@ -9895,7 +9895,7 @@ test_simde_mm_srlv_epi32(void) {
 }
 
 static int
-test_simde_mm256_srlv_epi32(void) {
+test_simde_mm256_srlv_epi32(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -9960,7 +9960,7 @@ test_simde_mm256_srlv_epi32(void) {
 }
 
 static int
-test_simde_mm_srlv_epi64(void) {
+test_simde_mm_srlv_epi64(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m128i a;
     simde__m128i b;
@@ -10001,7 +10001,7 @@ for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
 }
 
 static int
-test_simde_mm256_srlv_epi64(void) {
+test_simde_mm256_srlv_epi64(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -10066,7 +10066,7 @@ test_simde_mm256_srlv_epi64(void) {
 }
 
 static int
-test_simde_mm256_sub_epi8(void) {
+test_simde_mm256_sub_epi8(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -10275,7 +10275,7 @@ test_simde_mm256_sub_epi8(void) {
 }
 
 static int
-test_simde_mm256_sub_epi16(void) {
+test_simde_mm256_sub_epi16(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -10388,7 +10388,7 @@ test_simde_mm256_sub_epi16(void) {
 }
 
 static int
-test_simde_mm256_sub_epi32(void) {
+test_simde_mm256_sub_epi32(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -10453,7 +10453,7 @@ test_simde_mm256_sub_epi32(void) {
 }
 
 static int
-test_simde_mm256_sub_epi64(void) {
+test_simde_mm256_sub_epi64(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -10518,7 +10518,7 @@ test_simde_mm256_sub_epi64(void) {
 }
 
 static int
-test_simde_x_mm256_sub_epu32(void) {
+test_simde_x_mm256_sub_epu32(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -10583,7 +10583,7 @@ test_simde_x_mm256_sub_epu32(void) {
 }
 
 static int
-test_simde_mm256_subs_epi8(void) {
+test_simde_mm256_subs_epi8(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -10792,7 +10792,7 @@ test_simde_mm256_subs_epi8(void) {
 }
 
 static int
-test_simde_mm256_subs_epi16(void) {
+test_simde_mm256_subs_epi16(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -10905,7 +10905,7 @@ test_simde_mm256_subs_epi16(void) {
 }
 
 static int
-test_simde_mm256_subs_epu8(void) {
+test_simde_mm256_subs_epu8(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -11114,7 +11114,7 @@ test_simde_mm256_subs_epu8(void) {
 }
 
 static int
-test_simde_mm256_subs_epu16(void) {
+test_simde_mm256_subs_epu16(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -11227,7 +11227,7 @@ test_simde_mm256_subs_epu16(void) {
 }
 
 static int
-test_simde_mm256_unpacklo_epi8(void) {
+test_simde_mm256_unpacklo_epi8(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -11436,7 +11436,7 @@ test_simde_mm256_unpacklo_epi8(void) {
 }
 
 static int
-test_simde_mm256_unpacklo_epi16(void) {
+test_simde_mm256_unpacklo_epi16(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -11549,7 +11549,7 @@ test_simde_mm256_unpacklo_epi16(void) {
 }
 
 static int
-test_simde_mm256_unpacklo_epi32(void) {
+test_simde_mm256_unpacklo_epi32(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -11614,7 +11614,7 @@ test_simde_mm256_unpacklo_epi32(void) {
 }
 
 static int
-test_simde_mm256_unpacklo_epi64(void) {
+test_simde_mm256_unpacklo_epi64(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -11679,7 +11679,7 @@ test_simde_mm256_unpacklo_epi64(void) {
 }
 
 static int
-test_simde_mm256_unpackhi_epi8(void) {
+test_simde_mm256_unpackhi_epi8(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -11888,7 +11888,7 @@ test_simde_mm256_unpackhi_epi8(void) {
 }
 
 static int
-test_simde_mm256_unpackhi_epi16(void) {
+test_simde_mm256_unpackhi_epi16(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -12001,7 +12001,7 @@ test_simde_mm256_unpackhi_epi16(void) {
 }
 
 static int
-test_simde_mm256_unpackhi_epi32(void) {
+test_simde_mm256_unpackhi_epi32(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -12066,7 +12066,7 @@ test_simde_mm256_unpackhi_epi32(void) {
 }
 
 static int
-test_simde_mm256_unpackhi_epi64(void) {
+test_simde_mm256_unpackhi_epi64(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -12131,7 +12131,7 @@ test_simde_mm256_unpackhi_epi64(void) {
 }
 
 static int
-test_simde_mm256_xor_si256(void) {
+test_simde_mm256_xor_si256(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -12196,7 +12196,7 @@ test_simde_mm256_xor_si256(void) {
 }
 
 static int
-test_simde_mm256_max_epu16(void) {
+test_simde_mm256_max_epu16(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -12310,7 +12310,7 @@ test_simde_mm256_max_epu16(void) {
 }
 
 static int
-test_simde_mm256_max_epu32(void) {
+test_simde_mm256_max_epu32(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -12375,7 +12375,7 @@ test_simde_mm256_max_epu32(void) {
 }
 
 static int
-test_simde_mm_blend_epi32(void) {
+test_simde_mm_blend_epi32(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m128i a;
     simde__m128i b;
@@ -12416,7 +12416,7 @@ test_simde_mm_blend_epi32(void) {
 }
 
 static int
-test_simde_mm256_min_epi8(void) {
+test_simde_mm256_min_epi8(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -12625,7 +12625,7 @@ test_simde_mm256_min_epi8(void) {
 }
 
 static int
-test_simde_mm256_min_epi16(void) {
+test_simde_mm256_min_epi16(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m256i b;
@@ -12738,7 +12738,7 @@ test_simde_mm256_min_epi16(void) {
 }
 
 static int
-test_simde_mm256_min_epi32(void) {
+test_simde_mm256_min_epi32(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m256i b;

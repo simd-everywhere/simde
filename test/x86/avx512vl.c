@@ -26,7 +26,7 @@
 #include <test/x86/test-avx512.h>
 
 static int
-test_simde_mm_cvtsepi16_epi8(void) {
+test_simde_mm_cvtsepi16_epi8(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m128i a;
     simde__m128i r;
@@ -90,7 +90,7 @@ test_simde_mm_cvtsepi16_epi8(void) {
 }
 
 static int
-test_simde_mm256_cvtsepi16_epi8(void) {
+test_simde_mm256_cvtsepi16_epi8(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m128i r;
@@ -170,7 +170,7 @@ test_simde_mm256_cvtsepi16_epi8(void) {
 }
 
 static int
-test_simde_mm_cvtsepi32_epi8(void) {
+test_simde_mm_cvtsepi32_epi8(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m128i a;
     simde__m128i r;
@@ -226,7 +226,7 @@ test_simde_mm_cvtsepi32_epi8(void) {
 }
 
 static int
-test_simde_mm256_cvtsepi32_epi8(void) {
+test_simde_mm256_cvtsepi32_epi8(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m128i r;
@@ -290,7 +290,7 @@ test_simde_mm256_cvtsepi32_epi8(void) {
 }
 
 static int
-test_simde_mm_cvtsepi32_epi16(void) {
+test_simde_mm_cvtsepi32_epi16(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m128i a;
     simde__m128i r;
@@ -330,7 +330,7 @@ test_simde_mm_cvtsepi32_epi16(void) {
 }
 
 static int
-test_simde_mm256_cvtsepi32_epi16(void) {
+test_simde_mm256_cvtsepi32_epi16(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m128i r;
@@ -378,7 +378,7 @@ test_simde_mm256_cvtsepi32_epi16(void) {
 }
 
 static int
-test_simde_mm_cvtsepi64_epi8(void) {
+test_simde_mm_cvtsepi64_epi8(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m128i a;
     simde__m128i r;
@@ -434,7 +434,7 @@ test_simde_mm_cvtsepi64_epi8(void) {
 }
 
 static int
-test_simde_mm256_cvtsepi64_epi8(void) {
+test_simde_mm256_cvtsepi64_epi8(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m128i r;
@@ -498,7 +498,7 @@ test_simde_mm256_cvtsepi64_epi8(void) {
 }
 
 static int
-test_simde_mm256_abs_epi64(void) {
+test_simde_mm256_abs_epi64(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m256i r;
@@ -546,7 +546,7 @@ test_simde_mm256_abs_epi64(void) {
 }
 
 static int
-test_simde_mm256_mask_abs_epi64(void) {
+test_simde_mm256_mask_abs_epi64(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i src;
     simde__mmask8 k;
@@ -620,7 +620,7 @@ test_simde_mm256_mask_abs_epi64(void) {
 }
 
 static int
-test_simde_mm256_maskz_abs_epi64(void) {
+test_simde_mm256_maskz_abs_epi64(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__mmask8 k;
     simde__m256i a;

@@ -26,7 +26,7 @@
 #include <test/x86/test-avx512.h>
 
 static int
-test_simde_mm_lzcnt_epi32(void) {
+test_simde_mm_lzcnt_epi32(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m128i a;
     simde__m128i r;
