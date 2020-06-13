@@ -530,6 +530,26 @@
   #endif
 #endif
 
+#if !defined(simde_math_logb)
+  #if SIMDE_MATH_BUILTIN_LIBM(logb)
+    #define simde_math_logb(v) __builtin_logb(v)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_logb(v) std::logb(v)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_logb(v) logb(v)
+  #endif
+#endif
+
+#if !defined(simde_math_logbf)
+  #if SIMDE_MATH_BUILTIN_LIBM(logbf)
+    #define simde_math_logbf(v) __builtin_logbf(v)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_logbf(v) std::logb(v)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_logbf(v) logbf(v)
+  #endif
+#endif
+
 #if !defined(simde_math_log2)
   #if SIMDE_MATH_BUILTIN_LIBM(log2)
     #define simde_math_log2(v) __builtin_log2(v)
