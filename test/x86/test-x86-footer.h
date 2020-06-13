@@ -4,7 +4,7 @@
 
     fprintf(stdout, "1..%zu\n", (sizeof(test_suite_tests) / sizeof(test_suite_tests[0])));
     for (size_t i = 0 ; i < (sizeof(test_suite_tests) / sizeof(test_suite_tests[0])) ; i++) {
-      int res = test_suite_tests[i]();
+      int res = test_suite_tests[i].func();
       if (res != 0) {
         retval = EXIT_FAILURE;
         fprintf(stdout, "not ok %zu " HEDLEY_STRINGIFY(SIMDE_TESTS_CURRENT_ISAX) "/%s\n", i + 1, test_suite_tests[i].name);

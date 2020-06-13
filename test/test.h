@@ -213,7 +213,7 @@ simde_test_codegen_u64(size_t buf_len, char buf[HEDLEY_ARRAY_PARAM(buf_len)], ui
 static void
 simde_test_codegen_write_indent(int indent) {
   for (int i = 0 ; i < indent ; i++) {
-    fputs("  ", stdout);
+    fputs("  ", SIMDE_CODEGEN_FP);
   }
 }
 
@@ -300,7 +300,7 @@ SIMDE_TEST_CODEGEN_GENERATE_RANDOM_INT_FUNC_(uint64_t, u64)
       case SIMDE_TEST_VEC_POS_FIRST: \
         simde_test_codegen_write_indent(indent); \
         indent++; \
-        fputs("{ ", stdout); \
+        fputs("{ ", SIMDE_CODEGEN_FP); \
         break; \
       case SIMDE_TEST_VEC_POS_MIDDLE: \
       case SIMDE_TEST_VEC_POS_LAST: \
@@ -309,35 +309,35 @@ SIMDE_TEST_CODEGEN_GENERATE_RANDOM_INT_FUNC_(uint64_t, u64)
         break; \
     } \
  \
-    fputs("{ ", stdout); \
+    fputs("{ ", SIMDE_CODEGEN_FP); \
     for (size_t i = 0 ; i < elem_count ; i++) { \
       if (i != 0) { \
-        fputc(',', stdout); \
+        fputc(',', SIMDE_CODEGEN_FP); \
         if ((i % elements_per_line) == 0) { \
-          fputc('\n', stdout); \
+          fputc('\n', SIMDE_CODEGEN_FP); \
           simde_test_codegen_write_indent(indent + 1); \
         } else { \
-          fputc(' ', stdout); \
+          fputc(' ', SIMDE_CODEGEN_FP); \
         } \
       } \
  \
       char buf[53]; \
       simde_test_codegen_##symbol_identifier(sizeof(buf), buf, values[i]); \
-      fputs(buf, stdout); \
+      fputs(buf, SIMDE_CODEGEN_FP); \
     } \
-    fputs(" }", stdout); \
+    fputs(" }", SIMDE_CODEGEN_FP); \
  \
     switch (pos) { \
       case SIMDE_TEST_VEC_POS_FIRST: \
       case SIMDE_TEST_VEC_POS_MIDDLE: \
-        fputc(',', stdout); \
+        fputc(',', SIMDE_CODEGEN_FP); \
         break; \
       case SIMDE_TEST_VEC_POS_LAST: \
-        fputs(" },", stdout); \
+        fputs(" },", SIMDE_CODEGEN_FP); \
         break; \
     } \
  \
-    fputc('\n', stdout); \
+    fputc('\n', SIMDE_CODEGEN_FP); \
   }
 
 SIMDE_TEST_CODEGEN_GENERATE_WRITE_VECTOR_FUNC_(simde_float32, f32, 4)
@@ -358,7 +358,7 @@ SIMDE_TEST_CODEGEN_GENERATE_WRITE_VECTOR_FUNC_(uint64_t, u64, 4)
       case SIMDE_TEST_VEC_POS_FIRST: \
         simde_test_codegen_write_indent(indent); \
         indent++; \
-        fputs("{ ", stdout); \
+        fputs("{ ", SIMDE_CODEGEN_FP); \
         break; \
       case SIMDE_TEST_VEC_POS_MIDDLE: \
       case SIMDE_TEST_VEC_POS_LAST: \
@@ -370,20 +370,20 @@ SIMDE_TEST_CODEGEN_GENERATE_WRITE_VECTOR_FUNC_(uint64_t, u64, 4)
     { \
       char buf[53]; \
       simde_test_codegen_##symbol_identifier(sizeof(buf), buf, value); \
-      fputs(buf, stdout); \
+      fputs(buf, SIMDE_CODEGEN_FP); \
     } \
  \
     switch (pos) { \
       case SIMDE_TEST_VEC_POS_FIRST: \
       case SIMDE_TEST_VEC_POS_MIDDLE: \
-        fputc(',', stdout); \
+        fputc(',', SIMDE_CODEGEN_FP); \
         break; \
       case SIMDE_TEST_VEC_POS_LAST: \
-        fputs(" },", stdout); \
+        fputs(" },", SIMDE_CODEGEN_FP); \
         break; \
     } \
  \
-    fputc('\n', stdout); \
+    fputc('\n', SIMDE_CODEGEN_FP); \
   }
 
 SIMDE_TEST_CODEGEN_WRITE_SCALAR_FUNC_(int8_t,    i8)
@@ -606,9 +606,8 @@ SIMDE_TEST_GENERATE_ASSERT_EQUAL_FUNC_(uint64_t, u64, PRIu64)
  * test suite.  It doesn't use munit, or any other dependencies so
  * it's easy to use with creduce. */
 #if defined(SIMDE_TEST_BARE)
-  typedef int (* SimdeTestFunc)(void);
-  #define SIMDE_TEST_FUNC_LIST_BEGIN static SimdeTestFunc test_suite_tests[] = {
-  #define SIMDE_TEST_FUNC_LIST_ENTRY(name) test_simde_##name,
+  #define SIMDE_TEST_FUNC_LIST_BEGIN static const struct { int (* func)(void); const char* name; } test_suite_tests[] = {
+  #define SIMDE_TEST_FUNC_LIST_ENTRY(name) { test_simde_##name, #name },
   #define SIMDE_TEST_FUNC_LIST_END };
   #define SIMDE_MUNIT_TEST_ARGS void
 #else

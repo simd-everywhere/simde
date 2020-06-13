@@ -69,11 +69,3 @@ simde_include_dir = include_directories('..')
 
 subdir('x86')
 subdir('arm')
-
-run_tests_exe = executable('run-tests', 'run-tests.c',
-           link_with: [munit, simde_tests_arm, simde_tests_x86],
-           dependencies: simde_deps,
-           c_args: simde_c_args + simde_c_defs + simde_native_c_flags,
-           cpp_args: simde_cxx_args + simde_cxx_defs + simde_native_cxx_flags)
-
-test('run-tests', run_tests_exe)
