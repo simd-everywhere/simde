@@ -470,46 +470,6 @@
   #endif
 #endif
 
-#if !defined(simde_math_exp2)
-  #if SIMDE_MATH_BUILTIN_LIBM(exp2)
-    #define simde_math_exp2(v) __builtin_exp2(v)
-  #elif defined(SIMDE_MATH_HAVE_CMATH)
-    #define simde_math_exp2(v) std::exp2(v)
-  #elif defined(SIMDE_MATH_HAVE_MATH_H)
-    #define simde_math_exp2(v) exp2(v)
-  #endif
-#endif
-
-#if !defined(simde_math_exp2f)
-  #if SIMDE_MATH_BUILTIN_LIBM(exp2f)
-    #define simde_math_exp2f(v) __builtin_exp2f(v)
-  #elif defined(SIMDE_MATH_HAVE_CMATH)
-    #define simde_math_exp2f(v) std::exp2(v)
-  #elif defined(SIMDE_MATH_HAVE_MATH_H)
-    #define simde_math_exp2f(v) exp2f(v)
-  #endif
-#endif
-
-#if !defined(simde_math_exp10)
-  #if SIMDE_MATH_BUILTIN_LIBM(exp10)
-    #define simde_math_exp10(v) __builtin_exp10(v)
-  #elif defined(SIMDE_MATH_HAVE_CMATH)
-    #define simde_math_exp10(v) std::exp10(v)
-  #elif defined(SIMDE_MATH_HAVE_MATH_H)
-    #define simde_math_exp10(v) exp10(v)
-  #endif
-#endif
-
-#if !defined(simde_math_exp10f)
-  #if SIMDE_MATH_BUILTIN_LIBM(exp10f)
-    #define simde_math_exp10f(v) __builtin_exp10f(v)
-  #elif defined(SIMDE_MATH_HAVE_CMATH)
-    #define simde_math_exp10f(v) std::exp10(v)
-  #elif defined(SIMDE_MATH_HAVE_MATH_H)
-    #define simde_math_exp10f(v) exp10f(v)
-  #endif
-#endif
-
 #if !defined(simde_math_fabs)
   #if SIMDE_MATH_BUILTIN_LIBM(fabs)
     #define simde_math_fabs(v) __builtin_fabs(v)
@@ -567,6 +527,26 @@
     #define simde_math_logf(v) std::log(v)
   #elif defined(SIMDE_MATH_HAVE_MATH_H)
     #define simde_math_logf(v) logf(v)
+  #endif
+#endif
+
+#if !defined(simde_math_logb)
+  #if SIMDE_MATH_BUILTIN_LIBM(logb)
+    #define simde_math_logb(v) __builtin_logb(v)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_logb(v) std::logb(v)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_logb(v) logb(v)
+  #endif
+#endif
+
+#if !defined(simde_math_logbf)
+  #if SIMDE_MATH_BUILTIN_LIBM(logbf)
+    #define simde_math_logbf(v) __builtin_logbf(v)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_logbf(v) std::logb(v)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_logbf(v) logbf(v)
   #endif
 #endif
 
