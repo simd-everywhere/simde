@@ -510,6 +510,26 @@
   #endif
 #endif
 
+#if !defined(simde_math_hypot)
+  #if SIMDE_MATH_BUILTIN_LIBM(hypot)
+    #define simde_math_hypot(y, x) __builtin_hypot(y, x)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_hypot(y, x) std::hypot(y, x)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_hypot(y, x) hypot(y, x)
+  #endif
+#endif
+
+#if !defined(simde_math_hypotf)
+  #if SIMDE_MATH_BUILTIN_LIBM(hypotf)
+    #define simde_math_hypotf(y, x) __builtin_hypotf(y, x)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_hypotf(y, x) std::hypot(y, x)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_hypotf(y, x) hypotf(y, x)
+  #endif
+#endif
+
 #if !defined(simde_math_log)
   #if SIMDE_MATH_BUILTIN_LIBM(log)
     #define simde_math_log(v) __builtin_log(v)
