@@ -3013,7 +3013,7 @@ test_simde_mm_loadl_pi(SIMDE_MUNIT_TEST_ARGS) {
 static int
 test_simde_mm_loadr_ps (SIMDE_MUNIT_TEST_ARGS) {
   static const struct {
-    const simde_float32 a[4];
+    SIMDE_ALIGN_AS(16, simde__m128) const simde_float32 a[4];
     const simde_float32 r[4];
   } test_vec[] = {
     { { SIMDE_FLOAT32_C(  -880.56), SIMDE_FLOAT32_C(  -284.61), SIMDE_FLOAT32_C(  -934.21), SIMDE_FLOAT32_C(   785.08) },
@@ -3033,17 +3033,6 @@ test_simde_mm_loadr_ps (SIMDE_MUNIT_TEST_ARGS) {
     { { SIMDE_FLOAT32_C(   323.21), SIMDE_FLOAT32_C(  -420.37), SIMDE_FLOAT32_C(  -966.28), SIMDE_FLOAT32_C(   442.65) },
       { SIMDE_FLOAT32_C(   442.65), SIMDE_FLOAT32_C(  -966.28), SIMDE_FLOAT32_C(  -420.37), SIMDE_FLOAT32_C(   323.21) } }
   };
-
-  // fputc('\n', stdout);
-  // for (int i = 0 ; i < 8 ; i++) {
-  //   simde_float32 a[4];
-  //   simde_test_codegen_random_vf32(sizeof(a) / sizeof(a[0]), a, -1000.0f, 1000.0f);
-  //   simde__m128 r = simde_mm_loadr_ps(a);
-
-  //   simde_test_codegen_write_vf32(2, sizeof(a) / sizeof(a[0]), a, SIMDE_TEST_VEC_POS_FIRST);
-  //   simde_test_x86_write_f32x4(2, r, SIMDE_TEST_VEC_POS_LAST);
-  // }
-  // return 1;
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
     simde__m128 r = simde_mm_loadr_ps(test_vec[i].a);
