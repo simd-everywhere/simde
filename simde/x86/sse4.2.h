@@ -290,6 +290,54 @@ simde_mm_crc32_u8(uint32_t prevcrc, uint8_t v) {
   #define _mm_crc32_u8(prevcrc, v) simde_mm_crc32_u8(prevcrc, v)
 #endif
 
+SIMDE_FUNCTION_ATTRIBUTES
+uint32_t
+simde_mm_crc32_u16(uint32_t prevcrc, uint16_t v) {
+  #if defined(SIMDE_X86_SSE4_2_NATIVE)
+    return _mm_crc32_u16(prevcrc, v);
+  #else
+    uint32_t crc = prevcrc;
+    crc = simde_mm_crc32_u8(crc, v & 0xff);
+    crc = simde_mm_crc32_u8(crc, (v >> 8) & 0xff);
+    return crc;
+  #endif
+}
+#if defined(SIMDE_X86_SSE4_2_ENABLE_NATIVE_ALIASES)
+  #define _mm_crc32_u16(prevcrc, v) simde_mm_crc32_u16(prevcrc, v)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+uint32_t
+simde_mm_crc32_u32(uint32_t prevcrc, uint32_t v) {
+  #if defined(SIMDE_X86_SSE4_2_NATIVE)
+    return _mm_crc32_u32(prevcrc, v);
+  #else
+    uint32_t crc = prevcrc;
+    crc = simde_mm_crc32_u16(crc, v & 0xffff);
+    crc = simde_mm_crc32_u16(crc, (v >> 16) & 0xffff);
+    return crc;
+  #endif
+}
+#if defined(SIMDE_X86_SSE4_2_ENABLE_NATIVE_ALIASES)
+  #define _mm_crc32_u32(prevcrc, v) simde_mm_crc32_u32(prevcrc, v)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+uint64_t
+simde_mm_crc32_u64(uint64_t prevcrc, uint64_t v) {
+  #if defined(SIMDE_X86_SSE4_2_NATIVE)
+    return _mm_crc32_u64(prevcrc, v);
+  #else
+    uint64_t crc = prevcrc;
+    crc = simde_mm_crc32_u32(HEDLEY_STATIC_CAST(uint32_t, crc), v & 0xffffffff);
+    crc = simde_mm_crc32_u32(HEDLEY_STATIC_CAST(uint32_t, crc), (v >> 32) & 0xffffffff);
+    return crc;
+  #endif
+}
+#if defined(SIMDE_X86_SSE4_2_ENABLE_NATIVE_ALIASES)
+  #define _mm_crc32_u64(prevcrc, v) simde_mm_crc32_u64(prevcrc, v)
+#endif
+
 SIMDE_END_DECLS_
 
 HEDLEY_DIAGNOSTIC_POP
