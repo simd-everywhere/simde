@@ -310,7 +310,7 @@ simde_vshlq_n_s16 (const simde_int16x8_t a, const int n)
   #if defined(SIMDE_X86_SSE2_NATIVE)
     return _mm_slli_epi16((a), (n));
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    wasm_i16x8_shl((a), (n));
+    return wasm_i16x8_shl((a), (n));
   #else
     simde_int16x8_private
       r_,
