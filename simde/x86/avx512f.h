@@ -260,8 +260,11 @@ typedef union {
  * all compilers I've looked at use an object-like macro for
  * _MM_CMPINT_GE, which is defined to _MM_CMPINT_NLT.  _MM_CMPINT_NLT
  * is included in case a compiler does the reverse, though I haven't
- * run into one which does. */
-#if defined(_MM_CMPINT_GE) || defined(_MM_CMPINT_NLT)
+ * run into one which does.
+ *
+ * As for the ICC check, unlike other compilers, merely using the
+ * AVX-512 types causes ICC to generate AVX-512 instructions. */
+#if (defined(_MM_CMPINT_GE) || defined(_MM_CMPINT_NLT)) && (defined(SIMDE_X86_AVX512F_NATIVE) || !defined(HEDLEY_INTEL_VERSION))
   typedef __m512 simde__m512;
   typedef __m512i simde__m512i;
   typedef __m512d simde__m512d;
