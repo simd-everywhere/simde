@@ -470,6 +470,38 @@
   #endif
 #endif
 
+#if !defined(simde_math_exp2)
+  #if SIMDE_MATH_BUILTIN_LIBM(exp2)
+    #define simde_math_exp2(v) __builtin_exp2(v)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_exp2(v) std::exp2(v)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_exp2(v) exp2(v)
+  #endif
+#endif
+
+#if !defined(simde_math_exp2f)
+  #if SIMDE_MATH_BUILTIN_LIBM(exp2f)
+    #define simde_math_exp2f(v) __builtin_exp2f(v)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_exp2f(v) std::exp2(v)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_exp2f(v) exp2f(v)
+  #endif
+#endif
+
+#if HEDLEY_HAS_BUILTIN(__builtin_exp10) ||  HEDLEY_GCC_VERSION_CHECK(3,4,0)
+  #  define simde_math_exp10(v) __builtin_exp10(v)
+#else
+#  define simde_math_exp10(v) pow(10.0, (v))
+#endif
+
+#if HEDLEY_HAS_BUILTIN(__builtin_exp10f) ||  HEDLEY_GCC_VERSION_CHECK(3,4,0)
+  #  define simde_math_exp10f(v) __builtin_exp10f(v)
+#else
+#  define simde_math_exp10f(v) powf(10.0f, (v))
+#endif
+
 #if !defined(simde_math_fabs)
   #if SIMDE_MATH_BUILTIN_LIBM(fabs)
     #define simde_math_fabs(v) __builtin_fabs(v)
