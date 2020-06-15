@@ -1,0 +1,18 @@
+[binaries]
+c = '/usr/bin/clang-10'
+cpp = '/usr/bin/clang++-10'
+ar = '/usr/bin/llvm-ar-10'
+strip = '/usr/bin/llvm-strip-10'
+objcopy = '/usr/bin/llvm-objcopy-10'
+ld = '/usr/bin/llvm-ld-10'
+exe_wrapper = 'qemu-arm-static'
+
+[properties]
+c_args = ['--target=arm-linux-gnueabihf', '-march=armv8-a', '-isystem=/usr/arm-linux-gnueabihf/include', '-Weverything', '-Wno-newline-eof', '-Wno-missing-variable-declarations', '-Werror']
+cpp_args = ['--target=arm-linux-gnueabihf', '-march=armv8-a', '-isystem=/usr/arm-linux-gnueabihf/include', '-Weverything', '-Wno-newline-eof', '-Wno-missing-variable-declarations', '-Werror']
+
+[host_machine]
+system = 'linux'
+cpu_family = 'arm'
+cpu = 'armv8-a'
+endian = 'little'
