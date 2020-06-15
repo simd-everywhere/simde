@@ -58,7 +58,7 @@ simde_mm_blend_epi16 (simde__m128i a, simde__m128i b, const int imm8)
 #  define simde_mm_blend_epi16(a, b, imm8) _mm_blend_epi16(a, b, imm8)
 #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
 #  define simde_mm_blend_epi16(a, b, imm8) \
-     ({                                              \
+     (__extension__ ({ \
            const uint16_t _mask[8] = {               \
                ((imm8) & (1 << 0)) ? 0xFFFF : 0x0000, \
                ((imm8) & (1 << 1)) ? 0xFFFF : 0x0000, \
@@ -71,7 +71,7 @@ simde_mm_blend_epi16 (simde__m128i a, simde__m128i b, const int imm8)
            };                                        \
            uint16x8_t _mask_vec = vld1q_u16(_mask);  \
            simde__m128i_from_neon_u16(vbslq_u16(_mask_vec, simde__m128i_to_neon_u16(b), simde__m128i_to_neon_u16(a))); \
-       })
+       }))
 #endif
 #if defined(SIMDE_X86_SSE4_1_ENABLE_NATIVE_ALIASES)
 #  define _mm_blend_epi16(a, b, imm8) simde_mm_blend_epi16(a, b, imm8)

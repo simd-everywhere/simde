@@ -1562,7 +1562,7 @@ simde_mm_cvt_si2ss (simde__m128 a, int32_t b) {
     a_ = simde__m128_to_private(a);
 
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-  r_.neon_f32 = vsetq_lane_f32((float) b, a_.neon_f32, 0);
+  r_.neon_f32 = vsetq_lane_f32(HEDLEY_STATIC_CAST(float, b), a_.neon_f32, 0);
 #else
   r_.f32[0] = HEDLEY_STATIC_CAST(simde_float32, b);
   r_.i32[1] = a_.i32[1];
@@ -1855,7 +1855,7 @@ simde__m128
   simde__m128_private a_ = simde__m128_to_private(a);
 
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-  r_.neon_f32 = vsetq_lane_f32((simde_float32) b, a_.neon_f32, 0);
+  r_.neon_f32 = vsetq_lane_f32(HEDLEY_STATIC_CAST(float32_t, b), a_.neon_f32, 0);
 #else
   r_.f32[0] = HEDLEY_STATIC_CAST(simde_float32, b);
   SIMDE_VECTORIZE
@@ -1885,7 +1885,7 @@ simde_mm_cvtsi64_ss (simde__m128 a, int64_t b) {
   simde__m128_private a_ = simde__m128_to_private(a);
 
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-  r_.neon_f32 = vsetq_lane_f32((simde_float32) b, a_.neon_f32, 0);
+  r_.neon_f32 = vsetq_lane_f32(HEDLEY_STATIC_CAST(float32_t, b), a_.neon_f32, 0);
 #else
   r_ = a_;
   r_.f32[0] = HEDLEY_STATIC_CAST(simde_float32, b);
