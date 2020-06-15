@@ -896,7 +896,7 @@ test_simde_mm_crc32_u8 (SIMDE_MUNIT_TEST_ARGS) {
   static const struct {
     uint32_t crc;
     uint8_t v;
-    unsigned int r;
+    uint32_t r;
   } test_vec[] = {
     { UINT32_C(3488119326),
       UINT8_C(233),
@@ -928,7 +928,136 @@ test_simde_mm_crc32_u8 (SIMDE_MUNIT_TEST_ARGS) {
     uint32_t crc = test_vec[i].crc;
     uint8_t v = test_vec[i].v;
     uint32_t r = simde_mm_crc32_u8(crc, v);
-    munit_assert_uint32(r, ==, test_vec[i].r);
+    simde_assert_equal_u32(r, test_vec[i].r);
+  }
+
+  return 0;
+}
+
+static int
+test_simde_mm_crc32_u16 (SIMDE_MUNIT_TEST_ARGS) {
+  static const struct {
+    uint32_t crc;
+    uint16_t v;
+    uint32_t r;
+  } test_vec[] = {
+    { UINT32_C( 728173782),
+      UINT16_C(58051),
+      UINT32_C( 765801584) },
+    { UINT32_C(2531395991),
+      UINT16_C(57124),
+      UINT32_C(2048446530) },
+    { UINT32_C( 297646163),
+      UINT16_C( 4793),
+      UINT32_C( 145203338) },
+    { UINT32_C(4018813906),
+      UINT16_C( 4093),
+      UINT32_C(1871435995) },
+    { UINT32_C(1176812284),
+      UINT16_C(48677),
+      UINT32_C(1916618632) },
+    { UINT32_C(1019935701),
+      UINT16_C(36390),
+      UINT32_C( 873790012) },
+    { UINT32_C(  26721567),
+      UINT16_C(47956),
+      UINT32_C(1883589466) },
+    { UINT32_C(2658379744),
+      UINT16_C(11705),
+      UINT32_C(2809192825) }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
+    uint32_t crc = test_vec[i].crc;
+    uint16_t v = test_vec[i].v;
+    uint32_t r = simde_mm_crc32_u16(crc, v);
+    simde_assert_equal_u32(r, test_vec[i].r);
+  }
+
+  return 0;
+}
+
+static int
+test_simde_mm_crc32_u32 (SIMDE_MUNIT_TEST_ARGS) {
+  static const struct {
+    uint32_t crc;
+    uint32_t v;
+    uint32_t r;
+  } test_vec[] = {
+    { UINT32_C(2436525653),
+      UINT32_C(2335302948),
+      UINT32_C(3283443050) },
+    { UINT32_C(1145760123),
+      UINT32_C(3888075817),
+      UINT32_C(1275307424) },
+    { UINT32_C(1404614118),
+      UINT32_C(1676357820),
+      UINT32_C(2140092727) },
+    { UINT32_C( 546365338),
+      UINT32_C(2107344167),
+      UINT32_C(3150313630) },
+    { UINT32_C( 386848243),
+      UINT32_C( 899891386),
+      UINT32_C(3310319573) },
+    { UINT32_C(1383787817),
+      UINT32_C( 674838849),
+      UINT32_C(4185068584) },
+    { UINT32_C(2877026799),
+      UINT32_C(3155060257),
+      UINT32_C(1654064964) },
+    { UINT32_C(1826397765),
+      UINT32_C( 401176356),
+      UINT32_C(1688688127) }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
+    uint32_t crc = test_vec[i].crc;
+    uint32_t v = test_vec[i].v;
+    uint32_t r = simde_mm_crc32_u32(crc, v);
+    simde_assert_equal_u32(r, test_vec[i].r);
+  }
+
+  return 0;
+}
+
+static int
+test_simde_mm_crc32_u64 (SIMDE_MUNIT_TEST_ARGS) {
+  static const struct {
+    uint64_t crc;
+    uint64_t v;
+    uint64_t r;
+  } test_vec[] = {
+    { UINT64_C(10964460371209988374),
+      UINT64_C(14849487482734297659),
+      UINT64_C(          2530609228) },
+    { UINT64_C(14906864906438122131),
+      UINT64_C(10579630055528908036),
+      UINT64_C(          2336937406) },
+    { UINT64_C( 8450238593151902479),
+      UINT64_C(14846135117717324041),
+      UINT64_C(          2389161291) },
+    { UINT64_C(15754071801993691947),
+      UINT64_C(17187741549636385145),
+      UINT64_C(          2628533589) },
+    { UINT64_C(17686444891285660866),
+      UINT64_C(12477846746303524896),
+      UINT64_C(          1813528429) },
+    { UINT64_C( 3308212454223314746),
+      UINT64_C( 1686784245036627611),
+      UINT64_C(           721365030) },
+    { UINT64_C(  157211343182889549),
+      UINT64_C(14854147642213948918),
+      UINT64_C(          1805070678) },
+    { UINT64_C( 7018798198485263495),
+      UINT64_C( 9253000792826939901),
+      UINT64_C(          1576406668) }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
+    uint64_t crc = test_vec[i].crc;
+    uint64_t v = test_vec[i].v;
+    uint64_t r = simde_mm_crc32_u64(crc, v);
+    simde_assert_equal_u64(r, test_vec[i].r);
   }
 
   return 0;
@@ -945,6 +1074,9 @@ SIMDE_TEST_FUNC_LIST_BEGIN
   SIMDE_TEST_FUNC_LIST_ENTRY(mm_cmpistrz_8)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm_cmpistrz_16)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm_crc32_u8)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm_crc32_u16)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm_crc32_u32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm_crc32_u64)
 SIMDE_TEST_FUNC_LIST_END
 
 #include <test/x86/test-x86-footer.h>

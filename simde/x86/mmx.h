@@ -929,7 +929,7 @@ simde_mm_packs_pu16 (simde__m64 a, simde__m64 b) {
   const int16x8_t t2 = vandq_s16(t1, vreinterpretq_s16_u16(vcgezq_s16(t1)));
 
   /* Vector with all s16 elements set to UINT8_MAX */
-  const int16x8_t vmax = vmovq_n_s16((int16_t) UINT8_MAX);
+  const int16x8_t vmax = vmovq_n_s16(HEDLEY_STATIC_CAST(int16_t, UINT8_MAX));
 
   /* Elements which are within the acceptable range */
   const int16x8_t le_max = vandq_s16(t2, vreinterpretq_s16_u16(vcleq_s16(t2, vmax)));
@@ -1307,7 +1307,7 @@ simde_mm_sll_pi16 (simde__m64 a, simde__m64 count) {
   simde__m64_private count_ = simde__m64_to_private(count);
 
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-  r_.neon_i16 = vshl_s16(a_.neon_i16, vmov_n_s16((int16_t) vget_lane_u64(count_.neon_u64, 0)));
+  r_.neon_i16 = vshl_s16(a_.neon_i16, vmov_n_s16(HEDLEY_STATIC_CAST(int16_t, vget_lane_u64(count_.neon_u64, 0))));
 #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
   r_.i16 = a_.i16 << count_.u64[0];
 #else
@@ -1342,7 +1342,7 @@ simde_mm_sll_pi32 (simde__m64 a, simde__m64 count) {
   simde__m64_private count_ = simde__m64_to_private(count);
 
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-  r_.neon_i32 = vshl_s32(a_.neon_i32, vmov_n_s32((int32_t) vget_lane_u64(count_.neon_u64, 0)));
+  r_.neon_i32 = vshl_s32(a_.neon_i32, vmov_n_s32(HEDLEY_STATIC_CAST(int32_t, vget_lane_u64(count_.neon_u64, 0))));
 #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
   r_.i32 = a_.i32 << count_.u64[0];
 #else
