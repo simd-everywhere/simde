@@ -928,7 +928,7 @@ test_simde_mm_crc32_u8 (SIMDE_MUNIT_TEST_ARGS) {
     uint32_t crc = test_vec[i].crc;
     uint8_t v = test_vec[i].v;
     uint32_t r = simde_mm_crc32_u8(crc, v);
-    munit_assert_uint32(r, ==, test_vec[i].r);
+    simde_assert_equal_u32(r, test_vec[i].r);
   }
 
   return 0;
@@ -971,7 +971,7 @@ test_simde_mm_crc32_u16 (SIMDE_MUNIT_TEST_ARGS) {
     uint32_t crc = test_vec[i].crc;
     uint16_t v = test_vec[i].v;
     uint32_t r = simde_mm_crc32_u16(crc, v);
-    munit_assert_uint32(r, ==, test_vec[i].r);
+    simde_assert_equal_u32(r, test_vec[i].r);
   }
 
   return 0;
@@ -1014,7 +1014,7 @@ test_simde_mm_crc32_u32 (SIMDE_MUNIT_TEST_ARGS) {
     uint32_t crc = test_vec[i].crc;
     uint32_t v = test_vec[i].v;
     uint32_t r = simde_mm_crc32_u32(crc, v);
-    munit_assert_uint32(r, ==, test_vec[i].r);
+    simde_assert_equal_u32(r, test_vec[i].r);
   }
 
   return 0;
@@ -1057,7 +1057,7 @@ test_simde_mm_crc32_u64 (SIMDE_MUNIT_TEST_ARGS) {
     uint64_t crc = test_vec[i].crc;
     uint64_t v = test_vec[i].v;
     uint64_t r = simde_mm_crc32_u64(crc, v);
-    munit_assert_uint64(r, ==, test_vec[i].r);
+    simde_assert_equal_u64(r, test_vec[i].r);
   }
 
   return 0;

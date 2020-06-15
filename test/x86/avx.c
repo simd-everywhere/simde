@@ -46,7 +46,7 @@ test_simde_mm256_set_epi8(SIMDE_MUNIT_TEST_ARGS) {
     int8_t a[32];
     simde__m256i r;
 
-    munit_rand_memory(sizeof(a), HEDLEY_REINTERPRET_CAST(uint8_t*, a));
+    simde_test_codegen_random_memory(sizeof(a), HEDLEY_REINTERPRET_CAST(uint8_t*, a));
     r = simde_mm256_set_epi8(a[31], a[30], a[29], a[28], a[27], a[26], a[25], a[24],
                              a[23], a[22], a[21], a[20], a[19], a[18], a[17], a[16],
                              a[15], a[14], a[13], a[12], a[11], a[10], a[ 9], a[ 8],
@@ -64,7 +64,7 @@ test_simde_mm256_set_epi16(SIMDE_MUNIT_TEST_ARGS) {
     int16_t a[16];
     simde__m256i r;
 
-    munit_rand_memory(sizeof(a), HEDLEY_REINTERPRET_CAST(uint8_t*, a));
+    simde_test_codegen_random_memory(sizeof(a), HEDLEY_REINTERPRET_CAST(uint8_t*, a));
     r = simde_mm256_set_epi16(a[15], a[14], a[13], a[12], a[11], a[10], a[ 9], a[ 8],
                               a[ 7], a[ 6], a[ 5], a[ 4], a[ 3], a[ 2], a[ 1], a[ 0]);
 
@@ -80,7 +80,7 @@ test_simde_mm256_set_epi32(SIMDE_MUNIT_TEST_ARGS) {
     int32_t a[8];
     simde__m256i r;
 
-    munit_rand_memory(sizeof(a), HEDLEY_REINTERPRET_CAST(uint8_t*, a));
+    simde_test_codegen_random_memory(sizeof(a), HEDLEY_REINTERPRET_CAST(uint8_t*, a));
     r = simde_mm256_set_epi32(a[7], a[6], a[5], a[4], a[3], a[2], a[1], a[0]);
 
     simde_test_x86_assert_equal_i32x8(simde_x_mm256_loadu_epi32(a), r);
@@ -95,7 +95,7 @@ test_simde_mm256_set_epi64x(SIMDE_MUNIT_TEST_ARGS) {
     int64_t a[4];
     simde__m256i r;
 
-    munit_rand_memory(sizeof(a), HEDLEY_REINTERPRET_CAST(uint8_t*, a));
+    simde_test_codegen_random_memory(sizeof(a), HEDLEY_REINTERPRET_CAST(uint8_t*, a));
     r = simde_mm256_set_epi64x(a[3], a[2], a[1], a[0]);
 
     simde_test_x86_assert_equal_i64x4(simde_x_mm256_loadu_epi64(a), r);
@@ -4893,7 +4893,7 @@ test_simde_mm256_cvtsd_f64 (SIMDE_MUNIT_TEST_ARGS) {
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
     simde__m256d a = simde_mm256_loadu_pd(test_vec[i].a);
     simde_float64 r = simde_mm256_cvtsd_f64(a);
-    munit_assert_double_equal(r, test_vec[i].r, 1);
+    simde_assert_equal_f64(r, test_vec[i].r, 1);
   }
 
   return 0;
@@ -4926,7 +4926,7 @@ test_simde_mm256_cvtsi256_si32 (SIMDE_MUNIT_TEST_ARGS) {
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
     simde__m256i a = simde_x_mm256_loadu_epi32(test_vec[i].a);
     int32_t r = simde_mm256_cvtsi256_si32(a);
-    munit_assert_int32(r, ==, test_vec[i].r);
+    simde_assert_equal_i32(r, test_vec[i].r);
   }
 
   return 0;
@@ -4967,7 +4967,7 @@ test_simde_mm256_cvtss_f32 (SIMDE_MUNIT_TEST_ARGS) {
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
     simde__m256 a = simde_mm256_loadu_ps(test_vec[i].a);
     simde_float32 r = simde_mm256_cvtss_f32(a);
-    munit_assert_double_equal(HEDLEY_STATIC_CAST(double, r), HEDLEY_STATIC_CAST(double, test_vec[i].r), 1);
+    simde_assert_equal_f32(r, test_vec[i].r, 1);
   }
 
   return 0;
