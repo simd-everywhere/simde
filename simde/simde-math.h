@@ -630,6 +630,26 @@
   #endif
 #endif
 
+#if !defined(simde_math_pow)
+  #if SIMDE_MATH_BUILTIN_LIBM(pow)
+    #define simde_math_pow(y, x) __builtin_pow(y, x)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_pow(y, x) std::pow(y, x)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_pow(y, x) pow(y, x)
+  #endif
+#endif
+
+#if !defined(simde_math_powf)
+  #if SIMDE_MATH_BUILTIN_LIBM(powf)
+    #define simde_math_powf(y, x) __builtin_powf(y, x)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_powf(y, x) std::pow(y, x)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_powf(y, x) powf(y, x)
+  #endif
+#endif
+
 #if !defined(simde_math_round)
   #if SIMDE_MATH_BUILTIN_LIBM(round)
     #define simde_math_round(v) __builtin_round(v)
