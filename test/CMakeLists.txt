@@ -109,6 +109,7 @@ set(TEST_SOURCES_C
   arm/neon/add.c
   arm/neon/addw.c
   arm/neon/and.c
+  arm/neon/cagt.c
   arm/neon/dup_n.c
   arm/neon/eor.c
   arm/neon/get_high.c

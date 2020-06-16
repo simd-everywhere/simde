@@ -2,6 +2,7 @@ simde_test_arm_neon_tests = [
   'add',
   'addw',
   'and',
+  'cagt',
   'dup_n',
   'eor',
   'get_high',

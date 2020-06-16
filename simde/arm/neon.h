@@ -32,6 +32,7 @@
 #include "neon/add.h"
 #include "neon/addw.h"
 #include "neon/and.h"
+#include "neon/cagt.h"
 #include "neon/dup_n.h"
 #include "neon/eor.h"
 #include "neon/get_high.h"
