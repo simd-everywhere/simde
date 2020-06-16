@@ -1,25 +1,28 @@
-simde_test_x86_sources = [
-  'mmx.c',
-  'sse.c',
-  'sse2.c',
-  'sse3.c',
-  'ssse3.c',
-  'sse4.1.c',
-  'sse4.2.c',
-  'avx.c',
-  'avx2.c',
-  'fma.c',
-  'avx512f.c',
-  'avx512bw.c',
-  'avx512vl.c',
-  'avx512dq.c',
-  'avx512cd.c',
-  'gfni.c',
-  'svml.c'
+simde_test_x86_tests = [
+  'mmx',
+  'sse',
+  'sse2',
+  'sse3',
+  'ssse3',
+  'sse4.1',
+  'sse4.2',
+  'avx',
+  'avx2',
+  'fma',
+  'avx512f',
+  'avx512bw',
+  'avx512vl',
+  'avx512dq',
+  'avx512cd',
+  'gfni',
+  'svml'
 ]
 
-foreach src : simde_test_x86_sources
-  simde_test_x86_sources += configure_file(input: src, output: src + 'pp', copy: true)
+simde_test_x86_sources = []
+foreach name : simde_test_x86_tests
+  c_source = name + '.c'
+  cpp_source = configure_file(input: name + '.c', output: name + '.cpp', copy: true)
+  simde_test_x86_sources += [c_source, cpp_source]
 endforeach
 
 simde_tests_x86_emul = static_library('simde-tests-x86-emul', simde_test_x86_sources,
