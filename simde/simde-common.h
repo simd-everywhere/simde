@@ -645,36 +645,34 @@ typedef SIMDE_FLOAT64_TYPE simde_float64;
 #endif
 
 /* Try to deal with environments without a standard library. */
-#if !defined(simde_memcpy) || !defined(simde_memset)
-  #if !defined(SIMDE_NO_STRING_H) && defined(__has_include)
-    #if __has_include(<string.h>)
-      #include <string.h>
-      #if !defined(simde_memcpy)
-        #define simde_memcpy(dest, src, n) memcpy(dest, src, n)
-      #endif
-      #if !defined(simde_memset)
-        #define simde_memset(s, c, n) memset(s, c, n)
-      #endif
-    #else
-      #define SIMDE_NO_STRING_H
-    #endif
+#if !defined(simde_memcpy)
+  #if HEDLEY_HAS_BUILTIN(__builtin_memcpy)
+    #define simde_memcpy(dest, src, n) __builtin_memcpy(dest, src, n)
+  #endif
+#endif
+#if !defined(simde_memset)
+  #if HEDLEY_HAS_BUILTIN(__builtin_memset)
+    #define simde_memset(s, c, n) __builtin_memset(s, c, n)
   #endif
 #endif
 #if !defined(simde_memcpy) || !defined(simde_memset)
-  #if !defined(SIMDE_NO_STRING_H) && (SIMDE_STDC_HOSTED == 1)
+  #if !defined(SIMDE_NO_STRING_H)
+    #if defined(__has_include)
+      #if !__has_include(<string.h>)
+        #define SIMDE_NO_STRING_H
+      #endif
+    #elif (SIMDE_STDC_HOSTED == 0)
+      #define SIMDE_NO_STRING_H
+    #endif
+  #endif
+
+  #if !defined(SIMDE_NO_STRING_H)
     #include <string.h>
     #if !defined(simde_memcpy)
       #define simde_memcpy(dest, src, n) memcpy(dest, src, n)
     #endif
     #if !defined(simde_memset)
       #define simde_memset(s, c, n) memset(s, c, n)
-    #endif
-  #elif (HEDLEY_HAS_BUILTIN(__builtin_memcpy) && HEDLEY_HAS_BUILTIN(__builtin_memset)) || HEDLEY_GCC_VERSION_CHECK(4,2,0)
-    #if !defined(simde_memcpy)
-      #define simde_memcpy(dest, src, n) __builtin_memcpy(dest, src, n)
-    #endif
-    #if !defined(simde_memset)
-      #define simde_memset(s, c, n) __builtin_memset(s, c, n)
     #endif
   #else
     /* These are meant to be portable, not fast.  If you're hitting them you
@@ -708,8 +706,8 @@ typedef SIMDE_FLOAT64_TYPE simde_float64;
       }
       #define simde_memset(s, c, n) simde_memset_(s, c, n)
     #endif
-  #endif /* !defined(SIMDE_NO_STRING_H) && (SIMDE_STDC_HOSTED == 1) */
-#endif /* !defined(simde_memcpy) || !defined(simde_memset) */
+  #endif
+#endif
 
 #if defined(FE_ALL_EXCEPT)
   #define SIMDE_HAVE_FENV_H
