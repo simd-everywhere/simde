@@ -450,6 +450,46 @@
   #endif
 #endif
 
+#if !defined(simde_math_erf)
+  #if SIMDE_MATH_BUILTIN_LIBM(erf)
+    #define simde_math_erf(v) __builtin_erf(v)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_erf(v) std::erf(v)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_erf(v) erf(v)
+  #endif
+#endif
+
+#if !defined(simde_math_erff)
+  #if SIMDE_MATH_BUILTIN_LIBM(erff)
+    #define simde_math_erff(v) __builtin_erff(v)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_erff(v) std::erf(v)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_erff(v) erff(v)
+  #endif
+#endif
+
+#if !defined(simde_math_erfc)
+  #if SIMDE_MATH_BUILTIN_LIBM(erfc)
+    #define simde_math_erfc(v) __builtin_erfc(v)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_erfc(v) std::erfc(v)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_erfc(v) erfc(v)
+  #endif
+#endif
+
+#if !defined(simde_math_erfcf)
+  #if SIMDE_MATH_BUILTIN_LIBM(erfcf)
+    #define simde_math_erfcf(v) __builtin_erfcf(v)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_erfcf(v) std::erfc(v)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_erfcf(v) erfcf(v)
+  #endif
+#endif
+
 #if !defined(simde_math_exp)
   #if SIMDE_MATH_BUILTIN_LIBM(exp)
     #define simde_math_exp(v) __builtin_exp(v)
