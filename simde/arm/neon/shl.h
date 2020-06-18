@@ -78,14 +78,14 @@ simde_int8x8_t
 simde_vshl_s8 (const simde_int8x8_t a, const simde_int8x8_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vshl_s8(a, b);
-  #elif defined(SIMDE_X86_AVX512BW_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
+  #elif defined(SIMDE_X86_AVX512BW_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
     __m128i a128 = _mm_cvtepi8_epi16(_mm_movpi64_epi64(a));
     __m128i b128 = _mm_cvtepi8_epi16(_mm_movpi64_epi64(b));
     __m128i r128 = _mm_blendv_epi8(_mm_sllv_epi16(a128, b128),
                                    _mm_srav_epi16(a128, _mm_abs_epi16(b128)),
                                    _mm_cmpgt_epi16(_mm_setzero_si128(), b128));
     return _mm_movepi64_pi64(_mm_cvtepi16_epi8(r128));
-  #elif defined(SIMDE_X86_AVX2_NATIVE)
+  #elif defined(SIMDE_X86_AVX2_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
     __m256i a256 = _mm256_cvtepi8_epi32(_mm_movpi64_epi64(a));
     __m256i b256 = _mm256_cvtepi8_epi32(_mm_movpi64_epi64(b));
     __m256i r256 = _mm256_blendv_epi8(_mm256_sllv_epi32(a256, b256),
@@ -120,7 +120,7 @@ simde_int16x4_t
 simde_vshl_s16 (const simde_int16x4_t a, const simde_int16x4_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vshl_s16(a, b);
-  #elif defined(SIMDE_X86_AVX2_NATIVE)
+  #elif defined(SIMDE_X86_AVX2_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
     __m128i a128 = _mm_cvtepi16_epi32(_mm_movpi64_epi64(a));
     __m128i b128 = _mm_cvtepi16_epi32(_mm_movpi64_epi64(b));
     b128 = _mm_srai_epi32(_mm_slli_epi32(b128, 24), 24);
@@ -156,7 +156,7 @@ simde_int32x2_t
 simde_vshl_s32 (const simde_int32x2_t a, const simde_int32x2_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vshl_s32(a, b);
-  #elif defined(SIMDE_X86_AVX2_NATIVE)
+  #elif defined(SIMDE_X86_AVX2_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
     __m128i a128 = _mm_movpi64_epi64(a);
     __m128i b128 = _mm_movpi64_epi64(b);
     b128 = _mm_srai_epi32(_mm_slli_epi32(b128, 24), 24);
@@ -192,7 +192,7 @@ simde_int64x1_t
 simde_vshl_s64 (const simde_int64x1_t a, const simde_int64x1_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vshl_s64(a, b);
-  #elif defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
+  #elif defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
     __m128i zero = _mm_setzero_si128();
     __m128i a128 = _mm_movpi64_epi64(a);
     __m128i b128 = _mm_movpi64_epi64(b);
@@ -201,7 +201,7 @@ simde_vshl_s64 (const simde_int64x1_t a, const simde_int64x1_t b) {
                                    _mm_srav_epi64(a128, _mm_sub_epi64(zero, b128)),
                                    _mm_cmpgt_epi64(zero, b128));
     return _mm_movepi64_pi64(r128);
-  #elif defined(SIMDE_X86_AVX2_NATIVE)
+  #elif defined(SIMDE_X86_AVX2_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
     __m128i zero = _mm_setzero_si128();
     __m128i a128 = _mm_movpi64_epi64(a);
     __m128i b128 = _mm_movpi64_epi64(b);
@@ -239,14 +239,14 @@ simde_uint8x8_t
 simde_vshl_u8 (const simde_uint8x8_t a, const simde_int8x8_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vshl_u8(a, b);
-  #elif defined(SIMDE_X86_AVX512BW_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
+  #elif defined(SIMDE_X86_AVX512BW_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
     __m128i a128 = _mm_cvtepu8_epi16(_mm_movpi64_epi64(a));
     __m128i b128 = _mm_cvtepi8_epi16(_mm_movpi64_epi64(b));
     __m128i r128 = _mm_blendv_epi8(_mm_sllv_epi16(a128, b128),
                                    _mm_srlv_epi16(a128, _mm_abs_epi16(b128)),
                                    _mm_cmpgt_epi16(_mm_setzero_si128(), b128));
     return _mm_movepi64_pi64(_mm_cvtepi16_epi8(r128));
-  #elif defined(SIMDE_X86_AVX2_NATIVE)
+  #elif defined(SIMDE_X86_AVX2_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
     __m256i a256 = _mm256_cvtepu8_epi32(_mm_movpi64_epi64(a));
     __m256i b256 = _mm256_cvtepi8_epi32(_mm_movpi64_epi64(b));
     __m256i r256 = _mm256_blendv_epi8(_mm256_sllv_epi32(a256, b256),
@@ -281,7 +281,7 @@ simde_uint16x4_t
 simde_vshl_u16 (const simde_uint16x4_t a, const simde_int16x4_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vshl_u16(a, b);
-  #elif defined(SIMDE_X86_AVX2_NATIVE)
+  #elif defined(SIMDE_X86_AVX2_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
     __m128i a128 = _mm_cvtepu16_epi32(_mm_movpi64_epi64(a));
     __m128i b128 = _mm_cvtepi16_epi32(_mm_movpi64_epi64(b));
     b128 = _mm_srai_epi32(_mm_slli_epi32(b128, 24), 24);
@@ -317,7 +317,7 @@ simde_uint32x2_t
 simde_vshl_u32 (const simde_uint32x2_t a, const simde_int32x2_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vshl_u32(a, b);
-  #elif defined(SIMDE_X86_AVX2_NATIVE)
+  #elif defined(SIMDE_X86_AVX2_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
     __m128i a128 = _mm_movpi64_epi64(a);
     __m128i b128 = _mm_movpi64_epi64(b);
     b128 = _mm_srai_epi32(_mm_slli_epi32(b128, 24), 24);
@@ -353,7 +353,7 @@ simde_uint64x1_t
 simde_vshl_u64 (const simde_uint64x1_t a, const simde_int64x1_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vshl_u64(a, b);
-  #elif defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
+  #elif defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
     __m128i zero = _mm_setzero_si128();
     __m128i a128 = _mm_movpi64_epi64(a);
     __m128i b128 = _mm_movpi64_epi64(b);
@@ -362,7 +362,7 @@ simde_vshl_u64 (const simde_uint64x1_t a, const simde_int64x1_t b) {
                                    _mm_srlv_epi64(a128, _mm_sub_epi64(zero, b128)),
                                    _mm_cmpgt_epi64(zero, b128));
     return _mm_movepi64_pi64(r128);
-  #elif defined(SIMDE_X86_AVX2_NATIVE)
+  #elif defined(SIMDE_X86_AVX2_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
     __m128i a128 = _mm_movpi64_epi64(a);
     __m128i b128 = _mm_movpi64_epi64(b);
     __m128i b_abs = _mm_and_si128(_mm_abs_epi8(b128), _mm_set1_epi64x(0xFF));
