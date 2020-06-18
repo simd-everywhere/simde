@@ -556,17 +556,17 @@ simde_vshlq_s64 (const simde_int64x2_t a, const simde_int64x2_t b) {
                            _mm_xor_si128(_mm_srlv_epi64(_mm_xor_si128(a, maska), b_abs), maska),
                            _mm_cmpgt_epi64(zero, _mm_slli_epi64(b, 56)));
   #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
-    vector signed long a_shl, a_shr;
-    vector unsigned long b_abs, b_max;
-    vector bool long b_mask;
-    b_abs = vec_and(HEDLEY_REINTERPRET_CAST(vector unsigned long,
+    vector signed long long a_shl, a_shr;
+    vector unsigned long long b_abs, b_max;
+    vector bool long long b_mask;
+    b_abs = vec_and(HEDLEY_REINTERPRET_CAST(vector unsigned long long,
                                             vec_abs(HEDLEY_REINTERPRET_CAST(vector signed char, b))),
-                    vec_splats(HEDLEY_STATIC_CAST(unsigned long, 0xFF)));
-    b_max = vec_splats(HEDLEY_STATIC_CAST(unsigned long, 63));
+                    vec_splats(HEDLEY_STATIC_CAST(unsigned long long, 0xFF)));
+    b_max = vec_splats(HEDLEY_STATIC_CAST(unsigned long long, 63));
     a_shl = vec_and(vec_sl(a, b_abs), vec_cmple(b_abs, b_max));
     a_shr = vec_sra(a, vec_min(b_abs, b_max));
-    b_mask = vec_cmplt(vec_sl(b, vec_splats(HEDLEY_STATIC_CAST(unsigned long, 56))),
-                       vec_splats(HEDLEY_STATIC_CAST(signed long, 0)));
+    b_mask = vec_cmplt(vec_sl(b, vec_splats(HEDLEY_STATIC_CAST(unsigned long long, 56))),
+                       vec_splats(HEDLEY_STATIC_CAST(signed long long, 0)));
     return vec_or(vec_andc(a_shl, b_mask), vec_and(a_shr, b_mask));
   #else
     simde_int64x2_private
@@ -744,16 +744,16 @@ simde_vshlq_u64 (const simde_uint64x2_t a, const simde_int64x2_t b) {
                            _mm_srlv_epi64(a, b_abs),
                            _mm_cmpgt_epi64(_mm_setzero_si128(), _mm_slli_epi64(b, 56)));
   #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
-    vector unsigned long b_abs;
-    vector bool long b_mask;
-    b_abs = vec_and(HEDLEY_REINTERPRET_CAST(vector unsigned long,
+    vector unsigned long long b_abs;
+    vector bool long long b_mask;
+    b_abs = vec_and(HEDLEY_REINTERPRET_CAST(vector unsigned long long,
                                             vec_abs(HEDLEY_REINTERPRET_CAST(vector signed char, b))),
-                    vec_splats(HEDLEY_STATIC_CAST(unsigned long, 0xFF)));
-    b_mask = vec_cmplt(vec_sl(b, vec_splats(HEDLEY_STATIC_CAST(unsigned long, 56))),
-                       vec_splats(HEDLEY_STATIC_CAST(signed long, 0)));
+                    vec_splats(HEDLEY_STATIC_CAST(unsigned long long, 0xFF)));
+    b_mask = vec_cmplt(vec_sl(b, vec_splats(HEDLEY_STATIC_CAST(unsigned long long, 56))),
+                       vec_splats(HEDLEY_STATIC_CAST(signed long long, 0)));
     return vec_and(vec_or(vec_andc(vec_sl(a, b_abs), b_mask),
                           vec_and(vec_sr(a, b_abs), b_mask)),
-                   vec_cmplt(b_abs, vec_splats(HEDLEY_STATIC_CAST(unsigned long, 64))));
+                   vec_cmplt(b_abs, vec_splats(HEDLEY_STATIC_CAST(unsigned long long, 64))));
   #else
     simde_uint64x2_private
       r_,
