@@ -648,7 +648,13 @@ typedef SIMDE_FLOAT64_TYPE simde_float64;
     #define simde_memset(s, c, n) __builtin_memset(s, c, n)
   #endif
 #endif
-#if !defined(simde_memcpy) || !defined(simde_memset)
+#if !defined(simde_memcmp)
+  #if HEDLEY_HAS_BUILTIN(__builtin_memcmp)
+    #define simde_memcmp(s1, s2, n) __builtin_memcmp(s1, s2, n)
+  #endif
+#endif
+
+#if !defined(simde_memcpy) || !defined(simde_memset) || !defined(simde_memcmp)
   #if !defined(SIMDE_NO_STRING_H)
     #if defined(__has_include)
       #if !__has_include(<string.h>)
@@ -666,6 +672,9 @@ typedef SIMDE_FLOAT64_TYPE simde_float64;
     #endif
     #if !defined(simde_memset)
       #define simde_memset(s, c, n) memset(s, c, n)
+    #endif
+    #if !defined(simde_memcmp)
+      #define simde_memcmp(s1, s2, n) memcmp(s1, s2, n)
     #endif
   #else
     /* These are meant to be portable, not fast.  If you're hitting them you
@@ -698,6 +707,22 @@ typedef SIMDE_FLOAT64_TYPE simde_float64;
         }
       }
       #define simde_memset(s, c, n) simde_memset_(s, c, n)
+    #endif
+
+    #if !defined(simde_memcmp)
+      SIMDE_FUCTION_ATTRIBUTES
+      int
+      simde_memcmp_(const void *s1, const void *s2, size_t n) {
+        unsigned char* s1_ = HEDLEY_STATIC_CAST(unsigned char*, s1);
+        unsigned char* s2_ = HEDLEY_STATIC_CAST(unsigned char*, s2);
+        for (size_t i = 0 ; i < len ; i++) {
+          if (s1_[i] != s2_[i]) {
+            return (int) (s1_[i] - s2_[i]);
+          }
+        }
+        return 0;
+      }
+    #define simde_memcmp(s1, s2, n) simde_memcmp_(s1, s2, n)
     #endif
   #endif
 #endif
