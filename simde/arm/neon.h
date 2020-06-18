@@ -47,6 +47,7 @@
 #include "neon/padd.h"
 #include "neon/pmin.h"
 #include "neon/reinterpret.h"
+#include "neon/shl.h"
 #include "neon/shl_n.h"
 #include "neon/shr_n.h"
 #include "neon/st1.h"
