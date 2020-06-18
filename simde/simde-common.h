@@ -674,7 +674,7 @@ typedef SIMDE_FLOAT64_TYPE simde_float64;
       #define simde_memset(s, c, n) memset(s, c, n)
     #endif
     #if !defined(simde_memcmp)
-      #define simde_memcmp(s1, s2, n) memcmp(s1, s1, n)
+      #define simde_memcmp(s1, s2, n) memcmp(s1, s2, n)
     #endif
   #else
     /* These are meant to be portable, not fast.  If you're hitting them you
