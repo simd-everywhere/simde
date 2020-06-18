@@ -895,6 +895,78 @@ simde_mm256_broadcastsi128_si256 (simde__m128i a) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m256i
+simde_mm256_bslli_epi128 (simde__m256i a, const int imm8)
+    SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 255)  {
+    simde__m256i_private
+      r_,
+      a_ = simde__m256i_to_private(a);
+    const int ssize = HEDLEY_STATIC_CAST(int, (sizeof(r_.i8) / sizeof(r_.i8[0])));
+
+    SIMDE_VECTORIZE
+    for (int i = 0 ; i < ssize ; i++) {
+      const int e = i - imm8;
+      if(i >= (ssize/2)) {
+        if(e >= (ssize/2) && e < ssize)
+          r_.i8[i] = a_.i8[e];
+        else
+          r_.i8[i] = 0;
+      }
+      else{
+        if(e >= 0 && e < (ssize/2))
+          r_.i8[i] = a_.i8[e];
+        else
+          r_.i8[i] = 0;
+      }
+    }
+
+  return simde__m256i_from_private(r_);
+}
+#if defined(SIMDE_X86_AVX2_NATIVE)
+  #define simde_mm256_bslli_epi128(a, imm8) _mm256_bslli_epi128(a, imm8)
+#endif
+#if defined(SIMDE_X86_AVX2_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_bslli_epi128
+  #define _mm256_bslli_epi128(a, imm8) simde_mm256_bslli_epi128(a, imm8)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256i
+simde_mm256_bsrli_epi128 (simde__m256i a, const int imm8)
+    SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 255)  {
+    simde__m256i_private
+      r_,
+      a_ = simde__m256i_to_private(a);
+    const int ssize = HEDLEY_STATIC_CAST(int, (sizeof(r_.i8) / sizeof(r_.i8[0])));
+
+    SIMDE_VECTORIZE
+    for (int i = 0 ; i < ssize ; i++) {
+      const int e = i + imm8;
+      if(i < (ssize/2)) {
+        if(e >= 0 && e < (ssize/2))
+          r_.i8[i] = a_.i8[e];
+        else
+          r_.i8[i] = 0;
+      }
+      else{
+        if(e >= (ssize/2) && e < ssize)
+          r_.i8[i] = a_.i8[e];
+        else
+          r_.i8[i] = 0;
+      }
+    }
+
+  return simde__m256i_from_private(r_);
+}
+#if defined(SIMDE_X86_AVX2_NATIVE)
+  #define simde_mm256_bsrli_epi128(a, imm8) _mm256_bsrli_epi128(a, imm8)
+#endif
+#if defined(SIMDE_X86_AVX2_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_bsrli_epi128
+  #define _mm256_bsrli_epi128(a, imm8) simde_mm256_bsrli_epi128(a, imm8)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256i
 simde_mm256_cmpeq_epi8 (simde__m256i a, simde__m256i b) {
 #if defined(SIMDE_X86_AVX2_NATIVE)
   return _mm256_cmpeq_epi8(a, b);
