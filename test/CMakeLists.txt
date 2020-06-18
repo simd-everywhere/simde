@@ -107,11 +107,14 @@ set(TEST_SOURCES_C
   x86/svml.c
 
   arm/neon/add.c
+  arm/neon/addw.c
   arm/neon/and.c
   arm/neon/bsl.c
+  arm/neon/cagt.c
   arm/neon/dup_n.c
   arm/neon/eor.c
   arm/neon/get_high.c
+  arm/neon/get_lane.c
   arm/neon/get_low.c
   arm/neon/min.c
   arm/neon/mla.c

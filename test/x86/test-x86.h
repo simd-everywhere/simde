@@ -20,7 +20,7 @@
     simde_test_codegen_write_vf##EL(indent, sizeof(values) / sizeof(values[0]), values, pos); \
   } \
  \
-  static void \
+  static int \
   simde_test_x86_assert_equal_f##EL##x##EC##_(simde##NT a, simde##NT b, simde_float##EL slop, \
       const char* filename, int line, const char* astr, const char* bstr) { \
     simde_float##EL \
@@ -30,7 +30,7 @@
     SF(a_, a); \
     SF(b_, b); \
  \
-    simde_assert_equal_vf##EL##_(sizeof(a_) / sizeof(a_[0]), a_, b_, slop, filename, line, astr, bstr); \
+    return simde_assert_equal_vf##EL##_(sizeof(a_) / sizeof(a_[0]), a_, b_, slop, filename, line, astr, bstr); \
   }
 
 #define SIMDE_TEST_X86_GENERATE_INT_TYPE_FUNCS_(NT, EL, EC, SF) \
@@ -48,13 +48,13 @@
     simde_test_codegen_write_vi##EL(indent, sizeof(value_) / sizeof(value_[0]), value_, pos); \
   } \
  \
-  static void \
+  static int \
   simde_test_x86_assert_equal_i##EL##x##EC##_(simde##NT a, simde##NT b, \
       const char* filename, int line, const char* astr, const char* bstr) { \
     int##EL##_t a_[sizeof(a) / sizeof(int##EL##_t)], b_[sizeof(a) / sizeof(int##EL##_t)]; \
     SF(SIMDE_ALIGN_CAST(simde##NT*, a_), a); \
     SF(SIMDE_ALIGN_CAST(simde##NT*, b_), b); \
-    simde_assert_equal_vi##EL##_(sizeof(a_) / sizeof(a_[0]), a_, b_, filename, line, astr, bstr); \
+    return simde_assert_equal_vi##EL##_(sizeof(a_) / sizeof(a_[0]), a_, b_, filename, line, astr, bstr); \
   }
 
 #define SIMDE_TEST_X86_GENERATE_UINT_TYPE_FUNCS_(NT, EL, EC, SF) \
@@ -72,13 +72,13 @@
     simde_test_codegen_write_vu##EL(indent, sizeof(value_) / sizeof(value_[0]), value_, pos); \
   } \
  \
-  static void \
+  static int \
   simde_test_x86_assert_equal_u##EL##x##EC##_(simde##NT a, simde##NT b, \
       const char* filename, int line, const char* astr, const char* bstr) { \
     uint##EL##_t a_[sizeof(a) / sizeof(int##EL##_t)], b_[sizeof(a) / sizeof(int##EL##_t)]; \
     SF(SIMDE_ALIGN_CAST(simde##NT*, a_), a); \
     SF(SIMDE_ALIGN_CAST(simde##NT*, b_), b); \
-    simde_assert_equal_vu##EL##_(sizeof(a_) / sizeof(a_[0]), a_, b_, filename, line, astr, bstr); \
+    return simde_assert_equal_vu##EL##_(sizeof(a_) / sizeof(a_[0]), a_, b_, filename, line, astr, bstr); \
   }
 
 /* For compatibility only.  Note that the operator is assumed to be == */

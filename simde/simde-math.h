@@ -450,6 +450,46 @@
   #endif
 #endif
 
+#if !defined(simde_math_erf)
+  #if SIMDE_MATH_BUILTIN_LIBM(erf)
+    #define simde_math_erf(v) __builtin_erf(v)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_erf(v) std::erf(v)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_erf(v) erf(v)
+  #endif
+#endif
+
+#if !defined(simde_math_erff)
+  #if SIMDE_MATH_BUILTIN_LIBM(erff)
+    #define simde_math_erff(v) __builtin_erff(v)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_erff(v) std::erf(v)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_erff(v) erff(v)
+  #endif
+#endif
+
+#if !defined(simde_math_erfc)
+  #if SIMDE_MATH_BUILTIN_LIBM(erfc)
+    #define simde_math_erfc(v) __builtin_erfc(v)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_erfc(v) std::erfc(v)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_erfc(v) erfc(v)
+  #endif
+#endif
+
+#if !defined(simde_math_erfcf)
+  #if SIMDE_MATH_BUILTIN_LIBM(erfcf)
+    #define simde_math_erfcf(v) __builtin_erfcf(v)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_erfcf(v) std::erfc(v)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_erfcf(v) erfcf(v)
+  #endif
+#endif
+
 #if !defined(simde_math_exp)
   #if SIMDE_MATH_BUILTIN_LIBM(exp)
     #define simde_math_exp(v) __builtin_exp(v)
@@ -468,6 +508,38 @@
   #elif defined(SIMDE_MATH_HAVE_MATH_H)
     #define simde_math_expf(v) expf(v)
   #endif
+#endif
+
+#if !defined(simde_math_exp2)
+  #if SIMDE_MATH_BUILTIN_LIBM(exp2)
+    #define simde_math_exp2(v) __builtin_exp2(v)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_exp2(v) std::exp2(v)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_exp2(v) exp2(v)
+  #endif
+#endif
+
+#if !defined(simde_math_exp2f)
+  #if SIMDE_MATH_BUILTIN_LIBM(exp2f)
+    #define simde_math_exp2f(v) __builtin_exp2f(v)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_exp2f(v) std::exp2(v)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_exp2f(v) exp2f(v)
+  #endif
+#endif
+
+#if HEDLEY_HAS_BUILTIN(__builtin_exp10) ||  HEDLEY_GCC_VERSION_CHECK(3,4,0)
+  #  define simde_math_exp10(v) __builtin_exp10(v)
+#else
+#  define simde_math_exp10(v) pow(10.0, (v))
+#endif
+
+#if HEDLEY_HAS_BUILTIN(__builtin_exp10f) ||  HEDLEY_GCC_VERSION_CHECK(3,4,0)
+  #  define simde_math_exp10f(v) __builtin_exp10f(v)
+#else
+#  define simde_math_exp10f(v) powf(10.0f, (v))
 #endif
 
 #if !defined(simde_math_fabs)
@@ -627,6 +699,26 @@
     #define simde_math_nearbyintf(v) std::nearbyint(v)
   #elif defined(SIMDE_MATH_HAVE_MATH_H)
     #define simde_math_nearbyintf(v) nearbyintf(v)
+  #endif
+#endif
+
+#if !defined(simde_math_pow)
+  #if SIMDE_MATH_BUILTIN_LIBM(pow)
+    #define simde_math_pow(y, x) __builtin_pow(y, x)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_pow(y, x) std::pow(y, x)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_pow(y, x) pow(y, x)
+  #endif
+#endif
+
+#if !defined(simde_math_powf)
+  #if SIMDE_MATH_BUILTIN_LIBM(powf)
+    #define simde_math_powf(y, x) __builtin_powf(y, x)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_powf(y, x) std::pow(y, x)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_powf(y, x) powf(y, x)
   #endif
 #endif
 

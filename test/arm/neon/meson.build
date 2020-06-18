@@ -24,8 +24,11 @@ simde_test_arm_neon_tests = [
   'uzp2',
 ]
 
-foreach src : simde_test_arm_neon_sources
-  simde_test_arm_neon_sources += configure_file(input: src, output: src + 'pp', copy: true)
+simde_test_arm_neon_sources = []
+foreach name : simde_test_arm_neon_tests
+  c_source = name + '.c'
+  cpp_source = configure_file(input: name + '.c', output: name + '.cpp', copy: true)
+  simde_test_arm_neon_sources += [c_source, cpp_source]
 endforeach
 
 simde_tests_arm_neon_emul = static_library('simde-tests-arm-neon-emul', simde_test_arm_neon_sources,
