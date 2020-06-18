@@ -510,6 +510,26 @@
   #endif
 #endif
 
+#if !defined(simde_math_expm1)
+  #if SIMDE_MATH_BUILTIN_LIBM(expm1)
+    #define simde_math_expm1(v) __builtin_expm1(v)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_expm1(v) std::expm1(v)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_expm1(v) expm1(v)
+  #endif
+#endif
+
+#if !defined(simde_math_expm1f)
+  #if SIMDE_MATH_BUILTIN_LIBM(expm1f)
+    #define simde_math_expm1f(v) __builtin_expm1f(v)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_expm1f(v) std::expm1(v)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_expm1f(v) expm1f(v)
+  #endif
+#endif
+
 #if !defined(simde_math_exp2)
   #if SIMDE_MATH_BUILTIN_LIBM(exp2)
     #define simde_math_exp2(v) __builtin_exp2(v)
