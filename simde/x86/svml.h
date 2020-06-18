@@ -45,7 +45,7 @@ SIMDE_BEGIN_DECLS_
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128
 simde_mm_acos_ps (simde__m128 a) {
-  #if defined(SIMDE_X86_SVML_NATIVE)
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE_NATIVE)
     return _mm_acos_ps(a);
   #else
     simde__m128_private
@@ -68,7 +68,7 @@ simde_mm_acos_ps (simde__m128 a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128d
 simde_mm_acos_pd (simde__m128d a) {
-  #if defined(SIMDE_X86_SVML_NATIVE)
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE_NATIVE)
     return _mm_acos_pd(a);
   #else
     simde__m128d_private
@@ -91,7 +91,7 @@ simde_mm_acos_pd (simde__m128d a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m256
 simde_mm256_acos_ps (simde__m256 a) {
-  #if defined(SIMDE_X86_SVML_NATIVE)
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX_NATIVE)
     return _mm256_acos_ps(a);
   #else
     simde__m256_private
@@ -115,7 +115,7 @@ simde_mm256_acos_ps (simde__m256 a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m256d
 simde_mm256_acos_pd (simde__m256d a) {
-  #if defined(SIMDE_X86_SVML_NATIVE)
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX_NATIVE)
     return _mm256_acos_pd(a);
   #else
     simde__m256d_private
@@ -138,7 +138,7 @@ simde_mm256_acos_pd (simde__m256d a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m512
 simde_mm512_acos_ps (simde__m512 a) {
-  #if defined(SIMDE_X86_SVML_NATIVE)
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX512F_NATIVE)
     return _mm512_acos_ps(a);
   #else
     simde__m512_private
@@ -161,7 +161,7 @@ simde_mm512_acos_ps (simde__m512 a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m512d
 simde_mm512_acos_pd (simde__m512d a) {
-  #if defined(SIMDE_X86_SVML_NATIVE)
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX512F_NATIVE)
     return _mm512_acos_pd(a);
   #else
     simde__m512d_private
@@ -184,7 +184,7 @@ simde_mm512_acos_pd (simde__m512d a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m512
 simde_mm512_mask_acos_ps(simde__m512 src, simde__mmask16 k, simde__m512 a) {
-  #if defined(SIMDE_X86_SVML_NATIVE)
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX512F_NATIVE)
     return _mm512_mask_acos_ps(src, k, a);
   #else
     return simde_mm512_mask_mov_ps(src, k, simde_mm512_acos_ps(a));
@@ -198,7 +198,7 @@ simde_mm512_mask_acos_ps(simde__m512 src, simde__mmask16 k, simde__m512 a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m512d
 simde_mm512_mask_acos_pd(simde__m512d src, simde__mmask8 k, simde__m512d a) {
-  #if defined(SIMDE_X86_SVML_NATIVE)
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX512F_NATIVE)
     return _mm512_mask_acos_pd(src, k, a);
   #else
     return simde_mm512_mask_mov_pd(src, k, simde_mm512_acos_pd(a));
@@ -212,7 +212,7 @@ simde_mm512_mask_acos_pd(simde__m512d src, simde__mmask8 k, simde__m512d a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128
 simde_mm_acosh_ps (simde__m128 a) {
-  #if defined(SIMDE_X86_SVML_NATIVE)
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE_NATIVE)
     return _mm_acosh_ps(a);
   #else
     simde__m128_private
@@ -235,7 +235,7 @@ simde_mm_acosh_ps (simde__m128 a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128d
 simde_mm_acosh_pd (simde__m128d a) {
-  #if defined(SIMDE_X86_SVML_NATIVE)
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE_NATIVE)
     return _mm_acosh_pd(a);
   #else
     simde__m128d_private
@@ -258,7 +258,7 @@ simde_mm_acosh_pd (simde__m128d a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m256
 simde_mm256_acosh_ps (simde__m256 a) {
-  #if defined(SIMDE_X86_SVML_NATIVE)
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX_NATIVE)
     return _mm256_acosh_ps(a);
   #else
     simde__m256_private
@@ -282,7 +282,7 @@ simde_mm256_acosh_ps (simde__m256 a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m256d
 simde_mm256_acosh_pd (simde__m256d a) {
-  #if defined(SIMDE_X86_SVML_NATIVE)
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX_NATIVE)
     return _mm256_acosh_pd(a);
   #else
     simde__m256d_private
@@ -305,7 +305,7 @@ simde_mm256_acosh_pd (simde__m256d a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m512
 simde_mm512_acosh_ps (simde__m512 a) {
-  #if defined(SIMDE_X86_SVML_NATIVE)
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX512F_NATIVE)
     return _mm512_acosh_ps(a);
   #else
     simde__m512_private
@@ -328,7 +328,7 @@ simde_mm512_acosh_ps (simde__m512 a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m512d
 simde_mm512_acosh_pd (simde__m512d a) {
-  #if defined(SIMDE_X86_SVML_NATIVE)
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX512F_NATIVE)
     return _mm512_acosh_pd(a);
   #else
     simde__m512d_private
@@ -351,7 +351,7 @@ simde_mm512_acosh_pd (simde__m512d a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m512
 simde_mm512_mask_acosh_ps(simde__m512 src, simde__mmask16 k, simde__m512 a) {
-  #if defined(SIMDE_X86_SVML_NATIVE)
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX512F_NATIVE)
     return _mm512_mask_acosh_ps(src, k, a);
   #else
     return simde_mm512_mask_mov_ps(src, k, simde_mm512_acosh_ps(a));
@@ -365,7 +365,7 @@ simde_mm512_mask_acosh_ps(simde__m512 src, simde__mmask16 k, simde__m512 a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m512d
 simde_mm512_mask_acosh_pd(simde__m512d src, simde__mmask8 k, simde__m512d a) {
-  #if defined(SIMDE_X86_SVML_NATIVE)
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX512F_NATIVE)
     return _mm512_mask_acosh_pd(src, k, a);
   #else
     return simde_mm512_mask_mov_pd(src, k, simde_mm512_acosh_pd(a));
