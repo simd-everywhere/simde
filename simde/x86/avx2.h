@@ -1675,6 +1675,24 @@ simde_mm256_hsub_epi32 (simde__m256i a, simde__m256i b) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m256i
+simde_mm256_inserti128_si256(simde__m256i a, simde__m128i b, const int imm8)
+    SIMDE_REQUIRE_RANGE(imm8, 0, 7) {
+  simde__m256i_private a_ = simde__m256i_to_private(a);
+  simde__m128i_private b_ = simde__m128i_to_private(b);
+
+  a_.m128i_private[ imm8 & 1 ] = b_;
+
+  return simde__m256i_from_private(a_);
+}
+#if defined(SIMDE_X86_AVX2_NATIVE)
+  #define simde_mm256_inserti128_si256(a, b, imm8) _mm256_inserti128_si256(a, b, imm8)
+#endif
+#if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
+  #define _mm256_inserti128_si256(a, b, imm8) simde_mm256_inserti128_si256(a, b, imm8)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256i
 simde_mm256_madd_epi16 (simde__m256i a, simde__m256i b) {
 #if defined(SIMDE_X86_AVX2_NATIVE)
   return _mm256_madd_epi16(a, b);
