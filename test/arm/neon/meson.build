@@ -1,27 +1,33 @@
-simde_test_arm_neon_sources = [
-  'add.c',
-  'and.c',
-  'dup_n.c',
-  'eor.c',
-  'get_high.c',
-  'get_low.c',
-  'min.c',
-  'mla.c',
-  'mul.c',
-  'mull.c',
-  'orr.c',
-  'padd.c',
-  'pmin.c',
-  'shl.c',
-  'shl_n.c',
-  'shr_n.c',
-  'sub.c',
-  'uzp1.c',
-  'uzp2.c',
+simde_test_arm_neon_tests = [
+  'add',
+  'addw',
+  'and',
+  'cagt',
+  'dup_n',
+  'eor',
+  'get_high',
+  'get_lane',
+  'get_low',
+  'min',
+  'mla',
+  'mul',
+  'mull',
+  'orr',
+  'padd',
+  'pmin',
+  "shl",
+  'shl_n',
+  'shr_n',
+  'sub',
+  'uzp1',
+  'uzp2',
 ]
 
-foreach src : simde_test_arm_neon_sources
-  simde_test_arm_neon_sources += configure_file(input: src, output: src + 'pp', copy: true)
+simde_test_arm_neon_sources = []
+foreach name : simde_test_arm_neon_tests
+  c_source = name + '.c'
+  cpp_source = configure_file(input: name + '.c', output: name + '.cpp', copy: true)
+  simde_test_arm_neon_sources += [c_source, cpp_source]
 endforeach
 
 simde_tests_arm_neon_emul = static_library('simde-tests-arm-neon-emul', simde_test_arm_neon_sources,

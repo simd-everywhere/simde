@@ -174,6 +174,34 @@ simde_mm_lzcnt_epi32(simde__m128i a) {
   #define _mm_lzcnt_epi32(a) simde_mm_lzcnt_epi32(a)
 #endif
 
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m128i
+simde_mm_mask_lzcnt_epi32(simde__m128i src, simde__mmask8 k, simde__m128i a) {
+  #if defined(SIMDE_X86_AVX512VL_NATIVE) && defined(SIMDE_X86_AVX512CD_NATIVE)
+    return _mm_mask_lzcnt_epi32(src, k, a);
+  #else
+    return simde_mm_mask_mov_epi32(src, k, simde_mm_lzcnt_epi32(a));
+  #endif
+}
+#if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
+  #undef _mm_mask_lzcnt_epi32
+  #define _mm_mask_lzcnt_epi32(src, k, a) simde_mm_mask_lzcnt_epi32(src, k, a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m128i
+simde_mm_maskz_lzcnt_epi32(simde__mmask8 k, simde__m128i a) {
+  #if defined(SIMDE_X86_AVX512VL_NATIVE) && defined(SIMDE_X86_AVX512CD_NATIVE)
+    return _mm_maskz_lzcnt_epi32(k, a);
+  #else
+    return simde_mm_maskz_mov_epi32(k, simde_mm_lzcnt_epi32(a));
+  #endif
+}
+#if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
+  #undef _mm_maskz_lzcnt_epi32
+  #define _mm_maskz_lzcnt_epi32(k, a) simde_mm_maskz_lzcnt_epi32(k, a)
+#endif
+
 SIMDE_END_DECLS_
 HEDLEY_DIAGNOSTIC_POP
 

@@ -42,6 +42,7 @@
 #include "simde-features.h"
 #include "simde-diagnostic.h"
 #include "simde-math.h"
+#include "simde-constify.h"
 
 /* In some situations, SIMDe has to make large performance sacrifices
  * for small increases in how faithfully it reproduces an API, but
@@ -163,10 +164,12 @@
   #define SIMDE_CHECK_CONSTANT_(expr) (std::is_constant_evaluated())
 #endif
 
-/* diagnose_if + __builtin_constant_p was broken until clang 9,
- * which is when __FILE_NAME__ was added. */
-#if defined(SIMDE_CHECK_CONSTANT_) && defined(__FILE_NAME__)
-  #define SIMDE_REQUIRE_CONSTANT(arg) HEDLEY_REQUIRE_MSG(SIMDE_CHECK_CONSTANT_(arg), "`" #arg "' must be constant")
+#if !defined(SIMDE_NO_CHECK_IMMEDIATE_CONSTANT)
+  #if defined(SIMDE_CHECK_CONSTANT_) && SIMDE_DETECT_CLANG_VERSION_NOT(9,0,0)
+    #define SIMDE_REQUIRE_CONSTANT(arg) HEDLEY_REQUIRE_MSG(SIMDE_CHECK_CONSTANT_(arg), "`" #arg "' must be constant")
+  #else
+    #define SIMDE_REQUIRE_CONSTANT(arg)
+  #endif
 #else
   #define SIMDE_REQUIRE_CONSTANT(arg)
 #endif
@@ -194,16 +197,6 @@
   (defined(__cplusplus) && (__cplusplus >= 201103L)) || \
   HEDLEY_MSVC_VERSION_CHECK(16,0,0)
 #  define SIMDE_STATIC_ASSERT(expr, message) HEDLEY_DIAGNOSTIC_DISABLE_CPP98_COMPAT_WRAP_(static_assert(expr, message))
-#endif
-
-/* Similar to SIMDE_REQUIRE_CONSTANT_RANGE, but for use in macros. */
-#if defined(SIMDE_STATIC_ASSERT)
-  #define SIMDE_VALIDATE_CONSTANT_RANGE(value, min, max) \
-    ( SIMDE_STATIC_ASSERT(SIMDE_CHECK_CONSTANT(value), "`" #value "` must be constant"), \
-      SIMDE_STATIC_ASSERT(((value) > ()) && (), "'" #value "' must be in [" #min ", " #max "]"), \
-      (value) )
-#else
-  #define SIMDE_VALIDATE_CONSTANT_RANGE(value, min, max) (value)
 #endif
 
 /* SIMDE_ASSUME_ALIGNED allows you to (try to) tell the compiler
@@ -645,36 +638,34 @@ typedef SIMDE_FLOAT64_TYPE simde_float64;
 #endif
 
 /* Try to deal with environments without a standard library. */
-#if !defined(simde_memcpy) || !defined(simde_memset)
-  #if !defined(SIMDE_NO_STRING_H) && defined(__has_include)
-    #if __has_include(<string.h>)
-      #include <string.h>
-      #if !defined(simde_memcpy)
-        #define simde_memcpy(dest, src, n) memcpy(dest, src, n)
-      #endif
-      #if !defined(simde_memset)
-        #define simde_memset(s, c, n) memset(s, c, n)
-      #endif
-    #else
-      #define SIMDE_NO_STRING_H
-    #endif
+#if !defined(simde_memcpy)
+  #if HEDLEY_HAS_BUILTIN(__builtin_memcpy)
+    #define simde_memcpy(dest, src, n) __builtin_memcpy(dest, src, n)
+  #endif
+#endif
+#if !defined(simde_memset)
+  #if HEDLEY_HAS_BUILTIN(__builtin_memset)
+    #define simde_memset(s, c, n) __builtin_memset(s, c, n)
   #endif
 #endif
 #if !defined(simde_memcpy) || !defined(simde_memset)
-  #if !defined(SIMDE_NO_STRING_H) && (SIMDE_STDC_HOSTED == 1)
+  #if !defined(SIMDE_NO_STRING_H)
+    #if defined(__has_include)
+      #if !__has_include(<string.h>)
+        #define SIMDE_NO_STRING_H
+      #endif
+    #elif (SIMDE_STDC_HOSTED == 0)
+      #define SIMDE_NO_STRING_H
+    #endif
+  #endif
+
+  #if !defined(SIMDE_NO_STRING_H)
     #include <string.h>
     #if !defined(simde_memcpy)
       #define simde_memcpy(dest, src, n) memcpy(dest, src, n)
     #endif
     #if !defined(simde_memset)
       #define simde_memset(s, c, n) memset(s, c, n)
-    #endif
-  #elif (HEDLEY_HAS_BUILTIN(__builtin_memcpy) && HEDLEY_HAS_BUILTIN(__builtin_memset)) || HEDLEY_GCC_VERSION_CHECK(4,2,0)
-    #if !defined(simde_memcpy)
-      #define simde_memcpy(dest, src, n) __builtin_memcpy(dest, src, n)
-    #endif
-    #if !defined(simde_memset)
-      #define simde_memset(s, c, n) __builtin_memset(s, c, n)
     #endif
   #else
     /* These are meant to be portable, not fast.  If you're hitting them you
@@ -708,8 +699,8 @@ typedef SIMDE_FLOAT64_TYPE simde_float64;
       }
       #define simde_memset(s, c, n) simde_memset_(s, c, n)
     #endif
-  #endif /* !defined(SIMDE_NO_STRING_H) && (SIMDE_STDC_HOSTED == 1) */
-#endif /* !defined(simde_memcpy) || !defined(simde_memset) */
+  #endif
+#endif
 
 #if defined(FE_ALL_EXCEPT)
   #define SIMDE_HAVE_FENV_H

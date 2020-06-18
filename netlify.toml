@@ -3,7 +3,7 @@
   command = 'mkdir -p web/amalgamated/x86 && (cd simde && for header in x86/*.h; do ../amalgamate.py "$header" > ../web/amalgamated/"$header"; done); mkdir -p web/amalgamated/arm && (cd simde/arm && ../../amalgamate.py neon.h > ../../web/amalgamated/arm/neon.h)'
 
 [[headers]]
-  for = "/amalgamated/x86/*.h"
+  for = "/amalgamated/*/*.h"
   [headers.values]
     Access-Control-Allow-Origin = "*"
 
@@ -15,6 +15,18 @@
 
 [[redirects]]
   from = "/godbolt/demo"
-  to = "https://godbolt.org/z/v9R-cP"
+  to = "https://godbolt.org/z/keBtF9"
+  status = 302
+  force = true
+
+[[redirects]]
+  from = "/godbolt/arm/neon/simple"
+  to = "https://godbolt.org/z/6rdp4L"
+  status = 302
+  force = true
+
+[[redirects]]
+  from = "/godbolt/arm/neon/demo"
+  to = "https://godbolt.org/z/sHVz49"
   status = 302
   force = true
