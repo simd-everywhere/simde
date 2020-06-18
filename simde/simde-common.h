@@ -645,15 +645,27 @@ typedef SIMDE_FLOAT64_TYPE simde_float64;
 #endif
 
 /* Try to deal with environments without a standard library. */
-#if !defined(simde_memcpy) || !defined(simde_memset)
-  #if !defined(SIMDE_NO_STRING_H) && defined(__has_include)
-    #if __has_include(<string.h>)
-      #include <string.h>
-      #if !defined(simde_memcpy)
-        #define simde_memcpy(dest, src, n) memcpy(dest, src, n)
-      #endif
-      #if !defined(simde_memset)
-        #define simde_memset(s, c, n) memset(s, c, n)
+#if !defined(simde_memcpy)
+  #if HEDLEY_HAS_BUILTIN(__builtin_memcpy)
+    #define simde_memcpy(dest, src, n) __builtin_memcpy(dest, src, n)
+  #endif
+#endif
+#if !defined(simde_memset)
+  #if HEDLEY_HAS_BUILTIN(__builtin_memset)
+    #define simde_memset(s, c, n) __builtin_memset(s, c, n)
+  #endif
+#endif
+#if !defined(simde_memcmp)
+  #if HEDLEY_HAS_BUILTIN(__builtin_memcmp)
+    #define simde_memcmp(s1, s2, n) __builtin_memcmp(s1, s2, n)
+  #endif
+#endif
+
+#if !defined(simde_memcpy) || !defined(simde_memset) || !defined(simde_memcmp)
+  #if !defined(SIMDE_NO_STRING_H)
+    #if defined(__has_include)
+      #if !__has_include(<string.h>)
+        #define SIMDE_NO_STRING_H
       #endif
     #else
       #define SIMDE_NO_STRING_H
@@ -669,12 +681,8 @@ typedef SIMDE_FLOAT64_TYPE simde_float64;
     #if !defined(simde_memset)
       #define simde_memset(s, c, n) memset(s, c, n)
     #endif
-  #elif (HEDLEY_HAS_BUILTIN(__builtin_memcpy) && HEDLEY_HAS_BUILTIN(__builtin_memset)) || HEDLEY_GCC_VERSION_CHECK(4,2,0)
-    #if !defined(simde_memcpy)
-      #define simde_memcpy(dest, src, n) __builtin_memcpy(dest, src, n)
-    #endif
-    #if !defined(simde_memset)
-      #define simde_memset(s, c, n) __builtin_memset(s, c, n)
+    #if !defined(simde_memcmp)
+      #define simde_memcmp(s1, s2, n) memcmp(s1, s2, n)
     #endif
   #else
     /* These are meant to be portable, not fast.  If you're hitting them you
@@ -707,6 +715,22 @@ typedef SIMDE_FLOAT64_TYPE simde_float64;
         }
       }
       #define simde_memset(s, c, n) simde_memset_(s, c, n)
+    #endif
+
+    #if !defined(simde_memcmp)
+      SIMDE_FUCTION_ATTRIBUTES
+      int
+      simde_memcmp_(const void *s1, const void *s2, size_t n) {
+        unsigned char* s1_ = HEDLEY_STATIC_CAST(unsigned char*, s1);
+        unsigned char* s2_ = HEDLEY_STATIC_CAST(unsigned char*, s2);
+        for (size_t i = 0 ; i < len ; i++) {
+          if (s1_[i] != s2_[i]) {
+            return (int) (s1_[i] - s2_[i]);
+          }
+        }
+        return 0;
+      }
+    #define simde_memcmp(s1, s2, n) simde_memcmp_(s1, s2, n)
     #endif
   #endif /* !defined(SIMDE_NO_STRING_H) && (SIMDE_STDC_HOSTED == 1) */
 #endif /* !defined(simde_memcpy) || !defined(simde_memset) */

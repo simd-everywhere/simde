@@ -120,6 +120,7 @@ set(TEST_SOURCES_C
   arm/neon/orr.c
   arm/neon/padd.c
   arm/neon/pmin.c
+  arm/neon/reinterpret.c
   arm/neon/shl_n.c
   arm/neon/shr_n.c
   arm/neon/sub.c
