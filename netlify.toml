@@ -15,6 +15,18 @@
 
 [[redirects]]
   from = "/godbolt/demo"
-  to = "https://godbolt.org/z/v9R-cP"
+  to = "https://godbolt.org/z/keBtF9"
+  status = 302
+  force = true
+
+[[redirects]]
+  from = "/godbolt/arm/neon/simple"
+  to = "https://godbolt.org/z/6rdp4L"
+  status = 302
+  force = true
+
+[[redirects]]
+  from = "/godbolt/arm/neon/demo"
+  to = "https://godbolt.org/z/sHVz49"
   status = 302
   force = true
