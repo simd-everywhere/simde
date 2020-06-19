@@ -9,6 +9,7 @@ simde_test_arm_neon_tests = [
   'get_high',
   'get_lane',
   'get_low',
+  'max',
   'min',
   'mla',
   'mul',
