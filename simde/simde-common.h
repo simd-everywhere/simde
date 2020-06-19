@@ -357,27 +357,27 @@
 #endif
 
 #if defined(SIMDE_ENABLE_OPENMP)
-#  define SIMDE_VECTORIZE _Pragma("omp simd")
+#  define SIMDE_VECTORIZE HEDLEY_PRAGMA(omp simd)
 #  define SIMDE_VECTORIZE_SAFELEN(l) HEDLEY_PRAGMA(omp simd safelen(l))
 #  define SIMDE_VECTORIZE_REDUCTION(r) HEDLEY_PRAGMA(omp simd reduction(r))
 #  define SIMDE_VECTORIZE_ALIGNED(a) HEDLEY_PRAGMA(omp simd aligned(a))
 #elif defined(SIMDE_ENABLE_CILKPLUS)
-#  define SIMDE_VECTORIZE _Pragma("simd")
+#  define SIMDE_VECTORIZE HEDLEY_PRAGMA(simd)
 #  define SIMDE_VECTORIZE_SAFELEN(l) HEDLEY_PRAGMA(simd vectorlength(l))
 #  define SIMDE_VECTORIZE_REDUCTION(r) HEDLEY_PRAGMA(simd reduction(r))
 #  define SIMDE_VECTORIZE_ALIGNED(a) HEDLEY_PRAGMA(simd aligned(a))
 #elif defined(__clang__) && !defined(HEDLEY_IBM_VERSION)
-#  define SIMDE_VECTORIZE _Pragma("clang loop vectorize(enable)")
+#  define SIMDE_VECTORIZE HEDLEY_PRAGMA(clang loop vectorize(enable))
 #  define SIMDE_VECTORIZE_SAFELEN(l) HEDLEY_PRAGMA(clang loop vectorize_width(l))
 #  define SIMDE_VECTORIZE_REDUCTION(r) SIMDE_VECTORIZE
 #  define SIMDE_VECTORIZE_ALIGNED(a)
 #elif HEDLEY_GCC_VERSION_CHECK(4,9,0)
-#  define SIMDE_VECTORIZE _Pragma("GCC ivdep")
+#  define SIMDE_VECTORIZE HEDLEY_PRAGMA(GCC ivdep)
 #  define SIMDE_VECTORIZE_SAFELEN(l) SIMDE_VECTORIZE
 #  define SIMDE_VECTORIZE_REDUCTION(r) SIMDE_VECTORIZE
 #  define SIMDE_VECTORIZE_ALIGNED(a)
 #elif HEDLEY_CRAY_VERSION_CHECK(5,0,0)
-#  define SIMDE_VECTORIZE _Pragma("_CRI ivdep")
+#  define SIMDE_VECTORIZE HEDLEY_PRAGMA(_CRI ivdep)
 #  define SIMDE_VECTORIZE_SAFELEN(l) SIMDE_VECTORIZE
 #  define SIMDE_VECTORIZE_REDUCTION(r) SIMDE_VECTORIZE
 #  define SIMDE_VECTORIZE_ALIGNED(a)
