@@ -302,6 +302,32 @@ simde__m128d_to_private(simde__m128d v) {
   #endif
 #endif /* defined(SIMDE_ARM_NEON_A32V7_NATIVE) */
 
+#if defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+  SIMDE_X86_GENERATE_CONVERSION_FUNCTION(m128i, vector signed char, altivec, i8)
+  SIMDE_X86_GENERATE_CONVERSION_FUNCTION(m128i, vector signed short, altivec, i16)
+  SIMDE_X86_GENERATE_CONVERSION_FUNCTION(m128i, vector signed int, altivec, i32)
+  SIMDE_X86_GENERATE_CONVERSION_FUNCTION(m128i, vector signed long long, altivec, i64)
+  SIMDE_X86_GENERATE_CONVERSION_FUNCTION(m128i, vector unsigned char, altivec, u8)
+  SIMDE_X86_GENERATE_CONVERSION_FUNCTION(m128i, vector unsigned short, altivec, u16)
+  SIMDE_X86_GENERATE_CONVERSION_FUNCTION(m128i, vector unsigned int, altivec, u32)
+  SIMDE_X86_GENERATE_CONVERSION_FUNCTION(m128i, vector unsigned long long, altivec, u64)
+  SIMDE_X86_GENERATE_CONVERSION_FUNCTION(m128i, vector float, altivec, f32)
+  SIMDE_X86_GENERATE_CONVERSION_FUNCTION(m128i, vector double, altivec, f64)
+#endif /* defined(SIMDE_POWER_ALTIVEC_P5_NATIVE) */
+
+#if defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+  SIMDE_X86_GENERATE_CONVERSION_FUNCTION(m128d, vector signed char, altivec, i8)
+  SIMDE_X86_GENERATE_CONVERSION_FUNCTION(m128d, vector signed short, altivec, i16)
+  SIMDE_X86_GENERATE_CONVERSION_FUNCTION(m128d, vector signed int, altivec, i32)
+  SIMDE_X86_GENERATE_CONVERSION_FUNCTION(m128d, vector signed long long, altivec, i64)
+  SIMDE_X86_GENERATE_CONVERSION_FUNCTION(m128d, vector unsigned char, altivec, u8)
+  SIMDE_X86_GENERATE_CONVERSION_FUNCTION(m128d, vector unsigned short, altivec, u16)
+  SIMDE_X86_GENERATE_CONVERSION_FUNCTION(m128d, vector unsigned int, altivec, u32)
+  SIMDE_X86_GENERATE_CONVERSION_FUNCTION(m128d, vector unsigned long long, altivec, u64)
+  SIMDE_X86_GENERATE_CONVERSION_FUNCTION(m128d, vector float, altivec, f32)
+  SIMDE_X86_GENERATE_CONVERSION_FUNCTION(m128d, vector double, altivec, f64)
+#endif /* defined(SIMDE_POWER_ALTIVEC_P5_NATIVE) */
+
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_add_epi8 (simde__m128i a, simde__m128i b) {

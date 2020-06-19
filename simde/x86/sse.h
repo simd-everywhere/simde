@@ -167,6 +167,19 @@ simde__m128_to_private(simde__m128 v) {
   #endif
 #endif /* defined(SIMDE_ARM_NEON_A32V7_NATIVE) */
 
+#if defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+  SIMDE_X86_GENERATE_CONVERSION_FUNCTION(m128, vector signed char, altivec, i8)
+  SIMDE_X86_GENERATE_CONVERSION_FUNCTION(m128, vector signed short, altivec, i16)
+  SIMDE_X86_GENERATE_CONVERSION_FUNCTION(m128, vector signed int, altivec, i32)
+  SIMDE_X86_GENERATE_CONVERSION_FUNCTION(m128, vector signed long long, altivec, i64)
+  SIMDE_X86_GENERATE_CONVERSION_FUNCTION(m128, vector unsigned char, altivec, u8)
+  SIMDE_X86_GENERATE_CONVERSION_FUNCTION(m128, vector unsigned short, altivec, u16)
+  SIMDE_X86_GENERATE_CONVERSION_FUNCTION(m128, vector unsigned int, altivec, u32)
+  SIMDE_X86_GENERATE_CONVERSION_FUNCTION(m128, vector unsigned long long, altivec, u64)
+  SIMDE_X86_GENERATE_CONVERSION_FUNCTION(m128, vector float, altivec, f32)
+  SIMDE_X86_GENERATE_CONVERSION_FUNCTION(m128, vector double, altivec, f64)
+#endif /* defined(SIMDE_POWER_ALTIVEC_P5_NATIVE) */
+
 enum {
 #if defined(SIMDE_X86_SSE_NATIVE)
   SIMDE_MM_ROUND_NEAREST     = _MM_ROUND_NEAREST,
