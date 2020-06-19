@@ -57,5 +57,8 @@
 #include "neon/sub.h"
 #include "neon/uzp1.h"
 #include "neon/uzp2.h"
+#include "neon/zip.h"
+#include "neon/zip1.h"
+#include "neon/zip2.h"
 
 #endif /* SIMDE_ARM_NEON_H */

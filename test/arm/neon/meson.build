@@ -25,6 +25,9 @@ simde_test_arm_neon_tests = [
   'sub',
   'uzp1',
   'uzp2',
+  'zip',
+  'zip1',
+  'zip2',
 ]
 
 simde_test_arm_neon_sources = []
