@@ -3993,6 +3993,174 @@ simde_mm512_mask_hypot_pd(simde__m512d src, simde__mmask8 k, simde__m512d a, sim
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128
+simde_mm_invcbrt_ps (simde__m128 a) {
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE_NATIVE)
+    return _mm_invcbrt_ps(a);
+  #else
+    return simde_mm_div_ps(simde_mm_set1_ps(SIMDE_FLOAT32_C(1.0)), simde_mm_cbrt_ps(a));
+  #endif
+}
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
+  #undef _mm_invcbrt_ps
+  #define _mm_invcbrt_ps(a) simde_mm_invcbrt_ps(a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m128d
+simde_mm_invcbrt_pd (simde__m128d a) {
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE_NATIVE)
+    return _mm_invcbrt_pd(a);
+  #else
+    return simde_mm_div_pd(simde_mm_set1_pd(SIMDE_FLOAT64_C(1.0)), simde_mm_cbrt_pd(a));
+  #endif
+}
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
+  #undef _mm_invcbrt_pd
+  #define _mm_invcbrt_pd(a) simde_mm_invcbrt_pd(a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256
+simde_mm256_invcbrt_ps (simde__m256 a) {
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE_NATIVE)
+    return _mm256_invcbrt_ps(a);
+  #else
+    return simde_mm256_div_ps(simde_mm256_set1_ps(SIMDE_FLOAT32_C(1.0)), simde_mm256_cbrt_ps(a));
+  #endif
+}
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_invcbrt_ps
+  #define _mm256_invcbrt_ps(a) simde_mm256_invcbrt_ps(a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256d
+simde_mm256_invcbrt_pd (simde__m256d a) {
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE_NATIVE)
+    return _mm256_invcbrt_pd(a);
+  #else
+    return simde_mm256_div_pd(simde_mm256_set1_pd(SIMDE_FLOAT64_C(1.0)), simde_mm256_cbrt_pd(a));
+  #endif
+}
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_invcbrt_pd
+  #define _mm256_invcbrt_pd(a) simde_mm256_invcbrt_pd(a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m128
+simde_mm_invsqrt_ps (simde__m128 a) {
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE_NATIVE)
+    return _mm_invsqrt_ps(a);
+  #else
+    return simde_mm_div_ps(simde_mm_set1_ps(SIMDE_FLOAT32_C(1.0)), simde_mm_sqrt_ps(a));
+  #endif
+}
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
+  #undef _mm_invsqrt_ps
+  #define _mm_invsqrt_ps(a) simde_mm_invsqrt_ps(a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m128d
+simde_mm_invsqrt_pd (simde__m128d a) {
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE_NATIVE)
+    return _mm_invsqrt_pd(a);
+  #else
+    return simde_mm_div_pd(simde_mm_set1_pd(SIMDE_FLOAT64_C(1.0)), simde_mm_sqrt_pd(a));
+  #endif
+}
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
+  #undef _mm_invsqrt_pd
+  #define _mm_invsqrt_pd(a) simde_mm_invsqrt_pd(a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256
+simde_mm256_invsqrt_ps (simde__m256 a) {
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE_NATIVE)
+    return _mm256_invsqrt_ps(a);
+  #else
+    return simde_mm256_div_ps(simde_mm256_set1_ps(SIMDE_FLOAT32_C(1.0)), simde_mm256_sqrt_ps(a));
+  #endif
+}
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_invsqrt_ps
+  #define _mm256_invsqrt_ps(a) simde_mm256_invsqrt_ps(a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256d
+simde_mm256_invsqrt_pd (simde__m256d a) {
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE_NATIVE)
+    return _mm256_invsqrt_pd(a);
+  #else
+    return simde_mm256_div_pd(simde_mm256_set1_pd(SIMDE_FLOAT64_C(1.0)), simde_mm256_sqrt_pd(a));
+  #endif
+}
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_invsqrt_pd
+  #define _mm256_invsqrt_pd(a) simde_mm256_invsqrt_pd(a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512
+simde_mm512_invsqrt_ps (simde__m512 a) {
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE_NATIVE)
+    return _mm512_invsqrt_ps(a);
+  #else
+    return simde_mm512_div_ps(simde_mm512_set1_ps(SIMDE_FLOAT32_C(1.0)), simde_mm512_sqrt_ps(a));
+  #endif
+}
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_invsqrt_ps
+  #define _mm512_invsqrt_ps(a) simde_mm512_invsqrt_ps(a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512d
+simde_mm512_invsqrt_pd (simde__m512d a) {
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE_NATIVE)
+    return _mm512_invsqrt_pd(a);
+  #else
+    return simde_mm512_div_pd(simde_mm512_set1_pd(SIMDE_FLOAT64_C(1.0)), simde_mm512_sqrt_pd(a));
+  #endif
+}
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_invsqrt_pd
+  #define _mm512_invsqrt_pd(a) simde_mm512_invsqrt_pd(a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512
+simde_mm512_mask_invsqrt_ps(simde__m512 src, simde__mmask16 k, simde__m512 a) {
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX512F_NATIVE)
+    return _mm512_mask_invsqrt_ps(src, k, a);
+  #else
+    return simde_mm512_mask_mov_ps(src, k, simde_mm512_invsqrt_ps(a));
+  #endif
+}
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_mask_invsqrt_ps
+  #define _mm512_mask_invsqrt_ps(src, k, a) simde_mm512_mask_invsqrt_ps(src, k, a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512d
+simde_mm512_mask_invsqrt_pd(simde__m512d src, simde__mmask8 k, simde__m512d a) {
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX512F_NATIVE)
+    return _mm512_mask_invsqrt_pd(src, k, a);
+  #else
+    return simde_mm512_mask_mov_pd(src, k, simde_mm512_invsqrt_pd(a));
+  #endif
+}
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_mask_invsqrt_pd
+  #define _mm512_mask_invsqrt_pd(src, k, a) simde_mm512_mask_invsqrt_pd(src, k, a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m128
 simde_mm_log_ps (simde__m128 a) {
   #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE_NATIVE)
     return _mm_log_ps(a);
@@ -4059,7 +4227,6 @@ simde_mm256_log_ps (simde__m256 a) {
   #undef _mm256_log_ps
   #define _mm256_log_ps(a) simde_mm256_log_ps(a)
 #endif
-
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m256d
@@ -4157,7 +4324,6 @@ simde_mm512_mask_log_pd(simde__m512d src, simde__mmask8 k, simde__m512d a) {
   #undef _mm512_mask_log_pd
   #define _mm512_mask_log_pd(src, k, a) simde_mm512_mask_log_pd(src, k, a)
 #endif
-
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128
