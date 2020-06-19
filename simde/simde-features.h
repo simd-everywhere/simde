@@ -315,9 +315,9 @@
     #if defined(bool)
       #undef bool
     #endif
-    #define SIMDE_POWER_ALTIVEC_VECTOR(T) vector T
-    #define SIMDE_POWER_ALTIVEC_PIXEL pixel
-    #define SIMDE_POWER_ALTIVEC_BOOL bool
+    #define SIMDE_POWER_ALTIVEC_VECTOR(T) __vector T
+    #define SIMDE_POWER_ALTIVEC_PIXEL __pixel
+    #define SIMDE_POWER_ALTIVEC_BOOL __bool
   #else
     #define SIMDE_POWER_ALTIVEC_VECTOR(T) __vector T
     #define SIMDE_POWER_ALTIVEC_PIXEL __pixel
