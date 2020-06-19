@@ -61,8 +61,7 @@ jobs:
     - name: Build
       run: ninja -C build -v
     - name: Test
-      run: |
-        ./build/test/run-tests --list | grep -oP '^/([^\/]+)/([^\/]+)' | sort -u | xargs parallel ./build/test/run-tests --color always {} :::
+      run: ninja -C build -v test
     - name: Coverage Report
       run: ninja -C build -v coverage-xml
     - name: CodeCov.io
@@ -89,16 +88,20 @@ jobs:
     - name: Install pip Dependencies
       run: pip3 install meson
     - name: Download SDE
-      run: ./test/download-sde.sh sde
+      run: ./test/download-sde.sh ~/sde
     - name: Configure
       run: ~/.local/bin/meson setup build -Db_coverage=true
     - name: Build
       run: ninja -C build -v
-    # SDE is unreasonable slow, so only test the code which isn't
-    # already tested on Travis.
     - name: Test
       run: |
-        echo /x86/{gfni,avx512dq} | sort -u | xargs parallel sde/sde64 -- ./build/test/run-tests --color always {} :::
+        for isax in gfni avx512dq; do
+          for native in native emul; do
+            for lang in c cpp; do
+              ~/sde/sde64 -- sh -xc ./build/test/x86/"${isax}-${native}-${lang}" || exit 1
+            done
+          done
+        done
     - name: Coverage Report
       run: ninja -C build -v coverage-xml
     - name: CodeCov.io
@@ -128,8 +131,7 @@ jobs:
     - name: Build
       run: ninja -C build -v
     - name: Test
-      run: |
-        ./build/test/run-tests --list | grep -oP '^/([^\/]+)/([^\/]+)' | sort -u | xargs parallel ./build/test/run-tests --color always {} :::
+      run: ninja -C build -v test
     - name: Coverage Report
       run: ninja -C build -v coverage-xml
     - name: CodeCov.io
@@ -153,5 +155,4 @@ jobs:
     - name: Build
       run: ninja -C test/build -v
     - name: Test
-      run: |
-        ./test/build/run-tests --list | grep -oP '^/([^\/]+)/([^\/]+)' | sort -u | xargs parallel ./test/build/run-tests --color always {} :::
+      run: ninja -C test/build -v test

@@ -1,4 +1,5 @@
 environment:
+  MESON_EXE_WRAPPER: "['C:\\Program Files\\OpenCppCoverage\\OpenCppCoverage.exe', '--export_type=cobertura', '--']"
   matrix:
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
       VCVARSALL: C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvarsall.bat
@@ -9,9 +10,6 @@ environment:
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
       VCVARSALL: C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat
       PYTHON_DIR: C:\Python38-x64
-    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2013
-      VCVARSALL: C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\vcvarsall.bat
-      PYTHON_DIR: C:\Python37-x64
 
 branches:
   except:
@@ -32,9 +30,7 @@ before_build:
 
 build_script:
   - cmd: meson --backend=ninja build
-  - cmd: ninja -C build -v
-  - cmd: |
-      "C:\Program Files\OpenCppCoverage\OpenCppCoverage.exe" --export_type=cobertura -- build\test\run-tests.exe
+  - cmd: ninja -C build -v test
 
 ## This seems to work; data shows up on CodeCov, but it emits an error
 ## which makes AppVeyor thing the whole build failed.  Example:

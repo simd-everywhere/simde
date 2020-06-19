@@ -7,8 +7,7 @@ def get_test_commands():
     "mkdir -p build",
     "cd build",
     'CFLAGS="$ARCH_FLAGS" CXXFLAGS="$ARCH_FLAGS" meson .. || (cat meson-logs/meson-log.txt; false)',
-    '"$(command -v ninja || command -v ninja-build)" -v',
-    './test/run-tests --list | grep -oP "^/([^/]+)/([^/]+)" | sort -u | xargs parallel ./test/run-tests --color always {} :::',
+    '"$(command -v ninja || command -v ninja-build)" -v test'
   ]
 
 def get_apt_install_commands(extra_pkgs = []):
