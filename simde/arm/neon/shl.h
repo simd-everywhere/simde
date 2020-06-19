@@ -414,7 +414,7 @@ simde_vshlq_s8 (const simde_int8x16_t a, const simde_int8x16_t b) {
     a_shl = vec_and(vec_sl(a, b_abs), vec_cmple(b_abs, b_max));
     a_shr = vec_sra(a, vec_min(b_abs, b_max));
     b_mask = vec_cmplt(b, vec_splat_s8(0));
-    return vec_or(vec_andc(a_shl, b_mask), vec_and(a_shr, b_mask));
+    return vec_sel(a_shl, a_shr, b_mask);
   #else
     simde_int8x16_private
       r_,
@@ -467,7 +467,7 @@ simde_vshlq_s16 (const simde_int16x8_t a, const simde_int16x8_t b) {
     a_shl = vec_and(vec_sl(a, b_abs), vec_cmple(b_abs, b_max));
     a_shr = vec_sra(a, vec_min(b_abs, b_max));
     b_mask = vec_cmplt(vec_sl(b, vec_splat_u16(8)), vec_splat_s16(0));
-    return vec_or(vec_andc(a_shl, b_mask), vec_and(a_shr, b_mask));
+    return vec_sel(a_shl, a_shr, b_mask);
   #else
     simde_int16x8_private
       r_,
@@ -513,7 +513,7 @@ simde_vshlq_s32 (const simde_int32x4_t a, const simde_int32x4_t b) {
     a_shr = vec_sra(a, vec_min(b_abs, b_max));
     b_mask = vec_cmplt(vec_sl(b, vec_splats(HEDLEY_STATIC_CAST(unsigned int, 24))),
                        vec_splat_s32(0));
-    return vec_or(vec_andc(a_shl, b_mask), vec_and(a_shr, b_mask));
+    return vec_sel(a_shl, a_shr, b_mask);
   #else
     simde_int32x4_private
       r_,
@@ -567,7 +567,7 @@ simde_vshlq_s64 (const simde_int64x2_t a, const simde_int64x2_t b) {
     a_shr = vec_sra(a, vec_min(b_abs, b_max));
     b_mask = vec_cmplt(vec_sl(b, vec_splats(HEDLEY_STATIC_CAST(unsigned long long, 56))),
                        vec_splats(HEDLEY_STATIC_CAST(signed long long, 0)));
-    return vec_or(vec_andc(a_shl, b_mask), vec_and(a_shr, b_mask));
+    return vec_sel(a_shl, a_shr, b_mask);
   #else
     simde_int64x2_private
       r_,
@@ -608,8 +608,7 @@ simde_vshlq_u8 (const simde_uint8x16_t a, const simde_int8x16_t b) {
     vector bool char b_mask;
     b_abs = HEDLEY_REINTERPRET_CAST(vector unsigned char, vec_abs(b));
     b_mask = vec_cmplt(b, vec_splat_s8(0));
-    return vec_and(vec_or(vec_andc(vec_sl(a, b_abs), b_mask),
-                          vec_and (vec_sr(a, b_abs), b_mask)),
+    return vec_and(vec_sel(vec_sl(a, b_abs), vec_sr(a, b_abs), b_mask),
                    vec_cmplt(b_abs, vec_splat_u8(8)));
   #else
     simde_uint8x16_private
@@ -659,8 +658,7 @@ simde_vshlq_u16 (const simde_uint16x8_t a, const simde_int16x8_t b) {
                                             vec_abs(HEDLEY_REINTERPRET_CAST(vector signed char, b))),
                     vec_splats(HEDLEY_STATIC_CAST(unsigned short, 0xFF)));
     b_mask = vec_cmplt(vec_sl(b, vec_splat_u16(8)), vec_splat_s16(0));
-    return vec_and(vec_or(vec_andc(vec_sl(a, b_abs), b_mask),
-                          vec_and (vec_sr(a, b_abs), b_mask)),
+    return vec_and(vec_sel(vec_sl(a, b_abs), vec_sr(a, b_abs), b_mask),
                    vec_cmple(b_abs, vec_splat_u16(15)));
   #else
     simde_uint16x8_private
@@ -702,8 +700,7 @@ simde_vshlq_u32 (const simde_uint32x4_t a, const simde_int32x4_t b) {
                                             vec_abs(HEDLEY_REINTERPRET_CAST(vector signed char, b))),
                     vec_splats(HEDLEY_STATIC_CAST(unsigned int, 0xFF)));
     b_mask = vec_cmplt(vec_sl(b, vec_splats(HEDLEY_STATIC_CAST(unsigned int, 24))), vec_splat_s32(0));
-    return vec_and(vec_or(vec_andc(vec_sl(a, b_abs), b_mask),
-                          vec_and (vec_sr(a, b_abs), b_mask)),
+    return vec_and(vec_sel(vec_sl(a, b_abs), vec_sr(a, b_abs), b_mask),
                    vec_cmplt(b_abs, vec_splats(HEDLEY_STATIC_CAST(unsigned int, 32))));
   #else
     simde_uint32x4_private
@@ -751,8 +748,7 @@ simde_vshlq_u64 (const simde_uint64x2_t a, const simde_int64x2_t b) {
                     vec_splats(HEDLEY_STATIC_CAST(unsigned long long, 0xFF)));
     b_mask = vec_cmplt(vec_sl(b, vec_splats(HEDLEY_STATIC_CAST(unsigned long long, 56))),
                        vec_splats(HEDLEY_STATIC_CAST(signed long long, 0)));
-    return vec_and(vec_or(vec_andc(vec_sl(a, b_abs), b_mask),
-                          vec_and(vec_sr(a, b_abs), b_mask)),
+    return vec_and(vec_sel(vec_sl(a, b_abs), vec_sr(a, b_abs), b_mask),
                    vec_cmplt(b_abs, vec_splats(HEDLEY_STATIC_CAST(unsigned long long, 64))));
   #else
     simde_uint64x2_private
