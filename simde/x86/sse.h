@@ -2551,13 +2551,17 @@ simde_mm_min_ps (simde__m128 a, simde__m128 b) {
     return _mm_min_ps(a, b);
   #elif defined(SIMDE_FAST_NANS) && defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return simde__m128_from_neon_f32(vminq_f32(simde__m128_to_neon_f32(a), simde__m128_to_neon_f32(b)));
-  #elif defined(SIMDE_FAST_NANS) && defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+  #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
     simde__m128_private
       r_,
       a_ = simde__m128_to_private(a),
       b_ = simde__m128_to_private(b);
 
-    r_.altivec_f32 = vec_min(a_.altivec_f32, b_.altivec_f32);
+    #if defined(SIMDE_FAST_NANS)
+      r_.altivec_f32 = vec_min(a_.altivec_f32, b_.altivec_f32);
+    #else
+      r_.altivec_f32 = vec_sel(b_.altivec_f32, a_.altivec_f32, vec_cmpgt(b_.altivec_f32, a_.altivec_f32));
+    #endif
 
     return simde__m128_from_private(r_);
   #elif defined(SIMDE_ASSUME_VECTORIZATION)

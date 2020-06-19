@@ -329,15 +329,13 @@ simde_mm_shuffle_epi8 (simde__m128i a, simde__m128i b) {
 
       r_.neon_i8 = vcombine_s8(l, h);
     #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
-      /* If the most significant bit in b is set, we need to return
-       * 0; this is 0 if MSB is set, ~0 otherwise. */
-      SIMDE_POWER_ALTIVEC_VECTOR(unsigned char) msb_mask =
-        HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned char), vec_cmplt(b_.altivec_u8, vec_splats(HEDLEY_STATIC_CAST(unsigned char, 128))));
-      /* Mask off all but the 4 least significant bits of b. */
-      SIMDE_POWER_ALTIVEC_VECTOR(unsigned char) b_ls4b =
-        HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned char), vec_and(b_.altivec_u8, vec_splats(HEDLEY_STATIC_CAST(unsigned char, 15))));
-      SIMDE_POWER_ALTIVEC_VECTOR(unsigned char) res = vec_perm(a_.altivec_u8, a_.altivec_u8, b_ls4b);
-      r_.altivec_u8 = vec_and(res, msb_mask);
+      /* This is a bit ugly because of the casts and the awful type
+      * macros (SIMDE_POWER_ALTIVEC_VECTOR), but it's really just
+       * vec_sel(vec_perm(a, a, b), 0, vec_cmplt(b, 0)) */
+      SIMDE_POWER_ALTIVEC_VECTOR(signed char) z = { 0, };
+      SIMDE_POWER_ALTIVEC_VECTOR(signed char) msb_mask = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(signed char), vec_cmplt(b_.altivec_i8, z));
+      SIMDE_POWER_ALTIVEC_VECTOR(signed char) c = vec_perm(a_.altivec_i8, a_.altivec_i8, HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned char), b_.altivec_i8));
+      r_.altivec_i8 = vec_sel(c, z, HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned char), msb_mask));
     #else
       for (size_t i = 0 ; i < (sizeof(r_.i8) / sizeof(r_.i8[0])) ; i++) {
         r_.i8[i] = a_.i8[b_.i8[i] & 15] & (~(b_.i8[i]) >> 7);

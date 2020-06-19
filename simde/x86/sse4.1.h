@@ -1509,6 +1509,10 @@ simde_mm_mullo_epi32 (simde__m128i a, simde__m128i b) {
 
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     r_.neon_i32 = vmulq_s32(a_.neon_i32, b_.neon_i32);
+  #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+    (void) a_;
+    (void) b_;
+    r_.altivec_i32 = vec_mul(a_.altivec_i32, b_.altivec_i32);
   #else
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {
