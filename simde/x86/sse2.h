@@ -951,7 +951,7 @@ simde_mm_bslli_si128 (simde__m128i a, const int imm8)
   #define simde_mm_bslli_si128(a, imm8) \
     (__extension__ ({ \
       SIMDE_POWER_ALTIVEC_VECTOR(unsigned char) simde_mm_bslli_si128_z_ = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }; \
-      simde__m128i_from_altivec_u8((imm8 < 16) ? vec_sld(simde__m128i_to_altivec_u8(a), simde_mm_bslli_si128_z_, imm8) : simde_mm_bslli_si128_z_); \
+      simde__m128i_from_altivec_u8((imm8 < 16) ? vec_sld(simde__m128i_to_altivec_u8(a), simde_mm_bslli_si128_z_, imm8 & 15) : simde_mm_bslli_si128_z_); \
     }))
 #elif defined(SIMDE_SHUFFLE_VECTOR_)
   #define simde_mm_bslli_si128(a, imm8) (__extension__ ({ \
