@@ -40,6 +40,7 @@
 #include "neon/get_lane.h"
 #include "neon/get_low.h"
 #include "neon/ld1.h"
+#include "neon/max.h"
 #include "neon/min.h"
 #include "neon/mla.h"
 #include "neon/mul.h"
