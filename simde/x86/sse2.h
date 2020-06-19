@@ -322,6 +322,27 @@ simde__m128d_to_private(simde__m128d v) {
   #if defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
     SIMDE_X86_GENERATE_CONVERSION_FUNCTION(m128d, SIMDE_POWER_ALTIVEC_VECTOR(signed long long), altivec, i64)
   #endif
+
+  #if defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
+    #if defined(SIMDE_BUG_GCC_95782)
+      SIMDE_FUNCTION_ATTRIBUTES
+      SIMDE_POWER_ALTIVEC_VECTOR(double)
+      simde__m128d_to_altivec_f64(simde__m128d value) {
+        simde__m128d_private r_ = simde__m128d_to_private(value);
+        return r_.altivec_f64;
+      }
+
+      SIMDE_FUNCTION_ATTRIBUTES
+      simde__m128d
+      simde__m128d_from_altivec_f64(SIMDE_POWER_ALTIVEC_VECTOR(double) value) {
+        simde__m128d_private r_;
+        r_.altivec_f64 = value;
+        return simde__m128d_from_private(r_);
+      }
+    #else
+      SIMDE_X86_GENERATE_CONVERSION_FUNCTION(m128d, SIMDE_POWER_ALTIVEC_VECTOR(double), altivec, f64)
+    #endif
+  #endif
 #endif /* defined(SIMDE_ARM_NEON_A32V7_NATIVE) */
 
 SIMDE_FUNCTION_ATTRIBUTES

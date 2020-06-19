@@ -167,6 +167,36 @@ simde__m128_to_private(simde__m128 v) {
   #endif
 #endif /* defined(SIMDE_ARM_NEON_A32V7_NATIVE) */
 
+#if defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+  SIMDE_X86_GENERATE_CONVERSION_FUNCTION(m128, SIMDE_POWER_ALTIVEC_VECTOR(signed char), altivec, i8)
+  SIMDE_X86_GENERATE_CONVERSION_FUNCTION(m128, SIMDE_POWER_ALTIVEC_VECTOR(signed short), altivec, i16)
+  SIMDE_X86_GENERATE_CONVERSION_FUNCTION(m128, SIMDE_POWER_ALTIVEC_VECTOR(signed int), altivec, i32)
+  SIMDE_X86_GENERATE_CONVERSION_FUNCTION(m128, SIMDE_POWER_ALTIVEC_VECTOR(signed long long), altivec, i64)
+  SIMDE_X86_GENERATE_CONVERSION_FUNCTION(m128, SIMDE_POWER_ALTIVEC_VECTOR(unsigned char), altivec, u8)
+  SIMDE_X86_GENERATE_CONVERSION_FUNCTION(m128, SIMDE_POWER_ALTIVEC_VECTOR(unsigned short), altivec, u16)
+  SIMDE_X86_GENERATE_CONVERSION_FUNCTION(m128, SIMDE_POWER_ALTIVEC_VECTOR(unsigned int), altivec, u32)
+  SIMDE_X86_GENERATE_CONVERSION_FUNCTION(m128, SIMDE_POWER_ALTIVEC_VECTOR(unsigned long long), altivec, u64)
+
+  #if defined(SIMDE_BUG_GCC_95782)
+    SIMDE_FUNCTION_ATTRIBUTES
+    SIMDE_POWER_ALTIVEC_VECTOR(float)
+    simde__m128_to_altivec_f32(simde__m128 value) {
+      simde__m128_private r_ = simde__m128_to_private(value);
+      return r_.altivec_f32;
+    }
+
+    SIMDE_FUNCTION_ATTRIBUTES
+    simde__m128
+    simde__m128_from_altivec_f32(SIMDE_POWER_ALTIVEC_VECTOR(float) value) {
+      simde__m128_private r_;
+      r_.altivec_f32 = value;
+      return simde__m128_from_private(r_);
+    }
+  #else
+    SIMDE_X86_GENERATE_CONVERSION_FUNCTION(m128, SIMDE_POWER_ALTIVEC_VECTOR(float), altivec, f32)
+  #endif
+#endif /* defined(SIMDE_POWER_ALTIVEC_P5_NATIVE) */
+
 enum {
 #if defined(SIMDE_X86_SSE_NATIVE)
   SIMDE_MM_ROUND_NEAREST     = _MM_ROUND_NEAREST,

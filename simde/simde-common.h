@@ -803,9 +803,9 @@ typedef SIMDE_FLOAT64_TYPE simde_float64;
 #    if defined(SIMDE_ARCH_ARM)
 #      define SIMDE_BUG_GCC_95399
 #      define SIMDE_BUG_GCC_95471
-#    endif
-#    if defined(SIMDE_ARCH_POWER)
+#    elif defined(SIMDE_ARCH_POWER)
 #      define SIMDE_BUG_GCC_95227
+#      define SIMDE_BUG_GCC_95782
 #    endif
 #    define SIMDE_BUG_GCC_95399
 #  elif defined(__clang__)

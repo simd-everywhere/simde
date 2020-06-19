@@ -72,6 +72,21 @@ simde_mm_blend_epi16 (simde__m128i a, simde__m128i b, const int imm8)
            uint16x8_t _mask_vec = vld1q_u16(_mask);  \
            simde__m128i_from_neon_u16(vbslq_u16(_mask_vec, simde__m128i_to_neon_u16(b), simde__m128i_to_neon_u16(a))); \
        }))
+#elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+#  define simde_mm_blend_epi16(a, b, imm8)      \
+     (__extension__ ({ \
+           const vector unsigned short _mask = {      \
+               ((imm8) & (1 << 0)) ? 0xFFFF : 0x0000, \
+               ((imm8) & (1 << 1)) ? 0xFFFF : 0x0000, \
+               ((imm8) & (1 << 2)) ? 0xFFFF : 0x0000, \
+               ((imm8) & (1 << 3)) ? 0xFFFF : 0x0000, \
+               ((imm8) & (1 << 4)) ? 0xFFFF : 0x0000, \
+               ((imm8) & (1 << 5)) ? 0xFFFF : 0x0000, \
+               ((imm8) & (1 << 6)) ? 0xFFFF : 0x0000, \
+               ((imm8) & (1 << 7)) ? 0xFFFF : 0x0000  \
+           };                                         \
+           simde__m128i_from_altivec_u16(vec_sel(simde__m128i_to_altivec_u16(a), simde__m128i_to_altivec_u16(b), _mask)); \
+       }))
 #endif
 #if defined(SIMDE_X86_SSE4_1_ENABLE_NATIVE_ALIASES)
 #  define _mm_blend_epi16(a, b, imm8) simde_mm_blend_epi16(a, b, imm8)
@@ -94,6 +109,25 @@ simde_mm_blend_pd (simde__m128d a, simde__m128d b, const int imm8)
 }
 #if defined(SIMDE_X86_SSE4_1_NATIVE)
 #  define simde_mm_blend_pd(a, b, imm8) _mm_blend_pd(a, b, imm8)
+#elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+#  define simde_mm_blend_pd(a, b, imm8) \
+     (__extension__ ({ \
+           const uint64_t _mask[2] = {               \
+               ((imm8) & (1 << 0)) ? UINT64_MAX : 0, \
+               ((imm8) & (1 << 1)) ? UINT64_MAX : 0  \
+           };                                        \
+           uint64x2_t _mask_vec = vld1q_u64(_mask);  \
+           simde__m128d_from_neon_f64(vbslq_f64(_mask_vec, simde__m128d_to_neon_f64(b), simde__m128d_to_neon_f64(a))); \
+       }))
+#elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
+#  define simde_mm_blend_pd(a, b, imm8)         \
+     (__extension__ ({ \
+           const vector unsigned long long _mask = { \
+               ((imm8) & (1 << 0)) ? UINT64_MAX : 0, \
+               ((imm8) & (1 << 1)) ? UINT64_MAX : 0  \
+           };                                        \
+           simde__m128d_from_altivec_f64(vec_sel(simde__m128d_to_altivec_f64(a), simde__m128d_to_altivec_f64(b), _mask)); \
+       }))
 #endif
 #if defined(SIMDE_X86_SSE4_1_ENABLE_NATIVE_ALIASES)
 #  define _mm_blend_pd(a, b, imm8) simde_mm_blend_pd(a, b, imm8)
@@ -116,6 +150,29 @@ simde_mm_blend_ps (simde__m128 a, simde__m128 b, const int imm8)
 }
 #if defined(SIMDE_X86_SSE4_1_NATIVE)
 #  define simde_mm_blend_ps(a, b, imm8) _mm_blend_ps(a, b, imm8)
+#elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+#  define simde_mm_blend_ps(a, b, imm8) \
+     (__extension__ ({ \
+           const uint32_t _mask[4] = {               \
+               ((imm8) & (1 << 0)) ? UINT32_MAX : 0, \
+               ((imm8) & (1 << 1)) ? UINT32_MAX : 0, \
+               ((imm8) & (1 << 2)) ? UINT32_MAX : 0, \
+               ((imm8) & (1 << 3)) ? UINT32_MAX : 0  \
+           };                                        \
+           uint32x4_t _mask_vec = vld1q_u32(_mask);  \
+           simde__m128_from_neon_f32(vbslq_f32(_mask_vec, simde__m128_to_neon_f32(b), simde__m128_to_neon_f32(a))); \
+       }))
+#elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
+#  define simde_mm_blend_ps(a, b, imm8) \
+     (__extension__ ({ \
+           const vector unsigned int _mask = {       \
+               ((imm8) & (1 << 0)) ? UINT32_MAX : 0, \
+               ((imm8) & (1 << 1)) ? UINT32_MAX : 0, \
+               ((imm8) & (1 << 2)) ? UINT32_MAX : 0, \
+               ((imm8) & (1 << 3)) ? UINT32_MAX : 0  \
+           };                                        \
+           simde__m128_from_altivec_f32(vec_sel(simde__m128_to_altivec_f32(a), simde__m128_to_altivec_f32(b), _mask)); \
+       }))
 #endif
 #if defined(SIMDE_X86_SSE4_1_ENABLE_NATIVE_ALIASES)
 #  define _mm_blend_ps(a, b, imm8) simde_mm_blend_ps(a, b, imm8)
@@ -137,6 +194,8 @@ simde_mm_blendv_epi8 (simde__m128i a, simde__m128i b, simde__m128i mask) {
     // Use a signed shift right to create a mask with the sign bit
     mask_.neon_i8 = vshrq_n_s8(mask_.neon_i8, 7);
     r_.neon_i8 = vbslq_s8(mask_.neon_u8, b_.neon_i8, a_.neon_i8);
+  #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+    r_.altivec_i8 = vec_sel(a_.altivec_i8, b_.altivec_i8, vec_cmplt(mask_.altivec_i8, vec_splat_s8(0)));
   #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
     /* https://software.intel.com/en-us/forums/intel-c-compiler/topic/850087 */
     #if defined(HEDLEY_INTEL_VERSION_CHECK)
@@ -178,6 +237,8 @@ simde_x_mm_blendv_epi16 (simde__m128i a, simde__m128i b, simde__m128i mask) {
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   mask_ = simde__m128i_to_private(simde_mm_cmplt_epi16(mask, simde_mm_setzero_si128()));
   r_.neon_i16 = vbslq_s16(mask_.neon_u16, b_.neon_i16, a_.neon_i16);
+#elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+  r_.altivec_i16 = vec_sel(a_.altivec_i16, b_.altivec_i16, vec_cmplt(mask_.altivec_i16, vec_splat_s16(0)));
 #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
   #if defined(HEDLEY_INTEL_VERSION_CHECK)
     __typeof__(mask_.i16) z = { 0, 0, 0, 0, 0, 0, 0, 0 };
@@ -214,6 +275,8 @@ simde_x_mm_blendv_epi32 (simde__m128i a, simde__m128i b, simde__m128i mask) {
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   mask_ = simde__m128i_to_private(simde_mm_cmplt_epi32(mask, simde_mm_setzero_si128()));
   r_.neon_i32 = vbslq_s32(mask_.neon_u32, b_.neon_i32, a_.neon_i32);
+#elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+  r_.altivec_i32 = vec_sel(a_.altivec_i32, b_.altivec_i32, vec_cmplt(mask_.altivec_i32, vec_splat_s32(0)));
 #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
   #if defined(HEDLEY_INTEL_VERSION_CHECK)
     __typeof__(mask_.i32) z = { 0, 0, 0, 0 };
@@ -250,6 +313,9 @@ simde_x_mm_blendv_epi64 (simde__m128i a, simde__m128i b, simde__m128i mask) {
 #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
   mask_.u64 = vcltq_s64(mask_.i64, vdupq_n_s64(UINT64_C(0)));
   r_.neon_i64 = vbslq_s64(mask_.neon_u64, b_.neon_i64, a_.neon_i64);
+#elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+  r_.altivec_i64 = vec_sel(a_.altivec_i64, b_.altivec_i64,
+                           vec_cmplt(mask_.altivec_i64, vec_splats(HEDLEY_STATIC_CAST(signed long long, 0))));
 #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
   #if defined(HEDLEY_INTEL_VERSION_CHECK)
     __typeof__(mask_.i64) z = { 0, 0 };
@@ -313,7 +379,7 @@ simde_mm_round_pd (simde__m128d a, int rounding)
 
   switch (rounding & ~SIMDE_MM_FROUND_NO_EXC) {
     case SIMDE_MM_FROUND_CUR_DIRECTION:
-      #if defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+      #if defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
         r_.altivec_f64 = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(double), vec_round(a_.altivec_f64));
       #elif defined(SIMDE_ARM_NEON_A64V8_NATIVE) && 0
         r_.neon_f64 = vrndiq_f64(a_.neon_f64);
@@ -328,7 +394,7 @@ simde_mm_round_pd (simde__m128d a, int rounding)
       break;
 
     case SIMDE_MM_FROUND_TO_NEAREST_INT:
-      #if defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+      #if defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
         r_.altivec_f64 = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(double), vec_round(a_.altivec_f64));
       #elif defined(SIMDE_ARM_NEON_A64V8_NATIVE) && 0
         r_.neon_f64 = vrndaq_f64(a_.neon_f64);
@@ -343,7 +409,7 @@ simde_mm_round_pd (simde__m128d a, int rounding)
       break;
 
     case SIMDE_MM_FROUND_TO_NEG_INF:
-      #if defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+      #if defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
         r_.altivec_f64 = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(double), vec_floor(a_.altivec_f64));
       #elif defined(SIMDE_ARM_NEON_A64V8_NATIVE) && 0
         r_.neon_f64 = vrndmq_f64(a_.neon_f64);
@@ -356,7 +422,7 @@ simde_mm_round_pd (simde__m128d a, int rounding)
       break;
 
     case SIMDE_MM_FROUND_TO_POS_INF:
-      #if defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+      #if defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
         r_.altivec_f64 = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(double), vec_ceil(a_.altivec_f64));
       #elif defined(SIMDE_ARM_NEON_A64V8_NATIVE) && 0
         r_.neon_f64 = vrndpq_f64(a_.neon_f64);
@@ -371,7 +437,7 @@ simde_mm_round_pd (simde__m128d a, int rounding)
       break;
 
     case SIMDE_MM_FROUND_TO_ZERO:
-      #if defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+      #if defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
         r_.altivec_f64 = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(double), vec_trunc(a_.altivec_f64));
       #elif defined(SIMDE_ARM_NEON_A64V8_NATIVE) && 0
         r_.neon_f64 = vrndq_f64(a_.neon_f64);
