@@ -117,6 +117,27 @@ SIMDE_ARM_NEON_TYPE_FLOAT_DEFINE_(64, 2, 16)
 
   typedef   float32_t   simde_float32_t;
 
+  typedef    int8x8x2_t    simde_int8x8x2_t;
+  typedef   int16x4x2_t   simde_int16x4x2_t;
+  typedef   int32x2x2_t   simde_int32x2x2_t;
+  typedef   int64x1x2_t   simde_int64x1x2_t;
+  typedef   uint8x8x2_t   simde_uint8x8x2_t;
+  typedef  uint16x4x2_t  simde_uint16x4x2_t;
+  typedef  uint32x2x2_t  simde_uint32x2x2_t;
+  typedef  uint64x1x2_t  simde_uint64x1x2_t;
+  typedef float32x2x2_t simde_float32x2x2_t;
+  
+  typedef   int8x16x2_t   simde_int8x16x2_t;
+  typedef   int16x8x2_t   simde_int16x8x2_t;
+  typedef   int32x4x2_t   simde_int32x4x2_t;
+  typedef   int64x2x2_t   simde_int64x2x2_t;
+  typedef  uint8x16x2_t  simde_uint8x16x2_t;
+  typedef  uint16x8x2_t  simde_uint16x8x2_t;
+  typedef  uint32x4x2_t  simde_uint32x4x2_t;
+  typedef  uint64x2x2_t  simde_uint64x2x2_t;
+  typedef float32x4x2_t simde_float32x4x2_t;
+  typedef   float32x2_t   simde_float32x2_t;
+
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     typedef float64x1_t simde_float64x1_t;
     typedef float64x2_t simde_float64x2_t;
