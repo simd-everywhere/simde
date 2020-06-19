@@ -3129,6 +3129,19 @@ simde_mm256_srlv_epi64 (simde__m256i a, simde__m256i b) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m256i
+simde_mm256_stream_load_si256 (const simde__m256i* mem_addr) {
+#if defined(SIMDE_X86_AVX2_NATIVE)
+  return _mm256_stream_load_si256(HEDLEY_CONST_CAST(simde__m256i*, mem_addr));
+#else
+  return *mem_addr;
+#endif
+}
+#if defined(SIMDE_X86_AVX2_ENABLE_NATIVE_ALIASES)
+#  define _mm256_stream_load_si256(mem_addr) simde_mm256_stream_load_si256(mem_addr)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256i
 simde_mm256_sub_epi8 (simde__m256i a, simde__m256i b) {
 #if defined(SIMDE_X86_AVX2_NATIVE)
   return _mm256_sub_epi8(a, b);
