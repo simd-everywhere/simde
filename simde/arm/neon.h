@@ -47,6 +47,7 @@
 #include "neon/mull.h"
 #include "neon/orr.h"
 #include "neon/padd.h"
+#include "neon/pmax.h"
 #include "neon/pmin.h"
 #include "neon/reinterpret.h"
 #include "neon/shl.h"
