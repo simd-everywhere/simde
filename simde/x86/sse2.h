@@ -214,10 +214,10 @@ typedef union {
    typedef v128_t simde__m128i;
    typedef v128_t simde__m128d;
 #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
-   typedef SIMDE_POWER_ALTIVEC_VECTOR(float) simde__m128i;
+   typedef SIMDE_POWER_ALTIVEC_VECTOR(signed long long) simde__m128i;
    typedef SIMDE_POWER_ALTIVEC_VECTOR(double) simde__m128d;
 #elif defined(SIMDE_VECTOR_SUBSCRIPT)
-  typedef int_fast32_t simde__m128i SIMDE_ALIGN(16) SIMDE_VECTOR(16) SIMDE_MAY_ALIAS;
+  typedef int64_t simde__m128i SIMDE_ALIGN(16) SIMDE_VECTOR(16) SIMDE_MAY_ALIAS;
   typedef simde_float64 simde__m128d SIMDE_ALIGN(16) SIMDE_VECTOR(16) SIMDE_MAY_ALIAS;
 #else
   typedef simde__m128i_private simde__m128i;
@@ -1270,7 +1270,7 @@ simde_mm_castsi128_ps (simde__m128i a) {
 #if defined(SIMDE_X86_SSE2_NATIVE)
   return _mm_castsi128_ps(a);
 #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
-  return a;
+  return HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(float), a);
 #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   return simde__m128_from_neon_i32(simde__m128i_to_private(a).neon_i32);
 #else
