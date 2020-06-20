@@ -370,7 +370,7 @@ simde_vsubq_f64(simde_float64x2_t a, simde_float64x2_t b) {
     return vsubq_f64(a, b);
   #elif defined(SIMDE_X86_SSE2_NATIVE)
     return _mm_sub_pd(a, b);
-  #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+  #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
     return vec_sub(a, b);
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_f64x2_sub(a, b);
@@ -506,7 +506,7 @@ simde_vsubq_s64(simde_int64x2_t a, simde_int64x2_t b) {
     return vsubq_s64(a, b);
   #elif defined(SIMDE_X86_SSE2_NATIVE)
     return _mm_sub_epi64(a, b);
-  #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+  #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
     return vec_sub(a, b);
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_i64x2_sub(a, b);
@@ -628,7 +628,7 @@ simde_uint64x2_t
 simde_vsubq_u64(simde_uint64x2_t a, simde_uint64x2_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vsubq_u64(a, b);
-  #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+  #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
     return vec_sub(a, b);
   #else
     simde_uint64x2_private

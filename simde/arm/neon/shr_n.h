@@ -429,7 +429,7 @@ simde_vshrq_n_s64 (const simde_int64x2_t a, const int n)
 }
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vshrq_n_s64(a, n) vshrq_n_s64((a), (n))
-#elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+#elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
   #define simde_vshrq_n_s64(a, n) \
     vec_sra((a), vec_splats(HEDLEY_STATIC_CAST(unsigned long long, ((n) == 64) ? 63 : (n))))
 #endif
@@ -589,7 +589,7 @@ simde_vshrq_n_u64 (const simde_uint64x2_t a, const int n)
 }
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vshrq_n_u64(a, n) vshrq_n_u64((a), (n))
-#elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+#elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
   #define simde_vshrq_n_u64(a, n) \
     (((n) == 64) ? vec_splats(HEDLEY_STATIC_CAST(unsigned long long, 0)) : vec_sr((a), vec_splats(HEDLEY_STATIC_CAST(unsigned long long, (n)))))
 #endif

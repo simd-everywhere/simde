@@ -177,7 +177,9 @@ simde__m128_to_private(simde__m128 v) {
   SIMDE_X86_GENERATE_CONVERSION_FUNCTION(m128, vector unsigned int, altivec, u32)
   SIMDE_X86_GENERATE_CONVERSION_FUNCTION(m128, vector unsigned long long, altivec, u64)
   SIMDE_X86_GENERATE_CONVERSION_FUNCTION(m128, vector float, altivec, f32)
-  SIMDE_X86_GENERATE_CONVERSION_FUNCTION(m128, vector double, altivec, f64)
+  #if defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
+    SIMDE_X86_GENERATE_CONVERSION_FUNCTION(m128, vector double, altivec, f64)
+  #endif
 #endif /* defined(SIMDE_POWER_ALTIVEC_P5_NATIVE) */
 
 enum {

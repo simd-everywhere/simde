@@ -42,7 +42,7 @@ simde__m128d
 simde_mm_fmadd_pd (simde__m128d a, simde__m128d b, simde__m128d c) {
   #if defined(SIMDE_X86_FMA_NATIVE)
     return _mm_fmadd_pd(a, b, c);
-  #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+  #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
     simde__m128d_private
       a_ = simde__m128d_to_private(a),
       b_ = simde__m128d_to_private(b),

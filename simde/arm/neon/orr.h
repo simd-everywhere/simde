@@ -383,7 +383,7 @@ simde_vorrq_s64(simde_int64x2_t a, simde_int64x2_t b) {
     return vorrq_s64(a, b);
   #elif defined(SIMDE_X86_SSE2_NATIVE)
     return _mm_or_si128(a, b);
-  #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+  #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
     return vec_or(a, b);
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_v128_or(a, b);
@@ -519,7 +519,7 @@ simde_vorrq_u64(simde_uint64x2_t a, simde_uint64x2_t b) {
     return vorrq_u64(a, b);
   #elif defined(SIMDE_X86_SSE2_NATIVE)
     return _mm_or_si128(a, b);
-  #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+  #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
     return vec_or(a, b);
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_v128_or(a, b);

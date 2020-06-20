@@ -555,7 +555,7 @@ simde_vshlq_s64 (const simde_int64x2_t a, const simde_int64x2_t b) {
     return _mm_blendv_epi8(_mm_sllv_epi64(a, b_abs),
                            _mm_xor_si128(_mm_srlv_epi64(_mm_xor_si128(a, maska), b_abs), maska),
                            _mm_cmpgt_epi64(zero, _mm_slli_epi64(b, 56)));
-  #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+  #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
     vector signed long long a_shl, a_shr;
     vector unsigned long long b_abs, b_max;
     vector bool long long b_mask;
@@ -740,7 +740,7 @@ simde_vshlq_u64 (const simde_uint64x2_t a, const simde_int64x2_t b) {
     return _mm_blendv_epi8(_mm_sllv_epi64(a, b_abs),
                            _mm_srlv_epi64(a, b_abs),
                            _mm_cmpgt_epi64(_mm_setzero_si128(), _mm_slli_epi64(b, 56)));
-  #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+  #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
     vector unsigned long long b_abs;
     vector bool long long b_mask;
     b_abs = vec_and(HEDLEY_REINTERPRET_CAST(vector unsigned long long,

@@ -293,7 +293,7 @@ simde_vdupq_n_f64(double value) {
     return _mm_set1_pd(value);
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_f64x2_splat(value);
-  #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+  #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
     (void) value;
     return vec_splats(value);
   #else
@@ -402,7 +402,7 @@ simde_vdupq_n_s64(int64_t value) {
     return _mm_set1_epi64x(value);
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_i64x2_splat(value);
-  #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+  #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
     return vec_splats(HEDLEY_STATIC_CAST(signed long long, value));
   #else
     simde_int64x2_private r_;
@@ -510,7 +510,7 @@ simde_vdupq_n_u64(uint64_t value) {
     return _mm_set1_epi64x(HEDLEY_STATIC_CAST(int64_t, value));
   #elif defined (SIMDE_WASM_SIMD128_NATIVE)
     return wasm_i64x2_splat(HEDLEY_STATIC_CAST(int64_t, value));
-  #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+  #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
     return vec_splats(HEDLEY_STATIC_CAST(unsigned long long, value));
   #else
     simde_uint64x2_private r_;

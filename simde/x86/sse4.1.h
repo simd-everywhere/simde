@@ -313,7 +313,7 @@ simde_x_mm_blendv_epi64 (simde__m128i a, simde__m128i b, simde__m128i mask) {
 #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
   mask_.u64 = vcltq_s64(mask_.i64, vdupq_n_s64(UINT64_C(0)));
   r_.neon_i64 = vbslq_s64(mask_.neon_u64, b_.neon_i64, a_.neon_i64);
-#elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+#elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
   r_.altivec_i64 = vec_sel(a_.altivec_i64, b_.altivec_i64,
                            vec_cmplt(mask_.altivec_i64, vec_splats(HEDLEY_STATIC_CAST(signed long long, 0))));
 #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
@@ -1042,7 +1042,7 @@ simde_mm_extract_epi64 (simde__m128i a, const int imm8)
   simde__m128i_private
     a_ = simde__m128i_to_private(a);
 
-  #if defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+  #if defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
     #if defined(SIMDE_BUG_GCC_95227)
       (void) a_;
       (void) imm8;
@@ -1056,7 +1056,7 @@ simde_mm_extract_epi64 (simde__m128i a, const int imm8)
 #  define simde_mm_extract_epi64(a, imm8) _mm_extract_epi64(a, imm8)
 #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
 #  define simde_mm_extract_epi64(a, imm8) vgetq_lane_s64(simde__m128i_to_private(a).neon_i64, imm8)
-#elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+#elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
 #  define simde_mm_extract_epi64(a, imm8) HEDLEY_STATIC_CAST(int64_t, vec_extract(simde__m128i_to_private(a).altivec_i64, imm8))
 #endif
 #if defined(SIMDE_X86_SSE4_1_ENABLE_NATIVE_ALIASES)
