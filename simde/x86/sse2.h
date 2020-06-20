@@ -214,8 +214,12 @@ typedef union {
    typedef v128_t simde__m128i;
    typedef v128_t simde__m128d;
 #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
-   typedef SIMDE_POWER_ALTIVEC_VECTOR(signed long long) simde__m128i;
-   typedef SIMDE_POWER_ALTIVEC_VECTOR(double) simde__m128d;
+  typedef SIMDE_POWER_ALTIVEC_VECTOR(float) simde__m128i;
+  #if defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
+     typedef SIMDE_POWER_ALTIVEC_VECTOR(double) simde__m128d;
+  #else
+     typedef simde__m128d_private simde__m128d;
+  #endif
 #elif defined(SIMDE_VECTOR_SUBSCRIPT)
   typedef int64_t simde__m128i SIMDE_ALIGN(16) SIMDE_VECTOR(16) SIMDE_MAY_ALIAS;
   typedef simde_float64 simde__m128d SIMDE_ALIGN(16) SIMDE_VECTOR(16) SIMDE_MAY_ALIAS;
@@ -451,7 +455,7 @@ simde_mm_add_epi64 (simde__m128i a, simde__m128i b) {
 
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     r_.neon_i64 = vaddq_s64(a_.neon_i64, b_.neon_i64);
-  #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+  #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
     r_.altivec_i64 = vec_add(a_.altivec_i64, b_.altivec_i64);
   #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
     r_.i64 = a_.i64 + b_.i64;
@@ -484,7 +488,7 @@ simde_mm_add_pd (simde__m128d a, simde__m128d b) {
   r_.neon_f64 = vaddq_f64(a_.neon_f64, b_.neon_f64);
 #elif defined(SIMDE_WASM_SIMD128_NATIVE)
   r_.wasm_v128 = wasm_f64x2_add(a_.wasm_v128, b_.wasm_v128);
-#elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+#elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
   r_.altivec_f64 = vec_add(a_.altivec_f64, b_.altivec_f64);
 #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
   r_.f64 = a_.f64 + b_.f64;
@@ -515,7 +519,7 @@ simde_mm_move_sd (simde__m128d a, simde__m128d b) {
 
 #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
   r_.neon_f64 = vsetq_lane_f64(vgetq_lane_f64(b_.neon_f64, 0), a_.neon_f64, 0);
-#elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+#elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
   SIMDE_POWER_ALTIVEC_VECTOR(unsigned char) m = {
     16, 17, 18, 19, 20, 21, 22, 23,
      8,  9, 10, 11, 12, 13, 14, 15
@@ -725,7 +729,7 @@ simde_mm_and_pd (simde__m128d a, simde__m128d b) {
   r_.neon_i32 = vandq_s32(a_.neon_i32, b_.neon_i32);
 #elif defined(SIMDE_WASM_SIMD128_NATIVE)
   r_.wasm_v128 = wasm_v128_and(a_.wasm_v128, b_.wasm_v128);
-#elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+#elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
   r_.altivec_f64 = vec_and(a_.altivec_f64, b_.altivec_f64);
 #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
   r_.i32f = a_.i32f & b_.i32f;
@@ -1418,7 +1422,7 @@ simde_mm_cmpeq_pd (simde__m128d a, simde__m128d b) {
     r_.neon_u64 = vceqq_s64(b_.neon_i64, a_.neon_i64);
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
     r_.wasm_v128 = wasm_f64x2_eq(a_.wasm_v128, b_.wasm_v128);
-  #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+  #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
     r_.altivec_f64 = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(double), vec_cmpeq(a_.altivec_f64, b_.altivec_f64));
   #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
     r_.i64 = HEDLEY_STATIC_CAST(__typeof__(r_.i64), (a_.f64 == b_.f64));
@@ -2442,7 +2446,7 @@ simde_mm_cvtsi128_si64 (simde__m128i a) {
   #endif
 #else
   simde__m128i_private a_ = simde__m128i_to_private(a);
-#if defined(SIMDE_POWER_ALTIVEC_P5_NATIVE) && !defined(HEDLEY_IBM_VERSION)
+#if defined(SIMDE_POWER_ALTIVEC_P7_NATIVE) && !defined(HEDLEY_IBM_VERSION)
   return vec_extract(HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(signed long long), a_.i64), 0);
 #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   return vgetq_lane_s64(a_.neon_i64, 0);
@@ -3465,7 +3469,7 @@ simde_mm_max_pd (simde__m128d a, simde__m128d b) {
       a_ = simde__m128d_to_private(a),
       b_ = simde__m128d_to_private(b);
 
-    #if defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+    #if defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
       r_.altivec_f64 = vec_max(a_.altivec_f64, b_.altivec_f64);
     #else
       SIMDE_VECTORIZE
@@ -5499,7 +5503,7 @@ simde_mm_storel_epi64 (simde__m128i* mem_addr, simde__m128i a) {
 
     #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       tmp = vgetq_lane_s64(a_.neon_i64, 0);
-    #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+    #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
       #if defined(SIMDE_BUG_GCC_95227)
         (void) a_;
       #endif

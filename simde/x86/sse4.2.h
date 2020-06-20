@@ -168,7 +168,7 @@ simde_mm_cmpgt_epi64 (simde__m128i a, simde__m128i b) {
     // a_hi > b_hi || (a_lo > b_lo && a_hi == b_hi)
     int64x2_t ret = vorrq_s64(gt_hi, vandq_s64(gt_lo, eq_hi));
     r_.neon_i64 = ret;
-  #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+  #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
     r_.altivec_u64 = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned long long), vec_cmpgt(a_.altivec_i64, b_.altivec_i64));
   #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
     r_.i64 = HEDLEY_STATIC_CAST(__typeof__(r_.i64), a_.i64 > b_.i64);
