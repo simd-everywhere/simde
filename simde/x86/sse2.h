@@ -5081,7 +5081,7 @@ simde_mm_slli_epi16 (simde__m128i a, const int imm8)
         if ((imm8) <= 0) {                                         \
             ret = a;                                               \
         } else if ((imm8) > 15) {                                  \
-            ret = simde__m128i_from_neon_i32(vdupq_n_s32(0));      \
+            ret = simde_mm_setzero_si128();      \
         } else {                                                   \
             ret = simde__m128i_from_neon_i16(                      \
                 vshlq_n_s16(simde__m128i_to_neon_i16(a), (imm8))); \
@@ -5126,17 +5126,17 @@ simde_mm_slli_epi32 (simde__m128i a, const int imm8)
 // The above is allowed by gcc/g++ 9 with -march=armv8-a, might work on A32V8 and elsewhere but needs testing
 #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE) && !defined(__clang__) // clang can't handle the potential out of range use of imm8 even though that is handled
 #  define simde_mm_slli_epi32(a, imm8) \
-     ({                                                            \
-        simde__m128i ret;                                          \
-        if ((imm8) <= 0) {                                         \
-            ret = a;                                               \
-        } else if ((imm8) > 31) {                                  \
-            ret = simde__m128i_from_neon_i32(vdupq_n_s32(0));      \
-        } else {                                                   \
-            ret = simde__m128i_from_neon_i32(                      \
-                vshlq_n_s32(simde__m128i_to_neon_i32(a), (imm8))); \
-        }                                                          \
-        ret;                                                       \
+     ({                                                       \
+       simde__m128i ret;                                      \
+       if ((imm8) <= 0) {                                     \
+         ret = a;                                             \
+       } else if ((imm8) > 31) {                              \
+         ret = simde_mm_setzero_si128();                      \
+       } else {                                               \
+         ret = simde__m128i_from_neon_i32(                    \
+           vshlq_n_s32(simde__m128i_to_neon_i32(a), (imm8))); \
+       }                                                      \
+       ret;                                                   \
     })
 #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
   #define simde_mm_slli_epi32(a, imm8) \
@@ -5193,7 +5193,7 @@ simde_mm_slli_epi64 (simde__m128i a, const int imm8)
         if ((imm8) <= 0) {                                         \
             ret = a;                                               \
         } else if ((imm8) > 63) {                                  \
-            ret = simde__m128i_from_neon_i32(vdupq_n_s32(0));      \
+            ret = simde_mm_setzero_si128();                        \
         } else {                                                   \
             ret = simde__m128i_from_neon_i64(                      \
                 vshlq_n_s64(simde__m128i_to_neon_i64(a), (imm8))); \
@@ -5240,7 +5240,7 @@ simde_mm_srli_epi16 (simde__m128i a, const int imm8)
         if ((imm8) <= 0) {                                         \
             ret = a;                                               \
         } else if ((imm8) > 15) {                                  \
-            ret = simde__m128i_from_neon_i32(vdupq_n_s32(0));      \
+            ret = simde_mm_setzero_si128();                        \
         } else {                                                   \
             ret = simde__m128i_from_neon_u16(                      \
                 vshrq_n_u16(simde__m128i_to_neon_u16(a), (imm8))); \
@@ -5281,7 +5281,7 @@ simde_mm_srli_epi32 (simde__m128i a, const int imm8)
 #  define simde_mm_srli_epi32(a, imm8) _mm_srli_epi32(a, imm8)
 #elif defined(SIMDE_ARM_NEON_A64V8_NATIVE) && !defined(__clang__)
 #  define simde_mm_srli_epi32(a, imm8) \
-  simde__m128i_from_neon_u32(vshrq_n_u32(simde__m128i_to_neon_u32(a), imm8))
+     simde__m128i_from_neon_u32(vshrq_n_u32(simde__m128i_to_neon_u32(a), imm8))
 // The above is allowed by gcc/g++ 9 with -march=armv8-a, might work on A32V8 and elsewhere but needs testing
 #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE) && !defined(__clang__) // clang can't handle the potential out of range use of imm8 even though that is handled
 #  define simde_mm_srli_epi32(a, imm8) \
@@ -5290,7 +5290,7 @@ simde_mm_srli_epi32 (simde__m128i a, const int imm8)
         if ((imm8) <= 0) {                                       \
             ret = a;                                             \
         } else if ((imm8) > 31) {                                \
-            ret = simde__m128i_from_neon_i32(vdupq_n_s32(0));    \
+            ret = simde_mm_setzero_si128();                      \
         } else {                                                 \
             ret = simde__m128i_from_neon_u32(                    \
               vshrq_n_u32(simde__m128i_to_neon_u32(a), (imm8))); \
@@ -5356,7 +5356,7 @@ simde_mm_srli_epi64 (simde__m128i a, const int imm8)
         if ((imm8) <= 0) {                                       \
             ret = a;                                             \
         } else if ((imm8) > 63) {                                \
-            ret = simde__m128i_from_neon_i32(vdupq_n_s32(0));    \
+            ret = simde_mm_setzero_si128();                      \
         } else {                                                 \
             ret = simde__m128i_from_neon_u64(                    \
               vshrq_n_u64(simde__m128i_to_neon_u64(a), (imm8))); \
