@@ -1613,6 +1613,35 @@ simde_mm256_hadd_epi32 (simde__m256i a, simde__m256i b) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m256i
+simde_mm256_hadds_epi16 (simde__m256i a, simde__m256i b) {
+#if defined(SIMDE_X86_AVX2_NATIVE)
+  return _mm256_hadds_epi16(a, b);
+#else
+  simde__m256i_private
+    r_,
+    a_ = simde__m256i_to_private(a),
+    b_ = simde__m256i_to_private(b);
+
+  size_t j = 0;
+  for (size_t i = 0 ; i < ((sizeof(r_.i16) / sizeof(r_.i16[0]))) ; i++) {
+    if((i/4) % 2 == 1)
+      continue;
+    int32_t ta = HEDLEY_STATIC_CAST(int32_t, a_.i16[ j ]) + HEDLEY_STATIC_CAST(int32_t, a_.i16[j + 1]);
+    r_.i16[  i  ] = HEDLEY_LIKELY(ta > INT16_MIN) ? (HEDLEY_LIKELY(ta < INT16_MAX) ? HEDLEY_STATIC_CAST(int16_t, ta) : INT16_MAX) : INT16_MIN;
+    int32_t tb = HEDLEY_STATIC_CAST(int32_t, b_.i16[ j ]) + HEDLEY_STATIC_CAST(int32_t, b_.i16[j + 1]);
+    r_.i16[i + 4] = HEDLEY_LIKELY(tb > INT16_MIN) ? (HEDLEY_LIKELY(tb < INT16_MAX) ? HEDLEY_STATIC_CAST(int16_t, tb) : INT16_MAX) : INT16_MIN;
+    j += 2;
+  }
+
+  return simde__m256i_from_private(r_);
+#endif
+}
+#if defined(SIMDE_X86_AVX2_ENABLE_NATIVE_ALIASES)
+#  define _mm256_hadds_epi16(a, b) simde_mm256_hadds_epi16(a, b)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256i
 simde_mm256_hsub_epi16 (simde__m256i a, simde__m256i b) {
 #if defined(SIMDE_X86_AVX2_NATIVE)
   return _mm256_hsub_epi16(a, b);
@@ -1671,6 +1700,35 @@ simde_mm256_hsub_epi32 (simde__m256i a, simde__m256i b) {
 #if defined(SIMDE_X86_AVX2_ENABLE_NATIVE_ALIASES)
   #undef _mm256_hsub_epi32
   #define _mm256_hsub_epi32(a, b) simde_mm256_hsub_epi32(a, b)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256i
+simde_mm256_hsubs_epi16 (simde__m256i a, simde__m256i b) {
+#if defined(SIMDE_X86_AVX2_NATIVE)
+  return _mm256_hsubs_epi16(a, b);
+#else
+  simde__m256i_private
+    r_,
+    a_ = simde__m256i_to_private(a),
+    b_ = simde__m256i_to_private(b);
+
+  size_t j = 0;
+  for (size_t i = 0 ; i < ((sizeof(r_.i16) / sizeof(r_.i16[0]))) ; i++) {
+    if((i/4) % 2 == 1)
+      continue;
+    int32_t ta = HEDLEY_STATIC_CAST(int32_t, a_.i16[ j ]) - HEDLEY_STATIC_CAST(int32_t, a_.i16[j + 1]);
+    r_.i16[  i  ] = HEDLEY_LIKELY(ta > INT16_MIN) ? (HEDLEY_LIKELY(ta < INT16_MAX) ? HEDLEY_STATIC_CAST(int16_t, ta) : INT16_MAX) : INT16_MIN;
+    int32_t tb = HEDLEY_STATIC_CAST(int32_t, b_.i16[ j ]) - HEDLEY_STATIC_CAST(int32_t, b_.i16[j + 1]);
+    r_.i16[i + 4] = HEDLEY_LIKELY(tb > INT16_MIN) ? (HEDLEY_LIKELY(tb < INT16_MAX) ? HEDLEY_STATIC_CAST(int16_t, tb) : INT16_MAX) : INT16_MIN;
+    j += 2;
+  }
+
+  return simde__m256i_from_private(r_);
+#endif
+}
+#if defined(SIMDE_X86_AVX2_ENABLE_NATIVE_ALIASES)
+#  define _mm256_hsubs_epi16(a, b) simde_mm256_hsubs_epi16(a, b)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -2260,6 +2318,33 @@ simde_mm256_or_si256 (simde__m256i a, simde__m256i b) {
 #if defined(SIMDE_X86_AVX2_ENABLE_NATIVE_ALIASES)
   #undef _mm256_or_si256
   #define _mm256_or_si256(a, b) simde_mm256_or_si256(a, b)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256i
+simde_mm256_packs_epi16 (simde__m256i a, simde__m256i b) {
+#if defined(SIMDE_X86_AVX2_NATIVE)
+  return _mm256_packs_epi16(a, b);
+#else
+  simde__m256i_private
+    r_,
+    v_[] = {
+      simde__m256i_to_private(a),
+      simde__m256i_to_private(b)
+    };
+
+  SIMDE_VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r_.i16) / sizeof(r_.i16[0])) ; i++) {
+    const int32_t v = v_[(i >> 2) & 1].i32[(i & 11) - ((i & 8) >> 1)];
+    r_.i16[i] = HEDLEY_STATIC_CAST(int16_t, (v > INT16_MAX) ? INT16_MAX : ((v < INT16_MIN) ? INT16_MIN : v));
+  }
+
+  return simde__m256i_from_private(r_);
+#endif
+}
+#if defined(SIMDE_X86_AVX2_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_packs_epi16
+  #define _mm256_packs_epi16(a, b) simde_mm256_packs_epi16(a, b)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
