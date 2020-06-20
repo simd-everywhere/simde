@@ -42,7 +42,7 @@ simde_vzip_f32(simde_float32x2_t a, simde_float32x2_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vzip_f32(a, b);
   #else
-    simde_float32x2x2_t r = { simde_vzip1_f32(a, b), simde_vzip2_f32(a, b) };
+    simde_float32x2x2_t r = { { simde_vzip1_f32(a, b), simde_vzip2_f32(a, b) } };
     return r;
   #endif
 }
@@ -57,7 +57,7 @@ simde_vzip_s8(simde_int8x8_t a, simde_int8x8_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vzip_s8(a, b);
   #else
-    simde_int8x8x2_t r = { simde_vzip1_s8(a, b), simde_vzip2_s8(a, b) };
+    simde_int8x8x2_t r = { { simde_vzip1_s8(a, b), simde_vzip2_s8(a, b) } };
     return r;
   #endif
 }
@@ -72,7 +72,7 @@ simde_vzip_s16(simde_int16x4_t a, simde_int16x4_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vzip_s16(a, b);
   #else
-    simde_int16x4x2_t r = { simde_vzip1_s16(a, b), simde_vzip2_s16(a, b) };
+    simde_int16x4x2_t r = { { simde_vzip1_s16(a, b), simde_vzip2_s16(a, b) } };
     return r;
   #endif
 }
@@ -87,7 +87,7 @@ simde_vzip_s32(simde_int32x2_t a, simde_int32x2_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vzip_s32(a, b);
   #else
-    simde_int32x2x2_t r = { simde_vzip1_s32(a, b), simde_vzip2_s32(a, b) };
+    simde_int32x2x2_t r = { { simde_vzip1_s32(a, b), simde_vzip2_s32(a, b) } };
     return r;
   #endif
 }
@@ -102,7 +102,7 @@ simde_vzip_u8(simde_uint8x8_t a, simde_uint8x8_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vzip_u8(a, b);
   #else
-    simde_uint8x8x2_t r = { simde_vzip1_u8(a, b), simde_vzip2_u8(a, b) };
+    simde_uint8x8x2_t r = { { simde_vzip1_u8(a, b), simde_vzip2_u8(a, b) } };
     return r;
   #endif
 }
@@ -117,7 +117,7 @@ simde_vzip_u16(simde_uint16x4_t a, simde_uint16x4_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vzip_u16(a, b);
   #else
-    simde_uint16x4x2_t r = { simde_vzip1_u16(a, b), simde_vzip2_u16(a, b) };
+    simde_uint16x4x2_t r = { { simde_vzip1_u16(a, b), simde_vzip2_u16(a, b) } };
     return r;
   #endif
 }
@@ -132,7 +132,7 @@ simde_vzip_u32(simde_uint32x2_t a, simde_uint32x2_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vzip_u32(a, b);
   #else
-    simde_uint32x2x2_t r = { simde_vzip1_u32(a, b), simde_vzip2_u32(a, b) };
+    simde_uint32x2x2_t r = { { simde_vzip1_u32(a, b), simde_vzip2_u32(a, b) } };
     return r;
   #endif
 }
@@ -147,7 +147,7 @@ simde_vzipq_f32(simde_float32x4_t a, simde_float32x4_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vzipq_f32(a, b);
   #else
-    simde_float32x4x2_t r = { simde_vzip1q_f32(a, b), simde_vzip2q_f32(a, b) };
+    simde_float32x4x2_t r = { { simde_vzip1q_f32(a, b), simde_vzip2q_f32(a, b) } };
     return r;
   #endif
 }
@@ -162,7 +162,7 @@ simde_vzipq_s8(simde_int8x16_t a, simde_int8x16_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vzipq_s8(a, b);
   #else
-    simde_int8x16x2_t r = { simde_vzip1q_s8(a, b), simde_vzip2q_s8(a, b) };
+    simde_int8x16x2_t r = { { simde_vzip1q_s8(a, b), simde_vzip2q_s8(a, b) } };
     return r;
   #endif
 }
@@ -177,7 +177,7 @@ simde_vzipq_s16(simde_int16x8_t a, simde_int16x8_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vzipq_s16(a, b);
   #else
-    simde_int16x8x2_t r = { simde_vzip1q_s16(a, b), simde_vzip2q_s16(a, b) };
+    simde_int16x8x2_t r = { { simde_vzip1q_s16(a, b), simde_vzip2q_s16(a, b) } };
     return r;
   #endif
 }
@@ -192,7 +192,7 @@ simde_vzipq_s32(simde_int32x4_t a, simde_int32x4_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vzipq_s32(a, b);
   #else
-    simde_int32x4x2_t r = { simde_vzip1q_s32(a, b), simde_vzip2q_s32(a, b) };
+    simde_int32x4x2_t r = { { simde_vzip1q_s32(a, b), simde_vzip2q_s32(a, b) } };
     return r;
   #endif
 }
@@ -207,7 +207,7 @@ simde_vzipq_s64(simde_int64x2_t a, simde_int64x2_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vzipq_s64(a, b);
   #else
-    simde_int64x2x2_t r = { simde_vzip1q_s64(a, b), simde_vzip2q_s64(a, b) };
+    simde_int64x2x2_t r = { { simde_vzip1q_s64(a, b), simde_vzip2q_s64(a, b) } };
     return r;
   #endif
 }
@@ -223,7 +223,7 @@ simde_vzipq_u8(simde_uint8x16_t a, simde_uint8x16_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vzipq_u8(a, b);
   #else
-    simde_uint8x16x2_t r = { simde_vzip1q_u8(a, b), simde_vzip2q_u8(a, b) };
+    simde_uint8x16x2_t r = { { simde_vzip1q_u8(a, b), simde_vzip2q_u8(a, b) } };
     return r;
   #endif
 }
@@ -238,7 +238,7 @@ simde_vzipq_u16(simde_uint16x8_t a, simde_uint16x8_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vzipq_u16(a, b);
   #else
-    simde_uint16x8x2_t r = { simde_vzip1q_u16(a, b), simde_vzip2q_u16(a, b) };
+    simde_uint16x8x2_t r = { { simde_vzip1q_u16(a, b), simde_vzip2q_u16(a, b) } };
     return r;
   #endif
 }
@@ -253,7 +253,7 @@ simde_vzipq_u32(simde_uint32x4_t a, simde_uint32x4_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vzipq_u32(a, b);
   #else
-    simde_uint32x4x2_t r = { simde_vzip1q_u32(a, b), simde_vzip2q_u32(a, b) };
+    simde_uint32x4x2_t r = { { simde_vzip1q_u32(a, b), simde_vzip2q_u32(a, b) } };
     return r;
   #endif
 }
@@ -268,7 +268,7 @@ simde_vzipq_u64(simde_uint64x2_t a, simde_uint64x2_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vzipq_u64(a, b);
   #else
-    simde_uint64x2x2_t r = { simde_vzip1q_u64(a, b), simde_vzip2q_u64(a, b) };
+    simde_uint64x2x2_t r = { { simde_vzip1q_u64(a, b), simde_vzip2q_u64(a, b) } };
     return r;
   #endif
 }
