@@ -96,7 +96,7 @@
 #endif
 
 /* This controls how ties are rounded.  For example, does 10.5 round to
- * 10 or 11?  IEEE 754 specifies round-towards-even, but bun ARMv7 (for
+ * 10 or 11?  IEEE 754 specifies round-towards-even, but on ARMv7 (for
  * example) doesn't support it and it must be emulated (which is rather
  * slow).  If you're okay with just using the default for whatever arch
  * you're on, you should definitely define this. */
