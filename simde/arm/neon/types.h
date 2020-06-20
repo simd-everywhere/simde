@@ -115,7 +115,6 @@ SIMDE_ARM_NEON_TYPE_FLOAT_DEFINE_(64, 2, 16)
   typedef  uint32x4x2_t  simde_uint32x4x2_t;
   typedef  uint64x2x2_t  simde_uint64x2x2_t;
   typedef float32x4x2_t simde_float32x4x2_t;
-  typedef   float32x2_t   simde_float32x2_t;
 
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     typedef float64x1_t simde_float64x1_t;
