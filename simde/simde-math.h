@@ -662,6 +662,26 @@
   #endif
 #endif
 
+#if !defined(simde_math_log1p)
+  #if SIMDE_MATH_BUILTIN_LIBM(log1p)
+    #define simde_math_log1p(v) __builtin_log1p(v)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_log1p(v) std::log1p(v)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_log1p(v) log1p(v)
+  #endif
+#endif
+
+#if !defined(simde_math_log1pf)
+  #if SIMDE_MATH_BUILTIN_LIBM(log1pf)
+    #define simde_math_log1pf(v) __builtin_log1pf(v)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_log1pf(v) std::log1p(v)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_log1pf(v) log1pf(v)
+  #endif
+#endif
+
 #if !defined(simde_math_log2)
   #if SIMDE_MATH_BUILTIN_LIBM(log2)
     #define simde_math_log2(v) __builtin_log2(v)
