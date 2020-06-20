@@ -105,7 +105,7 @@ SIMDE_ARM_NEON_TYPE_FLOAT_DEFINE_(64, 2, 16)
   typedef  uint32x2x2_t  simde_uint32x2x2_t;
   typedef  uint64x1x2_t  simde_uint64x1x2_t;
   typedef float32x2x2_t simde_float32x2x2_t;
-  
+
   typedef   int8x16x2_t   simde_int8x16x2_t;
   typedef   int16x8x2_t   simde_int16x8x2_t;
   typedef   int32x4x2_t   simde_int32x4x2_t;
@@ -136,6 +136,10 @@ SIMDE_ARM_NEON_TYPE_FLOAT_DEFINE_(64, 2, 16)
 #elif defined(SIMDE_ARCH_X86) || defined(SIMDE_ARCH_AMD64)
   #define SIMDE_ARM_NEON_NEED_PORTABLE_F32
   #define SIMDE_ARM_NEON_NEED_PORTABLE_F64
+
+  #define SIMDE_ARM_NEON_NEED_PORTABLE_VX2
+  #define SIMDE_ARM_NEON_NEED_PORTABLE_F64X1X2
+  #define SIMDE_ARM_NEON_NEED_PORTABLE_F64X2X2
 
   #if defined(SIMDE_X86_MMX_NATIVE)
     typedef __m64    simde_int8x8_t;
@@ -193,6 +197,11 @@ SIMDE_ARM_NEON_TYPE_FLOAT_DEFINE_(64, 2, 16)
   #define SIMDE_ARM_NEON_NEED_PORTABLE_F64
 
   #define SIMDE_ARM_NEON_NEED_PORTABLE_64BIT
+
+  #define SIMDE_ARM_NEON_NEED_PORTABLE_F64X1X2
+  #define SIMDE_ARM_NEON_NEED_PORTABLE_F64X2X2
+  #define SIMDE_ARM_NEON_NEED_PORTABLE_VX2
+
   typedef v128_t   simde_int8x16_t;
   typedef v128_t   simde_int16x8_t;
   typedef v128_t   simde_int32x4_t;
@@ -208,6 +217,9 @@ SIMDE_ARM_NEON_TYPE_FLOAT_DEFINE_(64, 2, 16)
   #define SIMDE_ARM_NEON_NEED_PORTABLE_F64
 
   #define SIMDE_ARM_NEON_NEED_PORTABLE_64BIT
+  #define SIMDE_ARM_NEON_NEED_PORTABLE_F64X1X2
+  #define SIMDE_ARM_NEON_NEED_PORTABLE_F64X2X2
+  #define SIMDE_ARM_NEON_NEED_PORTABLE_VX2
 
   typedef SIMDE_POWER_ALTIVEC_VECTOR(signed char)          simde_int8x16_t;
   typedef SIMDE_POWER_ALTIVEC_VECTOR(signed short)         simde_int16x8_t;
@@ -326,6 +338,9 @@ SIMDE_ARM_NEON_TYPE_FLOAT_DEFINE_(64, 2, 16)
   typedef struct  simde_uint32x2x2_t {
     simde_uint32x2_t val[2];
   } simde_uint32x2x2_t;
+  typedef struct  simde_uint64x1x2_t {
+    simde_uint64x1_t val[2];
+  } simde_uint64x1x2_t;
   typedef struct simde_float32x2x2_t {
     simde_float32x2_t val[2];
   } simde_float32x2x2_t;
@@ -351,6 +366,9 @@ SIMDE_ARM_NEON_TYPE_FLOAT_DEFINE_(64, 2, 16)
   typedef struct  simde_uint32x4x2_t {
     simde_uint32x4_t val[2];
   } simde_uint32x4x2_t;
+  typedef struct  simde_uint64x2x2_t {
+    simde_uint64x2_t val[2];
+  } simde_uint64x2x2_t;
   typedef struct simde_float32x4x2_t {
     simde_float32x4_t val[2];
   } simde_float32x4x2_t;
