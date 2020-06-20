@@ -599,9 +599,10 @@ typedef SIMDE_FLOAT64_TYPE simde_float64;
 #  define SIMDE_CONVERT_FTOI(T,v) ((T) (v))
 #endif
 
+/* TODO: detect compilers which support this outside of C11 mode */
 #if defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 201112L)
-  #define SIMDE_CHECKED_REINTERPRET_CAST(to, from, value) (_Generic((value), to: (value), from: ((to) (value))))
-  #define SIMDE_CHECKED_STATIC_CAST(to, from, value) (_Generic((value), to: (value), from: ((to) (value))))
+  #define SIMDE_CHECKED_REINTERPRET_CAST(to, from, value) _Generic((value), to: (value), default: (_Generic((value), from: ((to) (value)))))
+  #define SIMDE_CHECKED_STATIC_CAST(to, from, value) _Generic((value), to: (value), default: (_Generic((value), from: ((to) (value)))))
 #else
   #define SIMDE_CHECKED_REINTERPRET_CAST(to, from, value) HEDLEY_REINTERPRET_CAST(to, value)
   #define SIMDE_CHECKED_STATIC_CAST(to, from, value) HEDLEY_STATIC_CAST(to, value)
