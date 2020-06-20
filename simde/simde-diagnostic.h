@@ -207,7 +207,7 @@
 
 /* Several compilers treat conformant array parameters as VLAs.  We
  * test to make sure we're in C mode (C++ doesn't support CAPs), and
- * that the version of the standard supports CAPs.  We also blacklist
+ * that the version of the standard supports CAPs.  We also reject
  * some buggy compilers like MSVC (the logic is in Hedley if you want
  * to take a look), but with certain warnings enabled some compilers
  * still like to emit a diagnostic. */
