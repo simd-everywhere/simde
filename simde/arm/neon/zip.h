@@ -202,22 +202,6 @@ simde_vzipq_s32(simde_int32x4_t a, simde_int32x4_t b) {
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
-simde_int64x2x2_t
-simde_vzipq_s64(simde_int64x2_t a, simde_int64x2_t b) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-    return vzipq_s64(a, b);
-  #else
-    simde_int64x2x2_t r = { { simde_vzip1q_s64(a, b), simde_vzip2q_s64(a, b) } };
-    return r;
-  #endif
-}
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
-  #undef vzipq_s64
-  #define vzipq_s64(a, b) simde_vzipq_s64((a), (b))
-#endif
-
-
-SIMDE_FUNCTION_ATTRIBUTES
 simde_uint8x16x2_t
 simde_vzipq_u8(simde_uint8x16_t a, simde_uint8x16_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
@@ -260,21 +244,6 @@ simde_vzipq_u32(simde_uint32x4_t a, simde_uint32x4_t b) {
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vzipq_u32
   #define vzipq_u32(a, b) simde_vzipq_u32((a), (b))
-#endif
-
-SIMDE_FUNCTION_ATTRIBUTES
-simde_uint64x2x2_t
-simde_vzipq_u64(simde_uint64x2_t a, simde_uint64x2_t b) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-    return vzipq_u64(a, b);
-  #else
-    simde_uint64x2x2_t r = { { simde_vzip1q_u64(a, b), simde_vzip2q_u64(a, b) } };
-    return r;
-  #endif
-}
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
-  #undef vzipq_u64
-  #define vzipq_u64(a, b) simde_vzipq_u64((a), (b))
 #endif
 
 SIMDE_END_DECLS_
