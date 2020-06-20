@@ -5140,7 +5140,19 @@ simde_mm_slli_epi32 (simde__m128i a, const int imm8)
     })
 #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
   #define simde_mm_slli_epi32(a, imm8) \
-    ((imm8 & ~31) ? simde_mm_setzero_si128() : simde__m128i_from_altivec_i32(vec_sl(simde__m128i_to_altivec_i32(a), vec_splat_u32(HEDLEY_STATIC_CAST(unsigned int, imm8)))))
+     ({                                                            \
+       simde__m128i ret;                                           \
+       if ((imm8) <= 0) {                                          \
+         ret = a;                                                  \
+       } else if ((imm8) > 31) {                                   \
+         ret = simde_mm_setzero_si128();                           \
+       } else {                                                    \
+         ret = simde__m128i_from_altivec_i32(                      \
+           vec_sl(simde__m128i_to_altivec_i32(a),                  \
+             vec_splats(HEDLEY_STATIC_CAST(unsigned int, imm8)))); \
+       }                                                           \
+       ret;                                                        \
+     })
 #endif
 #if defined(SIMDE_X86_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_slli_epi32(a, imm8) simde_mm_slli_epi32(a, imm8)
@@ -5286,8 +5298,20 @@ simde_mm_srli_epi32 (simde__m128i a, const int imm8)
         ret;                                                     \
     })
 #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
-  #define simde_mm_srli_epi32(a, imm8) \
-    ((imm8 & ~31) ? simde_mm_setzero_si128() : simde__m128i_from_altivec_i32(vec_sr(simde__m128i_to_altivec_i32(a), vec_splat_u32(HEDLEY_STATIC_CAST(unsigned int, imm8)))))
+#  define simde_mm_srli_epi32(a, imm8) \
+    ({                                                                \
+        simde__m128i ret;                                             \
+        if ((imm8) <= 0) {                                            \
+            ret = a;                                                  \
+        } else if ((imm8) > 31) {                                     \
+            ret = simde_mm_setzero_si128();                           \
+        } else {                                                      \
+            ret = simde__m128i_from_altivec_i32(                      \
+              vec_sr(simde__m128i_to_altivec_i32(a),                  \
+                vec_splats(HEDLEY_STATIC_CAST(unsigned int, imm8)))); \
+        }                                                             \
+        ret;                                                          \
+    })
 #endif
 #if defined(SIMDE_X86_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_srli_epi32(a, imm8) simde_mm_srli_epi32(a, imm8)
