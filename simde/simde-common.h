@@ -813,6 +813,10 @@ typedef SIMDE_FLOAT64_TYPE simde_float64;
 #    if defined(SIMDE_ARCH_AARCH64)
 #      define SIMDE_BUG_CLANG_45541
 #    endif
+#  elif defined(HEDLEY_MSVC_VERSION)
+#    if defined(SIMDE_ARCH_X86)
+#      define SIMDE_BUG_MSVC_ROUND_EXTRACT
+#    endif
 #  endif
 #  if defined(HEDLEY_EMSCRIPTEN_VERSION)
 #    define SIMDE_BUG_EMSCRIPTEN_MISSING_IMPL /* Placeholder for (as yet) unfiled issues. */

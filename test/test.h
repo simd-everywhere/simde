@@ -480,7 +480,7 @@ simde_assert_equal_f64_(simde_float64 a, simde_float64 b, simde_float64 slop,
       const char* filename, int line, const char* astr, const char* bstr) { \
     for (size_t i = 0 ; i < vec_len ; i++) { \
       if (HEDLEY_UNLIKELY(a[i] != b[i])) { \
-        simde_test_debug_printf_("%s:%d: assertion failed: %s[%zu] != %s[%zu] (%" fmt " != %" fmt ")\n", \
+        simde_test_debug_printf_("%s:%d: assertion failed: %s[%zu] == %s[%zu] (%" fmt " == %" fmt ")\n", \
               filename, line, astr, i, bstr, i, a[i], b[i]); \
         SIMDE_TEST_ASSERT_RETURN(1); \
       } \
@@ -492,8 +492,33 @@ simde_assert_equal_f64_(simde_float64 a, simde_float64 b, simde_float64 slop,
   simde_assert_equal_##symbol_identifier##_(T a, T b, \
       const char* filename, int line, const char* astr, const char* bstr) { \
     if (HEDLEY_UNLIKELY(a != b)) { \
-      simde_test_debug_printf_("%s:%d: assertion failed: %s != %s (%" fmt " != %" fmt ")\n", \
+      simde_test_debug_printf_("%s:%d: assertion failed: %s == %s (%" fmt " == %" fmt ")\n", \
             filename, line, astr, bstr, a, b); \
+      SIMDE_TEST_ASSERT_RETURN(1); \
+    } \
+    return 0; \
+  } \
+  \
+  static int \
+  simde_assert_close_v##symbol_identifier##_( \
+      size_t vec_len, const T a[HEDLEY_ARRAY_PARAM(vec_len)], const T b[HEDLEY_ARRAY_PARAM(vec_len)], const T slop, \
+      const char* filename, int line, const char* astr, const char* bstr) { \
+    for (size_t i = 0 ; i < vec_len ; i++) { \
+      if (((a[i] + slop) < b[i]) || ((a[i] - slop) > b[i])) { \
+        simde_test_debug_printf_("%s:%d: assertion failed: %s[%zu] == %s[%zu] (%" fmt " == %" fmt ")\n", \
+              filename, line, astr, i, bstr, i, a[i], b[i]); \
+        SIMDE_TEST_ASSERT_RETURN(1); \
+      } \
+    } \
+    return 0; \
+  } \
+  \
+  static int \
+  simde_assert_close_##symbol_identifier##_(T a, T b, T slop, \
+      const char* filename, int line, const char* astr, const char* bstr) { \
+    if (((a + slop) < b) || ((a - slop) > b)) { \
+      simde_test_debug_printf_("%s:%d: assertion failed: %s == %s +/- %" fmt " (%" fmt " == %" fmt ")\n", \
+            filename, line, astr, bstr, slop, a, b); \
       SIMDE_TEST_ASSERT_RETURN(1); \
     } \
     return 0; \
@@ -502,7 +527,7 @@ simde_assert_equal_f64_(simde_float64 a, simde_float64 b, simde_float64 slop,
 static int
 simde_assert_equal_i_(int a, int b, const char* filename, int line, const char* astr, const char* bstr) {
   if (HEDLEY_UNLIKELY(a != b)) {
-    simde_test_debug_printf_("%s:%d: assertion failed: %s != %s (%d != %d)\n",
+    simde_test_debug_printf_("%s:%d: assertion failed: %s == %s (%d == %d)\n",
           filename, line, astr, bstr, a, b);
     SIMDE_TEST_ASSERT_RETURN(1);
   }
@@ -536,6 +561,25 @@ SIMDE_TEST_GENERATE_ASSERT_EQUAL_FUNC_(uint64_t, u64, PRIu64)
 #define simde_assert_equal_u32(a, b) do { if (simde_assert_equal_u32_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 #define simde_assert_equal_u64(a, b) do { if (simde_assert_equal_u64_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 #define simde_assert_equal_i(a, b) do { if (simde_assert_equal_i_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+
+#define simde_assert_close_vi8(vec_len, a, b, slop) do { if (simde_assert_close_vi8_(vec_len, a, b, slop, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+#define simde_assert_close_vi16(vec_len, a, b, slop) do { if (simde_assert_close_vi16_(vec_len, a, b, slop, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+#define simde_assert_close_vi32(vec_len, a, b, slop) do { if (simde_assert_close_vi32_(vec_len, a, b, slop, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+#define simde_assert_close_vi64(vec_len, a, b, slop) do { if (simde_assert_close_vi64_(vec_len, a, b, slop, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+#define simde_assert_close_vu8(vec_len, a, b, slop) do { if (simde_assert_close_vu8_(vec_len, a, b, slop, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+#define simde_assert_close_vu16(vec_len, a, b, slop) do { if (simde_assert_close_vu16_(vec_len, a, b, slop, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+#define simde_assert_close_vu32(vec_len, a, b, slop) do { if (simde_assert_close_vu32_(vec_len, a, b, slop, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+#define simde_assert_close_vu64(vec_len, a, b, slop) do { if (simde_assert_close_vu64_(vec_len, a, b, slop, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+
+#define simde_assert_close_i8(a, b, slop) do { if (simde_assert_close_i8_(a, b, slop, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+#define simde_assert_close_i16(a, b, slop) do { if (simde_assert_close_i16_(a, b, slop, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+#define simde_assert_close_i32(a, b, slop) do { if (simde_assert_close_i32_(a, b, slop, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+#define simde_assert_close_i64(a, b, slop) do { if (simde_assert_close_i64_(a, b, slop, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+#define simde_assert_close_u8(a, b, slop) do { if (simde_assert_close_u8_(a, b, slop, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+#define simde_assert_close_u16(a, b, slop) do { if (simde_assert_close_u16_(a, b, slop, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+#define simde_assert_close_u32(a, b, slop) do { if (simde_assert_close_u32_(a, b, slop, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+#define simde_assert_close_u64(a, b, slop) do { if (simde_assert_close_u64_(a, b, slop, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+#define simde_assert_close_i(a, b, slop) do { if (simde_assert_close_i_(a, b, slop, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 
 /* Since each test is compiled in 4 different versions (C/C++ and
  * native/emul), we need to be able to generate different symbols
