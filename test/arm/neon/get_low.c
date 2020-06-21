@@ -1,7 +1,7 @@
 #define SIMDE_TEST_ARM_NEON_INSN get_low
 
-#include <test/arm/neon/test-neon.h>
-#include <simde/arm/neon/get_low.h>
+#include "test-neon.h"
+#include "../../../simde/arm/neon/get_low.h"
 
 static int
 test_simde_vget_low_f32 (SIMDE_MUNIT_TEST_ARGS) {
@@ -383,4 +383,4 @@ SIMDE_TEST_FUNC_LIST_ENTRY(vget_low_u64)
 
 SIMDE_TEST_FUNC_LIST_END
 
-#include <test/arm/neon/test-neon-footer.h>
+#include "test-neon-footer.h"

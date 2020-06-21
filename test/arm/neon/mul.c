@@ -1,7 +1,7 @@
 #define SIMDE_TEST_ARM_NEON_INSN mul
 
-#include <test/arm/neon/test-neon.h>
-#include <simde/arm/neon/mul.h>
+#include "test-neon.h"
+#include "../../../simde/arm/neon/mul.h"
 
 static int
 test_simde_vmul_f32 (SIMDE_MUNIT_TEST_ARGS) {
@@ -787,4 +787,4 @@ SIMDE_TEST_FUNC_LIST_ENTRY(vmulq_u16)
 SIMDE_TEST_FUNC_LIST_ENTRY(vmulq_u32)
 SIMDE_TEST_FUNC_LIST_END
 
-#include <test/arm/neon/test-neon-footer.h>
+#include "test-neon-footer.h"

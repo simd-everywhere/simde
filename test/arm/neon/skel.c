@@ -1,6 +1,6 @@
 #define SIMDE_TEST_ARM_NEON_INSN xxx
 
-#include <test/arm/neon/test-neon.h>
+#include "test-neon.h"
 #include <simde/arm/neon/xxx.h>
 
 static int
@@ -679,4 +679,4 @@ SIMDE_TEST_FUNC_LIST_ENTRY(vxxxq_u32)
 SIMDE_TEST_FUNC_LIST_ENTRY(vxxxq_u64)
 SIMDE_TEST_FUNC_LIST_END
 
-#include <test/arm/neon/test-neon-footer.h>
+#include "test-neon-footer.h"

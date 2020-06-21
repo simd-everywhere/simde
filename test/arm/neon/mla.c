@@ -1,7 +1,7 @@
 #define SIMDE_TEST_ARM_NEON_INSN mla
 
-#include <test/arm/neon/test-neon.h>
-#include <simde/arm/neon/mla.h>
+#include "test-neon.h"
+#include "../../../simde/arm/neon/mla.h"
 
 static int
 test_simde_vmla_f32 (SIMDE_MUNIT_TEST_ARGS) {
@@ -963,4 +963,4 @@ SIMDE_TEST_FUNC_LIST_ENTRY(vmlaq_u16)
 SIMDE_TEST_FUNC_LIST_ENTRY(vmlaq_u32)
 SIMDE_TEST_FUNC_LIST_END
 
-#include <test/arm/neon/test-neon-footer.h>
+#include "test-neon-footer.h"

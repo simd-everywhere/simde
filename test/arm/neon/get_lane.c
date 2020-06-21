@@ -1,7 +1,7 @@
 #define SIMDE_TEST_ARM_NEON_INSN get_lane
 
-#include <test/arm/neon/test-neon.h>
-#include <simde/arm/neon/get_lane.h>
+#include "test-neon.h"
+#include "../../../simde/arm/neon/get_lane.h"
 
 static int
 test_simde_vget_lane_f32 (void) {
@@ -937,4 +937,4 @@ SIMDE_TEST_FUNC_LIST_ENTRY(vgetq_lane_u32)
 SIMDE_TEST_FUNC_LIST_ENTRY(vgetq_lane_u64)
 SIMDE_TEST_FUNC_LIST_END
 
-#include <test/arm/neon/test-neon-footer.h>
+#include "test-neon-footer.h"

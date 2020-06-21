@@ -1,7 +1,7 @@
 #define SIMDE_TEST_ARM_NEON_INSN shr_n
 
-#include <test/arm/neon/test-neon.h>
-#include <simde/arm/neon/shr_n.h>
+#include "test-neon.h"
+#include "../../../simde/arm/neon/shr_n.h"
 
 static int
 test_simde_vshr_n_s8 (SIMDE_MUNIT_TEST_ARGS) {
@@ -1383,4 +1383,4 @@ SIMDE_TEST_FUNC_LIST_ENTRY(vshrq_n_u32)
 SIMDE_TEST_FUNC_LIST_ENTRY(vshrq_n_u64)
 SIMDE_TEST_FUNC_LIST_END
 
-#include <test/arm/neon/test-neon-footer.h>
+#include "test-neon-footer.h"

@@ -1,7 +1,7 @@
 #define SIMDE_TEST_ARM_NEON_INSN cagt
 
-#include <test/arm/neon/test-neon.h>
-#include <simde/arm/neon/cagt.h>
+#include "test-neon.h"
+#include "../../../simde/arm/neon/cagt.h"
 
 static int
 test_simde_vcagt_f32 (SIMDE_MUNIT_TEST_ARGS) {
@@ -190,4 +190,4 @@ SIMDE_TEST_FUNC_LIST_ENTRY(vcagtq_f32)
 SIMDE_TEST_FUNC_LIST_ENTRY(vcagtq_f64)
 SIMDE_TEST_FUNC_LIST_END
 
-#include <test/arm/neon/test-neon-footer.h>
+#include "test-neon-footer.h"

@@ -151,6 +151,9 @@ if(BUILD_CPP_TESTS)
   foreach(csource ${TEST_SOURCES_C})
     configure_file("${csource}" "${CMAKE_CURRENT_BINARY_DIR}/${csource}pp")
     list(APPEND TEST_SOURCES_CPP "${CMAKE_CURRENT_BINARY_DIR}/${csource}pp")
+
+    get_filename_component(DIR "${csource}" DIRECTORY)
+    set_property(SOURCE "${CMAKE_CURRENT_BINARY_DIR}/${csource}pp" APPEND PROPERTY COMPILE_FLAGS " -I${CMAKE_CURRENT_SOURCE_DIR}/${DIR}")
   endforeach()
 
   add_definitions(-DSIMDE_BUILD_CPP_TESTS)

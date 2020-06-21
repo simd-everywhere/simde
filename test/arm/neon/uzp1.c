@@ -1,7 +1,7 @@
 #define SIMDE_TEST_ARM_NEON_INSN uzp1
 
-#include <test/arm/neon/test-neon.h>
-#include <simde/arm/neon/uzp1.h>
+#include "test-neon.h"
+#include "../../../simde/arm/neon/uzp1.h"
 
 static int
 test_simde_vuzp1_f32 (SIMDE_MUNIT_TEST_ARGS) {
@@ -832,4 +832,4 @@ SIMDE_TEST_FUNC_LIST_ENTRY(vuzp1q_u32)
 SIMDE_TEST_FUNC_LIST_ENTRY(vuzp1q_u64)
 SIMDE_TEST_FUNC_LIST_END
 
-#include <test/arm/neon/test-neon-footer.h>
+#include "test-neon-footer.h"

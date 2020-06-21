@@ -1,7 +1,7 @@
 #define SIMDE_TEST_ARM_NEON_INSN reinterpret
 
-#include <test/arm/neon/test-neon.h>
-#include <simde/arm/neon/reinterpret.h>
+#include "test-neon.h"
+#include "../../../simde/arm/neon/reinterpret.h"
 
 static int
 test_simde_vreinterpret_f32_s8 (SIMDE_MUNIT_TEST_ARGS) {
@@ -6757,4 +6757,4 @@ SIMDE_TEST_FUNC_LIST_ENTRY(vreinterpretq_u32_f64)
 SIMDE_TEST_FUNC_LIST_ENTRY(vreinterpretq_u64_f64)
 SIMDE_TEST_FUNC_LIST_END
 
-#include <test/arm/neon/test-neon-footer.h>
+#include "test-neon-footer.h"

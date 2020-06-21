@@ -1,7 +1,7 @@
 #define SIMDE_TEST_ARM_NEON_INSN and
 
-#include <test/arm/neon/test-neon.h>
-#include <simde/arm/neon/and.h>
+#include "test-neon.h"
+#include "../../../simde/arm/neon/and.h"
 
 static int
 test_simde_vand_s8 (SIMDE_MUNIT_TEST_ARGS) {
@@ -768,4 +768,4 @@ SIMDE_TEST_FUNC_LIST_ENTRY(vandq_u32)
 SIMDE_TEST_FUNC_LIST_ENTRY(vandq_u64)
 SIMDE_TEST_FUNC_LIST_END
 
-#include <test/arm/neon/test-neon-footer.h>
+#include "test-neon-footer.h"

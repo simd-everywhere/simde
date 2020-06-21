@@ -1,7 +1,7 @@
 #define SIMDE_TEST_ARM_NEON_INSN pmax
 
-#include <test/arm/neon/test-neon.h>
-#include <simde/arm/neon/pmax.h>
+#include "test-neon.h"
+#include "../../../simde/arm/neon/pmax.h"
 
 static int
 test_simde_vpmax_f32 (SIMDE_MUNIT_TEST_ARGS) {
@@ -740,4 +740,4 @@ SIMDE_TEST_FUNC_LIST_ENTRY(vpmaxq_u16)
 SIMDE_TEST_FUNC_LIST_ENTRY(vpmaxq_u32)
 SIMDE_TEST_FUNC_LIST_END
 
-#include <test/arm/neon/test-neon-footer.h>
+#include "test-neon-footer.h"

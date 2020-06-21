@@ -1,7 +1,7 @@
 #define SIMDE_TEST_ARM_NEON_INSN sub
 
-#include <test/arm/neon/test-neon.h>
-#include <simde/arm/neon/sub.h>
+#include "test-neon.h"
+#include "../../../simde/arm/neon/sub.h"
 
 static int
 test_simde_vsub_f32 (SIMDE_MUNIT_TEST_ARGS) {
@@ -947,4 +947,4 @@ SIMDE_TEST_FUNC_LIST_ENTRY(vsubq_u32)
 SIMDE_TEST_FUNC_LIST_ENTRY(vsubq_u64)
 SIMDE_TEST_FUNC_LIST_END
 
-#include <test/arm/neon/test-neon-footer.h>
+#include "test-neon-footer.h"
