@@ -117,7 +117,7 @@ simde_mm_blend_pd (simde__m128d a, simde__m128d b, const int imm8)
                ((imm8) & (1 << 1)) ? UINT64_MAX : 0  \
            };                                        \
            uint64x2_t _mask_vec = vld1q_u64(_mask);  \
-           simde__m128d_from_neon_f64(vbslq_f64(_mask_vec, simde__m128d_to_neon_f64(b), simde__m128d_to_neon_f64(a))); \
+           simde__m128d_from_neon_u64(vbslq_u64(_mask_vec, simde__m128d_to_neon_u64(b), simde__m128d_to_neon_u64(a))); \
        }))
 #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
 #  define simde_mm_blend_pd(a, b, imm8)         \
