@@ -278,7 +278,7 @@ jobs:
   ##
 
   - name: push-to-no-tests
-    if: branch = master AND type != pull_request AND repo = nemequ/simde
+    if: branch = master AND type != pull_request AND repo = simd-everywhere/simde
     addons:
       apt:
         packages:
@@ -293,7 +293,7 @@ jobs:
       git filter-repo --path-rename '.no-test/':'simde/' && \
       git filter-repo --subdirectory-filter simde
     after_script:
-    - git push -q "https://${NO_TESTS_TOKEN}@github.com/nemequ/simde-no-tests" master
+    - git push -q "https://${NO_TESTS_TOKEN}@github.com/simd-everywhere/simde-no-tests" master
 
   allow_failures:
   - name: msvc x86

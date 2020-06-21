@@ -273,7 +273,7 @@
   #define SIMDE_DIAGNOSTIC_DISABLE_C99_EXTENSIONS_
 #endif
 
-/* https://github.com/nemequ/simde/issues/277 */
+/* https://github.com/simd-everywhere/simde/issues/277 */
 #if defined(HEDLEY_GCC_VERSION) && HEDLEY_GCC_VERSION_CHECK(4,6,0) && !HEDLEY_GCC_VERSION_CHECK(6,0,0) && defined(__cplusplus)
   #define SIMDE_DIAGNOSTIC_DISABLE_BUGGY_UNUSED_BUT_SET_VARIBALE_ _Pragma("GCC diagnostic ignored \"-Wunused-but-set-variable\"")
 #else

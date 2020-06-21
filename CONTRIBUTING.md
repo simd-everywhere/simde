@@ -4,21 +4,21 @@ First off, if you're even reading this, thank you!  There is a lot of
 work to do, and any help is appreciated.
 
 If you haven't already, please read the
-[README](https://github.com/nemequ/simde/blob/master/README.md).  The
-[wiki](https://github.com/nemequ/simde/wiki) also has some good
+[README](https://github.com/simd-everywhere/simde/blob/master/README.md).  The
+[wiki](https://github.com/simd-everywhere/simde/wiki) also has some good
 information, especially the
-[FAQ](https://github.com/nemequ/simde/wiki/FAQ) and a guide on how to
+[FAQ](https://github.com/simd-everywhere/simde/wiki/FAQ) and a guide on how to
 [implement a new
-function](https://github.com/nemequ/simde/wiki/Implementing-a-New-Function).
+function](https://github.com/simd-everywhere/simde/wiki/Implementing-a-New-Function).
 
 For information on developing for architectures you don't have access
 to, please see the [Development
-Environment](https://github.com/nemequ/simde/wiki/Development-Environment)
+Environment](https://github.com/simd-everywhere/simde/wiki/Development-Environment)
 page on the wiki.
 
 If you still have questions, or if anything below doesn't make sense
 to you, please feel free to use the [issue
-tracker](https://github.com/nemequ/simde/issues) or the [mailing
+tracker](https://github.com/simd-everywhere/simde/issues) or the [mailing
 list](https://groups.google.com/forum/#!forum/simde) to ask.  I know
 the SIMDe documentation needs a lot of improvement, and asking
 questions will help us understand what is missing, so please don't be

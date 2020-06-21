@@ -11,11 +11,11 @@
  */
 
 /* This file was originally part of SIMDe
- * (<https://github.com/nemequ/simde>).  You're free to do with it as
+ * (<https://github.com/simd-everywhere/simde>).  You're free to do with it as
  * you please, but I do have a few small requests:
  *
  *  * If you make improvements, please submit them back to SIMDe
- *    (at <https://github.com/nemequ/simde/issues>) so others can
+ *    (at <https://github.com/simd-everywhere/simde/issues>) so others can
  *    benefit from them.
  *  * Please keep a link to SIMDe intact so people know where to submit
  *    improvements.

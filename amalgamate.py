@@ -17,8 +17,9 @@
 # included by this script.
 #
 # If you make any improvements please report them in the SIMDe issue
-# tracker at <https://github.com/nemequ/simde/issues> or directly to
-# the author so they can be merged back into the original version.
+# tracker at <https://github.com/simd-everywhere/simde/issues> or
+# directly to the author so they can be merged back into the original
+# version.
 
 import sys, re, os, subprocess
 
