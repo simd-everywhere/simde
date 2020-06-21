@@ -212,7 +212,7 @@ simde_vld1q_f32(simde_float32 const ptr[HEDLEY_ARRAY_PARAM(4)]) {
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
-  #undef vld1_f32
+  #undef vld1q_f32
   #define vld1q_f32(a) simde_vld1q_f32((a))
 #endif
 
@@ -232,7 +232,7 @@ simde_vld1q_f64(simde_float64 const ptr[HEDLEY_ARRAY_PARAM(2)]) {
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
-  #undef vld1_f64
+  #undef vld1q_f64
   #define vld1q_f64(a) simde_vld1q_f64((a))
 #endif
 
@@ -255,7 +255,7 @@ simde_vld1q_s8(int8_t const ptr[HEDLEY_ARRAY_PARAM(16)]) {
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
-  #undef vld1_s8
+  #undef vld1q_s8
   #define vld1q_s8(a) simde_vld1q_s8((a))
 #endif
 
@@ -278,7 +278,7 @@ simde_vld1q_s16(int16_t const ptr[HEDLEY_ARRAY_PARAM(8)]) {
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
-  #undef vld1_s16
+  #undef vld1q_s16
   #define vld1q_s16(a) simde_vld1q_s16((a))
 #endif
 
@@ -301,7 +301,7 @@ simde_vld1q_s32(int32_t const ptr[HEDLEY_ARRAY_PARAM(4)]) {
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
-  #undef vld1_s32
+  #undef vld1q_s32
   #define vld1q_s32(a) simde_vld1q_s32((a))
 #endif
 
@@ -321,7 +321,7 @@ simde_vld1q_s64(int64_t const ptr[HEDLEY_ARRAY_PARAM(2)]) {
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
-  #undef vld1_s64
+  #undef vld1q_s64
   #define vld1q_s64(a) simde_vld1q_s64((a))
 #endif
 
@@ -344,7 +344,7 @@ simde_vld1q_u8(uint8_t const ptr[HEDLEY_ARRAY_PARAM(16)]) {
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
-  #undef vld1_u8
+  #undef vld1q_u8
   #define vld1q_u8(a) simde_vld1q_u8((a))
 #endif
 
@@ -367,7 +367,7 @@ simde_vld1q_u16(uint16_t const ptr[HEDLEY_ARRAY_PARAM(8)]) {
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
-  #undef vld1_u16
+  #undef vld1q_u16
   #define vld1q_u16(a) simde_vld1q_u16((a))
 #endif
 
@@ -390,7 +390,7 @@ simde_vld1q_u32(uint32_t const ptr[HEDLEY_ARRAY_PARAM(4)]) {
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
-  #undef vld1_u32
+  #undef vld1q_u32
   #define vld1q_u32(a) simde_vld1q_u32((a))
 #endif
 
@@ -410,7 +410,7 @@ simde_vld1q_u64(uint64_t const ptr[HEDLEY_ARRAY_PARAM(2)]) {
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
-  #undef vld1_u64
+  #undef vld1q_u64
   #define vld1q_u64(a) simde_vld1q_u64((a))
 #endif
 
