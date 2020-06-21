@@ -77,9 +77,11 @@ jobs:
       run: ~/.local/bin/meson setup build -Db_coverage=true
     - name: Build
       run: ninja -C build -v
+    # SDE is unreasonable slow, so only test the code which isn't
+    # already tested on Travis.
     - name: Test
       run: |
-        sde/sde64 -- ./build/test/run-tests --list | grep -oP '^/([^\/]+)/([^\/]+)' | sort -u | xargs parallel sde/sde64 -- ./build/test/run-tests --color always {} :::
+        echo /x86/{gfni,avx512dq} | sort -u | xargs parallel sde/sde64 -- ./build/test/run-tests --color always {} :::
     - name: Coverage Report
       run: ninja -C build -v coverage-xml
     - name: CodeCov.io
