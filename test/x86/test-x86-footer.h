@@ -1,13 +1,19 @@
 #if defined(SIMDE_TEST_BARE)
   int main(void) {
+    int retval = EXIT_SUCCESS;
+
+    fprintf(stdout, "1..%zu\n", (sizeof(test_suite_tests) / sizeof(test_suite_tests[0])));
     for (size_t i = 0 ; i < (sizeof(test_suite_tests) / sizeof(test_suite_tests[0])) ; i++) {
       int res = test_suite_tests[i]();
       if (res != 0) {
-        return res;
+        retval = EXIT_FAILURE;
+        fprintf(stdout, "not ok %zu " HEDLEY_STRINGIFY(SIMDE_TESTS_CURRENT_ISAX) "/%s\n", i + 1, test_suite_tests[i].name);
+      } else {
+        fprintf(stdout, "ok %zu " HEDLEY_STRINGIFY(SIMDE_TESTS_CURRENT_ISAX) "/%s\n", i + 1, test_suite_tests[i].name);
       }
     }
 
-    return 0;
+    return retval;
   }
 #else
   #if defined(__cplusplus)
