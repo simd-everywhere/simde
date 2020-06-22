@@ -849,6 +849,7 @@ test_simde_mm_bslli_si128(SIMDE_MUNIT_TEST_ARGS) {
                         INT8_C(  30), INT8_C( 114), INT8_C(  65), INT8_C(  26),
                         INT8_C(-121), INT8_C(   0), INT8_C(   0), INT8_C(   0));
   r = simde_mm_bslli_si128(a, 3);
+  simde_assert_m128i_i8(r, ==, e);
 
   e = simde_mm_set_epi8(INT8_C(  65), INT8_C(  26), INT8_C(-121), INT8_C(   0),
                         INT8_C(   0), INT8_C(   0), INT8_C(   0), INT8_C(   0),
