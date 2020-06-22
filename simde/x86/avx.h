@@ -375,7 +375,8 @@ simde_mm256_castps_pd (simde__m256 a) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_castps_pd(a) simde_mm256_castps_pd(a)
+  #undef _mm256_castps_pd
+  #define _mm256_castps_pd(a) simde_mm256_castps_pd(a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -388,7 +389,8 @@ simde_mm256_castps_si256 (simde__m256 a) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_castps_si256(a) simde_mm256_castps_si256(a)
+  #undef _mm256_castps_si256
+  #define _mm256_castps_si256(a) simde_mm256_castps_si256(a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -401,7 +403,8 @@ simde_mm256_castsi256_pd (simde__m256i a) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_castsi256_pd(a) simde_mm256_castsi256_pd(a)
+  #undef _mm256_castsi256_pd
+  #define _mm256_castsi256_pd(a) simde_mm256_castsi256_pd(a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -414,7 +417,8 @@ simde_mm256_castsi256_ps (simde__m256i a) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_castsi256_ps(a) simde_mm256_castsi256_ps(a)
+  #undef _mm256_castsi256_ps
+  #define _mm256_castsi256_ps(a) simde_mm256_castsi256_ps(a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -427,7 +431,8 @@ simde_mm256_castpd_ps (simde__m256d a) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_castpd_ps(a) simde_mm256_castpd_ps(a)
+  #undef _mm256_castpd_ps
+  #define _mm256_castpd_ps(a) simde_mm256_castpd_ps(a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -440,7 +445,8 @@ simde_mm256_castpd_si256 (simde__m256d a) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_castpd_si256(a) simde_mm256_castpd_si256(a)
+  #undef _mm256_castpd_si256
+  #define _mm256_castpd_si256(a) simde_mm256_castpd_si256(a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -464,7 +470,8 @@ simde_mm256_setzero_si256 (void) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_setzero_si256() simde_mm256_setzero_si256()
+  #undef _mm256_setzero_si256
+  #define _mm256_setzero_si256() simde_mm256_setzero_si256()
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -477,7 +484,8 @@ simde_mm256_setzero_ps (void) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_setzero_ps() simde_mm256_setzero_ps()
+  #undef _mm256_setzero_ps
+  #define _mm256_setzero_ps() simde_mm256_setzero_ps()
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -490,7 +498,8 @@ simde_mm256_setzero_pd (void) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_setzero_pd() simde_mm256_setzero_pd()
+  #undef _mm256_setzero_pd
+  #define _mm256_setzero_pd() simde_mm256_setzero_pd()
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -590,7 +599,8 @@ simde_mm256_set_epi8 (int8_t e31, int8_t e30, int8_t e29, int8_t e28,
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_set_epi8(e31, e30, e29, e28, e27, e26, e25, e24, e23, e22, e21, e20, e19, e18, e17, e16, e15, e14, e13, e12, e11, e10, e9, e8, e7, e6, e5, e4, e3, e2, e1, e0) \
+  #undef _mm256_set_epi8
+  #define _mm256_set_epi8(e31, e30, e29, e28, e27, e26, e25, e24, e23, e22, e21, e20, e19, e18, e17, e16, e15, e14, e13, e12, e11, e10, e9, e8, e7, e6, e5, e4, e3, e2, e1, e0) \
   simde_mm256_set_epi8(e31, e30, e29, e28, e27, e26, e25, e24, e23, e22, e21, e20, e19, e18, e17, e16, e15, e14, e13, e12, e11, e10, e9, e8, e7, e6, e5, e4, e3, e2, e1, e0)
 #endif
 
@@ -632,7 +642,8 @@ simde_mm256_set_epi16 (int16_t e15, int16_t e14, int16_t e13, int16_t e12,
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_set_epi16(e15, e14, e13, e12, e11, e10, e9, e8, e7, e6, e5, e4, e3, e2, e1, e0) \
+  #undef _mm256_set_epi16
+  #define _mm256_set_epi16(e15, e14, e13, e12, e11, e10, e9, e8, e7, e6, e5, e4, e3, e2, e1, e0) \
   simde_mm256_set_epi16(e15, e14, e13, e12, e11, e10, e9, e8, e7, e6, e5, e4, e3, e2, e1, e0)
 #endif
 
@@ -663,7 +674,8 @@ simde_mm256_set_epi32 (int32_t e7, int32_t e6, int32_t e5, int32_t e4,
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_set_epi32(e7, e6, e5, e4, e3, e2, e1, e0) \
+  #undef _mm256_set_epi32
+  #define _mm256_set_epi32(e7, e6, e5, e4, e3, e2, e1, e0) \
   simde_mm256_set_epi32(e7, e6, e5, e4, e3, e2, e1, e0)
 #endif
 
@@ -689,7 +701,8 @@ simde_mm256_set_epi64x (int64_t  e3, int64_t  e2, int64_t  e1, int64_t  e0) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_set_epi64x(e3, e2, e1, e0) simde_mm256_set_epi64x(e3, e2, e1, e0)
+  #undef _mm256_set_epi64x
+  #define _mm256_set_epi64x(e3, e2, e1, e0) simde_mm256_set_epi64x(e3, e2, e1, e0)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -837,7 +850,8 @@ simde_mm256_set_ps (simde_float32 e7, simde_float32 e6, simde_float32 e5, simde_
   #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_set_ps(e7, e6, e5, e4, e3, e2, e1, e0) \
+  #undef _mm256_set_ps
+  #define _mm256_set_ps(e7, e6, e5, e4, e3, e2, e1, e0) \
   simde_mm256_set_ps(e7, e6, e5, e4, e3, e2, e1, e0)
 #endif
 
@@ -863,7 +877,8 @@ simde_mm256_set_pd (simde_float64 e3, simde_float64 e2, simde_float64 e1, simde_
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_set_pd(e3, e2, e1, e0) \
+  #undef _mm256_set_pd
+  #define _mm256_set_pd(e3, e2, e1, e0) \
   simde_mm256_set_pd(e3, e2, e1, e0)
 #endif
 
@@ -895,7 +910,8 @@ simde_mm256_set_m128 (simde__m128 e1, simde__m128 e0) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_set_m128(e1, e0) simde_mm256_set_m128(e1, e0)
+  #undef _mm256_set_m128
+  #define _mm256_set_m128(e1, e0) simde_mm256_set_m128(e1, e0)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -923,7 +939,8 @@ simde_mm256_set_m128d (simde__m128d e1, simde__m128d e0) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_set_m128d(e1, e0) simde_mm256_set_m128d(e1, e0)
+  #undef _mm256_set_m128d
+  #define _mm256_set_m128d(e1, e0) simde_mm256_set_m128d(e1, e0)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -951,7 +968,8 @@ simde_mm256_set_m128i (simde__m128i e1, simde__m128i e0) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_set_m128i(e1, e0) simde_mm256_set_m128i(e1, e0)
+  #undef _mm256_set_m128i
+  #define _mm256_set_m128i(e1, e0) simde_mm256_set_m128i(e1, e0)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -976,7 +994,8 @@ simde_mm256_set1_epi8 (int8_t a) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_set1_epi8(a) simde_mm256_set1_epi8(a)
+  #undef _mm256_set1_epi8
+  #define _mm256_set1_epi8(a) simde_mm256_set1_epi8(a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -1001,7 +1020,8 @@ simde_mm256_set1_epi16 (int16_t a) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_set1_epi16(a) simde_mm256_set1_epi16(a)
+  #undef _mm256_set1_epi16
+  #define _mm256_set1_epi16(a) simde_mm256_set1_epi16(a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -1026,7 +1046,8 @@ simde_mm256_set1_epi32 (int32_t a) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_set1_epi32(a) simde_mm256_set1_epi32(a)
+  #undef _mm256_set1_epi32
+  #define _mm256_set1_epi32(a) simde_mm256_set1_epi32(a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -1051,7 +1072,8 @@ simde_mm256_set1_epi64x (int64_t a) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_set1_epi64x(a) simde_mm256_set1_epi64x(a)
+  #undef _mm256_set1_epi64x
+  #define _mm256_set1_epi64x(a) simde_mm256_set1_epi64x(a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -1076,7 +1098,8 @@ simde_mm256_set1_ps (simde_float32 a) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_set1_ps(a) simde_mm256_set1_ps(a)
+  #undef _mm256_set1_ps
+  #define _mm256_set1_ps(a) simde_mm256_set1_ps(a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -1101,7 +1124,8 @@ simde_mm256_set1_pd (simde_float64 a) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_set1_pd(a) simde_mm256_set1_pd(a)
+  #undef _mm256_set1_pd
+  #define _mm256_set1_pd(a) simde_mm256_set1_pd(a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -1131,7 +1155,8 @@ simde_mm256_add_ps (simde__m256 a, simde__m256 b) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_add_ps(a, b) simde_mm256_add_ps(a, b)
+  #undef _mm256_add_ps
+  #define _mm256_add_ps(a, b) simde_mm256_add_ps(a, b)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -1161,7 +1186,8 @@ simde_mm256_add_pd (simde__m256d a, simde__m256d b) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_add_pd(a, b) simde_mm256_add_pd(a, b)
+  #undef _mm256_add_pd
+  #define _mm256_add_pd(a, b) simde_mm256_add_pd(a, b)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -1190,7 +1216,8 @@ simde_mm256_addsub_ps (simde__m256 a, simde__m256 b) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_addsub_ps(a, b) simde_mm256_addsub_ps(a, b)
+  #undef _mm256_addsub_ps
+  #define _mm256_addsub_ps(a, b) simde_mm256_addsub_ps(a, b)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -1219,7 +1246,8 @@ simde_mm256_addsub_pd (simde__m256d a, simde__m256d b) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_addsub_pd(a, b) simde_mm256_addsub_pd(a, b)
+  #undef _mm256_addsub_pd
+  #define _mm256_addsub_pd(a, b) simde_mm256_addsub_pd(a, b)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -1249,7 +1277,8 @@ simde_mm256_and_ps (simde__m256 a, simde__m256 b) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_and_ps(a, b) simde_mm256_and_ps(a, b)
+  #undef _mm256_and_ps
+  #define _mm256_and_ps(a, b) simde_mm256_and_ps(a, b)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -1279,7 +1308,8 @@ simde_mm256_and_pd (simde__m256d a, simde__m256d b) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_and_pd(a, b) simde_mm256_and_pd(a, b)
+  #undef _mm256_and_pd
+  #define _mm256_and_pd(a, b) simde_mm256_and_pd(a, b)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -1309,7 +1339,8 @@ simde_mm256_andnot_ps (simde__m256 a, simde__m256 b) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_andnot_ps(a, b) simde_mm256_andnot_ps(a, b)
+  #undef _mm256_andnot_ps
+  #define _mm256_andnot_ps(a, b) simde_mm256_andnot_ps(a, b)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -1339,7 +1370,8 @@ simde_mm256_andnot_pd (simde__m256d a, simde__m256d b) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_andnot_pd(a, b) simde_mm256_andnot_pd(a, b)
+  #undef _mm256_andnot_pd
+  #define _mm256_andnot_pd(a, b) simde_mm256_andnot_pd(a, b)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -1367,7 +1399,8 @@ simde_mm256_blend_ps (simde__m256 a, simde__m256 b, const int imm8)
           simde_mm_blend_ps(simde_mm256_extractf128_ps(a, 0), simde_mm256_extractf128_ps(b, 0), (imm8) & 0x0F))
 #endif
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_blend_ps(a, b, imm8) simde_mm256_blend_ps(a, b, imm8)
+  #undef _mm256_blend_ps
+  #define _mm256_blend_ps(a, b, imm8) simde_mm256_blend_ps(a, b, imm8)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -1394,7 +1427,8 @@ simde_mm256_blend_pd (simde__m256d a, simde__m256d b, const int imm8)
           simde_mm_blend_pd(simde_mm256_extractf128_pd(a, 0), simde_mm256_extractf128_pd(b, 0), (imm8) & 3))
 #endif
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_blend_pd(a, b, imm8) simde_mm256_blend_pd(a, b, imm8)
+  #undef _mm256_blend_pd
+  #define _mm256_blend_pd(a, b, imm8) simde_mm256_blend_pd(a, b, imm8)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -1423,7 +1457,8 @@ simde_mm256_blendv_ps (simde__m256 a, simde__m256 b, simde__m256 mask) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_blendv_ps(a, b, imm8) simde_mm256_blendv_ps(a, b, imm8)
+  #undef _mm256_blendv_ps
+  #define _mm256_blendv_ps(a, b, imm8) simde_mm256_blendv_ps(a, b, imm8)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -1452,7 +1487,8 @@ simde_mm256_blendv_pd (simde__m256d a, simde__m256d b, simde__m256d mask) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_blendv_pd(a, b, imm8) simde_mm256_blendv_pd(a, b, imm8)
+  #undef _mm256_blendv_pd
+  #define _mm256_blendv_pd(a, b, imm8) simde_mm256_blendv_pd(a, b, imm8)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -1471,7 +1507,8 @@ simde_mm256_broadcast_pd (simde__m128d const * mem_addr) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_broadcast_pd(mem_addr) simde_mm256_broadcast_pd(mem_addr)
+  #undef _mm256_broadcast_pd
+  #define _mm256_broadcast_pd(mem_addr) simde_mm256_broadcast_pd(mem_addr)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -1490,7 +1527,8 @@ simde_mm256_broadcast_ps (simde__m128 const * mem_addr) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_broadcast_ps(mem_addr) simde_mm256_broadcast_ps(HEDLEY_REINTERPRET_CAST(simde__m128 const*, mem_addr))
+  #undef _mm256_broadcast_ps
+  #define _mm256_broadcast_ps(mem_addr) simde_mm256_broadcast_ps(HEDLEY_REINTERPRET_CAST(simde__m128 const*, mem_addr))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -1510,7 +1548,8 @@ simde_mm256_broadcast_sd (simde_float64 const * a) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_broadcast_sd(mem_addr) simde_mm256_broadcast_sd(HEDLEY_REINTERPRET_CAST(double const*, mem_addr))
+  #undef _mm256_broadcast_sd
+  #define _mm256_broadcast_sd(mem_addr) simde_mm256_broadcast_sd(HEDLEY_REINTERPRET_CAST(double const*, mem_addr))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -1530,7 +1569,8 @@ simde_mm_broadcast_ss (simde_float32 const * a) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm_broadcast_ss(mem_addr) simde_mm_broadcast_ss(mem_addr)
+  #undef _mm_broadcast_ss
+  #define _mm_broadcast_ss(mem_addr) simde_mm_broadcast_ss(mem_addr)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -1550,7 +1590,8 @@ simde_mm256_broadcast_ss (simde_float32 const * a) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_broadcast_ss(mem_addr) simde_mm256_broadcast_ss(mem_addr)
+  #undef _mm256_broadcast_ss
+  #define _mm256_broadcast_ss(mem_addr) simde_mm256_broadcast_ss(mem_addr)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -1568,7 +1609,8 @@ simde_mm256_castpd128_pd256 (simde__m128d a) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_castpd128_pd256(a) simde_mm256_castpd128_pd256(a)
+  #undef _mm256_castpd128_pd256
+  #define _mm256_castpd128_pd256(a) simde_mm256_castpd128_pd256(a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -1582,7 +1624,8 @@ simde_mm256_castpd256_pd128 (simde__m256d a) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_castpd256_pd128(a) simde_mm256_castpd256_pd128(a)
+  #undef _mm256_castpd256_pd128
+  #define _mm256_castpd256_pd128(a) simde_mm256_castpd256_pd128(a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -1600,7 +1643,8 @@ simde_mm256_castps128_ps256 (simde__m128 a) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_castps128_ps256(a) simde_mm256_castps128_ps256(a)
+  #undef _mm256_castps128_ps256
+  #define _mm256_castps128_ps256(a) simde_mm256_castps128_ps256(a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -1614,7 +1658,8 @@ simde_mm256_castps256_ps128 (simde__m256 a) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_castps256_ps128(a) simde_mm256_castps256_ps128(a)
+  #undef _mm256_castps256_ps128
+  #define _mm256_castps256_ps128(a) simde_mm256_castps256_ps128(a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -1632,7 +1677,8 @@ simde_mm256_castsi128_si256 (simde__m128i a) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_castsi128_si256(a) simde_mm256_castsi128_si256(a)
+  #undef _mm256_castsi128_si256
+  #define _mm256_castsi128_si256(a) simde_mm256_castsi128_si256(a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -1646,7 +1692,8 @@ simde_mm256_castsi256_si128 (simde__m256i a) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_castsi256_si128(a) simde_mm256_castsi256_si128(a)
+  #undef _mm256_castsi256_si128
+  #define _mm256_castsi256_si128(a) simde_mm256_castsi256_si128(a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -1707,7 +1754,8 @@ simde_mm256_round_ps (simde__m256 a, const int rounding) {
 #  define simde_mm256_round_ps(a, rounding) _mm256_round_ps(a, rounding)
 #endif
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_round_ps(a, rounding) simde_mm256_round_ps(a, rounding)
+  #undef _mm256_round_ps
+  #define _mm256_round_ps(a, rounding) simde_mm256_round_ps(a, rounding)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -1768,7 +1816,8 @@ simde_mm256_round_pd (simde__m256d a, const int rounding) {
 #  define simde_mm256_round_pd(a, rounding) _mm256_round_pd(a, rounding)
 #endif
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_round_pd(a, rounding) simde_mm256_round_pd(a, rounding)
+  #undef _mm256_round_pd
+  #define _mm256_round_pd(a, rounding) simde_mm256_round_pd(a, rounding)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -1777,7 +1826,8 @@ simde_mm256_ceil_pd (simde__m256d a) {
   return simde_mm256_round_pd(a, SIMDE_MM_FROUND_TO_POS_INF);
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_ceil_pd(a) simde_mm256_ceil_pd(a)
+  #undef _mm256_ceil_pd
+  #define _mm256_ceil_pd(a) simde_mm256_ceil_pd(a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -1786,7 +1836,8 @@ simde_mm256_ceil_ps (simde__m256 a) {
   return simde_mm256_round_ps(a, SIMDE_MM_FROUND_TO_POS_INF);
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_ceil_ps(a) simde_mm256_ceil_ps(a)
+  #undef _mm256_ceil_ps
+  #define _mm256_ceil_ps(a) simde_mm256_ceil_ps(a)
 #endif
 
 HEDLEY_DIAGNOSTIC_PUSH
@@ -1859,7 +1910,8 @@ simde_mm_cmp_pd (simde__m128d a, simde__m128d b, const int imm8)
 #  define simde_mm_cmp_pd(a, b, imm8) _mm_cmp_pd(a, b, imm8)
 #endif
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm_cmp_pd(a, b, imm8) simde_mm_cmp_pd(a, b, imm8)
+  #undef _mm_cmp_pd
+  #define _mm_cmp_pd(a, b, imm8) simde_mm_cmp_pd(a, b, imm8)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -1931,7 +1983,8 @@ simde_mm_cmp_ps (simde__m128 a, simde__m128 b, const int imm8)
 #  define simde_mm_cmp_ps(a, b, imm8) _mm_cmp_ps(a, b, imm8)
 #endif
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm_cmp_ps(a, b, imm8) simde_mm_cmp_ps(a, b, imm8)
+  #undef _mm_cmp_ps
+  #define _mm_cmp_ps(a, b, imm8) simde_mm_cmp_ps(a, b, imm8)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -2066,7 +2119,8 @@ simde_mm_cmp_sd (simde__m128d a, simde__m128d b, const int imm8)
 #  define simde_mm_cmp_sd(a, b, imm8) _mm_cmp_sd(a, b, imm8)
 #endif
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm_cmp_sd(a, b, imm8) simde_mm_cmp_sd(a, b, imm8)
+  #undef _mm_cmp_sd
+  #define _mm_cmp_sd(a, b, imm8) simde_mm_cmp_sd(a, b, imm8)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -2203,7 +2257,8 @@ simde_mm_cmp_ss (simde__m128 a, simde__m128 b, const int imm8)
 #  define simde_mm_cmp_ss(a, b, imm8) _mm_cmp_ss(a, b, imm8)
 #endif
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm_cmp_ss(a, b, imm8) simde_mm_cmp_ss(a, b, imm8)
+  #undef _mm_cmp_ss
+  #define _mm_cmp_ss(a, b, imm8) simde_mm_cmp_ss(a, b, imm8)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -2468,7 +2523,8 @@ simde_mm256_cmp_pd (simde__m256d a, simde__m256d b, const int imm8)
 #  define simde_mm256_cmp_pd(a, b, imm8) _mm256_cmp_pd(a, b, imm8)
 #endif
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_cmp_pd(a, b, imm8) simde_mm256_cmp_pd(a, b, imm8)
+  #undef _mm256_cmp_pd
+  #define _mm256_cmp_pd(a, b, imm8) simde_mm256_cmp_pd(a, b, imm8)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -2737,7 +2793,8 @@ simde_mm256_cmp_ps (simde__m256 a, simde__m256 b, const int imm8)
 #  define simde_mm256_cmp_ps(a, b, imm8) _mm256_cmp_ps(a, b, imm8)
 #endif
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_cmp_ps(a, b, imm8) simde_mm256_cmp_ps(a, b, imm8)
+  #undef _mm256_cmp_ps
+  #define _mm256_cmp_ps(a, b, imm8) simde_mm256_cmp_ps(a, b, imm8)
 #endif
 
 HEDLEY_DIAGNOSTIC_POP /* -Wfloat-equal */
@@ -2760,7 +2817,8 @@ simde_mm256_cvtepi32_pd (simde__m128i a) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_cvtepi32_pd(a) simde_mm256_cvtepi32_pd(a)
+  #undef _mm256_cvtepi32_pd
+  #define _mm256_cvtepi32_pd(a) simde_mm256_cvtepi32_pd(a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -2781,7 +2839,8 @@ simde_mm256_cvtepi32_ps (simde__m256i a) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_cvtepi32_ps(a) simde_mm256_cvtepi32_ps(a)
+  #undef _mm256_cvtepi32_ps
+  #define _mm256_cvtepi32_ps(a) simde_mm256_cvtepi32_ps(a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -2806,7 +2865,8 @@ simde_mm256_cvtpd_epi32 (simde__m256d a) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_cvtpd_epi32(a) simde_mm256_cvtpd_epi32(a)
+  #undef _mm256_cvtpd_epi32
+  #define _mm256_cvtpd_epi32(a) simde_mm256_cvtpd_epi32(a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -2827,7 +2887,8 @@ simde_mm256_cvtpd_ps (simde__m256d a) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_cvtpd_ps(a) simde_mm256_cvtpd_ps(a)
+  #undef _mm256_cvtpd_ps
+  #define _mm256_cvtpd_ps(a) simde_mm256_cvtpd_ps(a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -2852,7 +2913,8 @@ simde_mm256_cvtps_epi32 (simde__m256 a) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_cvtps_epi32(a) simde_mm256_cvtps_epi32(a)
+  #undef _mm256_cvtps_epi32
+  #define _mm256_cvtps_epi32(a) simde_mm256_cvtps_epi32(a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -2873,7 +2935,8 @@ simde_mm256_cvtps_pd (simde__m128 a) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_cvtps_pd(a) simde_mm256_cvtps_pd(a)
+  #undef _mm256_cvtps_pd
+  #define _mm256_cvtps_pd(a) simde_mm256_cvtps_pd(a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -2891,7 +2954,8 @@ simde_mm256_cvtsd_f64 (simde__m256d a) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_cvtsd_f64(a) simde_mm256_cvtsd_f64(a)
+  #undef _mm256_cvtsd_f64
+  #define _mm256_cvtsd_f64(a) simde_mm256_cvtsd_f64(a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -2908,7 +2972,8 @@ simde_mm256_cvtsi256_si32 (simde__m256i a) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_cvtsi256_si32(a) simde_mm256_cvtsi256_si32(a)
+  #undef _mm256_cvtsi256_si32
+  #define _mm256_cvtsi256_si32(a) simde_mm256_cvtsi256_si32(a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -2926,7 +2991,8 @@ simde_mm256_cvtss_f32 (simde__m256 a) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_cvtss_f32(a) simde_mm256_cvtss_f32(a)
+  #undef _mm256_cvtss_f32
+  #define _mm256_cvtss_f32(a) simde_mm256_cvtss_f32(a)
 #endif
 
 
@@ -2952,7 +3018,8 @@ simde_mm256_cvttpd_epi32 (simde__m256d a) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_cvttpd_epi32(a) simde_mm256_cvttpd_epi32(a)
+  #undef _mm256_cvttpd_epi32
+  #define _mm256_cvttpd_epi32(a) simde_mm256_cvttpd_epi32(a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -2977,7 +3044,8 @@ simde_mm256_cvttps_epi32 (simde__m256 a) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_cvttps_epi32(a) simde_mm256_cvttps_epi32(a)
+  #undef _mm256_cvttps_epi32
+  #define _mm256_cvttps_epi32(a) simde_mm256_cvttps_epi32(a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -3007,7 +3075,8 @@ simde_mm256_div_ps (simde__m256 a, simde__m256 b) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_div_ps(a, b) simde_mm256_div_ps(a, b)
+  #undef _mm256_div_ps
+  #define _mm256_div_ps(a, b) simde_mm256_div_ps(a, b)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -3037,7 +3106,8 @@ simde_mm256_div_pd (simde__m256d a, simde__m256d b) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_div_pd(a, b) simde_mm256_div_pd(a, b)
+  #undef _mm256_div_pd
+  #define _mm256_div_pd(a, b) simde_mm256_div_pd(a, b)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -3051,7 +3121,8 @@ simde_mm256_extractf128_pd (simde__m256d a, const int imm8)
 #  define simde_mm256_extractf128_pd(a, imm8) _mm256_extractf128_pd(a, imm8)
 #endif
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_extractf128_pd(a, imm8) simde_mm256_extractf128_pd(a, imm8)
+  #undef _mm256_extractf128_pd
+  #define _mm256_extractf128_pd(a, imm8) simde_mm256_extractf128_pd(a, imm8)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -3065,7 +3136,8 @@ simde_mm256_extractf128_ps (simde__m256 a, const int imm8)
 #  define simde_mm256_extractf128_ps(a, imm8) _mm256_extractf128_ps(a, imm8)
 #endif
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_extractf128_ps(a, imm8) simde_mm256_extractf128_ps(a, imm8)
+  #undef _mm256_extractf128_ps
+  #define _mm256_extractf128_ps(a, imm8) simde_mm256_extractf128_ps(a, imm8)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -3079,7 +3151,8 @@ simde_mm256_extractf128_si256 (simde__m256i a, const int imm8)
 #  define simde_mm256_extractf128_si256(a, imm8) _mm256_extractf128_si256(a, imm8)
 #endif
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_extractf128_si256(a, imm8) simde_mm256_extractf128_si256(a, imm8)
+  #undef _mm256_extractf128_si256
+  #define _mm256_extractf128_si256(a, imm8) simde_mm256_extractf128_si256(a, imm8)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -3088,7 +3161,8 @@ simde_mm256_floor_pd (simde__m256d a) {
   return simde_mm256_round_pd(a, SIMDE_MM_FROUND_TO_NEG_INF);
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_floor_pd(a) simde_mm256_floor_pd(a)
+  #undef _mm256_floor_pd
+  #define _mm256_floor_pd(a) simde_mm256_floor_pd(a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -3097,7 +3171,8 @@ simde_mm256_floor_ps (simde__m256 a) {
   return simde_mm256_round_ps(a, SIMDE_MM_FROUND_TO_NEG_INF);
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_floor_ps(a) simde_mm256_floor_ps(a)
+  #undef _mm256_floor_ps
+  #define _mm256_floor_ps(a) simde_mm256_floor_ps(a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -3124,7 +3199,8 @@ simde_mm256_hadd_ps (simde__m256 a, simde__m256 b) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_hadd_ps(a, b) simde_mm256_hadd_ps(a, b)
+  #undef _mm256_hadd_ps
+  #define _mm256_hadd_ps(a, b) simde_mm256_hadd_ps(a, b)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -3147,7 +3223,8 @@ simde_mm256_hadd_pd (simde__m256d a, simde__m256d b) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_hadd_pd(a, b) simde_mm256_hadd_pd(a, b)
+  #undef _mm256_hadd_pd
+  #define _mm256_hadd_pd(a, b) simde_mm256_hadd_pd(a, b)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -3174,7 +3251,8 @@ simde_mm256_hsub_ps (simde__m256 a, simde__m256 b) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_hsub_ps(a, b) simde_mm256_hsub_ps(a, b)
+  #undef _mm256_hsub_ps
+  #define _mm256_hsub_ps(a, b) simde_mm256_hsub_ps(a, b)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -3197,7 +3275,8 @@ simde_mm256_hsub_pd (simde__m256d a, simde__m256d b) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_hsub_pd(a, b) simde_mm256_hsub_pd(a, b)
+  #undef _mm256_hsub_pd
+  #define _mm256_hsub_pd(a, b) simde_mm256_hsub_pd(a, b)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -3214,6 +3293,7 @@ simde_mm256_insert_epi8 (simde__m256i a, int8_t i, const int index)
   #define simde_mm256_insert_epi8(a, i, index) _mm256_insert_epi8(a, i, index)
 #endif
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_insert_epi8
   #define _mm256_insert_epi8(a, i, index) simde_mm256_insert_epi8(a, i, index)
 #endif
 
@@ -3231,6 +3311,7 @@ simde_mm256_insert_epi16 (simde__m256i a, int16_t i, const int index)
   #define simde_mm256_insert_epi16(a, i, index) _mm256_insert_epi16(a, i, index)
 #endif
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_insert_epi16
   #define _mm256_insert_epi16(a, i, imm8) simde_mm256_insert_epi16(a, i, imm8)
 #endif
 
@@ -3248,6 +3329,7 @@ simde_mm256_insert_epi32 (simde__m256i a, int32_t i, const int index)
   #define simde_mm256_insert_epi32(a, i, index) _mm256_insert_epi32(a, i, index)
 #endif
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_insert_epi32
   #define _mm256_insert_epi32(a, i, index) simde_mm256_insert_epi32(a, i, index)
 #endif
 
@@ -3267,6 +3349,7 @@ simde_mm256_insert_epi64 (simde__m256i a, int64_t i, const int index)
   #endif
 #endif
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_insert_epi64
   #define _mm256_insert_epi64(a, i, index) simde_mm256_insert_epi64(a, i, index)
 #endif
 
@@ -3281,7 +3364,8 @@ simde__m256d simde_mm256_insertf128_pd(simde__m256d a, simde__m128d b, int imm8)
   return simde__m256d_from_private(a_);
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_insertf128_pd(a, b, imm8) simde_mm256_insertf128_pd(a, b, imm8)
+  #undef _mm256_insertf128_pd
+  #define _mm256_insertf128_pd(a, b, imm8) simde_mm256_insertf128_pd(a, b, imm8)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -3295,7 +3379,8 @@ simde__m256 simde_mm256_insertf128_ps(simde__m256 a, simde__m128 b, int imm8)
   return simde__m256_from_private(a_);
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_insertf128_ps(a, b, imm8) simde_mm256_insertf128_ps(a, b, imm8)
+  #undef _mm256_insertf128_ps
+  #define _mm256_insertf128_ps(a, b, imm8) simde_mm256_insertf128_ps(a, b, imm8)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -3309,7 +3394,8 @@ simde__m256i simde_mm256_insertf128_si256(simde__m256i a, simde__m128i b, int im
   return simde__m256i_from_private(a_);
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_insertf128_si256(a, b, imm8) simde_mm256_insertf128_si256(a, b, imm8)
+  #undef _mm256_insertf128_si256
+  #define _mm256_insertf128_si256(a, b, imm8) simde_mm256_insertf128_si256(a, b, imm8)
 #endif
 
 #if defined(SIMDE_X86_AVX_NATIVE)
@@ -3321,7 +3407,8 @@ simde__m256i simde_mm256_insertf128_si256(simde__m256i a, simde__m128i b, int im
       simde_mm_dp_ps(simde_mm256_extractf128_ps(a, 0), simde_mm256_extractf128_ps(b, 0), imm8))
 #endif
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_dp_ps(a, b, imm8) simde_mm256_dp_ps(a, b, imm8)
+  #undef _mm256_dp_ps
+  #define _mm256_dp_ps(a, b, imm8) simde_mm256_dp_ps(a, b, imm8)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -3335,6 +3422,7 @@ simde_mm256_extract_epi32 (simde__m256i a, const int index)
   #define simde_mm256_extract_epi32(a, index) _mm256_extract_epi32(a, index)
 #endif
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_extract_epi32
   #define _mm256_extract_epi32(a, index) simde_mm256_extract_epi32(a, index)
 #endif
 
@@ -3351,6 +3439,7 @@ simde_mm256_extract_epi64 (simde__m256i a, const int index)
   #endif
 #endif
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_extract_epi64
   #define _mm256_extract_epi64(a, index) simde_mm256_extract_epi64(a, index)
 #endif
 
@@ -3424,7 +3513,8 @@ simde_mm256_lddqu_si256 (simde__m256i const * a) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_lddqu_si256(a) simde_mm256_lddqu_si256(a)
+  #undef _mm256_lddqu_si256
+  #define _mm256_lddqu_si256(a) simde_mm256_lddqu_si256(a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -3441,7 +3531,8 @@ simde_mm256_load_pd (const double a[HEDLEY_ARRAY_PARAM(4)]) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_load_pd(a) simde_mm256_load_pd(a)
+  #undef _mm256_load_pd
+  #define _mm256_load_pd(a) simde_mm256_load_pd(a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -3458,7 +3549,8 @@ simde_mm256_load_ps (const float a[HEDLEY_ARRAY_PARAM(8)]) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_load_ps(a) simde_mm256_load_ps(a)
+  #undef _mm256_load_ps
+  #define _mm256_load_ps(a) simde_mm256_load_ps(a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -3475,7 +3567,8 @@ simde_mm256_load_si256 (simde__m256i const * mem_addr) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_load_si256(a) simde_mm256_load_si256(a)
+  #undef _mm256_load_si256
+  #define _mm256_load_si256(a) simde_mm256_load_si256(a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -3490,7 +3583,8 @@ simde_mm256_loadu_pd (const double a[HEDLEY_ARRAY_PARAM(4)]) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_loadu_pd(a) simde_mm256_loadu_pd(a)
+  #undef _mm256_loadu_pd
+  #define _mm256_loadu_pd(a) simde_mm256_loadu_pd(a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -3505,7 +3599,8 @@ simde_mm256_loadu_ps (const float a[HEDLEY_ARRAY_PARAM(8)]) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_loadu_ps(a) simde_mm256_loadu_ps(a)
+  #undef _mm256_loadu_ps
+  #define _mm256_loadu_ps(a) simde_mm256_loadu_ps(a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -3532,7 +3627,8 @@ simde_mm256_loadu_si256 (void const * mem_addr) {
   #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_loadu_si256(mem_addr) simde_mm256_loadu_si256(mem_addr)
+  #undef _mm256_loadu_si256
+  #define _mm256_loadu_si256(mem_addr) simde_mm256_loadu_si256(mem_addr)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -3547,7 +3643,8 @@ simde_mm256_loadu2_m128 (const float hiaddr[HEDLEY_ARRAY_PARAM(4)], const float 
   #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_loadu2_m128(hiaddr, loaddr) simde_mm256_loadu2_m128(hiaddr, loaddr)
+  #undef _mm256_loadu2_m128
+  #define _mm256_loadu2_m128(hiaddr, loaddr) simde_mm256_loadu2_m128(hiaddr, loaddr)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -3562,7 +3659,8 @@ simde_mm256_loadu2_m128d (const double hiaddr[HEDLEY_ARRAY_PARAM(2)], const doub
   #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_loadu2_m128d(hiaddr, loaddr) simde_mm256_loadu2_m128d(hiaddr, loaddr)
+  #undef _mm256_loadu2_m128d
+  #define _mm256_loadu2_m128d(hiaddr, loaddr) simde_mm256_loadu2_m128d(hiaddr, loaddr)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -3577,7 +3675,8 @@ simde_mm256_loadu2_m128i (const simde__m128i* hiaddr, const simde__m128i* loaddr
   #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_loadu2_m128i(hiaddr, loaddr) simde_mm256_loadu2_m128i(hiaddr, loaddr)
+  #undef _mm256_loadu2_m128i
+  #define _mm256_loadu2_m128i(hiaddr, loaddr) simde_mm256_loadu2_m128i(hiaddr, loaddr)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -3604,7 +3703,8 @@ simde_mm_maskload_pd (const simde_float64 mem_addr[HEDLEY_ARRAY_PARAM(4)], simde
   #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm_maskload_pd(mem_addr, mask) simde_mm_maskload_pd(HEDLEY_REINTERPRET_CAST(double const*, mem_addr), mask)
+  #undef _mm_maskload_pd
+  #define _mm_maskload_pd(mem_addr, mask) simde_mm_maskload_pd(HEDLEY_REINTERPRET_CAST(double const*, mem_addr), mask)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -3626,7 +3726,8 @@ simde_mm256_maskload_pd (const simde_float64 mem_addr[HEDLEY_ARRAY_PARAM(4)], si
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_maskload_pd(mem_addr, mask) simde_mm256_maskload_pd(HEDLEY_REINTERPRET_CAST(double const*, mem_addr), mask)
+  #undef _mm256_maskload_pd
+  #define _mm256_maskload_pd(mem_addr, mask) simde_mm256_maskload_pd(HEDLEY_REINTERPRET_CAST(double const*, mem_addr), mask)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -3653,7 +3754,8 @@ simde_mm_maskload_ps (const simde_float32 mem_addr[HEDLEY_ARRAY_PARAM(4)], simde
   #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm_maskload_ps(mem_addr, mask) simde_mm_maskload_ps(HEDLEY_REINTERPRET_CAST(float const*, mem_addr), mask)
+  #undef _mm_maskload_ps
+  #define _mm_maskload_ps(mem_addr, mask) simde_mm_maskload_ps(HEDLEY_REINTERPRET_CAST(float const*, mem_addr), mask)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -3675,7 +3777,8 @@ simde_mm256_maskload_ps (const simde_float32 mem_addr[HEDLEY_ARRAY_PARAM(4)], si
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_maskload_ps(mem_addr, mask) simde_mm256_maskload_ps(HEDLEY_REINTERPRET_CAST(float const*, mem_addr), mask)
+  #undef _mm256_maskload_ps
+  #define _mm256_maskload_ps(mem_addr, mask) simde_mm256_maskload_ps(HEDLEY_REINTERPRET_CAST(float const*, mem_addr), mask)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -3695,7 +3798,8 @@ simde_mm_maskstore_pd (simde_float64 mem_addr[HEDLEY_ARRAY_PARAM(2)], simde__m12
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm_maskstore_pd(mem_addr, mask, a) simde_mm_maskstore_pd(HEDLEY_REINTERPRET_CAST(double*, mem_addr), mask, a)
+  #undef _mm_maskstore_pd
+  #define _mm_maskstore_pd(mem_addr, mask, a) simde_mm_maskstore_pd(HEDLEY_REINTERPRET_CAST(double*, mem_addr), mask, a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -3715,7 +3819,8 @@ simde_mm256_maskstore_pd (simde_float64 mem_addr[HEDLEY_ARRAY_PARAM(4)], simde__
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_maskstore_pd(mem_addr, mask, a) simde_mm256_maskstore_pd(HEDLEY_REINTERPRET_CAST(double*, mem_addr), mask, a)
+  #undef _mm256_maskstore_pd
+  #define _mm256_maskstore_pd(mem_addr, mask, a) simde_mm256_maskstore_pd(HEDLEY_REINTERPRET_CAST(double*, mem_addr), mask, a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -3735,7 +3840,8 @@ simde_mm_maskstore_ps (simde_float32 mem_addr[HEDLEY_ARRAY_PARAM(4)], simde__m12
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm_maskstore_ps(mem_addr, mask, a) simde_mm_maskstore_ps(HEDLEY_REINTERPRET_CAST(float*, mem_addr), mask, a)
+  #undef _mm_maskstore_ps
+  #define _mm_maskstore_ps(mem_addr, mask, a) simde_mm_maskstore_ps(HEDLEY_REINTERPRET_CAST(float*, mem_addr), mask, a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -3755,7 +3861,8 @@ simde_mm256_maskstore_ps (simde_float32 mem_addr[HEDLEY_ARRAY_PARAM(8)], simde__
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_maskstore_ps(mem_addr, mask, a) simde_mm256_maskstore_ps(HEDLEY_REINTERPRET_CAST(float*, mem_addr), mask, a)
+  #undef _mm256_maskstore_ps
+  #define _mm256_maskstore_ps(mem_addr, mask, a) simde_mm256_maskstore_ps(HEDLEY_REINTERPRET_CAST(float*, mem_addr), mask, a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -3783,7 +3890,8 @@ simde_mm256_min_ps (simde__m256 a, simde__m256 b) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_min_ps(a, b) simde_mm256_min_ps(a, b)
+  #undef _mm256_min_ps
+  #define _mm256_min_ps(a, b) simde_mm256_min_ps(a, b)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -3811,7 +3919,8 @@ simde_mm256_min_pd (simde__m256d a, simde__m256d b) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_min_pd(a, b) simde_mm256_min_pd(a, b)
+  #undef _mm256_min_pd
+  #define _mm256_min_pd(a, b) simde_mm256_min_pd(a, b)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -3839,7 +3948,8 @@ simde_mm256_max_ps (simde__m256 a, simde__m256 b) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_max_ps(a, b) simde_mm256_max_ps(a, b)
+  #undef _mm256_max_ps
+  #define _mm256_max_ps(a, b) simde_mm256_max_ps(a, b)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -3867,7 +3977,8 @@ simde_mm256_max_pd (simde__m256d a, simde__m256d b) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_max_pd(a, b) simde_mm256_max_pd(a, b)
+  #undef _mm256_max_pd
+  #define _mm256_max_pd(a, b) simde_mm256_max_pd(a, b)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -3893,7 +4004,8 @@ simde_mm256_movedup_pd (simde__m256d a) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_movedup_pd(a) simde_mm256_movedup_pd(a)
+  #undef _mm256_movedup_pd
+  #define _mm256_movedup_pd(a) simde_mm256_movedup_pd(a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -3919,7 +4031,8 @@ simde_mm256_movehdup_ps (simde__m256 a) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_movehdup_ps(a) simde_mm256_movehdup_ps(a)
+  #undef _mm256_movehdup_ps
+  #define _mm256_movehdup_ps(a) simde_mm256_movehdup_ps(a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -3945,7 +4058,8 @@ simde_mm256_moveldup_ps (simde__m256 a) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_moveldup_ps(a) simde_mm256_moveldup_ps(a)
+  #undef _mm256_moveldup_ps
+  #define _mm256_moveldup_ps(a) simde_mm256_moveldup_ps(a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -3966,7 +4080,8 @@ simde_mm256_movemask_ps (simde__m256 a) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_movemask_ps(a) simde_mm256_movemask_ps(a)
+  #undef _mm256_movemask_ps
+  #define _mm256_movemask_ps(a) simde_mm256_movemask_ps(a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -3987,7 +4102,8 @@ simde_mm256_movemask_pd (simde__m256d a) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_movemask_pd(a) simde_mm256_movemask_pd(a)
+  #undef _mm256_movemask_pd
+  #define _mm256_movemask_pd(a) simde_mm256_movemask_pd(a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -4017,7 +4133,8 @@ simde_mm256_mul_ps (simde__m256 a, simde__m256 b) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_mul_ps(a, b) simde_mm256_mul_ps(a, b)
+  #undef _mm256_mul_ps
+  #define _mm256_mul_ps(a, b) simde_mm256_mul_ps(a, b)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -4047,7 +4164,8 @@ simde_mm256_mul_pd (simde__m256d a, simde__m256d b) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_mul_pd(a, b) simde_mm256_mul_pd(a, b)
+  #undef _mm256_mul_pd
+  #define _mm256_mul_pd(a, b) simde_mm256_mul_pd(a, b)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -4077,7 +4195,8 @@ simde_mm256_or_ps (simde__m256 a, simde__m256 b) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_or_ps(a, b) simde_mm256_or_ps(a, b)
+  #undef _mm256_or_ps
+  #define _mm256_or_ps(a, b) simde_mm256_or_ps(a, b)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -4107,7 +4226,8 @@ simde_mm256_or_pd (simde__m256d a, simde__m256d b) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_or_pd(a, b) simde_mm256_or_pd(a, b)
+  #undef _mm256_or_pd
+  #define _mm256_or_pd(a, b) simde_mm256_or_pd(a, b)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -4128,7 +4248,8 @@ simde_mm256_permute_ps (simde__m256 a, const int imm8) {
 #  define simde_mm256_permute_ps(a, imm8) _mm256_permute_ps(a, imm8)
 #endif
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_permute_ps(a, imm8) simde_mm256_permute_ps(a, imm8)
+  #undef _mm256_permute_ps
+  #define _mm256_permute_ps(a, imm8) simde_mm256_permute_ps(a, imm8)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -4149,7 +4270,8 @@ simde_mm256_permute_pd (simde__m256d a, const int imm8) {
 #  define simde_mm256_permute_pd(a, imm8) _mm256_permute_pd(a, imm8)
 #endif
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_permute_pd(a, imm8) simde_mm256_permute_pd(a, imm8)
+  #undef _mm256_permute_pd
+  #define _mm256_permute_pd(a, imm8) simde_mm256_permute_pd(a, imm8)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -4170,7 +4292,8 @@ simde_mm_permute_ps (simde__m128 a, const int imm8) {
 #  define simde_mm_permute_ps(a, imm8) _mm_permute_ps(a, imm8)
 #endif
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm_permute_ps(a, imm8) simde_mm_permute_ps(a, imm8)
+  #undef _mm_permute_ps
+  #define _mm_permute_ps(a, imm8) simde_mm_permute_ps(a, imm8)
 #endif
 
 
@@ -4192,7 +4315,8 @@ simde_mm_permute_pd (simde__m128d a, const int imm8) {
 #  define simde_mm_permute_pd(a, imm8) _mm_permute_pd(a, imm8)
 #endif
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm_permute_pd(a, imm8) simde_mm_permute_pd(a, imm8)
+  #undef _mm_permute_pd
+  #define _mm_permute_pd(a, imm8) simde_mm_permute_pd(a, imm8)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -4215,7 +4339,8 @@ simde_mm_permutevar_ps (simde__m128 a, simde__m128i b) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm_permutevar_ps(a, b) simde_mm_permutevar_ps(a, b)
+  #undef _mm_permutevar_ps
+  #define _mm_permutevar_ps(a, b) simde_mm_permutevar_ps(a, b)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -4238,7 +4363,8 @@ simde_mm_permutevar_pd (simde__m128d a, simde__m128i b) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm_permutevar_pd(a, b) simde_mm_permutevar_pd(a, b)
+  #undef _mm_permutevar_pd
+  #define _mm_permutevar_pd(a, b) simde_mm_permutevar_pd(a, b)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -4261,7 +4387,8 @@ simde_mm256_permutevar_ps (simde__m256 a, simde__m256i b) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_permutevar_ps(a, b) simde_mm256_permutevar_ps(a, b)
+  #undef _mm256_permutevar_ps
+  #define _mm256_permutevar_ps(a, b) simde_mm256_permutevar_ps(a, b)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -4284,7 +4411,8 @@ simde_mm256_permutevar_pd (simde__m256d a, simde__m256i b) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_permutevar_pd(a, b) simde_mm256_permutevar_pd(a, b)
+  #undef _mm256_permutevar_pd
+  #define _mm256_permutevar_pd(a, b) simde_mm256_permutevar_pd(a, b)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -4305,7 +4433,8 @@ simde_mm256_permute2f128_ps (simde__m256 a, simde__m256 b, const int imm8)
 #  define simde_mm256_permute2f128_ps(a, b, imm8) _mm256_permute2f128_ps(a, b, imm8)
 #endif
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_permute2f128_ps(a, b, imm8) simde_mm256_permute2f128_ps(a, b, imm8)
+  #undef _mm256_permute2f128_ps
+  #define _mm256_permute2f128_ps(a, b, imm8) simde_mm256_permute2f128_ps(a, b, imm8)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -4326,7 +4455,8 @@ simde_mm256_permute2f128_pd (simde__m256d a, simde__m256d b, const int imm8)
 #  define simde_mm256_permute2f128_pd(a, b, imm8) _mm256_permute2f128_pd(a, b, imm8)
 #endif
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_permute2f128_pd(a, b, imm8) simde_mm256_permute2f128_pd(a, b, imm8)
+  #undef _mm256_permute2f128_pd
+  #define _mm256_permute2f128_pd(a, b, imm8) simde_mm256_permute2f128_pd(a, b, imm8)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -4347,7 +4477,8 @@ simde_mm256_permute2f128_si256 (simde__m256i a, simde__m256i b, const int imm8)
 #  define simde_mm256_permute2f128_si128(a, b, imm8) _mm256_permute2f128_si128(a, b, imm8)
 #endif
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_permute2f128_si256(a, b, imm8) simde_mm256_permute2f128_si256(a, b, imm8)
+  #undef _mm256_permute2f128_si256
+  #define _mm256_permute2f128_si256(a, b, imm8) simde_mm256_permute2f128_si256(a, b, imm8)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -4375,7 +4506,8 @@ simde_mm256_rcp_ps (simde__m256 a) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_rcp_ps(a) simde_mm256_rcp_ps(a)
+  #undef _mm256_rcp_ps
+  #define _mm256_rcp_ps(a) simde_mm256_rcp_ps(a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -4401,7 +4533,8 @@ simde_mm256_rsqrt_ps (simde__m256 a) {
   #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_rsqrt_ps(a) simde_mm256_rsqrt_ps(a)
+  #undef _mm256_rsqrt_ps
+  #define _mm256_rsqrt_ps(a) simde_mm256_rsqrt_ps(a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -4426,7 +4559,8 @@ simde_mm256_setr_epi8 (
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_setr_epi8(e31, e30, e29, e28, e27, e26, e25, e24, e23, e22, e21, e20, e19, e18, e17, e16, e15, e14, e13, e12, e11, e10, e9, e8, e7, e6, e5, e4, e3, e2, e1, e0) \
+  #undef _mm256_setr_epi8
+  #define _mm256_setr_epi8(e31, e30, e29, e28, e27, e26, e25, e24, e23, e22, e21, e20, e19, e18, e17, e16, e15, e14, e13, e12, e11, e10, e9, e8, e7, e6, e5, e4, e3, e2, e1, e0) \
     simde_mm256_setr_epi8(e31, e30, e29, e28, e27, e26, e25, e24, e23, e22, e21, e20, e19, e18, e17, e16, e15, e14, e13, e12, e11, e10, e9, e8, e7, e6, e5, e4, e3, e2, e1, e0)
 #endif
 
@@ -4446,7 +4580,8 @@ simde_mm256_setr_epi16 (
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_setr_epi16(e15, e14, e13, e12, e11, e10, e9, e8, e7, e6, e5, e4, e3, e2, e1, e0) \
+  #undef _mm256_setr_epi16
+  #define _mm256_setr_epi16(e15, e14, e13, e12, e11, e10, e9, e8, e7, e6, e5, e4, e3, e2, e1, e0) \
     simde_mm256_setr_epi16(e15, e14, e13, e12, e11, e10, e9, e8, e7, e6, e5, e4, e3, e2, e1, e0)
 #endif
 
@@ -4461,7 +4596,8 @@ simde_mm256_setr_epi32 (
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_setr_epi32(e7, e6, e5, e4, e3, e2, e1, e0) \
+  #undef _mm256_setr_epi32
+  #define _mm256_setr_epi32(e7, e6, e5, e4, e3, e2, e1, e0) \
     simde_mm256_setr_epi32(e7, e6, e5, e4, e3, e2, e1, e0)
 #endif
 
@@ -4475,7 +4611,8 @@ simde_mm256_setr_epi64x (int64_t  e3, int64_t  e2, int64_t  e1, int64_t  e0) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_setr_epi64x(e3, e2, e1, e0) \
+  #undef _mm256_setr_epi64x
+  #define _mm256_setr_epi64x(e3, e2, e1, e0) \
     simde_mm256_setr_epi64x(e3, e2, e1, e0)
 #endif
 
@@ -4493,7 +4630,8 @@ simde_mm256_setr_ps (
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_setr_ps(e7, e6, e5, e4, e3, e2, e1, e0) \
+  #undef _mm256_setr_ps
+  #define _mm256_setr_ps(e7, e6, e5, e4, e3, e2, e1, e0) \
     simde_mm256_setr_ps(e7, e6, e5, e4, e3, e2, e1, e0)
 #endif
 
@@ -4507,7 +4645,8 @@ simde_mm256_setr_pd (simde_float64  e3, simde_float64  e2, simde_float64  e1, si
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_setr_pd(e3, e2, e1, e0) \
+  #undef _mm256_setr_pd
+  #define _mm256_setr_pd(e3, e2, e1, e0) \
     simde_mm256_setr_pd(e3, e2, e1, e0)
 #endif
 
@@ -4521,7 +4660,8 @@ simde_mm256_setr_m128 (simde__m128 lo, simde__m128 hi) {
   #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_setr_m128(lo, hi) \
+  #undef _mm256_setr_m128
+  #define _mm256_setr_m128(lo, hi) \
     simde_mm256_setr_m128(lo, hi)
 #endif
 
@@ -4535,7 +4675,8 @@ simde_mm256_setr_m128d (simde__m128d lo, simde__m128d hi) {
   #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_setr_m128d(lo, hi) \
+  #undef _mm256_setr_m128d
+  #define _mm256_setr_m128d(lo, hi) \
     simde_mm256_setr_m128d(lo, hi)
 #endif
 
@@ -4549,7 +4690,8 @@ simde_mm256_setr_m128i (simde__m128i lo, simde__m128i hi) {
   #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_setr_m128i(lo, hi) \
+  #undef _mm256_setr_m128i
+  #define _mm256_setr_m128i(lo, hi) \
     simde_mm256_setr_m128i(lo, hi)
 #endif
 
@@ -4582,7 +4724,8 @@ simde_mm256_shuffle_ps (simde__m256 a, simde__m256 b, const int imm8)
 #  define simde_mm256_shuffle_ps(a, b, imm8) _mm256_shuffle_ps(a, b, imm8)
 #endif
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_shuffle_ps(a, b, imm8) simde_mm256_shuffle_ps(a, b, imm8)
+  #undef _mm256_shuffle_ps
+  #define _mm256_shuffle_ps(a, b, imm8) simde_mm256_shuffle_ps(a, b, imm8)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -4605,7 +4748,8 @@ simde_mm256_shuffle_pd (simde__m256d a, simde__m256d b, const int imm8)
 #  define simde_mm256_shuffle_pd(a, b, imm8) _mm256_shuffle_pd(a, b, imm8)
 #endif
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_shuffle_pd(a, b, imm8) simde_mm256_shuffle_pd(a, b, imm8)
+  #undef _mm256_shuffle_pd
+  #define _mm256_shuffle_pd(a, b, imm8) simde_mm256_shuffle_pd(a, b, imm8)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -4634,7 +4778,8 @@ simde_mm256_sqrt_ps (simde__m256 a) {
   #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_sqrt_ps(a) simde_mm256_sqrt_ps(a)
+  #undef _mm256_sqrt_ps
+  #define _mm256_sqrt_ps(a) simde_mm256_sqrt_ps(a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -4663,7 +4808,8 @@ simde_mm256_sqrt_pd (simde__m256d a) {
   #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_sqrt_pd(a) simde_mm256_sqrt_pd(a)
+  #undef _mm256_sqrt_pd
+  #define _mm256_sqrt_pd(a) simde_mm256_sqrt_pd(a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -4678,7 +4824,8 @@ simde_mm256_store_ps (simde_float32 mem_addr[8], simde__m256 a) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_store_ps(mem_addr, a) simde_mm256_store_ps(HEDLEY_REINTERPRET_CAST(float*, mem_addr), a)
+  #undef _mm256_store_ps
+  #define _mm256_store_ps(mem_addr, a) simde_mm256_store_ps(HEDLEY_REINTERPRET_CAST(float*, mem_addr), a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -4693,7 +4840,8 @@ simde_mm256_store_pd (simde_float64 mem_addr[4], simde__m256d a) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_store_pd(mem_addr, a) simde_mm256_store_pd(HEDLEY_REINTERPRET_CAST(double*, mem_addr), a)
+  #undef _mm256_store_pd
+  #define _mm256_store_pd(mem_addr, a) simde_mm256_store_pd(HEDLEY_REINTERPRET_CAST(double*, mem_addr), a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -4708,7 +4856,8 @@ simde_mm256_store_si256 (simde__m256i* mem_addr, simde__m256i a) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_store_si256(mem_addr, a) simde_mm256_store_si256(mem_addr, a)
+  #undef _mm256_store_si256
+  #define _mm256_store_si256(mem_addr, a) simde_mm256_store_si256(mem_addr, a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -4721,7 +4870,8 @@ simde_mm256_storeu_ps (simde_float32 mem_addr[8], simde__m256 a) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_storeu_ps(mem_addr, a) simde_mm256_storeu_ps(HEDLEY_REINTERPRET_CAST(float*, mem_addr), a)
+  #undef _mm256_storeu_ps
+  #define _mm256_storeu_ps(mem_addr, a) simde_mm256_storeu_ps(HEDLEY_REINTERPRET_CAST(float*, mem_addr), a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -4734,7 +4884,8 @@ simde_mm256_storeu_pd (simde_float64 mem_addr[4], simde__m256d a) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_storeu_pd(mem_addr, a) simde_mm256_storeu_pd(HEDLEY_REINTERPRET_CAST(double*, mem_addr), a)
+  #undef _mm256_storeu_pd
+  #define _mm256_storeu_pd(mem_addr, a) simde_mm256_storeu_pd(HEDLEY_REINTERPRET_CAST(double*, mem_addr), a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -4747,7 +4898,8 @@ simde_mm256_storeu_si256 (simde__m256i* mem_addr, simde__m256i a) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_storeu_si256(mem_addr, a) simde_mm256_storeu_si256(mem_addr, a)
+  #undef _mm256_storeu_si256
+  #define _mm256_storeu_si256(mem_addr, a) simde_mm256_storeu_si256(mem_addr, a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -4761,7 +4913,8 @@ simde_mm256_storeu2_m128 (simde_float32 hi_addr[4], simde_float32 lo_addr[4], si
   #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_storeu2_m128(hi_addr, lo_addr, a) simde_mm256_storeu2_m128(hi_addr, lo_addr, a)
+  #undef _mm256_storeu2_m128
+  #define _mm256_storeu2_m128(hi_addr, lo_addr, a) simde_mm256_storeu2_m128(hi_addr, lo_addr, a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -4775,7 +4928,8 @@ simde_mm256_storeu2_m128d (simde_float64 hi_addr[2], simde_float64 lo_addr[2], s
   #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_storeu2_m128d(hi_addr, lo_addr, a) simde_mm256_storeu2_m128d(hi_addr, lo_addr, a)
+  #undef _mm256_storeu2_m128d
+  #define _mm256_storeu2_m128d(hi_addr, lo_addr, a) simde_mm256_storeu2_m128d(hi_addr, lo_addr, a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -4789,7 +4943,8 @@ simde_mm256_storeu2_m128i (simde__m128i* hi_addr, simde__m128i* lo_addr, simde__
   #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_storeu2_m128i(hi_addr, lo_addr, a) simde_mm256_storeu2_m128i(hi_addr, lo_addr, a)
+  #undef _mm256_storeu2_m128i
+  #define _mm256_storeu2_m128i(hi_addr, lo_addr, a) simde_mm256_storeu2_m128i(hi_addr, lo_addr, a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -4804,7 +4959,8 @@ simde_mm256_stream_ps (simde_float32 mem_addr[8], simde__m256 a) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_stream_ps(mem_addr, a) simde_mm256_stream_ps(HEDLEY_REINTERPRET_CAST(float*, mem_addr), a)
+  #undef _mm256_stream_ps
+  #define _mm256_stream_ps(mem_addr, a) simde_mm256_stream_ps(HEDLEY_REINTERPRET_CAST(float*, mem_addr), a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -4819,7 +4975,8 @@ simde_mm256_stream_pd (simde_float64 mem_addr[4], simde__m256d a) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_stream_pd(mem_addr, a) simde_mm256_stream_pd(HEDLEY_REINTERPRET_CAST(double*, mem_addr), a)
+  #undef _mm256_stream_pd
+  #define _mm256_stream_pd(mem_addr, a) simde_mm256_stream_pd(HEDLEY_REINTERPRET_CAST(double*, mem_addr), a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -4834,7 +4991,8 @@ simde_mm256_stream_si256 (simde__m256i* mem_addr, simde__m256i a) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_stream_si256(mem_addr, a) simde_mm256_stream_si256(mem_addr, a)
+  #undef _mm256_stream_si256
+  #define _mm256_stream_si256(mem_addr, a) simde_mm256_stream_si256(mem_addr, a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -4864,7 +5022,8 @@ simde_mm256_sub_ps (simde__m256 a, simde__m256 b) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_sub_ps(a, b) simde_mm256_sub_ps(a, b)
+  #undef _mm256_sub_ps
+  #define _mm256_sub_ps(a, b) simde_mm256_sub_ps(a, b)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -4894,7 +5053,8 @@ simde_mm256_sub_pd (simde__m256d a, simde__m256d b) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_sub_pd(a, b) simde_mm256_sub_pd(a, b)
+  #undef _mm256_sub_pd
+  #define _mm256_sub_pd(a, b) simde_mm256_sub_pd(a, b)
 #endif
 
 #if defined(SIMDE_DIAGNOSTIC_DISABLE_UNINITIALIZED_)
@@ -4919,7 +5079,8 @@ simde_mm256_undefined_ps (void) {
   return simde__m256_from_private(r_);
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_undefined_ps() simde_mm256_undefined_ps()
+  #undef _mm256_undefined_ps
+  #define _mm256_undefined_ps() simde_mm256_undefined_ps()
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -4939,7 +5100,8 @@ simde_mm256_undefined_pd (void) {
   return simde__m256d_from_private(r_);
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_undefined_pd() simde_mm256_undefined_pd()
+  #undef _mm256_undefined_pd
+  #define _mm256_undefined_pd() simde_mm256_undefined_pd()
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -4958,7 +5120,8 @@ simde_mm256_undefined_si256 (void) {
   return simde__m256i_from_private(r_);
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_undefined_si256() simde_mm256_undefined_si256()
+  #undef _mm256_undefined_si256
+  #define _mm256_undefined_si256() simde_mm256_undefined_si256()
 #endif
 
 #if defined(SIMDE_DIAGNOSTIC_DISABLE_UNINITIALIZED_)
@@ -4992,7 +5155,8 @@ simde_mm256_xor_ps (simde__m256 a, simde__m256 b) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_xor_ps(a, b) simde_mm256_xor_ps(a, b)
+  #undef _mm256_xor_ps
+  #define _mm256_xor_ps(a, b) simde_mm256_xor_ps(a, b)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -5022,7 +5186,8 @@ simde_mm256_xor_pd (simde__m256d a, simde__m256d b) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_xor_pd(a, b) simde_mm256_xor_pd(a, b)
+  #undef _mm256_xor_pd
+  #define _mm256_xor_pd(a, b) simde_mm256_xor_pd(a, b)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -5053,7 +5218,8 @@ simde_mm256_unpackhi_ps (simde__m256 a, simde__m256 b) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_unpackhi_ps(a, b) simde_mm256_unpackhi_ps(a, b)
+  #undef _mm256_unpackhi_ps
+  #define _mm256_unpackhi_ps(a, b) simde_mm256_unpackhi_ps(a, b)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -5080,7 +5246,8 @@ simde_mm256_unpackhi_pd (simde__m256d a, simde__m256d b) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_unpackhi_pd(a, b) simde_mm256_unpackhi_pd(a, b)
+  #undef _mm256_unpackhi_pd
+  #define _mm256_unpackhi_pd(a, b) simde_mm256_unpackhi_pd(a, b)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -5111,7 +5278,8 @@ simde_mm256_unpacklo_ps (simde__m256 a, simde__m256 b) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_unpacklo_ps(a, b) simde_mm256_unpacklo_ps(a, b)
+  #undef _mm256_unpacklo_ps
+  #define _mm256_unpacklo_ps(a, b) simde_mm256_unpacklo_ps(a, b)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -5138,7 +5306,8 @@ simde_mm256_unpacklo_pd (simde__m256d a, simde__m256d b) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_unpacklo_pd(a, b) simde_mm256_unpacklo_pd(a, b)
+  #undef _mm256_unpacklo_pd
+  #define _mm256_unpacklo_pd(a, b) simde_mm256_unpacklo_pd(a, b)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -5156,7 +5325,8 @@ simde_mm256_zextps128_ps256 (simde__m128 a) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_zextps128_ps256(a) simde_mm256_zextps128_ps256(a)
+  #undef _mm256_zextps128_ps256
+  #define _mm256_zextps128_ps256(a) simde_mm256_zextps128_ps256(a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -5174,7 +5344,8 @@ simde_mm256_zextpd128_pd256 (simde__m128d a) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_zextpd128_pd256(a) simde_mm256_zextpd128_pd256(a)
+  #undef _mm256_zextpd128_pd256
+  #define _mm256_zextpd128_pd256(a) simde_mm256_zextpd128_pd256(a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -5192,7 +5363,8 @@ simde_mm256_zextsi128_si256 (simde__m128i a) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_zextsi128_si256(a) simde_mm256_zextsi128_si256(a)
+  #undef _mm256_zextsi128_si256
+  #define _mm256_zextsi128_si256(a) simde_mm256_zextsi128_si256(a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -5215,7 +5387,8 @@ simde_mm_testc_ps (simde__m128 a, simde__m128 b) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm_testc_ps(a, b) simde_mm_testc_ps(a, b)
+  #undef _mm_testc_ps
+  #define _mm_testc_ps(a, b) simde_mm_testc_ps(a, b)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -5238,7 +5411,8 @@ simde_mm_testc_pd (simde__m128d a, simde__m128d b) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm_testc_pd(a, b) simde_mm_testc_pd(a, b)
+  #undef _mm_testc_pd
+  #define _mm_testc_pd(a, b) simde_mm_testc_pd(a, b)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -5261,7 +5435,8 @@ simde_mm256_testc_ps (simde__m256 a, simde__m256 b) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_testc_ps(a, b) simde_mm256_testc_ps(a, b)
+  #undef _mm256_testc_ps
+  #define _mm256_testc_ps(a, b) simde_mm256_testc_ps(a, b)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -5284,7 +5459,8 @@ simde_mm256_testc_pd (simde__m256d a, simde__m256d b) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_testc_pd(a, b) simde_mm256_testc_pd(a, b)
+  #undef _mm256_testc_pd
+  #define _mm256_testc_pd(a, b) simde_mm256_testc_pd(a, b)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -5307,7 +5483,8 @@ simde_mm256_testc_si256 (simde__m256i a, simde__m256i b) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_testc_si256(a, b) simde_mm256_testc_si256(a, b)
+  #undef _mm256_testc_si256
+  #define _mm256_testc_si256(a, b) simde_mm256_testc_si256(a, b)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -5330,7 +5507,8 @@ simde_mm_testz_ps (simde__m128 a, simde__m128 b) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm_testz_ps(a, b) simde_mm_testz_ps(a, b)
+  #undef _mm_testz_ps
+  #define _mm_testz_ps(a, b) simde_mm_testz_ps(a, b)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -5353,7 +5531,8 @@ simde_mm_testz_pd (simde__m128d a, simde__m128d b) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm_testz_pd(a, b) simde_mm_testz_pd(a, b)
+  #undef _mm_testz_pd
+  #define _mm_testz_pd(a, b) simde_mm_testz_pd(a, b)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -5376,7 +5555,8 @@ simde_mm256_testz_ps (simde__m256 a, simde__m256 b) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_testz_ps(a, b) simde_mm256_testz_ps(a, b)
+  #undef _mm256_testz_ps
+  #define _mm256_testz_ps(a, b) simde_mm256_testz_ps(a, b)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -5399,7 +5579,8 @@ simde_mm256_testz_pd (simde__m256d a, simde__m256d b) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_testz_pd(a, b) simde_mm256_testz_pd(a, b)
+  #undef _mm256_testz_pd
+  #define _mm256_testz_pd(a, b) simde_mm256_testz_pd(a, b)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -5428,7 +5609,8 @@ simde_mm256_testz_si256 (simde__m256i a, simde__m256i b) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_testz_si256(a, b) simde_mm256_testz_si256(a, b)
+  #undef _mm256_testz_si256
+  #define _mm256_testz_si256(a, b) simde_mm256_testz_si256(a, b)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -5453,7 +5635,8 @@ simde_mm_testnzc_ps (simde__m128 a, simde__m128 b) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm_testnzc_ps(a, b) simde_mm_testnzc_ps(a, b)
+  #undef _mm_testnzc_ps
+  #define _mm_testnzc_ps(a, b) simde_mm_testnzc_ps(a, b)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -5478,7 +5661,8 @@ simde_mm_testnzc_pd (simde__m128d a, simde__m128d b) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm_testnzc_pd(a, b) simde_mm_testnzc_pd(a, b)
+  #undef _mm_testnzc_pd
+  #define _mm_testnzc_pd(a, b) simde_mm_testnzc_pd(a, b)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -5503,7 +5687,8 @@ simde_mm256_testnzc_ps (simde__m256 a, simde__m256 b) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_testnzc_ps(a, b) simde_mm256_testnzc_ps(a, b)
+  #undef _mm256_testnzc_ps
+  #define _mm256_testnzc_ps(a, b) simde_mm256_testnzc_ps(a, b)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -5528,7 +5713,8 @@ simde_mm256_testnzc_pd (simde__m256d a, simde__m256d b) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_testnzc_pd(a, b) simde_mm256_testnzc_pd(a, b)
+  #undef _mm256_testnzc_pd
+  #define _mm256_testnzc_pd(a, b) simde_mm256_testnzc_pd(a, b)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -5551,7 +5737,8 @@ simde_mm256_testnzc_si256 (simde__m256i a, simde__m256i b) {
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-#  define _mm256_testnzc_si256(a, b) simde_mm256_testnzc_si256(a, b)
+  #undef _mm256_testnzc_si256
+  #define _mm256_testnzc_si256(a, b) simde_mm256_testnzc_si256(a, b)
 #endif
 
 SIMDE_END_DECLS_
