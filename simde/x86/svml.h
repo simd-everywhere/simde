@@ -3803,7 +3803,7 @@ simde_mm_idivrem_epi32 (simde__m128i* mem_addr, simde__m128i a, simde__m128i b) 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m256i
 simde_mm256_idivrem_epi32 (simde__m256i* mem_addr, simde__m256i a, simde__m256i b) {
-  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE2_NATIVE)
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX_NATIVE)
     return _mm256_idivrem_epi32(HEDLEY_REINTERPRET_CAST(__m256i*, mem_addr), a, b);
   #else
     simde__m256i r;
@@ -7147,7 +7147,7 @@ simde_mm_udivrem_epi32 (simde__m128i * mem_addr, simde__m128i a, simde__m128i b)
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m256i
 simde_mm256_udivrem_epi32 (simde__m256i* mem_addr, simde__m256i a, simde__m256i b) {
-  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE2_NATIVE)
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX_NATIVE)
     return _mm256_udivrem_epi32(HEDLEY_REINTERPRET_CAST(__m256i*, mem_addr), a, b);
   #else
     simde__m256i r;
