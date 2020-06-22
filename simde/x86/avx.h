@@ -223,9 +223,15 @@ typedef union {
 #endif
 
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-  typedef simde__m256 __m256;
-  typedef simde__m256i __m256i;
-  typedef simde__m256d __m256d;
+  #if !defined(HEDLEY_INTEL_VERSION)
+    typedef simde__m256 __m256;
+    typedef simde__m256i __m256i;
+    typedef simde__m256d __m256d;
+  #else
+    #define __m256 simde__m256
+    #define __m256i simde__m256i
+    #define __m256d simde__m256d
+  #endif
 #endif
 
 HEDLEY_STATIC_ASSERT(32 == sizeof(simde__m256), "simde__m256 size incorrect");

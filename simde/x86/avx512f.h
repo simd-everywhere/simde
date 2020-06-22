@@ -290,10 +290,15 @@ typedef union {
 #endif
 
 #if !defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_ENABLE_NATIVE_ALIASES)
-  #define SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES
-  typedef simde__m512 __m512;
-  typedef simde__m512i __m512i;
-  typedef simde__m512d __m512d;
+  #if !defined(HEDLEY_INTEL_VERSION)
+    typedef simde__m512 __m512;
+    typedef simde__m512i __m512i;
+    typedef simde__m512d __m512d;
+  #else
+    #define __m512 simde__m512
+    #define __m512i simde__m512i
+    #define __m512d simde__m512d
+  #endif
 #endif
 
 HEDLEY_STATIC_ASSERT(64 == sizeof(simde__m512), "simde__m512 size incorrect");
