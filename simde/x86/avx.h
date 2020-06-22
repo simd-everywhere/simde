@@ -324,7 +324,7 @@ simde__m256d_to_private(simde__m256d v) {
 #define SIMDE_CMP_GT_OQ    30
 #define SIMDE_CMP_TRUE_US  31
 
-#if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES) && !defined(_CMP_EQ_OQ)
 #define _CMP_EQ_OQ SIMDE_CMP_EQ_OQ
 #define _CMP_LT_OS SIMDE_CMP_LT_OS
 #define _CMP_LE_OS SIMDE_CMP_LE_OS
