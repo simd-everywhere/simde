@@ -2797,6 +2797,48 @@ simde_mm256_cmp_ps (simde__m256 a, simde__m256 b, const int imm8)
   #define _mm256_cmp_ps(a, b, imm8) simde_mm256_cmp_ps(a, b, imm8)
 #endif
 
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256
+simde_x_mm256_copysign_ps(simde__m256 dest, simde__m256 src) {
+  simde__m256_private
+    r_,
+    dest_ = simde__m256_to_private(dest),
+    src_ = simde__m256_to_private(src);
+
+  #if defined(simde_math_copysignf)
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
+      r_.f32[i] = simde_math_copysignf(dest_.f32[i], src_.f32[i]);
+    }
+  #else
+    simde__m256 sgnbit = simde_mm256_xor_ps(simde_mm256_set1_ps(SIMDE_FLOAT32_C(0.0)), simde_mm256_set1_ps(-SIMDE_FLOAT32_C(0.0)));
+    return simde_mm256_xor_ps(simde_mm256_and_ps(sgnbit, src), simde_mm256_andnot_ps(sgnbit, dest));
+  #endif
+
+  return simde__m256_from_private(r_);
+}
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256d
+simde_x_mm256_copysign_pd(simde__m256d dest, simde__m256d src) {
+  simde__m256d_private
+    r_,
+    dest_ = simde__m256d_to_private(dest),
+    src_ = simde__m256d_to_private(src);
+
+  #if defined(simde_math_copysignf)
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
+      r_.f64[i] = simde_math_copysignf(dest_.f64[i], src_.f64[i]);
+    }
+  #else
+    simde__m256d sgnbit = simde_mm256_xor_pd(simde_mm256_set1_pd(SIMDE_FLOAT64_C(0.0)), simde_mm256_set1_pd(-SIMDE_FLOAT64_C(0.0)));
+    return simde_mm256_xor_pd(simde_mm256_and_pd(sgnbit, src), simde_mm256_andnot_pd(sgnbit, dest));
+  #endif
+
+  return simde__m256d_from_private(r_);
+}
+
 HEDLEY_DIAGNOSTIC_POP /* -Wfloat-equal */
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -5189,6 +5231,52 @@ simde_mm256_xor_pd (simde__m256d a, simde__m256d b) {
   #undef _mm256_xor_pd
   #define _mm256_xor_pd(a, b) simde_mm256_xor_pd(a, b)
 #endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256
+simde_x_mm256_negate_ps(simde__m256 a) {
+  #if defined(SIMDE_X86_AVX_NATIVE)
+    return simde_mm256_xor_ps(a,_mm256_set1_ps(SIMDE_FLOAT32_C(-0.0)));
+  #else
+    simde__m256_private
+      r_,
+      a_ = simde__m256_to_private(a);
+
+    #if defined(SIMDE_VECTOR_OPS)
+      r_.f32 = -a_.f32;
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
+        r_.f32[i] = -a_.f32[i];
+      }
+    #endif
+
+    return simde__m256_from_private(r_);
+  #endif
+}
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256d
+simde_x_mm256_negate_pd(simde__m256d a) {
+  #if defined(SIMDE_X86_AVX2_NATIVE)
+    return simde_mm256_xor_pd(a, _mm256_set1_pd(SIMDE_FLOAT64_C(-0.0)));
+  #else
+    simde__m256d_private
+      r_,
+      a_ = simde__m256d_to_private(a);
+
+    #if defined(SIMDE_VECTOR_OPS)
+      r_.f64 = -a_.f64;
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
+        r_.f64[i] = -a_.f64[i];
+      }
+    #endif
+
+    return simde__m256d_from_private(r_);
+  #endif
+}
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m256
