@@ -125,6 +125,7 @@ set(TEST_SOURCES_C
   arm/neon/mull.c
   arm/neon/orr.c
   arm/neon/padd.c
+  arm/neon/paddl.c
   arm/neon/pmax.c
   arm/neon/pmin.c
   arm/neon/reinterpret.c

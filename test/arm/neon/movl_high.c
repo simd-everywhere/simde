@@ -116,7 +116,7 @@ test_simde_vmovl_high_s32 (SIMDE_MUNIT_TEST_ARGS) {
   return 0;
 }
 
-static uint
+static int
 test_simde_vmovl_high_u8 (SIMDE_MUNIT_TEST_ARGS) {
   struct {
     uint8_t a[16];
@@ -159,7 +159,7 @@ test_simde_vmovl_high_u8 (SIMDE_MUNIT_TEST_ARGS) {
   return 0;
 }
 
-static uint
+static int
 test_simde_vmovl_high_u16 (SIMDE_MUNIT_TEST_ARGS) {
   struct {
     uint16_t a[8];
@@ -194,7 +194,7 @@ test_simde_vmovl_high_u16 (SIMDE_MUNIT_TEST_ARGS) {
   return 0;
 }
 
-static uint
+static int
 test_simde_vmovl_high_u32 (SIMDE_MUNIT_TEST_ARGS) {
   struct {
     uint32_t a[4];
