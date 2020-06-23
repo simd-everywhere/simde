@@ -953,15 +953,15 @@ simde_mm_bslli_si128 (simde__m128i a, const int imm8)
     return simde_mm_setzero_si128();
   }
 
-  #if defined(SIMDE_POWER_ALTIVEC_P5_NATIVE) && defined(__BYTE_ORDER__)
+  #if defined(SIMDE_POWER_ALTIVEC_P5_NATIVE) && defined(SIMDE_ENDIAN_ORDER)
     r_.altivec_i8 =
-    #if (__BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__)
+    #if (SIMDE_ENDIAN_ORDER == SIMDE_ENDIAN_LITTLE)
       vec_slo
-    #else /* __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__ */
+    #else /* SIMDE_ENDIAN_ORDER == SIMDE_ENDIAN_BIG */
       vec_sro
     #endif
         (a_.altivec_i8, vec_splats(HEDLEY_STATIC_CAST(unsigned char, imm8 * 8)));
-  #elif defined(SIMDE_HAVE_INT128_) && defined(__BYTE_ORDER__) && (__BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__) && 0
+  #elif defined(SIMDE_HAVE_INT128_) && (SIMDE_ENDIAN_ORDER == SIMDE_ENDIAN_LITTLE) && 0
     r_.u128[0] = a_.u128[0] << s;
   #else
     r_ = simde__m128i_to_private(simde_mm_setzero_si128());
@@ -977,7 +977,7 @@ simde_mm_bslli_si128 (simde__m128i a, const int imm8)
 #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE) && !defined(__clang__)
 #  define simde_mm_bslli_si128(a, imm8) \
   simde__m128i_from_neon_i8(((imm8) <= 0) ? simde__m128i_to_neon_i8(a) : (((imm8) > 15) ? (vdupq_n_s8(0)) : (vextq_s8(vdupq_n_s8(0), simde__m128i_to_neon_i8(a), 16 - (imm8)))))
-#elif defined(SIMDE_SHUFFLE_VECTOR_) && !(defined(SIMDE_POWER_ALTIVEC_P5_NATIVE) && defined(__BYTE_ORDER__))
+#elif defined(SIMDE_SHUFFLE_VECTOR_) && !defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
   #define simde_mm_bslli_si128(a, imm8) (__extension__ ({ \
     const simde__m128i_private simde__tmp_a_ = simde__m128i_to_private(a); \
     const simde__m128i_private simde__tmp_z_ = simde__m128i_to_private(simde_mm_setzero_si128()); \
@@ -1026,11 +1026,11 @@ simde_mm_bsrli_si128 (simde__m128i a, const int imm8)
     return simde_mm_setzero_si128();
   }
 
-  #if defined(SIMDE_POWER_ALTIVEC_P5_NATIVE) && defined(__BYTE_ORDER__)
+  #if defined(SIMDE_POWER_ALTIVEC_P5_NATIVE) && defined(SIMDE_ENDIAN_ORDER)
     r_.altivec_i8 =
-    #if (__BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__)
+    #if (SIMDE_ENDIAN_ORDER == SIMDE_ENDIAN_LITTLE)
       vec_sro
-    #else /* __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__ */
+    #else /* SIMDE_ENDIAN_ORDER == SIMDE_ENDIAN_BIG */
       vec_slo
     #endif
         (a_.altivec_i8, vec_splats(HEDLEY_STATIC_CAST(unsigned char, imm8 * 8)));
@@ -1049,7 +1049,7 @@ simde_mm_bsrli_si128 (simde__m128i a, const int imm8)
 #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE) && !defined(__clang__)
 #  define simde_mm_bsrli_si128(a, imm8) \
   simde__m128i_from_neon_i8(((imm8 < 0) || (imm8 > 15)) ? vdupq_n_s8(0) : (vextq_s8(simde__m128i_to_private(a).neon_i8, vdupq_n_s8(0), ((imm8 & 15) != 0) ? imm8 : (imm8 & 15))))
-#elif defined(SIMDE_SHUFFLE_VECTOR_) && !(defined(SIMDE_POWER_ALTIVEC_P5_NATIVE) && defined(__BYTE_ORDER__))
+#elif defined(SIMDE_SHUFFLE_VECTOR_) && !defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
   #define simde_mm_bsrli_si128(a, imm8) (__extension__ ({ \
     const simde__m128i_private simde__tmp_a_ = simde__m128i_to_private(a); \
     const simde__m128i_private simde__tmp_z_ = simde__m128i_to_private(simde_mm_setzero_si128()); \
@@ -3224,10 +3224,10 @@ simde_mm_movemask_epi8 (simde__m128i a) {
     //                      d2
     // Note: Little endian would return the correct value 4b (01001011) instead.
     r = vgetq_lane_u8(paired64, 0) | (HEDLEY_STATIC_CAST(int32_t, vgetq_lane_u8(paired64, 8)) << 8);
-#elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE) && !defined(HEDLEY_IBM_VERSION) && defined(__BYTE_ORDER__) && (__BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__)
+#elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE) && !defined(HEDLEY_IBM_VERSION) && (SIMDE_ENDIAN_ORDER == SIMDE_ENDIAN_LITTLE)
   static const SIMDE_POWER_ALTIVEC_VECTOR(unsigned char) perm = { 120, 112, 104, 96, 88, 80, 72, 64, 56, 48, 40, 32, 24, 16, 8, 0 };
   r = HEDLEY_STATIC_CAST(int32_t, vec_extract(vec_vbpermq(a_.altivec_u8, perm), 1));
-#elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE) && !defined(HEDLEY_IBM_VERSION) && defined(__BYTE_ORDER__) && (__BYTE_ORDER__ == __ORDER_BIG_ENDIAN__)
+#elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE) && !defined(HEDLEY_IBM_VERSION) && (SIMDE_ENDIAN_ORDER == SIMDE_ENDIAN_BIG)
   static const SIMDE_POWER_ALTIVEC_VECTOR(unsigned char) perm = { 120, 112, 104, 96, 88, 80, 72, 64, 56, 48, 40, 32, 24, 16, 8, 0 };
   r = HEDLEY_STATIC_CAST(int32_t, vec_extract(vec_vbpermq(a_.altivec_u8, perm), 14));
 #else
