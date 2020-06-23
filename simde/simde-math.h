@@ -412,11 +412,11 @@
 
 #if !defined(simde_math_copysign)
   #if SIMDE_MATH_BUILTIN_LIBM(copysign)
-    #define simde_math_copysign(v) __builtin_copysign(v)
+    #define simde_math_copysign(x, y) __builtin_copysign(x, y)
   #elif defined(SIMDE_MATH_HAVE_CMATH)
-    #define simde_math_copysign(v) std::copysign(v)
+    #define simde_math_copysign(x, y) std::copysign(x, y)
   #elif defined(SIMDE_MATH_HAVE_MATH_H)
-    #define simde_math_copysign(v) copysign(v)
+    #define simde_math_copysign(x, y) copysign(x, y)
   #endif
 #endif
 

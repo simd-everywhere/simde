@@ -281,24 +281,7 @@ simde_mm_hadd_pd (simde__m128d a, simde__m128d b) {
 #if defined(SIMDE_X86_SSE3_NATIVE)
   return _mm_hadd_pd(a, b);
 #else
-  simde__m128d_private
-    r_,
-    a_ = simde__m128d_to_private(a),
-    b_ = simde__m128d_to_private(b);
-
-  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
-    simde_float64 res[2] = { vaddvq_f64(a_.neon_f64), vaddvq_f64(b_.neon_f64)};
-    r_.neon_f64 = vld1q_f64(res);
-  #elif defined(SIMDE_ASSUME_VECTORIZATION) && defined(SIMDE_SHUFFLE_VECTOR_)
-    r_.f64 =
-      SIMDE_SHUFFLE_VECTOR_(64, 16, a_.f64, b_.f64, 0, 2) +
-      SIMDE_SHUFFLE_VECTOR_(64, 16, a_.f64, b_.f64, 1, 3);
-  #else
-    r_.f64[0] = a_.f64[0] + a_.f64[1];
-    r_.f64[1] = b_.f64[0] + b_.f64[1];
-  #endif
-
-  return simde__m128d_from_private(r_);
+  return simde_mm_add_pd(simde_x_mm_deinterleaveeven_pd(a, b), simde_x_mm_deinterleaveodd_pd(a, b));
 #endif
 }
 #if defined(SIMDE_X86_SSE3_ENABLE_NATIVE_ALIASES)
@@ -311,31 +294,7 @@ simde_mm_hadd_ps (simde__m128 a, simde__m128 b) {
 #if defined(SIMDE_X86_SSE3_NATIVE)
   return _mm_hadd_ps(a, b);
 #else
-  simde__m128_private
-    r_,
-    a_ = simde__m128_to_private(a),
-    b_ = simde__m128_to_private(b);
-
-  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
-    r_.f32 = vpaddq_f32(a_.neon_f32, b_.neon_f32);
-  #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-    float32x2_t a10 = vget_low_f32(a_.neon_f32);
-    float32x2_t a32 = vget_high_f32(a_.neon_f32);
-    float32x2_t b10 = vget_low_f32(b_.neon_f32);
-    float32x2_t b32 = vget_high_f32(b_.neon_f32);
-    r_.neon_f32 = vcombine_f32(vpadd_f32(a10, a32), vpadd_f32(b10, b32));
-  #elif defined(SIMDE_ASSUME_VECTORIZATION) && defined(SIMDE_SHUFFLE_VECTOR_)
-    r_.f32 =
-      SIMDE_SHUFFLE_VECTOR_(32, 16, a_.f32, b_.f32, 0, 2, 4, 6) +
-      SIMDE_SHUFFLE_VECTOR_(32, 16, a_.f32, b_.f32, 1, 3, 5, 7);
-  #else
-    r_.f32[0] = a_.f32[0] + a_.f32[1];
-    r_.f32[1] = a_.f32[2] + a_.f32[3];
-    r_.f32[2] = b_.f32[0] + b_.f32[1];
-    r_.f32[3] = b_.f32[2] + b_.f32[3];
-  #endif
-
-  return simde__m128_from_private(r_);
+  return simde_mm_add_ps(simde_x_mm_deinterleaveeven_ps(a, b), simde_x_mm_deinterleaveodd_ps(a, b));
 #endif
 }
 #if defined(SIMDE_X86_SSE3_ENABLE_NATIVE_ALIASES)
@@ -348,21 +307,7 @@ simde_mm_hsub_pd (simde__m128d a, simde__m128d b) {
 #if defined(SIMDE_X86_SSE3_NATIVE)
   return _mm_hsub_pd(a, b);
 #else
-  simde__m128d_private
-    r_,
-    a_ = simde__m128d_to_private(a),
-    b_ = simde__m128d_to_private(b);
-
-  #if defined(SIMDE_ASSUME_VECTORIZATION) && defined(SIMDE_SHUFFLE_VECTOR_)
-    r_.f64 =
-      SIMDE_SHUFFLE_VECTOR_(64, 16, a_.f64, b_.f64, 0, 2) -
-      SIMDE_SHUFFLE_VECTOR_(64, 16, a_.f64, b_.f64, 1, 3);
-  #else
-    r_.f64[0] = a_.f64[0] - a_.f64[1];
-    r_.f64[1] = b_.f64[0] - b_.f64[1];
-  #endif
-
-  return simde__m128d_from_private(r_);
+  return simde_mm_sub_pd(simde_x_mm_deinterleaveeven_pd(a, b), simde_x_mm_deinterleaveodd_pd(a, b));
 #endif
 }
 #if defined(SIMDE_X86_SSE3_ENABLE_NATIVE_ALIASES)
@@ -375,25 +320,7 @@ simde_mm_hsub_ps (simde__m128 a, simde__m128 b) {
 #if defined(SIMDE_X86_SSE3_NATIVE)
   return _mm_hsub_ps(a, b);
 #else
-  simde__m128_private
-    r_,
-    a_ = simde__m128_to_private(a),
-    b_ = simde__m128_to_private(b);
-
-#if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
-  r_.f32 = vsubq_f32(vuzp1q_f32(a_.neon_f32, b_.neon_f32), vuzp2q_f32(a_.neon_f32, b_.neon_f32));
-#elif defined(SIMDE_ASSUME_VECTORIZATION) && defined(SIMDE_SHUFFLE_VECTOR_)
-  r_.f32 =
-    SIMDE_SHUFFLE_VECTOR_(32, 16, a_.f32, b_.f32, 0, 2, 4, 6) -
-    SIMDE_SHUFFLE_VECTOR_(32, 16, a_.f32, b_.f32, 1, 3, 5, 7);
-#else
-  r_.f32[0] = a_.f32[0] - a_.f32[1];
-  r_.f32[1] = a_.f32[2] - a_.f32[3];
-  r_.f32[2] = b_.f32[0] - b_.f32[1];
-  r_.f32[3] = b_.f32[2] - b_.f32[3];
-#endif
-
-  return simde__m128_from_private(r_);
+  return simde_mm_sub_ps(simde_x_mm_deinterleaveeven_ps(a, b), simde_x_mm_deinterleaveodd_ps(a, b));
 #endif
 }
 #if defined(SIMDE_X86_SSE3_ENABLE_NATIVE_ALIASES)

@@ -4382,11 +4382,11 @@ simde_mm_erfinv_pd (simde__m128d a) {
     a = simde_mm_mul_pd(simde_mm_sub_pd(one, a), simde_mm_add_pd(one, a));
     simde__m128d lnx = simde_mm_log_pd(a);
 
-    simde__m128d tt1 = simde_mm_mul_pd(simde_mm_set1_pd(HEDLEY_STATIC_CAST(simde_float32, SIMDE_MATH_PI)), simde_mm_set1_pd(SIMDE_FLOAT32_C(0.147)));
-    tt1 = simde_mm_div_pd(simde_mm_set1_pd(SIMDE_FLOAT32_C(2.0)), tt1);
-    tt1 = simde_mm_add_pd(tt1, simde_mm_mul_pd(simde_mm_set1_pd(SIMDE_FLOAT32_C(0.5)), lnx));
+    simde__m128d tt1 = simde_mm_mul_pd(simde_mm_set1_pd(SIMDE_MATH_PI), simde_mm_set1_pd(SIMDE_FLOAT64_C(0.147)));
+    tt1 = simde_mm_div_pd(simde_mm_set1_pd(SIMDE_FLOAT64_C(2.0)), tt1);
+    tt1 = simde_mm_add_pd(tt1, simde_mm_mul_pd(simde_mm_set1_pd(SIMDE_FLOAT64_C(0.5)), lnx));
 
-    simde__m128d tt2 = simde_mm_set1_pd(SIMDE_FLOAT32_C(1.0) / SIMDE_FLOAT32_C(0.147));
+    simde__m128d tt2 = simde_mm_set1_pd(SIMDE_FLOAT64_C(1.0) / SIMDE_FLOAT64_C(0.147));
     tt2 = simde_mm_mul_pd(tt2, lnx);
 
     simde__m128d r = simde_mm_mul_pd(tt1, tt1);
@@ -4470,11 +4470,11 @@ simde_mm256_erfinv_pd (simde__m256d a) {
     a = simde_mm256_mul_pd(simde_mm256_sub_pd(one, a), simde_mm256_add_pd(one, a));
     simde__m256d lnx = simde_mm256_log_pd(a);
 
-    simde__m256d tt1 = simde_mm256_mul_pd(simde_mm256_set1_pd(HEDLEY_STATIC_CAST(simde_float32, SIMDE_MATH_PI)), simde_mm256_set1_pd(SIMDE_FLOAT32_C(0.147)));
-    tt1 = simde_mm256_div_pd(simde_mm256_set1_pd(SIMDE_FLOAT32_C(2.0)), tt1);
-    tt1 = simde_mm256_add_pd(tt1, simde_mm256_mul_pd(simde_mm256_set1_pd(SIMDE_FLOAT32_C(0.5)), lnx));
+    simde__m256d tt1 = simde_mm256_mul_pd(simde_mm256_set1_pd(SIMDE_MATH_PI), simde_mm256_set1_pd(SIMDE_FLOAT64_C(0.147)));
+    tt1 = simde_mm256_div_pd(simde_mm256_set1_pd(SIMDE_FLOAT64_C(2.0)), tt1);
+    tt1 = simde_mm256_add_pd(tt1, simde_mm256_mul_pd(simde_mm256_set1_pd(SIMDE_FLOAT64_C(0.5)), lnx));
 
-    simde__m256d tt2 = simde_mm256_set1_pd(SIMDE_FLOAT32_C(1.0) / SIMDE_FLOAT32_C(0.147));
+    simde__m256d tt2 = simde_mm256_set1_pd(SIMDE_FLOAT64_C(1.0) / SIMDE_FLOAT64_C(0.147));
     tt2 = simde_mm256_mul_pd(tt2, lnx);
 
     simde__m256d r = simde_mm256_mul_pd(tt1, tt1);

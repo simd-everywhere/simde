@@ -2826,10 +2826,10 @@ simde_x_mm256_copysign_pd(simde__m256d dest, simde__m256d src) {
     dest_ = simde__m256d_to_private(dest),
     src_ = simde__m256d_to_private(src);
 
-  #if defined(simde_math_copysignf)
+  #if defined(simde_math_copysign)
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
-      r_.f64[i] = simde_math_copysignf(dest_.f64[i], src_.f64[i]);
+      r_.f64[i] = simde_math_copysign(dest_.f64[i], src_.f64[i]);
     }
   #else
     simde__m256d sgnbit = simde_mm256_xor_pd(simde_mm256_set1_pd(SIMDE_FLOAT64_C(0.0)), simde_mm256_set1_pd(-SIMDE_FLOAT64_C(0.0)));
