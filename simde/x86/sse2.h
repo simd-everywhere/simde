@@ -953,7 +953,15 @@ simde_mm_bslli_si128 (simde__m128i a, const int imm8)
     return simde_mm_setzero_si128();
   }
 
-  #if defined(SIMDE_HAVE_INT128_) && defined(__BYTE_ORDER__) && (__BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__) && 0
+  #if defined(SIMDE_POWER_ALTIVEC_P5_NATIVE) && defined(__BYTE_ORDER__)
+    r_.altivec_i8 =
+    #if (__BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__)
+      vec_slo
+    #else /* __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__ */
+      vec_sro
+    #endif
+        (a_.altivec_i8, vec_splats(HEDLEY_STATIC_CAST(unsigned char, imm8 * 8)));
+  #elif defined(SIMDE_HAVE_INT128_) && defined(__BYTE_ORDER__) && (__BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__) && 0
     r_.u128[0] = a_.u128[0] << s;
   #else
     r_ = simde__m128i_to_private(simde_mm_setzero_si128());
@@ -969,13 +977,7 @@ simde_mm_bslli_si128 (simde__m128i a, const int imm8)
 #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE) && !defined(__clang__)
 #  define simde_mm_bslli_si128(a, imm8) \
   simde__m128i_from_neon_i8(((imm8) <= 0) ? simde__m128i_to_neon_i8(a) : (((imm8) > 15) ? (vdupq_n_s8(0)) : (vextq_s8(vdupq_n_s8(0), simde__m128i_to_neon_i8(a), 16 - (imm8)))))
-#elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE) && defined(__BYTE_ORDER__) && (__BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__)
-  #define simde_mm_bslli_si128(a, imm8) simde__m128i_from_altivec_u8(((imm8) >= 16) ? vec_splat_u8(0) : \
-    vec_slo(simde__m128i_to_altivec_u8(a), vec_splats(HEDLEY_STATIC_CAST(unsigned char, (imm8) * 8))))
-#elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE) && defined(__BYTE_ORDER__) && (__BYTE_ORDER__ == __ORDER_BIG_ENDIAN__)
-  #define simde_mm_bslli_si128(a, imm8) simde__m128i_from_altivec_u8(((imm8) >= 16) ? vec_splat_u8(0) : \
-    vec_sro(simde__m128i_to_altivec_u8(a), vec_splats(HEDLEY_STATIC_CAST(unsigned char, (imm8) * 8))))
-#elif defined(SIMDE_SHUFFLE_VECTOR_)
+#elif defined(SIMDE_SHUFFLE_VECTOR_) && !(defined(SIMDE_POWER_ALTIVEC_P5_NATIVE) && defined(__BYTE_ORDER__))
   #define simde_mm_bslli_si128(a, imm8) (__extension__ ({ \
     const simde__m128i_private simde__tmp_a_ = simde__m128i_to_private(a); \
     const simde__m128i_private simde__tmp_z_ = simde__m128i_to_private(simde_mm_setzero_si128()); \
@@ -1020,11 +1022,25 @@ simde_mm_bsrli_si128 (simde__m128i a, const int imm8)
     r_,
     a_ = simde__m128i_to_private(a);
 
-  SIMDE_VECTORIZE
-  for (size_t i = 0 ; i < (sizeof(r_.i8) / sizeof(r_.i8[0])) ; i++) {
-    const int e = HEDLEY_STATIC_CAST(int, i) + imm8;
-    r_.i8[i] = (e < 16) ? a_.i8[e] : 0;
+  if (HEDLEY_UNLIKELY((imm8 & ~15))) {
+    return simde_mm_setzero_si128();
   }
+
+  #if defined(SIMDE_POWER_ALTIVEC_P5_NATIVE) && defined(__BYTE_ORDER__)
+    r_.altivec_i8 =
+    #if (__BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__)
+      vec_sro
+    #else /* __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__ */
+      vec_slo
+    #endif
+        (a_.altivec_i8, vec_splats(HEDLEY_STATIC_CAST(unsigned char, imm8 * 8)));
+  #else
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.i8) / sizeof(r_.i8[0])) ; i++) {
+      const int e = HEDLEY_STATIC_CAST(int, i) + imm8;
+      r_.i8[i] = (e < 16) ? a_.i8[e] : 0;
+    }
+  #endif
 
   return simde__m128i_from_private(r_);
 }
@@ -1033,13 +1049,7 @@ simde_mm_bsrli_si128 (simde__m128i a, const int imm8)
 #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE) && !defined(__clang__)
 #  define simde_mm_bsrli_si128(a, imm8) \
   simde__m128i_from_neon_i8(((imm8 < 0) || (imm8 > 15)) ? vdupq_n_s8(0) : (vextq_s8(simde__m128i_to_private(a).neon_i8, vdupq_n_s8(0), ((imm8 & 15) != 0) ? imm8 : (imm8 & 15))))
-#elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE) && defined(__BYTE_ORDER__) && (__BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__)
-  #define simde_mm_bsrli_si128(a, imm8) simde__m128i_from_altivec_u8(((imm8) >= 16) ? vec_splat_u8(0) : \
-    vec_sro(simde__m128i_to_altivec_u8(a), vec_splats(HEDLEY_STATIC_CAST(unsigned char, (imm8) * 8))))
-#elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE) && defined(__BYTE_ORDER__) && (__BYTE_ORDER__ == __ORDER_BIG_ENDIAN__)
-  #define simde_mm_bsrli_si128(a, imm8) simde__m128i_from_altivec_u8(((imm8) >= 16) ? vec_splat_u8(0) : \
-    vec_slo(simde__m128i_to_altivec_u8(a), vec_splats(HEDLEY_STATIC_CAST(unsigned char, (imm8) * 8))))
-#elif defined(SIMDE_SHUFFLE_VECTOR_)
+#elif defined(SIMDE_SHUFFLE_VECTOR_) && !(defined(SIMDE_POWER_ALTIVEC_P5_NATIVE) && defined(__BYTE_ORDER__))
   #define simde_mm_bsrli_si128(a, imm8) (__extension__ ({ \
     const simde__m128i_private simde__tmp_a_ = simde__m128i_to_private(a); \
     const simde__m128i_private simde__tmp_z_ = simde__m128i_to_private(simde_mm_setzero_si128()); \
