@@ -974,6 +974,25 @@
   #define simde_math_cdfnormf simde_math_cdfnormf
 #endif
 
+#if !defined(simde_math_erfinvf) && defined(simde_math_logf) && defined(simde_math_copysignf) && defined(simde_math_sqrtf)
+  static HEDLEY_INLINE
+  float
+  simde_math_erfinvf(float x) {
+    /* https://stackoverflow.com/questions/27229371/inverse-error-function-in-c */
+    float tt1, tt2, lnx;
+    float sgn = simde_math_copysignf(1.0f, x);
+
+    x = (1.0f - x) * (1.0f + x);
+    lnx = simde_math_logf(x);
+
+    tt1 = 2.0f / (HEDLEY_STATIC_CAST(float, SIMDE_MATH_PI) * 0.147f) + 0.5f * lnx;
+    tt2 = (1.0f / 0.147f) * lnx;
+
+    return sgn * simde_math_sqrtf(-tt1 + simde_math_sqrtf(tt1 * tt1 - tt2));
+  }
+  #define simde_math_erfinvf simde_math_erfinvf
+#endif
+
 static HEDLEY_INLINE
 double
 simde_math_rad2deg(double radians) {

@@ -4327,6 +4327,51 @@ simde_mm512_mask_log_pd(simde__m512d src, simde__mmask8 k, simde__m512d a) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128
+simde_mm_erfinv_ps (simde__m128 a) {
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE_NATIVE)
+    return _mm_erfinv_ps(a);
+  #elif defined(SIMDE_ASSUME_VECTORIZATION)
+    /* https://stackoverflow.com/questions/27229371/inverse-error-function-in-c */
+    simde__m128 one = simde_mm_set1_ps(1.0f);
+    simde__m128 sgn = simde_x_mm_copysign_ps(one, a);
+
+    a = simde_mm_mul_ps(simde_mm_sub_ps(one, a), simde_mm_add_ps(one, a));
+    simde__m128 lnx = simde_mm_log_ps(a);
+
+    simde__m128 tt1 = simde_mm_mul_ps(simde_mm_set1_ps(HEDLEY_STATIC_CAST(simde_float32, SIMDE_MATH_PI)), simde_mm_set1_ps(SIMDE_FLOAT32_C(0.147)));
+    tt1 = simde_mm_div_ps(simde_mm_set1_ps(SIMDE_FLOAT32_C(2.0)), tt1);
+    tt1 = simde_mm_add_ps(tt1, simde_mm_mul_ps(simde_mm_set1_ps(SIMDE_FLOAT32_C(0.5)), lnx));
+
+    simde__m128 tt2 = simde_mm_set1_ps(SIMDE_FLOAT32_C(1.0) / SIMDE_FLOAT32_C(0.147));
+    tt2 = simde_mm_mul_ps(tt2, lnx);
+
+    simde__m128 r = simde_mm_mul_ps(tt1, tt1);
+    r = simde_mm_sub_ps(r, tt2);
+    r = simde_mm_sqrt_ps(r);
+    r = simde_mm_add_ps(simde_x_mm_negate_ps(tt1), r);
+    r = simde_mm_sqrt_ps(r);
+
+    return simde_mm_mul_ps(sgn, r);
+  #else
+    simde__m128_private
+      a_ = simde__m128_to_private(a),
+      r_;
+
+    SIMDE_VECTORIZE
+    for (int i = 0 ; i < 4 ; i++) {
+      r_.f32[i] = simde_math_erfinvf(a_.f32[i]);
+    }
+
+    return simde__m128_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
+  #undef _mm_erfinv_ps
+  #define _mm_erfinv_ps(a) simde_mm_erfinv_ps(a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m128
 simde_mm_logb_ps (simde__m128 a) {
   #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE_NATIVE)
     return _mm_logb_ps(a);
