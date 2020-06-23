@@ -250,26 +250,6 @@
   #endif
 #endif
 
-#if !defined(simde_math_cbrt)
-  #if SIMDE_MATH_BUILTIN_LIBM(cbrt)
-    #define simde_math_cbrt(v) __builtin_cbrt(v)
-  #elif defined(SIMDE_MATH_HAVE_CMATH)
-    #define simde_math_cbrt(v) std::cbrt(v)
-  #elif defined(SIMDE_MATH_HAVE_MATH_H)
-    #define simde_math_cbrt(v) cbrt(v)
-  #endif
-#endif
-
-#if !defined(simde_math_cbrtf)
-  #if SIMDE_MATH_BUILTIN_LIBM(cbrtf)
-    #define simde_math_cbrtf(v) __builtin_cbrtf(v)
-  #elif defined(SIMDE_MATH_HAVE_CMATH)
-    #define simde_math_cbrtf(v) std::cbrt(v)
-  #elif defined(SIMDE_MATH_HAVE_MATH_H)
-    #define simde_math_cbrtf(v) cbrtf(v)
-  #endif
-#endif
-
 #if !defined(simde_math_acosh)
   #if SIMDE_MATH_BUILTIN_LIBM(acosh)
     #define simde_math_acosh(v) __builtin_acosh(v)
@@ -390,6 +370,26 @@
   #endif
 #endif
 
+#if !defined(simde_math_cbrt)
+  #if SIMDE_MATH_BUILTIN_LIBM(cbrt)
+    #define simde_math_cbrt(v) __builtin_cbrt(v)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_cbrt(v) std::cbrt(v)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_cbrt(v) cbrt(v)
+  #endif
+#endif
+
+#if !defined(simde_math_cbrtf)
+  #if SIMDE_MATH_BUILTIN_LIBM(cbrtf)
+    #define simde_math_cbrtf(v) __builtin_cbrtf(v)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_cbrtf(v) std::cbrt(v)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_cbrtf(v) cbrtf(v)
+  #endif
+#endif
+
 #if !defined(simde_math_ceil)
   #if SIMDE_MATH_BUILTIN_LIBM(ceil)
     #define simde_math_ceil(v) __builtin_ceil(v)
@@ -407,6 +407,26 @@
     #define simde_math_ceilf(v) std::ceil(v)
   #elif defined(SIMDE_MATH_HAVE_MATH_H)
     #define simde_math_ceilf(v) ceilf(v)
+  #endif
+#endif
+
+#if !defined(simde_math_copysign)
+  #if SIMDE_MATH_BUILTIN_LIBM(copysign)
+    #define simde_math_copysign(v) __builtin_copysign(v)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_copysign(v) std::copysign(v)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_copysign(v) copysign(v)
+  #endif
+#endif
+
+#if !defined(simde_math_copysignf)
+  #if SIMDE_MATH_BUILTIN_LIBM(copysignf)
+    #define simde_math_copysignf(x, y) __builtin_copysignf(x, y)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_copysignf(x, y) std::copysignf(x, y)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_copysignf(x, y) copysignf(x, y)
   #endif
 #endif
 

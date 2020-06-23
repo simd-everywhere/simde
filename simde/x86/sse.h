@@ -1522,6 +1522,27 @@ simde_mm_comineq_ss (simde__m128 a, simde__m128 b) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128
+simde_x_mm_copysign_ps(simde__m128 dest, simde__m128 src) {
+  simde__m128_private
+    r_,
+    dest_ = simde__m128_to_private(dest),
+    src_ = simde__m128_to_private(src);
+
+  #if defined(simde_math_copysignf)
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
+      r_.f32[i] = simde_math_copysignf(dest_.f32[i], src_.f32[i]);
+    }
+  #else
+    simde__m128 sgnbit = simde_mm_xor_ps(simde_mm_set1_ps(SIMDE_FLOAT32_C(0.0)), simde_mm_set1_ps(-SIMDE_FLOAT32_C(0.0)));
+    return simde_mm_xor_ps(simde_mm_and_ps(sgnbit, src), simde_mm_andnot_ps(sgnbit, dest));
+  #endif
+  
+  return simde__m128_from_private(r_);
+}
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m128
 simde_mm_cvt_pi2ps (simde__m128 a, simde__m64 b) {
 #if defined(SIMDE_X86_SSE_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
   return _mm_cvt_pi2ps(a, b);
@@ -2875,10 +2896,11 @@ SIMDE_FUNCTION_ATTRIBUTES
 void
 simde_mm_prefetch (char const* p, int i) {
   #if defined(HEDLEY_GCC_VERSION)
-  __builtin_prefetch(p);
+    __builtin_prefetch(p);
   #else
-  (void) p;
+    (void) p;
   #endif
+
   (void) i;
 }
 #if defined(SIMDE_X86_SSE_NATIVE)
@@ -2887,6 +2909,35 @@ simde_mm_prefetch (char const* p, int i) {
 #if defined(SIMDE_X86_SSE_ENABLE_NATIVE_ALIASES)
 #  define _mm_prefetch(p, i) simde_mm_prefetch(p, i)
 #endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m128
+simde_x_mm_negate_ps(simde__m128 a) {
+  #if defined(SIMDE_X86_SSE_NATIVE)
+    return simde_mm_xor_ps(a, _mm_set1_ps(SIMDE_FLOAT32_C(-0.0)));
+  #else
+    simde__m128_private
+      r_,
+      a_ = simde__m128_to_private(a);
+  
+    #if defined(SIMDE_POWER_ALTIVEC_P9_NATIVE)
+      r_.altivec_f32 = vec_neg(a_.altivec_f32);
+    #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+      r_.neon_f32 = vnegq_f32(a_.neon_f32);
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+      r_.wasm_v128 = wasm_f32x4_neg(a_.wasm_v128);
+    #elif defined(SIMDE_VECTOR_OPS)
+      r_.f32 = -a_.f32;
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
+        r_.f32[i] = -a_.f32[i];
+      }
+    #endif
+    
+    return simde__m128_from_private(r_);
+  #endif
+}
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128
