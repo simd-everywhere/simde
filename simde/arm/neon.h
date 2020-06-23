@@ -53,6 +53,7 @@
 #include "neon/mull.h"
 #include "neon/orr.h"
 #include "neon/padd.h"
+#include "neon/paddl.h"
 #include "neon/pmax.h"
 #include "neon/pmin.h"
 #include "neon/reinterpret.h"
