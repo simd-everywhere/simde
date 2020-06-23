@@ -1220,6 +1220,27 @@ simde_mm_comineq_sd (simde__m128d a, simde__m128d b) {
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
+simde__m128d
+simde_x_mm_copysign_pd(simde__m128d dest, simde__m128d src) {
+  simde__m128d_private
+    r_,
+    dest_ = simde__m128d_to_private(dest),
+    src_ = simde__m128d_to_private(src);
+
+  #if defined(simde_math_copysignf)
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
+      r_.f64[i] = simde_math_copysignf(dest_.f64[i], src_.f64[i]);
+    }
+  #else
+    simde__m128d sgnbit = simde_mm_xor_pd(simde_mm_set1_pd(SIMDE_FLOAT64_C(0.0)), simde_mm_set1_pd(-SIMDE_FLOAT64_C(0.0)));
+    return simde_mm_xor_pd(simde_mm_and_pd(sgnbit, src), simde_mm_andnot_pd(sgnbit, dest));
+  #endif
+
+  return simde__m128d_from_private(r_);
+}
+
+SIMDE_FUNCTION_ATTRIBUTES
 simde__m128
 simde_mm_castpd_ps (simde__m128d a) {
 #if defined(SIMDE_X86_SSE2_NATIVE)
@@ -6557,6 +6578,35 @@ simde_mm_xor_pd (simde__m128d a, simde__m128d b) {
 #if defined(SIMDE_X86_SSE2_ENABLE_NATIVE_ALIASES)
 #  define _mm_xor_pd(a, b) simde_mm_xor_pd(a, b)
 #endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m128d
+simde_x_mm_negate_pd(simde__m128d a) {
+  #if defined(SIMDE_X86_SSE_NATIVE)
+    return simde_mm_xor_pd(a, _mm_set1_pd(SIMDE_FLOAT64_C(-0.0)));
+  #else
+    simde__m128d_private
+      r_,
+      a_ = simde__m128d_to_private(a);
+
+    #if defined(SIMDE_POWER_ALTIVEC_P9_NATIVE)
+      r_.altivec_f64 = vec_neg(a_.altivec_f64);
+    #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+      r_.neon_f64 = vnegq_f64(a_.neon_f64);
+    #elif defined(SIMDE_WASM_SIMD128d_NATIVE)
+      r_.wasm_v128d = wasm_f64x2_neg(a_.wasm_v128d);
+    #elif defined(SIMDE_VECTOR_OPS)
+      r_.f64 = -a_.f64;
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
+        r_.f64[i] = -a_.f64[i];
+      }
+    #endif
+
+    return simde__m128d_from_private(r_);
+  #endif
+}
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128i

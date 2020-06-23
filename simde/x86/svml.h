@@ -4332,7 +4332,7 @@ simde_mm_erfinv_ps (simde__m128 a) {
     return _mm_erfinv_ps(a);
   #elif defined(SIMDE_ASSUME_VECTORIZATION)
     /* https://stackoverflow.com/questions/27229371/inverse-error-function-in-c */
-    simde__m128 one = simde_mm_set1_ps(1.0f);
+    simde__m128 one = simde_mm_set1_ps(SIMDE_FLOAT32_C(1.0));
     simde__m128 sgn = simde_x_mm_copysign_ps(one, a);
 
     a = simde_mm_mul_ps(simde_mm_sub_ps(one, a), simde_mm_add_ps(one, a));
@@ -4358,7 +4358,7 @@ simde_mm_erfinv_ps (simde__m128 a) {
       r_;
 
     SIMDE_VECTORIZE
-    for (int i = 0 ; i < 4 ; i++) {
+    for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
       r_.f32[i] = simde_math_erfinvf(a_.f32[i]);
     }
 
@@ -4368,6 +4368,138 @@ simde_mm_erfinv_ps (simde__m128 a) {
 #if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
   #undef _mm_erfinv_ps
   #define _mm_erfinv_ps(a) simde_mm_erfinv_ps(a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m128d
+simde_mm_erfinv_pd (simde__m128d a) {
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE_NATIVE)
+    return _mm_erfinv_pd(a);
+  #elif defined(SIMDE_ASSUME_VECTORIZATION)
+    simde__m128d one = simde_mm_set1_pd(SIMDE_FLOAT64_C(1.0));
+    simde__m128d sgn = simde_x_mm_copysign_pd(one, a);
+
+    a = simde_mm_mul_pd(simde_mm_sub_pd(one, a), simde_mm_add_pd(one, a));
+    simde__m128d lnx = simde_mm_log_pd(a);
+
+    simde__m128d tt1 = simde_mm_mul_pd(simde_mm_set1_pd(HEDLEY_STATIC_CAST(simde_float32, SIMDE_MATH_PI)), simde_mm_set1_pd(SIMDE_FLOAT32_C(0.147)));
+    tt1 = simde_mm_div_pd(simde_mm_set1_pd(SIMDE_FLOAT32_C(2.0)), tt1);
+    tt1 = simde_mm_add_pd(tt1, simde_mm_mul_pd(simde_mm_set1_pd(SIMDE_FLOAT32_C(0.5)), lnx));
+
+    simde__m128d tt2 = simde_mm_set1_pd(SIMDE_FLOAT32_C(1.0) / SIMDE_FLOAT32_C(0.147));
+    tt2 = simde_mm_mul_pd(tt2, lnx);
+
+    simde__m128d r = simde_mm_mul_pd(tt1, tt1);
+    r = simde_mm_sub_pd(r, tt2);
+    r = simde_mm_sqrt_pd(r);
+    r = simde_mm_add_pd(simde_x_mm_negate_pd(tt1), r);
+    r = simde_mm_sqrt_pd(r);
+
+    return simde_mm_mul_pd(sgn, r);
+  #else
+    simde__m128d_private
+      a_ = simde__m128d_to_private(a),
+      r_;
+
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
+      r_.f64[i] = simde_math_erfinv(a_.f64[i]);
+    }
+
+    return simde__m128d_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
+  #undef _mm_erfinv_pd
+  #define _mm_erfinv_pd(a) simde_mm_erfinv_pd(a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256
+simde_mm256_erfinv_ps (simde__m256 a) {
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX_NATIVE)
+    return _mm256_erfinv_ps(a);
+  #elif defined(SIMDE_ASSUME_VECTORIZATION)
+    simde__m256 one = simde_mm256_set1_ps(SIMDE_FLOAT32_C(1.0));
+    simde__m256 sgn = simde_x_mm256_copysign_ps(one, a);
+
+    a = simde_mm256_mul_ps(simde_mm256_sub_ps(one, a), simde_mm256_add_ps(one, a));
+    simde__m256 lnx = simde_mm256_log_ps(a);
+
+    simde__m256 tt1 = simde_mm256_mul_ps(simde_mm256_set1_ps(HEDLEY_STATIC_CAST(simde_float32, SIMDE_MATH_PI)), simde_mm256_set1_ps(SIMDE_FLOAT32_C(0.147)));
+    tt1 = simde_mm256_div_ps(simde_mm256_set1_ps(SIMDE_FLOAT32_C(2.0)), tt1);
+    tt1 = simde_mm256_add_ps(tt1, simde_mm256_mul_ps(simde_mm256_set1_ps(SIMDE_FLOAT32_C(0.5)), lnx));
+
+    simde__m256 tt2 = simde_mm256_set1_ps(SIMDE_FLOAT32_C(1.0) / SIMDE_FLOAT32_C(0.147));
+    tt2 = simde_mm256_mul_ps(tt2, lnx);
+
+    simde__m256 r = simde_mm256_mul_ps(tt1, tt1);
+    r = simde_mm256_sub_ps(r, tt2);
+    r = simde_mm256_sqrt_ps(r);
+    r = simde_mm256_add_ps(simde_x_mm256_negate_ps(tt1), r);
+    r = simde_mm256_sqrt_ps(r);
+
+    return simde_mm256_mul_ps(sgn, r);
+  #else
+    simde__m256_private
+      a_ = simde__m256_to_private(a),
+      r_;
+
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
+      r_.f32[i] = simde_math_erfinvf(a_.f32[i]);
+    }
+
+    return simde__m256_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_erfinv_ps
+  #define _mm256_erfinv_ps(a) simde_mm256_erfinv_ps(a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256d
+simde_mm256_erfinv_pd (simde__m256d a) {
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX_NATIVE)
+    return _mm256_erfinv_pd(a);
+  #elif defined(SIMDE_ASSUME_VECTORIZATION)
+    simde__m256d one = simde_mm256_set1_pd(SIMDE_FLOAT64_C(1.0));
+    simde__m256d sgn = simde_x_mm256_copysign_pd(one, a);
+
+    a = simde_mm256_mul_pd(simde_mm256_sub_pd(one, a), simde_mm256_add_pd(one, a));
+    simde__m256d lnx = simde_mm256_log_pd(a);
+
+    simde__m256d tt1 = simde_mm256_mul_pd(simde_mm256_set1_pd(HEDLEY_STATIC_CAST(simde_float32, SIMDE_MATH_PI)), simde_mm256_set1_pd(SIMDE_FLOAT32_C(0.147)));
+    tt1 = simde_mm256_div_pd(simde_mm256_set1_pd(SIMDE_FLOAT32_C(2.0)), tt1);
+    tt1 = simde_mm256_add_pd(tt1, simde_mm256_mul_pd(simde_mm256_set1_pd(SIMDE_FLOAT32_C(0.5)), lnx));
+
+    simde__m256d tt2 = simde_mm256_set1_pd(SIMDE_FLOAT32_C(1.0) / SIMDE_FLOAT32_C(0.147));
+    tt2 = simde_mm256_mul_pd(tt2, lnx);
+
+    simde__m256d r = simde_mm256_mul_pd(tt1, tt1);
+    r = simde_mm256_sub_pd(r, tt2);
+    r = simde_mm256_sqrt_pd(r);
+    r = simde_mm256_add_pd(simde_x_mm256_negate_pd(tt1), r);
+    r = simde_mm256_sqrt_pd(r);
+
+    return simde_mm256_mul_pd(sgn, r);
+  #else
+    simde__m256d_private
+      a_ = simde__m256d_to_private(a),
+      r_;
+
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
+      r_.f64[i] = simde_math_erfinv(a_.f64[i]);
+    }
+
+    return simde__m256d_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_erfinv_pd
+  #define _mm256_erfinv_pd(a) simde_mm256_erfinv_pd(a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
