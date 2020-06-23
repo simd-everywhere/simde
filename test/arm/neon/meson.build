@@ -23,6 +23,7 @@ simde_test_arm_neon_tests = [
   'shl_n',
   'shr_n',
   'sub',
+  'uzp',
   'uzp1',
   'uzp2',
 ]
