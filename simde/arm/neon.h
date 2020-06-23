@@ -55,6 +55,7 @@
 #include "neon/shr_n.h"
 #include "neon/st1.h"
 #include "neon/sub.h"
+#include "neon/uzp.h"
 #include "neon/uzp1.h"
 #include "neon/uzp2.h"
 #include "neon/zip.h"

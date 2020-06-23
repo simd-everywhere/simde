@@ -130,6 +130,7 @@ set(TEST_SOURCES_C
   arm/neon/shl_n.c
   arm/neon/shr_n.c
   arm/neon/sub.c
+  arm/neon/uzp.c
   arm/neon/uzp1.c
   arm/neon/uzp2.c
   arm/neon/zip.c
