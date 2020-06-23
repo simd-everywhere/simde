@@ -66,7 +66,7 @@ test_simde_vuzp_f32 (SIMDE_MUNIT_TEST_ARGS) {
           { SIMDE_FLOAT32_C(  -669.39), SIMDE_FLOAT32_C(   502.94) },
       },
     },
- 
+
   };
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
