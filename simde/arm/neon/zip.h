@@ -25,7 +25,7 @@
  *   2020      Sean Maher <seanptmaher@gmail.com>
  */
 
-#if !defined(SIMDE_ARM_NEON_ZIP_H)
+#if !defined(SIMDE_ARM_NEON_ZIP_H) && !defined(SIMDE_BUG_INTEL_857088)
 #define SIMDE_ARM_NEON_ZIP_H
 
 #include "types.h"

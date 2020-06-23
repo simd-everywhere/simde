@@ -338,7 +338,7 @@ SIMDE_ARM_NEON_TYPE_FLOAT_DEFINE_(64, 2, 16)
   typedef simde_float64 simde_float64_t;
 #endif
 
-#if defined(SIMDE_ARM_NEON_NEED_PORTABLE_VX2)
+#if defined(SIMDE_ARM_NEON_NEED_PORTABLE_VX2) && !defined(SIMDE_BUG_INTEL_857088)
   typedef struct    simde_int8x8x2_t {
     simde_int8x8_t val[2];
   } simde_int8x8x2_t;

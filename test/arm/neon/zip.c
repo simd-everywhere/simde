@@ -3,6 +3,8 @@
 #include <test/arm/neon/test-neon.h>
 #include <simde/arm/neon/zip.h>
 
+#if !defined(SIMDE_BUG_INTEL_857088)
+
 static int
 test_simde_vzip_f32 (SIMDE_MUNIT_TEST_ARGS) {
   struct {
@@ -1154,7 +1156,10 @@ test_simde_vzipq_u32 (SIMDE_MUNIT_TEST_ARGS) {
   return 0;
 }
 
+#endif /* !defined(SIMDE_BUG_INTEL_857088) */
+
 SIMDE_TEST_FUNC_LIST_BEGIN
+#if !defined(SIMDE_BUG_INTEL_857088)
 SIMDE_TEST_FUNC_LIST_ENTRY(vzip_f32)
 SIMDE_TEST_FUNC_LIST_ENTRY(vzip_s8)
 SIMDE_TEST_FUNC_LIST_ENTRY(vzip_s16)
@@ -1170,6 +1175,7 @@ SIMDE_TEST_FUNC_LIST_ENTRY(vzipq_s32)
 SIMDE_TEST_FUNC_LIST_ENTRY(vzipq_u8)
 SIMDE_TEST_FUNC_LIST_ENTRY(vzipq_u16)
 SIMDE_TEST_FUNC_LIST_ENTRY(vzipq_u32)
+#endif /* !defined(SIMDE_BUG_INTEL_857088) */
 SIMDE_TEST_FUNC_LIST_END
 
 #include <test/arm/neon/test-neon-footer.h>
