@@ -48,7 +48,7 @@ simde_vtrn1_f32(simde_float32x2_t a, simde_float32x2_t b) {
     const size_t halfway_point = sizeof(r_.values) / sizeof(r_.values[0]) / 2;
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < halfway_point ; i++) {
-    const size_t idx = i << 1;
+      const size_t idx = i << 1;
       r_.values[idx] = a_.values[idx];
       r_.values[idx | 1] = b_.values[idx];
     }
@@ -75,7 +75,7 @@ simde_vtrn1_s8(simde_int8x8_t a, simde_int8x8_t b) {
     const size_t halfway_point = sizeof(r_.values) / sizeof(r_.values[0]) / 2;
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < halfway_point ; i++) {
-    const size_t idx = i << 1;
+      const size_t idx = i << 1;
       r_.values[idx] = a_.values[idx];
       r_.values[idx | 1] = b_.values[idx];
     }
@@ -102,7 +102,7 @@ simde_vtrn1_s16(simde_int16x4_t a, simde_int16x4_t b) {
     const size_t halfway_point = sizeof(r_.values) / sizeof(r_.values[0]) / 2;
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < halfway_point ; i++) {
-    const size_t idx = i << 1;
+      const size_t idx = i << 1;
       r_.values[idx] = a_.values[idx];
       r_.values[idx | 1] = b_.values[idx];
     }
@@ -129,7 +129,7 @@ simde_vtrn1_s32(simde_int32x2_t a, simde_int32x2_t b) {
     const size_t halfway_point = sizeof(r_.values) / sizeof(r_.values[0]) / 2;
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < halfway_point ; i++) {
-    const size_t idx = i << 1;
+      const size_t idx = i << 1;
       r_.values[idx] = a_.values[idx];
       r_.values[idx | 1] = b_.values[idx];
     }
@@ -156,7 +156,7 @@ simde_vtrn1_u8(simde_uint8x8_t a, simde_uint8x8_t b) {
     const size_t halfway_point = sizeof(r_.values) / sizeof(r_.values[0]) / 2;
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < halfway_point ; i++) {
-    const size_t idx = i << 1;
+      const size_t idx = i << 1;
       r_.values[idx] = a_.values[idx];
       r_.values[idx | 1] = b_.values[idx];
     }
@@ -183,7 +183,7 @@ simde_vtrn1_u16(simde_uint16x4_t a, simde_uint16x4_t b) {
     const size_t halfway_point = sizeof(r_.values) / sizeof(r_.values[0]) / 2;
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < halfway_point ; i++) {
-    const size_t idx = i << 1;
+      const size_t idx = i << 1;
       r_.values[idx] = a_.values[idx];
       r_.values[idx | 1] = b_.values[idx];
     }
@@ -210,7 +210,7 @@ simde_vtrn1_u32(simde_uint32x2_t a, simde_uint32x2_t b) {
     const size_t halfway_point = sizeof(r_.values) / sizeof(r_.values[0]) / 2;
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < halfway_point ; i++) {
-    const size_t idx = i << 1;
+      const size_t idx = i << 1;
       r_.values[idx] = a_.values[idx];
       r_.values[idx | 1] = b_.values[idx];
     }
@@ -237,7 +237,7 @@ simde_vtrn1q_f32(simde_float32x4_t a, simde_float32x4_t b) {
     const size_t halfway_point = sizeof(r_.values) / sizeof(r_.values[0]) / 2;
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < halfway_point ; i++) {
-    const size_t idx = i << 1;
+      const size_t idx = i << 1;
       r_.values[idx] = a_.values[idx];
       r_.values[idx | 1] = b_.values[idx];
     }
@@ -264,7 +264,7 @@ simde_vtrn1q_f64(simde_float64x2_t a, simde_float64x2_t b) {
     const size_t halfway_point = sizeof(r_.values) / sizeof(r_.values[0]) / 2;
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < halfway_point ; i++) {
-    const size_t idx = i << 1;
+      const size_t idx = i << 1;
       r_.values[idx] = a_.values[idx];
       r_.values[idx | 1] = b_.values[idx];
     }
@@ -291,7 +291,7 @@ simde_vtrn1q_s8(simde_int8x16_t a, simde_int8x16_t b) {
     const size_t halfway_point = sizeof(r_.values) / sizeof(r_.values[0]) / 2;
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < halfway_point ; i++) {
-    const size_t idx = i << 1;
+      const size_t idx = i << 1;
       r_.values[idx] = a_.values[idx];
       r_.values[idx | 1] = b_.values[idx];
     }
@@ -318,7 +318,7 @@ simde_vtrn1q_s16(simde_int16x8_t a, simde_int16x8_t b) {
     const size_t halfway_point = sizeof(r_.values) / sizeof(r_.values[0]) / 2;
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < halfway_point ; i++) {
-    const size_t idx = i << 1;
+      const size_t idx = i << 1;
       r_.values[idx] = a_.values[idx];
       r_.values[idx | 1] = b_.values[idx];
     }
@@ -345,7 +345,7 @@ simde_vtrn1q_s32(simde_int32x4_t a, simde_int32x4_t b) {
     const size_t halfway_point = sizeof(r_.values) / sizeof(r_.values[0]) / 2;
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < halfway_point ; i++) {
-    const size_t idx = i << 1;
+      const size_t idx = i << 1;
       r_.values[idx] = a_.values[idx];
       r_.values[idx | 1] = b_.values[idx];
     }
@@ -372,7 +372,7 @@ simde_vtrn1q_s64(simde_int64x2_t a, simde_int64x2_t b) {
     const size_t halfway_point = sizeof(r_.values) / sizeof(r_.values[0]) / 2;
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < halfway_point ; i++) {
-    const size_t idx = i << 1;
+      const size_t idx = i << 1;
       r_.values[idx] = a_.values[idx];
       r_.values[idx | 1] = b_.values[idx];
     }
@@ -400,7 +400,7 @@ simde_vtrn1q_u8(simde_uint8x16_t a, simde_uint8x16_t b) {
     const size_t halfway_point = sizeof(r_.values) / sizeof(r_.values[0]) / 2;
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < halfway_point ; i++) {
-    const size_t idx = i << 1;
+      const size_t idx = i << 1;
       r_.values[idx] = a_.values[idx];
       r_.values[idx | 1] = b_.values[idx];
     }
@@ -427,7 +427,7 @@ simde_vtrn1q_u16(simde_uint16x8_t a, simde_uint16x8_t b) {
     const size_t halfway_point = sizeof(r_.values) / sizeof(r_.values[0]) / 2;
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < halfway_point ; i++) {
-    const size_t idx = i << 1;
+      const size_t idx = i << 1;
       r_.values[idx] = a_.values[idx];
       r_.values[idx | 1] = b_.values[idx];
     }
@@ -454,7 +454,7 @@ simde_vtrn1q_u32(simde_uint32x4_t a, simde_uint32x4_t b) {
     const size_t halfway_point = sizeof(r_.values) / sizeof(r_.values[0]) / 2;
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < halfway_point ; i++) {
-    const size_t idx = i << 1;
+      const size_t idx = i << 1;
       r_.values[idx] = a_.values[idx];
       r_.values[idx | 1] = b_.values[idx];
     }
@@ -481,7 +481,7 @@ simde_vtrn1q_u64(simde_uint64x2_t a, simde_uint64x2_t b) {
     const size_t halfway_point = sizeof(r_.values) / sizeof(r_.values[0]) / 2;
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < halfway_point ; i++) {
-    const size_t idx = i << 1;
+      const size_t idx = i << 1;
       r_.values[idx] = a_.values[idx];
       r_.values[idx | 1] = b_.values[idx];
     }
