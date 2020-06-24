@@ -325,6 +325,50 @@
   #endif /* defined(__cplusplus) */
 #endif
 
+/* This is used to determine whether or not to fall back on a vector
+ * function in an earlier ISA extensions.  Most tests using these macros
+ * will look something like:
+ *
+ *   #if defined(SIMDE_X86_SSE2_NATIVE) || SIMDE_PREFER_VECTOR_SIZE(128)
+ *
+ * The goal is that if the target ISA extension (SSE2 in this example) is
+ * natively supported we should use it.
+ *
+ * If the natural vector size is less than or equal to the value
+ * passed to SIMDE_PREFER_VECTOR_SIZE it should also be used.  Since
+ * larger vectors aren't supported the compiler is unlikely to be able
+ * to auto-vectorize to the larger type (unless we're missing
+ * detection for a larger vector size, in which case please file a
+ * bug).  It is possible, however, that the function for the smaller
+ * vector size will contain an optimized implementation for the ISA
+ * extension the machine does support.
+ *
+ * That said, there are cases where we'll probably still want to use
+ * the fallbacks even if they are the same length.  Mainly if we don't
+ * think it's likely the auto-vectorizer will do a good job since the
+ * current function is too complex.  In this case, the tests can be
+ * omitted altogether. */
+
+#if !defined(SIMDE_NATURAL_VECTOR_SIZE)
+  #if defined(SIMDE_X86_AVX512F_NATIVE)
+    #define SIMDE_NATURAL_VECTOR_SIZE (512)
+  #elif defined(SIMDE_X86_AVX_NATIVE)
+    #define SIMDE_NATURAL_VECTOR_SIZE (256)
+  #elif \
+      defined(SIMDE_X86_SSE_NATIVE) || \
+      defined(SIMDE_ARM_NEON_A32V7_NATIVE) || \
+      defined(SIMDE_WASM_SIMD128_NATIVE) || \
+      defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+    #define SIMDE_NATURAL_VECTOR_SIZE (128)
+  #endif
+#endif
+
+#if defined(SIMDE_NATURAL_VECTOR_SIZE)
+  #define SIMDE_PREFER_VECTOR_SIZE(size_in_bits) ((SIMDE_NATURAL_VECTOR_SIZE) <= (size_in_bits))
+#else
+  #define SIMDE_PREFER_VECTOR_SIZE(size_in_bits) (0)
+#endif
+
 /* Native aliases */
 #if defined(SIMDE_ENABLE_NATIVE_ALIASES)
   #if !defined(SIMDE_X86_MMX_NATIVE)
