@@ -23,8 +23,8 @@
  *   2020      Evan Nemerson <evan@nemerson.com>
  */
 
-#if !defined(SIMDE_GFNI_H)
-#define SIMDE_GFNI_H
+#if !defined(SIMDE_X86_GFNI_H)
+#define SIMDE_X86_GFNI_H
 
 #include "avx512bw.h"
 #include "avx512vl.h"
@@ -788,4 +788,4 @@ SIMDE_END_DECLS_
 
 HEDLEY_DIAGNOSTIC_POP
 
-#endif /* !defined(SIMDE_GFNI_H) */
+#endif /* !defined(SIMDE_X86_GFNI_H) */

@@ -25,8 +25,8 @@
  */
 
 #include "sse.h"
-#if !defined(SIMDE_AVX_H)
-#define SIMDE_AVX_H
+#if !defined(SIMDE_X86_AVX_H)
+#define SIMDE_X86_AVX_H
 
 #include "sse4.2.h"
 
@@ -5833,4 +5833,4 @@ SIMDE_END_DECLS_
 
 HEDLEY_DIAGNOSTIC_POP
 
-#endif /* !defined(SIMDE_AVX_H) */
+#endif /* !defined(SIMDE_X86_AVX_H) */
