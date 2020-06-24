@@ -43,6 +43,8 @@
 #include "neon/max.h"
 #include "neon/min.h"
 #include "neon/mla.h"
+#include "neon/movl.h"
+#include "neon/movl_high.h"
 #include "neon/mul.h"
 #include "neon/mull.h"
 #include "neon/orr.h"
