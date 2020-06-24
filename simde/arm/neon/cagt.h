@@ -25,8 +25,8 @@
  *   2020      Sean Maher <seanptmaher@gmail.com>
  */
 
-#if !defined(SIMDE_ARM_NEON_ADD_H)
-#define SIMDE_ARM_NEON_ADD_H
+#if !defined(SIMDE_ARM_NEON_CAGT_H)
+#define SIMDE_ARM_NEON_CAGT_H
 
 #include "types.h"
 
@@ -137,4 +137,4 @@ simde_vcagtq_f64(simde_float64x2_t a, simde_float64x2_t b) {
 SIMDE_END_DECLS_
 HEDLEY_DIAGNOSTIC_POP
 
-#endif /* !defined(SIMDE_ARM_NEON_ADD_H) */
+#endif /* !defined(SIMDE_ARM_NEON_CAGT_H) */
