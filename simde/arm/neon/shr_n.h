@@ -322,7 +322,7 @@ simde_vshrq_n_s8 (const simde_int8x16_t a, const int n)
 }
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vshrq_n_s8(a, n) vshrq_n_s8((a), (n))
-#elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+#elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
   #define simde_vshrq_n_s8(a, n) vec_sra((a), vec_splat_u8(((n) == 8) ? 7 : (n)))
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
@@ -358,7 +358,7 @@ simde_vshrq_n_s16 (const simde_int16x8_t a, const int n)
 }
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vshrq_n_s16(a, n) vshrq_n_s16((a), (n))
-#elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+#elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
   #define simde_vshrq_n_s16(a, n) vec_sra((a), vec_splat_u16(((n) == 16) ? 15 : (n)))
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
@@ -394,7 +394,7 @@ simde_vshrq_n_s32 (const simde_int32x4_t a, const int n)
 }
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vshrq_n_s32(a, n) vshrq_n_s32((a), (n))
-#elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+#elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
   #define simde_vshrq_n_s32(a, n) \
     vec_sra((a), vec_splats(HEDLEY_STATIC_CAST(unsigned int, ((n) == 32) ? 31 : (n))))
 #endif
@@ -469,7 +469,7 @@ simde_vshrq_n_u8 (const simde_uint8x16_t a, const int n)
 }
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vshrq_n_u8(a, n) vshrq_n_u8((a), (n))
-#elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+#elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
   #define simde_vshrq_n_u8(a, n) \
     (((n) == 8) ? vec_splat_u8(0) : vec_sr((a), vec_splat_u8(n)))
 #endif
@@ -509,7 +509,7 @@ simde_vshrq_n_u16 (const simde_uint16x8_t a, const int n)
 }
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vshrq_n_u16(a, n) vshrq_n_u16((a), (n))
-#elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+#elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
   #define simde_vshrq_n_u16(a, n) \
     (((n) == 16) ? vec_splat_u16(0) : vec_sr((a), vec_splat_u16(n)))
 #endif
@@ -549,7 +549,7 @@ simde_vshrq_n_u32 (const simde_uint32x4_t a, const int n)
 }
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vshrq_n_u32(a, n) vshrq_n_u32((a), (n))
-#elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+#elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
   #define simde_vshrq_n_u32(a, n) \
     (((n) == 32) ? vec_splat_u32(0) : vec_sr((a), vec_splats(HEDLEY_STATIC_CAST(unsigned int, (n)))))
 #endif

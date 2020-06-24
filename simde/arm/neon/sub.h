@@ -332,7 +332,7 @@ simde_vsubq_f32(simde_float32x4_t a, simde_float32x4_t b) {
     return vsubq_f32(a, b);
   #elif defined(SIMDE_X86_SSE_NATIVE)
     return _mm_sub_ps(a, b);
-  #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
     SIMDE_POWER_ALTIVEC_VECTOR(float) a_ , b_, r_;
     a_ = a;
     b_ = b;
@@ -404,7 +404,7 @@ simde_vsubq_s8(simde_int8x16_t a, simde_int8x16_t b) {
     return vsubq_s8(a, b);
   #elif defined(SIMDE_X86_SSE2_NATIVE)
     return _mm_sub_epi8(a, b);
-  #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
     return vec_sub(a, b);
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_i8x16_sub(a, b);
@@ -438,7 +438,7 @@ simde_vsubq_s16(simde_int16x8_t a, simde_int16x8_t b) {
     return vsubq_s16(a, b);
   #elif defined(SIMDE_X86_SSE2_NATIVE)
     return _mm_sub_epi16(a, b);
-  #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
     return vec_sub(a, b);
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_i16x8_sub(a, b);
@@ -472,7 +472,7 @@ simde_vsubq_s32(simde_int32x4_t a, simde_int32x4_t b) {
     return vsubq_s32(a, b);
   #elif defined(SIMDE_X86_SSE2_NATIVE)
     return _mm_sub_epi32(a, b);
-  #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
     return vec_sub(a, b);
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_i32x4_sub(a, b);
@@ -538,7 +538,7 @@ simde_uint8x16_t
 simde_vsubq_u8(simde_uint8x16_t a, simde_uint8x16_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vsubq_u8(a, b);
-  #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
     return vec_sub(a, b);
   #else
     simde_uint8x16_private
@@ -568,7 +568,7 @@ simde_uint16x8_t
 simde_vsubq_u16(simde_uint16x8_t a, simde_uint16x8_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vsubq_u16(a, b);
-  #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
     return vec_sub(a, b);
   #else
     simde_uint16x8_private
@@ -598,7 +598,7 @@ simde_uint32x4_t
 simde_vsubq_u32(simde_uint32x4_t a, simde_uint32x4_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vsubq_u32(a, b);
-  #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
     return vec_sub(a, b);
   #else
     simde_uint32x4_private

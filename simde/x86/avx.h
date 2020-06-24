@@ -76,7 +76,7 @@ typedef union {
 
 #if defined(SIMDE_X86_AVX_NATIVE)
   SIMDE_ALIGN(32) __m256         n;
-#elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+#elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
   SIMDE_ALIGN(16) SIMDE_POWER_ALTIVEC_VECTOR(unsigned char)      altivec_u8[2];
   SIMDE_ALIGN(16) SIMDE_POWER_ALTIVEC_VECTOR(unsigned short)     altivec_u16[2];
   SIMDE_ALIGN(16) SIMDE_POWER_ALTIVEC_VECTOR(unsigned int)       altivec_u32[2];
@@ -134,7 +134,7 @@ typedef union {
 
 #if defined(SIMDE_X86_AVX_NATIVE)
   SIMDE_ALIGN(32) __m256d        n;
-#elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+#elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
   SIMDE_ALIGN(16) SIMDE_POWER_ALTIVEC_VECTOR(unsigned char)      altivec_u8[2];
   SIMDE_ALIGN(16) SIMDE_POWER_ALTIVEC_VECTOR(unsigned short)     altivec_u16[2];
   SIMDE_ALIGN(16) SIMDE_POWER_ALTIVEC_VECTOR(unsigned int)       altivec_u32[2];
@@ -192,7 +192,7 @@ typedef union {
 
 #if defined(SIMDE_X86_AVX_NATIVE)
   SIMDE_ALIGN(32) __m256i        n;
-#elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+#elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
   SIMDE_ALIGN(16) SIMDE_POWER_ALTIVEC_VECTOR(unsigned char)      altivec_u8[2];
   SIMDE_ALIGN(16) SIMDE_POWER_ALTIVEC_VECTOR(unsigned short)     altivec_u16[2];
   SIMDE_ALIGN(16) SIMDE_POWER_ALTIVEC_VECTOR(unsigned int)       altivec_u32[2];
@@ -1392,7 +1392,7 @@ simde_mm256_blend_ps (simde__m256 a, simde__m256 b, const int imm8)
 }
 #if defined(SIMDE_X86_AVX_NATIVE)
 #  define simde_mm256_blend_ps(a, b, imm8) _mm256_blend_ps(a, b, imm8)
-#elif defined(SIMDE_X86_SSE4_1_NATIVE) || defined(SIMDE_ARM_NEON_A32V7_NATIVE) || defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+#elif defined(SIMDE_X86_SSE4_1_NATIVE) || defined(SIMDE_ARM_NEON_A32V7_NATIVE) || defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
 #  define simde_mm256_blend_ps(a, b, imm8) \
       simde_mm256_set_m128( \
           simde_mm_blend_ps(simde_mm256_extractf128_ps(a, 1), simde_mm256_extractf128_ps(b, 1), (imm8) >> 4), \
@@ -1420,7 +1420,7 @@ simde_mm256_blend_pd (simde__m256d a, simde__m256d b, const int imm8)
 }
 #if defined(SIMDE_X86_AVX_NATIVE)
 #  define simde_mm256_blend_pd(a, b, imm8) _mm256_blend_pd(a, b, imm8)
-#elif defined(SIMDE_X86_SSE4_1_NATIVE) || defined(SIMDE_ARM_NEON_A32V7_NATIVE) || defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+#elif defined(SIMDE_X86_SSE4_1_NATIVE) || defined(SIMDE_ARM_NEON_A32V7_NATIVE) || defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
 #  define simde_mm256_blend_pd(a, b, imm8) \
       simde_mm256_set_m128d( \
           simde_mm_blend_pd(simde_mm256_extractf128_pd(a, 1), simde_mm256_extractf128_pd(b, 1), (imm8) >> 2), \
@@ -1443,7 +1443,7 @@ simde_mm256_blendv_ps (simde__m256 a, simde__m256 b, simde__m256 mask) {
     b_ = simde__m256_to_private(b),
     mask_ = simde__m256_to_private(mask);
 
-#if defined(SIMDE_X86_SSE4_1_NATIVE) || defined(SIMDE_ARM_NEON_A32V7_NATIVE) || defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+#if defined(SIMDE_X86_SSE4_1_NATIVE) || defined(SIMDE_ARM_NEON_A32V7_NATIVE) || defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
   r_.m128[0] = simde_mm_blendv_ps(a_.m128[0], b_.m128[0], mask_.m128[0]);
   r_.m128[1] = simde_mm_blendv_ps(a_.m128[1], b_.m128[1], mask_.m128[1]);
 #else
@@ -1473,7 +1473,7 @@ simde_mm256_blendv_pd (simde__m256d a, simde__m256d b, simde__m256d mask) {
     b_ = simde__m256d_to_private(b),
     mask_ = simde__m256d_to_private(mask);
 
-#if defined(SIMDE_X86_SSE4_1_NATIVE) || defined(SIMDE_ARM_NEON_A32V7_NATIVE) || defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+#if defined(SIMDE_X86_SSE4_1_NATIVE) || defined(SIMDE_ARM_NEON_A32V7_NATIVE) || defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
   r_.m128d[0] = simde_mm_blendv_pd(a_.m128d[0], b_.m128d[0], mask_.m128d[0]);
   r_.m128d[1] = simde_mm_blendv_pd(a_.m128d[1], b_.m128d[1], mask_.m128d[1]);
 #else
