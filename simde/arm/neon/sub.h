@@ -24,8 +24,8 @@
  *   2020      Evan Nemerson <evan@nemerson.com>
  */
 
-#if !defined(SIMDE_ARM_NEON_ADD_H)
-#define SIMDE_ARM_NEON_ADD_H
+#if !defined(SIMDE_ARM_NEON_SUB_H)
+#define SIMDE_ARM_NEON_SUB_H
 
 #include "types.h"
 

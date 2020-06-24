@@ -28,10 +28,10 @@
 #if !defined(SIMDE_ARM_NEON_PADD_H)
 #define SIMDE_ARM_NEON_PADD_H
 
-#include "types.h"
 #include "add.h"
 #include "uzp1.h"
 #include "uzp2.h"
+#include "types.h"
 
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
