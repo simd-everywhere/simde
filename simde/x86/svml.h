@@ -2741,7 +2741,7 @@ simde_mm512_div_epu32 (simde__m512i a, simde__m512i b) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m512i
 simde_mm512_mask_div_epu32(simde__m512i src, simde__mmask16 k, simde__m512i a, simde__m512i b) {
-  #if defined(SIMDE_X86_SVML_NATIVE)
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX512F_NATIVE)
     return _mm512_mask_div_epu32(src, k, a, b);
   #else
     return simde_mm512_mask_mov_epi32(src, k, simde_mm512_div_epu32(a, b));
@@ -4106,7 +4106,7 @@ simde_mm256_invsqrt_pd (simde__m256d a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m512
 simde_mm512_invsqrt_ps (simde__m512 a) {
-  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE_NATIVE)
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX512F_NATIVE)
     return _mm512_invsqrt_ps(a);
   #else
     return simde_mm512_div_ps(simde_mm512_set1_ps(SIMDE_FLOAT32_C(1.0)), simde_mm512_sqrt_ps(a));
@@ -4120,7 +4120,7 @@ simde_mm512_invsqrt_ps (simde__m512 a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m512d
 simde_mm512_invsqrt_pd (simde__m512d a) {
-  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE_NATIVE)
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX512F_NATIVE)
     return _mm512_invsqrt_pd(a);
   #else
     return simde_mm512_div_pd(simde_mm512_set1_pd(SIMDE_FLOAT64_C(1.0)), simde_mm512_sqrt_pd(a));
