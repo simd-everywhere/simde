@@ -1129,6 +1129,246 @@ simde_mm256_set1_pd (simde_float64 a) {
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
+simde__m256i
+simde_x_mm256_deinterleaveeven_epi16 (simde__m256i a, simde__m256i b) {
+  simde__m256i_private
+    r_,
+    a_ = simde__m256i_to_private(a),
+    b_ = simde__m256i_to_private(b);
+
+  #if SIMDE_PREFER_VECTOR_SIZE(128)
+    for(size_t i = 0 ; i < (sizeof(r_.m128i) / sizeof(r_.m128i[0])) ; i++) {
+      r_.m128i[i] = simde_x_mm_deinterleaveeven_epi16(a_.m128i[i], b_.m128i[i]);
+    }
+  #else
+    #if defined(SIMDE_SHUFFLE_VECTOR_)
+      r_.i16 = SIMDE_SHUFFLE_VECTOR_(16, 32, a_.i16, b_.i16, 0, 2, 4, 6, 16, 18, 20, 22, 8, 10, 12, 14, 24, 26, 28, 30);
+    #else
+      const size_t halfway_point = (sizeof(r_.i16) / sizeof(r_.i16[0])) / 2;
+      const size_t quarter_point = (sizeof(r_.i16) / sizeof(r_.i16[0])) / 4;
+      for(size_t i = 0 ; i < quarter_point ; i++) {
+        r_.i16[i] = a_.i16[2 * i];
+        r_.i16[i + quarter_point] = b_.i16[2 * i];
+        r_.i16[halfway_point + i] = a_.i16[halfway_point + 2 * i];
+        r_.i16[halfway_point + i + quarter_point] = b_.i16[halfway_point + 2 * i];
+      }
+    #endif
+  #endif
+
+  return simde__m256i_from_private(r_);
+}
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256i
+simde_x_mm256_deinterleaveodd_epi16 (simde__m256i a, simde__m256i b) {
+  simde__m256i_private
+    r_,
+    a_ = simde__m256i_to_private(a),
+    b_ = simde__m256i_to_private(b);
+
+  #if SIMDE_PREFER_VECTOR_SIZE(128)
+    for(size_t i = 0 ; i < (sizeof(r_.m128i) / sizeof(r_.m128i[0])) ; i++) {
+      r_.m128i[i] = simde_x_mm_deinterleaveodd_epi16(a_.m128i[i], b_.m128i[i]);
+    }
+  #else
+    #if defined(SIMDE_SHUFFLE_VECTOR_)
+      r_.i16 = SIMDE_SHUFFLE_VECTOR_(16, 32, a_.i16, b_.i16, 1, 3, 5, 7, 17, 19, 21, 23, 9, 11, 13, 15, 25, 27, 29, 31);
+    #else
+      const size_t halfway_point = (sizeof(r_.i16) / sizeof(r_.i16[0])) / 2;
+      const size_t quarter_point = (sizeof(r_.i16) / sizeof(r_.i16[0])) / 4;
+      for(size_t i = 0 ; i < quarter_point ; i++) {
+        r_.i16[i] = a_.i16[2 * i + 1];
+        r_.i16[i + quarter_point] = b_.i16[2 * i + 1];
+        r_.i16[halfway_point + i] = a_.i16[halfway_point + 2 * i + 1];
+        r_.i16[halfway_point + i + quarter_point] = b_.i16[halfway_point + 2 * i + 1];
+      }
+    #endif
+  #endif
+
+  return simde__m256i_from_private(r_);
+}
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256i
+simde_x_mm256_deinterleaveeven_epi32 (simde__m256i a, simde__m256i b) {
+  simde__m256i_private
+    r_,
+    a_ = simde__m256i_to_private(a),
+    b_ = simde__m256i_to_private(b);
+
+  #if SIMDE_PREFER_VECTOR_SIZE(128)
+    for(size_t i = 0 ; i < (sizeof(r_.m128i) / sizeof(r_.m128i[0])) ; i++) {
+      r_.m128i[i] = simde_x_mm_deinterleaveeven_epi32(a_.m128i[i], b_.m128i[i]);
+    }
+  #else
+    #if defined(SIMDE_SHUFFLE_VECTOR_)
+      r_.i32 = SIMDE_SHUFFLE_VECTOR_(32, 32, a_.i32, b_.i32, 0, 2, 8, 10, 4, 6, 12, 14);
+    #else
+      const size_t halfway_point = (sizeof(r_.i32) / sizeof(r_.i32[0])) / 2;
+      const size_t quarter_point = (sizeof(r_.i32) / sizeof(r_.i32[0])) / 4;
+      for(size_t i = 0 ; i < quarter_point ; i++) {
+        r_.i32[i] = a_.i32[2 * i];
+        r_.i32[i + quarter_point] = b_.i32[2 * i];
+        r_.i32[halfway_point + i] = a_.i32[halfway_point + 2 * i];
+        r_.i32[halfway_point + i + quarter_point] = b_.i32[halfway_point + 2 * i];
+      }
+    #endif
+  #endif
+
+  return simde__m256i_from_private(r_);
+}
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256i
+simde_x_mm256_deinterleaveodd_epi32 (simde__m256i a, simde__m256i b) {
+  simde__m256i_private
+    r_,
+    a_ = simde__m256i_to_private(a),
+    b_ = simde__m256i_to_private(b);
+
+  #if SIMDE_PREFER_VECTOR_SIZE(128)
+    for(size_t i = 0 ; i < (sizeof(r_.m128i) / sizeof(r_.m128i[0])) ; i++) {
+      r_.m128i[i] = simde_x_mm_deinterleaveodd_epi32(a_.m128i[i], b_.m128i[i]);
+    }
+  #else
+    #if defined(SIMDE_SHUFFLE_VECTOR_)
+      r_.i32 = SIMDE_SHUFFLE_VECTOR_(32, 32, a_.i32, b_.i32, 1, 3, 9, 11, 5, 7, 13, 15);
+    #else
+      const size_t halfway_point = (sizeof(r_.i32) / sizeof(r_.i32[0])) / 2;
+      const size_t quarter_point = (sizeof(r_.i32) / sizeof(r_.i32[0])) / 4;
+      for(size_t i = 0 ; i < quarter_point ; i++) {
+        r_.i32[i] = a_.i32[2 * i + 1];
+        r_.i32[i + quarter_point] = b_.i32[2 * i + 1];
+        r_.i32[halfway_point + i] = a_.i32[halfway_point + 2 * i + 1];
+        r_.i32[halfway_point + i + quarter_point] = b_.i32[halfway_point + 2 * i + 1];
+      }
+    #endif
+  #endif
+
+  return simde__m256i_from_private(r_);
+}
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256
+simde_x_mm256_deinterleaveeven_ps (simde__m256 a, simde__m256 b) {
+  simde__m256_private
+    r_,
+    a_ = simde__m256_to_private(a),
+    b_ = simde__m256_to_private(b);
+
+  #if SIMDE_PREFER_VECTOR_SIZE(128)
+    for(size_t i = 0 ; i < (sizeof(r_.m128) / sizeof(r_.m128[0])) ; i++) {
+      r_.m128[i] = simde_x_mm_deinterleaveeven_ps(a_.m128[i], b_.m128[i]);
+    }
+  #else
+    #if defined(SIMDE_SHUFFLE_VECTOR_)
+      r_.f32 = SIMDE_SHUFFLE_VECTOR_(32, 32, a_.f32, b_.f32, 0, 2, 8, 10, 4, 6, 12, 14);
+    #else
+      const size_t halfway_point = (sizeof(r_.f32) / sizeof(r_.f32[0])) / 2;
+      const size_t quarter_point = (sizeof(r_.f32) / sizeof(r_.f32[0])) / 4;
+      for(size_t i = 0 ; i < quarter_point ; i++) {
+        r_.f32[i] = a_.f32[2 * i];
+        r_.f32[i + quarter_point] = b_.f32[2 * i];
+        r_.f32[halfway_point + i] = a_.f32[halfway_point + 2 * i];
+        r_.f32[halfway_point + i + quarter_point] = b_.f32[halfway_point + 2 * i];
+      }
+    #endif
+  #endif
+
+  return simde__m256_from_private(r_);
+}
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256
+simde_x_mm256_deinterleaveodd_ps (simde__m256 a, simde__m256 b) {
+  simde__m256_private
+    r_,
+    a_ = simde__m256_to_private(a),
+    b_ = simde__m256_to_private(b);
+
+  #if SIMDE_PREFER_VECTOR_SIZE(128)
+    for(size_t i = 0 ; i < (sizeof(r_.m128) / sizeof(r_.m128[0])) ; i++) {
+      r_.m128[i] = simde_x_mm_deinterleaveodd_ps(a_.m128[i], b_.m128[i]);
+    }
+  #else
+    #if defined(SIMDE_SHUFFLE_VECTOR_)
+      r_.f32 = SIMDE_SHUFFLE_VECTOR_(32, 32, a_.f32, b_.f32, 1, 3, 9, 11, 5, 7, 13, 15);
+    #else
+      const size_t halfway_point = (sizeof(r_.f32) / sizeof(r_.f32[0])) / 2;
+      const size_t quarter_point = (sizeof(r_.f32) / sizeof(r_.f32[0])) / 4;
+      for(size_t i = 0 ; i < quarter_point ; i++) {
+        r_.f32[i] = a_.f32[2 * i + 1];
+        r_.f32[i + quarter_point] = b_.f32[2 * i + 1];
+        r_.f32[halfway_point + i] = a_.f32[halfway_point + 2 * i + 1];
+        r_.f32[halfway_point + i + quarter_point] = b_.f32[halfway_point + 2 * i + 1];
+      }
+    #endif
+  #endif
+
+  return simde__m256_from_private(r_);
+}
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256d
+simde_x_mm256_deinterleaveeven_pd (simde__m256d a, simde__m256d b) {
+  simde__m256d_private
+    r_,
+    a_ = simde__m256d_to_private(a),
+    b_ = simde__m256d_to_private(b);
+
+  #if SIMDE_PREFER_VECTOR_SIZE(128)
+    for(size_t i = 0 ; i < (sizeof(r_.m128d) / sizeof(r_.m128d[0])) ; i++) {
+      r_.m128d[i] = simde_x_mm_deinterleaveeven_pd(a_.m128d[i], b_.m128d[i]);
+    }
+  #else
+    #if defined(SIMDE_SHUFFLE_VECTOR_)
+      r_.f64 = SIMDE_SHUFFLE_VECTOR_(64, 32, a_.f64, b_.f64, 0, 4, 2, 6);
+    #else
+      const size_t halfway_point = (sizeof(r_.f64) / sizeof(r_.f64[0])) / 2;
+      const size_t quarter_point = (sizeof(r_.f64) / sizeof(r_.f64[0])) / 4;
+      for(size_t i = 0 ; i < quarter_point ; i++) {
+        r_.f64[i] = a_.f64[2 * i];
+        r_.f64[i + quarter_point] = b_.f64[2 * i];
+        r_.f64[halfway_point + i] = a_.f64[halfway_point + 2 * i];
+        r_.f64[halfway_point + i + quarter_point] = b_.f64[halfway_point + 2 * i];
+      }
+    #endif
+  #endif
+
+  return simde__m256d_from_private(r_);
+}
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256d
+simde_x_mm256_deinterleaveodd_pd (simde__m256d a, simde__m256d b) {
+  simde__m256d_private
+    r_,
+    a_ = simde__m256d_to_private(a),
+    b_ = simde__m256d_to_private(b);
+
+  #if SIMDE_PREFER_VECTOR_SIZE(128)
+    for(size_t i = 0 ; i < (sizeof(r_.m128d) / sizeof(r_.m128d[0])) ; i++) {
+      r_.m128d[i] = simde_x_mm_deinterleaveodd_pd(a_.m128d[i], b_.m128d[i]);
+    }
+  #else
+    #if defined(SIMDE_SHUFFLE_VECTOR_)
+      r_.f64 = SIMDE_SHUFFLE_VECTOR_(64, 32, a_.f64, b_.f64, 1, 5, 3, 7);
+    #else
+      const size_t halfway_point = (sizeof(r_.f64) / sizeof(r_.f64[0])) / 2;
+      const size_t quarter_point = (sizeof(r_.f64) / sizeof(r_.f64[0])) / 4;
+      for(size_t i = 0 ; i < quarter_point ; i++) {
+        r_.f64[i] = a_.f64[2 * i + 1];
+        r_.f64[i + quarter_point] = b_.f64[2 * i + 1];
+        r_.f64[halfway_point + i] = a_.f64[halfway_point + 2 * i + 1];
+        r_.f64[halfway_point + i + quarter_point] = b_.f64[halfway_point + 2 * i + 1];
+      }
+    #endif
+  #endif
+
+  return simde__m256d_from_private(r_);
+}
+
+SIMDE_FUNCTION_ATTRIBUTES
 simde__m256
 simde_mm256_add_ps (simde__m256 a, simde__m256 b) {
 #if defined(SIMDE_X86_AVX_NATIVE)
