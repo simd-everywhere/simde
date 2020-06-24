@@ -119,6 +119,8 @@ set(TEST_SOURCES_C
   arm/neon/max.c
   arm/neon/min.c
   arm/neon/mla.c
+  arm/neon/movl.c
+  arm/neon/movl_high.c
   arm/neon/mul.c
   arm/neon/mull.c
   arm/neon/orr.c
