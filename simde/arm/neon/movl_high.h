@@ -46,7 +46,7 @@ simde_vmovl_high_s8(simde_int8x16_t a) {
     size_t half = (sizeof(a_.values) / sizeof(a_.values[0])) / 2;
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = HEDLEY_STATIC_CAST(int16_t, a_.values[i + half]); 
+      r_.values[i] = HEDLEY_STATIC_CAST(int16_t, a_.values[i + half]);
     }
 
     return simde_int16x8_from_private(r_);
@@ -69,7 +69,7 @@ simde_vmovl_high_s16(simde_int16x8_t a) {
     size_t half = (sizeof(a_.values) / sizeof(a_.values[0])) / 2;
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = HEDLEY_STATIC_CAST(int16_t, a_.values[i + half]); 
+      r_.values[i] = HEDLEY_STATIC_CAST(int16_t, a_.values[i + half]);
     }
 
     return simde_int32x4_from_private(r_);
@@ -92,7 +92,7 @@ simde_vmovl_high_s32(simde_int32x4_t a) {
     size_t half = (sizeof(a_.values) / sizeof(a_.values[0])) / 2;
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = HEDLEY_STATIC_CAST(int16_t, a_.values[i + half]); 
+      r_.values[i] = HEDLEY_STATIC_CAST(int16_t, a_.values[i + half]);
     }
 
     return simde_int64x2_from_private(r_);
@@ -115,7 +115,7 @@ simde_vmovl_high_u8(simde_uint8x16_t a) {
     size_t half = (sizeof(a_.values) / sizeof(a_.values[0])) / 2;
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = HEDLEY_STATIC_CAST(int16_t, a_.values[i + half]); 
+      r_.values[i] = HEDLEY_STATIC_CAST(int16_t, a_.values[i + half]);
     }
 
     return simde_uint16x8_from_private(r_);
@@ -138,7 +138,7 @@ simde_vmovl_high_u16(simde_uint16x8_t a) {
     size_t half = (sizeof(a_.values) / sizeof(a_.values[0])) / 2;
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = HEDLEY_STATIC_CAST(int16_t, a_.values[i + half]); 
+      r_.values[i] = HEDLEY_STATIC_CAST(int16_t, a_.values[i + half]);
     }
 
     return simde_uint32x4_from_private(r_);
@@ -161,7 +161,7 @@ simde_vmovl_high_u32(simde_uint32x4_t a) {
     size_t half = (sizeof(a_.values) / sizeof(a_.values[0])) / 2;
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = HEDLEY_STATIC_CAST(int16_t, a_.values[i + half]); 
+      r_.values[i] = HEDLEY_STATIC_CAST(int16_t, a_.values[i + half]);
     }
 
     return simde_uint64x2_from_private(r_);

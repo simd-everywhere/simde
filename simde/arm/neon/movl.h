@@ -45,7 +45,7 @@ simde_vmovl_s8(simde_int8x8_t a) {
 
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = HEDLEY_STATIC_CAST(int16_t, a_.values[i]); 
+      r_.values[i] = HEDLEY_STATIC_CAST(int16_t, a_.values[i]);
     }
 
     return simde_int16x8_from_private(r_);
@@ -111,7 +111,7 @@ simde_vmovl_u8(simde_uint8x8_t a) {
 
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = HEDLEY_STATIC_CAST(uint16_t, a_.values[i]); 
+      r_.values[i] = HEDLEY_STATIC_CAST(uint16_t, a_.values[i]);
     }
 
     return simde_uint16x8_from_private(r_);
