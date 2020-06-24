@@ -265,7 +265,7 @@ simde_vdupq_n_f32(float value) {
     return _mm_set1_ps(value);
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_f32x4_splat(value);
-  #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
     (void) value;
     return vec_splats(value);
   #else
@@ -321,7 +321,7 @@ simde_vdupq_n_s8(int8_t value) {
     return _mm_set1_epi8(value);
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_i8x16_splat(value);
-  #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
     return vec_splats(value);
   #else
     simde_int8x16_private r_;
@@ -348,7 +348,7 @@ simde_vdupq_n_s16(int16_t value) {
     return _mm_set1_epi16(value);
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_i16x8_splat(value);
-  #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
     return vec_splats(value);
   #else
     simde_int16x8_private r_;
@@ -375,7 +375,7 @@ simde_vdupq_n_s32(int32_t value) {
     return _mm_set1_epi32(value);
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_i32x4_splat(value);
-  #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
     return vec_splats(value);
   #else
     simde_int32x4_private r_;
@@ -429,7 +429,7 @@ simde_vdupq_n_u8(uint8_t value) {
     return _mm_set1_epi8(HEDLEY_STATIC_CAST(int8_t, value));
   #elif defined (SIMDE_WASM_SIMD128_NATIVE)
     return wasm_i8x16_splat(HEDLEY_STATIC_CAST(int8_t, value));
-  #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
     return vec_splats(value);
   #else
     simde_uint8x16_private r_;
@@ -456,7 +456,7 @@ simde_vdupq_n_u16(uint16_t value) {
     return _mm_set1_epi16(HEDLEY_STATIC_CAST(int16_t, value));
   #elif defined (SIMDE_WASM_SIMD128_NATIVE)
     return wasm_i16x8_splat(HEDLEY_STATIC_CAST(int16_t, value));
-  #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
     return vec_splats(value);
   #else
     simde_uint16x8_private r_;
@@ -483,7 +483,7 @@ simde_vdupq_n_u32(uint32_t value) {
     return _mm_set1_epi32(HEDLEY_STATIC_CAST(int32_t, value));
   #elif defined (SIMDE_WASM_SIMD128_NATIVE)
     return wasm_i32x4_splat(HEDLEY_STATIC_CAST(int32_t, value));
-  #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
     return vec_splats(value);
   #else
     simde_uint32x4_private r_;

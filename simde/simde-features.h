@@ -297,7 +297,7 @@
     #define SIMDE_POWER_ALTIVEC_P5_NATIVE
   #endif
 #endif
-#if defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+#if defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
   /* stdbool.h conflicts with the bool in altivec.h */
   #if defined(bool) && !defined(SIMDE_POWER_ALTIVEC_NO_UNDEF_BOOL_)
     #undef bool

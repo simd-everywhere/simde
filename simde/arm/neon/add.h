@@ -326,7 +326,7 @@ simde_vaddq_f32(simde_float32x4_t a, simde_float32x4_t b) {
     return vaddq_f32(a, b);
   #elif defined(SIMDE_X86_SSE_NATIVE)
     return _mm_add_ps(a, b);
-  #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
     SIMDE_POWER_ALTIVEC_VECTOR(float) a_ , b_, r_;
     a_ = a;
     b_ = b;
@@ -398,7 +398,7 @@ simde_vaddq_s8(simde_int8x16_t a, simde_int8x16_t b) {
     return vaddq_s8(a, b);
   #elif defined(SIMDE_X86_SSE2_NATIVE)
     return _mm_add_epi8(a, b);
-  #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
     return vec_add(a, b);
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_i8x16_add(a, b);
@@ -432,7 +432,7 @@ simde_vaddq_s16(simde_int16x8_t a, simde_int16x8_t b) {
     return vaddq_s16(a, b);
   #elif defined(SIMDE_X86_SSE2_NATIVE)
     return _mm_add_epi16(a, b);
-  #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
     return vec_add(a, b);
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_i16x8_add(a, b);
@@ -466,7 +466,7 @@ simde_vaddq_s32(simde_int32x4_t a, simde_int32x4_t b) {
     return vaddq_s32(a, b);
   #elif defined(SIMDE_X86_SSE2_NATIVE)
     return _mm_add_epi32(a, b);
-  #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
     return vec_add(a, b);
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_i32x4_add(a, b);
@@ -532,7 +532,7 @@ simde_uint8x16_t
 simde_vaddq_u8(simde_uint8x16_t a, simde_uint8x16_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vaddq_u8(a, b);
-  #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
     return vec_add(a, b);
   #else
     simde_uint8x16_private
@@ -562,7 +562,7 @@ simde_uint16x8_t
 simde_vaddq_u16(simde_uint16x8_t a, simde_uint16x8_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vaddq_u16(a, b);
-  #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
     return vec_add(a, b);
   #else
     simde_uint16x8_private
@@ -592,7 +592,7 @@ simde_uint32x4_t
 simde_vaddq_u32(simde_uint32x4_t a, simde_uint32x4_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vaddq_u32(a, b);
-  #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
     return vec_add(a, b);
   #else
     simde_uint32x4_private

@@ -277,7 +277,7 @@ simde_vmlaq_f32(simde_float32x4_t a, simde_float32x4_t b, simde_float32x4_t c) {
     return _mm_fmadd_ps(b, c, a);
   #elif defined(SIMDE_X86_SSE_NATIVE)
     return _mm_add_ps(_mm_mul_ps(b, c), a);
-  #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
     return vec_madd(b, c, a);
   #else
     simde_float32x4_private

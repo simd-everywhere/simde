@@ -232,7 +232,7 @@ SIMDE_ARM_NEON_TYPE_FLOAT_DEFINE_(64, 2, 16)
   typedef v128_t  simde_uint64x2_t;
   typedef v128_t simde_float32x4_t;
   typedef v128_t simde_float64x2_t;
-#elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+#elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
   #define SIMDE_ARM_NEON_NEED_PORTABLE_F32
   #define SIMDE_ARM_NEON_NEED_PORTABLE_F64
 
