@@ -6850,6 +6850,90 @@ simde_mm512_or_si512 (simde__m512i a, simde__m512i b) {
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
+simde__m512
+simde_mm512_permute_ps (simde__m512 a, const int imm8) {
+  simde__m512_private
+    r_,
+    a_ = simde__m512_to_private(a);
+
+  SIMDE_VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
+    r_.f32[i] = a_.f32[(imm8 >> ((i << 1) & 7)) & 3];
+  }
+
+  return simde__m512_from_private(r_);
+}
+#if defined(SIMDE_X86_AVX512F_NATIVE)
+  #define simde_mm512_permute_ps(a, imm8) _mm512_permute_ps(a, imm8)
+#endif
+#if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_permute_ps
+  #define _mm512_permute_ps(a, imm8) simde_mm512_permute_ps(a, imm8)
+#endif
+
+#if defined(SIMDE_X86_AVX512F_NATIVE)
+  #define simde_mm512_mask_permute_ps(src, k, a, imm8) _mm512_mask_permute_ps(src, k, a, imm8)
+#else
+  #define simde_mm512_mask_permute_ps(src, k, a, imm8) simde_mm512_mask_mov_ps(src, k, simde_mm512_permute_ps(a, imm8));
+#endif
+#if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_mask_permute_ps
+  #define _mm512_mask_permute_ps(src, k, a, imm8) simde_mm512_mask_permute_ps(src, k, a, imm8)
+#endif
+
+#if defined(SIMDE_X86_AVX512F_NATIVE)
+  #define simde_mm512_maskz_permute_ps(k, a, imm8) _mm512_maskz_permute_ps(k, a, imm8)
+#else
+  #define simde_mm512_maskz_permute_ps(k, a, imm8) simde_mm512_maskz_mov_ps(k, simde_mm512_permute_ps(a, imm8))
+#endif
+#if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_maskz_permute_ps
+  #define _mm512_maskz_permute_ps(k, a, imm8) simde_mm512_maskz_permute_ps(k, a, imm8)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512d
+simde_mm512_permute_pd (simde__m512d a, const int imm8) {
+  simde__m512d_private
+    r_,
+    a_ = simde__m512d_to_private(a);
+
+  SIMDE_VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
+    r_.f64[i] = a_.f64[((imm8 >> i) & 1) + (i & 2)];
+  }
+
+  return simde__m512d_from_private(r_);
+}
+#if defined(SIMDE_X86_AVX512F_NATIVE)
+  #define simde_mm512_permute_pd(a, imm8) _mm512_permute_pd(a, imm8)
+#endif
+#if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_permute_pd
+  #define _mm512_permute_pd(a, imm8) simde_mm512_permute_pd(a, imm8)
+#endif
+
+#if defined(SIMDE_X86_AVX512F_NATIVE)
+  #define simde_mm512_mask_permute_pd(src, k, a, imm8) _mm512_mask_permute_pd(src, k, a, imm8)
+#else
+  #define simde_mm512_mask_permute_pd(src, k, a, imm8) simde_mm512_mask_mov_pd(src, k, simde_mm512_permute_pd(a, imm8))
+#endif
+#if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_mask_permute_pd
+  #define _mm512_mask_permute_pd(src, k, a, imm8) simde_mm512_mask_permute_pd(src, k, a, imm8)
+#endif
+
+#if defined(SIMDE_X86_AVX512F_NATIVE)
+  #define simde_mm512_maskz_permute_pd(k, a, imm8) _mm512_maskz_permute_pd(k, a, imm8)
+#else
+  #define simde_mm512_maskz_permute_pd(k, a, imm8) simde_mm512_maskz_mov_pd(k, simde_mm512_permute_pd(a, imm8))
+#endif
+#if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_maskz_permute_pd
+  #define _mm512_maskz_permute_pd(k, a, imm8) simde_mm512_maskz_permute_pd(k, a, imm8)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
 simde__m512i
 simde_mm512_permutexvar_epi32 (simde__m512i idx, simde__m512i a) {
   #if defined(SIMDE_X86_AVX512F_NATIVE)
