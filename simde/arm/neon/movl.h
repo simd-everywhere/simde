@@ -43,10 +43,14 @@ simde_vmovl_s8(simde_int8x8_t a) {
     simde_int16x8_private r_;
     simde_int8x8_private a_ = simde_int8x8_to_private(a);
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = HEDLEY_STATIC_CAST(int16_t, a_.values[i]);
-    }
+    #if defined(SIMDE_CONVERT_VECTOR_)
+      SIMDE_CONVERT_VECTOR_(r_.values, a_.values);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+        r_.values[i] = HEDLEY_STATIC_CAST(int16_t, a_.values[i]);
+      }
+    #endif
 
     return simde_int16x8_from_private(r_);
   #endif
@@ -65,10 +69,14 @@ simde_vmovl_s16(simde_int16x4_t a) {
     simde_int32x4_private r_;
     simde_int16x4_private a_ = simde_int16x4_to_private(a);
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = HEDLEY_STATIC_CAST(int32_t, a_.values[i]);
-    }
+    #if defined(SIMDE_CONVERT_VECTOR_)
+      SIMDE_CONVERT_VECTOR_(r_.values, a_.values);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+        r_.values[i] = HEDLEY_STATIC_CAST(int32_t, a_.values[i]);
+      }
+    #endif
 
     return simde_int32x4_from_private(r_);
   #endif
@@ -87,10 +95,14 @@ simde_vmovl_s32(simde_int32x2_t a) {
     simde_int64x2_private r_;
     simde_int32x2_private a_ = simde_int32x2_to_private(a);
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = HEDLEY_STATIC_CAST(int64_t, a_.values[i]);
-    }
+    #if defined(SIMDE_CONVERT_VECTOR_)
+      SIMDE_CONVERT_VECTOR_(r_.values, a_.values);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+        r_.values[i] = HEDLEY_STATIC_CAST(int64_t, a_.values[i]);
+      }
+    #endif
 
     return simde_int64x2_from_private(r_);
   #endif
@@ -109,10 +121,14 @@ simde_vmovl_u8(simde_uint8x8_t a) {
     simde_uint16x8_private r_;
     simde_uint8x8_private a_ = simde_uint8x8_to_private(a);
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = HEDLEY_STATIC_CAST(uint16_t, a_.values[i]);
-    }
+    #if defined(SIMDE_CONVERT_VECTOR_)
+      SIMDE_CONVERT_VECTOR_(r_.values, a_.values);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+        r_.values[i] = HEDLEY_STATIC_CAST(uint16_t, a_.values[i]);
+      }
+    #endif
 
     return simde_uint16x8_from_private(r_);
   #endif
@@ -131,10 +147,14 @@ simde_vmovl_u16(simde_uint16x4_t a) {
     simde_uint32x4_private r_;
     simde_uint16x4_private a_ = simde_uint16x4_to_private(a);
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = HEDLEY_STATIC_CAST(uint32_t, a_.values[i]);
-    }
+    #if defined(SIMDE_CONVERT_VECTOR_)
+      SIMDE_CONVERT_VECTOR_(r_.values, a_.values);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+        r_.values[i] = HEDLEY_STATIC_CAST(uint32_t, a_.values[i]);
+      }
+    #endif
 
     return simde_uint32x4_from_private(r_);
   #endif
@@ -153,10 +173,14 @@ simde_vmovl_u32(simde_uint32x2_t a) {
     simde_uint64x2_private r_;
     simde_uint32x2_private a_ = simde_uint32x2_to_private(a);
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = HEDLEY_STATIC_CAST(uint64_t, a_.values[i]);
-    }
+    #if defined(SIMDE_CONVERT_VECTOR_)
+      SIMDE_CONVERT_VECTOR_(r_.values, a_.values);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+        r_.values[i] = HEDLEY_STATIC_CAST(uint64_t, a_.values[i]);
+      }
+    #endif
 
     return simde_uint64x2_from_private(r_);
   #endif
