@@ -1,4 +1,5 @@
 simde_test_arm_neon_tests = [
+  'abs',
   'add',
   'addw',
   'and',
