@@ -1,6 +1,8 @@
 simde_test_arm_neon_tests = [
   'abs',
   'add',
+  'addl',
+  'addl_high',
   'addw',
   'and',
   'bsl',
