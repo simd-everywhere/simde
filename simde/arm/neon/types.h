@@ -75,47 +75,27 @@ SIMDE_ARM_NEON_TYPE_FLOAT_DEFINE_(32, 4, 16)
 SIMDE_ARM_NEON_TYPE_FLOAT_DEFINE_(64, 2, 16)
 
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-  typedef    int8x8_t    simde_int8x8_t;
-  typedef   int16x4_t   simde_int16x4_t;
-  typedef   int32x2_t   simde_int32x2_t;
-  typedef   int64x1_t   simde_int64x1_t;
-  typedef   uint8x8_t   simde_uint8x8_t;
-  typedef  uint16x4_t  simde_uint16x4_t;
-  typedef  uint32x2_t  simde_uint32x2_t;
-  typedef  uint64x1_t  simde_uint64x1_t;
-  typedef float32x2_t simde_float32x2_t;
+  typedef     float32_t     simde_float32_t;
 
-  typedef   int8x16_t   simde_int8x16_t;
-  typedef   int16x8_t   simde_int16x8_t;
-  typedef   int32x4_t   simde_int32x4_t;
-  typedef   int64x2_t   simde_int64x2_t;
-  typedef  uint8x16_t  simde_uint8x16_t;
-  typedef  uint16x8_t  simde_uint16x8_t;
-  typedef  uint32x4_t  simde_uint32x4_t;
-  typedef  uint64x2_t  simde_uint64x2_t;
-  typedef float32x4_t simde_float32x4_t;
+  typedef      int8x8_t      simde_int8x8_t;
+  typedef     int16x4_t     simde_int16x4_t;
+  typedef     int32x2_t     simde_int32x2_t;
+  typedef     int64x1_t     simde_int64x1_t;
+  typedef     uint8x8_t     simde_uint8x8_t;
+  typedef    uint16x4_t    simde_uint16x4_t;
+  typedef    uint32x2_t    simde_uint32x2_t;
+  typedef    uint64x1_t    simde_uint64x1_t;
+  typedef   float32x2_t   simde_float32x2_t;
 
-  typedef    int8x8x2_t    simde_int8x8x2_t;
-  typedef   int16x4x2_t   simde_int16x4x2_t;
-  typedef   int32x2x2_t   simde_int32x2x2_t;
-  typedef   int64x1x2_t   simde_int64x1x2_t;
-  typedef   uint8x8x2_t   simde_uint8x8x2_t;
-  typedef  uint16x4x2_t  simde_uint16x4x2_t;
-  typedef  uint32x2x2_t  simde_uint32x2x2_t;
-  typedef  uint64x1x2_t  simde_uint64x1x2_t;
-  typedef float32x2x2_t simde_float32x2x2_t;
-
-  typedef   int8x16x2_t   simde_int8x16x2_t;
-  typedef   int16x8x2_t   simde_int16x8x2_t;
-  typedef   int32x4x2_t   simde_int32x4x2_t;
-  typedef   int64x2x2_t   simde_int64x2x2_t;
-  typedef  uint8x16x2_t  simde_uint8x16x2_t;
-  typedef  uint16x8x2_t  simde_uint16x8x2_t;
-  typedef  uint32x4x2_t  simde_uint32x4x2_t;
-  typedef  uint64x2x2_t  simde_uint64x2x2_t;
-  typedef float32x4x2_t simde_float32x4x2_t;
-
-  typedef   float32_t   simde_float32_t;
+  typedef     int8x16_t     simde_int8x16_t;
+  typedef     int16x8_t     simde_int16x8_t;
+  typedef     int32x4_t     simde_int32x4_t;
+  typedef     int64x2_t     simde_int64x2_t;
+  typedef    uint8x16_t    simde_uint8x16_t;
+  typedef    uint16x8_t    simde_uint16x8_t;
+  typedef    uint32x4_t    simde_uint32x4_t;
+  typedef    uint64x2_t    simde_uint64x2_t;
+  typedef   float32x4_t   simde_float32x4_t;
 
   typedef    int8x8x2_t    simde_int8x8x2_t;
   typedef   int16x4x2_t   simde_int16x4x2_t;
@@ -138,18 +118,15 @@ SIMDE_ARM_NEON_TYPE_FLOAT_DEFINE_(64, 2, 16)
   typedef float32x4x2_t simde_float32x4x2_t;
 
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
-    typedef float64x1_t simde_float64x1_t;
-    typedef float64x2_t simde_float64x2_t;
-    typedef   float64_t   simde_float64_t;
-
+    typedef     float64_t     simde_float64_t;
+    typedef   float64x1_t   simde_float64x1_t;
+    typedef   float64x2_t   simde_float64x2_t;
     typedef float64x1x2_t simde_float64x1x2_t;
     typedef float64x2x2_t simde_float64x2x2_t;
-    typedef   float64x2_t   simde_float64x2_t;
   #else
     #define SIMDE_ARM_NEON_NEED_PORTABLE_F64X1
     #define SIMDE_ARM_NEON_NEED_PORTABLE_F64X2
     #define SIMDE_ARM_NEON_NEED_PORTABLE_F64
-
     #define SIMDE_ARM_NEON_NEED_PORTABLE_F64X1X2
     #define SIMDE_ARM_NEON_NEED_PORTABLE_F64X2X2
   #endif
@@ -409,51 +386,54 @@ typedef struct   simde_float64x2x2_t {
 #endif
 
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
-  typedef    simde_int8x8_t    int8x8_t;
-  typedef   simde_int16x4_t   int16x4_t;
-  typedef   simde_int32x2_t   int32x2_t;
-  typedef   simde_int64x1_t   int64x1_t;
-  typedef   simde_uint8x8_t   uint8x8_t;
-  typedef  simde_uint16x4_t  uint16x4_t;
-  typedef  simde_uint32x2_t  uint32x2_t;
-  typedef  simde_uint64x1_t  uint64x1_t;
-  typedef simde_float32x2_t float32x2_t;
-  typedef   simde_int8x16_t   int8x16_t;
-  typedef   simde_int16x8_t   int16x8_t;
-  typedef   simde_int32x4_t   int32x4_t;
-  typedef   simde_int64x2_t   int64x2_t;
-  typedef  simde_uint8x16_t  uint8x16_t;
-  typedef  simde_uint16x8_t  uint16x8_t;
-  typedef  simde_uint32x4_t  uint32x4_t;
-  typedef  simde_uint64x2_t  uint64x2_t;
-  typedef simde_float32x4_t float32x4_t;
+  typedef   simde_float32_t     float32_t;
 
-  typedef    simde_int8x8x2_t    int8x8x2_t;
-  typedef   simde_int16x4x2_t   int16x4x2_t;
-  typedef   simde_int32x2x2_t   int32x2x2_t;
-  typedef   simde_int64x1x2_t   int64x1x2_t;
-  typedef   simde_uint8x8x2_t   uint8x8x2_t;
-  typedef  simde_uint16x4x2_t  uint16x4x2_t;
-  typedef  simde_uint32x2x2_t  uint32x2x2_t;
-  typedef  simde_uint64x1x2_t  uint64x1x2_t;
+  typedef    simde_int8x8_t      int8x8_t;
+  typedef   simde_int16x4_t     int16x4_t;
+  typedef   simde_int32x2_t     int32x2_t;
+  typedef   simde_int64x1_t     int64x1_t;
+  typedef   simde_uint8x8_t     uint8x8_t;
+  typedef  simde_uint16x4_t    uint16x4_t;
+  typedef  simde_uint32x2_t    uint32x2_t;
+  typedef  simde_uint64x1_t    uint64x1_t;
+  typedef simde_float32x2_t   float32x2_t;
+
+  typedef   simde_int8x16_t     int8x16_t;
+  typedef   simde_int16x8_t     int16x8_t;
+  typedef   simde_int32x4_t     int32x4_t;
+  typedef   simde_int64x2_t     int64x2_t;
+  typedef  simde_uint8x16_t    uint8x16_t;
+  typedef  simde_uint16x8_t    uint16x8_t;
+  typedef  simde_uint32x4_t    uint32x4_t;
+  typedef  simde_uint64x2_t    uint64x2_t;
+  typedef simde_float32x4_t   float32x4_t;
+
+  typedef  simde_int8x8x2_t    int8x8x2_t;
+  typedef simde_int16x4x2_t   int16x4x2_t;
+  typedef simde_int32x2x2_t   int32x2x2_t;
+  typedef simde_int64x1x2_t   int64x1x2_t;
+  typedef simde_uint8x8x2_t   uint8x8x2_t;
+  typedef simde_uint16x4x2_t  uint16x4x2_t;
+  typedef simde_uint32x2x2_t  uint32x2x2_t;
+  typedef simde_uint64x1x2_t  uint64x1x2_t;
   typedef simde_float32x2x2_t float32x2x2_t;
-  typedef   simde_int8x16x2_t   int8x16x2_t;
-  typedef   simde_int16x8x2_t   int16x8x2_t;
-  typedef   simde_int32x4x2_t   int32x4x2_t;
-  typedef   simde_int64x2x2_t   int64x2x2_t;
-  typedef  simde_uint8x16x2_t  uint8x16x2_t;
-  typedef  simde_uint16x8x2_t  uint16x8x2_t;
-  typedef  simde_uint32x4x2_t  uint32x4x2_t;
-  typedef  simde_uint64x2x2_t  uint64x2x2_t;
-  typedef simde_float32x4x2_t float32x4x2_t;
 
+  typedef simde_int8x16x2_t   int8x16x2_t;
+  typedef simde_int16x8x2_t   int16x8x2_t;
+  typedef simde_int32x4x2_t   int32x4x2_t;
+  typedef simde_int64x2x2_t   int64x2x2_t;
+  typedef simde_uint8x16x2_t  uint8x16x2_t;
+  typedef simde_uint16x8x2_t  uint16x8x2_t;
+  typedef simde_uint32x4x2_t  uint32x4x2_t;
+  typedef simde_uint64x2x2_t  uint64x2x2_t;
+  typedef simde_float32x4x2_t float32x4x2_t;
 #endif
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  typedef   simde_float64_t     float64_t;
   typedef simde_float64x1_t   float64x1_t;
   typedef simde_float64x2_t   float64x2_t;
-
-  typedef  simde_uint64x1x2_t  uint64x1x2_t;
-  typedef simde_float64x2x2_t float64x2x2_t;
+  typedef simde_float64x1_t float64x1x2_t;
+  typedef simde_float64x2_t float64x2x2_t;
 #endif
 
 #define SIMDE_ARM_NEON_TYPE_DEFINE_CONVERSIONS_(T) \
