@@ -6645,16 +6645,7 @@ simde_mm_svml_ceil_ps (simde__m128 a) {
   #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE_NATIVE)
     return _mm_svml_ceil_ps(a);
   #else
-    simde__m128_private
-      r_,
-      a_ = simde__m128_to_private(a);
-
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
-      r_.f32[i] =  simde_math_ceilf(a_.f32[i]);
-    }
-
-    return simde__m128_from_private(r_);
+    return simde_mm_round_ps(a, SIMDE_MM_FROUND_TO_POS_INF);
   #endif
 }
 #if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
@@ -6668,16 +6659,7 @@ simde_mm_svml_ceil_pd (simde__m128d a) {
   #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE_NATIVE)
     return _mm_svml_ceil_pd(a);
   #else
-    simde__m128d_private
-      r_,
-      a_ = simde__m128d_to_private(a);
-
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
-      r_.f64[i] =  simde_math_ceil(a_.f64[i]);
-    }
-
-    return simde__m128d_from_private(r_);
+    return simde_mm_round_pd(a, SIMDE_MM_FROUND_TO_POS_INF);
   #endif
 }
 #if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
@@ -6688,19 +6670,10 @@ simde_mm_svml_ceil_pd (simde__m128d a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m256
 simde_mm256_svml_ceil_ps (simde__m256 a) {
-  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE_NATIVE)
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX_NATIVE)
     return _mm256_svml_ceil_ps(a);
   #else
-    simde__m256_private
-      r_,
-      a_ = simde__m256_to_private(a);
-
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
-      r_.f32[i] =  simde_math_ceilf(a_.f32[i]);
-    }
-
-    return simde__m256_from_private(r_);
+    return simde_mm256_round_ps(a, SIMDE_MM_FROUND_TO_POS_INF);
   #endif
 }
 #if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
@@ -6711,19 +6684,10 @@ simde_mm256_svml_ceil_ps (simde__m256 a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m256d
 simde_mm256_svml_ceil_pd (simde__m256d a) {
-  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE_NATIVE)
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX_NATIVE)
     return _mm256_svml_ceil_pd(a);
   #else
-    simde__m256d_private
-      r_,
-      a_ = simde__m256d_to_private(a);
-
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
-      r_.f64[i] =  simde_math_ceil(a_.f64[i]);
-    }
-
-    return simde__m256d_from_private(r_);
+    return simde_mm256_round_pd(a, SIMDE_MM_FROUND_TO_POS_INF);
   #endif
 }
 #if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
@@ -6803,6 +6767,266 @@ simde_mm512_mask_ceil_pd(simde__m512d src, simde__mmask8 k, simde__m512d a) {
 #if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
   #undef _mm512_mask_ceil_pd
   #define _mm512_mask_ceil_pd(src, k, a) simde_mm512_mask_ceil_pd(src, k, a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m128
+simde_mm_svml_floor_ps (simde__m128 a) {
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE_NATIVE)
+    return _mm_svml_floor_ps(a);
+  #else
+    return simde_mm_round_ps(a, SIMDE_MM_FROUND_TO_NEG_INF);
+  #endif
+}
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
+  #undef _mm_svml_floor_ps
+  #define _mm_svml_floor_ps(a) simde_mm_svml_floor_ps(a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m128d
+simde_mm_svml_floor_pd (simde__m128d a) {
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE_NATIVE)
+    return _mm_svml_floor_pd(a);
+  #else
+    return simde_mm_round_pd(a, SIMDE_MM_FROUND_TO_NEG_INF);
+  #endif
+}
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
+  #undef _mm_svml_floor_pd
+  #define _mm_svml_floor_pd(a) simde_mm_svml_floor_pd(a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256
+simde_mm256_svml_floor_ps (simde__m256 a) {
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX_NATIVE)
+    return _mm256_svml_floor_ps(a);
+  #else
+    return simde_mm256_round_ps(a, SIMDE_MM_FROUND_TO_NEG_INF);
+  #endif
+}
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_svml_floor_ps
+  #define _mm256_svml_floor_ps(a) simde_mm256_svml_floor_ps(a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256d
+simde_mm256_svml_floor_pd (simde__m256d a) {
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX_NATIVE)
+    return _mm256_svml_floor_pd(a);
+  #else
+    return simde_mm256_round_pd(a, SIMDE_MM_FROUND_TO_NEG_INF);
+  #endif
+}
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_svml_floor_pd
+  #define _mm256_svml_floor_pd(a) simde_mm256_svml_floor_pd(a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512
+simde_mm512_floor_ps (simde__m512 a) {
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE_NATIVE)
+    return _mm512_floor_ps(a);
+  #else
+    simde__m512_private
+      r_,
+      a_ = simde__m512_to_private(a);
+
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
+      r_.f32[i] =  simde_math_floorf(a_.f32[i]);
+    }
+
+    return simde__m512_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_floor_ps
+  #define _mm512_floor_ps(a) simde_mm512_floor_ps(a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512d
+simde_mm512_floor_pd (simde__m512d a) {
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE_NATIVE)
+    return _mm512_floor_pd(a);
+  #else
+    simde__m512d_private
+      r_,
+      a_ = simde__m512d_to_private(a);
+
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
+      r_.f64[i] =  simde_math_floor(a_.f64[i]);
+    }
+
+    return simde__m512d_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_floor_pd
+  #define _mm512_floor_pd(a) simde_mm512_floor_pd(a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512
+simde_mm512_mask_floor_ps(simde__m512 src, simde__mmask16 k, simde__m512 a) {
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX512F_NATIVE)
+    return _mm512_mask_floor_ps(src, k, a);
+  #else
+    return simde_mm512_mask_mov_ps(src, k, simde_mm512_floor_ps(a));
+  #endif
+}
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_mask_floor_ps
+  #define _mm512_mask_floor_ps(src, k, a) simde_mm512_mask_floor_ps(src, k, a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512d
+simde_mm512_mask_floor_pd(simde__m512d src, simde__mmask8 k, simde__m512d a) {
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX512F_NATIVE)
+    return _mm512_mask_floor_pd(src, k, a);
+  #else
+    return simde_mm512_mask_mov_pd(src, k, simde_mm512_floor_pd(a));
+  #endif
+}
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_mask_floor_pd
+  #define _mm512_mask_floor_pd(src, k, a) simde_mm512_mask_floor_pd(src, k, a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m128
+simde_mm_svml_round_ps (simde__m128 a) {
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE_NATIVE)
+    return _mm_svml_round_ps(a);
+  #else
+    simde__m128_private
+      r_,
+      a_ = simde__m128_to_private(a);
+
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
+      r_.f32[i] =  simde_math_roundf(a_.f32[i]);
+    }
+
+    return simde__m128_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
+  #undef _mm_svml_round_ps
+  #define _mm_svml_round_ps(a) simde_mm_svml_round_ps(a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m128d
+simde_mm_svml_round_pd (simde__m128d a) {
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE_NATIVE)
+    return _mm_svml_round_pd(a);
+  #else
+    simde__m128d_private
+      r_,
+      a_ = simde__m128d_to_private(a);
+
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
+      r_.f64[i] =  simde_math_round(a_.f64[i]);
+    }
+
+    return simde__m128d_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
+  #undef _mm_svml_round_pd
+  #define _mm_svml_round_pd(a) simde_mm_svml_round_pd(a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256
+simde_mm256_svml_round_ps (simde__m256 a) {
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX_NATIVE)
+    return _mm256_svml_round_ps(a);
+  #else
+    simde__m256_private
+      r_,
+      a_ = simde__m256_to_private(a);
+
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
+      r_.f32[i] =  simde_math_roundf(a_.f32[i]);
+    }
+
+    return simde__m256_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_svml_round_ps
+  #define _mm256_svml_round_ps(a) simde_mm256_svml_round_ps(a)
+#endif
+
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256d
+simde_mm256_svml_round_pd (simde__m256d a) {
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX_NATIVE)
+    return _mm256_svml_round_pd(a);
+  #else
+    simde__m256d_private
+      r_,
+      a_ = simde__m256d_to_private(a);
+
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
+      r_.f64[i] =  simde_math_round(a_.f64[i]);
+    }
+
+    return simde__m256d_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_svml_round_pd
+  #define _mm256_svml_round_pd(a) simde_mm256_svml_round_pd(a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512d
+simde_mm512_svml_round_pd (simde__m512d a) {
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX512F_NATIVE)
+    return _mm512_svml_round_pd(a);
+  #else
+    simde__m512d_private
+      r_,
+      a_ = simde__m512d_to_private(a);
+
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
+      r_.f64[i] =  simde_math_round(a_.f64[i]);
+    }
+
+    return simde__m512d_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_svml_round_pd
+  #define _mm512_svml_round_pd(a) simde_mm512_svml_round_pd(a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512d
+simde_mm512_mask_svml_round_pd(simde__m512d src, simde__mmask8 k, simde__m512d a) {
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX512F_NATIVE)
+    return _mm512_mask_svml_round_pd(src, k, a);
+  #else
+    return simde_mm512_mask_mov_pd(src, k, simde_mm512_svml_round_pd(a));
+  #endif
+}
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_mask_svml_round_pd
+  #define _mm512_mask_svml_round_pd(src, k, a) simde_mm512_mask_svml_round_pd(src, k, a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -7394,16 +7618,7 @@ simde_mm_trunc_ps (simde__m128 a) {
   #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE_NATIVE)
     return _mm_trunc_ps(a);
   #else
-    simde__m128_private
-      r_,
-      a_ = simde__m128_to_private(a);
-
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
-      r_.f32[i] =  simde_math_truncf(a_.f32[i]);
-    }
-
-    return simde__m128_from_private(r_);
+    return simde_mm_round_ps(a, SIMDE_MM_FROUND_TO_ZERO);
   #endif
 }
 #if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
@@ -7417,16 +7632,7 @@ simde_mm_trunc_pd (simde__m128d a) {
   #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE_NATIVE)
     return _mm_trunc_pd(a);
   #else
-    simde__m128d_private
-      r_,
-      a_ = simde__m128d_to_private(a);
-
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
-      r_.f64[i] =  simde_math_trunc(a_.f64[i]);
-    }
-
-    return simde__m128d_from_private(r_);
+    return simde_mm_round_pd(a, SIMDE_MM_FROUND_TO_ZERO);
   #endif
 }
 #if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
@@ -7440,16 +7646,7 @@ simde_mm256_trunc_ps (simde__m256 a) {
   #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX_NATIVE)
     return _mm256_trunc_ps(a);
   #else
-    simde__m256_private
-      r_,
-      a_ = simde__m256_to_private(a);
-
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
-      r_.f32[i] =  simde_math_truncf(a_.f32[i]);
-    }
-
-    return simde__m256_from_private(r_);
+    return simde_mm256_round_ps(a, SIMDE_MM_FROUND_TO_ZERO);
   #endif
 }
 #if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
@@ -7457,23 +7654,13 @@ simde_mm256_trunc_ps (simde__m256 a) {
   #define _mm256_trunc_ps(a) simde_mm256_trunc_ps(a)
 #endif
 
-
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m256d
 simde_mm256_trunc_pd (simde__m256d a) {
   #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX_NATIVE)
     return _mm256_trunc_pd(a);
   #else
-    simde__m256d_private
-      r_,
-      a_ = simde__m256d_to_private(a);
-
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
-      r_.f64[i] =  simde_math_trunc(a_.f64[i]);
-    }
-
-    return simde__m256d_from_private(r_);
+    return simde_mm256_round_pd(a, SIMDE_MM_FROUND_TO_ZERO);
   #endif
 }
 #if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
