@@ -2844,6 +2844,80 @@ simde_mm256_sllv_epi64 (simde__m256i a, simde__m256i b) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m256i
+simde_mm256_sra_epi16 (simde__m256i a, simde__m128i count) {
+  simde__m256i_private
+    r_,
+    a_ = simde__m256i_to_private(a);
+  simde__m128i_private
+    count_ = simde__m128i_to_private(count);
+
+  uint64_t shift = HEDLEY_STATIC_CAST(uint64_t, count_.i64[0]);
+
+  if (shift > 15) shift = 15;
+
+  #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+    r_.i16 = a_.i16 >> HEDLEY_STATIC_CAST(int16_t, shift);
+  #else
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.i16) / sizeof(r_.i16[0])) ; i++) {
+      r_.i16[i] = a_.i16[i] >> shift;
+    }
+  #endif
+
+  return simde__m256i_from_private(r_);
+}
+#if defined(SIMDE_X86_AVX2_NATIVE)
+#  define simde_mm256_sra_epi16(a, count) _mm256_sra_epi16(a, count)
+#elif defined(SIMDE_X86_SSE2_NATIVE)
+#  define simde_mm256_sra_epi16(a, count) \
+     simde_mm256_set_m128i( \
+         simde_mm_sra_epi16(simde_mm256_extracti128_si256(a, 1), (count)), \
+         simde_mm_sra_epi16(simde_mm256_extracti128_si256(a, 0), (count)))
+#endif
+#if defined(SIMDE_X86_AVX2_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_sra_epi16
+  #define _mm256_sra_epi16(a, count) simde_mm256_sra_epi16(a, count)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256i
+simde_mm256_sra_epi32 (simde__m256i a, simde__m128i count) {
+  simde__m256i_private
+    r_,
+    a_ = simde__m256i_to_private(a);
+  simde__m128i_private
+    count_ = simde__m128i_to_private(count);
+
+  uint64_t shift = HEDLEY_STATIC_CAST(uint64_t, count_.i64[0]);
+
+  if (shift > 31) shift = 31;
+
+  #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+    r_.i32 = a_.i32 >> HEDLEY_STATIC_CAST(int16_t, shift);
+  #else
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {
+      r_.i32[i] = a_.i32[i] >> shift;
+    }
+  #endif
+
+  return simde__m256i_from_private(r_);
+}
+#if defined(SIMDE_X86_AVX2_NATIVE)
+#  define simde_mm256_sra_epi32(a, count) _mm256_sra_epi32(a, count)
+#elif defined(SIMDE_X86_SSE2_NATIVE)
+#  define simde_mm256_sra_epi32(a, count) \
+     simde_mm256_set_m128i( \
+         simde_mm_sra_epi32(simde_mm256_extracti128_si256(a, 1), (count)), \
+         simde_mm_sra_epi32(simde_mm256_extracti128_si256(a, 0), (count)))
+#endif
+#if defined(SIMDE_X86_AVX2_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_sra_epi32
+  #define _mm256_sra_epi32(a, count) simde_mm256_sra_epi32(a, count)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256i
 simde_mm256_srai_epi16 (simde__m256i a, const int imm8) {
   simde__m256i_private
     r_,
