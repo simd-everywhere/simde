@@ -230,7 +230,7 @@ simde_mm512_xor_ps (simde__m512 a, simde__m512 b) {
   return simde__m512_from_private(r_);
 #endif
 }
-#if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_AVX512DQ_ENABLE_NATIVE_ALIASES)
   #undef _mm512_xor_ps
   #define _mm512_xor_ps(a, b) simde_mm512_xor_ps(a, b)
 #endif
@@ -261,7 +261,7 @@ simde_mm512_xor_pd (simde__m512d a, simde__m512d b) {
   return simde__m512d_from_private(r_);
 #endif
 }
-#if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_AVX512DQ_ENABLE_NATIVE_ALIASES)
   #undef _mm512_xor_pd
   #define _mm512_xor_pd(a, b) simde_mm512_xor_pd(a, b)
 #endif
