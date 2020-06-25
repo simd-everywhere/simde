@@ -29,6 +29,8 @@
 #define SIMDE_ARM_NEON_MOVL_HIGH_H
 
 #include "types.h"
+#include "movl.h"
+#include "get_high.h"
 
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
@@ -40,16 +42,7 @@ simde_vmovl_high_s8(simde_int8x16_t a) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vmovl_high_s8(a);
   #else
-    simde_int16x8_private r_;
-    simde_int8x16_private a_ = simde_int8x16_to_private(a);
-
-    size_t half = (sizeof(a_.values) / sizeof(a_.values[0])) / 2;
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = HEDLEY_STATIC_CAST(int16_t, a_.values[i + half]);
-    }
-
-    return simde_int16x8_from_private(r_);
+    return simde_vmovl_s8(simde_vget_high_s8(a));
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
@@ -63,16 +56,7 @@ simde_vmovl_high_s16(simde_int16x8_t a) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vmovl_high_s16(a);
   #else
-    simde_int32x4_private r_;
-    simde_int16x8_private a_ = simde_int16x8_to_private(a);
-
-    size_t half = (sizeof(a_.values) / sizeof(a_.values[0])) / 2;
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = HEDLEY_STATIC_CAST(int16_t, a_.values[i + half]);
-    }
-
-    return simde_int32x4_from_private(r_);
+    return simde_vmovl_s16(simde_vget_high_s16(a));
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
@@ -86,16 +70,7 @@ simde_vmovl_high_s32(simde_int32x4_t a) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vmovl_high_s32(a);
   #else
-    simde_int64x2_private r_;
-    simde_int32x4_private a_ = simde_int32x4_to_private(a);
-
-    size_t half = (sizeof(a_.values) / sizeof(a_.values[0])) / 2;
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = HEDLEY_STATIC_CAST(int32_t, a_.values[i + half]);
-    }
-
-    return simde_int64x2_from_private(r_);
+    return simde_vmovl_s32(simde_vget_high_s32(a));
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
@@ -109,16 +84,7 @@ simde_vmovl_high_u8(simde_uint8x16_t a) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vmovl_high_u8(a);
   #else
-    simde_uint16x8_private r_;
-    simde_uint8x16_private a_ = simde_uint8x16_to_private(a);
-
-    size_t half = (sizeof(a_.values) / sizeof(a_.values[0])) / 2;
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = HEDLEY_STATIC_CAST(uint16_t, a_.values[i + half]);
-    }
-
-    return simde_uint16x8_from_private(r_);
+    return simde_vmovl_u8(simde_vget_high_u8(a));
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
@@ -132,16 +98,7 @@ simde_vmovl_high_u16(simde_uint16x8_t a) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vmovl_high_u16(a);
   #else
-    simde_uint32x4_private r_;
-    simde_uint16x8_private a_ = simde_uint16x8_to_private(a);
-
-    size_t half = (sizeof(a_.values) / sizeof(a_.values[0])) / 2;
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = HEDLEY_STATIC_CAST(uint32_t, a_.values[i + half]);
-    }
-
-    return simde_uint32x4_from_private(r_);
+    return simde_vmovl_u16(simde_vget_high_u16(a));
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
@@ -155,16 +112,7 @@ simde_vmovl_high_u32(simde_uint32x4_t a) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vmovl_high_u32(a);
   #else
-    simde_uint64x2_private r_;
-    simde_uint32x4_private a_ = simde_uint32x4_to_private(a);
-
-    size_t half = (sizeof(a_.values) / sizeof(a_.values[0])) / 2;
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = HEDLEY_STATIC_CAST(uint64_t, a_.values[i + half]);
-    }
-
-    return simde_uint64x2_from_private(r_);
+    return simde_vmovl_u32(simde_vget_high_u32(a));
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
