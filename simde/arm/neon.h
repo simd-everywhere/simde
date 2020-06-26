@@ -37,6 +37,7 @@
 #include "neon/bsl.h"
 #include "neon/cagt.h"
 #include "neon/ceq.h"
+#include "neon/ceqz.h"
 #include "neon/cltz.h"
 #include "neon/dup_n.h"
 #include "neon/eor.h"

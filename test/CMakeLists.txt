@@ -115,6 +115,7 @@ set(TEST_SOURCES_C
   arm/neon/bsl.c
   arm/neon/cagt.c
   arm/neon/ceq.c
+  arm/neon/ceqz.c
   arm/neon/cltz.c
   arm/neon/dup_n.c
   arm/neon/eor.c
