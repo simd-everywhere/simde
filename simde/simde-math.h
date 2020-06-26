@@ -782,6 +782,26 @@
   #endif
 #endif
 
+#if !defined(simde_math_rint)
+  #if SIMDE_MATH_BUILTIN_LIBM(rint)
+    #define simde_math_rint(v) __builtin_rint(v)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_rint(v) std::rint(v)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_rint(v) rint(v)
+  #endif
+#endif
+
+#if !defined(simde_math_rintf)
+  #if SIMDE_MATH_BUILTIN_LIBM(rintf)
+    #define simde_math_rintf(v) __builtin_rintf(v)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_rintf(v) std::rint(v)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_rintf(v) rintf(v)
+  #endif
+#endif
+
 #if !defined(simde_math_round)
   #if SIMDE_MATH_BUILTIN_LIBM(round)
     #define simde_math_round(v) __builtin_round(v)
