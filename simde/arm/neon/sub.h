@@ -359,8 +359,8 @@ simde_vsubq_f32(simde_float32x4_t a, simde_float32x4_t b) {
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
-  #undef vsub_f32
-  #define vsub_f32(a, b) simde_vsub_f32((a), (b))
+  #undef vsubq_f32
+  #define vsubq_f32(a, b) simde_vsubq_f32((a), (b))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -393,8 +393,8 @@ simde_vsubq_f64(simde_float64x2_t a, simde_float64x2_t b) {
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
-  #undef vsub_f64
-  #define vsub_f64(a, b) simde_vsub_f64((a), (b))
+  #undef vsubq_f64
+  #define vsubq_f64(a, b) simde_vsubq_f64((a), (b))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -427,8 +427,8 @@ simde_vsubq_s8(simde_int8x16_t a, simde_int8x16_t b) {
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
-  #undef vsub_s8
-  #define vsub_s8(a, b) simde_vsub_s8((a), (b))
+  #undef vsubq_s8
+  #define vsubq_s8(a, b) simde_vsubq_s8((a), (b))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -461,8 +461,8 @@ simde_vsubq_s16(simde_int16x8_t a, simde_int16x8_t b) {
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
-  #undef vsub_s16
-  #define vsub_s16(a, b) simde_vsub_s16((a), (b))
+  #undef vsubq_s16
+  #define vsubq_s16(a, b) simde_vsubq_s16((a), (b))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -495,8 +495,8 @@ simde_vsubq_s32(simde_int32x4_t a, simde_int32x4_t b) {
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
-  #undef vsub_s32
-  #define vsub_s32(a, b) simde_vsub_s32((a), (b))
+  #undef vsubq_s32
+  #define vsubq_s32(a, b) simde_vsubq_s32((a), (b))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -529,8 +529,8 @@ simde_vsubq_s64(simde_int64x2_t a, simde_int64x2_t b) {
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
-  #undef vsub_s64
-  #define vsub_s64(a, b) simde_vsub_s64((a), (b))
+  #undef vsubq_s64
+  #define vsubq_s64(a, b) simde_vsubq_s64((a), (b))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -559,8 +559,8 @@ simde_vsubq_u8(simde_uint8x16_t a, simde_uint8x16_t b) {
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
-  #undef vsub_u8
-  #define vsub_u8(a, b) simde_vsub_u8((a), (b))
+  #undef vsubq_u8
+  #define vsubq_u8(a, b) simde_vsubq_u8((a), (b))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -589,8 +589,8 @@ simde_vsubq_u16(simde_uint16x8_t a, simde_uint16x8_t b) {
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
-  #undef vsub_u16
-  #define vsub_u16(a, b) simde_vsub_u16((a), (b))
+  #undef vsubq_u16
+  #define vsubq_u16(a, b) simde_vsubq_u16((a), (b))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -619,8 +619,8 @@ simde_vsubq_u32(simde_uint32x4_t a, simde_uint32x4_t b) {
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
-  #undef vsub_u32
-  #define vsub_u32(a, b) simde_vsub_u32((a), (b))
+  #undef vsubq_u32
+  #define vsubq_u32(a, b) simde_vsubq_u32((a), (b))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -649,8 +649,8 @@ simde_vsubq_u64(simde_uint64x2_t a, simde_uint64x2_t b) {
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
-  #undef vsub_u64
-  #define vsub_u64(a, b) simde_vsub_u64((a), (b))
+  #undef vsubq_u64
+  #define vsubq_u64(a, b) simde_vsubq_u64((a), (b))
 #endif
 
 SIMDE_END_DECLS_
