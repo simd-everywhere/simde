@@ -25,8 +25,8 @@
  *   2020      Sean Maher <seanptmaher@gmail.com>
  */
 
-#if !defined(SIMDE_ARM_NEON_MIN_H)
-#define SIMDE_ARM_NEON_MIN_H
+#if !defined(SIMDE_ARM_NEON_MAX_H)
+#define SIMDE_ARM_NEON_MAX_H
 
 #include "types.h"
 
@@ -437,4 +437,4 @@ simde_vmaxq_u32(simde_uint32x4_t a, simde_uint32x4_t b) {
 SIMDE_END_DECLS_
 HEDLEY_DIAGNOSTIC_POP
 
-#endif /* !defined(SIMDE_ARM_NEON_MIN_H) */
+#endif /* !defined(SIMDE_ARM_NEON_MAX_H) */

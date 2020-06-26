@@ -200,7 +200,7 @@ simde_vld1q_f32(simde_float32 const ptr[HEDLEY_ARRAY_PARAM(4)]) {
     return vld1q_f32(ptr);
   #elif defined(SIMDE_X86_SSE2_NATIVE)
     return _mm_loadu_ps(ptr);
-  #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE) && 0
+  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE) && 0
     (void) ptr;
     return vec_ld(0, HEDLEY_REINTERPRET_CAST(const float*, ptr));
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
@@ -243,7 +243,7 @@ simde_vld1q_s8(int8_t const ptr[HEDLEY_ARRAY_PARAM(16)]) {
     return vld1q_s8(ptr);
   #elif defined(SIMDE_X86_SSE2_NATIVE)
     return _mm_loadu_si128(SIMDE_ALIGN_CAST(const __m128i*, ptr));
-  #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE) && 0
+  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE) && 0
     (void) ptr;
     return vec_ld(0, ptr);
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
@@ -266,7 +266,7 @@ simde_vld1q_s16(int16_t const ptr[HEDLEY_ARRAY_PARAM(8)]) {
     return vld1q_s16(ptr);
   #elif defined(SIMDE_X86_SSE2_NATIVE)
     return _mm_loadu_si128(SIMDE_ALIGN_CAST(const __m128i*, ptr));
-  #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE) && 0
+  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE) && 0
     (void) ptr;
     return vec_ld(0, ptr);
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
@@ -289,7 +289,7 @@ simde_vld1q_s32(int32_t const ptr[HEDLEY_ARRAY_PARAM(4)]) {
     return vld1q_s32(ptr);
   #elif defined(SIMDE_X86_SSE2_NATIVE)
     return _mm_loadu_si128(SIMDE_ALIGN_CAST(const __m128i*, ptr));
-  #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE) && 0
+  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE) && 0
     (void) ptr;
     return vec_ld(0, ptr);
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
@@ -332,7 +332,7 @@ simde_vld1q_u8(uint8_t const ptr[HEDLEY_ARRAY_PARAM(16)]) {
     return vld1q_u8(ptr);
   #elif defined(SIMDE_X86_SSE2_NATIVE)
     return _mm_loadu_si128(SIMDE_ALIGN_CAST(const __m128i*, ptr));
-  #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE) && 0
+  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE) && 0
     (void) ptr;
     return vec_ld(0, ptr);
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
@@ -355,7 +355,7 @@ simde_vld1q_u16(uint16_t const ptr[HEDLEY_ARRAY_PARAM(8)]) {
     return vld1q_u16(ptr);
   #elif defined(SIMDE_X86_SSE2_NATIVE)
     return _mm_loadu_si128(SIMDE_ALIGN_CAST(const __m128i*, ptr));
-  #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE) && 0
+  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE) && 0
     (void) ptr;
     return vec_ld(0, ptr);
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
@@ -378,7 +378,7 @@ simde_vld1q_u32(uint32_t const ptr[HEDLEY_ARRAY_PARAM(4)]) {
     return vld1q_u32(ptr);
   #elif defined(SIMDE_X86_SSE2_NATIVE)
     return _mm_loadu_si128(SIMDE_ALIGN_CAST(const __m128i*, ptr));
-  #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE) && 0
+  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE) && 0
     (void) ptr;
     return vec_ld(0, ptr);
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)

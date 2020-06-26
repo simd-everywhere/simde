@@ -289,6 +289,8 @@ simde_vbslq_s16(simde_uint16x8_t a, simde_int16x8_t b, simde_int16x8_t c) {
     return vbslq_s16(a, b, c);
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_v128_bitselect(b, c, a);
+  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+    return vec_sel(c, b, a);
   #else
     simde_uint8x16_t
       a_ = simde_vreinterpretq_u8_u16(a),
@@ -349,6 +351,8 @@ simde_vbslq_u8(simde_uint8x16_t a, simde_uint8x16_t b, simde_uint8x16_t c) {
     return vbslq_u8(a, b, c);
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_v128_bitselect(b, c, a);
+  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+    return vec_sel(c, b, a);
   #else
     return simde_veorq_u8(c, simde_vandq_u8(simde_veorq_u8(c, b), a));
   #endif

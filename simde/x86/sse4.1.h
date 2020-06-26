@@ -72,7 +72,7 @@ simde_mm_blend_epi16 (simde__m128i a, simde__m128i b, const int imm8)
            uint16x8_t _mask_vec = vld1q_u16(_mask);  \
            simde__m128i_from_neon_u16(vbslq_u16(_mask_vec, simde__m128i_to_neon_u16(b), simde__m128i_to_neon_u16(a))); \
        }))
-#elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+#elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
 #  define simde_mm_blend_epi16(a, b, imm8)      \
      (__extension__ ({ \
            const vector unsigned short _mask = {      \
@@ -197,7 +197,7 @@ simde_mm_blendv_epi8 (simde__m128i a, simde__m128i b, simde__m128i mask) {
     // Use a signed shift right to create a mask with the sign bit
     mask_.neon_i8 = vshrq_n_s8(mask_.neon_i8, 7);
     r_.neon_i8 = vbslq_s8(mask_.neon_u8, b_.neon_i8, a_.neon_i8);
-  #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
     r_.altivec_i8 = vec_sel(a_.altivec_i8, b_.altivec_i8, vec_cmplt(mask_.altivec_i8, vec_splat_s8(0)));
   #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
     /* https://software.intel.com/en-us/forums/intel-c-compiler/topic/850087 */
@@ -241,7 +241,7 @@ simde_x_mm_blendv_epi16 (simde__m128i a, simde__m128i b, simde__m128i mask) {
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   mask_ = simde__m128i_to_private(simde_mm_cmplt_epi16(mask, simde_mm_setzero_si128()));
   r_.neon_i16 = vbslq_s16(mask_.neon_u16, b_.neon_i16, a_.neon_i16);
-#elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+#elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
   r_.altivec_i16 = vec_sel(a_.altivec_i16, b_.altivec_i16, vec_cmplt(mask_.altivec_i16, vec_splat_s16(0)));
 #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
   #if defined(HEDLEY_INTEL_VERSION_CHECK)
@@ -279,7 +279,7 @@ simde_x_mm_blendv_epi32 (simde__m128i a, simde__m128i b, simde__m128i mask) {
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   mask_ = simde__m128i_to_private(simde_mm_cmplt_epi32(mask, simde_mm_setzero_si128()));
   r_.neon_i32 = vbslq_s32(mask_.neon_u32, b_.neon_i32, a_.neon_i32);
-#elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+#elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
   r_.altivec_i32 = vec_sel(a_.altivec_i32, b_.altivec_i32, vec_cmplt(mask_.altivec_i32, vec_splat_s32(0)));
 #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
   #if defined(HEDLEY_INTEL_VERSION_CHECK)
@@ -378,7 +378,7 @@ simde_mm_round_pd (simde__m128d a, int rounding)
     a_ = simde__m128d_to_private(a);
 
   /* For architectures which lack a current direction SIMD instruction. */
-  #if defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+  #if defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
     if ((rounding & 7) == SIMDE_MM_FROUND_CUR_DIRECTION)
       rounding = HEDLEY_STATIC_CAST(int, SIMDE_MM_GET_ROUNDING_MODE()) << 13;
   #endif
@@ -561,7 +561,7 @@ simde_mm_cmpeq_epi64 (simde__m128i a, simde__m128i b) {
     r_.neon_u32 = vandq_u32(cmp, swapped);
   #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
     r_.i64 = HEDLEY_STATIC_CAST(__typeof__(r_.i64), a_.i64 == b_.i64);
-  #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
     r_.altivec_i64 = (vector signed long long) vec_cmpeq(a_.altivec_i64, b_.altivec_i64);
   #else
     SIMDE_VECTORIZE
@@ -1008,7 +1008,7 @@ simde_mm_extract_epi8 (simde__m128i a, const int imm8)
   simde__m128i_private
     a_ = simde__m128i_to_private(a);
 
-  #if defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+  #if defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
     #if defined(SIMDE_BUG_GCC_95227)
       (void) a_;
       (void) imm8;
@@ -1038,7 +1038,7 @@ simde_mm_extract_epi32 (simde__m128i a, const int imm8)
   simde__m128i_private
     a_ = simde__m128i_to_private(a);
 
-  #if defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+  #if defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
     #if defined(SIMDE_BUG_GCC_95227)
       (void) a_;
       (void) imm8;
@@ -1052,7 +1052,7 @@ simde_mm_extract_epi32 (simde__m128i a, const int imm8)
 #  define simde_mm_extract_epi32(a, imm8) _mm_extract_epi32(a, imm8)
 #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
 #  define simde_mm_extract_epi32(a, imm8) vgetq_lane_s32(simde__m128i_to_private(a).neon_i32, imm8)
-#elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+#elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
 #  define simde_mm_extract_epi32(a, imm8) HEDLEY_STATIC_CAST(int32_t, vec_extract(simde__m128i_to_private(a).altivec_i32, imm8))
 #endif
 #if defined(SIMDE_X86_SSE4_1_ENABLE_NATIVE_ALIASES)
@@ -1298,7 +1298,7 @@ simde_mm_max_epi8 (simde__m128i a, simde__m128i b) {
 
     #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       r_.neon_i8 = vmaxq_s8(a_.neon_i8, b_.neon_i8);
-    #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+    #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
       r_.altivec_i8 = vec_max(a_.altivec_i8, b_.altivec_i8);
     #else
       SIMDE_VECTORIZE
@@ -1328,7 +1328,7 @@ simde_mm_max_epi32 (simde__m128i a, simde__m128i b) {
 
     #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       r_.neon_i32 = vmaxq_s32(a_.neon_i32, b_.neon_i32);
-    #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+    #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
       r_.altivec_i32 = vec_max(a_.altivec_i32, b_.altivec_i32);
     #else
       SIMDE_VECTORIZE
@@ -1358,7 +1358,7 @@ simde_mm_max_epu16 (simde__m128i a, simde__m128i b) {
 
     #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       r_.neon_u16 = vmaxq_u16(a_.neon_u16, b_.neon_u16);
-    #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+    #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
       r_.altivec_u16 = vec_max(a_.altivec_u16, b_.altivec_u16);
     #else
       SIMDE_VECTORIZE
@@ -1388,7 +1388,7 @@ simde_mm_max_epu32 (simde__m128i a, simde__m128i b) {
 
     #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       r_.neon_u32 = vmaxq_u32(a_.neon_u32, b_.neon_u32);
-    #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+    #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
       r_.altivec_u32 = vec_max(a_.altivec_u32, b_.altivec_u32);
     #else
       SIMDE_VECTORIZE
@@ -1623,7 +1623,7 @@ simde_mm_mullo_epi32 (simde__m128i a, simde__m128i b) {
 
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     r_.neon_i32 = vmulq_s32(a_.neon_i32, b_.neon_i32);
-  #elif defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
     (void) a_;
     (void) b_;
     r_.altivec_i32 = vec_mul(a_.altivec_i32, b_.altivec_i32);

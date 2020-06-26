@@ -25,8 +25,8 @@
  *   2020      Sean Maher <seanptmaher@gmail.com>
  */
 
-#if !defined(SIMDE_ARM_NEON_ZIP_H) && !defined(SIMDE_BUG_INTEL_857088)
-#define SIMDE_ARM_NEON_ZIP_H
+#if !defined(SIMDE_ARM_NEON_UZP_H) && !defined(SIMDE_BUG_INTEL_857088)
+#define SIMDE_ARM_NEON_UZP_H
 
 #include "types.h"
 #include "uzp1.h"
@@ -249,4 +249,4 @@ simde_vuzpq_u32(simde_uint32x4_t a, simde_uint32x4_t b) {
 SIMDE_END_DECLS_
 HEDLEY_DIAGNOSTIC_POP
 
-#endif /* !defined(SIMDE_ARM_NEON_ZIP_H) */
+#endif /* !defined(SIMDE_ARM_NEON_UZP_H) */

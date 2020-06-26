@@ -521,7 +521,7 @@ simde_mm_blend_epi32(simde__m128i a, simde__m128i b, const int imm8)
 }
 #if defined(SIMDE_X86_AVX2_NATIVE)
 #  define simde_mm_blend_epi32(a, b, imm8) _mm_blend_epi32(a, b, imm8)
-#elif defined(SIMDE_X86_SSE4_1_NATIVE) || defined(SIMDE_ARM_NEON_A32V7_NATIVE) || defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+#elif defined(SIMDE_X86_SSE4_1_NATIVE) || defined(SIMDE_ARM_NEON_A32V7_NATIVE) || defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
 #  define simde_mm_blend_epi32(a, b, imm8) \
   simde_mm_castps_si128(simde_mm_blend_ps(simde_mm_castsi128_ps(a), simde_mm_castsi128_ps(b), (imm8)))
 #endif
@@ -548,7 +548,7 @@ simde_mm256_blend_epi16(simde__m256i a, simde__m256i b, const int imm8)
 }
 #if defined(SIMDE_X86_AVX2_NATIVE)
 #  define simde_mm256_blend_epi16(a, b, imm8) _mm256_blend_epi16(a, b, imm8)
-#elif defined(SIMDE_X86_SSE4_1_NATIVE) || defined(SIMDE_ARM_NEON_A32V7_NATIVE) || defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+#elif defined(SIMDE_X86_SSE4_1_NATIVE) || defined(SIMDE_ARM_NEON_A32V7_NATIVE) || defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
 #  define simde_mm256_blend_epi16(a, b, imm8) \
       simde_mm256_set_m128i( \
           simde_mm_blend_epi16(simde_mm256_extracti128_si256(a, 1), simde_mm256_extracti128_si256(b, 1), (imm8)), \
@@ -578,7 +578,7 @@ simde_mm256_blend_epi32(simde__m256i a, simde__m256i b, const int imm8)
 }
 #if defined(SIMDE_X86_AVX2_NATIVE)
 #  define simde_mm256_blend_epi32(a, b, imm8) _mm256_blend_epi32(a, b, imm8)
-#elif defined(SIMDE_X86_SSE4_1_NATIVE) || defined(SIMDE_ARM_NEON_A32V7_NATIVE) || defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+#elif defined(SIMDE_X86_SSE4_1_NATIVE) || defined(SIMDE_ARM_NEON_A32V7_NATIVE) || defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
 #  define simde_mm256_blend_epi32(a, b, imm8) \
       simde_mm256_set_m128i( \
           simde_mm_blend_epi32(simde_mm256_extracti128_si256(a, 1), simde_mm256_extracti128_si256(b, 1), (imm8) >> 4), \
@@ -602,7 +602,7 @@ simde_mm256_blendv_epi8(simde__m256i a, simde__m256i b, simde__m256i mask) {
     b_ = simde__m256i_to_private(b),
     mask_ = simde__m256i_to_private(mask);
 
-#if defined(SIMDE_X86_SSE4_1_NATIVE) || defined(SIMDE_ARM_NEON_A32V7_NATIVE) || defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+#if defined(SIMDE_X86_SSE4_1_NATIVE) || defined(SIMDE_ARM_NEON_A32V7_NATIVE) || defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
   r_.m128i_private[0] = simde__m128i_to_private(simde_mm_blendv_epi8(simde__m128i_from_private(a_.m128i_private[0]), simde__m128i_from_private(b_.m128i_private[0]), simde__m128i_from_private(mask_.m128i_private[0])));
   r_.m128i_private[1] = simde__m128i_to_private(simde_mm_blendv_epi8(simde__m128i_from_private(a_.m128i_private[1]), simde__m128i_from_private(b_.m128i_private[1]), simde__m128i_from_private(mask_.m128i_private[1])));
 #else
@@ -2601,7 +2601,7 @@ simde_mm256_slli_epi16 (simde__m256i a, const int imm8)
     r_,
     a_ = simde__m256i_to_private(a);
 
-  #if defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+  #if defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
     SIMDE_POWER_ALTIVEC_VECTOR(unsigned short) sv = vec_splats(HEDLEY_STATIC_CAST(unsigned short, imm8));
     for (size_t i = 0 ; i < (sizeof(a_.altivec_i16) / sizeof(a_.altivec_i16[0])) ; i++) {
       r_.altivec_i16[i] = vec_sl(a_.altivec_i16[i], sv);
@@ -2638,7 +2638,7 @@ simde_mm256_slli_epi32 (simde__m256i a, const int imm8)
     r_,
     a_ = simde__m256i_to_private(a);
 
-  #if defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+  #if defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
     SIMDE_POWER_ALTIVEC_VECTOR(unsigned int) sv = vec_splats(HEDLEY_STATIC_CAST(unsigned int, imm8));
     for (size_t i = 0 ; i < (sizeof(a_.altivec_i32) / sizeof(a_.altivec_i32[0])) ; i++) {
       r_.altivec_i32[i] = vec_sl(a_.altivec_i32[i], sv);
@@ -2921,7 +2921,7 @@ simde_mm256_srli_epi16 (simde__m256i a, const int imm8)
   if (imm8 > 15)
     return simde_mm256_setzero_si256();
 
-  #if defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+  #if defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
     SIMDE_POWER_ALTIVEC_VECTOR(unsigned short) sv = vec_splats(HEDLEY_STATIC_CAST(unsigned short, imm8));
     for (size_t i = 0 ; i < (sizeof(a_.altivec_u16) / sizeof(a_.altivec_u16[0])) ; i++) {
       r_.altivec_u16[i] = vec_sr(a_.altivec_u16[i], sv);
@@ -2963,7 +2963,7 @@ simde_mm256_srli_epi32 (simde__m256i a, const int imm8) {
     r_,
     a_ = simde__m256i_to_private(a);
 
-  #if defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+  #if defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
     SIMDE_POWER_ALTIVEC_VECTOR(unsigned int) sv = vec_splats(HEDLEY_STATIC_CAST(unsigned int, imm8));
     for (size_t i = 0 ; i < (sizeof(a_.altivec_u32) / sizeof(a_.altivec_u32[0])) ; i++) {
       r_.altivec_u32[i] = vec_sr(a_.altivec_u32[i], sv);

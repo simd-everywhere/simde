@@ -22,6 +22,8 @@ jobs:
       run: find \( -name '*.c' -o -name '*.h' \) -executable | grep -q '.' && exit 1 || exit 0
     - name: Missing NEON includes
       run: for f in simde/arm/neon/*.h; do grep -q "include \"neon/$(basename "$f")\"" simde/arm/neon.h || (echo "Missing $f" && exit 1); done
+    - name: Header guards
+      run: for file in $(find simde/*/ -name '*.h'); do grep -q "$(echo "$file" | tr '[:lower:]' '[:upper:]' | tr '[:punct:]' '_')" "$file" || (echo "Missing or incorrect header guard in $file" && exit 1); done
 
   x86:
     runs-on: ubuntu-latest
