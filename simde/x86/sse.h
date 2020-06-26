@@ -1540,7 +1540,7 @@ simde_x_mm_copysign_ps(simde__m128 dest, simde__m128 src) {
     simde__m128 sgnbit = simde_mm_xor_ps(simde_mm_set1_ps(SIMDE_FLOAT32_C(0.0)), simde_mm_set1_ps(-SIMDE_FLOAT32_C(0.0)));
     return simde_mm_xor_ps(simde_mm_and_ps(sgnbit, src), simde_mm_andnot_ps(sgnbit, dest));
   #endif
-  
+
   return simde__m128_from_private(r_);
 }
 
@@ -2922,7 +2922,7 @@ simde_x_mm_negate_ps(simde__m128 a) {
     simde__m128_private
       r_,
       a_ = simde__m128_to_private(a);
-  
+
     #if defined(SIMDE_POWER_ALTIVEC_P9_NATIVE)
       r_.altivec_f32 = vec_neg(a_.altivec_f32);
     #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
@@ -2937,7 +2937,7 @@ simde_x_mm_negate_ps(simde__m128 a) {
         r_.f32[i] = -a_.f32[i];
       }
     #endif
-    
+
     return simde__m128_from_private(r_);
   #endif
 }

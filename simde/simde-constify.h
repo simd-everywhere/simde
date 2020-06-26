@@ -23,7 +23,7 @@
  * Copyright:
  *   2020      Evan Nemerson <evan@nemerson.com>
  */
- 
+
 /* Constify macros.  For internal use only.
  *
  * These are used to make it possible to call a function which takes

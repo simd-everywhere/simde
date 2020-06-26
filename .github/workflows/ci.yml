@@ -10,7 +10,7 @@ jobs:
       with:
         fetch-depth: 2
     - name: Trailing whitespace
-      run: git diff --check HEAD^
+      run: find simde/ -name '*.c' -o -name '*.h' -exec grep -nP '\s+$' {} + && exit 1 || exit 0
     - name: Tabs
       run: find simde/ -name '*.c' -o -name '*.h' -exec grep -nP '\t' {} + && exit 1 || exit 0
     # s/8/16/ will result in this if the input is x86.
