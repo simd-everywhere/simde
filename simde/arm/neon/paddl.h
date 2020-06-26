@@ -170,7 +170,7 @@ simde_vpaddlq_s32(simde_int32x4_t a) {
   #else
     simde_int64x2_t lo = simde_vmovl_s32(simde_vget_low_s32(a));
     simde_int64x2_t hi = simde_vmovl_s32(simde_vget_high_s32(a));
-    return simde_vpaddq_s32(lo, hi);
+    return simde_vpaddq_s64(lo, hi);
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
@@ -218,7 +218,7 @@ simde_vpaddlq_u32(simde_uint32x4_t a) {
   #else
     simde_uint64x2_t lo = simde_vmovl_u32(simde_vget_low_u32(a));
     simde_uint64x2_t hi = simde_vmovl_u32(simde_vget_high_u32(a));
-    return simde_vpaddq_u32(lo, hi);
+    return simde_vpaddq_u64(lo, hi);
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
