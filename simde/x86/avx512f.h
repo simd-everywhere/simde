@@ -5475,7 +5475,7 @@ simde_mm512_extractf32x4_ps (simde__m512 a, int imm8)
 
   return a_.m128[imm8 & 3];
 }
-#if defined(SIMDE_X86_AVX512F_NATIVE)
+#if defined(SIMDE_X86_AVX512F_NATIVE) && (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(7,0,0))
   #define simde_mm512_extractf32x4_ps(a, imm8) _mm512_extractf32x4_ps(a, imm8)
 #endif
 #if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
