@@ -251,7 +251,7 @@ We would love to add more, so patches are extremely welcome!
    * [SSE-to-NEON](https://github.com/otim/SSE-to-NEON) — implementing
      SSE with NEON.  Non-free, C++.
  * [arm-neon-tests](https://github.com/christophe-lyon/arm-neon-tests)
-   contains tests te verify NEON implementations.
+   contains tests to verify NEON implementations.
 
 If you know of any other related projects, please [let us
 know](https://github.com/simd-everywhere/simde/issues/new)!
