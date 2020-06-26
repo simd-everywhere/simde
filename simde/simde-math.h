@@ -412,11 +412,11 @@
 
 #if !defined(simde_math_copysign)
   #if SIMDE_MATH_BUILTIN_LIBM(copysign)
-    #define simde_math_copysign(v) __builtin_copysign(v)
+    #define simde_math_copysign(x, y) __builtin_copysign(x, y)
   #elif defined(SIMDE_MATH_HAVE_CMATH)
-    #define simde_math_copysign(v) std::copysign(v)
+    #define simde_math_copysign(x, y) std::copysign(x, y)
   #elif defined(SIMDE_MATH_HAVE_MATH_H)
-    #define simde_math_copysign(v) copysign(v)
+    #define simde_math_copysign(x, y) copysign(x, y)
   #endif
 #endif
 
@@ -989,6 +989,25 @@
     tt2 = (1.0f / 0.147f) * lnx;
 
     return sgn * simde_math_sqrtf(-tt1 + simde_math_sqrtf(tt1 * tt1 - tt2));
+  }
+  #define simde_math_erfinvf simde_math_erfinvf
+#endif
+
+#if !defined(simde_math_erfinv) && defined(simde_math_log) && defined(simde_math_copysign) && defined(simde_math_sqrt)
+  static HEDLEY_INLINE
+  double
+  simde_math_erfinv(double x) {
+    /* https://stackoverflow.com/questions/27229371/inverse-error-function-in-c */
+    double tt1, tt2, lnx;
+    double sgn = simde_math_copysign(1.0, x);
+
+    x = (1.0 - x) * (1.0 + x);
+    lnx = simde_math_log(x);
+
+    tt1 = 2.0 / (SIMDE_MATH_PI * 0.147) + 0.5 * lnx;
+    tt2 = (1.0 / 0.147) * lnx;
+
+    return sgn * simde_math_sqrt(-tt1 + simde_math_sqrt(tt1 * tt1 - tt2));
   }
   #define simde_math_erfinvf simde_math_erfinvf
 #endif

@@ -133,8 +133,16 @@ set(TEST_SOURCES_C
   arm/neon/shl_n.c
   arm/neon/shr_n.c
   arm/neon/sub.c
+  arm/neon/trn.c
+  arm/neon/trn1.c
+  arm/neon/trn2.c
+  arm/neon/uzp.c
   arm/neon/uzp1.c
-  arm/neon/uzp2.c)
+  arm/neon/uzp2.c
+  arm/neon/zip.c
+  arm/neon/zip1.c
+  arm/neon/zip2.c
+  )
 
 set(TEST_RUNNER_SOURCES
   run-tests.c

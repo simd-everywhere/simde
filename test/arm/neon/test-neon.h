@@ -181,8 +181,7 @@ HEDLEY_DIAGNOSTIC_POP
       simde_assert_equal_v##symbol_identifier##_(sizeof(a1_) / sizeof(ET), HEDLEY_REINTERPRET_CAST(SET*, a1_), HEDLEY_REINTERPRET_CAST(SET*, b1_), slop, filename, line, astr, bstr); \
   }
 
-HEDLEY_DIAGNOSTIC_PUSH
-SIMDE_DIAGNOSTIC_DISABLE_CPP98_COMPAT_PEDANTIC_
+#if !defined(SIMDE_BUG_INTEL_857088)
 SIMDE_TEST_ARM_NEON_GENERATE_X2_VECTOR_INT_TYPE_FUNCS_(     int8x8x2_t,   int8_t,  8,  ,  i8,  s8)
 SIMDE_TEST_ARM_NEON_GENERATE_X2_VECTOR_INT_TYPE_FUNCS_(    int16x4x2_t,  int16_t,  4,  , i16, s16)
 SIMDE_TEST_ARM_NEON_GENERATE_X2_VECTOR_INT_TYPE_FUNCS_(    int32x2x2_t,  int32_t,  2,  , i32, s32)
@@ -204,7 +203,7 @@ SIMDE_TEST_ARM_NEON_GENERATE_X2_VECTOR_INT_TYPE_FUNCS_(   uint32x4x2_t,  uint32_
 SIMDE_TEST_ARM_NEON_GENERATE_X2_VECTOR_INT_TYPE_FUNCS_(   uint64x2x2_t,  uint64_t,  2, q, u64, u64)
 SIMDE_TEST_ARM_NEON_GENERATE_X2_VECTOR_FLOAT_TYPE_FUNCS_(float32x4x2_t, simde_float32_t, simde_float32, 4, q, f32)
 SIMDE_TEST_ARM_NEON_GENERATE_X2_VECTOR_FLOAT_TYPE_FUNCS_(float64x2x2_t, simde_float64_t, simde_float64, 2, q, f64)
-HEDLEY_DIAGNOSTIC_POP
+#endif
 
 #define simde_test_arm_neon_assert_equal_i8x8(a, b)   do { if (simde_test_arm_neon_assert_equal_i8x8_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 #define simde_test_arm_neon_assert_equal_i16x4(a, b) do { if (simde_test_arm_neon_assert_equal_i16x4_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)

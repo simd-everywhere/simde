@@ -117,6 +117,26 @@ SIMDE_ARM_NEON_TYPE_FLOAT_DEFINE_(64, 2, 16)
 
   typedef   float32_t   simde_float32_t;
 
+  typedef    int8x8x2_t    simde_int8x8x2_t;
+  typedef   int16x4x2_t   simde_int16x4x2_t;
+  typedef   int32x2x2_t   simde_int32x2x2_t;
+  typedef   int64x1x2_t   simde_int64x1x2_t;
+  typedef   uint8x8x2_t   simde_uint8x8x2_t;
+  typedef  uint16x4x2_t  simde_uint16x4x2_t;
+  typedef  uint32x2x2_t  simde_uint32x2x2_t;
+  typedef  uint64x1x2_t  simde_uint64x1x2_t;
+  typedef float32x2x2_t simde_float32x2x2_t;
+
+  typedef   int8x16x2_t   simde_int8x16x2_t;
+  typedef   int16x8x2_t   simde_int16x8x2_t;
+  typedef   int32x4x2_t   simde_int32x4x2_t;
+  typedef   int64x2x2_t   simde_int64x2x2_t;
+  typedef  uint8x16x2_t  simde_uint8x16x2_t;
+  typedef  uint16x8x2_t  simde_uint16x8x2_t;
+  typedef  uint32x4x2_t  simde_uint32x4x2_t;
+  typedef  uint64x2x2_t  simde_uint64x2x2_t;
+  typedef float32x4x2_t simde_float32x4x2_t;
+
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     typedef float64x1_t simde_float64x1_t;
     typedef float64x2_t simde_float64x2_t;
@@ -224,16 +244,18 @@ SIMDE_ARM_NEON_TYPE_FLOAT_DEFINE_(64, 2, 16)
   typedef SIMDE_POWER_ALTIVEC_VECTOR(signed char)          simde_int8x16_t;
   typedef SIMDE_POWER_ALTIVEC_VECTOR(signed short)         simde_int16x8_t;
   typedef SIMDE_POWER_ALTIVEC_VECTOR(signed int)           simde_int32x4_t;
-  typedef SIMDE_POWER_ALTIVEC_VECTOR(signed long long)     simde_int64x2_t;
   typedef SIMDE_POWER_ALTIVEC_VECTOR(unsigned char)       simde_uint8x16_t;
   typedef SIMDE_POWER_ALTIVEC_VECTOR(unsigned short)      simde_uint16x8_t;
   typedef SIMDE_POWER_ALTIVEC_VECTOR(unsigned int)        simde_uint32x4_t;
-  typedef SIMDE_POWER_ALTIVEC_VECTOR(unsigned long long)  simde_uint64x2_t;
   typedef SIMDE_POWER_ALTIVEC_VECTOR(float)              simde_float32x4_t;
 
   #if defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
+    typedef SIMDE_POWER_ALTIVEC_VECTOR(signed long long)       simde_int64x2_t;
+    typedef SIMDE_POWER_ALTIVEC_VECTOR(unsigned long long)     simde_uint64x2_t;
     typedef SIMDE_ALIGN(16) SIMDE_POWER_ALTIVEC_VECTOR(double) simde_float64x2_t;
   #else
+    #define SIMDE_ARM_NEON_NEED_PORTABLE_I64X2
+    #define SIMDE_ARM_NEON_NEED_PORTABLE_U64X2
     #define SIMDE_ARM_NEON_NEED_PORTABLE_F64X2
   #endif
 #else
@@ -316,7 +338,7 @@ SIMDE_ARM_NEON_TYPE_FLOAT_DEFINE_(64, 2, 16)
   typedef simde_float64 simde_float64_t;
 #endif
 
-#if defined(SIMDE_ARM_NEON_NEED_PORTABLE_VX2)
+#if defined(SIMDE_ARM_NEON_NEED_PORTABLE_VX2) && !defined(SIMDE_BUG_INTEL_857088)
   typedef struct    simde_int8x8x2_t {
     simde_int8x8_t val[2];
   } simde_int8x8x2_t;
