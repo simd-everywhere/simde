@@ -39,13 +39,13 @@ SIMDE_BEGIN_DECLS_
 SIMDE_FUNCTION_ATTRIBUTES
 simde_int16x8_t
 simde_vmovl_high_s8(simde_int8x16_t a) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vmovl_high_s8(a);
   #else
     return simde_vmovl_s8(simde_vget_high_s8(a));
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
   #undef vmovl_high_s8
   #define vmovl_high_s8(a) simde_vmovl_high_s8((a))
 #endif
@@ -53,13 +53,13 @@ simde_vmovl_high_s8(simde_int8x16_t a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_int32x4_t
 simde_vmovl_high_s16(simde_int16x8_t a) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vmovl_high_s16(a);
   #else
     return simde_vmovl_s16(simde_vget_high_s16(a));
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
   #undef vmovl_high_s16
   #define vmovl_high_s16(a) simde_vmovl_high_s16((a))
 #endif
@@ -67,13 +67,13 @@ simde_vmovl_high_s16(simde_int16x8_t a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_int64x2_t
 simde_vmovl_high_s32(simde_int32x4_t a) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vmovl_high_s32(a);
   #else
     return simde_vmovl_s32(simde_vget_high_s32(a));
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
   #undef vmovl_high_s32
   #define vmovl_high_s32(a) simde_vmovl_high_s32((a))
 #endif
@@ -81,13 +81,13 @@ simde_vmovl_high_s32(simde_int32x4_t a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_uint16x8_t
 simde_vmovl_high_u8(simde_uint8x16_t a) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vmovl_high_u8(a);
   #else
     return simde_vmovl_u8(simde_vget_high_u8(a));
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
   #undef vmovl_high_u8
   #define vmovl_high_u8(a) simde_vmovl_high_u8((a))
 #endif
@@ -95,13 +95,13 @@ simde_vmovl_high_u8(simde_uint8x16_t a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_uint32x4_t
 simde_vmovl_high_u16(simde_uint16x8_t a) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vmovl_high_u16(a);
   #else
     return simde_vmovl_u16(simde_vget_high_u16(a));
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
   #undef vmovl_high_u16
   #define vmovl_high_u16(a) simde_vmovl_high_u16((a))
 #endif
@@ -109,13 +109,13 @@ simde_vmovl_high_u16(simde_uint16x8_t a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_uint64x2_t
 simde_vmovl_high_u32(simde_uint32x4_t a) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vmovl_high_u32(a);
   #else
     return simde_vmovl_u32(simde_vget_high_u32(a));
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
   #undef vmovl_high_u32
   #define vmovl_high_u32(a) simde_vmovl_high_u32((a))
 #endif
