@@ -3343,7 +3343,7 @@ simde_mm512_maskz_abs_epi64(simde__mmask8 k, simde__m512i a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m512
 simde_mm512_abs_ps(simde__m512 v2) {
-#if defined(SIMDE_X86_AVX512F_NATIVE)
+#if defined(SIMDE_X86_AVX512F_NATIVE) && (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(7,0,0))
   return _mm512_abs_ps(v2);
 #else
   simde__m512_private
@@ -3366,7 +3366,7 @@ simde_mm512_abs_ps(simde__m512 v2) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m512
 simde_mm512_mask_abs_ps(simde__m512 src, simde__mmask16 k, simde__m512 v2) {
-#if defined(SIMDE_X86_AVX512F_NATIVE)
+#if defined(SIMDE_X86_AVX512F_NATIVE) && (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(7,0,0))
   return _mm512_mask_abs_ps(src, k, v2);
 #else
   return simde_mm512_mask_mov_ps(src, k, simde_mm512_abs_ps(v2));
@@ -3379,7 +3379,7 @@ simde_mm512_mask_abs_ps(simde__m512 src, simde__mmask16 k, simde__m512 v2) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m512d
 simde_mm512_abs_pd(simde__m512d v2) {
-#if defined(SIMDE_X86_AVX512F_NATIVE)
+#if defined(SIMDE_X86_AVX512F_NATIVE) && (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(7,0,0))
   return _mm512_abs_pd(v2);
 #else
   simde__m512d_private
@@ -3402,7 +3402,7 @@ simde_mm512_abs_pd(simde__m512d v2) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m512d
 simde_mm512_mask_abs_pd(simde__m512d src, simde__mmask8 k, simde__m512d v2) {
-#if defined(SIMDE_X86_AVX512F_NATIVE)
+#if defined(SIMDE_X86_AVX512F_NATIVE) && (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(7,0,0))
   return _mm512_mask_abs_pd(src, k, v2);
 #else
   return simde_mm512_mask_mov_pd(src, k, simde_mm512_abs_pd(v2));
