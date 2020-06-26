@@ -76,7 +76,7 @@ simde_vceqz_s8(simde_int8x8_t a) {
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vceqz_s8
-  #define vceqz_s8(a) simde_vadd_s8((a))
+  #define vceqz_s8(a) simde_vceqz_s8((a))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -90,7 +90,7 @@ simde_vceqz_s16(simde_int16x4_t a) {
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vceqz_s16
-  #define vceqz_s16(a) simde_vadd_s16((a))
+  #define vceqz_s16(a) simde_vceqz_s16((a))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -104,7 +104,7 @@ simde_vceqz_s32(simde_int32x2_t a) {
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vceqz_s32
-  #define vceqz_s32(a) simde_vadd_s32((a))
+  #define vceqz_s32(a) simde_vceqz_s32((a))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -118,7 +118,7 @@ simde_vceqz_s64(simde_int64x1_t a) {
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vceqz_s64
-  #define vceqz_s64(a) simde_vadd_s64((a))
+  #define vceqz_s64(a) simde_vceqz_s64((a))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -132,7 +132,7 @@ simde_vceqz_u8(simde_uint8x8_t a) {
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vceqz_u8
-  #define vceqz_u8(a) simde_vadd_u8((a))
+  #define vceqz_u8(a) simde_vceqz_u8((a))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -146,7 +146,7 @@ simde_vceqz_u16(simde_uint16x4_t a) {
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vceqz_u16
-  #define vceqz_u16(a) simde_vadd_u16((a))
+  #define vceqz_u16(a) simde_vceqz_u16((a))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -160,7 +160,7 @@ simde_vceqz_u32(simde_uint32x2_t a) {
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vceqz_u32
-  #define vceqz_u32(a) simde_vadd_u32((a))
+  #define vceqz_u32(a) simde_vceqz_u32((a))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -174,7 +174,7 @@ simde_vceqz_u64(simde_uint64x1_t a) {
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vceqz_u64
-  #define vceqz_u64(a) simde_vadd_u64((a))
+  #define vceqz_u64(a) simde_vceqz_u64((a))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -222,7 +222,7 @@ simde_vceqzq_s8(simde_int8x16_t a) {
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vceqzq_s8
-  #define vceqzq_s8(a) simde_vaddq_s8((a))
+  #define vceqzq_s8(a) simde_vceqzq_s8((a))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -238,7 +238,7 @@ simde_vceqzq_s16(simde_int16x8_t a) {
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vceqzq_s16
-  #define vceqzq_s16(a) simde_vaddq_s16((a))
+  #define vceqzq_s16(a) simde_vceqzq_s16((a))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -254,7 +254,7 @@ simde_vceqzq_s32(simde_int32x4_t a) {
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vceqzq_s32
-  #define vceqzq_s32(a) simde_vaddq_s32((a))
+  #define vceqzq_s32(a) simde_vceqzq_s32((a))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -268,7 +268,7 @@ simde_vceqzq_s64(simde_int64x2_t a) {
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vceqzq_s64
-  #define vceqzq_s64(a) simde_vaddq_s64((a))
+  #define vceqzq_s64(a) simde_vceqzq_s64((a))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -284,7 +284,7 @@ simde_vceqzq_u8(simde_uint8x16_t a) {
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vceqzq_u8
-  #define vceqzq_u8(a) simde_vaddq_u8((a))
+  #define vceqzq_u8(a) simde_vceqzq_u8((a))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -298,7 +298,7 @@ simde_vceqzq_u16(simde_uint16x8_t a) {
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vceqzq_u16
-  #define vceqzq_u16(a) simde_vaddq_u16((a))
+  #define vceqzq_u16(a) simde_vceqzq_u16((a))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -312,7 +312,7 @@ simde_vceqzq_u32(simde_uint32x4_t a) {
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vceqzq_u32
-  #define vceqzq_u32(a) simde_vaddq_u32((a))
+  #define vceqzq_u32(a) simde_vceqzq_u32((a))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -326,7 +326,7 @@ simde_vceqzq_u64(simde_uint64x2_t a) {
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vceqzq_u64
-  #define vceqzq_u64(a) simde_vaddq_u64((a))
+  #define vceqzq_u64(a) simde_vceqzq_u64((a))
 #endif
 
 SIMDE_END_DECLS_

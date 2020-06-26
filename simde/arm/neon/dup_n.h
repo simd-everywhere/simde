@@ -119,7 +119,7 @@ simde_vdup_n_s16(int16_t value) {
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vdup_n_s16
-  #define vdup_n_s16(value) simde_vdup_n_s16((s16 value))
+  #define vdup_n_s16(value) simde_vdup_n_s16((value))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -142,7 +142,7 @@ simde_vdup_n_s32(int32_t value) {
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vdup_n_s32
-  #define vdup_n_s32(value) simde_vdup_n_s32((s32 value))
+  #define vdup_n_s32(value) simde_vdup_n_s32((value))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -163,7 +163,7 @@ simde_vdup_n_s64(int64_t value) {
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vdup_n_s64
-  #define vdup_n_s64(value) simde_vdup_n_s64((s64 value))
+  #define vdup_n_s64(value) simde_vdup_n_s64((value))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -186,7 +186,7 @@ simde_vdup_n_u8(uint8_t value) {
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vdup_n_u8
-  #define vdup_n_u8(value) simde_vdup_n_u8((u8 value))
+  #define vdup_n_u8(value) simde_vdup_n_u8((value))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -209,7 +209,7 @@ simde_vdup_n_u16(uint16_t value) {
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vdup_n_u16
-  #define vdup_n_u16(value) simde_vdup_n_u16((u16 value))
+  #define vdup_n_u16(value) simde_vdup_n_u16((value))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES

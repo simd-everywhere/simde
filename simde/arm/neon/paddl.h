@@ -52,7 +52,7 @@ simde_vpaddl_s8(simde_int8x8_t a) {
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vpaddl_s8
-  #define vpaddl_s8(a) simde_vpaddl_s8((a)))
+  #define vpaddl_s8(a) simde_vpaddl_s8((a))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -67,7 +67,7 @@ simde_vpaddl_s16(simde_int16x4_t a) {
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vpaddl_s16
-  #define vpaddl_s16(a) simde_vpaddl_s16((a)))
+  #define vpaddl_s16(a) simde_vpaddl_s16((a))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -82,7 +82,7 @@ simde_vpaddl_s32(simde_int32x2_t a) {
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vpaddl_s32
-  #define vpaddl_s32(a) simde_vpaddl_s32((a)))
+  #define vpaddl_s32(a) simde_vpaddl_s32((a))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -97,7 +97,7 @@ simde_vpaddl_u8(simde_uint8x8_t a) {
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vpaddl_u8
-  #define vpaddl_u8(a) simde_vpaddl_u8((a)))
+  #define vpaddl_u8(a) simde_vpaddl_u8((a))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -112,7 +112,7 @@ simde_vpaddl_u16(simde_uint16x4_t a) {
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vpaddl_u16
-  #define vpaddl_u16(a) simde_vpaddl_u16((a)))
+  #define vpaddl_u16(a) simde_vpaddl_u16((a))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -127,7 +127,7 @@ simde_vpaddl_u32(simde_uint32x2_t a) {
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vpaddl_u32
-  #define vpaddl_u32(a) simde_vpaddl_u32((a)))
+  #define vpaddl_u32(a) simde_vpaddl_u32((a))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -143,7 +143,7 @@ simde_vpaddlq_s8(simde_int8x16_t a) {
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vpaddlq_s8
-  #define vpaddlq_s8(a) simde_vpaddlq_s8((a)))
+  #define vpaddlq_s8(a) simde_vpaddlq_s8((a))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -159,7 +159,7 @@ simde_vpaddlq_s16(simde_int16x8_t a) {
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vpaddlq_s16
-  #define vpaddlq_s16(a) simde_vpaddlq_s16((a)))
+  #define vpaddlq_s16(a) simde_vpaddlq_s16((a))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -175,7 +175,7 @@ simde_vpaddlq_s32(simde_int32x4_t a) {
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vpaddlq_s32
-  #define vpaddlq_s32(a) simde_vpaddlq_s32((a)))
+  #define vpaddlq_s32(a) simde_vpaddlq_s32((a))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -191,7 +191,7 @@ simde_vpaddlq_u8(simde_uint8x16_t a) {
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vpaddlq_u8
-  #define vpaddlq_u8(a) simde_vpaddlq_u8((a)))
+  #define vpaddlq_u8(a) simde_vpaddlq_u8((a))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -207,7 +207,7 @@ simde_vpaddlq_u16(simde_uint16x8_t a) {
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vpaddlq_u16
-  #define vpaddlq_u16(a) simde_vpaddlq_u16((a)))
+  #define vpaddlq_u16(a) simde_vpaddlq_u16((a))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -223,7 +223,7 @@ simde_vpaddlq_u32(simde_uint32x4_t a) {
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vpaddlq_u32
-  #define vpaddlq_u32(a) simde_vpaddlq_u32((a)))
+  #define vpaddlq_u32(a) simde_vpaddlq_u32((a))
 #endif
 
 SIMDE_END_DECLS_

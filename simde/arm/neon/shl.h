@@ -231,7 +231,7 @@ simde_vshl_s64 (const simde_int64x1_t a, const simde_int64x1_t b) {
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vshl_s64
-  #define vshl_s64(a, b) simde_vshl_u64((a), (b))
+  #define vshl_s64(a, b) simde_vshl_s64((a), (b))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES

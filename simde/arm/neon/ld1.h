@@ -60,7 +60,7 @@ simde_vld1_f64(simde_float64 const ptr[HEDLEY_ARRAY_PARAM(1)]) {
     return simde_float64x1_from_private(r_);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A64V_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
   #undef vld1_f64
   #define vld1_f64(a) simde_vld1_f64((a))
 #endif
