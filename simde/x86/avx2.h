@@ -2518,6 +2518,123 @@ simde_mm256_sign_epi32(simde__m256i a, simde__m256i b) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m256i
+simde_mm256_sll_epi16 (simde__m256i a, simde__m128i count) {
+  #if defined(SIMDE_X86_AVX2_NATIVE)
+    return _mm256_sll_epi16(a, count);
+  #else
+    simde__m256i_private
+      r_,
+      a_ = simde__m256i_to_private(a);
+
+    #if SIMDE_PREFER_VECTOR_SIZE(128)
+      r_.m128i[0] = simde_mm_sll_epi16(a_.m128i[0], count);
+      r_.m128i[1] = simde_mm_sll_epi16(a_.m128i[1], count);
+    #else
+      simde__m128i_private
+        count_ = simde__m128i_to_private(count);
+
+      uint64_t shift = HEDLEY_STATIC_CAST(uint64_t, count_.i64[0]);
+      if (shift > 15)
+        return simde_mm256_setzero_si256();
+
+      #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+        r_.i16 = a_.i16 << HEDLEY_STATIC_CAST(int16_t, shift);
+      #else
+        SIMDE_VECTORIZE
+        for (size_t i = 0 ; i < (sizeof(r_.i16) / sizeof(r_.i16[0])) ; i++) {
+          r_.i16[i] = HEDLEY_STATIC_CAST(int16_t, a_.i16[i] << (shift));
+        }
+      #endif
+    #endif
+
+    return simde__m256i_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_X86_AVX2_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_sll_epi16
+  #define _mm256_sll_epi16(a, count) simde_mm256_sll_epi16(a, count)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256i
+simde_mm256_sll_epi32 (simde__m256i a, simde__m128i count) {
+  #if defined(SIMDE_X86_AVX2_NATIVE)
+    return _mm256_sll_epi32(a, count);
+  #else
+    simde__m256i_private
+      r_,
+      a_ = simde__m256i_to_private(a);
+
+    #if SIMDE_PREFER_VECTOR_SIZE(128)
+      r_.m128i[0] = simde_mm_sll_epi32(a_.m128i[0], count);
+      r_.m128i[1] = simde_mm_sll_epi32(a_.m128i[1], count);
+    #else
+      simde__m128i_private
+        count_ = simde__m128i_to_private(count);
+
+      uint64_t shift = HEDLEY_STATIC_CAST(uint64_t, count_.i64[0]);
+      if (shift > 31)
+        return simde_mm256_setzero_si256();
+
+      #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+        r_.i32 = a_.i32 << HEDLEY_STATIC_CAST(int32_t, shift);
+      #else
+        SIMDE_VECTORIZE
+        for (size_t i = 0 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {
+          r_.i32[i] = HEDLEY_STATIC_CAST(int32_t, a_.i32[i] << (shift));
+        }
+      #endif
+    #endif
+
+    return simde__m256i_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_X86_AVX2_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_sll_epi32
+  #define _mm256_sll_epi32(a, count) simde_mm256_sll_epi32(a, count)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256i
+simde_mm256_sll_epi64 (simde__m256i a, simde__m128i count) {
+  #if defined(SIMDE_X86_AVX2_NATIVE)
+    return _mm256_sll_epi64(a, count);
+  #else
+    simde__m256i_private
+      r_,
+      a_ = simde__m256i_to_private(a);
+
+    #if SIMDE_PREFER_VECTOR_SIZE(128)
+      r_.m128i[0] = simde_mm_sll_epi64(a_.m128i[0], count);
+      r_.m128i[1] = simde_mm_sll_epi64(a_.m128i[1], count);
+    #else
+      simde__m128i_private
+        count_ = simde__m128i_to_private(count);
+
+      uint64_t shift = HEDLEY_STATIC_CAST(uint64_t, count_.i64[0]);
+      if (shift > 63)
+        return simde_mm256_setzero_si256();
+
+      #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+        r_.i64 = a_.i64 << HEDLEY_STATIC_CAST(int64_t, shift);
+      #else
+        SIMDE_VECTORIZE
+        for (size_t i = 0 ; i < (sizeof(r_.i64) / sizeof(r_.i64[0])) ; i++) {
+          r_.i64[i] = HEDLEY_STATIC_CAST(int64_t, a_.i64[i] << (shift));
+        }
+      #endif
+    #endif
+
+    return simde__m256i_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_X86_AVX2_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_sll_epi64
+  #define _mm256_sll_epi64(a, count) simde_mm256_sll_epi64(a, count)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256i
 simde_mm256_slli_epi16 (simde__m256i a, const int imm8)
     SIMDE_REQUIRE_RANGE(imm8, 0, 15) {
   /* Note: There is no consistency in how compilers handle values outside of
