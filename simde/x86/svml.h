@@ -6511,6 +6511,154 @@ simde_mm512_mask_sin_pd(simde__m512d src, simde__mmask8 k, simde__m512d a) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128
+simde_mm_sincos_ps (simde__m128* mem_addr, simde__m128 a) {
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE_NATIVE)
+    return _mm_sincos_ps(HEDLEY_REINTERPRET_CAST(__m128*, mem_addr), a);
+  #else
+    simde__m128 r;
+
+    r = simde_mm_sin_ps(a);
+    *mem_addr = simde_mm_cos_ps(a);
+
+    return r;
+  #endif
+}
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
+  #undef _mm_sincos_ps
+  #define _mm_sincos_ps(mem_addr, a) simde_mm_sincos_ps((mem_addr),(a))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m128d
+simde_mm_sincos_pd (simde__m128d* mem_addr, simde__m128d a) {
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE_NATIVE)
+    return _mm_sincos_pd(HEDLEY_REINTERPRET_CAST(__m128d*, mem_addr), a);
+  #else
+    simde__m128d r;
+
+    r = simde_mm_sin_pd(a);
+    *mem_addr = simde_mm_cos_pd(a);
+
+    return r;
+  #endif
+}
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
+  #undef _mm_sincos_pd
+  #define _mm_sincos_pd(mem_addr, a) simde_mm_sincos_pd((mem_addr),(a))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256
+simde_mm256_sincos_ps (simde__m256* mem_addr, simde__m256 a) {
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX_NATIVE)
+    return _mm256_sincos_ps(HEDLEY_REINTERPRET_CAST(__m256*, mem_addr), a);
+  #else
+    simde__m256 r;
+
+    r = simde_mm256_sin_ps(a);
+    *mem_addr = simde_mm256_cos_ps(a);
+
+    return r;
+  #endif
+}
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_sincos_ps
+  #define _mm256_sincos_ps(mem_addr, a) simde_mm256_sincos_ps((mem_addr),(a))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256d
+simde_mm256_sincos_pd (simde__m256d* mem_addr, simde__m256d a) {
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX_NATIVE)
+    return _mm256_sincos_pd(HEDLEY_REINTERPRET_CAST(__m256d*, mem_addr), a);
+  #else
+    simde__m256d r;
+
+    r = simde_mm256_sin_pd(a);
+    *mem_addr = simde_mm256_cos_pd(a);
+
+    return r;
+  #endif
+}
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_sincos_pd
+  #define _mm256_sincos_pd(mem_addr, a) simde_mm256_sincos_pd((mem_addr),(a))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512
+simde_mm512_sincos_ps (simde__m512* mem_addr, simde__m512 a) {
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX_NATIVE)
+    return _mm512_sincos_ps(HEDLEY_REINTERPRET_CAST(__m512*, mem_addr), a);
+  #else
+    simde__m512 r;
+
+    r = simde_mm512_sin_ps(a);
+    *mem_addr = simde_mm512_cos_ps(a);
+
+    return r;
+  #endif
+}
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_sincos_ps
+  #define _mm512_sincos_ps(mem_addr, a) simde_mm512_sincos_ps((mem_addr),(a))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512d
+simde_mm512_sincos_pd (simde__m512d* mem_addr, simde__m512d a) {
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX_NATIVE)
+    return _mm512_sincos_pd(HEDLEY_REINTERPRET_CAST(__m512d*, mem_addr), a);
+  #else
+    simde__m512d r;
+
+    r = simde_mm512_sin_pd(a);
+    *mem_addr = simde_mm512_cos_pd(a);
+
+    return r;
+  #endif
+}
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_sincos_pd
+  #define _mm512_sincos_pd(mem_addr, a) simde_mm512_sincos_pd((mem_addr),(a))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512
+simde_mm512_mask_sincos_ps(simde__m512* mem_addr, simde__m512 sin_src, simde__m512 cos_src, simde__mmask16 k, simde__m512 a) {
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX512F_NATIVE)
+    return _mm512_mask_sincos_ps(mem_addr, sin_src, cos_src, k, a);
+  #else
+    simde__m512 cos_res, sin_res;
+    sin_res = simde_mm512_sincos_ps(&cos_res, a);
+    *mem_addr = simde_mm512_mask_mov_ps(cos_src, k, cos_res);
+    return simde_mm512_mask_mov_ps(sin_src, k, sin_res);
+  #endif
+}
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_mask_sincos_ps
+  #define _mm512_mask_sincos_ps(mem_addr, sin_src, cos_src, k, a) simde_mm512_mask_sincos_ps(mem_addr, sin_src, cos_src, k, a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512d
+simde_mm512_mask_sincos_pd(simde__m512d* mem_addr, simde__m512d sin_src, simde__m512d cos_src, simde__mmask8 k, simde__m512d a) {
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX512F_NATIVE)
+    return _mm512_mask_sincos_pd(mem_addr, sin_src, cos_src, k, a);
+  #else
+    simde__m512d cos_res, sin_res;
+    sin_res = simde_mm512_sincos_pd(&cos_res, a);
+    *mem_addr = simde_mm512_mask_mov_pd(cos_src, k, cos_res);
+    return simde_mm512_mask_mov_pd(sin_src, k, sin_res);
+  #endif
+}
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_mask_sincos_pd
+  #define _mm512_mask_sincos_pd(mem_addr, sin_src, cos_src, k, a) simde_mm512_mask_sincos_pd(mem_addr, sin_src, cos_src, k, a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m128
 simde_mm_sind_ps (simde__m128 a) {
   #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE_NATIVE)
     return _mm_sind_ps(a);
@@ -6600,7 +6748,6 @@ simde_mm256_sind_pd (simde__m256d a) {
   #undef _mm256_sind_pd
   #define _mm256_sind_pd(a) simde_mm256_sind_pd(a)
 #endif
-
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m512
