@@ -2410,6 +2410,42 @@ simde_mm256_shuffle_epi32 (simde__m256i a, const int imm8) {
 #endif
 
 #if defined(SIMDE_X86_AVX2_NATIVE)
+#  define simde_mm256_shufflehi_epi16(a, imm8) _mm256_shufflehi_epi16(a, imm8)
+#elif defined(SIMDE_X86_SSE2_NATIVE)
+#  define simde_mm256_shufflehi_epi16(a, imm8) \
+     simde_mm256_set_m128i( \
+       simde_mm_shufflehi_epi16(simde_mm256_extracti128_si256(a, 1), (imm8)), \
+       simde_mm_shufflehi_epi16(simde_mm256_extracti128_si256(a, 0), (imm8)))
+#elif defined(SIMDE_SHUFFLE_VECTOR_)
+#  define simde_mm256_shufflehi_epi16(a, imm8) (__extension__ ({ \
+      const simde__m256i_private simde__tmp_a_ = simde__m256i_to_private(a); \
+      simde__m256i_from_private((simde__m256i_private) { .i16 = \
+        SIMDE_SHUFFLE_VECTOR_(16, 32, \
+          (simde__tmp_a_).i16, \
+          (simde__tmp_a_).i16, \
+          0, 1, 2, 3, \
+          (((imm8)     ) & 3) + 4, \
+          (((imm8) >> 2) & 3) + 4, \
+          (((imm8) >> 4) & 3) + 4, \
+          (((imm8) >> 6) & 3) + 4, \
+          8, 9, 10, 11, \
+          ((((imm8)     ) & 3) + 8 + 4), \
+          ((((imm8) >> 2) & 3) + 8 + 4), \
+          ((((imm8) >> 4) & 3) + 8 + 4), \
+          ((((imm8) >> 6) & 3) + 8 + 4) \
+          ) }); }))
+#else
+#  define simde_mm256_shufflehi_epi16(a, imm8) \
+     simde_mm256_set_m128i( \
+       simde_mm_shufflehi_epi16(simde_mm256_extracti128_si256(a, 1), imm8), \
+       simde_mm_shufflehi_epi16(simde_mm256_extracti128_si256(a, 0), imm8))
+#endif
+#if defined(SIMDE_X86_AVX2_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_shufflehi_epi16
+  #define _mm256_shufflehi_epi16(a, imm8) simde_mm256_shufflehi_epi16(a, imm8)
+#endif
+
+#if defined(SIMDE_X86_AVX2_NATIVE)
 #  define simde_mm256_shufflelo_epi16(a, imm8) _mm256_shufflelo_epi16(a, imm8)
 #elif defined(SIMDE_X86_SSE2_NATIVE)
 #  define simde_mm256_shufflelo_epi16(a, imm8) \
