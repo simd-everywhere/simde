@@ -39,6 +39,7 @@
 #include "neon/ceq.h"
 #include "neon/ceqz.h"
 #include "neon/cltz.h"
+#include "neon/combine.h"
 #include "neon/dup_n.h"
 #include "neon/eor.h"
 #include "neon/get_high.h"
