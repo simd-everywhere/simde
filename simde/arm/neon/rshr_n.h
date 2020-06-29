@@ -342,7 +342,7 @@ simde_vrshrq_n_s64 (const simde_int64x2_t a, const int n)
 
   SIMDE_VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-    r_.values[i] = (a_.values[i] >> ((n == 64) ? 63 : n)) + ((a_.values[i] & (UINT64_C(1) << (n - 1))) != 0);
+    r_.values[i] = (a_.values[i] >> ((n == 64) ? 63 : n)) + ((a_.values[i] & HEDLEY_STATIC_CAST(int64_t, UINT64_C(1) << (n - 1))) != 0);
   }
 
   return simde_int64x2_from_private(r_);
