@@ -43,7 +43,7 @@ simde_uint8x8_t
 simde_vtst_s8(simde_int8x8_t a, simde_int8x8_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vtst_s8(a, b);
-  #elif SIMDE_NATURAL_VECTOR_SIZE >= 64
+  #elif defined(SIMDE_NATURAL_VECTOR_SIZE) && (SIMDE_NATURAL_VECTOR_SIZE >= 64)
     return simde_vcgt_u8(simde_vreinterpret_u8_s8(simde_vand_s8(a, b)), simde_vdup_n_u8(0));
   #else
     simde_int8x8_private
@@ -69,7 +69,7 @@ simde_uint16x4_t
 simde_vtst_s16(simde_int16x4_t a, simde_int16x4_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vtst_s16(a, b);
-  #elif SIMDE_NATURAL_VECTOR_SIZE >= 64
+  #elif defined(SIMDE_NATURAL_VECTOR_SIZE) && (SIMDE_NATURAL_VECTOR_SIZE >= 64)
     return simde_vcgt_u16(simde_vreinterpret_u16_s16(simde_vand_s16(a, b)), simde_vdup_n_u16(0));
   #else
     simde_int16x4_private
@@ -95,7 +95,7 @@ simde_uint32x2_t
 simde_vtst_s32(simde_int32x2_t a, simde_int32x2_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vtst_s32(a, b);
-  #elif SIMDE_NATURAL_VECTOR_SIZE >= 64
+  #elif defined(SIMDE_NATURAL_VECTOR_SIZE) && (SIMDE_NATURAL_VECTOR_SIZE >= 64)
     return simde_vcgt_u32(simde_vreinterpret_u32_s32(simde_vand_s32(a, b)), simde_vdup_n_u32(0));
   #else
     simde_int32x2_private
@@ -121,7 +121,7 @@ simde_uint64x1_t
 simde_vtst_s64(simde_int64x1_t a, simde_int64x1_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vtst_s64(a, b);
-  #elif SIMDE_NATURAL_VECTOR_SIZE >= 64
+  #elif defined(SIMDE_NATURAL_VECTOR_SIZE) && (SIMDE_NATURAL_VECTOR_SIZE >= 64)
     return simde_vcgt_u64(simde_vreinterpret_u64_s64(simde_vand_s64(a, b)), simde_vdup_n_u64(0));
   #else
     simde_int64x1_private
@@ -147,7 +147,7 @@ simde_uint8x8_t
 simde_vtst_u8(simde_uint8x8_t a, simde_uint8x8_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vtst_u8(a, b);
-  #elif SIMDE_NATURAL_VECTOR_SIZE >= 64
+  #elif defined(SIMDE_NATURAL_VECTOR_SIZE) && (SIMDE_NATURAL_VECTOR_SIZE >= 64)
     return simde_vcgt_u8(simde_vand_u8(a, b), simde_vdup_n_u8(0));
   #else
     simde_uint8x8_private
@@ -173,7 +173,7 @@ simde_uint16x4_t
 simde_vtst_u16(simde_uint16x4_t a, simde_uint16x4_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vtst_u16(a, b);
-  #elif SIMDE_NATURAL_VECTOR_SIZE >= 64
+  #elif defined(SIMDE_NATURAL_VECTOR_SIZE) && (SIMDE_NATURAL_VECTOR_SIZE >= 64)
     return simde_vcgt_u16(simde_vand_u16(a, b), simde_vdup_n_u16(0));
   #else
     simde_uint16x4_private
@@ -199,7 +199,7 @@ simde_uint32x2_t
 simde_vtst_u32(simde_uint32x2_t a, simde_uint32x2_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vtst_u32(a, b);
-  #elif SIMDE_NATURAL_VECTOR_SIZE >= 64
+  #elif defined(SIMDE_NATURAL_VECTOR_SIZE) && (SIMDE_NATURAL_VECTOR_SIZE >= 64)
     return simde_vcgt_u32(simde_vand_u32(a, b), simde_vdup_n_u32(0));
   #else
     simde_uint32x2_private
@@ -225,7 +225,7 @@ simde_uint64x1_t
 simde_vtst_u64(simde_uint64x1_t a, simde_uint64x1_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vtst_u64(a, b);
-  #elif SIMDE_NATURAL_VECTOR_SIZE >= 64
+  #elif defined(SIMDE_NATURAL_VECTOR_SIZE) && (SIMDE_NATURAL_VECTOR_SIZE >= 64)
     return simde_vcgt_u64(simde_vand_u64(a, b), simde_vdup_n_u64(0));
   #else
     simde_uint64x1_private
@@ -251,7 +251,7 @@ simde_uint8x16_t
 simde_vtstq_s8(simde_int8x16_t a, simde_int8x16_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vtstq_s8(a, b);
-  #elif SIMDE_NATURAL_VECTOR_SIZE >= 128
+  #elif defined(SIMDE_NATURAL_VECTOR_SIZE) && (SIMDE_NATURAL_VECTOR_SIZE >= 128)
     return simde_vcgtq_u8(simde_vreinterpretq_u8_s8(simde_vandq_s8(a, b)), simde_vdupq_n_u8(0));
   #else
     simde_int8x16_private
@@ -277,7 +277,7 @@ simde_uint16x8_t
 simde_vtstq_s16(simde_int16x8_t a, simde_int16x8_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vtstq_s16(a, b);
-  #elif SIMDE_NATURAL_VECTOR_SIZE >= 128
+  #elif defined(SIMDE_NATURAL_VECTOR_SIZE) && (SIMDE_NATURAL_VECTOR_SIZE >= 128)
     return simde_vcgtq_u16(simde_vreinterpretq_u16_s16(simde_vandq_s16(a, b)), simde_vdupq_n_u16(0));
   #else
     simde_int16x8_private
@@ -303,7 +303,7 @@ simde_uint32x4_t
 simde_vtstq_s32(simde_int32x4_t a, simde_int32x4_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vtstq_s32(a, b);
-  #elif SIMDE_NATURAL_VECTOR_SIZE >= 128
+  #elif defined(SIMDE_NATURAL_VECTOR_SIZE) && (SIMDE_NATURAL_VECTOR_SIZE >= 128)
     return simde_vcgtq_u32(simde_vreinterpretq_u32_s32(simde_vandq_s32(a, b)), simde_vdupq_n_u32(0));
   #else
     simde_int32x4_private
@@ -329,7 +329,7 @@ simde_uint64x2_t
 simde_vtstq_s64(simde_int64x2_t a, simde_int64x2_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vtstq_s64(a, b);
-  #elif SIMDE_NATURAL_VECTOR_SIZE >= 128
+  #elif defined(SIMDE_NATURAL_VECTOR_SIZE) && (SIMDE_NATURAL_VECTOR_SIZE >= 128)
     return simde_vcgtq_u64(simde_vreinterpretq_u64_s64(simde_vandq_s64(a, b)), simde_vdupq_n_u64(0));
   #else
     simde_int64x2_private
@@ -355,7 +355,7 @@ simde_uint8x16_t
 simde_vtstq_u8(simde_uint8x16_t a, simde_uint8x16_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vtstq_u8(a, b);
-  #elif SIMDE_NATURAL_VECTOR_SIZE >= 128
+  #elif defined(SIMDE_NATURAL_VECTOR_SIZE) && (SIMDE_NATURAL_VECTOR_SIZE >= 128)
     return simde_vcgtq_u8(simde_vandq_u8(a, b), simde_vdupq_n_u8(0));
   #else
     simde_uint8x16_private
@@ -381,7 +381,7 @@ simde_uint16x8_t
 simde_vtstq_u16(simde_uint16x8_t a, simde_uint16x8_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vtstq_u16(a, b);
-  #elif SIMDE_NATURAL_VECTOR_SIZE >= 128
+  #elif defined(SIMDE_NATURAL_VECTOR_SIZE) && (SIMDE_NATURAL_VECTOR_SIZE >= 128)
     return simde_vcgtq_u16(simde_vandq_u16(a, b), simde_vdupq_n_u16(0));
   #else
     simde_uint16x8_private
@@ -407,7 +407,7 @@ simde_uint32x4_t
 simde_vtstq_u32(simde_uint32x4_t a, simde_uint32x4_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vtstq_u32(a, b);
-  #elif SIMDE_NATURAL_VECTOR_SIZE >= 128
+  #elif defined(SIMDE_NATURAL_VECTOR_SIZE) && (SIMDE_NATURAL_VECTOR_SIZE >= 128)
     return simde_vcgtq_u32(simde_vandq_u32(a, b), simde_vdupq_n_u32(0));
   #else
     simde_uint32x4_private
@@ -433,7 +433,7 @@ simde_uint64x2_t
 simde_vtstq_u64(simde_uint64x2_t a, simde_uint64x2_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vtstq_u64(a, b);
-  #elif SIMDE_NATURAL_VECTOR_SIZE >= 128
+  #elif defined(SIMDE_NATURAL_VECTOR_SIZE) && (SIMDE_NATURAL_VECTOR_SIZE >= 128)
     return simde_vcgtq_u64(simde_vandq_u64(a, b), simde_vdupq_n_u64(0));
   #else
     simde_uint64x2_private

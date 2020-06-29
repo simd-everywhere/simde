@@ -56,7 +56,7 @@ simde_vrshr_n_s8 (const simde_int8x8_t a, const int n)
 }
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vrshr_n_s8(a, n) vrshr_n_s8((a), (n))
-#elif SIMDE_NATURAL_VECTOR_SIZE >= 64
+#elif defined(SIMDE_NATURAL_VECTOR_SIZE) && (SIMDE_NATURAL_VECTOR_SIZE >= 64)
   #define simde_vrshr_n_s8(a, n) simde_vsub_s8(simde_vshr_n_s8((a), (n)), simde_vreinterpret_s8_u8( \
     simde_vtst_u8(simde_vreinterpret_u8_s8(a),                              \
                   simde_vdup_n_u8(HEDLEY_STATIC_CAST(uint8_t, 1 << ((n) - 1))))))
@@ -83,7 +83,7 @@ simde_vrshr_n_s16 (const simde_int16x4_t a, const int n)
 }
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vrshr_n_s16(a, n) vrshr_n_s16((a), (n))
-#elif SIMDE_NATURAL_VECTOR_SIZE >= 64
+#elif defined(SIMDE_NATURAL_VECTOR_SIZE) && (SIMDE_NATURAL_VECTOR_SIZE >= 64)
   #define simde_vrshr_n_s16(a, n) simde_vsub_s16(simde_vshr_n_s16((a), (n)), simde_vreinterpret_s16_u16( \
     simde_vtst_u16(simde_vreinterpret_u16_s16(a), \
                    simde_vdup_n_u16(HEDLEY_STATIC_CAST(uint16_t, 1 << ((n) - 1))))))
@@ -110,7 +110,7 @@ simde_vrshr_n_s32 (const simde_int32x2_t a, const int n)
 }
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vrshr_n_s32(a, n) vrshr_n_s32((a), (n))
-#elif SIMDE_NATURAL_VECTOR_SIZE >= 64
+#elif defined(SIMDE_NATURAL_VECTOR_SIZE) && (SIMDE_NATURAL_VECTOR_SIZE >= 64)
   #define simde_vrshr_n_s32(a, n) simde_vsub_s32(simde_vshr_n_s32((a), (n)), \
     simde_vreinterpret_s32_u32(simde_vtst_s32((a), \
       simde_vdup_n_s32(INT32_C(1) << ((n) - 1)))))
@@ -137,7 +137,7 @@ simde_vrshr_n_s64 (const simde_int64x1_t a, const int n)
 }
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vrshr_n_s64(a, n) vrshr_n_s64((a), (n))
-#elif SIMDE_NATURAL_VECTOR_SIZE >= 64
+#elif defined(SIMDE_NATURAL_VECTOR_SIZE) && (SIMDE_NATURAL_VECTOR_SIZE >= 64)
   #define simde_vrshr_n_s64(a, n) simde_vsub_s64(simde_vshr_n_s64((a), (n)), \
     simde_vreinterpret_s64_u64(simde_vtst_s64((a), \
       simde_vdup_n_s64(INT64_C(1) << ((n) - 1)))))
@@ -164,7 +164,7 @@ simde_vrshr_n_u8 (const simde_uint8x8_t a, const int n)
 }
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vrshr_n_u8(a, n) vrshr_n_u8((a), (n))
-#elif SIMDE_NATURAL_VECTOR_SIZE >= 64
+#elif defined(SIMDE_NATURAL_VECTOR_SIZE) && (SIMDE_NATURAL_VECTOR_SIZE >= 64)
   #define simde_vrshr_n_u8(a, n) simde_vsub_u8(simde_vshr_n_u8((a), (n)), \
     simde_vtst_u8((a), simde_vdup_n_u8(HEDLEY_STATIC_CAST(uint8_t, 1 << ((n) - 1)))))
 #endif
@@ -190,7 +190,7 @@ simde_vrshr_n_u16 (const simde_uint16x4_t a, const int n)
 }
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vrshr_n_u16(a, n) vrshr_n_u16((a), (n))
-#elif SIMDE_NATURAL_VECTOR_SIZE >= 64
+#elif defined(SIMDE_NATURAL_VECTOR_SIZE) && (SIMDE_NATURAL_VECTOR_SIZE >= 64)
   #define simde_vrshr_n_u16(a, n) simde_vsub_u16(simde_vshr_n_u16((a), (n)), \
     simde_vtst_u16((a), simde_vdup_n_u16(HEDLEY_STATIC_CAST(uint16_t, 1 << ((n) - 1)))))
 #endif
@@ -216,7 +216,7 @@ simde_vrshr_n_u32 (const simde_uint32x2_t a, const int n)
 }
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vrshr_n_u32(a, n) vrshr_n_u32((a), (n))
-#elif SIMDE_NATURAL_VECTOR_SIZE >= 64
+#elif defined(SIMDE_NATURAL_VECTOR_SIZE) && (SIMDE_NATURAL_VECTOR_SIZE >= 64)
   #define simde_vrshr_n_u32(a, n) simde_vsub_u32(simde_vshr_n_u32((a), (n)), \
     simde_vtst_u32((a), simde_vdup_n_u32(UINT32_C(1) << ((n) - 1))))
 #endif
@@ -242,7 +242,7 @@ simde_vrshr_n_u64 (const simde_uint64x1_t a, const int n)
 }
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vrshr_n_u64(a, n) vrshr_n_u64((a), (n))
-#elif SIMDE_NATURAL_VECTOR_SIZE >= 64
+#elif defined(SIMDE_NATURAL_VECTOR_SIZE) && (SIMDE_NATURAL_VECTOR_SIZE >= 64)
   #define simde_vrshr_n_u64(a, n) simde_vsub_u64(simde_vshr_n_u64((a), (n)), \
     simde_vtst_u64((a), simde_vdup_n_u64(UINT64_C(1) << ((n) - 1))))
 #endif
@@ -268,7 +268,7 @@ simde_vrshrq_n_s8 (const simde_int8x16_t a, const int n)
 }
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vrshrq_n_s8(a, n) vrshrq_n_s8((a), (n))
-#elif SIMDE_NATURAL_VECTOR_SIZE >= 128
+#elif defined(SIMDE_NATURAL_VECTOR_SIZE) && (SIMDE_NATURAL_VECTOR_SIZE >= 128)
   #define simde_vrshrq_n_s8(a, n) simde_vsubq_s8(simde_vshrq_n_s8((a), (n)), simde_vreinterpretq_s8_u8( \
     simde_vtstq_u8(simde_vreinterpretq_u8_s8(a),                              \
                   simde_vdupq_n_u8(HEDLEY_STATIC_CAST(uint8_t, 1 << ((n) - 1))))))
@@ -295,7 +295,7 @@ simde_vrshrq_n_s16 (const simde_int16x8_t a, const int n)
 }
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vrshrq_n_s16(a, n) vrshrq_n_s16((a), (n))
-#elif SIMDE_NATURAL_VECTOR_SIZE >= 128
+#elif defined(SIMDE_NATURAL_VECTOR_SIZE) && (SIMDE_NATURAL_VECTOR_SIZE >= 128)
   #define simde_vrshrq_n_s16(a, n) simde_vsubq_s16(simde_vshrq_n_s16((a), (n)), simde_vreinterpretq_s16_u16( \
     simde_vtstq_u16(simde_vreinterpretq_u16_s16(a),                              \
                     simde_vdupq_n_u16(HEDLEY_STATIC_CAST(uint16_t, 1 << ((n) - 1))))))
@@ -322,7 +322,7 @@ simde_vrshrq_n_s32 (const simde_int32x4_t a, const int n)
 }
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vrshrq_n_s32(a, n) vrshrq_n_s32((a), (n))
-#elif SIMDE_NATURAL_VECTOR_SIZE >= 128
+#elif defined(SIMDE_NATURAL_VECTOR_SIZE) && (SIMDE_NATURAL_VECTOR_SIZE >= 128)
   #define simde_vrshrq_n_s32(a, n) simde_vsubq_s32(simde_vshrq_n_s32((a), (n)), \
     simde_vreinterpretq_s32_u32(simde_vtstq_s32((a), \
       simde_vdupq_n_s32(INT32_C(1) << ((n) - 1)))))
@@ -349,7 +349,7 @@ simde_vrshrq_n_s64 (const simde_int64x2_t a, const int n)
 }
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vrshrq_n_s64(a, n) vrshrq_n_s64((a), (n))
-#elif SIMDE_NATURAL_VECTOR_SIZE >= 128
+#elif defined(SIMDE_NATURAL_VECTOR_SIZE) && (SIMDE_NATURAL_VECTOR_SIZE >= 128)
   #define simde_vrshrq_n_s64(a, n) simde_vsubq_s64(simde_vshrq_n_s64((a), (n)), \
     simde_vreinterpretq_s64_u64(simde_vtstq_s64((a), \
       simde_vdupq_n_s64(INT64_C(1) << ((n) - 1)))))
@@ -376,7 +376,7 @@ simde_vrshrq_n_u8 (const simde_uint8x16_t a, const int n)
 }
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vrshrq_n_u8(a, n) vrshrq_n_u8((a), (n))
-#elif SIMDE_NATURAL_VECTOR_SIZE >= 128
+#elif defined(SIMDE_NATURAL_VECTOR_SIZE) && (SIMDE_NATURAL_VECTOR_SIZE >= 128)
   #define simde_vrshrq_n_u8(a, n) simde_vsubq_u8(simde_vshrq_n_u8((a), (n)), \
     simde_vtstq_u8((a), simde_vdupq_n_u8(HEDLEY_STATIC_CAST(uint8_t, 1 << ((n) - 1)))))
 #endif
@@ -402,7 +402,7 @@ simde_vrshrq_n_u16 (const simde_uint16x8_t a, const int n)
 }
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vrshrq_n_u16(a, n) vrshrq_n_u16((a), (n))
-#elif SIMDE_NATURAL_VECTOR_SIZE >= 128
+#elif defined(SIMDE_NATURAL_VECTOR_SIZE) && (SIMDE_NATURAL_VECTOR_SIZE >= 128)
   #define simde_vrshrq_n_u16(a, n) simde_vsubq_u16(simde_vshrq_n_u16((a), (n)), \
     simde_vtstq_u16((a), simde_vdupq_n_u16(HEDLEY_STATIC_CAST(uint16_t, 1 << ((n) - 1)))))
 #endif
@@ -428,7 +428,7 @@ simde_vrshrq_n_u32 (const simde_uint32x4_t a, const int n)
 }
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vrshrq_n_u32(a, n) vrshrq_n_u32((a), (n))
-#elif SIMDE_NATURAL_VECTOR_SIZE >= 128
+#elif defined(SIMDE_NATURAL_VECTOR_SIZE) && (SIMDE_NATURAL_VECTOR_SIZE >= 128)
   #define simde_vrshrq_n_u32(a, n) simde_vsubq_u32(simde_vshrq_n_u32((a), (n)), \
     simde_vtstq_u32((a), simde_vdupq_n_u32(UINT32_C(1) << ((n) - 1))))
 #endif
@@ -454,7 +454,7 @@ simde_vrshrq_n_u64 (const simde_uint64x2_t a, const int n)
 }
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vrshrq_n_u64(a, n) vrshrq_n_u64((a), (n))
-#elif SIMDE_NATURAL_VECTOR_SIZE >= 128
+#elif defined(SIMDE_NATURAL_VECTOR_SIZE) && (SIMDE_NATURAL_VECTOR_SIZE >= 128)
   #define simde_vrshrq_n_u64(a, n) simde_vsubq_u64(simde_vshrq_n_u64((a), (n)), \
     simde_vtstq_u64((a), simde_vdupq_n_u64(UINT64_C(1) << ((n) - 1))))
 #endif
