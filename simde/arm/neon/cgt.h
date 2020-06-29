@@ -45,12 +45,13 @@ simde_vcgt_f32(simde_float32x2_t a, simde_float32x2_t b) {
       b_ = simde_float32x2_to_private(b);
     simde_uint32x2_private r_;
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && 0
+      /* These need a cast to avoid warning-errors but I am not sure how to cast it :-( */
       r_.values = a_.values > b_.values;
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-        r_.values[i] = a_.values[i] > b_.values[i];
+        r_.values[i] = (a_.values[i] > b_.values[i]) ? UINT32_MAX : 0;
       }
     #endif
 
@@ -73,12 +74,12 @@ simde_vcgt_f64(simde_float64x1_t a, simde_float64x1_t b) {
       b_ = simde_float64x1_to_private(b);
     simde_uint64x1_private r_;
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && 0
       r_.values = a_.values > b_.values;
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-        r_.values[i] = a_.values[i] > b_.values[i];
+        r_.values[i] = (a_.values[i] > b_.values[i]) ? UINT64_MAX : 0;
       }
     #endif
 
@@ -103,12 +104,12 @@ simde_vcgt_s8(simde_int8x8_t a, simde_int8x8_t b) {
       b_ = simde_int8x8_to_private(b);
     simde_uint8x8_private r_;
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && 0
       r_.values = a_.values > b_.values;
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-        r_.values[i] = a_.values[i] > b_.values[i];
+        r_.values[i] = (a_.values[i] > b_.values[i]) ? UINT8_MAX : 0;
       }
     #endif
 
@@ -133,12 +134,12 @@ simde_vcgt_s16(simde_int16x4_t a, simde_int16x4_t b) {
       b_ = simde_int16x4_to_private(b);
     simde_uint16x4_private r_;
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && 0
       r_.values = a_.values > b_.values;
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-        r_.values[i] = a_.values[i] > b_.values[i];
+        r_.values[i] = (a_.values[i] > b_.values[i]) ? UINT16_MAX : 0;
       }
     #endif
 
@@ -163,12 +164,12 @@ simde_vcgt_s32(simde_int32x2_t a, simde_int32x2_t b) {
       b_ = simde_int32x2_to_private(b);
     simde_uint32x2_private r_;
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && 0
       r_.values = a_.values > b_.values;
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-        r_.values[i] = a_.values[i] > b_.values[i];
+        r_.values[i] = (a_.values[i] > b_.values[i]) ? UINT32_MAX : 0;
       }
     #endif
 
@@ -191,12 +192,12 @@ simde_vcgt_s64(simde_int64x1_t a, simde_int64x1_t b) {
       b_ = simde_int64x1_to_private(b);
     simde_uint64x1_private r_;
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && 0
       r_.values = a_.values > b_.values;
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-        r_.values[i] = a_.values[i] > b_.values[i];
+        r_.values[i] = (a_.values[i] > b_.values[i]) ? UINT64_MAX : 0;
       }
     #endif
 
@@ -219,12 +220,12 @@ simde_vcgt_u8(simde_uint8x8_t a, simde_uint8x8_t b) {
       a_ = simde_uint8x8_to_private(a),
       b_ = simde_uint8x8_to_private(b);
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && 0
       r_.values = a_.values > b_.values;
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-        r_.values[i] = a_.values[i] > b_.values[i];
+        r_.values[i] = (a_.values[i] > b_.values[i]) ? UINT8_MAX : 0;
       }
     #endif
 
@@ -247,12 +248,12 @@ simde_vcgt_u16(simde_uint16x4_t a, simde_uint16x4_t b) {
       a_ = simde_uint16x4_to_private(a),
       b_ = simde_uint16x4_to_private(b);
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && 0
       r_.values = a_.values > b_.values;
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-        r_.values[i] = a_.values[i] > b_.values[i];
+        r_.values[i] = (a_.values[i] > b_.values[i]) ? UINT16_MAX : 0;
       }
     #endif
 
@@ -275,12 +276,12 @@ simde_vcgt_u32(simde_uint32x2_t a, simde_uint32x2_t b) {
       a_ = simde_uint32x2_to_private(a),
       b_ = simde_uint32x2_to_private(b);
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && 0
       r_.values = a_.values > b_.values;
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-        r_.values[i] = a_.values[i] > b_.values[i];
+        r_.values[i] = (a_.values[i] > b_.values[i]) ? UINT32_MAX : 0;
       }
     #endif
 
@@ -303,12 +304,12 @@ simde_vcgt_u64(simde_uint64x1_t a, simde_uint64x1_t b) {
       a_ = simde_uint64x1_to_private(a),
       b_ = simde_uint64x1_to_private(b);
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && 0
       r_.values = a_.values > b_.values;
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-        r_.values[i] = a_.values[i] > b_.values[i];
+        r_.values[i] = (a_.values[i] > b_.values[i]) ? UINT64_MAX : 0;
       }
     #endif
 
@@ -342,12 +343,12 @@ simde_vcgtq_f32(simde_float32x4_t a, simde_float32x4_t b) {
       b_ = simde_float32x4_to_private(b);
     simde_uint32x4_private r_;
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && 0
       r_.values = a_.values > b_.values;
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-        r_.values[i] = a_.values[i] > b_.values[i];
+        r_.values[i] = (a_.values[i] > b_.values[i]) ? UINT32_MAX : 0;
       }
     #endif
 
@@ -381,12 +382,12 @@ simde_vcgtq_f64(simde_float64x2_t a, simde_float64x2_t b) {
       b_ = simde_float64x2_to_private(b);
     simde_uint64x2_private r_;
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && 0
       r_.values = a_.values > b_.values;
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-        r_.values[i] = a_.values[i] > b_.values[i];
+        r_.values[i] = (a_.values[i] > b_.values[i]) ? UINT64_MAX : 0;
       }
     #endif
 
@@ -420,12 +421,12 @@ simde_vcgtq_s8(simde_int8x16_t a, simde_int8x16_t b) {
       b_ = simde_int8x16_to_private(b);
     simde_uint8x16_private r_;
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && 0
       r_.values = a_.values > b_.values;
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-        r_.values[i] = a_.values[i] > b_.values[i];
+        r_.values[i] = (a_.values[i] > b_.values[i]) ? UINT8_MAX : 0;
       }
     #endif
 
@@ -459,12 +460,12 @@ simde_vcgtq_s16(simde_int16x8_t a, simde_int16x8_t b) {
       b_ = simde_int16x8_to_private(b);
     simde_uint16x8_private r_;
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && 0
       r_.values = a_.values > b_.values;
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-        r_.values[i] = a_.values[i] > b_.values[i];
+        r_.values[i] = (a_.values[i] > b_.values[i]) ? UINT16_MAX : 0;
       }
     #endif
 
@@ -498,12 +499,12 @@ simde_vcgtq_s32(simde_int32x4_t a, simde_int32x4_t b) {
       b_ = simde_int32x4_to_private(b);
     simde_uint32x4_private r_;
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && 0
       r_.values = a_.values > b_.values;
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-        r_.values[i] = a_.values[i] > b_.values[i];
+        r_.values[i] = (a_.values[i] > b_.values[i]) ? UINT32_MAX : 0;
       }
     #endif
 
@@ -537,12 +538,12 @@ simde_vcgtq_s64(simde_int64x2_t a, simde_int64x2_t b) {
       b_ = simde_int64x2_to_private(b);
     simde_uint64x2_private r_;
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && 0
       r_.values = a_.values > b_.values;
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-        r_.values[i] = a_.values[i] > b_.values[i];
+        r_.values[i] = (a_.values[i] > b_.values[i]) ? UINT64_MAX : 0;
       }
     #endif
 
@@ -573,12 +574,12 @@ simde_vcgtq_u8(simde_uint8x16_t a, simde_uint8x16_t b) {
       a_ = simde_uint8x16_to_private(a),
       b_ = simde_uint8x16_to_private(b);
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && 0
       r_.values = a_.values > b_.values;
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-        r_.values[i] = a_.values[i] > b_.values[i];
+        r_.values[i] = (a_.values[i] > b_.values[i]) ? UINT8_MAX : 0;
       }
     #endif
 
@@ -609,12 +610,12 @@ simde_vcgtq_u16(simde_uint16x8_t a, simde_uint16x8_t b) {
       a_ = simde_uint16x8_to_private(a),
       b_ = simde_uint16x8_to_private(b);
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && 0
       r_.values = a_.values > b_.values;
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-        r_.values[i] = a_.values[i] > b_.values[i];
+        r_.values[i] = (a_.values[i] > b_.values[i]) ? UINT16_MAX : 0;
       }
     #endif
 
@@ -645,12 +646,12 @@ simde_vcgtq_u32(simde_uint32x4_t a, simde_uint32x4_t b) {
       a_ = simde_uint32x4_to_private(a),
       b_ = simde_uint32x4_to_private(b);
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && 0
       r_.values = a_.values > b_.values;
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-        r_.values[i] = a_.values[i] > b_.values[i];
+        r_.values[i] = (a_.values[i] > b_.values[i]) ? UINT32_MAX : 0;
       }
     #endif
 
@@ -681,12 +682,12 @@ simde_vcgtq_u64(simde_uint64x2_t a, simde_uint64x2_t b) {
       a_ = simde_uint64x2_to_private(a),
       b_ = simde_uint64x2_to_private(b);
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && 0
       r_.values = a_.values > b_.values;
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-        r_.values[i] = a_.values[i] > b_.values[i];
+        r_.values[i] = (a_.values[i] > b_.values[i]) ? UINT64_MAX : 0;
       }
     #endif
 
