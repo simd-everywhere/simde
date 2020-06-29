@@ -523,15 +523,13 @@ simde_vcgtq_s64(simde_int64x2_t a, simde_int64x2_t b) {
     return vcgtq_s64(a, b);
   #elif defined(SIMDE_X86_SSE4_2_NATIVE)
     return _mm_cmpgt_epi64(a, b);
-  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+  #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
     SIMDE_POWER_ALTIVEC_VECTOR(signed long long) a_, b_;
     SIMDE_POWER_ALTIVEC_VECTOR(unsigned long long) r_;
     a_ = a;
     b_ = b;
     r_ = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned long long), vec_cmpgt(a_, b_));
     return r_;
-  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    return wasm_i64x2_gt(a, b);
   #else
     simde_int64x2_private
       a_ = simde_int64x2_to_private(a),
@@ -674,8 +672,6 @@ simde_vcgtq_u64(simde_uint64x2_t a, simde_uint64x2_t b) {
     b_ = b;
     r_ = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned long long), vec_cmpgt(a_, b_));
     return r_;
-  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    return wasm_u64x2_gt(a, b);
   #else
     simde_uint64x2_private
       r_,
