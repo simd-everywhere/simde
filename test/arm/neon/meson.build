@@ -9,6 +9,7 @@ simde_test_arm_neon_tests = [
   'cagt',
   'ceq',
   'cltz',
+  'combine',
   'dup_n',
   'eor',
   'get_high',
