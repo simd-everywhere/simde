@@ -1,7 +1,13 @@
 #define SIMDE_TEST_ARM_NEON_INSN xxx
 
 #include "test-neon.h"
-#include "../../../simde/arm/neon/xxx.h"
+
+/* Check that both of these work */
+#if defined(__cplusplus)
+  #include "../../../simde/arm/neon/xxx.h"
+#else
+  #include "../../../simde/arm/neon.h"
+#endif
 
 static int
 test_simde_vxxx_f32 (SIMDE_MUNIT_TEST_ARGS) {
@@ -19,7 +25,7 @@ test_simde_vxxx_f32 (SIMDE_MUNIT_TEST_ARGS) {
     simde_float32x2_t b = simde_vld1_f32(test_vec[i].b);
     simde_float32x2_t r = simde_vxxx_f32(a, b);
 
-    simde_test_arm_neon_assert_equal_f32x2(r, simde_vld1_f32(test_vec[i].r), 1);
+    simde_test_arm_neon_assert_equal_f32x2(r, simde_vld1_f32(test_vec[i].r));
   }
 
   return 0;
@@ -54,7 +60,7 @@ test_simde_vxxx_f64 (SIMDE_MUNIT_TEST_ARGS) {
     simde_float64x1_t b = simde_vld1_f64(test_vec[i].b);
     simde_float64x1_t r = simde_vxxx_f64(a, b);
 
-    simde_test_arm_neon_assert_equal_f64x1(r, simde_vld1_f64(test_vec[i].r), 1);
+    simde_test_arm_neon_assert_equal_f64x1(r, simde_vld1_f64(test_vec[i].r));
   }
 
   return 0;
@@ -365,7 +371,7 @@ test_simde_vxxxq_f32 (SIMDE_MUNIT_TEST_ARGS) {
     simde_float32x4_t a = simde_vld1q_f32(test_vec[i].a);
     simde_float32x4_t b = simde_vld1q_f32(test_vec[i].b);
     simde_float32x4_t r = simde_vxxxq_f32(a, b);
-    simde_test_arm_neon_assert_equal_f32x4(r, simde_vld1q_f32(test_vec[i].r), 1);
+    simde_test_arm_neon_assert_equal_f32x4(r, simde_vld1q_f32(test_vec[i].r));
   }
 
   return 0;
@@ -400,7 +406,7 @@ test_simde_vxxxq_f64 (SIMDE_MUNIT_TEST_ARGS) {
     simde_float64x2_t b = simde_vld1q_f64(test_vec[i].b);
     simde_float64x2_t r = simde_vxxxq_f64(a, b);
 
-    simde_test_arm_neon_assert_equal_f64x2(r, simde_vld1q_f64(test_vec[i].r), 1);
+    simde_test_arm_neon_assert_equal_f64x2(r, simde_vld1q_f64(test_vec[i].r));
   }
 
   return 0;
