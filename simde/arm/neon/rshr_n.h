@@ -421,7 +421,7 @@ simde_vrshrq_n_u32 (const simde_uint32x4_t a, const int n)
 
   SIMDE_VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-    r_.values[i] = HEDLEY_STATIC_CAST(int32_t, ((n == 32) ? 0 : (a_.values[i] >> n)) + ((a_.values[i] & (1 << (n - 1))) != 0));
+    r_.values[i] = HEDLEY_STATIC_CAST(uint32_t, ((n == 32) ? 0 : (a_.values[i] >> n)) + ((a_.values[i] & (1 << (n - 1))) != 0));
   }
 
   return simde_uint32x4_from_private(r_);
