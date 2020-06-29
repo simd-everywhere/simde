@@ -103,7 +103,7 @@ simde_vrshr_n_s32 (const simde_int32x2_t a, const int n)
 
   SIMDE_VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-    r_.values[i] = HEDLEY_STATIC_CAST(int32_t, (a_.values[i] >> ((n == 32) ? 31 : n)) + ((a_.values[i] & (UINT32_C(1) << (n - 1))) != 0));
+    r_.values[i] = (a_.values[i] >> ((n == 32) ? 31 : n)) + ((a_.values[i] & HEDLEY_STATIC_CAST(int32_t, UINT32_C(1) << (n - 1))) != 0);
   }
 
   return simde_int32x2_from_private(r_);
@@ -130,7 +130,7 @@ simde_vrshr_n_s64 (const simde_int64x1_t a, const int n)
 
   SIMDE_VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-    r_.values[i] = HEDLEY_STATIC_CAST(int64_t, (a_.values[i] >> ((n == 64) ? 63 : n)) + ((a_.values[i] & (UINT64_C(1) << (n - 1))) != 0));
+    r_.values[i] = (a_.values[i] >> ((n == 64) ? 63 : n)) + ((a_.values[i] & HEDLEY_STATIC_CAST(int64_t, UINT64_C(1) << (n - 1))) != 0);
   }
 
   return simde_int64x1_from_private(r_);
@@ -209,7 +209,7 @@ simde_vrshr_n_u32 (const simde_uint32x2_t a, const int n)
 
   SIMDE_VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-    r_.values[i] = HEDLEY_STATIC_CAST(uint32_t, ((n == 32) ? 0 : (a_.values[i] >> n))  + ((a_.values[i] & (UINT32_C(1) << (n - 1))) != 0));
+    r_.values[i] = ((n == 32) ? 0 : (a_.values[i] >> n))  + ((a_.values[i] & (UINT32_C(1) << (n - 1))) != 0);
   }
 
   return simde_uint32x2_from_private(r_);
@@ -235,7 +235,7 @@ simde_vrshr_n_u64 (const simde_uint64x1_t a, const int n)
 
   SIMDE_VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-    r_.values[i] = HEDLEY_STATIC_CAST(uint64_t, ((n == 64) ? 0 : (a_.values[i] >> n))  + ((a_.values[i] & (UINT64_C(1) << (n - 1))) != 0));
+    r_.values[i] = ((n == 64) ? 0 : (a_.values[i] >> n))  + ((a_.values[i] & (UINT64_C(1) << (n - 1))) != 0);
   }
 
   return simde_uint64x1_from_private(r_);
@@ -315,7 +315,7 @@ simde_vrshrq_n_s32 (const simde_int32x4_t a, const int n)
 
   SIMDE_VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-    r_.values[i] = HEDLEY_STATIC_CAST(int32_t, (a_.values[i] >> ((n == 32) ? 31 : n)) + ((a_.values[i] & (UINT32_C(1) << (n - 1))) != 0));
+    r_.values[i] = (a_.values[i] >> ((n == 32) ? 31 : n)) + ((a_.values[i] & HEDLEY_STATIC_CAST(int32_t, UINT32_C(1) << (n - 1))) != 0);
   }
 
   return simde_int32x4_from_private(r_);
@@ -342,7 +342,7 @@ simde_vrshrq_n_s64 (const simde_int64x2_t a, const int n)
 
   SIMDE_VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-    r_.values[i] = HEDLEY_STATIC_CAST(int64_t, (a_.values[i] >> ((n == 64) ? 63 : n)) + ((a_.values[i] & (UINT64_C(1) << (n - 1))) != 0));
+    r_.values[i] = (a_.values[i] >> ((n == 64) ? 63 : n)) + ((a_.values[i] & (UINT64_C(1) << (n - 1))) != 0);
   }
 
   return simde_int64x2_from_private(r_);
@@ -421,7 +421,7 @@ simde_vrshrq_n_u32 (const simde_uint32x4_t a, const int n)
 
   SIMDE_VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-    r_.values[i] = HEDLEY_STATIC_CAST(uint32_t, ((n == 32) ? 0 : (a_.values[i] >> n)) + ((a_.values[i] & (UINT32_C(1) << (n - 1))) != 0));
+    r_.values[i] = ((n == 32) ? 0 : (a_.values[i] >> n)) + ((a_.values[i] & (UINT32_C(1) << (n - 1))) != 0);
   }
 
   return simde_uint32x4_from_private(r_);
@@ -447,7 +447,7 @@ simde_vrshrq_n_u64 (const simde_uint64x2_t a, const int n)
 
   SIMDE_VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-    r_.values[i] = HEDLEY_STATIC_CAST(uint64_t, ((n == 64) ? 0 : (a_.values[i] >> n)) + ((a_.values[i] & (UINT64_C(1) << (n - 1))) != 0));
+    r_.values[i] = ((n == 64) ? 0 : (a_.values[i] >> n)) + ((a_.values[i] & (UINT64_C(1) << (n - 1))) != 0);
   }
 
   return simde_uint64x2_from_private(r_);
