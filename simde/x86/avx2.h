@@ -2337,6 +2337,57 @@ SIMDE_REQUIRE_RANGE(imm8, 0, 255) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m256i
+simde_mm256_permutevar8x32_epi32 (simde__m256i a, simde__m256i idx) {
+  #if defined(SIMDE_X86_AVX2_NATIVE)
+    return _mm256_permutevar8x32_epi32(a, idx);
+  #else
+    simde__m256i_private
+      r_,
+      a_ = simde__m256i_to_private(a),
+      idx_ = simde__m256i_to_private(idx);
+
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {
+      const int id = idx_.i32[i] & 7;
+      r_.i32[i] = a_.i32[id];
+    }
+
+    return simde__m256i_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_X86_AVX2_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_permutevar8x32_epi32
+  #define _mm256_permutevar8x32_epi32(a, idx) simde_mm256_permutevar8x32_epi32(a, idx)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256
+simde_mm256_permutevar8x32_ps (simde__m256 a, simde__m256i idx) {
+  #if defined(SIMDE_X86_AVX2_NATIVE)
+    return _mm256_permutevar8x32_ps(a, idx);
+  #else
+    simde__m256_private
+      r_,
+      a_ = simde__m256_to_private(a);
+    simde__m256i_private
+      idx_ = simde__m256i_to_private(idx);
+
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
+      const int id = idx_.i32[i] & 7;
+      r_.f32[i] = a_.f32[id];
+    }
+
+    return simde__m256_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_X86_AVX2_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_permutevar8x32_ps
+  #define _mm256_permutevar8x32_ps(a, idx) simde_mm256_permutevar8x32_ps(a, idx)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256i
 simde_mm256_shuffle_epi8 (simde__m256i a, simde__m256i b) {
 #if defined(SIMDE_X86_AVX2_NATIVE)
   return _mm256_shuffle_epi8(a, b);
