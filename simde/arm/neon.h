@@ -69,6 +69,7 @@
 #include "neon/paddl.h"
 #include "neon/pmax.h"
 #include "neon/pmin.h"
+#include "neon/qmovn.h"
 #include "neon/reinterpret.h"
 #include "neon/shl.h"
 #include "neon/shl_n.h"
