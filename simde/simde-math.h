@@ -50,7 +50,7 @@
 
   /* The math.h from libc++ (yes, the C header from the C++ standard
    * library) will define an isnan function, but not an isnan macro
-   * like the C standard requires.  So, we detect the header guards
+   * like the C standard requires.  So we detect the header guards
    * macro libc++ uses. */
   #if defined(isnan) || (defined(_LIBCPP_MATH_H) && !defined(_LIBCPP_CMATH))
     #define SIMDE_MATH_HAVE_MATH_H
@@ -73,7 +73,7 @@
     HEDLEY_DIAGNOSTIC_PUSH
     #if defined(HEDLEY_MSVC_VERSION)
       /* VS 14 emits this diagnostic about noexcept being used on a
-       * <cmath>, which we can't do anything about. */
+       * <cmath> function, which we can't do anything about. */
       #pragma warning(disable:4996)
     #endif
     #include <cmath>
@@ -81,6 +81,95 @@
   #else
     #define SIMDE_MATH_HAVE_MATH_H
     #include <math.h>
+  #endif
+#endif
+
+#if !defined(__cplusplus)
+  /* If this is a problem we *might* be able to avoid including
+   * <complex.h> on some compilers (gcc, clang, and others which
+   * implement builtins like __builtin_cexpf).  If you don't have
+   * a <complex.h> please file an issue and we'll take a look. */
+  #include <complex.h>
+
+  #if !defined(HEDLEY_MSVC_VERSION)
+    typedef float _Complex simde_cfloat32;
+    typedef double _Complex simde_cfloat64;
+  #else
+    typedef _Fcomplex simde_cfloat32;
+    typedef _Dcomplex simde_cfloat64;
+  #endif
+  #if \
+      HEDLEY_HAS_BUILTIN(__builtin_complex) || \
+      HEDLEY_GCC_VERSION_CHECK(4,7,0) || \
+      HEDLEY_INTEL_VERSION_CHECK(13,0,0)
+    #define SIMDE_MATH_CMPLX(x, y) __builtin_complex((double) (x), (double) (y))
+    #define SIMDE_MATH_CMPLXF(x, y) __builtin_complex((float) (x), (float) (y))
+  #elif defined(CMPLX) && defined(CMPLXF)
+    #define SIMDE_MATH_CMPLX(x, y) CMPLX(x, y)
+    #define SIMDE_MATH_CMPLXF(x, y) CMPLXF(x, y)
+  #else
+    /* CMPLX / CMPLXF are in C99, but these seem to be necessary in
+     * some compilers that aren't even MSVC. */
+    #define SIMDE_MATH_CMPLX(x, y) (HEDLEY_STATIC_CAST(double, x) + HEDLEY_STATIC_CAST(double, y) * I)
+    #define SIMDE_MATH_CMPLXF(x, y) (HEDLEY_STATIC_CAST(float, x) + HEDLEY_STATIC_CAST(float, y) * I)
+  #endif
+
+  #if !defined(simde_math_creal)
+    #if SIMDE_MATH_BUILTIN_LIBM(creal)
+      #define simde_math_creal(z) __builtin_creal(z)
+    #else
+      #define simde_math_creal(z) creal(z)
+    #endif
+  #endif
+
+  #if !defined(simde_math_crealf)
+    #if SIMDE_MATH_BUILTIN_LIBM(crealf)
+      #define simde_math_crealf(z) __builtin_crealf(z)
+    #else
+      #define simde_math_crealf(z) crealf(z)
+    #endif
+  #endif
+
+  #if !defined(simde_math_cimag)
+    #if SIMDE_MATH_BUILTIN_LIBM(cimag)
+      #define simde_math_cimag(z) __builtin_cimag(z)
+    #else
+      #define simde_math_cimag(z) cimag(z)
+    #endif
+  #endif
+
+  #if !defined(simde_math_cimagf)
+    #if SIMDE_MATH_BUILTIN_LIBM(cimagf)
+      #define simde_math_cimagf(z) __builtin_cimagf(z)
+    #else
+      #define simde_math_cimagf(z) cimagf(z)
+    #endif
+  #endif
+#else
+
+  HEDLEY_DIAGNOSTIC_PUSH
+  #if defined(HEDLEY_MSVC_VERSION)
+    #pragma warning(disable:4530)
+  #endif
+  #include <complex>
+  HEDLEY_DIAGNOSTIC_POP
+
+  typedef std::complex<float> simde_cfloat32;
+  typedef std::complex<double> simde_cfloat64;
+  #define SIMDE_MATH_CMPLX(x, y) (std::complex<double>(x, y))
+  #define SIMDE_MATH_CMPLXF(x, y) (std::complex<float>(x, y))
+
+  #if !defined(simde_math_creal)
+    #define simde_math_creal(z) ((z).real())
+  #endif
+  #if !defined(simde_math_crealf)
+    #define simde_math_crealf(z) ((z).real())
+  #endif
+  #if !defined(simde_math_cimag)
+    #define simde_math_cimag(z) ((z).imag())
+  #endif
+  #if !defined(simde_math_cimagf)
+    #define simde_math_cimagf(z) ((z).imag())
   #endif
 #endif
 
@@ -942,6 +1031,28 @@
   #endif
 #endif
 
+/***  Complex functions ***/
+
+#if !defined(simde_math_cexp)
+  #if defined(__cplusplus)
+    #define simde_math_cexp(v) std::cexp(v)
+  #elif SIMDE_MATH_BUILTIN_LIBM(cexp)
+    #define simde_math_cexp(v) __builtin_cexp(v)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_cexp(v) cexp(v)
+  #endif
+#endif
+
+#if !defined(simde_math_cexpf)
+  #if defined(__cplusplus)
+    #define simde_math_cexpf(v) std::exp(v)
+  #elif SIMDE_MATH_BUILTIN_LIBM(cexpf)
+    #define simde_math_cexpf(v) __builtin_cexpf(v)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_cexpf(v) cexpf(v)
+  #endif
+#endif
+
 /*** Additional functions not in libm ***/
 
 #if defined(simde_math_fabs) && defined(simde_math_sqrt) && defined(simde_math_exp)
@@ -1175,22 +1286,41 @@ HEDLEY_DIAGNOSTIC_POP
   #define simde_math_erfinvf simde_math_erfinvf
 #endif
 
-#if !defined(simde_math_erfinv) && defined(simde_math_log) && defined(simde_math_copysign) && defined(simde_math_sqrt)
+#if !defined(simde_math_erfcinv) && defined(simde_math_erfinv) && defined(simde_math_log) && defined(simde_math_sqrt)
   static HEDLEY_INLINE
   double
-  simde_math_erfinv(double x) {
-    double tt1, tt2, lnx;
-    double sgn = simde_math_copysign(1.0, x);
+  simde_math_erfcinv(double x) {
+      double oup,t;      
+       
+      if( x >= 0.0625 && x <2.0) {
+        oup = simde_math_erfinv( 1.0 - x );
+      } 
+      else if (x < 0.0625 && x >= 1.0e-100) {
 
-    x = (1.0 - x) * (1.0 + x);
-    lnx = simde_math_log(x);
-
-    tt1 = 2.0 / (SIMDE_MATH_PI * 0.14829094707965850830078125) + 0.5 * lnx;
-    tt2 = (1.0 / 0.14829094707965850830078125) * lnx;
-
-    return sgn * simde_math_sqrt(-tt1 + simde_math_sqrt(tt1 * tt1 - tt2));
+        double p[6] = {0.1550470003116,1.382719649631,0.690969348887, \
+          -1.128081391617, 0.680544246825,-0.16444156791};
+        double q[3] = {0.155024849822,1.385228141995,1.000000000000};
+        
+        t=1.0/simde_math_sqrt(-simde_math_log(x));
+        oup = (p[0]/t+p[1]+t*(p[2]+t*(p[3]+t*(p[4]+t*p[5]))))/
+              (q[0]+t*(q[1]+t*(q[2])));
+        
+      } else if( x < 1.0e-100 && x > 1.0e-1000 ) {
+        double p[4]={0.00980456202915,0.363667889171,0.97302949837,-0.5374947401};
+        double q[3]={0.00980451277802,0.363699971544,1.000000000000}; 
+        t = 1.0/simde_math_sqrt(-simde_math_log(x));
+        oup = (p[0]/t+p[1]+t*(p[2]+t*p[3]))/(q[0]+t*(q[1]+t*(q[2])));
+        
+      } else if (x <= 1.0e-1000) {
+         oup = SIMDE_MATH_INFINITY;
+      } else if (x == 2.) {
+         oup = -SIMDE_MATH_INFINITY;
+      }
+      
+      return oup;
   }
-  #define simde_math_erfinvf simde_math_erfinvf
+
+  #define simde_math_erfcinv simde_math_erfcinv
 #endif
 
 static HEDLEY_INLINE

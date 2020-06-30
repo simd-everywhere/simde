@@ -4755,17 +4755,26 @@ simde_mm512_erfinv_pd (simde__m512d a) {
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
-simde__m128
-simde_mm_erfcinv_ps (simde__m128 a) {
+simde__m128d
+simde_mm_erfcinv_pd (simde__m128d a) {
   #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE_NATIVE)
-    return _mm_erfcinv_ps(a);
+    return _mm_erfcinv_pd(a);
   #else
-    return simde_mm_sub_ps(simde_mm_set1_ps(SIMDE_FLOAT32_C(1.0)), simde_mm_erfinv_ps(a));
+    simde__m128d_private
+      r_,
+      a_ = simde__m128d_to_private(a);
+
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
+      r_.f64[i] =  simde_math_erfcinv(a_.f64[i]);
+    }
+
+    return simde__m128d_from_private(r_);
   #endif
 }
 #if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
-  #undef _mm_erfcinv_ps
-  #define _mm_erfcinv_ps(a) simde_mm_erfcinv_ps(a)
+  #undef _mm_erfcinv_pd
+  #define _mm_erfcinv_pd(a) simde_mm_erfcinv_pd(a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
