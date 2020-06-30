@@ -141,6 +141,7 @@ set(TEST_SOURCES_C
   arm/neon/paddl.c
   arm/neon/pmax.c
   arm/neon/pmin.c
+  arm/neon/qmovn.c
   arm/neon/reinterpret.c
   arm/neon/shl.c
   arm/neon/shl_n.c
