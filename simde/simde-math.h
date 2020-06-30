@@ -1153,15 +1153,22 @@ HEDLEY_DIAGNOSTIC_POP
   static HEDLEY_INLINE
   float
   simde_math_erfinvf(float x) {
-    /* https://stackoverflow.com/questions/27229371/inverse-error-function-in-c */
+    /* https://stackoverflow.com/questions/27229371/inverse-error-function-in-c
+     *
+     * The original answer on SO uses a constant of 0.147, but in my
+     * testing 0.14829094707965850830078125 gives a lower average absolute error
+     * (0.0001410958211636170744895935 vs. 0.0001465479290345683693885803).
+     * That said, if your goal is to minimize the *maximum* absolute
+     * error, 0.15449436008930206298828125 provides significantly better
+     * results; 0.0009250640869140625000000000 vs ~ 0.005. */
     float tt1, tt2, lnx;
     float sgn = simde_math_copysignf(1.0f, x);
 
     x = (1.0f - x) * (1.0f + x);
     lnx = simde_math_logf(x);
 
-    tt1 = 2.0f / (HEDLEY_STATIC_CAST(float, SIMDE_MATH_PI) * 0.1482909470796585083007812500f) + 0.5f * lnx;
-    tt2 = (1.0f / 0.1482909470796585083007812500f) * lnx;
+    tt1 = 2.0f / (HEDLEY_STATIC_CAST(float, SIMDE_MATH_PI) * 0.14829094707965850830078125f) + 0.5f * lnx;
+    tt2 = (1.0f / 0.14829094707965850830078125f) * lnx;
 
     return sgn * simde_math_sqrtf(-tt1 + simde_math_sqrtf(tt1 * tt1 - tt2));
   }
@@ -1172,15 +1179,14 @@ HEDLEY_DIAGNOSTIC_POP
   static HEDLEY_INLINE
   double
   simde_math_erfinv(double x) {
-    /* https://stackoverflow.com/questions/27229371/inverse-error-function-in-c */
     double tt1, tt2, lnx;
     double sgn = simde_math_copysign(1.0, x);
 
     x = (1.0 - x) * (1.0 + x);
     lnx = simde_math_log(x);
 
-    tt1 = 2.0 / (SIMDE_MATH_PI * 0.15449436008930206298828125) + 0.5 * lnx;
-    tt2 = (1.0 / 0.15449436008930206298828125) * lnx;
+    tt1 = 2.0 / (SIMDE_MATH_PI * 0.14829094707965850830078125) + 0.5 * lnx;
+    tt2 = (1.0 / 0.14829094707965850830078125) * lnx;
 
     return sgn * simde_math_sqrt(-tt1 + simde_math_sqrt(tt1 * tt1 - tt2));
   }
