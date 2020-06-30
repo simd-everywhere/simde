@@ -50,7 +50,7 @@
 
   /* The math.h from libc++ (yes, the C header from the C++ standard
    * library) will define an isnan function, but not an isnan macro
-   * like the C standard requires.  So, we detect the header guards
+   * like the C standard requires.  So we detect the header guards
    * macro libc++ uses. */
   #if defined(isnan) || (defined(_LIBCPP_MATH_H) && !defined(_LIBCPP_CMATH))
     #define SIMDE_MATH_HAVE_MATH_H
@@ -73,7 +73,7 @@
     HEDLEY_DIAGNOSTIC_PUSH
     #if defined(HEDLEY_MSVC_VERSION)
       /* VS 14 emits this diagnostic about noexcept being used on a
-       * <cmath>, which we can't do anything about. */
+       * <cmath> function, which we can't do anything about. */
       #pragma warning(disable:4996)
     #endif
     #include <cmath>
@@ -81,6 +81,95 @@
   #else
     #define SIMDE_MATH_HAVE_MATH_H
     #include <math.h>
+  #endif
+#endif
+
+#if !defined(__cplusplus)
+  /* If this is a problem we *might* be able to avoid including
+   * <complex.h> on some compilers (gcc, clang, and others which
+   * implement builtins like __builtin_cexpf).  If you don't have
+   * a <complex.h> please file an issue and we'll take a look. */
+  #include <complex.h>
+
+  #if !defined(HEDLEY_MSVC_VERSION)
+    typedef float _Complex simde_cfloat32;
+    typedef double _Complex simde_cfloat64;
+  #else
+    typedef _Fcomplex simde_cfloat32;
+    typedef _Dcomplex simde_cfloat64;
+  #endif
+  #if \
+      HEDLEY_HAS_BUILTIN(__builtin_complex) || \
+      HEDLEY_GCC_VERSION_CHECK(4,7,0) || \
+      HEDLEY_INTEL_VERSION_CHECK(13,0,0)
+    #define SIMDE_MATH_CMPLX(x, y) __builtin_complex((double) (x), (double) (y))
+    #define SIMDE_MATH_CMPLXF(x, y) __builtin_complex((float) (x), (float) (y))
+  #elif defined(CMPLX) && defined(CMPLXF)
+    #define SIMDE_MATH_CMPLX(x, y) CMPLX(x, y)
+    #define SIMDE_MATH_CMPLXF(x, y) CMPLXF(x, y)
+  #else
+    /* CMPLX / CMPLXF are in C99, but these seem to be necessary in
+     * some compilers that aren't even MSVC. */
+    #define SIMDE_MATH_CMPLX(x, y) (HEDLEY_STATIC_CAST(double, x) + HEDLEY_STATIC_CAST(double, y) * I)
+    #define SIMDE_MATH_CMPLXF(x, y) (HEDLEY_STATIC_CAST(float, x) + HEDLEY_STATIC_CAST(float, y) * I)
+  #endif
+
+  #if !defined(simde_math_creal)
+    #if SIMDE_MATH_BUILTIN_LIBM(creal)
+      #define simde_math_creal(z) __builtin_creal(z)
+    #else
+      #define simde_math_creal(z) creal(z)
+    #endif
+  #endif
+
+  #if !defined(simde_math_crealf)
+    #if SIMDE_MATH_BUILTIN_LIBM(crealf)
+      #define simde_math_crealf(z) __builtin_crealf(z)
+    #else
+      #define simde_math_crealf(z) crealf(z)
+    #endif
+  #endif
+
+  #if !defined(simde_math_cimag)
+    #if SIMDE_MATH_BUILTIN_LIBM(cimag)
+      #define simde_math_cimag(z) __builtin_cimag(z)
+    #else
+      #define simde_math_cimag(z) cimag(z)
+    #endif
+  #endif
+
+  #if !defined(simde_math_cimagf)
+    #if SIMDE_MATH_BUILTIN_LIBM(cimagf)
+      #define simde_math_cimagf(z) __builtin_cimagf(z)
+    #else
+      #define simde_math_cimagf(z) cimagf(z)
+    #endif
+  #endif
+#else
+
+  HEDLEY_DIAGNOSTIC_PUSH
+  #if defined(HEDLEY_MSVC_VERSION)
+    #pragma warning(disable:4530)
+  #endif
+  #include <complex>
+  HEDLEY_DIAGNOSTIC_POP
+
+  typedef std::complex<float> simde_cfloat32;
+  typedef std::complex<double> simde_cfloat64;
+  #define SIMDE_MATH_CMPLX(x, y) (std::complex<double>(x, y))
+  #define SIMDE_MATH_CMPLXF(x, y) (std::complex<float>(x, y))
+
+  #if !defined(simde_math_creal)
+    #define simde_math_creal(z) ((z).real())
+  #endif
+  #if !defined(simde_math_crealf)
+    #define simde_math_crealf(z) ((z).real())
+  #endif
+  #if !defined(simde_math_cimag)
+    #define simde_math_cimag(z) ((z).imag())
+  #endif
+  #if !defined(simde_math_cimagf)
+    #define simde_math_cimagf(z) ((z).imag())
   #endif
 #endif
 
@@ -942,6 +1031,28 @@
   #endif
 #endif
 
+/***  Complex functions ***/
+
+#if !defined(simde_math_cexp)
+  #if defined(__cplusplus)
+    #define simde_math_cexp(v) std::cexp(v)
+  #elif SIMDE_MATH_BUILTIN_LIBM(cexp)
+    #define simde_math_cexp(v) __builtin_cexp(v)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_cexp(v) cexp(v)
+  #endif
+#endif
+
+#if !defined(simde_math_cexpf)
+  #if defined(__cplusplus)
+    #define simde_math_cexpf(v) std::exp(v)
+  #elif SIMDE_MATH_BUILTIN_LIBM(cexpf)
+    #define simde_math_cexpf(v) __builtin_cexpf(v)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_cexpf(v) cexpf(v)
+  #endif
+#endif
+
 /*** Additional functions not in libm ***/
 
 #if defined(simde_math_fabs) && defined(simde_math_sqrt) && defined(simde_math_exp)
@@ -1153,15 +1264,22 @@ HEDLEY_DIAGNOSTIC_POP
   static HEDLEY_INLINE
   float
   simde_math_erfinvf(float x) {
-    /* https://stackoverflow.com/questions/27229371/inverse-error-function-in-c */
+    /* https://stackoverflow.com/questions/27229371/inverse-error-function-in-c
+     *
+     * The original answer on SO uses a constant of 0.147, but in my
+     * testing 0.14829094707965850830078125 gives a lower average absolute error
+     * (0.0001410958211636170744895935 vs. 0.0001465479290345683693885803).
+     * That said, if your goal is to minimize the *maximum* absolute
+     * error, 0.15449436008930206298828125 provides significantly better
+     * results; 0.0009250640869140625000000000 vs ~ 0.005. */
     float tt1, tt2, lnx;
     float sgn = simde_math_copysignf(1.0f, x);
 
     x = (1.0f - x) * (1.0f + x);
     lnx = simde_math_logf(x);
 
-    tt1 = 2.0f / (HEDLEY_STATIC_CAST(float, SIMDE_MATH_PI) * 0.1482909470796585083007812500f) + 0.5f * lnx;
-    tt2 = (1.0f / 0.1482909470796585083007812500f) * lnx;
+    tt1 = 2.0f / (HEDLEY_STATIC_CAST(float, SIMDE_MATH_PI) * 0.14829094707965850830078125f) + 0.5f * lnx;
+    tt2 = (1.0f / 0.14829094707965850830078125f) * lnx;
 
     return sgn * simde_math_sqrtf(-tt1 + simde_math_sqrtf(tt1 * tt1 - tt2));
   }
@@ -1172,15 +1290,14 @@ HEDLEY_DIAGNOSTIC_POP
   static HEDLEY_INLINE
   double
   simde_math_erfinv(double x) {
-    /* https://stackoverflow.com/questions/27229371/inverse-error-function-in-c */
     double tt1, tt2, lnx;
     double sgn = simde_math_copysign(1.0, x);
 
     x = (1.0 - x) * (1.0 + x);
     lnx = simde_math_log(x);
 
-    tt1 = 2.0 / (SIMDE_MATH_PI * 0.15449436008930206298828125) + 0.5 * lnx;
-    tt2 = (1.0 / 0.15449436008930206298828125) * lnx;
+    tt1 = 2.0 / (SIMDE_MATH_PI * 0.14829094707965850830078125) + 0.5 * lnx;
+    tt2 = (1.0 / 0.14829094707965850830078125) * lnx;
 
     return sgn * simde_math_sqrt(-tt1 + simde_math_sqrt(tt1 * tt1 - tt2));
   }

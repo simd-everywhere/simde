@@ -1717,6 +1717,56 @@ simde_mm512_mask_cdfnorminv_pd(simde__m512d src, simde__mmask8 k, simde__m512d a
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128
+simde_mm_cexp_ps (simde__m128 a) {
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE_NATIVE)
+    return _mm_cexp_ps(a);
+  #else
+    simde__m128_private
+      r_,
+      a_ = simde__m128_to_private(a);
+
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i+=2) {
+      simde_cfloat32 val = simde_math_cexpf(SIMDE_MATH_CMPLXF(a_.f32[i], a_.f32[i+1]));
+      r_.f32[  i  ] = simde_math_crealf(val);
+      r_.f32[i + 1] = simde_math_cimagf(val);
+    }
+
+    return simde__m128_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
+  #undef _mm_cexp_ps
+  #define _mm_cexp_ps(a) simde_mm_cexp_ps(a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256
+simde_mm256_cexp_ps (simde__m256 a) {
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX_NATIVE)
+    return _mm256_cexp_ps(a);
+  #else
+    simde__m256_private
+      r_,
+      a_ = simde__m256_to_private(a);
+
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i+=2) {
+      simde_cfloat32 val = simde_math_cexpf(SIMDE_MATH_CMPLXF(a_.f32[i], a_.f32[i+1]));
+      r_.f32[  i  ] = simde_math_crealf(val);
+      r_.f32[i + 1] = simde_math_cimagf(val);
+    }
+
+    return simde__m256_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_cexp_ps
+  #define _mm256_cexp_ps(a) simde_mm256_cexp_ps(a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m128
 simde_mm_cos_ps (simde__m128 a) {
   #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE_NATIVE)
     return _mm_cos_ps(a);
