@@ -1108,15 +1108,15 @@
   #define simde_math_cdfnormf simde_math_cdfnormf
 #endif
 
+HEDLEY_DIAGNOSTIC_PUSH
+SIMDE_DIAGNOSTIC_DISABLE_FLOAT_EQUAL_
+
 #if !defined(simde_math_cdfnorminv) && defined(simde_math_log) && defined(simde_math_sqrt)
   /*https://web.archive.org/web/20150910081113/http://home.online.no/~pjacklam/notes/invnorm/impl/sprouse/ltqnorm.c*/
-  HEDLEY_DIAGNOSTIC_PUSH
-  SIMDE_DIAGNOSTIC_DISABLE_FLOAT_EQUAL_
   static HEDLEY_INLINE
   double
   simde_math_cdfnorminv(double p) {
-    static const double a[] =
-    {
+    static const double a[] = {
       -3.969683028665376e+01,
        2.209460984245205e+02,
       -2.759285104469687e+02,
@@ -1125,8 +1125,7 @@
        2.506628277459239e+00
     };
 
-    static const double b[] =
-    {
+    static const double b[] = {
       -5.447609879822406e+01,
        1.615858368580409e+02,
       -1.556989798598866e+02,
@@ -1134,8 +1133,7 @@
       -1.328068155288572e+01
     };
 
-    static const double c[] =
-    {
+    static const double c[] = {
       -7.784894002430293e-03,
       -3.223964580411365e-01,
       -2.400758277161838e+00,
@@ -1144,8 +1142,7 @@
        2.938163982698783e+00
     };
 
-    static const double d[] =
-    {
+    static const double d[] = {
       7.784695709041462e-03,
       3.224671290700398e-01,
       2.445134137142996e+00,
@@ -1154,51 +1151,35 @@
 
     static const double low  = 0.02425;
     static const double high = 0.97575;
-
     double q, r;
 
-    if (p < 0 || p > 1)
-    {
+    if (p < 0 || p > 1) {
       return 0.0;
-    }
-    else if (p == 0)
-    {
+    } else if (p == 0) {
       return -SIMDE_MATH_INFINITY;
-    }
-    else if (p == 1)
-    {
+    } else if (p == 1) {
       return SIMDE_MATH_INFINITY;
-    }
-    else if (p < low)
-    {
-      /* Rational approximation for lower region */
-      q = simde_math_sqrt(-2*simde_math_log(p));
-      return (((((c[0]*q+c[1])*q+c[2])*q+c[3])*q+c[4])*q+c[5]) /
-        ((((d[0]*q+d[1])*q+d[2])*q+d[3])*q+1);
-    }
-    else if (p > high)
-    {
-      /* Rational approximation for upper region */
-      q  = simde_math_sqrt(-2*simde_math_log(1-p));
-      return -(((((c[0]*q+c[1])*q+c[2])*q+c[3])*q+c[4])*q+c[5]) /
-        ((((d[0]*q+d[1])*q+d[2])*q+d[3])*q+1);
-    }
-    else
-    {
-      /* Rational approximation for central region */
-          q = p - 0.5;
-          r = q*q;
-      return (((((a[0]*r+a[1])*r+a[2])*r+a[3])*r+a[4])*r+a[5])*q /
-        (((((b[0]*r+b[1])*r+b[2])*r+b[3])*r+b[4])*r+1);
+    } else if (p < low) {
+      q = simde_math_sqrt(-2.0 * simde_math_log(p));
+      return
+        (((((c[0] * q + c[1]) * q + c[2]) * q + c[3]) * q + c[4]) * q + c[5]) /
+        (((((d[0] * q + d[1]) * q + d[2]) * q + d[3]) * q + 1));
+    } else if (p > high) {
+      q = simde_math_sqrt(-2.0 * simde_math_log(1.0 - p));
+      return
+        -(((((c[0] * q + c[1]) * q + c[2]) * q + c[3]) * q + c[4]) * q + c[5]) /
+         (((((d[0] * q + d[1]) * q + d[2]) * q + d[3]) * q + 1));
+    } else {
+      q = p - 0.5;
+      r = q * q;
+      return (((((a[0] * r + a[1]) * r + a[2]) * r + a[3]) * r + a[4]) * r + a[5]) *
+        q / (((((b[0] * r + b[1]) * r + b[2]) * r + b[3]) * r + b[4]) * r + 1);
     }
 }
-HEDLEY_DIAGNOSTIC_POP
 #define simde_math_cdfnorminv simde_math_cdfnorminv
 #endif
 
 #if !defined(simde_math_cdfnorminvf) && defined(simde_math_logf) && defined(simde_math_sqrtf)
-  HEDLEY_DIAGNOSTIC_PUSH
-  SIMDE_DIAGNOSTIC_DISABLE_FLOAT_EQUAL_
   static HEDLEY_INLINE
   float
   simde_math_cdfnorminvf(float p) {
@@ -1238,9 +1219,9 @@ HEDLEY_DIAGNOSTIC_POP
     if (p < 0 || p > 1) {
       return 0.0f;
     } else if (p == 0) {
-      return -SIMDE_MATH_INFINITY;
+      return -SIMDE_MATH_INFINITYF;
     } else if (p == 1) {
-      return SIMDE_MATH_INFINITY;
+      return SIMDE_MATH_INFINITYF;
     } else if (p < low) {
       q = simde_math_sqrtf(-2.0f * simde_math_logf(p));
       return
@@ -1258,15 +1239,15 @@ HEDLEY_DIAGNOSTIC_POP
          q / (((((b[0] * r + b[1]) * r + b[2]) * r + b[3]) * r + b[4]) * r + 1);
     }
   }
-  HEDLEY_DIAGNOSTIC_POP
   #define simde_math_cdfnorminvf simde_math_cdfnorminvf
 #endif
 
+HEDLEY_DIAGNOSTIC_POP
 
-#if !defined(simde_math_erfinvf) && defined(simde_math_logf) && defined(simde_math_copysignf) && defined(simde_math_sqrtf)
+#if !defined(simde_math_erfinv) && defined(simde_math_log) && defined(simde_math_copysign) && defined(simde_math_sqrt)
   static HEDLEY_INLINE
-  float
-  simde_math_erfinvf(float x) {
+  double
+  simde_math_erfinv(double x) {
     /* https://stackoverflow.com/questions/27229371/inverse-error-function-in-c
      *
      * The original answer on SO uses a constant of 0.147, but in my
@@ -1275,6 +1256,24 @@ HEDLEY_DIAGNOSTIC_POP
      * That said, if your goal is to minimize the *maximum* absolute
      * error, 0.15449436008930206298828125 provides significantly better
      * results; 0.0009250640869140625000000000 vs ~ 0.005. */
+    double tt1, tt2, lnx;
+    double sgn = simde_math_copysign(1.0, x);
+
+    x = (1.0 - x) * (1.0 + x);
+    lnx = simde_math_log(x);
+
+    tt1 = 2.0 / (SIMDE_MATH_PI * 0.14829094707965850830078125) + 0.5 * lnx;
+    tt2 = (1.0 / 0.14829094707965850830078125) * lnx;
+
+    return sgn * simde_math_sqrt(-tt1 + simde_math_sqrt(tt1 * tt1 - tt2));
+  }
+  #define simde_math_erfinv simde_math_erfinv
+#endif
+
+#if !defined(simde_math_erfinvf) && defined(simde_math_logf) && defined(simde_math_copysignf) && defined(simde_math_sqrtf)
+  static HEDLEY_INLINE
+  float
+  simde_math_erfinvf(float x) {
     float tt1, tt2, lnx;
     float sgn = simde_math_copysignf(1.0f, x);
 
@@ -1289,24 +1288,6 @@ HEDLEY_DIAGNOSTIC_POP
   #define simde_math_erfinvf simde_math_erfinvf
 #endif
 
-#if !defined(simde_math_erfinv) && defined(simde_math_log) && defined(simde_math_copysign) && defined(simde_math_sqrt)
-  static HEDLEY_INLINE
-  double
-  simde_math_erfinv(double x) {
-    double tt1, tt2, lnx;
-    double sgn = simde_math_copysign(1.0, x);
-
-    x = (1.0 - x) * (1.0 + x);
-    lnx = simde_math_log(x);
-
-    tt1 = 2.0 / (SIMDE_MATH_PI * 0.14829094707965850830078125) + 0.5 * lnx;
-    tt2 = (1.0 / 0.14829094707965850830078125) * lnx;
-
-    return sgn * simde_math_sqrt(-tt1 + simde_math_sqrt(tt1 * tt1 - tt2));
-  }
-  #define simde_math_erfinvf simde_math_erfinvf
-#endif
-
 static HEDLEY_INLINE
 double
 simde_math_rad2deg(double radians) {
@@ -1314,15 +1295,15 @@ simde_math_rad2deg(double radians) {
 }
 
 static HEDLEY_INLINE
-double
-simde_math_deg2rad(double degrees) {
-  return degrees * (SIMDE_MATH_PI / 180.0);
-}
-
-static HEDLEY_INLINE
 float
 simde_math_rad2degf(float radians) {
     return radians * (180.0f / HEDLEY_STATIC_CAST(float, SIMDE_MATH_PI));
+}
+
+static HEDLEY_INLINE
+double
+simde_math_deg2rad(double degrees) {
+  return degrees * (SIMDE_MATH_PI / 180.0);
 }
 
 static HEDLEY_INLINE
