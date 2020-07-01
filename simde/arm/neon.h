@@ -55,6 +55,7 @@
 #include "neon/movl_high.h"
 #include "neon/mul.h"
 #include "neon/mull.h"
+#include "neon/neg.h"
 #include "neon/orr.h"
 #include "neon/padd.h"
 #include "neon/paddl.h"
