@@ -33,6 +33,7 @@
 
 #include "hedley.h"
 #include "simde-features.h"
+#include <float.h>
 
 #if defined(__has_builtin)
   #define SIMDE_MATH_BUILTIN_LIBM(func) __has_builtin(__builtin_##func)
@@ -291,12 +292,24 @@
 #if !defined(simde_math_isnormal)
   #if SIMDE_MATH_BUILTIN_LIBM(isnormal)
     #define simde_math_isnormal(v) __builtin_isnormal(v)
-  #elif defined(isnormal) || defined(SIMDE_MATH_HAVE_MATH_H)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
     #define simde_math_isnormal(v) isnormal(v)
   #elif defined(SIMDE_MATH_HAVE_CMATH)
     #define simde_math_isnormal(v) std::isnormal(v)
-  #elif defined(simde_math_isnan)
-    #define simde_math_isnormal(v) simde_math_isnormal(v)
+  #endif
+#endif
+
+#if !defined(simde_math_isnormalf)
+  #if HEDLEY_HAS_BUILTIN(__builtin_isnormalf)
+    #define simde_math_isnormalf(v) __builtin_isnormalf(v)
+  #elif defined(isnormalf)
+    #define simde_math_isnormalf(v) isnormalf(v)
+  #elif defined(isnormal) || defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_isnormalf(v) isnormal(v)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_isnormalf(v) std::isnormal(v)
+  #elif defined(simde_math_isnormal)
+    #define simde_math_isnormalf(v) simde_math_isnormal(v)
   #endif
 #endif
 
@@ -1242,7 +1255,6 @@ SIMDE_DIAGNOSTIC_DISABLE_FLOAT_EQUAL_
   #define simde_math_cdfnorminvf simde_math_cdfnorminvf
 #endif
 
-HEDLEY_DIAGNOSTIC_POP
 
 #if !defined(simde_math_erfinv) && defined(simde_math_log) && defined(simde_math_copysign) && defined(simde_math_sqrt)
   static HEDLEY_INLINE
@@ -1287,6 +1299,84 @@ HEDLEY_DIAGNOSTIC_POP
   }
   #define simde_math_erfinvf simde_math_erfinvf
 #endif
+
+#if !defined(simde_math_erfcinv) && defined(simde_math_erfinv) && defined(simde_math_log) && defined(simde_math_sqrt)
+  static HEDLEY_INLINE
+  double
+  simde_math_erfcinv(double x) {
+      double oup,t;
+
+      if( x >= 0.0625 && x <2.0) {
+        oup = simde_math_erfinv( 1.0 - x );
+      }
+      else if (x < 0.0625 && x >= 1.0e-100) {
+
+        double p[6] = {0.1550470003116,1.382719649631,0.690969348887, \
+          -1.128081391617, 0.680544246825,-0.16444156791};
+        double q[3] = {0.155024849822,1.385228141995,1.000000000000};
+
+        t=1.0/simde_math_sqrt(-simde_math_log(x));
+        oup = (p[0]/t+p[1]+t*(p[2]+t*(p[3]+t*(p[4]+t*p[5]))))/
+              (q[0]+t*(q[1]+t*(q[2])));
+
+      } else if( x < 1.0e-100 && simde_math_isnormal(x) ) {
+        double p[4]={0.00980456202915,0.363667889171,0.97302949837,-0.5374947401};
+        double q[3]={0.00980451277802,0.363699971544,1.000000000000};
+        t = 1.0/simde_math_sqrt(-simde_math_log(x));
+        oup = (p[0]/t+p[1]+t*(p[2]+t*p[3]))/(q[0]+t*(q[1]+t*(q[2])));
+
+      } else if (!simde_math_isnormal(x)) {
+         oup = SIMDE_MATH_INFINITY;
+      } else {
+         oup = -SIMDE_MATH_INFINITY;
+      }
+
+      return oup;
+  }
+
+  #define simde_math_erfcinv simde_math_erfcinv
+#endif
+
+#if !defined(simde_math_erfcinvf) && defined(simde_math_erfinvf) && defined(simde_math_logf) && defined(simde_math_sqrtf)
+  static HEDLEY_INLINE
+  float
+  simde_math_erfcinvf(float x) {
+      float oup,t;
+
+      if( x >= 0.0625f && x <2.0f) {
+        oup = simde_math_erfinvf( 1.0f - x );
+      }
+      else if (x < 0.0625f && x >= FLT_MIN) {
+
+        float p[6] = {0.1550470003116f,1.382719649631f,0.690969348887f, \
+          -1.128081391617f, 0.680544246825f,-0.16444156791f};
+        float q[3] = {0.155024849822f,1.385228141995f,1.000000000000f};
+
+        t=1.0f/simde_math_sqrtf(-simde_math_logf(x));
+        oup = (p[0]/t+p[1]+t*(p[2]+t*(p[3]+t*(p[4]+t*p[5]))))/
+              (q[0]+t*(q[1]+t*(q[2])));
+
+      } else if( x < FLT_MIN && simde_math_isnormalf(x) ) {
+        float p[4]={0.00980456202915f,0.363667889171f,0.97302949837f,-0.5374947401f};
+        float q[3]={0.00980451277802f,0.363699971544f,1.000000000000f};
+        t = 1.0f/simde_math_sqrtf(-simde_math_logf(x));
+        oup = (p[0]/t+p[1]+t*(p[2]+t*p[3]))/(q[0]+t*(q[1]+t*(q[2])));
+
+      }
+      else if (!simde_math_isnormalf(x)) {
+         oup = SIMDE_MATH_INFINITYF;
+      }
+      else {
+         oup = -SIMDE_MATH_INFINITYF;
+      }
+
+      return oup;
+  }
+
+  #define simde_math_erfcinvf simde_math_erfcinvf
+#endif
+
+HEDLEY_DIAGNOSTIC_POP
 
 static HEDLEY_INLINE
 double
