@@ -4547,10 +4547,8 @@ simde_mm_erfinv_ps (simde__m128 a) {
   #elif defined(SIMDE_ASSUME_VECTORIZATION)
     /* https://stackoverflow.com/questions/27229371/inverse-error-function-in-c */
     simde__m128 one = simde_mm_set1_ps(SIMDE_FLOAT32_C(1.0));
-    simde__m128 sgn = simde_x_mm_copysign_ps(one, a);
 
-    a = simde_mm_mul_ps(simde_mm_sub_ps(one, a), simde_mm_add_ps(one, a));
-    simde__m128 lnx = simde_mm_log_ps(a);
+    simde__m128 lnx = simde_mm_log_ps(simde_mm_mul_ps(simde_mm_sub_ps(one, a), simde_mm_add_ps(one, a)));
 
     simde__m128 tt1 = simde_mm_mul_ps(simde_mm_set1_ps(HEDLEY_STATIC_CAST(simde_float32, SIMDE_MATH_PI)), simde_mm_set1_ps(SIMDE_FLOAT32_C(0.147)));
     tt1 = simde_mm_div_ps(simde_mm_set1_ps(SIMDE_FLOAT32_C(2.0)), tt1);
@@ -4565,7 +4563,7 @@ simde_mm_erfinv_ps (simde__m128 a) {
     r = simde_mm_add_ps(simde_x_mm_negate_ps(tt1), r);
     r = simde_mm_sqrt_ps(r);
 
-    return simde_mm_mul_ps(sgn, r);
+    return simde_x_mm_xorsign_ps(r, a);
   #else
     simde__m128_private
       a_ = simde__m128_to_private(a),
@@ -4591,10 +4589,8 @@ simde_mm_erfinv_pd (simde__m128d a) {
     return _mm_erfinv_pd(a);
   #elif defined(SIMDE_ASSUME_VECTORIZATION)
     simde__m128d one = simde_mm_set1_pd(SIMDE_FLOAT64_C(1.0));
-    simde__m128d sgn = simde_x_mm_copysign_pd(one, a);
 
-    a = simde_mm_mul_pd(simde_mm_sub_pd(one, a), simde_mm_add_pd(one, a));
-    simde__m128d lnx = simde_mm_log_pd(a);
+    simde__m128d lnx = simde_mm_log_pd(simde_mm_mul_pd(simde_mm_sub_pd(one, a), simde_mm_add_pd(one, a)));
 
     simde__m128d tt1 = simde_mm_mul_pd(simde_mm_set1_pd(SIMDE_MATH_PI), simde_mm_set1_pd(SIMDE_FLOAT64_C(0.147)));
     tt1 = simde_mm_div_pd(simde_mm_set1_pd(SIMDE_FLOAT64_C(2.0)), tt1);
@@ -4609,7 +4605,7 @@ simde_mm_erfinv_pd (simde__m128d a) {
     r = simde_mm_add_pd(simde_x_mm_negate_pd(tt1), r);
     r = simde_mm_sqrt_pd(r);
 
-    return simde_mm_mul_pd(sgn, r);
+    return simde_x_mm_xorsign_pd(r, a);
   #else
     simde__m128d_private
       a_ = simde__m128d_to_private(a),

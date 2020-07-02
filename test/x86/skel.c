@@ -65,6 +65,7 @@ test_simde_mm_xxx_pd (SIMDE_MUNIT_TEST_ARGS) {
     simde_test_x86_write_f64x2(2, b, SIMDE_TEST_VEC_POS_MIDDLE);
     simde_test_x86_write_f64x2(2, r, SIMDE_TEST_VEC_POS_LAST);
   }
+  return 1;
 #endif
 }
 

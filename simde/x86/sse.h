@@ -1546,6 +1546,12 @@ simde_x_mm_copysign_ps(simde__m128 dest, simde__m128 src) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128
+simde_x_mm_xorsign_ps(simde__m128 dest, simde__m128 src) {
+  return simde_mm_xor_ps(simde_mm_and_ps(simde_mm_set1_ps(-0.0f), src), dest);
+}
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m128
 simde_mm_cvt_pi2ps (simde__m128 a, simde__m64 b) {
 #if defined(SIMDE_X86_SSE_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
   return _mm_cvt_pi2ps(a, b);
