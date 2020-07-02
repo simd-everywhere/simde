@@ -40,7 +40,7 @@
     HEDLEY_INTEL_VERSION_CHECK(13,0,0) || \
     HEDLEY_ARM_VERSION_CHECK(4,1,0) || \
     HEDLEY_GCC_VERSION_CHECK(4,4,0)
-  #define SIMDE_MATH_BUILTIN_LIBM(func) (0)
+  #define SIMDE_MATH_BUILTIN_LIBM(func) (1)
 #else
   #define SIMDE_MATH_BUILTIN_LIBM(func) (0)
 #endif
@@ -241,6 +241,42 @@
   #endif
 #endif
 
+#if !defined(SIMDE_MATH_PIF)
+  #if defined(M_PI)
+    #define SIMDE_MATH_PIF HEDLEY_STATIC_CAST(float, M_PI)
+  #else
+    #define SIMDE_MATH_PIF 3.14159265358979323846f
+  #endif
+#endif
+
+#if !defined(SIMDE_MATH_FLT_MIN)
+  #if defined(FLT_MIN)
+    #define SIMDE_MATH_FLT_MIN FLT_MIN
+  #elif defined(__FLT_MIN__)
+    #define SIMDE_MATH_FLT_MIN __FLT_MIN__
+  #elif defined(__cplusplus)
+    #include <cfloat>
+    #define SIMDE_MATH_FLT_MIN FLT_MIN
+  #else
+    #include <float.h>
+    #define SIMDE_MATH_FLT_MIN FLT_MIN
+  #endif
+#endif
+
+#if !defined(SIMDE_MATH_DBL_MIN)
+  #if defined(DBL_MIN)
+    #define SIMDE_MATH_DBL_MIN DBL_MIN
+  #elif defined(__DBL_MIN__)
+    #define SIMDE_MATH_DBL_MIN __DBL_MIN__
+  #elif defined(__cplusplus)
+    #include <cfloat>
+    #define SIMDE_MATH_DBL_MIN DBL_MIN
+  #else
+    #include <float.h>
+    #define SIMDE_MATH_DBL_MIN DBL_MIN
+  #endif
+#endif
+
 /*** Classification macros from C99 ***/
 
 #if !defined(simde_math_isinf)
@@ -291,12 +327,26 @@
 #if !defined(simde_math_isnormal)
   #if SIMDE_MATH_BUILTIN_LIBM(isnormal)
     #define simde_math_isnormal(v) __builtin_isnormal(v)
-  #elif defined(isnormal) || defined(SIMDE_MATH_HAVE_MATH_H)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
     #define simde_math_isnormal(v) isnormal(v)
   #elif defined(SIMDE_MATH_HAVE_CMATH)
     #define simde_math_isnormal(v) std::isnormal(v)
-  #elif defined(simde_math_isnan)
-    #define simde_math_isnormal(v) simde_math_isnormal(v)
+  #endif
+#endif
+
+#if !defined(simde_math_isnormalf)
+  #if HEDLEY_HAS_BUILTIN(__builtin_isnormalf)
+    #define simde_math_isnormalf(v) __builtin_isnormalf(v)
+  #elif SIMDE_MATH_BUILTIN_LIBM(isnormal)
+    #define simde_math_isnormalf(v) __builtin_isnormal(v)
+  #elif defined(isnormalf)
+    #define simde_math_isnormalf(v) isnormalf(v)
+  #elif defined(isnormal) || defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_isnormalf(v) isnormal(v)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_isnormalf(v) std::isnormal(v)
+  #elif defined(simde_math_isnormal)
+    #define simde_math_isnormalf(v) simde_math_isnormal(v)
   #endif
 #endif
 
@@ -1280,7 +1330,7 @@ HEDLEY_DIAGNOSTIC_POP
     x = (1.0f - x) * (1.0f + x);
     lnx = simde_math_logf(x);
 
-    tt1 = 2.0f / (HEDLEY_STATIC_CAST(float, SIMDE_MATH_PI) * 0.14829094707965850830078125f) + 0.5f * lnx;
+    tt1 = 2.0f / (SIMDE_MATH_PIF * 0.14829094707965850830078125f) + 0.5f * lnx;
     tt2 = (1.0f / 0.14829094707965850830078125f) * lnx;
 
     return sgn * simde_math_sqrtf(-tt1 + simde_math_sqrtf(tt1 * tt1 - tt2));
@@ -1297,7 +1347,7 @@ simde_math_rad2deg(double radians) {
 static HEDLEY_INLINE
 float
 simde_math_rad2degf(float radians) {
-    return radians * (180.0f / HEDLEY_STATIC_CAST(float, SIMDE_MATH_PI));
+    return radians * (180.0f / SIMDE_MATH_PIF);
 }
 
 static HEDLEY_INLINE
@@ -1309,7 +1359,7 @@ simde_math_deg2rad(double degrees) {
 static HEDLEY_INLINE
 float
 simde_math_deg2radf(float degrees) {
-    return degrees * (HEDLEY_STATIC_CAST(float, SIMDE_MATH_PI) / 180.0f);
+    return degrees * (SIMDE_MATH_PIF / 180.0f);
 }
 
 #endif /* !defined(SIMDE_MATH_H) */
