@@ -1292,8 +1292,6 @@ SIMDE_DIAGNOSTIC_DISABLE_FLOAT_EQUAL_
   #define simde_math_cdfnorminvf simde_math_cdfnorminvf
 #endif
 
-HEDLEY_DIAGNOSTIC_POP
-
 #if !defined(simde_math_erfinv) && defined(simde_math_log) && defined(simde_math_copysign) && defined(simde_math_sqrt)
   static HEDLEY_INLINE
   double
@@ -1337,6 +1335,106 @@ HEDLEY_DIAGNOSTIC_POP
   }
   #define simde_math_erfinvf simde_math_erfinvf
 #endif
+
+#if !defined(simde_math_erfcinv) && defined(simde_math_erfinv) && defined(simde_math_log) && defined(simde_math_sqrt)
+  static HEDLEY_INLINE
+  double
+  simde_math_erfcinv(double x) {
+    if(x >= 0.0625 && x < 2.0) {
+      return simde_math_erfinv(1.0 - x);
+    } else if (x < 0.0625 && x >= 1.0e-100) {
+      double p[6] = {
+        0.1550470003116,
+        1.382719649631,
+        0.690969348887,
+        -1.128081391617,
+        0.680544246825,
+        -0.16444156791
+      };
+      double q[3] = {
+        0.155024849822,
+        1.385228141995,
+        1.000000000000
+      };
+
+      const double t = 1.0 / simde_math_sqrt(-simde_math_log(x));
+      return (p[0] / t + p[1] + t * (p[2] + t * (p[3] + t * (p[4] + t * p[5])))) /
+            (q[0] + t * (q[1] + t * (q[2])));
+    } else if (x < 1.0e-100 && x >= SIMDE_MATH_DBL_MIN) {
+      double p[4] = {
+        0.00980456202915,
+        0.363667889171,
+        0.97302949837,
+        -0.5374947401
+      };
+      double q[3] = {
+        0.00980451277802,
+        0.363699971544,
+        1.000000000000
+      };
+
+      const double t = 1.0 / simde_math_sqrt(-simde_math_log(x));
+      return (p[0] / t + p[1] + t * (p[2] + t * p[3])) /
+             (q[0] + t * (q[1] + t * (q[2])));
+    } else if (!simde_math_isnormal(x)) {
+      return SIMDE_MATH_INFINITY;
+    } else {
+      return -SIMDE_MATH_INFINITY;
+    }
+  }
+
+  #define simde_math_erfcinv simde_math_erfcinv
+#endif
+
+#if !defined(simde_math_erfcinvf) && defined(simde_math_erfinvf) && defined(simde_math_logf) && defined(simde_math_sqrtf)
+  static HEDLEY_INLINE
+  float
+  simde_math_erfcinvf(float x) {
+    if(x >= 0.0625f && x < 2.0f) {
+      return simde_math_erfinvf(1.0f - x);
+    } else if (x < 0.0625f && x >= SIMDE_MATH_FLT_MIN) {
+      static const float p[6] = {
+         0.1550470003116f,
+         1.382719649631f,
+         0.690969348887f,
+        -1.128081391617f,
+         0.680544246825f
+        -0.164441567910f
+      };
+      static const float q[3] = {
+        0.155024849822f,
+        1.385228141995f,
+        1.000000000000f
+      };
+
+      const float t = 1.0f / simde_math_sqrtf(-simde_math_logf(x));
+      return (p[0] / t + p[1] + t * (p[2] + t * (p[3] + t * (p[4] + t * p[5])))) /
+             (q[0] + t * (q[1] + t * (q[2])));
+    } else if (x < SIMDE_MATH_FLT_MIN && simde_math_isnormalf(x)) {
+      static const float p[4] = {
+        0.00980456202915f,
+        0.36366788917100f,
+        0.97302949837000f,
+        -0.5374947401000f
+      };
+      static const float q[3] = {
+        0.00980451277802f,
+        0.36369997154400f,
+        1.00000000000000f
+      };
+
+      const float t = 1.0f / simde_math_sqrtf(-simde_math_logf(x));
+      return (p[0] / t + p[1] + t * (p[2] + t * p[3])) /
+             (q[0] + t * (q[1] + t * (q[2])));
+    } else {
+      return simde_math_isnormalf(x) ? -SIMDE_MATH_INFINITYF : SIMDE_MATH_INFINITYF;
+    }
+  }
+
+  #define simde_math_erfcinvf simde_math_erfcinvf
+#endif
+
+HEDLEY_DIAGNOSTIC_POP
 
 static HEDLEY_INLINE
 double
