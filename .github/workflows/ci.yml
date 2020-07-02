@@ -24,6 +24,8 @@ jobs:
       run: for f in simde/arm/neon/*.h; do grep -q "include \"neon/$(basename "$f")\"" simde/arm/neon.h || (echo "Missing $f" && exit 1); done
     - name: Header guards
       run: for file in $(find simde/*/ -name '*.h'); do grep -q "$(echo "$file" | tr '[:lower:]' '[:upper:]' | tr '[:punct:]' '_')" "$file" || (echo "Missing or incorrect header guard in $file" && exit 1); done
+    - name: Newline at EOF
+      run: for file in $(find simde -name '*.h'); do if [ ! -z "$(tail -c 1 "$file")" ]; then echo "No newline at end of $file" && exit 1; fi; done
 
   x86:
     runs-on: ubuntu-latest
