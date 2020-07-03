@@ -191,14 +191,10 @@ simde_vabsq_f32(simde_float32x4_t a) {
       r_,
       a_ = simde_float32x4_to_private(a);
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && 0
-      r_.values = a_.values;
-    #else
-      SIMDE_VECTORIZE
-      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-        r_.values[i] = simde_math_fabsf(a_.values[i]);
-      }
-    #endif
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+      r_.values[i] = simde_math_fabsf(a_.values[i]);
+    }
 
     return simde_float32x4_from_private(r_);
   #endif
