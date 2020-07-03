@@ -37,7 +37,7 @@ SIMDE_BEGIN_DECLS_
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float32x2_t
 simde_vget_low_f32(simde_float32x4_t a) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vget_low_f32(a);
   #else
     simde_float32x2_private r_;
@@ -81,7 +81,7 @@ simde_vget_low_f64(simde_float64x2_t a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_int8x8_t
 simde_vget_low_s8(simde_int8x16_t a) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vget_low_s8(a);
   #elif defined(SIMDE_X86_SSE2_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
     return _mm_movepi64_pi64(a);
@@ -105,7 +105,7 @@ simde_vget_low_s8(simde_int8x16_t a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_int16x4_t
 simde_vget_low_s16(simde_int16x8_t a) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vget_low_s16(a);
   #elif defined(SIMDE_X86_SSE2_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
     return _mm_movepi64_pi64(a);
@@ -129,7 +129,7 @@ simde_vget_low_s16(simde_int16x8_t a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_int32x2_t
 simde_vget_low_s32(simde_int32x4_t a) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vget_low_s32(a);
   #elif defined(SIMDE_X86_SSE2_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
     return _mm_movepi64_pi64(a);
@@ -153,7 +153,7 @@ simde_vget_low_s32(simde_int32x4_t a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_int64x1_t
 simde_vget_low_s64(simde_int64x2_t a) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vget_low_s64(a);
   #elif defined(SIMDE_X86_SSE2_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
     return _mm_movepi64_pi64(a);
@@ -177,7 +177,7 @@ simde_vget_low_s64(simde_int64x2_t a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_uint8x8_t
 simde_vget_low_u8(simde_uint8x16_t a) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vget_low_u8(a);
   #elif defined(SIMDE_X86_SSE2_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
     return _mm_movepi64_pi64(a);
@@ -201,7 +201,7 @@ simde_vget_low_u8(simde_uint8x16_t a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_uint16x4_t
 simde_vget_low_u16(simde_uint16x8_t a) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vget_low_u16(a);
   #elif defined(SIMDE_X86_SSE2_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
     return _mm_movepi64_pi64(a);
@@ -225,7 +225,7 @@ simde_vget_low_u16(simde_uint16x8_t a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_uint32x2_t
 simde_vget_low_u32(simde_uint32x4_t a) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vget_low_u32(a);
   #elif defined(SIMDE_X86_SSE2_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
     return _mm_movepi64_pi64(a);
@@ -249,7 +249,7 @@ simde_vget_low_u32(simde_uint32x4_t a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_uint64x1_t
 simde_vget_low_u64(simde_uint64x2_t a) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vget_low_u64(a);
   #elif defined(SIMDE_X86_SSE2_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
     return _mm_movepi64_pi64(a);
