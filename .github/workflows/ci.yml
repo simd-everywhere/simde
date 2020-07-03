@@ -9,8 +9,12 @@ jobs:
     - uses: actions/checkout@v2
       with:
         fetch-depth: 2
+    # Check for trailing whitespace
     - name: Trailing whitespace
       run: find simde/ -name '*.c' -o -name '*.h' -exec grep -nP '\s+$' {} + && exit 1 || exit 0
+    # We use spaces, not tabs.  I don't want to start a holy war here;
+    # I don't actually have a strong preference between the two, but I
+    # do have a strong preference for consistency, so don't @ me.
     - name: Tabs
       run: find simde/ -name '*.c' -o -name '*.h' -exec grep -nP '\t' {} + && exit 1 || exit 0
     # s/8/16/ will result in this if the input is x86.
@@ -18,14 +22,21 @@ jobs:
       run: git grep -i 'x''1''6''6' && exit 1 || exit 0
     - name: Incorrect assertions in test/
       run: grep -PR '(?<=[^a-zA-Z0-9_])simde_assert_u?int(8|16|32|64)(?>[^a-zA-Z0-9_])' test/ && exit 1 || exit 0
+    # Check to make sure no source files have the executable bit set
     - name: Executable sources
       run: find \( -name '*.c' -o -name '*.h' \) -executable | grep -q '.' && exit 1 || exit 0
+    # Make sure neon.h includes all the NEON headers.
     - name: Missing NEON includes
       run: for f in simde/arm/neon/*.h; do grep -q "include \"neon/$(basename "$f")\"" simde/arm/neon.h || (echo "Missing $f" && exit 1); done
+    # Make sure we can find the expected header guards.  It's easy to miss this when doing C&P
     - name: Header guards
       run: for file in $(find simde/*/ -name '*.h'); do grep -q "$(echo "$file" | tr '[:lower:]' '[:upper:]' | tr '[:punct:]' '_')" "$file" || (echo "Missing or incorrect header guard in $file" && exit 1); done
+    # There should be an empty line at the end of every file
     - name: Newline at EOF
       run: for file in $(find simde -name '*.h'); do if [ ! -z "$(tail -c 1 "$file")" ]; then echo "No newline at end of $file" && exit 1; fi; done
+    # Don't #ifndef ; use !defined(...) instead.  ifndef leads to annoying inconsistencies
+    - name: ifndef
+      run: for file in $(find simde -name '*.h'); do grep -qP '^ *# *ifndef ' "${file}" && exit 1 || exit 0; done
 
   x86:
     runs-on: ubuntu-latest
