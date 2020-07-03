@@ -43,7 +43,7 @@ simde_vceqz_f32(simde_float32x2_t a) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vceqz_f32(a);
   #else
-    return simde_vceq_f32(a, simde_vdup_n_f32(0));
+    return simde_vceq_f32(a, simde_vdup_n_f32(0.0f));
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
@@ -57,7 +57,7 @@ simde_vceqz_f64(simde_float64x1_t a) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vceqz_f64(a);
   #else
-    return simde_vceq_f64(a, simde_vdup_n_f64(0));
+    return simde_vceq_f64(a, simde_vdup_n_f64(0.0));
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
