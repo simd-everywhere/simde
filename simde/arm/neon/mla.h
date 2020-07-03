@@ -29,6 +29,8 @@
 #define SIMDE_ARM_NEON_MLA_H
 
 #include "types.h"
+#include "add.h"
+#include "mul.h"
 
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
@@ -271,14 +273,12 @@ simde_float32x4_t
 simde_vmlaq_f32(simde_float32x4_t a, simde_float32x4_t b, simde_float32x4_t c) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vmlaq_f32(a, b, c);
-  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    return wasm_f32x4_add(wasm_f32x4_mul(b, c), a);
   #elif defined(SIMDE_X86_FMA_NATIVE)
     return _mm_fmadd_ps(b, c, a);
-  #elif defined(SIMDE_X86_SSE_NATIVE)
-    return _mm_add_ps(_mm_mul_ps(b, c), a);
   #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
     return vec_madd(b, c, a);
+  #elif SIMDE_NATURAL_VECTOR_SIZE_LE(128)
+    return simde_vaddq_f32(simde_vmulq_f32(b, c), a);
   #else
     simde_float32x4_private
       r_,
@@ -308,14 +308,12 @@ simde_float64x2_t
 simde_vmlaq_f64(simde_float64x2_t a, simde_float64x2_t b, simde_float64x2_t c) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vmlaq_f64(a, b, c);
-  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    return wasm_f64x2_add(wasm_f64x2_mul(b, c), a);
   #elif defined(SIMDE_X86_FMA_NATIVE)
     return _mm_fmadd_pd(b, c, a);
-  #elif defined(SIMDE_X86_SSE2_NATIVE)
-    return _mm_add_pd(_mm_mul_pd(b, c), a);
   #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
     return vec_madd(b, c, a);
+  #elif SIMDE_NATURAL_VECTOR_SIZE_LE(128)
+    return simde_vaddq_f64(simde_vmulq_f64(b, c), a);
   #else
     simde_float64x2_private
       r_,
@@ -345,6 +343,8 @@ simde_int8x16_t
 simde_vmlaq_s8(simde_int8x16_t a, simde_int8x16_t b, simde_int8x16_t c) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vmlaq_s8(a, b, c);
+  #elif SIMDE_NATURAL_VECTOR_SIZE_LE(128)
+    return simde_vaddq_s8(simde_vmulq_s8(b, c), a);
   #else
     simde_int8x16_private
       r_,
@@ -374,8 +374,8 @@ simde_int16x8_t
 simde_vmlaq_s16(simde_int16x8_t a, simde_int16x8_t b, simde_int16x8_t c) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vmlaq_s16(a, b, c);
-  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    return wasm_i16x8_add(wasm_i16x8_mul(b, c), a);
+  #elif SIMDE_NATURAL_VECTOR_SIZE_LE(128)
+    return simde_vaddq_s16(simde_vmulq_s16(b, c), a);
   #else
     simde_int16x8_private
       r_,
@@ -405,8 +405,8 @@ simde_int32x4_t
 simde_vmlaq_s32(simde_int32x4_t a, simde_int32x4_t b, simde_int32x4_t c) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vmlaq_s32(a, b, c);
-  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    return wasm_i32x4_add(wasm_i32x4_mul(b, c), a);
+  #elif SIMDE_NATURAL_VECTOR_SIZE_LE(128)
+    return simde_vaddq_s32(simde_vmulq_s32(b, c), a);
   #else
     simde_int32x4_private
       r_,
@@ -436,6 +436,8 @@ simde_uint8x16_t
 simde_vmlaq_u8(simde_uint8x16_t a, simde_uint8x16_t b, simde_uint8x16_t c) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vmlaq_u8(a, b, c);
+  #elif SIMDE_NATURAL_VECTOR_SIZE_LE(128)
+    return simde_vaddq_u8(simde_vmulq_u8(b, c), a);
   #else
     simde_uint8x16_private
       r_,
@@ -465,8 +467,8 @@ simde_uint16x8_t
 simde_vmlaq_u16(simde_uint16x8_t a, simde_uint16x8_t b, simde_uint16x8_t c) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vmlaq_u16(a, b, c);
-  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    return wasm_i16x8_add(wasm_i16x8_mul(b, c), a);
+  #elif SIMDE_NATURAL_VECTOR_SIZE_LE(128)
+    return simde_vaddq_u16(simde_vmulq_u16(b, c), a);
   #else
     simde_uint16x8_private
       r_,
@@ -496,8 +498,8 @@ simde_uint32x4_t
 simde_vmlaq_u32(simde_uint32x4_t a, simde_uint32x4_t b, simde_uint32x4_t c) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vmlaq_u32(a, b, c);
-  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    return wasm_i32x4_add(wasm_i32x4_mul(b, c), a);
+  #elif SIMDE_NATURAL_VECTOR_SIZE_LE(128)
+    return simde_vaddq_u32(simde_vmulq_u32(b, c), a);
   #else
     simde_uint32x4_private
       r_,
