@@ -2568,6 +2568,40 @@ simde_mm256_permutevar8x32_ps (simde__m256 a, simde__m256i idx) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m256i
+simde_mm256_sad_epu8 (simde__m256i a, simde__m256i b) {
+#if defined(SIMDE_X86_AVX2_NATIVE)
+  return _mm256_sad_epu8(a, b);
+#else
+  simde__m256i_private
+    r_,
+    a_ = simde__m256i_to_private(a),
+    b_ = simde__m256i_to_private(b);
+
+  #if defined(SIMDE_X86_SSE2_NATIVE)
+    r_.m128i[0] = simde_mm_sad_epu8(a_.m128i[0], b_.m128i[0]);
+    r_.m128i[1] = simde_mm_sad_epu8(a_.m128i[1], b_.m128i[1]);
+  #else
+    for (size_t i = 0 ; i < (sizeof(r_.i64) / sizeof(r_.i64[0])) ; i++) {
+      uint16_t tmp = 0;
+      SIMDE_VECTORIZE_REDUCTION(+:tmp)
+      for (size_t j = 0 ; j < ((sizeof(r_.u8) / sizeof(r_.u8[0])) / 4) ; j++) {
+        const size_t e = j + (i * 8);
+        tmp += (a_.u8[e] > b_.u8[e]) ? (a_.u8[e] - b_.u8[e]) : (b_.u8[e] - a_.u8[e]);
+      }
+      r_.i64[i] = tmp;
+    }
+  #endif
+
+  return simde__m256i_from_private(r_);
+#endif
+}
+#if defined(SIMDE_X86_AVX2_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_sad_epu8
+  #define _mm256_sad_epu8(a, b) simde_mm256_sad_epu8(a, b)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256i
 simde_mm256_shuffle_epi8 (simde__m256i a, simde__m256i b) {
 #if defined(SIMDE_X86_AVX2_NATIVE)
   return _mm256_shuffle_epi8(a, b);
