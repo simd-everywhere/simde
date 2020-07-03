@@ -71,6 +71,8 @@
 #include "neon/pmin.h"
 #include "neon/qmovn.h"
 #include "neon/reinterpret.h"
+#include "neon/rshr_n.h"
+#include "neon/rsra_n.h"
 #include "neon/shl.h"
 #include "neon/shl_n.h"
 #include "neon/shr_n.h"

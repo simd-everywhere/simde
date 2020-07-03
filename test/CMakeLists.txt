@@ -148,6 +148,8 @@ set(TEST_SOURCES_C
   arm/neon/pmin.c
   arm/neon/qmovn.c
   arm/neon/reinterpret.c
+  arm/neon/rshr_n.c
+  arm/neon/rsra_n.c
   arm/neon/st1_lane.c
   arm/neon/shl.c
   arm/neon/shl_n.c

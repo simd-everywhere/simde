@@ -41,6 +41,8 @@ simde_test_arm_neon_tests = [
   'pmin',
   'qmovn',
   'reinterpret',
+  'rshr_n',
+  'rsra_n',
   'st1_lane',
   'shl',
   'shl_n',
