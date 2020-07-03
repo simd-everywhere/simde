@@ -230,6 +230,12 @@ simde_float32x4_t
 simde_vminq_f32(simde_float32x4_t a, simde_float32x4_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vminq_f32(a, b);
+  #elif defined(SIMDE_X86_SSE_NATIVE)
+    return _mm_min_ps(a, b);
+  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+    return vec_min(a, b);
+  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+    return wasm_f32x4_min(a, b);
   #else
     simde_float32x4_private
       r_,
@@ -254,6 +260,12 @@ simde_float64x2_t
 simde_vminq_f64(simde_float64x2_t a, simde_float64x2_t b) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vminq_f64(a, b);
+  #elif defined(SIMDE_X86_SSE2_NATIVE)
+    return _mm_min_pd(a, b);
+  #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
+    return vec_min(a, b);
+  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+    return wasm_f64x2_min(a, b);
   #else
     simde_float64x2_private
       r_,
@@ -278,6 +290,12 @@ simde_int8x16_t
 simde_vminq_s8(simde_int8x16_t a, simde_int8x16_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vminq_s8(a, b);
+  #elif defined(SIMDE_X86_SSE4_1_NATIVE)
+    return _mm_min_epi8(a, b);
+  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+    return vec_min(a, b);
+  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+    return wasm_i8x16_min(a, b);
   #else
     simde_int8x16_private
       r_,
@@ -302,6 +320,12 @@ simde_int16x8_t
 simde_vminq_s16(simde_int16x8_t a, simde_int16x8_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vminq_s16(a, b);
+  #elif defined(SIMDE_X86_SSE2_NATIVE)
+    return _mm_min_epi16(a, b);
+  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+    return vec_min(a, b);
+  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+    return wasm_i16x8_min(a, b);
   #else
     simde_int16x8_private
       r_,
@@ -326,6 +350,12 @@ simde_int32x4_t
 simde_vminq_s32(simde_int32x4_t a, simde_int32x4_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vminq_s32(a, b);
+  #elif defined(SIMDE_X86_SSE4_1_NATIVE)
+    return _mm_min_epi32(a, b);
+  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+    return vec_min(a, b);
+  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+    return wasm_i32x4_min(a, b);
   #else
     simde_int32x4_private
       r_,
@@ -350,6 +380,12 @@ simde_uint8x16_t
 simde_vminq_u8(simde_uint8x16_t a, simde_uint8x16_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vminq_u8(a, b);
+  #elif defined(SIMDE_X86_SSE2_NATIVE)
+    return _mm_min_epu8(a, b);
+  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+    return vec_min(a, b);
+  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+    return wasm_u8x16_min(a, b);
   #else
     simde_uint8x16_private
       r_,
@@ -374,6 +410,12 @@ simde_uint16x8_t
 simde_vminq_u16(simde_uint16x8_t a, simde_uint16x8_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vminq_u16(a, b);
+  #elif defined(SIMDE_X86_SSE4_1_NATIVE)
+    return _mm_min_epu16(a, b);
+  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+    return vec_min(a, b);
+  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+    return wasm_u16x8_min(a, b);
   #else
     simde_uint16x8_private
       r_,
@@ -398,6 +440,12 @@ simde_uint32x4_t
 simde_vminq_u32(simde_uint32x4_t a, simde_uint32x4_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vminq_u32(a, b);
+  #elif defined(SIMDE_X86_SSE4_1_NATIVE)
+    return _mm_min_epu32(a, b);
+  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+    return vec_min(a, b);
+  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+    return wasm_u32x4_min(a, b);
   #else
     simde_uint32x4_private
       r_,
