@@ -172,7 +172,7 @@ simde_vabs_s32(simde_int32x2_t a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_int64x1_t
 simde_vabs_s64(simde_int64x1_t a) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vabs_s64(a);
   #else
     simde_int64x1_private
@@ -354,7 +354,7 @@ simde_vabsq_s32(simde_int32x4_t a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_int64x2_t
 simde_vabsq_s64(simde_int64x2_t a) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vabsq_s64(a);
   #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE) && !defined(HEDLEY_IBM_VERSION)
     return vec_abs(a);

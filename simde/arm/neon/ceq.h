@@ -182,7 +182,7 @@ simde_vceq_s32(simde_int32x2_t a, simde_int32x2_t b) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_uint64x1_t
 simde_vceq_s64(simde_int64x1_t a, simde_int64x1_t b) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vceq_s64(a, b);
   #else
     simde_uint64x1_private r_;
@@ -294,7 +294,7 @@ simde_vceq_u32(simde_uint32x2_t a, simde_uint32x2_t b) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_uint64x1_t
 simde_vceq_u64(simde_uint64x1_t a, simde_uint64x1_t b) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vceq_u64(a, b);
   #else
     simde_uint64x1_private r_;
@@ -492,7 +492,7 @@ simde_vceqq_s32(simde_int32x4_t a, simde_int32x4_t b) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_uint64x2_t
 simde_vceqq_s64(simde_int64x2_t a, simde_int64x2_t b) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vceqq_s64(a, b);
   #elif defined(SIMDE_X86_SSE4_1_NATIVE)
     return _mm_cmpeq_epi64(a, b);
@@ -620,7 +620,7 @@ simde_vceqq_u32(simde_uint32x4_t a, simde_uint32x4_t b) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_uint64x2_t
 simde_vceqq_u64(simde_uint64x2_t a, simde_uint64x2_t b) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vceqq_u64(a, b);
   #elif defined(SIMDE_X86_SSE4_1_NATIVE)
     return _mm_cmpeq_epi64(a, b);

@@ -171,7 +171,7 @@ simde_vneg_s32(simde_int32x2_t a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_int64x1_t
 simde_vneg_s64(simde_int64x1_t a) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vneg_s64(a);
   #else
     simde_int64x1_private
@@ -353,7 +353,7 @@ simde_vnegq_s32(simde_int32x4_t a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_int64x2_t
 simde_vnegq_s64(simde_int64x2_t a) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vnegq_s64(a);
   #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
     return vec_neg(a);
