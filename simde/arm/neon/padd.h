@@ -70,6 +70,8 @@ simde_int16x4_t
 simde_vpadd_s16(simde_int16x4_t a, simde_int16x4_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vpadd_s16(a, b);
+  #elif defined(SIMDE_X86_SSSE3_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
+    return _mm_hadd_pi16(a, b);
   #else
     return simde_vadd_s16(simde_vuzp1_s16(a, b), simde_vuzp2_s16(a, b));
   #endif
@@ -84,6 +86,8 @@ simde_int32x2_t
 simde_vpadd_s32(simde_int32x2_t a, simde_int32x2_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vpadd_s32(a, b);
+  #elif defined(SIMDE_X86_SSSE3_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
+    return _mm_hadd_pi32(a, b);
   #else
     return simde_vadd_s32(simde_vuzp1_s32(a, b), simde_vuzp2_s32(a, b));
   #endif
@@ -140,6 +144,8 @@ simde_float32x4_t
 simde_vpaddq_f32(simde_float32x4_t a, simde_float32x4_t b) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vpaddq_f32(a, b);
+  #elif defined(SIMDE_X86_SSE3_NATIVE)
+    return _mm_hadd_ps(a, b);
   #else
     return simde_vaddq_f32(simde_vuzp1q_f32(a, b), simde_vuzp2q_f32(a, b));
   #endif
@@ -154,6 +160,8 @@ simde_float64x2_t
 simde_vpaddq_f64(simde_float64x2_t a, simde_float64x2_t b) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vpaddq_f64(a, b);
+  #elif defined(SIMDE_X86_SSE3_NATIVE)
+    return _mm_hadd_pd(a, b);
   #else
     return simde_vaddq_f64(simde_vuzp1q_f64(a, b), simde_vuzp2q_f64(a, b));
   #endif
@@ -182,6 +190,8 @@ simde_int16x8_t
 simde_vpaddq_s16(simde_int16x8_t a, simde_int16x8_t b) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vpaddq_s16(a, b);
+  #elif defined(SIMDE_X86_SSSE3_NATIVE)
+    return _mm_hadd_epi16(a, b);
   #else
     return simde_vaddq_s16(simde_vuzp1q_s16(a, b), simde_vuzp2q_s16(a, b));
   #endif
@@ -196,6 +206,8 @@ simde_int32x4_t
 simde_vpaddq_s32(simde_int32x4_t a, simde_int32x4_t b) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vpaddq_s32(a, b);
+  #elif defined(SIMDE_X86_SSSE3_NATIVE)
+    return _mm_hadd_epi32(a, b);
   #else
     return simde_vaddq_s32(simde_vuzp1q_s32(a, b), simde_vuzp2q_s32(a, b));
   #endif
