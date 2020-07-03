@@ -2055,6 +2055,53 @@ simde_mm256_movemask_epi8 (simde__m256i a) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m256i
+simde_mm256_mpsadbw_epu8 (simde__m256i a, simde__m256i b, const int imm8)
+    SIMDE_REQUIRE_RANGE(imm8, 0, 7)  {
+  simde__m256i_private
+    r_,
+    a_ = simde__m256i_to_private(a),
+    b_ = simde__m256i_to_private(b);
+
+  const int a_offset1 = imm8 & 4;
+  const int b_offset1 = (imm8 & 3) << 2;
+  const int a_offset2 = (imm8 >> 3) & 4;
+  const int b_offset2 = ((imm8 >> 3) & 3) << 2;
+
+  #if defined(simde_math_abs)
+    const int halfway_point = HEDLEY_STATIC_CAST(int, (sizeof(r_.u16) / sizeof(r_.u16[0])) ) / 2;
+    for (int i = 0 ; i < halfway_point ; i++) {
+      r_.u16[i] =
+        HEDLEY_STATIC_CAST(uint16_t, simde_math_abs(HEDLEY_STATIC_CAST(int, a_.u8[a_offset1 + i + 0] - b_.u8[b_offset1 + 0]))) +
+        HEDLEY_STATIC_CAST(uint16_t, simde_math_abs(HEDLEY_STATIC_CAST(int, a_.u8[a_offset1 + i + 1] - b_.u8[b_offset1 + 1]))) +
+        HEDLEY_STATIC_CAST(uint16_t, simde_math_abs(HEDLEY_STATIC_CAST(int, a_.u8[a_offset1 + i + 2] - b_.u8[b_offset1 + 2]))) +
+        HEDLEY_STATIC_CAST(uint16_t, simde_math_abs(HEDLEY_STATIC_CAST(int, a_.u8[a_offset1 + i + 3] - b_.u8[b_offset1 + 3])));
+      r_.u16[halfway_point + i] =
+        HEDLEY_STATIC_CAST(uint16_t, simde_math_abs(HEDLEY_STATIC_CAST(int, a_.u8[2 * halfway_point + a_offset2 + i + 0] - b_.u8[2 * halfway_point + b_offset2 + 0]))) +
+        HEDLEY_STATIC_CAST(uint16_t, simde_math_abs(HEDLEY_STATIC_CAST(int, a_.u8[2 * halfway_point + a_offset2 + i + 1] - b_.u8[2 * halfway_point + b_offset2 + 1]))) +
+        HEDLEY_STATIC_CAST(uint16_t, simde_math_abs(HEDLEY_STATIC_CAST(int, a_.u8[2 * halfway_point + a_offset2 + i + 2] - b_.u8[2 * halfway_point + b_offset2 + 2]))) +
+        HEDLEY_STATIC_CAST(uint16_t, simde_math_abs(HEDLEY_STATIC_CAST(int, a_.u8[2 * halfway_point + a_offset2 + i + 3] - b_.u8[2 * halfway_point + b_offset2 + 3])));
+    }
+  #else
+    HEDLEY_UNREACHABLE();
+  #endif
+
+  return simde__m256i_from_private(r_);
+}
+#if defined(SIMDE_X86_AVX2_NATIVE) && SIMDE_DETECT_CLANG_VERSION_CHECK(3,9,0)
+  #define simde_mm256_mpsadbw_epu8(a, b, imm8) _mm256_mpsadbw_epu8(a, b, imm8)
+#elif defined(SIMDE_X86_SSE4_1_NATIVE)
+  #define simde_mm256_mpsadbw_epu8(a, b, imm8) \
+     simde_mm256_set_m128i( \
+       simde_mm_mpsadbw_epu8(simde_mm256_extracti128_si256(a, 1), simde_mm256_extracti128_si256(b, 1), (imm8 >> 3)), \
+       simde_mm_mpsadbw_epu8(simde_mm256_extracti128_si256(a, 0), simde_mm256_extracti128_si256(b, 0), (imm8)))
+#endif
+#if defined(SIMDE_X86_AVX2_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_mpsadbw_epu8
+  #define _mm256_mpsadbw_epu8(a, b, imm8) simde_mm256_mpsadbw_epu8(a, b, imm8)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256i
 simde_mm256_mul_epi32 (simde__m256i a, simde__m256i b) {
 #if defined(SIMDE_X86_AVX2_NATIVE)
   return _mm256_mul_epi32(a, b);
