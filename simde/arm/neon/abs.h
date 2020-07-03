@@ -91,10 +91,15 @@ simde_vabs_s8(simde_int8x8_t a) {
       r_,
       a_ = simde_int8x8_to_private(a);
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = a_.values[i] < 0 ? -a_.values[i] : a_.values[i];
-    }
+    #if (SIMDE_NATURAL_VECTOR_SIZE > 0) && defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+      __typeof__(r_.values) m = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), a_.values < INT8_C(0));
+      r_.values = (-a_.values & m) | (a_.values & ~m);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+        r_.values[i] = a_.values[i] < 0 ? -a_.values[i] : a_.values[i];
+      }
+    #endif
 
     return simde_int8x8_from_private(r_);
   #endif
@@ -116,10 +121,15 @@ simde_vabs_s16(simde_int16x4_t a) {
       r_,
       a_ = simde_int16x4_to_private(a);
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = a_.values[i] < 0 ? -a_.values[i] : a_.values[i];
-    }
+    #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+      __typeof__(r_.values) m = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), a_.values < INT16_C(0));
+      r_.values = (-a_.values & m) | (a_.values & ~m);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+        r_.values[i] = a_.values[i] < 0 ? -a_.values[i] : a_.values[i];
+      }
+    #endif
 
     return simde_int16x4_from_private(r_);
   #endif
@@ -141,10 +151,15 @@ simde_vabs_s32(simde_int32x2_t a) {
       r_,
       a_ = simde_int32x2_to_private(a);
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = a_.values[i] < 0 ? -a_.values[i] : a_.values[i];
-    }
+    #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+      __typeof__(r_.values) m = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), a_.values < INT32_C(0));
+      r_.values = (-a_.values & m) | (a_.values & ~m);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+        r_.values[i] = a_.values[i] < 0 ? -a_.values[i] : a_.values[i];
+      }
+    #endif
 
     return simde_int32x2_from_private(r_);
   #endif
@@ -164,10 +179,15 @@ simde_vabs_s64(simde_int64x1_t a) {
       r_,
       a_ = simde_int64x1_to_private(a);
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = a_.values[i] < 0 ? -a_.values[i] : a_.values[i];
-    }
+    #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+      __typeof__(r_.values) m = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), a_.values < INT64_C(0));
+      r_.values = (-a_.values & m) | (a_.values & ~m);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+        r_.values[i] = a_.values[i] < 0 ? -a_.values[i] : a_.values[i];
+      }
+    #endif
 
     return simde_int64x1_from_private(r_);
   #endif
@@ -245,10 +265,15 @@ simde_vabsq_s8(simde_int8x16_t a) {
       r_,
       a_ = simde_int8x16_to_private(a);
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = a_.values[i] < 0 ? -a_.values[i] : a_.values[i];
-    }
+    #if (SIMDE_NATURAL_VECTOR_SIZE > 0) && defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+      __typeof__(r_.values) m = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), a_.values < INT8_C(0));
+      r_.values = (-a_.values & m) | (a_.values & ~m);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+        r_.values[i] = a_.values[i] < 0 ? -a_.values[i] : a_.values[i];
+      }
+    #endif
 
     return simde_int8x16_from_private(r_);
   #endif
@@ -274,10 +299,15 @@ simde_vabsq_s16(simde_int16x8_t a) {
       r_,
       a_ = simde_int16x8_to_private(a);
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = a_.values[i] < 0 ? -a_.values[i] : a_.values[i];
-    }
+    #if (SIMDE_NATURAL_VECTOR_SIZE > 0) && defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+      __typeof__(r_.values) m = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), a_.values < INT16_C(0));
+      r_.values = (-a_.values & m) | (a_.values & ~m);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+        r_.values[i] = a_.values[i] < 0 ? -a_.values[i] : a_.values[i];
+      }
+    #endif
 
     return simde_int16x8_from_private(r_);
   #endif
@@ -303,10 +333,15 @@ simde_vabsq_s32(simde_int32x4_t a) {
       r_,
       a_ = simde_int32x4_to_private(a);
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = a_.values[i] < 0 ? -a_.values[i] : a_.values[i];
-    }
+    #if (SIMDE_NATURAL_VECTOR_SIZE > 0) && defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+      __typeof__(r_.values) m = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), a_.values < INT32_C(0));
+      r_.values = (-a_.values & m) | (a_.values & ~m);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+        r_.values[i] = a_.values[i] < 0 ? -a_.values[i] : a_.values[i];
+      }
+    #endif
 
     return simde_int32x4_from_private(r_);
   #endif
@@ -328,10 +363,15 @@ simde_vabsq_s64(simde_int64x2_t a) {
       r_,
       a_ = simde_int64x2_to_private(a);
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = a_.values[i] < 0 ? -a_.values[i] : a_.values[i];
-    }
+    #if (SIMDE_NATURAL_VECTOR_SIZE > 0) && defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+      __typeof__(r_.values) m = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), a_.values < INT64_C(0));
+      r_.values = (-a_.values & m) | (a_.values & ~m);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+        r_.values[i] = a_.values[i] < 0 ? -a_.values[i] : a_.values[i];
+      }
+    #endif
 
     return simde_int64x2_from_private(r_);
   #endif
