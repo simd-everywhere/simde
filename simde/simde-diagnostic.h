@@ -299,6 +299,13 @@
   #define SIMDE_DIAGNOSTIC_DISABLE_CPP98_COMPAT_PEDANTIC_
 #endif
 
+/* Some problem as above */
+#if HEDLEY_HAS_WARNING("-Wc++11-long-long")
+  #define SIMDE_DIAGNOSTIC_DISABLE_CPP11_LONG_LONG_ _Pragma("clang diagnostic ignored \"-Wc++11-long-long\"")
+#else
+  #define SIMDE_DIAGNOSTIC_DISABLE_CPP11_LONG_LONG_
+#endif
+
 /* emscripten emits this whenever stdin/stdout/stderr is used in a
  * macro. */
 #if HEDLEY_HAS_WARNING("-Wdisabled-macro-expansion")
@@ -320,6 +327,7 @@
   SIMDE_DIAGNOSTIC_DISABLE_UNUSED_FUNCTION_ \
   SIMDE_DIAGNOSTIC_DISABLE_PASS_FAILED_ \
   SIMDE_DIAGNOSTIC_DISABLE_CPP98_COMPAT_PEDANTIC_ \
+  SIMDE_DIAGNOSTIC_DISABLE_CPP11_LONG_LONG_ \
   SIMDE_DIAGNOSTIC_DISABLE_BUGGY_UNUSED_BUT_SET_VARIBALE_
 
 #endif /* !defined(SIMDE_DIAGNOSTIC_H) */

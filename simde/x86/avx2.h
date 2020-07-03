@@ -1678,6 +1678,108 @@ simde_mm256_maddubs_epi16 (simde__m256i a, simde__m256i b) {
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
+simde__m128i
+simde_mm_maskload_epi32 (const int32_t mem_addr[HEDLEY_ARRAY_PARAM(4)], simde__m128i mask) {
+  #if defined(SIMDE_X86_AVX2_NATIVE)
+    return _mm_maskload_epi32(mem_addr, mask);
+  #else
+    simde__m128i_private
+      mem_ = simde__m128i_to_private(simde_x_mm_loadu_epi32(mem_addr)),
+      r_,
+      mask_ = simde__m128i_to_private(mask);
+
+    #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+      r_.neon_i32 = vandq_s32(mem_.neon_i32, vshrq_n_s32(mask_.neon_i32, 31));
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {
+        r_.i32[i] = mem_.i32[i] & (mask_.i32[i] >> 31);
+      }
+    #endif
+
+    return simde__m128i_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_X86_AVX2_ENABLE_NATIVE_ALIASES)
+  #undef _mm_maskload_epi32
+  #define _mm_maskload_epi32(mem_addr, mask) simde_mm_maskload_epi32(HEDLEY_REINTERPRET_CAST(int32_t const*, mem_addr), mask)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256i
+simde_mm256_maskload_epi32 (const int32_t mem_addr[HEDLEY_ARRAY_PARAM(4)], simde__m256i mask) {
+#if defined(SIMDE_X86_AVX2_NATIVE)
+  return _mm256_maskload_epi32(mem_addr, mask);
+#else
+  simde__m256i_private
+    mask_ = simde__m256i_to_private(mask),
+    r_ = simde__m256i_to_private(simde_x_mm256_loadu_epi32(mem_addr));
+
+  SIMDE_VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {
+    r_.i32[i] &= mask_.i32[i] >> 31;
+  }
+
+  return simde__m256i_from_private(r_);
+#endif
+}
+#if defined(SIMDE_X86_AVX2_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_maskload_epi32
+  #define _mm256_maskload_epi32(mem_addr, mask) simde_mm256_maskload_epi32(HEDLEY_REINTERPRET_CAST(int32_t const*, mem_addr), mask)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m128i
+simde_mm_maskload_epi64 (const int64_t mem_addr[HEDLEY_ARRAY_PARAM(4)], simde__m128i mask) {
+  #if defined(SIMDE_X86_AVX2_NATIVE)
+    return _mm_maskload_epi64(HEDLEY_REINTERPRET_CAST(const long long *, mem_addr), mask);
+  #else
+    simde__m128i_private
+      mem_ = simde__m128i_to_private(simde_x_mm_loadu_epi64((mem_addr))),
+      r_,
+      mask_ = simde__m128i_to_private(mask);
+
+    #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+      r_.neon_i64 = vandq_s64(mem_.neon_i64, vshrq_n_s64(mask_.neon_i64, 63));
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.i64) / sizeof(r_.i64[0])) ; i++) {
+        r_.i64[i] = mem_.i64[i] & (mask_.i64[i] >> 63);
+      }
+    #endif
+
+    return simde__m128i_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_X86_AVX2_ENABLE_NATIVE_ALIASES)
+  #undef _mm_maskload_epi64
+  #define _mm_maskload_epi64(mem_addr, mask) simde_mm_maskload_epi64(HEDLEY_REINTERPRET_CAST(int64_t const*, mem_addr), mask)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256i
+simde_mm256_maskload_epi64 (const int64_t mem_addr[HEDLEY_ARRAY_PARAM(4)], simde__m256i mask) {
+#if defined(SIMDE_X86_AVX2_NATIVE)
+  return _mm256_maskload_epi64(HEDLEY_REINTERPRET_CAST(const long long *, mem_addr), mask);
+#else
+  simde__m256i_private
+    mask_ = simde__m256i_to_private(mask),
+    r_ = simde__m256i_to_private(simde_x_mm256_loadu_epi64((mem_addr)));
+
+  SIMDE_VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r_.i64) / sizeof(r_.i64[0])) ; i++) {
+    r_.i64[i] &= mask_.i64[i] >> 63;
+  }
+
+  return simde__m256i_from_private(r_);
+#endif
+}
+#if defined(SIMDE_X86_AVX2_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_maskload_epi64
+  #define _mm256_maskload_epi64(mem_addr, mask) simde_mm256_maskload_epi64(HEDLEY_REINTERPRET_CAST(int64_t const*, mem_addr), mask)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
 simde__m256i
 simde_mm256_max_epi8 (simde__m256i a, simde__m256i b) {
 #if defined(SIMDE_X86_AVX2_NATIVE) && !defined(__PGI)
