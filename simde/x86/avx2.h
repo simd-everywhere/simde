@@ -2827,7 +2827,7 @@ simde_mm256_sll_epi16 (simde__m256i a, simde__m128i count) {
       r_,
       a_ = simde__m256i_to_private(a);
 
-    #if SIMDE_PREFER_VECTOR_SIZE(128)
+    #if SIMDE_NATURAL_VECTOR_SIZE_LE(128)
       r_.m128i[0] = simde_mm_sll_epi16(a_.m128i[0], count);
       r_.m128i[1] = simde_mm_sll_epi16(a_.m128i[1], count);
     #else
@@ -2866,7 +2866,7 @@ simde_mm256_sll_epi32 (simde__m256i a, simde__m128i count) {
       r_,
       a_ = simde__m256i_to_private(a);
 
-    #if SIMDE_PREFER_VECTOR_SIZE(128)
+    #if SIMDE_NATURAL_VECTOR_SIZE_LE(128)
       r_.m128i[0] = simde_mm_sll_epi32(a_.m128i[0], count);
       r_.m128i[1] = simde_mm_sll_epi32(a_.m128i[1], count);
     #else
@@ -2905,7 +2905,7 @@ simde_mm256_sll_epi64 (simde__m256i a, simde__m128i count) {
       r_,
       a_ = simde__m256i_to_private(a);
 
-    #if SIMDE_PREFER_VECTOR_SIZE(128)
+    #if SIMDE_NATURAL_VECTOR_SIZE_LE(128)
       r_.m128i[0] = simde_mm_sll_epi64(a_.m128i[0], count);
       r_.m128i[1] = simde_mm_sll_epi64(a_.m128i[1], count);
     #else
@@ -3197,7 +3197,7 @@ simde_mm256_sra_epi16 (simde__m256i a, simde__m128i count) {
       r_,
       a_ = simde__m256i_to_private(a);
 
-    #if SIMDE_PREFER_VECTOR_SIZE(128)
+    #if SIMDE_NATURAL_VECTOR_SIZE_LE(128)
       r_.m128i[0] = simde_mm_sra_epi16(a_.m128i[0], count);
       r_.m128i[1] = simde_mm_sra_epi16(a_.m128i[1], count);
     #else
@@ -3236,7 +3236,7 @@ simde_mm256_sra_epi32 (simde__m256i a, simde__m128i count) {
       r_,
       a_ = simde__m256i_to_private(a);
 
-    #if SIMDE_PREFER_VECTOR_SIZE(128)
+    #if SIMDE_NATURAL_VECTOR_SIZE_LE(128)
       r_.m128i[0] = simde_mm_sra_epi32(a_.m128i[0], count);
       r_.m128i[1] = simde_mm_sra_epi32(a_.m128i[1], count);
     #else
@@ -3394,7 +3394,7 @@ simde_mm256_srl_epi16 (simde__m256i a, simde__m128i count) {
       r_,
       a_ = simde__m256i_to_private(a);
 
-    #if SIMDE_PREFER_VECTOR_SIZE(128)
+    #if SIMDE_NATURAL_VECTOR_SIZE_LE(128)
       r_.m128i[0] = simde_mm_srl_epi16(a_.m128i[0], count);
       r_.m128i[1] = simde_mm_srl_epi16(a_.m128i[1], count);
     #else
@@ -3431,7 +3431,7 @@ simde_mm256_srl_epi32 (simde__m256i a, simde__m128i count) {
       r_,
       a_ = simde__m256i_to_private(a);
 
-    #if SIMDE_PREFER_VECTOR_SIZE(128)
+    #if SIMDE_NATURAL_VECTOR_SIZE_LE(128)
       r_.m128i[0] = simde_mm_srl_epi32(a_.m128i[0], count);
       r_.m128i[1] = simde_mm_srl_epi32(a_.m128i[1], count);
     #else
@@ -3468,7 +3468,7 @@ simde_mm256_srl_epi64 (simde__m256i a, simde__m128i count) {
       r_,
       a_ = simde__m256i_to_private(a);
 
-    #if SIMDE_PREFER_VECTOR_SIZE(128)
+    #if SIMDE_NATURAL_VECTOR_SIZE_LE(128)
       r_.m128i[0] = simde_mm_srl_epi64(a_.m128i[0], count);
       r_.m128i[1] = simde_mm_srl_epi64(a_.m128i[1], count);
     #else

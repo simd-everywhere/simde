@@ -1136,7 +1136,7 @@ simde_x_mm256_deinterleaveeven_epi16 (simde__m256i a, simde__m256i b) {
     a_ = simde__m256i_to_private(a),
     b_ = simde__m256i_to_private(b);
 
-  #if SIMDE_PREFER_VECTOR_SIZE(128)
+  #if SIMDE_NATURAL_VECTOR_SIZE_LE(128)
     for(size_t i = 0 ; i < (sizeof(r_.m128i) / sizeof(r_.m128i[0])) ; i++) {
       r_.m128i[i] = simde_x_mm_deinterleaveeven_epi16(a_.m128i[i], b_.m128i[i]);
     }
@@ -1164,7 +1164,7 @@ simde_x_mm256_deinterleaveodd_epi16 (simde__m256i a, simde__m256i b) {
     a_ = simde__m256i_to_private(a),
     b_ = simde__m256i_to_private(b);
 
-  #if SIMDE_PREFER_VECTOR_SIZE(128)
+  #if SIMDE_NATURAL_VECTOR_SIZE_LE(128)
     for(size_t i = 0 ; i < (sizeof(r_.m128i) / sizeof(r_.m128i[0])) ; i++) {
       r_.m128i[i] = simde_x_mm_deinterleaveodd_epi16(a_.m128i[i], b_.m128i[i]);
     }
@@ -1192,7 +1192,7 @@ simde_x_mm256_deinterleaveeven_epi32 (simde__m256i a, simde__m256i b) {
     a_ = simde__m256i_to_private(a),
     b_ = simde__m256i_to_private(b);
 
-  #if SIMDE_PREFER_VECTOR_SIZE(128)
+  #if SIMDE_NATURAL_VECTOR_SIZE_LE(128)
     for(size_t i = 0 ; i < (sizeof(r_.m128i) / sizeof(r_.m128i[0])) ; i++) {
       r_.m128i[i] = simde_x_mm_deinterleaveeven_epi32(a_.m128i[i], b_.m128i[i]);
     }
@@ -1220,7 +1220,7 @@ simde_x_mm256_deinterleaveodd_epi32 (simde__m256i a, simde__m256i b) {
     a_ = simde__m256i_to_private(a),
     b_ = simde__m256i_to_private(b);
 
-  #if SIMDE_PREFER_VECTOR_SIZE(128)
+  #if SIMDE_NATURAL_VECTOR_SIZE_LE(128)
     for(size_t i = 0 ; i < (sizeof(r_.m128i) / sizeof(r_.m128i[0])) ; i++) {
       r_.m128i[i] = simde_x_mm_deinterleaveodd_epi32(a_.m128i[i], b_.m128i[i]);
     }
@@ -1248,7 +1248,7 @@ simde_x_mm256_deinterleaveeven_ps (simde__m256 a, simde__m256 b) {
     a_ = simde__m256_to_private(a),
     b_ = simde__m256_to_private(b);
 
-  #if SIMDE_PREFER_VECTOR_SIZE(128)
+  #if SIMDE_NATURAL_VECTOR_SIZE_LE(128)
     for (size_t i = 0 ; i < (sizeof(r_.m128) / sizeof(r_.m128[0])) ; i++) {
       r_.m128[i] = simde_x_mm_deinterleaveeven_ps(a_.m128[i], b_.m128[i]);
     }
@@ -1276,7 +1276,7 @@ simde_x_mm256_deinterleaveodd_ps (simde__m256 a, simde__m256 b) {
     a_ = simde__m256_to_private(a),
     b_ = simde__m256_to_private(b);
 
-  #if SIMDE_PREFER_VECTOR_SIZE(128)
+  #if SIMDE_NATURAL_VECTOR_SIZE_LE(128)
     for (size_t i = 0 ; i < (sizeof(r_.m128) / sizeof(r_.m128[0])) ; i++) {
       r_.m128[i] = simde_x_mm_deinterleaveodd_ps(a_.m128[i], b_.m128[i]);
     }
@@ -1304,7 +1304,7 @@ simde_x_mm256_deinterleaveeven_pd (simde__m256d a, simde__m256d b) {
     a_ = simde__m256d_to_private(a),
     b_ = simde__m256d_to_private(b);
 
-  #if SIMDE_PREFER_VECTOR_SIZE(128)
+  #if SIMDE_NATURAL_VECTOR_SIZE_LE(128)
     for (size_t i = 0 ; i < (sizeof(r_.m128d) / sizeof(r_.m128d[0])) ; i++) {
       r_.m128d[i] = simde_x_mm_deinterleaveeven_pd(a_.m128d[i], b_.m128d[i]);
     }
@@ -1332,7 +1332,7 @@ simde_x_mm256_deinterleaveodd_pd (simde__m256d a, simde__m256d b) {
     a_ = simde__m256d_to_private(a),
     b_ = simde__m256d_to_private(b);
 
-  #if SIMDE_PREFER_VECTOR_SIZE(128)
+  #if SIMDE_NATURAL_VECTOR_SIZE_LE(128)
     for (size_t i = 0 ; i < (sizeof(r_.m128d) / sizeof(r_.m128d[0])) ; i++) {
       r_.m128d[i] = simde_x_mm_deinterleaveodd_pd(a_.m128d[i], b_.m128d[i]);
     }

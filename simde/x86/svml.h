@@ -4710,7 +4710,7 @@ simde__m128
 simde_mm_erfinv_ps (simde__m128 a) {
   #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE_NATIVE)
     return _mm_erfinv_ps(a);
-  #elif defined(SIMDE_ASSUME_VECTORIZATION)
+  #elif (SIMDE_NATURAL_VECTOR_SIZE > 0)
     /* https://stackoverflow.com/questions/27229371/inverse-error-function-in-c */
     simde__m128 one = simde_mm_set1_ps(SIMDE_FLOAT32_C(1.0));
 
@@ -4753,7 +4753,7 @@ simde__m128d
 simde_mm_erfinv_pd (simde__m128d a) {
   #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE_NATIVE)
     return _mm_erfinv_pd(a);
-  #elif defined(SIMDE_ASSUME_VECTORIZATION)
+  #elif (SIMDE_NATURAL_VECTOR_SIZE > 0)
     simde__m128d one = simde_mm_set1_pd(SIMDE_FLOAT64_C(1.0));
 
     simde__m128d lnx = simde_mm_log_pd(simde_mm_mul_pd(simde_mm_sub_pd(one, a), simde_mm_add_pd(one, a)));
@@ -4795,7 +4795,7 @@ simde__m256
 simde_mm256_erfinv_ps (simde__m256 a) {
   #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX_NATIVE)
     return _mm256_erfinv_ps(a);
-  #elif defined(SIMDE_ASSUME_VECTORIZATION)
+  #elif (SIMDE_NATURAL_VECTOR_SIZE > 0)
     simde__m256 one = simde_mm256_set1_ps(SIMDE_FLOAT32_C(1.0));
     simde__m256 sgn = simde_x_mm256_copysign_ps(one, a);
 
@@ -4839,7 +4839,7 @@ simde__m256d
 simde_mm256_erfinv_pd (simde__m256d a) {
   #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX_NATIVE)
     return _mm256_erfinv_pd(a);
-  #elif defined(SIMDE_ASSUME_VECTORIZATION)
+  #elif (SIMDE_NATURAL_VECTOR_SIZE > 0)
     simde__m256d one = simde_mm256_set1_pd(SIMDE_FLOAT64_C(1.0));
     simde__m256d sgn = simde_x_mm256_copysign_pd(one, a);
 
@@ -4883,7 +4883,7 @@ simde__m512
 simde_mm512_erfinv_ps (simde__m512 a) {
   #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX512F_NATIVE)
     return _mm512_erfinv_ps(a);
-  #elif defined(SIMDE_ASSUME_VECTORIZATION)
+  #elif (SIMDE_NATURAL_VECTOR_SIZE > 0)
     simde__m512 one = simde_mm512_set1_ps(SIMDE_FLOAT32_C(1.0));
     simde__m512 sgn = simde_x_mm512_copysign_ps(one, a);
 
@@ -4927,7 +4927,7 @@ simde__m512d
 simde_mm512_erfinv_pd (simde__m512d a) {
   #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX512F_NATIVE)
     return _mm512_erfinv_pd(a);
-  #elif defined(SIMDE_ASSUME_VECTORIZATION)
+  #elif (SIMDE_NATURAL_VECTOR_SIZE > 0)
     simde__m512d one = simde_mm512_set1_pd(SIMDE_FLOAT64_C(1.0));
     simde__m512d sgn = simde_x_mm512_copysign_pd(one, a);
 

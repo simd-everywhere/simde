@@ -415,7 +415,7 @@ simde_mm_hadd_pi16 (simde__m64 a, simde__m64 b) {
 
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     r_.neon_i16 = vadd_s16(vuzp1_s16(a_.neon_i16, b_.neon_i16), vuzp2_s16(a_.neon_i16, b_.neon_i16));
-  #elif defined(SIMDE_ASSUME_VECTORIZATION) && defined(SIMDE_SHUFFLE_VECTOR_)
+  #elif (SIMDE_NATURAL_VECTOR_SIZE > 0) && defined(SIMDE_SHUFFLE_VECTOR_)
     r_.i16 =
       SIMDE_SHUFFLE_VECTOR_(16, 8, a_.i16, b_.i16, 0, 2, 4, 6) +
       SIMDE_SHUFFLE_VECTOR_(16, 8, a_.i16, b_.i16, 1, 3, 5, 7);
@@ -446,7 +446,7 @@ simde_mm_hadd_pi32 (simde__m64 a, simde__m64 b) {
 
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     r_.neon_i32 = vadd_s32(vuzp1_s32(a_.neon_i32, b_.neon_i32), vuzp2_s32(a_.neon_i32, b_.neon_i32));
-  #elif defined(SIMDE_ASSUME_VECTORIZATION) && defined(SIMDE_SHUFFLE_VECTOR_)
+  #elif (SIMDE_NATURAL_VECTOR_SIZE > 0) && defined(SIMDE_SHUFFLE_VECTOR_)
     r_.i32 =
       SIMDE_SHUFFLE_VECTOR_(32, 8, a_.i32, b_.i32, 0, 2) +
       SIMDE_SHUFFLE_VECTOR_(32, 8, a_.i32, b_.i32, 1, 3);
@@ -543,7 +543,7 @@ simde_mm_hsub_pi16 (simde__m64 a, simde__m64 b) {
 
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     r_.neon_i16 = vsub_s16(vuzp1_s16(a_.neon_i16, b_.neon_i16), vuzp2_s16(a_.neon_i16, b_.neon_i16));
-  #elif defined(SIMDE_ASSUME_VECTORIZATION) && defined(SIMDE_SHUFFLE_VECTOR_)
+  #elif (SIMDE_NATURAL_VECTOR_SIZE > 0) && defined(SIMDE_SHUFFLE_VECTOR_)
     r_.i16 =
       SIMDE_SHUFFLE_VECTOR_(16, 8, a_.i16, b_.i16, 0, 2, 4, 6) -
       SIMDE_SHUFFLE_VECTOR_(16, 8, a_.i16, b_.i16, 1, 3, 5, 7);
@@ -574,7 +574,7 @@ simde_mm_hsub_pi32 (simde__m64 a, simde__m64 b) {
 
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     r_.neon_i32 = vsub_s32(vuzp1_s32(a_.neon_i32, b_.neon_i32), vuzp2_s32(a_.neon_i32, b_.neon_i32));
-  #elif defined(SIMDE_ASSUME_VECTORIZATION) && defined(SIMDE_SHUFFLE_VECTOR_)
+  #elif (SIMDE_NATURAL_VECTOR_SIZE > 0) && defined(SIMDE_SHUFFLE_VECTOR_)
     r_.i32 =
       SIMDE_SHUFFLE_VECTOR_(32, 8, a_.i32, b_.i32, 0, 2) -
       SIMDE_SHUFFLE_VECTOR_(32, 8, a_.i32, b_.i32, 1, 3);

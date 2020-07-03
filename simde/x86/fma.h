@@ -120,7 +120,7 @@ simde__m256
 simde_mm256_fmadd_ps (simde__m256 a, simde__m256 b, simde__m256 c) {
   #if defined(SIMDE_X86_FMA_NATIVE)
     return _mm256_fmadd_ps(a, b, c);
-  #elif SIMDE_PREFER_VECTOR_SIZE(128)
+  #elif SIMDE_NATURAL_VECTOR_SIZE_LE(128)
     simde__m256_private
       a_ = simde__m256_to_private(a),
       b_ = simde__m256_to_private(b),

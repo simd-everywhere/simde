@@ -519,7 +519,7 @@ simde__m128
 simde_mm_ceil_ss (simde__m128 a, simde__m128 b) {
   #if defined(SIMDE_X86_SSE4_1_NATIVE)
     return _mm_ceil_ss(a, b);
-  #elif defined(SIMDE_ASSUME_VECTORIZATION)
+  #elif (SIMDE_NATURAL_VECTOR_SIZE > 0)
     return simde_mm_move_ss(a, simde_mm_ceil_ps(b));
   #else
     simde__m128_private
@@ -1143,7 +1143,7 @@ simde__m128
 simde_mm_floor_ss (simde__m128 a, simde__m128 b) {
 #if defined(SIMDE_X86_SSE4_1_NATIVE)
   return _mm_floor_ss(a, b);
-#elif defined(SIMDE_ASSUME_VECTORIZATION)
+#elif (SIMDE_NATURAL_VECTOR_SIZE > 0)
     return simde_mm_move_ss(a, simde_mm_floor_ps(b));
 #else
   simde__m128_private
