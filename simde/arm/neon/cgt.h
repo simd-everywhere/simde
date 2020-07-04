@@ -244,8 +244,8 @@ simde_vcgtq_u8(simde_uint8x16_t a, simde_uint8x16_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vcgtq_u8(a, b);
   #elif defined(SIMDE_X86_SSE2_NATIVE)
-    __m128i all_set = _mm_set1_epi8(INT8_MIN);
-    return _mm_cmpgt_epi8(_mm_xor_si128(a, all_set), _mm_xor_si128(b, all_set));
+    __m128i sign_bit = _mm_set1_epi8(INT8_MIN);
+    return _mm_cmpgt_epi8(_mm_xor_si128(a, sign_bit), _mm_xor_si128(b, sign_bit));
   #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
     return HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned char), vec_cmpgt(a, b));
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
@@ -279,8 +279,8 @@ simde_vcgtq_u16(simde_uint16x8_t a, simde_uint16x8_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vcgtq_u16(a, b);
   #elif defined(SIMDE_X86_SSE2_NATIVE)
-    __m128i all_set = _mm_set1_epi16(INT16_MIN);
-    return _mm_cmpgt_epi16(_mm_xor_si128(a, all_set), _mm_xor_si128(b, all_set));
+    __m128i sign_bit = _mm_set1_epi16(INT16_MIN);
+    return _mm_cmpgt_epi16(_mm_xor_si128(a, sign_bit), _mm_xor_si128(b, sign_bit));
   #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
     return HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned short), vec_cmpgt(a, b));
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
@@ -314,8 +314,8 @@ simde_vcgtq_u32(simde_uint32x4_t a, simde_uint32x4_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vcgtq_u32(a, b);
   #elif defined(SIMDE_X86_SSE2_NATIVE)
-    __m128i all_set = _mm_set1_epi32(INT32_MIN);
-    return _mm_cmpgt_epi32(_mm_xor_si128(a, all_set), _mm_xor_si128(b, all_set));
+    __m128i sign_bit = _mm_set1_epi32(INT32_MIN);
+    return _mm_cmpgt_epi32(_mm_xor_si128(a, sign_bit), _mm_xor_si128(b, sign_bit));
   #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
     return HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned int), vec_cmpgt(a, b));
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
@@ -349,8 +349,8 @@ simde_vcgtq_u64(simde_uint64x2_t a, simde_uint64x2_t b) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vcgtq_u64(a, b);
   #elif defined(SIMDE_X86_SSE4_2_NATIVE)
-    __m128i all_set = _mm_set1_epi64x(INT64_MIN);
-    return _mm_cmpgt_epi64(_mm_xor_si128(a, all_set), _mm_xor_si128(b, all_set));
+    __m128i sign_bit = _mm_set1_epi64x(INT64_MIN);
+    return _mm_cmpgt_epi64(_mm_xor_si128(a, sign_bit), _mm_xor_si128(b, sign_bit));
   #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
     return HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned long long), vec_cmpgt(a, b));
   #else
@@ -558,8 +558,8 @@ simde_vcgt_u8(simde_uint8x8_t a, simde_uint8x8_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vcgt_u8(a, b);
   #elif defined(SIMDE_X86_MMX_NATIVE)
-    __m64 all_set = _mm_set1_pi8(INT8_MIN);
-    return _mm_cmpgt_pi8(_mm_xor_si64(a, all_set), _mm_xor_si64(b, all_set));
+    __m64 sign_bit = _mm_set1_pi8(INT8_MIN);
+    return _mm_cmpgt_pi8(_mm_xor_si64(a, sign_bit), _mm_xor_si64(b, sign_bit));
   #else
     simde_uint8x8_private
       r_,
@@ -589,8 +589,8 @@ simde_vcgt_u16(simde_uint16x4_t a, simde_uint16x4_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vcgt_u16(a, b);
   #elif defined(SIMDE_X86_MMX_NATIVE)
-    __m64 all_set = _mm_set1_pi16(INT16_MIN);
-    return _mm_cmpgt_pi16(_mm_xor_si64(a, all_set), _mm_xor_si64(b, all_set));
+    __m64 sign_bit = _mm_set1_pi16(INT16_MIN);
+    return _mm_cmpgt_pi16(_mm_xor_si64(a, sign_bit), _mm_xor_si64(b, sign_bit));
   #else
     simde_uint16x4_private
       r_,
@@ -620,8 +620,8 @@ simde_vcgt_u32(simde_uint32x2_t a, simde_uint32x2_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vcgt_u32(a, b);
   #elif defined(SIMDE_X86_MMX_NATIVE)
-    __m64 all_set = _mm_set1_pi32(INT32_MIN);
-    return _mm_cmpgt_pi32(_mm_xor_si64(a, all_set), _mm_xor_si64(b, all_set));
+    __m64 sign_bit = _mm_set1_pi32(INT32_MIN);
+    return _mm_cmpgt_pi32(_mm_xor_si64(a, sign_bit), _mm_xor_si64(b, sign_bit));
   #else
     simde_uint32x2_private
       r_,
