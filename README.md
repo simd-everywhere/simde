@@ -73,6 +73,7 @@ sets:
  * [AVX](https://en.wikipedia.org/wiki/Advanced_Vector_Extensions)
  * [FMA](https://en.wikipedia.org/wiki/FMA_instruction_set)
  * [GFNI](https://en.wikipedia.org/wiki/AVX-512#GFNI)
+ * [SVML](https://software.intel.com/content/www/us/en/develop/documentation/cpp-compiler-developer-guide-and-reference/top/compiler-reference/intrinsics/intrinsics-for-intel-advanced-vector-extensions-512-intel-avx-512-instructions/intrinsics-for-arithmetic-operations-1/intrinsics-for-short-vector-math-library-svml-operations.html)
 
 As well as partial support for many others; see the
 [instruction-set-support](https://github.com/simd-everywhere/simde/issues?q=is%3Aissue+is%3Aopen+label%3Ainstruction-set-support+sort%3Aupdated-desc)
