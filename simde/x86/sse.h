@@ -846,6 +846,21 @@ simde_mm_avg_pu8 (simde__m64 a, simde__m64 b) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128
+simde_x_mm_abs_ps(simde__m128 a) {
+  simde__m128_private
+    r_,
+    a_ = simde__m128_to_private(a);
+
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
+      r_.f32[i] = simde_math_fabsf(a_.f32[i]);
+    }
+
+  return simde__m128_from_private(r_);
+}
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m128
 simde_mm_cmpeq_ps (simde__m128 a, simde__m128 b) {
 #if defined(SIMDE_X86_SSE_NATIVE)
   return _mm_cmpeq_ps(a, b);

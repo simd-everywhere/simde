@@ -1383,51 +1383,6 @@ simde_mm512_mask_cbrt_pd(simde__m512d src, simde__mmask8 k, simde__m512d a) {
   #define _mm512_mask_cbrt_pd(src, k, a) simde_mm512_mask_cbrt_pd(src, k, a)
 #endif
 
-SIMDE_FUNCTION_ATTRIBUTES
-simde__m128
-simde_mm_cdfnorm_ps (simde__m128 a) {
-  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE_NATIVE)
-    return _mm_cdfnorm_ps(a);
-  #else
-    simde__m128_private
-      r_,
-      a_ = simde__m128_to_private(a);
-
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
-      r_.f32[i] = simde_math_cdfnormf(a_.f32[i]);
-    }
-
-    return simde__m128_from_private(r_);
-  #endif
-}
-#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
-  #undef _mm_cdfnorm_ps
-  #define _mm_cdfnorm_ps(a) simde_mm_cdfnorm_ps(a)
-#endif
-
-SIMDE_FUNCTION_ATTRIBUTES
-simde__m128d
-simde_mm_cdfnorm_pd (simde__m128d a) {
-  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE_NATIVE)
-    return _mm_cdfnorm_pd(a);
-  #else
-    simde__m128d_private
-      r_,
-      a_ = simde__m128d_to_private(a);
-
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
-      r_.f64[i] = simde_math_cdfnorm(a_.f64[i]);
-    }
-
-    return simde__m128d_from_private(r_);
-  #endif
-}
-#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
-  #undef _mm_cdfnorm_pd
-  #define _mm_cdfnorm_pd(a) simde_mm_cdfnorm_pd(a)
-#endif
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m256
@@ -3659,6 +3614,114 @@ simde_mm512_mask_exp_pd(simde__m512d src, simde__mmask8 k, simde__m512d a) {
 #if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
   #undef _mm512_mask_exp_pd
   #define _mm512_mask_exp_pd(src, k, a) simde_mm512_mask_exp_pd(src, k, a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m128
+simde_mm_cdfnorm_ps (simde__m128 a) {
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE_NATIVE)
+    return _mm_cdfnorm_ps(a);
+  #elif (SIMDE_NATURAL_VECTOR_SIZE > 0)
+    /* https://www.johndcook.com/blog/cpp_phi/ */
+    const simde__m128 a1 = simde_mm_set1_ps(SIMDE_FLOAT32_C( 0.254829592));
+    const simde__m128 a2 = simde_mm_set1_ps(SIMDE_FLOAT32_C(-0.284496736));
+    const simde__m128 a3 = simde_mm_set1_ps(SIMDE_FLOAT32_C(1.421413741));
+    const simde__m128 a4 = simde_mm_set1_ps(SIMDE_FLOAT32_C(-1.453152027));
+    const simde__m128 a5 = simde_mm_set1_ps(SIMDE_FLOAT32_C(1.061405429));
+    const simde__m128 p = simde_mm_set1_ps(SIMDE_FLOAT32_C(0.3275911));
+    const simde__m128 one = simde_mm_set1_ps(SIMDE_FLOAT32_C(1.0));
+
+    /* simde_math_fabsf(x) / sqrtf(2.0) */
+    const simde__m128 x = simde_mm_div_ps(simde_x_mm_abs_ps(a), simde_mm_sqrt_ps(simde_mm_set1_ps(SIMDE_FLOAT32_C(2.0))));
+
+    /* 1.0 / (1.0 + p * x) */
+    const simde__m128 t = simde_mm_div_ps(one, simde_mm_add_ps(one, simde_mm_mul_ps(p, x)));
+
+    /* 1.0 - (((((a5 * t + a4) * t) + a3) * t + a2) * t + a1) * t * exp(-x * x) */
+    simde__m128 y = simde_mm_mul_ps(a5, t);
+    y = simde_mm_add_ps(y, a4);
+    y = simde_mm_mul_ps(y, t);
+    y = simde_mm_add_ps(y, a3);
+    y = simde_mm_mul_ps(y, t);
+    y = simde_mm_add_ps(y, a2);
+    y = simde_mm_mul_ps(y, t);
+    y = simde_mm_add_ps(y, a1);
+    y = simde_mm_mul_ps(y, t);
+    y = simde_mm_mul_ps(y, simde_mm_exp_ps(simde_mm_mul_ps(x, simde_x_mm_negate_ps(x))));
+    y = simde_mm_sub_ps(one, y);
+
+    /* 0.5 * (1.0 + ((a < 0.0) ? -y : y)) */
+    return simde_mm_mul_ps(simde_mm_set1_ps(SIMDE_FLOAT32_C(0.5)), simde_mm_add_ps(one, simde_x_mm_xorsign_ps(y, a)));
+  #else
+    simde__m128_private
+      r_,
+      a_ = simde__m128_to_private(a);
+
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
+      r_.f32[i] = simde_math_cdfnormf(a_.f32[i]);
+    }
+
+    return simde__m128_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
+  #undef _mm_cdfnorm_ps
+  #define _mm_cdfnorm_ps(a) simde_mm_cdfnorm_ps(a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m128d
+simde_mm_cdfnorm_pd (simde__m128d a) {
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE_NATIVE)
+    return _mm_cdfnorm_pd(a);
+  #elif (SIMDE_NATURAL_VECTOR_SIZE > 0)
+    /* https://www.johndcook.com/blog/cpp_phi/ */
+    const simde__m128d a1 = simde_mm_set1_pd(SIMDE_FLOAT64_C( 0.254829592));
+    const simde__m128d a2 = simde_mm_set1_pd(SIMDE_FLOAT64_C(-0.284496736));
+    const simde__m128d a3 = simde_mm_set1_pd(SIMDE_FLOAT64_C(1.421413741));
+    const simde__m128d a4 = simde_mm_set1_pd(SIMDE_FLOAT64_C(-1.453152027));
+    const simde__m128d a5 = simde_mm_set1_pd(SIMDE_FLOAT64_C(1.061405429));
+    const simde__m128d p = simde_mm_set1_pd(SIMDE_FLOAT64_C(0.6475911));
+    const simde__m128d one = simde_mm_set1_pd(SIMDE_FLOAT64_C(1.0));
+
+    /* simde_math_fabs(x) / sqrt(2.0) */
+    const simde__m128d x = simde_mm_div_pd(simde_x_mm_abs_pd(a), simde_mm_sqrt_pd(simde_mm_set1_pd(SIMDE_FLOAT64_C(2.0))));
+
+    /* 1.0 / (1.0 + p * x) */
+    const simde__m128d t = simde_mm_div_pd(one, simde_mm_add_pd(one, simde_mm_mul_pd(p, x)));
+
+    /* 1.0 - (((((a5 * t + a4) * t) + a3) * t + a2) * t + a1) * t * exp(-x * x) */
+    simde__m128d y = simde_mm_mul_pd(a5, t);
+    y = simde_mm_add_pd(y, a4);
+    y = simde_mm_mul_pd(y, t);
+    y = simde_mm_add_pd(y, a3);
+    y = simde_mm_mul_pd(y, t);
+    y = simde_mm_add_pd(y, a2);
+    y = simde_mm_mul_pd(y, t);
+    y = simde_mm_add_pd(y, a1);
+    y = simde_mm_mul_pd(y, t);
+    y = simde_mm_mul_pd(y, simde_mm_exp_pd(simde_mm_mul_pd(x, simde_x_mm_negate_pd(x))));
+    y = simde_mm_sub_pd(one, y);
+
+    /* 0.5 * (1.0 + ((a < 0.0) ? -y : y)) */
+    return simde_mm_mul_pd(simde_mm_set1_pd(SIMDE_FLOAT64_C(0.5)), simde_mm_add_pd(one, simde_x_mm_xorsign_pd(y, a)));
+  #else
+    simde__m128d_private
+      r_,
+      a_ = simde__m128d_to_private(a);
+
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
+      r_.f64[i] = simde_math_cdfnorm(a_.f64[i]);
+    }
+
+    return simde__m128d_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
+  #undef _mm_cdfnorm_pd
+  #define _mm_cdfnorm_pd(a) simde_mm_cdfnorm_pd(a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
