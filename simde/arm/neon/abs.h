@@ -206,6 +206,8 @@ simde_vabsq_f32(simde_float32x4_t a) {
     return vec_abs(a);
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_f32x4_abs(a);
+  #elif defined(SIMDE_X86_AVX512F_NATIVE)
+    return _mm512_castps512_ps128(_mm512_abs_ps(_mm512_castps128_ps512(a)));
   #else
     simde_float32x4_private
       r_,
@@ -231,6 +233,8 @@ simde_vabsq_f64(simde_float64x2_t a) {
     return vabsq_f64(a);
   #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
     return vec_abs(a);
+  #elif defined(SIMDE_X86_AVX512F_NATIVE)
+    return _mm512_castpd512_pd128(_mm512_abs_pd(_mm512_castpd128_pd512(a)));
   #else
     simde_float64x2_private
       r_,

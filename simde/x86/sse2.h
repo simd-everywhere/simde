@@ -401,16 +401,26 @@ simde_mm_set1_pd (simde_float64 a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128d
 simde_x_mm_abs_pd(simde__m128d a) {
-  simde__m128d_private
-    r_,
-    a_ = simde__m128d_to_private(a);
+  #if defined(SIMDE_X86_AVX512F_NATIVE)
+    return _mm512_castpd512_pd128(_mm512_abs_pd(_mm512_castpd128_pd512(a)));
+  #else
+    simde__m128d_private
+      r_,
+      a_ = simde__m128d_to_private(a);
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
-      r_.f64[i] = simde_math_fabs(a_.f64[i]);
-    }
+    #if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
+      r_.neon_f32 = vabsq_f32(a_.neon_f32);
+    #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
+      r_.altivec_f32 = vec_abs(a_.altivec_f32);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
+        r_.f64[i] = simde_math_fabs(a_.f64[i]);
+      }
+    #endif
 
-  return simde__m128d_from_private(r_);
+    return simde__m128d_from_private(r_);
+    #endif
 }
 
 SIMDE_FUNCTION_ATTRIBUTES

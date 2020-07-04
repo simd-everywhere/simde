@@ -847,16 +847,28 @@ simde_mm_avg_pu8 (simde__m64 a, simde__m64 b) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128
 simde_x_mm_abs_ps(simde__m128 a) {
-  simde__m128_private
-    r_,
-    a_ = simde__m128_to_private(a);
+  #if defined(SIMDE_X86_AVX512F_NATIVE)
+    return _mm512_castps512_ps128(_mm512_abs_ps(_mm512_castps128_ps512(a)));
+  #else
+    simde__m128_private
+      r_,
+      a_ = simde__m128_to_private(a);
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
-      r_.f32[i] = simde_math_fabsf(a_.f32[i]);
-    }
+    #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+      r_.neon_f32 = vabsq_f32(a_.neon_f32);
+    #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+      r_.altivec_f32 = vec_abs(a_.altivec_f32);
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+      r_.wasm_v128 = wasm_f32x4_abs(a_.wasm_v128);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
+        r_.f32[i] = simde_math_fabsf(a_.f32[i]);
+      }
+    #endif
 
-  return simde__m128_from_private(r_);
+    return simde__m128_from_private(r_);
+  #endif
 }
 
 SIMDE_FUNCTION_ATTRIBUTES
