@@ -399,6 +399,21 @@ simde_mm_set1_pd (simde_float64 a) {
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
+simde__m128d
+simde_x_mm_abs_pd(simde__m128d a) {
+  simde__m128d_private
+    r_,
+    a_ = simde__m128d_to_private(a);
+
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
+      r_.f64[i] = simde_math_fabs(a_.f64[i]);
+    }
+
+  return simde__m128d_from_private(r_);
+}
+
+SIMDE_FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_add_epi8 (simde__m128i a, simde__m128i b) {
 #if defined(SIMDE_X86_SSE2_NATIVE)
