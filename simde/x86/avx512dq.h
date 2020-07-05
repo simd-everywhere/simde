@@ -354,6 +354,18 @@ simde_x_mm512_negate_pd(simde__m512d a) {
   #endif
 }
 
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512
+simde_x_mm512_xorsign_ps(simde__m512 dest, simde__m512 src) {
+  return simde_mm512_xor_ps(simde_mm512_and_ps(simde_mm512_set1_ps(-0.0f), src), dest);
+}
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512d
+simde_x_mm512_xorsign_pd(simde__m512d dest, simde__m512d src) {
+  return simde_mm512_xor_pd(simde_mm512_and_pd(simde_mm512_set1_pd(-0.0), src), dest);
+}
+
 SIMDE_END_DECLS_
 
 HEDLEY_DIAGNOSTIC_POP
