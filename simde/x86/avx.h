@@ -1354,6 +1354,34 @@ simde_x_mm256_deinterleaveodd_pd (simde__m256d a, simde__m256d b) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m256
+simde_x_mm256_abs_ps(simde__m256 a) {
+    simde__m256_private
+      r_,
+      a_ = simde__m256_to_private(a);
+
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
+        r_.f32[i] = simde_math_fabsf(a_.f32[i]);
+      }
+    return simde__m256_from_private(r_);
+}
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256d
+simde_x_mm256_abs_pd(simde__m256d a) {
+    simde__m256d_private
+      r_,
+      a_ = simde__m256d_to_private(a);
+
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
+        r_.f64[i] = simde_math_fabs(a_.f64[i]);
+      }
+    return simde__m256d_from_private(r_);
+}
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256
 simde_mm256_add_ps (simde__m256 a, simde__m256 b) {
 #if defined(SIMDE_X86_AVX_NATIVE)
   return _mm256_add_ps(a, b);
@@ -5407,6 +5435,18 @@ simde_mm256_xor_pd (simde__m256d a, simde__m256d b) {
   #undef _mm256_xor_pd
   #define _mm256_xor_pd(a, b) simde_mm256_xor_pd(a, b)
 #endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256
+simde_x_mm256_xorsign_ps(simde__m256 dest, simde__m256 src) {
+  return simde_mm256_xor_ps(simde_mm256_and_ps(simde_mm256_set1_ps(-0.0f), src), dest);
+}
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256d
+simde_x_mm256_xorsign_pd(simde__m256d dest, simde__m256d src) {
+  return simde_mm256_xor_pd(simde_mm256_and_pd(simde_mm256_set1_pd(-0.0), src), dest);
+}
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m256
