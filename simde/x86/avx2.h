@@ -1780,6 +1780,90 @@ simde_mm256_maskload_epi64 (const int64_t mem_addr[HEDLEY_ARRAY_PARAM(4)], simde
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
+void
+simde_mm_maskstore_epi32 (int32_t mem_addr[HEDLEY_ARRAY_PARAM(4)], simde__m128i mask, simde__m128i a) {
+  #if defined(SIMDE_X86_AVX2_NATIVE)
+    _mm_maskstore_epi32(mem_addr, mask, a);
+  #else
+    simde__m128i_private mask_ = simde__m128i_to_private(mask);
+    simde__m128i_private a_ = simde__m128i_to_private(a);
+
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(a_.i32) / sizeof(a_.i32[0])) ; i++) {
+      if (mask_.u32[i] & (UINT32_C(1) << 31))
+        mem_addr[i] = a_.i32[i];
+    }
+  #endif
+}
+#if defined(SIMDE_X86_AVX2_ENABLE_NATIVE_ALIASES)
+  #undef _mm_maskstore_epi32
+  #define _mm_maskstore_epi32(mem_addr, mask, a) simde_mm_maskstore_epi32(HEDLEY_REINTERPRET_CAST(int32_t *, mem_addr), mask, a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+void
+simde_mm256_maskstore_epi32 (int32_t mem_addr[HEDLEY_ARRAY_PARAM(8)], simde__m256i mask, simde__m256i a) {
+  #if defined(SIMDE_X86_AVX2_NATIVE)
+    _mm256_maskstore_epi32(mem_addr, mask, a);
+  #else
+    simde__m256i_private mask_ = simde__m256i_to_private(mask);
+    simde__m256i_private a_ = simde__m256i_to_private(a);
+
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(a_.i32) / sizeof(a_.i32[0])) ; i++) {
+      if (mask_.u32[i] & (UINT32_C(1) << 31))
+        mem_addr[i] = a_.i32[i];
+    }
+  #endif
+}
+#if defined(SIMDE_X86_AVX2_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_maskstore_epi32
+  #define _mm256_maskstore_epi32(mem_addr, mask, a) simde_mm256_maskstore_epi32(HEDLEY_REINTERPRET_CAST(int32_t *, mem_addr), mask, a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+void
+simde_mm_maskstore_epi64 (int64_t mem_addr[HEDLEY_ARRAY_PARAM(2)], simde__m128i mask, simde__m128i a) {
+  #if defined(SIMDE_X86_AVX2_NATIVE)
+    _mm_maskstore_epi64(HEDLEY_REINTERPRET_CAST(long long *, mem_addr), mask, a);
+  #else
+    simde__m128i_private mask_ = simde__m128i_to_private(mask);
+    simde__m128i_private a_ = simde__m128i_to_private(a);
+
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(a_.i64) / sizeof(a_.i64[0])) ; i++) {
+      if (mask_.u64[i] >> 63)
+        mem_addr[i] = a_.i64[i];
+    }
+  #endif
+}
+#if defined(SIMDE_X86_AVX2_ENABLE_NATIVE_ALIASES)
+  #undef _mm_maskstore_epi64
+  #define _mm_maskstore_epi64(mem_addr, mask, a) simde_mm_maskstore_epi64(HEDLEY_REINTERPRET_CAST(int64_t *, mem_addr), mask, a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+void
+simde_mm256_maskstore_epi64 (int64_t mem_addr[HEDLEY_ARRAY_PARAM(4)], simde__m256i mask, simde__m256i a) {
+  #if defined(SIMDE_X86_AVX2_NATIVE)
+    _mm256_maskstore_epi64(HEDLEY_REINTERPRET_CAST(long long *, mem_addr), mask, a);
+  #else
+    simde__m256i_private mask_ = simde__m256i_to_private(mask);
+    simde__m256i_private a_ = simde__m256i_to_private(a);
+
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(a_.i64) / sizeof(a_.i64[0])) ; i++) {
+      if (mask_.u64[i] & (UINT64_C(1) << 63))
+        mem_addr[i] = a_.i64[i];
+    }
+  #endif
+}
+#if defined(SIMDE_X86_AVX2_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_maskstore_epi64
+  #define _mm256_maskstore_epi64(mem_addr, mask, a) simde_mm256_maskstore_epi64(HEDLEY_REINTERPRET_CAST(int64_t *, mem_addr), mask, a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
 simde__m256i
 simde_mm256_max_epi8 (simde__m256i a, simde__m256i b) {
 #if defined(SIMDE_X86_AVX2_NATIVE) && !defined(__PGI)
