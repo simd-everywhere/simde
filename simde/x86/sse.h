@@ -873,6 +873,25 @@ simde_x_mm_abs_ps(simde__m128 a) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128
+simde_x_mm_not_ps(simde__m128 a) {
+    simde__m128_private
+      r_,
+      a_ = simde__m128_to_private(a);
+
+    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+      r_.i32 = ~a_.i32;
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {
+        r_.i32[i] = ~(a_.i32[i]);
+      }
+    #endif
+
+    return simde__m128_from_private(r_);
+}
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m128
 simde_mm_cmpeq_ps (simde__m128 a, simde__m128 b) {
 #if defined(SIMDE_X86_SSE_NATIVE)
   return _mm_cmpeq_ps(a, b);

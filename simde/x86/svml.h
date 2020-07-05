@@ -1505,52 +1505,6 @@ simde_mm512_mask_cdfnorm_pd(simde__m512d src, simde__mmask8 k, simde__m512d a) {
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
-simde__m128
-simde_mm_cdfnorminv_ps (simde__m128 a) {
-  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE_NATIVE)
-    return _mm_cdfnorminv_ps(a);
-  #else
-    simde__m128_private
-      r_,
-      a_ = simde__m128_to_private(a);
-
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
-      r_.f32[i] = simde_math_cdfnorminvf(a_.f32[i]);
-    }
-
-    return simde__m128_from_private(r_);
-  #endif
-}
-#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
-  #undef _mm_cdfnorminv_ps
-  #define _mm_cdfnorminv_ps(a) simde_mm_cdfnorminv_ps(a)
-#endif
-
-SIMDE_FUNCTION_ATTRIBUTES
-simde__m128d
-simde_mm_cdfnorminv_pd (simde__m128d a) {
-  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE_NATIVE)
-    return _mm_cdfnorminv_pd(a);
-  #else
-    simde__m128d_private
-      r_,
-      a_ = simde__m128d_to_private(a);
-
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
-      r_.f64[i] = simde_math_cdfnorminv(a_.f64[i]);
-    }
-
-    return simde__m128d_from_private(r_);
-  #endif
-}
-#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
-  #undef _mm_cdfnorminv_pd
-  #define _mm_cdfnorminv_pd(a) simde_mm_cdfnorminv_pd(a)
-#endif
-
-SIMDE_FUNCTION_ATTRIBUTES
 simde__m256
 simde_mm256_cdfnorminv_ps (simde__m256 a) {
   #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX_NATIVE)
@@ -4770,11 +4724,211 @@ simde_mm512_mask_log_pd(simde__m512d src, simde__mmask8 k, simde__m512d a) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128
+simde_mm_cdfnorminv_ps (simde__m128 a) {
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE_NATIVE)
+    return _mm_cdfnorminv_ps(a);
+  #elif (SIMDE_NATURAL_VECTOR_SIZE > 0)
+    const simde__m128 a_[] = { simde_mm_set1_ps(SIMDE_FLOAT32_C(-3.969683028665376e+01)),
+                              simde_mm_set1_ps(SIMDE_FLOAT32_C( 2.209460984245205e+02)),
+                              simde_mm_set1_ps(SIMDE_FLOAT32_C(-2.759285104469687e+02)),
+                              simde_mm_set1_ps(SIMDE_FLOAT32_C( 1.383577518672690e+02)),
+                              simde_mm_set1_ps(SIMDE_FLOAT32_C(-3.066479806614716e+01)),
+                              simde_mm_set1_ps(SIMDE_FLOAT32_C( 2.506628277459239e+00))
+                            };
+
+    const simde__m128 b[] = { simde_mm_set1_ps(SIMDE_FLOAT32_C(-5.447609879822406e+01)),
+                              simde_mm_set1_ps(SIMDE_FLOAT32_C( 1.615858368580409e+02)),
+                              simde_mm_set1_ps(SIMDE_FLOAT32_C(-1.556989798598866e+02)),
+                              simde_mm_set1_ps(SIMDE_FLOAT32_C( 6.680131188771972e+01)),
+                              simde_mm_set1_ps(SIMDE_FLOAT32_C(-1.328068155288572e+01)),
+                            };
+
+    const simde__m128 c[] = { simde_mm_set1_ps(SIMDE_FLOAT32_C(-7.784894002430293e-03)),
+                              simde_mm_set1_ps(SIMDE_FLOAT32_C(-3.223964580411365e-01)),
+                              simde_mm_set1_ps(SIMDE_FLOAT32_C(-2.400758277161838e+00)),
+                              simde_mm_set1_ps(SIMDE_FLOAT32_C(-2.549732539343734e+00)),
+                              simde_mm_set1_ps(SIMDE_FLOAT32_C( 4.374664141464968e+00)),
+                              simde_mm_set1_ps(SIMDE_FLOAT32_C( 2.938163982698783e+00))
+                            };
+
+    const simde__m128 d[] = { simde_mm_set1_ps(SIMDE_FLOAT32_C( 7.784695709041462e-03)),
+                              simde_mm_set1_ps(SIMDE_FLOAT32_C( 3.224671290700398e-01)),
+                              simde_mm_set1_ps(SIMDE_FLOAT32_C( 2.445134137142996e+00)),
+                              simde_mm_set1_ps(SIMDE_FLOAT32_C( 3.754408661907416e+00)),
+                            };
+
+    const simde__m128 low  = simde_mm_set1_ps(SIMDE_FLOAT32_C( 0.02425));
+    const simde__m128 high = simde_mm_set1_ps(SIMDE_FLOAT32_C( 0.97575));
+
+    simde__m128 q, r;
+
+    simde__m128 matched;
+
+    /* if (a < 0 || a > 1) */
+    simde__m128 m1 = simde_mm_or_ps(simde_mm_cmplt_ps(a, simde_mm_set1_ps(SIMDE_FLOAT32_C(0.0))), simde_mm_cmpgt_ps(a, simde_mm_set1_ps(SIMDE_FLOAT32_C(1.0))));
+    matched = m1;
+
+    /* if (a < low) */
+    simde__m128 m2 = simde_mm_andnot_ps(matched, simde_mm_cmplt_ps(a, low));
+    matched = simde_mm_or_ps(matched, m2);
+
+    /* if (a > high) */
+    simde__m128 m3 = simde_mm_andnot_ps(matched, simde_mm_cmpgt_ps(a, high));
+    matched = simde_mm_or_ps(matched, m3);
+
+    simde__m128 m4 = simde_x_mm_not_ps(matched);
+
+    /* For branch 1 */
+    simde__m128 res1 = simde_mm_set1_ps(SIMDE_FLOAT32_C(0.0));
+
+
+    /* For branch 2 */
+    /* q = simde_math_sqrtf(-2.0f * simde_math_logf(p)) */
+    q = simde_mm_log_ps(a);
+    q = simde_mm_mul_ps(simde_mm_set1_ps(SIMDE_FLOAT32_C(-2.0)), q);
+    q = simde_mm_sqrt_ps(q);
+
+    /*(((((c[0] * q + c[1]) * q + c[2]) * q + c[3]) * q + c[4]) * q + c[5]) */
+    simde__m128 r_ = simde_mm_mul_ps(c[0], q);
+    r_ = simde_mm_add_ps(r_, c[1]);
+    r_ = simde_mm_mul_ps(r_, q);
+    r_ = simde_mm_add_ps(r_, c[2]);
+    r_ = simde_mm_mul_ps(r_, q);
+    r_ = simde_mm_add_ps(r_, c[3]);
+    r_ = simde_mm_mul_ps(r_, q);
+    r_ = simde_mm_add_ps(r_, c[4]);
+    r_ = simde_mm_mul_ps(r_, q);
+    r_ = simde_mm_add_ps(r_, c[5]);
+
+    /*(((((d[0] * q + d[1]) * q + d[2]) * q + d[3]) * q + 1)) */
+    simde__m128 r_div = simde_mm_mul_ps(d[0], q);
+    r_div = simde_mm_add_ps(r_div, d[1]);
+    r_div = simde_mm_mul_ps(r_div, q);
+    r_div = simde_mm_add_ps(r_div, d[2]);
+    r_div = simde_mm_mul_ps(r_div, q);
+    r_div = simde_mm_add_ps(r_div, d[3]);
+    r_div = simde_mm_mul_ps(r_div, q);
+    r_div = simde_mm_add_ps(r_div, simde_mm_set1_ps(SIMDE_FLOAT32_C(1.0)));
+
+    simde__m128 res2 =  simde_mm_div_ps(r_, r_div);
+
+
+    /* For branch 3 */
+    /* q = simde_math_sqrtf(-2.0f * simde_math_logf(1.0f - p))*/
+    simde__m128 q2 = simde_mm_sub_ps(simde_mm_set1_ps(SIMDE_FLOAT32_C(1.0)), a);
+    q2 = simde_mm_log_ps(q2);
+    q2 = simde_mm_mul_ps(simde_mm_set1_ps(SIMDE_FLOAT32_C(-2.0)), q2);
+    q2 = simde_mm_sqrt_ps(q2);
+
+    /* -(((((c[0] * q2 + c[1]) * q2 + c[2]) * q2 + c[3]) * q2 + c[4]) * q2 + c[5]) */
+    simde__m128 r2_ = simde_mm_mul_ps(c[0], q2);
+    r2_ = simde_mm_add_ps(r2_, c[1]);
+    r2_ = simde_mm_mul_ps(r2_, q2);
+    r2_ = simde_mm_add_ps(r2_, c[2]);
+    r2_ = simde_mm_mul_ps(r2_, q2);
+    r2_ = simde_mm_add_ps(r2_, c[3]);
+    r2_ = simde_mm_mul_ps(r2_, q2);
+    r2_ = simde_mm_add_ps(r2_, c[4]);
+    r2_ = simde_mm_mul_ps(r2_, q2);
+    r2_ = simde_mm_add_ps(r2_, c[5]);
+    r2_ = simde_x_mm_negate_ps(r2_);
+
+    /* (((((d[0] * q2 + d[1]) * q2 + d[2]) * q2 + d[3]) * q2 + 1)) */
+    simde__m128 r2_div = simde_mm_mul_ps(d[0], q2);
+    r2_div = simde_mm_add_ps(r2_div, d[1]);
+    r2_div = simde_mm_mul_ps(r2_div, q2);
+    r2_div = simde_mm_add_ps(r2_div, d[2]);
+    r2_div = simde_mm_mul_ps(r2_div, q2);
+    r2_div = simde_mm_add_ps(r2_div, d[3]);
+    r2_div = simde_mm_mul_ps(r2_div, q2);
+    r2_div = simde_mm_add_ps(r2_div, simde_mm_set1_ps(SIMDE_FLOAT32_C(1.0)));
+
+    simde__m128 res3 = simde_mm_div_ps(r_, r_div);
+
+
+    /* For branch 4 */
+    /*q = p - 0.5f */
+    q = simde_mm_sub_ps(a, simde_mm_set1_ps(SIMDE_FLOAT32_C(0.5)));
+    /* r = q * q */
+    r = simde_mm_mul_ps(q, q);
+
+    /* (((((a[0] * r + a[1]) * r + a[2]) * r + a[3]) * r + a[4]) * r + a[5]) * q */
+    simde__m128 r3_ = simde_mm_mul_ps(a_[0], r);
+    r3_ = simde_mm_add_ps(r3_, a_[1]);
+    r3_ = simde_mm_mul_ps(r3_, r);
+    r3_ = simde_mm_add_ps(r3_, a_[2]);
+    r3_ = simde_mm_mul_ps(r3_, r);
+    r3_ = simde_mm_add_ps(r3_, a_[3]);
+    r3_ = simde_mm_mul_ps(r3_, r);
+    r3_ = simde_mm_add_ps(r3_, a_[4]);
+    r3_ = simde_mm_mul_ps(r3_, r);
+    r3_ = simde_mm_add_ps(r3_, a_[5]);
+    r3_ = simde_mm_mul_ps(r3_, q);
+
+    /* (((((b[0] * r + b[1]) * r + b[2]) * r + b[3]) * r + b[4]) * r + 1) */
+    simde__m128 r3_div = simde_mm_mul_ps(b[0], r);
+    r3_div = simde_mm_add_ps(r3_div, b[1]);
+    r3_div = simde_mm_mul_ps(r3_div, r);
+    r3_div = simde_mm_add_ps(r3_div, b[2]);
+    r3_div = simde_mm_mul_ps(r3_div, r);
+    r3_div = simde_mm_add_ps(r3_div, b[3]);
+    r3_div = simde_mm_mul_ps(r3_div, r);
+    r3_div = simde_mm_add_ps(r3_div, b[4]);
+    r3_div = simde_mm_mul_ps(r3_div, r);
+    r3_div = simde_mm_add_ps(r3_div, simde_mm_set1_ps(SIMDE_FLOAT32_C(1.0)));
+
+    simde__m128 res4 =  simde_mm_div_ps(r_, r_div);
+
+    return simde_mm_or_ps(simde_mm_or_ps(simde_mm_or_ps(simde_mm_and_ps(m1, res1), simde_mm_and_ps(m2, res2)), simde_mm_and_ps(m3, res3)), simde_mm_and_ps(m4, res4));
+
+  #else
+    simde__m128_private
+      r_,
+      a_ = simde__m128_to_private(a);
+
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
+      r_.f32[i] = simde_math_cdfnorminvf(a_.f32[i]);
+    }
+
+    return simde__m128_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
+  #undef _mm_cdfnorminv_ps
+  #define _mm_cdfnorminv_ps(a) simde_mm_cdfnorminv_ps(a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m128d
+simde_mm_cdfnorminv_pd (simde__m128d a) {
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE_NATIVE)
+    return _mm_cdfnorminv_pd(a);
+  #else
+    simde__m128d_private
+      r_,
+      a_ = simde__m128d_to_private(a);
+
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
+      r_.f64[i] = simde_math_cdfnorminv(a_.f64[i]);
+    }
+
+    return simde__m128d_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
+  #undef _mm_cdfnorminv_pd
+  #define _mm_cdfnorminv_pd(a) simde_mm_cdfnorminv_pd(a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m128
 simde_mm_erfinv_ps (simde__m128 a) {
   #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE_NATIVE)
     return _mm_erfinv_ps(a);
   #elif (SIMDE_NATURAL_VECTOR_SIZE > 0)
-    /* https://stackoverflow.com/questions/27229371/inverse-error-function-in-c */
+    /* https://stackoverflow.com/questions/27229371/inverse-er_divor-function-in-c */
     simde__m128 one = simde_mm_set1_ps(SIMDE_FLOAT32_C(1.0));
 
     simde__m128 lnx = simde_mm_log_ps(simde_mm_mul_ps(simde_mm_sub_ps(one, a), simde_mm_add_ps(one, a)));
