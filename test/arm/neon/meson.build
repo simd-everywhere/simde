@@ -30,6 +30,7 @@ simde_test_arm_neon_tests = [
   'mvn',
   'neg',
   'orr',
+  'padal',
   'padd',
   'paddl',
   'pmax',
