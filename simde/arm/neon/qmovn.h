@@ -124,7 +124,7 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde_int8x8_t
 simde_vqmovn_s16(simde_int16x8_t a) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-    return vqmovn_s8(a);
+    return vqmovn_s16(a);
   #else
     simde_int8x8_private r_;
     simde_int16x8_private a_ = simde_int16x8_to_private(a);
@@ -146,7 +146,7 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde_int16x4_t
 simde_vqmovn_s32(simde_int32x4_t a) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-    return vqmovn_s16(a);
+    return vqmovn_s32(a);
   #else
     simde_int16x4_private r_;
     simde_int32x4_private a_ = simde_int32x4_to_private(a);
@@ -168,7 +168,7 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde_int32x2_t
 simde_vqmovn_s64(simde_int64x2_t a) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-    return vqmovn_s32(a);
+    return vqmovn_s64(a);
   #else
     simde_int32x2_private r_;
     simde_int64x2_private a_ = simde_int64x2_to_private(a);
@@ -190,7 +190,7 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde_uint8x8_t
 simde_vqmovn_u16(simde_uint16x8_t a) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-    return vqmovn_u8(a);
+    return vqmovn_u16(a);
   #else
     simde_uint8x8_private r_;
     simde_uint16x8_private a_ = simde_uint16x8_to_private(a);
@@ -212,7 +212,7 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde_uint16x4_t
 simde_vqmovn_u32(simde_uint32x4_t a) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-    return vqmovn_u16(a);
+    return vqmovn_u32(a);
   #else
     simde_uint16x4_private r_;
     simde_uint32x4_private a_ = simde_uint32x4_to_private(a);
@@ -234,7 +234,7 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde_uint32x2_t
 simde_vqmovn_u64(simde_uint64x2_t a) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-    return vqmovn_u32(a);
+    return vqmovn_u64(a);
   #else
     simde_uint32x2_private r_;
     simde_uint64x2_private a_ = simde_uint64x2_to_private(a);
