@@ -141,6 +141,7 @@ set(TEST_SOURCES_C
   arm/neon/mvn.c
   arm/neon/neg.c
   arm/neon/orr.c
+  arm/neon/padal.c
   arm/neon/padd.c
   arm/neon/paddl.c
   arm/neon/pmax.c

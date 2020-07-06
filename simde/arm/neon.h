@@ -64,6 +64,7 @@
 #include "neon/mvn.h"
 #include "neon/neg.h"
 #include "neon/orr.h"
+#include "neon/padal.h"
 #include "neon/padd.h"
 #include "neon/paddl.h"
 #include "neon/pmax.h"
