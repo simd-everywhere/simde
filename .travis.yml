@@ -265,10 +265,11 @@ jobs:
     install:
     - |
       git clone https://github.com/emscripten-core/emsdk.git
-      emsdk/emsdk update-tags
-      emsdk/emsdk install tot
-      emsdk/emsdk activate tot
-      source emsdk/emsdk_env.sh
+      cd emsdk
+      ./emsdk update-tags
+      ./emsdk install tot
+      ./emsdk activate tot
+      source emsdk_env.sh
     - |
       npm install jsvu -g
       jsvu --os=linux64 --engines=v8
