@@ -771,6 +771,21 @@ simde_mm_or_ps (simde__m128 a, simde__m128 b) {
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
+simde__m128
+simde_x_mm_not_ps(simde__m128 a) {
+    simde__m128_private
+      r_,
+      a_ = simde__m128_to_private(a);
+
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {
+        r_.i32[i] = ~(a_.i32[i]);
+      }
+
+    return simde__m128_from_private(r_);
+}
+
+SIMDE_FUNCTION_ATTRIBUTES
 simde__m64
 simde_mm_avg_pu16 (simde__m64 a, simde__m64 b) {
 #if defined(SIMDE_X86_SSE_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
