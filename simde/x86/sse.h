@@ -773,16 +773,33 @@ simde_mm_or_ps (simde__m128 a, simde__m128 b) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128
 simde_x_mm_not_ps(simde__m128 a) {
+  #if defined(SIMDE_X86_SSE2_NATIVE)
+    /* Note: we use ints instead of floats because we don't want cmpeq
+     * to return false for (NaN, NaN) */
+    __m128i ai = _mm_castps_si128(a);
+    return _mm_castsi128_ps(_mm_andnot_si128(ai, _mm_cmpeq_epi32(ai, ai)));
+  #else
     simde__m128_private
       r_,
       a_ = simde__m128_to_private(a);
 
+    #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+      r_.neon_i32 = vmvnq_s32(a_.neon_i32);
+    #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+      r_.altivec_i32 = vec_nor(a_.altivec_i32, a_.altivec_i32);
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+      r_.wasm_v128 = wasm_v128_not(a_.wasm_v128);
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+      r_.i32 = ~a_.i32;
+    #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {
         r_.i32[i] = ~(a_.i32[i]);
       }
+    #endif
 
     return simde__m128_from_private(r_);
+  #endif
 }
 
 SIMDE_FUNCTION_ATTRIBUTES
