@@ -40,6 +40,7 @@ simde_test_arm_neon_tests = [
   'pmax',
   'pmin',
   'qmovn',
+  'qmovn_high',
   'reinterpret',
   'rshr_n',
   'rsra_n',
