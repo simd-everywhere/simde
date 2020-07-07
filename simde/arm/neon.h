@@ -74,6 +74,7 @@
 #include "neon/shr_n.h"
 #include "neon/sra_n.h"
 #include "neon/st1.h"
+#include "neon/st1_lane.h"
 #include "neon/sub.h"
 #include "neon/trn.h"
 #include "neon/trn1.h"
