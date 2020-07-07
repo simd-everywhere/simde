@@ -803,6 +803,45 @@ simde_x_mm_not_ps(simde__m128 a) {
 }
 
 SIMDE_FUNCTION_ATTRIBUTES
+simde__m128
+simde_x_mm_select_ps(simde__m128 a, simde__m128 b, simde__m128 mask) {
+  /* This function is for when you want to blend two elements together
+   * according to a mask.  It is similar to _mm_blendv_ps, except that
+   * it is undefined whether the blend is based on the highest bit in
+   * each lane (like blendv) or just bitwise operations.  This allows
+   * us to implement the function efficiently everywhere.
+   *
+   * Basically, you promise that all the lanes in mask are either 0 or
+   * ~0. */
+  #if defined(SIMDE_X86_SSE4_1_NATIVE)
+    return _mm_blendv_ps(a, b, mask);
+  #else
+    simde__m128_private
+      r_,
+      a_ = simde__m128_to_private(a),
+      b_ = simde__m128_to_private(b),
+      mask_ = simde__m128_to_private(mask);
+
+    #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+      r_.neon_i32 = vbslq_s32(mask_.neon_u32, b_.neon_i32, a_.neon_i32);
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+      r_.wasm_v128 = wasm_v128_bitselect(b_.wasm_v128, a_.wasm_v128, mask_.wasm_v128);
+    #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+      r_.altivec_i32 = vec_sel(a_.altivec_i32, b_.altivec_i32, mask_.altivec_u32);
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+      r_.i32 = a_.i32 ^ ((a_.i32 ^ b_.i32) & mask_.i32);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {
+        r_.i32[i] = a_.i32[i] ^ ((a_.i32[i] ^ b_.i32[i]) & mask_.i32[i]);
+      }
+    #endif
+
+    return simde__m128_from_private(r_);
+  #endif
+}
+
+SIMDE_FUNCTION_ATTRIBUTES
 simde__m64
 simde_mm_avg_pu16 (simde__m64 a, simde__m64 b) {
 #if defined(SIMDE_X86_SSE_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
