@@ -165,7 +165,9 @@
 #endif
 
 #if !defined(SIMDE_NO_CHECK_IMMEDIATE_CONSTANT)
-  #if defined(SIMDE_CHECK_CONSTANT_) && SIMDE_DETECT_CLANG_VERSION_NOT(9,0,0)
+  #if defined(SIMDE_CHECK_CONSTANT_) && \
+      SIMDE_DETECT_CLANG_VERSION_NOT(9,0,0) && \
+      (!defined(__apple_build_version__) || ((__apple_build_version__ < 11000000) || (__apple_build_version__ >= 12000000)))
     #define SIMDE_REQUIRE_CONSTANT(arg) HEDLEY_REQUIRE_MSG(SIMDE_CHECK_CONSTANT_(arg), "`" #arg "' must be constant")
   #else
     #define SIMDE_REQUIRE_CONSTANT(arg)
