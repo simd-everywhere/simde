@@ -306,8 +306,6 @@ simde_int32x4_t
 simde_vqaddq_s32(simde_int32x4_t a, simde_int32x4_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vqaddq_s32(a, b);
-  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    return wasm_i32x4_add_saturate(a, b);
   #elif SIMDE_NATURAL_VECTOR_SIZE > 0
     return simde_vcombine_s32(simde_vqadd_s32(simde_vget_low_s32(a), simde_vget_low_s32(b)), simde_vqadd_s32(simde_vget_high_s32(a), simde_vget_high_s32(b)));
   #else
@@ -334,8 +332,6 @@ simde_int64x2_t
 simde_vqaddq_s64(simde_int64x2_t a, simde_int64x2_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vqaddq_s64(a, b);
-  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    return wasm_i64x2_add_saturate(a, b);
   #else
     simde_int64x2_private
       r_,
@@ -421,8 +417,6 @@ simde_uint32x4_t
 simde_vqaddq_u32(simde_uint32x4_t a, simde_uint32x4_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vqaddq_u32(a, b);
-  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    return wasm_u32x4_add_saturate(a, b);
   #elif SIMDE_NATURAL_VECTOR_SIZE > 0
     return simde_vcombine_u32(simde_vqadd_u32(simde_vget_low_u32(a), simde_vget_low_u32(b)), simde_vqadd_u32(simde_vget_high_u32(a), simde_vget_high_u32(b)));
   #else
@@ -449,8 +443,6 @@ simde_uint64x2_t
 simde_vqaddq_u64(simde_uint64x2_t a, simde_uint64x2_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vqaddq_u64(a, b);
-  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    return wasm_u64x2_add_saturate(a, b);
   #else
     simde_uint64x2_private
       r_,
