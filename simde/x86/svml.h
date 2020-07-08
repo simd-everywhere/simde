@@ -1385,52 +1385,6 @@ simde_mm512_mask_cbrt_pd(simde__m512d src, simde__mmask8 k, simde__m512d a) {
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
-simde__m256
-simde_mm256_cdfnorminv_ps (simde__m256 a) {
-  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX_NATIVE)
-    return _mm256_cdfnorminv_ps(a);
-  #else
-    simde__m256_private
-      r_,
-      a_ = simde__m256_to_private(a);
-
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
-      r_.f32[i] = simde_math_cdfnorminvf(a_.f32[i]);
-    }
-
-    return simde__m256_from_private(r_);
-  #endif
-}
-#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
-  #undef _mm256_cdfnorminv_ps
-  #define _mm256_cdfnorminv_ps(a) simde_mm256_cdfnorminv_ps(a)
-#endif
-
-SIMDE_FUNCTION_ATTRIBUTES
-simde__m256d
-simde_mm256_cdfnorminv_pd (simde__m256d a) {
-  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX_NATIVE)
-    return _mm256_cdfnorminv_pd(a);
-  #else
-    simde__m256d_private
-      r_,
-      a_ = simde__m256d_to_private(a);
-
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
-      r_.f64[i] = simde_math_cdfnorminv(a_.f64[i]);
-    }
-
-    return simde__m256d_from_private(r_);
-  #endif
-}
-#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
-  #undef _mm256_cdfnorminv_pd
-  #define _mm256_cdfnorminv_pd(a) simde_mm256_cdfnorminv_pd(a)
-#endif
-
-SIMDE_FUNCTION_ATTRIBUTES
 simde__m512
 simde_mm512_cdfnorminv_ps (simde__m512 a) {
   #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX512F_NATIVE)
@@ -4976,6 +4930,108 @@ simde__m128d
 simde_mm_cdfnorminv_pd (simde__m128d a) {
   #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE_NATIVE)
     return _mm_cdfnorminv_pd(a);
+   #elif SIMDE_NATURAL_VECTOR_SIZE_GE(128)
+    simde__m128d matched, retval = simde_mm_setzero_pd();
+
+    { /* if (a < 0 || a > 1) */
+      matched = simde_mm_or_pd(simde_mm_cmplt_pd(a, simde_mm_set1_pd(SIMDE_FLOAT64_C(0.0))), simde_mm_cmpgt_pd(a, simde_mm_set1_pd(SIMDE_FLOAT64_C(1.0))));
+
+      /* We don't actually need to do anything here since we initialize
+       * retval to 0.0. */
+    }
+
+    { /* else if (a == 0) */
+      simde__m128d mask = simde_mm_cmpeq_pd(a, simde_mm_set1_pd(SIMDE_FLOAT64_C(0.0)));
+      mask = simde_mm_andnot_pd(matched, mask);
+      matched = simde_mm_or_pd(matched, mask);
+
+      simde__m128d res = simde_mm_set1_pd(-SIMDE_MATH_INFINITY);
+
+      retval = simde_mm_or_pd(retval, simde_mm_and_pd(mask, res));
+    }
+
+    { /* else if (a == 1) */
+      simde__m128d mask = simde_mm_cmpeq_pd(a, simde_mm_set1_pd(SIMDE_FLOAT64_C(1.0)));
+      mask = simde_mm_andnot_pd(matched, mask);
+      matched = simde_mm_or_pd(matched, mask);
+
+      simde__m128d res = simde_mm_set1_pd(SIMDE_MATH_INFINITY);
+
+      retval = simde_mm_or_pd(retval, simde_mm_and_pd(mask, res));
+    }
+
+    { /* Remaining conditions.
+       *
+       * Including the else case in this complicates things a lot, but
+       * we're using cheap operations to get rid of expensive multiply
+       * and add functions.  This should be a small improvement on SSE
+       * prior to 4.1.  On SSE 4.1 we can use _mm_blendv_pd which is
+       * very fast and this becomes a huge win.  NEON, AltiVec, and
+       * WASM also have blend operations, so this should be a big win
+       * there, too. */
+
+      /* else if (a < 0.02425) */
+      simde__m128d mask_lo = simde_mm_cmplt_pd(a, simde_mm_set1_pd(SIMDE_FLOAT64_C(0.02425)));
+      /* else if (a > 0.97575) */
+      simde__m128d mask_hi = simde_mm_cmpgt_pd(a, simde_mm_set1_pd(SIMDE_FLOAT64_C(0.97575)));
+
+      simde__m128d mask = simde_mm_or_pd(mask_lo, mask_hi);
+      matched = simde_mm_or_pd(matched, mask);
+
+      /* else */
+      simde__m128d mask_el = simde_x_mm_not_pd(matched);
+      mask = simde_mm_or_pd(mask, mask_el);
+
+      /* r = a - 0.5 */
+      simde__m128d r = simde_mm_sub_pd(a, simde_mm_set1_pd(SIMDE_FLOAT64_C(0.5)));
+
+      /* lo: q = a
+       * hi: q = (1.0 - a) */
+      simde__m128d q = simde_mm_and_pd(mask_lo, a);
+      q = simde_mm_or_pd(q, simde_mm_and_pd(mask_hi, simde_mm_sub_pd(simde_mm_set1_pd(1.0), a)));
+
+      /* q = simde_math_sqrt(-2.0 * simde_math_log(q)) */
+      q = simde_mm_log_pd(q);
+      q = simde_mm_mul_pd(q, simde_mm_set1_pd(SIMDE_FLOAT64_C(-2.0)));
+      q = simde_mm_sqrt_pd(q);
+
+      /* el: q = r * r */
+      q = simde_x_mm_select_pd(q, simde_mm_mul_pd(r, r), mask_el);
+
+      /* lo: double numerator = ((((((c_c[0] * q + c_c[1]) * q + c_c[2]) * q + c_c[3]) * q + c_c[4]) * q + c_c[5]) *  1.0); */
+      /* hi: double numerator = ((((((c_c[0] * q + c_c[1]) * q + c_c[2]) * q + c_c[3]) * q + c_c[4]) * q + c_c[5]) * -1.0); */
+      /* el: double numerator = ((((((c_a[0] * q + c_a[1]) * q + c_a[2]) * q + c_a[3]) * q + c_a[4]) * q + c_a[5]) *  r); */
+      simde__m128d numerator = simde_x_mm_select_pd(simde_mm_set1_pd(SIMDE_FLOAT64_C(-7.784894002430293e-03)), simde_mm_set1_pd(SIMDE_FLOAT64_C(-3.969683028665376e+01)), mask_el);
+      numerator = simde_mm_fmadd_pd(numerator, q, simde_x_mm_select_pd(simde_mm_set1_pd(SIMDE_FLOAT64_C(-3.223964580411365e-01)), simde_mm_set1_pd(SIMDE_FLOAT64_C( 2.209460984245205e+02)), mask_el));
+      numerator = simde_mm_fmadd_pd(numerator, q, simde_x_mm_select_pd(simde_mm_set1_pd(SIMDE_FLOAT64_C(-2.400758277161838e+00)), simde_mm_set1_pd(SIMDE_FLOAT64_C(-2.759285104469687e+02)), mask_el));
+      numerator = simde_mm_fmadd_pd(numerator, q, simde_x_mm_select_pd(simde_mm_set1_pd(SIMDE_FLOAT64_C(-2.549732539343734e+00)), simde_mm_set1_pd(SIMDE_FLOAT64_C( 1.383577518672690e+02)), mask_el));
+      numerator = simde_mm_fmadd_pd(numerator, q, simde_x_mm_select_pd(simde_mm_set1_pd(SIMDE_FLOAT64_C( 4.374664141464968e+00)), simde_mm_set1_pd(SIMDE_FLOAT64_C(-3.066479806614716e+01)), mask_el));
+      numerator = simde_mm_fmadd_pd(numerator, q, simde_x_mm_select_pd(simde_mm_set1_pd(SIMDE_FLOAT64_C( 2.938163982698783e+00)), simde_mm_set1_pd(SIMDE_FLOAT64_C( 2.506628277459239e+00)), mask_el));
+      {
+        simde__m128d multiplier;
+        multiplier =                            simde_mm_and_pd(mask_lo, simde_mm_set1_pd(SIMDE_FLOAT64_C( 1.0)));
+        multiplier = simde_mm_or_pd(multiplier, simde_mm_and_pd(mask_hi, simde_mm_set1_pd(SIMDE_FLOAT64_C(-1.0))));
+        multiplier = simde_mm_or_pd(multiplier, simde_mm_and_pd(mask_el, r));
+        numerator = simde_mm_mul_pd(numerator, multiplier);
+      }
+
+      /* lo/hi: double denominator = (((((c_d[0] * q + c_d[1]) * q + c_d[2]) * q + c_d[3]) * 1 +   0.0f) * q + 1); */
+      /*    el: double denominator = (((((c_b[0] * q + c_b[1]) * q + c_b[2]) * q + c_b[3]) * q + c_b[4]) * q + 1); */
+      simde__m128d denominator = simde_x_mm_select_pd(simde_mm_set1_pd(SIMDE_FLOAT64_C( 7.784695709041462e-03)), simde_mm_set1_pd(SIMDE_FLOAT64_C(-5.447609879822406e+01)), mask_el);
+      denominator = simde_mm_fmadd_pd(denominator, q, simde_x_mm_select_pd(simde_mm_set1_pd(SIMDE_FLOAT64_C( 3.224671290700398e-01)), simde_mm_set1_pd(SIMDE_FLOAT64_C( 1.615858368580409e+02)), mask_el));
+      denominator = simde_mm_fmadd_pd(denominator, q, simde_x_mm_select_pd(simde_mm_set1_pd(SIMDE_FLOAT64_C( 2.445134137142996e+00)), simde_mm_set1_pd(SIMDE_FLOAT64_C(-1.556989798598866e+02)), mask_el));
+      denominator = simde_mm_fmadd_pd(denominator, q, simde_x_mm_select_pd(simde_mm_set1_pd(SIMDE_FLOAT64_C( 3.754408661907416e+00)), simde_mm_set1_pd(SIMDE_FLOAT64_C( 6.680131188771972e+01)), mask_el));
+      denominator = simde_mm_fmadd_pd(denominator, simde_x_mm_select_pd(simde_mm_set1_pd(SIMDE_FLOAT64_C( 1.0)), q, mask_el),
+                                                   simde_x_mm_select_pd(simde_mm_set1_pd(SIMDE_FLOAT64_C( 0.0)), simde_mm_set1_pd(SIMDE_FLOAT64_C(-1.328068155288572e+01)), mask_el));
+      denominator = simde_mm_fmadd_pd(denominator, q, simde_mm_set1_pd(SIMDE_FLOAT64_C(1.0)));
+
+      /* res = numerator / denominator; */
+      simde__m128d res = simde_mm_div_pd(numerator, denominator);
+
+      retval = simde_mm_or_pd(retval, simde_mm_and_pd(mask, res));
+    }
+
+    return retval;
   #else
     simde__m128d_private
       r_,
@@ -4992,6 +5048,255 @@ simde_mm_cdfnorminv_pd (simde__m128d a) {
 #if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
   #undef _mm_cdfnorminv_pd
   #define _mm_cdfnorminv_pd(a) simde_mm_cdfnorminv_pd(a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256
+simde_mm256_cdfnorminv_ps (simde__m256 a) {
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX_NATIVE)
+    return _mm256_cdfnorminv_ps(a);
+  #elif SIMDE_NATURAL_VECTOR_SIZE_GE(256)
+    simde__m256 matched, retval = simde_mm256_setzero_ps();
+
+    { /* if (a < 0 || a > 1) */
+      matched = simde_mm256_or_ps(simde_mm256_cmp_ps(a, simde_mm256_set1_ps(SIMDE_FLOAT32_C(0.0)), SIMDE_CMP_LT_OQ), simde_mm256_cmp_ps(a, simde_mm256_set1_ps(SIMDE_FLOAT32_C(1.0)), SIMDE_CMP_GT_OQ));
+
+      /* We don't actually need to do anything here since we initialize
+       * retval to 0.0. */
+    }
+
+    { /* else if (a == 0) */
+      simde__m256 mask = simde_mm256_cmp_ps(a, simde_mm256_set1_ps(SIMDE_FLOAT32_C(0.0)), SIMDE_CMP_EQ_OQ);
+      mask = simde_mm256_andnot_ps(matched, mask);
+      matched = simde_mm256_or_ps(matched, mask);
+
+      simde__m256 res = simde_mm256_set1_ps(-SIMDE_MATH_INFINITYF);
+
+      retval = simde_mm256_or_ps(retval, simde_mm256_and_ps(mask, res));
+    }
+
+    { /* else if (a == 1) */
+      simde__m256 mask = simde_mm256_cmp_ps(a, simde_mm256_set1_ps(SIMDE_FLOAT32_C(1.0)), SIMDE_CMP_EQ_OQ);
+      mask = simde_mm256_andnot_ps(matched, mask);
+      matched = simde_mm256_or_ps(matched, mask);
+
+      simde__m256 res = simde_mm256_set1_ps(SIMDE_MATH_INFINITYF);
+
+      retval = simde_mm256_or_ps(retval, simde_mm256_and_ps(mask, res));
+    }
+
+    { /* Remaining conditions.
+       *
+       * Including the else case in this complicates things a lot, but
+       * we're using cheap operations to get rid of expensive multiply
+       * and add functions.  This should be a small improvement on SSE
+       * prior to 4.1.  On SSE 4.1 we can use _mm256_blendv_ps which is
+       * very fast and this becomes a huge win.  NEON, AltiVec, and
+       * WASM also have blend operations, so this should be a big win
+       * there, too. */
+
+      /* else if (a < 0.02425) */
+      simde__m256 mask_lo = simde_mm256_cmp_ps(a, simde_mm256_set1_ps(SIMDE_FLOAT32_C(0.02425)), SIMDE_CMP_LT_OQ);
+      /* else if (a > 0.97575) */
+      simde__m256 mask_hi = simde_mm256_cmp_ps(a, simde_mm256_set1_ps(SIMDE_FLOAT32_C(0.97575)), SIMDE_CMP_GT_OQ);
+
+      simde__m256 mask = simde_mm256_or_ps(mask_lo, mask_hi);
+      matched = simde_mm256_or_ps(matched, mask);
+
+      /* else */
+      simde__m256 mask_el = simde_x_mm256_not_ps(matched);
+      mask = simde_mm256_or_ps(mask, mask_el);
+
+      /* r = a - 0.5f */
+      simde__m256 r = simde_mm256_sub_ps(a, simde_mm256_set1_ps(SIMDE_FLOAT32_C(0.5)));
+
+      /* lo: q = a
+       * hi: q = (1.0 - a) */
+      simde__m256 q = simde_mm256_and_ps(mask_lo, a);
+      q = simde_mm256_or_ps(q, simde_mm256_and_ps(mask_hi, simde_mm256_sub_ps(simde_mm256_set1_ps(1.0f), a)));
+
+      /* q = simde_math_sqrtf(-2.0f * simde_math_logf(q)) */
+      q = simde_mm256_log_ps(q);
+      q = simde_mm256_mul_ps(q, simde_mm256_set1_ps(SIMDE_FLOAT32_C(-2.0)));
+      q = simde_mm256_sqrt_ps(q);
+
+      /* el: q = r * r */
+      q = simde_x_mm256_select_ps(q, simde_mm256_mul_ps(r, r), mask_el);
+
+      /* lo: float numerator = ((((((c_c[0] * q + c_c[1]) * q + c_c[2]) * q + c_c[3]) * q + c_c[4]) * q + c_c[5]) *  1.0f); */
+      /* hi: float numerator = ((((((c_c[0] * q + c_c[1]) * q + c_c[2]) * q + c_c[3]) * q + c_c[4]) * q + c_c[5]) * -1.0f); */
+      /* el: float numerator = ((((((c_a[0] * q + c_a[1]) * q + c_a[2]) * q + c_a[3]) * q + c_a[4]) * q + c_a[5]) *  r); */
+      simde__m256 numerator = simde_x_mm256_select_ps(simde_mm256_set1_ps(SIMDE_FLOAT32_C(-7.784894002430293e-03)), simde_mm256_set1_ps(SIMDE_FLOAT32_C(-3.969683028665376e+01)), mask_el);
+      numerator = simde_mm256_fmadd_ps(numerator, q, simde_x_mm256_select_ps(simde_mm256_set1_ps(SIMDE_FLOAT32_C(-3.223964580411365e-01)), simde_mm256_set1_ps(SIMDE_FLOAT32_C( 2.209460984245205e+02)), mask_el));
+      numerator = simde_mm256_fmadd_ps(numerator, q, simde_x_mm256_select_ps(simde_mm256_set1_ps(SIMDE_FLOAT32_C(-2.400758277161838e+00)), simde_mm256_set1_ps(SIMDE_FLOAT32_C(-2.759285104469687e+02)), mask_el));
+      numerator = simde_mm256_fmadd_ps(numerator, q, simde_x_mm256_select_ps(simde_mm256_set1_ps(SIMDE_FLOAT32_C(-2.549732539343734e+00)), simde_mm256_set1_ps(SIMDE_FLOAT32_C( 1.383577518672690e+02)), mask_el));
+      numerator = simde_mm256_fmadd_ps(numerator, q, simde_x_mm256_select_ps(simde_mm256_set1_ps(SIMDE_FLOAT32_C( 4.374664141464968e+00)), simde_mm256_set1_ps(SIMDE_FLOAT32_C(-3.066479806614716e+01)), mask_el));
+      numerator = simde_mm256_fmadd_ps(numerator, q, simde_x_mm256_select_ps(simde_mm256_set1_ps(SIMDE_FLOAT32_C( 2.938163982698783e+00)), simde_mm256_set1_ps(SIMDE_FLOAT32_C( 2.506628277459239e+00)), mask_el));
+      {
+        simde__m256 multiplier;
+        multiplier =                            simde_mm256_and_ps(mask_lo, simde_mm256_set1_ps(SIMDE_FLOAT32_C( 1.0)));
+        multiplier = simde_mm256_or_ps(multiplier, simde_mm256_and_ps(mask_hi, simde_mm256_set1_ps(SIMDE_FLOAT32_C(-1.0))));
+        multiplier = simde_mm256_or_ps(multiplier, simde_mm256_and_ps(mask_el, r));
+        numerator = simde_mm256_mul_ps(numerator, multiplier);
+      }
+
+      /* lo/hi: float denominator = (((((c_d[0] * q + c_d[1]) * q + c_d[2]) * q + c_d[3]) * 1 +   0.0f) * q + 1); */
+      /*    el: float denominator = (((((c_b[0] * q + c_b[1]) * q + c_b[2]) * q + c_b[3]) * q + c_b[4]) * q + 1); */
+      simde__m256 denominator = simde_x_mm256_select_ps(simde_mm256_set1_ps(SIMDE_FLOAT32_C( 7.784695709041462e-03)), simde_mm256_set1_ps(SIMDE_FLOAT32_C(-5.447609879822406e+01)), mask_el);
+      denominator = simde_mm256_fmadd_ps(denominator, q, simde_x_mm256_select_ps(simde_mm256_set1_ps(SIMDE_FLOAT32_C( 3.224671290700398e-01)), simde_mm256_set1_ps(SIMDE_FLOAT32_C( 1.615858368580409e+02)), mask_el));
+      denominator = simde_mm256_fmadd_ps(denominator, q, simde_x_mm256_select_ps(simde_mm256_set1_ps(SIMDE_FLOAT32_C( 2.445134137142996e+00)), simde_mm256_set1_ps(SIMDE_FLOAT32_C(-1.556989798598866e+02)), mask_el));
+      denominator = simde_mm256_fmadd_ps(denominator, q, simde_x_mm256_select_ps(simde_mm256_set1_ps(SIMDE_FLOAT32_C( 3.754408661907416e+00)), simde_mm256_set1_ps(SIMDE_FLOAT32_C( 6.680131188771972e+01)), mask_el));
+      denominator = simde_mm256_fmadd_ps(denominator, simde_x_mm256_select_ps(simde_mm256_set1_ps(SIMDE_FLOAT32_C( 1.0)), q, mask_el),
+                                                   simde_x_mm256_select_ps(simde_mm256_set1_ps(SIMDE_FLOAT32_C( 0.0)), simde_mm256_set1_ps(SIMDE_FLOAT32_C(-1.328068155288572e+01)), mask_el));
+      denominator = simde_mm256_fmadd_ps(denominator, q, simde_mm256_set1_ps(SIMDE_FLOAT32_C(1.0)));
+
+      /* res = numerator / denominator; */
+      simde__m256 res = simde_mm256_div_ps(numerator, denominator);
+
+      retval = simde_mm256_or_ps(retval, simde_mm256_and_ps(mask, res));
+    }
+
+    return retval;
+  #else
+    simde__m256_private
+      r_,
+      a_ = simde__m256_to_private(a);
+
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
+      r_.f32[i] = simde_math_cdfnorminvf(a_.f32[i]);
+    }
+
+    return simde__m256_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_cdfnorminv_ps
+  #define _mm256_cdfnorminv_ps(a) simde_mm256_cdfnorminv_ps(a)
+#endif
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256d
+simde_mm256_cdfnorminv_pd (simde__m256d a) {
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX_NATIVE)
+    return _mm256_cdfnorminv_pd(a);
+   #elif SIMDE_NATURAL_VECTOR_SIZE_GE(256)
+    simde__m256d matched, retval = simde_mm256_setzero_pd();
+
+    { /* if (a < 0 || a > 1) */
+      matched = simde_mm256_or_pd(simde_mm256_cmp_pd(a, simde_mm256_set1_pd(SIMDE_FLOAT64_C(0.0)), SIMDE_CMP_LT_OQ), simde_mm256_cmp_pd(a, simde_mm256_set1_pd(SIMDE_FLOAT64_C(1.0)), SIMDE_CMP_GT_OQ));
+
+      /* We don't actually need to do anything here since we initialize
+       * retval to 0.0. */
+    }
+
+    { /* else if (a == 0) */
+      simde__m256d mask = simde_mm256_cmp_pd(a, simde_mm256_set1_pd(SIMDE_FLOAT64_C(0.0)), SIMDE_CMP_EQ_OQ);
+      mask = simde_mm256_andnot_pd(matched, mask);
+      matched = simde_mm256_or_pd(matched, mask);
+
+      simde__m256d res = simde_mm256_set1_pd(-SIMDE_MATH_INFINITY);
+
+      retval = simde_mm256_or_pd(retval, simde_mm256_and_pd(mask, res));
+    }
+
+    { /* else if (a == 1) */
+      simde__m256d mask = simde_mm256_cmp_pd(a, simde_mm256_set1_pd(SIMDE_FLOAT64_C(1.0)), SIMDE_CMP_EQ_OQ);
+      mask = simde_mm256_andnot_pd(matched, mask);
+      matched = simde_mm256_or_pd(matched, mask);
+
+      simde__m256d res = simde_mm256_set1_pd(SIMDE_MATH_INFINITY);
+
+      retval = simde_mm256_or_pd(retval, simde_mm256_and_pd(mask, res));
+    }
+
+    { /* Remaining conditions.
+       *
+       * Including the else case in this complicates things a lot, but
+       * we're using cheap operations to get rid of expensive multiply
+       * and add functions.  This should be a small improvement on SSE
+       * prior to 4.1.  On SSE 4.1 we can use _mm256_blendv_pd which is
+       * very fast and this becomes a huge win.  NEON, AltiVec, and
+       * WASM also have blend operations, so this should be a big win
+       * there, too. */
+
+      /* else if (a < 0.02425) */
+      simde__m256d mask_lo = simde_mm256_cmp_pd(a, simde_mm256_set1_pd(SIMDE_FLOAT64_C(0.02425)), SIMDE_CMP_LT_OQ);
+      /* else if (a > 0.97575) */
+      simde__m256d mask_hi = simde_mm256_cmp_pd(a, simde_mm256_set1_pd(SIMDE_FLOAT64_C(0.97575)), SIMDE_CMP_GT_OQ);
+
+      simde__m256d mask = simde_mm256_or_pd(mask_lo, mask_hi);
+      matched = simde_mm256_or_pd(matched, mask);
+
+      /* else */
+      simde__m256d mask_el = simde_x_mm256_not_pd(matched);
+      mask = simde_mm256_or_pd(mask, mask_el);
+
+      /* r = a - 0.5 */
+      simde__m256d r = simde_mm256_sub_pd(a, simde_mm256_set1_pd(SIMDE_FLOAT64_C(0.5)));
+
+      /* lo: q = a
+       * hi: q = (1.0 - a) */
+      simde__m256d q = simde_mm256_and_pd(mask_lo, a);
+      q = simde_mm256_or_pd(q, simde_mm256_and_pd(mask_hi, simde_mm256_sub_pd(simde_mm256_set1_pd(1.0), a)));
+
+      /* q = simde_math_sqrt(-2.0 * simde_math_log(q)) */
+      q = simde_mm256_log_pd(q);
+      q = simde_mm256_mul_pd(q, simde_mm256_set1_pd(SIMDE_FLOAT64_C(-2.0)));
+      q = simde_mm256_sqrt_pd(q);
+
+      /* el: q = r * r */
+      q = simde_x_mm256_select_pd(q, simde_mm256_mul_pd(r, r), mask_el);
+
+      /* lo: double numerator = ((((((c_c[0] * q + c_c[1]) * q + c_c[2]) * q + c_c[3]) * q + c_c[4]) * q + c_c[5]) *  1.0); */
+      /* hi: double numerator = ((((((c_c[0] * q + c_c[1]) * q + c_c[2]) * q + c_c[3]) * q + c_c[4]) * q + c_c[5]) * -1.0); */
+      /* el: double numerator = ((((((c_a[0] * q + c_a[1]) * q + c_a[2]) * q + c_a[3]) * q + c_a[4]) * q + c_a[5]) *  r); */
+      simde__m256d numerator = simde_x_mm256_select_pd(simde_mm256_set1_pd(SIMDE_FLOAT64_C(-7.784894002430293e-03)), simde_mm256_set1_pd(SIMDE_FLOAT64_C(-3.969683028665376e+01)), mask_el);
+      numerator = simde_mm256_fmadd_pd(numerator, q, simde_x_mm256_select_pd(simde_mm256_set1_pd(SIMDE_FLOAT64_C(-3.223964580411365e-01)), simde_mm256_set1_pd(SIMDE_FLOAT64_C( 2.209460984245205e+02)), mask_el));
+      numerator = simde_mm256_fmadd_pd(numerator, q, simde_x_mm256_select_pd(simde_mm256_set1_pd(SIMDE_FLOAT64_C(-2.400758277161838e+00)), simde_mm256_set1_pd(SIMDE_FLOAT64_C(-2.759285104469687e+02)), mask_el));
+      numerator = simde_mm256_fmadd_pd(numerator, q, simde_x_mm256_select_pd(simde_mm256_set1_pd(SIMDE_FLOAT64_C(-2.549732539343734e+00)), simde_mm256_set1_pd(SIMDE_FLOAT64_C( 1.383577518672690e+02)), mask_el));
+      numerator = simde_mm256_fmadd_pd(numerator, q, simde_x_mm256_select_pd(simde_mm256_set1_pd(SIMDE_FLOAT64_C( 4.374664141464968e+00)), simde_mm256_set1_pd(SIMDE_FLOAT64_C(-3.066479806614716e+01)), mask_el));
+      numerator = simde_mm256_fmadd_pd(numerator, q, simde_x_mm256_select_pd(simde_mm256_set1_pd(SIMDE_FLOAT64_C( 2.938163982698783e+00)), simde_mm256_set1_pd(SIMDE_FLOAT64_C( 2.506628277459239e+00)), mask_el));
+      {
+        simde__m256d multiplier;
+        multiplier =                            simde_mm256_and_pd(mask_lo, simde_mm256_set1_pd(SIMDE_FLOAT64_C( 1.0)));
+        multiplier = simde_mm256_or_pd(multiplier, simde_mm256_and_pd(mask_hi, simde_mm256_set1_pd(SIMDE_FLOAT64_C(-1.0))));
+        multiplier = simde_mm256_or_pd(multiplier, simde_mm256_and_pd(mask_el, r));
+        numerator = simde_mm256_mul_pd(numerator, multiplier);
+      }
+
+      /* lo/hi: double denominator = (((((c_d[0] * q + c_d[1]) * q + c_d[2]) * q + c_d[3]) * 1 +   0.0f) * q + 1); */
+      /*    el: double denominator = (((((c_b[0] * q + c_b[1]) * q + c_b[2]) * q + c_b[3]) * q + c_b[4]) * q + 1); */
+      simde__m256d denominator = simde_x_mm256_select_pd(simde_mm256_set1_pd(SIMDE_FLOAT64_C( 7.784695709041462e-03)), simde_mm256_set1_pd(SIMDE_FLOAT64_C(-5.447609879822406e+01)), mask_el);
+      denominator = simde_mm256_fmadd_pd(denominator, q, simde_x_mm256_select_pd(simde_mm256_set1_pd(SIMDE_FLOAT64_C( 3.224671290700398e-01)), simde_mm256_set1_pd(SIMDE_FLOAT64_C( 1.615858368580409e+02)), mask_el));
+      denominator = simde_mm256_fmadd_pd(denominator, q, simde_x_mm256_select_pd(simde_mm256_set1_pd(SIMDE_FLOAT64_C( 2.445134137142996e+00)), simde_mm256_set1_pd(SIMDE_FLOAT64_C(-1.556989798598866e+02)), mask_el));
+      denominator = simde_mm256_fmadd_pd(denominator, q, simde_x_mm256_select_pd(simde_mm256_set1_pd(SIMDE_FLOAT64_C( 3.754408661907416e+00)), simde_mm256_set1_pd(SIMDE_FLOAT64_C( 6.680131188771972e+01)), mask_el));
+      denominator = simde_mm256_fmadd_pd(denominator, simde_x_mm256_select_pd(simde_mm256_set1_pd(SIMDE_FLOAT64_C( 1.0)), q, mask_el),
+                                                   simde_x_mm256_select_pd(simde_mm256_set1_pd(SIMDE_FLOAT64_C( 0.0)), simde_mm256_set1_pd(SIMDE_FLOAT64_C(-1.328068155288572e+01)), mask_el));
+      denominator = simde_mm256_fmadd_pd(denominator, q, simde_mm256_set1_pd(SIMDE_FLOAT64_C(1.0)));
+
+      /* res = numerator / denominator; */
+      simde__m256d res = simde_mm256_div_pd(numerator, denominator);
+
+      retval = simde_mm256_or_pd(retval, simde_mm256_and_pd(mask, res));
+    }
+
+    return retval;
+  #else
+    simde__m256d_private
+      r_,
+      a_ = simde__m256d_to_private(a);
+
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
+      r_.f64[i] = simde_math_cdfnorminv(a_.f64[i]);
+    }
+
+    return simde__m256d_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_cdfnorminv_pd
+  #define _mm256_cdfnorminv_pd(a) simde_mm256_cdfnorminv_pd(a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES

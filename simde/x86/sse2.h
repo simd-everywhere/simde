@@ -424,6 +424,58 @@ simde_x_mm_abs_pd(simde__m128d a) {
 }
 
 SIMDE_FUNCTION_ATTRIBUTES
+simde__m128d
+simde_x_mm_not_pd(simde__m128d a) {
+    simde__m128d_private
+      r_,
+      a_ = simde__m128d_to_private(a);
+
+    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+      r_.i64 = ~a_.i64;
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.i64) / sizeof(r_.i64[0])) ; i++) {
+        r_.i64[i] = ~(a_.i64[i]);
+      }
+    #endif
+
+    return simde__m128d_from_private(r_);
+}
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m128d
+simde_x_mm_select_pd(simde__m128d a, simde__m128d b, simde__m128d mask) {
+  /* This function is for when you want to blend two elements together
+   * according to a mask.  It is similar to _mm_blendv_pd, except that
+   * it is undefined whether the blend is based on the highest bit in
+   * each lane (like blendv) or just bitwise operations.  This allows
+   * us to implement the function efficiently everywhere.
+   *
+   * Basically, you promise that all the lanes in mask are either 0 or
+   * ~0. */
+  #if defined(SIMDE_X86_SSE4_1_NATIVE)
+    return _mm_blendv_pd(a, b, mask);
+  #else
+    simde__m128d_private
+      r_,
+      a_ = simde__m128d_to_private(a),
+      b_ = simde__m128d_to_private(b),
+      mask_ = simde__m128d_to_private(mask);
+
+    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+      r_.i64 = a_.i64 ^ ((a_.i64 ^ b_.i64) & mask_.i64);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.i64) / sizeof(r_.i64[0])) ; i++) {
+        r_.i64[i] = a_.i64[i] ^ ((a_.i64[i] ^ b_.i64[i]) & mask_.i64[i]);
+      }
+    #endif
+
+    return simde__m128d_from_private(r_);
+  #endif
+}
+
+SIMDE_FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_add_epi8 (simde__m128i a, simde__m128i b) {
 #if defined(SIMDE_X86_SSE2_NATIVE)
