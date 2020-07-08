@@ -45,12 +45,19 @@ simde_vcombine_f32(simde_float32x2_t low, simde_float32x2_t high) {
       low_ = simde_float32x2_to_private(low),
       high_ = simde_float32x2_to_private(high);
 
-    size_t halfway = (sizeof(r_.values) / sizeof(r_.values[0])) / 2;
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < halfway ; i++) {
-      r_.values[i] = low_.values[i];
-      r_.values[i + halfway] = high_.values[i];
-    }
+    /* Note: __builtin_shufflevector can have a the output contain
+     * twice the number of elements, __builtin_shuffle cannot.
+     * Using SIMDE_SHUFFLE_VECTOR_ here would not work. */
+    #if defined(SIMDE_VECTOR_SUBSCRIPT) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
+      r_.values = __builtin_shufflevector(low_.values, high_.values, 0, 1, 2, 3);
+    #else
+      size_t halfway = (sizeof(r_.values) / sizeof(r_.values[0])) / 2;
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < halfway ; i++) {
+        r_.values[i] = low_.values[i];
+        r_.values[i + halfway] = high_.values[i];
+      }
+    #endif
 
     return simde_float32x4_from_private(r_);
   #endif
@@ -71,12 +78,16 @@ simde_vcombine_f64(simde_float64x1_t low, simde_float64x1_t high) {
       low_ = simde_float64x1_to_private(low),
       high_ = simde_float64x1_to_private(high);
 
-    size_t halfway = (sizeof(r_.values) / sizeof(r_.values[0])) / 2;
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < halfway ; i++) {
-      r_.values[i] = low_.values[i];
-      r_.values[i + halfway] = high_.values[i];
-    }
+    #if defined(SIMDE_VECTOR_SUBSCRIPT) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
+      r_.values = __builtin_shufflevector(low_.values, high_.values, 0, 1);
+    #else
+      size_t halfway = (sizeof(r_.values) / sizeof(r_.values[0])) / 2;
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < halfway ; i++) {
+        r_.values[i] = low_.values[i];
+        r_.values[i + halfway] = high_.values[i];
+      }
+    #endif
 
     return simde_float64x2_from_private(r_);
   #endif
@@ -97,12 +108,16 @@ simde_vcombine_s8(simde_int8x8_t low, simde_int8x8_t high) {
       low_ = simde_int8x8_to_private(low),
       high_ = simde_int8x8_to_private(high);
 
-    size_t halfway = (sizeof(r_.values) / sizeof(r_.values[0])) / 2;
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < halfway ; i++) {
-      r_.values[i] = low_.values[i];
-      r_.values[i + halfway] = high_.values[i];
-    }
+    #if defined(SIMDE_VECTOR_SUBSCRIPT) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
+      r_.values = __builtin_shufflevector(low_.values, high_.values, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
+    #else
+      size_t halfway = (sizeof(r_.values) / sizeof(r_.values[0])) / 2;
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < halfway ; i++) {
+        r_.values[i] = low_.values[i];
+        r_.values[i + halfway] = high_.values[i];
+      }
+    #endif
 
     return simde_int8x16_from_private(r_);
   #endif
@@ -123,12 +138,16 @@ simde_vcombine_s16(simde_int16x4_t low, simde_int16x4_t high) {
       low_ = simde_int16x4_to_private(low),
       high_ = simde_int16x4_to_private(high);
 
-    size_t halfway = (sizeof(r_.values) / sizeof(r_.values[0])) / 2;
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < halfway ; i++) {
-      r_.values[i] = low_.values[i];
-      r_.values[i + halfway] = high_.values[i];
-    }
+    #if defined(SIMDE_VECTOR_SUBSCRIPT) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
+      r_.values = __builtin_shufflevector(low_.values, high_.values, 0, 1, 2, 3, 4, 5, 6, 7);
+    #else
+      size_t halfway = (sizeof(r_.values) / sizeof(r_.values[0])) / 2;
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < halfway ; i++) {
+        r_.values[i] = low_.values[i];
+        r_.values[i + halfway] = high_.values[i];
+      }
+    #endif
 
     return simde_int16x8_from_private(r_);
   #endif
@@ -149,12 +168,16 @@ simde_vcombine_s32(simde_int32x2_t low, simde_int32x2_t high) {
       low_ = simde_int32x2_to_private(low),
       high_ = simde_int32x2_to_private(high);
 
-    size_t halfway = (sizeof(r_.values) / sizeof(r_.values[0])) / 2;
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < halfway ; i++) {
-      r_.values[i] = low_.values[i];
-      r_.values[i + halfway] = high_.values[i];
-    }
+    #if defined(SIMDE_VECTOR_SUBSCRIPT) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
+      r_.values = __builtin_shufflevector(low_.values, high_.values, 0, 1, 2, 3);
+    #else
+      size_t halfway = (sizeof(r_.values) / sizeof(r_.values[0])) / 2;
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < halfway ; i++) {
+        r_.values[i] = low_.values[i];
+        r_.values[i + halfway] = high_.values[i];
+      }
+    #endif
 
     return simde_int32x4_from_private(r_);
   #endif
@@ -175,12 +198,16 @@ simde_vcombine_s64(simde_int64x1_t low, simde_int64x1_t high) {
       low_ = simde_int64x1_to_private(low),
       high_ = simde_int64x1_to_private(high);
 
-    size_t halfway = (sizeof(r_.values) / sizeof(r_.values[0])) / 2;
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < halfway ; i++) {
-      r_.values[i] = low_.values[i];
-      r_.values[i + halfway] = high_.values[i];
-    }
+    #if defined(SIMDE_VECTOR_SUBSCRIPT) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
+      r_.values = __builtin_shufflevector(low_.values, high_.values, 0, 1);
+    #else
+      size_t halfway = (sizeof(r_.values) / sizeof(r_.values[0])) / 2;
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < halfway ; i++) {
+        r_.values[i] = low_.values[i];
+        r_.values[i + halfway] = high_.values[i];
+      }
+    #endif
 
     return simde_int64x2_from_private(r_);
   #endif
@@ -201,12 +228,16 @@ simde_vcombine_u8(simde_uint8x8_t low, simde_uint8x8_t high) {
       low_ = simde_uint8x8_to_private(low),
       high_ = simde_uint8x8_to_private(high);
 
-    size_t halfway = (sizeof(r_.values) / sizeof(r_.values[0])) / 2;
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < halfway ; i++) {
-      r_.values[i] = low_.values[i];
-      r_.values[i + halfway] = high_.values[i];
-    }
+    #if defined(SIMDE_VECTOR_SUBSCRIPT) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
+      r_.values = __builtin_shufflevector(low_.values, high_.values, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
+    #else
+      size_t halfway = (sizeof(r_.values) / sizeof(r_.values[0])) / 2;
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < halfway ; i++) {
+        r_.values[i] = low_.values[i];
+        r_.values[i + halfway] = high_.values[i];
+      }
+    #endif
 
     return simde_uint8x16_from_private(r_);
   #endif
@@ -227,12 +258,16 @@ simde_vcombine_u16(simde_uint16x4_t low, simde_uint16x4_t high) {
       low_ = simde_uint16x4_to_private(low),
       high_ = simde_uint16x4_to_private(high);
 
-    size_t halfway = (sizeof(r_.values) / sizeof(r_.values[0])) / 2;
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < halfway ; i++) {
-      r_.values[i] = low_.values[i];
-      r_.values[i + halfway] = high_.values[i];
-    }
+    #if defined(SIMDE_VECTOR_SUBSCRIPT) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
+      r_.values = __builtin_shufflevector(low_.values, high_.values, 0, 1, 2, 3, 4, 5, 6, 7);
+    #else
+      size_t halfway = (sizeof(r_.values) / sizeof(r_.values[0])) / 2;
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < halfway ; i++) {
+        r_.values[i] = low_.values[i];
+        r_.values[i + halfway] = high_.values[i];
+      }
+    #endif
 
     return simde_uint16x8_from_private(r_);
   #endif
@@ -253,12 +288,16 @@ simde_vcombine_u32(simde_uint32x2_t low, simde_uint32x2_t high) {
       low_ = simde_uint32x2_to_private(low),
       high_ = simde_uint32x2_to_private(high);
 
-    size_t halfway = (sizeof(r_.values) / sizeof(r_.values[0])) / 2;
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < halfway ; i++) {
-      r_.values[i] = low_.values[i];
-      r_.values[i + halfway] = high_.values[i];
-    }
+    #if defined(SIMDE_VECTOR_SUBSCRIPT) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
+      r_.values = __builtin_shufflevector(low_.values, high_.values, 0, 1, 2, 3);
+    #else
+      size_t halfway = (sizeof(r_.values) / sizeof(r_.values[0])) / 2;
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < halfway ; i++) {
+        r_.values[i] = low_.values[i];
+        r_.values[i + halfway] = high_.values[i];
+      }
+    #endif
 
     return simde_uint32x4_from_private(r_);
   #endif
@@ -279,12 +318,16 @@ simde_vcombine_u64(simde_uint64x1_t low, simde_uint64x1_t high) {
       low_ = simde_uint64x1_to_private(low),
       high_ = simde_uint64x1_to_private(high);
 
-    size_t halfway = (sizeof(r_.values) / sizeof(r_.values[0])) / 2;
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < halfway ; i++) {
-      r_.values[i] = low_.values[i];
-      r_.values[i + halfway] = high_.values[i];
-    }
+    #if defined(SIMDE_VECTOR_SUBSCRIPT) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
+      r_.values = __builtin_shufflevector(low_.values, high_.values, 0, 1);
+    #else
+      size_t halfway = (sizeof(r_.values) / sizeof(r_.values[0])) / 2;
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < halfway ; i++) {
+        r_.values[i] = low_.values[i];
+        r_.values[i + halfway] = high_.values[i];
+      }
+    #endif
 
     return simde_uint64x2_from_private(r_);
   #endif
