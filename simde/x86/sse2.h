@@ -683,9 +683,9 @@ simde_mm_adds_epi8 (simde__m128i a, simde__m128i b) {
 #else
   SIMDE_VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r_.i8) / sizeof(r_.i8[0])) ; i++) {
-    const int32_t tmp =
-      HEDLEY_STATIC_CAST(int16_t, a_.i8[i]) +
-      HEDLEY_STATIC_CAST(int16_t, b_.i8[i]);
+    const int_fast16_t tmp =
+      HEDLEY_STATIC_CAST(int_fast16_t, a_.i8[i]) +
+      HEDLEY_STATIC_CAST(int_fast16_t, b_.i8[i]);
     r_.i8[i] = HEDLEY_STATIC_CAST(int8_t, ((tmp < INT8_MAX) ? ((tmp > INT8_MIN) ? tmp : INT8_MIN) : INT8_MAX));
   }
 #endif
@@ -716,9 +716,9 @@ simde_mm_adds_epi16 (simde__m128i a, simde__m128i b) {
   #else
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.i16) / sizeof(r_.i16[0])) ; i++) {
-      const int32_t tmp =
-        HEDLEY_STATIC_CAST(int32_t, a_.i16[i]) +
-        HEDLEY_STATIC_CAST(int32_t, b_.i16[i]);
+      const int_fast32_t tmp =
+        HEDLEY_STATIC_CAST(int_fast32_t, a_.i16[i]) +
+        HEDLEY_STATIC_CAST(int_fast32_t, b_.i16[i]);
       r_.i16[i] = HEDLEY_STATIC_CAST(int16_t, ((tmp < INT16_MAX) ? ((tmp > INT16_MIN) ? tmp : INT16_MIN) : INT16_MAX));
     }
   #endif
