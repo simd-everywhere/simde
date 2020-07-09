@@ -122,6 +122,7 @@ set(TEST_SOURCES_C
   arm/neon/cgtz.c
   arm/neon/cle.c
   arm/neon/clez.c
+  arm/neon/clt.c
   arm/neon/cltz.c
   arm/neon/combine.c
   arm/neon/dup_n.c
