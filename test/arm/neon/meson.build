@@ -15,6 +15,7 @@ simde_test_arm_neon_tests = [
   'cgtz',
   'cle',
   'clez',
+  'clt',
   'cltz',
   'combine',
   'dup_n',
