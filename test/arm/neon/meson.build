@@ -29,6 +29,7 @@ simde_test_arm_neon_tests = [
   'mlal_high',
   'movl',
   'movl_high',
+  'movn',
   'mul',
   'mull',
   'mvn',

@@ -136,6 +136,7 @@ set(TEST_SOURCES_C
   arm/neon/mlal_high.c
   arm/neon/movl.c
   arm/neon/movl_high.c
+  arm/neon/movn.c
   arm/neon/mul.c
   arm/neon/mull.c
   arm/neon/mvn.c

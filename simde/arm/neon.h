@@ -59,6 +59,7 @@
 #include "neon/mlal_high.h"
 #include "neon/movl.h"
 #include "neon/movl_high.h"
+#include "neon/movn.h"
 #include "neon/mul.h"
 #include "neon/mull.h"
 #include "neon/mvn.h"
