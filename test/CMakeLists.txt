@@ -122,6 +122,7 @@ set(TEST_SOURCES_C
   arm/neon/cgtz.c
   arm/neon/cle.c
   arm/neon/clez.c
+  arm/neon/clt.c
   arm/neon/cltz.c
   arm/neon/combine.c
   arm/neon/dup_n.c
@@ -136,6 +137,7 @@ set(TEST_SOURCES_C
   arm/neon/mlal_high.c
   arm/neon/movl.c
   arm/neon/movl_high.c
+  arm/neon/movn.c
   arm/neon/mul.c
   arm/neon/mull.c
   arm/neon/mvn.c
@@ -146,7 +148,9 @@ set(TEST_SOURCES_C
   arm/neon/paddl.c
   arm/neon/pmax.c
   arm/neon/pmin.c
+  arm/neon/qadd.c
   arm/neon/qmovn.c
+  arm/neon/qmovn_high.c
   arm/neon/reinterpret.c
   arm/neon/rshr_n.c
   arm/neon/rsra_n.c

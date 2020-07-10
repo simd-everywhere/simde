@@ -29,11 +29,14 @@
 #define SIMDE_ARM_NEON_QMOVN_H
 
 #include "types.h"
+#include "dup_n.h"
+#include "min.h"
+#include "max.h"
+#include "movn.h"
 
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 SIMDE_BEGIN_DECLS_
-
 
 SIMDE_FUNCTION_ATTRIBUTES
 int8_t
@@ -125,6 +128,8 @@ simde_int8x8_t
 simde_vqmovn_s16(simde_int16x8_t a) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vqmovn_s16(a);
+  #elif SIMDE_NATURAL_VECTOR_SIZE > 0
+    return simde_vmovn_s16(simde_vmaxq_s16(simde_vdupq_n_s16(INT8_MIN), simde_vminq_s16(simde_vdupq_n_s16(INT8_MAX), a)));
   #else
     simde_int8x8_private r_;
     simde_int16x8_private a_ = simde_int16x8_to_private(a);
@@ -147,6 +152,8 @@ simde_int16x4_t
 simde_vqmovn_s32(simde_int32x4_t a) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vqmovn_s32(a);
+  #elif SIMDE_NATURAL_VECTOR_SIZE > 0
+    return simde_vmovn_s32(simde_vmaxq_s32(simde_vdupq_n_s32(INT16_MIN), simde_vminq_s32(simde_vdupq_n_s32(INT16_MAX), a)));
   #else
     simde_int16x4_private r_;
     simde_int32x4_private a_ = simde_int32x4_to_private(a);
@@ -169,6 +176,8 @@ simde_int32x2_t
 simde_vqmovn_s64(simde_int64x2_t a) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vqmovn_s64(a);
+  #elif SIMDE_NATURAL_VECTOR_SIZE > 0
+    return simde_vmovn_s64(simde_x_vmaxq_s64(simde_vdupq_n_s64(INT32_MIN), simde_x_vminq_s64(simde_vdupq_n_s64(INT32_MAX), a)));
   #else
     simde_int32x2_private r_;
     simde_int64x2_private a_ = simde_int64x2_to_private(a);
@@ -191,6 +200,8 @@ simde_uint8x8_t
 simde_vqmovn_u16(simde_uint16x8_t a) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vqmovn_u16(a);
+  #elif SIMDE_NATURAL_VECTOR_SIZE > 0
+    return simde_vmovn_u16(simde_vminq_u16(a, simde_vdupq_n_u16(UINT8_MAX)));
   #else
     simde_uint8x8_private r_;
     simde_uint16x8_private a_ = simde_uint16x8_to_private(a);
@@ -213,6 +224,8 @@ simde_uint16x4_t
 simde_vqmovn_u32(simde_uint32x4_t a) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vqmovn_u32(a);
+  #elif SIMDE_NATURAL_VECTOR_SIZE > 0
+    return simde_vmovn_u32(simde_vminq_u32(a, simde_vdupq_n_u32(UINT16_MAX)));
   #else
     simde_uint16x4_private r_;
     simde_uint32x4_private a_ = simde_uint32x4_to_private(a);
@@ -235,6 +248,8 @@ simde_uint32x2_t
 simde_vqmovn_u64(simde_uint64x2_t a) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vqmovn_u64(a);
+  #elif SIMDE_NATURAL_VECTOR_SIZE > 0
+    return simde_vmovn_u64(simde_x_vminq_u64(a, simde_vdupq_n_u64(UINT32_MAX)));
   #else
     simde_uint32x2_private r_;
     simde_uint64x2_private a_ = simde_uint64x2_to_private(a);
