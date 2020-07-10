@@ -36,3 +36,15 @@ install_headers(
     'simde/x86/svml.h',
     ]),
   subdir: 'simde')
+
+if not meson.is_subproject()
+  import('pkgconfig').generate(
+    version : meson.project_version(),
+    name : 'SIMDe',
+    filebase : 'simde',
+    description : 'Portable SIMD wrapper library')
+endif
+
+simde_dep = declare_dependency(
+  include_directories : include_directories('.'),
+  version : meson.project_version())
