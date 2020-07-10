@@ -4636,7 +4636,7 @@ simde_mm256_permutevar_pd (simde__m256d a, simde__m256i b) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m256
 simde_mm256_permute2f128_ps (simde__m256 a, simde__m256 b, const int imm8)
-    SIMDE_REQUIRE_RANGE(imm8, 0, 15) {
+    SIMDE_REQUIRE_RANGE(imm8, 0, 255) {
   simde__m256_private
     r_,
     a_ = simde__m256_to_private(a),
@@ -4658,7 +4658,7 @@ simde_mm256_permute2f128_ps (simde__m256 a, simde__m256 b, const int imm8)
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m256d
 simde_mm256_permute2f128_pd (simde__m256d a, simde__m256d b, const int imm8)
-    SIMDE_REQUIRE_RANGE(imm8, 0, 15) {
+    SIMDE_REQUIRE_RANGE(imm8, 0, 255) {
   simde__m256d_private
     r_,
     a_ = simde__m256d_to_private(a),
@@ -4680,7 +4680,7 @@ simde_mm256_permute2f128_pd (simde__m256d a, simde__m256d b, const int imm8)
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m256i
 simde_mm256_permute2f128_si256 (simde__m256i a, simde__m256i b, const int imm8)
-    SIMDE_REQUIRE_RANGE(imm8, 0, 15) {
+    SIMDE_REQUIRE_RANGE(imm8, 0, 255) {
   simde__m256i_private
     r_,
     a_ = simde__m256i_to_private(a),
