@@ -430,12 +430,20 @@ simde_x_mm_not_pd(simde__m128d a) {
     r_,
     a_ = simde__m128d_to_private(a);
 
-  #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-    r_.i64 = ~a_.i64;
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    r_.neon_i32 = vmvnq_s32(a_.neon_i32);
+  #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
+    r_.altivec_f64 = vec_nor(a_.altivec_f64, a_.altivec_f64);
+  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+    r_.altivec_i32 = vec_nor(a_.altivec_i32, a_.altivec_i32);
+  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+    r_.wasm_v128 = wasm_v128_not(a_.wasm_v128);
+  #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+    r_.i32f = ~a_.i32f;
   #else
     SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.i64) / sizeof(r_.i64[0])) ; i++) {
-      r_.i64[i] = ~(a_.i64[i]);
+    for (size_t i = 0 ; i < (sizeof(r_.i32f) / sizeof(r_.i32f[0])) ; i++) {
+      r_.i32f[i] = ~(a_.i32f[i]);
     }
   #endif
 
@@ -6712,8 +6720,12 @@ simde_x_mm_not_si128 (simde__m128i a) {
 
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     r_.neon_i32 = vmvnq_s32(a_.neon_i32);
+  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+    r_.altivec_i32 = vec_nor(a_.altivec_i32, a_.altivec_i32);
+  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+    r_.wasm_v128 = wasm_v128_not(a_.wasm_v128);
   #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-    r_.i32f = ~(a_.i32f);
+    r_.i32f = ~a_.i32f;
   #else
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.i32f) / sizeof(r_.i32f[0])) ; i++) {
