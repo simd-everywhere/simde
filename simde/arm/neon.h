@@ -73,6 +73,8 @@
 #include "neon/pmax.h"
 #include "neon/pmin.h"
 #include "neon/qadd.h"
+#include "neon/qdmulh.h"
+#include "neon/qdmull.h"
 #include "neon/qmovn.h"
 #include "neon/qmovn_high.h"
 #include "neon/reinterpret.h"
