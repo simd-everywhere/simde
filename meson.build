@@ -17,7 +17,11 @@ install_headers(
     'simde/debug-trap.h',
     'simde/simde-arch.h',
     'simde/simde-common.h',
+    ]),
+  subdir: 'simde')
 
+install_headers(
+  files([
     'simde/x86/avx2.h',
     'simde/x86/avx512f.h',
     'simde/x86/avx512bw.h',
@@ -35,7 +39,7 @@ install_headers(
     'simde/x86/ssse3.h',
     'simde/x86/svml.h',
     ]),
-  subdir: 'simde')
+  subdir: 'simde/x86')
 
 if not meson.is_subproject()
   import('pkgconfig').generate(
