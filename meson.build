@@ -6,7 +6,9 @@ project('SIMDe', 'c', 'cpp',
 cc = meson.get_compiler('c')
 cxx = meson.get_compiler('cpp')
 
-subdir('test')
+if not meson.is_subproject() and if get_option('tests')
+  subdir('test')
+endif
 
 install_headers(
     [
