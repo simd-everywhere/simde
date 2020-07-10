@@ -41,7 +41,7 @@ simde_vcleq_f32(simde_float32x4_t a, simde_float32x4_t b) {
     return vcleq_f32(a, b);
   #elif defined(SIMDE_X86_SSE_NATIVE)
     return _mm_castps_si128(_mm_cmple_ps(a, b));
-  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+  #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
     return HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned int), vec_cmple(a, b));
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_f32x4_le(a, b);
@@ -109,7 +109,7 @@ simde_vcleq_s8(simde_int8x16_t a, simde_int8x16_t b) {
     return vcleq_s8(a, b);
   #elif defined(SIMDE_X86_SSE2_NATIVE)
     return _mm_or_si128(_mm_cmpgt_epi8(b, a), _mm_cmpeq_epi8(a, b));
-  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+  #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
     return HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned char), vec_cmple(a, b));
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_i8x16_le(a, b);
@@ -143,7 +143,7 @@ simde_vcleq_s16(simde_int16x8_t a, simde_int16x8_t b) {
     return vcleq_s16(a, b);
   #elif defined(SIMDE_X86_SSE2_NATIVE)
     return _mm_or_si128(_mm_cmpgt_epi16(b, a), _mm_cmpeq_epi16(a, b));
-  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+  #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
     return HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned short), vec_cmple(a, b));
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_i16x8_le(a, b);
@@ -177,7 +177,7 @@ simde_vcleq_s32(simde_int32x4_t a, simde_int32x4_t b) {
     return vcleq_s32(a, b);
   #elif defined(SIMDE_X86_SSE2_NATIVE)
     return _mm_or_si128(_mm_cmpgt_epi32(b, a), _mm_cmpeq_epi32(a, b));
-  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+  #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
     return HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned int), vec_cmple(a, b));
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_i32x4_le(a, b);
@@ -244,7 +244,7 @@ simde_vcleq_u8(simde_uint8x16_t a, simde_uint8x16_t b) {
   #elif defined(SIMDE_X86_SSE2_NATIVE)
     __m128i sign_bits = _mm_set1_epi8(INT8_MIN);
     return _mm_or_si128(_mm_cmpgt_epi8(_mm_xor_si128(b, sign_bits), _mm_xor_si128(a, sign_bits)), _mm_cmpeq_epi8(a, b));
-  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+  #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
     return HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned char), vec_cmple(a, b));
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_u8x16_le(a, b);
@@ -279,7 +279,7 @@ simde_vcleq_u16(simde_uint16x8_t a, simde_uint16x8_t b) {
   #elif defined(SIMDE_X86_SSE2_NATIVE)
     __m128i sign_bits = _mm_set1_epi16(INT16_MIN);
     return _mm_or_si128(_mm_cmpgt_epi16(_mm_xor_si128(b, sign_bits), _mm_xor_si128(a, sign_bits)), _mm_cmpeq_epi16(a, b));
-  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+  #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
     return HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned short), vec_cmple(a, b));
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_u16x8_le(a, b);
@@ -314,7 +314,7 @@ simde_vcleq_u32(simde_uint32x4_t a, simde_uint32x4_t b) {
   #elif defined(SIMDE_X86_SSE2_NATIVE)
     __m128i sign_bits = _mm_set1_epi32(INT32_MIN);
     return _mm_or_si128(_mm_cmpgt_epi32(_mm_xor_si128(b, sign_bits), _mm_xor_si128(a, sign_bits)), _mm_cmpeq_epi32(a, b));
-  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+  #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
     return HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned int), vec_cmple(a, b));
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_u32x4_le(a, b);
