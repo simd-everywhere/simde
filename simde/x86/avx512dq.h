@@ -206,6 +206,68 @@ simde_mm512_maskz_and_pd(simde__mmask8 k, simde__m512d a, simde__m512d b) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m512
+simde_mm512_or_ps (simde__m512 a, simde__m512 b) {
+  #if defined(SIMDE_X86_AVX512DQ_NATIVE)
+    return _mm512_or_ps(a, b);
+  #else
+    simde__m512_private
+      r_,
+      a_ = simde__m512_to_private(a),
+      b_ = simde__m512_to_private(b);
+
+  #if SIMDE_NATURAL_VECTOR_SIZE_LE(256)
+    r_.m256[0] = simde_mm256_or_ps(a_.m256[0], b_.m256[0]);
+    r_.m256[1] = simde_mm256_or_ps(a_.m256[1], b_.m256[1]);
+  #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+    r_.i32f = a_.i32f | b_.i32f;
+  #else
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.i32f) / sizeof(r_.i32f[0])) ; i++) {
+      r_.i32f[i] = a_.i32f[i] | b_.i32f[i];
+    }
+  #endif
+
+    return simde__m512_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_X86_AVX512DQ_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_or_ps
+  #define _mm512_or_ps(a, b) simde_mm512_or_ps(a, b)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512d
+simde_mm512_or_pd (simde__m512d a, simde__m512d b) {
+  #if defined(SIMDE_X86_AVX512DQ_NATIVE)
+    return _mm512_or_pd(a, b);
+  #else
+    simde__m512d_private
+      r_,
+      a_ = simde__m512d_to_private(a),
+      b_ = simde__m512d_to_private(b);
+
+  #if SIMDE_NATURAL_VECTOR_SIZE_LE(256)
+    r_.m256d[0] = simde_mm256_or_pd(a_.m256d[0], b_.m256d[0]);
+    r_.m256d[1] = simde_mm256_or_pd(a_.m256d[1], b_.m256d[1]);
+  #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+    r_.i32f = a_.i32f | b_.i32f;
+  #else
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.i32f) / sizeof(r_.i32f[0])) ; i++) {
+      r_.i32f[i] = a_.i32f[i] | b_.i32f[i];
+    }
+  #endif
+
+    return simde__m512d_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_X86_AVX512DQ_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_or_pd
+  #define _mm512_or_pd(a, b) simde_mm512_or_pd(a, b)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512
 simde_mm512_xor_ps (simde__m512 a, simde__m512 b) {
 #if defined(SIMDE_X86_AVX512DQ_NATIVE)
   return _mm512_xor_ps(a, b);
