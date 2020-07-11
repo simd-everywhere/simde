@@ -222,8 +222,8 @@ simde_mm512_xor_ps (simde__m512 a, simde__m512 b) {
   r_.i32f = a_.i32f ^ b_.i32f;
 #else
   SIMDE_VECTORIZE
-  for (size_t i = 0 ; i < (sizeof(r_.u32) / sizeof(r_.u32[0])) ; i++) {
-    r_.u32[i] = a_.u32[i] ^ b_.u32[i];
+  for (size_t i = 0 ; i < (sizeof(r_.i32f) / sizeof(r_.i32f[0])) ; i++) {
+    r_.i32f[i] = a_.i32f[i] ^ b_.i32f[i];
   }
 #endif
 
@@ -253,8 +253,8 @@ simde_mm512_xor_pd (simde__m512d a, simde__m512d b) {
   r_.i32f = a_.i32f ^ b_.i32f;
 #else
   SIMDE_VECTORIZE
-  for (size_t i = 0 ; i < (sizeof(r_.u64) / sizeof(r_.u64[0])) ; i++) {
-    r_.u64[i] = a_.u64[i] ^ b_.u64[i];
+  for (size_t i = 0 ; i < (sizeof(r_.i32f) / sizeof(r_.i32f[0])) ; i++) {
+    r_.i32f[i] = a_.i32f[i] ^ b_.i32f[i];
   }
 #endif
 
