@@ -1714,3 +1714,46 @@ test_simde_mm512_maskz_xxx_epu64 (SIMDE_MUNIT_TEST_ARGS) {
   return 1;
 #endif
 }
+
+static int
+test_simde_mm512_xxx_ps_mask (SIMDE_MUNIT_TEST_ARGS) {
+#if 1
+  static const struct {
+    const simde_float32 a[16];
+    const simde_float32 b[16];
+    const simde__mmask16 r;
+  } test_vec[] = {
+
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
+    simde__m512 a = simde_mm512_loadu_ps(test_vec[i].a);
+    simde__m512 b = simde_mm512_loadu_ps(test_vec[i].b);
+    simde__mmask16 r = simde_mm512_xxx_ps_mask(a, b);
+    simde_assert_mmask16(r, ==, test_vec[i].r);
+  }
+
+  return 0;
+#else
+  fputc('\n', stdout);
+  for (int i = 0 ; i < 8 ; i++) {
+    simde_float32 a_[16];
+    simde_float32 b_[16];
+    
+    simde_test_codegen_random_vf32(16, a_, SIMDE_FLOAT32_C(-1000.0), SIMDE_FLOAT32_C(1000.0));
+    simde_test_codegen_random_vf32(16, b_, SIMDE_FLOAT32_C(-1000.0), SIMDE_FLOAT32_C(1000.0));
+    for (size_t j = 0 ; j < 16 ; j++)
+      if (!(simde_test_codegen_random_i32() & 1))
+        a_[j] = b_[j];
+
+    simde__m512 a = simde_mm512_loadu_ps(a_);
+    simde__m512 b = simde_mm512_loadu_ps(b_);
+    simde__mmask16 r = simde_mm512_xxx_ps_mask(a, b);
+
+    simde_test_x86_write_f32x16(2, a, SIMDE_TEST_VEC_POS_FIRST);
+    simde_test_x86_write_f32x16(2, b, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_x86_write_mmask16(2, r, SIMDE_TEST_VEC_POS_LAST);
+  }
+  return 1;
+#endif
+}
