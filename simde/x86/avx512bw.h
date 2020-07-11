@@ -1738,6 +1738,199 @@ simde_mm512_mullo_epi16 (simde__m512i a, simde__m512i b) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m512i
+simde_mm512_packs_epi16 (simde__m512i a, simde__m512i b) {
+  #if defined(SIMDE_X86_AVX512BW_NATIVE)
+    return _mm512_packs_epi16(a, b);
+  #else
+    simde__m512i_private
+      r_,
+      a_ = simde__m512i_to_private(a),
+      b_ = simde__m512i_to_private(b);
+
+    #if SIMDE_NATURAL_VECTOR_SIZE_LE(256)
+      r_.m256i[0] = simde_mm256_packs_epi16(a_.m256i[0], b_.m256i[0]);
+      r_.m256i[1] = simde_mm256_packs_epi16(a_.m256i[1], b_.m256i[1]);
+    #else
+      const size_t halfway_point = (sizeof(r_.i8) / sizeof(r_.i8[0])) / 2;
+      const size_t quarter_point = (sizeof(r_.i8) / sizeof(r_.i8[0])) / 4;
+      const size_t octet_point = (sizeof(r_.i8) / sizeof(r_.i8[0])) / 8;
+
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < octet_point ; i++) {
+        r_.i8[i] = (a_.i16[i] > INT8_MAX) ? INT8_MAX : ((a_.i16[i] < INT8_MIN) ? INT8_MIN : HEDLEY_STATIC_CAST(int8_t, a_.i16[i]));
+        r_.i8[i + octet_point] = (b_.i16[i] > INT8_MAX) ? INT8_MAX : ((b_.i16[i] < INT8_MIN) ? INT8_MIN : HEDLEY_STATIC_CAST(int8_t, b_.i16[i]));
+        r_.i8[quarter_point + i] = (a_.i16[octet_point + i] > INT8_MAX) ? INT8_MAX : ((a_.i16[octet_point + i] < INT8_MIN) ? INT8_MIN : HEDLEY_STATIC_CAST(int8_t, a_.i16[octet_point + i]));
+        r_.i8[quarter_point + i + octet_point] = (b_.i16[octet_point + i] > INT8_MAX) ? INT8_MAX : ((b_.i16[octet_point + i] < INT8_MIN) ? INT8_MIN : HEDLEY_STATIC_CAST(int8_t, b_.i16[octet_point + i]));
+        r_.i8[halfway_point + i] = (a_.i16[quarter_point + i] > INT8_MAX) ? INT8_MAX : ((a_.i16[quarter_point + i] < INT8_MIN) ? INT8_MIN : HEDLEY_STATIC_CAST(int8_t, a_.i16[quarter_point + i]));
+        r_.i8[halfway_point + i + octet_point] = (b_.i16[quarter_point + i] > INT8_MAX) ? INT8_MAX : ((b_.i16[quarter_point + i] < INT8_MIN) ? INT8_MIN : HEDLEY_STATIC_CAST(int8_t, b_.i16[quarter_point + i]));
+        r_.i8[halfway_point + quarter_point + i]     = (a_.i16[quarter_point + octet_point + i] > INT8_MAX) ? INT8_MAX : ((a_.i16[quarter_point + octet_point + i] < INT8_MIN) ? INT8_MIN : HEDLEY_STATIC_CAST(int8_t, a_.i16[quarter_point + octet_point + i]));
+        r_.i8[halfway_point + quarter_point + i + octet_point] = (b_.i16[quarter_point + octet_point + i] > INT8_MAX) ? INT8_MAX : ((b_.i16[quarter_point + octet_point + i] < INT8_MIN) ? INT8_MIN : HEDLEY_STATIC_CAST(int8_t, b_.i16[quarter_point + octet_point + i]));
+      }
+    #endif
+
+    return simde__m512i_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_packs_epi16
+  #define _mm512_packs_epi16(a, b) simde_mm512_packs_epi16(a, b)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512i
+simde_mm512_packs_epi32 (simde__m512i a, simde__m512i b) {
+  #if defined(SIMDE_X86_AVX512BW_NATIVE)
+    return _mm512_packs_epi32(a, b);
+  #else
+    simde__m512i_private
+      r_,
+      a_ = simde__m512i_to_private(a),
+      b_ = simde__m512i_to_private(b);
+
+    #if SIMDE_NATURAL_VECTOR_SIZE_LE(256)
+      r_.m256i[0] = simde_mm256_packs_epi32(a_.m256i[0], b_.m256i[0]);
+      r_.m256i[1] = simde_mm256_packs_epi32(a_.m256i[1], b_.m256i[1]);
+    #else
+      const size_t halfway_point = (sizeof(r_.i16) / sizeof(r_.i16[0])) / 2;
+      const size_t quarter_point = (sizeof(r_.i16) / sizeof(r_.i16[0])) / 4;
+      const size_t octet_point = (sizeof(r_.i16) / sizeof(r_.i16[0])) / 8;
+
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < octet_point ; i++) {
+        r_.i16[i] = (a_.i32[i] > INT16_MAX) ? INT16_MAX : ((a_.i32[i] < INT16_MIN) ? INT16_MIN : HEDLEY_STATIC_CAST(int16_t, a_.i32[i]));
+        r_.i16[i + octet_point] = (b_.i32[i] > INT16_MAX) ? INT16_MAX : ((b_.i32[i] < INT16_MIN) ? INT16_MIN : HEDLEY_STATIC_CAST(int16_t, b_.i32[i]));
+        r_.i16[quarter_point + i] = (a_.i32[octet_point + i] > INT16_MAX) ? INT16_MAX : ((a_.i32[octet_point + i] < INT16_MIN) ? INT16_MIN : HEDLEY_STATIC_CAST(int16_t, a_.i32[octet_point + i]));
+        r_.i16[quarter_point + i + octet_point] = (b_.i32[octet_point + i] > INT16_MAX) ? INT16_MAX : ((b_.i32[octet_point + i] < INT16_MIN) ? INT16_MIN : HEDLEY_STATIC_CAST(int16_t, b_.i32[octet_point + i]));
+        r_.i16[halfway_point + i] = (a_.i32[quarter_point + i] > INT16_MAX) ? INT16_MAX : ((a_.i32[quarter_point +i] < INT16_MIN) ? INT16_MIN : HEDLEY_STATIC_CAST(int16_t, a_.i32[quarter_point + i]));
+        r_.i16[halfway_point + i + octet_point] = (b_.i32[quarter_point + i] > INT16_MAX) ? INT16_MAX : ((b_.i32[quarter_point + i] < INT16_MIN) ? INT16_MIN : HEDLEY_STATIC_CAST(int16_t, b_.i32[quarter_point +i]));
+        r_.i16[halfway_point + quarter_point + i] = (a_.i32[quarter_point + octet_point + i] > INT16_MAX) ? INT16_MAX : ((a_.i32[quarter_point + octet_point + i] < INT16_MIN) ? INT16_MIN : HEDLEY_STATIC_CAST(int16_t, a_.i32[quarter_point + octet_point + i]));
+        r_.i16[halfway_point + quarter_point + i + octet_point] = (b_.i32[quarter_point + octet_point + i] > INT16_MAX) ? INT16_MAX : ((b_.i32[quarter_point + octet_point + i] < INT16_MIN) ? INT16_MIN : HEDLEY_STATIC_CAST(int16_t, b_.i32[quarter_point + octet_point + i]));
+      }
+    #endif
+
+    return simde__m512i_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_packs_epi32
+  #define _mm512_packs_epi32(a, b) simde_mm512_packs_epi32(a, b)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512i
+simde_mm512_packus_epi16 (simde__m512i a, simde__m512i b) {
+  #if defined(SIMDE_X86_AVX512BW_NATIVE)
+    return _mm512_packus_epi16(a, b);
+  #else
+    simde__m512i_private
+      r_,
+      a_ = simde__m512i_to_private(a),
+      b_ = simde__m512i_to_private(b);
+
+    #if SIMDE_NATURAL_VECTOR_SIZE_LE(256)
+      r_.m256i[0] = simde_mm256_packus_epi16(a_.m256i[0], b_.m256i[0]);
+      r_.m256i[1] = simde_mm256_packus_epi16(a_.m256i[1], b_.m256i[1]);
+    #else
+      const size_t halfway_point = (sizeof(r_.i8) / sizeof(r_.i8[0])) / 2;
+      const size_t quarter_point = (sizeof(r_.i8) / sizeof(r_.i8[0])) / 4;
+      const size_t octet_point = (sizeof(r_.i8) / sizeof(r_.i8[0])) / 8;
+
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < octet_point ; i++) {
+        r_.u8[i]     = (a_.i16[i] > UINT8_MAX) ? UINT8_MAX : ((a_.i16[i] < 0) ? UINT8_C(0) : HEDLEY_STATIC_CAST(uint8_t, a_.i16[i]));
+        r_.u8[i + octet_point] = (b_.i16[i] > UINT8_MAX) ? UINT8_MAX : ((b_.i16[i] < 0) ? UINT8_C(0) : HEDLEY_STATIC_CAST(uint8_t, b_.i16[i]));
+        r_.u8[quarter_point + i]     = (a_.i16[octet_point + i] > UINT8_MAX) ? UINT8_MAX : ((a_.i16[octet_point + i] < 0) ? UINT8_C(0) : HEDLEY_STATIC_CAST(uint8_t, a_.i16[octet_point + i]));
+        r_.u8[quarter_point + i + octet_point] = (b_.i16[octet_point + i] > UINT8_MAX) ? UINT8_MAX : ((b_.i16[octet_point + i] < 0) ? UINT8_C(0) : HEDLEY_STATIC_CAST(uint8_t, b_.i16[octet_point + i]));
+        r_.u8[halfway_point + i]     = (a_.i16[quarter_point + i] > UINT8_MAX) ? UINT8_MAX : ((a_.i16[quarter_point + i] < 0) ? UINT8_C(0) : HEDLEY_STATIC_CAST(uint8_t, a_.i16[quarter_point + i]));
+        r_.u8[halfway_point + i + octet_point] = (b_.i16[quarter_point + i] > UINT8_MAX) ? UINT8_MAX : ((b_.i16[quarter_point + i] < 0) ? UINT8_C(0) : HEDLEY_STATIC_CAST(uint8_t, b_.i16[quarter_point + i]));
+        r_.u8[halfway_point + quarter_point + i]     = (a_.i16[quarter_point + octet_point + i] > UINT8_MAX) ? UINT8_MAX : ((a_.i16[quarter_point + octet_point + i] < 0) ? UINT8_C(0) : HEDLEY_STATIC_CAST(uint8_t, a_.i16[quarter_point + octet_point + i]));
+        r_.u8[halfway_point + quarter_point + i + octet_point] = (b_.i16[quarter_point + octet_point + i] > UINT8_MAX) ? UINT8_MAX : ((b_.i16[quarter_point + octet_point + i] < 0) ? UINT8_C(0) : HEDLEY_STATIC_CAST(uint8_t, b_.i16[quarter_point + octet_point + i]));
+      }
+    #endif
+
+    return simde__m512i_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_packus_epi16
+  #define _mm512_packus_epi16(a, b) simde_mm512_packus_epi16(a, b)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512i
+simde_mm512_packus_epi32 (simde__m512i a, simde__m512i b) {
+#if defined(SIMDE_X86_AVX512BW_NATIVE)
+  return _mm512_packus_epi32(a, b);
+#else
+  simde__m512i_private
+    r_,
+    a_ = simde__m512i_to_private(a),
+    b_ = simde__m512i_to_private(b);
+
+  #if defined(SIMDE_X86_AVX2_NATIVE)
+    r_.m256i[0] = simde_mm256_packus_epi32(a_.m256i[0], b_.m256i[0]);
+    r_.m256i[1] = simde_mm256_packus_epi32(a_.m256i[1], b_.m256i[1]);
+  #else
+    const size_t halfway_point = (sizeof(r_.i16) / sizeof(r_.i16[0])) / 2;
+    const size_t quarter_point = (sizeof(r_.i16) / sizeof(r_.i16[0])) / 4;
+    const size_t octet_point = (sizeof(r_.i16) / sizeof(r_.i16[0])) / 8;
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < octet_point ; i++) {
+      r_.u16[i] = (a_.i32[i] > UINT16_MAX) ? UINT16_MAX : ((a_.i32[i] < 0) ? UINT16_C(0) : HEDLEY_STATIC_CAST(uint16_t, a_.i32[i]));
+      r_.u16[i + octet_point] = (b_.i32[i] > UINT16_MAX) ? UINT16_MAX : ((b_.i32[i] < 0) ? UINT16_C(0) : HEDLEY_STATIC_CAST(uint16_t, b_.i32[i]));
+      r_.u16[quarter_point + i]     = (a_.i32[octet_point + i] > UINT16_MAX) ? UINT16_MAX : ((a_.i32[octet_point + i] < 0) ? UINT16_C(0) : HEDLEY_STATIC_CAST(uint16_t, a_.i32[octet_point + i]));
+      r_.u16[quarter_point + i + octet_point] = (b_.i32[octet_point + i] > UINT16_MAX) ? UINT16_MAX : ((b_.i32[octet_point + i] < 0) ? UINT16_C(0) : HEDLEY_STATIC_CAST(uint16_t, b_.i32[octet_point + i]));
+      r_.u16[halfway_point + i] = (a_.i32[quarter_point + i] > UINT16_MAX) ? UINT16_MAX : ((a_.i32[quarter_point +i] < 0) ? UINT16_C(0) : HEDLEY_STATIC_CAST(uint16_t, a_.i32[quarter_point + i]));
+      r_.u16[halfway_point + i + octet_point] = (b_.i32[quarter_point + i] > UINT16_MAX) ? UINT16_MAX : ((b_.i32[quarter_point + i] < 0) ? UINT16_C(0) : HEDLEY_STATIC_CAST(uint16_t, b_.i32[quarter_point +i]));
+      r_.u16[halfway_point + quarter_point + i]     = (a_.i32[quarter_point + octet_point + i] > UINT16_MAX) ? UINT16_MAX : ((a_.i32[quarter_point + octet_point + i] < 0) ? UINT16_C(0) : HEDLEY_STATIC_CAST(uint16_t, a_.i32[quarter_point + octet_point + i]));
+      r_.u16[halfway_point + quarter_point + i + octet_point] = (b_.i32[quarter_point + octet_point + i] > UINT16_MAX) ? UINT16_MAX : ((b_.i32[quarter_point + octet_point + i] < 0) ? UINT16_C(0) : HEDLEY_STATIC_CAST(uint16_t, b_.i32[quarter_point + octet_point + i]));
+    }
+  #endif
+
+  return simde__m512i_from_private(r_);
+#endif
+}
+#if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_packus_epi32
+  #define _mm512_packus_epi32(a, b) simde_mm512_packus_epi32(a, b)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512i
+simde_mm512_srli_epi16 (simde__m512i a, const int imm8)
+    SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 255) {
+  simde__m512i_private
+    r_,
+    a_ = simde__m512i_to_private(a);
+
+  if (imm8 > 15)
+    return simde_mm512_setzero_si512();
+
+  if (HEDLEY_STATIC_CAST(unsigned int, imm8) > 15) {
+    simde_memset(&r_, 0, sizeof(r_));
+  } else {
+    #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+      r_.u16 = a_.u16 >> HEDLEY_STATIC_CAST(int16_t, imm8);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.u16) / sizeof(r_.u16[0])) ; i++) {
+        r_.u16[i] = a_.u16[i] >> imm8;
+      }
+    #endif
+  }
+
+  return simde__m512i_from_private(r_);
+}
+#if defined(SIMDE_X86_AVX512BW_NATIVE)
+  #define simde_mm512_srli_epi16(a, imm8) _mm512_srli_epi16(a, imm8)
+#endif
+#if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_srli_epi16
+  #define _mm512_srli_epi16(a, imm8) simde_mm512_srli_epi16(a, imm8)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512i
 simde_mm512_sub_epi16 (simde__m512i a, simde__m512i b) {
   #if defined(SIMDE_X86_AVX512BW_NATIVE)
     return _mm512_sub_epi16(a, b);

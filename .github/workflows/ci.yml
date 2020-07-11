@@ -37,6 +37,8 @@ jobs:
     # Don't #ifndef ; use !defined(...) instead.  ifndef leads to annoying inconsistencies
     - name: ifndef
       run: for file in $(find simde -name '*.h'); do grep -qP '^ *# *ifndef ' "${file}" && exit 1 || exit 0; done
+    - name: Meson install headers
+      run: for file in $(find simde -name '*.h'); do grep -qF "${file}" meson.build || (echo "${file} missing from top-level meson.build" && exit 1); done
 
   x86:
     runs-on: ubuntu-latest

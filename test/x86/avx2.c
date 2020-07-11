@@ -6029,6 +6029,364 @@ test_simde_mm256_hsubs_epi16 (SIMDE_MUNIT_TEST_ARGS) {
   return 0;
 }
 
+static int32_t gather_buffer[4096];
+
+static int
+test_simde_mm_i32gather_epi32 (SIMDE_MUNIT_TEST_ARGS) {
+  static const struct {
+    const int32_t vindex[4];
+    const int32_t r[4];
+  } test_vec[] = {
+    { {  INT32_C(         141),  INT32_C(          78),  INT32_C(         249),  INT32_C(          88) },
+      {  INT32_C(         141),  INT32_C(          78),  INT32_C(         249),  INT32_C(          88) } },
+    { {  INT32_C(         189),  INT32_C(         204),  INT32_C(          14),  INT32_C(         231) },
+      {  INT32_C(         189),  INT32_C(         204),  INT32_C(          14),  INT32_C(         231) } },
+    { {  INT32_C(         199),  INT32_C(          52),  INT32_C(         133),  INT32_C(         101) },
+      {  INT32_C(         199),  INT32_C(          52),  INT32_C(         133),  INT32_C(         101) } },
+    { {  INT32_C(         239),  INT32_C(          12),  INT32_C(         121),  INT32_C(         226) },
+      {  INT32_C(         239),  INT32_C(          12),  INT32_C(         121),  INT32_C(         226) } },
+    { {  INT32_C(         197),  INT32_C(         167),  INT32_C(         235),  INT32_C(          15) },
+      {  INT32_C(         197),  INT32_C(         167),  INT32_C(         235),  INT32_C(          15) } },
+    { {  INT32_C(         239),  INT32_C(         157),  INT32_C(         219),  INT32_C(          83) },
+      {  INT32_C(         239),  INT32_C(         157),  INT32_C(         219),  INT32_C(          83) } },
+    { {  INT32_C(         230),  INT32_C(          67),  INT32_C(         195),  INT32_C(          27) },
+      {  INT32_C(         230),  INT32_C(          67),  INT32_C(         195),  INT32_C(          27) } },
+    { {  INT32_C(         203),  INT32_C(         150),  INT32_C(         133),  INT32_C(          68) },
+      {  INT32_C(         203),  INT32_C(         150),  INT32_C(         133),  INT32_C(          68) } }
+  };
+  for (size_t i = 0 ; i < (sizeof(gather_buffer) / sizeof(gather_buffer[0])) ; i++) { gather_buffer[i] = HEDLEY_STATIC_CAST(int32_t, i); }
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
+    simde__m128i vindex = simde_x_mm_loadu_epi32(test_vec[i].vindex);
+    simde__m128i r = simde_mm_i32gather_epi32(gather_buffer, vindex, 4);
+    simde_test_x86_assert_equal_i32x4(r, simde_x_mm_loadu_epi32(test_vec[i].r));
+  }
+
+  return 0;
+}
+
+static int
+test_simde_mm_mask_i32gather_epi32 (SIMDE_MUNIT_TEST_ARGS) {
+  static const struct {
+    const int32_t src[4];
+    const int32_t vindex[4];
+    const int32_t mask[4];
+    const int32_t r[4];
+  } test_vec[] = {
+    { { -INT32_C(   685361840), -INT32_C(  1057547638), -INT32_C(  1601608401), -INT32_C(  2110383967) },
+      {  INT32_C(          85),  INT32_C(          81),  INT32_C(         250),  INT32_C(         146) },
+      {            INT32_MIN,            INT32_MIN,            INT32_MIN,            INT32_MIN },
+      {  INT32_C(          85),  INT32_C(          81),  INT32_C(         250),  INT32_C(         146) } },
+    { { -INT32_C(   612533238), -INT32_C(  2144538583), -INT32_C(  1518687133),  INT32_C(  1765241328) },
+      {  INT32_C(         198),  INT32_C(         202),  INT32_C(         225),  INT32_C(         124) },
+      {  INT32_C(           0),  INT32_C(           0),            INT32_MIN,            INT32_MIN },
+      { -INT32_C(   612533238), -INT32_C(  2144538583),  INT32_C(         225),  INT32_C(         124) } },
+    { {  INT32_C(  1518663255), -INT32_C(  1557876442),  INT32_C(  1485068261),  INT32_C(   248810868) },
+      {  INT32_C(         138),  INT32_C(         226),  INT32_C(           2),  INT32_C(         239) },
+      {            INT32_MIN,            INT32_MIN,            INT32_MIN,            INT32_MIN },
+      {  INT32_C(         138),  INT32_C(         226),  INT32_C(           2),  INT32_C(         239) } },
+    { { -INT32_C(   436463052),  INT32_C(    46620719), -INT32_C(   637220286), -INT32_C(   624310953) },
+      {  INT32_C(         255),  INT32_C(          71),  INT32_C(           2),  INT32_C(          72) },
+      {  INT32_C(           0),            INT32_MIN,  INT32_C(           0),  INT32_C(           0) },
+      { -INT32_C(   436463052),  INT32_C(          71), -INT32_C(   637220286), -INT32_C(   624310953) } },
+    { {  INT32_C(  1290237130), -INT32_C(   376192698), -INT32_C(   487909938), -INT32_C(  1020567585) },
+      {  INT32_C(         161),  INT32_C(          11),  INT32_C(         227),  INT32_C(          34) },
+      {            INT32_MIN,            INT32_MIN,  INT32_C(           0),            INT32_MIN },
+      {  INT32_C(         161),  INT32_C(          11), -INT32_C(   487909938),  INT32_C(          34) } },
+    { { -INT32_C(   193884505),  INT32_C(  2130650489),  INT32_C(   526459079), -INT32_C(  1220465615) },
+      {  INT32_C(          81),  INT32_C(         199),  INT32_C(         213),  INT32_C(         171) },
+      {            INT32_MIN,            INT32_MIN,            INT32_MIN,  INT32_C(           0) },
+      {  INT32_C(          81),  INT32_C(         199),  INT32_C(         213), -INT32_C(  1220465615) } },
+    { { -INT32_C(  1028183535),  INT32_C(   931744097),  INT32_C(    34424318), -INT32_C(  1095912774) },
+      {  INT32_C(           3),  INT32_C(         170),  INT32_C(          26),  INT32_C(         155) },
+      {  INT32_C(           0),  INT32_C(           0),  INT32_C(           0),            INT32_MIN },
+      { -INT32_C(  1028183535),  INT32_C(   931744097),  INT32_C(    34424318),  INT32_C(         155) } },
+    { {  INT32_C(  1720704891), -INT32_C(  1492085483),  INT32_C(  1187097276),  INT32_C(  1491223020) },
+      {  INT32_C(         248),  INT32_C(          82),  INT32_C(         255),  INT32_C(         161) },
+      {  INT32_C(           0),  INT32_C(           0),  INT32_C(           0),  INT32_C(           0) },
+      {  INT32_C(  1720704891), -INT32_C(  1492085483),  INT32_C(  1187097276),  INT32_C(  1491223020) } }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(gather_buffer) / sizeof(gather_buffer[0])) ; i++) { gather_buffer[i] = HEDLEY_STATIC_CAST(int32_t, i); }
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
+    simde__m128i src = simde_x_mm_loadu_epi32(test_vec[i].src);
+    simde__m128i vindex = simde_x_mm_loadu_epi32(test_vec[i].vindex);
+    simde__m128i mask = simde_x_mm_loadu_epi32(test_vec[i].mask);
+    simde__m128i r = simde_mm_mask_i32gather_epi32(src, gather_buffer, vindex, mask, 4);
+    simde_test_x86_assert_equal_i32x4(r, simde_x_mm_loadu_epi32(test_vec[i].r));
+  }
+
+  return 0;
+
+}
+
+static int
+test_simde_mm256_i32gather_epi32 (SIMDE_MUNIT_TEST_ARGS) {
+  static const struct {
+    const int32_t vindex[8];
+    const int32_t r[8];
+  } test_vec[] = {
+    { {  INT32_C(          27),  INT32_C(         135),  INT32_C(         222),  INT32_C(          60),  INT32_C(         120),  INT32_C(         248),  INT32_C(         252),  INT32_C(          33) },
+      {  INT32_C(          27),  INT32_C(         135),  INT32_C(         222),  INT32_C(          60),  INT32_C(         120),  INT32_C(         248),  INT32_C(         252),  INT32_C(          33) } },
+    { {  INT32_C(          94),  INT32_C(         185),  INT32_C(         221),  INT32_C(         160),  INT32_C(          28),  INT32_C(         199),  INT32_C(         216),  INT32_C(          91) },
+      {  INT32_C(          94),  INT32_C(         185),  INT32_C(         221),  INT32_C(         160),  INT32_C(          28),  INT32_C(         199),  INT32_C(         216),  INT32_C(          91) } },
+    { {  INT32_C(         198),  INT32_C(          71),  INT32_C(         176),  INT32_C(          54),  INT32_C(         235),  INT32_C(         249),  INT32_C(           5),  INT32_C(         236) },
+      {  INT32_C(         198),  INT32_C(          71),  INT32_C(         176),  INT32_C(          54),  INT32_C(         235),  INT32_C(         249),  INT32_C(           5),  INT32_C(         236) } },
+    { {  INT32_C(         152),  INT32_C(         161),  INT32_C(         168),  INT32_C(         209),  INT32_C(         201),  INT32_C(         153),  INT32_C(           8),  INT32_C(          97) },
+      {  INT32_C(         152),  INT32_C(         161),  INT32_C(         168),  INT32_C(         209),  INT32_C(         201),  INT32_C(         153),  INT32_C(           8),  INT32_C(          97) } },
+    { {  INT32_C(         210),  INT32_C(          35),  INT32_C(          29),  INT32_C(         112),  INT32_C(         115),  INT32_C(           2),  INT32_C(         240),  INT32_C(         195) },
+      {  INT32_C(         210),  INT32_C(          35),  INT32_C(          29),  INT32_C(         112),  INT32_C(         115),  INT32_C(           2),  INT32_C(         240),  INT32_C(         195) } },
+    { {  INT32_C(         126),  INT32_C(           0),  INT32_C(          49),  INT32_C(         241),  INT32_C(         211),  INT32_C(         104),  INT32_C(         198),  INT32_C(         131) },
+      {  INT32_C(         126),  INT32_C(           0),  INT32_C(          49),  INT32_C(         241),  INT32_C(         211),  INT32_C(         104),  INT32_C(         198),  INT32_C(         131) } },
+    { {  INT32_C(          25),  INT32_C(         242),  INT32_C(          37),  INT32_C(         251),  INT32_C(         120),  INT32_C(          10),  INT32_C(          98),  INT32_C(         217) },
+      {  INT32_C(          25),  INT32_C(         242),  INT32_C(          37),  INT32_C(         251),  INT32_C(         120),  INT32_C(          10),  INT32_C(          98),  INT32_C(         217) } },
+    { {  INT32_C(         159),  INT32_C(         152),  INT32_C(         136),  INT32_C(          27),  INT32_C(          62),  INT32_C(         120),  INT32_C(         145),  INT32_C(         235) },
+      {  INT32_C(         159),  INT32_C(         152),  INT32_C(         136),  INT32_C(          27),  INT32_C(          62),  INT32_C(         120),  INT32_C(         145),  INT32_C(         235) } }
+  };
+  for (size_t i = 0 ; i < (sizeof(gather_buffer) / sizeof(gather_buffer[0])) ; i++) { gather_buffer[i] = HEDLEY_STATIC_CAST(int32_t, i); }
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
+    simde__m256i vindex = simde_x_mm256_loadu_epi32(test_vec[i].vindex);
+    simde__m256i r = simde_mm256_i32gather_epi32(gather_buffer, vindex, 4);
+    simde_test_x86_assert_equal_i32x8(r, simde_x_mm256_loadu_epi32(test_vec[i].r));
+  }
+
+  return 0;
+}
+
+static int
+test_simde_mm256_mask_i32gather_epi32 (SIMDE_MUNIT_TEST_ARGS) {
+  static const struct {
+    const int32_t src[8];
+    const int32_t vindex[8];
+    const int32_t mask[8];
+    const int32_t r[8];
+  } test_vec[] = {
+    { { -INT32_C(  1086860273), -INT32_C(   849127954), -INT32_C(   348023026), -INT32_C(  1484367608),  INT32_C(   287657063), -INT32_C(   380909789),  INT32_C(  1004087424), -INT32_C(  1260891740) },
+      {  INT32_C(          19),  INT32_C(         114),  INT32_C(         118),  INT32_C(         226),  INT32_C(          83),  INT32_C(         138),  INT32_C(          11),  INT32_C(         140) },
+      {  INT32_C(           0),            INT32_MIN,            INT32_MIN,            INT32_MIN,            INT32_MIN,  INT32_C(           0),  INT32_C(           0),            INT32_MIN },
+      { -INT32_C(  1086860273),  INT32_C(         114),  INT32_C(         118),  INT32_C(         226),  INT32_C(          83), -INT32_C(   380909789),  INT32_C(  1004087424),  INT32_C(         140) } },
+    { { -INT32_C(  1577111400),  INT32_C(  1410892465),  INT32_C(   678561379),  INT32_C(  1578988305), -INT32_C(  1665833368), -INT32_C(  2026400021),  INT32_C(  2139872828), -INT32_C(   596763836) },
+      {  INT32_C(         252),  INT32_C(          84),  INT32_C(         173),  INT32_C(         158),  INT32_C(         235),  INT32_C(         148),  INT32_C(         148),  INT32_C(         100) },
+      {  INT32_C(           0),            INT32_MIN,  INT32_C(           0),            INT32_MIN,            INT32_MIN,  INT32_C(           0),  INT32_C(           0),  INT32_C(           0) },
+      { -INT32_C(  1577111400),  INT32_C(          84),  INT32_C(   678561379),  INT32_C(         158),  INT32_C(         235), -INT32_C(  2026400021),  INT32_C(  2139872828), -INT32_C(   596763836) } },
+    { { -INT32_C(  1074690759), -INT32_C(  1478416843),  INT32_C(   592490712),  INT32_C(   695179148),  INT32_C(   220112409), -INT32_C(   128800944),  INT32_C(  1706634309), -INT32_C(  1334452618) },
+      {  INT32_C(         152),  INT32_C(         101),  INT32_C(         140),  INT32_C(          63),  INT32_C(         238),  INT32_C(         192),  INT32_C(          66),  INT32_C(         224) },
+      {            INT32_MIN,            INT32_MIN,            INT32_MIN,            INT32_MIN,            INT32_MIN,            INT32_MIN,  INT32_C(           0),            INT32_MIN },
+      {  INT32_C(         152),  INT32_C(         101),  INT32_C(         140),  INT32_C(          63),  INT32_C(         238),  INT32_C(         192),  INT32_C(  1706634309),  INT32_C(         224) } },
+    { { -INT32_C(  1420665862),  INT32_C(  1515996691),  INT32_C(   969382596),  INT32_C(  1431139470),  INT32_C(   144133742), -INT32_C(  1133668042), -INT32_C(  2118118208), -INT32_C(  1488673875) },
+      {  INT32_C(          18),  INT32_C(         161),  INT32_C(         215),  INT32_C(          22),  INT32_C(         172),  INT32_C(          28),  INT32_C(          76),  INT32_C(         203) },
+      {  INT32_C(           0),  INT32_C(           0),  INT32_C(           0),  INT32_C(           0),            INT32_MIN,            INT32_MIN,            INT32_MIN,  INT32_C(           0) },
+      { -INT32_C(  1420665862),  INT32_C(  1515996691),  INT32_C(   969382596),  INT32_C(  1431139470),  INT32_C(         172),  INT32_C(          28),  INT32_C(          76), -INT32_C(  1488673875) } },
+    { { -INT32_C(    20439286), -INT32_C(   449069208), -INT32_C(  2012655728), -INT32_C(  1829288817), -INT32_C(  2081353314),  INT32_C(  1074228372),  INT32_C(  2142754948), -INT32_C(  1477248355) },
+      {  INT32_C(         130),  INT32_C(           9),  INT32_C(         190),  INT32_C(          83),  INT32_C(          47),  INT32_C(          49),  INT32_C(          83),  INT32_C(          58) },
+      {            INT32_MIN,            INT32_MIN,            INT32_MIN,            INT32_MIN,            INT32_MIN,            INT32_MIN,  INT32_C(           0),  INT32_C(           0) },
+      {  INT32_C(         130),  INT32_C(           9),  INT32_C(         190),  INT32_C(          83),  INT32_C(          47),  INT32_C(          49),  INT32_C(  2142754948), -INT32_C(  1477248355) } },
+    { {  INT32_C(  1885499633),  INT32_C(   656294547), -INT32_C(  1351644492),  INT32_C(  1128532806), -INT32_C(   873657988), -INT32_C(  1764702148), -INT32_C(  2096027564),  INT32_C(  1796130170) },
+      {  INT32_C(         201),  INT32_C(         102),  INT32_C(         201),  INT32_C(         231),  INT32_C(         159),  INT32_C(          22),  INT32_C(          38),  INT32_C(          66) },
+      {  INT32_C(           0),            INT32_MIN,  INT32_C(           0),            INT32_MIN,  INT32_C(           0),            INT32_MIN,  INT32_C(           0),  INT32_C(           0) },
+      {  INT32_C(  1885499633),  INT32_C(         102), -INT32_C(  1351644492),  INT32_C(         231), -INT32_C(   873657988),  INT32_C(          22), -INT32_C(  2096027564),  INT32_C(  1796130170) } },
+    { {  INT32_C(   515341239), -INT32_C(   737547912), -INT32_C(   778257104),  INT32_C(   936725373), -INT32_C(  1833731923),  INT32_C(  1914979922),  INT32_C(  1184881778), -INT32_C(   583921882) },
+      {  INT32_C(           2),  INT32_C(           3),  INT32_C(          63),  INT32_C(         107),  INT32_C(         115),  INT32_C(         226),  INT32_C(          35),  INT32_C(          31) },
+      {            INT32_MIN,  INT32_C(           0),            INT32_MIN,  INT32_C(           0),            INT32_MIN,            INT32_MIN,  INT32_C(           0),            INT32_MIN },
+      {  INT32_C(           2), -INT32_C(   737547912),  INT32_C(          63),  INT32_C(   936725373),  INT32_C(         115),  INT32_C(         226),  INT32_C(  1184881778),  INT32_C(          31) } },
+    { { -INT32_C(   724013614), -INT32_C(   778505370),  INT32_C(  2063310050), -INT32_C(  1154183402), -INT32_C(   707698399),  INT32_C(   210159988),  INT32_C(  1698257641),  INT32_C(    36013360) },
+      {  INT32_C(          89),  INT32_C(         212),  INT32_C(          34),  INT32_C(         214),  INT32_C(          87),  INT32_C(          97),  INT32_C(         188),  INT32_C(          22) },
+      {            INT32_MIN,            INT32_MIN,            INT32_MIN,  INT32_C(           0),  INT32_C(           0),            INT32_MIN,  INT32_C(           0),  INT32_C(           0) },
+      {  INT32_C(          89),  INT32_C(         212),  INT32_C(          34), -INT32_C(  1154183402), -INT32_C(   707698399),  INT32_C(          97),  INT32_C(  1698257641),  INT32_C(    36013360) } }
+  };
+  for (size_t i = 0 ; i < (sizeof(gather_buffer) / sizeof(gather_buffer[0])) ; i++) { gather_buffer[i] = HEDLEY_STATIC_CAST(int32_t, i); }
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
+    simde__m256i src = simde_x_mm256_loadu_epi32(test_vec[i].src);
+    simde__m256i vindex = simde_x_mm256_loadu_epi32(test_vec[i].vindex);
+    simde__m256i mask = simde_x_mm256_loadu_epi32(test_vec[i].mask);
+    simde__m256i r = simde_mm256_mask_i32gather_epi32(src, gather_buffer, vindex, mask, 4);
+    simde_test_x86_assert_equal_i32x8(r, simde_x_mm256_loadu_epi32(test_vec[i].r));
+  }
+
+  return 0;
+}
+
+static int
+test_simde_mm_i64gather_epi32 (SIMDE_MUNIT_TEST_ARGS) {
+  static const struct {
+    const int64_t vindex[2];
+    const int32_t r[4];
+  } test_vec[] = {
+    { {  INT64_C(                 136),  INT64_C(                  22) },
+      {  INT32_C(         136),  INT32_C(          22),  INT32_C(           0),  INT32_C(           0) } },
+    { {  INT64_C(                 173),  INT64_C(                  86) },
+      {  INT32_C(         173),  INT32_C(          86),  INT32_C(           0),  INT32_C(           0) } },
+    { {  INT64_C(                 157),  INT64_C(                 106) },
+      {  INT32_C(         157),  INT32_C(         106),  INT32_C(           0),  INT32_C(           0) } },
+    { {  INT64_C(                  81),  INT64_C(                 112) },
+      {  INT32_C(          81),  INT32_C(         112),  INT32_C(           0),  INT32_C(           0) } },
+    { {  INT64_C(                  42),  INT64_C(                  54) },
+      {  INT32_C(          42),  INT32_C(          54),  INT32_C(           0),  INT32_C(           0) } },
+    { {  INT64_C(                  75),  INT64_C(                 158) },
+      {  INT32_C(          75),  INT32_C(         158),  INT32_C(           0),  INT32_C(           0) } },
+    { {  INT64_C(                   9),  INT64_C(                  95) },
+      {  INT32_C(           9),  INT32_C(          95),  INT32_C(           0),  INT32_C(           0) } },
+    { {  INT64_C(                 192),  INT64_C(                 148) },
+      {  INT32_C(         192),  INT32_C(         148),  INT32_C(           0),  INT32_C(           0) } }
+  };
+  for (size_t i = 0 ; i < (sizeof(gather_buffer) / sizeof(gather_buffer[0])) ; i++) { gather_buffer[i] = HEDLEY_STATIC_CAST(int32_t, i); }
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
+    simde__m128i vindex = simde_x_mm_loadu_epi64(test_vec[i].vindex);
+    simde__m128i r = simde_mm_i64gather_epi32(gather_buffer, vindex, 4);
+    simde_test_x86_assert_equal_i32x4(r, simde_x_mm_loadu_epi32(test_vec[i].r));
+  }
+
+  return 0;
+}
+
+static int
+test_simde_mm_mask_i64gather_epi32 (SIMDE_MUNIT_TEST_ARGS) {
+  static const struct {
+    const int32_t src[4];
+    const int64_t vindex[2];
+    const int32_t mask[4];
+    const int32_t r[4];
+  } test_vec[] = {
+    { {  INT32_C(  1478898212),  INT32_C(   916774907), -INT32_C(  1556893248),  INT32_C(  1777183058) },
+      {  INT64_C(                 141),  INT64_C(                 139) },
+      {            INT32_MIN,            INT32_MIN,  INT32_C(           0),  INT32_C(           0) },
+      {  INT32_C(         141),  INT32_C(         139),  INT32_C(           0),  INT32_C(           0) } },
+    { { -INT32_C(   632300097), -INT32_C(   462958966),  INT32_C(  1851006215),  INT32_C(   721091466) },
+      {  INT64_C(                 157),  INT64_C(                 177) },
+      {            INT32_MIN,            INT32_MIN,            INT32_MIN,            INT32_MIN },
+      {  INT32_C(         157),  INT32_C(         177),  INT32_C(           0),  INT32_C(           0) } },
+    { {  INT32_C(  1526041333), -INT32_C(  1124607967), -INT32_C(  1106894900),  INT32_C(   879726651) },
+      {  INT64_C(                   0),  INT64_C(                 233) },
+      {            INT32_MIN,            INT32_MIN,  INT32_C(           0),            INT32_MIN },
+      {  INT32_C(           0),  INT32_C(         233),  INT32_C(           0),  INT32_C(           0) } },
+    { { -INT32_C(  1009155372),  INT32_C(  2126747810),  INT32_C(  1779523445), -INT32_C(  1420614464) },
+      {  INT64_C(                  44),  INT64_C(                 205) },
+      {            INT32_MIN,  INT32_C(           0),            INT32_MIN,  INT32_C(           0) },
+      {  INT32_C(          44),  INT32_C(  2126747810),  INT32_C(           0),  INT32_C(           0) } },
+    { { -INT32_C(  2036541516), -INT32_C(  1464708264),  INT32_C(  1817736563),  INT32_C(   289001730) },
+      {  INT64_C(                 210),  INT64_C(                   6) },
+      {  INT32_C(           0),            INT32_MIN,  INT32_C(           0),  INT32_C(           0) },
+      { -INT32_C(  2036541516),  INT32_C(           6),  INT32_C(           0),  INT32_C(           0) } },
+    { {  INT32_C(   529894144), -INT32_C(  1242496641), -INT32_C(  1991166154), -INT32_C(   661684580) },
+      {  INT64_C(                  15),  INT64_C(                  39) },
+      {            INT32_MIN,  INT32_C(           0),            INT32_MIN,            INT32_MIN },
+      {  INT32_C(          15), -INT32_C(  1242496641),  INT32_C(           0),  INT32_C(           0) } },
+    { { -INT32_C(  2000072659),  INT32_C(   932691705), -INT32_C(   673489744),  INT32_C(    16648425) },
+      {  INT64_C(                 234),  INT64_C(                  70) },
+      {  INT32_C(           0),            INT32_MIN,  INT32_C(           0),            INT32_MIN },
+      { -INT32_C(  2000072659),  INT32_C(          70),  INT32_C(           0),  INT32_C(           0) } },
+    { { -INT32_C(   913030322), -INT32_C(  1531700955),  INT32_C(   960408096), -INT32_C(  1367393148) },
+      {  INT64_C(                 118),  INT64_C(                  32) },
+      {  INT32_C(           0),  INT32_C(           0),  INT32_C(           0),            INT32_MIN },
+      { -INT32_C(   913030322), -INT32_C(  1531700955),  INT32_C(           0),  INT32_C(           0) } }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(gather_buffer) / sizeof(gather_buffer[0])) ; i++) { gather_buffer[i] = HEDLEY_STATIC_CAST(int32_t, i); }
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
+    simde__m128i src = simde_x_mm_loadu_epi32(test_vec[i].src);
+    simde__m128i vindex = simde_x_mm_loadu_epi64(test_vec[i].vindex);
+    simde__m128i mask = simde_x_mm_loadu_epi32(test_vec[i].mask);
+    simde__m128i r = simde_mm_mask_i64gather_epi32(src, gather_buffer, vindex, mask, 4);
+    simde_test_x86_assert_equal_i32x4(r, simde_x_mm_loadu_epi32(test_vec[i].r));
+  }
+
+  return 0;
+}
+
+static int
+test_simde_mm256_i64gather_epi32 (SIMDE_MUNIT_TEST_ARGS) {
+  static const struct {
+    const int64_t vindex[4];
+    const int32_t r[4];
+  } test_vec[] = {
+    { {  INT64_C(                 164),  INT64_C(                 255),  INT64_C(                  34),  INT64_C(                 127) },
+      {  INT32_C(         164),  INT32_C(         255),  INT32_C(          34),  INT32_C(         127) } },
+    { {  INT64_C(                  52),  INT64_C(                  61),  INT64_C(                  40),  INT64_C(                  26) },
+      {  INT32_C(          52),  INT32_C(          61),  INT32_C(          40),  INT32_C(          26) } },
+    { {  INT64_C(                 166),  INT64_C(                 126),  INT64_C(                 130),  INT64_C(                  24) },
+      {  INT32_C(         166),  INT32_C(         126),  INT32_C(         130),  INT32_C(          24) } },
+    { {  INT64_C(                 246),  INT64_C(                  51),  INT64_C(                  78),  INT64_C(                 212) },
+      {  INT32_C(         246),  INT32_C(          51),  INT32_C(          78),  INT32_C(         212) } },
+    { {  INT64_C(                 104),  INT64_C(                 184),  INT64_C(                  15),  INT64_C(                 222) },
+      {  INT32_C(         104),  INT32_C(         184),  INT32_C(          15),  INT32_C(         222) } },
+    { {  INT64_C(                 136),  INT64_C(                  54),  INT64_C(                 141),  INT64_C(                  30) },
+      {  INT32_C(         136),  INT32_C(          54),  INT32_C(         141),  INT32_C(          30) } },
+    { {  INT64_C(                 103),  INT64_C(                 148),  INT64_C(                 191),  INT64_C(                 239) },
+      {  INT32_C(         103),  INT32_C(         148),  INT32_C(         191),  INT32_C(         239) } },
+    { {  INT64_C(                 123),  INT64_C(                 179),  INT64_C(                  92),  INT64_C(                 156) },
+      {  INT32_C(         123),  INT32_C(         179),  INT32_C(          92),  INT32_C(         156) } }
+  };
+  for (size_t i = 0 ; i < (sizeof(gather_buffer) / sizeof(gather_buffer[0])) ; i++) { gather_buffer[i] = HEDLEY_STATIC_CAST(int32_t, i); }
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
+    simde__m256i vindex = simde_x_mm256_loadu_epi64(test_vec[i].vindex);
+    simde__m128i r = simde_mm256_i64gather_epi32(gather_buffer, vindex, 4);
+    simde_test_x86_assert_equal_i32x4(r, simde_x_mm_loadu_epi32(test_vec[i].r));
+  }
+
+  return 0;
+}
+
+static int
+test_simde_mm256_mask_i64gather_epi32 (SIMDE_MUNIT_TEST_ARGS) {
+  static const struct {
+    const int32_t src[4];
+    const int64_t vindex[4];
+    const int32_t mask[4];
+    const int32_t r[4];
+  } test_vec[] = {
+    { { -INT32_C(  1914974857), -INT32_C(   268305992),  INT32_C(  1600826892),  INT32_C(    91051765) },
+      {  INT64_C(                  21),  INT64_C(                 250),  INT64_C(                  89),  INT64_C(                  48) },
+      {  INT32_C(           0),  INT32_C(           0),            INT32_MIN,  INT32_C(           0) },
+      { -INT32_C(  1914974857), -INT32_C(   268305992),  INT32_C(          89),  INT32_C(    91051765) } },
+    { { -INT32_C(   807128191), -INT32_C(   215463748),  INT32_C(   975167766),  INT32_C(   627724550) },
+      {  INT64_C(                  89),  INT64_C(                  70),  INT64_C(                 162),  INT64_C(                 179) },
+      {  INT32_C(           0),  INT32_C(           0),            INT32_MIN,            INT32_MIN },
+      { -INT32_C(   807128191), -INT32_C(   215463748),  INT32_C(         162),  INT32_C(         179) } },
+    { { -INT32_C(   569972142),  INT32_C(  1199611944),  INT32_C(  1668045913), -INT32_C(   770263134) },
+      {  INT64_C(                  96),  INT64_C(                  18),  INT64_C(                 116),  INT64_C(                   3) },
+      {            INT32_MIN,  INT32_C(           0),  INT32_C(           0),  INT32_C(           0) },
+      {  INT32_C(          96),  INT32_C(  1199611944),  INT32_C(  1668045913), -INT32_C(   770263134) } },
+    { {  INT32_C(   209437937),  INT32_C(    25204532),  INT32_C(  1584355103), -INT32_C(  1738428347) },
+      {  INT64_C(                 249),  INT64_C(                 196),  INT64_C(                 215),  INT64_C(                 197) },
+      {  INT32_C(           0),  INT32_C(           0),            INT32_MIN,            INT32_MIN },
+      {  INT32_C(   209437937),  INT32_C(    25204532),  INT32_C(         215),  INT32_C(         197) } },
+    { {  INT32_C(  1431392925),  INT32_C(  1278007459),  INT32_C(  1966760398),  INT32_C(   926662903) },
+      {  INT64_C(                 228),  INT64_C(                 100),  INT64_C(                 202),  INT64_C(                  39) },
+      {  INT32_C(           0),            INT32_MIN,            INT32_MIN,            INT32_MIN },
+      {  INT32_C(  1431392925),  INT32_C(         100),  INT32_C(         202),  INT32_C(          39) } },
+    { {  INT32_C(   286484245), -INT32_C(  1831110836),  INT32_C(  1942952725),  INT32_C(  2140816278) },
+      {  INT64_C(                  25),  INT64_C(                 234),  INT64_C(                 181),  INT64_C(                 145) },
+      {            INT32_MIN,  INT32_C(           0),            INT32_MIN,  INT32_C(           0) },
+      {  INT32_C(          25), -INT32_C(  1831110836),  INT32_C(         181),  INT32_C(  2140816278) } },
+    { {  INT32_C(   478193020),  INT32_C(  1842534011),  INT32_C(  1693907963), -INT32_C(   520749634) },
+      {  INT64_C(                  40),  INT64_C(                  39),  INT64_C(                 239),  INT64_C(                 122) },
+      {  INT32_C(           0),            INT32_MIN,            INT32_MIN,            INT32_MIN },
+      {  INT32_C(   478193020),  INT32_C(          39),  INT32_C(         239),  INT32_C(         122) } },
+    { { -INT32_C(   683278108),  INT32_C(   667313686), -INT32_C(  1862854276), -INT32_C(   552950175) },
+      {  INT64_C(                 248),  INT64_C(                 188),  INT64_C(                  99),  INT64_C(                  19) },
+      {  INT32_C(           0),            INT32_MIN,  INT32_C(           0),            INT32_MIN },
+      { -INT32_C(   683278108),  INT32_C(         188), -INT32_C(  1862854276),  INT32_C(          19) } }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(gather_buffer) / sizeof(gather_buffer[0])) ; i++) { gather_buffer[i] = HEDLEY_STATIC_CAST(int32_t, i); }
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
+    simde__m128i src = simde_x_mm_loadu_epi32(test_vec[i].src);
+    simde__m256i vindex = simde_x_mm256_loadu_epi64(test_vec[i].vindex);
+    simde__m128i mask = simde_x_mm_loadu_epi32(test_vec[i].mask);
+    simde__m128i r = simde_mm256_mask_i64gather_epi32(src, gather_buffer, vindex, mask, 4);
+    simde_test_x86_assert_equal_i32x4(r, simde_x_mm_loadu_epi32(test_vec[i].r));
+  }
+
+  return 0;
+}
+
 static int
 test_simde_mm256_inserti128_si256 (SIMDE_MUNIT_TEST_ARGS) {
   static const struct {
@@ -6452,6 +6810,230 @@ test_simde_mm256_maskload_epi64 (SIMDE_MUNIT_TEST_ARGS) {
       r = simde_mm256_maskload_epi64(test_vec[i].a, b);
     #endif
     simde_test_x86_assert_equal_i64x4(r, simde_x_mm256_loadu_epi64(test_vec[i].r));
+  }
+
+  return 0;
+}
+
+static int
+test_simde_mm_maskstore_epi32 (SIMDE_MUNIT_TEST_ARGS) {
+  static const struct {
+    const int32_t mask[4];
+    const int32_t a[4];
+    const int32_t ri[4];
+    const int32_t ro[4];
+  } test_vec[] = {
+    { { -INT32_C(  1072310678), -INT32_C(  1753702976), -INT32_C(  1000721038),  INT32_C(  1139936175) },
+      { -INT32_C(   921988596), -INT32_C(  1384169384),  INT32_C(  1969759351),  INT32_C(   323044521) },
+      { -INT32_C(   921988596), -INT32_C(  1384169384),  INT32_C(  1969759351),  INT32_C(       22034) },
+      { -INT32_C(   921988596), -INT32_C(  1384169384),  INT32_C(  1969759351),  INT32_C(       22034) } },
+    { { -INT32_C(   623618278),  INT32_C(  1718766836),  INT32_C(   824888449), -INT32_C(   462152488) },
+      {  INT32_C(   112033710),  INT32_C(   917712319), -INT32_C(    72606895),  INT32_C(  2047798624) },
+      {  INT32_C(   112033710), -INT32_C(  1384169384),  INT32_C(  1969759351),  INT32_C(  2047798624) },
+      {  INT32_C(   112033710), -INT32_C(  1384169384),  INT32_C(  1969759351),  INT32_C(  2047798624) } },
+    { {  INT32_C(   945152580), -INT32_C(  1331771601),  INT32_C(  1809959315), -INT32_C(  1806674203) },
+      { -INT32_C(  1785004587),  INT32_C(  2093698602), -INT32_C(   914917527), -INT32_C(  1455127195) },
+      {  INT32_C(   112033710),  INT32_C(  2093698602),  INT32_C(  1969759351), -INT32_C(  1455127195) },
+      {  INT32_C(   112033710),  INT32_C(  2093698602),  INT32_C(  1969759351), -INT32_C(  1455127195) } },
+    { { -INT32_C(  1746757272), -INT32_C(   213417888),  INT32_C(   794765641),  INT32_C(  1422110591) },
+      { -INT32_C(   672571988),  INT32_C(   357807531), -INT32_C(  1847670228), -INT32_C(  1220861361) },
+      { -INT32_C(   672571988),  INT32_C(   357807531),  INT32_C(  1969759351), -INT32_C(  1455127195) },
+      { -INT32_C(   672571988),  INT32_C(   357807531),  INT32_C(  1969759351), -INT32_C(  1455127195) } },
+    { {  INT32_C(   458104251), -INT32_C(   418408803),  INT32_C(  1041657535), -INT32_C(   913123043) },
+      { -INT32_C(   492798922),  INT32_C(  1576530737),  INT32_C(   233821629), -INT32_C(  1278989576) },
+      { -INT32_C(   672571988),  INT32_C(  1576530737),  INT32_C(  1969759351), -INT32_C(  1278989576) },
+      { -INT32_C(   672571988),  INT32_C(  1576530737),  INT32_C(  1969759351), -INT32_C(  1278989576) } },
+    { { -INT32_C(   456191161),  INT32_C(  1758191273),  INT32_C(  1772544332), -INT32_C(   248366918) },
+      { -INT32_C(   439102540), -INT32_C(  2075931962), -INT32_C(  1752092001), -INT32_C(  1555344036) },
+      { -INT32_C(   439102540),  INT32_C(  1576530737),  INT32_C(  1969759351), -INT32_C(  1555344036) },
+      { -INT32_C(   439102540),  INT32_C(  1576530737),  INT32_C(  1969759351), -INT32_C(  1555344036) } },
+    { {  INT32_C(   294066792),  INT32_C(  1148802040), -INT32_C(   273866956),  INT32_C(   216063832) },
+      {  INT32_C(  2045948850),  INT32_C(   486356349), -INT32_C(  1011577241),  INT32_C(  1281818595) },
+      { -INT32_C(   439102540),  INT32_C(  1576530737), -INT32_C(  1011577241), -INT32_C(  1555344036) },
+      { -INT32_C(   439102540),  INT32_C(  1576530737), -INT32_C(  1011577241), -INT32_C(  1555344036) } },
+    { {  INT32_C(   291368217),  INT32_C(  1968559936),  INT32_C(  1315177206), -INT32_C(  1805957919) },
+      {  INT32_C(  1947028983), -INT32_C(   376436094),  INT32_C(  2074887320),  INT32_C(  1556550211) },
+      { -INT32_C(   439102540),  INT32_C(  1576530737), -INT32_C(  1011577241),  INT32_C(  1556550211) },
+      { -INT32_C(   439102540),  INT32_C(  1576530737), -INT32_C(  1011577241),  INT32_C(  1556550211) } }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
+    simde__m128i mask = simde_x_mm_loadu_epi32(test_vec[i].mask);
+    simde__m128i a = simde_x_mm_loadu_epi32(test_vec[i].a);
+    int32_t r[4];
+    simde_memcpy(r, test_vec[i].ri, sizeof(r));
+    simde_mm_maskstore_epi32(r, mask, a);
+    simde_assert_equal_vi32(sizeof(r) / sizeof(r[0]), r, test_vec[i].ro);
+  }
+
+  return 0;
+}
+
+static int
+test_simde_mm256_maskstore_epi32 (SIMDE_MUNIT_TEST_ARGS) {
+  static const struct {
+    const int32_t mask[8];
+    const int32_t a[8];
+    const int32_t ri[8];
+    const int32_t ro[8];
+  } test_vec[] = {
+    { { -INT32_C(  2076816164),  INT32_C(   922486962),  INT32_C(   556407151),  INT32_C(  1733355511),  INT32_C(   401058348), -INT32_C(    81912571), -INT32_C(  1174954754),  INT32_C(   302965558) },
+      { -INT32_C(   493403088), -INT32_C(  1139240115), -INT32_C(  1545780564),  INT32_C(  1426795817), -INT32_C(   580062504),  INT32_C(   232294927),  INT32_C(  1573376039), -INT32_C(   479210061) },
+      { -INT32_C(   493403088),  INT32_C(           0),  INT32_C(  1022469250),  INT32_C(       32547),  INT32_C(  1022406520),  INT32_C(   232294927),  INT32_C(  1573376039),  INT32_C(       32547) },
+      { -INT32_C(   493403088),  INT32_C(           0),  INT32_C(  1022469250),  INT32_C(       32547),  INT32_C(  1022406520),  INT32_C(   232294927),  INT32_C(  1573376039),  INT32_C(       32547) } },
+    { {  INT32_C(  1724188185),  INT32_C(  1176690073),  INT32_C(  1240071968),  INT32_C(    94368813), -INT32_C(   152957977), -INT32_C(  1123763306),  INT32_C(  1041943435), -INT32_C(  1188918880) },
+      {  INT32_C(   690022288), -INT32_C(   445693243),  INT32_C(  1865308482),  INT32_C(   880069965),  INT32_C(  1865111257), -INT32_C(  1674825967), -INT32_C(  1696905478),  INT32_C(  1599339983) },
+      { -INT32_C(   493403088),  INT32_C(           0),  INT32_C(  1022469250),  INT32_C(       32547),  INT32_C(  1865111257), -INT32_C(  1674825967),  INT32_C(  1573376039),  INT32_C(  1599339983) },
+      { -INT32_C(   493403088),  INT32_C(           0),  INT32_C(  1022469250),  INT32_C(       32547),  INT32_C(  1865111257), -INT32_C(  1674825967),  INT32_C(  1573376039),  INT32_C(  1599339983) } },
+    { { -INT32_C(  1450609692), -INT32_C(   124847946), -INT32_C(  1620591279),  INT32_C(  1674828682),  INT32_C(  1137901105),  INT32_C(   668991021),  INT32_C(   348240452), -INT32_C(  1670179401) },
+      {  INT32_C(  1044774024),  INT32_C(  1177998581),  INT32_C(   468032913), -INT32_C(  1434470024), -INT32_C(   437431881), -INT32_C(  1811100592),  INT32_C(  1051250311),  INT32_C(  1809456355) },
+      {  INT32_C(  1044774024),  INT32_C(  1177998581),  INT32_C(   468032913),  INT32_C(       32547),  INT32_C(  1865111257), -INT32_C(  1674825967),  INT32_C(  1573376039),  INT32_C(  1809456355) },
+      {  INT32_C(  1044774024),  INT32_C(  1177998581),  INT32_C(   468032913),  INT32_C(       32547),  INT32_C(  1865111257), -INT32_C(  1674825967),  INT32_C(  1573376039),  INT32_C(  1809456355) } },
+    { {  INT32_C(   229253144), -INT32_C(  2058034956), -INT32_C(   157271682), -INT32_C(  1432346638), -INT32_C(  1047556751), -INT32_C(   514483366),  INT32_C(  1277165161),  INT32_C(   850983450) },
+      {  INT32_C(   239100442), -INT32_C(  1064070078), -INT32_C(  1061735475), -INT32_C(   999663789),  INT32_C(  1065744869), -INT32_C(    31401324), -INT32_C(   230015016),  INT32_C(  1394934329) },
+      {  INT32_C(  1044774024), -INT32_C(  1064070078), -INT32_C(  1061735475), -INT32_C(   999663789),  INT32_C(  1065744869), -INT32_C(    31401324),  INT32_C(  1573376039),  INT32_C(  1809456355) },
+      {  INT32_C(  1044774024), -INT32_C(  1064070078), -INT32_C(  1061735475), -INT32_C(   999663789),  INT32_C(  1065744869), -INT32_C(    31401324),  INT32_C(  1573376039),  INT32_C(  1809456355) } },
+    { { -INT32_C(  1486789276), -INT32_C(   966265607),  INT32_C(  2072387112),  INT32_C(  1530916982),  INT32_C(  2124072169),  INT32_C(  2004662942),  INT32_C(   862570233),  INT32_C(   763793097) },
+      { -INT32_C(   321591053),  INT32_C(    78855388), -INT32_C(   796968614),  INT32_C(   321633834),  INT32_C(   563201410),  INT32_C(  2040008063), -INT32_C(  1649671724), -INT32_C(  2083900784) },
+      { -INT32_C(   321591053),  INT32_C(    78855388), -INT32_C(  1061735475), -INT32_C(   999663789),  INT32_C(  1065744869), -INT32_C(    31401324),  INT32_C(  1573376039),  INT32_C(  1809456355) },
+      { -INT32_C(   321591053),  INT32_C(    78855388), -INT32_C(  1061735475), -INT32_C(   999663789),  INT32_C(  1065744869), -INT32_C(    31401324),  INT32_C(  1573376039),  INT32_C(  1809456355) } },
+    { { -INT32_C(   143614182),  INT32_C(   905651163), -INT32_C(  2046395556), -INT32_C(  1130745543),  INT32_C(  1994206199),  INT32_C(   233796921),  INT32_C(   111844214), -INT32_C(   393579314) },
+      { -INT32_C(   287311341),  INT32_C(  2032458525), -INT32_C(  1895814570),  INT32_C(  1380686427), -INT32_C(    20371259),  INT32_C(   336312477),  INT32_C(   572175700),  INT32_C(  1024107562) },
+      { -INT32_C(   287311341),  INT32_C(    78855388), -INT32_C(  1895814570),  INT32_C(  1380686427),  INT32_C(  1065744869), -INT32_C(    31401324),  INT32_C(  1573376039),  INT32_C(  1024107562) },
+      { -INT32_C(   287311341),  INT32_C(    78855388), -INT32_C(  1895814570),  INT32_C(  1380686427),  INT32_C(  1065744869), -INT32_C(    31401324),  INT32_C(  1573376039),  INT32_C(  1024107562) } },
+    { { -INT32_C(  1154684258),  INT32_C(   456478917), -INT32_C(   710265478), -INT32_C(  1809254705), -INT32_C(  1131155170), -INT32_C(    36659543),  INT32_C(  2116020820),  INT32_C(   767240847) },
+      { -INT32_C(   638982380), -INT32_C(  1309401545),  INT32_C(   579313235), -INT32_C(  1279873132),  INT32_C(  1232030112),  INT32_C(  1011302376), -INT32_C(  1195743703), -INT32_C(  1528400496) },
+      { -INT32_C(   638982380),  INT32_C(    78855388),  INT32_C(   579313235), -INT32_C(  1279873132),  INT32_C(  1232030112),  INT32_C(  1011302376),  INT32_C(  1573376039),  INT32_C(  1024107562) },
+      { -INT32_C(   638982380),  INT32_C(    78855388),  INT32_C(   579313235), -INT32_C(  1279873132),  INT32_C(  1232030112),  INT32_C(  1011302376),  INT32_C(  1573376039),  INT32_C(  1024107562) } },
+    { { -INT32_C(  1803694243),  INT32_C(  1078358509), -INT32_C(  1537028848),  INT32_C(   475469948),  INT32_C(  1248183906),  INT32_C(   797355013), -INT32_C(  1545125869),  INT32_C(   306761141) },
+      { -INT32_C(  1985493604),  INT32_C(  1204415799),  INT32_C(   921381818), -INT32_C(  1504558268),  INT32_C(   267433737),  INT32_C(  2000582244),  INT32_C(  1796875702), -INT32_C(  1887542541) },
+      { -INT32_C(  1985493604),  INT32_C(    78855388),  INT32_C(   921381818), -INT32_C(  1279873132),  INT32_C(  1232030112),  INT32_C(  1011302376),  INT32_C(  1796875702),  INT32_C(  1024107562) },
+      { -INT32_C(  1985493604),  INT32_C(    78855388),  INT32_C(   921381818), -INT32_C(  1279873132),  INT32_C(  1232030112),  INT32_C(  1011302376),  INT32_C(  1796875702),  INT32_C(  1024107562) } }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
+    simde__m256i mask = simde_x_mm256_loadu_epi32(test_vec[i].mask);
+    simde__m256i a = simde_x_mm256_loadu_epi32(test_vec[i].a);
+    int32_t r[8];
+    simde_memcpy(r, test_vec[i].ri, sizeof(r));
+    simde_mm256_maskstore_epi32(r, mask, a);
+    simde_assert_equal_vi32(sizeof(r) / sizeof(r[0]), r, test_vec[i].ro);
+  }
+
+  return 0;
+}
+
+static int
+test_simde_mm_maskstore_epi64 (SIMDE_MUNIT_TEST_ARGS) {
+  static const struct {
+    const int64_t mask[2];
+    const int64_t a[2];
+    const int64_t ri[2];
+    const int64_t ro[2];
+  } test_vec[] = {
+    { {  INT64_C( 3149967905596390459), -INT64_C( 4778628840774069374) },
+      {  INT64_C( 5664027239959376000),  INT64_C( 8937778571530162224) },
+      {  INT64_C(     140732988756112),  INT64_C( 8937778571530162224) },
+      {  INT64_C(     140732988756112),  INT64_C( 8937778571530162224) } },
+    { {  INT64_C( 8062610935831789210), -INT64_C( 8946025712957579848) },
+      { -INT64_C( 7091179927189929083), -INT64_C( 5251394950330663071) },
+      {  INT64_C(     140732988756112), -INT64_C( 5251394950330663071) },
+      {  INT64_C(     140732988756112), -INT64_C( 5251394950330663071) } },
+    { {  INT64_C( 7684922938565365066),  INT64_C( 2879875638071020913) },
+      { -INT64_C( 2293448770573013726),  INT64_C(  332036821611605703) },
+      {  INT64_C(     140732988756112), -INT64_C( 5251394950330663071) },
+      {  INT64_C(     140732988756112), -INT64_C( 5251394950330663071) } },
+    { { -INT64_C( 3437124613673645265),  INT64_C( 6050651184505868846) },
+      {  INT64_C( 3965153871791286441),  INT64_C( 6501991883275471484) },
+      {  INT64_C( 3965153871791286441), -INT64_C( 5251394950330663071) },
+      {  INT64_C( 3965153871791286441), -INT64_C( 5251394950330663071) } },
+    { { -INT64_C( 8650702022112413758),  INT64_C( 2008129837236434778) },
+      {  INT64_C( 5359365805870137528), -INT64_C(  767092764058747948) },
+      {  INT64_C( 5359365805870137528), -INT64_C( 5251394950330663071) },
+      {  INT64_C( 5359365805870137528), -INT64_C( 5251394950330663071) } },
+    { {  INT64_C( 8652269335912879668),  INT64_C( 8272797757509692224) },
+      {  INT64_C( 3511395233916719521),  INT64_C( 3215161084095773558) },
+      {  INT64_C( 5359365805870137528), -INT64_C( 5251394950330663071) },
+      {  INT64_C( 5359365805870137528), -INT64_C( 5251394950330663071) } },
+    { { -INT64_C(   20041080821402335),  INT64_C( 4567917337930546231) },
+      {  INT64_C( 8151067802542735250), -INT64_C(  303508250809446492) },
+      {  INT64_C( 8151067802542735250), -INT64_C( 5251394950330663071) },
+      {  INT64_C( 8151067802542735250), -INT64_C( 5251394950330663071) } },
+    { { -INT64_C( 8778935907035413907), -INT64_C( 1185330308615447376) },
+      {  INT64_C( 5136350581142404060), -INT64_C( 8781828949867732662) },
+      {  INT64_C( 5136350581142404060), -INT64_C( 8781828949867732662) },
+      {  INT64_C( 5136350581142404060), -INT64_C( 8781828949867732662) } }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
+    simde__m128i mask = simde_x_mm_loadu_epi64(test_vec[i].mask);
+    simde__m128i a = simde_x_mm_loadu_epi64(test_vec[i].a);
+    int64_t r[2];
+    simde_memcpy(r, test_vec[i].ri, sizeof(r));
+    #if defined(SIMDE_X86_AVX2_NATIVE) && defined(SIMDE_NATIVE_ALIASES_TESTING)
+      simde_mm_maskstore_epi64((long long *)r, mask, a);
+    #else
+      simde_mm_maskstore_epi64(r, mask, a);
+    #endif
+    simde_assert_equal_vi64(sizeof(r) / sizeof(r[0]), r, test_vec[i].ro);
+  }
+
+  return 0;
+}
+
+static int
+test_simde_mm256_maskstore_epi64 (SIMDE_MUNIT_TEST_ARGS) {
+  static const struct {
+    const int64_t mask[4];
+    const int64_t a[4];
+    const int64_t ri[4];
+    const int64_t ro[4];
+  } test_vec[] = {
+    { {  INT64_C( 5242526618242621661),  INT64_C( 6166759832868221493), -INT64_C( 3838943471189419310), -INT64_C(  300229214128524470) },
+      {  INT64_C( 2195119886963881727),  INT64_C( 4994165925608667027), -INT64_C( 2162954226736872975),  INT64_C(  464305096456775511) },
+      {  INT64_C(                2050),  INT64_C(             1313770), -INT64_C( 2162954226736872975),  INT64_C(  464305096456775511) },
+      {  INT64_C(                2050),  INT64_C(             1313770), -INT64_C( 2162954226736872975),  INT64_C(  464305096456775511) } },
+    { { -INT64_C( 8770573412453887679),  INT64_C( 5987762628439542624), -INT64_C(  105974608678354161),  INT64_C(  663406593554201895) },
+      {  INT64_C( 8191901560846116662),  INT64_C(  917429192545808134), -INT64_C( 1800249354620813217), -INT64_C( 7905707010328004489) },
+      {  INT64_C( 8191901560846116662),  INT64_C(             1313770), -INT64_C( 1800249354620813217),  INT64_C(  464305096456775511) },
+      {  INT64_C( 8191901560846116662),  INT64_C(             1313770), -INT64_C( 1800249354620813217),  INT64_C(  464305096456775511) } },
+    { { -INT64_C(  129641248100483919),  INT64_C( 3792913607644641434),  INT64_C(  579345394647586402),  INT64_C( 1920382171601182647) },
+      {  INT64_C( 7351017860721565965), -INT64_C( 1112211479437939833), -INT64_C( 4570841319541126409),  INT64_C( 8628750009532471612) },
+      {  INT64_C( 7351017860721565965),  INT64_C(             1313770), -INT64_C( 1800249354620813217),  INT64_C(  464305096456775511) },
+      {  INT64_C( 7351017860721565965),  INT64_C(             1313770), -INT64_C( 1800249354620813217),  INT64_C(  464305096456775511) } },
+    { {  INT64_C( 3606962921541573595), -INT64_C( 6599710048517223188), -INT64_C( 3120222027706958616), -INT64_C( 2560234815484229993) },
+      {  INT64_C( 7111344849244452307),  INT64_C( 4967546651701690014),  INT64_C( 8227770697573080513), -INT64_C( 5454725699460683665) },
+      {  INT64_C( 7351017860721565965),  INT64_C( 4967546651701690014),  INT64_C( 8227770697573080513), -INT64_C( 5454725699460683665) },
+      {  INT64_C( 7351017860721565965),  INT64_C( 4967546651701690014),  INT64_C( 8227770697573080513), -INT64_C( 5454725699460683665) } },
+    { {  INT64_C(  124660851703730401), -INT64_C( 7079591700845521376),  INT64_C( 5739316420021843801), -INT64_C( 1845900778233980467) },
+      { -INT64_C( 7620099957265165093),  INT64_C( 2379821211310001037), -INT64_C( 1082557009605755447), -INT64_C( 6989304304425322474) },
+      {  INT64_C( 7351017860721565965),  INT64_C( 2379821211310001037),  INT64_C( 8227770697573080513), -INT64_C( 6989304304425322474) },
+      {  INT64_C( 7351017860721565965),  INT64_C( 2379821211310001037),  INT64_C( 8227770697573080513), -INT64_C( 6989304304425322474) } },
+    { { -INT64_C( 4350446221603815788),  INT64_C( 5661361750980473512), -INT64_C(  413503352329476305),  INT64_C( 8362083761278804137) },
+      { -INT64_C( 5886734649484449196), -INT64_C( 2548280180651164976),  INT64_C( 3707993608283921047), -INT64_C(  746280734714459568) },
+      { -INT64_C( 5886734649484449196),  INT64_C( 2379821211310001037),  INT64_C( 3707993608283921047), -INT64_C( 6989304304425322474) },
+      { -INT64_C( 5886734649484449196),  INT64_C( 2379821211310001037),  INT64_C( 3707993608283921047), -INT64_C( 6989304304425322474) } },
+    { {  INT64_C( 1174539280240812695), -INT64_C( 5561656252458243512), -INT64_C( 4512708599429136223),  INT64_C( 4954969688283086893) },
+      {  INT64_C( 6343651101063070392),  INT64_C( 1685505655689801368),  INT64_C( 7084341664285954590), -INT64_C( 8028524129605893725) },
+      { -INT64_C( 5886734649484449196),  INT64_C( 1685505655689801368),  INT64_C( 7084341664285954590), -INT64_C( 6989304304425322474) },
+      { -INT64_C( 5886734649484449196),  INT64_C( 1685505655689801368),  INT64_C( 7084341664285954590), -INT64_C( 6989304304425322474) } },
+    { {  INT64_C( 4296032324518769974),  INT64_C( 2922363408830294785),  INT64_C( 1764011878569726692), -INT64_C( 3048659187356095416) },
+      { -INT64_C( 3724554084945282703),  INT64_C( 8347090473923591588), -INT64_C( 2580272778841387612),  INT64_C(  443794320655161779) },
+      { -INT64_C( 5886734649484449196),  INT64_C( 1685505655689801368),  INT64_C( 7084341664285954590),  INT64_C(  443794320655161779) },
+      { -INT64_C( 5886734649484449196),  INT64_C( 1685505655689801368),  INT64_C( 7084341664285954590),  INT64_C(  443794320655161779) } }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
+    simde__m256i mask = simde_x_mm256_loadu_epi64(test_vec[i].mask);
+    simde__m256i a = simde_x_mm256_loadu_epi64(test_vec[i].a);
+    int64_t r[4];
+    simde_memcpy(r, test_vec[i].ri, sizeof(r));
+    #if defined(SIMDE_X86_AVX2_NATIVE) && defined(SIMDE_NATIVE_ALIASES_TESTING)
+      simde_mm256_maskstore_epi64((long long *)r, mask, a);
+    #else
+      simde_mm256_maskstore_epi64(r, mask, a);
+    #endif
+    simde_assert_equal_vi64(sizeof(r) / sizeof(r[0]), r, test_vec[i].ro);
   }
 
   return 0;
@@ -14893,6 +15475,15 @@ SIMDE_TEST_FUNC_LIST_BEGIN
   SIMDE_TEST_FUNC_LIST_ENTRY(mm256_hsub_epi32)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm256_hsubs_epi16)
 
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm_i32gather_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm_mask_i32gather_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_i32gather_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_mask_i32gather_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm_i64gather_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm_mask_i64gather_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_i64gather_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_mask_i64gather_epi32)
+
   SIMDE_TEST_FUNC_LIST_ENTRY(mm256_inserti128_si256)
 
   SIMDE_TEST_FUNC_LIST_ENTRY(mm256_madd_epi16)
@@ -14902,6 +15493,11 @@ SIMDE_TEST_FUNC_LIST_BEGIN
   SIMDE_TEST_FUNC_LIST_ENTRY(mm256_maskload_epi32)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm_maskload_epi64)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm256_maskload_epi64)
+
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm_maskstore_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_maskstore_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm_maskstore_epi64)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_maskstore_epi64)
 
   SIMDE_TEST_FUNC_LIST_ENTRY(mm256_max_epi8)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm256_max_epi16)
