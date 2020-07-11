@@ -25,7 +25,6 @@ test_simde_vget_high_f32 (SIMDE_MUNIT_TEST_ARGS) {
       { SIMDE_FLOAT32_C(  -233.95), SIMDE_FLOAT32_C(    96.87) } },
     { { SIMDE_FLOAT32_C(   751.96), SIMDE_FLOAT32_C(  -235.16), SIMDE_FLOAT32_C(  -766.29), SIMDE_FLOAT32_C(  -590.06) },
       { SIMDE_FLOAT32_C(  -766.29), SIMDE_FLOAT32_C(  -590.06) } },
-
   };
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
@@ -63,7 +62,6 @@ test_simde_vget_high_f64 (SIMDE_MUNIT_TEST_ARGS) {
       { SIMDE_FLOAT64_C(   719.32) } },
     { { SIMDE_FLOAT64_C(  -609.36), SIMDE_FLOAT64_C(  -653.25) },
       { SIMDE_FLOAT64_C(  -653.25) } },
-
   };
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
@@ -106,7 +104,6 @@ test_simde_vget_high_s8 (SIMDE_MUNIT_TEST_ARGS) {
     { { -INT8_C(  18), -INT8_C(  21), -INT8_C(   8), -INT8_C( 101),  INT8_C(  24),  INT8_C(  92), -INT8_C(  57),  INT8_C(  71),
          INT8_C(  57),  INT8_C(  47), -INT8_C(  88), -INT8_C(  51), -INT8_C( 108),  INT8_C(   3),  INT8_C(  77), -INT8_C( 122) },
       {  INT8_C(  57),  INT8_C(  47), -INT8_C(  88), -INT8_C(  51), -INT8_C( 108),  INT8_C(   3),  INT8_C(  77), -INT8_C( 122) } },
-
   };
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
@@ -141,7 +138,6 @@ test_simde_vget_high_s16 (SIMDE_MUNIT_TEST_ARGS) {
       {  INT16_C( 15538), -INT16_C( 19429), -INT16_C(  7052),  INT16_C( 21592) } },
     { { -INT16_C( 11063), -INT16_C( 24450),  INT16_C( 25671),  INT16_C(  9378), -INT16_C( 27036), -INT16_C( 16859), -INT16_C(  1233), -INT16_C( 16338) },
       { -INT16_C( 27036), -INT16_C( 16859), -INT16_C(  1233), -INT16_C( 16338) } },
-
   };
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
@@ -176,7 +172,6 @@ test_simde_vget_high_s32 (SIMDE_MUNIT_TEST_ARGS) {
       {  INT32_C(  1281246455),  INT32_C(   790480063) } },
     { {  INT32_C(   133471420), -INT32_C(    87246407),  INT32_C(   166695173), -INT32_C(  1074519786) },
       {  INT32_C(   166695173), -INT32_C(  1074519786) } },
-
   };
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
@@ -211,7 +206,6 @@ test_simde_vget_high_s64 (SIMDE_MUNIT_TEST_ARGS) {
       {  INT64_C( 4929987596782868763) } },
     { {  INT64_C( 1649728995198906885), -INT64_C( 2183193650073023956) },
       { -INT64_C( 2183193650073023956) } },
-
   };
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
@@ -254,7 +248,6 @@ test_simde_vget_high_u8 (SIMDE_MUNIT_TEST_ARGS) {
     { { UINT8_C( 37), UINT8_C(152), UINT8_C( 19), UINT8_C(197), UINT8_C( 90), UINT8_C( 25), UINT8_C(199), UINT8_C(229),
         UINT8_C(145), UINT8_C( 37), UINT8_C(107), UINT8_C( 98), UINT8_C(141), UINT8_C(  3), UINT8_C(249), UINT8_C(195) },
       { UINT8_C(145), UINT8_C( 37), UINT8_C(107), UINT8_C( 98), UINT8_C(141), UINT8_C(  3), UINT8_C(249), UINT8_C(195) } },
-
   };
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
@@ -289,7 +282,6 @@ test_simde_vget_high_u16 (SIMDE_MUNIT_TEST_ARGS) {
       { UINT16_C( 7213), UINT16_C(47741), UINT16_C(12445), UINT16_C(37822) } },
     { { UINT16_C(35616), UINT16_C(25173), UINT16_C(36241), UINT16_C(27692), UINT16_C(32829), UINT16_C(48867), UINT16_C( 5610), UINT16_C(60860) },
       { UINT16_C(32829), UINT16_C(48867), UINT16_C( 5610), UINT16_C(60860) } },
-
   };
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
@@ -323,7 +315,6 @@ test_simde_vget_high_u32 (SIMDE_MUNIT_TEST_ARGS) {
       { UINT32_C(2534138883), UINT32_C(3069335827) } },
     { { UINT32_C( 441396432), UINT32_C( 657114011), UINT32_C(1689791451), UINT32_C(2877377521) },
       { UINT32_C(1689791451), UINT32_C(2877377521) } },
-
   };
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
@@ -357,7 +348,6 @@ test_simde_vget_high_u64 (SIMDE_MUNIT_TEST_ARGS) {
       { UINT64_C(11771472225186025531) } },
     { { UINT64_C( 6401441061383838005), UINT64_C( 8919791479167855808) },
       { UINT64_C( 8919791479167855808) } },
-
   };
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {

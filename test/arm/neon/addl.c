@@ -34,7 +34,6 @@ test_simde_vaddl_s8 (SIMDE_MUNIT_TEST_ARGS) {
     { { -INT8_C(  84),  INT8_C(  22),  INT8_C( 111),  INT8_C(  14),      INT8_MAX, -INT8_C(  76), -INT8_C(  31), -INT8_C( 121) },
       { -INT8_C(  14), -INT8_C(  20),  INT8_C(   0), -INT8_C( 106), -INT8_C( 114),  INT8_C(   2),  INT8_C(  90),  INT8_C(  75) },
       { -INT16_C(    98),  INT16_C(     2),  INT16_C(   111), -INT16_C(    92),  INT16_C(    13), -INT16_C(    74),  INT16_C(    59), -INT16_C(    46) } },
-
   };
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
@@ -79,7 +78,6 @@ test_simde_vaddl_s16 (SIMDE_MUNIT_TEST_ARGS) {
     { {  INT16_C( 19167),  INT16_C( 12467),  INT16_C( 18959),  INT16_C( 17401) },
       { -INT16_C( 21291), -INT16_C(  5752), -INT16_C( 24598), -INT16_C(  1979) },
       { -INT32_C(        2124),  INT32_C(        6715), -INT32_C(        5639),  INT32_C(       15422) } },
-
   };
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
@@ -124,7 +122,6 @@ test_simde_vaddl_s32 (SIMDE_MUNIT_TEST_ARGS) {
     { {  INT32_C(   405172860), -INT32_C(   146860866) },
       { -INT32_C(  1688763660), -INT32_C(   789884568) },
       { -INT64_C(          1283590800), -INT64_C(           936745434) } },
-
   };
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
@@ -169,7 +166,6 @@ test_simde_vaddl_u8 (SIMDE_MUNIT_TEST_ARGS) {
     { { UINT8_C(138), UINT8_C(159), UINT8_C(154), UINT8_C( 68), UINT8_C(  0), UINT8_C(195), UINT8_C( 65), UINT8_C( 77) },
       { UINT8_C( 21), UINT8_C(231), UINT8_C(143), UINT8_C(109), UINT8_C(139), UINT8_C(199), UINT8_C(251), UINT8_C(  7) },
       { UINT16_C(  159), UINT16_C(  390), UINT16_C(  297), UINT16_C(  177), UINT16_C(  139), UINT16_C(  394), UINT16_C(  316), UINT16_C(   84) } },
-
   };
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
@@ -214,7 +210,6 @@ test_simde_vaddl_u16 (SIMDE_MUNIT_TEST_ARGS) {
     { { UINT16_C(10211), UINT16_C(54710), UINT16_C(37430), UINT16_C(45797) },
       { UINT16_C(19041), UINT16_C(18261), UINT16_C(47604), UINT16_C(53872) },
       { UINT32_C(     29252), UINT32_C(     72971), UINT32_C(     85034), UINT32_C(     99669) } },
-
   };
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
@@ -258,7 +253,6 @@ test_simde_vaddl_u32 (SIMDE_MUNIT_TEST_ARGS) {
     { { UINT32_C(4205644906), UINT32_C(3977024272) },
       { UINT32_C( 711996161), UINT32_C(2220887160) },
       { UINT64_C(          4917641067), UINT64_C(          6197911432) } },
-
   };
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {

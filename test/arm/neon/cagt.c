@@ -34,7 +34,6 @@ test_simde_vcagt_f32 (SIMDE_MUNIT_TEST_ARGS) {
     { { SIMDE_FLOAT32_C(  -965.46), SIMDE_FLOAT32_C(  -738.96) },
       { SIMDE_FLOAT32_C(  -711.74), SIMDE_FLOAT32_C(   346.23) },
       {           UINT32_MAX,           UINT32_MAX } },
-
   };
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
@@ -79,7 +78,6 @@ test_simde_vcagt_f64 (SIMDE_MUNIT_TEST_ARGS) {
     { { SIMDE_FLOAT64_C(  -511.44) },
       { SIMDE_FLOAT64_C(   752.01) },
       { UINT64_C(                   0) } },
-
   };
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
@@ -124,7 +122,6 @@ test_simde_vcagtq_f32 (SIMDE_MUNIT_TEST_ARGS) {
     { { SIMDE_FLOAT32_C(    48.01), SIMDE_FLOAT32_C(   990.32), SIMDE_FLOAT32_C(  -232.76), SIMDE_FLOAT32_C(   259.86) },
       { SIMDE_FLOAT32_C(   729.55), SIMDE_FLOAT32_C(  -660.58), SIMDE_FLOAT32_C(   351.97), SIMDE_FLOAT32_C(   -33.86) },
       { UINT32_C(         0),           UINT32_MAX, UINT32_C(         0),           UINT32_MAX } },
-
   };
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
@@ -168,7 +165,6 @@ test_simde_vcagtq_f64 (SIMDE_MUNIT_TEST_ARGS) {
     { { SIMDE_FLOAT64_C(   -27.41), SIMDE_FLOAT64_C(   231.88) },
       { SIMDE_FLOAT64_C(  -442.67), SIMDE_FLOAT64_C(  -797.10) },
       { UINT64_C(                   0), UINT64_C(                   0) } },
-
   };
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
