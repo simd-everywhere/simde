@@ -31,6 +31,7 @@
 #define SIMDE_X86_AVX512F_H
 
 #include "avx2.h"
+#include "fma.h"
 
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
@@ -3580,7 +3581,6 @@ simde_mm512_maskz_add_ps(simde__mmask16 k, simde__m512 a, simde__m512 b) {
   #define _mm512_maskz_add_ps(k, a, b) simde_mm512_maskz_add_ps(k, a, b)
 #endif
 
-
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m512d
 simde_mm512_add_pd (simde__m512d a, simde__m512d b) {
@@ -5901,6 +5901,67 @@ simde_mm512_extracti64x4_epi64 (simde__m512i a, int imm8)
 #if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
   #undef _mm512_maskz_extracti64x4_epi64
   #define _mm512_maskz_extracti64x4_epi64(k, a, imm8) simde_mm512_maskz_extracti64x4_epi64(k, a, imm8)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512
+simde_mm512_fmadd_ps (simde__m512 a, simde__m512 b, simde__m512 c) {
+  #if defined(SIMDE_X86_AVX512F_NATIVE)
+    return _mm512_fmadd_ps(a, b, c);
+  #else
+    simde__m512_private
+      r_,
+      a_ = simde__m512_to_private(a),
+      b_ = simde__m512_to_private(b),
+      c_ = simde__m512_to_private(c);
+
+    #if SIMDE_NATURAL_VECTOR_SIZE_LE(256)
+      for (size_t i = 0 ; i < (sizeof(r_.m256) / sizeof(r_.m256[0])) ; i++) {
+        r_.m256[i] = simde_mm256_fmadd_ps(a_.m256[i], b_.m256[i], c_.m256[i]);
+      }
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+      r_.f32 = (a_.f32 * b_.f32) + c_.f32;
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.m256) / sizeof(r_.m256[0])) ; i++) {
+        r_.m256[i] = simde_mm256_fmadd_ps(a_.m256[i], b_.m256[i]);
+      }
+    #endif
+
+    return simde__m512_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_fmadd_ps
+  #define _mm512_fmadd_ps(a, b, c) simde_mm512_fmadd_ps(a, b, c)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512
+simde_mm512_mask_fmadd_ps(simde__m512 a, simde__mmask16 k, simde__m512 b, simde__m512 c) {
+  #if defined(SIMDE_X86_AVX512F_NATIVE)
+    return _mm512_mask_fmadd_ps(a, k, b, c);
+  #else
+    return simde_mm512_mask_mov_ps(a, k, simde_mm512_fmadd_ps(a, b, c));
+  #endif
+}
+#if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_mask_fmadd_ps
+  #define _mm512_mask_fmadd_ps(a, k, b, c) simde_mm512_mask_fmadd_ps(a, k, b, c)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512
+simde_mm512_maskz_fmadd_ps(simde__mmask16 k, simde__m512 a, simde__m512 b, simde__m512 c) {
+  #if defined(SIMDE_X86_AVX512F_NATIVE)
+    return _mm512_maskz_fmadd_ps(k, a, b, c);
+  #else
+    return simde_mm512_maskz_mov_ps(k, simde_mm512_fmadd_ps(a, b, c));
+  #endif
+}
+#if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_maskz_fmadd_ps
+  #define _mm512_maskz_fmadd_ps(k, a, b, c) simde_mm512_maskz_fmadd_ps(k, a, b, c)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
