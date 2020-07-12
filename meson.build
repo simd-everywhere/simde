@@ -54,6 +54,7 @@ simde_neon_families = [
   'qmovn',
   'qmovn_high',
   'reinterpret',
+  'rshl',
   'rshr_n',
   'rsra_n',
   'shl',
