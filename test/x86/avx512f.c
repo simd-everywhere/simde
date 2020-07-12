@@ -8606,6 +8606,7 @@ test_simde_mm512_cmp_ps_mask (SIMDE_MUNIT_TEST_ARGS) {
 }
 #endif /* !defined(SIMDE_NATIVE_ALIASES_TESTING */
 
+#if !defined(SIMDE_BUG_GCC_96174)
 static int
 test_simde_mm512_cmplt_ps_mask (SIMDE_MUNIT_TEST_ARGS) {
   static const struct {
@@ -8787,6 +8788,7 @@ test_simde_mm512_cmpeq_ps_mask (SIMDE_MUNIT_TEST_ARGS) {
 
   return 0;
 }
+#endif /* !defined(SIMDE_BUG_GCC_96174) */
 
 static int
 test_simde_mm512_mask_cvtepi8_epi32(SIMDE_MUNIT_TEST_ARGS) {
@@ -35841,9 +35843,11 @@ SIMDE_TEST_FUNC_LIST_BEGIN
   #if !defined(SIMDE_NATIVE_ALIASES_TESTING)
     SIMDE_TEST_FUNC_LIST_ENTRY(mm512_cmp_ps_mask)
   #endif
-  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_cmplt_ps_mask)
-  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_cmpeq_ps_mask)
-  
+  #if !defined(SIMDE_BUG_GCC_96174)
+    SIMDE_TEST_FUNC_LIST_ENTRY(mm512_cmplt_ps_mask)
+    SIMDE_TEST_FUNC_LIST_ENTRY(mm512_cmpeq_ps_mask)
+  #endif
+
   SIMDE_TEST_FUNC_LIST_ENTRY(mm512_cvtepi8_epi32)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_cvtepi8_epi32)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm512_maskz_cvtepi8_epi32)

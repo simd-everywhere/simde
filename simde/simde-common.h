@@ -778,6 +778,10 @@ typedef SIMDE_FLOAT64_TYPE simde_float64;
 #    elif defined(SIMDE_ARCH_POWER)
 #      define SIMDE_BUG_GCC_95227
 #      define SIMDE_BUG_GCC_95782
+#    elif defined(SIMDE_ARCH_X86) || defined(SIMDE_ARCH_AMD64)
+#      if !defined(__OPTIMIZE__)
+#        define SIMDE_BUG_GCC_96174
+#      endif
 #    endif
 #    define SIMDE_BUG_GCC_95399
 #  elif defined(__clang__)
