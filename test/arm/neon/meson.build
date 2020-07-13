@@ -1,75 +1,10 @@
-simde_test_arm_neon_tests = [
-  'abs',
-  'add',
-  'addl',
-  'addl_high',
-  'addw',
-  'and',
-  'bsl',
-  'cagt',
-  'ceq',
-  'ceqz',
-  'cge',
-  'cgez',
-  'cgt',
-  'cgtz',
-  'cle',
-  'clez',
-  'clt',
-  'cltz',
-  'combine',
-  'dup_n',
-  'eor',
-  'get_high',
-  'get_lane',
-  'get_low',
-  'max',
-  'min',
-  'mla',
-  'mlal',
-  'mlal_high',
-  'movl',
-  'movl_high',
-  'movn',
-  'mul',
-  'mull',
-  'mvn',
-  'neg',
-  'orr',
-  'padal',
-  'padd',
-  'paddl',
-  'pmax',
-  'pmin',
-  'qadd',
-  'qmovn',
-  'qmovn_high',
-  'reinterpret',
-  'rshr_n',
-  'rsra_n',
-  'st1_lane',
-  'shl',
-  'shl_n',
-  'shr_n',
-  'sra_n',
-  'sub',
-  'trn',
-  'trn1',
-  'trn2',
-  'tst',
-  'uzp',
-  'uzp1',
-  'uzp2',
-  'zip',
-  'zip1',
-  'zip2',
-]
-
 simde_test_arm_neon_sources = []
-foreach name : simde_test_arm_neon_tests
-  c_source = name + '.c'
-  cpp_source = configure_file(input: name + '.c', output: name + '.cpp', copy: true)
-  simde_test_arm_neon_sources += [c_source, cpp_source]
+foreach name : simde_neon_families
+  if (name != 'ld1') and (name != 'st1')
+    c_source = name + '.c'
+    cpp_source = configure_file(input: name + '.c', output: name + '.cpp', copy: true)
+    simde_test_arm_neon_sources += [c_source, cpp_source]
+  endif
 endforeach
 
 simde_tests_arm_neon_emul = static_library('simde-tests-arm-neon-emul', simde_test_arm_neon_sources,
