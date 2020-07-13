@@ -32,6 +32,7 @@
 #include "neon/abs.h"
 #include "neon/add.h"
 #include "neon/addl.h"
+#include "neon/addl_high.h"
 #include "neon/addw.h"
 #include "neon/and.h"
 #include "neon/bsl.h"
