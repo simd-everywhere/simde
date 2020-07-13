@@ -102,6 +102,7 @@ if not meson.is_subproject()
       'simde/arm/neon/qmovn.h',
       'simde/arm/neon/qmovn_high.h',
       'simde/arm/neon/reinterpret.h',
+      'simde/arm/neon/rshl.h',
       'simde/arm/neon/rshr_n.h',
       'simde/arm/neon/rsra_n.h',
       'simde/arm/neon/shl.h',
