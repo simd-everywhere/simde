@@ -1385,80 +1385,6 @@ simde_mm512_mask_cbrt_pd(simde__m512d src, simde__mmask8 k, simde__m512d a) {
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
-simde__m512
-simde_mm512_cdfnorminv_ps (simde__m512 a) {
-  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX512F_NATIVE)
-    return _mm512_cdfnorminv_ps(a);
-  #else
-    simde__m512_private
-      r_,
-      a_ = simde__m512_to_private(a);
-
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
-      r_.f32[i] = simde_math_cdfnorminvf(a_.f32[i]);
-    }
-
-    return simde__m512_from_private(r_);
-  #endif
-}
-#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
-  #undef _mm512_cdfnorminv_ps
-  #define _mm512_cdfnorminv_ps(a) simde_mm512_cdfnorminv_ps(a)
-#endif
-
-SIMDE_FUNCTION_ATTRIBUTES
-simde__m512d
-simde_mm512_cdfnorminv_pd (simde__m512d a) {
-  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX512F_NATIVE)
-    return _mm512_cdfnorminv_pd(a);
-  #else
-    simde__m512d_private
-      r_,
-      a_ = simde__m512d_to_private(a);
-
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
-      r_.f64[i] = simde_math_cdfnorminv(a_.f64[i]);
-    }
-
-    return simde__m512d_from_private(r_);
-  #endif
-}
-#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
-  #undef _mm512_cdfnorminv_pd
-  #define _mm512_cdfnorminv_pd(a) simde_mm512_cdfnorminv_pd(a)
-#endif
-
-SIMDE_FUNCTION_ATTRIBUTES
-simde__m512
-simde_mm512_mask_cdfnorminv_ps(simde__m512 src, simde__mmask16 k, simde__m512 a) {
-  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX512F_NATIVE)
-    return _mm512_mask_cdfnorminv_ps(src, k, a);
-  #else
-    return simde_mm512_mask_mov_ps(src, k, simde_mm512_cdfnorminv_ps(a));
-  #endif
-}
-#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
-  #undef _mm512_mask_cdfnorminv_ps
-  #define _mm512_mask_cdfnorminv_ps(src, k, a) simde_mm512_mask_cdfnorminv_ps(src, k, a)
-#endif
-
-SIMDE_FUNCTION_ATTRIBUTES
-simde__m512d
-simde_mm512_mask_cdfnorminv_pd(simde__m512d src, simde__mmask8 k, simde__m512d a) {
-  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX512F_NATIVE)
-    return _mm512_mask_cdfnorminv_pd(src, k, a);
-  #else
-    return simde_mm512_mask_mov_pd(src, k, simde_mm512_cdfnorminv_pd(a));
-  #endif
-}
-#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
-  #undef _mm512_mask_cdfnorminv_pd
-  #define _mm512_mask_cdfnorminv_pd(src, k, a) simde_mm512_mask_cdfnorminv_pd(src, k, a)
-#endif
-
-SIMDE_FUNCTION_ATTRIBUTES
 simde__m128
 simde_mm_cexp_ps (simde__m128 a) {
   #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE_NATIVE)
@@ -5174,6 +5100,7 @@ simde_mm256_cdfnorminv_ps (simde__m256 a) {
   #undef _mm256_cdfnorminv_ps
   #define _mm256_cdfnorminv_ps(a) simde_mm256_cdfnorminv_ps(a)
 #endif
+
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m256d
 simde_mm256_cdfnorminv_pd (simde__m256d a) {
@@ -5297,6 +5224,252 @@ simde_mm256_cdfnorminv_pd (simde__m256d a) {
 #if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
   #undef _mm256_cdfnorminv_pd
   #define _mm256_cdfnorminv_pd(a) simde_mm256_cdfnorminv_pd(a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512
+simde_mm512_cdfnorminv_ps (simde__m512 a) {
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX512F_NATIVE)
+    return _mm512_cdfnorminv_ps(a);
+  #elif SIMDE_NATURAL_VECTOR_SIZE_LE(256)
+    simde__m512_private
+      r_,
+      a_ = simde__m512_to_private(a);
+
+    for (size_t i = 0 ; i < (sizeof(r_.m256) / sizeof(r_.m256[0])) ; i++) {
+      r_.m256[i] = simde_mm256_cdfnorminv_ps(a_.m256[i]);
+    }
+
+    return simde__m512_from_private(r_);
+  #else
+
+    simde__m512 retval = simde_mm512_setzero_ps();
+    simde__mmask16 matched;
+
+    { /* if (a < 0 || a > 1) */
+      matched  = simde_mm512_cmp_ps_mask(a, simde_mm512_set1_ps(SIMDE_FLOAT32_C(0.0)), SIMDE_CMP_LT_OQ);
+      matched |= simde_mm512_cmp_ps_mask(a, simde_mm512_set1_ps(SIMDE_FLOAT32_C(1.0)), SIMDE_CMP_GT_OQ);
+
+      /* We don't actually need to do anything here since we initialize
+       * retval to 0.0. */
+    }
+
+    { /* else if (a == 0) */
+      simde__mmask16 mask = simde_mm512_cmp_ps_mask(a, simde_mm512_set1_ps(SIMDE_FLOAT32_C(0.0)), SIMDE_CMP_EQ_OQ);
+      matched |= mask;
+
+      retval = simde_mm512_mask_mov_ps(retval, mask, simde_mm512_set1_ps(-SIMDE_MATH_INFINITYF));
+    }
+
+    { /* else if (a == 1) */
+      simde__mmask16 mask = simde_mm512_cmp_ps_mask(a, simde_mm512_set1_ps(SIMDE_FLOAT32_C(0.0)), SIMDE_CMP_EQ_OQ);
+      matched |= mask;
+
+      retval = simde_mm512_mask_mov_ps(retval, mask, simde_mm512_set1_ps(SIMDE_MATH_INFINITYF));
+    }
+
+    { /* else if (a < 0.02425) */
+      simde__mmask16 mask_lo = simde_mm512_cmp_ps_mask(a, simde_mm512_set1_ps(SIMDE_FLOAT32_C(0.02425)), SIMDE_CMP_LT_OQ);
+      /* else if (a > 0.97575) */
+      simde__mmask16 mask_hi = simde_mm512_cmp_ps_mask(a, simde_mm512_set1_ps(SIMDE_FLOAT32_C(0.97575)), SIMDE_CMP_GT_OQ);
+
+      simde__mmask16 mask = mask_lo | mask_hi;
+      matched = matched | mask;
+
+      /* else */
+      simde__mmask16 mask_el = ~matched;
+      mask = mask | mask_el;
+
+      /* r = a - 0.5f */
+      simde__m512 r = simde_mm512_sub_ps(a, simde_mm512_set1_ps(SIMDE_FLOAT32_C(0.5)));
+
+      /* lo: q = a
+       * hi: q = (1.0 - a) */
+      simde__m512 q = simde_mm512_maskz_mov_ps(mask_lo, a);
+      q = simde_mm512_mask_sub_ps(q, mask_hi, simde_mm512_set1_ps(SIMDE_FLOAT32_C(1.0)), a);
+
+      /* q = simde_math_sqrtf(-2.0f * simde_math_logf(q)) */
+      q = simde_mm512_log_ps(q);
+      q = simde_mm512_mul_ps(q, simde_mm512_set1_ps(SIMDE_FLOAT32_C(-2.0)));
+      q = simde_mm512_sqrt_ps(q);
+
+      /* el: q = r * r */
+      q = simde_mm512_mask_mul_ps(q, mask_el, r, r);
+
+      /* lo: float numerator = ((((((c_c[0] * q + c_c[1]) * q + c_c[2]) * q + c_c[3]) * q + c_c[4]) * q + c_c[5]) *  1.0f); */
+      /* hi: float numerator = ((((((c_c[0] * q + c_c[1]) * q + c_c[2]) * q + c_c[3]) * q + c_c[4]) * q + c_c[5]) * -1.0f); */
+      /* el: float numerator = ((((((c_a[0] * q + c_a[1]) * q + c_a[2]) * q + c_a[3]) * q + c_a[4]) * q + c_a[5]) *  r); */
+      simde__m512 numerator = simde_mm512_mask_mov_ps(simde_mm512_set1_ps(SIMDE_FLOAT32_C(-7.784894002430293e-03)), mask_el, simde_mm512_set1_ps(SIMDE_FLOAT32_C(-3.969683028665376e+01)));
+      numerator = simde_mm512_fmadd_ps(numerator, q, simde_mm512_mask_mov_ps(simde_mm512_set1_ps(SIMDE_FLOAT32_C(-3.223964580411365e-01)), mask_el, simde_mm512_set1_ps(SIMDE_FLOAT32_C( 2.209460984245205e+02))));
+      numerator = simde_mm512_fmadd_ps(numerator, q, simde_mm512_mask_mov_ps(simde_mm512_set1_ps(SIMDE_FLOAT32_C(-2.400758277161838e+00)), mask_el, simde_mm512_set1_ps(SIMDE_FLOAT32_C(-2.759285104469687e+02))));
+      numerator = simde_mm512_fmadd_ps(numerator, q, simde_mm512_mask_mov_ps(simde_mm512_set1_ps(SIMDE_FLOAT32_C(-2.549732539343734e+00)), mask_el, simde_mm512_set1_ps(SIMDE_FLOAT32_C( 1.383577518672690e+02))));
+      numerator = simde_mm512_fmadd_ps(numerator, q, simde_mm512_mask_mov_ps(simde_mm512_set1_ps(SIMDE_FLOAT32_C( 4.374664141464968e+00)), mask_el, simde_mm512_set1_ps(SIMDE_FLOAT32_C(-3.066479806614716e+01))));
+      numerator = simde_mm512_fmadd_ps(numerator, q, simde_mm512_mask_mov_ps(simde_mm512_set1_ps(SIMDE_FLOAT32_C( 2.938163982698783e+00)), mask_el, simde_mm512_set1_ps(SIMDE_FLOAT32_C( 2.506628277459239e+00))));
+      {
+        simde__m512 multiplier;
+        multiplier =                                              simde_mm512_set1_ps(SIMDE_FLOAT32_C( 1.0));
+        multiplier = simde_mm512_mask_mov_ps(multiplier, mask_hi, simde_mm512_set1_ps(SIMDE_FLOAT32_C(-1.0)));
+        multiplier = simde_mm512_mask_mov_ps(multiplier, mask_el, r);
+        numerator = simde_mm512_mul_ps(numerator, multiplier);
+      }
+
+      /* lo/hi: float denominator = (((((c_d[0] * q + c_d[1]) * q + c_d[2]) * q + c_d[3]) * 1 +   0.0f) * q + 1); */
+      /*    el: float denominator = (((((c_b[0] * q + c_b[1]) * q + c_b[2]) * q + c_b[3]) * q + c_b[4]) * q + 1); */
+      simde__m512 denominator = simde_mm512_mask_mov_ps(simde_mm512_set1_ps(SIMDE_FLOAT32_C( 7.784695709041462e-03)), mask_el, simde_mm512_set1_ps(SIMDE_FLOAT32_C(-5.447609879822406e+01)));
+      denominator = simde_mm512_fmadd_ps(denominator, q, simde_mm512_mask_mov_ps(simde_mm512_set1_ps(SIMDE_FLOAT32_C( 3.224671290700398e-01)), mask_el, simde_mm512_set1_ps(SIMDE_FLOAT32_C( 1.615858368580409e+02))));
+      denominator = simde_mm512_fmadd_ps(denominator, q, simde_mm512_mask_mov_ps(simde_mm512_set1_ps(SIMDE_FLOAT32_C( 2.445134137142996e+00)), mask_el, simde_mm512_set1_ps(SIMDE_FLOAT32_C(-1.556989798598866e+02))));
+      denominator = simde_mm512_fmadd_ps(denominator, q, simde_mm512_mask_mov_ps(simde_mm512_set1_ps(SIMDE_FLOAT32_C( 3.754408661907416e+00)), mask_el, simde_mm512_set1_ps(SIMDE_FLOAT32_C( 6.680131188771972e+01))));
+      denominator = simde_mm512_fmadd_ps(denominator, simde_mm512_mask_mov_ps(simde_mm512_set1_ps(SIMDE_FLOAT32_C( 1.0)), mask_el, q),
+                                                      simde_mm512_mask_mov_ps(simde_mm512_set1_ps(SIMDE_FLOAT32_C( 0.0)), mask_el, simde_mm512_set1_ps(SIMDE_FLOAT32_C(-1.328068155288572e+01))));
+      denominator = simde_mm512_fmadd_ps(denominator, q, simde_mm512_set1_ps(SIMDE_FLOAT32_C(1.0)));
+
+      /* res = numerator / denominator; */
+      retval = simde_mm512_mask_div_ps(retval, mask_lo | mask_hi | mask_el, numerator, denominator);
+    }
+
+    return retval;
+  #endif
+}
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_cdfnorminv_ps
+  #define _mm512_cdfnorminv_ps(a) simde_mm512_cdfnorminv_ps(a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512d
+simde_mm512_cdfnorminv_pd (simde__m512d a) {
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX512F_NATIVE)
+    return _mm512_cdfnorminv_pd(a);
+  #elif SIMDE_NATURAL_VECTOR_SIZE_LE(256)
+    simde__m512d_private
+      r_,
+      a_ = simde__m512d_to_private(a);
+
+    for (size_t i = 0 ; i < (sizeof(r_.m256d) / sizeof(r_.m256d[0])) ; i++) {
+      r_.m256d[i] = simde_mm256_cdfnorminv_pd(a_.m256d[i]);
+    }
+
+    return simde__m512d_from_private(r_);
+  #else
+
+    simde__m512d retval = simde_mm512_setzero_pd();
+    simde__mmask8 matched;
+
+    { /* if (a < 0 || a > 1) */
+      matched  = simde_mm512_cmp_pd_mask(a, simde_mm512_set1_pd(SIMDE_FLOAT64_C(0.0)), SIMDE_CMP_LT_OQ);
+      matched |= simde_mm512_cmp_pd_mask(a, simde_mm512_set1_pd(SIMDE_FLOAT64_C(1.0)), SIMDE_CMP_GT_OQ);
+
+      /* We don't actually need to do anything here since we initialize
+       * retval to 0.0. */
+    }
+
+    { /* else if (a == 0) */
+      simde__mmask8 mask = simde_mm512_cmp_pd_mask(a, simde_mm512_set1_pd(SIMDE_FLOAT64_C(0.0)), SIMDE_CMP_EQ_OQ);
+      matched |= mask;
+
+      retval = simde_mm512_mask_mov_pd(retval, mask, simde_mm512_set1_pd(-SIMDE_MATH_INFINITY));
+    }
+
+    { /* else if (a == 1) */
+      simde__mmask8 mask = simde_mm512_cmp_pd_mask(a, simde_mm512_set1_pd(SIMDE_FLOAT64_C(0.0)), SIMDE_CMP_EQ_OQ);
+      matched |= mask;
+
+      retval = simde_mm512_mask_mov_pd(retval, mask, simde_mm512_set1_pd(SIMDE_MATH_INFINITY));
+    }
+
+    { /* else if (a < 0.02425) */
+      simde__mmask8 mask_lo = simde_mm512_cmp_pd_mask(a, simde_mm512_set1_pd(SIMDE_FLOAT64_C(0.02425)), SIMDE_CMP_LT_OQ);
+      /* else if (a > 0.97575) */
+      simde__mmask8 mask_hi = simde_mm512_cmp_pd_mask(a, simde_mm512_set1_pd(SIMDE_FLOAT64_C(0.97575)), SIMDE_CMP_GT_OQ);
+
+      simde__mmask8 mask = mask_lo | mask_hi;
+      matched = matched | mask;
+
+      /* else */
+      simde__mmask8 mask_el = ~matched;
+      mask = mask | mask_el;
+
+      /* r = a - 0.5f */
+      simde__m512d r = simde_mm512_sub_pd(a, simde_mm512_set1_pd(SIMDE_FLOAT64_C(0.5)));
+
+      /* lo: q = a
+       * hi: q = (1.0 - a) */
+      simde__m512d q = a;
+      q = simde_mm512_mask_sub_pd(q, mask_hi, simde_mm512_set1_pd(SIMDE_FLOAT64_C(1.0)), a);
+
+      /* q = simde_math_sqrtf(-2.0f * simde_math_logf(q)) */
+      q = simde_mm512_log_pd(q);
+      q = simde_mm512_mul_pd(q, simde_mm512_set1_pd(SIMDE_FLOAT64_C(-2.0)));
+      q = simde_mm512_sqrt_pd(q);
+
+      /* el: q = r * r */
+      q = simde_mm512_mask_mul_pd(q, mask_el, r, r);
+
+      /* lo: float numerator = ((((((c_c[0] * q + c_c[1]) * q + c_c[2]) * q + c_c[3]) * q + c_c[4]) * q + c_c[5]) *  1.0f); */
+      /* hi: float numerator = ((((((c_c[0] * q + c_c[1]) * q + c_c[2]) * q + c_c[3]) * q + c_c[4]) * q + c_c[5]) * -1.0f); */
+      /* el: float numerator = ((((((c_a[0] * q + c_a[1]) * q + c_a[2]) * q + c_a[3]) * q + c_a[4]) * q + c_a[5]) *  r); */
+      simde__m512d numerator = simde_mm512_mask_mov_pd(simde_mm512_set1_pd(SIMDE_FLOAT64_C(-7.784894002430293e-03)), mask_el, simde_mm512_set1_pd(SIMDE_FLOAT64_C(-3.969683028665376e+01)));
+      numerator = simde_mm512_fmadd_pd(numerator, q, simde_mm512_mask_mov_pd(simde_mm512_set1_pd(SIMDE_FLOAT64_C(-3.223964580411365e-01)), mask_el, simde_mm512_set1_pd(SIMDE_FLOAT64_C( 2.209460984245205e+02))));
+      numerator = simde_mm512_fmadd_pd(numerator, q, simde_mm512_mask_mov_pd(simde_mm512_set1_pd(SIMDE_FLOAT64_C(-2.400758277161838e+00)), mask_el, simde_mm512_set1_pd(SIMDE_FLOAT64_C(-2.759285104469687e+02))));
+      numerator = simde_mm512_fmadd_pd(numerator, q, simde_mm512_mask_mov_pd(simde_mm512_set1_pd(SIMDE_FLOAT64_C(-2.549732539343734e+00)), mask_el, simde_mm512_set1_pd(SIMDE_FLOAT64_C( 1.383577518672690e+02))));
+      numerator = simde_mm512_fmadd_pd(numerator, q, simde_mm512_mask_mov_pd(simde_mm512_set1_pd(SIMDE_FLOAT64_C( 4.374664141464968e+00)), mask_el, simde_mm512_set1_pd(SIMDE_FLOAT64_C(-3.066479806614716e+01))));
+      numerator = simde_mm512_fmadd_pd(numerator, q, simde_mm512_mask_mov_pd(simde_mm512_set1_pd(SIMDE_FLOAT64_C( 2.938163982698783e+00)), mask_el, simde_mm512_set1_pd(SIMDE_FLOAT64_C( 2.506628277459239e+00))));
+      {
+        simde__m512d multiplier;
+        multiplier =                                              simde_mm512_set1_pd(SIMDE_FLOAT64_C( 1.0));
+        multiplier = simde_mm512_mask_mov_pd(multiplier, mask_hi, simde_mm512_set1_pd(SIMDE_FLOAT64_C(-1.0)));
+        multiplier = simde_mm512_mask_mov_pd(multiplier, mask_el, r);
+        numerator = simde_mm512_mul_pd(numerator, multiplier);
+      }
+
+      /* lo/hi: float denominator = (((((c_d[0] * q + c_d[1]) * q + c_d[2]) * q + c_d[3]) * 1 +   0.0f) * q + 1); */
+      /*    el: float denominator = (((((c_b[0] * q + c_b[1]) * q + c_b[2]) * q + c_b[3]) * q + c_b[4]) * q + 1); */
+      simde__m512d denominator = simde_mm512_mask_mov_pd(simde_mm512_set1_pd(SIMDE_FLOAT64_C( 7.784695709041462e-03)), mask_el, simde_mm512_set1_pd(SIMDE_FLOAT64_C(-5.447609879822406e+01)));
+      denominator = simde_mm512_fmadd_pd(denominator, q, simde_mm512_mask_mov_pd(simde_mm512_set1_pd(SIMDE_FLOAT64_C( 3.224671290700398e-01)), mask_el, simde_mm512_set1_pd(SIMDE_FLOAT64_C( 1.615858368580409e+02))));
+      denominator = simde_mm512_fmadd_pd(denominator, q, simde_mm512_mask_mov_pd(simde_mm512_set1_pd(SIMDE_FLOAT64_C( 2.445134137142996e+00)), mask_el, simde_mm512_set1_pd(SIMDE_FLOAT64_C(-1.556989798598866e+02))));
+      denominator = simde_mm512_fmadd_pd(denominator, q, simde_mm512_mask_mov_pd(simde_mm512_set1_pd(SIMDE_FLOAT64_C( 3.754408661907416e+00)), mask_el, simde_mm512_set1_pd(SIMDE_FLOAT64_C( 6.680131188771972e+01))));
+      denominator = simde_mm512_fmadd_pd(denominator, simde_mm512_mask_mov_pd(simde_mm512_set1_pd(SIMDE_FLOAT64_C( 1.0)), mask_el, q),
+                                                      simde_mm512_mask_mov_pd(simde_mm512_set1_pd(SIMDE_FLOAT64_C( 0.0)), mask_el, simde_mm512_set1_pd(SIMDE_FLOAT64_C(-1.328068155288572e+01))));
+      denominator = simde_mm512_fmadd_pd(denominator, q, simde_mm512_set1_pd(SIMDE_FLOAT64_C(1.0)));
+
+      /* res = numerator / denominator; */
+      retval = simde_mm512_mask_div_pd(retval, mask_lo | mask_hi | mask_el, numerator, denominator);
+    }
+
+    return retval;
+  #endif
+}
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_cdfnorminv_pd
+  #define _mm512_cdfnorminv_pd(a) simde_mm512_cdfnorminv_pd(a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512
+simde_mm512_mask_cdfnorminv_ps(simde__m512 src, simde__mmask16 k, simde__m512 a) {
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX512F_NATIVE)
+    return _mm512_mask_cdfnorminv_ps(src, k, a);
+  #else
+    return simde_mm512_mask_mov_ps(src, k, simde_mm512_cdfnorminv_ps(a));
+  #endif
+}
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_mask_cdfnorminv_ps
+  #define _mm512_mask_cdfnorminv_ps(src, k, a) simde_mm512_mask_cdfnorminv_ps(src, k, a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512d
+simde_mm512_mask_cdfnorminv_pd(simde__m512d src, simde__mmask8 k, simde__m512d a) {
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX512F_NATIVE)
+    return _mm512_mask_cdfnorminv_pd(src, k, a);
+  #else
+    return simde_mm512_mask_mov_pd(src, k, simde_mm512_cdfnorminv_pd(a));
+  #endif
+}
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_mask_cdfnorminv_pd
+  #define _mm512_mask_cdfnorminv_pd(src, k, a) simde_mm512_mask_cdfnorminv_pd(src, k, a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
