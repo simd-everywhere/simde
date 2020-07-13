@@ -57,8 +57,8 @@ simde_mm_fmadd_pd (simde__m128d a, simde__m128d b, simde__m128d c) {
       r_.neon_f64 = vmlaq_f64(c_.neon_f64, b_.neon_f64, a_.neon_f64);
     #else
       SIMDE_VECTORIZE
-      for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
-        r_.f32[i] = (a_.f32[i] * b_.f32[i]) + c_.f32[i];
+      for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
+        r_.f64[i] = (a_.f64[i] * b_.f64[i]) + c_.f64[i];
       }
     #endif
 
