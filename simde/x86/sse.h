@@ -3178,7 +3178,9 @@ simde_mm_rsqrt_ss (simde__m128 a) {
     r_,
     a_ = simde__m128_to_private(a);
 
-#if defined(__STDC_IEC_559__)
+#if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    r_.neon_f32 = vsetq_lane_f32(vgetq_lane_f32(simde_mm_rsqrt_ps(a).neon_f32, 0), a_.neon_f32, 0);
+#elif defined(__STDC_IEC_559__)
   {
     #if SIMDE_ACCURACY_PREFERENCE <= 0
       r_.i32[0] = INT32_C(0x5F37624F) - (a_.i32[0] >> 1);
