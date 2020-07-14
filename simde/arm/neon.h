@@ -50,6 +50,7 @@
 #include "neon/combine.h"
 #include "neon/dup_n.h"
 #include "neon/eor.h"
+#include "neon/ext.h"
 #include "neon/get_high.h"
 #include "neon/get_lane.h"
 #include "neon/get_low.h"
