@@ -28,6 +28,7 @@ simde_neon_families = [
   'combine',
   'dup_n',
   'eor',
+  'ext',
   'get_high',
   'get_lane',
   'get_low',
