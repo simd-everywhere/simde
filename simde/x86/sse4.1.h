@@ -1092,6 +1092,28 @@ simde_mm_extract_epi64 (simde__m128i a, const int imm8)
   #define _mm_extract_epi64(a, imm8) simde_mm_extract_epi64(a, imm8)
 #endif
 
+#if defined(simde_mm_extract_ps)
+#  undef simde_mm_extract_ps
+#endif
+SIMDE_FUNCTION_ATTRIBUTES
+int32_t
+simde_mm_extract_ps (simde__m128 a, const int imm8)
+    SIMDE_REQUIRE_RANGE(imm8, 0, 3)  {
+  simde__m128_private
+    a_ = simde__m128_to_private(a);
+
+  return a_.i32[imm8 & 3];
+}
+#if defined(SIMDE_X86_SSE4_1_NATIVE)
+  #define simde_mm_extract_ps(a, imm8) _mm_extract_ps(a, imm8)
+#elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #define simde_mm_extract_ps(a, imm8) vgetq_lane_s32(simde__m128_to_private(a).neon_i32, imm8)
+#endif
+#if defined(SIMDE_X86_SSE4_1_ENABLE_NATIVE_ALIASES)
+  #undef _mm_extract_ps
+  #define _mm_extract_ps(a, imm8) simde_mm_extract_ps(a, imm8)
+#endif
+
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128d
 simde_mm_floor_pd (simde__m128d a) {
