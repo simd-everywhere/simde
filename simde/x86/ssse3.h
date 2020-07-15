@@ -382,7 +382,14 @@ simde_mm_hadd_epi16 (simde__m128i a, simde__m128i b) {
 #if defined(SIMDE_X86_SSSE3_NATIVE)
   return _mm_hadd_epi16(a, b);
 #else
-  return simde_mm_add_epi16(simde_x_mm_deinterleaveeven_epi16(a, b), simde_x_mm_deinterleaveodd_epi16(a, b));
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+    return vreinterpretq_s64_s16(vpaddq_s16(simde__m128i_to_private(a).neon_i16, simde__m128i_to_private(b).neon_i16));
+  #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    return vreinterpretq_s64_s16(vcombine_s16(vpadd_s16(vget_low_s16(simde__m128i_to_private(a).neon_i16), vget_high_s16(simde__m128i_to_private(a).neon_i16)),
+                     vpadd_s16(vget_low_s16(simde__m128i_to_private(b).neon_i16), vget_high_s16(simde__m128i_to_private(b).neon_i16))));
+  #else
+    return simde_mm_add_epi16(simde_x_mm_deinterleaveeven_epi16(a, b), simde_x_mm_deinterleaveodd_epi16(a, b));
+  #endif
 #endif
 }
 #if defined(SIMDE_X86_SSSE3_ENABLE_NATIVE_ALIASES)
@@ -395,7 +402,12 @@ simde_mm_hadd_epi32 (simde__m128i a, simde__m128i b) {
 #if defined(SIMDE_X86_SSSE3_NATIVE)
   return _mm_hadd_epi32(a, b);
 #else
-  return simde_mm_add_epi32(simde_x_mm_deinterleaveeven_epi32(a, b), simde_x_mm_deinterleaveodd_epi32(a, b));
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    return vreinterpretq_s64_s32(vcombine_s32(vpadd_s32(vget_low_s32(simde__m128i_to_private(a).neon_i32), vget_high_s32(simde__m128i_to_private(a).neon_i32)),
+                     vpadd_s32(vget_low_s32(simde__m128i_to_private(b).neon_i32), vget_high_s32(simde__m128i_to_private(b).neon_i32))));
+  #else
+    return simde_mm_add_epi32(simde_x_mm_deinterleaveeven_epi32(a, b), simde_x_mm_deinterleaveodd_epi32(a, b));
+  #endif
 #endif
 }
 #if defined(SIMDE_X86_SSSE3_ENABLE_NATIVE_ALIASES)
@@ -468,7 +480,19 @@ simde_mm_hadds_epi16 (simde__m128i a, simde__m128i b) {
 #if defined(SIMDE_X86_SSSE3_NATIVE)
   return _mm_hadds_epi16(a, b);
 #else
-  return simde_mm_adds_epi16(simde_x_mm_deinterleaveeven_epi16(a, b), simde_x_mm_deinterleaveodd_epi16(a, b));
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    int32x4_t ax = simde__m128i_to_private(a).neon_i32;
+    int32x4_t bx = simde__m128i_to_private(b).neon_i32;
+    // Interleave using vshrn/vmovn
+    // [a0|a2|a4|a6|b0|b2|b4|b6]
+    // [a1|a3|a5|a7|b1|b3|b5|b7]
+    int16x8_t ab0246 = vcombine_s16(vmovn_s32(ax), vmovn_s32(bx));
+    int16x8_t ab1357 = vcombine_s16(vshrn_n_s32(ax, 16), vshrn_n_s32(bx, 16));
+    // Saturated add
+    return vreinterpretq_s64_s16(vqaddq_s16(ab0246, ab1357));
+  #else
+    return simde_mm_adds_epi16(simde_x_mm_deinterleaveeven_epi16(a, b), simde_x_mm_deinterleaveodd_epi16(a, b));
+  #endif
 #endif
 }
 #if defined(SIMDE_X86_SSSE3_ENABLE_NATIVE_ALIASES)

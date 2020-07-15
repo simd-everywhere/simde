@@ -294,7 +294,17 @@ simde_mm_hadd_ps (simde__m128 a, simde__m128 b) {
 #if defined(SIMDE_X86_SSE3_NATIVE)
   return _mm_hadd_ps(a, b);
 #else
-  return simde_mm_add_ps(simde_x_mm_deinterleaveeven_ps(a, b), simde_x_mm_deinterleaveodd_ps(a, b));
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+    return vpaddq_f32(simde__m128_to_private(a).neon_f32, simde__m128_to_private(b).neon_f32);
+  #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    float32x2_t a10 = vget_low_f32(simde__m128_to_private(a).neon_f32);
+    float32x2_t a32 = vget_high_f32(simde__m128_to_private(a).neon_f32);
+    float32x2_t b10 = vget_low_f32(simde__m128_to_private(b).neon_f32);
+    float32x2_t b32 = vget_high_f32(simde__m128_to_private(b).neon_f32);
+    return vcombine_f32(vpadd_f32(a10, a32), vpadd_f32(b10, b32));
+  #else
+    return simde_mm_add_ps(simde_x_mm_deinterleaveeven_ps(a, b), simde_x_mm_deinterleaveodd_ps(a, b));
+  #endif
 #endif
 }
 #if defined(SIMDE_X86_SSE3_ENABLE_NATIVE_ALIASES)
