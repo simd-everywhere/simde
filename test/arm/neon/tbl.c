@@ -149,6 +149,8 @@ test_simde_vtbl1_u8 (SIMDE_MUNIT_TEST_ARGS) {
 #endif
 }
 
+#if !defined(SIMDE_BUG_INTEL_857088)
+
 static int
 test_simde_vtbl2_s8 (SIMDE_MUNIT_TEST_ARGS) {
 #if 1
@@ -716,15 +718,21 @@ test_simde_vtbl4_u8 (SIMDE_MUNIT_TEST_ARGS) {
 #endif
 }
 
+#endif /* !defined(SIMDE_BUG_INTEL_857088) */
+
 SIMDE_TEST_FUNC_LIST_BEGIN
 SIMDE_TEST_FUNC_LIST_ENTRY(vtbl1_s8)
 SIMDE_TEST_FUNC_LIST_ENTRY(vtbl1_u8)
+
+#if !defined(SIMDE_BUG_INTEL_857088)
 SIMDE_TEST_FUNC_LIST_ENTRY(vtbl2_s8)
 SIMDE_TEST_FUNC_LIST_ENTRY(vtbl2_u8)
 SIMDE_TEST_FUNC_LIST_ENTRY(vtbl3_s8)
 SIMDE_TEST_FUNC_LIST_ENTRY(vtbl3_u8)
 SIMDE_TEST_FUNC_LIST_ENTRY(vtbl4_s8)
 SIMDE_TEST_FUNC_LIST_ENTRY(vtbl4_u8)
+#endif /* !defined(SIMDE_BUG_INTEL_857088) */
+
 SIMDE_TEST_FUNC_LIST_END
 
 #include "test-neon-footer.h"

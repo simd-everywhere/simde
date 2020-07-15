@@ -75,6 +75,8 @@ simde_vtbl1_s8(simde_int8x8_t a, simde_int8x8_t b) {
   #define vtbl1_s8(a, b) simde_vtbl1_s8((a), (b))
 #endif
 
+#if !defined(SIMDE_BUG_INTEL_857088)
+
 SIMDE_FUNCTION_ATTRIBUTES
 simde_uint8x8_t
 simde_vtbl2_u8(simde_uint8x8x2_t a, simde_uint8x8_t b) {
@@ -211,6 +213,7 @@ simde_vtbl4_s8(simde_int8x8x4_t a, simde_int8x8_t b) {
   #define vtbl4_s8(a, b) simde_vtbl4_s8((a), (b))
 #endif
 
+#endif /* !defined(SIMDE_BUG_INTEL_857088) */
 
 SIMDE_END_DECLS_
 HEDLEY_DIAGNOSTIC_POP
