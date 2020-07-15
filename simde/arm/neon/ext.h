@@ -56,11 +56,17 @@ simde_vext_f32(simde_float32x2_t a, simde_float32x2_t b, const int n)
 }
 #if defined(SIMDE_SHUFFLE_VECTOR_) && !defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vext_f32(a, b, n) (__extension__ ({ \
-      const int simde_vext_f32_n = HEDLEY_STATIC_CAST(int8_t, n); \
-      simde_float32x2_private simde_vext_f32_r_; \
-      simde_vext_f32_r_.values = SIMDE_SHUFFLE_VECTOR_(32, 8, simde_float32x2_to_private(a).values, simde_float32x2_to_private(b).values, \
-        HEDLEY_STATIC_CAST(int8_t, simde_vext_f32_n + 0), HEDLEY_STATIC_CAST(int8_t, simde_vext_f32_n + 1)); \
-      simde_float32x2_from_private(simde_vext_f32_r_); \
+      simde_float32x2_t simde_vext_f32_r; \
+      if (!__builtin_constant_p(n)) { \
+        simde_vext_f32_r = simde_vext_f32(a, b, n); \
+      } else { \
+        const int simde_vext_f32_n = HEDLEY_STATIC_CAST(int8_t, n); \
+        simde_float32x2_private simde_vext_f32_r_; \
+        simde_vext_f32_r_.values = SIMDE_SHUFFLE_VECTOR_(32, 8, simde_float32x2_to_private(a).values, simde_float32x2_to_private(b).values, \
+          HEDLEY_STATIC_CAST(int8_t, simde_vext_f32_n + 0), HEDLEY_STATIC_CAST(int8_t, simde_vext_f32_n + 1)); \
+        simde_vext_f32_r = simde_float32x2_from_private(simde_vext_f32_r_); \
+      } \
+      simde_vext_f32_r; \
     }))
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
@@ -90,11 +96,17 @@ simde_vext_f64(simde_float64x1_t a, simde_float64x1_t b, const int n)
 }
 #if defined(SIMDE_SHUFFLE_VECTOR_) && !defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vext_f64(a, b, n) (__extension__ ({ \
-      const int simde_vext_f64_n = HEDLEY_STATIC_CAST(int8_t, n); \
-      simde_float64x1_private simde_vext_f64_r_; \
-      simde_vext_f64_r_.values = SIMDE_SHUFFLE_VECTOR_(64, 8, simde_float64x1_to_private(a).values, simde_float64x1_to_private(b).values, \
-        HEDLEY_STATIC_CAST(int8_t, simde_vext_f64_n)); \
-      simde_float64x1_from_private(simde_vext_f64_r_); \
+      simde_float64x1_t simde_vext_f64_r; \
+      if (!__builtin_constant_p(n)) { \
+         simde_vext_f64_r = simde_vext_f64(a, b, n); \
+      } else { \
+        const int simde_vext_f64_n = HEDLEY_STATIC_CAST(int8_t, n); \
+        simde_float64x1_private simde_vext_f64_r_; \
+        simde_vext_f64_r_.values = SIMDE_SHUFFLE_VECTOR_(64, 8, simde_float64x1_to_private(a).values, simde_float64x1_to_private(b).values, \
+          HEDLEY_STATIC_CAST(int8_t, simde_vext_f64_n)); \
+        simde_vext_f64_r = simde_float64x1_from_private(simde_vext_f64_r_); \
+      } \
+      simde_vext_f64_r; \
     }))
 #endif
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
@@ -125,14 +137,20 @@ simde_vext_s8(simde_int8x8_t a, simde_int8x8_t b, const int n)
 }
 #if defined(SIMDE_SHUFFLE_VECTOR_) && !defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vext_s8(a, b, n) (__extension__ ({ \
-      const int simde_vext_s8_n = HEDLEY_STATIC_CAST(int8_t, n); \
-      simde_int8x8_private simde_vext_s8_r_; \
-      simde_vext_s8_r_.values = SIMDE_SHUFFLE_VECTOR_(8, 8, simde_int8x8_to_private(a).values, simde_int8x8_to_private(b).values, \
-        HEDLEY_STATIC_CAST(int8_t, simde_vext_s8_n + 0), HEDLEY_STATIC_CAST(int8_t, simde_vext_s8_n + 1), \
-        HEDLEY_STATIC_CAST(int8_t, simde_vext_s8_n + 2), HEDLEY_STATIC_CAST(int8_t, simde_vext_s8_n + 3), \
-        HEDLEY_STATIC_CAST(int8_t, simde_vext_s8_n + 4), HEDLEY_STATIC_CAST(int8_t, simde_vext_s8_n + 5), \
-        HEDLEY_STATIC_CAST(int8_t, simde_vext_s8_n + 6), HEDLEY_STATIC_CAST(int8_t, simde_vext_s8_n + 7)); \
-      simde_int8x8_from_private(simde_vext_s8_r_); \
+      simde_int8x8_t simde_vext_s8_r; \
+      if (!__builtin_constant_p(n)) { \
+         simde_vext_s8_r = simde_vext_s8(a, b, n); \
+      } else { \
+        const int simde_vext_s8_n = HEDLEY_STATIC_CAST(int8_t, n); \
+        simde_int8x8_private simde_vext_s8_r_; \
+        simde_vext_s8_r_.values = SIMDE_SHUFFLE_VECTOR_(8, 8, simde_int8x8_to_private(a).values, simde_int8x8_to_private(b).values, \
+          HEDLEY_STATIC_CAST(int8_t, simde_vext_s8_n + 0), HEDLEY_STATIC_CAST(int8_t, simde_vext_s8_n + 1), \
+          HEDLEY_STATIC_CAST(int8_t, simde_vext_s8_n + 2), HEDLEY_STATIC_CAST(int8_t, simde_vext_s8_n + 3), \
+          HEDLEY_STATIC_CAST(int8_t, simde_vext_s8_n + 4), HEDLEY_STATIC_CAST(int8_t, simde_vext_s8_n + 5), \
+          HEDLEY_STATIC_CAST(int8_t, simde_vext_s8_n + 6), HEDLEY_STATIC_CAST(int8_t, simde_vext_s8_n + 7)); \
+        simde_vext_s8_r = simde_int8x8_from_private(simde_vext_s8_r_); \
+      } \
+      simde_vext_s8_r; \
     }))
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
@@ -163,12 +181,18 @@ simde_vext_s16(simde_int16x4_t a, simde_int16x4_t b, const int n)
 }
 #if defined(SIMDE_SHUFFLE_VECTOR_) && !defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vext_s16(a, b, n) (__extension__ ({ \
-      const int simde_vext_s16_n = HEDLEY_STATIC_CAST(int8_t, n); \
-      simde_int16x4_private simde_vext_s16_r_; \
-      simde_vext_s16_r_.values = SIMDE_SHUFFLE_VECTOR_(16, 8, simde_int16x4_to_private(a).values, simde_int16x4_to_private(b).values, \
-        HEDLEY_STATIC_CAST(int8_t, simde_vext_s16_n + 0), HEDLEY_STATIC_CAST(int8_t, simde_vext_s16_n + 1), \
-        HEDLEY_STATIC_CAST(int8_t, simde_vext_s16_n + 2), HEDLEY_STATIC_CAST(int8_t, simde_vext_s16_n + 3)); \
-      simde_int16x4_from_private(simde_vext_s16_r_); \
+      simde_int16x4_t simde_vext_s16_r; \
+      if (!__builtin_constant_p(n)) { \
+         simde_vext_s16_r = simde_vext_s16(a, b, n); \
+      } else { \
+        const int simde_vext_s16_n = HEDLEY_STATIC_CAST(int8_t, n); \
+        simde_int16x4_private simde_vext_s16_r_; \
+        simde_vext_s16_r_.values = SIMDE_SHUFFLE_VECTOR_(16, 8, simde_int16x4_to_private(a).values, simde_int16x4_to_private(b).values, \
+          HEDLEY_STATIC_CAST(int8_t, simde_vext_s16_n + 0), HEDLEY_STATIC_CAST(int8_t, simde_vext_s16_n + 1), \
+          HEDLEY_STATIC_CAST(int8_t, simde_vext_s16_n + 2), HEDLEY_STATIC_CAST(int8_t, simde_vext_s16_n + 3)); \
+        simde_vext_s16_r = simde_int16x4_from_private(simde_vext_s16_r_); \
+      } \
+      simde_vext_s16_r; \
     }))
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
@@ -199,11 +223,17 @@ simde_vext_s32(simde_int32x2_t a, simde_int32x2_t b, const int n)
 }
 #if defined(SIMDE_SHUFFLE_VECTOR_) && !defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vext_s32(a, b, n) (__extension__ ({ \
-      const int simde_vext_s32_n = HEDLEY_STATIC_CAST(int8_t, n); \
-      simde_int32x2_private simde_vext_s32_r_; \
-      simde_vext_s32_r_.values = SIMDE_SHUFFLE_VECTOR_(32, 8, simde_int32x2_to_private(a).values, simde_int32x2_to_private(b).values, \
-        HEDLEY_STATIC_CAST(int8_t, simde_vext_s32_n + 0), HEDLEY_STATIC_CAST(int8_t, simde_vext_s32_n + 1)); \
-      simde_int32x2_from_private(simde_vext_s32_r_); \
+      simde_int32x2_t simde_vext_s32_r; \
+      if (!__builtin_constant_p(n)) { \
+         simde_vext_s32_r = simde_vext_s32(a, b, n); \
+      } else { \
+        const int simde_vext_s32_n = HEDLEY_STATIC_CAST(int8_t, n); \
+        simde_int32x2_private simde_vext_s32_r_; \
+        simde_vext_s32_r_.values = SIMDE_SHUFFLE_VECTOR_(32, 8, simde_int32x2_to_private(a).values, simde_int32x2_to_private(b).values, \
+          HEDLEY_STATIC_CAST(int8_t, simde_vext_s32_n + 0), HEDLEY_STATIC_CAST(int8_t, simde_vext_s32_n + 1)); \
+        simde_vext_s32_r = simde_int32x2_from_private(simde_vext_s32_r_); \
+      } \
+      simde_vext_s32_r; \
     }))
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
@@ -233,11 +263,17 @@ simde_vext_s64(simde_int64x1_t a, simde_int64x1_t b, const int n)
 }
 #if defined(SIMDE_SHUFFLE_VECTOR_) && !defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vext_s64(a, b, n) (__extension__ ({ \
-      const int simde_vext_s64_n = HEDLEY_STATIC_CAST(int8_t, n); \
-      simde_int64x1_private simde_vext_s64_r_; \
-      simde_vext_s64_r_.values = SIMDE_SHUFFLE_VECTOR_(64, 8, simde_int64x1_to_private(a).values, simde_int64x1_to_private(b).values, \
-        HEDLEY_STATIC_CAST(int8_t, simde_vext_s64_n + 0)); \
-      simde_int64x1_from_private(simde_vext_s64_r_); \
+      simde_int64x1_t simde_vext_s64_r; \
+      if (!__builtin_constant_p(n)) { \
+         simde_vext_s64_r = simde_vext_s64(a, b, n); \
+      } else { \
+        const int simde_vext_s64_n = HEDLEY_STATIC_CAST(int8_t, n); \
+        simde_int64x1_private simde_vext_s64_r_; \
+        simde_vext_s64_r_.values = SIMDE_SHUFFLE_VECTOR_(64, 8, simde_int64x1_to_private(a).values, simde_int64x1_to_private(b).values, \
+          HEDLEY_STATIC_CAST(int8_t, simde_vext_s64_n + 0)); \
+        simde_vext_s64_r = simde_int64x1_from_private(simde_vext_s64_r_); \
+      } \
+      simde_vext_s64_r; \
     }))
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
@@ -268,14 +304,20 @@ simde_vext_u8(simde_uint8x8_t a, simde_uint8x8_t b, const int n)
 }
 #if defined(SIMDE_SHUFFLE_VECTOR_) && !defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vext_u8(a, b, n) (__extension__ ({ \
-      const int simde_vext_u8_n = HEDLEY_STATIC_CAST(int8_t, n); \
-      simde_uint8x8_private simde_vext_u8_r_; \
-      simde_vext_u8_r_.values = SIMDE_SHUFFLE_VECTOR_(8, 8, simde_uint8x8_to_private(a).values, simde_uint8x8_to_private(b).values, \
-        HEDLEY_STATIC_CAST(int8_t, simde_vext_u8_n + 0), HEDLEY_STATIC_CAST(int8_t, simde_vext_u8_n + 1), \
-        HEDLEY_STATIC_CAST(int8_t, simde_vext_u8_n + 2), HEDLEY_STATIC_CAST(int8_t, simde_vext_u8_n + 3), \
-        HEDLEY_STATIC_CAST(int8_t, simde_vext_u8_n + 4), HEDLEY_STATIC_CAST(int8_t, simde_vext_u8_n + 5), \
-        HEDLEY_STATIC_CAST(int8_t, simde_vext_u8_n + 6), HEDLEY_STATIC_CAST(int8_t, simde_vext_u8_n + 7)); \
-      simde_uint8x8_from_private(simde_vext_u8_r_); \
+      simde_uint8x8_t simde_vext_u8_r; \
+      if (!__builtin_constant_p(n)) { \
+         simde_vext_u8_r = simde_vext_u8(a, b, n); \
+      } else { \
+        const int simde_vext_u8_n = HEDLEY_STATIC_CAST(int8_t, n); \
+        simde_uint8x8_private simde_vext_u8_r_; \
+        simde_vext_u8_r_.values = SIMDE_SHUFFLE_VECTOR_(8, 8, simde_uint8x8_to_private(a).values, simde_uint8x8_to_private(b).values, \
+          HEDLEY_STATIC_CAST(int8_t, simde_vext_u8_n + 0), HEDLEY_STATIC_CAST(int8_t, simde_vext_u8_n + 1), \
+          HEDLEY_STATIC_CAST(int8_t, simde_vext_u8_n + 2), HEDLEY_STATIC_CAST(int8_t, simde_vext_u8_n + 3), \
+          HEDLEY_STATIC_CAST(int8_t, simde_vext_u8_n + 4), HEDLEY_STATIC_CAST(int8_t, simde_vext_u8_n + 5), \
+          HEDLEY_STATIC_CAST(int8_t, simde_vext_u8_n + 6), HEDLEY_STATIC_CAST(int8_t, simde_vext_u8_n + 7)); \
+        simde_vext_u8_r = simde_uint8x8_from_private(simde_vext_u8_r_); \
+      } \
+      simde_vext_u8_r; \
     }))
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
@@ -306,12 +348,18 @@ simde_vext_u16(simde_uint16x4_t a, simde_uint16x4_t b, const int n)
 }
 #if defined(SIMDE_SHUFFLE_VECTOR_) && !defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vext_u16(a, b, n) (__extension__ ({ \
-      const int simde_vext_u16_n = HEDLEY_STATIC_CAST(int8_t, n); \
-      simde_uint16x4_private simde_vext_u16_r_; \
-      simde_vext_u16_r_.values = SIMDE_SHUFFLE_VECTOR_(16, 8, simde_uint16x4_to_private(a).values, simde_uint16x4_to_private(b).values, \
-        HEDLEY_STATIC_CAST(int8_t, simde_vext_u16_n + 0), HEDLEY_STATIC_CAST(int8_t, simde_vext_u16_n + 1), \
-        HEDLEY_STATIC_CAST(int8_t, simde_vext_u16_n + 2), HEDLEY_STATIC_CAST(int8_t, simde_vext_u16_n + 3)); \
-      simde_uint16x4_from_private(simde_vext_u16_r_); \
+      simde_uint16x4_t simde_vext_u16_r; \
+      if (!__builtin_constant_p(n)) { \
+         simde_vext_u16_r = simde_vext_u16(a, b, n); \
+      } else { \
+        const int simde_vext_u16_n = HEDLEY_STATIC_CAST(int8_t, n); \
+        simde_uint16x4_private simde_vext_u16_r_; \
+        simde_vext_u16_r_.values = SIMDE_SHUFFLE_VECTOR_(16, 8, simde_uint16x4_to_private(a).values, simde_uint16x4_to_private(b).values, \
+          HEDLEY_STATIC_CAST(int8_t, simde_vext_u16_n + 0), HEDLEY_STATIC_CAST(int8_t, simde_vext_u16_n + 1), \
+          HEDLEY_STATIC_CAST(int8_t, simde_vext_u16_n + 2), HEDLEY_STATIC_CAST(int8_t, simde_vext_u16_n + 3)); \
+        simde_vext_u16_r = simde_uint16x4_from_private(simde_vext_u16_r_); \
+      } \
+      simde_vext_u16_r; \
     }))
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
@@ -342,11 +390,17 @@ simde_vext_u32(simde_uint32x2_t a, simde_uint32x2_t b, const int n)
 }
 #if defined(SIMDE_SHUFFLE_VECTOR_) && !defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vext_u32(a, b, n) (__extension__ ({ \
-      const int simde_vext_u32_n = HEDLEY_STATIC_CAST(int8_t, n); \
-      simde_uint32x2_private simde_vext_u32_r_; \
-      simde_vext_u32_r_.values = SIMDE_SHUFFLE_VECTOR_(32, 8, simde_uint32x2_to_private(a).values, simde_uint32x2_to_private(b).values, \
-        HEDLEY_STATIC_CAST(int8_t, simde_vext_u32_n + 0), HEDLEY_STATIC_CAST(int8_t, simde_vext_u32_n + 1)); \
-      simde_uint32x2_from_private(simde_vext_u32_r_); \
+      simde_uint32x2_t simde_vext_u32_r; \
+      if (!__builtin_constant_p(n)) { \
+         simde_vext_u32_r = simde_vext_u32(a, b, n); \
+      } else { \
+        const int simde_vext_u32_n = HEDLEY_STATIC_CAST(int8_t, n); \
+        simde_uint32x2_private simde_vext_u32_r_; \
+        simde_vext_u32_r_.values = SIMDE_SHUFFLE_VECTOR_(32, 8, simde_uint32x2_to_private(a).values, simde_uint32x2_to_private(b).values, \
+          HEDLEY_STATIC_CAST(int8_t, simde_vext_u32_n + 0), HEDLEY_STATIC_CAST(int8_t, simde_vext_u32_n + 1)); \
+        simde_vext_u32_r = simde_uint32x2_from_private(simde_vext_u32_r_); \
+      } \
+      simde_vext_u32_r; \
     }))
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
@@ -376,11 +430,17 @@ simde_vext_u64(simde_uint64x1_t a, simde_uint64x1_t b, const int n)
 }
 #if defined(SIMDE_SHUFFLE_VECTOR_) && !defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vext_u64(a, b, n) (__extension__ ({ \
-      const int simde_vext_u64_n = HEDLEY_STATIC_CAST(int8_t, n); \
-      simde_uint64x1_private simde_vext_u64_r_; \
-      simde_vext_u64_r_.values = SIMDE_SHUFFLE_VECTOR_(64, 8, simde_uint64x1_to_private(a).values, simde_uint64x1_to_private(b).values, \
-        HEDLEY_STATIC_CAST(int8_t, simde_vext_u64_n + 0)); \
-      simde_uint64x1_from_private(simde_vext_u64_r_); \
+      simde_uint64x1_t simde_vext_u64_r; \
+      if (!__builtin_constant_p(n)) { \
+         simde_vext_u64_r = simde_vext_u64(a, b, n); \
+      } else { \
+        const int simde_vext_u64_n = HEDLEY_STATIC_CAST(int8_t, n); \
+        simde_uint64x1_private simde_vext_u64_r_; \
+        simde_vext_u64_r_.values = SIMDE_SHUFFLE_VECTOR_(64, 8, simde_uint64x1_to_private(a).values, simde_uint64x1_to_private(b).values, \
+          HEDLEY_STATIC_CAST(int8_t, simde_vext_u64_n + 0)); \
+        simde_vext_u64_r = simde_uint64x1_from_private(simde_vext_u64_r_); \
+      } \
+      simde_vext_u64_r; \
     }))
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
@@ -411,12 +471,18 @@ simde_vextq_f32(simde_float32x4_t a, simde_float32x4_t b, const int n)
 }
 #if defined(SIMDE_SHUFFLE_VECTOR_) && !defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vextq_f32(a, b, n) (__extension__ ({ \
-      const int simde_vextq_f32_n = HEDLEY_STATIC_CAST(int8_t, n); \
-      simde_float32x4_private simde_vextq_f32_r_; \
-      simde_vextq_f32_r_.values = SIMDE_SHUFFLE_VECTOR_(32, 16, simde_float32x4_to_private(a).values, simde_float32x4_to_private(b).values, \
-        HEDLEY_STATIC_CAST(int8_t, simde_vextq_f32_n + 0), HEDLEY_STATIC_CAST(int8_t, simde_vextq_f32_n + 1), \
-        HEDLEY_STATIC_CAST(int8_t, simde_vextq_f32_n + 2), HEDLEY_STATIC_CAST(int8_t, simde_vextq_f32_n + 3)); \
-      simde_float32x4_from_private(simde_vextq_f32_r_); \
+      simde_float32x4_t simde_vextq_f32_r; \
+      if (!__builtin_constant_p(n)) { \
+         simde_vextq_f32_r = simde_vextq_f32(a, b, n); \
+      } else { \
+        const int simde_vextq_f32_n = HEDLEY_STATIC_CAST(int8_t, n); \
+        simde_float32x4_private simde_vextq_f32_r_; \
+        simde_vextq_f32_r_.values = SIMDE_SHUFFLE_VECTOR_(32, 16, simde_float32x4_to_private(a).values, simde_float32x4_to_private(b).values, \
+          HEDLEY_STATIC_CAST(int8_t, simde_vextq_f32_n + 0), HEDLEY_STATIC_CAST(int8_t, simde_vextq_f32_n + 1), \
+          HEDLEY_STATIC_CAST(int8_t, simde_vextq_f32_n + 2), HEDLEY_STATIC_CAST(int8_t, simde_vextq_f32_n + 3)); \
+        simde_vextq_f32_r = simde_float32x4_from_private(simde_vextq_f32_r_); \
+      } \
+      simde_vextq_f32_r; \
     }))
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
@@ -447,11 +513,17 @@ simde_vextq_f64(simde_float64x2_t a, simde_float64x2_t b, const int n)
 }
 #if defined(SIMDE_SHUFFLE_VECTOR_) && !defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vextq_f64(a, b, n) (__extension__ ({ \
-      const int simde_vextq_f64_n = HEDLEY_STATIC_CAST(int8_t, n); \
-      simde_float64x2_private simde_vextq_f64_r_; \
-      simde_vextq_f64_r_.values = SIMDE_SHUFFLE_VECTOR_(64, 16, simde_float64x2_to_private(a).values, simde_float64x2_to_private(b).values, \
-        HEDLEY_STATIC_CAST(int8_t, simde_vextq_f64_n + 0), HEDLEY_STATIC_CAST(int8_t, simde_vextq_f64_n + 1)); \
-      simde_float64x2_from_private(simde_vextq_f64_r_); \
+      simde_float64x2_t simde_vextq_f64_r; \
+      if (!__builtin_constant_p(n)) { \
+         simde_vextq_f64_r = simde_vextq_f64(a, b, n); \
+      } else { \
+        const int simde_vextq_f64_n = HEDLEY_STATIC_CAST(int8_t, n); \
+        simde_float64x2_private simde_vextq_f64_r_; \
+        simde_vextq_f64_r_.values = SIMDE_SHUFFLE_VECTOR_(64, 16, simde_float64x2_to_private(a).values, simde_float64x2_to_private(b).values, \
+          HEDLEY_STATIC_CAST(int8_t, simde_vextq_f64_n + 0), HEDLEY_STATIC_CAST(int8_t, simde_vextq_f64_n + 1)); \
+        simde_vextq_f64_r = simde_float64x2_from_private(simde_vextq_f64_r_); \
+      } \
+      simde_vextq_f64_r; \
     }))
 #endif
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
@@ -482,18 +554,24 @@ simde_vextq_s8(simde_int8x16_t a, simde_int8x16_t b, const int n)
 }
 #if defined(SIMDE_SHUFFLE_VECTOR_) && !defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vextq_s8(a, b, n) (__extension__ ({ \
-      const int simde_vextq_s8_n = HEDLEY_STATIC_CAST(int8_t, n); \
-      simde_int8x16_private simde_vextq_s8_r_; \
-      simde_vextq_s8_r_.values = SIMDE_SHUFFLE_VECTOR_(8, 16, simde_int8x16_to_private(a).values, simde_int8x16_to_private(b).values, \
-        HEDLEY_STATIC_CAST(int8_t, simde_vextq_s8_n + 0), HEDLEY_STATIC_CAST(int8_t, simde_vextq_s8_n + 1), \
-        HEDLEY_STATIC_CAST(int8_t, simde_vextq_s8_n + 2), HEDLEY_STATIC_CAST(int8_t, simde_vextq_s8_n + 3), \
-        HEDLEY_STATIC_CAST(int8_t, simde_vextq_s8_n + 4), HEDLEY_STATIC_CAST(int8_t, simde_vextq_s8_n + 5), \
-        HEDLEY_STATIC_CAST(int8_t, simde_vextq_s8_n + 6), HEDLEY_STATIC_CAST(int8_t, simde_vextq_s8_n + 7), \
-        HEDLEY_STATIC_CAST(int8_t, simde_vextq_s8_n + 8), HEDLEY_STATIC_CAST(int8_t, simde_vextq_s8_n + 9), \
-        HEDLEY_STATIC_CAST(int8_t, simde_vextq_s8_n + 10), HEDLEY_STATIC_CAST(int8_t, simde_vextq_s8_n + 11), \
-        HEDLEY_STATIC_CAST(int8_t, simde_vextq_s8_n + 12), HEDLEY_STATIC_CAST(int8_t, simde_vextq_s8_n + 13), \
-        HEDLEY_STATIC_CAST(int8_t, simde_vextq_s8_n + 14), HEDLEY_STATIC_CAST(int8_t, simde_vextq_s8_n + 15)); \
-      simde_int8x16_from_private(simde_vextq_s8_r_); \
+      simde_int8x16_t simde_vextq_s8_r; \
+      if (!__builtin_constant_p(n)) { \
+         simde_vextq_s8_r = simde_vextq_s8(a, b, n); \
+      } else { \
+        const int simde_vextq_s8_n = HEDLEY_STATIC_CAST(int8_t, n); \
+        simde_int8x16_private simde_vextq_s8_r_; \
+        simde_vextq_s8_r_.values = SIMDE_SHUFFLE_VECTOR_(8, 16, simde_int8x16_to_private(a).values, simde_int8x16_to_private(b).values, \
+          HEDLEY_STATIC_CAST(int8_t, simde_vextq_s8_n + 0), HEDLEY_STATIC_CAST(int8_t, simde_vextq_s8_n + 1), \
+          HEDLEY_STATIC_CAST(int8_t, simde_vextq_s8_n + 2), HEDLEY_STATIC_CAST(int8_t, simde_vextq_s8_n + 3), \
+          HEDLEY_STATIC_CAST(int8_t, simde_vextq_s8_n + 4), HEDLEY_STATIC_CAST(int8_t, simde_vextq_s8_n + 5), \
+          HEDLEY_STATIC_CAST(int8_t, simde_vextq_s8_n + 6), HEDLEY_STATIC_CAST(int8_t, simde_vextq_s8_n + 7), \
+          HEDLEY_STATIC_CAST(int8_t, simde_vextq_s8_n + 8), HEDLEY_STATIC_CAST(int8_t, simde_vextq_s8_n + 9), \
+          HEDLEY_STATIC_CAST(int8_t, simde_vextq_s8_n + 10), HEDLEY_STATIC_CAST(int8_t, simde_vextq_s8_n + 11), \
+          HEDLEY_STATIC_CAST(int8_t, simde_vextq_s8_n + 12), HEDLEY_STATIC_CAST(int8_t, simde_vextq_s8_n + 13), \
+          HEDLEY_STATIC_CAST(int8_t, simde_vextq_s8_n + 14), HEDLEY_STATIC_CAST(int8_t, simde_vextq_s8_n + 15)); \
+        simde_vextq_s8_r = simde_int8x16_from_private(simde_vextq_s8_r_); \
+      } \
+      simde_vextq_s8_r; \
     }))
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
@@ -524,14 +602,20 @@ simde_vextq_s16(simde_int16x8_t a, simde_int16x8_t b, const int n)
 }
 #if defined(SIMDE_SHUFFLE_VECTOR_) && !defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vextq_s16(a, b, n) (__extension__ ({ \
-      const int simde_vextq_s16_n = HEDLEY_STATIC_CAST(int8_t, n); \
-      simde_int16x8_private simde_vextq_s16_r_; \
-      simde_vextq_s16_r_.values = SIMDE_SHUFFLE_VECTOR_(16, 16, simde_int16x8_to_private(a).values, simde_int16x8_to_private(b).values, \
-        HEDLEY_STATIC_CAST(int8_t, simde_vextq_s16_n + 0), HEDLEY_STATIC_CAST(int8_t, simde_vextq_s16_n + 1), \
-        HEDLEY_STATIC_CAST(int8_t, simde_vextq_s16_n + 2), HEDLEY_STATIC_CAST(int8_t, simde_vextq_s16_n + 3), \
-        HEDLEY_STATIC_CAST(int8_t, simde_vextq_s16_n + 4), HEDLEY_STATIC_CAST(int8_t, simde_vextq_s16_n + 5), \
-        HEDLEY_STATIC_CAST(int8_t, simde_vextq_s16_n + 6), HEDLEY_STATIC_CAST(int8_t, simde_vextq_s16_n + 7)); \
-      simde_int16x8_from_private(simde_vextq_s16_r_); \
+      simde_int16x8_t simde_vextq_s16_r; \
+      if (!__builtin_constant_p(n)) { \
+         simde_vextq_s16_r = simde_vextq_s16(a, b, n); \
+      } else { \
+        const int simde_vextq_s16_n = HEDLEY_STATIC_CAST(int8_t, n); \
+        simde_int16x8_private simde_vextq_s16_r_; \
+        simde_vextq_s16_r_.values = SIMDE_SHUFFLE_VECTOR_(16, 16, simde_int16x8_to_private(a).values, simde_int16x8_to_private(b).values, \
+          HEDLEY_STATIC_CAST(int8_t, simde_vextq_s16_n + 0), HEDLEY_STATIC_CAST(int8_t, simde_vextq_s16_n + 1), \
+          HEDLEY_STATIC_CAST(int8_t, simde_vextq_s16_n + 2), HEDLEY_STATIC_CAST(int8_t, simde_vextq_s16_n + 3), \
+          HEDLEY_STATIC_CAST(int8_t, simde_vextq_s16_n + 4), HEDLEY_STATIC_CAST(int8_t, simde_vextq_s16_n + 5), \
+          HEDLEY_STATIC_CAST(int8_t, simde_vextq_s16_n + 6), HEDLEY_STATIC_CAST(int8_t, simde_vextq_s16_n + 7)); \
+        simde_vextq_s16_r = simde_int16x8_from_private(simde_vextq_s16_r_); \
+      } \
+      simde_vextq_s16_r; \
     }))
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
@@ -562,12 +646,18 @@ simde_vextq_s32(simde_int32x4_t a, simde_int32x4_t b, const int n)
 }
 #if defined(SIMDE_SHUFFLE_VECTOR_) && !defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vextq_s32(a, b, n) (__extension__ ({ \
-      const int simde_vextq_s32_n = HEDLEY_STATIC_CAST(int8_t, n); \
-      simde_int32x4_private simde_vextq_s32_r_; \
-      simde_vextq_s32_r_.values = SIMDE_SHUFFLE_VECTOR_(32, 16, simde_int32x4_to_private(a).values, simde_int32x4_to_private(b).values, \
-        HEDLEY_STATIC_CAST(int8_t, simde_vextq_s32_n + 0), HEDLEY_STATIC_CAST(int8_t, simde_vextq_s32_n + 1), \
-        HEDLEY_STATIC_CAST(int8_t, simde_vextq_s32_n + 2), HEDLEY_STATIC_CAST(int8_t, simde_vextq_s32_n + 3)); \
-      simde_int32x4_from_private(simde_vextq_s32_r_); \
+      simde_int32x4_t simde_vextq_s32_r; \
+      if (!__builtin_constant_p(n)) { \
+         simde_vextq_s32_r = simde_vextq_s32(a, b, n); \
+      } else { \
+        const int simde_vextq_s32_n = HEDLEY_STATIC_CAST(int8_t, n); \
+        simde_int32x4_private simde_vextq_s32_r_; \
+        simde_vextq_s32_r_.values = SIMDE_SHUFFLE_VECTOR_(32, 16, simde_int32x4_to_private(a).values, simde_int32x4_to_private(b).values, \
+          HEDLEY_STATIC_CAST(int8_t, simde_vextq_s32_n + 0), HEDLEY_STATIC_CAST(int8_t, simde_vextq_s32_n + 1), \
+          HEDLEY_STATIC_CAST(int8_t, simde_vextq_s32_n + 2), HEDLEY_STATIC_CAST(int8_t, simde_vextq_s32_n + 3)); \
+        simde_vextq_s32_r = simde_int32x4_from_private(simde_vextq_s32_r_); \
+      } \
+      simde_vextq_s32_r; \
     }))
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
@@ -598,11 +688,17 @@ simde_vextq_s64(simde_int64x2_t a, simde_int64x2_t b, const int n)
 }
 #if defined(SIMDE_SHUFFLE_VECTOR_) && !defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vextq_s64(a, b, n) (__extension__ ({ \
-      const int simde_vextq_s64_n = HEDLEY_STATIC_CAST(int8_t, n); \
-      simde_int64x2_private simde_vextq_s64_r_; \
-      simde_vextq_s64_r_.values = SIMDE_SHUFFLE_VECTOR_(64, 16, simde_int64x2_to_private(a).values, simde_int64x2_to_private(b).values, \
-        HEDLEY_STATIC_CAST(int8_t, simde_vextq_s64_n + 0), HEDLEY_STATIC_CAST(int8_t, simde_vextq_s64_n + 1)); \
-      simde_int64x2_from_private(simde_vextq_s64_r_); \
+      simde_int64x2_t simde_vextq_s64_r; \
+      if (!__builtin_constant_p(n)) { \
+         simde_vextq_s64_r = simde_vextq_s64(a, b, n); \
+      } else { \
+        const int simde_vextq_s64_n = HEDLEY_STATIC_CAST(int8_t, n); \
+        simde_int64x2_private simde_vextq_s64_r_; \
+        simde_vextq_s64_r_.values = SIMDE_SHUFFLE_VECTOR_(64, 16, simde_int64x2_to_private(a).values, simde_int64x2_to_private(b).values, \
+          HEDLEY_STATIC_CAST(int8_t, simde_vextq_s64_n + 0), HEDLEY_STATIC_CAST(int8_t, simde_vextq_s64_n + 1)); \
+        simde_vextq_s64_r = simde_int64x2_from_private(simde_vextq_s64_r_); \
+      } \
+      simde_vextq_s64_r; \
     }))
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
@@ -633,18 +729,24 @@ simde_vextq_u8(simde_uint8x16_t a, simde_uint8x16_t b, const int n)
 }
 #if defined(SIMDE_SHUFFLE_VECTOR_) && !defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vextq_u8(a, b, n) (__extension__ ({ \
-      const int simde_vextq_u8_n = HEDLEY_STATIC_CAST(int8_t, n); \
-      simde_uint8x16_private simde_vextq_u8_r_; \
-      simde_vextq_u8_r_.values = SIMDE_SHUFFLE_VECTOR_(8, 16, simde_uint8x16_to_private(a).values, simde_uint8x16_to_private(b).values, \
-        HEDLEY_STATIC_CAST(int8_t, simde_vextq_u8_n + 0), HEDLEY_STATIC_CAST(int8_t, simde_vextq_u8_n + 1), \
-        HEDLEY_STATIC_CAST(int8_t, simde_vextq_u8_n + 2), HEDLEY_STATIC_CAST(int8_t, simde_vextq_u8_n + 3), \
-        HEDLEY_STATIC_CAST(int8_t, simde_vextq_u8_n + 4), HEDLEY_STATIC_CAST(int8_t, simde_vextq_u8_n + 5), \
-        HEDLEY_STATIC_CAST(int8_t, simde_vextq_u8_n + 6), HEDLEY_STATIC_CAST(int8_t, simde_vextq_u8_n + 7), \
-        HEDLEY_STATIC_CAST(int8_t, simde_vextq_u8_n + 8), HEDLEY_STATIC_CAST(int8_t, simde_vextq_u8_n + 9), \
-        HEDLEY_STATIC_CAST(int8_t, simde_vextq_u8_n + 10), HEDLEY_STATIC_CAST(int8_t, simde_vextq_u8_n + 11), \
-        HEDLEY_STATIC_CAST(int8_t, simde_vextq_u8_n + 12), HEDLEY_STATIC_CAST(int8_t, simde_vextq_u8_n + 13), \
-        HEDLEY_STATIC_CAST(int8_t, simde_vextq_u8_n + 14), HEDLEY_STATIC_CAST(int8_t, simde_vextq_u8_n + 15)); \
-      simde_uint8x16_from_private(simde_vextq_u8_r_); \
+      simde_uint8x16_t simde_vextq_u8_r; \
+      if (!__builtin_constant_p(n)) { \
+         simde_vextq_u8_r = simde_vextq_u8(a, b, n); \
+      } else { \
+        const int simde_vextq_u8_n = HEDLEY_STATIC_CAST(int8_t, n); \
+        simde_uint8x16_private simde_vextq_u8_r_; \
+        simde_vextq_u8_r_.values = SIMDE_SHUFFLE_VECTOR_(8, 16, simde_uint8x16_to_private(a).values, simde_uint8x16_to_private(b).values, \
+          HEDLEY_STATIC_CAST(int8_t, simde_vextq_u8_n + 0), HEDLEY_STATIC_CAST(int8_t, simde_vextq_u8_n + 1), \
+          HEDLEY_STATIC_CAST(int8_t, simde_vextq_u8_n + 2), HEDLEY_STATIC_CAST(int8_t, simde_vextq_u8_n + 3), \
+          HEDLEY_STATIC_CAST(int8_t, simde_vextq_u8_n + 4), HEDLEY_STATIC_CAST(int8_t, simde_vextq_u8_n + 5), \
+          HEDLEY_STATIC_CAST(int8_t, simde_vextq_u8_n + 6), HEDLEY_STATIC_CAST(int8_t, simde_vextq_u8_n + 7), \
+          HEDLEY_STATIC_CAST(int8_t, simde_vextq_u8_n + 8), HEDLEY_STATIC_CAST(int8_t, simde_vextq_u8_n + 9), \
+          HEDLEY_STATIC_CAST(int8_t, simde_vextq_u8_n + 10), HEDLEY_STATIC_CAST(int8_t, simde_vextq_u8_n + 11), \
+          HEDLEY_STATIC_CAST(int8_t, simde_vextq_u8_n + 12), HEDLEY_STATIC_CAST(int8_t, simde_vextq_u8_n + 13), \
+          HEDLEY_STATIC_CAST(int8_t, simde_vextq_u8_n + 14), HEDLEY_STATIC_CAST(int8_t, simde_vextq_u8_n + 15)); \
+        simde_vextq_u8_r = simde_uint8x16_from_private(simde_vextq_u8_r_); \
+      } \
+      simde_vextq_u8_r; \
     }))
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
@@ -675,14 +777,20 @@ simde_vextq_u16(simde_uint16x8_t a, simde_uint16x8_t b, const int n)
 }
 #if defined(SIMDE_SHUFFLE_VECTOR_) && !defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vextq_u16(a, b, n) (__extension__ ({ \
-      const int simde_vextq_u16_n = HEDLEY_STATIC_CAST(int8_t, n); \
-      simde_uint16x8_private simde_vextq_u16_r_; \
-      simde_vextq_u16_r_.values = SIMDE_SHUFFLE_VECTOR_(16, 16, simde_uint16x8_to_private(a).values, simde_uint16x8_to_private(b).values, \
-        HEDLEY_STATIC_CAST(int8_t, simde_vextq_u16_n + 0), HEDLEY_STATIC_CAST(int8_t, simde_vextq_u16_n + 1), \
-        HEDLEY_STATIC_CAST(int8_t, simde_vextq_u16_n + 2), HEDLEY_STATIC_CAST(int8_t, simde_vextq_u16_n + 3), \
-        HEDLEY_STATIC_CAST(int8_t, simde_vextq_u16_n + 4), HEDLEY_STATIC_CAST(int8_t, simde_vextq_u16_n + 5), \
-        HEDLEY_STATIC_CAST(int8_t, simde_vextq_u16_n + 6), HEDLEY_STATIC_CAST(int8_t, simde_vextq_u16_n + 7)); \
-      simde_uint16x8_from_private(simde_vextq_u16_r_); \
+      simde_uint16x8_t simde_vextq_u16_r; \
+      if (!__builtin_constant_p(n)) { \
+         simde_vextq_u16_r = simde_vextq_u16(a, b, n); \
+      } else { \
+        const int simde_vextq_u16_n = HEDLEY_STATIC_CAST(int8_t, n); \
+        simde_uint16x8_private simde_vextq_u16_r_; \
+        simde_vextq_u16_r_.values = SIMDE_SHUFFLE_VECTOR_(16, 16, simde_uint16x8_to_private(a).values, simde_uint16x8_to_private(b).values, \
+          HEDLEY_STATIC_CAST(int8_t, simde_vextq_u16_n + 0), HEDLEY_STATIC_CAST(int8_t, simde_vextq_u16_n + 1), \
+          HEDLEY_STATIC_CAST(int8_t, simde_vextq_u16_n + 2), HEDLEY_STATIC_CAST(int8_t, simde_vextq_u16_n + 3), \
+          HEDLEY_STATIC_CAST(int8_t, simde_vextq_u16_n + 4), HEDLEY_STATIC_CAST(int8_t, simde_vextq_u16_n + 5), \
+          HEDLEY_STATIC_CAST(int8_t, simde_vextq_u16_n + 6), HEDLEY_STATIC_CAST(int8_t, simde_vextq_u16_n + 7)); \
+        simde_vextq_u16_r = simde_uint16x8_from_private(simde_vextq_u16_r_); \
+      } \
+      simde_vextq_u16_r; \
     }))
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
@@ -713,12 +821,18 @@ simde_vextq_u32(simde_uint32x4_t a, simde_uint32x4_t b, const int n)
 }
 #if defined(SIMDE_SHUFFLE_VECTOR_) && !defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vextq_u32(a, b, n) (__extension__ ({ \
-      const int simde_vextq_u32_n = HEDLEY_STATIC_CAST(int8_t, n); \
-      simde_uint32x4_private simde_vextq_u32_r_; \
-      simde_vextq_u32_r_.values = SIMDE_SHUFFLE_VECTOR_(32, 16, simde_uint32x4_to_private(a).values, simde_uint32x4_to_private(b).values, \
-        HEDLEY_STATIC_CAST(int8_t, simde_vextq_u32_n + 0), HEDLEY_STATIC_CAST(int8_t, simde_vextq_u32_n + 1), \
-        HEDLEY_STATIC_CAST(int8_t, simde_vextq_u32_n + 2), HEDLEY_STATIC_CAST(int8_t, simde_vextq_u32_n + 3)); \
-      simde_uint32x4_from_private(simde_vextq_u32_r_); \
+      simde_uint32x4_t simde_vextq_u32_r; \
+      if (!__builtin_constant_p(n)) { \
+         simde_vextq_u32_r = simde_vextq_u32(a, b, n); \
+      } else { \
+        const int simde_vextq_u32_n = HEDLEY_STATIC_CAST(int8_t, n); \
+        simde_uint32x4_private simde_vextq_u32_r_; \
+        simde_vextq_u32_r_.values = SIMDE_SHUFFLE_VECTOR_(32, 16, simde_uint32x4_to_private(a).values, simde_uint32x4_to_private(b).values, \
+          HEDLEY_STATIC_CAST(int8_t, simde_vextq_u32_n + 0), HEDLEY_STATIC_CAST(int8_t, simde_vextq_u32_n + 1), \
+          HEDLEY_STATIC_CAST(int8_t, simde_vextq_u32_n + 2), HEDLEY_STATIC_CAST(int8_t, simde_vextq_u32_n + 3)); \
+        simde_vextq_u32_r = simde_uint32x4_from_private(simde_vextq_u32_r_); \
+      } \
+      simde_vextq_u32_r; \
     }))
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
@@ -749,11 +863,17 @@ simde_vextq_u64(simde_uint64x2_t a, simde_uint64x2_t b, const int n)
 }
 #if defined(SIMDE_SHUFFLE_VECTOR_) && !defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vextq_u64(a, b, n) (__extension__ ({ \
-      const int simde_vextq_u64_n = HEDLEY_STATIC_CAST(int8_t, n); \
-      simde_uint64x2_private simde_vextq_u64_r_; \
-      simde_vextq_u64_r_.values = SIMDE_SHUFFLE_VECTOR_(64, 16, simde_uint64x2_to_private(a).values, simde_uint64x2_to_private(b).values, \
-        HEDLEY_STATIC_CAST(int8_t, simde_vextq_u64_n + 0), HEDLEY_STATIC_CAST(int8_t, simde_vextq_u64_n + 1)); \
-      simde_uint64x2_from_private(simde_vextq_u64_r_); \
+      simde_uint64x2_t simde_vextq_u64_r; \
+      if (!__builtin_constant_p(n)) { \
+        simde_vextq_u64_r = simde_vextq_u64(a, b, n);        \
+      } else { \
+        const int simde_vextq_u64_n = HEDLEY_STATIC_CAST(int8_t, n); \
+        simde_uint64x2_private simde_vextq_u64_r_; \
+        simde_vextq_u64_r_.values = SIMDE_SHUFFLE_VECTOR_(64, 16, simde_uint64x2_to_private(a).values, simde_uint64x2_to_private(b).values, \
+          HEDLEY_STATIC_CAST(int8_t, simde_vextq_u64_n + 0), HEDLEY_STATIC_CAST(int8_t, simde_vextq_u64_n + 1)); \
+        simde_vextq_u64_r = simde_uint64x2_from_private(simde_vextq_u64_r_); \
+      } \
+      simde_vextq_u64_r; \
     }))
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
