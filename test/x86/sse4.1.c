@@ -1542,6 +1542,39 @@ test_simde_mm_extract_epi64(SIMDE_MUNIT_TEST_ARGS) {
 }
 
 static int
+test_simde_mm_extract_ps (SIMDE_MUNIT_TEST_ARGS) {
+  static const struct {
+    const simde_float32 a[4];
+    int32_t r;
+  } test_vec[] = {
+    { { SIMDE_FLOAT32_C(  -849.36), SIMDE_FLOAT32_C(  -598.79), SIMDE_FLOAT32_C(  -735.05), SIMDE_FLOAT32_C(   435.26) },
+      -INT32_C(  1001105654) },
+    { { SIMDE_FLOAT32_C(  -991.80), SIMDE_FLOAT32_C(  -606.95), SIMDE_FLOAT32_C(   532.00), SIMDE_FLOAT32_C(  -243.65) },
+      -INT32_C(   998771917) },
+    { { SIMDE_FLOAT32_C(   652.00), SIMDE_FLOAT32_C(  -803.65), SIMDE_FLOAT32_C(   853.23), SIMDE_FLOAT32_C(  -479.16) },
+       INT32_C(  1143144448) },
+    { { SIMDE_FLOAT32_C(  -496.01), SIMDE_FLOAT32_C(  -449.26), SIMDE_FLOAT32_C(   824.10), SIMDE_FLOAT32_C(   206.32) },
+      -INT32_C(  1007156920) },
+    { { SIMDE_FLOAT32_C(  -549.74), SIMDE_FLOAT32_C(    14.08), SIMDE_FLOAT32_C(   893.37), SIMDE_FLOAT32_C(   921.66) },
+      -INT32_C(  1006014628) },
+    { { SIMDE_FLOAT32_C(  -296.23), SIMDE_FLOAT32_C(   133.06), SIMDE_FLOAT32_C(  -137.87), SIMDE_FLOAT32_C(  -577.55) },
+      -INT32_C(  1013703311) },
+    { { SIMDE_FLOAT32_C(   -98.04), SIMDE_FLOAT32_C(   744.07), SIMDE_FLOAT32_C(    68.13), SIMDE_FLOAT32_C(   315.55) },
+      -INT32_C(  1027337093) },
+    { { SIMDE_FLOAT32_C(  -258.15), SIMDE_FLOAT32_C(   588.77), SIMDE_FLOAT32_C(  -722.13), SIMDE_FLOAT32_C(  -107.51) },
+      -INT32_C(  1014951117) }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
+    simde__m128 a = simde_mm_loadu_ps(test_vec[i].a);
+    int32_t r = simde_mm_extract_ps(a, 0);
+    simde_assert_equal_i32(r, test_vec[i].r);
+  }
+
+  return 0;
+}
+
+static int
 test_simde_mm_floor_pd(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m128d a;
@@ -3229,6 +3262,8 @@ SIMDE_TEST_FUNC_LIST_BEGIN
   SIMDE_TEST_FUNC_LIST_ENTRY(mm_extract_epi8)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm_extract_epi32)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm_extract_epi64)
+
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm_extract_ps)
 
   SIMDE_TEST_FUNC_LIST_ENTRY(mm_floor_pd)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm_floor_ps)
