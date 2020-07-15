@@ -3342,7 +3342,7 @@ simde_mm_movemask_epi8 (simde__m128i a) {
     int32_t r = 0;
     simde__m128i_private a_ = simde__m128i_to_private(a);
 
-    #if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
+    #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
       uint8x16_t input = a_.neon_u8;
       const int8_t xr[16] = {-7, -6, -5, -4, -3, -2, -1, 0, -7, -6, -5, -4, -3, -2, -1, 0};
       const uint8x16_t mask_and = vdupq_n_u8(0x80);
