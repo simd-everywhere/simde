@@ -943,9 +943,12 @@ simde_mm256_broadcastsi128_si256 (simde__m128i a) {
   return simde__m256i_from_private(r_);
 #endif
 }
+#define simde_mm_broadcastsi128_si256(a) simde_mm256_broadcastsi128_si256(a)
 #if defined(SIMDE_X86_AVX2_ENABLE_NATIVE_ALIASES)
   #undef _mm256_broadcastsi128_si256
   #define _mm256_broadcastsi128_si256(a) simde_mm256_broadcastsi128_si256(a)
+  #undef _mm_broadcastsi128_si256
+  #define _mm_broadcastsi128_si256(a) simde_mm256_broadcastsi128_si256(a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
