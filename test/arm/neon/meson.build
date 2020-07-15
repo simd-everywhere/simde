@@ -53,6 +53,7 @@ simde_test_arm_neon_tests = [
   'shr_n',
   'sra_n',
   'sub',
+  'tbl',
   'trn',
   'trn1',
   'trn2',

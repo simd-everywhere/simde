@@ -111,6 +111,7 @@ if not meson.is_subproject()
       'simde/arm/neon/st1.h',
       'simde/arm/neon/st1_lane.h',
       'simde/arm/neon/sub.h',
+      'simde/arm/neon/tbl.h',
       'simde/arm/neon/trn1.h',
       'simde/arm/neon/trn2.h',
       'simde/arm/neon/trn.h',
