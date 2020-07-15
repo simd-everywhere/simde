@@ -128,7 +128,7 @@ simde_vtbl3_u8(simde_uint8x8x3_t a, simde_uint8x8_t b) {
     __m256i a256 = _mm256_set_m128i(_mm_set1_epi64(a.val[2]), _mm_set_epi64(a.val[1], a.val[0]));
     __m256i b256 = _mm256_broadcastsi128_si256(_mm_set1_epi64(b));
     __m256i r256 = _mm256_shuffle_epi8(a256, _mm256_or_si256(b256, _mm256_cmpgt_epi8(b256, _mm256_set1_epi8(23))));
-    return _mm_movepi64_pi64(_mm_castsi256_si128(r256));
+    return _mm_movepi64_pi64(_mm256_castsi256_si128(r256));
   #elif defined(SIMDE_X86_SSSE4_1_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
     __m128i a128 = _mm_blend_epi8(_mm_set_epi64(a.val[1], a.val[0]),
                                   _mm_set1_epi64(a.val[2]),
@@ -179,7 +179,7 @@ simde_vtbl4_u8(simde_uint8x8x4_t a, simde_uint8x8_t b) {
     __m256i a256 = _mm256_set_m128i(_mm_set_epi64(a.val[3], a.val[2]), _mm_set_epi64(a.val[1], a.val[0]));
     __m256i b256 = _mm256_broadcastsi128_si256(_mm_set1_epi64(b));
     __m256i r256 = _mm256_shuffle_epi8(a256, _mm256_or_si256(b256, _mm256_cmpgt_epi8(b256, _mm256_set1_epi8(31))));
-    return _mm_movepi64_pi64(_mm_castsi256_si128(r256));
+    return _mm_movepi64_pi64(_mm256_castsi256_si128(r256));
   #elif defined(SIMDE_X86_SSSE4_1_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
     __m128i a128 = _mm_blend_epi8(_mm_set_epi64(a.val[1], a.val[0]),
                                   _mm_set_epi64(a.val[3], a.val[2]),
