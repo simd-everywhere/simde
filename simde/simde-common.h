@@ -361,7 +361,15 @@
 #if defined(SIMDE_ENABLE_OPENMP)
 #  define SIMDE_VECTORIZE HEDLEY_PRAGMA(omp simd)
 #  define SIMDE_VECTORIZE_SAFELEN(l) HEDLEY_PRAGMA(omp simd safelen(l))
-#  define SIMDE_VECTORIZE_REDUCTION(r) HEDLEY_PRAGMA(omp simd reduction(r))
+#  if defined(__clang__)
+#    define SIMDE_VECTORIZE_REDUCTION(r) \
+        HEDLEY_DIAGNOSTIC_PUSH \
+        _Pragma("clang diagnostic ignored \"-Wsign-conversion\"") \
+        HEDLEY_PRAGMA(omp simd reduction(r)) \
+        HEDLEY_DIAGNOSTIC_POP
+#  else
+#    define SIMDE_VECTORIZE_REDUCTION(r) HEDLEY_PRAGMA(omp simd reduction(r))
+#  endif
 #  define SIMDE_VECTORIZE_ALIGNED(a) HEDLEY_PRAGMA(omp simd aligned(a))
 #elif defined(SIMDE_ENABLE_CILKPLUS)
 #  define SIMDE_VECTORIZE HEDLEY_PRAGMA(simd)
@@ -788,6 +796,8 @@ typedef SIMDE_FLOAT64_TYPE simde_float64;
 #    if defined(SIMDE_ARCH_AARCH64)
 #      define SIMDE_BUG_CLANG_45541
 #    endif
+#  elif defined(__clang__)
+#    define SIMDE_BUG_CLANG_45959
 #  elif defined(HEDLEY_MSVC_VERSION)
 #    if defined(SIMDE_ARCH_X86)
 #      define SIMDE_BUG_MSVC_ROUND_EXTRACT
