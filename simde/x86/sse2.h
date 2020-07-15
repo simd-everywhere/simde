@@ -3342,7 +3342,17 @@ simde_mm_movemask_epi8 (simde__m128i a) {
     int32_t r = 0;
     simde__m128i_private a_ = simde__m128i_to_private(a);
 
-    #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    #if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
+      uint8x16_t input = a_.neon_u8;
+      const int8_t xr[16] = {-7, -6, -5, -4, -3, -2, -1, 0, -7, -6, -5, -4, -3, -2, -1, 0};
+      const uint8x16_t mask_and = vdupq_n_u8(0x80);
+      const int8x16_t mask_shift = vld1q_s8(xr);
+      const uint8x16_t mask_result =
+        vshlq_u8(vandq_u8(input, mask_and), mask_shift);
+      uint8x8_t lo = vget_low_u8(mask_result);
+      uint8x8_t hi = vget_high_u8(mask_result);
+      r = vaddv_u8(lo) + (vaddv_u8(hi) << 8);
+    #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       // Use increasingly wide shifts+adds to collect the sign bits
       // together.
       // Since the widening shifts would be rather confusing to follow in little endian, everything
