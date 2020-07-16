@@ -281,7 +281,12 @@ simde_mm_hadd_pd (simde__m128d a, simde__m128d b) {
 #if defined(SIMDE_X86_SSE3_NATIVE)
   return _mm_hadd_pd(a, b);
 #else
-  return simde_mm_add_pd(simde_x_mm_deinterleaveeven_pd(a, b), simde_x_mm_deinterleaveodd_pd(a, b));
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+    simde_float64 res[2] = { vaddvq_f64(simde__m128d_to_private(a).neon_f64), vaddvq_f64(simde__m128d_to_private(b).neon_f64)};
+    return vld1q_f64(res);
+  #else
+    return simde_mm_add_pd(simde_x_mm_deinterleaveeven_pd(a, b), simde_x_mm_deinterleaveodd_pd(a, b));
+  #endif
 #endif
 }
 #if defined(SIMDE_X86_SSE3_ENABLE_NATIVE_ALIASES)
@@ -330,7 +335,11 @@ simde_mm_hsub_ps (simde__m128 a, simde__m128 b) {
 #if defined(SIMDE_X86_SSE3_NATIVE)
   return _mm_hsub_ps(a, b);
 #else
-  return simde_mm_sub_ps(simde_x_mm_deinterleaveeven_ps(a, b), simde_x_mm_deinterleaveodd_ps(a, b));
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+    return vsubq_f32(vuzp1q_f32(simde__m128_to_private(a).neon_f32, simde__m128_to_private(b).neon_f32), vuzp2q_f32(simde__m128_to_private(a).neon_f32, simde__m128_to_private(b).neon_f32));
+  #else
+    return simde_mm_sub_ps(simde_x_mm_deinterleaveeven_ps(a, b), simde_x_mm_deinterleaveodd_ps(a, b));
+  #endif
 #endif
 }
 #if defined(SIMDE_X86_SSE3_ENABLE_NATIVE_ALIASES)
