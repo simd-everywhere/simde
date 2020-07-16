@@ -2998,29 +2998,6 @@ simde_mm512_mask_erfc_pd(simde__m512d src, simde__mmask8 k, simde__m512d a) {
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
-simde__m128
-simde_mm_erfcinv_ps (simde__m128 a) {
-  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE_NATIVE)
-    return _mm_erfcinv_ps(a);
-  #else
-    simde__m128_private
-      r_,
-      a_ = simde__m128_to_private(a);
-
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
-      r_.f32[i] = simde_math_erfcinvf(a_.f32[i]);
-    }
-
-    return simde__m128_from_private(r_);
-  #endif
-}
-#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
-  #undef _mm_erfcinv_ps
-  #define _mm_erfcinv_ps(a) simde_mm_erfcinv_ps(a)
-#endif
-
-SIMDE_FUNCTION_ATTRIBUTES
 simde__m128d
 simde_mm_erfcinv_pd (simde__m128d a) {
   #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE_NATIVE)
@@ -5759,6 +5736,150 @@ simde_mm512_mask_erfinv_pd(simde__m512d src, simde__mmask8 k, simde__m512d a) {
 #if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
   #undef _mm512_mask_erfinv_pd
   #define _mm512_mask_erfinv_pd(src, k, a) simde_mm512_mask_erfinv_pd(src, k, a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m128
+simde_mm_erfcinv_ps (simde__m128 a) {
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE_NATIVE)
+    return _mm_erfcinv_ps(a);
+  #elif SIMDE_NATURAL_VECTOR_SIZE_GE(128)
+    simde__m128 matched, retval = simde_mm_setzero_ps();
+
+    { /* if (a < 2.0f && a > 0.0625f) */
+      matched = simde_mm_cmplt_ps(a, simde_mm_set1_ps(SIMDE_FLOAT32_C(2.0)));
+      matched = simde_mm_and_ps(matched, simde_mm_cmpgt_ps(a, simde_mm_set1_ps(SIMDE_FLOAT32_C(0.0625))));
+
+      if (!simde_mm_test_all_zeros(simde_mm_castps_si128(matched), simde_x_mm_setone_si128())) {
+        retval = simde_mm_erfinv_ps(simde_mm_sub_ps(simde_mm_set1_ps(SIMDE_FLOAT32_C(1.0)), a));
+      }
+
+      if (simde_mm_test_all_ones(simde_mm_castps_si128(matched))) {
+        return retval;
+      }
+    }
+
+    { /* else if (a < 0.0625f && a > 0.0f) */
+      simde__m128 mask = simde_mm_cmplt_ps(a, simde_mm_set1_ps(SIMDE_FLOAT32_C(0.0625)));
+      mask = simde_mm_and_ps(mask, simde_mm_cmpgt_ps(a, simde_mm_set1_ps(SIMDE_FLOAT32_C(0.0))));
+      mask = simde_mm_andnot_ps(matched, mask);
+
+      if (!simde_mm_test_all_zeros(simde_mm_castps_si128(mask), simde_x_mm_setone_si128())) {
+        matched = simde_mm_or_ps(matched, mask);
+
+        /* t =  1/(sqrt(-log(a))) */
+        simde__m128 t = simde_x_mm_negate_ps(simde_mm_log_ps(a));
+        t = simde_mm_sqrt_ps(t);
+        t = simde_mm_div_ps(simde_mm_set1_ps(SIMDE_FLOAT32_C(1.0)), t);
+
+        const simde__m128 p[] = {
+          simde_mm_set1_ps(SIMDE_FLOAT32_C( 0.1550470003116)),
+          simde_mm_set1_ps(SIMDE_FLOAT32_C( 1.382719649631)),
+          simde_mm_set1_ps(SIMDE_FLOAT32_C( 0.690969348887)),
+          simde_mm_set1_ps(SIMDE_FLOAT32_C(-1.128081391617)),
+          simde_mm_set1_ps(SIMDE_FLOAT32_C( 0.680544246825)),
+          simde_mm_set1_ps(SIMDE_FLOAT32_C(-0.164441567910))
+        };
+
+        const simde__m128 q[] = {
+          simde_mm_set1_ps(SIMDE_FLOAT32_C( 0.155024849822)),
+          simde_mm_set1_ps(SIMDE_FLOAT32_C( 1.385228141995)),
+          simde_mm_set1_ps(SIMDE_FLOAT32_C( 1.000000000000))
+        };
+
+        /* float numerator = p[0] / t + p[1] + t * (p[2] + t * (p[3] + t * (p[4] + t * p[5])))) */
+        simde__m128 numerator = simde_mm_fmadd_ps(p[5], t, p[4]);
+        numerator = simde_mm_fmadd_ps(numerator, t, p[3]);
+        numerator = simde_mm_fmadd_ps(numerator, t, p[2]);
+        numerator = simde_mm_fmadd_ps(numerator, t, p[1]);
+        numerator = simde_mm_add_ps(numerator, simde_mm_div_ps(p[0], t));
+
+        /* float denominator = (q[0] + t * (q[1] + t * (q[2]))) */
+        simde__m128 denominator = simde_mm_fmadd_ps(q[2], t, q[1]);
+        denominator = simde_mm_fmadd_ps(denominator, t, q[0]);
+
+        simde__m128 res = simde_mm_div_ps(numerator, denominator);
+
+        retval = simde_mm_or_ps(retval, simde_mm_and_ps(mask, res));
+      }
+    }
+
+    { /* else if (a < 0.0f) */
+      simde__m128 mask = simde_mm_cmplt_ps(a, simde_mm_set1_ps(SIMDE_FLOAT32_C(0.0)));
+      mask = simde_mm_andnot_ps(matched, mask);
+
+      if (!simde_mm_test_all_zeros(simde_mm_castps_si128(mask), simde_x_mm_setone_si128())) {
+        matched = simde_mm_or_ps(matched, mask);
+
+        /* t =  1/(sqrt(-log(a))) */
+        simde__m128 t = simde_x_mm_negate_ps(simde_mm_log_ps(a));
+        t = simde_mm_sqrt_ps(t);
+        t = simde_mm_div_ps(simde_mm_set1_ps(SIMDE_FLOAT32_C(1.0)), t);
+
+        const simde__m128 p[] = {
+          simde_mm_set1_ps(SIMDE_FLOAT32_C( 0.00980456202915)),
+          simde_mm_set1_ps(SIMDE_FLOAT32_C( 0.36366788917100)),
+          simde_mm_set1_ps(SIMDE_FLOAT32_C( 0.97302949837000)),
+          simde_mm_set1_ps(SIMDE_FLOAT32_C( -0.5374947401000))
+        };
+
+        const simde__m128 q[] = {
+          simde_mm_set1_ps(SIMDE_FLOAT32_C( 0.00980451277802)),
+          simde_mm_set1_ps(SIMDE_FLOAT32_C( 0.36369997154400)),
+          simde_mm_set1_ps(SIMDE_FLOAT32_C( 1.00000000000000))
+        };
+
+        /* float numerator = (p[0] / t + p[1] + t * (p[2] + t * p[3])) */
+        simde__m128 numerator = simde_mm_fmadd_ps(p[3], t, p[2]);
+        numerator = simde_mm_fmadd_ps(numerator, t, p[1]);
+        numerator = simde_mm_add_ps(numerator, simde_mm_div_ps(p[0], t));
+
+        /* float denominator = (q[0] + t * (q[1] + t * (q[2]))) */
+        simde__m128 denominator = simde_mm_fmadd_ps(q[2], t, q[1]);
+        denominator = simde_mm_fmadd_ps(denominator, t, q[0]);
+
+        simde__m128 res = simde_mm_div_ps(numerator, denominator);
+
+        retval = simde_mm_or_ps(retval, simde_mm_and_ps(mask, res));
+
+        if (simde_mm_test_all_ones(simde_mm_castps_si128(matched))) {
+          return retval;
+        }
+      }
+    }
+
+    { /* else if (a == 0.0f) */
+      simde__m128 mask = simde_mm_cmpeq_ps(a, simde_mm_set1_ps(SIMDE_FLOAT32_C(0.0)));
+      mask = simde_mm_andnot_ps(matched, mask);
+      matched = simde_mm_or_ps(matched, mask);
+
+      simde__m128 res = simde_mm_set1_ps(SIMDE_MATH_INFINITYF);
+
+      retval = simde_mm_or_ps(retval, simde_mm_and_ps(mask, res));
+    }
+
+    { /* else */
+      /* (a >= 2.0f) */
+      retval = simde_mm_or_ps(retval, simde_mm_andnot_ps(matched, simde_mm_set1_ps(-SIMDE_MATH_INFINITYF)));
+    }
+
+    return retval;
+  #else
+    simde__m128_private
+      r_,
+      a_ = simde__m128_to_private(a);
+
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
+      r_.f32[i] = simde_math_erfcinvf(a_.f32[i]);
+    }
+
+    return simde__m128_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
+  #undef _mm_erfcinv_ps
+  #define _mm_erfcinv_ps(a) simde_mm_erfcinv_ps(a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
