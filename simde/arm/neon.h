@@ -91,6 +91,7 @@
 #include "neon/st1_lane.h"
 #include "neon/sub.h"
 #include "neon/tbl.h"
+#include "neon/tbx.h"
 #include "neon/trn.h"
 #include "neon/trn1.h"
 #include "neon/trn2.h"
