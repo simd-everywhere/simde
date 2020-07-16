@@ -88,7 +88,8 @@ simde_vtbx2_u8(simde_uint8x8_t a, simde_uint8x8x2_t b, simde_uint8x8_t c) {
     __m128i a128 = _mm_set1_epi64(a);
     __m128i b128 = _mm_set_epi64(b.val[1], b.val[0]);
     __m128i c128 = _mm_set1_epi64(c);
-    __m128i r128 = _mm_shuffle_epi8(b128, _mm_or_si128(c128, _mm_cmpgt_epi8(c128, _mm_set1_epi8(15))));
+    c128 = _mm_or_si128(c128, _mm_cmpgt_epi8(c128, _mm_set1_epi8(15)));
+    __m128i r128 = _mm_shuffle_epi8(b128, c128);
     r128 =  _mm_blendv_epi8(r128, a128, c128);
     return _mm_movepi64_pi64(r128);
   #else
