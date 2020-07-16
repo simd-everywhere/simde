@@ -455,7 +455,9 @@ simde_mm_hadds_epi16 (simde__m128i a, simde__m128i b) {
 #if defined(SIMDE_X86_SSSE3_NATIVE)
   return _mm_hadds_epi16(a, b);
 #else
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+    return vreinterpretq_s64_s16(vqaddq_s16(vuzp1q_s16(simde__m128i_to_private(a).neon_i16, simde__m128i_to_private(b).neon_i16), vuzp2q_s16(simde__m128i_to_private(a).neon_i16, simde__m128i_to_private(b).neon_i16)));
+  #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     int32x4_t ax = simde__m128i_to_private(a).neon_i32;
     int32x4_t bx = simde__m128i_to_private(b).neon_i32;
     // Interleave using vshrn/vmovn
@@ -509,7 +511,19 @@ simde_mm_hsub_epi16 (simde__m128i a, simde__m128i b) {
 #if defined(SIMDE_X86_SSSE3_NATIVE)
   return _mm_hsub_epi16(a, b);
 #else
-  return simde_mm_sub_epi16(simde_x_mm_deinterleaveeven_epi16(a, b), simde_x_mm_deinterleaveodd_epi16(a, b));
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+    return vreinterpretq_s64_s16(vsubq_s16(vuzp1q_s16(simde__m128i_to_private(a).neon_i16, simde__m128i_to_private(b).neon_i16), vuzp2q_s16(simde__m128i_to_private(a).neon_i16, simde__m128i_to_private(b).neon_i16)));
+  #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    // Interleave using vshrn/vmovn
+    // [a0|a2|a4|a6|b0|b2|b4|b6]
+    // [a1|a3|a5|a7|b1|b3|b5|b7]
+    int16x8_t ab0246 = vcombine_s16(vmovn_s32(simde__m128i_to_private(a).neon_i32), vmovn_s32(simde__m128i_to_private(b).neon_i32));
+    int16x8_t ab1357 = vcombine_s16(vshrn_n_s32(simde__m128i_to_private(a).neon_i32, 16), vshrn_n_s32(simde__m128i_to_private(b).neon_i32, 16));
+    // Subtract
+    return vreinterpretq_s64_s16(vsubq_s16(ab0246, ab1357));
+  #else
+    return simde_mm_sub_epi16(simde_x_mm_deinterleaveeven_epi16(a, b), simde_x_mm_deinterleaveodd_epi16(a, b));
+  #endif
 #endif
 }
 #if defined(SIMDE_X86_SSSE3_ENABLE_NATIVE_ALIASES)
@@ -522,7 +536,19 @@ simde_mm_hsub_epi32 (simde__m128i a, simde__m128i b) {
 #if defined(SIMDE_X86_SSSE3_NATIVE)
   return _mm_hsub_epi32(a, b);
 #else
-  return simde_mm_sub_epi32(simde_x_mm_deinterleaveeven_epi32(a, b), simde_x_mm_deinterleaveodd_epi32(a, b));
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+    return vreinterpretq_s64_s32(vsubq_s32(vuzp1q_s32(simde__m128i_to_private(a).neon_i32, simde__m128i_to_private(b).neon_i32), vuzp2q_s32(simde__m128i_to_private(a).neon_i32, simde__m128i_to_private(b).neon_i32)));
+  #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    // Interleave using vshrn/vmovn
+    // [a0|a2|b0|b2]
+    // [a1|a2|b1|b3]
+    int32x4_t ab02 = vcombine_s32(vmovn_s64(simde__m128i_to_private(a).neon_i64), vmovn_s64(simde__m128i_to_private(b).neon_i64));
+    int32x4_t ab13 = vcombine_s32(vshrn_n_s64(simde__m128i_to_private(a).neon_i64, 32), vshrn_n_s64(simde__m128i_to_private(b).neon_i64, 32));
+    // Subtract
+    return vreinterpretq_s64_s32(vsubq_s32(ab02, ab13));
+  #else
+    return simde_mm_sub_epi32(simde_x_mm_deinterleaveeven_epi32(a, b), simde_x_mm_deinterleaveodd_epi32(a, b));
+  #endif
 #endif
 }
 #if defined(SIMDE_X86_SSSE3_ENABLE_NATIVE_ALIASES)
@@ -595,7 +621,19 @@ simde_mm_hsubs_epi16 (simde__m128i a, simde__m128i b) {
 #if defined(SIMDE_X86_SSSE3_NATIVE)
   return _mm_hsubs_epi16(a, b);
 #else
-  return simde_mm_subs_epi16(simde_x_mm_deinterleaveeven_epi16(a, b), simde_x_mm_deinterleaveodd_epi16(a, b));
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+    return vreinterpretq_s64_s16(vqsubq_s16(vuzp1q_s16(simde__m128i_to_private(a).neon_i16, simde__m128i_to_private(b).neon_i16), vuzp2q_s16(simde__m128i_to_private(a).neon_i16, simde__m128i_to_private(b).neon_i16)));
+  #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    // Interleave using vshrn/vmovn
+    // [a0|a2|a4|a6|b0|b2|b4|b6]
+    // [a1|a3|a5|a7|b1|b3|b5|b7]
+    int16x8_t ab0246 = vcombine_s16(vmovn_s32(simde__m128i_to_private(a).neon_i32), vmovn_s32(simde__m128i_to_private(b).neon_i32));
+    int16x8_t ab1357 = vcombine_s16(vshrn_n_s32(simde__m128i_to_private(a).neon_i32, 16), vshrn_n_s32(simde__m128i_to_private(b).neon_i32, 16));
+    // Saturated subtract
+    return vreinterpretq_s64_s16(vqsubq_s16(ab0246, ab1357));
+  #else
+    return simde_mm_subs_epi16(simde_x_mm_deinterleaveeven_epi16(a, b), simde_x_mm_deinterleaveodd_epi16(a, b));
+  #endif
 #endif
 }
 #if defined(SIMDE_X86_SSSE3_ENABLE_NATIVE_ALIASES)
