@@ -220,7 +220,7 @@ simde_vrhaddq_s8(simde_int8x16_t a, simde_int8x16_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vrhaddq_s8(a, b);
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    return wasm_i8x16_avgr(a, b);
+    return wasm_i8x16_add(wasm_i8x16_add(wasm_i8x16_shr(a, 1), wasm_i8x16_shr(b, 1)), wasm_v128_and(wasm_v128_or(a, b), wasm_i8x16_splat(1)));
   #else
     simde_int8x16_private
       r_,
@@ -253,7 +253,7 @@ simde_vrhaddq_s16(simde_int16x8_t a, simde_int16x8_t b) {
     return _mm_add_epi16(_mm_and_si128(_mm_or_si128(a, b), _mm_set1_epi16(HEDLEY_STATIC_CAST(int16_t, 1))),
                         _mm_add_epi16(_mm_srai_epi16(a, 1), _mm_srai_epi16(b, 1)));
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    return wasm_i16x8_avgr(a, b);
+    return wasm_i16x8_add(wasm_i16x8_add(wasm_i16x8_shr(a, 1), wasm_i16x8_shr(b, 1)), wasm_v128_and(wasm_v128_or(a, b), wasm_i16x8_splat(1)));
   #else
     simde_int16x8_private
       r_,
@@ -286,7 +286,7 @@ simde_vrhaddq_s32(simde_int32x4_t a, simde_int32x4_t b) {
     return _mm_add_epi32(_mm_and_si128(_mm_or_si128(a, b), _mm_set1_epi32(HEDLEY_STATIC_CAST(int32_t, 1))),
                         _mm_add_epi32(_mm_srai_epi32(a, 1), _mm_srai_epi32(b, 1)));
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    return wasm_i32x4_add(wasm_i32x4_add(wasm_i32x4_shr(a, 1), wasm_i32x4_shr(b, 1)), wasm_v128_and(wasm_v128_or(a, b), wasm_i32x4_load_splat(1)));
+    return wasm_i32x4_add(wasm_i32x4_add(wasm_i32x4_shr(a, 1), wasm_i32x4_shr(b, 1)), wasm_v128_and(wasm_v128_or(a, b), wasm_i32x4_splat(1)));
   #else
     simde_int32x4_private
       r_,
@@ -376,7 +376,7 @@ simde_vrhaddq_u32(simde_uint32x4_t a, simde_uint32x4_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vrhaddq_u32(a, b);
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    return wasm_i32x4_add(wasm_i32x4_add(wasm_u32x4_shr(a, 1), wasm_u32x4_shr(b, 1)), wasm_v128_and(wasm_v128_or(a, b), wasm_i32x4_load_splat(1)));
+    return wasm_i32x4_add(wasm_i32x4_add(wasm_u32x4_shr(a, 1), wasm_u32x4_shr(b, 1)), wasm_v128_and(wasm_v128_or(a, b), wasm_i32x4_splat(1)));
   #else
     simde_uint32x4_private
       r_,
