@@ -126,13 +126,13 @@ simde_uint8x8_t
 simde_vtbl3_u8(simde_uint8x8x3_t a, simde_uint8x8_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vtbl3_u8(a, b);
-  #elif defined(SIMDE_X86_SSSE4_1_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
+  #elif defined(SIMDE_X86_SSE4_1_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
     __m128i b128 = _mm_set1_epi64(b);
-    __m128i a128 = _mm_blend_epi8(_mm_set_epi64(a.val[1], a.val[0]),
-                                  _mm_set1_epi64(a.val[2]),
-                                  _mm_cmpgt_epi8(b128, _mm_set1_epi8(15));
-    __m128i r128 = _mm_shuffle_epi8(a128, _mm_or_si128(b128, _mm_cmpgt_epi8(b128, _mm_set1_epi8(23))));
-    return _mm_movepi64_pi64(r128);
+    b128 = _mm_or_si128(b128, _mm_cmpgt_epi8(b128, _mm_set1_epi8(23)));
+    __m128i r128_01 = _mm_shuffle_epi8(_mm_set_epi64(a.val[1], a.val[0]), b128);
+    __m128i r128_2  = _mm_shuffle_epi8(_mm_set1_epi64(a.val[2]), b128);
+    __m128i r128 = _mm_blendv_epi8(r128_01, r128_2, _mm_cmpgt_epi8(b128, _mm_set1_epi8(15)));
+   return _mm_movepi64_pi64(r128);
   #else
     simde_uint8x8_private
       r_,
@@ -172,13 +172,13 @@ simde_uint8x8_t
 simde_vtbl4_u8(simde_uint8x8x4_t a, simde_uint8x8_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vtbl4_u8(a, b);
-  #elif defined(SIMDE_X86_SSSE4_1_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
+  #elif defined(SIMDE_X86_SSE4_1_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
     __m128i b128 = _mm_set1_epi64(b);
-    __m128i a128 = _mm_blend_epi8(_mm_set_epi64(a.val[1], a.val[0]),
-                                  _mm_set_epi64(a.val[3], a.val[2]),
-                                  _mm_cmpgt_epi8(b128, _mm_set1_epi8(15));
-    __m128i r128 = _mm_shuffle_epi8(a128, _mm_or_si128(b128, _mm_cmpgt_epi8(b128, _mm_set1_epi8(31))));
-    return _mm_movepi64_pi64(r128);
+    b128 = _mm_or_si128(b128, _mm_cmpgt_epi8(b128, _mm_set1_epi8(31)));
+    __m128i r128_01 = _mm_shuffle_epi8(_mm_set_epi64(a.val[1], a.val[0]), b128);
+    __m128i r128_23 = _mm_shuffle_epi8(_mm_set_epi64(a.val[3], a.val[2]), b128);
+    __m128i r128 = _mm_blendv_epi8(r128_01, r128_23, _mm_cmpgt_epi8(b128, _mm_set1_epi8(15)));
+   return _mm_movepi64_pi64(r128);
   #else
     simde_uint8x8_private
       r_,
