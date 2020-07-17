@@ -808,10 +808,25 @@ simde_mm_mulhrs_pi16 (simde__m64 a, simde__m64 b) {
     a_ = simde__m64_to_private(a),
     b_ = simde__m64_to_private(b);
 
-  SIMDE_VECTORIZE
-  for (size_t i = 0 ; i < (sizeof(r_.i16) / sizeof(r_.i16[0])) ; i++) {
-    r_.i16[i] = HEDLEY_STATIC_CAST(int16_t, (((HEDLEY_STATIC_CAST(int32_t, a_.i16[i]) * HEDLEY_STATIC_CAST(int32_t, b_.i16[i])) + 0x4000) >> 15));
-  }
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    // Has issues due to saturation
+    // r_.neon_i16 =  vqrdmulh_s16(a, b);
+
+    // Multiply
+    int32x4_t mul = vmull_s16(a_.neon_i16, b_.neon_i16);
+
+    // Rounding narrowing shift right
+    // narrow = (int16_t)((mul + 16384) >> 15);
+    int16x4_t narrow = vrshrn_n_s32(mul, 15);
+
+    // Join together
+    r_.neon_i16 = narrow;
+  #else
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.i16) / sizeof(r_.i16[0])) ; i++) {
+      r_.i16[i] = HEDLEY_STATIC_CAST(int16_t, (((HEDLEY_STATIC_CAST(int32_t, a_.i16[i]) * HEDLEY_STATIC_CAST(int32_t, b_.i16[i])) + 0x4000) >> 15));
+    }
+  #endif
 
   return simde__m64_from_private(r_);
 #endif
