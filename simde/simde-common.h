@@ -286,7 +286,7 @@
 #    define SIMDE_VECTOR(size) __attribute__((__vector_size__(size)))
 #    define SIMDE_VECTOR_OPS
 #    define SIMDE_VECTOR_SUBSCRIPT
-#    if HEDLEY_HAS_ATTRIBUTE(diagnose_if) /* clang 4.0 */
+#    if SIMDE_DETECT_CLANG_VERSION_CHECK(5,0,0)
 #      define SIMDE_VECTOR_SCALAR
 #    endif
 #  endif
