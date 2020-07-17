@@ -45,7 +45,7 @@ simde_vrhadd_s8(simde_int8x8_t a, simde_int8x8_t b) {
       a_ = simde_int8x8_to_private(a),
       b_ = simde_int8x8_to_private(b);
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && !defined(__clang__)
+    #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
       r_.values = (((a_.values >> HEDLEY_STATIC_CAST(int8_t, 1)) + (b_.values >> HEDLEY_STATIC_CAST(int8_t, 1))) + ((a_.values | b_.values) & HEDLEY_STATIC_CAST(int8_t, 1)));
     #else
       SIMDE_VECTORIZE
@@ -76,7 +76,7 @@ simde_vrhadd_s16(simde_int16x4_t a, simde_int16x4_t b) {
       a_ = simde_int16x4_to_private(a),
       b_ = simde_int16x4_to_private(b);
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && !defined(__clang__)
+    #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
       r_.values = (((a_.values >> HEDLEY_STATIC_CAST(int16_t, 1)) + (b_.values >> HEDLEY_STATIC_CAST(int16_t, 1))) + ((a_.values | b_.values) & HEDLEY_STATIC_CAST(int16_t, 1)));
     #else
       SIMDE_VECTORIZE
@@ -107,7 +107,7 @@ simde_vrhadd_s32(simde_int32x2_t a, simde_int32x2_t b) {
       a_ = simde_int32x2_to_private(a),
       b_ = simde_int32x2_to_private(b);
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && !defined(__clang__)
+    #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
       r_.values = (((a_.values >> HEDLEY_STATIC_CAST(int32_t, 1)) + (b_.values >> HEDLEY_STATIC_CAST(int32_t, 1))) + ((a_.values | b_.values) & HEDLEY_STATIC_CAST(int32_t, 1)));
     #else
       SIMDE_VECTORIZE
@@ -135,7 +135,7 @@ simde_vrhadd_u8(simde_uint8x8_t a, simde_uint8x8_t b) {
       a_ = simde_uint8x8_to_private(a),
       b_ = simde_uint8x8_to_private(b);
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && !defined(__clang__)
+    #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
       r_.values = (((a_.values >> HEDLEY_STATIC_CAST(uint8_t, 1)) + (b_.values >> HEDLEY_STATIC_CAST(uint8_t, 1))) + ((a_.values | b_.values) & HEDLEY_STATIC_CAST(uint8_t, 1)));
     #else
       SIMDE_VECTORIZE
@@ -166,7 +166,7 @@ simde_vrhadd_u16(simde_uint16x4_t a, simde_uint16x4_t b) {
       a_ = simde_uint16x4_to_private(a),
       b_ = simde_uint16x4_to_private(b);
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && !defined(__clang__)
+    #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
       r_.values = (((a_.values >> HEDLEY_STATIC_CAST(uint16_t, 1)) + (b_.values >> HEDLEY_STATIC_CAST(uint16_t, 1))) + ((a_.values | b_.values) & HEDLEY_STATIC_CAST(uint16_t, 1)));
     #else
       SIMDE_VECTORIZE
@@ -197,7 +197,7 @@ simde_vrhadd_u32(simde_uint32x2_t a, simde_uint32x2_t b) {
       a_ = simde_uint32x2_to_private(a),
       b_ = simde_uint32x2_to_private(b);
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && !defined(__clang__)
+    #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
       r_.values = (((a_.values >> HEDLEY_STATIC_CAST(uint32_t, 1)) + (b_.values >> HEDLEY_STATIC_CAST(uint32_t, 1))) + ((a_.values | b_.values) & HEDLEY_STATIC_CAST(uint32_t, 1)));
     #else
       SIMDE_VECTORIZE
@@ -227,7 +227,7 @@ simde_vrhaddq_s8(simde_int8x16_t a, simde_int8x16_t b) {
       a_ = simde_int8x16_to_private(a),
       b_ = simde_int8x16_to_private(b);
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && !defined(__clang__)
+    #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
       r_.values = (((a_.values >> HEDLEY_STATIC_CAST(int8_t, 1)) + (b_.values >> HEDLEY_STATIC_CAST(int8_t, 1))) + ((a_.values | b_.values) & HEDLEY_STATIC_CAST(int8_t, 1)));
     #else
       SIMDE_VECTORIZE
@@ -260,7 +260,7 @@ simde_vrhaddq_s16(simde_int16x8_t a, simde_int16x8_t b) {
       a_ = simde_int16x8_to_private(a),
       b_ = simde_int16x8_to_private(b);
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && !defined(__clang__)
+    #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
       r_.values = (((a_.values >> HEDLEY_STATIC_CAST(int16_t, 1)) + (b_.values >> HEDLEY_STATIC_CAST(int16_t, 1))) + ((a_.values | b_.values) & HEDLEY_STATIC_CAST(int16_t, 1)));
     #else
       SIMDE_VECTORIZE
@@ -293,7 +293,7 @@ simde_vrhaddq_s32(simde_int32x4_t a, simde_int32x4_t b) {
       a_ = simde_int32x4_to_private(a),
       b_ = simde_int32x4_to_private(b);
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && !defined(__clang__)
+    #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
       r_.values = (((a_.values >> HEDLEY_STATIC_CAST(int32_t, 1)) + (b_.values >> HEDLEY_STATIC_CAST(int32_t, 1))) + ((a_.values | b_.values) & HEDLEY_STATIC_CAST(int32_t, 1)));
     #else
       SIMDE_VECTORIZE
@@ -323,7 +323,7 @@ simde_vrhaddq_u8(simde_uint8x16_t a, simde_uint8x16_t b) {
       a_ = simde_uint8x16_to_private(a),
       b_ = simde_uint8x16_to_private(b);
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && !defined(__clang__)
+    #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
       r_.values = (((a_.values >> HEDLEY_STATIC_CAST(uint8_t, 1)) + (b_.values >> HEDLEY_STATIC_CAST(uint8_t, 1))) + ((a_.values | b_.values) & HEDLEY_STATIC_CAST(uint8_t, 1)));
     #else
       SIMDE_VECTORIZE
@@ -353,7 +353,7 @@ simde_vrhaddq_u16(simde_uint16x8_t a, simde_uint16x8_t b) {
       a_ = simde_uint16x8_to_private(a),
       b_ = simde_uint16x8_to_private(b);
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && !defined(__clang__)
+    #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
       r_.values = (((a_.values >> HEDLEY_STATIC_CAST(uint16_t, 1)) + (b_.values >> HEDLEY_STATIC_CAST(uint16_t, 1))) + ((a_.values | b_.values) & HEDLEY_STATIC_CAST(uint16_t, 1)));
     #else
       SIMDE_VECTORIZE
@@ -383,7 +383,7 @@ simde_vrhaddq_u32(simde_uint32x4_t a, simde_uint32x4_t b) {
       a_ = simde_uint32x4_to_private(a),
       b_ = simde_uint32x4_to_private(b);
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && !defined(__clang__)
+    #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
       r_.values = (((a_.values >> HEDLEY_STATIC_CAST(uint32_t, 1)) + (b_.values >> HEDLEY_STATIC_CAST(uint32_t, 1))) + ((a_.values | b_.values) & HEDLEY_STATIC_CAST(uint32_t, 1)));
     #else
       SIMDE_VECTORIZE
