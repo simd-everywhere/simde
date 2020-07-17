@@ -27,6 +27,7 @@ simde_neon_families = [
   'cltz',
   'combine',
   'dot',
+  'dot_lane',
   'dup_n',
   'eor',
   'ext',
