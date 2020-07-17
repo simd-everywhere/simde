@@ -288,7 +288,7 @@ simde_vqtbl2q_u8(simde_uint8x16x2_t t, simde_uint8x16_t idx) {
                    vec_cmplt(idx, vec_splats(HEDLEY_STATIC_CAST(unsigned char, 32))));
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_v128_or(wasm_v8x16_swizzle(t.val[0], idx),
-                        wasm_v8x16_swizzle(t.val[1], wasm_i8x16_sub(idx, wasm_i8x16.splat(16))));
+                        wasm_v8x16_swizzle(t.val[1], wasm_i8x16_sub(idx, wasm_i8x16_splat(16))));
   #else
     simde_uint8x16_private t_[2] = { simde_uint8x16_to_private(t.val[0]), simde_uint8x16_to_private(t.val[1]) };
     simde_uint8x16_private
@@ -341,8 +341,8 @@ simde_vqtbl3q_u8(simde_uint8x16x3_t t, simde_uint8x16_t idx) {
                    vec_cmplt(idx, vec_splats(HEDLEY_STATIC_CAST(unsigned char, 48))));
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_v128_or(wasm_v128_or(wasm_v8x16_swizzle(t.val[0], idx),
-                                     wasm_v8x16_swizzle(t.val[1], wasm_i8x16_sub(idx, wasm_i8x16.splat(16)))),
-                                     wasm_v8x16_swizzle(t.val[2], wasm_i8x16_sub(idx, wasm_i8x16.splat(32))));
+                                     wasm_v8x16_swizzle(t.val[1], wasm_i8x16_sub(idx, wasm_i8x16_splat(16)))),
+                                     wasm_v8x16_swizzle(t.val[2], wasm_i8x16_sub(idx, wasm_i8x16_splat(32))));
   #else
     simde_uint8x16_private t_[3] = { simde_uint8x16_to_private(t.val[0]), simde_uint8x16_to_private(t.val[1]),
                                      simde_uint8x16_to_private(t.val[2]) };
@@ -400,9 +400,9 @@ simde_vqtbl4q_u8(simde_uint8x16x4_t t, simde_uint8x16_t idx) {
                    vec_cmplt(idx, vec_splats(HEDLEY_STATIC_CAST(unsigned char, 64))));
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_v128_or(wasm_v128_or(wasm_v8x16_swizzle(t.val[0], idx),
-                                     wasm_v8x16_swizzle(t.val[1], wasm_i8x16_sub(idx, wasm_i8x16.splat(16)))),
-                        wasm_v128_or(wasm_v8x16_swizzle(t.val[2], wasm_i8x16_sub(idx, wasm_i8x16.splat(32))),
-                                     wasm_v8x16_swizzle(t.val[3], wasm_i8x16_sub(idx, wasm_i8x16.splat(48)))));
+                                     wasm_v8x16_swizzle(t.val[1], wasm_i8x16_sub(idx, wasm_i8x16_splat(16)))),
+                        wasm_v128_or(wasm_v8x16_swizzle(t.val[2], wasm_i8x16_sub(idx, wasm_i8x16_splat(32))),
+                                     wasm_v8x16_swizzle(t.val[3], wasm_i8x16_sub(idx, wasm_i8x16_splat(48)))));
   #else
     simde_uint8x16_private t_[4] = { simde_uint8x16_to_private(t.val[0]), simde_uint8x16_to_private(t.val[1]),
                                      simde_uint8x16_to_private(t.val[2]), simde_uint8x16_to_private(t.val[3]) };
