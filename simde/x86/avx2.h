@@ -5299,6 +5299,23 @@ simde_mm256_subs_epu16(simde__m256i a, simde__m256i b) {
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
+int
+simde_x_mm256_test_all_ones (simde__m256i a) {
+  simde__m256i_private a_ = simde__m256i_to_private(a);
+  int r;
+  int_fast32_t r_ = ~HEDLEY_STATIC_CAST(int_fast32_t, 0);
+
+  SIMDE_VECTORIZE_REDUCTION(&:r_)
+  for (size_t i = 0 ; i < (sizeof(a_.i32f) / sizeof(a_.i32f[0])) ; i++) {
+    r_ &= a_.i32f[i];
+  }
+
+  r = (r_ == ~HEDLEY_STATIC_CAST(int_fast32_t, 0));
+
+  return r;
+}
+
+SIMDE_FUNCTION_ATTRIBUTES
 simde__m256i
 simde_mm256_unpacklo_epi8 (simde__m256i a, simde__m256i b) {
   #if defined(SIMDE_X86_AVX2_NATIVE)
