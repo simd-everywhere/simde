@@ -1673,7 +1673,9 @@ simde_x_mm_mullo_epu32 (simde__m128i a, simde__m128i b) {
     a_ = simde__m128i_to_private(a),
     b_ = simde__m128i_to_private(b);
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+    #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+      r_.neon_u32 = vmulq_u32(a_.neon_u32, b_.neon_u32);
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       r_.u32 = a_.u32 * b_.u32;
     #else
       SIMDE_VECTORIZE
