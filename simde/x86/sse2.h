@@ -4299,8 +4299,12 @@ simde_mm_set_epi64 (simde__m64 e1, simde__m64 e0) {
   #else
     simde__m128i_private r_;
 
-    r_.m64_private[0] = simde__m64_to_private(e0);
-    r_.m64_private[1] = simde__m64_to_private(e1);
+    #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+      r_.neon_i64 = vcombine_s64(simde__m64_to_neon_i64(e0), simde__m64_to_neon_i64(e1));
+    #else
+      r_.m64[0] = e0;
+      r_.m64[1] = e1;
+    #endif
 
     return simde__m128i_from_private(r_);
   #endif
