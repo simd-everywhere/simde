@@ -2510,7 +2510,11 @@ simde_mm_cvtps_epi32 (simde__m128 a) {
         r_.neon_i32 = vbslq_s32(is_delta_half, r_even, r_normal);
       #endif
     #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+      HEDLEY_DIAGNOSTIC_PUSH
+      SIMDE_DIAGNOSTIC_DISABLE_C11_EXTENSIONS_
+      SIMDE_DIAGNOSTIC_DISABLE_VECTOR_CONVERSION_
       r_.altivec_i32 = vec_cts(vec_round(a_.altivec_f32), 0);
+      HEDLEY_DIAGNOSTIC_POP
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {
@@ -5301,7 +5305,7 @@ simde_mm_slli_epi32 (simde__m128i a, const int imm8)
 // The above is allowed by gcc/g++ 9 with -march=armv8-a, might work on A32V8 and elsewhere but needs testing
 #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE) && !defined(__clang__) // clang can't handle the potential out of range use of imm8 even though that is handled
   #define simde_mm_slli_epi32(a, imm8) \
-     ({                                                       \
+     (__extension__ ({                                        \
        simde__m128i ret;                                      \
        if ((imm8) <= 0) {                                     \
          ret = a;                                             \
@@ -5312,10 +5316,10 @@ simde_mm_slli_epi32 (simde__m128i a, const int imm8)
            vshlq_n_s32(simde__m128i_to_neon_i32(a), (imm8))); \
        }                                                      \
        ret;                                                   \
-    })
+    }))
 #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
   #define simde_mm_slli_epi32(a, imm8) \
-     ({                                                            \
+     (__extension__ ({                                             \
        simde__m128i ret;                                           \
        if ((imm8) <= 0) {                                          \
          ret = a;                                                  \
@@ -5327,7 +5331,7 @@ simde_mm_slli_epi32 (simde__m128i a, const int imm8)
              vec_splats(HEDLEY_STATIC_CAST(unsigned int, imm8)))); \
        }                                                           \
        ret;                                                        \
-     })
+     }))
 #endif
 #if defined(SIMDE_X86_SSE2_ENABLE_NATIVE_ALIASES)
   #define _mm_slli_epi32(a, imm8) simde_mm_slli_epi32(a, imm8)
@@ -5460,7 +5464,7 @@ simde_mm_srli_epi32 (simde__m128i a, const int imm8)
 // The above is allowed by gcc/g++ 9 with -march=armv8-a, might work on A32V8 and elsewhere but needs testing
 #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE) && !defined(__clang__) // clang can't handle the potential out of range use of imm8 even though that is handled
   #define simde_mm_srli_epi32(a, imm8) \
-    ({                                                           \
+    (__extension__ ({                                            \
         simde__m128i ret;                                        \
         if ((imm8) <= 0) {                                       \
             ret = a;                                             \
@@ -5471,10 +5475,10 @@ simde_mm_srli_epi32 (simde__m128i a, const int imm8)
               vshrq_n_u32(simde__m128i_to_neon_u32(a), (imm8))); \
         }                                                        \
         ret;                                                     \
-    })
+    }))
 #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
   #define simde_mm_srli_epi32(a, imm8) \
-    ({                                                                \
+    (__extension__ ({                                                 \
         simde__m128i ret;                                             \
         if ((imm8) <= 0) {                                            \
             ret = a;                                                  \
@@ -5486,7 +5490,7 @@ simde_mm_srli_epi32 (simde__m128i a, const int imm8)
                 vec_splats(HEDLEY_STATIC_CAST(unsigned int, imm8)))); \
         }                                                             \
         ret;                                                          \
-    })
+    }))
 #endif
 #if defined(SIMDE_X86_SSE2_ENABLE_NATIVE_ALIASES)
   #define _mm_srli_epi32(a, imm8) simde_mm_srli_epi32(a, imm8)

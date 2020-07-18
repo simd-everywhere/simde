@@ -314,6 +314,23 @@
   #define SIMDE_DIAGNOSTIC_DISABLE_DISABLED_MACRO_EXPANSION_
 #endif
 
+/* Clang uses C11 generic selections to implement some AltiVec
+ * functions, which triggers this diagnostic when not compiling
+ * in C11 mode */
+#if HEDLEY_HAS_WARNING("-Wc11-extensions")
+  #define SIMDE_DIAGNOSTIC_DISABLE_C11_EXTENSIONS_ _Pragma("clang diagnostic ignored \"-Wc11-extensions\"")
+#else
+  #define SIMDE_DIAGNOSTIC_DISABLE_C11_EXTENSIONS_
+#endif
+
+/* Clang sometimes triggers this warning in macros in the AltiVec
+ * headers, or due to missing AltiVec functions. */
+#if HEDLEY_HAS_WARNING("-Wvector-conversion")
+  #define SIMDE_DIAGNOSTIC_DISABLE_VECTOR_CONVERSION_ _Pragma("clang diagnostic ignored \"-Wvector-conversion\"")
+#else
+  #define SIMDE_DIAGNOSTIC_DISABLE_VECTOR_CONVERSION_
+#endif
+
 #define SIMDE_DISABLE_UNWANTED_DIAGNOSTICS \
   SIMDE_DIAGNOSTIC_DISABLE_PSABI_ \
   SIMDE_DIAGNOSTIC_DISABLE_NO_EMMS_INSTRUCTION_ \

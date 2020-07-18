@@ -75,7 +75,7 @@ simde_mm_blend_epi16 (simde__m128i a, simde__m128i b, const int imm8)
 #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
 #  define simde_mm_blend_epi16(a, b, imm8)      \
      (__extension__ ({ \
-           const vector unsigned short _mask = {      \
+           const SIMDE_POWER_ALTIVEC_VECTOR(unsigned short) _mask = {      \
                ((imm8) & (1 << 0)) ? 0xFFFF : 0x0000, \
                ((imm8) & (1 << 1)) ? 0xFFFF : 0x0000, \
                ((imm8) & (1 << 2)) ? 0xFFFF : 0x0000, \
@@ -123,7 +123,7 @@ simde_mm_blend_pd (simde__m128d a, simde__m128d b, const int imm8)
 #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
 #  define simde_mm_blend_pd(a, b, imm8)         \
      (__extension__ ({ \
-           const vector unsigned long long _mask = { \
+           const SIMDE_POWER_ALTIVEC_VECTOR(unsigned long long) _mask = { \
                ((imm8) & (1 << 0)) ? UINT64_MAX : 0, \
                ((imm8) & (1 << 1)) ? UINT64_MAX : 0  \
            };                                        \
@@ -167,7 +167,7 @@ simde_mm_blend_ps (simde__m128 a, simde__m128 b, const int imm8)
 #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
 #  define simde_mm_blend_ps(a, b, imm8) \
      (__extension__ ({ \
-           const vector unsigned int _mask = {       \
+           const SIMDE_POWER_ALTIVEC_VECTOR(unsigned int) _mask = {       \
                ((imm8) & (1 << 0)) ? UINT32_MAX : 0, \
                ((imm8) & (1 << 1)) ? UINT32_MAX : 0, \
                ((imm8) & (1 << 2)) ? UINT32_MAX : 0, \
@@ -305,40 +305,41 @@ simde_x_mm_blendv_epi32 (simde__m128i a, simde__m128i b, simde__m128i mask) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128i
 simde_x_mm_blendv_epi64 (simde__m128i a, simde__m128i b, simde__m128i mask) {
-#if defined(SIMDE_X86_SSE4_1_NATIVE)
-  return _mm_castpd_si128(_mm_blendv_pd(_mm_castsi128_pd(a), _mm_castsi128_pd(b), _mm_castsi128_pd(mask)));
-#else
-  simde__m128i_private
-    r_,
-    a_ = simde__m128i_to_private(a),
-    b_ = simde__m128i_to_private(b),
-    mask_ = simde__m128i_to_private(mask);
-
-#if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
-  mask_.u64 = vcltq_s64(mask_.i64, vdupq_n_s64(UINT64_C(0)));
-  r_.neon_i64 = vbslq_s64(mask_.neon_u64, b_.neon_i64, a_.neon_i64);
-#elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
-  r_.altivec_i64 = vec_sel(a_.altivec_i64, b_.altivec_i64,
-                           vec_cmplt(mask_.altivec_i64, vec_splats(HEDLEY_STATIC_CAST(signed long long, 0))));
-#elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-  #if defined(HEDLEY_INTEL_VERSION_CHECK)
-    __typeof__(mask_.i64) z = { 0, 0 };
-    mask_.i64 = HEDLEY_STATIC_CAST(__typeof__(mask_.i64), mask_.i64 < z);
+  #if defined(SIMDE_X86_SSE4_1_NATIVE)
+    return _mm_castpd_si128(_mm_blendv_pd(_mm_castsi128_pd(a), _mm_castsi128_pd(b), _mm_castsi128_pd(mask)));
   #else
-    mask_.i64 >>= (CHAR_BIT * sizeof(mask_.i64[0])) - 1;
+    simde__m128i_private
+      r_,
+      a_ = simde__m128i_to_private(a),
+      b_ = simde__m128i_to_private(b),
+      mask_ = simde__m128i_to_private(mask);
+
+    #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+      mask_.u64 = vcltq_s64(mask_.i64, vdupq_n_s64(UINT64_C(0)));
+      r_.neon_i64 = vbslq_s64(mask_.neon_u64, b_.neon_i64, a_.neon_i64);
+    #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
+      /* Using int due to clang bug #46770 */
+      SIMDE_POWER_ALTIVEC_VECTOR(signed long long) selector = vec_sra(mask_.altivec_i64, vec_splats(HEDLEY_STATIC_CAST(unsigned long long, 63)));
+      r_.altivec_i32 = vec_sel(a_.altivec_i32, b_.altivec_i32, HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned int), selector));
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+      #if defined(HEDLEY_INTEL_VERSION_CHECK)
+        __typeof__(mask_.i64) z = { 0, 0 };
+        mask_.i64 = HEDLEY_STATIC_CAST(__typeof__(mask_.i64), mask_.i64 < z);
+      #else
+        mask_.i64 >>= (CHAR_BIT * sizeof(mask_.i64[0])) - 1;
+      #endif
+
+    r_.i64 = (mask_.i64 & b_.i64) | (~mask_.i64 & a_.i64);
+  #else
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.i64) / sizeof(r_.i64[0])) ; i++) {
+      int64_t m = mask_.i64[i] >> 63;
+      r_.i64[i] = (m & b_.i64[i]) | (~m & a_.i64[i]);
+    }
   #endif
 
-  r_.i64 = (mask_.i64 & b_.i64) | (~mask_.i64 & a_.i64);
-#else
-  SIMDE_VECTORIZE
-  for (size_t i = 0 ; i < (sizeof(r_.i64) / sizeof(r_.i64[0])) ; i++) {
-    int64_t m = mask_.i64[i] >> 63;
-    r_.i64[i] = (m & b_.i64[i]) | (~m & a_.i64[i]);
-  }
-#endif
-
-  return simde__m128i_from_private(r_);
-#endif
+    return simde__m128i_from_private(r_);
+  #endif
 }
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -562,7 +563,7 @@ simde_mm_cmpeq_epi64 (simde__m128i a, simde__m128i b) {
   #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
     r_.i64 = HEDLEY_STATIC_CAST(__typeof__(r_.i64), a_.i64 == b_.i64);
   #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
-    r_.altivec_i64 = (vector signed long long) vec_cmpeq(a_.altivec_i64, b_.altivec_i64);
+    r_.altivec_i64 = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(signed long long), vec_cmpeq(a_.altivec_i64, b_.altivec_i64));
   #else
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.u64) / sizeof(r_.u64[0])) ; i++) {

@@ -37,8 +37,12 @@ jobs:
     # Don't #ifndef ; use !defined(...) instead.  ifndef leads to annoying inconsistencies
     - name: ifndef
       run: for file in $(find simde -name '*.h'); do grep -qP '^ *# *ifndef ' "${file}" && exit 1 || exit 0; done
+    # List of headers we want Meson to install
     - name: Meson install headers
       run: for file in $(find simde -name '*.h'); do grep -qF "$(basename "${file}" .h)" meson.build || (echo "${file} missing from top-level meson.build" && exit 1); done
+    # Make sure we don't accidentally use `vector ...` instead of SIMDE_POWER_ALTIVEC_VECTOR(...)
+    - name: AltiVec raw vector keyword
+      run: find simde/ -name '*.c' -o -name '*.h' -exec grep -nP 'vector( +)((bool|signed|unsigned) +)?(double|float|long long|long|int|short|char)' {} + && exit 1 || exit 0
 
   x86:
     runs-on: ubuntu-latest

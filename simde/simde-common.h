@@ -796,6 +796,9 @@ typedef SIMDE_FLOAT64_TYPE simde_float64;
 #    if defined(SIMDE_ARCH_AARCH64)
 #      define SIMDE_BUG_CLANG_45541
 #    endif
+#    if defined(SIMDE_ARCH_POWER)
+#      define SIMDE_BUG_CLANG_46770
+#    endif
 #  elif defined(__clang__)
 #    define SIMDE_BUG_CLANG_45959
 #  elif defined(HEDLEY_MSVC_VERSION)

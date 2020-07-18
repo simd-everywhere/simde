@@ -1253,7 +1253,8 @@ simde_mm_cmpneq_ps (simde__m128 a, simde__m128 b) {
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
     r_.wasm_v128 = wasm_f32x4_ne(a_.wasm_v128, b_.wasm_v128);
   #elif defined(SIMDE_POWER_ALTIVEC_P9_NATIVE) && SIMDE_ARCH_POWER_CHECK(900) && !defined(HEDLEY_IBM_VERSION)
-    /* vec_cmpne(vector float, vector float) is missing from XL C/C++ v16.1.1,
+    /* vec_cmpne(SIMDE_POWER_ALTIVEC_VECTOR(float), SIMDE_POWER_ALTIVEC_VECTOR(float))
+       is missing from XL C/C++ v16.1.1,
        though the documentation (table 89 on page 432 of the IBM XL C/C++ for
        Linux Compiler Reference, Version 16.1.1) shows that it should be
        present.  Both GCC and clang support it. */

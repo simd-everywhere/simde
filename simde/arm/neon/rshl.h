@@ -444,16 +444,16 @@ simde_vrshlq_s8 (const simde_int8x16_t a, const simde_int8x16_t b) {
                                       _mm256_cmpgt_epi16(zero, b256));
     return _mm256_cvtepi16_epi8(r256);
   #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
-    const vector   signed char zero  = vec_splats(HEDLEY_STATIC_CAST(  signed char,    0));
-    const vector unsigned char ones  = vec_splats(HEDLEY_STATIC_CAST(unsigned char,    1));
-    const vector unsigned char max   = vec_splats(HEDLEY_STATIC_CAST(unsigned char,    8));
-    vector signed char a_shr;
-    vector unsigned char b_abs;
+    const SIMDE_POWER_ALTIVEC_VECTOR(  signed char) zero  = vec_splats(HEDLEY_STATIC_CAST(  signed char,    0));
+    const SIMDE_POWER_ALTIVEC_VECTOR(unsigned char) ones  = vec_splats(HEDLEY_STATIC_CAST(unsigned char,    1));
+    const SIMDE_POWER_ALTIVEC_VECTOR(unsigned char) max   = vec_splats(HEDLEY_STATIC_CAST(unsigned char,    8));
+    SIMDE_POWER_ALTIVEC_VECTOR(signed char) a_shr;
+    SIMDE_POWER_ALTIVEC_VECTOR(unsigned char) b_abs;
 
-    b_abs = HEDLEY_REINTERPRET_CAST(vector unsigned char, vec_abs(b));
+    b_abs = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned char), vec_abs(b));
     a_shr = vec_sra(a, vec_sub(b_abs, ones));
     return vec_and(vec_sel(vec_sl(a, b_abs),
-                           vec_add(vec_sra(a_shr, ones), vec_and(a_shr, HEDLEY_REINTERPRET_CAST(vector signed char, ones))),
+                           vec_add(vec_sra(a_shr, ones), vec_and(a_shr, HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(signed char), ones))),
                            vec_cmplt(b, zero)),
                    vec_cmplt(b_abs, max));
   #else
@@ -504,20 +504,20 @@ simde_vrshlq_s16 (const simde_int16x8_t a, const simde_int16x8_t b) {
     r256 = _mm256_shuffle_epi8(r256, _mm256_set1_epi64x(0x0D0C090805040100));
     return _mm_set_epi64x(_mm256_extract_epi64(r256, 2), _mm256_extract_epi64(r256, 0));
   #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
-    const vector   signed short zero  = vec_splats(HEDLEY_STATIC_CAST(  signed short,      0));
-    const vector unsigned short ones  = vec_splats(HEDLEY_STATIC_CAST(unsigned short,      1));
-    const vector unsigned short shift = vec_splats(HEDLEY_STATIC_CAST(unsigned short, 16 - 8));
-    const vector unsigned short max   = vec_splats(HEDLEY_STATIC_CAST(unsigned short,     16));
-    const vector unsigned short ff    = vec_splats(HEDLEY_STATIC_CAST(unsigned short,   0xFF));
-    vector signed short a_shr;
-    vector unsigned short b_abs;
+    const SIMDE_POWER_ALTIVEC_VECTOR(  signed short) zero  = vec_splats(HEDLEY_STATIC_CAST(  signed short,      0));
+    const SIMDE_POWER_ALTIVEC_VECTOR(unsigned short) ones  = vec_splats(HEDLEY_STATIC_CAST(unsigned short,      1));
+    const SIMDE_POWER_ALTIVEC_VECTOR(unsigned short) shift = vec_splats(HEDLEY_STATIC_CAST(unsigned short, 16 - 8));
+    const SIMDE_POWER_ALTIVEC_VECTOR(unsigned short) max   = vec_splats(HEDLEY_STATIC_CAST(unsigned short,     16));
+    const SIMDE_POWER_ALTIVEC_VECTOR(unsigned short) ff    = vec_splats(HEDLEY_STATIC_CAST(unsigned short,   0xFF));
+    SIMDE_POWER_ALTIVEC_VECTOR(signed short) a_shr;
+    SIMDE_POWER_ALTIVEC_VECTOR(unsigned short) b_abs;
 
-    b_abs = vec_and(HEDLEY_REINTERPRET_CAST(vector unsigned short,
-                                            vec_abs(HEDLEY_REINTERPRET_CAST(vector signed char, b))),
+    b_abs = vec_and(HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned short),
+                                            vec_abs(HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(signed char), b))),
                     ff);
     a_shr = vec_sra(a, vec_sub(b_abs, ones));
     return vec_and(vec_sel(vec_sl(a, b_abs),
-                           vec_add(vec_sra(a_shr, ones), vec_and(a_shr, HEDLEY_REINTERPRET_CAST(vector signed short, ones))),
+                           vec_add(vec_sra(a_shr, ones), vec_and(a_shr, HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(signed short), ones))),
                            vec_cmplt(vec_sl(b, shift), zero)),
                    vec_cmplt(b_abs, max));
   #else
@@ -557,20 +557,20 @@ simde_vrshlq_s32 (const simde_int32x4_t a, const simde_int32x4_t b) {
                            _mm_srai_epi32(_mm_sub_epi32(a_shr, ff), 1),
                            _mm_cmpgt_epi32(zero, b_));
   #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
-    const vector   signed int zero  = vec_splats(HEDLEY_STATIC_CAST(  signed int,      0));
-    const vector unsigned int ones  = vec_splats(HEDLEY_STATIC_CAST(unsigned int,      1));
-    const vector unsigned int shift = vec_splats(HEDLEY_STATIC_CAST(unsigned int, 32 - 8));
-    const vector unsigned int max   = vec_splats(HEDLEY_STATIC_CAST(unsigned int,     32));
-    const vector unsigned int ff    = vec_splats(HEDLEY_STATIC_CAST(unsigned int,   0xFF));
-    vector signed int a_shr;
-    vector unsigned int b_abs;
+    const SIMDE_POWER_ALTIVEC_VECTOR(  signed int) zero  = vec_splats(HEDLEY_STATIC_CAST(  signed int,      0));
+    const SIMDE_POWER_ALTIVEC_VECTOR(unsigned int) ones  = vec_splats(HEDLEY_STATIC_CAST(unsigned int,      1));
+    const SIMDE_POWER_ALTIVEC_VECTOR(unsigned int) shift = vec_splats(HEDLEY_STATIC_CAST(unsigned int, 32 - 8));
+    const SIMDE_POWER_ALTIVEC_VECTOR(unsigned int) max   = vec_splats(HEDLEY_STATIC_CAST(unsigned int,     32));
+    const SIMDE_POWER_ALTIVEC_VECTOR(unsigned int) ff    = vec_splats(HEDLEY_STATIC_CAST(unsigned int,   0xFF));
+    SIMDE_POWER_ALTIVEC_VECTOR(signed int) a_shr;
+    SIMDE_POWER_ALTIVEC_VECTOR(unsigned int) b_abs;
 
-    b_abs = vec_and(HEDLEY_REINTERPRET_CAST(vector unsigned int,
-                                            vec_abs(HEDLEY_REINTERPRET_CAST(vector signed char, b))),
+    b_abs = vec_and(HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned int),
+                                            vec_abs(HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(signed char), b))),
                     ff);
     a_shr = vec_sra(a, vec_sub(b_abs, ones));
     return vec_and(vec_sel(vec_sl(a, b_abs),
-                           vec_add(vec_sra(a_shr, ones), vec_and(a_shr, HEDLEY_REINTERPRET_CAST(vector signed int, ones))),
+                           vec_add(vec_sra(a_shr, ones), vec_and(a_shr, HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(signed int), ones))),
                            vec_cmplt(vec_sl(b, shift), zero)),
                    vec_cmplt(b_abs, max));
   #else
@@ -619,22 +619,28 @@ simde_vrshlq_s64 (const simde_int64x2_t a, const simde_int64x2_t b) {
                            _mm_add_epi64(_mm_xor_si128(_mm_srlv_epi64(_mm_xor_si128(a, maska), b_abs), maska), a_rnd),
                            _mm_cmpgt_epi64(zero, _mm_slli_epi64(b, 56)));
   #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
-    const vector   signed long long zero  = vec_splats(HEDLEY_STATIC_CAST(  signed long long,      0));
-    const vector unsigned long long ones  = vec_splats(HEDLEY_STATIC_CAST(unsigned long long,      1));
-    const vector unsigned long long shift = vec_splats(HEDLEY_STATIC_CAST(unsigned long long, 64 - 8));
-    const vector unsigned long long max   = vec_splats(HEDLEY_STATIC_CAST(unsigned long long,     64));
-    const vector unsigned long long ff    = vec_splats(HEDLEY_STATIC_CAST(unsigned long long,   0xFF));
-    vector signed long long a_shr;
-    vector unsigned long long b_abs;
+    const SIMDE_POWER_ALTIVEC_VECTOR(  signed long long) zero  = vec_splats(HEDLEY_STATIC_CAST(  signed long long,      0));
+    const SIMDE_POWER_ALTIVEC_VECTOR(unsigned long long) ones  = vec_splats(HEDLEY_STATIC_CAST(unsigned long long,      1));
+    const SIMDE_POWER_ALTIVEC_VECTOR(unsigned long long) shift = vec_splats(HEDLEY_STATIC_CAST(unsigned long long, 64 - 8));
+    const SIMDE_POWER_ALTIVEC_VECTOR(unsigned long long) max   = vec_splats(HEDLEY_STATIC_CAST(unsigned long long,     64));
+    const SIMDE_POWER_ALTIVEC_VECTOR(unsigned long long) ff    = vec_splats(HEDLEY_STATIC_CAST(unsigned long long,   0xFF));
+    SIMDE_POWER_ALTIVEC_VECTOR(signed long long) a_shr;
+    SIMDE_POWER_ALTIVEC_VECTOR(unsigned long long) b_abs;
 
-    b_abs = vec_and(HEDLEY_REINTERPRET_CAST(vector unsigned long long,
-                                            vec_abs(HEDLEY_REINTERPRET_CAST(vector signed char, b))),
+    b_abs = vec_and(HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned long long),
+                                            vec_abs(HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(signed char), b))),
                     ff);
     a_shr = vec_sra(a, vec_sub(b_abs, ones));
+
+    HEDLEY_DIAGNOSTIC_PUSH
+    #if defined(SIMDE_BUG_CLANG_46770)
+      SIMDE_DIAGNOSTIC_DISABLE_VECTOR_CONVERSION_
+    #endif
     return vec_and(vec_sel(vec_sl(a, b_abs),
-                           vec_add(vec_sra(a_shr, ones), vec_and(a_shr, HEDLEY_REINTERPRET_CAST(vector signed long long, ones))),
+                           vec_add(vec_sra(a_shr, ones), vec_and(a_shr, HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(signed long long), ones))),
                            vec_cmplt(vec_sl(b, shift), zero)),
                    vec_cmplt(b_abs, max));
+    HEDLEY_DIAGNOSTIC_POP
   #else
     simde_int64x2_private
       r_,
@@ -674,12 +680,12 @@ simde_vrshlq_u8 (const simde_uint8x16_t a, const simde_int8x16_t b) {
                                       _mm256_cmpgt_epi16(zero, b256));
     return _mm256_cvtepi16_epi8(r256);
   #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
-   const vector   signed char zero  = vec_splats(HEDLEY_STATIC_CAST(  signed char,    0));
-    const vector unsigned char ones  = vec_splats(HEDLEY_STATIC_CAST(unsigned char,    1));
-    const vector unsigned char max   = vec_splats(HEDLEY_STATIC_CAST(unsigned char,    8));
-    vector unsigned char b_abs, b_abs_dec, a_shr;
+   const SIMDE_POWER_ALTIVEC_VECTOR(  signed char) zero  = vec_splats(HEDLEY_STATIC_CAST(  signed char,    0));
+    const SIMDE_POWER_ALTIVEC_VECTOR(unsigned char) ones  = vec_splats(HEDLEY_STATIC_CAST(unsigned char,    1));
+    const SIMDE_POWER_ALTIVEC_VECTOR(unsigned char) max   = vec_splats(HEDLEY_STATIC_CAST(unsigned char,    8));
+    SIMDE_POWER_ALTIVEC_VECTOR(unsigned char) b_abs, b_abs_dec, a_shr;
 
-    b_abs = HEDLEY_REINTERPRET_CAST(vector unsigned char, vec_abs(b));
+    b_abs = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned char), vec_abs(b));
     b_abs_dec = vec_sub(b_abs, ones);
     a_shr = vec_and(vec_sr(a, b_abs_dec), vec_cmplt(b_abs_dec, max));
     return vec_sel(vec_and(vec_sl(a, b_abs), vec_cmplt(b_abs, max)),
@@ -734,15 +740,15 @@ simde_vrshlq_u16 (const simde_uint16x8_t a, const simde_int16x8_t b) {
     r256 = _mm256_shuffle_epi8(r256, _mm256_set1_epi64x(0x0D0C090805040100));
     return _mm_set_epi64x(_mm256_extract_epi64(r256, 2), _mm256_extract_epi64(r256, 0));
   #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
-    const vector   signed short zero  = vec_splats(HEDLEY_STATIC_CAST(  signed short,      0));
-    const vector unsigned short ones  = vec_splats(HEDLEY_STATIC_CAST(unsigned short,      1));
-    const vector unsigned short shift = vec_splats(HEDLEY_STATIC_CAST(unsigned short, 16 - 8));
-    const vector unsigned short max   = vec_splats(HEDLEY_STATIC_CAST(unsigned short,     16));
-    const vector unsigned short ff    = vec_splats(HEDLEY_STATIC_CAST(unsigned short,   0xFF));
-    vector unsigned short b_abs, b_abs_dec, a_shr;
+    const SIMDE_POWER_ALTIVEC_VECTOR(  signed short) zero  = vec_splats(HEDLEY_STATIC_CAST(  signed short,      0));
+    const SIMDE_POWER_ALTIVEC_VECTOR(unsigned short) ones  = vec_splats(HEDLEY_STATIC_CAST(unsigned short,      1));
+    const SIMDE_POWER_ALTIVEC_VECTOR(unsigned short) shift = vec_splats(HEDLEY_STATIC_CAST(unsigned short, 16 - 8));
+    const SIMDE_POWER_ALTIVEC_VECTOR(unsigned short) max   = vec_splats(HEDLEY_STATIC_CAST(unsigned short,     16));
+    const SIMDE_POWER_ALTIVEC_VECTOR(unsigned short) ff    = vec_splats(HEDLEY_STATIC_CAST(unsigned short,   0xFF));
+    SIMDE_POWER_ALTIVEC_VECTOR(unsigned short) b_abs, b_abs_dec, a_shr;
 
-    b_abs = vec_and(HEDLEY_REINTERPRET_CAST(vector unsigned short,
-                                            vec_abs(HEDLEY_REINTERPRET_CAST(vector signed char, b))),
+    b_abs = vec_and(HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned short),
+                                            vec_abs(HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(signed char), b))),
                     ff);
     b_abs_dec = vec_sub(b_abs, ones);
     a_shr = vec_and(vec_sr(a, b_abs_dec), vec_cmplt(b_abs_dec, max));
@@ -787,15 +793,15 @@ simde_vrshlq_u32 (const simde_uint32x4_t a, const simde_int32x4_t b) {
                            _mm_srli_epi32(_mm_sub_epi32(a_shr, ff), 1),
                            _mm_cmpgt_epi32(zero, b_));
   #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
-    const vector   signed int zero  = vec_splats(HEDLEY_STATIC_CAST(  signed int,      0));
-    const vector unsigned int ones  = vec_splats(HEDLEY_STATIC_CAST(unsigned int,      1));
-    const vector unsigned int shift = vec_splats(HEDLEY_STATIC_CAST(unsigned int, 32 - 8));
-    const vector unsigned int max   = vec_splats(HEDLEY_STATIC_CAST(unsigned int,     32));
-    const vector unsigned int ff    = vec_splats(HEDLEY_STATIC_CAST(unsigned int,   0xFF));
-    vector unsigned int b_abs, b_abs_dec, a_shr;
+    const SIMDE_POWER_ALTIVEC_VECTOR(  signed int) zero  = vec_splats(HEDLEY_STATIC_CAST(  signed int,      0));
+    const SIMDE_POWER_ALTIVEC_VECTOR(unsigned int) ones  = vec_splats(HEDLEY_STATIC_CAST(unsigned int,      1));
+    const SIMDE_POWER_ALTIVEC_VECTOR(unsigned int) shift = vec_splats(HEDLEY_STATIC_CAST(unsigned int, 32 - 8));
+    const SIMDE_POWER_ALTIVEC_VECTOR(unsigned int) max   = vec_splats(HEDLEY_STATIC_CAST(unsigned int,     32));
+    const SIMDE_POWER_ALTIVEC_VECTOR(unsigned int) ff    = vec_splats(HEDLEY_STATIC_CAST(unsigned int,   0xFF));
+    SIMDE_POWER_ALTIVEC_VECTOR(unsigned int) b_abs, b_abs_dec, a_shr;
 
-    b_abs = vec_and(HEDLEY_REINTERPRET_CAST(vector unsigned int,
-                                            vec_abs(HEDLEY_REINTERPRET_CAST(vector signed char, b))),
+    b_abs = vec_and(HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned int),
+                                            vec_abs(HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(signed char), b))),
                     ff);
     b_abs_dec = vec_sub(b_abs, ones);
     a_shr = vec_and(vec_sr(a, b_abs_dec), vec_cmplt(b_abs_dec, max));
@@ -847,21 +853,26 @@ simde_vrshlq_u64 (const simde_uint64x2_t a, const simde_int64x2_t b) {
                            _mm_srli_epi64(_mm_add_epi64(a_shr, ones), 1),
                            _mm_cmpgt_epi64(_mm_setzero_si128(), _mm_slli_epi64(b, 56)));
   #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
-    const vector   signed long long zero  = vec_splats(HEDLEY_STATIC_CAST(  signed long long,      0));
-    const vector unsigned long long ones  = vec_splats(HEDLEY_STATIC_CAST(unsigned long long,      1));
-    const vector unsigned long long shift = vec_splats(HEDLEY_STATIC_CAST(unsigned long long, 64 - 8));
-    const vector unsigned long long max   = vec_splats(HEDLEY_STATIC_CAST(unsigned long long,     64));
-    const vector unsigned long long ff    = vec_splats(HEDLEY_STATIC_CAST(unsigned long long,   0xFF));
-    vector unsigned long long b_abs, b_abs_dec, a_shr;
+    const SIMDE_POWER_ALTIVEC_VECTOR(  signed long long) zero  = vec_splats(HEDLEY_STATIC_CAST(  signed long long,      0));
+    const SIMDE_POWER_ALTIVEC_VECTOR(unsigned long long) ones  = vec_splats(HEDLEY_STATIC_CAST(unsigned long long,      1));
+    const SIMDE_POWER_ALTIVEC_VECTOR(unsigned long long) shift = vec_splats(HEDLEY_STATIC_CAST(unsigned long long, 64 - 8));
+    const SIMDE_POWER_ALTIVEC_VECTOR(unsigned long long) max   = vec_splats(HEDLEY_STATIC_CAST(unsigned long long,     64));
+    const SIMDE_POWER_ALTIVEC_VECTOR(unsigned long long) ff    = vec_splats(HEDLEY_STATIC_CAST(unsigned long long,   0xFF));
+    SIMDE_POWER_ALTIVEC_VECTOR(unsigned long long) b_abs, b_abs_dec, a_shr;
 
-    b_abs = vec_and(HEDLEY_REINTERPRET_CAST(vector unsigned long long,
-                                            vec_abs(HEDLEY_REINTERPRET_CAST(vector signed char, b))),
+    b_abs = vec_and(HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned long long),
+                                            vec_abs(HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(signed char), b))),
                     ff);
     b_abs_dec = vec_sub(b_abs, ones);
     a_shr = vec_and(vec_sr(a, b_abs_dec), vec_cmplt(b_abs_dec, max));
+    HEDLEY_DIAGNOSTIC_PUSH
+    #if defined(SIMDE_BUG_CLANG_46770)
+      SIMDE_DIAGNOSTIC_DISABLE_VECTOR_CONVERSION_
+    #endif
     return vec_sel(vec_and(vec_sl(a, b_abs), vec_cmplt(b_abs, max)),
                    vec_sr(vec_add(a_shr, ones), ones),
                    vec_cmplt(vec_sl(b, shift), zero));
+    HEDLEY_DIAGNOSTIC_POP
   #else
     simde_uint64x2_private
       r_,
