@@ -204,43 +204,13 @@ simde_mm_abs_pi32 (simde__m64 a) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128i
-simde_mm_alignr_epi8 (simde__m128i a, simde__m128i b, int count) {
+simde_mm_alignr_epi8 (simde__m128i a, simde__m128i b, int count)
+    SIMDE_REQUIRE_CONSTANT(count) {
   simde__m128i_private
     r_,
     a_ = simde__m128i_to_private(a),
     b_ = simde__m128i_to_private(b);
 
-#if 0 && defined(SIMDE_BYTE_ORDER_LE)
-  const int bits = (8 * count) % 64;
-  const int eo = count / 8;
-
-  switch (eo) {
-    case 0:
-      r_.u64[0]  = b_.u64[0] >> bits;
-      r_.u64[0] |= b_.u64[1] << (64 - bits);
-      r_.u64[1]  = b_.u64[1] >> bits;
-      r_.u64[1] |= a_.u64[0] << (64 - bits);
-      break;
-    case 1:
-      r_.u64[0]  = b_.u64[1] >> bits;
-      r_.u64[0] |= a_.u64[0] << (64 - bits);
-      r_.u64[1]  = a_.u64[0] >> bits;
-      r_.u64[1] |= a_.u64[1] << (64 - bits);
-      break;
-    case 2:
-      r_.u64[0]  = a_.u64[0] >> bits;
-      r_.u64[0] |= a_.u64[1] << (64 - bits);
-      r_.u64[1]  = a_.u64[1] >> bits;
-      break;
-    case 3:
-      r_.u64[0]  = a_.u64[1] >> bits;
-      r_.u64[1]  = 0;
-      break;
-    default:
-      HEDLEY_UNREACHABLE();
-      break;
-  }
-#else
   if (HEDLEY_UNLIKELY(count > 31))
     return simde_mm_setzero_si128();
 
@@ -254,18 +224,23 @@ simde_mm_alignr_epi8 (simde__m128i a, simde__m128i b, int count) {
       r_.i8[i] = b_.i8[srcpos];
     }
   }
-#endif
 
   return simde__m128i_from_private(r_);
 }
 #if defined(SIMDE_X86_SSSE3_NATIVE)
-#  define simde_mm_alignr_epi8(a, b, count) _mm_alignr_epi8(a, b, count)
-// #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-// #  define simde_mm_alignr_epi8(a, b, count) simde__m128i_from_neon_i8(vextq_s8((int8x16_t) (b), (int8x16_t) (a), (count)))
-// doesn't work with count > 15 (the tests use 17)
+  #define simde_mm_alignr_epi8(a, b, count) _mm_alignr_epi8(a, b, count)
+#elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #define simde_mm_alignr_epi8(a, b, count) \
+    ( \
+      ((count) > 31) \
+        ? simde__m128i_from_neon_i8(vdupq_n_s8(0)) \
+        : ( \
+          ((count) > 15) \
+            ? (simde__m128i_from_neon_i8(vextq_s8(simde__m128i_to_neon_i8(a), vdupq_n_s8(0), (count) & 15))) \
+            : (simde__m128i_from_neon_i8(vextq_s8(simde__m128i_to_neon_i8(b), simde__m128i_to_neon_i8(a), ((count) & 15))))))
 #endif
 #if defined(SIMDE_X86_SSSE3_ENABLE_NATIVE_ALIASES)
-#  define _mm_alignr_epi8(a, b, count) simde_mm_alignr_epi8(a, b, count)
+  #define _mm_alignr_epi8(a, b, count) simde_mm_alignr_epi8(a, b, count)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
