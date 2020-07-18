@@ -58,57 +58,11 @@ it to the list.
 
 ## Coding Style
 
-SIMDe uses two spaces for indentation.  Please adjust your editor
-accordingly.
+SIMDe has an [EditorConfig](https://editorconfig.org/) file to
+configure your editor for things like tabs vs. spaces, how many spaces,
+etc. If you use an editor which doesn't support it out of the box then
+odds are good there is a plugin you can download; please do so.
 
-The coding style for preprocessor macros is a bit mixed since I made
-some changes mid-project.  For new code, please indent the
-preprocessor conditions before the hash to the same level as the
-normal code would be, and indent the code inside of preprocessor
-conditions as if the conditions were normal code.  For example:
-
-```c
-int
-foo(void) {
-  #if 1
-    bar();
-  #else
-    baz();
-  #endif
-}
-```
-
-Other than that, please just try to follow the existing style.  We'll
-add new rules here as the need arises.
-
-## Commit Messages
-
-Git commit messages should contain lines no longer than 72 characters.
-The first line should always be a one-line summary of the commit, with
-the relevant component followed by a colon and a space (if
-applicable), then the summary.
-
-If the one-line summary is insufficient to fully describe the changes
-further descriptive paragraphs should be added, separated by blank
-lines.
-
-For example:
-
-```
-sse: add magical code to make everything go fast
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur
-interdum scelerisque risus non ultricies. Vivamus id tristique mauris.
-Mauris et augue vel urna aliquam posuere. Morbi in sem nec ante
-ullamcorper ultrices in quis nibh. In felis velit, semper a mauris sed,
-congue ullamcorper enim. Vestibulum ante ipsum primis in faucibus orci
-luctus et ultrices posuere cubilia Curae; Nulla facilisi. Donec
-scelerisque elit dui, et aliquet magna tincidunt eu.
-
-Curabitur rhoncus lacus ac elit pulvinar, quis posuere ante ultrices.
-Suspendisse at mauris vitae justo pretium tempor et in mauris. Nunc
-facilisis nulla a ante tincidunt, imperdiet rhoncus metus interdum.
-Vivamus sed nunc vel tellus porta consequat. Donec quis porttitor elit,
-et cursus urna. Donec et sapien lorem. In imperdiet magna at aliquet
-hendrerit.
-```
+For other coding style information, please see the
+[Coding Style](https://github.com/simd-everywhere/simde/wiki/Coding-Style)
+document in the Wiki.

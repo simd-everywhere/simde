@@ -166,6 +166,7 @@ set(TEST_SOURCES_C
   arm/neon/sra_n.c
   arm/neon/sub.c
   arm/neon/tbl.c
+  arm/neon/tbx.c
   arm/neon/trn.c
   arm/neon/trn1.c
   arm/neon/trn2.c

@@ -71,6 +71,7 @@ sets:
  * [SSSE3](https://en.wikipedia.org/wiki/SSSE3)
  * [SSE4.1](https://en.wikipedia.org/wiki/SSE4#SSE4.1)
  * [AVX](https://en.wikipedia.org/wiki/Advanced_Vector_Extensions)
+ * [AVX2](https://en.wikipedia.org/wiki/Advanced_Vector_Extensions#Advanced_Vector_Extensions_2)
  * [FMA](https://en.wikipedia.org/wiki/FMA_instruction_set)
  * [GFNI](https://en.wikipedia.org/wiki/AVX-512#GFNI)
  * [SVML](https://software.intel.com/content/www/us/en/develop/documentation/cpp-compiler-developer-guide-and-reference/top/compiler-reference/intrinsics/intrinsics-for-intel-advanced-vector-extensions-512-intel-avx-512-instructions/intrinsics-for-arithmetic-operations-1/intrinsics-for-short-vector-math-library-svml-operations.html)

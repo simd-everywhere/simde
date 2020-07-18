@@ -924,11 +924,13 @@ simde_mm_andnot_pd (simde__m128d a, simde__m128d b) {
       b_ = simde__m128d_to_private(b);
 
     #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-      r_.neon_i32 = vbicq_s32(a_.neon_i32, b_.neon_i32);
+      r_.neon_i32 = vbicq_s32(b_.neon_i32, a_.neon_i32);
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r_.wasm_v128 = wasm_v128_andnot(b_.wasm_v128, a_.wasm_v128);
+    #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
+      r_.altivec_f64 = vec_andc(b_.altivec_f64, a_.altivec_f64);
     #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
-      r_.altivec_i32f = vec_andc(a_.altivec_i32f, b_.altivec_i32f);
+      r_.altivec_i32f = vec_andc(b_.altivec_i32f, a_.altivec_i32f);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       r_.i32f = ~a_.i32f & b_.i32f;
     #else
