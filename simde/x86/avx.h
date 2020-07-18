@@ -5042,11 +5042,6 @@ simde_mm256_shuffle_ps (simde__m256 a, simde__m256 b, const int imm8)
     a_ = simde__m256_to_private(a),
     b_ = simde__m256_to_private(b);
 
-  // SIMDE_VECTORIZE
-  // for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
-  //   r_.f32[i] = ((i & 2) ? b : a).m128[i >> 2].f32[(imm8 >> ((i & 3) << 1) & 3)];
-  // }
-
   r_.f32[0] = a_.m128_private[0].f32[(imm8 >> 0) & 3];
   r_.f32[1] = a_.m128_private[0].f32[(imm8 >> 2) & 3];
   r_.f32[2] = b_.m128_private[0].f32[(imm8 >> 4) & 3];
@@ -5059,7 +5054,23 @@ simde_mm256_shuffle_ps (simde__m256 a, simde__m256 b, const int imm8)
   return simde__m256_from_private(r_);
 }
 #if defined(SIMDE_X86_AVX_NATIVE)
-#  define simde_mm256_shuffle_ps(a, b, imm8) _mm256_shuffle_ps(a, b, imm8)
+  #define simde_mm256_shuffle_ps(a, b, imm8) _mm256_shuffle_ps(a, b, imm8)
+#elif SIMDE_NATURAL_VECTOR_SIZE_LE(128)
+  #define simde_mm256_shuffle_ps(a, b, imm8) \
+      simde_mm256_set_m128( \
+          simde_mm_shuffle_ps(simde_mm256_extractf128_ps(a, 1), simde_mm256_extractf128_ps(b, 1), (imm8)), \
+          simde_mm_shuffle_ps(simde_mm256_extractf128_ps(a, 0), simde_mm256_extractf128_ps(b, 0), (imm8)))
+#elif defined(SIMDE_SHUFFLE_VECTOR_)
+  #define simde_mm256_shuffle_ps(a, b, imm8) \
+    SIMDE_SHUFFLE_VECTOR_(32, 32, a, b, \
+      (((imm8) >> 0) & 3) + 0, \
+      (((imm8) >> 2) & 3) + 0, \
+      (((imm8) >> 4) & 3) + 8, \
+      (((imm8) >> 6) & 3) + 8, \
+      (((imm8) >> 0) & 3) + 4, \
+      (((imm8) >> 2) & 3) + 4, \
+      (((imm8) >> 4) & 3) + 12, \
+      (((imm8) >> 6) & 3) + 12)
 #endif
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
   #undef _mm256_shuffle_ps
@@ -5083,7 +5094,19 @@ simde_mm256_shuffle_pd (simde__m256d a, simde__m256d b, const int imm8)
   return simde__m256d_from_private(r_);
 }
 #if defined(SIMDE_X86_AVX_NATIVE)
-#  define simde_mm256_shuffle_pd(a, b, imm8) _mm256_shuffle_pd(a, b, imm8)
+  #define simde_mm256_shuffle_pd(a, b, imm8) _mm256_shuffle_pd(a, b, imm8)
+#elif SIMDE_NATURAL_VECTOR_SIZE_LE(128)
+  #define simde_mm256_shuffle_pd(a, b, imm8) \
+      simde_mm256_set_m128d( \
+          simde_mm_shuffle_pd(simde_mm256_extractf128_pd(a, 1), simde_mm256_extractf128_pd(b, 1), (imm8 >> 0) & 3), \
+          simde_mm_shuffle_pd(simde_mm256_extractf128_pd(a, 0), simde_mm256_extractf128_pd(b, 0), (imm8 >> 2) & 3))
+#elif defined(SIMDE_SHUFFLE_VECTOR_)
+  #define simde_mm256_shuffle_pd(a, b, imm8) \
+    SIMDE_SHUFFLE_VECTOR_(64, 32, a, b, \
+      (((imm8) >> 0) & 1) + 0, \
+      (((imm8) >> 1) & 1) + 4, \
+      (((imm8) >> 2) & 1) + 2, \
+      (((imm8) >> 3) & 1) + 6)
 #endif
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
   #undef _mm256_shuffle_pd
