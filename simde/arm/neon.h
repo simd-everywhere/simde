@@ -80,6 +80,7 @@
 #include "neon/qmovn.h"
 #include "neon/qmovn_high.h"
 #include "neon/qtbl.h"
+#include "neon/qtbx.h"
 #include "neon/reinterpret.h"
 #include "neon/rshl.h"
 #include "neon/rshr_n.h"
