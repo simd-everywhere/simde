@@ -331,6 +331,15 @@
   #define SIMDE_DIAGNOSTIC_DISABLE_VECTOR_CONVERSION_
 #endif
 
+/* SLEEF triggers this a *lot* in their headers */
+#if HEDLEY_HAS_WARNING("-Wignored-qualifiers")
+  #define SIMDE_DIAGNOSTIC_DISABLE_IGNORED_QUALIFIERS_ _Pragma("clang diagnostic ignored \"-Wignored-qualifiers\"")
+#elif HEDLEY_GCC_VERSION_CHECK(4,3,0)
+  #define SIMDE_DIAGNOSTIC_DISABLE_IGNORED_QUALIFIERS_ _Pragma("GCC diagnostic ignored \"-Wignored-qualifiers\"")
+#else
+  #define SIMDE_DIAGNOSTIC_DISABLE_IGNORED_QUALIFIERS_
+#endif
+
 #define SIMDE_DISABLE_UNWANTED_DIAGNOSTICS \
   SIMDE_DIAGNOSTIC_DISABLE_PSABI_ \
   SIMDE_DIAGNOSTIC_DISABLE_NO_EMMS_INSTRUCTION_ \

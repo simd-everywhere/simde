@@ -28,21 +28,21 @@ foreach name : simde_test_x86_tests
   test('x86/' + name + '/emul/c', executable(name + '-emul-c', c_source,
       c_args: simde_c_args + simde_c_defs + simde_native_c_flags + ['-DSIMDE_NO_NATIVE', '-DSIMDE_TEST_BARE'],
       include_directories: simde_include_dir,
-      dependencies: libm),
+      dependencies: simde_deps),
     protocol: 'tap')
   test('x86/' + name + '/emul/cpp', executable(name + '-emul-cpp', cpp_source,
       cpp_args: simde_c_args + simde_c_defs + simde_native_c_flags + ['-DSIMDE_NO_NATIVE', '-DSIMDE_TEST_BARE'],
       include_directories: simde_include_dir,
-      dependencies: libm),
+      dependencies: simde_deps),
     protocol: 'tap')
   test('x86/' + name + '/native/c', executable(name + '-native-c', c_source,
       c_args: simde_c_args + simde_c_defs + simde_native_c_flags + ['-DSIMDE_TEST_BARE'],
       include_directories: simde_include_dir,
-      dependencies: libm),
+      dependencies: simde_deps),
     protocol: 'tap')
   test('x86/' + name + '/native/cpp', executable(name + '-native-cpp', cpp_source,
       cpp_args: simde_c_args + simde_c_defs + simde_native_c_flags + ['-DSIMDE_TEST_BARE'],
       include_directories: simde_include_dir,
-      dependencies: libm),
+      dependencies: simde_deps),
     protocol: 'tap')
 endforeach

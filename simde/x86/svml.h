@@ -1444,10 +1444,18 @@ simde_mm_cos_ps (simde__m128 a) {
       r_,
       a_ = simde__m128_to_private(a);
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
-      r_.f32[i] = simde_math_cosf(a_.f32[i]);
-    }
+    #if defined(SIMDE_MATH_SLEEF_ENABLE) && defined(SIMDE_X86_SSE2_NATIVE)
+      #if SIMDE_ACCURACY_PREFERENCE > 1
+        r_.f32 = Sleef_cosf4_u10(a_.f32);
+      #else
+        r_.f32 = Sleef_cosf4_u35(a_.f32);
+      #endif
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
+        r_.f32[i] = simde_math_cosf(a_.f32[i]);
+      }
+    #endif
 
     return simde__m128_from_private(r_);
   #endif

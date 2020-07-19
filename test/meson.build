@@ -25,6 +25,13 @@ simde_c_args = []
 simde_cxx_args = []
 simde_deps = [libm]
 
+if get_option('sleef').enabled() or meson.get_external_property('sleef', false)
+  sleef = cc.find_library('sleef', required: true)
+  simde_deps += sleef
+  simde_c_defs = ['-DSIMDE_MATH_SLEEF_ENABLE']
+  simde_cxx_defs = ['-DSIMDE_MATH_SLEEF_ENABLE']
+endif
+
 c_openmp_simd = false
 cxx_openmp_simd = false
 foreach omp_arg : ['-fopenmp-simd', '-qopenmp-simd']

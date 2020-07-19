@@ -34,6 +34,35 @@
 #include "hedley.h"
 #include "simde-features.h"
 
+/* SLEEF support
+ * https://sleef.org/
+ *
+ * If you include <sleef.h> prior to including SIMDe, SIMDe will use
+ * SLEEF.  You can also define SIMDE_MATH_SLEEF_ENABLE prior to
+ * including SIMDe to force the issue.
+ *
+ * Note that SLEEF does requires linking to libsleef.
+ *
+ * By default, SIMDe will use the 1 ULP functions, but if you use
+ * SIMDE_ACCURACY_PREFERENCE of 0 we will use up to 4 ULP.  This is
+ * only the case for the simde_math_* functions; for code in other
+ * SIMDe headers which calls SLEEF directly we may use functions with
+ * greater error if the API we're implementing is less precise (for
+ * example, SVML guarantees 4 ULP, so we will generally use the 3.5
+ * ULP functions from SLEEF). */
+#if !defined(SIMDE_MATH_SLEEF_DISABLE)
+  #if defined(__SLEEF_H__)
+    #define SIMDE_MATH_SLEEF_ENABLE
+  #endif
+#endif
+
+#if defined(SIMDE_MATH_SLEEF_ENABLE) && !defined(__SLEEF_H__)
+  HEDLEY_DIAGNOSTIC_PUSH
+  SIMDE_DIAGNOSTIC_DISABLE_IGNORED_QUALIFIERS_
+  #include <sleef.h>
+  HEDLEY_DIAGNOSTIC_POP
+#endif
+
 #if defined(__has_builtin)
   #define SIMDE_MATH_BUILTIN_LIBM(func) __has_builtin(__builtin_##func)
 #elif \
@@ -583,7 +612,13 @@
 #endif
 
 #if !defined(simde_math_cosf)
-  #if SIMDE_MATH_BUILTIN_LIBM(cosf)
+  #if defined(SIMDE_MATH_SLEEF_ENABLE)
+    #if SIMDE_ACCURACY_PREFERENCE < 1
+      #define simde_math_cosf(v) Sleef_cosf_u35(v)
+    #else
+      #define simde_math_cosf(v) Sleef_cosf_u10(v)
+    #endif
+  #elif SIMDE_MATH_BUILTIN_LIBM(cosf)
     #define simde_math_cosf(v) __builtin_cosf(v)
   #elif defined(SIMDE_MATH_HAVE_CMATH)
     #define simde_math_cosf(v) std::cos(v)

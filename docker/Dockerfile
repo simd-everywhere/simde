@@ -22,7 +22,7 @@ RUN \
     intel-oneapi-icc \
     qemu binfmt-support qemu-user-static \
     creduce screen htop parallel nano rsync strace \
-    npm && \
+    npm libsleef-dev && \
   for arch in `dpkg --print-foreign-architectures`; do \
     echo libc6:"${arch}" libstdc++-8-dev:"${arch}" libstdc++-9-dev:"${arch}" libstdc++-10-dev:"${arch}"; \
   done | xargs apt-get install -y && \

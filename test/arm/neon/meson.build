@@ -8,22 +8,22 @@ foreach name : simde_neon_families
     test('arm/neon/' + name + '/emul/c', executable(name + '-emul-c', c_source,
         c_args: simde_c_args + simde_c_defs + simde_native_c_flags + ['-DSIMDE_NO_NATIVE', '-DSIMDE_TEST_BARE'],
         include_directories: simde_include_dir,
-        dependencies: libm),
+        dependencies: simde_deps),
       protocol: 'tap')
     test('arm/neon/' + name + '/emul/cpp', executable(name + '-emul-cpp', cpp_source,
         cpp_args: simde_c_args + simde_c_defs + simde_native_c_flags + ['-DSIMDE_NO_NATIVE', '-DSIMDE_TEST_BARE'],
         include_directories: simde_include_dir,
-        dependencies: libm),
+        dependencies: simde_deps),
       protocol: 'tap')
     test('arm/neon/' + name + '/native/c', executable(name + '-native-c', c_source,
         c_args: simde_c_args + simde_c_defs + simde_native_c_flags + ['-DSIMDE_TEST_BARE'],
         include_directories: simde_include_dir,
-        dependencies: libm),
+        dependencies: simde_deps),
       protocol: 'tap')
     test('arm/neon/' + name + '/native/cpp', executable(name + '-native-cpp', cpp_source,
         cpp_args: simde_c_args + simde_c_defs + simde_native_c_flags + ['-DSIMDE_TEST_BARE'],
         include_directories: simde_include_dir,
-        dependencies: libm),
+        dependencies: simde_deps),
       protocol: 'tap')
   endif
 endforeach
