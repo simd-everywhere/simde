@@ -1991,10 +1991,15 @@ simde_mm_testz_si128 (simde__m128i a, simde__m128i b) {
     a_ = simde__m128i_to_private(a),
     b_ = simde__m128i_to_private(b);
 
-  for (size_t i = 0 ; i < (sizeof(a_.u64) / sizeof(a_.u64[0])) ; i++) {
-    if ((a_.u64[i] & b_.u64[i]) == 0)
-      return 1;
-  }
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    int64x2_t s64 = vandq_s64(a_.neon_i64, b_.neon_i64);
+    return !(vgetq_lane_s64(s64, 0) | vgetq_lane_s64(s64, 1));
+  #else
+    for (size_t i = 0 ; i < (sizeof(a_.u64) / sizeof(a_.u64[0])) ; i++) {
+      if ((a_.u64[i] & b_.u64[i]) == 0)
+        return 1;
+    }
+  #endif
 
   return 0;
 #endif
