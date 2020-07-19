@@ -250,7 +250,7 @@ simde_vqtbx1q_u8(simde_uint8x16_t a, simde_uint8x16_t t, simde_uint8x16_t idx) {
     return vec_sel(a, vec_perm(t, t, idx), vec_cmplt(idx, vec_splats(HEDLEY_STATIC_CAST(unsigned char, 16))));
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_v128_or(wasm_v8x16_swizzle(t, idx),
-                        wasm_v128_and(a, i8x16_gt_u(idx, wasm_i8x16_splat(15))));
+                        wasm_v128_and(a, wasm_u8x16_gt(idx, wasm_i8x16_splat(15))));
    #else
     simde_uint8x16_private
       r_,
@@ -302,8 +302,8 @@ simde_vqtbx2q_u8(simde_uint8x16_t a, simde_uint8x16x2_t t, simde_uint8x16_t idx)
     return vec_sel(a, vec_perm(t.val[0], t.val[1], idx), vec_cmplt(idx, vec_splats(HEDLEY_STATIC_CAST(unsigned char, 32))));
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_v128_or(wasm_v128_or(wasm_v8x16_swizzle(t.val[0], idx),
-                                     wasm_v8x16_swizzle(t.val[1], wasm_i8x16_sub(idx, wasm_i8x16_splat(16))))
-                        wasm_v128_and(a, i8x16_gt_u(idx, wasm_i8x16_splat(31))));
+                                     wasm_v8x16_swizzle(t.val[1], wasm_i8x16_sub(idx, wasm_i8x16_splat(16)))),
+                        wasm_v128_and(a, wasm_u8x16_gt(idx, wasm_i8x16_splat(31))));
   #else
     simde_uint8x16_private
       r_,
@@ -362,7 +362,7 @@ simde_vqtbx3q_u8(simde_uint8x16_t a, simde_uint8x16x3_t t, simde_uint8x16_t idx)
     return wasm_v128_or(wasm_v128_or(wasm_v8x16_swizzle(t.val[0], idx),
                                      wasm_v8x16_swizzle(t.val[1], wasm_i8x16_sub(idx, wasm_i8x16_splat(16)))),
                         wasm_v128_or(wasm_v8x16_swizzle(t.val[2], wasm_i8x16_sub(idx, wasm_i8x16_splat(32))),
-                                     wasm_v128_and(a, i8x16_gt_u(idx, wasm_i8x16_splat(47)))));
+                                     wasm_v128_and(a, wasm_u8x16_gt(idx, wasm_i8x16_splat(47)))));
 #else
     simde_uint8x16_private
       r_,
@@ -425,7 +425,7 @@ simde_vqtbx4q_u8(simde_uint8x16_t a, simde_uint8x16x4_t t, simde_uint8x16_t idx)
                                                   wasm_v8x16_swizzle(t.val[1], wasm_i8x16_sub(idx, wasm_i8x16_splat(16)))),
                                      wasm_v128_or(wasm_v8x16_swizzle(t.val[2], wasm_i8x16_sub(idx, wasm_i8x16_splat(32))),
                                                   wasm_v8x16_swizzle(t.val[3], wasm_i8x16_sub(idx, wasm_i8x16_splat(48))))),
-                        wasm_v128_and(a, i8x16_gt_u(idx, wasm_i8x16_splat(63))));
+                        wasm_v128_and(a, wasm_u8x16_gt(idx, wasm_i8x16_splat(63))));
   #else
     simde_uint8x16_private
       r_,
