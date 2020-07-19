@@ -335,8 +335,8 @@ simde_vqtbl3q_u8(simde_uint8x16x3_t t, simde_uint8x16_t idx) {
     __m128i r_2 = _mm_shuffle_epi8(t.val[2], idx);
     return _mm_blendv_epi8(r_01, r_2, _mm_slli_epi32(idx, 2));
   #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
-    vector unsigned char r_01 = vec_perm(t.val[0], t.val[1], idx);
-    vector unsigned char r_2 = vec_perm(t.val[2], t.val[2], idx);
+    simde_uint8x16_t r_01 = vec_perm(t.val[0], t.val[1], idx);
+    simde_uint8x16_t r_2 = vec_perm(t.val[2], t.val[2], idx);
     return vec_and(vec_sel(r_01, r_2, vec_cmpgt(idx, vec_splats(HEDLEY_STATIC_CAST(unsigned char, 31)))),
                    vec_cmplt(idx, vec_splats(HEDLEY_STATIC_CAST(unsigned char, 48))));
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
@@ -394,8 +394,8 @@ simde_vqtbl4q_u8(simde_uint8x16x4_t t, simde_uint8x16_t idx) {
     __m128i r_23 = _mm_blendv_epi8(r_2, r_3, idx_shl3);
     return _mm_blendv_epi8(r_01, r_23, _mm_slli_epi32(idx, 2));
   #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
-    vector unsigned char r_01 = vec_perm(t.val[0], t.val[1], idx);
-    vector unsigned char r_23 = vec_perm(t.val[2], t.val[3], idx);
+    simde_uint8x16_t r_01 = vec_perm(t.val[0], t.val[1], idx);
+    simde_uint8x16_t r_23 = vec_perm(t.val[2], t.val[3], idx);
     return vec_and(vec_sel(r_01, r_23, vec_cmpgt(idx, vec_splats(HEDLEY_STATIC_CAST(unsigned char, 31)))),
                    vec_cmplt(idx, vec_splats(HEDLEY_STATIC_CAST(unsigned char, 64))));
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
