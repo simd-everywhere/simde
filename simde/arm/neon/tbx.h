@@ -144,7 +144,7 @@ simde_vtbx3_u8(simde_uint8x8_t a, simde_uint8x8x3_t b, simde_uint8x8_t c) {
     c128 = _mm_or_si128(c128, _mm_cmpgt_epi8(c128, _mm_set1_epi8(23)));
     __m128i r128_01 = _mm_shuffle_epi8(_mm_set_epi64(b.val[1], b.val[0]), c128);
     __m128i r128_2  = _mm_shuffle_epi8(_mm_set1_epi64(b.val[2]), c128);
-    __m128i r128 = _mm_blendv_epi8(r128_01, r128_2, _mm_cmpgt_epi8(c128, _mm_set1_epi8(15)));
+    __m128i r128 = _mm_blendv_epi8(r128_01, r128_2, _mm_slli_epi32(c128, 3));
     r128 =  _mm_blendv_epi8(r128, a128, c128);
    return _mm_movepi64_pi64(r128);
   #else
@@ -194,7 +194,7 @@ simde_uint8x8_t
     c128 = _mm_or_si128(c128, _mm_cmpgt_epi8(c128, _mm_set1_epi8(31)));
     __m128i r128_01 = _mm_shuffle_epi8(_mm_set_epi64(b.val[1], b.val[0]), c128);
     __m128i r128_23 = _mm_shuffle_epi8(_mm_set_epi64(b.val[3], b.val[2]), c128);
-    __m128i r128 = _mm_blendv_epi8(r128_01, r128_23, _mm_cmpgt_epi8(c128, _mm_set1_epi8(15)));
+    __m128i r128 = _mm_blendv_epi8(r128_01, r128_23,  _mm_slli_epi32(c128, 3));
     r128 =  _mm_blendv_epi8(r128, a128, c128);
    return _mm_movepi64_pi64(r128);
   #else
