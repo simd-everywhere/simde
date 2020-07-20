@@ -1897,6 +1897,41 @@ simde_mm512_packus_epi32 (simde__m512i a, simde__m512i b) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m512i
+simde_mm512_sad_epu8 (simde__m512i a, simde__m512i b) {
+  #if defined(SIMDE_X86_AVX512BW_NATIVE)
+    return _mm512_sad_epu8(a, b);
+  #else
+    simde__m512i_private
+      r_,
+      a_ = simde__m512i_to_private(a),
+      b_ = simde__m512i_to_private(b);
+
+    #if SIMDE_NATURAL_VECTOR_SIZE_LE(256)
+        for (size_t i = 0 ; i < (sizeof(r_.m256i) / sizeof(r_.m256i[0])) ; i++) {
+          r_.m256i[i] = simde_mm256_sad_epu8(a_.m256i[i], b_.m256i[i]);
+        }
+    #else
+      for (size_t i = 0 ; i < (sizeof(r_.i64) / sizeof(r_.i64[0])) ; i++) {
+        uint16_t tmp = 0;
+        SIMDE_VECTORIZE_REDUCTION(+:tmp)
+        for (size_t j = 0 ; j < ((sizeof(r_.u8) / sizeof(r_.u8[0])) / 8) ; j++) {
+          const size_t e = j + (i * 8);
+          tmp += (a_.u8[e] > b_.u8[e]) ? (a_.u8[e] - b_.u8[e]) : (b_.u8[e] - a_.u8[e]);
+        }
+        r_.i64[i] = tmp;
+      }
+    #endif
+
+    return simde__m512i_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_sad_epu8
+  #define _mm512_sad_epu8(a, b) simde_mm512_sad_epu8(a, b)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512i
 simde_mm512_srli_epi16 (simde__m512i a, const int imm8)
     SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 255) {
   simde__m512i_private
@@ -1927,6 +1962,33 @@ simde_mm512_srli_epi16 (simde__m512i a, const int imm8)
 #if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
   #undef _mm512_srli_epi16
   #define _mm512_srli_epi16(a, imm8) simde_mm512_srli_epi16(a, imm8)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512i
+simde_mm512_srlv_epi16 (simde__m512i a, simde__m512i b) {
+  simde__m512i_private
+    a_ = simde__m512i_to_private(a),
+    b_ = simde__m512i_to_private(b),
+    r_;
+
+  #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+    r_.u16 = HEDLEY_STATIC_CAST(__typeof__(r_.u16), (b_.u16 < 16) & (a_.u16 >> b_.u16));
+  #else
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.u16) / sizeof(r_.u16[0])) ; i++) {
+      r_.u16[i] = (b_.u16[i] < 16) ? (a_.u16[i] >> b_.u16[i]) : 0;
+    }
+  #endif
+
+  return simde__m512i_from_private(r_);
+}
+#if defined(SIMDE_X86_AVX512BW_NATIVE)
+  #define simde_mm512_srlv_epi16(a, b) _mm512_srlv_epi16(a, b)
+#endif
+#if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_srlv_epi16
+  #define _mm512_srlv_epi16(a, b) simde_mm512_srlv_epi16(a, b)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
