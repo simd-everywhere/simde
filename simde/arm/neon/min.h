@@ -448,7 +448,7 @@ simde_int64x2_t
 simde_x_vminq_s64(simde_int64x2_t a, simde_int64x2_t b) {
   #if defined(SIMDE_X86_AVX512VL_NATIVE)
     return _mm_min_epi64(a, b);
-  #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
+  #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
     return vec_min(a, b);
   #elif SIMDE_NATURAL_VECTOR_SIZE > 0
     return simde_vbslq_s64(simde_vcgtq_s64(b, a), a, b);
@@ -566,7 +566,7 @@ simde_vminq_u32(simde_uint32x4_t a, simde_uint32x4_t b) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_uint64x2_t
 simde_x_vminq_u64(simde_uint64x2_t a, simde_uint64x2_t b) {
-  #if defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
+  #if defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
     return vec_min(a, b);
   #elif SIMDE_NATURAL_VECTOR_SIZE > 0
     return simde_vbslq_u64(simde_vcgtq_u64(b, a), a, b);
