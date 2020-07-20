@@ -1924,14 +1924,19 @@ simde_mm_testc_si128 (simde__m128i a, simde__m128i b) {
     a_ = simde__m128i_to_private(a),
     b_ = simde__m128i_to_private(b);
 
-  int_fast32_t r = 0;
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    int64x2_t s64 = vandq_s64(~a_.neon_i64, b_.neon_i64);
+    return !(vgetq_lane_s64(s64, 0) & vgetq_lane_s64(s64, 1));
+  #else
+    int_fast32_t r = 0;
 
-  SIMDE_VECTORIZE_REDUCTION(|:r)
-  for (size_t i = 0 ; i < (sizeof(a_.i32f) / sizeof(a_.i32f[0])) ; i++) {
-    r |= ~a_.i32f[i] & b_.i32f[i];
-  }
+    SIMDE_VECTORIZE_REDUCTION(|:r)
+    for (size_t i = 0 ; i < (sizeof(a_.i32f) / sizeof(a_.i32f[0])) ; i++) {
+      r |= ~a_.i32f[i] & b_.i32f[i];
+    }
 
-  return HEDLEY_STATIC_CAST(int, !r);
+    return HEDLEY_STATIC_CAST(int, !r);
+  #endif
 #endif
 }
 #if defined(SIMDE_X86_SSE4_1_ENABLE_NATIVE_ALIASES)
