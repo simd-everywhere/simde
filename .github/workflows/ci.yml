@@ -143,6 +143,72 @@ jobs:
       with:
         file: ./build/meson-logs/coverage.xml
 
+  sleef:
+    runs-on: ubuntu-20.04
+    env:
+      CFLAGS: -march=native -Wall -Wextra -Werror
+      CXXFLAGS: -march=native -Wall -Wextra -Werror
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: recursive
+    - name: Install APT Dependencies
+      run: sudo add-apt-repository 'ppa:ubuntu-toolchain-r/test' && sudo apt-get update && sudo apt-get install -y ninja-build ninja-build python3-pip python3-setuptools python3-wheel parallel gcovr libsleef-dev
+    - name: Install pip Dependencies
+      run: pip3 install meson
+    - name: Configure
+      run: ~/.local/bin/meson setup build -Dsleef=enabled -Db_coverage=true
+    - name: Build
+      run: ninja -C build -v
+    - name: Test
+      run: ninja -C build -v test
+    - name: Coverage Report
+      run: ninja -C build -v coverage-xml
+    - name: CodeCov.io
+      uses: codecov/codecov-action@v1
+      with:
+        file: ./build/meson-logs/coverage.xml
+
+  sleef-SDE:
+    runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        arch: ["icelake-server"]
+    env:
+      CC: clang
+      CXX: clang++
+      CFLAGS: -march=icelake-server -Wall -Wextra -Werror
+      CXXFLAGS: -march=icelake-server -Wall -Wextra -Werror
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: recursive
+    - name: Install APT Dependencies
+      run: sudo add-apt-repository 'ppa:ubuntu-toolchain-r/test' && sudo apt-get update && sudo apt-get install -y ninja-build ninja-build python3-pip python3-setuptools python3-wheel parallel gcovr libsleef-dev
+    - name: Install pip Dependencies
+      run: pip3 install meson
+    - name: Download SDE
+      run: ./test/download-sde.sh ~/sde
+    - name: Configure
+      run: ~/.local/bin/meson setup build -Dsleef=enabled -Db_coverage=true
+    - name: Build
+      run: ninja -C build -v
+    - name: Test
+      run: |
+        for isax in gfni avx512dq; do
+          for native in native emul; do
+            for lang in c cpp; do
+              ~/sde/sde64 -- sh -xc ./build/test/x86/"${isax}-${native}-${lang}" || exit 1
+            done
+          done
+        done
+    - name: Coverage Report
+      run: ninja -C build -v coverage-xml
+    - name: CodeCov.io
+      uses: codecov/codecov-action@v1
+      with:
+        file: ./build/meson-logs/coverage.xml
+
   ubuntu-xenial:
     runs-on: ubuntu-16.04
     env:
