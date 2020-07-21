@@ -3006,80 +3006,6 @@ simde_mm512_mask_erfc_pd(simde__m512d src, simde__mmask8 k, simde__m512d a) {
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
-simde__m512
-simde_mm512_erfcinv_ps (simde__m512 a) {
-  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX512F_NATIVE)
-    return _mm512_erfcinv_ps(a);
-  #else
-    simde__m512_private
-      r_,
-      a_ = simde__m512_to_private(a);
-
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
-      r_.f32[i] = simde_math_erfcinvf(a_.f32[i]);
-    }
-
-    return simde__m512_from_private(r_);
-  #endif
-}
-#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
-  #undef _mm512_erfcinv_ps
-  #define _mm512_erfcinv_ps(a) simde_mm512_erfcinv_ps(a)
-#endif
-
-SIMDE_FUNCTION_ATTRIBUTES
-simde__m512d
-simde_mm512_erfcinv_pd (simde__m512d a) {
-  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX512F_NATIVE)
-    return _mm512_erfcinv_pd(a);
-  #else
-    simde__m512d_private
-      r_,
-      a_ = simde__m512d_to_private(a);
-
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
-      r_.f64[i] = simde_math_erfcinv(a_.f64[i]);
-    }
-
-    return simde__m512d_from_private(r_);
-  #endif
-}
-#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
-  #undef _mm512_erfcinv_pd
-  #define _mm512_erfcinv_pd(a) simde_mm512_erfcinv_pd(a)
-#endif
-
-SIMDE_FUNCTION_ATTRIBUTES
-simde__m512
-simde_mm512_mask_erfcinv_ps(simde__m512 src, simde__mmask16 k, simde__m512 a) {
-  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX512F_NATIVE)
-    return _mm512_mask_erfcinv_ps(src, k, a);
-  #else
-    return simde_mm512_mask_mov_ps(src, k, simde_mm512_erfcinv_ps(a));
-  #endif
-}
-#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
-  #undef _mm512_mask_erfcinv_ps
-  #define _mm512_mask_erfcinv_ps(src, k, a) simde_mm512_mask_erfcinv_ps(src, k, a)
-#endif
-
-SIMDE_FUNCTION_ATTRIBUTES
-simde__m512d
-simde_mm512_mask_erfcinv_pd(simde__m512d src, simde__mmask8 k, simde__m512d a) {
-  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX512F_NATIVE)
-    return _mm512_mask_erfcinv_pd(src, k, a);
-  #else
-    return simde_mm512_mask_mov_pd(src, k, simde_mm512_erfcinv_pd(a));
-  #endif
-}
-#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
-  #undef _mm512_mask_erfcinv_pd
-  #define _mm512_mask_erfcinv_pd(src, k, a) simde_mm512_mask_erfcinv_pd(src, k, a)
-#endif
-
-SIMDE_FUNCTION_ATTRIBUTES
 simde__m128
 simde_mm_exp_ps (simde__m128 a) {
   #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE_NATIVE)
@@ -6250,6 +6176,320 @@ simde_mm256_erfcinv_pd (simde__m256d a) {
 #if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
   #undef _mm256_erfcinv_pd
   #define _mm256_erfcinv_pd(a) simde_mm256_erfcinv_pd(a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512
+simde_mm512_erfcinv_ps (simde__m512 a) {
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX512F_NATIVE)
+    return _mm512_erfcinv_ps(a);
+  #elif SIMDE_NATURAL_VECTOR_SIZE_LE(256)
+    simde__m512_private
+      r_,
+      a_ = simde__m512_to_private(a);
+
+    for (size_t i = 0 ; i < (sizeof(r_.m256) / sizeof(r_.m256[0])) ; i++) {
+      r_.m256[i] = simde_mm256_erfcinv_ps(a_.m256[i]);
+    }
+    return simde__m512_from_private(r_);
+  #else
+    simde__m512 retval = simde_mm512_setzero_ps();
+    simde__mmask16 matched;
+
+    { /* if (a < 2.0f && a > 0.0625f) */
+      matched =  simde_mm512_cmp_ps_mask(a, simde_mm512_set1_ps(SIMDE_FLOAT32_C(2.0)), SIMDE_CMP_LT_OQ);
+      matched &= simde_mm512_cmp_ps_mask(a, simde_mm512_set1_ps(SIMDE_FLOAT32_C(0.0625)), SIMDE_CMP_GT_OQ);
+
+      if (matched != 0) {
+        retval = simde_mm512_erfinv_ps(simde_mm512_sub_ps(simde_mm512_set1_ps(SIMDE_FLOAT32_C(1.0)), a));
+      }
+
+      if (matched == 1) {
+        return retval;
+      }
+    }
+
+    { /* else if (a < 0.0625f && a > 0.0f) */
+      simde__mmask16 mask = simde_mm512_cmp_ps_mask(a, simde_mm512_set1_ps(SIMDE_FLOAT32_C(0.0625)), SIMDE_CMP_LT_OQ);
+      mask &= simde_mm512_cmp_ps_mask(a, simde_mm512_set1_ps(SIMDE_FLOAT32_C(0.0)), SIMDE_CMP_GT_OQ);
+      mask = ~matched & mask;
+
+      if (mask != 0) {
+        matched = matched | mask;
+
+        /* t =  1/(sqrt(-log(a))) */
+        simde__m512 t = simde_x_mm512_negate_ps(simde_mm512_log_ps(a));
+        t = simde_mm512_sqrt_ps(t);
+        t = simde_mm512_div_ps(simde_mm512_set1_ps(SIMDE_FLOAT32_C(1.0)), t);
+
+        const simde__m512 p[] = {
+          simde_mm512_set1_ps(SIMDE_FLOAT32_C( 0.1550470003116)),
+          simde_mm512_set1_ps(SIMDE_FLOAT32_C( 1.382719649631)),
+          simde_mm512_set1_ps(SIMDE_FLOAT32_C( 0.690969348887)),
+          simde_mm512_set1_ps(SIMDE_FLOAT32_C(-1.128081391617)),
+          simde_mm512_set1_ps(SIMDE_FLOAT32_C( 0.680544246825)),
+          simde_mm512_set1_ps(SIMDE_FLOAT32_C(-0.16444156791))
+        };
+
+        const simde__m512 q[] = {
+          simde_mm512_set1_ps(SIMDE_FLOAT32_C( 0.155024849822)),
+          simde_mm512_set1_ps(SIMDE_FLOAT32_C( 1.385228141995)),
+          simde_mm512_set1_ps(SIMDE_FLOAT32_C( 1.000000000000))
+        };
+
+        /* float numerator = p[0] / t + p[1] + t * (p[2] + t * (p[3] + t * (p[4] + t * p[5])))) */
+        simde__m512 numerator = simde_mm512_fmadd_ps(p[5], t, p[4]);
+        numerator = simde_mm512_fmadd_ps(numerator, t, p[3]);
+        numerator = simde_mm512_fmadd_ps(numerator, t, p[2]);
+        numerator = simde_mm512_fmadd_ps(numerator, t, p[1]);
+        numerator = simde_mm512_add_ps(numerator, simde_mm512_div_ps(p[0], t));
+
+        /* float denominator = (q[0] + t * (q[1] + t * (q[2]))) */
+        simde__m512 denominator = simde_mm512_fmadd_ps(q[2], t, q[1]);
+        denominator = simde_mm512_fmadd_ps(denominator, t, q[0]);
+
+        simde__m512 res = simde_mm512_div_ps(numerator, denominator);
+
+        retval = simde_mm512_or_ps(retval, simde_mm512_maskz_mov_ps(mask, res));
+      }
+    }
+
+    { /* else if (a < 0.0f) */
+      simde__mmask16 mask = simde_mm512_cmp_ps_mask(a, simde_mm512_set1_ps(SIMDE_FLOAT32_C(0.0)), SIMDE_CMP_LT_OQ);
+      mask = ~matched & mask;
+
+      if (mask != 0) {
+        matched = matched | mask;
+
+        /* t =  1/(sqrt(-log(a))) */
+        simde__m512 t = simde_x_mm512_negate_ps(simde_mm512_log_ps(a));
+        t = simde_mm512_sqrt_ps(t);
+        t = simde_mm512_div_ps(simde_mm512_set1_ps(SIMDE_FLOAT32_C(1.0)), t);
+
+        const simde__m512 p[] = {
+          simde_mm512_set1_ps(SIMDE_FLOAT32_C( 0.00980456202915)),
+          simde_mm512_set1_ps(SIMDE_FLOAT32_C( 0.36366788917100)),
+          simde_mm512_set1_ps(SIMDE_FLOAT32_C( 0.97302949837000)),
+          simde_mm512_set1_ps(SIMDE_FLOAT32_C( -0.5374947401000))
+        };
+
+        const simde__m512 q[] = {
+          simde_mm512_set1_ps(SIMDE_FLOAT32_C( 0.00980451277802)),
+          simde_mm512_set1_ps(SIMDE_FLOAT32_C( 0.36369997154400)),
+          simde_mm512_set1_ps(SIMDE_FLOAT32_C( 1.00000000000000))
+        };
+
+        /* float numerator = (p[0] / t + p[1] + t * (p[2] + t * p[3])) */
+        simde__m512 numerator = simde_mm512_fmadd_ps(p[3], t, p[2]);
+        numerator = simde_mm512_fmadd_ps(numerator, t, p[1]);
+        numerator = simde_mm512_add_ps(numerator, simde_mm512_div_ps(p[0], t));
+
+        /* float denominator = (q[0] + t * (q[1] + t * (q[2]))) */
+        simde__m512 denominator = simde_mm512_fmadd_ps(q[2], t, q[1]);
+        denominator = simde_mm512_fmadd_ps(denominator, t, q[0]);
+
+        simde__m512 res = simde_mm512_div_ps(numerator, denominator);
+
+        retval = simde_mm512_or_ps(retval, simde_mm512_maskz_mov_ps(mask, res));
+
+        if (matched == 1) {
+          return retval;
+        }
+      }
+    }
+
+    { /* else if (a == 0.0f) */
+      simde__mmask16 mask = simde_mm512_cmp_ps_mask(a, simde_mm512_set1_ps(SIMDE_FLOAT32_C(0.0)), SIMDE_CMP_EQ_OQ);
+      mask = ~matched & mask;
+      matched = matched | mask;
+
+      simde__m512 res = simde_mm512_set1_ps(SIMDE_MATH_INFINITYF);
+
+      retval = simde_mm512_or_ps(retval, simde_mm512_maskz_mov_ps(mask, res));
+    }
+
+    { /* else */
+      /* (a >= 2.0f) */
+      retval = simde_mm512_or_ps(retval, simde_mm512_maskz_mov_ps(~matched, simde_mm512_set1_ps(-SIMDE_MATH_INFINITYF)));
+    }
+
+    return retval;
+  #endif
+}
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_erfcinv_ps
+  #define _mm512_erfcinv_ps(a) simde_mm512_erfcinv_ps(a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512d
+simde_mm512_erfcinv_pd (simde__m512d a) {
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX512F_NATIVE)
+    return _mm512_erfcinv_pd(a);
+  #elif SIMDE_NATURAL_VECTOR_SIZE_LE(256)
+    simde__m512d_private
+      r_,
+      a_ = simde__m512d_to_private(a);
+
+    for (size_t i = 0 ; i < (sizeof(r_.m256d) / sizeof(r_.m256d[0])) ; i++) {
+      r_.m256d[i] = simde_mm256_erfcinv_pd(a_.m256d[i]);
+    }
+    return simde__m512d_from_private(r_);
+  #else
+    simde__m512d retval = simde_mm512_setzero_pd();
+    simde__mmask8 matched;
+
+    { /* if (a < 2.0f && a > 0.0625f) */
+      matched =  simde_mm512_cmp_pd_mask(a, simde_mm512_set1_pd(SIMDE_FLOAT64_C(2.0)), SIMDE_CMP_LT_OQ);
+      matched &= simde_mm512_cmp_pd_mask(a, simde_mm512_set1_pd(SIMDE_FLOAT64_C(0.0625)), SIMDE_CMP_GT_OQ);
+
+      if (matched != 0) {
+        retval = simde_mm512_erfinv_pd(simde_mm512_sub_pd(simde_mm512_set1_pd(SIMDE_FLOAT64_C(1.0)), a));
+      }
+
+      if (matched == 1) {
+        return retval;
+      }
+    }
+
+    { /* else if (a < 0.0625f && a > 0.0f) */
+      simde__mmask8 mask = simde_mm512_cmp_pd_mask(a, simde_mm512_set1_pd(SIMDE_FLOAT64_C(0.0625)), SIMDE_CMP_LT_OQ);
+      mask &= simde_mm512_cmp_pd_mask(a, simde_mm512_set1_pd(SIMDE_FLOAT64_C(0.0)), SIMDE_CMP_GT_OQ);
+      mask = ~matched & mask;
+
+      if (mask != 0) {
+        matched = matched | mask;
+
+        /* t =  1/(sqrt(-log(a))) */
+        simde__m512d t = simde_x_mm512_negate_pd(simde_mm512_log_pd(a));
+        t = simde_mm512_sqrt_pd(t);
+        t = simde_mm512_div_pd(simde_mm512_set1_pd(SIMDE_FLOAT64_C(1.0)), t);
+
+        const simde__m512d p[] = {
+          simde_mm512_set1_pd(SIMDE_FLOAT64_C( 0.1550470003116)),
+          simde_mm512_set1_pd(SIMDE_FLOAT64_C( 1.382719649631)),
+          simde_mm512_set1_pd(SIMDE_FLOAT64_C( 0.690969348887)),
+          simde_mm512_set1_pd(SIMDE_FLOAT64_C(-1.128081391617)),
+          simde_mm512_set1_pd(SIMDE_FLOAT64_C( 0.680544246825)),
+          simde_mm512_set1_pd(SIMDE_FLOAT64_C(-0.16444156791))
+        };
+
+        const simde__m512d q[] = {
+          simde_mm512_set1_pd(SIMDE_FLOAT64_C( 0.155024849822)),
+          simde_mm512_set1_pd(SIMDE_FLOAT64_C( 1.385228141995)),
+          simde_mm512_set1_pd(SIMDE_FLOAT64_C( 1.000000000000))
+        };
+
+        /* float numerator = p[0] / t + p[1] + t * (p[2] + t * (p[3] + t * (p[4] + t * p[5])))) */
+        simde__m512d numerator = simde_mm512_fmadd_pd(p[5], t, p[4]);
+        numerator = simde_mm512_fmadd_pd(numerator, t, p[3]);
+        numerator = simde_mm512_fmadd_pd(numerator, t, p[2]);
+        numerator = simde_mm512_fmadd_pd(numerator, t, p[1]);
+        numerator = simde_mm512_add_pd(numerator, simde_mm512_div_pd(p[0], t));
+
+        /* float denominator = (q[0] + t * (q[1] + t * (q[2]))) */
+        simde__m512d denominator = simde_mm512_fmadd_pd(q[2], t, q[1]);
+        denominator = simde_mm512_fmadd_pd(denominator, t, q[0]);
+
+        simde__m512d res = simde_mm512_div_pd(numerator, denominator);
+
+        retval = simde_mm512_or_pd(retval, simde_mm512_maskz_mov_pd(mask, res));
+      }
+    }
+
+    { /* else if (a < 0.0f) */
+      simde__mmask8 mask = simde_mm512_cmp_pd_mask(a, simde_mm512_set1_pd(SIMDE_FLOAT64_C(0.0)), SIMDE_CMP_LT_OQ);
+      mask = ~matched & mask;
+
+      if (mask != 0) {
+        matched = matched | mask;
+
+        /* t =  1/(sqrt(-log(a))) */
+        simde__m512d t = simde_x_mm512_negate_pd(simde_mm512_log_pd(a));
+        t = simde_mm512_sqrt_pd(t);
+        t = simde_mm512_div_pd(simde_mm512_set1_pd(SIMDE_FLOAT64_C(1.0)), t);
+
+        const simde__m512d p[] = {
+          simde_mm512_set1_pd(SIMDE_FLOAT64_C( 0.00980456202915)),
+          simde_mm512_set1_pd(SIMDE_FLOAT64_C( 0.36366788917100)),
+          simde_mm512_set1_pd(SIMDE_FLOAT64_C( 0.97302949837000)),
+          simde_mm512_set1_pd(SIMDE_FLOAT64_C( -0.5374947401000))
+        };
+
+        const simde__m512d q[] = {
+          simde_mm512_set1_pd(SIMDE_FLOAT64_C( 0.00980451277802)),
+          simde_mm512_set1_pd(SIMDE_FLOAT64_C( 0.36369997154400)),
+          simde_mm512_set1_pd(SIMDE_FLOAT64_C( 1.00000000000000))
+        };
+
+        /* float numerator = (p[0] / t + p[1] + t * (p[2] + t * p[3])) */
+        simde__m512d numerator = simde_mm512_fmadd_pd(p[3], t, p[2]);
+        numerator = simde_mm512_fmadd_pd(numerator, t, p[1]);
+        numerator = simde_mm512_add_pd(numerator, simde_mm512_div_pd(p[0], t));
+
+        /* float denominator = (q[0] + t * (q[1] + t * (q[2]))) */
+        simde__m512d denominator = simde_mm512_fmadd_pd(q[2], t, q[1]);
+        denominator = simde_mm512_fmadd_pd(denominator, t, q[0]);
+
+        simde__m512d res = simde_mm512_div_pd(numerator, denominator);
+
+        retval = simde_mm512_or_pd(retval, simde_mm512_maskz_mov_pd(mask, res));
+
+        if (matched == 1) {
+          return retval;
+        }
+      }
+    }
+
+    { /* else if (a == 0.0f) */
+      simde__mmask8 mask = simde_mm512_cmp_pd_mask(a, simde_mm512_set1_pd(SIMDE_FLOAT64_C(0.0)), SIMDE_CMP_EQ_OQ);
+      mask = ~matched & mask;
+      matched = matched | mask;
+
+      simde__m512d res = simde_mm512_set1_pd(SIMDE_MATH_INFINITY);
+
+      retval = simde_mm512_or_pd(retval, simde_mm512_maskz_mov_pd(mask, res));
+    }
+
+    { /* else */
+      /* (a >= 2.0f) */
+      retval = simde_mm512_or_pd(retval, simde_mm512_maskz_mov_pd(~matched, simde_mm512_set1_pd(-SIMDE_MATH_INFINITY)));
+    }
+
+    return retval;
+  #endif
+}
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_erfcinv_pd
+  #define _mm512_erfcinv_pd(a) simde_mm512_erfcinv_pd(a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512
+simde_mm512_mask_erfcinv_ps(simde__m512 src, simde__mmask16 k, simde__m512 a) {
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX512F_NATIVE)
+    return _mm512_mask_erfcinv_ps(src, k, a);
+  #else
+    return simde_mm512_mask_mov_ps(src, k, simde_mm512_erfcinv_ps(a));
+  #endif
+}
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_mask_erfcinv_ps
+  #define _mm512_mask_erfcinv_ps(src, k, a) simde_mm512_mask_erfcinv_ps(src, k, a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512d
+simde_mm512_mask_erfcinv_pd(simde__m512d src, simde__mmask8 k, simde__m512d a) {
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX512F_NATIVE)
+    return _mm512_mask_erfcinv_pd(src, k, a);
+  #else
+    return simde_mm512_mask_mov_pd(src, k, simde_mm512_erfcinv_pd(a));
+  #endif
+}
+#if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_mask_erfcinv_pd
+  #define _mm512_mask_erfcinv_pd(src, k, a) simde_mm512_mask_erfcinv_pd(src, k, a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
