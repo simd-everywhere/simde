@@ -1019,6 +1019,7 @@ simde_mm256_bsrli_epi128 (simde__m256i a, const int imm8)
   return simde__m256i_from_private(r_);
 }
 #if defined(SIMDE_X86_AVX2_NATIVE) && \
+    (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(4,8,0)) && \
     SIMDE_DETECT_CLANG_VERSION_NOT(3,7,0)
   #define simde_mm256_bsrli_epi128(a, imm8) _mm256_bsrli_epi128(a, imm8)
 #endif
