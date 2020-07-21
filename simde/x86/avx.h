@@ -4991,7 +4991,9 @@ simde_mm256_setr_pd (simde_float64  e3, simde_float64  e2, simde_float64  e1, si
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m256
 simde_mm256_setr_m128 (simde__m128 lo, simde__m128 hi) {
-  #if defined(SIMDE_X86_AVX_NATIVE) && !defined(SIMDE_BUG_GCC_REV_247851)
+  #if defined(SIMDE_X86_AVX_NATIVE) && \
+      !defined(SIMDE_BUG_GCC_REV_247851) && \
+      SIMDE_DETECT_CLANG_VERSION_NOT(3,6,0)
     return _mm256_setr_m128(lo, hi);
   #else
     return simde_mm256_set_m128(hi, lo);
@@ -5006,7 +5008,9 @@ simde_mm256_setr_m128 (simde__m128 lo, simde__m128 hi) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m256d
 simde_mm256_setr_m128d (simde__m128d lo, simde__m128d hi) {
-  #if defined(SIMDE_X86_AVX_NATIVE) && !defined(SIMDE_BUG_GCC_REV_247851)
+  #if defined(SIMDE_X86_AVX_NATIVE) && \
+      !defined(SIMDE_BUG_GCC_REV_247851) && \
+      SIMDE_DETECT_CLANG_VERSION_NOT(3,6,0)
     return _mm256_setr_m128d(lo, hi);
   #else
     return simde_mm256_set_m128d(hi, lo);
@@ -5021,7 +5025,9 @@ simde_mm256_setr_m128d (simde__m128d lo, simde__m128d hi) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m256i
 simde_mm256_setr_m128i (simde__m128i lo, simde__m128i hi) {
-  #if defined(SIMDE_X86_AVX_NATIVE) && !defined(SIMDE_BUG_GCC_REV_247851)
+  #if defined(SIMDE_X86_AVX_NATIVE) && \
+      !defined(SIMDE_BUG_GCC_REV_247851) && \
+      SIMDE_DETECT_CLANG_VERSION_NOT(3,6,0)
     return _mm256_setr_m128i(lo, hi);
   #else
     return simde_mm256_set_m128i(hi, lo);
