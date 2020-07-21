@@ -924,7 +924,8 @@ simde_mm256_broadcastsd_pd (simde__m128d a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m256i
 simde_mm256_broadcastsi128_si256 (simde__m128i a) {
-#if defined(SIMDE_X86_AVX2_NATIVE)
+#if defined(SIMDE_X86_AVX2_NATIVE) && \
+    (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(4,8,0))
   return _mm256_broadcastsi128_si256(a);
 #else
   simde__m256i_private r_;
