@@ -93,7 +93,8 @@ simde_mm_fmadd_ps (simde__m128 a, simde__m128 b, simde__m128 c) {
     return _mm_fmadd_ps(a, b, c);
   #elif \
       defined(SIMDE_POWER_ALTIVEC_P6_NATIVE) || \
-      defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+      defined(SIMDE_ARM_NEON_A32V7_NATIVE) || \
+      defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     simde__m128_private
       a_ = simde__m128_to_private(a),
       b_ = simde__m128_to_private(b),
@@ -102,6 +103,8 @@ simde_mm_fmadd_ps (simde__m128 a, simde__m128 b, simde__m128 c) {
 
     #if defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
       r_.altivec_f32 = vec_madd(a_.altivec_f32, b_.altivec_f32, c_.altivec_f32);
+    #elif defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+      r_.neon_f32 = vfmaq_f32(c_.neon_f32, b_.neon_f32, a_.neon_f32);
     #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       r_.neon_f32 = vmlaq_f32(c_.neon_f32, b_.neon_f32, a_.neon_f32);
     #else
