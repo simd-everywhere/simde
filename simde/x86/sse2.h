@@ -1432,6 +1432,8 @@ simde__m128i
 simde_mm_castpd_si128 (simde__m128d a) {
   #if defined(SIMDE_X86_SSE2_NATIVE)
     return _mm_castpd_si128(a);
+  #elif defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+    return vreinterpretq_s64_f64(a);
   #else
     simde__m128i r;
     simde_memcpy(&r, &a, sizeof(a));
