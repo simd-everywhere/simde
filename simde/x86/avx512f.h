@@ -269,10 +269,9 @@ typedef union {
   typedef __m512 simde__m512;
   typedef __m512i simde__m512i;
   typedef __m512d simde__m512d;
+
   typedef __mmask8 simde__mmask8;
   typedef __mmask16 simde__mmask16;
-  typedef __mmask32 simde__mmask32;
-  typedef __mmask64 simde__mmask64;
 #else
  #if defined(SIMDE_VECTOR_SUBSCRIPT)
    typedef simde_float32 simde__m512  SIMDE_AVX512_ALIGN SIMDE_VECTOR(64) SIMDE_MAY_ALIAS;
@@ -286,9 +285,22 @@ typedef union {
 
   typedef uint8_t simde__mmask8;
   typedef uint16_t simde__mmask16;
-  typedef uint32_t simde__mmask32;
-  typedef uint64_t simde__mmask64;
 #endif
+
+/* These are really part of AVX-512VL / AVX-512BW (in GCC __mmask32 is
+ * in avx512vlintrin.h and __mmask64 is in avx512bwintrin.h, in clang
+ * both are in avx512bwintrin.h), not AVX-512F.  However, we don't have
+ * a good (not-compiler-specific) way to detect if these headers have
+ * been included.  In compilers which support AVX-512F but not
+ * AVX-512BW/VL (e.g., GCC 4.9) we these typedefs since __mmask{32,64)
+ * won't exist.
+ *
+ * AFAICT __mmask{32,64} are always just typedefs to uint{32,64}_t
+ * in all compilers, so it's safe to use these instead of typedefs to
+ * __mmask{16,32}. If you run into a problem with this please file an
+ * issue and we'll try to figure out a work-around. */
+typedef uint32_t simde__mmask32;
+typedef uint64_t simde__mmask64;
 
 #if !defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_ENABLE_NATIVE_ALIASES)
   #if !defined(HEDLEY_INTEL_VERSION)
