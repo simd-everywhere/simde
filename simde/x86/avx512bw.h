@@ -1932,6 +1932,63 @@ simde_mm512_sad_epu8 (simde__m512i a, simde__m512i b) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m512i
+simde_mm512_slli_epi16 (simde__m512i a, const int imm8)
+    SIMDE_REQUIRE_RANGE(imm8, 0, 255) {
+  simde__m512i_private
+    r_,
+    a_ = simde__m512i_to_private(a);
+
+  #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+    if(imm8 < 16)
+      r_.i16 = HEDLEY_STATIC_CAST(__typeof__(r_.i16), (a_.i16 << HEDLEY_STATIC_CAST(int16_t, imm8)));
+    else
+      return simde_mm512_setzero_si512();
+  #else
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.i16) / sizeof(r_.i16[0])) ; i++) {
+      r_.i16[i] = (imm8 < 16) ? HEDLEY_STATIC_CAST(int16_t, a_.i16[i] << (imm8 & 0xff)) : 0;
+    }
+  #endif
+
+  return simde__m512i_from_private(r_);
+}
+#if defined(SIMDE_X86_AVX512BW_NATIVE)
+  #define simde_mm512_slli_epi16(a, imm8) _mm512_slli_epi16(a, imm8)
+#endif
+#if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_slli_epi16
+  #define _mm512_slli_epi16(a, imm8) simde_mm512_slli_epi16(a, imm8)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512i
+simde_mm512_sllv_epi16 (simde__m512i a, simde__m512i b) {
+  simde__m512i_private
+    a_ = simde__m512i_to_private(a),
+    b_ = simde__m512i_to_private(b),
+    r_;
+
+  #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+    r_.u16 = HEDLEY_STATIC_CAST(__typeof__(r_.u16), (b_.u16 < 16) & (a_.u16 << b_.u16));
+  #else
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.u16) / sizeof(r_.u16[0])) ; i++) {
+      r_.u16[i] = (b_.u16[i] < 16) ? HEDLEY_STATIC_CAST(uint16_t, (a_.u16[i] << b_.u16[i])) : 0;
+    }
+  #endif
+
+  return simde__m512i_from_private(r_);
+}
+#if defined(SIMDE_X86_AVX512BW_NATIVE)
+  #define simde_mm512_sllv_epi16(a, b) _mm512_sllv_epi16(a, b)
+#endif
+#if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_sllv_epi16
+  #define _mm512_sllv_epi16(a, b) simde_mm512_sllv_epi16(a, b)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512i
 simde_mm512_srli_epi16 (simde__m512i a, const int imm8)
     SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 255) {
   simde__m512i_private

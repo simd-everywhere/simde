@@ -4191,7 +4191,7 @@ simde_mm256_sll_epi64 (simde__m256i a, simde__m128i count) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m256i
 simde_mm256_slli_epi16 (simde__m256i a, const int imm8)
-    SIMDE_REQUIRE_RANGE(imm8, 0, 15) {
+    SIMDE_REQUIRE_RANGE(imm8, 0, 255) {
   /* Note: There is no consistency in how compilers handle values outside of
      the expected range, hence the discrepancy between what we allow and what
      Intel specifies.  Some compilers will return 0, others seem to just mask
