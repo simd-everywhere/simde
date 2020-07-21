@@ -69,14 +69,18 @@
 #    define SIMDE_DETECT_CLANG_VERSION 70000
 #  elif __has_warning("-Wpragma-pack")
 #    define SIMDE_DETECT_CLANG_VERSION 60000
-#  elif __has_warning("-Wasm-ignored-qualifier")
+#  elif __has_warning("-Wbitfield-enum-conversion")
 #    define SIMDE_DETECT_CLANG_VERSION 50000
 #  elif __has_attribute(diagnose_if)
 #    define SIMDE_DETECT_CLANG_VERSION 40000
-#  elif __has_warning("-Wcomma")
+#  elif __has_warning("-Wcast-calling-convention")
 #    define SIMDE_DETECT_CLANG_VERSION 30900
-#  elif __has_warning("-Wmicrosoft")
+#  elif __has_warning("-WCL4")
 #    define SIMDE_DETECT_CLANG_VERSION 30800
+#  elif __has_warning("-WIndependentClass-attribute")
+#    define SIMDE_DETECT_CLANG_VERSION 30700
+#  elif __has_warning("-Wambiguous-ellipsis")
+#    define SIMDE_DETECT_CLANG_VERSION 30600
 #  else
 #    define SIMDE_DETECT_CLANG_VERSION 1
 #  endif
