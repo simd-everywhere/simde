@@ -232,6 +232,31 @@ jobs:
     - name: Test
       run: ninja -C test/build -v test
 
+  xenial-clang:
+    runs-on: ubuntu-16.04
+    strategy:
+      matrix:
+        version: ["3.5", "3.9", "6.0"]
+    env:
+      CC: clang-${{ matrix.version }}
+      CXX: clang++-${{ matrix.version }}
+      CFLAGS: -mavx2 -Wall -Wextra -Werror
+      CXXFLAGS: -mavx2 -Wall -Wextra -Werror
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: recursive
+    - name: apt-cache search clang
+      run: sudo add-apt-repository ppa:ubuntu-toolchain-r/test && sudo apt-get update && apt-cache search clang
+    - name: Install APT Dependencies
+      run: sudo add-apt-repository ppa:ubuntu-toolchain-r/test && sudo apt-get update && sudo apt-get -yq install ninja-build parallel clang-${{ matrix.version }}
+    - name: Configure
+      run: mkdir test/build && cd test/build && cmake -G Ninja ..
+    - name: Build
+      run: ninja -C test/build -v
+    - name: Test
+      run: ninja -C test/build -v test
+
   macos:
     runs-on: macos-latest
     strategy:

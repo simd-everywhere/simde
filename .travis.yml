@@ -49,21 +49,6 @@ jobs:
         packages:
         - clang-10
 
-  - name: "clang-3.8"
-    if: branch != master OR type == pull_request
-    compiler: clang-3.8
-    dist: xenial
-    env:
-    - C_COMPILER=clang-3.8
-    - CXX_COMPILER=clang++-3.8
-    - DIAGNOSTIC_FLAGS='-Weverything -Werror -Wno-c++98-compat-pedantic -Wno-newline-eof'
-    - ARCH_FLAGS='-mavx2'
-    addons:
-      apt:
-        packages:
-        - clang-3.8
-        - libc++-dev
-
   - name: "gcc-8 x86"
     if: branch != master OR type == pull_request
     arch: amd64
