@@ -209,9 +209,14 @@ jobs:
       with:
         file: ./build/meson-logs/coverage.xml
 
-  ubuntu-xenial:
+  xenial-gcc:
     runs-on: ubuntu-16.04
+    strategy:
+      matrix:
+        version: ["4.7", "4.8", "4.9", "5"]
     env:
+      CC: gcc-${{ matrix.version }}
+      CXX: g++-${{ matrix.version }}
       CFLAGS: -mavx2 -Wall -Wextra -Werror
       CXXFLAGS: -mavx2 -Wall -Wextra -Werror
     steps:
@@ -219,7 +224,7 @@ jobs:
       with:
         submodules: recursive
     - name: Install APT Dependencies
-      run: sudo add-apt-repository ppa:ubuntu-toolchain-r/test && sudo apt-get update && sudo apt-get -yq install ninja-build parallel
+      run: sudo add-apt-repository ppa:ubuntu-toolchain-r/test && sudo apt-get update && sudo apt-get -yq install ninja-build parallel "${CC}" "${CXX}"
     - name: Configure
       run: mkdir test/build && cd test/build && cmake -G Ninja ..
     - name: Build
