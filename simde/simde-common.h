@@ -255,6 +255,7 @@
 
     * SIMDE_VECTOR - Declaring a vector.
     * SIMDE_VECTOR_OPS - basic operations (binary and unary).
+    * SIMDE_VECTOR_NEGATE - negating a vector
     * SIMDE_VECTOR_SCALAR - For binary operators, the second argument
         can be a scalar, in which case the result is as if that scalar
         had been broadcast to all lanes of a vector.
@@ -268,11 +269,13 @@
     HEDLEY_GCC_VERSION_CHECK(4,8,0)
 #    define SIMDE_VECTOR(size) __attribute__((__vector_size__(size)))
 #    define SIMDE_VECTOR_OPS
+#    define SIMDE_VECTOR_NEGATE
 #    define SIMDE_VECTOR_SCALAR
 #    define SIMDE_VECTOR_SUBSCRIPT
 #  elif HEDLEY_INTEL_VERSION_CHECK(16,0,0)
 #    define SIMDE_VECTOR(size) __attribute__((__vector_size__(size)))
 #    define SIMDE_VECTOR_OPS
+#    define SIMDE_VECTOR_NEGATE
 /* ICC only supports SIMDE_VECTOR_SCALAR for constants */
 #    define SIMDE_VECTOR_SUBSCRIPT
 #  elif \
@@ -285,6 +288,7 @@
 #  elif HEDLEY_HAS_ATTRIBUTE(vector_size)
 #    define SIMDE_VECTOR(size) __attribute__((__vector_size__(size)))
 #    define SIMDE_VECTOR_OPS
+#    define SIMDE_VECTOR_NEGATE
 #    define SIMDE_VECTOR_SUBSCRIPT
 #    if SIMDE_DETECT_CLANG_VERSION_CHECK(5,0,0)
 #      define SIMDE_VECTOR_SCALAR

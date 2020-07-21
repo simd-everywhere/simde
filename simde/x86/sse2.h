@@ -6671,7 +6671,7 @@ simde_x_mm_negate_pd(simde__m128d a) {
       r_.neon_f64 = vnegq_f64(a_.neon_f64);
     #elif defined(SIMDE_WASM_SIMD128d_NATIVE)
       r_.wasm_v128d = wasm_f64x2_neg(a_.wasm_v128d);
-    #elif defined(SIMDE_VECTOR_OPS)
+    #elif defined(SIMDE_VECTOR_NEGATE)
       r_.f64 = -a_.f64;
     #else
       SIMDE_VECTORIZE

@@ -3039,7 +3039,7 @@ simde_x_mm_negate_ps(simde__m128 a) {
       r_.neon_f32 = vnegq_f32(a_.neon_f32);
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r_.wasm_v128 = wasm_f32x4_neg(a_.wasm_v128);
-    #elif defined(SIMDE_VECTOR_OPS)
+    #elif defined(SIMDE_VECTOR_NEGATE)
       r_.f32 = -a_.f32;
     #else
       SIMDE_VECTORIZE

@@ -380,7 +380,7 @@ simde_x_mm512_negate_ps(simde__m512 a) {
       r_,
       a_ = simde__m512_to_private(a);
 
-    #if defined(SIMDE_VECTOR_OPS)
+    #if defined(SIMDE_VECTOR_NEGATE)
       r_.f32 = -a_.f32;
     #else
       SIMDE_VECTORIZE
@@ -403,7 +403,7 @@ simde_x_mm512_negate_pd(simde__m512d a) {
       r_,
       a_ = simde__m512d_to_private(a);
 
-    #if defined(SIMDE_VECTOR_OPS)
+    #if defined(SIMDE_VECTOR_NEGATE)
       r_.f64 = -a_.f64;
     #else
       SIMDE_VECTORIZE

@@ -5601,7 +5601,7 @@ simde_x_mm256_negate_ps(simde__m256 a) {
       r_,
       a_ = simde__m256_to_private(a);
 
-    #if defined(SIMDE_VECTOR_OPS)
+    #if defined(SIMDE_VECTOR_NEGATE)
       r_.f32 = -a_.f32;
     #else
       SIMDE_VECTORIZE
@@ -5624,7 +5624,7 @@ simde_x_mm256_negate_pd(simde__m256d a) {
       r_,
       a_ = simde__m256d_to_private(a);
 
-    #if defined(SIMDE_VECTOR_OPS)
+    #if defined(SIMDE_VECTOR_NEGATE)
       r_.f64 = -a_.f64;
     #else
       SIMDE_VECTORIZE
