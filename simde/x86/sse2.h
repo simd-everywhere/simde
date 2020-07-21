@@ -5691,6 +5691,8 @@ void
 simde_mm_storeu_pd (simde_float64* mem_addr, simde__m128d a) {
   #if defined(SIMDE_X86_SSE2_NATIVE)
     _mm_storeu_pd(mem_addr, a);
+  #elif defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+    vst1q_f64(mem_addr, simde__m128d_to_private(a).neon_f64);
   #else
     simde_memcpy(mem_addr, &a, sizeof(a));
   #endif
