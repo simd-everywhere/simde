@@ -226,3 +226,31 @@ jobs:
       run: ninja -C test/build -v
     - name: Test
       run: ninja -C test/build -v test
+
+  macos:
+    runs-on: macos-latest
+    strategy:
+      matrix:
+        # https://www.jessesquires.com/blog/2020/01/06/selecting-an-xcode-version-on-github-ci/
+        # https://github.com/actions/virtual-environments/blob/master/images/macos/macos-10.15-Readme.md#xcode
+        xcode: ["10.3", "11.4", "11.6_beta", "12_beta"]
+    env:
+      DEVELOPER_DIR:  /Applications/Xcode_${{ matrix.xcode }}.app
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: recursive
+    - name: Compiler version
+      run: cc --version
+    - name: Install Homebrew Dependencies
+      run: brew install meson ninja gcovr
+    - name: Configure
+      run: meson setup build -Db_coverage=true
+    - name: Build
+      run: ninja -C build -v
+    - name: Coverage Report
+      run: ninja -C build -v coverage-xml
+    - name: CodeCov.io
+      uses: codecov/codecov-action@v1
+      with:
+        file: ./build/meson-logs/coverage.xml

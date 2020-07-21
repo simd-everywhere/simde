@@ -185,15 +185,6 @@ jobs:
     - C_COMPILER=xlc
     - CXX_COMPILER=xlc++
 
-  - name: osx
-    if: branch != master OR type == pull_request
-    os: osx
-
-  - name: osx_xcode11
-    if: branch != master OR type == pull_request
-    os: osx
-    osx_image: xcode11
-
   - name: msvc x86
     if: branch != master OR type == pull_request
     os: windows
