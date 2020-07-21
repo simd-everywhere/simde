@@ -38,6 +38,7 @@ simde_neon_families = [
   'max',
   'min',
   'mla',
+  'mla_n',
   'mlal',
   'mlal_high',
   'movl',

@@ -60,6 +60,7 @@
 #include "neon/max.h"
 #include "neon/min.h"
 #include "neon/mla.h"
+#include "neon/mla_n.h"
 #include "neon/mlal.h"
 #include "neon/mlal_high.h"
 #include "neon/movl.h"
