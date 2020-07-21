@@ -439,21 +439,10 @@
      HEDLEY_DIAGNOSTIC_POP
 #endif
 
-#if HEDLEY_HAS_WARNING("-Wpedantic")
-#  define SIMDE_DIAGNOSTIC_DISABLE_INT128 _Pragma("clang diagnostic ignored \"-Wpedantic\"")
-#elif defined(HEDLEY_GCC_VERSION)
-#  define SIMDE_DIAGNOSTIC_DISABLE_INT128 _Pragma("GCC diagnostic ignored \"-Wpedantic\"")
-#else
-#  define SIMDE_DIAGNOSTIC_DISABLE_INT128
-#endif
-
 #if defined(__SIZEOF_INT128__)
 #  define SIMDE_HAVE_INT128_
-HEDLEY_DIAGNOSTIC_PUSH
-SIMDE_DIAGNOSTIC_DISABLE_INT128
 typedef __int128 simde_int128;
 typedef unsigned __int128 simde_uint128;
-HEDLEY_DIAGNOSTIC_POP
 #endif
 
 #if !defined(SIMDE_ENDIAN_LITTLE)
