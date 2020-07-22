@@ -269,6 +269,15 @@ simde_mm_alignr_pi8 (simde__m64 a, simde__m64 b, const int count) {
 }
 #if defined(SIMDE_X86_SSSE3_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
 #  define simde_mm_alignr_pi8(a, b, count) _mm_alignr_pi8(a, b, count)
+#elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #define simde_mm_alignr_pi8(a, b, count) \
+    ( \
+      ((count) > 15) \
+        ? simde__m64_from_neon_i8(vdup_n_s8(0)) \
+        : ( \
+          ((count) > 7) \
+            ? (simde__m64_from_neon_i8(vext_s8(simde__m64_to_neon_i8(a), vdup_n_s8(0), (count) & 7))) \
+            : (simde__m64_from_neon_i8(vext_s8(simde__m64_to_neon_i8(b), simde__m64_to_neon_i8(a), ((count) & 7))))))
 #endif
 #if defined(SIMDE_X86_SSSE3_ENABLE_NATIVE_ALIASES)
 #  define _mm_alignr_pi8(a, b, count) simde_mm_alignr_pi8(a, b, count)
