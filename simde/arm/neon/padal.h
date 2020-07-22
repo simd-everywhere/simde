@@ -28,6 +28,8 @@
 #if !defined(SIMDE_ARM_NEON_PADAL_H)
 #define SIMDE_ARM_NEON_PADAL_H
 
+#include "types.h"
+
 #include "add.h"
 #include "paddl.h"
 

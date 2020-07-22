@@ -124,6 +124,7 @@ set(TEST_SOURCES_C
   arm/neon/clez.c
   arm/neon/clt.c
   arm/neon/cltz.c
+  arm/neon/cvt.c
   arm/neon/combine.c
   arm/neon/dot.c
   arm/neon/dot_lane.c
