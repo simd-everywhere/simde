@@ -105,9 +105,9 @@ simde_vrbitq_u8(simde_uint8x16_t a) {
     a = vec_or(vec_sl(a, shift), vec_sr(a, shift));
     return a;
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    a = v128.bitselect(wasm_u8x16_shr(a, 1), wasm_i8x16_shl(a, 1), wasm_i8x16_splat(0x55));
-    a = v128.bitselect(wasm_u8x16_shr(a, 2), wasm_i8x16_shl(a, 2), wasm_i8x16_splat(0x33));
-    a = v128.or(wasm_u8x16_shr(a, 4), wasm_i8x16_shl(a, 4));
+    a = wasm_v128_bitselect(wasm_u8x16_shr(a, 1), wasm_i8x16_shl(a, 1), wasm_i8x16_splat(0x55));
+    a = wasm_v128_bitselect(wasm_u8x16_shr(a, 2), wasm_i8x16_shl(a, 2), wasm_i8x16_splat(0x33));
+    a = wasm_v128_or(wasm_u8x16_shr(a, 4), wasm_i8x16_shl(a, 4));
     return a;
   #else
     simde_uint8x16_private
