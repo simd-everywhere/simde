@@ -16,12 +16,12 @@ env:
   - TEST_ARG_SEPARATOR=""
 jobs:
   include:
-  - name: "gcc-9"
+  - name: "gcc-10"
     if: branch != master OR type == pull_request
-    compiler: gcc-9
+    compiler: gcc-10
     env:
-    - C_COMPILER=gcc-9
-    - CXX_COMPILER=g++-9
+    - C_COMPILER=gcc-10
+    - CXX_COMPILER=g++-10
     - COMPILER_FLAGS='-fsanitize=address,undefined'
     - OPTIMIZATION_FLAGS=''
     addons:
@@ -30,8 +30,8 @@ jobs:
         - sourceline: "ppa:ubuntu-toolchain-r/test"
           key_url: https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x60c317803a41ba51845e371a1e9377a2ba9ef27f
         packages:
-        - gcc-9
-        - g++-9
+        - gcc-10
+        - g++-10
 
   - name: "clang-10"
     if: branch != master OR type == pull_request
@@ -170,15 +170,6 @@ jobs:
     - C_COMPILER=xlc
     - CXX_COMPILER=xlc++
 
-  - name: msvc x86
-    if: branch != master OR type == pull_request
-    os: windows
-    env:
-    - ARCH_FLAGS=""
-    - CMAKE_GENERATOR="Visual Studio 15 2017"
-    - OPTIMIZATION_FLAGS="/Ox"
-    - DIAGNOSTIC_FLAGS="/W4 /WX"
-
   - name: msvc x86_64
     if: branch != master OR type == pull_request
     os: windows
@@ -197,29 +188,6 @@ jobs:
     - RUN_TESTS=false
     - OPTIMIZATION_FLAGS="/Ox"
     - DIAGNOSTIC_FLAGS="/W4 /WX"
-
-  - name: "gcc-7 amd64"
-    if: branch != master OR type == pull_request
-    compiler: gcc
-    arch: amd64
-
-  - name: "clang-7 amd64"
-    if: branch != master OR type == pull_request
-    arch: amd64
-    compiler: clang
-
-  - name: gcc-4.8
-    if: branch != master OR type == pull_request
-    dist: trusty
-    env:
-    # Lots of -Wunused-but-set-variable false positives
-    - DIAGNOSTIC_FLAGS='-Wall -Wextra -Wno-unused-but-set-variable -Werror'
-    addons:
-      apt:
-        packages:
-        - cmake
-        sources:
-        - kalakris-cmake
 
   - name: s390x
     if: branch != master OR type == pull_request
