@@ -84,6 +84,7 @@
 #include "neon/qrdmulh.h"
 #include "neon/qrdmulh_n.h"
 #include "neon/qmovn.h"
+#include "neon/qmovun.h"
 #include "neon/qmovn_high.h"
 #include "neon/qtbl.h"
 #include "neon/qtbx.h"
