@@ -164,6 +164,7 @@ set(TEST_SOURCES_C
   arm/neon/qmovun.c
   arm/neon/qtbl.c
   arm/neon/qtbx.c
+  arm/neon/rbit.c
   arm/neon/reinterpret.c
   arm/neon/rev16.c
   arm/neon/rev32.c

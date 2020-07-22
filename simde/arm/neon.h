@@ -88,6 +88,7 @@
 #include "neon/qmovn_high.h"
 #include "neon/qtbl.h"
 #include "neon/qtbx.h"
+#include "neon/rbit.h"
 #include "neon/reinterpret.h"
 #include "neon/rev16.h"
 #include "neon/rev32.h"
