@@ -88,6 +88,7 @@
 #include "neon/qtbl.h"
 #include "neon/qtbx.h"
 #include "neon/reinterpret.h"
+#include "neon/rev32.h"
 #include "neon/rev64.h"
 #include "neon/rhadd.h"
 #include "neon/rshl.h"
