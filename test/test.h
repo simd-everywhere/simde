@@ -404,7 +404,7 @@ simde_test_equal_f32(simde_float32 a, simde_float32 b, simde_float32 slop) {
   } else if (simde_math_isinf(a)) {
     return !((a < b) || (a > b));
   } else {
-    return ((b > (a - slop)) && (b < (a + slop)));
+    return ((b >= (a - slop)) && (b <= (a + slop)));
   }
 }
 
@@ -415,7 +415,7 @@ simde_test_equal_f64(simde_float64 a, simde_float64 b, simde_float64 slop) {
   } else if (simde_math_isinf(a)) {
     return !((a < b) || (a > b));
   } else {
-    return ((b > (a - slop)) && (b < (a + slop)));
+    return ((b >= (a - slop)) && (b <= (a + slop)));
   }
 }
 
