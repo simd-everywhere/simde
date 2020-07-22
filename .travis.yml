@@ -72,7 +72,7 @@ jobs:
     if: branch != master OR type == pull_request
     arch: arm64
     env:
-    - ARCH_FLAGS="-march=armv8-a+simd"
+    - ARCH_FLAGS="-march=armv8-a+simd+crc"
 
   - name: "ppc64le"
     if: branch != master OR type == pull_request
