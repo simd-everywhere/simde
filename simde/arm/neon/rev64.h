@@ -50,10 +50,14 @@ simde_vrev64_s8(simde_int8x8_t a) {
       r_,
       a_ = simde_int8x8_to_private(a);
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = a_.values[i ^ 7];
-    }
+    #if defined(SIMDE_SHUFFLE_VECTOR_)
+      r_.values = SIMDE_SHUFFLE_VECTOR_(8, 8, a_.values, a_.values, 7, 6, 5, 4, 3, 2, 1, 0);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+        r_.values[i] = a_.values[i ^ 7];
+      }
+    #endif
 
     return simde_int8x8_from_private(r_);
   #endif
@@ -75,10 +79,14 @@ simde_vrev64_s16(simde_int16x4_t a) {
       r_,
       a_ = simde_int16x4_to_private(a);
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = a_.values[i ^ 3];
-    }
+    #if defined(SIMDE_SHUFFLE_VECTOR_)
+      r_.values = SIMDE_SHUFFLE_VECTOR_(16, 8, a_.values, a_.values, 3, 2, 1, 0);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+        r_.values[i] = a_.values[i ^ 3];
+      }
+    #endif
 
     return simde_int16x4_from_private(r_);
   #endif
@@ -100,10 +108,14 @@ simde_vrev64_s32(simde_int32x2_t a) {
       r_,
       a_ = simde_int32x2_to_private(a);
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = a_.values[i ^ 1];
-    }
+    #if defined(SIMDE_SHUFFLE_VECTOR_)
+      r_.values = SIMDE_SHUFFLE_VECTOR_(32, 8, a_.values, a_.values, 1, 0);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+        r_.values[i] = a_.values[i ^ 1];
+      }
+    #endif
 
     return simde_int32x2_from_private(r_);
   #endif
@@ -192,10 +204,14 @@ simde_vrev64q_s8(simde_int8x16_t a) {
       r_,
       a_ = simde_int8x16_to_private(a);
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = a_.values[i ^ 7];
-    }
+    #if defined(SIMDE_SHUFFLE_VECTOR_)
+      r_.values = SIMDE_SHUFFLE_VECTOR_(8, 16, a_.values, a_.values, 7, 6, 5, 4, 3, 2, 1, 0, 15, 14, 13, 12, 11, 10, 9, 8);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+        r_.values[i] = a_.values[i ^ 7];
+      }
+    #endif
 
     return simde_int8x16_from_private(r_);
   #endif
@@ -228,10 +244,14 @@ simde_vrev64q_s16(simde_int16x8_t a) {
       r_,
       a_ = simde_int16x8_to_private(a);
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = a_.values[i ^ 3];
-    }
+    #if defined(SIMDE_SHUFFLE_VECTOR_)
+      r_.values = SIMDE_SHUFFLE_VECTOR_(16, 16, a_.values, a_.values, 3, 2, 1, 0, 7, 6, 5, 4);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+        r_.values[i] = a_.values[i ^ 3];
+      }
+    #endif
 
     return simde_int16x8_from_private(r_);
   #endif
@@ -259,10 +279,14 @@ simde_vrev64q_s32(simde_int32x4_t a) {
       r_,
       a_ = simde_int32x4_to_private(a);
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = a_.values[i ^ 1];
-    }
+    #if defined(SIMDE_SHUFFLE_VECTOR_)
+      r_.values = SIMDE_SHUFFLE_VECTOR_(32, 16, a_.values, a_.values, 1, 0, 3, 2);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+        r_.values[i] = a_.values[i ^ 1];
+      }
+    #endif
 
     return simde_int32x4_from_private(r_);
   #endif
