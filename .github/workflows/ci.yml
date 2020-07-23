@@ -135,6 +135,34 @@ jobs:
       with:
         file: ./build/meson-logs/coverage.xml
 
+  emscripten:
+    runs-on: ubuntu-latest
+    env:
+      CFLAGS: -Weverything -Werror -O3
+      CXXFLAGS: -Weverything -Werror -O3
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: recursive
+    - name: Install APT Dependencies
+      run: sudo add-apt-repository ppa:ubuntu-toolchain-r/test && sudo apt-get update && sudo apt-get -yq install ninja-build
+    - name: Install emscripten
+      run: |
+        git clone https://github.com/emscripten-core/emsdk.git
+        cd emsdk
+        ./emsdk update-tags
+        ./emsdk install tot
+        ./emsdk activate tot
+        source emsdk_env.sh
+    - name: Install v8
+      run: sudo npm install jsvu -g && jsvu --os=linux64 --engines=v8
+    - name: Configure
+      run: mkdir test/build && cd test/build && ../../emsdk/upstream/emscripten/emcmake cmake -G Ninja ..
+    - name: Build
+      run: ninja -C test/build -v
+    - name: Test
+      run: cd test/build && ~/.jsvu/v8 --experimental-wasm-simd run-tests.js
+
   SDE:
     runs-on: ubuntu-latest
     strategy:
@@ -308,8 +336,6 @@ jobs:
     - uses: actions/checkout@v2
       with:
         submodules: recursive
-    - name: apt-cache search clang
-      run: sudo add-apt-repository ppa:ubuntu-toolchain-r/test && sudo apt-get update && apt-cache search clang
     - name: Install APT Dependencies
       run: sudo add-apt-repository ppa:ubuntu-toolchain-r/test && sudo apt-get update && sudo apt-get -yq install ninja-build parallel clang-${{ matrix.version }}
     - name: Configure
