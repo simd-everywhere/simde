@@ -421,6 +421,11 @@ simde_mm_movehdup_ps (simde__m128 a) {
 
   #if (SIMDE_NATURAL_VECTOR_SIZE > 0) && defined(SIMDE_SHUFFLE_VECTOR_)
     r_.f32 = SIMDE_SHUFFLE_VECTOR_(32, 16, a_.f32, a_.f32, 1, 1, 3, 3);
+  #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    float32_t a1 = vgetq_lane_f32(a_.neon_f32, 1);
+    float32_t a3 = vgetq_lane_f32(a_.neon_f32, 3);
+    SIMDE_ALIGN(16) simde_float32 data[4] = { a1, a1, a3, a3 };
+    r_.neon_f32 = vld1q_f32(data);
   #else
     r_.f32[0] = a_.f32[1];
     r_.f32[1] = a_.f32[1];
@@ -447,6 +452,11 @@ simde_mm_moveldup_ps (simde__m128 a) {
 
   #if (SIMDE_NATURAL_VECTOR_SIZE > 0) && defined(SIMDE_SHUFFLE_VECTOR_)
     r_.f32 = SIMDE_SHUFFLE_VECTOR_(32, 16, a_.f32, a_.f32, 0, 0, 2, 2);
+  #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    float32_t a0 = vgetq_lane_f32(a_.neon_f32, 0);
+    float32_t a2 = vgetq_lane_f32(a_.neon_f32, 2);
+    SIMDE_ALIGN(16) simde_float32 data[4] = { a0, a0, a2, a2 };
+    r_.neon_f32 = vld1q_f32(data);
   #else
     r_.f32[0] = a_.f32[0];
     r_.f32[1] = a_.f32[0];
