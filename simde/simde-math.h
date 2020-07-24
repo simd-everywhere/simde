@@ -63,6 +63,16 @@
   HEDLEY_DIAGNOSTIC_POP
 #endif
 
+#if defined(SIMDE_MATH_SLEEF_ENABLE) && defined(__SLEEF_H__)
+  #if defined(SLEEF_VERSION_MAJOR)
+    #define SIMDE_MATH_SLEEF_VERSION_CHECK(major, minor, patch) (HEDLEY_VERSION_ENCODE(SLEEF_VERSION_MAJOR, SLEEF_VERSION_MINOR, SLEEF_VERSION_PATCHLEVEL) >= HEDLEY_VERSION_ENCODE(major, minor, patch))
+  #else
+    #define SIMDE_MATH_SLEEF_VERSION_CHECK(major, minor, patch) (HEDLEY_VERSION_ENCODE(3,0,0) >= HEDLEY_VERSION_ENCODE(major, minor, patch))
+  #endif
+#else
+  #define SIMDE_MATH_SLEEF_VERSION_CHECK(major, minor, patch) (0)
+#endif
+
 #if defined(__has_builtin)
   #define SIMDE_MATH_BUILTIN_LIBM(func) __has_builtin(__builtin_##func)
 #elif \
