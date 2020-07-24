@@ -1906,7 +1906,7 @@ simde_mm_test_mix_ones_zeros (simde__m128i a, simde__m128i mask) {
 
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     int64x2_t s640 = vandq_s64(a_.neon_i64, mask_.neon_i64);
-    int64x2_t s641 = vandq_s64(~a_.neon_i64, mask_.neon_i64);
+    int64x2_t s641 = vandq_s64(vreinterpretq_s64_s32(vmvnq_s32(vreinterpretq_s32_s64(a_.neon_i64))), mask_.neon_i64);
     return (((vgetq_lane_s64(s640, 0) | vgetq_lane_s64(s640, 1)) & (vgetq_lane_s64(s641, 0) | vgetq_lane_s64(s641, 1)))!=0);
   #else
     for (size_t i = 0 ; i < (sizeof(a_.u64) / sizeof(a_.u64[0])) ; i++)
