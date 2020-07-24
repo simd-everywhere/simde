@@ -42,7 +42,7 @@ SIMDE_FUNCTION_ATTRIBUTES
 uint8_t
 simde_vqmovunh_s16(int16_t a) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
-    return vqmovunh_s16(a);
+    return HEDLEY_STATIC_CAST(uint8_t, vqmovunh_s16(a));
   #else
     return (a > UINT8_MAX) ? UINT8_MAX : ((a < 0) ? 0 : HEDLEY_STATIC_CAST(uint8_t, a));
   #endif
@@ -56,7 +56,7 @@ SIMDE_FUNCTION_ATTRIBUTES
 uint16_t
 simde_vqmovuns_s32(int32_t a) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
-    return vqmovuns_s32(a);
+    return HEDLEY_STATIC_CAST(uint16_t, vqmovuns_s32(a));
   #else
     return (a > UINT16_MAX) ? UINT16_MAX : ((a < 0) ? 0 : HEDLEY_STATIC_CAST(uint16_t, a));
   #endif
@@ -70,7 +70,7 @@ SIMDE_FUNCTION_ATTRIBUTES
 uint32_t
 simde_vqmovund_s64(int64_t a) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
-    return vqmovund_s64(a);
+    return HEDLEY_STATIC_CAST(uint32_t, vqmovund_s64(a));
   #else
     return (a > UINT32_MAX) ? UINT32_MAX : ((a < 0) ? 0 : HEDLEY_STATIC_CAST(uint32_t, a));
   #endif
