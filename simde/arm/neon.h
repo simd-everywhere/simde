@@ -97,6 +97,7 @@
 #include "neon/rshl.h"
 #include "neon/rshr_n.h"
 #include "neon/rsra_n.h"
+#include "neon/set_lane.h"
 #include "neon/shl.h"
 #include "neon/shl_n.h"
 #include "neon/shr_n.h"
