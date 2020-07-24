@@ -397,6 +397,10 @@ simde_mm_movedup_pd (simde__m128d a) {
 
   #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && defined(SIMDE_SHUFFLE_VECTOR_)
     r_.f64 = SIMDE_SHUFFLE_VECTOR_(64, 16, a_.f64, a_.f64, 0, 0);
+  #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    float64_t a0 = vgetq_lane_f64(a_.neon_f64, 0);
+    simde_float64 data[2] = { a0, a0 };
+    r_.neon_f64 = vld1q_f64(data);
   #else
     r_.f64[0] = a_.f64[0];
     r_.f64[1] = a_.f64[0];
