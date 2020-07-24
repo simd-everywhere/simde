@@ -325,7 +325,7 @@ simde_vmulq_n_u16(simde_uint16x8_t a, uint16_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vmulq_n_u16(a, b);
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    return wasm_i16x8_mul(a, wasm_i16x8_splat(b));
+    return wasm_i16x8_mul(a, wasm_i16x8_splat(HEDLEY_STATIC_CAST(int16_t, b)));
   #else
     simde_uint16x8_private
       r_,
@@ -354,7 +354,7 @@ simde_vmulq_n_u32(simde_uint32x4_t a, uint32_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vmulq_n_u32(a, b);
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    return wasm_i32x4_mul(a, wasm_i32x4_splat(b));
+    return wasm_i32x4_mul(a, wasm_i32x4_splat(HEDLEY_STATIC_CAST(int32_t, b)));
   #else
     simde_uint32x4_private
       r_,
