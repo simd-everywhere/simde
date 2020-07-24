@@ -200,7 +200,8 @@ simde_float32x4_t
 simde_vnegq_f32(simde_float32x4_t a) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vnegq_f32(a);
-  #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
+  #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE) && \
+      (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(8,1,0))
     return vec_neg(a);
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_f32x4_neg(a);
@@ -231,7 +232,8 @@ simde_float64x2_t
 simde_vnegq_f64(simde_float64x2_t a) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vnegq_f64(a);
-  #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
+  #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE) && \
+      (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(8,1,0))
     return vec_neg(a);
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_f64x2_neg(a);
@@ -262,7 +264,8 @@ simde_int8x16_t
 simde_vnegq_s8(simde_int8x16_t a) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vnegq_s8(a);
-  #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
+  #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE) && \
+      (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(8,1,0))
     return vec_neg(a);
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_i8x16_neg(a);
@@ -293,7 +296,8 @@ simde_int16x8_t
 simde_vnegq_s16(simde_int16x8_t a) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vnegq_s16(a);
-  #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
+  #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE) && \
+      (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(8,1,0))
     return vec_neg(a);
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_i16x8_neg(a);
@@ -324,7 +328,8 @@ simde_int32x4_t
 simde_vnegq_s32(simde_int32x4_t a) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vnegq_s32(a);
-  #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
+  #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE) && \
+      (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(8,1,0))
     return vec_neg(a);
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_i32x4_neg(a);
@@ -355,7 +360,8 @@ simde_int64x2_t
 simde_vnegq_s64(simde_int64x2_t a) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vnegq_s64(a);
-  #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
+  #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE) && \
+      (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(8,1,0))
     return vec_neg(a);
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_i64x2_neg(a);
