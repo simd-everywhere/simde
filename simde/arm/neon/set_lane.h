@@ -25,8 +25,8 @@
  *   2020      Sean Maher <seanptmaher@gmail.com>
  */
 
-#if !defined(SIMDE_ARM_NEON_ST1_LANE_H)
-#define SIMDE_ARM_NEON_ST1_LANE_H
+#if !defined(SIMDE_ARM_NEON_SET_LANE_H)
+#define SIMDE_ARM_NEON_SET_LANE_H
 #include "types.h"
 
 HEDLEY_DIAGNOSTIC_PUSH
@@ -419,4 +419,4 @@ simde_vsetq_lane_u64(uint64_t a, simde_uint64x2_t v, const int lane)
 SIMDE_END_DECLS_
 HEDLEY_DIAGNOSTIC_POP
 
-#endif /* !defined(SIMDE_ARM_NEON_ST1_LANE_H) */
+#endif /* !defined(SIMDE_ARM_NEON_SET_LANE_H) */
