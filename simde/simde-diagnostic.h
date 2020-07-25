@@ -340,6 +340,13 @@
   #define SIMDE_DIAGNOSTIC_DISABLE_IGNORED_QUALIFIERS_
 #endif
 
+/* GCC emits this under some circumstances when using __int128 */
+#if HEDLEY_GCC_VERSION_CHECK(4,8,0)
+  #define SIMDE_DIAGNOSTIC_DISABLE_PEDANTIC_ _Pragma("GCC diagnostic ignored \"-Wpedantic\"")
+#else
+  #define SIMDE_DIAGNOSTIC_DISABLE_PEDANTIC_
+#endif
+
 #define SIMDE_DISABLE_UNWANTED_DIAGNOSTICS \
   SIMDE_DIAGNOSTIC_DISABLE_PSABI_ \
   SIMDE_DIAGNOSTIC_DISABLE_NO_EMMS_INSTRUCTION_ \
