@@ -228,7 +228,11 @@ simde_mm_addsub_pd (simde__m128d a, simde__m128d b) {
     a_ = simde__m128d_to_private(a),
     b_ = simde__m128d_to_private(b);
 
-  #if (SIMDE_NATURAL_VECTOR_SIZE > 0) && defined(SIMDE_SHUFFLE_VECTOR_)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+    float64x2_t rs = vsubq_f64(a_.neon_f64, b_.neon_f64);
+    float64x2_t ra = vaddq_f64(a_.neon_f64, b_.neon_f64);
+    return vcombine_f64(vget_low_f64(rs), vget_high_f64(ra));
+  #elif (SIMDE_NATURAL_VECTOR_SIZE > 0) && defined(SIMDE_SHUFFLE_VECTOR_)
     r_.f64 = SIMDE_SHUFFLE_VECTOR_(64, 16, a_.f64 - b_.f64, a_.f64 + b_.f64, 0, 3);
   #else
     for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i += 2) {
@@ -370,16 +374,20 @@ simde_mm_lddqu_si128 (simde__m128i const* mem_addr) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128d
 simde_mm_loaddup_pd (simde_float64 const* mem_addr) {
-#if defined(SIMDE_X86_SSE3_NATIVE)
-  return _mm_loaddup_pd(mem_addr);
-#else
-  simde__m128d_private r_;
+  #if defined(SIMDE_X86_SSE3_NATIVE)
+    return _mm_loaddup_pd(mem_addr);
+  #else
+    simde__m128d_private r_;
 
-  r_.f64[0] = *mem_addr;
-  r_.f64[1] = *mem_addr;
+    #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+      r_.neon_f64 = vsetq_lane_f64(*mem_addr, vsetq_lane_f64(*mem_addr, vdupq_n_f64(0), 0), 1);
+    #else
+      r_.f64[0] = *mem_addr;
+      r_.f64[1] = *mem_addr;
+    #endif
 
-  return simde__m128d_from_private(r_);
-#endif
+    return simde__m128d_from_private(r_);
+  #endif
 }
 #if defined(SIMDE_X86_SSE3_ENABLE_NATIVE_ALIASES)
 #  define _mm_loaddup_pd(mem_addr) simde_mm_loaddup_pd(mem_addr)
