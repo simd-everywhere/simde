@@ -373,10 +373,14 @@ simde_mm_loaddup_pd (simde_float64 const* mem_addr) {
 #if defined(SIMDE_X86_SSE3_NATIVE)
   return _mm_loaddup_pd(mem_addr);
 #else
-  simde__m128d_private r_;
+    simde__m128d_private r_;
 
-  r_.f64[0] = *mem_addr;
-  r_.f64[1] = *mem_addr;
+    #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+      r_.neon_f64 = vsetq_lane_f64(*mem_addr, vsetq_lane_f64(*mem_addr, vdupq_n_f64(0), 0), 1);
+    #else
+      r_.f64[0] = *mem_addr;
+      r_.f64[1] = *mem_addr;
+  #endif
 
   return simde__m128d_from_private(r_);
 #endif
