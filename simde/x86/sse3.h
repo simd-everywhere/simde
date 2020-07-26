@@ -228,7 +228,11 @@ simde_mm_addsub_pd (simde__m128d a, simde__m128d b) {
     a_ = simde__m128d_to_private(a),
     b_ = simde__m128d_to_private(b);
 
-  #if (SIMDE_NATURAL_VECTOR_SIZE > 0) && defined(SIMDE_SHUFFLE_VECTOR_)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+    float64x2_t rs = vsubq_f64(a_.neon_f64, b_.neon_f64);
+    float64x2_t ra = vaddq_f64(a_.neon_f64, b_.neon_f64);
+    return vcombine_f64(vget_low_f64(rs), vget_high_f64(ra));
+  #elif (SIMDE_NATURAL_VECTOR_SIZE > 0) && defined(SIMDE_SHUFFLE_VECTOR_)
     r_.f64 = SIMDE_SHUFFLE_VECTOR_(64, 16, a_.f64 - b_.f64, a_.f64 + b_.f64, 0, 3);
   #else
     for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i += 2) {
