@@ -55,8 +55,8 @@ SIMDE_BEGIN_DECLS_
 
 SIMDE_FUNCTION_ATTRIBUTES
 int32_t
-simde_vcvts_s32_f32 (simde_float32 a) {
-  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+simde_vcvts_s32_f32(simde_float32 a) {
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && !defined(SIMDE_CLANG_BUG_46844)
     return vcvts_s32_f32(a);
   #else
     return HEDLEY_STATIC_CAST(int32_t, a);
@@ -69,8 +69,8 @@ simde_vcvts_s32_f32 (simde_float32 a) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 uint32_t
-simde_vcvts_u32_f32 (simde_float32 a) {
-  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+simde_vcvts_u32_f32(simde_float32 a) {
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && !defined(SIMDE_CLANG_BUG_46844)
     return vcvts_u32_f32(a);
   #else
     return HEDLEY_STATIC_CAST(uint32_t, (a < 0) ? 0 : a);
@@ -82,9 +82,9 @@ simde_vcvts_u32_f32 (simde_float32 a) {
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
-int32_t
-simde_vcvts_f32_s32 (simde_float32 a) {
-  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+simde_float32
+simde_vcvts_f32_s32(int32_t a) {
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && !defined(SIMDE_CLANG_BUG_46844)
     return vcvts_f32_s32(a);
   #else
     return HEDLEY_STATIC_CAST(simde_float32, a);
@@ -96,9 +96,9 @@ simde_vcvts_f32_s32 (simde_float32 a) {
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
-uint32_t
-simde_vcvts_f32_u32 (simde_float32 a) {
-  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+simde_float32
+simde_vcvts_f32_u32 (uint32_t a) {
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && !defined(SIMDE_CLANG_BUG_46844)
     return vcvts_f32_u32(a);
   #else
     return HEDLEY_STATIC_CAST(simde_float32, a);
@@ -112,8 +112,8 @@ simde_vcvts_f32_u32 (simde_float32 a) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 int64_t
-simde_vcvtd_s64_f64 (simde_float64 a) {
-  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+simde_vcvtd_s64_f64(simde_float64 a) {
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && !defined(SIMDE_CLANG_BUG_46844)
     return vcvtd_s64_f64(a);
   #else
     return HEDLEY_STATIC_CAST(int64_t, a);
@@ -126,8 +126,8 @@ simde_vcvtd_s64_f64 (simde_float64 a) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 uint64_t
-simde_vcvtd_u64_f64 (simde_float64 a) {
-  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+simde_vcvtd_u64_f64(simde_float64 a) {
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && !defined(SIMDE_CLANG_BUG_46844)
     return vcvtd_u64_f64(a);
   #else
     return HEDLEY_STATIC_CAST(uint64_t, (a < 0) ? 0 : a);
@@ -139,9 +139,9 @@ simde_vcvtd_u64_f64 (simde_float64 a) {
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
-int64_t
-simde_vcvtd_f64_s64 (simde_float64 a) {
-  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+simde_float64
+simde_vcvtd_f64_s64(int64_t a) {
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && !defined(SIMDE_CLANG_BUG_46844)
     return vcvtd_f64_s64(a);
   #else
     return HEDLEY_STATIC_CAST(simde_float64, a);
@@ -153,9 +153,9 @@ simde_vcvtd_f64_s64 (simde_float64 a) {
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
-uint64_t
-simde_vcvtd_f64_u64 (simde_float64 a) {
-  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+simde_float64
+simde_vcvtd_f64_u64(uint64_t a) {
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && !defined(SIMDE_CLANG_BUG_46844)
     return vcvtd_f64_u64(a);
   #else
     return HEDLEY_STATIC_CAST(simde_float64, a);
