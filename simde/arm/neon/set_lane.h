@@ -59,7 +59,7 @@ simde_vset_lane_f64(simde_float64_t a, simde_float64x1_t v, const int lane)
   simde_float64x1_t r;
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     (void) lane;
-    vset_lane_f64(a, v, 0);
+    r = vset_lane_f64(a, v, 0);
   #else
     simde_float64x1_private v_ = simde_float64x1_to_private(v);
     v_.values[lane] = a;
