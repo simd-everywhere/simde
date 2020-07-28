@@ -48,6 +48,7 @@
 #include "neon/clt.h"
 #include "neon/cltz.h"
 #include "neon/combine.h"
+#include "neon/create.h"
 #include "neon/dot.h"
 #include "neon/dot_lane.h"
 #include "neon/dup_n.h"
