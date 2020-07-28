@@ -969,6 +969,18 @@ simde_mm_dp_pd (simde__m128d a, simde__m128d b, const int imm8)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
+void
+simde_x_kadd_f32(float *sum, float *c, float y)
+{
+  // Kahan summation for accurate summation of floating-point numbers.
+  // http://blog.zachbjornson.com/2019/08/11/fast-float-summation.html
+    y -= *c;
+    float t = *sum + y;
+    *c = (t - *sum) - y;
+    *sum = t;
+}
+
+SIMDE_FUNCTION_ATTRIBUTES
 simde__m128
 simde_mm_dp_ps (simde__m128 a, simde__m128 b, const int imm8)
     SIMDE_REQUIRE_RANGE(imm8, 0, 255)  {
@@ -977,17 +989,57 @@ simde_mm_dp_ps (simde__m128 a, simde__m128 b, const int imm8)
     a_ = simde__m128_to_private(a),
     b_ = simde__m128_to_private(b);
 
-  simde_float32 sum = SIMDE_FLOAT32_C(0.0);
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+      // shortcut cases
+      if (imm8 == 0xFF) {
+        r_.neon_f32 = vdupq_n_f32(vaddvq_f32(simde_mm_mul_ps(a, b)));
+        return simde__m128_from_private(r_);
+      }
+      if (imm8 == 0x7F) {
+        float32x4_t m = simde_mm_mul_ps(a, b);
+        m = vsetq_lane_f32(0, m, 3);
+        r_.neon_f32 = vdupq_n_f32(vaddvq_f32(m));
+        return simde__m128_from_private(r_);
+      }
+    #endif
+    float s = 0, c = 0;
+    float32x4_t f32a = a_.neon_f32;
+    float32x4_t f32b = b_.neon_f32;
 
-  SIMDE_VECTORIZE_REDUCTION(+:sum)
-  for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
-    sum += ((imm8 >> (i + 4)) & 1) ? (a_.f32[i] * b_.f32[i]) : SIMDE_FLOAT32_C(0.0);
-  }
+    /* To improve the accuracy of floating-point summation, Kahan algorithm
+     * is used for each operation.
+     */
+    if (imm8 & (1 << 4))
+        simde_x_kadd_f32(&s, &c, vgetq_lane_f32(f32a, 0) * vgetq_lane_f32(f32b, 0));
+    if (imm8 & (1 << 5))
+        simde_x_kadd_f32(&s, &c, vgetq_lane_f32(f32a, 1) * vgetq_lane_f32(f32b, 1));
+    if (imm8 & (1 << 6))
+        simde_x_kadd_f32(&s, &c, vgetq_lane_f32(f32a, 2) * vgetq_lane_f32(f32b, 2));
+    if (imm8 & (1 << 7))
+        simde_x_kadd_f32(&s, &c, vgetq_lane_f32(f32a, 3) * vgetq_lane_f32(f32b, 3));
+    s += c;
 
-  SIMDE_VECTORIZE
-  for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
-    r_.f32[i] = ((imm8 >> i) & 1) ? sum : SIMDE_FLOAT32_C(0.0);
-  }
+    simde_float32 res[4] = {
+        (imm8 & 0x1) ? s : 0,
+        (imm8 & 0x2) ? s : 0,
+        (imm8 & 0x4) ? s : 0,
+        (imm8 & 0x8) ? s : 0,
+    };
+    r_.neon_f32 = vld1q_f32(res);
+  #else
+    simde_float32 sum = SIMDE_FLOAT32_C(0.0);
+
+    SIMDE_VECTORIZE_REDUCTION(+:sum)
+    for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
+      sum += ((imm8 >> (i + 4)) & 1) ? (a_.f32[i] * b_.f32[i]) : SIMDE_FLOAT32_C(0.0);
+    }
+
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
+      r_.f32[i] = ((imm8 >> i) & 1) ? sum : SIMDE_FLOAT32_C(0.0);
+    }
+  #endif
 
   return simde__m128_from_private(r_);
 }
