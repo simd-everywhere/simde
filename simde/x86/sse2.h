@@ -2605,13 +2605,16 @@ simde_mm_cvtsd_ss (simde__m128 a, simde__m128d b) {
       a_ = simde__m128_to_private(a);
     simde__m128d_private b_ = simde__m128d_to_private(b);
 
-    r_.f32[0] = HEDLEY_STATIC_CAST(simde_float32, b_.f64[0]);
+    #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+      r_.neon_f32 = vsetq_lane_f32(vcvtxd_f32_f64(vgetq_lane_f64(b_.neon_f64, 0)), a_.neon_f32, 0);
+    #else
+      r_.f32[0] = HEDLEY_STATIC_CAST(simde_float32, b_.f64[0]);
 
-    SIMDE_VECTORIZE
-    for (size_t i = 1 ; i < (sizeof(r_) / sizeof(r_.i32[0])) ; i++) {
-      r_.i32[i] = a_.i32[i];
-    }
-
+      SIMDE_VECTORIZE
+      for (size_t i = 1 ; i < (sizeof(r_) / sizeof(r_.i32[0])) ; i++) {
+        r_.i32[i] = a_.i32[i];
+      }
+    #endif
     return simde__m128_from_private(r_);
   #endif
 }
