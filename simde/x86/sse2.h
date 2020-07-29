@@ -2779,6 +2779,9 @@ simde__m128d
 simde_mm_cvtss_sd (simde__m128d a, simde__m128 b) {
   #if defined(SIMDE_X86_SSE2_NATIVE)
     return _mm_cvtss_sd(a, b);
+  #elif defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+    float64x2_t temp = vcvt_f64_f32(vset_lane_f32(vgetq_lane_f32(simde__m128_to_private(b).neon_f32, 0), vdup_n_f32(0), 0));
+    return vsetq_lane_f64(vgetq_lane_f64(simde__m128d_to_private(a).neon_f64, 1), temp, 1);
   #else
     simde__m128d_private
       a_ = simde__m128d_to_private(a);
