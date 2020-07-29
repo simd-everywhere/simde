@@ -32,6 +32,8 @@
 #if !defined(SIMDE_ARM_NEON_CREATE_H)
 #define SIMDE_ARM_NEON_CREATE_H
 
+#include "dup_n.h"
+#include "reinterpret.h"
 #include "types.h"
 
 HEDLEY_DIAGNOSTIC_PUSH
@@ -44,9 +46,7 @@ simde_vcreate_s8(uint64_t a) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vcreate_s8(a);
   #else
-    simde_int8x8_t r;
-    simde_memcpy(&r, &a, sizeof(r));
-    return r;
+    return simde_vreinterpret_s8_u64(simde_vdup_n_u64(a));
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
@@ -60,9 +60,7 @@ simde_vcreate_s16(uint64_t a) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vcreate_s16(a);
   #else
-    simde_int16x4_t r;
-    simde_memcpy(&r, &a, sizeof(r));
-    return r;
+    return simde_vreinterpret_s16_u64(simde_vdup_n_u64(a));
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
@@ -76,9 +74,7 @@ simde_vcreate_s32(uint64_t a) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vcreate_s32(a);
   #else
-    simde_int32x2_t r;
-    simde_memcpy(&r, &a, sizeof(r));
-    return r;
+    return simde_vreinterpret_s32_u64(simde_vdup_n_u64(a));
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
@@ -92,9 +88,7 @@ simde_vcreate_s64(uint64_t a) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vcreate_s64(a);
   #else
-    simde_int64x1_t r;
-    simde_memcpy(&r, &a, sizeof(r));
-    return r;
+    return simde_vreinterpret_s64_u64(simde_vdup_n_u64(a));
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
@@ -108,9 +102,7 @@ simde_vcreate_u8(uint64_t a) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vcreate_u8(a);
   #else
-    simde_uint8x8_t r;
-    simde_memcpy(&r, &a, sizeof(r));
-    return r;
+    return simde_vreinterpret_u8_u64(simde_vdup_n_u64(a));
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
@@ -124,9 +116,7 @@ simde_vcreate_u16(uint64_t a) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vcreate_u16(a);
   #else
-    simde_uint16x4_t r;
-    simde_memcpy(&r, &a, sizeof(r));
-    return r;
+    return simde_vreinterpret_u16_u64(simde_vdup_n_u64(a));
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
@@ -140,9 +130,7 @@ simde_vcreate_u32(uint64_t a) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vcreate_u32(a);
   #else
-    simde_uint32x2_t r;
-    simde_memcpy(&r, &a, sizeof(r));
-    return r;
+    return simde_vreinterpret_u32_u64(simde_vdup_n_u64(a));
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
@@ -156,9 +144,7 @@ simde_vcreate_u64(uint64_t a) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vcreate_u64(a);
   #else
-    simde_uint64x1_t r;
-    simde_memcpy(&r, &a, sizeof(r));
-    return r;
+    return simde_vdup_n_u64(a);
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
@@ -172,9 +158,7 @@ simde_vcreate_f32(uint64_t a) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vcreate_f32(a);
   #else
-    simde_float32x2_t r;
-    simde_memcpy(&r, &a, sizeof(r));
-    return r;
+    return simde_vreinterpret_f32_u64(simde_vdup_n_u64(a));
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
@@ -188,9 +172,7 @@ simde_vcreate_f64(uint64_t a) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vcreate_f64(a);
   #else
-    simde_float64x1_t r;
-    simde_memcpy(&r, &a, sizeof(r));
-    return r;
+    return simde_vreinterpret_f64_u64(simde_vdup_n_u64(a));
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
