@@ -135,7 +135,7 @@ jobs:
     - CXX_COMPILER=icpc
     - DIAGNOSTIC_FLAGS='-wd13200 -wd13203 -wd16219 -Wall'
     install:
-    - source /opt/intel/inteloneapi/compiler/latest/env/vars.sh
+    - source /opt/intel/oneapi/compiler/latest/env/vars.sh
     addons:
       apt:
         sources:
