@@ -2,41 +2,42 @@ pool:
   vmImage: 'ubuntu-latest'
 
 jobs:
-
-- job: sse2
+- job: clang_analysis
+  variables:
+    CC: clang-10
+    CXX: clang++-10
+    # CFLAGS: -Weverything -Werror
+    # CXXFLAGS: -Weverything -Werror
   steps:
-  - script: sudo apt-get update && sudo apt-get install -y ninja-build
-    displayName: Dependencies
-  - script: cmake test -G Ninja -DCMAKE_BUILD_TYPE=Coverage -DCMAKE_C_FLAGS='-msse2' -DCMAKE_CXX_FLAGS='-march=native'
+  - script: uname -a && cat /proc/cpuinfo /proc/meminfo
+    displayName: System Information
+  - script: sudo add-apt-repository 'ppa:ubuntu-toolchain-r/test' && sudo apt-get update && sudo apt-get install -y ninja-build ninja-build python3-pip python3-setuptools python3-wheel clang-10 clang-tools-10
+    displayName: Install APT Dependencies
+  - script: pip3 install -v meson
+    displayName: Install pip Dependencies
+  - script: scan-build-10 /home/vsts/.local/bin/meson setup build -Db_sanitize=address,undefined
     displayName: Configure
-  - script: ninja -v
+  - script: scan-build-10 ninja -C build -v
     displayName: Build
-  - script: ./run-tests
-    displayName: Tests
+  - script: ninja -C build -v test
+    displayName: Test
 
-- job: sse4_1
+- job: gcc_analysis
+  variables:
+    CC: gcc-10
+    CXX: g++-10
+    CFLAGS: -fanalyzer -Wextra -Werror
+    CXXFLAGS: -fanalyzer -Wextra -Werror
   steps:
-  - script: sudo apt-get update && sudo apt-get install -y ninja-build
-    displayName: Dependencies
-  - script: cmake test -G Ninja -DCMAKE_BUILD_TYPE=Coverage -DCMAKE_C_FLAGS='-msse4.1' -DCMAKE_CXX_FLAGS='-march=native'
+  - script: uname -a && cat /proc/cpuinfo /proc/meminfo
+    displayName: System Information
+  - script: sudo add-apt-repository 'ppa:ubuntu-toolchain-r/test' && sudo apt-get update && sudo apt-get install -y ninja-build ninja-build python3-pip python3-setuptools python3-wheel gcc-10 g++-10
+    displayName: Install APT Dependencies
+  - script: pip3 install meson
+    displayName: Install pip Dependencies
+  - script: /home/vsts/.local/bin/meson setup build -Db_sanitize=address,undefined
     displayName: Configure
-  - script: ninja -v
+  - script: ninja -C build -v
     displayName: Build
-  - script: ./run-tests
-    displayName: Tests
-
-- job: mipsel
-  steps:
-  - script: sudo apt-get update && sudo apt-get -y install qemu-user
-    displayName: APT Dependencies
-  - script: |
-      docker pull dockcross/linux-mipsel
-      docker run --rm dockcross/linux-mipsel > ./dockcross-linux-mipsel
-      chmod u+x ./dockcross-linux-mipsel
-    displayName: Prepare Dockcross
-  - script: ./dockcross-linux-mipsel cmake test -DCMAKE_BUILD_TYPE=Coverage
-    displayName: Configure
-  - script: ./dockcross-linux-mipsel make VERBOSE=1
-    displayName: Build
-  - script: ./dockcross-linux-mipsel ./run-tests
-    displayName: Tests
+  - script: ninja -C build -v test
+    displayName: Test
