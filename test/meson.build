@@ -1,21 +1,3 @@
-munit_deps = []
-munit_defs = []
-if cc.get_id() == 'pgi'
-  munit_deps += dependency('openmp')
-endif
-if cc.has_function('clock_gettime')
-  librt_dep = cc.find_library('rt', required: false)
-  if not librt_dep.found()
-    munit_defs += '-DPSNIP_CLOCK_NO_LIBRT'
-  endif
-  munit_deps += librt_dep
-endif
-munit_cflags = []
-if cc.has_argument('-w')
-  munit_cflags += '-w'
-endif
-munit = static_library('munit', 'munit/munit.c', dependencies: munit_deps, c_args: munit_cflags)
-
 cc = meson.get_compiler('c')
 libm = cc.find_library('m', required : false)
 
