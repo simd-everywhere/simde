@@ -3594,6 +3594,8 @@ simde_mm_min_pd (simde__m128d a, simde__m128d b) {
 
     #if defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
       r_.altivec_f64 = vec_min(a_.altivec_f64, b_.altivec_f64);
+    #elif defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+      r_.neon_f64 = vminq_f64(a_.neon_f64, b_.neon_f64);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
@@ -3621,8 +3623,13 @@ simde_mm_min_sd (simde__m128d a, simde__m128d b) {
       a_ = simde__m128d_to_private(a),
       b_ = simde__m128d_to_private(b);
 
-    r_.f64[0] = (a_.f64[0] < b_.f64[0]) ? a_.f64[0] : b_.f64[0];
-    r_.f64[1] = a_.f64[1];
+    #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+      float64x2_t temp = vminq_f64(a_.neon_f64, b_.neon_f64);
+      r_.neon_f64 = vsetq_lane_f64(vgetq_lane(a_.neon_f64, 1), temp, 1);
+    #else
+      r_.f64[0] = (a_.f64[0] < b_.f64[0]) ? a_.f64[0] : b_.f64[0];
+      r_.f64[1] = a_.f64[1];
+    #endif
 
     return simde__m128d_from_private(r_);
   #endif
@@ -3702,6 +3709,8 @@ simde_mm_max_pd (simde__m128d a, simde__m128d b) {
 
     #if defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
       r_.altivec_f64 = vec_max(a_.altivec_f64, b_.altivec_f64);
+    #elif defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+      r_.neon_f64 = vmaxq_f64(a_.neon_f64, b_.neon_f64);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
@@ -3729,8 +3738,13 @@ simde_mm_max_sd (simde__m128d a, simde__m128d b) {
       a_ = simde__m128d_to_private(a),
       b_ = simde__m128d_to_private(b);
 
-    r_.f64[0] = (a_.f64[0] > b_.f64[0]) ? a_.f64[0] : b_.f64[0];
-    r_.f64[1] = a_.f64[1];
+    #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+      float64x2_t temp = vmaxq_f64(a_.neon_f64, b_.neon_f64);
+      r_.neon_f64 = vsetq_lane_f64(vgetq_lane(a_.neon_f64, 1), temp, 1);
+    #else
+      r_.f64[0] = (a_.f64[0] > b_.f64[0]) ? a_.f64[0] : b_.f64[0];
+      r_.f64[1] = a_.f64[1];
+    #endif
 
     return simde__m128d_from_private(r_);
   #endif
