@@ -112,8 +112,8 @@ jobs:
     env:
       CC: clang-${{ matrix.version }}
       CXX: clang++-${{ matrix.version }}
-      CFLAGS: -Wall -Wextra -Werror -march=native
-      CXXFLAGS: -Wall -Wextra -Werror -march=native
+      CFLAGS: -Wall -Weverything -Werror -march=native
+      CXXFLAGS: -Wall -Weverything -Werror -march=native
     steps:
     - uses: actions/checkout@v2
       with:
