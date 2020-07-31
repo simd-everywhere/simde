@@ -3592,7 +3592,9 @@ simde_mm_min_pd (simde__m128d a, simde__m128d b) {
       a_ = simde__m128d_to_private(a),
       b_ = simde__m128d_to_private(b);
 
-    #if defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
+    #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+      r_.neon_f64 = vminq_f64(a_.neon_f64, b_.neon_f64);
+    #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
       r_.altivec_f64 = vec_min(a_.altivec_f64, b_.altivec_f64);
     #else
       SIMDE_VECTORIZE
@@ -3700,7 +3702,9 @@ simde_mm_max_pd (simde__m128d a, simde__m128d b) {
       a_ = simde__m128d_to_private(a),
       b_ = simde__m128d_to_private(b);
 
-    #if defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
+    #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+      r_.neon_f64 = vmaxq_f64(a_.neon_f64, b_.neon_f64);
+    #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
       r_.altivec_f64 = vec_max(a_.altivec_f64, b_.altivec_f64);
     #else
       SIMDE_VECTORIZE
