@@ -101,7 +101,6 @@ simde_x_mm_gf2p8matrix_multiply_epi64_epi8 (simde__m128i x, simde__m128i A) {
       SIMDE_VECTORIZE
     #endif
     for (size_t i = 0 ; i < (sizeof(r_.u8) / sizeof(r_.u8[0])) ; i++) {
-      q = A_.u64[i / 8];
       q = simde_endian_bswap64_le(A_.u64[i / 8]);
       q &= HEDLEY_STATIC_CAST(uint64_t, x_.u8[i]) * ones;
       q ^= q >> 4;
