@@ -52,7 +52,7 @@ RUN npm install jsvu -g && jsvu --os=linux64 --engines=v8 && ln -s "/root/.jsvu/
 # Wrappers for ICC
 RUN \
     for exe in icc icpc; do \
-      printf '#!/bin/bash\nsource /opt/intel/inteloneapi/setvars.sh >/dev/null\n%s $@\n' "${exe}" > /usr/bin/"${exe}" && \
+      printf '#!/bin/bash\nsource /opt/intel/oneapi/compiler/latest/env/vars.sh >/dev/null\n%s $@\n' "${exe}" > /usr/bin/"${exe}" && \
       chmod 0755 /usr/bin/"${exe}" ; \
     done
 

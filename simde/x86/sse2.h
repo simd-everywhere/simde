@@ -2446,6 +2446,8 @@ simde_mm_cvtpd_ps (simde__m128d a) {
     #if defined(SIMDE_CONVERT_VECTOR_)
       SIMDE_CONVERT_VECTOR_(r_.m64_private[0].f32, a_.f64);
       r_.m64_private[1] = simde__m64_to_private(simde_mm_setzero_si64());
+    #elif defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+      r_.neon_f32 = vreinterpretq_f32_f64(vcombine_f64(vreinterpret_f64_f32(vcvtx_f32_f64(a_.neon_f64)), vdup_n_f64(0)));
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(a_.f64) / sizeof(a_.f64[0])) ; i++) {
@@ -2542,6 +2544,8 @@ simde_mm_cvtps_pd (simde__m128 a) {
 
     #if defined(SIMDE_CONVERT_VECTOR_)
       SIMDE_CONVERT_VECTOR_(r_.f64, a_.m64_private[0].f32);
+    #elif defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+      r_.neon_f64 = vcvt_f64_f32(vget_low_f32(a_.neon_f32));
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {

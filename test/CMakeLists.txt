@@ -173,6 +173,7 @@ set(TEST_SOURCES_C
   arm/neon/rshl.c
   arm/neon/rshr_n.c
   arm/neon/rsra_n.c
+  arm/neon/set_lane.c
   arm/neon/st1_lane.c
   arm/neon/shl.c
   arm/neon/shl_n.c
