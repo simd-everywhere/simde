@@ -10,10 +10,10 @@ RUN \
   echo "deb [arch=amd64] https://apt.repos.intel.com/oneapi all main" > /etc/apt/sources.list.d/oneAPI.list && \
   for arch in armhf arm64 ppc64el s390x; do \
     dpkg --add-architecture "$arch"; \
-  done && \
-  apt-get update -y
+  done
 
 RUN \
+  apt-get update -y && \
   apt-get install -y \
     git build-essential \
     meson cmake \
