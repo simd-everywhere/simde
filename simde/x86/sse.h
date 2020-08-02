@@ -3077,6 +3077,17 @@ simde_mm_rcp_ps (simde__m128 a) {
       r_.altivec_f32 = vec_re(a_.altivec_f32);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
       r_.f32 = 1.0f / a_.f32;
+    #elif defined(__STDC_IEC_559__)
+      /* https://stackoverflow.com/questions/12227126/division-as-multiply-and-lut-fast-float-division-reciprocal/12228234#12228234 */
+      for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
+        int32_t ix;
+        simde_float32 fx = a_.f32[i];
+        simde_memcpy(&ix, &fx, sizeof(ix));
+        int32_t x = INT32_C(0x7EF311C3) - ix;
+        simde_float32 temp;
+        simde_memcpy(&temp, &x, sizeof(temp));
+        r_.f32[i] = temp * (SIMDE_FLOAT32_C(2.0) - temp * fx);
+      }
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
