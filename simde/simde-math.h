@@ -123,6 +123,7 @@
   #endif
 #endif
 
+#ifndef SIMDE_NO_COMPLEX
 #if !defined(__cplusplus)
   /* If this is a problem we *might* be able to avoid including
    * <complex.h> on some compilers (gcc, clang, and others which
@@ -213,6 +214,7 @@
   #if !defined(simde_math_cimagf)
     #define simde_math_cimagf(z) ((z).imag())
   #endif
+#endif
 #endif
 
 #if !defined(SIMDE_MATH_INFINITY)

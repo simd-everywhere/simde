@@ -1577,6 +1577,7 @@ simde_mm512_mask_cbrt_pd(simde__m512d src, simde__mmask8 k, simde__m512d a) {
   #define _mm512_mask_cbrt_pd(src, k, a) simde_mm512_mask_cbrt_pd(src, k, a)
 #endif
 
+#if !defined(SIMDE_NO_COMPLEX)
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128
 simde_mm_cexp_ps (simde__m128 a) {
@@ -1601,7 +1602,9 @@ simde_mm_cexp_ps (simde__m128 a) {
   #undef _mm_cexp_ps
   #define _mm_cexp_ps(a) simde_mm_cexp_ps(a)
 #endif
+#endif
 
+#if !defined(SIMDE_NO_COMPLEX)
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m256
 simde_mm256_cexp_ps (simde__m256 a) {
@@ -1625,6 +1628,7 @@ simde_mm256_cexp_ps (simde__m256 a) {
 #if defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
   #undef _mm256_cexp_ps
   #define _mm256_cexp_ps(a) simde_mm256_cexp_ps(a)
+#endif
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
