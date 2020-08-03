@@ -112,8 +112,9 @@ simde_vtbl2_s8(simde_int8x8x2_t a, simde_int8x8_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vtbl2_s8(a, b);
   #else
-    return simde_vreinterpret_s8_u8(simde_vtbl2_u8(*HEDLEY_REINTERPRET_CAST(simde_uint8x8x2_t *, &a),
-                                                   simde_vreinterpret_u8_s8(b)));
+    simde_uint8x8x2_t a_;
+    simde_memcpy(&a_, &a, sizeof(a_));
+    return simde_vreinterpret_s8_u8(simde_vtbl2_u8(a_, simde_vreinterpret_u8_s8(b)));
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
@@ -132,7 +133,7 @@ simde_vtbl3_u8(simde_uint8x8x3_t a, simde_uint8x8_t b) {
     __m128i r128_01 = _mm_shuffle_epi8(_mm_set_epi64(a.val[1], a.val[0]), b128);
     __m128i r128_2  = _mm_shuffle_epi8(_mm_set1_epi64(a.val[2]), b128);
     __m128i r128 = _mm_blendv_epi8(r128_01, r128_2, _mm_slli_epi32(b128, 3));
-   return _mm_movepi64_pi64(r128);
+    return _mm_movepi64_pi64(r128);
   #else
     simde_uint8x8_private
       r_,
@@ -158,8 +159,9 @@ simde_vtbl3_s8(simde_int8x8x3_t a, simde_int8x8_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vtbl3_s8(a, b);
   #else
-    return simde_vreinterpret_s8_u8(simde_vtbl3_u8(*HEDLEY_REINTERPRET_CAST(simde_uint8x8x3_t *, &a),
-                                                   simde_vreinterpret_u8_s8(b)));
+    simde_uint8x8x3_t a_;
+    simde_memcpy(&a_, &a, sizeof(a_));
+    return simde_vreinterpret_s8_u8(simde_vtbl3_u8(a_, simde_vreinterpret_u8_s8(b)));
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
@@ -178,7 +180,7 @@ simde_vtbl4_u8(simde_uint8x8x4_t a, simde_uint8x8_t b) {
     __m128i r128_01 = _mm_shuffle_epi8(_mm_set_epi64(a.val[1], a.val[0]), b128);
     __m128i r128_23 = _mm_shuffle_epi8(_mm_set_epi64(a.val[3], a.val[2]), b128);
     __m128i r128 = _mm_blendv_epi8(r128_01, r128_23, _mm_slli_epi32(b128, 3));
-   return _mm_movepi64_pi64(r128);
+    return _mm_movepi64_pi64(r128);
   #else
     simde_uint8x8_private
       r_,
@@ -203,9 +205,10 @@ simde_int8x8_t
 simde_vtbl4_s8(simde_int8x8x4_t a, simde_int8x8_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vtbl4_s8(a, b);
- #else
-    return simde_vreinterpret_s8_u8(simde_vtbl4_u8(*HEDLEY_REINTERPRET_CAST(simde_uint8x8x4_t *, &a),
-                                                   simde_vreinterpret_u8_s8(b)));
+  #else
+    simde_uint8x8x4_t a_;
+    simde_memcpy(&a_, &a, sizeof(a_));
+    return simde_vreinterpret_s8_u8(simde_vtbl4_u8(a_, simde_vreinterpret_u8_s8(b)));
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)

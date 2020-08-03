@@ -90,7 +90,7 @@ simde_vqtbl2_u8(simde_uint8x16x2_t t, simde_uint8x8_t idx) {
     __m128i r128_0 = _mm_shuffle_epi8(t.val[0], idx128);
     __m128i r128_1 = _mm_shuffle_epi8(t.val[1], idx128);
     __m128i r128 = _mm_blendv_epi8(r128_0, r128_1, _mm_slli_epi32(idx128, 3));
-   return _mm_movepi64_pi64(r128);
+    return _mm_movepi64_pi64(r128);
   #else
     simde_uint8x16_private t_[2] = { simde_uint8x16_to_private(t.val[0]), simde_uint8x16_to_private(t.val[1]) };
     simde_uint8x8_private
@@ -116,7 +116,9 @@ simde_vqtbl2_s8(simde_int8x16x2_t t, simde_uint8x8_t idx) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vqtbl2_s8(t, idx);
   #else
-    return simde_vreinterpret_s8_u8(simde_vqtbl2_u8(*HEDLEY_REINTERPRET_CAST(simde_uint8x16x2_t *, &t), idx));
+    simde_uint8x16x2_t t_;
+    simde_memcpy(&t_, &t, sizeof(t_));
+    return simde_vreinterpret_s8_u8(simde_vqtbl2_u8(t_, idx));
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
@@ -164,8 +166,9 @@ simde_vqtbl3_s8(simde_int8x16x3_t t, simde_uint8x8_t idx) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vqtbl3_s8(t, idx);
   #else
-    return simde_vreinterpret_s8_u8(simde_vqtbl3_u8(*HEDLEY_REINTERPRET_CAST(simde_uint8x16x3_t *, &t),
-                                                   idx));
+    simde_uint8x16x3_t t_;
+    simde_memcpy(&t_, &t, sizeof(t_));
+    return simde_vreinterpret_s8_u8(simde_vqtbl3_u8(t_, idx));
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
@@ -215,8 +218,10 @@ simde_int8x8_t
 simde_vqtbl4_s8(simde_int8x16x4_t t, simde_uint8x8_t idx) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vqtbl4_s8(t, idx);
- #else
-    return simde_vreinterpret_s8_u8(simde_vqtbl4_u8(*HEDLEY_REINTERPRET_CAST(simde_uint8x16x4_t *, &t), idx));
+  #else
+    simde_uint8x16x4_t t_;
+    simde_memcpy(&t_, &t, sizeof(t_));
+    return simde_vreinterpret_s8_u8(simde_vqtbl4_u8(t_, idx));
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
@@ -314,7 +319,9 @@ simde_vqtbl2q_s8(simde_int8x16x2_t t, simde_uint8x16_t idx) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vqtbl2q_s8(t, idx);
   #else
-    return simde_vreinterpretq_s8_u8(simde_vqtbl2q_u8(*HEDLEY_REINTERPRET_CAST(simde_uint8x16x2_t *, &t), idx));
+    simde_uint8x16x2_t t_;
+    simde_memcpy(&t_, &t, sizeof(t_));
+    return simde_vreinterpretq_s8_u8(simde_vqtbl2q_u8(t_, idx));
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
@@ -369,8 +376,9 @@ simde_vqtbl3q_s8(simde_int8x16x3_t t, simde_uint8x16_t idx) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vqtbl3q_s8(t, idx);
   #else
-    return simde_vreinterpretq_s8_u8(simde_vqtbl3q_u8(*HEDLEY_REINTERPRET_CAST(simde_uint8x16x3_t *, &t),
-                                                   idx));
+    simde_uint8x16x3_t t_;
+    simde_memcpy(&t_, &t, sizeof(t_));
+    return simde_vreinterpretq_s8_u8(simde_vqtbl3q_u8(t_, idx));
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
@@ -428,8 +436,10 @@ simde_int8x16_t
 simde_vqtbl4q_s8(simde_int8x16x4_t t, simde_uint8x16_t idx) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vqtbl4q_s8(t, idx);
- #else
-    return simde_vreinterpretq_s8_u8(simde_vqtbl4q_u8(*HEDLEY_REINTERPRET_CAST(simde_uint8x16x4_t *, &t), idx));
+  #else
+    simde_uint8x16x4_t t_;
+    simde_memcpy(&t_, &t, sizeof(t_));
+    return simde_vreinterpretq_s8_u8(simde_vqtbl4q_u8(t_, idx));
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
