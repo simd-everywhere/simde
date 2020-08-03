@@ -938,6 +938,18 @@ simde_mm_cvtepu32_epi64 (simde__m128i a) {
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
+void
+simde_x_kadd_f64(simde_float64 *sum, simde_float64 *c, simde_float64 y)
+{
+  // Kahan summation for accurate summation of floating-point numbers.
+  // http://blog.zachbjornson.com/2019/08/11/fast-float-summation.html
+    y -= *c;
+    simde_float64 t = *sum + y;
+    *c = (t - *sum) - y;
+    *sum = t;
+}
+
+SIMDE_FUNCTION_ATTRIBUTES
 simde__m128d
 simde_mm_dp_pd (simde__m128d a, simde__m128d b, const int imm8)
     SIMDE_REQUIRE_RANGE(imm8, 0, 255)  {
@@ -946,17 +958,49 @@ simde_mm_dp_pd (simde__m128d a, simde__m128d b, const int imm8)
     a_ = simde__m128d_to_private(a),
     b_ = simde__m128d_to_private(b);
 
-  simde_float64 sum = SIMDE_FLOAT64_C(0.0);
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+    // shortcut cases
+    if (imm8 == 0xFF) {
+      r_.neon_f64 = vdupq_n_f64(vaddvq_f64(simde_mm_mul_pd(a, b)));
+      return simde__m128d_from_private(r_);
+    }
+    if (imm8 == 0x13) {
+      float64x2_t m = simde_mm_mul_pd(a, b);
+      m = vsetq_lane_f64(0, m, 1);
+      r_.neon_f64 = vdupq_n_f64(vaddvq_f64(m));
+      return simde__m128d_from_private(r_);
+    }
+    simde_float64 s = 0, c = 0;
+    float64x2_t f64a = a_.neon_f64;
+    float64x2_t f64b = b_.neon_f64;
 
-  SIMDE_VECTORIZE_REDUCTION(+:sum)
-  for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
-    sum += ((imm8 >> (i + 4)) & 1) ? (a_.f64[i] * b_.f64[i]) : 0.0;
-  }
+    /* To improve the accuracy of floating-point summation, Kahan algorithm
+     * is used for each operation.
+     */
+    if (imm8 & (1 << 4))
+        simde_x_kadd_f64(&s, &c, vgetq_lane_f64(f64a, 0) * vgetq_lane_f64(f64b, 0));
+    if (imm8 & (1 << 5))
+        simde_x_kadd_f64(&s, &c, vgetq_lane_f64(f64a, 1) * vgetq_lane_f64(f64b, 1));
+    s += c;
 
-  SIMDE_VECTORIZE
-  for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
-    r_.f64[i] = ((imm8 >> i) & 1) ? sum : 0.0;
-  }
+    simde_float64 res[2] = {
+        (imm8 & 0x1) ? s : 0,
+        (imm8 & 0x2) ? s : 0,
+    };
+    r_.neon_f64 = vld1q_f64(res);
+  #else
+    simde_float64 sum = SIMDE_FLOAT64_C(0.0);
+
+    SIMDE_VECTORIZE_REDUCTION(+:sum)
+    for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
+      sum += ((imm8 >> (i + 4)) & 1) ? (a_.f64[i] * b_.f64[i]) : 0.0;
+    }
+
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
+      r_.f64[i] = ((imm8 >> i) & 1) ? sum : 0.0;
+    }
+  #endif
 
   return simde__m128d_from_private(r_);
 }
@@ -970,12 +1014,12 @@ simde_mm_dp_pd (simde__m128d a, simde__m128d b, const int imm8)
 
 SIMDE_FUNCTION_ATTRIBUTES
 void
-simde_x_kadd_f32(float *sum, float *c, float y)
+simde_x_kadd_f32(simde_float32 *sum, simde_float32 *c, simde_float32 y)
 {
   // Kahan summation for accurate summation of floating-point numbers.
   // http://blog.zachbjornson.com/2019/08/11/fast-float-summation.html
     y -= *c;
-    float t = *sum + y;
+    simde_float32 t = *sum + y;
     *c = (t - *sum) - y;
     *sum = t;
 }
@@ -1003,7 +1047,7 @@ simde_mm_dp_ps (simde__m128 a, simde__m128 b, const int imm8)
         return simde__m128_from_private(r_);
       }
     #endif
-    float s = 0, c = 0;
+    simde_float32 s = 0, c = 0;
     float32x4_t f32a = a_.neon_f32;
     float32x4_t f32b = b_.neon_f32;
 
