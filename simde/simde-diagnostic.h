@@ -267,6 +267,9 @@
   #define SIMDE_DIAGNOSTIC_DISABLE_CAST_FUNCTION_TYPE_
 #endif
 
+/* clang will emit this warning when we use C99 extensions whan not in
+ * C99 mode, even though it does support this.  In such cases we check
+ * the compiler and version first, so we know it's not a problem. */
 #if HEDLEY_HAS_WARNING("-Wc99-extensions")
   #define SIMDE_DIAGNOSTIC_DISABLE_C99_EXTENSIONS_ _Pragma("clang diagnostic ignored \"-Wc99-extensions\"")
 #else
