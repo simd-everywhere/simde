@@ -4,14 +4,11 @@ DOCKER="$(command -v podman || command -v docker)"
 
 DOCKER_DIR="$(dirname "${0}")"
 
-if [ "$(basename "${DOCKER}")" = "podman" ]; then
-  PODMAN_RELABEL=":z"
-fi
+VOLUME_OPTIONS=""
+CAPABILITIES=""
 
 if [ "${OSTYPE}" = "linux-gnu" ]; then
   CAPABILITIES="--cap-add=CAP_SYS_PTRACE";
-else
-  CAPABILITIES="";
 fi
 
 IMAGE_NAME="simde-dev"
@@ -33,5 +30,12 @@ fi
 
 echo "Using $(realpath "${DOCKERFILE}")"
 
-"${DOCKER}" build -t "${IMAGE_NAME}" --cap-add=CAP_SYS_PTRACE -f "${DOCKERFILE}" "${DOCKER_DIR}/.."
-"${DOCKER}" run -v "$(realpath "${DOCKER_DIR}/..")":/usr/local/src/simde${PODMAN_RELABEL} ${CAPABILITIES} --rm -it "${IMAGE_NAME}" /bin/bash
+"${DOCKER}" build -t "${IMAGE_NAME}" ${CAPABILITIES} -f "${DOCKERFILE}" "${DOCKER_DIR}/.."
+"${DOCKER}" run --mount type=bind,source="$(realpath "${DOCKER_DIR}/..")",target=/usr/local/src/simde ${CAPABILITIES} --rm -it "${IMAGE_NAME}" /bin/bash
+
+if [ "$(basename "${DOCKER}")" = "podman" ]; then
+  VOLUME_OPTIONS=":z";
+elif [ "$OSTYPE" == "darwin" ]; then
+  VOLUME_OPTIONS=":delegated"
+fi
+# "${DOCKER}" run -v "$(realpath "${DOCKER_DIR}/..")":/usr/local/src/simde${VOLUME_OPTIONS} ${CAPABILITIES} --rm -it "${IMAGE_NAME}" /bin/bash
