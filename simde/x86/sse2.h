@@ -689,6 +689,9 @@ simde_mm_add_sd (simde__m128d a, simde__m128d b) {
 
     #if (SIMDE_NATURAL_VECTOR_SIZE > 0)
       return simde_mm_move_sd(a, simde_mm_add_pd(a, b));
+    #elif defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+      float64x2_t temp = vaddq_f64(a_.neon_f64, b_.neon_f64);
+      r_.neon_f64 = vsetq_lane_f64(vgetq_lane(a_.neon_f64, 1), temp, 1);
     #else
         r_.f64[0] = a_.f64[0] + b_.f64[0];
         r_.f64[1] = a_.f64[1];
@@ -3802,6 +3805,8 @@ simde_x_mm_mul_epi64 (simde__m128i a, simde__m128i b) {
 
   #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
     r_.i64 = a_.i64 * b_.i64;
+  #elif defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+    r_.neon_f64 = vdivq_f64(a_.neon_f64, b_.neon_f64);
   #else
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.i64) / sizeof(r_.i64[0])) ; i++) {
@@ -5027,6 +5032,9 @@ simde_mm_sqrt_sd (simde__m128d a, simde__m128d b) {
     #if defined(simde_math_sqrt)
       r_.f64[0] = simde_math_sqrt(b_.f64[0]);
       r_.f64[1] = a_.f64[1];
+    #elif defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+      float64x2_t temp = vsqrtq_f64(a_.neon_f64, b_.neon_f64);
+      r_.neon_f64 = vsetq_lane_f64(vgetq_lane(a_.neon_f64, 1), temp, 1);
     #else
       HEDLEY_UNREACHABLE();
     #endif
