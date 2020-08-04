@@ -5939,6 +5939,8 @@ simde_mm_sub_pd (simde__m128d a, simde__m128d b) {
 
     #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       r_.f64 = a_.f64 - b_.f64;
+    #elif defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+      r_.neon_f64 = vsubq_f64(a_.neon_f64, b_.neon_f64);
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r_.wasm_v128 = wasm_f64x2_sub(a_.wasm_v128, b_.wasm_v128);
     #else
@@ -5968,8 +5970,13 @@ simde_mm_sub_sd (simde__m128d a, simde__m128d b) {
       a_ = simde__m128d_to_private(a),
       b_ = simde__m128d_to_private(b);
 
-    r_.f64[0] = a_.f64[0] - b_.f64[0];
-    r_.f64[1] = a_.f64[1];
+    #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+      float64x2_t temp = vsubq_f64(a_.neon_f64, b_.neon_f64);
+      r_.neon_f64 = vsetq_lane_f64(vgetq_lane(a_.neon_f64, 1), temp, 1);
+    #else
+      r_.f64[0] = a_.f64[0] - b_.f64[0];
+      r_.f64[1] = a_.f64[1];
+    #endif
 
     return simde__m128d_from_private(r_);
   #endif
