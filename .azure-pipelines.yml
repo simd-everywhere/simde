@@ -1,6 +1,11 @@
 pool:
   vmImage: 'ubuntu-latest'
 
+trigger:
+  branches:
+    exclude:
+    - master
+
 jobs:
 - job: clang_analysis
   variables:
