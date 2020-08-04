@@ -5916,6 +5916,8 @@ simde_x_mm_sub_epu32 (simde__m128i a, simde__m128i b) {
 
   #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
     r_.u32 = a_.u32 - b_.u32;
+  #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    r_.neon_u32 = vsubq_u32(a_.neon_u32, b_.neon_u32);
   #else
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.u32) / sizeof(r_.u32[0])) ; i++) {
@@ -5998,6 +6000,8 @@ simde_mm_sub_si64 (simde__m64 a, simde__m64 b) {
 
     #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       r_.i64 = a_.i64 - b_.i64;
+    #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+      r_.neon_i64 = vsub_s64(a_.neon_i64, b_.neon_i64);
     #else
       r_.i64[0] = a_.i64[0] - b_.i64[0];
     #endif
