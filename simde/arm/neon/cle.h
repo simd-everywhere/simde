@@ -39,7 +39,7 @@ simde_uint32x4_t
 simde_vcleq_f32(simde_float32x4_t a, simde_float32x4_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vcleq_f32(a, b);
-  #elif defined(SIMDE_X86_SSE_NATIVE)
+  #elif defined(SIMDE_X86_SSE2_NATIVE)
     return _mm_castps_si128(_mm_cmple_ps(a, b));
   #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
     return HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned int), vec_cmple(a, b));
