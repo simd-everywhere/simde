@@ -475,6 +475,8 @@ simde_x_mm_select_pd(simde__m128d a, simde__m128d b, simde__m128d mask) {
 
     #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       r_.i64 = a_.i64 ^ ((a_.i64 ^ b_.i64) & mask_.i64);
+    #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+      r_.neon_i64 = vbslq_s64(mask_.neon_u64, b_.neon_i64, a_.neon_i64);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.i64) / sizeof(r_.i64[0])) ; i++) {
@@ -994,6 +996,8 @@ simde_mm_xor_pd (simde__m128d a, simde__m128d b) {
 
     #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       r_.i32f = a_.i32f ^ b_.i32f;
+    #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+      r_.neon_i64 = veorq_s64(a_.neon_i64, b_.neon_i64);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.i32f) / sizeof(r_.i32f[0])) ; i++) {
@@ -4050,6 +4054,8 @@ simde_mm_or_pd (simde__m128d a, simde__m128d b) {
 
     #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       r_.i32f = a_.i32f | b_.i32f;
+    #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+      r_.neon_i64 = vorrq_s64(a_.neon_i64, b_.neon_i64);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.i32f) / sizeof(r_.i32f[0])) ; i++) {
@@ -5801,7 +5807,11 @@ simde_mm_stream_pd (simde_float64 mem_addr[HEDLEY_ARRAY_PARAM(2)], simde__m128d 
   #if defined(SIMDE_X86_SSE2_NATIVE)
     _mm_stream_pd(mem_addr, a);
   #else
-    simde_memcpy(mem_addr, &a, sizeof(a));
+    #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+      vst1q_f64(SIMDE_ASSUME_ALIGNED(16, mem_addr), simde__m128d_to_private(a).neon_f64);
+    #else
+      simde_memcpy(mem_addr, &a, sizeof(a));
+    #endif
   #endif
 }
 #if defined(SIMDE_X86_SSE2_ENABLE_NATIVE_ALIASES)
