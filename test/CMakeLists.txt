@@ -133,6 +133,8 @@ set(TEST_SOURCES_C
   arm/neon/get_high.c
   arm/neon/get_lane.c
   arm/neon/get_low.c
+  arm/neon/ld3.c
+  arm/neon/ld4.c
   arm/neon/max.c
   arm/neon/min.c
   arm/neon/mla.c
@@ -174,6 +176,8 @@ set(TEST_SOURCES_C
   arm/neon/rshr_n.c
   arm/neon/rsra_n.c
   arm/neon/st1_lane.c
+  arm/neon/st3.c
+  arm/neon/st4.c
   arm/neon/shl.c
   arm/neon/shl_n.c
   arm/neon/shr_n.c

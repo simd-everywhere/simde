@@ -1,6 +1,6 @@
 simde_test_arm_neon_sources = []
 foreach name : simde_neon_families
-  if (name != 'ld1') and (name != 'st1')
+  if (name != 'ld1') and (name != 'st1') and (name != 'ld3') and (name != 'ld4')
     c_source = name + '.c'
     cpp_source = configure_file(input: name + '.c', output: name + '.cpp', copy: true)
     simde_test_arm_neon_sources += [c_source, cpp_source]
