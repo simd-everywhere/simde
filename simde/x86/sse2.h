@@ -2091,6 +2091,8 @@ simde_mm_cmpge_pd (simde__m128d a, simde__m128d b) {
 
     #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       r_.i64 = HEDLEY_STATIC_CAST(__typeof__(r_.i64), (a_.f64 >= b_.f64));
+    #elif defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+      r_.neon_u64 = vcgeq_f64(a_.neon_f64, b_.neon_f64);
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r_.wasm_v128 = wasm_f64x2_ge(a_.wasm_v128, b_.wasm_v128);
     #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
@@ -3041,8 +3043,12 @@ simde_mm_load_pd1 (simde_float64 const* mem_addr) {
   #else
     simde__m128d_private r_;
 
-    r_.f64[0] = *mem_addr;
-    r_.f64[1] = *mem_addr;
+    #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+      r_.neon_f64 = vld1q_dup_f64(mem_addr);
+    #else
+      r_.f64[0] = *mem_addr;
+      r_.f64[1] = *mem_addr;
+    #endif
 
     return simde__m128d_from_private(r_);
   #endif
