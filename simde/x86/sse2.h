@@ -2235,7 +2235,14 @@ simde_mm_cmpord_pd (simde__m128d a, simde__m128d b) {
       a_ = simde__m128d_to_private(a),
       b_ = simde__m128d_to_private(b);
 
-    #if defined(simde_math_isnan)
+    #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+      /* Note: NEON does not have ordered compare builtin
+        Need to compare a eq a and b eq b to check for NaN
+        Do AND of results to get final */
+      uint64x2_t ceqaa = vceqq_f64(a_.neon_f64, a_.neon_f64);
+      uint64x2_t ceqbb = vceqq_f64(b_.neon_f64, b_.neon_f64);
+      r_.neon_u64 = vandq_u64(ceqaa, ceqbb);
+    #elif defined(simde_math_isnan)
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
         r_.u64[i] = (!simde_math_isnan(a_.f64[i]) && !simde_math_isnan(b_.f64[i])) ? ~UINT64_C(0) : UINT64_C(0);
@@ -2303,7 +2310,11 @@ simde_mm_cmpunord_pd (simde__m128d a, simde__m128d b) {
       a_ = simde__m128d_to_private(a),
       b_ = simde__m128d_to_private(b);
 
-    #if defined(simde_math_isnan)
+    #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+      uint64x2_t ceqaa = vceqq_f64(a_.neon_f64, a_.neon_f64);
+      uint64x2_t ceqbb = vceqq_f64(b_.neon_f64, b_.neon_f64);
+      r_.neon_u64 = vreinterpretq_u64_u32(vmvnq_u32(vreinterpretq_u32_u64(vandq_u64(ceqaa, ceqbb))));
+    #elif defined(simde_math_isnan)
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
         r_.u64[i] = (simde_math_isnan(a_.f64[i]) || simde_math_isnan(b_.f64[i])) ? ~UINT64_C(0) : UINT64_C(0);
