@@ -1417,6 +1417,8 @@ simde__m128
 simde_mm_castpd_ps (simde__m128d a) {
   #if defined(SIMDE_X86_SSE2_NATIVE)
     return _mm_castpd_ps(a);
+  #elif defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+    return vreinterpretq_f32_f64(a);
   #else
     simde__m128 r;
     simde_memcpy(&r, &a, sizeof(a));
@@ -1449,6 +1451,8 @@ simde__m128d
 simde_mm_castps_pd (simde__m128 a) {
   #if defined(SIMDE_X86_SSE2_NATIVE)
     return _mm_castps_pd(a);
+  #elif defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+    return vreinterpretq_f64_f32(a);
   #else
     simde__m128d r;
     simde_memcpy(&r, &a, sizeof(a));
@@ -1481,6 +1485,8 @@ simde__m128d
 simde_mm_castsi128_pd (simde__m128i a) {
   #if defined(SIMDE_X86_SSE2_NATIVE)
     return _mm_castsi128_pd(a);
+  #elif defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+    return vreinterpretq_f64_s64(a);
   #else
     simde__m128d r;
     simde_memcpy(&r, &a, sizeof(a));
