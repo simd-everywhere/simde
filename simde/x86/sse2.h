@@ -3121,11 +3121,16 @@ simde_mm_loadh_pd (simde__m128d a, simde_float64 const* mem_addr) {
     simde__m128d_private
       r_,
       a_ = simde__m128d_to_private(a);
-    simde_float64 t;
 
-    simde_memcpy(&t, mem_addr, sizeof(t));
-    r_.f64[0] = a_.f64[0];
-    r_.f64[1] = t;
+    #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+      r_.neon_f64 = vcombine_f64(vget_low_f64(a_.neon_f64), vld1_f64(HEDLEY_REINTERPRET_CAST(const float64_t*, mem_addr)));
+    #else
+      simde_float64 t;
+
+      simde_memcpy(&t, mem_addr, sizeof(t));
+      r_.f64[0] = a_.f64[0];
+      r_.f64[1] = t;
+    #endif
 
     return simde__m128d_from_private(r_);
   #endif
@@ -3169,8 +3174,13 @@ simde_mm_loadl_pd (simde__m128d a, simde_float64 const* mem_addr) {
       r_,
       a_ = simde__m128d_to_private(a);
 
-    r_.f64[0] = *mem_addr;
-    r_.u64[1] = a_.u64[1];
+    #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+      r_.neon_f64 = vcombine_f64(vld1_f64(
+        HEDLEY_REINTERPRET_CAST(const float64_t*, mem_addr)), vget_high_f64(a_.neon_f64));
+    #else
+      r_.f64[0] = *mem_addr;
+      r_.u64[1] = a_.u64[1];
+    #endif
 
     return simde__m128d_from_private(r_);
   #endif
@@ -3187,10 +3197,16 @@ simde_mm_loadr_pd (simde_float64 const mem_addr[HEDLEY_ARRAY_PARAM(2)]) {
   #if defined(SIMDE_X86_SSE2_NATIVE)
     return _mm_loadr_pd(mem_addr);
   #else
-    simde__m128d_private r_;
+    simde__m128d_private
+      r_;
 
-    r_.f64[0] = mem_addr[1];
-    r_.f64[1] = mem_addr[0];
+    #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+      float64x2_t temp = simde_mm_load_pd(mem_addr);
+      r_.neon_f64 = vcombine_f64(vget_high_f64(temp), vget_low_f64(temp));
+    #else
+      r_.f64[0] = mem_addr[1];
+      r_.f64[1] = mem_addr[0];
+    #endif
 
     return simde__m128d_from_private(r_);
   #endif
