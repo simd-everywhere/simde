@@ -5735,7 +5735,12 @@ simde_mm_storel_pd (simde_float64* mem_addr, simde__m128d a) {
   #else
     simde__m128d_private a_ = simde__m128d_to_private(a);
 
-    *mem_addr = a_.f64[0];
+    #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+      simde_float64 tmp = vgetq_lane_f64(a_.neon_f64, 0);
+      simde_memcpy(mem_addr, &tmp, sizeof(tmp));
+    #else
+      *mem_addr = a_.f64[0];
+    #endif
   #endif
 }
 #if defined(SIMDE_X86_SSE2_ENABLE_NATIVE_ALIASES)
