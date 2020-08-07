@@ -3488,10 +3488,16 @@ simde_mm_movemask_pd (simde__m128d a) {
     int32_t r = 0;
     simde__m128d_private a_ = simde__m128d_to_private(a);
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(a_.u64) / sizeof(a_.u64[0])) ; i++) {
-      r |= (a_.u64[i] >> 63) << i;
-    }
+    #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+      static const int64x2_t shift = {0, 1};
+      uint64x2_t tmp = vshrq_n_u64(a_.neon_u64, 63);
+      return vaddvq_u64(vshlq_u64(tmp, shift));
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(a_.u64) / sizeof(a_.u64[0])) ; i++) {
+        r |= (a_.u64[i] >> 63) << i;
+      }
+    #endif
 
     return r;
   #endif
