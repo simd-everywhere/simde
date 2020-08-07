@@ -2899,10 +2899,9 @@ simde_mm_movemask_ps (simde__m128 a) {
   simde__m128_private a_ = simde__m128_to_private(a);
 
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
-    static const int32x4_t shift = {-31, -30, -29, -28};
-    static const uint32x4_t highbit = {0x80000000, 0x80000000, 0x80000000,
-                                       0x80000000};
-    return HEDLEY_STATIC_CAST(int, vaddvq_u32(vshlq_u32(vandq_u32(a_.neon_u32, highbit), shift)));
+    static const int32x4_t shift = {0, 1, 2, 3};
+    uint32x4_t tmp = vshrq_n_u32(a_.neon_u32, 31);
+    return vaddvq_u32(vshlq_u32(tmp, shift));
   #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     // Shift out everything but the sign bits with a 32-bit unsigned shift right.
     uint64x2_t high_bits = vreinterpretq_u64_u32(vshrq_n_u32(a_.neon_u32, 31));
