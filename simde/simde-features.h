@@ -241,6 +241,13 @@
   #include <arm_neon.h>
 #endif
 
+#if !defined(SIMDE_ARM_SVE_NATIVE) && !defined(SIMDE_ARM_SVE_NO_NATIVE) && !defined(SIMDE_NO_NATIVE)
+  #if defined(SIMDE_ARCH_ARM_SVE)
+    #define SIMDE_ARM_SVE_NATIVE
+    #include <arm_sve.h>
+  #endif
+#endif
+
 #if !defined(SIMDE_WASM_SIMD128_NATIVE) && !defined(SIMDE_WASM_SIMD128_NO_NATIVE) && !defined(SIMDE_NO_NATIVE)
   #if defined(SIMDE_ARCH_WASM_SIMD128)
     #define SIMDE_WASM_SIMD128_NATIVE
