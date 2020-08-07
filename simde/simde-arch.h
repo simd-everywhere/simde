@@ -123,6 +123,9 @@
 #    define SIMDE_ARCH_ARM_NEON SIMDE_ARCH_ARM
 #  endif
 #endif
+#if defined(__ARM_FEATURE_SVE)
+#  define SIMDE_ARCH_ARM_SVE
+#endif
 
 /* Blackfin
    <https://en.wikipedia.org/wiki/Blackfin> */
