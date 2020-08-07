@@ -1637,6 +1637,743 @@ test_simde_mm_maskz_add_epi64 (SIMDE_MUNIT_TEST_ARGS) {
   return 0;
 }
 
+static int
+test_simde_mm_mask_adds_epi8 (SIMDE_MUNIT_TEST_ARGS) {
+  static const struct {
+    const int8_t src[16];
+    const simde__mmask16 k;
+    const int8_t a[16];
+    const int8_t b[16];
+    const int8_t r[16];
+  } test_vec[] = {
+    { { -INT8_C(  31), -INT8_C(   5),  INT8_C(  46),  INT8_C(   1),  INT8_C(  19), -INT8_C(  53),  INT8_C(  28),  INT8_C(  66),
+        -INT8_C(  30),  INT8_C( 100),  INT8_C(  35), -INT8_C(  33),  INT8_C(  39), -INT8_C(  73),  INT8_C(  19),  INT8_C(  92) },
+      UINT16_C( 2426),
+      { -INT8_C(  95),  INT8_C(  26), -INT8_C(  72),  INT8_C(  19),  INT8_C(  14),  INT8_C( 102),  INT8_C(  82), -INT8_C(   2),
+        -INT8_C(  59), -INT8_C(  10),  INT8_C( 113),  INT8_C(  15),  INT8_C(  27),  INT8_C(  69), -INT8_C( 110),  INT8_C( 115) },
+      {  INT8_C(  15),  INT8_C(  75),  INT8_C( 123), -INT8_C( 127), -INT8_C( 110),  INT8_C(  47),  INT8_C(  62), -INT8_C( 126),
+         INT8_C(  41),  INT8_C(  26),  INT8_C(  55),  INT8_C(   3), -INT8_C( 110), -INT8_C(  34), -INT8_C(  49), -INT8_C(  55) },
+      { -INT8_C(  31),  INT8_C( 101),  INT8_C(  46), -INT8_C( 108), -INT8_C(  96),      INT8_MAX,      INT8_MAX,  INT8_C(  66),
+        -INT8_C(  18),  INT8_C( 100),  INT8_C(  35),  INT8_C(  18),  INT8_C(  39), -INT8_C(  73),  INT8_C(  19),  INT8_C(  92) } },
+    { {  INT8_C( 118),  INT8_C(  85),  INT8_C(  76), -INT8_C(  47), -INT8_C(  19),  INT8_C(  81),  INT8_C(  94),  INT8_C(  77),
+         INT8_C(  47), -INT8_C( 123), -INT8_C( 116), -INT8_C( 110), -INT8_C(  57),  INT8_C(  55), -INT8_C( 111), -INT8_C(   4) },
+      UINT16_C(32116),
+      { -INT8_C(  69),  INT8_C( 126),  INT8_C(  82), -INT8_C(  14), -INT8_C(  58),  INT8_C(  10),  INT8_C(  64),      INT8_MAX,
+         INT8_C(  23), -INT8_C( 109),  INT8_C(  72), -INT8_C(  20),  INT8_C(  64),  INT8_C(  73),  INT8_C(  75), -INT8_C(  38) },
+      { -INT8_C(  24),  INT8_C(  58), -INT8_C(  98),  INT8_C( 121),  INT8_C(  74),  INT8_C(  61), -INT8_C(  26), -INT8_C( 116),
+         INT8_C( 100),  INT8_C(  59), -INT8_C( 113), -INT8_C( 115), -INT8_C(  23),  INT8_C(  33),  INT8_C(  58), -INT8_C(   8) },
+      {  INT8_C( 118),  INT8_C(  85), -INT8_C(  16), -INT8_C(  47),  INT8_C(  16),  INT8_C(  71),  INT8_C(  38),  INT8_C(  77),
+         INT8_C( 123), -INT8_C( 123), -INT8_C(  41),      INT8_MIN,  INT8_C(  41),  INT8_C( 106),      INT8_MAX, -INT8_C(   4) } },
+    { { -INT8_C(  47), -INT8_C(  23),  INT8_C(  39),  INT8_C(  51), -INT8_C(  61), -INT8_C(  44), -INT8_C( 113),  INT8_C(  35),
+        -INT8_C(  52), -INT8_C(  41),  INT8_C(  98),  INT8_C(  85), -INT8_C( 104),  INT8_C( 102), -INT8_C(  36), -INT8_C(  31) },
+      UINT16_C(20717),
+      { -INT8_C( 104), -INT8_C(  53), -INT8_C( 112), -INT8_C(  37),  INT8_C(  87),  INT8_C(  78), -INT8_C(  51), -INT8_C(  79),
+         INT8_C(   5),  INT8_C( 119),  INT8_C(  69), -INT8_C(  74), -INT8_C(  10),  INT8_C(  26),  INT8_C(  95), -INT8_C( 100) },
+      { -INT8_C(  17), -INT8_C( 107), -INT8_C(   7), -INT8_C(  58),  INT8_C(  10),  INT8_C(  88),  INT8_C(  60), -INT8_C(  46),
+         INT8_C(   2),  INT8_C(  90),  INT8_C(  57),  INT8_C(  85), -INT8_C(  77),  INT8_C(  49), -INT8_C(  36), -INT8_C(  31) },
+      { -INT8_C( 121), -INT8_C(  23), -INT8_C( 119), -INT8_C(  95), -INT8_C(  61),      INT8_MAX,  INT8_C(   9), -INT8_C( 125),
+        -INT8_C(  52), -INT8_C(  41),  INT8_C(  98),  INT8_C(  85), -INT8_C(  87),  INT8_C( 102),  INT8_C(  59), -INT8_C(  31) } },
+    { {  INT8_C(  85),  INT8_C( 118), -INT8_C( 103),      INT8_MIN,  INT8_C(  39), -INT8_C(  43), -INT8_C(  67), -INT8_C(  57),
+        -INT8_C(  62),  INT8_C(  83), -INT8_C( 118), -INT8_C( 116), -INT8_C(  79),  INT8_C(  25),  INT8_C( 118),  INT8_C(  95) },
+      UINT16_C(62809),
+      {  INT8_C(  82), -INT8_C( 124),  INT8_C(  65),  INT8_C(  56), -INT8_C(  94), -INT8_C(   9),  INT8_C(  63), -INT8_C( 116),
+        -INT8_C(  68),  INT8_C(  40),  INT8_C(   6), -INT8_C( 104),  INT8_C(   1), -INT8_C( 120), -INT8_C(  34), -INT8_C(  27) },
+      {  INT8_C(  86), -INT8_C( 105),  INT8_C(  63), -INT8_C(  53), -INT8_C(  76), -INT8_C( 100),  INT8_C(   3),  INT8_C( 113),
+        -INT8_C(  76),  INT8_C(  30), -INT8_C( 104), -INT8_C(  53),  INT8_C(   4), -INT8_C(  45), -INT8_C(  26), -INT8_C(   6) },
+      {      INT8_MAX,  INT8_C( 118), -INT8_C( 103),  INT8_C(   3),      INT8_MIN, -INT8_C(  43),  INT8_C(  66), -INT8_C(  57),
+             INT8_MIN,  INT8_C(  83), -INT8_C(  98), -INT8_C( 116),  INT8_C(   5),      INT8_MIN, -INT8_C(  60), -INT8_C(  33) } },
+    { { -INT8_C(  90), -INT8_C( 117), -INT8_C(  26), -INT8_C(   9), -INT8_C(  54),  INT8_C( 123),  INT8_C(  17), -INT8_C(  40),
+        -INT8_C(  24),  INT8_C(  12), -INT8_C(   5),  INT8_C( 120),  INT8_C(  71),  INT8_C(   4),  INT8_C(  10),  INT8_C(   1) },
+      UINT16_C(44733),
+      { -INT8_C(  54),  INT8_C(  98), -INT8_C(  59),  INT8_C( 107), -INT8_C(  95),  INT8_C(  79), -INT8_C(  23),  INT8_C(  35),
+        -INT8_C(  87),  INT8_C(   3),  INT8_C(  87), -INT8_C( 117), -INT8_C( 101),  INT8_C(  66), -INT8_C( 100), -INT8_C(  98) },
+      {  INT8_C(   3), -INT8_C(  14), -INT8_C(  39),  INT8_C(  50),  INT8_C(  93), -INT8_C(  35), -INT8_C(  58),  INT8_C(  81),
+         INT8_C( 108),  INT8_C(  97),  INT8_C( 119), -INT8_C(   4), -INT8_C(  32), -INT8_C(  56),  INT8_C(  12),  INT8_C(  20) },
+      { -INT8_C(  51), -INT8_C( 117), -INT8_C(  98),      INT8_MAX, -INT8_C(   2),  INT8_C(  44),  INT8_C(  17),  INT8_C( 116),
+        -INT8_C(  24),  INT8_C( 100),      INT8_MAX, -INT8_C( 121),  INT8_C(  71),  INT8_C(  10),  INT8_C(  10), -INT8_C(  78) } },
+    { {  INT8_C(  19), -INT8_C(  64), -INT8_C(  43), -INT8_C(   1), -INT8_C( 111),  INT8_C(  62), -INT8_C( 109),  INT8_C( 118),
+        -INT8_C(  60), -INT8_C(  20),  INT8_C( 126), -INT8_C( 114), -INT8_C( 121), -INT8_C(  42), -INT8_C(  28), -INT8_C(  20) },
+      UINT16_C(55639),
+      { -INT8_C(  71),  INT8_C(  65),  INT8_C(   2), -INT8_C(  81), -INT8_C(  74),  INT8_C(  31),  INT8_C( 108), -INT8_C(  43),
+         INT8_C( 116),  INT8_C(  15),  INT8_C(  97), -INT8_C(  97), -INT8_C(  27),  INT8_C( 102), -INT8_C( 108),  INT8_C(  86) },
+      { -INT8_C(  89), -INT8_C(  92),  INT8_C( 119), -INT8_C(  97), -INT8_C(  64), -INT8_C(  44),  INT8_C(  57),  INT8_C(  45),
+        -INT8_C(  53),  INT8_C(  21),  INT8_C(  88), -INT8_C( 119), -INT8_C(  42),  INT8_C( 100), -INT8_C(  41),  INT8_C(  82) },
+      {      INT8_MIN, -INT8_C(  27),  INT8_C( 121), -INT8_C(   1),      INT8_MIN,  INT8_C(  62),      INT8_MAX,  INT8_C( 118),
+         INT8_C(  63), -INT8_C(  20),  INT8_C( 126),      INT8_MIN, -INT8_C(  69), -INT8_C(  42),      INT8_MIN,      INT8_MAX } },
+    { {  INT8_C(   0), -INT8_C(  56), -INT8_C(  74), -INT8_C(  70),  INT8_C(   8),  INT8_C(  43),  INT8_C( 101), -INT8_C( 121),
+         INT8_C(   0),  INT8_C(  92), -INT8_C(  58),  INT8_C(  42),  INT8_C(  93),  INT8_C( 109),  INT8_C(  64),  INT8_C( 125) },
+      UINT16_C(21225),
+      {  INT8_C( 113),  INT8_C(  49), -INT8_C(  88),  INT8_C( 112), -INT8_C(  39), -INT8_C(  82),  INT8_C(  13), -INT8_C(  74),
+         INT8_C(  91), -INT8_C( 122), -INT8_C(  99),  INT8_C( 112), -INT8_C(  37),  INT8_C(  19), -INT8_C(  46), -INT8_C(  30) },
+      { -INT8_C(  88),  INT8_C(  60),  INT8_C(  21), -INT8_C(  52),  INT8_C(  33), -INT8_C(  37), -INT8_C(  92),  INT8_C(  25),
+         INT8_C(  63),  INT8_C(  50), -INT8_C(  57),  INT8_C(  91),  INT8_C(  73),  INT8_C( 120),  INT8_C(  62),  INT8_C(  79) },
+      {  INT8_C(  25), -INT8_C(  56), -INT8_C(  74),  INT8_C(  60),  INT8_C(   8), -INT8_C( 119), -INT8_C(  79), -INT8_C(  49),
+         INT8_C(   0), -INT8_C(  72), -INT8_C(  58),  INT8_C(  42),  INT8_C(  36),  INT8_C( 109),  INT8_C(  16),  INT8_C( 125) } },
+    { { -INT8_C(  10), -INT8_C(  50), -INT8_C(  47),  INT8_C(  74),  INT8_C(  57), -INT8_C(  26), -INT8_C(  66),  INT8_C(  94),
+         INT8_C(  84), -INT8_C( 107), -INT8_C(  57), -INT8_C(  48), -INT8_C(  69), -INT8_C(  65),  INT8_C(  38),  INT8_C(  80) },
+      UINT16_C(52423),
+      {  INT8_C(  55), -INT8_C(   9),  INT8_C(  51),  INT8_C(  94),  INT8_C(  84), -INT8_C( 116),  INT8_C(  78), -INT8_C(  33),
+        -INT8_C(  36), -INT8_C(  21), -INT8_C(  69), -INT8_C(  98),  INT8_C(  52),  INT8_C(  73),  INT8_C(  52), -INT8_C(  72) },
+      { -INT8_C(  69), -INT8_C(  10),  INT8_C(   2),  INT8_C(  68), -INT8_C( 124), -INT8_C(  68), -INT8_C(  24), -INT8_C(   4),
+         INT8_C(  40), -INT8_C(  98),  INT8_C(  58),  INT8_C(  89), -INT8_C(  59), -INT8_C(  66),  INT8_C(  90), -INT8_C(  84) },
+      { -INT8_C(  14), -INT8_C(  19),  INT8_C(  53),  INT8_C(  74),  INT8_C(  57), -INT8_C(  26),  INT8_C(  54), -INT8_C(  37),
+         INT8_C(  84), -INT8_C( 107), -INT8_C(  11), -INT8_C(   9), -INT8_C(  69), -INT8_C(  65),      INT8_MAX,      INT8_MIN } }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
+    simde__m128i src = simde_x_mm_loadu_epi8(test_vec[i].src);
+    simde__m128i a = simde_x_mm_loadu_epi8(test_vec[i].a);
+    simde__m128i b = simde_x_mm_loadu_epi8(test_vec[i].b);
+    simde__m128i r = simde_mm_mask_adds_epi8(src, test_vec[i].k, a, b);
+    simde_test_x86_assert_equal_i8x16(r, simde_x_mm_loadu_epi8(test_vec[i].r));
+  }
+
+  return 0;
+}
+
+static int
+test_simde_mm_maskz_adds_epi8 (SIMDE_MUNIT_TEST_ARGS) {
+  static const struct {
+    const simde__mmask16 k;
+    const int8_t a[16];
+    const int8_t b[16];
+    const int8_t r[16];
+  } test_vec[] = {
+    { UINT16_C(12102),
+      {  INT8_C(   1),  INT8_C(  83), -INT8_C(  45),  INT8_C(   8), -INT8_C( 110), -INT8_C(  61),      INT8_MIN, -INT8_C( 118),
+        -INT8_C(  32), -INT8_C(   8), -INT8_C(  28),  INT8_C(  82), -INT8_C(  13), -INT8_C(  72), -INT8_C(  60),  INT8_C(  13) },
+      { -INT8_C( 121), -INT8_C(  88), -INT8_C(  66), -INT8_C(  50),  INT8_C(  67),  INT8_C( 126),      INT8_MIN,  INT8_C(  29),
+        -INT8_C( 107),  INT8_C(  42), -INT8_C(  47), -INT8_C(  51),  INT8_C( 119),  INT8_C(  13),  INT8_C(  63), -INT8_C(  24) },
+      {  INT8_C(   0), -INT8_C(   5), -INT8_C( 111),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),      INT8_MIN,  INT8_C(   0),
+             INT8_MIN,  INT8_C(  34), -INT8_C(  75),  INT8_C(  31),  INT8_C(   0), -INT8_C(  59),  INT8_C(   0),  INT8_C(   0) } },
+    { UINT16_C(65315),
+      {  INT8_C(  98), -INT8_C( 110),  INT8_C(  37),  INT8_C( 119), -INT8_C(  45), -INT8_C( 116),  INT8_C(  33),  INT8_C( 110),
+         INT8_C( 102),  INT8_C(  43), -INT8_C(  95), -INT8_C(  73), -INT8_C(  10),  INT8_C(  70),  INT8_C(  39),  INT8_C(  96) },
+      {  INT8_C(  77), -INT8_C(  80),  INT8_C(  43), -INT8_C(  64),  INT8_C(  51), -INT8_C(  18),  INT8_C(  91),  INT8_C(  16),
+        -INT8_C(  40),  INT8_C(  55), -INT8_C(  39), -INT8_C(  38), -INT8_C(  69), -INT8_C(  67),  INT8_C(  53), -INT8_C( 103) },
+      {      INT8_MAX,      INT8_MIN,  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),      INT8_MIN,  INT8_C(   0),  INT8_C(   0),
+         INT8_C(  62),  INT8_C(  98),      INT8_MIN, -INT8_C( 111), -INT8_C(  79),  INT8_C(   3),  INT8_C(  92), -INT8_C(   7) } },
+    { UINT16_C(29490),
+      { -INT8_C(  35), -INT8_C(  98),  INT8_C(   6), -INT8_C(  75),  INT8_C( 113), -INT8_C(  22),  INT8_C(  62),  INT8_C(   7),
+        -INT8_C(  56), -INT8_C(  16),  INT8_C( 122), -INT8_C( 115), -INT8_C(  47),  INT8_C(  54), -INT8_C( 125), -INT8_C(  94) },
+      { -INT8_C(  82),  INT8_C(  75), -INT8_C(  88),  INT8_C(  26),  INT8_C(  97), -INT8_C(  72),  INT8_C(  34), -INT8_C(  46),
+        -INT8_C(  23),  INT8_C(  62),  INT8_C(  30),  INT8_C( 110), -INT8_C(  34), -INT8_C( 121), -INT8_C(  34),  INT8_C(  14) },
+      {  INT8_C(   0), -INT8_C(  23),  INT8_C(   0),  INT8_C(   0),      INT8_MAX, -INT8_C(  94),  INT8_C(   0),  INT8_C(   0),
+        -INT8_C(  79),  INT8_C(  46),  INT8_C(   0),  INT8_C(   0), -INT8_C(  81), -INT8_C(  67),      INT8_MIN,  INT8_C(   0) } },
+    { UINT16_C(14341),
+      { -INT8_C(  19), -INT8_C(  46), -INT8_C(  73),  INT8_C(  51), -INT8_C( 101),  INT8_C(  37), -INT8_C(  80),  INT8_C(  41),
+         INT8_C(  38),  INT8_C(  20), -INT8_C(  33), -INT8_C(  54),  INT8_C(  67),  INT8_C(  20),  INT8_C(  21),  INT8_C( 117) },
+      {  INT8_C(  33), -INT8_C(  99),  INT8_C(  79), -INT8_C( 113), -INT8_C(  63),  INT8_C(   7), -INT8_C( 124), -INT8_C( 105),
+         INT8_C(  64), -INT8_C(  85), -INT8_C(  62), -INT8_C(  17), -INT8_C(  96), -INT8_C(  25), -INT8_C(  93),  INT8_C( 124) },
+      {  INT8_C(  14),  INT8_C(   0),  INT8_C(   6),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),
+         INT8_C(   0),  INT8_C(   0),  INT8_C(   0), -INT8_C(  71), -INT8_C(  29), -INT8_C(   5),  INT8_C(   0),  INT8_C(   0) } },
+    { UINT16_C( 3703),
+      {      INT8_MIN, -INT8_C( 125),  INT8_C(  45), -INT8_C( 105),  INT8_C( 125), -INT8_C(  41),  INT8_C(  59), -INT8_C(  89),
+         INT8_C(  14), -INT8_C(  92), -INT8_C(  90), -INT8_C( 114),  INT8_C(  96), -INT8_C(  78), -INT8_C( 109),  INT8_C(  39) },
+      { -INT8_C(  91),  INT8_C(  23), -INT8_C(  57),  INT8_C(  59),  INT8_C(  66),  INT8_C(  66),  INT8_C(  12), -INT8_C(  94),
+        -INT8_C( 108), -INT8_C(  63),  INT8_C(  99),  INT8_C(  23),  INT8_C(  86),  INT8_C(  80),  INT8_C(  24),  INT8_C(  42) },
+      {      INT8_MIN, -INT8_C( 102), -INT8_C(  12),  INT8_C(   0),      INT8_MAX,  INT8_C(  25),  INT8_C(  71),  INT8_C(   0),
+         INT8_C(   0),      INT8_MIN,  INT8_C(   9), -INT8_C(  91),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0) } },
+    { UINT16_C(23183),
+      { -INT8_C( 119), -INT8_C(  26), -INT8_C(  57),  INT8_C(  13), -INT8_C(  45),  INT8_C(  56),  INT8_C(  92),  INT8_C(  18),
+         INT8_C(  77), -INT8_C(  82),  INT8_C( 104),  INT8_C(  71), -INT8_C(  99), -INT8_C( 127), -INT8_C(  39), -INT8_C(  14) },
+      {  INT8_C(  71),  INT8_C(  93),  INT8_C(  46), -INT8_C(  20),  INT8_C(   5), -INT8_C(  14), -INT8_C(  92), -INT8_C( 125),
+        -INT8_C(  73), -INT8_C(  53), -INT8_C(  18),  INT8_C(   0),  INT8_C(  48), -INT8_C(  84), -INT8_C(  86), -INT8_C(  53) },
+      { -INT8_C(  48),  INT8_C(  67), -INT8_C(  11), -INT8_C(   7),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0), -INT8_C( 107),
+         INT8_C(   0),      INT8_MIN,  INT8_C(   0),  INT8_C(  71), -INT8_C(  51),  INT8_C(   0), -INT8_C( 125),  INT8_C(   0) } },
+    { UINT16_C( 4280),
+      {  INT8_C(  10),  INT8_C(  78),      INT8_MAX, -INT8_C(   8),  INT8_C( 108), -INT8_C(  11), -INT8_C(  97), -INT8_C( 111),
+        -INT8_C(  46),  INT8_C(  13), -INT8_C(  47), -INT8_C(  45), -INT8_C( 105), -INT8_C(  25),  INT8_C(   0), -INT8_C(   7) },
+      { -INT8_C(  16), -INT8_C(  22),  INT8_C(  88), -INT8_C(  71),  INT8_C(   8), -INT8_C(  70), -INT8_C(  80),  INT8_C( 103),
+         INT8_C( 123),  INT8_C(  93), -INT8_C(  35),  INT8_C(  85),  INT8_C(  10),  INT8_C(  77),  INT8_C(   0),  INT8_C(  47) },
+      {  INT8_C(   0),  INT8_C(   0),  INT8_C(   0), -INT8_C(  79),  INT8_C( 116), -INT8_C(  81),  INT8_C(   0), -INT8_C(   8),
+         INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0), -INT8_C(  95),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0) } },
+    { UINT16_C( 4325),
+      {  INT8_C(  65),  INT8_C(  62),  INT8_C(  42), -INT8_C(  68),  INT8_C(  90),  INT8_C(  73),  INT8_C(  19), -INT8_C(  56),
+        -INT8_C(   4),  INT8_C(  31),  INT8_C(   4),  INT8_C(   3),  INT8_C(  44),  INT8_C(  90),  INT8_C(  99), -INT8_C(  25) },
+      {  INT8_C(  89),  INT8_C(  52),  INT8_C( 104), -INT8_C(  86),  INT8_C( 121), -INT8_C(  27),  INT8_C(  75), -INT8_C(   9),
+        -INT8_C(  48),  INT8_C( 121),  INT8_C(  40), -INT8_C(   3), -INT8_C(  53), -INT8_C( 114), -INT8_C( 100),  INT8_C(  81) },
+      {      INT8_MAX,  INT8_C(   0),      INT8_MAX,  INT8_C(   0),  INT8_C(   0),  INT8_C(  46),  INT8_C(  94), -INT8_C(  65),
+         INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0), -INT8_C(   9),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0) } }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
+    simde__m128i a = simde_x_mm_loadu_epi8(test_vec[i].a);
+    simde__m128i b = simde_x_mm_loadu_epi8(test_vec[i].b);
+    simde__m128i r = simde_mm_maskz_adds_epi8(test_vec[i].k, a, b);
+    simde_test_x86_assert_equal_i8x16(r, simde_x_mm_loadu_epi8(test_vec[i].r));
+  }
+
+  return 0;
+}
+
+static int
+test_simde_mm_mask_adds_epi16 (SIMDE_MUNIT_TEST_ARGS) {
+  static const struct {
+    const int16_t src[8];
+    const simde__mmask8 k;
+    const int16_t a[8];
+    const int16_t b[8];
+    const int16_t r[8];
+  } test_vec[] = {
+    { {  INT16_C( 19830), -INT16_C( 20263),  INT16_C(  6365),  INT16_C(  9514),  INT16_C(  8029), -INT16_C( 31012), -INT16_C( 27351),  INT16_C( 19606) },
+      UINT8_C(166),
+      { -INT16_C( 21201), -INT16_C( 16983), -INT16_C( 28913),  INT16_C(   479), -INT16_C( 27699), -INT16_C(   698), -INT16_C( 21664),  INT16_C( 12978) },
+      { -INT16_C( 31630), -INT16_C( 27895), -INT16_C( 31919), -INT16_C( 25946),  INT16_C(  5384),  INT16_C( 31469),  INT16_C( 29499), -INT16_C(  8608) },
+      {  INT16_C( 19830),       INT16_MIN,       INT16_MIN,  INT16_C(  9514),  INT16_C(  8029),  INT16_C( 30771), -INT16_C( 27351),  INT16_C(  4370) } },
+    { {  INT16_C( 14956), -INT16_C( 24206),  INT16_C( 10279),  INT16_C(   662), -INT16_C( 16911), -INT16_C( 17106), -INT16_C(  4862), -INT16_C(  4374) },
+      UINT8_C(253),
+      {  INT16_C( 25492), -INT16_C(  2767), -INT16_C(  5158), -INT16_C(  5013),  INT16_C( 23080),  INT16_C( 24538),  INT16_C( 24678), -INT16_C( 27578) },
+      { -INT16_C(  5284),  INT16_C(  1255),  INT16_C( 12121),  INT16_C( 12017),  INT16_C( 13281),  INT16_C(  1685),  INT16_C( 18360), -INT16_C( 24670) },
+      {  INT16_C( 20208), -INT16_C( 24206),  INT16_C(  6963),  INT16_C(  7004),       INT16_MAX,  INT16_C( 26223),       INT16_MAX,       INT16_MIN } },
+    { { -INT16_C( 14832), -INT16_C( 19736),  INT16_C(  5222), -INT16_C(  1427),  INT16_C( 24020),  INT16_C( 13226), -INT16_C( 22015),  INT16_C(  8143) },
+      UINT8_C(219),
+      { -INT16_C( 20552), -INT16_C(  5853),  INT16_C( 22872), -INT16_C(  6013), -INT16_C( 16137), -INT16_C( 27569),  INT16_C( 19276), -INT16_C( 26420) },
+      {  INT16_C(  1430),  INT16_C( 15804),  INT16_C( 13643),  INT16_C( 13486),  INT16_C( 28580),  INT16_C( 26652),  INT16_C( 15895), -INT16_C( 25828) },
+      { -INT16_C( 19122),  INT16_C(  9951),  INT16_C(  5222),  INT16_C(  7473),  INT16_C( 12443),  INT16_C( 13226),       INT16_MAX,       INT16_MIN } },
+    { {  INT16_C( 18056), -INT16_C(  6311), -INT16_C( 10823),  INT16_C(  8297),  INT16_C( 24132),  INT16_C( 31019), -INT16_C( 20821),  INT16_C(  1073) },
+      UINT8_C(155),
+      {  INT16_C( 25312), -INT16_C( 18725), -INT16_C( 31168), -INT16_C( 13304), -INT16_C( 19949),  INT16_C( 28347),  INT16_C(  3674),  INT16_C( 11284) },
+      { -INT16_C( 32624),  INT16_C( 14806),  INT16_C( 29854), -INT16_C( 13394),  INT16_C( 19939),  INT16_C( 14150), -INT16_C( 32469), -INT16_C( 16490) },
+      { -INT16_C(  7312), -INT16_C(  3919), -INT16_C( 10823), -INT16_C( 26698), -INT16_C(    10),  INT16_C( 31019), -INT16_C( 20821), -INT16_C(  5206) } },
+    { {  INT16_C( 16411),  INT16_C( 26770), -INT16_C( 15770),  INT16_C( 11567), -INT16_C( 25386), -INT16_C( 21370), -INT16_C( 18951),  INT16_C(  5013) },
+      UINT8_C(175),
+      {  INT16_C( 22074), -INT16_C(  6096),  INT16_C( 12562), -INT16_C(  2681), -INT16_C(  8474),  INT16_C(  7981),  INT16_C( 29859), -INT16_C(  5915) },
+      { -INT16_C( 26649), -INT16_C( 14667), -INT16_C( 21700),  INT16_C( 23924),  INT16_C( 23041), -INT16_C( 12329), -INT16_C( 26844),  INT16_C( 12057) },
+      { -INT16_C(  4575), -INT16_C( 20763), -INT16_C(  9138),  INT16_C( 21243), -INT16_C( 25386), -INT16_C(  4348), -INT16_C( 18951),  INT16_C(  6142) } },
+    { {  INT16_C( 31823), -INT16_C( 16416),  INT16_C( 10547), -INT16_C( 20936), -INT16_C( 21717),  INT16_C(  2429), -INT16_C( 14089),  INT16_C( 20415) },
+      UINT8_C(116),
+      { -INT16_C( 20670), -INT16_C( 18929), -INT16_C(  9110), -INT16_C( 27658),  INT16_C(  5659), -INT16_C( 22755),  INT16_C( 30401),  INT16_C( 12241) },
+      { -INT16_C(  2428), -INT16_C(  3085),  INT16_C( 20629), -INT16_C( 29739), -INT16_C( 19289),  INT16_C( 29198),  INT16_C( 13379), -INT16_C( 26784) },
+      {  INT16_C( 31823), -INT16_C( 16416),  INT16_C( 11519), -INT16_C( 20936), -INT16_C( 13630),  INT16_C(  6443),       INT16_MAX,  INT16_C( 20415) } },
+    { {  INT16_C( 10682),  INT16_C( 30723), -INT16_C( 25631),  INT16_C( 12870), -INT16_C(  7733), -INT16_C(  3023),  INT16_C(  8882),  INT16_C( 24910) },
+      UINT8_C( 45),
+      { -INT16_C( 15846), -INT16_C( 19943), -INT16_C( 32694), -INT16_C(  6090),  INT16_C( 14036), -INT16_C( 30104), -INT16_C( 22309),  INT16_C( 32750) },
+      { -INT16_C( 16035),  INT16_C(  6633),  INT16_C( 31017), -INT16_C( 29512),  INT16_C( 20156),  INT16_C( 28149),  INT16_C(  9311), -INT16_C( 22877) },
+      { -INT16_C( 31881),  INT16_C( 30723), -INT16_C(  1677),       INT16_MIN, -INT16_C(  7733), -INT16_C(  1955),  INT16_C(  8882),  INT16_C( 24910) } },
+    { {  INT16_C( 11801),  INT16_C( 30522), -INT16_C( 28771),  INT16_C( 18595), -INT16_C( 26062),  INT16_C(  7549),  INT16_C( 19180), -INT16_C( 19581) },
+      UINT8_C( 42),
+      {  INT16_C( 21562), -INT16_C( 15180),  INT16_C( 17197),  INT16_C( 26341),  INT16_C( 15144), -INT16_C( 11790),  INT16_C( 26114), -INT16_C( 26150) },
+      { -INT16_C( 16280), -INT16_C( 27280),  INT16_C( 27387), -INT16_C( 12348),  INT16_C( 28781),  INT16_C( 23348),  INT16_C( 22336),  INT16_C(  2436) },
+      {  INT16_C( 11801),       INT16_MIN, -INT16_C( 28771),  INT16_C( 13993), -INT16_C( 26062),  INT16_C( 11558),  INT16_C( 19180), -INT16_C( 19581) } }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
+    simde__m128i src = simde_x_mm_loadu_epi16(test_vec[i].src);
+    simde__m128i a = simde_x_mm_loadu_epi16(test_vec[i].a);
+    simde__m128i b = simde_x_mm_loadu_epi16(test_vec[i].b);
+    simde__m128i r = simde_mm_mask_adds_epi16(src, test_vec[i].k, a, b);
+    simde_test_x86_assert_equal_i16x8(r, simde_x_mm_loadu_epi16(test_vec[i].r));
+  }
+
+  return 0;
+}
+
+static int
+test_simde_mm_maskz_adds_epi16 (SIMDE_MUNIT_TEST_ARGS) {
+  static const struct {
+    const simde__mmask8 k;
+    const int16_t a[8];
+    const int16_t b[8];
+    const int16_t r[8];
+  } test_vec[] = {
+    { UINT8_C(126),
+      {  INT16_C( 18530), -INT16_C( 15866), -INT16_C( 15400), -INT16_C( 26342), -INT16_C( 14737), -INT16_C( 15030),  INT16_C( 21680),  INT16_C( 29882) },
+      {  INT16_C( 27962),  INT16_C( 13123), -INT16_C( 10479),  INT16_C(  3537), -INT16_C(  7715),  INT16_C( 27275), -INT16_C(  4308),  INT16_C(  2341) },
+      {  INT16_C(     0), -INT16_C(  2743), -INT16_C( 25879), -INT16_C( 22805), -INT16_C( 22452),  INT16_C( 12245),  INT16_C( 17372),  INT16_C(     0) } },
+    { UINT8_C(175),
+      { -INT16_C( 18089), -INT16_C( 11763), -INT16_C(  7340), -INT16_C( 26300),  INT16_C( 14485),  INT16_C( 27175),  INT16_C(  8158), -INT16_C( 20335) },
+      { -INT16_C(  8103),  INT16_C( 16065), -INT16_C(  4453),  INT16_C(  5089),  INT16_C( 29515), -INT16_C(  2790), -INT16_C( 21763),  INT16_C( 22019) },
+      { -INT16_C( 26192),  INT16_C(  4302), -INT16_C( 11793), -INT16_C( 21211),  INT16_C(     0),  INT16_C( 24385),  INT16_C(     0),  INT16_C(  1684) } },
+    { UINT8_C( 14),
+      { -INT16_C( 20827), -INT16_C( 18732), -INT16_C( 10152), -INT16_C(  2933),  INT16_C( 31842), -INT16_C(  8748), -INT16_C( 11815),  INT16_C( 21410) },
+      { -INT16_C(  1528), -INT16_C( 13596), -INT16_C( 25943), -INT16_C( 28335),  INT16_C( 25848),  INT16_C(  9269), -INT16_C( 15402),  INT16_C( 26007) },
+      {  INT16_C(     0), -INT16_C( 32328),       INT16_MIN, -INT16_C( 31268),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0) } },
+    { UINT8_C( 15),
+      { -INT16_C( 27507), -INT16_C(  9398),  INT16_C( 28915), -INT16_C(  2956), -INT16_C( 14608), -INT16_C( 10466),  INT16_C( 28978), -INT16_C(  7517) },
+      {  INT16_C( 20451), -INT16_C( 22940),  INT16_C( 26080),  INT16_C( 12379), -INT16_C(  5954), -INT16_C( 27171), -INT16_C( 18512), -INT16_C( 15809) },
+      { -INT16_C(  7056), -INT16_C( 32338),       INT16_MAX,  INT16_C(  9423),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0) } },
+    { UINT8_C( 30),
+      {  INT16_C( 17121), -INT16_C( 27683),  INT16_C( 32718),  INT16_C( 24958), -INT16_C( 20150), -INT16_C(  1717), -INT16_C(  8726), -INT16_C( 15593) },
+      {  INT16_C( 21952), -INT16_C(  7015), -INT16_C( 16049), -INT16_C( 27828),  INT16_C( 16846),  INT16_C( 20356),  INT16_C( 31961), -INT16_C( 30752) },
+      {  INT16_C(     0),       INT16_MIN,  INT16_C( 16669), -INT16_C(  2870), -INT16_C(  3304),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0) } },
+    { UINT8_C(176),
+      { -INT16_C(  2095),  INT16_C( 22806),  INT16_C( 10643),  INT16_C( 17957), -INT16_C(  4712), -INT16_C( 17466), -INT16_C( 31523),  INT16_C( 23464) },
+      { -INT16_C(  9670),  INT16_C(  4356), -INT16_C( 25926),  INT16_C( 21354), -INT16_C(  3587),  INT16_C( 16434), -INT16_C(  8316), -INT16_C( 28686) },
+      {  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0), -INT16_C(  8299), -INT16_C(  1032),  INT16_C(     0), -INT16_C(  5222) } },
+    { UINT8_C(196),
+      {  INT16_C( 23417), -INT16_C(  1452), -INT16_C( 25974), -INT16_C(  1716),  INT16_C( 22247), -INT16_C( 10292),  INT16_C(  7502), -INT16_C(   839) },
+      { -INT16_C(  1858), -INT16_C(  2942), -INT16_C( 11236),  INT16_C( 15194), -INT16_C(  6079),  INT16_C(  6575), -INT16_C( 15784), -INT16_C( 25633) },
+      {  INT16_C(     0),  INT16_C(     0),       INT16_MIN,  INT16_C(     0),  INT16_C(     0),  INT16_C(     0), -INT16_C(  8282), -INT16_C( 26472) } },
+    { UINT8_C(  6),
+      { -INT16_C(  1086),  INT16_C( 31230), -INT16_C( 15014), -INT16_C(  7078), -INT16_C( 11452),  INT16_C( 13045),  INT16_C( 23661),  INT16_C( 14428) },
+      { -INT16_C( 29896), -INT16_C( 10249), -INT16_C(  5921), -INT16_C( 11132), -INT16_C(  3726), -INT16_C( 12393),  INT16_C(  5350),  INT16_C( 20495) },
+      {  INT16_C(     0),  INT16_C( 20981), -INT16_C( 20935),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0) } }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
+    simde__m128i a = simde_x_mm_loadu_epi16(test_vec[i].a);
+    simde__m128i b = simde_x_mm_loadu_epi16(test_vec[i].b);
+    simde__m128i r = simde_mm_maskz_adds_epi16(test_vec[i].k, a, b);
+    simde_test_x86_assert_equal_i16x8(r, simde_x_mm_loadu_epi16(test_vec[i].r));
+  }
+
+  return 0;
+}
+
+static int
+test_simde_mm256_mask_adds_epi8 (SIMDE_MUNIT_TEST_ARGS) {
+// #if 0
+  static const struct {
+    const int8_t src[32];
+    const simde__mmask32 k;
+    const int8_t a[32];
+    const int8_t b[32];
+    const int8_t r[32];
+  } test_vec[] = {
+      { {  INT8_C(  63),  INT8_C(  79),  INT8_C(  62), -INT8_C(  24),  INT8_C(  99),  INT8_C(  34),  INT8_C(  33),  INT8_C(  55),
+         INT8_C(  34),  INT8_C( 107),  INT8_C( 116),  INT8_C(  40), -INT8_C(  20),  INT8_C(  26),  INT8_C(  82), -INT8_C( 107),
+        -INT8_C(  52),      INT8_MIN, -INT8_C(  36),  INT8_C(  51), -INT8_C(  21), -INT8_C( 124),  INT8_C( 112),  INT8_C( 122),
+        -INT8_C(  57), -INT8_C(  30), -INT8_C(  11), -INT8_C(  90), -INT8_C(  59),  INT8_C(  91),  INT8_C( 106), -INT8_C( 116) },
+      UINT32_C(     17939),
+      { -INT8_C( 123), -INT8_C(  71),  INT8_C(   3), -INT8_C(  27),  INT8_C(  90), -INT8_C(  35),  INT8_C(  53), -INT8_C(  70),
+         INT8_C(  37), -INT8_C(  93),  INT8_C(  39), -INT8_C(  99), -INT8_C(  73),  INT8_C(  99), -INT8_C(  90), -INT8_C(  99),
+         INT8_C(  34),  INT8_C(  74),  INT8_C(  66), -INT8_C(  87), -INT8_C(  35),  INT8_C( 109), -INT8_C(  31),  INT8_C(  57),
+         INT8_C(  29), -INT8_C(   1), -INT8_C( 109), -INT8_C(  29), -INT8_C( 102), -INT8_C( 122), -INT8_C(  40), -INT8_C(  64) },
+      {  INT8_C(   1), -INT8_C(  57), -INT8_C(  42), -INT8_C(  31),  INT8_C(  49), -INT8_C(  49),  INT8_C(  95), -INT8_C( 124),
+        -INT8_C( 108),  INT8_C(  82), -INT8_C( 127), -INT8_C(  41),  INT8_C( 123),  INT8_C(  60),  INT8_C(  18),  INT8_C(   4),
+        -INT8_C(  92), -INT8_C( 115),  INT8_C(  22), -INT8_C(  82),  INT8_C(  16), -INT8_C(  95),  INT8_C(  51), -INT8_C(   3),
+         INT8_C(  91),  INT8_C(  71), -INT8_C(  33), -INT8_C( 101), -INT8_C( 115), -INT8_C(   4),  INT8_C(  91), -INT8_C( 104) },
+      { -INT8_C( 122),      INT8_MIN,  INT8_C(  62), -INT8_C(  24),      INT8_MAX,  INT8_C(  34),  INT8_C(  33),  INT8_C(  55),
+         INT8_C(  34), -INT8_C(  11), -INT8_C(  88),  INT8_C(  40), -INT8_C(  20),  INT8_C(  26), -INT8_C(  72), -INT8_C( 107),
+        -INT8_C(  52),      INT8_MIN, -INT8_C(  36),  INT8_C(  51), -INT8_C(  21), -INT8_C( 124),  INT8_C( 112),  INT8_C( 122),
+        -INT8_C(  57), -INT8_C(  30), -INT8_C(  11), -INT8_C(  90), -INT8_C(  59),  INT8_C(  91),  INT8_C( 106), -INT8_C( 116) } },
+    { { -INT8_C( 123),  INT8_C( 123),  INT8_C(  97),  INT8_C(  38), -INT8_C(  67), -INT8_C(  49),  INT8_C(  30), -INT8_C(  76),
+        -INT8_C(  84),  INT8_C(  84),  INT8_C(  23),  INT8_C(  86),  INT8_C(   8), -INT8_C(  26), -INT8_C(  64), -INT8_C(  51),
+         INT8_C( 112),  INT8_C(  87),  INT8_C( 119),  INT8_C(   1),  INT8_C(  43), -INT8_C(  21),  INT8_C(  90),  INT8_C(  91),
+         INT8_C( 125), -INT8_C(  98),  INT8_C(  20),  INT8_C(  24),  INT8_C( 126), -INT8_C(  27), -INT8_C( 117), -INT8_C(  87) },
+      UINT32_C(     56101),
+      { -INT8_C(  29),  INT8_C(  83),  INT8_C( 102), -INT8_C(  68), -INT8_C(  94),  INT8_C(  98), -INT8_C( 113), -INT8_C(  98),
+        -INT8_C(  91), -INT8_C(  30),  INT8_C(  20),  INT8_C( 105),  INT8_C(  46), -INT8_C(  21), -INT8_C(  97), -INT8_C(  66),
+        -INT8_C( 109), -INT8_C(  73),  INT8_C(  45),  INT8_C(  30), -INT8_C(  72), -INT8_C( 108), -INT8_C(  85), -INT8_C(  45),
+         INT8_C(  78),  INT8_C(  69),  INT8_C(  14),  INT8_C(  75), -INT8_C(  71), -INT8_C(  49), -INT8_C(  55),  INT8_C(  42) },
+      {  INT8_C(  52), -INT8_C(  69), -INT8_C( 103), -INT8_C(  82),  INT8_C(  90),  INT8_C(  51), -INT8_C(  42),      INT8_MIN,
+         INT8_C( 102),  INT8_C( 100),  INT8_C(   6),  INT8_C(  50), -INT8_C( 114),  INT8_C( 106),  INT8_C( 119), -INT8_C(  17),
+        -INT8_C(  46), -INT8_C(  52),  INT8_C(  25), -INT8_C(  71),  INT8_C( 100),  INT8_C(  75),  INT8_C(  70),  INT8_C(   2),
+        -INT8_C(  20),  INT8_C(  69), -INT8_C(   9), -INT8_C(  68),  INT8_C( 119), -INT8_C(  98), -INT8_C(  25), -INT8_C(  53) },
+      {  INT8_C(  23),  INT8_C( 123), -INT8_C(   1),  INT8_C(  38), -INT8_C(  67),      INT8_MAX,  INT8_C(  30), -INT8_C(  76),
+         INT8_C(  11),  INT8_C(  70),  INT8_C(  23),      INT8_MAX, -INT8_C(  68), -INT8_C(  26),  INT8_C(  22), -INT8_C(  83),
+         INT8_C( 112),  INT8_C(  87),  INT8_C( 119),  INT8_C(   1),  INT8_C(  43), -INT8_C(  21),  INT8_C(  90),  INT8_C(  91),
+         INT8_C( 125), -INT8_C(  98),  INT8_C(  20),  INT8_C(  24),  INT8_C( 126), -INT8_C(  27), -INT8_C( 117), -INT8_C(  87) } },
+    { { -INT8_C(  26),  INT8_C(  33), -INT8_C(  40),  INT8_C(  31), -INT8_C(  46),  INT8_C(  71),  INT8_C(  81), -INT8_C(  30),
+        -INT8_C(  45), -INT8_C(   8), -INT8_C(   2),      INT8_MAX, -INT8_C(  99),  INT8_C(  87),  INT8_C(  64), -INT8_C(  20),
+        -INT8_C(  83), -INT8_C(  40), -INT8_C(  19), -INT8_C( 114),  INT8_C(  34),  INT8_C( 105),  INT8_C(  90),  INT8_C(  35),
+         INT8_C(  75),  INT8_C( 112), -INT8_C(  89), -INT8_C( 127),  INT8_C(  95),  INT8_C(  79),  INT8_C(  40),  INT8_C(   8) },
+      UINT32_C(     23780),
+      { -INT8_C(  46), -INT8_C(  84), -INT8_C(  66), -INT8_C(  62),  INT8_C(  68), -INT8_C( 119), -INT8_C( 126), -INT8_C(  81),
+        -INT8_C( 113),  INT8_C(  88), -INT8_C(  93), -INT8_C( 126),  INT8_C(  25),  INT8_C( 108), -INT8_C( 109),  INT8_C(  86),
+        -INT8_C(  76),  INT8_C(  45),  INT8_C(  25),  INT8_C(  69),  INT8_C(  27), -INT8_C(  54),  INT8_C(  66), -INT8_C( 126),
+         INT8_C( 100), -INT8_C(  10), -INT8_C(  44), -INT8_C(  28),  INT8_C( 113), -INT8_C( 119), -INT8_C(  10), -INT8_C(  93) },
+      {  INT8_C( 109), -INT8_C(  64), -INT8_C(  31), -INT8_C(  47),  INT8_C( 104), -INT8_C(  13),  INT8_C(  71),  INT8_C(  10),
+        -INT8_C(  90),  INT8_C(  62),  INT8_C( 102), -INT8_C(  45),  INT8_C(  60), -INT8_C(  39), -INT8_C( 121), -INT8_C(  60),
+         INT8_C( 117), -INT8_C(  59),  INT8_C(  37), -INT8_C(  71), -INT8_C(  20),  INT8_C(  65), -INT8_C(  54), -INT8_C(  58),
+        -INT8_C(  96), -INT8_C(  70), -INT8_C(  87),  INT8_C(  79), -INT8_C(  17),  INT8_C(  50), -INT8_C(  51),  INT8_C(  52) },
+      { -INT8_C(  26),  INT8_C(  33), -INT8_C(  97),  INT8_C(  31), -INT8_C(  46),      INT8_MIN, -INT8_C(  55), -INT8_C(  71),
+        -INT8_C(  45), -INT8_C(   8),  INT8_C(   9),      INT8_MIN,  INT8_C(  85),  INT8_C(  87),      INT8_MIN, -INT8_C(  20),
+        -INT8_C(  83), -INT8_C(  40), -INT8_C(  19), -INT8_C( 114),  INT8_C(  34),  INT8_C( 105),  INT8_C(  90),  INT8_C(  35),
+         INT8_C(  75),  INT8_C( 112), -INT8_C(  89), -INT8_C( 127),  INT8_C(  95),  INT8_C(  79),  INT8_C(  40),  INT8_C(   8) } },
+    { { -INT8_C( 127), -INT8_C( 111), -INT8_C(  31),  INT8_C( 126),  INT8_C( 108),  INT8_C(  93), -INT8_C(  18),  INT8_C( 111),
+        -INT8_C( 105),  INT8_C(  57),  INT8_C(  30), -INT8_C(  40),  INT8_C(  11), -INT8_C( 124), -INT8_C(  72),  INT8_C(  21),
+         INT8_C( 105),  INT8_C(  64), -INT8_C(   9),  INT8_C( 116), -INT8_C(  97), -INT8_C(  95),  INT8_C(   6), -INT8_C(  94),
+         INT8_C(  64), -INT8_C(  46),  INT8_C(  55),  INT8_C(  98),  INT8_C(  21), -INT8_C(  72), -INT8_C( 125),  INT8_C(  46) },
+      UINT32_C(     49881),
+      { -INT8_C( 114), -INT8_C(  58),  INT8_C(   3),  INT8_C(  38), -INT8_C(  42), -INT8_C( 116),  INT8_C(  75),  INT8_C(  22),
+        -INT8_C(  60),  INT8_C(  47),  INT8_C(  34),  INT8_C(  47), -INT8_C( 105),  INT8_C(  78), -INT8_C(  59), -INT8_C(  90),
+        -INT8_C(  37),  INT8_C( 116), -INT8_C(  87), -INT8_C(  26),  INT8_C( 120),  INT8_C(  99), -INT8_C(  89),  INT8_C(  40),
+        -INT8_C(   5), -INT8_C(  91), -INT8_C(  78),  INT8_C(  22),  INT8_C(  10), -INT8_C(  39), -INT8_C(  35),  INT8_C(  56) },
+      {  INT8_C(   4),  INT8_C(  92),  INT8_C(  58), -INT8_C(  42),  INT8_C( 109),  INT8_C(  85), -INT8_C(  76),  INT8_C( 113),
+         INT8_C(  58), -INT8_C(  80),  INT8_C(  16),  INT8_C(  52),  INT8_C(   8),  INT8_C(  35), -INT8_C(  21),  INT8_C( 108),
+         INT8_C( 126), -INT8_C(  36), -INT8_C(  43), -INT8_C(  64),  INT8_C(  95), -INT8_C( 115), -INT8_C(  91),  INT8_C(  38),
+         INT8_C(  96),  INT8_C(  13),  INT8_C(  93),  INT8_C(  14),  INT8_C( 107), -INT8_C(  90),  INT8_C(  99),  INT8_C(  71) },
+      { -INT8_C( 110), -INT8_C( 111), -INT8_C(  31), -INT8_C(   4),  INT8_C(  67),  INT8_C(  93), -INT8_C(   1),      INT8_MAX,
+        -INT8_C( 105), -INT8_C(  33),  INT8_C(  30), -INT8_C(  40),  INT8_C(  11), -INT8_C( 124), -INT8_C(  80),  INT8_C(  18),
+         INT8_C( 105),  INT8_C(  64), -INT8_C(   9),  INT8_C( 116), -INT8_C(  97), -INT8_C(  95),  INT8_C(   6), -INT8_C(  94),
+         INT8_C(  64), -INT8_C(  46),  INT8_C(  55),  INT8_C(  98),  INT8_C(  21), -INT8_C(  72), -INT8_C( 125),  INT8_C(  46) } },
+    { { -INT8_C(  92), -INT8_C(  56), -INT8_C(  56), -INT8_C(   3),  INT8_C( 106), -INT8_C( 125), -INT8_C(  24), -INT8_C( 120),
+        -INT8_C(  42), -INT8_C(   1),  INT8_C(  74),  INT8_C(  47),  INT8_C(  71), -INT8_C(  15), -INT8_C(   8),  INT8_C(  57),
+         INT8_C( 109),  INT8_C(  68), -INT8_C(  69),  INT8_C(  98), -INT8_C(  52),  INT8_C(  55),  INT8_C(  55),  INT8_C( 101),
+        -INT8_C(  58),  INT8_C( 121), -INT8_C(  76), -INT8_C( 112),  INT8_C(  50), -INT8_C(  36), -INT8_C(  36),  INT8_C(  96) },
+      UINT32_C(     33993),
+      { -INT8_C(   4), -INT8_C(   8),  INT8_C(  72),  INT8_C( 121),  INT8_C(  22), -INT8_C(  61), -INT8_C(  95),  INT8_C(  91),
+         INT8_C(  13), -INT8_C( 124),  INT8_C(  34), -INT8_C(  59),  INT8_C(  96),  INT8_C(  14),  INT8_C(  20),  INT8_C(  69),
+         INT8_C(  18),  INT8_C(  37),  INT8_C(  87), -INT8_C(  61), -INT8_C(  47), -INT8_C(  17),  INT8_C(  37), -INT8_C(  73),
+        -INT8_C(  66),  INT8_C(  43), -INT8_C(  63),  INT8_C( 101), -INT8_C( 107), -INT8_C(  56), -INT8_C(  72), -INT8_C(  87) },
+      {  INT8_C(  82),  INT8_C( 121), -INT8_C(  76),  INT8_C(  57), -INT8_C(  81),  INT8_C(  56), -INT8_C(  72),  INT8_C(  67),
+         INT8_C(  58),  INT8_C(  91),  INT8_C(  66), -INT8_C(  59), -INT8_C(  79), -INT8_C(  29), -INT8_C(  96),      INT8_MIN,
+         INT8_C(  89), -INT8_C(  52), -INT8_C(  48), -INT8_C( 102), -INT8_C(  77), -INT8_C(  68),  INT8_C(   9),  INT8_C( 120),
+         INT8_C(  28), -INT8_C(  42),  INT8_C(  38), -INT8_C(  89), -INT8_C(  78),  INT8_C( 109),  INT8_C(  34),  INT8_C(  43) },
+      {  INT8_C(  78), -INT8_C(  56), -INT8_C(  56),      INT8_MAX,  INT8_C( 106), -INT8_C( 125),      INT8_MIN,      INT8_MAX,
+        -INT8_C(  42), -INT8_C(   1),  INT8_C( 100),  INT8_C(  47),  INT8_C(  71), -INT8_C(  15), -INT8_C(   8), -INT8_C(  59),
+         INT8_C( 109),  INT8_C(  68), -INT8_C(  69),  INT8_C(  98), -INT8_C(  52),  INT8_C(  55),  INT8_C(  55),  INT8_C( 101),
+        -INT8_C(  58),  INT8_C( 121), -INT8_C(  76), -INT8_C( 112),  INT8_C(  50), -INT8_C(  36), -INT8_C(  36),  INT8_C(  96) } },
+    { { -INT8_C( 119),  INT8_C(   0),  INT8_C(  65), -INT8_C(  53), -INT8_C(  18),  INT8_C(  41),  INT8_C(  12),  INT8_C(  72),
+        -INT8_C(  86),  INT8_C(  39),  INT8_C(  80), -INT8_C(  86), -INT8_C(  98),  INT8_C(  71), -INT8_C(  10),  INT8_C(  26),
+         INT8_C(   2),  INT8_C(   2),  INT8_C(  81), -INT8_C(  15), -INT8_C( 127),  INT8_C(  89),  INT8_C( 120), -INT8_C( 108),
+         INT8_C(  37),  INT8_C(  34),  INT8_C(  62),  INT8_C(   1),  INT8_C(  36),  INT8_C(  86),  INT8_C( 109),  INT8_C( 112) },
+      UINT32_C(      9379),
+      {  INT8_C( 104),  INT8_C(  79),  INT8_C(  45),  INT8_C(  74), -INT8_C(   6), -INT8_C(  53),  INT8_C(  39), -INT8_C(  66),
+         INT8_C(  44), -INT8_C(  68),  INT8_C(  67),  INT8_C(  50), -INT8_C(  91), -INT8_C(  88),  INT8_C(  82), -INT8_C(  87),
+         INT8_C(  16),  INT8_C(  37),  INT8_C(  87), -INT8_C(  66), -INT8_C(  77),  INT8_C(  46),  INT8_C(  25),  INT8_C(  15),
+         INT8_C(  45), -INT8_C(  13), -INT8_C(  39), -INT8_C( 113),  INT8_C(  16),  INT8_C(  13), -INT8_C(  73), -INT8_C( 102) },
+      {  INT8_C(  96),  INT8_C(  32),  INT8_C(  87), -INT8_C(  68),  INT8_C( 115), -INT8_C(  15), -INT8_C(  38), -INT8_C(  33),
+        -INT8_C(  61), -INT8_C( 113), -INT8_C( 118),  INT8_C(  12),  INT8_C(  78), -INT8_C(  29), -INT8_C(  43),  INT8_C(  48),
+        -INT8_C(  55),  INT8_C(  71), -INT8_C(  43),  INT8_C(  21), -INT8_C(  98), -INT8_C(  50),  INT8_C( 121),  INT8_C( 116),
+         INT8_C(  65),  INT8_C(  79),      INT8_MAX,  INT8_C(  62),  INT8_C(   2),  INT8_C( 115),  INT8_C(  10),  INT8_C(  17) },
+      {      INT8_MAX,  INT8_C( 111),  INT8_C(  65), -INT8_C(  53), -INT8_C(  18), -INT8_C(  68),  INT8_C(  12), -INT8_C(  99),
+        -INT8_C(  86),  INT8_C(  39), -INT8_C(  51), -INT8_C(  86), -INT8_C(  98), -INT8_C( 117), -INT8_C(  10),  INT8_C(  26),
+         INT8_C(   2),  INT8_C(   2),  INT8_C(  81), -INT8_C(  15), -INT8_C( 127),  INT8_C(  89),  INT8_C( 120), -INT8_C( 108),
+         INT8_C(  37),  INT8_C(  34),  INT8_C(  62),  INT8_C(   1),  INT8_C(  36),  INT8_C(  86),  INT8_C( 109),  INT8_C( 112) } },
+    { {  INT8_C( 106), -INT8_C(  38),  INT8_C( 113), -INT8_C( 114), -INT8_C( 121),  INT8_C(  92), -INT8_C(  30),  INT8_C( 110),
+         INT8_C(  56), -INT8_C(  93), -INT8_C(  61),  INT8_C(  32),  INT8_C(   8),  INT8_C(  89),  INT8_C(  67), -INT8_C( 108),
+        -INT8_C(  52),  INT8_C( 104), -INT8_C(  67), -INT8_C(   2),  INT8_C( 105),  INT8_C(  96), -INT8_C(  60),  INT8_C(  83),
+        -INT8_C( 123), -INT8_C(  16),  INT8_C(  90),  INT8_C(  53),  INT8_C(   8), -INT8_C(  83), -INT8_C(   2), -INT8_C(  72) },
+      UINT32_C(     60777),
+      {  INT8_C(  87),  INT8_C( 109), -INT8_C(  14), -INT8_C(  56), -INT8_C(  36),  INT8_C(  50),  INT8_C( 112), -INT8_C( 106),
+         INT8_C( 115),  INT8_C(  42),  INT8_C( 109),  INT8_C(   2), -INT8_C(  46), -INT8_C(  67),  INT8_C(  26),  INT8_C( 102),
+        -INT8_C( 104), -INT8_C( 104),  INT8_C(   5), -INT8_C(  69), -INT8_C(  12), -INT8_C(  38), -INT8_C( 100), -INT8_C(  59),
+         INT8_C(  92), -INT8_C(  63),  INT8_C(  99),  INT8_C(  33),  INT8_C(  56), -INT8_C(  66), -INT8_C(  59), -INT8_C(  33) },
+      { -INT8_C(  65),  INT8_C(  98),  INT8_C(  34),  INT8_C( 105),  INT8_C(  11),  INT8_C(  40), -INT8_C(  94),  INT8_C(  55),
+         INT8_C(  93),  INT8_C(  32),  INT8_C(  16), -INT8_C( 123), -INT8_C(  53),  INT8_C( 118),  INT8_C(  76), -INT8_C(   7),
+        -INT8_C( 126), -INT8_C(  96),  INT8_C( 111),      INT8_MIN, -INT8_C(  88), -INT8_C(  35),  INT8_C( 107),  INT8_C(  19),
+         INT8_C(  54), -INT8_C(  31),  INT8_C(  97),  INT8_C(  15), -INT8_C(  66),  INT8_C( 116),  INT8_C(  96), -INT8_C(   1) },
+      {  INT8_C(  22), -INT8_C(  38),  INT8_C( 113),  INT8_C(  49), -INT8_C( 121),  INT8_C(  90),  INT8_C(  18),  INT8_C( 110),
+             INT8_MAX, -INT8_C(  93),  INT8_C( 125), -INT8_C( 121),  INT8_C(   8),  INT8_C(  51),  INT8_C( 102),  INT8_C(  95),
+        -INT8_C(  52),  INT8_C( 104), -INT8_C(  67), -INT8_C(   2),  INT8_C( 105),  INT8_C(  96), -INT8_C(  60),  INT8_C(  83),
+        -INT8_C( 123), -INT8_C(  16),  INT8_C(  90),  INT8_C(  53),  INT8_C(   8), -INT8_C(  83), -INT8_C(   2), -INT8_C(  72) } },
+    { {  INT8_C( 100), -INT8_C(  55),      INT8_MIN,  INT8_C(  72),  INT8_C(  87),  INT8_C(  65),  INT8_C(  86), -INT8_C(  76),
+         INT8_C(  80),  INT8_C( 106), -INT8_C( 121),      INT8_MAX, -INT8_C( 112), -INT8_C(  35), -INT8_C(   2), -INT8_C(  44),
+         INT8_C(  49), -INT8_C(  82), -INT8_C(  22), -INT8_C(  13), -INT8_C(  17), -INT8_C(   8), -INT8_C(  14),  INT8_C( 108),
+         INT8_C( 126),  INT8_C(  95), -INT8_C(  50), -INT8_C(  76),  INT8_C( 116), -INT8_C(   6),  INT8_C(  17), -INT8_C(  97) },
+      UINT32_C(     17935),
+      { -INT8_C(  36),  INT8_C( 107),  INT8_C(  99), -INT8_C(  88), -INT8_C( 108), -INT8_C(  54), -INT8_C( 107), -INT8_C(  60),
+         INT8_C(  33),  INT8_C( 111),  INT8_C(  96),  INT8_C( 117),  INT8_C(  43), -INT8_C(  46), -INT8_C(  19), -INT8_C( 103),
+        -INT8_C( 107), -INT8_C(  51),  INT8_C( 122),  INT8_C(  90),  INT8_C(  34), -INT8_C(  40), -INT8_C( 107),  INT8_C( 117),
+         INT8_C(  95),  INT8_C(  30), -INT8_C(  30),  INT8_C( 112),  INT8_C(  86), -INT8_C(  46), -INT8_C(   2),  INT8_C( 109) },
+      {  INT8_C(  69),  INT8_C(  50),  INT8_C( 112),  INT8_C(  36), -INT8_C(  68),  INT8_C(  41),  INT8_C(  61),  INT8_C(  95),
+        -INT8_C(  71),  INT8_C(  65), -INT8_C(  90), -INT8_C(  46),  INT8_C(  10),  INT8_C(  89), -INT8_C(  35), -INT8_C(  68),
+        -INT8_C(  54),  INT8_C(  48),      INT8_MIN, -INT8_C( 108), -INT8_C(  48), -INT8_C(  34), -INT8_C(  69), -INT8_C(  69),
+         INT8_C(   0),  INT8_C(  32),  INT8_C(   8),  INT8_C(  21),  INT8_C(  10),  INT8_C(  48), -INT8_C(  60),  INT8_C(  55) },
+      {  INT8_C(  33),      INT8_MAX,      INT8_MAX, -INT8_C(  52),  INT8_C(  87),  INT8_C(  65),  INT8_C(  86), -INT8_C(  76),
+         INT8_C(  80),      INT8_MAX,  INT8_C(   6),      INT8_MAX, -INT8_C( 112), -INT8_C(  35), -INT8_C(  54), -INT8_C(  44),
+         INT8_C(  49), -INT8_C(  82), -INT8_C(  22), -INT8_C(  13), -INT8_C(  17), -INT8_C(   8), -INT8_C(  14),  INT8_C( 108),
+         INT8_C( 126),  INT8_C(  95), -INT8_C(  50), -INT8_C(  76),  INT8_C( 116), -INT8_C(   6),  INT8_C(  17), -INT8_C(  97) } }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
+    simde__m256i src = simde_x_mm256_loadu_epi8(test_vec[i].src);
+    simde__m256i a = simde_x_mm256_loadu_epi8(test_vec[i].a);
+    simde__m256i b = simde_x_mm256_loadu_epi8(test_vec[i].b);
+    simde__m256i r = simde_mm256_mask_adds_epi8(src, test_vec[i].k, a, b);
+    simde_test_x86_assert_equal_i8x32(r, simde_x_mm256_loadu_epi8(test_vec[i].r));
+  }
+
+  return 0;
+}
+
+static int
+test_simde_mm256_maskz_adds_epi8 (SIMDE_MUNIT_TEST_ARGS) {
+  static const struct {
+    const simde__mmask32 k;
+    const int8_t a[32];
+    const int8_t b[32];
+    const int8_t r[32];
+  } test_vec[] = {
+    { UINT32_C(     14766),
+      {  INT8_C(  55),  INT8_C(  62),  INT8_C(  61), -INT8_C(  18),  INT8_C(  70), -INT8_C(  29),  INT8_C(  26), -INT8_C(  17),
+         INT8_C(  21),  INT8_C(  30), -INT8_C(  94), -INT8_C(   9),  INT8_C(   2),  INT8_C( 115), -INT8_C(  89), -INT8_C(  32),
+         INT8_C(  70), -INT8_C( 105),  INT8_C(  70),  INT8_C(  70),  INT8_C(  61),  INT8_C(  10),  INT8_C(   9),  INT8_C(  43),
+         INT8_C(  68), -INT8_C(  98), -INT8_C( 100), -INT8_C( 127), -INT8_C(  29),  INT8_C(  26), -INT8_C(  67), -INT8_C(  57) },
+      {  INT8_C(  66),  INT8_C(  16),  INT8_C( 100), -INT8_C(  70),  INT8_C(  89), -INT8_C(  69), -INT8_C(  68), -INT8_C( 110),
+         INT8_C(  64), -INT8_C( 113), -INT8_C(  40),  INT8_C(  48),  INT8_C(  79), -INT8_C(  27),  INT8_C(  25),  INT8_C(  42),
+        -INT8_C(  19),  INT8_C(  67),  INT8_C(  63), -INT8_C(  22), -INT8_C( 125),  INT8_C(  59), -INT8_C(  74),  INT8_C(  64),
+        -INT8_C(  96),  INT8_C(  66),  INT8_C(  71), -INT8_C(  80),  INT8_C(  23), -INT8_C( 102),  INT8_C(  65),  INT8_C( 126) },
+      {  INT8_C(   0),  INT8_C(  78),      INT8_MAX, -INT8_C(  88),  INT8_C(   0), -INT8_C(  98),  INT8_C(   0), -INT8_C( 127),
+         INT8_C(  85),  INT8_C(   0),  INT8_C(   0),  INT8_C(  39),  INT8_C(  81),  INT8_C(  88),  INT8_C(   0),  INT8_C(   0),
+         INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),
+         INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0) } },
+    { UINT32_C(     48711),
+      { -INT8_C(  23), -INT8_C( 106),  INT8_C(  46), -INT8_C(  92), -INT8_C(  53), -INT8_C( 100), -INT8_C(  19), -INT8_C(  86),
+        -INT8_C(   3),  INT8_C( 102),  INT8_C(  27),  INT8_C(  95),  INT8_C(  80),  INT8_C(  93),  INT8_C( 104), -INT8_C(  65),
+        -INT8_C( 117), -INT8_C(  64),  INT8_C( 111), -INT8_C(  87), -INT8_C(  92),  INT8_C(  32),  INT8_C(  69), -INT8_C(  39),
+         INT8_C(  50), -INT8_C(  78),  INT8_C(  69),  INT8_C(  71), -INT8_C(  10), -INT8_C(  95),  INT8_C(  19),  INT8_C(  78) },
+      { -INT8_C(  13),  INT8_C(  64),  INT8_C(  95), -INT8_C( 107),  INT8_C(  32),  INT8_C(  21),  INT8_C( 116), -INT8_C(  18),
+        -INT8_C(  61),  INT8_C(  88),  INT8_C( 111), -INT8_C(  60), -INT8_C(   5),  INT8_C(   0), -INT8_C(  87), -INT8_C(  89),
+        -INT8_C(  75), -INT8_C( 119),  INT8_C( 100),  INT8_C(  56),  INT8_C( 112), -INT8_C( 120), -INT8_C( 115), -INT8_C(  17),
+        -INT8_C(  19),  INT8_C(  30), -INT8_C(  93),  INT8_C(  18),  INT8_C(  40), -INT8_C(  94), -INT8_C(  36), -INT8_C(  32) },
+      { -INT8_C(  36), -INT8_C(  42),      INT8_MAX,  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(  97),  INT8_C(   0),
+         INT8_C(   0),      INT8_MAX,      INT8_MAX,  INT8_C(  35),  INT8_C(  75),  INT8_C(  93),  INT8_C(   0),      INT8_MIN,
+         INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),
+         INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0) } },
+    { UINT32_C(     22629),
+      {  INT8_C(   0),  INT8_C(  69), -INT8_C(  39), -INT8_C( 106), -INT8_C(  84),  INT8_C(  19),  INT8_C(  31), -INT8_C(  16),
+        -INT8_C( 113), -INT8_C(  23),  INT8_C(  40),  INT8_C(  69), -INT8_C(   7), -INT8_C(  85), -INT8_C(  89), -INT8_C( 117),
+         INT8_C(  70),  INT8_C(  44),  INT8_C( 115),  INT8_C(  20),  INT8_C(  16),  INT8_C(  45), -INT8_C(  30),  INT8_C(  36),
+         INT8_C(  38), -INT8_C(  49),  INT8_C(  88),  INT8_C(  80),  INT8_C(  78),  INT8_C(  52),  INT8_C(  70),  INT8_C(  47) },
+      { -INT8_C(  37), -INT8_C(  51), -INT8_C(  78), -INT8_C(  33),  INT8_C(  76),  INT8_C(  24),  INT8_C(   2),  INT8_C(  44),
+         INT8_C(  68), -INT8_C(  42),  INT8_C(   1), -INT8_C(  82), -INT8_C(   7), -INT8_C( 101), -INT8_C( 121), -INT8_C(   5),
+         INT8_C(  42),  INT8_C(  31), -INT8_C(  59), -INT8_C( 111),      INT8_MIN, -INT8_C(  74), -INT8_C(  80), -INT8_C(  43),
+        -INT8_C(  92), -INT8_C(   5),  INT8_C(  56), -INT8_C(  57), -INT8_C(  14),  INT8_C(  35), -INT8_C(  94), -INT8_C(  10) },
+      { -INT8_C(  37),  INT8_C(   0), -INT8_C( 117),  INT8_C(   0),  INT8_C(   0),  INT8_C(  43),  INT8_C(  33),  INT8_C(   0),
+         INT8_C(   0),  INT8_C(   0),  INT8_C(   0), -INT8_C(  13), -INT8_C(  14),  INT8_C(   0),      INT8_MIN,  INT8_C(   0),
+         INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),
+         INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0) } },
+    { UINT32_C(     34647),
+      {  INT8_C(  22), -INT8_C( 101), -INT8_C(   1),  INT8_C(  44),  INT8_C(  87),  INT8_C(  24), -INT8_C(  84), -INT8_C(  58),
+        -INT8_C(  20),  INT8_C(  81), -INT8_C(  60), -INT8_C(  24),  INT8_C(   6),  INT8_C(  70), -INT8_C(  48),  INT8_C( 111),
+        -INT8_C(  65),  INT8_C(  60), -INT8_C(  59),  INT8_C(  20),  INT8_C(   6), -INT8_C(  65), -INT8_C(  88),  INT8_C( 103),
+         INT8_C(  43),  INT8_C(  22),  INT8_C(  95),  INT8_C(  54),  INT8_C(  91),  INT8_C( 116),  INT8_C( 118),  INT8_C(   1) },
+      { -INT8_C(  64), -INT8_C(  72), -INT8_C(  36), -INT8_C(  45), -INT8_C(  62), -INT8_C( 121),  INT8_C(  20),  INT8_C(  98),
+         INT8_C(   9), -INT8_C(   3), -INT8_C(  33), -INT8_C(  57), -INT8_C(  77),  INT8_C(  54),  INT8_C(  14), -INT8_C( 101),
+         INT8_C(  57), -INT8_C( 123), -INT8_C(  71),  INT8_C(  16),  INT8_C( 102),  INT8_C(   5), -INT8_C( 127),  INT8_C(  46),
+         INT8_C( 112), -INT8_C(  64),  INT8_C(   3),  INT8_C(  32), -INT8_C(  70), -INT8_C(  90), -INT8_C(  38), -INT8_C(  60) },
+      { -INT8_C(  42),      INT8_MIN, -INT8_C(  37),  INT8_C(   0),  INT8_C(  25),  INT8_C(   0), -INT8_C(  64),  INT8_C(   0),
+        -INT8_C(  11),  INT8_C(  78), -INT8_C(  93),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(  10),
+         INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),
+         INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0) } },
+    { UINT32_C(     33178),
+      { -INT8_C( 112), -INT8_C( 114), -INT8_C(  27),  INT8_C(  55),  INT8_C(  41),  INT8_C(  10),  INT8_C( 103), -INT8_C( 121),
+         INT8_C(  66), -INT8_C( 119),  INT8_C(  82), -INT8_C( 125), -INT8_C( 120),  INT8_C(   5),  INT8_C(  41), -INT8_C(  55),
+        -INT8_C( 114),  INT8_C( 124), -INT8_C( 115),  INT8_C(  57),  INT8_C(  20), -INT8_C(  84), -INT8_C(   7),  INT8_C( 102),
+        -INT8_C(  77), -INT8_C(   5), -INT8_C(  59), -INT8_C(  62),  INT8_C( 124),  INT8_C(  14),  INT8_C(  57),  INT8_C(  94) },
+      { -INT8_C( 126),  INT8_C(  83),  INT8_C(   7),  INT8_C(  67),  INT8_C(  33),  INT8_C(  82), -INT8_C(  24),  INT8_C(  96),
+        -INT8_C( 112), -INT8_C(  43),  INT8_C(  36),  INT8_C(  36), -INT8_C(  99), -INT8_C(  23),  INT8_C(  74),  INT8_C(  27),
+        -INT8_C(  72),  INT8_C(  23), -INT8_C(  17), -INT8_C(   4), -INT8_C(  25), -INT8_C(  84), -INT8_C(  55), -INT8_C( 115),
+        -INT8_C(  36),  INT8_C(  16),  INT8_C(  33),  INT8_C(  13),  INT8_C(   3),  INT8_C(  29), -INT8_C(  53),      INT8_MAX },
+      {  INT8_C(   0), -INT8_C(  31),  INT8_C(   0),  INT8_C( 122),  INT8_C(  74),  INT8_C(   0),  INT8_C(   0), -INT8_C(  25),
+        -INT8_C(  46),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0), -INT8_C(  28),
+         INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),
+         INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0) } },
+    { UINT32_C(     23935),
+      {  INT8_C(  37),  INT8_C(  27),  INT8_C(  77), -INT8_C( 113),  INT8_C(   4), -INT8_C(  36), -INT8_C(   1),  INT8_C( 117),
+        -INT8_C(  77),  INT8_C(  42),  INT8_C( 104),  INT8_C( 109), -INT8_C(   9),  INT8_C(  94),  INT8_C(  23),  INT8_C(  25),
+        -INT8_C(  69), -INT8_C(  80), -INT8_C(  76),  INT8_C(  22), -INT8_C(  44), -INT8_C(  48),  INT8_C( 100), -INT8_C(  87),
+         INT8_C(  73),  INT8_C(  64),  INT8_C(  74),  INT8_C(  77), -INT8_C( 104),  INT8_C( 109),  INT8_C(  73), -INT8_C( 100) },
+      {  INT8_C(  34),  INT8_C(  89),  INT8_C(  99),  INT8_C(  37),  INT8_C(   2),  INT8_C(  58),  INT8_C(  49),  INT8_C(  10),
+         INT8_C(  72), -INT8_C(  35),  INT8_C( 120),  INT8_C(  43),  INT8_C(  84), -INT8_C(  59), -INT8_C(  72),  INT8_C( 106),
+         INT8_C(  33),  INT8_C(  86),  INT8_C(  69), -INT8_C(  42), -INT8_C(  14),  INT8_C(  32),  INT8_C( 113), -INT8_C( 101),
+        -INT8_C( 108), -INT8_C(  77),  INT8_C( 126), -INT8_C(  15),  INT8_C(  63),  INT8_C( 113),  INT8_C( 108), -INT8_C( 117) },
+      {  INT8_C(  71),  INT8_C( 116),      INT8_MAX, -INT8_C(  76),  INT8_C(   6),  INT8_C(  22),  INT8_C(  48),  INT8_C(   0),
+        -INT8_C(   5),  INT8_C(   0),      INT8_MAX,      INT8_MAX,  INT8_C(  75),  INT8_C(   0), -INT8_C(  49),  INT8_C(   0),
+         INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),
+         INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0) } },
+    { UINT32_C(     30325),
+      { -INT8_C(  38),  INT8_C(  61), -INT8_C(  91),  INT8_C(  83), -INT8_C(  95), -INT8_C(  17),  INT8_C(  39), -INT8_C(  69),
+        -INT8_C(  65), -INT8_C(  37), -INT8_C( 112), -INT8_C( 103),  INT8_C(  54), -INT8_C(  77),  INT8_C(  39), -INT8_C(  98),
+        -INT8_C(  45), -INT8_C( 124), -INT8_C(  82), -INT8_C( 119), -INT8_C(  44), -INT8_C(  17), -INT8_C(  83), -INT8_C(  33),
+         INT8_C(  89), -INT8_C(  29),  INT8_C( 105),  INT8_C(  39), -INT8_C(  32), -INT8_C(  38),  INT8_C(  98), -INT8_C(  47) },
+      { -INT8_C( 109),  INT8_C( 105), -INT8_C(  21),  INT8_C(  27),  INT8_C(   2), -INT8_C( 112), -INT8_C(  93),  INT8_C(  15),
+        -INT8_C(  75), -INT8_C(   2),  INT8_C(  65), -INT8_C( 112), -INT8_C(   6),  INT8_C(  59), -INT8_C(  94),  INT8_C( 123),
+         INT8_C(  35), -INT8_C(  22), -INT8_C(  85),  INT8_C( 118),  INT8_C(  60),  INT8_C(  28),  INT8_C(  72),  INT8_C( 106),
+        -INT8_C( 104), -INT8_C(  83), -INT8_C(  41), -INT8_C(  31),  INT8_C(  80),  INT8_C(  85), -INT8_C(  69),  INT8_C(  37) },
+      {      INT8_MIN,  INT8_C(   0), -INT8_C( 112),  INT8_C(   0), -INT8_C(  93),      INT8_MIN, -INT8_C(  54),  INT8_C(   0),
+         INT8_C(   0), -INT8_C(  39), -INT8_C(  47),  INT8_C(   0),  INT8_C(  48), -INT8_C(  18), -INT8_C(  55),  INT8_C(   0),
+         INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),
+         INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0) } },
+    { UINT32_C(     38151),
+      {  INT8_C(  24),  INT8_C(  22),  INT8_C( 106),  INT8_C(  19), -INT8_C(  11),  INT8_C(  73), -INT8_C(  76), -INT8_C( 100),
+        -INT8_C(  66), -INT8_C(  18),  INT8_C(   0),  INT8_C( 116), -INT8_C(  99),  INT8_C(   9), -INT8_C( 107), -INT8_C(  41),
+         INT8_C(   2), -INT8_C(  51), -INT8_C( 119), -INT8_C(  50),  INT8_C(  52), -INT8_C(  79), -INT8_C( 112), -INT8_C( 105),
+         INT8_C( 121), -INT8_C(   1), -INT8_C(  33), -INT8_C(  59), -INT8_C(  40),  INT8_C( 113), -INT8_C( 108), -INT8_C(  42) },
+      { -INT8_C( 111), -INT8_C(   9), -INT8_C(  21),      INT8_MIN,  INT8_C(  68), -INT8_C(  45), -INT8_C(  26),  INT8_C(  55),
+         INT8_C(  54), -INT8_C( 115), -INT8_C(  52), -INT8_C( 115),  INT8_C(  11), -INT8_C(  27),  INT8_C(  14),  INT8_C(  69),
+         INT8_C( 105), -INT8_C(  79), -INT8_C(  62), -INT8_C(   2),  INT8_C(  99),  INT8_C(  81), -INT8_C( 127),  INT8_C(   0),
+        -INT8_C(  25),  INT8_C(  66),  INT8_C(  49), -INT8_C(  21),  INT8_C(   3),  INT8_C( 110), -INT8_C(  88), -INT8_C(  74) },
+      { -INT8_C(  87),  INT8_C(  13),  INT8_C(  85),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),
+        -INT8_C(  12),  INT8_C(   0), -INT8_C(  52),  INT8_C(   0), -INT8_C(  88),  INT8_C(   0),  INT8_C(   0),  INT8_C(  28),
+         INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),
+         INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0) } }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
+    simde__m256i a = simde_x_mm256_loadu_epi8(test_vec[i].a);
+    simde__m256i b = simde_x_mm256_loadu_epi8(test_vec[i].b);
+    simde__m256i r = simde_mm256_maskz_adds_epi8(test_vec[i].k, a, b);
+    simde_test_x86_assert_equal_i8x32(r, simde_x_mm256_loadu_epi8(test_vec[i].r));
+  }
+
+  return 0;
+}
+
+static int
+test_simde_mm256_mask_adds_epi16 (SIMDE_MUNIT_TEST_ARGS) {
+  static const struct {
+    const int16_t src[16];
+    const simde__mmask16 k;
+    const int16_t a[16];
+    const int16_t b[16];
+    const int16_t r[16];
+  } test_vec[] = {
+    { {  INT16_C(  7990),  INT16_C(  6121),  INT16_C(  1695), -INT16_C( 16346), -INT16_C( 31357),  INT16_C( 17527), -INT16_C(  8442), -INT16_C(  5961),
+         INT16_C( 21675), -INT16_C( 17197), -INT16_C( 13269),  INT16_C( 26238),  INT16_C(  7008),  INT16_C( 11700),  INT16_C( 14871), -INT16_C( 20003) },
+      UINT32_C(     10568),
+      {  INT16_C( 25804), -INT16_C( 19189),  INT16_C( 17573),  INT16_C( 25379),  INT16_C( 22002),  INT16_C( 16325), -INT16_C(  3773), -INT16_C( 28770),
+        -INT16_C(  7776), -INT16_C( 15400),  INT16_C( 25651),  INT16_C( 13783),  INT16_C( 16340),  INT16_C( 10898),  INT16_C( 25744), -INT16_C(  3578) },
+      {  INT16_C( 18142), -INT16_C(  4396), -INT16_C(  6094),  INT16_C( 27801),  INT16_C( 19323),  INT16_C( 26031),  INT16_C(  9085),  INT16_C( 23834),
+        -INT16_C(  4516),  INT16_C(  8964),  INT16_C( 22812),  INT16_C(  7811), -INT16_C( 15967), -INT16_C(  6916),  INT16_C(  2634),  INT16_C(  4908) },
+      {  INT16_C(  7990),  INT16_C(  6121),  INT16_C(  1695),       INT16_MAX, -INT16_C( 31357),  INT16_C( 17527),  INT16_C(  5312), -INT16_C(  5961),
+         INT16_C( 21675), -INT16_C( 17197), -INT16_C( 13269),  INT16_C( 26238),  INT16_C(  7008),  INT16_C( 11700),  INT16_C( 14871), -INT16_C( 20003) } },
+    { {  INT16_C(  2787), -INT16_C( 16872),  INT16_C( 31102),  INT16_C( 24165),  INT16_C(  4712),  INT16_C( 24403), -INT16_C( 22319),  INT16_C( 17062),
+        -INT16_C( 24261),  INT16_C( 29595), -INT16_C(  8807), -INT16_C( 32218),  INT16_C( 30066), -INT16_C( 23909),  INT16_C( 12940), -INT16_C(  1018) },
+      UINT32_C(     41295),
+      {  INT16_C( 23996),  INT16_C( 26308),  INT16_C(  6403),  INT16_C( 26991),  INT16_C(  8461), -INT16_C( 30994),  INT16_C( 10338), -INT16_C(  9765),
+        -INT16_C( 20322), -INT16_C( 14086),  INT16_C( 25215), -INT16_C( 12724),  INT16_C(  8391), -INT16_C( 26977), -INT16_C( 16893),  INT16_C( 27422) },
+      { -INT16_C( 21719), -INT16_C( 15288),  INT16_C( 19232),  INT16_C( 10614),  INT16_C( 17946),  INT16_C(  8934), -INT16_C(  8672), -INT16_C(  8971),
+         INT16_C(  4516), -INT16_C(   986),  INT16_C( 31769), -INT16_C( 25928),  INT16_C( 10265), -INT16_C( 14328),  INT16_C( 24250),  INT16_C( 30786) },
+      {  INT16_C(  2277),  INT16_C( 11020),  INT16_C( 25635),       INT16_MAX,  INT16_C(  4712),  INT16_C( 24403),  INT16_C(  1666),  INT16_C( 17062),
+        -INT16_C( 24261),  INT16_C( 29595), -INT16_C(  8807), -INT16_C( 32218),  INT16_C( 30066), -INT16_C( 23909),  INT16_C( 12940), -INT16_C(  1018) } },
+    { { -INT16_C( 24318), -INT16_C( 31318),  INT16_C( 31552), -INT16_C( 15682),  INT16_C( 25560), -INT16_C(  3040),  INT16_C(  6709), -INT16_C(  2230),
+        -INT16_C( 24182), -INT16_C( 18286),  INT16_C(  9925),  INT16_C( 24290),  INT16_C( 32700), -INT16_C(  2529), -INT16_C( 13363),  INT16_C( 24823) },
+      UINT32_C(     20446),
+      {  INT16_C( 16059), -INT16_C( 15471), -INT16_C(  8740), -INT16_C( 16037),  INT16_C( 24108),  INT16_C(  9862),  INT16_C(  3462), -INT16_C( 18161),
+        -INT16_C( 30446), -INT16_C( 31811), -INT16_C( 31397), -INT16_C( 25809), -INT16_C( 13666),  INT16_C( 18597), -INT16_C(  4110), -INT16_C( 31636) },
+      {  INT16_C( 11401),  INT16_C( 12890),  INT16_C( 17265),  INT16_C(  1796), -INT16_C( 27935), -INT16_C( 31060),  INT16_C( 32213), -INT16_C( 32494),
+        -INT16_C(  9441), -INT16_C( 24380), -INT16_C( 23643), -INT16_C(  5059), -INT16_C(   522), -INT16_C( 25503), -INT16_C(  1455),  INT16_C( 19352) },
+      { -INT16_C( 24318), -INT16_C(  2581),  INT16_C(  8525), -INT16_C( 14241), -INT16_C(  3827), -INT16_C(  3040),       INT16_MAX,       INT16_MIN,
+        -INT16_C( 24182), -INT16_C( 18286),  INT16_C(  9925),  INT16_C( 24290),  INT16_C( 32700), -INT16_C(  2529), -INT16_C( 13363),  INT16_C( 24823) } },
+    { { -INT16_C( 29786), -INT16_C(  1672), -INT16_C( 14631),  INT16_C( 28923),  INT16_C( 11593), -INT16_C( 20217),  INT16_C(   816), -INT16_C( 24908),
+        -INT16_C(  8305), -INT16_C( 27455), -INT16_C( 30979),  INT16_C( 14289),  INT16_C( 10733),  INT16_C(   630),  INT16_C( 15415), -INT16_C(  3124) },
+      UINT32_C(     64759),
+      { -INT16_C( 11606),  INT16_C( 29051), -INT16_C( 28409), -INT16_C(   181), -INT16_C(  4354),  INT16_C(  8145),  INT16_C(  9755),  INT16_C( 10263),
+         INT16_C(  3863),  INT16_C( 28346), -INT16_C( 10103), -INT16_C(  3412), -INT16_C( 21702),  INT16_C( 22037),  INT16_C( 28606), -INT16_C( 12029) },
+      {  INT16_C( 24277), -INT16_C( 32059),  INT16_C( 15702), -INT16_C( 14099),  INT16_C( 15566), -INT16_C(  2209), -INT16_C(  8162),  INT16_C(   784),
+         INT16_C(  2166),  INT16_C( 13425),  INT16_C( 12655),  INT16_C(  9423), -INT16_C(  5822),  INT16_C( 27488), -INT16_C( 26688), -INT16_C( 29661) },
+      {  INT16_C( 12671), -INT16_C(  3008), -INT16_C( 12707),  INT16_C( 28923),  INT16_C( 11212),  INT16_C(  5936),  INT16_C(  1593),  INT16_C( 11047),
+        -INT16_C(  8305), -INT16_C( 27455), -INT16_C( 30979),  INT16_C( 14289),  INT16_C( 10733),  INT16_C(   630),  INT16_C( 15415), -INT16_C(  3124) } },
+    { { -INT16_C(  3853),  INT16_C( 27918),  INT16_C(  1703),  INT16_C(  5171),  INT16_C( 31807),  INT16_C( 10442), -INT16_C(   931), -INT16_C( 17013),
+         INT16_C( 10225), -INT16_C( 11268),  INT16_C( 23783),  INT16_C( 24407), -INT16_C( 29457), -INT16_C( 32693), -INT16_C( 18517),  INT16_C(   138) },
+      UINT32_C(     43636),
+      { -INT16_C( 24715),  INT16_C(   782),  INT16_C( 24865), -INT16_C( 26897), -INT16_C(  8033),  INT16_C( 10382), -INT16_C( 30974), -INT16_C( 15896),
+         INT16_C(  7732), -INT16_C( 24802),  INT16_C(  7387),  INT16_C( 11694), -INT16_C( 30034), -INT16_C(  3579), -INT16_C( 25122),  INT16_C( 28709) },
+      {  INT16_C( 25275),  INT16_C( 15642),  INT16_C(  3223), -INT16_C( 20172), -INT16_C( 20678),  INT16_C( 17524),  INT16_C(  2118),  INT16_C( 22877),
+        -INT16_C( 27692), -INT16_C( 28128), -INT16_C( 10505), -INT16_C(  7645),  INT16_C( 20095), -INT16_C(  3521), -INT16_C( 24821),  INT16_C( 18517) },
+      { -INT16_C(  3853),  INT16_C( 27918),  INT16_C( 28088),  INT16_C(  5171), -INT16_C( 28711),  INT16_C( 27906), -INT16_C( 28856), -INT16_C( 17013),
+         INT16_C( 10225), -INT16_C( 11268),  INT16_C( 23783),  INT16_C( 24407), -INT16_C( 29457), -INT16_C( 32693), -INT16_C( 18517),  INT16_C(   138) } },
+    { {  INT16_C( 14115), -INT16_C( 14062), -INT16_C(  3893),  INT16_C( 25421), -INT16_C( 10866),  INT16_C( 14196), -INT16_C(  8066),  INT16_C( 20522),
+         INT16_C( 31733), -INT16_C( 24966), -INT16_C( 23539), -INT16_C( 17659),  INT16_C( 24632),  INT16_C( 29912), -INT16_C( 14937),  INT16_C(  7599) },
+      UINT32_C(     25445),
+      {  INT16_C(  4411),  INT16_C(  4814),  INT16_C(  3490), -INT16_C( 18294),  INT16_C( 14319),  INT16_C( 31228), -INT16_C( 16041),  INT16_C( 13642),
+         INT16_C(  3872), -INT16_C(  2633), -INT16_C( 30401), -INT16_C( 15606),  INT16_C( 18755),  INT16_C( 15377),  INT16_C( 21738),  INT16_C(   241) },
+      {  INT16_C( 30223),  INT16_C(  4013), -INT16_C( 20577),  INT16_C( 24370),  INT16_C(  3960),  INT16_C(   988), -INT16_C( 19550),  INT16_C( 30234),
+         INT16_C(  4306),  INT16_C(  7957), -INT16_C( 22716),  INT16_C( 17273),  INT16_C( 32118), -INT16_C( 18512), -INT16_C(   457), -INT16_C(  1627) },
+      {       INT16_MAX, -INT16_C( 14062), -INT16_C( 17087),  INT16_C( 25421), -INT16_C( 10866),  INT16_C( 32216),       INT16_MIN,  INT16_C( 20522),
+         INT16_C( 31733), -INT16_C( 24966), -INT16_C( 23539), -INT16_C( 17659),  INT16_C( 24632),  INT16_C( 29912), -INT16_C( 14937),  INT16_C(  7599) } },
+    { {  INT16_C( 24879),  INT16_C( 17027), -INT16_C(  3113),  INT16_C( 14516),  INT16_C( 15584),  INT16_C( 31545), -INT16_C( 15724), -INT16_C(  8172),
+        -INT16_C( 16043), -INT16_C( 18528), -INT16_C( 18568), -INT16_C( 19838),  INT16_C( 21885),  INT16_C( 15709),  INT16_C( 22708), -INT16_C( 11454) },
+      UINT32_C(      5214),
+      { -INT16_C( 15384), -INT16_C( 31613),  INT16_C( 14723), -INT16_C( 25925),  INT16_C(  6744), -INT16_C(  9143), -INT16_C( 13920), -INT16_C(  6219),
+         INT16_C( 11703),  INT16_C( 32583), -INT16_C(  2150), -INT16_C( 22363), -INT16_C( 25615), -INT16_C(  6653), -INT16_C( 20185),  INT16_C( 10254) },
+      {  INT16_C( 20939), -INT16_C(  5442),  INT16_C(  2435),  INT16_C( 23130), -INT16_C( 20479),  INT16_C( 28221),  INT16_C( 17205), -INT16_C(  5418),
+         INT16_C(  6083),  INT16_C(  6698), -INT16_C(   790), -INT16_C(  3182),  INT16_C( 22881), -INT16_C(  1672), -INT16_C( 27067),  INT16_C( 14888) },
+      {  INT16_C( 24879),       INT16_MIN,  INT16_C( 17158), -INT16_C(  2795), -INT16_C( 13735),  INT16_C( 31545),  INT16_C(  3285), -INT16_C(  8172),
+        -INT16_C( 16043), -INT16_C( 18528), -INT16_C( 18568), -INT16_C( 19838),  INT16_C( 21885),  INT16_C( 15709),  INT16_C( 22708), -INT16_C( 11454) } },
+    { {  INT16_C( 22144), -INT16_C(  2928), -INT16_C(  6182), -INT16_C( 31839),  INT16_C( 16769), -INT16_C( 31397),  INT16_C(  1857),  INT16_C( 22493),
+        -INT16_C( 20637), -INT16_C(  1114), -INT16_C(  5949), -INT16_C( 28099),  INT16_C( 16497),  INT16_C( 28771), -INT16_C(  8587), -INT16_C( 16951) },
+      UINT32_C(     48564),
+      { -INT16_C( 16780),  INT16_C(  1184), -INT16_C( 14296),  INT16_C( 11546),  INT16_C( 25138),  INT16_C( 30477),  INT16_C( 24185), -INT16_C(   543),
+        -INT16_C( 32297),  INT16_C( 15280),  INT16_C(  3253),  INT16_C( 11966),  INT16_C(  4685),  INT16_C( 10810), -INT16_C( 12801), -INT16_C( 11795) },
+      { -INT16_C( 30557),  INT16_C(  8537),  INT16_C( 16907), -INT16_C(  1045), -INT16_C( 22816), -INT16_C( 29428), -INT16_C( 29999),  INT16_C( 26643),
+        -INT16_C( 16983), -INT16_C( 27903),  INT16_C(  3804),  INT16_C( 11531), -INT16_C( 16520),  INT16_C(  9181), -INT16_C( 14558),  INT16_C( 13742) },
+      {  INT16_C( 22144), -INT16_C(  2928),  INT16_C(  2611), -INT16_C( 31839),  INT16_C(  2322),  INT16_C(  1049),  INT16_C(  1857),  INT16_C( 26100),
+        -INT16_C( 20637), -INT16_C(  1114), -INT16_C(  5949), -INT16_C( 28099),  INT16_C( 16497),  INT16_C( 28771), -INT16_C(  8587), -INT16_C( 16951) } }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
+    simde__m256i src = simde_x_mm256_loadu_epi16(test_vec[i].src);
+    simde__m256i a = simde_x_mm256_loadu_epi16(test_vec[i].a);
+    simde__m256i b = simde_x_mm256_loadu_epi16(test_vec[i].b);
+    simde__m256i r = simde_mm256_mask_adds_epi16(src, test_vec[i].k, a, b);
+    simde_test_x86_assert_equal_i16x16(r, simde_x_mm256_loadu_epi16(test_vec[i].r));
+  }
+
+  return 0;
+}
+
+static int
+test_simde_mm256_maskz_adds_epi16 (SIMDE_MUNIT_TEST_ARGS) {
+  static const struct {
+    const simde__mmask16 k;
+    const int16_t a[16];
+    const int16_t b[16];
+    const int16_t r[16];
+  } test_vec[] = {
+    { UINT32_C(     52786),
+      { -INT16_C( 26250),  INT16_C( 26475),  INT16_C( 23119),  INT16_C(  3504), -INT16_C( 17233),  INT16_C( 10299), -INT16_C( 11346),  INT16_C( 32034),
+        -INT16_C(  1553),  INT16_C(  8745),  INT16_C(  3065),  INT16_C( 16859),  INT16_C( 21461), -INT16_C( 22504),  INT16_C( 22369),  INT16_C(  8406) },
+      { -INT16_C(  8033),  INT16_C( 17145),  INT16_C(  8223), -INT16_C( 19373),  INT16_C(  6731), -INT16_C( 18041), -INT16_C( 11659), -INT16_C( 28987),
+        -INT16_C( 22555), -INT16_C( 18667), -INT16_C(  4601),  INT16_C( 11094), -INT16_C( 31798), -INT16_C( 16666), -INT16_C(  3067), -INT16_C( 13625) },
+      {  INT16_C(     0),       INT16_MAX,  INT16_C(     0),  INT16_C(     0), -INT16_C( 10502), -INT16_C(  7742),  INT16_C(     0),  INT16_C(     0),
+         INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0) } },
+    { UINT32_C(     33457),
+      {  INT16_C( 11927),  INT16_C(  5037), -INT16_C(  2389),  INT16_C(  1727), -INT16_C( 14122),  INT16_C( 30971), -INT16_C( 17246),  INT16_C( 25916),
+        -INT16_C( 30188),  INT16_C(  8288), -INT16_C( 21989), -INT16_C(  8874),  INT16_C( 28585),  INT16_C( 30341),  INT16_C( 26041),  INT16_C(  1846) },
+      { -INT16_C(  5899),  INT16_C( 10019), -INT16_C( 27929),  INT16_C(  9560), -INT16_C( 13709), -INT16_C( 18288), -INT16_C( 13126), -INT16_C(  8707),
+         INT16_C( 31668),  INT16_C( 28539), -INT16_C(  1275),  INT16_C(  5253),  INT16_C( 14423), -INT16_C( 15743),  INT16_C(  4988),  INT16_C( 22165) },
+      {  INT16_C(  6028),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0), -INT16_C( 27831),  INT16_C( 12683),  INT16_C(     0),  INT16_C( 17209),
+         INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0) } },
+    { UINT32_C(      3054),
+      { -INT16_C( 11892),  INT16_C(   878), -INT16_C(  2098), -INT16_C( 13030),  INT16_C( 16047),  INT16_C(  9111), -INT16_C( 21995),  INT16_C( 30431),
+        -INT16_C(  2229),  INT16_C( 22556),  INT16_C( 23457), -INT16_C( 19325),  INT16_C( 30426), -INT16_C( 29402),  INT16_C( 25789), -INT16_C( 16938) },
+      {  INT16_C( 20696), -INT16_C(  1335),  INT16_C( 13641), -INT16_C( 23977), -INT16_C( 32159), -INT16_C( 19902), -INT16_C( 17390),  INT16_C( 15415),
+        -INT16_C( 30456), -INT16_C( 30074), -INT16_C( 28725), -INT16_C( 32598), -INT16_C( 23165), -INT16_C( 22916), -INT16_C( 12939), -INT16_C( 20189) },
+      {  INT16_C(     0), -INT16_C(   457),  INT16_C( 11543),       INT16_MIN,  INT16_C(     0), -INT16_C( 10791),       INT16_MIN,       INT16_MAX,
+         INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0) } },
+    { UINT32_C(     59086),
+      { -INT16_C(  9956),  INT16_C(  7170), -INT16_C( 13809),  INT16_C(  1938),  INT16_C( 20062), -INT16_C(   808), -INT16_C( 11335), -INT16_C( 15961),
+         INT16_C(  8445),  INT16_C( 26519),  INT16_C( 22916),  INT16_C( 31967), -INT16_C( 13432),  INT16_C( 26338),  INT16_C( 15751),  INT16_C( 29039) },
+      {  INT16_C( 22513), -INT16_C( 30639), -INT16_C(   816),  INT16_C(  7125),  INT16_C(  9905), -INT16_C( 22793),  INT16_C( 15882), -INT16_C( 14838),
+         INT16_C( 18308), -INT16_C( 21960),  INT16_C(  4194),  INT16_C( 19629), -INT16_C(  4382), -INT16_C( 15719), -INT16_C( 17317),  INT16_C( 17748) },
+      {  INT16_C(     0), -INT16_C( 23469), -INT16_C( 14625),  INT16_C(  9063),  INT16_C(     0),  INT16_C(     0),  INT16_C(  4547), -INT16_C( 30799),
+         INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0) } },
+    { UINT32_C(     38916),
+      {  INT16_C( 27312), -INT16_C( 30204), -INT16_C( 29120), -INT16_C( 28764), -INT16_C( 13655), -INT16_C( 16236), -INT16_C(  7652),  INT16_C(  6036),
+         INT16_C( 28045),  INT16_C( 10391),  INT16_C(  2858), -INT16_C( 29557),  INT16_C( 19161), -INT16_C( 18818), -INT16_C(  2227), -INT16_C( 16216) },
+      {  INT16_C( 11547),  INT16_C( 12995), -INT16_C( 18006),  INT16_C( 16526), -INT16_C(  2343),  INT16_C(  4082), -INT16_C(  3977), -INT16_C(  9676),
+        -INT16_C( 27322), -INT16_C( 23375),  INT16_C( 14000), -INT16_C( 19674), -INT16_C( 26549), -INT16_C(  3619),  INT16_C( 23039),  INT16_C(   274) },
+      {  INT16_C(     0),  INT16_C(     0),       INT16_MIN,  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),
+         INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0) } },
+    { UINT32_C(      5814),
+      {  INT16_C( 15822), -INT16_C( 20424),  INT16_C( 17508),  INT16_C( 24109),  INT16_C( 15746),  INT16_C(  6942), -INT16_C( 19181),  INT16_C( 21372),
+        -INT16_C(  5532), -INT16_C( 22653), -INT16_C(  5603), -INT16_C( 23917),  INT16_C( 15033), -INT16_C(  6313), -INT16_C(  2206),  INT16_C(  4657) },
+      {  INT16_C( 28288), -INT16_C(  3198), -INT16_C( 25781), -INT16_C(  8812),  INT16_C( 21967), -INT16_C( 28360),  INT16_C( 25860), -INT16_C(  3430),
+        -INT16_C( 16045), -INT16_C( 16043), -INT16_C(   495),  INT16_C( 29298), -INT16_C( 29768), -INT16_C( 19745), -INT16_C(  2590),  INT16_C( 18316) },
+      {  INT16_C(     0), -INT16_C( 23622), -INT16_C(  8273),  INT16_C(     0),       INT16_MAX, -INT16_C( 21418),  INT16_C(     0),  INT16_C( 17942),
+         INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0) } },
+    { UINT32_C(     36024),
+      {  INT16_C(  7231),  INT16_C( 19379), -INT16_C( 14922), -INT16_C(  3312),  INT16_C( 19017),  INT16_C( 28501), -INT16_C( 13156), -INT16_C( 26985),
+        -INT16_C(  5198),  INT16_C( 25771),  INT16_C( 20002), -INT16_C( 16447), -INT16_C(  7472),  INT16_C( 25261), -INT16_C(  9010), -INT16_C( 21719) },
+      { -INT16_C(  2231),  INT16_C( 31669),  INT16_C( 16145), -INT16_C( 27947),  INT16_C(  2391),  INT16_C(  7212), -INT16_C( 14190),  INT16_C( 13991),
+         INT16_C( 12158),  INT16_C( 31935),  INT16_C( 30840), -INT16_C(  3263),  INT16_C( 12782), -INT16_C( 22555),  INT16_C( 20878),  INT16_C( 31394) },
+      {  INT16_C(     0),  INT16_C(     0),  INT16_C(     0), -INT16_C( 31259),  INT16_C( 21408),       INT16_MAX,  INT16_C(     0), -INT16_C( 12994),
+         INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0) } },
+    { UINT32_C(     42165),
+      { -INT16_C( 18330),  INT16_C( 17315),  INT16_C(  1910), -INT16_C( 28703), -INT16_C(  1320), -INT16_C(   899),  INT16_C(  8995),  INT16_C( 15582),
+        -INT16_C( 16924), -INT16_C( 12371), -INT16_C( 19397),  INT16_C(  8298),  INT16_C(  9149), -INT16_C( 22391), -INT16_C(  5849), -INT16_C( 31369) },
+      {  INT16_C( 19010),  INT16_C(  4648),  INT16_C( 16230), -INT16_C(  7129),  INT16_C( 11139), -INT16_C( 25428), -INT16_C(  8792), -INT16_C(  7811),
+         INT16_C( 25556),  INT16_C( 27232),  INT16_C( 13020),  INT16_C( 16543), -INT16_C( 32449), -INT16_C(  5120),  INT16_C( 12980),  INT16_C( 15776) },
+      {  INT16_C(   680),  INT16_C(     0),  INT16_C( 18140),  INT16_C(     0),  INT16_C(  9819), -INT16_C( 26327),  INT16_C(     0),  INT16_C(  7771),
+         INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0) } }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
+    simde__m256i a = simde_x_mm256_loadu_epi16(test_vec[i].a);
+    simde__m256i b = simde_x_mm256_loadu_epi16(test_vec[i].b);
+    simde__m256i r = simde_mm256_maskz_adds_epi16(test_vec[i].k, a, b);
+    simde_test_x86_assert_equal_i16x16(r, simde_x_mm256_loadu_epi16(test_vec[i].r));
+  }
+
+  return 0;
+}
+
 SIMDE_TEST_FUNC_LIST_BEGIN
   SIMDE_TEST_FUNC_LIST_ENTRY(mm_cvtsepi16_epi8)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm256_cvtsepi16_epi8)
@@ -1665,6 +2402,15 @@ SIMDE_TEST_FUNC_LIST_BEGIN
   SIMDE_TEST_FUNC_LIST_ENTRY(mm_maskz_add_epi32)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm_mask_add_epi64)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm_maskz_add_epi64)
+
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm_mask_adds_epi8)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm_maskz_adds_epi8)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm_mask_adds_epi16)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm_maskz_adds_epi16)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_mask_adds_epi8)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_maskz_adds_epi8)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_mask_adds_epi16)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_maskz_adds_epi16)
 
   SIMDE_TEST_FUNC_LIST_ENTRY(mm256_abs_epi64)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm256_mask_abs_epi64)
