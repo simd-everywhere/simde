@@ -2875,10 +2875,21 @@ simde_mm_movemask_pi8 (simde__m64 a) {
   int r = 0;
   const size_t nmemb = sizeof(a_.i8) / sizeof(a_.i8[0]);
 
-  SIMDE_VECTORIZE_REDUCTION(|:r)
-  for (size_t i = 0 ; i < nmemb ; i++) {
-    r |= (a_.u8[nmemb - 1 - i] >> 7) << (nmemb - 1 - i);
-  }
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+    uint8x8_t input = a_.neon_u8;
+    const int8_t xr[8] = {-7, -6, -5, -4, -3, -2, -1, 0};
+    const uint8x8_t mask_and = vdup_n_u8(0x80);
+    const int8x8_t mask_shift = vld1_s8(xr);
+    const uint8x8_t mask_result = vshl_u8(vand_u8(input, mask_and), mask_shift);
+    uint8x8_t lo = mask_result;
+    r = vaddv_u8(lo);
+  #else
+    const size_t nmemb = sizeof(a_.i8) / sizeof(a_.i8[0]);
+    SIMDE_VECTORIZE_REDUCTION(|:r)
+    for (size_t i = 0 ; i < nmemb ; i++) {
+      r |= (a_.u8[nmemb - 1 - i] >> 7) << (nmemb - 1 - i);
+    }
+  #endif
 
   return r;
 #endif
@@ -2899,10 +2910,9 @@ simde_mm_movemask_ps (simde__m128 a) {
   simde__m128_private a_ = simde__m128_to_private(a);
 
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
-    static const int32x4_t shift = {-31, -30, -29, -28};
-    static const uint32x4_t highbit = {0x80000000, 0x80000000, 0x80000000,
-                                       0x80000000};
-    return HEDLEY_STATIC_CAST(int, vaddvq_u32(vshlq_u32(vandq_u32(a_.neon_u32, highbit), shift)));
+    static const int32x4_t shift = {0, 1, 2, 3};
+    uint32x4_t tmp = vshrq_n_u32(a_.neon_u32, 31);
+    return vaddvq_u32(vshlq_u32(tmp, shift));
   #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     // Shift out everything but the sign bits with a 32-bit unsigned shift right.
     uint64x2_t high_bits = vreinterpretq_u64_u32(vshrq_n_u32(a_.neon_u32, 31));
@@ -4089,6 +4099,21 @@ simde_mm_stream_ps (simde_float32 mem_addr[4], simde__m128 a) {
 #  define _mm_stream_ps(mem_addr, a) simde_mm_stream_ps(SIMDE_CHECKED_REINTERPRET_CAST(float*, simde_float32*, mem_addr), (a))
 #endif
 
+#if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+#define SIMDE_MM_TRANSPOSE4_PS(row0, row1, row2, row3) \
+  do {                                                  \
+        float32x4x2_t ROW01 = vtrnq_f32(row0, row1);      \
+        float32x4x2_t ROW23 = vtrnq_f32(row2, row3);      \
+        row0 = vcombine_f32(vget_low_f32(ROW01.val[0]),   \
+                            vget_low_f32(ROW23.val[0]));  \
+        row1 = vcombine_f32(vget_low_f32(ROW01.val[1]),   \
+                            vget_low_f32(ROW23.val[1]));  \
+        row2 = vcombine_f32(vget_high_f32(ROW01.val[0]),  \
+                            vget_high_f32(ROW23.val[0])); \
+        row3 = vcombine_f32(vget_high_f32(ROW01.val[1]),  \
+                            vget_high_f32(ROW23.val[1])); \
+    } while (0)
+#else
 #define SIMDE_MM_TRANSPOSE4_PS(row0, row1, row2, row3) \
   do { \
     simde__m128 tmp3, tmp2, tmp1, tmp0; \
@@ -4101,7 +4126,7 @@ simde_mm_stream_ps (simde_float32 mem_addr[4], simde__m128 a) {
     row2 = simde_mm_movelh_ps(tmp1, tmp3); \
     row3 = simde_mm_movehl_ps(tmp3, tmp1); \
   } while (0)
-
+#endif
 #if defined(SIMDE_X86_SSE_ENABLE_NATIVE_ALIASES)
 #  define _MM_TRANSPOSE4_PS(row0, row1, row2, row3) SIMDE_MM_TRANSPOSE4_PS(row0, row1, row2, row3)
 #endif
