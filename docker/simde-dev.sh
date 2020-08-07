@@ -31,11 +31,15 @@ fi
 echo "Using $(realpath "${DOCKERFILE}")"
 
 "${DOCKER}" build -t "${IMAGE_NAME}" ${CAPABILITIES} -f "${DOCKERFILE}" "${DOCKER_DIR}/.."
-"${DOCKER}" run --mount type=bind,source="$(realpath "${DOCKER_DIR}/..")",target=/usr/local/src/simde ${CAPABILITIES} --rm -it "${IMAGE_NAME}" /bin/bash
 
 if [ "$(basename "${DOCKER}")" = "podman" ]; then
   VOLUME_OPTIONS=":z";
 elif [ "$OSTYPE" == "darwin" ]; then
   VOLUME_OPTIONS=":delegated"
 fi
-# "${DOCKER}" run -v "$(realpath "${DOCKER_DIR}/..")":/usr/local/src/simde${VOLUME_OPTIONS} ${CAPABILITIES} --rm -it "${IMAGE_NAME}" /bin/bash
+
+if [ "$OSTYPE" == "darwin" ]; then
+  "${DOCKER}" run --mount type=bind,source="$(realpath "${DOCKER_DIR}/..")",target=/usr/local/src/simde ${CAPABILITIES} --rm -it "${IMAGE_NAME}" /bin/bash
+else
+  "${DOCKER}" run -v "$(realpath "${DOCKER_DIR}/..")":/usr/local/src/simde${VOLUME_OPTIONS} ${CAPABILITIES} --rm -it "${IMAGE_NAME}" /bin/bash
+fi
