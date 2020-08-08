@@ -512,6 +512,84 @@ test_simde_mm256_xxx_epi16 (SIMDE_MUNIT_TEST_ARGS) {
 }
 
 static int
+test_simde_mm256_mask_xxx_epi16 (SIMDE_MUNIT_TEST_ARGS) {
+#if 0
+  static const struct {
+    const int16_t src[16];
+    const simde__mmask16 k;
+    const int16_t a[16];
+    const int16_t b[16];
+    const int16_t r[16];
+  } test_vec[] = {
+
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
+    simde__m256i src = simde_x_mm256_loadu_epi16(test_vec[i].src);
+    simde__m256i a = simde_x_mm256_loadu_epi16(test_vec[i].a);
+    simde__m256i b = simde_x_mm256_loadu_epi16(test_vec[i].b);
+    simde__m256i r = simde_mm256_mask_xxx_epi16(src, test_vec[i].k, a, b);
+    simde_test_x86_assert_equal_i16x16(r, simde_x_mm256_loadu_epi16(test_vec[i].r));
+  }
+
+  return 0;
+#else
+  fputc('\n', stdout);
+  for (int i = 0 ; i < 8 ; i++) {
+    simde__m256i src = simde_test_x86_random_i16x16();
+    simde__mmask16 k = simde_test_x86_random_mmask16();
+    simde__m256i a = simde_test_x86_random_i16x16();
+    simde__m256i b = simde_test_x86_random_i16x16();
+    simde__m256i r = simde_mm256_mask_xxx_epi16(src, k, a, b);
+
+    simde_test_x86_write_i16x16(2, src, SIMDE_TEST_VEC_POS_FIRST);
+    simde_test_x86_write_mmask16(2, k, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_x86_write_i16x16(2, a, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_x86_write_i16x16(2, b, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_x86_write_i16x16(2, r, SIMDE_TEST_VEC_POS_LAST);
+  }
+  return 1;
+#endif
+}
+
+static int
+test_simde_mm256_maskz_xxx_epi16 (SIMDE_MUNIT_TEST_ARGS) {
+#if 0
+  static const struct {
+    const simde__mmask16 k;
+    const int16_t a[16];
+    const int16_t b[16];
+    const int16_t r[16];
+  } test_vec[] = {
+
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
+    simde__m256i a = simde_x_mm256_loadu_epi16(test_vec[i].a);
+    simde__m256i b = simde_x_mm256_loadu_epi16(test_vec[i].b);
+    simde__m256i r = simde_mm256_maskz_xxx_epi16(test_vec[i].k, a, b);
+    simde_test_x86_assert_equal_i16x16(r, simde_x_mm256_loadu_epi16(test_vec[i].r));
+  }
+
+  return 0;
+#else
+  fputc('\n', stdout);
+  for (int i = 0 ; i < 8 ; i++) {
+    simde__mmask16 k = simde_test_x86_random_mmask16();
+    simde__m256i a = simde_test_x86_random_i16x16();
+    simde__m256i b = simde_test_x86_random_i16x16();
+    simde__m256i r = simde_mm256_maskz_xxx_epi16(k, a, b);
+
+    simde_test_x86_write_mmask16(2, k, SIMDE_TEST_VEC_POS_FIRST);
+    simde_test_x86_write_i16x16(2, a, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_x86_write_i16x16(2, b, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_x86_write_i16x16(2, r, SIMDE_TEST_VEC_POS_LAST);
+  }
+  return 1;
+#endif
+}
+
+static int
 test_simde_mm256_xxx_epi32 (SIMDE_MUNIT_TEST_ARGS) {
 #if 0
   static const struct {
@@ -1739,7 +1817,7 @@ test_simde_mm512_xxx_ps_mask (SIMDE_MUNIT_TEST_ARGS) {
   for (int i = 0 ; i < 8 ; i++) {
     simde_float32 a_[16];
     simde_float32 b_[16];
-    
+
     simde_test_codegen_random_vf32(16, a_, SIMDE_FLOAT32_C(-1000.0), SIMDE_FLOAT32_C(1000.0));
     simde_test_codegen_random_vf32(16, b_, SIMDE_FLOAT32_C(-1000.0), SIMDE_FLOAT32_C(1000.0));
     for (size_t j = 0 ; j < 16 ; j++)
