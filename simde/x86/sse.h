@@ -2875,10 +2875,20 @@ simde_mm_movemask_pi8 (simde__m64 a) {
   int r = 0;
   const size_t nmemb = sizeof(a_.i8) / sizeof(a_.i8[0]);
 
-  SIMDE_VECTORIZE_REDUCTION(|:r)
-  for (size_t i = 0 ; i < nmemb ; i++) {
-    r |= (a_.u8[nmemb - 1 - i] >> 7) << (nmemb - 1 - i);
-  }
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    uint8x8_t input = a_.neon_u8;
+    const int8_t xr[8] = {-7, -6, -5, -4, -3, -2, -1, 0};
+    const uint8x8_t mask_and = vdup_n_u8(0x80);
+    const int8x8_t mask_shift = vld1_s8(xr);
+    const uint8x8_t mask_result = vshl_u8(vand_u8(input, mask_and), mask_shift);
+    uint8x8_t lo = mask_result;
+    r = vaddv_u8(lo);
+  #else
+    SIMDE_VECTORIZE_REDUCTION(|:r)
+    for (size_t i = 0 ; i < nmemb ; i++) {
+      r |= (a_.u8[nmemb - 1 - i] >> 7) << (nmemb - 1 - i);
+    }
+  #endif
 
   return r;
 #endif
