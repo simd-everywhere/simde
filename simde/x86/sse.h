@@ -2991,10 +2991,17 @@ simde_mm_mulhi_pu16 (simde__m64 a, simde__m64 b) {
     a_ = simde__m64_to_private(a),
     b_ = simde__m64_to_private(b);
 
-  SIMDE_VECTORIZE
-  for (size_t i = 0 ; i < (sizeof(r_.u16) / sizeof(r_.u16[0])) ; i++) {
-    r_.u16[i] = HEDLEY_STATIC_CAST(uint16_t, ((HEDLEY_STATIC_CAST(uint32_t, a_.u16[i]) * HEDLEY_STATIC_CAST(uint32_t, b_.u16[i])) >> UINT32_C(16)));
-  }
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    const uint32x4_t t1 = vmull_u16(a_.neon_u16, b_.neon_u16);
+    const uint32x4_t t2 = vshrq_n_u32(t1, 16);
+    const uint16x4_t t3 = vmovn_u32(t2);
+    r_.neon_u16 = t3;
+  #else
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.u16) / sizeof(r_.u16[0])) ; i++) {
+      r_.u16[i] = HEDLEY_STATIC_CAST(uint16_t, ((HEDLEY_STATIC_CAST(uint32_t, a_.u16[i]) * HEDLEY_STATIC_CAST(uint32_t, b_.u16[i])) >> UINT32_C(16)));
+    }
+  #endif
 
   return simde__m64_from_private(r_);
 #endif
