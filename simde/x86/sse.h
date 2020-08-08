@@ -2873,7 +2873,6 @@ simde_mm_movemask_pi8 (simde__m64 a) {
 #else
   simde__m64_private a_ = simde__m64_to_private(a);
   int r = 0;
-  const size_t nmemb = sizeof(a_.i8) / sizeof(a_.i8[0]);
 
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     uint8x8_t input = a_.neon_u8;
@@ -3001,10 +3000,17 @@ simde_mm_mulhi_pu16 (simde__m64 a, simde__m64 b) {
     a_ = simde__m64_to_private(a),
     b_ = simde__m64_to_private(b);
 
-  SIMDE_VECTORIZE
-  for (size_t i = 0 ; i < (sizeof(r_.u16) / sizeof(r_.u16[0])) ; i++) {
-    r_.u16[i] = HEDLEY_STATIC_CAST(uint16_t, ((HEDLEY_STATIC_CAST(uint32_t, a_.u16[i]) * HEDLEY_STATIC_CAST(uint32_t, b_.u16[i])) >> UINT32_C(16)));
-  }
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    const uint32x4_t t1 = vmull_u16(a_.neon_u16, b_.neon_u16);
+    const uint32x4_t t2 = vshrq_n_u32(t1, 16);
+    const uint16x4_t t3 = vmovn_u32(t2);
+    r_.neon_u16 = t3;
+  #else
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.u16) / sizeof(r_.u16[0])) ; i++) {
+      r_.u16[i] = HEDLEY_STATIC_CAST(uint16_t, ((HEDLEY_STATIC_CAST(uint32_t, a_.u16[i]) * HEDLEY_STATIC_CAST(uint32_t, b_.u16[i])) >> UINT32_C(16)));
+    }
+  #endif
 
   return simde__m64_from_private(r_);
 #endif
@@ -3265,21 +3271,28 @@ simde_mm_sad_pu8 (simde__m64 a, simde__m64 b) {
     r_,
     a_ = simde__m64_to_private(a),
     b_ = simde__m64_to_private(b);
-  uint16_t sum = 0;
 
-#if defined(SIMDE_HAVE_STDLIB_H)
-  SIMDE_VECTORIZE_REDUCTION(+:sum)
-  for (size_t i = 0 ; i < (sizeof(r_.u8) / sizeof(r_.u8[0])) ; i++) {
-    sum += HEDLEY_STATIC_CAST(uint8_t, abs(a_.u8[i] - b_.u8[i]));
-  }
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    uint16x4_t t = vpaddl_u8(vabd_u8(a_.neon_u8, b_.neon_u8));
+    uint16_t r0 = t[0] + t[1] + t[2] + t[3];
+    r_.neon_u16 = vset_lane_u16(r0, vdup_n_u16(0), 0);
+  #else
+    uint16_t sum = 0;
 
-  r_.i16[0] = HEDLEY_STATIC_CAST(int16_t, sum);
-  r_.i16[1] = 0;
-  r_.i16[2] = 0;
-  r_.i16[3] = 0;
-#else
-  HEDLEY_UNREACHABLE();
-#endif
+    #if defined(SIMDE_HAVE_STDLIB_H)
+      SIMDE_VECTORIZE_REDUCTION(+:sum)
+      for (size_t i = 0 ; i < (sizeof(r_.u8) / sizeof(r_.u8[0])) ; i++) {
+        sum += HEDLEY_STATIC_CAST(uint8_t, abs(a_.u8[i] - b_.u8[i]));
+      }
+
+      r_.i16[0] = HEDLEY_STATIC_CAST(int16_t, sum);
+      r_.i16[1] = 0;
+      r_.i16[2] = 0;
+      r_.i16[3] = 0;
+    #else
+      HEDLEY_UNREACHABLE();
+    #endif
+  #endif
 
   return simde__m64_from_private(r_);
 #endif

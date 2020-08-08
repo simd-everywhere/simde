@@ -3560,7 +3560,11 @@ simde_mm_movepi64_pi64 (simde__m128i a) {
     simde__m64_private r_;
     simde__m128i_private a_ = simde__m128i_to_private(a);
 
-    r_.i64[0] = a_.i64[0];
+    #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+      r_.neon_i64 = vget_low_s64(a_.neon_i64);
+    #else
+      r_.i64[0] = a_.i64[0];
+    #endif
 
     return simde__m64_from_private(r_);
   #endif
@@ -3578,8 +3582,12 @@ simde_mm_movpi64_epi64 (simde__m64 a) {
     simde__m128i_private r_;
     simde__m64_private a_ = simde__m64_to_private(a);
 
-    r_.i64[0] = a_.i64[0];
-    r_.i64[1] = 0;
+    #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+      r_.neon_i64 = vcombine_s64(a_.neon_i64, vdup_n_s64(0));
+    #else
+      r_.i64[0] = a_.i64[0];
+      r_.i64[1] = 0;
+    #endif
 
     return simde__m128i_from_private(r_);
   #endif
@@ -5896,6 +5904,9 @@ void
 simde_mm_stream_si32 (int32_t* mem_addr, int32_t a) {
   #if defined(SIMDE_X86_SSE2_NATIVE)
     _mm_stream_si32(mem_addr, a);
+  #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    int32x2_t temp = vdup_n_s32(0);
+    vst1_lane_s32(mem_addr, vset_lane_s32(a, temp, 0), 0);
   #else
     *mem_addr = a;
   #endif
@@ -5907,7 +5918,14 @@ simde_mm_stream_si32 (int32_t* mem_addr, int32_t a) {
 SIMDE_FUNCTION_ATTRIBUTES
 void
 simde_mm_stream_si64 (int64_t* mem_addr, int64_t a) {
-  *mem_addr = a;
+  #if defined(SIMDE_X86_SSE2_NATIVE)
+    _mm_stream_si64(SIMDE_CHECKED_REINTERPRET_CAST(long long int*, int64_t*, mem_addr), a);
+  #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    int64x2_t temp = vdupq_n_s64(0);
+    vst1q_lane_s64(mem_addr, vsetq_lane_s64(a, temp, 0), 0);
+  #else
+    *mem_addr = a;
+  #endif
 }
 #if defined(SIMDE_X86_SSE2_ENABLE_NATIVE_ALIASES)
   #define _mm_stream_si64(mem_addr, a) simde_mm_stream_si64(SIMDE_CHECKED_REINTERPRET_CAST(int64_t*, __int64*, mem_addr), a)
