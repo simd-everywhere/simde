@@ -3509,7 +3509,11 @@ simde_mm_movepi64_pi64 (simde__m128i a) {
     simde__m64_private r_;
     simde__m128i_private a_ = simde__m128i_to_private(a);
 
-    r_.i64[0] = a_.i64[0];
+    #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+      r_.neon_i64 = vget_low_s64(a_.neon_i64);
+    #else
+      r_.i64[0] = a_.i64[0];
+    #endif
 
     return simde__m64_from_private(r_);
   #endif
