@@ -5863,7 +5863,7 @@ SIMDE_FUNCTION_ATTRIBUTES
 void
 simde_mm_stream_si64 (int64_t* mem_addr, int64_t a) {
   #if defined(SIMDE_X86_SSE2_NATIVE)
-    _mm_stream_si64(mem_addr, a);
+    _mm_stream_si64(SIMDE_CHECKED_REINTERPRET_CAST(long long int*, int64_t*, mem_addr), a);
   #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     int64x2_t temp = vdupq_n_s64(0);
     vst1q_lane_s64(mem_addr, vsetq_lane_s64(a, temp, 0), 0);
