@@ -5692,8 +5692,13 @@ simde_mm_store1_pd (simde_float64 mem_addr[HEDLEY_ARRAY_PARAM(2)], simde__m128d 
   #else
     simde__m128d_private a_ = simde__m128d_to_private(a);
 
-    mem_addr[0] = a_.f64[0];
-    mem_addr[1] = a_.f64[0];
+    #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+      mem_addr[0] = vgetq_lane_f64(a_.neon_f64, 0);
+      mem_addr[1] = vgetq_lane_f64(a_.neon_f64, 0);
+    #else
+      mem_addr[0] = a_.f64[0];
+      mem_addr[1] = a_.f64[0];
+    #endif
   #endif
 }
 #define simde_mm_store_pd1(mem_addr, a) simde_mm_store1_pd(HEDLEY_REINTERPRET_CAST(double*, mem_addr), a)
@@ -5821,8 +5826,13 @@ simde_mm_storer_pd (simde_float64 mem_addr[2], simde__m128d a) {
   #else
     simde__m128d_private a_ = simde__m128d_to_private(a);
 
-    mem_addr[0] = a_.f64[1];
-    mem_addr[1] = a_.f64[0];
+    #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+      mem_addr[0] = vgetq_lane_f64(a_.neon_f64, 1);
+      mem_addr[1] = vgetq_lane_f64(a_.neon_f64, 0);
+    #else
+      mem_addr[0] = a_.f64[1];
+      mem_addr[1] = a_.f64[0];
+    #endif
   #endif
 }
 #if defined(SIMDE_X86_SSE2_ENABLE_NATIVE_ALIASES)

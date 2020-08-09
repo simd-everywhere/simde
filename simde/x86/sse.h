@@ -3600,10 +3600,17 @@ simde_mm_store_ps1 (simde_float32 mem_addr[4], simde__m128 a) {
 #else
   simde__m128_private a_ = simde__m128_to_private(a);
 
-  SIMDE_VECTORIZE_ALIGNED(mem_addr:16)
-  for (size_t i = 0 ; i < sizeof(a_.f32) / sizeof(a_.f32[0]) ; i++) {
-    mem_addr[i] = a_.f32[0];
-  }
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    mem_addr[0] = vgetq_lane_f32(a_.neon_f32, 0);
+    mem_addr[1] = vgetq_lane_f32(a_.neon_f32, 0);
+    mem_addr[2] = vgetq_lane_f32(a_.neon_f32, 0);
+    mem_addr[3] = vgetq_lane_f32(a_.neon_f32, 0);
+  #else
+    SIMDE_VECTORIZE_ALIGNED(mem_addr:16)
+    for (size_t i = 0 ; i < sizeof(a_.f32) / sizeof(a_.f32[0]) ; i++) {
+      mem_addr[i] = a_.f32[0];
+    }
+  #endif
 #endif
 }
 #if defined(SIMDE_X86_SSE_ENABLE_NATIVE_ALIASES)
@@ -3652,9 +3659,13 @@ simde_mm_storeh_pi (simde__m64* mem_addr, simde__m128 a) {
 #else
   simde__m64_private* dest_ = HEDLEY_REINTERPRET_CAST(simde__m64_private*, mem_addr);
   simde__m128_private a_ = simde__m128_to_private(a);
-
-  dest_->f32[0] = a_.f32[2];
-  dest_->f32[1] = a_.f32[3];
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    dest_->f32[0] = vgetq_lane_f32(a_.neon_f32, 2);
+    dest_->f32[1] = vgetq_lane_f32(a_.neon_f32, 3);
+  #else
+    dest_->f32[0] = a_.f32[2];
+    dest_->f32[1] = a_.f32[3];
+  #endif
 #endif
 }
 #if defined(SIMDE_X86_SSE_ENABLE_NATIVE_ALIASES)
@@ -3695,6 +3706,11 @@ simde_mm_storer_ps (simde_float32 mem_addr[4], simde__m128 a) {
   #if defined(SIMDE_SHUFFLE_VECTOR_)
     a_.f32 = SIMDE_SHUFFLE_VECTOR_(32, 16, a_.f32, a_.f32, 3, 2, 1, 0);
     simde_mm_store_ps(mem_addr, simde__m128_from_private(a_));
+  #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    mem_addr[0] = vgetq_lane_f32(a_.neon_f32, 3);
+    mem_addr[1] = vgetq_lane_f32(a_.neon_f32, 2);
+    mem_addr[2] = vgetq_lane_f32(a_.neon_f32, 1);
+    mem_addr[3] = vgetq_lane_f32(a_.neon_f32, 0);
   #else
     SIMDE_VECTORIZE_ALIGNED(mem_addr:16)
     for (size_t i = 0 ; i < sizeof(a_.f32) / sizeof(a_.f32[0]) ; i++) {
