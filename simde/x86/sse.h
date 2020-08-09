@@ -3629,9 +3629,13 @@ simde_mm_storeh_pi (simde__m64* mem_addr, simde__m128 a) {
 #else
   simde__m64_private* dest_ = HEDLEY_REINTERPRET_CAST(simde__m64_private*, mem_addr);
   simde__m128_private a_ = simde__m128_to_private(a);
-
-  dest_->f32[0] = a_.f32[2];
-  dest_->f32[1] = a_.f32[3];
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    dest_->f32[0] = vgetq_lane_f32(a_.neon_f32, 2);
+    dest_->f32[1] = vgetq_lane_f32(a_.neon_f32, 3);
+  #else
+    dest_->f32[0] = a_.f32[2];
+    dest_->f32[1] = a_.f32[3];
+  #endif
 #endif
 }
 #if defined(SIMDE_X86_SSE_ENABLE_NATIVE_ALIASES)
