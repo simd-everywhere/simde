@@ -106,6 +106,7 @@ set(TEST_SOURCES_C
   x86/fma.c
   x86/svml.c
 
+  arm/neon/abd.c
   arm/neon/abs.c
   arm/neon/add.c
   arm/neon/addl.c
