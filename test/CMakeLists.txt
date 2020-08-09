@@ -181,6 +181,7 @@ set(TEST_SOURCES_C
   arm/neon/shr_n.c
   arm/neon/sra_n.c
   arm/neon/sub.c
+  arm/neon/subl.c
   arm/neon/tbl.c
   arm/neon/tbx.c
   arm/neon/trn.c
