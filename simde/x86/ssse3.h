@@ -205,7 +205,7 @@ simde_mm_abs_pi32 (simde__m64 a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_alignr_epi8 (simde__m128i a, simde__m128i b, int count)
-    SIMDE_REQUIRE_CONSTANT(count) {
+    SIMDE_REQUIRE_CONSTANT_RANGE(count, 0, 31) {
   simde__m128i_private
     r_,
     a_ = simde__m128i_to_private(a),
