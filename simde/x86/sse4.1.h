@@ -1820,35 +1820,39 @@ simde_mm_round_sd (simde__m128d a, simde__m128d b, int rounding)
     r_ = simde__m128d_to_private(a),
     b_ = simde__m128d_to_private(b);
 
-  switch (rounding & ~SIMDE_MM_FROUND_NO_EXC) {
-    #if defined(simde_math_nearbyint)
-      case SIMDE_MM_FROUND_TO_NEAREST_INT:
-      case SIMDE_MM_FROUND_CUR_DIRECTION:
-        r_.f64[0] = simde_math_nearbyint(b_.f64[0]);
-        break;
-    #endif
+  #if (SIMDE_NATURAL_VECTOR_SIZE > 0)
+    return simde_mm_move_sd(a, simde_mm_round_pd(b, rounding));
+  #else
+      switch (rounding & ~SIMDE_MM_FROUND_NO_EXC) {
+      #if defined(simde_math_nearbyint)
+        case SIMDE_MM_FROUND_TO_NEAREST_INT:
+        case SIMDE_MM_FROUND_CUR_DIRECTION:
+          r_.f64[0] = simde_math_nearbyint(b_.f64[0]);
+          break;
+      #endif
 
-    #if defined(simde_math_floor)
-      case SIMDE_MM_FROUND_TO_NEG_INF:
-        r_.f64[0] = simde_math_floor(b_.f64[0]);
-        break;
-    #endif
+      #if defined(simde_math_floor)
+        case SIMDE_MM_FROUND_TO_NEG_INF:
+          r_.f64[0] = simde_math_floor(b_.f64[0]);
+          break;
+      #endif
 
-    #if defined(simde_math_ceil)
-      case SIMDE_MM_FROUND_TO_POS_INF:
-        r_.f64[0] = simde_math_ceil(b_.f64[0]);
-        break;
-    #endif
+      #if defined(simde_math_ceil)
+        case SIMDE_MM_FROUND_TO_POS_INF:
+          r_.f64[0] = simde_math_ceil(b_.f64[0]);
+          break;
+      #endif
 
-    #if defined(simde_math_trunc)
-      case SIMDE_MM_FROUND_TO_ZERO:
-        r_.f64[0] = simde_math_trunc(b_.f64[0]);
-        break;
-    #endif
+      #if defined(simde_math_trunc)
+        case SIMDE_MM_FROUND_TO_ZERO:
+          r_.f64[0] = simde_math_trunc(b_.f64[0]);
+          break;
+      #endif
 
-    default:
-      HEDLEY_UNREACHABLE_RETURN(simde_mm_undefined_pd());
-  }
+      default:
+        HEDLEY_UNREACHABLE_RETURN(simde_mm_undefined_pd());
+    }
+  #endif
 
   return simde__m128d_from_private(r_);
 }
@@ -1868,35 +1872,39 @@ simde_mm_round_ss (simde__m128 a, simde__m128 b, int rounding)
     r_ = simde__m128_to_private(a),
     b_ = simde__m128_to_private(b);
 
-  switch (rounding & ~SIMDE_MM_FROUND_NO_EXC) {
-    #if defined(simde_math_nearbyintf)
-      case SIMDE_MM_FROUND_TO_NEAREST_INT:
-      case SIMDE_MM_FROUND_CUR_DIRECTION:
-        r_.f32[0] = simde_math_nearbyintf(b_.f32[0]);
-        break;
-    #endif
+  #if (SIMDE_NATURAL_VECTOR_SIZE > 0)
+    return simde_mm_move_ss(a, simde_mm_round_ps(b, rounding));
+  #else
+    switch (rounding & ~SIMDE_MM_FROUND_NO_EXC) {
+      #if defined(simde_math_nearbyintf)
+        case SIMDE_MM_FROUND_TO_NEAREST_INT:
+        case SIMDE_MM_FROUND_CUR_DIRECTION:
+          r_.f32[0] = simde_math_nearbyintf(b_.f32[0]);
+          break;
+      #endif
 
-    #if defined(simde_math_floorf)
-      case SIMDE_MM_FROUND_TO_NEG_INF:
-        r_.f32[0] = simde_math_floorf(b_.f32[0]);
-        break;
-    #endif
+      #if defined(simde_math_floorf)
+        case SIMDE_MM_FROUND_TO_NEG_INF:
+          r_.f32[0] = simde_math_floorf(b_.f32[0]);
+          break;
+      #endif
 
-    #if defined(simde_math_ceilf)
-      case SIMDE_MM_FROUND_TO_POS_INF:
-        r_.f32[0] = simde_math_ceilf(b_.f32[0]);
-        break;
-    #endif
+      #if defined(simde_math_ceilf)
+        case SIMDE_MM_FROUND_TO_POS_INF:
+          r_.f32[0] = simde_math_ceilf(b_.f32[0]);
+          break;
+      #endif
 
-    #if defined(simde_math_truncf)
-      case SIMDE_MM_FROUND_TO_ZERO:
-        r_.f32[0] = simde_math_truncf(b_.f32[0]);
-        break;
-    #endif
+      #if defined(simde_math_truncf)
+        case SIMDE_MM_FROUND_TO_ZERO:
+          r_.f32[0] = simde_math_truncf(b_.f32[0]);
+          break;
+      #endif
 
-    default:
-      HEDLEY_UNREACHABLE_RETURN(simde_mm_undefined_pd());
-  }
+      default:
+        HEDLEY_UNREACHABLE_RETURN(simde_mm_undefined_pd());
+    }
+  #endif
 
   return simde__m128_from_private(r_);
 }
