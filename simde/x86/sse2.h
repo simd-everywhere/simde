@@ -1405,6 +1405,9 @@ simde_x_mm_copysign_pd(simde__m128d dest, simde__m128d src) {
     for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
       r_.f64[i] = simde_math_copysign(dest_.f64[i], src_.f64[i]);
     }
+  #elif defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+    float64x2_t sgnbit = vreinterpretq_f64_s64(veorq_s64(vdupq_n_f64(SIMDE_FLOAT64_C(0.0)),vdupq_n_f64(-SIMDE_FLOAT64_C(0.0))));
+    r_.neon_f64 = vreinterpretq_f64_s64(veorq_s64(vandq_s64(sgnbit, src_.neon_s64), vbicq_s64(sgnbit, dest_.neon_s64)));
   #else
     simde__m128d sgnbit = simde_mm_xor_pd(simde_mm_set1_pd(SIMDE_FLOAT64_C(0.0)), simde_mm_set1_pd(-SIMDE_FLOAT64_C(0.0)));
     return simde_mm_xor_pd(simde_mm_and_pd(sgnbit, src), simde_mm_andnot_pd(sgnbit, dest));
