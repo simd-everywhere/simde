@@ -3,6 +3,11 @@
 #include "test-neon.h"
 #include "../../../simde/arm/neon/abd.h"
 
+/* https://community.intel.com/t5/Intel-C-Compiler/ICC-generates-incorrect-code/td-p/1199261 */
+#if defined(HEDLEY_INTEL_VERSION)
+#  define TEST_SIMDE_VABD_NO_TEST_32
+#endif
+
 static int
 test_simde_vabd_f32 (SIMDE_MUNIT_TEST_ARGS) {
 #if 1
@@ -238,6 +243,7 @@ test_simde_vabd_s16 (SIMDE_MUNIT_TEST_ARGS) {
 #endif
 }
 
+#if !defined(TEST_SIMDE_VABD_NO_TEST_32)
 static int
 test_simde_vabd_s32 (SIMDE_MUNIT_TEST_ARGS) {
 #if 1
@@ -295,6 +301,7 @@ test_simde_vabd_s32 (SIMDE_MUNIT_TEST_ARGS) {
   return 1;
 #endif
 }
+#endif
 
 static int
 test_simde_vabd_u8 (SIMDE_MUNIT_TEST_ARGS) {
@@ -411,6 +418,7 @@ test_simde_vabd_u16 (SIMDE_MUNIT_TEST_ARGS) {
 #endif
 }
 
+#if !defined(TEST_SIMDE_VABD_NO_TEST_32)
 static int
 test_simde_vabd_u32 (SIMDE_MUNIT_TEST_ARGS) {
 #if 1
@@ -467,6 +475,7 @@ test_simde_vabd_u32 (SIMDE_MUNIT_TEST_ARGS) {
   return 1;
 #endif
 }
+#endif
 
 static int
 test_simde_vabdq_f32 (SIMDE_MUNIT_TEST_ARGS) {
@@ -723,6 +732,7 @@ test_simde_vabdq_s16 (SIMDE_MUNIT_TEST_ARGS) {
 #endif
 }
 
+#if !defined(TEST_SIMDE_VABD_NO_TEST_32)
 static int
 test_simde_vabdq_s32 (SIMDE_MUNIT_TEST_ARGS) {
 #if 1
@@ -779,6 +789,7 @@ test_simde_vabdq_s32 (SIMDE_MUNIT_TEST_ARGS) {
   return 1;
 #endif
 }
+#endif
 
 static int
 test_simde_vabdq_u8 (SIMDE_MUNIT_TEST_ARGS) {
@@ -919,6 +930,7 @@ test_simde_vabdq_u16 (SIMDE_MUNIT_TEST_ARGS) {
 #endif
 }
 
+#if !defined(TEST_SIMDE_VABD_NO_TEST_32)
 static int
 test_simde_vabdq_u32 (SIMDE_MUNIT_TEST_ARGS) {
 #if 1
@@ -976,25 +988,29 @@ test_simde_vabdq_u32 (SIMDE_MUNIT_TEST_ARGS) {
   return 1;
 #endif
 }
+#endif
 
 SIMDE_TEST_FUNC_LIST_BEGIN
 SIMDE_TEST_FUNC_LIST_ENTRY(vabd_f32)
 SIMDE_TEST_FUNC_LIST_ENTRY(vabd_f64)
 SIMDE_TEST_FUNC_LIST_ENTRY(vabd_s8)
 SIMDE_TEST_FUNC_LIST_ENTRY(vabd_s16)
-SIMDE_TEST_FUNC_LIST_ENTRY(vabd_s32)
 SIMDE_TEST_FUNC_LIST_ENTRY(vabd_u8)
 SIMDE_TEST_FUNC_LIST_ENTRY(vabd_u16)
-SIMDE_TEST_FUNC_LIST_ENTRY(vabd_u32)
 
 SIMDE_TEST_FUNC_LIST_ENTRY(vabdq_f32)
 SIMDE_TEST_FUNC_LIST_ENTRY(vabdq_f64)
 SIMDE_TEST_FUNC_LIST_ENTRY(vabdq_s8)
 SIMDE_TEST_FUNC_LIST_ENTRY(vabdq_s16)
-SIMDE_TEST_FUNC_LIST_ENTRY(vabdq_s32)
 SIMDE_TEST_FUNC_LIST_ENTRY(vabdq_u8)
 SIMDE_TEST_FUNC_LIST_ENTRY(vabdq_u16)
-SIMDE_TEST_FUNC_LIST_ENTRY(vabdq_u32)
+
+#if !defined(TEST_SIMDE_VABD_NO_TEST_32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(vabd_s32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(vabd_u32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(vabdq_u32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(vabdq_s32)
+#endif
 SIMDE_TEST_FUNC_LIST_END
 
 #include "test-neon-footer.h"
