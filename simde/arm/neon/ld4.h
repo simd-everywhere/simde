@@ -131,25 +131,6 @@ simde_vld4_s32(int32_t const *ptr) {
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
-simde_int64x1x4_t
-simde_vld4_s64(int64_t const *ptr) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-    return vld4_s64(ptr);
-  #else
-    simde_int64x1x4_t s_;
-    s_.val[0] = simde_vld1_s64(ptr + 0);
-    s_.val[1] = simde_vld1_s64(ptr + 1);
-    s_.val[2] = simde_vld1_s64(ptr + 2);
-    s_.val[3] = simde_vld1_s64(ptr + 3);
-    return s_;
-  #endif
-}
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
-  #undef vld4_s64
-  #define vld4_s64(a) simde_vld4_s64((a))
-#endif
-
-SIMDE_FUNCTION_ATTRIBUTES
 simde_uint8x8x4_t
 simde_vld4_u8(uint8_t const *ptr) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
@@ -204,25 +185,6 @@ simde_vld4_u32(uint32_t const *ptr) {
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vld4_u32
   #define vld4_u32(a) simde_vld4_u32((a))
-#endif
-
-SIMDE_FUNCTION_ATTRIBUTES
-simde_uint64x1x4_t
-simde_vld4_u64(uint64_t const *ptr) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-    return vld4_u64(ptr);
-  #else
-    simde_uint64x1x4_t s_;
-    s_.val[0] = simde_vld1_u64(ptr + 0);
-    s_.val[1] = simde_vld1_u64(ptr + 1);
-    s_.val[2] = simde_vld1_u64(ptr + 2);
-    s_.val[3] = simde_vld1_u64(ptr + 3);
-    return s_;
-  #endif
-}
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
-  #undef vld4_u64
-  #define vld4_u64(a) simde_vld4_u64((a))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -321,25 +283,6 @@ simde_vld4q_s32(int32_t const *ptr) {
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
-simde_int64x2x4_t
-simde_vld4q_s64(int64_t const *ptr) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-    return vld4q_s64(ptr);
-  #else
-    simde_int64x2x4_t s_;
-    s_.val[0] = simde_vld1q_s64(ptr + ((sizeof(s_.val[0]) / sizeof(*ptr)) * 0));
-    s_.val[1] = simde_vld1q_s64(ptr + ((sizeof(s_.val[0]) / sizeof(*ptr)) * 1));
-    s_.val[2] = simde_vld1q_s64(ptr + ((sizeof(s_.val[0]) / sizeof(*ptr)) * 2));
-    s_.val[3] = simde_vld1q_s64(ptr + ((sizeof(s_.val[0]) / sizeof(*ptr)) * 3));
-    return s_;
-  #endif
-}
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
-  #undef vld4q_s64
-  #define vld4q_s64(a) simde_vld4q_s64((a))
-#endif
-
-SIMDE_FUNCTION_ATTRIBUTES
 simde_uint8x16x4_t
 simde_vld4q_u8(uint8_t const *ptr) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
@@ -394,25 +337,6 @@ simde_vld4q_u32(uint32_t const *ptr) {
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vld4q_u32
   #define vld4q_u32(a) simde_vld4q_u32((a))
-#endif
-
-SIMDE_FUNCTION_ATTRIBUTES
-simde_uint64x2x4_t
-simde_vld4q_u64(uint64_t const *ptr) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-    return vld4q_u64(ptr);
-  #else
-    simde_uint64x2x4_t s_;
-    s_.val[0] = simde_vld1q_u64(ptr + ((sizeof(s_.val[0]) / sizeof(*ptr)) * 0));
-    s_.val[1] = simde_vld1q_u64(ptr + ((sizeof(s_.val[0]) / sizeof(*ptr)) * 1));
-    s_.val[2] = simde_vld1q_u64(ptr + ((sizeof(s_.val[0]) / sizeof(*ptr)) * 2));
-    s_.val[3] = simde_vld1q_u64(ptr + ((sizeof(s_.val[0]) / sizeof(*ptr)) * 3));
-    return s_;
-  #endif
-}
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
-  #undef vld4q_u64
-  #define vld4q_u64(a) simde_vld4q_u64((a))
 #endif
 
 SIMDE_END_DECLS_
