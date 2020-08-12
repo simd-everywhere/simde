@@ -29,7 +29,6 @@
 #define SIMDE_ARM_NEON_LD3_H
 
 #include "types.h"
-#include "ld1.h"
 
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS

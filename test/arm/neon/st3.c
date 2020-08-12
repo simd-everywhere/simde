@@ -131,14 +131,6 @@ test_simde_vst3_f32 (SIMDE_MUNIT_TEST_ARGS) {
 
     simde_float32 a_[6];
     simde_vst3_f32(a_, r_);
-    /* for (int k = 0; k < (sizeof(a_) / sizeof(a_[0])); k++) { */
-    /*   printf("%f ", a_[k]); */
-    /* } */
-    /* printf("\n"); */
-    /* for (int k = 0; k < (sizeof(a_) / sizeof(a_[0])); k++) { */
-    /*   printf("%f ", test_vec[i].a[k]); */
-    /* } */
-    /* printf("\n"); */
     simde_assert_equal_i(0, memcmp(a_, test_vec[i].a, sizeof(test_vec[i].a)));
 
     r_ = simde_vld3_f32(a_);
@@ -550,24 +542,8 @@ test_simde_vst3_s8 (SIMDE_MUNIT_TEST_ARGS) {
     simde_int8x8x3_t r_ = { { simde_vld1_s8(test_vec[i].r0),
                               simde_vld1_s8(test_vec[i].r1),
                               simde_vld1_s8(test_vec[i].r2), } };
-
-    /* for (int j = 0; j < 3; ++j) { */
-    /*   for (int k = 0; k < 8; ++k) { */
-    /*     printf("%d ", simde_vget_lane_s8(r_.val[j], k)); */
-    /*   } */
-    /*   printf("\n"); */
-    /* } */
-
     int8_t a_[24];
     simde_vst3_s8(a_, r_);
-    /* for (int k = 0; k < (sizeof(a_) / sizeof(a_[0])); k++) { */
-    /*   printf("%d ", a_[k]); */
-    /* } */
-    /* printf("\n"); */
-    /* for (int k = 0; k < (sizeof(a_) / sizeof(a_[0])); k++) { */
-    /*   printf("%d ", test_vec[i].a[k]); */
-    /* } */
-    /* printf("\n"); */
     simde_assert_equal_i(0, memcmp(a_, test_vec[i].a, sizeof(a_)));
 
     r_ = simde_vld3_s8(a_);
