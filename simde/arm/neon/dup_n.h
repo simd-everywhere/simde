@@ -21,7 +21,7 @@
  * SOFTWARE.
  *
  * Copyright:
- *   2020      Sean Maher <seanptmaher@gmail.com>
+ *   2020      Sean Maher <seanptmaher@gmail.com> (Copyright owned by Google, LLC)
  *   2020      Evan Nemerson <evan@nemerson.com>
  */
 
