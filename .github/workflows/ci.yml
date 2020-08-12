@@ -1,6 +1,10 @@
 name: CI
 
-on: [push, pull_request]
+on:
+  push:
+    branches-ignore:
+      - master
+  pull_request:
 
 jobs:
   formatting:
@@ -112,8 +116,8 @@ jobs:
     env:
       CC: clang-${{ matrix.version }}
       CXX: clang++-${{ matrix.version }}
-      CFLAGS: -Wall -Wextra -Werror -march=native
-      CXXFLAGS: -Wall -Wextra -Werror -march=native
+      CFLAGS: -Wall -Weverything -Werror -march=native
+      CXXFLAGS: -Wall -Weverything -Werror -march=native
     steps:
     - uses: actions/checkout@v2
       with:
@@ -138,8 +142,8 @@ jobs:
   emscripten:
     runs-on: ubuntu-latest
     env:
-      CFLAGS: -Weverything -Werror -O3
-      CXXFLAGS: -Weverything -Werror -O3
+      CFLAGS: -Weverything -Werror -O3 -msimd128
+      CXXFLAGS: -Weverything -Werror -O3 -msimd128
     steps:
     - uses: actions/checkout@v2
       with:

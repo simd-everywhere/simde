@@ -1,6 +1,6 @@
 # Dockerfile for SIMDe development
 
-FROM debian:testing-slim
+FROM debian:unstable-slim
 
 RUN \
   apt-get update -y && \

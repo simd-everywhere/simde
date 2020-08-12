@@ -56,6 +56,13 @@ def get_default_job():
         "git submodule --quiet update --init --recursive",
       ],
       "script": get_test_commands()
+    },
+    "trigger": {
+      "branch": {
+        "exclude": [
+          "master"
+        ]
+      }
     }
   }
 

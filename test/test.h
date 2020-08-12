@@ -419,6 +419,16 @@ simde_test_equal_f64(simde_float64 a, simde_float64 b, simde_float64 slop) {
   }
 }
 
+static float
+simde_test_f32_precision_to_slop(int precision) {
+  return simde_math_powf(SIMDE_FLOAT32_C(10.0), -HEDLEY_STATIC_CAST(float, precision));
+}
+
+static double
+simde_test_f64_precision_to_slop(int precision) {
+  return simde_math_pow(SIMDE_FLOAT64_C(10.0), -HEDLEY_STATIC_CAST(double, precision));
+}
+
 static int
 simde_assert_equal_vf32_(
     size_t vec_len, simde_float32 const a[HEDLEY_ARRAY_PARAM(vec_len)], simde_float32 const b[HEDLEY_ARRAY_PARAM(vec_len)], simde_float32 slop,
@@ -432,7 +442,7 @@ simde_assert_equal_vf32_(
   }
   return 0;
 }
-#define simde_assert_equal_vf32(vec_len, a, b, precision) simde_assert_equal_vf32_(vec_len, a, b, 1e-##precision##f, __FILE__, __LINE__, #a, #b)
+#define simde_assert_equal_vf32(vec_len, a, b, precision) simde_assert_equal_vf32_(vec_len, a, b, simde_test_f32_precision_to_slop(precision), __FILE__, __LINE__, #a, #b)
 
 static int
 simde_assert_equal_f32_(simde_float32 a, simde_float32 b, simde_float32 slop,
@@ -444,7 +454,7 @@ simde_assert_equal_f32_(simde_float32 a, simde_float32 b, simde_float32 slop,
   }
   return 0;
 }
-#define simde_assert_equal_f32(a, b, precision) simde_assert_equal_f32_(a, b, 1e-##precision##f, __FILE__, __LINE__, #a, #b)
+#define simde_assert_equal_f32(a, b, precision) simde_assert_equal_f32_(a, b, simde_test_f32_precision_to_slop(precision), __FILE__, __LINE__, #a, #b)
 
 static int
 simde_assert_equal_vf64_(
@@ -459,7 +469,7 @@ simde_assert_equal_vf64_(
   }
   return 0;
 }
-#define simde_assert_equal_vf64(vec_len, a, b, precision) simde_assert_equal_vf64_(vec_len, a, b, 1e-##precision, __FILE__, __LINE__, #a, #b)
+#define simde_assert_equal_vf64(vec_len, a, b, precision) simde_assert_equal_vf64_(vec_len, a, b, simde_test_f64_precision_to_slop(precision), __FILE__, __LINE__, #a, #b)
 
 static int
 simde_assert_equal_f64_(simde_float64 a, simde_float64 b, simde_float64 slop,
@@ -471,7 +481,7 @@ simde_assert_equal_f64_(simde_float64 a, simde_float64 b, simde_float64 slop,
   }
   return 0;
 }
-#define simde_assert_equal_f64(a, b, precision) simde_assert_equal_f64_(a, b, 1e-##precision, __FILE__, __LINE__, #a, #b)
+#define simde_assert_equal_f64(a, b, precision) simde_assert_equal_f64_(a, b, simde_test_f64_precision_to_slop(precision), __FILE__, __LINE__, #a, #b)
 
 #define SIMDE_TEST_GENERATE_ASSERT_EQUAL_FUNC_(T, symbol_identifier, fmt) \
   static int \
@@ -615,6 +625,7 @@ SIMDE_TEST_GENERATE_ASSERT_EQUAL_FUNC_(uint64_t, u64, PRIu64)
   SIMDE_DIAGNOSTIC_DISABLE_CPP98_COMPAT_PEDANTIC_
   SIMDE_DIAGNOSTIC_DISABLE_OLD_STYLE_CAST_
   SIMDE_DIAGNOSTIC_DISABLE_VARIADIC_MACROS_
+  SIMDE_DIAGNOSTIC_DISABLE_RESERVED_ID_MACRO_
   #include "munit/munit.h"
   HEDLEY_DIAGNOSTIC_POP
 

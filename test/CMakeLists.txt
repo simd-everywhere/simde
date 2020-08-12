@@ -125,6 +125,7 @@ set(TEST_SOURCES_C
   arm/neon/clt.c
   arm/neon/cltz.c
   arm/neon/combine.c
+  arm/neon/create.c
   arm/neon/dot.c
   arm/neon/dot_lane.c
   arm/neon/dup_n.c
@@ -173,6 +174,7 @@ set(TEST_SOURCES_C
   arm/neon/rshl.c
   arm/neon/rshr_n.c
   arm/neon/rsra_n.c
+  arm/neon/set_lane.c
   arm/neon/st1_lane.c
   arm/neon/st3.c
   arm/neon/st4.c

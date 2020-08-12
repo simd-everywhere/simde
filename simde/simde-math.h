@@ -123,11 +123,32 @@
   #endif
 #endif
 
-#if !defined(__cplusplus)
-  /* If this is a problem we *might* be able to avoid including
-   * <complex.h> on some compilers (gcc, clang, and others which
-   * implement builtins like __builtin_cexpf).  If you don't have
-   * a <complex.h> please file an issue and we'll take a look. */
+/* Try to avoid including <complex> since it pulls in a *lot* of code. */
+#if \
+    HEDLEY_HAS_BUILTIN(__builtin_creal) || \
+    HEDLEY_GCC_VERSION_CHECK(4,7,0) || \
+    HEDLEY_INTEL_VERSION_CHECK(13,0,0)
+  HEDLEY_DIAGNOSTIC_PUSH
+  SIMDE_DIAGNOSTIC_DISABLE_C99_EXTENSIONS_
+    typedef __complex__ float simde_cfloat32;
+    typedef __complex__ double simde_cfloat64;
+  HEDLEY_DIAGNOSTIC_POP
+  #define SIMDE_MATH_CMPLX(x, y) (HEDLEY_STATIC_CAST(double, x) + HEDLEY_STATIC_CAST(double, y) * (__extension__ 1.0j))
+  #define SIMDE_MATH_CMPLXF(x, y) (HEDLEY_STATIC_CAST(float, x) + HEDLEY_STATIC_CAST(float, y) * (__extension__ 1.0fj))
+
+  #if !defined(simde_math_creal)
+    #define simde_math_crealf(z) __builtin_crealf(z)
+  #endif
+  #if !defined(simde_math_crealf)
+    #define simde_math_creal(z) __builtin_creal(z)
+  #endif
+  #if !defined(simde_math_cimag)
+    #define simde_math_cimagf(z) __builtin_cimagf(z)
+  #endif
+  #if !defined(simde_math_cimagf)
+    #define simde_math_cimag(z) __builtin_cimag(z)
+  #endif
+#elif !defined(__cplusplus)
   #include <complex.h>
 
   #if !defined(HEDLEY_MSVC_VERSION)
@@ -137,58 +158,31 @@
     typedef _Fcomplex simde_cfloat32;
     typedef _Dcomplex simde_cfloat64;
   #endif
-  #if \
-      HEDLEY_HAS_BUILTIN(__builtin_complex) || \
-      HEDLEY_GCC_VERSION_CHECK(4,7,0) || \
-      HEDLEY_INTEL_VERSION_CHECK(13,0,0)
-    #define SIMDE_MATH_CMPLX(x, y) __builtin_complex((double) (x), (double) (y))
-    #define SIMDE_MATH_CMPLXF(x, y) __builtin_complex((float) (x), (float) (y))
-  #elif defined(HEDLEY_MSVC_VERSION)
+
+  #if defined(HEDLEY_MSVC_VERSION)
     #define SIMDE_MATH_CMPLX(x, y) ((simde_cfloat64) { (x), (y) })
     #define SIMDE_MATH_CMPLXF(x, y) ((simde_cfloat32) { (x), (y) })
   #elif defined(CMPLX) && defined(CMPLXF)
     #define SIMDE_MATH_CMPLX(x, y) CMPLX(x, y)
     #define SIMDE_MATH_CMPLXF(x, y) CMPLXF(x, y)
   #else
-    /* CMPLX / CMPLXF are in C99, but these seem to be necessary in
-     * some compilers that aren't even MSVC. */
     #define SIMDE_MATH_CMPLX(x, y) (HEDLEY_STATIC_CAST(double, x) + HEDLEY_STATIC_CAST(double, y) * I)
     #define SIMDE_MATH_CMPLXF(x, y) (HEDLEY_STATIC_CAST(float, x) + HEDLEY_STATIC_CAST(float, y) * I)
   #endif
 
   #if !defined(simde_math_creal)
-    #if SIMDE_MATH_BUILTIN_LIBM(creal)
-      #define simde_math_creal(z) __builtin_creal(z)
-    #else
-      #define simde_math_creal(z) creal(z)
-    #endif
+    #define simde_math_creal(z) creal(z)
   #endif
-
   #if !defined(simde_math_crealf)
-    #if SIMDE_MATH_BUILTIN_LIBM(crealf)
-      #define simde_math_crealf(z) __builtin_crealf(z)
-    #else
-      #define simde_math_crealf(z) crealf(z)
-    #endif
+    #define simde_math_crealf(z) crealf(z)
   #endif
-
   #if !defined(simde_math_cimag)
-    #if SIMDE_MATH_BUILTIN_LIBM(cimag)
-      #define simde_math_cimag(z) __builtin_cimag(z)
-    #else
-      #define simde_math_cimag(z) cimag(z)
-    #endif
+    #define simde_math_cimag(z) cimag(z)
   #endif
-
   #if !defined(simde_math_cimagf)
-    #if SIMDE_MATH_BUILTIN_LIBM(cimagf)
-      #define simde_math_cimagf(z) __builtin_cimagf(z)
-    #else
-      #define simde_math_cimagf(z) cimagf(z)
-    #endif
+    #define simde_math_cimagf(z) cimagf(z)
   #endif
 #else
-
   HEDLEY_DIAGNOSTIC_PUSH
   #if defined(HEDLEY_MSVC_VERSION)
     #pragma warning(disable:4530)
@@ -1132,20 +1126,20 @@
 /***  Complex functions ***/
 
 #if !defined(simde_math_cexp)
-  #if defined(__cplusplus)
-    #define simde_math_cexp(v) std::cexp(v)
-  #elif SIMDE_MATH_BUILTIN_LIBM(cexp)
+  #if SIMDE_MATH_BUILTIN_LIBM(cexp)
     #define simde_math_cexp(v) __builtin_cexp(v)
+  #elif defined(__cplusplus)
+    #define simde_math_cexp(v) std::cexp(v)
   #elif defined(SIMDE_MATH_HAVE_MATH_H)
     #define simde_math_cexp(v) cexp(v)
   #endif
 #endif
 
 #if !defined(simde_math_cexpf)
-  #if defined(__cplusplus)
-    #define simde_math_cexpf(v) std::exp(v)
-  #elif SIMDE_MATH_BUILTIN_LIBM(cexpf)
+  #if SIMDE_MATH_BUILTIN_LIBM(cexpf)
     #define simde_math_cexpf(v) __builtin_cexpf(v)
+  #elif defined(__cplusplus)
+    #define simde_math_cexpf(v) std::exp(v)
   #elif defined(SIMDE_MATH_HAVE_MATH_H)
     #define simde_math_cexpf(v) cexpf(v)
   #endif
