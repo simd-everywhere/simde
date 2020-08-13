@@ -1400,13 +1400,23 @@ simde_x_mm_copysign_pd(simde__m128d dest, simde__m128d src) {
     dest_ = simde__m128d_to_private(dest),
     src_ = simde__m128d_to_private(src);
 
-  #if defined(simde_math_copysign)
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+      uint64x2_t sign_pos = vreinterpretq_u64_f64(vdupq_n_f64(-SIMDE_FLOAT64_C(0.0)));
+    #else
+      simde_float64 dbl_nz = -SIMDE_FLOAT64_C(0.0);
+      uint64_t u64_nz;
+      simde_memcpy(&u64_nz, &dbl_nz, sizeof(u64_nz));
+      uint64x2_t sign_pos = vdupq_n_u64(u64_nz);
+    #endif
+    r_.neon_u64 = vbslq_u64(sign_pos, src_.neon_u64, dest_.neon_u64);
+  #elif defined(simde_math_copysign)
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
       r_.f64[i] = simde_math_copysign(dest_.f64[i], src_.f64[i]);
     }
   #else
-    simde__m128d sgnbit = simde_mm_xor_pd(simde_mm_set1_pd(SIMDE_FLOAT64_C(0.0)), simde_mm_set1_pd(-SIMDE_FLOAT64_C(0.0)));
+    simde__m128d sgnbit = simde_mm_set1_pd(-SIMDE_FLOAT64_C(0.0));
     return simde_mm_xor_pd(simde_mm_and_pd(sgnbit, src), simde_mm_andnot_pd(sgnbit, dest));
   #endif
 

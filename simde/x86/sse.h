@@ -1630,7 +1630,10 @@ simde_x_mm_copysign_ps(simde__m128 dest, simde__m128 src) {
     dest_ = simde__m128_to_private(dest),
     src_ = simde__m128_to_private(src);
 
-  #if defined(simde_math_copysignf)
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    const uint32x4_t sign_pos = vreinterpretq_u32_f32(vdupq_n_f32(-SIMDE_FLOAT32_C(0.0)));
+    r_.neon_u32 = vbslq_u32(sign_pos, src_.neon_u32, dest_.neon_u32);
+  #elif defined(simde_math_copysignf)
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
       r_.f32[i] = simde_math_copysignf(dest_.f32[i], src_.f32[i]);

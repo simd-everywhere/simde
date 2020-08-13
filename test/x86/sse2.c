@@ -2826,8 +2826,8 @@ test_simde_mm_comineq_sd(SIMDE_MUNIT_TEST_ARGS) {
 static int
 test_simde_x_mm_copysign_pd (SIMDE_MUNIT_TEST_ARGS) {
   static const struct {
-    const simde_float64 a[2];
-    const simde_float64 b[2];
+    const simde_float64 dest[2];
+    const simde_float64 src[2];
     const simde_float64 r[2];
   } test_vec[] = {
     { { SIMDE_FLOAT64_C(  -182.01), SIMDE_FLOAT64_C(   309.30) },
@@ -2857,9 +2857,9 @@ test_simde_x_mm_copysign_pd (SIMDE_MUNIT_TEST_ARGS) {
   };
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
-    simde__m128d a = simde_mm_loadu_pd(test_vec[i].a);
-    simde__m128d b = simde_mm_loadu_pd(test_vec[i].b);
-    simde__m128d r = simde_x_mm_copysign_pd(a, b);
+    simde__m128d dest = simde_mm_loadu_pd(test_vec[i].dest);
+    simde__m128d src = simde_mm_loadu_pd(test_vec[i].src);
+    simde__m128d r = simde_x_mm_copysign_pd(dest, src);
     simde_test_x86_assert_equal_f64x2(r, simde_mm_loadu_pd(test_vec[i].r), 1);
   }
 
