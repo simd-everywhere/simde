@@ -5938,17 +5938,16 @@ simde_mm_stream_si32 (int32_t* mem_addr, int32_t a) {
 SIMDE_FUNCTION_ATTRIBUTES
 void
 simde_mm_stream_si64 (int64_t* mem_addr, int64_t a) {
-  #if defined(SIMDE_X86_SSE2_NATIVE)
+  #if defined(SIMDE_X86_SSE2_NATIVE) && !defined(HEDLEY_MSVC_VERSION)
     _mm_stream_si64(SIMDE_CHECKED_REINTERPRET_CAST(long long int*, int64_t*, mem_addr), a);
-  #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-    int64x2_t temp = vdupq_n_s64(0);
-    vst1q_lane_s64(mem_addr, vsetq_lane_s64(a, temp, 0), 0);
   #else
     *mem_addr = a;
   #endif
 }
+#define simde_mm_stream_si64x(mem_addr, a) simde_mm_stream_si64(mem_addr, a)
 #if defined(SIMDE_X86_SSE2_ENABLE_NATIVE_ALIASES)
   #define _mm_stream_si64(mem_addr, a) simde_mm_stream_si64(SIMDE_CHECKED_REINTERPRET_CAST(int64_t*, __int64*, mem_addr), a)
+  #define _mm_stream_si64x(mem_addr, a) simde_mm_stream_si64(SIMDE_CHECKED_REINTERPRET_CAST(int64_t*, __int64*, mem_addr), a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
