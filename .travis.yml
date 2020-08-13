@@ -16,39 +16,6 @@ env:
   - TEST_ARG_SEPARATOR=""
 jobs:
   include:
-  - name: "gcc-10"
-    if: branch != master OR type == pull_request
-    compiler: gcc-10
-    env:
-    - C_COMPILER=gcc-10
-    - CXX_COMPILER=g++-10
-    - COMPILER_FLAGS='-fsanitize=address,undefined'
-    - OPTIMIZATION_FLAGS=''
-    addons:
-      apt:
-        sources:
-        - sourceline: "ppa:ubuntu-toolchain-r/test"
-          key_url: https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x60c317803a41ba51845e371a1e9377a2ba9ef27f
-        packages:
-        - gcc-10
-        - g++-10
-
-  - name: "clang-10"
-    if: branch != master OR type == pull_request
-    compiler: clang-10
-    env:
-    - C_COMPILER=clang-10
-    - CXX_COMPILER=clang++-10
-    - COMPILER_FLAGS='-fsanitize=address,undefined'
-    - DIAGNOSTIC_FLAGS='-Weverything -Werror -Wno-c++98-compat-pedantic -Wno-newline-eof'
-    addons:
-      apt:
-        sources:
-        - sourceline: 'deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-10 main'
-          key_url: 'https://apt.llvm.org/llvm-snapshot.gpg.key'
-        packages:
-        - clang-10
-
   - name: "gcc-8 x86"
     if: branch != master OR type == pull_request
     arch: amd64
