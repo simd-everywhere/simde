@@ -721,6 +721,8 @@ simde_mm_xor_ps (simde__m128 a, simde__m128 b) {
 
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     r_.neon_i32 = veorq_s32(a_.neon_i32, b_.neon_i32);
+  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+    r_.wasm_v128 = wasm_v128_xor(a_.wasm_v128, b_.wasm_v128);
   #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
     r_.altivec_i32 = vec_xor(a_.altivec_i32, b_.altivec_i32);
   #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
@@ -752,6 +754,8 @@ simde_mm_or_ps (simde__m128 a, simde__m128 b) {
 
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     r_.neon_i32 = vorrq_s32(a_.neon_i32, b_.neon_i32);
+  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+    r_.wasm_v128 = wasm_v128_or(a_.wasm_v128, b_.wasm_v128);
   #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
     r_.altivec_i32 = vec_or(a_.altivec_i32, b_.altivec_i32);
   #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
