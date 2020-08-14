@@ -261,6 +261,122 @@ simde_mm256_maskz_broadcast_f32x2(simde__mmask8 k, simde__m128 a) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m512
+simde_mm512_broadcast_f32x2 (simde__m128 a) {
+  #if defined(SIMDE_X86_AVX512DQ_NATIVE)
+    return _mm512_broadcast_f32x2(a);
+  #else
+    simde__m512_private r_;
+    simde__m128_private a_ = simde__m128_to_private(a);
+
+    #if defined(SIMDE_VECTOR_SUBSCRIPT) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
+      r_.f32 = __builtin_shufflevector(a_.f32, a_.f32, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i+=2) {
+         r_.f32[  i  ] = a_.f32[0];
+         r_.f32[i + 1] = a_.f32[1];
+      }
+    #endif
+
+    return simde__m512_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_X86_AVX512DQ_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_broadcast_f32x2
+  #define _mm512_broadcast_f32x2(a) simde_mm512_broadcast_f32x2(a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512
+simde_mm512_mask_broadcast_f32x2(simde__m512 src, simde__mmask16 k, simde__m128 a) {
+#if defined(SIMDE_X86_AVX512DQ_NATIVE)
+  return _mm512_mask_broadcast_f32x2(src, k, a);
+#else
+  return simde_mm512_mask_mov_ps(src, k, simde_mm512_broadcast_f32x2(a));
+#endif
+}
+#if defined(SIMDE_X86_AVX512DQ_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_mask_broadcast_f32x2
+  #define _mm512_mask_broadcast_f32x2(src, k, a) simde_mm512_mask_broadcast_f32x2(src, k, a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512
+simde_mm512_maskz_broadcast_f32x2(simde__mmask16 k, simde__m128 a) {
+#if defined(SIMDE_X86_AVX512DQ_NATIVE)
+  return _mm512_maskz_broadcast_f32x2(k, a);
+#else
+  return simde_mm512_maskz_mov_ps(k, simde_mm512_broadcast_f32x2(a));
+#endif
+}
+#if defined(SIMDE_X86_AVX512DQ_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_maskz_broadcast_f32x2
+  #define _mm512_maskz_broadcast_f32x2(k, a) simde_mm512_maskz_broadcast_f32x2(k, a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512
+simde_mm512_broadcast_f32x8 (simde__m256 a) {
+  #if defined(SIMDE_X86_AVX512DQ_NATIVE)
+    return _mm512_broadcast_f32x8(a);
+  #else
+    simde__m512_private r_;
+    simde__m256_private a_ = simde__m256_to_private(a);
+
+    #if defined(SIMDE_VECTOR_SUBSCRIPT) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
+      r_.f32 = __builtin_shufflevector(a_.f32, a_.f32, 0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i+=8) {
+         r_.f32[  i  ] = a_.f32[0];
+         r_.f32[i + 1] = a_.f32[1];
+         r_.f32[i + 2] = a_.f32[2];
+         r_.f32[i + 3] = a_.f32[3];
+         r_.f32[i + 4] = a_.f32[4];
+         r_.f32[i + 5] = a_.f32[5];
+         r_.f32[i + 6] = a_.f32[6];
+         r_.f32[i + 7] = a_.f32[7];
+      }
+    #endif
+
+    return simde__m512_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_X86_AVX512DQ_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_broadcast_f32x8
+  #define _mm512_broadcast_f32x8(a) simde_mm512_broadcast_f32x8(a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512
+simde_mm512_mask_broadcast_f32x8(simde__m512 src, simde__mmask16 k, simde__m256 a) {
+#if defined(SIMDE_X86_AVX512DQ_NATIVE)
+  return _mm512_mask_broadcast_f32x8(src, k, a);
+#else
+  return simde_mm512_mask_mov_ps(src, k, simde_mm512_broadcast_f32x8(a));
+#endif
+}
+#if defined(SIMDE_X86_AVX512DQ_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_mask_broadcast_f32x8
+  #define _mm512_mask_broadcast_f32x8(src, k, a) simde_mm512_mask_broadcast_f32x8(src, k, a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512
+simde_mm512_maskz_broadcast_f32x8(simde__mmask16 k, simde__m256 a) {
+#if defined(SIMDE_X86_AVX512DQ_NATIVE)
+  return _mm512_maskz_broadcast_f32x8(k, a);
+#else
+  return simde_mm512_maskz_mov_ps(k, simde_mm512_broadcast_f32x8(a));
+#endif
+}
+#if defined(SIMDE_X86_AVX512DQ_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_maskz_broadcast_f32x8
+  #define _mm512_maskz_broadcast_f32x8(k, a) simde_mm512_maskz_broadcast_f32x8(k, a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512
 simde_mm512_or_ps (simde__m512 a, simde__m512 b) {
   #if defined(SIMDE_X86_AVX512DQ_NATIVE)
     return _mm512_or_ps(a, b);
