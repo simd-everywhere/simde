@@ -805,6 +805,61 @@ simde_mm256_maskz_broadcast_f32x4(simde__mmask8 k, simde__m128 a) {
   #define _mm256_maskz_broadcast_f32x4(k, a) simde_mm256_maskz_broadcast_f32x4(k, a)
 #endif
 
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256d
+simde_mm256_broadcast_f64x2 (simde__m128d a) {
+  #if defined(SIMDE_X86_AVX512VL_NATIVE)
+    return _mm256_broadcast_f64x2(a);
+  #else
+    simde__m256d_private r_;
+    simde__m128d_private a_ = simde__m128d_to_private(a);
+
+    #if defined(SIMDE_VECTOR_SUBSCRIPT) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
+      r_.f64 = __builtin_shufflevector(a_.f64, a_.f64, 0, 1, 0, 1);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i+=2) {
+         r_.f64[i]     = a_.f64[0];
+         r_.f64[i + 1] = a_.f64[1];
+      }
+    #endif
+
+    return simde__m256d_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_broadcast_f64x2
+  #define _mm256_broadcast_f64x2(a) simde_mm256_broadcast_f64x2(a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256d
+simde_mm256_mask_broadcast_f64x2(simde__m256d src, simde__mmask8 k, simde__m128d a) {
+  #if defined(SIMDE_X86_AVX512VL_NATIVE)
+    return _mm256_mask_broadcast_f64x2(src, k, a);
+  #else
+    return simde_mm256_mask_mov_pd(src, k, simde_mm256_broadcast_f64x2(a));
+  #endif
+}
+#if defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_mask_broadcast_f64x2
+  #define _mm256_mask_broadcast_f64x2(src, k, a) simde_mm256_mask_broadcast_f64x2(src, k, a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256d
+simde_mm256_maskz_broadcast_f64x2(simde__mmask8 k, simde__m128d a) {
+  #if defined(SIMDE_X86_AVX512VL_NATIVE)
+    return _mm256_maskz_broadcast_f64x2(k, a);
+  #else
+    return simde_mm256_maskz_mov_pd(k, simde_mm256_broadcast_f64x2(a));
+  #endif
+}
+#if defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_maskz_broadcast_f64x2
+  #define _mm256_maskz_broadcast_f64x2(k, a) simde_mm256_maskz_broadcast_f64x2(k, a)
+#endif
+
 SIMDE_END_DECLS_
 
 HEDLEY_DIAGNOSTIC_POP
