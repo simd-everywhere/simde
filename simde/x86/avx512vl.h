@@ -745,6 +745,66 @@ simde_mm256_maskz_adds_epi16(simde__mmask16 k, simde__m256i a, simde__m256i b) {
   #define _mm256_maskz_adds_epi16(k, a, b) simde_mm256_maskz_adds_epi16(k, a, b)
 #endif
 
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256
+simde_mm256_broadcast_f32x4 (simde__m128 a) {
+  #if defined(SIMDE_X86_AVX512DQ_NATIVE)
+    return _mm256_broadcast_f32x4(a);
+  #else
+    simde__m256_private r_;
+    simde__m128_private a_ = simde__m128_to_private(a);
+
+    #if SIMDE_NATURAL_VECTOR_SIZE_LE(128)
+        r_.m128_private[0] = a_;
+        r_.m128_private[1] = a_;
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
+      r_.f32 = __builtin_shufflevector(a_.f32, a_.f32, 0, 1, 2, 3, 0, 1, 2, 3);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i+=4) {
+         r_.f32[i]     = a_.f32[0];
+         r_.f32[i + 1] = a_.f32[1];
+         r_.f32[i + 2] = a_.f32[2];
+         r_.f32[i + 3] = a_.f32[3];
+      }
+    #endif
+
+    return simde__m256_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_X86_AVX512DQ_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_broadcast_f32x4
+  #define _mm256_broadcast_f32x4(a) simde_mm256_broadcast_f32x4(a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256
+simde_mm256_mask_broadcast_f32x4(simde__m256 src, simde__mmask8 k, simde__m128 a) {
+#if defined(SIMDE_X86_AVX512VL_NATIVE)
+  return _mm256_mask_broadcast_f32x4(src, k, a);
+#else
+  return simde_mm256_mask_mov_ps(src, k, simde_mm256_broadcast_f32x4(a));
+#endif
+}
+#if defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_mask_broadcast_f32x4
+  #define _mm256_mask_broadcast_f32x4(src, k, a) simde_mm256_mask_broadcast_f32x4(src, k, a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256
+simde_mm256_maskz_broadcast_f32x4(simde__mmask8 k, simde__m128 a) {
+#if defined(SIMDE_X86_AVX512VL_NATIVE)
+  return _mm256_maskz_broadcast_f32x4(k, a);
+#else
+  return simde_mm256_maskz_mov_ps(k, simde_mm256_broadcast_f32x4(a));
+#endif
+}
+#if defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_maskz_broadcast_f32x4
+  #define _mm256_maskz_broadcast_f32x4(k, a) simde_mm256_maskz_broadcast_f32x4(k, a)
+#endif
+
 SIMDE_END_DECLS_
 
 HEDLEY_DIAGNOSTIC_POP
