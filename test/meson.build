@@ -56,5 +56,6 @@ endif
 
 simde_include_dir = include_directories('..')
 
+subdir('common')
 subdir('x86')
 subdir('arm')

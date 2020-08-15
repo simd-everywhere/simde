@@ -1637,14 +1637,22 @@ simde_x_mm_copysign_ps(simde__m128 dest, simde__m128 src) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     const uint32x4_t sign_pos = vreinterpretq_u32_f32(vdupq_n_f32(-SIMDE_FLOAT32_C(0.0)));
     r_.neon_u32 = vbslq_u32(sign_pos, src_.neon_u32, dest_.neon_u32);
-  #elif defined(simde_math_copysignf)
+  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+    const v128_t sign_pos = wasm_f32x4_splat(-0.0f);
+    r_.wasm_v128 = wasm_v128_bitselect(src_.wasm_v128, dest_.wasm_v128, sign_pos);
+  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+    const SIMDE_POWER_ALTIVEC_VECTOR(unsigned int) sign_pos = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned int), vec_splats(-0.0f));
+    r_.altivec_f32 = vec_sel(dest_.altivec_f32, src_.altivec_f32, sign_pos);
+  #elif defined(SIMDE_IEEE754_STORAGE)
+    (void) src_;
+    (void) dest_;
+    simde__m128 sign_pos = simde_mm_set1_ps(-0.0f);
+    r_ = simde__m128_to_private(simde_mm_xor_ps(dest, simde_mm_and_ps(simde_mm_xor_ps(dest, src), sign_pos)));
+  #else
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
       r_.f32[i] = simde_math_copysignf(dest_.f32[i], src_.f32[i]);
     }
-  #else
-    simde__m128 sgnbit = simde_mm_xor_ps(simde_mm_set1_ps(SIMDE_FLOAT32_C(0.0)), simde_mm_set1_ps(-SIMDE_FLOAT32_C(0.0)));
-    return simde_mm_xor_ps(simde_mm_and_ps(sgnbit, src), simde_mm_andnot_ps(sgnbit, dest));
   #endif
 
   return simde__m128_from_private(r_);
@@ -3100,7 +3108,7 @@ simde_mm_rcp_ps (simde__m128 a) {
       r_.altivec_f32 = vec_re(a_.altivec_f32);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
       r_.f32 = 1.0f / a_.f32;
-    #elif defined(__STDC_IEC_559__)
+    #elif defined(SIMDE_IEEE754_STORAGE)
       /* https://stackoverflow.com/questions/12227126/division-as-multiply-and-lut-fast-float-division-reciprocal/12228234#12228234 */
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
@@ -3162,7 +3170,7 @@ simde_mm_rsqrt_ps (simde__m128 a) {
 
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     r_.neon_f32 = vrsqrteq_f32(a_.neon_f32);
-  #elif defined(__STDC_IEC_559__)
+  #elif defined(SIMDE_IEEE754_STORAGE)
     /* https://basesandframes.files.wordpress.com/2020/04/even_faster_math_functions_green_2020.pdf
        Pages 100 - 103 */
     SIMDE_VECTORIZE
@@ -3222,7 +3230,7 @@ simde_mm_rsqrt_ss (simde__m128 a) {
 
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     r_.neon_f32 = vsetq_lane_f32(vgetq_lane_f32(simde_mm_rsqrt_ps(a).neon_f32, 0), a_.neon_f32, 0);
-#elif defined(__STDC_IEC_559__)
+#elif defined(SIMDE_IEEE754_STORAGE)
   {
     #if SIMDE_ACCURACY_PREFERENCE <= 0
       r_.i32[0] = INT32_C(0x5F37624F) - (a_.i32[0] >> 1);
