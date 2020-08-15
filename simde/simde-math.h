@@ -383,6 +383,36 @@
   #endif
 #endif
 
+/*** Manipulation functions ***/
+
+#if !defined(simde_math_nextafter)
+  #if \
+      (HEDLEY_HAS_BUILTIN(__builtin_nextafter) && !defined(HEDLEY_IBM_VERSION)) || \
+      HEDLEY_ARM_VERSION_CHECK(4,1,0) || \
+      HEDLEY_GCC_VERSION_CHECK(3,4,0) || \
+      HEDLEY_INTEL_VERSION_CHECK(13,0,0)
+    #define simde_math_nextafter(x, y) __builtin_nextafter(x, y)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_nextafter(x, y) std::nextafter(x, y)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_nextafter(x, y) nextafter(x, y)
+  #endif
+#endif
+
+#if !defined(simde_math_nextafterf)
+  #if \
+      (HEDLEY_HAS_BUILTIN(__builtin_nextafterf) && !defined(HEDLEY_IBM_VERSION)) || \
+      HEDLEY_ARM_VERSION_CHECK(4,1,0) || \
+      HEDLEY_GCC_VERSION_CHECK(3,4,0) || \
+      HEDLEY_INTEL_VERSION_CHECK(13,0,0)
+    #define simde_math_nextafterf(x, y) __builtin_nextafterf(x, y)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_nextafterf(x, y) std::nextafter(x, y)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_nextafterf(x, y) nextafterf(x, y)
+  #endif
+#endif
+
 /*** Functions from C99 ***/
 
 #if !defined(simde_math_abs)
