@@ -376,6 +376,61 @@ simde_mm512_maskz_broadcast_f32x8(simde__mmask16 k, simde__m256 a) {
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
+simde__m512d
+simde_mm512_broadcast_f64x2 (simde__m128d a) {
+  #if defined(SIMDE_X86_AVX512DQ_NATIVE)
+    return _mm512_broadcast_f64x2(a);
+  #else
+    simde__m512d_private r_;
+    simde__m128d_private a_ = simde__m128d_to_private(a);
+
+    #if defined(SIMDE_VECTOR_SUBSCRIPT) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
+      r_.f64 = __builtin_shufflevector(a_.f64, a_.f64, 0, 1, 0, 1, 0, 1, 0, 1);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i+=2) {
+         r_.f64[i]     = a_.f64[0];
+         r_.f64[i + 1] = a_.f64[1];
+      }
+    #endif
+
+    return simde__m512d_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_X86_AVX512DQ_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_broadcast_f64x2
+  #define _mm512_broadcast_f64x2(a) simde_mm512_broadcast_f64x2(a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512d
+simde_mm512_mask_broadcast_f64x2(simde__m512d src, simde__mmask8 k, simde__m128d a) {
+#if defined(SIMDE_X86_AVX512DQ_NATIVE)
+  return _mm512_mask_broadcast_f64x2(src, k, a);
+#else
+  return simde_mm512_mask_mov_pd(src, k, simde_mm512_broadcast_f64x2(a));
+#endif
+}
+#if defined(SIMDE_X86_AVX512DQ_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_mask_broadcast_f64x2
+  #define _mm512_mask_broadcast_f64x2(src, k, a) simde_mm512_mask_broadcast_f64x2(src, k, a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512d
+simde_mm512_maskz_broadcast_f64x2(simde__mmask8 k, simde__m128d a) {
+#if defined(SIMDE_X86_AVX512DQ_NATIVE)
+  return _mm512_maskz_broadcast_f64x2(k, a);
+#else
+  return simde_mm512_maskz_mov_pd(k, simde_mm512_broadcast_f64x2(a));
+#endif
+}
+#if defined(SIMDE_X86_AVX512DQ_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_maskz_broadcast_f64x2
+  #define _mm512_maskz_broadcast_f64x2(k, a) simde_mm512_maskz_broadcast_f64x2(k, a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
 simde__m512
 simde_mm512_or_ps (simde__m512 a, simde__m512 b) {
   #if defined(SIMDE_X86_AVX512DQ_NATIVE)
