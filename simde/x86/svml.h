@@ -2196,7 +2196,7 @@ simde_mm_cosh_ps (simde__m128 a) {
   #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE_NATIVE)
     return _mm_cosh_ps(a);
   #elif defined(SIMDE_MATH_SLEEF_ENABLE) && defined(SIMDE_X86_SSE_NATIVE)
-      return Sleef_coshf4_u10sse4(a);
+      return Sleef_coshf4_u10(a);
   #else
     simde__m128_private
       r_,
@@ -2221,7 +2221,7 @@ simde_mm_cosh_pd (simde__m128d a) {
   #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE_NATIVE)
     return _mm_cosh_pd(a);
   #elif defined(SIMDE_MATH_SLEEF_ENABLE) && defined(SIMDE_X86_SSE_NATIVE)
-      return Sleef_coshd2_u10avx2128(a);
+      return Sleef_coshd2_u10(a);
   #else
     simde__m128d_private
       r_,
@@ -2272,7 +2272,7 @@ simde_mm256_cosh_pd (simde__m256d a) {
   #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX_NATIVE)
     return _mm256_cosh_pd(a);
   #elif defined(SIMDE_MATH_SLEEF_ENABLE) && defined(SIMDE_X86_AVX_NATIVE)
-      return Sleef_coshd4_u10avx(a);
+      return Sleef_coshd4_u10(a);
   #else
     simde__m256d_private
       r_,
@@ -2322,7 +2322,7 @@ simde_mm512_cosh_pd (simde__m512d a) {
   #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX512F_NATIVE)
     return _mm512_cosh_pd(a);
   #elif defined(SIMDE_MATH_SLEEF_ENABLE) && defined(SIMDE_X86_AVX512F_NATIVE)
-      return Sleef_coshd8_u10avx512f(a);
+      return Sleef_coshd8_u10(a);
   #else
     simde__m512d_private
       r_,
@@ -9567,7 +9567,7 @@ simde_mm_sinh_ps (simde__m128 a) {
   #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE_NATIVE)
     return _mm_sinh_ps(a);
   #elif defined(SIMDE_MATH_SLEEF_ENABLE) && defined(SIMDE_X86_SSE_NATIVE)
-      return Sleef_sinhf4_u10sse4(a);
+      return Sleef_sinhf4_u10(a);
   #else
     simde__m128_private
       r_,
@@ -9592,7 +9592,7 @@ simde_mm_sinh_pd (simde__m128d a) {
   #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE_NATIVE)
     return _mm_sinh_pd(a);
   #elif defined(SIMDE_MATH_SLEEF_ENABLE) && defined(SIMDE_X86_SSE_NATIVE)
-      return Sleef_sinhd2_u10avx2128(a);
+      return Sleef_sinhd2_u10(a);
   #else
     simde__m128d_private
       r_,
@@ -9643,7 +9643,7 @@ simde_mm256_sinh_pd (simde__m256d a) {
   #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX_NATIVE)
     return _mm256_sinh_pd(a);
   #elif defined(SIMDE_MATH_SLEEF_ENABLE) && defined(SIMDE_X86_AVX_NATIVE)
-      return Sleef_sinhd4_u10avx(a);
+      return Sleef_sinhd4_u10(a);
   #else
     simde__m256d_private
       r_,
@@ -9693,7 +9693,7 @@ simde_mm512_sinh_pd (simde__m512d a) {
   #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX512F_NATIVE)
     return _mm512_sinh_pd(a);
   #elif defined(SIMDE_MATH_SLEEF_ENABLE) && defined(SIMDE_X86_AVX512F_NATIVE)
-      return Sleef_sinhd8_u10avx512f(a);
+      return Sleef_sinhd8_u10(a);
   #else
     simde__m512d_private
       r_,
@@ -10671,7 +10671,7 @@ simde_mm_tanh_ps (simde__m128 a) {
   #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE_NATIVE)
     return _mm_tanh_ps(a);
   #elif defined(SIMDE_MATH_SLEEF_ENABLE) && defined(SIMDE_X86_SSE_NATIVE)
-      return Sleef_tanhf4_u10sse4(a);
+      return Sleef_tanhf4_u10(a);
   #else
     simde__m128_private
       r_,
@@ -10696,7 +10696,7 @@ simde_mm_tanh_pd (simde__m128d a) {
   #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE_NATIVE)
     return _mm_tanh_pd(a);
   #elif defined(SIMDE_MATH_SLEEF_ENABLE) && defined(SIMDE_X86_SSE_NATIVE)
-      return Sleef_tanhd2_u10avx2128(a);
+      return Sleef_tanhd2_u10(a);
   #else
     simde__m128d_private
       r_,
@@ -10747,7 +10747,7 @@ simde_mm256_tanh_pd (simde__m256d a) {
   #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX_NATIVE)
     return _mm256_tanh_pd(a);
   #elif defined(SIMDE_MATH_SLEEF_ENABLE) && defined(SIMDE_X86_AVX_NATIVE)
-      return Sleef_tanhd4_u10avx(a);
+      return Sleef_tanhd4_u10(a);
   #else
     simde__m256d_private
       r_,
@@ -10797,7 +10797,7 @@ simde_mm512_tanh_pd (simde__m512d a) {
   #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX512F_NATIVE)
     return _mm512_tanh_pd(a);
   #elif defined(SIMDE_MATH_SLEEF_ENABLE) && defined(SIMDE_X86_AVX512F_NATIVE)
-      return Sleef_tanhd8_u10avx512f(a);
+      return Sleef_tanhd8_u10(a);
   #else
     simde__m512d_private
       r_,
