@@ -4943,6 +4943,8 @@ simde__m128
 simde_mm_log_ps (simde__m128 a) {
   #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE_NATIVE)
     return _mm_log_ps(a);
+  #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE) && 0
+    return vec_loge(a);
   #elif defined(SIMDE_MATH_SLEEF_ENABLE) && defined(SIMDE_X86_SSE_NATIVE)
     #if SIMDE_ACCURACY_PREFERENCE > 1
       return Sleef_logf4_u10(a);
