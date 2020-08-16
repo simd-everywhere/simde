@@ -37,28 +37,28 @@ SIMDE_BEGIN_DECLS_
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m512d
 simde_mm512_and_pd (simde__m512d a, simde__m512d b) {
-#if defined(SIMDE_X86_AVX512DQ_NATIVE)
-  return _mm512_and_pd(a, b);
-#else
-  simde__m512d_private
-    r_,
-    a_ = simde__m512d_to_private(a),
-    b_ = simde__m512d_to_private(b);
+  #if defined(SIMDE_X86_AVX512DQ_NATIVE)
+    return _mm512_and_pd(a, b);
+  #else
+    simde__m512d_private
+      r_,
+      a_ = simde__m512d_to_private(a),
+      b_ = simde__m512d_to_private(b);
 
-#if defined(SIMDE_X86_AVX_NATIVE)
-  r_.m256d[0] = simde_mm256_and_pd(a_.m256d[0], b_.m256d[0]);
-  r_.m256d[1] = simde_mm256_and_pd(a_.m256d[1], b_.m256d[1]);
-#elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-  r_.i32f = a_.i32f & b_.i32f;
-#else
-  SIMDE_VECTORIZE
-  for (size_t i = 0 ; i < (sizeof(r_.i32f) / sizeof(r_.i32f[0])) ; i++) {
-    r_.i32f[i] = a_.i32f[i] & b_.i32f[i];
-  }
-#endif
+    #if defined(SIMDE_X86_AVX_NATIVE)
+      r_.m256d[0] = simde_mm256_and_pd(a_.m256d[0], b_.m256d[0]);
+      r_.m256d[1] = simde_mm256_and_pd(a_.m256d[1], b_.m256d[1]);
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+      r_.i32f = a_.i32f & b_.i32f;
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.i32f) / sizeof(r_.i32f[0])) ; i++) {
+        r_.i32f[i] = a_.i32f[i] & b_.i32f[i];
+      }
+    #endif
 
-  return simde__m512d_from_private(r_);
-#endif
+    return simde__m512d_from_private(r_);
+  #endif
 }
 #if defined(SIMDE_X86_AVX512DQ_ENABLE_NATIVE_ALIASES)
   #undef _mm512_and_pd
@@ -68,28 +68,28 @@ simde_mm512_and_pd (simde__m512d a, simde__m512d b) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m512
 simde_mm512_and_ps (simde__m512 a, simde__m512 b) {
-#if defined(SIMDE_X86_AVX512DQ_NATIVE)
-  return _mm512_and_ps(a, b);
-#else
-  simde__m512_private
-    r_,
-    a_ = simde__m512_to_private(a),
-    b_ = simde__m512_to_private(b);
+  #if defined(SIMDE_X86_AVX512DQ_NATIVE)
+    return _mm512_and_ps(a, b);
+  #else
+    simde__m512_private
+      r_,
+      a_ = simde__m512_to_private(a),
+      b_ = simde__m512_to_private(b);
 
-#if defined(SIMDE_X86_AVX_NATIVE)
-  r_.m256[0] = simde_mm256_and_ps(a_.m256[0], b_.m256[0]);
-  r_.m256[1] = simde_mm256_and_ps(a_.m256[1], b_.m256[1]);
-#elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-  r_.i32f = a_.i32f & b_.i32f;
-#else
-  SIMDE_VECTORIZE
-  for (size_t i = 0 ; i < (sizeof(r_.i32f) / sizeof(r_.i32f[0])) ; i++) {
-    r_.i32f[i] = a_.i32f[i] & b_.i32f[i];
-  }
-#endif
+    #if defined(SIMDE_X86_AVX_NATIVE)
+      r_.m256[0] = simde_mm256_and_ps(a_.m256[0], b_.m256[0]);
+      r_.m256[1] = simde_mm256_and_ps(a_.m256[1], b_.m256[1]);
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+      r_.i32f = a_.i32f & b_.i32f;
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.i32f) / sizeof(r_.i32f[0])) ; i++) {
+        r_.i32f[i] = a_.i32f[i] & b_.i32f[i];
+      }
+    #endif
 
-  return simde__m512_from_private(r_);
-#endif
+    return simde__m512_from_private(r_);
+  #endif
 }
 #if defined(SIMDE_X86_AVX512DQ_ENABLE_NATIVE_ALIASES)
   #undef _mm512_and_ps
@@ -112,11 +112,11 @@ simde_mm512_mask_and_ps(simde__m512 src, simde__mmask16 k, simde__m512 a, simde_
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m512
 simde_mm512_maskz_and_ps(simde__mmask16 k, simde__m512 a, simde__m512 b) {
-#if defined(SIMDE_X86_AVX512DQ_NATIVE)
-  return _mm512_maskz_and_ps(k, a, b);
-#else
-  return simde_mm512_maskz_mov_ps(k, simde_mm512_and_ps(a, b));
-#endif
+  #if defined(SIMDE_X86_AVX512DQ_NATIVE)
+    return _mm512_maskz_and_ps(k, a, b);
+  #else
+    return simde_mm512_maskz_mov_ps(k, simde_mm512_and_ps(a, b));
+  #endif
 }
 #if defined(SIMDE_X86_AVX512DQ_ENABLE_NATIVE_ALIASES)
 #define _mm512_maskz_and_ps(k, a, b) simde_mm512_maskz_and_ps(k, a, b)
@@ -125,11 +125,11 @@ simde_mm512_maskz_and_ps(simde__mmask16 k, simde__m512 a, simde__m512 b) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m512d
 simde_mm512_mask_and_pd(simde__m512d src, simde__mmask8 k, simde__m512d a, simde__m512d b) {
-#if defined(SIMDE_X86_AVX512DQ_NATIVE)
-  return _mm512_mask_and_pd(src, k, a, b);
-#else
-  return simde_mm512_mask_mov_pd(src, k, simde_mm512_and_pd(a, b));
-#endif
+  #if defined(SIMDE_X86_AVX512DQ_NATIVE)
+    return _mm512_mask_and_pd(src, k, a, b);
+  #else
+    return simde_mm512_mask_mov_pd(src, k, simde_mm512_and_pd(a, b));
+  #endif
 }
 #if defined(SIMDE_X86_AVX512DQ_ENABLE_NATIVE_ALIASES)
 #define _mm512_mask_and_pd(src, k, a, b) simde_mm512_mask_and_pd(src, k, a, b)
@@ -138,11 +138,11 @@ simde_mm512_mask_and_pd(simde__m512d src, simde__mmask8 k, simde__m512d a, simde
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m512d
 simde_mm512_maskz_and_pd(simde__mmask8 k, simde__m512d a, simde__m512d b) {
-#if defined(SIMDE_X86_AVX512DQ_NATIVE)
-  return _mm512_maskz_and_pd(k, a, b);
-#else
-  return simde_mm512_maskz_mov_pd(k, simde_mm512_and_pd(a, b));
-#endif
+  #if defined(SIMDE_X86_AVX512DQ_NATIVE)
+    return _mm512_maskz_and_pd(k, a, b);
+  #else
+    return simde_mm512_maskz_mov_pd(k, simde_mm512_and_pd(a, b));
+  #endif
 }
 #if defined(SIMDE_X86_AVX512DQ_ENABLE_NATIVE_ALIASES)
 #define _mm512_maskz_and_pd(k, a, b) simde_mm512_maskz_and_pd(k, a, b)
@@ -289,11 +289,11 @@ simde_mm512_broadcast_f32x2 (simde__m128 a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m512
 simde_mm512_mask_broadcast_f32x2(simde__m512 src, simde__mmask16 k, simde__m128 a) {
-#if defined(SIMDE_X86_AVX512DQ_NATIVE)
-  return _mm512_mask_broadcast_f32x2(src, k, a);
-#else
-  return simde_mm512_mask_mov_ps(src, k, simde_mm512_broadcast_f32x2(a));
-#endif
+  #if defined(SIMDE_X86_AVX512DQ_NATIVE)
+    return _mm512_mask_broadcast_f32x2(src, k, a);
+  #else
+    return simde_mm512_mask_mov_ps(src, k, simde_mm512_broadcast_f32x2(a));
+  #endif
 }
 #if defined(SIMDE_X86_AVX512DQ_ENABLE_NATIVE_ALIASES)
   #undef _mm512_mask_broadcast_f32x2
@@ -350,11 +350,11 @@ simde_mm512_broadcast_f32x8 (simde__m256 a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m512
 simde_mm512_mask_broadcast_f32x8(simde__m512 src, simde__mmask16 k, simde__m256 a) {
-#if defined(SIMDE_X86_AVX512DQ_NATIVE)
-  return _mm512_mask_broadcast_f32x8(src, k, a);
-#else
-  return simde_mm512_mask_mov_ps(src, k, simde_mm512_broadcast_f32x8(a));
-#endif
+  #if defined(SIMDE_X86_AVX512DQ_NATIVE)
+    return _mm512_mask_broadcast_f32x8(src, k, a);
+  #else
+    return simde_mm512_mask_mov_ps(src, k, simde_mm512_broadcast_f32x8(a));
+  #endif
 }
 #if defined(SIMDE_X86_AVX512DQ_ENABLE_NATIVE_ALIASES)
   #undef _mm512_mask_broadcast_f32x8
@@ -364,11 +364,11 @@ simde_mm512_mask_broadcast_f32x8(simde__m512 src, simde__mmask16 k, simde__m256 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m512
 simde_mm512_maskz_broadcast_f32x8(simde__mmask16 k, simde__m256 a) {
-#if defined(SIMDE_X86_AVX512DQ_NATIVE)
-  return _mm512_maskz_broadcast_f32x8(k, a);
-#else
-  return simde_mm512_maskz_mov_ps(k, simde_mm512_broadcast_f32x8(a));
-#endif
+  #if defined(SIMDE_X86_AVX512DQ_NATIVE)
+    return _mm512_maskz_broadcast_f32x8(k, a);
+  #else
+    return simde_mm512_maskz_mov_ps(k, simde_mm512_broadcast_f32x8(a));
+  #endif
 }
 #if defined(SIMDE_X86_AVX512DQ_ENABLE_NATIVE_ALIASES)
   #undef _mm512_maskz_broadcast_f32x8
@@ -405,11 +405,11 @@ simde_mm512_broadcast_f64x2 (simde__m128d a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m512d
 simde_mm512_mask_broadcast_f64x2(simde__m512d src, simde__mmask8 k, simde__m128d a) {
-#if defined(SIMDE_X86_AVX512DQ_NATIVE)
-  return _mm512_mask_broadcast_f64x2(src, k, a);
-#else
-  return simde_mm512_mask_mov_pd(src, k, simde_mm512_broadcast_f64x2(a));
-#endif
+  #if defined(SIMDE_X86_AVX512DQ_NATIVE)
+    return _mm512_mask_broadcast_f64x2(src, k, a);
+  #else
+    return simde_mm512_mask_mov_pd(src, k, simde_mm512_broadcast_f64x2(a));
+  #endif
 }
 #if defined(SIMDE_X86_AVX512DQ_ENABLE_NATIVE_ALIASES)
   #undef _mm512_mask_broadcast_f64x2
@@ -419,11 +419,11 @@ simde_mm512_mask_broadcast_f64x2(simde__m512d src, simde__mmask8 k, simde__m128d
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m512d
 simde_mm512_maskz_broadcast_f64x2(simde__mmask8 k, simde__m128d a) {
-#if defined(SIMDE_X86_AVX512DQ_NATIVE)
-  return _mm512_maskz_broadcast_f64x2(k, a);
-#else
-  return simde_mm512_maskz_mov_pd(k, simde_mm512_broadcast_f64x2(a));
-#endif
+  #if defined(SIMDE_X86_AVX512DQ_NATIVE)
+    return _mm512_maskz_broadcast_f64x2(k, a);
+  #else
+    return simde_mm512_maskz_mov_pd(k, simde_mm512_broadcast_f64x2(a));
+  #endif
 }
 #if defined(SIMDE_X86_AVX512DQ_ENABLE_NATIVE_ALIASES)
   #undef _mm512_maskz_broadcast_f64x2
