@@ -292,7 +292,7 @@ typedef union {
  * both are in avx512bwintrin.h), not AVX-512F.  However, we don't have
  * a good (not-compiler-specific) way to detect if these headers have
  * been included.  In compilers which support AVX-512F but not
- * AVX-512BW/VL (e.g., GCC 4.9) we these typedefs since __mmask{32,64)
+ * AVX-512BW/VL (e.g., GCC 4.9) we need typedefs since __mmask{32,64)
  * won't exist.
  *
  * AFAICT __mmask{32,64} are always just typedefs to uint{32,64}_t
@@ -679,10 +679,18 @@ simde_mm_movm_epi8 (simde__mmask16 k) {
   #else
     simde__m128i_private r_;
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.i8) / sizeof(r_.i8[0])) ; i++) {
-      r_.i8[i] = ((k >> i) & 1) ? ~INT8_C(0) : INT8_C(0);
-    }
+    #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+      static const int8_t pos_data[] = { 7, 6, 5, 4, 3, 2, 1, 0 };
+      int8x8_t pos = vld1_s8(pos_data);
+      r_.neon_i8 = vcombine_s8(
+        vshr_n_s8(vshl_s8(vdup_n_s8(HEDLEY_STATIC_CAST(int8_t, k)), pos), 7),
+        vshr_n_s8(vshl_s8(vdup_n_s8(HEDLEY_STATIC_CAST(int8_t, k >> 8)), pos), 7));
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.i8) / sizeof(r_.i8[0])) ; i++) {
+        r_.i8[i] = ((k >> i) & 1) ? ~INT8_C(0) : INT8_C(0);
+      }
+    #endif
 
     return simde__m128i_from_private(r_);
   #endif
@@ -712,7 +720,7 @@ simde_mm256_movm_epi8 (simde__mmask32 k) {
   #else
     simde__m256i_private r_;
 
-    #if defined(SIMDE_X86_SSSE3_NATIVE)
+    #if SIMDE_NATURAL_VECTOR_SIZE_LE(128)
       r_.m128i[0] = simde_mm_movm_epi8(HEDLEY_STATIC_CAST(simde__mmask16, k));
       r_.m128i[1] = simde_mm_movm_epi8(HEDLEY_STATIC_CAST(simde__mmask16, k >> 16));
     #else
@@ -738,7 +746,7 @@ simde_mm512_movm_epi8 (simde__mmask64 k) {
   #else
     simde__m512i_private r_;
 
-    #if defined(SIMDE_X86_SSSE3_NATIVE)
+    #if SIMDE_NATURAL_VECTOR_SIZE_LE(256)
       r_.m256i[0] = simde_mm256_movm_epi8(HEDLEY_STATIC_CAST(simde__mmask32, k));
       r_.m256i[1] = simde_mm256_movm_epi8(HEDLEY_STATIC_CAST(simde__mmask32, k >> 32));
     #else
@@ -773,10 +781,16 @@ simde_mm_movm_epi16 (simde__mmask8 k) {
   #else
     simde__m128i_private r_;
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.i16) / sizeof(r_.i16[0])) ; i++) {
-      r_.i16[i] = ((k >> i) & 1) ? ~INT16_C(0) : INT16_C(0);
-    }
+    #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+      static const int16_t pos_data[] = { 15, 14, 13, 12, 11, 10, 9, 8 };
+      const int16x8_t pos = vld1q_s16(pos_data);
+      r_.neon_i16 = vshrq_n_s16(vshlq_s16(vdupq_n_s16(HEDLEY_STATIC_CAST(int16_t, k)), pos), 15);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.i16) / sizeof(r_.i16[0])) ; i++) {
+        r_.i16[i] = ((k >> i) & 1) ? ~INT16_C(0) : INT16_C(0);
+      }
+    #endif
 
     return simde__m128i_from_private(r_);
   #endif
@@ -804,7 +818,7 @@ simde_mm256_movm_epi16 (simde__mmask16 k) {
   #else
     simde__m256i_private r_;
 
-    #if defined(SIMDE_X86_SSE2_NATIVE)
+    #if SIMDE_NATURAL_VECTOR_SIZE_LE(128)
       r_.m128i[0] = simde_mm_movm_epi16(HEDLEY_STATIC_CAST(simde__mmask8, k));
       r_.m128i[1] = simde_mm_movm_epi16(HEDLEY_STATIC_CAST(simde__mmask8, k >> 8));
     #else
@@ -830,7 +844,7 @@ simde_mm512_movm_epi16 (simde__mmask32 k) {
   #else
     simde__m512i_private r_;
 
-    #if defined(SIMDE_X86_SSE2_NATIVE)
+    #if SIMDE_NATURAL_VECTOR_SIZE_LE(256)
       r_.m256i[0] = simde_mm256_movm_epi16(HEDLEY_STATIC_CAST(simde__mmask16, k));
       r_.m256i[1] = simde_mm256_movm_epi16(HEDLEY_STATIC_CAST(simde__mmask16, k >> 16));
     #else
@@ -874,10 +888,16 @@ simde_mm_movm_epi32 (simde__mmask8 k) {
   #else
     simde__m128i_private r_;
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {
-      r_.i32[i] = ((k >> i) & 1) ? ~INT32_C(0) : INT32_C(0);
-    }
+    #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+      static const int32_t pos_data[] = { 31, 30, 29, 28 };
+      const int32x4_t pos = vld1q_s32(pos_data);
+      r_.neon_i32 = vshrq_n_s32(vshlq_s32(vdupq_n_s32(HEDLEY_STATIC_CAST(int32_t, k)), pos), 31);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {
+        r_.i32[i] = ((k >> i) & 1) ? ~INT32_C(0) : INT32_C(0);
+      }
+    #endif
 
     return simde__m128i_from_private(r_);
   #endif
@@ -904,7 +924,7 @@ simde_mm256_movm_epi32 (simde__mmask8 k) {
   #else
     simde__m256i_private r_;
 
-    #if defined(SIMDE_X86_SSE2_NATIVE)
+    #if SIMDE_NATURAL_VECTOR_SIZE_LE(128)
       r_.m128i[0] = simde_mm_movm_epi32(k     );
       r_.m128i[1] = simde_mm_movm_epi32(k >> 4);
     #else
@@ -930,7 +950,7 @@ simde_mm512_movm_epi32 (simde__mmask16 k) {
   #else
     simde__m512i_private r_;
 
-    #if defined(SIMDE_X86_SSE2_NATIVE)
+    #if SIMDE_NATURAL_VECTOR_SIZE_LE(256)
       r_.m256i[0] = simde_mm256_movm_epi32(HEDLEY_STATIC_CAST(simde__mmask8, k     ));
       r_.m256i[1] = simde_mm256_movm_epi32(HEDLEY_STATIC_CAST(simde__mmask8, k >> 8));
     #else
@@ -975,10 +995,16 @@ simde_mm_movm_epi64 (simde__mmask8 k) {
   #else
     simde__m128i_private r_;
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.i64) / sizeof(r_.i64[0])) ; i++) {
-      r_.i64[i] = ((k >> i) & 1) ? ~INT64_C(0) : INT64_C(0);
-    }
+    #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+      static const int64_t pos_data[] = { 63, 62 };
+      const int64x2_t pos = vld1q_s64(pos_data);
+      r_.neon_i64 = vshrq_n_s64(vshlq_s64(vdupq_n_s64(HEDLEY_STATIC_CAST(int64_t, k)), pos), 63);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.i64) / sizeof(r_.i64[0])) ; i++) {
+        r_.i64[i] = ((k >> i) & 1) ? ~INT64_C(0) : INT64_C(0);
+      }
+    #endif
 
     return simde__m128i_from_private(r_);
   #endif
@@ -1006,7 +1032,7 @@ simde_mm256_movm_epi64 (simde__mmask8 k) {
     simde__m256i_private r_;
 
     /* N.B. CM: This fallback may not be faster as there are only four elements */
-    #if defined(SIMDE_X86_SSE2_NATIVE)
+    #if SIMDE_NATURAL_VECTOR_SIZE_LE(128)
       r_.m128i[0] = simde_mm_movm_epi64(k     );
       r_.m128i[1] = simde_mm_movm_epi64(k >> 2);
     #else
@@ -1033,7 +1059,7 @@ simde_mm512_movm_epi64 (simde__mmask8 k) {
     simde__m512i_private r_;
 
     /* N.B. CM: Without AVX2 this fallback may not be faster as there are only eight elements */
-    #if defined(SIMDE_X86_SSE2_NATIVE)
+    #if SIMDE_NATURAL_VECTOR_SIZE_LE(256)
       r_.m256i[0] = simde_mm256_movm_epi64(k     );
       r_.m256i[1] = simde_mm256_movm_epi64(k >> 4);
     #else
