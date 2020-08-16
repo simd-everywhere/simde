@@ -2740,7 +2740,11 @@ simde_mm_min_ps (simde__m128 a, simde__m128 b) {
       r_,
       a_ = simde__m128_to_private(a),
       b_ = simde__m128_to_private(b);
-    r_.wasm_v128 = wasm_v128_bitselect(a_.wasm_v128, b_.wasm_v128, wasm_f32x4_lt(a_.wasm_v128, b_.wasm_v128));
+    #if defined(SIMDE_FAST_NANS)
+      r_.wasm_v128 = wasm_f32x4_min(a_.wasm_v128, b_.wasm_v128);
+    #else
+      r_.wasm_v128 = wasm_v128_bitselect(a_.wasm_v128, b_.wasm_v128, wasm_f32x4_lt(a_.wasm_v128, b_.wasm_v128));
+    #endif
     return simde__m128_from_private(r_);
   #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
     simde__m128_private
