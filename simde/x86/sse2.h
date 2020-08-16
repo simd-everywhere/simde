@@ -3550,11 +3550,12 @@ simde_mm_movemask_pd (simde__m128d a) {
     simde__m128d_private a_ = simde__m128d_to_private(a);
 
     #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
-      static const int64x2_t shift = {0, 1};
+      static const int64_t shift_amount[] = { 0, 1 };
+      const int64x2_t shift = vld1q_s64(shift_amount);
       uint64x2_t tmp = vshrq_n_u64(a_.neon_u64, 63);
-      return vaddvq_u64(vshlq_u64(tmp, shift));
+      return HEDLEY_STATIC_CAST(int32_t, vaddvq_u64(vshlq_u64(tmp, shift)));
     #else
-      SIMDE_VECTORIZE
+      SIMDE_VECTORIZE_REDUCTION(|:r)
       for (size_t i = 0 ; i < (sizeof(a_.u64) / sizeof(a_.u64[0])) ; i++) {
         r |= (a_.u64[i] >> 63) << i;
       }
