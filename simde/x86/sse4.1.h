@@ -1760,6 +1760,8 @@ simde_mm_mullo_epi32 (simde__m128i a, simde__m128i b) {
     (void) a_;
     (void) b_;
     r_.altivec_i32 = vec_mul(a_.altivec_i32, b_.altivec_i32);
+  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+    r_.wasm_v128 = wasm_i32x4_min(a_.wasm_v128, b_.wasm_v128);
   #else
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {
