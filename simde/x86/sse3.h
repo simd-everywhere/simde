@@ -409,6 +409,8 @@ simde_mm_movedup_pd (simde__m128d a) {
     float64_t a0 = vgetq_lane_f64(a_.neon_f64, 0);
     simde_float64 data[2] = { a0, a0 };
     r_.neon_f64 = vld1q_f64(data);
+  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+    r_.wasm_v128 = wasm_v64x2_shuffle(a_.wasm_v128, a_.wasm_v128, 0, 0);
   #else
     r_.f64[0] = a_.f64[0];
     r_.f64[1] = a_.f64[0];
@@ -438,6 +440,8 @@ simde_mm_movehdup_ps (simde__m128 a) {
     float32_t a3 = vgetq_lane_f32(a_.neon_f32, 3);
     SIMDE_ALIGN(16) simde_float32 data[4] = { a1, a1, a3, a3 };
     r_.neon_f32 = vld1q_f32(data);
+  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+    r_.wasm_v128 = wasm_v32x4_shuffle(a_.wasm_v128, a_.wasm_v128, 1, 1, 3, 3);
   #else
     r_.f32[0] = a_.f32[1];
     r_.f32[1] = a_.f32[1];
@@ -469,6 +473,8 @@ simde_mm_moveldup_ps (simde__m128 a) {
     float32_t a2 = vgetq_lane_f32(a_.neon_f32, 2);
     SIMDE_ALIGN(16) simde_float32 data[4] = { a0, a0, a2, a2 };
     r_.neon_f32 = vld1q_f32(data);
+  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+    r_.wasm_v128 = wasm_v32x4_shuffle(a_.wasm_v128, a_.wasm_v128, 0, 0, 2, 2);
   #else
     r_.f32[0] = a_.f32[0];
     r_.f32[1] = a_.f32[0];
