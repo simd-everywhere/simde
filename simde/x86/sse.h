@@ -2542,6 +2542,8 @@ simde_mm_loadu_ps (simde_float32 const mem_addr[HEDLEY_ARRAY_PARAM(4)]) {
 
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     r_.neon_f32 = vld1q_f32(HEDLEY_REINTERPRET_CAST(const float32_t*, mem_addr));
+  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+    r_.wasm_v128 = wasm_v128_load(mem_addr);
   #else
     r_.f32[0] = mem_addr[0];
     r_.f32[1] = mem_addr[1];
@@ -3113,6 +3115,8 @@ simde_mm_rcp_ps (simde__m128 a) {
       #endif
 
       r_.neon_f32 = recip;
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+      r_.wasm_v128 = wasm_f32x4_div(simde_mm_set1_ps(1.0f), a_.wasm_v128);
     #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
       r_.altivec_f32 = vec_re(a_.altivec_f32);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
@@ -3536,6 +3540,8 @@ simde_mm_sqrt_ps (simde__m128 a) {
       est = vmulq_f32(vrsqrtsq_f32(vmulq_f32(a_.neon_f32, est), est), est);
     }
     r_.neon_f32 = vmulq_f32(a_.neon_f32, est);
+  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+    r_.wasm_v128 = wasm_f32x4_sqrt(a_.wasm_v128);
   #elif defined(simde_math_sqrt)
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < sizeof(r_.f32) / sizeof(r_.f32[0]) ; i++) {
