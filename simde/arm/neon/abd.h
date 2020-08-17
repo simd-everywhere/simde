@@ -272,7 +272,7 @@ simde_uint8x16_t
 simde_vabdq_u8(simde_uint8x16_t a, simde_uint8x16_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vabdq_u8(a, b);
-  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+  #elif defined(SIMDE_POWER_ALTIVEC_P9_NATIVE)
     return vec_absd(a, b);
   #else
     simde_uint8x16_private
@@ -299,7 +299,7 @@ simde_uint16x8_t
 simde_vabdq_u16(simde_uint16x8_t a, simde_uint16x8_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vabdq_u16(a, b);
-  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+  #elif defined(SIMDE_POWER_ALTIVEC_P9_NATIVE)
     return vec_absd(a, b);
   #else
     simde_uint16x8_private
@@ -326,7 +326,7 @@ simde_uint32x4_t
 simde_vabdq_u32(simde_uint32x4_t a, simde_uint32x4_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vabdq_u32(a, b);
-  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+  #elif defined(SIMDE_POWER_ALTIVEC_P9_NATIVE)
     return vec_absd(a, b);
   #else
     simde_uint32x4_private
