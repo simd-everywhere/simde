@@ -996,6 +996,8 @@ simde_mm_xor_pd (simde__m128d a, simde__m128d b) {
 
     #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       r_.i32f = a_.i32f ^ b_.i32f;
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+      r_.wasm_v128 = wasm_v128_xor(a_.wasm_v128, b_.wasm_v128);
     #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       r_.neon_i64 = veorq_s64(a_.neon_i64, b_.neon_i64);
     #else
@@ -4142,6 +4144,8 @@ simde_mm_or_pd (simde__m128d a, simde__m128d b) {
 
     #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       r_.i32f = a_.i32f | b_.i32f;
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+      r_.wasm_v128 = wasm_v128_or(a_.wasm_v128, b_.wasm_v128);
     #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       r_.neon_i64 = vorrq_s64(a_.neon_i64, b_.neon_i64);
     #else
@@ -5146,6 +5150,8 @@ simde_mm_sqrt_pd (simde__m128d a) {
 
     #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
       r_.neon_f64 = vsqrtq_f64(a_.neon_f64);
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+      r_.wasm_v128 = wasm_f64x2_sqrt(a_.wasm_v128);
     #elif defined(simde_math_sqrt)
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
