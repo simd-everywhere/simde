@@ -9218,6 +9218,17 @@ simde__m128
 simde_mm_sincos_ps (simde__m128* mem_addr, simde__m128 a) {
   #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE_NATIVE)
     return _mm_sincos_ps(HEDLEY_REINTERPRET_CAST(__m128*, mem_addr), a);
+  #elif defined(SIMDE_MATH_SLEEF_ENABLE) && defined(SIMDE_X86_SSE_NATIVE)
+    Sleef___m128_2 temp;
+
+    #if SIMDE_ACCURACY_PREFERENCE > 1
+      temp = Sleef_sincosf4_u10(a);
+    #else
+      temp = Sleef_sincosf4_u35(a);
+    #endif
+
+    *mem_addr = temp.y;
+    return temp.x;
   #else
     simde__m128 r;
 
@@ -9237,6 +9248,17 @@ simde__m128d
 simde_mm_sincos_pd (simde__m128d* mem_addr, simde__m128d a) {
   #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE_NATIVE)
     return _mm_sincos_pd(HEDLEY_REINTERPRET_CAST(__m128d*, mem_addr), a);
+  #elif defined(SIMDE_MATH_SLEEF_ENABLE) && defined(SIMDE_X86_SSE_NATIVE)
+    Sleef___m128d_2 temp;
+
+    #if SIMDE_ACCURACY_PREFERENCE > 1
+      temp = Sleef_sincosd2_u10(a);
+    #else
+      temp = Sleef_sincosd2_u35(a);
+    #endif
+
+    *mem_addr = temp.y;
+    return temp.x;
   #else
     simde__m128d r;
 
@@ -9256,6 +9278,17 @@ simde__m256
 simde_mm256_sincos_ps (simde__m256* mem_addr, simde__m256 a) {
   #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX_NATIVE)
     return _mm256_sincos_ps(HEDLEY_REINTERPRET_CAST(__m256*, mem_addr), a);
+  #elif defined(SIMDE_MATH_SLEEF_ENABLE) && defined(SIMDE_X86_AVX_NATIVE)
+    Sleef___m256_2 temp;
+
+    #if SIMDE_ACCURACY_PREFERENCE > 1
+      temp = Sleef_sincosf8_u10(a);
+    #else
+      temp = Sleef_sincosf8_u35(a);
+    #endif
+
+    *mem_addr = temp.y;
+    return temp.x;
   #else
     simde__m256 r;
 
@@ -9275,6 +9308,17 @@ simde__m256d
 simde_mm256_sincos_pd (simde__m256d* mem_addr, simde__m256d a) {
   #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX_NATIVE)
     return _mm256_sincos_pd(HEDLEY_REINTERPRET_CAST(__m256d*, mem_addr), a);
+  #elif defined(SIMDE_MATH_SLEEF_ENABLE) && defined(SIMDE_X86_AVX_NATIVE)
+    Sleef___m256d_2 temp;
+
+    #if SIMDE_ACCURACY_PREFERENCE > 1
+      temp = Sleef_sincosd4_u10(a);
+    #else
+      temp = Sleef_sincosd4_u35(a);
+    #endif
+
+    *mem_addr = temp.y;
+    return temp.x;
   #else
     simde__m256d r;
 
@@ -9292,8 +9336,19 @@ simde_mm256_sincos_pd (simde__m256d* mem_addr, simde__m256d a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m512
 simde_mm512_sincos_ps (simde__m512* mem_addr, simde__m512 a) {
-  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX_NATIVE)
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX512F_NATIVE)
     return _mm512_sincos_ps(HEDLEY_REINTERPRET_CAST(__m512*, mem_addr), a);
+  #elif defined(SIMDE_MATH_SLEEF_ENABLE) && defined(SIMDE_X86_AVX512F_NATIVE)
+    Sleef___m512_2 temp;
+
+    #if SIMDE_ACCURACY_PREFERENCE > 1
+      temp = Sleef_sincosf16_u10(a);
+    #else
+      temp = Sleef_sincosf16_u35(a);
+    #endif
+
+    *mem_addr = temp.y;
+    return temp.x;
   #else
     simde__m512 r;
 
@@ -9311,8 +9366,19 @@ simde_mm512_sincos_ps (simde__m512* mem_addr, simde__m512 a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m512d
 simde_mm512_sincos_pd (simde__m512d* mem_addr, simde__m512d a) {
-  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX_NATIVE)
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX512F_NATIVE)
     return _mm512_sincos_pd(HEDLEY_REINTERPRET_CAST(__m512d*, mem_addr), a);
+  #elif defined(SIMDE_MATH_SLEEF_ENABLE) && defined(SIMDE_X86_AVX512F_NATIVE)
+    Sleef___m512d_2 temp;
+
+    #if SIMDE_ACCURACY_PREFERENCE > 1
+      temp = Sleef_sincosd8_u10(a);
+    #else
+      temp = Sleef_sincosd8_u35(a);
+    #endif
+
+    *mem_addr = temp.y;
+    return temp.x;
   #else
     simde__m512d r;
 
