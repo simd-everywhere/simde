@@ -1415,6 +1415,8 @@ simde_mm_max_epi8 (simde__m128i a, simde__m128i b) {
 
     #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       r_.neon_i8 = vmaxq_s8(a_.neon_i8, b_.neon_i8);
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+      r_.wasm_v128 = wasm_i8x16_max(a_.wasm_v128, b_.wasm_v128);
     #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
       r_.altivec_i8 = vec_max(a_.altivec_i8, b_.altivec_i8);
     #else
@@ -1445,6 +1447,8 @@ simde_mm_max_epi32 (simde__m128i a, simde__m128i b) {
 
     #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       r_.neon_i32 = vmaxq_s32(a_.neon_i32, b_.neon_i32);
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+      r_.wasm_v128 = wasm_i32x4_max(a_.wasm_v128, b_.wasm_v128);
     #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
       r_.altivec_i32 = vec_max(a_.altivec_i32, b_.altivec_i32);
     #else
@@ -1475,6 +1479,8 @@ simde_mm_max_epu16 (simde__m128i a, simde__m128i b) {
 
     #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       r_.neon_u16 = vmaxq_u16(a_.neon_u16, b_.neon_u16);
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+      r_.wasm_v128 = wasm_u16x8_max(a_.wasm_v128, b_.wasm_v128);
     #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
       r_.altivec_u16 = vec_max(a_.altivec_u16, b_.altivec_u16);
     #else
@@ -1505,6 +1511,8 @@ simde_mm_max_epu32 (simde__m128i a, simde__m128i b) {
 
     #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       r_.neon_u32 = vmaxq_u32(a_.neon_u32, b_.neon_u32);
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+      r_.wasm_v128 = wasm_u32x4_max(a_.wasm_v128, b_.wasm_v128);
     #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
       r_.altivec_u32 = vec_max(a_.altivec_u32, b_.altivec_u32);
     #else

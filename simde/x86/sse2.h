@@ -1410,6 +1410,12 @@ simde_x_mm_copysign_pd(simde__m128d dest, simde__m128d src) {
       uint64x2_t sign_pos = vdupq_n_u64(u64_nz);
     #endif
     r_.neon_u64 = vbslq_u64(sign_pos, src_.neon_u64, dest_.neon_u64);
+  #elif defined(SIMDE_POWER_ALTIVEC_P9_NATIVE)
+    #if !defined(HEDLEY_IBM_VERSION)
+      r_.altivec_f64 = vec_cpsgn(dest_.altivec_f64, src_.altivec_f64);
+    #else
+      r_.altivec_f64 = vec_cpsgn(src_.altivec_f64, dest_.altivec_f64);
+    #endif
   #elif defined(simde_math_copysign)
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
@@ -3544,11 +3550,12 @@ simde_mm_movemask_pd (simde__m128d a) {
     simde__m128d_private a_ = simde__m128d_to_private(a);
 
     #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
-      static const int64x2_t shift = {0, 1};
+      static const int64_t shift_amount[] = { 0, 1 };
+      const int64x2_t shift = vld1q_s64(shift_amount);
       uint64x2_t tmp = vshrq_n_u64(a_.neon_u64, 63);
-      return vaddvq_u64(vshlq_u64(tmp, shift));
+      return HEDLEY_STATIC_CAST(int32_t, vaddvq_u64(vshlq_u64(tmp, shift)));
     #else
-      SIMDE_VECTORIZE
+      SIMDE_VECTORIZE_REDUCTION(|:r)
       for (size_t i = 0 ; i < (sizeof(a_.u64) / sizeof(a_.u64[0])) ; i++) {
         r |= (a_.u64[i] >> 63) << i;
       }
@@ -3740,6 +3747,8 @@ simde_mm_max_epi16 (simde__m128i a, simde__m128i b) {
 
     #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       r_.neon_i16 = vmaxq_s16(a_.neon_i16, b_.neon_i16);
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+      r_.wasm_v128 = wasm_i16x8_max(a_.wasm_v128, b_.wasm_v128);
     #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
       r_.altivec_i16 = vec_max(a_.altivec_i16, b_.altivec_i16);
     #else
@@ -3769,6 +3778,8 @@ simde_mm_max_epu8 (simde__m128i a, simde__m128i b) {
 
     #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       r_.neon_u8 = vmaxq_u8(a_.neon_u8, b_.neon_u8);
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+      r_.wasm_v128 = wasm_u8x16_max(a_.wasm_v128, b_.wasm_v128);
     #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
       r_.altivec_u8 = vec_max(a_.altivec_u8, b_.altivec_u8);
     #else
@@ -3798,6 +3809,8 @@ simde_mm_max_pd (simde__m128d a, simde__m128d b) {
 
     #if defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
       r_.altivec_f64 = vec_max(a_.altivec_f64, b_.altivec_f64);
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+      r_.wasm_v128 = wasm_f64x2_max(a_.wasm_v128, b_.wasm_v128);
     #elif defined(SIMDE_ARM_NEON_A64V8_NATIVE)
       r_.neon_f64 = vmaxq_f64(a_.neon_f64, b_.neon_f64);
     #else

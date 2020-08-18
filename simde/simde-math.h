@@ -833,6 +833,26 @@
   #endif
 #endif
 
+#if !defined(simde_math_fma)
+  #if SIMDE_MATH_BUILTIN_LIBM(fma)
+    #define simde_math_fma(x, y, z) __builtin_fma(x, y, z)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_fma(x, y, z) std::fma(x, y, z)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_fma(x, y, z) fma(x, y, z)
+  #endif
+#endif
+
+#if !defined(simde_math_fmaf)
+  #if SIMDE_MATH_BUILTIN_LIBM(fmaf)
+    #define simde_math_fmaf(x, y, z) __builtin_fmaf(x, y, z)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_fmaf(x, y, z) std::fma(x, y, z)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_fmaf(x, y, z) fmaf(x, y, z)
+  #endif
+#endif
+
 #if !defined(simde_math_hypot)
   #if SIMDE_MATH_BUILTIN_LIBM(hypot)
     #define simde_math_hypot(y, x) __builtin_hypot(y, x)

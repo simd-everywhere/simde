@@ -761,8 +761,8 @@ simde_mm256_broadcast_f32x4 (simde__m128 a) {
       r_.f32 = __builtin_shufflevector(a_.f32, a_.f32, 0, 1, 2, 3, 0, 1, 2, 3);
     #else
       SIMDE_VECTORIZE
-      for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i+=4) {
-         r_.f32[i]     = a_.f32[0];
+      for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i += 4) {
+         r_.f32[  i  ] = a_.f32[0];
          r_.f32[i + 1] = a_.f32[1];
          r_.f32[i + 2] = a_.f32[2];
          r_.f32[i + 3] = a_.f32[3];
@@ -814,12 +814,15 @@ simde_mm256_broadcast_f64x2 (simde__m128d a) {
     simde__m256d_private r_;
     simde__m128d_private a_ = simde__m128d_to_private(a);
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
+    /* I don't have a bug # for this, but when compiled with clang-10 without optimization on aarch64
+     * the __builtin_shufflevector version doesn't work correctly.  clang 9 and 11 aren't a problem */
+    #if defined(SIMDE_VECTOR_SUBSCRIPT) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector) && \
+        (!defined(__clang__) || (SIMDE_DETECT_CLANG_VERSION < 100000 || SIMDE_DETECT_CLANG_VERSION > 100000))
       r_.f64 = __builtin_shufflevector(a_.f64, a_.f64, 0, 1, 0, 1);
     #else
       SIMDE_VECTORIZE
-      for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i+=2) {
-         r_.f64[i]     = a_.f64[0];
+      for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i += 2) {
+         r_.f64[  i  ] = a_.f64[0];
          r_.f64[i + 1] = a_.f64[1];
       }
     #endif
