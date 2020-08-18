@@ -5826,17 +5826,24 @@ simde_mm_testc_ps (simde__m128 a, simde__m128 b) {
 #if defined(SIMDE_X86_AVX_NATIVE)
   return _mm_testc_ps(a, b);
 #else
-  uint_fast32_t r = 0;
   simde__m128_private
     a_ = simde__m128_to_private(a),
     b_ = simde__m128_to_private(b);
 
-  SIMDE_VECTORIZE_REDUCTION(|:r)
-  for (size_t i = 0 ; i < (sizeof(a_.u32) / sizeof(a_.u32[0])) ; i++) {
-    r |= ~a_.u32[i] & b_.u32[i];
-  }
+  #if defined(SIMDE_WASM_SIMD128_NATIVE)
+    v128_t m = wasm_u32x4_shr(wasm_v128_or(wasm_v128_not(b_.wasm_v128), a_.wasm_v128), 31);
+    m = wasm_v128_and(m, simde_mm_movehl_ps(m, m));
+    m = wasm_v128_and(m, simde_mm_shuffle_epi32(m, SIMDE_MM_SHUFFLE(3, 2, 0, 1)));
+    return wasm_i32x4_extract_lane(m, 0);
+  #else
+    uint_fast32_t r = 0;
+    SIMDE_VECTORIZE_REDUCTION(|:r)
+    for (size_t i = 0 ; i < (sizeof(a_.u32) / sizeof(a_.u32[0])) ; i++) {
+      r |= ~a_.u32[i] & b_.u32[i];
+    }
 
   return HEDLEY_STATIC_CAST(int, ((~r >> 31) & 1));
+  #endif
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
@@ -5850,17 +5857,22 @@ simde_mm_testc_pd (simde__m128d a, simde__m128d b) {
 #if defined(SIMDE_X86_AVX_NATIVE)
   return _mm_testc_pd(a, b);
 #else
-  uint_fast64_t r = 0;
   simde__m128d_private
     a_ = simde__m128d_to_private(a),
     b_ = simde__m128d_to_private(b);
 
-  SIMDE_VECTORIZE_REDUCTION(|:r)
-  for (size_t i = 0 ; i < (sizeof(a_.u64) / sizeof(a_.u64[0])) ; i++) {
-    r |= ~a_.u64[i] & b_.u64[i];
-  }
+  #if defined(SIMDE_WASM_SIMD128_NATIVE)
+    v128_t m = wasm_u64x2_shr(wasm_v128_or(wasm_v128_not(b_.wasm_v128), a_.wasm_v128), 63);
+    return HEDLEY_STATIC_CAST(int, wasm_i64x2_extract_lane(m, 0) & wasm_i64x2_extract_lane(m, 1));
+  #else
+    uint_fast64_t r = 0;
+    SIMDE_VECTORIZE_REDUCTION(|:r)
+    for (size_t i = 0 ; i < (sizeof(a_.u64) / sizeof(a_.u64[0])) ; i++) {
+      r |= ~a_.u64[i] & b_.u64[i];
+    }
 
-  return HEDLEY_STATIC_CAST(int, ((~r >> 63) & 1));
+    return HEDLEY_STATIC_CAST(int, ((~r >> 63) & 1));
+  #endif
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
@@ -5946,17 +5958,24 @@ simde_mm_testz_ps (simde__m128 a, simde__m128 b) {
 #if defined(SIMDE_X86_AVX_NATIVE)
   return _mm_testz_ps(a, b);
 #else
-  uint_fast32_t r = 0;
   simde__m128_private
     a_ = simde__m128_to_private(a),
     b_ = simde__m128_to_private(b);
 
-  SIMDE_VECTORIZE_REDUCTION(|:r)
-  for (size_t i = 0 ; i < (sizeof(a_.u32) / sizeof(a_.u32[0])) ; i++) {
-    r |= a_.u32[i] & b_.u32[i];
-  }
+  #if defined(SIMDE_WASM_SIMD128_NATIVE)
+    v128_t m = wasm_u32x4_shr(wasm_v128_not(wasm_v128_and(a_.wasm_v128, b_.wasm_v128)), 31);
+    m = wasm_v128_and(m, simde_mm_movehl_ps(m, m));
+    m = wasm_v128_and(m, simde_mm_shuffle_epi32(m, SIMDE_MM_SHUFFLE(3, 2, 0, 1)));
+    return wasm_i32x4_extract_lane(m, 0);
+  #else
+    uint_fast32_t r = 0;
+    SIMDE_VECTORIZE_REDUCTION(|:r)
+    for (size_t i = 0 ; i < (sizeof(a_.u32) / sizeof(a_.u32[0])) ; i++) {
+      r |= a_.u32[i] & b_.u32[i];
+    }
 
-  return HEDLEY_STATIC_CAST(int, ((~r >> 31) & 1));
+    return HEDLEY_STATIC_CAST(int, ((~r >> 31) & 1));
+  #endif
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
@@ -5970,17 +5989,22 @@ simde_mm_testz_pd (simde__m128d a, simde__m128d b) {
 #if defined(SIMDE_X86_AVX_NATIVE)
   return _mm_testz_pd(a, b);
 #else
-  uint_fast64_t r = 0;
   simde__m128d_private
     a_ = simde__m128d_to_private(a),
     b_ = simde__m128d_to_private(b);
 
-  SIMDE_VECTORIZE_REDUCTION(|:r)
-  for (size_t i = 0 ; i < (sizeof(a_.u64) / sizeof(a_.u64[0])) ; i++) {
-    r |= a_.u64[i] & b_.u64[i];
-  }
+  #if defined(SIMDE_WASM_SIMD128_NATIVE)
+    v128_t m = wasm_u64x2_shr(wasm_v128_not(wasm_v128_and(a_.wasm_v128, b_.wasm_v128)), 63);
+    return HEDLEY_STATIC_CAST(int, wasm_i64x2_extract_lane(m, 0) & wasm_i64x2_extract_lane(m, 1));
+  #else
+    uint_fast64_t r = 0;
+    SIMDE_VECTORIZE_REDUCTION(|:r)
+    for (size_t i = 0 ; i < (sizeof(a_.u64) / sizeof(a_.u64[0])) ; i++) {
+      r |= a_.u64[i] & b_.u64[i];
+    }
 
-  return HEDLEY_STATIC_CAST(int, ((~r >> 63) & 1));
+    return HEDLEY_STATIC_CAST(int, ((~r >> 63) & 1));
+  #endif
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
@@ -6072,19 +6096,29 @@ simde_mm_testnzc_ps (simde__m128 a, simde__m128 b) {
 #if defined(SIMDE_X86_AVX_NATIVE)
   return _mm_testnzc_ps(a, b);
 #else
-  uint32_t rz = 0, rc = 0;
   simde__m128_private
     a_ = simde__m128_to_private(a),
     b_ = simde__m128_to_private(b);
 
-  for (size_t i = 0 ; i < (sizeof(a_.u32) / sizeof(a_.u32[0])) ; i++) {
-    rc |= ~a_.u32[i] & b_.u32[i];
-    rz |=  a_.u32[i] & b_.u32[i];
-  }
+  #if defined(SIMDE_WASM_SIMD128_NATIVE)
+    v128_t m = wasm_u32x4_shr(wasm_v128_and(a_.wasm_v128, b_.wasm_v128), 31);
+    v128_t m2 = wasm_u32x4_shr(wasm_v128_andnot(b_.wasm_v128, a_.wasm_v128), 31);
+    m  = wasm_v128_or(m,  simde_mm_movehl_ps(m, m));
+    m2 = wasm_v128_or(m2, simde_mm_movehl_ps(m2, m2));
+    m  = wasm_v128_or(m,  simde_mm_shuffle_epi32(m, SIMDE_MM_SHUFFLE(3, 2, 0, 1)));
+    m2 = wasm_v128_or(m2, simde_mm_shuffle_epi32(m2, SIMDE_MM_SHUFFLE(3, 2, 0, 1)));
+    return wasm_i32x4_extract_lane(m, 0) & wasm_i32x4_extract_lane(m2, 0);
+  #else
+    uint32_t rz = 0, rc = 0;
+    for (size_t i = 0 ; i < (sizeof(a_.u32) / sizeof(a_.u32[0])) ; i++) {
+      rc |= ~a_.u32[i] & b_.u32[i];
+      rz |=  a_.u32[i] & b_.u32[i];
+    }
 
-  return
-    (rc >> ((sizeof(rc) * CHAR_BIT) - 1)) &
-    (rz >> ((sizeof(rz) * CHAR_BIT) - 1));
+    return
+      (rc >> ((sizeof(rc) * CHAR_BIT) - 1)) &
+      (rz >> ((sizeof(rz) * CHAR_BIT) - 1));
+  #endif
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
@@ -6098,19 +6132,25 @@ simde_mm_testnzc_pd (simde__m128d a, simde__m128d b) {
 #if defined(SIMDE_X86_AVX_NATIVE)
   return _mm_testnzc_pd(a, b);
 #else
-  uint64_t rc = 0, rz = 0;
   simde__m128d_private
     a_ = simde__m128d_to_private(a),
     b_ = simde__m128d_to_private(b);
+  #if defined(SIMDE_WASM_SIMD128_NATIVE)
+    v128_t m = wasm_u64x2_shr(wasm_v128_and(a_.wasm_v128, b_.wasm_v128), 63);
+    v128_t m2 = wasm_u64x2_shr(wasm_v128_andnot(b_.wasm_v128, a_.wasm_v128), 63);
+    return HEDLEY_STATIC_CAST(int, (wasm_i64x2_extract_lane(m, 0)  | wasm_i64x2_extract_lane(m, 1))
+       & (wasm_i64x2_extract_lane(m2, 0) | wasm_i64x2_extract_lane(m2, 1)));
+  #else
+    uint64_t rc = 0, rz = 0;
+    for (size_t i = 0 ; i < (sizeof(a_.u64) / sizeof(a_.u64[0])) ; i++) {
+      rc |= ~a_.u64[i] & b_.u64[i];
+      rz |=  a_.u64[i] & b_.u64[i];
+    }
 
-  for (size_t i = 0 ; i < (sizeof(a_.u64) / sizeof(a_.u64[0])) ; i++) {
-    rc |= ~a_.u64[i] & b_.u64[i];
-    rz |=  a_.u64[i] & b_.u64[i];
-  }
-
-  return
-    (rc >> ((sizeof(rc) * CHAR_BIT) - 1)) &
-    (rz >> ((sizeof(rz) * CHAR_BIT) - 1));
+    return
+      (rc >> ((sizeof(rc) * CHAR_BIT) - 1)) &
+      (rz >> ((sizeof(rz) * CHAR_BIT) - 1));
+  #endif
 #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
