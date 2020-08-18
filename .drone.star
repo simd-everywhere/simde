@@ -243,7 +243,7 @@ def get_jobs():
     },
     "steps": [
       {
-        "image": "fedora:rawhide",
+        "image": "fedora:latest",
         "environment": {
           "CC": "clang",
           "CXX": "clang++",
