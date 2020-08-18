@@ -6,7 +6,7 @@ def get_test_commands():
   return [
     "mkdir -p build",
     "cd build",
-    'CFLAGS="$ARCH_FLAGS" CXXFLAGS="$ARCH_FLAGS" meson .. || (cat meson-logs/meson-log.txt; false)',
+    'CFLAGS="$ARCH_FLAGS $DIAGNOSTIC_FLAGS" CXXFLAGS="$ARCH_FLAGS $DIAGNOSTIC_FLAGS" meson .. || (cat meson-logs/meson-log.txt; false)',
     '"$(command -v ninja || command -v ninja-build)" -v test'
   ]
 
@@ -78,6 +78,7 @@ def get_jobs():
           "CC": "clang-9",
           "CXX": "clang++-9",
           "ARCH_FLAGS": "-march=armv7a -mfpu=neon",
+          "DIAGNOSTIC_FLAGS": "-Weverything -Werror",
         }
       }
     ],
@@ -97,6 +98,7 @@ def get_jobs():
           "CC": "clang-9",
           "CXX": "clang++-9",
           "ARCH_FLAGS": "-march=armv8a -mfpu=neon",
+          "DIAGNOSTIC_FLAGS": "-Weverything -Werror",
         }
       }
     ],
@@ -116,6 +118,7 @@ def get_jobs():
           "CC": "gcc-8",
           "CXX": "g++-8",
           "ARCH_FLAGS": "-march=armv7-a -mfpu=neon",
+          "DIAGNOSTIC_FLAGS": "-Wextra -Werror",
         }
       }
     ],
@@ -135,6 +138,7 @@ def get_jobs():
           "CC": "gcc-8",
           "CXX": "g++-8",
           "ARCH_FLAGS": "-march=armv8-a -mfpu=neon",
+          "DIAGNOSTIC_FLAGS": "-Wextra -Werror",
         }
       }
     ],
@@ -154,6 +158,7 @@ def get_jobs():
           "CC": "clang-7",
           "CXX": "clang++-7",
           "ARCH_FLAGS": "-march=armv7a -mfpu=neon",
+          "DIAGNOSTIC_FLAGS": "-Weverything -Werror",
         }
       }
     ],
@@ -173,6 +178,7 @@ def get_jobs():
           "CC": "clang-7",
           "CXX": "clang++-7",
           "ARCH_FLAGS": "-march=armv8a -mfpu=neon",
+          "DIAGNOSTIC_FLAGS": "-Weverything -Werror",
         }
       }
     ],
@@ -192,6 +198,7 @@ def get_jobs():
           "CC": "gcc-7",
           "CXX": "g++-7",
           "ARCH_FLAGS": "-march=armv7-a -mfpu=neon",
+          "DIAGNOSTIC_FLAGS": "-Wextra -Werror",
         }
       }
     ],
@@ -211,6 +218,7 @@ def get_jobs():
           "CC": "gcc-7",
           "CXX": "g++-7",
           "ARCH_FLAGS": "-march=armv8-a -mfpu=neon",
+          "DIAGNOSTIC_FLAGS": "-Wextra -Werror",
         }
       }
     ],
@@ -228,6 +236,7 @@ def get_jobs():
           "CC": "gcc",
           "CXX": "g++",
           "ARCH_FLAGS": "-march=native",
+          "DIAGNOSTIC_FLAGS": "-Wextra -Werror",
         }
       }
     ],
@@ -247,6 +256,7 @@ def get_jobs():
         "environment": {
           "CC": "clang",
           "CXX": "clang++",
+          "DIAGNOSTIC_FLAGS": "-Weverything -Werror",
         }
       }
     ],
@@ -269,6 +279,7 @@ def get_jobs():
         "environment": {
           "CC": "clang",
           "CXX": "clang++",
+          "DIAGNOSTIC_FLAGS": "-Weverything -Werror",
         },
         "failure": "ignore"
       }
