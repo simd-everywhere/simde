@@ -1285,6 +1285,8 @@ simde_mm_comieq_sd (simde__m128d a, simde__m128d b) {
       b_ = simde__m128d_to_private(b);
     #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
       return !!vgetq_lane_u64(vceqq_f64(a_.neon_f64, b_.neon_f64), 0);
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+      return wasm_f64x2_extract_lane(a_.wasm_v128, 0) == wasm_f64x2_extract_lane(b_.wasm_v128, 0);
     #else
       return a_.f64[0] == b_.f64[0];
     #endif
@@ -1305,6 +1307,8 @@ simde_mm_comige_sd (simde__m128d a, simde__m128d b) {
       b_ = simde__m128d_to_private(b);
     #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
       return !!vgetq_lane_u64(vcgeq_f64(a_.neon_f64, b_.neon_f64), 0);
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+      return wasm_f64x2_extract_lane(a_.wasm_v128, 0) >= wasm_f64x2_extract_lane(b_.wasm_v128, 0);
     #else
       return a_.f64[0] >= b_.f64[0];
     #endif
@@ -1325,6 +1329,8 @@ simde_mm_comigt_sd (simde__m128d a, simde__m128d b) {
       b_ = simde__m128d_to_private(b);
     #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
       return !!vgetq_lane_u64(vcgtq_f64(a_.neon_f64, b_.neon_f64), 0);
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+      return wasm_f64x2_extract_lane(a_.wasm_v128, 0) > wasm_f64x2_extract_lane(b_.wasm_v128, 0);
     #else
       return a_.f64[0] > b_.f64[0];
     #endif
@@ -1345,6 +1351,8 @@ simde_mm_comile_sd (simde__m128d a, simde__m128d b) {
       b_ = simde__m128d_to_private(b);
     #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
       return !!vgetq_lane_u64(vcleq_f64(a_.neon_f64, b_.neon_f64), 0);
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+      return wasm_f64x2_extract_lane(a_.wasm_v128, 0) <= wasm_f64x2_extract_lane(b_.wasm_v128, 0);
     #else
       return a_.f64[0] <= b_.f64[0];
     #endif
@@ -1365,6 +1373,8 @@ simde_mm_comilt_sd (simde__m128d a, simde__m128d b) {
       b_ = simde__m128d_to_private(b);
     #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
       return !!vgetq_lane_u64(vcltq_f64(a_.neon_f64, b_.neon_f64), 0);
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+      return wasm_f64x2_extract_lane(a_.wasm_v128, 0) < wasm_f64x2_extract_lane(b_.wasm_v128, 0);
     #else
       return a_.f64[0] < b_.f64[0];
     #endif
@@ -1385,6 +1395,8 @@ simde_mm_comineq_sd (simde__m128d a, simde__m128d b) {
       b_ = simde__m128d_to_private(b);
     #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
       return !vgetq_lane_u64(vceqq_f64(a_.neon_f64, b_.neon_f64), 0);
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+      return wasm_f64x2_extract_lane(a_.wasm_v128, 0) != wasm_f64x2_extract_lane(b_.wasm_v128, 0);
     #else
       return a_.f64[0] != b_.f64[0];
     #endif
