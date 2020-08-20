@@ -6352,6 +6352,8 @@ simde_mm_ucomieq_sd (simde__m128d a, simde__m128d b) {
       uint64x2_t a_or_b_nan = vreinterpretq_u64_u32(vmvnq_u32(vreinterpretq_u32_u64(vandq_u64(a_not_nan, b_not_nan))));
       uint64x2_t a_eq_b = vceqq_f64(a_.neon_f64, b_.neon_f64);
       r = !!(vgetq_lane_u64(vorrq_u64(a_or_b_nan, a_eq_b), 0) != 0);
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+      return wasm_f64x2_extract_lane(a_.wasm_v128, 0) == wasm_f64x2_extract_lane(b_.wasm_v128, 0);
     #elif defined(SIMDE_HAVE_FENV_H)
       fenv_t envp;
       int x = feholdexcept(&envp);
@@ -6386,6 +6388,8 @@ simde_mm_ucomige_sd (simde__m128d a, simde__m128d b) {
       uint64x2_t a_and_b_not_nan = vandq_u64(a_not_nan, b_not_nan);
       uint64x2_t a_ge_b = vcgeq_f64(a_.neon_f64, b_.neon_f64);
       r = !!(vgetq_lane_u64(vandq_u64(a_and_b_not_nan, a_ge_b), 0) != 0);
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+      return wasm_f64x2_extract_lane(a_.wasm_v128, 0) >= wasm_f64x2_extract_lane(b_.wasm_v128, 0);
     #elif defined(SIMDE_HAVE_FENV_H)
       fenv_t envp;
       int x = feholdexcept(&envp);
@@ -6420,6 +6424,8 @@ simde_mm_ucomigt_sd (simde__m128d a, simde__m128d b) {
       uint64x2_t a_and_b_not_nan = vandq_u64(a_not_nan, b_not_nan);
       uint64x2_t a_gt_b = vcgtq_f64(a_.neon_f64, b_.neon_f64);
       r = !!(vgetq_lane_u64(vandq_u64(a_and_b_not_nan, a_gt_b), 0) != 0);
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+      return wasm_f64x2_extract_lane(a_.wasm_v128, 0) > wasm_f64x2_extract_lane(b_.wasm_v128, 0);
     #elif defined(SIMDE_HAVE_FENV_H)
       fenv_t envp;
       int x = feholdexcept(&envp);
@@ -6454,6 +6460,8 @@ simde_mm_ucomile_sd (simde__m128d a, simde__m128d b) {
       uint64x2_t a_or_b_nan = vreinterpretq_u64_u32(vmvnq_u32(vreinterpretq_u32_u64(vandq_u64(a_not_nan, b_not_nan))));
       uint64x2_t a_le_b = vcleq_f64(a_.neon_f64, b_.neon_f64);
       r = !!(vgetq_lane_u64(vorrq_u64(a_or_b_nan, a_le_b), 0) != 0);
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+      return wasm_f64x2_extract_lane(a_.wasm_v128, 0) <= wasm_f64x2_extract_lane(b_.wasm_v128, 0);
     #elif defined(SIMDE_HAVE_FENV_H)
       fenv_t envp;
       int x = feholdexcept(&envp);
@@ -6488,6 +6496,8 @@ simde_mm_ucomilt_sd (simde__m128d a, simde__m128d b) {
       uint64x2_t a_or_b_nan = vreinterpretq_u64_u32(vmvnq_u32(vreinterpretq_u32_u64(vandq_u64(a_not_nan, b_not_nan))));
       uint64x2_t a_lt_b = vcltq_f64(a_.neon_f64, b_.neon_f64);
       r = !!(vgetq_lane_u64(vorrq_u64(a_or_b_nan, a_lt_b), 0) != 0);
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+      return wasm_f64x2_extract_lane(a_.wasm_v128, 0) < wasm_f64x2_extract_lane(b_.wasm_v128, 0);
     #elif defined(SIMDE_HAVE_FENV_H)
       fenv_t envp;
       int x = feholdexcept(&envp);
@@ -6522,6 +6532,8 @@ simde_mm_ucomineq_sd (simde__m128d a, simde__m128d b) {
       uint64x2_t a_and_b_not_nan = vandq_u64(a_not_nan, b_not_nan);
       uint64x2_t a_neq_b = vreinterpretq_u64_u32(vmvnq_u32(vreinterpretq_u32_u64(vceqq_f64(a_.neon_f64, b_.neon_f64))));
       r = !!(vgetq_lane_u64(vandq_u64(a_and_b_not_nan, a_neq_b), 0) != 0);
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+      return wasm_f64x2_extract_lane(a_.wasm_v128, 0) != wasm_f64x2_extract_lane(b_.wasm_v128, 0);
     #elif defined(SIMDE_HAVE_FENV_H)
       fenv_t envp;
       int x = feholdexcept(&envp);
