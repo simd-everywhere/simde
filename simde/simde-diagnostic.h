@@ -48,6 +48,7 @@
 #define SIMDE_DIAGNOSTIC_H
 
 #include "hedley.h"
+#include "simde-detect-clang.h"
 
 /* This is only to help us implement functions like _mm_undefined_ps. */
 #if defined(SIMDE_DIAGNOSTIC_DISABLE_UNINITIALIZED_)
@@ -326,12 +327,20 @@
   #define SIMDE_DIAGNOSTIC_DISABLE_C11_EXTENSIONS_
 #endif
 
-/* Clang sometimes triggers this warning in macros in the AltiVec
- * headers, or due to missing AltiVec functions. */
+/* Clang sometimes triggers this warning in macros in the AltiVec and
+ * NEON headers, or due to missing functions. */
 #if HEDLEY_HAS_WARNING("-Wvector-conversion")
   #define SIMDE_DIAGNOSTIC_DISABLE_VECTOR_CONVERSION_ _Pragma("clang diagnostic ignored \"-Wvector-conversion\"")
+  /* For NEON, the situation with -Wvector-conversion in clang < 10 is
+   * bad enough that we just disable the warning altogether. */
+  #if defined(__arm__) && SIMDE_DETECT_CLANG_VERSION_NOT(10,0,0)
+    #define SIMDE_DIAGNOSTIC_DISABLE_BUGGY_VECTOR_CONVERSION_ SIMDE_DIAGNOSTIC_DISABLE_VECTOR_CONVERSION_
+  #endif
 #else
   #define SIMDE_DIAGNOSTIC_DISABLE_VECTOR_CONVERSION_
+#endif
+#if !defined(SIMDE_DIAGNOSTIC_DISABLE_BUGGY_VECTOR_CONVERSION_)
+  #define SIMDE_DIAGNOSTIC_DISABLE_BUGGY_VECTOR_CONVERSION_
 #endif
 
 /* SLEEF triggers this a *lot* in their headers */
@@ -364,6 +373,7 @@
   SIMDE_DIAGNOSTIC_DISABLE_PASS_FAILED_ \
   SIMDE_DIAGNOSTIC_DISABLE_CPP98_COMPAT_PEDANTIC_ \
   SIMDE_DIAGNOSTIC_DISABLE_CPP11_LONG_LONG_ \
-  SIMDE_DIAGNOSTIC_DISABLE_BUGGY_UNUSED_BUT_SET_VARIBALE_
+  SIMDE_DIAGNOSTIC_DISABLE_BUGGY_UNUSED_BUT_SET_VARIBALE_ \
+  SIMDE_DIAGNOSTIC_DISABLE_BUGGY_VECTOR_CONVERSION_
 
 #endif /* !defined(SIMDE_DIAGNOSTIC_H) */
