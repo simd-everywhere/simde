@@ -3683,7 +3683,7 @@ simde_mm256_insert_epi64 (simde__m256i a, int64_t i, const int index)
 }
 #if defined(SIMDE_X86_AVX_NATIVE) && \
     (!defined(HEDLEY_MSVC_VERSION) || (HEDLEY_MSVC_VERSION_CHECK(19,20,0) && defined(_M_X64))) && \
-    SIMDE_DETECT_CLANG_VERSION_NOT(3,7,0)
+    SIMDE_DETECT_CLANG_VERSION_CHECK(3,7,0)
   #define simde_mm256_insert_epi64(a, i, index) _mm256_insert_epi64(a, i, index)
 #endif
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
@@ -4993,7 +4993,7 @@ simde__m256
 simde_mm256_setr_m128 (simde__m128 lo, simde__m128 hi) {
   #if defined(SIMDE_X86_AVX_NATIVE) && \
       !defined(SIMDE_BUG_GCC_REV_247851) && \
-      SIMDE_DETECT_CLANG_VERSION_NOT(3,6,0)
+      SIMDE_DETECT_CLANG_VERSION_CHECK(3,6,0)
     return _mm256_setr_m128(lo, hi);
   #else
     return simde_mm256_set_m128(hi, lo);
@@ -5010,7 +5010,7 @@ simde__m256d
 simde_mm256_setr_m128d (simde__m128d lo, simde__m128d hi) {
   #if defined(SIMDE_X86_AVX_NATIVE) && \
       !defined(SIMDE_BUG_GCC_REV_247851) && \
-      SIMDE_DETECT_CLANG_VERSION_NOT(3,6,0)
+      SIMDE_DETECT_CLANG_VERSION_CHECK(3,6,0)
     return _mm256_setr_m128d(lo, hi);
   #else
     return simde_mm256_set_m128d(hi, lo);
@@ -5027,7 +5027,7 @@ simde__m256i
 simde_mm256_setr_m128i (simde__m128i lo, simde__m128i hi) {
   #if defined(SIMDE_X86_AVX_NATIVE) && \
       !defined(SIMDE_BUG_GCC_REV_247851) && \
-      SIMDE_DETECT_CLANG_VERSION_NOT(3,6,0)
+      SIMDE_DETECT_CLANG_VERSION_CHECK(3,6,0)
     return _mm256_setr_m128i(lo, hi);
   #else
     return simde_mm256_set_m128i(hi, lo);

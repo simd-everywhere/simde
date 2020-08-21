@@ -982,7 +982,7 @@ simde_mm256_bslli_epi128 (simde__m256i a, const int imm8)
 }
 #if defined(SIMDE_X86_AVX2_NATIVE) && \
     (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(4,8,0)) && \
-    SIMDE_DETECT_CLANG_VERSION_NOT(3,7,0)
+    SIMDE_DETECT_CLANG_VERSION_CHECK(3,7,0)
   #define simde_mm256_bslli_epi128(a, imm8) _mm256_bslli_epi128(a, imm8)
 #endif
 #if defined(SIMDE_X86_AVX2_ENABLE_NATIVE_ALIASES)
@@ -1020,7 +1020,7 @@ simde_mm256_bsrli_epi128 (simde__m256i a, const int imm8)
 }
 #if defined(SIMDE_X86_AVX2_NATIVE) && \
     (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(4,8,0)) && \
-    SIMDE_DETECT_CLANG_VERSION_NOT(3,7,0)
+    SIMDE_DETECT_CLANG_VERSION_CHECK(3,7,0)
   #define simde_mm256_bsrli_epi128(a, imm8) _mm256_bsrli_epi128(a, imm8)
 #endif
 #if defined(SIMDE_X86_AVX2_ENABLE_NATIVE_ALIASES)
@@ -1887,7 +1887,7 @@ simde_mm_i32gather_epi64(const int64_t* base_addr, simde__m128i vindex, const in
   return simde__m128i_from_private(r_);
 }
 #if defined(SIMDE_X86_AVX2_NATIVE)
-  #if SIMDE_DETECT_CLANG_VERSION_NOT(3,8,0)
+  #if SIMDE_DETECT_CLANG_VERSION_CHECK(3,8,0)
     #define simde_mm_i32gather_epi64(base_addr, vindex, scale) _mm_i32gather_epi64(HEDLEY_REINTERPRET_CAST(int64_t const*, base_addr), vindex, scale)
   #else
     #define simde_mm_i32gather_epi64(base_addr, vindex, scale) _mm_i32gather_epi64(HEDLEY_REINTERPRET_CAST(long long const*, base_addr), vindex, scale)
@@ -1926,7 +1926,7 @@ simde_mm_mask_i32gather_epi64(simde__m128i src, const int64_t* base_addr, simde_
   return simde__m128i_from_private(r_);
 }
 #if defined(SIMDE_X86_AVX2_NATIVE)
-  #if SIMDE_DETECT_CLANG_VERSION_NOT(3,8,0)
+  #if SIMDE_DETECT_CLANG_VERSION_CHECK(3,8,0)
     #define simde_mm_mask_i32gather_epi64(src, base_addr, vindex, mask, scale) _mm_mask_i32gather_epi64(src, HEDLEY_REINTERPRET_CAST(int64_t const*, base_addr), vindex, mask, scale)
   #else
     #define simde_mm_mask_i32gather_epi64(src, base_addr, vindex, mask, scale) _mm_mask_i32gather_epi64(src, HEDLEY_REINTERPRET_CAST(long long const*, base_addr), vindex, mask, scale)
@@ -1959,7 +1959,7 @@ simde_mm256_i32gather_epi64(const int64_t* base_addr, simde__m128i vindex, const
   return simde__m256i_from_private(r_);
 }
 #if defined(SIMDE_X86_AVX2_NATIVE)
-  #if SIMDE_DETECT_CLANG_VERSION_NOT(3,8,0)
+  #if SIMDE_DETECT_CLANG_VERSION_CHECK(3,8,0)
     #define simde_mm256_i32gather_epi64(base_addr, vindex, scale) _mm256_i32gather_epi64(HEDLEY_REINTERPRET_CAST(int64_t const*, base_addr), vindex, scale)
   #else
     #define simde_mm256_i32gather_epi64(base_addr, vindex, scale) _mm256_i32gather_epi64(HEDLEY_REINTERPRET_CAST(long long const*, base_addr), vindex, scale)
@@ -1999,7 +1999,7 @@ simde_mm256_mask_i32gather_epi64(simde__m256i src, const int64_t* base_addr, sim
   return simde__m256i_from_private(r_);
 }
 #if defined(SIMDE_X86_AVX2_NATIVE)
-  #if SIMDE_DETECT_CLANG_VERSION_NOT(3,8,0)
+  #if SIMDE_DETECT_CLANG_VERSION_CHECK(3,8,0)
     #define simde_mm256_mask_i32gather_epi64(src, base_addr, vindex, mask, scale) _mm256_mask_i32gather_epi64(src, HEDLEY_REINTERPRET_CAST(int64_t const*, base_addr), vindex, mask, scale)
   #else
     #define simde_mm256_mask_i32gather_epi64(src, base_addr, vindex, mask, scale) _mm256_mask_i32gather_epi64(src, HEDLEY_REINTERPRET_CAST(long long const*, base_addr), vindex, mask, scale)
@@ -2031,7 +2031,7 @@ simde_mm_i64gather_epi64(const int64_t* base_addr, simde__m128i vindex, const in
   return simde__m128i_from_private(r_);
 }
 #if defined(SIMDE_X86_AVX2_NATIVE)
-  #if SIMDE_DETECT_CLANG_VERSION_NOT(3,8,0)
+  #if SIMDE_DETECT_CLANG_VERSION_CHECK(3,8,0)
     #define simde_mm_i64gather_epi64(base_addr, vindex, scale) _mm_i64gather_epi64(HEDLEY_REINTERPRET_CAST(int64_t const*, base_addr), vindex, scale)
   #else
     #define simde_mm_i64gather_epi64(base_addr, vindex, scale) _mm_i64gather_epi64(HEDLEY_REINTERPRET_CAST(long long const*, base_addr), vindex, scale)
@@ -2070,7 +2070,7 @@ simde_mm_mask_i64gather_epi64(simde__m128i src, const int64_t* base_addr, simde_
   return simde__m128i_from_private(r_);
 }
 #if defined(SIMDE_X86_AVX2_NATIVE)
-  #if SIMDE_DETECT_CLANG_VERSION_NOT(3,8,0)
+  #if SIMDE_DETECT_CLANG_VERSION_CHECK(3,8,0)
     #define simde_mm_mask_i64gather_epi64(src, base_addr, vindex, mask, scale) _mm_mask_i64gather_epi64(src, HEDLEY_REINTERPRET_CAST(int64_t const*, base_addr), vindex, mask, scale)
   #else
     #define simde_mm_mask_i64gather_epi64(src, base_addr, vindex, mask, scale) _mm_mask_i64gather_epi64(src, HEDLEY_REINTERPRET_CAST(long long const*, base_addr), vindex, mask, scale)
@@ -2102,7 +2102,7 @@ simde_mm256_i64gather_epi64(const int64_t* base_addr, simde__m256i vindex, const
   return simde__m256i_from_private(r_);
 }
 #if defined(SIMDE_X86_AVX2_NATIVE)
-  #if SIMDE_DETECT_CLANG_VERSION_NOT(3,8,0)
+  #if SIMDE_DETECT_CLANG_VERSION_CHECK(3,8,0)
     #define simde_mm256_i64gather_epi64(base_addr, vindex, scale) _mm256_i64gather_epi64(HEDLEY_REINTERPRET_CAST(int64_t const*, base_addr), vindex, scale)
   #else
     #define simde_mm256_i64gather_epi64(base_addr, vindex, scale) _mm256_i64gather_epi64(HEDLEY_REINTERPRET_CAST(long long const*, base_addr), vindex, scale)
@@ -2141,7 +2141,7 @@ simde_mm256_mask_i64gather_epi64(simde__m256i src, const int64_t* base_addr, sim
   return simde__m256i_from_private(r_);
 }
 #if defined(SIMDE_X86_AVX2_NATIVE)
-  #if SIMDE_DETECT_CLANG_VERSION_NOT(3,8,0)
+  #if SIMDE_DETECT_CLANG_VERSION_CHECK(3,8,0)
     #define simde_mm256_mask_i64gather_epi64(src, base_addr, vindex, mask, scale) _mm256_mask_i64gather_epi64(src, HEDLEY_REINTERPRET_CAST(int64_t const*, base_addr), vindex, mask, scale)
   #else
     #define simde_mm256_mask_i64gather_epi64(src, base_addr, vindex, mask, scale) _mm256_mask_i64gather_epi64(src, HEDLEY_REINTERPRET_CAST(long long const*, base_addr), vindex, mask, scale)
