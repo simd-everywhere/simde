@@ -197,6 +197,9 @@ simde_mm_blendv_epi8 (simde__m128i a, simde__m128i b, simde__m128i mask) {
     /* Use a signed shift right to create a mask with the sign bit */
     mask_.neon_i8 = vshrq_n_s8(mask_.neon_i8, 7);
     r_.neon_i8 = vbslq_s8(mask_.neon_u8, b_.neon_i8, a_.neon_i8);
+  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+    v128_t m = wasm_i8x16_shr(mask_.wasm_v128, 7);
+    r_.wasm_v128 = wasm_v128_or(wasm_v128_and(b_.wasm_v128, m), wasm_v128_andnot(a_.wasm_v128, m));
   #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
     r_.altivec_i8 = vec_sel(a_.altivec_i8, b_.altivec_i8, vec_cmplt(mask_.altivec_i8, vec_splat_s8(0)));
   #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
@@ -279,6 +282,9 @@ simde_x_mm_blendv_epi32 (simde__m128i a, simde__m128i b, simde__m128i mask) {
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   mask_ = simde__m128i_to_private(simde_mm_cmplt_epi32(mask, simde_mm_setzero_si128()));
   r_.neon_i32 = vbslq_s32(mask_.neon_u32, b_.neon_i32, a_.neon_i32);
+#elif defined(SIMDE_WASM_SIMD128_NATIVE)
+  v128_t m = wasm_i32x4_shr(mask_.wasm_v128, 31);
+  r_.wasm_v128 = wasm_v128_or(wasm_v128_and(b_.wasm_v128, m), wasm_v128_andnot(a_.wasm_v128, m));
 #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
   r_.altivec_i32 = vec_sel(a_.altivec_i32, b_.altivec_i32, vec_cmplt(mask_.altivec_i32, vec_splat_s32(0)));
 #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
@@ -317,6 +323,9 @@ simde_x_mm_blendv_epi64 (simde__m128i a, simde__m128i b, simde__m128i mask) {
     #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
       mask_.u64 = vcltq_s64(mask_.i64, vdupq_n_s64(UINT64_C(0)));
       r_.neon_i64 = vbslq_s64(mask_.neon_u64, b_.neon_i64, a_.neon_i64);
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+      v128_t m = wasm_i64x2_shr(mask_.wasm_v128, 63);
+      r_.wasm_v128 = wasm_v128_or(wasm_v128_and(b_.wasm_v128, m), wasm_v128_andnot(a_.wasm_v128, m));
     #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
       /* Using int due to clang bug #46770 */
       SIMDE_POWER_ALTIVEC_VECTOR(signed long long) selector = vec_sra(mask_.altivec_i64, vec_splats(HEDLEY_STATIC_CAST(unsigned long long, 63)));
