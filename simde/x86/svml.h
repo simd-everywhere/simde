@@ -4450,7 +4450,7 @@ simde_mm_cdfnorm_pd (simde__m128d a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m256
 simde_mm256_cdfnorm_ps (simde__m256 a) {
-  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE_NATIVE)
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX_NATIVE)
     return _mm256_cdfnorm_ps(a);
   #elif (SIMDE_NATURAL_VECTOR_SIZE > 0)
     /* https://www.johndcook.com/blog/cpp_phi/ */
@@ -4504,7 +4504,7 @@ simde_mm256_cdfnorm_ps (simde__m256 a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m256d
 simde_mm256_cdfnorm_pd (simde__m256d a) {
-  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE_NATIVE)
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX_NATIVE)
     return _mm256_cdfnorm_pd(a);
   #elif (SIMDE_NATURAL_VECTOR_SIZE > 0)
     /* https://www.johndcook.com/blog/cpp_phi/ */
@@ -4558,7 +4558,7 @@ simde_mm256_cdfnorm_pd (simde__m256d a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m512
 simde_mm512_cdfnorm_ps (simde__m512 a) {
-  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE_NATIVE)
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX512F_NATIVE)
     return _mm512_cdfnorm_ps(a);
   #elif (SIMDE_NATURAL_VECTOR_SIZE > 0)
     /* https://www.johndcook.com/blog/cpp_phi/ */
@@ -4612,7 +4612,7 @@ simde_mm512_cdfnorm_ps (simde__m512 a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m512d
 simde_mm512_cdfnorm_pd (simde__m512d a) {
-  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE_NATIVE)
+  #if defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_AVX512F_NATIVE)
     return _mm512_cdfnorm_pd(a);
   #elif (SIMDE_NATURAL_VECTOR_SIZE > 0)
     /* https://www.johndcook.com/blog/cpp_phi/ */
