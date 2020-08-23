@@ -2752,6 +2752,7 @@ simde_mm_min_ps (simde__m128 a, simde__m128 b) {
       a_ = simde__m128_to_private(a),
       b_ = simde__m128_to_private(b);
 
+    // we have 2 different implementations because NANs are not valid input for vec_min
     #if defined(SIMDE_FAST_NANS)
       r_.altivec_f32 = vec_min(a_.altivec_f32, b_.altivec_f32);
     #else
