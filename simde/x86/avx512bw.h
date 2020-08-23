@@ -850,13 +850,13 @@ simde_mm512_cmpgt_epi8_mask (simde__m512i a, simde__m512i b) {
       b_ = simde__m512i_to_private(b);
     simde__mmask64 r;
 
-    #if SIMDE_NATURAL_VECTOR_SIZE_LE(256)
+    #if SIMDE_NATURAL_VECTOR_SIZE_LE(256) && !defined(HEDLEY_INTEL_VERSION)
       r = 0;
 
       SIMDE_VECTORIZE_REDUCTION(|:r)
       for (size_t i = 0 ; i < (sizeof(a_.m256i) / sizeof(a_.m256i[0])) ; i++) {
         const uint32_t t = HEDLEY_STATIC_CAST(uint32_t, simde_mm256_movemask_epi8(simde_mm256_cmpgt_epi8(a_.m256i[i], b_.m256i[i])));
-        r |= HEDLEY_STATIC_CAST(uint64_t, t) << (i * 32);
+        r |= HEDLEY_STATIC_CAST(uint64_t, t) << HEDLEY_STATIC_CAST(uint64_t, i * 32);
       }
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       simde__m512i_private tmp;

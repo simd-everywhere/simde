@@ -3286,11 +3286,12 @@ simde_mm256_movemask_epi8 (simde__m256i a) {
     return _mm256_movemask_epi8(a);
   #else
     simde__m256i_private a_ = simde__m256i_to_private(a);
-    int32_t r;
+    uint32_t r = 0;
 
     #if SIMDE_NATURAL_VECTOR_SIZE_LE(128)
-      r =             simde_mm_movemask_epi8(a_.m128i[1]);
-      r = (r << 16) | simde_mm_movemask_epi8(a_.m128i[0]);
+      for (size_t i = 0 ; i < (sizeof(a_.m128i) / sizeof(a_.m128i[0])) ; i++) {
+        r |= HEDLEY_STATIC_CAST(uint32_t,simde_mm_movemask_epi8(a_.m128i[i])) << (16 * i);
+      }
     #else
       r = 0;
       SIMDE_VECTORIZE_REDUCTION(|:r)
@@ -3299,7 +3300,7 @@ simde_mm256_movemask_epi8 (simde__m256i a) {
       }
     #endif
 
-    return r;
+    return HEDLEY_STATIC_CAST(int32_t, r);
   #endif
 }
 #if defined(SIMDE_X86_AVX2_ENABLE_NATIVE_ALIASES)

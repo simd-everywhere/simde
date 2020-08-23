@@ -503,9 +503,11 @@ simde_mm512_xor_ps (simde__m512 a, simde__m512 b) {
       a_ = simde__m512_to_private(a),
       b_ = simde__m512_to_private(b);
 
-    #if SIMDE_NATURAL_VECTOR_SIZE_LE(256)
-      r_.m256[0] = simde_mm256_xor_ps(a_.m256[0], b_.m256[0]);
-      r_.m256[1] = simde_mm256_xor_ps(a_.m256[1], b_.m256[1]);
+    /* TODO: generate reduced case to give to Intel */
+    #if SIMDE_NATURAL_VECTOR_SIZE_LE(256) && !defined(HEDLEY_INTEL_VERSION)
+      for (size_t i = 0 ; i < (sizeof(r_.m256) / sizeof(r_.m256[0])) ; i++) {
+        r_.m256[i] = simde_mm256_xor_ps(a_.m256[i], b_.m256[i]);
+      }
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       r_.i32f = a_.i32f ^ b_.i32f;
     #else
