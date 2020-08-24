@@ -5269,6 +5269,8 @@ simde_mm_srl_epi32 (simde__m128i a, simde__m128i count) {
 
     #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       r_.neon_u32 = vshlq_u32(a_.neon_u32, vdupq_n_s32(HEDLEY_STATIC_CAST(int32_t, -cnt)));
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+      r_.wasm_v128 = wasm_u32x4_shr(a_.wasm_v128, cnt);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.u32) / sizeof(r_.u32[0])) ; i++) {
@@ -5298,6 +5300,8 @@ simde_mm_srl_epi64 (simde__m128i a, simde__m128i count) {
 
     #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       r_.neon_u64 = vshlq_u64(a_.neon_u64, vdupq_n_s64(HEDLEY_STATIC_CAST(int64_t, -cnt)));
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+      r_.wasm_v128 = wasm_u64x2_shr(a_.wasm_v128, cnt);
     #else
       #if !defined(SIMDE_BUG_GCC_94488)
         SIMDE_VECTORIZE
@@ -5626,6 +5630,9 @@ simde_mm_srli_epi16 (simde__m128i a, const int imm8)
         } \
         ret; \
     }))
+#elif defined(SIMDE_WASM_SIMD128_NATIVE)
+  #define simde_mm_srli_epi16(a, imm8) \
+    ((imm8 < 16) ? wasm_u16x8_shr(simde__m128i_to_private(a).wasm_v128, imm8) : wasm_i16x8_const(0,0,0,0,0,0,0,0))
 #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
   #define simde_mm_srli_epi16(a, imm8) \
     ((imm8 & ~15) ? simde_mm_setzero_si128() : simde__m128i_from_altivec_i16(vec_sr(simde__m128i_to_altivec_i16(a), vec_splat_u16(HEDLEY_STATIC_CAST(unsigned short, imm8)))))
@@ -5672,6 +5679,9 @@ simde_mm_srli_epi32 (simde__m128i a, const int imm8)
         } \
         ret; \
     }))
+#elif defined(SIMDE_WASM_SIMD128_NATIVE)
+  #define simde_mm_srli_epi32(a, imm8) \
+    ((imm8 < 32) ? wasm_u32x4_shr(simde__m128i_to_private(a).wasm_v128, imm8) : wasm_i32x4_const(0,0,0,0))
 #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
   #define simde_mm_srli_epi32(a, imm8) \
     (__extension__ ({ \
@@ -5734,6 +5744,9 @@ simde_mm_srli_epi64 (simde__m128i a, const int imm8)
         } \
         ret; \
     }))
+#elif defined(SIMDE_WASM_SIMD128_NATIVE)
+  #define simde_mm_srli_epi64(a, imm8) \
+    ((imm8 < 64) ? wasm_u64x2_shr(simde__m128i_to_private(a).wasm_v128, imm8) : wasm_i64x2_const(0,0))
 #endif
 #if defined(SIMDE_X86_SSE2_ENABLE_NATIVE_ALIASES)
   #define _mm_srli_epi64(a, imm8) simde_mm_srli_epi64(a, imm8)
