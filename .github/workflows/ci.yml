@@ -51,7 +51,7 @@ jobs:
       run: find simde/ -name '*.c' -o -name '*.h' -exec grep -nP 'vector( +)((bool|signed|unsigned) +)?(double|float|long long|long|int|short|char)' {} + && exit 1 || exit 0
     # Check indentation of preprocessor directives.
     - name: Preprocessor directive indentation
-      run: find simde/x86 -name 'avx*.h' -exec pcre2grep -M '{\n#' {} + && exit 1 || exit 0
+      run: find simde/*/ -name 'avx*.h' -exec pcre2grep -M '{\n#' {} + && exit 1 || exit 0
 
   x86:
     runs-on: ubuntu-latest
