@@ -2442,6 +2442,8 @@ simde_mm_cvtepi32_ps (simde__m128i a) {
 
     #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       r_.neon_f32 = vcvtq_f32_s32(a_.neon_i32);
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+      r_.wasm_v128 = wasm_f32x4_convert_i32x4(a_.wasm_v128);
     #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
       HEDLEY_DIAGNOSTIC_PUSH
       #if HEDLEY_HAS_WARNING("-Wc11-extensions")
@@ -2707,6 +2709,8 @@ simde_mm_cvtsi128_si32 (simde__m128i a) {
 
     #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       return vgetq_lane_s32(a_.neon_i32, 0);
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+      return wasm_i32x4_extract_lane(a_.wasm_v128, 0);
     #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
       #if defined(SIMDE_BUG_GCC_95227)
         (void) a_;
@@ -2736,6 +2740,8 @@ simde_mm_cvtsi128_si64 (simde__m128i a) {
     return vec_extract(HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(signed long long), a_.i64), 0);
   #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vgetq_lane_s64(a_.neon_i64, 0);
+  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+    return wasm_i64x2_extract_lane(a_.wasm_v128, 0);
   #endif
     return a_.i64[0];
   #endif
@@ -2779,6 +2785,8 @@ simde_mm_cvtsi32_si128 (int32_t a) {
 
     #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       r_.neon_i32 = vsetq_lane_s32(a, vdupq_n_s32(0), 0);
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+      r_.wasm_v128 = wasm_i32x4_make(a, 0, 0, 0);
     #else
       r_.i32[0] = a;
       r_.i32[1] = 0;
@@ -2837,6 +2845,8 @@ simde_mm_cvtsi64_si128 (int64_t a) {
 
     #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       r_.neon_i64 = vsetq_lane_s64(a, vdupq_n_s64(0), 0);
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+      r_.wasm_v128 = wasm_i64x2_make(a, 0);
     #else
       r_.i64[0] = a;
       r_.i64[1] = 0;
