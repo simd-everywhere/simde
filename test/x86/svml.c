@@ -23,7 +23,7 @@
  */
 
 #define SIMDE_TESTS_CURRENT_ISAX svml
-#include <test/x86/test-avx512.h>
+#include <test/x86/avx512/test-avx512.h>
 #include <simde/x86/svml.h>
 
 static int

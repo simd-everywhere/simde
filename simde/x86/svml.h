@@ -28,8 +28,24 @@
 #if !defined(SIMDE_X86_SVML_H)
 #define SIMDE_X86_SVML_H
 
-#include "avx512dq.h"
 #include "fma.h"
+#include "avx2.h"
+#include "avx512/abs.h"
+#include "avx512/add.h"
+#include "avx512/cmp.h"
+#include "avx512/copysign.h"
+#include "avx512/xorsign.h"
+#include "avx512/div.h"
+#include "avx512/fmadd.h"
+#include "avx512/mov.h"
+#include "avx512/mul.h"
+#include "avx512/negate.h"
+#include "avx512/or.h"
+#include "avx512/set1.h"
+#include "avx512/setone.h"
+#include "avx512/setzero.h"
+#include "avx512/sqrt.h"
+#include "avx512/sub.h"
 
 #if !defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_ENABLE_NATIVE_ALIASES)
 #  define SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES

@@ -198,13 +198,7 @@ jobs:
       run: ninja -C build -v
     - name: Test
       run: |
-        for isax in gfni avx512dq; do
-          for native in native emul; do
-            for lang in c cpp; do
-              ~/sde/sde64 -- sh -xc ./build/test/x86/"${isax}-${native}-${lang}" || exit 1
-            done
-          done
-        done
+        find build/test/ -type f -executable -exec parallel ~/sde/sde64 -- ::: {} \;
     - name: Coverage Report
       run: ninja -C build -v coverage-xml
     - name: CodeCov.io
@@ -294,13 +288,7 @@ jobs:
       run: ninja -C build -v
     - name: Test
       run: |
-        for isax in gfni avx512dq; do
-          for native in native emul; do
-            for lang in c cpp; do
-              ~/sde/sde64 -- sh -xc ./build/test/x86/"${isax}-${native}-${lang}" || exit 1
-            done
-          done
-        done
+        find build/test/ -type f -executable -exec parallel ~/sde/sde64 -- ::: {} \;
     - name: Coverage Report
       run: ninja -C build -v coverage-xml
     - name: CodeCov.io

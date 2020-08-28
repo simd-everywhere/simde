@@ -105,6 +105,80 @@ simde_neon_families = [
   'zip',
 ]
 
+simde_avx512_families = [
+  'abs',
+  'add',
+  'adds',
+  'and',
+  'andnot',
+  'avg',
+  'blend',
+  'broadcast',
+  'cast',
+  'cmp',
+  'cmpeq',
+  'cmpge',
+  'cmpgt',
+  'cmple',
+  'cmplt',
+  'copysign',
+  'cvt',
+  'cvts',
+  'div',
+  'extract',
+  'fmadd',
+  'fmsub',
+  'fnmadd',
+  'fnmsub',
+  'insert',
+  'load',
+  'loadu',
+  'lzcnt',
+  'max',
+  'min',
+  'mov',
+  'mov_mask',
+  'movm',
+  'mul',
+  'mulhi',
+  'mulhrs',
+  'mullo',
+  'negate',
+  'or',
+  'packs',
+  'packus',
+  'permutexvar',
+  'permutex2var',
+  'sad',
+  'set',
+  'set1',
+  'set4',
+  'setr',
+  'setr4',
+  'setzero',
+  'setone',
+  'shuffle',
+  'sll',
+  'slli',
+  'sllv',
+  'sqrt',
+  'sra',
+  'srai',
+  'srav',
+  'srl',
+  'srli',
+  'srlv',
+  'store',
+  'storeu',
+  'sub',
+  'subs',
+  'test',
+  'unpacklo',
+  'unpackhi',
+  'xor',
+  'xorsign',
+]
+
 if not meson.is_subproject() and get_option('tests')
   subdir('test')
 endif
@@ -112,6 +186,11 @@ endif
 simde_neon_family_headers = ['simde/arm/neon/types.h']
 foreach neon_family : simde_neon_families
   simde_neon_family_headers += 'simde/arm/neon/' + neon_family + '.h'
+endforeach
+
+simde_avx512_family_headers = ['simde/x86/avx512/types.h']
+foreach avx512_family : simde_avx512_families
+  simde_avx512_family_headers += 'simde/x86/avx512/' + avx512_family + '.h'
 endforeach
 
 if not meson.is_subproject()
@@ -133,11 +212,6 @@ if not meson.is_subproject()
   install_headers(
     files([
       'simde/x86/avx2.h',
-      'simde/x86/avx512bw.h',
-      'simde/x86/avx512cd.h',
-      'simde/x86/avx512dq.h',
-      'simde/x86/avx512f.h',
-      'simde/x86/avx512vl.h',
       'simde/x86/avx.h',
       'simde/x86/fma.h',
       'simde/x86/gfni.h',
@@ -151,6 +225,10 @@ if not meson.is_subproject()
       'simde/x86/svml.h',
       ]),
     subdir: 'simde/x86')
+
+  install_headers(
+    files(simde_avx512_family_headers),
+    subdir: 'simde/x86/avx512')
 
   install_headers(
     files([

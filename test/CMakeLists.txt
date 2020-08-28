@@ -93,6 +93,10 @@ list(REMOVE_ITEM ARM_NEON_SOURCES_C "arm/neon/skel.c")
 list(REMOVE_ITEM ARM_NEON_SOURCES_C "arm/neon/skel-single.c")
 list(REMOVE_ITEM ARM_NEON_SOURCES_C "arm/neon/skel-triple.c")
 
+aux_source_directory("x86/avx512" X86_AVX512_SOURCES_C)
+list(REMOVE_ITEM X86_AVX512_SOURCES_C "x86/avx512/run-tests.c")
+list(REMOVE_ITEM X86_AVX512_SOURCES_C "x86/avx512/skel.c")
+
 set(TEST_SOURCES_C
   x86/mmx.c
   x86/sse.c
@@ -103,23 +107,22 @@ set(TEST_SOURCES_C
   x86/sse4.2.c
   x86/avx.c
   x86/avx2.c
-  x86/avx512f.c
-  x86/avx512bw.c
-  x86/avx512vl.c
-  x86/avx512dq.c
-  x86/avx512cd.c
   x86/gfni.c
   x86/fma.c
   x86/svml.c
+  ${X86_AVX512_SOURCES_C}
   ${ARM_NEON_SOURCES_C})
 
 set(TEST_RUNNER_SOURCES
   run-tests.c
   x86/run-tests.c
+  x86/avx512/run-tests.c
   arm/run-tests.c
   arm/neon/run-tests.c)
 add_executable(run-tests ${TEST_RUNNER_SOURCES})
 set_property(TARGET run-tests PROPERTY C_STANDARD "99")
+target_add_compiler_flags(run-tests "-Wno-psabi")
+
 target_link_libraries(run-tests munit)
 target_add_compiler_flags (munit "-w")
 if(NEED_LIBM)

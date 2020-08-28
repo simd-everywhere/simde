@@ -26,9 +26,21 @@
 #if !defined(SIMDE_X86_GFNI_H)
 #define SIMDE_X86_GFNI_H
 
-#include "avx512bw.h"
-#include "avx512vl.h"
-#include "sse4.1.h"
+#include "avx512/add.h"
+#include "avx512/and.h"
+#include "avx512/cmpeq.h"
+#include "avx512/cmpge.h"
+#include "avx512/cmpgt.h"
+#include "avx512/broadcast.h"
+#include "avx512/permutex2var.h"
+#include "avx512/mov.h"
+#include "avx512/mov_mask.h"
+#include "avx512/set.h"
+#include "avx512/set1.h"
+#include "avx512/setzero.h"
+#include "avx512/shuffle.h"
+#include "avx512/srli.h"
+#include "avx512/xor.h"
 
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
