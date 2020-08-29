@@ -258,3 +258,8 @@ foreach(tst
     )
   add_test(NAME "${tst}/${variant}" COMMAND $<TARGET_FILE:run-tests> "${tst}")
 endforeach()
+
+message(WARNING
+        "CMake support is deprecated; please use Meson instead.  CMake is only present "
+        "for compilers which Meson doesn't yet support (e.g., xlc) and platforms where "
+        "difficult to run an up-to-date copy of Meson (e.g., Ubuntu 12.04).")
