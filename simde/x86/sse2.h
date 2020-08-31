@@ -3348,6 +3348,26 @@ simde_x_mm_loadu_epi16(int16_t const* mem_addr) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128i
+simde_x_mm_loadu_epu8(uint8_t const* mem_addr) {
+    simde__m128i_private r_;
+
+    simde_memcpy(&r_, mem_addr, sizeof(r_));
+
+    return simde__m128i_from_private(r_);
+}
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m128i
+simde_x_mm_loadu_epu16(uint16_t const* mem_addr) {
+    simde__m128i_private r_;
+
+    simde_memcpy(&r_, mem_addr, sizeof(r_));
+
+    return simde__m128i_from_private(r_);
+}
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m128i
 simde_x_mm_loadu_epi32(int32_t const* mem_addr) {
   #if defined(SIMDE_X86_SSE2_NATIVE)
     return _mm_loadu_si128(SIMDE_ALIGN_CAST(simde__m128i const*, mem_addr));
