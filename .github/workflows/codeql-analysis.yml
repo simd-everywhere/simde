@@ -42,21 +42,12 @@ jobs:
       with:
          languages: ${{ matrix.language }}
 
-    # Autobuild attempts to build any compiled languages  (C/C++, C#, or Java).
-    # If this step fails, then you should remove it and run the build manually (see below)
-    - name: Autobuild
-      uses: github/codeql-action/autobuild@v1
-
-    # ℹ️ Command-line programs to run using the OS shell.
-    # 📚 https://git.io/JvXDl
-
-    # ✏️ If the Autobuild fails above, remove it and uncomment the following three lines
-    #    and modify them (or add more) to build your code if your project
-    #    uses a compiled language
-
-    #- run: |
-    #   make bootstrap
-    #   make release
+    - run: |
+       sudo add-apt-repository 'ppa:ubuntu-toolchain-r/test' && sudo apt-get update && sudo apt-get install -y ninja-build ninja-build python3-pip python3-setuptools python3-wheel gcc-10 g++-10
+       pip3 install meson
+       $HOME/.local/bin/meson setup build -Db_sanitize=address,undefined
+       ninja -C build -v
+       ninja -C build -v test
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v1
