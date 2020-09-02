@@ -1398,6 +1398,8 @@ simde_mm_cmpord_ps (simde__m128 a, simde__m128 b) {
       uint32x4_t ceqaa = vceqq_f32(a_.neon_f32, a_.neon_f32);
       uint32x4_t ceqbb = vceqq_f32(b_.neon_f32, b_.neon_f32);
       r_.neon_u32 = vandq_u32(ceqaa, ceqbb);
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+      r_.wasm_v128 = wasm_v128_and(wasm_f32x4_eq(a_.wasm_v128, a_.wasm_v128), wasm_f32x4_eq(b_.wasm_v128, b_.wasm_v128));
     #elif defined(simde_math_isnanf)
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
@@ -1431,6 +1433,8 @@ simde_mm_cmpunord_ps (simde__m128 a, simde__m128 b) {
       uint32x4_t ceqaa = vceqq_f32(a_.neon_f32, a_.neon_f32);
       uint32x4_t ceqbb = vceqq_f32(b_.neon_f32, b_.neon_f32);
       r_.neon_u32 = vmvnq_u32(vandq_u32(ceqaa, ceqbb));
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+      r_.wasm_v128 = wasm_v128_or(wasm_f32x4_ne(a_.wasm_v128, a_.wasm_v128), wasm_f32x4_ne(b_.wasm_v128, b_.wasm_v128));
     #elif defined(simde_math_isnanf)
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
