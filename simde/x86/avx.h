@@ -3682,8 +3682,8 @@ simde_mm256_insert_epi64 (simde__m256i a, int64_t i, const int index)
 
   return simde__m256i_from_private(a_);
 }
-#if defined(SIMDE_X86_AVX_NATIVE) && \
-    (!defined(HEDLEY_MSVC_VERSION) || (HEDLEY_MSVC_VERSION_CHECK(19,20,0) && defined(_M_X64))) && \
+#if defined(SIMDE_X86_AVX_NATIVE) && defined(SIMDE_ARCH_AMD64) && \
+    (!defined(HEDLEY_MSVC_VERSION) || HEDLEY_MSVC_VERSION_CHECK(19,20,0)) && \
     SIMDE_DETECT_CLANG_VERSION_CHECK(3,7,0)
   #define simde_mm256_insert_epi64(a, i, index) _mm256_insert_epi64(a, i, index)
 #endif
