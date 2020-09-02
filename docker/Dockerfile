@@ -8,7 +8,7 @@ RUN \
   apt-get install -y curl gpg && \
   curl -s "https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS-2023.PUB" | apt-key add - && \
   echo "deb [arch=amd64] https://apt.repos.intel.com/oneapi all main" > /etc/apt/sources.list.d/oneAPI.list && \
-  for arch in armhf arm64 ppc64el s390x; do \
+  for arch in armhf arm64 ppc64el s390x i386; do \
     dpkg --add-architecture "$arch"; \
   done
 
@@ -18,7 +18,7 @@ RUN \
     git build-essential \
     meson cmake \
     clang-8 clang-9 clang-10 \
-    gcc-10 g++-10 gcc-9 g++-9 gcc-8 g++-8 \
+    gcc-8 g++-8 gcc-9 g++-9 gcc-10 g++-10 \
     intel-oneapi-icc \
     qemu binfmt-support qemu-user-static \
     creduce screen htop parallel nano rsync strace \
@@ -26,7 +26,7 @@ RUN \
   for arch in `dpkg --print-foreign-architectures`; do \
     echo libc6:"${arch}" libstdc++-8-dev:"${arch}" libstdc++-9-dev:"${arch}" libstdc++-10-dev:"${arch}"; \
   done | xargs apt-get install -y && \
-  for arch in arm-linux-gnueabihf aarch64-linux-gnu powerpc64le-linux-gnu s390x-linux-gnu; do \
+  for arch in arm-linux-gnueabihf aarch64-linux-gnu powerpc64le-linux-gnu s390x-linux-gnu i686-linux-gnu; do \
     echo gcc-10-${arch} g++-10-${arch} gcc-9-${arch} g++-9-${arch}; \
   done | xargs apt-get install -y
 

@@ -3772,8 +3772,8 @@ simde_mm256_extract_epi64 (simde__m256i a, const int index)
   simde__m256i_private a_ = simde__m256i_to_private(a);
   return a_.i64[index];
 }
-#if defined(SIMDE_X86_AVX_NATIVE)
-  #if !defined(HEDLEY_MSVC_VERSION) || (HEDLEY_MSVC_VERSION_CHECK(19,20,0) && defined(_M_X64))
+#if defined(SIMDE_X86_AVX_NATIVE) && defined(SIMDE_ARCH_AMD64)
+  #if !defined(HEDLEY_MSVC_VERSION) || HEDLEY_MSVC_VERSION_CHECK(19,20,0)
     #define simde_mm256_extract_epi64(a, index) _mm256_extract_epi64(a, index)
   #endif
 #endif

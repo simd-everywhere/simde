@@ -341,7 +341,7 @@ simde_mm_crc32_u32(uint32_t prevcrc, uint32_t v) {
 SIMDE_FUNCTION_ATTRIBUTES
 uint64_t
 simde_mm_crc32_u64(uint64_t prevcrc, uint64_t v) {
-  #if defined(SIMDE_X86_SSE4_2_NATIVE)
+  #if defined(SIMDE_X86_SSE4_2_NATIVE) && defined(SIMDE_ARCH_AMD64)
     return _mm_crc32_u64(prevcrc, v);
   #else
     #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(__ARM_FEATURE_CRC32)

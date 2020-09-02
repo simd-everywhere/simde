@@ -5999,7 +5999,7 @@ void
 simde_mm_stream_si128 (simde__m128i* mem_addr, simde__m128i a) {
   simde_assert_aligned(16, mem_addr);
 
-  #if defined(SIMDE_X86_SSE2_NATIVE)
+  #if defined(SIMDE_X86_SSE2_NATIVE) && defined(SIMDE_ARCH_AMD64)
     _mm_stream_si128(HEDLEY_STATIC_CAST(__m128i*, mem_addr), a);
   #else
     simde_memcpy(mem_addr, &a, sizeof(a));
@@ -6025,7 +6025,7 @@ simde_mm_stream_si32 (int32_t* mem_addr, int32_t a) {
 SIMDE_FUNCTION_ATTRIBUTES
 void
 simde_mm_stream_si64 (int64_t* mem_addr, int64_t a) {
-  #if defined(SIMDE_X86_SSE2_NATIVE) && !defined(HEDLEY_MSVC_VERSION)
+  #if defined(SIMDE_X86_SSE2_NATIVE) && defined(SIMDE_ARCH_AMD64) && !defined(HEDLEY_MSVC_VERSION)
     _mm_stream_si64(SIMDE_CHECKED_REINTERPRET_CAST(long long int*, int64_t*, mem_addr), a);
   #else
     *mem_addr = a;
