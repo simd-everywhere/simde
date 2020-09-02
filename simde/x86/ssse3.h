@@ -867,6 +867,10 @@ simde_mm_sign_epi8 (simde__m128i a, simde__m128i b) {
       bnz_mask = vmvnq_u8(bnz_mask);
 
       r_.neon_i8 = vbslq_s8(aneg_mask, vnegq_s8(a_.neon_i8), vandq_s8(a_.neon_i8, vreinterpretq_s8_u8(bnz_mask)));
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+      simde__m128i mask = wasm_i8x16_shr(b_.wasm_v128, 7);
+      simde__m128i zeromask = simde_mm_cmpeq_epi8(b_.wasm_v128, simde_mm_setzero_si128());
+      r_.wasm_v128 = simde_mm_andnot_si128(zeromask, simde_mm_xor_si128(simde_mm_add_epi8(a_.wasm_v128, mask), mask));
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.i8) / sizeof(r_.i8[0])) ; i++) {
@@ -903,6 +907,10 @@ simde_mm_sign_epi16 (simde__m128i a, simde__m128i b) {
       bnz_mask = vmvnq_u16(bnz_mask);
 
       r_.neon_i16 = vbslq_s16(aneg_mask, vnegq_s16(a_.neon_i16), vandq_s16(a_.neon_i16, vreinterpretq_s16_u16(bnz_mask)));
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+      simde__m128i mask = simde_mm_srai_epi16(b_.wasm_v128, 15);
+      simde__m128i zeromask = simde_mm_cmpeq_epi16(b_.wasm_v128, simde_mm_setzero_si128());
+      r_.wasm_v128 = simde_mm_andnot_si128(zeromask, simde_mm_xor_si128(simde_mm_add_epi16(a_.wasm_v128, mask), mask));
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.i16) / sizeof(r_.i16[0])) ; i++) {
@@ -939,6 +947,10 @@ simde_mm_sign_epi32 (simde__m128i a, simde__m128i b) {
       bnz_mask = vmvnq_u32(bnz_mask);
 
       r_.neon_i32 = vbslq_s32(aneg_mask, vnegq_s32(a_.neon_i32), vandq_s32(a_.neon_i32, vreinterpretq_s32_u32(bnz_mask)));
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+      simde__m128i mask = simde_mm_srai_epi32(b_.wasm_v128, 31);
+      simde__m128i zeromask = simde_mm_cmpeq_epi32(b_.wasm_v128, simde_mm_setzero_si128());
+      r_.wasm_v128 = simde_mm_andnot_si128(zeromask, simde_mm_xor_si128(simde_mm_add_epi32(a_.wasm_v128, mask), mask));
     #else
       for (size_t i = 0 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {
         r_.i32[i] = (b_.i32[i] < 0) ? (- a_.i32[i]) : ((b_.i32[i] != 0) ? (a_.i32[i]) : INT32_C(0));
