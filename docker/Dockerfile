@@ -17,17 +17,24 @@ RUN \
   apt-get install -y \
     git build-essential \
     meson cmake \
-    clang-8 clang-9 clang-10 \
-    gcc-8 g++-8 gcc-9 g++-9 gcc-10 g++-10 \
+    '^clang-[0-9]+$' \
+    '^g(cc|\+\+)-[0-9]+$' \
     intel-oneapi-icc \
     qemu binfmt-support qemu-user-static \
     creduce screen htop parallel nano rsync strace \
-    npm libsleef-dev && \
+    npm libsleef-dev
+
+RUN \
   for arch in `dpkg --print-foreign-architectures`; do \
     echo libc6:"${arch}" libstdc++-8-dev:"${arch}" libstdc++-9-dev:"${arch}" libstdc++-10-dev:"${arch}"; \
-  done | xargs apt-get install -y && \
-  for arch in arm-linux-gnueabihf aarch64-linux-gnu powerpc64le-linux-gnu s390x-linux-gnu i686-linux-gnu; do \
-    echo gcc-10-${arch} g++-10-${arch} gcc-9-${arch} g++-9-${arch}; \
+  done | xargs apt-get install -y
+
+RUN \
+  for arch in $(dpkg --print-foreign-architectures | grep -v i386); do \
+    triplet="$(dpkg -L libc6:${arch} | grep -Po '(?<=/usr/lib/)[^/]+$')"; \
+    for version in $(apt-cache pkgnames | grep -Po '(?<=gcc\-)([0-9]+)$' | sort -h | tail -n 2); do \
+      echo gcc-${version}-${triplet} g++-${version}-${triplet}; \
+    done; \
   done | xargs apt-get install -y
 
 # Install emscripten
@@ -40,7 +47,9 @@ RUN ln -s /opt/emsdk/upstream/bin/wasm-ld /usr/bin/wasm-ld
 # And v8
 RUN npm install jsvu -g && jsvu --os=linux64 --engines=v8 && ln -s "/root/.jsvu/v8" "/usr/bin/v8"
 
-# xlc -- Install fails.
+# # xlc -- Install fails.
+# # Once IBM releases a version for Ubuntu Focal (20.04) I hope I can
+# # get this working.
 # RUN \
 #   curl -s 'https://public.dhe.ibm.com/software/server/POWER/Linux/xl-compiler/eval/ppc64le/ubuntu/public.gpg' | apt-key add - && \
 #   echo "deb [arch=ppc64el] https://public.dhe.ibm.com/software/server/POWER/Linux/xl-compiler/eval/ppc64le/ubuntu/ bionic main" > /etc/apt/sources.list.d/xlc.list && \
