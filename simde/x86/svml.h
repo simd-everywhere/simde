@@ -2066,20 +2066,19 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde__m128
 simde_x_mm_deg2rad_ps(simde__m128 a) {
   #if SIMDE_NATURAL_VECTOR_SIZE_GE(128)
-    return simde_mm_mul_ps(a, simde_mm_set1_ps(SIMDE_MATH_PIF / SIMDE_FLOAT32_C(180.0)));
+    return simde_mm_mul_ps(a, simde_mm_set1_ps(SIMDE_MATH_PI_OVER_180F));
   #else
     simde__m128_private
       r_,
       a_ = simde__m128_to_private(a);
 
     #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-      r_.neon_f32 = vmulq_n_f32(a_.neon_i32, SIMDE_MATH_PIF / 180.0f);
+      r_.neon_f32 = vmulq_n_f32(a_.neon_i32, SIMDE_MATH_PI_OVER_180F);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && !defined(SIMDE_BUG_GCC_53784)
-      r_.f32 = a_.f32 * (SIMDE_MATH_PIF / 180.0f);
+      r_.f32 = a_.f32 * SIMDE_MATH_PI_OVER_180F;
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
-      const simde_float32 tmps = SIMDE_MATH_PIF / 180.0f;
-      const __typeof__(r_.f32) tmpv = { tmps, tmps, tmps, tmps };
-      r_.f32 = a_.f32 * tmpv;
+      const __typeof__(r_.f32) tmp = { SIMDE_MATH_PI_OVER_180F, SIMDE_MATH_PI_OVER_180F, SIMDE_MATH_PI_OVER_180F, SIMDE_MATH_PI_OVER_180F };
+      r_.f32 = a_.f32 * tmp;
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
@@ -2095,20 +2094,19 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde__m128d
 simde_x_mm_deg2rad_pd(simde__m128d a) {
   #if SIMDE_NATURAL_VECTOR_SIZE_GE(128)
-      return simde_mm_mul_pd(a, simde_mm_set1_pd(SIMDE_MATH_PI / SIMDE_FLOAT64_C(180.0)));
+      return simde_mm_mul_pd(a, simde_mm_set1_pd(SIMDE_MATH_PI_OVER_180));
   #else
     simde__m128d_private
       r_,
       a_ = simde__m128d_to_private(a);
 
     #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
-      r_.neon_f64 = vmulq_n_f64(a_.neon_i64, SIMDE_MATH_PI / 180.0);
+      r_.neon_f64 = vmulq_n_f64(a_.neon_i64, SIMDE_MATH_PI_OVER_180);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && !defined(SIMDE_BUG_GCC_53784)
-      r_.f64 = a_.f64 * (SIMDE_MATH_PI / 180.0);
+      r_.f64 = a_.f64 * SIMDE_MATH_PI_OVER_180;
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
-      const simde_float64 tmps = SIMDE_MATH_PI / 180.0;
-      const __typeof__(r_.f64) tmpv = { tmps, tmps };
-      r_.f64 = a_.f64 * tmpv;
+      const __typeof__(r_.f64) tmp = { SIMDE_MATH_PI_OVER_180, SIMDE_MATH_PI_OVER_180 };
+      r_.f64 = a_.f64 * tmp;
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
@@ -2124,7 +2122,7 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde__m256
 simde_x_mm256_deg2rad_ps(simde__m256 a) {
   #if SIMDE_NATURAL_VECTOR_SIZE_GE(256)
-    return simde_mm256_mul_ps(a, simde_mm256_set1_ps(SIMDE_MATH_PIF / SIMDE_FLOAT32_C(180.0)));
+    return simde_mm256_mul_ps(a, simde_mm256_set1_ps(SIMDE_MATH_PI_OVER_180F));
   #else
     simde__m256_private
       r_,
@@ -2135,7 +2133,7 @@ simde_x_mm256_deg2rad_ps(simde__m256 a) {
         r_.m128[i] = simde_x_mm_deg2rad_ps(a_.m128[i]);
       }
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
-      r_.f32 = a_.f32 * (SIMDE_MATH_PIF / 180.0f);
+      r_.f32 = a_.f32 * SIMDE_MATH_PI_OVER_180F;
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
@@ -2151,7 +2149,7 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde__m256d
 simde_x_mm256_deg2rad_pd(simde__m256d a) {
   #if SIMDE_NATURAL_VECTOR_SIZE_GE(256)
-    return simde_mm256_mul_pd(a, simde_mm256_set1_pd(SIMDE_MATH_PI / SIMDE_FLOAT64_C(180.0)));
+    return simde_mm256_mul_pd(a, simde_mm256_set1_pd(SIMDE_MATH_PI_OVER_180));
   #else
     simde__m256d_private
       r_,
@@ -2162,7 +2160,7 @@ simde_x_mm256_deg2rad_pd(simde__m256d a) {
         r_.m128d[i] = simde_x_mm_deg2rad_pd(a_.m128d[i]);
       }
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
-      r_.f64 = a_.f64 * (SIMDE_MATH_PI / 180.0);
+      r_.f64 = a_.f64 * SIMDE_MATH_PI_OVER_180;
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
@@ -2178,7 +2176,7 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde__m512
 simde_x_mm512_deg2rad_ps(simde__m512 a) {
   #if SIMDE_NATURAL_VECTOR_SIZE_GE(512)
-      return simde_mm512_mul_ps(a, simde_mm512_set1_ps(SIMDE_MATH_PIF / SIMDE_FLOAT32_C(180.0)));
+      return simde_mm512_mul_ps(a, simde_mm512_set1_ps(SIMDE_MATH_PI_OVER_180F));
   #else
     simde__m512_private
         r_,
@@ -2189,7 +2187,7 @@ simde_x_mm512_deg2rad_ps(simde__m512 a) {
         r_.m256[i] = simde_x_mm256_deg2rad_ps(a_.m256[i]);
       }
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
-      r_.f32 = a_.f32 * (SIMDE_MATH_PIF / 180.0f);
+      r_.f32 = a_.f32 * SIMDE_MATH_PI_OVER_180F;
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.m256) / sizeof(r_.m256[0])) ; i++) {
@@ -2205,7 +2203,7 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde__m512d
 simde_x_mm512_deg2rad_pd(simde__m512d a) {
   #if SIMDE_NATURAL_VECTOR_SIZE_GE(512)
-      return simde_mm512_mul_pd(a, simde_mm512_set1_pd(SIMDE_MATH_PI / SIMDE_FLOAT64_C(180.0)));
+      return simde_mm512_mul_pd(a, simde_mm512_set1_pd(SIMDE_MATH_PI_OVER_180));
   #else
     simde__m512d_private
         r_,
@@ -2216,7 +2214,7 @@ simde_x_mm512_deg2rad_pd(simde__m512d a) {
         r_.m256d[i] = simde_x_mm256_deg2rad_pd(a_.m256d[i]);
       }
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
-      r_.f64 = a_.f64 * (SIMDE_MATH_PI / 180.0);
+      r_.f64 = a_.f64 * SIMDE_MATH_PI_OVER_180;
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.m256d) / sizeof(r_.m256d[0])) ; i++) {

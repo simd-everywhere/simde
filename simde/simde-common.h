@@ -771,8 +771,10 @@ typedef SIMDE_FLOAT64_TYPE simde_float64;
 #      define SIMDE_BUG_GCC_ARM_SHIFT_SCALAR
 #    endif
 #    if defined(SIMDE_ARCH_X86) && !defined(SIMDE_ARCH_AMD64)
-#      define SIMDE_BUG_GCC_53784
 #      define SIMDE_BUG_GCC_94482
+#    endif
+#    if (defined(SIMDE_ARCH_X86) && !defined(SIMDE_ARCH_AMD64)) || defined(SIMDE_ARCH_SYSTEMZ)
+#      define SIMDE_BUG_GCC_53784
 #    endif
 #    if !HEDLEY_GCC_VERSION_CHECK(9,4,0) && defined(SIMDE_ARCH_AARCH64)
 #      define SIMDE_BUG_GCC_94488

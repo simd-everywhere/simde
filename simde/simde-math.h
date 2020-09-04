@@ -282,6 +282,22 @@
   #endif
 #endif
 
+#if !defined(SIMDE_MATH_PI_OVER_180)
+  #define SIMDE_MATH_PI_OVER_180 0.0174532925199432957692369076848861271344287188854172545609719144
+#endif
+
+#if !defined(SIMDE_MATH_PI_OVER_180F)
+  #define SIMDE_MATH_PI_OVER_180F 0.0174532925199432957692369076848861271344287188854172545609719144f
+#endif
+
+#if !defined(SIMDE_MATH_180_OVER_PI)
+  #define SIMDE_MATH_180_OVER_PI 57.295779513082320876798154814105170332405472466564321549160243861
+#endif
+
+#if !defined(SIMDE_MATH_180_OVER_PIF)
+  #define SIMDE_MATH_180_OVER_PIF 57.295779513082320876798154814105170332405472466564321549160243861f
+#endif
+
 #if !defined(SIMDE_MATH_FLT_MIN)
   #if defined(FLT_MIN)
     #define SIMDE_MATH_FLT_MIN FLT_MIN
@@ -1528,25 +1544,25 @@ HEDLEY_DIAGNOSTIC_POP
 static HEDLEY_INLINE
 double
 simde_math_rad2deg(double radians) {
- return radians * (180.0 / SIMDE_MATH_PI);
+ return radians * SIMDE_MATH_180_OVER_PI;
 }
 
 static HEDLEY_INLINE
 float
 simde_math_rad2degf(float radians) {
-    return radians * (180.0f / SIMDE_MATH_PIF);
+    return radians * SIMDE_MATH_180_OVER_PIF;
 }
 
 static HEDLEY_INLINE
 double
 simde_math_deg2rad(double degrees) {
-  return degrees * (SIMDE_MATH_PI / 180.0);
+  return degrees * SIMDE_MATH_PI_OVER_180;
 }
 
 static HEDLEY_INLINE
 float
 simde_math_deg2radf(float degrees) {
-    return degrees * (SIMDE_MATH_PIF / 180.0f);
+    return degrees * (SIMDE_MATH_PI_OVER_180F);
 }
 
 #endif /* !defined(SIMDE_MATH_H) */
