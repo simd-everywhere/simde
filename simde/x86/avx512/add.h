@@ -151,7 +151,7 @@ simde_mm_maskz_add_epi64(simde__mmask8 k, simde__m128i a, simde__m128i b) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128
 simde_mm_mask_add_ss(simde__m128 src, simde__mmask8 k, simde__m128 a, simde__m128 b) {
-  #if defined(SIMDE_X86_AVX512F_NATIVE)
+  #if defined(SIMDE_X86_AVX512F_NATIVE) && (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(8,1,0))
     return _mm_mask_add_ss(src, k, a, b);
   #else
     return simde_mm_mask_mov_ps(src, k, simde_mm_add_ss(a, b));
@@ -165,7 +165,7 @@ simde_mm_mask_add_ss(simde__m128 src, simde__mmask8 k, simde__m128 a, simde__m12
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128
 simde_mm_maskz_add_ss(simde__mmask8 k, simde__m128 a, simde__m128 b) {
-  #if defined(SIMDE_X86_AVX512F_NATIVE)
+  #if defined(SIMDE_X86_AVX512F_NATIVE) && (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(8,1,0))
     return _mm_maskz_add_ss(k, a, b);
   #else
     return simde_mm_maskz_mov_ps(k, simde_mm_add_ss(a, b));
