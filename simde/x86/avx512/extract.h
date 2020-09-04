@@ -74,7 +74,7 @@ simde_mm512_extractf32x4_ps (simde__m512 a, int imm8)
   #define _mm512_mask_extractf32x4_ps(src, k, a, imm8) simde_mm512_mask_extractf32x4_ps(src, k, a, imm8)
 #endif
 
-#if defined(SIMDE_X86_AVX512F_NATIVE)
+#if defined(SIMDE_X86_AVX512F_NATIVE) && (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(7,0,0))
   #define simde_mm512_maskz_extractf32x4_ps(k, a, imm8) _mm512_maskz_extractf32x4_ps(k, a, imm8)
 #else
   #define simde_mm512_maskz_extractf32x4_ps(k, a, imm8) simde_mm_maskz_mov_ps(k, simde_mm512_extractf32x4_ps(a, imm8))
@@ -92,7 +92,7 @@ simde_mm512_extractf64x4_pd (simde__m512d a, int imm8)
 
   return a_.m256d[imm8 & 1];
 }
-#if defined(SIMDE_X86_AVX512F_NATIVE)
+#if defined(SIMDE_X86_AVX512F_NATIVE) && (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(7,0,0))
   #define simde_mm512_extractf64x4_pd(a, imm8) _mm512_extractf64x4_pd(a, imm8)
 #endif
 #if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
@@ -100,7 +100,7 @@ simde_mm512_extractf64x4_pd (simde__m512d a, int imm8)
   #define _mm512_extractf64x4_pd(a, imm8) simde_mm512_extractf64x4_pd(a, imm8)
 #endif
 
-#if defined(SIMDE_X86_AVX512F_NATIVE)
+#if defined(SIMDE_X86_AVX512F_NATIVE) && (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(7,0,0))
   #define simde_mm512_mask_extractf64x4_pd(src, k, a, imm8) _mm512_mask_extractf64x4_pd(src, k, a, imm8)
 #else
   #define simde_mm512_mask_extractf64x4_pd(src, k, a, imm8) simde_mm256_mask_mov_pd(src, k, simde_mm512_extractf64x4_pd(a, imm8))
@@ -110,7 +110,7 @@ simde_mm512_extractf64x4_pd (simde__m512d a, int imm8)
   #define _mm512_mask_extractf64x4_pd(src, k, a, imm8) simde_mm512_mask_extractf64x4_pd(src, k, a, imm8)
 #endif
 
-#if defined(SIMDE_X86_AVX512F_NATIVE)
+#if defined(SIMDE_X86_AVX512F_NATIVE) && (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(7,0,0))
   #define simde_mm512_maskz_extractf64x4_pd(k, a, imm8) _mm512_maskz_extractf64x4_pd(k, a, imm8)
 #else
   #define simde_mm512_maskz_extractf64x4_pd(k, a, imm8) simde_mm256_maskz_mov_pd(k, simde_mm512_extractf64x4_pd(a, imm8))
@@ -128,7 +128,7 @@ simde_mm512_extracti32x4_epi32 (simde__m512i a, int imm8)
 
   return a_.m128i[imm8 & 3];
 }
-#if defined(SIMDE_X86_AVX512F_NATIVE)
+#if defined(SIMDE_X86_AVX512F_NATIVE) && (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(7,0,0))
   #define simde_mm512_extracti32x4_epi32(a, imm8) _mm512_extracti32x4_epi32(a, imm8)
 #endif
 #if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
@@ -136,7 +136,7 @@ simde_mm512_extracti32x4_epi32 (simde__m512i a, int imm8)
   #define _mm512_extracti32x4_epi32(a, imm8) simde_mm512_extracti32x4_epi32(a, imm8)
 #endif
 
-#if defined(SIMDE_X86_AVX512F_NATIVE)
+#if defined(SIMDE_X86_AVX512F_NATIVE) && (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(7,0,0))
   #define simde_mm512_mask_extracti32x4_epi32(src, k, a, imm8) _mm512_mask_extracti32x4_epi32(src, k, a, imm8)
 #else
   #define simde_mm512_mask_extracti32x4_epi32(src, k, a, imm8) simde_mm_mask_mov_epi32(src, k, simde_mm512_extracti32x4_epi32(a, imm8))
@@ -146,7 +146,7 @@ simde_mm512_extracti32x4_epi32 (simde__m512i a, int imm8)
   #define _mm512_mask_extracti32x4_epi32(src, k, a, imm8) simde_mm512_mask_extracti32x4_epi32(src, k, a, imm8)
 #endif
 
-#if defined(SIMDE_X86_AVX512F_NATIVE)
+#if defined(SIMDE_X86_AVX512F_NATIVE) && (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(7,0,0))
   #define simde_mm512_maskz_extracti32x4_epi32(k, a, imm8) _mm512_maskz_extracti32x4_epi32(k, a, imm8)
 #else
   #define simde_mm512_maskz_extracti32x4_epi32(k, a, imm8) simde_mm_maskz_mov_epi32(k, simde_mm512_extracti32x4_epi32(a, imm8))
@@ -164,7 +164,7 @@ simde_mm512_extracti64x4_epi64 (simde__m512i a, int imm8)
 
   return a_.m256i[imm8 & 1];
 }
-#if defined(SIMDE_X86_AVX512F_NATIVE)
+#if defined(SIMDE_X86_AVX512F_NATIVE) && (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(7,0,0))
   #define simde_mm512_extracti64x4_epi64(a, imm8) _mm512_extracti64x4_epi64(a, imm8)
 #endif
 #if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
@@ -172,7 +172,7 @@ simde_mm512_extracti64x4_epi64 (simde__m512i a, int imm8)
   #define _mm512_extracti64x4_epi64(a, imm8) simde_mm512_extracti64x4_epi64(a, imm8)
 #endif
 
-#if defined(SIMDE_X86_AVX512F_NATIVE)
+#if defined(SIMDE_X86_AVX512F_NATIVE) && (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(7,0,0))
   #define simde_mm512_mask_extracti64x4_epi64(src, k, a, imm8) _mm512_mask_extracti64x4_epi64(src, k, a, imm8)
 #else
   #define simde_mm512_mask_extracti64x4_epi64(src, k, a, imm8) simde_mm256_mask_mov_epi64(src, k, simde_mm512_extracti64x4_epi64(a, imm8))
@@ -182,7 +182,7 @@ simde_mm512_extracti64x4_epi64 (simde__m512i a, int imm8)
   #define _mm512_mask_extracti64x4_epi64(src, k, a, imm8) simde_mm512_mask_extracti64x4_epi64(src, k, a, imm8)
 #endif
 
-#if defined(SIMDE_X86_AVX512F_NATIVE)
+#if defined(SIMDE_X86_AVX512F_NATIVE) && (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(7,0,0))
   #define simde_mm512_maskz_extracti64x4_epi64(k, a, imm8) _mm512_maskz_extracti64x4_epi64(k, a, imm8)
 #else
   #define simde_mm512_maskz_extracti64x4_epi64(k, a, imm8) simde_mm256_maskz_mov_epi64(k, simde_mm512_extracti64x4_epi64(a, imm8))
