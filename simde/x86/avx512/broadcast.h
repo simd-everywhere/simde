@@ -43,7 +43,7 @@ SIMDE_BEGIN_DECLS_
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m256
 simde_mm256_broadcast_f32x2 (simde__m128 a) {
-  #if defined(SIMDE_X86_AVX512DQ_NATIVE)
+  #if defined(SIMDE_X86_AVX512VL_NATIVE) && defined(SIMDE_X86_AVX512DQ_NATIVE)
     return _mm256_broadcast_f32x2(a);
   #else
     simde__m256_private r_;
@@ -70,7 +70,7 @@ simde_mm256_broadcast_f32x2 (simde__m128 a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m256
 simde_mm256_mask_broadcast_f32x2(simde__m256 src, simde__mmask8 k, simde__m128 a) {
-  #if defined(SIMDE_X86_AVX512DQ_NATIVE)
+  #if defined(SIMDE_X86_AVX512VL_NATIVE) && defined(SIMDE_X86_AVX512DQ_NATIVE)
     return _mm256_mask_broadcast_f32x2(src, k, a);
   #else
     return simde_mm256_mask_mov_ps(src, k, simde_mm256_broadcast_f32x2(a));
@@ -84,7 +84,7 @@ simde_mm256_mask_broadcast_f32x2(simde__m256 src, simde__mmask8 k, simde__m128 a
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m256
 simde_mm256_maskz_broadcast_f32x2(simde__mmask8 k, simde__m128 a) {
-  #if defined(SIMDE_X86_AVX512DQ_NATIVE)
+  #if defined(SIMDE_X86_AVX512VL_NATIVE) && defined(SIMDE_X86_AVX512DQ_NATIVE)
     return _mm256_maskz_broadcast_f32x2(k, a);
   #else
     return simde_mm256_maskz_mov_ps(k, simde_mm256_broadcast_f32x2(a));
@@ -269,7 +269,7 @@ simde_mm512_maskz_broadcast_f64x2(simde__mmask8 k, simde__m128d a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m256
 simde_mm256_broadcast_f32x4 (simde__m128 a) {
-  #if defined(SIMDE_X86_AVX512DQ_NATIVE)
+  #if defined(SIMDE_X86_AVX512VL_NATIVE)
     return _mm256_broadcast_f32x4(a);
   #else
     simde__m256_private r_;
@@ -329,7 +329,7 @@ simde_mm256_maskz_broadcast_f32x4(simde__mmask8 k, simde__m128 a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m256d
 simde_mm256_broadcast_f64x2 (simde__m128d a) {
-  #if defined(SIMDE_X86_AVX512VL_NATIVE)
+  #if defined(SIMDE_X86_AVX512VL_NATIVE) && defined(SIMDE_X86_AVX512DQ_NATIVE)
     return _mm256_broadcast_f64x2(a);
   #else
     simde__m256d_private r_;
@@ -359,7 +359,7 @@ simde_mm256_broadcast_f64x2 (simde__m128d a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m256d
 simde_mm256_mask_broadcast_f64x2(simde__m256d src, simde__mmask8 k, simde__m128d a) {
-  #if defined(SIMDE_X86_AVX512VL_NATIVE)
+  #if defined(SIMDE_X86_AVX512VL_NATIVE) && defined(SIMDE_X86_AVX512DQ_NATIVE)
     return _mm256_mask_broadcast_f64x2(src, k, a);
   #else
     return simde_mm256_mask_mov_pd(src, k, simde_mm256_broadcast_f64x2(a));
@@ -373,7 +373,7 @@ simde_mm256_mask_broadcast_f64x2(simde__m256d src, simde__mmask8 k, simde__m128d
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m256d
 simde_mm256_maskz_broadcast_f64x2(simde__mmask8 k, simde__m128d a) {
-  #if defined(SIMDE_X86_AVX512VL_NATIVE)
+  #if defined(SIMDE_X86_AVX512VL_NATIVE) && defined(SIMDE_X86_AVX512DQ_NATIVE)
     return _mm256_maskz_broadcast_f64x2(k, a);
   #else
     return simde_mm256_maskz_mov_pd(k, simde_mm256_broadcast_f64x2(a));
