@@ -776,6 +776,11 @@ typedef SIMDE_FLOAT64_TYPE simde_float64;
 #    if (defined(SIMDE_ARCH_X86) && !defined(SIMDE_ARCH_AMD64)) || defined(SIMDE_ARCH_SYSTEMZ)
 #      define SIMDE_BUG_GCC_53784
 #    endif
+#    if defined(SIMDE_ARCH_X86) || defined(SIMDE_ARCH_AMD64)
+#      if HEDLEY_GCC_VERSION_CHECK(4,3,0) /* -Wsign-conversion */
+#        define SIMDE_BUG_GCC_95144
+#      endif
+#    endif
 #    if !HEDLEY_GCC_VERSION_CHECK(9,4,0) && defined(SIMDE_ARCH_AARCH64)
 #      define SIMDE_BUG_GCC_94488
 #    endif
@@ -799,7 +804,11 @@ typedef SIMDE_FLOAT64_TYPE simde_float64;
 #    if defined(SIMDE_ARCH_POWER)
 #      define SIMDE_BUG_CLANG_46770
 #    endif
-#  elif defined(__clang__)
+#    if defined(SIMDE_ARCH_X86) || defined(SIMDE_ARCH_AMD64)
+#      if HEDLEY_HAS_WARNING("-Wsign-conversion") && SIMDE_DETECT_CLANG_VERSION_NOT(11,0,0)
+#        define SIMDE_BUG_CLANG_45931
+#      endif
+#    endif
 #    define SIMDE_BUG_CLANG_45959
 #  elif defined(HEDLEY_MSVC_VERSION)
 #    if defined(SIMDE_ARCH_X86)
@@ -817,8 +826,11 @@ typedef SIMDE_FLOAT64_TYPE simde_float64;
 /* GCC and Clang both have the same issue:
  * https://gcc.gnu.org/bugzilla/show_bug.cgi?id=95144
  * https://bugs.llvm.org/show_bug.cgi?id=45931
+ * This is just an easy way to work around it.
  */
-#if HEDLEY_HAS_WARNING("-Wsign-conversion") || HEDLEY_GCC_VERSION_CHECK(4,3,0)
+#if \
+    (HEDLEY_HAS_WARNING("-Wsign-conversion") && SIMDE_DETECT_CLANG_VERSION_NOT(11,0,0)) || \
+    HEDLEY_GCC_VERSION_CHECK(4,3,0)
 #  define SIMDE_BUG_IGNORE_SIGN_CONVERSION(expr) (__extension__ ({ \
        HEDLEY_DIAGNOSTIC_PUSH  \
        HEDLEY_DIAGNOSTIC_POP  \

@@ -31,6 +31,7 @@
 #include "types.h"
 #include "../avx2.h"
 #include "mov.h"
+#include "setzero.h"
 
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS

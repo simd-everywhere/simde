@@ -216,7 +216,7 @@ simde_mm256_movm_epi16 (simde__mmask16 k) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m512i
 simde_mm512_movm_epi16 (simde__mmask32 k) {
-  #if defined(SIMDE_X86_AVX512BW_NATIVE)
+  #if defined(SIMDE_X86_AVX512BW_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
     return _mm512_movm_epi16(k);
   #else
     simde__m512i_private r_;
@@ -242,7 +242,7 @@ simde_mm512_movm_epi16 (simde__mmask32 k) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_movm_epi32 (simde__mmask8 k) {
-  #if defined(SIMDE_X86_AVX512BW_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
+  #if defined(SIMDE_X86_AVX512VL_NATIVE) && defined(SIMDE_X86_AVX512DQ_NATIVE)
     return _mm_movm_epi32(k);
   #elif defined(SIMDE_X86_AVX2_NATIVE)
     const __m128i shifts = _mm_set_epi32(28, 29, 30, 31);
@@ -287,7 +287,7 @@ simde_mm_movm_epi32 (simde__mmask8 k) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m256i
 simde_mm256_movm_epi32 (simde__mmask8 k) {
-  #if defined(SIMDE_X86_AVX512BW_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
+  #if defined(SIMDE_X86_AVX512VL_NATIVE) && defined(SIMDE_X86_AVX512DQ_NATIVE)
     return _mm256_movm_epi32(k);
   #elif defined(SIMDE_X86_AVX2_NATIVE)
     const __m256i shifts = _mm256_set_epi32(24, 25, 26, 27, 28, 29, 30, 31);
