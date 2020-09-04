@@ -153,8 +153,18 @@ simde__m128
 simde_mm_mask_add_ss(simde__m128 src, simde__mmask8 k, simde__m128 a, simde__m128 b) {
   #if defined(SIMDE_X86_AVX512F_NATIVE) && (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(8,1,0))
     return _mm_mask_add_ss(src, k, a, b);
+  #elif 1
+    simde__m128_private
+      src_ = simde__m128_to_private(src),
+      a_ = simde__m128_to_private(a),
+      b_ = simde__m128_to_private(b),
+      r_ = simde__m128_to_private(a);
+
+    r_.f32[0] = (k & 1) ? (a_.f32[0] + b_.f32[0]) : src_.f32[0];
+
+    return simde__m128_from_private(r_);
   #else
-    return simde_mm_mask_mov_ps(src, k, simde_mm_add_ss(a, b));
+    return simde_mm_move_ss(a, simde_mm_mask_mov_ps(src, k, simde_mm_add_ps(a, b)));
   #endif
 }
 #if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
@@ -167,8 +177,17 @@ simde__m128
 simde_mm_maskz_add_ss(simde__mmask8 k, simde__m128 a, simde__m128 b) {
   #if defined(SIMDE_X86_AVX512F_NATIVE) && (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(8,1,0))
     return _mm_maskz_add_ss(k, a, b);
+  #elif 1
+    simde__m128_private
+      a_ = simde__m128_to_private(a),
+      b_ = simde__m128_to_private(b),
+      r_ = simde__m128_to_private(a);
+
+    r_.f32[0] = (k & 1) ? (a_.f32[0] + b_.f32[0]) : 0.0f;
+
+    return simde__m128_from_private(r_);
   #else
-    return simde_mm_maskz_mov_ps(k, simde_mm_add_ss(a, b));
+    return simde_mm_move_ss(a, simde_mm_maskz_mov_ps(k, simde_mm_add_ps(a, b)));
   #endif
 }
 #if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
