@@ -41,7 +41,20 @@ simde_mm512_extractf32x4_ps (simde__m512 a, int imm8)
     SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 3) {
   simde__m512_private a_ = simde__m512_to_private(a);
 
-  return a_.m128[imm8 & 3];
+  /* GCC 6 generates an ICE */
+  #if defined(HEDLEY_GCC_VERSION) && !HEDLEY_GCC_VERSION_CHECK(7,0,0)
+    return a_.m128[imm8 & 3];
+  #else
+    simde__m128_private r_;
+    const size_t offset = HEDLEY_STATIC_CAST(size_t, imm8 & 3) * (sizeof(r_.f32) / sizeof(r_.f32[0]));
+
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
+      r_.f32[i] = a_.f32[i + offset];
+    }
+
+    return simde__m128_from_private(r_);
+  #endif
 }
 #if defined(SIMDE_X86_AVX512F_NATIVE) && (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(7,0,0))
   #define simde_mm512_extractf32x4_ps(a, imm8) _mm512_extractf32x4_ps(a, imm8)
@@ -51,7 +64,7 @@ simde_mm512_extractf32x4_ps (simde__m512 a, int imm8)
   #define _mm512_extractf32x4_ps(a, imm8) simde_mm512_extractf32x4_ps(a, imm8)
 #endif
 
-#if defined(SIMDE_X86_AVX512F_NATIVE)
+#if defined(SIMDE_X86_AVX512F_NATIVE) && (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(7,0,0))
   #define simde_mm512_mask_extractf32x4_ps(src, k, a, imm8) _mm512_mask_extractf32x4_ps(src, k, a, imm8)
 #else
   #define simde_mm512_mask_extractf32x4_ps(src, k, a, imm8) simde_mm_mask_mov_ps(src, k, simde_mm512_extractf32x4_ps(a, imm8))
