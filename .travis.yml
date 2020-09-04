@@ -64,35 +64,31 @@ jobs:
         - gcc-10
         - g++-10
 
-  - name: "-DSIMDE_NO_SHUFFLE_VECTOR"
+  # These next two ere largely to detect missing AVX-512 functions
+  # since Travis is the only CI right now with AVX-512 hardware and SDE
+  # is too slow.
+  - name: "gcc-6"
+    dist: bionic
     if: branch != master OR type == pull_request
     env:
-    - COMPILER_FLAGS=-DSIMDE_NO_SHUFFLE_VECTOR
-    - OPTIMIZATION_FLAGS=''
+    - C_COMPILER=gcc-6
+    - CXX_COMPILER=g++-6
+    addons:
+      apt:
+        packages:
+          - gcc-6
+          - g++-6
 
-  - name: "armv8-a"
+  - name: "clang-3.5"
+    dist: xenial
     if: branch != master OR type == pull_request
-    arch: arm64
     env:
-    - C_COMPILER=arm-linux-gnueabihf-gcc
-    - CXX_COMPILER=arm-linux-gnueabihf-g++
-    - ARCH_FLAGS="-march=armv8-a"
-    install:
-    - sudo dpkg --add-architecture armhf
-    - sudo apt-get update
-    - sudo apt-get -y install crossbuild-essential-armhf libc6:armhf libstdc++6:armhf
-
-  - name: "armv7-a"
-    if: branch != master OR type == pull_request
-    arch: arm64
-    env:
-    - C_COMPILER=arm-linux-gnueabihf-gcc
-    - CXX_COMPILER=arm-linux-gnueabihf-g++
-    - ARCH_FLAGS="-march=armv7-a"
-    install:
-    - sudo dpkg --add-architecture armhf
-    - sudo apt-get update
-    - sudo apt-get -y install crossbuild-essential-armhf libc6:armhf libstdc++6:armhf
+    - C_COMPILER=clang-3.5
+    - CXX_COMPILER=clang++-3.5
+    addons:
+      apt:
+        packages:
+          - clang-3.5
 
   - name: icc
     if: branch != master OR type == pull_request
