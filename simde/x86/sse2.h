@@ -404,7 +404,8 @@ simde_mm_set1_pd (simde_float64 a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128d
 simde_x_mm_abs_pd(simde__m128d a) {
-  #if defined(SIMDE_X86_AVX512F_NATIVE)
+  #if defined(SIMDE_X86_AVX512F_NATIVE) && \
+        (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(7,4,0))
     return _mm512_castpd512_pd128(_mm512_abs_pd(_mm512_castpd128_pd512(a)));
   #else
     simde__m128d_private
