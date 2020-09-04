@@ -141,8 +141,10 @@ auto-vectorization that isn't enabled at lower optimization levels.
 
 Each instruction set has a separate file; `x86/mmx.h` for MMX,
 `x86/sse.h` for SSE, `x86/sse2.h` for SSE2, and so on.  Just include
-the header for whichever instruction set(s) you want, and SIMDe will
-provide the fastest implementation it can given which extensions
+the header for whichever instruction set(s) you want *instead of the
+native version* (if you include the native version after SIMDe it will
+result in compile-time errors if native aliases are enabled).  SIMDe
+will provide the fastest implementation it can given which extensions
 you've enabled in your compiler (i.e., if you want to use NEON to
 implement SSE, you may need to pass something like `-mfpu=neon`
 or `-march=armv8-a+simd`.  See
