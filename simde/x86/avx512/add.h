@@ -32,6 +32,10 @@
 #include "../avx2.h"
 #include "mov.h"
 
+HEDLEY_DIAGNOSTIC_PUSH
+SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
+SIMDE_BEGIN_DECLS_
+
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_mask_add_epi8(simde__m128i src, simde__mmask16 k, simde__m128i a, simde__m128i b) {
@@ -142,6 +146,34 @@ simde_mm_maskz_add_epi64(simde__mmask8 k, simde__m128i a, simde__m128i b) {
 #if defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES)
   #undef _mm_maskz_add_epi64
   #define _mm_maskz_add_epi64(k, a, b) simde_mm_maskz_add_epi64(k, a, b)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m128
+simde_mm_mask_add_ss(simde__m128 src, simde__mmask8 k, simde__m128 a, simde__m128 b) {
+  #if defined(SIMDE_X86_AVX512F_NATIVE)
+    return _mm_mask_add_ss(src, k, a, b);
+  #else
+    return simde_mm_mask_mov_ps(src, k, simde_mm_add_ss(a, b));
+  #endif
+}
+#if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
+  #undef _mm_mask_add_ss
+  #define _mm_mask_add_ss(src, k, a, b) simde_mm_mask_add_ss(src, k, a, b)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m128
+simde_mm_maskz_add_ss(simde__mmask8 k, simde__m128 a, simde__m128 b) {
+  #if defined(SIMDE_X86_AVX512F_NATIVE)
+    return _mm_maskz_add_ss(k, a, b);
+  #else
+    return simde_mm_maskz_mov_ps(k, simde_mm_add_ss(a, b));
+  #endif
+}
+#if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
+  #undef _mm_maskz_add_ss
+  #define _mm_maskz_add_ss(k, a, b) simde_mm_maskz_add_ss(k, a, b)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -339,10 +371,6 @@ simde_mm512_maskz_add_epi16 (simde__mmask32 k, simde__m512i a, simde__m512i b) {
   #undef _mm512_maskz_add_epi16
   #define _mm512_maskz_add_epi16(k, a, b) simde_mm512_maskz_add_epi16(k, a, b)
 #endif
-
-HEDLEY_DIAGNOSTIC_PUSH
-SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
-SIMDE_BEGIN_DECLS_
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m512i
