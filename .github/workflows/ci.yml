@@ -82,6 +82,37 @@ jobs:
       with:
         file: ./build/meson-logs/coverage.xml
 
+  avx512:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        isax: ["-mavx512f", "-mavx512bw", "-mavx512cd", "-mavx512dq", "-mavx512vl", "-mavx512bw -mavx512vl", "-mavx512vl -mavx512dq"]
+    env:
+      CFLAGS: -Wall -Wextra -Werror ${{ matrix.isax }}
+      CXXFLAGS: -Wall -Wextra -Werror ${{ matrix.isax }}
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: recursive
+    - name: Install APT Dependencies
+      run: sudo add-apt-repository 'ppa:ubuntu-toolchain-r/test' && sudo apt-get update && sudo apt-get install -y ninja-build ninja-build python3-pip python3-setuptools python3-wheel parallel gcovr
+    - name: Install pip Dependencies
+      run: pip3 install meson
+    - name: Configure
+      run: ~/.local/bin/meson setup build -Db_coverage=true
+    - name: Build
+      run: ninja -C build -v
+    # We can't actually run the tests without AVX-512. GitHub Actions doesn't
+    # currently support it, and SDE is too slow.
+    # - name: Test
+    #   run: ninja -C build -v test
+    # - name: Coverage Report
+    #   run: ninja -C build -v coverage-xml
+    # - name: CodeCov.io
+    #   uses: codecov/codecov-action@v1
+    #   with:
+    #     file: ./build/meson-logs/coverage.xml
+
   gcc:
     runs-on: ubuntu-latest
     strategy:
