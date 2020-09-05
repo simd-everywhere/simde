@@ -151,10 +151,10 @@
 #define simde_assert_m512d_equal(a, b) simde_test_x86_assert_equal_i32x16(simde_mm_castpd_si512(a), simde_mm_castpd_si512(b))
 #define simde_assert_m512i_equal(a, b) simde_test_x86_assert_equal_i32x16(a, b)
 
-#define simde_assert_mmask8(a, op, b) simde_assert_equal_u8(a, b)
-#define simde_assert_mmask16(a, op, b) simde_assert_equal_u16(a, b)
-#define simde_assert_mmask32(a, op, b) simde_assert_equal_u32(a, b)
-#define simde_assert_mmask64(a, op, b) simde_assert_equal_u64(a, b)
+#define simde_assert_equal_mmask8(a, b) simde_assert_equal_u8(a, b)
+#define simde_assert_equal_mmask16(a, b) simde_assert_equal_u16(a, b)
+#define simde_assert_equal_mmask32(a, b) simde_assert_equal_u32(a, b)
+#define simde_assert_equal_mmask64(a, b) simde_assert_equal_u64(a, b)
 
 #if !defined(SIMDE_TEST_BARE)
   #define SIMDE_TEST_DECLARE_SUITE(name) SIMDE_TEST_SUITE_DECLARE_GETTERS(HEDLEY_CONCAT(simde_test_x86_get_suite_,name))

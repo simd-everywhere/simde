@@ -305,7 +305,7 @@ test_simde_mm512_cmple_epi8_mask(SIMDE_MUNIT_TEST_ARGS) {
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__mmask64 r = simde_mm512_cmple_epi8_mask(test_vec[i].a, test_vec[i].b);
-    simde_assert_mmask64(r, ==, test_vec[i].r);
+    simde_assert_equal_mmask64(r, test_vec[i].r);
   }
 
   return 0;
@@ -586,7 +586,7 @@ test_simde_mm512_cmple_epu8_mask(SIMDE_MUNIT_TEST_ARGS) {
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__mmask64 r = simde_mm512_cmple_epu8_mask(test_vec[i].a, test_vec[i].b);
-    simde_assert_mmask64(r, ==, test_vec[i].r);
+    simde_assert_equal_mmask64(r, test_vec[i].r);
   }
 
   return 0;

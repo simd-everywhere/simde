@@ -24,7 +24,7 @@ SIMDE_TEST_X86_GENERATE_UINT_TYPE_FUNCS_(__m512i, 64, 8, simde_mm512_storeu_si51
   } \
  \
   static void \
-  simde_test_x86_write_mmask##EL(int indent, simde__mmask16 value, SimdeTestVecPos pos) { \
+  simde_test_x86_write_mmask##EL(int indent, simde__mmask##EL value, SimdeTestVecPos pos) { \
     simde_test_codegen_write_u##EL(indent, HEDLEY_STATIC_CAST(uint##EL##_t, value), pos); \
   }
 

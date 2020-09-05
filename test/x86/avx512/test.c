@@ -123,7 +123,7 @@ test_simde_mm512_mask_test_epi32_mask(SIMDE_MUNIT_TEST_ARGS) {
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__mmask16 r = simde_mm512_mask_test_epi32_mask(test_vec[i].k, test_vec[i].a, test_vec[i].b);
-    simde_assert_mmask16(HEDLEY_STATIC_CAST(uint16_t, r), ==, HEDLEY_STATIC_CAST(uint16_t, test_vec[i].r));
+    simde_assert_equal_mmask16(r, HEDLEY_STATIC_CAST(uint16_t, test_vec[i].r));
   }
 
   return 0;
@@ -221,7 +221,7 @@ test_simde_mm512_mask_test_epi64_mask(SIMDE_MUNIT_TEST_ARGS) {
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__mmask8 r = simde_mm512_mask_test_epi64_mask(test_vec[i].k, test_vec[i].a, test_vec[i].b);
-    simde_assert_mmask8(r, ==, test_vec[i].r);
+    simde_assert_equal_mmask8(r, test_vec[i].r);
   }
 
   return 0;
