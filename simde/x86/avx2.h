@@ -3296,7 +3296,7 @@ simde_mm256_movemask_epi8 (simde__m256i a) {
       r = 0;
       SIMDE_VECTORIZE_REDUCTION(|:r)
       for (size_t i = 0 ; i < (sizeof(a_.u8) / sizeof(a_.u8[0])) ; i++) {
-        r |= (a_.u8[31 - i] >> 7) << (31 - i);
+        r |= HEDLEY_STATIC_CAST(uint32_t, (a_.u8[31 - i] >> 7)) << (31 - i);
       }
     #endif
 
