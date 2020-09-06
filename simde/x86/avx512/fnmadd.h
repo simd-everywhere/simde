@@ -56,7 +56,7 @@ simde_mm512_fnmadd_ps (simde__m512 a, simde__m512 b, simde__m512 c) {
       r_.f32 = -(a_.f32 * b_.f32) + c_.f32;
     #else
       SIMDE_VECTORIZE
-      for (size_t i = 0 ; i < (sizeof(r_.m32) / sizeof(r_.m32)) ; i++) {
+      for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
         r_.f32[i] = -(a_.f32[i] * b_.f32[i]) + c_.f32[i];
       }
     #endif
@@ -89,7 +89,7 @@ simde_mm512_fnmadd_pd (simde__m512d a, simde__m512d b, simde__m512d c) {
       r_.f64 = -(a_.f64 * b_.f64) + c_.f64;
     #else
       SIMDE_VECTORIZE
-      for (size_t i = 0 ; i < (sizeof(r_.m64) / sizeof(r_.m64)) ; i++) {
+      for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
         r_.f64[i] = -(a_.f64[i] * b_.f64[i]) + c_.f64[i];
       }
     #endif
