@@ -31,6 +31,7 @@
 #include "types.h"
 #include "../avx2.h"
 #include "mov.h"
+#include "setzero.h"
 
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
@@ -54,14 +55,15 @@ simde_mm512_srl_epi16 (simde__m512i a, simde__m128i count) {
       simde__m128i_private
         count_ = simde__m128i_to_private(count);
 
-      uint64_t shift = HEDLEY_STATIC_CAST(uint64_t , (count_.i64[0] > 16 ? 16 : count_.i64[0]));
+      if (HEDLEY_STATIC_CAST(uint64_t, count_.i64[0]) > 15)
+        return simde_mm512_setzero_si512();
 
       #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
-        r_.u16 = a_.u16 >> HEDLEY_STATIC_CAST(int16_t, shift);
+        r_.u16 = a_.u16 >> count_.i64[0];
       #else
         SIMDE_VECTORIZE
         for (size_t i = 0 ; i < (sizeof(r_.i16) / sizeof(r_.i16[0])) ; i++) {
-          r_.u16[i] = a_.u16[i] >> (shift);
+          r_.u16[i] = a_.u16[i] >> count_.i64[0];
         }
       #endif
     #endif
@@ -92,16 +94,15 @@ simde_mm512_srl_epi32 (simde__m512i a, simde__m128i count) {
       simde__m128i_private
         count_ = simde__m128i_to_private(count);
 
-      uint64_t shift = HEDLEY_STATIC_CAST(uint64_t, count_.i64[0]);
-      if (shift > 31)
+      if (HEDLEY_STATIC_CAST(uint64_t, count_.i64[0]) > 31)
         return simde_mm512_setzero_si512();
 
       #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
-        r_.i32 = a_.i32 >> HEDLEY_STATIC_CAST(int32_t, shift);
+        r_.u32 = a_.u32 >> count_.i64[0];
       #else
         SIMDE_VECTORIZE
         for (size_t i = 0 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {
-          r_.i32[i] = HEDLEY_STATIC_CAST(int32_t, a_.i32[i] >> (shift));
+          r_.u32[i] = a_.u32[i] >> count_.i64[0];
         }
       #endif
     #endif
@@ -160,16 +161,15 @@ simde_mm512_srl_epi64 (simde__m512i a, simde__m128i count) {
       simde__m128i_private
         count_ = simde__m128i_to_private(count);
 
-      uint64_t shift = HEDLEY_STATIC_CAST(uint64_t, count_.i64[0]);
-      if (shift > 63)
+      if (HEDLEY_STATIC_CAST(uint64_t, count_.i64[0]) > 63)
         return simde_mm512_setzero_si512();
 
       #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
-        r_.i64 = a_.i64 >> HEDLEY_STATIC_CAST(int64_t, shift);
+        r_.u64 = a_.u64 >> count_.i64[0];
       #else
         SIMDE_VECTORIZE
         for (size_t i = 0 ; i < (sizeof(r_.i64) / sizeof(r_.i64[0])) ; i++) {
-          r_.i64[i] = HEDLEY_STATIC_CAST(int64_t, a_.i64[i] >> (shift));
+          r_.u64[i] = a_.u64[i] >> count_.i64[0];
         }
       #endif
     #endif
