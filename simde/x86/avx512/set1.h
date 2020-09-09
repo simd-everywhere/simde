@@ -66,7 +66,8 @@ simde_mm512_mask_set1_epi8(simde__m512i src, simde__mmask64 k, int8_t a) {
   #endif
 }
 #if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
-#define _mm512_mask_set1_epi8(src, k, a) simde_mm512_mask_set1_epi8(src, k, a)
+  #undef _mm512_mask_set1_epi8
+  #define _mm512_mask_set1_epi8(src, k, a) simde_mm512_mask_set1_epi8(src, k, a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -79,7 +80,8 @@ simde_mm512_maskz_set1_epi8(simde__mmask64 k, int8_t a) {
   #endif
 }
 #if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
-#define _mm512_maskz_set1_epi8(k, a) simde_mm512_maskz_set1_epi8(k, a)
+  #undef _mm512_maskz_set1_epi8
+  #define _mm512_maskz_set1_epi8(k, a) simde_mm512_maskz_set1_epi8(k, a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -113,7 +115,8 @@ simde_mm512_mask_set1_epi16(simde__m512i src, simde__mmask32 k, int16_t a) {
   #endif
 }
 #if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
-#define _mm512_mask_set1_epi16(src, k, a) simde_mm512_mask_set1_epi16(src, k, a)
+  #undef _mm512_mask_set1_epi16
+  #define _mm512_mask_set1_epi16(src, k, a) simde_mm512_mask_set1_epi16(src, k, a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -126,7 +129,8 @@ simde_mm512_maskz_set1_epi16(simde__mmask32 k, int16_t a) {
   #endif
 }
 #if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
-#define _mm512_maskz_set1_epi16(k, a) simde_mm512_maskz_set1_epi16(k, a)
+  #undef _mm512_maskz_set1_epi16
+  #define _mm512_maskz_set1_epi16(k, a) simde_mm512_maskz_set1_epi16(k, a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -160,7 +164,8 @@ simde_mm512_mask_set1_epi32(simde__m512i src, simde__mmask16 k, int32_t a) {
   #endif
 }
 #if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
-#define _mm512_mask_set1_epi32(src, k, a) simde_mm512_mask_set1_epi32(src, k, a)
+  #undef _mm512_mask_set1_epi32
+  #define _mm512_mask_set1_epi32(src, k, a) simde_mm512_mask_set1_epi32(src, k, a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -173,7 +178,8 @@ simde_mm512_maskz_set1_epi32(simde__mmask16 k, int32_t a) {
   #endif
 }
 #if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
-#define _mm512_maskz_set1_epi32(k, a) simde_mm512_maskz_set1_epi32(k, a)
+  #undef _mm512_maskz_set1_epi32
+  #define _mm512_maskz_set1_epi32(k, a) simde_mm512_maskz_set1_epi32(k, a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -207,7 +213,8 @@ simde_mm512_mask_set1_epi64(simde__m512i src, simde__mmask8 k, int64_t a) {
   #endif
 }
 #if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
-#define _mm512_mask_set1_epi64(src, k, a) simde_mm512_mask_set1_epi64(src, k, a)
+  #undef _mm512_mask_set1_epi64
+  #define _mm512_mask_set1_epi64(src, k, a) simde_mm512_mask_set1_epi64(src, k, a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -220,7 +227,8 @@ simde_mm512_maskz_set1_epi64(simde__mmask8 k, int64_t a) {
   #endif
 }
 #if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
-#define _mm512_maskz_set1_epi64(k, a) simde_mm512_maskz_set1_epi64(k, a)
+  #undef _mm512_maskz_set1_epi64
+  #define _mm512_maskz_set1_epi64(k, a) simde_mm512_maskz_set1_epi64(k, a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES

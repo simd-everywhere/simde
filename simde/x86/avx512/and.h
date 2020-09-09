@@ -110,7 +110,8 @@ simde_mm512_mask_and_ps(simde__m512 src, simde__mmask16 k, simde__m512 a, simde_
   #endif
 }
 #if defined(SIMDE_X86_AVX512DQ_ENABLE_NATIVE_ALIASES)
-#define _mm512_mask_and_ps(src, k, a, b) simde_mm512_mask_and_ps(src, k, a, b)
+  #undef _mm512_mask_and_ps
+  #define _mm512_mask_and_ps(src, k, a, b) simde_mm512_mask_and_ps(src, k, a, b)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -123,7 +124,8 @@ simde_mm512_maskz_and_ps(simde__mmask16 k, simde__m512 a, simde__m512 b) {
   #endif
 }
 #if defined(SIMDE_X86_AVX512DQ_ENABLE_NATIVE_ALIASES)
-#define _mm512_maskz_and_ps(k, a, b) simde_mm512_maskz_and_ps(k, a, b)
+  #undef _mm512_maskz_and_ps
+  #define _mm512_maskz_and_ps(k, a, b) simde_mm512_maskz_and_ps(k, a, b)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -136,7 +138,8 @@ simde_mm512_mask_and_pd(simde__m512d src, simde__mmask8 k, simde__m512d a, simde
   #endif
 }
 #if defined(SIMDE_X86_AVX512DQ_ENABLE_NATIVE_ALIASES)
-#define _mm512_mask_and_pd(src, k, a, b) simde_mm512_mask_and_pd(src, k, a, b)
+  #undef _mm512_mask_and_pd
+  #define _mm512_mask_and_pd(src, k, a, b) simde_mm512_mask_and_pd(src, k, a, b)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -149,7 +152,8 @@ simde_mm512_maskz_and_pd(simde__mmask8 k, simde__m512d a, simde__m512d b) {
   #endif
 }
 #if defined(SIMDE_X86_AVX512DQ_ENABLE_NATIVE_ALIASES)
-#define _mm512_maskz_and_pd(k, a, b) simde_mm512_maskz_and_pd(k, a, b)
+  #undef _mm512_maskz_and_pd
+  #define _mm512_maskz_and_pd(k, a, b) simde_mm512_maskz_and_pd(k, a, b)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES

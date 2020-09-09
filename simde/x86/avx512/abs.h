@@ -356,7 +356,8 @@ simde_mm512_mask_abs_epi32(simde__m512i src, simde__mmask16 k, simde__m512i a) {
   #endif
 }
 #if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
-#define _mm512_mask_abs_epi32(src, k, a) simde_mm512_mask_abs_epi32(src, k, a)
+  #undef _mm512_mask_abs_epi32
+  #define _mm512_mask_abs_epi32(src, k, a) simde_mm512_mask_abs_epi32(src, k, a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -369,7 +370,8 @@ simde_mm512_maskz_abs_epi32(simde__mmask16 k, simde__m512i a) {
   #endif
 }
 #if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
-#define _mm512_maskz_abs_epi32(k, a) simde_mm512_maskz_abs_epi32(k, a)
+  #undef _mm512_maskz_abs_epi32
+  #define _mm512_maskz_abs_epi32(k, a) simde_mm512_maskz_abs_epi32(k, a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -405,7 +407,8 @@ simde_mm512_mask_abs_epi64(simde__m512i src, simde__mmask8 k, simde__m512i a) {
   #endif
 }
 #if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
-#define _mm512_mask_abs_epi64(src, k, a) simde_mm512_mask_abs_epi64(src, k, a)
+  #undef _mm512_mask_abs_epi64
+  #define _mm512_mask_abs_epi64(src, k, a) simde_mm512_mask_abs_epi64(src, k, a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -418,7 +421,8 @@ simde_mm512_maskz_abs_epi64(simde__mmask8 k, simde__m512i a) {
   #endif
 }
 #if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
-#define _mm512_maskz_abs_epi64(k, a) simde_mm512_maskz_abs_epi64(k, a)
+  #undef _mm512_maskz_abs_epi64
+  #define _mm512_maskz_abs_epi64(k, a) simde_mm512_maskz_abs_epi64(k, a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -454,7 +458,8 @@ simde_mm512_mask_abs_ps(simde__m512 src, simde__mmask16 k, simde__m512 v2) {
   #endif
 }
 #if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
-#define _mm512_mask_abs_ps(src, k, v2) simde_mm512_mask_abs_ps(src, k, v2)
+  #undef _mm512_mask_abs_ps
+  #define _mm512_mask_abs_ps(src, k, v2) simde_mm512_mask_abs_ps(src, k, v2)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -490,7 +495,8 @@ simde_mm512_mask_abs_pd(simde__m512d src, simde__mmask8 k, simde__m512d v2) {
   #endif
 }
 #if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
-#define _mm512_mask_abs_pd(src, k, v2) simde_mm512_mask_abs_pd(src, k, v2)
+  #undef _mm512_mask_abs_pd
+  #define _mm512_mask_abs_pd(src, k, v2) simde_mm512_mask_abs_pd(src, k, v2)
 #endif
 
 SIMDE_END_DECLS_

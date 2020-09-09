@@ -2687,6 +2687,7 @@ simde_mm256_inserti128_si256(simde__m256i a, simde__m128i b, const int imm8)
   #define simde_mm256_inserti128_si256(a, b, imm8) _mm256_inserti128_si256(a, b, imm8)
 #endif
 #if defined(SIMDE_X86_AVX2_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_inserti128_si256
   #define _mm256_inserti128_si256(a, b, imm8) simde_mm256_inserti128_si256(a, b, imm8)
 #endif
 
