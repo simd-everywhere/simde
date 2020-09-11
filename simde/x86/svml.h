@@ -2190,8 +2190,8 @@ simde_x_mm512_deg2rad_ps(simde__m512 a) {
       r_.f32 = a_.f32 * SIMDE_MATH_PI_OVER_180F;
     #else
       SIMDE_VECTORIZE
-      for (size_t i = 0 ; i < (sizeof(r_.m256) / sizeof(r_.m256[0])) ; i++) {
-        r_.m256[i] = simde_x_mm256_deg2rad_ps(a_.m256[i]);
+      for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
+        r_.f32[i] = simde_math_deg2radf(a_.f32[i]);
       }
 
     #endif
@@ -2217,8 +2217,8 @@ simde_x_mm512_deg2rad_pd(simde__m512d a) {
       r_.f64 = a_.f64 * SIMDE_MATH_PI_OVER_180;
     #else
       SIMDE_VECTORIZE
-      for (size_t i = 0 ; i < (sizeof(r_.m256d) / sizeof(r_.m256d[0])) ; i++) {
-        r_.m256d[i] = simde_x_mm256_deg2rad_pd(a_.m256d[i]);
+      for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
+        r_.f64[i] = simde_math_deg2rad(a_.f64[i]);
       }
 
     #endif
