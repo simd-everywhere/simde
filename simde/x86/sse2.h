@@ -1732,8 +1732,8 @@ simde_mm_cmpneq_pd (simde__m128d a, simde__m128d b) {
       a_ = simde__m128d_to_private(a),
       b_ = simde__m128d_to_private(b);
 
-    #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-      r_.neon_u16 = vmvnq_u16(vceqq_s16(b_.neon_i16, a_.neon_i16));
+    #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+      r_.neon_u32 = vmvnq_u32(vreinterpretq_u32_u64(vceqq_f64(b_.neon_f64, a_.neon_f64)));
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r_.wasm_v128 = wasm_f64x2_ne(a_.wasm_v128, b_.wasm_v128);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
