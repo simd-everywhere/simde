@@ -38,8 +38,20 @@ jobs:
   - name: "aarch64"
     if: branch != master OR type == pull_request
     arch: arm64
+    compiler: gcc-10
     env:
+    - C_COMPILER=gcc-10
+    - CXX_COMPILER=g++-10
     - ARCH_FLAGS="-march=armv8-a+simd+crc"
+    - OPTIMIZATION_FLAGS="-O1"
+    addons:
+      apt:
+        sources:
+        - sourceline: "ppa:ubuntu-toolchain-r/test"
+          key_url: https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x60c317803a41ba51845e371a1e9377a2ba9ef27f
+        packages:
+        - gcc-10
+        - g++-10
 
   - name: "ppc64le"
     if: branch != master OR type == pull_request
