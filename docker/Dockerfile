@@ -25,13 +25,18 @@ RUN \
     npm libsleef-dev
 
 RUN \
+  apt-get update -y && \
   for arch in `dpkg --print-foreign-architectures`; do \
-    echo libc6:"${arch}" libstdc++-8-dev:"${arch}" libstdc++-9-dev:"${arch}" libstdc++-10-dev:"${arch}"; \
+    echo libc6:"${arch}"; \
+    for version in $(apt-cache pkgnames | grep -Po '(?<=gcc\-)([0-9]+)$'); do \
+      echo libstdc++-${version}-dev:"${arch}"; \
+    done; \
   done | xargs apt-get install -y
 
 RUN \
-  for arch in $(dpkg --print-foreign-architectures | grep -v i386); do \
-    triplet="$(dpkg -L libc6:${arch} | grep -Po '(?<=/usr/lib/)[^/]+$')"; \
+  apt-get update -y && \
+  for arch in $(dpkg --print-foreign-architectures); do \
+    triplet="$(dpkg -L libc6:${arch} | grep -Po '(?<=/usr/lib/)[^/]+$' | sed -e 's/i386/i686/')"; \
     for version in $(apt-cache pkgnames | grep -Po '(?<=gcc\-)([0-9]+)$' | sort -h | tail -n 2); do \
       echo gcc-${version}-${triplet} g++-${version}-${triplet}; \
     done; \
