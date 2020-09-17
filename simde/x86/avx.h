@@ -3901,7 +3901,7 @@ simde_mm256_load_si256 (simde__m256i const * mem_addr) {
     return _mm256_load_si256(HEDLEY_REINTERPRET_CAST(__m256i const*, mem_addr));
   #else
     simde__m256i r;
-    r = *mem_addr;
+    simde_memcpy(&r, mem_addr, sizeof(r));
     return r;
   #endif
 }
@@ -5215,11 +5215,11 @@ void
 simde_mm256_store_si256 (simde__m256i* mem_addr, simde__m256i a) {
   simde_assert_aligned(32, mem_addr);
 
-#if defined(SIMDE_X86_AVX_NATIVE)
-  _mm256_store_si256(mem_addr, a);
-#else
-  *mem_addr = a;
-#endif
+  #if defined(SIMDE_X86_AVX_NATIVE)
+    _mm256_store_si256(mem_addr, a);
+  #else
+    simde_memcpy(mem_addr, &a, sizeof(a));
+  #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
   #undef _mm256_store_si256
@@ -5350,11 +5350,11 @@ void
 simde_mm256_stream_si256 (simde__m256i* mem_addr, simde__m256i a) {
   simde_assert_aligned(32, mem_addr);
 
-#if defined(SIMDE_X86_AVX_NATIVE)
-  _mm256_stream_si256(mem_addr, a);
-#else
-  *mem_addr = a;
-#endif
+  #if defined(SIMDE_X86_AVX_NATIVE)
+    _mm256_stream_si256(mem_addr, a);
+  #else
+    simde_memcpy(mem_addr, &a, sizeof(a));
+  #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
   #undef _mm256_stream_si256

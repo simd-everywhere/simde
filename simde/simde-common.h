@@ -145,8 +145,12 @@
 #  define SIMDE_ALIGN_AS(N, T) SIMDE_ALIGN(N)
 #endif
 
-#define simde_assert_aligned(alignment, val) \
-  simde_assert_int(HEDLEY_REINTERPRET_CAST(uintptr_t, HEDLEY_REINTERPRET_CAST(const void*, (val))) % (alignment), ==, 0)
+#if !(defined(HEDLEY_GCC_VERSION) && defined(SIMDE_ARCH_ARM))
+  #define simde_assert_aligned(alignment, val) \
+    simde_assert_int(HEDLEY_REINTERPRET_CAST(uintptr_t, HEDLEY_REINTERPRET_CAST(const void*, (val))) % (alignment), ==, 0)
+#else
+  #define simde_assert_aligned(alignment, val) ((void) 0)
+#endif
 
 #if \
     HEDLEY_HAS_BUILTIN(__builtin_constant_p) || \
