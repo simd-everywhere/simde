@@ -42,8 +42,7 @@ SIMDE_BEGIN_DECLS_
 SIMDE_FUNCTION_ATTRIBUTES
 simde__mmask16
 simde_mm512_cmp_ps_mask (simde__m512 a, simde__m512 b, const int imm8)
-    SIMDE_REQUIRE_CONSTANT(imm8)
-    HEDLEY_REQUIRE_MSG(((imm8 >= 0) && (imm8 <= 31)), "imm8 must be one of the SIMDE_CMP_* macros (values: [0, 31])") {
+    SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 31) {
   #if defined(SIMDE_X86_AVX512F_NATIVE)
     simde__mmask16 r;
     SIMDE_CONSTIFY_32_(_mm512_cmp_ps_mask, r, (HEDLEY_UNREACHABLE(), 0), imm8, a, b);
@@ -314,8 +313,7 @@ simde_mm512_cmp_ps_mask (simde__m512 a, simde__m512 b, const int imm8)
 SIMDE_FUNCTION_ATTRIBUTES
 simde__mmask8
 simde_mm512_cmp_pd_mask (simde__m512d a, simde__m512d b, const int imm8)
-    SIMDE_REQUIRE_CONSTANT(imm8)
-    HEDLEY_REQUIRE_MSG(((imm8 >= 0) && (imm8 <= 31)), "imm8 must be one of the SIMDE_CMP_* macros (values: [0, 31])") {
+    SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 31) {
   #if defined(SIMDE_X86_AVX512F_NATIVE)
     simde__mmask8 r;
     SIMDE_CONSTIFY_32_(_mm512_cmp_pd_mask, r, (HEDLEY_UNREACHABLE(), 0), imm8, a, b);
