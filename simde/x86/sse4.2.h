@@ -95,7 +95,7 @@ SIMDE_BEGIN_DECLS_
 
 SIMDE_FUNCTION_ATTRIBUTES
 int simde_mm_cmpestrs (simde__m128i a, int la, simde__m128i b, int lb, const int imm8)
-    SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 127) {
+    SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 255) {
   #if !defined(HEDLEY_PGI_VERSION)
     /* https://www.pgroup.com/userforum/viewtopic.php?f=4&p=27590&sid=cf89f8bf30be801831fe4a2ff0a2fa6c */
     (void) a;
@@ -115,7 +115,7 @@ int simde_mm_cmpestrs (simde__m128i a, int la, simde__m128i b, int lb, const int
 
 SIMDE_FUNCTION_ATTRIBUTES
 int simde_mm_cmpestrz (simde__m128i a, int la, simde__m128i b, int lb, const int imm8)
-    SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 127) {
+    SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 255) {
   #if !defined(HEDLEY_PGI_VERSION)
     /* https://www.pgroup.com/userforum/viewtopic.php?f=4&p=27590&sid=cf89f8bf30be801831fe4a2ff0a2fa6c */
     (void) a;
