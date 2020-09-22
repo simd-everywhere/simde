@@ -246,11 +246,11 @@ test_simde_mm_mask_xxx_epi16 (SIMDE_MUNIT_TEST_ARGS) {
     simde__m128i b = simde_test_x86_random_i16x8();
     simde__m128i r = simde_mm_mask_xxx_epi16(src, k, a, b);
 
-    simde_test_x86_write_i16x32(2, src, SIMDE_TEST_VEC_POS_FIRST);
+    simde_test_x86_write_i16x8(2, src, SIMDE_TEST_VEC_POS_FIRST);
     simde_test_x86_write_mmask8(2, k, SIMDE_TEST_VEC_POS_MIDDLE);
-    simde_test_x86_write_i16x32(2, a, SIMDE_TEST_VEC_POS_MIDDLE);
-    simde_test_x86_write_i16x32(2, b, SIMDE_TEST_VEC_POS_MIDDLE);
-    simde_test_x86_write_i16x32(2, r, SIMDE_TEST_VEC_POS_LAST);
+    simde_test_x86_write_i16x8(2, a, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_x86_write_i16x8(2, b, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_x86_write_i16x8(2, r, SIMDE_TEST_VEC_POS_LAST);
   }
   return 1;
 #endif
