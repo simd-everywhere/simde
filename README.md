@@ -254,6 +254,10 @@ We would love to add more, so patches are extremely welcome!
      [powerveclib](https://www.ibm.com/developerworks/community/groups/community/powerveclib/)
    * [SSE-to-NEON](https://github.com/otim/SSE-to-NEON) — implementing
      SSE with NEON.  Non-free, C++.
+   * [loongson-community GCC](https://github.com/loongson-community/gcc/commit/99cb272)  —
+     implementing SSE2 with Loongson SIMD.
+   * [Emscripten](https://emscripten.org/docs/porting/simd.html) —
+     implementing SSE and 128-bit AVX with WebAssembly SIMD.
  * [arm-neon-tests](https://github.com/christophe-lyon/arm-neon-tests)
    contains tests to verify NEON implementations.
 
