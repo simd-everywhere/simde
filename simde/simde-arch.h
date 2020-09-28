@@ -361,6 +361,10 @@
 #  define SIMDE_ARCH_MIPS_CHECK(version) (0)
 #endif
 
+#if defined(__mips_loongson_mmi)
+#  define SIMDE_ARCH_MIPS_LOONGSON_MMI 1
+#endif
+
 /* Matsushita MN10300
    <https://en.wikipedia.org/wiki/MN103> */
 #if defined(__MN10300__) || defined(__mn10300__)
