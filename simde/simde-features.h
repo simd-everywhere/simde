@@ -348,6 +348,15 @@
   #endif
 #endif
 
+#if !defined(SIMDE_MIPS_LOONGSON_MMI_NATIVE) && !defined(SIMDE_MIPS_LOONGSON_MMI_NO_NATIVE) && !defined(SIMDE_NO_NATIVE)
+  #if defined(SIMDE_ARCH_MIPS_LOONGSON_MMI)
+    #define SIMDE_MIPS_LOONGSON_MMI_NATIVE  1
+  #endif
+#endif
+#if defined(SIMDE_MIPS_LOONGSON_MMI_NATIVE)
+  #include <loongson-mmiintrin.h>
+#endif
+
 /* This is used to determine whether or not to fall back on a vector
  * function in an earlier ISA extensions, as well as whether
  * we expected any attempts at vectorization to be fruitful or if we
