@@ -361,7 +361,9 @@ simde_int64x2_t
 simde_vabsq_s64(simde_int64x2_t a) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vabsq_s64(a);
-  #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE) && !defined(HEDLEY_IBM_VERSION)
+  #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    return vbslq_s64(vreinterpretq_u64_s64(vshrq_n_s64(a, 63)), vsubq_s64(vdupq_n_s64(0), a), a);
+  #elif defined(SIMDE_POWER_ALTIVEC_P64_NATIVE) && !defined(HEDLEY_IBM_VERSION)
     return vec_abs(a);
   #else
     simde_int64x2_private
