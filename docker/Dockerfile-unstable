@@ -8,7 +8,7 @@ RUN \
   apt-get install -y curl gpg && \
   curl -s "https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS-2023.PUB" | apt-key add - && \
   echo "deb [arch=amd64] https://apt.repos.intel.com/oneapi all main" > /etc/apt/sources.list.d/oneAPI.list && \
-  for arch in armhf arm64 ppc64el s390x i386; do \
+  for arch in armhf arm64 ppc64el s390x i386 mips64el; do \
     dpkg --add-architecture "$arch"; \
   done
 
@@ -25,27 +25,27 @@ RUN \
     npm libsleef-dev
 
 RUN \
+  apt-get update -y && \
   for arch in `dpkg --print-foreign-architectures`; do \
-    echo libc6:"${arch}" libstdc++-8-dev:"${arch}" libstdc++-9-dev:"${arch}" libstdc++-10-dev:"${arch}"; \
-  done | xargs apt-get install -y
-
-RUN \
-  for arch in $(dpkg --print-foreign-architectures | grep -v i386); do \
-    triplet="$(dpkg -L libc6:${arch} | grep -Po '(?<=/usr/lib/)[^/]+$')"; \
-    for version in $(apt-cache pkgnames | grep -Po '(?<=gcc\-)([0-9]+)$' | sort -h | tail -n 2); do \
-      echo gcc-${version}-${triplet} g++-${version}-${triplet}; \
+    echo libc6:"${arch}"; \
+    for version in $(apt-cache pkgnames | grep -Po '(?<=gcc\-)([0-9]+)$'); do \
+      echo libstdc++-${version}-dev:"${arch}"; \
     done; \
   done | xargs apt-get install -y
 
-# Install emscripten
-RUN git clone https://github.com/emscripten-core/emsdk.git /opt/emsdk
-WORKDIR /opt/emsdk
-RUN ./emsdk update-tags && ./emsdk install tot && ./emsdk activate tot
-# https://github.com/mesonbuild/meson/issues/6847
-RUN ln -s /opt/emsdk/upstream/bin/wasm-ld /usr/bin/wasm-ld
+RUN \
+  apt-get update -y && \
+  for arch in $(dpkg --print-foreign-architectures); do \
+    triplet="$(dpkg -L libc6:${arch} | grep -Po '(?<=/usr/lib/)[^/]+$' | sed -e 's/i386/i686/')"; \
+    apt-get install -y "^g(cc|\+\+)(\-[0-9]+)-${triplet}$"; \
+  done
 
-# And v8
-RUN npm install jsvu -g && jsvu --os=linux64 --engines=v8 && ln -s "/root/.jsvu/v8" "/usr/bin/v8"
+# Install emscripten
+RUN \
+  git clone https://github.com/emscripten-core/emsdk.git /opt/emsdk && \
+  cd /opt/emsdk && ./emsdk update-tags && ./emsdk install tot && ./emsdk activate tot && \
+  ln -s /opt/emsdk/upstream/bin/wasm-ld /usr/bin/wasm-ld && \
+  npm install jsvu -g && jsvu --os=linux64 --engines=v8 && ln -s "/root/.jsvu/v8" "/usr/bin/v8"
 
 # # xlc -- Install fails.
 # # Once IBM releases a version for Ubuntu Focal (20.04) I hope I can

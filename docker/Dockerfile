@@ -8,7 +8,7 @@ RUN \
   apt-get install -y curl gpg && \
   curl -s "https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS-2023.PUB" | apt-key add - && \
   echo "deb [arch=amd64] https://apt.repos.intel.com/oneapi all main" > /etc/apt/sources.list.d/oneAPI.list && \
-  for arch in armhf arm64 ppc64el s390x i386; do \
+  for arch in armhf arm64 ppc64el s390x i386 mips64el; do \
     dpkg --add-architecture "$arch"; \
   done
 
@@ -37,20 +37,15 @@ RUN \
   apt-get update -y && \
   for arch in $(dpkg --print-foreign-architectures); do \
     triplet="$(dpkg -L libc6:${arch} | grep -Po '(?<=/usr/lib/)[^/]+$' | sed -e 's/i386/i686/')"; \
-    for version in $(apt-cache pkgnames | grep -Po '(?<=gcc\-)([0-9]+)$' | sort -h | tail -n 2); do \
-      echo gcc-${version}-${triplet} g++-${version}-${triplet}; \
-    done; \
-  done | xargs apt-get install -y
+    apt-get install -y "^g(cc|\+\+)(\-[0-9]+)-${triplet}$"; \
+  done
 
 # Install emscripten
-RUN git clone https://github.com/emscripten-core/emsdk.git /opt/emsdk
-WORKDIR /opt/emsdk
-RUN ./emsdk update-tags && ./emsdk install tot && ./emsdk activate tot
-# https://github.com/mesonbuild/meson/issues/6847
-RUN ln -s /opt/emsdk/upstream/bin/wasm-ld /usr/bin/wasm-ld
-
-# And v8
-RUN npm install jsvu -g && jsvu --os=linux64 --engines=v8 && ln -s "/root/.jsvu/v8" "/usr/bin/v8"
+RUN \
+  git clone https://github.com/emscripten-core/emsdk.git /opt/emsdk && \
+  cd /opt/emsdk && ./emsdk update-tags && ./emsdk install tot && ./emsdk activate tot && \
+  ln -s /opt/emsdk/upstream/bin/wasm-ld /usr/bin/wasm-ld && \
+  npm install jsvu -g && jsvu --os=linux64 --engines=v8 && ln -s "/root/.jsvu/v8" "/usr/bin/v8"
 
 # # xlc -- Install fails.
 # # Once IBM releases a version for Ubuntu Focal (20.04) I hope I can
