@@ -76,6 +76,21 @@ jobs:
         - gcc-10
         - g++-10
 
+  - name: "MIPS Loongson-MMI (Compile Only)"
+    if: branch != master OR type == pull_request
+    arch: amd64
+    compiler: mips64el-linux-gnuabi64-gcc
+    env:
+    - C_COMPILER=mips64el-linux-gnuabi64-gcc
+    - CXX_COMPILER=mips64el-linux-gnuabi64-g++
+    - ARCH_FLAGS="-march=loongson3a"
+    - RUN_TESTS=false
+    addons:
+      apt:
+        packages:
+        - gcc-mips64el-linux-gnuabi64
+        - g++-mips64el-linux-gnuabi64
+
   # These next two ere largely to detect missing AVX-512 functions
   # since Travis is the only CI right now with AVX-512 hardware and SDE
   # is too slow.
