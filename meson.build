@@ -106,6 +106,7 @@ simde_neon_families = [
 ]
 
 simde_avx512_families = [
+  '2intersect',
   'abs',
   'add',
   'adds',
