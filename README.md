@@ -25,7 +25,7 @@ exist side-by-side, in the same implementation.
 
 Second, SIMDe makes it easier to write code targeting [ISA](https://en.wikipedia.org/wiki/Instruction_set_architecture)
 extensions you don't have convenient access to.  You can run NEON code on your
-x86 machine *without an emulator*.  Obviously you'll eventually want
+x86 machine *without an emulator*.  Obviously, you'll eventually want
 to test on the actual hardware you're targeting, but for most
 development, SIMDe can provide a much easier path.
 
@@ -79,7 +79,7 @@ sets:
 As well as partial support for many others; see the
 [instruction-set-support](https://github.com/simd-everywhere/simde/issues?q=is%3Aissue+is%3Aopen+label%3Ainstruction-set-support+sort%3Aupdated-desc)
 label in the issue tracker for details on progress.  If you'd like to
-be notified when an instruction set is available you may subscribe to
+be notified when an instruction set is available, you may subscribe to
 the relevant issue.
 
 If you have a project you're interested in using with SIMDe but we
@@ -135,7 +135,7 @@ versions* (one using SIMDe, the other native).  If the native functions
 are available SIMDe will use them, and compilers easily optimize away
 any overhead from SIMDe; all they have to do is some basic inlining.
 `-O2` should be enough, but we strongly recommend `-O3` (or whatever
-flag instructs your compiler to aggressizely optimize) since many of
+flag instructs your compiler to aggressively optimize) since many of
 the portable fallbacks are substantially faster with aggressive
 auto-vectorization that isn't enabled at lower optimization levels.
 
