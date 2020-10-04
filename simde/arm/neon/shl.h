@@ -408,7 +408,7 @@ simde_vshlq_s8 (const simde_int8x16_t a, const simde_int8x16_t b) {
   #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
     SIMDE_POWER_ALTIVEC_VECTOR(signed char) a_shl, a_shr;
     SIMDE_POWER_ALTIVEC_VECTOR(unsigned char) b_abs, b_max;
-    SIMDE_POWER_ALTIVEC_VECTOR(bool char) b_mask;
+    SIMDE_POWER_ALTIVEC_VECTOR(SIMDE_POWER_ALTIVEC_BOOL char) b_mask;
     b_abs = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned char), vec_abs(b));
     b_max = vec_splat_u8(7);
     #if defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
@@ -463,7 +463,7 @@ simde_vshlq_s16 (const simde_int16x8_t a, const simde_int16x8_t b) {
   #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
     SIMDE_POWER_ALTIVEC_VECTOR(signed short) a_shl, a_shr;
     SIMDE_POWER_ALTIVEC_VECTOR(unsigned short) b_abs, b_max;
-    SIMDE_POWER_ALTIVEC_VECTOR(bool short) b_mask;
+    SIMDE_POWER_ALTIVEC_VECTOR(SIMDE_POWER_ALTIVEC_BOOL short) b_mask;
     b_abs = vec_and(HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned short),
                                             vec_abs(HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(signed char), b))),
                     vec_splats(HEDLEY_STATIC_CAST(unsigned short, 0xFF)));
@@ -512,7 +512,7 @@ simde_vshlq_s32 (const simde_int32x4_t a, const simde_int32x4_t b) {
   #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
     SIMDE_POWER_ALTIVEC_VECTOR(signed int) a_shl, a_shr;
     SIMDE_POWER_ALTIVEC_VECTOR(unsigned int) b_abs, b_max;
-    SIMDE_POWER_ALTIVEC_VECTOR(bool int) b_mask;
+    SIMDE_POWER_ALTIVEC_VECTOR(SIMDE_POWER_ALTIVEC_BOOL int) b_mask;
     b_abs = vec_and(HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned int),
                                             vec_abs(HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(signed char), b))),
                     vec_splats(HEDLEY_STATIC_CAST(unsigned int, 0xFF)));
@@ -570,7 +570,7 @@ simde_vshlq_s64 (const simde_int64x2_t a, const simde_int64x2_t b) {
   #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
     SIMDE_POWER_ALTIVEC_VECTOR(signed long long) a_shl, a_shr;
     SIMDE_POWER_ALTIVEC_VECTOR(unsigned long long) b_abs, b_max;
-    SIMDE_POWER_ALTIVEC_VECTOR(bool long long) b_mask;
+    SIMDE_POWER_ALTIVEC_VECTOR(SIMDE_POWER_ALTIVEC_BOOL long long) b_mask;
     b_abs = vec_and(HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned long long),
                                             vec_abs(HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(signed char), b))),
                     vec_splats(HEDLEY_STATIC_CAST(unsigned long long, 0xFF)));
@@ -622,7 +622,7 @@ simde_vshlq_u8 (const simde_uint8x16_t a, const simde_int8x16_t b) {
     return _mm256_cvtepi16_epi8(r256);
   #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
     SIMDE_POWER_ALTIVEC_VECTOR(unsigned char) b_abs;
-    SIMDE_POWER_ALTIVEC_VECTOR(bool char) b_mask;
+    SIMDE_POWER_ALTIVEC_VECTOR(SIMDE_POWER_ALTIVEC_BOOL char) b_mask;
     b_abs = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned char), vec_abs(b));
     b_mask = vec_cmplt(b, vec_splat_s8(0));
     return vec_and(vec_sel(vec_sl(a, b_abs), vec_sr(a, b_abs), b_mask),
@@ -670,7 +670,7 @@ simde_vshlq_u16 (const simde_uint16x8_t a, const simde_int16x8_t b) {
     return _mm_set_epi64x(_mm256_extract_epi64(r256, 2), _mm256_extract_epi64(r256, 0));
   #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
     SIMDE_POWER_ALTIVEC_VECTOR(unsigned short) b_abs;
-    SIMDE_POWER_ALTIVEC_VECTOR(bool short) b_mask;
+    SIMDE_POWER_ALTIVEC_VECTOR(SIMDE_POWER_ALTIVEC_BOOL short) b_mask;
     b_abs = vec_and(HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned short),
                                             vec_abs(HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(signed char), b))),
                     vec_splats(HEDLEY_STATIC_CAST(unsigned short, 0xFF)));
@@ -717,7 +717,7 @@ simde_vshlq_u32 (const simde_uint32x4_t a, const simde_int32x4_t b) {
                            _mm_cmpgt_epi32(_mm_setzero_si128(), b_));
   #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
     SIMDE_POWER_ALTIVEC_VECTOR(unsigned int) b_abs;
-    SIMDE_POWER_ALTIVEC_VECTOR(bool int) b_mask;
+    SIMDE_POWER_ALTIVEC_VECTOR(SIMDE_POWER_ALTIVEC_BOOL int) b_mask;
     b_abs = vec_and(HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned int),
                                             vec_abs(HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(signed char), b))),
                     vec_splats(HEDLEY_STATIC_CAST(unsigned int, 0xFF)));
@@ -764,7 +764,7 @@ simde_vshlq_u64 (const simde_uint64x2_t a, const simde_int64x2_t b) {
                            _mm_cmpgt_epi64(_mm_setzero_si128(), _mm_slli_epi64(b, 56)));
   #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
     SIMDE_POWER_ALTIVEC_VECTOR(unsigned long long) b_abs;
-    SIMDE_POWER_ALTIVEC_VECTOR(bool long long) b_mask;
+    SIMDE_POWER_ALTIVEC_VECTOR(SIMDE_POWER_ALTIVEC_BOOL long long) b_mask;
     b_abs = vec_and(HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned long long),
                                             vec_abs(HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(signed char), b))),
                     vec_splats(HEDLEY_STATIC_CAST(unsigned long long, 0xFF)));
