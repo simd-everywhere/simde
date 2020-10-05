@@ -4190,17 +4190,14 @@ void
 simde_mm_stream_ps (simde_float32 mem_addr[4], simde__m128 a) {
   simde_assert_aligned(16, mem_addr);
 
-#if defined(SIMDE_X86_SSE_NATIVE)
-  _mm_stream_ps(mem_addr, a);
-#else
-  simde__m128_private a_ = simde__m128_to_private(a);
-
-#if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-  vst1q_f32(SIMDE_ASSUME_ALIGNED(16, mem_addr), a_.neon_f32);
-#else
-  simde_memcpy(SIMDE_ASSUME_ALIGNED(16, mem_addr), &a_, sizeof(a_));
-#endif
-#endif
+  #if defined(SIMDE_X86_SSE_NATIVE)
+    _mm_stream_ps(mem_addr, a);
+  #elif HEDLEY_HAS_BUILTIN(__builtin_nontemporal_store) && defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+    simde__m128_private a_ = simde__m128_to_private(a);
+    __builtin_nontemporal_store(a_.f32, SIMDE_ALIGN_CAST(__typeof__(a_.f32)*, mem_addr));
+  #else
+    simde_mm_store_ps(mem_addr, a);
+  #endif
 }
 #if defined(SIMDE_X86_SSE_ENABLE_NATIVE_ALIASES)
 #  define _mm_stream_ps(mem_addr, a) simde_mm_stream_ps(SIMDE_CHECKED_REINTERPRET_CAST(float*, simde_float32*, mem_addr), (a))
