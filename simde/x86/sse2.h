@@ -4347,11 +4347,10 @@ simde_mm_sad_epu8 (simde__m128i a, simde__m128i b) {
       b_ = simde__m128i_to_private(b);
 
     #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-      uint16x8_t t = vpaddlq_u8(vabdq_u8(a_.neon_u8, b_.neon_u8));
-      uint16_t r0 = t[0] + t[1] + t[2] + t[3];
-      uint16_t r4 = t[4] + t[5] + t[6] + t[7];
-      uint16x8_t r = vsetq_lane_u16(r0, vdupq_n_u16(0), 0);
-      r_.neon_u16 = vsetq_lane_u16(r4, r, 4);
+      const uint16x8_t t = vpaddlq_u8(vabdq_u8(a_.neon_u8, b_.neon_u8));
+      r_.neon_u64 = vcombine_u64(
+        vpaddl_u32(vpaddl_u16(vget_low_u16(t))),
+        vpaddl_u32(vpaddl_u16(vget_high_u16(t))));
     #else
       for (size_t i = 0 ; i < (sizeof(r_.i64) / sizeof(r_.i64[0])) ; i++) {
         uint16_t tmp = 0;
