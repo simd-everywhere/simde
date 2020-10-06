@@ -2658,6 +2658,8 @@ simde_mm_max_pu8 (simde__m64 a, simde__m64 b) {
 
     #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       r_.neon_u8 = vmax_u8(a_.neon_u8, b_.neon_u8);
+    #elif defined(SIMDE_SSE_WASM_SIMD128)
+      r_.wasm_v128 = wasm_i8x16.max_u(a_.wasm_v128, b_.wasm_v128);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.u8) / sizeof(r_.u8[0])) ; i++) {
