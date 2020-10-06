@@ -48,7 +48,11 @@ simde_mm_2intersect_epi32(simde__m128i a, simde__m128i b, simde__mmask8 *k1, sim
       k2_ = 0;
 
     for (size_t i = 0 ; i < sizeof(a_.i32) / sizeof(a_.i32[0]) ; i++) {
-      SIMDE_VECTORIZE
+      #if defined(SIMDE_ENABLE_OPENMP)
+        #pragma omp simd reduction(|:k1_) reduction(|:k2_)
+      #else
+        SIMDE_VECTORIZE
+      #endif
       for (size_t j = 0 ; j < sizeof(b_.i32) / sizeof(b_.i32[0]) ; j++) {
         const int32_t m = a_.i32[i] == b_.i32[j];
         k1_ |= m << i;
@@ -79,7 +83,11 @@ simde_mm_2intersect_epi64(simde__m128i a, simde__m128i b, simde__mmask8 *k1, sim
       k2_ = 0;
 
     for (size_t i = 0 ; i < sizeof(a_.i64) / sizeof(a_.i64[0]) ; i++) {
-      SIMDE_VECTORIZE
+      #if defined(SIMDE_ENABLE_OPENMP)
+        #pragma omp simd reduction(|:k1_) reduction(|:k2_)
+      #else
+        SIMDE_VECTORIZE
+      #endif
       for (size_t j = 0 ; j < sizeof(b_.i64) / sizeof(b_.i64[0]) ; j++) {
         const int32_t m = a_.i64[i] == b_.i64[j];
         k1_ |= m << i;
@@ -110,7 +118,11 @@ simde_mm256_2intersect_epi32(simde__m256i a, simde__m256i b, simde__mmask8 *k1, 
       k2_ = 0;
 
     for (size_t i = 0 ; i < sizeof(a_.i32) / sizeof(a_.i32[0]) ; i++) {
-      SIMDE_VECTORIZE
+      #if defined(SIMDE_ENABLE_OPENMP)
+        #pragma omp simd reduction(|:k1_) reduction(|:k2_)
+      #else
+        SIMDE_VECTORIZE
+      #endif
       for (size_t j = 0 ; j < sizeof(b_.i32) / sizeof(b_.i32[0]) ; j++) {
         const int32_t m = a_.i32[i] == b_.i32[j];
         k1_ |= m << i;
@@ -141,7 +153,11 @@ simde_mm256_2intersect_epi64(simde__m256i a, simde__m256i b, simde__mmask8 *k1, 
       k2_ = 0;
 
     for (size_t i = 0 ; i < sizeof(a_.i64) / sizeof(a_.i64[0]) ; i++) {
-      SIMDE_VECTORIZE
+      #if defined(SIMDE_ENABLE_OPENMP)
+        #pragma omp simd reduction(|:k1_) reduction(|:k2_)
+      #else
+        SIMDE_VECTORIZE
+      #endif
       for (size_t j = 0 ; j < sizeof(b_.i64) / sizeof(b_.i64[0]) ; j++) {
         const int32_t m = a_.i64[i] == b_.i64[j];
         k1_ |= m << i;
@@ -172,7 +188,11 @@ simde_mm512_2intersect_epi32(simde__m512i a, simde__m512i b, simde__mmask16 *k1,
       k2_ = 0;
 
     for (size_t i = 0 ; i < sizeof(a_.i32) / sizeof(a_.i32[0]) ; i++) {
-      SIMDE_VECTORIZE
+      #if defined(SIMDE_ENABLE_OPENMP)
+        #pragma omp simd reduction(|:k1_) reduction(|:k2_)
+      #else
+        SIMDE_VECTORIZE
+      #endif
       for (size_t j = 0 ; j < sizeof(b_.i32) / sizeof(b_.i32[0]) ; j++) {
         const int32_t m = a_.i32[i] == b_.i32[j];
         k1_ |= m << i;
@@ -203,7 +223,11 @@ simde_mm512_2intersect_epi64(simde__m512i a, simde__m512i b, simde__mmask8 *k1, 
       k2_ = 0;
 
     for (size_t i = 0 ; i < sizeof(a_.i64) / sizeof(a_.i64[0]) ; i++) {
-      SIMDE_VECTORIZE
+      #if defined(SIMDE_ENABLE_OPENMP)
+        #pragma omp simd reduction(|:k1_) reduction(|:k2_)
+      #else
+        SIMDE_VECTORIZE
+      #endif
       for (size_t j = 0 ; j < sizeof(b_.i64) / sizeof(b_.i64[0]) ; j++) {
         const int32_t m = a_.i64[i] == b_.i64[j];
         k1_ |= m << i;
