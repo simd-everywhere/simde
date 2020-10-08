@@ -388,7 +388,7 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde__m512i
 simde_x_mm512_set_m128i (simde__m128i a, simde__m128i b, simde__m128i c, simde__m128i d) {
   #if defined(SIMDE_X86_AVX512F_NATIVE)
-    SIMDE_ALIGN(64) simde__m128i v[] = { d, c, b, a };
+    SIMDE_ALIGN_LIKE_16(simde__m128i) simde__m128i v[] = { d, c, b, a };
     return simde_mm512_load_si512(HEDLEY_STATIC_CAST(__m512i *, HEDLEY_STATIC_CAST(void *, v)));
   #else
     simde__m512i_private r_;
@@ -406,7 +406,7 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde__m512i
 simde_x_mm512_set_m256i (simde__m256i a, simde__m256i b) {
   #if defined(SIMDE_X86_AVX512F_NATIVE)
-    SIMDE_ALIGN(64) simde__m256i v[] = { b, a };
+    SIMDE_ALIGN_LIKE_32(simde__m256i) simde__m256i v[] = { b, a };
     return simde_mm512_load_si512(HEDLEY_STATIC_CAST(__m512i *, HEDLEY_STATIC_CAST(void *, v)));
   #else
     simde__m512i_private r_;

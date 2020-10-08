@@ -5019,14 +5019,11 @@ simde_mm256_srlv_epi64 (simde__m256i a, simde__m256i b) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m256i
 simde_mm256_stream_load_si256 (const simde__m256i* mem_addr) {
-  simde_assert_aligned(32, mem_addr);
-
   #if defined(SIMDE_X86_AVX2_NATIVE)
     return _mm256_stream_load_si256(HEDLEY_CONST_CAST(simde__m256i*, mem_addr));
   #else
-    /* Use memcpy to avoid aliasing; data must still be 32-byte aligned */
     simde__m256i r;
-    simde_memcpy(&r, mem_addr, sizeof(r));
+    simde_memcpy(&r, SIMDE_ALIGN_ASSUME_LIKE(mem_addr, simde__m256i), sizeof(r));
     return r;
   #endif
 }

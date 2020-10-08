@@ -43,6 +43,7 @@
 #include "simde-diagnostic.h"
 #include "simde-math.h"
 #include "simde-constify.h"
+#include "simde-align.h"
 
 /* In some situations, SIMDe has to make large performance sacrifices
  * for small increases in how faithfully it reproduces an API, but
@@ -105,54 +106,6 @@
 #endif
 
 #if \
-  HEDLEY_HAS_ATTRIBUTE(aligned) || \
-  HEDLEY_GCC_VERSION_CHECK(2,95,0) || \
-  HEDLEY_CRAY_VERSION_CHECK(8,4,0) || \
-  HEDLEY_IBM_VERSION_CHECK(11,1,0) || \
-  HEDLEY_INTEL_VERSION_CHECK(13,0,0) || \
-  HEDLEY_PGI_VERSION_CHECK(19,4,0) || \
-  HEDLEY_ARM_VERSION_CHECK(4,1,0) || \
-  HEDLEY_TINYC_VERSION_CHECK(0,9,24) || \
-  HEDLEY_TI_VERSION_CHECK(8,1,0)
-#  define SIMDE_ALIGN(alignment) __attribute__((aligned(alignment)))
-#elif defined(_MSC_VER) && !(defined(_M_ARM) && !defined(_M_ARM64))
-#  define SIMDE_ALIGN(alignment) __declspec(align(alignment))
-#elif defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 201112L)
-#  define SIMDE_ALIGN(alignment) _Alignas(alignment)
-#elif defined(__cplusplus) && (__cplusplus >= 201103L)
-#  define SIMDE_ALIGN(alignment) alignas(alignment)
-#else
-#  define SIMDE_ALIGN(alignment)
-#endif
-
-#if HEDLEY_GNUC_VERSION_CHECK(2,95,0) || \
-    HEDLEY_ARM_VERSION_CHECK(4,1,0) || \
-    HEDLEY_IBM_VERSION_CHECK(11,1,0)
-#  define SIMDE_ALIGN_OF(T) (__alignof__(T))
-#elif \
-  (defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 201112L)) || \
-  HEDLEY_HAS_FEATURE(c11_alignof)
-#  define SIMDE_ALIGN_OF(T) (_Alignof(T))
-#elif \
-  (defined(__cplusplus) && (__cplusplus >= 201103L)) || \
-  HEDLEY_HAS_FEATURE(cxx_alignof)
-#  define SIMDE_ALIGN_OF(T) (alignof(T))
-#endif
-
-#if defined(SIMDE_ALIGN_OF)
-#  define SIMDE_ALIGN_AS(N, T) SIMDE_ALIGN(SIMDE_ALIGN_OF(T))
-#else
-#  define SIMDE_ALIGN_AS(N, T) SIMDE_ALIGN(N)
-#endif
-
-#if !(defined(HEDLEY_GCC_VERSION) && defined(SIMDE_ARCH_ARM))
-  #define simde_assert_aligned(alignment, val) \
-    simde_assert_int(HEDLEY_REINTERPRET_CAST(uintptr_t, HEDLEY_REINTERPRET_CAST(const void*, (val))) % (alignment), ==, 0)
-#else
-  #define simde_assert_aligned(alignment, val) ((void) 0)
-#endif
-
-#if \
     HEDLEY_HAS_BUILTIN(__builtin_constant_p) || \
     HEDLEY_GCC_VERSION_CHECK(3,4,0) || \
     HEDLEY_INTEL_VERSION_CHECK(13,0,0) || \
@@ -203,44 +156,6 @@
   (defined(__cplusplus) && (__cplusplus >= 201103L)) || \
   HEDLEY_MSVC_VERSION_CHECK(16,0,0)
 #  define SIMDE_STATIC_ASSERT(expr, message) HEDLEY_DIAGNOSTIC_DISABLE_CPP98_COMPAT_WRAP_(static_assert(expr, message))
-#endif
-
-/* SIMDE_ASSUME_ALIGNED allows you to (try to) tell the compiler
- * that a pointer is aligned to an `alignment`-byte boundary. */
-#if \
-    HEDLEY_HAS_BUILTIN(__builtin_assume_aligned) || \
-    HEDLEY_GCC_VERSION_CHECK(4,7,0)
-  #define SIMDE_ASSUME_ALIGNED(alignment, v) HEDLEY_REINTERPRET_CAST(__typeof__(v), __builtin_assume_aligned(v, alignment))
-#elif defined(__cplusplus) && (__cplusplus > 201703L)
-  #define SIMDE_ASSUME_ALIGNED(alignment, v) std::assume_aligned<alignment>(v)
-#elif HEDLEY_INTEL_VERSION_CHECK(13,0,0)
-  #define SIMDE_ASSUME_ALIGNED(alignment, v) (__extension__ ({ \
-      __typeof__(v) simde_assume_aligned_t_ = (v); \
-      __assume_aligned(simde_assume_aligned_t_, alignment); \
-      simde_assume_aligned_t_; \
-    }))
-#else
-  #define SIMDE_ASSUME_ALIGNED(alignment, v) (v)
-#endif
-
-#if defined(SIMDE_ALIGN_OF)
-  #define SIMDE_ASSUME_ALIGNED_AS(T, v) SIMDE_ASSUME_ALIGNED(SIMDE_ALIGN_OF(T), v)
-#else
-  #define SIMDE_ASSUME_ALIGNED_AS(T, v) (v)
-#endif
-
-/* SIMDE_ALIGN_CAST allows you to convert to a type with greater
- * aligment requirements without triggering a warning. */
-#if HEDLEY_HAS_WARNING("-Wcast-align") || defined(__clang__) || HEDLEY_GCC_VERSION_CHECK(3,4,0)
-  #define SIMDE_ALIGN_CAST(T, v) (__extension__({ \
-      HEDLEY_DIAGNOSTIC_PUSH \
-      _Pragma("GCC diagnostic ignored \"-Wcast-align\"") \
-      T simde_r_ = HEDLEY_REINTERPRET_CAST(T, v); \
-      HEDLEY_DIAGNOSTIC_POP \
-      simde_r_; \
-    }))
-#else
-  #define SIMDE_ALIGN_CAST(T, v) HEDLEY_REINTERPRET_CAST(T, v)
 #endif
 
 #if \

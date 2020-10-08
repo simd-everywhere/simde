@@ -53,29 +53,29 @@ SIMDE_BEGIN_DECLS_
 
 typedef union {
   #if defined(SIMDE_VECTOR_SUBSCRIPT)
-    SIMDE_ALIGN(8) int8_t          i8 SIMDE_VECTOR(8) SIMDE_MAY_ALIAS;
-    SIMDE_ALIGN(8) int16_t        i16 SIMDE_VECTOR(8) SIMDE_MAY_ALIAS;
-    SIMDE_ALIGN(8) int32_t        i32 SIMDE_VECTOR(8) SIMDE_MAY_ALIAS;
-    SIMDE_ALIGN(8) int64_t        i64 SIMDE_VECTOR(8) SIMDE_MAY_ALIAS;
-    SIMDE_ALIGN(8) uint8_t         u8 SIMDE_VECTOR(8) SIMDE_MAY_ALIAS;
-    SIMDE_ALIGN(8) uint16_t       u16 SIMDE_VECTOR(8) SIMDE_MAY_ALIAS;
-    SIMDE_ALIGN(8) uint32_t       u32 SIMDE_VECTOR(8) SIMDE_MAY_ALIAS;
-    SIMDE_ALIGN(8) uint64_t       u64 SIMDE_VECTOR(8) SIMDE_MAY_ALIAS;
-    SIMDE_ALIGN(8) simde_float32  f32 SIMDE_VECTOR(8) SIMDE_MAY_ALIAS;
-    SIMDE_ALIGN(8) int_fast32_t  i32f SIMDE_VECTOR(8) SIMDE_MAY_ALIAS;
-    SIMDE_ALIGN(8) uint_fast32_t u32f SIMDE_VECTOR(8) SIMDE_MAY_ALIAS;
+    SIMDE_ALIGN_TO_8 int8_t          i8 SIMDE_VECTOR(8) SIMDE_MAY_ALIAS;
+    SIMDE_ALIGN_TO_8 int16_t        i16 SIMDE_VECTOR(8) SIMDE_MAY_ALIAS;
+    SIMDE_ALIGN_TO_8 int32_t        i32 SIMDE_VECTOR(8) SIMDE_MAY_ALIAS;
+    SIMDE_ALIGN_TO_8 int64_t        i64 SIMDE_VECTOR(8) SIMDE_MAY_ALIAS;
+    SIMDE_ALIGN_TO_8 uint8_t         u8 SIMDE_VECTOR(8) SIMDE_MAY_ALIAS;
+    SIMDE_ALIGN_TO_8 uint16_t       u16 SIMDE_VECTOR(8) SIMDE_MAY_ALIAS;
+    SIMDE_ALIGN_TO_8 uint32_t       u32 SIMDE_VECTOR(8) SIMDE_MAY_ALIAS;
+    SIMDE_ALIGN_TO_8 uint64_t       u64 SIMDE_VECTOR(8) SIMDE_MAY_ALIAS;
+    SIMDE_ALIGN_TO_8 simde_float32  f32 SIMDE_VECTOR(8) SIMDE_MAY_ALIAS;
+    SIMDE_ALIGN_TO_8 int_fast32_t  i32f SIMDE_VECTOR(8) SIMDE_MAY_ALIAS;
+    SIMDE_ALIGN_TO_8 uint_fast32_t u32f SIMDE_VECTOR(8) SIMDE_MAY_ALIAS;
   #else
-    SIMDE_ALIGN(8) int8_t          i8[8];
-    SIMDE_ALIGN(8) int16_t        i16[4];
-    SIMDE_ALIGN(8) int32_t        i32[2];
-    SIMDE_ALIGN(8) int64_t        i64[1];
-    SIMDE_ALIGN(8) uint8_t         u8[8];
-    SIMDE_ALIGN(8) uint16_t       u16[4];
-    SIMDE_ALIGN(8) uint32_t       u32[2];
-    SIMDE_ALIGN(8) uint64_t       u64[1];
-    SIMDE_ALIGN(8) simde_float32  f32[2];
-    SIMDE_ALIGN(8) int_fast32_t  i32f[8 / sizeof(int_fast32_t)];
-    SIMDE_ALIGN(8) uint_fast32_t u32f[8 / sizeof(uint_fast32_t)];
+    SIMDE_ALIGN_TO_8 int8_t          i8[8];
+    SIMDE_ALIGN_TO_8 int16_t        i16[4];
+    SIMDE_ALIGN_TO_8 int32_t        i32[2];
+    SIMDE_ALIGN_TO_8 int64_t        i64[1];
+    SIMDE_ALIGN_TO_8 uint8_t         u8[8];
+    SIMDE_ALIGN_TO_8 uint16_t       u16[4];
+    SIMDE_ALIGN_TO_8 uint32_t       u32[2];
+    SIMDE_ALIGN_TO_8 uint64_t       u64[1];
+    SIMDE_ALIGN_TO_8 simde_float32  f32[2];
+    SIMDE_ALIGN_TO_8 int_fast32_t  i32f[8 / sizeof(int_fast32_t)];
+    SIMDE_ALIGN_TO_8 uint_fast32_t u32f[8 / sizeof(uint_fast32_t)];
   #endif
 
   #if defined(SIMDE_X86_MMX_USE_NATIVE_TYPE)
@@ -111,7 +111,7 @@ typedef union {
 #elif defined(SIMDE_MIPS_LOONGSON_MMI_NATIVE)
   typedef int32x2_t simde__m64;
 #elif defined(SIMDE_VECTOR_SUBSCRIPT)
-  typedef int32_t simde__m64 SIMDE_ALIGN(8) SIMDE_VECTOR(8) SIMDE_MAY_ALIAS;
+  typedef int32_t simde__m64 SIMDE_ALIGN_TO_8 SIMDE_VECTOR(8) SIMDE_MAY_ALIAS;
 #else
   typedef simde__m64_private simde__m64;
 #endif
@@ -1343,7 +1343,7 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde__m64
 simde_x_mm_load_si64 (const void* mem_addr) {
   simde__m64 r;
-  simde_memcpy(&r, SIMDE_ASSUME_ALIGNED_AS(simde__m64, mem_addr), sizeof(r));
+  simde_memcpy(&r, SIMDE_ALIGN_ASSUME_LIKE(mem_addr, simde__m64), sizeof(r));
   return r;
 }
 
@@ -1358,7 +1358,7 @@ simde_x_mm_loadu_si64 (const void* mem_addr) {
 SIMDE_FUNCTION_ATTRIBUTES
 void
 simde_x_mm_store_si64 (void* mem_addr, simde__m64 value) {
-  simde_memcpy(SIMDE_ASSUME_ALIGNED_AS(simde__m64, mem_addr), &value, sizeof(value));
+  simde_memcpy(SIMDE_ALIGN_ASSUME_LIKE(mem_addr, simde__m64), &value, sizeof(value));
 }
 
 SIMDE_FUNCTION_ATTRIBUTES

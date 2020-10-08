@@ -104,7 +104,7 @@ test_simde_mm512_store_ps (SIMDE_MUNIT_TEST_ARGS) {
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
     simde__m512 a = simde_mm512_loadu_ps(test_vec[i].a);
-    SIMDE_ALIGN_AS(16, simde__m512) simde_float32 r[sizeof(simde__m512) / sizeof(simde_float32)];
+    SIMDE_ALIGN_LIKE_64(simde__m512) simde_float32 r[sizeof(simde__m512) / sizeof(simde_float32)];
     simde_mm512_store_ps(r, a);
     simde_assert_equal_vf32(sizeof(r) / sizeof(r[0]), r, test_vec[i].r, 1);
   }
