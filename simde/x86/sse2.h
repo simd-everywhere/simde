@@ -667,6 +667,9 @@ simde_mm_move_sd (simde__m128d a, simde__m128d b) {
       r_.altivec_f64 = vec_perm(a_.altivec_f64, b_.altivec_f64, m);
     #elif defined(SIMDE_SHUFFLE_VECTOR_)
       r_.f64 = SIMDE_SHUFFLE_VECTOR_(64, 16, a_.f64, b_.f64, 2, 1);
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+      // assuming WebAssembly is little endian
+      r_.wasm_v128 = wasm_i8x16.shuffle(a_.wasm_v128, b_.wasm_v128, 16, 17, 18, 19, 20, 21, 22, 23, 8, 9, 10, 11, 12, 13, 14, 15)
     #else
       r_.f64[0] = b_.f64[0];
       r_.f64[1] = a_.f64[1];
