@@ -2076,7 +2076,7 @@ simde_x_mm_deg2rad_ps(simde__m128 a) {
       r_.neon_f32 = vmulq_n_f32(a_.neon_i32, SIMDE_MATH_PI_OVER_180F);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && !defined(SIMDE_BUG_GCC_53784)
       r_.f32 = a_.f32 * SIMDE_MATH_PI_OVER_180F;
-    #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       const __typeof__(r_.f32) tmp = { SIMDE_MATH_PI_OVER_180F, SIMDE_MATH_PI_OVER_180F, SIMDE_MATH_PI_OVER_180F, SIMDE_MATH_PI_OVER_180F };
       r_.f32 = a_.f32 * tmp;
     #else
@@ -2104,7 +2104,7 @@ simde_x_mm_deg2rad_pd(simde__m128d a) {
       r_.neon_f64 = vmulq_n_f64(a_.neon_i64, SIMDE_MATH_PI_OVER_180);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && !defined(SIMDE_BUG_GCC_53784)
       r_.f64 = a_.f64 * SIMDE_MATH_PI_OVER_180;
-    #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       const __typeof__(r_.f64) tmp = { SIMDE_MATH_PI_OVER_180, SIMDE_MATH_PI_OVER_180 };
       r_.f64 = a_.f64 * tmp;
     #else
@@ -2132,8 +2132,14 @@ simde_x_mm256_deg2rad_ps(simde__m256 a) {
       for (size_t i = 0 ; i < (sizeof(r_.m128) / sizeof(r_.m128[0])) ; i++) {
         r_.m128[i] = simde_x_mm_deg2rad_ps(a_.m128[i]);
       }
-    #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && !defined(SIMDE_BUG_GCC_53784)
       r_.f32 = a_.f32 * SIMDE_MATH_PI_OVER_180F;
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+      const __typeof__(r_.f32) tmp = {
+        SIMDE_MATH_PI_OVER_180F, SIMDE_MATH_PI_OVER_180F, SIMDE_MATH_PI_OVER_180F, SIMDE_MATH_PI_OVER_180F,
+        SIMDE_MATH_PI_OVER_180F, SIMDE_MATH_PI_OVER_180F, SIMDE_MATH_PI_OVER_180F, SIMDE_MATH_PI_OVER_180F
+      };
+      r_.f32 = a_.f32 * tmp;
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
@@ -2159,8 +2165,11 @@ simde_x_mm256_deg2rad_pd(simde__m256d a) {
       for (size_t i = 0 ; i < (sizeof(r_.m128d) / sizeof(r_.m128d[0])) ; i++) {
         r_.m128d[i] = simde_x_mm_deg2rad_pd(a_.m128d[i]);
       }
-    #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && !defined(SIMDE_BUG_GCC_53784)
       r_.f64 = a_.f64 * SIMDE_MATH_PI_OVER_180;
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+      const __typeof__(r_.f64) tmp = { SIMDE_MATH_PI_OVER_180, SIMDE_MATH_PI_OVER_180, SIMDE_MATH_PI_OVER_180, SIMDE_MATH_PI_OVER_180 };
+      r_.f64 = a_.f64 * tmp;
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
@@ -2186,8 +2195,16 @@ simde_x_mm512_deg2rad_ps(simde__m512 a) {
       for (size_t i = 0 ; i < (sizeof(r_.m256) / sizeof(r_.m256[0])) ; i++) {
         r_.m256[i] = simde_x_mm256_deg2rad_ps(a_.m256[i]);
       }
-    #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && !defined(SIMDE_BUG_GCC_53784)
       r_.f32 = a_.f32 * SIMDE_MATH_PI_OVER_180F;
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+      const __typeof__(r_.f32) tmp = {
+        SIMDE_MATH_PI_OVER_180F, SIMDE_MATH_PI_OVER_180F, SIMDE_MATH_PI_OVER_180F, SIMDE_MATH_PI_OVER_180F,
+        SIMDE_MATH_PI_OVER_180F, SIMDE_MATH_PI_OVER_180F, SIMDE_MATH_PI_OVER_180F, SIMDE_MATH_PI_OVER_180F,
+        SIMDE_MATH_PI_OVER_180F, SIMDE_MATH_PI_OVER_180F, SIMDE_MATH_PI_OVER_180F, SIMDE_MATH_PI_OVER_180F,
+        SIMDE_MATH_PI_OVER_180F, SIMDE_MATH_PI_OVER_180F, SIMDE_MATH_PI_OVER_180F, SIMDE_MATH_PI_OVER_180F
+      };
+      r_.f32 = a_.f32 * tmp;
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
@@ -2213,8 +2230,14 @@ simde_x_mm512_deg2rad_pd(simde__m512d a) {
       for (size_t i = 0 ; i < (sizeof(r_.m256d) / sizeof(r_.m256d[0])) ; i++) {
         r_.m256d[i] = simde_x_mm256_deg2rad_pd(a_.m256d[i]);
       }
-    #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && !defined(SIMDE_BUG_GCC_53784)
       r_.f64 = a_.f64 * SIMDE_MATH_PI_OVER_180;
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+      const __typeof__(r_.f64) tmp = {
+        SIMDE_MATH_PI_OVER_180, SIMDE_MATH_PI_OVER_180, SIMDE_MATH_PI_OVER_180, SIMDE_MATH_PI_OVER_180,
+        SIMDE_MATH_PI_OVER_180, SIMDE_MATH_PI_OVER_180, SIMDE_MATH_PI_OVER_180, SIMDE_MATH_PI_OVER_180
+      };
+      r_.f64 = a_.f64 * tmp;
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
