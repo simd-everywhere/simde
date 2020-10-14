@@ -14,7 +14,7 @@ jobs:
       with:
         fetch-depth: 2
     - name: Install pcre2grep
-      run: sudo apt-get install -y pcre2-utils
+      run: sudo apt-get update && sudo apt-get install -y pcre2-utils
     # Check for trailing whitespace
     - name: Trailing whitespace
       run: find simde/ -name '*.c' -o -name '*.h' -exec grep -nP '\s+$' {} + && exit 1 || exit 0
