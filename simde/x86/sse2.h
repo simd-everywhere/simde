@@ -3431,12 +3431,19 @@ simde_mm_madd_epi16 (simde__m128i a, simde__m128i b) {
       a_ = simde__m128i_to_private(a),
       b_ = simde__m128i_to_private(b);
 
-    #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+      int32x4_t pl = vmull_s16(vget_low_s16(a_.neon_i16),  vget_low_s16(b_.neon_i16));
+      int32x4_t ph = vmull_high_s16(a_.neon_i16, b_.neon_i16);
+      r_.neon_i32 = vpaddq_s32(pl, ph);
+    #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       int32x4_t pl = vmull_s16(vget_low_s16(a_.neon_i16),  vget_low_s16(b_.neon_i16));
       int32x4_t ph = vmull_s16(vget_high_s16(a_.neon_i16), vget_high_s16(b_.neon_i16));
       int32x2_t rl = vpadd_s32(vget_low_s32(pl), vget_high_s32(pl));
       int32x2_t rh = vpadd_s32(vget_low_s32(ph), vget_high_s32(ph));
       r_.neon_i32 = vcombine_s32(rl, rh);
+    #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
+      static const SIMDE_POWER_ALTIVEC_VECTOR(int) tz = { 0, 0, 0, 0 };
+      r_.altivec_i32 = vec_msum(a_.altivec_i16, b_.altivec_i16, tz);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_) / sizeof(r_.i16[0])) ; i += 2) {
