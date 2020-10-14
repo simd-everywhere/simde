@@ -238,9 +238,10 @@ simde_mm256_add_epi64 (simde__m256i a, simde__m256i b) {
       b_ = simde__m256i_to_private(b);
 
     #if SIMDE_NATURAL_VECTOR_SIZE_LE(128)
-      r_.m128i[0] = simde_mm_add_epi64(a_.m128i[0], b_.m128i[0]);
-      r_.m128i[1] = simde_mm_add_epi64(a_.m128i[1], b_.m128i[1]);
-    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+      for (size_t i = 0 ; i < (sizeof(r_.m128i) / sizeof(r_.m128i[0])) ; i++) {
+        r_.m128i[i] = simde_mm_add_epi64(a_.m128i[i], b_.m128i[i]);
+      }
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && !defined(SIMDE_BUG_CLANG_BAD_VI64_OPS)
       r_.i64 = a_.i64 + b_.i64;
     #else
       SIMDE_VECTORIZE
