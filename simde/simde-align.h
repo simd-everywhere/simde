@@ -347,11 +347,11 @@
     simde_align_assume_to_checked_uncapped(void* ptr, const size_t alignment, const char* file, int line, const char* ptrname)
   #endif
   {
-    if (HEDLEY_UNLIKELY((HEDLEY_REINTERPRET_CAST(SIMDE_ALIGN_INTPTR_T_, (ptr)) % SIMDE_ALIGN_CAP(alignment)) != 0)) {
+    if (HEDLEY_UNLIKELY((HEDLEY_REINTERPRET_CAST(SIMDE_ALIGN_INTPTR_T_, (ptr)) % HEDLEY_STATIC_CAST(SIMDE_ALIGN_INTPTR_T_, SIMDE_ALIGN_CAP(alignment))) != 0)) {
       fprintf(stderr, "%s:%d: alignment check failed for `%s' (%p %% %u == %u)\n",
         file, line, ptrname, HEDLEY_REINTERPRET_CAST(const void*, ptr),
         HEDLEY_STATIC_CAST(unsigned int, SIMDE_ALIGN_CAP(alignment)),
-        HEDLEY_STATIC_CAST(unsigned int, HEDLEY_REINTERPRET_CAST(SIMDE_ALIGN_INTPTR_T_, (ptr)) % SIMDE_ALIGN_CAP(alignment)));
+        HEDLEY_STATIC_CAST(unsigned int, HEDLEY_REINTERPRET_CAST(SIMDE_ALIGN_INTPTR_T_, (ptr)) % HEDLEY_STATIC_CAST(SIMDE_ALIGN_INTPTR_T_, SIMDE_ALIGN_CAP(alignment))));
     }
 
     return ptr;
