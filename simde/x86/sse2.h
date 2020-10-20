@@ -6806,7 +6806,7 @@ simde_mm_unpackhi_pd (simde__m128d a, simde__m128d b) {
       float64x1_t b_l = vget_high_f64(b_.f64);
       r_.neon_f64 = vcombine_f64(a_l, b_l);
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-      r_.wasm_v128 = wasm_v8x16_shuffle(a_.wasm_v128, b_.wasm_v128, 8, 9, 10, 11, 12, 13, 14, 15, 24, 25, 26, 27, 28, 29, 30, 31);
+      r_.wasm_v128 = wasm_v64x2_shuffle(a_.wasm_v128, b_.wasm_v128, 1, 3);
     #elif defined(SIMDE_SHUFFLE_VECTOR_)
       r_.f64 = SIMDE_SHUFFLE_VECTOR_(64, 16, a_.f64, b_.f64, 1, 3);
     #else
