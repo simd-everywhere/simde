@@ -478,7 +478,7 @@ simde_mm512_add_epi64 (simde__m512i a, simde__m512i b) {
       for (size_t i = 0 ; i < (sizeof(r_.m256i) / sizeof(r_.m256i[0])) ; i++) {
         r_.m256i[i] = simde_mm256_add_epi64(a_.m256i[i], b_.m256i[i]);
       }
-    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && !defined(SIMDE_BUG_CLANG_BAD_VI64_OPS)
       r_.i64 = a_.i64 + b_.i64;
     #else
       SIMDE_VECTORIZE

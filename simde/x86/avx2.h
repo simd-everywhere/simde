@@ -238,9 +238,10 @@ simde_mm256_add_epi64 (simde__m256i a, simde__m256i b) {
       b_ = simde__m256i_to_private(b);
 
     #if SIMDE_NATURAL_VECTOR_SIZE_LE(128)
-      r_.m128i[0] = simde_mm_add_epi64(a_.m128i[0], b_.m128i[0]);
-      r_.m128i[1] = simde_mm_add_epi64(a_.m128i[1], b_.m128i[1]);
-    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+      for (size_t i = 0 ; i < (sizeof(r_.m128i) / sizeof(r_.m128i[0])) ; i++) {
+        r_.m128i[i] = simde_mm_add_epi64(a_.m128i[i], b_.m128i[i]);
+      }
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && !defined(SIMDE_BUG_CLANG_BAD_VI64_OPS)
       r_.i64 = a_.i64 + b_.i64;
     #else
       SIMDE_VECTORIZE
@@ -5019,14 +5020,11 @@ simde_mm256_srlv_epi64 (simde__m256i a, simde__m256i b) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m256i
 simde_mm256_stream_load_si256 (const simde__m256i* mem_addr) {
-  simde_assert_aligned(32, mem_addr);
-
   #if defined(SIMDE_X86_AVX2_NATIVE)
     return _mm256_stream_load_si256(HEDLEY_CONST_CAST(simde__m256i*, mem_addr));
   #else
-    /* Use memcpy to avoid aliasing; data must still be 32-byte aligned */
     simde__m256i r;
-    simde_memcpy(&r, mem_addr, sizeof(r));
+    simde_memcpy(&r, SIMDE_ALIGN_ASSUME_LIKE(mem_addr, simde__m256i), sizeof(r));
     return r;
   #endif
 }

@@ -167,6 +167,8 @@ simde_uint8x8_t
 simde_vzip1_u8(simde_uint8x8_t a, simde_uint8x8_t b) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vzip1_u8(a, b);
+  #elif defined(SIMDE_X86_MMX_NATIVE)
+    return _mm_unpacklo_pi8(a, b);
   #else
     simde_uint8x8_private
       r_,
@@ -197,6 +199,8 @@ simde_uint16x4_t
 simde_vzip1_u16(simde_uint16x4_t a, simde_uint16x4_t b) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vzip1_u16(a, b);
+  #elif defined(SIMDE_X86_MMX_NATIVE)
+    return _mm_unpacklo_pi16(a, b);
   #else
     simde_uint16x4_private
       r_,
@@ -227,6 +231,8 @@ simde_uint32x2_t
 simde_vzip1_u32(simde_uint32x2_t a, simde_uint32x2_t b) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vzip1_u32(a, b);
+  #elif defined(SIMDE_X86_MMX_NATIVE)
+    return _mm_unpacklo_pi32(a, b);
   #else
     simde_uint32x2_private
       r_,

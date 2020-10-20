@@ -7,7 +7,7 @@ static int
 test_simde_mm512_load_si512 (SIMDE_MUNIT_TEST_ARGS) {
 #if 1
   static const struct {
-    SIMDE_ALIGN_AS(64, simde__m512i) const int32_t a[16];
+    SIMDE_ALIGN_LIKE_64(simde__m512i) const int32_t a[16];
     const int32_t r[16];
   } test_vec[] = {
     { { -INT32_C(  1085279312),  INT32_C(  1689654203), -INT32_C(  1704027444),  INT32_C(  1992004399),  INT32_C(  1598136076), -INT32_C(  1107314712),  INT32_C(  1634510512),  INT32_C(  2144272078),

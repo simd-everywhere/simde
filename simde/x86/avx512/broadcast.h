@@ -220,12 +220,12 @@ simde_mm512_broadcast_f64x2 (simde__m128d a) {
     simde__m512d_private r_;
     simde__m128d_private a_ = simde__m128d_to_private(a);
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
+    #if defined(SIMDE_VECTOR_SUBSCRIPT) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector) && !defined(SIMDE_BUG_CLANG_BAD_VI64_OPS)
       r_.f64 = __builtin_shufflevector(a_.f64, a_.f64, 0, 1, 0, 1, 0, 1, 0, 1);
     #else
       SIMDE_VECTORIZE
-      for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i+=2) {
-         r_.f64[i]     = a_.f64[0];
+      for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i += 2) {
+         r_.f64[  i  ] = a_.f64[0];
          r_.f64[i + 1] = a_.f64[1];
       }
     #endif

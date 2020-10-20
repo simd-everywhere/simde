@@ -18,9 +18,9 @@ static int
 test_simde_vtbl1_s8 (SIMDE_MUNIT_TEST_ARGS) {
 #if 1
   struct {
-    SIMDE_ALIGN(16) int8_t a[8];
-    SIMDE_ALIGN(16) int8_t b[8];
-    SIMDE_ALIGN(16) int8_t r[8];
+    SIMDE_ALIGN_TO_16 int8_t a[8];
+    SIMDE_ALIGN_TO_16 int8_t b[8];
+    SIMDE_ALIGN_TO_16 int8_t r[8];
   } test_vec[] = {
     { {  INT8_C(  99), -INT8_C(  37), -INT8_C(  95),      INT8_MAX, -INT8_C(  56), -INT8_C(  46), -INT8_C(  47), -INT8_C(  86) },
       {  INT8_C(   2), -INT8_C(  89),  INT8_C(   7),  INT8_C(   1),  INT8_C( 116),  INT8_C(   7),  INT8_C(   5),  INT8_C(   3) },
@@ -85,9 +85,9 @@ static int
 test_simde_vtbl1_u8 (SIMDE_MUNIT_TEST_ARGS) {
 #if 1
   struct {
-    SIMDE_ALIGN(16) uint8_t a[8];
-    SIMDE_ALIGN(16) uint8_t b[8];
-    SIMDE_ALIGN(16) uint8_t r[8];
+    SIMDE_ALIGN_TO_16 uint8_t a[8];
+    SIMDE_ALIGN_TO_16 uint8_t b[8];
+    SIMDE_ALIGN_TO_16 uint8_t r[8];
   } test_vec[] = {
     { { UINT8_C( 30), UINT8_C( 72), UINT8_C(249), UINT8_C( 35), UINT8_C( 96), UINT8_C( 70), UINT8_C(235), UINT8_C( 89) },
       { UINT8_C(225), UINT8_C(  4), UINT8_C(200), UINT8_C(  3), UINT8_C(  0), UINT8_C( 39), UINT8_C(  3), UINT8_C(  1) },
@@ -155,9 +155,9 @@ static int
 test_simde_vtbl2_s8 (SIMDE_MUNIT_TEST_ARGS) {
 #if 1
   struct {
-    SIMDE_ALIGN(16) int8_t a[2][8];
-    SIMDE_ALIGN(16) int8_t b[8];
-    SIMDE_ALIGN(16) int8_t r[8];
+    SIMDE_ALIGN_TO_16 int8_t a[2][8];
+    SIMDE_ALIGN_TO_16 int8_t b[8];
+    SIMDE_ALIGN_TO_16 int8_t r[8];
   } test_vec[] = {
     {
         { { -INT8_C(  96),  INT8_C(  73), -INT8_C(  46), -INT8_C(  52),  INT8_C(  62),  INT8_C(  65),  INT8_C(  82), -INT8_C( 124) },
@@ -240,9 +240,9 @@ static int
 test_simde_vtbl2_u8 (SIMDE_MUNIT_TEST_ARGS) {
 #if 1
   struct {
-    SIMDE_ALIGN(16) uint8_t a[2][8];
-    SIMDE_ALIGN(16) uint8_t b[8];
-    SIMDE_ALIGN(16) uint8_t r[8];
+    SIMDE_ALIGN_TO_16 uint8_t a[2][8];
+    SIMDE_ALIGN_TO_16 uint8_t b[8];
+    SIMDE_ALIGN_TO_16 uint8_t r[8];
   } test_vec[] = {
     {
         { { UINT8_C(134), UINT8_C(191), UINT8_C(113), UINT8_C( 91), UINT8_C(  5), UINT8_C(138), UINT8_C( 44), UINT8_C(141) },
@@ -326,9 +326,9 @@ static int
 test_simde_vtbl3_s8 (SIMDE_MUNIT_TEST_ARGS) {
 #if 1
   struct {
-    SIMDE_ALIGN(16) int8_t a[3][8];
-    SIMDE_ALIGN(16) int8_t b[8];
-    SIMDE_ALIGN(16) int8_t r[8];
+    SIMDE_ALIGN_TO_16 int8_t a[3][8];
+    SIMDE_ALIGN_TO_16 int8_t b[8];
+    SIMDE_ALIGN_TO_16 int8_t r[8];
   } test_vec[] = {
     {
         { { -INT8_C(  89), -INT8_C(  72), -INT8_C(  99), -INT8_C(   2), -INT8_C( 113), -INT8_C(  51),  INT8_C( 112),  INT8_C(   1) },
@@ -420,9 +420,9 @@ static int
 test_simde_vtbl3_u8 (SIMDE_MUNIT_TEST_ARGS) {
 #if 1
   struct {
-    SIMDE_ALIGN(16) uint8_t a[3][8];
-    SIMDE_ALIGN(16) uint8_t b[8];
-    SIMDE_ALIGN(16) uint8_t r[8];
+    SIMDE_ALIGN_TO_16 uint8_t a[3][8];
+    SIMDE_ALIGN_TO_16 uint8_t b[8];
+    SIMDE_ALIGN_TO_16 uint8_t r[8];
   } test_vec[] = {
     {
         { { UINT8_C( 83), UINT8_C(122), UINT8_C(109), UINT8_C(136), UINT8_C(147), UINT8_C( 79), UINT8_C(110), UINT8_C(111) },
@@ -515,9 +515,9 @@ static int
 test_simde_vtbl4_s8 (SIMDE_MUNIT_TEST_ARGS) {
 #if 1
   struct {
-    SIMDE_ALIGN(16) int8_t a[4][8];
-    SIMDE_ALIGN(16) int8_t b[8];
-    SIMDE_ALIGN(16) int8_t r[8];
+    SIMDE_ALIGN_TO_16 int8_t a[4][8];
+    SIMDE_ALIGN_TO_16 int8_t b[8];
+    SIMDE_ALIGN_TO_16 int8_t r[8];
   } test_vec[] = {
     {
         { {  INT8_C(  80),  INT8_C(  36),  INT8_C(  51),  INT8_C(  30),  INT8_C(  72),  INT8_C(  86), -INT8_C(  48),  INT8_C(  15) },
@@ -618,9 +618,9 @@ static int
 test_simde_vtbl4_u8 (SIMDE_MUNIT_TEST_ARGS) {
 #if 1
   struct {
-    SIMDE_ALIGN(16) uint8_t a[4][8];
-    SIMDE_ALIGN(16) uint8_t b[8];
-    SIMDE_ALIGN(16) uint8_t r[8];
+    SIMDE_ALIGN_TO_16 uint8_t a[4][8];
+    SIMDE_ALIGN_TO_16 uint8_t b[8];
+    SIMDE_ALIGN_TO_16 uint8_t r[8];
   } test_vec[] = {
     {
         { { UINT8_C(202), UINT8_C(241), UINT8_C(181), UINT8_C( 46), UINT8_C( 29), UINT8_C( 91), UINT8_C(135), UINT8_C(225) },

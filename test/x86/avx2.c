@@ -13721,7 +13721,7 @@ test_simde_mm256_stream_load_si256 (SIMDE_MUNIT_TEST_ARGS) {
    * is static.  I'm actually not sure if it honors them if it's not
    * static or just happens to generate properly aligned data… */
   const struct {
-    SIMDE_ALIGN_AS(32, simde__m256i) const int32_t a[8];
+    SIMDE_ALIGN_LIKE_32(simde__m256i) const int32_t a[8];
     const int32_t r[8];
   } test_vec[] = {
     { { -INT32_C(   318278464), -INT32_C(  1120465675),  INT32_C(   457266700),  INT32_C(  2139701695),  INT32_C(  1033159662), -INT32_C(   359675734),  INT32_C(  1714257348),  INT32_C(  1256709514) },

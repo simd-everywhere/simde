@@ -8,7 +8,7 @@ static int
 test_simde_mm_loadu_epi8 (SIMDE_MUNIT_TEST_ARGS) {
 #if 1
   static const struct {
-    SIMDE_ALIGN_AS(16, simde__m128i) const int8_t a[16];
+    SIMDE_ALIGN_LIKE_16(simde__m128i) const int8_t a[16];
     const int8_t r[16];
   } test_vec[] = {
     { {  INT8_C(  98),  INT8_C( 124), -INT8_C(  57), -INT8_C(  74),  INT8_C( 104),  INT8_C(  59),  INT8_C(  69), -INT8_C(  25),
@@ -67,7 +67,7 @@ static int
 test_simde_mm_loadu_epi16 (SIMDE_MUNIT_TEST_ARGS) {
 #if 1
   static const struct {
-    SIMDE_ALIGN_AS(16, simde__m128i) const int16_t a[8];
+    SIMDE_ALIGN_LIKE_16(simde__m128i) const int16_t a[8];
     const int16_t r[8];
   } test_vec[] = {
     { { -INT16_C( 32738), -INT16_C( 17548), -INT16_C( 20121), -INT16_C( 26193),  INT16_C( 15712), -INT16_C( 28559),  INT16_C(  9968),  INT16_C( 23661) },
@@ -110,7 +110,7 @@ static int
 test_simde_mm_loadu_epi32 (SIMDE_MUNIT_TEST_ARGS) {
 #if 1
   static const struct {
-    SIMDE_ALIGN_AS(16, simde__m128i) const int32_t a[4];
+    SIMDE_ALIGN_LIKE_16(simde__m128i) const int32_t a[4];
     const int32_t r[4];
   } test_vec[] = {
     { {  INT32_C(   248287792), -INT32_C(   891132803), -INT32_C(   679897154), -INT32_C(  1083716044) },
@@ -153,7 +153,7 @@ static int
 test_simde_mm_loadu_epi64 (SIMDE_MUNIT_TEST_ARGS) {
 #if 1
   static const struct {
-    SIMDE_ALIGN_AS(32, simde__m128i) const int64_t a[2];
+    SIMDE_ALIGN_LIKE_16(simde__m128i) const int64_t a[2];
     const int64_t r[2];
   } test_vec[] = {
     { {  INT64_C( 4511087683801712032), -INT64_C( 8060898892722248287) },
@@ -196,7 +196,7 @@ static int
 test_simde_mm256_loadu_epi8 (SIMDE_MUNIT_TEST_ARGS) {
 #if 1
   static const struct {
-    SIMDE_ALIGN_AS(32, simde__m256i) const int8_t a[32];
+    SIMDE_ALIGN_LIKE_32(simde__m256i) const int8_t a[32];
     const int8_t r[32];
   } test_vec[] = {
     { {  INT8_C(  29), -INT8_C(  94),  INT8_C(  76),  INT8_C(  20),  INT8_C(  54), -INT8_C(  63),      INT8_MAX,  INT8_C(  69),
@@ -287,7 +287,7 @@ static int
 test_simde_mm256_loadu_epi16 (SIMDE_MUNIT_TEST_ARGS) {
 #if 1
   static const struct {
-    SIMDE_ALIGN_AS(32, simde__m256i) const int16_t a[16];
+    SIMDE_ALIGN_LIKE_32(simde__m256i) const int16_t a[16];
     const int16_t r[16];
   } test_vec[] = {
     { { -INT16_C( 24694),  INT16_C( 23546), -INT16_C( 20906), -INT16_C(  2504), -INT16_C( 25748), -INT16_C( 19507),  INT16_C( 20044), -INT16_C( 17602),
@@ -346,7 +346,7 @@ static int
 test_simde_mm256_loadu_epi32 (SIMDE_MUNIT_TEST_ARGS) {
 #if 1
   static const struct {
-    SIMDE_ALIGN_AS(32, simde__m256i) const int32_t a[8];
+    SIMDE_ALIGN_LIKE_32(simde__m256i) const int32_t a[8];
     const int32_t r[8];
   } test_vec[] = {
     { {  INT32_C(  1560218362), -INT32_C(   378535400),  INT32_C(   531776093), -INT32_C(  2065833499),  INT32_C(   232324736),  INT32_C(  1846400991),  INT32_C(  1410150809), -INT32_C(   454619671) },
@@ -389,7 +389,7 @@ static int
 test_simde_mm256_loadu_epi64 (SIMDE_MUNIT_TEST_ARGS) {
 #if 1
   static const struct {
-    SIMDE_ALIGN_AS(32, simde__m256i) const int64_t a[4];
+    SIMDE_ALIGN_LIKE_32(simde__m256i) const int64_t a[4];
     const int64_t r[4];
   } test_vec[] = {
     { { -INT64_C( 2730480485383468799),  INT64_C( 3961809025040497319), -INT64_C( 7760876929369986550),  INT64_C( 2630957754019333904) },
@@ -432,7 +432,7 @@ static int
 test_simde_mm512_loadu_epi8 (SIMDE_MUNIT_TEST_ARGS) {
 #if 1
   static const struct {
-    SIMDE_ALIGN_AS(64, simde__m512i) const int8_t a[64];
+    SIMDE_ALIGN_LIKE_64(simde__m512i) const int8_t a[64];
     const int8_t r[64];
   } test_vec[] = {
     { {  INT8_C( 115),  INT8_C(   0), -INT8_C(  90), -INT8_C(  57),  INT8_C(  50),  INT8_C(  15), -INT8_C( 121),  INT8_C(  47),
@@ -587,7 +587,7 @@ static int
 test_simde_mm512_loadu_epi16 (SIMDE_MUNIT_TEST_ARGS) {
 #if 1
   static const struct {
-    SIMDE_ALIGN_AS(64, simde__m512i) const int16_t a[32];
+    SIMDE_ALIGN_LIKE_64(simde__m512i) const int16_t a[32];
     const int16_t r[32];
   } test_vec[] = {
     { {  INT16_C(  1628), -INT16_C( 19656), -INT16_C( 13922),  INT16_C(   835), -INT16_C(  2787), -INT16_C( 10395),  INT16_C(  6399),  INT16_C( 11765),
@@ -678,7 +678,7 @@ static int
 test_simde_mm512_loadu_epi32 (SIMDE_MUNIT_TEST_ARGS) {
 #if 1
   static const struct {
-    SIMDE_ALIGN_AS(64, simde__m512i) const int32_t a[16];
+    SIMDE_ALIGN_LIKE_64(simde__m512i) const int32_t a[16];
     const int32_t r[16];
   } test_vec[] = {
     { { -INT32_C(  1085279312),  INT32_C(  1689654203), -INT32_C(  1704027444),  INT32_C(  1992004399),  INT32_C(  1598136076), -INT32_C(  1107314712),  INT32_C(  1634510512),  INT32_C(  2144272078),
@@ -737,7 +737,7 @@ static int
 test_simde_mm512_loadu_epi64 (SIMDE_MUNIT_TEST_ARGS) {
 #if 1
   static const struct {
-    SIMDE_ALIGN_AS(64, simde__m512i) const int64_t a[8];
+    SIMDE_ALIGN_LIKE_64(simde__m512i) const int64_t a[8];
     const int64_t r[8];
   } test_vec[] = {
     { { -INT64_C( 2031689546876671122), -INT64_C( 4181824216786536295),  INT64_C( 3378378289711491617),  INT64_C( 1413316256384642707),

@@ -333,7 +333,7 @@
   #define SIMDE_DIAGNOSTIC_DISABLE_VECTOR_CONVERSION_ _Pragma("clang diagnostic ignored \"-Wvector-conversion\"")
   /* For NEON, the situation with -Wvector-conversion in clang < 10 is
    * bad enough that we just disable the warning altogether. */
-  #if defined(__arm__) && SIMDE_DETECT_CLANG_VERSION_NOT(10,0,0)
+  #if defined(SIMDE_ARCH_ARM) && SIMDE_DETECT_CLANG_VERSION_NOT(10,0,0)
     #define SIMDE_DIAGNOSTIC_DISABLE_BUGGY_VECTOR_CONVERSION_ SIMDE_DIAGNOSTIC_DISABLE_VECTOR_CONVERSION_
   #endif
 #else

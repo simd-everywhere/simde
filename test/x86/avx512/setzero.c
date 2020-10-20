@@ -38,8 +38,24 @@ test_simde_mm512_setzero_si512(SIMDE_MUNIT_TEST_ARGS) {
   return 0;
 }
 
+static int
+test_simde_mm512_setzero_ps(SIMDE_MUNIT_TEST_ARGS) {
+  simde_assert_m512_close(simde_mm512_setzero_ps(), simde_mm512_set1_ps(SIMDE_FLOAT32_C(0.0)), 1);
+
+  return 0;
+}
+
+static int
+test_simde_mm512_setzero_pd(SIMDE_MUNIT_TEST_ARGS) {
+  simde_assert_m512d_close(simde_mm512_setzero_pd(), simde_mm512_set1_pd(SIMDE_FLOAT64_C(0.0)), 1);
+
+  return 0;
+}
+
 SIMDE_TEST_FUNC_LIST_BEGIN
   SIMDE_TEST_FUNC_LIST_ENTRY(mm512_setzero_si512)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_setzero_ps)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_setzero_pd)
 SIMDE_TEST_FUNC_LIST_END
 
 #include <test/x86/avx512/test-avx512-footer.h>

@@ -56,7 +56,11 @@ simde_vrbit_u8(simde_uint8x8_t a) {
 
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = HEDLEY_STATIC_CAST(uint8_t, (((a_.values[i] * UINT64_C(0x80200802)) & UINT64_C(0x0884422110)) * UINT64_C(0x0101010101)) >> 32);
+      #if HEDLEY_HAS_BUILTIN(__builtin_bitreverse8) && !defined(HEDLEY_IBM_VERSION)
+        r_.values[i] = __builtin_bitreverse8(a_.values[i]);
+      #else
+        r_.values[i] = HEDLEY_STATIC_CAST(uint8_t, (((a_.values[i] * UINT64_C(0x80200802)) & UINT64_C(0x0884422110)) * UINT64_C(0x0101010101)) >> 32);
+      #endif
     }
 
     return simde_uint8x8_from_private(r_);
@@ -116,7 +120,11 @@ simde_vrbitq_u8(simde_uint8x16_t a) {
 
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = HEDLEY_STATIC_CAST(uint8_t, (((a_.values[i] * UINT64_C(0x80200802)) & UINT64_C(0x0884422110)) * UINT64_C(0x0101010101)) >> 32);
+      #if HEDLEY_HAS_BUILTIN(__builtin_bitreverse8) && !defined(HEDLEY_IBM_VERSION)
+        r_.values[i] = __builtin_bitreverse8(a_.values[i]);
+      #else
+        r_.values[i] = HEDLEY_STATIC_CAST(uint8_t, (((a_.values[i] * UINT64_C(0x80200802)) & UINT64_C(0x0884422110)) * UINT64_C(0x0101010101)) >> 32);
+      #endif
     }
 
     return simde_uint8x16_from_private(r_);

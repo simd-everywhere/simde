@@ -106,6 +106,7 @@ simde_neon_families = [
 ]
 
 simde_avx512_families = [
+  '2intersect',
   'abs',
   'add',
   'adds',
@@ -199,6 +200,7 @@ if not meson.is_subproject()
       'simde/check.h',
       'simde/debug-trap.h',
       'simde/hedley.h',
+      'simde/simde-align.h',
       'simde/simde-arch.h',
       'simde/simde-common.h',
       'simde/simde-constify.h',

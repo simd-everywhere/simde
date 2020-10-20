@@ -14,7 +14,7 @@ jobs:
       with:
         fetch-depth: 2
     - name: Install pcre2grep
-      run: sudo apt-get install -y pcre2-utils
+      run: sudo apt-get update && sudo apt-get install -y pcre2-utils
     # Check for trailing whitespace
     - name: Trailing whitespace
       run: find simde/ -name '*.c' -o -name '*.h' -exec grep -nP '\s+$' {} + && exit 1 || exit 0
@@ -65,6 +65,8 @@ jobs:
     - uses: actions/checkout@v2
       with:
         submodules: recursive
+    - name: CPU Information
+      run: cat /proc/cpuinfo
     - name: Install APT Dependencies
       run: sudo add-apt-repository 'ppa:ubuntu-toolchain-r/test' && sudo apt-get update && sudo apt-get install -y ninja-build ninja-build python3-pip python3-setuptools python3-wheel parallel gcovr
     - name: Install pip Dependencies
@@ -94,6 +96,8 @@ jobs:
     - uses: actions/checkout@v2
       with:
         submodules: recursive
+    - name: CPU Information
+      run: cat /proc/cpuinfo
     - name: Install APT Dependencies
       run: sudo add-apt-repository 'ppa:ubuntu-toolchain-r/test' && sudo apt-get update && sudo apt-get install -y ninja-build ninja-build python3-pip python3-setuptools python3-wheel parallel gcovr
     - name: Install pip Dependencies
@@ -127,6 +131,8 @@ jobs:
     - uses: actions/checkout@v2
       with:
         submodules: recursive
+    - name: CPU Information
+      run: cat /proc/cpuinfo
     - name: Install APT Dependencies
       run: sudo add-apt-repository 'ppa:ubuntu-toolchain-r/test' && sudo apt-get update && sudo apt-get install -y ninja-build ninja-build python3-pip python3-setuptools python3-wheel parallel gcovr gcc-${{ matrix.version }} g++-${{ matrix.version }}
     - name: Install pip Dependencies
@@ -158,6 +164,8 @@ jobs:
     - uses: actions/checkout@v2
       with:
         submodules: recursive
+    - name: CPU Information
+      run: cat /proc/cpuinfo
     - name: Install APT Dependencies
       run: sudo add-apt-repository 'ppa:ubuntu-toolchain-r/test' && sudo apt-get update && sudo apt-get install -y ninja-build ninja-build python3-pip python3-setuptools python3-wheel parallel gcovr clang-${{ matrix.version }}
     - name: Install pip Dependencies
@@ -184,6 +192,8 @@ jobs:
     - uses: actions/checkout@v2
       with:
         submodules: recursive
+    - name: CPU Information
+      run: cat /proc/cpuinfo
     - name: Install APT Dependencies
       run: sudo add-apt-repository ppa:ubuntu-toolchain-r/test && sudo apt-get update && sudo apt-get -yq install ninja-build
     - name: Install emscripten
@@ -217,6 +227,8 @@ jobs:
     - uses: actions/checkout@v2
       with:
         submodules: recursive
+    - name: CPU Information
+      run: cat /proc/cpuinfo
     - name: Install APT Dependencies
       run: sudo add-apt-repository 'ppa:ubuntu-toolchain-r/test' && sudo apt-get update && sudo apt-get install -y ninja-build ninja-build python3-pip python3-setuptools python3-wheel parallel gcovr
     - name: Install pip Dependencies
@@ -248,6 +260,8 @@ jobs:
     - uses: actions/checkout@v2
       with:
         submodules: recursive
+    - name: CPU Information
+      run: cat /proc/cpuinfo
     - name: Install APT Dependencies
       run: sudo add-apt-repository ppa:ubuntu-toolchain-r/test && sudo apt-get update && sudo apt-get -yq install libxml2-utils ninja-build python3-pip python3-setuptools python3-wheel gcc-10 g++-10 parallel gcovr
     - name: Install pip Dependencies
@@ -276,6 +290,8 @@ jobs:
     - uses: actions/checkout@v2
       with:
         submodules: recursive
+    - name: CPU Information
+      run: cat /proc/cpuinfo
     - name: Install APT Dependencies
       run: sudo add-apt-repository 'ppa:ubuntu-toolchain-r/test' && sudo apt-get update && sudo apt-get install -y ninja-build ninja-build python3-pip python3-setuptools python3-wheel parallel gcovr libsleef-dev
     - name: Install pip Dependencies
@@ -307,6 +323,8 @@ jobs:
     - uses: actions/checkout@v2
       with:
         submodules: recursive
+    - name: CPU Information
+      run: cat /proc/cpuinfo
     - name: Install APT Dependencies
       run: sudo add-apt-repository 'ppa:ubuntu-toolchain-r/test' && sudo apt-get update && sudo apt-get install -y ninja-build ninja-build python3-pip python3-setuptools python3-wheel parallel gcovr libsleef-dev
     - name: Install pip Dependencies
@@ -341,6 +359,8 @@ jobs:
     - uses: actions/checkout@v2
       with:
         submodules: recursive
+    - name: CPU Information
+      run: cat /proc/cpuinfo
     - name: Install APT Dependencies
       run: sudo add-apt-repository ppa:ubuntu-toolchain-r/test && sudo apt-get update && sudo apt-get -yq install ninja-build parallel "${CC}" "${CXX}"
     - name: Configure
@@ -364,6 +384,8 @@ jobs:
     - uses: actions/checkout@v2
       with:
         submodules: recursive
+    - name: CPU Information
+      run: cat /proc/cpuinfo
     - name: Install APT Dependencies
       run: sudo add-apt-repository ppa:ubuntu-toolchain-r/test && sudo apt-get update && sudo apt-get -yq install ninja-build parallel clang-${{ matrix.version }}
     - name: Configure
@@ -386,6 +408,8 @@ jobs:
     - uses: actions/checkout@v2
       with:
         submodules: recursive
+    - name: System Information
+      run: system_profiler
     - name: Compiler version
       run: cc --version
     - name: Install Homebrew Dependencies

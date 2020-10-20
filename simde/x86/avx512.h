@@ -29,6 +29,7 @@
 
 #include "avx512/types.h"
 
+#include "avx512/2intersect.h"
 #include "avx512/abs.h"
 #include "avx512/add.h"
 #include "avx512/adds.h"

@@ -36,43 +36,43 @@ SIMDE_BEGIN_DECLS_
 #if defined(SIMDE_VECTOR_SUBSCRIPT)
   #define SIMDE_ARM_NEON_TYPE_INT_DEFINE_(Element_Type_Name, Element_Count, Alignment) \
     typedef struct simde_##Element_Type_Name##x##Element_Count##_private { \
-      SIMDE_ALIGN(Alignment) Element_Type_Name##_t values SIMDE_VECTOR(sizeof(Element_Type_Name##_t) * Element_Count); \
+      SIMDE_ALIGN_TO(Alignment) Element_Type_Name##_t values SIMDE_VECTOR(sizeof(Element_Type_Name##_t) * Element_Count); \
     } simde_##Element_Type_Name##x##Element_Count##_private;
   #define SIMDE_ARM_NEON_TYPE_FLOAT_DEFINE_(Element_Size, Element_Count, Alignment) \
     typedef struct simde_float##Element_Size##x##Element_Count##_private { \
-      SIMDE_ALIGN(Alignment) simde_float##Element_Size values SIMDE_VECTOR(sizeof(simde_float##Element_Size) * Element_Count); \
+      SIMDE_ALIGN_TO(Alignment) simde_float##Element_Size values SIMDE_VECTOR(sizeof(simde_float##Element_Size) * Element_Count); \
     } simde_float##Element_Size##x##Element_Count##_private;
 #else
   #define SIMDE_ARM_NEON_TYPE_INT_DEFINE_(Element_Type_Name, Element_Count, Alignment) \
     typedef struct simde_##Element_Type_Name##x##Element_Count##_private { \
-      SIMDE_ALIGN(Alignment) Element_Type_Name##_t values[Element_Count]; \
+      SIMDE_ALIGN_TO(Alignment) Element_Type_Name##_t values[Element_Count]; \
     } simde_##Element_Type_Name##x##Element_Count##_private;
   #define SIMDE_ARM_NEON_TYPE_FLOAT_DEFINE_(Element_Size, Element_Count, Alignment) \
     typedef struct simde_float##Element_Size##x##Element_Count##_private { \
-      SIMDE_ALIGN(Alignment) simde_float##Element_Size values[Element_Count]; \
+      SIMDE_ALIGN_TO(Alignment) simde_float##Element_Size values[Element_Count]; \
     } simde_float##Element_Size##x##Element_Count##_private;
 #endif
 
-SIMDE_ARM_NEON_TYPE_INT_DEFINE_(     int8, 8,  8)
-SIMDE_ARM_NEON_TYPE_INT_DEFINE_(    int16, 4,  8)
-SIMDE_ARM_NEON_TYPE_INT_DEFINE_(    int32, 2,  8)
-SIMDE_ARM_NEON_TYPE_INT_DEFINE_(    int64, 1,  8)
-SIMDE_ARM_NEON_TYPE_INT_DEFINE_(    uint8, 8,  8)
-SIMDE_ARM_NEON_TYPE_INT_DEFINE_(   uint16, 4,  8)
-SIMDE_ARM_NEON_TYPE_INT_DEFINE_(   uint32, 2,  8)
-SIMDE_ARM_NEON_TYPE_INT_DEFINE_(   uint64, 1,  8)
-SIMDE_ARM_NEON_TYPE_INT_DEFINE_(     int8, 16, 16)
-SIMDE_ARM_NEON_TYPE_INT_DEFINE_(    int16, 8,  16)
-SIMDE_ARM_NEON_TYPE_INT_DEFINE_(    int32, 4,  16)
-SIMDE_ARM_NEON_TYPE_INT_DEFINE_(    int64, 2,  16)
-SIMDE_ARM_NEON_TYPE_INT_DEFINE_(    uint8, 16, 16)
-SIMDE_ARM_NEON_TYPE_INT_DEFINE_(   uint16, 8,  16)
-SIMDE_ARM_NEON_TYPE_INT_DEFINE_(   uint32, 4,  16)
-SIMDE_ARM_NEON_TYPE_INT_DEFINE_(   uint64, 2,  16)
-SIMDE_ARM_NEON_TYPE_FLOAT_DEFINE_(32, 2, 8)
-SIMDE_ARM_NEON_TYPE_FLOAT_DEFINE_(64, 1, 8)
-SIMDE_ARM_NEON_TYPE_FLOAT_DEFINE_(32, 4, 16)
-SIMDE_ARM_NEON_TYPE_FLOAT_DEFINE_(64, 2, 16)
+SIMDE_ARM_NEON_TYPE_INT_DEFINE_(     int8,  8, SIMDE_ALIGN_8_)
+SIMDE_ARM_NEON_TYPE_INT_DEFINE_(    int16,  4, SIMDE_ALIGN_8_)
+SIMDE_ARM_NEON_TYPE_INT_DEFINE_(    int32,  2, SIMDE_ALIGN_8_)
+SIMDE_ARM_NEON_TYPE_INT_DEFINE_(    int64,  1, SIMDE_ALIGN_8_)
+SIMDE_ARM_NEON_TYPE_INT_DEFINE_(    uint8,  8, SIMDE_ALIGN_8_)
+SIMDE_ARM_NEON_TYPE_INT_DEFINE_(   uint16,  4, SIMDE_ALIGN_8_)
+SIMDE_ARM_NEON_TYPE_INT_DEFINE_(   uint32,  2, SIMDE_ALIGN_8_)
+SIMDE_ARM_NEON_TYPE_INT_DEFINE_(   uint64,  1, SIMDE_ALIGN_8_)
+SIMDE_ARM_NEON_TYPE_INT_DEFINE_(     int8, 16, SIMDE_ALIGN_16_)
+SIMDE_ARM_NEON_TYPE_INT_DEFINE_(    int16,  8, SIMDE_ALIGN_16_)
+SIMDE_ARM_NEON_TYPE_INT_DEFINE_(    int32,  4, SIMDE_ALIGN_16_)
+SIMDE_ARM_NEON_TYPE_INT_DEFINE_(    int64,  2, SIMDE_ALIGN_16_)
+SIMDE_ARM_NEON_TYPE_INT_DEFINE_(    uint8, 16, SIMDE_ALIGN_16_)
+SIMDE_ARM_NEON_TYPE_INT_DEFINE_(   uint16,  8, SIMDE_ALIGN_16_)
+SIMDE_ARM_NEON_TYPE_INT_DEFINE_(   uint32,  4, SIMDE_ALIGN_16_)
+SIMDE_ARM_NEON_TYPE_INT_DEFINE_(   uint64,  2, SIMDE_ALIGN_16_)
+SIMDE_ARM_NEON_TYPE_FLOAT_DEFINE_(32, 2, SIMDE_ALIGN_8_)
+SIMDE_ARM_NEON_TYPE_FLOAT_DEFINE_(64, 1, SIMDE_ALIGN_8_)
+SIMDE_ARM_NEON_TYPE_FLOAT_DEFINE_(32, 4, SIMDE_ALIGN_16_)
+SIMDE_ARM_NEON_TYPE_FLOAT_DEFINE_(64, 2, SIMDE_ALIGN_16_)
 
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   typedef     float32_t     simde_float32_t;
@@ -273,7 +273,7 @@ SIMDE_ARM_NEON_TYPE_FLOAT_DEFINE_(64, 2, 16)
   #if defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
     typedef SIMDE_POWER_ALTIVEC_VECTOR(signed long long)       simde_int64x2_t;
     typedef SIMDE_POWER_ALTIVEC_VECTOR(unsigned long long)     simde_uint64x2_t;
-    typedef SIMDE_ALIGN(16) SIMDE_POWER_ALTIVEC_VECTOR(double) simde_float64x2_t;
+    typedef SIMDE_POWER_ALTIVEC_VECTOR(double) simde_float64x2_t;
   #else
     #define SIMDE_ARM_NEON_NEED_PORTABLE_I64X2
     #define SIMDE_ARM_NEON_NEED_PORTABLE_U64X2

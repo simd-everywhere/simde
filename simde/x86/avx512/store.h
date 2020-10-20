@@ -39,7 +39,7 @@ simde_mm512_store_ps (void * mem_addr, simde__m512 a) {
   #if defined(SIMDE_X86_AVX512F_NATIVE)
     _mm512_store_ps(mem_addr, a);
   #else
-    simde_memcpy(SIMDE_ASSUME_ALIGNED_AS(simde__m512, mem_addr), &a, sizeof(a));
+    simde_memcpy(SIMDE_ALIGN_ASSUME_LIKE(mem_addr, simde__m512), &a, sizeof(a));
   #endif
 }
 #if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
@@ -53,7 +53,7 @@ simde_mm512_store_pd (void * mem_addr, simde__m512d a) {
   #if defined(SIMDE_X86_AVX512F_NATIVE)
     _mm512_store_pd(mem_addr, a);
   #else
-    simde_memcpy(SIMDE_ASSUME_ALIGNED_AS(simde__m512d, mem_addr), &a, sizeof(a));
+    simde_memcpy(SIMDE_ALIGN_ASSUME_LIKE(mem_addr, simde__m512d), &a, sizeof(a));
   #endif
 }
 #if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
@@ -67,7 +67,7 @@ simde_mm512_store_si512 (void * mem_addr, simde__m512i a) {
   #if defined(SIMDE_X86_AVX512F_NATIVE)
     _mm512_store_si512(HEDLEY_REINTERPRET_CAST(void*, mem_addr), a);
   #else
-    simde_memcpy(SIMDE_ASSUME_ALIGNED_AS(simde__m512i, mem_addr), &a, sizeof(a));
+    simde_memcpy(SIMDE_ALIGN_ASSUME_LIKE(mem_addr, simde__m512i), &a, sizeof(a));
   #endif
 }
 #define simde_mm512_store_epi8(mem_addr, a) simde_mm512_store_si512(mem_addr, a)
