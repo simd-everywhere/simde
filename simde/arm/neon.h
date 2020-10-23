@@ -40,6 +40,7 @@
 #include "neon/addv.h"
 #include "neon/addw.h"
 #include "neon/and.h"
+#include "neon/bic.h"
 #include "neon/bsl.h"
 #include "neon/cagt.h"
 #include "neon/ceq.h"
