@@ -1938,14 +1938,7 @@ simde_mm256_broadcast_sd (simde_float64 const * a) {
   #if defined(SIMDE_X86_AVX_NATIVE)
     return _mm256_broadcast_sd(a);
   #else
-    simde__m256d_private r_;
-
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
-      r_.f64[i] = *a;
-    }
-
-    return simde__m256d_from_private(r_);
+    return simde_mm256_set1_pd(*a);
   #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
@@ -1959,14 +1952,7 @@ simde_mm_broadcast_ss (simde_float32 const * a) {
   #if defined(SIMDE_X86_AVX_NATIVE)
     return _mm_broadcast_ss(a);
   #else
-    simde__m128_private r_;
-
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
-      r_.f32[i] = *a;
-    }
-
-    return simde__m128_from_private(r_);
+    return simde_mm_set1_ps(*a);
   #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
@@ -1980,14 +1966,7 @@ simde_mm256_broadcast_ss (simde_float32 const * a) {
   #if defined(SIMDE_X86_AVX_NATIVE)
     return _mm256_broadcast_ss(a);
   #else
-    simde__m256_private r_;
-
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
-      r_.f32[i] = *a;
-    }
-
-    return simde__m256_from_private(r_);
+    return simde_mm256_set1_ps(*a);
   #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
