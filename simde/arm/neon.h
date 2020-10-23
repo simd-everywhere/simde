@@ -29,7 +29,9 @@
 
 #include "neon/types.h"
 
+#include "neon/aba.h"
 #include "neon/abd.h"
+#include "neon/abdl.h"
 #include "neon/abs.h"
 #include "neon/add.h"
 #include "neon/addl.h"
