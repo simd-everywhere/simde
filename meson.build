@@ -51,6 +51,7 @@ simde_neon_families = [
   'max',
   'maxv',
   'min',
+  'minv',
   'mla',
   'mla_n',
   'mlal',
