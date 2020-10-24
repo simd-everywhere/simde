@@ -43,6 +43,7 @@ simde_neon_families = [
   'get_high',
   'get_lane',
   'get_low',
+  'hadd',
   'ld1',
   'ld3',
   'ld4',

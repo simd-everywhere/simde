@@ -65,6 +65,7 @@
 #include "neon/get_high.h"
 #include "neon/get_lane.h"
 #include "neon/get_low.h"
+#include "neon/hadd.h"
 #include "neon/ld1.h"
 #include "neon/ld3.h"
 #include "neon/ld4.h"
