@@ -59,6 +59,7 @@
 #include "neon/create.h"
 #include "neon/dot.h"
 #include "neon/dot_lane.h"
+#include "neon/dup_lane.h"
 #include "neon/dup_n.h"
 #include "neon/eor.h"
 #include "neon/ext.h"

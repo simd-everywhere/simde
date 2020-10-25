@@ -359,6 +359,17 @@
   #define SIMDE_DIAGNOSTIC_DISABLE_PEDANTIC_
 #endif
 
+/* MSVC doesn't like (__assume(0), code) and will warn about code being
+ * unreachable, but we want it there because not all compilers
+ * understand the unreachable macro and will complain if it is missing.
+ * I'm planning on adding a new macro to Hedley to handle this a bit
+ * more elegantly, but until then... */
+#if defined(HEDLEY_MSVC_VERSION)
+  #define SIMDE_DIAGNOSTIC_DISABLE_UNREACHABLE_ __pragma(warning(disable:4702))
+#else
+  #define SIMDE_DIAGNOSTIC_DISABLE_UNREACHABLE_
+#endif
+
 #define SIMDE_DISABLE_UNWANTED_DIAGNOSTICS \
   SIMDE_DIAGNOSTIC_DISABLE_PSABI_ \
   SIMDE_DIAGNOSTIC_DISABLE_NO_EMMS_INSTRUCTION_ \
