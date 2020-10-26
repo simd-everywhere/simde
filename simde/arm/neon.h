@@ -92,6 +92,7 @@
 #include "neon/mull_n.h"
 #include "neon/mvn.h"
 #include "neon/neg.h"
+#include "neon/orn.h"
 #include "neon/orr.h"
 #include "neon/padal.h"
 #include "neon/padd.h"
