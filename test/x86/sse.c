@@ -3487,44 +3487,65 @@ test_simde_m_pmaxsw(SIMDE_MUNIT_TEST_ARGS) {
 }
 
 static int
-test_simde_mm_max_ps(SIMDE_MUNIT_TEST_ARGS) {
-  const struct {
-    simde__m128 a;
-    simde__m128 b;
-    simde__m128 r;
-  } test_vec[8] = {
-    { simde_mm_set_ps( 243.39f,  726.06f, -707.75f,  539.11f),
-      simde_mm_set_ps( 452.06f, -743.40f, -959.79f, -625.85f),
-      simde_mm_set_ps( 452.06f,  726.06f, -707.75f,  539.11f) },
-    { simde_mm_set_ps( 927.87f,  825.19f, -742.41f, -106.29f),
-      simde_mm_set_ps(-988.96f, -513.77f,  271.05f, -506.77f),
-      simde_mm_set_ps( 927.87f,  825.19f,  271.05f, -106.29f) },
-    { simde_mm_set_ps( 501.07f, -751.90f,  333.57f,  862.44f),
-      simde_mm_set_ps(-129.71f,  542.65f,  -99.64f, -609.96f),
-      simde_mm_set_ps( 501.07f,  542.65f,  333.57f,  862.44f) },
-    { simde_mm_set_ps( 237.27f, -100.72f,  806.63f,  318.52f),
-      simde_mm_set_ps(  75.91f,  129.34f, -169.38f, -401.83f),
-      simde_mm_set_ps( 237.27f,  129.34f,  806.63f,  318.52f) },
-    { simde_mm_set_ps(-664.90f,  204.37f, -623.14f,   77.06f),
-      simde_mm_set_ps(-909.66f,  849.83f, -206.26f, -162.33f),
-      simde_mm_set_ps(-664.90f,  849.83f, -206.26f,   77.06f) },
-    { simde_mm_set_ps(-141.59f, -323.72f, -113.68f, -564.18f),
-      simde_mm_set_ps( 293.03f, -880.63f,  701.27f, -113.42f),
-      simde_mm_set_ps( 293.03f, -323.72f,  701.27f, -113.42f) },
-    { simde_mm_set_ps(-158.10f, -618.57f,  197.04f,  507.93f),
-      simde_mm_set_ps(-813.81f, -476.03f, -357.06f,  262.52f),
-      simde_mm_set_ps(-158.10f, -476.03f,  197.04f,  507.93f) },
-    { simde_mm_set_ps( 336.66f, -150.62f, -774.81f,  -52.00f),
-      simde_mm_set_ps(-283.99f, -939.93f, -115.92f,  471.61f),
-      simde_mm_set_ps( 336.66f, -150.62f, -115.92f,  471.61f) }
+test_simde_mm_max_ps (SIMDE_MUNIT_TEST_ARGS) {
+#if 1
+  static const struct {
+    const simde_float32 a[4];
+    const simde_float32 b[4];
+    const simde_float32 r[4];
+  } test_vec[] = {
+    #if !defined(SIMDE_FAST_NANS)
+    { {            SIMDE_MATH_NANF, SIMDE_FLOAT32_C(   353.79),            SIMDE_MATH_NANF, SIMDE_FLOAT32_C(   -20.53) },
+      { SIMDE_FLOAT32_C(  -559.69),            SIMDE_MATH_NANF,            SIMDE_MATH_NANF, SIMDE_FLOAT32_C(   542.61) },
+      { SIMDE_FLOAT32_C(  -559.69),            SIMDE_MATH_NANF,            SIMDE_MATH_NANF, SIMDE_FLOAT32_C(   542.61) } },
+    #endif
+    { { SIMDE_FLOAT32_C(  -584.82), SIMDE_FLOAT32_C(  -771.96), SIMDE_FLOAT32_C(   713.78), SIMDE_FLOAT32_C(   -25.19) },
+      { SIMDE_FLOAT32_C(  -146.60), SIMDE_FLOAT32_C(  -788.24), SIMDE_FLOAT32_C(   792.99), SIMDE_FLOAT32_C(  -871.40) },
+      { SIMDE_FLOAT32_C(  -146.60), SIMDE_FLOAT32_C(  -771.96), SIMDE_FLOAT32_C(   792.99), SIMDE_FLOAT32_C(   -25.19) } },
+    { { SIMDE_FLOAT32_C(  -253.85), SIMDE_FLOAT32_C(   796.83), SIMDE_FLOAT32_C(   458.25), SIMDE_FLOAT32_C(   983.39) },
+      { SIMDE_FLOAT32_C(  -205.15), SIMDE_FLOAT32_C(  -738.14), SIMDE_FLOAT32_C(   103.55), SIMDE_FLOAT32_C(   362.69) },
+      { SIMDE_FLOAT32_C(  -205.15), SIMDE_FLOAT32_C(   796.83), SIMDE_FLOAT32_C(   458.25), SIMDE_FLOAT32_C(   983.39) } },
+    { { SIMDE_FLOAT32_C(  -535.82), SIMDE_FLOAT32_C(  -110.18), SIMDE_FLOAT32_C(  -688.86), SIMDE_FLOAT32_C(   231.16) },
+      { SIMDE_FLOAT32_C(  -765.48), SIMDE_FLOAT32_C(  -343.50), SIMDE_FLOAT32_C(   811.93), SIMDE_FLOAT32_C(   559.03) },
+      { SIMDE_FLOAT32_C(  -535.82), SIMDE_FLOAT32_C(  -110.18), SIMDE_FLOAT32_C(   811.93), SIMDE_FLOAT32_C(   559.03) } },
+    { { SIMDE_FLOAT32_C(  -989.71), SIMDE_FLOAT32_C(  -736.05), SIMDE_FLOAT32_C(  -461.50), SIMDE_FLOAT32_C(  -549.40) },
+      { SIMDE_FLOAT32_C(  -316.97), SIMDE_FLOAT32_C(  -791.36), SIMDE_FLOAT32_C(   993.20), SIMDE_FLOAT32_C(    98.21) },
+      { SIMDE_FLOAT32_C(  -316.97), SIMDE_FLOAT32_C(  -736.05), SIMDE_FLOAT32_C(   993.20), SIMDE_FLOAT32_C(    98.21) } },
+    { { SIMDE_FLOAT32_C(  -563.32), SIMDE_FLOAT32_C(   706.98), SIMDE_FLOAT32_C(  -926.98), SIMDE_FLOAT32_C(   290.07) },
+      { SIMDE_FLOAT32_C(   918.74), SIMDE_FLOAT32_C(   866.01), SIMDE_FLOAT32_C(   418.68), SIMDE_FLOAT32_C(  -335.11) },
+      { SIMDE_FLOAT32_C(   918.74), SIMDE_FLOAT32_C(   866.01), SIMDE_FLOAT32_C(   418.68), SIMDE_FLOAT32_C(   290.07) } },
+    { { SIMDE_FLOAT32_C(   662.83), SIMDE_FLOAT32_C(  -123.07), SIMDE_FLOAT32_C(  -351.72), SIMDE_FLOAT32_C(  -542.32) },
+      { SIMDE_FLOAT32_C(   138.79), SIMDE_FLOAT32_C(   751.84), SIMDE_FLOAT32_C(   820.37), SIMDE_FLOAT32_C(   602.97) },
+      { SIMDE_FLOAT32_C(   662.83), SIMDE_FLOAT32_C(   751.84), SIMDE_FLOAT32_C(   820.37), SIMDE_FLOAT32_C(   602.97) } },
+    { { SIMDE_FLOAT32_C(  -358.34), SIMDE_FLOAT32_C(  -868.49), SIMDE_FLOAT32_C(  -165.86), SIMDE_FLOAT32_C(  -123.83) },
+      { SIMDE_FLOAT32_C(  -211.99), SIMDE_FLOAT32_C(  -353.93), SIMDE_FLOAT32_C(  -564.80), SIMDE_FLOAT32_C(  -201.70) },
+      { SIMDE_FLOAT32_C(  -211.99), SIMDE_FLOAT32_C(  -353.93), SIMDE_FLOAT32_C(  -165.86), SIMDE_FLOAT32_C(  -123.83) } }
   };
 
-  for (size_t i = 0 ; i < (sizeof(test_vec) / (sizeof(test_vec[0]))) ; i++) {
-    simde__m128 r = simde_mm_max_ps(test_vec[i].a, test_vec[i].b);
-    simde_test_x86_assert_equal_f32x4(test_vec[i].r, r, 1);
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
+    simde__m128 a = simde_mm_loadu_ps(test_vec[i].a);
+    simde__m128 b = simde_mm_loadu_ps(test_vec[i].b);
+    simde__m128 r = simde_mm_max_ps(a, b);
+    simde_test_x86_assert_equal_f32x4(r, simde_mm_loadu_ps(test_vec[i].r), 1);
   }
 
   return 0;
+#else
+  fputc('\n', stdout);
+  simde_float32 values[8 * 2 * sizeof(simde__m128)];
+  simde_test_x86_random_f32x4_full(8, 2, values, -1000.0f, 1000.0f, SIMDE_TEST_VEC_FLOAT_NAN);
+
+  for (size_t i = 0 ; i < 8 ; i++) {
+    simde__m128 a = simde_test_x86_random_extract_f32x4(i, 2, 0, values);
+    simde__m128 b = simde_test_x86_random_extract_f32x4(i, 2, 1, values);
+    simde__m128 r = simde_mm_max_ps(a, b);
+
+    simde_test_x86_write_f32x4(2, a, SIMDE_TEST_VEC_POS_FIRST);
+    simde_test_x86_write_f32x4(2, b, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_x86_write_f32x4(2, r, SIMDE_TEST_VEC_POS_LAST);
+  }
+  return 1;
+#endif
 }
 
 static int

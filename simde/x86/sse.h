@@ -2627,12 +2627,18 @@ simde_mm_max_ps (simde__m128 a, simde__m128 b) {
       a_ = simde__m128_to_private(a),
       b_ = simde__m128_to_private(b);
 
-    #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_FAST_NANS)
       r_.neon_f32 = vmaxq_f32(a_.neon_f32, b_.neon_f32);
-    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+    #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+      r_.neon_f32 = vbslq_f32(vcgtq_f32(a_.neon_f32, b_.neon_f32), a_.neon_f32, b_.neon_f32);
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE) && defined(SIMDE_FAST_NANS)
       r_.wasm_v128 = wasm_f32x4_max(a_.wasm_v128, b_.wasm_v128);
-    #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+      r_.wasm_v128 = wasm_v128_bitselect(a_.wasm_v128, b_.wasm_v128, wasm_f32x4_gt(a_.wasm_v128, b_.wasm_v128));
+    #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE) && defined(SIMDE_FAST_NANS)
       r_.altivec_f32 = vec_max(a_.altivec_f32, b_.altivec_f32);
+    #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+      r_.altivec_f32 = vec_sel(b_.altivec_f32, a_.altivec_f32, vec_cmpgt(a_.altivec_f32, b_.altivec_f32));
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
