@@ -869,6 +869,26 @@
   #endif
 #endif
 
+#if !defined(simde_math_fmax)
+  #if SIMDE_MATH_BUILTIN_LIBM(fmax)
+    #define simde_math_fmax(x, y, z) __builtin_fmax(x, y, z)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_fmax(x, y, z) std::fmax(x, y, z)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_fmax(x, y, z) fmax(x, y, z)
+  #endif
+#endif
+
+#if !defined(simde_math_fmaxf)
+  #if SIMDE_MATH_BUILTIN_LIBM(fmaxf)
+    #define simde_math_fmaxf(x, y, z) __builtin_fmaxf(x, y, z)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_fmaxf(x, y, z) std::fmax(x, y, z)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_fmaxf(x, y, z) fmaxf(x, y, z)
+  #endif
+#endif
+
 #if !defined(simde_math_hypot)
   #if SIMDE_MATH_BUILTIN_LIBM(hypot)
     #define simde_math_hypot(y, x) __builtin_hypot(y, x)
