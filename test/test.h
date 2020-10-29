@@ -263,6 +263,113 @@ simde_test_codegen_random_f64(simde_float64 min, simde_float64 max) {
   return simde_math_round(v * SIMDE_FLOAT64_C(100.0)) / SIMDE_FLOAT64_C(100.0);
 }
 
+typedef enum SimdeTestVecFloatMask {
+  SIMDE_TEST_VEC_FLOAT_DEFAULT  = 0,
+  SIMDE_TEST_VEC_FLOAT_PAIR     = 1,
+  SIMDE_TEST_VEC_FLOAT_NAN      = 2,
+  SIMDE_TEST_VEC_FLOAT_EQUAL    = 4
+}
+#if \
+    (HEDLEY_HAS_ATTRIBUTE(flag_enum) && !defined(HEDLEY_IBM_VERSION)) && \
+    (!defined(__cplusplus) || SIMDE_DETECT_CLANG_VERSION_CHECK(5,0,0))
+  __attribute__((__flag_enum__))
+#endif
+SimdeTestVecFloatType;
+
+/* This is a bit messy, sorry.  And I haven't really tested with
+ * anything greater than 4-element vectors, there is no input
+ * validation, etc.  I'm not going to lose any sleep since it's
+ * just a test harness, but you probably shouldn't use this API
+ * directly since there is a good chance it will change. */
+
+static void
+simde_test_codegen_calc_pair(int pairwise, size_t test_sets, size_t vectors_per_set, size_t elements_per_vector, size_t pos, size_t* a, size_t* b) {
+  (void) test_sets; // <- for validating ranges
+
+  if (pairwise) {
+    *a = (((pos * 2) + 0) % elements_per_vector) + ((((pos * 2) + 0) / elements_per_vector) * elements_per_vector);
+    *b = (((pos * 2) + 1) % elements_per_vector) + ((((pos * 2) + 1) / elements_per_vector) * elements_per_vector);
+  } else {
+    size_t elements_per_set = elements_per_vector * vectors_per_set;
+    size_t set_num = pos / elements_per_vector;
+    size_t pos_in_set = pos % elements_per_vector;
+
+    *a = (elements_per_set * set_num) + pos_in_set;
+    *b = *a + elements_per_vector;
+  }
+}
+
+static void
+simde_test_codegen_float_set_value_(size_t element_size, size_t pos, void* values, simde_float32 f32_val, simde_float64 f64_val) {
+  switch (element_size) {
+    case sizeof(simde_float32):
+      HEDLEY_REINTERPRET_CAST(simde_float32*, values)[pos] = f32_val;
+      break;
+    case sizeof(simde_float64):
+      HEDLEY_REINTERPRET_CAST(simde_float64*, values)[pos] = f64_val;
+      break;
+  }
+}
+
+static void
+simde_test_codegen_random_vfX_full_(
+    size_t test_sets, size_t vectors_per_set, size_t elements_per_vector,
+    size_t elem_size, void* values,
+    simde_float64 min, simde_float64 max,
+    SimdeTestVecFloatType vec_type) {
+  for (size_t i = 0 ; i < (test_sets * vectors_per_set * elements_per_vector) ; i++) {
+    simde_float64 v = simde_test_codegen_random_f64(min, max);
+    simde_test_codegen_float_set_value_(elem_size, i, values, HEDLEY_STATIC_CAST(simde_float32, v), v);
+  }
+
+  int pairwise = !!(vec_type & SIMDE_TEST_VEC_FLOAT_PAIR);
+  size_t pos = 0;
+  size_t a, b;
+
+  if (vec_type & SIMDE_TEST_VEC_FLOAT_NAN) {
+    simde_test_codegen_calc_pair(pairwise, test_sets, vectors_per_set, elements_per_vector, pos++, &a, &b);
+    simde_test_codegen_float_set_value_(elem_size, a, values, SIMDE_MATH_NANF, SIMDE_MATH_NAN);
+
+    simde_test_codegen_calc_pair(pairwise, test_sets, vectors_per_set, elements_per_vector, pos++, &a, &b);
+    simde_test_codegen_float_set_value_(elem_size, b, values, SIMDE_MATH_NANF, SIMDE_MATH_NAN);
+
+    simde_test_codegen_calc_pair(pairwise, test_sets, vectors_per_set, elements_per_vector, pos++, &a, &b);
+    simde_test_codegen_float_set_value_(elem_size, a, values, SIMDE_MATH_NANF, SIMDE_MATH_NAN);
+    simde_test_codegen_float_set_value_(elem_size, b, values, SIMDE_MATH_NANF, SIMDE_MATH_NAN);
+  }
+
+  if (vec_type & SIMDE_TEST_VEC_FLOAT_EQUAL) {
+    simde_test_codegen_calc_pair(pairwise, test_sets, vectors_per_set, elements_per_vector, pos++, &a, &b);
+    simde_float64 v = simde_test_codegen_random_f64(min, max);
+    simde_test_codegen_float_set_value_(elem_size, a, values, HEDLEY_STATIC_CAST(simde_float32, v), v);
+    simde_test_codegen_float_set_value_(elem_size, b, values, HEDLEY_STATIC_CAST(simde_float32, v), v);
+  }
+}
+
+static void
+simde_test_codegen_random_vf32_full(
+    size_t test_sets, size_t vectors_per_set, size_t elements_per_vector,
+    simde_float32 values[HEDLEY_ARRAY_PARAM(test_sets * vectors_per_set * elements_per_vector)],
+    simde_float32 min, simde_float32 max,
+    SimdeTestVecFloatType vec_type) {
+  simde_test_codegen_random_vfX_full_(test_sets, vectors_per_set, elements_per_vector,
+      sizeof(simde_float32), values,
+      HEDLEY_STATIC_CAST(simde_float64, min), HEDLEY_STATIC_CAST(simde_float64, max),
+      vec_type);
+}
+
+static void
+simde_test_codegen_random_vf64_full(
+    size_t test_sets, size_t vectors_per_set, size_t elements_per_vector,
+    simde_float64 values[HEDLEY_ARRAY_PARAM(test_sets * vectors_per_set * elements_per_vector)],
+    simde_float64 min, simde_float64 max,
+    SimdeTestVecFloatType vec_type) {
+  simde_test_codegen_random_vfX_full_(test_sets, vectors_per_set, elements_per_vector,
+      sizeof(simde_float64), values,
+      min, max,
+      vec_type);
+}
+
 static void
 simde_test_codegen_random_vf32(size_t elem_count, simde_float32 values[HEDLEY_ARRAY_PARAM(elem_count)], simde_float32 min, simde_float32 max) {
   for (size_t i = 0 ; i < elem_count ; i++) {
