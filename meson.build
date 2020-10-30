@@ -149,6 +149,7 @@ simde_avx512_families = [
   'load',
   'loadu',
   'lzcnt',
+  'maddubs',
   'max',
   'min',
   'mov',
