@@ -79,6 +79,34 @@ simde_mm512_sll_epi16 (simde__m512i a, simde__m128i count) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m512i
+simde_mm512_mask_sll_epi16 (simde__m512i src, simde__mmask32 k, simde__m512i a, simde__m128i count) {
+  #if defined(SIMDE_X86_AVX51BW_NATIVE)
+    return _mm512_mask_sll_epi16(src, k, a, count);
+  #else
+    return simde_mm512_mask_mov_epi16(src, k, simde_mm512_sll_epi16(a, count));
+  #endif
+}
+#if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_mask_sll_epi16
+  #define _mm512_mask_sll_epi16(src, k, a, count) simde_mm512_mask_sll_epi16(src, k, a, count)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512i
+simde_mm512_maskz_sll_epi16 (simde__mmask32 k, simde__m512i a, simde__m128i count) {
+  #if defined(SIMDE_X86_AVX512BW_NATIVE)
+    return _mm512_maskz_sll_epi16(k, a, count);
+  #else
+    return simde_mm512_maskz_mov_epi16(k, simde_mm512_sll_epi16(a, count));
+  #endif
+}
+#if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_maskz_sll_epi16
+  #define _mm512_maskz_sll_epi16(src, k, a, count) simde_mm512_maskz_sll_epi16(src, k, a, count)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512i
 simde_mm512_sll_epi32 (simde__m512i a, simde__m128i count) {
   #if defined(SIMDE_X86_AVX512F_NATIVE)
     return _mm512_sll_epi32(a, count);
