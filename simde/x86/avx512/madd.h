@@ -22,6 +22,7 @@
  *
  * Copyright:
  *   2020      Evan Nemerson <evan@nemerson.com>
+ *   2020      Ashleigh Newman-Jones <ashnewman-jones@hotmail.co.uk>
  */
 
 #if !defined(SIMDE_X86_AVX512_MADD_H)

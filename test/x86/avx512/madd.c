@@ -22,6 +22,7 @@
  *
  * Copyright:
  *   2020      Evan Nemerson <evan@nemerson.com>
+ *   2020      Ashleigh Newman-Jones <ashnewman-jones@hotmail.co.uk>
  */
 
 #define SIMDE_TEST_X86_AVX512_INSN madd
