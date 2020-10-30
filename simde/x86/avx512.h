@@ -58,6 +58,7 @@
 #include "avx512/load.h"
 #include "avx512/loadu.h"
 #include "avx512/lzcnt.h"
+#include "avx512/madd.h"
 #include "avx512/max.h"
 #include "avx512/min.h"
 #include "avx512/mov.h"
