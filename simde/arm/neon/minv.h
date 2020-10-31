@@ -45,9 +45,17 @@ simde_vminv_f32(simde_float32x2_t a) {
     simde_float32x2_private a_ = simde_float32x2_to_private(a);
 
     r = SIMDE_MATH_INFINITYF;
-    SIMDE_VECTORIZE_REDUCTION(min:r)
+    #if defined(SIMDE_FAST_NANS)
+      SIMDE_VECTORIZE_REDUCTION(min:r)
+    #else
+      SIMDE_VECTORIZE
+    #endif
     for (size_t i = 0 ; i < (sizeof(a_.values) / sizeof(a_.values[0])) ; i++) {
-      r = a_.values[i] < r ? a_.values[i] : r;
+      #if defined(SIMDE_FAST_NANS)
+        r = a_.values[i] < r ? a_.values[i] : r;
+      #else
+        r = (a_.values[i] < r) ? a_.values[i] : ((a_.values[i] >= r) ? r : ((a_.values[i] == a_.values[i]) ? r : a_.values[i]));
+      #endif
     }
   #endif
 
@@ -213,9 +221,17 @@ simde_vminvq_f32(simde_float32x4_t a) {
     simde_float32x4_private a_ = simde_float32x4_to_private(a);
 
     r = SIMDE_MATH_INFINITYF;
-    SIMDE_VECTORIZE_REDUCTION(min:r)
+    #if defined(SIMDE_FAST_NANS)
+      SIMDE_VECTORIZE_REDUCTION(min:r)
+    #else
+      SIMDE_VECTORIZE
+    #endif
     for (size_t i = 0 ; i < (sizeof(a_.values) / sizeof(a_.values[0])) ; i++) {
-      r = a_.values[i] < r ? a_.values[i] : r;
+      #if defined(SIMDE_FAST_NANS)
+        r = a_.values[i] < r ? a_.values[i] : r;
+      #else
+        r = (a_.values[i] < r) ? a_.values[i] : ((a_.values[i] >= r) ? r : ((a_.values[i] == a_.values[i]) ? r : a_.values[i]));
+      #endif
     }
   #endif
 
@@ -237,9 +253,17 @@ simde_vminvq_f64(simde_float64x2_t a) {
     simde_float64x2_private a_ = simde_float64x2_to_private(a);
 
     r = SIMDE_MATH_INFINITY;
-    SIMDE_VECTORIZE_REDUCTION(min:r)
+    #if defined(SIMDE_FAST_NANS)
+      SIMDE_VECTORIZE_REDUCTION(min:r)
+    #else
+      SIMDE_VECTORIZE
+    #endif
     for (size_t i = 0 ; i < (sizeof(a_.values) / sizeof(a_.values[0])) ; i++) {
-      r = a_.values[i] < r ? a_.values[i] : r;
+      #if defined(SIMDE_FAST_NANS)
+        r = a_.values[i] < r ? a_.values[i] : r;
+      #else
+        r = (a_.values[i] < r) ? a_.values[i] : ((a_.values[i] >= r) ? r : ((a_.values[i] == a_.values[i]) ? r : a_.values[i]));
+      #endif
     }
   #endif
 
