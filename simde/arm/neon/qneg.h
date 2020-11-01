@@ -40,6 +40,62 @@ SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 SIMDE_BEGIN_DECLS_
 
 SIMDE_FUNCTION_ATTRIBUTES
+int8_t
+simde_vqnegb_s8(int8_t a) {
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+    return vqnegb_s8(a);
+  #else
+    return a == INT8_MIN ? INT8_MAX : -a;
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vqnegb_s8
+  #define vqnegb_s8(a) simde_vqnegb_s8(a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+int16_t
+simde_vqnegh_s16(int16_t a) {
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+    return vqnegh_s16(a);
+  #else
+    return a == INT16_MIN ? INT16_MAX : -a;
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vqnegh_s16
+  #define vqnegh_s16(a) simde_vqnegh_s16(a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+int32_t
+simde_vqnegs_s32(int32_t a) {
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+    return vqnegs_s32(a);
+  #else
+    return a == INT32_MIN ? INT32_MAX : -a;
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vqnegs_s32
+  #define vqnegs_s32(a) simde_vqnegs_s32(a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+int64_t
+simde_vqnegd_s64(int64_t a) {
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+    return vqnegd_s64(a);
+  #else
+    return a == INT64_MIN ? INT64_MAX : -a;
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vqnegd_s64
+  #define vqnegd_s64(a) simde_vqnegd_s64(a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
 simde_int8x8_t
 simde_vqneg_s8(simde_int8x8_t a) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
