@@ -100,6 +100,7 @@
 #include "neon/paddl.h"
 #include "neon/pmax.h"
 #include "neon/pmin.h"
+#include "neon/qabs.h"
 #include "neon/qadd.h"
 #include "neon/qdmulh.h"
 #include "neon/qdmull.h"

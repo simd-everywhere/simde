@@ -79,6 +79,7 @@ simde_neon_families = [
   'pmax',
   'pmin',
   'qadd',
+  'qabs',
   'qdmulh',
   'qdmull',
   'qrdmulh',
