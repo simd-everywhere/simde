@@ -662,6 +662,93 @@ typedef SIMDE_FLOAT64_TYPE simde_float64;
 
 #include "check.h"
 
+/* GCC/clang have a bunch of functionality in builtins which we would
+ * like to access, but the suffixes indicate whether the operate on
+ * int, long, or long long, not fixed width types (e.g., int32_t).
+ * we use these macros to attempt to map from fixed-width to the
+ * names GCC uses.  Note that you should still cast the input(s) and
+ * return values (to/from SIMDE_BUILTIN_TYPE_*_) since often even if
+ * types are the same size they may not be compatible according to the
+ * compiler.  For example, on x86 long and long lonsg are generally
+ * both 64 bits, but platforms vary on whether an int64_t is mapped
+ * to a long or long long. */
+
+#include <limits.h>
+
+HEDLEY_DIAGNOSTIC_PUSH
+SIMDE_DIAGNOSTIC_DISABLE_CPP98_COMPAT_PEDANTIC_
+
+#if (INT8_MAX == INT_MAX) && (INT8_MIN == INT_MIN)
+  #define SIMDE_BUILTIN_SUFFIX_8_
+  #define SIMDE_BUILTIN_TYPE_8_ int
+#elif (INT8_MAX == LONG_MAX) && (INT8_MIN == LONG_MIN)
+  #define SIMDE_BUILTIN_SUFFIX_8_ l
+  #define SIMDE_BUILTIN_TYPE_8_ long
+#elif (INT8_MAX == LLONG_MAX) && (INT8_MIN == LLONG_MIN)
+  #define SIMDE_BUILTIN_SUFFIX_8_ ll
+  #define SIMDE_BUILTIN_TYPE_8_ long long
+#endif
+
+#if (INT16_MAX == INT_MAX) && (INT16_MIN == INT_MIN)
+  #define SIMDE_BUILTIN_SUFFIX_16_
+  #define SIMDE_BUILTIN_TYPE_16_ int
+#elif (INT16_MAX == LONG_MAX) && (INT16_MIN == LONG_MIN)
+  #define SIMDE_BUILTIN_SUFFIX_16_ l
+  #define SIMDE_BUILTIN_TYPE_16_ long
+#elif (INT16_MAX == LLONG_MAX) && (INT16_MIN == LLONG_MIN)
+  #define SIMDE_BUILTIN_SUFFIX_16_ ll
+  #define SIMDE_BUILTIN_TYPE_16_ long long
+#endif
+
+#if (INT32_MAX == INT_MAX) && (INT32_MIN == INT_MIN)
+  #define SIMDE_BUILTIN_SUFFIX_32_
+  #define SIMDE_BUILTIN_TYPE_32_ int
+#elif (INT32_MAX == LONG_MAX) && (INT32_MIN == LONG_MIN)
+  #define SIMDE_BUILTIN_SUFFIX_32_ l
+  #define SIMDE_BUILTIN_TYPE_32_ long
+#elif (INT32_MAX == LLONG_MAX) && (INT32_MIN == LLONG_MIN)
+  #define SIMDE_BUILTIN_SUFFIX_32_ ll
+  #define SIMDE_BUILTIN_TYPE_32_ long long
+#endif
+
+#if (INT64_MAX == INT_MAX) && (INT64_MIN == INT_MIN)
+  #define SIMDE_BUILTIN_SUFFIX_64_
+  #define SIMDE_BUILTIN_TYPE_64_ int
+#elif (INT64_MAX == LONG_MAX) && (INT64_MIN == LONG_MIN)
+  #define SIMDE_BUILTIN_SUFFIX_64_ l
+  #define SIMDE_BUILTIN_TYPE_64_ long
+#elif (INT64_MAX == LLONG_MAX) && (INT64_MIN == LLONG_MIN)
+  #define SIMDE_BUILTIN_SUFFIX_64_ ll
+  #define SIMDE_BUILTIN_TYPE_64_ long long
+#endif
+
+#if defined(SIMDE_BUILTIN_SUFFIX_8_)
+  #define SIMDE_BUILTIN_8_(name) HEDLEY_CONCAT3(__builtin_, name, SIMDE_BUILTIN_SUFFIX_8_)
+  #define SIMDE_BUILTIN_HAS_8_(name) HEDLEY_HAS_BUILTIN(HEDLEY_CONCAT3(__builtin_, name, SIMDE_BUILTIN_SUFFIX_8_))
+#else
+  #define SIMDE_BUILTIN_HAS_8_(name) 0
+#endif
+#if defined(SIMDE_BUILTIN_SUFFIX_16_)
+  #define SIMDE_BUILTIN_16_(name) HEDLEY_CONCAT3(__builtin_, name, SIMDE_BUILTIN_SUFFIX_16_)
+  #define SIMDE_BUILTIN_HAS_16_(name) HEDLEY_HAS_BUILTIN(HEDLEY_CONCAT3(__builtin_, name, SIMDE_BUILTIN_SUFFIX_16_))
+#else
+  #define SIMDE_BUILTIN_HAS_16_(name) 0
+#endif
+#if defined(SIMDE_BUILTIN_SUFFIX_32_)
+  #define SIMDE_BUILTIN_32_(name) HEDLEY_CONCAT3(__builtin_, name, SIMDE_BUILTIN_SUFFIX_32_)
+  #define SIMDE_BUILTIN_HAS_32_(name) HEDLEY_HAS_BUILTIN(HEDLEY_CONCAT3(__builtin_, name, SIMDE_BUILTIN_SUFFIX_32_))
+#else
+  #define SIMDE_BUILTIN_HAS_32_(name) 0
+#endif
+#if defined(SIMDE_BUILTIN_SUFFIX_64_)
+  #define SIMDE_BUILTIN_64_(name) HEDLEY_CONCAT3(__builtin_, name, SIMDE_BUILTIN_SUFFIX_64_)
+  #define SIMDE_BUILTIN_HAS_64_(name) HEDLEY_HAS_BUILTIN(HEDLEY_CONCAT3(__builtin_, name, SIMDE_BUILTIN_SUFFIX_64_))
+#else
+  #define SIMDE_BUILTIN_HAS_64_(name) 0
+#endif
+
+HEDLEY_DIAGNOSTIC_POP
+
 /* Sometimes we run into problems with specific versions of compilers
    which make the native versions unusable for us.  Often this is due
    to missing functions, sometimes buggy implementations, etc.  These
