@@ -281,6 +281,11 @@ simde_int8x16_t
 simde_vclzq_s8(simde_int8x16_t a) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vclzq_s8(a);
+  #elif defined(SIMDE_X86_GFNI_NATIVE)
+    /* https://gist.github.com/animetosho/6cb732ccb5ecd86675ca0a442b3c0622 */
+    a = _mm_gf2p8affine_epi64_epi8(a, _mm_set_epi32(0x80402010, 0x08040201, 0x80402010, 0x08040201), 0);
+    a = _mm_andnot_si128(_mm_add_epi8(a, _mm_set1_epi8(0xff)), a);
+    return _mm_gf2p8affine_epi64_epi8(a, _mm_set_epi32(0xaaccf0ff, 0, 0xaaccf0ff, 0), 8);
   #else
     simde_int8x16_private
       a_ = simde_int8x16_to_private(a),
@@ -347,6 +352,10 @@ simde_uint8x16_t
 simde_vclzq_u8(simde_uint8x16_t a) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vclzq_u8(a);
+  #elif defined(SIMDE_X86_GFNI_NATIVE)
+    a = _mm_gf2p8affine_epi64_epi8(a, _mm_set_epi32(0x80402010, 0x08040201, 0x80402010, 0x08040201), 0);
+    a = _mm_andnot_si128(_mm_add_epi8(a, _mm_set1_epi8(0xff)), a);
+    return _mm_gf2p8affine_epi64_epi8(a, _mm_set_epi32(0xaaccf0ff, 0, 0xaaccf0ff, 0), 8);
   #else
     simde_uint8x16_private
       a_ = simde_uint8x16_to_private(a),
