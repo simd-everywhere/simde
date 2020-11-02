@@ -250,18 +250,7 @@ script:
     -DCMAKE_CXX_FLAGS="${ARCH_FLAGS} ${OPTIMIZATION_FLAGS} ${DIAGNOSTIC_FLAGS} ${COMPILER_FLAGS} ${CXXFLAGS}" \
     ${CMAKE_ARGS} || (cat CMakeFiles/CMakeError.log && false) && \
   ${BUILD_WRAPPER} cmake --build .
-- |
-  if [ "${RUN_TESTS}" = "true" ]; then
-    if [ "windows" != "${TRAVIS_OS_NAME}" ]; then
-      if command -v parallel; then
-        ${TEST_WRAPPER} ./run-tests${EXECUTABLE_EXTENSION} --list | grep -oP '^/(x86|arm/neon)/([^\/]+)' | sort -u | xargs parallel ${TEST_WRAPPER} ./run-tests${EXECUTABLE_EXTENSION} ${TEST_ARG_SEPARATOR} {} ::: || exit 1
-      else
-        ${TEST_WRAPPER} ./run-tests${EXECUTABLE_EXTENSION} || exit 1
-      fi
-    else
-      ctest --output-on-failure --interactive-debug-mode 0 -C Debug -V || exit 1
-    fi
-  fi
+- ../.travis.sh
 
 notifications:
   email: false
