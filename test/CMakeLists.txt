@@ -87,6 +87,10 @@ endif()
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OPENMP_SIMD_FLAGS}")
 
+if("${CMAKE_C_COMPILER_ID}" STREQUAL "Intel")
+  add_definitions(-DSIMDE_FAST_MATH)
+endif()
+
 aux_source_directory("arm/neon" ARM_NEON_SOURCES_C)
 list(REMOVE_ITEM ARM_NEON_SOURCES_C "arm/neon/run-tests.c")
 list(REMOVE_ITEM ARM_NEON_SOURCES_C "arm/neon/skel.c")

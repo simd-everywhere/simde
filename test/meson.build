@@ -40,6 +40,10 @@ endif
 #   simde_native_c_flags += '-march=native'
 # endif
 
+if cc.get_id() == 'intel'
+  simde_native_c_flags += '-DSIMDE_FAST_MATH'
+endif
+
 simde_native_cxx_flags = []
 if cxx.has_argument('-Wpsabi')
   simde_native_cxx_flags += '-Wno-psabi'
@@ -49,6 +53,10 @@ endif
 # elif cxx.has_argument('-march=native')
 #   simde_native_cxx_flags += '-march=native'
 # endif
+
+if cxx.get_id() == 'intel'
+  simde_native_cxx_flags += '-DSIMDE_FAST_MATH'
+endif
 
 if not c_openmp_simd
   simde_deps += dependency('openmp', required: false)
