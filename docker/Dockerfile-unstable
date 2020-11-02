@@ -19,7 +19,7 @@ RUN \
     meson cmake \
     '^clang-[0-9]+$' \
     '^g(cc|\+\+)-[0-9]+$' \
-    intel-oneapi-icc \
+    intel-oneapi-dpcpp-cpp-compiler-pro \
     qemu binfmt-support qemu-user-static \
     creduce screen htop parallel nano rsync strace \
     npm libsleef-dev
