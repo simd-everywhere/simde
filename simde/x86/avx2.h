@@ -2704,8 +2704,15 @@ simde_mm256_madd_epi16 (simde__m256i a, simde__m256i b) {
       a_ = simde__m256i_to_private(a),
       b_ = simde__m256i_to_private(b);
 
-    r_.m128i[0] = simde_mm_madd_epi16(a_.m128i[0], b_.m128i[0]);
-    r_.m128i[1] = simde_mm_madd_epi16(a_.m128i[1], b_.m128i[1]);
+    #if SIMDE_NATURAL_VECTOR_SIZE_LE(128)
+      r_.m128i[0] = simde_mm_madd_epi16(a_.m128i[0], b_.m128i[0]);
+      r_.m128i[1] = simde_mm_madd_epi16(a_.m128i[1], b_.m128i[1]);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_) / sizeof(r_.i16[0])) ; i += 2) {
+        r_.i32[i / 2] = (a_.i16[i] * b_.i16[i]) + (a_.i16[i + 1] * b_.i16[i + 1]);
+      }
+    #endif
 
     return simde__m256i_from_private(r_);
   #endif

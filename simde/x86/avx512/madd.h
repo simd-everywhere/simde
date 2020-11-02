@@ -108,8 +108,8 @@ simde_mm512_madd_epi16 (simde__m512i a, simde__m512i b) {
       }
     #else
       SIMDE_VECTORIZE
-      for (size_t i = 0 ; i < (sizeof(r_.m256i) / sizeof(r_.m256i[0])) ; i++) {
-        r_.m256i[i] = simde_mm256_madd_epi16(a_.m256i[i], b_.m256i[i]);
+      for (size_t i = 0 ; i < (sizeof(r_) / sizeof(r_.i16[0])) ; i += 2) {
+        r_.i32[i / 2] = (a_.i16[i] * b_.i16[i]) + (a_.i16[i + 1] * b_.i16[i + 1]);
       }
     #endif
 
