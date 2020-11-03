@@ -369,9 +369,6 @@ simde_mm_hadd_epi16 (simde__m128i a, simde__m128i b) {
   #else
     #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
       return vreinterpretq_s64_s16(vpaddq_s16(simde__m128i_to_private(a).neon_i16, simde__m128i_to_private(b).neon_i16));
-    #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-      return vreinterpretq_s64_s16(vcombine_s16(vpadd_s16(vget_low_s16(simde__m128i_to_private(a).neon_i16), vget_high_s16(simde__m128i_to_private(a).neon_i16)),
-                      vpadd_s16(vget_low_s16(simde__m128i_to_private(b).neon_i16), vget_high_s16(simde__m128i_to_private(b).neon_i16))));
     #else
       return simde_mm_add_epi16(simde_x_mm_deinterleaveeven_epi16(a, b), simde_x_mm_deinterleaveodd_epi16(a, b));
     #endif
@@ -387,12 +384,7 @@ simde_mm_hadd_epi32 (simde__m128i a, simde__m128i b) {
   #if defined(SIMDE_X86_SSSE3_NATIVE)
     return _mm_hadd_epi32(a, b);
   #else
-    #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-      return vreinterpretq_s64_s32(vcombine_s32(vpadd_s32(vget_low_s32(simde__m128i_to_private(a).neon_i32), vget_high_s32(simde__m128i_to_private(a).neon_i32)),
-                      vpadd_s32(vget_low_s32(simde__m128i_to_private(b).neon_i32), vget_high_s32(simde__m128i_to_private(b).neon_i32))));
-    #else
-      return simde_mm_add_epi32(simde_x_mm_deinterleaveeven_epi32(a, b), simde_x_mm_deinterleaveodd_epi32(a, b));
-    #endif
+    return simde_mm_add_epi32(simde_x_mm_deinterleaveeven_epi32(a, b), simde_x_mm_deinterleaveodd_epi32(a, b));
   #endif
 }
 #if defined(SIMDE_X86_SSSE3_ENABLE_NATIVE_ALIASES)
