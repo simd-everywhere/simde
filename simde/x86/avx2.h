@@ -3376,12 +3376,18 @@ simde_mm256_mul_epi32 (simde__m256i a, simde__m256i b) {
       a_ = simde__m256i_to_private(a),
       b_ = simde__m256i_to_private(b);
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.i64) / sizeof(r_.i64[0])) ; i++) {
-      r_.i64[i] =
-        HEDLEY_STATIC_CAST(int64_t, a_.i32[i * 2]) *
-        HEDLEY_STATIC_CAST(int64_t, b_.i32[i * 2]);
-    }
+    #if SIMDE_NATURAL_VECTOR_SIZE_LE(128)
+      for (size_t i = 0 ; i < (sizeof(r_.m128i) / sizeof(r_.m128i[0])) ; i++) {
+        r_.m128i[i] = simde_mm_mul_epi32(a_.m128i[i], b_.m128i[i]);
+      }
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.i64) / sizeof(r_.i64[0])) ; i++) {
+        r_.i64[i] =
+          HEDLEY_STATIC_CAST(int64_t, a_.i32[i * 2]) *
+          HEDLEY_STATIC_CAST(int64_t, b_.i32[i * 2]);
+      }
+    #endif
 
     return simde__m256i_from_private(r_);
   #endif
@@ -3401,10 +3407,16 @@ simde_mm256_mul_epu32 (simde__m256i a, simde__m256i b) {
       a_ = simde__m256i_to_private(a),
       b_ = simde__m256i_to_private(b);
 
+    #if SIMDE_NATURAL_VECTOR_SIZE_LE(128)
+      for (size_t i = 0 ; i < (sizeof(r_.m128i) / sizeof(r_.m128i[0])) ; i++) {
+        r_.m128i[i] = simde_mm_mul_epu32(a_.m128i[i], b_.m128i[i]);
+      }
+    #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.u64) / sizeof(r_.u64[0])) ; i++) {
         r_.u64[i] = HEDLEY_STATIC_CAST(uint64_t, a_.u32[i * 2]) * HEDLEY_STATIC_CAST(uint64_t, b_.u32[i * 2]);
       }
+    #endif
 
     return simde__m256i_from_private(r_);
   #endif
