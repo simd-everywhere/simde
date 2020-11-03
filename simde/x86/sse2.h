@@ -3944,6 +3944,12 @@ simde_mm_mul_epu32 (simde__m128i a, simde__m128i b) {
       uint32x2_t a_lo = vmovn_u64(a_.neon_u64);
       uint32x2_t b_lo = vmovn_u64(b_.neon_u64);
       r_.neon_u64 = vmull_u32(a_lo, b_lo);
+    #elif defined(SIMDE_SHUFFLE_VECTOR_) && (SIMDE_ENDIAN_ORDER == SIMDE_ENDIAN_LITTLE)
+      __typeof__(a_.u32) z = { 0, };
+      a_.u32 = SIMDE_SHUFFLE_VECTOR_(32, 16, a_.u32, z, 0, 4, 2, 6);
+      b_.u32 = SIMDE_SHUFFLE_VECTOR_(32, 16, b_.u32, z, 0, 4, 2, 6);
+      r_.u64 = HEDLEY_REINTERPRET_CAST(__typeof__(r_.u64), a_.u32) *
+               HEDLEY_REINTERPRET_CAST(__typeof__(r_.u64), b_.u32);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.u64) / sizeof(r_.u64[0])) ; i++) {
@@ -3969,7 +3975,7 @@ simde_x_mm_mul_epi64 (simde__m128i a, simde__m128i b) {
   #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
     r_.i64 = a_.i64 * b_.i64;
   #elif defined(SIMDE_ARM_NEON_A64V8_NATIVE)
-    r_.neon_f64 = vmulq_f64(a_.neon_f64, b_.neon_f64);
+    r_.neon_f64 = vmulq_s64(a_.neon_f64, b_.neon_f64);
   #else
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.i64) / sizeof(r_.i64[0])) ; i++) {
