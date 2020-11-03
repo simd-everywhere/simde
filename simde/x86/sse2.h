@@ -4100,11 +4100,16 @@ simde_mm_mulhi_epi16 (simde__m128i a, simde__m128i b) {
       int16x4_t a3210 = vget_low_s16(a_.neon_i16);
       int16x4_t b3210 = vget_low_s16(b_.neon_i16);
       int32x4_t ab3210 = vmull_s16(a3210, b3210); /* 3333222211110000 */
-      int16x4_t a7654 = vget_high_s16(a_.neon_i16);
-      int16x4_t b7654 = vget_high_s16(b_.neon_i16);
-      int32x4_t ab7654 = vmull_s16(a7654, b7654); /* 7777666655554444 */
-      uint16x8x2_t rv = vuzpq_u16(vreinterpretq_u16_s32(ab3210), vreinterpretq_u16_s32(ab7654));
-      r_.neon_u16 = rv.val[1];
+      #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+        int32x4_t ab7654 = vmull_high_s16(a_.neon_i16, b_.neon_i16);
+        r_.neon_i16 = vuzp2q_s16(vreinterpretq_s16_s32(ab3210), vreinterpretq_s16_s32(ab7654));
+      #else
+        int16x4_t a7654 = vget_high_s16(a_.neon_i16);
+        int16x4_t b7654 = vget_high_s16(b_.neon_i16);
+        int32x4_t ab7654 = vmull_s16(a7654, b7654); /* 7777666655554444 */
+        uint16x8x2_t rv = vuzpq_u16(vreinterpretq_u16_s32(ab3210), vreinterpretq_u16_s32(ab7654));
+        r_.neon_u16 = rv.val[1];
+      #endif
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.i16) / sizeof(r_.i16[0])) ; i++) {
@@ -4134,12 +4139,16 @@ simde_mm_mulhi_epu16 (simde__m128i a, simde__m128i b) {
       uint16x4_t a3210 = vget_low_u16(a_.neon_u16);
       uint16x4_t b3210 = vget_low_u16(b_.neon_u16);
       uint32x4_t ab3210 = vmull_u16(a3210, b3210); /* 3333222211110000 */
-      uint16x4_t a7654 = vget_high_u16(a_.neon_u16);
-      uint16x4_t b7654 = vget_high_u16(b_.neon_u16);
-      uint32x4_t ab7654 = vmull_u16(a7654, b7654); /* 7777666655554444 */
-      uint16x8x2_t neon_r =
-              vuzpq_u16(vreinterpretq_u16_u32(ab3210), vreinterpretq_u16_u32(ab7654));
-      r_.neon_u16 = neon_r.val[1];
+      #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+        uint32x4_t ab7654 = vmull_high_u16(a_.neon_u16, b_.neon_u16);
+        r_.neon_u16 = vuzp2q_u16(vreinterpretq_u16_u32(ab3210), vreinterpretq_u16_u32(ab7654));
+      #else
+        uint16x4_t a7654 = vget_high_u16(a_.neon_u16);
+        uint16x4_t b7654 = vget_high_u16(b_.neon_u16);
+        uint32x4_t ab7654 = vmull_u16(a7654, b7654); /* 7777666655554444 */
+        uint16x8x2_t neon_r = vuzpq_u16(vreinterpretq_u16_u32(ab3210), vreinterpretq_u16_u32(ab7654));
+        r_.neon_u16 = neon_r.val[1];
+      #endif
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.u16) / sizeof(r_.u16[0])) ; i++) {
