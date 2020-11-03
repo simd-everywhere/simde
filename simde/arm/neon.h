@@ -76,6 +76,7 @@
 #include "neon/maxnm.h"
 #include "neon/maxv.h"
 #include "neon/min.h"
+#include "neon/minnm.h"
 #include "neon/minv.h"
 #include "neon/mla.h"
 #include "neon/mla_n.h"
