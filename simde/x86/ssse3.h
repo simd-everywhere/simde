@@ -45,8 +45,8 @@ simde_mm_abs_epi8 (simde__m128i a) {
 
     #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       r_.neon_i8 = vabsq_s8(a_.neon_i8);
-  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
-    r_.altivec_i8 = vec_abs(a_.altivec_i8);
+    #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+      r_.altivec_i8 = vec_abs(a_.altivec_i8);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.i8) / sizeof(r_.i8[0])) ; i++) {
@@ -299,8 +299,8 @@ simde_mm_shuffle_epi8 (simde__m128i a, simde__m128i b) {
       r_.neon_i8 = vqtbl1q_s8(a_.neon_i8, vandq_u8(b_.neon_u8, vdupq_n_u8(0x8F)));
     #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       /* Mask out the bits we're not interested in.  vtbl will result in 0
-         for any values outside of [0, 15], so if the high bit is set it
-         will return 0, just like in SSSE3. */
+       * for any values outside of [0, 15], so if the high bit is set it
+       * will return 0, just like in SSSE3. */
       b_.neon_i8 = vandq_s8(b_.neon_i8, vdupq_n_s8(HEDLEY_STATIC_CAST(int8_t, (1 << 7) | 15)));
 
       /* Convert a from an int8x16_t to an int8x8x2_t */
@@ -315,7 +315,7 @@ simde_mm_shuffle_epi8 (simde__m128i a, simde__m128i b) {
       r_.neon_i8 = vcombine_s8(l, h);
     #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
       /* This is a bit ugly because of the casts and the awful type
-      * macros (SIMDE_POWER_ALTIVEC_VECTOR), but it's really just
+       * macros (SIMDE_POWER_ALTIVEC_VECTOR), but it's really just
        * vec_sel(vec_perm(a, a, b), 0, vec_cmplt(b, 0)) */
       SIMDE_POWER_ALTIVEC_VECTOR(signed char) z = { 0, };
       SIMDE_POWER_ALTIVEC_VECTOR(signed char) msb_mask = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(signed char), vec_cmplt(b_.altivec_i8, z));
@@ -470,12 +470,12 @@ simde_mm_hadds_epi16 (simde__m128i a, simde__m128i b) {
     #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       int32x4_t ax = simde__m128i_to_private(a).neon_i32;
       int32x4_t bx = simde__m128i_to_private(b).neon_i32;
-      // Interleave using vshrn/vmovn
-      // [a0|a2|a4|a6|b0|b2|b4|b6]
-      // [a1|a3|a5|a7|b1|b3|b5|b7]
+      /* Interleave using vshrn/vmovn
+       * [a0|a2|a4|a6|b0|b2|b4|b6]
+       * [a1|a3|a5|a7|b1|b3|b5|b7] */
       int16x8_t ab0246 = vcombine_s16(vmovn_s32(ax), vmovn_s32(bx));
       int16x8_t ab1357 = vcombine_s16(vshrn_n_s32(ax, 16), vshrn_n_s32(bx, 16));
-      // Saturated add
+      /* Saturated add */
       return vreinterpretq_s64_s16(vqaddq_s16(ab0246, ab1357));
     #else
       return simde_mm_adds_epi16(simde_x_mm_deinterleaveeven_epi16(a, b), simde_x_mm_deinterleaveodd_epi16(a, b));
