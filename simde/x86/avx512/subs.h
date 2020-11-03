@@ -55,10 +55,7 @@ simde_mm512_subs_epi8 (simde__m512i a, simde__m512i b) {
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.i8) / sizeof(r_.i8[0])) ; i++) {
-        const int16_t tmp =
-          HEDLEY_STATIC_CAST(int16_t, a_.i8[i]) -
-          HEDLEY_STATIC_CAST(int16_t, b_.i8[i]);
-        r_.i8[i] = HEDLEY_STATIC_CAST(int8_t, ((tmp < INT8_MAX) ? ((tmp > INT8_MIN) ? tmp : INT8_MIN) : INT8_MAX));
+        r_.i8[i] = simde_math_subs_i8(a_.i8[i], b_.i8[i]);
       }
     #endif
 
@@ -117,10 +114,7 @@ simde_mm512_subs_epi16 (simde__m512i a, simde__m512i b) {
       #else
         SIMDE_VECTORIZE
         for (size_t i = 0 ; i < (sizeof(r_.i16) / sizeof(r_.i16[0])) ; i++) {
-          const int32_t tmp =
-            HEDLEY_STATIC_CAST(int32_t, a_.i16[i]) -
-            HEDLEY_STATIC_CAST(int32_t, b_.i16[i]);
-          r_.i16[i] = HEDLEY_STATIC_CAST(int16_t, ((tmp < INT16_MAX) ? ((tmp > INT16_MIN) ? tmp : INT16_MIN) : INT16_MAX));
+        r_.i16[i] = simde_math_subs_i16(a_.i16[i], b_.i16[i]);
         }
       #endif
 
@@ -151,7 +145,7 @@ simde_mm512_subs_epu8 (simde__m512i a, simde__m512i b) {
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.u8) / sizeof(r_.u8[0])) ; i++) {
-        r_.u8[i] = (a_.u8[i] > b_.u8[i]) ? (a_.u8[i] - b_.u8[i]) : UINT8_C(0);
+        r_.u8[i] = simde_math_subs_u8(a_.u8[i], b_.u8[i]);
       }
     #endif
 
@@ -210,7 +204,7 @@ simde_mm512_subs_epu16 (simde__m512i a, simde__m512i b) {
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.u16) / sizeof(r_.u16[0])) ; i++) {
-        r_.u16[i] = (a_.u16[i] > b_.u16[i]) ? (a_.u16[i] - b_.u16[i]) : UINT16_C(0);
+        r_.u16[i] = simde_math_subs_u16(a_.u16[i], b_.u16[i]);
       }
     #endif
 
