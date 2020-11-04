@@ -90,6 +90,7 @@ simde_neon_families = [
   'qmovn_high',
   'qmovun',
   'qneg',
+  'qsub',
   'qtbl',
   'qtbx',
   'rbit',

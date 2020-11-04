@@ -39,6 +39,9 @@
   #include <arm_neon.h>
 #endif
 
+HEDLEY_DIAGNOSTIC_PUSH
+SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
+
 /* SLEEF support
  * https://sleef.org/
  *
@@ -1564,6 +1567,8 @@ SIMDE_DIAGNOSTIC_DISABLE_FLOAT_EQUAL_
   #define simde_math_erfcinvf simde_math_erfcinvf
 #endif
 
+HEDLEY_DIAGNOSTIC_POP
+
 static HEDLEY_INLINE
 double
 simde_math_rad2deg(double radians) {
@@ -1711,6 +1716,134 @@ simde_math_adds_u64(uint64_t a, uint64_t b) {
     uint64_t r = a + b;
     r |= -(r < a);
     return r;
+  #endif
+}
+
+static HEDLEY_INLINE
+int8_t
+simde_math_subs_i8(int8_t a, int8_t b) {
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+    return vqsubb_s8(a, b);
+  #else
+    uint8_t a_ = HEDLEY_STATIC_CAST(uint8_t, a);
+    uint8_t b_ = HEDLEY_STATIC_CAST(uint8_t, b);
+    uint8_t r_ = a_ - b_;
+
+    a_ = (a_ >> 7) + INT8_MAX;
+
+    if (HEDLEY_STATIC_CAST(int8_t, (a_ ^ b_) & (a_ ^ r_)) < 0) {
+      r_ = a_;
+    }
+
+    return HEDLEY_STATIC_CAST(int8_t, r_);
+  #endif
+}
+
+static HEDLEY_INLINE
+int16_t
+simde_math_subs_i16(int16_t a, int16_t b) {
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+    return vqsubh_s16(a, b);
+  #else
+    uint16_t a_ = HEDLEY_STATIC_CAST(uint16_t, a);
+    uint16_t b_ = HEDLEY_STATIC_CAST(uint16_t, b);
+    uint16_t r_ = a_ - b_;
+
+    a_ = (a_ >> 15) + INT16_MAX;
+
+    if (HEDLEY_STATIC_CAST(int16_t, (a_ ^ b_) & (a_ ^ r_)) < 0) {
+      r_ = a_;
+    }
+
+    return HEDLEY_STATIC_CAST(int16_t, r_);
+  #endif
+}
+
+static HEDLEY_INLINE
+int32_t
+simde_math_subs_i32(int32_t a, int32_t b) {
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+    return vqsubs_s32(a, b);
+  #else
+    uint32_t a_ = HEDLEY_STATIC_CAST(uint32_t, a);
+    uint32_t b_ = HEDLEY_STATIC_CAST(uint32_t, b);
+    uint32_t r_ = a_ - b_;
+
+    a_ = (a_ >> 31) + INT32_MAX;
+
+    if (HEDLEY_STATIC_CAST(int32_t, (a_ ^ b_) & (a_ ^ r_)) < 0) {
+      r_ = a_;
+    }
+
+    return HEDLEY_STATIC_CAST(int32_t, r_);
+  #endif
+}
+
+static HEDLEY_INLINE
+int64_t
+simde_math_subs_i64(int64_t a, int64_t b) {
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+    return vqsubd_s64(a, b);
+  #else
+    uint64_t a_ = HEDLEY_STATIC_CAST(uint64_t, a);
+    uint64_t b_ = HEDLEY_STATIC_CAST(uint64_t, b);
+    uint64_t r_ = a_ - b_;
+
+    a_ = (a_ >> 63) + INT64_MAX;
+
+    if (HEDLEY_STATIC_CAST(int64_t, (a_ ^ b_) & (a_ ^ r_)) < 0) {
+      r_ = a_;
+    }
+
+    return HEDLEY_STATIC_CAST(int64_t, r_);
+  #endif
+}
+
+static HEDLEY_INLINE
+uint8_t
+simde_math_subs_u8(uint8_t a, uint8_t b) {
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+    return vqsubb_u8(a, b);
+  #else
+    uint8_t res = a - b;
+    res &= -(res <= a);
+    return res;
+  #endif
+}
+
+static HEDLEY_INLINE
+uint16_t
+simde_math_subs_u16(uint16_t a, uint16_t b) {
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+    return vqsubh_u16(a, b);
+  #else
+    uint16_t res = a - b;
+    res &= -(res <= a);
+    return res;
+  #endif
+}
+
+static HEDLEY_INLINE
+uint32_t
+simde_math_subs_u32(uint32_t a, uint32_t b) {
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+    return vqsubs_u32(a, b);
+  #else
+    uint32_t res = a - b;
+    res &= -(res <= a);
+    return res;
+  #endif
+}
+
+static HEDLEY_INLINE
+uint64_t
+simde_math_subs_u64(uint64_t a, uint64_t b) {
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+    return vqsubd_u64(a, b);
+  #else
+    uint64_t res = a - b;
+    res &= -(res <= a);
+    return res;
   #endif
 }
 

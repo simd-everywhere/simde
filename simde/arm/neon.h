@@ -112,6 +112,7 @@
 #include "neon/qmovun.h"
 #include "neon/qmovn_high.h"
 #include "neon/qneg.h"
+#include "neon/qsub.h"
 #include "neon/qtbl.h"
 #include "neon/qtbx.h"
 #include "neon/rbit.h"
