@@ -43,6 +43,9 @@ simde_x_mm_deinterleaveeven_epi16 (simde__m128i a, simde__m128i b) {
 
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     r_.neon_i16 = vuzp1q_s16(a_.neon_i16, b_.neon_i16);
+  #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    int16x8x2_t t = vuzpq_s16(a_.neon_i16, b_.neon_i16);
+    r_.neon_i16 = t.val[0];
   #elif defined(SIMDE_SHUFFLE_VECTOR_)
     r_.i16 = SIMDE_SHUFFLE_VECTOR_(16, 16, a_.i16, b_.i16, 0, 2, 4, 6, 8, 10, 12, 14);
   #else
@@ -66,6 +69,9 @@ simde_x_mm_deinterleaveodd_epi16 (simde__m128i a, simde__m128i b) {
 
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     r_.neon_i16 = vuzp2q_s16(a_.neon_i16, b_.neon_i16);
+  #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    int16x8x2_t t = vuzpq_s16(a_.neon_i16, b_.neon_i16);
+    r_.neon_i16 = t.val[1];
   #elif defined(SIMDE_SHUFFLE_VECTOR_)
     r_.i16 = SIMDE_SHUFFLE_VECTOR_(16, 16, a_.i16, b_.i16, 1, 3, 5, 7, 9, 11, 13, 15);
   #else
@@ -89,6 +95,9 @@ simde_x_mm_deinterleaveeven_epi32 (simde__m128i a, simde__m128i b) {
 
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     r_.neon_i32 = vuzp1q_s32(a_.neon_i32, b_.neon_i32);
+  #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    int32x4x2_t t = vuzpq_s32(a_.neon_i32, b_.neon_i32);
+    r_.neon_i32 = t.val[0];
   #elif defined(SIMDE_SHUFFLE_VECTOR_)
     r_.i32 = SIMDE_SHUFFLE_VECTOR_(32, 16, a_.i32, b_.i32, 0, 2, 4, 6);
   #else
@@ -112,6 +121,9 @@ simde_x_mm_deinterleaveodd_epi32 (simde__m128i a, simde__m128i b) {
 
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     r_.neon_i32 = vuzp2q_s32(a_.neon_i32, b_.neon_i32);
+  #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    int32x4x2_t t = vuzpq_s32(a_.neon_i32, b_.neon_i32);
+    r_.neon_i32 = t.val[1];
   #elif defined(SIMDE_SHUFFLE_VECTOR_)
     r_.i32 = SIMDE_SHUFFLE_VECTOR_(32, 16, a_.i32, b_.i32, 1, 3, 5, 7);
   #else
@@ -135,6 +147,9 @@ simde_x_mm_deinterleaveeven_ps (simde__m128 a, simde__m128 b) {
 
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     r_.neon_f32 = vuzp1q_f32(a_.neon_f32, b_.neon_f32);
+  #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    float32x4x2_t t = vuzpq_f32(a_.neon_f32, b_.neon_f32);
+    r_.neon_f32 = t.val[0];
   #elif defined(SIMDE_SHUFFLE_VECTOR_)
     r_.f32 = SIMDE_SHUFFLE_VECTOR_(32, 16, a_.f32, b_.f32, 0, 2, 4, 6);
   #else
@@ -158,6 +173,9 @@ simde_x_mm_deinterleaveodd_ps (simde__m128 a, simde__m128 b) {
 
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     r_.neon_f32 = vuzp2q_f32(a_.neon_f32, b_.neon_f32);
+  #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    float32x4x2_t t = vuzpq_f32(a_.neon_f32, b_.neon_f32);
+    r_.neon_f32 = t.val[1];
   #elif defined(SIMDE_SHUFFLE_VECTOR_)
     r_.f32 = SIMDE_SHUFFLE_VECTOR_(32, 16, a_.f32, b_.f32, 1, 3, 5, 7);
   #else
