@@ -144,6 +144,7 @@
 #include "neon/trn1.h"
 #include "neon/trn2.h"
 #include "neon/tst.h"
+#include "neon/uqadd.h"
 #include "neon/uzp.h"
 #include "neon/uzp1.h"
 #include "neon/uzp2.h"

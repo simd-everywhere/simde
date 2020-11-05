@@ -122,6 +122,7 @@ simde_neon_families = [
   'trn2',
   'trn',
   'tst',
+  'uqadd',
   'uzp1',
   'uzp2',
   'uzp',
