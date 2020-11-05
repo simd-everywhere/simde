@@ -136,6 +136,7 @@
 #include "neon/sub.h"
 #include "neon/subl.h"
 #include "neon/subw.h"
+#include "neon/subw_high.h"
 #include "neon/tbl.h"
 #include "neon/tbx.h"
 #include "neon/trn.h"
