@@ -135,6 +135,7 @@
 #include "neon/st4.h"
 #include "neon/sub.h"
 #include "neon/subl.h"
+#include "neon/subw.h"
 #include "neon/tbl.h"
 #include "neon/tbx.h"
 #include "neon/trn.h"
