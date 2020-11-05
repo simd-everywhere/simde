@@ -17,6 +17,7 @@ simde_neon_families = [
   'addl_high',
   'addv',
   'addw',
+  'addw_high',
   'and',
   'bic',
   'bsl',

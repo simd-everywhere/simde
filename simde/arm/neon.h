@@ -39,6 +39,7 @@
 #include "neon/addl_high.h"
 #include "neon/addv.h"
 #include "neon/addw.h"
+#include "neon/addw_high.h"
 #include "neon/and.h"
 #include "neon/bic.h"
 #include "neon/bsl.h"
