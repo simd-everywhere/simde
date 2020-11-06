@@ -52,6 +52,7 @@
 #include "neon/cgtz.h"
 #include "neon/cle.h"
 #include "neon/clez.h"
+#include "neon/cls.h"
 #include "neon/clt.h"
 #include "neon/cltz.h"
 #include "neon/clz.h"

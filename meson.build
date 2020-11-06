@@ -29,6 +29,7 @@ simde_neon_families = [
   'cgt',
   'cgtz',
   'cle',
+  'cls',
   'clez',
   'clt',
   'cltz',
