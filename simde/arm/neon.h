@@ -90,6 +90,7 @@
 #include "neon/movl_high.h"
 #include "neon/movn.h"
 #include "neon/mul.h"
+#include "neon/mul_lane.h"
 #include "neon/mul_n.h"
 #include "neon/mull.h"
 #include "neon/mull_high.h"
