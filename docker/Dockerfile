@@ -6,8 +6,8 @@ ARG DEBIAN_FRONTEND=noninteractive
 
 RUN \
   apt-get update -y && \
-  apt-get install -y apt-utils curl gpg && \
   apt-get upgrade -y && \
+  apt-get install -y curl gpg && \
   curl -s "https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS-2023.PUB" | gpg --dearmor > /etc/apt/trusted.gpg.d/intel.gpg && \
   echo "deb [arch=amd64] https://apt.repos.intel.com/oneapi all main" > /etc/apt/sources.list.d/oneAPI.list && \
   for arch in armhf arm64 ppc64el s390x i386 mips64el; do \
