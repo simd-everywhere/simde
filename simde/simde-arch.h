@@ -69,7 +69,7 @@
 
 /* AMD64 / x86_64
    <https://en.wikipedia.org/wiki/X86-64> */
-#if defined(__amd64__) || defined(__amd64) || defined(__x86_64__) || defined(__x86_64) || defined(_M_X66) || defined(_M_AMD64)
+#if defined(__amd64__) || defined(__amd64) || defined(__x86_64__) || defined(__x86_64) || defined(_M_X64) || defined(_M_AMD64)
 #  define SIMDE_ARCH_AMD64 1000
 #endif
 
