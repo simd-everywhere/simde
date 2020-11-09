@@ -2209,6 +2209,32 @@ simde_mm_cmpge_sd (simde__m128d a, simde__m128d b) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128d
+simde_mm_cmpngt_pd (simde__m128d a, simde__m128d b) {
+  #if defined(SIMDE_X86_SSE2_NATIVE)
+    return _mm_cmpngt_pd(a, b);
+  #else
+    return simde_mm_cmple_pd(a, b);
+  #endif
+}
+#if defined(SIMDE_X86_SSE2_ENABLE_NATIVE_ALIASES)
+  #define _mm_cmpngt_pd(a, b) simde_mm_cmpngt_pd(a, b)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m128d
+simde_mm_cmpngt_sd (simde__m128d a, simde__m128d b) {
+  #if defined(SIMDE_X86_SSE2_NATIVE) && !defined(__PGI)
+    return _mm_cmpngt_sd(a, b);
+  #else
+    return simde_mm_cmple_sd(a, b);
+  #endif
+}
+#if defined(SIMDE_X86_SSE2_ENABLE_NATIVE_ALIASES)
+  #define _mm_cmpngt_sd(a, b) simde_mm_cmpngt_sd(a, b)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m128d
 simde_mm_cmpnge_pd (simde__m128d a, simde__m128d b) {
   #if defined(SIMDE_X86_SSE2_NATIVE)
     return _mm_cmpnge_pd(a, b);
