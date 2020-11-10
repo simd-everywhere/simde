@@ -343,7 +343,7 @@ simde_vmaxq_f64(simde_float64x2_t a, simde_float64x2_t b) {
       res = _mm_or_pd(res, _mm_and_pd(_mm_set1_pd(SIMDE_MATH_NAN), nan_mask));
       return res;
     #else
-      return _mm_max_ps(a, b);
+      return _mm_max_pd(a, b);
     #endif
   #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE) && defined(SIMDE_FAST_NANS)
     return vec_max(a, b);
