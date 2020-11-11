@@ -1775,7 +1775,7 @@ simde_mm_srai_pi16 (simde__m64 a, int count) {
     #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
       r_.i16 = a_.i16 >> (count & 0xff);
     #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-      r_.neon_i16 = vshl_s16(a_.neon_i16, vmov_n_s16(-HEDLEY_STATIC_CAST(int16_t, count));
+      r_.neon_i16 = vshl_s16(a_.neon_i16, vmov_n_s16(-HEDLEY_STATIC_CAST(int16_t, count)));
     #elif defined(SIMDE_MIPS_LOONGSON_MMI_NATIVE)
       r_.mmi_i16 = psrah_s(a_.mmi_i16, count);
     #else
