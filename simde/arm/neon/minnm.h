@@ -170,7 +170,7 @@ simde_vminnmq_f64(simde_float64x2_t a, simde_float64x2_t b) {
       r = _mm_or_pd(r, _mm_and_pd(a, bnan));
       return r;
     #else
-      return _mm_min_ps(a, b);
+      return _mm_min_pd(a, b);
     #endif
   #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
     return vec_min(a, b);
