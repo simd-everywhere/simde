@@ -1160,8 +1160,8 @@ simde_mm_bslli_si128 (simde__m128i a, const int imm8)
         vec_sro
       #endif
         (a_.altivec_i8, vec_splats(HEDLEY_STATIC_CAST(unsigned char, imm8 * 8)));
-  #elif defined(SIMDE_HAVE_INT128_) && (SIMDE_ENDIAN_ORDER == SIMDE_ENDIAN_LITTLE) && 0
-    r_.u128[0] = a_.u128[0] << s;
+  #elif defined(SIMDE_HAVE_INT128_) && (SIMDE_ENDIAN_ORDER == SIMDE_ENDIAN_LITTLE)
+    r_.u128[0] = a_.u128[0] << (imm8 * 8);
   #else
     r_ = simde__m128i_to_private(simde_mm_setzero_si128());
     for (int i = imm8 ; i < HEDLEY_STATIC_CAST(int, sizeof(r_.i8) / sizeof(r_.i8[0])) ; i++) {

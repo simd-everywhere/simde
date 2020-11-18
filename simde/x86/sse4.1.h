@@ -972,7 +972,7 @@ simde_mm_cvtepi16_epi64 (simde__m128i a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_cvtepi32_epi64 (simde__m128i a) {
-  #if defined(SIMDE_X86_SSE4_1_NATIVE) && 0
+  #if defined(SIMDE_X86_SSE4_1_NATIVE)
     return _mm_cvtepi32_epi64(a);
   #elif defined(SIMDE_X86_SSE2_NATIVE)
     __m128i tmp = _mm_shuffle_epi32(a, 0x50);

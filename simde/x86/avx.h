@@ -4328,7 +4328,7 @@ simde_mm256_movehdup_ps (simde__m256 a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m256
 simde_mm256_moveldup_ps (simde__m256 a) {
-  #if defined(SIMDE_X86_AVX_NATIVE) && 0
+  #if defined(SIMDE_X86_AVX_NATIVE)
     return _mm256_moveldup_ps(a);
   #else
     simde__m256_private

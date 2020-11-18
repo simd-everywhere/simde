@@ -408,7 +408,7 @@ simde_mm_round_ps (simde__m128 a, int rounding)
     case SIMDE_MM_FROUND_CUR_DIRECTION:
       #if defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
         r_.altivec_f32 = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(float), vec_round(a_.altivec_f32));
-      #elif defined(SIMDE_ARM_NEON_A32V8_NATIVE) && 0
+      #elif defined(SIMDE_ARM_NEON_A32V8_NATIVE)
         r_.neon_f32 = vrndiq_f32(a_.neon_f32);
       #elif defined(simde_math_nearbyintf)
         SIMDE_VECTORIZE
@@ -1728,7 +1728,8 @@ simde_mm_cvt_ps2pi (simde__m128 a) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     a_ = simde__m128_to_private(simde_mm_round_ps(a, SIMDE_MM_FROUND_CUR_DIRECTION));
     r_.neon_i32 = vcvt_s32_f32(vget_low_f32(a_.neon_f32));
-  #elif defined(SIMDE_CONVERT_VECTOR_) && !defined(__clang__) && 0
+  #elif defined(SIMDE_CONVERT_VECTOR_) && SIMDE_NATURAL_VECTOR_SIZE_GE(128)
+    a_ = simde__m128_to_private(simde_mm_round_ps(a, SIMDE_MM_FROUND_CUR_DIRECTION));
     SIMDE_CONVERT_VECTOR_(r_.i32, a_.m64_private[0].f32);
   #else
     a_ = simde__m128_to_private(a);
@@ -1797,8 +1798,8 @@ simde_mm_cvtpi16_ps (simde__m64 a) {
     simde__m128_private r_;
     simde__m64_private a_ = simde__m64_to_private(a);
 
-    #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && 0 /* TODO */
-      r_.neon_f32 = vmovl_s16(vget_low_s16(vuzp1q_s16(a_.neon_i16, vmovq_n_s16(0))));
+    #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+      r_.neon_f32 = vcvtq_f32_s32(vmovl_s16(a_.neon_i16));
     #elif defined(SIMDE_CONVERT_VECTOR_)
       SIMDE_CONVERT_VECTOR_(r_.f32, a_.i16);
     #else
@@ -3526,7 +3527,7 @@ HEDLEY_DIAGNOSTIC_POP
 
 #if defined(SIMDE_X86_SSE_NATIVE) && !defined(__PGI)
 #  define simde_mm_shuffle_ps(a, b, imm8) _mm_shuffle_ps(a, b, imm8)
-#elif defined(SIMDE_SHUFFLE_VECTOR_) && 0
+#elif defined(SIMDE_SHUFFLE_VECTOR_)
 #  define simde_mm_shuffle_ps(a, b, imm8) (__extension__ ({ \
       simde__m128_from_private((simde__m128_private) { .f32 = \
         SIMDE_SHUFFLE_VECTOR_(32, 16, \
