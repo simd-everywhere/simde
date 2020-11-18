@@ -1390,6 +1390,11 @@ simde_mm_sll_pi16 (simde__m64 a, simde__m64 count) {
       #endif
       r_.neon_i16 = vshl_s16(a_.neon_i16, vmov_n_s16(HEDLEY_STATIC_CAST(int16_t, vget_lane_u64(count_.neon_u64, 0))));
       HEDLEY_DIAGNOSTIC_POP
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && defined(SIMDE_BUG_CLANG_POWER9_16x4_BAD_SHIFT)
+      if (HEDLEY_UNLIKELY(count_.u64[0] > 15))
+        return simde_mm_setzero_si64();
+
+      r_.i16 = a_.i16 << HEDLEY_STATIC_CAST(int16_t, count_.u64[0]);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
       r_.i16 = a_.i16 << count_.u64[0];
     #else
@@ -1462,8 +1467,14 @@ simde_mm_slli_pi16 (simde__m64 a, int count) {
     simde__m64_private r_;
     simde__m64_private a_ = simde__m64_to_private(a);
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+    #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && defined(SIMDE_BUG_CLANG_POWER9_16x4_BAD_SHIFT)
+      if (HEDLEY_UNLIKELY(count > 15))
+        return simde_mm_setzero_si64();
+
+      r_.i16 = a_.i16 << HEDLEY_STATIC_CAST(int16_t, count);
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
       r_.i16 = a_.i16 << count;
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
     #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       r_.neon_i16 = vshl_s16(a_.neon_i16, vmov_n_s16((int16_t) count));
     #elif defined(SIMDE_MIPS_LOONGSON_MMI_NATIVE)
@@ -1583,7 +1594,12 @@ simde_mm_srl_pi16 (simde__m64 a, simde__m64 count) {
     simde__m64_private a_ = simde__m64_to_private(a);
     simde__m64_private count_ = simde__m64_to_private(count);
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+    #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && defined(SIMDE_BUG_CLANG_POWER9_16x4_BAD_SHIFT)
+      if (HEDLEY_UNLIKELY(count_.u64[0] > 15))
+        return simde_mm_setzero_si64();
+
+      r_.i16 = a_.i16 >> HEDLEY_STATIC_CAST(int16_t, count_.u64[0]);
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
       r_.u16 = a_.u16 >> count_.u64[0];
     #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       r_.neon_u16 = vshl_u16(a_.neon_u16, vmov_n_s16(-((int16_t) vget_lane_u64(count_.neon_u64, 0))));
