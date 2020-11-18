@@ -2611,22 +2611,10 @@ simde_mm_cvtps_epi32 (simde__m128 a) {
     simde__m128i_private r_;
     simde__m128_private a_ = simde__m128_to_private(a);
 
-    #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-      /* The default rounding mode on SSE is 'round to even', which ArmV7
-        does not support!  It is supported on ARMv8 however. */
-      #if defined(SIMDE_ARCH_AARCH64)
-        r_.neon_i32 = vcvtnq_s32_f32(a_.neon_f32);
-      #else
-        uint32x4_t signmask = vdupq_n_u32(0x80000000);
-        float32x4_t half = vbslq_f32(signmask, a_.neon_f32, vdupq_n_f32(0.5f)); /* +/- 0.5 */
-        int32x4_t r_normal = vcvtq_s32_f32(vaddq_f32(a_.neon_f32, half)); /* round to integer: [a + 0.5]*/
-        int32x4_t r_trunc = vcvtq_s32_f32(a_.neon_f32); /* truncate to integer: [a] */
-        int32x4_t plusone = vshrq_n_s32(vnegq_s32(r_trunc), 31); /* 1 or 0 */
-        int32x4_t r_even = vbicq_s32(vaddq_s32(r_trunc, plusone), vdupq_n_s32(1)); /* ([a] + {0,1}) & ~1 */
-        float32x4_t delta = vsubq_f32(a_.neon_f32, vcvtq_f32_s32(r_trunc)); /* compute delta: delta = (a - [a]) */
-        uint32x4_t is_delta_half = vceqq_f32(delta, half); /* delta == +/- 0.5 */
-        r_.neon_i32 = vbslq_s32(is_delta_half, r_even, r_normal);
-      #endif
+    #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+      r_.neon_i32 = vcvtnq_s32_f32(a_.neon_f32);
+    #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_FAST_ROUND_TIES)
+      r_.neon_i32 = vcvtnq_s32_f32(a_.neon_f32);
     #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
       HEDLEY_DIAGNOSTIC_PUSH
       SIMDE_DIAGNOSTIC_DISABLE_C11_EXTENSIONS_
@@ -2634,9 +2622,10 @@ simde_mm_cvtps_epi32 (simde__m128 a) {
       r_.altivec_i32 = vec_cts(vec_round(a_.altivec_f32), 0);
       HEDLEY_DIAGNOSTIC_POP
     #else
+      a_ = simde__m128_to_private(simde_mm_round_ps(simde__m128_from_private(a_), SIMDE_MM_FROUND_TO_NEAREST_INT));
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {
-        r_.i32[i] = HEDLEY_STATIC_CAST(int32_t, simde_math_roundf(a_.f32[i]));
+        r_.i32[i] = HEDLEY_STATIC_CAST(int32_t, a_.f32[i]);
       }
     #endif
 

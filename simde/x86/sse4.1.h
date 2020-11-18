@@ -414,10 +414,10 @@ simde_mm_round_pd (simde__m128d a, int rounding)
         r_.altivec_f64 = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(double), vec_round(a_.altivec_f64));
       #elif defined(SIMDE_ARM_NEON_A64V8_NATIVE) && 0
         r_.neon_f64 = vrndaq_f64(a_.neon_f64);
-      #elif defined(simde_math_round)
+      #elif defined(simde_math_roundeven)
         SIMDE_VECTORIZE
         for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
-          r_.f64[i] = simde_math_round(a_.f64[i]);
+          r_.f64[i] = simde_math_roundeven(a_.f64[i]);
         }
       #else
         HEDLEY_UNREACHABLE_RETURN(simde_mm_undefined_pd());

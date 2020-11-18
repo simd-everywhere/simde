@@ -423,12 +423,12 @@ simde_mm_round_ps (simde__m128 a, int rounding)
     case SIMDE_MM_FROUND_TO_NEAREST_INT:
       #if defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
         r_.altivec_f32 = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(float), vec_round(a_.altivec_f32));
-      #elif defined(SIMDE_ARM_NEON_A32V8_NATIVE) && 0
-        r_.neon_f32 = vrndaq_f32(a_.neon_f32);
-      #elif defined(simde_math_roundf)
+      #elif defined(SIMDE_ARM_NEON_A32V8_NATIVE)
+        r_.neon_f32 = vrndnq_f32(a_.neon_f32);
+      #elif defined(simde_math_roundevenf)
         SIMDE_VECTORIZE
         for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
-          r_.f32[i] = simde_math_roundf(a_.f32[i]);
+          r_.f32[i] = simde_math_roundevenf(a_.f32[i]);
         }
       #else
         HEDLEY_UNREACHABLE_RETURN(simde_mm_undefined_pd());

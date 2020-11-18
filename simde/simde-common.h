@@ -97,10 +97,17 @@
 #endif
 
 /* This controls how ties are rounded.  For example, does 10.5 round to
- * 10 or 11?  IEEE 754 specifies round-towards-even, but on ARMv7 (for
+ * 10 or 11?  IEEE 754 specifies round-towards-even, but ARMv7 (for
  * example) doesn't support it and it must be emulated (which is rather
  * slow).  If you're okay with just using the default for whatever arch
- * you're on, you should definitely define this. */
+ * you're on, you should definitely define this.
+ *
+ * Note that we don't use this macro to avoid correct implementations
+ * in functions which are explicitly about rounding (such as vrnd* on
+ * NEON, _mm_round_* on x86, etc.); it is only used for code where
+ * rounding is a component in another function, and even then it isn't
+ * usually a problem since such functions will use the current rounding
+ * mode. */
 #if !defined(SIMDE_FAST_ROUND_TIES) && !defined(SIMDE_NO_FAST_ROUND_TIES) && defined(SIMDE_FAST_MATH)
   #define SIMDE_FAST_ROUND_TIES
 #endif
