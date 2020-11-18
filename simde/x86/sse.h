@@ -438,7 +438,7 @@ simde_mm_round_ps (simde__m128 a, int rounding)
     case SIMDE_MM_FROUND_TO_NEG_INF:
       #if defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
         r_.altivec_f32 = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(float), vec_floor(a_.altivec_f32));
-      #elif defined(SIMDE_ARM_NEON_A32V8_NATIVE) && 0
+      #elif defined(SIMDE_ARM_NEON_A32V8_NATIVE)
         r_.neon_f32 = vrndmq_f32(a_.neon_f32);
       #elif defined(simde_math_floorf)
         SIMDE_VECTORIZE
@@ -453,7 +453,7 @@ simde_mm_round_ps (simde__m128 a, int rounding)
     case SIMDE_MM_FROUND_TO_POS_INF:
       #if defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
         r_.altivec_f32 = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(float), vec_ceil(a_.altivec_f32));
-      #elif defined(SIMDE_ARM_NEON_A32V8_NATIVE) && 0
+      #elif defined(SIMDE_ARM_NEON_A32V8_NATIVE)
         r_.neon_f32 = vrndpq_f32(a_.neon_f32);
       #elif defined(simde_math_ceilf)
         SIMDE_VECTORIZE
@@ -468,7 +468,7 @@ simde_mm_round_ps (simde__m128 a, int rounding)
     case SIMDE_MM_FROUND_TO_ZERO:
       #if defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
         r_.altivec_f32 = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(float), vec_trunc(a_.altivec_f32));
-      #elif defined(SIMDE_ARM_NEON_A32V8_NATIVE) && 0
+      #elif defined(SIMDE_ARM_NEON_A32V8_NATIVE)
         r_.neon_f32 = vrndq_f32(a_.neon_f32);
       #elif defined(simde_math_truncf)
         SIMDE_VECTORIZE
