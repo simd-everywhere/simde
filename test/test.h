@@ -267,7 +267,8 @@ typedef enum SimdeTestVecFloatMask {
   SIMDE_TEST_VEC_FLOAT_DEFAULT  = 0,
   SIMDE_TEST_VEC_FLOAT_PAIR     = 1,
   SIMDE_TEST_VEC_FLOAT_NAN      = 2,
-  SIMDE_TEST_VEC_FLOAT_EQUAL    = 4
+  SIMDE_TEST_VEC_FLOAT_EQUAL    = 4,
+  SIMDE_TEST_VEC_FLOAT_ROUND    = 8
 }
 #if \
     (HEDLEY_HAS_ATTRIBUTE(flag_enum) && !defined(HEDLEY_IBM_VERSION)) && \
@@ -319,6 +320,15 @@ simde_test_codegen_random_vfX_full_(
     SimdeTestVecFloatType vec_type) {
   for (size_t i = 0 ; i < (test_sets * vectors_per_set * elements_per_vector) ; i++) {
     simde_float64 v = simde_test_codegen_random_f64(min, max);
+    if (vec_type & SIMDE_TEST_VEC_FLOAT_ROUND) {
+      if (simde_test_codegen_rand() & 7) {
+        do {
+          v = HEDLEY_STATIC_CAST(simde_float64, HEDLEY_STATIC_CAST(int64_t, v));
+          if (simde_test_codegen_rand() & 7)
+            v += 0.5;
+        } while (v > max || v < min);
+      }
+    }
     simde_test_codegen_float_set_value_(elem_size, i, values, HEDLEY_STATIC_CAST(simde_float32, v), v);
   }
 
