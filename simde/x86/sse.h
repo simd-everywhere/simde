@@ -385,11 +385,14 @@ simde_mm_setcsr (uint32_t a) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128
-simde_mm_round_ps (simde__m128 a, int rounding)
-    SIMDE_REQUIRE_CONSTANT_RANGE(rounding, 0, 15) {
+simde_x_mm_round_ps (simde__m128 a, int rounding, int lax_rounding)
+    SIMDE_REQUIRE_CONSTANT_RANGE(rounding, 0, 15)
+    SIMDE_REQUIRE_CONSTANT_RANGE(lax_rounding, 0, 1) {
   simde__m128_private
     r_,
     a_ = simde__m128_to_private(a);
+
+  (void) lax_rounding;
 
   /* For architectures which lack a current direction SIMD instruction.
    *
@@ -487,10 +490,12 @@ simde_mm_round_ps (simde__m128 a, int rounding)
   return simde__m128_from_private(r_);
 }
 #if defined(SIMDE_X86_SSE4_1_NATIVE)
-  #define simde_mm_round_ps(a, rounding) _mm_round_ps(a, rounding)
+  #define simde_mm_round_ps(a, rounding) _mm_round_ps((a), (rounding))
+#else
+  #define simde_mm_round_ps(a, rounding) simde_x_mm_round_ps((a), (rounding), 0)
 #endif
 #if defined(SIMDE_X86_SSE4_1_ENABLE_NATIVE_ALIASES)
-  #define _mm_round_ps(a, rounding) simde_mm_round_ps(a, rounding)
+  #define _mm_round_ps(a, rounding) simde_mm_round_ps((a), (rounding))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
