@@ -94,6 +94,8 @@ simde_int8x16_t
 simde_vcntq_s8(simde_int8x16_t a) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vcntq_s8(a);
+  #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
+    return HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(signed char), vec_popcnt(HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned char), a)));
   #else
     simde_int8x16_private
       r_,
@@ -117,6 +119,8 @@ simde_uint8x16_t
 simde_vcntq_u8(simde_uint8x16_t a) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vcntq_u8(a);
+  #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
+    return vec_popcnt(a);
   #else
     simde_uint8x16_private
       r_,
