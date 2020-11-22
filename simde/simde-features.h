@@ -187,6 +187,18 @@
   #endif
 #endif
 
+#if !defined(SIMDE_X86_PCLMUL_NATIVE) && !defined(SIMDE_X86_PCLMUL_NO_NATIVE) && !defined(SIMDE_NO_NATIVE)
+  #if defined(SIMDE_ARCH_X86_PCLMUL)
+    #define SIMDE_X86_PCLMUL_NATIVE
+  #endif
+#endif
+
+#if !defined(SIMDE_X86_VPCLMULQDQ_NATIVE) && !defined(SIMDE_X86_VPCLMULQDQ_NO_NATIVE) && !defined(SIMDE_NO_NATIVE)
+  #if defined(SIMDE_ARCH_X86_VPCLMULQDQ)
+    #define SIMDE_X86_VPCLMULQDQ_NATIVE
+  #endif
+#endif
+
 #if !defined(SIMDE_X86_SVML_NATIVE) && !defined(SIMDE_X86_SVML_NO_NATIVE) && !defined(SIMDE_NO_NATIVE)
   #if defined(__INTEL_COMPILER)
     #define SIMDE_X86_SVML_NATIVE
@@ -199,9 +211,7 @@
 #endif
 
 #if \
-    defined(SIMDE_X86_AVX_NATIVE) || \
-    defined(SIMDE_X86_GFNI_NATIVE) || \
-    defined(SIMDE_X86_SVML_NATIVE)
+    defined(SIMDE_X86_AVX_NATIVE)
   #include <immintrin.h>
 #elif defined(SIMDE_X86_SSE4_2_NATIVE)
   #include <nmmintrin.h>
@@ -441,6 +451,12 @@
   #endif
   #if !defined(SIMDE_X86_GFNI_NATIVE)
     #define SIMDE_X86_GFNI_ENABLE_NATIVE_ALIASES
+  #endif
+  #if !defined(SIMDE_X86_PCLMUL_NATIVE)
+    #define SIMDE_X86_PCLMUL_ENABLE_NATIVE_ALIASES
+  #endif
+  #if !defined(SIMDE_X86_VPCLMULQDQ_NATIVE)
+    #define SIMDE_X86_VPCLMULQDQ_ENABLE_NATIVE_ALIASES
   #endif
 
   #if !defined(SIMDE_ARM_NEON_A32V7_NATIVE)

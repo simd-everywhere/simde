@@ -250,6 +250,7 @@ if not meson.is_subproject()
     files([
       'simde/x86/avx2.h',
       'simde/x86/avx.h',
+      'simde/x86/clmul.h',
       'simde/x86/fma.h',
       'simde/x86/gfni.h',
       'simde/x86/mmx.h',

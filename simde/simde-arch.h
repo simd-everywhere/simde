@@ -296,6 +296,12 @@
 #  if defined(__GFNI__)
 #    define SIMDE_ARCH_X86_GFNI 1
 #  endif
+#  if defined(__PCLMUL__)
+#    define SIMDE_ARCH_X86_PCLMUL 1
+#  endif
+#  if defined(__VPCLMULQDQ__)
+#    define SIMDE_ARCH_X86_VPCLMULQDQ 1
+#  endif
 #endif
 
 /* Itanium

@@ -112,6 +112,7 @@ set(TEST_SOURCES_C
   x86/avx.c
   x86/avx2.c
   x86/gfni.c
+  x86/clmul.c
   x86/fma.c
   x86/svml.c
   ${X86_AVX512_SOURCES_C}
