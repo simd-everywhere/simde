@@ -2615,14 +2615,14 @@ simde_mm_cvtps_epi32 (simde__m128 a) {
       r_.neon_i32 = vcvtnq_s32_f32(a_.neon_f32);
     #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_FAST_ROUND_TIES)
       r_.neon_i32 = vcvtnq_s32_f32(a_.neon_f32);
-    #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+    #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE) && defined(SIMDE_FAST_ROUND_TIES)
       HEDLEY_DIAGNOSTIC_PUSH
       SIMDE_DIAGNOSTIC_DISABLE_C11_EXTENSIONS_
       SIMDE_DIAGNOSTIC_DISABLE_VECTOR_CONVERSION_
-      r_.altivec_i32 = vec_cts(vec_round(a_.altivec_f32), 0);
+      r_.altivec_i32 = vec_cts(a_.altivec_f32, 1);
       HEDLEY_DIAGNOSTIC_POP
     #else
-      a_ = simde__m128_to_private(simde_mm_round_ps(simde__m128_from_private(a_), SIMDE_MM_FROUND_TO_NEAREST_INT));
+      a_ = simde__m128_to_private(simde_x_mm_round_ps(simde__m128_from_private(a_), SIMDE_MM_FROUND_TO_NEAREST_INT, 1));
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {
         r_.i32[i] = HEDLEY_STATIC_CAST(int32_t, a_.f32[i]);
