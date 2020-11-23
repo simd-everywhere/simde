@@ -1,6 +1,8 @@
 # Dockerfile for SIMDe development
 
-FROM debian:testing-slim
+ARG release=testing
+
+FROM debian:${release}-slim
 
 ARG DEBIAN_FRONTEND=noninteractive
 
