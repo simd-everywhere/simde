@@ -95,6 +95,43 @@ simde_mm512_maskz_shuffle_epi8 (simde__mmask64 k, simde__m512i a, simde__m512i b
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
+simde__m256i
+simde_mm256_shuffle_i32x4 (simde__m256i a, simde__m256i b, const int imm8)
+    SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 3) {
+  simde__m256i_private
+    r_,
+    a_ = simde__m256i_to_private(a),
+    b_ = simde__m256i_to_private(b);
+
+  r_.m128i[0] = a_.m128i[imm8 & 1];
+  r_.m128i[1] = b_.m128i[imm8 >> 1];
+
+  return simde__m256i_from_private(r_);
+}
+#if defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
+  #define simde_mm256_shuffle_i32x4(a, b, imm8) _mm256_shuffle_i32x4(a, b, imm8)
+#endif
+#if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES) && defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_shuffle_i32x4
+  #define _mm256_shuffle_i32x4(a, b, imm8) simde_mm256_shuffle_i32x4(a, b, imm8)
+#endif
+
+#define simde_mm256_maskz_shuffle_i32x4(k, a, b, imm8) simde_mm256_maskz_mov_epi32(k, simde_mm256_shuffle_i32x4(a, b, imm8))
+#define simde_mm256_mask_shuffle_i32x4(src, k, a, b, imm8) simde_mm256_mask_mov_epi32(src, k, simde_mm256_shuffle_i32x4(a, b, imm8))
+
+#define simde_mm256_shuffle_f32x4(a, b, imm8) simde_mm256_castsi256_ps(simde_mm256_shuffle_i32x4(simde_mm256_castps_si256(a), simde_mm256_castps_si256(b), imm8))
+#define simde_mm256_maskz_shuffle_f32x4(k, a, b, imm8) simde_mm256_maskz_mov_ps(k, simde_mm256_shuffle_f32x4(a, b, imm8))
+#define simde_mm256_mask_shuffle_f32x4(src, k, a, b, imm8) simde_mm256_mask_mov_ps(src, k, simde_mm256_shuffle_f32x4(a, b, imm8))
+
+#define simde_mm256_shuffle_i64x2(a, b, imm8) simde_mm256_shuffle_i32x4(a, b, imm8)
+#define simde_mm256_maskz_shuffle_i64x2(k, a, b, imm8) simde_mm256_maskz_mov_epi64(k, simde_mm256_shuffle_i64x2(a, b, imm8))
+#define simde_mm256_mask_shuffle_i64x2(src, k, a, b, imm8) simde_mm256_mask_mov_epi64(src, k, simde_mm256_shuffle_i64x2(a, b, imm8))
+
+#define simde_mm256_shuffle_f64x2(a, b, imm8) simde_mm256_castsi256_pd(simde_mm256_shuffle_i64x2(simde_mm256_castpd_si256(a), simde_mm256_castpd_si256(b), imm8))
+#define simde_mm256_maskz_shuffle_f64x2(k, a, b, imm8) simde_mm256_maskz_mov_pd(k, simde_mm256_shuffle_f64x2(a, b, imm8))
+#define simde_mm256_mask_shuffle_f64x2(src, k, a, b, imm8) simde_mm256_mask_mov_pd(src, k, simde_mm256_shuffle_f64x2(a, b, imm8))
+
+SIMDE_FUNCTION_ATTRIBUTES
 simde__m512i
 simde_mm512_shuffle_i32x4 (simde__m512i a, simde__m512i b, const int imm8)
     SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 255) {
