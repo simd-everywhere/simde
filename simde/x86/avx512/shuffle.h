@@ -103,8 +103,8 @@ simde_mm256_shuffle_i32x4 (simde__m256i a, simde__m256i b, const int imm8)
     a_ = simde__m256i_to_private(a),
     b_ = simde__m256i_to_private(b);
 
-  r_.m128i[0] = a_.m128i[imm8 & 1];
-  r_.m128i[1] = b_.m128i[imm8 >> 1];
+  r_.m128i[0] = a_.m128i[ imm8       & 1];
+  r_.m128i[1] = b_.m128i[(imm8 >> 1) & 1];
 
   return simde__m256i_from_private(r_);
 }
@@ -143,7 +143,7 @@ simde_mm512_shuffle_i32x4 (simde__m512i a, simde__m512i b, const int imm8)
   r_.m128i[0] = a_.m128i[ imm8       & 3];
   r_.m128i[1] = a_.m128i[(imm8 >> 2) & 3];
   r_.m128i[2] = b_.m128i[(imm8 >> 4) & 3];
-  r_.m128i[3] = b_.m128i[ imm8 >> 6     ];
+  r_.m128i[3] = b_.m128i[(imm8 >> 6) & 3];
 
   return simde__m512i_from_private(r_);
 }
