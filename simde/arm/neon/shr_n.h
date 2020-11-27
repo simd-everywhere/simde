@@ -293,9 +293,9 @@ simde_vshrq_n_s8 (const simde_int8x16_t a, const int n)
     SIMDE_REQUIRE_CONSTANT_RANGE(n, 1, 8) {
   #if defined(SIMDE_X86_GFNI_NATIVE)
     /* https://wunkolo.github.io/post/2020/11/gf2p8affineqb-int8-shifting/ */
-    uint8_t imm = n <= 7 ? HEDLEY_STATIC_CAST(uint8_t, n) : 7;
-    const int64_t sign_extend = ~(HEDLEY_STATIC_CAST(int64_t, 0xFFFFFFFFFFFFFFFF) << (imm * 8)) & HEDLEY_STATIC_CAST(int64_t, 0x8080808080808080);
-    return _mm_gf2p8affine_epi64_epi8(a, _mm_set1_epi64x(INT64_C(0x0102040810204080) << (imm * 8) | sign_extend), 0);
+    const int shift = (n <= 7) ? n : 7;
+    const uint64_t matrix = (UINT64_C(0x8182848890A0C000) << (shift * 8)) ^ UINT64_C(0x8080808080808080);
+    return _mm_gf2p8affine_epi64_epi8(a, _mm_set1_epi64x(HEDLEY_STATIC_CAST(int64_t, matrix)), 0);
   #elif defined(SIMDE_X86_SSE4_1_NATIVE)
     return
       _mm_blendv_epi8(_mm_srai_epi16((a), (n)),
