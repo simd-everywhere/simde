@@ -243,7 +243,7 @@ simde_vbicq_s8(simde_int8x16_t a, simde_int8x16_t b) {
     return _mm_andnot_si128(b, a);
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_v128_andnot(a, b);
-  #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
+  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
     return vec_andc(a, b);
   #else
     simde_int8x16_private
@@ -330,7 +330,7 @@ simde_vbicq_s64(simde_int64x2_t a, simde_int64x2_t b) {
     return _mm_andnot_si128(b, a);
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_v128_andnot(a, b);
-  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+  #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
     return vec_andc(a, b);
   #else
     simde_int64x2_private
