@@ -3098,6 +3098,15 @@ simde_mm_prefetch (char const* p, int i) {
 }
 #if defined(SIMDE_X86_SSE_NATIVE)
 #  define simde_mm_prefetch(p, i) _mm_prefetch(p, i)
+#elif !defined(SIMDE_MATH_SLEEF_ENABLE)
+HEDLEY_DIAGNOSTIC_PUSH
+  #if HEDLEY_HAS_WARNING("-Wreserved-id-macro")
+    _Pragma("clang diagnostic ignored \"-Wreserved-id-macro\"")
+  #endif
+#  define _MM_HINT_T0 1
+#  define _MM_HINT_T1 2
+#  define _MM_HINT_T2 3
+HEDLEY_DIAGNOSTIC_POP
 #endif
 #if defined(SIMDE_X86_SSE_ENABLE_NATIVE_ALIASES)
 #  define _mm_prefetch(p, i) simde_mm_prefetch(p, i)
