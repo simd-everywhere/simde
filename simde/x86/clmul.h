@@ -340,7 +340,7 @@ simde_mm512_clmulepi64_epi128 (simde__m512i a, simde__m512i b, const int imm8)
   #else
     simde__m256i_private a_lo_, b_lo_, r_lo_, a_hi_, b_hi_, r_hi_;
 
-    #if HEDLEY_HAS_BUILTIN(__builtin_shufflevector) && 0
+    #if HEDLEY_HAS_BUILTIN(__builtin_shufflevector) && !defined(HEDLEY_IBM_VERSION)
       switch (imm8 & 0x01) {
         case 0x00:
           a_lo_.u64 = __builtin_shufflevector(a_.u64, a_.u64, 0, 2, 4, 6);
