@@ -227,6 +227,26 @@ def get_jobs():
     }
   }
 
+  job_clang9_aarch64 = {
+    "name": "clang-9 aarch64",
+    "platform": {
+      "arch": "arm64",
+    },
+    "steps": [
+      {
+        "environment": {
+          "CC": "clang-9",
+          "CXX": "clang++-9",
+          "ARCH_FLAGS": "-march=armv8a+simd+crypto+crc",
+          "DIAGNOSTIC_FLAGS": "-Weverything -Werror",
+        }
+      }
+    ],
+    "custom": {
+      "install": get_apt_install_commands(["clang-9"])
+    }
+  }
+
   job_fedora = {
     "name": "fedora",
     "steps": [
@@ -299,8 +319,9 @@ def get_jobs():
     job_clang7_armv8,
     job_gcc7_armv7,
     job_gcc7_armv8,
+    job_clang9_aarch64,
     # job_fedora,
-    job_fedora_clang_arm64_flags,
+    # job_fedora_clang_arm64_flags,
     job_centos7_clang3,
   ]
 
