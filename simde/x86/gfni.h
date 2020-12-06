@@ -589,7 +589,7 @@ simde__m128i simde_mm_gf2p8mul_epi8 (simde__m128i a, simde__m128i b) {
 
     m = vec_splat_u8(0x01);
 
-    const SIMDE_POWER_ALTIVEC_VECTOR(unsigned char) fgp = vec_splats(HEDLEY_STATIC_CAST(unsigned char, SIMDE_X86_GFNI_FGP)); /* P6 */
+    const SIMDE_POWER_ALTIVEC_VECTOR(unsigned char) fgp = vec_splats(HEDLEY_STATIC_CAST(unsigned char, SIMDE_X86_GFNI_FGP));
     t = vec_and(y, m);
     t = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned char), vec_cmpeq(t, m));
     r = vec_and(x, t);
