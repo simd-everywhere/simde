@@ -29,11 +29,86 @@
 #define SIMDE_X86_AVX512_PERMUTEX2VAR_H
 
 #include "types.h"
+#include "and.h"
+#include "andnot.h"
+#include "blend.h"
 #include "mov.h"
+#include "or.h"
+#include "set1.h"
+#include "slli.h"
+#include "srli.h"
+#include "test.h"
 
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 SIMDE_BEGIN_DECLS_
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512i
+simde_mm512_permutex2var_epi16 (simde__m512i a, simde__m512i idx, simde__m512i b) {
+  #if defined(SIMDE_X86_AVX512BW_NATIVE)
+    return _mm512_permutex2var_epi16(a, idx, b);
+  #else
+    simde__m512i_private
+      a_ = simde__m512i_to_private(a),
+      idx_ = simde__m512i_to_private(idx),
+      b_ = simde__m512i_to_private(b),
+      r_;
+
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.i16) / sizeof(r_.i16[0])) ; i++) {
+      r_.i16[i] = ((idx_.i16[i] & 0x20) ? b_ : a_).i16[idx_.i16[i] & 0x1F];
+    }
+
+    return simde__m512i_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_permutex2var_epi16
+  #define _mm512_permutex2var_epi16(a, idx, b) simde_mm512_permutex2var_epi16(a, idx, b)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512i
+simde_mm512_mask_permutex2var_epi16 (simde__m512i a, simde__mmask32 k, simde__m512i idx, simde__m512i b) {
+  #if defined(SIMDE_X86_AVX512BW_NATIVE)
+    return _mm512_mask_permutex2var_epi16(a, k, idx, b);
+  #else
+    return simde_mm512_mask_mov_epi16(a, k, simde_mm512_permutex2var_epi16(a, idx, b));
+  #endif
+}
+#if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_mask_permutex2var_epi16
+#define _mm512_mask_permutex2var_epi16(a, k, idx, b) simde_mm512_mask_permutex2var_epi16(a, k, idx, b)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512i
+simde_mm512_mask2_permutex2var_epi16 (simde__m512i a, simde__m512i idx, simde__mmask32 k, simde__m512i b) {
+  #if defined(SIMDE_X86_AVX512BW_NATIVE)
+    return _mm512_mask2_permutex2var_epi16(a, idx, k, b);
+  #else
+    return simde_mm512_mask_mov_epi16(idx, k, simde_mm512_permutex2var_epi16(a, idx, b));
+  #endif
+}
+#if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_mask2_permutex2var_epi16
+#define _mm512_mask2_permutex2var_epi16(a, idx, k, b) simde_mm512_mask2_permutex2var_epi16(a, idx, k, b)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512i
+simde_mm512_maskz_permutex2var_epi16 (simde__mmask32 k, simde__m512i a, simde__m512i idx, simde__m512i b) {
+  #if defined(SIMDE_X86_AVX512BW_NATIVE)
+    return _mm512_maskz_permutex2var_epi16(k, a, idx, b);
+  #else
+    return simde_mm512_maskz_mov_epi16(k, simde_mm512_permutex2var_epi16(a, idx, b));
+  #endif
+}
+#if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_maskz_permutex2var_epi16
+#define _mm512_maskz_permutex2var_epi16(k, a, idx, b) simde_mm512_maskz_permutex2var_epi16(k, a, idx, b)
+#endif
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m512i
@@ -167,6 +242,93 @@ simde_mm512_maskz_permutex2var_epi64 (simde__mmask8 k, simde__m512i a, simde__m5
 #if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
   #undef _mm512_maskz_permutex2var_epi64
 #define _mm512_maskz_permutex2var_epi64(k, a, idx, b) simde_mm512_maskz_permutex2var_epi64(k, a, idx, b)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512i
+simde_mm512_permutex2var_epi8 (simde__m512i a, simde__m512i idx, simde__m512i b) {
+  #if defined(SIMDE_X86_AVX512VBMI_NATIVE)
+    return _mm512_permutex2var_epi8(a, idx, b);
+  #elif defined(SIMDE_X86_AVX512BW_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
+    simde__m512i hilo, hi, lo, hi2, lo2, idx2;
+    simde__m512i ones = simde_mm512_set1_epi8(1);
+    simde__m512i low_bytes = simde_mm512_set1_epi16(0x00FF);
+
+    idx2 = simde_mm512_srli_epi16(idx, 1);
+    hilo = simde_mm512_permutex2var_epi16(a, idx2, b);
+    simde__mmask64 mask = simde_mm512_test_epi8_mask(idx, ones);
+    lo = simde_mm512_and_si512(hilo, low_bytes);
+    hi = simde_mm512_srli_epi16(hilo, 8);
+
+    idx2 = simde_mm512_srli_epi16(idx, 9);
+    hilo = simde_mm512_permutex2var_epi16(a, idx2, b);
+    lo2 = simde_mm512_slli_epi16(hilo, 8);
+    hi2 = simde_mm512_andnot_si512(low_bytes, hilo);
+
+    lo = simde_mm512_or_si512(lo, lo2);
+    hi = simde_mm512_or_si512(hi, hi2);
+
+    return simde_mm512_mask_blend_epi8(mask, lo, hi);
+  #else
+    simde__m512i_private
+      a_ = simde__m512i_to_private(a),
+      idx_ = simde__m512i_to_private(idx),
+      b_ = simde__m512i_to_private(b),
+      r_;
+
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.i8) / sizeof(r_.i8[0])) ; i++) {
+      r_.i8[i] = ((idx_.i8[i] & 0x40) ? b_ : a_).i8[idx_.i8[i] & 0x3F];
+    }
+
+    return simde__m512i_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_X86_AVX512VBMI_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_permutex2var_epi8
+  #define _mm512_permutex2var_epi8(a, idx, b) simde_mm512_permutex2var_epi8(a, idx, b)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512i
+simde_mm512_mask_permutex2var_epi8 (simde__m512i a, simde__mmask64 k, simde__m512i idx, simde__m512i b) {
+  #if defined(SIMDE_X86_AVX512VBMI_NATIVE)
+    return _mm512_mask_permutex2var_epi8(a, k, idx, b);
+  #else
+    return simde_mm512_mask_mov_epi8(a, k, simde_mm512_permutex2var_epi8(a, idx, b));
+  #endif
+}
+#if defined(SIMDE_X86_AVX512VBMI_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_mask_permutex2var_epi8
+#define _mm512_mask_permutex2var_epi8(a, k, idx, b) simde_mm512_mask_permutex2var_epi8(a, k, idx, b)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512i
+simde_mm512_mask2_permutex2var_epi8 (simde__m512i a, simde__m512i idx, simde__mmask64 k, simde__m512i b) {
+  #if defined(SIMDE_X86_AVX512VBMI_NATIVE)
+    return _mm512_mask2_permutex2var_epi8(a, idx, k, b);
+  #else
+    return simde_mm512_mask_mov_epi8(idx, k, simde_mm512_permutex2var_epi8(a, idx, b));
+  #endif
+}
+#if defined(SIMDE_X86_AVX512VBMI_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_mask2_permutex2var_epi8
+#define _mm512_mask2_permutex2var_epi8(a, idx, k, b) simde_mm512_mask2_permutex2var_epi8(a, idx, k, b)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512i
+simde_mm512_maskz_permutex2var_epi8 (simde__mmask64 k, simde__m512i a, simde__m512i idx, simde__m512i b) {
+  #if defined(SIMDE_X86_AVX512VBMI_NATIVE)
+    return _mm512_maskz_permutex2var_epi8(k, a, idx, b);
+  #else
+    return simde_mm512_maskz_mov_epi8(k, simde_mm512_permutex2var_epi8(a, idx, b));
+  #endif
+}
+#if defined(SIMDE_X86_AVX512VBMI_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_maskz_permutex2var_epi8
+#define _mm512_maskz_permutex2var_epi8(k, a, idx, b) simde_mm512_maskz_permutex2var_epi8(k, a, idx, b)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
