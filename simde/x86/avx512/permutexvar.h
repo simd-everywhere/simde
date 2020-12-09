@@ -80,7 +80,7 @@ simde_mm512_permutexvar_epi16 (simde__m512i idx, simde__m512i a) {
   #endif
 }
 #if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
-  #undef _mm512_permutexvar_epi16(idx, a)
+  #undef _mm512_permutexvar_epi16
   #define _mm512_permutexvar_epi16(idx, a) simde_mm512_permutexvar_epi16(idx, a)
 #endif
 
