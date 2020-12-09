@@ -55,10 +55,33 @@ simde_mm512_permutex2var_epi16 (simde__m512i a, simde__m512i idx, simde__m512i b
       b_ = simde__m512i_to_private(b),
       r_;
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.i16) / sizeof(r_.i16[0])) ; i++) {
-      r_.i16[i] = ((idx_.i16[i] & 0x20) ? b_ : a_).i16[idx_.i16[i] & 0x1F];
-    }
+    #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+      uint8x16x4_t table_a = { { a_.m128i_private[0].neon_u8,
+                                 a_.m128i_private[1].neon_u8,
+                                 a_.m128i_private[2].neon_u8,
+                                 a_.m128i_private[3].neon_u8 } };
+      uint8x16x4_t table_b = { { b_.m128i_private[0].neon_u8,
+                                 b_.m128i_private[1].neon_u8,
+                                 b_.m128i_private[2].neon_u8,
+                                 b_.m128i_private[3].neon_u8 } };
+      uint8x16_t mask8 = vdupq_n_u8(0x3F);
+      uint16x8_t mask16 = vdupq_n_u16(0x003F);
+      uint16x8_t byte_index16 = vdupq_n_u16(0x0100);
+
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.m128i_private) / sizeof(r_.m128i_private[0])) ; i++) {
+        uint16x8_t index16 = vandq_u16(idx_.m128i_private[i].neon_u16, mask16);
+        index16 = vmulq_n_u16(index16, 0x0202);
+        index16 = vaddq_u16(index16, byte_index16);
+        uint8x16_t index8 = vreinterpretq_u8_u16(index16);
+        r_.m128i_private[i].neon_u8 = vqtbx4q_u8(vqtbl4q_u8(table_b, vandq_u8(index8, mask8)), table_a, index8);
+      }
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.i16) / sizeof(r_.i16[0])) ; i++) {
+        r_.i16[i] = ((idx_.i16[i] & 0x20) ? b_ : a_).i16[idx_.i16[i] & 0x1F];
+      }
+    #endif
 
     return simde__m512i_from_private(r_);
   #endif
@@ -122,10 +145,33 @@ simde_mm512_permutex2var_epi32 (simde__m512i a, simde__m512i idx, simde__m512i b
       b_ = simde__m512i_to_private(b),
       r_;
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {
-      r_.i32[i] = ((idx_.i32[i] & 0x10) ? b_ : a_).i32[idx_.i32[i] & 0x0F];
-    }
+    #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+      uint8x16x4_t table_a = { { a_.m128i_private[0].neon_u8,
+                                 a_.m128i_private[1].neon_u8,
+                                 a_.m128i_private[2].neon_u8,
+                                 a_.m128i_private[3].neon_u8 } };
+      uint8x16x4_t table_b = { { b_.m128i_private[0].neon_u8,
+                                 b_.m128i_private[1].neon_u8,
+                                 b_.m128i_private[2].neon_u8,
+                                 b_.m128i_private[3].neon_u8 } };
+      uint8x16_t mask8 = vdupq_n_u8(0x3F);
+      uint32x4_t mask32 = vdupq_n_u32(0x0000001F);
+      uint32x4_t byte_index32 = vdupq_n_u32(0x03020100);
+
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.m128i_private) / sizeof(r_.m128i_private[0])) ; i++) {
+        uint32x4_t index32 = vandq_u32(idx_.m128i_private[i].neon_u32, mask32);
+        index32 = vmulq_n_u32(index32, 0x04040404);
+        index32 = vaddq_u32(index32, byte_index32);
+        uint8x16_t index8 = vreinterpretq_u8_u32(index32);
+        r_.m128i_private[i].neon_u8 = vqtbx4q_u8(vqtbl4q_u8(table_b, vandq_u8(index8, mask8)), table_a, index8);
+      }
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {
+        r_.i32[i] = ((idx_.i32[i] & 0x10) ? b_ : a_).i32[idx_.i32[i] & 0x0F];
+      }
+    #endif
 
     return simde__m512i_from_private(r_);
   #endif
@@ -276,10 +322,28 @@ simde_mm512_permutex2var_epi8 (simde__m512i a, simde__m512i idx, simde__m512i b)
       b_ = simde__m512i_to_private(b),
       r_;
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.i8) / sizeof(r_.i8[0])) ; i++) {
-      r_.i8[i] = ((idx_.i8[i] & 0x40) ? b_ : a_).i8[idx_.i8[i] & 0x3F];
-    }
+    #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+      uint8x16x4_t table_a = { { a_.m128i_private[0].neon_u8,
+                                 a_.m128i_private[1].neon_u8,
+                                 a_.m128i_private[2].neon_u8,
+                                 a_.m128i_private[3].neon_u8 } };
+      uint8x16x4_t table_b = { { b_.m128i_private[0].neon_u8,
+                                 b_.m128i_private[1].neon_u8,
+                                 b_.m128i_private[2].neon_u8,
+                                 b_.m128i_private[3].neon_u8 } };
+      uint8x16_t mask_7F = vdupq_n_u8(0x7F), mask_3F = vdupq_n_u8(0x3F);
+
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.m128i_private) / sizeof(r_.m128i_private[0])) ; i++) {
+        uint8x16_t index = vandq_u8(idx_.m128i_private[i].neon_u8, mask_7F);
+        r_.m128i_private[i].neon_u8 = vqtbx4q_u8(vqtbl4q_u8(table_b, vandq_u8(index, mask_3F)), table_a, index);
+      }
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.i8) / sizeof(r_.i8[0])) ; i++) {
+        r_.i8[i] = ((idx_.i8[i] & 0x40) ? b_ : a_).i8[idx_.i8[i] & 0x3F];
+      }
+    #endif
 
     return simde__m512i_from_private(r_);
   #endif
