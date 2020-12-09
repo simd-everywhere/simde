@@ -132,7 +132,7 @@ jobs:
         - sourceline: 'deb https://apt.repos.intel.com/oneapi all main'
           key_url: 'https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS-2023.PUB'
         packages:
-        - intel-oneapi-dpcpp-cpp-compiler-pro
+        - intel-oneapi-compiler-dpcpp-cpp-and-cpp-classic
 
   # - name: "pgcc"
   #   if: branch != master OR type == pull_request
