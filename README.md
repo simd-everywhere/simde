@@ -178,7 +178,8 @@ equivalent is), you should enable OpenMP 4 SIMD support by defining
 enabling OpenMP support in your compiler.  GCC and ICC both support a
 flag to enable only OpenMP SIMD support instead of full OpenMP (the OpenMP
 SIMD support doesn't require the OpenMP run-time library); for GCC the
-flag is `-fopenmp-simd`, for ICC `-qopenmp-simd`.  SIMDe also supports
+flag is `-fopenmp-simd` (requires GCC version 4.9 or later), for ICC
+the flag is `-qopenmp-simd`.  SIMDe also supports
 using [Cilk Plus](https://www.cilkplus.org/), [GCC loop-specific
 pragmas](https://gcc.gnu.org/onlinedocs/gcc/Loop-Specific-Pragmas.html),
 or [clang pragma loop hint
