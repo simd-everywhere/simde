@@ -3089,6 +3089,39 @@ simde_mm_mulhi_pu16 (simde__m64 a, simde__m64 b) {
 #  define _m_pmulhuw(a, b) simde_mm_mulhi_pu16(a, b)
 #endif
 
+#define SIMDE_MM_HINT_NTA  0
+#define SIMDE_MM_HINT_T0   1
+#define SIMDE_MM_HINT_T1   2
+#define SIMDE_MM_HINT_T2   3
+#define SIMDE_MM_HINT_ENTA 4
+#define SIMDE_MM_HINT_ET0  5
+#define SIMDE_MM_HINT_ET1  6
+#define SIMDE_MM_HINT_ET2  7
+
+#if defined(SIMDE_X86_SSE_ENABLE_NATIVE_ALIASES)
+  HEDLEY_DIAGNOSTIC_PUSH
+  #if HEDLEY_HAS_WARNING("-Wreserved-id-macro")
+    _Pragma("clang diagnostic ignored \"-Wreserved-id-macro\"")
+  #endif
+  #undef  _MM_HINT_NTA
+  #define _MM_HINT_NTA  SIMDE_MM_HINT_NTA
+  #undef  _MM_HINT_T0
+  #define _MM_HINT_T0   SIMDE_MM_HINT_T0
+  #undef  _MM_HINT_T1
+  #define _MM_HINT_T1   SIMDE_MM_HINT_T1
+  #undef  _MM_HINT_T2
+  #define _MM_HINT_T2   SIMDE_MM_HINT_T2
+  #undef  _MM_HINT_ETNA
+  #define _MM_HINT_ETNA SIMDE_MM_HINT_ETNA
+  #undef  _MM_HINT_ET0
+  #define _MM_HINT_ET0  SIMDE_MM_HINT_ET0
+  #undef  _MM_HINT_ET1
+  #define _MM_HINT_ET1  SIMDE_MM_HINT_ET1
+  #undef  _MM_HINT_ET1
+  #define _MM_HINT_ET2  SIMDE_MM_HINT_ET2
+  HEDLEY_DIAGNOSTIC_POP
+#endif
+
 SIMDE_FUNCTION_ATTRIBUTES
 void
 simde_mm_prefetch (char const* p, int i) {
@@ -3101,10 +3134,20 @@ simde_mm_prefetch (char const* p, int i) {
   (void) i;
 }
 #if defined(SIMDE_X86_SSE_NATIVE)
-#  define simde_mm_prefetch(p, i) _mm_prefetch(p, i)
+  #if defined(__clang__) && !SIMDE_DETECT_CLANG_VERSION_CHECK(10,0,0) /* https://reviews.llvm.org/D71718 */
+    #define simde_mm_prefetch(p, i) \
+      (__extension__({ \
+        HEDLEY_DIAGNOSTIC_PUSH \
+        HEDLEY_DIAGNOSTIC_DISABLE_CAST_QUAL \
+        _mm_prefetch((p), (i)); \
+        HEDLEY_DIAGNOSTIC_POP \
+      }))
+  #else
+    #define simde_mm_prefetch(p, i) _mm_prefetch(p, i)
+  #endif
 #endif
 #if defined(SIMDE_X86_SSE_ENABLE_NATIVE_ALIASES)
-#  define _mm_prefetch(p, i) simde_mm_prefetch(p, i)
+  #define _mm_prefetch(p, i) simde_mm_prefetch(p, i)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
