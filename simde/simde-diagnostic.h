@@ -333,7 +333,7 @@
   #define SIMDE_DIAGNOSTIC_DISABLE_VECTOR_CONVERSION_ _Pragma("clang diagnostic ignored \"-Wvector-conversion\"")
   /* For NEON, the situation with -Wvector-conversion in clang < 10 is
    * bad enough that we just disable the warning altogether. */
-  #if defined(__arm__) && SIMDE_DETECT_CLANG_VERSION_NOT(10,0,0)
+  #if defined(SIMDE_ARCH_ARM) && SIMDE_DETECT_CLANG_VERSION_NOT(10,0,0)
     #define SIMDE_DIAGNOSTIC_DISABLE_BUGGY_VECTOR_CONVERSION_ SIMDE_DIAGNOSTIC_DISABLE_VECTOR_CONVERSION_
   #endif
 #else
@@ -357,6 +357,17 @@
   #define SIMDE_DIAGNOSTIC_DISABLE_PEDANTIC_ _Pragma("GCC diagnostic ignored \"-Wpedantic\"")
 #else
   #define SIMDE_DIAGNOSTIC_DISABLE_PEDANTIC_
+#endif
+
+/* MSVC doesn't like (__assume(0), code) and will warn about code being
+ * unreachable, but we want it there because not all compilers
+ * understand the unreachable macro and will complain if it is missing.
+ * I'm planning on adding a new macro to Hedley to handle this a bit
+ * more elegantly, but until then... */
+#if defined(HEDLEY_MSVC_VERSION)
+  #define SIMDE_DIAGNOSTIC_DISABLE_UNREACHABLE_ __pragma(warning(disable:4702))
+#else
+  #define SIMDE_DIAGNOSTIC_DISABLE_UNREACHABLE_
 #endif
 
 #define SIMDE_DISABLE_UNWANTED_DIAGNOSTICS \

@@ -1,11 +1,5 @@
 # SIMDe Development Container
 
-## WORK IN PROGRESS
-
-This isn't fully functional yet.  Emscripten and clang cross builds
-don't work yet.  There are also some bugs in qemu on a couple of
-platforms which cause tests to fail, but you can still compile.
-
 The basic idea is to set up a Debian system with lots of different
 compilers and emulators for different architectures and configure
 multiple builds in different directories.
@@ -15,45 +9,34 @@ subdirectory.  These can be used to test other operating systems,
 especially older compilers which aren't supported on Debian testing
 anymore.
 
-Note that I use Podman not Docker, so this may require some tweaks to
-run on Docker.  Patches welcome.  If it works for you please let us
-know so we can remove this paragraph.
-
-To use this, just run the `simde-dev.sh` script.  Once the container is
-ready it will drop you into a bash shell in `/opt/simde`; this is the
-build directory.  Run `simde-reset-build.sh` and it should be populated
-with a bunch of subdirectories which you can build with ninja.  For
-example, `ninja -C gcc-10` will build SIMDe using GCC 10.  If you want
-to run the tests, `ninja -C gcc-10 test`.
+To use this, just run the `simde-dev.sh` script and go grab ~a cup of
+coffee~ lunch (it will take a while, and download a *lot* of packages).
+Once the container is ready it will drop you into a bash shell in
+`/opt/simde`; this is the build directory.  Run `simde-reset-build.sh`
+and it should be populated with a bunch of subdirectories which you can
+build with ninja.  For example, `ninja -C gcc-10` will build SIMDe
+using GCC 10.  If you want to run the tests, `ninja -C gcc-10 test`.
 
 This will bind the parent directory (the root of the SIMDe checkout)
 to `/usr/local/src/simde`; any changes to either will propogate to the
 other, meaning you can continue using your normal development
-environment and just re-run ninja to rebuild SIMDe.
+environment and just re-run ninja in the container to (re)build SIMDe.
 
-## CMake-Based Builds
+You can also run `simde-reset-build.sh build-name` to (re)generate a
+single build.
 
-A couple of directories are different because I haven't managed to get
-them working with Meson yet:
+# Debian Version
 
-For Emscripten, don't include the "test", argument with ninja since
-CMake isn't smart enough to actually build the tests before it tries to
-run them.  Even if it were, you need to run them in v8 not node since
-the version of node bundled with emscripten doesn't support WASM SIMD.
-To use emscripten, do something like:
+By default, we use Debian testing.  If you would like to use Debian
+unstable instead, just run `simde-dev.sh unstable`.
 
-```bash
-cd emscripten
-ninja
-v8 --enable-experimental-wasm run-tests.js
-```
+## Altering or Adding Builds
 
-I also haven't figured out how to get clang cross-compiling with Meson
-yet, so most of the clang cross-compilation builds don't work yet.
-There is a CMake-based aarch64-clang-10 build, though.  To use it:
-
-```bash
-cd aarch64-clang-10
-ninja
-qemu-aarch64-system ./run-tests
-```
+Each build has an associated Meson cross file (see the `cross-files/`
+subdirectory).  We kind of abuse these by adding flags like `-Wextra`,
+`-Werror`, `-march=...`, *etc.*, which aren't really about
+cross-compilation.  However, you can add or remove C/C++ flags in the
+cross files, or if you want to *add* flags you can just put them in
+the `CFLAGS`/`CXXFLAGS` environment variables and reconfigure the
+build.  You can also create a new cross file with your preferred
+configuration.

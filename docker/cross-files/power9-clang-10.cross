@@ -1,0 +1,20 @@
+[binaries]
+c = '/usr/bin/clang-10'
+cpp = '/usr/bin/clang++-10'
+ar = '/usr/bin/llvm-ar-10'
+strip = '/usr/bin/llvm-strip-10'
+objcopy = '/usr/bin/llvm-objcopy-10'
+ld = '/usr/bin/llvm-ld-10'
+exe_wrapper = ['qemu-ppc64le-static', '-cpu', 'power9']
+
+[properties]
+c_args = ['--target=powerpc64le-linux-gnu', '-mcpu=power9', '-isystem=/usr/powerpc64le-linux-gnu/include', '-Weverything', '-Werror']
+cpp_args = ['--target=powerpc64le-linux-gnu', '-mcpu=power9', '-isystem=/usr/powerpc64le-linux-gnu/include', '-Weverything', '-Werror']
+c_link_args = ['--target=powerpc64le-linux-gnu']
+cpp_link_args = ['--target=powerpc64le-linux-gnu']
+
+[host_machine]
+system = 'linux'
+cpu_family = 'powerpc64le'
+cpu = 'ppc64el'
+endian = 'little'

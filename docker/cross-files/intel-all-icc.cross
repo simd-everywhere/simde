@@ -5,7 +5,7 @@ ar = '/usr/bin/ar'
 strip = '/usr/bin/strip'
 objcopy = '/usr/bin/objcopy'
 ld = '/usr/bin/ld'
-exe_wrapper = ['sde64', '--']
+exe_wrapper = ['sde64', '-future', '--']
 
 [properties]
 c_args = ['-march=tigerlake', '-Wextra', '-wd13200', '-wd13203', '-wd16219', '-Werror']

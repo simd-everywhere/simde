@@ -9,14 +9,12 @@ simde_test_x86_tests = [
   'avx',
   'avx2',
   'fma',
-  'avx512f',
-  'avx512bw',
-  'avx512vl',
-  'avx512dq',
-  'avx512cd',
   'gfni',
+  'clmul',
   'svml'
 ]
+
+subdir('avx512')
 
 simde_test_x86_sources = []
 simde_test_x86_libs = []

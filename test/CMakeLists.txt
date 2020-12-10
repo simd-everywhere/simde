@@ -87,6 +87,20 @@ endif()
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OPENMP_SIMD_FLAGS}")
 
+if("${CMAKE_C_COMPILER_ID}" STREQUAL "Intel")
+  add_definitions(-DSIMDE_FAST_MATH)
+endif()
+
+aux_source_directory("arm/neon" ARM_NEON_SOURCES_C)
+list(REMOVE_ITEM ARM_NEON_SOURCES_C "arm/neon/run-tests.c")
+list(REMOVE_ITEM ARM_NEON_SOURCES_C "arm/neon/skel.c")
+list(REMOVE_ITEM ARM_NEON_SOURCES_C "arm/neon/skel-single.c")
+list(REMOVE_ITEM ARM_NEON_SOURCES_C "arm/neon/skel-triple.c")
+
+aux_source_directory("x86/avx512" X86_AVX512_SOURCES_C)
+list(REMOVE_ITEM X86_AVX512_SOURCES_C "x86/avx512/run-tests.c")
+list(REMOVE_ITEM X86_AVX512_SOURCES_C "x86/avx512/skel.c")
+
 set(TEST_SOURCES_C
   x86/mmx.c
   x86/sse.c
@@ -97,116 +111,23 @@ set(TEST_SOURCES_C
   x86/sse4.2.c
   x86/avx.c
   x86/avx2.c
-  x86/avx512f.c
-  x86/avx512bw.c
-  x86/avx512vl.c
-  x86/avx512dq.c
-  x86/avx512cd.c
   x86/gfni.c
+  x86/clmul.c
   x86/fma.c
   x86/svml.c
-
-  arm/neon/abd.c
-  arm/neon/abs.c
-  arm/neon/add.c
-  arm/neon/addl.c
-  arm/neon/addl_high.c
-  arm/neon/addw.c
-  arm/neon/and.c
-  arm/neon/bsl.c
-  arm/neon/cagt.c
-  arm/neon/ceq.c
-  arm/neon/ceqz.c
-  arm/neon/cge.c
-  arm/neon/cgez.c
-  arm/neon/cgt.c
-  arm/neon/cgtz.c
-  arm/neon/cle.c
-  arm/neon/clez.c
-  arm/neon/clt.c
-  arm/neon/cltz.c
-  arm/neon/cvt.c
-  arm/neon/combine.c
-  arm/neon/create.c
-  arm/neon/dot.c
-  arm/neon/dot_lane.c
-  arm/neon/dup_n.c
-  arm/neon/eor.c
-  arm/neon/ext.c
-  arm/neon/get_high.c
-  arm/neon/get_lane.c
-  arm/neon/get_low.c
-  arm/neon/max.c
-  arm/neon/min.c
-  arm/neon/mla.c
-  arm/neon/mla_n.c
-  arm/neon/mlal.c
-  arm/neon/mlal_high.c
-  arm/neon/movl.c
-  arm/neon/movl_high.c
-  arm/neon/movn.c
-  arm/neon/mul.c
-  arm/neon/mul_n.c
-  arm/neon/mull.c
-  arm/neon/mull_n.c
-  arm/neon/mvn.c
-  arm/neon/neg.c
-  arm/neon/orr.c
-  arm/neon/padal.c
-  arm/neon/padd.c
-  arm/neon/paddl.c
-  arm/neon/pmax.c
-  arm/neon/pmin.c
-  arm/neon/qadd.c
-  arm/neon/qdmulh.c
-  arm/neon/qdmull.c
-  arm/neon/qrdmulh.c
-  arm/neon/qrdmulh_n.c
-  arm/neon/qmovn.c
-  arm/neon/qmovn_high.c
-  arm/neon/qmovun.c
-  arm/neon/qtbl.c
-  arm/neon/qtbx.c
-  arm/neon/rbit.c
-  arm/neon/reinterpret.c
-  arm/neon/rev16.c
-  arm/neon/rev32.c
-  arm/neon/rev64.c
-  arm/neon/rhadd.c
-  arm/neon/rshl.c
-  arm/neon/rshr_n.c
-  arm/neon/rsra_n.c
-  arm/neon/set_lane.c
-  arm/neon/st1_lane.c
-  arm/neon/st3.c
-  arm/neon/st4.c
-  arm/neon/shl.c
-  arm/neon/shl_n.c
-  arm/neon/shr_n.c
-  arm/neon/sra_n.c
-  arm/neon/sub.c
-  arm/neon/subl.c
-  arm/neon/tbl.c
-  arm/neon/tbx.c
-  arm/neon/trn.c
-  arm/neon/trn1.c
-  arm/neon/trn2.c
-  arm/neon/tst.c
-  arm/neon/uzp.c
-  arm/neon/uzp1.c
-  arm/neon/uzp2.c
-  arm/neon/zip.c
-  arm/neon/zip1.c
-  arm/neon/zip2.c
-  )
+  ${X86_AVX512_SOURCES_C}
+  ${ARM_NEON_SOURCES_C})
 
 set(TEST_RUNNER_SOURCES
   run-tests.c
   x86/run-tests.c
+  x86/avx512/run-tests.c
   arm/run-tests.c
   arm/neon/run-tests.c)
 add_executable(run-tests ${TEST_RUNNER_SOURCES})
 set_property(TARGET run-tests PROPERTY C_STANDARD "99")
+target_add_compiler_flags(run-tests "-Wno-psabi")
+
 target_link_libraries(run-tests munit)
 target_add_compiler_flags (munit "-w")
 if(NEED_LIBM)
@@ -237,24 +158,12 @@ foreach(native native emul)
 endforeach(native native emul)
 target_compile_definitions(simde-test-emul PRIVATE SIMDE_NO_NATIVE)
 
-foreach(tst
-      "/x86/mmx"
-      "/x86/sse"
-      "/x86/sse2"
-      "/x86/sse3"
-      "/x86/ssse3"
-      "/x86/sse4_1"
-      "/x86/sse4_2"
-      "/x86/avx"
-      "/x86/fma"
-      "/x86/avx2"
-      "/x86/avx512f"
-      "/x86/avx512bw"
-      "/x86/avx512vl"
-      "/x86/avx512dq"
-      "/x86/gfni"
-      "/x86/svml"
-      "/arm"
-    )
-  add_test(NAME "${tst}/${variant}" COMMAND $<TARGET_FILE:run-tests> "${tst}")
-endforeach()
+foreach(src ${TEST_SOURCES_C})
+  string(REGEX REPLACE "^(.+)\\.c$" "/\\1" TEST_NAME "${src}")
+  add_test(NAME "${TEST_NAME}" COMMAND $<TARGET_FILE:run-tests> "${TEST_NAME}")
+endforeach(src ${TEST_SOURCES_C})
+
+message(WARNING
+        "CMake support is deprecated; please use Meson instead.  CMake is only present "
+        "for compilers which Meson doesn't yet support (e.g., xlc) and platforms where "
+        "difficult to run an up-to-date copy of Meson (e.g., Ubuntu 12.04).")

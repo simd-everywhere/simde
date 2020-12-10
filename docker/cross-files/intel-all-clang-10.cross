@@ -5,7 +5,7 @@ ar = '/usr/bin/llvm-ar-10'
 strip = '/usr/bin/llvm-strip-10'
 objcopy = '/usr/bin/llvm-objcopy-10'
 ld = '/usr/bin/llvm-ld-10'
-exe_wrapper = ['sde64', '--']
+exe_wrapper = ['sde64', '-future', '--']
 
 [properties]
 c_args = ['-march=tigerlake', '-Weverything', '-Wno-newline-eof', '-Wno-missing-variable-declarations', '-Werror']

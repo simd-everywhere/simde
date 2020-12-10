@@ -58,6 +58,22 @@
     simde_vst1##modifier##_##symbol_identifier(b_, b); \
  \
     return simde_assert_equal_v##symbol_identifier##_(sizeof(a_) / sizeof(ET), HEDLEY_REINTERPRET_CAST(SET*, a_), HEDLEY_REINTERPRET_CAST(SET*, b_), slop, filename, line, astr, bstr); \
+  } \
+  \
+  static void \
+  simde_test_arm_neon_random_##symbol_identifier##x##element_count##_full( \
+      size_t test_sets, size_t vectors_per_set, \
+      ET values[HEDLEY_ARRAY_PARAM(test_sets * vectors_per_set * (sizeof(simde_##NT) / sizeof(ET)))], \
+      ET min, ET max, SimdeTestVecFloatType type) { \
+    simde_test_codegen_random_v##symbol_identifier##_full(test_sets, vectors_per_set, sizeof(simde_##NT) / sizeof(ET), values, HEDLEY_STATIC_CAST(SET, min), HEDLEY_STATIC_CAST(SET, max), type); \
+  } \
+  \
+  static simde_##NT \
+  simde_test_arm_neon_random_extract_##symbol_identifier##x##element_count(size_t set_num, size_t vectors_per_set, size_t vector_num, ET* values) { \
+    const size_t elements_per_vector = sizeof(simde_##NT) / sizeof(ET); \
+    const size_t elements_per_set = elements_per_vector * vectors_per_set; \
+    const size_t pos = (elements_per_set * set_num) + (elements_per_vector * vector_num); \
+    return simde_vld1##modifier##_##symbol_identifier(&(values[pos])); \
   }
 
 

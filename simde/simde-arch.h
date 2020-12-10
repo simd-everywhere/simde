@@ -69,7 +69,7 @@
 
 /* AMD64 / x86_64
    <https://en.wikipedia.org/wiki/X86-64> */
-#if defined(__amd64__) || defined(__amd64) || defined(__x86_64__) || defined(__x86_64) || defined(_M_X66) || defined(_M_AMD64)
+#if defined(__amd64__) || defined(__amd64) || defined(__x86_64__) || defined(__x86_64) || defined(_M_X64) || defined(_M_AMD64)
 #  define SIMDE_ARCH_AMD64 1000
 #endif
 
@@ -275,6 +275,12 @@
 #      define SIMDE_ARCH_X86_AVX 1
 #    endif
 #  endif
+#  if defined(__AVX512VP2INTERSECT__)
+#    define SIMDE_ARCH_X86_AVX512VP2INTERSECT 1
+#  endif
+#  if defined(__AVX512VBMI__)
+#    define SIMDE_ARCH_X86_AVX512VBMI 1
+#  endif
 #  if defined(__AVX512BW__)
 #    define SIMDE_ARCH_X86_AVX512BW 1
 #  endif
@@ -292,6 +298,12 @@
 #  endif
 #  if defined(__GFNI__)
 #    define SIMDE_ARCH_X86_GFNI 1
+#  endif
+#  if defined(__PCLMUL__)
+#    define SIMDE_ARCH_X86_PCLMUL 1
+#  endif
+#  if defined(__VPCLMULQDQ__)
+#    define SIMDE_ARCH_X86_VPCLMULQDQ 1
 #  endif
 #endif
 
@@ -359,6 +371,10 @@
 #  define SIMDE_ARCH_MIPS_CHECK(version) ((version) <= SIMDE_ARCH_MIPS)
 #else
 #  define SIMDE_ARCH_MIPS_CHECK(version) (0)
+#endif
+
+#if defined(__mips_loongson_mmi)
+#  define SIMDE_ARCH_MIPS_LOONGSON_MMI 1
 #endif
 
 /* Matsushita MN10300

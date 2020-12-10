@@ -272,7 +272,10 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde_int8x16_t
 simde_vshlq_n_s8 (const simde_int8x16_t a, const int n)
     SIMDE_REQUIRE_CONSTANT_RANGE(n, 0, 7) {
-  #if defined(SIMDE_X86_SSE2_NATIVE)
+  #if defined(SIMDE_X86_GFNI_NATIVE)
+    /* https://wunkolo.github.io/post/2020/11/gf2p8affineqb-int8-shifting/ */
+    return _mm_gf2p8affine_epi64_epi8(a, _mm_set1_epi64x(INT64_C(0x0102040810204080) >> (n * 8)), 0);
+  #elif defined(SIMDE_X86_SSE2_NATIVE)
     return _mm_andnot_si128(_mm_set1_epi8(HEDLEY_STATIC_CAST(int8_t, (1 << n) - 1)), _mm_slli_epi64(a, n));
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_i8x16_shl(a, n);
@@ -412,7 +415,10 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde_uint8x16_t
 simde_vshlq_n_u8 (const simde_uint8x16_t a, const int n)
     SIMDE_REQUIRE_CONSTANT_RANGE(n, 0, 7) {
-  #if defined(SIMDE_X86_SSE2_NATIVE)
+  #if defined(SIMDE_X86_GFNI_NATIVE)
+    /* https://wunkolo.github.io/post/2020/11/gf2p8affineqb-int8-shifting/ */
+    return _mm_gf2p8affine_epi64_epi8(a, _mm_set1_epi64x(INT64_C(0x0102040810204080) >> (n * 8)), 0);
+  #elif defined(SIMDE_X86_SSE2_NATIVE)
     return _mm_andnot_si128(_mm_set1_epi8(HEDLEY_STATIC_CAST(int8_t, (1 << n) - 1)), _mm_slli_epi64((a), (n)));
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_i8x16_shl((a), (n));

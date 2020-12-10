@@ -31,6 +31,23 @@
     SF(b_, b); \
  \
     return simde_assert_equal_vf##EL##_(sizeof(a_) / sizeof(a_[0]), a_, b_, slop, filename, line, astr, bstr); \
+  } \
+\
+  static void \
+  simde_test_x86_random_f##EL##x##EC##_full( \
+      size_t test_sets, size_t vectors_per_set, \
+      simde_float##EL values[HEDLEY_ARRAY_PARAM(test_sets * vectors_per_set * (sizeof(simde##NT) / sizeof(simde_float##EL)))], \
+      simde_float##EL min, simde_float##EL max, SimdeTestVecFloatType type) { \
+    simde_test_codegen_random_vf##EL##_full(test_sets, vectors_per_set, sizeof(simde##NT) / sizeof(simde_float##EL), values, min, max, type); \
+  } \
+  \
+  static simde##NT \
+  simde_test_x86_random_extract_f##EL##x##EC(size_t set_num, size_t vectors_per_set, size_t vector_num, simde_float##EL* values) { \
+    const size_t elem_cnt = sizeof(simde##NT) / sizeof(simde_float##EL); \
+    const size_t set_cnt = elem_cnt * vectors_per_set; \
+    simde##NT r; \
+    simde_memcpy(&r, &(values[(set_num * set_cnt) + (vector_num * elem_cnt)]), sizeof(r)); \
+    return r; \
   }
 
 #define SIMDE_TEST_X86_GENERATE_INT_TYPE_FUNCS_(NT, EL, EC, SF) \
@@ -151,10 +168,10 @@
 #define simde_assert_m512d_equal(a, b) simde_test_x86_assert_equal_i32x16(simde_mm_castpd_si512(a), simde_mm_castpd_si512(b))
 #define simde_assert_m512i_equal(a, b) simde_test_x86_assert_equal_i32x16(a, b)
 
-#define simde_assert_mmask8(a, op, b) simde_assert_equal_u8(a, b)
-#define simde_assert_mmask16(a, op, b) simde_assert_equal_u16(a, b)
-#define simde_assert_mmask32(a, op, b) simde_assert_equal_u32(a, b)
-#define simde_assert_mmask64(a, op, b) simde_assert_equal_u64(a, b)
+#define simde_assert_equal_mmask8(a, b) simde_assert_equal_u8(a, b)
+#define simde_assert_equal_mmask16(a, b) simde_assert_equal_u16(a, b)
+#define simde_assert_equal_mmask32(a, b) simde_assert_equal_u32(a, b)
+#define simde_assert_equal_mmask64(a, b) simde_assert_equal_u64(a, b)
 
 #if !defined(SIMDE_TEST_BARE)
   #define SIMDE_TEST_DECLARE_SUITE(name) SIMDE_TEST_SUITE_DECLARE_GETTERS(HEDLEY_CONCAT(simde_test_x86_get_suite_,name))

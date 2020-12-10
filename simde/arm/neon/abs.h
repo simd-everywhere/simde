@@ -206,7 +206,8 @@ simde_vabsq_f32(simde_float32x4_t a) {
     return vec_abs(a);
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_f32x4_abs(a);
-  #elif defined(SIMDE_X86_AVX512F_NATIVE)
+  #elif defined(SIMDE_X86_AVX512F_NATIVE) && \
+      (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(7,0,0))
     return _mm512_castps512_ps128(_mm512_abs_ps(_mm512_castps128_ps512(a)));
   #else
     simde_float32x4_private
@@ -233,7 +234,7 @@ simde_vabsq_f64(simde_float64x2_t a) {
     return vabsq_f64(a);
   #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
     return vec_abs(a);
-  #elif defined(SIMDE_X86_AVX512F_NATIVE)
+  #elif defined(SIMDE_X86_AVX512F_NATIVE) && (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(7,0,0))
     return _mm512_castpd512_pd128(_mm512_abs_pd(_mm512_castpd128_pd512(a)));
   #else
     simde_float64x2_private
@@ -360,7 +361,9 @@ simde_int64x2_t
 simde_vabsq_s64(simde_int64x2_t a) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vabsq_s64(a);
-  #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE) && !defined(HEDLEY_IBM_VERSION)
+  #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    return vbslq_s64(vreinterpretq_u64_s64(vshrq_n_s64(a, 63)), vsubq_s64(vdupq_n_s64(0), a), a);
+  #elif defined(SIMDE_POWER_ALTIVEC_P64_NATIVE) && !defined(HEDLEY_IBM_VERSION)
     return vec_abs(a);
   #else
     simde_int64x2_private
