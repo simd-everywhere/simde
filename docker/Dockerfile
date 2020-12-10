@@ -51,7 +51,7 @@ RUN \
   curl -s "https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS-2023.PUB" | gpg --dearmor > /etc/apt/trusted.gpg.d/intel.gpg && \
   echo "deb [arch=amd64] https://apt.repos.intel.com/oneapi all main" > /etc/apt/sources.list.d/oneAPI.list && \
   apt-get update && \
-  apt-get install -yq intel-oneapi-dpcpp-cpp-compiler-pro && \
+  apt-get install -yq intel-oneapi-compiler-dpcpp-cpp-and-cpp-classic && \
   for exe in icc icpc; do \
     printf '#!/bin/bash\nARGS="$@"\nsource /opt/intel/oneapi/compiler/latest/env/vars.sh >/dev/null\n%s ${ARGS}\n' "${exe}" > /usr/bin/"${exe}" && \
     chmod 0755 /usr/bin/"${exe}" ; \
