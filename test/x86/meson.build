@@ -10,6 +10,7 @@ simde_test_x86_tests = [
   'avx2',
   'fma',
   'gfni',
+  'clmul',
   'svml'
 ]
 

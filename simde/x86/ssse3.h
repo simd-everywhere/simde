@@ -630,7 +630,7 @@ simde_mm_hsubs_pi16 (simde__m64 a, simde__m64 b) {
       a_ = simde__m64_to_private(a),
       b_ = simde__m64_to_private(b);
 
-    #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && 0
+    #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       int16x4x2_t t = vuzp_s16(a_.neon_i16, b_.neon_i16);
       r_.neon_i16 = vqsub_s16(t.val[0], t.val[1]);
     #else

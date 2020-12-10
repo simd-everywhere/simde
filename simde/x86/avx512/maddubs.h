@@ -108,9 +108,12 @@ simde_mm512_maddubs_epi16 (simde__m512i a, simde__m512i b) {
         r_.m256i[i] = simde_mm256_maddubs_epi16(a_.m256i[i], b_.m256i[i]);
       }
     #else
-      SIMDE_VECTORIZE
-      for (size_t i = 0 ; i < (sizeof(r_.m256i) / sizeof(r_.m256i[0])) ; i++) {
-        r_.m256i[i] = simde_mm256_maddubs_epi16(a_.m256i[i], b_.m256i[i]);
+      for (size_t i = 0 ; i < (sizeof(r_.i16) / sizeof(r_.i16[0])) ; i++) {
+        const int idx = HEDLEY_STATIC_CAST(int, i) << 1;
+        int32_t ts =
+          (HEDLEY_STATIC_CAST(int16_t, a_.u8[  idx  ]) * HEDLEY_STATIC_CAST(int16_t, b_.i8[  idx  ])) +
+          (HEDLEY_STATIC_CAST(int16_t, a_.u8[idx + 1]) * HEDLEY_STATIC_CAST(int16_t, b_.i8[idx + 1]));
+        r_.i16[i] = (ts > INT16_MIN) ? ((ts < INT16_MAX) ? HEDLEY_STATIC_CAST(int16_t, ts) : INT16_MAX) : INT16_MIN;
       }
     #endif
 

@@ -1,7 +1,7 @@
 project('SIMDe', 'c', 'cpp',
         default_options: ['c_std=c99'],
         license: 'MIT',
-        version: '0.5.0')
+        version: '0.7.0-rc.1')
 
 cc = meson.get_compiler('c')
 cxx = meson.get_compiler('cpp')
@@ -62,6 +62,7 @@ simde_neon_families = [
   'mla_n',
   'mlal',
   'mlal_high',
+  'mlal_n',
   'mls',
   'mlsl',
   'mlsl_high',
@@ -69,6 +70,7 @@ simde_neon_families = [
   'movl',
   'movl_high',
   'movn',
+  'movn_high',
   'mul',
   'mul_lane',
   'mul_n',
@@ -104,6 +106,7 @@ simde_neon_families = [
   'rev32',
   'rev64',
   'rhadd',
+  'rnd',
   'rshl',
   'rshr_n',
   'rsra_n',
@@ -248,6 +251,7 @@ if not meson.is_subproject()
     files([
       'simde/x86/avx2.h',
       'simde/x86/avx.h',
+      'simde/x86/clmul.h',
       'simde/x86/fma.h',
       'simde/x86/gfni.h',
       'simde/x86/mmx.h',

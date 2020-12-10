@@ -8,8 +8,8 @@ ld = '/usr/bin/arm-linux-gnueabihf-ld'
 exe_wrapper = 'qemu-arm-static'
 
 [properties]
-c_args = ['-march=armv8-a+simd', '-mfpu=neon', '-Wextra', '-Werror']
-cpp_args = ['-march=armv8-a+simd', '-mfpu=neon', '-Wextra', '-Werror']
+c_args = ['-march=armv8-a+simd', '-mfpu=auto', '-Wextra', '-Werror']
+cpp_args = ['-march=armv8-a+simd', '-mfpu=auto', '-Wextra', '-Werror']
 
 [host_machine]
 system = 'linux'

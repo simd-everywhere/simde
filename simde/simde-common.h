@@ -97,10 +97,17 @@
 #endif
 
 /* This controls how ties are rounded.  For example, does 10.5 round to
- * 10 or 11?  IEEE 754 specifies round-towards-even, but on ARMv7 (for
+ * 10 or 11?  IEEE 754 specifies round-towards-even, but ARMv7 (for
  * example) doesn't support it and it must be emulated (which is rather
  * slow).  If you're okay with just using the default for whatever arch
- * you're on, you should definitely define this. */
+ * you're on, you should definitely define this.
+ *
+ * Note that we don't use this macro to avoid correct implementations
+ * in functions which are explicitly about rounding (such as vrnd* on
+ * NEON, _mm_round_* on x86, etc.); it is only used for code where
+ * rounding is a component in another function, and even then it isn't
+ * usually a problem since such functions will use the current rounding
+ * mode. */
 #if !defined(SIMDE_FAST_ROUND_TIES) && !defined(SIMDE_NO_FAST_ROUND_TIES) && defined(SIMDE_FAST_MATH)
   #define SIMDE_FAST_ROUND_TIES
 #endif
@@ -806,12 +813,16 @@ HEDLEY_DIAGNOSTIC_POP
 #    if defined(SIMDE_ARCH_AARCH64)
 #      define SIMDE_BUG_CLANG_45541
 #      define SIMDE_BUG_CLANG_46844
+#      define SIMDE_BUG_CLANG_48257
 #      if SIMDE_DETECT_CLANG_VERSION_CHECK(10,0,0) && SIMDE_DETECT_CLANG_VERSION_NOT(11,0,0)
 #        define SIMDE_BUG_CLANG_BAD_VI64_OPS
 #      endif
 #    endif
 #    if defined(SIMDE_ARCH_POWER)
 #      define SIMDE_BUG_CLANG_46770
+#    endif
+#    if defined(_ARCH_PWR9) && !SIMDE_DETECT_CLANG_VERSION_CHECK(12,0,0) && !defined(__OPTIMIZE__)
+#      define SIMDE_BUG_CLANG_POWER9_16x4_BAD_SHIFT
 #    endif
 #    if defined(SIMDE_ARCH_X86) || defined(SIMDE_ARCH_AMD64)
 #      if HEDLEY_HAS_WARNING("-Wsign-conversion") && SIMDE_DETECT_CLANG_VERSION_NOT(11,0,0)

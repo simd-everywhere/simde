@@ -30,14 +30,13 @@ SIMDe contains an extensive test suite used for development.  Most
 users will never need to build the suite, but if you're contributing
 code to SIMDe you'll need to build them.
 
-Here is the basic procedure for compiling the tests:
+Here is the basic procedure for compiling and running the tests:
 
 ```bash
-mkdir test/build
-cd test/build
-CFLAGS="-march=native" CXXFLAGS="-march=native" cmake ..
-make -j
-./run-tests
+mkdir build
+cd build
+CFLAGS="-march=native" CXXFLAGS="-march=native" meson ..
+ninja test
 ```
 
 Note that `-march=native` may not be the right flag for your compiler.
@@ -48,13 +47,18 @@ what flags you should use to enable the SIMD extension for your target
 platform.  Here are a few to try:
 
  * ARM:
-   * `-march=armv8-a+simd` (for ARMv8)
+   * `-march=armv8-a+simd` (for AArch64)
+   * `-march=armv8-a+simd -mfpu=auto` (for ARMv8)
    * `-march=armv7-a -mfpu=neon` (for ARMv7)
  * POWER
    * `-mcpu=native`
 
 If you need a flag not listed above, please let us know so we can add
 it to the list.
+
+You may also want to take a look at the
+[Docker container](https://github.com/simd-everywhere/simde/tree/master/docker)
+which has many builds pre-configured, including cross-compilers and emulators.
 
 ## Coding Style
 

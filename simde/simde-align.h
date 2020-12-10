@@ -154,6 +154,10 @@
  * of two.  MSVC is the exception (of course), so we need to cap the
  * alignment requests at values that the implementation supports.
  *
+ * XL C/C++ will accept values larger than 16 (which is the alignment
+ * of an AltiVec vector), but will not reliably align to the larger
+ * value, so so we cap the value at 16 there.
+ *
  * If the compiler accepts any power-of-two value within reason then
  * this macro should be left undefined, and the SIMDE_ALIGN_CAP
  * macro will just return the value passed to it. */
@@ -172,6 +176,8 @@
     #elif defined(_M_ARM) || defined(_M_ARM64)
       #define SIMDE_ALIGN_PLATFORM_MAXIMUM 8
     #endif
+  #elif defined(HEDLEY_IBM_VERSION)
+    #define SIMDE_ALIGN_PLATFORM_MAXIMUM 16
   #endif
 #endif
 
@@ -437,7 +443,3 @@
 #define SIMDE_ALIGN_ASSUME_CAST(Type, Pointer) SIMDE_ALIGN_ASSUME_LIKE(SIMDE_ALIGN_CAST(Type, Pointer), Type)
 
 #endif /* !defined(SIMDE_ALIGN_H) */
-
-#if defined(SIMDE_TESTING)
-SIMDE_ALIGN_ASSUME_LIKE(Foo, bar)
-#endif

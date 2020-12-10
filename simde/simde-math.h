@@ -449,13 +449,13 @@ SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
   #endif
 #endif
 
-#if !defined(simde_math_absf)
-  #if SIMDE_MATH_BUILTIN_LIBM(absf)
-    #define simde_math_absf(v) __builtin_absf(v)
+#if !defined(simde_math_fabsf)
+  #if SIMDE_MATH_BUILTIN_LIBM(fabsf)
+    #define simde_math_fabsf(v) __builtin_fabsf(v)
   #elif defined(SIMDE_MATH_HAVE_CMATH)
-    #define simde_math_absf(v) std::abs(v)
+    #define simde_math_fabsf(v) std::abs(v)
   #elif defined(SIMDE_MATH_HAVE_MATH_H)
-    #define simde_math_absf(v) absf(v)
+    #define simde_math_fabsf(v) fabsf(v)
   #endif
 #endif
 
@@ -1094,6 +1094,46 @@ SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
     #define simde_math_roundf(v) std::round(v)
   #elif defined(SIMDE_MATH_HAVE_MATH_H)
     #define simde_math_roundf(v) roundf(v)
+  #endif
+#endif
+
+#if !defined(simde_math_roundeven)
+  #if \
+      HEDLEY_HAS_BUILTIN(__builtin_roundeven) || \
+      HEDLEY_GCC_VERSION_CHECK(10,0,0)
+    #define simde_math_roundeven(v) __builtin_roundeven(v)
+  #elif defined(simde_math_round) && defined(simde_math_fabs)
+    static HEDLEY_INLINE
+    double
+    simde_math_roundeven(double v) {
+      double rounded = simde_math_round(v);
+      double diff = rounded - v;
+      if (HEDLEY_UNLIKELY(simde_math_fabs(diff) == 0.5) && (HEDLEY_STATIC_CAST(int64_t, rounded) & 1)) {
+        rounded = v - diff;
+      }
+      return rounded;
+    }
+    #define simde_math_roundeven simde_math_roundeven
+  #endif
+#endif
+
+#if !defined(simde_math_roundevenf)
+  #if \
+      HEDLEY_HAS_BUILTIN(__builtin_roundevenf) || \
+      HEDLEY_GCC_VERSION_CHECK(10,0,0)
+    #define simde_math_roundevenf(v) __builtin_roundevenf(v)
+  #elif defined(simde_math_roundf) && defined(simde_math_fabsf)
+    static HEDLEY_INLINE
+    float
+    simde_math_roundevenf(float v) {
+      float rounded = simde_math_roundf(v);
+      float diff = rounded - v;
+      if (HEDLEY_UNLIKELY(simde_math_fabsf(diff) == 0.5f) && (HEDLEY_STATIC_CAST(int32_t, rounded) & 1)) {
+        rounded = v - diff;
+      }
+      return rounded;
+    }
+    #define simde_math_roundevenf simde_math_roundevenf
   #endif
 #endif
 

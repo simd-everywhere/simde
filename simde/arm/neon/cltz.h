@@ -184,7 +184,7 @@ simde_vcltzq_f64(simde_float64x2_t a) {
     simde_float64x2_private a_ = simde_float64x2_to_private(a);
     simde_uint64x2_private r_;
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && 0
+    #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
       r_.values = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), a_.values < SIMDE_FLOAT64_C(0.0));
     #else
       SIMDE_VECTORIZE
