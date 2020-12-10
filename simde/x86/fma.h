@@ -110,7 +110,7 @@ simde_mm_fmadd_ps (simde__m128 a, simde__m128 b, simde__m128 c) {
     #elif defined(simde_math_fmaf) && (defined(__FP_FAST_FMAF) || defined(FP_FAST_FMAF))
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
-        r_.f32[i] = simde_math_fma(a_.f32[i], b_.f32[i], c_.f32[i]);
+        r_.f32[i] = simde_math_fmaf(a_.f32[i], b_.f32[i], c_.f32[i]);
       }
     #else
       SIMDE_VECTORIZE

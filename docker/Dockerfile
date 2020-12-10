@@ -1,46 +1,65 @@
 # Dockerfile for SIMDe development
 
-FROM debian:testing-slim
+ARG release=testing
 
+FROM debian:${release}-slim
+
+ARG DEBIAN_FRONTEND=noninteractive
+
+COPY docker/bin /tmp/simde-bin
+RUN \
+  for script in simde-reset-build.sh; do \
+    ln -s /usr/local/src/simde/docker/bin/"${script}" /usr/bin/"${script}"; \
+  done
+
+# Multiarch
 RUN \
   apt-get update -y && \
   apt-get upgrade -y && \
-  apt-get install -y curl gpg && \
-  curl -s "https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS-2023.PUB" | apt-key add - && \
-  echo "deb [arch=amd64] https://apt.repos.intel.com/oneapi all main" > /etc/apt/sources.list.d/oneAPI.list && \
-  for arch in armhf arm64 ppc64el s390x; do \
+  for arch in armhf arm64 ppc64el s390x i386 mips64el; do \
     dpkg --add-architecture "$arch"; \
-  done
+  done; \
+  apt-get update -y
 
+# Common packages
 RUN \
-  apt-get update -y && \
-  apt-get install -y \
+  apt-get install -yq \
     git build-essential \
     meson cmake \
-    clang-8 clang-9 clang-10 \
-    gcc-10 g++-10 gcc-9 g++-9 gcc-8 g++-8 \
-    intel-oneapi-icc \
+    '^clang-[0-9\.]+$' \
+    '^g(cc|\+\+)-[0-9\.]+$' \
     qemu binfmt-support qemu-user-static \
     creduce screen htop parallel nano rsync strace \
-    npm libsleef-dev && \
-  for arch in `dpkg --print-foreign-architectures`; do \
-    echo libc6:"${arch}" libstdc++-8-dev:"${arch}" libstdc++-9-dev:"${arch}" libstdc++-10-dev:"${arch}"; \
-  done | xargs apt-get install -y && \
-  for arch in arm-linux-gnueabihf aarch64-linux-gnu powerpc64le-linux-gnu s390x-linux-gnu; do \
-    echo gcc-10-${arch} g++-10-${arch} gcc-9-${arch} g++-9-${arch}; \
-  done | xargs apt-get install -y
+    npm libsleef-dev
 
-# Install emscripten
-RUN git clone https://github.com/emscripten-core/emsdk.git /opt/emsdk
-WORKDIR /opt/emsdk
-RUN ./emsdk update-tags && ./emsdk install tot && ./emsdk activate tot
-# https://github.com/mesonbuild/meson/issues/6847
-RUN ln -s /opt/emsdk/upstream/bin/wasm-ld /usr/bin/wasm-ld
+# GCC cross-compilers
+RUN \
+  apt-get install -y apt-file && \
+  apt-file update && \
+  PACKAGES_TO_INSTALL=""; \
+  for ARCH in $(dpkg --print-foreign-architectures); do \
+    PACKAGES_TO_INSTALL="${PACKAGES_TO_INSTALL} libc6:${ARCH} ^libstdc\+\+\-[0-9]+\-dev:${ARCH}"; \
+    for pkg in $(apt-file search -x "/usr/bin/$(/tmp/simde-bin/arch2gcc.sh ${ARCH})-g(cc|\+\+)-[0-9\.]+" | grep -Po '^([^ ]+)(?<!:)'); do \
+      PACKAGES_TO_INSTALL="${PACKAGES_TO_INSTALL} ${pkg}"; \
+    done; \
+  done; \
+  apt-get install -yq ${PACKAGES_TO_INSTALL}
 
-# And v8
-RUN npm install jsvu -g && jsvu --os=linux64 --engines=v8 && ln -s "/root/.jsvu/v8" "/usr/bin/v8"
+# ICC
+RUN \
+  apt-get install -yq curl gpg && \
+  curl -s "https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS-2023.PUB" | gpg --dearmor > /etc/apt/trusted.gpg.d/intel.gpg && \
+  echo "deb [arch=amd64] https://apt.repos.intel.com/oneapi all main" > /etc/apt/sources.list.d/oneAPI.list && \
+  apt-get update && \
+  apt-get install -yq intel-oneapi-compiler-dpcpp-cpp-and-cpp-classic && \
+  for exe in icc icpc; do \
+    printf '#!/bin/bash\nARGS="$@"\nsource /opt/intel/oneapi/compiler/latest/env/vars.sh >/dev/null\n%s ${ARGS}\n' "${exe}" > /usr/bin/"${exe}" && \
+    chmod 0755 /usr/bin/"${exe}" ; \
+  done
 
-# xlc -- Install fails.
+# # xlc -- Install fails.
+# # Once IBM releases a version for Ubuntu Focal (20.04) I hope I can
+# # get this working.
 # RUN \
 #   curl -s 'https://public.dhe.ibm.com/software/server/POWER/Linux/xl-compiler/eval/ppc64le/ubuntu/public.gpg' | apt-key add - && \
 #   echo "deb [arch=ppc64el] https://public.dhe.ibm.com/software/server/POWER/Linux/xl-compiler/eval/ppc64le/ubuntu/ bionic main" > /etc/apt/sources.list.d/xlc.list && \
@@ -49,30 +68,24 @@ RUN npm install jsvu -g && jsvu --os=linux64 --engines=v8 && ln -s "/root/.jsvu/
 #   apt-get install "xlc.${XLC_VERSION}:ppc64el" "xlc-license-community.${XLC_VERSION}:ppc64el" && \
 #   /opt/ibm/xlC/${XLC_VERSION}/bin/xlc_configure <<< 1 >/dev/null
 
-# Wrappers for ICC
+# Intel SDE
+COPY test/download-sde.sh /tmp/simde-bin/download-sde.sh
 RUN \
-    for exe in icc icpc; do \
-      printf '#!/bin/bash\nARGS="$@"\nsource /opt/intel/oneapi/compiler/latest/env/vars.sh >/dev/null\n%s ${ARGS}\n' "${exe}" > /usr/bin/"${exe}" && \
-      chmod 0755 /usr/bin/"${exe}" ; \
-    done
-
-# Install Intel SDE
-COPY test/download-sde.sh /usr/local/bin/download-sde.sh
-RUN \
-  "/usr/local/bin/download-sde.sh" "/opt/intel/sde" && \
+  "/tmp/simde-bin/download-sde.sh" "/opt/intel/sde" && \
   for executable in sde sde64; do \
     ln -s "/opt/intel/sde/${executable}" "/usr/bin/${executable}"; \
   done
 
-# Copy Meson cross files
-# COPY docker/cross-files/ /usr/local/share/meson/cross/simde
-RUN mkdir -p "/usr/local/share/meson/cross" && ln -s /usr/local/src/simde/docker/cross-files /usr/local/share/meson/cross/simde
-
-# Copy helper scripts
+# Emscripten
 RUN \
-  for script in simde-reset-build.sh; do \
-    ln -s /usr/local/src/simde/docker/bin/"${script}" /usr/bin/"${script}"; \
-  done
+  git clone https://github.com/emscripten-core/emsdk.git /opt/emsdk && \
+  cd /opt/emsdk && ./emsdk update-tags && ./emsdk install tot && ./emsdk activate tot && \
+  ln -s /opt/emsdk/upstream/bin/wasm-ld /usr/bin/wasm-ld && \
+  npm install jsvu -g && jsvu --os=linux64 --engines=v8 && ln -s "/root/.jsvu/v8" "/usr/bin/v8"
+
+# Meson cross files
+RUN \
+  mkdir -p "/usr/local/share/meson/cross" && ln -s /usr/local/src/simde/docker/cross-files /usr/local/share/meson/cross/simde
 
 RUN mkdir -p /opt/simde
 WORKDIR /opt/simde

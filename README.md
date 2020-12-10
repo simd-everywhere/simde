@@ -74,6 +74,7 @@ sets:
  * [AVX2](https://en.wikipedia.org/wiki/Advanced_Vector_Extensions#Advanced_Vector_Extensions_2)
  * [FMA](https://en.wikipedia.org/wiki/FMA_instruction_set)
  * [GFNI](https://en.wikipedia.org/wiki/AVX-512#GFNI)
+ * [CLMUL](https://en.wikipedia.org/wiki/CLMUL_instruction_set)
  * [SVML](https://software.intel.com/content/www/us/en/develop/documentation/cpp-compiler-developer-guide-and-reference/top/compiler-reference/intrinsics/intrinsics-for-intel-advanced-vector-extensions-512-intel-avx-512-instructions/intrinsics-for-arithmetic-operations-1/intrinsics-for-short-vector-math-library-svml-operations.html)
 
 As well as partial support for many others; see the
@@ -141,8 +142,10 @@ auto-vectorization that isn't enabled at lower optimization levels.
 
 Each instruction set has a separate file; `x86/mmx.h` for MMX,
 `x86/sse.h` for SSE, `x86/sse2.h` for SSE2, and so on.  Just include
-the header for whichever instruction set(s) you want, and SIMDe will
-provide the fastest implementation it can given which extensions
+the header for whichever instruction set(s) you want *instead of the
+native version* (if you include the native version after SIMDe it will
+result in compile-time errors if native aliases are enabled).  SIMDe
+will provide the fastest implementation it can given which extensions
 you've enabled in your compiler (i.e., if you want to use NEON to
 implement SSE, you may need to pass something like `-mfpu=neon`
 or `-march=armv8-a+simd`.  See

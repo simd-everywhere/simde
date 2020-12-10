@@ -25,6 +25,10 @@
  *   2020      Christopher Moore <moore@free.fr>
  */
 
+/* The GFNI implementation is based on Wojciech Muła's work at
+ * http://0x80.pl/articles/avx512-galois-field-for-bit-shuffling.html#bit-shuffling via
+ * https://github.com/InstLatx64/InstLatX64_Demo/blob/49c27effdfd5a45f27e0ccb6e2f3be5f27c3845d/GFNI_Demo.h#L173 */
+
 #if !defined(SIMDE_ARM_NEON_RBIT_H)
 #define SIMDE_ARM_NEON_RBIT_H
 
@@ -40,6 +44,10 @@ simde_uint8x8_t
 simde_vrbit_u8(simde_uint8x8_t a) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vrbit_u8(a);
+  #elif defined(SIMDE_X86_MMX_NATIVE) && defined(SIMDE_X86_GFNI_NATIVE)
+    __m128i tmp = _mm_movpi64_epi64(a);
+    tmp = _mm_gf2p8affine_epi64_epi8(tmp, _mm_set1_epi64x(HEDLEY_STATIC_CAST(int64_t, UINT64_C(0x8040201008040201))), 0);
+    return _mm_movepi64_pi64(tmp);
   #elif defined(SIMDE_X86_MMX_NATIVE)
     __m64 mask;
     mask = _mm_set1_pi8(0x55);
@@ -56,7 +64,11 @@ simde_vrbit_u8(simde_uint8x8_t a) {
 
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = HEDLEY_STATIC_CAST(uint8_t, (((a_.values[i] * UINT64_C(0x80200802)) & UINT64_C(0x0884422110)) * UINT64_C(0x0101010101)) >> 32);
+      #if HEDLEY_HAS_BUILTIN(__builtin_bitreverse8) && !defined(HEDLEY_IBM_VERSION)
+        r_.values[i] = __builtin_bitreverse8(a_.values[i]);
+      #else
+        r_.values[i] = HEDLEY_STATIC_CAST(uint8_t, (((a_.values[i] * UINT64_C(0x80200802)) & UINT64_C(0x0884422110)) * UINT64_C(0x0101010101)) >> 32);
+      #endif
     }
 
     return simde_uint8x8_from_private(r_);
@@ -86,6 +98,8 @@ simde_uint8x16_t
 simde_vrbitq_u8(simde_uint8x16_t a) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vrbitq_u8(a);
+  #elif defined(SIMDE_X86_GFNI_NATIVE)
+    return _mm_gf2p8affine_epi64_epi8(a, _mm_set1_epi64x(HEDLEY_STATIC_CAST(int64_t, UINT64_C(0x8040201008040201))), 0);
   #elif defined(SIMDE_X86_SSE2_NATIVE)
     __m128i mask;
     mask = _mm_set1_epi8(0x55);
@@ -116,7 +130,11 @@ simde_vrbitq_u8(simde_uint8x16_t a) {
 
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = HEDLEY_STATIC_CAST(uint8_t, (((a_.values[i] * UINT64_C(0x80200802)) & UINT64_C(0x0884422110)) * UINT64_C(0x0101010101)) >> 32);
+      #if HEDLEY_HAS_BUILTIN(__builtin_bitreverse8) && !defined(HEDLEY_IBM_VERSION)
+        r_.values[i] = __builtin_bitreverse8(a_.values[i]);
+      #else
+        r_.values[i] = HEDLEY_STATIC_CAST(uint8_t, (((a_.values[i] * UINT64_C(0x80200802)) & UINT64_C(0x0884422110)) * UINT64_C(0x0101010101)) >> 32);
+      #endif
     }
 
     return simde_uint8x16_from_private(r_);

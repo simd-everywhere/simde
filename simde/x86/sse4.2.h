@@ -95,7 +95,7 @@ SIMDE_BEGIN_DECLS_
 
 SIMDE_FUNCTION_ATTRIBUTES
 int simde_mm_cmpestrs (simde__m128i a, int la, simde__m128i b, int lb, const int imm8)
-    SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 127) {
+    SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 255) {
   #if !defined(HEDLEY_PGI_VERSION)
     /* https://www.pgroup.com/userforum/viewtopic.php?f=4&p=27590&sid=cf89f8bf30be801831fe4a2ff0a2fa6c */
     (void) a;
@@ -115,7 +115,7 @@ int simde_mm_cmpestrs (simde__m128i a, int la, simde__m128i b, int lb, const int
 
 SIMDE_FUNCTION_ATTRIBUTES
 int simde_mm_cmpestrz (simde__m128i a, int la, simde__m128i b, int lb, const int imm8)
-    SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 127) {
+    SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 255) {
   #if !defined(HEDLEY_PGI_VERSION)
     /* https://www.pgroup.com/userforum/viewtopic.php?f=4&p=27590&sid=cf89f8bf30be801831fe4a2ff0a2fa6c */
     (void) a;
@@ -341,7 +341,7 @@ simde_mm_crc32_u32(uint32_t prevcrc, uint32_t v) {
 SIMDE_FUNCTION_ATTRIBUTES
 uint64_t
 simde_mm_crc32_u64(uint64_t prevcrc, uint64_t v) {
-  #if defined(SIMDE_X86_SSE4_2_NATIVE)
+  #if defined(SIMDE_X86_SSE4_2_NATIVE) && defined(SIMDE_ARCH_AMD64)
     return _mm_crc32_u64(prevcrc, v);
   #else
     #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(__ARM_FEATURE_CRC32)

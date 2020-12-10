@@ -7367,7 +7367,7 @@ test_simde_mm256_load_pd(SIMDE_MUNIT_TEST_ARGS) {
 static int
 test_simde_mm256_load_ps(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
-    SIMDE_ALIGN_AS(32, simde__m256) simde_float32 a[sizeof(simde__m256) / sizeof(simde_float32)];
+    SIMDE_ALIGN_LIKE_32(simde__m256) simde_float32 a[sizeof(simde__m256) / sizeof(simde_float32)];
     simde__m256 r;
   } test_vec[8] = {
     { { SIMDE_FLOAT32_C(  -651.15), SIMDE_FLOAT32_C(   486.09),
@@ -11780,7 +11780,7 @@ static int
 test_simde_mm256_store_ps(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256 a;
-    SIMDE_ALIGN(32) simde_float32 r[8];
+    SIMDE_ALIGN_LIKE_32(simde__m256) simde_float32 r[8];
   } test_vec[8] = {
     { simde_mm256_set_ps(SIMDE_FLOAT32_C(  256.09), SIMDE_FLOAT32_C(  768.79),
                          SIMDE_FLOAT32_C(  201.90), SIMDE_FLOAT32_C(  339.33),
@@ -11849,7 +11849,7 @@ test_simde_mm256_store_ps(SIMDE_MUNIT_TEST_ARGS) {
   };
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
-    SIMDE_ALIGN(32) simde_float32 r[8];
+    SIMDE_ALIGN_LIKE_32(simde__m256) simde_float32 r[8];
     simde_mm256_store_ps(r, test_vec[i].a);
     simde_assert_equal_vf32(sizeof(r) / sizeof(r[0]), r, test_vec[i].r, 1);
   }
@@ -11861,7 +11861,7 @@ static int
 test_simde_mm256_store_pd(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256d a;
-    SIMDE_ALIGN(32) simde_float64 r[4];
+    SIMDE_ALIGN_LIKE_32(simde__m256d) simde_float64 r[4];
   } test_vec[8] = {
     { simde_mm256_set_pd(SIMDE_FLOAT64_C(  771.84), SIMDE_FLOAT64_C(  578.19),
                          SIMDE_FLOAT64_C(  287.63), SIMDE_FLOAT64_C(  196.16)),
@@ -11898,7 +11898,7 @@ test_simde_mm256_store_pd(SIMDE_MUNIT_TEST_ARGS) {
   };
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
-    SIMDE_ALIGN(32) simde_float64 r[4];
+    SIMDE_ALIGN_LIKE_32(simde__m256d) simde_float64 r[4];
     simde_mm256_store_pd(r, test_vec[i].a);
     simde_assert_equal_vf64(sizeof(r) / sizeof(r[0]), r, test_vec[i].r, 1);
   }
@@ -12325,7 +12325,7 @@ static int
 test_simde_mm256_stream_ps(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256 a;
-    SIMDE_ALIGN(32) simde_float32 r[8];
+    SIMDE_ALIGN_LIKE_32(simde__m256) simde_float32 r[8];
   } test_vec[8] = {
     { simde_mm256_set_ps(SIMDE_FLOAT32_C(  256.09), SIMDE_FLOAT32_C(  768.79),
                          SIMDE_FLOAT32_C(  201.90), SIMDE_FLOAT32_C(  339.33),
@@ -12394,7 +12394,7 @@ test_simde_mm256_stream_ps(SIMDE_MUNIT_TEST_ARGS) {
   };
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
-    SIMDE_ALIGN(32) simde_float32 r[8];
+    SIMDE_ALIGN_LIKE_32(simde__m256) simde_float32 r[8];
     simde_mm256_stream_ps(r, test_vec[i].a);
     simde_assert_equal_vf32(sizeof(r) / sizeof(r[0]), r, test_vec[i].r, 1);
   }
@@ -12406,7 +12406,7 @@ static int
 test_simde_mm256_stream_pd(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256d a;
-    SIMDE_ALIGN(32) simde_float64 r[4];
+    SIMDE_ALIGN_LIKE_32(simde__m256d) simde_float64 r[4];
   } test_vec[8] = {
     { simde_mm256_set_pd(SIMDE_FLOAT64_C(  771.84), SIMDE_FLOAT64_C(  578.19),
                          SIMDE_FLOAT64_C(  287.63), SIMDE_FLOAT64_C(  196.16)),
@@ -12443,7 +12443,7 @@ test_simde_mm256_stream_pd(SIMDE_MUNIT_TEST_ARGS) {
   };
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
-    SIMDE_ALIGN(32) simde_float64 r[4];
+    SIMDE_ALIGN_LIKE_32(simde__m256d) simde_float64 r[4];
     simde_mm256_stream_pd(r, test_vec[i].a);
     simde_assert_equal_vf64(sizeof(r) / sizeof(r[0]), r, test_vec[i].r, 1);
   }

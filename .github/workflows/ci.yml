@@ -14,7 +14,7 @@ jobs:
       with:
         fetch-depth: 2
     - name: Install pcre2grep
-      run: sudo apt-get install -y pcre2-utils
+      run: sudo apt-get update && sudo apt-get install -y pcre2-utils
     # Check for trailing whitespace
     - name: Trailing whitespace
       run: find simde/ -name '*.c' -o -name '*.h' -exec grep -nP '\s+$' {} + && exit 1 || exit 0
@@ -65,6 +65,8 @@ jobs:
     - uses: actions/checkout@v2
       with:
         submodules: recursive
+    - name: CPU Information
+      run: cat /proc/cpuinfo
     - name: Install APT Dependencies
       run: sudo add-apt-repository 'ppa:ubuntu-toolchain-r/test' && sudo apt-get update && sudo apt-get install -y ninja-build ninja-build python3-pip python3-setuptools python3-wheel parallel gcovr
     - name: Install pip Dependencies
@@ -82,6 +84,39 @@ jobs:
       with:
         file: ./build/meson-logs/coverage.xml
 
+  avx512:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        isax: ["-mavx512f", "-mavx512bw", "-mavx512cd", "-mavx512dq", "-mavx512vl", "-mavx512bw -mavx512vl", "-mavx512vl -mavx512dq"]
+    env:
+      CFLAGS: -Wall -Wextra -Werror ${{ matrix.isax }}
+      CXXFLAGS: -Wall -Wextra -Werror ${{ matrix.isax }}
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: recursive
+    - name: CPU Information
+      run: cat /proc/cpuinfo
+    - name: Install APT Dependencies
+      run: sudo add-apt-repository 'ppa:ubuntu-toolchain-r/test' && sudo apt-get update && sudo apt-get install -y ninja-build ninja-build python3-pip python3-setuptools python3-wheel parallel gcovr
+    - name: Install pip Dependencies
+      run: pip3 install meson
+    - name: Configure
+      run: ~/.local/bin/meson setup build -Db_coverage=true
+    - name: Build
+      run: ninja -C build -v
+    # We can't actually run the tests without AVX-512. GitHub Actions doesn't
+    # currently support it, and SDE is too slow.
+    # - name: Test
+    #   run: ninja -C build -v test
+    # - name: Coverage Report
+    #   run: ninja -C build -v coverage-xml
+    # - name: CodeCov.io
+    #   uses: codecov/codecov-action@v1
+    #   with:
+    #     file: ./build/meson-logs/coverage.xml
+
   gcc:
     runs-on: ubuntu-latest
     strategy:
@@ -96,6 +131,8 @@ jobs:
     - uses: actions/checkout@v2
       with:
         submodules: recursive
+    - name: CPU Information
+      run: cat /proc/cpuinfo
     - name: Install APT Dependencies
       run: sudo add-apt-repository 'ppa:ubuntu-toolchain-r/test' && sudo apt-get update && sudo apt-get install -y ninja-build ninja-build python3-pip python3-setuptools python3-wheel parallel gcovr gcc-${{ matrix.version }} g++-${{ matrix.version }}
     - name: Install pip Dependencies
@@ -127,6 +164,8 @@ jobs:
     - uses: actions/checkout@v2
       with:
         submodules: recursive
+    - name: CPU Information
+      run: cat /proc/cpuinfo
     - name: Install APT Dependencies
       run: sudo add-apt-repository 'ppa:ubuntu-toolchain-r/test' && sudo apt-get update && sudo apt-get install -y ninja-build ninja-build python3-pip python3-setuptools python3-wheel parallel gcovr clang-${{ matrix.version }}
     - name: Install pip Dependencies
@@ -153,6 +192,8 @@ jobs:
     - uses: actions/checkout@v2
       with:
         submodules: recursive
+    - name: CPU Information
+      run: cat /proc/cpuinfo
     - name: Install APT Dependencies
       run: sudo add-apt-repository ppa:ubuntu-toolchain-r/test && sudo apt-get update && sudo apt-get -yq install ninja-build
     - name: Install emscripten
@@ -186,6 +227,8 @@ jobs:
     - uses: actions/checkout@v2
       with:
         submodules: recursive
+    - name: CPU Information
+      run: cat /proc/cpuinfo
     - name: Install APT Dependencies
       run: sudo add-apt-repository 'ppa:ubuntu-toolchain-r/test' && sudo apt-get update && sudo apt-get install -y ninja-build ninja-build python3-pip python3-setuptools python3-wheel parallel gcovr
     - name: Install pip Dependencies
@@ -198,13 +241,7 @@ jobs:
       run: ninja -C build -v
     - name: Test
       run: |
-        for isax in gfni avx512dq; do
-          for native in native emul; do
-            for lang in c cpp; do
-              ~/sde/sde64 -- sh -xc ./build/test/x86/"${isax}-${native}-${lang}" || exit 1
-            done
-          done
-        done
+        find build/test/ -type f -executable -exec parallel ~/sde/sde64 -- ::: {} \;
     - name: Coverage Report
       run: ninja -C build -v coverage-xml
     - name: CodeCov.io
@@ -223,6 +260,8 @@ jobs:
     - uses: actions/checkout@v2
       with:
         submodules: recursive
+    - name: CPU Information
+      run: cat /proc/cpuinfo
     - name: Install APT Dependencies
       run: sudo add-apt-repository ppa:ubuntu-toolchain-r/test && sudo apt-get update && sudo apt-get -yq install libxml2-utils ninja-build python3-pip python3-setuptools python3-wheel gcc-10 g++-10 parallel gcovr
     - name: Install pip Dependencies
@@ -251,6 +290,8 @@ jobs:
     - uses: actions/checkout@v2
       with:
         submodules: recursive
+    - name: CPU Information
+      run: cat /proc/cpuinfo
     - name: Install APT Dependencies
       run: sudo add-apt-repository 'ppa:ubuntu-toolchain-r/test' && sudo apt-get update && sudo apt-get install -y ninja-build ninja-build python3-pip python3-setuptools python3-wheel parallel gcovr libsleef-dev
     - name: Install pip Dependencies
@@ -282,6 +323,8 @@ jobs:
     - uses: actions/checkout@v2
       with:
         submodules: recursive
+    - name: CPU Information
+      run: cat /proc/cpuinfo
     - name: Install APT Dependencies
       run: sudo add-apt-repository 'ppa:ubuntu-toolchain-r/test' && sudo apt-get update && sudo apt-get install -y ninja-build ninja-build python3-pip python3-setuptools python3-wheel parallel gcovr libsleef-dev
     - name: Install pip Dependencies
@@ -294,13 +337,7 @@ jobs:
       run: ninja -C build -v
     - name: Test
       run: |
-        for isax in gfni avx512dq; do
-          for native in native emul; do
-            for lang in c cpp; do
-              ~/sde/sde64 -- sh -xc ./build/test/x86/"${isax}-${native}-${lang}" || exit 1
-            done
-          done
-        done
+        find build/test/ -type f -executable -exec parallel ~/sde/sde64 -- ::: {} \;
     - name: Coverage Report
       run: ninja -C build -v coverage-xml
     - name: CodeCov.io
@@ -322,6 +359,8 @@ jobs:
     - uses: actions/checkout@v2
       with:
         submodules: recursive
+    - name: CPU Information
+      run: cat /proc/cpuinfo
     - name: Install APT Dependencies
       run: sudo add-apt-repository ppa:ubuntu-toolchain-r/test && sudo apt-get update && sudo apt-get -yq install ninja-build parallel "${CC}" "${CXX}"
     - name: Configure
@@ -345,6 +384,8 @@ jobs:
     - uses: actions/checkout@v2
       with:
         submodules: recursive
+    - name: CPU Information
+      run: cat /proc/cpuinfo
     - name: Install APT Dependencies
       run: sudo add-apt-repository ppa:ubuntu-toolchain-r/test && sudo apt-get update && sudo apt-get -yq install ninja-build parallel clang-${{ matrix.version }}
     - name: Configure
@@ -360,13 +401,15 @@ jobs:
       matrix:
         # https://www.jessesquires.com/blog/2020/01/06/selecting-an-xcode-version-on-github-ci/
         # https://github.com/actions/virtual-environments/blob/master/images/macos/macos-10.15-Readme.md#xcode
-        xcode: ["10.3", "11.4", "11.6_beta", "12_beta"]
+        xcode: ["11.4", "11.6_beta", "12_beta"]
     env:
       DEVELOPER_DIR:  /Applications/Xcode_${{ matrix.xcode }}.app
     steps:
     - uses: actions/checkout@v2
       with:
         submodules: recursive
+    - name: System Information
+      run: system_profiler
     - name: Compiler version
       run: cc --version
     - name: Install Homebrew Dependencies

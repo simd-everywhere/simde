@@ -38,8 +38,20 @@ jobs:
   - name: "aarch64"
     if: branch != master OR type == pull_request
     arch: arm64
+    compiler: gcc-10
     env:
+    - C_COMPILER=gcc-10
+    - CXX_COMPILER=g++-10
     - ARCH_FLAGS="-march=armv8-a+simd+crc"
+    - OPTIMIZATION_FLAGS="-O1"
+    addons:
+      apt:
+        sources:
+        - sourceline: "ppa:ubuntu-toolchain-r/test"
+          key_url: https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x60c317803a41ba51845e371a1e9377a2ba9ef27f
+        packages:
+        - gcc-10
+        - g++-10
 
   - name: "ppc64le"
     if: branch != master OR type == pull_request
@@ -64,35 +76,46 @@ jobs:
         - gcc-10
         - g++-10
 
-  - name: "-DSIMDE_NO_SHUFFLE_VECTOR"
+  - name: "MIPS Loongson-MMI (Compile Only)"
     if: branch != master OR type == pull_request
+    arch: amd64
+    compiler: mips64el-linux-gnuabi64-gcc
     env:
-    - COMPILER_FLAGS=-DSIMDE_NO_SHUFFLE_VECTOR
-    - OPTIMIZATION_FLAGS=''
+    - C_COMPILER=mips64el-linux-gnuabi64-gcc
+    - CXX_COMPILER=mips64el-linux-gnuabi64-g++
+    - ARCH_FLAGS="-march=loongson3a"
+    - RUN_TESTS=false
+    addons:
+      apt:
+        packages:
+        - gcc-mips64el-linux-gnuabi64
+        - g++-mips64el-linux-gnuabi64
 
-  - name: "armv8-a"
+  # These next two ere largely to detect missing AVX-512 functions
+  # since Travis is the only CI right now with AVX-512 hardware and SDE
+  # is too slow.
+  - name: "gcc-6"
+    dist: bionic
     if: branch != master OR type == pull_request
-    arch: arm64
     env:
-    - C_COMPILER=arm-linux-gnueabihf-gcc
-    - CXX_COMPILER=arm-linux-gnueabihf-g++
-    - ARCH_FLAGS="-march=armv8-a"
-    install:
-    - sudo dpkg --add-architecture armhf
-    - sudo apt-get update
-    - sudo apt-get -y install crossbuild-essential-armhf libc6:armhf libstdc++6:armhf
+    - C_COMPILER=gcc-6
+    - CXX_COMPILER=g++-6
+    addons:
+      apt:
+        packages:
+          - gcc-6
+          - g++-6
 
-  - name: "armv7-a"
+  - name: "clang-3.5"
+    dist: xenial
     if: branch != master OR type == pull_request
-    arch: arm64
     env:
-    - C_COMPILER=arm-linux-gnueabihf-gcc
-    - CXX_COMPILER=arm-linux-gnueabihf-g++
-    - ARCH_FLAGS="-march=armv7-a"
-    install:
-    - sudo dpkg --add-architecture armhf
-    - sudo apt-get update
-    - sudo apt-get -y install crossbuild-essential-armhf libc6:armhf libstdc++6:armhf
+    - C_COMPILER=clang-3.5
+    - CXX_COMPILER=clang++-3.5
+    addons:
+      apt:
+        packages:
+          - clang-3.5
 
   - name: icc
     if: branch != master OR type == pull_request
@@ -109,7 +132,7 @@ jobs:
         - sourceline: 'deb https://apt.repos.intel.com/oneapi all main'
           key_url: 'https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS-2023.PUB'
         packages:
-        - intel-oneapi-icc
+        - intel-oneapi-compiler-dpcpp-cpp-and-cpp-classic
 
   # - name: "pgcc"
   #   if: branch != master OR type == pull_request

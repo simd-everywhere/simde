@@ -491,7 +491,7 @@ simde_vrshlq_s16 (const simde_int16x8_t a, const simde_int16x8_t b) {
     return _mm_blendv_epi8(_mm_sllv_epi16(a, b_),
                            _mm_srai_epi16(_mm_sub_epi16(a_shr, ff), 1),
                            _mm_cmpgt_epi16(zero, b_));
-  #elif defined(SIMDE_X86_AVX2_NATIVE)
+  #elif defined(SIMDE_X86_AVX2_NATIVE) && defined(SIMDE_ARCH_AMD64)
     const __m256i zero = _mm256_setzero_si256();
     const __m256i ff   = _mm256_cmpeq_epi32(zero, zero);
     __m256i a256 = _mm256_cvtepi16_epi32(a);
@@ -727,7 +727,7 @@ simde_vrshlq_u16 (const simde_uint16x8_t a, const simde_int16x8_t b) {
     return _mm_blendv_epi8(_mm_sllv_epi16(a, b_),
                            _mm_srli_epi16(_mm_sub_epi16(a_shr, ff), 1),
                            _mm_cmpgt_epi16(zero, b_));
-  #elif defined(SIMDE_X86_AVX2_NATIVE)
+  #elif defined(SIMDE_X86_AVX2_NATIVE) && defined(SIMDE_ARCH_AMD64)
     const __m256i zero = _mm256_setzero_si256();
     const __m256i ff   = _mm256_cmpeq_epi32(zero, zero);
     __m256i a256 = _mm256_cvtepu16_epi32(a);
