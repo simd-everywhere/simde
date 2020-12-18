@@ -795,23 +795,28 @@ simde_mm512_permutexvar_epi32 (simde__m512i idx, simde__m512i a) {
         r_.m128i_private[i].neon_u8 = vqtbl4q_u8(table, vreinterpretq_u8_u32(index32));
       }
     #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
-      SIMDE_POWER_ALTIVEC_VECTOR(unsigned int) index32, mask32, byte_index32, temp32, two, eight, sixteen;
+      SIMDE_POWER_ALTIVEC_VECTOR(unsigned int) index32, mask32, byte_index32, temp32, sixteen;
+      SIMDE_POWER_ALTIVEC_VECTOR(unsigned short) zero, shift;
       SIMDE_POWER_ALTIVEC_VECTOR(unsigned char) index, test, r01, r23;
       mask32 = vec_splats(HEDLEY_STATIC_CAST(unsigned int, 0x0000000F));
       byte_index32 = vec_splats(HEDLEY_STATIC_CAST(unsigned int, 0x03020100));
-      two = vec_splat_u32(2);
-      eight = vec_splat_u32(8);
+      zero = vec_splat_u16(0);
+      shift = vec_splats(HEDLEY_STATIC_CAST(unsigned short, 0x0404));
       sixteen = vec_splats(HEDLEY_STATIC_CAST(unsigned int, 16));
       test = vec_splats(HEDLEY_STATIC_CAST(unsigned char, 0x20));
 
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.m128i_private) / sizeof(r_.m128i_private[0])) ; i++) {
         index32 = vec_and(idx_.m128i_private[i].altivec_u32, mask32);
-        index32 = vec_sl(index32, two);
-        temp32 = vec_sl(index32, eight);
-        index32 = vec_add(index32, temp32);
+
+        /* Multiply index32 by 0x04040404; unfortunately vec_mul isn't available so (mis)use 16-bit vec_mladd */
         temp32 = vec_sl(index32, sixteen);
         index32 = vec_add(index32, temp32);
+        index32 = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned int),
+                                          vec_mladd(HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned short), index32),
+                                                    shift,
+                                                    zero));
+
         index32 = vec_add(index32, byte_index32);
         index = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned char), index32);
         r01 = vec_perm(a_.m128i_private[0].altivec_u8, a_.m128i_private[1].altivec_u8, index);
