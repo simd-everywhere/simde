@@ -28,10 +28,6 @@
 #if !defined(SIMDE_X86_AVX512_PERMUTEXVAR_H)
 #define SIMDE_X86_AVX512_PERMUTEXVAR_H
 
-/* Currently (18th December 2020) using emsdk tot many tests fail on wasm with -O0, -O2 and -O3 */
-/* Only -O1 passes all tests */
-#define SIMDE_BUG_EMSCRIPTEN_OPTIMIZATION_FAILURES 1
-
 #include "types.h"
 #include "and.h"
 #include "andnot.h"
@@ -248,7 +244,7 @@ simde_mm256_permutexvar_epi16 (simde__m256i idx, simde__m256i a) {
                                                   a_.m128i_private[1].altivec_u8,
                                                   HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned char), index16));
       }
-    #elif defined(SIMDE_WASM_SIMD128_NATIVE) && !SIMDE_BUG_EMSCRIPTEN_OPTIMIZATION_FAILURES
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       v128_t index, index16, r, t;
       const v128_t mask16 = wasm_i16x8_splat(0x000F);
       const v128_t shift16 = wasm_i16x8_splat(0x0202);
@@ -470,7 +466,7 @@ simde_mm256_permutexvar_epi8 (simde__m256i idx, simde__m256i a) {
       for (size_t i = 0 ; i < (sizeof(r_.m128i_private) / sizeof(r_.m128i_private[0])) ; i++) {
         r_.m128i_private[i].altivec_u8 = vec_perm(a_.m128i_private[0].altivec_u8, a_.m128i_private[1].altivec_u8, idx_.m128i_private[i].altivec_u8);
       }
-    #elif defined(SIMDE_WASM_SIMD128_NATIVE) && !SIMDE_BUG_EMSCRIPTEN_OPTIMIZATION_FAILURES
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       v128_t index, r, t;
       const v128_t mask = wasm_i8x16_splat(0x1F);
       const v128_t sixteen = wasm_i8x16_splat(16);
@@ -683,7 +679,7 @@ simde_mm512_permutexvar_epi16 (simde__m512i idx, simde__m512i a) {
         r23 = vec_perm(a_.m128i_private[2].altivec_u8, a_.m128i_private[3].altivec_u8, index);
         r_.m128i_private[i].altivec_u8 = vec_sel(r01, r23, vec_cmpeq(vec_and(index, test), test));
       }
-    #elif defined(SIMDE_WASM_SIMD128_NATIVE) && !SIMDE_BUG_EMSCRIPTEN_OPTIMIZATION_FAILURES
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       v128_t index, r, t;
       const v128_t mask = wasm_i16x8_splat(0x001F);
       const v128_t shift = wasm_i16x8_splat(0x0202);
@@ -823,7 +819,7 @@ simde_mm512_permutexvar_epi32 (simde__m512i idx, simde__m512i a) {
         r23 = vec_perm(a_.m128i_private[2].altivec_u8, a_.m128i_private[3].altivec_u8, index);
         r_.m128i_private[i].altivec_u8 = vec_sel(r01, r23, vec_cmpeq(vec_and(index, test), test));
       }
-    #elif defined(SIMDE_WASM_SIMD128_NATIVE) && !SIMDE_BUG_EMSCRIPTEN_OPTIMIZATION_FAILURES
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       v128_t index, r, t;
       const v128_t mask = wasm_i32x4_splat(0x0000000F);
       const v128_t shift = wasm_i32x4_splat(0x04040404);
@@ -1025,7 +1021,7 @@ simde_mm512_permutexvar_epi8 (simde__m512i idx, simde__m512i a) {
         r23 = vec_perm(a_.m128i_private[2].altivec_u8, a_.m128i_private[3].altivec_u8, idx_.m128i_private[i].altivec_u8);
         r_.m128i_private[i].altivec_u8 = vec_sel(r01, r23, vec_cmpeq(vec_and(idx_.m128i_private[i].altivec_u8, test), test));
       }
-    #elif defined(SIMDE_WASM_SIMD128_NATIVE) && !SIMDE_BUG_EMSCRIPTEN_OPTIMIZATION_FAILURES
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       v128_t index, r, t;
       const v128_t mask = wasm_i8x16_splat(0x3F);
       const v128_t sixteen = wasm_i8x16_splat(16);
