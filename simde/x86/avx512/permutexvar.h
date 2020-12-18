@@ -534,7 +534,7 @@ simde_mm256_permutexvar_pd (simde__m256i idx, simde__m256d a) {
   #if defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
     return _mm256_permutexvar_pd(idx, a);
   #else
-    return HEDLEY_REINTERPRET_CAST(simde__m256d, simde_mm256_permutexvar_epi64(idx, HEDLEY_REINTERPRET_CAST(simde__m256i, a)));
+    return simde_mm256_castsi256_pd(simde_mm256_permutexvar_epi64(idx, simde_mm256_castpd_si256(a)));
   #endif
 }
 #if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES) || defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES)
@@ -578,7 +578,7 @@ simde_mm256_permutexvar_ps (simde__m256i idx, simde__m256 a) {
   #elif defined(SIMDE_X86_AVX2_NATIVE)
     return simde_mm256_permutevar8x32_ps(a, idx);
   #else
-    return HEDLEY_REINTERPRET_CAST(simde__m256, simde_mm256_permutexvar_epi32(idx, HEDLEY_REINTERPRET_CAST(simde__m256i, a)));
+    return simde_mm256_castsi256_ps(simde_mm256_permutexvar_epi32(idx, simde_mm256_castps_si256(a)));
   #endif
 }
 #if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES) || defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES)
@@ -775,9 +775,9 @@ simde_mm512_permutexvar_epi32 (simde__m512i idx, simde__m512i a) {
         r0 = simde_mm256_permutevar8x32_epi32(a_.m256i[0], index);
         r1 = simde_mm256_permutevar8x32_epi32(a_.m256i[1], index);
         select = simde_mm256_slli_epi32(index, 28);
-        r_.m256i[i] = HEDLEY_REINTERPRET_CAST(simde__m256i, simde_mm256_blendv_ps(HEDLEY_REINTERPRET_CAST(simde__m256, r0),
-                                                                                  HEDLEY_REINTERPRET_CAST(simde__m256, r1),
-                                                                                  HEDLEY_REINTERPRET_CAST(simde__m256, select)));
+        r_.m256i[i] = simde_mm256_castps_si256(simde_mm256_blendv_ps(simde_mm256_castsi256_ps(r0),
+                                                                     simde_mm256_castsi256_ps(r1),
+                                                                     simde_mm256_castsi256_ps(select)));
       }
     #elif defined(SIMDE_ARM_NEON_A64V8_NATIVE)
       uint8x16x4_t table = { { a_.m128i_private[0].neon_u8,
@@ -1095,7 +1095,7 @@ simde_mm512_permutexvar_pd (simde__m512i idx, simde__m512d a) {
   #if defined(SIMDE_X86_AVX512F_NATIVE)
     return _mm512_permutexvar_pd(idx, a);
   #else
-    return HEDLEY_REINTERPRET_CAST(simde__m512d, simde_mm512_permutexvar_epi64(idx, HEDLEY_REINTERPRET_CAST(simde__m512i, a)));
+    return simde_mm512_castsi512_pd(simde_mm512_permutexvar_epi64(idx, simde_mm512_castpd_si512(a)));
   #endif
 }
 #if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
@@ -1137,7 +1137,7 @@ simde_mm512_permutexvar_ps (simde__m512i idx, simde__m512 a) {
   #if defined(SIMDE_X86_AVX512F_NATIVE)
     return _mm512_permutexvar_ps(idx, a);
   #else
-    return HEDLEY_REINTERPRET_CAST(simde__m512, simde_mm512_permutexvar_epi32(idx, HEDLEY_REINTERPRET_CAST(simde__m512i, a)));
+    return simde_mm512_castsi512_ps(simde_mm512_permutexvar_epi32(idx, simde_mm512_castps_si512(a)));
   #endif
 }
 #if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
