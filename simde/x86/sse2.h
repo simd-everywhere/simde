@@ -2352,7 +2352,11 @@ simde_mm_cvtsd_f64 (simde__m128d a) {
     return _mm_cvtsd_f64(a);
   #else
     simde__m128d_private a_ = simde__m128d_to_private(a);
-    return a_.f64[0];
+    #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+      return HEDLEY_STATIC_CAST(simde_float64, vgetq_lane_f64(a_.neon_f64, 0));
+    #else
+      return a_.f64[0];
+    #endif
   #endif
 }
 #if defined(SIMDE_X86_SSE2_ENABLE_NATIVE_ALIASES)
@@ -4135,7 +4139,7 @@ simde_mm_mul_su32 (simde__m64 a, simde__m64 b) {
       b_ = simde__m64_to_private(b);
 
     #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-      r_.u64[0] = vreinterpret_s64_u64(vget_low_u64(vmull_u32(vreinterpret_u32_s64(a), vreinterpret_u32_s64(b))));
+      r_.u64[0] = vget_lane_u64(vget_low_u64(vmull_u32(vreinterpret_u32_s64(a_.neon_i64), vreinterpret_u32_s64(b_.neon_i64))), 0);
     #else
       r_.u64[0] = HEDLEY_STATIC_CAST(uint64_t, a_.u32[0]) * HEDLEY_STATIC_CAST(uint64_t, b_.u32[0]);
     #endif
