@@ -4134,7 +4134,11 @@ simde_mm_mul_su32 (simde__m64 a, simde__m64 b) {
       a_ = simde__m64_to_private(a),
       b_ = simde__m64_to_private(b);
 
-    r_.u64[0] = HEDLEY_STATIC_CAST(uint64_t, a_.u32[0]) * HEDLEY_STATIC_CAST(uint64_t, b_.u32[0]);
+    #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+      r_.u64[0] = vreinterpret_s64_u64(vget_low_u64(vmull_u32(vreinterpret_u32_s64(a), vreinterpret_u32_s64(b))));
+    #else
+      r_.u64[0] = HEDLEY_STATIC_CAST(uint64_t, a_.u32[0]) * HEDLEY_STATIC_CAST(uint64_t, b_.u32[0]);
+    #endif
 
     return simde__m64_from_private(r_);
   #endif
