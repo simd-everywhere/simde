@@ -5097,7 +5097,7 @@ simde_mm_shuffle_epi32 (simde__m128i a, const int imm8)
 #if defined(SIMDE_X86_SSE2_NATIVE)
   #define simde_mm_shuffle_epi32(a, imm8) _mm_shuffle_epi32((a), (imm8))
 #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-  #define _mm_shuffle_epi32(a, imm8)                                   \
+  #define simde_mm_shuffle_epi32(a, imm8)                                   \
     __extension__({                                                         \
         int32x4_t ret;                                                      \
         ret = vmovq_n_s32(                                                  \
