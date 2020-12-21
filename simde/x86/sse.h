@@ -3579,6 +3579,22 @@ HEDLEY_DIAGNOSTIC_POP
 
 #if defined(SIMDE_X86_SSE_NATIVE) && !defined(__PGI)
 #  define simde_mm_shuffle_ps(a, b, imm8) _mm_shuffle_ps(a, b, imm8)
+#elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #define simde_mm_shuffle_ps(a, b, imm8)                                   \
+     __extension__({                                                        \
+        float32x4_t ret;                                                   \
+        ret = vmovq_n_f32(                                                 \
+            vgetq_lane_f32(a, (imm8) & (0x3)));     \
+        ret = vsetq_lane_f32(                                              \
+            vgetq_lane_f32(a, ((imm8) >> 2) & 0x3), \
+            ret, 1);                                                       \
+        ret = vsetq_lane_f32(                                              \
+            vgetq_lane_f32(b, ((imm8) >> 4) & 0x3), \
+            ret, 2);                                                       \
+        ret = vsetq_lane_f32(                                              \
+            vgetq_lane_f32(b, ((imm8) >> 6) & 0x3), \
+            ret, 3);                                                                    \
+    })
 #elif defined(SIMDE_SHUFFLE_VECTOR_)
 #  define simde_mm_shuffle_ps(a, b, imm8) (__extension__ ({ \
       simde__m128_from_private((simde__m128_private) { .f32 = \
