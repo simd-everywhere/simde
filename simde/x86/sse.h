@@ -784,7 +784,10 @@ simde_mm_or_ps (simde__m128 a, simde__m128 b) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128
 simde_x_mm_not_ps(simde__m128 a) {
-  #if defined(SIMDE_X86_SSE2_NATIVE)
+  #if defined(SIMDE_X86_AVX512VL_NATIVE)
+    __m128i ai = _mm_castps_si128(a);
+    return _mm_castsi128_ps(_mm_ternarylogic_epi32(ai, ai, ai, 0x55));
+  #elif defined(SIMDE_X86_SSE2_NATIVE)
     /* Note: we use ints instead of floats because we don't want cmpeq
      * to return false for (NaN, NaN) */
     __m128i ai = _mm_castps_si128(a);
