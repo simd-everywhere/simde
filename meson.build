@@ -1,7 +1,7 @@
 project('SIMDe', 'c', 'cpp',
         default_options: ['c_std=c99'],
         license: 'MIT',
-        version: '0.7.0-rc.1')
+        version: '0.7.0-rc2')
 
 cc = meson.get_compiler('c')
 cxx = meson.get_compiler('cpp')
