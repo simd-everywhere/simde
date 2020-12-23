@@ -3092,14 +3092,25 @@ simde_mm_mulhi_pu16 (simde__m64 a, simde__m64 b) {
 #  define _m_pmulhuw(a, b) simde_mm_mulhi_pu16(a, b)
 #endif
 
-#define SIMDE_MM_HINT_NTA  0
-#define SIMDE_MM_HINT_T0   1
-#define SIMDE_MM_HINT_T1   2
-#define SIMDE_MM_HINT_T2   3
-#define SIMDE_MM_HINT_ENTA 4
-#define SIMDE_MM_HINT_ET0  5
-#define SIMDE_MM_HINT_ET1  6
-#define SIMDE_MM_HINT_ET2  7
+#if defined(SIMDE_X86_SSE_NATIVE) && defined(HEDLEY_GCC_VERSION)
+  #define SIMDE_MM_HINT_NTA  HEDLEY_STATIC_CAST(enum _mm_hint, 0)
+  #define SIMDE_MM_HINT_T0   HEDLEY_STATIC_CAST(enum _mm_hint, 1)
+  #define SIMDE_MM_HINT_T1   HEDLEY_STATIC_CAST(enum _mm_hint, 2)
+  #define SIMDE_MM_HINT_T2   HEDLEY_STATIC_CAST(enum _mm_hint, 3)
+  #define SIMDE_MM_HINT_ENTA HEDLEY_STATIC_CAST(enum _mm_hint, 4)
+  #define SIMDE_MM_HINT_ET0  HEDLEY_STATIC_CAST(enum _mm_hint, 5)
+  #define SIMDE_MM_HINT_ET1  HEDLEY_STATIC_CAST(enum _mm_hint, 6)
+  #define SIMDE_MM_HINT_ET2  HEDLEY_STATIC_CAST(enum _mm_hint, 7)
+#else
+  #define SIMDE_MM_HINT_NTA  0
+  #define SIMDE_MM_HINT_T0   1
+  #define SIMDE_MM_HINT_T1   2
+  #define SIMDE_MM_HINT_T2   3
+  #define SIMDE_MM_HINT_ENTA 4
+  #define SIMDE_MM_HINT_ET0  5
+  #define SIMDE_MM_HINT_ET1  6
+  #define SIMDE_MM_HINT_ET2  7
+#endif
 
 #if defined(SIMDE_X86_SSE_ENABLE_NATIVE_ALIASES)
   HEDLEY_DIAGNOSTIC_PUSH
