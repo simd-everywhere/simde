@@ -1017,6 +1017,26 @@ SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
   #endif
 #endif
 
+#if !defined(simde_math_modf)
+  #if SIMDE_MATH_BUILTIN_LIBM(modf)
+    #define simde_math_modf(x, iptr) __builtin_modf(x, iptr)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_modf(x, iptr) std::modf(x, iptr)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_modf(x, iptr) modf(x, iptr)
+  #endif
+#endif
+
+#if !defined(simde_math_modff)
+  #if SIMDE_MATH_BUILTIN_LIBM(modff)
+    #define simde_math_modff(x, iptr) __builtin_modff(x, iptr)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_modff(x, iptr) std::modf(x, iptr)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_modff(x, iptr) modff(x, iptr)
+  #endif
+#endif
+
 #if !defined(simde_math_nearbyint)
   #if SIMDE_MATH_BUILTIN_LIBM(nearbyint)
     #define simde_math_nearbyint(v) __builtin_nearbyint(v)
