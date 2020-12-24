@@ -840,10 +840,6 @@ HEDLEY_DIAGNOSTIC_POP
 #  elif defined(HEDLEY_INTEL_VERSION)
 #    define SIMDE_BUG_INTEL_857088
 #  endif
-#  if defined(HEDLEY_EMSCRIPTEN_VERSION)
-#    define SIMDE_BUG_EMSCRIPTEN_MISSING_IMPL /* Placeholder for (as yet) unfiled issues. */
-#    define SIMDE_BUG_EMSCRIPTEN_5242
-#  endif
 #endif
 
 /* GCC and Clang both have the same issue:
