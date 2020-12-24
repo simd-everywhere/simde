@@ -2331,8 +2331,7 @@ simde_mm_extract_pi16 (simde__m64 a, const int imm8)
   return a_.i16[imm8];
 }
 #if defined(SIMDE_X86_SSE_NATIVE) && defined(SIMDE_X86_MMX_NATIVE) && !defined(HEDLEY_PGI_VERSION)
-#  if HEDLEY_HAS_WARNING("-Wvector-conversion")
-     /* https://bugs.llvm.org/show_bug.cgi?id=44589 */
+#  if defined(SIMDE_BUG_CLANG_44589)
 #    define simde_mm_extract_pi16(a, imm8) ( \
          HEDLEY_DIAGNOSTIC_PUSH \
          _Pragma("clang diagnostic ignored \"-Wvector-conversion\"") \
@@ -2365,8 +2364,7 @@ simde_mm_insert_pi16 (simde__m64 a, int16_t i, const int imm8)
   return simde__m64_from_private(r_);
 }
 #if defined(SIMDE_X86_SSE_NATIVE) && defined(SIMDE_X86_MMX_NATIVE) && !defined(__PGI)
-#  if HEDLEY_HAS_WARNING("-Wvector-conversion")
-     /* https://bugs.llvm.org/show_bug.cgi?id=44589 */
+#  if defined(SIMDE_BUG_CLANG_44589)
 #    define ssimde_mm_insert_pi16(a, i, imm8) ( \
          HEDLEY_DIAGNOSTIC_PUSH \
          _Pragma("clang diagnostic ignored \"-Wvector-conversion\"") \

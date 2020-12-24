@@ -777,22 +777,13 @@ HEDLEY_DIAGNOSTIC_POP
 #      define SIMDE_BUG_GCC_REV_247851
 #    endif
 #    if !HEDLEY_GCC_VERSION_CHECK(10,0,0)
-#      define SIMDE_BUG_GCC_REV_274313
 #      define SIMDE_BUG_GCC_91341
-#    endif
-#    if !HEDLEY_GCC_VERSION_CHECK(9,0,0) && defined(SIMDE_ARCH_AARCH64)
-#      define SIMDE_BUG_GCC_ARM_SHIFT_SCALAR
 #    endif
 #    if defined(SIMDE_ARCH_X86) && !defined(SIMDE_ARCH_AMD64)
 #      define SIMDE_BUG_GCC_94482
 #    endif
 #    if (defined(SIMDE_ARCH_X86) && !defined(SIMDE_ARCH_AMD64)) || defined(SIMDE_ARCH_SYSTEMZ)
 #      define SIMDE_BUG_GCC_53784
-#    endif
-#    if defined(SIMDE_ARCH_X86) || defined(SIMDE_ARCH_AMD64)
-#      if HEDLEY_GCC_VERSION_CHECK(4,3,0) /* -Wsign-conversion */
-#        define SIMDE_BUG_GCC_95144
-#      endif
 #    endif
 #    if !HEDLEY_GCC_VERSION_CHECK(9,4,0) && defined(SIMDE_ARCH_AARCH64)
 #      define SIMDE_BUG_GCC_94488
@@ -825,21 +816,12 @@ HEDLEY_DIAGNOSTIC_POP
 #      define SIMDE_BUG_CLANG_POWER9_16x4_BAD_SHIFT
 #    endif
 #    if defined(SIMDE_ARCH_X86) || defined(SIMDE_ARCH_AMD64)
-#      if HEDLEY_HAS_WARNING("-Wsign-conversion") && SIMDE_DETECT_CLANG_VERSION_NOT(11,0,0)
-#        define SIMDE_BUG_CLANG_45931
+#      if HEDLEY_HAS_WARNING("-Wvector-conversion") && SIMDE_DETECT_CLANG_VERSION_NOT(11,0,0)
+#        define SIMDE_BUG_CLANG_44589
 #      endif
-#    endif
-#    define SIMDE_BUG_CLANG_45959
-#  elif defined(HEDLEY_MSVC_VERSION)
-#    if defined(SIMDE_ARCH_X86)
-#      define SIMDE_BUG_MSVC_ROUND_EXTRACT
 #    endif
 #  elif defined(HEDLEY_INTEL_VERSION)
 #    define SIMDE_BUG_INTEL_857088
-#  endif
-#  if defined(HEDLEY_EMSCRIPTEN_VERSION)
-#    define SIMDE_BUG_EMSCRIPTEN_MISSING_IMPL /* Placeholder for (as yet) unfiled issues. */
-#    define SIMDE_BUG_EMSCRIPTEN_5242
 #  endif
 #endif
 
