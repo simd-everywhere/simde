@@ -21,6 +21,7 @@
  * SOFTWARE.
  */
 
+#include "test/test.h"
 #define SIMDE_TESTS_CURRENT_ISAX sse2
 #include <simde/x86/sse2.h>
 #include <test/x86/test-sse2.h>
@@ -6255,38 +6256,36 @@ test_simde_mm_set1_epi16(SIMDE_MUNIT_TEST_ARGS) {
 }
 
 static int
-test_simde_mm_set1_epi32(SIMDE_MUNIT_TEST_ARGS) {
-  const struct {
-    int32_t a;
-    simde__m128i r;
-  } test_vec[8] = {
-    { 1762656528,
-      simde_mm_set_epi32(INT32_C( 1762656528), INT32_C( 1762656528), INT32_C( 1762656528), INT32_C( 1762656528)) },
-    { 2090029949,
-      simde_mm_set_epi32(INT32_C( 2090029949), INT32_C( 2090029949), INT32_C( 2090029949), INT32_C( 2090029949)) },
-    { -1430846200,
-      simde_mm_set_epi32(INT32_C(-1430846200), INT32_C(-1430846200), INT32_C(-1430846200), INT32_C(-1430846200)) },
-    { 650482146,
-      simde_mm_set_epi32(INT32_C(  650482146), INT32_C(  650482146), INT32_C(  650482146), INT32_C(  650482146)) },
-    { 118741357,
-      simde_mm_set_epi32(INT32_C(  118741357), INT32_C(  118741357), INT32_C(  118741357), INT32_C(  118741357)) },
-    { 1582540852,
-      simde_mm_set_epi32(INT32_C( 1582540852), INT32_C( 1582540852), INT32_C( 1582540852), INT32_C( 1582540852)) },
-    { 1534932294,
-      simde_mm_set_epi32(INT32_C( 1534932294), INT32_C( 1534932294), INT32_C( 1534932294), INT32_C( 1534932294)) },
-    { 571188734,
-      simde_mm_set_epi32(INT32_C(  571188734), INT32_C(  571188734), INT32_C(  571188734), INT32_C(  571188734)) },
-
+test_simde_mm_set1_epi32 (SIMDE_MUNIT_TEST_ARGS) {
+  static const struct {
+    const int32_t a;
+    const int32_t r[4];
+  } test_vec[] = {
+    { -INT32_C(  1379277210),
+      { -INT32_C(  1379277210), -INT32_C(  1379277210), -INT32_C(  1379277210), -INT32_C(  1379277210) } },
+    {  INT32_C(  1628685468),
+      {  INT32_C(  1628685468),  INT32_C(  1628685468),  INT32_C(  1628685468),  INT32_C(  1628685468) } },
+    {  INT32_C(  1687738541),
+      {  INT32_C(  1687738541),  INT32_C(  1687738541),  INT32_C(  1687738541),  INT32_C(  1687738541) } },
+    {  INT32_C(  1891425133),
+      {  INT32_C(  1891425133),  INT32_C(  1891425133),  INT32_C(  1891425133),  INT32_C(  1891425133) } },
+    {  INT32_C(  1695660386),
+      {  INT32_C(  1695660386),  INT32_C(  1695660386),  INT32_C(  1695660386),  INT32_C(  1695660386) } },
+    {  INT32_C(  1846447439),
+      {  INT32_C(  1846447439),  INT32_C(  1846447439),  INT32_C(  1846447439),  INT32_C(  1846447439) } },
+    {  INT32_C(   958687000),
+      {  INT32_C(   958687000),  INT32_C(   958687000),  INT32_C(   958687000),  INT32_C(   958687000) } },
+    { -INT32_C(  1238079408),
+      { -INT32_C(  1238079408), -INT32_C(  1238079408), -INT32_C(  1238079408), -INT32_C(  1238079408) } }
   };
 
-  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
     simde__m128i r = simde_mm_set1_epi32(test_vec[i].a);
-    simde_assert_m128i_i16(r, ==, test_vec[i].r);
+    simde_test_x86_assert_equal_i32x4(r, simde_x_mm_loadu_epi32(test_vec[i].r));
   }
 
   return 0;
 }
-
 
 static int
 test_simde_mm_set1_pd(SIMDE_MUNIT_TEST_ARGS) {
