@@ -66,6 +66,7 @@ simde_x_permutex2var128 (const simde__m128i *a, const simde__m128i idx, const si
 
     /* Avoid the mullo intrinsics which have high latency (and the 32-bit one requires SSE4.1) */
     switch (log2_index_size) {
+    default:  /* Avoid uninitialized variable warning/error */
     case 0:
       index = _mm_and_si128(idx, _mm_set1_epi8(HEDLEY_STATIC_CAST(int8_t, idx_mask)));
       break;
@@ -174,6 +175,7 @@ simde_x_permutex2var128 (const simde__m128i *a, const simde__m128i idx, const si
     SIMDE_POWER_ALTIVEC_VECTOR(SIMDE_POWER_ALTIVEC_BOOL char) select, test;
 
     switch (log2_index_size) {
+    default:  /* Avoid uninitialized variable warning/error */
     case 0:
       index = vec_and(simde__m128i_to_altivec_u8(idx), vec_splats(HEDLEY_STATIC_CAST(uint8_t, idx_mask)));
       break;
