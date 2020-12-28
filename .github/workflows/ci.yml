@@ -424,3 +424,36 @@ jobs:
       uses: codecov/codecov-action@v1
       with:
         file: ./build/meson-logs/coverage.xml
+
+  icc:
+    runs-on: ubuntu-latest
+    env:
+      CC: /home/runner/.local/bin/icc
+      CXX: /home/runner/.local/bin/icpc
+      CFLAGS: -Werror -wd13200 -wd13203 -wd16219 -Wall -Werror -march=native
+      CXXFLAGS: -wd13200 -wd13203 -wd16219 -Wall -Werror -march=native
+    steps:
+    - uses: actions/checkout@v2
+    - name: CPU Information
+      run: cat /proc/cpuinfo
+    - name: Install APT Dependencies
+      run: sudo apt-get install -y ninja-build ninja-build python3-pip python3-setuptools python3-wheel
+    - name: Install ICC
+      run: |
+        curl -s https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS-2023.PUB | sudo apt-key add -
+        sudo add-apt-repository 'deb https://apt.repos.intel.com/oneapi all main'
+        sudo apt-get update
+        sudo apt-get install -y intel-oneapi-compiler-dpcpp-cpp-and-cpp-classic ninja-build ninja-build python3-pip python3-setuptools python3-wheel
+        mkdir -p ~/.local/bin/ || true
+        for exe in icc icpc; do
+          printf '#!/bin/bash\nARGS="$@"\nsource /opt/intel/oneapi/compiler/latest/env/vars.sh >/dev/null\n%s ${ARGS}\n' "${exe}" > ~/.local/bin/"${exe}"
+          chmod 0755 ~/.local/bin/"${exe}";
+        done
+    - name: Install pip Dependencies
+      run: pip3 install meson
+    - name: Configure
+      run: ~/.local/bin/meson setup build
+    - name: Build
+      run: ninja -C build -v
+    - name: Test
+      run: ninja -C build -v test

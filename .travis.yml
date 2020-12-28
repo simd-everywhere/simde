@@ -117,23 +117,6 @@ jobs:
         packages:
           - clang-3.5
 
-  - name: icc
-    if: branch != master OR type == pull_request
-    compiler: icc
-    env:
-    - C_COMPILER=icc
-    - CXX_COMPILER=icpc
-    - DIAGNOSTIC_FLAGS='-wd13200 -wd13203 -wd16219 -Wall'
-    install:
-    - source /opt/intel/oneapi/compiler/latest/env/vars.sh
-    addons:
-      apt:
-        sources:
-        - sourceline: 'deb https://apt.repos.intel.com/oneapi all main'
-          key_url: 'https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS-2023.PUB'
-        packages:
-        - intel-oneapi-compiler-dpcpp-cpp-and-cpp-classic
-
   # - name: "pgcc"
   #   if: branch != master OR type == pull_request
   #   env:
