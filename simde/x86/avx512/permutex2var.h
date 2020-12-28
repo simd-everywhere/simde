@@ -125,23 +125,23 @@ simde_x_permutex2var128 (const simde__m128i *a, const simde__m128i idx, const si
 
     switch (log2_index_size) {
     case 0:
-      index = vandq_u8(simde__m128i_to_neon_u8(idx), vdupq_n_u8(HEDLEY_STATIC_CAST(int8_t, idx_mask)));
+      index = vandq_u8(simde__m128i_to_neon_u8(idx), vdupq_n_u8(HEDLEY_STATIC_CAST(uint8_t, idx_mask)));
       break;
     case 1:
-      index16 = vandq_u16(simde__m128i_to_neon_u16(idx), vdupq_n_u16(HEDLEY_STATIC_CAST(int16_t, idx_mask)));
+      index16 = vandq_u16(simde__m128i_to_neon_u16(idx), vdupq_n_u16(HEDLEY_STATIC_CAST(uint16_t, idx_mask)));
       index16 = vmulq_n_u16(index16, 0x0202);
       index16 = vaddq_u16(index16, vdupq_n_u16(0x0100));
       index = vreinterpretq_u8_u16(index16);
       break;
     case 2:
-      index32 = vandq_u32(simde__m128i_to_neon_u32(idx), vdupq_n_u32(HEDLEY_STATIC_CAST(int32_t, idx_mask)));
+      index32 = vandq_u32(simde__m128i_to_neon_u32(idx), vdupq_n_u32(HEDLEY_STATIC_CAST(uint32_t, idx_mask)));
       index32 = vmulq_n_u32(index32, 0x04040404);
       index32 = vaddq_u32(index32, vdupq_n_u32(0x03020100));
       index = vreinterpretq_u8_u32(index32);
       break;
     }
 
-    uint8x16_t mask = vdupq_n_u8(HEDLEY_STATIC_CAST(int8_t, (1 << (4 + log2_data_length)) - 1));
+    uint8x16_t mask = vdupq_n_u8(HEDLEY_STATIC_CAST(uint8_t, (1 << (4 + log2_data_length)) - 1));
 
     switch (log2_data_length) {
     case 0:
