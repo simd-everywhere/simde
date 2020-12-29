@@ -2479,7 +2479,11 @@ simde_mm_loadh_pi (simde__m128 a, simde__m64 const* mem_addr) {
   #endif
 }
 #if defined(SIMDE_X86_SSE_ENABLE_NATIVE_ALIASES)
-#  define _mm_loadh_pi(a, mem_addr) simde_mm_loadh_pi((a), (simde__m64 const*) (mem_addr))
+  #if HEDLEY_HAS_WARNING("-Wold-style-cast")
+    #define _mm_loadh_pi(a, mem_addr) simde_mm_loadh_pi((a), HEDLEY_REINTERPRET_CAST(simde__m64 const*, (mem_addr)))
+  #else
+    #define _mm_loadh_pi(a, mem_addr) simde_mm_loadh_pi((a), (simde__m64 const*) (mem_addr))
+  #endif
 #endif
 
 /* The SSE documentation says that there are no alignment requirements
@@ -2517,7 +2521,11 @@ simde_mm_loadl_pi (simde__m128 a, simde__m64 const* mem_addr) {
   #endif
 }
 #if defined(SIMDE_X86_SSE_ENABLE_NATIVE_ALIASES)
-#  define _mm_loadl_pi(a, mem_addr) simde_mm_loadl_pi((a), (simde__m64 const*) (mem_addr))
+  #if HEDLEY_HAS_WARNING("-Wold-style-cast")
+    #define _mm_loadl_pi(a, mem_addr) simde_mm_loadl_pi((a), HEDLEY_REINTERPRET_CAST(simde__m64 const*, (mem_addr)))
+  #else
+    #define _mm_loadl_pi(a, mem_addr) simde_mm_loadl_pi((a), (simde__m64 const*) (mem_addr))
+  #endif
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES

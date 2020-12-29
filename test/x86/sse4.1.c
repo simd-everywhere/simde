@@ -1519,7 +1519,7 @@ test_simde_mm_extract_epi8(SIMDE_MUNIT_TEST_ARGS) {
   };
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
-    int8_t r = simde_mm_extract_epi8(test_vec[i].a, 2);
+    int8_t r = HEDLEY_STATIC_CAST(int8_t, simde_mm_extract_epi8(test_vec[i].a, 2));
     simde_assert_equal_i8(r, test_vec[i].r);
   }
 

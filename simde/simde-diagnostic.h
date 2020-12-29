@@ -181,7 +181,10 @@
  * before we can access certain SIMD intrinsics, but this diagnostic
  * warns about it being a reserved name.  It is a reserved name, but
  * it's reserved for the compiler and we are using it to convey
- * information to the compiler. */
+ * information to the compiler.
+ *
+ * This is also used when enabling native aliases since we don't get to
+ * choose the macro names. */
 #if HEDLEY_HAS_WARNING("-Wdouble-promotion")
   #define SIMDE_DIAGNOSTIC_DISABLE_RESERVED_ID_MACRO_ _Pragma("clang diagnostic ignored \"-Wreserved-id-macro\"")
 #else
@@ -377,7 +380,15 @@
   #define SIMDE_DIAGNOSTIC_DISABLE_MAYBE_UNINITIAZILED_
 #endif
 
+#if defined(SIMDE_ENABLE_NATIVE_ALIASES)
+  #define SIMDE_DISABLE_UNWANTED_DIAGNOSTICS_NATIVE_ALIASES_ \
+    SIMDE_DIAGNOSTIC_DISABLE_RESERVED_ID_MACRO_
+#else
+  #define SIMDE_DISABLE_UNWANTED_DIAGNOSTICS_NATIVE_ALIASES_
+#endif
+
 #define SIMDE_DISABLE_UNWANTED_DIAGNOSTICS \
+  SIMDE_DISABLE_UNWANTED_DIAGNOSTICS_NATIVE_ALIASES_ \
   SIMDE_DIAGNOSTIC_DISABLE_PSABI_ \
   SIMDE_DIAGNOSTIC_DISABLE_NO_EMMS_INSTRUCTION_ \
   SIMDE_DIAGNOSTIC_DISABLE_SIMD_PRAGMA_DEPRECATED_ \

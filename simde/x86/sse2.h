@@ -5243,7 +5243,7 @@ simde_mm_shufflelo_epi16 (simde__m128i a, const int imm8)
 #if defined(SIMDE_X86_SSE2_NATIVE)
   #define simde_mm_shufflelo_epi16(a, imm8) _mm_shufflelo_epi16((a), (imm8))
 #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-  #define _mm_shufflelo_epi16(a, imm8)                                  \
+  #define simde_mm_shufflelo_epi16(a, imm8)                                  \
     __extension__({                                                           \
         int16x8_t ret = vreinterpretq_s16_s64(a);                           \
         int16x4_t lowBits = vget_low_s16(ret);                                \
