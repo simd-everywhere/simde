@@ -3,6 +3,9 @@
 #include "test-neon.h"
 #include "../../../simde/arm/neon/st1_lane.h"
 
+HEDLEY_DIAGNOSTIC_PUSH
+SIMDE_DIAGNOSTIC_DISABLE_UNREACHABLE_
+
 static int
 test_simde_vst1_lane_f32 (SIMDE_MUNIT_TEST_ARGS) {
 #if 1
@@ -1189,6 +1192,8 @@ test_simde_vst1q_lane_u64 (SIMDE_MUNIT_TEST_ARGS) {
   return 1;
 #endif
 }
+
+HEDLEY_DIAGNOSTIC_POP
 
 SIMDE_TEST_FUNC_LIST_BEGIN
 SIMDE_TEST_FUNC_LIST_ENTRY(vst1_lane_f32)

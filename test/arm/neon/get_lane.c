@@ -3,6 +3,9 @@
 #include "test-neon.h"
 #include "../../../simde/arm/neon/get_lane.h"
 
+HEDLEY_DIAGNOSTIC_PUSH
+SIMDE_DIAGNOSTIC_DISABLE_UNREACHABLE_
+
 static int
 test_simde_vget_lane_f32 (SIMDE_MUNIT_TEST_ARGS) {
   struct {
@@ -899,6 +902,8 @@ test_simde_vgetq_lane_u64 (SIMDE_MUNIT_TEST_ARGS) {
 
   return 0;
 }
+
+HEDLEY_DIAGNOSTIC_POP
 
 SIMDE_TEST_FUNC_LIST_BEGIN
 SIMDE_TEST_FUNC_LIST_ENTRY(vget_lane_f32)
