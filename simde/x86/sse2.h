@@ -2631,7 +2631,7 @@ simde_mm_cvtps_epi32 (simde__m128 a) {
       r_.altivec_i32 = vec_cts(a_.altivec_f32, 1);
       HEDLEY_DIAGNOSTIC_POP
     #else
-      a_ = simde__m128_to_private(simde_x_mm_round_ps(simde__m128_from_private(a_), SIMDE_MM_FROUND_TO_NEAREST_INT, 1));
+      a_ = simde__m128_to_private(simde_x_mm_round_ps(a, SIMDE_MM_FROUND_TO_NEAREST_INT, 1));
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {
         r_.i32[i] = HEDLEY_STATIC_CAST(int32_t, a_.f32[i]);
