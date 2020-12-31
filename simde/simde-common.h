@@ -112,6 +112,16 @@
   #define SIMDE_FAST_ROUND_TIES
 #endif
 
+/* For functions which convert from one type to another (mostly from
+ * floating point to integer types), sometimes we need to do a range
+ * check and potentially return a different result if the value
+ * falls outside that range.  Skipping this check can provide a
+ * performance boost, at the expense of faithfulness to the API we're
+ * emulating. */
+#if !defined(SIMDE_FAST_CONVERSION_RANGE) && !defined(SIMDE_NO_FAST_CONVERSION_RANGE) && defined(SIMDE_FAST_MATH)
+  #define SIMDE_FAST_CONVERSION_RANGE
+#endif
+
 #if \
     HEDLEY_HAS_BUILTIN(__builtin_constant_p) || \
     HEDLEY_GCC_VERSION_CHECK(3,4,0) || \

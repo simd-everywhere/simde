@@ -1948,12 +1948,18 @@ simde_mm_cvtps_pi32 (simde__m128 a) {
     simde__m64_private r_;
     simde__m128_private a_ = simde__m128_to_private(a);
 
-    #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && !defined(SIMDE_BUG_GCC_95399)
+    #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_FAST_CONVERSION_RANGE) && !defined(SIMDE_BUG_GCC_95399)
       r_.neon_i32 = vcvt_s32_f32(vget_low_f32(vrndiq_f32(a_.neon_f32)));
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {
-        r_.i32[i] = SIMDE_CONVERT_FTOI(int32_t, simde_math_roundf(a_.f32[i]));
+        simde_float32 v = simde_math_roundf(a_.f32[i]);
+        #if !defined(SIMDE_FAST_CONVERSION_RANGE)
+          r_.i32[i] = ((v > HEDLEY_STATIC_CAST(simde_float32, INT32_MIN)) && (v < HEDLEY_STATIC_CAST(simde_float32, INT32_MAX))) ?
+            SIMDE_CONVERT_FTOI(int32_t, v) : INT32_MIN;
+        #else
+          r_.i32[i] = SIMDE_CONVERT_FTOI(int32_t, v);
+        #endif
       }
     #endif
 
@@ -2161,14 +2167,18 @@ simde_mm_cvtt_ps2pi (simde__m128 a) {
     simde__m64_private r_;
     simde__m128_private a_ = simde__m128_to_private(a);
 
-    #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_FAST_CONVERSION_RANGE)
       r_.neon_i32 = vcvt_s32_f32(vget_low_f32(a_.neon_f32));
-    #elif defined(SIMDE_CONVERT_VECTOR_)
-      SIMDE_CONVERT_VECTOR_(r_.i32, a_.m64_private[0].f32);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
-        r_.i32[i] = SIMDE_CONVERT_FTOI(int32_t, a_.f32[i]);
+        simde_float32 v = a_.f32[i];
+        #if !defined(SIMDE_FAST_CONVERSION_RANGE)
+          r_.i32[i] = ((v > HEDLEY_STATIC_CAST(simde_float32, INT32_MIN)) && (v < HEDLEY_STATIC_CAST(simde_float32, INT32_MAX))) ?
+            SIMDE_CONVERT_FTOI(int32_t, v) : INT32_MIN;
+        #else
+          r_.i32[i] = SIMDE_CONVERT_FTOI(int32_t, v);
+        #endif
       }
     #endif
 
@@ -2189,10 +2199,16 @@ simde_mm_cvtt_ss2si (simde__m128 a) {
   #else
     simde__m128_private a_ = simde__m128_to_private(a);
 
-    #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_FAST_CONVERSION_RANGE)
       return SIMDE_CONVERT_FTOI(int32_t, vgetq_lane_f32(a_.neon_f32, 0));
     #else
-      return SIMDE_CONVERT_FTOI(int32_t, a_.f32[0]);
+      simde_float32 v = a_.f32[0];
+      #if !defined(SIMDE_FAST_CONVERSION_RANGE)
+        return ((v > HEDLEY_STATIC_CAST(simde_float32, INT32_MIN)) && (v < HEDLEY_STATIC_CAST(simde_float32, INT32_MAX))) ?
+          SIMDE_CONVERT_FTOI(int32_t, v) : INT32_MIN;
+      #else
+        return SIMDE_CONVERT_FTOI(int32_t, v);
+      #endif
     #endif
   #endif
 }
