@@ -60,7 +60,11 @@ def get_default_job():
     "trigger": {
       "branch": {
         "exclude": [
-          "master"
+          "master",
+          "ci/**"
+        ],
+        "include": [
+          "ci/drone**"
         ]
       }
     }

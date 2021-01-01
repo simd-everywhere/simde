@@ -6,6 +6,8 @@ agent:
     os_image: ubuntu1804
 blocks:
   - name: CI
+    skip:
+      when: "branch = 'master' OR (branch !~ '^ci/semaphore(/.*)?' AND branch =~ '^ci/.+')"
     task:
       jobs:
         - name: GCC
