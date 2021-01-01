@@ -2167,31 +2167,46 @@ test_simde_mm_cvt_si2ss(SIMDE_MUNIT_TEST_ARGS) {
 }
 
 static int
-test_simde_mm_cvt_ss2si(SIMDE_MUNIT_TEST_ARGS) {
-  const struct {
-    simde__m128 a;
-    int32_t r;
-  } test_vec[8] = {
-    { simde_mm_set_ps(SIMDE_FLOAT32_C(  -664.74), SIMDE_FLOAT32_C(  -351.36), SIMDE_FLOAT32_C(   921.54), SIMDE_FLOAT32_C(  -369.61)),
-      -370 },
-    { simde_mm_set_ps(SIMDE_FLOAT32_C(   771.32), SIMDE_FLOAT32_C(    26.79), SIMDE_FLOAT32_C(   121.70), SIMDE_FLOAT32_C(   126.41)),
-      126 },
-    { simde_mm_set_ps(SIMDE_FLOAT32_C(   672.24), SIMDE_FLOAT32_C(  -228.21), SIMDE_FLOAT32_C(  -487.97), SIMDE_FLOAT32_C(   370.22)),
-      370 },
-    { simde_mm_set_ps(SIMDE_FLOAT32_C(   -93.41), SIMDE_FLOAT32_C(  -359.95), SIMDE_FLOAT32_C(  -336.38), SIMDE_FLOAT32_C(   627.55)),
-      628 },
-    { simde_mm_set_ps(SIMDE_FLOAT32_C(  -867.28), SIMDE_FLOAT32_C(  -790.69), SIMDE_FLOAT32_C(    18.38), SIMDE_FLOAT32_C(  -425.80)),
-      -426 },
-    { simde_mm_set_ps(SIMDE_FLOAT32_C(  -104.96), SIMDE_FLOAT32_C(  -928.48), SIMDE_FLOAT32_C(   913.27), SIMDE_FLOAT32_C(  -917.48)),
-      -917 },
-    { simde_mm_set_ps(SIMDE_FLOAT32_C(  -346.94), SIMDE_FLOAT32_C(  -701.32), SIMDE_FLOAT32_C(   578.50), SIMDE_FLOAT32_C(  -817.36)),
-      -817 },
-    { simde_mm_set_ps(SIMDE_FLOAT32_C(  -129.57), SIMDE_FLOAT32_C(  -178.92), SIMDE_FLOAT32_C(   982.38), SIMDE_FLOAT32_C(   222.15)),
-      222 }
+test_simde_mm_cvt_ss2si (SIMDE_MUNIT_TEST_ARGS) {
+  static const struct {
+    const simde_float32 a[4];
+    const int32_t r;
+  } test_vec[] = {
+    #if !defined(SIMDE_FAST_NANS)
+    { {            SIMDE_MATH_NANF, SIMDE_FLOAT32_C(  -434.80), SIMDE_FLOAT32_C(   718.49), SIMDE_FLOAT32_C(  -765.08) },
+                 INT32_MIN },
+    { {           -SIMDE_MATH_NANF, SIMDE_FLOAT32_C(   610.10),            SIMDE_MATH_NANF, SIMDE_FLOAT32_C(  -238.39) },
+                 INT32_MIN },
+    #endif
+    #if !defined(SIMDE_FAST_CONVERSION_RANGE)
+    { { HEDLEY_STATIC_CAST(float, INT32_MAX), SIMDE_FLOAT32_C(   264.19), SIMDE_FLOAT32_C(  -247.70), SIMDE_FLOAT32_C(  -466.34) },
+                 INT32_MIN },
+    { { HEDLEY_STATIC_CAST(float, INT32_MIN), SIMDE_FLOAT32_C(  -656.10), SIMDE_FLOAT32_C(   528.97), SIMDE_FLOAT32_C(  -664.65) },
+      -INT32_C(  2147483648) },
+    { { HEDLEY_STATIC_CAST(float, INT32_MAX - 100), SIMDE_FLOAT32_C(  -572.40), SIMDE_FLOAT32_C(   986.43), SIMDE_FLOAT32_C(   789.86) },
+       INT32_C(  2147483520) },
+    { { HEDLEY_STATIC_CAST(float, INT32_MIN + 100), SIMDE_FLOAT32_C(  -226.55), SIMDE_FLOAT32_C(  -926.20), SIMDE_FLOAT32_C(   130.01) },
+      -INT32_C(  2147483520) },
+    #endif
+    { { SIMDE_FLOAT32_C(   555.67), SIMDE_FLOAT32_C(   330.04), SIMDE_FLOAT32_C(  -110.18), SIMDE_FLOAT32_C(   679.85) },
+       INT32_C(         556) },
+    { { SIMDE_FLOAT32_C(   809.05), SIMDE_FLOAT32_C(  -456.06), SIMDE_FLOAT32_C(   886.35), SIMDE_FLOAT32_C(   696.23) },
+       INT32_C(         809) },
+    { { SIMDE_FLOAT32_C(  -676.99), SIMDE_FLOAT32_C(   517.95), SIMDE_FLOAT32_C(   287.44), SIMDE_FLOAT32_C(  -885.31) },
+      -INT32_C(         677) },
+    { { SIMDE_FLOAT32_C(  -202.79), SIMDE_FLOAT32_C(    24.50), SIMDE_FLOAT32_C(   108.39), SIMDE_FLOAT32_C(  -810.69) },
+      -INT32_C(         203) },
+    { { SIMDE_FLOAT32_C(  -214.44), SIMDE_FLOAT32_C(   248.05), SIMDE_FLOAT32_C(  -729.85), SIMDE_FLOAT32_C(  -886.40) },
+      -INT32_C(         214) },
+    { { SIMDE_FLOAT32_C(  -238.22), SIMDE_FLOAT32_C(  -190.61), SIMDE_FLOAT32_C(   -31.58), SIMDE_FLOAT32_C(  -490.90) },
+      -INT32_C(         238) },
+    { { SIMDE_FLOAT32_C(    86.03), SIMDE_FLOAT32_C(   720.06), SIMDE_FLOAT32_C(   886.14), SIMDE_FLOAT32_C(  -649.64) },
+       INT32_C(          86) }
   };
 
-  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
-    int32_t r = simde_mm_cvt_ss2si(test_vec[i].a);
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
+    simde__m128 a = simde_mm_loadu_ps(test_vec[i].a);
+    int32_t r = simde_mm_cvt_ss2si(a);
     simde_assert_equal_i32(r, test_vec[i].r);
   }
 
