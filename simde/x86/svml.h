@@ -47,6 +47,8 @@
 #include "avx512/sqrt.h"
 #include "avx512/sub.h"
 
+#include "../simde-complex.h"
+
 #if !defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_ENABLE_NATIVE_ALIASES)
 #  define SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES
 #endif

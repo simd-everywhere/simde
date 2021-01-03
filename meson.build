@@ -244,6 +244,7 @@ if not meson.is_subproject()
       'simde/simde-diagnostic.h',
       'simde/simde-features.h',
       'simde/simde-math.h',
+      'simde/simde-complex.h',
       ]),
     subdir: 'simde')
 
