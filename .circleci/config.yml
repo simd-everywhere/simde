@@ -81,7 +81,7 @@ jobs:
       - run: apt-get update && apt-get install -y ninja-build ninja-build python3-pip python3-setuptools python3-wheel gcovr
       - run: apt-get install -y {gcc,g++}-i686-linux-gnu libc6-dev:i386
       - run: pip3 install meson
-      - run: CC=gcc CXX=g++ /usr/local/bin/meson setup build -Db_coverage=true
+      - run: CC=x86_64-linux-gnu-gcc CXX=x86_64-linux-gnu-g++ /usr/local/bin/meson setup build -Db_coverage=true
       - run: ninja -C build -v -j 3
       - run: ninja -C build -v test
 
