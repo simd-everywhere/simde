@@ -75,6 +75,7 @@ sets:
  * [FMA](https://en.wikipedia.org/wiki/FMA_instruction_set)
  * [GFNI](https://en.wikipedia.org/wiki/AVX-512#GFNI)
  * [CLMUL](https://en.wikipedia.org/wiki/CLMUL_instruction_set)
+ * [XOP](https://en.wikipedia.org/wiki/XOP_instruction_set)
  * [SVML](https://software.intel.com/content/www/us/en/develop/documentation/cpp-compiler-developer-guide-and-reference/top/compiler-reference/intrinsics/intrinsics-for-intel-advanced-vector-extensions-512-intel-avx-512-instructions/intrinsics-for-arithmetic-operations-1/intrinsics-for-short-vector-math-library-svml-operations.html)
 
 As well as partial support for many others; see the

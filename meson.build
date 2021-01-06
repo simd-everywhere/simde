@@ -263,6 +263,7 @@ if not meson.is_subproject()
       'simde/x86/sse.h',
       'simde/x86/ssse3.h',
       'simde/x86/svml.h',
+      'simde/x86/xop.h',
       ]),
     subdir: 'simde/x86')
 
