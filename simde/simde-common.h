@@ -803,6 +803,9 @@ HEDLEY_DIAGNOSTIC_POP
 #      if HEDLEY_GCC_VERSION_CHECK(4,3,0) /* -Wsign-conversion */
 #        define SIMDE_BUG_GCC_95144
 #      endif
+#      if !HEDLEY_GCC_VERSION_CHECK(11,0,0)
+#        define SIMDE_BUG_GCC_95483
+#      endif
 #    endif
 #    if !HEDLEY_GCC_VERSION_CHECK(9,4,0) && defined(SIMDE_ARCH_AARCH64)
 #      define SIMDE_BUG_GCC_94488
