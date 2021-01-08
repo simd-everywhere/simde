@@ -107,6 +107,7 @@ simde_neon_families = [
   'rev64',
   'rhadd',
   'rnd',
+  'rndn',
   'rndp',
   'rshl',
   'rshr_n',
