@@ -129,6 +129,8 @@
 #include "neon/rev64.h"
 #include "neon/rhadd.h"
 #include "neon/rnd.h"
+#include "neon/rndm.h"
+#include "neon/rndi.h"
 #include "neon/rndn.h"
 #include "neon/rndp.h"
 #include "neon/rshl.h"
