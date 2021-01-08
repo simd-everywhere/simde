@@ -2861,18 +2861,12 @@ simde_mm_maccsd_epi16 (simde__m128i a, simde__m128i b, simde__m128i c) {
 
     #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
       int16x8_t even = vuzp1q_s16(a_.neon_i16, b_.neon_i16);
-      r_.neon_i32 = vmlal_s16(c_.neon_i32, vget_low_s16(even), vget_high_s16(even));
+      r_.neon_i32 = vqaddq_s32(vmull_s16(vget_low_s16(even), vget_high_s16(even)), c_.neon_i32);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {
-        int64_t tmp = HEDLEY_STATIC_CAST(int32_t, a_.i16[i * 2]) * HEDLEY_STATIC_CAST(int32_t, b_.i16[i * 2]);
-        tmp += c_.i32[i];
-        if (tmp > INT32_MAX)
-          r_.i32[i] = INT32_MAX;
-        else if (tmp < INT32_MIN)
-          r_.i32[i] = INT32_MIN;
-        else
-          r_.i32[i] = HEDLEY_STATIC_CAST(int32_t, tmp);
+        int32_t prod = HEDLEY_STATIC_CAST(int32_t, a_.i16[i * 2]) * HEDLEY_STATIC_CAST(int32_t, b_.i16[i * 2]);
+        r_.i32[i] = simde_math_adds_i32(prod, c_.i32[i]);
       }
     #endif
 
