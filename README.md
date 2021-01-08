@@ -92,11 +92,23 @@ The default branch is protected so commits never reach it unless
 they have passed extensive CI checks.  Status badges don't really
 make sense since they will always be green, but here are the links:
 
-* [Travis CI](https://travis-ci.org/simd-everywhere/simde)
-* [AppVeyor](https://ci.appveyor.com/project/nemequ/simde)
 * [GitHub Actions](https://github.com/simd-everywhere/simde/actions)
+* [Cirrus CI](https://cirrus-ci.com/github/simd-everywhere/simde)
+* [Semaphore CI](https://nemequ.semaphoreci.com/projects/simde)
+* [Circle CI](https://app.circleci.com/pipelines/github/simd-everywhere/simde)
+* [AppVeyor](https://ci.appveyor.com/project/nemequ/simde)
 * [Azure Pipelines](https://dev.azure.com/nemequ/SIMDe/_build)
 * [Drone CI](https://cloud.drone.io/nemequ/simde)
+* [Travis CI](https://travis-ci.org/simd-everywhere/simde)
+
+If you're adding a new build I suggest Cirrus CI, which is where we
+currently have the most room given the number of builds currently on
+the platform and the quotas for free/open-source usage.  Alternately,
+feel free to set up another provider (such as
+[Codefresh](https://codefresh.io/),
+[Shippable](https://www.shippable.com/),
+[Bitrise](https://www.bitrise.io/),
+[Werkaer](https://app.wercker.com/), etc.).
 
 *Notice*: we plan on changing the name of the default branch from
 "master" to something else soon; we are just trying to wait to see what
@@ -223,7 +235,7 @@ The following architectures are tested in CI for every commit:
  * ARMv8
  * ARMv7
  * PPC64
- * MIPS
+ * MIPS Loongson
 
 We would love to add more, so patches are extremely welcome!
 
@@ -306,14 +318,6 @@ SIMDe uses resources provided for free by a number of organizations.
 While this shouldn't be taken to imply endorsement of SIMDe, we're
 tremendously grateful for their support:
 
- * [GitHub](https://github.com/) — hosts our source repository, issue
-   tracker, etc.
- * [Travis CI](https://travis-ci.org/) — provides CI testing on
-   numerous platforms.
- * [AppVeyor](https://www.appveyor.com/) — provides CI testing on
-   Windows.
- * [Drone CI](https://drone.io/) — provides CI testing on ARM 32 bits
-   platform, etc.
  * [IntegriCloud](https://integricloud.com/) — provides access to a very
    fast POWER9 server for developing AltiVec/VMX support.
  * [GCC Compile Farm](https://gcc.gnu.org/wiki/CompileFarm) — provides
@@ -321,6 +325,10 @@ tremendously grateful for their support:
    developing support for various ISA extensions.
  * [CodeCov.io](https://codecov.io/) — provides code coverage analysis
    for our test cases.
+ * [Google](https://www.google.com/) ­— financing
+   [Summer of Code](https://summerofcode.withgoogle.com/), substantial
+   amounts of code (Sean Maher's contributions), and an [Open Source Peer
+   Bonus](https://opensource.google/docs/growing/peer-bonus/).
 
 Without such organizations donating resources, SIMDe wouldn't be nearly
 as useful or usable as it is today.
