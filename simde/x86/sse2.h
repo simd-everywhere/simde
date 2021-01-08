@@ -3422,15 +3422,15 @@ simde_mm_loadu_epi8(void const * mem_addr) {
   #elif defined(SIMDE_X86_SSE2_NATIVE)
     return _mm_loadu_si128(SIMDE_ALIGN_CAST(__m128i const *, mem_addr));
   #else
-    simde__m128i r;
+    simde__m128i_private r_;
 
     #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       r_.neon_i8 = vld1q_s8(HEDLEY_REINTERPRET_CAST(int8_t const*, mem_addr));
     #else
-      simde_memcpy(&r, mem_addr, sizeof(r));
+      simde_memcpy(&r_, mem_addr, sizeof(r_));
     #endif
 
-    return r;
+    return simde__m128i_from_private(r_);
   #endif
 }
 #define simde_x_mm_loadu_epi8(mem_addr) simde_mm_loadu_epi8(mem_addr)
@@ -3447,15 +3447,15 @@ simde_mm_loadu_epi16(void const * mem_addr) {
   #elif defined(SIMDE_X86_SSE2_NATIVE)
     return _mm_loadu_si128(SIMDE_ALIGN_CAST(__m128i const *, mem_addr));
   #else
-    simde__m128i r;
+    simde__m128i_private r_;
 
     #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       r_.neon_i16 = vreinterpretq_s16_s8(vld1q_s8(HEDLEY_REINTERPRET_CAST(int8_t const*, mem_addr)));
     #else
-      simde_memcpy(&r, mem_addr, sizeof(r));
+      simde_memcpy(&r_, mem_addr, sizeof(r_));
     #endif
 
-    return r;
+    return simde__m128i_from_private(r_);
   #endif
 }
 #define simde_x_mm_loadu_epi16(mem_addr) simde_mm_loadu_epi16(mem_addr)
@@ -3472,15 +3472,15 @@ simde_mm_loadu_epi32(void const * mem_addr) {
   #elif defined(SIMDE_X86_SSE2_NATIVE)
     return _mm_loadu_si128(SIMDE_ALIGN_CAST(__m128i const *, mem_addr));
   #else
-    simde__m128i r;
+    simde__m128i_private r_;
 
     #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       r_.neon_i32 = vreinterpretq_s32_s8(vld1q_s8(HEDLEY_REINTERPRET_CAST(int8_t const*, mem_addr)));
     #else
-      simde_memcpy(&r, mem_addr, sizeof(r));
+      simde_memcpy(&r_, mem_addr, sizeof(r_));
     #endif
 
-    return r;
+    return simde__m128i_from_private(r_);
   #endif
 }
 #define simde_x_mm_loadu_epi32(mem_addr) simde_mm_loadu_epi32(mem_addr)
@@ -3497,15 +3497,15 @@ simde_mm_loadu_epi64(void const * mem_addr) {
   #elif defined(SIMDE_X86_SSE2_NATIVE)
     return _mm_loadu_si128(SIMDE_ALIGN_CAST(__m128i const *, mem_addr));
   #else
-    simde__m128i r;
+    simde__m128i_private r_;
 
     #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       r_.neon_i64 = vreinterpretq_s64_s8(vld1q_s8(HEDLEY_REINTERPRET_CAST(int8_t const*, mem_addr)));
     #else
-      simde_memcpy(&r, mem_addr, sizeof(r));
+      simde_memcpy(&r_, mem_addr, sizeof(r_));
     #endif
 
-    return r;
+    return simde__m128i_from_private(r_);
   #endif
 }
 #define simde_x_mm_loadu_epi64(mem_addr) simde_mm_loadu_epi64(mem_addr)
