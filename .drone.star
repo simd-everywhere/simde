@@ -61,10 +61,20 @@ def get_default_job():
       "branch": {
         "exclude": [
           "master",
-          "ci/**"
-        ],
-        "include": [
-          "ci/drone**"
+          "ci/gha",
+          "ci/gha/**",
+          "ci/cirrus",
+          "ci/cirrus/**",
+          "ci/semaphore",
+          "ci/semaphore/**",
+          "ci/circleci",
+          "ci/circleci/**",
+          "ci/appveyor",
+          "ci/appveyor/**",
+          "ci/azure",
+          "ci/azure/**",
+          "ci/travis",
+          "ci/travis/**"
         ]
       }
     }
