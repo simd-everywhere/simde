@@ -40,7 +40,7 @@ SIMDE_BEGIN_DECLS_
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float32_t
 simde_vabds_f32(simde_float32_t a, simde_float32_t b) {
-    #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vabds_f32(a, b);
   #else
     simde_float32_t r = a - b;
@@ -55,7 +55,7 @@ simde_vabds_f32(simde_float32_t a, simde_float32_t b) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float64_t
 simde_vabdd_f64(simde_float64_t a, simde_float64_t b) {
-    #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vabdd_f64(a, b);
   #else
     simde_float64_t r = a - b;
