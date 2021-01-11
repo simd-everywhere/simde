@@ -1,0 +1,18 @@
+[binaries]
+c = '/usr/bin/i686-linux-gnu-gcc-9'
+cpp = '/usr/bin/i686-linux-gnu-g++-9'
+ar = '/usr/bin/ar'
+strip = '/usr/bin/strip'
+objcopy = '/usr/bin/objcopy'
+ld = '/usr/bin/ld'
+exe_wrapper = ['sde', '--']
+
+[properties]
+c_args = ['-march=icelake-server', '-Wextra', '-Werror']
+cpp_args = ['-march=icelake-server', '-Wextra', '-Werror']
+
+[host_machine]
+system = 'linux'
+cpu_family = 'i686-all'
+cpu = 'i686'
+endian = 'little'

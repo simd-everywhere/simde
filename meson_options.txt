@@ -1,0 +1,9 @@
+option('tests',
+    type : 'boolean',
+    value : true,
+    description : 'Enable dependencies required for testing')
+
+option('sleef',
+    type : 'feature',
+    value : 'disabled',
+    description : 'Enable SLEEF integration')

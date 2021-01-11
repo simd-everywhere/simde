@@ -1,23 +1,30 @@
-simde_test_arm_neon_sources = [
-  'vadd.c',
-  'vdup_n.c',
-  'vmul.c',
-  'vsub.c'
-]
+simde_test_arm_neon_sources = []
+foreach name : simde_neon_families
+  if (name != 'ld1') and (name != 'ld3') and (name != 'ld4') and (name != 'st1')
+    foreach lang : ['c', 'cpp']
+      source_file = name + '.c'
+      if lang == 'cpp'
+        source_file = configure_file(input: name + '.c', output: name + '.cpp', copy: true)
+      endif
+      simde_test_arm_neon_sources += source_file
 
-foreach src : simde_test_arm_neon_sources
-  simde_test_arm_neon_sources += configure_file(input: src, output: src + 'pp', copy: true)
+      foreach emul : ['emul', 'native']
+        extra_flags = ['-DSIMDE_TEST_BARE']
+        if emul == 'emul'
+          extra_flags += '-DSIMDE_NO_NATIVE'
+        endif
+
+        x = executable(name + '-' + emul +  '-' + lang, source_file,
+            c_args: simde_c_args + simde_c_defs + simde_native_c_flags + extra_flags,
+            cpp_args: simde_c_args + simde_c_defs + simde_native_c_flags + extra_flags,
+            include_directories: simde_include_dir,
+            dependencies: simde_deps)
+
+        test('arm/neon/' + name + '/' + emul + '/' + lang, x,
+            protocol: 'tap',
+            # Emscripten tests must be run from builddir
+            workdir: meson.current_build_dir())
+      endforeach
+    endforeach
+  endif
 endforeach
-
-simde_tests_arm_neon_emul = static_library('simde-tests-arm-neon-emul', simde_test_arm_neon_sources,
-  c_args: simde_c_args + simde_c_defs + simde_native_c_flags + ['-DSIMDE_NO_NATIVE'],
-  cpp_args: simde_c_args + simde_c_defs + simde_native_c_flags + ['-DSIMDE_NO_NATIVE'],
-  include_directories: simde_include_dir)
-
-simde_tests_arm_neon_native = static_library('simde-tests-arm-neon-native', simde_test_arm_neon_sources,
-  c_args: simde_c_args + simde_c_defs + simde_native_c_flags + simde_native_c_flags,
-  cpp_args: simde_c_args + simde_c_defs + simde_native_c_flags + simde_native_cxx_flags,
-  include_directories: simde_include_dir)
-
-simde_tests_arm_neon = static_library('simde-tests-neon', 'test-neon.c',
-  link_with: [simde_tests_arm_neon_emul, simde_tests_arm_neon_native])

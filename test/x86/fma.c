@@ -25,13 +25,8 @@
 #include <simde/x86/fma.h>
 #include <test/x86/test-avx.h>
 
-#if defined(SIMDE_X86_FMA_NATIVE) || defined(SIMDE_NO_NATIVE) || defined(SIMDE_ALWAYS_BUILD_NATIVE_TESTS)
-
-static MunitResult
-test_simde_mm_fmadd_pd(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm_fmadd_pd(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m128d a;
     simde__m128d b;
@@ -77,14 +72,11 @@ test_simde_mm_fmadd_pd(const MunitParameter params[], void* data) {
     simde_assert_m128d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_fmadd_pd(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_fmadd_pd(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256d a;
     simde__m256d b;
@@ -162,14 +154,11 @@ test_simde_mm256_fmadd_pd(const MunitParameter params[], void* data) {
     simde_assert_m256d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm_fmadd_ps(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm_fmadd_ps(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m128 a;
     simde__m128 b;
@@ -215,14 +204,11 @@ test_simde_mm_fmadd_ps(const MunitParameter params[], void* data) {
     simde_assert_m128_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_fmadd_ps(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_fmadd_ps(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256 a;
     simde__m256 b;
@@ -364,14 +350,11 @@ test_simde_mm256_fmadd_ps(const MunitParameter params[], void* data) {
     simde_assert_m256_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm_fmadd_sd(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm_fmadd_sd(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m128d a;
     simde__m128d b;
@@ -417,14 +400,11 @@ test_simde_mm_fmadd_sd(const MunitParameter params[], void* data) {
     simde_assert_m128d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm_fmadd_ss(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm_fmadd_ss(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m128 a;
     simde__m128 b;
@@ -470,14 +450,11 @@ test_simde_mm_fmadd_ss(const MunitParameter params[], void* data) {
     simde_assert_m128_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm_fmaddsub_pd(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm_fmaddsub_pd(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m128d a;
     simde__m128d b;
@@ -523,14 +500,11 @@ test_simde_mm_fmaddsub_pd(const MunitParameter params[], void* data) {
     simde_assert_m128d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_fmaddsub_pd(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_fmaddsub_pd(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256d a;
     simde__m256d b;
@@ -608,14 +582,11 @@ test_simde_mm256_fmaddsub_pd(const MunitParameter params[], void* data) {
     simde_assert_m256d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm_fmaddsub_ps(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm_fmaddsub_ps(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m128 a;
     simde__m128 b;
@@ -661,14 +632,11 @@ test_simde_mm_fmaddsub_ps(const MunitParameter params[], void* data) {
     simde_assert_m128_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_fmaddsub_ps(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_fmaddsub_ps(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256 a;
     simde__m256 b;
@@ -810,14 +778,11 @@ test_simde_mm256_fmaddsub_ps(const MunitParameter params[], void* data) {
     simde_assert_m256_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm_fmsub_pd(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm_fmsub_pd(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m128d a;
     simde__m128d b;
@@ -863,14 +828,11 @@ test_simde_mm_fmsub_pd(const MunitParameter params[], void* data) {
     simde_assert_m128d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_fmsub_pd(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_fmsub_pd(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256d a;
     simde__m256d b;
@@ -948,14 +910,11 @@ test_simde_mm256_fmsub_pd(const MunitParameter params[], void* data) {
     simde_assert_m256d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm_fmsub_ps(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm_fmsub_ps(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m128 a;
     simde__m128 b;
@@ -1001,14 +960,11 @@ test_simde_mm_fmsub_ps(const MunitParameter params[], void* data) {
     simde_assert_m128_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_fmsub_ps(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_fmsub_ps(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256 a;
     simde__m256 b;
@@ -1150,14 +1106,11 @@ test_simde_mm256_fmsub_ps(const MunitParameter params[], void* data) {
     simde_assert_m256_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm_fmsub_sd(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm_fmsub_sd(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m128d a;
     simde__m128d b;
@@ -1203,14 +1156,11 @@ test_simde_mm_fmsub_sd(const MunitParameter params[], void* data) {
     simde_assert_m128d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm_fmsub_ss(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm_fmsub_ss(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m128 a;
     simde__m128 b;
@@ -1256,14 +1206,11 @@ test_simde_mm_fmsub_ss(const MunitParameter params[], void* data) {
     simde_assert_m128_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm_fmsubadd_pd(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm_fmsubadd_pd(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m128d a;
     simde__m128d b;
@@ -1309,14 +1256,11 @@ test_simde_mm_fmsubadd_pd(const MunitParameter params[], void* data) {
     simde_assert_m128d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_fmsubadd_pd(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_fmsubadd_pd(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256d a;
     simde__m256d b;
@@ -1394,14 +1338,11 @@ test_simde_mm256_fmsubadd_pd(const MunitParameter params[], void* data) {
     simde_assert_m256d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm_fmsubadd_ps(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm_fmsubadd_ps(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m128 a;
     simde__m128 b;
@@ -1447,14 +1388,11 @@ test_simde_mm_fmsubadd_ps(const MunitParameter params[], void* data) {
     simde_assert_m128_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_fmsubadd_ps(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_fmsubadd_ps(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256 a;
     simde__m256 b;
@@ -1596,14 +1534,11 @@ test_simde_mm256_fmsubadd_ps(const MunitParameter params[], void* data) {
     simde_assert_m256_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm_fnmadd_pd(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm_fnmadd_pd(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m128d a;
     simde__m128d b;
@@ -1649,14 +1584,11 @@ test_simde_mm_fnmadd_pd(const MunitParameter params[], void* data) {
     simde_assert_m128d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_fnmadd_pd(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_fnmadd_pd(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256d a;
     simde__m256d b;
@@ -1734,14 +1666,11 @@ test_simde_mm256_fnmadd_pd(const MunitParameter params[], void* data) {
     simde_assert_m256d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm_fnmadd_ps(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm_fnmadd_ps(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m128 a;
     simde__m128 b;
@@ -1787,14 +1716,11 @@ test_simde_mm_fnmadd_ps(const MunitParameter params[], void* data) {
     simde_assert_m128_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_fnmadd_ps(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_fnmadd_ps(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256 a;
     simde__m256 b;
@@ -1936,14 +1862,11 @@ test_simde_mm256_fnmadd_ps(const MunitParameter params[], void* data) {
     simde_assert_m256_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm_fnmadd_sd(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm_fnmadd_sd(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m128d a;
     simde__m128d b;
@@ -1989,14 +1912,11 @@ test_simde_mm_fnmadd_sd(const MunitParameter params[], void* data) {
     simde_assert_m128d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm_fnmadd_ss(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm_fnmadd_ss(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m128 a;
     simde__m128 b;
@@ -2042,14 +1962,11 @@ test_simde_mm_fnmadd_ss(const MunitParameter params[], void* data) {
     simde_assert_m128_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm_fnmsub_pd(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm_fnmsub_pd(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m128d a;
     simde__m128d b;
@@ -2095,14 +2012,11 @@ test_simde_mm_fnmsub_pd(const MunitParameter params[], void* data) {
     simde_assert_m128d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_fnmsub_pd(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_fnmsub_pd(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256d a;
     simde__m256d b;
@@ -2180,14 +2094,11 @@ test_simde_mm256_fnmsub_pd(const MunitParameter params[], void* data) {
     simde_assert_m256d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm_fnmsub_ps(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm_fnmsub_ps(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m128 a;
     simde__m128 b;
@@ -2233,14 +2144,11 @@ test_simde_mm_fnmsub_ps(const MunitParameter params[], void* data) {
     simde_assert_m128_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm256_fnmsub_ps(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm256_fnmsub_ps(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256 a;
     simde__m256 b;
@@ -2382,14 +2290,11 @@ test_simde_mm256_fnmsub_ps(const MunitParameter params[], void* data) {
     simde_assert_m256_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm_fnmsub_sd(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm_fnmsub_sd(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m128d a;
     simde__m128d b;
@@ -2435,14 +2340,11 @@ test_simde_mm_fnmsub_sd(const MunitParameter params[], void* data) {
     simde_assert_m128d_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-static MunitResult
-test_simde_mm_fnmsub_ss(const MunitParameter params[], void* data) {
-  (void) params;
-  (void) data;
-
+static int
+test_simde_mm_fnmsub_ss(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m128 a;
     simde__m128 b;
@@ -2488,77 +2390,47 @@ test_simde_mm_fnmsub_ss(const MunitParameter params[], void* data) {
     simde_assert_m128_close(r, test_vec[i].r, 1);
   }
 
-  return MUNIT_OK;
+  return 0;
 }
 
-#endif /* defined(SIMDE_X86_FMA_NATIVE) || defined(SIMDE_NO_NATIVE) || defined(SIMDE_ALWAYS_BUILD_NATIVE_TESTS) */
+SIMDE_TEST_FUNC_LIST_BEGIN
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm_fmadd_pd)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_fmadd_pd)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm_fmadd_ps)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_fmadd_ps)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm_fmadd_sd)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm_fmadd_ss)
 
-HEDLEY_DIAGNOSTIC_PUSH
-HEDLEY_DIAGNOSTIC_DISABLE_CAST_QUAL
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm_fmaddsub_pd)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_fmaddsub_pd)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm_fmaddsub_ps)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_fmaddsub_ps)
 
-#if HEDLEY_HAS_WARNING("-Wold-style-cast")
-  #pragma clang diagnostic ignored "-Wold-style-cast"
-#endif
-#if HEDLEY_HAS_WARNING("-Wzero-as-null-pointer-constant")
-  #pragma clang diagnostic ignored "-Wzero-as-null-pointer-constant"
-#endif
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm_fmsub_pd)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_fmsub_pd)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm_fmsub_ps)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_fmsub_ps)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm_fmsub_sd)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm_fmsub_ss)
 
-static MunitTest test_suite_tests[] = {
-#if defined(SIMDE_X86_FMA_NATIVE) || defined(SIMDE_NO_NATIVE) || defined(SIMDE_ALWAYS_BUILD_NATIVE_TESTS)
-  SIMDE_TESTS_DEFINE_TEST(mm_fmadd_pd),
-  SIMDE_TESTS_DEFINE_TEST(mm256_fmadd_pd),
-  SIMDE_TESTS_DEFINE_TEST(mm_fmadd_ps),
-  SIMDE_TESTS_DEFINE_TEST(mm256_fmadd_ps),
-  SIMDE_TESTS_DEFINE_TEST(mm_fmadd_sd),
-  SIMDE_TESTS_DEFINE_TEST(mm_fmadd_ss),
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm_fmsubadd_pd)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_fmsubadd_pd)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm_fmsubadd_ps)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_fmsubadd_ps)
 
-  SIMDE_TESTS_DEFINE_TEST(mm_fmaddsub_pd),
-  SIMDE_TESTS_DEFINE_TEST(mm256_fmaddsub_pd),
-  SIMDE_TESTS_DEFINE_TEST(mm_fmaddsub_ps),
-  SIMDE_TESTS_DEFINE_TEST(mm256_fmaddsub_ps),
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm_fnmadd_pd)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_fnmadd_pd)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm_fnmadd_ps)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_fnmadd_ps)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm_fnmadd_sd)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm_fnmadd_ss)
 
-  SIMDE_TESTS_DEFINE_TEST(mm_fmsub_pd),
-  SIMDE_TESTS_DEFINE_TEST(mm256_fmsub_pd),
-  SIMDE_TESTS_DEFINE_TEST(mm_fmsub_ps),
-  SIMDE_TESTS_DEFINE_TEST(mm256_fmsub_ps),
-  SIMDE_TESTS_DEFINE_TEST(mm_fmsub_sd),
-  SIMDE_TESTS_DEFINE_TEST(mm_fmsub_ss),
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm_fnmsub_pd)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_fnmsub_pd)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm_fnmsub_ps)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_fnmsub_ps)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm_fnmsub_sd)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm_fnmsub_ss)
+SIMDE_TEST_FUNC_LIST_END
 
-  SIMDE_TESTS_DEFINE_TEST(mm_fmsubadd_pd),
-  SIMDE_TESTS_DEFINE_TEST(mm256_fmsubadd_pd),
-  SIMDE_TESTS_DEFINE_TEST(mm_fmsubadd_ps),
-  SIMDE_TESTS_DEFINE_TEST(mm256_fmsubadd_ps),
-
-  SIMDE_TESTS_DEFINE_TEST(mm_fnmadd_pd),
-  SIMDE_TESTS_DEFINE_TEST(mm256_fnmadd_pd),
-  SIMDE_TESTS_DEFINE_TEST(mm_fnmadd_ps),
-  SIMDE_TESTS_DEFINE_TEST(mm256_fnmadd_ps),
-  SIMDE_TESTS_DEFINE_TEST(mm_fnmadd_sd),
-  SIMDE_TESTS_DEFINE_TEST(mm_fnmadd_ss),
-
-  SIMDE_TESTS_DEFINE_TEST(mm_fnmsub_pd),
-  SIMDE_TESTS_DEFINE_TEST(mm256_fnmsub_pd),
-  SIMDE_TESTS_DEFINE_TEST(mm_fnmsub_ps),
-  SIMDE_TESTS_DEFINE_TEST(mm256_fnmsub_ps),
-  SIMDE_TESTS_DEFINE_TEST(mm_fnmsub_sd),
-  SIMDE_TESTS_DEFINE_TEST(mm_fnmsub_ss),
-#endif /* defined(SIMDE_X86_FMA_NATIVE) || defined(SIMDE_NO_NATIVE) || defined(SIMDE_ALWAYS_BUILD_NATIVE_TESTS) */
-
-  { NULL, NULL, NULL, NULL, MUNIT_TEST_OPTION_NONE, NULL }
-};
-
-HEDLEY_C_DECL MunitSuite* SIMDE_TESTS_GENERATE_SYMBOL(suite)(void) {
-  static MunitSuite suite = { (char*) "/" HEDLEY_STRINGIFY(SIMDE_TESTS_CURRENT_ISAX), test_suite_tests, NULL, 1, MUNIT_SUITE_OPTION_NONE };
-
-  return &suite;
-}
-
-#if defined(SIMDE_TESTS_SINGLE_ISAX)
-int main(int argc, char* argv[HEDLEY_ARRAY_PARAM(argc + 1)]) {
-  static MunitSuite suite = { "", test_suite_tests, NULL, 1, MUNIT_SUITE_OPTION_NONE };
-
-  return munit_suite_main(&suite, NULL, argc, argv);
-}
-#endif /* defined(SIMDE_TESTS_SINGLE_ISAX) */
-
-HEDLEY_DIAGNOSTIC_POP
+#include <test/x86/test-x86-footer.h>

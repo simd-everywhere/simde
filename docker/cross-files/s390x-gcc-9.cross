@@ -1,0 +1,18 @@
+[binaries]
+c = '/usr/bin/s390x-linux-gnu-gcc-9'
+cpp = '/usr/bin/s390x-linux-gnu-g++-9'
+ar = '/usr/bin/s390x-linux-gnu-ar'
+strip = '/usr/bin/s390x-linux-gnu-strip'
+objcopy = '/usr/bin/s390x-linux-gnu-objcopy'
+ld = '/usr/bin/s390x-linux-gnu-ld'
+exe_wrapper = ['qemu-s390x-static']
+
+[properties]
+c_args = ['-Wextra', '-Werror']
+cpp_args = ['-Wextra', '-Werror']
+
+[host_machine]
+system = 'linux'
+cpu_family = 's390x'
+cpu = 's390x'
+endian = 'big'

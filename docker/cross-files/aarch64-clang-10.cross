@@ -1,0 +1,20 @@
+[binaries]
+c = '/usr/bin/clang-10'
+cpp = '/usr/bin/clang++-10'
+ar = '/usr/bin/llvm-ar-10'
+strip = '/usr/bin/llvm-strip-10'
+objcopy = '/usr/bin/llvm-objcopy-10'
+ld = '/usr/bin/llvm-ld-10'
+exe_wrapper = 'qemu-aarch64-static'
+
+[properties]
+c_args = ['--target=aarch64-linux-gnu', '-march=armv8-a+simd', '-isystem=/usr/aarch64-linux-gnu/include', '-Weverything', '-Werror']
+cpp_args = ['--target=aarch64-linux-gnu', '-march=armv8-a+simd', '-isystem=/usr/aarch64-linux-gnu/include', '-Weverything', '-Werror']
+c_link_args = ['--target=aarch64-linux-gnu']
+cpp_link_args = ['--target=aarch64-linux-gnu']
+
+[host_machine]
+system = 'linux'
+cpu_family = 'aarch64'
+cpu = 'arm64'
+endian = 'little'

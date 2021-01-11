@@ -1,0 +1,18 @@
+[binaries]
+c = '/usr/bin/powerpc64le-linux-gnu-gcc-10'
+cpp = '/usr/bin/powerpc64le-linux-gnu-g++-10'
+ar = '/usr/bin/powerpc64le-linux-gnu-ar'
+strip = '/usr/bin/powerpc64le-linux-gnu-strip'
+objcopy = '/usr/bin/powerpc64le-linux-gnu-objcopy'
+ld = '/usr/bin/powerpc64le-linux-gnu-ld'
+exe_wrapper = ['qemu-ppc64le-static', '-cpu', 'power9']
+
+[properties]
+c_args = ['-mcpu=power9', '-Wextra', '-Werror']
+cpp_args = ['-mcpu=power9', '-Wextra', '-Werror']
+
+[host_machine]
+system = 'linux'
+cpu_family = 'powerpc64le'
+cpu = 'ppc64el'
+endian = 'little'

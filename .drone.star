@@ -6,28 +6,27 @@ def get_test_commands():
   return [
     "mkdir -p build",
     "cd build",
-    'CFLAGS="$ARCH_FLAGS" CXXFLAGS="$ARCH_FLAGS" meson .. || (cat meson-logs/meson-log.txt; false)',
-    '"$(command -v ninja || command -v ninja-build)" -v',
-    "./test/run-tests",
+    'CFLAGS="$ARCH_FLAGS $DIAGNOSTIC_FLAGS" CXXFLAGS="$ARCH_FLAGS $DIAGNOSTIC_FLAGS" meson .. || (cat meson-logs/meson-log.txt; false)',
+    '"$(command -v ninja || command -v ninja-build)" -v test'
   ]
 
 def get_apt_install_commands(extra_pkgs = []):
   return [
     "apt-get -yq update",
-    "apt-get -yq install %s ninja-build git-core python3-pip" % " ".join(extra_pkgs),
+    "apt-get -yq install %s ninja-build git-core python3-pip parallel" % " ".join(extra_pkgs),
     "pip3 install meson",
   ]
 
 def get_dnf_install_commands(extra_pkgs = []):
   return [
-    "dnf install -y %s ninja-build git-core python3-pip" % " ".join(extra_pkgs),
+    "dnf install -y %s ninja-build git-core python3-pip parallel findutils" % " ".join(extra_pkgs),
     "pip3 install meson",
   ]
 
 def get_yum_install_commands(extra_pkgs = []):
   return [
     "yum install -y epel-release",
-    "yum install -y %s meson ninja-build git-core" % " ".join(extra_pkgs),
+    "yum install -y %s meson ninja-build git-core parallel" % " ".join(extra_pkgs),
   ]
 
 def get_default_job():
@@ -57,6 +56,17 @@ def get_default_job():
         "git submodule --quiet update --init --recursive",
       ],
       "script": get_test_commands()
+    },
+    "trigger": {
+      "branch": {
+        "exclude": [
+          "master",
+          "ci/**"
+        ],
+        "include": [
+          "ci/drone**"
+        ]
+      }
     }
   }
 
@@ -72,6 +82,7 @@ def get_jobs():
           "CC": "clang-9",
           "CXX": "clang++-9",
           "ARCH_FLAGS": "-march=armv7a -mfpu=neon",
+          "DIAGNOSTIC_FLAGS": "-Weverything -Werror",
         }
       }
     ],
@@ -91,6 +102,7 @@ def get_jobs():
           "CC": "clang-9",
           "CXX": "clang++-9",
           "ARCH_FLAGS": "-march=armv8a -mfpu=neon",
+          "DIAGNOSTIC_FLAGS": "-Weverything -Werror",
         }
       }
     ],
@@ -110,6 +122,7 @@ def get_jobs():
           "CC": "gcc-8",
           "CXX": "g++-8",
           "ARCH_FLAGS": "-march=armv7-a -mfpu=neon",
+          "DIAGNOSTIC_FLAGS": "-Wextra -Werror",
         }
       }
     ],
@@ -129,6 +142,7 @@ def get_jobs():
           "CC": "gcc-8",
           "CXX": "g++-8",
           "ARCH_FLAGS": "-march=armv8-a -mfpu=neon",
+          "DIAGNOSTIC_FLAGS": "-Wextra -Werror",
         }
       }
     ],
@@ -148,6 +162,7 @@ def get_jobs():
           "CC": "clang-7",
           "CXX": "clang++-7",
           "ARCH_FLAGS": "-march=armv7a -mfpu=neon",
+          "DIAGNOSTIC_FLAGS": "-Weverything -Werror",
         }
       }
     ],
@@ -167,6 +182,7 @@ def get_jobs():
           "CC": "clang-7",
           "CXX": "clang++-7",
           "ARCH_FLAGS": "-march=armv8a -mfpu=neon",
+          "DIAGNOSTIC_FLAGS": "-Weverything -Werror",
         }
       }
     ],
@@ -186,6 +202,7 @@ def get_jobs():
           "CC": "gcc-7",
           "CXX": "g++-7",
           "ARCH_FLAGS": "-march=armv7-a -mfpu=neon",
+          "DIAGNOSTIC_FLAGS": "-Wextra -Werror",
         }
       }
     ],
@@ -205,11 +222,32 @@ def get_jobs():
           "CC": "gcc-7",
           "CXX": "g++-7",
           "ARCH_FLAGS": "-march=armv8-a -mfpu=neon",
+          "DIAGNOSTIC_FLAGS": "-Wextra -Werror",
         }
       }
     ],
     "custom": {
       "install": get_apt_install_commands(["gcc-7", "g++-7"])
+    }
+  }
+
+  job_clang9_aarch64 = {
+    "name": "clang-9 aarch64",
+    "platform": {
+      "arch": "arm64",
+    },
+    "steps": [
+      {
+        "environment": {
+          "CC": "clang-9",
+          "CXX": "clang++-9",
+          "ARCH_FLAGS": "-march=armv8a+simd+crypto+crc",
+          "DIAGNOSTIC_FLAGS": "-Weverything -Werror",
+        }
+      }
+    ],
+    "custom": {
+      "install": get_apt_install_commands(["clang-9"])
     }
   }
 
@@ -222,6 +260,7 @@ def get_jobs():
           "CC": "gcc",
           "CXX": "g++",
           "ARCH_FLAGS": "-march=native",
+          "DIAGNOSTIC_FLAGS": "-Wextra -Werror",
         }
       }
     ],
@@ -237,10 +276,11 @@ def get_jobs():
     },
     "steps": [
       {
-        "image": "fedora:rawhide",
+        "image": "fedora:latest",
         "environment": {
           "CC": "clang",
           "CXX": "clang++",
+          "DIAGNOSTIC_FLAGS": "-Weverything -Werror",
         }
       }
     ],
@@ -263,6 +303,7 @@ def get_jobs():
         "environment": {
           "CC": "clang",
           "CXX": "clang++",
+          "DIAGNOSTIC_FLAGS": "-Weverything -Werror",
         },
         "failure": "ignore"
       }
@@ -282,8 +323,9 @@ def get_jobs():
     job_clang7_armv8,
     job_gcc7_armv7,
     job_gcc7_armv8,
+    job_clang9_aarch64,
     # job_fedora,
-    job_fedora_clang_arm64_flags,
+    # job_fedora_clang_arm64_flags,
     job_centos7_clang3,
   ]
 

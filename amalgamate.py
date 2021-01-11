@@ -17,8 +17,9 @@
 # included by this script.
 #
 # If you make any improvements please report them in the SIMDe issue
-# tracker at <https://github.com/nemequ/simde/issues> or directly to
-# the author so they can be merged back into the original version.
+# tracker at <https://github.com/simd-everywhere/simde/issues> or
+# directly to the author so they can be merged back into the original
+# version.
 
 import sys, re, os, subprocess
 
@@ -28,6 +29,11 @@ already_included = []
 def amalgamate(filename, stream):
   full_path = os.path.realpath(os.path.realpath(filename))
   srcdir = os.path.dirname(full_path)
+
+  print('/* AUTOMATICALLY GENERATED FILE, DO NOT MODIFY */')
+
+  git_id = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=srcdir).decode().strip()
+  print("/* {:s} */".format(git_id))
 
   if full_path not in already_included:
     already_included.insert(-1, full_path)
@@ -49,10 +55,5 @@ if len(sys.argv) != 2:
   sys.stderr.write("all '#include AMALGAMATE(file)' lines with copies of file.\n")
 
   sys.exit(1)
-
-print('/* AUTOMATICALLY GENERATED FILE, DO NOT MODIFY */')
-
-git_id = subprocess.check_output(["git", "rev-parse", "HEAD"]).decode().strip()
-print("/* {:s} */".format(git_id))
 
 amalgamate(sys.argv[1], sys.stdout)

@@ -1,0 +1,18 @@
+[binaries]
+c = '/usr/bin/icc'
+cpp = '/usr/bin/icpc'
+ar = '/usr/bin/ar'
+strip = '/usr/bin/strip'
+objcopy = '/usr/bin/objcopy'
+ld = '/usr/bin/ld'
+exe_wrapper = ['sde64', '-future', '--']
+
+[properties]
+c_args = ['-march=tigerlake', '-Wextra', '-wd13200', '-wd13203', '-wd16219', '-Werror']
+cpp_args = ['-march=tigerlake', '-Wextra', '-wd13200', '-wd13203', '-wd16219', '-Werror']
+
+[host_machine]
+system = 'linux'
+cpu_family = 'x86_64-all'
+cpu = 'x86_64'
+endian = 'little'

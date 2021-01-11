@@ -1,0 +1,11 @@
+[binaries]
+c = '/usr/bin/gcc-10'
+cpp = '/usr/bin/g++-10'
+ar = '/usr/bin/ar'
+strip = '/usr/bin/strip'
+objcopy = '/usr/bin/objcopy'
+ld = '/usr/bin/ld'
+
+[properties]
+c_args = ['-Wextra', '-Werror', '-march=native']
+cpp_args = ['-Wextra', '-Werror', '-march=native']

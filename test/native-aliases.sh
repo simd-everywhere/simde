@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -e
 
 # Convert SIMDe test cases to strip the simde_ prefix to test native
 # aliases.
@@ -12,15 +12,17 @@
 #   CFLAGS='-DSIMDE_ENABLE_NATIVE_ALIASES -DSIMDE_NATIVE_ALIASES_TESTING' CXXFLAGS='-DSIMDE_ENABLE_NATIVE_ALIASES -DSIMDE_NATIVE_ALIASES_TESTING' meson ..
 #   ninja
 
-cd "$(dirname "${0}")"
+DIRNAME="$(realpath "$(dirname "${0}")")"
+cd "${DIRNAME}"
 
-if [ ! -e iig.xml ]; then
-  curl "https://software.intel.com/sites/landingpage/IntrinsicsGuide/files/data-3.5.0.xml" > iig.xml
-fi
+# x86
 
-PATTERN="$(xmllint --xpath '//intrinsic/@name' iig.xml | grep -Po '(?<=")[^"]+' | xargs printf '%s|' | rev | cut -c 2- | rev)"
+./download-iig.sh "${DIRNAME}/iig.xml"
+PATTERN="$(xmllint --xpath '//intrinsic/@name' "${DIRNAME}/iig.xml" | grep -Po '(?<=")[^"]+' | grep -Pv '^(_mm256_cvtsi256_si32|_mm512_loadu_epi.+)$' | xargs printf '%s|' | rev | cut -c 2- | rev)"
+echo "s/([^_])simde(${PATTERN})/\1\2/g" > pattern
+ls x86/*.c | xargs -n1 -P$(nproc) sed -i -E -f pattern
 
-for file in x86/*.c; do
-  echo "${file}..."
-  sed -i -E -e "s/([^_])simde(${PATTERN})/\1\2/g" "$file";
-done
+
+# NEON
+
+perl -p -i -e 's/([^a-zA-Z0-9_])simde_v/$1v/g' arm/neon/*.{c,h}

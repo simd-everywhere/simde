@@ -1,37 +1,43 @@
 environment:
+  MESON_EXE_WRAPPER: "['C:\\Program Files\\OpenCppCoverage\\OpenCppCoverage.exe', '--export_type=cobertura', '--']"
   matrix:
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-      GENERATOR: Visual Studio 16 2019
-      ARCH: x64
+      VCVARSALL: C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvarsall.bat
+      PYTHON_DIR: C:\Python38-x64
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-      GENERATOR: Visual Studio 15 2017 Win64
+      VCVARSALL: C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat
+      PYTHON_DIR: C:\Python38-x64
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-      GENERATOR: Visual Studio 14 2015 Win64
-    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2013
-      GENERATOR: Visual Studio 12 2013 Win64
+      VCVARSALL: C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat
+      PYTHON_DIR: C:\Python38-x64
 
 branches:
   except:
-    - /^(wip\/)?(travis|osx|ipp)(\-.+)?$/
+    - /^ci/(?!appveyor)(/.+)?/
+
+platform:
+  - x64
+
+install:
+  - cmd: set PATH=%PYTHON_DIR%;%PYTHON_DIR%\scripts;%PATH%
+  - cmd: pip install --upgrade ninja meson
+  - cmd: choco install opencppcoverage codecov
+  - cmd: call "%VCVARSALL%" amd64
 
 before_build:
   - ps: |
       git submodule -q update --init --recursive
-      cd test
-      mkdir build
-      cd build
-      cmake --version
-      if ($env:ARCH -is "String") {
-        cmake -G "$env:GENERATOR" -A $env:ARCH -DCMAKE_C_FLAGS="/W4 /WX /wd4054" -DCMAKE_CXX_FLAGS="/W4 /WX /wd4054" ..
-      } else {
-        cmake -G "$env:GENERATOR" -DCMAKE_C_FLAGS="/W4 /WX /wd4054" -DCMAKE_CXX_FLAGS="/W4 /WX /wd4054" ..
-      }
-      type CMakeFiles/CMakeError.log
 
 build_script:
-  - ps: |
-      cmake --build . --config Debug
+  - cmd: meson --backend=ninja build
+  - cmd: ninja -C build -v test
 
-test_script:
-  - ps: |
-      if("$env:RUN_TESTS" -ne "no") { ctest --output-on-failure --interactive-debug-mode 0 -C Debug -V }
+## This seems to work; data shows up on CodeCov, but it emits an error
+## which makes AppVeyor thing the whole build failed.  Example:
+## https://ci.appveyor.com/project/quixdb/ci-noise/build/job/e7d1wpt9icu77fn2
+# after_test:
+#   - ps: |
+#       Invoke-WebRequest -Uri 'https://codecov.io/bash' -OutFile codecov.sh
+#       $env:APPVEYOR="true"
+#       $env:CI="true"
+#       bash codecov.sh -f "run-testsCoverage.xml"

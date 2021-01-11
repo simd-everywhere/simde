@@ -8,7 +8,6 @@ include (ExtraWarningFlags)
 enable_testing()
 
 option(BUILD_CPP_TESTS "Build C++ tests" ON)
-option(ALWAYS_BUILD_NATIVE_TESTS "Build 'native' tests even if the native instructions aren't available" OFF)
 
 if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/munit/munit.c")
   find_program(GIT git)
@@ -88,36 +87,39 @@ endif()
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OPENMP_SIMD_FLAGS}")
 
-set(TEST_SOURCES_C
-  x86/mmx.c
-  x86/sse.c
-  x86/sse2.c
-  x86/sse3.c
-  x86/ssse3.c
-  x86/sse4.1.c
-  x86/sse4.2.c
-  x86/avx.c
-  x86/avx2.c
-  x86/avx512f.c
-  x86/avx512bw.c
-  x86/avx512vl.c
-  x86/avx512dq.c
-  x86/gfni.c
-  x86/fma.c
-  x86/svml.c
+if("${CMAKE_C_COMPILER_ID}" STREQUAL "Intel")
+  add_definitions(-DSIMDE_FAST_MATH)
+endif()
 
-  arm/neon/vadd.c
-  arm/neon/vdup_n.c
-  arm/neon/vmul.c
-  arm/neon/vsub.c)
+aux_source_directory("arm/neon" ARM_NEON_SOURCES_C)
+list(REMOVE_ITEM ARM_NEON_SOURCES_C "arm/neon/run-tests.c")
+list(REMOVE_ITEM ARM_NEON_SOURCES_C "arm/neon/skel.c")
+list(REMOVE_ITEM ARM_NEON_SOURCES_C "arm/neon/skel-single.c")
+list(REMOVE_ITEM ARM_NEON_SOURCES_C "arm/neon/skel-triple.c")
+
+aux_source_directory("x86/avx512" X86_AVX512_SOURCES_C)
+list(REMOVE_ITEM X86_AVX512_SOURCES_C "x86/avx512/run-tests.c")
+list(REMOVE_ITEM X86_AVX512_SOURCES_C "x86/avx512/skel.c")
+
+aux_source_directory("x86" X86_SOURCES_C)
+list(REMOVE_ITEM X86_SOURCES_C "x86/skel.c")
+list(REMOVE_ITEM X86_SOURCES_C "x86/run-tests.c")
+
+set(TEST_SOURCES_C
+  ${X86_SOURCES_C}
+  ${X86_AVX512_SOURCES_C}
+  ${ARM_NEON_SOURCES_C})
 
 set(TEST_RUNNER_SOURCES
   run-tests.c
-  x86/test-x86.c
-  arm/neon/test-neon.c
-  arm/test-arm.c)
+  x86/run-tests.c
+  x86/avx512/run-tests.c
+  arm/run-tests.c
+  arm/neon/run-tests.c)
 add_executable(run-tests ${TEST_RUNNER_SOURCES})
 set_property(TARGET run-tests PROPERTY C_STANDARD "99")
+target_add_compiler_flags(run-tests "-Wno-psabi")
+
 target_link_libraries(run-tests munit)
 target_add_compiler_flags (munit "-w")
 if(NEED_LIBM)
@@ -129,6 +131,9 @@ if(BUILD_CPP_TESTS)
   foreach(csource ${TEST_SOURCES_C})
     configure_file("${csource}" "${CMAKE_CURRENT_BINARY_DIR}/${csource}pp")
     list(APPEND TEST_SOURCES_CPP "${CMAKE_CURRENT_BINARY_DIR}/${csource}pp")
+
+    get_filename_component(DIR "${csource}" DIRECTORY)
+    set_property(SOURCE "${CMAKE_CURRENT_BINARY_DIR}/${csource}pp" APPEND PROPERTY COMPILE_FLAGS " -I${CMAKE_CURRENT_SOURCE_DIR}/${DIR}")
   endforeach()
 
   add_definitions(-DSIMDE_BUILD_CPP_TESTS)
@@ -140,32 +145,17 @@ foreach(native native emul)
   target_include_directories(simde-test-${native} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/..")
   set_property(TARGET simde-test-${native} PROPERTY C_STANDARD "99")
 
-  if(ALWAYS_BUILD_NATIVE_TESTS)
-    target_compile_definitions(simde-test-${native} PRIVATE SIMDE_ALWAYS_BUILD_NATIVE_TESTS)
-  endif(ALWAYS_BUILD_NATIVE_TESTS)
-
   target_link_libraries(run-tests simde-test-${native})
   target_add_compiler_flags(simde-test-${native} "-Wno-psabi")
 endforeach(native native emul)
 target_compile_definitions(simde-test-emul PRIVATE SIMDE_NO_NATIVE)
 
-foreach(tst
-      "/x86/mmx"
-      "/x86/sse"
-      "/x86/sse2"
-      "/x86/sse3"
-      "/x86/ssse3"
-      "/x86/sse4.1"
-      "/x86/sse4.2"
-      "/x86/avx"
-      "/x86/fma"
-      "/x86/avx2"
-      "/x86/avx512f"
-      "/x86/avx512bw"
-      "/x86/avx512vl"
-      "/x86/avx512dq"
-      "/x86/gfni"
-      "/x86/svml"
-    )
-  add_test(NAME "${tst}/${variant}" COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:run-tests> "${tst}")
-endforeach()
+foreach(src ${TEST_SOURCES_C})
+  string(REGEX REPLACE "^(.+)\\.c$" "/\\1" TEST_NAME "${src}")
+  add_test(NAME "${TEST_NAME}" COMMAND $<TARGET_FILE:run-tests> "${TEST_NAME}")
+endforeach(src ${TEST_SOURCES_C})
+
+message(WARNING
+        "CMake support is deprecated; please use Meson instead.  CMake is only present "
+        "for compilers which Meson doesn't yet support (e.g., xlc) and platforms where "
+        "difficult to run an up-to-date copy of Meson (e.g., Ubuntu 12.04).")
