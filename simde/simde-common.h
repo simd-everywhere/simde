@@ -793,6 +793,9 @@ HEDLEY_DIAGNOSTIC_POP
 #    if !HEDLEY_GCC_VERSION_CHECK(9,0,0) && defined(SIMDE_ARCH_AARCH64)
 #      define SIMDE_BUG_GCC_ARM_SHIFT_SCALAR
 #    endif
+#    if !HEDLEY_GCC_VERSION_CHECK(9,0,0) && defined(SIMDE_ARCH_AARCH64)
+#      define SIMDE_BUG_GCC_BAD_VEXT_REV32
+#    endif
 #    if defined(SIMDE_ARCH_X86) && !defined(SIMDE_ARCH_AMD64)
 #      define SIMDE_BUG_GCC_94482
 #    endif
