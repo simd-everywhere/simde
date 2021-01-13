@@ -36,7 +36,7 @@ SIMDE_BEGIN_DECLS_
 SIMDE_FUNCTION_ATTRIBUTES
 int64_t
 simde_vabsd_s64(int64_t a) {
-  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(9,1,0))
     return vabsd_s64(a);
   #else
     return a < 0 ? -a : a;
