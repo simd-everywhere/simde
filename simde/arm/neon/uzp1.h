@@ -427,7 +427,7 @@ simde_vuzp1q_s32(simde_int32x4_t a, simde_int32x4_t b) {
     return t.val[0];
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_v32x4_shuffle(a, b, 0, 2, 4, 6);
-  #elif defined(SIMDE_X86_SSE_NATIVE)
+  #elif defined(SIMDE_X86_SSE2_NATIVE)
     return _mm_castps_si128(_mm_shuffle_ps(_mm_castsi128_ps(a), _mm_castsi128_ps(b), 0x88));
   #else
     simde_int32x4_private
@@ -573,7 +573,7 @@ simde_vuzp1q_u32(simde_uint32x4_t a, simde_uint32x4_t b) {
     return t.val[0];
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_v32x4_shuffle(a, b, 0, 2, 4, 6);
-  #elif defined(SIMDE_X86_SSE_NATIVE)
+  #elif defined(SIMDE_X86_SSE2_NATIVE)
     return _mm_castps_si128(_mm_shuffle_ps(_mm_castsi128_ps(a), _mm_castsi128_ps(b), 0x88));
   #else
     simde_uint32x4_private

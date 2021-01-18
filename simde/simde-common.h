@@ -496,7 +496,7 @@ typedef SIMDE_FLOAT32_TYPE simde_float32;
 #  define SIMDE_FLOAT64_TYPE double
 #  define SIMDE_FLOAT64_C(value) value
 #else
-#  define SIMDE_FLOAT32_C(value) ((SIMDE_FLOAT64_TYPE) value)
+#  define SIMDE_FLOAT64_C(value) ((SIMDE_FLOAT64_TYPE) value)
 #endif
 typedef SIMDE_FLOAT64_TYPE simde_float64;
 

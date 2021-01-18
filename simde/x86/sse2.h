@@ -7290,7 +7290,7 @@ simde_mm_unpacklo_pd (simde__m128d a, simde__m128d b) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128d
 simde_x_mm_negate_pd(simde__m128d a) {
-  #if defined(SIMDE_X86_SSE_NATIVE)
+  #if defined(SIMDE_X86_SSE2_NATIVE)
     return simde_mm_xor_pd(a, _mm_set1_pd(SIMDE_FLOAT64_C(-0.0)));
   #else
     simde__m128d_private
