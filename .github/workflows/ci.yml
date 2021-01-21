@@ -6,6 +6,9 @@ on:
       - 'master'
       - 'ci/**'
       - '!ci/gha**'
+  pull_request:
+    branches:
+      - 'master'
 
 jobs:
   formatting:
