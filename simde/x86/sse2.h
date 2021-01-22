@@ -5578,7 +5578,7 @@ simde_mm_srl_epi64 (simde__m128i a, simde__m128i count) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_srai_epi16 (simde__m128i a, const int imm8)
-    SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 255) {
+    SIMDE_REQUIRE_RANGE(imm8, 0, 255) {
   /* MSVC requires a range of (0, 255). */
   simde__m128i_private
     r_,
@@ -5609,7 +5609,7 @@ simde_mm_srai_epi16 (simde__m128i a, const int imm8)
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_srai_epi32 (simde__m128i a, const int imm8)
-    SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 255) {
+    SIMDE_REQUIRE_RANGE(imm8, 0, 255) {
   /* MSVC requires a range of (0, 255). */
   simde__m128i_private
     r_,
