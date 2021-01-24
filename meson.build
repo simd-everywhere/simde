@@ -1,7 +1,8 @@
 project('SIMDe', 'c', 'cpp',
         default_options: ['c_std=c99'],
         license: 'MIT',
-        version: '0.7.1')
+        version: '0.7.2')
+# also update SIMDE_VESION_* in simde/simde-common.h
 
 cc = meson.get_compiler('c')
 cxx = meson.get_compiler('cpp')
