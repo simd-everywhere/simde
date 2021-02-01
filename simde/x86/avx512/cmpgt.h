@@ -56,7 +56,7 @@ simde_mm512_cmpgt_epi8_mask (simde__m512i a, simde__m512i b) {
         const uint32_t t = HEDLEY_STATIC_CAST(uint32_t, simde_mm256_movemask_epi8(simde_mm256_cmpgt_epi8(a_.m256i[i], b_.m256i[i])));
         r |= HEDLEY_STATIC_CAST(uint64_t, t) << HEDLEY_STATIC_CAST(uint64_t, i * 32);
       }
-    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && !defined(SIMDE_SKIP_EXTENDED_E2K_VECTOR_OPS)
       simde__m512i_private tmp;
 
       tmp.i8 = HEDLEY_STATIC_CAST(__typeof__(tmp.i8), a_.i8 > b_.i8);
@@ -89,7 +89,7 @@ simde_mm512_cmpgt_epu8_mask (simde__m512i a, simde__m512i b) {
       b_ = simde__m512i_to_private(b);
     simde__mmask64 r = 0;
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && !defined(SIMDE_SKIP_EXTENDED_E2K_VECTOR_OPS)
       simde__m512i_private tmp;
 
       tmp.i8 = HEDLEY_STATIC_CAST(__typeof__(tmp.i8), a_.u8 > b_.u8);

@@ -58,7 +58,7 @@ simde_mm512_srl_epi16 (simde__m512i a, simde__m128i count) {
       if (HEDLEY_STATIC_CAST(uint64_t, count_.i64[0]) > 15)
         return simde_mm512_setzero_si512();
 
-      #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+      #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && !defined(SIMDE_SKIP_EXTENDED_E2K_VECTOR_OPS)
         r_.u16 = a_.u16 >> count_.i64[0];
       #else
         SIMDE_VECTORIZE
@@ -97,7 +97,7 @@ simde_mm512_srl_epi32 (simde__m512i a, simde__m128i count) {
       if (HEDLEY_STATIC_CAST(uint64_t, count_.i64[0]) > 31)
         return simde_mm512_setzero_si512();
 
-      #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+      #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && !defined(SIMDE_SKIP_EXTENDED_E2K_VECTOR_OPS)
         r_.u32 = a_.u32 >> count_.i64[0];
       #else
         SIMDE_VECTORIZE
@@ -164,7 +164,7 @@ simde_mm512_srl_epi64 (simde__m512i a, simde__m128i count) {
       if (HEDLEY_STATIC_CAST(uint64_t, count_.i64[0]) > 63)
         return simde_mm512_setzero_si512();
 
-      #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+      #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && !defined(SIMDE_SKIP_EXTENDED_E2K_VECTOR_OPS)
         r_.u64 = a_.u64 >> count_.i64[0];
       #else
         SIMDE_VECTORIZE

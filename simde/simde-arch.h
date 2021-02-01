@@ -182,6 +182,7 @@
    <https://en.wikipedia.org/wiki/Elbrus-8S> */
 #if defined(__e2k__)
 #define SIMDE_ARCH_E2K
+#define SIMDE_SKIP_EXTENDED_E2K_VECTOR_OPS /* Discard features unsupported by compiler */
 #endif
 
 /* Discard features unsupported by Elbrus compiler.

@@ -1166,7 +1166,7 @@ simde_mm256_cmpgt_epi8 (simde__m256i a, simde__m256i b) {
     #if SIMDE_NATURAL_VECTOR_SIZE_LE(128)
       r_.m128i[0] = simde_mm_cmpgt_epi8(a_.m128i[0], b_.m128i[0]);
       r_.m128i[1] = simde_mm_cmpgt_epi8(a_.m128i[1], b_.m128i[1]);
-    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && !defined(SIMDE_SKIP_EXTENDED_E2K_VECTOR_OPS)
       r_.i8 = HEDLEY_STATIC_CAST(__typeof__(r_.i8), a_.i8 > b_.i8);
     #else
       SIMDE_VECTORIZE
@@ -4379,7 +4379,7 @@ simde_mm_sllv_epi32 (simde__m128i a, simde__m128i b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     r_.neon_u32 = vshlq_u32(a_.neon_u32, vreinterpretq_s32_u32(b_.neon_u32));
     r_.neon_u32 = vandq_u32(r_.neon_u32, vcltq_u32(b_.neon_u32, vdupq_n_u32(32)));
-  #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+  #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && !defined(SIMDE_SKIP_EXTENDED_E2K_VECTOR_OPS)
     r_.u32 = HEDLEY_STATIC_CAST(__typeof__(r_.u32), (b_.u32 < 32) & (a_.u32 << b_.u32));
   #else
     SIMDE_VECTORIZE
@@ -4409,7 +4409,7 @@ simde_mm256_sllv_epi32 (simde__m256i a, simde__m256i b) {
   #if SIMDE_NATURAL_VECTOR_SIZE_LE(128)
     r_.m128i[0] = simde_mm_sllv_epi32(a_.m128i[0], b_.m128i[0]);
     r_.m128i[1] = simde_mm_sllv_epi32(a_.m128i[1], b_.m128i[1]);
-  #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+  #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && !defined(SIMDE_SKIP_EXTENDED_E2K_VECTOR_OPS)
     r_.u32 = HEDLEY_STATIC_CAST(__typeof__(r_.u32), (b_.u32 < 32) & (a_.u32 << b_.u32));
   #else
     SIMDE_VECTORIZE
@@ -4439,7 +4439,7 @@ simde_mm_sllv_epi64 (simde__m128i a, simde__m128i b) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     r_.neon_u64 = vshlq_u64(a_.neon_u64, vreinterpretq_s64_u64(b_.neon_u64));
     r_.neon_u64 = vandq_u64(r_.neon_u64, vcltq_u64(b_.neon_u64, vdupq_n_u64(64)));
-  #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+  #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && !defined(SIMDE_SKIP_EXTENDED_E2K_VECTOR_OPS)
     r_.u64 = HEDLEY_STATIC_CAST(__typeof__(r_.u64), (b_.u64 < 64) & (a_.u64 << b_.u64));
   #else
     SIMDE_VECTORIZE
@@ -4469,7 +4469,7 @@ simde_mm256_sllv_epi64 (simde__m256i a, simde__m256i b) {
   #if SIMDE_NATURAL_VECTOR_SIZE_LE(128)
     r_.m128i[0] = simde_mm_sllv_epi64(a_.m128i[0], b_.m128i[0]);
     r_.m128i[1] = simde_mm_sllv_epi64(a_.m128i[1], b_.m128i[1]);
-  #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+  #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && !defined(SIMDE_SKIP_EXTENDED_E2K_VECTOR_OPS)
     r_.u64 = HEDLEY_STATIC_CAST(__typeof__(r_.u64), (b_.u64 < 64) & (a_.u64 << b_.u64));
   #else
     SIMDE_VECTORIZE
@@ -4966,7 +4966,7 @@ simde_mm_srlv_epi32 (simde__m128i a, simde__m128i b) {
     b_ = simde__m128i_to_private(b),
     r_;
 
-  #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+  #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && !defined(SIMDE_SKIP_EXTENDED_E2K_VECTOR_OPS)
     r_.u32 = HEDLEY_STATIC_CAST(__typeof__(r_.u32), (b_.u32 < 32) & (a_.u32 >> b_.u32));
   #else
     SIMDE_VECTORIZE
@@ -4993,7 +4993,7 @@ simde_mm256_srlv_epi32 (simde__m256i a, simde__m256i b) {
     b_ = simde__m256i_to_private(b),
     r_;
 
-  #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+  #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && !defined(SIMDE_SKIP_EXTENDED_E2K_VECTOR_OPS)
     r_.u32 = HEDLEY_STATIC_CAST(__typeof__(r_.u32), (b_.u32 < 32) & (a_.u32 >> b_.u32));
   #else
     SIMDE_VECTORIZE
@@ -5020,7 +5020,7 @@ simde_mm_srlv_epi64 (simde__m128i a, simde__m128i b) {
     b_ = simde__m128i_to_private(b),
     r_;
 
-  #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+  #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && !defined(SIMDE_SKIP_EXTENDED_E2K_VECTOR_OPS)
     r_.u64 = HEDLEY_STATIC_CAST(__typeof__(r_.u64), (b_.u64 < 64) & (a_.u64 >> b_.u64));
   #else
     SIMDE_VECTORIZE
@@ -5047,7 +5047,7 @@ simde_mm256_srlv_epi64 (simde__m256i a, simde__m256i b) {
     b_ = simde__m256i_to_private(b),
     r_;
 
-  #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+  #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && !defined(SIMDE_SKIP_EXTENDED_E2K_VECTOR_OPS)
     r_.u64 = HEDLEY_STATIC_CAST(__typeof__(r_.u64), (b_.u64 < 64) & (a_.u64 >> b_.u64));
   #else
     SIMDE_VECTORIZE
