@@ -181,7 +181,13 @@
 /* Elbrus (8S, 8SV and successors)
    <https://en.wikipedia.org/wiki/Elbrus-8S> */
 #if defined(__e2k__)
-#  define SIMDE_ARCH_E2K
+#define SIMDE_ARCH_E2K
+#endif
+
+/* Discard features unsupported by Elbrus compiler.
+   For lcc > 1.25.10, it may be based on a version. */
+#if defined(__LCC__)
+#define SIMDE_SKIP_EXTENDED_E2K_VECTOR_OPS
 #endif
 
 /* HP/PA / PA-RISC
@@ -260,7 +266,7 @@
 #  if defined(__SSE4_2__)
 #    define SIMDE_ARCH_X86_SSE4_2 1
 #  endif
-#  if defined(__XOP__)
+#  if defined(__XOP__) && !defined(__LCC__) /* LCC incorrectly defines __XOP__ */
 #    define SIMDE_ARCH_X86_XOP 1
 #  endif
 #  if defined(__AVX__)
@@ -278,7 +284,7 @@
 #  if defined(__AVX2__)
 #    define SIMDE_ARCH_X86_AVX2 1
 #  endif
-#  if defined(__FMA__)
+#  if defined(__FMA__) && !defined(__LCC__) /* LCC incorrectly defines __FMA__ */
 #    define SIMDE_ARCH_X86_FMA 1
 #    if !defined(SIMDE_ARCH_X86_AVX)
 #      define SIMDE_ARCH_X86_AVX 1
