@@ -178,6 +178,12 @@
 #  define SIMDE_ARCH_H8300
 #endif
 
+/* Elbrus (8S, 8SV and successors)
+   <https://en.wikipedia.org/wiki/Elbrus-8S> */
+#if defined(__e2k__)
+#  define SIMDE_ARCH_E2K
+#endif
+
 /* HP/PA / PA-RISC
    <https://en.wikipedia.org/wiki/PA-RISC> */
 #if defined(__PA8000__) || defined(__HPPA20__) || defined(__RISC2_0__) || defined(_PA_RISC2_0)
@@ -218,8 +224,8 @@
 #  define SIMDE_ARCH_X86_CHECK(version) (0)
 #endif
 
-/* SIMD ISA extensions for x86/x86_64 */
-#if defined(SIMDE_ARCH_X86) || defined(SIMDE_ARCH_AMD64)
+/* SIMD ISA extensions for x86/x86_64 and Elbrus */
+#if defined(SIMDE_ARCH_X86) || defined(SIMDE_ARCH_AMD64) || defined(SIMDE_ARCH_E2K)
 #  if defined(_M_IX86_FP)
 #    define SIMDE_ARCH_X86_MMX
 #    if (_M_IX86_FP >= 1)
