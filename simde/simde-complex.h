@@ -45,12 +45,13 @@
       HEDLEY_HAS_BUILTIN(__builtin_creal) || \
       HEDLEY_GCC_VERSION_CHECK(4,7,0) || \
       HEDLEY_INTEL_VERSION_CHECK(13,0,0) \
-    ) && (!defined(__cplusplus) || !defined(__STRICT_ANSI__))
+    ) && (!defined(__e2k__)) && (!defined(__cplusplus) || !defined(__STRICT_ANSI__))
   HEDLEY_DIAGNOSTIC_PUSH
   SIMDE_DIAGNOSTIC_DISABLE_C99_EXTENSIONS_
     typedef __complex__ float simde_cfloat32;
     typedef __complex__ double simde_cfloat64;
   HEDLEY_DIAGNOSTIC_POP
+
   #define SIMDE_MATH_CMPLX(x, y) (HEDLEY_STATIC_CAST(double, x) + HEDLEY_STATIC_CAST(double, y) * (__extension__ 1.0j))
   #define SIMDE_MATH_CMPLXF(x, y) (HEDLEY_STATIC_CAST(float, x) + HEDLEY_STATIC_CAST(float, y) * (__extension__ 1.0fj))
 
