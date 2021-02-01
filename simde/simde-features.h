@@ -217,6 +217,12 @@
   #endif
 #endif
 
+#if !defined(SIMDE_X86_F16C_NATIVE) && !defined(SIMDE_X86_F16C_NO_NATIVE) && !defined(SIMDE_NO_NATIVE)
+  #if defined(SIMDE_ARCH_X86_F16C)
+    #define SIMDE_X86_F16C_NATIVE
+  #endif
+#endif
+
 #if !defined(SIMDE_X86_SVML_NATIVE) && !defined(SIMDE_X86_SVML_NO_NATIVE) && !defined(SIMDE_NO_NATIVE)
   #if defined(__INTEL_COMPILER)
     #define SIMDE_X86_SVML_NATIVE
@@ -483,6 +489,9 @@
   #endif
   #if !defined(SIMDE_X86_VPCLMULQDQ_NATIVE)
     #define SIMDE_X86_VPCLMULQDQ_ENABLE_NATIVE_ALIASES
+  #endif
+  #if !defined(SIMDE_X86_F16C_NATIVE)
+    #define SIMDE_X86_F16C_ENABLE_NATIVE_ALIASES
   #endif
 
   #if !defined(SIMDE_ARM_NEON_A32V7_NATIVE)

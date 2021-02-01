@@ -1192,6 +1192,29 @@ SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
   #endif
 #endif
 
+/*** Comparison macros (which don't raise invalid errors) ***/
+
+#if defined(isunordered)
+  #define simde_math_isunordered(x, y) isunordered(x, y)
+#elif HEDLEY_HAS_BUILTIN(__builtin_isunordered)
+  #define simde_math_isunordered(x, y) __builtin_isunordered(x, y)
+#else
+  static HEDLEY_INLINE
+  int simde_math_isunordered(double x, double y) {
+    return (x != y) && (x != x || y != y);
+  }
+  #define simde_math_isunordered simde_math_isunordered
+
+  static HEDLEY_INLINE
+  int simde_math_isunorderedf(float x, float y) {
+    return (x != y) && (x != x || y != y);
+  }
+  #define simde_math_isunorderedf simde_math_isunorderedf
+#endif
+#if !defined(simde_math_isunorderedf)
+  #define simde_math_isunorderedf simde_math_isunordered
+#endif
+
 /*** Additional functions not in libm ***/
 
 #if defined(simde_math_fabs) && defined(simde_math_sqrt) && defined(simde_math_exp)

@@ -91,6 +91,9 @@ typedef union {
     SIMDE_ALIGN_TO_16 uint16x8_t     neon_u16;
     SIMDE_ALIGN_TO_16 uint32x4_t     neon_u32;
     SIMDE_ALIGN_TO_16 uint64x2_t     neon_u64;
+    #if defined(__ARM_FP16_FORMAT_IEEE)
+    SIMDE_ALIGN_TO_16 float16x8_t    neon_f16;
+    #endif
     SIMDE_ALIGN_TO_16 float32x4_t    neon_f32;
     #if defined(SIMDE_ARCH_AARCH64)
     SIMDE_ALIGN_TO_16 float64x2_t    neon_f64;

@@ -308,6 +308,9 @@
 #  if defined(__VPCLMULQDQ__)
 #    define SIMDE_ARCH_X86_VPCLMULQDQ 1
 #  endif
+#  if defined(__F16C__)
+#    define SIMDE_ARCH_X86_F16C 1
+#  endif
 #endif
 
 /* Itanium

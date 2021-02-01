@@ -678,6 +678,15 @@ typedef SIMDE_FLOAT64_TYPE simde_float64;
 #  include <fenv.h>
 #endif
 
+#define SIMDE_DEFINE_CONVERSION_FUNCTION_(Name, T_To, T_From) \
+  static HEDLEY_ALWAYS_INLINE HEDLEY_CONST \
+  T_To \
+  Name (T_From value) { \
+    T_To r; \
+    simde_memcpy(&r, &value, sizeof(r)); \
+    return r; \
+  }
+
 #include "check.h"
 
 /* GCC/clang have a bunch of functionality in builtins which we would
