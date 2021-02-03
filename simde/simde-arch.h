@@ -315,7 +315,7 @@
 #  if defined(__GFNI__)
 #    define SIMDE_ARCH_X86_GFNI 1
 #  endif
-#  if defined(__PCLMUL__)
+#  if defined(__PCLMUL__) && !defined(SIMDE_ARCH_E2K) /* E2K has inefficient implementation of PCLMUL */
 #    define SIMDE_ARCH_X86_PCLMUL 1
 #  endif
 #  if defined(__VPCLMULQDQ__)

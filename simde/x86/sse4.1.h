@@ -1165,7 +1165,7 @@ simde_mm_dp_ps (simde__m128 a, simde__m128 b, const int imm8)
 
   return simde__m128_from_private(r_);
 }
-#if defined(SIMDE_X86_SSE4_1_NATIVE)
+#if defined(SIMDE_X86_SSE4_1_NATIVE) && !defined(SIMDE_ARCH_E2K)
 #  define simde_mm_dp_ps(a, b, imm8) _mm_dp_ps(a, b, imm8)
 #endif
 #if defined(SIMDE_X86_SSE4_1_ENABLE_NATIVE_ALIASES)
