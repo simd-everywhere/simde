@@ -16,19 +16,28 @@ endif
 
 c_openmp_simd = false
 cxx_openmp_simd = false
-foreach omp_arg : ['-fopenmp-simd', '-qopenmp-simd']
-  if (not c_openmp_simd) and cc.has_argument(omp_arg)
-    simde_c_args += omp_arg
-    simde_c_defs += '-DSIMDE_ENABLE_OPENMP'
-    c_openmp_simd = true
-  endif
 
-  if (not cxx_openmp_simd) and cxx.has_argument(omp_arg)
-    simde_cxx_args += omp_arg
-    simde_cxx_defs += '-DSIMDE_ENABLE_OPENMP'
-    cxx_openmp_simd = true
-  endif
-endforeach
+# LCC has OpenMP enabled by default without any args
+if cc.get_id() == 'lcc'
+  c_openmp_simd = true
+  cxx_openmp_simd = true
+  simde_c_defs += '-DSIMDE_ENABLE_OPENMP'
+  simde_cxx_defs += '-DSIMDE_ENABLE_OPENMP'
+else
+  foreach omp_arg : ['-fopenmp-simd', '-qopenmp-simd']
+    if (not c_openmp_simd) and cc.has_argument(omp_arg)
+      simde_c_args += omp_arg
+      simde_c_defs += '-DSIMDE_ENABLE_OPENMP'
+      c_openmp_simd = true
+    endif
+
+    if (not cxx_openmp_simd) and cxx.has_argument(omp_arg)
+      simde_cxx_args += omp_arg
+      simde_cxx_defs += '-DSIMDE_ENABLE_OPENMP'
+      cxx_openmp_simd = true
+    endif
+  endforeach
+endif
 
 simde_native_c_flags = []
 if cc.has_argument('-Wpsabi')
