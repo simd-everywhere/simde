@@ -293,27 +293,27 @@ jobs:
         - version: 4.7
           distro: ubuntu-16.04
           arch_flags: -mavx2
-        - version: 4.8
-          distro: ubuntu-16.04
-          arch_flags: -mavx2
-        - version: 4.9
-          distro: ubuntu-16.04
-          arch_flags: -mavx2
+        # - version: 4.8
+        #   distro: ubuntu-16.04
+        #   arch_flags: -mavx2
+        # - version: 4.9
+        #   distro: ubuntu-16.04
+        #   arch_flags: -mavx2
         - version: 5
           distro: ubuntu-16.04
           arch_flags: -mavx2
-        - version: 6
-          distro: ubuntu-18.04
-          arch_flags: -march=native
-        - version: 7
-          distro: ubuntu-18.04
-          arch_flags: -march=native
+        # - version: 6
+        #   distro: ubuntu-18.04
+        #   arch_flags: -march=native
+        # - version: 7
+        #   distro: ubuntu-18.04
+        #   arch_flags: -march=native
         - version: 8
           distro: ubuntu-18.04
           arch_flags: -march=native
-        - version: 9
-          distro: ubuntu-20.04
-          arch_flags: -march=native
+        # - version: 9
+        #   distro: ubuntu-20.04
+        #   arch_flags: -march=native
         - version: 10
           distro: ubuntu-20.04
           arch_flags: -march=native
@@ -338,16 +338,49 @@ jobs:
     - name: Test
       run: ninja -C test/build -v test
 
-  xenial-clang:
-    runs-on: ubuntu-16.04
+  clang:
     strategy:
       matrix:
-        version: ["3.5", "3.9", "6.0"]
+        include:
+        - version: "3.5"
+          distro: ubuntu-16.04
+          arch_flags: -mavx2
+        # - version: "3.6"
+        #   distro: ubuntu-16.04
+        #   arch_flags: -mavx2
+        # - version: "3.7"
+        #   distro: ubuntu-16.04
+        #   arch_flags: -mavx2
+        # - version: "3.8"
+        #   distro: ubuntu-16.04
+        #   arch_flags: -mavx2
+        - version: "3.9"
+          distro: ubuntu-18.04
+          arch_flags: -mavx2
+        # - version: "4.0"
+        #   distro: ubuntu-18.04
+        #   arch_flags: -mavx2
+        - version: "5.0"
+          distro: ubuntu-18.04
+          arch_flags: -mavx2
+        # - version: "6.0"
+        #   distro: ubuntu-20.04
+        #   arch_flags: -march=native
+        - version: "7"
+          distro: ubuntu-20.04
+          arch_flags: -march=native
+        # - version: "8"
+        #   distro: ubuntu-20.04
+        #   arch_flags: -march=native
+        - version: "10"
+          distro: ubuntu-20.04
+          arch_flags: -march=native
+    runs-on: ${{ matrix.distro }}
     env:
       CC: clang-${{ matrix.version }}
       CXX: clang++-${{ matrix.version }}
-      CFLAGS: -mavx2 -Wall -Wextra -Werror
-      CXXFLAGS: -mavx2 -Wall -Wextra -Werror
+      CFLAGS: ${{ matrix.arch_flags }} -Wall -Weverything -Werror
+      CXXFLAGS: ${{ matrix.arch_flags }} -Wall -Weverything -Werror
     steps:
     - uses: actions/checkout@v2
       with:
