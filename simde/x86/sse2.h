@@ -3417,7 +3417,7 @@ simde_mm_loadu_pd (simde_float64 const mem_addr[HEDLEY_ARRAY_PARAM(2)]) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_loadu_epi8(void const * mem_addr) {
-  #if defined(SIMDE_X86_AVX512VL_NATIVE) && defined(SIMDE_X86_AVX512BW_NATIVE) && !defined(SIMDE_BUG_GCC_95483)
+  #if defined(SIMDE_X86_AVX512VL_NATIVE) && defined(SIMDE_X86_AVX512BW_NATIVE) && !defined(SIMDE_BUG_GCC_95483) && !defined(SIMDE_BUG_CLANG_REV_344862)
     return _mm_loadu_epi8(mem_addr);
   #elif defined(SIMDE_X86_SSE2_NATIVE)
     return _mm_loadu_si128(SIMDE_ALIGN_CAST(__m128i const *, mem_addr));
@@ -3434,7 +3434,7 @@ simde_mm_loadu_epi8(void const * mem_addr) {
   #endif
 }
 #define simde_x_mm_loadu_epi8(mem_addr) simde_mm_loadu_epi8(mem_addr)
-#if defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES) || defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && defined(SIMDE_BUG_GCC_95483))
+#if defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES) || defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && (defined(SIMDE_BUG_GCC_95483) || defined(SIMDE_BUG_CLANG_REV_344862)))
   #undef _mm_loadu_epi8
   #define _mm_loadu_epi8(a) simde_mm_loadu_epi8(a)
 #endif
@@ -3442,7 +3442,7 @@ simde_mm_loadu_epi8(void const * mem_addr) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_loadu_epi16(void const * mem_addr) {
-  #if defined(SIMDE_X86_AVX512VL_NATIVE) && defined(SIMDE_X86_AVX512BW_NATIVE) && !defined(SIMDE_BUG_GCC_95483)
+  #if defined(SIMDE_X86_AVX512VL_NATIVE) && defined(SIMDE_X86_AVX512BW_NATIVE) && !defined(SIMDE_BUG_GCC_95483) && !defined(SIMDE_BUG_CLANG_REV_344862)
     return _mm_loadu_epi16(mem_addr);
   #elif defined(SIMDE_X86_SSE2_NATIVE)
     return _mm_loadu_si128(SIMDE_ALIGN_CAST(__m128i const *, mem_addr));
@@ -3459,7 +3459,7 @@ simde_mm_loadu_epi16(void const * mem_addr) {
   #endif
 }
 #define simde_x_mm_loadu_epi16(mem_addr) simde_mm_loadu_epi16(mem_addr)
-#if defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES) || defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && defined(SIMDE_BUG_GCC_95483))
+#if defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES) || defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && (defined(SIMDE_BUG_GCC_95483) || defined(SIMDE_BUG_CLANG_REV_344862)))
   #undef _mm_loadu_epi16
   #define _mm_loadu_epi16(a) simde_mm_loadu_epi16(a)
 #endif
@@ -3467,7 +3467,7 @@ simde_mm_loadu_epi16(void const * mem_addr) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_loadu_epi32(void const * mem_addr) {
-  #if defined(SIMDE_X86_AVX512VL_NATIVE) && !defined(SIMDE_BUG_GCC_95483)
+  #if defined(SIMDE_X86_AVX512VL_NATIVE) && !defined(SIMDE_BUG_GCC_95483) && !defined(SIMDE_BUG_CLANG_REV_344862)
     return _mm_loadu_epi32(mem_addr);
   #elif defined(SIMDE_X86_SSE2_NATIVE)
     return _mm_loadu_si128(SIMDE_ALIGN_CAST(__m128i const *, mem_addr));
@@ -3484,7 +3484,7 @@ simde_mm_loadu_epi32(void const * mem_addr) {
   #endif
 }
 #define simde_x_mm_loadu_epi32(mem_addr) simde_mm_loadu_epi32(mem_addr)
-#if defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && defined(SIMDE_BUG_GCC_95483))
+#if defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && (defined(SIMDE_BUG_GCC_95483) || defined(SIMDE_BUG_CLANG_REV_344862)))
   #undef _mm_loadu_epi32
   #define _mm_loadu_epi32(a) simde_mm_loadu_epi32(a)
 #endif
@@ -3492,7 +3492,7 @@ simde_mm_loadu_epi32(void const * mem_addr) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_loadu_epi64(void const * mem_addr) {
-  #if defined(SIMDE_X86_AVX512VL_NATIVE) && !defined(SIMDE_BUG_GCC_95483)
+  #if defined(SIMDE_X86_AVX512VL_NATIVE) && !defined(SIMDE_BUG_GCC_95483) && !defined(SIMDE_BUG_CLANG_REV_344862)
     return _mm_loadu_epi64(mem_addr);
   #elif defined(SIMDE_X86_SSE2_NATIVE)
     return _mm_loadu_si128(SIMDE_ALIGN_CAST(__m128i const *, mem_addr));
@@ -3509,7 +3509,7 @@ simde_mm_loadu_epi64(void const * mem_addr) {
   #endif
 }
 #define simde_x_mm_loadu_epi64(mem_addr) simde_mm_loadu_epi64(mem_addr)
-#if defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && defined(SIMDE_BUG_GCC_95483))
+#if defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && (defined(SIMDE_BUG_GCC_95483) || defined(SIMDE_BUG_CLANG_REV_344862)))
   #undef _mm_loadu_epi64
   #define _mm_loadu_epi64(a) simde_mm_loadu_epi64(a)
 #endif

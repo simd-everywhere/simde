@@ -594,7 +594,9 @@ simde_mm256_blend_epi16(simde__m256i a, simde__m256i b, const int imm8)
 
   return simde__m256i_from_private(r_);
 }
-#if defined(SIMDE_X86_AVX2_NATIVE)
+#if defined(SIMDE_X86_AVX2_NATIVE) && defined(SIMDE_BUG_CLANG_REV_234560)
+#  define simde_mm256_blend_epi16(a, b, imm8) _mm256_castpd_si256(_mm256_blend_epi16(a, b, imm8))
+#elif defined(SIMDE_X86_AVX2_NATIVE)
 #  define simde_mm256_blend_epi16(a, b, imm8) _mm256_blend_epi16(a, b, imm8)
 #elif SIMDE_NATURAL_VECTOR_SIZE_LE(128)
 #  define simde_mm256_blend_epi16(a, b, imm8) \

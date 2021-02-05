@@ -103,7 +103,7 @@ simde_mm512_maddubs_epi16 (simde__m512i a, simde__m512i b) {
       a_ = simde__m512i_to_private(a),
       b_ = simde__m512i_to_private(b);
 
-    #if SIMDE_NATURAL_VECTOR_SIZE_LE(256)
+    #if SIMDE_NATURAL_VECTOR_SIZE_LE(256) || defined(SIMDE_BUG_CLANG_BAD_MADD)
       for (size_t i = 0 ; i < (sizeof(r_.m256i) / sizeof(r_.m256i[0])) ; i++) {
         r_.m256i[i] = simde_mm256_maddubs_epi16(a_.m256i[i], b_.m256i[i]);
       }

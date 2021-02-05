@@ -37,7 +37,11 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde__m512
 simde_mm512_loadu_ps (void const * mem_addr) {
   #if defined(SIMDE_X86_AVX512F_NATIVE)
-    return _mm512_loadu_ps(mem_addr);
+    #if defined(SIMDE_BUG_CLANG_REV_298042)
+      return _mm512_loadu_ps(SIMDE_ALIGN_CAST(const float *, mem_addr));
+    #else
+      return _mm512_loadu_ps(mem_addr);
+    #endif
   #else
     simde__m512 r;
     simde_memcpy(&r, mem_addr, sizeof(r));
@@ -53,7 +57,11 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde__m512d
 simde_mm512_loadu_pd (void const * mem_addr) {
   #if defined(SIMDE_X86_AVX512F_NATIVE)
-    return _mm512_loadu_pd(mem_addr);
+    #if defined(SIMDE_BUG_CLANG_REV_298042)
+      return _mm512_loadu_pd(SIMDE_ALIGN_CAST(const double *, mem_addr));
+    #else
+      return _mm512_loadu_pd(mem_addr);
+    #endif
   #else
     simde__m512d r;
     simde_memcpy(&r, mem_addr, sizeof(r));
