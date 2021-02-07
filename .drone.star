@@ -67,7 +67,7 @@ def main(ctx):
               "apt-get install -y " + " ".join(packages),
               "pip3 install meson",
               "meson build -Db_coverage=true || (cat build/meson-logs/meson-log.txt; false)",
-              "ninja -C build -v test",
+              "ninja -C build -v test || (cat build/meson-logs/testlog.txt; false)",
             ],
           }
         ],
