@@ -25,6 +25,20 @@
  *   2020      Sean Maher <seanptmaher@gmail.com> (Copyright owned by Google, LLC)
  */
 
+/* Formula to average two unsigned integers without overflow is from Hacker's Delight (ISBN 978-0-321-84268-8).
+ * https://web.archive.org/web/20180831033349/http://hackersdelight.org/basics2.pdf#G525596
+ *     avg_u = (x | y) - ((x ^ y) >> 1);
+ *
+ * Formula to average two signed integers (without widening):
+ *     avg_s = (x >> 1) + (y >> 1) + ((x | y) & 1); // use arithmetic shifts
+ *
+ * If hardware has avg_u but not avg_s then rebase input to be unsigned.
+ * For example: s8 (-128..127) can be converted to u8 (0..255) by adding +128.
+ * Idea borrowed from Intel's ARM_NEON_2_x86_SSE project.
+ * https://github.com/intel/ARM_NEON_2_x86_SSE/blob/3c9879bf2dbef3274e0ed20f93cb8da3a2115ba1/NEON_2_SSE.h#L3171
+ *     avg_s8 = avg_u8(a ^ 0x80, b ^ 0x80) ^ 0x80;
+ */
+
 #if !defined(SIMDE_ARM_NEON_RHADD_H)
 #define SIMDE_ARM_NEON_RHADD_H
 
@@ -219,8 +233,12 @@ simde_int8x16_t
 simde_vrhaddq_s8(simde_int8x16_t a, simde_int8x16_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vrhaddq_s8(a, b);
+  #elif defined(SIMDE_X86_SSE2_NATIVE)
+    const __m128i msb = _mm_set1_epi8(HEDLEY_STATIC_CAST(int8_t, -128)); /* 0x80 */
+    return _mm_xor_si128(_mm_avg_epu8(_mm_xor_si128(a, msb), _mm_xor_si128(b, msb)), msb);
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    return wasm_i8x16_add(wasm_i8x16_add(wasm_i8x16_shr(a, 1), wasm_i8x16_shr(b, 1)), wasm_v128_and(wasm_v128_or(a, b), wasm_i8x16_splat(1)));
+    const v128_t msb = wasm_i8x16_splat(HEDLEY_STATIC_CAST(int8_t, -128)); /* 0x80 */
+    return wasm_v128_xor(wasm_u8x16_avgr(wasm_v128_xor(a, msb), wasm_v128_xor(b, msb)), msb);
   #else
     simde_int8x16_private
       r_,
@@ -250,10 +268,11 @@ simde_vrhaddq_s16(simde_int16x8_t a, simde_int16x8_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vrhaddq_s16(a, b);
   #elif defined(SIMDE_X86_SSE2_NATIVE)
-    return _mm_add_epi16(_mm_and_si128(_mm_or_si128(a, b), _mm_set1_epi16(HEDLEY_STATIC_CAST(int16_t, 1))),
-                        _mm_add_epi16(_mm_srai_epi16(a, 1), _mm_srai_epi16(b, 1)));
+    const __m128i msb = _mm_set1_epi16(HEDLEY_STATIC_CAST(int16_t, -32768)); /* 0x8000 */
+    return _mm_xor_si128(_mm_avg_epu16(_mm_xor_si128(a, msb), _mm_xor_si128(b, msb)), msb);
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    return wasm_i16x8_add(wasm_i16x8_add(wasm_i16x8_shr(a, 1), wasm_i16x8_shr(b, 1)), wasm_v128_and(wasm_v128_or(a, b), wasm_i16x8_splat(1)));
+    const v128_t msb = wasm_i16x8_splat(HEDLEY_STATIC_CAST(int16_t, -32768)); /* 0x8000 */
+    return wasm_v128_xor(wasm_u16x8_avgr(wasm_v128_xor(a, msb), wasm_v128_xor(b, msb)), msb);
   #else
     simde_int16x8_private
       r_,
@@ -283,10 +302,11 @@ simde_vrhaddq_s32(simde_int32x4_t a, simde_int32x4_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vrhaddq_s32(a, b);
   #elif defined(SIMDE_X86_SSE2_NATIVE)
-    return _mm_add_epi32(_mm_and_si128(_mm_or_si128(a, b), _mm_set1_epi32(HEDLEY_STATIC_CAST(int32_t, 1))),
+    return _mm_add_epi32(_mm_and_si128(_mm_or_si128(a, b), _mm_set1_epi32(1)),
                         _mm_add_epi32(_mm_srai_epi32(a, 1), _mm_srai_epi32(b, 1)));
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    return wasm_i32x4_add(wasm_i32x4_add(wasm_i32x4_shr(a, 1), wasm_i32x4_shr(b, 1)), wasm_v128_and(wasm_v128_or(a, b), wasm_i32x4_splat(1)));
+    return wasm_i32x4_add(wasm_v128_and(wasm_v128_or(a, b), wasm_i32x4_splat(1)),
+                         wasm_i32x4_add(wasm_i32x4_shr(a, 1), wasm_i32x4_shr(b, 1)));
   #else
     simde_int32x4_private
       r_,
@@ -315,6 +335,8 @@ simde_uint8x16_t
 simde_vrhaddq_u8(simde_uint8x16_t a, simde_uint8x16_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vrhaddq_u8(a, b);
+  #elif defined(SIMDE_X86_SSE2_NATIVE)
+    return _mm_avg_epu8(a, b);
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_u8x16_avgr(a, b);
   #else
@@ -324,11 +346,11 @@ simde_vrhaddq_u8(simde_uint8x16_t a, simde_uint8x16_t b) {
       b_ = simde_uint8x16_to_private(b);
 
     #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
-      r_.values = (((a_.values >> HEDLEY_STATIC_CAST(uint8_t, 1)) + (b_.values >> HEDLEY_STATIC_CAST(uint8_t, 1))) + ((a_.values | b_.values) & HEDLEY_STATIC_CAST(uint8_t, 1)));
+      r_.values = (a_.values | b_.values) - ((a_.values ^ b_.values) >> HEDLEY_STATIC_CAST(uint8_t, 1));
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-        r_.values[i] = (((a_.values[i] >> HEDLEY_STATIC_CAST(uint8_t, 1)) + (b_.values[i] >> HEDLEY_STATIC_CAST(uint8_t, 1))) + ((a_.values[i] | b_.values[i]) & HEDLEY_STATIC_CAST(uint8_t, 1)));
+        r_.values[i] = (a_.values[i] | b_.values[i]) - ((a_.values[i] ^ b_.values[i]) >> HEDLEY_STATIC_CAST(uint8_t, 1));
       }
     #endif
 
@@ -345,6 +367,8 @@ simde_uint16x8_t
 simde_vrhaddq_u16(simde_uint16x8_t a, simde_uint16x8_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vrhaddq_u16(a, b);
+  #elif defined(SIMDE_X86_SSE2_NATIVE)
+    return _mm_avg_epu16(a, b);
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_u16x8_avgr(a, b);
   #else
@@ -354,11 +378,11 @@ simde_vrhaddq_u16(simde_uint16x8_t a, simde_uint16x8_t b) {
       b_ = simde_uint16x8_to_private(b);
 
     #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
-      r_.values = (((a_.values >> HEDLEY_STATIC_CAST(uint16_t, 1)) + (b_.values >> HEDLEY_STATIC_CAST(uint16_t, 1))) + ((a_.values | b_.values) & HEDLEY_STATIC_CAST(uint16_t, 1)));
+      r_.values = (a_.values | b_.values) - ((a_.values ^ b_.values) >> HEDLEY_STATIC_CAST(uint16_t, 1));
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-        r_.values[i] = (((a_.values[i] >> HEDLEY_STATIC_CAST(uint16_t, 1)) + (b_.values[i] >> HEDLEY_STATIC_CAST(uint16_t, 1))) + ((a_.values[i] | b_.values[i]) & HEDLEY_STATIC_CAST(uint16_t, 1)));
+        r_.values[i] = (a_.values[i] | b_.values[i]) - ((a_.values[i] ^ b_.values[i]) >> HEDLEY_STATIC_CAST(uint16_t, 1));
       }
     #endif
 
@@ -375,8 +399,10 @@ simde_uint32x4_t
 simde_vrhaddq_u32(simde_uint32x4_t a, simde_uint32x4_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vrhaddq_u32(a, b);
+  #elif defined(SIMDE_X86_SSE2_NATIVE)
+    return _mm_sub_epi32(_mm_or_si128(a, b), _mm_srli_epi32(_mm_xor_si128(a, b), 1));
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    return wasm_i32x4_add(wasm_i32x4_add(wasm_u32x4_shr(a, 1), wasm_u32x4_shr(b, 1)), wasm_v128_and(wasm_v128_or(a, b), wasm_i32x4_splat(1)));
+    return wasm_i32x4_sub(wasm_v128_or(a, b), wasm_u32x4_shr(wasm_v128_xor(a, b), 1));
   #else
     simde_uint32x4_private
       r_,
@@ -384,11 +410,11 @@ simde_vrhaddq_u32(simde_uint32x4_t a, simde_uint32x4_t b) {
       b_ = simde_uint32x4_to_private(b);
 
     #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
-      r_.values = (((a_.values >> HEDLEY_STATIC_CAST(uint32_t, 1)) + (b_.values >> HEDLEY_STATIC_CAST(uint32_t, 1))) + ((a_.values | b_.values) & HEDLEY_STATIC_CAST(uint32_t, 1)));
+      r_.values = (a_.values | b_.values) - ((a_.values ^ b_.values) >> HEDLEY_STATIC_CAST(uint32_t, 1));
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-        r_.values[i] = (((a_.values[i] >> HEDLEY_STATIC_CAST(uint32_t, 1)) + (b_.values[i] >> HEDLEY_STATIC_CAST(uint32_t, 1))) + ((a_.values[i] | b_.values[i]) & HEDLEY_STATIC_CAST(uint32_t, 1)));
+        r_.values[i] = (a_.values[i] | b_.values[i]) - ((a_.values[i] ^ b_.values[i]) >> HEDLEY_STATIC_CAST(uint32_t, 1));
       }
     #endif
 
