@@ -891,6 +891,8 @@ HEDLEY_DIAGNOSTIC_POP
 #    endif
 #  elif defined(HEDLEY_INTEL_VERSION)
 #    define SIMDE_BUG_INTEL_857088
+#  elif defined(HEDLEY_MCST_LCC_VERSION)
+#    define SIMDE_BUG_MCST_LCC_MISSING_AVX_LOAD_STORE_M128_FUNCS
 #  endif
 #endif
 
