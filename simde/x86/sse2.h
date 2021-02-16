@@ -410,18 +410,20 @@ simde_mm_set1_pd (simde_float64 a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128d
 simde_x_mm_abs_pd(simde__m128d a) {
-  #if defined(SIMDE_X86_AVX512F_NATIVE) && \
-        (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(7,4,0))
-    return _mm512_castpd512_pd128(_mm512_abs_pd(_mm512_castpd128_pd512(a)));
+  #if defined(SIMDE_X86_SSE2_NATIVE)
+    simde_float64 mask_;
+    uint64_t u64_ = UINT64_C(0x7FFFFFFFFFFFFFFF);
+    simde_memcpy(&mask_, &u64_, sizeof(u64_));
+    return _mm_and_pd(_mm_set1_pd(mask_), a);
   #else
     simde__m128d_private
       r_,
       a_ = simde__m128d_to_private(a);
 
     #if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
-      r_.neon_f32 = vabsq_f32(a_.neon_f32);
+      r_.neon_f64 = vabsq_f64(a_.neon_f64);
     #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
-      r_.altivec_f32 = vec_abs(a_.altivec_f32);
+      r_.altivec_f64 = vec_abs(a_.altivec_f64);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
