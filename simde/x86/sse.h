@@ -1075,9 +1075,11 @@ simde_mm_avg_pu8 (simde__m64 a, simde__m64 b) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128
 simde_x_mm_abs_ps(simde__m128 a) {
-  #if defined(SIMDE_X86_AVX512F_NATIVE) && \
-        (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(7,1,0))
-    return _mm512_castps512_ps128(_mm512_abs_ps(_mm512_castps128_ps512(a)));
+  #if defined(SIMDE_X86_SSE_NATIVE)
+    simde_float32 mask_;
+    uint32_t u32_ = UINT32_C(0x7FFFFFFF);
+    simde_memcpy(&mask_, &u32_, sizeof(u32_));
+    return _mm_and_ps(_mm_set1_ps(mask_), a);
   #else
     simde__m128_private
       r_,
