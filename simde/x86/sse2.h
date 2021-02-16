@@ -2627,7 +2627,7 @@ simde_mm_cvtps_epi32 (simde__m128 a) {
 
     #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_FAST_CONVERSION_RANGE)
       r_.neon_i32 = vcvtnq_s32_f32(a_.neon_f32);
-    #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_FAST_CONVERSION_RANGE) && defined(SIMDE_FAST_ROUND_TIES)
+    #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_FAST_CONVERSION_RANGE) && defined(SIMDE_FAST_ROUND_TIES) && !defined(SIMDE_BUG_GCC_95399)
       r_.neon_i32 = vcvtnq_s32_f32(a_.neon_f32);
     #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE) && defined(SIMDE_FAST_CONVERSION_RANGE) && defined(SIMDE_FAST_ROUND_TIES)
       HEDLEY_DIAGNOSTIC_PUSH
