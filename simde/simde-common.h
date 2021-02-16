@@ -217,7 +217,8 @@
 #    define SIMDE_VECTOR_SUBSCRIPT
 #  elif \
     HEDLEY_GCC_VERSION_CHECK(4,1,0) || \
-    HEDLEY_INTEL_VERSION_CHECK(13,0,0)
+    HEDLEY_INTEL_VERSION_CHECK(13,0,0) || \
+    HEDLEY_MCST_LCC_VERSION_CHECK(1,25,10)
 #    define SIMDE_VECTOR(size) __attribute__((__vector_size__(size)))
 #    define SIMDE_VECTOR_OPS
 #  elif HEDLEY_SUNPRO_VERSION_CHECK(5,12,0)
