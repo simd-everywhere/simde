@@ -7238,8 +7238,8 @@ simde_mm_unpacklo_epi64 (simde__m128i a, simde__m128i b) {
       b_ = simde__m128i_to_private(b);
 
     #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-      int64x1_t a_l = vget_low_s64(a_.i64);
-      int64x1_t b_l = vget_low_s64(b_.i64);
+      int64x1_t a_l = vget_low_s64(a_.neon_i64);
+      int64x1_t b_l = vget_low_s64(b_.neon_i64);
       r_.neon_i64 = vcombine_s64(a_l, b_l);
     #elif defined(SIMDE_SHUFFLE_VECTOR_)
       r_.i64 = SIMDE_SHUFFLE_VECTOR_(64, 16, a_.i64, b_.i64, 0, 2);
