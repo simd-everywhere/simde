@@ -156,7 +156,7 @@ simde_mm256_fmadd_ps (simde__m256 a, simde__m256 b, simde__m256 c) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128d
 simde_mm_fmadd_sd (simde__m128d a, simde__m128d b, simde__m128d c) {
-  #if defined(SIMDE_X86_FMA_NATIVE)
+  #if defined(SIMDE_X86_FMA_NATIVE) && !defined(SIMDE_BUG_MCST_LCC_FMA_WRONG_RESULT)
     return _mm_fmadd_sd(a, b, c);
   #else
     return simde_mm_add_sd(simde_mm_mul_sd(a, b), c);
@@ -170,7 +170,7 @@ simde_mm_fmadd_sd (simde__m128d a, simde__m128d b, simde__m128d c) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128
 simde_mm_fmadd_ss (simde__m128 a, simde__m128 b, simde__m128 c) {
-  #if defined(SIMDE_X86_FMA_NATIVE)
+  #if defined(SIMDE_X86_FMA_NATIVE) && !defined(SIMDE_BUG_MCST_LCC_FMA_WRONG_RESULT)
     return _mm_fmadd_ss(a, b, c);
   #else
     return simde_mm_add_ss(simde_mm_mul_ss(a, b), c);
@@ -296,7 +296,7 @@ simde_mm256_fmsub_ps (simde__m256 a, simde__m256 b, simde__m256 c) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128d
 simde_mm_fmsub_sd (simde__m128d a, simde__m128d b, simde__m128d c) {
-  #if defined(SIMDE_X86_FMA_NATIVE)
+  #if defined(SIMDE_X86_FMA_NATIVE) && !defined(SIMDE_BUG_MCST_LCC_FMA_WRONG_RESULT)
     return _mm_fmsub_sd(a, b, c);
   #else
     return simde_mm_sub_sd(simde_mm_mul_sd(a, b), c);
@@ -310,7 +310,7 @@ simde_mm_fmsub_sd (simde__m128d a, simde__m128d b, simde__m128d c) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128
 simde_mm_fmsub_ss (simde__m128 a, simde__m128 b, simde__m128 c) {
-  #if defined(SIMDE_X86_FMA_NATIVE)
+  #if defined(SIMDE_X86_FMA_NATIVE) && !defined(SIMDE_BUG_MCST_LCC_FMA_WRONG_RESULT)
     return _mm_fmsub_ss(a, b, c);
   #else
     return simde_mm_sub_ss(simde_mm_mul_ss(a, b), c);
@@ -528,7 +528,7 @@ simde_mm256_fnmadd_ps (simde__m256 a, simde__m256 b, simde__m256 c) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128d
 simde_mm_fnmadd_sd (simde__m128d a, simde__m128d b, simde__m128d c) {
-  #if defined(SIMDE_X86_FMA_NATIVE)
+  #if defined(SIMDE_X86_FMA_NATIVE) && !defined(SIMDE_BUG_MCST_LCC_FMA_WRONG_RESULT)
     return _mm_fnmadd_sd(a, b, c);
   #else
     simde__m128d_private
@@ -551,7 +551,7 @@ simde_mm_fnmadd_sd (simde__m128d a, simde__m128d b, simde__m128d c) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128
 simde_mm_fnmadd_ss (simde__m128 a, simde__m128 b, simde__m128 c) {
-  #if defined(SIMDE_X86_FMA_NATIVE)
+  #if defined(SIMDE_X86_FMA_NATIVE) && !defined(SIMDE_BUG_MCST_LCC_FMA_WRONG_RESULT)
     return _mm_fnmadd_ss(a, b, c);
   #else
     simde__m128_private
@@ -674,7 +674,7 @@ simde_mm256_fnmsub_ps (simde__m256 a, simde__m256 b, simde__m256 c) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128d
 simde_mm_fnmsub_sd (simde__m128d a, simde__m128d b, simde__m128d c) {
-  #if defined(SIMDE_X86_FMA_NATIVE)
+  #if defined(SIMDE_X86_FMA_NATIVE) && !defined(SIMDE_BUG_MCST_LCC_FMA_WRONG_RESULT)
     return _mm_fnmsub_sd(a, b, c);
   #else
     simde__m128d_private
@@ -697,7 +697,7 @@ simde_mm_fnmsub_sd (simde__m128d a, simde__m128d b, simde__m128d c) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128
 simde_mm_fnmsub_ss (simde__m128 a, simde__m128 b, simde__m128 c) {
-  #if defined(SIMDE_X86_FMA_NATIVE)
+  #if defined(SIMDE_X86_FMA_NATIVE) && !defined(SIMDE_BUG_MCST_LCC_FMA_WRONG_RESULT)
     return _mm_fnmsub_ss(a, b, c);
   #else
     simde__m128_private
