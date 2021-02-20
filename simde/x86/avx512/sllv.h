@@ -43,7 +43,7 @@ simde_mm512_sllv_epi16 (simde__m512i a, simde__m512i b) {
     b_ = simde__m512i_to_private(b),
     r_;
 
-  #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && !defined(SIMDE_SKIP_EXTENDED_E2K_VECTOR_OPS)
+  #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && !defined(SIMDE_BUG_LCC_TOO_STRICT_VECTOR_SHIFTS_AND_COMPARES)
     r_.u16 = HEDLEY_STATIC_CAST(__typeof__(r_.u16), (b_.u16 < 16) & (a_.u16 << b_.u16));
   #else
     SIMDE_VECTORIZE
