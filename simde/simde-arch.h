@@ -188,6 +188,8 @@
    For lcc > 1.25.10, it may be based on a version. */
 #if defined(__LCC__)
 #define SIMDE_BUG_LCC_TOO_STRICT_VECTOR_SHIFTS_AND_COMPARES
+#define SIMDE_BUG_LCC_XOP_MISSING
+#define SIMDE_BUG_LCC_FMA_WRONG_RESULT
 #endif
 
 /* HP/PA / PA-RISC
@@ -266,7 +268,7 @@
 #  if defined(__SSE4_2__)
 #    define SIMDE_ARCH_X86_SSE4_2 1
 #  endif
-#  if defined(__XOP__) && !defined(__LCC__) /* LCC incorrectly defines __XOP__ */
+#  if defined(__XOP__)
 #    define SIMDE_ARCH_X86_XOP 1
 #  endif
 #  if defined(__AVX__)
@@ -284,7 +286,7 @@
 #  if defined(__AVX2__)
 #    define SIMDE_ARCH_X86_AVX2 1
 #  endif
-#  if defined(__FMA__) && !defined(__LCC__) /* LCC incorrectly defines __FMA__ */
+#  if defined(__FMA__)
 #    define SIMDE_ARCH_X86_FMA 1
 #    if !defined(SIMDE_ARCH_X86_AVX)
 #      define SIMDE_ARCH_X86_AVX 1

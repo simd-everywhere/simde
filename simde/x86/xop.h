@@ -78,7 +78,7 @@ simde_mm_cmov_si128 (simde__m128i a, simde__m128i b, simde__m128i c) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m256i
 simde_mm256_cmov_si256 (simde__m256i a, simde__m256i b, simde__m256i c) {
-  #if defined(SIMDE_X86_XOP_NATIVE) && defined(SIMDE_X86_AVX_NATIVE) && !defined(SIMDE_BUG_GCC_98521)
+  #if defined(SIMDE_X86_XOP_NATIVE) && defined(SIMDE_X86_AVX_NATIVE) && !defined(SIMDE_BUG_GCC_98521) && !defined(SIMDE_BUG_LCC_XOP_MISSING)
     return _mm256_cmov_si256(a, b, c);
   #elif defined(SIMDE_X86_AVX512VL_NATIVE)
     return _mm256_ternarylogic_epi32(a, b, c, 0xe4);
