@@ -1180,7 +1180,11 @@ simde_mm_bslli_si128 (simde__m128i a, const int imm8)
   return simde__m128i_from_private(r_);
 }
 #if defined(SIMDE_X86_SSE2_NATIVE) && !defined(__PGI)
-  #define simde_mm_bslli_si128(a, imm8) _mm_slli_si128(a, imm8)
+  #if defined(SIMDE_BUG_LCC_WARNING_ON_SHIFTS)
+    #define simde_mm_bslli_si128(a, imm8) ((imm8 & ~15) ? _mm_setzero_si128() : _mm_slli_si128(a, imm8 & 15))
+  #else
+    #define simde_mm_bslli_si128(a, imm8) _mm_slli_si128(a, imm8)
+  #endif
 #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE) && !defined(__clang__)
   #define simde_mm_bslli_si128(a, imm8) \
   simde__m128i_from_neon_i8(((imm8) <= 0) ? simde__m128i_to_neon_i8(a) : (((imm8) > 15) ? (vdupq_n_s8(0)) : (vextq_s8(vdupq_n_s8(0), simde__m128i_to_neon_i8(a), 16 - (imm8)))))
@@ -1252,7 +1256,11 @@ simde_mm_bsrli_si128 (simde__m128i a, const int imm8)
   return simde__m128i_from_private(r_);
 }
 #if defined(SIMDE_X86_SSE2_NATIVE) && !defined(__PGI)
-  #define simde_mm_bsrli_si128(a, imm8) _mm_srli_si128(a, imm8)
+  #if defined(SIMDE_BUG_LCC_WARNING_ON_SHIFTS)
+    #define simde_mm_bsrli_si128(a, imm8) ((imm8 & ~15) ? _mm_setzero_si128() : _mm_srli_si128(a, imm8 & 15))
+  #else
+    #define simde_mm_bsrli_si128(a, imm8) _mm_srli_si128(a, imm8)
+  #endif
 #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE) && !defined(__clang__)
   #define simde_mm_bsrli_si128(a, imm8) \
   simde__m128i_from_neon_i8(((imm8 < 0) || (imm8 > 15)) ? vdupq_n_s8(0) : (vextq_s8(simde__m128i_to_private(a).neon_i8, vdupq_n_s8(0), ((imm8 & 15) != 0) ? imm8 : (imm8 & 15))))
