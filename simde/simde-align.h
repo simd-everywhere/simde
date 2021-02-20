@@ -116,6 +116,7 @@
   #define SIMDE_ALIGN_OF(Type) alignof(Type)
 #elif \
     HEDLEY_GCC_VERSION_CHECK(2,95,0) || \
+    HEDLEY_MCST_LCC_VERSION_CHECK(1,25,10) || \
     HEDLEY_ARM_VERSION_CHECK(4,1,0) || \
     HEDLEY_INTEL_VERSION_CHECK(13,0,0) || \
     HEDLEY_SUNPRO_VERSION_CHECK(5,13,0) || \
@@ -264,6 +265,7 @@
 #if \
     HEDLEY_HAS_ATTRIBUTE(aligned) || \
     HEDLEY_GCC_VERSION_CHECK(2,95,0) || \
+    HEDLEY_MCST_LCC_VERSION_CHECK(1,25,10) || \
     HEDLEY_CRAY_VERSION_CHECK(8,4,0) || \
     HEDLEY_IBM_VERSION_CHECK(11,1,0) || \
     HEDLEY_INTEL_VERSION_CHECK(13,0,0) || \
@@ -314,7 +316,8 @@
  */
 #if \
     HEDLEY_HAS_BUILTIN(__builtin_assume_aligned) || \
-    HEDLEY_GCC_VERSION_CHECK(4,7,0)
+    HEDLEY_GCC_VERSION_CHECK(4,7,0) || \
+    HEDLEY_MCST_LCC_VERSION_CHECK(1,25,10)
   #define SIMDE_ALIGN_ASSUME_TO_UNCHECKED(Pointer, Alignment) \
     HEDLEY_REINTERPRET_CAST(__typeof__(Pointer), __builtin_assume_aligned(HEDLEY_CONST_CAST(void*, HEDLEY_REINTERPRET_CAST(const void*, Pointer)), Alignment))
 #elif HEDLEY_INTEL_VERSION_CHECK(13,0,0)
