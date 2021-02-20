@@ -399,6 +399,18 @@
   #define SIMDE_DISABLE_UNWANTED_DIAGNOSTICS_NATIVE_ALIASES_
 #endif
 
+/* Some native functions on E2K with instruction set < v6 are declared
+ * as deprecated due to inefficiency. Still they are more efficient
+ * than SIMDe implementation. So we're using them, and switching off
+ * these deprecation warnings. */
+#if defined(HEDLEY_MCST_LCC_VERSION)
+#  define SIMDE_LCC_DISABLE_DEPRECATED_WARNINGS _Pragma("diag_suppress 1215,1444")
+#  define SIMDE_LCC_REVERT_DEPRECATED_WARNINGS _Pragma("diag_default 1215,1444")
+#else
+#  define SIMDE_LCC_DISABLE_DEPRECATED_WARNINGS
+#  define SIMDE_LCC_REVERT_DEPRECATED_WARNINGS
+#endif
+
 #define SIMDE_DISABLE_UNWANTED_DIAGNOSTICS \
   HEDLEY_DIAGNOSTIC_DISABLE_UNUSED_FUNCTION \
   SIMDE_DISABLE_UNWANTED_DIAGNOSTICS_NATIVE_ALIASES_ \

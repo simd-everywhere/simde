@@ -1174,7 +1174,15 @@ simde_mm_dp_ps (simde__m128 a, simde__m128 b, const int imm8)
   return simde__m128_from_private(r_);
 }
 #if defined(SIMDE_X86_SSE4_1_NATIVE)
-#  define simde_mm_dp_ps(a, b, imm8) _mm_dp_ps(a, b, imm8)
+  #if defined(HEDLEY_MCST_LCC_VERSION)
+    #define simde_mm_dp_ps(a, b, imm8) (__extension__ ({ \
+      SIMDE_LCC_DISABLE_DEPRECATED_WARNINGS \
+      _mm_dp_ps((a), (b), (imm8)); \
+      SIMDE_LCC_REVERT_DEPRECATED_WARNINGS \
+    }))
+  #else
+    #define simde_mm_dp_ps(a, b, imm8) _mm_dp_ps(a, b, imm8)
+  #endif
 #endif
 #if defined(SIMDE_X86_SSE4_1_ENABLE_NATIVE_ALIASES)
   #undef _mm_dp_ps

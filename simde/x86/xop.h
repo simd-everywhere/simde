@@ -78,7 +78,7 @@ simde_mm_cmov_si128 (simde__m128i a, simde__m128i b, simde__m128i c) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m256i
 simde_mm256_cmov_si256 (simde__m256i a, simde__m256i b, simde__m256i c) {
-  #if defined(SIMDE_X86_XOP_NATIVE) && defined(SIMDE_X86_AVX_NATIVE) && !defined(SIMDE_BUG_GCC_98521)
+  #if defined(SIMDE_X86_XOP_NATIVE) && defined(SIMDE_X86_AVX_NATIVE) && !defined(SIMDE_BUG_GCC_98521) && !defined(SIMDE_BUG_MCST_LCC_MISSING_CMOV_M256)
     return _mm256_cmov_si256(a, b, c);
   #elif defined(SIMDE_X86_AVX512VL_NATIVE)
     return _mm256_ternarylogic_epi32(a, b, c, 0xe4);
@@ -3512,7 +3512,15 @@ simde_mm_permute2_ps (simde__m128 a, simde__m128 b, simde__m128i c, const int im
   return simde__m128_from_private(r_);
 }
 #if defined(SIMDE_X86_XOP_NATIVE)
-  #define simde_mm_permute2_ps(a, b, c, imm8) _mm_permute2_ps((a), (b), (c), (imm8))
+  #if defined(HEDLEY_MCST_LCC_VERSION)
+    #define simde_mm_permute2_ps(a, b, c, imm8) (__extension__ ({ \
+      SIMDE_LCC_DISABLE_DEPRECATED_WARNINGS \
+      _mm_permute2_ps((a), (b), (c), (imm8)); \
+      SIMDE_LCC_REVERT_DEPRECATED_WARNINGS \
+    }))
+  #else
+    #define simde_mm_permute2_ps(a, b, c, imm8) _mm_permute2_ps((a), (b), (c), (imm8))
+  #endif
 #endif
 #if defined(SIMDE_X86_XOP_ENABLE_NATIVE_ALIASES)
   #define _mm_permute2_ps(a, b, c, imm8) simde_mm_permute2_ps((a), (b), (c), (imm8))
@@ -3547,8 +3555,17 @@ simde_mm_permute2_pd (simde__m128d a, simde__m128d b, simde__m128i c, const int 
 
   return simde__m128d_from_private(r_);
 }
+
 #if defined(SIMDE_X86_XOP_NATIVE)
-  #define simde_mm_permute2_pd(a, b, c, imm8) _mm_permute2_pd((a), (b), (c), (imm8))
+  #if defined(HEDLEY_MCST_LCC_VERSION)
+    #define simde_mm_permute2_pd(a, b, c, imm8) (__extension__ ({ \
+      SIMDE_LCC_DISABLE_DEPRECATED_WARNINGS \
+      _mm_permute2_pd((a), (b), (c), (imm8)); \
+      SIMDE_LCC_REVERT_DEPRECATED_WARNINGS \
+    }))
+  #else
+    #define simde_mm_permute2_pd(a, b, c, imm8) _mm_permute2_pd((a), (b), (c), (imm8))
+  #endif
 #endif
 #if defined(SIMDE_X86_XOP_ENABLE_NATIVE_ALIASES)
   #define _mm_permute2_pd(a, b, c, imm8) simde_mm_permute2_pd((a), (b), (c), (imm8))
@@ -3589,8 +3606,17 @@ simde_mm256_permute2_ps (simde__m256 a, simde__m256 b, simde__m256i c, const int
 
   return simde__m256_from_private(r_);
 }
+
 #if defined(SIMDE_X86_XOP_NATIVE)
-  #define simde_mm256_permute2_ps(a, b, c, imm8) _mm256_permute2_ps((a), (b), (c), (imm8))
+  #if defined(HEDLEY_MCST_LCC_VERSION)
+    #define simde_mm256_permute2_ps(a, b, c, imm8) (__extension__ ({ \
+      SIMDE_LCC_DISABLE_DEPRECATED_WARNINGS \
+      _mm256_permute2_ps((a), (b), (c), (imm8)); \
+      SIMDE_LCC_REVERT_DEPRECATED_WARNINGS \
+    }))
+  #else
+    #define simde_mm256_permute2_ps(a, b, c, imm8) _mm256_permute2_ps((a), (b), (c), (imm8))
+  #endif
 #endif
 #if defined(SIMDE_X86_XOP_ENABLE_NATIVE_ALIASES)
   #define _mm256_permute2_ps(a, b, c, imm8) simde_mm256_permute2_ps((a), (b), (c), (imm8))
@@ -3632,7 +3658,15 @@ simde_mm256_permute2_pd (simde__m256d a, simde__m256d b, simde__m256i c, const i
   return simde__m256d_from_private(r_);
 }
 #if defined(SIMDE_X86_XOP_NATIVE)
-  #define simde_mm256_permute2_pd(a, b, c, imm8) _mm256_permute2_pd((a), (b), (c), (imm8))
+  #if defined(HEDLEY_MCST_LCC_VERSION)
+    #define simde_mm256_permute2_pd(a, b, c, imm8) (__extension__ ({ \
+      SIMDE_LCC_DISABLE_DEPRECATED_WARNINGS \
+      _mm256_permute2_pd((a), (b), (c), (imm8)); \
+      SIMDE_LCC_REVERT_DEPRECATED_WARNINGS \
+    }))
+  #else
+    #define simde_mm256_permute2_pd(a, b, c, imm8) simde_undeprecated_mm256_permute2_pd((a), (b), (c), (imm8))
+  #endif
 #endif
 #if defined(SIMDE_X86_XOP_ENABLE_NATIVE_ALIASES)
   #define _mm256_permute2_pd(a, b, c, imm8) simde_mm256_permute2_pd((a), (b), (c), (imm8))

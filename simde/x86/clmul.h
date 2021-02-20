@@ -204,7 +204,15 @@ simde_mm_clmulepi64_si128 (simde__m128i a, simde__m128i b, const int imm8)
   return simde__m128i_from_private(r_);
 }
 #if defined(SIMDE_X86_PCLMUL_NATIVE)
-  #define simde_mm_clmulepi64_si128(a, b, imm8) _mm_clmulepi64_si128(a, b, imm8)
+  #if defined(HEDLEY_MCST_LCC_VERSION)
+    #define simde_mm_clmulepi64_si128(a, b, imm8) (__extension__ ({ \
+      SIMDE_LCC_DISABLE_DEPRECATED_WARNINGS \
+      _mm_clmulepi64_si128((a), (b), (imm8)); \
+      SIMDE_LCC_REVERT_DEPRECATED_WARNINGS \
+    }))
+  #else
+    #define simde_mm_clmulepi64_si128(a, b, imm8) simde_mm_clmulepi64_si128(a, b, imm8)
+  #endif
 #elif defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(__ARM_FEATURE_AES)
   #define simde_mm_clmulepi64_si128(a, b, imm8) \
     simde__m128i_from_neon_u64( \
@@ -231,6 +239,7 @@ simde_mm256_clmulepi64_epi128 (simde__m256i a, simde__m256i b, const int imm8)
     r_;
 
   #if defined(SIMDE_X86_PCLMUL_NATIVE)
+    SIMDE_LCC_DISABLE_DEPRECATED_WARNINGS
     switch (imm8 & 0x11) {
       case 0x00:
         r_.m128i[0] = _mm_clmulepi64_si128(a_.m128i[0], b_.m128i[0], 0x00);
@@ -249,6 +258,7 @@ simde_mm256_clmulepi64_epi128 (simde__m256i a, simde__m256i b, const int imm8)
         r_.m128i[1] = _mm_clmulepi64_si128(a_.m128i[1], b_.m128i[1], 0x11);
         break;
     }
+    SIMDE_LCC_REVERT_DEPRECATED_WARNINGS
   #else
     simde__m128i_private a_lo_, b_lo_, r_lo_, a_hi_, b_hi_, r_hi_;
 
