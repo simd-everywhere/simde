@@ -45,12 +45,14 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_cvtps_ph(simde__m128 a, const int sae) {
   #if defined(SIMDE_X86_F16C_NATIVE)
+    SIMDE_LCC_DISABLE_DEPRECATED_WARNINGS
     switch (sae & SIMDE_MM_FROUND_NO_EXC) {
       case SIMDE_MM_FROUND_NO_EXC:
         return _mm_cvtps_ph(a, SIMDE_MM_FROUND_NO_EXC);
       default:
         return _mm_cvtps_ph(a, 0);
     }
+    SIMDE_LCC_REVERT_DEPRECATED_WARNINGS
   #else
     simde__m128_private a_ = simde__m128_to_private(a);
     simde__m128i_private r_ = simde__m128i_to_private(simde_mm_setzero_si128());
@@ -102,12 +104,14 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm256_cvtps_ph(simde__m256 a, const int sae) {
   #if defined(SIMDE_X86_F16C_NATIVE) && defined(SIMDE_X86_AVX_NATIVE)
+    SIMDE_LCC_DISABLE_DEPRECATED_WARNINGS
     switch (sae & SIMDE_MM_FROUND_NO_EXC) {
       case SIMDE_MM_FROUND_NO_EXC:
         return _mm256_cvtps_ph(a, SIMDE_MM_FROUND_NO_EXC);
       default:
         return _mm256_cvtps_ph(a, 0);
     }
+    SIMDE_LCC_REVERT_DEPRECATED_WARNINGS
   #else
     simde__m256_private a_ = simde__m256_to_private(a);
     simde__m128i_private r_;

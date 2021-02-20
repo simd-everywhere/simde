@@ -191,6 +191,14 @@
 #define SIMDE_BUG_LCC_XOP_MISSING
 #define SIMDE_BUG_LCC_FMA_WRONG_RESULT
 #define SIMDE_BUG_LCC_AVX_NO_LOAD_STORE_U2
+
+/* Some native functions on E2K with instruction set < v6
+   are declared as deprecated due to inefficiency.
+   Still they are more efficient than SIMDe implementation.
+   So we're using them, and switching off these deprecation warnings. */
+#define SIMDE_BUG_PCLMUL_XOP_DEPRECATED
+#define SIMDE_LCC_DISABLE_DEPRECATED_WARNINGS _Pragma("diag_suppress 1215,1444")
+#define SIMDE_LCC_REVERT_DEPRECATED_WARNINGS _Pragma("diag_default 1215,1444")
 #endif
 
 /* HP/PA / PA-RISC
@@ -317,7 +325,7 @@
 #  if defined(__GFNI__)
 #    define SIMDE_ARCH_X86_GFNI 1
 #  endif
-#  if defined(__PCLMUL__) && !defined(SIMDE_ARCH_E2K) /* E2K has inefficient implementation of PCLMUL */
+#  if defined(__PCLMUL__)
 #    define SIMDE_ARCH_X86_PCLMUL 1
 #  endif
 #  if defined(__VPCLMULQDQ__)
