@@ -280,6 +280,8 @@ simde_vabsq_s8(simde_int8x16_t a) {
     return vabsq_s8(a);
   #elif defined(SIMDE_X86_SSSE3_NATIVE)
     return _mm_abs_epi8(a);
+  #elif defined(SIMDE_X86_SSE2_NATIVE)
+    return _mm_min_epu8(a, _mm_sub_epi8(_mm_setzero_si128(), a));
   #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
     return vec_abs(a);
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
@@ -314,6 +316,8 @@ simde_vabsq_s16(simde_int16x8_t a) {
     return vabsq_s16(a);
   #elif defined(SIMDE_X86_SSSE3_NATIVE)
     return _mm_abs_epi16(a);
+  #elif defined(SIMDE_X86_SSE2_NATIVE)
+    return _mm_max_epi16(a, _mm_sub_epi16(_mm_setzero_si128(), a));
   #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
     return vec_abs(a);
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
@@ -348,6 +352,9 @@ simde_vabsq_s32(simde_int32x4_t a) {
     return vabsq_s32(a);
   #elif defined(SIMDE_X86_SSSE3_NATIVE)
     return _mm_abs_epi32(a);
+  #elif defined(SIMDE_X86_SSE2_NATIVE)
+    const __m128i m = _mm_cmpgt_epi32(_mm_setzero_si128(), a);
+    return _mm_sub_epi32(_mm_xor_si128(a, m), m);
   #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
     return vec_abs(a);
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
@@ -382,8 +389,15 @@ simde_vabsq_s64(simde_int64x2_t a) {
     return vabsq_s64(a);
   #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vbslq_s64(vreinterpretq_u64_s64(vshrq_n_s64(a, 63)), vsubq_s64(vdupq_n_s64(0), a), a);
+  #elif defined(SIMDE_X86_AVX512VL_NATIVE)
+    return _mm_abs_epi64(a);
+  #elif defined(SIMDE_X86_SSE2_NATIVE)
+    const __m128i m = _mm_srai_epi32(_mm_shuffle_epi32(a, 0xF5), 31);
+    return _mm_sub_epi64(_mm_xor_si128(a, m), m);
   #elif defined(SIMDE_POWER_ALTIVEC_P64_NATIVE) && !defined(HEDLEY_IBM_VERSION)
     return vec_abs(a);
+  #elif defined(SIMDE_WASM_SIMD128_NATIVE) && 0
+    return wasm_i64x2_abs(a);
   #else
     simde_int64x2_private
       r_,
