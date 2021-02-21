@@ -77,9 +77,4 @@ simde_include_dir = include_directories('..')
 
 subdir('common')
 subdir('x86')
-
-# Currently it is nearly impossible to support non-native ARM on elbrus.
-# It's compiler bug, so it will be possible in future versions.
-if cc.get_id() != 'lcc'
-    subdir('arm')
-endif
+subdir('arm')
