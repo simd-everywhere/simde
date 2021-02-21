@@ -76,7 +76,7 @@ test_simde_vabs_f32 (SIMDE_MUNIT_TEST_ARGS) {
     simde_float32x2_t a = simde_vld1_f32(test_vec[i].a);
     simde_float32x2_t r = simde_vabs_f32(a);
 
-    simde_test_arm_neon_assert_equal_f32x2(r, simde_vld1_f32(test_vec[i].r), 1);
+    simde_test_arm_neon_assert_equal_exact_f32x2(r, simde_vld1_f32(test_vec[i].r));
   }
 
   return 0;
@@ -110,7 +110,7 @@ test_simde_vabs_f64 (SIMDE_MUNIT_TEST_ARGS) {
     simde_float64x1_t a = simde_vld1_f64(test_vec[i].a);
     simde_float64x1_t r = simde_vabs_f64(a);
 
-    simde_test_arm_neon_assert_equal_f64x1(r, simde_vld1_f64(test_vec[i].r), 1);
+    simde_test_arm_neon_assert_equal_exact_f64x1(r, simde_vld1_f64(test_vec[i].r));
   }
 
   return 0;
@@ -279,7 +279,7 @@ test_simde_vabsq_f32 (SIMDE_MUNIT_TEST_ARGS) {
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
     simde_float32x4_t a = simde_vld1q_f32(test_vec[i].a);
     simde_float32x4_t r = simde_vabsq_f32(a);
-    simde_test_arm_neon_assert_equal_f32x4(r, simde_vld1q_f32(test_vec[i].r), 1);
+    simde_test_arm_neon_assert_equal_exact_f32x4(r, simde_vld1q_f32(test_vec[i].r));
   }
 
   return 0;
@@ -313,7 +313,7 @@ test_simde_vabsq_f64 (SIMDE_MUNIT_TEST_ARGS) {
     simde_float64x2_t a = simde_vld1q_f64(test_vec[i].a);
     simde_float64x2_t r = simde_vabsq_f64(a);
 
-    simde_test_arm_neon_assert_equal_f64x2(r, simde_vld1q_f64(test_vec[i].r), 1);
+    simde_test_arm_neon_assert_equal_exact_f64x2(r, simde_vld1q_f64(test_vec[i].r));
   }
 
   return 0;
