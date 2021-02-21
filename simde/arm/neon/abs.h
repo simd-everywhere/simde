@@ -391,7 +391,7 @@ simde_vabsq_s64(simde_int64x2_t a) {
     return _mm_sub_epi64(_mm_xor_si128(a, m), m);
   #elif defined(SIMDE_POWER_ALTIVEC_P64_NATIVE) && !defined(HEDLEY_IBM_VERSION)
     return vec_abs(a);
-  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+  #elif defined(SIMDE_WASM_SIMD128_NATIVE) && 0
     return wasm_i64x2_abs(a);
   #else
     simde_int64x2_private
