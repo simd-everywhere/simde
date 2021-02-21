@@ -140,7 +140,7 @@ simde_mm_abs_epi64(simde__m128i a) {
       r_.neon_i64 = vsubq_s64(veorq_s64(a_.neon_i64, m), m);
     #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE) && !defined(HEDLEY_IBM_VERSION)
       r_.altivec_i64 = vec_abs(a_.altivec_i64);
-    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE) && 0
       r_.wasm_v128 = wasm_i64x2_abs(a_.wasm_v128);
     #else
       SIMDE_VECTORIZE
