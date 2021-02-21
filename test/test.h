@@ -537,6 +537,17 @@ simde_test_equal_f32(simde_float32 a, simde_float32 b, simde_float32 slop) {
 }
 
 static int
+simde_test_equal_exact_f32(simde_float32 a, simde_float32 b) {
+  if (simde_math_isnan(a)) {
+    return simde_math_isnan(b);
+  } else if (simde_math_isinf(a)) {
+    return !((a < b) || (a > b));
+  } else {
+      return a == b;
+  }
+}
+
+static int
 simde_test_equal_f64(simde_float64 a, simde_float64 b, simde_float64 slop) {
   if (simde_math_isnan(a)) {
     return simde_math_isnan(b);
@@ -552,6 +563,17 @@ simde_test_equal_f64(simde_float64 a, simde_float64 b, simde_float64 slop) {
       hi = simde_math_nextafter(a, SIMDE_MATH_INFINITY);
 
     return ((b >= lo) && (b <= hi));
+  }
+}
+
+static int
+simde_test_equal_exact_f64(simde_float64 a, simde_float64 b) {
+  if (simde_math_isnan(a)) {
+    return simde_math_isnan(b);
+  } else if (simde_math_isinf(a)) {
+    return !((a < b) || (a > b));
+  } else {
+      return a == b;
   }
 }
 
@@ -583,6 +605,21 @@ simde_assert_equal_vf32_(
 #define simde_assert_equal_vf32(vec_len, a, b, precision) simde_assert_equal_vf32_(vec_len, a, b, simde_test_f32_precision_to_slop(precision), __FILE__, __LINE__, #a, #b)
 
 static int
+simde_assert_equal_exact_vf32_(
+    size_t vec_len, simde_float32 const a[HEDLEY_ARRAY_PARAM(vec_len)], simde_float32 const b[HEDLEY_ARRAY_PARAM(vec_len)],
+    const char* filename, int line, const char* astr, const char* bstr) {
+  for (size_t i = 0 ; i < vec_len ; i++) {
+  if (HEDLEY_UNLIKELY(!simde_test_equal_exact_f32(a[i], b[i]))) {
+      simde_test_debug_printf_("%s:%d: assertion failed: %s[%zu] = %s[%zu] (%f = %f)\n",
+              filename, line, astr, i, bstr, i, HEDLEY_STATIC_CAST(double, a[i]), HEDLEY_STATIC_CAST(double, b[i]));
+      SIMDE_TEST_ASSERT_RETURN(1);
+    }
+  }
+  return 0;
+}
+#define simde_assert_equal_exact_vf32(vec_len, a, b) simde_assert_equal_exact_vf32_(vec_len, a, b, __FILE__, __LINE__, #a, #b)
+
+static int
 simde_assert_equal_f32_(simde_float32 a, simde_float32 b, simde_float32 slop,
     const char* filename, int line, const char* astr, const char* bstr) {
   if (HEDLEY_UNLIKELY(!simde_test_equal_f32(a, b, slop))) {
@@ -593,6 +630,18 @@ simde_assert_equal_f32_(simde_float32 a, simde_float32 b, simde_float32 slop,
   return 0;
 }
 #define simde_assert_equal_f32(a, b, precision) simde_assert_equal_f32_(a, b, simde_test_f32_precision_to_slop(precision), __FILE__, __LINE__, #a, #b)
+
+static int
+simde_assert_equal_exact_f32_(simde_float32 a, simde_float32 b,
+    const char* filename, int line, const char* astr, const char* bstr) {
+  if (HEDLEY_UNLIKELY(!simde_test_equal_exact_f32(a, b))) {
+    simde_test_debug_printf_("%s:%d: assertion failed: %s = %s (%f = %f)\n",
+        filename, line, astr, bstr, HEDLEY_STATIC_CAST(double, a), HEDLEY_STATIC_CAST(double, b));
+    SIMDE_TEST_ASSERT_RETURN(1);
+  }
+  return 0;
+}
+#define simde_assert_equal_exact_f32(a, b) simde_assert_equal_exact_f32_(a, b, __FILE__, __LINE__, #a, #b)
 
 static int
 simde_assert_equal_vf64_(
@@ -610,6 +659,21 @@ simde_assert_equal_vf64_(
 #define simde_assert_equal_vf64(vec_len, a, b, precision) simde_assert_equal_vf64_(vec_len, a, b, simde_test_f64_precision_to_slop(precision), __FILE__, __LINE__, #a, #b)
 
 static int
+simde_assert_equal_exact_vf64_(
+    size_t vec_len, simde_float64 const a[HEDLEY_ARRAY_PARAM(vec_len)], simde_float64 const b[HEDLEY_ARRAY_PARAM(vec_len)],
+    const char* filename, int line, const char* astr, const char* bstr) {
+  for (size_t i = 0 ; i < vec_len ; i++) {
+  if (HEDLEY_UNLIKELY(!simde_test_equal_exact_f64(a[i], b[i]))) {
+      simde_test_debug_printf_("%s:%d: assertion failed: %s[%zu] = %s[%zu] (%f = %f)\n",
+              filename, line, astr, i, bstr, i, HEDLEY_STATIC_CAST(double, a[i]), HEDLEY_STATIC_CAST(double, b[i]));
+      SIMDE_TEST_ASSERT_RETURN(1);
+    }
+  }
+  return 0;
+}
+#define simde_assert_equal_exact_vf64(vec_len, a, b) simde_assert_equal_exact_vf64_(vec_len, a, b, __FILE__, __LINE__, #a, #b)
+
+static int
 simde_assert_equal_f64_(simde_float64 a, simde_float64 b, simde_float64 slop,
     const char* filename, int line, const char* astr, const char* bstr) {
   if (HEDLEY_UNLIKELY(!simde_test_equal_f64(a, b, slop))) {
@@ -620,6 +684,19 @@ simde_assert_equal_f64_(simde_float64 a, simde_float64 b, simde_float64 slop,
   return 0;
 }
 #define simde_assert_equal_f64(a, b, precision) simde_assert_equal_f64_(a, b, simde_test_f64_precision_to_slop(precision), __FILE__, __LINE__, #a, #b)
+
+
+static int
+simde_assert_equal_exact_f64_(simde_float64 a, simde_float64 b,
+    const char* filename, int line, const char* astr, const char* bstr) {
+  if (HEDLEY_UNLIKELY(!simde_test_equal_exact_f64(a, b))) {
+    simde_test_debug_printf_("%s:%d: assertion failed: %s = %s (%f = %f)\n",
+        filename, line, astr, bstr, a, b);
+    SIMDE_TEST_ASSERT_RETURN(1);
+  }
+  return 0;
+}
+#define simde_assert_equal_exact_f64(a, b) simde_assert_equal_exact_f64_(a, b, __FILE__, __LINE__, #a, #b)
 
 #define SIMDE_TEST_GENERATE_ASSERT_EQUAL_FUNC_(T, symbol_identifier, fmt) \
   static int \

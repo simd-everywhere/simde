@@ -32,6 +32,19 @@
  \
     return simde_assert_equal_vf##EL##_(sizeof(a_) / sizeof(a_[0]), a_, b_, slop, filename, line, astr, bstr); \
   } \
+ \
+  static int \
+  simde_test_x86_assert_equal_exact_f##EL##x##EC##_(simde##NT a, simde##NT b, \
+      const char* filename, int line, const char* astr, const char* bstr) { \
+    simde_float##EL \
+      a_[sizeof(a) / sizeof(simde_float##EL)], \
+      b_[sizeof(a) / sizeof(simde_float##EL)]; \
+ \
+    SF(a_, a); \
+    SF(b_, b); \
+ \
+    return simde_assert_equal_exact_vf##EL##_(sizeof(a_) / sizeof(a_[0]), a_, b_, filename, line, astr, bstr); \
+  } \
 \
   static void \
   simde_test_x86_random_f##EL##x##EC##_full( \
