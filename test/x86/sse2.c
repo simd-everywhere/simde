@@ -57,7 +57,7 @@ test_simde_x_mm_abs_pd (SIMDE_MUNIT_TEST_ARGS) {
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
     simde__m128d a = simde_mm_loadu_pd(test_vec[i].a);
     simde__m128d r = simde_x_mm_abs_pd(a);
-    simde_test_x86_assert_equal_f64x2(r, simde_mm_loadu_pd(test_vec[i].r), 1);
+    simde_test_x86_assert_equal_f64x2(r, simde_mm_loadu_pd(test_vec[i].r), INT_MAX);
   }
 
   return 0;
