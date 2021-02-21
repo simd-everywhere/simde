@@ -59,6 +59,17 @@
  \
     return simde_assert_equal_v##symbol_identifier##_(sizeof(a_) / sizeof(ET), HEDLEY_REINTERPRET_CAST(SET*, a_), HEDLEY_REINTERPRET_CAST(SET*, b_), slop, filename, line, astr, bstr); \
   } \
+ \
+  static int \
+  simde_test_arm_neon_assert_equal_exact_##symbol_identifier##x##element_count##_(simde_##NT a, simde_##NT b, \
+      const char* filename, int line, const char* astr, const char* bstr) { \
+    SET a_[sizeof(a) / sizeof(ET)], b_[sizeof(b) / sizeof(ET)]; \
+ \
+    simde_vst1##modifier##_##symbol_identifier(a_, a); \
+    simde_vst1##modifier##_##symbol_identifier(b_, b); \
+ \
+    return simde_assert_equal_exact_v##symbol_identifier##_(sizeof(a_) / sizeof(ET), HEDLEY_REINTERPRET_CAST(SET*, a_), HEDLEY_REINTERPRET_CAST(SET*, b_), filename, line, astr, bstr); \
+  } \
   \
   static void \
   simde_test_arm_neon_random_##symbol_identifier##x##element_count##_full( \
@@ -191,6 +202,21 @@ HEDLEY_DIAGNOSTIC_POP
  \
     return simde_assert_equal_v##symbol_identifier##_(sizeof(a0_) / sizeof(ET), HEDLEY_REINTERPRET_CAST(SET*, a0_), HEDLEY_REINTERPRET_CAST(SET*, b0_), slop, filename, line, astr, bstr) && \
       simde_assert_equal_v##symbol_identifier##_(sizeof(a1_) / sizeof(ET), HEDLEY_REINTERPRET_CAST(SET*, a1_), HEDLEY_REINTERPRET_CAST(SET*, b1_), slop, filename, line, astr, bstr); \
+  } \
+ \
+  static int \
+  simde_test_arm_neon_assert_equal_exact_##symbol_identifier##x##element_count##x2_(simde_##NT a, simde_##NT b, \
+     const char* filename, int line, const char* astr, const char* bstr) { \
+    SET a0_[sizeof(a) / sizeof(ET)], b0_[sizeof(b) / sizeof(ET)]; \
+    SET a1_[sizeof(a) / sizeof(ET)], b1_[sizeof(b) / sizeof(ET)]; \
+ \
+    simde_vst1##modifier##_##symbol_identifier(a0_, a.val[0]); \
+    simde_vst1##modifier##_##symbol_identifier(b0_, b.val[0]);       \
+    simde_vst1##modifier##_##symbol_identifier(a1_, a.val[1]); \
+    simde_vst1##modifier##_##symbol_identifier(b1_, b.val[1]); \
+ \
+    return simde_assert_equal_exact_v##symbol_identifier##_(sizeof(a0_) / sizeof(ET), HEDLEY_REINTERPRET_CAST(SET*, a0_), HEDLEY_REINTERPRET_CAST(SET*, b0_), filename, line, astr, bstr) && \
+      simde_assert_equal_exact_v##symbol_identifier##_(sizeof(a1_) / sizeof(ET), HEDLEY_REINTERPRET_CAST(SET*, a1_), HEDLEY_REINTERPRET_CAST(SET*, b1_), filename, line, astr, bstr); \
   }
 
 #if !defined(SIMDE_BUG_INTEL_857088)
@@ -323,6 +349,25 @@ SIMDE_TEST_ARM_NEON_GENERATE_X2_VECTOR_FLOAT_TYPE_FUNCS_(float64x2x2_t, simde_fl
     return simde_assert_equal_v##symbol_identifier##_(sizeof(a0_) / sizeof(ET), HEDLEY_REINTERPRET_CAST(SET*, a0_), HEDLEY_REINTERPRET_CAST(SET*, b0_), slop, filename, line, astr, bstr) && \
       simde_assert_equal_v##symbol_identifier##_(sizeof(a1_) / sizeof(ET), HEDLEY_REINTERPRET_CAST(SET*, a1_), HEDLEY_REINTERPRET_CAST(SET*, b1_), slop, filename, line, astr, bstr) && \
       simde_assert_equal_v##symbol_identifier##_(sizeof(a2_) / sizeof(ET), HEDLEY_REINTERPRET_CAST(SET*, a2_), HEDLEY_REINTERPRET_CAST(SET*, b2_), slop, filename, line, astr, bstr); \
+  } \
+ \
+  static int \
+  simde_test_arm_neon_assert_equal_exact_##symbol_identifier##x##element_count##x3_(simde_##NT a, simde_##NT b, \
+     const char* filename, int line, const char* astr, const char* bstr) { \
+    SET a0_[sizeof(a) / sizeof(ET)], b0_[sizeof(b) / sizeof(ET)]; \
+    SET a1_[sizeof(a) / sizeof(ET)], b1_[sizeof(b) / sizeof(ET)]; \
+    SET a2_[sizeof(a) / sizeof(ET)], b2_[sizeof(b) / sizeof(ET)]; \
+ \
+    simde_vst1##modifier##_##symbol_identifier(a0_, a.val[0]); \
+    simde_vst1##modifier##_##symbol_identifier(b0_, b.val[0]);       \
+    simde_vst1##modifier##_##symbol_identifier(a1_, a.val[1]); \
+    simde_vst1##modifier##_##symbol_identifier(b1_, b.val[1]); \
+    simde_vst1##modifier##_##symbol_identifier(a2_, a.val[2]); \
+    simde_vst1##modifier##_##symbol_identifier(b2_, b.val[2]); \
+ \
+    return simde_assert_equal_exact_v##symbol_identifier##_(sizeof(a0_) / sizeof(ET), HEDLEY_REINTERPRET_CAST(SET*, a0_), HEDLEY_REINTERPRET_CAST(SET*, b0_), filename, line, astr, bstr) && \
+      simde_assert_equal_exact_v##symbol_identifier##_(sizeof(a1_) / sizeof(ET), HEDLEY_REINTERPRET_CAST(SET*, a1_), HEDLEY_REINTERPRET_CAST(SET*, b1_), filename, line, astr, bstr) && \
+      simde_assert_equal_exact_v##symbol_identifier##_(sizeof(a2_) / sizeof(ET), HEDLEY_REINTERPRET_CAST(SET*, a2_), HEDLEY_REINTERPRET_CAST(SET*, b2_), filename, line, astr, bstr); \
   }
 
 #if !defined(SIMDE_BUG_INTEL_857088)
@@ -472,6 +517,29 @@ SIMDE_TEST_ARM_NEON_GENERATE_X3_VECTOR_FLOAT_TYPE_FUNCS_(float64x2x3_t, simde_fl
       simde_assert_equal_v##symbol_identifier##_(sizeof(a1_) / sizeof(ET), HEDLEY_REINTERPRET_CAST(SET*, a1_), HEDLEY_REINTERPRET_CAST(SET*, b1_), slop, filename, line, astr, bstr) && \
       simde_assert_equal_v##symbol_identifier##_(sizeof(a2_) / sizeof(ET), HEDLEY_REINTERPRET_CAST(SET*, a2_), HEDLEY_REINTERPRET_CAST(SET*, b2_), slop, filename, line, astr, bstr) && \
       simde_assert_equal_v##symbol_identifier##_(sizeof(a3_) / sizeof(ET), HEDLEY_REINTERPRET_CAST(SET*, a3_), HEDLEY_REINTERPRET_CAST(SET*, b3_), slop, filename, line, astr, bstr); \
+  } \
+ \
+  static int \
+  simde_test_arm_neon_assert_equal_exact_##symbol_identifier##x##element_count##x4_(simde_##NT a, simde_##NT b, \
+     const char* filename, int line, const char* astr, const char* bstr) { \
+    SET a0_[sizeof(a) / sizeof(ET)], b0_[sizeof(b) / sizeof(ET)]; \
+    SET a1_[sizeof(a) / sizeof(ET)], b1_[sizeof(b) / sizeof(ET)]; \
+    SET a2_[sizeof(a) / sizeof(ET)], b2_[sizeof(b) / sizeof(ET)]; \
+    SET a3_[sizeof(a) / sizeof(ET)], b3_[sizeof(b) / sizeof(ET)]; \
+ \
+    simde_vst1##modifier##_##symbol_identifier(a0_, a.val[0]); \
+    simde_vst1##modifier##_##symbol_identifier(b0_, b.val[0]);       \
+    simde_vst1##modifier##_##symbol_identifier(a1_, a.val[1]); \
+    simde_vst1##modifier##_##symbol_identifier(b1_, b.val[1]); \
+    simde_vst1##modifier##_##symbol_identifier(a2_, a.val[2]); \
+    simde_vst1##modifier##_##symbol_identifier(b2_, b.val[2]); \
+    simde_vst1##modifier##_##symbol_identifier(a3_, a.val[3]); \
+    simde_vst1##modifier##_##symbol_identifier(b3_, b.val[3]); \
+ \
+    return simde_assert_equal_exact_v##symbol_identifier##_(sizeof(a0_) / sizeof(ET), HEDLEY_REINTERPRET_CAST(SET*, a0_), HEDLEY_REINTERPRET_CAST(SET*, b0_), filename, line, astr, bstr) && \
+      simde_assert_equal_exact_v##symbol_identifier##_(sizeof(a1_) / sizeof(ET), HEDLEY_REINTERPRET_CAST(SET*, a1_), HEDLEY_REINTERPRET_CAST(SET*, b1_), filename, line, astr, bstr) && \
+      simde_assert_equal_exact_v##symbol_identifier##_(sizeof(a2_) / sizeof(ET), HEDLEY_REINTERPRET_CAST(SET*, a2_), HEDLEY_REINTERPRET_CAST(SET*, b2_), filename, line, astr, bstr) && \
+      simde_assert_equal_exact_v##symbol_identifier##_(sizeof(a3_) / sizeof(ET), HEDLEY_REINTERPRET_CAST(SET*, a3_), HEDLEY_REINTERPRET_CAST(SET*, b3_), filename, line, astr, bstr); \
   }
 
 #if !defined(SIMDE_BUG_INTEL_857088)
@@ -507,7 +575,9 @@ SIMDE_TEST_ARM_NEON_GENERATE_X4_VECTOR_FLOAT_TYPE_FUNCS_(float64x2x4_t, simde_fl
 #define simde_test_arm_neon_assert_equal_u32x2(a, b) do { if (simde_test_arm_neon_assert_equal_u32x2_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 #define simde_test_arm_neon_assert_equal_u64x1(a, b) do { if (simde_test_arm_neon_assert_equal_u64x1_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 #define simde_test_arm_neon_assert_equal_f32x2(a, b, precision) do { if (simde_test_arm_neon_assert_equal_f32x2_(a, b, 1e-##precision##f, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+#define simde_test_arm_neon_assert_equal_exact_f32x2(a, b) do { if (simde_test_arm_neon_assert_equal_exact_f32x2_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 #define simde_test_arm_neon_assert_equal_f64x1(a, b, precision) do { if (simde_test_arm_neon_assert_equal_f64x1_(a, b, 1e-##precision,    __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+#define simde_test_arm_neon_assert_equal_exact_f64x1(a, b) do { if (simde_test_arm_neon_assert_equal_exact_f64x1_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 
 #define simde_test_arm_neon_assert_equal_i8x16(a, b) do { if (simde_test_arm_neon_assert_equal_i8x16_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 #define simde_test_arm_neon_assert_equal_i16x8(a, b) do { if (simde_test_arm_neon_assert_equal_i16x8_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
@@ -518,7 +588,9 @@ SIMDE_TEST_ARM_NEON_GENERATE_X4_VECTOR_FLOAT_TYPE_FUNCS_(float64x2x4_t, simde_fl
 #define simde_test_arm_neon_assert_equal_u32x4(a, b) do { if (simde_test_arm_neon_assert_equal_u32x4_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 #define simde_test_arm_neon_assert_equal_u64x2(a, b) do { if (simde_test_arm_neon_assert_equal_u64x2_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 #define simde_test_arm_neon_assert_equal_f32x4(a, b, precision) do { if (simde_test_arm_neon_assert_equal_f32x4_(a, b, 1e-##precision##f, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+#define simde_test_arm_neon_assert_equal_exact_f32x4(a, b) do { if (simde_test_arm_neon_assert_equal_exact_f32x4_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 #define simde_test_arm_neon_assert_equal_f64x2(a, b, precision) do { if (simde_test_arm_neon_assert_equal_f64x2_(a, b, 1e-##precision,    __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+#define simde_test_arm_neon_assert_equal_exact_f64x2(a, b) do { if (simde_test_arm_neon_assert_equal_exact_f64x2_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 
 #if !defined(SIMDE_TEST_BARE)
   #define SIMDE_TEST_DECLARE_SUITE(name) SIMDE_TEST_SUITE_DECLARE_GETTERS(HEDLEY_CONCAT(simde_test_arm_neon_get_suite_,name))
