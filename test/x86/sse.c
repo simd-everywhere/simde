@@ -60,7 +60,7 @@ test_simde_mm_set_ps(SIMDE_MUNIT_TEST_ARGS) {
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
     simde_float32* a = test_vec[i].a;
     simde__m128 r = simde_mm_set_ps(a[3], a[2], a[1], a[0]);
-    simde_test_x86_assert_equal_f32x4(r, simde_mm_loadu_ps(test_vec[i].r), 1);
+    simde_test_x86_assert_equal_exact_f32x4(r, simde_mm_loadu_ps(test_vec[i].r));
   }
 
   return 0;
