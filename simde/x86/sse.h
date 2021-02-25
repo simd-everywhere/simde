@@ -2256,7 +2256,7 @@ simde_mm_cvtsi64_ss (simde__m128 a, int64_t b) {
     return simde__m128_from_private(r_);
   #endif
 }
-#if defined(SIMDE_X86_SSE_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_SSE_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && !defined(SIMDE_ARCH_AMD64))
 #  define _mm_cvtsi64_ss(a, b) simde_mm_cvtsi64_ss((a), b)
 #endif
 
@@ -2305,7 +2305,7 @@ simde_mm_cvtss_si64 (simde__m128 a) {
     #endif
   #endif
 }
-#if defined(SIMDE_X86_SSE_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_SSE_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && !defined(SIMDE_ARCH_AMD64))
 #  define _mm_cvtss_si64(a) simde_mm_cvtss_si64((a))
 #endif
 
@@ -2388,7 +2388,7 @@ simde_mm_cvttss_si64 (simde__m128 a) {
     #endif
   #endif
 }
-#if defined(SIMDE_X86_SSE_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_SSE_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && !defined(SIMDE_ARCH_AMD64))
 #  define _mm_cvttss_si64(a) simde_mm_cvttss_si64((a))
 #endif
 

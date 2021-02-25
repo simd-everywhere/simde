@@ -2721,7 +2721,7 @@ simde_mm_cvtsd_si64 (simde__m128d a) {
   #endif
 }
 #define simde_mm_cvtsd_si64x(a) simde_mm_cvtsd_si64(a)
-#if defined(SIMDE_X86_SSE2_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_SSE2_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && !defined(SIMDE_ARCH_AMD64))
   #define _mm_cvtsd_si64(a) simde_mm_cvtsd_si64(a)
   #define _mm_cvtsd_si64x(a) simde_mm_cvtsd_si64x(a)
 #endif
@@ -2823,7 +2823,7 @@ simde_mm_cvtsi128_si64 (simde__m128i a) {
   #endif
 }
 #define simde_mm_cvtsi128_si64x(a) simde_mm_cvtsi128_si64(a)
-#if defined(SIMDE_X86_SSE2_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_SSE2_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && !defined(SIMDE_ARCH_AMD64))
   #define _mm_cvtsi128_si64(a) simde_mm_cvtsi128_si64(a)
   #define _mm_cvtsi128_si64x(a) simde_mm_cvtsi128_si64x(a)
 #endif
@@ -2837,7 +2837,7 @@ simde_mm_cvtsi32_sd (simde__m128d a, int32_t b) {
     simde__m128d_private r_;
     simde__m128d_private a_ = simde__m128d_to_private(a);
 
-    #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_ARCH_AMD64)
+    #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
       r_.neon_f64 = vsetq_lane_f64(HEDLEY_STATIC_CAST(float64_t, b), a_.neon_f64, 0);
     #else
       r_.f64[0] = HEDLEY_STATIC_CAST(simde_float64, b);
@@ -2925,7 +2925,7 @@ simde_mm_cvtsi64_sd (simde__m128d a, int64_t b) {
   #endif
 }
 #define simde_mm_cvtsi64x_sd(a, b) simde_mm_cvtsi64_sd(a, b)
-#if defined(SIMDE_X86_SSE2_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_SSE2_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && !defined(SIMDE_ARCH_AMD64))
   #define _mm_cvtsi64_sd(a, b) simde_mm_cvtsi64_sd(a, b)
   #define _mm_cvtsi64x_sd(a, b) simde_mm_cvtsi64x_sd(a, b)
 #endif
@@ -2955,7 +2955,7 @@ simde_mm_cvtsi64_si128 (int64_t a) {
   #endif
 }
 #define simde_mm_cvtsi64x_si128(a) simde_mm_cvtsi64_si128(a)
-#if defined(SIMDE_X86_SSE2_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_SSE2_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && !defined(SIMDE_ARCH_AMD64))
   #define _mm_cvtsi64_si128(a) simde_mm_cvtsi64_si128(a)
   #define _mm_cvtsi64x_si128(a) simde_mm_cvtsi64x_si128(a)
 #endif
@@ -3097,7 +3097,7 @@ simde_mm_cvttsd_si64 (simde__m128d a) {
   #endif
 }
 #define simde_mm_cvttsd_si64x(a) simde_mm_cvttsd_si64(a)
-#if defined(SIMDE_X86_SSE2_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_SSE2_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && !defined(SIMDE_ARCH_AMD64))
   #define _mm_cvttsd_si64(a) simde_mm_cvttsd_si64(a)
   #define _mm_cvttsd_si64x(a) simde_mm_cvttsd_si64x(a)
 #endif
@@ -6332,7 +6332,7 @@ simde_mm_stream_si64 (int64_t* mem_addr, int64_t a) {
   #endif
 }
 #define simde_mm_stream_si64x(mem_addr, a) simde_mm_stream_si64(mem_addr, a)
-#if defined(SIMDE_X86_SSE2_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_SSE2_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && !defined(SIMDE_ARCH_AMD64))
   #define _mm_stream_si64(mem_addr, a) simde_mm_stream_si64(SIMDE_CHECKED_REINTERPRET_CAST(int64_t*, __int64*, mem_addr), a)
   #define _mm_stream_si64x(mem_addr, a) simde_mm_stream_si64(SIMDE_CHECKED_REINTERPRET_CAST(int64_t*, __int64*, mem_addr), a)
 #endif

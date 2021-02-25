@@ -336,7 +336,7 @@ simde_mm_crc32_u64(uint64_t prevcrc, uint64_t v) {
     #endif
   #endif
 }
-#if defined(SIMDE_X86_SSE4_2_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_SSE4_2_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && !defined(SIMDE_ARCH_AMD64))
   #define _mm_crc32_u64(prevcrc, v) simde_mm_crc32_u64(prevcrc, v)
 #endif
 

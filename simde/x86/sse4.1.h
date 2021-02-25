@@ -1262,7 +1262,7 @@ simde_mm_extract_epi64 (simde__m128i a, const int imm8)
 #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
 #  define simde_mm_extract_epi64(a, imm8) HEDLEY_STATIC_CAST(int64_t, vec_extract(simde__m128i_to_private(a).altivec_i64, imm8))
 #endif
-#if defined(SIMDE_X86_SSE4_1_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_SSE4_1_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && !defined(SIMDE_ARCH_AMD64))
   #undef _mm_extract_epi64
   #define _mm_extract_epi64(a, imm8) simde_mm_extract_epi64(a, imm8)
 #endif
@@ -1450,7 +1450,7 @@ simde_mm_insert_epi64 (simde__m128i a, int64_t i, const int imm8)
 #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
 #  define simde_mm_insert_epi64(a, i, imm8) simde__m128i_from_neon_i64(vsetq_lane_s64(i, simde__m128i_to_private(a).i64, imm8))
 #endif
-#if defined(SIMDE_X86_SSE4_1_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_SSE4_1_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && !defined(SIMDE_ARCH_AMD64))
   #undef _mm_insert_epi64
   #define _mm_insert_epi64(a, i, imm8) simde_mm_insert_epi64(a, i, imm8)
 #endif
