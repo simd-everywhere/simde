@@ -300,9 +300,9 @@ simde_mm256_alignr_epi8 (simde__m256i a, simde__m256i b, int count)
 
   return simde__m256i_from_private(r_);
 }
-#if defined(SIMDE_X86_AVX2_NATIVE)
+#if defined(SIMDE_X86_AVX2_NATIVE) && !defined(SIMDE_BUG_LCC_STACK_ALIGNMENT_CAP)
 #  define simde_mm256_alignr_epi8(a, b, count) _mm256_alignr_epi8(a, b, count)
-#elif SIMDE_NATURAL_VECTOR_SIZE_LE(128)
+#elif SIMDE_NATURAL_VECTOR_SIZE_LE(128) || defined(SIMDE_BUG_LCC_STACK_ALIGNMENT_CAP)
 #  define simde_mm256_alignr_epi8(a, b, count) \
       simde_mm256_set_m128i( \
           simde_mm_alignr_epi8(simde_mm256_extracti128_si256(a, 1), simde_mm256_extracti128_si256(b, 1), (count)), \
@@ -596,9 +596,9 @@ simde_mm256_blend_epi16(simde__m256i a, simde__m256i b, const int imm8)
 }
 #if defined(SIMDE_X86_AVX2_NATIVE) && defined(SIMDE_BUG_CLANG_REV_234560)
 #  define simde_mm256_blend_epi16(a, b, imm8) _mm256_castpd_si256(_mm256_blend_epi16(a, b, imm8))
-#elif defined(SIMDE_X86_AVX2_NATIVE)
+#elif defined(SIMDE_X86_AVX2_NATIVE) && !defined(SIMDE_BUG_LCC_STACK_ALIGNMENT_CAP)
 #  define simde_mm256_blend_epi16(a, b, imm8) _mm256_blend_epi16(a, b, imm8)
-#elif SIMDE_NATURAL_VECTOR_SIZE_LE(128)
+#elif SIMDE_NATURAL_VECTOR_SIZE_LE(128) || defined(SIMDE_BUG_LCC_STACK_ALIGNMENT_CAP)
 #  define simde_mm256_blend_epi16(a, b, imm8) \
       simde_mm256_set_m128i( \
           simde_mm_blend_epi16(simde_mm256_extracti128_si256(a, 1), simde_mm256_extracti128_si256(b, 1), (imm8)), \
@@ -3934,9 +3934,9 @@ simde_mm256_shuffle_epi32 (simde__m256i a, const int imm8)
 
   return simde__m256i_from_private(r_);
 }
-#if defined(SIMDE_X86_AVX2_NATIVE)
+#if defined(SIMDE_X86_AVX2_NATIVE) && !defined(SIMDE_BUG_LCC_STACK_ALIGNMENT_CAP)
 #  define simde_mm256_shuffle_epi32(a, imm8) _mm256_shuffle_epi32(a, imm8)
-#elif SIMDE_NATURAL_VECTOR_SIZE_LE(128) && !defined(__PGI)
+#elif SIMDE_NATURAL_VECTOR_SIZE_LE(128) && !defined(__PGI) || defined(SIMDE_BUG_LCC_STACK_ALIGNMENT_CAP)
 #  define simde_mm256_shuffle_epi32(a, imm8) \
      simde_mm256_set_m128i( \
        simde_mm_shuffle_epi32(simde_mm256_extracti128_si256(a, 1), (imm8)), \
@@ -3962,9 +3962,9 @@ simde_mm256_shuffle_epi32 (simde__m256i a, const int imm8)
   #define _mm256_shuffle_epi32(a, imm8) simde_mm256_shuffle_epi32(a, imm8)
 #endif
 
-#if defined(SIMDE_X86_AVX2_NATIVE)
+#if defined(SIMDE_X86_AVX2_NATIVE) && !defined(SIMDE_BUG_LCC_STACK_ALIGNMENT_CAP)
 #  define simde_mm256_shufflehi_epi16(a, imm8) _mm256_shufflehi_epi16(a, imm8)
-#elif SIMDE_NATURAL_VECTOR_SIZE_LE(128)
+#elif SIMDE_NATURAL_VECTOR_SIZE_LE(128) || defined(SIMDE_BUG_LCC_STACK_ALIGNMENT_CAP)
 #  define simde_mm256_shufflehi_epi16(a, imm8) \
      simde_mm256_set_m128i( \
        simde_mm_shufflehi_epi16(simde_mm256_extracti128_si256(a, 1), (imm8)), \
@@ -3998,9 +3998,9 @@ simde_mm256_shuffle_epi32 (simde__m256i a, const int imm8)
   #define _mm256_shufflehi_epi16(a, imm8) simde_mm256_shufflehi_epi16(a, imm8)
 #endif
 
-#if defined(SIMDE_X86_AVX2_NATIVE)
+#if defined(SIMDE_X86_AVX2_NATIVE) && !defined(SIMDE_BUG_LCC_STACK_ALIGNMENT_CAP)
 #  define simde_mm256_shufflelo_epi16(a, imm8) _mm256_shufflelo_epi16(a, imm8)
-#elif SIMDE_NATURAL_VECTOR_SIZE_LE(128)
+#elif SIMDE_NATURAL_VECTOR_SIZE_LE(128) || defined(SIMDE_BUG_LCC_STACK_ALIGNMENT_CAP)
 #  define simde_mm256_shufflelo_epi16(a, imm8) \
      simde_mm256_set_m128i( \
        simde_mm_shufflelo_epi16(simde_mm256_extracti128_si256(a, 1), (imm8)), \
@@ -4350,9 +4350,9 @@ simde_mm256_slli_si256 (simde__m256i a, const int imm8)
 
   return simde__m256i_from_private(r_);
 }
-#if defined(SIMDE_X86_AVX2_NATIVE)
+#if defined(SIMDE_X86_AVX2_NATIVE) && !defined(SIMDE_BUG_LCC_STACK_ALIGNMENT_CAP)
 #  define simde_mm256_slli_si256(a, imm8) _mm256_slli_si256(a, imm8)
-#elif SIMDE_NATURAL_VECTOR_SIZE_LE(128) && !defined(__PGI)
+#elif SIMDE_NATURAL_VECTOR_SIZE_LE(128) && !defined(__PGI) || defined(SIMDE_BUG_LCC_STACK_ALIGNMENT_CAP)
 #  define simde_mm256_slli_si256(a, imm8) \
      simde_mm256_set_m128i( \
          simde_mm_slli_si128(simde_mm256_extracti128_si256(a, 1), (imm8)), \
@@ -4940,9 +4940,9 @@ simde_mm256_srli_si256 (simde__m256i a, const int imm8)
 
   return simde__m256i_from_private(r_);
 }
-#if defined(SIMDE_X86_AVX2_NATIVE)
+#if defined(SIMDE_X86_AVX2_NATIVE) && !defined(SIMDE_BUG_LCC_STACK_ALIGNMENT_CAP)
 #  define simde_mm256_srli_si256(a, imm8) _mm256_srli_si256(a, imm8)
-#elif SIMDE_NATURAL_VECTOR_SIZE_LE(128) && !defined(__PGI)
+#elif SIMDE_NATURAL_VECTOR_SIZE_LE(128) && !defined(__PGI) || defined(SIMDE_BUG_LCC_STACK_ALIGNMENT_CAP)
 #  define simde_mm256_srli_si256(a, imm8) \
      simde_mm256_set_m128i( \
          simde_mm_srli_si128(simde_mm256_extracti128_si256(a, 1), (imm8)), \

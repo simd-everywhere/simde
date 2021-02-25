@@ -4547,7 +4547,20 @@ simde_mm256_permute_ps (simde__m256 a, const int imm8)
   return simde__m256_from_private(r_);
 }
 #if defined(SIMDE_X86_AVX_NATIVE)
+#if defined(SIMDE_BUG_LCC_STACK_ALIGNMENT_CAP)
+/* Patched implementation from e2kbuiltin.h */
+#  define simde_mm256_permute_ps(a, imm8) ({                        \
+    type_union_256 __attribute__((aligned(16))) __s, __dst;         \
+    __s.__v8sf = (__v8sf)(a);                                       \
+    SELECT_CONST_32F (__s.l.l1, __s.l.l0, __dst.l.l0, (imm8));      \
+    SELECT_CONST_32F (__s.l.l1, __s.l.l0, __dst.l.l1, (imm8) >> 4); \
+    SELECT_CONST_32F (__s.l.l3, __s.l.l2, __dst.l.l2, (imm8));      \
+    SELECT_CONST_32F (__s.l.l3, __s.l.l2, __dst.l.l3, (imm8) >> 4); \
+    (__m256)(__dst.__v8sf);                                         \
+})
+#else
 #  define simde_mm256_permute_ps(a, imm8) _mm256_permute_ps(a, imm8)
+#endif
 #endif
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
   #undef _mm256_permute_ps
@@ -5023,9 +5036,9 @@ simde_mm256_shuffle_ps (simde__m256 a, simde__m256 b, const int imm8)
 
   return simde__m256_from_private(r_);
 }
-#if defined(SIMDE_X86_AVX_NATIVE)
+#if defined(SIMDE_X86_AVX_NATIVE) && !defined(SIMDE_BUG_LCC_STACK_ALIGNMENT_CAP)
   #define simde_mm256_shuffle_ps(a, b, imm8) _mm256_shuffle_ps(a, b, imm8)
-#elif SIMDE_NATURAL_VECTOR_SIZE_LE(128)
+#elif SIMDE_NATURAL_VECTOR_SIZE_LE(128) || defined(SIMDE_BUG_LCC_STACK_ALIGNMENT_CAP)
   #define simde_mm256_shuffle_ps(a, b, imm8) \
       simde_mm256_set_m128( \
           simde_mm_shuffle_ps(simde_mm256_extractf128_ps(a, 1), simde_mm256_extractf128_ps(b, 1), (imm8)), \
