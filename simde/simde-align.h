@@ -459,7 +459,8 @@
   #define SIMDE_ALIGN_REDUCE_STRUCT __attribute__((packed, aligned(16)))
   #define SIMDE_ALIGN_REDUCE_ARRAY  __attribute__((aligned(16)))
 #else
-  #define SIMDE_ALIGN_REDUCE
+  #define SIMDE_ALIGN_REDUCE_STRUCT
+  #define SIMDE_ALIGN_REDUCE_ARRAY
 #endif
 
 #endif /* !defined(SIMDE_ALIGN_H) */
