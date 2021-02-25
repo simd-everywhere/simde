@@ -15,7 +15,7 @@ SIMDE_TEST_X86_GENERATE_UINT_TYPE_FUNCS_(__m128i, 16, 8, simde_mm_storeu_si128)
 SIMDE_TEST_X86_GENERATE_UINT_TYPE_FUNCS_(__m128i, 32, 4, simde_mm_storeu_si128)
 SIMDE_TEST_X86_GENERATE_UINT_TYPE_FUNCS_(__m128i, 64, 2, simde_mm_storeu_si128)
 
-#define simde_test_x86_assert_equal_f64x2(a, b, precision) do { if (simde_test_x86_assert_equal_f64x2_(a, b, 1e-##precision, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+#define simde_test_x86_assert_equal_f64x2(a, b, precision) do { if (simde_test_x86_assert_equal_f64x2_(a, b, simde_test_f64_precision_to_slop(precision), __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 #define simde_test_x86_assert_equal_i8x16(a, b) do { if (simde_test_x86_assert_equal_i8x16_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 #define simde_test_x86_assert_equal_i16x8(a, b) do { if (simde_test_x86_assert_equal_i16x8_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 #define simde_test_x86_assert_equal_i32x4(a, b) do { if (simde_test_x86_assert_equal_i32x4_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
