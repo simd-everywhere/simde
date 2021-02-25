@@ -36,7 +36,7 @@ test_simde_mm512_cmplt_epi8_mask(SIMDE_MUNIT_TEST_ARGS) {
     simde__m512i a;
     simde__m512i b;
     simde__mmask64 r;
-  } test_vec[8] = {
+  } SIMDE_ALIGN_REDUCE_STRUCT test_vec[8] = {
     { simde_mm512_set_epi8(INT8_C( -77), INT8_C( -25), INT8_C( -46), INT8_C(  46),
                            INT8_C(  13), INT8_C(   4), INT8_C( -85), INT8_C( -85),
                            INT8_C( -84), INT8_C( -54), INT8_C(  24), INT8_C(  27),
@@ -317,7 +317,7 @@ test_simde_mm512_cmplt_epu8_mask(SIMDE_MUNIT_TEST_ARGS) {
     simde__m512i a;
     simde__m512i b;
     simde__mmask64 r;
-  } test_vec[8] = {
+  } SIMDE_ALIGN_REDUCE_STRUCT test_vec[8] = {
     { simde_x_mm512_set_epu8(UINT8_C(200), UINT8_C( 64), UINT8_C(228), UINT8_C(187),
                              UINT8_C( 53), UINT8_C(115), UINT8_C(212), UINT8_C(224),
                              UINT8_C(234), UINT8_C( 45), UINT8_C(183), UINT8_C(185),

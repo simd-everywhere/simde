@@ -8,15 +8,6 @@ project('SIMDe', 'c', 'cpp',
 cc = meson.get_compiler('c')
 cxx = meson.get_compiler('cpp')
 
-foreach additional_arg : [ '-Wno-reduced-alignment' ]
-    if cc.has_argument(additional_arg)
-        add_global_arguments(additional_arg, language : 'c')
-    endif
-    if cxx.has_argument(additional_arg)
-        add_global_arguments(additional_arg, language : 'cpp')
-    endif
-endforeach
-
 simde_neon_families = [
   'aba',
   'abd',

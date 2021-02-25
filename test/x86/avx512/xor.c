@@ -646,7 +646,7 @@ test_simde_mm512_xor_si512(SIMDE_MUNIT_TEST_ARGS) {
     simde__m512i a;
     simde__m512i b;
     simde__m512i r;
-  } test_vec[8] = {
+  } SIMDE_ALIGN_REDUCE_STRUCT test_vec[8] = {
     { simde_x_mm512_set_epu64(UINT64_C(0xedb78aa51009d043), UINT64_C(0xf8d6e1466c80412e),
                               UINT64_C(0x8d2f88ccf8d072d2), UINT64_C(0xd42ce380801d56eb),
                               UINT64_C(0x4f7a9f9f877cf207), UINT64_C(0x9ebf29784a068fec),

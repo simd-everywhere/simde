@@ -192,6 +192,7 @@
 #define SIMDE_BUG_LCC_WARNING_ON_SHIFTS
 #define SIMDE_BUG_LCC_FMA_WRONG_RESULT
 #define SIMDE_BUG_LCC_AVX_NO_LOAD_STORE_U2
+#define SIMDE_BUG_LCC_STACK_ALIGNMENT_CAP
 
 /* Some native functions on E2K with instruction set < v6
    are declared as deprecated due to inefficiency.

@@ -91,7 +91,7 @@ typedef union {
       SIMDE_ALIGN_TO_16 SIMDE_POWER_ALTIVEC_VECTOR(double)             altivec_f64[2];
     #endif
   #endif
-} simde__m256_private;
+} SIMDE_ALIGN_REDUCE_STRUCT simde__m256_private;
 
 typedef union {
   #if defined(SIMDE_VECTOR_SUBSCRIPT)
@@ -149,7 +149,7 @@ typedef union {
       SIMDE_ALIGN_TO_16 SIMDE_POWER_ALTIVEC_VECTOR(double)             altivec_f64[2];
     #endif
   #endif
-} simde__m256d_private;
+} SIMDE_ALIGN_REDUCE_STRUCT simde__m256d_private;
 
 typedef union {
   #if defined(SIMDE_VECTOR_SUBSCRIPT)
@@ -207,7 +207,7 @@ typedef union {
       SIMDE_ALIGN_TO_16 SIMDE_POWER_ALTIVEC_VECTOR(double)             altivec_f64[2];
     #endif
   #endif
-} simde__m256i_private;
+} SIMDE_ALIGN_REDUCE_STRUCT simde__m256i_private;
 
 #if defined(SIMDE_X86_AVX_NATIVE)
   typedef __m256 simde__m256;

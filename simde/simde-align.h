@@ -449,4 +449,16 @@
  */
 #define SIMDE_ALIGN_ASSUME_CAST(Type, Pointer) SIMDE_ALIGN_ASSUME_LIKE(SIMDE_ALIGN_CAST(Type, Pointer), Type)
 
+/* In some circumstances we need to define types as packed,
+ * because platform alignment is fixed when variable is placed
+ * on the stack (but this alignment is variable otherwise).
+ * so there's SIMDE_ALIGN_REDUCE_STRUCT macros that allows this
+ * for LCC compiler on Elbrus architecture.
+ */
+#if defined (SIMDE_BUG_LCC_STACK_ALIGNMENT_CAP)
+  #define SIMDE_ALIGN_REDUCE_STRUCT __attribute__((packed, aligned(16)))
+#else
+  #define SIMDE_ALIGN_REDUCE
+#endif
+
 #endif /* !defined(SIMDE_ALIGN_H) */

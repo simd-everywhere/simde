@@ -773,7 +773,7 @@ test_simde_mm512_adds_epi8(SIMDE_MUNIT_TEST_ARGS) {
     simde__m512i a;
     simde__m512i b;
     simde__m512i r;
-  } test_vec[8] = {
+  } SIMDE_ALIGN_REDUCE_STRUCT test_vec[8] = {
     { simde_mm512_set_epi8(INT8_C( -30), INT8_C( -16), INT8_C( -64), INT8_C( 113),
                            INT8_C(  51), INT8_C(-115), INT8_C(  19), INT8_C( -80),
                            INT8_C(-110), INT8_C( -62), INT8_C( -91), INT8_C(   8),
@@ -1176,7 +1176,7 @@ test_simde_mm512_mask_adds_epi8(SIMDE_MUNIT_TEST_ARGS) {
     simde__m512i a;
     simde__m512i b;
     simde__m512i r;
-  } test_vec[8] = {
+  } SIMDE_ALIGN_REDUCE_STRUCT test_vec[8] = {
     { simde_mm512_set_epi8(INT8_C(  92), INT8_C( 116), INT8_C( -78), INT8_C( -19),
                            INT8_C( -73), INT8_C(  22), INT8_C( -66), INT8_C( -29),
                            INT8_C(  55), INT8_C(  78), INT8_C( -45), INT8_C(-119),
@@ -1714,7 +1714,7 @@ test_simde_mm512_maskz_adds_epi8(SIMDE_MUNIT_TEST_ARGS) {
     simde__m512i a;
     simde__m512i b;
     simde__m512i r;
-  } test_vec[8] = {
+  } SIMDE_ALIGN_REDUCE_STRUCT test_vec[8] = {
     { UINT64_C(17286015531074160252),
       simde_mm512_set_epi8(INT8_C(-115), INT8_C( -27), INT8_C(  62), INT8_C( -85),
                            INT8_C(  49), INT8_C(-115), INT8_C(  38), INT8_C(   4),
@@ -2123,7 +2123,7 @@ test_simde_mm512_adds_epi16(SIMDE_MUNIT_TEST_ARGS) {
     simde__m512i a;
     simde__m512i b;
     simde__m512i r;
-  } test_vec[8] = {
+  } SIMDE_ALIGN_REDUCE_STRUCT test_vec[8] = {
     { simde_mm512_set_epi16(INT16_C(  5952), INT16_C(-21138), INT16_C( 23605), INT16_C( -3799),
                             INT16_C(  1987), INT16_C( 29254), INT16_C( -4184), INT16_C( 13346),
                             INT16_C( 26203), INT16_C(-24373), INT16_C( 15487), INT16_C( 15569),
@@ -2614,7 +2614,7 @@ test_simde_mm512_adds_epu8(SIMDE_MUNIT_TEST_ARGS) {
     simde__m512i a;
     simde__m512i b;
     simde__m512i r;
-  } test_vec[8] = {
+  } SIMDE_ALIGN_REDUCE_STRUCT test_vec[8] = {
     { simde_x_mm512_set_epu8(UINT8_C( 52), UINT8_C( 29), UINT8_C( 31), UINT8_C(206),
                              UINT8_C( 40), UINT8_C(160), UINT8_C(244), UINT8_C( 85),
                              UINT8_C( 47), UINT8_C(153), UINT8_C(218), UINT8_C(226),
@@ -3017,7 +3017,7 @@ test_simde_mm512_mask_adds_epu8(SIMDE_MUNIT_TEST_ARGS) {
     simde__m512i a;
     simde__m512i b;
     simde__m512i r;
-  } test_vec[8] = {
+  } SIMDE_ALIGN_REDUCE_STRUCT test_vec[8] = {
     { simde_x_mm512_set_epu8(UINT8_C(  92), UINT8_C( 116), UINT8_C( 178), UINT8_C( 237),
                              UINT8_C( 183), UINT8_C(  22), UINT8_C( 190), UINT8_C( 227),
                              UINT8_C(  55), UINT8_C(  78), UINT8_C( 211), UINT8_C( 137),
@@ -3555,7 +3555,7 @@ test_simde_mm512_maskz_adds_epu8(SIMDE_MUNIT_TEST_ARGS) {
     simde__m512i a;
     simde__m512i b;
     simde__m512i r;
-  } test_vec[8] = {
+  } SIMDE_ALIGN_REDUCE_STRUCT test_vec[8] = {
     { UINT64_C(17286015531074160252),
       simde_x_mm512_set_epu8(UINT8_C( 141), UINT8_C( 229), UINT8_C(  62), UINT8_C( 171),
                              UINT8_C(  49), UINT8_C( 141), UINT8_C(  38), UINT8_C(   4),
@@ -3964,7 +3964,7 @@ test_simde_mm512_adds_epu16(SIMDE_MUNIT_TEST_ARGS) {
     simde__m512i a;
     simde__m512i b;
     simde__m512i r;
-  } test_vec[8] = {
+  } SIMDE_ALIGN_REDUCE_STRUCT test_vec[8] = {
     { simde_x_mm512_set_epu16(UINT16_C( 57245), UINT16_C( 31803), UINT16_C(  9053), UINT16_C( 21282),
                               UINT16_C( 45515), UINT16_C( 57894), UINT16_C( 50445), UINT16_C( 50583),
                               UINT16_C( 54723), UINT16_C( 52144), UINT16_C( 13347), UINT16_C( 57624),

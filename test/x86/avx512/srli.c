@@ -118,7 +118,7 @@ test_simde_mm512_srli_epi32(SIMDE_MUNIT_TEST_ARGS) {
     simde__m512i a;
     unsigned int imm8;
     simde__m512i r;
-  } test_vec[8] = {
+  } SIMDE_ALIGN_REDUCE_STRUCT test_vec[8] = {
      { simde_mm512_set_epi32(INT32_C(-2020822652), INT32_C( -257395769), INT32_C(  499270536), INT32_C( 1400500940),
                             INT32_C( 1373098033), INT32_C( 1102869287), INT32_C( 1033807112), INT32_C(-1561080563),
                             INT32_C( 1506432231), INT32_C(-1063413574), INT32_C(  341686905), INT32_C( -287206476),
@@ -207,7 +207,7 @@ test_simde_mm512_srli_epi64(SIMDE_MUNIT_TEST_ARGS) {
     simde__m512i a;
     unsigned int b;
     simde__m512i r;
-  } test_vec[8] = {
+  } SIMDE_ALIGN_REDUCE_STRUCT test_vec[8] = {
     { simde_mm512_set_epi64(INT64_C( 7973262903512536694), INT64_C( -756652926976123625),
                             INT64_C(-7907329678808178856), INT64_C(-4613066309848201378),
                             INT64_C(  911796452309072772), INT64_C(-7947449538018331043),
