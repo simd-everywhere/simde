@@ -457,6 +457,7 @@
  */
 #if defined (SIMDE_BUG_LCC_STACK_ALIGNMENT_CAP)
   #define SIMDE_ALIGN_REDUCE_STRUCT __attribute__((packed, aligned(16)))
+  #define SIMDE_ALIGN_REDUCE_ARRAY  __attribute__((aligned(16)))
 #else
   #define SIMDE_ALIGN_REDUCE
 #endif
