@@ -523,6 +523,8 @@ simde_test_equal_f32(simde_float32 a, simde_float32 b, simde_float32 slop) {
     return simde_math_isnan(b);
   } else if (simde_math_isinf(a)) {
     return !((a < b) || (a > b));
+  } else if (slop == SIMDE_FLOAT32_C(0.0)) {
+    return a == b;
   } else {
     simde_float32 lo = a - slop;
     if (HEDLEY_UNLIKELY(lo == a))
@@ -542,6 +544,8 @@ simde_test_equal_f64(simde_float64 a, simde_float64 b, simde_float64 slop) {
     return simde_math_isnan(b);
   } else if (simde_math_isinf(a)) {
     return !((a < b) || (a > b));
+  } else if (slop == SIMDE_FLOAT64_C(0.0)) {
+    return a == b;
   } else {
     simde_float64 lo = a - slop;
     if (HEDLEY_UNLIKELY(lo == a))
@@ -559,12 +563,12 @@ HEDLEY_DIAGNOSTIC_POP
 
 static float
 simde_test_f32_precision_to_slop(int precision) {
-  return simde_math_powf(SIMDE_FLOAT32_C(10.0), -HEDLEY_STATIC_CAST(float, precision));
+  return HEDLEY_UNLIKELY(precision == INT_MAX) ? SIMDE_FLOAT32_C(0.0) : simde_math_powf(SIMDE_FLOAT32_C(10.0), -HEDLEY_STATIC_CAST(float, precision));
 }
 
 static double
 simde_test_f64_precision_to_slop(int precision) {
-  return simde_math_pow(SIMDE_FLOAT64_C(10.0), -HEDLEY_STATIC_CAST(double, precision));
+  return HEDLEY_UNLIKELY(precision == INT_MAX) ? SIMDE_FLOAT64_C(0.0) : simde_math_pow(SIMDE_FLOAT64_C(10.0), -HEDLEY_STATIC_CAST(double, precision));
 }
 
 static int
