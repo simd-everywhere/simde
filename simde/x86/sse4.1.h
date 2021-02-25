@@ -204,7 +204,7 @@ simde_mm_blendv_epi8 (simde__m128i a, simde__m128i b, simde__m128i mask) {
       r_.altivec_i8 = vec_sel(a_.altivec_i8, b_.altivec_i8, vec_cmplt(mask_.altivec_i8, vec_splat_s8(0)));
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       /* https://software.intel.com/en-us/forums/intel-c-compiler/topic/850087 */
-      #if defined(HEDLEY_INTEL_VERSION_CHECK) && !defined(SIMDE_SKIP_EXTENDED_E2K_VECTOR_OPS)
+      #if defined(HEDLEY_INTEL_VERSION_CHECK) && !defined(SIMDE_BUG_LCC_TOO_STRICT_VECTOR_SHIFTS_AND_COMPARES)
         __typeof__(mask_.i8) z = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
         mask_.i8 = HEDLEY_STATIC_CAST(__typeof__(mask_.i8), mask_.i8 < z);
       #else

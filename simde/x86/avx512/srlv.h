@@ -47,7 +47,7 @@ simde_mm_srlv_epi16 (simde__m128i a, simde__m128i b) {
       b_ = simde__m128i_to_private(b),
       r_;
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && !defined(SIMDE_SKIP_EXTENDED_E2K_VECTOR_OPS)
+    #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && !defined(SIMDE_BUG_LCC_TOO_STRICT_VECTOR_SHIFTS_AND_COMPARES)
       r_.u16 = HEDLEY_STATIC_CAST(__typeof__(r_.u16), (b_.u16 < 16) & (a_.u16 >> b_.u16));
     #else
       SIMDE_VECTORIZE
@@ -163,7 +163,7 @@ simde_mm256_srlv_epi16 (simde__m256i a, simde__m256i b) {
       for (size_t i = 0 ; i < (sizeof(r_.m128i) / sizeof(r_.m128i[0])) ; i++) {
         r_.m128i[i] = simde_mm_srlv_epi16(a_.m128i[i], b_.m128i[i]);
       }
-    #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && !defined(SIMDE_SKIP_EXTENDED_E2K_VECTOR_OPS)
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && !defined(SIMDE_BUG_LCC_TOO_STRICT_VECTOR_SHIFTS_AND_COMPARES)
       r_.u16 = HEDLEY_STATIC_CAST(__typeof__(r_.u16), (b_.u16 < 16) & (a_.u16 >> b_.u16));
     #else
       SIMDE_VECTORIZE
@@ -195,7 +195,7 @@ simde_mm512_srlv_epi16 (simde__m512i a, simde__m512i b) {
       for (size_t i = 0 ; i < (sizeof(r_.m256i) / sizeof(r_.m256i[0])) ; i++) {
         r_.m256i[i] = simde_mm256_srlv_epi16(a_.m256i[i], b_.m256i[i]);
       }
-    #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && !defined(SIMDE_SKIP_EXTENDED_E2K_VECTOR_OPS)
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && !defined(SIMDE_BUG_LCC_TOO_STRICT_VECTOR_SHIFTS_AND_COMPARES)
       r_.u16 = HEDLEY_STATIC_CAST(__typeof__(r_.u16), (b_.u16 < 16) & (a_.u16 >> b_.u16));
     #else
       SIMDE_VECTORIZE
@@ -227,7 +227,7 @@ simde_mm512_srlv_epi32 (simde__m512i a, simde__m512i b) {
       for (size_t i = 0 ; i < (sizeof(r_.m256i) / sizeof(r_.m256i[0])) ; i++) {
         r_.m256i[i] = simde_mm256_srlv_epi32(a_.m256i[i], b_.m256i[i]);
       }
-    #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && !defined(SIMDE_SKIP_EXTENDED_E2K_VECTOR_OPS)
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && !defined(SIMDE_BUG_LCC_TOO_STRICT_VECTOR_SHIFTS_AND_COMPARES)
       r_.u32 = HEDLEY_STATIC_CAST(__typeof__(r_.u32), (b_.u32 < 32) & (a_.u32 >> b_.u32));
     #else
       SIMDE_VECTORIZE
@@ -259,7 +259,7 @@ simde_mm512_srlv_epi64 (simde__m512i a, simde__m512i b) {
       for (size_t i = 0 ; i < (sizeof(r_.m256i) / sizeof(r_.m256i[0])) ; i++) {
         r_.m256i[i] = simde_mm256_srlv_epi64(a_.m256i[i], b_.m256i[i]);
       }
-    #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && !defined(SIMDE_SKIP_EXTENDED_E2K_VECTOR_OPS)
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && !defined(SIMDE_BUG_LCC_TOO_STRICT_VECTOR_SHIFTS_AND_COMPARES)
       r_.u64 = HEDLEY_STATIC_CAST(__typeof__(r_.u64), (b_.u64 < 64) & (a_.u64 >> b_.u64));
     #else
       SIMDE_VECTORIZE

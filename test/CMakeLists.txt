@@ -79,7 +79,7 @@ if("${OPENMP_SIMD_FLAGS}" STREQUAL "")
     check_c_compiler_flag("${omp_simd_flag}" "${omp_simd_flag_name}")
 
     if(${omp_simd_flag_name})
-      set(OPENMP_SIMD_FLAGS "-DSIMDE_ENABLE_OPENMP ${omp_simd_flag}")
+      set(OPENMP_SIMD_FLAGS "${omp_simd_flag}")
       break()
     endif()
   endforeach()

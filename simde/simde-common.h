@@ -291,8 +291,14 @@
 #  endif
 #endif
 
-#if !defined(SIMDE_ENABLE_OPENMP) && ((defined(_OPENMP) && (_OPENMP >= 201307L)) || (defined(_OPENMP_SIMD) && (_OPENMP_SIMD >= 201307L)))
-#  define SIMDE_ENABLE_OPENMP
+#if !defined(SIMDE_DISABLE_OPENMP)
+  #if !defined(SIMDE_ENABLE_OPENMP) && ((defined(_OPENMP) && (_OPENMP >= 201307L)) || (defined(_OPENMP_SIMD) && (_OPENMP_SIMD >= 201307L)))
+  #  define SIMDE_ENABLE_OPENMP
+  #endif
+#else
+  #if defined(SIMDE_ENABLE_OPENMP)
+  #  undef SIMDE_ENABLE_OPENMP
+  #endif
 #endif
 
 #if !defined(SIMDE_ENABLE_CILKPLUS) && (defined(__cilk) || defined(HEDLEY_INTEL_VERSION))
@@ -322,7 +328,7 @@
 #  define SIMDE_VECTORIZE_SAFELEN(l) HEDLEY_PRAGMA(clang loop vectorize_width(l))
 #  define SIMDE_VECTORIZE_REDUCTION(r) SIMDE_VECTORIZE
 #  define SIMDE_VECTORIZE_ALIGNED(a)
-#elif HEDLEY_GCC_VERSION_CHECK(4,9,0) && !defined(__LCC__)
+#elif HEDLEY_GCC_VERSION_CHECK(4,9,0)
 #  define SIMDE_VECTORIZE HEDLEY_PRAGMA(GCC ivdep)
 #  define SIMDE_VECTORIZE_SAFELEN(l) SIMDE_VECTORIZE
 #  define SIMDE_VECTORIZE_REDUCTION(r) SIMDE_VECTORIZE

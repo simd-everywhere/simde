@@ -116,7 +116,7 @@ typedef union {
       SIMDE_ALIGN_TO_16 SIMDE_POWER_ALTIVEC_VECTOR(double)             altivec_f64[4];
     #endif
   #endif
-} simde__m512_private;
+} SIMDE_ALIGN_REDUCE_STRUCT simde__m512_private;
 
 typedef union {
   #if defined(SIMDE_VECTOR_SUBSCRIPT)
@@ -176,7 +176,7 @@ typedef union {
       SIMDE_ALIGN_TO_16 SIMDE_POWER_ALTIVEC_VECTOR(double)             altivec_f64[4];
     #endif
   #endif
-} simde__m512d_private;
+} SIMDE_ALIGN_REDUCE_STRUCT simde__m512d_private;
 
 typedef union {
   #if defined(SIMDE_VECTOR_SUBSCRIPT)
@@ -236,7 +236,7 @@ typedef union {
       SIMDE_ALIGN_TO_16 SIMDE_POWER_ALTIVEC_VECTOR(double)             altivec_f64[4];
     #endif
   #endif
-} simde__m512i_private;
+} SIMDE_ALIGN_REDUCE_STRUCT simde__m512i_private;
 
 /* Intel uses the same header (immintrin.h) for everything AVX and
  * later.  If native aliases are enabled, and the machine has native

@@ -1180,7 +1180,11 @@ simde_mm_bslli_si128 (simde__m128i a, const int imm8)
   return simde__m128i_from_private(r_);
 }
 #if defined(SIMDE_X86_SSE2_NATIVE) && !defined(__PGI)
-  #define simde_mm_bslli_si128(a, imm8) _mm_slli_si128(a, imm8)
+  #if defined(SIMDE_BUG_LCC_WARNING_ON_SHIFTS)
+    #define simde_mm_bslli_si128(a, imm8) ((imm8 & ~15) ? _mm_setzero_si128() : _mm_slli_si128(a, imm8 & 15))
+  #else
+    #define simde_mm_bslli_si128(a, imm8) _mm_slli_si128(a, imm8)
+  #endif
 #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE) && !defined(__clang__)
   #define simde_mm_bslli_si128(a, imm8) \
   simde__m128i_from_neon_i8(((imm8) <= 0) ? simde__m128i_to_neon_i8(a) : (((imm8) > 15) ? (vdupq_n_s8(0)) : (vextq_s8(vdupq_n_s8(0), simde__m128i_to_neon_i8(a), 16 - (imm8)))))
@@ -1252,7 +1256,11 @@ simde_mm_bsrli_si128 (simde__m128i a, const int imm8)
   return simde__m128i_from_private(r_);
 }
 #if defined(SIMDE_X86_SSE2_NATIVE) && !defined(__PGI)
-  #define simde_mm_bsrli_si128(a, imm8) _mm_srli_si128(a, imm8)
+  #if defined(SIMDE_BUG_LCC_WARNING_ON_SHIFTS)
+    #define simde_mm_bsrli_si128(a, imm8) ((imm8 & ~15) ? _mm_setzero_si128() : _mm_srli_si128(a, imm8 & 15))
+  #else
+    #define simde_mm_bsrli_si128(a, imm8) _mm_srli_si128(a, imm8)
+  #endif
 #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE) && !defined(__clang__)
   #define simde_mm_bsrli_si128(a, imm8) \
   simde__m128i_from_neon_i8(((imm8 < 0) || (imm8 > 15)) ? vdupq_n_s8(0) : (vextq_s8(simde__m128i_to_private(a).neon_i8, vdupq_n_s8(0), ((imm8 & 15) != 0) ? imm8 : (imm8 & 15))))
@@ -1602,7 +1610,7 @@ simde_mm_cmpeq_epi8 (simde__m128i a, simde__m128i b) {
       r_.wasm_v128 = wasm_i8x16_eq(a_.wasm_v128, b_.wasm_v128);
     #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
       r_.altivec_i8 = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(signed char), vec_cmpeq(a_.altivec_i8, b_.altivec_i8));
-    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && !defined(SIMDE_SKIP_EXTENDED_E2K_VECTOR_OPS)
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && !defined(SIMDE_BUG_LCC_TOO_STRICT_VECTOR_SHIFTS_AND_COMPARES)
       r_.i8 = HEDLEY_STATIC_CAST(__typeof__(r_.i8), (a_.i8 == b_.i8));
     #else
       SIMDE_VECTORIZE
@@ -1812,7 +1820,7 @@ simde_mm_cmplt_epi8 (simde__m128i a, simde__m128i b) {
       r_.altivec_i8 = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(signed char),vec_cmplt(a_.altivec_i8, b_.altivec_i8));
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r_.wasm_v128 = wasm_i8x16_lt(a_.wasm_v128, b_.wasm_v128);
-    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && !defined(SIMDE_SKIP_EXTENDED_E2K_VECTOR_OPS)
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && !defined(SIMDE_BUG_LCC_TOO_STRICT_VECTOR_SHIFTS_AND_COMPARES)
       r_.i8 = HEDLEY_STATIC_CAST(__typeof__(r_.i8), (a_.i8 < b_.i8));
     #else
       SIMDE_VECTORIZE
@@ -2021,7 +2029,7 @@ simde_mm_cmpgt_epi8 (simde__m128i a, simde__m128i b) {
       r_.wasm_v128 = wasm_i8x16_gt(a_.wasm_v128, b_.wasm_v128);
     #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
       r_.altivec_i8 = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(signed char), vec_cmpgt(a_.altivec_i8, b_.altivec_i8));
-    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && !defined(SIMDE_SKIP_EXTENDED_E2K_VECTOR_OPS)
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && !defined(SIMDE_BUG_LCC_TOO_STRICT_VECTOR_SHIFTS_AND_COMPARES)
       r_.i8 = HEDLEY_STATIC_CAST(__typeof__(r_.i8), (a_.i8 > b_.i8));
     #else
       SIMDE_VECTORIZE
@@ -5346,7 +5354,7 @@ simde_mm_sll_epi16 (simde__m128i a, simde__m128i count) {
     if (count_.u64[0] > 15)
       return simde_mm_setzero_si128();
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && !defined(SIMDE_SKIP_EXTENDED_E2K_VECTOR_OPS)
+    #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && !defined(SIMDE_BUG_LCC_TOO_STRICT_VECTOR_SHIFTS_AND_COMPARES)
       r_.u16 = (a_.u16 << count_.u64[0]);
     #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       r_.neon_u16 = vshlq_u16(a_.neon_u16, vdupq_n_s16(HEDLEY_STATIC_CAST(int16_t, count_.u64[0])));
@@ -5380,7 +5388,7 @@ simde_mm_sll_epi32 (simde__m128i a, simde__m128i count) {
     if (count_.u64[0] > 31)
       return simde_mm_setzero_si128();
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && !defined(SIMDE_SKIP_EXTENDED_E2K_VECTOR_OPS)
+    #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && !defined(SIMDE_BUG_LCC_TOO_STRICT_VECTOR_SHIFTS_AND_COMPARES)
       r_.u32 = (a_.u32 << count_.u64[0]);
     #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       r_.neon_u32 = vshlq_u32(a_.neon_u32, vdupq_n_s32(HEDLEY_STATIC_CAST(int32_t, count_.u64[0])));

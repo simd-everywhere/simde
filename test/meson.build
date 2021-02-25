@@ -17,23 +17,21 @@ endif
 c_openmp_simd = false
 cxx_openmp_simd = false
 
-# LCC has OpenMP enabled by default without any args
+# LCC has OpenMP enabled by default without any args.
+# For other compilers, we need to find correct one.
+# We'll build tests with OpenMP SIMD enabled, if we can.
 if cc.get_id() == 'lcc'
   c_openmp_simd = true
   cxx_openmp_simd = true
-  simde_c_defs += '-DSIMDE_ENABLE_OPENMP'
-  simde_cxx_defs += '-DSIMDE_ENABLE_OPENMP'
 else
   foreach omp_arg : ['-fopenmp-simd', '-qopenmp-simd']
     if (not c_openmp_simd) and cc.has_argument(omp_arg)
       simde_c_args += omp_arg
-      simde_c_defs += '-DSIMDE_ENABLE_OPENMP'
       c_openmp_simd = true
     endif
 
     if (not cxx_openmp_simd) and cxx.has_argument(omp_arg)
       simde_cxx_args += omp_arg
-      simde_cxx_defs += '-DSIMDE_ENABLE_OPENMP'
       cxx_openmp_simd = true
     endif
   endforeach
@@ -67,6 +65,8 @@ if cxx.get_id() == 'intel'
   simde_native_cxx_flags += '-DSIMDE_FAST_MATH'
 endif
 
+# If we can't use OpenMP SIMD, use OpenMP library instead,
+# if available
 if not c_openmp_simd
   simde_deps += dependency('openmp', required: false)
 endif
@@ -77,9 +77,4 @@ simde_include_dir = include_directories('..')
 
 subdir('common')
 subdir('x86')
-
-# Currently it is nearly impossible to support non-native ARM on elbrus.
-# It's compiler bug, so it will be possible in future versions.
-if cc.get_id() != 'lcc'
-    subdir('arm')
-endif
+subdir('arm')

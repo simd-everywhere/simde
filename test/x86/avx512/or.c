@@ -694,7 +694,7 @@ test_simde_mm512_or_si512(SIMDE_MUNIT_TEST_ARGS) {
     simde__m512i a;
     simde__m512i b;
     simde__m512i r;
-  } test_vec[8] = {
+  } SIMDE_ALIGN_REDUCE_STRUCT test_vec[8] = {
     { simde_mm512_set_epi32(INT32_C( 1982508443), INT32_C( -368650443), INT32_C( -190462634), INT32_C( 1539812062),
                             INT32_C( 1356046477), INT32_C(  862189546), INT32_C( 1762309251), INT32_C(-1019483096),
                             INT32_C( 1873631110), INT32_C(  -15642982), INT32_C( 1155728159), INT32_C(  -93367878),

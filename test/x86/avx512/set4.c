@@ -36,7 +36,7 @@ test_simde_mm512_set4_epi32(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     int32_t d; int32_t c; int32_t b; int32_t a;
     simde__m512i r;
-  } test_vec[8] = {
+  } SIMDE_ALIGN_REDUCE_STRUCT test_vec[8] = {
     { INT32_C( 1704071444),
       INT32_C(-1428654423),
       INT32_C( 1780802031),
@@ -116,7 +116,7 @@ test_simde_mm512_set4_epi64(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     int64_t d; int64_t c; int64_t b; int64_t a;
     simde__m512i r;
-  } test_vec[8] = {
+  } SIMDE_ALIGN_REDUCE_STRUCT test_vec[8] = {
     { INT64_C(-2593705665723537468),
       INT64_C( 7248735595083828941),
       INT64_C(-1480325022577808917),
@@ -196,7 +196,7 @@ test_simde_mm512_set4_ps(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde_float32 d; simde_float32 c; simde_float32 b; simde_float32 a;
     simde__m512 r;
-  } test_vec[8] = {
+  } SIMDE_ALIGN_REDUCE_STRUCT test_vec[8] = {
     { SIMDE_FLOAT32_C(   549.42),
       SIMDE_FLOAT32_C(   390.74),
       SIMDE_FLOAT32_C(  -762.45),
@@ -276,7 +276,7 @@ test_simde_mm512_set4_pd(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde_float64 d; simde_float64 c; simde_float64 b; simde_float64 a;
     simde__m512d r;
-  } test_vec[8] = {
+  } SIMDE_ALIGN_REDUCE_STRUCT test_vec[8] = {
     { SIMDE_FLOAT64_C( -466.05),
       SIMDE_FLOAT64_C(  -39.63),
       SIMDE_FLOAT64_C(  479.17),

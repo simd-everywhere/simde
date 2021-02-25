@@ -182,13 +182,28 @@
    <https://en.wikipedia.org/wiki/Elbrus-8S> */
 #if defined(__e2k__)
 #define SIMDE_ARCH_E2K
-#define SIMDE_SKIP_EXTENDED_E2K_VECTOR_OPS /* Discard features unsupported by compiler */
 #endif
 
 /* Discard features unsupported by Elbrus compiler.
    For lcc > 1.25.10, it may be based on a version. */
 #if defined(__LCC__)
-#define SIMDE_SKIP_EXTENDED_E2K_VECTOR_OPS
+#define SIMDE_BUG_LCC_TOO_STRICT_VECTOR_SHIFTS_AND_COMPARES
+#define SIMDE_BUG_LCC_XOP_MISSING
+#define SIMDE_BUG_LCC_WARNING_ON_SHIFTS
+#define SIMDE_BUG_LCC_FMA_WRONG_RESULT
+#define SIMDE_BUG_LCC_AVX_NO_LOAD_STORE_U2
+#define SIMDE_BUG_LCC_STACK_ALIGNMENT_CAP
+
+/* Some native functions on E2K with instruction set < v6
+   are declared as deprecated due to inefficiency.
+   Still they are more efficient than SIMDe implementation.
+   So we're using them, and switching off these deprecation warnings. */
+#define SIMDE_BUG_PCLMUL_XOP_DEPRECATED
+#define SIMDE_LCC_DISABLE_DEPRECATED_WARNINGS _Pragma("diag_suppress 1215,1444")
+#define SIMDE_LCC_REVERT_DEPRECATED_WARNINGS _Pragma("diag_default 1215,1444")
+#else
+#define SIMDE_LCC_DISABLE_DEPRECATED_WARNINGS
+#define SIMDE_LCC_REVERT_DEPRECATED_WARNINGS
 #endif
 
 /* HP/PA / PA-RISC
@@ -267,7 +282,7 @@
 #  if defined(__SSE4_2__)
 #    define SIMDE_ARCH_X86_SSE4_2 1
 #  endif
-#  if defined(__XOP__) && !defined(__LCC__) /* LCC incorrectly defines __XOP__ */
+#  if defined(__XOP__)
 #    define SIMDE_ARCH_X86_XOP 1
 #  endif
 #  if defined(__AVX__)
@@ -285,7 +300,7 @@
 #  if defined(__AVX2__)
 #    define SIMDE_ARCH_X86_AVX2 1
 #  endif
-#  if defined(__FMA__) && !defined(__LCC__) /* LCC incorrectly defines __FMA__ */
+#  if defined(__FMA__)
 #    define SIMDE_ARCH_X86_FMA 1
 #    if !defined(SIMDE_ARCH_X86_AVX)
 #      define SIMDE_ARCH_X86_AVX 1
@@ -315,7 +330,7 @@
 #  if defined(__GFNI__)
 #    define SIMDE_ARCH_X86_GFNI 1
 #  endif
-#  if defined(__PCLMUL__) && !defined(SIMDE_ARCH_E2K) /* E2K has inefficient implementation of PCLMUL */
+#  if defined(__PCLMUL__)
 #    define SIMDE_ARCH_X86_PCLMUL 1
 #  endif
 #  if defined(__VPCLMULQDQ__)

@@ -101,7 +101,7 @@ test_simde_mm256_cvtsepi16_epi8(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m128i r;
-  } test_vec[8] = {
+  } SIMDE_ALIGN_REDUCE_STRUCT test_vec[8] = {
     { simde_mm256_set_epi16(INT16_C(   447), INT16_C( -3887), INT16_C(     9), INT16_C(  6277),
                             INT16_C(     2), INT16_C(  -314), INT16_C(  1617), INT16_C(    64),
                             INT16_C(     0), INT16_C(  1725), INT16_C(   801), INT16_C(    -2),
@@ -237,7 +237,7 @@ test_simde_mm256_cvtsepi32_epi8(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m128i r;
-  } test_vec[8] = {
+  } SIMDE_ALIGN_REDUCE_STRUCT test_vec[8] = {
     { simde_mm256_set_epi32(INT32_C( 1740492550), INT32_C(  140736582), INT32_C( -304624647), INT32_C( 1856868246),
                             INT32_C(-1035207889), INT32_C( -259975534), INT32_C(  927209588), INT32_C( -783560978)),
       simde_mm_set_epi8(INT8_C(   0), INT8_C(   0), INT8_C(   0), INT8_C(   0),
@@ -341,7 +341,7 @@ test_simde_mm256_cvtsepi32_epi16(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m128i r;
-  } test_vec[8] = {
+  } SIMDE_ALIGN_REDUCE_STRUCT test_vec[8] = {
     { simde_mm256_set_epi32(INT32_C(  293632982), INT32_C( -353952507), INT32_C( -369979604), INT32_C(-1836849217),
                             INT32_C( -251503260), INT32_C(-1183044723), INT32_C(-1145018690), INT32_C( 1658446911)),
       simde_mm_set_epi16(INT16_C( 32767), INT16_C(-32768), INT16_C(-32768), INT16_C(-32768),
@@ -445,7 +445,7 @@ test_simde_mm256_cvtsepi64_epi8(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
     simde__m128i r;
-  } test_vec[8] = {
+  } SIMDE_ALIGN_REDUCE_STRUCT test_vec[8] = {
     { simde_mm256_set_epi64x(INT64_C( 7571764882458171438), INT64_C(-5921591509803744983),
                              INT64_C( 6658090239555345361), INT64_C(-2357401607469764832)),
       simde_mm_set_epi8(INT8_C(   0), INT8_C(   0), INT8_C(   0), INT8_C(   0),
@@ -509,7 +509,7 @@ test_simde_mm512_cvtsepi16_epi8(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m512i a;
     simde__m256i r;
-  } test_vec[8] = {
+  } SIMDE_ALIGN_REDUCE_STRUCT test_vec[8] = {
         { simde_mm512_set_epi16(INT16_C(  8002), INT16_C(   -42), INT16_C(   317), INT16_C(     3),
                             INT16_C(     2), INT16_C(    22), INT16_C(     2), INT16_C(   102),
                             INT16_C(     0), INT16_C(   130), INT16_C(   297), INT16_C(  4068),
@@ -655,7 +655,7 @@ test_simde_mm512_mask_cvtsepi16_epi8(SIMDE_MUNIT_TEST_ARGS) {
     simde__mmask32 k;
     simde__m512i a;
     simde__m256i r;
-  } test_vec[8] = {
+  } SIMDE_ALIGN_REDUCE_STRUCT test_vec[8] = {
     { simde_mm256_set_epi8(INT8_C( -40), INT8_C(  93), INT8_C( -64), INT8_C( 127),
                            INT8_C(-121), INT8_C( -33), INT8_C( -51), INT8_C(  86),
                            INT8_C(-123), INT8_C(-117), INT8_C(-108), INT8_C( -18),
@@ -872,7 +872,7 @@ test_simde_mm512_maskz_cvtsepi16_epi8(SIMDE_MUNIT_TEST_ARGS) {
     simde__mmask32 k;
     simde__m512i a;
     simde__m256i r;
-  } test_vec[8] = {
+  } SIMDE_ALIGN_REDUCE_STRUCT test_vec[8] = {
     { UINT32_C(  16184841),
       simde_mm512_set_epi16(INT16_C( 26453), INT16_C(-25565), INT16_C(-27471), INT16_C(-25692),
                             INT16_C( 24633), INT16_C(-12996), INT16_C( -7464), INT16_C(  6163),
@@ -1024,7 +1024,7 @@ test_simde_mm512_cvtsepi32_epi8(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m512i a;
     simde__m128i r;
-  } test_vec[8] = {
+  } SIMDE_ALIGN_REDUCE_STRUCT test_vec[8] = {
     { simde_mm512_set_epi32(INT32_C(  699026811), INT32_C( -375318237), INT32_C(  900674930), INT32_C( -532379219),
                             INT32_C(  259624037), INT32_C( -680802854), INT32_C( 1547540196), INT32_C( -396867814),
                             INT32_C( -680186334), INT32_C( -646546417), INT32_C( 1050185959), INT32_C(  210164141),
@@ -1106,7 +1106,7 @@ test_simde_mm512_mask_cvtsepi32_epi8(SIMDE_MUNIT_TEST_ARGS) {
     simde__mmask16 k;
     simde__m512i a;
     simde__m128i r;
-  } test_vec[8] = {
+  } SIMDE_ALIGN_REDUCE_STRUCT test_vec[8] = {
     { simde_mm_set_epi8(INT8_C(   4), INT8_C( 110), INT8_C(   8), INT8_C( 124),
                         INT8_C( -85), INT8_C( -65), INT8_C( -62), INT8_C(-114),
                         INT8_C( 110), INT8_C(  33), INT8_C( -28), INT8_C( 106),
@@ -1227,7 +1227,7 @@ test_simde_mm512_maskz_cvtsepi32_epi8(SIMDE_MUNIT_TEST_ARGS) {
     simde__mmask16 k;
     simde__m512i a;
     simde__m128i r;
-  } test_vec[8] = {
+  } SIMDE_ALIGN_REDUCE_STRUCT test_vec[8] = {
     { UINT16_C(22908),
       simde_mm512_set_epi32(INT32_C(  760893683), INT32_C(-2027734617), INT32_C( 1683947105), INT32_C( -424320007),
                             INT32_C(  107722959), INT32_C(  -13745640), INT32_C(-1276316442), INT32_C(-1722135079),
@@ -1315,7 +1315,7 @@ test_simde_mm512_cvtsepi32_epi16(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m512i a;
     simde__m256i r;
-  } test_vec[8] = {
+  } SIMDE_ALIGN_REDUCE_STRUCT test_vec[8] = {
     { simde_mm512_set_epi32(INT32_C( -633826313), INT32_C( -624858207), INT32_C( 1490386470), INT32_C(-2098903851),
                             INT32_C(-1539984349), INT32_C( 1958536651), INT32_C(-1468703883), INT32_C( -330293651),
                             INT32_C( 2111698546), INT32_C(-1712476271), INT32_C( 1928035775), INT32_C(  815855626),
@@ -1397,7 +1397,7 @@ test_simde_mm512_mask_cvtsepi32_epi16(SIMDE_MUNIT_TEST_ARGS) {
     simde__mmask16 k;
     simde__m512i a;
     simde__m256i r;
-  } test_vec[8] = {
+  } SIMDE_ALIGN_REDUCE_STRUCT test_vec[8] = {
     { simde_mm256_set_epi16(INT16_C(  4055), INT16_C(-20252), INT16_C(-20899), INT16_C( 32293),
                             INT16_C( -9133), INT16_C( 17590), INT16_C( 23336), INT16_C( 12710),
                             INT16_C(  1134), INT16_C(  2172), INT16_C(-21569), INT16_C(-15730),
@@ -1518,7 +1518,7 @@ test_simde_mm512_maskz_cvtsepi32_epi16(SIMDE_MUNIT_TEST_ARGS) {
     simde__mmask16 k;
     simde__m512i a;
     simde__m256i r;
-  } test_vec[8] = {
+  } SIMDE_ALIGN_REDUCE_STRUCT test_vec[8] = {
     { UINT16_C(22908),
       simde_mm512_set_epi32(INT32_C(  760893683), INT32_C(-2027734617), INT32_C( 1683947105), INT32_C( -424320007),
                             INT32_C(  107722959), INT32_C(  -13745640), INT32_C(-1276316442), INT32_C(-1722135079),
@@ -1606,7 +1606,7 @@ test_simde_mm512_cvtsepi64_epi8(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m512i a;
     simde__m128i r;
-  } test_vec[8] = {
+  } SIMDE_ALIGN_REDUCE_STRUCT test_vec[8] = {
      { simde_mm512_set_epi64(INT64_C( 5688878986790062607), INT64_C( -507006338933993777),
                             INT64_C( 2731700857838766689), INT64_C( 5038766546414012764),
                             INT64_C( 8031668245477288096), INT64_C( 8558843731862564067),
@@ -1688,7 +1688,7 @@ test_simde_mm512_mask_cvtsepi64_epi8(SIMDE_MUNIT_TEST_ARGS) {
     simde__mmask8 k;
     simde__m512i a;
     simde__m128i r;
-  } test_vec[8] = {
+  } SIMDE_ALIGN_REDUCE_STRUCT test_vec[8] = {
     { simde_mm_set_epi8(INT8_C( -98), INT8_C(-118), INT8_C( -55), INT8_C(  84),
                         INT8_C( -38), INT8_C(-100), INT8_C(  69), INT8_C( -11),
                         INT8_C( -76), INT8_C( -44), INT8_C( 111), INT8_C(  57),
@@ -1809,7 +1809,7 @@ test_simde_mm512_maskz_cvtsepi64_epi8(SIMDE_MUNIT_TEST_ARGS) {
     simde__mmask8 k;
     simde__m512i a;
     simde__m128i r;
-  } test_vec[8] = {
+  } SIMDE_ALIGN_REDUCE_STRUCT test_vec[8] = {
     { UINT8_C( 99),
       simde_mm512_set_epi64(INT64_C(-6773163771856001287), INT64_C( 8528895860955669022),
                             INT64_C(  743395091751495893), INT64_C(-5753646205421077345),
@@ -1897,7 +1897,7 @@ test_simde_mm512_cvtsepi64_epi16(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m512i a;
     simde__m128i r;
-  } test_vec[8] = {
+  } SIMDE_ALIGN_REDUCE_STRUCT test_vec[8] = {
     { simde_mm512_set_epi64(INT64_C(-2030970610590957423), INT64_C(-6407881172688895992),
                             INT64_C( 5763311992085393311), INT64_C( 5413217893862876377),
                             INT64_C( 2736248102150189299), INT64_C(-3905239043220002295),
@@ -1963,7 +1963,7 @@ test_simde_mm512_mask_cvtsepi64_epi16(SIMDE_MUNIT_TEST_ARGS) {
     simde__mmask8 k;
     simde__m512i a;
     simde__m128i r;
-  } test_vec[8] = {
+  } SIMDE_ALIGN_REDUCE_STRUCT test_vec[8] = {
     { simde_mm_set_epi16(INT16_C(-24950), INT16_C(-13996), INT16_C( -9572), INT16_C( 17909),
                          INT16_C(-19244), INT16_C( 28473), INT16_C(-27531), INT16_C(-23965)),
       UINT8_C( 89),
@@ -2052,7 +2052,7 @@ test_simde_mm512_maskz_cvtsepi64_epi16(SIMDE_MUNIT_TEST_ARGS) {
     simde__mmask8 k;
     simde__m512i a;
     simde__m128i r;
-  } test_vec[8] = {
+  } SIMDE_ALIGN_REDUCE_STRUCT test_vec[8] = {
     { UINT8_C( 99),
       simde_mm512_set_epi64(INT64_C(-6773163771856001287), INT64_C( 8528895860955669022),
                             INT64_C(  743395091751495893), INT64_C(-5753646205421077345),
@@ -2124,7 +2124,7 @@ test_simde_mm512_cvtsepi64_epi32(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m512i a;
     simde__m256i r;
-  } test_vec[8] = {
+  } SIMDE_ALIGN_REDUCE_STRUCT test_vec[8] = {
     { simde_mm512_set_epi64(INT64_C(   -1385298216494496), INT64_C(       -996445051636),
                             INT64_C(             3207004), INT64_C(    -651667828674554),
                             INT64_C(   -3476602607657036), INT64_C(            -4627787),
@@ -2190,7 +2190,7 @@ test_simde_mm512_mask_cvtsepi64_epi32(SIMDE_MUNIT_TEST_ARGS) {
     simde__mmask8 k;
     simde__m512i a;
     simde__m256i r;
-  } test_vec[8] = {
+  } SIMDE_ALIGN_REDUCE_STRUCT test_vec[8] = {
     { simde_mm256_set_epi32(INT32_C( -783872818), INT32_C(  224826276), INT32_C(  833953142), INT32_C(  704393899),
                             INT32_C(-1282792525), INT32_C(-1682931810), INT32_C( 1715663188), INT32_C(-1736532826)),
       UINT8_C(184),
@@ -2279,7 +2279,7 @@ test_simde_mm512_maskz_cvtsepi64_epi32(SIMDE_MUNIT_TEST_ARGS) {
     simde__mmask8 k;
     simde__m512i a;
     simde__m256i r;
-  } test_vec[8] = {
+  } SIMDE_ALIGN_REDUCE_STRUCT test_vec[8] = {
     { UINT8_C(166),
       simde_mm512_set_epi64(INT64_C(-8094918606566868518), INT64_C( 4039990350021559518),
                             INT64_C(-5079608809355355713), INT64_C( 4544449552448075830),
