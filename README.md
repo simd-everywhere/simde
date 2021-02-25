@@ -186,13 +186,16 @@ just use search and replace, manual changes are required pretty
 infrequently.
 
 For best performance, in addition to `-O3` (or whatever your compiler's
-equivalent is), you should enable OpenMP 4 SIMD support by defining
-`SIMDE_ENABLE_OPENMP` before including any SIMDe headers, and
-enabling OpenMP support in your compiler.  GCC and ICC both support a
-flag to enable only OpenMP SIMD support instead of full OpenMP (the OpenMP
-SIMD support doesn't require the OpenMP run-time library); for GCC the
-flag is `-fopenmp-simd` (requires GCC version 4.9 or later), for ICC
-the flag is `-qopenmp-simd`.  SIMDe also supports
+equivalent is), you should enable OpenMP 4 SIMD support in your compiler.
+GCC and ICC both support a flag to enable only OpenMP SIMD support instead
+of full OpenMP (the OpenMP SIMD support doesn't require the OpenMP run-time
+library); for GCC the flag is `-fopenmp-simd` (requires GCC version 4.9
+or later), for ICC the flag is `-qopenmp-simd`. Some compilers have this
+support implicitly enabled (the example is MCST Elbrus Compiler, or LCC
+for short). If for some reason you need to disable OpenMP support,
+you need to define `SIMDE_DISABLE_OPENMP` before including any of SIMDe
+headers, and probably disable its support in compiler, if it is implicitly
+enabled (for LCC, there is `-fno-openmp` flag). SIMDe also supports
 using [Cilk Plus](https://www.cilkplus.org/), [GCC loop-specific
 pragmas](https://gcc.gnu.org/onlinedocs/gcc/Loop-Specific-Pragmas.html),
 or [clang pragma loop hint
