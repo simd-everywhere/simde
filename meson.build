@@ -23,6 +23,7 @@ simde_neon_families = [
   'and',
   'bic',
   'bsl',
+  'cage',
   'cagt',
   'ceq',
   'ceqz',
