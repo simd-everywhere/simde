@@ -43,6 +43,7 @@
 #include "neon/and.h"
 #include "neon/bic.h"
 #include "neon/bsl.h"
+#include "neon/cage.h"
 #include "neon/cagt.h"
 #include "neon/ceq.h"
 #include "neon/ceqz.h"
