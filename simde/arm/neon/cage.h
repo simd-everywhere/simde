@@ -21,8 +21,8 @@
  * SOFTWARE.
  *
  * Copyright:
- *   2020      Evan Nemerson <evan@nemerson.com>
- *   2020      Sean Maher <seanptmaher@gmail.com> (Copyright owned by Google, LLC)
+ *   2021      Evan Nemerson <evan@nemerson.com>
+ *   2021      Atharva Nimbalkar <atharvakn@gmail.com>
  */
 
 #if !defined(SIMDE_ARM_NEON_CAGE_H)
