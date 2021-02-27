@@ -3649,7 +3649,7 @@ simde_mm256_insert_epi64 (simde__m256i a, int64_t i, const int index)
     SIMDE_DETECT_CLANG_VERSION_CHECK(3,7,0)
   #define simde_mm256_insert_epi64(a, i, index) _mm256_insert_epi64(a, i, index)
 #endif
-#if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && !defined(SIMDE_ARCH_AMD64))
   #undef _mm256_insert_epi64
   #define _mm256_insert_epi64(a, i, index) simde_mm256_insert_epi64(a, i, index)
 #endif
@@ -3739,7 +3739,7 @@ simde_mm256_extract_epi64 (simde__m256i a, const int index)
     #define simde_mm256_extract_epi64(a, index) _mm256_extract_epi64(a, index)
   #endif
 #endif
-#if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && !defined(SIMDE_ARCH_AMD64))
   #undef _mm256_extract_epi64
   #define _mm256_extract_epi64(a, index) simde_mm256_extract_epi64(a, index)
 #endif

@@ -125,6 +125,9 @@ simde__m128i
 simde_mm_abs_epi64(simde__m128i a) {
   #if defined(SIMDE_X86_AVX512VL_NATIVE)
     return _mm_abs_epi64(a);
+  #elif defined(SIMDE_X86_SSE2_NATIVE)
+    const __m128i m = _mm_srai_epi32(_mm_shuffle_epi32(a, 0xF5), 31);
+    return _mm_sub_epi64(_mm_xor_si128(a, m), m);
   #else
     simde__m128i_private
       r_,
@@ -132,8 +135,13 @@ simde_mm_abs_epi64(simde__m128i a) {
 
     #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
       r_.neon_i64 = vabsq_s64(a_.neon_i64);
+    #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+      const int64x2_t m = vshrq_n_s64(a_.neon_i64, 63);
+      r_.neon_i64 = vsubq_s64(veorq_s64(a_.neon_i64, m), m);
     #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE) && !defined(HEDLEY_IBM_VERSION)
       r_.altivec_i64 = vec_abs(a_.altivec_i64);
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE) && 0
+      r_.wasm_v128 = wasm_i64x2_abs(a_.wasm_v128);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0; i < (sizeof(r_.i64) / sizeof(r_.i64[0])); i++) {
