@@ -185,20 +185,52 @@ That said, the changes are usually quite minor.  It's often enough to
 just use search and replace, manual changes are required pretty
 infrequently.
 
-For best performance, in addition to `-O3` (or whatever your compiler's
-equivalent is), you should enable OpenMP 4 SIMD support by defining
-`SIMDE_ENABLE_OPENMP` before including any SIMDe headers, and
-enabling OpenMP support in your compiler.  GCC and ICC both support a
-flag to enable only OpenMP SIMD support instead of full OpenMP (the OpenMP
-SIMD support doesn't require the OpenMP run-time library); for GCC the
-flag is `-fopenmp-simd` (requires GCC version 4.9 or later), for ICC
-the flag is `-qopenmp-simd`.  SIMDe also supports
+### OpenMP 4 SIMD
+
+SIMDe makes extensive use of annotations to help the compiler vectorize
+code.  By far the best annotations use the SIMD support built in to
+OpenMP 4, so if your compiler supports these annotations we strongly
+recommend you enable them.
+
+If you are already using OpenMP, SIMDe will automatically detect it
+using the `_OPENMP` macro and no further action is required.
+
+Some compilers allow you to enable OpenMP SIMD *without* enabling the
+full OpenMP.  In such cases there is no runtime dependency on OpenMP
+and no runtime overhead; SIMDe will just be faster.  Unfortunately,
+SIMDe has no way to detect such situations (the `_OPENMP` macro is not
+defined), so after enabling it in your compiler you'll need to define
+`SIMDE_ENABLE_OPENMP` (e.g., by passing `-DSIMDE_ENABLE_OPENMP`) to get
+SIMDe to output the relevant pragmas.
+
+Enabling OpenMP SIMD support varies by compiler:
+
+ * GCC 4.9+ and clang 6+ support a `-fopenmp-simd` command line flag.
+ * ICC supports a `-qopenmp-simd` command line flag.
+ * MCST's LCC enables OpenMP SIMD by default, so no flags are needed
+   (technically you don't even need to pass `-DSIMDE_ENABLE_OPENMP`).
+
+We are not currently aware of any other compilers which allow you to
+enable OpenMP SIMD support without enabling full OpenMP (if you are
+please file an issue to let us know).  You should determine whether you
+wish to enable full OpenMP support on a case-by-case basis, but it is
+likely that the overhead of linking to (but not using) the OpenMP
+runtime library will be dwarfed by the performance improvements from
+using the OpenMP SIMD annotations in SIMDe.
+
+If you choose not to use OpenMP SIMD, SIMDe also supports
 using [Cilk Plus](https://www.cilkplus.org/), [GCC loop-specific
 pragmas](https://gcc.gnu.org/onlinedocs/gcc/Loop-Specific-Pragmas.html),
 or [clang pragma loop hint
 directives](http://llvm.org/docs/Vectorizers.html#pragma-loop-hint-directives),
 though these are not nearly as effective as OpenMP SIMD and depending
-on them will likely result in less efficient code.
+on them will likely result in less efficient code.  All of these are
+detected automatically by SIMDe, so if they are enabled in your
+compiler nothing more is required.
+
+If for some reason you do not wish to enable OpenMP 4 SIMD support even
+though SIMDe detects it, you should define `SIMDE_DISABLE_OPENMP` prior
+to including SIMDe.
 
 ## Portability
 
