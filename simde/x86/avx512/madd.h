@@ -102,14 +102,16 @@ simde_mm512_madd_epi16 (simde__m512i a, simde__m512i b) {
       a_ = simde__m512i_to_private(a),
       b_ = simde__m512i_to_private(b);
 
-    #if SIMDE_NATURAL_VECTOR_SIZE_LE(256) || defined(SIMDE_BUG_CLANG_BAD_MADD)
+    #if 0 && SIMDE_NATURAL_VECTOR_SIZE_LE(256) || defined(SIMDE_BUG_CLANG_BAD_MADD)
       for (size_t i = 0 ; i < (sizeof(r_.m256i) / sizeof(r_.m256i[0])) ; i++) {
         r_.m256i[i] = simde_mm256_madd_epi16(a_.m256i[i], b_.m256i[i]);
       }
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_) / sizeof(r_.i16[0])) ; i += 2) {
-        r_.i32[i / 2] = (a_.i16[i] * b_.i16[i]) + (a_.i16[i + 1] * b_.i16[i + 1]);
+        r_.i32[i / 2] =
+          (HEDLEY_STATIC_CAST(int32_t, a_.i16[  i  ]) * HEDLEY_STATIC_CAST(int32_t, b_.i16[  i  ])) +
+          (HEDLEY_STATIC_CAST(int32_t, a_.i16[i + 1]) * HEDLEY_STATIC_CAST(int32_t, b_.i16[i + 1]));
       }
     #endif
 
