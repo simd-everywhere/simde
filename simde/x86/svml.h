@@ -2077,7 +2077,7 @@ simde_x_mm_deg2rad_ps(simde__m128 a) {
     #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       r_.neon_f32 = vmulq_n_f32(a_.neon_i32, SIMDE_MATH_PI_OVER_180F);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && !defined(SIMDE_BUG_GCC_53784)
-    r_.f32 = a_.f32 * SIMDE_MATH_PI_OVER_180F;
+      r_.f32 = a_.f32 * SIMDE_MATH_PI_OVER_180F;
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
     const __typeof__(r_.f32) tmp = { SIMDE_MATH_PI_OVER_180F, SIMDE_MATH_PI_OVER_180F, SIMDE_MATH_PI_OVER_180F, SIMDE_MATH_PI_OVER_180F };
       r_.f32 = a_.f32 * tmp;
