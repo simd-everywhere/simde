@@ -292,8 +292,10 @@
 #  endif
 #endif
 
-#if !defined(SIMDE_ENABLE_OPENMP) && ((defined(_OPENMP) && (_OPENMP >= 201307L)) || (defined(_OPENMP_SIMD) && (_OPENMP_SIMD >= 201307L)))
-#  define SIMDE_ENABLE_OPENMP
+#if !defined(SIMDE_DISABLE_OPENMP)
+  #if !defined(SIMDE_ENABLE_OPENMP) && ((defined(_OPENMP) && (_OPENMP >= 201307L)) || (defined(_OPENMP_SIMD) && (_OPENMP_SIMD >= 201307L))) || defined(HEDLEY_MCST_LCC_VERSION)
+    #define SIMDE_ENABLE_OPENMP
+  #endif
 #endif
 
 #if !defined(SIMDE_ENABLE_CILKPLUS) && (defined(__cilk) || defined(HEDLEY_INTEL_VERSION))
