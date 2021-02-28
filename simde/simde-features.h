@@ -356,7 +356,25 @@
   #endif
 #endif
 
-#if defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+#if !defined(SIMDE_ZARCH_ZVECTOR_15_NATIVE) && !defined(SIMDE_ZARCH_ZVECTOR_15_NO_NATIVE) && !defined(SIMDE_ZARCH_ZVECTOR_15_NO_NATIVE)
+  #if SIMDE_ARCH_ZARCH_CHECK(13)
+    #define SIMDE_ZARCH_ZVECTOR_15_NATIVE
+  #endif
+#endif
+
+#if !defined(SIMDE_ZARCH_ZVECTOR_14_NATIVE) && !defined(SIMDE_ZARCH_ZVECTOR_14_NO_NATIVE) && !defined(SIMDE_ZARCH_ZVECTOR_14_NO_NATIVE)
+  #if SIMDE_ARCH_ZARCH_CHECK(12)
+    #define SIMDE_ZARCH_ZVECTOR_14_NATIVE
+  #endif
+#endif
+
+#if !defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE) && !defined(SIMDE_ZARCH_ZVECTOR_13_NO_NATIVE) && !defined(SIMDE_ZARCH_ZVECTOR_13_NO_NATIVE)
+  #if SIMDE_ARCH_ZARCH_CHECK(11)
+    #define SIMDE_ZARCH_ZVECTOR_13_NATIVE
+  #endif
+#endif
+
+#if defined(SIMDE_POWER_ALTIVEC_P6_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
   /* AltiVec conflicts with lots of stuff.  The bool keyword conflicts
    * with the bool keyword in C++ and the bool macro in C99+ (defined
    * in stdbool.h).  The vector keyword conflicts with std::vector in
@@ -374,19 +392,23 @@
     #undef bool
   #endif
 
-  #include <altivec.h>
+  #if defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+    #include <altivec.h>
 
-  #if !defined(SIMDE_POWER_ALTIVEC_NO_UNDEF)
-    #if defined(vector)
-      #undef vector
-    #endif
-    #if defined(pixel)
-      #undef pixel
-    #endif
-    #if defined(bool)
-      #undef bool
-    #endif
-  #endif /* !defined(SIMDE_POWER_ALTIVEC_NO_UNDEF) */
+    #if !defined(SIMDE_POWER_ALTIVEC_NO_UNDEF)
+      #if defined(vector)
+        #undef vector
+      #endif
+      #if defined(pixel)
+        #undef pixel
+      #endif
+      #if defined(bool)
+        #undef bool
+      #endif
+    #endif /* !defined(SIMDE_POWER_ALTIVEC_NO_UNDEF) */
+  #elif defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
+    #include <vecintrin.h>
+  #endif
 
   /* Use these intsead of vector/pixel/bool in SIMDe. */
   #define SIMDE_POWER_ALTIVEC_VECTOR(T) __vector T

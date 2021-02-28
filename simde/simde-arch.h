@@ -491,7 +491,12 @@
 /* IBM System z
    <https://en.wikipedia.org/wiki/IBM_System_z> */
 #if defined(__370__) || defined(__THW_370__) || defined(__s390__) || defined(__s390x__) || defined(__zarch__) || defined(__SYSC_ZARCH__)
-#  define SIMDE_ARCH_SYSTEMZ
+#  define SIMDE_ARCH_ZARCH __ARCH__
+#endif
+#if defined(SIMDE_ARCH_ZARCH)
+  #define SIMDE_ARCH_ZARCH_CHECK(version) ((version) <= SIMDE_ARCH_ZARCH)
+#else
+  #define SIMDE_ARCH_ZARCH_CHECK(version) (0)
 #endif
 
 /* TMS320 DSP
