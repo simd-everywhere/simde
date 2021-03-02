@@ -3843,7 +3843,7 @@ simde_mm_min_epu8 (simde__m128i a, simde__m128i b) {
       r_.neon_u8 = vminq_u8(a_.neon_u8, b_.neon_u8);
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r_.wasm_v128 = wasm_u8x16_min(a_.wasm_v128, b_.wasm_v128);
-    #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+    #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
       r_.altivec_u8 = vec_min(a_.altivec_u8, b_.altivec_u8);
     #else
       SIMDE_VECTORIZE
@@ -3964,7 +3964,7 @@ simde_mm_max_epu8 (simde__m128i a, simde__m128i b) {
       r_.neon_u8 = vmaxq_u8(a_.neon_u8, b_.neon_u8);
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r_.wasm_v128 = wasm_u8x16_max(a_.wasm_v128, b_.wasm_v128);
-    #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+    #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
       r_.altivec_u8 = vec_max(a_.altivec_u8, b_.altivec_u8);
     #else
       SIMDE_VECTORIZE

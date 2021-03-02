@@ -1497,7 +1497,7 @@ simde_mm_max_epi8 (simde__m128i a, simde__m128i b) {
       r_.neon_i8 = vmaxq_s8(a_.neon_i8, b_.neon_i8);
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r_.wasm_v128 = wasm_i8x16_max(a_.wasm_v128, b_.wasm_v128);
-    #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+    #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
       r_.altivec_i8 = vec_max(a_.altivec_i8, b_.altivec_i8);
     #else
       SIMDE_VECTORIZE
