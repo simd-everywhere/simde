@@ -49,7 +49,7 @@ simde_mm_fmadd_pd (simde__m128d a, simde__m128d b, simde__m128d c) {
       c_ = simde__m128d_to_private(c),
       r_;
 
-    #if defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
+    #if defined(SIMDE_POWER_ALTIVEC_P7_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
       r_.altivec_f64 = vec_madd(a_.altivec_f64, b_.altivec_f64, c_.altivec_f64);
     #elif defined(SIMDE_ARM_NEON_A64V8_NATIVE)
       r_.neon_f64 = vmlaq_f64(c_.neon_f64, b_.neon_f64, a_.neon_f64);

@@ -162,10 +162,14 @@ simde_mm_lzcnt_epi32(simde__m128i a) {
       r_,
       a_ = simde__m128i_to_private(a);
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0; i < (sizeof(r_.i32) / sizeof(r_.i32[0])); i++) {
-      r_.i32[i] = (HEDLEY_UNLIKELY(a_.i32[i] == 0) ? HEDLEY_STATIC_CAST(int32_t, sizeof(int32_t) * CHAR_BIT) : HEDLEY_STATIC_CAST(int32_t, simde_x_clz32(HEDLEY_STATIC_CAST(uint32_t, a_.i32[i]))));
-    }
+    #if defined(SIMDE_POWER_ALTIVEC_P7_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
+      r_.altivec_u32 = vec_cntlz(a_.altivec_u32);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0; i < (sizeof(r_.i32) / sizeof(r_.i32[0])); i++) {
+        r_.i32[i] = (HEDLEY_UNLIKELY(a_.i32[i] == 0) ? HEDLEY_STATIC_CAST(int32_t, sizeof(int32_t) * CHAR_BIT) : HEDLEY_STATIC_CAST(int32_t, simde_x_clz32(HEDLEY_STATIC_CAST(uint32_t, a_.i32[i]))));
+      }
+    #endif
 
     return simde__m128i_from_private(r_);
   #endif

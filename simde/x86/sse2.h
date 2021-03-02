@@ -422,7 +422,7 @@ simde_x_mm_abs_pd(simde__m128d a) {
 
     #if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
       r_.neon_f64 = vabsq_f64(a_.neon_f64);
-    #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
+    #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
       r_.altivec_f64 = vec_abs(a_.altivec_f64);
     #else
       SIMDE_VECTORIZE
@@ -1057,7 +1057,7 @@ simde_mm_avg_epu8 (simde__m128i a, simde__m128i b) {
       r_.neon_u8 = vrhaddq_u8(b_.neon_u8, a_.neon_u8);
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r_.wasm_v128 = wasm_u8x16_avgr(a_.wasm_v128, b_.wasm_v128);
-    #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+    #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
       r_.altivec_u8 = vec_avg(a_.altivec_u8, b_.altivec_u8);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && defined(SIMDE_CONVERT_VECTOR_)
       uint16_t wa SIMDE_VECTOR(32);
@@ -1096,7 +1096,7 @@ simde_mm_avg_epu16 (simde__m128i a, simde__m128i b) {
       r_.neon_u16 = vrhaddq_u16(b_.neon_u16, a_.neon_u16);
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r_.wasm_v128 = wasm_u16x8_avgr(a_.wasm_v128, b_.wasm_v128);
-    #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+    #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
       r_.altivec_u16 = vec_avg(a_.altivec_u16, b_.altivec_u16);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && defined(SIMDE_CONVERT_VECTOR_)
       uint32_t wa SIMDE_VECTOR(32);
@@ -5457,6 +5457,8 @@ simde_mm_sqrt_pd (simde__m128d a) {
       r_.neon_f64 = vsqrtq_f64(a_.neon_f64);
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r_.wasm_v128 = wasm_f64x2_sqrt(a_.wasm_v128);
+    #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
+      r_.altivec_f64 = vec_sqrt(a_.altivec_f64);
     #elif defined(simde_math_sqrt)
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
