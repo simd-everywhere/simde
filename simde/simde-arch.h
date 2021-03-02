@@ -499,6 +499,10 @@
   #define SIMDE_ARCH_ZARCH_CHECK(version) (0)
 #endif
 
+#if defined(SIMDE_ARCH_ZARCH) && defined(__VEC__)
+  #define SIMDE_ARCH_ZARCH_ZVECTOR SIMDE_ARCH_ZARCH
+#endif
+
 /* TMS320 DSP
    <https://en.wikipedia.org/wiki/Texas_Instruments_TMS320> */
 #if defined(_TMS320C6740) || defined(__TMS320C6740__)
