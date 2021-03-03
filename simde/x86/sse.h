@@ -552,7 +552,7 @@ simde_x_mm_round_ps (simde__m128 a, int rounding, int lax_rounding)
 
   switch (rounding & ~SIMDE_MM_FROUND_NO_EXC) {
     case SIMDE_MM_FROUND_CUR_DIRECTION:
-      #if defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+      #if defined(SIMDE_POWER_ALTIVEC_P6_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
         r_.altivec_f32 = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(float), vec_round(a_.altivec_f32));
       #elif defined(SIMDE_ARM_NEON_A32V8_NATIVE) && !defined(SIMDE_BUG_GCC_95399)
         r_.neon_f32 = vrndiq_f32(a_.neon_f32);
@@ -567,7 +567,7 @@ simde_x_mm_round_ps (simde__m128 a, int rounding, int lax_rounding)
       break;
 
     case SIMDE_MM_FROUND_TO_NEAREST_INT:
-      #if defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
+      #if defined(SIMDE_POWER_ALTIVEC_P8_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
         r_.altivec_f32 = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(float), vec_rint(a_.altivec_f32));
       #elif defined(SIMDE_ARM_NEON_A32V8_NATIVE)
         r_.neon_f32 = vrndnq_f32(a_.neon_f32);
@@ -582,7 +582,7 @@ simde_x_mm_round_ps (simde__m128 a, int rounding, int lax_rounding)
       break;
 
     case SIMDE_MM_FROUND_TO_NEG_INF:
-      #if defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+      #if defined(SIMDE_POWER_ALTIVEC_P6_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
         r_.altivec_f32 = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(float), vec_floor(a_.altivec_f32));
       #elif defined(SIMDE_ARM_NEON_A32V8_NATIVE)
         r_.neon_f32 = vrndmq_f32(a_.neon_f32);
@@ -597,7 +597,7 @@ simde_x_mm_round_ps (simde__m128 a, int rounding, int lax_rounding)
       break;
 
     case SIMDE_MM_FROUND_TO_POS_INF:
-      #if defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+      #if defined(SIMDE_POWER_ALTIVEC_P6_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
         r_.altivec_f32 = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(float), vec_ceil(a_.altivec_f32));
       #elif defined(SIMDE_ARM_NEON_A32V8_NATIVE)
         r_.neon_f32 = vrndpq_f32(a_.neon_f32);
@@ -612,7 +612,7 @@ simde_x_mm_round_ps (simde__m128 a, int rounding, int lax_rounding)
       break;
 
     case SIMDE_MM_FROUND_TO_ZERO:
-      #if defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+      #if defined(SIMDE_POWER_ALTIVEC_P6_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
         r_.altivec_f32 = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(float), vec_trunc(a_.altivec_f32));
       #elif defined(SIMDE_ARM_NEON_A32V8_NATIVE)
         r_.neon_f32 = vrndq_f32(a_.neon_f32);

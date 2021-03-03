@@ -396,7 +396,7 @@ simde_mm_round_pd (simde__m128d a, int rounding)
 
   switch (rounding & ~SIMDE_MM_FROUND_NO_EXC) {
     case SIMDE_MM_FROUND_CUR_DIRECTION:
-      #if defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
+      #if defined(SIMDE_POWER_ALTIVEC_P7_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
         r_.altivec_f64 = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(double), vec_round(a_.altivec_f64));
       #elif defined(SIMDE_ARM_NEON_A64V8_NATIVE)
         r_.neon_f64 = vrndiq_f64(a_.neon_f64);
@@ -411,7 +411,7 @@ simde_mm_round_pd (simde__m128d a, int rounding)
       break;
 
     case SIMDE_MM_FROUND_TO_NEAREST_INT:
-      #if defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
+      #if defined(SIMDE_POWER_ALTIVEC_P7_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
         r_.altivec_f64 = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(double), vec_round(a_.altivec_f64));
       #elif defined(SIMDE_ARM_NEON_A64V8_NATIVE)
         r_.neon_f64 = vrndaq_f64(a_.neon_f64);
@@ -426,7 +426,7 @@ simde_mm_round_pd (simde__m128d a, int rounding)
       break;
 
     case SIMDE_MM_FROUND_TO_NEG_INF:
-      #if defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
+      #if defined(SIMDE_POWER_ALTIVEC_P7_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
         r_.altivec_f64 = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(double), vec_floor(a_.altivec_f64));
       #elif defined(SIMDE_ARM_NEON_A64V8_NATIVE)
         r_.neon_f64 = vrndmq_f64(a_.neon_f64);
@@ -439,7 +439,7 @@ simde_mm_round_pd (simde__m128d a, int rounding)
       break;
 
     case SIMDE_MM_FROUND_TO_POS_INF:
-      #if defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
+      #if defined(SIMDE_POWER_ALTIVEC_P7_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
         r_.altivec_f64 = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(double), vec_ceil(a_.altivec_f64));
       #elif defined(SIMDE_ARM_NEON_A64V8_NATIVE)
         r_.neon_f64 = vrndpq_f64(a_.neon_f64);
@@ -454,7 +454,7 @@ simde_mm_round_pd (simde__m128d a, int rounding)
       break;
 
     case SIMDE_MM_FROUND_TO_ZERO:
-      #if defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
+      #if defined(SIMDE_POWER_ALTIVEC_P7_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
         r_.altivec_f64 = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(double), vec_trunc(a_.altivec_f64));
       #elif defined(SIMDE_ARM_NEON_A64V8_NATIVE)
         r_.neon_f64 = vrndq_f64(a_.neon_f64);
