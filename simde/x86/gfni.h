@@ -549,36 +549,27 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde__m128i simde_mm_gf2p8mul_epi8 (simde__m128i a, simde__m128i b) {
   #if defined(SIMDE_X86_GFNI_NATIVE) && (defined(SIMDE_X86_AVX512VL_NATIVE) || !defined(SIMDE_X86_AVX512F_NATIVE))
     return _mm_gf2p8mul_epi8(a, b);
-  #elif defined (SIMDE_ARM_NEON_A64V8_NATIVE)
-    const uint8_t reduceLutHi[] = {0x00, 0xab, 0x4d, 0xe6, 0x9a, 0x31, 0xd7, 0x7c, 0x2f, 0x84, 0x62, 0xc9, 0xb5, 0x1e, 0xf8, 0x53};
-    const uint8_t reduceLutLo[] = {0x00, 0x1b, 0x36, 0x2d, 0x6c, 0x77, 0x5a, 0x41, 0xd8, 0xc3, 0xee, 0xf5, 0xb4, 0xaf, 0x82, 0x99};
+  #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     const poly8x16_t pa = vreinterpretq_p8_u8(simde__m128i_to_neon_u8(a));
     const poly8x16_t pb = vreinterpretq_p8_u8(simde__m128i_to_neon_u8(b));
     const uint8x16_t lo = vreinterpretq_u8_p16(vmull_p8(vget_low_p8(pa), vget_low_p8(pb)));
-    uint8x16_t hi = vreinterpretq_u8_p16(vmull_high_p8(pa, pb));
-    uint8x16_t r = vuzp1q_u8(lo, hi);
-    hi = vuzp2q_u8(lo, hi);
-    r = veorq_u8(r, vqtbl1q_u8(vld1q_u8(reduceLutHi), vshrq_n_u8(hi, 4)));
-    r = veorq_u8(r, vqtbl1q_u8(vld1q_u8(reduceLutLo), vandq_u8(hi, vdupq_n_u8(0xF))));
-    return simde__m128i_from_neon_u8(r);
-  #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-    #define SIMDE_X_VCLMULQ_U8(a, b) vreinterpretq_u8_p8(vmulq_p8(vreinterpretq_p8_u8(a), vreinterpretq_p8_u8(b)))
-    const uint8x8x2_t reduceLutHi = {{{0x00, 0xab, 0x4d, 0xe6, 0x9a, 0x31, 0xd7, 0x7c}, {0x2f, 0x84, 0x62, 0xc9, 0xb5, 0x1e, 0xf8, 0x53}}};
-    const uint8x8x2_t reduceLutLo = {{{0x00, 0x1b, 0x36, 0x2d, 0x6c, 0x77, 0x5a, 0x41}, {0xd8, 0xc3, 0xee, 0xf5, 0xb4, 0xaf, 0x82, 0x99}}};
-    const uint8x16_t mask0xF = vdupq_n_u8(0xF);
-    const uint8x16_t a_ = simde__m128i_to_neon_u8(a);
-    const uint8x16_t b_ = simde__m128i_to_neon_u8(b);
-    uint8x16_t r = SIMDE_X_VCLMULQ_U8(a_, b_);
-    const uint8x16_t aHi = vshrq_n_u8(a_, 4);
-    const uint8x16_t bHi = vshrq_n_u8(b_, 4);
-    const uint8x16_t aLo = vandq_u8(a_, mask0xF);
-    const uint8x16_t bLo = vandq_u8(b_, mask0xF);
-    uint8x16_t hi = vshrq_n_u8(veorq_u8(SIMDE_X_VCLMULQ_U8(aHi, bLo), SIMDE_X_VCLMULQ_U8(aLo, bHi)), 4);
-    hi = veorq_u8(hi, SIMDE_X_VCLMULQ_U8(aHi, bHi));
-    uint8x16_t idx = vshrq_n_u8(hi, 4);
-    r = veorq_u8(r, vcombine_u8(vtbl2_u8(reduceLutHi, vget_low_u8(idx)), vtbl2_u8(reduceLutHi, vget_high_u8(idx))));
-    idx = vandq_u8(hi, mask0xF);
-    r = veorq_u8(r, vcombine_u8(vtbl2_u8(reduceLutLo, vget_low_u8(idx)), vtbl2_u8(reduceLutLo, vget_high_u8(idx))));
+    uint8x16_t hi = vreinterpretq_u8_p16(vmull_p8(vget_high_p8(pa), vget_high_p8(pb)));
+    uint8x16x2_t hilo = vuzpq_u8(lo, hi);
+    uint8x16_t r = hilo.val[0];
+    hi = hilo.val[1];
+    const uint8x16_t idxHi = vshrq_n_u8(hi, 4);
+    const uint8x16_t idxLo = vandq_u8(hi, vdupq_n_u8(0xF));
+    #if defined (SIMDE_ARM_NEON_A64V8_NATIVE)
+      const uint8_t reduceLutHi[] = {0x00, 0xab, 0x4d, 0xe6, 0x9a, 0x31, 0xd7, 0x7c, 0x2f, 0x84, 0x62, 0xc9, 0xb5, 0x1e, 0xf8, 0x53};
+      const uint8_t reduceLutLo[] = {0x00, 0x1b, 0x36, 0x2d, 0x6c, 0x77, 0x5a, 0x41, 0xd8, 0xc3, 0xee, 0xf5, 0xb4, 0xaf, 0x82, 0x99};
+      r = veorq_u8(r, vqtbl1q_u8(vld1q_u8(reduceLutHi), idxHi));
+      r = veorq_u8(r, vqtbl1q_u8(vld1q_u8(reduceLutLo), idxLo));
+    #else
+      const uint8x8x2_t reduceLutHi = {{{0x00, 0xab, 0x4d, 0xe6, 0x9a, 0x31, 0xd7, 0x7c}, {0x2f, 0x84, 0x62, 0xc9, 0xb5, 0x1e, 0xf8, 0x53}}};
+      const uint8x8x2_t reduceLutLo = {{{0x00, 0x1b, 0x36, 0x2d, 0x6c, 0x77, 0x5a, 0x41}, {0xd8, 0xc3, 0xee, 0xf5, 0xb4, 0xaf, 0x82, 0x99}}};
+      r = veorq_u8(r, vcombine_u8(vtbl2_u8(reduceLutHi, vget_low_u8(idxHi)), vtbl2_u8(reduceLutHi, vget_high_u8(idxHi))));
+      r = veorq_u8(r, vcombine_u8(vtbl2_u8(reduceLutLo, vget_low_u8(idxLo)), vtbl2_u8(reduceLutLo, vget_high_u8(idxLo))));
+    #endif
     return simde__m128i_from_neon_u8(r);
   #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
     SIMDE_POWER_ALTIVEC_VECTOR(unsigned char) x, y, r, t, m;
