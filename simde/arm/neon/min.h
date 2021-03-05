@@ -325,7 +325,7 @@ simde_vminq_f32(simde_float32x4_t a, simde_float32x4_t b) {
     return _mm_min_ps(a, b);
   #elif defined(SIMDE_X86_SSE4_1_NATIVE)
     return _mm_blendv_ps(_mm_set1_ps(SIMDE_MATH_NANF), _mm_min_ps(a, b), _mm_cmpord_ps(a, b));
-  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE) && defined(SIMDE_FAST_NANS)
+  #elif (defined(SIMDE_POWER_ALTIVEC_P6_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)) && defined(SIMDE_FAST_NANS)
     return vec_min(a, b);
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_f32x4_min(a, b);
@@ -375,7 +375,7 @@ simde_vminq_f64(simde_float64x2_t a, simde_float64x2_t b) {
     return _mm_min_pd(a, b);
   #elif defined(SIMDE_X86_SSE4_1_NATIVE)
     return _mm_blendv_pd(_mm_set1_pd(SIMDE_MATH_NAN), _mm_min_pd(a, b), _mm_cmpord_pd(a, b));
-  #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE) && defined(SIMDE_FAST_NANS)
+  #elif (defined(SIMDE_POWER_ALTIVEC_P7_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)) && defined(SIMDE_FAST_NANS)
     return vec_min(a, b);
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_f64x2_min(a, b);
@@ -423,7 +423,7 @@ simde_vminq_s8(simde_int8x16_t a, simde_int8x16_t b) {
     return vminq_s8(a, b);
   #elif defined(SIMDE_X86_SSE4_1_NATIVE)
     return _mm_min_epi8(a, b);
-  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
     return vec_min(a, b);
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_i8x16_min(a, b);
@@ -455,7 +455,7 @@ simde_vminq_s16(simde_int16x8_t a, simde_int16x8_t b) {
     return vminq_s16(a, b);
   #elif defined(SIMDE_X86_SSE2_NATIVE)
     return _mm_min_epi16(a, b);
-  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
     return vec_min(a, b);
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_i16x8_min(a, b);
@@ -487,7 +487,7 @@ simde_vminq_s32(simde_int32x4_t a, simde_int32x4_t b) {
     return vminq_s32(a, b);
   #elif defined(SIMDE_X86_SSE4_1_NATIVE)
     return _mm_min_epi32(a, b);
-  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
     return vec_min(a, b);
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_i32x4_min(a, b);
@@ -517,7 +517,7 @@ simde_int64x2_t
 simde_x_vminq_s64(simde_int64x2_t a, simde_int64x2_t b) {
   #if defined(SIMDE_X86_AVX512VL_NATIVE)
     return _mm_min_epi64(a, b);
-  #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
+  #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
     return vec_min(a, b);
   #elif SIMDE_NATURAL_VECTOR_SIZE > 0
     return simde_vbslq_s64(simde_vcgtq_s64(b, a), a, b);
@@ -543,7 +543,7 @@ simde_vminq_u8(simde_uint8x16_t a, simde_uint8x16_t b) {
     return vminq_u8(a, b);
   #elif defined(SIMDE_X86_SSE2_NATIVE)
     return _mm_min_epu8(a, b);
-  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
     return vec_min(a, b);
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_u8x16_min(a, b);
@@ -575,7 +575,7 @@ simde_vminq_u16(simde_uint16x8_t a, simde_uint16x8_t b) {
     return vminq_u16(a, b);
   #elif defined(SIMDE_X86_SSE4_1_NATIVE)
     return _mm_min_epu16(a, b);
-  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
     return vec_min(a, b);
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_u16x8_min(a, b);
@@ -607,7 +607,7 @@ simde_vminq_u32(simde_uint32x4_t a, simde_uint32x4_t b) {
     return vminq_u32(a, b);
   #elif defined(SIMDE_X86_SSE4_1_NATIVE)
     return _mm_min_epu32(a, b);
-  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
     return vec_min(a, b);
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_u32x4_min(a, b);
@@ -635,7 +635,7 @@ simde_vminq_u32(simde_uint32x4_t a, simde_uint32x4_t b) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_uint64x2_t
 simde_x_vminq_u64(simde_uint64x2_t a, simde_uint64x2_t b) {
-  #if defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
+  #if defined(SIMDE_POWER_ALTIVEC_P8_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
     return vec_min(a, b);
   #elif SIMDE_NATURAL_VECTOR_SIZE > 0
     return simde_vbslq_u64(simde_vcgtq_u64(b, a), a, b);

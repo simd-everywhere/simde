@@ -303,7 +303,7 @@ simde_vmaxq_f32(simde_float32x4_t a, simde_float32x4_t b) {
     #else
       return _mm_max_ps(a, b);
     #endif
-  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE) && defined(SIMDE_FAST_NANS)
+  #elif (defined(SIMDE_POWER_ALTIVEC_P6_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)) && defined(SIMDE_FAST_NANS)
     return vec_max(a, b);
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_f32x4_max(a, b);
@@ -345,7 +345,7 @@ simde_vmaxq_f64(simde_float64x2_t a, simde_float64x2_t b) {
     #else
       return _mm_max_pd(a, b);
     #endif
-  #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE) && defined(SIMDE_FAST_NANS)
+  #elif (defined(SIMDE_POWER_ALTIVEC_P7_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)) && defined(SIMDE_FAST_NANS)
     return vec_max(a, b);
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_f64x2_max(a, b);
@@ -379,7 +379,7 @@ simde_vmaxq_s8(simde_int8x16_t a, simde_int8x16_t b) {
     return vmaxq_s8(a, b);
   #elif defined(SIMDE_X86_SSE4_1_NATIVE)
     return _mm_max_epi8(a, b);
-  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
     return vec_max(a, b);
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_i8x16_max(a, b);
@@ -411,7 +411,7 @@ simde_vmaxq_s16(simde_int16x8_t a, simde_int16x8_t b) {
     return vmaxq_s16(a, b);
   #elif defined(SIMDE_X86_SSE2_NATIVE)
     return _mm_max_epi16(a, b);
-  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
     return vec_max(a, b);
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_i16x8_max(a, b);
@@ -443,7 +443,7 @@ simde_vmaxq_s32(simde_int32x4_t a, simde_int32x4_t b) {
     return vmaxq_s32(a, b);
   #elif defined(SIMDE_X86_SSE4_1_NATIVE)
     return _mm_max_epi32(a, b);
-  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
     return vec_max(a, b);
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_i32x4_max(a, b);
@@ -471,7 +471,7 @@ simde_vmaxq_s32(simde_int32x4_t a, simde_int32x4_t b) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_int64x2_t
 simde_x_vmaxq_s64(simde_int64x2_t a, simde_int64x2_t b) {
-  #if defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
+  #if defined(SIMDE_POWER_ALTIVEC_P8_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
     return vec_max(a, b);
   #elif SIMDE_NATURAL_VECTOR_SIZE > 0
     return simde_vbslq_s64(simde_vcgtq_s64(a, b), a, b);
@@ -497,7 +497,7 @@ simde_vmaxq_u8(simde_uint8x16_t a, simde_uint8x16_t b) {
     return vmaxq_u8(a, b);
   #elif defined(SIMDE_X86_SSE2_NATIVE)
     return _mm_max_epu8(a, b);
-  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
     return vec_max(a, b);
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_u8x16_max(a, b);
@@ -529,7 +529,7 @@ simde_vmaxq_u16(simde_uint16x8_t a, simde_uint16x8_t b) {
     return vmaxq_u16(a, b);
   #elif defined(SIMDE_X86_SSE4_1_NATIVE)
     return _mm_max_epu16(a, b);
-  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
     return vec_max(a, b);
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_u16x8_max(a, b);
@@ -561,7 +561,7 @@ simde_vmaxq_u32(simde_uint32x4_t a, simde_uint32x4_t b) {
     return vmaxq_u32(a, b);
   #elif defined(SIMDE_X86_SSE4_1_NATIVE)
     return _mm_max_epu32(a, b);
-  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
     return vec_max(a, b);
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_u32x4_max(a, b);
@@ -589,7 +589,7 @@ simde_vmaxq_u32(simde_uint32x4_t a, simde_uint32x4_t b) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_uint64x2_t
 simde_x_vmaxq_u64(simde_uint64x2_t a, simde_uint64x2_t b) {
-  #if defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
+  #if defined(SIMDE_POWER_ALTIVEC_P8_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
     return vec_max(a, b);
   #elif SIMDE_NATURAL_VECTOR_SIZE > 0
     return simde_vbslq_u64(simde_vcgtq_u64(a, b), a, b);

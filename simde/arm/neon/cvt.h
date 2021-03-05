@@ -291,6 +291,10 @@ simde_int64x2_t
 simde_vcvtq_s64_f64(simde_float64x2_t a) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vcvtq_s64_f64(a);
+  #elif defined(SIMDE_X86_AVX512VL_NATIVE) && defined(SIMDE_X86_AVX512DQ_NATIVE)
+    return _mm_cvtpd_epi64(_mm_round_pd(a, _MM_FROUND_TO_ZERO));
+  #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
+    return vec_ctsl(a, 0);
   #else
     simde_float64x2_private a_ = simde_float64x2_to_private(a);
     simde_int64x2_private r_;
@@ -311,6 +315,8 @@ simde_uint64x2_t
 simde_vcvtq_u64_f64(simde_float64x2_t a) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && !defined(SIMDE_BUG_CLANG_46844)
     return vcvtq_u64_f64(a);
+  #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
+    return vec_ctul(a, 0);
   #else
     simde_float64x2_private a_ = simde_float64x2_to_private(a);
     simde_uint64x2_private r_;
@@ -451,6 +457,10 @@ simde_float64x2_t
 simde_vcvtq_f64_s64(simde_int64x2_t a) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vcvtq_f64_s64(a);
+  #elif defined(SIMDE_X86_AVX512VL_NATIVE) && defined(SIMDE_X86_AVX512DQ_NATIVE)
+    return _mm_cvtepi64_pd(a);
+  #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
+    return vec_ctd(a, 0);
   #else
     simde_int64x2_private a_ = simde_int64x2_to_private(a);
     simde_float64x2_private r_;
