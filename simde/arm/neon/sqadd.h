@@ -21,7 +21,6 @@
  * SOFTWARE.
  *
  * Copyright:
- *   2021      Evan Nemerson <evan@nemerson.com>
  *   2021      Atharva Nimbalkar <atharvakn@gmail.com>
  */
 
