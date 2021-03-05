@@ -25,13 +25,18 @@ RUN \
 RUN \
   apt-get install -yq \
     git build-essential \
-    meson cmake \
+    cmake ninja-build \
     '^clang-[0-9\.]+$' \
     '^g(cc|\+\+)-[0-9\.]+$' \
     gdb valgrind \
     qemu binfmt-support qemu-user-static \
     creduce screen htop parallel nano rsync strace \
-    npm libsleef-dev
+    npm libsleef-dev \
+    python3-pip
+
+# Meson on stable is too old, and we want to make sure we keep 0.54
+# working for a while.
+RUN pip3 install meson==0.54.0
 
 # GCC cross-compilers
 RUN \
