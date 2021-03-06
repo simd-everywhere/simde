@@ -230,7 +230,7 @@ simde_vbslq_f32(simde_uint32x4_t a, simde_float32x4_t b, simde_float32x4_t c) {
     return wasm_v128_bitselect(b, c, a);
   #elif defined(SIMDE_X86_AVX512VL_NATIVE)
     return _mm_castsi128_ps(_mm_ternarylogic_epi32(a, _mm_castps_si128(b), _mm_castps_si128(c), 0xca));
-  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
+  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_14_NATIVE)
     return vec_sel(c, b, a);
   #else
     simde_uint8x16_t

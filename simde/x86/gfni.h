@@ -575,7 +575,7 @@ simde__m128i simde_mm_gf2p8mul_epi8 (simde__m128i a, simde__m128i b) {
       r = veorq_u8(r, vcombine_u8(vtbl2_u8(reduceLutLo, vget_low_u8(idxLo)), vtbl2_u8(reduceLutLo, vget_high_u8(idxLo))));
     #endif
     return simde__m128i_from_neon_u8(r);
-  #elif defined(SIMDE_ZARCH_ZVECTOR_14_NATIVE)
+  #elif defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
     SIMDE_POWER_ALTIVEC_VECTOR(unsigned char) x, y, lo, hi;
     SIMDE_POWER_ALTIVEC_VECTOR(unsigned short) even, odd, mask0x00FF;
     x = simde__m128i_to_altivec_u8(a);
