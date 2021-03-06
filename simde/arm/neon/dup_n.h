@@ -265,7 +265,7 @@ simde_vdupq_n_f32(float value) {
     return _mm_set1_ps(value);
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_f32x4_splat(value);
-  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
+  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_14_NATIVE)
     (void) value;
     return vec_splats(value);
   #else
