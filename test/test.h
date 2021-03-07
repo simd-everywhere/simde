@@ -93,6 +93,10 @@ simde_test_debug_printf_(const char* format, ...) {
   #endif
 }
 
+#if !defined(SIMDE_TEST_STRUCT_MODIFIERS)
+  #define SIMDE_TEST_STRUCT_MODIFIERS static const
+#endif
+
 HEDLEY_PRINTF_FORMAT(3, 4)
 static void
 simde_test_codegen_snprintf_(char* str, size_t size, const char* format, ...) {
@@ -221,19 +225,21 @@ static int simde_test_codegen_rand(void) {
   /* Single-threaded programs are so nice */
   static int is_init = 0;
   if (HEDLEY_UNLIKELY(!is_init)) {
-    FILE* fp = fopen("/dev/urandom", "r");
-    if (fp == NULL)
-      fp = fopen("/dev/random", "r");
+    #if !defined(HEDLEY_EMSCRIPTEN_VERSION)
+      FILE* fp = fopen("/dev/urandom", "r");
+      if (fp == NULL)
+        fp = fopen("/dev/random", "r");
 
-    if (fp != NULL) {
-      unsigned int seed;
-      size_t nread = fread(&seed, sizeof(seed), 1, fp);
-      fclose(fp);
-      if (nread == 1) {
-        srand(seed);
-        is_init = 1;
+      if (fp != NULL) {
+        unsigned int seed;
+        size_t nread = fread(&seed, sizeof(seed), 1, fp);
+        fclose(fp);
+        if (nread == 1) {
+          srand(seed);
+          is_init = 1;
+        }
       }
-    }
+    #endif
 
     if (!is_init) {
       srand(HEDLEY_STATIC_CAST(unsigned int, time(NULL)));

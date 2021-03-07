@@ -290,6 +290,12 @@ if not meson.is_subproject()
     files(simde_neon_family_headers),
     subdir: 'simde/arm/neon')
 
+  install_headers(
+    files([
+      'simde/wasm/simd128.h',
+      ]),
+    subdir: 'simde/wasm')
+
   import('pkgconfig').generate(
     version : meson.project_version(),
     name : 'SIMDe',
