@@ -327,7 +327,7 @@ simde_x_mm_blendv_epi64 (simde__m128i a, simde__m128i b, simde__m128i mask) {
       v128_t m = wasm_i64x2_shr(mask_.wasm_v128, 63);
       r_.wasm_v128 = wasm_v128_or(wasm_v128_and(b_.wasm_v128, m), wasm_v128_andnot(a_.wasm_v128, m));
     #elif (defined(SIMDE_POWER_ALTIVEC_P8_NATIVE) && !defined(SIMDE_BUG_CLANG_46770)) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
-      r_.altivec_i64 = vec_sel(a_.altivec_i64, b_.altivec_i64, vec_cmplt(mask_.altivec_i64, vec_splat_s64(0)));
+      r_.altivec_i64 = vec_sel(a_.altivec_i64, b_.altivec_i64, vec_cmplt(mask_.altivec_i64, vec_splats(HEDLEY_STATIC_CAST(signed long long, 0))));
     #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
       SIMDE_POWER_ALTIVEC_VECTOR(signed long long) selector = vec_sra(mask_.altivec_i64, vec_splats(HEDLEY_STATIC_CAST(unsigned long long, 63)));
       r_.altivec_i32 = vec_sel(a_.altivec_i32, b_.altivec_i32, HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned int), selector));

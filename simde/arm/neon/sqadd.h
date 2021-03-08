@@ -38,7 +38,11 @@ SIMDE_FUNCTION_ATTRIBUTES
 uint8_t
 simde_vsqaddb_u8(uint8_t a, int8_t b) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
-    return vsqaddb_u8(a, b);
+    #if defined(SIMDE_BUG_CLANG_REV_365298)
+      return vsqaddb_u8(a, HEDLEY_STATIC_CAST(uint8_t, b));
+    #else
+      return vsqaddb_u8(a, b);
+    #endif
   #else
     int16_t r_ = HEDLEY_STATIC_CAST(int16_t, a) + HEDLEY_STATIC_CAST(int16_t, b);
     return (r_ < 0) ? 0 : ((r_ > UINT8_MAX) ? UINT8_MAX : HEDLEY_STATIC_CAST(uint8_t, r_));
@@ -53,7 +57,11 @@ SIMDE_FUNCTION_ATTRIBUTES
 uint16_t
 simde_vsqaddh_u16(uint16_t a, int16_t b) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
-    return vsqaddh_u16(a, b);
+    #if defined(SIMDE_BUG_CLANG_REV_365298)
+      return vsqaddh_u16(a, HEDLEY_STATIC_CAST(uint16_t, b));
+    #else
+      return vsqaddh_u16(a, b);
+    #endif
   #else
     int32_t r_ = HEDLEY_STATIC_CAST(int32_t, a) + HEDLEY_STATIC_CAST(int32_t, b);
     return (r_ < 0) ? 0 : ((r_ > UINT16_MAX) ? UINT16_MAX : HEDLEY_STATIC_CAST(uint16_t, r_));
@@ -68,7 +76,11 @@ SIMDE_FUNCTION_ATTRIBUTES
 uint32_t
 simde_vsqadds_u32(uint32_t a, int32_t b) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
-    return vsqadds_u32(a, b);
+    #if defined(SIMDE_BUG_CLANG_REV_365298)
+      return vsqadds_u32(a, HEDLEY_STATIC_CAST(uint32_t, b));
+    #else
+      return vsqadds_u32(a, b);
+    #endif
   #else
     int64_t r_ = HEDLEY_STATIC_CAST(int64_t, a) + HEDLEY_STATIC_CAST(int64_t, b);
     return (r_ < 0) ? 0 : ((r_ > UINT32_MAX) ? UINT32_MAX : HEDLEY_STATIC_CAST(uint32_t, r_));
@@ -83,7 +95,11 @@ SIMDE_FUNCTION_ATTRIBUTES
 uint64_t
 simde_vsqaddd_u64(uint64_t a, int64_t b) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
-    return vsqaddd_u64(a, b);
+    #if defined(SIMDE_BUG_CLANG_REV_365298)
+      return vsqaddd_u64(a, HEDLEY_STATIC_CAST(uint64_t, b));
+    #else
+      return vsqaddd_u64(a, b);
+    #endif
   #else
     uint64_t r_;
 
