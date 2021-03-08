@@ -293,8 +293,8 @@ simde_vcvtq_s64_f64(simde_float64x2_t a) {
     return vcvtq_s64_f64(a);
   #elif defined(SIMDE_X86_AVX512VL_NATIVE) && defined(SIMDE_X86_AVX512DQ_NATIVE)
     return _mm_cvtpd_epi64(_mm_round_pd(a, _MM_FROUND_TO_ZERO));
-  #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
-    return vec_ctsl(a, 0);
+  #elif defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
+    return vec_signed(a);
   #else
     simde_float64x2_private a_ = simde_float64x2_to_private(a);
     simde_int64x2_private r_;
