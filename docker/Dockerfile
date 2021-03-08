@@ -23,6 +23,7 @@ RUN \
 
 # Common packages
 RUN \
+  apt-get update -y && \
   apt-get install -yq \
     git build-essential \
     cmake ninja-build \
@@ -40,6 +41,7 @@ RUN pip3 install meson==0.55.0
 
 # GCC cross-compilers
 RUN \
+  apt-get update -y && \
   apt-get install -y apt-file && \
   apt-file update && \
   PACKAGES_TO_INSTALL=""; \
@@ -53,6 +55,7 @@ RUN \
 
 # ICC
 RUN \
+  apt-get update -y && \
   apt-get install -yq curl gpg && \
   curl -s "https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS-2023.PUB" | gpg --dearmor > /etc/apt/trusted.gpg.d/intel.gpg && \
   echo "deb [arch=amd64] https://apt.repos.intel.com/oneapi all main" > /etc/apt/sources.list.d/oneAPI.list && \
