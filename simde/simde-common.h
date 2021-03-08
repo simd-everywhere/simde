@@ -887,6 +887,7 @@ HEDLEY_DIAGNOSTIC_POP
 #      endif
 #      if SIMDE_DETECT_CLANG_VERSION_NOT(9,0,0)
 #        define SIMDE_BUG_CLANG_GIT_4EC445B8
+#        define SIMDE_BUG_CLANG_REV_365298 /* 0464e07c8f6e3310c28eb210a4513bc2243c2a7e */
 #      endif
 #    endif
 #    if defined(SIMDE_ARCH_POWER)
