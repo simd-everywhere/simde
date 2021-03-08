@@ -93,7 +93,7 @@ simde_vbcaxq_u64(simde_uint64x2_t a, simde_uint64x2_t b, simde_uint64x2_t c) {
       nc_.values = ~c_.values;
     #else
       SIMDE_VECTORIZE
-      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+      for (size_t i = 0 ; i < (sizeof(c_.values) / sizeof(c_.values[0])) ; i++) {
         nc_.values[i] = ~(c_.values[i]);
       }
     #endif
@@ -163,7 +163,7 @@ simde_vbcaxq_s64(simde_int64x2_t a, simde_int64x2_t b, simde_int64x2_t c) {
       nc_.values = ~c_.values;
     #else
       SIMDE_VECTORIZE
-      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+      for (size_t i = 0 ; i < (sizeof(c_.values) / sizeof(c_.values[0])) ; i++) {
         nc_.values[i] = ~(c_.values[i]);
       }
     #endif
