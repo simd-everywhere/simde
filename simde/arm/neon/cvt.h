@@ -21,27 +21,8 @@
  * SOFTWARE.
  *
  * Copyright:
- *   2020      Evan Nemerson <evan@nemerson.com>
  *   2020      Sean Maher <seanptmaher@gmail.com>
- */
-
-/*
- * Implementor's notes: seanptmaher
- *
- * this intrinsic has many (7 pages worth) of variations on it, so
- * this file might become a dumping ground for various
- * implementations. I'm only going to write the `cvt` intrinsics for
- * now, but off the top of my head, we've got:
- *
- * - vcvt* <- round towards 0
- * - vcvtn* <- round to nearest with ties to even
- * - vcvtm* <- round towards minus infinity
- * - vcvtp* <- round towards plus infinity
- * - vcvta* <- round to nearest with ties to away
- *
- * and there are a bunch of variations on these. More information can
- * be found here:
- * https://developer.arm.com/architectures/instruction-sets/simd-isas/neon/intrinsics?page=1&search=vcvt
+ *   2020-2021 Evan Nemerson <evan@nemerson.com>
  */
 
 #if !defined(SIMDE_ARM_NEON_CVT_H)
@@ -360,7 +341,7 @@ simde_uint64x2_t
 simde_vcvtq_u64_f64(simde_float64x2_t a) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && !defined(SIMDE_BUG_CLANG_46844)
     return vcvtq_u64_f64(a);
-  #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
+  #elif defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
     return vec_ctul(a, 0);
   #else
     simde_float64x2_private a_ = simde_float64x2_to_private(a);
@@ -547,7 +528,7 @@ simde_vcvtq_f64_s64(simde_int64x2_t a) {
     return vcvtq_f64_s64(a);
   #elif defined(SIMDE_X86_AVX512VL_NATIVE) && defined(SIMDE_X86_AVX512DQ_NATIVE)
     return _mm_cvtepi64_pd(a);
-  #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
+  #elif defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
     return vec_ctd(a, 0);
   #else
     simde_int64x2_private a_ = simde_int64x2_to_private(a);

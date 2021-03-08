@@ -186,17 +186,17 @@ SIMDE_WASM_SIMD128_GENERATE_CONVERSION_FUNCTIONS(simde_v128_private, simde_v128_
   #if defined(SIMDE_BUG_GCC_95782)
     SIMDE_FUNCTION_ATTRIBUTES
     SIMDE_POWER_ALTIVEC_VECTOR(float)
-    simde_v128_to_altivec_f32(simde__m128 value) {
-      simde_v128_private r_ = simde__m128_to_private(value);
+    simde_v128_to_altivec_f32(simde_v128_t value) {
+      simde_v128_private r_ = simde_v128_to_private(value);
       return r_.altivec_f32;
     }
 
     SIMDE_FUNCTION_ATTRIBUTES
-    simde__m128
+    simde_v128_t
     simde_v128_from_altivec_f32(SIMDE_POWER_ALTIVEC_VECTOR(float) value) {
       simde_v128_private r_;
       r_.altivec_f32 = value;
-      return simde__m128_from_private(r_);
+      return simde_v128_from_private(r_);
     }
   #else
     SIMDE_WASM_SIMD128_GENERATE_CONVERSION_FUNCTIONS(SIMDE_POWER_ALTIVEC_VECTOR(float), simde_v128_t, simde_v128_to_altivec_f32, simde_v128_from_altivec_f32)
