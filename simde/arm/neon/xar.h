@@ -38,24 +38,20 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde_uint64x2_t
 simde_vxarq_u64(simde_uint64x2_t a, simde_uint64x2_t b, const int d)
     SIMDE_REQUIRE_CONSTANT_RANGE(d, 0, 63) {
-  simde_uint64x2_t result;
-  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(__ARM_FEATURE_SHA3)
-    SIMDE_CONSTIFY_64_(vxarq_u64, result, (HEDLEY_UNREACHABLE(), result), d, a, b);
-    return result;
-  #else
-    simde_uint64x2_private
-      r_,
-      t = simde_uint64x2_to_private(simde_veorq_u64(a,b));
+  simde_uint64x2_private
+    r_,
+    t = simde_uint64x2_to_private(simde_veorq_u64(a,b));
 
-    SIMDE_VECTORIZE
-    for(size_t i=0;i<(sizeof(r_.values) / sizeof(r_.values[0]));i++) {
-      r_.values[i] = (t.values[i] >> d | t.values[i] << (64-d));
-    }
+  SIMDE_VECTORIZE
+  for (size_t i=0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+    r_.values[i] = ((t.values[i] >> d) | (t.values[i] << (64 - d)));
+  }
 
-    result = simde_uint64x2_from_private(r_);
-    return result;
-  #endif
+  return simde_uint64x2_from_private(r_);
 }
+#if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(__ARM_FEATURE_SHA3)
+  #define simde_vxarq_u64(a, b, d) vxarq_u64((a), (b), (d))
+#endif
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && !defined(__ARM_FEATURE_SHA3))
   #undef vxarq_u64
   #define vxarq_u64(a, b, d) simde_vxarq_u32((a), (b), (d))
