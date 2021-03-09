@@ -845,7 +845,7 @@ simde_wasm_i64x2_extract_lane (simde_v128_t a, const int lane) {
 }
 #if defined(SIMDE_WASM_SIMD128_NATIVE)
   #define simde_wasm_i64x2_extract_lane(a, lane) HEDLEY_STATIC_CAST(int64_t, wasm_i64x2_extract_lane((a), (lane)))
-#elif defined(SIMDE_X86_SSE4_1_NATIVE)
+#elif defined(SIMDE_X86_SSE4_1_NATIVE) && defined(SIMDE_ARCH_AMD64)
   #define simde_wasm_i64x2_extract_lane(a, lane) HEDLEY_STATIC_CAST(int64_t, _mm_extract_epi64((a), (lane) & 1))
 #endif
 #if defined(SIMDE_WASM_SIMD128_ENABLE_NATIVE_ALIASES)
@@ -939,7 +939,7 @@ simde_wasm_i64x2_replace_lane (simde_v128_t a, const int lane, int64_t value) {
 }
 #if defined(SIMDE_WASM_SIMD128_NATIVE)
   #define simde_wasm_i64x2_replace_lane(a, lane, value) wasm_i64x2_replace_lane((a), (lane), (value))
-#elif defined(SIMDE_X86_SSE4_1_NATIVE)
+#elif defined(SIMDE_X86_SSE4_1_NATIVE) && defined(SIMDE_ARCH_AMD64)
   #define simde_wasm_i64x2_replace_lane(a, lane, value) _mm_insert_epi64((a), (value), (lane) & 1)
 #endif
 #if defined(SIMDE_WASM_SIMD128_ENABLE_NATIVE_ALIASES)
@@ -2517,7 +2517,7 @@ simde_wasm_i16x8_shl (simde_v128_t a, int32_t count) {
       r_;
 
     #if defined(SIMDE_X86_SSE2_NATIVE)
-      return _mm_sll_epi16(a_.sse_m128i, _mm_cvtsi64_si128(count & 15));
+      return _mm_sll_epi16(a_.sse_m128i, _mm_cvtsi32_si128(count & 15));
     #elif defined(SIMDE_VECTOR_SUBSCRIPT) && defined(SIMDE_VECTOR_SCALAR)
       r_.i16 = a_.i16 << (count & 15);
     #else
@@ -2545,7 +2545,7 @@ simde_wasm_i32x4_shl (simde_v128_t a, int32_t count) {
       r_;
 
     #if defined(SIMDE_X86_SSE2_NATIVE)
-      return _mm_sll_epi32(a_.sse_m128i, _mm_cvtsi64_si128(count & 31));
+      return _mm_sll_epi32(a_.sse_m128i, _mm_cvtsi32_si128(count & 31));
     #elif defined(SIMDE_VECTOR_SUBSCRIPT) && defined(SIMDE_VECTOR_SCALAR)
       r_.i32 = a_.i32 << (count & 31);
     #else
@@ -2573,7 +2573,7 @@ simde_wasm_i64x2_shl (simde_v128_t a, int32_t count) {
       r_;
 
     #if defined(SIMDE_X86_SSE2_NATIVE)
-      return _mm_sll_epi64(a_.sse_m128i, _mm_cvtsi64_si128(count & 63));
+      return _mm_sll_epi64(a_.sse_m128i, _mm_cvtsi32_si128(count & 63));
     #elif defined(SIMDE_VECTOR_SUBSCRIPT) && defined(SIMDE_VECTOR_SCALAR)
       r_.i64 = a_.i64 << (count & 63);
     #else
@@ -2629,7 +2629,7 @@ simde_wasm_i16x8_shr (simde_v128_t a, int32_t count) {
       r_;
 
     #if defined(SIMDE_X86_SSE2_NATIVE)
-      return _mm_sra_epi16(a_.sse_m128i, _mm_cvtsi64_si128(count & 15));
+      return _mm_sra_epi16(a_.sse_m128i, _mm_cvtsi32_si128(count & 15));
     #elif defined(SIMDE_VECTOR_SUBSCRIPT) && defined(SIMDE_VECTOR_SCALAR)
       r_.i16 = a_.i16 >> (count & 15);
     #else
@@ -2657,7 +2657,7 @@ simde_wasm_i32x4_shr (simde_v128_t a, int32_t count) {
       r_;
 
     #if defined(SIMDE_X86_SSE4_1_NATIVE)
-      return _mm_sra_epi32(a_.sse_m128i, _mm_cvtsi64_si128(count & 31));
+      return _mm_sra_epi32(a_.sse_m128i, _mm_cvtsi32_si128(count & 31));
     #elif defined(SIMDE_VECTOR_SUBSCRIPT) && defined(SIMDE_VECTOR_SCALAR)
       r_.i32 = a_.i32 >> (count & 31);
     #else
@@ -2685,7 +2685,7 @@ simde_wasm_i64x2_shr (simde_v128_t a, int32_t count) {
       r_;
 
     #if defined(SIMDE_X86_AVX512VL_NATIVE)
-      return _mm_sra_epi64(a_.sse_m128i, _mm_cvtsi64_si128(count & 63));
+      return _mm_sra_epi64(a_.sse_m128i, _mm_cvtsi32_si128(count & 63));
     #elif defined(SIMDE_VECTOR_SUBSCRIPT) && defined(SIMDE_VECTOR_SCALAR)
       r_.i64 = a_.i64 >> (count & 63);
     #else
@@ -2739,7 +2739,7 @@ simde_wasm_u16x8_shr (simde_v128_t a, int32_t count) {
       r_;
 
     #if defined(SIMDE_X86_SSE2_NATIVE)
-      return _mm_srl_epi16(a_.sse_m128i, _mm_cvtsi64_si128(count & 15));
+      return _mm_srl_epi16(a_.sse_m128i, _mm_cvtsi32_si128(count & 15));
     #elif defined(SIMDE_VECTOR_SUBSCRIPT) && defined(SIMDE_VECTOR_SCALAR)
       r_.u16 = a_.u16 >> (count & 15);
     #else
@@ -2767,7 +2767,7 @@ simde_wasm_u32x4_shr (simde_v128_t a, int32_t count) {
       r_;
 
     #if defined(SIMDE_X86_SSE4_1_NATIVE)
-      return _mm_srl_epi32(a_.sse_m128i, _mm_cvtsi64_si128(count & 31));
+      return _mm_srl_epi32(a_.sse_m128i, _mm_cvtsi32_si128(count & 31));
     #elif defined(SIMDE_VECTOR_SUBSCRIPT) && defined(SIMDE_VECTOR_SCALAR)
       r_.u32 = a_.u32 >> (count & 31);
     #else
@@ -2795,7 +2795,7 @@ simde_wasm_u64x2_shr (simde_v128_t a, int32_t count) {
       r_;
 
     #if defined(SIMDE_X86_SSE4_1_NATIVE)
-      return _mm_srl_epi64(a_.sse_m128i, _mm_cvtsi64_si128(count & 63));
+      return _mm_srl_epi64(a_.sse_m128i, _mm_cvtsi32_si128(count & 63));
     #elif defined(SIMDE_VECTOR_SUBSCRIPT) && defined(SIMDE_VECTOR_SCALAR)
       r_.u64 = a_.u64 >> (count & 63);
     #else
