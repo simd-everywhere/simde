@@ -1,0 +1,26 @@
+name: push-to-no-tests
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  no-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+         persist-credentials: false
+         fetch-depth: 0
+      - uses: actions/setup-python@v1
+      - name: Filter Repository
+        run: |
+          pip install git-filter-repo
+          git-filter-repo --force --path-rename COPYING:.no-test/COPYING && \
+          git-filter-repo --path-rename '.no-test/':'simde/' && \
+          git-filter-repo --subdirectory-filter simde
+      - name: GitHub Push
+        uses: ad-m/github-push-action@v0.6.0
+        with:
+          github_token: ${{ secrets.PUSH_TO_NO_TESTS_TOKEN }}
+          repository: simd-everywhere/simde-no-tests

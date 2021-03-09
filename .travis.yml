@@ -164,28 +164,6 @@ jobs:
   #   if: branch != master OR type == pull_request
   #   arch: s390x
 
-  ##
-  ## Special builds to deploy from master
-  ##
-
-  - name: push-to-no-tests
-    if: branch = master AND type != pull_request AND repo = simd-everywhere/simde
-    addons:
-      apt:
-        packages:
-        - python3-pip
-        - python3-setuptools
-    before_install:
-    - git fetch --unshallow
-    - pip3 install git-filter-repo
-    script:
-    - |
-      git filter-repo --force --path-rename COPYING:.no-test/COPYING && \
-      git filter-repo --path-rename '.no-test/':'simde/' && \
-      git filter-repo --subdirectory-filter simde
-    after_script:
-    - git push -q "https://${NO_TESTS_TOKEN}@github.com/simd-everywhere/simde-no-tests" master
-
 #   allow_failures:
 #   - name: msvc x86
 
