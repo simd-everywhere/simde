@@ -102,7 +102,6 @@ make sense since they will always be green, but here are the links:
 * [AppVeyor](https://ci.appveyor.com/project/nemequ/simde)
 * [Azure Pipelines](https://dev.azure.com/simd-everywhere/SIMDe/_build)
 * [Drone CI](https://cloud.drone.io/simd-everywhere/simde/)
-* [Travis CI](https://travis-ci.org/simd-everywhere/simde)
 
 If you're adding a new build I suggest Cirrus CI, which is where we
 currently have the most room given the number of builds currently on
@@ -256,9 +255,8 @@ Currently tested compilers include:
 
 I'm generally willing to accept patches to add support for other
 compilers, as long as they're not too disruptive, *especially* if we
-can get CI support going.  We currently use Travis CI, AppVeyor, and
-Microsoft Azure Pipelines, but other CI platforms can be added as
-necessary.
+can get CI support going.  If using one of our existing CI providers
+isn't an option then other CI platforms can be added.
 
 ### Hardware
 
