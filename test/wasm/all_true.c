@@ -193,10 +193,64 @@ test_simde_wasm_i32x4_all_true(SIMDE_MUNIT_TEST_ARGS) {
   #endif
 }
 
+static int
+test_simde_wasm_i64x2_all_true(SIMDE_MUNIT_TEST_ARGS) {
+  #if 1
+    SIMDE_TEST_STRUCT_MODIFIERS struct {
+      int64_t a[sizeof(simde_v128_t) / sizeof(int64_t)];
+      simde_bool r;
+    } test_vec[8] = {
+      { {  INT64_C( 4627191103769018368), -INT64_C( 6533839992563695616) },
+         INT8_C(   1) },
+      { { -INT64_C( 2356159122894565910), -INT64_C( 7636474394341444928) },
+         INT8_C(   1) },
+      { { -INT64_C( 5614692162571868031),  INT64_C( 1687979966696920052) },
+         INT8_C(   1) },
+      { {  INT64_C(  222243027358750925),  INT64_C(                   0) },
+         INT8_C(   0) },
+      { {  INT64_C(          4083780179),  INT64_C( 6996765384397661295) },
+         INT8_C(   1) },
+      { {  INT64_C( 6728759044367151320), -INT64_C( 2257984121953607472) },
+         INT8_C(   1) },
+      { {  INT64_C(                   0), -INT64_C( 1209425168241270568) },
+         INT8_C(   0) },
+      { { -INT64_C( 7853513116650955838), -INT64_C( 4468347172671650195) },
+         INT8_C(   1) }
+    };
+
+    for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
+      simde_v128_t a = simde_wasm_v128_load(test_vec[i].a);
+      simde_bool r = simde_wasm_i64x2_all_true(a);
+      simde_assert_equal_i(r, test_vec[i].r);
+    }
+    return 0;
+  #else
+    fputc('\n', stdout);
+    for (int i = 0 ; i < 8 ; i++) {
+      int64_t a_[sizeof(simde_v128_t) / sizeof(int64_t)];
+      simde_v128_t a;
+      simde_bool r;
+
+      simde_test_codegen_random_memory(sizeof(a_), HEDLEY_REINTERPRET_CAST(uint8_t*, a_));
+      for (size_t j = 0 ; j < (sizeof(a_) / sizeof(a_[0])) ; j++)
+        if ((simde_test_codegen_random_i32() & 3) == 0)
+          a_[j] = INT8_C(0);
+
+      a = simde_wasm_v128_load(a_);
+      r = simde_wasm_i64x2_all_true(a);
+
+      simde_test_wasm_i64x2_write(3, a, SIMDE_TEST_VEC_POS_FIRST);
+      simde_test_codegen_write_i8(3, HEDLEY_STATIC_CAST(int8_t, r), SIMDE_TEST_VEC_POS_LAST);
+    }
+    return 1;
+  #endif
+}
+
 SIMDE_TEST_FUNC_LIST_BEGIN
   SIMDE_TEST_FUNC_LIST_ENTRY(wasm_i8x16_all_true)
   SIMDE_TEST_FUNC_LIST_ENTRY(wasm_i16x8_all_true)
   SIMDE_TEST_FUNC_LIST_ENTRY(wasm_i32x4_all_true)
+  SIMDE_TEST_FUNC_LIST_ENTRY(wasm_i64x2_all_true)
 SIMDE_TEST_FUNC_LIST_END
 
 #include <test/x86/test-x86-footer.h>
