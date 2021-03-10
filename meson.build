@@ -21,6 +21,7 @@ simde_neon_families = [
   'addw',
   'addw_high',
   'and',
+  'bcax',
   'bic',
   'bsl',
   'cage',

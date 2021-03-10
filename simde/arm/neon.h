@@ -41,6 +41,7 @@
 #include "neon/addw.h"
 #include "neon/addw_high.h"
 #include "neon/and.h"
+#include "neon/bcax.h"
 #include "neon/bic.h"
 #include "neon/bsl.h"
 #include "neon/cage.h"
