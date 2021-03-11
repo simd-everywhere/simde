@@ -5010,7 +5010,8 @@ simde_wasm_i8x16_narrow_i16x8 (simde_v128_t a, simde_v128_t b) {
       const int16_t min SIMDE_VECTOR(32) = { INT8_MIN, INT8_MIN, INT8_MIN, INT8_MIN, INT8_MIN, INT8_MIN, INT8_MIN, INT8_MIN, INT8_MIN, INT8_MIN, INT8_MIN, INT8_MIN, INT8_MIN, INT8_MIN, INT8_MIN, INT8_MIN };
       const int16_t max SIMDE_VECTOR(32) = { INT8_MAX, INT8_MAX, INT8_MAX, INT8_MAX, INT8_MAX, INT8_MAX, INT8_MAX, INT8_MAX, INT8_MAX, INT8_MAX, INT8_MAX, INT8_MAX, INT8_MAX, INT8_MAX, INT8_MAX, INT8_MAX };
 
-      int16_t m SIMDE_VECTOR(32) = v < min;
+      int16_t m SIMDE_VECTOR(32);
+      m = HEDLEY_REINTERPRET_CAST(__typeof__(m), v < min);
       v = (v & ~m) | (min & m);
 
       m = v > max;
@@ -5048,10 +5049,11 @@ simde_wasm_i16x8_narrow_i32x4 (simde_v128_t a, simde_v128_t b) {
       const int32_t min SIMDE_VECTOR(32) = { INT16_MIN, INT16_MIN, INT16_MIN, INT16_MIN, INT16_MIN, INT16_MIN, INT16_MIN, INT16_MIN };
       const int32_t max SIMDE_VECTOR(32) = { INT16_MAX, INT16_MAX, INT16_MAX, INT16_MAX, INT16_MAX, INT16_MAX, INT16_MAX, INT16_MAX };
 
-      int32_t m SIMDE_VECTOR(32) = v < min;
+      int32_t m SIMDE_VECTOR(32);
+      m = HEDLEY_REINTERPRET_CAST(__typeof__(m), v < min);
       v = (v & ~m) | (min & m);
 
-      m = v > max;
+      m = HEDLEY_REINTERPRET_CAST(__typeof__(m), v > max);
       v = (v & ~m) | (max & m);
 
       SIMDE_CONVERT_VECTOR_(r_.i16, v);
@@ -5086,10 +5088,11 @@ simde_wasm_u8x16_narrow_i16x8 (simde_v128_t a, simde_v128_t b) {
       const int16_t min SIMDE_VECTOR(32) = { 0, };
       const int16_t max SIMDE_VECTOR(32) = { UINT8_MAX, UINT8_MAX, UINT8_MAX, UINT8_MAX, UINT8_MAX, UINT8_MAX, UINT8_MAX, UINT8_MAX, UINT8_MAX, UINT8_MAX, UINT8_MAX, UINT8_MAX, UINT8_MAX, UINT8_MAX, UINT8_MAX, UINT8_MAX };
 
-      int16_t m SIMDE_VECTOR(32) = v < min;
+      int16_t m SIMDE_VECTOR(32);
+      m = HEDLEY_REINTERPRET_CAST(__typeof__(m), v < min);
       v = (v & ~m) | (min & m);
 
-      m = v > max;
+      m = HEDLEY_REINTERPRET_CAST(__typeof__(m), v > max);
       v = (v & ~m) | (max & m);
 
       SIMDE_CONVERT_VECTOR_(r_.i8, v);
@@ -5124,10 +5127,11 @@ simde_wasm_u16x8_narrow_i32x4 (simde_v128_t a, simde_v128_t b) {
       const int32_t min SIMDE_VECTOR(32) = { 0, };
       const int32_t max SIMDE_VECTOR(32) = { UINT16_MAX, UINT16_MAX, UINT16_MAX, UINT16_MAX, UINT16_MAX, UINT16_MAX, UINT16_MAX, UINT16_MAX };
 
-      int32_t m SIMDE_VECTOR(32) = v < min;
+      int32_t m SIMDE_VECTOR(32);
+      m = HEDLEY_REINTERPRET_CAST(__typeof__(m), v < min);
       v = (v & ~m) | (min & m);
 
-      m = v > max;
+      m = HEDLEY_REINTERPRET_CAST(__typeof__(m), v > max);
       v = (v & ~m) | (max & m);
 
       SIMDE_CONVERT_VECTOR_(r_.i16, v);
