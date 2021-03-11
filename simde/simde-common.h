@@ -890,6 +890,11 @@ HEDLEY_DIAGNOSTIC_POP
 #        define SIMDE_BUG_CLANG_REV_365298 /* 0464e07c8f6e3310c28eb210a4513bc2243c2a7e */
 #      endif
 #    endif
+#    if defined(SIMDE_ARCH_ARM)
+#      if !SIMDE_DETECT_CLANG_VERSION_CHECK(11,0,0)
+#        define SIMDE_BUG_CLANG_BAD_VGET_SET_LANE_TYPES
+#      endif
+#    endif
 #    if defined(SIMDE_ARCH_POWER)
 #      define SIMDE_BUG_CLANG_46770
 #    endif
