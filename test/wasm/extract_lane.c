@@ -69,11 +69,15 @@ test_simde_wasm_i8x16_extract_lane(SIMDE_MUNIT_TEST_ARGS) {
 
     for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
       simde_v128_t a = simde_wasm_v128_load(test_vec[i].a);
-      int8_t r;
+      #if defined(SIMDE_NATIVE_ALIASES_TESTING)
+        int r;
+      #else
+        int8_t r;
+      #endif
 
       SIMDE_CONSTIFY_16_(simde_wasm_i8x16_extract_lane, r, (HEDLEY_UNREACHABLE(), -1), test_vec[i].lane, a);
 
-      simde_assert_equal_i8(r, test_vec[i].r);
+      simde_assert_equal_i8(HEDLEY_STATIC_CAST(int8_t, r), test_vec[i].r);
     }
     return 0;
   #else
@@ -129,11 +133,15 @@ test_simde_wasm_i16x8_extract_lane(SIMDE_MUNIT_TEST_ARGS) {
 
     for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
       simde_v128_t a = simde_wasm_v128_load(test_vec[i].a);
-      int16_t r;
+      #if defined(SIMDE_NATIVE_ALIASES_TESTING)
+        int r;
+      #else
+        int16_t r;
+      #endif
 
       SIMDE_CONSTIFY_8_(simde_wasm_i16x8_extract_lane, r, (HEDLEY_UNREACHABLE(), -1), test_vec[i].lane, a);
 
-      simde_assert_equal_i16(r, test_vec[i].r);
+      simde_assert_equal_i16(HEDLEY_STATIC_CAST(int16_t, r), test_vec[i].r);
     }
     return 0;
   #else
@@ -317,11 +325,15 @@ test_simde_wasm_u8x16_extract_lane(SIMDE_MUNIT_TEST_ARGS) {
 
     for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
       simde_v128_t a = simde_wasm_v128_load(test_vec[i].a);
-      uint8_t r;
+      #if defined(SIMDE_NATIVE_ALIASES_TESTING)
+        int r;
+      #else
+        uint8_t r;
+      #endif
 
       SIMDE_CONSTIFY_16_(simde_wasm_u8x16_extract_lane, r, (HEDLEY_UNREACHABLE(), UINT8_C(0)), test_vec[i].lane, a);
 
-      simde_assert_equal_u8(r, test_vec[i].r);
+      simde_assert_equal_u8(HEDLEY_STATIC_CAST(uint8_t, r), test_vec[i].r);
     }
     return 0;
   #else
@@ -377,11 +389,15 @@ test_simde_wasm_u16x8_extract_lane(SIMDE_MUNIT_TEST_ARGS) {
 
     for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
       simde_v128_t a = simde_wasm_v128_load(test_vec[i].a);
-      uint16_t r;
+      #if defined(SIMDE_NATIVE_ALIASES_TESTING)
+        int r;
+      #else
+        uint16_t r;
+      #endif
 
       SIMDE_CONSTIFY_8_(simde_wasm_u16x8_extract_lane, r, (HEDLEY_UNREACHABLE(), UINT16_C(0)), test_vec[i].lane, a);
 
-      simde_assert_equal_u16(r, test_vec[i].r);
+      simde_assert_equal_u16(HEDLEY_STATIC_CAST(uint16_t, r), test_vec[i].r);
     }
     return 0;
   #else

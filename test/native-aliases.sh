@@ -26,3 +26,8 @@ ls x86/*.c | xargs -n1 -P$(nproc) sed -i -E -f pattern
 # NEON
 
 perl -p -i -e 's/([^a-zA-Z0-9_])simde_v/$1v/g' arm/neon/*.{c,h}
+
+
+# WASM SIMD128
+
+perl -p -i -e 's/([^a-zA-Z0-9_])simde_wasm_/$1wasm_/g' wasm/*.{c,h}

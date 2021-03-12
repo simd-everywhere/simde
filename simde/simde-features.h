@@ -519,6 +519,10 @@
   #if !defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     #define SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES
   #endif
+
+  #if !defined(SIMDE_WASM_SIMD128_NATIVE)
+    #define SIMDE_WASM_SIMD128_ENABLE_NATIVE_ALIASES
+  #endif
 #endif
 
 /* Are floating point values stored using IEEE 754?  Knowing

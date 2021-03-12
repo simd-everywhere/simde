@@ -186,7 +186,7 @@
     HEDLEY_SUNPRO_VERSION_CHECK(5,12,0) || \
     HEDLEY_IBM_VERSION_CHECK(11,1,0) || \
     HEDLEY_MCST_LCC_VERSION_CHECK(1,25,10)
-  #define SIMDE_STATEMENT_EXPR_(expr) (__extension__ (expr))
+  #define SIMDE_STATEMENT_EXPR_(expr) (__extension__ expr)
 #endif
 
 #if defined(SIMDE_CHECK_CONSTANT_) && defined(SIMDE_STATIC_ASSERT)
