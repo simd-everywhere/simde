@@ -19,7 +19,26 @@ fi
 
 IMAGE_NAME="simde-dev-${RELEASE}"
 
-"${DOCKER}" build --build-arg "release=${RELEASE}" -t "${IMAGE_NAME}" ${CAPABILITIES} -f "${DOCKER_DIR}/Dockerfile" "${DOCKER_DIR}/.."
+# (Re)build image
+# We only do this if the current image is older than a week (if jq is installed)
+BUILD_IMAGE=auto
+command -v jq >/dev/null
+if [ 0 = $? ]; then
+  BUILD_CUTOFF_TIME="$(expr $(date +%s) - \( 60 \* 60 \* 24 \* 7 \))"
+  CURRENT_IMAGE_CREATED="$(${DOCKER} images "${IMAGE_NAME}" --format json | jq '.[].Created')"
+
+  if [ ${CURRENT_IMAGE_CREATED} -lt ${BUILD_CUTOFF_TIME} ]; then
+    BUILD_IMAGE=y
+  else
+    BUILD_IMAGE=n
+  fi
+else
+  BUILD_IMAGE=y
+fi
+
+if [ "${BUILD_IMAGE}" = "y" ]; then
+  "${DOCKER}" build --build-arg "release=${RELEASE}" -t "${IMAGE_NAME}" ${CAPABILITIES} -f "${DOCKER_DIR}/Dockerfile" "${DOCKER_DIR}/.."
+fi
 
 if [ "$(basename "${DOCKER}")" = "podman" ]; then
   VOLUME_OPTIONS=":z";
