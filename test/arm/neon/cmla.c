@@ -2,6 +2,9 @@
 
 #include "test-neon.h"
 #include "../../../simde/arm/neon/cmla.h"
+#include "../../../simde/arm/neon/cmla_rot90.h"
+#include "../../../simde/arm/neon/cmla_rot180.h"
+#include "../../../simde/arm/neon/cmla_rot270.h"
 
 /* * rot 0 * */
 
