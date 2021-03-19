@@ -99,6 +99,21 @@ simde_mm512_or_pd (simde__m512d a, simde__m512d b) {
   #define _mm512_or_pd(a, b) simde_mm512_or_pd(a, b)
 #endif
 
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512d
+simde_mm512_mask_or_pd(simde__m512d src, simde__mmask8 k, simde__m512d a, simde__m512d b) {
+  #if defined(SIMDE_X86_AVX512DQ_NATIVE)
+    return _mm512_mask_or_pd(src, k, a, b);
+  #else
+    return simde_mm512_mask_mov_pd(src, k, simde_mm512_or_pd(a, b));
+  #endif
+}
+#if defined(SIMDE_X86_AVX512DQ_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_mask_or_pd
+  #define _mm512_mask_or_pd(src, k, a, b) simde_mm512_mask_or_pd(src, k, a, b)
+#endif
+
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m512i
 simde_mm512_or_epi32 (simde__m512i a, simde__m512i b) {
