@@ -50,7 +50,7 @@ simde_vcmla_rot270_f32(simde_float32x2_t r, simde_float32x2_t a, simde_float32x2
       r_.values += b_.values * a_.values;
     #else
       SIMDE_VECTORIZE
-      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+      for (size_t i = 0 ; i < (sizeof(r_.values) / (2 * sizeof(r_.values[0]))) ; i++) {
         r_.values[2 * i] += b_.values[2 * i + 1] * a_.values[2 * i + 1];
         r_.values[2 * i + 1] += -(b_.values[2 * i]) * a_.values[2 * i + 1];
       }
@@ -81,7 +81,7 @@ simde_vcmlaq_rot270_f32(simde_float32x4_t r, simde_float32x4_t a, simde_float32x
       r_.values += b_.values * a_.values;
     #else
       SIMDE_VECTORIZE
-      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+      for (size_t i = 0 ; i < (sizeof(r_.values) / (2 * sizeof(r_.values[0]))) ; i++) {
         r_.values[2 * i] += b_.values[2 * i + 1] * a_.values[2 * i + 1];
         r_.values[2 * i + 1] += -(b_.values[2 * i]) * a_.values[2 * i + 1];
       }
@@ -112,7 +112,7 @@ simde_vcmlaq_rot270_f64(simde_float64x2_t r, simde_float64x2_t a, simde_float64x
       r_.values += b_.values * a_.values;
     #else
       SIMDE_VECTORIZE
-      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+      for (size_t i = 0 ; i < (sizeof(r_.values) / (2 * sizeof(r_.values[0]))) ; i++) {
         r_.values[2 * i] += b_.values[2 * i + 1] * a_.values[2 * i + 1];
         r_.values[2 * i + 1] += -(b_.values[2 * i]) * a_.values[2 * i + 1];
       }
