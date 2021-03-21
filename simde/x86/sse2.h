@@ -420,7 +420,7 @@ simde_x_mm_abs_pd(simde__m128d a) {
       r_,
       a_ = simde__m128d_to_private(a);
 
-    #if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
+    #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
       r_.neon_f64 = vabsq_f64(a_.neon_f64);
     #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
       r_.altivec_f64 = vec_abs(a_.altivec_f64);

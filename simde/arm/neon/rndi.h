@@ -36,7 +36,7 @@ SIMDE_BEGIN_DECLS_
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float32x2_t
 simde_vrndi_f32(simde_float32x2_t a) {
-  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && !defined(SIMDE_BUG_GCC_95399)
     return vrndi_f32(a);
   #else
     simde_float32x2_private
@@ -59,7 +59,7 @@ simde_vrndi_f32(simde_float32x2_t a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float64x1_t
 simde_vrndi_f64(simde_float64x1_t a) {
-  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && !defined(SIMDE_BUG_GCC_95399)
     return vrndi_f64(a);
   #else
     simde_float64x1_private
@@ -82,7 +82,7 @@ simde_vrndi_f64(simde_float64x1_t a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float32x4_t
 simde_vrndiq_f32(simde_float32x4_t a) {
-  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && !defined(SIMDE_BUG_GCC_95399)
     return vrndiq_f32(a);
   #elif defined(SIMDE_X86_SSE4_1_NATIVE)
     return _mm_round_ps(a, _MM_FROUND_CUR_DIRECTION);
@@ -107,7 +107,7 @@ simde_vrndiq_f32(simde_float32x4_t a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float64x2_t
 simde_vrndiq_f64(simde_float64x2_t a) {
-  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && !defined(SIMDE_BUG_GCC_95399)
     return vrndiq_f64(a);
   #elif defined(SIMDE_X86_SSE4_1_NATIVE)
     return _mm_round_pd(a, _MM_FROUND_CUR_DIRECTION);
