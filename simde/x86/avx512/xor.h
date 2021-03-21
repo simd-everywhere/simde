@@ -71,6 +71,34 @@ simde_mm512_xor_ps (simde__m512 a, simde__m512 b) {
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
+simde__m512
+simde_mm512_mask_xor_ps(simde__m512 src, simde__mmask16 k, simde__m512 a, simde__m512 b) {
+  #if defined(SIMDE_X86_AVX512DQ_NATIVE)
+    return _mm512_mask_xor_ps(src, k, a, b);
+  #else
+    return simde_mm512_mask_mov_ps(src, k, simde_mm512_xor_ps(a, b));
+  #endif
+}
+#if defined(SIMDE_X86_AVX512DQ_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_mask_xor_ps
+  #define _mm512_mask_xor_ps(src, k, a, b) simde_mm512_mask_xor_ps(src, k, a, b)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512
+simde_mm512_maskz_xor_ps(simde__mmask16 k, simde__m512 a, simde__m512 b) {
+  #if defined(SIMDE_X86_AVX512DQ_NATIVE)
+    return _mm512_maskz_xor_ps(k, a, b);
+  #else
+    return simde_mm512_maskz_mov_ps(k, simde_mm512_xor_ps(a, b));
+  #endif
+}
+#if defined(SIMDE_X86_AVX512DQ_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_maskz_xor_ps
+  #define _mm512_maskz_xor_ps(k, a, b) simde_mm512_maskz_xor_ps(k, a, b)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
 simde__m512d
 simde_mm512_xor_pd (simde__m512d a, simde__m512d b) {
   #if defined(SIMDE_X86_AVX512DQ_NATIVE)
@@ -99,6 +127,34 @@ simde_mm512_xor_pd (simde__m512d a, simde__m512d b) {
 #if defined(SIMDE_X86_AVX512DQ_ENABLE_NATIVE_ALIASES)
   #undef _mm512_xor_pd
   #define _mm512_xor_pd(a, b) simde_mm512_xor_pd(a, b)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512d
+simde_mm512_mask_xor_pd(simde__m512d src, simde__mmask8 k, simde__m512d a, simde__m512d b) {
+  #if defined(SIMDE_X86_AVX512DQ_NATIVE)
+    return _mm512_mask_xor_pd(src, k, a, b);
+  #else
+    return simde_mm512_mask_mov_pd(src, k, simde_mm512_xor_pd(a, b));
+  #endif
+}
+#if defined(SIMDE_X86_AVX512DQ_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_mask_xor_pd
+  #define _mm512_mask_xor_pd(src, k, a, b) simde_mm512_mask_xor_pd(src, k, a, b)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512d
+simde_mm512_maskz_xor_pd(simde__mmask8 k, simde__m512d a, simde__m512d b) {
+  #if defined(SIMDE_X86_AVX512DQ_NATIVE)
+    return _mm512_maskz_xor_pd(k, a, b);
+  #else
+    return simde_mm512_maskz_mov_pd(k, simde_mm512_xor_pd(a, b));
+  #endif
+}
+#if defined(SIMDE_X86_AVX512DQ_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_maskz_xor_pd
+  #define _mm512_maskz_xor_pd(k, a, b) simde_mm512_maskz_xor_pd(k, a, b)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
