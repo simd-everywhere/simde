@@ -27,7 +27,9 @@ if [ 0 = $? ]; then
   BUILD_CUTOFF_TIME="$(expr $(date +%s) - \( 60 \* 60 \* 24 \* 7 \))"
   CURRENT_IMAGE_CREATED="$(${DOCKER} images "${IMAGE_NAME}" --format json | jq '.[].Created')"
 
-  if [ ${CURRENT_IMAGE_CREATED} -lt ${BUILD_CUTOFF_TIME} ]; then
+  if [ -z "${CURRENT_IMAGE_CREATED}" ]; then
+    BUILD_IMAGE=y
+  elif [ ${CURRENT_IMAGE_CREATED} -lt ${BUILD_CUTOFF_TIME} ]; then
     BUILD_IMAGE=y
   else
     BUILD_IMAGE=n
