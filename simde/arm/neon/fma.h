@@ -109,10 +109,10 @@ simde_float64x2_t
 simde_vfmaq_f64(simde_float64x2_t a, simde_float64x2_t b, simde_float64x2_t c) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vfmaq_f64(a, b, c);
+  #elif defined(SIMDE_X86_FMA_NATIVE)
+    return _mm_fmadd_pd(b, c, a);
   #elif defined(SIMDE_X86_SSE2_NATIVE)
     return _mm_add_pd(a, _mm_mul_pd(b, c));
-  #elif defined(SIMDE_X86_FMA_NATIVE)
-    return _mm_fmadd_pd_(b, c, a)
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_f64x2_add(a, wasm_f64x2_mul(b, c));
   #else
@@ -121,10 +121,14 @@ simde_vfmaq_f64(simde_float64x2_t a, simde_float64x2_t b, simde_float64x2_t c) {
       b_ = simde_float64x2_to_private(b),
       c_ = simde_float64x2_to_private(c);
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(a_.values) / sizeof(a_.values[0])) ; i++) {
-      a_.values[i] += b_.values[i] * c_.values[i];
-    }
+    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+      a_.values += b_.values * c_.values;
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(a_.values) / sizeof(a_.values[0])) ; i++) {
+        a_.values[i] += b_.values[i] * c_.values[i];
+      }
+    #endif
 
     return simde_float64x2_from_private(a_);
   #endif
