@@ -279,6 +279,9 @@
 #  if defined(__AVX512VP2INTERSECT__)
 #    define SIMDE_ARCH_X86_AVX512VP2INTERSECT 1
 #  endif
+#  if defined(__AVX512BITALG__)
+#    define SIMDE_ARCH_X86_AVX512BITALG 1
+#  endif
 #  if defined(__AVX512VBMI__)
 #    define SIMDE_ARCH_X86_AVX512VBMI 1
 #  endif
