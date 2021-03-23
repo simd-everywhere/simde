@@ -260,7 +260,7 @@ simde_mm512_insertf64x2 (simde__m512d a, simde__m128d b, int imm8)
 #endif
 #if defined(SIMDE_X86_AVX512DQ_ENABLE_NATIVE_ALIASES)
   #undef _mm512_maskz_insertf64x2
-  #define _mm512_maskz_insertf64x2(k, a, b, imm8) simde_mm512_maskz_insertf64x1(k, a, b, imm8)
+  #define _mm512_maskz_insertf64x2(k, a, b, imm8) simde_mm512_maskz_insertf64x2(k, a, b, imm8)
 #endif
 
 SIMDE_END_DECLS_
