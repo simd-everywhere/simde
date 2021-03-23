@@ -213,7 +213,7 @@ simde_mm512_mask_insertf32x8(simde__m512 src, simde__mmask16 k, simde__m512 a, s
     SIMDE_CONSTIFY_2_(_mm512_mask_insertf32x8, r, (HEDLEY_UNREACHABLE(), simde_mm512_setzero_ps ()), imm8, src, k, a, b);
     return r;
   #else
-    simde__m512 r; 
+    simde__m512 r;
     SIMDE_CONSTIFY_2_(simde_mm512_insertf32x8, r, (HEDLEY_UNREACHABLE(), simde_mm512_setzero_ps ()), imm8, a, b);
     return simde_mm512_mask_mov_ps(src, k, r);
   #endif
@@ -227,11 +227,11 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde__m512
 simde_mm512_maskz_insertf32x8(simde__mmask16 k, simde__m512 a, simde__m256 b, const int imm8) {
   #if defined(SIMDE_X86_AVX512DQ_NATIVE)
-    simde__m512 r; 
+    simde__m512 r;
     SIMDE_CONSTIFY_2_(_mm512_maskz_insertf32x8, r, (HEDLEY_UNREACHABLE(), simde_mm512_setzero_ps ()), imm8, k, a, b);
     return r;
   #else
-    simde__m512 r; 
+    simde__m512 r;
     SIMDE_CONSTIFY_2_(simde_mm512_insertf32x8, r, (HEDLEY_UNREACHABLE(), simde_mm512_setzero_ps ()), imm8, a, b);
     return simde_mm512_maskz_mov_ps(k, r);
   #endif
@@ -263,11 +263,11 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde__m512d
 simde_mm512_mask_insertf64x2(simde__m512d src, simde__mmask8 k, simde__m512d a, simde__m128d b, const int imm8) {
   #if defined(SIMDE_X86_AVX512DQ_NATIVE)
-    simde__m512d r; 
+    simde__m512d r;
     SIMDE_CONSTIFY_4_(_mm512_mask_insertf64x2, r, (HEDLEY_UNREACHABLE(), simde_mm512_setzero_pd ()), imm8, src, k, a, b);
     return r;
   #else
-    simde__m512d r; 
+    simde__m512d r;
     SIMDE_CONSTIFY_4_(simde_mm512_insertf64x2, r, (HEDLEY_UNREACHABLE(), simde_mm512_setzero_pd ()), imm8, a, b);
     return simde_mm512_mask_mov_pd(src, k, r);
   #endif
@@ -281,11 +281,11 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde__m512d
 simde_mm512_maskz_insertf64x2(simde__mmask8 k, simde__m512d a, simde__m128d b, const int imm8) {
   #if defined(SIMDE_X86_AVX512DQ_NATIVE)
-    simde__m512d r; 
+    simde__m512d r;
     SIMDE_CONSTIFY_4_(_mm512_maskz_insertf64x2, r, (HEDLEY_UNREACHABLE(), simde_mm512_setzero_pd ()), imm8, k, a, b);
     return r;
   #else
-    simde__m512d r; 
+    simde__m512d r;
     SIMDE_CONSTIFY_4_(simde_mm512_insertf64x2, r, (HEDLEY_UNREACHABLE(), simde_mm512_setzero_pd ()), imm8, a, b);
     return simde_mm512_maskz_mov_pd(k, r);
   #endif
