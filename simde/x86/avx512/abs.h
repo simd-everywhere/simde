@@ -142,6 +142,10 @@ simde_mm_abs_epi64(simde__m128i a) {
       r_.altivec_i64 = vec_abs(a_.altivec_i64);
     #elif defined(SIMDE_WASM_SIMD128_NATIVE) && 0
       r_.wasm_v128 = wasm_i64x2_abs(a_.wasm_v128);
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+      __typeof__(r_.i64) z = { 0, };
+      __typeof__(r_.i64) m = HEDLEY_REINTERPRET_CAST(__typeof__(r_.i64), a_.i64 < z);
+      r_.i64 = (-a_.i64 & m) | (a_.i64 & ~m);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0; i < (sizeof(r_.i64) / sizeof(r_.i64[0])); i++) {

@@ -403,7 +403,7 @@ simde_vabsq_s64(simde_int64x2_t a) {
       r_,
       a_ = simde_int64x2_to_private(a);
 
-    #if (SIMDE_NATURAL_VECTOR_SIZE > 0) && defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+    #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
       __typeof__(r_.values) m = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), a_.values < INT64_C(0));
       r_.values = (-a_.values & m) | (a_.values & ~m);
     #else

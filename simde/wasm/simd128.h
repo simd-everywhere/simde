@@ -2620,10 +2620,14 @@ simde_wasm_i32x4_abs (simde_v128_t a) {
       r_.sse_m128i = _mm_abs_epi32(a_.sse_m128i);
     #elif defined(SIMDE_ARM_NEON_A64V8_NATIVE)
       r_.neon_i32 = vabsq_s32(a_.neon_i32);
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+      __typeof__(r_.i32) z = { 0, };
+      __typeof__(r_.i32) m = a_.i32 < z;
+      r_.i32 = (-a_.i32 & m) | (a_.i32 & ~m);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {
-        r_.i32[i] = (a_.i32[i] < INT8_C(0)) ? -a_.i32[i] : a_.i32[i];
+        r_.i32[i] = (a_.i32[i] < INT32_C(0)) ? -a_.i32[i] : a_.i32[i];
       }
     #endif
 
