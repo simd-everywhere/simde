@@ -2718,6 +2718,21 @@ simde_mm256_madd_epi16 (simde__m256i a, simde__m256i b) {
     #if SIMDE_NATURAL_VECTOR_SIZE_LE(128)
       r_.m128i[0] = simde_mm_madd_epi16(a_.m128i[0], b_.m128i[0]);
       r_.m128i[1] = simde_mm_madd_epi16(a_.m128i[1], b_.m128i[1]);
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && defined(SIMDE_CONVERT_VECTOR_) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
+      SIMDE_ALIGN_TO_32 int32_t product SIMDE_VECTOR(64);
+      SIMDE_ALIGN_TO_32 int32_t a32x16 SIMDE_VECTOR(64);
+      SIMDE_ALIGN_TO_32 int32_t b32x16 SIMDE_VECTOR(64);
+      SIMDE_ALIGN_TO_32 int32_t even SIMDE_VECTOR(32);
+      SIMDE_ALIGN_TO_32 int32_t odd SIMDE_VECTOR(32);
+
+      SIMDE_CONVERT_VECTOR_(a32x16, a_.i16);
+      SIMDE_CONVERT_VECTOR_(b32x16, b_.i16);
+      product = a32x16 * b32x16;
+
+      even = __builtin_shufflevector(product, product, 0, 2, 4, 6, 8, 10, 12, 14);
+      odd  = __builtin_shufflevector(product, product, 1, 3, 5, 7, 9, 11, 13, 15);
+
+      r_.i32 = even + odd;
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_) / sizeof(r_.i16[0])) ; i += 2) {
