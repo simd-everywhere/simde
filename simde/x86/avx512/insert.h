@@ -295,6 +295,114 @@ simde_mm512_maskz_insertf64x2(simde__mmask8 k, simde__m512d a, simde__m128d b, c
   #define _mm512_maskz_insertf64x2(k, a, b, imm8) simde_mm512_maskz_insertf64x2(k, a, b, imms8)
 #endif
 
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512i
+simde_mm512_inserti32x8 (simde__m512i a, simde__m256i b, int imm8)
+    SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 1) {
+  simde__m512i_private a_ = simde__m512i_to_private(a);
+
+  a_.m256i[imm8 & 1] = b;
+
+  return simde__m512i_from_private(a_);
+}
+#if defined(SIMDE_X86_AVX512DQ_NATIVE)
+  #define simde_mm512_inserti32x8(a, b, imm8) _mm512_inserti32x8(a, b, imm8)
+#endif
+#if defined(SIMDE_X86_AVX512DQ_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_inserti32x8
+  #define _mm512_inserti32x8(a, b, imm8) simde_mm512_inserti32x8(a, b, imm8)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512i
+simde_mm512_mask_inserti32x8(simde__m512i src, simde__mmask16 k, simde__m512i a, simde__m256i b, const int imm8) {
+  #if defined(SIMDE_X86_AVX512DQ_NATIVE)
+    simde__m512i r;
+    SIMDE_CONSTIFY_2_(_mm512_mask_inserti32x8, r, (HEDLEY_UNREACHABLE(), simde_mm512_setzero_epi32 ()), imm8, src, k, a, b);
+    return r;
+  #else
+    simde__m512i r;
+    SIMDE_CONSTIFY_2_(simde_mm512_inserti32x8, r, (HEDLEY_UNREACHABLE(), simde_mm512_setzero_epi32 ()), imm8, a, b);
+    return simde_mm512_mask_mov_epi32(src, k, r);
+  #endif
+ }
+#if defined(SIMDE_X86_AVX512DQ_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_mask_inserti32x8
+  #define _mm512_mask_inserti32x8(src, k, a, b, imm8) simde_mm512_mask_inserti32x8(src, k, a, b, imms8)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512i
+simde_mm512_maskz_inserti32x8(simde__mmask16 k, simde__m512i a, simde__m256i b, const int imm8) {
+  #if defined(SIMDE_X86_AVX512DQ_NATIVE)
+    simde__m512i r;
+    SIMDE_CONSTIFY_2_(_mm512_maskz_inserti32x8, r, (HEDLEY_UNREACHABLE(), simde_mm512_setzero_epi32 ()), imm8, k, a, b);
+    return r;
+  #else
+    simde__m512i r;
+    SIMDE_CONSTIFY_2_(simde_mm512_inserti32x8, r, (HEDLEY_UNREACHABLE(), simde_mm512_setzero_epi32 ()), imm8, a, b);
+    return simde_mm512_maskz_mov_epi32(k, r);
+  #endif
+ }
+#if defined(SIMDE_X86_AVX512DQ_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_maskz_inserti32x8
+  #define _mm512_maskz_inserti32x8(k, a, b, imm8) simde_mm512_maskz_inserti32x8(k, a, b, imms8)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512i
+simde_mm512_inserti64x2 (simde__m512i a, simde__m128i b, int imm8)
+    SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 3) {
+  simde__m512i_private a_ = simde__m512i_to_private(a);
+
+  a_.m128i[imm8 & 3] = b;
+
+  return simde__m512i_from_private(a_);
+}
+#if defined(SIMDE_X86_AVX512DQ_NATIVE)
+  #define simde_mm512_inserti64x2(a, b, imm8) _mm512_inserti64x2(a, b, imm8)
+#endif
+#if defined(SIMDE_X86_AVX512DQ_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_inserti64x2
+  #define _mm512_inserti64x2(a, b, imm8) simde_mm512_inserti64x2(a, b, imm8)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512i
+simde_mm512_mask_inserti64x2(simde__m512i src, simde__mmask8 k, simde__m512i a, simde__m128i b, const int imm8) {
+  #if defined(SIMDE_X86_AVX512DQ_NATIVE)
+    simde__m512i r;
+    SIMDE_CONSTIFY_4_(_mm512_mask_inserti64x2, r, (HEDLEY_UNREACHABLE(), simde_mm512_setzero_si512 ()), imm8, src, k, a, b);
+    return r;
+  #else
+    simde__m512i r;
+    SIMDE_CONSTIFY_4_(simde_mm512_inserti64x2, r, (HEDLEY_UNREACHABLE(), simde_mm512_setzero_si512 ()), imm8, a, b);
+    return simde_mm512_mask_mov_epi64(src, k, r);
+  #endif
+ }
+#if defined(SIMDE_X86_AVX512DQ_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_mask_inserti64x2
+  #define _mm512_mask_inserti64x2(src, k, a, b, imm8) simde_mm512_mask_inserti64x2(src, k, a, b, imms8)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512i
+simde_mm512_maskz_inserti64x2(simde__mmask8 k, simde__m512i a, simde__m128i b, const int imm8) {
+  #if defined(SIMDE_X86_AVX512DQ_NATIVE)
+    simde__m512i r;
+    SIMDE_CONSTIFY_4_(_mm512_maskz_inserti64x2, r, (HEDLEY_UNREACHABLE(), simde_mm512_setzero_si512 ()), imm8, k, a, b);
+    return r;
+  #else
+    simde__m512i r;
+    SIMDE_CONSTIFY_4_(simde_mm512_inserti64x2, r, (HEDLEY_UNREACHABLE(), simde_mm512_setzero_si512 ()), imm8, a, b);
+    return simde_mm512_maskz_mov_epi64(k, r);
+  #endif
+ }
+#if defined(SIMDE_X86_AVX512DQ_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_maskz_inserti64x2
+  #define _mm512_maskz_inserti64x2(k, a, b, imm8) simde_mm512_maskz_inserti64x2(k, a, b, imms8)
+#endif
+
 SIMDE_END_DECLS_
 HEDLEY_DIAGNOSTIC_POP
 
