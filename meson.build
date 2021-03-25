@@ -170,6 +170,7 @@ simde_avx512_families = [
   'cmpgt',
   'cmple',
   'cmplt',
+  'compress',
   'copysign',
   'cvt',
   'cvts',
