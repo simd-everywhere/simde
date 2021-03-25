@@ -4600,7 +4600,6 @@ simde__m128i
 simde_mm_loadu_si16 (void const* mem_addr) {
   #if defined(SIMDE_X86_SSE2_NATIVE) && ( \
       SIMDE_DETECT_CLANG_VERSION_CHECK(8,0,0) || \
-      HEDLEY_GCC_VERSION_CHECK(11,0,0) || \
       HEDLEY_INTEL_VERSION_CHECK(20,21,1))
     return _mm_loadu_si16(mem_addr);
   #else
@@ -4645,7 +4644,6 @@ simde__m128i
 simde_mm_loadu_si32 (void const* mem_addr) {
   #if defined(SIMDE_X86_SSE2_NATIVE) && ( \
       SIMDE_DETECT_CLANG_VERSION_CHECK(8,0,0) || \
-      HEDLEY_GCC_VERSION_CHECK(11,0,0) || \
       HEDLEY_INTEL_VERSION_CHECK(20,21,1))
     return _mm_loadu_si32(mem_addr);
   #else
