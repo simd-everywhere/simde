@@ -141,6 +141,20 @@ simde_mm512_cmpeq_epi64_mask (simde__m512i a, simde__m512i b) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__mmask8
+simde_mm512_cmpneq_epi64_mask (simde__m512i a, simde__m512i b) {
+  #if defined(SIMDE_X86_AVX512F_NATIVE)
+    return _mm512_cmpneq_epi64_mask(a, b);
+  #else
+    return ~simde_mm512_cmpeq_epi64_mask(a, b);
+  #endif
+}
+#if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_cmpneq_epi64_mask
+  #define _mm512_cmpneq_epi64_mask(a, b) simde_mm512_cmpneq_epi64_mask(a, b)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__mmask8
 simde_mm512_mask_cmpeq_epi64_mask (simde__mmask8 k1, simde__m512i a, simde__m512i b) {
   #if defined(SIMDE_X86_AVX512F_NATIVE)
     return _mm512_mask_cmpeq_epi64_mask(k1, a, b);
