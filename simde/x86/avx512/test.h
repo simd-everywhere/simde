@@ -92,7 +92,7 @@ simde_mm256_test_epi32_mask (simde__m256i a, simde__m256i b) {
     simde__m256i_private
       a_ = simde__m256i_to_private(a),
       b_ = simde__m256i_to_private(b);
-    simde__mmask16 r = 0;
+    simde__mmask8 r = 0;
 
     SIMDE_VECTORIZE_REDUCTION(|:r)
     for (size_t i = 0 ; i < (sizeof(a_.i32) / sizeof(a_.i32[0])) ; i++) {
