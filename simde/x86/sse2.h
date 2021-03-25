@@ -771,10 +771,7 @@ simde_mm_adds_epi8 (simde__m128i a, simde__m128i b) {
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.i8) / sizeof(r_.i8[0])) ; i++) {
-        const int_fast16_t tmp =
-          HEDLEY_STATIC_CAST(int_fast16_t, a_.i8[i]) +
-          HEDLEY_STATIC_CAST(int_fast16_t, b_.i8[i]);
-        r_.i8[i] = HEDLEY_STATIC_CAST(int8_t, ((tmp < INT8_MAX) ? ((tmp > INT8_MIN) ? tmp : INT8_MIN) : INT8_MAX));
+        r_.i8[i] = simde_math_adds_i8(a_.i8[i], b_.i8[i]);
       }
     #endif
 
@@ -805,10 +802,7 @@ simde_mm_adds_epi16 (simde__m128i a, simde__m128i b) {
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.i16) / sizeof(r_.i16[0])) ; i++) {
-        const int_fast32_t tmp =
-          HEDLEY_STATIC_CAST(int_fast32_t, a_.i16[i]) +
-          HEDLEY_STATIC_CAST(int_fast32_t, b_.i16[i]);
-        r_.i16[i] = HEDLEY_STATIC_CAST(int16_t, ((tmp < INT16_MAX) ? ((tmp > INT16_MIN) ? tmp : INT16_MIN) : INT16_MAX));
+        r_.i16[i] = simde_math_adds_i16(a_.i16[i], b_.i16[i]);
       }
     #endif
 
@@ -839,7 +833,7 @@ simde_mm_adds_epu8 (simde__m128i a, simde__m128i b) {
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.u8) / sizeof(r_.u8[0])) ; i++) {
-        r_.u8[i] = ((UINT8_MAX - a_.u8[i]) > b_.u8[i]) ? (a_.u8[i] + b_.u8[i]) : UINT8_MAX;
+        r_.u8[i] = simde_math_adds_u8(a_.u8[i], b_.u8[i]);
       }
     #endif
 
@@ -870,7 +864,7 @@ simde_mm_adds_epu16 (simde__m128i a, simde__m128i b) {
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.u16) / sizeof(r_.u16[0])) ; i++) {
-        r_.u16[i] = ((UINT16_MAX - a_.u16[i]) > b_.u16[i]) ? (a_.u16[i] + b_.u16[i]) : UINT16_MAX;
+        r_.u16[i] = simde_math_adds_u16(a_.u16[i], b_.u16[i]);
       }
     #endif
 
@@ -6571,13 +6565,7 @@ simde_mm_subs_epi8 (simde__m128i a, simde__m128i b) {
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_) / sizeof(r_.i8[0])) ; i++) {
-        if (((b_.i8[i]) > 0 && (a_.i8[i]) < INT8_MIN + (b_.i8[i]))) {
-          r_.i8[i] = INT8_MIN;
-        } else if ((b_.i8[i]) < 0 && (a_.i8[i]) > INT8_MAX + (b_.i8[i])) {
-          r_.i8[i] = INT8_MAX;
-        } else {
-          r_.i8[i] = (a_.i8[i]) - (b_.i8[i]);
-        }
+        r_.i8[i] = simde_math_subs_i8(a_.i8[i], b_.i8[i]);
       }
     #endif
 
@@ -6606,13 +6594,7 @@ simde_mm_subs_epi16 (simde__m128i a, simde__m128i b) {
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_) / sizeof(r_.i16[0])) ; i++) {
-        if (((b_.i16[i]) > 0 && (a_.i16[i]) < INT16_MIN + (b_.i16[i]))) {
-          r_.i16[i] = INT16_MIN;
-        } else if ((b_.i16[i]) < 0 && (a_.i16[i]) > INT16_MAX + (b_.i16[i])) {
-          r_.i16[i] = INT16_MAX;
-        } else {
-          r_.i16[i] = (a_.i16[i]) - (b_.i16[i]);
-        }
+        r_.i16[i] = simde_math_subs_i16(a_.i16[i], b_.i16[i]);
       }
     #endif
 
@@ -6642,15 +6624,8 @@ simde_mm_subs_epu8 (simde__m128i a, simde__m128i b) {
       r_.altivec_u8 = vec_subs(a_.altivec_u8, b_.altivec_u8);
     #else
       SIMDE_VECTORIZE
-      for (size_t i = 0 ; i < (sizeof(r_) / sizeof(r_.i8[0])) ; i++) {
-        const int32_t x = a_.u8[i] - b_.u8[i];
-        if (x < 0) {
-          r_.u8[i] = 0;
-        } else if (x > UINT8_MAX) {
-          r_.u8[i] = UINT8_MAX;
-        } else {
-          r_.u8[i] = HEDLEY_STATIC_CAST(uint8_t, x);
-        }
+      for (size_t i = 0 ; i < (sizeof(r_) / sizeof(r_.u8[0])) ; i++) {
+        r_.u8[i] = simde_math_subs_u8(a_.u8[i], b_.u8[i]);
       }
     #endif
 
@@ -6680,15 +6655,8 @@ simde_mm_subs_epu16 (simde__m128i a, simde__m128i b) {
       r_.altivec_u16 = vec_subs(a_.altivec_u16, b_.altivec_u16);
     #else
       SIMDE_VECTORIZE
-      for (size_t i = 0 ; i < (sizeof(r_) / sizeof(r_.i16[0])) ; i++) {
-        const int32_t x = a_.u16[i] - b_.u16[i];
-        if (x < 0) {
-          r_.u16[i] = 0;
-        } else if (x > UINT16_MAX) {
-          r_.u16[i] = UINT16_MAX;
-        } else {
-          r_.u16[i] = HEDLEY_STATIC_CAST(uint16_t, x);
-        }
+      for (size_t i = 0 ; i < (sizeof(r_) / sizeof(r_.u16[0])) ; i++) {
+        r_.u16[i] = simde_math_subs_u16(a_.u16[i], b_.u16[i]);
       }
     #endif
 
