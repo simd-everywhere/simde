@@ -41,7 +41,7 @@ inline simde__m256i simde_mm512_mask_i64gather_epi32(simde__m256i src, simde__mm
     src_ = simde__m256i_to_private(src);
   simde__m512i_private
     vindex_ = simde__m512i_to_private(vindex);
-  
+
   for (size_t i = 0; i < (sizeof(vindex_.u64) / sizeof(vindex_.u64[0])) ; i++) {
     if (k & (UINT64_C(1) << i)) {
       src_.u32[i] = *(uint32_t*)&((uint8_t*)base_addr)[vindex_.u64[i] * scale];

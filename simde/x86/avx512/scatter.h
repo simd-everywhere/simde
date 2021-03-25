@@ -41,7 +41,7 @@ inline void simde_mm512_mask_i32scatter_epi64(void* base, simde__mmask8 k, simde
     index_ = simde__m256i_to_private(index);
   simde__m512i_private
     a_ = simde__m512i_to_private(a);
-  
+
   for (size_t i = 0; i < (sizeof(a_.u64) / sizeof(a_.u64[0])) ; i++) {
     if (k & (UINT64_C(1) << i)) {
       *(uint64_t*)(&((uint8_t*)base)[index_.u32[i] * scale]) = a_.u64[i];
