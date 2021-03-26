@@ -87,6 +87,27 @@ simde_mm512_store_si512 (void * mem_addr, simde__m512i a) {
   #define _mm512_store_epi64(mem_addr, a) simde_mm512_store_si512(mem_addr, a)
 #endif
 
+SIMDE_FUNCTION_ATTRIBUTES
+void
+simde_mm512_mask_store_epi64 (void * mem_addr, simde__mmask8 k, simde__m512i a) {
+  #if defined(SIMDE_X86_AVX512F_NATIVE)
+    _mm512_mask_store_epi64(HEDLEY_REINTERPRET_CAST(void*, mem_addr), k, a);
+  #else
+    uint64_t* base = (uint64_t*)SIMDE_ALIGN_ASSUME_LIKE(mem_addr, uint64_t);
+    simde__m512i_private
+      a_ = simde__m512i_to_private(a);
+    for (size_t i = 0 ; i < (sizeof(a_.i64) / sizeof(a_.i64[0])) ; i++) {
+      if (k & (UINT64_C(1) << i)) {
+        base[i] = a_.i64[i];
+      }
+    }
+  #endif
+}
+#if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
+#undef _mm512_mask_store_epi64
+#define _mm512_mask_store_epi64(m, k, a) simde_mm512_mask_store_epi64(m, k, a)
+#endif
+
 SIMDE_END_DECLS_
 HEDLEY_DIAGNOSTIC_POP
 

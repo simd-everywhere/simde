@@ -96,6 +96,20 @@ simde_mm512_maskz_shuffle_epi8 (simde__mmask64 k, simde__m512i a, simde__m512i b
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m256i
+simde_mm256_maskz_shuffle_epi8 (simde__mmask32 k, simde__m256i a, simde__m256i b) {
+  #if defined(SIMDE_X86_AVX512BW_NATIVE)
+    return _mm256_maskz_shuffle_epi8(k, a, b);
+  #else
+    return simde_mm256_maskz_mov_epi8(k, simde_mm256_shuffle_epi8(a, b));
+  #endif
+}
+#if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_maskz_shuffle_epi8
+  #define _mm256_maskz_shuffle_epi8(k, a, b) simde_mm256_maskz_shuffle_epi8(k, a, b)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256i
 simde_mm256_shuffle_i32x4 (simde__m256i a, simde__m256i b, const int imm8)
     SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 3) {
   simde__m256i_private
