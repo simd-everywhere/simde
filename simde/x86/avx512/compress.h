@@ -14,18 +14,21 @@ simde_mm256_mask_compress_pd (simde__m256d src, simde__mmask8 k, simde__m256d a)
     return _mm256_mask_compress_pd(src, k, a);
   #else
     simde__m256d_private
-    a_ = simde__m256d_to_private(a),
-    src_ = simde__m256d_to_private(src);
+      a_ = simde__m256d_to_private(a),
+      src_ = simde__m256d_to_private(src);
     size_t j = 0;
+
     SIMDE_VECTORIZE
-    for (size_t i = 0; i < (sizeof(a_.f64)/sizeof(a_.f64[0])); i++){
+    for (size_t i = 0 ; i < (sizeof(a_.f64) / sizeof(a_.f64[0])) ; i++){
       if((k >> i) & 1) {
-        a_.f64[j++] =  a_.f64[i];
+        a_.f64[j++] = a_.f64[i];
       }
     }
-    for (; j < (sizeof(a_.f64)/sizeof(a_.f64[0])); j++){
-      a_.f64[j] =  src_.f64[j];
+
+    for ( ; j < (sizeof(a_.f64) / sizeof(a_.f64[0])) ; j++){
+      a_.f64[j] = src_.f64[j];
     }
+
     return simde__m256d_from_private(a_);
   #endif
 }
@@ -37,4 +40,4 @@ simde_mm256_mask_compress_pd (simde__m256d src, simde__mmask8 k, simde__m256d a)
 SIMDE_END_DECLS_
 HEDLEY_DIAGNOSTIC_POP
 
-#endif /* !defined(SIMDE_X86_AVX512_COPYSIGN_H) */
+#endif /* !defined(SIMDE_X86_AVX512_COMPRESS_H) */
