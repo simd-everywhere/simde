@@ -45,6 +45,7 @@
 #include "avx512/cmpgt.h"
 #include "avx512/cmple.h"
 #include "avx512/cmplt.h"
+#include "avx512/cmpneq.h"
 #include "avx512/copysign.h"
 #include "avx512/cvt.h"
 #include "avx512/cvts.h"
