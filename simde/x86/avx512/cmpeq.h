@@ -21,7 +21,7 @@
  * SOFTWARE.
  *
  * Copyright:
- *   2020      Evan Nemerson <evan@nemerson.com>
+ *   2020-2021 Evan Nemerson <evan@nemerson.com>
  *   2020      Himanshi Mathur <himanshi18037@iiitd.ac.in>
  */
 
@@ -77,6 +77,20 @@ simde_mm512_cmpeq_epi8_mask (simde__m512i a, simde__m512i b) {
 #if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
   #undef _mm512_cmpeq_epi8_mask
   #define _mm512_cmpeq_epi8_mask(a, b) simde_mm512_cmpeq_epi8_mask(a, b)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__mmask64
+simde_mm512_mask_cmpeq_epi8_mask(simde__mmask64 k1, simde__m512i a, simde__m512i b) {
+  #if defined(SIMDE_X86_AVX512BW_NATIVE)
+    return _mm512_mask_cmpeq_epi8_mask(k1, a, b);
+  #else
+    return simde_mm512_cmpeq_epi8_mask(a, b) & k1;
+  #endif
+}
+#if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_mask_cmpeq_epi8_mask
+  #define _mm512_mask_cmpeq_epi8_mask(k1, a, b) simde_mm512_mask_cmpeq_epi8_mask((k1), (a), (b))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
