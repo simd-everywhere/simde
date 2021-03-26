@@ -2622,7 +2622,7 @@ simde_wasm_i32x4_abs (simde_v128_t a) {
       r_.neon_i32 = vabsq_s32(a_.neon_i32);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       __typeof__(r_.i32) z = { 0, };
-      __typeof__(r_.i32) m = a_.i32 < z;
+      __typeof__(r_.i32) m = HEDLEY_REINTERPRET_CAST(__typeof__(r_.i32), a_.i32 < z);
       r_.i32 = (-a_.i32 & m) | (a_.i32 & ~m);
     #else
       SIMDE_VECTORIZE
