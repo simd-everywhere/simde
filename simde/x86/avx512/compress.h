@@ -41,7 +41,7 @@ SIMDE_FUNCTION_ATTRIBUTES
 void
 simde_mm256_mask_compressstoreu_pd (void* base_addr, simde__mmask8 k, simde__m256d a) {
   #if defined(SIMDE_X86_AVX512VL_NATIVE) && defined(SIMDE_X86_AVX512F_NATIVE)
-    return _mm256_mask_compressstoreu_pd(base_addr, k, a);
+    _mm256_mask_compressstoreu_pd(base_addr, k, a);
   #else
     simde__m256d_private
       a_ = simde__m256d_to_private(a);
@@ -129,7 +129,7 @@ SIMDE_FUNCTION_ATTRIBUTES
 void
 simde_mm256_mask_compressstoreu_ps (void* base_addr, simde__mmask8 k, simde__m256 a) {
   #if defined(SIMDE_X86_AVX512VL_NATIVE) && defined(SIMDE_X86_AVX512F_NATIVE)
-    return _mm256_mask_compressstoreu_ps(base_addr, k, a);
+    _mm256_mask_compressstoreu_ps(base_addr, k, a);
   #else
     simde__m256_private
       a_ = simde__m256_to_private(a);
