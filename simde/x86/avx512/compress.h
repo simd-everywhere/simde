@@ -74,17 +74,15 @@ simde_mm256_maskz_compress_pd (simde__mmask8 k, simde__m256d a) {
       a_ = simde__m256d_to_private(a);
     size_t ri = 0;
 
-    for(size_t i = 0 ; k && (i < (sizeof(a_.f64) / sizeof(a_.f64[0]))) ; i++)
-    {
-      if(k & 1){
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(a_.f64) / sizeof(a_.f64[0])) ; i++) {
+      if ((k >> i) & 1) {
         a_.f64[ri++] = a_.f64[i];
       }
-      k = k >> 1;
     }
 
-    SIMDE_VECTORIZE
-    for (size_t j = ri ; j < (sizeof(a_.f64) / sizeof(a_.f64[0])); j++) {
-      a_.f64[j] = SIMDE_FLOAT64_C(0.0);
+    for ( ; ri < (sizeof(a_.f64) / sizeof(a_.f64[0])); ri++) {
+      a_.f64[ri] = SIMDE_FLOAT64_C(0.0);
     }
 
     return simde__m256d_from_private(a_);
@@ -162,17 +160,15 @@ simde_mm256_maskz_compress_ps (simde__mmask8 k, simde__m256 a) {
       a_ = simde__m256_to_private(a);
     size_t ri = 0;
 
-    for(size_t i = 0 ; k && (i < (sizeof(a_.f32) / sizeof(a_.f32[0]))) ; i++)
-    {
-      if(k & 1){
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(a_.f32) / sizeof(a_.f32[0])) ; i++) {
+      if ((k >> i) & 1) {
         a_.f32[ri++] = a_.f32[i];
       }
-      k = k >> 1;
     }
 
-    SIMDE_VECTORIZE
-    for (size_t j = ri ; j < (sizeof(a_.f32) / sizeof(a_.f32[0])); j++) {
-      a_.f32[j] = SIMDE_FLOAT32_C(0.0);
+    for ( ; ri < (sizeof(a_.f32) / sizeof(a_.f32[0])); ri++) {
+      a_.f32[ri] = SIMDE_FLOAT32_C(0.0);
     }
 
     return simde__m256_from_private(a_);
