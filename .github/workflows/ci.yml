@@ -196,35 +196,35 @@ jobs:
     #   with:
     #     file: ./build/meson-logs/coverage.xml
 
-  emscripten:
-    runs-on: ubuntu-latest
-    env:
-      CFLAGS: -Weverything -Werror -O3 -msimd128
-      CXXFLAGS: -Weverything -Werror -O3 -msimd128
-    steps:
-    - uses: actions/checkout@v2
-      with:
-        submodules: recursive
-    - name: CPU Information
-      run: cat /proc/cpuinfo
-    - name: Install APT Dependencies
-      run: sudo add-apt-repository ppa:ubuntu-toolchain-r/test && sudo apt-get update && sudo apt-get -yq install ninja-build
-    - name: Install emscripten
-      run: |
-        git clone https://github.com/emscripten-core/emsdk.git
-        cd emsdk
-        ./emsdk update-tags
-        ./emsdk install tot
-        ./emsdk activate tot
-        source emsdk_env.sh
-    - name: Install v8
-      run: sudo npm install jsvu -g && jsvu --os=linux64 --engines=v8
-    - name: Configure
-      run: mkdir test/build && cd test/build && ../../emsdk/upstream/emscripten/emcmake cmake -G Ninja ..
-    - name: Build
-      run: ninja -C test/build -v
-    - name: Test
-      run: cd test/build && ~/.jsvu/v8 --experimental-wasm-simd run-tests.js
+  # emscripten:
+  #   runs-on: ubuntu-latest
+  #   env:
+  #     CFLAGS: -Weverything -Werror -O3 -msimd128
+  #     CXXFLAGS: -Weverything -Werror -O3 -msimd128
+  #   steps:
+  #   - uses: actions/checkout@v2
+  #     with:
+  #       submodules: recursive
+  #   - name: CPU Information
+  #     run: cat /proc/cpuinfo
+  #   - name: Install APT Dependencies
+  #     run: sudo add-apt-repository ppa:ubuntu-toolchain-r/test && sudo apt-get update && sudo apt-get -yq install ninja-build
+  #   - name: Install emscripten
+  #     run: |
+  #       git clone https://github.com/emscripten-core/emsdk.git
+  #       cd emsdk
+  #       ./emsdk update-tags
+  #       ./emsdk install tot
+  #       ./emsdk activate tot
+  #       source emsdk_env.sh
+  #   - name: Install v8
+  #     run: sudo npm install jsvu -g && jsvu --os=linux64 --engines=v8
+  #   - name: Configure
+  #     run: mkdir test/build && cd test/build && ../../emsdk/upstream/emscripten/emcmake cmake -G Ninja ..
+  #   - name: Build
+  #     run: ninja -C test/build -v
+  #   - name: Test
+  #     run: cd test/build && ~/.jsvu/v8 --experimental-wasm-simd run-tests.js
 
   native-aliases:
     runs-on: ubuntu-latest
