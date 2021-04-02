@@ -186,6 +186,9 @@ simde__m128i
 simde_mm_blendv_epi8 (simde__m128i a, simde__m128i b, simde__m128i mask) {
   #if defined(SIMDE_X86_SSE4_1_NATIVE)
     return _mm_blendv_epi8(a, b, mask);
+  #elif defined(SIMDE_X86_SSE2_NATIVE)
+    __m128i m = _mm_cmpgt_epi8(_mm_setzero_si128(), mask);
+    return _mm_xor_si128(_mm_subs_epu8(_mm_xor_si128(a, b), m), b);
   #else
     simde__m128i_private
       r_,
@@ -199,7 +202,7 @@ simde_mm_blendv_epi8 (simde__m128i a, simde__m128i b, simde__m128i mask) {
       r_.neon_i8 = vbslq_s8(mask_.neon_u8, b_.neon_i8, a_.neon_i8);
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       v128_t m = wasm_i8x16_shr(mask_.wasm_v128, 7);
-      r_.wasm_v128 = wasm_v128_or(wasm_v128_and(b_.wasm_v128, m), wasm_v128_andnot(a_.wasm_v128, m));
+      r_.wasm_v128 = wasm_v128_bitselect(b_.wasm_v128, a_.wasm_v128, m);
     #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
       r_.altivec_i8 = vec_sel(a_.altivec_i8, b_.altivec_i8, vec_cmplt(mask_.altivec_i8, vec_splat_s8(0)));
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
