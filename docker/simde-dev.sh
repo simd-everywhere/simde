@@ -22,8 +22,7 @@ IMAGE_NAME="simde-dev-${RELEASE}"
 # (Re)build image
 # We only do this if the current image is older than a week (if jq is installed)
 BUILD_IMAGE=auto
-command -v jq >/dev/null
-if [ 0 = $? ]; then
+if command -v jq >/dev/null; then
   BUILD_CUTOFF_TIME="$(expr $(date +%s) - \( 60 \* 60 \* 24 \* 7 \))"
   CURRENT_IMAGE_CREATED="$(${DOCKER} images "${IMAGE_NAME}" --format json | jq '.[].Created')"
 
