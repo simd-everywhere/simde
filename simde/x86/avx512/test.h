@@ -62,7 +62,7 @@ simde_mm256_test_epi32_mask (simde__m256i a, simde__m256i b) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__mmask8
-simde_mm256_mask_test_epi32_mask (simde__mmask16 k1, simde__m256i a, simde__m256i b) {
+simde_mm256_mask_test_epi32_mask (simde__mmask8 k1, simde__m256i a, simde__m256i b) {
   #if defined(SIMDE_X86_AVX512VL_NATIVE)
     return _mm256_mask_test_epi32_mask(k1, a, b);
   #else

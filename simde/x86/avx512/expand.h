@@ -22,6 +22,7 @@
  *
  * Copyright:
  *   2021      Andrew Rodriguez <anrodriguez@linkedin.com>
+ *   2021      Evan Nemerson <evan@nemerson.com>
  */
 
 #if !defined(SIMDE_X86_AVX512_EXPAND_H)
@@ -35,25 +36,59 @@ HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 SIMDE_BEGIN_DECLS_
 
-inline simde__m256i simde_mm256_maskz_expand_epi32(simde__mmask8 k, simde__m256i a) {
-  simde__m256i_private
-    a_ = simde__m256i_to_private(a);
-  simde__m256i_private r_;
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256i
+simde_mm256_mask_expand_epi32(simde__m256i src, simde__mmask8 k, simde__m256i a) {
+  #if defined(SIMDE_X86_AVX512VL_NATIVE)
+    return _mm256_mask_expand_epi32(src, k, a);
+  #else
+    simde__m256i_private
+      a_ = simde__m256i_to_private(a),
+      src_ = simde__m256i_to_private(src);
+    simde__m256i_private r_;
 
-  size_t src_idx = 0;
-  for (size_t i = 0; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {
-    if (k & (UINT64_C(1) << i)) {
-      r_.i32[i] = a_.i32[src_idx++];
-    } else {
-      r_.i32[i] = 0;
+    size_t src_idx = 0;
+    for (size_t i = 0; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {
+      if (k & (UINT64_C(1) << i)) {
+        r_.i32[i] = a_.i32[src_idx++];
+      } else {
+        r_.i32[i] = src_.i32[i];
+      }
     }
-  }
 
-  return simde__m256i_from_private(r_);
+    return simde__m256i_from_private(r_);
+  #endif
 }
 #if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
-#undef _mm256_maskz_expand_epi32
-#define _mm256_maskz_expand_epi32(k, a) simde_mm256_maskz_expand_epi32(k, a)
+  #undef _mm256_mask_expand_epi32
+  #define _mm256_mask_expand_epi32(src, k, a) simde_mm256_mask_expand_epi32((src), (k), (a))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256i
+simde_mm256_maskz_expand_epi32(simde__mmask8 k, simde__m256i a) {
+  #if defined(SIMDE_X86_AVX512VL_NATIVE)
+    return _mm256_maskz_expand_epi32(k, a);
+  #else
+    simde__m256i_private
+      a_ = simde__m256i_to_private(a),
+      r_;
+
+    size_t src_idx = 0;
+    for (size_t i = 0; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {
+      if (k & (UINT64_C(1) << i)) {
+        r_.i32[i] = a_.i32[src_idx++];
+      } else {
+        r_.i32[i] = INT32_C(0);
+      }
+    }
+
+    return simde__m256i_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_maskz_expand_epi32
+  #define _mm256_maskz_expand_epi32(k, a) simde_mm256_maskz_expand_epi32((k), (a))
 #endif
 
 SIMDE_END_DECLS_
