@@ -23,6 +23,7 @@
  * Copyright:
  *   2020      Evan Nemerson <evan@nemerson.com>
  *   2020      Christopher Moore <moore@free.fr>
+ *   2021      Andrew Rodriguez <anrodriguez@linkedin.com>
  */
 
 #if !defined(SIMDE_X86_AVX512_CMPGE_H)
@@ -97,6 +98,38 @@ simde_mm512_cmpge_epu8_mask (simde__m512i a, simde__m512i b) {
   #undef _mm512_cmpge_epu8_mask
   #define _mm512_cmpge_epu8_mask(a, b) simde_mm512_cmpge_epu8_mask(a, b)
 #endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__mmask8
+simde_mm512_cmpge_epi64_mask (simde__m512i a, simde__m512i b) {
+  #if defined(SIMDE_X86_AVX512F_NATIVE)
+    return _mm512_cmpge_epi64_mask(a, b);
+  #else
+    simde__m512i_private
+      a_ = simde__m512i_to_private(a),
+      b_ = simde__m512i_to_private(b);
+    simde__mmask8 r = 0;
+
+    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+      simde__m512i_private tmp;
+
+      tmp.i64 = HEDLEY_STATIC_CAST(__typeof__(tmp.i64), a_.i64 >= b_.i64);
+      r = simde_mm512_movepi64_mask(simde__m512i_from_private(tmp));
+    #else
+      SIMDE_VECTORIZE_REDUCTION(|:r)
+      for (size_t i = 0 ; i < (sizeof(a_.i64) / sizeof(a_.i64[0])) ; i++) {
+        r |= (a_.i64[i] >= b_.i64[i]) ? (UINT64_C(1) << i) : 0;
+      }
+    #endif
+
+    return r;
+  #endif
+}
+#if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_cmpge_epi64_mask
+  #define _mm512_cmpge_epi64_mask(a, b) simde_mm512_cmpge_epi64_mask(a, b)
+#endif
+
 
 SIMDE_END_DECLS_
 HEDLEY_DIAGNOSTIC_POP
