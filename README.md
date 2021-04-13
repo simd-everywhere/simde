@@ -81,7 +81,8 @@ set extensions:
 * WebAssembly
   * [SIMD128](https://github.com/WebAssembly/simd)
 
-As well as partial support for many others; see the
+As well as partial support for many others, including NEON and SVE in
+addition to several AVX-512 extensions.  See the
 [instruction-set-support](https://github.com/simd-everywhere/simde/issues?q=is%3Aissue+is%3Aopen+label%3Ainstruction-set-support+sort%3Aupdated-desc)
 label in the issue tracker for details on progress.  If you'd like to
 be notified when an instruction set is available you may subscribe to

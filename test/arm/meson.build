@@ -1,1 +1,2 @@
 subdir('neon')
+subdir('sve')

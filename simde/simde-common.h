@@ -805,6 +805,28 @@ SIMDE_DIAGNOSTIC_DISABLE_CPP98_COMPAT_PEDANTIC_
   #define SIMDE_BUILTIN_HAS_64_(name) 0
 #endif
 
+#if !defined(__cplusplus)
+  #if defined(__clang__)
+    #if HEDLEY_HAS_WARNING("-Wc11-extensions")
+      #define SIMDE_GENERIC_(...) (__extension__ ({ \
+          HEDLEY_DIAGNOSTIC_PUSH \
+          _Pragma("clang diagnostic ignored \"-Wc11-extensions\"") \
+          _Generic(__VA_ARGS__); \
+          HEDLEY_DIAGNOSTIC_POP \
+        }))
+    #elif HEDLEY_HAS_WARNING("-Wc1x-extensions")
+      #define SIMDE_GENERIC_(...) (__extension__ ({ \
+          HEDLEY_DIAGNOSTIC_PUSH \
+          _Pragma("clang diagnostic ignored \"-Wc1x-extensions\"") \
+          _Generic(__VA_ARGS__); \
+          HEDLEY_DIAGNOSTIC_POP \
+        }))
+    #endif
+  #elif HEDLEY_GCC_VERSION_CHECK(4,9,0)
+    #define SIMDE_GENERIC_(...) _Generic(__VA_ARGS__)
+  #endif
+#endif
+
 HEDLEY_DIAGNOSTIC_POP
 
 /* Sometimes we run into problems with specific versions of compilers

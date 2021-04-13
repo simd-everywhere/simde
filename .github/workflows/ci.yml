@@ -38,6 +38,9 @@ jobs:
     # Make sure neon.h includes all the NEON headers.
     - name: Missing NEON includes
       run: for f in simde/arm/neon/*.h; do grep -q "include \"neon/$(basename "$f")\"" simde/arm/neon.h || (echo "Missing $f" && exit 1); done
+    # Make sure sve.h includes all the SVE headers.
+    - name: Missing SVE includes
+      run: for f in simde/arm/sve/*.h; do grep -q "include \"sve/$(basename "$f")\"" simde/arm/sve.h || (echo "Missing $f" && exit 1); done
     # Make sure we can find the expected header guards.  It's easy to miss this when doing C&P
     - name: Header guards
       run: for file in $(find simde/*/ -name '*.h'); do grep -q "$(echo "$file" | tr '[:lower:]' '[:upper:]' | tr '[:punct:]' '_')" "$file" || (echo "Missing or incorrect header guard in $file" && exit 1); done
@@ -120,6 +123,39 @@ jobs:
       run: ./test/download-sde.sh ~/sde
     - name: Configure
       run: ~/.local/bin/meson setup build -Dsleef=enabled -Db_coverage=true
+    - name: Build
+      run: ninja -C build -v
+    - name: Test
+      run: |
+        find build/test/ -type f -executable -exec parallel ~/sde/sde64 -- ::: {} \;
+    - name: Coverage Report
+      run: ninja -C build -v coverage-xml
+    - name: CodeCov.io
+      uses: codecov/codecov-action@v1
+      with:
+        file: ./build/meson-logs/coverage.xml
+
+  sve-avx512vl:
+    runs-on: ubuntu-latest
+    env:
+      CC: clang
+      CXX: clang++
+      CFLAGS: -march=icelake-server -DSIMDE_NATURAL_VECTOR_SIZE=256 -Wall -Wextra -Werror
+      CXXFLAGS: -march=icelake-server -DSIMDE_NATURAL_VECTOR_SIZE=256 -Wall -Wextra -Werror
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: recursive
+    - name: CPU Information
+      run: cat /proc/cpuinfo
+    - name: Install APT Dependencies
+      run: sudo add-apt-repository 'ppa:ubuntu-toolchain-r/test' && sudo apt-get update && sudo apt-get install -y ninja-build ninja-build python3-pip python3-setuptools python3-wheel parallel gcovr
+    - name: Install pip Dependencies
+      run: pip3 install meson
+    - name: Download SDE
+      run: ./test/download-sde.sh ~/sde
+    - name: Configure
+      run: ~/.local/bin/meson setup build -Db_coverage=true
     - name: Build
       run: ninja -C build -v
     - name: Test

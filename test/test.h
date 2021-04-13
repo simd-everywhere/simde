@@ -12,6 +12,7 @@
 #include <stdarg.h>
 
 typedef enum SimdeTestVecPos {
+  SIMDE_TEST_VEC_POS_SINGLE =  2,
   SIMDE_TEST_VEC_POS_FIRST  =  1,
   SIMDE_TEST_VEC_POS_MIDDLE =  0,
   SIMDE_TEST_VEC_POS_LAST   = -1
@@ -208,7 +209,7 @@ simde_test_codegen_u32(size_t buf_len, char buf[HEDLEY_ARRAY_PARAM(buf_len)], ui
 static void
 simde_test_codegen_u64(size_t buf_len, char buf[HEDLEY_ARRAY_PARAM(buf_len)], uint64_t value) {
   if (value == UINT64_MAX) {
-    simde_test_codegen_snprintf_(buf, buf_len, "%29s", "UINT64_MAX");
+    simde_test_codegen_snprintf_(buf, buf_len, "%30s", "UINT64_MAX");
   } else {
     simde_test_codegen_snprintf_(buf, buf_len, "UINT64_C(%20" PRIu64 ")", value);
   }
@@ -418,7 +419,7 @@ SIMDE_TEST_CODEGEN_GENERATE_RANDOM_INT_FUNC_(uint64_t, u64)
 
 #define SIMDE_TEST_CODEGEN_GENERATE_WRITE_VECTOR_FUNC_(T, symbol_identifier, elements_per_line) \
   static void \
-  simde_test_codegen_write_v##symbol_identifier(int indent, size_t elem_count, T values[HEDLEY_ARRAY_PARAM(elem_count)], SimdeTestVecPos pos) { \
+  simde_test_codegen_write_v##symbol_identifier##_full(int indent, size_t elem_count, const char* name, T values[HEDLEY_ARRAY_PARAM(elem_count)], SimdeTestVecPos pos) { \
     switch (pos) { \
       case SIMDE_TEST_VEC_POS_FIRST: \
         simde_test_codegen_write_indent(indent); \
@@ -430,8 +431,13 @@ SIMDE_TEST_CODEGEN_GENERATE_RANDOM_INT_FUNC_(uint64_t, u64)
         indent++; \
         simde_test_codegen_write_indent(indent); \
         break; \
+      case SIMDE_TEST_VEC_POS_SINGLE: \
+        simde_test_codegen_write_indent(indent++); \
+        fprintf(SIMDE_CODEGEN_FP, "static const " #T " %s[] = \n", name); \
+        simde_test_codegen_write_indent(indent); \
+        break; \
     } \
- \
+    \
     fputs("{ ", SIMDE_CODEGEN_FP); \
     for (size_t i = 0 ; i < elem_count ; i++) { \
       if (i != 0) { \
@@ -443,13 +449,13 @@ SIMDE_TEST_CODEGEN_GENERATE_RANDOM_INT_FUNC_(uint64_t, u64)
           fputc(' ', SIMDE_CODEGEN_FP); \
         } \
       } \
- \
+    \
       char buf[53]; \
       simde_test_codegen_##symbol_identifier(sizeof(buf), buf, values[i]); \
       fputs(buf, SIMDE_CODEGEN_FP); \
     } \
     fputs(" }", SIMDE_CODEGEN_FP); \
- \
+    \
     switch (pos) { \
       case SIMDE_TEST_VEC_POS_FIRST: \
       case SIMDE_TEST_VEC_POS_MIDDLE: \
@@ -458,9 +464,17 @@ SIMDE_TEST_CODEGEN_GENERATE_RANDOM_INT_FUNC_(uint64_t, u64)
       case SIMDE_TEST_VEC_POS_LAST: \
         fputs(" },", SIMDE_CODEGEN_FP); \
         break; \
+      case SIMDE_TEST_VEC_POS_SINGLE: \
+        fputs(";", SIMDE_CODEGEN_FP); \
+        break; \
     } \
- \
+    \
     fputc('\n', SIMDE_CODEGEN_FP); \
+  } \
+  \
+  static void \
+  simde_test_codegen_write_v##symbol_identifier(int indent, size_t elem_count, T values[HEDLEY_ARRAY_PARAM(elem_count)], SimdeTestVecPos pos) { \
+    simde_test_codegen_write_v##symbol_identifier##_full(indent, elem_count, "???", values, pos); \
   }
 
 SIMDE_TEST_CODEGEN_GENERATE_WRITE_VECTOR_FUNC_(simde_float32, f32, 4)
@@ -474,9 +488,20 @@ SIMDE_TEST_CODEGEN_GENERATE_WRITE_VECTOR_FUNC_(uint16_t, u16, 8)
 SIMDE_TEST_CODEGEN_GENERATE_WRITE_VECTOR_FUNC_(uint32_t, u32, 8)
 SIMDE_TEST_CODEGEN_GENERATE_WRITE_VECTOR_FUNC_(uint64_t, u64, 4)
 
+#define simde_test_codegen_write_1vi8(indent, elem_count, values)  simde_test_codegen_write_vi8_full( (indent), (elem_count), #values, (values), SIMDE_TEST_VEC_POS_SINGLE)
+#define simde_test_codegen_write_1vi16(indent, elem_count, values) simde_test_codegen_write_vi16_full((indent), (elem_count), #values, (values), SIMDE_TEST_VEC_POS_SINGLE)
+#define simde_test_codegen_write_1vi32(indent, elem_count, values) simde_test_codegen_write_vi32_full((indent), (elem_count), #values, (values), SIMDE_TEST_VEC_POS_SINGLE)
+#define simde_test_codegen_write_1vi64(indent, elem_count, values) simde_test_codegen_write_vi64_full((indent), (elem_count), #values, (values), SIMDE_TEST_VEC_POS_SINGLE)
+#define simde_test_codegen_write_1vu8(indent, elem_count, values)  simde_test_codegen_write_vu8_full( (indent), (elem_count), #values, (values), SIMDE_TEST_VEC_POS_SINGLE)
+#define simde_test_codegen_write_1vu16(indent, elem_count, values) simde_test_codegen_write_vu16_full((indent), (elem_count), #values, (values), SIMDE_TEST_VEC_POS_SINGLE)
+#define simde_test_codegen_write_1vu32(indent, elem_count, values) simde_test_codegen_write_vu32_full((indent), (elem_count), #values, (values), SIMDE_TEST_VEC_POS_SINGLE)
+#define simde_test_codegen_write_1vu64(indent, elem_count, values) simde_test_codegen_write_vu64_full((indent), (elem_count), #values, (values), SIMDE_TEST_VEC_POS_SINGLE)
+#define simde_test_codegen_write_1vf32(indent, elem_count, values) simde_test_codegen_write_vf32_full((indent), (elem_count), #values, (values), SIMDE_TEST_VEC_POS_SINGLE)
+#define simde_test_codegen_write_1vf64(indent, elem_count, values) simde_test_codegen_write_vf64_full((indent), (elem_count), #values, (values), SIMDE_TEST_VEC_POS_SINGLE)
+
 #define SIMDE_TEST_CODEGEN_WRITE_SCALAR_FUNC_(T, symbol_identifier) \
   static void \
-  simde_test_codegen_write_##symbol_identifier(int indent, T value, SimdeTestVecPos pos) { \
+  simde_test_codegen_write_##symbol_identifier##_full(int indent, const char* name, T value, SimdeTestVecPos pos) { \
     switch (pos) { \
       case SIMDE_TEST_VEC_POS_FIRST: \
         simde_test_codegen_write_indent(indent); \
@@ -487,6 +512,10 @@ SIMDE_TEST_CODEGEN_GENERATE_WRITE_VECTOR_FUNC_(uint64_t, u64, 4)
       case SIMDE_TEST_VEC_POS_LAST: \
         indent++; \
         simde_test_codegen_write_indent(indent); \
+        break; \
+      case SIMDE_TEST_VEC_POS_SINGLE: \
+        simde_test_codegen_write_indent(indent++); \
+        fprintf(SIMDE_CODEGEN_FP, "static const " #T " %s = ", name); \
         break; \
     } \
  \
@@ -504,9 +533,17 @@ SIMDE_TEST_CODEGEN_GENERATE_WRITE_VECTOR_FUNC_(uint64_t, u64, 4)
       case SIMDE_TEST_VEC_POS_LAST: \
         fputs(" },", SIMDE_CODEGEN_FP); \
         break; \
+      case SIMDE_TEST_VEC_POS_SINGLE: \
+        fputs(";", SIMDE_CODEGEN_FP); \
+        break; \
     } \
- \
+    \
     fputc('\n', SIMDE_CODEGEN_FP); \
+  } \
+  \
+  static void \
+  simde_test_codegen_write_##symbol_identifier(int indent, T value, SimdeTestVecPos pos) { \
+    simde_test_codegen_write_##symbol_identifier##_full(indent, "???", value, pos); \
   }
 
 SIMDE_TEST_CODEGEN_WRITE_SCALAR_FUNC_(int8_t,    i8)
@@ -519,6 +556,17 @@ SIMDE_TEST_CODEGEN_WRITE_SCALAR_FUNC_(uint32_t, u32)
 SIMDE_TEST_CODEGEN_WRITE_SCALAR_FUNC_(uint64_t, u64)
 SIMDE_TEST_CODEGEN_WRITE_SCALAR_FUNC_(simde_float32, f32)
 SIMDE_TEST_CODEGEN_WRITE_SCALAR_FUNC_(simde_float64, f64)
+
+#define simde_test_codegen_write_1i8(indent, value)  simde_test_codegen_write_i8_full((indent), #value, (value), SIMDE_TEST_VEC_POS_SINGLE)
+#define simde_test_codegen_write_1i16(indent, value) simde_test_codegen_write_i16_full((indent), #value, (value), SIMDE_TEST_VEC_POS_SINGLE)
+#define simde_test_codegen_write_1i32(indent, value) simde_test_codegen_write_i32_full((indent), #value, (value), SIMDE_TEST_VEC_POS_SINGLE)
+#define simde_test_codegen_write_1i64(indent, value) simde_test_codegen_write_i64_full((indent), #value, (value), SIMDE_TEST_VEC_POS_SINGLE)
+#define simde_test_codegen_write_1u8(indent, value)  simde_test_codegen_write_u8_full((indent), #value, (value), SIMDE_TEST_VEC_POS_SINGLE)
+#define simde_test_codegen_write_1u16(indent, value) simde_test_codegen_write_u16_full((indent), #value, (value), SIMDE_TEST_VEC_POS_SINGLE)
+#define simde_test_codegen_write_1u32(indent, value) simde_test_codegen_write_u32_full((indent), #value, (value), SIMDE_TEST_VEC_POS_SINGLE)
+#define simde_test_codegen_write_1u64(indent, value) simde_test_codegen_write_u64_full((indent), #value, (value), SIMDE_TEST_VEC_POS_SINGLE)
+#define simde_test_codegen_write_1f32(indent, value) simde_test_codegen_write_f32_full((indent), #value, (value), SIMDE_TEST_VEC_POS_SINGLE)
+#define simde_test_codegen_write_1f64(indent, value) simde_test_codegen_write_f64_full((indent), #value, (value), SIMDE_TEST_VEC_POS_SINGLE)
 
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DIAGNOSTIC_DISABLE_FLOAT_EQUAL_

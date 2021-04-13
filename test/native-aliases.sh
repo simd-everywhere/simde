@@ -22,11 +22,13 @@ PATTERN="$(xmllint --xpath '//intrinsic/@name' "${DIRNAME}/iig.xml" | grep -Po '
 echo "s/([^_])simde(${PATTERN})/\1\2/g" > pattern
 ls x86/*.c | xargs -n1 -P$(nproc) sed -i -E -f pattern
 
-
 # NEON
 
 perl -p -i -e 's/([^a-zA-Z0-9_])simde_v/$1v/g' arm/neon/*.{c,h}
 
+# SVE
+
+perl -p -i -e 's/([^a-zA-Z0-9_])simde_sv/$1sv/g' arm/sve/*.{c,h}
 
 # WASM SIMD128
 
