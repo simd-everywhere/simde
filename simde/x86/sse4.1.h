@@ -753,8 +753,10 @@ simde_mm_cvtepu8_epi32 (simde__m128i a) {
     return _mm_cvtepu8_epi32(a);
   #elif defined(SIMDE_X86_SSSE3_NATIVE)
     __m128i s = _mm_set_epi8(
-        0x80, 0x80, 0x80, 0x03, 0x80, 0x80, 0x80, 0x02,
-        0x80, 0x80, 0x80, 0x01, 0x80, 0x80, 0x80, 0x00);
+        HEDLEY_STATIC_CAST(char, 0x80), HEDLEY_STATIC_CAST(char, 0x80), HEDLEY_STATIC_CAST(char, 0x80), HEDLEY_STATIC_CAST(char, 0x03),
+        HEDLEY_STATIC_CAST(char, 0x80), HEDLEY_STATIC_CAST(char, 0x80), HEDLEY_STATIC_CAST(char, 0x80), HEDLEY_STATIC_CAST(char, 0x02),
+        HEDLEY_STATIC_CAST(char, 0x80), HEDLEY_STATIC_CAST(char, 0x80), HEDLEY_STATIC_CAST(char, 0x80), HEDLEY_STATIC_CAST(char, 0x01),
+        HEDLEY_STATIC_CAST(char, 0x80), HEDLEY_STATIC_CAST(char, 0x80), HEDLEY_STATIC_CAST(char, 0x80), HEDLEY_STATIC_CAST(char, 0x00));
     return _mm_shuffle_epi8(a, s);
   #elif defined(SIMDE_X86_SSE2_NATIVE)
     __m128i z = _mm_setzero_si128();
@@ -796,8 +798,10 @@ simde_mm_cvtepu8_epi64 (simde__m128i a) {
     return _mm_cvtepu8_epi64(a);
   #elif defined(SIMDE_X86_SSSE3_NATIVE)
     __m128i s = _mm_set_epi8(
-        0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x01,
-        0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x00);
+        HEDLEY_STATIC_CAST(char, 0x80), HEDLEY_STATIC_CAST(char, 0x80), HEDLEY_STATIC_CAST(char, 0x80), HEDLEY_STATIC_CAST(char, 0x80),
+        HEDLEY_STATIC_CAST(char, 0x80), HEDLEY_STATIC_CAST(char, 0x80), HEDLEY_STATIC_CAST(char, 0x80), HEDLEY_STATIC_CAST(char, 0x01),
+        HEDLEY_STATIC_CAST(char, 0x80), HEDLEY_STATIC_CAST(char, 0x80), HEDLEY_STATIC_CAST(char, 0x80), HEDLEY_STATIC_CAST(char, 0x80),
+        HEDLEY_STATIC_CAST(char, 0x80), HEDLEY_STATIC_CAST(char, 0x80), HEDLEY_STATIC_CAST(char, 0x80), HEDLEY_STATIC_CAST(char, 0x00));
     return _mm_shuffle_epi8(a, s);
   #elif defined(SIMDE_X86_SSE2_NATIVE)
     __m128i z = _mm_setzero_si128();
