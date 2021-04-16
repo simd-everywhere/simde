@@ -60,119 +60,27 @@ jobs:
     - name: Preprocessor directive indentation
       run: find simde/*/ -name 'avx*.h' -exec pcre2grep -M '{\n#' {} + && exit 1 || exit 0
 
-  # Running the tests in SDE is pretty slow, so we put these early
-  # in the file so hopefully they start sooner.
-
-  SDE:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        arch: ["icelake-server"]
-    env:
-      CC: clang
-      CXX: clang++
-      CFLAGS: -march=icelake-server -Wall -Wextra -Werror
-      CXXFLAGS: -march=icelake-server -Wall -Wextra -Werror
-    steps:
-    - uses: actions/checkout@v2
-      with:
-        submodules: recursive
-    - name: CPU Information
-      run: cat /proc/cpuinfo
-    - name: Install APT Dependencies
-      run: sudo add-apt-repository 'ppa:ubuntu-toolchain-r/test' && sudo apt-get update && sudo apt-get install -y ninja-build ninja-build python3-pip python3-setuptools python3-wheel parallel gcovr
-    - name: Install pip Dependencies
-      run: pip3 install meson
-    - name: Download SDE
-      run: ./test/download-sde.sh ~/sde
-    - name: Configure
-      run: ~/.local/bin/meson setup build -Db_coverage=true
-    - name: Build
-      run: ninja -C build -v
-    - name: Test
-      run: |
-        find build/test/ -type f -executable -exec parallel ~/sde/sde64 -- ::: {} \;
-    - name: Coverage Report
-      run: ninja -C build -v coverage-xml
-    - name: CodeCov.io
-      uses: codecov/codecov-action@v1
-      with:
-        file: ./build/meson-logs/coverage.xml
-
-  sleef-SDE:
-    runs-on: ubuntu-20.04
-    strategy:
-      matrix:
-        arch: ["icelake-server"]
-    env:
-      CC: clang
-      CXX: clang++
-      CFLAGS: -march=icelake-server -Wall -Wextra -Werror
-      CXXFLAGS: -march=icelake-server -Wall -Wextra -Werror
-    steps:
-    - uses: actions/checkout@v2
-      with:
-        submodules: recursive
-    - name: CPU Information
-      run: cat /proc/cpuinfo
-    - name: Install APT Dependencies
-      run: sudo add-apt-repository 'ppa:ubuntu-toolchain-r/test' && sudo apt-get update && sudo apt-get install -y ninja-build ninja-build python3-pip python3-setuptools python3-wheel parallel gcovr libsleef-dev
-    - name: Install pip Dependencies
-      run: pip3 install meson
-    - name: Download SDE
-      run: ./test/download-sde.sh ~/sde
-    - name: Configure
-      run: ~/.local/bin/meson setup build -Dsleef=enabled -Db_coverage=true
-    - name: Build
-      run: ninja -C build -v
-    - name: Test
-      run: |
-        find build/test/ -type f -executable -exec parallel ~/sde/sde64 -- ::: {} \;
-    - name: Coverage Report
-      run: ninja -C build -v coverage-xml
-    - name: CodeCov.io
-      uses: codecov/codecov-action@v1
-      with:
-        file: ./build/meson-logs/coverage.xml
-
-  sve-avx512vl:
-    runs-on: ubuntu-latest
-    env:
-      CC: clang
-      CXX: clang++
-      CFLAGS: -march=icelake-server -DSIMDE_NATURAL_VECTOR_SIZE=256 -Wall -Wextra -Werror
-      CXXFLAGS: -march=icelake-server -DSIMDE_NATURAL_VECTOR_SIZE=256 -Wall -Wextra -Werror
-    steps:
-    - uses: actions/checkout@v2
-      with:
-        submodules: recursive
-    - name: CPU Information
-      run: cat /proc/cpuinfo
-    - name: Install APT Dependencies
-      run: sudo add-apt-repository 'ppa:ubuntu-toolchain-r/test' && sudo apt-get update && sudo apt-get install -y ninja-build ninja-build python3-pip python3-setuptools python3-wheel parallel gcovr
-    - name: Install pip Dependencies
-      run: pip3 install meson
-    - name: Download SDE
-      run: ./test/download-sde.sh ~/sde
-    - name: Configure
-      run: ~/.local/bin/meson setup build -Db_coverage=true
-    - name: Build
-      run: ninja -C build -v
-    - name: Test
-      run: |
-        find build/test/ -type f -executable -exec parallel ~/sde/sde64 -- ::: {} \;
-    - name: Coverage Report
-      run: ninja -C build -v coverage-xml
-    - name: CodeCov.io
-      uses: codecov/codecov-action@v1
-      with:
-        file: ./build/meson-logs/coverage.xml
-
   x86:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        isax: ["", "-msse3", "-mssse3", "-msse4.1", "-msse4.2", "-mavx", "-mfma", "-mavx2", "-march=native"]
+        isax:
+        - -mavx512bw -mavx512vl -mavx512cd -mavx512dq -mavx512vbmi -mavx512ifma -mavx512vpopcntdq -mavx512bitalg -mavx512vnni -mvpclmulqdq
+        - -mavx512bw -mavx512vl -DSIMDE_NATURAL_VECTOR_SIZE=256
+        - -mavx512f
+        - -mavx512bw
+        - -mavx512vl
+        - -mavx512vl -mavx512dq
+        - -mavx512cd
+        - -mavx512dq
+        - -msse2
+        - -msse3
+        - -mssse3
+        - -msse4.1
+        - -msse4.2
+        - -mavx
+        - -mfma
+        - -mavx2
     env:
       CFLAGS: -Wall -Wextra -Werror ${{ matrix.isax }}
       CXXFLAGS: -Wall -Wextra -Werror ${{ matrix.isax }}
@@ -191,46 +99,13 @@ jobs:
     - name: Build
       run: ninja -C build -v
     - name: Test
-      run: ninja -C build -v test
+      run: meson test -C build --print-errorlogs --wrapper "${GITHUB_WORKSPACE}/test/check-flags.sh sde"
     - name: Coverage Report
       run: ninja -C build -v coverage-xml
     - name: CodeCov.io
       uses: codecov/codecov-action@v1
       with:
         file: ./build/meson-logs/coverage.xml
-
-  avx512:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        isax: ["-mavx512f", "-mavx512bw", "-mavx512cd", "-mavx512dq", "-mavx512vl", "-mavx512bw -mavx512vl", "-mavx512vl -mavx512dq"]
-    env:
-      CFLAGS: -Wall -Wextra -Werror ${{ matrix.isax }}
-      CXXFLAGS: -Wall -Wextra -Werror ${{ matrix.isax }}
-    steps:
-    - uses: actions/checkout@v2
-      with:
-        submodules: recursive
-    - name: CPU Information
-      run: cat /proc/cpuinfo
-    - name: Install APT Dependencies
-      run: sudo add-apt-repository 'ppa:ubuntu-toolchain-r/test' && sudo apt-get update && sudo apt-get install -y ninja-build ninja-build python3-pip python3-setuptools python3-wheel parallel gcovr
-    - name: Install pip Dependencies
-      run: pip3 install meson
-    - name: Configure
-      run: ~/.local/bin/meson setup build -Db_coverage=true
-    - name: Build
-      run: ninja -C build -v
-    # We can't actually run the tests without AVX-512. GitHub Actions doesn't
-    # currently support it, and SDE is too slow.
-    # - name: Test
-    #   run: ninja -C build -v test
-    # - name: Coverage Report
-    #   run: ninja -C build -v coverage-xml
-    # - name: CodeCov.io
-    #   uses: codecov/codecov-action@v1
-    #   with:
-    #     file: ./build/meson-logs/coverage.xml
 
   # emscripten:
   #   runs-on: ubuntu-latest
