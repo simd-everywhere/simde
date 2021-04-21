@@ -397,10 +397,10 @@ SIMDE_BEGIN_DECLS_
       int       type;
     } simde_svbool_t;
 
-    static const uint64_t simde_arm_sve_mask_bp_lo_ = UINT64_C(0x5555555555555555);
-    static const uint64_t simde_arm_sve_mask_bp_hi_ = UINT64_C(0xaaaaaaaaaaaaaaaa);
-
     #if defined(__BMI2__)
+      static const uint64_t simde_arm_sve_mask_bp_lo_ = UINT64_C(0x5555555555555555);
+      static const uint64_t simde_arm_sve_mask_bp_hi_ = UINT64_C(0xaaaaaaaaaaaaaaaa);
+
       SIMDE_FUNCTION_ATTRIBUTES
       __mmask64
       simde_arm_sve_mmask32_to_mmask64(__mmask32 m) {
@@ -760,6 +760,11 @@ SIMDE_BEGIN_DECLS_
     typedef  simde_svfloat64_t  svfloat64_t;
   #endif
 #endif
+
+#if !defined(SIMDE_ARM_SVE_DEFAULT_UNDEFINED_SUFFIX)
+  #define SIMDE_ARM_SVE_DEFAULT_UNDEFINED_SUFFIX z
+#endif
+#define SIMDE_ARM_SVE_UNDEFINED_SYMBOL(name) HEDLEY_CONCAT3(name, _, SIMDE_ARM_SVE_DEFAULT_UNDEFINED_SUFFIX)
 
 SIMDE_END_DECLS_
 HEDLEY_DIAGNOSTIC_POP

@@ -30,6 +30,7 @@
 #include "sve/types.h"
 
 #include "sve/add.h"
+#include "sve/and.h"
 #include "sve/cnt.h"
 #include "sve/cmplt.h"
 #include "sve/dup_n.h"

@@ -27,10 +27,10 @@
 #if !defined(SIMDE_ARM_SVE_ST1_H)
 #define SIMDE_ARM_SVE_ST1_H
 
+#include "types.h"
+
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
-
-#include "types.h"
 
 SIMDE_FUNCTION_ATTRIBUTES
 void

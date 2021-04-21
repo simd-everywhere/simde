@@ -155,6 +155,7 @@ simde_neon_families = [
 
 simde_sve_families = [
   'add',
+  'and',
   'cnt',
   'cmplt',
   'dup_n',

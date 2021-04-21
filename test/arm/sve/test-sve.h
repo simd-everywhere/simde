@@ -3,7 +3,12 @@
 
 #include "../../test.h"
 
-
+static int32_t
+simde_test_arm_sve_random_length(size_t buf_size, size_t elem_size) {
+  return
+    (simde_test_codegen_random_i32() & HEDLEY_STATIC_CAST(int32_t, (buf_size / elem_size) - 1)) |
+    HEDLEY_STATIC_CAST(int32_t, (buf_size / 2) / elem_size);
+}
 
 #if !defined(SIMDE_TEST_BARE)
   #define SIMDE_TEST_DECLARE_SUITE(name) SIMDE_TEST_SUITE_DECLARE_GETTERS(HEDLEY_CONCAT(simde_test_arm_sve_get_suite_,name))
