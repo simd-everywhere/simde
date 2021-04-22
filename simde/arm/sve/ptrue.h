@@ -131,9 +131,9 @@ simde_svptrue_b64(void) {
     simde_svbool_t r;
 
     #if SIMDE_ARM_SVE_VECTOR_SIZE >= 512
-      r = simde_svbool_from_mmask8(HEDLEY_STATIC_CAST(__mmask8, ~UINT64_C(0)));
-    #else
       r = simde_svbool_from_mmask8(HEDLEY_STATIC_CAST(__mmask8, ~UINT8_C(0)));
+    #else
+      r = simde_svbool_from_mmask4(HEDLEY_STATIC_CAST(__mmask8, ~UINT8_C(0)));
     #endif
 
     return r;

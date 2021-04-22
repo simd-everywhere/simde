@@ -315,7 +315,7 @@ simde_svadd_s64_z(simde_svbool_t pg, simde_svint64_t op1, simde_svint64_t op2) {
     #elif defined(SIMDE_X86_AVX512BW_NATIVE) && (SIMDE_ARM_SVE_VECTOR_SIZE >= 512)
       r.m512i = _mm512_maskz_add_epi64(simde_svbool_to_mmask8(pg), op1.m512i, op2.m512i);
     #elif defined(SIMDE_X86_AVX512BW_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
-      r.m256i[0] = _mm256_maskz_add_epi64(simde_svbool_to_mmask8(pg), op1.m256i[0], op2.m256i[0]);
+      r.m256i[0] = _mm256_maskz_add_epi64(simde_svbool_to_mmask4(pg), op1.m256i[0], op2.m256i[0]);
     #elif defined(SIMDE_X86_AVX2_NATIVE)
       for (int i = 0 ; i < HEDLEY_STATIC_CAST(int, sizeof(r.m256i) / sizeof(r.m256i[0])) ; i++) {
         r.m256i[i] = _mm256_and_si256(pg.m256i[i], _mm256_add_epi64(op1.m256i[i], op2.m256i[i]));
@@ -360,7 +360,7 @@ simde_svadd_s64_m(simde_svbool_t pg, simde_svint64_t op1, simde_svint64_t op2) {
     #elif defined(SIMDE_X86_AVX512BW_NATIVE) && (SIMDE_ARM_SVE_VECTOR_SIZE >= 512)
       r.m512i = _mm512_mask_add_epi64(op1.m512i, simde_svbool_to_mmask8(pg), op1.m512i, op2.m512i);
     #elif defined(SIMDE_X86_AVX512BW_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
-      r.m256i[0] = _mm256_mask_add_epi64(op1.m256i[0], simde_svbool_to_mmask8(pg), op1.m256i[0], op2.m256i[0]);
+      r.m256i[0] = _mm256_mask_add_epi64(op1.m256i[0], simde_svbool_to_mmask4(pg), op1.m256i[0], op2.m256i[0]);
     #elif defined(SIMDE_X86_AVX2_NATIVE)
       for (int i = 0 ; i < HEDLEY_STATIC_CAST(int, sizeof(r.m256i) / sizeof(r.m256i[0])) ; i++) {
         r.m256i[i] = _mm256_add_epi64(op1.m256i[i], _mm256_and_si256(pg.m256i[i], op2.m256i[i]));
@@ -675,7 +675,7 @@ simde_svadd_u64_z(simde_svbool_t pg, simde_svuint64_t op1, simde_svuint64_t op2)
     #elif defined(SIMDE_X86_AVX512BW_NATIVE) && (SIMDE_ARM_SVE_VECTOR_SIZE >= 512)
       r.m512i = _mm512_maskz_add_epi64(simde_svbool_to_mmask8(pg), op1.m512i, op2.m512i);
     #elif defined(SIMDE_X86_AVX512BW_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
-      r.m256i[0] = _mm256_maskz_add_epi64(simde_svbool_to_mmask8(pg), op1.m256i[0], op2.m256i[0]);
+      r.m256i[0] = _mm256_maskz_add_epi64(simde_svbool_to_mmask4(pg), op1.m256i[0], op2.m256i[0]);
     #elif defined(SIMDE_X86_AVX2_NATIVE)
       for (int i = 0 ; i < HEDLEY_STATIC_CAST(int, sizeof(r.m256i) / sizeof(r.m256i[0])) ; i++) {
         r.m256i[i] = _mm256_and_si256(pg.m256i[i], _mm256_add_epi64(op1.m256i[i], op2.m256i[i]));
@@ -720,7 +720,7 @@ simde_svadd_u64_m(simde_svbool_t pg, simde_svuint64_t op1, simde_svuint64_t op2)
     #elif defined(SIMDE_X86_AVX512BW_NATIVE) && (SIMDE_ARM_SVE_VECTOR_SIZE >= 512)
       r.m512i = _mm512_mask_add_epi64(op1.m512i, simde_svbool_to_mmask8(pg), op1.m512i, op2.m512i);
     #elif defined(SIMDE_X86_AVX512BW_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
-      r.m256i[0] = _mm256_mask_add_epi64(op1.m256i[0], simde_svbool_to_mmask8(pg), op1.m256i[0], op2.m256i[0]);
+      r.m256i[0] = _mm256_mask_add_epi64(op1.m256i[0], simde_svbool_to_mmask4(pg), op1.m256i[0], op2.m256i[0]);
     #elif defined(SIMDE_X86_AVX2_NATIVE)
       for (int i = 0 ; i < HEDLEY_STATIC_CAST(int, sizeof(r.m256i) / sizeof(r.m256i[0])) ; i++) {
         r.m256i[i] = _mm256_add_epi64(op1.m256i[i], _mm256_and_si256(pg.m256i[i], op2.m256i[i]));
@@ -869,7 +869,7 @@ simde_svadd_f64_z(simde_svbool_t pg, simde_svfloat64_t op1, simde_svfloat64_t op
     #elif defined(SIMDE_X86_AVX512BW_NATIVE) && (SIMDE_ARM_SVE_VECTOR_SIZE >= 512)
       r.m512d = _mm512_maskz_add_pd(simde_svbool_to_mmask8(pg), op1.m512d, op2.m512d);
     #elif defined(SIMDE_X86_AVX512BW_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
-      r.m256d[0] = _mm256_maskz_add_pd(simde_svbool_to_mmask8(pg), op1.m256d[0], op2.m256d[0]);
+      r.m256d[0] = _mm256_maskz_add_pd(simde_svbool_to_mmask4(pg), op1.m256d[0], op2.m256d[0]);
     #elif defined(SIMDE_X86_AVX2_NATIVE)
       for (int i = 0 ; i < HEDLEY_STATIC_CAST(int, sizeof(r.m256d) / sizeof(r.m256d[0])) ; i++) {
         r.m256d[i] = _mm256_and_pd(_mm256_castsi256_pd(pg.m256i[i]), _mm256_add_pd(op1.m256d[i], op2.m256d[i]));
@@ -921,7 +921,7 @@ simde_svadd_f64_m(simde_svbool_t pg, simde_svfloat64_t op1, simde_svfloat64_t op
     #elif defined(SIMDE_X86_AVX512BW_NATIVE) && (SIMDE_ARM_SVE_VECTOR_SIZE >= 512)
       r.m512d = _mm512_mask_add_pd(op1.m512d, simde_svbool_to_mmask8(pg), op1.m512d, op2.m512d);
     #elif defined(SIMDE_X86_AVX512BW_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
-      r.m256d[0] = _mm256_mask_add_pd(op1.m256d[0], simde_svbool_to_mmask8(pg), op1.m256d[0], op2.m256d[0]);
+      r.m256d[0] = _mm256_mask_add_pd(op1.m256d[0], simde_svbool_to_mmask4(pg), op1.m256d[0], op2.m256d[0]);
     #elif defined(SIMDE_X86_AVX2_NATIVE)
       for (int i = 0 ; i < HEDLEY_STATIC_CAST(int, sizeof(r.m256d) / sizeof(r.m256d[0])) ; i++) {
         r.m256d[i] = _mm256_add_pd(op1.m256d[i], _mm256_and_pd(_mm256_castsi256_pd(pg.m256i[i]), op2.m256d[i]));

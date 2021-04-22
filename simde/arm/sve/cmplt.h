@@ -42,7 +42,7 @@ simde_svcmplt_s8(simde_svbool_t pg, simde_svint8_t op1, simde_svint8_t op2) {
 
     #if defined(SIMDE_X86_AVX512BW_NATIVE) && (SIMDE_ARM_SVE_VECTOR_SIZE >= 512)
       r = simde_svbool_from_mmask64(_mm512_mask_cmplt_epi8_mask(simde_svbool_to_mmask64(pg), op1.m512i, op2.m512i));
-  #elif defined(SIMDE_X86_AVX512BW_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
+    #elif defined(SIMDE_X86_AVX512BW_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
       r = simde_svbool_from_mmask32(_mm256_mask_cmplt_epi8_mask(simde_svbool_to_mmask32(pg), op1.m256i[0], op2.m256i[0]));
     #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       r.neon_i8 = vandq_s8(pg.neon_i8, vreinterpretq_s8_u8(vcltq_s8(op1.neon, op2.neon)));
@@ -81,7 +81,7 @@ simde_svcmplt_s16(simde_svbool_t pg, simde_svint16_t op1, simde_svint16_t op2) {
 
     #if defined(SIMDE_X86_AVX512BW_NATIVE) && (SIMDE_ARM_SVE_VECTOR_SIZE >= 512)
       r = simde_svbool_from_mmask32(_mm512_mask_cmplt_epi16_mask(simde_svbool_to_mmask32(pg), op1.m512i, op2.m512i));
-  #elif defined(SIMDE_X86_AVX512BW_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
+    #elif defined(SIMDE_X86_AVX512BW_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
       r = simde_svbool_from_mmask16(_mm256_mask_cmplt_epi16_mask(simde_svbool_to_mmask16(pg), op1.m256i[0], op2.m256i[0]));
     #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       r.neon_i16 = vandq_s16(pg.neon_i16, vreinterpretq_s16_u16(vcltq_s16(op1.neon, op2.neon)));
@@ -120,7 +120,7 @@ simde_svcmplt_s32(simde_svbool_t pg, simde_svint32_t op1, simde_svint32_t op2) {
 
     #if defined(SIMDE_X86_AVX512BW_NATIVE) && (SIMDE_ARM_SVE_VECTOR_SIZE >= 512)
       r = simde_svbool_from_mmask16(_mm512_mask_cmplt_epi32_mask(simde_svbool_to_mmask16(pg), op1.m512i, op2.m512i));
-  #elif defined(SIMDE_X86_AVX512BW_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
+    #elif defined(SIMDE_X86_AVX512BW_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
       r = simde_svbool_from_mmask8(_mm256_mask_cmplt_epi32_mask(simde_svbool_to_mmask8(pg), op1.m256i[0], op2.m256i[0]));
     #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       r.neon_i32 = vandq_s32(pg.neon_i32, vreinterpretq_s32_u32(vcltq_s32(op1.neon, op2.neon)));
@@ -159,8 +159,8 @@ simde_svcmplt_s64(simde_svbool_t pg, simde_svint64_t op1, simde_svint64_t op2) {
 
     #if defined(SIMDE_X86_AVX512BW_NATIVE) && (SIMDE_ARM_SVE_VECTOR_SIZE >= 512)
       r = simde_svbool_from_mmask8(_mm512_mask_cmplt_epi64_mask(simde_svbool_to_mmask8(pg), op1.m512i, op2.m512i));
-  #elif defined(SIMDE_X86_AVX512BW_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
-      r = simde_svbool_from_mmask4(_mm256_mask_cmplt_epi64_mask(simde_svbool_to_mmask8(pg), op1.m256i[0], op2.m256i[0]));
+    #elif defined(SIMDE_X86_AVX512BW_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
+      r = simde_svbool_from_mmask4(_mm256_mask_cmplt_epi64_mask(simde_svbool_to_mmask4(pg), op1.m256i[0], op2.m256i[0]));
     #elif defined(SIMDE_ARM_NEON_A64V8_NATIVE)
       r.neon_i64 = vandq_s64(pg.neon_i64, vreinterpretq_s64_u64(vcltq_s64(op1.neon, op2.neon)));
     #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
@@ -300,7 +300,7 @@ simde_svcmplt_u64(simde_svbool_t pg, simde_svuint64_t op1, simde_svuint64_t op2)
     #if defined(SIMDE_X86_AVX512BW_NATIVE) && (SIMDE_ARM_SVE_VECTOR_SIZE >= 512)
       r = simde_svbool_from_mmask8(_mm512_mask_cmplt_epu64_mask(simde_svbool_to_mmask8(pg), op1.m512i, op2.m512i));
   #elif defined(SIMDE_X86_AVX512BW_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
-      r = simde_svbool_from_mmask4(_mm256_mask_cmplt_epu64_mask(simde_svbool_to_mmask8(pg), op1.m256i[0], op2.m256i[0]));
+      r = simde_svbool_from_mmask4(_mm256_mask_cmplt_epu64_mask(simde_svbool_to_mmask4(pg), op1.m256i[0], op2.m256i[0]));
     #elif defined(SIMDE_ARM_NEON_A64V8_NATIVE)
       r.neon_u64 = vandq_u64(pg.neon_u64, vcltq_u64(op1.neon, op2.neon));
     #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
@@ -334,7 +334,7 @@ simde_svcmplt_f32(simde_svbool_t pg, simde_svfloat32_t op1, simde_svfloat32_t op
 
     #if defined(SIMDE_X86_AVX512BW_NATIVE) && (SIMDE_ARM_SVE_VECTOR_SIZE >= 512)
       r = simde_svbool_from_mmask16(_mm512_mask_cmp_ps_mask(simde_svbool_to_mmask16(pg), op1.m512, op2.m512, _CMP_LT_OQ));
-  #elif defined(SIMDE_X86_AVX512BW_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
+    #elif defined(SIMDE_X86_AVX512BW_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
       r = simde_svbool_from_mmask8(_mm256_mask_cmp_ps_mask(simde_svbool_to_mmask8(pg), op1.m256[0], op2.m256[0], _CMP_LT_OQ));
     #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       r.neon_u32 = vandq_u32(pg.neon_u32, vcltq_f32(op1.neon, op2.neon));
@@ -374,7 +374,7 @@ simde_svcmplt_f64(simde_svbool_t pg, simde_svfloat64_t op1, simde_svfloat64_t op
     #if defined(SIMDE_X86_AVX512BW_NATIVE) && (SIMDE_ARM_SVE_VECTOR_SIZE >= 512)
       r = simde_svbool_from_mmask8(_mm512_mask_cmp_pd_mask(simde_svbool_to_mmask8(pg), op1.m512d, op2.m512d, _CMP_LT_OQ));
     #elif defined(SIMDE_X86_AVX512BW_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
-      r = simde_svbool_from_mmask4(_mm256_mask_cmp_pd_mask(simde_svbool_to_mmask8(pg), op1.m256d[0], op2.m256d[0], _CMP_LT_OQ));
+      r = simde_svbool_from_mmask4(_mm256_mask_cmp_pd_mask(simde_svbool_to_mmask4(pg), op1.m256d[0], op2.m256d[0], _CMP_LT_OQ));
     #elif defined(SIMDE_ARM_NEON_A64V8_NATIVE)
       r.neon_u64 = vandq_u64(pg.neon_u64, vcltq_f64(op1.neon, op2.neon));
     #elif defined(SIMDE_X86_SSE2_NATIVE)

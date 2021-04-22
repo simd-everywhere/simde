@@ -178,7 +178,7 @@ simde_svbool_t
 simde_svwhilelt_b64_s32(int32_t op1, int32_t op2) {
   #if defined(SIMDE_ARM_SVE_NATIVE)
     return svwhilelt_b64_s32(op1, op2);
-  #elif defined(SIMDE_X86_AVX512BW_NATIVE)
+  #elif defined(SIMDE_X86_AVX512BW_NATIVE) && (SIMDE_ARM_SVE_VECTOR_SIZE >= 512)
     if (HEDLEY_UNLIKELY(op1 >= op2))
       return simde_svbool_from_mmask8(HEDLEY_STATIC_CAST(__mmask8, 0));
 
@@ -189,6 +189,17 @@ simde_svwhilelt_b64_s32(int32_t op1, int32_t op2) {
     }
 
     return simde_svbool_from_mmask8(r);
+  #elif defined(SIMDE_X86_AVX512BW_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
+    if (HEDLEY_UNLIKELY(op1 >= op2))
+      return simde_svbool_from_mmask4(HEDLEY_STATIC_CAST(__mmask8, 0));
+
+    int_fast32_t remaining = (op2 - op1);
+    __mmask8 r = HEDLEY_STATIC_CAST(__mmask8, 0x0f);
+    if (remaining < 4) {
+      r >>= 4 - remaining;
+    }
+
+    return simde_svbool_from_mmask4(r);
   #else
     simde_svint64_t r;
 

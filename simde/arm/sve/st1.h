@@ -106,7 +106,7 @@ simde_svst1_s64(simde_svbool_t pg, int64_t * base, simde_svint64_t data) {
   #elif defined(SIMDE_X86_AVX512BW_NATIVE) && (SIMDE_ARM_SVE_VECTOR_SIZE >= 512)
      _mm512_mask_storeu_epi64(base, simde_svbool_to_mmask8(pg), data.m512i);
   #elif defined(SIMDE_X86_AVX512BW_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
-     _mm256_mask_storeu_epi64(base, simde_svbool_to_mmask8(pg), data.m256i[0]);
+     _mm256_mask_storeu_epi64(base, simde_svbool_to_mmask4(pg), data.m256i[0]);
   #else
     for (int i = 0 ; i < HEDLEY_STATIC_CAST(int, simde_svcntd()) ; i++) {
       if (pg.values_i64[i]) {
@@ -194,7 +194,7 @@ simde_svst1_u64(simde_svbool_t pg, uint64_t * base, simde_svuint64_t data) {
   #elif defined(SIMDE_X86_AVX512BW_NATIVE) && (SIMDE_ARM_SVE_VECTOR_SIZE >= 512)
      _mm512_mask_storeu_epi64(base, simde_svbool_to_mmask8(pg), data.m512i);
   #elif defined(SIMDE_X86_AVX512BW_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
-     _mm256_mask_storeu_epi64(base, simde_svbool_to_mmask8(pg), data.m256i[0]);
+     _mm256_mask_storeu_epi64(base, simde_svbool_to_mmask4(pg), data.m256i[0]);
   #else
     for (int i = 0 ; i < HEDLEY_STATIC_CAST(int, simde_svcntd()) ; i++) {
       if (pg.values_u64[i]) {
@@ -238,7 +238,7 @@ simde_svst1_f64(simde_svbool_t pg, simde_float64 * base, simde_svfloat64_t data)
   #elif defined(SIMDE_X86_AVX512BW_NATIVE) && (SIMDE_ARM_SVE_VECTOR_SIZE >= 512)
      _mm512_mask_storeu_pd(base, simde_svbool_to_mmask8(pg), data.m512d);
   #elif defined(SIMDE_X86_AVX512BW_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
-     _mm256_mask_storeu_pd(base, simde_svbool_to_mmask8(pg), data.m256d[0]);
+     _mm256_mask_storeu_pd(base, simde_svbool_to_mmask4(pg), data.m256d[0]);
   #else
     for (int i = 0 ; i < HEDLEY_STATIC_CAST(int, simde_svcntd()) ; i++) {
       if (pg.values_i64[i]) {

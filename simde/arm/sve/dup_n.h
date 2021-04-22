@@ -395,7 +395,7 @@ simde_svdup_n_s64_z(simde_svbool_t pg, int64_t op) {
     #elif defined(SIMDE_X86_AVX512BW_NATIVE) && (SIMDE_ARM_SVE_VECTOR_SIZE >= 512)
       r.m512i = _mm512_maskz_set1_epi64(simde_svbool_to_mmask8(pg), op);
     #elif defined(SIMDE_X86_AVX512BW_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
-      r.m256i[0]= _mm256_maskz_set1_epi64(simde_svbool_to_mmask8(pg), op);
+      r.m256i[0]= _mm256_maskz_set1_epi64(simde_svbool_to_mmask4(pg), op);
     #elif defined(SIMDE_X86_AVX2_NATIVE)
       for (int i = 0 ; i < HEDLEY_STATIC_CAST(int, sizeof(r.m256i) / sizeof(r.m256i[0])) ; i++) {
         r.m256i[i] = _mm256_and_si256(pg.m256i[i], _mm256_set1_epi64x(op));
@@ -791,7 +791,7 @@ simde_svdup_n_u64_z(simde_svbool_t pg, uint64_t op) {
     #elif defined(SIMDE_X86_AVX512BW_NATIVE) && (SIMDE_ARM_SVE_VECTOR_SIZE >= 512)
       r.m512i = _mm512_maskz_set1_epi64(simde_svbool_to_mmask8(pg), HEDLEY_STATIC_CAST(int64_t, op));
     #elif defined(SIMDE_X86_AVX512BW_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
-      r.m256i[0]= _mm256_maskz_set1_epi64(simde_svbool_to_mmask8(pg), HEDLEY_STATIC_CAST(int64_t, op));
+      r.m256i[0]= _mm256_maskz_set1_epi64(simde_svbool_to_mmask4(pg), HEDLEY_STATIC_CAST(int64_t, op));
     #elif defined(SIMDE_X86_AVX2_NATIVE)
       for (int i = 0 ; i < HEDLEY_STATIC_CAST(int, sizeof(r.m256i) / sizeof(r.m256i[0])) ; i++) {
         r.m256i[i] = _mm256_and_si256(pg.m256i[i], _mm256_set1_epi64x(HEDLEY_STATIC_CAST(int64_t, op)));
@@ -994,7 +994,7 @@ simde_svdup_n_f64_z(simde_svbool_t pg, simde_float64 op) {
     #elif defined(SIMDE_X86_AVX512BW_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
       int64_t opi;
       simde_memcpy(&opi, &op, sizeof(opi));
-      r.m256d[0] = _mm256_castsi256_pd(_mm256_maskz_set1_epi64(simde_svbool_to_mmask8(pg), opi));
+      r.m256d[0] = _mm256_castsi256_pd(_mm256_maskz_set1_epi64(simde_svbool_to_mmask4(pg), opi));
     #elif defined(SIMDE_X86_AVX2_NATIVE)
       for (int i = 0 ; i < HEDLEY_STATIC_CAST(int, sizeof(r.m256d) / sizeof(r.m256d[0])) ; i++) {
         r.m256d[i] = _mm256_and_pd(_mm256_castsi256_pd(pg.m256i[i]), _mm256_set1_pd(op));

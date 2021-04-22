@@ -132,7 +132,7 @@ simde_svld1_s64(simde_svbool_t pg, const int64_t * base) {
     #if defined(SIMDE_X86_AVX512BW_NATIVE) && (SIMDE_ARM_SVE_VECTOR_SIZE >= 512)
       r.m512i = _mm512_maskz_loadu_epi64(simde_svbool_to_mmask8(pg), base);
     #elif defined(SIMDE_X86_AVX512BW_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
-      r.m256i[0] = _mm256_maskz_loadu_epi64(simde_svbool_to_mmask8(pg), base);
+      r.m256i[0] = _mm256_maskz_loadu_epi64(simde_svbool_to_mmask4(pg), base);
     #else
       for (int i = 0 ; i < HEDLEY_STATIC_CAST(int, simde_svcntd()) ; i++) {
         r.values[i] = pg.values_i64[i] ? base[i] : INT64_C(0);
@@ -236,7 +236,7 @@ simde_svld1_u64(simde_svbool_t pg, const uint64_t * base) {
     #if defined(SIMDE_X86_AVX512BW_NATIVE) && (SIMDE_ARM_SVE_VECTOR_SIZE >= 512)
       r.m512i = _mm512_maskz_loadu_epi64(simde_svbool_to_mmask8(pg), base);
     #elif defined(SIMDE_X86_AVX512BW_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
-      r.m256i[0] = _mm256_maskz_loadu_epi64(simde_svbool_to_mmask8(pg), base);
+      r.m256i[0] = _mm256_maskz_loadu_epi64(simde_svbool_to_mmask4(pg), base);
     #else
       for (int i = 0 ; i < HEDLEY_STATIC_CAST(int, simde_svcntd()) ; i++) {
         r.values[i] = pg.values_i64[i] ? base[i] : UINT64_C(0);
@@ -288,7 +288,7 @@ simde_svld1_f64(simde_svbool_t pg, const simde_float64 * base) {
     #if defined(SIMDE_X86_AVX512BW_NATIVE) && (SIMDE_ARM_SVE_VECTOR_SIZE >= 512)
       r.m512d = _mm512_maskz_loadu_pd(simde_svbool_to_mmask8(pg), base);
     #elif defined(SIMDE_X86_AVX512BW_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
-      r.m256d[0] = _mm256_maskz_loadu_pd(simde_svbool_to_mmask8(pg), base);
+      r.m256d[0] = _mm256_maskz_loadu_pd(simde_svbool_to_mmask4(pg), base);
     #else
       for (int i = 0 ; i < HEDLEY_STATIC_CAST(int, simde_svcntd()) ; i++) {
         r.values[i] = pg.values_i64[i] ? base[i] : SIMDE_FLOAT64_C(0.0);

@@ -58,6 +58,16 @@ simde_svptest_first(simde_svbool_t pg, simde_svbool_t op) {
         if (pg.value == UINT8_MAX)
           return op.value & UINT64_C(1);
         break;
+
+      #if SIMDE_ARM_SVE_VECTOR_SIZE < 512
+        case SIMDE_ARM_SVE_SVBOOL_TYPE_MMASK4:
+          if (pg.value == 0x0f)
+            return op.value & UINT64_C(1);
+          break;
+      #endif
+
+      default:
+        HEDLEY_UNREACHABLE();
     }
 
     #if defined(_MSC_VER)

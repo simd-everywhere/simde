@@ -10,11 +10,11 @@
  * SPDX-License-Identifier: CC0-1.0
  */
 
-#if !defined(HEDLEY_VERSION) || (HEDLEY_VERSION < 15)
+#if !defined(HEDLEY_VERSION) || (HEDLEY_VERSION < 16)
 #if defined(HEDLEY_VERSION)
 #  undef HEDLEY_VERSION
 #endif
-#define HEDLEY_VERSION 15
+#define HEDLEY_VERSION 16
 
 #if defined(HEDLEY_STRINGIFY_EX)
 #  undef HEDLEY_STRINGIFY_EX
@@ -1346,7 +1346,7 @@ HEDLEY_DIAGNOSTIC_POP
 #  define HEDLEY_UNPREDICTABLE(expr) __builtin_unpredictable((expr))
 #endif
 #if \
-  (HEDLEY_HAS_BUILTIN(__builtin_expect_with_probability) && !defined(HEDLEY_PGI_VERSION)) || \
+  (HEDLEY_HAS_BUILTIN(__builtin_expect_with_probability) && !defined(HEDLEY_PGI_VERSION) && !defined(HEDLEY_INTEL_VERSION)) || \
   HEDLEY_GCC_VERSION_CHECK(9,0,0) || \
   HEDLEY_MCST_LCC_VERSION_CHECK(1,25,10)
 #  define HEDLEY_PREDICT(expr, value, probability) __builtin_expect_with_probability(  (expr), (value), (probability))
@@ -1698,7 +1698,7 @@ HEDLEY_DIAGNOSTIC_POP
 # undef HEDLEY_FALL_THROUGH
 #endif
 #if \
-  HEDLEY_HAS_ATTRIBUTE(fallthrough) || \
+  (HEDLEY_HAS_ATTRIBUTE(fallthrough)) || \
   HEDLEY_GCC_VERSION_CHECK(7,0,0) || \
   HEDLEY_MCST_LCC_VERSION_CHECK(1,25,10)
 #  define HEDLEY_FALL_THROUGH __attribute__((__fallthrough__))

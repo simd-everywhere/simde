@@ -426,6 +426,14 @@ SIMDE_BEGIN_DECLS_
       }
 
       SIMDE_FUNCTION_ATTRIBUTES
+      __mmask8
+      simde_arm_sve_mmask4_to_mmask8(__mmask8 m) {
+        return HEDLEY_STATIC_CAST(__mmask8,
+          _pdep_u32(HEDLEY_STATIC_CAST(uint32_t, m), HEDLEY_STATIC_CAST(uint32_t, simde_arm_sve_mask_bp_lo_)) |
+          _pdep_u32(HEDLEY_STATIC_CAST(uint32_t, m), HEDLEY_STATIC_CAST(uint32_t, simde_arm_sve_mask_bp_hi_)));
+      }
+
+      SIMDE_FUNCTION_ATTRIBUTES
       __mmask32
       simde_arm_sve_mmask64_to_mmask32(__mmask64 m) {
         return HEDLEY_STATIC_CAST(__mmask32,
@@ -444,6 +452,14 @@ SIMDE_BEGIN_DECLS_
       SIMDE_FUNCTION_ATTRIBUTES
       __mmask8
       simde_arm_sve_mmask16_to_mmask8(__mmask16 m) {
+        return HEDLEY_STATIC_CAST(__mmask8,
+          _pext_u32(HEDLEY_STATIC_CAST(uint32_t, m), HEDLEY_STATIC_CAST(uint32_t, simde_arm_sve_mask_bp_lo_)) &
+          _pext_u32(HEDLEY_STATIC_CAST(uint32_t, m), HEDLEY_STATIC_CAST(uint32_t, simde_arm_sve_mask_bp_hi_)));
+      }
+
+      SIMDE_FUNCTION_ATTRIBUTES
+      __mmask8
+      simde_arm_sve_mmask8_to_mmask4(__mmask8 m) {
         return HEDLEY_STATIC_CAST(__mmask8,
           _pext_u32(HEDLEY_STATIC_CAST(uint32_t, m), HEDLEY_STATIC_CAST(uint32_t, simde_arm_sve_mask_bp_lo_)) &
           _pext_u32(HEDLEY_STATIC_CAST(uint32_t, m), HEDLEY_STATIC_CAST(uint32_t, simde_arm_sve_mask_bp_hi_)));
@@ -507,6 +523,21 @@ SIMDE_BEGIN_DECLS_
       }
 
       SIMDE_FUNCTION_ATTRIBUTES
+      __mmask8
+      simde_arm_sve_mmask4_to_mmask8(__mmask8 m) {
+        uint8_t e = HEDLEY_STATIC_CAST(uint8_t, m);
+        uint8_t o = HEDLEY_STATIC_CAST(uint8_t, m);
+
+        e = (e | (e <<  2)) & UINT8_C(0x33);
+        e = (e | (e <<  1)) & UINT8_C(0x55);
+
+        o = (o | (o <<  2)) & UINT8_C(0x33);
+        o = (o | (o <<  1)) & UINT8_C(0x55);
+
+        return HEDLEY_STATIC_CAST(uint8_t, e | (o << 1));
+      }
+
+      SIMDE_FUNCTION_ATTRIBUTES
       __mmask32
       simde_arm_sve_mmask64_to_mmask32(__mmask64 m) {
         uint64_t l = (HEDLEY_STATIC_CAST(uint64_t, m)     ) & UINT64_C(0x5555555555555555);
@@ -557,13 +588,32 @@ SIMDE_BEGIN_DECLS_
 
         return HEDLEY_STATIC_CAST(uint8_t, l & h);
       }
+
+      SIMDE_FUNCTION_ATTRIBUTES
+      __mmask8
+      simde_arm_sve_mmask8_to_mmask4(__mmask8 m) {
+        uint8_t l = (HEDLEY_STATIC_CAST(uint8_t, m)     ) & UINT8_C(0x55);
+        l = (l | (l >> 1)) & UINT8_C(0x33);
+        l = (l | (l >> 2)) & UINT8_C(0x0f);
+        l = (l | (l >> 4)) & UINT8_C(0xff);
+
+        uint8_t h = (HEDLEY_STATIC_CAST(uint8_t, m) >> 1) & UINT8_C(0x55);
+        h = (h | (h >> 1)) & UINT8_C(0x33);
+        h = (h | (h >> 2)) & UINT8_C(0x0f);
+        h = (h | (h >> 4)) & UINT8_C(0xff);
+
+        return HEDLEY_STATIC_CAST(uint8_t, l & h);
+      }
     #endif
 
     typedef enum {
-      SIMDE_ARM_SVE_SVBOOL_TYPE_MMASK8,
-      SIMDE_ARM_SVE_SVBOOL_TYPE_MMASK16,
-      SIMDE_ARM_SVE_SVBOOL_TYPE_MMASK32,
       SIMDE_ARM_SVE_SVBOOL_TYPE_MMASK64,
+      SIMDE_ARM_SVE_SVBOOL_TYPE_MMASK32,
+      SIMDE_ARM_SVE_SVBOOL_TYPE_MMASK16,
+      SIMDE_ARM_SVE_SVBOOL_TYPE_MMASK8,
+      #if SIMDE_ARM_SVE_VECTOR_SIZE < 512
+        SIMDE_ARM_SVE_SVBOOL_TYPE_MMASK4,
+      #endif
     } simde_svbool_mmask_type;
 
     HEDLEY_CONST HEDLEY_ALWAYS_INLINE
@@ -610,72 +660,147 @@ SIMDE_BEGIN_DECLS_
       return b;
     }
 
+    #if SIMDE_ARM_SVE_VECTOR_SIZE < 512
+      SIMDE_FUNCTION_ATTRIBUTES HEDLEY_CONST
+      simde_svbool_t
+      simde_svbool_from_mmask4(__mmask8 mi) {
+        simde_svbool_t b;
+
+        b.value = HEDLEY_STATIC_CAST(__mmask64, mi);
+        b.type  = SIMDE_ARM_SVE_SVBOOL_TYPE_MMASK4;
+
+        return b;
+      }
+
+      SIMDE_FUNCTION_ATTRIBUTES HEDLEY_CONST
+      __mmask8
+      simde_svbool_to_mmask4(simde_svbool_t b) {
+        __mmask64 tmp = b.value;
+
+        switch (b.type) {
+          case SIMDE_ARM_SVE_SVBOOL_TYPE_MMASK64:
+            tmp = HEDLEY_STATIC_CAST(__mmask64, simde_arm_sve_mmask64_to_mmask32(HEDLEY_STATIC_CAST(__mmask64, tmp)));
+            HEDLEY_FALL_THROUGH;
+          case SIMDE_ARM_SVE_SVBOOL_TYPE_MMASK32:
+            tmp = HEDLEY_STATIC_CAST(__mmask64, simde_arm_sve_mmask32_to_mmask16(HEDLEY_STATIC_CAST(__mmask32, tmp)));
+            HEDLEY_FALL_THROUGH;
+          case SIMDE_ARM_SVE_SVBOOL_TYPE_MMASK16:
+            tmp = HEDLEY_STATIC_CAST(__mmask64, simde_arm_sve_mmask16_to_mmask8(HEDLEY_STATIC_CAST(__mmask16, tmp)));
+            HEDLEY_FALL_THROUGH;
+          case SIMDE_ARM_SVE_SVBOOL_TYPE_MMASK8:
+            tmp = HEDLEY_STATIC_CAST(__mmask64, simde_arm_sve_mmask8_to_mmask4(HEDLEY_STATIC_CAST(__mmask8, tmp)));
+        }
+
+        return HEDLEY_STATIC_CAST(__mmask8, tmp);
+      }
+    #endif
+
     SIMDE_FUNCTION_ATTRIBUTES HEDLEY_CONST
     __mmask8
     simde_svbool_to_mmask8(simde_svbool_t b) {
+      __mmask64 tmp = b.value;
+
       switch (b.type) {
-        case SIMDE_ARM_SVE_SVBOOL_TYPE_MMASK8:
-          return HEDLEY_STATIC_CAST(__mmask8, b.value);
-        case SIMDE_ARM_SVE_SVBOOL_TYPE_MMASK16:
-          return simde_arm_sve_mmask16_to_mmask8(HEDLEY_STATIC_CAST(__mmask16, b.value));
-        case SIMDE_ARM_SVE_SVBOOL_TYPE_MMASK32:
-          return simde_arm_sve_mmask16_to_mmask8(simde_arm_sve_mmask32_to_mmask16(HEDLEY_STATIC_CAST(__mmask32, b.value)));
         case SIMDE_ARM_SVE_SVBOOL_TYPE_MMASK64:
-          return simde_arm_sve_mmask16_to_mmask8(simde_arm_sve_mmask32_to_mmask16(simde_arm_sve_mmask64_to_mmask32(HEDLEY_STATIC_CAST(__mmask64, b.value))));
-        default:
-          HEDLEY_UNREACHABLE();
+          tmp = HEDLEY_STATIC_CAST(__mmask64, simde_arm_sve_mmask64_to_mmask32(HEDLEY_STATIC_CAST(__mmask64, tmp)));
+          HEDLEY_FALL_THROUGH;
+        case SIMDE_ARM_SVE_SVBOOL_TYPE_MMASK32:
+          tmp = HEDLEY_STATIC_CAST(__mmask64, simde_arm_sve_mmask32_to_mmask16(HEDLEY_STATIC_CAST(__mmask32, tmp)));
+          HEDLEY_FALL_THROUGH;
+        case SIMDE_ARM_SVE_SVBOOL_TYPE_MMASK16:
+          tmp = HEDLEY_STATIC_CAST(__mmask64, simde_arm_sve_mmask16_to_mmask8(HEDLEY_STATIC_CAST(__mmask16, tmp)));
+          HEDLEY_FALL_THROUGH;
+        case SIMDE_ARM_SVE_SVBOOL_TYPE_MMASK8:
+          break;
+
+        #if SIMDE_ARM_SVE_VECTOR_SIZE < 512
+          case SIMDE_ARM_SVE_SVBOOL_TYPE_MMASK4:
+            tmp = HEDLEY_STATIC_CAST(__mmask64, simde_arm_sve_mmask4_to_mmask8(HEDLEY_STATIC_CAST(__mmask8, tmp)));
+        #endif
       }
+
+      return HEDLEY_STATIC_CAST(__mmask8, tmp);
     }
 
     SIMDE_FUNCTION_ATTRIBUTES HEDLEY_CONST
     __mmask16
     simde_svbool_to_mmask16(simde_svbool_t b) {
+      __mmask64 tmp = b.value;
+
       switch (b.type) {
-        case SIMDE_ARM_SVE_SVBOOL_TYPE_MMASK8:
-          return simde_arm_sve_mmask8_to_mmask16(HEDLEY_STATIC_CAST(__mmask8, b.value));
-        case SIMDE_ARM_SVE_SVBOOL_TYPE_MMASK16:
-          return HEDLEY_STATIC_CAST(__mmask16, b.value);
-        case SIMDE_ARM_SVE_SVBOOL_TYPE_MMASK32:
-          return simde_arm_sve_mmask32_to_mmask16(HEDLEY_STATIC_CAST(__mmask32, b.value));
         case SIMDE_ARM_SVE_SVBOOL_TYPE_MMASK64:
-          return simde_arm_sve_mmask32_to_mmask16(simde_arm_sve_mmask64_to_mmask32(HEDLEY_STATIC_CAST(__mmask64, b.value)));
-        default:
-          HEDLEY_UNREACHABLE();
+          tmp = HEDLEY_STATIC_CAST(__mmask64, simde_arm_sve_mmask64_to_mmask32(HEDLEY_STATIC_CAST(__mmask64, tmp)));
+          HEDLEY_FALL_THROUGH;
+        case SIMDE_ARM_SVE_SVBOOL_TYPE_MMASK32:
+          tmp = HEDLEY_STATIC_CAST(__mmask64, simde_arm_sve_mmask32_to_mmask16(HEDLEY_STATIC_CAST(__mmask32, tmp)));
+          HEDLEY_FALL_THROUGH;
+        case SIMDE_ARM_SVE_SVBOOL_TYPE_MMASK16:
+          break;
+
+        #if SIMDE_ARM_SVE_VECTOR_SIZE < 512
+          case SIMDE_ARM_SVE_SVBOOL_TYPE_MMASK4:
+            tmp = HEDLEY_STATIC_CAST(__mmask64, simde_arm_sve_mmask4_to_mmask8(HEDLEY_STATIC_CAST(__mmask8, tmp)));
+            HEDLEY_FALL_THROUGH;
+        #endif
+        case SIMDE_ARM_SVE_SVBOOL_TYPE_MMASK8:
+          tmp = HEDLEY_STATIC_CAST(__mmask64, simde_arm_sve_mmask8_to_mmask16(HEDLEY_STATIC_CAST(__mmask8, tmp)));
       }
+
+      return HEDLEY_STATIC_CAST(__mmask16, tmp);
     }
 
     SIMDE_FUNCTION_ATTRIBUTES HEDLEY_CONST
     __mmask32
     simde_svbool_to_mmask32(simde_svbool_t b) {
+      __mmask64 tmp = b.value;
+
       switch (b.type) {
-        case SIMDE_ARM_SVE_SVBOOL_TYPE_MMASK8:
-          return simde_arm_sve_mmask16_to_mmask32(simde_arm_sve_mmask8_to_mmask16(HEDLEY_STATIC_CAST(__mmask8, b.value)));
-        case SIMDE_ARM_SVE_SVBOOL_TYPE_MMASK16:
-          return simde_arm_sve_mmask16_to_mmask32(HEDLEY_STATIC_CAST(__mmask16, b.value));
-        case SIMDE_ARM_SVE_SVBOOL_TYPE_MMASK32:
-          return HEDLEY_STATIC_CAST(__mmask32, b.value);
         case SIMDE_ARM_SVE_SVBOOL_TYPE_MMASK64:
-          return simde_arm_sve_mmask64_to_mmask32(HEDLEY_STATIC_CAST(__mmask64, b.value));
-        default:
-          HEDLEY_UNREACHABLE();
+          tmp = HEDLEY_STATIC_CAST(__mmask64, simde_arm_sve_mmask64_to_mmask32(HEDLEY_STATIC_CAST(__mmask64, tmp)));
+          HEDLEY_FALL_THROUGH;
+        case SIMDE_ARM_SVE_SVBOOL_TYPE_MMASK32:
+          break;
+
+        #if SIMDE_ARM_SVE_VECTOR_SIZE < 512
+          case SIMDE_ARM_SVE_SVBOOL_TYPE_MMASK4:
+            tmp = HEDLEY_STATIC_CAST(__mmask64, simde_arm_sve_mmask4_to_mmask8(HEDLEY_STATIC_CAST(__mmask8, tmp)));
+            HEDLEY_FALL_THROUGH;
+        #endif
+        case SIMDE_ARM_SVE_SVBOOL_TYPE_MMASK8:
+          tmp = HEDLEY_STATIC_CAST(__mmask64, simde_arm_sve_mmask8_to_mmask16(HEDLEY_STATIC_CAST(__mmask8, tmp)));
+          HEDLEY_FALL_THROUGH;
+        case SIMDE_ARM_SVE_SVBOOL_TYPE_MMASK16:
+          tmp = HEDLEY_STATIC_CAST(__mmask64, simde_arm_sve_mmask16_to_mmask32(HEDLEY_STATIC_CAST(__mmask16, tmp)));
       }
+
+      return HEDLEY_STATIC_CAST(__mmask32, tmp);
     }
 
     SIMDE_FUNCTION_ATTRIBUTES HEDLEY_CONST
     __mmask64
     simde_svbool_to_mmask64(simde_svbool_t b) {
+      __mmask64 tmp = b.value;
+
       switch (b.type) {
-        case SIMDE_ARM_SVE_SVBOOL_TYPE_MMASK8:
-          return simde_arm_sve_mmask32_to_mmask64(simde_arm_sve_mmask16_to_mmask32(simde_arm_sve_mmask8_to_mmask16(HEDLEY_STATIC_CAST(__mmask8, b.value))));
-        case SIMDE_ARM_SVE_SVBOOL_TYPE_MMASK16:
-          return simde_arm_sve_mmask32_to_mmask64(simde_arm_sve_mmask16_to_mmask32(HEDLEY_STATIC_CAST(__mmask16, b.value)));
-        case SIMDE_ARM_SVE_SVBOOL_TYPE_MMASK32:
-          return simde_arm_sve_mmask32_to_mmask64(HEDLEY_STATIC_CAST(__mmask32, b.value));
         case SIMDE_ARM_SVE_SVBOOL_TYPE_MMASK64:
-          return HEDLEY_STATIC_CAST(__mmask64, b.value);
-        default:
-          HEDLEY_UNREACHABLE();
+          break;
+
+        #if SIMDE_ARM_SVE_VECTOR_SIZE < 512
+          case SIMDE_ARM_SVE_SVBOOL_TYPE_MMASK4:
+            tmp = HEDLEY_STATIC_CAST(__mmask64, simde_arm_sve_mmask4_to_mmask8(HEDLEY_STATIC_CAST(__mmask8, tmp)));
+            HEDLEY_FALL_THROUGH;
+        #endif
+        case SIMDE_ARM_SVE_SVBOOL_TYPE_MMASK8:
+          tmp = HEDLEY_STATIC_CAST(__mmask64, simde_arm_sve_mmask8_to_mmask16(HEDLEY_STATIC_CAST(__mmask8, tmp)));
+          HEDLEY_FALL_THROUGH;
+        case SIMDE_ARM_SVE_SVBOOL_TYPE_MMASK16:
+          tmp = HEDLEY_STATIC_CAST(__mmask64, simde_arm_sve_mmask16_to_mmask32(HEDLEY_STATIC_CAST(__mmask16, tmp)));
+          HEDLEY_FALL_THROUGH;
+        case SIMDE_ARM_SVE_SVBOOL_TYPE_MMASK32:
+          tmp = HEDLEY_STATIC_CAST(__mmask64, simde_arm_sve_mmask32_to_mmask64(HEDLEY_STATIC_CAST(__mmask32, tmp)));
       }
+
+      return HEDLEY_STATIC_CAST(__mmask64, tmp);
     }
 
     /* TODO: we're going to need need svbool_to/from_svint* functions
