@@ -101,7 +101,7 @@ SIMDE_BEGIN_DECLS_
     #endif
 
     #if defined(SIMDE_POWER_ALTIVEC_P6_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
-      SIMDE_POWER_ALTIVEC_VECTOR(int8_t) altivec;
+      SIMDE_POWER_ALTIVEC_VECTOR(signed char) altivec;
     #endif
 
     #if defined(SIMDE_WASM_SIMD128_NATIVE)
@@ -127,7 +127,7 @@ SIMDE_BEGIN_DECLS_
     #endif
 
     #if defined(SIMDE_POWER_ALTIVEC_P6_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
-      SIMDE_POWER_ALTIVEC_VECTOR(int16_t) altivec;
+      SIMDE_POWER_ALTIVEC_VECTOR(signed short) altivec;
     #endif
 
     #if defined(SIMDE_WASM_SIMD128_NATIVE)
@@ -153,7 +153,7 @@ SIMDE_BEGIN_DECLS_
     #endif
 
     #if defined(SIMDE_POWER_ALTIVEC_P6_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
-      SIMDE_POWER_ALTIVEC_VECTOR(int32_t) altivec;
+      SIMDE_POWER_ALTIVEC_VECTOR(signed int) altivec;
     #endif
 
     #if defined(SIMDE_WASM_SIMD128_NATIVE)
@@ -179,7 +179,7 @@ SIMDE_BEGIN_DECLS_
     #endif
 
     #if defined(SIMDE_POWER_ALTIVEC_P6_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
-      SIMDE_POWER_ALTIVEC_VECTOR(int64_t) altivec;
+      SIMDE_POWER_ALTIVEC_VECTOR(signed long long int) altivec;
     #endif
 
     #if defined(SIMDE_WASM_SIMD128_NATIVE)
@@ -205,7 +205,7 @@ SIMDE_BEGIN_DECLS_
     #endif
 
     #if defined(SIMDE_POWER_ALTIVEC_P6_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
-      SIMDE_POWER_ALTIVEC_VECTOR(uint8_t) altivec;
+      SIMDE_POWER_ALTIVEC_VECTOR(unsigned char) altivec;
     #endif
 
     #if defined(SIMDE_WASM_SIMD128_NATIVE)
@@ -231,7 +231,7 @@ SIMDE_BEGIN_DECLS_
     #endif
 
     #if defined(SIMDE_POWER_ALTIVEC_P6_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
-      SIMDE_POWER_ALTIVEC_VECTOR(uint16_t) altivec;
+      SIMDE_POWER_ALTIVEC_VECTOR(unsigned short) altivec;
     #endif
 
     #if defined(SIMDE_WASM_SIMD128_NATIVE)
@@ -257,7 +257,7 @@ SIMDE_BEGIN_DECLS_
     #endif
 
     #if defined(SIMDE_POWER_ALTIVEC_P6_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
-      SIMDE_POWER_ALTIVEC_VECTOR(uint32_t) altivec;
+      SIMDE_POWER_ALTIVEC_VECTOR(unsigned int) altivec;
     #endif
 
     #if defined(SIMDE_WASM_SIMD128_NATIVE)
@@ -283,7 +283,7 @@ SIMDE_BEGIN_DECLS_
     #endif
 
     #if defined(SIMDE_POWER_ALTIVEC_P6_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
-      SIMDE_POWER_ALTIVEC_VECTOR(uint64_t) altivec;
+      SIMDE_POWER_ALTIVEC_VECTOR(unsigned long long int) altivec;
     #endif
 
     #if defined(SIMDE_WASM_SIMD128_NATIVE)
@@ -309,7 +309,7 @@ SIMDE_BEGIN_DECLS_
     #endif
 
     #if defined(SIMDE_POWER_ALTIVEC_P6_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
-      SIMDE_POWER_ALTIVEC_VECTOR(uint16_t) altivec;
+      SIMDE_POWER_ALTIVEC_VECTOR(unsigned short) altivec;
     #endif
 
     #if defined(SIMDE_WASM_SIMD128_NATIVE)
@@ -331,7 +331,7 @@ SIMDE_BEGIN_DECLS_
     #endif
 
     #if defined(SIMDE_POWER_ALTIVEC_P6_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
-      SIMDE_POWER_ALTIVEC_VECTOR(uint16_t) altivec;
+      SIMDE_POWER_ALTIVEC_VECTOR(unsigned short) altivec;
     #endif
 
     #if defined(SIMDE_WASM_SIMD128_NATIVE)

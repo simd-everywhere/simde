@@ -57,7 +57,7 @@ simde_svadd_s8_z(simde_svbool_t pg, simde_svint8_t op1, simde_svint8_t op2) {
     #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
       r.altivec = vec_and(pg.altivec_b8, vec_add(op1.altivec, op2.altivec));
     #elif defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
-      r.altivec = pg.values & (op1.altivec + op2.altivec);
+      r.altivec = pg.values_i8 & (op1.altivec + op2.altivec);
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r.v128 = wasm_v128_and(pg.v128, wasm_i8x16_add(op1.v128, op2.v128));
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
@@ -102,7 +102,7 @@ simde_svadd_s8_m(simde_svbool_t pg, simde_svint8_t op1, simde_svint8_t op2) {
     #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
       r.altivec = vec_add(op1.altivec, vec_and(pg.altivec_b8, op2.altivec));
     #elif defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
-      r.altivec = op1.altivec + (pg.values & op2.altivec);
+      r.altivec = op1.altivec + (pg.values_i8 & op2.altivec);
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r.v128 = wasm_i8x16_add(op1.v128, wasm_v128_and(pg.v128, op2.v128));
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
@@ -147,7 +147,7 @@ simde_svadd_s16_z(simde_svbool_t pg, simde_svint16_t op1, simde_svint16_t op2) {
     #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
       r.altivec = vec_and(pg.altivec_b16, vec_add(op1.altivec, op2.altivec));
     #elif defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
-      r.altivec = pg.values & (op1.altivec + op2.altivec);
+      r.altivec = pg.values_i16 & (op1.altivec + op2.altivec);
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r.v128 = wasm_v128_and(pg.v128, wasm_i16x8_add(op1.v128, op2.v128));
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
@@ -237,7 +237,7 @@ simde_svadd_s32_z(simde_svbool_t pg, simde_svint32_t op1, simde_svint32_t op2) {
     #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
       r.altivec = vec_and(pg.altivec_b32, vec_add(op1.altivec, op2.altivec));
     #elif defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
-      r.altivec = pg.values & (op1.altivec + op2.altivec);
+      r.altivec = pg.values_i32 & (op1.altivec + op2.altivec);
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r.v128 = wasm_v128_and(pg.v128, wasm_i32x4_add(op1.v128, op2.v128));
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
@@ -282,7 +282,7 @@ simde_svadd_s32_m(simde_svbool_t pg, simde_svint32_t op1, simde_svint32_t op2) {
     #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
       r.altivec = vec_add(op1.altivec, vec_and(pg.altivec_b32, op2.altivec));
     #elif defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
-      r.altivec = op1.altivec + (pg.values & op2.altivec);
+      r.altivec = op1.altivec + (pg.values_i32 & op2.altivec);
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r.v128 = wasm_i32x4_add(op1.v128, wasm_v128_and(pg.v128, op2.v128));
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
@@ -327,7 +327,7 @@ simde_svadd_s64_z(simde_svbool_t pg, simde_svint64_t op1, simde_svint64_t op2) {
     #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
       r.altivec = vec_and(pg.altivec_b64, vec_add(op1.altivec, op2.altivec));
     #elif defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
-      r.altivec = pg.values & (op1.altivec + op2.altivec);
+      r.altivec = pg.altivec_b64 & (op1.altivec + op2.altivec);
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r.v128 = wasm_v128_and(pg.v128, wasm_i64x2_add(op1.v128, op2.v128));
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
@@ -372,7 +372,7 @@ simde_svadd_s64_m(simde_svbool_t pg, simde_svint64_t op1, simde_svint64_t op2) {
     #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
       r.altivec = vec_add(op1.altivec, vec_and(pg.altivec_b64, op2.altivec));
     #elif defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
-      r.altivec = op1.altivec + (pg.values & op2.altivec);
+      r.altivec = op1.altivec + (pg.altivec_b64 & op2.altivec);
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r.v128 = wasm_i64x2_add(op1.v128, wasm_v128_and(pg.v128, op2.v128));
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
@@ -417,7 +417,7 @@ simde_svadd_u8_z(simde_svbool_t pg, simde_svuint8_t op1, simde_svuint8_t op2) {
     #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
       r.altivec = vec_and(pg.altivec_b8, vec_add(op1.altivec, op2.altivec));
     #elif defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
-      r.altivec = pg.values & (op1.altivec + op2.altivec);
+      r.altivec = pg.values_u8 & (op1.altivec + op2.altivec);
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r.v128 = wasm_v128_and(pg.v128, wasm_i8x16_add(op1.v128, op2.v128));
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
@@ -462,7 +462,7 @@ simde_svadd_u8_m(simde_svbool_t pg, simde_svuint8_t op1, simde_svuint8_t op2) {
     #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
       r.altivec = vec_add(op1.altivec, vec_and(pg.altivec_b8, op2.altivec));
     #elif defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
-      r.altivec = op1.altivec + (pg.values & op2.altivec);
+      r.altivec = op1.altivec + (pg.values_u8 & op2.altivec);
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r.v128 = wasm_i8x16_add(op1.v128, wasm_v128_and(pg.v128, op2.v128));
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
@@ -507,7 +507,7 @@ simde_svadd_u16_z(simde_svbool_t pg, simde_svuint16_t op1, simde_svuint16_t op2)
     #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
       r.altivec = vec_and(pg.altivec_b16, vec_add(op1.altivec, op2.altivec));
     #elif defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
-      r.altivec = pg.values & (op1.altivec + op2.altivec);
+      r.altivec = pg.values_u16 & (op1.altivec + op2.altivec);
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r.v128 = wasm_v128_and(pg.v128, wasm_i16x8_add(op1.v128, op2.v128));
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
@@ -597,7 +597,7 @@ simde_svadd_u32_z(simde_svbool_t pg, simde_svuint32_t op1, simde_svuint32_t op2)
     #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
       r.altivec = vec_and(pg.altivec_b32, vec_add(op1.altivec, op2.altivec));
     #elif defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
-      r.altivec = pg.values & (op1.altivec + op2.altivec);
+      r.altivec = pg.values_u32 & (op1.altivec + op2.altivec);
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r.v128 = wasm_v128_and(pg.v128, wasm_i32x4_add(op1.v128, op2.v128));
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
@@ -642,7 +642,7 @@ simde_svadd_u32_m(simde_svbool_t pg, simde_svuint32_t op1, simde_svuint32_t op2)
     #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
       r.altivec = vec_add(op1.altivec, vec_and(pg.altivec_b32, op2.altivec));
     #elif defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
-      r.altivec = op1.altivec + (pg.values & op2.altivec);
+      r.altivec = op1.altivec + (pg.values_u32 & op2.altivec);
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r.v128 = wasm_i32x4_add(op1.v128, wasm_v128_and(pg.v128, op2.v128));
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
@@ -687,7 +687,7 @@ simde_svadd_u64_z(simde_svbool_t pg, simde_svuint64_t op1, simde_svuint64_t op2)
     #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
       r.altivec = vec_and(pg.altivec_b64, vec_add(op1.altivec, op2.altivec));
     #elif defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
-      r.altivec = pg.values & (op1.altivec + op2.altivec);
+      r.altivec = pg.altivec_b64 & (op1.altivec + op2.altivec);
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r.v128 = wasm_v128_and(pg.v128, wasm_i64x2_add(op1.v128, op2.v128));
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
@@ -732,7 +732,7 @@ simde_svadd_u64_m(simde_svbool_t pg, simde_svuint64_t op1, simde_svuint64_t op2)
     #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
       r.altivec = vec_add(op1.altivec, vec_and(pg.altivec_b64, op2.altivec));
     #elif defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
-      r.altivec = op1.altivec + (pg.values & op2.altivec);
+      r.altivec = op1.altivec + (pg.altivec_b64 & op2.altivec);
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r.v128 = wasm_i64x2_add(op1.v128, wasm_v128_and(pg.v128, op2.v128));
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
@@ -777,7 +777,7 @@ simde_svadd_f32_z(simde_svbool_t pg, simde_svfloat32_t op1, simde_svfloat32_t op
     #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
       r.altivec = vec_and(pg.altivec_b32, vec_add(op1.altivec, op2.altivec));
     #elif defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
-      r.altivec = pg.values & (op1.altivec + op2.altivec);
+      r.altivec = HEDLEY_REINTERPRET_CAST(__typeof__(r.altivec), pg.values_u32 & (HEDLEY_REINTERPRET_CAST(__typeof__(pg.altivec_b32), op1.altivec + op2.altivec)));
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r.v128 = wasm_v128_and(pg.v128, wasm_i32x4_add(op1.v128, op2.v128));
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
@@ -829,7 +829,7 @@ simde_svadd_f32_m(simde_svbool_t pg, simde_svfloat32_t op1, simde_svfloat32_t op
     #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
       r.altivec = vec_add(op1.altivec, vec_and(pg.altivec_b32, op2.altivec));
     #elif defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
-      r.altivec = op1.altivec + (pg.values & op2.altivec);
+      r.altivec = op1.altivec + HEDLEY_REINTERPRET_CAST(__typeof__(op1.altivec), pg.altivec_b32 & HEDLEY_REINTERPRET_CAST(__typeof__(pg.altivec_b32), op2.altivec));
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r.v128 = wasm_i32x4_add(op1.v128, wasm_v128_and(pg.v128, op2.v128));
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
@@ -881,7 +881,7 @@ simde_svadd_f64_z(simde_svbool_t pg, simde_svfloat64_t op1, simde_svfloat64_t op
     #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
       r.altivec = vec_and(pg.altivec_b64, vec_add(op1.altivec, op2.altivec));
     #elif defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
-      r.altivec = pg.values & (op1.altivec + op2.altivec);
+      r.altivec = HEDLEY_REINTERPRET_CAST(__typeof__(r.altivec), pg.altivec_b64 & (HEDLEY_REINTERPRET_CAST(__typeof__(pg.altivec_b64), op1.altivec + op2.altivec)));
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r.v128 = wasm_v128_and(pg.v128, wasm_i64x2_add(op1.v128, op2.v128));
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
@@ -933,7 +933,7 @@ simde_svadd_f64_m(simde_svbool_t pg, simde_svfloat64_t op1, simde_svfloat64_t op
     #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
       r.altivec = vec_add(op1.altivec, vec_and(pg.altivec_b64, op2.altivec));
     #elif defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
-      r.altivec = op1.altivec + (pg.values & op2.altivec);
+      r.altivec = op1.altivec + HEDLEY_REINTERPRET_CAST(__typeof__(op1.altivec), pg.altivec_b64 & HEDLEY_REINTERPRET_CAST(__typeof__(pg.altivec_b64), op2.altivec));
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r.v128 = wasm_i64x2_add(op1.v128, wasm_v128_and(pg.v128, op2.v128));
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
