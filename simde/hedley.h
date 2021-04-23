@@ -1697,8 +1697,10 @@ HEDLEY_DIAGNOSTIC_POP
 #if defined(HEDLEY_FALL_THROUGH)
 # undef HEDLEY_FALL_THROUGH
 #endif
-#if \
-  (HEDLEY_HAS_ATTRIBUTE(fallthrough)) || \
+#if defined(HEDLEY_INTEL_VERSION)
+#  define HEDLEY_FALL_THROUGH
+#elif \
+  HEDLEY_HAS_ATTRIBUTE(fallthrough) || \
   HEDLEY_GCC_VERSION_CHECK(7,0,0) || \
   HEDLEY_MCST_LCC_VERSION_CHECK(1,25,10)
 #  define HEDLEY_FALL_THROUGH __attribute__((__fallthrough__))

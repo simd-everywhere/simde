@@ -299,6 +299,9 @@
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #include <arm_neon.h>
+  #if defined(__ARM_FEATURE_FP16_VECTOR_ARITHMETIC)
+    #include <arm_fp16.h>
+  #endif
 #endif
 
 #if !defined(SIMDE_ARM_SVE_NATIVE) && !defined(SIMDE_ARM_SVE_NO_NATIVE) && !defined(SIMDE_NO_NATIVE)
