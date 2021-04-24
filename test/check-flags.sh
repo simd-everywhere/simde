@@ -7,7 +7,11 @@
 echo "WD: $PWD" > ~/wd.txt
 
 if [ -z "${SDE_PATH}" ]; then
-  SDE_PATH="${HOME}/sde"
+  SDE_PATH="/opt/intel/sde"
+fi
+
+if [ ! -d "${SDE_PATH}" ]; then
+  mkdir -p "${SDE_PATH}"
 fi
 
 NATIVE_SUPPORT=1
