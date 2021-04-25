@@ -24,11 +24,12 @@
  *   2021      Evan Nemerson <evan@nemerson.com>
  */
 
-#if !defined(SIMDE_ARM_SVE_DUP_N_H)
-#define SIMDE_ARM_SVE_DUP_N_H
+#if !defined(SIMDE_ARM_SVE_DUP_H)
+#define SIMDE_ARM_SVE_DUP_H
 
 #include "types.h"
 #include "reinterpret.h"
+#include "sel.h"
 
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
@@ -88,34 +89,7 @@ simde_svdup_n_s8_z(simde_svbool_t pg, int8_t op) {
   #if defined(SIMDE_ARM_SVE_NATIVE)
     return svdup_n_s8_z(pg, op);
   #else
-    simde_svint8_t r;
-
-    #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-      r.neon = vandq_s8(pg.neon_i8, vdupq_n_s8(op));
-    #elif defined(SIMDE_X86_AVX512BW_NATIVE) && (SIMDE_ARM_SVE_VECTOR_SIZE >= 512)
-      r.m512i = _mm512_maskz_set1_epi8(simde_svbool_to_mmask64(pg), op);
-    #elif defined(SIMDE_X86_AVX512BW_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
-      r.m256i[0] = _mm256_maskz_set1_epi8(simde_svbool_to_mmask32(pg), op);
-    #elif defined(SIMDE_X86_AVX2_NATIVE)
-      for (int i = 0 ; i < HEDLEY_STATIC_CAST(int, sizeof(r.m256i) / sizeof(r.m256i[0])) ; i++) {
-        r.m256i[i] = _mm256_and_si256(pg.m256i[i], _mm256_set1_epi8(op));
-      }
-    #elif defined(SIMDE_X86_SSE2_NATIVE)
-      for (int i = 0 ; i < HEDLEY_STATIC_CAST(int, sizeof(r.m128i) / sizeof(r.m128i[0])) ; i++) {
-        r.m128i[i] = _mm_and_si128(pg.m128i[i], _mm_set1_epi8(op));
-      }
-    #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
-      r.altivec = vec_and(HEDLEY_REINTERPRET_CAST(__typeof__(r.altivec), pg.altivec_b8), vec_splats(op));
-    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-      r.v128 = wasm_v128_and(pg.v128, wasm_i8x16_splat(op));
-    #else
-      SIMDE_VECTORIZE
-      for (int i = 0 ; i < HEDLEY_STATIC_CAST(int, sizeof(r.values) / sizeof(r.values[0])) ; i++) {
-        r.values[i] = pg.values_i8[i] & op;
-      }
-    #endif
-
-    return r;
+    return simde_x_svsel_s8_z(pg, simde_svdup_n_s8(op));
   #endif
 }
 #if defined(SIMDE_ARM_SVE_ENABLE_NATIVE_ALIASES)
@@ -188,34 +162,7 @@ simde_svdup_n_s16_z(simde_svbool_t pg, int16_t op) {
   #if defined(SIMDE_ARM_SVE_NATIVE)
     return svdup_n_s16_z(pg, op);
   #else
-    simde_svint16_t r;
-
-    #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-      r.neon = vandq_s16(pg.neon_i16, vdupq_n_s16(op));
-    #elif defined(SIMDE_X86_AVX512BW_NATIVE) && (SIMDE_ARM_SVE_VECTOR_SIZE >= 512)
-      r.m512i = _mm512_maskz_set1_epi16(simde_svbool_to_mmask32(pg), op);
-    #elif defined(SIMDE_X86_AVX512BW_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
-      r.m256i[0]= _mm256_maskz_set1_epi16(simde_svbool_to_mmask16(pg), op);
-    #elif defined(SIMDE_X86_AVX2_NATIVE)
-      for (int i = 0 ; i < HEDLEY_STATIC_CAST(int, sizeof(r.m256i) / sizeof(r.m256i[0])) ; i++) {
-        r.m256i[i] = _mm256_and_si256(pg.m256i[i], _mm256_set1_epi16(op));
-      }
-    #elif defined(SIMDE_X86_SSE2_NATIVE)
-      for (int i = 0 ; i < HEDLEY_STATIC_CAST(int, sizeof(r.m128i) / sizeof(r.m128i[0])) ; i++) {
-        r.m128i[i] = _mm_and_si128(pg.m128i[i], _mm_set1_epi16(op));
-      }
-    #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
-      r.altivec = vec_and(HEDLEY_REINTERPRET_CAST(__typeof__(r.altivec), pg.altivec_b16), vec_splats(op));
-    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-      r.v128 = wasm_v128_and(pg.v128, wasm_i16x8_splat(op));
-    #else
-      SIMDE_VECTORIZE
-      for (int i = 0 ; i < HEDLEY_STATIC_CAST(int, sizeof(r.values) / sizeof(r.values[0])) ; i++) {
-        r.values[i] = pg.values_i16[i] & op;
-      }
-    #endif
-
-    return r;
+    return simde_x_svsel_s16_z(pg, simde_svdup_n_s16(op));
   #endif
 }
 #if defined(SIMDE_ARM_SVE_ENABLE_NATIVE_ALIASES)
@@ -288,34 +235,7 @@ simde_svdup_n_s32_z(simde_svbool_t pg, int32_t op) {
   #if defined(SIMDE_ARM_SVE_NATIVE)
     return svdup_n_s32_z(pg, op);
   #else
-    simde_svint32_t r;
-
-    #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-      r.neon = vandq_s32(pg.neon_i32, vdupq_n_s32(op));
-    #elif defined(SIMDE_X86_AVX512BW_NATIVE) && (SIMDE_ARM_SVE_VECTOR_SIZE >= 512)
-      r.m512i = _mm512_maskz_set1_epi32(simde_svbool_to_mmask16(pg), op);
-    #elif defined(SIMDE_X86_AVX512BW_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
-      r.m256i[0]= _mm256_maskz_set1_epi32(simde_svbool_to_mmask8(pg), op);
-    #elif defined(SIMDE_X86_AVX2_NATIVE)
-      for (int i = 0 ; i < HEDLEY_STATIC_CAST(int, sizeof(r.m256i) / sizeof(r.m256i[0])) ; i++) {
-        r.m256i[i] = _mm256_and_si256(pg.m256i[i], _mm256_set1_epi32(op));
-      }
-    #elif defined(SIMDE_X86_SSE2_NATIVE)
-      for (int i = 0 ; i < HEDLEY_STATIC_CAST(int, sizeof(r.m128i) / sizeof(r.m128i[0])) ; i++) {
-        r.m128i[i] = _mm_and_si128(pg.m128i[i], _mm_set1_epi32(op));
-      }
-    #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
-      r.altivec = vec_and(HEDLEY_REINTERPRET_CAST(__typeof__(r.altivec), pg.altivec_b32), vec_splats(op));
-    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-      r.v128 = wasm_v128_and(pg.v128, wasm_i32x4_splat(op));
-    #else
-      SIMDE_VECTORIZE
-      for (int i = 0 ; i < HEDLEY_STATIC_CAST(int, sizeof(r.values) / sizeof(r.values[0])) ; i++) {
-        r.values[i] = pg.values_i32[i] & op;
-      }
-    #endif
-
-    return r;
+    return simde_x_svsel_s32_z(pg, simde_svdup_n_s32(op));
   #endif
 }
 #if defined(SIMDE_ARM_SVE_ENABLE_NATIVE_ALIASES)
@@ -388,30 +308,7 @@ simde_svdup_n_s64_z(simde_svbool_t pg, int64_t op) {
   #if defined(SIMDE_ARM_SVE_NATIVE)
     return svdup_n_s64_z(pg, op);
   #else
-    simde_svint64_t r;
-
-    #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-      r.neon = vandq_s64(pg.neon_i64, vdupq_n_s64(op));
-    #elif defined(SIMDE_X86_AVX512BW_NATIVE) && (SIMDE_ARM_SVE_VECTOR_SIZE >= 512)
-      r.m512i = _mm512_maskz_set1_epi64(simde_svbool_to_mmask8(pg), op);
-    #elif defined(SIMDE_X86_AVX512BW_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
-      r.m256i[0]= _mm256_maskz_set1_epi64(simde_svbool_to_mmask4(pg), op);
-    #elif defined(SIMDE_X86_AVX2_NATIVE)
-      for (int i = 0 ; i < HEDLEY_STATIC_CAST(int, sizeof(r.m256i) / sizeof(r.m256i[0])) ; i++) {
-        r.m256i[i] = _mm256_and_si256(pg.m256i[i], _mm256_set1_epi64x(op));
-      }
-    #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
-      r.altivec = vec_and(HEDLEY_REINTERPRET_CAST(__typeof__(r.altivec), pg.altivec_b64), vec_splats(HEDLEY_STATIC_CAST(signed long long int, op)));
-    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-      r.v128 = wasm_v128_and(pg.v128, wasm_i64x2_splat(op));
-    #else
-      SIMDE_VECTORIZE
-      for (int i = 0 ; i < HEDLEY_STATIC_CAST(int, sizeof(r.values) / sizeof(r.values[0])) ; i++) {
-        r.values[i] = pg.values_i64[i] & op;
-      }
-    #endif
-
-    return r;
+    return simde_x_svsel_s64_z(pg, simde_svdup_n_s64(op));
   #endif
 }
 #if defined(SIMDE_ARM_SVE_ENABLE_NATIVE_ALIASES)
@@ -484,34 +381,7 @@ simde_svdup_n_u8_z(simde_svbool_t pg, uint8_t op) {
   #if defined(SIMDE_ARM_SVE_NATIVE)
     return svdup_n_u8_z(pg, op);
   #else
-    simde_svuint8_t r;
-
-    #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-      r.neon = vandq_u8(pg.neon_u8, vdupq_n_u8(op));
-    #elif defined(SIMDE_X86_AVX512BW_NATIVE) && (SIMDE_ARM_SVE_VECTOR_SIZE >= 512)
-      r.m512i = _mm512_maskz_set1_epi8(simde_svbool_to_mmask64(pg), HEDLEY_STATIC_CAST(int8_t, op));
-    #elif defined(SIMDE_X86_AVX512BW_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
-      r.m256i[0]= _mm256_maskz_set1_epi8(simde_svbool_to_mmask32(pg), HEDLEY_STATIC_CAST(int8_t, op));
-    #elif defined(SIMDE_X86_AVX2_NATIVE)
-      for (int i = 0 ; i < HEDLEY_STATIC_CAST(int, sizeof(r.m256i) / sizeof(r.m256i[0])) ; i++) {
-        r.m256i[i] = _mm256_and_si256(pg.m256i[i], _mm256_set1_epi8(HEDLEY_STATIC_CAST(int8_t, op)));
-      }
-    #elif defined(SIMDE_X86_SSE2_NATIVE)
-      for (int i = 0 ; i < HEDLEY_STATIC_CAST(int, sizeof(r.m128i) / sizeof(r.m128i[0])) ; i++) {
-        r.m128i[i] = _mm_and_si128(pg.m128i[i], _mm_set1_epi8(HEDLEY_STATIC_CAST(int8_t, op)));
-      }
-    #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
-      r.altivec = vec_and(HEDLEY_REINTERPRET_CAST(__typeof__(r.altivec), pg.altivec_b8), vec_splats(op));
-    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-      r.v128 = wasm_v128_and(pg.v128, wasm_i8x16_splat(HEDLEY_STATIC_CAST(int8_t, op)));
-    #else
-      SIMDE_VECTORIZE
-      for (int i = 0 ; i < HEDLEY_STATIC_CAST(int, sizeof(r.values) / sizeof(r.values[0])) ; i++) {
-        r.values[i] = pg.values_i8[i] & op;
-      }
-    #endif
-
-    return r;
+    return simde_x_svsel_u8_z(pg, simde_svdup_n_u8(op));
   #endif
 }
 #if defined(SIMDE_ARM_SVE_ENABLE_NATIVE_ALIASES)
@@ -584,34 +454,7 @@ simde_svdup_n_u16_z(simde_svbool_t pg, uint16_t op) {
   #if defined(SIMDE_ARM_SVE_NATIVE)
     return svdup_n_u16_z(pg, op);
   #else
-    simde_svuint16_t r;
-
-    #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-      r.neon = vandq_u16(pg.neon_u16, vdupq_n_u16(op));
-    #elif defined(SIMDE_X86_AVX512BW_NATIVE) && (SIMDE_ARM_SVE_VECTOR_SIZE >= 512)
-      r.m512i = _mm512_maskz_set1_epi16(simde_svbool_to_mmask32(pg), HEDLEY_STATIC_CAST(int16_t, op));
-    #elif defined(SIMDE_X86_AVX512BW_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
-      r.m256i[0]= _mm256_maskz_set1_epi16(simde_svbool_to_mmask16(pg), HEDLEY_STATIC_CAST(int16_t, op));
-    #elif defined(SIMDE_X86_AVX2_NATIVE)
-      for (int i = 0 ; i < HEDLEY_STATIC_CAST(int, sizeof(r.m256i) / sizeof(r.m256i[0])) ; i++) {
-        r.m256i[i] = _mm256_and_si256(pg.m256i[i], _mm256_set1_epi16(HEDLEY_STATIC_CAST(int16_t, op)));
-      }
-    #elif defined(SIMDE_X86_SSE2_NATIVE)
-      for (int i = 0 ; i < HEDLEY_STATIC_CAST(int, sizeof(r.m128i) / sizeof(r.m128i[0])) ; i++) {
-        r.m128i[i] = _mm_and_si128(pg.m128i[i], _mm_set1_epi16(HEDLEY_STATIC_CAST(int16_t, op)));
-      }
-    #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
-      r.altivec = vec_and(HEDLEY_REINTERPRET_CAST(__typeof__(r.altivec), pg.altivec_b16), vec_splats(op));
-    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-      r.v128 = wasm_v128_and(pg.v128, wasm_i16x8_splat(HEDLEY_STATIC_CAST(int16_t, op)));
-    #else
-      SIMDE_VECTORIZE
-      for (int i = 0 ; i < HEDLEY_STATIC_CAST(int, sizeof(r.values) / sizeof(r.values[0])) ; i++) {
-        r.values[i] = pg.values_i16[i] & op;
-      }
-    #endif
-
-    return r;
+    return simde_x_svsel_u16_z(pg, simde_svdup_n_u16(op));
   #endif
 }
 #if defined(SIMDE_ARM_SVE_ENABLE_NATIVE_ALIASES)
@@ -684,34 +527,7 @@ simde_svdup_n_u32_z(simde_svbool_t pg, uint32_t op) {
   #if defined(SIMDE_ARM_SVE_NATIVE)
     return svdup_n_u32_z(pg, op);
   #else
-    simde_svuint32_t r;
-
-    #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-      r.neon = vandq_u32(pg.neon_u32, vdupq_n_u32(op));
-    #elif defined(SIMDE_X86_AVX512BW_NATIVE) && (SIMDE_ARM_SVE_VECTOR_SIZE >= 512)
-      r.m512i = _mm512_maskz_set1_epi32(simde_svbool_to_mmask16(pg), HEDLEY_STATIC_CAST(int32_t, op));
-    #elif defined(SIMDE_X86_AVX512BW_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
-      r.m256i[0]= _mm256_maskz_set1_epi32(simde_svbool_to_mmask8(pg), HEDLEY_STATIC_CAST(int32_t, op));
-    #elif defined(SIMDE_X86_AVX2_NATIVE)
-      for (int i = 0 ; i < HEDLEY_STATIC_CAST(int, sizeof(r.m256i) / sizeof(r.m256i[0])) ; i++) {
-        r.m256i[i] = _mm256_and_si256(pg.m256i[i], _mm256_set1_epi32(HEDLEY_STATIC_CAST(int32_t, op)));
-      }
-    #elif defined(SIMDE_X86_SSE2_NATIVE)
-      for (int i = 0 ; i < HEDLEY_STATIC_CAST(int, sizeof(r.m128i) / sizeof(r.m128i[0])) ; i++) {
-        r.m128i[i] = _mm_and_si128(pg.m128i[i], _mm_set1_epi32(HEDLEY_STATIC_CAST(int32_t, op)));
-      }
-    #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
-      r.altivec = vec_and(HEDLEY_REINTERPRET_CAST(__typeof__(r.altivec), pg.altivec_b32), vec_splats(op));
-    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-      r.v128 = wasm_v128_and(pg.v128, wasm_i32x4_splat(HEDLEY_STATIC_CAST(int32_t, op)));
-    #else
-      SIMDE_VECTORIZE
-      for (int i = 0 ; i < HEDLEY_STATIC_CAST(int, sizeof(r.values) / sizeof(r.values[0])) ; i++) {
-        r.values[i] = pg.values_u32[i] & op;
-      }
-    #endif
-
-    return r;
+    return simde_x_svsel_u32_z(pg, simde_svdup_n_u32(op));
   #endif
 }
 #if defined(SIMDE_ARM_SVE_ENABLE_NATIVE_ALIASES)
@@ -784,30 +600,7 @@ simde_svdup_n_u64_z(simde_svbool_t pg, uint64_t op) {
   #if defined(SIMDE_ARM_SVE_NATIVE)
     return svdup_n_u64_z(pg, op);
   #else
-    simde_svuint64_t r;
-
-    #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-      r.neon = vandq_u64(pg.neon_u64, vdupq_n_u64(op));
-    #elif defined(SIMDE_X86_AVX512BW_NATIVE) && (SIMDE_ARM_SVE_VECTOR_SIZE >= 512)
-      r.m512i = _mm512_maskz_set1_epi64(simde_svbool_to_mmask8(pg), HEDLEY_STATIC_CAST(int64_t, op));
-    #elif defined(SIMDE_X86_AVX512BW_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
-      r.m256i[0]= _mm256_maskz_set1_epi64(simde_svbool_to_mmask4(pg), HEDLEY_STATIC_CAST(int64_t, op));
-    #elif defined(SIMDE_X86_AVX2_NATIVE)
-      for (int i = 0 ; i < HEDLEY_STATIC_CAST(int, sizeof(r.m256i) / sizeof(r.m256i[0])) ; i++) {
-        r.m256i[i] = _mm256_and_si256(pg.m256i[i], _mm256_set1_epi64x(HEDLEY_STATIC_CAST(int64_t, op)));
-      }
-    #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
-      r.altivec = vec_and(HEDLEY_REINTERPRET_CAST(__typeof__(r.altivec), pg.altivec_b64), vec_splats(HEDLEY_STATIC_CAST(unsigned long long int, op)));
-    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-      r.v128 = wasm_v128_and(pg.v128, wasm_i64x2_splat(HEDLEY_STATIC_CAST(int64_t, op)));
-    #else
-      SIMDE_VECTORIZE
-      for (int i = 0 ; i < HEDLEY_STATIC_CAST(int, sizeof(r.values) / sizeof(r.values[0])) ; i++) {
-        r.values[i] = pg.values_u64[i] & op;
-      }
-    #endif
-
-    return r;
+    return simde_x_svsel_u64_z(pg, simde_svdup_n_u64(op));
   #endif
 }
 #if defined(SIMDE_ARM_SVE_ENABLE_NATIVE_ALIASES)
@@ -880,37 +673,7 @@ simde_svdup_n_f32_z(simde_svbool_t pg, simde_float32 op) {
   #if defined(SIMDE_ARM_SVE_NATIVE)
     return svdup_n_f32_z(pg, op);
   #else
-    simde_svfloat32_t r;
-
-    #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-      r.neon = vreinterpretq_f32_s32(vandq_s32(pg.neon_i32, vreinterpretq_s32_f32(vdupq_n_f32(op))));
-    #elif defined(SIMDE_X86_AVX512BW_NATIVE) && (SIMDE_ARM_SVE_VECTOR_SIZE >= 512)
-      int32_t opi;
-      simde_memcpy(&opi, &op, sizeof(opi));
-      r.m512 = _mm512_castsi512_ps(_mm512_maskz_set1_epi32(simde_svbool_to_mmask16(pg), opi));
-    #elif defined(SIMDE_X86_AVX512BW_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
-      int32_t opi;
-      simde_memcpy(&opi, &op, sizeof(opi));
-      r.m256[0]= _mm256_castsi256_ps(_mm256_maskz_set1_epi32(simde_svbool_to_mmask8(pg), opi));
-    #elif defined(SIMDE_X86_AVX2_NATIVE)
-      for (int i = 0 ; i < HEDLEY_STATIC_CAST(int, sizeof(r.m256) / sizeof(r.m256[0])) ; i++) {
-        r.m256[i] = _mm256_and_ps(_mm256_castsi256_ps(pg.m256i[i]), _mm256_set1_ps(op));
-      }
-    #elif defined(SIMDE_X86_SSE2_NATIVE)
-      for (int i = 0 ; i < HEDLEY_STATIC_CAST(int, sizeof(r.m128) / sizeof(r.m128[0])) ; i++) {
-        r.m128[i] = _mm_and_ps(_mm_castsi128_ps(pg.m128i[i]), _mm_set1_ps(op));
-      }
-    #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
-      r.altivec = vec_and(HEDLEY_REINTERPRET_CAST(__typeof__(r.altivec), pg.altivec_b32), vec_splats(op));
-    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-      r.v128 = wasm_v128_and(pg.v128, wasm_f32x4_splat(op));
-    #else
-      int32_t opi;
-      simde_memcpy(&opi, &op, sizeof(opi));
-      r = simde_svreinterpret_f32_s32(simde_svdup_n_s32_z(pg, opi));
-    #endif
-
-    return r;
+    return simde_x_svsel_f32_z(pg, simde_svdup_n_f32(op));
   #endif
 }
 #if defined(SIMDE_ARM_SVE_ENABLE_NATIVE_ALIASES)
@@ -983,33 +746,7 @@ simde_svdup_n_f64_z(simde_svbool_t pg, simde_float64 op) {
   #if defined(SIMDE_ARM_SVE_NATIVE)
     return svdup_n_f64_z(pg, op);
   #else
-    simde_svfloat64_t r;
-
-    #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
-      r.neon = vreinterpretq_f64_s64(vandq_s64(pg.neon_i64, vreinterpretq_s64_f64(vdupq_n_f64(op))));
-    #elif defined(SIMDE_X86_AVX512BW_NATIVE) && (SIMDE_ARM_SVE_VECTOR_SIZE >= 512)
-      int64_t opi;
-      simde_memcpy(&opi, &op, sizeof(opi));
-      r.m512d = _mm512_castsi512_pd(_mm512_maskz_set1_epi64(simde_svbool_to_mmask8(pg), opi));
-    #elif defined(SIMDE_X86_AVX512BW_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
-      int64_t opi;
-      simde_memcpy(&opi, &op, sizeof(opi));
-      r.m256d[0] = _mm256_castsi256_pd(_mm256_maskz_set1_epi64(simde_svbool_to_mmask4(pg), opi));
-    #elif defined(SIMDE_X86_AVX2_NATIVE)
-      for (int i = 0 ; i < HEDLEY_STATIC_CAST(int, sizeof(r.m256d) / sizeof(r.m256d[0])) ; i++) {
-        r.m256d[i] = _mm256_and_pd(_mm256_castsi256_pd(pg.m256i[i]), _mm256_set1_pd(op));
-      }
-    #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
-      r.altivec = vec_and(HEDLEY_REINTERPRET_CAST(__typeof__(r.altivec), pg.altivec_b64), vec_splats(op));
-    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-      r.v128 = wasm_v128_and(pg.v128, wasm_f64x2_splat(op));
-    #else
-      int64_t opi;
-      simde_memcpy(&opi, &op, sizeof(opi));
-      r = simde_svreinterpret_f64_s64(simde_svdup_n_s64_z(pg, opi));
-    #endif
-
-    return r;
+    return simde_x_svsel_f64_z(pg, simde_svdup_n_f64(op));
   #endif
 }
 #if defined(SIMDE_ARM_SVE_ENABLE_NATIVE_ALIASES)
@@ -1153,4 +890,4 @@ simde_svdup_f64_z(simde_svbool_t pg, simde_float64 op) {
 
 HEDLEY_DIAGNOSTIC_POP
 
-#endif /* SIMDE_ARM_SVE_DUP_N_H */
+#endif /* SIMDE_ARM_SVE_DUP_H */

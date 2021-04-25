@@ -28,7 +28,7 @@
 #define SIMDE_ARM_SVE_SEL_H
 
 #include "types.h"
-#include "dup.h"
+#include "reinterpret.h"
 
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
