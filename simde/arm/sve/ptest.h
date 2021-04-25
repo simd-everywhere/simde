@@ -38,37 +38,11 @@ simde_svptest_first(simde_svbool_t pg, simde_svbool_t op) {
   #if defined(SIMDE_ARM_SVE_NATIVE)
     return svptest_first(pg, op);
   #elif defined(SIMDE_X86_AVX512BW_NATIVE)
+    if (HEDLEY_LIKELY(pg.value & 1))
+      return op.value & 1;
+
     if (pg.value == 0 || op.value == 0)
       return 0;
-
-    switch (pg.type) {
-      case SIMDE_ARM_SVE_SVBOOL_TYPE_MMASK64:
-        if (pg.value == UINT64_MAX)
-          return op.value & UINT64_C(1);
-        break;
-      case SIMDE_ARM_SVE_SVBOOL_TYPE_MMASK32:
-        if (pg.value == UINT32_MAX)
-          return op.value & UINT64_C(1);
-        break;
-      case SIMDE_ARM_SVE_SVBOOL_TYPE_MMASK16:
-        if (pg.value == UINT16_MAX)
-          return op.value & UINT64_C(1);
-        break;
-      case SIMDE_ARM_SVE_SVBOOL_TYPE_MMASK8:
-        if (pg.value == UINT8_MAX)
-          return op.value & UINT64_C(1);
-        break;
-
-      #if SIMDE_ARM_SVE_VECTOR_SIZE < 512
-        case SIMDE_ARM_SVE_SVBOOL_TYPE_MMASK4:
-          if (pg.value == 0x0f)
-            return op.value & UINT64_C(1);
-          break;
-      #endif
-
-      default:
-        HEDLEY_UNREACHABLE();
-    }
 
     #if defined(_MSC_VER)
       unsigned long r = 0;
