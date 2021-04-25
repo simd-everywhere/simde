@@ -41,9 +41,9 @@ simde_svwhilelt_b8_s32(int32_t op1, int32_t op2) {
     if (HEDLEY_UNLIKELY(op1 >= op2))
       return simde_svbool_from_mmask64(HEDLEY_STATIC_CAST(__mmask64, 0));
 
-    int_fast32_t remaining = (op2 - op1);
+    int_fast32_t remaining = (HEDLEY_STATIC_CAST(int_fast32_t, op2) - HEDLEY_STATIC_CAST(int_fast32_t, op1));
     __mmask64 r = ~HEDLEY_STATIC_CAST(__mmask64, 0);
-    if (remaining < 64) {
+    if (HEDLEY_UNLIKELY(remaining < 64)) {
       r >>= 64 - remaining;
     }
 
@@ -52,9 +52,9 @@ simde_svwhilelt_b8_s32(int32_t op1, int32_t op2) {
     if (HEDLEY_UNLIKELY(op1 >= op2))
       return simde_svbool_from_mmask32(HEDLEY_STATIC_CAST(__mmask32, 0));
 
-    int_fast32_t remaining = (op2 - op1);
+    int_fast32_t remaining = (HEDLEY_STATIC_CAST(int_fast32_t, op2) - HEDLEY_STATIC_CAST(int_fast32_t, op1));
     __mmask32 r = HEDLEY_STATIC_CAST(__mmask32, ~UINT32_C(0));
-    if (remaining < 32) {
+    if (HEDLEY_UNLIKELY(remaining < 32)) {
       r >>= 32 - remaining;
     }
 
@@ -62,9 +62,7 @@ simde_svwhilelt_b8_s32(int32_t op1, int32_t op2) {
   #else
     simde_svint8_t r;
 
-    int_fast32_t remaining = (op2 - op1);
-    if (op1 >= op2)
-      remaining = 0;
+    int_fast32_t remaining = (op1 >= op2) ? 0 : (HEDLEY_STATIC_CAST(int_fast32_t, op2) - HEDLEY_STATIC_CAST(int_fast32_t, op1));
 
     SIMDE_VECTORIZE
     for (int i = 0 ; i < HEDLEY_STATIC_CAST(int, simde_svcntb()) ; i++) {
@@ -88,9 +86,9 @@ simde_svwhilelt_b16_s32(int32_t op1, int32_t op2) {
     if (HEDLEY_UNLIKELY(op1 >= op2))
       return simde_svbool_from_mmask32(HEDLEY_STATIC_CAST(__mmask32, 0));
 
-    int_fast32_t remaining = (op2 - op1);
+    int_fast32_t remaining = (HEDLEY_STATIC_CAST(int_fast32_t, op2) - HEDLEY_STATIC_CAST(int_fast32_t, op1));
     __mmask32 r = HEDLEY_STATIC_CAST(__mmask32, ~UINT32_C(0));
-    if (remaining < 32) {
+    if (HEDLEY_UNLIKELY(remaining < 32)) {
       r >>= 32 - remaining;
     }
 
@@ -99,9 +97,9 @@ simde_svwhilelt_b16_s32(int32_t op1, int32_t op2) {
     if (HEDLEY_UNLIKELY(op1 >= op2))
       return simde_svbool_from_mmask16(HEDLEY_STATIC_CAST(__mmask16, 0));
 
-    int_fast32_t remaining = (op2 - op1);
+    int_fast32_t remaining = (HEDLEY_STATIC_CAST(int_fast32_t, op2) - HEDLEY_STATIC_CAST(int_fast32_t, op1));
     __mmask16 r = HEDLEY_STATIC_CAST(__mmask16, ~UINT16_C(0));
-    if (remaining < 16) {
+    if (HEDLEY_UNLIKELY(remaining < 16)) {
       r >>= 16 - remaining;
     }
 
@@ -109,9 +107,7 @@ simde_svwhilelt_b16_s32(int32_t op1, int32_t op2) {
   #else
     simde_svint16_t r;
 
-    int_fast32_t remaining = (op2 - op1);
-    if (op1 >= op2)
-      remaining = 0;
+    int_fast32_t remaining = (op1 >= op2) ? 0 : (HEDLEY_STATIC_CAST(int_fast32_t, op2) - HEDLEY_STATIC_CAST(int_fast32_t, op1));
 
     SIMDE_VECTORIZE
     for (int i = 0 ; i < HEDLEY_STATIC_CAST(int, simde_svcnth()) ; i++) {
@@ -135,9 +131,9 @@ simde_svwhilelt_b32_s32(int32_t op1, int32_t op2) {
     if (HEDLEY_UNLIKELY(op1 >= op2))
       return simde_svbool_from_mmask16(HEDLEY_STATIC_CAST(__mmask16, 0));
 
-    int_fast32_t remaining = (op2 - op1);
+    int_fast32_t remaining = (HEDLEY_STATIC_CAST(int_fast32_t, op2) - HEDLEY_STATIC_CAST(int_fast32_t, op1));
     __mmask16 r = HEDLEY_STATIC_CAST(__mmask16, ~UINT16_C(0));
-    if (remaining < 16) {
+    if (HEDLEY_UNLIKELY(remaining < 16)) {
       r >>= 16 - remaining;
     }
 
@@ -146,9 +142,9 @@ simde_svwhilelt_b32_s32(int32_t op1, int32_t op2) {
     if (HEDLEY_UNLIKELY(op1 >= op2))
       return simde_svbool_from_mmask8(HEDLEY_STATIC_CAST(__mmask8, 0));
 
-    int_fast32_t remaining = (op2 - op1);
+    int_fast32_t remaining = (HEDLEY_STATIC_CAST(int_fast32_t, op2) - HEDLEY_STATIC_CAST(int_fast32_t, op1));
     __mmask8 r = HEDLEY_STATIC_CAST(__mmask8, ~UINT8_C(0));
-    if (remaining < 8) {
+    if (HEDLEY_UNLIKELY(remaining < 8)) {
       r >>= 8 - remaining;
     }
 
@@ -156,9 +152,7 @@ simde_svwhilelt_b32_s32(int32_t op1, int32_t op2) {
   #else
     simde_svint32_t r;
 
-    int_fast32_t remaining = (op2 - op1);
-    if (op1 >= op2)
-      remaining = 0;
+    int_fast32_t remaining = (op1 >= op2) ? 0 : (HEDLEY_STATIC_CAST(int_fast32_t, op2) - HEDLEY_STATIC_CAST(int_fast32_t, op1));
 
     SIMDE_VECTORIZE
     for (int i = 0 ; i < HEDLEY_STATIC_CAST(int, simde_svcntw()) ; i++) {
@@ -182,9 +176,9 @@ simde_svwhilelt_b64_s32(int32_t op1, int32_t op2) {
     if (HEDLEY_UNLIKELY(op1 >= op2))
       return simde_svbool_from_mmask8(HEDLEY_STATIC_CAST(__mmask8, 0));
 
-    int_fast32_t remaining = (op2 - op1);
+    int_fast32_t remaining = (HEDLEY_STATIC_CAST(int_fast32_t, op2) - HEDLEY_STATIC_CAST(int_fast32_t, op1));
     __mmask8 r = HEDLEY_STATIC_CAST(__mmask8, ~UINT8_C(0));
-    if (remaining < 8) {
+    if (HEDLEY_UNLIKELY(remaining < 8)) {
       r >>= 8 - remaining;
     }
 
@@ -193,9 +187,9 @@ simde_svwhilelt_b64_s32(int32_t op1, int32_t op2) {
     if (HEDLEY_UNLIKELY(op1 >= op2))
       return simde_svbool_from_mmask4(HEDLEY_STATIC_CAST(__mmask8, 0));
 
-    int_fast32_t remaining = (op2 - op1);
+    int_fast32_t remaining = (HEDLEY_STATIC_CAST(int_fast32_t, op2) - HEDLEY_STATIC_CAST(int_fast32_t, op1));
     __mmask8 r = HEDLEY_STATIC_CAST(__mmask8, 0x0f);
-    if (remaining < 4) {
+    if (HEDLEY_UNLIKELY(remaining < 4)) {
       r >>= 4 - remaining;
     }
 
@@ -203,9 +197,7 @@ simde_svwhilelt_b64_s32(int32_t op1, int32_t op2) {
   #else
     simde_svint64_t r;
 
-    int_fast32_t remaining = (op2 - op1);
-    if (op1 >= op2)
-      remaining = 0;
+    int_fast32_t remaining = (op1 >= op2) ? 0 : (HEDLEY_STATIC_CAST(int_fast32_t, op2) - HEDLEY_STATIC_CAST(int_fast32_t, op1));
 
     SIMDE_VECTORIZE
     for (int i = 0 ; i < HEDLEY_STATIC_CAST(int, simde_svcntd()) ; i++) {
@@ -229,9 +221,9 @@ simde_svwhilelt_b8_s64(int64_t op1, int64_t op2) {
     if (HEDLEY_UNLIKELY(op1 >= op2))
       return simde_svbool_from_mmask64(HEDLEY_STATIC_CAST(__mmask64, 0));
 
-    int_fast64_t remaining = (op2 - op1);
+    int_fast64_t remaining = (HEDLEY_STATIC_CAST(int_fast64_t, op2) - HEDLEY_STATIC_CAST(int_fast64_t, op1));
     __mmask64 r = ~HEDLEY_STATIC_CAST(__mmask64, 0);
-    if (remaining < 64) {
+    if (HEDLEY_UNLIKELY(remaining < 64)) {
       r >>= 64 - remaining;
     }
 
@@ -240,9 +232,9 @@ simde_svwhilelt_b8_s64(int64_t op1, int64_t op2) {
     if (HEDLEY_UNLIKELY(op1 >= op2))
       return simde_svbool_from_mmask32(HEDLEY_STATIC_CAST(__mmask32, 0));
 
-    int_fast64_t remaining = (op2 - op1);
+    int_fast64_t remaining = (HEDLEY_STATIC_CAST(int_fast64_t, op2) - HEDLEY_STATIC_CAST(int_fast64_t, op1));
     __mmask32 r = HEDLEY_STATIC_CAST(__mmask32, ~UINT32_C(0));
-    if (remaining < 32) {
+    if (HEDLEY_UNLIKELY(remaining < 32)) {
       r >>= 32 - remaining;
     }
 
@@ -250,9 +242,7 @@ simde_svwhilelt_b8_s64(int64_t op1, int64_t op2) {
   #else
     simde_svint8_t r;
 
-    int_fast64_t remaining = (op2 - op1);
-    if (op1 >= op2)
-      remaining = 0;
+    int_fast64_t remaining = (op1 >= op2) ? 0 : (HEDLEY_STATIC_CAST(int_fast64_t, op2) - HEDLEY_STATIC_CAST(int_fast64_t, op1));
 
     SIMDE_VECTORIZE
     for (int i = 0 ; i < HEDLEY_STATIC_CAST(int, simde_svcntb()) ; i++) {
@@ -276,9 +266,9 @@ simde_svwhilelt_b16_s64(int64_t op1, int64_t op2) {
     if (HEDLEY_UNLIKELY(op1 >= op2))
       return simde_svbool_from_mmask32(HEDLEY_STATIC_CAST(__mmask32, 0));
 
-    int_fast64_t remaining = (op2 - op1);
+    int_fast64_t remaining = (HEDLEY_STATIC_CAST(int_fast64_t, op2) - HEDLEY_STATIC_CAST(int_fast64_t, op1));
     __mmask32 r = HEDLEY_STATIC_CAST(__mmask32, ~UINT64_C(0));
-    if (remaining < 32) {
+    if (HEDLEY_UNLIKELY(remaining < 32)) {
       r >>= 32 - remaining;
     }
 
@@ -287,9 +277,9 @@ simde_svwhilelt_b16_s64(int64_t op1, int64_t op2) {
     if (HEDLEY_UNLIKELY(op1 >= op2))
       return simde_svbool_from_mmask16(HEDLEY_STATIC_CAST(__mmask16, 0));
 
-    int_fast64_t remaining = (op2 - op1);
+    int_fast64_t remaining = (HEDLEY_STATIC_CAST(int_fast64_t, op2) - HEDLEY_STATIC_CAST(int_fast64_t, op1));
     __mmask16 r = HEDLEY_STATIC_CAST(__mmask16, ~UINT16_C(0));
-    if (remaining < 16) {
+    if (HEDLEY_UNLIKELY(remaining < 16)) {
       r >>= 16 - remaining;
     }
 
@@ -297,9 +287,7 @@ simde_svwhilelt_b16_s64(int64_t op1, int64_t op2) {
   #else
     simde_svint16_t r;
 
-    int_fast64_t remaining = (op2 - op1);
-    if (op1 >= op2)
-      remaining = 0;
+    int_fast64_t remaining = (op1 >= op2) ? 0 : (HEDLEY_STATIC_CAST(int_fast64_t, op2) - HEDLEY_STATIC_CAST(int_fast64_t, op1));
 
     SIMDE_VECTORIZE
     for (int i = 0 ; i < HEDLEY_STATIC_CAST(int, simde_svcnth()) ; i++) {
@@ -323,9 +311,9 @@ simde_svwhilelt_b32_s64(int64_t op1, int64_t op2) {
     if (HEDLEY_UNLIKELY(op1 >= op2))
       return simde_svbool_from_mmask16(HEDLEY_STATIC_CAST(__mmask16, 0));
 
-    int_fast64_t remaining = (op2 - op1);
+    int_fast64_t remaining = (HEDLEY_STATIC_CAST(int_fast64_t, op2) - HEDLEY_STATIC_CAST(int_fast64_t, op1));
     __mmask16 r = HEDLEY_STATIC_CAST(__mmask16, ~UINT16_C(0));
-    if (remaining < 16) {
+    if (HEDLEY_UNLIKELY(remaining < 16)) {
       r >>= 16 - remaining;
     }
 
@@ -334,9 +322,9 @@ simde_svwhilelt_b32_s64(int64_t op1, int64_t op2) {
     if (HEDLEY_UNLIKELY(op1 >= op2))
       return simde_svbool_from_mmask8(HEDLEY_STATIC_CAST(__mmask8, 0));
 
-    int_fast64_t remaining = (op2 - op1);
+    int_fast64_t remaining = (HEDLEY_STATIC_CAST(int_fast64_t, op2) - HEDLEY_STATIC_CAST(int_fast64_t, op1));
     __mmask8 r = HEDLEY_STATIC_CAST(__mmask8, ~UINT8_C(0));
-    if (remaining < 8) {
+    if (HEDLEY_UNLIKELY(remaining < 8)) {
       r >>= 8 - remaining;
     }
 
@@ -344,9 +332,7 @@ simde_svwhilelt_b32_s64(int64_t op1, int64_t op2) {
   #else
     simde_svint64_t r;
 
-    int_fast64_t remaining = (op2 - op1);
-    if (op1 >= op2)
-      remaining = 0;
+    int_fast64_t remaining = (op1 >= op2) ? 0 : (HEDLEY_STATIC_CAST(int_fast64_t, op2) - HEDLEY_STATIC_CAST(int_fast64_t, op1));
 
     SIMDE_VECTORIZE
     for (int i = 0 ; i < HEDLEY_STATIC_CAST(int, simde_svcntw()) ; i++) {
@@ -370,9 +356,9 @@ simde_svwhilelt_b64_s64(int64_t op1, int64_t op2) {
     if (HEDLEY_UNLIKELY(op1 >= op2))
       return simde_svbool_from_mmask8(HEDLEY_STATIC_CAST(__mmask8, 0));
 
-    int_fast64_t remaining = (op2 - op1);
+    int_fast64_t remaining = (HEDLEY_STATIC_CAST(int_fast64_t, op2) - HEDLEY_STATIC_CAST(int_fast64_t, op1));
     __mmask8 r = HEDLEY_STATIC_CAST(__mmask8, ~UINT8_C(0));
-    if (remaining < 8) {
+    if (HEDLEY_UNLIKELY(remaining < 8)) {
       r >>= 8 - remaining;
     }
 
@@ -381,9 +367,9 @@ simde_svwhilelt_b64_s64(int64_t op1, int64_t op2) {
     if (HEDLEY_UNLIKELY(op1 >= op2))
       return simde_svbool_from_mmask4(HEDLEY_STATIC_CAST(__mmask8, 0));
 
-    int_fast64_t remaining = (op2 - op1);
+    int_fast64_t remaining = (HEDLEY_STATIC_CAST(int_fast64_t, op2) - HEDLEY_STATIC_CAST(int_fast64_t, op1));
     __mmask8 r = HEDLEY_STATIC_CAST(__mmask8, 0x0f);
-    if (remaining < 4) {
+    if (HEDLEY_UNLIKELY(remaining < 4)) {
       r >>= 4 - remaining;
     }
 
@@ -391,9 +377,7 @@ simde_svwhilelt_b64_s64(int64_t op1, int64_t op2) {
   #else
     simde_svint64_t r;
 
-    int_fast64_t remaining = (op2 - op1);
-    if (op1 >= op2)
-      remaining = 0;
+    int_fast64_t remaining = (op1 >= op2) ? 0 : (HEDLEY_STATIC_CAST(int_fast64_t, op2) - HEDLEY_STATIC_CAST(int_fast64_t, op1));
 
     SIMDE_VECTORIZE
     for (int i = 0 ; i < HEDLEY_STATIC_CAST(int, simde_svcntd()) ; i++) {
@@ -417,9 +401,9 @@ simde_svwhilelt_b8_u32(uint32_t op1, uint32_t op2) {
     if (HEDLEY_UNLIKELY(op1 >= op2))
       return simde_svbool_from_mmask64(HEDLEY_STATIC_CAST(__mmask64, 0));
 
-    uint_fast32_t remaining = (op2 - op1);
+    uint_fast32_t remaining = (HEDLEY_STATIC_CAST(uint_fast32_t, op2) - HEDLEY_STATIC_CAST(uint_fast32_t, op1));
     __mmask64 r = ~HEDLEY_STATIC_CAST(__mmask64, 0);
-    if (remaining < 64) {
+    if (HEDLEY_UNLIKELY(remaining < 64)) {
       r >>= 64 - remaining;
     }
 
@@ -428,9 +412,9 @@ simde_svwhilelt_b8_u32(uint32_t op1, uint32_t op2) {
     if (HEDLEY_UNLIKELY(op1 >= op2))
       return simde_svbool_from_mmask32(HEDLEY_STATIC_CAST(__mmask32, 0));
 
-    uint_fast32_t remaining = (op2 - op1);
+    uint_fast32_t remaining = (HEDLEY_STATIC_CAST(uint_fast32_t, op2) - HEDLEY_STATIC_CAST(uint_fast32_t, op1));
     __mmask32 r = HEDLEY_STATIC_CAST(__mmask32, ~UINT32_C(0));
-    if (remaining < 32) {
+    if (HEDLEY_UNLIKELY(remaining < 32)) {
       r >>= 32 - remaining;
     }
 
@@ -438,9 +422,7 @@ simde_svwhilelt_b8_u32(uint32_t op1, uint32_t op2) {
   #else
     simde_svint8_t r;
 
-    uint_fast32_t remaining = (op2 - op1);
-    if (op1 >= op2)
-      remaining = 0;
+    uint_fast32_t remaining = (op1 >= op2) ? 0 : (HEDLEY_STATIC_CAST(uint_fast32_t, op2) - HEDLEY_STATIC_CAST(uint_fast32_t, op1));
 
     SIMDE_VECTORIZE
     for (int i = 0 ; i < HEDLEY_STATIC_CAST(int, simde_svcntb()) ; i++) {
@@ -464,9 +446,9 @@ simde_svwhilelt_b16_u32(uint32_t op1, uint32_t op2) {
     if (HEDLEY_UNLIKELY(op1 >= op2))
       return simde_svbool_from_mmask32(HEDLEY_STATIC_CAST(__mmask32, 0));
 
-    uint_fast32_t remaining = (op2 - op1);
+    uint_fast32_t remaining = (HEDLEY_STATIC_CAST(uint_fast32_t, op2) - HEDLEY_STATIC_CAST(uint_fast32_t, op1));
     __mmask32 r = HEDLEY_STATIC_CAST(__mmask32, ~UINT32_C(0));
-    if (remaining < 32) {
+    if (HEDLEY_UNLIKELY(remaining < 32)) {
       r >>= 32 - remaining;
     }
 
@@ -475,9 +457,9 @@ simde_svwhilelt_b16_u32(uint32_t op1, uint32_t op2) {
     if (HEDLEY_UNLIKELY(op1 >= op2))
       return simde_svbool_from_mmask16(HEDLEY_STATIC_CAST(__mmask16, 0));
 
-    uint_fast32_t remaining = (op2 - op1);
+    uint_fast32_t remaining = (HEDLEY_STATIC_CAST(uint_fast32_t, op2) - HEDLEY_STATIC_CAST(uint_fast32_t, op1));
     __mmask16 r = HEDLEY_STATIC_CAST(__mmask16, ~UINT16_C(0));
-    if (remaining < 16) {
+    if (HEDLEY_UNLIKELY(remaining < 16)) {
       r >>= 16 - remaining;
     }
 
@@ -485,9 +467,7 @@ simde_svwhilelt_b16_u32(uint32_t op1, uint32_t op2) {
   #else
     simde_svint16_t r;
 
-    uint_fast32_t remaining = (op2 - op1);
-    if (op1 >= op2)
-      remaining = 0;
+    uint_fast32_t remaining = (op1 >= op2) ? 0 : (HEDLEY_STATIC_CAST(uint_fast32_t, op2) - HEDLEY_STATIC_CAST(uint_fast32_t, op1));
 
     SIMDE_VECTORIZE
     for (int i = 0 ; i < HEDLEY_STATIC_CAST(int, simde_svcnth()) ; i++) {
@@ -511,9 +491,9 @@ simde_svwhilelt_b32_u32(uint32_t op1, uint32_t op2) {
     if (HEDLEY_UNLIKELY(op1 >= op2))
       return simde_svbool_from_mmask16(HEDLEY_STATIC_CAST(__mmask16, 0));
 
-    uint_fast32_t remaining = (op2 - op1);
+    uint_fast32_t remaining = (HEDLEY_STATIC_CAST(uint_fast32_t, op2) - HEDLEY_STATIC_CAST(uint_fast32_t, op1));
     __mmask16 r = HEDLEY_STATIC_CAST(__mmask16, ~UINT16_C(0));
-    if (remaining < 16) {
+    if (HEDLEY_UNLIKELY(remaining < 16)) {
       r >>= 16 - remaining;
     }
 
@@ -522,9 +502,9 @@ simde_svwhilelt_b32_u32(uint32_t op1, uint32_t op2) {
     if (HEDLEY_UNLIKELY(op1 >= op2))
       return simde_svbool_from_mmask8(HEDLEY_STATIC_CAST(__mmask8, 0));
 
-    uint_fast32_t remaining = (op2 - op1);
+    uint_fast32_t remaining = (HEDLEY_STATIC_CAST(uint_fast32_t, op2) - HEDLEY_STATIC_CAST(uint_fast32_t, op1));
     __mmask8 r = HEDLEY_STATIC_CAST(__mmask8, ~UINT8_C(0));
-    if (remaining < 8) {
+    if (HEDLEY_UNLIKELY(remaining < 8)) {
       r >>= 8 - remaining;
     }
 
@@ -532,9 +512,7 @@ simde_svwhilelt_b32_u32(uint32_t op1, uint32_t op2) {
   #else
     simde_svuint32_t r;
 
-    uint_fast32_t remaining = (op2 - op1);
-    if (op1 >= op2)
-      remaining = 0;
+    uint_fast32_t remaining = (op1 >= op2) ? 0 : (HEDLEY_STATIC_CAST(uint_fast32_t, op2) - HEDLEY_STATIC_CAST(uint_fast32_t, op1));
 
     SIMDE_VECTORIZE
     for (int i = 0 ; i < HEDLEY_STATIC_CAST(int, simde_svcntw()) ; i++) {
@@ -558,9 +536,9 @@ simde_svwhilelt_b64_u32(uint32_t op1, uint32_t op2) {
     if (HEDLEY_UNLIKELY(op1 >= op2))
       return simde_svbool_from_mmask8(HEDLEY_STATIC_CAST(__mmask8, 0));
 
-    uint_fast32_t remaining = (op2 - op1);
+    uint_fast32_t remaining = (HEDLEY_STATIC_CAST(uint_fast32_t, op2) - HEDLEY_STATIC_CAST(uint_fast32_t, op1));
     __mmask8 r = HEDLEY_STATIC_CAST(__mmask8, ~UINT8_C(0));
-    if (remaining < 8) {
+    if (HEDLEY_UNLIKELY(remaining < 8)) {
       r >>= 8 - remaining;
     }
 
@@ -569,9 +547,9 @@ simde_svwhilelt_b64_u32(uint32_t op1, uint32_t op2) {
     if (HEDLEY_UNLIKELY(op1 >= op2))
       return simde_svbool_from_mmask4(HEDLEY_STATIC_CAST(__mmask8, 0));
 
-    uint_fast32_t remaining = (op2 - op1);
+    uint_fast32_t remaining = (HEDLEY_STATIC_CAST(uint_fast32_t, op2) - HEDLEY_STATIC_CAST(uint_fast32_t, op1));
     __mmask8 r = HEDLEY_STATIC_CAST(__mmask8, 0x0f);
-    if (remaining < 4) {
+    if (HEDLEY_UNLIKELY(remaining < 4)) {
       r >>= 4 - remaining;
     }
 
@@ -579,9 +557,7 @@ simde_svwhilelt_b64_u32(uint32_t op1, uint32_t op2) {
   #else
     simde_svint64_t r;
 
-    uint_fast32_t remaining = (op2 - op1);
-    if (op1 >= op2)
-      remaining = 0;
+    uint_fast32_t remaining = (op1 >= op2) ? 0 : (HEDLEY_STATIC_CAST(uint_fast32_t, op2) - HEDLEY_STATIC_CAST(uint_fast32_t, op1));
 
     SIMDE_VECTORIZE
     for (int i = 0 ; i < HEDLEY_STATIC_CAST(int, simde_svcntd()) ; i++) {
@@ -605,9 +581,9 @@ simde_svwhilelt_b8_u64(uint64_t op1, uint64_t op2) {
     if (HEDLEY_UNLIKELY(op1 >= op2))
       return simde_svbool_from_mmask64(HEDLEY_STATIC_CAST(__mmask64, 0));
 
-    uint_fast64_t remaining = (op2 - op1);
+    uint_fast64_t remaining = (HEDLEY_STATIC_CAST(uint_fast64_t, op2) - HEDLEY_STATIC_CAST(uint_fast64_t, op1));
     __mmask64 r = ~HEDLEY_STATIC_CAST(__mmask64, 0);
-    if (remaining < 64) {
+    if (HEDLEY_UNLIKELY(remaining < 64)) {
       r >>= 64 - remaining;
     }
 
@@ -616,9 +592,9 @@ simde_svwhilelt_b8_u64(uint64_t op1, uint64_t op2) {
     if (HEDLEY_UNLIKELY(op1 >= op2))
       return simde_svbool_from_mmask32(HEDLEY_STATIC_CAST(__mmask32, 0));
 
-    uint_fast64_t remaining = (op2 - op1);
+    uint_fast64_t remaining = (HEDLEY_STATIC_CAST(uint_fast64_t, op2) - HEDLEY_STATIC_CAST(uint_fast64_t, op1));
     __mmask32 r = HEDLEY_STATIC_CAST(__mmask32, ~UINT64_C(0));
-    if (remaining < 32) {
+    if (HEDLEY_UNLIKELY(remaining < 32)) {
       r >>= 32 - remaining;
     }
 
@@ -626,9 +602,7 @@ simde_svwhilelt_b8_u64(uint64_t op1, uint64_t op2) {
   #else
     simde_svint8_t r;
 
-    uint_fast64_t remaining = (op2 - op1);
-    if (op1 >= op2)
-      remaining = 0;
+    uint_fast64_t remaining = (op1 >= op2) ? 0 : (HEDLEY_STATIC_CAST(uint_fast64_t, op2) - HEDLEY_STATIC_CAST(uint_fast64_t, op1));
 
     SIMDE_VECTORIZE
     for (int i = 0 ; i < HEDLEY_STATIC_CAST(int, simde_svcntb()) ; i++) {
@@ -652,9 +626,9 @@ simde_svwhilelt_b16_u64(uint64_t op1, uint64_t op2) {
     if (HEDLEY_UNLIKELY(op1 >= op2))
       return simde_svbool_from_mmask32(HEDLEY_STATIC_CAST(__mmask32, 0));
 
-    uint_fast64_t remaining = (op2 - op1);
+    uint_fast64_t remaining = (HEDLEY_STATIC_CAST(uint_fast64_t, op2) - HEDLEY_STATIC_CAST(uint_fast64_t, op1));
     __mmask32 r = HEDLEY_STATIC_CAST(__mmask32, ~UINT64_C(0));
-    if (remaining < 32) {
+    if (HEDLEY_UNLIKELY(remaining < 32)) {
       r >>= 32 - remaining;
     }
 
@@ -663,9 +637,9 @@ simde_svwhilelt_b16_u64(uint64_t op1, uint64_t op2) {
     if (HEDLEY_UNLIKELY(op1 >= op2))
       return simde_svbool_from_mmask16(HEDLEY_STATIC_CAST(__mmask16, 0));
 
-    uint_fast64_t remaining = (op2 - op1);
+    uint_fast64_t remaining = (HEDLEY_STATIC_CAST(uint_fast64_t, op2) - HEDLEY_STATIC_CAST(uint_fast64_t, op1));
     __mmask16 r = HEDLEY_STATIC_CAST(__mmask16, ~UINT16_C(0));
-    if (remaining < 16) {
+    if (HEDLEY_UNLIKELY(remaining < 16)) {
       r >>= 16 - remaining;
     }
 
@@ -673,9 +647,7 @@ simde_svwhilelt_b16_u64(uint64_t op1, uint64_t op2) {
   #else
     simde_svint16_t r;
 
-    uint_fast64_t remaining = (op2 - op1);
-    if (op1 >= op2)
-      remaining = 0;
+    uint_fast64_t remaining = (op1 >= op2) ? 0 : (HEDLEY_STATIC_CAST(uint_fast64_t, op2) - HEDLEY_STATIC_CAST(uint_fast64_t, op1));
 
     SIMDE_VECTORIZE
     for (int i = 0 ; i < HEDLEY_STATIC_CAST(int, simde_svcnth()) ; i++) {
@@ -699,9 +671,9 @@ simde_svwhilelt_b32_u64(uint64_t op1, uint64_t op2) {
     if (HEDLEY_UNLIKELY(op1 >= op2))
       return simde_svbool_from_mmask16(HEDLEY_STATIC_CAST(__mmask16, 0));
 
-    uint_fast64_t remaining = (op2 - op1);
+    uint_fast64_t remaining = (HEDLEY_STATIC_CAST(uint_fast64_t, op2) - HEDLEY_STATIC_CAST(uint_fast64_t, op1));
     __mmask16 r = HEDLEY_STATIC_CAST(__mmask16, ~UINT16_C(0));
-    if (remaining < 16) {
+    if (HEDLEY_UNLIKELY(remaining < 16)) {
       r >>= 16 - remaining;
     }
 
@@ -710,9 +682,9 @@ simde_svwhilelt_b32_u64(uint64_t op1, uint64_t op2) {
     if (HEDLEY_UNLIKELY(op1 >= op2))
       return simde_svbool_from_mmask8(HEDLEY_STATIC_CAST(__mmask8, 0));
 
-    uint_fast64_t remaining = (op2 - op1);
+    uint_fast64_t remaining = (HEDLEY_STATIC_CAST(uint_fast64_t, op2) - HEDLEY_STATIC_CAST(uint_fast64_t, op1));
     __mmask8 r = HEDLEY_STATIC_CAST(__mmask8, ~UINT8_C(0));
-    if (remaining < 8) {
+    if (HEDLEY_UNLIKELY(remaining < 8)) {
       r >>= 8 - remaining;
     }
 
@@ -720,9 +692,7 @@ simde_svwhilelt_b32_u64(uint64_t op1, uint64_t op2) {
   #else
     simde_svuint64_t r;
 
-    uint_fast64_t remaining = (op2 - op1);
-    if (op1 >= op2)
-      remaining = 0;
+    uint_fast64_t remaining = (op1 >= op2) ? 0 : (HEDLEY_STATIC_CAST(uint_fast64_t, op2) - HEDLEY_STATIC_CAST(uint_fast64_t, op1));
 
     SIMDE_VECTORIZE
     for (int i = 0 ; i < HEDLEY_STATIC_CAST(int, simde_svcntw()) ; i++) {
@@ -746,9 +716,9 @@ simde_svwhilelt_b64_u64(uint64_t op1, uint64_t op2) {
     if (HEDLEY_UNLIKELY(op1 >= op2))
       return simde_svbool_from_mmask8(HEDLEY_STATIC_CAST(__mmask8, 0));
 
-    uint_fast64_t remaining = (op2 - op1);
+    uint_fast64_t remaining = (HEDLEY_STATIC_CAST(uint_fast64_t, op2) - HEDLEY_STATIC_CAST(uint_fast64_t, op1));
     __mmask8 r = HEDLEY_STATIC_CAST(__mmask8, ~UINT8_C(0));
-    if (remaining < 8) {
+    if (HEDLEY_UNLIKELY(remaining < 8)) {
       r >>= 8 - remaining;
     }
 
@@ -757,9 +727,9 @@ simde_svwhilelt_b64_u64(uint64_t op1, uint64_t op2) {
     if (HEDLEY_UNLIKELY(op1 >= op2))
       return simde_svbool_from_mmask4(HEDLEY_STATIC_CAST(__mmask8, 0));
 
-    uint_fast64_t remaining = (op2 - op1);
+    uint_fast64_t remaining = (HEDLEY_STATIC_CAST(uint_fast64_t, op2) - HEDLEY_STATIC_CAST(uint_fast64_t, op1));
     __mmask8 r = HEDLEY_STATIC_CAST(__mmask8, 0x0f);
-    if (remaining < 4) {
+    if (HEDLEY_UNLIKELY(remaining < 4)) {
       r >>= 4 - remaining;
     }
 
@@ -767,9 +737,7 @@ simde_svwhilelt_b64_u64(uint64_t op1, uint64_t op2) {
   #else
     simde_svint64_t r;
 
-    uint_fast64_t remaining = (op2 - op1);
-    if (op1 >= op2)
-      remaining = 0;
+    uint_fast64_t remaining = (op1 >= op2) ? 0 : (HEDLEY_STATIC_CAST(uint_fast64_t, op2) - HEDLEY_STATIC_CAST(uint_fast64_t, op1));
 
     SIMDE_VECTORIZE
     for (int i = 0 ; i < HEDLEY_STATIC_CAST(int, simde_svcntd()) ; i++) {
