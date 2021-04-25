@@ -455,6 +455,10 @@ simde_svcmplt_f64(simde_svbool_t pg, simde_svfloat64_t op1, simde_svfloat64_t op
          svint64_t: svcmplt_f64)(pg, op1, op2))
   #endif
 #endif
+#if defined(SIMDE_ARM_SVE_ENABLE_NATIVE_ALIASES)
+  #undef svcmplt
+  #define svcmplt(pg, op1, op2) simde_svcmplt((pg), (op1), (op2))
+#endif
 
 HEDLEY_DIAGNOSTIC_POP
 

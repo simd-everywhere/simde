@@ -277,6 +277,10 @@ simde_svst1_f64(simde_svbool_t pg, simde_float64 * base, simde_svfloat64_t data)
       simde_svfloat32_t: simde_svst1_f32, \
       simde_svfloat64_t: simde_svst1_f64)((pg), (base), (data)))
 #endif
+#if defined(SIMDE_ARM_SVE_ENABLE_NATIVE_ALIASES)
+  #undef svst1
+  #define svst1(pg, base, data) simde_svst1((pg), (base), (data))
+#endif
 
 HEDLEY_DIAGNOSTIC_POP
 

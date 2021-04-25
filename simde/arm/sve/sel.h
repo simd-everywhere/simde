@@ -598,6 +598,10 @@ simde_svsel_f64(simde_svbool_t pg, simde_svfloat64_t op1, simde_svfloat64_t op2)
       simde_svfloat32_t: simde_svsel_f32, \
       simde_svfloat64_t: simde_svsel_f64)((pg), (op1), (op2)))
 #endif
+#if defined(SIMDE_ARM_SVE_ENABLE_NATIVE_ALIASES)
+  #undef svsel
+  #define svsel(pg, op1) simde_svsel((pg), (op1))
+#endif
 
 HEDLEY_DIAGNOSTIC_POP
 

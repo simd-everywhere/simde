@@ -1139,36 +1139,16 @@ simde_svdup_f64_z(simde_svbool_t pg, simde_float64 op) {
       float32_t: simde_svdup_n_u32_z, \
       float64_t: simde_svdup_n_f64_z)((pg), (op)))
   #define simde_svdup_z(pg, op) simde_svdup_n_z((pg), (op))
-
-  #if defined(SIMDE_ARM_SVE_ENABLE_NATIVE_ALIASES)
-    #define svdup_n(op) \
-      (SIMDE_GENERIC_((op), \
-           int8_t: svdup_n_s8, \
-          int16_t: svdup_n_s16, \
-          int32_t: svdup_n_s32, \
-          int64_t: svdup_n_s64, \
-          uint8_t: svdup_n_u8, \
-         uint16_t: svdup_n_u16, \
-         uint32_t: svdup_n_u32, \
-         uint64_t: svdup_n_u64, \
-        float32_t: svdup_n_f32, \
-        float64_t: svdup_n_f64)((op)))
-    #define svdup(op) svdup_n((op))
-
-    #define svdup_n_z(pg, op) \
-      (SIMDE_GENERIC_((op), \
-           int8_t: svdup_n_s8_z, \
-          int16_t: svdup_n_s16_z, \
-          int32_t: svdup_n_s32_z, \
-          int64_t: svdup_n_s64_z, \
-          uint8_t: svdup_n_u8_z, \
-         uint16_t: svdup_n_u16_z, \
-         uint32_t: svdup_n_u32_z, \
-         uint64_t: svdup_n_u64_z, \
-        float32_t: svdup_n_f32_z, \
-        float64_t: svdup_n_f64_z)((pg), (op)))
-    #define svdup_z(pg, op) svdup_n_z((pg), (op))
-  #endif
+#endif
+#if defined(SIMDE_ARM_SVE_ENABLE_NATIVE_ALIASES)
+  #undef svdup
+  #undef svdup_z
+  #undef svdup_n
+  #undef svdup_n_z
+  #define svdup_n(op) simde_svdup_n((op))
+  #define svdup_n_z(pg, op) simde_svdup_n_z((pg), (op))
+  #define svdup(op) simde_svdup((op))
+  #define svdup_z(pg, op) simde_svdup_z((pg), (op))
 #endif
 
 HEDLEY_DIAGNOSTIC_POP

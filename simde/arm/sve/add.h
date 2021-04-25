@@ -1330,6 +1330,20 @@ simde_svadd_n_f64_m(simde_svbool_t pg, simde_svfloat64_t op1, simde_float64 op2)
           simde_float32: simde_svadd_n_f32_m, \
           simde_float64: simde_svadd_n_f64_m)((pg), (op1), (op2)))
 #endif
+#if defined(SIMDE_ARM_SVE_ENABLE_NATIVE_ALIASES)
+  #undef svadd_x
+  #undef svadd_z
+  #undef svadd_m
+  #undef svadd_n_x
+  #undef svadd_n_z
+  #undef svadd_n_m
+  #define svadd_x(pg, op1, op2) simde_svadd_x((pg), (op1), (op2))
+  #define svadd_z(pg, op1, op2) simde_svadd_z((pg), (op1), (op2))
+  #define svadd_m(pg, op1, op2) simde_svadd_m((pg), (op1), (op2))
+  #define svadd_n_x(pg, op1, op2) simde_svadd_n_x((pg), (op1), (op2))
+  #define svadd_n_z(pg, op1, op2) simde_svadd_n_z((pg), (op1), (op2))
+  #define svadd_n_m(pg, op1, op2) simde_svadd_n_m((pg), (op1), (op2))
+#endif
 
 HEDLEY_DIAGNOSTIC_POP
 

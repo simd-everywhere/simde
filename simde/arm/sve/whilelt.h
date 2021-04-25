@@ -785,22 +785,22 @@ simde_svwhilelt_b64_u64(uint64_t op1, uint64_t op2) {
 #endif
 
 #if defined(__cplusplus)
-  SIMDE_FUNCTION_ATTRIBUTES simde_svbool_t simde_whilelt_b8 ( int32_t op1,  int32_t op2) { return  simde_svwhilelt_b8_s32(op1, op2); }
-  SIMDE_FUNCTION_ATTRIBUTES simde_svbool_t simde_whilelt_b8 ( int64_t op1,  int64_t op2) { return  simde_svwhilelt_b8_s64(op1, op2); }
-  SIMDE_FUNCTION_ATTRIBUTES simde_svbool_t simde_whilelt_b8 (uint32_t op1, uint32_t op2) { return  simde_svwhilelt_b8_u32(op1, op2); }
-  SIMDE_FUNCTION_ATTRIBUTES simde_svbool_t simde_whilelt_b8 (uint64_t op1, uint64_t op2) { return  simde_svwhilelt_b8_u64(op1, op2); }
-  SIMDE_FUNCTION_ATTRIBUTES simde_svbool_t simde_whilelt_b16( int32_t op1,  int32_t op2) { return simde_svwhilelt_b16_s32(op1, op2); }
-  SIMDE_FUNCTION_ATTRIBUTES simde_svbool_t simde_whilelt_b16( int64_t op1,  int64_t op2) { return simde_svwhilelt_b16_s64(op1, op2); }
-  SIMDE_FUNCTION_ATTRIBUTES simde_svbool_t simde_whilelt_b16(uint32_t op1, uint32_t op2) { return simde_svwhilelt_b16_u32(op1, op2); }
-  SIMDE_FUNCTION_ATTRIBUTES simde_svbool_t simde_whilelt_b16(uint64_t op1, uint64_t op2) { return simde_svwhilelt_b16_u64(op1, op2); }
-  SIMDE_FUNCTION_ATTRIBUTES simde_svbool_t simde_whilelt_b32( int32_t op1,  int32_t op2) { return simde_svwhilelt_b32_s32(op1, op2); }
-  SIMDE_FUNCTION_ATTRIBUTES simde_svbool_t simde_whilelt_b32( int64_t op1,  int64_t op2) { return simde_svwhilelt_b32_s64(op1, op2); }
-  SIMDE_FUNCTION_ATTRIBUTES simde_svbool_t simde_whilelt_b32(uint32_t op1, uint32_t op2) { return simde_svwhilelt_b32_u32(op1, op2); }
-  SIMDE_FUNCTION_ATTRIBUTES simde_svbool_t simde_whilelt_b32(uint64_t op1, uint64_t op2) { return simde_svwhilelt_b32_u64(op1, op2); }
-  SIMDE_FUNCTION_ATTRIBUTES simde_svbool_t simde_whilelt_b64( int32_t op1,  int32_t op2) { return simde_svwhilelt_b64_s32(op1, op2); }
-  SIMDE_FUNCTION_ATTRIBUTES simde_svbool_t simde_whilelt_b64( int64_t op1,  int64_t op2) { return simde_svwhilelt_b64_s64(op1, op2); }
-  SIMDE_FUNCTION_ATTRIBUTES simde_svbool_t simde_whilelt_b64(uint32_t op1, uint32_t op2) { return simde_svwhilelt_b64_u32(op1, op2); }
-  SIMDE_FUNCTION_ATTRIBUTES simde_svbool_t simde_whilelt_b64(uint64_t op1, uint64_t op2) { return simde_svwhilelt_b64_u64(op1, op2); }
+  SIMDE_FUNCTION_ATTRIBUTES simde_svbool_t simde_svwhilelt_b8 ( int32_t op1,  int32_t op2) { return  simde_svwhilelt_b8_s32(op1, op2); }
+  SIMDE_FUNCTION_ATTRIBUTES simde_svbool_t simde_svwhilelt_b8 ( int64_t op1,  int64_t op2) { return  simde_svwhilelt_b8_s64(op1, op2); }
+  SIMDE_FUNCTION_ATTRIBUTES simde_svbool_t simde_svwhilelt_b8 (uint32_t op1, uint32_t op2) { return  simde_svwhilelt_b8_u32(op1, op2); }
+  SIMDE_FUNCTION_ATTRIBUTES simde_svbool_t simde_svwhilelt_b8 (uint64_t op1, uint64_t op2) { return  simde_svwhilelt_b8_u64(op1, op2); }
+  SIMDE_FUNCTION_ATTRIBUTES simde_svbool_t simde_svwhilelt_b16( int32_t op1,  int32_t op2) { return simde_svwhilelt_b16_s32(op1, op2); }
+  SIMDE_FUNCTION_ATTRIBUTES simde_svbool_t simde_svwhilelt_b16( int64_t op1,  int64_t op2) { return simde_svwhilelt_b16_s64(op1, op2); }
+  SIMDE_FUNCTION_ATTRIBUTES simde_svbool_t simde_svwhilelt_b16(uint32_t op1, uint32_t op2) { return simde_svwhilelt_b16_u32(op1, op2); }
+  SIMDE_FUNCTION_ATTRIBUTES simde_svbool_t simde_svwhilelt_b16(uint64_t op1, uint64_t op2) { return simde_svwhilelt_b16_u64(op1, op2); }
+  SIMDE_FUNCTION_ATTRIBUTES simde_svbool_t simde_svwhilelt_b32( int32_t op1,  int32_t op2) { return simde_svwhilelt_b32_s32(op1, op2); }
+  SIMDE_FUNCTION_ATTRIBUTES simde_svbool_t simde_svwhilelt_b32( int64_t op1,  int64_t op2) { return simde_svwhilelt_b32_s64(op1, op2); }
+  SIMDE_FUNCTION_ATTRIBUTES simde_svbool_t simde_svwhilelt_b32(uint32_t op1, uint32_t op2) { return simde_svwhilelt_b32_u32(op1, op2); }
+  SIMDE_FUNCTION_ATTRIBUTES simde_svbool_t simde_svwhilelt_b32(uint64_t op1, uint64_t op2) { return simde_svwhilelt_b32_u64(op1, op2); }
+  SIMDE_FUNCTION_ATTRIBUTES simde_svbool_t simde_svwhilelt_b64( int32_t op1,  int32_t op2) { return simde_svwhilelt_b64_s32(op1, op2); }
+  SIMDE_FUNCTION_ATTRIBUTES simde_svbool_t simde_svwhilelt_b64( int64_t op1,  int64_t op2) { return simde_svwhilelt_b64_s64(op1, op2); }
+  SIMDE_FUNCTION_ATTRIBUTES simde_svbool_t simde_svwhilelt_b64(uint32_t op1, uint32_t op2) { return simde_svwhilelt_b64_u32(op1, op2); }
+  SIMDE_FUNCTION_ATTRIBUTES simde_svbool_t simde_svwhilelt_b64(uint64_t op1, uint64_t op2) { return simde_svwhilelt_b64_u64(op1, op2); }
 #elif defined(SIMDE_GENERIC_)
   #define simde_svwhilelt_b8(op1, op2) \
     (SIMDE_GENERIC_((op1), \
@@ -826,6 +826,16 @@ simde_svwhilelt_b64_u64(uint64_t op1, uint64_t op2) {
       uint32_t: simde_svwhilelt_b64_u32, \
        int64_t: simde_svwhilelt_b64_s64, \
       uint64_t: simde_svwhilelt_b64_u64)((op1), (op2)))
+#endif
+#if defined(SIMDE_ARM_SVE_ENABLE_NATIVE_ALIASES)
+  #undef svwhilelt_b8
+  #undef svwhilelt_b16
+  #undef svwhilelt_b32
+  #undef svwhilelt_b64
+  #define svwhilelt_b8(op1, op2) simde_svwhilelt_b8((op1), (op2))
+  #define svwhilelt_b16(op1, op2) simde_svwhilelt_b16((op1), (op2))
+  #define svwhilelt_b32(op1, op2) simde_svwhilelt_b32((op1), (op2))
+  #define svwhilelt_b64(op1, op2) simde_svwhilelt_b64((op1), (op2))
 #endif
 
 HEDLEY_DIAGNOSTIC_POP

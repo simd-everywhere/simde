@@ -985,6 +985,14 @@ simde_svand_n_u64_x(simde_svbool_t pg, simde_svuint64_t op1, uint64_t op2) {
                uint32_t: simde_svand_n_u32_x, \
                uint64_t: simde_svand_n_u64_x)((pg), (op1), (op2)))
 #endif
+#if defined(SIMDE_ARM_SVE_ENABLE_NATIVE_ALIASES)
+  #undef svand_x
+  #undef svand_z
+  #undef svand_m
+  #define svand_x(pg, op1, op2) simde_svand_x((pg), (op1), (op2))
+  #define svand_z(pg, op1, op2) simde_svand_z((pg), (op1), (op2))
+  #define svand_m(pg, op1, op2) simde_svand_m((pg), (op1), (op2))
+#endif
 
 HEDLEY_DIAGNOSTIC_POP
 

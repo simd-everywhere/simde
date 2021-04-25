@@ -328,6 +328,10 @@ simde_svld1_f64(simde_svbool_t pg, const simde_float64 * base) {
       const simde_float32 *: simde_svld1_f32, \
       const simde_float64 *: simde_svld1_f64)(pg, base))
 #endif
+#if defined(SIMDE_ARM_SVE_ENABLE_NATIVE_ALIASES)
+  #undef svld1
+  #define svld1(pg, base) simde_svld1((pg), (base))
+#endif
 
 HEDLEY_DIAGNOSTIC_POP
 
