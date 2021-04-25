@@ -76,12 +76,17 @@ SIMDE_BEGIN_DECLS_
   typedef  svfloat16_t  simde_svfloat16_t;
   typedef  svfloat32_t  simde_svfloat32_t;
   typedef  svfloat64_t  simde_svfloat64_t;
+  typedef    float32_t    simde_float32_t;
+  typedef    float64_t    simde_float64_t;
 #else
   #if SIMDE_NATURAL_VECTOR_SIZE > 0
     #define SIMDE_ARM_SVE_VECTOR_SIZE SIMDE_NATURAL_VECTOR_SIZE
   #else
     #define SIMDE_ARM_SVE_VECTOR_SIZE (128)
   #endif
+
+  typedef simde_float32 simde_float32_t;
+  typedef simde_float64 simde_float64_t;
 
   typedef union {
     SIMDE_ARM_SVE_DECLARE_VECTOR(int8_t, values, (SIMDE_ARM_SVE_VECTOR_SIZE / 8));

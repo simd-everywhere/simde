@@ -108,6 +108,30 @@ simde_svdup_s8_z(simde_svbool_t pg, int8_t op) {
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
+simde_svint8_t
+simde_svdup_n_s8_m(simde_svint8_t inactive, simde_svbool_t pg, int8_t op) {
+  #if defined(SIMDE_ARM_SVE_NATIVE)
+    return svdup_n_s8_m(inactive, pg, op);
+  #else
+    return simde_svsel_s8(pg, simde_svdup_n_s8(op), inactive);
+  #endif
+}
+#if defined(SIMDE_ARM_SVE_ENABLE_NATIVE_ALIASES)
+  #undef simde_svdup_n_s8_m
+  #define svdup_n_s8_m(inactive, pg, op) simde_svdup_n_s8_m((inactive), (pg), (op))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_svint8_t
+simde_svdup_s8_m(simde_svint8_t inactive, simde_svbool_t pg, int8_t op) {
+  return simde_svdup_n_s8_m(inactive, pg, op);
+}
+#if defined(SIMDE_ARM_SVE_ENABLE_NATIVE_ALIASES)
+  #undef simde_svdup_s8_m
+  #define svdup_s8_m(inactive, pg, op) simde_svdup_n_s8_m((inactive), (pg), (op))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
 simde_svint16_t
 simde_svdup_n_s16(int16_t op) {
   #if defined(SIMDE_ARM_SVE_NATIVE)
@@ -178,6 +202,30 @@ simde_svdup_s16_z(simde_svbool_t pg, int8_t op) {
 #if defined(SIMDE_ARM_SVE_ENABLE_NATIVE_ALIASES)
   #undef simde_svdup_s16_z
   #define svdup_s16_z(pg, op) simde_svdup_n_s16_z((pg), (op))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_svint16_t
+simde_svdup_n_s16_m(simde_svint16_t inactive, simde_svbool_t pg, int16_t op) {
+  #if defined(SIMDE_ARM_SVE_NATIVE)
+    return svdup_n_s16_m(inactive, pg, op);
+  #else
+    return simde_svsel_s16(pg, simde_svdup_n_s16(op), inactive);
+  #endif
+}
+#if defined(SIMDE_ARM_SVE_ENABLE_NATIVE_ALIASES)
+  #undef simde_svdup_n_s16_m
+  #define svdup_n_s16_m(inactive, pg, op) simde_svdup_n_s16_m((inactive), (pg), (op))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_svint16_t
+simde_svdup_s16_m(simde_svint16_t inactive, simde_svbool_t pg, int16_t op) {
+  return simde_svdup_n_s16_m(inactive, pg, op);
+}
+#if defined(SIMDE_ARM_SVE_ENABLE_NATIVE_ALIASES)
+  #undef simde_svdup_s16_m
+  #define svdup_s16_m(inactive, pg, op) simde_svdup_n_s16_m((inactive), (pg), (op))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -254,6 +302,30 @@ simde_svdup_s32_z(simde_svbool_t pg, int32_t op) {
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
+simde_svint32_t
+simde_svdup_n_s32_m(simde_svint32_t inactive, simde_svbool_t pg, int32_t op) {
+  #if defined(SIMDE_ARM_SVE_NATIVE)
+    return svdup_n_s32_m(inactive, pg, op);
+  #else
+    return simde_svsel_s32(pg, simde_svdup_n_s32(op), inactive);
+  #endif
+}
+#if defined(SIMDE_ARM_SVE_ENABLE_NATIVE_ALIASES)
+  #undef simde_svdup_n_s32_m
+  #define svdup_n_s32_m(inactive, pg, op) simde_svdup_n_s32_m((inactive), (pg), (op))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_svint32_t
+simde_svdup_s32_m(simde_svint32_t inactive, simde_svbool_t pg, int32_t op) {
+  return simde_svdup_n_s32_m(inactive, pg, op);
+}
+#if defined(SIMDE_ARM_SVE_ENABLE_NATIVE_ALIASES)
+  #undef simde_svdup_s32_m
+  #define svdup_s32_m(inactive, pg, op) simde_svdup_n_s32_m((inactive), (pg), (op))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
 simde_svint64_t
 simde_svdup_n_s64(int64_t op) {
   #if defined(SIMDE_ARM_SVE_NATIVE)
@@ -324,6 +396,30 @@ simde_svdup_s64_z(simde_svbool_t pg, int64_t op) {
 #if defined(SIMDE_ARM_SVE_ENABLE_NATIVE_ALIASES)
   #undef simde_svdup_s64_z
   #define svdup_s64_z(pg, op) simde_svdup_n_f64_z((pg), (op))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_svint64_t
+simde_svdup_n_s64_m(simde_svint64_t inactive, simde_svbool_t pg, int64_t op) {
+  #if defined(SIMDE_ARM_SVE_NATIVE)
+    return svdup_n_s64_m(inactive, pg, op);
+  #else
+    return simde_svsel_s64(pg, simde_svdup_n_s64(op), inactive);
+  #endif
+}
+#if defined(SIMDE_ARM_SVE_ENABLE_NATIVE_ALIASES)
+  #undef simde_svdup_n_s64_m
+  #define svdup_n_s64_m(inactive, pg, op) simde_svdup_n_s64_m((inactive), (pg), (op))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_svint64_t
+simde_svdup_s64_m(simde_svint64_t inactive, simde_svbool_t pg, int64_t op) {
+  return simde_svdup_n_s64_m(inactive, pg, op);
+}
+#if defined(SIMDE_ARM_SVE_ENABLE_NATIVE_ALIASES)
+  #undef simde_svdup_s64_m
+  #define svdup_s64_m(inactive, pg, op) simde_svdup_n_s64_m((inactive), (pg), (op))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -400,6 +496,30 @@ simde_svdup_u8_z(simde_svbool_t pg, uint8_t op) {
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
+simde_svuint8_t
+simde_svdup_n_u8_m(simde_svuint8_t inactive, simde_svbool_t pg, uint8_t op) {
+  #if defined(SIMDE_ARM_SVE_NATIVE)
+    return svdup_n_u8_m(inactive, pg, op);
+  #else
+    return simde_svsel_u8(pg, simde_svdup_n_u8(op), inactive);
+  #endif
+}
+#if defined(SIMDE_ARM_SVE_ENABLE_NATIVE_ALIASES)
+  #undef simde_svdup_n_u8_m
+  #define svdup_n_u8_m(inactive, pg, op) simde_svdup_n_u8_m((inactive), (pg), (op))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_svuint8_t
+simde_svdup_u8_m(simde_svuint8_t inactive, simde_svbool_t pg, uint8_t op) {
+  return simde_svdup_n_u8_m(inactive, pg, op);
+}
+#if defined(SIMDE_ARM_SVE_ENABLE_NATIVE_ALIASES)
+  #undef simde_svdup_u8_m
+  #define svdup_u8_m(inactive, pg, op) simde_svdup_n_u8_m((inactive), (pg), (op))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
 simde_svuint16_t
 simde_svdup_n_u16(uint16_t op) {
   #if defined(SIMDE_ARM_SVE_NATIVE)
@@ -470,6 +590,30 @@ simde_svdup_u16_z(simde_svbool_t pg, uint8_t op) {
 #if defined(SIMDE_ARM_SVE_ENABLE_NATIVE_ALIASES)
   #undef simde_svdup_u16_z
   #define svdup_u16_z(pg, op) simde_svdup_n_u16_z((pg), (op))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_svuint16_t
+simde_svdup_n_u16_m(simde_svuint16_t inactive, simde_svbool_t pg, uint16_t op) {
+  #if defined(SIMDE_ARM_SVE_NATIVE)
+    return svdup_n_u16_m(inactive, pg, op);
+  #else
+    return simde_svsel_u16(pg, simde_svdup_n_u16(op), inactive);
+  #endif
+}
+#if defined(SIMDE_ARM_SVE_ENABLE_NATIVE_ALIASES)
+  #undef simde_svdup_n_u16_m
+  #define svdup_n_u16_m(inactive, pg, op) simde_svdup_n_u16_m((inactive), (pg), (op))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_svuint16_t
+simde_svdup_u16_m(simde_svuint16_t inactive, simde_svbool_t pg, uint16_t op) {
+  return simde_svdup_n_u16_m(inactive, pg, op);
+}
+#if defined(SIMDE_ARM_SVE_ENABLE_NATIVE_ALIASES)
+  #undef simde_svdup_u16_m
+  #define svdup_u16_m(inactive, pg, op) simde_svdup_n_u16_m((inactive), (pg), (op))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -546,6 +690,30 @@ simde_svdup_u32_z(simde_svbool_t pg, uint32_t op) {
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
+simde_svuint32_t
+simde_svdup_n_u32_m(simde_svuint32_t inactive, simde_svbool_t pg, uint32_t op) {
+  #if defined(SIMDE_ARM_SVE_NATIVE)
+    return svdup_n_u32_m(inactive, pg, op);
+  #else
+    return simde_svsel_u32(pg, simde_svdup_n_u32(op), inactive);
+  #endif
+}
+#if defined(SIMDE_ARM_SVE_ENABLE_NATIVE_ALIASES)
+  #undef simde_svdup_n_u32_m
+  #define svdup_n_u32_m(inactive, pg, op) simde_svdup_n_u32_m((inactive), (pg), (op))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_svuint32_t
+simde_svdup_u32_m(simde_svuint32_t inactive, simde_svbool_t pg, uint32_t op) {
+  return simde_svdup_n_u32_m(inactive, pg, op);
+}
+#if defined(SIMDE_ARM_SVE_ENABLE_NATIVE_ALIASES)
+  #undef simde_svdup_u32_m
+  #define svdup_u32_m(inactive, pg, op) simde_svdup_n_u32_m((inactive), (pg), (op))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
 simde_svuint64_t
 simde_svdup_n_u64(uint64_t op) {
   #if defined(SIMDE_ARM_SVE_NATIVE)
@@ -616,6 +784,30 @@ simde_svdup_u64_z(simde_svbool_t pg, uint64_t op) {
 #if defined(SIMDE_ARM_SVE_ENABLE_NATIVE_ALIASES)
   #undef simde_svdup_u64_z
   #define svdup_u64_z(pg, op) simde_svdup_n_f64_z((pg), (op))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_svuint64_t
+simde_svdup_n_u64_m(simde_svuint64_t inactive, simde_svbool_t pg, uint64_t op) {
+  #if defined(SIMDE_ARM_SVE_NATIVE)
+    return svdup_n_u64_m(inactive, pg, op);
+  #else
+    return simde_svsel_u64(pg, simde_svdup_n_u64(op), inactive);
+  #endif
+}
+#if defined(SIMDE_ARM_SVE_ENABLE_NATIVE_ALIASES)
+  #undef simde_svdup_n_u64_m
+  #define svdup_n_u64_m(inactive, pg, op) simde_svdup_n_u64_m((inactive), (pg), (op))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_svuint64_t
+simde_svdup_u64_m(simde_svuint64_t inactive, simde_svbool_t pg, uint64_t op) {
+  return simde_svdup_n_u64_m(inactive, pg, op);
+}
+#if defined(SIMDE_ARM_SVE_ENABLE_NATIVE_ALIASES)
+  #undef simde_svdup_u64_m
+  #define svdup_u64_m(inactive, pg, op) simde_svdup_n_u64_m((inactive), (pg), (op))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -692,6 +884,30 @@ simde_svdup_f32_z(simde_svbool_t pg, simde_float32 op) {
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
+simde_svfloat32_t
+simde_svdup_n_f32_m(simde_svfloat32_t inactive, simde_svbool_t pg, simde_float32_t op) {
+  #if defined(SIMDE_ARM_SVE_NATIVE)
+    return svdup_n_f32_m(inactive, pg, op);
+  #else
+    return simde_svsel_f32(pg, simde_svdup_n_f32(op), inactive);
+  #endif
+}
+#if defined(SIMDE_ARM_SVE_ENABLE_NATIVE_ALIASES)
+  #undef simde_svdup_n_f32_m
+  #define svdup_n_f32_m(inactive, pg, op) simde_svdup_n_f32_m((inactive), (pg), (op))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_svfloat32_t
+simde_svdup_f32_m(simde_svfloat32_t inactive, simde_svbool_t pg, simde_float32_t op) {
+  return simde_svdup_n_f32_m(inactive, pg, op);
+}
+#if defined(SIMDE_ARM_SVE_ENABLE_NATIVE_ALIASES)
+  #undef simde_svdup_f32_m
+  #define svdup_f32_m(inactive, pg, op) simde_svdup_n_f32_m((inactive), (pg), (op))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
 simde_svfloat64_t
 simde_svdup_n_f64(simde_float64 op) {
   #if defined(SIMDE_ARM_SVE_NATIVE)
@@ -762,6 +978,30 @@ simde_svdup_f64_z(simde_svbool_t pg, simde_float64 op) {
 #if defined(SIMDE_ARM_SVE_ENABLE_NATIVE_ALIASES)
   #undef simde_svdup_f64_z
   #define svdup_f64_z(pg, op) simde_svdup_n_f64_z((pg), (op))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_svfloat64_t
+simde_svdup_n_f64_m(simde_svfloat64_t inactive, simde_svbool_t pg, simde_float64_t op) {
+  #if defined(SIMDE_ARM_SVE_NATIVE)
+    return svdup_n_f64_m(inactive, pg, op);
+  #else
+    return simde_svsel_f64(pg, simde_svdup_n_f64(op), inactive);
+  #endif
+}
+#if defined(SIMDE_ARM_SVE_ENABLE_NATIVE_ALIASES)
+  #undef simde_svdup_n_f64_m
+  #define svdup_n_f64_m(inactive, pg, op) simde_svdup_n_f64_m((inactive), (pg), (op))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_svfloat64_t
+simde_svdup_f64_m(simde_svfloat64_t inactive, simde_svbool_t pg, simde_float64_t op) {
+  return simde_svdup_n_f64_m(inactive, pg, op);
+}
+#if defined(SIMDE_ARM_SVE_ENABLE_NATIVE_ALIASES)
+  #undef simde_svdup_f64_m
+  #define svdup_f64_m(inactive, pg, op) simde_svdup_n_f64_m((inactive), (pg), (op))
 #endif
 
 #if defined(__cplusplus)
