@@ -1,7 +1,7 @@
-#define SIMDE_TEST_ARM_SVE_INSN dup_n
+#define SIMDE_TEST_ARM_SVE_INSN dup
 
 #include "test-sve.h"
-#include "../../../simde/arm/sve/dup_n.h"
+#include "../../../simde/arm/sve/dup.h"
 #include "../../../simde/arm/sve/cmplt.h"
 
 static int

@@ -4,7 +4,6 @@
 #include "../../../simde/arm/sve/add.h"
 
 #include "../../../simde/arm/sve/cmplt.h"
-#include "../../../simde/arm/sve/dup_n.h"
 
 static int
 test_simde_svadd_s8_z (SIMDE_MUNIT_TEST_ARGS) {

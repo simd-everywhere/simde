@@ -158,7 +158,7 @@ simde_sve_families = [
   'and',
   'cnt',
   'cmplt',
-  'dup_n',
+  'dup',
   'ld1',
   'ptest',
   'ptrue',

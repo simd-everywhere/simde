@@ -2,7 +2,7 @@
 
 #include "test-sve.h"
 #include "../../../simde/arm/sve/cmplt.h"
-#include "../../../simde/arm/sve/dup_n.h"
+#include "../../../simde/arm/sve/dup.h"
 
 static int
 test_simde_svcmplt_s8 (SIMDE_MUNIT_TEST_ARGS) {

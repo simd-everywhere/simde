@@ -4,7 +4,7 @@
 #include "../../../simde/arm/sve/sel.h"
 
 #include "../../../simde/arm/sve/cmplt.h"
-#include "../../../simde/arm/sve/dup_n.h"
+#include "../../../simde/arm/sve/dup.h"
 
 static int
 test_simde_x_svsel_s8_z (SIMDE_MUNIT_TEST_ARGS) {

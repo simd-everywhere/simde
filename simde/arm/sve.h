@@ -33,7 +33,7 @@
 #include "sve/and.h"
 #include "sve/cnt.h"
 #include "sve/cmplt.h"
-#include "sve/dup_n.h"
+#include "sve/dup.h"
 #include "sve/ld1.h"
 #include "sve/ptest.h"
 #include "sve/ptrue.h"
