@@ -822,7 +822,13 @@ SIMDE_DIAGNOSTIC_DISABLE_CPP98_COMPAT_PEDANTIC_
           HEDLEY_DIAGNOSTIC_POP \
         }))
     #endif
-  #elif HEDLEY_GCC_VERSION_CHECK(4,9,0)
+  #elif \
+      defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 201112L) || \
+      HEDLEY_HAS_EXTENSION(c_generic_selections) || \
+      HEDLEY_GCC_VERSION_CHECK(4,9,0) || \
+      HEDLEY_INTEL_VERSION_CHECK(17,0,0) || \
+      HEDLEY_IBM_VERSION_CHECK(12,1,0) || \
+      HEDLEY_ARM_VERSION_CHECK(5,3,0)
     #define SIMDE_GENERIC_(...) _Generic(__VA_ARGS__)
   #endif
 #endif
