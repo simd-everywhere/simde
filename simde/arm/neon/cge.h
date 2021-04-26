@@ -671,6 +671,62 @@ simde_vcge_u64(simde_uint64x1_t a, simde_uint64x1_t b) {
   #define vcge_u64(a, b) simde_vcge_u64((a), (b))
 #endif
 
+SIMDE_FUNCTION_ATTRIBUTES
+uint64_t
+simde_vcged_f64(simde_float64_t a, simde_float64_t b){
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+    return HEDLEY_STATIC_CAST(uint64_t, vcged_f64(a, b));
+  #else
+    return (a >= b) ? UINT64_MAX : 0;
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vcged_f64
+  #define vcged_f64(a, b) simde_vcged_f64((a), (b))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+uint64_t
+simde_vcged_s64(int64_t a, int64_t b){
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+    return HEDLEY_STATIC_CAST(uint64_t, vcged_s64(a, b));
+  #else
+    return (a >= b) ? UINT64_MAX : 0;
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vcged_s64
+  #define vcged_s64(a, b) simde_vcged_s64((a), (b))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+uint64_t
+simde_vcged_u64(uint64_t a, uint64_t b){
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+    return HEDLEY_STATIC_CAST(uint64_t, vcged_u64(a, b));
+  #else
+    return (a >= b) ? UINT64_MAX : 0;
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vcged_u64
+  #define vcged_u64(a, b) simde_vcged_u64((a), (b))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+uint32_t
+simde_vcges_f32(simde_float32_t a, simde_float32_t b){
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+    return HEDLEY_STATIC_CAST(uint32_t, vcges_f32(a, b));
+  #else
+    return (a >= b) ? UINT32_MAX : 0;
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vcges_f32
+  #define vcges_f32(a, b) simde_vcges_f32((a), (b))
+#endif
+
 SIMDE_END_DECLS_
 HEDLEY_DIAGNOSTIC_POP
 
