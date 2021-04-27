@@ -824,7 +824,7 @@ test_simde_svadd_s16_z (SIMDE_MUNIT_TEST_ARGS) {
   return 0;
 #else
   int16_t p[1024 / sizeof(int16_t)], a[1024 / sizeof(int16_t)], b[1024 / sizeof(int16_t)], e[1024 / sizeof(int16_t)];
-  int32_t len = simde_test_codegen_random_i16() & ((1024 / sizeof(int16_t)) - 1);
+  int32_t len = simde_test_arm_sve_random_length(sizeof(e), sizeof(e[0]));
 
   fputc('\n', stdout);
 
@@ -1017,7 +1017,7 @@ test_simde_svadd_s16_m (SIMDE_MUNIT_TEST_ARGS) {
   return 0;
 #else
   int16_t p[1024 / sizeof(int16_t)], a[1024 / sizeof(int16_t)], b[1024 / sizeof(int16_t)], e[1024 / sizeof(int16_t)];
-  int32_t len = simde_test_codegen_random_i16() & ((1024 / sizeof(int16_t)) - 1);
+  int32_t len = simde_test_arm_sve_random_length(sizeof(e), sizeof(e[0]));
 
   fputc('\n', stdout);
 
@@ -1903,7 +1903,7 @@ test_simde_svadd_u16_z (SIMDE_MUNIT_TEST_ARGS) {
 #else
   int16_t p[1024 / sizeof(int16_t)];
   uint16_t a[1024 / sizeof(int16_t)], b[1024 / sizeof(int16_t)], e[1024 / sizeof(int16_t)];
-  int32_t len = simde_test_codegen_random_i16() & ((1024 / sizeof(int16_t)) - 1);
+  int32_t len = simde_test_arm_sve_random_length(sizeof(e), sizeof(e[0]));
 
   fputc('\n', stdout);
 
@@ -2021,7 +2021,7 @@ test_simde_svadd_u16_m (SIMDE_MUNIT_TEST_ARGS) {
 #else
   int16_t p[1024 / sizeof(int16_t)];
   uint16_t a[1024 / sizeof(int16_t)], b[1024 / sizeof(int16_t)], e[1024 / sizeof(int16_t)];
-  int32_t len = simde_test_codegen_random_i16() & ((1024 / sizeof(int16_t)) - 1);
+  int32_t len = simde_test_arm_sve_random_length(sizeof(e), sizeof(e[0]));
 
   fputc('\n', stdout);
 

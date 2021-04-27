@@ -149,9 +149,9 @@ simde_test_codegen_i8(size_t buf_len, char buf[HEDLEY_ARRAY_PARAM(buf_len)], int
 static void
 simde_test_codegen_i16(size_t buf_len, char buf[HEDLEY_ARRAY_PARAM(buf_len)], int16_t value) {
   if (value == INT16_MIN) {
-    simde_test_codegen_snprintf_(buf, buf_len, "%15s", "INT16_MIN");
+    simde_test_codegen_snprintf_(buf, buf_len, "%16s", "INT16_MIN");
   } else if (value == INT16_MAX) {
-    simde_test_codegen_snprintf_(buf, buf_len, "%15s", "INT16_MAX");
+    simde_test_codegen_snprintf_(buf, buf_len, "%16s", "INT16_MAX");
   } else {
     simde_test_codegen_snprintf_(buf, buf_len, "%cINT16_C(%6" PRId16 ")", (value < 0) ? '-' : ' ', HEDLEY_STATIC_CAST(int16_t, (value < 0) ? -value : value));
   }
@@ -160,9 +160,9 @@ simde_test_codegen_i16(size_t buf_len, char buf[HEDLEY_ARRAY_PARAM(buf_len)], in
 static void
 simde_test_codegen_i32(size_t buf_len, char buf[HEDLEY_ARRAY_PARAM(buf_len)], int32_t value) {
   if (value == INT32_MIN) {
-    simde_test_codegen_snprintf_(buf, buf_len, "%20s", "INT32_MIN");
+    simde_test_codegen_snprintf_(buf, buf_len, "%22s", "INT32_MIN");
   } else if (value == INT32_MAX) {
-    simde_test_codegen_snprintf_(buf, buf_len, "%20s", "INT32_MAX");
+    simde_test_codegen_snprintf_(buf, buf_len, "%22s", "INT32_MAX");
   } else {
     simde_test_codegen_snprintf_(buf, buf_len, "%cINT32_C(%12" PRId32 ")", (value < 0) ? '-' : ' ', HEDLEY_STATIC_CAST(int32_t, (value < 0) ? -value : value));
   }
@@ -171,9 +171,9 @@ simde_test_codegen_i32(size_t buf_len, char buf[HEDLEY_ARRAY_PARAM(buf_len)], in
 static void
 simde_test_codegen_i64(size_t buf_len, char buf[HEDLEY_ARRAY_PARAM(buf_len)], int64_t value) {
   if (value == INT64_MIN) {
-    simde_test_codegen_snprintf_(buf, buf_len, "%29s", "INT64_MIN");
+    simde_test_codegen_snprintf_(buf, buf_len, "%30s", "INT64_MIN");
   } else if (value == INT64_MAX) {
-    simde_test_codegen_snprintf_(buf, buf_len, "%29s", "INT64_MAX");
+    simde_test_codegen_snprintf_(buf, buf_len, "%30s", "INT64_MAX");
   } else {
     simde_test_codegen_snprintf_(buf, buf_len, "%cINT64_C(%20" PRId64 ")", (value < 0) ? '-' : ' ', HEDLEY_STATIC_CAST(int64_t, (value < 0) ? -value : value));
   }
