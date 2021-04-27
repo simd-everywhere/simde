@@ -38,7 +38,7 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde_svint8_t
 simde_svadd_s8_x(simde_svbool_t pg, simde_svint8_t op1, simde_svint8_t op2) {
   #if defined(SIMDE_ARM_SVE_NATIVE)
-    return svadd_s8_z(pg, op1, op2);
+    return svadd_s8_x(pg, op1, op2);
   #else
     simde_svint8_t r;
     HEDLEY_STATIC_CAST(void, pg);
@@ -112,7 +112,7 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde_svint8_t
 simde_svadd_n_s8_x(simde_svbool_t pg, simde_svint8_t op1, int8_t op2) {
   #if defined(SIMDE_ARM_SVE_NATIVE)
-    return svadd_n_s8_z(pg, op1, op2);
+    return svadd_n_s8_x(pg, op1, op2);
   #else
     return simde_svadd_s8_x(pg, op1, simde_svdup_n_s8(op2));
   #endif
