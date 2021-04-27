@@ -322,7 +322,7 @@ simde_x_svsel_s64_z(simde_svbool_t pg, simde_svint64_t op1) {
     #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
       r.altivec = vec_and(pg.altivec_b64, op1.altivec);
     #elif defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
-      r.altivec = pg.values_i64 & op1.altivec;
+      r.altivec = HEDLEY_STATIC_CAST(__typeof__(op1.altivec), pg.values_i64) & op1.altivec;
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r.v128 = wasm_v128_and(pg.v128, op1.v128);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
