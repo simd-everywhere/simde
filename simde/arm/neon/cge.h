@@ -717,7 +717,7 @@ SIMDE_FUNCTION_ATTRIBUTES
 uint32_t
 simde_vcges_f32(simde_float32_t a, simde_float32_t b){
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
-    return HEDLEY_STATIC_CAST(uint64_t, vcges_f32(a, b));
+    return HEDLEY_STATIC_CAST(uint32_t, vcges_f32(a, b));
   #else
     return (a >= b) ? UINT32_MAX : 0;
   #endif
