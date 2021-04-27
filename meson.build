@@ -162,6 +162,7 @@ simde_sve_families = [
   'ld1',
   'ptest',
   'ptrue',
+  'qadd',
   'sel',
   'st1',
   'reinterpret',

@@ -37,6 +37,7 @@
 #include "sve/ld1.h"
 #include "sve/ptest.h"
 #include "sve/ptrue.h"
+#include "sve/qadd.h"
 #include "sve/reinterpret.h"
 #include "sve/sel.h"
 #include "sve/st1.h"
