@@ -675,7 +675,7 @@ SIMDE_FUNCTION_ATTRIBUTES
 uint64_t
 simde_vcged_f64(simde_float64_t a, simde_float64_t b){
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
-    return vcged_f64(a, b);
+    return HEDLEY_STATIC_CAST(uint64_t, vcged_f64(a, b));
   #else
     return (a >= b) ? UINT64_MAX : 0;
   #endif
@@ -689,7 +689,7 @@ SIMDE_FUNCTION_ATTRIBUTES
 uint64_t
 simde_vcged_s64(int64_t a, int64_t b){
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
-    return vcged_s64(a, b);
+    return HEDLEY_STATIC_CAST(uint64_t, vcged_s64(a, b));
   #else
     return (a >= b) ? UINT64_MAX : 0;
   #endif
@@ -703,7 +703,7 @@ SIMDE_FUNCTION_ATTRIBUTES
 uint64_t
 simde_vcged_u64(uint64_t a, uint64_t b){
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
-    return vcged_u64(a, b);
+    return HEDLEY_STATIC_CAST(uint64_t, vcged_u64(a, b));
   #else
     return (a >= b) ? UINT64_MAX : 0;
   #endif
@@ -717,7 +717,7 @@ SIMDE_FUNCTION_ATTRIBUTES
 uint32_t
 simde_vcges_f32(simde_float32_t a, simde_float32_t b){
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
-    return vcges_f32(a, b);
+    return HEDLEY_STATIC_CAST(uint64_t, vcges_f32(a, b));
   #else
     return (a >= b) ? UINT32_MAX : 0;
   #endif
