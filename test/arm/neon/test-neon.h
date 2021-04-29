@@ -114,7 +114,7 @@ HEDLEY_DIAGNOSTIC_POP
   simde_test_arm_neon_write_##symbol_identifier##x##element_count##x2(int indent, simde_##NT value, SimdeTestVecPos pos) { \
     if (pos == SIMDE_TEST_VEC_POS_FIRST) { \
       simde_test_codegen_write_indent(indent); \
-      fputs("{\n", stdout); \
+      fputs("{\n", SIMDE_CODEGEN_FP); \
     } \
     ET value0_[sizeof(value) / sizeof(ET) / 2]; \
     ET value1_[sizeof(value) / sizeof(ET) / 2]; \
@@ -126,7 +126,7 @@ HEDLEY_DIAGNOSTIC_POP
     simde_test_codegen_write_v##symbol_identifier(indent+2, sizeof(value1_) / sizeof(ET), value1_, SIMDE_TEST_VEC_POS_LAST); \
     if (pos == SIMDE_TEST_VEC_POS_LAST) { \
       simde_test_codegen_write_indent(indent); \
-      fputs("},\n", stdout); \
+      fputs("},\n", SIMDE_CODEGEN_FP); \
     } \
  \
   } \
@@ -163,7 +163,7 @@ HEDLEY_DIAGNOSTIC_POP
   simde_test_arm_neon_write_##symbol_identifier##x##element_count##x2(int indent, simde_##NT value, SimdeTestVecPos pos) { \
     if (pos == SIMDE_TEST_VEC_POS_FIRST) { \
       simde_test_codegen_write_indent(indent); \
-      fputs("{\n", stdout); \
+      fputs("{\n", SIMDE_CODEGEN_FP); \
     } \
  \
     ET value0_[sizeof(value) / sizeof(ET) / 2]; \
@@ -174,7 +174,7 @@ HEDLEY_DIAGNOSTIC_POP
     simde_test_codegen_write_v##symbol_identifier(indent + 2, sizeof(value1_) / sizeof(value1_[0]), value1_, SIMDE_TEST_VEC_POS_LAST); \
     if (pos == SIMDE_TEST_VEC_POS_LAST) { \
       simde_test_codegen_write_indent(indent); \
-      fputs("},\n", stdout); \
+      fputs("},\n", SIMDE_CODEGEN_FP); \
     } \
   } \
  \
@@ -229,7 +229,7 @@ SIMDE_TEST_ARM_NEON_GENERATE_X2_VECTOR_FLOAT_TYPE_FUNCS_(float64x2x2_t, simde_fl
   simde_test_arm_neon_write_##symbol_identifier##x##element_count##x3(int indent, simde_##NT value, SimdeTestVecPos pos) { \
     if (pos == SIMDE_TEST_VEC_POS_FIRST) { \
       simde_test_codegen_write_indent(indent); \
-      fputs("{\n", stdout); \
+      fputs("{\n", SIMDE_CODEGEN_FP); \
     } \
     ET value0_[sizeof(value) / sizeof(ET) / 3]; \
     ET value1_[sizeof(value) / sizeof(ET) / 3]; \
@@ -244,7 +244,7 @@ SIMDE_TEST_ARM_NEON_GENERATE_X2_VECTOR_FLOAT_TYPE_FUNCS_(float64x2x2_t, simde_fl
     simde_test_codegen_write_v##symbol_identifier(indent+2, sizeof(value2_) / sizeof(ET), value2_, SIMDE_TEST_VEC_POS_LAST); \
     if (pos == SIMDE_TEST_VEC_POS_LAST) { \
       simde_test_codegen_write_indent(indent); \
-      fputs("},\n", stdout); \
+      fputs("},\n", SIMDE_CODEGEN_FP); \
     } \
  \
   } \
@@ -288,7 +288,7 @@ SIMDE_TEST_ARM_NEON_GENERATE_X2_VECTOR_FLOAT_TYPE_FUNCS_(float64x2x2_t, simde_fl
   simde_test_arm_neon_write_##symbol_identifier##x##element_count##x3(int indent, simde_##NT value, SimdeTestVecPos pos) { \
     if (pos == SIMDE_TEST_VEC_POS_FIRST) { \
       simde_test_codegen_write_indent(indent); \
-      fputs("{\n", stdout); \
+      fputs("{\n", SIMDE_CODEGEN_FP); \
     } \
  \
     ET value0_[sizeof(value) / sizeof(ET) / 3]; \
@@ -302,7 +302,7 @@ SIMDE_TEST_ARM_NEON_GENERATE_X2_VECTOR_FLOAT_TYPE_FUNCS_(float64x2x2_t, simde_fl
     simde_test_codegen_write_v##symbol_identifier(indent + 2, sizeof(value2_) / sizeof(value2_[0]), value2_, SIMDE_TEST_VEC_POS_LAST); \
     if (pos == SIMDE_TEST_VEC_POS_LAST) { \
       simde_test_codegen_write_indent(indent); \
-      fputs("},\n", stdout); \
+      fputs("},\n", SIMDE_CODEGEN_FP); \
     } \
   } \
  \
@@ -361,7 +361,7 @@ SIMDE_TEST_ARM_NEON_GENERATE_X3_VECTOR_FLOAT_TYPE_FUNCS_(float64x2x3_t, simde_fl
   simde_test_arm_neon_write_##symbol_identifier##x##element_count##x4(int indent, simde_##NT value, SimdeTestVecPos pos) { \
     if (pos == SIMDE_TEST_VEC_POS_FIRST) { \
       simde_test_codegen_write_indent(indent); \
-      fputs("{\n", stdout); \
+      fputs("{\n", SIMDE_CODEGEN_FP); \
     } \
     ET value0_[sizeof(value) / sizeof(ET) / 4]; \
     ET value1_[sizeof(value) / sizeof(ET) / 4]; \
@@ -379,7 +379,7 @@ SIMDE_TEST_ARM_NEON_GENERATE_X3_VECTOR_FLOAT_TYPE_FUNCS_(float64x2x3_t, simde_fl
     simde_test_codegen_write_v##symbol_identifier(indent+2, sizeof(value3_) / sizeof(ET), value3_, SIMDE_TEST_VEC_POS_LAST); \
     if (pos == SIMDE_TEST_VEC_POS_LAST) { \
       simde_test_codegen_write_indent(indent); \
-      fputs("},\n", stdout); \
+      fputs("},\n", SIMDE_CODEGEN_FP); \
     } \
  \
   } \
@@ -430,7 +430,7 @@ SIMDE_TEST_ARM_NEON_GENERATE_X3_VECTOR_FLOAT_TYPE_FUNCS_(float64x2x3_t, simde_fl
   simde_test_arm_neon_write_##symbol_identifier##x##element_count##x4(int indent, simde_##NT value, SimdeTestVecPos pos) { \
     if (pos == SIMDE_TEST_VEC_POS_FIRST) { \
       simde_test_codegen_write_indent(indent); \
-      fputs("{\n", stdout); \
+      fputs("{\n", SIMDE_CODEGEN_FP); \
     } \
  \
     ET value0_[sizeof(value) / sizeof(ET) / 4]; \
@@ -447,7 +447,7 @@ SIMDE_TEST_ARM_NEON_GENERATE_X3_VECTOR_FLOAT_TYPE_FUNCS_(float64x2x3_t, simde_fl
     simde_test_codegen_write_v##symbol_identifier(indent + 2, sizeof(value3_) / sizeof(value3_[0]), value3_, SIMDE_TEST_VEC_POS_LAST); \
     if (pos == SIMDE_TEST_VEC_POS_LAST) { \
       simde_test_codegen_write_indent(indent); \
-      fputs("},\n", stdout); \
+      fputs("},\n", SIMDE_CODEGEN_FP); \
     } \
   } \
  \

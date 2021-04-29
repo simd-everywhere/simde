@@ -147,6 +147,7 @@ simde_neon_families = [
   'uzp1',
   'uzp2',
   'uzp',
+  'vld2',
   'xar',
   'zip1',
   'zip2',
