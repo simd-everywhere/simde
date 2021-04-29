@@ -63,6 +63,7 @@ def main(ctx):
             "environment": environment,
             "commands": [
               "cat /proc/cpuinfo",
+              "echo 'APT::Acquire::Retries \"3\";' > /etc/apt/apt.conf.d/80-retries",
               "apt-get update -y",
               "apt-get install -y " + " ".join(packages),
               "pip3 install meson",
