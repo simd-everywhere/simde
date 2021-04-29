@@ -4782,7 +4782,7 @@ simde_wasm_f64x2_div (simde_v128_t a, simde_v128_t b) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde_v128_t
-simde_wasm_v8x16_shuffle (
+simde_wasm_i8x16_shuffle (
     simde_v128_t a, simde_v128_t b,
     const int c0, const int c1, const int  c2, const int  c3, const int  c4, const int  c5, const int  c6, const int  c7,
     const int c8, const int c9, const int c10, const int c11, const int c12, const int c13, const int c14, const int c15) {
@@ -4812,17 +4812,17 @@ simde_wasm_v8x16_shuffle (
 }
 #if defined(SIMDE_WASM_SIMD128_NATIVE)
   #define \
-    simde_wasm_v8x16_shuffle( \
+    simde_wasm_i8x16_shuffle( \
         a, b, \
         c0, c1,  c2,  c3,  c4,  c5,  c6,  c7, \
         c8, c9, c10, c11, c12, c13, c14, c15) \
-    wasm_v8x16_shuffle( \
+    wasm_i8x16_shuffle( \
         a, b, \
         c0, c1,  c2,  c3,  c4,  c5,  c6,  c7, \
         c8, c9, c10, c11, c12, c13, c14, c15)
 #elif defined(SIMDE_SHUFFLE_VECTOR_)
   #define \
-    simde_wasm_v8x16_shuffle( \
+    simde_wasm_i8x16_shuffle( \
         a, b, \
         c0, c1,  c2,  c3,  c4,  c5,  c6,  c7, \
         c8, c9, c10, c11, c12, c13, c14, c15) \
@@ -4836,17 +4836,17 @@ simde_wasm_v8x16_shuffle (
 #endif
 #if defined(SIMDE_WASM_SIMD128_ENABLE_NATIVE_ALIASES)
   #define \
-    wasm_v8x16_shuffle(a, b, \
+    wasm_i8x16_shuffle(a, b, \
         c0, c1,  c2,  c3,  c4,  c5,  c6,  c7, \
         c8, c9, c10, c11, c12, c13, c14, c15) \
-      simde_wasm_v8x16_shuffle((a), (b), \
+      simde_wasm_i8x16_shuffle((a), (b), \
           (c0), (c1),  (c2),  (c3),  (c4),  (c5),  (c6),  (c7), \
           (c8), (c9), (c10), (c11), (c12), (c13), (c14), (c15))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde_v128_t
-simde_wasm_v16x8_shuffle (
+simde_wasm_i16x8_shuffle (
     simde_v128_t a, simde_v128_t b,
     const int c0, const int c1, const int  c2, const int  c3, const int  c4, const int  c5, const int  c6, const int  c7) {
   simde_v128_private
@@ -4867,15 +4867,15 @@ simde_wasm_v16x8_shuffle (
 }
 #if defined(SIMDE_WASM_SIMD128_NATIVE)
   #define \
-    simde_wasm_v16x8_shuffle( \
+    simde_wasm_i16x8_shuffle( \
         a, b, \
         c0, c1,  c2,  c3,  c4,  c5,  c6,  c7) \
-    wasm_v16x8_shuffle( \
+    wasm_i16x8_shuffle( \
         a, b, \
         c0, c1,  c2,  c3,  c4,  c5,  c6,  c7)
 #elif defined(SIMDE_SHUFFLE_VECTOR_)
   #define \
-    simde_wasm_v16x8_shuffle( \
+    simde_wasm_i16x8_shuffle( \
         a, b, \
         c0, c1,  c2,  c3,  c4,  c5,  c6,  c7) \
     (__extension__ ({ \
@@ -4887,15 +4887,15 @@ simde_wasm_v16x8_shuffle (
 #endif
 #if defined(SIMDE_WASM_SIMD128_ENABLE_NATIVE_ALIASES)
   #define \
-    wasm_v16x8_shuffle(a, b, \
+    wasm_i16x8_shuffle(a, b, \
         c0, c1,  c2,  c3,  c4,  c5,  c6,  c7) \
-      simde_wasm_v16x8_shuffle((a), (b), \
+      simde_wasm_i16x8_shuffle((a), (b), \
           (c0), (c1),  (c2),  (c3),  (c4),  (c5),  (c6),  (c7))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde_v128_t
-simde_wasm_v32x4_shuffle (
+simde_wasm_i32x4_shuffle (
     simde_v128_t a, simde_v128_t b,
     const int c0, const int c1, const int  c2, const int  c3) {
   simde_v128_private
@@ -4912,15 +4912,15 @@ simde_wasm_v32x4_shuffle (
 }
 #if defined(SIMDE_WASM_SIMD128_NATIVE)
   #define \
-    simde_wasm_v32x4_shuffle( \
+    simde_wasm_i32x4_shuffle( \
         a, b, \
         c0, c1,  c2,  c3) \
-    wasm_v32x4_shuffle( \
+    wasm_i32x4_shuffle( \
         a, b, \
         c0, c1,  c2,  c3)
 #elif defined(SIMDE_SHUFFLE_VECTOR_)
   #define \
-    simde_wasm_v32x4_shuffle( \
+    simde_wasm_i32x4_shuffle( \
         a, b, \
         c0, c1,  c2,  c3) \
     (__extension__ ({ \
@@ -4932,15 +4932,15 @@ simde_wasm_v32x4_shuffle (
 #endif
 #if defined(SIMDE_WASM_SIMD128_ENABLE_NATIVE_ALIASES)
   #define \
-    wasm_v32x4_shuffle(a, b, \
+    wasm_i32x4_shuffle(a, b, \
         c0, c1,  c2,  c3) \
-      simde_wasm_v32x4_shuffle((a), (b), \
+      simde_wasm_i32x4_shuffle((a), (b), \
           (c0), (c1),  (c2),  (c3))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde_v128_t
-simde_wasm_v64x2_shuffle (
+simde_wasm_i64x2_shuffle (
     simde_v128_t a, simde_v128_t b,
     const int c0, const int c1) {
   simde_v128_private
@@ -4955,15 +4955,15 @@ simde_wasm_v64x2_shuffle (
 }
 #if defined(SIMDE_WASM_SIMD128_NATIVE)
   #define \
-    simde_wasm_v64x2_shuffle( \
+    simde_wasm_i64x2_shuffle( \
         a, b, \
         c0, c1) \
-    wasm_v64x2_shuffle( \
+    wasm_i64x2_shuffle( \
         a, b, \
         c0, c1)
 #elif defined(SIMDE_SHUFFLE_VECTOR_)
   #define \
-    simde_wasm_v64x2_shuffle( \
+    simde_wasm_i64x2_shuffle( \
         a, b, \
         c0, c1) \
     (__extension__ ({ \
@@ -4975,9 +4975,9 @@ simde_wasm_v64x2_shuffle (
 #endif
 #if defined(SIMDE_WASM_SIMD128_ENABLE_NATIVE_ALIASES)
   #define \
-    wasm_v64x2_shuffle(a, b, \
+    wasm_i64x2_shuffle(a, b, \
         c0, c1) \
-      simde_wasm_v64x2_shuffle((a), (b), \
+      simde_wasm_i64x2_shuffle((a), (b), \
           (c0), (c1))
 #endif
 

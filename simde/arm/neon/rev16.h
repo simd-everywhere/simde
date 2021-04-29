@@ -94,7 +94,7 @@ simde_vrev16q_s8(simde_int8x16_t a) {
                                    vec_reve(HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(signed short),
                                                                     vec_reve(a))));
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    return wasm_v8x16_shuffle(a, a, 1, 0, 3, 2, 5, 4, 7, 6, 9, 8, 11, 10, 13, 12, 15, 14);
+    return wasm_i8x16_shuffle(a, a, 1, 0, 3, 2, 5, 4, 7, 6, 9, 8, 11, 10, 13, 12, 15, 14);
   #else
     simde_int8x16_private
       r_,

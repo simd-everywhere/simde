@@ -710,7 +710,7 @@ simde_mm_move_ss (simde__m128 a, simde__m128 b) {
       };
       r_.altivec_f32 = vec_perm(a_.altivec_f32, b_.altivec_f32, m);
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-      r_.wasm_v128 = wasm_v8x16_shuffle(b_.wasm_v128, a_.wasm_v128, 0, 1, 2, 3, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31);
+      r_.wasm_v128 = wasm_i8x16_shuffle(b_.wasm_v128, a_.wasm_v128, 0, 1, 2, 3, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31);
     #elif defined(SIMDE_SHUFFLE_VECTOR_)
       r_.f32 = SIMDE_SHUFFLE_VECTOR_(32, 16, a_.f32, b_.f32, 4, 1, 2, 3);
     #else
@@ -3920,7 +3920,7 @@ simde_mm_store1_ps (simde_float32 mem_addr[4], simde__m128 a) {
     #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       vst1q_f32(mem_addr_, vdupq_lane_f32(vget_low_f32(a_.neon_f32), 0));
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-      wasm_v128_store(mem_addr_, wasm_v32x4_shuffle(a_.wasm_v128, a_.wasm_v128, 0, 0, 0, 0));
+      wasm_v128_store(mem_addr_, wasm_i32x4_shuffle(a_.wasm_v128, a_.wasm_v128, 0, 0, 0, 0));
     #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
       vec_st(vec_splat(a_.altivec_f32, 0), 0, mem_addr_);
     #elif defined(SIMDE_SHUFFLE_VECTOR_)

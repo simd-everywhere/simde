@@ -689,7 +689,7 @@ simde_mm_move_sd (simde__m128d a, simde__m128d b) {
         r_.altivec_f64 = vec_xxpermdi(b_.altivec_f64, a_.altivec_f64, 1);
       #endif
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-      r_.wasm_v128 = wasm_v64x2_shuffle(a_.wasm_v128, b_.wasm_v128, 2, 1);
+      r_.wasm_v128 = wasm_i64x2_shuffle(a_.wasm_v128, b_.wasm_v128, 2, 1);
     #elif defined(SIMDE_SHUFFLE_VECTOR_)
       r_.f64 = SIMDE_SHUFFLE_VECTOR_(64, 16, a_.f64, b_.f64, 2, 1);
     #else
@@ -3387,7 +3387,7 @@ simde_mm_loadr_pd (simde_float64 const mem_addr[HEDLEY_ARRAY_PARAM(2)]) {
       r_.neon_i64 = vextq_s64(r_.neon_i64, r_.neon_i64, 1);
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       v128_t tmp = wasm_v128_load(mem_addr);
-      r_.wasm_v128 = wasm_v64x2_shuffle(tmp, tmp, 1, 0);
+      r_.wasm_v128 = wasm_i64x2_shuffle(tmp, tmp, 1, 0);
     #else
       r_.f64[0] = mem_addr[1];
       r_.f64[1] = mem_addr[0];
@@ -7069,7 +7069,7 @@ simde_mm_unpackhi_pd (simde__m128d a, simde__m128d b) {
       float64x1_t b_l = vget_high_f64(b_.f64);
       r_.neon_f64 = vcombine_f64(a_l, b_l);
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-      r_.wasm_v128 = wasm_v64x2_shuffle(a_.wasm_v128, b_.wasm_v128, 1, 3);
+      r_.wasm_v128 = wasm_i64x2_shuffle(a_.wasm_v128, b_.wasm_v128, 1, 3);
     #elif defined(SIMDE_SHUFFLE_VECTOR_)
       r_.f64 = SIMDE_SHUFFLE_VECTOR_(64, 16, a_.f64, b_.f64, 1, 3);
     #else
