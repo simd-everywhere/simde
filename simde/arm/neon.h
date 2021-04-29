@@ -167,6 +167,7 @@
 #include "neon/uzp.h"
 #include "neon/uzp1.h"
 #include "neon/uzp2.h"
+#include "neon/vld2.h"
 #include "neon/xar.h"
 #include "neon/zip.h"
 #include "neon/zip1.h"
