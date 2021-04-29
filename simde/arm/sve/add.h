@@ -990,7 +990,7 @@ simde_svadd_f32_x(simde_svbool_t pg, simde_svfloat32_t op1, simde_svfloat32_t op
     #elif defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
       r.altivec = op1.altivec + op2.altivec;
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-      r.v128 = wasm_i32x4_add(op1.v128, op2.v128);
+      r.v128 = wasm_f32x4_add(op1.v128, op2.v128);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       r.values = op1.values + op2.values;
     #else
@@ -1106,7 +1106,7 @@ simde_svadd_f64_x(simde_svbool_t pg, simde_svfloat64_t op1, simde_svfloat64_t op
     #elif defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
       r.altivec = op1.altivec + op2.altivec;
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-      r.v128 = wasm_i64x2_add(op1.v128, op2.v128);
+      r.v128 = wasm_f64x2_add(op1.v128, op2.v128);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       r.values = op1.values + op2.values;
     #else

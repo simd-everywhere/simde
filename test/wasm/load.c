@@ -26,7 +26,7 @@
 #include <test/wasm/test-simd128.h>
 
 static int
-test_simde_wasm_i16x8_load_8x8(SIMDE_MUNIT_TEST_ARGS) {
+test_simde_wasm_i16x8_load8x8(SIMDE_MUNIT_TEST_ARGS) {
   #if 1
     SIMDE_TEST_STRUCT_MODIFIERS struct {
       int8_t a[8];
@@ -51,7 +51,7 @@ test_simde_wasm_i16x8_load_8x8(SIMDE_MUNIT_TEST_ARGS) {
     };
 
     for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
-      simde_v128_t r = simde_wasm_i16x8_load_8x8(&(test_vec[i].a));
+      simde_v128_t r = simde_wasm_i16x8_load8x8(&(test_vec[i].a));
       simde_test_wasm_i16x8_assert_equal(r, simde_wasm_v128_load(test_vec[i].r));
     }
     return 0;
@@ -62,7 +62,7 @@ test_simde_wasm_i16x8_load_8x8(SIMDE_MUNIT_TEST_ARGS) {
       simde_v128_t r;
 
       simde_test_codegen_random_memory(sizeof(a), HEDLEY_REINTERPRET_CAST(uint8_t*, a));
-      r = simde_wasm_i16x8_load_8x8(a);
+      r = simde_wasm_i16x8_load8x8(a);
 
       simde_test_codegen_write_vi8(3, sizeof(a) / sizeof(a[0]), a, SIMDE_TEST_VEC_POS_FIRST);
       simde_test_wasm_i16x8_write(3, r, SIMDE_TEST_VEC_POS_LAST);
@@ -72,7 +72,7 @@ test_simde_wasm_i16x8_load_8x8(SIMDE_MUNIT_TEST_ARGS) {
 }
 
 static int
-test_simde_wasm_i32x4_load_16x4(SIMDE_MUNIT_TEST_ARGS) {
+test_simde_wasm_i32x4_load16x4(SIMDE_MUNIT_TEST_ARGS) {
   #if 1
     SIMDE_TEST_STRUCT_MODIFIERS struct {
       int16_t a[4];
@@ -97,7 +97,7 @@ test_simde_wasm_i32x4_load_16x4(SIMDE_MUNIT_TEST_ARGS) {
     };
 
     for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
-      simde_v128_t r = simde_wasm_i32x4_load_16x4(&(test_vec[i].a));
+      simde_v128_t r = simde_wasm_i32x4_load16x4(&(test_vec[i].a));
       simde_test_wasm_i32x4_assert_equal(r, simde_wasm_v128_load(test_vec[i].r));
     }
     return 0;
@@ -108,7 +108,7 @@ test_simde_wasm_i32x4_load_16x4(SIMDE_MUNIT_TEST_ARGS) {
       simde_v128_t r;
 
       simde_test_codegen_random_memory(sizeof(a), HEDLEY_REINTERPRET_CAST(uint8_t*, a));
-      r = simde_wasm_i32x4_load_16x4(a);
+      r = simde_wasm_i32x4_load16x4(a);
 
       simde_test_codegen_write_vi16(3, sizeof(a) / sizeof(a[0]), a, SIMDE_TEST_VEC_POS_FIRST);
       simde_test_wasm_i32x4_write(3, r, SIMDE_TEST_VEC_POS_LAST);
@@ -118,7 +118,7 @@ test_simde_wasm_i32x4_load_16x4(SIMDE_MUNIT_TEST_ARGS) {
 }
 
 static int
-test_simde_wasm_i64x2_load_32x2(SIMDE_MUNIT_TEST_ARGS) {
+test_simde_wasm_i64x2_load32x2(SIMDE_MUNIT_TEST_ARGS) {
   #if 1
     SIMDE_TEST_STRUCT_MODIFIERS struct {
       int32_t a[2];
@@ -143,7 +143,7 @@ test_simde_wasm_i64x2_load_32x2(SIMDE_MUNIT_TEST_ARGS) {
     };
 
     for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
-      simde_v128_t r = simde_wasm_i64x2_load_32x2(&(test_vec[i].a));
+      simde_v128_t r = simde_wasm_i64x2_load32x2(&(test_vec[i].a));
       simde_test_wasm_i64x2_assert_equal(r, simde_wasm_v128_load(test_vec[i].r));
     }
     return 0;
@@ -154,7 +154,7 @@ test_simde_wasm_i64x2_load_32x2(SIMDE_MUNIT_TEST_ARGS) {
       simde_v128_t r;
 
       simde_test_codegen_random_memory(sizeof(a), HEDLEY_REINTERPRET_CAST(uint8_t*, a));
-      r = simde_wasm_i64x2_load_32x2(a);
+      r = simde_wasm_i64x2_load32x2(a);
 
       simde_test_codegen_write_vi32(3, sizeof(a) / sizeof(a[0]), a, SIMDE_TEST_VEC_POS_FIRST);
       simde_test_wasm_i64x2_write(3, r, SIMDE_TEST_VEC_POS_LAST);
@@ -164,7 +164,7 @@ test_simde_wasm_i64x2_load_32x2(SIMDE_MUNIT_TEST_ARGS) {
 }
 
 static int
-test_simde_wasm_u16x8_load_8x8(SIMDE_MUNIT_TEST_ARGS) {
+test_simde_wasm_u16x8_load8x8(SIMDE_MUNIT_TEST_ARGS) {
   #if 1
     SIMDE_TEST_STRUCT_MODIFIERS struct {
       uint8_t a[8];
@@ -189,7 +189,7 @@ test_simde_wasm_u16x8_load_8x8(SIMDE_MUNIT_TEST_ARGS) {
     };
 
     for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
-      simde_v128_t r = simde_wasm_u16x8_load_8x8(&(test_vec[i].a));
+      simde_v128_t r = simde_wasm_u16x8_load8x8(&(test_vec[i].a));
       simde_test_wasm_u16x8_assert_equal(r, simde_wasm_v128_load(test_vec[i].r));
     }
     return 0;
@@ -200,7 +200,7 @@ test_simde_wasm_u16x8_load_8x8(SIMDE_MUNIT_TEST_ARGS) {
       simde_v128_t r;
 
       simde_test_codegen_random_memory(sizeof(a), HEDLEY_REINTERPRET_CAST(uint8_t*, a));
-      r = simde_wasm_u16x8_load_8x8(a);
+      r = simde_wasm_u16x8_load8x8(a);
 
       simde_test_codegen_write_vu8(3, sizeof(a) / sizeof(a[0]), a, SIMDE_TEST_VEC_POS_FIRST);
       simde_test_wasm_u16x8_write(3, r, SIMDE_TEST_VEC_POS_LAST);
@@ -210,7 +210,7 @@ test_simde_wasm_u16x8_load_8x8(SIMDE_MUNIT_TEST_ARGS) {
 }
 
 static int
-test_simde_wasm_u32x4_load_16x4(SIMDE_MUNIT_TEST_ARGS) {
+test_simde_wasm_u32x4_load16x4(SIMDE_MUNIT_TEST_ARGS) {
   #if 1
     SIMDE_TEST_STRUCT_MODIFIERS struct {
       uint16_t a[4];
@@ -235,7 +235,7 @@ test_simde_wasm_u32x4_load_16x4(SIMDE_MUNIT_TEST_ARGS) {
     };
 
     for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
-      simde_v128_t r = simde_wasm_u32x4_load_16x4(&(test_vec[i].a));
+      simde_v128_t r = simde_wasm_u32x4_load16x4(&(test_vec[i].a));
       simde_test_wasm_u32x4_assert_equal(r, simde_wasm_v128_load(test_vec[i].r));
     }
     return 0;
@@ -246,7 +246,7 @@ test_simde_wasm_u32x4_load_16x4(SIMDE_MUNIT_TEST_ARGS) {
       simde_v128_t r;
 
       simde_test_codegen_random_memory(sizeof(a), HEDLEY_REINTERPRET_CAST(uint8_t*, a));
-      r = simde_wasm_u32x4_load_16x4(a);
+      r = simde_wasm_u32x4_load16x4(a);
 
       simde_test_codegen_write_vu16(3, sizeof(a) / sizeof(a[0]), a, SIMDE_TEST_VEC_POS_FIRST);
       simde_test_wasm_u32x4_write(3, r, SIMDE_TEST_VEC_POS_LAST);
@@ -256,7 +256,7 @@ test_simde_wasm_u32x4_load_16x4(SIMDE_MUNIT_TEST_ARGS) {
 }
 
 static int
-test_simde_wasm_u64x2_load_32x2(SIMDE_MUNIT_TEST_ARGS) {
+test_simde_wasm_u64x2_load32x2(SIMDE_MUNIT_TEST_ARGS) {
   #if 1
     SIMDE_TEST_STRUCT_MODIFIERS struct {
       uint32_t a[2];
@@ -281,7 +281,7 @@ test_simde_wasm_u64x2_load_32x2(SIMDE_MUNIT_TEST_ARGS) {
     };
 
     for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
-      simde_v128_t r = simde_wasm_u64x2_load_32x2(&(test_vec[i].a));
+      simde_v128_t r = simde_wasm_u64x2_load32x2(&(test_vec[i].a));
       simde_test_wasm_u64x2_assert_equal(r, simde_wasm_v128_load(test_vec[i].r));
     }
     return 0;
@@ -292,7 +292,7 @@ test_simde_wasm_u64x2_load_32x2(SIMDE_MUNIT_TEST_ARGS) {
       simde_v128_t r;
 
       simde_test_codegen_random_memory(sizeof(a), HEDLEY_REINTERPRET_CAST(uint8_t*, a));
-      r = simde_wasm_u64x2_load_32x2(a);
+      r = simde_wasm_u64x2_load32x2(a);
 
       simde_test_codegen_write_vu32(3, sizeof(a) / sizeof(a[0]), a, SIMDE_TEST_VEC_POS_FIRST);
       simde_test_wasm_u64x2_write(3, r, SIMDE_TEST_VEC_POS_LAST);
@@ -302,12 +302,12 @@ test_simde_wasm_u64x2_load_32x2(SIMDE_MUNIT_TEST_ARGS) {
 }
 
 SIMDE_TEST_FUNC_LIST_BEGIN
-  SIMDE_TEST_FUNC_LIST_ENTRY(wasm_i16x8_load_8x8)
-  SIMDE_TEST_FUNC_LIST_ENTRY(wasm_i32x4_load_16x4)
-  SIMDE_TEST_FUNC_LIST_ENTRY(wasm_i64x2_load_32x2)
-  SIMDE_TEST_FUNC_LIST_ENTRY(wasm_u16x8_load_8x8)
-  SIMDE_TEST_FUNC_LIST_ENTRY(wasm_u32x4_load_16x4)
-  SIMDE_TEST_FUNC_LIST_ENTRY(wasm_u64x2_load_32x2)
+  SIMDE_TEST_FUNC_LIST_ENTRY(wasm_i16x8_load8x8)
+  SIMDE_TEST_FUNC_LIST_ENTRY(wasm_i32x4_load16x4)
+  SIMDE_TEST_FUNC_LIST_ENTRY(wasm_i64x2_load32x2)
+  SIMDE_TEST_FUNC_LIST_ENTRY(wasm_u16x8_load8x8)
+  SIMDE_TEST_FUNC_LIST_ENTRY(wasm_u32x4_load16x4)
+  SIMDE_TEST_FUNC_LIST_ENTRY(wasm_u64x2_load32x2)
 SIMDE_TEST_FUNC_LIST_END
 
 #include <test/x86/test-x86-footer.h>

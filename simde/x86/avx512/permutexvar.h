@@ -81,7 +81,7 @@ simde_mm_permutexvar_epi16 (simde__m128i idx, simde__m128i a) {
       v128_t index16 = wasm_v128_and(idx_.wasm_v128, mask16);
       index16 = wasm_i16x8_mul(index16, shift16);
       index16 = wasm_i16x8_add(index16, byte_index16);
-      r_.wasm_v128 = wasm_v8x16_swizzle(a_.wasm_v128, index16);
+      r_.wasm_v128 = wasm_i8x16_swizzle(a_.wasm_v128, index16);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.i16) / sizeof(r_.i16[0])) ; i++) {
@@ -149,7 +149,7 @@ simde_mm_permutexvar_epi8 (simde__m128i idx, simde__m128i a) {
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       const v128_t mask = wasm_i8x16_splat(0x0F);
       v128_t index = wasm_v128_and(idx_.wasm_v128, mask);
-      r_.wasm_v128 = wasm_v8x16_swizzle(a_.wasm_v128, index);
+      r_.wasm_v128 = wasm_i8x16_swizzle(a_.wasm_v128, index);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.i8) / sizeof(r_.i8[0])) ; i++) {
@@ -258,10 +258,10 @@ simde_mm256_permutexvar_epi16 (simde__m256i idx, simde__m256i a) {
         index16 = wasm_v128_and(idx_.m128i_private[i].wasm_v128, mask16);
         index16 = wasm_i16x8_mul(index16, shift16);
         index = wasm_i16x8_add(index16, byte_index16);
-        r = wasm_v8x16_swizzle(a0, index);
+        r = wasm_i8x16_swizzle(a0, index);
 
         index = wasm_i8x16_sub(index, sixteen);
-        t = wasm_v8x16_swizzle(a1, index);
+        t = wasm_i8x16_swizzle(a1, index);
         r_.m128i_private[i].wasm_v128 = wasm_v128_or(r, t);
       }
     #else
@@ -476,9 +476,9 @@ simde_mm256_permutexvar_epi8 (simde__m256i idx, simde__m256i a) {
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.m128i_private) / sizeof(r_.m128i_private[0])) ; i++) {
         index = wasm_v128_and(idx_.m128i_private[i].wasm_v128, mask);
-        r = wasm_v8x16_swizzle(a0, index);
+        r = wasm_i8x16_swizzle(a0, index);
         index = wasm_i8x16_sub(index, sixteen);
-        t = wasm_v8x16_swizzle(a1, index);
+        t = wasm_i8x16_swizzle(a1, index);
         r_.m128i_private[i].wasm_v128 = wasm_v128_or(r, t);
       }
     #else
@@ -695,18 +695,18 @@ simde_mm512_permutexvar_epi16 (simde__m512i idx, simde__m512i a) {
         index = wasm_v128_and(idx_.m128i_private[i].wasm_v128, mask);
         index = wasm_i16x8_mul(index, shift);
         index = wasm_i16x8_add(index, byte_index);
-        r = wasm_v8x16_swizzle(a0, index);
+        r = wasm_i8x16_swizzle(a0, index);
 
         index = wasm_i8x16_sub(index, sixteen);
-        t = wasm_v8x16_swizzle(a1, index);
+        t = wasm_i8x16_swizzle(a1, index);
         r = wasm_v128_or(r, t);
 
         index = wasm_i8x16_sub(index, sixteen);
-        t = wasm_v8x16_swizzle(a2, index);
+        t = wasm_i8x16_swizzle(a2, index);
         r = wasm_v128_or(r, t);
 
         index = wasm_i8x16_sub(index, sixteen);
-        t = wasm_v8x16_swizzle(a3, index);
+        t = wasm_i8x16_swizzle(a3, index);
         r_.m128i_private[i].wasm_v128 = wasm_v128_or(r, t);
       }
     #else
@@ -835,18 +835,18 @@ simde_mm512_permutexvar_epi32 (simde__m512i idx, simde__m512i a) {
         index = wasm_v128_and(idx_.m128i_private[i].wasm_v128, mask);
         index = wasm_i32x4_mul(index, shift);
         index = wasm_i32x4_add(index, byte_index);
-        r = wasm_v8x16_swizzle(a0, index);
+        r = wasm_i8x16_swizzle(a0, index);
 
         index = wasm_i8x16_sub(index, sixteen);
-        t = wasm_v8x16_swizzle(a1, index);
+        t = wasm_i8x16_swizzle(a1, index);
         r = wasm_v128_or(r, t);
 
         index = wasm_i8x16_sub(index, sixteen);
-        t = wasm_v8x16_swizzle(a2, index);
+        t = wasm_i8x16_swizzle(a2, index);
         r = wasm_v128_or(r, t);
 
         index = wasm_i8x16_sub(index, sixteen);
-        t = wasm_v8x16_swizzle(a3, index);
+        t = wasm_i8x16_swizzle(a3, index);
         r_.m128i_private[i].wasm_v128 = wasm_v128_or(r, t);
       }
     #else
@@ -1033,18 +1033,18 @@ simde_mm512_permutexvar_epi8 (simde__m512i idx, simde__m512i a) {
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.m128i_private) / sizeof(r_.m128i_private[0])) ; i++) {
         index = wasm_v128_and(idx_.m128i_private[i].wasm_v128, mask);
-        r = wasm_v8x16_swizzle(a0, index);
+        r = wasm_i8x16_swizzle(a0, index);
 
         index = wasm_i8x16_sub(index, sixteen);
-        t = wasm_v8x16_swizzle(a1, index);
+        t = wasm_i8x16_swizzle(a1, index);
         r = wasm_v128_or(r, t);
 
         index = wasm_i8x16_sub(index, sixteen);
-        t = wasm_v8x16_swizzle(a2, index);
+        t = wasm_i8x16_swizzle(a2, index);
         r = wasm_v128_or(r, t);
 
         index = wasm_i8x16_sub(index, sixteen);
-        t = wasm_v8x16_swizzle(a3, index);
+        t = wasm_i8x16_swizzle(a3, index);
         r_.m128i_private[i].wasm_v128 = wasm_v128_or(r, t);
       }
     #else

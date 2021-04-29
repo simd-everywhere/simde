@@ -26,7 +26,7 @@
 #include <test/wasm/test-simd128.h>
 
 static int
-test_simde_wasm_v8x16_swizzle(SIMDE_MUNIT_TEST_ARGS) {
+test_simde_wasm_i8x16_swizzle(SIMDE_MUNIT_TEST_ARGS) {
   #if 1
     SIMDE_TEST_STRUCT_MODIFIERS struct {
       int8_t a[sizeof(simde_v128_t) / sizeof(int8_t)];
@@ -86,7 +86,7 @@ test_simde_wasm_v8x16_swizzle(SIMDE_MUNIT_TEST_ARGS) {
     for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
       simde_v128_t a = simde_wasm_v128_load(test_vec[i].a);
       simde_v128_t b = simde_wasm_v128_load(test_vec[i].b);
-      simde_v128_t r = simde_wasm_v8x16_swizzle(a, b);
+      simde_v128_t r = simde_wasm_i8x16_swizzle(a, b);
       simde_test_wasm_i8x16_assert_equal(r, simde_wasm_v128_load(test_vec[i].r));
     }
     return 0;
@@ -98,7 +98,7 @@ test_simde_wasm_v8x16_swizzle(SIMDE_MUNIT_TEST_ARGS) {
         b = simde_test_wasm_i8x16_random(),
         r;
 
-      r = simde_wasm_v8x16_swizzle(a, b);
+      r = simde_wasm_i8x16_swizzle(a, b);
 
       simde_test_wasm_i8x16_write(3, a, SIMDE_TEST_VEC_POS_FIRST);
       simde_test_wasm_i8x16_write(3, b, SIMDE_TEST_VEC_POS_MIDDLE);
@@ -109,7 +109,7 @@ test_simde_wasm_v8x16_swizzle(SIMDE_MUNIT_TEST_ARGS) {
 }
 
 SIMDE_TEST_FUNC_LIST_BEGIN
-  SIMDE_TEST_FUNC_LIST_ENTRY(wasm_v8x16_swizzle)
+  SIMDE_TEST_FUNC_LIST_ENTRY(wasm_i8x16_swizzle)
 SIMDE_TEST_FUNC_LIST_END
 
 #include <test/x86/test-x86-footer.h>

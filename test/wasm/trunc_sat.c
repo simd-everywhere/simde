@@ -26,7 +26,7 @@
 #include <test/wasm/test-simd128.h>
 
 static int
-test_simde_wasm_i32x4_trunc_saturate_f32x4(SIMDE_MUNIT_TEST_ARGS) {
+test_simde_wasm_i32x4_trunc_sat_f32x4(SIMDE_MUNIT_TEST_ARGS) {
   #if 1
     SIMDE_TEST_STRUCT_MODIFIERS struct {
       simde_float32 a[sizeof(simde_v128_t) / sizeof(simde_float32)];
@@ -52,7 +52,7 @@ test_simde_wasm_i32x4_trunc_saturate_f32x4(SIMDE_MUNIT_TEST_ARGS) {
 
     for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
       simde_v128_t a = simde_wasm_v128_load(test_vec[i].a);
-      simde_v128_t r = simde_wasm_i32x4_trunc_saturate_f32x4(a);
+      simde_v128_t r = simde_wasm_i32x4_trunc_sat_f32x4(a);
       simde_test_wasm_i32x4_assert_equal(r, simde_wasm_v128_load(test_vec[i].r));
     }
     return 0;
@@ -65,7 +65,7 @@ test_simde_wasm_i32x4_trunc_saturate_f32x4(SIMDE_MUNIT_TEST_ARGS) {
         a = simde_test_wasm_f32x4_random_full_extract(1, inputs, i, 0),
         r;
 
-      r = simde_wasm_i32x4_trunc_saturate_f32x4(a);
+      r = simde_wasm_i32x4_trunc_sat_f32x4(a);
 
       simde_test_wasm_f32x4_write(3, a, SIMDE_TEST_VEC_POS_FIRST);
       simde_test_wasm_i32x4_write(3, r, SIMDE_TEST_VEC_POS_LAST);
@@ -75,7 +75,7 @@ test_simde_wasm_i32x4_trunc_saturate_f32x4(SIMDE_MUNIT_TEST_ARGS) {
 }
 
 static int
-test_simde_wasm_u32x4_trunc_saturate_f32x4(SIMDE_MUNIT_TEST_ARGS) {
+test_simde_wasm_u32x4_trunc_sat_f32x4(SIMDE_MUNIT_TEST_ARGS) {
   #if 1
     SIMDE_TEST_STRUCT_MODIFIERS struct {
       simde_float32 a[sizeof(simde_v128_t) / sizeof(simde_float32)];
@@ -101,7 +101,7 @@ test_simde_wasm_u32x4_trunc_saturate_f32x4(SIMDE_MUNIT_TEST_ARGS) {
 
     for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
       simde_v128_t a = simde_wasm_v128_load(test_vec[i].a);
-      simde_v128_t r = simde_wasm_u32x4_trunc_saturate_f32x4(a);
+      simde_v128_t r = simde_wasm_u32x4_trunc_sat_f32x4(a);
       simde_test_wasm_u32x4_assert_equal(r, simde_wasm_v128_load(test_vec[i].r));
     }
     return 0;
@@ -114,7 +114,7 @@ test_simde_wasm_u32x4_trunc_saturate_f32x4(SIMDE_MUNIT_TEST_ARGS) {
         a = simde_test_wasm_f32x4_random_full_extract(1, inputs, i, 0),
         r;
 
-      r = simde_wasm_u32x4_trunc_saturate_f32x4(a);
+      r = simde_wasm_u32x4_trunc_sat_f32x4(a);
 
       simde_test_wasm_f32x4_write(3, a, SIMDE_TEST_VEC_POS_FIRST);
       simde_test_wasm_u32x4_write(3, r, SIMDE_TEST_VEC_POS_LAST);
@@ -124,8 +124,8 @@ test_simde_wasm_u32x4_trunc_saturate_f32x4(SIMDE_MUNIT_TEST_ARGS) {
 }
 
 SIMDE_TEST_FUNC_LIST_BEGIN
-  SIMDE_TEST_FUNC_LIST_ENTRY(wasm_i32x4_trunc_saturate_f32x4)
-  SIMDE_TEST_FUNC_LIST_ENTRY(wasm_u32x4_trunc_saturate_f32x4)
+  SIMDE_TEST_FUNC_LIST_ENTRY(wasm_i32x4_trunc_sat_f32x4)
+  SIMDE_TEST_FUNC_LIST_ENTRY(wasm_u32x4_trunc_sat_f32x4)
 SIMDE_TEST_FUNC_LIST_END
 
 #include <test/x86/test-x86-footer.h>

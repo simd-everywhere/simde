@@ -327,7 +327,7 @@ simde_vqsubq_s8(simde_int8x16_t a, simde_int8x16_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vqsubq_s8(a, b);
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    return wasm_i8x16_sub_saturate(a, b);
+    return wasm_i8x16_sub_sat(a, b);
   #elif defined(SIMDE_X86_SSE2_NATIVE)
     return _mm_subs_epi8(a, b);
   #elif defined(SIMDE_POWER_ALTIVEC_P6)
@@ -357,7 +357,7 @@ simde_vqsubq_s16(simde_int16x8_t a, simde_int16x8_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vqsubq_s16(a, b);
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    return wasm_i16x8_sub_saturate(a, b);
+    return wasm_i16x8_sub_sat(a, b);
   #elif defined(SIMDE_X86_SSE2_NATIVE)
     return _mm_subs_epi16(a, b);
   #elif defined(SIMDE_POWER_ALTIVEC_P6)
@@ -439,7 +439,7 @@ simde_vqsubq_u8(simde_uint8x16_t a, simde_uint8x16_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vqsubq_u8(a, b);
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    return wasm_u8x16_sub_saturate(a, b);
+    return wasm_u8x16_sub_sat(a, b);
   #elif defined(SIMDE_X86_SSE2_NATIVE)
     return _mm_subs_epu8(a, b);
   #elif defined(SIMDE_POWER_ALTIVEC_P6)
@@ -469,7 +469,7 @@ simde_vqsubq_u16(simde_uint16x8_t a, simde_uint16x8_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vqsubq_u16(a, b);
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    return wasm_u16x8_sub_saturate(a, b);
+    return wasm_u16x8_sub_sat(a, b);
   #elif defined(SIMDE_X86_SSE2_NATIVE)
     return _mm_subs_epu16(a, b);
   #elif defined(SIMDE_POWER_ALTIVEC_P6)

@@ -264,7 +264,7 @@ simde_vzip1q_f32(simde_float32x4_t a, simde_float32x4_t b) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vzip1q_f32(a, b);
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    return wasm_v32x4_shuffle(a, b, 0, 4, 1, 5);
+    return wasm_i32x4_shuffle(a, b, 0, 4, 1, 5);
   #elif defined(SIMDE_X86_SSE_NATIVE)
     return _mm_unpacklo_ps(a, b);
   #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
@@ -300,7 +300,7 @@ simde_vzip1q_f64(simde_float64x2_t a, simde_float64x2_t b) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vzip1q_f64(a, b);
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    return wasm_v64x2_shuffle(a, b, 0, 2);
+    return wasm_i64x2_shuffle(a, b, 0, 2);
   #elif defined(SIMDE_X86_SSE2_NATIVE)
     return _mm_unpacklo_pd(a, b);
   #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
@@ -336,7 +336,7 @@ simde_vzip1q_s8(simde_int8x16_t a, simde_int8x16_t b) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vzip1q_s8(a, b);
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    return wasm_v8x16_shuffle(a, b, 0, 16, 1, 17, 2, 18, 3, 19, 4, 20, 5, 21, 6, 22, 7, 23);
+    return wasm_i8x16_shuffle(a, b, 0, 16, 1, 17, 2, 18, 3, 19, 4, 20, 5, 21, 6, 22, 7, 23);
   #elif defined(SIMDE_X86_SSE2_NATIVE)
     return _mm_unpacklo_epi8(a, b);
   #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
@@ -372,7 +372,7 @@ simde_vzip1q_s16(simde_int16x8_t a, simde_int16x8_t b) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vzip1q_s16(a, b);
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    return wasm_v16x8_shuffle(a, b, 0, 8, 1, 9, 2, 10, 3, 11);
+    return wasm_i16x8_shuffle(a, b, 0, 8, 1, 9, 2, 10, 3, 11);
   #elif defined(SIMDE_X86_SSE2_NATIVE)
     return _mm_unpacklo_epi16(a, b);
   #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
@@ -408,7 +408,7 @@ simde_vzip1q_s32(simde_int32x4_t a, simde_int32x4_t b) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vzip1q_s32(a, b);
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    return wasm_v32x4_shuffle(a, b, 0, 4, 1, 5);
+    return wasm_i32x4_shuffle(a, b, 0, 4, 1, 5);
   #elif defined(SIMDE_X86_SSE2_NATIVE)
     return _mm_unpacklo_epi32(a, b);
   #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
@@ -444,7 +444,7 @@ simde_vzip1q_s64(simde_int64x2_t a, simde_int64x2_t b) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vzip1q_s64(a, b);
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    return wasm_v64x2_shuffle(a, b, 0, 2);
+    return wasm_i64x2_shuffle(a, b, 0, 2);
   #elif defined(SIMDE_X86_SSE2_NATIVE)
     return _mm_unpacklo_epi64(a, b);
   #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
@@ -481,7 +481,7 @@ simde_vzip1q_u8(simde_uint8x16_t a, simde_uint8x16_t b) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vzip1q_u8(a, b);
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    return wasm_v8x16_shuffle(a, b, 0, 16, 1, 17, 2, 18, 3, 19, 4, 20, 5, 21, 6, 22, 7, 23);
+    return wasm_i8x16_shuffle(a, b, 0, 16, 1, 17, 2, 18, 3, 19, 4, 20, 5, 21, 6, 22, 7, 23);
   #elif defined(SIMDE_X86_SSE2_NATIVE)
     return _mm_unpacklo_epi8(a, b);
   #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
@@ -517,7 +517,7 @@ simde_vzip1q_u16(simde_uint16x8_t a, simde_uint16x8_t b) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vzip1q_u16(a, b);
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    return wasm_v16x8_shuffle(a, b, 0, 8, 1, 9, 2, 10, 3, 11);
+    return wasm_i16x8_shuffle(a, b, 0, 8, 1, 9, 2, 10, 3, 11);
   #elif defined(SIMDE_X86_SSE2_NATIVE)
     return _mm_unpacklo_epi16(a, b);
   #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
@@ -553,7 +553,7 @@ simde_vzip1q_u32(simde_uint32x4_t a, simde_uint32x4_t b) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vzip1q_u32(a, b);
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    return wasm_v32x4_shuffle(a, b, 0, 4, 1, 5);
+    return wasm_i32x4_shuffle(a, b, 0, 4, 1, 5);
   #elif defined(SIMDE_X86_SSE2_NATIVE)
     return _mm_unpacklo_epi32(a, b);
   #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
@@ -589,7 +589,7 @@ simde_vzip1q_u64(simde_uint64x2_t a, simde_uint64x2_t b) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vzip1q_u64(a, b);
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    return wasm_v64x2_shuffle(a, b, 0, 2);
+    return wasm_i64x2_shuffle(a, b, 0, 2);
   #elif defined(SIMDE_X86_SSE2_NATIVE)
     return _mm_unpacklo_epi64(a, b);
   #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)

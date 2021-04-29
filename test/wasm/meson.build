@@ -1,7 +1,7 @@
 simde_test_wasm_simd128_tests = [
   'abs',
   'add',
-  'add_saturate',
+  'add_sat',
   'all_true',
   'and',
   'andnot',
@@ -35,11 +35,11 @@ simde_test_wasm_simd128_tests = [
   'shr',
   'splat',
   'sub',
-  'sub_saturate',
+  'sub_sat',
   'swizzle',
-  'trunc_saturate',
-  'widen_low',
-  'widen_high',
+  'trunc_sat',
+  'extend_low',
+  'extend_high',
   'xor',
 ]
 

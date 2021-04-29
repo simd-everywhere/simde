@@ -417,7 +417,7 @@ simde_mm_movedup_pd (simde__m128d a) {
     #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
       r_.neon_f64 = vdupq_laneq_f64(a_.neon_f64, 0);
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-      r_.wasm_v128 = wasm_v64x2_shuffle(a_.wasm_v128, a_.wasm_v128, 0, 0);
+      r_.wasm_v128 = wasm_i64x2_shuffle(a_.wasm_v128, a_.wasm_v128, 0, 0);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && defined(SIMDE_SHUFFLE_VECTOR_)
       r_.f64 = SIMDE_SHUFFLE_VECTOR_(64, 16, a_.f64, a_.f64, 0, 0);
     #else
@@ -445,7 +445,7 @@ simde_mm_movehdup_ps (simde__m128 a) {
     #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
       r_.neon_f32 = vtrn2q_f32(a_.neon_f32, a_.neon_f32);
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-      r_.wasm_v128 = wasm_v32x4_shuffle(a_.wasm_v128, a_.wasm_v128, 1, 1, 3, 3);
+      r_.wasm_v128 = wasm_i32x4_shuffle(a_.wasm_v128, a_.wasm_v128, 1, 1, 3, 3);
     #elif (SIMDE_NATURAL_VECTOR_SIZE > 0) && defined(SIMDE_SHUFFLE_VECTOR_)
       r_.f32 = SIMDE_SHUFFLE_VECTOR_(32, 16, a_.f32, a_.f32, 1, 1, 3, 3);
     #else
@@ -475,7 +475,7 @@ simde_mm_moveldup_ps (simde__m128 a) {
     #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
       r_.neon_f32 = vtrn1q_f32(a_.neon_f32, a_.neon_f32);
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-      r_.wasm_v128 = wasm_v32x4_shuffle(a_.wasm_v128, a_.wasm_v128, 0, 0, 2, 2);
+      r_.wasm_v128 = wasm_i32x4_shuffle(a_.wasm_v128, a_.wasm_v128, 0, 0, 2, 2);
     #elif (SIMDE_NATURAL_VECTOR_SIZE > 0) && defined(SIMDE_SHUFFLE_VECTOR_)
       r_.f32 = SIMDE_SHUFFLE_VECTOR_(32, 16, a_.f32, a_.f32, 0, 0, 2, 2);
     #else

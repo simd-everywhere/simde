@@ -63,7 +63,7 @@ simde_svqadd_s8(simde_svint8_t op1, simde_svint8_t op2) {
           vec_unpackl(op1.altivec) + vec_unpackl(op2.altivec)
         );
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-      r.v128 = wasm_i8x16_add_saturate(a, b);
+      r.v128 = wasm_i8x16_add_sat(op1.v128, op2.v128);
     #else
       SIMDE_VECTORIZE
       for (int i = 0 ; i < HEDLEY_STATIC_CAST(int, sizeof(r.values) / sizeof(r.values[0])) ; i++) {
@@ -122,7 +122,7 @@ simde_svqadd_s16(simde_svint16_t op1, simde_svint16_t op2) {
           vec_unpackl(op1.altivec) + vec_unpackl(op2.altivec)
         );
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-      r.v128 = wasm_i16x8_add_saturate(a, b);
+      r.v128 = wasm_i16x8_add_sat(op1.v128, op2.v128);
     #else
       SIMDE_VECTORIZE
       for (int i = 0 ; i < HEDLEY_STATIC_CAST(int, sizeof(r.values) / sizeof(r.values[0])) ; i++) {
@@ -275,7 +275,7 @@ simde_svqadd_u8(simde_svuint8_t op1, simde_svuint8_t op2) {
           vec_unpackl(op1.altivec) + vec_unpackl(op2.altivec)
         );
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-      r.v128 = wasm_u8x16_add_saturate(a, b);
+      r.v128 = wasm_u8x16_add_sat(op1.v128, op2.v128);
     #else
       SIMDE_VECTORIZE
       for (int i = 0 ; i < HEDLEY_STATIC_CAST(int, sizeof(r.values) / sizeof(r.values[0])) ; i++) {
@@ -334,7 +334,7 @@ simde_svqadd_u16(simde_svuint16_t op1, simde_svuint16_t op2) {
           vec_unpackl(op1.altivec) + vec_unpackl(op2.altivec)
         );
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-      r.v128 = wasm_u16x8_add_saturate(a, b);
+      r.v128 = wasm_u16x8_add_sat(op1.v128, op2.v128);
     #else
       SIMDE_VECTORIZE
       for (int i = 0 ; i < HEDLEY_STATIC_CAST(int, sizeof(r.values) / sizeof(r.values[0])) ; i++) {

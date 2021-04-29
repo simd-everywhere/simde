@@ -249,18 +249,18 @@ simde_x_permutex2var128 (const simde__m128i *a, const simde__m128i idx, const si
       break;
     }
 
-    v128_t r = wasm_v8x16_swizzle(simde__m128i_to_wasm_v128(a[0]), index);
+    v128_t r = wasm_i8x16_swizzle(simde__m128i_to_wasm_v128(a[0]), index);
 
     SIMDE_VECTORIZE
     for (int i = 1 ; i < (1 << log2_data_length) ; i++) {
       index = wasm_i8x16_sub(index, sixteen);
-      r = wasm_v128_or(r, wasm_v8x16_swizzle(simde__m128i_to_wasm_v128(a[i]), index));
+      r = wasm_v128_or(r, wasm_i8x16_swizzle(simde__m128i_to_wasm_v128(a[i]), index));
     }
 
     SIMDE_VECTORIZE
     for (int i = 0 ; i < (1 << log2_data_length) ; i++) {
       index = wasm_i8x16_sub(index, sixteen);
-      r = wasm_v128_or(r, wasm_v8x16_swizzle(simde__m128i_to_wasm_v128(b[i]), index));
+      r = wasm_v128_or(r, wasm_i8x16_swizzle(simde__m128i_to_wasm_v128(b[i]), index));
     }
 
     return simde__m128i_from_wasm_v128(r);

@@ -26,7 +26,7 @@
 #include <test/wasm/test-simd128.h>
 
 static int
-test_simde_wasm_v8x16_load_splat(SIMDE_MUNIT_TEST_ARGS) {
+test_simde_wasm_v128_load8_splat(SIMDE_MUNIT_TEST_ARGS) {
   #if 1
     SIMDE_TEST_STRUCT_MODIFIERS struct {
       int8_t a;
@@ -59,7 +59,7 @@ test_simde_wasm_v8x16_load_splat(SIMDE_MUNIT_TEST_ARGS) {
     };
 
     for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
-      simde_v128_t r = simde_wasm_v8x16_load_splat(&(test_vec[i].a));
+      simde_v128_t r = simde_wasm_v128_load8_splat(&(test_vec[i].a));
       simde_test_wasm_i8x16_assert_equal(r, simde_wasm_v128_load(test_vec[i].r));
     }
     return 0;
@@ -69,7 +69,7 @@ test_simde_wasm_v8x16_load_splat(SIMDE_MUNIT_TEST_ARGS) {
       int8_t a = simde_test_codegen_random_i8();
       simde_v128_t r;
 
-      r = simde_wasm_v8x16_load_splat(&a);
+      r = simde_wasm_v128_load8_splat(&a);
 
       simde_test_codegen_write_i8(3, a, SIMDE_TEST_VEC_POS_FIRST);
       simde_test_wasm_i8x16_write(3, r, SIMDE_TEST_VEC_POS_LAST);
@@ -79,7 +79,7 @@ test_simde_wasm_v8x16_load_splat(SIMDE_MUNIT_TEST_ARGS) {
 }
 
 static int
-test_simde_wasm_v16x8_load_splat(SIMDE_MUNIT_TEST_ARGS) {
+test_simde_wasm_v128_load16_splat(SIMDE_MUNIT_TEST_ARGS) {
   #if 1
     SIMDE_TEST_STRUCT_MODIFIERS struct {
       int16_t a;
@@ -104,7 +104,7 @@ test_simde_wasm_v16x8_load_splat(SIMDE_MUNIT_TEST_ARGS) {
     };
 
     for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
-      simde_v128_t r = simde_wasm_v16x8_load_splat(&(test_vec[i].a));
+      simde_v128_t r = simde_wasm_v128_load16_splat(&(test_vec[i].a));
       simde_test_wasm_i16x8_assert_equal(r, simde_wasm_v128_load(test_vec[i].r));
     }
     return 0;
@@ -114,7 +114,7 @@ test_simde_wasm_v16x8_load_splat(SIMDE_MUNIT_TEST_ARGS) {
       int16_t a = simde_test_codegen_random_i16();
       simde_v128_t r;
 
-      r = simde_wasm_v16x8_load_splat(&a);
+      r = simde_wasm_v128_load16_splat(&a);
 
       simde_test_codegen_write_i16(3, a, SIMDE_TEST_VEC_POS_FIRST);
       simde_test_wasm_i16x8_write(3, r, SIMDE_TEST_VEC_POS_LAST);
@@ -124,7 +124,7 @@ test_simde_wasm_v16x8_load_splat(SIMDE_MUNIT_TEST_ARGS) {
 }
 
 static int
-test_simde_wasm_v32x4_load_splat(SIMDE_MUNIT_TEST_ARGS) {
+test_simde_wasm_v128_load32_splat(SIMDE_MUNIT_TEST_ARGS) {
   #if 1
     SIMDE_TEST_STRUCT_MODIFIERS struct {
       int32_t a;
@@ -149,7 +149,7 @@ test_simde_wasm_v32x4_load_splat(SIMDE_MUNIT_TEST_ARGS) {
     };
 
     for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
-      simde_v128_t r = simde_wasm_v32x4_load_splat(&(test_vec[i].a));
+      simde_v128_t r = simde_wasm_v128_load32_splat(&(test_vec[i].a));
       simde_test_wasm_i32x4_assert_equal(r, simde_wasm_v128_load(test_vec[i].r));
     }
     return 0;
@@ -159,7 +159,7 @@ test_simde_wasm_v32x4_load_splat(SIMDE_MUNIT_TEST_ARGS) {
       int32_t a = simde_test_codegen_random_i32();
       simde_v128_t r;
 
-      r = simde_wasm_v32x4_load_splat(&a);
+      r = simde_wasm_v128_load32_splat(&a);
 
       simde_test_codegen_write_i32(3, a, SIMDE_TEST_VEC_POS_FIRST);
       simde_test_wasm_i32x4_write(3, r, SIMDE_TEST_VEC_POS_LAST);
@@ -169,7 +169,7 @@ test_simde_wasm_v32x4_load_splat(SIMDE_MUNIT_TEST_ARGS) {
 }
 
 static int
-test_simde_wasm_v64x2_load_splat(SIMDE_MUNIT_TEST_ARGS) {
+test_simde_wasm_v128_load64_splat(SIMDE_MUNIT_TEST_ARGS) {
   #if 1
     SIMDE_TEST_STRUCT_MODIFIERS struct {
       int64_t a;
@@ -194,7 +194,7 @@ test_simde_wasm_v64x2_load_splat(SIMDE_MUNIT_TEST_ARGS) {
     };
 
     for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
-      simde_v128_t r = simde_wasm_v64x2_load_splat(&(test_vec[i].a));
+      simde_v128_t r = simde_wasm_v128_load64_splat(&(test_vec[i].a));
       simde_test_wasm_i64x2_assert_equal(r, simde_wasm_v128_load(test_vec[i].r));
     }
     return 0;
@@ -204,7 +204,7 @@ test_simde_wasm_v64x2_load_splat(SIMDE_MUNIT_TEST_ARGS) {
       int64_t a = simde_test_codegen_random_i64();
       simde_v128_t r;
 
-      r = simde_wasm_v64x2_load_splat(&a);
+      r = simde_wasm_v128_load64_splat(&a);
 
       simde_test_codegen_write_i64(3, a, SIMDE_TEST_VEC_POS_FIRST);
       simde_test_wasm_i64x2_write(3, r, SIMDE_TEST_VEC_POS_LAST);
@@ -214,10 +214,10 @@ test_simde_wasm_v64x2_load_splat(SIMDE_MUNIT_TEST_ARGS) {
 }
 
 SIMDE_TEST_FUNC_LIST_BEGIN
-  SIMDE_TEST_FUNC_LIST_ENTRY(wasm_v8x16_load_splat)
-  SIMDE_TEST_FUNC_LIST_ENTRY(wasm_v16x8_load_splat)
-  SIMDE_TEST_FUNC_LIST_ENTRY(wasm_v32x4_load_splat)
-  SIMDE_TEST_FUNC_LIST_ENTRY(wasm_v64x2_load_splat)
+  SIMDE_TEST_FUNC_LIST_ENTRY(wasm_v128_load8_splat)
+  SIMDE_TEST_FUNC_LIST_ENTRY(wasm_v128_load16_splat)
+  SIMDE_TEST_FUNC_LIST_ENTRY(wasm_v128_load32_splat)
+  SIMDE_TEST_FUNC_LIST_ENTRY(wasm_v128_load64_splat)
 SIMDE_TEST_FUNC_LIST_END
 
 #include <test/x86/test-x86-footer.h>
