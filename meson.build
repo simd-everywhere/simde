@@ -59,6 +59,7 @@ simde_neon_families = [
   'hadd',
   'hsub',
   'ld1',
+  'ld2',
   'ld3',
   'ld4',
   'max',
