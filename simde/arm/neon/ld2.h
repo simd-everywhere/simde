@@ -34,6 +34,8 @@ HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 SIMDE_BEGIN_DECLS_
 
+#if !defined(SIMDE_BUG_INTEL_857088)
+
 SIMDE_FUNCTION_ATTRIBUTES
 simde_uint8x8x2_t
 simde_vld2_u8(uint8_t const ptr[HEDLEY_ARRAY_PARAM(8)]) {
@@ -60,6 +62,8 @@ simde_vld2_u8(uint8_t const ptr[HEDLEY_ARRAY_PARAM(8)]) {
   #undef vld2_u8
   #define vld2_u8(a) simde_vld2_u8((a))
 #endif
+
+#endif /* !defined(SIMDE_BUG_INTEL_857088) */
 
 SIMDE_END_DECLS_
 HEDLEY_DIAGNOSTIC_POP

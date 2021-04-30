@@ -3,6 +3,8 @@
 #include "test-neon.h"
 #include "../../../simde/arm/neon/ld2.h"
 
+#if !defined(SIMDE_BUG_INTEL_857088)
+
 static int
 test_simde_vld2_u8 (SIMDE_MUNIT_TEST_ARGS) {
 #if 1
@@ -86,8 +88,12 @@ test_simde_vld2_u8 (SIMDE_MUNIT_TEST_ARGS) {
 #endif
 }
 
+#endif /* !defined(SIMDE_BUG_INTEL_857088) */
+
 SIMDE_TEST_FUNC_LIST_BEGIN
+#if !defined(SIMDE_BUG_INTEL_857088)
 SIMDE_TEST_FUNC_LIST_ENTRY(vld2_u8)
+#endif /* !defined(SIMDE_BUG_INTEL_857088) */
 SIMDE_TEST_FUNC_LIST_END
 
 #include "test-neon-footer.h"
