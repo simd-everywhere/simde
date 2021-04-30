@@ -71,7 +71,7 @@ simde_vrecpsq_f32(simde_float32x4_t a, simde_float32x4_t b) {
 
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = 2.0 - (a_.values[i] * b_.values[i]);
+      r_.values[i] = 2.0f - (a_.values[i] * b_.values[i]);
     }
 
     return simde_float32x4_from_private(r_);
