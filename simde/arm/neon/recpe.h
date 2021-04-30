@@ -44,6 +44,27 @@ simde_vrecpe_f32(simde_float32x2_t a) {
       r_,
       a_ = simde_float32x2_to_private(a);
 
+    #if defined(SIMDE_IEEE754_STORAGE)
+      /* https://stackoverflow.com/questions/12227126/division-as-multiply-and-lut-fast-float-division-reciprocal/12228234#12228234 */
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+        int32_t ix;
+        simde_float32 fx = a_.values[i];
+        simde_memcpy(&ix, &fx, sizeof(ix));
+        int32_t x = INT32_C(0x7EF311C3) - ix;
+        simde_float32 temp;
+        simde_memcpy(&temp, &x, sizeof(temp));
+        r_.values[i] = temp * (SIMDE_FLOAT32_C(2.0) - temp * fx);
+      }
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+      r_.f32 = 1.0f / a_.f32;
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
+        r_.values[i] = 1.0f / a_.values[i];
+      }
+    #endif
+
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
       r_.values[i] = 1.0f / a_.values[i];
@@ -62,15 +83,35 @@ simde_float32x4_t
 simde_vrecpeq_f32(simde_float32x4_t a) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vrecpeq_f32(a);
+  #elif defined(SIMDE_X86_SSE_NATIVE)
+    return _mm_rcp_ps(a);
+  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+    return vec_re(a);
   #else
     simde_float32x4_private
       r_,
       a_ = simde_float32x4_to_private(a);
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = 1.0f / a_.values[i];
-    }
+    #if defined(SIMDE_IEEE754_STORAGE)
+      /* https://stackoverflow.com/questions/12227126/division-as-multiply-and-lut-fast-float-division-reciprocal/12228234#12228234 */
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+        int32_t ix;
+        simde_float32 fx = a_.values[i];
+        simde_memcpy(&ix, &fx, sizeof(ix));
+        int32_t x = INT32_C(0x7EF311C3) - ix;
+        simde_float32 temp;
+        simde_memcpy(&temp, &x, sizeof(temp));
+        r_.values[i] = temp * (SIMDE_FLOAT32_C(2.0) - temp * fx);
+      }
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+      r_.f32 = 1.0f / a_.f32;
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
+        r_.values[i] = 1.0f / a_.values[i];
+      }
+    #endif
 
     return simde_float32x4_from_private(r_);
   #endif
