@@ -22,6 +22,7 @@
  *
  * Copyright:
  *   2020      Evan Nemerson <evan@nemerson.com>
+ *   2021      Zhi An Ng <zhin@google.com> (Copyright owned by Google, LLC)
  */
 
 #if !defined(SIMDE_ARM_NEON_LD2_H)
