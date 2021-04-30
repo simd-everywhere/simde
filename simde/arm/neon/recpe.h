@@ -22,7 +22,7 @@
  *
  * Copyright:
  *   2020      Evan Nemerson <evan@nemerson.com>
- *   2020      Zhi An Ng <zhin@google.com> (Copyright owned by Google, LLC)
+ *   2021      Zhi An Ng <zhin@google.com> (Copyright owned by Google, LLC)
  */
 
 #if !defined(SIMDE_ARM_NEON_RECPE_H)
@@ -64,11 +64,6 @@ simde_vrecpe_f32(simde_float32x2_t a) {
         r_.values[i] = 1.0f / a_.values[i];
       }
     #endif
-
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = 1.0f / a_.values[i];
-    }
 
     return simde_float32x2_from_private(r_);
   #endif
