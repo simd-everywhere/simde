@@ -24,8 +24,8 @@
  *   2020      Evan Nemerson <evan@nemerson.com>
  */
 
-#if !defined(SIMDE_ARM_NEON_VLD2_H)
-#define SIMDE_ARM_NEON_VLD2_H
+#if !defined(SIMDE_ARM_NEON_LD2_H)
+#define SIMDE_ARM_NEON_LD2_H
 
 #include "types.h"
 
@@ -63,4 +63,4 @@ simde_vld2_u8(uint8_t const ptr[HEDLEY_ARRAY_PARAM(8)]) {
 SIMDE_END_DECLS_
 HEDLEY_DIAGNOSTIC_POP
 
-#endif /* !defined(SIMDE_ARM_NEON_VLD2_H) */
+#endif /* !defined(SIMDE_ARM_NEON_LD2_H) */
