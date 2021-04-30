@@ -130,6 +130,7 @@
 #include "neon/qtbl.h"
 #include "neon/qtbx.h"
 #include "neon/rbit.h"
+#include "neon/recpe.h"
 #include "neon/reinterpret.h"
 #include "neon/rev16.h"
 #include "neon/rev32.h"
