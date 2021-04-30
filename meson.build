@@ -110,6 +110,7 @@ simde_neon_families = [
   'qtbl',
   'qtbx',
   'rbit',
+  'recpe',
   'reinterpret',
   'rev16',
   'rev32',
