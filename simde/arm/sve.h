@@ -41,6 +41,7 @@
 #include "sve/reinterpret.h"
 #include "sve/sel.h"
 #include "sve/st1.h"
+#include "sve/sub.h"
 #include "sve/whilelt.h"
 
 #endif /* SIMDE_ARM_SVE_H */

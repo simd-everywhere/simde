@@ -166,6 +166,7 @@ simde_sve_families = [
   'qadd',
   'sel',
   'st1',
+  'sub',
   'reinterpret',
   'whilelt'
 ]
