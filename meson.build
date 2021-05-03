@@ -126,6 +126,7 @@ simde_neon_families = [
   'rshl',
   'rshr_n',
   'rsqrte',
+  'rsqrts',
   'rsra_n',
   'set_lane',
   'shl',
