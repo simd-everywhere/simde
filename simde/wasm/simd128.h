@@ -6562,7 +6562,18 @@ simde_wasm_f32x4_convert_i32x4 (simde_v128_t a) {
       a_ = simde_v128_to_private(a),
       r_;
 
-    #if defined(SIMDE_CONVERT_VECTOR_)
+    #if defined(SIMDE_X86_SSE2_NATIVE)
+      r_.sse_m128 = _mm_cvtepi32_ps(a_.sse_m128i);
+    #elif defined(SIMDE_ARM_NEON_A32V7)
+      r_.neon_f32 = vcvtq_f32_s32(a_.neon_i32);
+    #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+      HEDLEY_DIAGNOSTIC_PUSH
+      #if HEDLEY_HAS_WARNING("-Wc11-extensions")
+        #pragma clang diagnostic ignored "-Wc11-extensions"
+      #endif
+      r_.altivec_f32 = vec_ctf(a_.altivec_i32, 0);
+      HEDLEY_DIAGNOSTIC_POP
+    #elif defined(SIMDE_CONVERT_VECTOR_)
       SIMDE_CONVERT_VECTOR_(r_.f32, a_.i32);
     #else
       SIMDE_VECTORIZE
@@ -6614,10 +6625,14 @@ simde_wasm_f64x2_convert_low_i32x4 (simde_v128_t a) {
       a_ = simde_v128_to_private(a),
       r_;
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
-      r_.f64[i] = HEDLEY_STATIC_CAST(simde_float64, a_.i32[i]);
-    }
+    #if HEDLEY_HAS_BUILTIN(__builtin_shufflevector) && HEDLEY_HAS_BUILTIN(__builtin_convertvector)
+      r_.f64 = __builtin_convertvector(__builtin_shufflevector(a_.i32, a_.i32, 0, 1), __typeof__(r_.f64));
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
+        r_.f64[i] = HEDLEY_STATIC_CAST(simde_float64, a_.i32[i]);
+      }
+    #endif
 
     return simde_v128_from_private(r_);
   #endif
@@ -6636,10 +6651,14 @@ simde_wasm_f64x2_convert_low_u32x4 (simde_v128_t a) {
       a_ = simde_v128_to_private(a),
       r_;
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
-      r_.f64[i] = HEDLEY_STATIC_CAST(simde_float64, a_.u32[i]);
-    }
+    #if HEDLEY_HAS_BUILTIN(__builtin_shufflevector) && HEDLEY_HAS_BUILTIN(__builtin_convertvector)
+      r_.f64 = __builtin_convertvector(__builtin_shufflevector(a_.u32, a_.u32, 0, 1), __typeof__(r_.f64));
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
+        r_.f64[i] = HEDLEY_STATIC_CAST(simde_float64, a_.u32[i]);
+      }
+    #endif
 
     return simde_v128_from_private(r_);
   #endif
