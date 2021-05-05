@@ -6420,7 +6420,7 @@ simde_wasm_v128_load8_lane (const void * a, simde_v128_t vec, const int lane)
   return simde_v128_from_private(a_);
 }
 #if defined(SIMDE_WASM_SIMD128_NATIVE)
-  #define simde_wasm_v128_load8_lane(a, vec, lane) wasm_v128_load8_lane(HEDLEY_CONST_CAST(void *, (a)), (vec), (lane))
+  #define simde_wasm_v128_load8_lane(a, vec, lane) wasm_v128_load8_lane(HEDLEY_CONST_CAST(int8_t *, (a)), (vec), (lane))
 #endif
 #if defined(SIMDE_WASM_SIMD128_ENABLE_NATIVE_ALIASES)
   #define wasm_v128_load8_lane(a, vec, lane) simde_wasm_v128_load8_lane((a), (vec), (lane))
@@ -6438,7 +6438,7 @@ simde_wasm_v128_load16_lane (const void * a, simde_v128_t vec, const int lane)
   return simde_v128_from_private(a_);
 }
 #if defined(SIMDE_WASM_SIMD128_NATIVE)
-  #define simde_wasm_v128_load16_lane(a, vec, lane) wasm_v128_load16_lane(HEDLEY_CONST_CAST(void *, (a)), (vec), (lane))
+  #define simde_wasm_v128_load16_lane(a, vec, lane) wasm_v128_load16_lane(HEDLEY_CONST_CAST(int16_t *, (a)), (vec), (lane))
 #endif
 #if defined(SIMDE_WASM_SIMD128_ENABLE_NATIVE_ALIASES)
   #define wasm_v128_load16_lane(a, vec, lane) simde_wasm_v128_load16_lane((a), (vec), (lane))
@@ -6456,7 +6456,7 @@ simde_wasm_v128_load32_lane (const void * a, simde_v128_t vec, const int lane)
   return simde_v128_from_private(a_);
 }
 #if defined(SIMDE_WASM_SIMD128_NATIVE)
-  #define simde_wasm_v128_load32_lane(a, vec, lane) wasm_v128_load32_lane(HEDLEY_CONST_CAST(void *, (a)), (vec), (lane))
+  #define simde_wasm_v128_load32_lane(a, vec, lane) wasm_v128_load32_lane(HEDLEY_CONST_CAST(int32_t *, (a)), (vec), (lane))
 #endif
 #if defined(SIMDE_WASM_SIMD128_ENABLE_NATIVE_ALIASES)
   #define wasm_v128_load32_lane(a, vec, lane) simde_wasm_v128_load32_lane((a), (vec), (lane))
@@ -6474,7 +6474,7 @@ simde_wasm_v128_load64_lane (const void * a, simde_v128_t vec, const int lane)
   return simde_v128_from_private(a_);
 }
 #if defined(SIMDE_WASM_SIMD128_NATIVE)
-  #define simde_wasm_v128_load64_lane(a, vec, lane) wasm_v128_load64_lane(HEDLEY_CONST_CAST(void *, (a)), (vec), (lane))
+  #define simde_wasm_v128_load64_lane(a, vec, lane) wasm_v128_load64_lane(HEDLEY_CONST_CAST(int64_t *, (a)), (vec), (lane))
 #endif
 #if defined(SIMDE_WASM_SIMD128_ENABLE_NATIVE_ALIASES)
   #define wasm_v128_load64_lane(a, vec, lane) simde_wasm_v128_load64_lane((a), (vec), (lane))
