@@ -55,7 +55,7 @@ simde_vrsqrts_f32(simde_float32x2_t a, simde_float32x2_t b) {
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vrsqrts_f32
-  #define vrsqrts_f32(a, b) simde_vrecps_f32((a), (b))
+  #define vrsqrts_f32(a, b) simde_rsqrts_f32((a), (b))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -80,7 +80,7 @@ simde_vrsqrtsq_f32(simde_float32x4_t a, simde_float32x4_t b) {
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vrsqrtsq_f32
-  #define vrsqrtsq_f32(a, b) simde_vrecpsq_f32((a), (b))
+  #define vrsqrtsq_f32(a, b) simde_rsqrtsq_f32((a), (b))
 #endif
 
 SIMDE_END_DECLS_
