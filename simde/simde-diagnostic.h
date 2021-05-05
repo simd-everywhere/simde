@@ -185,10 +185,18 @@
  *
  * This is also used when enabling native aliases since we don't get to
  * choose the macro names. */
-#if HEDLEY_HAS_WARNING("-Wdouble-promotion")
+#if HEDLEY_HAS_WARNING("-Wreserved-id-macro")
   #define SIMDE_DIAGNOSTIC_DISABLE_RESERVED_ID_MACRO_ _Pragma("clang diagnostic ignored \"-Wreserved-id-macro\"")
 #else
   #define SIMDE_DIAGNOSTIC_DISABLE_RESERVED_ID_MACRO_
+#endif
+
+/* Similar to above; types like simde__m128i are reserved due to the
+ * double underscore, but we didn't choose them, Intel did. */
+#if HEDLEY_HAS_WARNING("-Wreserved-identifier")
+  #define SIMDE_DIAGNOSTIC_DISABLE_RESERVED_ID_ _Pragma("clang diagnostic ignored \"-Wreserved-identifier\"")
+#else
+  #define SIMDE_DIAGNOSTIC_DISABLE_RESERVED_ID_
 #endif
 
 /* clang 3.8 warns about the packed attribute being unnecessary when
@@ -428,6 +436,7 @@
   SIMDE_DIAGNOSTIC_DISABLE_CPP11_LONG_LONG_ \
   SIMDE_DIAGNOSTIC_DISABLE_BUGGY_UNUSED_BUT_SET_VARIBALE_ \
   SIMDE_DIAGNOSTIC_DISABLE_BUGGY_CASTS_ \
-  SIMDE_DIAGNOSTIC_DISABLE_BUGGY_VECTOR_CONVERSION_
+  SIMDE_DIAGNOSTIC_DISABLE_BUGGY_VECTOR_CONVERSION_ \
+  SIMDE_DIAGNOSTIC_DISABLE_RESERVED_ID_
 
 #endif /* !defined(SIMDE_DIAGNOSTIC_H) */
