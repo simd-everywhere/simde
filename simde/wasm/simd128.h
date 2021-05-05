@@ -5726,8 +5726,12 @@ simde_wasm_f64x2_promote_low_f32x4 (simde_v128_t a) {
       a_ = simde_v128_to_private(a),
       r_;
 
-    r_.f64[0] = HEDLEY_STATIC_CAST(simde_float64, a_.f32[0]);
-    r_.f64[1] = HEDLEY_STATIC_CAST(simde_float64, a_.f32[1]);
+    #if HEDLEY_HAS_BUILTIN(__builtin_shufflevector) && HEDLEY_HAS_BUILTIN(__builtin_convertvector)
+      r_.f64 = __builtin_convertvector(__builtin_shufflevector(a_.f32, a_.f32, 0, 1), __typeof__(r_.f64));
+    #else
+      r_.f64[0] = HEDLEY_STATIC_CAST(simde_float64, a_.f32[0]);
+      r_.f64[1] = HEDLEY_STATIC_CAST(simde_float64, a_.f32[1]);
+    #endif
 
     return simde_v128_from_private(r_);
   #endif
