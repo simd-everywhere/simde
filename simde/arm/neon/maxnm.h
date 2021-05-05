@@ -47,7 +47,7 @@ simde_vmaxnm_f32(simde_float32x2_t a, simde_float32x2_t b) {
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
       #if defined(simde_math_fmaxf)
-        r_.values[i] = fmaxf(a_.values[i], b_.values[i]);
+        r_.values[i] = simde_math_fmaxf(a_.values[i], b_.values[i]);
       #else
         if (a_.values[i] > b_.values[i]) {
           r_.values[i] = a_.values[i];
@@ -83,7 +83,7 @@ simde_vmaxnm_f64(simde_float64x1_t a, simde_float64x1_t b) {
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
       #if defined(simde_math_fmax)
-        r_.values[i] = fmax(a_.values[i], b_.values[i]);
+        r_.values[i] = simde_math_fmax(a_.values[i], b_.values[i]);
       #else
         if (a_.values[i] > b_.values[i]) {
           r_.values[i] = a_.values[i];
@@ -135,7 +135,7 @@ simde_vmaxnmq_f32(simde_float32x4_t a, simde_float32x4_t b) {
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
       #if defined(simde_math_fmaxf)
-        r_.values[i] = fmaxf(a_.values[i], b_.values[i]);
+        r_.values[i] = simde_math_fmaxf(a_.values[i], b_.values[i]);
       #else
         if (a_.values[i] > b_.values[i]) {
           r_.values[i] = a_.values[i];
@@ -187,7 +187,7 @@ simde_vmaxnmq_f64(simde_float64x2_t a, simde_float64x2_t b) {
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
       #if defined(simde_math_fmax)
-        r_.values[i] = fmax(a_.values[i], b_.values[i]);
+        r_.values[i] = simde_math_fmax(a_.values[i], b_.values[i]);
       #else
         if (a_.values[i] > b_.values[i]) {
           r_.values[i] = a_.values[i];

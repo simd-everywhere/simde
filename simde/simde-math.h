@@ -794,21 +794,21 @@ SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 
 #if !defined(simde_math_fmax)
   #if SIMDE_MATH_BUILTIN_LIBM(fmax)
-    #define simde_math_fmax(x, y, z) __builtin_fmax(x, y, z)
+    #define simde_math_fmax(x, y) __builtin_fmax(x, y)
   #elif defined(SIMDE_MATH_HAVE_CMATH)
-    #define simde_math_fmax(x, y, z) std::fmax(x, y, z)
+    #define simde_math_fmax(x, y) std::fmax(x, y)
   #elif defined(SIMDE_MATH_HAVE_MATH_H)
-    #define simde_math_fmax(x, y, z) fmax(x, y, z)
+    #define simde_math_fmax(x, y) fmax(x, y)
   #endif
 #endif
 
 #if !defined(simde_math_fmaxf)
   #if SIMDE_MATH_BUILTIN_LIBM(fmaxf)
-    #define simde_math_fmaxf(x, y, z) __builtin_fmaxf(x, y, z)
+    #define simde_math_fmaxf(x, y) __builtin_fmaxf(x, y)
   #elif defined(SIMDE_MATH_HAVE_CMATH)
-    #define simde_math_fmaxf(x, y, z) std::fmax(x, y, z)
+    #define simde_math_fmaxf(x, y) std::fmax(x, y)
   #elif defined(SIMDE_MATH_HAVE_MATH_H)
-    #define simde_math_fmaxf(x, y, z) fmaxf(x, y, z)
+    #define simde_math_fmaxf(x, y) fmaxf(x, y)
   #endif
 #endif
 
