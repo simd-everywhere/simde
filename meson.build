@@ -53,6 +53,7 @@ simde_neon_families = [
   'eor',
   'ext',
   'fma',
+  'fma_n',
   'get_high',
   'get_lane',
   'get_low',
