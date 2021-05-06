@@ -380,7 +380,7 @@ simde_vshl_u64 (const simde_uint64x1_t a, const simde_int64x1_t b) {
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
       b_.values[i] = HEDLEY_STATIC_CAST(int8_t, b_.values[i]);
       r_.values[i] =
-        (llabs(b_.values[i]) >= 64) ? 0 :
+        (simde_math_llabs(b_.values[i]) >= 64) ? 0 :
               (b_.values[i]  >=  0) ? (a_.values[i] <<  b_.values[i]) :
                                       (a_.values[i] >> -b_.values[i]);
     }
@@ -786,7 +786,7 @@ simde_vshlq_u64 (const simde_uint64x2_t a, const simde_int64x2_t b) {
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
       b_.values[i] = HEDLEY_STATIC_CAST(int8_t, b_.values[i]);
-      r_.values[i] = (llabs(b_.values[i]) >= 64) ? 0 :
+      r_.values[i] = (simde_math_llabs(b_.values[i]) >= 64) ? 0 :
                            (b_.values[i]  >=  0) ? (a_.values[i] <<  b_.values[i]) :
                                                    (a_.values[i] >> -b_.values[i]);
       }

@@ -48,7 +48,7 @@ simde_vqdmullh_s16(int16_t a, int16_t b) {
     return vqdmullh_s16(a, b);
   #else
     int32_t mul = (HEDLEY_STATIC_CAST(int32_t, a) * HEDLEY_STATIC_CAST(int32_t, b));
-    return (labs(mul) & (1 << 30)) ? ((mul < 0) ? INT32_MIN : INT32_MAX) : mul << 1;
+    return (simde_math_labs(mul) & (1 << 30)) ? ((mul < 0) ? INT32_MIN : INT32_MAX) : mul << 1;
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
