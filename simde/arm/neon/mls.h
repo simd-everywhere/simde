@@ -151,6 +151,8 @@ simde_float32x4_t
 simde_vmlsq_f32(simde_float32x4_t a, simde_float32x4_t b, simde_float32x4_t c) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vmlsq_f32(a, b, c);
+  #elif defined(SIMDE_X86_FMA_NATIVE)
+    return _mm_fnmadd_ps(b, c, a);
   #else
     return simde_vsubq_f32(a, simde_vmulq_f32(b, c));
   #endif
@@ -165,6 +167,8 @@ simde_float64x2_t
 simde_vmlsq_f64(simde_float64x2_t a, simde_float64x2_t b, simde_float64x2_t c) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vmlsq_f64(a, b, c);
+  #elif defined(SIMDE_X86_FMA_NATIVE)
+    return _mm_fnmadd_pd(b, c, a);
   #else
     return simde_vsubq_f64(a, simde_vmulq_f64(b, c));
   #endif
