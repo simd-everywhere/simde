@@ -58,10 +58,35 @@ simde_vfma_f32(simde_float32x2_t a, simde_float32x2_t b, simde_float32x2_t c) {
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
+simde_float64x1_t
+simde_vfma_f64(simde_float64x1_t a, simde_float64x1_t b, simde_float64x1_t c) {
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && (defined(__ARM_FEATURE_FMA) && __ARM_FEATURE_FMA)
+    return vfma_f64(a, b, c);
+  #else
+    simde_float64x1_private
+      a_ = simde_float64x1_to_private(a),
+      b_ = simde_float64x1_to_private(b),
+      c_ = simde_float64x1_to_private(c);
+
+    a_.values[0] += b_.values[0] * c_.values[0];
+
+    return simde_float64x1_from_private(a_);
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+  #undef vfma_f64
+  #define vfma_f64(a, b, c) simde_vfma_f64(a, b, c)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
 simde_float32x4_t
 simde_vfmaq_f32(simde_float32x4_t a, simde_float32x4_t b, simde_float32x4_t c) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && (defined(__ARM_FEATURE_FMA) && __ARM_FEATURE_FMA)
     return vfmaq_f32(a, b, c);
+  #elif defined(SIMDE_X86_FMA_NATIVE)
+    return _mm_fmadd_ps(b, c, a);
+  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+    return vec_madd(b, c, a);
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_f32x4_add(a, wasm_f32x4_mul(b, c));
   #else
@@ -84,27 +109,6 @@ simde_vfmaq_f32(simde_float32x4_t a, simde_float32x4_t b, simde_float32x4_t c) {
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
-simde_float64x1_t
-simde_vfma_f64(simde_float64x1_t a, simde_float64x1_t b, simde_float64x1_t c) {
-  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && (defined(__ARM_FEATURE_FMA) && __ARM_FEATURE_FMA)
-    return vfma_f64(a, b, c);
-  #else
-    simde_float64x1_private
-      a_ = simde_float64x1_to_private(a),
-      b_ = simde_float64x1_to_private(b),
-      c_ = simde_float64x1_to_private(c);
-
-    a_.values[0] += b_.values[0] * c_.values[0];
-
-    return simde_float64x1_from_private(a_);
-  #endif
-}
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
-  #undef vfma_f64
-  #define vfma_f64(a, b, c) simde_vfma_f64(a, b, c)
-#endif
-
-SIMDE_FUNCTION_ATTRIBUTES
 simde_float64x2_t
 simde_vfmaq_f64(simde_float64x2_t a, simde_float64x2_t b, simde_float64x2_t c) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && (defined(__ARM_FEATURE_FMA) && __ARM_FEATURE_FMA)
@@ -113,6 +117,8 @@ simde_vfmaq_f64(simde_float64x2_t a, simde_float64x2_t b, simde_float64x2_t c) {
     return _mm_fmadd_pd(b, c, a);
   #elif defined(SIMDE_X86_SSE2_NATIVE)
     return _mm_add_pd(a, _mm_mul_pd(b, c));
+  #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
+    return vec_madd(b, c, a);
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_f64x2_add(a, wasm_f64x2_mul(b, c));
   #else
