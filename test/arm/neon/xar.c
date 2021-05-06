@@ -60,7 +60,7 @@ test_simde_vxarq_u64 (SIMDE_MUNIT_TEST_ARGS) {
   for (int i = 0 ; i < 8 ; i++) {
     simde_uint64x2_t a = simde_test_arm_neon_random_u64x2();
     simde_uint64x2_t b = simde_test_arm_neon_random_u64x2();
-    const int d = abs(simde_test_codegen_random_i32() % 64);
+    const int d = simde_math_abs(simde_test_codegen_random_i32() % 64);
     simde_uint64x2_t r;
     SIMDE_CONSTIFY_64_(simde_vxarq_u64, r, (HEDLEY_UNREACHABLE(), r), d, a, b);
 

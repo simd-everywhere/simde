@@ -107,7 +107,7 @@ simde_vrshl_s8 (const simde_int8x8_t a, const simde_int8x8_t b) {
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
       r_.values[i] = HEDLEY_STATIC_CAST(int8_t,
-                                        (abs(b_.values[i]) >= 8) ? 0 :
+                                        (simde_math_abs(b_.values[i]) >= 8) ? 0 :
                                         (b_.values[i] >= 0) ? (a_.values[i] << b_.values[i]) :
                                         ((a_.values[i] + (1 << (-b_.values[i] - 1))) >> -b_.values[i]));
    }
@@ -146,7 +146,7 @@ simde_vrshl_s16 (const simde_int16x4_t a, const simde_int16x4_t b) {
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
       b_.values[i] = HEDLEY_STATIC_CAST(int8_t, b_.values[i]);
       r_.values[i] = HEDLEY_STATIC_CAST(int16_t,
-                                        (abs(b_.values[i]) >= 16) ? 0 :
+                                        (simde_math_abs(b_.values[i]) >= 16) ? 0 :
                                         (b_.values[i] >= 0) ? (a_.values[i] << b_.values[i]) :
                                         ((a_.values[i] + (1 << (-b_.values[i] - 1))) >> -b_.values[i]));
     }
@@ -185,7 +185,7 @@ simde_vrshl_s32 (const simde_int32x2_t a, const simde_int32x2_t b) {
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
       b_.values[i] = HEDLEY_STATIC_CAST(int8_t, b_.values[i]);
       r_.values[i] = HEDLEY_STATIC_CAST(int32_t,
-                                        (abs(b_.values[i]) >= 32) ? 0 :
+                                        (simde_math_abs(b_.values[i]) >= 32) ? 0 :
                                         (b_.values[i] >= 0) ? (a_.values[i] << b_.values[i]) :
                                         ((a_.values[i] + (1 << (-b_.values[i] - 1))) >> -b_.values[i]));
     }
@@ -236,7 +236,7 @@ simde_vrshl_s64 (const simde_int64x1_t a, const simde_int64x1_t b) {
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
       b_.values[i] = HEDLEY_STATIC_CAST(int8_t, b_.values[i]);
       r_.values[i] = HEDLEY_STATIC_CAST(int64_t,
-                                        (llabs(b_.values[i]) >= 64) ? 0 :
+                                        (simde_math_llabs(b_.values[i]) >= 64) ? 0 :
                                         (b_.values[i] >= 0) ? (a_.values[i] << b_.values[i]) :
                                         ((a_.values[i] + (INT64_C(1) << (-b_.values[i] - 1))) >> -b_.values[i]));
     }
@@ -465,7 +465,7 @@ simde_vrshlq_s8 (const simde_int8x16_t a, const simde_int8x16_t b) {
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
       r_.values[i] = HEDLEY_STATIC_CAST(int8_t,
-                                        (abs(b_.values[i]) >= 8) ? 0 :
+                                        (simde_math_abs(b_.values[i]) >= 8) ? 0 :
                                         (b_.values[i] >= 0) ? (a_.values[i] << b_.values[i]) :
                                         ((a_.values[i] + (1 << (-b_.values[i] - 1))) >> -b_.values[i]));
     }
@@ -530,7 +530,7 @@ simde_vrshlq_s16 (const simde_int16x8_t a, const simde_int16x8_t b) {
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
       b_.values[i] = HEDLEY_STATIC_CAST(int8_t, b_.values[i]);
       r_.values[i] = HEDLEY_STATIC_CAST(int16_t,
-                                        (abs(b_.values[i]) >= 16) ? 0 :
+                                        (simde_math_abs(b_.values[i]) >= 16) ? 0 :
                                         (b_.values[i] >= 0) ? (a_.values[i] << b_.values[i]) :
                                         ((a_.values[i] + (1 << (-b_.values[i] - 1))) >> -b_.values[i]));
     }
@@ -583,7 +583,7 @@ simde_vrshlq_s32 (const simde_int32x4_t a, const simde_int32x4_t b) {
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
       b_.values[i] = HEDLEY_STATIC_CAST(int8_t, b_.values[i]);
       r_.values[i] = HEDLEY_STATIC_CAST(int32_t,
-                                        (abs(b_.values[i]) >= 32) ? 0 :
+                                        (simde_math_abs(b_.values[i]) >= 32) ? 0 :
                                         (b_.values[i] >=  0) ? (a_.values[i] << b_.values[i]) :
                                         ((a_.values[i] + (1 << (-b_.values[i] - 1))) >> -b_.values[i]));
     }
@@ -651,7 +651,7 @@ simde_vrshlq_s64 (const simde_int64x2_t a, const simde_int64x2_t b) {
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
       b_.values[i] = HEDLEY_STATIC_CAST(int8_t, b_.values[i]);
       r_.values[i] = HEDLEY_STATIC_CAST(int64_t,
-                                        (llabs(b_.values[i]) >= 64) ? 0 :
+                                        (simde_math_llabs(b_.values[i]) >= 64) ? 0 :
                                         (b_.values[i] >=  0) ? (a_.values[i] << b_.values[i]) :
                                         ((a_.values[i] + (INT64_C(1) << (-b_.values[i] - 1))) >> -b_.values[i]));
     }

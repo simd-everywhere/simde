@@ -364,6 +364,26 @@ SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
   #endif
 #endif
 
+#if !defined(simde_math_labs)
+  #if SIMDE_MATH_BUILTIN_LIBM(labs)
+    #define simde_math_labs(v) __builtin_labs(v)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_labs(v) std::labs(v)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_labs(v) labs(v)
+  #endif
+#endif
+
+#if !defined(simde_math_llabs)
+  #if SIMDE_MATH_BUILTIN_LIBM(llabs)
+    #define simde_math_llabs(v) __builtin_llabs(v)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_llabs(v) std::llabs(v)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_llabs(v) llabs(v)
+  #endif
+#endif
+
 #if !defined(simde_math_fabsf)
   #if SIMDE_MATH_BUILTIN_LIBM(fabsf)
     #define simde_math_fabsf(v) __builtin_fabsf(v)
