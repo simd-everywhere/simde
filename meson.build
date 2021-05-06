@@ -137,6 +137,7 @@ simde_neon_families = [
   'sra_n',
   'st1',
   'st1_lane',
+  'st2',
   'st3',
   'st4',
   'sub',
