@@ -57,9 +57,15 @@ simde_mm512_unpacklo_epi8 (simde__m512i a, simde__m512i b) {
                                     36, 100, 37, 101, 38, 102, 39, 103,
                                     48, 112, 49, 113, 50, 114, 51, 115,
                                     52, 116, 53, 117, 54, 118, 55, 119);
-    #else
+    #elif SIMDE_NATURAL_VECTOR_SIZE_LE(256)
       r_.m256i[0] = simde_mm256_unpacklo_epi8(a_.m256i[0], b_.m256i[0]);
       r_.m256i[1] = simde_mm256_unpacklo_epi8(a_.m256i[1], b_.m256i[1]);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.i8) / sizeof(r_.i8[0]) / 2) ; i++) {
+        r_.i8[2 * i] = a_.i8[i + ~(~i | 7)];
+        r_.i8[2 * i + 1] = b_.i8[i + ~(~i | 7)];
+      }
     #endif
 
     return simde__m512i_from_private(r_);
@@ -85,9 +91,15 @@ simde_mm512_unpacklo_epi16 (simde__m512i a, simde__m512i b) {
       r_.i16 = SIMDE_SHUFFLE_VECTOR_(16, 64, a_.i16, b_.i16,
                                     0,  32,  1, 33,  2, 34,  3, 35,  8, 40,  9, 41, 10, 42, 11, 43,
                                     16, 48, 17, 49, 18, 50, 19, 51, 24, 56, 25, 57, 26, 58, 27, 59);
-    #else
+    #elif SIMDE_NATURAL_VECTOR_SIZE_LE(256)
       r_.m256i[0] = simde_mm256_unpacklo_epi16(a_.m256i[0], b_.m256i[0]);
       r_.m256i[1] = simde_mm256_unpacklo_epi16(a_.m256i[1], b_.m256i[1]);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.i16) / sizeof(r_.i16[0]) / 2) ; i++) {
+        r_.i16[2 * i] = a_.i16[i + ~(~i | 3)];
+        r_.i16[2 * i + 1] = b_.i16[i + ~(~i | 3)];
+      }
     #endif
 
     return simde__m512i_from_private(r_);
@@ -113,9 +125,15 @@ simde_mm512_unpacklo_epi32 (simde__m512i a, simde__m512i b) {
       r_.i32 = SIMDE_SHUFFLE_VECTOR_(32, 64, a_.i32, b_.i32,
                                     0, 16, 1, 17, 4, 20, 5, 21,
                                     8, 24, 9, 25, 12, 28, 13, 29);
-    #else
+    #elif SIMDE_NATURAL_VECTOR_SIZE_LE(256)
       r_.m256i[0] = simde_mm256_unpacklo_epi32(a_.m256i[0], b_.m256i[0]);
       r_.m256i[1] = simde_mm256_unpacklo_epi32(a_.m256i[1], b_.m256i[1]);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0]) / 2) ; i++) {
+        r_.i32[2 * i] = a_.i32[i + ~(~i | 1)];
+        r_.i32[2 * i + 1] = b_.i32[i + ~(~i | 1)];
+      }
     #endif
 
     return simde__m512i_from_private(r_);
@@ -139,9 +157,15 @@ simde_mm512_unpacklo_epi64 (simde__m512i a, simde__m512i b) {
 
     #if defined(SIMDE_SHUFFLE_VECTOR_)
       r_.i64 = SIMDE_SHUFFLE_VECTOR_(64, 64, a_.i64, b_.i64, 0, 8, 2, 10, 4, 12, 6, 14);
-    #else
+    #elif SIMDE_NATURAL_VECTOR_SIZE_LE(256)
       r_.m256i[0] = simde_mm256_unpacklo_epi64(a_.m256i[0], b_.m256i[0]);
       r_.m256i[1] = simde_mm256_unpacklo_epi64(a_.m256i[1], b_.m256i[1]);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.i64) / sizeof(r_.i64[0]) / 2) ; i++) {
+        r_.i64[2 * i] = a_.i64[2 * i];
+        r_.i64[2 * i + 1] = b_.i64[2 * i];
+      }
     #endif
 
     return simde__m512i_from_private(r_);
@@ -167,9 +191,15 @@ simde_mm512_unpacklo_ps (simde__m512 a, simde__m512 b) {
       r_.f32 = SIMDE_SHUFFLE_VECTOR_(32, 64, a_.f32, b_.f32,
                                     0, 16, 1, 17, 4, 20, 5, 21,
                                     8, 24, 9, 25, 12, 28, 13, 29);
-    #else
+    #elif SIMDE_NATURAL_VECTOR_SIZE_LE(256)
       r_.m256[0] = simde_mm256_unpacklo_ps(a_.m256[0], b_.m256[0]);
       r_.m256[1] = simde_mm256_unpacklo_ps(a_.m256[1], b_.m256[1]);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0]) / 2) ; i++) {
+        r_.f32[2 * i] = a_.f32[i + ~(~i | 1)];
+        r_.f32[2 * i + 1] = b_.f32[i + ~(~i | 1)];
+      }
     #endif
 
     return simde__m512_from_private(r_);
@@ -193,9 +223,15 @@ simde_mm512_unpacklo_pd (simde__m512d a, simde__m512d b) {
 
     #if defined(SIMDE_SHUFFLE_VECTOR_)
       r_.f64 = SIMDE_SHUFFLE_VECTOR_(64, 64, a_.f64, b_.f64, 0, 8, 2, 10, 4, 12, 6, 14);
-    #else
+    #elif SIMDE_NATURAL_VECTOR_SIZE_LE(256)
       r_.m256d[0] = simde_mm256_unpacklo_pd(a_.m256d[0], b_.m256d[0]);
       r_.m256d[1] = simde_mm256_unpacklo_pd(a_.m256d[1], b_.m256d[1]);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0]) / 2) ; i++) {
+        r_.f64[2 * i] = a_.f64[2 * i];
+        r_.f64[2 * i + 1] = b_.f64[2 * i];
+      }
     #endif
 
     return simde__m512d_from_private(r_);
