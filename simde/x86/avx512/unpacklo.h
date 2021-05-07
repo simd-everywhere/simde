@@ -82,7 +82,7 @@ simde_mm512_unpacklo_epi16 (simde__m512i a, simde__m512i b) {
       b_ = simde__m512i_to_private(b);
 
     #if defined(SIMDE_SHUFFLE_VECTOR_)
-      r_.i16 =SIMDE_SHUFFLE_VECTOR_(16, 64, a_.i16, b_.i16,
+      r_.i16 = SIMDE_SHUFFLE_VECTOR_(16, 64, a_.i16, b_.i16,
                                     0,  32,  1, 33,  2, 34,  3, 35,  8, 40,  9, 41, 10, 42, 11, 43,
                                     16, 48, 17, 49, 18, 50, 19, 51, 24, 56, 25, 57, 26, 58, 27, 59);
     #else
@@ -96,6 +96,114 @@ simde_mm512_unpacklo_epi16 (simde__m512i a, simde__m512i b) {
 #if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
   #undef _mm512_unpacklo_epi16
   #define _mm512_unpacklo_epi16(a, b) simde_mm512_unpacklo_epi16(a, b)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512i
+simde_mm512_unpacklo_epi32 (simde__m512i a, simde__m512i b) {
+  #if defined(SIMDE_X86_AVX512BW_NATIVE)
+    return _mm512_unpacklo_epi32(a, b);
+  #else
+    simde__m512i_private
+      r_,
+      a_ = simde__m512i_to_private(a),
+      b_ = simde__m512i_to_private(b);
+
+    #if defined(SIMDE_SHUFFLE_VECTOR_)
+      r_.i32 = SIMDE_SHUFFLE_VECTOR_(32, 64, a_.i32, b_.i32,
+                                    0, 16, 1, 17, 4, 20, 5, 21,
+                                    8, 24, 9, 25, 12, 28, 13, 29);
+    #else
+      r_.m256i[0] = simde_mm256_unpacklo_epi32(a_.m256i[0], b_.m256i[0]);
+      r_.m256i[1] = simde_mm256_unpacklo_epi32(a_.m256i[1], b_.m256i[1]);
+    #endif
+
+    return simde__m512i_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_unpacklo_epi32
+  #define _mm512_unpacklo_epi32(a, b) simde_mm512_unpacklo_epi32(a, b)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512i
+simde_mm512_unpacklo_epi64 (simde__m512i a, simde__m512i b) {
+  #if defined(SIMDE_X86_AVX512BW_NATIVE)
+    return _mm512_unpacklo_epi64(a, b);
+  #else
+    simde__m512i_private
+      r_,
+      a_ = simde__m512i_to_private(a),
+      b_ = simde__m512i_to_private(b);
+
+    #if defined(SIMDE_SHUFFLE_VECTOR_)
+      r_.i64 = SIMDE_SHUFFLE_VECTOR_(64, 64, a_.i64, b_.i64, 0, 8, 2, 10, 4, 12, 6, 14);
+    #else
+      r_.m256i[0] = simde_mm256_unpacklo_epi64(a_.m256i[0], b_.m256i[0]);
+      r_.m256i[1] = simde_mm256_unpacklo_epi64(a_.m256i[1], b_.m256i[1]);
+    #endif
+
+    return simde__m512i_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_unpacklo_epi64
+  #define _mm512_unpacklo_epi64(a, b) simde_mm512_unpacklo_epi64(a, b)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512
+simde_mm512_unpacklo_ps (simde__m512 a, simde__m512 b) {
+  #if defined(SIMDE_X86_AVX512BW_NATIVE)
+    return _mm512_unpacklo_ps(a, b);
+  #else
+    simde__m512_private
+      r_,
+      a_ = simde__m512_to_private(a),
+      b_ = simde__m512_to_private(b);
+
+    #if defined(SIMDE_SHUFFLE_VECTOR_)
+      r_.f32 = SIMDE_SHUFFLE_VECTOR_(32, 64, a_.f32, b_.f32,
+                                    0, 16, 1, 17, 4, 20, 5, 21,
+                                    8, 24, 9, 25, 12, 28, 13, 29);
+    #else
+      r_.m256[0] = simde_mm256_unpacklo_ps(a_.m256[0], b_.m256[0]);
+      r_.m256[1] = simde_mm256_unpacklo_ps(a_.m256[1], b_.m256[1]);
+    #endif
+
+    return simde__m512_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_unpacklo_ps
+  #define _mm512_unpacklo_ps(a, b) simde_mm512_unpacklo_ps(a, b)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512d
+simde_mm512_unpacklo_pd (simde__m512d a, simde__m512d b) {
+  #if defined(SIMDE_X86_AVX512BW_NATIVE)
+    return _mm512_unpacklo_pd(a, b);
+  #else
+    simde__m512d_private
+      r_,
+      a_ = simde__m512d_to_private(a),
+      b_ = simde__m512d_to_private(b);
+
+    #if defined(SIMDE_SHUFFLE_VECTOR_)
+      r_.f64 = SIMDE_SHUFFLE_VECTOR_(64, 64, a_.f64, b_.f64, 0, 8, 2, 10, 4, 12, 6, 14);
+    #else
+      r_.m256d[0] = simde_mm256_unpacklo_pd(a_.m256d[0], b_.m256d[0]);
+      r_.m256d[1] = simde_mm256_unpacklo_pd(a_.m256d[1], b_.m256d[1]);
+    #endif
+
+    return simde__m512d_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_unpacklo_pd
+  #define _mm512_unpacklo_pd(a, b) simde_mm512_unpacklo_pd(a, b)
 #endif
 
 SIMDE_END_DECLS_
