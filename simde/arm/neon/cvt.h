@@ -184,7 +184,7 @@ simde_vcvt_u32_f32(simde_float32x2_t a) {
 
     #if defined(SIMDE_CONVERT_VECTOR_) && defined(SIMDE_VECTOR_SCALAR)
       SIMDE_CONVERT_VECTOR_(r_.values, a_.values);
-      r_.values &= (a_.values >= SIMDE_FLOAT32_C(0.0));
+      r_.values &= HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), (a_.values >= SIMDE_FLOAT32_C(0.0)));
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -237,7 +237,7 @@ simde_vcvt_u64_f64(simde_float64x1_t a) {
 
     #if defined(SIMDE_CONVERT_VECTOR_) && defined(SIMDE_VECTOR_SCALAR)
       SIMDE_CONVERT_VECTOR_(r_.values, a_.values);
-      r_.values &= (a_.values >= SIMDE_FLOAT64_C(0.0));
+      r_.values &= HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), (a_.values >= SIMDE_FLOAT64_C(0.0)));
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -290,7 +290,7 @@ simde_vcvtq_u32_f32(simde_float32x4_t a) {
 
     #if defined(SIMDE_CONVERT_VECTOR_) && defined(SIMDE_VECTOR_SCALAR)
       SIMDE_CONVERT_VECTOR_(r_.values, a_.values);
-      r_.values &= (a_.values >= SIMDE_FLOAT32_C(0.0));
+      r_.values &= HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), (a_.values >= SIMDE_FLOAT32_C(0.0)));
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -349,7 +349,7 @@ simde_vcvtq_u64_f64(simde_float64x2_t a) {
 
     #if defined(SIMDE_CONVERT_VECTOR_) && defined(SIMDE_VECTOR_SCALAR)
       SIMDE_CONVERT_VECTOR_(r_.values, a_.values);
-      r_.values &= (a_.values >= SIMDE_FLOAT64_C(0.0));
+      r_.values &= HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), (a_.values >= SIMDE_FLOAT64_C(0.0)));
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
