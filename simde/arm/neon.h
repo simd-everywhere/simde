@@ -153,6 +153,7 @@
 #include "neon/shl.h"
 #include "neon/shl_n.h"
 #include "neon/shr_n.h"
+#include "neon/shrn_n.h"
 #include "neon/sqadd.h"
 #include "neon/sra_n.h"
 #include "neon/st1.h"
