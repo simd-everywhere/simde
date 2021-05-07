@@ -42,7 +42,7 @@ simde_vst2_f32(simde_float32_t *ptr, simde_float32x2x2_t val) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     vst2_f32(ptr, val);
   #else
-    simde_float32_t buf[8];
+    simde_float32_t buf[4];
     simde_float32x2_private a_[2] = {simde_float32x2_to_private(val.val[0]),
                                      simde_float32x2_to_private(val.val[1])};
     for (size_t i = 0; i < (sizeof(val.val[0]) / sizeof(*ptr)) * 2 ; i++) {
@@ -62,7 +62,7 @@ simde_vst2_s8(int8_t *ptr, simde_int8x8x2_t val) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     vst2_s8(ptr, val);
   #else
-    int8_t buf[24];
+    int8_t buf[16];
     simde_int8x8_private a_[2] = {simde_int8x8_to_private(val.val[0]),
                                   simde_int8x8_to_private(val.val[1])};
     for (size_t i = 0; i < (sizeof(val.val[0]) / sizeof(*ptr)) * 2 ; i++) {
@@ -82,7 +82,7 @@ simde_vst2_s16(int16_t *ptr, simde_int16x4x2_t val) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     vst2_s16(ptr, val);
   #else
-    int16_t buf[16];
+    int16_t buf[8];
     simde_int16x4_private a_[2] = {simde_int16x4_to_private(val.val[0]),
                                    simde_int16x4_to_private(val.val[1])};
     for (size_t i = 0; i < (sizeof(val.val[0]) / sizeof(*ptr)) * 2 ; i++) {
@@ -102,7 +102,7 @@ simde_vst2_s32(int32_t *ptr, simde_int32x2x2_t val) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     vst2_s32(ptr, val);
   #else
-    int32_t buf[8];
+    int32_t buf[4];
     simde_int32x2_private a_[2] = {simde_int32x2_to_private(val.val[0]),
                                    simde_int32x2_to_private(val.val[1])};
     for (size_t i = 0; i < (sizeof(val.val[0]) / sizeof(*ptr)) * 2 ; i++) {
@@ -122,7 +122,7 @@ simde_vst2_u8(uint8_t *ptr, simde_uint8x8x2_t val) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     vst2_u8(ptr, val);
   #else
-    uint8_t buf[24];
+    uint8_t buf[16];
     simde_uint8x8_private a_[2] = {simde_uint8x8_to_private(val.val[0]),
                                    simde_uint8x8_to_private(val.val[1])};
     for (size_t i = 0; i < (sizeof(val.val[0]) / sizeof(*ptr)) * 2 ; i++) {
@@ -142,7 +142,7 @@ simde_vst2_u16(uint16_t *ptr, simde_uint16x4x2_t val) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     vst2_u16(ptr, val);
   #else
-    uint16_t buf[16];
+    uint16_t buf[8];
     simde_uint16x4_private a_[2] = {simde_uint16x4_to_private(val.val[0]),
                                     simde_uint16x4_to_private(val.val[1])};
     for (size_t i = 0; i < (sizeof(val.val[0]) / sizeof(*ptr)) * 2 ; i++) {
@@ -162,7 +162,7 @@ simde_vst2_u32(uint32_t *ptr, simde_uint32x2x2_t val) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     vst2_u32(ptr, val);
   #else
-    uint32_t buf[8];
+    uint32_t buf[4];
     simde_uint32x2_private a_[2] = {simde_uint32x2_to_private(val.val[0]),
                                     simde_uint32x2_to_private(val.val[1])};
     for (size_t i = 0; i < (sizeof(val.val[0]) / sizeof(*ptr)) * 2 ; i++) {
