@@ -41,10 +41,6 @@ simde_uint8x16_t
 simde_vbcaxq_u8(simde_uint8x16_t a, simde_uint8x16_t b, simde_uint8x16_t c) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(__ARM_FEATURE_SHA3)
     return vbcaxq_u8(a, b, c);
-  #elif defined(SIMDE_X86_SSE2_NATIVE)
-    return _mm_xor_si128(a, _mm_andnot_si128(c,b));
-  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    return wasm_v128_xor(a, wasm_v128_andnot(b,c));
   #else
     return simde_veorq_u8(a, simde_vbicq_u8(b, c));
   #endif
@@ -59,10 +55,6 @@ simde_uint16x8_t
 simde_vbcaxq_u16(simde_uint16x8_t a, simde_uint16x8_t b, simde_uint16x8_t c) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(__ARM_FEATURE_SHA3)
     return vbcaxq_u16(a, b, c);
-  #elif defined(SIMDE_X86_SSE2_NATIVE)
-    return _mm_xor_si128(a, _mm_andnot_si128(c,b));
-  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    return wasm_v128_xor(a, wasm_v128_andnot(b,c));
   #else
     return simde_veorq_u16(a, simde_vbicq_u16(b, c));
   #endif
@@ -77,10 +69,6 @@ simde_uint32x4_t
 simde_vbcaxq_u32(simde_uint32x4_t a, simde_uint32x4_t b, simde_uint32x4_t c) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(__ARM_FEATURE_SHA3)
     return vbcaxq_u32(a, b, c);
-  #elif defined(SIMDE_X86_SSE2_NATIVE)
-    return _mm_xor_si128(a, _mm_andnot_si128(c,b));
-  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    return wasm_v128_xor(a, wasm_v128_andnot(b,c));
   #else
     return simde_veorq_u32(a, simde_vbicq_u32(b, c));
   #endif
@@ -95,10 +83,6 @@ simde_uint64x2_t
 simde_vbcaxq_u64(simde_uint64x2_t a, simde_uint64x2_t b, simde_uint64x2_t c) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(__ARM_FEATURE_SHA3)
     return vbcaxq_u64(a, b, c);
-  #elif defined(SIMDE_X86_SSE2_NATIVE)
-    return _mm_xor_si128(a, _mm_andnot_si128(c,b));
-  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    return wasm_v128_xor(a, wasm_v128_andnot(b,c));
   #else
     return simde_veorq_u64(a, simde_vbicq_u64(b, c));
   #endif
@@ -113,10 +97,6 @@ simde_int8x16_t
 simde_vbcaxq_s8(simde_int8x16_t a, simde_int8x16_t b, simde_int8x16_t c) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(__ARM_FEATURE_SHA3)
     return vbcaxq_s8(a, b, c);
-  #elif defined(SIMDE_X86_SSE2_NATIVE)
-    return _mm_xor_si128(a, _mm_andnot_si128(c,b));
-  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    return wasm_v128_xor(a, wasm_v128_andnot(b,c));
   #else
     return simde_veorq_s8(a, simde_vbicq_s8(b, c));
   #endif
@@ -131,10 +111,6 @@ simde_int16x8_t
 simde_vbcaxq_s16(simde_int16x8_t a, simde_int16x8_t b, simde_int16x8_t c) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(__ARM_FEATURE_SHA3)
     return vbcaxq_s16(a, b, c);
-  #elif defined(SIMDE_X86_SSE2_NATIVE)
-    return _mm_xor_si128(a, _mm_andnot_si128(c,b));
-  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    return wasm_v128_xor(a, wasm_v128_andnot(b,c));
   #else
     return simde_veorq_s16(a,simde_vbicq_s16(b, c));
   #endif
@@ -149,10 +125,6 @@ simde_int32x4_t
 simde_vbcaxq_s32(simde_int32x4_t a, simde_int32x4_t b, simde_int32x4_t c) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(__ARM_FEATURE_SHA3)
     return vbcaxq_s32(a, b, c);
-  #elif defined(SIMDE_X86_SSE2_NATIVE)
-    return _mm_xor_si128(a, _mm_andnot_si128(c,b));
-  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    return wasm_v128_xor(a, wasm_v128_andnot(b,c));
   #else
     return simde_veorq_s32(a, simde_vbicq_s32(b, c));
   #endif
@@ -167,10 +139,6 @@ simde_int64x2_t
 simde_vbcaxq_s64(simde_int64x2_t a, simde_int64x2_t b, simde_int64x2_t c) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(__ARM_FEATURE_SHA3)
     return vbcaxq_s64(a, b, c);
-  #elif defined(SIMDE_X86_SSE2_NATIVE)
-    return _mm_xor_si128(a, _mm_andnot_si128(c,b));
-  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    return wasm_v128_xor(a, wasm_v128_andnot(b,c));
   #else
     return simde_veorq_s64(a, simde_vbicq_s64(b, c));
   #endif

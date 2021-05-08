@@ -96,8 +96,6 @@ simde_float32x4_t
 simde_vrsqrteq_f32(simde_float32x4_t a) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vrsqrteq_f32(a);
-  #elif defined(SIMDE_X86_SSE_NATIVE)
-    return _mm_rsqrt_ps(a);
   #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
     return vec_rsqrte(a);
   #else
@@ -105,7 +103,9 @@ simde_vrsqrteq_f32(simde_float32x4_t a) {
       r_,
       a_ = simde_float32x4_to_private(a);
 
-    #if defined(SIMDE_IEEE754_STORAGE)
+    #if defined(SIMDE_X86_SSE_NATIVE)
+      r_.m128 = _mm_rsqrt_ps(a_.m128);
+    #elif defined(SIMDE_IEEE754_STORAGE)
       /* https://basesandframes.files.wordpress.com/2020/04/even_faster_math_functions_green_2020.pdf
         Pages 100 - 103 */
       SIMDE_VECTORIZE

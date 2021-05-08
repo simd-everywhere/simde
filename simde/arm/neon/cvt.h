@@ -311,15 +311,15 @@ simde_int64x2_t
 simde_vcvtq_s64_f64(simde_float64x2_t a) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vcvtq_s64_f64(a);
-  #elif defined(SIMDE_X86_AVX512VL_NATIVE) && defined(SIMDE_X86_AVX512DQ_NATIVE)
-    return _mm_cvtpd_epi64(_mm_round_pd(a, _MM_FROUND_TO_ZERO));
   #elif defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
     return vec_signed(a);
   #else
     simde_float64x2_private a_ = simde_float64x2_to_private(a);
     simde_int64x2_private r_;
 
-    #if defined(SIMDE_CONVERT_VECTOR_)
+    #if defined(SIMDE_X86_AVX512VL_NATIVE) && defined(SIMDE_X86_AVX512DQ_NATIVE)
+      r_.m128i =  _mm_cvtpd_epi64(_mm_round_pd(a_.m128d, _MM_FROUND_TO_ZERO));
+    #elif defined(SIMDE_CONVERT_VECTOR_)
       SIMDE_CONVERT_VECTOR_(r_.values, a_.values);
     #else
       SIMDE_VECTORIZE
@@ -526,15 +526,15 @@ simde_float64x2_t
 simde_vcvtq_f64_s64(simde_int64x2_t a) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vcvtq_f64_s64(a);
-  #elif defined(SIMDE_X86_AVX512VL_NATIVE) && defined(SIMDE_X86_AVX512DQ_NATIVE)
-    return _mm_cvtepi64_pd(a);
   #elif defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
     return vec_ctd(a, 0);
   #else
     simde_int64x2_private a_ = simde_int64x2_to_private(a);
     simde_float64x2_private r_;
 
-    #if defined(SIMDE_CONVERT_VECTOR_)
+    #if defined(SIMDE_X86_AVX512VL_NATIVE) && defined(SIMDE_X86_AVX512DQ_NATIVE)
+      r_.m128d = _mm_cvtepi64_pd(a_.m128i);
+    #elif defined(SIMDE_CONVERT_VECTOR_)
       SIMDE_CONVERT_VECTOR_(r_.values, a_.values);
     #else
       SIMDE_VECTORIZE

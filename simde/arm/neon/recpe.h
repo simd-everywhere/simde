@@ -78,8 +78,6 @@ simde_float32x4_t
 simde_vrecpeq_f32(simde_float32x4_t a) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vrecpeq_f32(a);
-  #elif defined(SIMDE_X86_SSE_NATIVE)
-    return _mm_rcp_ps(a);
   #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
     return vec_re(a);
   #else
@@ -87,7 +85,9 @@ simde_vrecpeq_f32(simde_float32x4_t a) {
       r_,
       a_ = simde_float32x4_to_private(a);
 
-    #if defined(SIMDE_IEEE754_STORAGE)
+    #if defined(SIMDE_X86_SSE_NATIVE)
+      r_.m128 = _mm_rcp_ps(a_.m128);
+    #elif defined(SIMDE_IEEE754_STORAGE)
       /* https://stackoverflow.com/questions/12227126/division-as-multiply-and-lut-fast-float-division-reciprocal/12228234#12228234 */
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {

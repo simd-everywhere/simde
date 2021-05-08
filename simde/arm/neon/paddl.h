@@ -171,9 +171,17 @@ simde_vpaddlq_s32(simde_int32x4_t a) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vpaddlq_s32(a);
   #elif defined(SIMDE_X86_SSE4_1_NATIVE)
-    __m128i lo = _mm_cvtepi32_epi64(_mm_shuffle_epi32(a, 0xe8));
-    __m128i hi = _mm_cvtepi32_epi64(_mm_shuffle_epi32(a, 0xed));
-    return _mm_add_epi64(lo, hi);
+    simde_int64x2_private r_;
+    simde_int32x4_private
+      a_ = simde_int32x4_to_private(a);
+
+    #if defined(SIMDE_X86_SSE4_1_NATIVE)
+      __m128i lo = _mm_cvtepi32_epi64(_mm_shuffle_epi32(a_.m128i, 0xe8));
+      __m128i hi = _mm_cvtepi32_epi64(_mm_shuffle_epi32(a_.m128i, 0xed));
+      r_.m128i = _mm_add_epi64(lo, hi);
+    #endif
+
+    return simde_int64x2_from_private(r_);
   #else
     simde_int64x2_t lo = simde_vshrq_n_s64(simde_vshlq_n_s64(simde_vreinterpretq_s64_s32(a), 32), 32);
     simde_int64x2_t hi = simde_vshrq_n_s64(simde_vreinterpretq_s64_s32(a), 32);

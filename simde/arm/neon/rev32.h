@@ -40,14 +40,14 @@ simde_int8x8_t
 simde_vrev32_s8(simde_int8x8_t a) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vrev32_s8(a);
-  #elif defined(SIMDE_X86_SSSE3_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
-    return _mm_shuffle_pi8(a, _mm_set_pi8(4, 5, 6, 7, 0, 1, 2, 3));
   #else
     simde_int8x8_private
       r_,
       a_ = simde_int8x8_to_private(a);
 
-    #if defined(SIMDE_SHUFFLE_VECTOR_)
+    #if defined(SIMDE_X86_SSSE3_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
+      r_.m64 = _mm_shuffle_pi8(a_.m64, _mm_set_pi8(4, 5, 6, 7, 0, 1, 2, 3));
+    #elif defined(SIMDE_SHUFFLE_VECTOR_)
       r_.values = SIMDE_SHUFFLE_VECTOR_(8, 8, a_.values, a_.values, 3, 2, 1, 0, 7, 6, 5, 4);
     #else
       SIMDE_VECTORIZE
@@ -69,14 +69,14 @@ simde_int16x4_t
 simde_vrev32_s16(simde_int16x4_t a) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vrev32_s16(a);
-  #elif defined(SIMDE_X86_SSE_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
-    return _mm_shuffle_pi16(a, (2 << 6) | (3 << 4) | (0 << 2) | (1 << 0));
   #else
     simde_int16x4_private
       r_,
       a_ = simde_int16x4_to_private(a);
 
-    #if defined(SIMDE_SHUFFLE_VECTOR_)
+    #if defined(SIMDE_X86_SSE_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
+      r_.m64 = _mm_shuffle_pi16(a_.m64, (2 << 6) | (3 << 4) | (0 << 2) | (1 << 0));
+    #elif defined(SIMDE_SHUFFLE_VECTOR_)
       r_.values = SIMDE_SHUFFLE_VECTOR_(16, 8, a_.values, a_.values, 1, 0, 3, 2);
     #else
       SIMDE_VECTORIZE
@@ -126,25 +126,23 @@ simde_int8x16_t
 simde_vrev32q_s8(simde_int8x16_t a) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vrev32q_s8(a);
-  #elif defined(SIMDE_X86_SSSE3_NATIVE)
-    return _mm_shuffle_epi8(a, _mm_set_epi8(12, 13, 14, 15, 8, 9, 10, 11,
-                                             4,  5,  6,  7, 0, 1,  2,  3));
   #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
     return HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(signed char),
-                                   vec_revb(HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(signed int),
-                                                                    a)));
+                                   vec_revb(HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(signed int), a)));
   #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
     return HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(signed char),
-                                   vec_reve(HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(signed int),
-                                                                    vec_reve(a))));
-  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    return wasm_i8x16_shuffle(a, a, 3, 2, 1, 0, 7, 6, 5, 4, 11, 10, 9, 8, 15, 14, 13, 12);
+                                   vec_reve(HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(signed int), vec_reve(a))));
   #else
     simde_int8x16_private
       r_,
       a_ = simde_int8x16_to_private(a);
 
-    #if defined(SIMDE_SHUFFLE_VECTOR_)
+    #if defined(SIMDE_X86_SSSE3_NATIVE)
+      r_.m128i = _mm_shuffle_epi8(a_.m128i, _mm_set_epi8(12, 13, 14, 15, 8, 9, 10, 11,
+                                                          4,  5,  6,  7, 0, 1,  2,  3));
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+      return wasm_i8x16_shuffle(a_.v128, a_.v128, 3, 2, 1, 0, 7, 6, 5, 4, 11, 10, 9, 8, 15, 14, 13, 12);
+    #elif defined(SIMDE_SHUFFLE_VECTOR_)
       r_.values = SIMDE_SHUFFLE_VECTOR_(8, 16, a_.values, a_.values, 3, 2, 1, 0, 7, 6, 5, 4, 11, 10, 9, 8, 15, 14, 13, 12);
     #else
       SIMDE_VECTORIZE
@@ -166,25 +164,24 @@ simde_int16x8_t
 simde_vrev32q_s16(simde_int16x8_t a) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vrev32q_s16(a);
-  #elif defined(SIMDE_X86_SSSE3_NATIVE)
-    return _mm_shuffle_epi8(a, _mm_set_epi8(13, 12, 15, 14, 9, 8, 11, 10,
-                                             5,  4,  7,  6, 1, 0,  3,  2));
-  #elif defined(SIMDE_X86_SSE2_NATIVE)
-    return _mm_shufflehi_epi16(_mm_shufflelo_epi16(a,
-                               (2 << 6) | (3 << 4) | (0 << 2) | (1 << 0)),
-                               (2 << 6) | (3 << 4) | (0 << 2) | (1 << 0));
   #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
     return HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(signed short),
-                                   vec_reve(HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(signed int),
-                                                                    vec_reve(a))));
-  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    return wasm_i8x16_shuffle(a, a, 2, 3, 0, 1, 6, 7, 4, 5, 10, 11, 8, 9, 14, 15, 12, 13);
+                                   vec_reve(HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(signed int), vec_reve(a))));
   #else
     simde_int16x8_private
       r_,
       a_ = simde_int16x8_to_private(a);
 
-    #if defined(SIMDE_SHUFFLE_VECTOR_)
+    #if defined(SIMDE_X86_SSSE3_NATIVE)
+      r_.m128i = _mm_shuffle_epi8(a_.m128i, _mm_set_epi8(13, 12, 15, 14, 9, 8, 11, 10,
+                                                          5,  4,  7,  6, 1, 0,  3,  2));
+    #elif defined(SIMDE_X86_SSE2_NATIVE)
+      r_.m128i = _mm_shufflehi_epi16(_mm_shufflelo_epi16(a_.m128i,
+                                     (2 << 6) | (3 << 4) | (0 << 2) | (1 << 0)),
+                                     (2 << 6) | (3 << 4) | (0 << 2) | (1 << 0));
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+      r_.v128 = wasm_i8x16_shuffle(a_.v128, a_.v128, 2, 3, 0, 1, 6, 7, 4, 5, 10, 11, 8, 9, 14, 15, 12, 13);
+    #elif defined(SIMDE_SHUFFLE_VECTOR_)
       r_.values = SIMDE_SHUFFLE_VECTOR_(16, 16, a_.values, a_.values, 1, 0, 3, 2, 5, 4, 7, 6);
     #else
       SIMDE_VECTORIZE

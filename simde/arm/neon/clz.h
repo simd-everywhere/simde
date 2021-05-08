@@ -281,19 +281,21 @@ simde_int8x16_t
 simde_vclzq_s8(simde_int8x16_t a) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vclzq_s8(a);
-  #elif defined(SIMDE_X86_GFNI_NATIVE)
-    /* https://gist.github.com/animetosho/6cb732ccb5ecd86675ca0a442b3c0622 */
-    a = _mm_gf2p8affine_epi64_epi8(a, _mm_set_epi32(HEDLEY_STATIC_CAST(int32_t, 0x80402010), HEDLEY_STATIC_CAST(int32_t, 0x08040201), HEDLEY_STATIC_CAST(int32_t, 0x80402010), HEDLEY_STATIC_CAST(int32_t, 0x08040201)), 0);
-    a = _mm_andnot_si128(_mm_add_epi8(a, _mm_set1_epi8(HEDLEY_STATIC_CAST(int8_t, 0xff))), a);
-    return _mm_gf2p8affine_epi64_epi8(a, _mm_set_epi32(HEDLEY_STATIC_CAST(int32_t, 0xaaccf0ff), 0, HEDLEY_STATIC_CAST(int32_t, 0xaaccf0ff), 0), 8);
   #else
     simde_int8x16_private
       a_ = simde_int8x16_to_private(a),
       r_;
 
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = simde_x_vclzb_s8(a_.values[i]);
-    }
+    #if defined(SIMDE_X86_GFNI_NATIVE)
+      /* https://gist.github.com/animetosho/6cb732ccb5ecd86675ca0a442b3c0622 */
+      a_.m128i = _mm_gf2p8affine_epi64_epi8(a_.m128i, _mm_set_epi32(HEDLEY_STATIC_CAST(int32_t, 0x80402010), HEDLEY_STATIC_CAST(int32_t, 0x08040201), HEDLEY_STATIC_CAST(int32_t, 0x80402010), HEDLEY_STATIC_CAST(int32_t, 0x08040201)), 0);
+      a_.m128i = _mm_andnot_si128(_mm_add_epi8(a_.m128i, _mm_set1_epi8(HEDLEY_STATIC_CAST(int8_t, 0xff))), a_.m128i);
+      r_.m128i = _mm_gf2p8affine_epi64_epi8(a_.m128i, _mm_set_epi32(HEDLEY_STATIC_CAST(int32_t, 0xaaccf0ff), 0, HEDLEY_STATIC_CAST(int32_t, 0xaaccf0ff), 0), 8);
+    #else
+      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+        r_.values[i] = simde_x_vclzb_s8(a_.values[i]);
+      }
+    #endif
 
     return simde_int8x16_from_private(r_);
   #endif
@@ -352,18 +354,20 @@ simde_uint8x16_t
 simde_vclzq_u8(simde_uint8x16_t a) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vclzq_u8(a);
-  #elif defined(SIMDE_X86_GFNI_NATIVE)
-    a = _mm_gf2p8affine_epi64_epi8(a, _mm_set_epi32(HEDLEY_STATIC_CAST(int32_t, 0x80402010), HEDLEY_STATIC_CAST(int32_t, 0x08040201), HEDLEY_STATIC_CAST(int32_t, 0x80402010), HEDLEY_STATIC_CAST(int32_t, 0x08040201)), 0);
-    a = _mm_andnot_si128(_mm_add_epi8(a, _mm_set1_epi8(HEDLEY_STATIC_CAST(int8_t, 0xff))), a);
-    return _mm_gf2p8affine_epi64_epi8(a, _mm_set_epi32(HEDLEY_STATIC_CAST(int32_t, 0xaaccf0ff), 0, HEDLEY_STATIC_CAST(int32_t, 0xaaccf0ff), 0), 8);
   #else
     simde_uint8x16_private
       a_ = simde_uint8x16_to_private(a),
       r_;
 
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = simde_x_vclzb_u8(a_.values[i]);
-    }
+    #if defined(SIMDE_X86_GFNI_NATIVE)
+      a_.m128i = _mm_gf2p8affine_epi64_epi8(a_.m128i, _mm_set_epi32(HEDLEY_STATIC_CAST(int32_t, 0x80402010), HEDLEY_STATIC_CAST(int32_t, 0x08040201), HEDLEY_STATIC_CAST(int32_t, 0x80402010), HEDLEY_STATIC_CAST(int32_t, 0x08040201)), 0);
+      a_.m128i = _mm_andnot_si128(_mm_add_epi8(a_.m128i, _mm_set1_epi8(HEDLEY_STATIC_CAST(int8_t, 0xff))), a_.m128i);
+      r_.m128i = _mm_gf2p8affine_epi64_epi8(a_.m128i, _mm_set_epi32(HEDLEY_STATIC_CAST(int32_t, 0xaaccf0ff), 0, HEDLEY_STATIC_CAST(int32_t, 0xaaccf0ff), 0), 8);
+    #else
+      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+        r_.values[i] = simde_x_vclzb_u8(a_.values[i]);
+      }
+    #endif
 
     return simde_uint8x16_from_private(r_);
   #endif

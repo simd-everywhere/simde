@@ -255,12 +255,14 @@ simde_vgetq_lane_f32(simde_float32x4_t v, const int lane)
 
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     SIMDE_CONSTIFY_4_(vgetq_lane_f32, r, (HEDLEY_UNREACHABLE(), SIMDE_FLOAT32_C(0.0)), lane, v);
-  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    SIMDE_CONSTIFY_4_(wasm_f32x4_extract_lane, r, (HEDLEY_UNREACHABLE(), SIMDE_FLOAT32_C(0.0)), lane, v);
   #else
     simde_float32x4_private v_ = simde_float32x4_to_private(v);
 
-    r = v_.values[lane];
+    #if defined(SIMDE_WASM_SIMD128_NATIVE)
+      SIMDE_CONSTIFY_4_(wasm_f32x4_extract_lane, r, (HEDLEY_UNREACHABLE(), SIMDE_FLOAT32_C(0.0)), lane, v_.v128);
+    #else
+      r = v_.values[lane];
+    #endif
   #endif
 
   return r;
@@ -278,12 +280,14 @@ simde_vgetq_lane_f64(simde_float64x2_t v, const int lane)
 
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     SIMDE_CONSTIFY_2_(vgetq_lane_f64, r, (HEDLEY_UNREACHABLE(), SIMDE_FLOAT64_C(0.0)), lane, v);
-  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    SIMDE_CONSTIFY_2_(wasm_f64x2_extract_lane, r, (HEDLEY_UNREACHABLE(), SIMDE_FLOAT64_C(0.0)), lane, v);
   #else
     simde_float64x2_private v_ = simde_float64x2_to_private(v);
 
-    r = v_.values[lane];
+    #if defined(SIMDE_WASM_SIMD128_NATIVE)
+      SIMDE_CONSTIFY_2_(wasm_f64x2_extract_lane, r, (HEDLEY_UNREACHABLE(), SIMDE_FLOAT64_C(0.0)), lane, v_.v128);
+    #else
+      r = v_.values[lane];
+    #endif
   #endif
 
   return r;
@@ -301,14 +305,16 @@ simde_vgetq_lane_s8(simde_int8x16_t v, const int lane)
 
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     SIMDE_CONSTIFY_16_(vgetq_lane_s8, r, (HEDLEY_UNREACHABLE(), INT8_C(0)), lane, v);
-  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    int r_;
-    SIMDE_CONSTIFY_16_(wasm_i8x16_extract_lane, r_, (HEDLEY_UNREACHABLE(), INT8_C(0)), lane, v);
-    r = HEDLEY_STATIC_CAST(int8_t, r_);
   #else
     simde_int8x16_private v_ = simde_int8x16_to_private(v);
 
-    r = v_.values[lane];
+    #if defined(SIMDE_WASM_SIMD128_NATIVE)
+      int r_;
+      SIMDE_CONSTIFY_16_(wasm_i8x16_extract_lane, r_, (HEDLEY_UNREACHABLE(), INT8_C(0)), lane, v_.v128);
+      r = HEDLEY_STATIC_CAST(int8_t, r_);
+    #else
+      r = v_.values[lane];
+    #endif
   #endif
 
   return r;
@@ -326,14 +332,16 @@ simde_vgetq_lane_s16(simde_int16x8_t v, const int lane)
 
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     SIMDE_CONSTIFY_8_(vgetq_lane_s16, r, (HEDLEY_UNREACHABLE(), INT16_C(0)), lane, v);
-  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    int r_;
-    SIMDE_CONSTIFY_8_(wasm_i16x8_extract_lane, r_, (HEDLEY_UNREACHABLE(), INT16_C(0)), lane, v);
-    r = HEDLEY_STATIC_CAST(int16_t, r_);
   #else
     simde_int16x8_private v_ = simde_int16x8_to_private(v);
 
-    r = v_.values[lane];
+    #if defined(SIMDE_WASM_SIMD128_NATIVE)
+      int r_;
+      SIMDE_CONSTIFY_8_(wasm_i16x8_extract_lane, r_, (HEDLEY_UNREACHABLE(), INT16_C(0)), lane, v_.v128);
+      r = HEDLEY_STATIC_CAST(int16_t, r_);
+    #else
+      r = v_.values[lane];
+    #endif
   #endif
 
   return r;
@@ -351,14 +359,16 @@ simde_vgetq_lane_s32(simde_int32x4_t v, const int lane)
 
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     SIMDE_CONSTIFY_4_(vgetq_lane_s32, r, (HEDLEY_UNREACHABLE(), INT32_C(0)), lane, v);
-  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    int r_;
-    SIMDE_CONSTIFY_4_(wasm_i32x4_extract_lane, r_, (HEDLEY_UNREACHABLE(), INT32_C(0)), lane, v);
-    r = HEDLEY_STATIC_CAST(int32_t, r_);
   #else
     simde_int32x4_private v_ = simde_int32x4_to_private(v);
 
-    r = v_.values[lane];
+    #if defined(SIMDE_WASM_SIMD128_NATIVE)
+      int r_;
+      SIMDE_CONSTIFY_4_(wasm_i32x4_extract_lane, r_, (HEDLEY_UNREACHABLE(), INT32_C(0)), lane, v_.v128);
+      r = HEDLEY_STATIC_CAST(int32_t, r_);
+    #else
+      r = v_.values[lane];
+    #endif
   #endif
 
   return r;
@@ -376,14 +386,16 @@ simde_vgetq_lane_s64(simde_int64x2_t v, const int lane)
 
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     SIMDE_CONSTIFY_2_(vgetq_lane_s64, r, (HEDLEY_UNREACHABLE(), INT64_C(0)), lane, v);
-  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    long long r_;
-    SIMDE_CONSTIFY_2_(wasm_i64x2_extract_lane, r_, (HEDLEY_UNREACHABLE(), INT64_C(0)), lane, v);
-    r = HEDLEY_STATIC_CAST(int64_t, r_);
   #else
     simde_int64x2_private v_ = simde_int64x2_to_private(v);
 
-    r = v_.values[lane];
+    #if defined(SIMDE_WASM_SIMD128_NATIVE)
+      int64_t r_;
+      SIMDE_CONSTIFY_2_(wasm_i64x2_extract_lane, r_, (HEDLEY_UNREACHABLE(), INT64_C(0)), lane, v_.v128);
+      r = HEDLEY_STATIC_CAST(int64_t, r_);
+    #else
+      r = v_.values[lane];
+    #endif
   #endif
 
   return r;
@@ -401,14 +413,16 @@ simde_vgetq_lane_u8(simde_uint8x16_t v, const int lane)
 
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     SIMDE_CONSTIFY_16_(vgetq_lane_u8, r, (HEDLEY_UNREACHABLE(), UINT8_C(0)), lane, v);
-  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    int r_;
-    SIMDE_CONSTIFY_16_(wasm_i8x16_extract_lane, r_, (HEDLEY_UNREACHABLE(), UINT8_C(0)), lane, v);
-    r = HEDLEY_STATIC_CAST(uint8_t, r_);
   #else
     simde_uint8x16_private v_ = simde_uint8x16_to_private(v);
 
-    r = v_.values[lane];
+    #if defined(SIMDE_WASM_SIMD128_NATIVE)
+      int r_;
+      SIMDE_CONSTIFY_16_(wasm_i8x16_extract_lane, r_, (HEDLEY_UNREACHABLE(), UINT8_C(0)), lane, v_.v128);
+      r = HEDLEY_STATIC_CAST(uint8_t, r_);
+    #else
+      r = v_.values[lane];
+    #endif
   #endif
 
   return r;
@@ -426,14 +440,16 @@ simde_vgetq_lane_u16(simde_uint16x8_t v, const int lane)
 
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     SIMDE_CONSTIFY_8_(vgetq_lane_u16, r, (HEDLEY_UNREACHABLE(), UINT16_C(0)), lane, v);
-  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    int r_;
-    SIMDE_CONSTIFY_8_(wasm_i16x8_extract_lane, r_, (HEDLEY_UNREACHABLE(), UINT16_C(0)), lane, v);
-    r = HEDLEY_STATIC_CAST(uint16_t, r_);
   #else
     simde_uint16x8_private v_ = simde_uint16x8_to_private(v);
 
-    r = v_.values[lane];
+    #if defined(SIMDE_WASM_SIMD128_NATIVE)
+      int r_;
+      SIMDE_CONSTIFY_8_(wasm_i16x8_extract_lane, r_, (HEDLEY_UNREACHABLE(), UINT16_C(0)), lane, v_.v128);
+      r = HEDLEY_STATIC_CAST(uint16_t, r_);
+    #else
+      r = v_.values[lane];
+    #endif
   #endif
 
   return r;
@@ -451,14 +467,16 @@ simde_vgetq_lane_u32(simde_uint32x4_t v, const int lane)
 
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     SIMDE_CONSTIFY_4_(vgetq_lane_u32, r, (HEDLEY_UNREACHABLE(), UINT32_C(0)), lane, v);
-  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    int r_;
-    SIMDE_CONSTIFY_4_(wasm_i32x4_extract_lane, r_, (HEDLEY_UNREACHABLE(), UINT32_C(0)), lane, v);
-    r = HEDLEY_STATIC_CAST(uint32_t, r_);
   #else
     simde_uint32x4_private v_ = simde_uint32x4_to_private(v);
 
-    r = v_.values[lane];
+    #if defined(SIMDE_WASM_SIMD128_NATIVE)
+      int32_t r_;
+      SIMDE_CONSTIFY_4_(wasm_i32x4_extract_lane, r_, (HEDLEY_UNREACHABLE(), UINT32_C(0)), lane, v_.v128);
+      r = HEDLEY_STATIC_CAST(uint32_t, r_);
+    #else
+      r = v_.values[lane];
+    #endif
   #endif
 
   return r;
@@ -476,14 +494,16 @@ simde_vgetq_lane_u64(simde_uint64x2_t v, const int lane)
 
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     SIMDE_CONSTIFY_2_(vgetq_lane_u64, r, (HEDLEY_UNREACHABLE(), UINT64_C(0)), lane, v);
-  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    long long r_;
-    SIMDE_CONSTIFY_2_(wasm_i64x2_extract_lane, r_, (HEDLEY_UNREACHABLE(), UINT64_C(0)), lane, v);
-    r = HEDLEY_STATIC_CAST(uint64_t, r_);
   #else
     simde_uint64x2_private v_ = simde_uint64x2_to_private(v);
 
-    r = v_.values[lane];
+    #if defined(SIMDE_WASM_SIMD128_NATIVE)
+      int64_t r_;
+      SIMDE_CONSTIFY_2_(wasm_i64x2_extract_lane, r_, (HEDLEY_UNREACHABLE(), UINT64_C(0)), lane, v_.v128);
+      r = HEDLEY_STATIC_CAST(uint64_t, r_);
+    #else
+      r = v_.values[lane];
+    #endif
   #endif
 
   return r;

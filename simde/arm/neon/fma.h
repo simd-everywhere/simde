@@ -27,7 +27,8 @@
 #if !defined(SIMDE_ARM_NEON_FMA_H)
 #define SIMDE_ARM_NEON_FMA_H
 
-#include "types.h"
+#include "add.h"
+#include "mul.h"
 
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
@@ -39,17 +40,7 @@ simde_vfma_f32(simde_float32x2_t a, simde_float32x2_t b, simde_float32x2_t c) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && (defined(__ARM_FEATURE_FMA) && __ARM_FEATURE_FMA)
     return vfma_f32(a, b, c);
   #else
-    simde_float32x2_private
-      a_ = simde_float32x2_to_private(a),
-      b_ = simde_float32x2_to_private(b),
-      c_ = simde_float32x2_to_private(c);
-
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(a_.values) / sizeof(a_.values[0])) ; i++) {
-      a_.values[i] += b_.values[i] * c_.values[i];
-    }
-
-    return simde_float32x2_from_private(a_);
+    return simde_vadd_f32(a, simde_vmul_f32(b, c));
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
@@ -63,14 +54,7 @@ simde_vfma_f64(simde_float64x1_t a, simde_float64x1_t b, simde_float64x1_t c) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && (defined(__ARM_FEATURE_FMA) && __ARM_FEATURE_FMA)
     return vfma_f64(a, b, c);
   #else
-    simde_float64x1_private
-      a_ = simde_float64x1_to_private(a),
-      b_ = simde_float64x1_to_private(b),
-      c_ = simde_float64x1_to_private(c);
-
-    a_.values[0] += b_.values[0] * c_.values[0];
-
-    return simde_float64x1_from_private(a_);
+    return simde_vadd_f64(a, simde_vmul_f64(b, c));
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
@@ -83,24 +67,23 @@ simde_float32x4_t
 simde_vfmaq_f32(simde_float32x4_t a, simde_float32x4_t b, simde_float32x4_t c) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && (defined(__ARM_FEATURE_FMA) && __ARM_FEATURE_FMA)
     return vfmaq_f32(a, b, c);
-  #elif defined(SIMDE_X86_FMA_NATIVE)
-    return _mm_fmadd_ps(b, c, a);
   #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
     return vec_madd(b, c, a);
-  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    return wasm_f32x4_add(a, wasm_f32x4_mul(b, c));
-  #else
+  #elif \
+      defined(SIMDE_X86_FMA_NATIVE)
     simde_float32x4_private
+      r_,
       a_ = simde_float32x4_to_private(a),
       b_ = simde_float32x4_to_private(b),
       c_ = simde_float32x4_to_private(c);
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(a_.values) / sizeof(a_.values[0])) ; i++) {
-      a_.values[i] += b_.values[i] * c_.values[i];
-    }
+    #if defined(SIMDE_X86_FMA_NATIVE)
+      r_.m128 = _mm_fmadd_ps(b_.m128, c_.m128, a_.m128);
+    #endif
 
-    return simde_float32x4_from_private(a_);
+    return simde_float32x4_from_private(r_);
+  #else
+    return simde_vaddq_f32(a, simde_vmulq_f32(b, c));
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
@@ -113,30 +96,23 @@ simde_float64x2_t
 simde_vfmaq_f64(simde_float64x2_t a, simde_float64x2_t b, simde_float64x2_t c) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && (defined(__ARM_FEATURE_FMA) && __ARM_FEATURE_FMA)
     return vfmaq_f64(a, b, c);
-  #elif defined(SIMDE_X86_FMA_NATIVE)
-    return _mm_fmadd_pd(b, c, a);
-  #elif defined(SIMDE_X86_SSE2_NATIVE)
-    return _mm_add_pd(a, _mm_mul_pd(b, c));
   #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
     return vec_madd(b, c, a);
-  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    return wasm_f64x2_add(a, wasm_f64x2_mul(b, c));
-  #else
+  #elif \
+      defined(SIMDE_X86_FMA_NATIVE)
     simde_float64x2_private
+      r_,
       a_ = simde_float64x2_to_private(a),
       b_ = simde_float64x2_to_private(b),
       c_ = simde_float64x2_to_private(c);
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-      a_.values += b_.values * c_.values;
-    #else
-      SIMDE_VECTORIZE
-      for (size_t i = 0 ; i < (sizeof(a_.values) / sizeof(a_.values[0])) ; i++) {
-        a_.values[i] += b_.values[i] * c_.values[i];
-      }
+    #if defined(SIMDE_X86_FMA_NATIVE)
+      r_.m128d = _mm_fmadd_pd(b_.m128d, c_.m128d, a_.m128d);
     #endif
 
-    return simde_float64x2_from_private(a_);
+    return simde_float64x2_from_private(r_);
+  #else
+    return simde_vaddq_f64(a, simde_vmulq_f64(b, c));
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
