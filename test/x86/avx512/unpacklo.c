@@ -3719,6 +3719,21 @@ SIMDE_TEST_FUNC_LIST_BEGIN
   SIMDE_TEST_FUNC_LIST_ENTRY(mm512_maskz_unpacklo_pd)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm256_mask_unpacklo_pd)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm256_maskz_unpacklo_pd)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_unpacklo_epi16)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_unpacklo_epi16)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_maskz_unpacklo_epi16)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_unpacklo_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_unpacklo_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_maskz_unpacklo_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_unpacklo_epi64)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_unpacklo_epi64)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_maskz_unpacklo_epi64)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_unpacklo_ps)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_unpacklo_ps)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_maskz_unpacklo_ps)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_unpacklo_pd)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_unpacklo_pd)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_maskz_unpacklo_pd)
 SIMDE_TEST_FUNC_LIST_END
 
 #include <test/x86/avx512/test-avx512-footer.h>
