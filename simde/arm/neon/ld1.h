@@ -198,10 +198,6 @@ simde_float32x4_t
 simde_vld1q_f32(simde_float32 const ptr[HEDLEY_ARRAY_PARAM(4)]) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vld1q_f32(ptr);
-  #elif defined(SIMDE_X86_SSE2_NATIVE)
-    return _mm_loadu_ps(ptr);
-  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    return wasm_v128_load(ptr);
   #else
     simde_float32x4_private r_;
     simde_memcpy(&r_, ptr, sizeof(r_));
@@ -218,10 +214,6 @@ simde_float64x2_t
 simde_vld1q_f64(simde_float64 const ptr[HEDLEY_ARRAY_PARAM(2)]) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vld1q_f64(ptr);
-  #elif defined(SIMDE_X86_SSE2_NATIVE)
-    return _mm_loadu_pd(ptr);
-  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    return wasm_v128_load(ptr);
   #else
     simde_float64x2_private r_;
     simde_memcpy(&r_, ptr, sizeof(r_));
@@ -238,10 +230,6 @@ simde_int8x16_t
 simde_vld1q_s8(int8_t const ptr[HEDLEY_ARRAY_PARAM(16)]) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vld1q_s8(ptr);
-  #elif defined(SIMDE_X86_SSE2_NATIVE)
-    return _mm_loadu_si128(SIMDE_ALIGN_CAST(const __m128i*, ptr));
-  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    return wasm_v128_load(ptr);
   #else
     simde_int8x16_private r_;
     simde_memcpy(&r_, ptr, sizeof(r_));
@@ -258,10 +246,6 @@ simde_int16x8_t
 simde_vld1q_s16(int16_t const ptr[HEDLEY_ARRAY_PARAM(8)]) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vld1q_s16(ptr);
-  #elif defined(SIMDE_X86_SSE2_NATIVE)
-    return _mm_loadu_si128(SIMDE_ALIGN_CAST(const __m128i*, ptr));
-  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    return wasm_v128_load(ptr);
   #else
     simde_int16x8_private r_;
     simde_memcpy(&r_, ptr, sizeof(r_));
@@ -278,10 +262,6 @@ simde_int32x4_t
 simde_vld1q_s32(int32_t const ptr[HEDLEY_ARRAY_PARAM(4)]) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vld1q_s32(ptr);
-  #elif defined(SIMDE_X86_SSE2_NATIVE)
-    return _mm_loadu_si128(SIMDE_ALIGN_CAST(const __m128i*, ptr));
-  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    return wasm_v128_load(ptr);
   #else
     simde_int32x4_private r_;
     simde_memcpy(&r_, ptr, sizeof(r_));
@@ -298,10 +278,6 @@ simde_int64x2_t
 simde_vld1q_s64(int64_t const ptr[HEDLEY_ARRAY_PARAM(2)]) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vld1q_s64(ptr);
-  #elif defined(SIMDE_X86_SSE2_NATIVE)
-    return _mm_loadu_si128(SIMDE_ALIGN_CAST(const __m128i*, ptr));
-  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    return wasm_v128_load(ptr);
   #else
     simde_int64x2_private r_;
     simde_memcpy(&r_, ptr, sizeof(r_));
@@ -318,10 +294,6 @@ simde_uint8x16_t
 simde_vld1q_u8(uint8_t const ptr[HEDLEY_ARRAY_PARAM(16)]) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vld1q_u8(ptr);
-  #elif defined(SIMDE_X86_SSE2_NATIVE)
-    return _mm_loadu_si128(SIMDE_ALIGN_CAST(const __m128i*, ptr));
-  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    return wasm_v128_load(ptr);
   #else
     simde_uint8x16_private r_;
     simde_memcpy(&r_, ptr, sizeof(r_));
@@ -338,10 +310,6 @@ simde_uint16x8_t
 simde_vld1q_u16(uint16_t const ptr[HEDLEY_ARRAY_PARAM(8)]) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vld1q_u16(ptr);
-  #elif defined(SIMDE_X86_SSE2_NATIVE)
-    return _mm_loadu_si128(SIMDE_ALIGN_CAST(const __m128i*, ptr));
-  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    return wasm_v128_load(ptr);
   #else
     simde_uint16x8_private r_;
     simde_memcpy(&r_, ptr, sizeof(r_));
@@ -358,10 +326,6 @@ simde_uint32x4_t
 simde_vld1q_u32(uint32_t const ptr[HEDLEY_ARRAY_PARAM(4)]) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vld1q_u32(ptr);
-  #elif defined(SIMDE_X86_SSE2_NATIVE)
-    return _mm_loadu_si128(SIMDE_ALIGN_CAST(const __m128i*, ptr));
-  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    return wasm_v128_load(ptr);
   #else
     simde_uint32x4_private r_;
     simde_memcpy(&r_, ptr, sizeof(r_));
@@ -378,10 +342,6 @@ simde_uint64x2_t
 simde_vld1q_u64(uint64_t const ptr[HEDLEY_ARRAY_PARAM(2)]) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vld1q_u64(ptr);
-  #elif defined(SIMDE_X86_SSE2_NATIVE)
-    return _mm_loadu_si128(SIMDE_ALIGN_CAST(const __m128i*, ptr));
-  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    return wasm_v128_load(ptr);
   #else
     simde_uint64x2_private r_;
     simde_memcpy(&r_, ptr, sizeof(r_));

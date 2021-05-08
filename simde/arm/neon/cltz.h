@@ -108,8 +108,6 @@ simde_uint16x4_t
 simde_vcltz_s16(simde_int16x4_t a) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vcltz_s16(a);
-  #elif defined(SIMDE_X86_MMX_NATIVE)
-    return _mm_srai_pi16(a, 15);
   #else
     return simde_vreinterpret_u16_s16(simde_vshr_n_s16(a, 15));
   #endif
@@ -124,8 +122,6 @@ simde_uint32x2_t
 simde_vcltz_s32(simde_int32x2_t a) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vcltz_s32(a);
-  #elif defined(SIMDE_X86_MMX_NATIVE)
-    return _mm_srai_pi32(a, 31);
   #else
     return simde_vreinterpret_u32_s32(simde_vshr_n_s32(a, 31));
   #endif

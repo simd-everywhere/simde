@@ -256,17 +256,17 @@ simde_int8x16_t
 simde_vornq_s8(simde_int8x16_t a, simde_int8x16_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vornq_s8(a, b);
-  #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
-    return vec_orc(a, b);
-  #elif defined(SIMDE_X86_AVX512VL_NATIVE)
-    return _mm_ternarylogic_epi32(a, b, a, 0xf3);
   #else
     simde_int8x16_private
       a_ = simde_int8x16_to_private(a),
       b_ = simde_int8x16_to_private(b),
       r_;
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+    #if defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
+      r_.altivec = vec_orc(a_.altivec, b_.altivec);
+    #elif defined(SIMDE_X86_AVX512VL_NATIVE)
+      r_.m128i = _mm_ternarylogic_epi32(a_.m128i, b_.m128i, a_.m128i, 0xf3);
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       r_.values = a_.values | ~(b_.values);
     #else
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -287,17 +287,17 @@ simde_int16x8_t
 simde_vornq_s16(simde_int16x8_t a, simde_int16x8_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vornq_s16(a, b);
-  #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
-    return vec_orc(a, b);
-  #elif defined(SIMDE_X86_AVX512VL_NATIVE)
-    return _mm_ternarylogic_epi32(a, b, a, 0xf3);
   #else
     simde_int16x8_private
       a_ = simde_int16x8_to_private(a),
       b_ = simde_int16x8_to_private(b),
       r_;
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+    #if defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
+      r_.altivec = vec_orc(a_.altivec, b_.altivec);
+    #elif defined(SIMDE_X86_AVX512VL_NATIVE)
+      r_.m128i = _mm_ternarylogic_epi32(a_.m128i, b_.m128i, a_.m128i, 0xf3);
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       r_.values = a_.values | ~(b_.values);
     #else
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -318,17 +318,17 @@ simde_int32x4_t
 simde_vornq_s32(simde_int32x4_t a, simde_int32x4_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vornq_s32(a, b);
-  #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
-    return vec_orc(a, b);
-  #elif defined(SIMDE_X86_AVX512VL_NATIVE)
-    return _mm_ternarylogic_epi32(a, b, a, 0xf3);
   #else
     simde_int32x4_private
       a_ = simde_int32x4_to_private(a),
       b_ = simde_int32x4_to_private(b),
       r_;
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+    #if defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
+      r_.altivec = vec_orc(a_.altivec, b_.altivec);
+    #elif defined(SIMDE_X86_AVX512VL_NATIVE)
+      r_.m128i = _mm_ternarylogic_epi32(a_.m128i, b_.m128i, a_.m128i, 0xf3);
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       r_.values = a_.values | ~(b_.values);
     #else
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -349,17 +349,17 @@ simde_int64x2_t
 simde_vornq_s64(simde_int64x2_t a, simde_int64x2_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vornq_s64(a, b);
-  #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
-    return vec_orc(a, b);
-  #elif defined(SIMDE_X86_AVX512VL_NATIVE)
-    return _mm_ternarylogic_epi64(a, b, a, 0xf3);
   #else
     simde_int64x2_private
       a_ = simde_int64x2_to_private(a),
       b_ = simde_int64x2_to_private(b),
       r_;
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+    #if defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
+      r_.altivec = vec_orc(a_.altivec, b_.altivec);
+    #elif defined(SIMDE_X86_AVX512VL_NATIVE)
+      r_.m128i = _mm_ternarylogic_epi64(a_.m128i, b_.m128i, a_.m128i, 0xf3);
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       r_.values = a_.values | ~(b_.values);
     #else
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -380,17 +380,17 @@ simde_uint8x16_t
 simde_vornq_u8(simde_uint8x16_t a, simde_uint8x16_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vornq_u8(a, b);
-  #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
-    return vec_orc(a, b);
-  #elif defined(SIMDE_X86_AVX512VL_NATIVE)
-    return _mm_ternarylogic_epi32(a, b, a, 0xf3);
   #else
     simde_uint8x16_private
       a_ = simde_uint8x16_to_private(a),
       b_ = simde_uint8x16_to_private(b),
       r_;
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+    #if defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
+      r_.altivec = vec_orc(a_.altivec, b_.altivec);
+    #elif defined(SIMDE_X86_AVX512VL_NATIVE)
+      r_.m128i = _mm_ternarylogic_epi32(a_.m128i, b_.m128i, a_.m128i, 0xf3);
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       r_.values = a_.values | ~(b_.values);
     #else
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -411,17 +411,17 @@ simde_uint16x8_t
 simde_vornq_u16(simde_uint16x8_t a, simde_uint16x8_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vornq_u16(a, b);
-  #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
-    return vec_orc(a, b);
-  #elif defined(SIMDE_X86_AVX512VL_NATIVE)
-    return _mm_ternarylogic_epi32(a, b, a, 0xf3);
   #else
     simde_uint16x8_private
       a_ = simde_uint16x8_to_private(a),
       b_ = simde_uint16x8_to_private(b),
       r_;
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+    #if defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
+      r_.altivec = vec_orc(a_.altivec, b_.altivec);
+    #elif defined(SIMDE_X86_AVX512VL_NATIVE)
+      r_.m128i = _mm_ternarylogic_epi32(a_.m128i, b_.m128i, a_.m128i, 0xf3);
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       r_.values = a_.values | ~(b_.values);
     #else
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -442,17 +442,17 @@ simde_uint32x4_t
 simde_vornq_u32(simde_uint32x4_t a, simde_uint32x4_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vornq_u32(a, b);
-  #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
-    return vec_orc(a, b);
-  #elif defined(SIMDE_X86_AVX512VL_NATIVE)
-    return _mm_ternarylogic_epi32(a, b, a, 0xf3);
   #else
     simde_uint32x4_private
       a_ = simde_uint32x4_to_private(a),
       b_ = simde_uint32x4_to_private(b),
       r_;
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+    #if defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
+      r_.altivec = vec_orc(a_.altivec, b_.altivec);
+    #elif defined(SIMDE_X86_AVX512VL_NATIVE)
+      r_.m128i = _mm_ternarylogic_epi32(a_.m128i, b_.m128i, a_.m128i, 0xf3);
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       r_.values = a_.values | ~(b_.values);
     #else
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -473,17 +473,17 @@ simde_uint64x2_t
 simde_vornq_u64(simde_uint64x2_t a, simde_uint64x2_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vornq_u64(a, b);
-  #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
-    return vec_orc(a, b);
-  #elif defined(SIMDE_X86_AVX512VL_NATIVE)
-    return _mm_ternarylogic_epi64(a, b, a, 0xf3);
   #else
     simde_uint64x2_private
       a_ = simde_uint64x2_to_private(a),
       b_ = simde_uint64x2_to_private(b),
       r_;
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+    #if defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
+      r_.altivec = vec_orc(a_.altivec, b_.altivec);
+    #elif defined(SIMDE_X86_AVX512VL_NATIVE)
+      r_.m128i = _mm_ternarylogic_epi64(a_.m128i, b_.m128i, a_.m128i, 0xf3);
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       r_.values = a_.values | ~(b_.values);
     #else
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
