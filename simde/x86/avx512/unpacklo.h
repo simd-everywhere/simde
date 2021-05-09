@@ -105,6 +105,34 @@ simde_mm512_maskz_unpacklo_epi8(simde__mmask64 k, simde__m512i a, simde__m512i b
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
+simde__m256i
+simde_mm256_mask_unpacklo_epi8(simde__m256i src, simde__mmask32 k, simde__m256i a, simde__m256i b) {
+  #if defined(SIMDE_X86_AVX512BW_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
+    return _mm256_mask_unpacklo_epi8(src, k, a, b);
+  #else
+    return simde_mm256_mask_mov_epi8(src, k, simde_mm256_unpacklo_epi8(a, b));
+  #endif
+}
+#if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES) && defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_mask_unpacklo_epi8
+  #define _mm256_mask_unpacklo_epi8(src, k, a, b) simde_mm256_mask_unpacklo_epi8(src, k, a, b)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256i
+simde_mm256_maskz_unpacklo_epi8(simde__mmask32 k, simde__m256i a, simde__m256i b) {
+  #if defined(SIMDE_X86_AVX512BW_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
+    return _mm256_maskz_unpacklo_epi8(k, a, b);
+  #else
+    return simde_mm256_maskz_mov_epi8(k, simde_mm256_unpacklo_epi8(a, b));
+  #endif
+}
+#if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES) && defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_maskz_unpacklo_epi8
+  #define _mm256_maskz_unpacklo_epi8(k, a, b) simde_mm256_maskz_unpacklo_epi8(k, a, b)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
 simde__m512i
 simde_mm512_unpacklo_epi16 (simde__m512i a, simde__m512i b) {
   #if defined(SIMDE_X86_AVX512BW_NATIVE)
@@ -164,6 +192,34 @@ simde_mm512_maskz_unpacklo_epi16(simde__mmask32 k, simde__m512i a, simde__m512i 
 #if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
   #undef _mm512_maskz_unpacklo_epi16
   #define _mm512_maskz_unpacklo_epi16(k, a, b) simde_mm512_maskz_unpacklo_epi16(k, a, b)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256i
+simde_mm256_mask_unpacklo_epi16(simde__m256i src, simde__mmask16 k, simde__m256i a, simde__m256i b) {
+  #if defined(SIMDE_X86_AVX512BW_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
+    return _mm256_mask_unpacklo_epi16(src, k, a, b);
+  #else
+    return simde_mm256_mask_mov_epi16(src, k, simde_mm256_unpacklo_epi16(a, b));
+  #endif
+}
+#if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES) && defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_mask_unpacklo_epi16
+  #define _mm256_mask_unpacklo_epi16(src, k, a, b) simde_mm256_mask_unpacklo_epi16(src, k, a, b)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256i
+simde_mm256_maskz_unpacklo_epi16(simde__mmask16 k, simde__m256i a, simde__m256i b) {
+  #if defined(SIMDE_X86_AVX512BW_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
+    return _mm256_maskz_unpacklo_epi16(k, a, b);
+  #else
+    return simde_mm256_maskz_mov_epi16(k, simde_mm256_unpacklo_epi16(a, b));
+  #endif
+}
+#if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES) && defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_maskz_unpacklo_epi16
+  #define _mm256_maskz_unpacklo_epi16(k, a, b) simde_mm256_maskz_unpacklo_epi16(k, a, b)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -229,6 +285,34 @@ simde_mm512_maskz_unpacklo_epi32(simde__mmask16 k, simde__m512i a, simde__m512i 
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
+simde__m256i
+simde_mm256_mask_unpacklo_epi32(simde__m256i src, simde__mmask8 k, simde__m256i a, simde__m256i b) {
+  #if defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
+    return _mm256_mask_unpacklo_epi32(src, k, a, b);
+  #else
+    return simde_mm256_mask_mov_epi32(src, k, simde_mm256_unpacklo_epi32(a, b));
+  #endif
+}
+#if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES) && defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_mask_unpacklo_epi32
+  #define _mm256_mask_unpacklo_epi32(src, k, a, b) simde_mm256_mask_unpacklo_epi32(src, k, a, b)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256i
+simde_mm256_maskz_unpacklo_epi32(simde__mmask8 k, simde__m256i a, simde__m256i b) {
+  #if defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
+    return _mm256_maskz_unpacklo_epi32(k, a, b);
+  #else
+    return simde_mm256_maskz_mov_epi32(k, simde_mm256_unpacklo_epi32(a, b));
+  #endif
+}
+#if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES) && defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_maskz_unpacklo_epi32
+  #define _mm256_maskz_unpacklo_epi32(k, a, b) simde_mm256_maskz_unpacklo_epi32(k, a, b)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
 simde__m512i
 simde_mm512_unpacklo_epi64 (simde__m512i a, simde__m512i b) {
   #if defined(SIMDE_X86_AVX512F_NATIVE)
@@ -286,6 +370,34 @@ simde_mm512_maskz_unpacklo_epi64(simde__mmask8 k, simde__m512i a, simde__m512i b
 #if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
   #undef _mm512_maskz_unpacklo_epi64
   #define _mm512_maskz_unpacklo_epi64(k, a, b) simde_mm512_maskz_unpacklo_epi64(k, a, b)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256i
+simde_mm256_mask_unpacklo_epi64(simde__m256i src, simde__mmask8 k, simde__m256i a, simde__m256i b) {
+  #if defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
+    return _mm256_mask_unpacklo_epi64(src, k, a, b);
+  #else
+    return simde_mm256_mask_mov_epi64(src, k, simde_mm256_unpacklo_epi64(a, b));
+  #endif
+}
+#if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES) && defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_mask_unpacklo_epi64
+  #define _mm256_mask_unpacklo_epi64(src, k, a, b) simde_mm256_mask_unpacklo_epi64(src, k, a, b)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256i
+simde_mm256_maskz_unpacklo_epi64(simde__mmask8 k, simde__m256i a, simde__m256i b) {
+  #if defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
+    return _mm256_maskz_unpacklo_epi64(k, a, b);
+  #else
+    return simde_mm256_maskz_mov_epi64(k, simde_mm256_unpacklo_epi64(a, b));
+  #endif
+}
+#if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES) && defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_maskz_unpacklo_epi64
+  #define _mm256_maskz_unpacklo_epi64(k, a, b) simde_mm256_maskz_unpacklo_epi64(k, a, b)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -351,6 +463,34 @@ simde_mm512_maskz_unpacklo_ps(simde__mmask16 k, simde__m512 a, simde__m512 b) {
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
+simde__m256
+simde_mm256_mask_unpacklo_ps(simde__m256 src, simde__mmask8 k, simde__m256 a, simde__m256 b) {
+  #if defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
+    return _mm256_mask_unpacklo_ps(src, k, a, b);
+  #else
+    return simde_mm256_mask_mov_ps(src, k, simde_mm256_unpacklo_ps(a, b));
+  #endif
+}
+#if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES) && defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_mask_unpacklo_ps
+  #define _mm256_mask_unpacklo_ps(src, k, a, b) simde_mm256_mask_unpacklo_ps(src, k, a, b)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256
+simde_mm256_maskz_unpacklo_ps(simde__mmask8 k, simde__m256 a, simde__m256 b) {
+  #if defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
+    return _mm256_maskz_unpacklo_ps(k, a, b);
+  #else
+    return simde_mm256_maskz_mov_ps(k, simde_mm256_unpacklo_ps(a, b));
+  #endif
+}
+#if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES) && defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_maskz_unpacklo_ps
+  #define _mm256_maskz_unpacklo_ps(k, a, b) simde_mm256_maskz_unpacklo_ps(k, a, b)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
 simde__m512d
 simde_mm512_unpacklo_pd (simde__m512d a, simde__m512d b) {
   #if defined(SIMDE_X86_AVX512F_NATIVE)
@@ -408,6 +548,34 @@ simde_mm512_maskz_unpacklo_pd(simde__mmask8 k, simde__m512d a, simde__m512d b) {
 #if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
   #undef _mm512_maskz_unpacklo_pd
   #define _mm512_maskz_unpacklo_pd(k, a, b) simde_mm512_maskz_unpacklo_pd(k, a, b)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256d
+simde_mm256_mask_unpacklo_pd(simde__m256d src, simde__mmask8 k, simde__m256d a, simde__m256d b) {
+  #if defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
+    return _mm256_mask_unpacklo_pd(src, k, a, b);
+  #else
+    return simde_mm256_mask_mov_pd(src, k, simde_mm256_unpacklo_pd(a, b));
+  #endif
+}
+#if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES) && defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_mask_unpacklo_pd
+  #define _mm256_mask_unpacklo_pd(src, k, a, b) simde_mm256_mask_unpacklo_pd(src, k, a, b)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256d
+simde_mm256_maskz_unpacklo_pd(simde__mmask8 k, simde__m256d a, simde__m256d b) {
+  #if defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
+    return _mm256_maskz_unpacklo_pd(k, a, b);
+  #else
+    return simde_mm256_maskz_mov_pd(k, simde_mm256_unpacklo_pd(a, b));
+  #endif
+}
+#if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES) && defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_maskz_unpacklo_pd
+  #define _mm256_maskz_unpacklo_pd(k, a, b) simde_mm256_maskz_unpacklo_pd(k, a, b)
 #endif
 
 SIMDE_END_DECLS_
