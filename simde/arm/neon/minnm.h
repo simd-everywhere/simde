@@ -28,6 +28,8 @@
 #define SIMDE_ARM_NEON_MINNM_H
 
 #include "types.h"
+#include "cge.h"
+#include "bsl.h"
 
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
