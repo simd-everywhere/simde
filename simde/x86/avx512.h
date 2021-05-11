@@ -80,6 +80,7 @@
 #include "avx512/packus.h"
 #include "avx512/permutexvar.h"
 #include "avx512/permutex2var.h"
+#include "avx512/range.h"
 #include "avx512/sad.h"
 #include "avx512/set.h"
 #include "avx512/set1.h"
