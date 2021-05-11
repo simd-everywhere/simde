@@ -230,6 +230,7 @@ simde_avx512_families = [
   'packus',
   'permutexvar',
   'permutex2var',
+  'range',
   'sad',
   'set',
   'set1',
