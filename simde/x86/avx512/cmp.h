@@ -29,7 +29,6 @@
 #define SIMDE_X86_AVX512_CMP_H
 
 #include "types.h"
-#include "../avx2.h"
 #include "mov.h"
 #include "mov_mask.h"
 #include "setzero.h"
@@ -310,6 +309,26 @@ simde_mm512_cmp_ps_mask (simde__m512 a, simde__m512 b, const int imm8)
   #define _mm512_cmp_ps_mask(a, b, imm8) simde_mm512_cmp_ps_mask((a), (b), (imm8))
 #endif
 
+#if defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
+  #define simde_mm256_cmp_ps_mask(a, b, imm8) _mm256_cmp_ps_mask((a), (b), (imm8))
+#else
+  #define simde_mm256_cmp_ps_mask(a, b, imm8) simde_mm256_movepi32_mask(simde_mm256_castps_si256(simde_mm256_cmp_ps((a), (b), (imm8))))
+#endif
+#if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES) && defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_cmp_ps_mask
+  #define _mm256_cmp_ps_mask(a, b, imm8) simde_mm256_cmp_ps_mask((a), (b), (imm8))
+#endif
+
+#if defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
+  #define simde_mm_cmp_ps_mask(a, b, imm8) _mm_cmp_ps_mask((a), (b), (imm8))
+#else
+  #define simde_mm_cmp_ps_mask(a, b, imm8) simde_mm_movepi32_mask(simde_mm_castps_si128(simde_mm_cmp_ps((a), (b), (imm8))))
+#endif
+#if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES) && defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES)
+  #undef _mm_cmp_ps_mask
+  #define _mm_cmp_ps_mask(a, b, imm8) simde_mm_cmp_ps_mask((a), (b), (imm8))
+#endif
+
 SIMDE_FUNCTION_ATTRIBUTES
 simde__mmask8
 simde_mm512_cmp_pd_mask (simde__m512d a, simde__m512d b, const int imm8)
@@ -579,6 +598,26 @@ simde_mm512_cmp_pd_mask (simde__m512d a, simde__m512d b, const int imm8)
 #if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
   #undef _mm512_cmp_pd_mask
   #define _mm512_cmp_pd_mask(a, b, imm8) simde_mm512_cmp_pd_mask((a), (b), (imm8))
+#endif
+
+#if defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
+  #define simde_mm256_cmp_pd_mask(a, b, imm8) _mm256_cmp_pd_mask((a), (b), (imm8))
+#else
+  #define simde_mm256_cmp_pd_mask(a, b, imm8) simde_mm256_movepi64_mask(simde_mm256_castpd_si256(simde_mm256_cmp_pd((a), (b), (imm8))))
+#endif
+#if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES) && defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_cmp_pd_mask
+  #define _mm256_cmp_pd_mask(a, b, imm8) simde_mm256_cmp_pd_mask((a), (b), (imm8))
+#endif
+
+#if defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
+  #define simde_mm_cmp_pd_mask(a, b, imm8) _mm_cmp_pd_mask((a), (b), (imm8))
+#else
+  #define simde_mm_cmp_pd_mask(a, b, imm8) simde_mm_movepi64_mask(simde_mm_castpd_si128(simde_mm_cmp_pd((a), (b), (imm8))))
+#endif
+#if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES) && defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES)
+  #undef _mm_cmp_pd_mask
+  #define _mm_cmp_pd_mask(a, b, imm8) simde_mm_cmp_pd_mask((a), (b), (imm8))
 #endif
 
 SIMDE_END_DECLS_
