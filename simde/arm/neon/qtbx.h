@@ -263,7 +263,7 @@ simde_vqtbx1q_u8(simde_uint8x16_t a, simde_uint8x16_t t, simde_uint8x16_t idx) {
       idx_ = simde_uint8x16_to_private(idx);
 
     #if defined(SIMDE_X86_SSE4_1_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
-      idx_.m128i = _mm_or_si128(idx_.m128i, _mm_cmpgt_epi8(idx, _mm_set1_epi8(15)));
+      idx_.m128i = _mm_or_si128(idx_.m128i, _mm_cmpgt_epi8(idx_.m128i, _mm_set1_epi8(15)));
       r_.m128i =  _mm_blendv_epi8(_mm_shuffle_epi8(t_.m128i, idx_.m128i), a_.m128i, idx_.m128i);
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r_.v128 = wasm_v128_or(wasm_i8x16_swizzle(t_.v128, idx_.v128),
@@ -315,7 +315,7 @@ simde_vqtbx2q_u8(simde_uint8x16_t a, simde_uint8x16x2_t t, simde_uint8x16_t idx)
       idx_ = simde_uint8x16_to_private(idx);
 
     #if defined(SIMDE_X86_SSE4_1_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
-      idx_.m128i = _mm_or_si128(idx, _mm_cmpgt_epi8(idx_.m128i, _mm_set1_epi8(31)));
+      idx_.m128i = _mm_or_si128(idx_.m128i, _mm_cmpgt_epi8(idx_.m128i, _mm_set1_epi8(31)));
       __m128i r_0 = _mm_shuffle_epi8(t_[0].m128i, idx_.m128i);
       __m128i r_1 = _mm_shuffle_epi8(t_[1].m128i, idx_.m128i);
       __m128i r =  _mm_blendv_epi8(r_0, r_1, _mm_slli_epi32(idx_.m128i, 3));
@@ -374,13 +374,13 @@ simde_vqtbx3q_u8(simde_uint8x16_t a, simde_uint8x16x3_t t, simde_uint8x16_t idx)
       idx_ = simde_uint8x16_to_private(idx);
 
     #if defined(SIMDE_X86_SSE4_1_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
-      idx_.m128i = _mm_or_si128(idx, _mm_cmpgt_epi8(idx, _mm_set1_epi8(47)));
+      idx_.m128i = _mm_or_si128(idx_.m128i, _mm_cmpgt_epi8(idx_.m128i, _mm_set1_epi8(47)));
       __m128i r_0 = _mm_shuffle_epi8(t_[0].m128i, idx_.m128i);
       __m128i r_1 = _mm_shuffle_epi8(t_[1].m128i, idx_.m128i);
-      __m128i r_01 = _mm_blendv_epi8(r_0, r_1, _mm_slli_epi32(idx, 3));
+      __m128i r_01 = _mm_blendv_epi8(r_0, r_1, _mm_slli_epi32(idx_.m128i, 3));
       __m128i r_2 = _mm_shuffle_epi8(t_[2].m128i, idx_.m128i);
       __m128i r = _mm_blendv_epi8(r_01, r_2, _mm_slli_epi32(idx_.m128i, 2));
-      return _mm_blendv_epi8(r, a_.m128i, idx_.m128i);
+      r_.m128i = _mm_blendv_epi8(r, a_.m128i, idx_.m128i);
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r_.v128 = wasm_v128_or(wasm_v128_or(wasm_i8x16_swizzle(t_[0].v128, idx_.v128),
                                           wasm_i8x16_swizzle(t_[1].v128, wasm_i8x16_sub(idx_.v128, wasm_i8x16_splat(16)))),

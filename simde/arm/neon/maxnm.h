@@ -125,7 +125,7 @@ simde_vmaxnmq_f32(simde_float32x4_t a, simde_float32x4_t b) {
         __m128 r = _mm_max_ps(a_.m128, b_.m128);
         __m128 bnan = _mm_cmpunord_ps(b_.m128, b_.m128);
         r = _mm_andnot_ps(bnan, r);
-        r = _mm_or_ps(r, _mm_and_ps(a, bnan));
+        r = _mm_or_ps(r, _mm_and_ps(a_.m128, bnan));
         r_.m128 = r;
       #else
         r_.m128 = _mm_max_ps(a_.m128, b_.m128);
@@ -177,7 +177,7 @@ simde_vmaxnmq_f64(simde_float64x2_t a, simde_float64x2_t b) {
         __m128d r = _mm_max_pd(a_.m128d, b_.m128d);
         __m128d bnan = _mm_cmpunord_pd(b_.m128d, b_.m128d);
         r = _mm_andnot_pd(bnan, r);
-        r = _mm_or_pd(r, _mm_and_pd(a, bnan));
+        r = _mm_or_pd(r, _mm_and_pd(a_.m128d, bnan));
         r_.m128d = r;
       #else
         r_.m128d = _mm_max_pd(a_.m128d, b_.m128d);

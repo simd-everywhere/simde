@@ -71,7 +71,7 @@ simde_vpadd_s16(simde_int16x4_t a, simde_int16x4_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vpadd_s16(a, b);
   #elif defined(SIMDE_X86_SSSE3_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
-    return _mm_hadd_pi16(a, b);
+    return simde_int16x4_from_m64(_mm_hadd_pi16(simde_int16x4_to_m64(a), simde_int16x4_to_m64(b)));
   #else
     return simde_vadd_s16(simde_vuzp1_s16(a, b), simde_vuzp2_s16(a, b));
   #endif
@@ -87,7 +87,7 @@ simde_vpadd_s32(simde_int32x2_t a, simde_int32x2_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vpadd_s32(a, b);
   #elif defined(SIMDE_X86_SSSE3_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
-    return _mm_hadd_pi32(a, b);
+    return simde_int32x2_from_m64(_mm_hadd_pi32(simde_int32x2_to_m64(a), simde_int32x2_to_m64(b)));
   #else
     return simde_vadd_s32(simde_vuzp1_s32(a, b), simde_vuzp2_s32(a, b));
   #endif

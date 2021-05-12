@@ -90,7 +90,7 @@ simde_vshl_s8 (const simde_int8x8_t a, const simde_int8x8_t b) {
       __m128i r128 = _mm_blendv_epi8(_mm_sllv_epi16(a128, b128),
                                     _mm_srav_epi16(a128, _mm_abs_epi16(b128)),
                                     _mm_cmpgt_epi16(_mm_setzero_si128(), b128));
-      return _mm_movepi64_pi64(_mm_cvtepi16_epi8(r128));
+      r_.m64 = _mm_movepi64_pi64(_mm_cvtepi16_epi8(r128));
     #elif defined(SIMDE_X86_AVX2_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
       __m256i a256 = _mm256_cvtepi8_epi32(_mm_movpi64_epi64(a_.m64));
       __m256i b256 = _mm256_cvtepi8_epi32(_mm_movpi64_epi64(b_.m64));
@@ -98,7 +98,7 @@ simde_vshl_s8 (const simde_int8x8_t a, const simde_int8x8_t b) {
                                         _mm256_srav_epi32(a256, _mm256_abs_epi32(b256)),
                                         _mm256_cmpgt_epi32(_mm256_setzero_si256(), b256));
       r256 = _mm256_shuffle_epi8(r256, _mm256_set1_epi32(0x0C080400));
-      return _mm_set_pi32(_mm256_extract_epi32(r256, 4), _mm256_extract_epi32(r256, 0));
+      r_.m64 = _mm_set_pi32(_mm256_extract_epi32(r256, 4), _mm256_extract_epi32(r256, 0));
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -135,7 +135,7 @@ simde_vshl_s16 (const simde_int16x4_t a, const simde_int16x4_t b) {
       __m128i r128 = _mm_blendv_epi8(_mm_sllv_epi32(a128, b128),
                                     _mm_srav_epi32(a128, _mm_abs_epi32(b128)),
                                     _mm_cmpgt_epi32(_mm_setzero_si128(), b128));
-      return _mm_movepi64_pi64(_mm_shuffle_epi8(r128, _mm_set1_epi64x(0x0D0C090805040100)));
+      r_.m64 = _mm_movepi64_pi64(_mm_shuffle_epi8(r128, _mm_set1_epi64x(0x0D0C090805040100)));
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -173,7 +173,7 @@ simde_vshl_s32 (const simde_int32x2_t a, const simde_int32x2_t b) {
       __m128i r128 = _mm_blendv_epi8(_mm_sllv_epi32(a128, b128),
                                     _mm_srav_epi32(a128, _mm_abs_epi32(b128)),
                                     _mm_cmpgt_epi32(_mm_setzero_si128(), b128));
-      return _mm_movepi64_pi64(r128);
+      r_.m64 = _mm_movepi64_pi64(r128);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -212,7 +212,7 @@ simde_vshl_s64 (const simde_int64x1_t a, const simde_int64x1_t b) {
       __m128i r128 = _mm_blendv_epi8(_mm_sllv_epi64(a128, b128),
                                     _mm_srav_epi64(a128, _mm_sub_epi64(zero, b128)),
                                     _mm_cmpgt_epi64(zero, b128));
-      return _mm_movepi64_pi64(r128);
+      r_.m64 = _mm_movepi64_pi64(r128);
     #elif defined(SIMDE_X86_AVX2_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
       __m128i zero = _mm_setzero_si128();
       __m128i a128 = _mm_movpi64_epi64(a_.m64);
@@ -222,7 +222,7 @@ simde_vshl_s64 (const simde_int64x1_t a, const simde_int64x1_t b) {
       __m128i r128 = _mm_blendv_epi8(_mm_sllv_epi64(a128, b_abs),
                                     _mm_xor_si128(_mm_srlv_epi64(_mm_xor_si128(a128, maska), b_abs), maska),
                                     _mm_cmpgt_epi64(zero, _mm_slli_epi64(b128, 56)));
-      return _mm_movepi64_pi64(r128);
+      r_.m64 = _mm_movepi64_pi64(r128);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -259,7 +259,7 @@ simde_vshl_u8 (const simde_uint8x8_t a, const simde_int8x8_t b) {
       __m128i r128 = _mm_blendv_epi8(_mm_sllv_epi16(a128, b128),
                                     _mm_srlv_epi16(a128, _mm_abs_epi16(b128)),
                                     _mm_cmpgt_epi16(_mm_setzero_si128(), b128));
-      return _mm_movepi64_pi64(_mm_cvtepi16_epi8(r128));
+      r_.m64 = _mm_movepi64_pi64(_mm_cvtepi16_epi8(r128));
     #elif defined(SIMDE_X86_AVX2_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
       __m256i a256 = _mm256_cvtepu8_epi32(_mm_movpi64_epi64(a_.m64));
       __m256i b256 = _mm256_cvtepi8_epi32(_mm_movpi64_epi64(b_.m64));
@@ -267,7 +267,7 @@ simde_vshl_u8 (const simde_uint8x8_t a, const simde_int8x8_t b) {
                                         _mm256_srlv_epi32(a256, _mm256_abs_epi32(b256)),
                                         _mm256_cmpgt_epi32(_mm256_setzero_si256(), b256));
       r256 = _mm256_shuffle_epi8(r256, _mm256_set1_epi32(0x0C080400));
-      return _mm_set_pi32(_mm256_extract_epi32(r256, 4), _mm256_extract_epi32(r256, 0));
+      r_.m64 = _mm_set_pi32(_mm256_extract_epi32(r256, 4), _mm256_extract_epi32(r256, 0));
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -304,7 +304,7 @@ simde_vshl_u16 (const simde_uint16x4_t a, const simde_int16x4_t b) {
       __m128i r128 = _mm_blendv_epi8(_mm_sllv_epi32(a128, b128),
                                     _mm_srlv_epi32(a128, _mm_abs_epi32(b128)),
                                     _mm_cmpgt_epi32(_mm_setzero_si128(), b128));
-      return _mm_movepi64_pi64(_mm_shuffle_epi8(r128, _mm_set1_epi64x(0x0D0C090805040100)));
+      r_.m64 = _mm_movepi64_pi64(_mm_shuffle_epi8(r128, _mm_set1_epi64x(0x0D0C090805040100)));
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -342,7 +342,7 @@ simde_vshl_u32 (const simde_uint32x2_t a, const simde_int32x2_t b) {
       __m128i r128 = _mm_blendv_epi8(_mm_sllv_epi32(a128, b128),
                                     _mm_srlv_epi32(a128, _mm_abs_epi32(b128)),
                                     _mm_cmpgt_epi32(_mm_setzero_si128(), b128));
-      return _mm_movepi64_pi64(r128);
+      r_.m64 = _mm_movepi64_pi64(r128);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -381,7 +381,7 @@ simde_vshl_u64 (const simde_uint64x1_t a, const simde_int64x1_t b) {
       __m128i r128 = _mm_blendv_epi8(_mm_sllv_epi64(a128, b128),
                                     _mm_srlv_epi64(a128, _mm_sub_epi64(zero, b128)),
                                     _mm_cmpgt_epi64(zero, b128));
-      return _mm_movepi64_pi64(r128);
+      r_.m64 = _mm_movepi64_pi64(r128);
     #elif defined(SIMDE_X86_AVX2_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
       __m128i a128 = _mm_movpi64_epi64(a_.m64);
       __m128i b128 = _mm_movpi64_epi64(b_.m64);
@@ -389,7 +389,7 @@ simde_vshl_u64 (const simde_uint64x1_t a, const simde_int64x1_t b) {
       __m128i r128 = _mm_blendv_epi8(_mm_sllv_epi64(a128, b_abs),
                                     _mm_srlv_epi64(a128, b_abs),
                                     _mm_cmpgt_epi64(_mm_setzero_si128(), _mm_slli_epi64(b128, 56)));
-      return _mm_movepi64_pi64(r128);
+      r_.m64 = _mm_movepi64_pi64(r128);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -440,7 +440,7 @@ simde_vshlq_s8 (const simde_int8x16_t a, const simde_int8x16_t b) {
       __m256i r256 = _mm256_blendv_epi8(_mm256_sllv_epi16(a256, b256),
                                         _mm256_srav_epi16(a256, _mm256_abs_epi16(b256)),
                                         _mm256_cmpgt_epi16(_mm256_setzero_si256(), b256));
-      return _mm256_cvtepi16_epi8(r256);
+      r_.m128i = _mm256_cvtepi16_epi8(r256);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -488,9 +488,9 @@ simde_vshlq_s16 (const simde_int16x8_t a, const simde_int16x8_t b) {
 
     #if defined(SIMDE_X86_AVX512BW_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
       __m128i B = _mm_srai_epi16(_mm_slli_epi16(b_.m128i, 8), 8);
-      return _mm_blendv_epi8(_mm_sllv_epi16(a_.m128i, B),
-                            _mm_srav_epi16(a_.m128i, _mm_abs_epi16(B)),
-                            _mm_cmpgt_epi16(_mm_setzero_si128(), B));
+      r_.m128i = _mm_blendv_epi8(_mm_sllv_epi16(a_.m128i, B),
+                                 _mm_srav_epi16(a_.m128i, _mm_abs_epi16(B)),
+                                 _mm_cmpgt_epi16(_mm_setzero_si128(), B));
     #elif defined(SIMDE_X86_AVX2_NATIVE) && defined(SIMDE_ARCH_AMD64)
       __m256i a256 = _mm256_cvtepi16_epi32(a_.m128i);
       __m256i b256 = _mm256_cvtepi16_epi32(b_.m128i);
@@ -499,7 +499,7 @@ simde_vshlq_s16 (const simde_int16x8_t a, const simde_int16x8_t b) {
                                         _mm256_srav_epi32(a256, _mm256_abs_epi32(b256)),
                                         _mm256_cmpgt_epi32(_mm256_setzero_si256(), b256));
       r256 = _mm256_shuffle_epi8(r256, _mm256_set1_epi64x(0x0D0C090805040100));
-      return _mm_set_epi64x(_mm256_extract_epi64(r256, 2), _mm256_extract_epi64(r256, 0));
+      r_.m128i = _mm_set_epi64x(_mm256_extract_epi64(r256, 2), _mm256_extract_epi64(r256, 0));
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -549,9 +549,9 @@ simde_vshlq_s32 (const simde_int32x4_t a, const simde_int32x4_t b) {
 
     #if defined(SIMDE_X86_AVX2_NATIVE)
       __m128i B = _mm_srai_epi32(_mm_slli_epi32(b_.m128i, 24), 24);
-      return _mm_blendv_epi8(_mm_sllv_epi32(a_.m128i, B),
-                            _mm_srav_epi32(a_.m128i, _mm_abs_epi32(B)),
-                            _mm_cmpgt_epi32(_mm_setzero_si128(), B));
+      r_.m128i = _mm_blendv_epi8(_mm_sllv_epi32(a_.m128i, B),
+                                 _mm_srav_epi32(a_.m128i, _mm_abs_epi32(B)),
+                                 _mm_cmpgt_epi32(_mm_setzero_si128(), B));
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -603,16 +603,16 @@ simde_vshlq_s64 (const simde_int64x2_t a, const simde_int64x2_t b) {
     #if defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
       __m128i zero = _mm_setzero_si128();
       __m128i B = _mm_srai_epi64(_mm_slli_epi64(b_.m128i, 56), 56);
-      return _mm_blendv_epi8(_mm_sllv_epi64(a_.m128i, B),
-                            _mm_srav_epi64(a_.m128i, _mm_sub_epi64(zero, B)),
-                            _mm_cmpgt_epi64(zero, B));
+      r_.m128i = _mm_blendv_epi8(_mm_sllv_epi64(a_.m128i, B),
+                                 _mm_srav_epi64(a_.m128i, _mm_sub_epi64(zero, B)),
+                                 _mm_cmpgt_epi64(zero, B));
     #elif defined(SIMDE_X86_AVX2_NATIVE)
       __m128i zero = _mm_setzero_si128();
-      __m128i maska = _mm_cmpgt_epi64(zero, a);
-      __m128i b_abs = _mm_and_si128(_mm_abs_epi8(b), _mm_set1_epi64x(0xFF));
-      return _mm_blendv_epi8(_mm_sllv_epi64(a_.m128i, b_abs),
-                            _mm_xor_si128(_mm_srlv_epi64(_mm_xor_si128(a, maska), b_abs), maska),
-                            _mm_cmpgt_epi64(zero, _mm_slli_epi64(b_.m128i, 56)));
+      __m128i maska = _mm_cmpgt_epi64(zero, a_.m128i);
+      __m128i b_abs = _mm_and_si128(_mm_abs_epi8(b_.m128i), _mm_set1_epi64x(0xFF));
+      r_.m128i = _mm_blendv_epi8(_mm_sllv_epi64(a_.m128i, b_abs),
+                                 _mm_xor_si128(_mm_srlv_epi64(_mm_xor_si128(a_.m128i, maska), b_abs), maska),
+                                 _mm_cmpgt_epi64(zero, _mm_slli_epi64(b_.m128i, 56)));
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -656,7 +656,7 @@ simde_vshlq_u8 (const simde_uint8x16_t a, const simde_int8x16_t b) {
       __m256i r256 = _mm256_blendv_epi8(_mm256_sllv_epi16(a256, b256),
                                         _mm256_srlv_epi16(a256, _mm256_abs_epi16(b256)),
                                         _mm256_cmpgt_epi16(_mm256_setzero_si256(), b256));
-      return _mm256_cvtepi16_epi8(r256);
+      r_.m128i = _mm256_cvtepi16_epi8(r256);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -702,9 +702,9 @@ simde_vshlq_u16 (const simde_uint16x8_t a, const simde_int16x8_t b) {
 
     #if defined(SIMDE_X86_AVX512BW_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
       __m128i B = _mm_srai_epi16(_mm_slli_epi16(b_.m128i, 8), 8);
-      return _mm_blendv_epi8(_mm_sllv_epi16(a_.m128i, B),
-                            _mm_srlv_epi16(a_.m128i, _mm_abs_epi16(B)),
-                            _mm_cmpgt_epi16(_mm_setzero_si128(), B));
+      r_.m128i = _mm_blendv_epi8(_mm_sllv_epi16(a_.m128i, B),
+                                 _mm_srlv_epi16(a_.m128i, _mm_abs_epi16(B)),
+                                 _mm_cmpgt_epi16(_mm_setzero_si128(), B));
     #elif defined(SIMDE_X86_AVX2_NATIVE) && defined(SIMDE_ARCH_AMD64)
       __m256i a256 = _mm256_cvtepu16_epi32(a_.m128i);
       __m256i b256 = _mm256_cvtepi16_epi32(b_.m128i);
@@ -713,7 +713,7 @@ simde_vshlq_u16 (const simde_uint16x8_t a, const simde_int16x8_t b) {
                                         _mm256_srlv_epi32(a256, _mm256_abs_epi32(b256)),
                                         _mm256_cmpgt_epi32(_mm256_setzero_si256(), b256));
       r256 = _mm256_shuffle_epi8(r256, _mm256_set1_epi64x(0x0D0C090805040100));
-      return _mm_set_epi64x(_mm256_extract_epi64(r256, 2), _mm256_extract_epi64(r256, 0));
+      r_.m128i = _mm_set_epi64x(_mm256_extract_epi64(r256, 2), _mm256_extract_epi64(r256, 0));
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -755,9 +755,9 @@ simde_vshlq_u32 (const simde_uint32x4_t a, const simde_int32x4_t b) {
 
     #if defined(SIMDE_X86_AVX2_NATIVE)
       __m128i B = _mm_srai_epi32(_mm_slli_epi32(b_.m128i, 24), 24);
-      return _mm_blendv_epi8(_mm_sllv_epi32(a_.m128i, B),
-                            _mm_srlv_epi32(a_.m128i, _mm_abs_epi32(B)),
-                            _mm_cmpgt_epi32(_mm_setzero_si128(), B));
+      r_.m128i = _mm_blendv_epi8(_mm_sllv_epi32(a_.m128i, B),
+                                 _mm_srlv_epi32(a_.m128i, _mm_abs_epi32(B)),
+                                 _mm_cmpgt_epi32(_mm_setzero_si128(), B));
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -805,14 +805,14 @@ simde_vshlq_u64 (const simde_uint64x2_t a, const simde_int64x2_t b) {
     #if defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
       __m128i zero = _mm_setzero_si128();
       __m128i B = _mm_srai_epi64(_mm_slli_epi64(b_.m128i, 56), 56);
-      return _mm_blendv_epi8(_mm_sllv_epi64(a_.m128i, B),
-                            _mm_srlv_epi64(a_.m128i, _mm_sub_epi64(zero, B)),
-                            _mm_cmpgt_epi64(zero, B));
+      r_.m128i = _mm_blendv_epi8(_mm_sllv_epi64(a_.m128i, B),
+                                 _mm_srlv_epi64(a_.m128i, _mm_sub_epi64(zero, B)),
+                                 _mm_cmpgt_epi64(zero, B));
     #elif defined(SIMDE_X86_AVX2_NATIVE)
-      __m128i b_abs = _mm_and_si128(_mm_abs_epi8(b), _mm_set1_epi64x(0xFF));
-      return _mm_blendv_epi8(_mm_sllv_epi64(a_.m128i, b_abs),
-                            _mm_srlv_epi64(a_.m128i, b_abs),
-                            _mm_cmpgt_epi64(_mm_setzero_si128(), _mm_slli_epi64(b_.m128i, 56)));
+      __m128i b_abs = _mm_and_si128(_mm_abs_epi8(b_.m128i), _mm_set1_epi64x(0xFF));
+      r_.m128i = _mm_blendv_epi8(_mm_sllv_epi64(a_.m128i, b_abs),
+                                 _mm_srlv_epi64(a_.m128i, b_abs),
+                                 _mm_cmpgt_epi64(_mm_setzero_si128(), _mm_slli_epi64(b_.m128i, 56)));
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {

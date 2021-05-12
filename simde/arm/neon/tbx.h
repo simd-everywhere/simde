@@ -40,14 +40,6 @@ simde_uint8x8_t
 simde_vtbx1_u8(simde_uint8x8_t a, simde_uint8x8_t b, simde_uint8x8_t c) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vtbx1_u8(a, b, c);
-  #elif defined(SIMDE_X86_SSE4_1_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
-    __m128i a128 = _mm_set1_epi64(a);
-    __m128i b128 = _mm_set1_epi64(b);
-    __m128i c128 = _mm_set1_epi64(c);
-    c128 = _mm_or_si128(c128, _mm_cmpgt_epi8(c128, _mm_set1_epi8(7)));
-    __m128i r128 = _mm_shuffle_epi8(b128, c128);
-    r128 =  _mm_blendv_epi8(r128, a128, c128);
-    return _mm_movepi64_pi64(r128);
   #else
     simde_uint8x8_private
       r_,
@@ -55,10 +47,20 @@ simde_vtbx1_u8(simde_uint8x8_t a, simde_uint8x8_t b, simde_uint8x8_t c) {
       b_ = simde_uint8x8_to_private(b),
       c_ = simde_uint8x8_to_private(c);
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = (c_.values[i] < 8) ? b_.values[c_.values[i]] : a_.values[i];
-    }
+    #if defined(SIMDE_X86_SSE4_1_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
+      __m128i a128 = _mm_set1_epi64(a_.m64);
+      __m128i b128 = _mm_set1_epi64(b_.m64);
+      __m128i c128 = _mm_set1_epi64(c_.m64);
+      c128 = _mm_or_si128(c128, _mm_cmpgt_epi8(c128, _mm_set1_epi8(7)));
+      __m128i r128 = _mm_shuffle_epi8(b128, c128);
+      r128 =  _mm_blendv_epi8(r128, a128, c128);
+      r_.m64 = _mm_movepi64_pi64(r128);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+        r_.values[i] = (c_.values[i] < 8) ? b_.values[c_.values[i]] : a_.values[i];
+      }
+    #endif
 
     return simde_uint8x8_from_private(r_);
   #endif
@@ -89,14 +91,6 @@ simde_uint8x8_t
 simde_vtbx2_u8(simde_uint8x8_t a, simde_uint8x8x2_t b, simde_uint8x8_t c) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vtbx2_u8(a, b, c);
-  #elif defined(SIMDE_X86_SSE4_1_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
-    __m128i a128 = _mm_set1_epi64(a);
-    __m128i b128 = _mm_set_epi64(b.val[1], b.val[0]);
-    __m128i c128 = _mm_set1_epi64(c);
-    c128 = _mm_or_si128(c128, _mm_cmpgt_epi8(c128, _mm_set1_epi8(15)));
-    __m128i r128 = _mm_shuffle_epi8(b128, c128);
-    r128 =  _mm_blendv_epi8(r128, a128, c128);
-    return _mm_movepi64_pi64(r128);
   #else
     simde_uint8x8_private
       r_,
@@ -104,10 +98,20 @@ simde_vtbx2_u8(simde_uint8x8_t a, simde_uint8x8x2_t b, simde_uint8x8_t c) {
       b_[2] = { simde_uint8x8_to_private(b.val[0]), simde_uint8x8_to_private(b.val[1]) },
       c_ = simde_uint8x8_to_private(c);
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = (c_.values[i] < 16) ? b_[c_.values[i] / 8].values[c_.values[i] & 7] : a_.values[i];
-    }
+    #if defined(SIMDE_X86_SSE4_1_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
+      __m128i a128 = _mm_set1_epi64(a_.m64);
+      __m128i b128 = _mm_set_epi64(b_[1].m64, b_[0].m64);
+      __m128i c128 = _mm_set1_epi64(c_.m64);
+      c128 = _mm_or_si128(c128, _mm_cmpgt_epi8(c128, _mm_set1_epi8(15)));
+      __m128i r128 = _mm_shuffle_epi8(b128, c128);
+      r128 =  _mm_blendv_epi8(r128, a128, c128);
+      r_.m64 = _mm_movepi64_pi64(r128);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+        r_.values[i] = (c_.values[i] < 16) ? b_[c_.values[i] / 8].values[c_.values[i] & 7] : a_.values[i];
+      }
+    #endif
 
     return simde_uint8x8_from_private(r_);
   #endif
@@ -140,15 +144,6 @@ simde_uint8x8_t
 simde_vtbx3_u8(simde_uint8x8_t a, simde_uint8x8x3_t b, simde_uint8x8_t c) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vtbx3_u8(a, b, c);
-  #elif defined(SIMDE_X86_SSE4_1_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
-    __m128i a128 = _mm_set1_epi64(a);
-    __m128i c128 = _mm_set1_epi64(c);
-    c128 = _mm_or_si128(c128, _mm_cmpgt_epi8(c128, _mm_set1_epi8(23)));
-    __m128i r128_01 = _mm_shuffle_epi8(_mm_set_epi64(b.val[1], b.val[0]), c128);
-    __m128i r128_2  = _mm_shuffle_epi8(_mm_set1_epi64(b.val[2]), c128);
-    __m128i r128 = _mm_blendv_epi8(r128_01, r128_2, _mm_slli_epi32(c128, 3));
-    r128 =  _mm_blendv_epi8(r128, a128, c128);
-    return _mm_movepi64_pi64(r128);
   #else
     simde_uint8x8_private
       r_,
@@ -156,10 +151,21 @@ simde_vtbx3_u8(simde_uint8x8_t a, simde_uint8x8x3_t b, simde_uint8x8_t c) {
       b_[3] = { simde_uint8x8_to_private(b.val[0]), simde_uint8x8_to_private(b.val[1]), simde_uint8x8_to_private(b.val[2]) },
       c_ = simde_uint8x8_to_private(c);
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = (c_.values[i] < 24) ? b_[c_.values[i] / 8].values[c_.values[i] & 7] : a_.values[i];
-    }
+    #if defined(SIMDE_X86_SSE4_1_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
+      __m128i a128 = _mm_set1_epi64(a_.m64);
+      __m128i c128 = _mm_set1_epi64(c_.m64);
+      c128 = _mm_or_si128(c128, _mm_cmpgt_epi8(c128, _mm_set1_epi8(23)));
+      __m128i r128_01 = _mm_shuffle_epi8(_mm_set_epi64(b_[1].m64, b_[0].m64), c128);
+      __m128i r128_2  = _mm_shuffle_epi8(_mm_set1_epi64(b_[2].m64), c128);
+      __m128i r128 = _mm_blendv_epi8(r128_01, r128_2, _mm_slli_epi32(c128, 3));
+      r128 =  _mm_blendv_epi8(r128, a128, c128);
+      r_.m64 = _mm_movepi64_pi64(r128);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+        r_.values[i] = (c_.values[i] < 24) ? b_[c_.values[i] / 8].values[c_.values[i] & 7] : a_.values[i];
+      }
+    #endif
 
     return simde_uint8x8_from_private(r_);
   #endif
@@ -192,15 +198,6 @@ simde_uint8x8_t
 simde_vtbx4_u8(simde_uint8x8_t a, simde_uint8x8x4_t b, simde_uint8x8_t c) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vtbx4_u8(a, b, c);
-  #elif defined(SIMDE_X86_SSE4_1_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
-    __m128i a128 = _mm_set1_epi64(a);
-    __m128i c128 = _mm_set1_epi64(c);
-    c128 = _mm_or_si128(c128, _mm_cmpgt_epi8(c128, _mm_set1_epi8(31)));
-    __m128i r128_01 = _mm_shuffle_epi8(_mm_set_epi64(b.val[1], b.val[0]), c128);
-    __m128i r128_23 = _mm_shuffle_epi8(_mm_set_epi64(b.val[3], b.val[2]), c128);
-    __m128i r128 = _mm_blendv_epi8(r128_01, r128_23,  _mm_slli_epi32(c128, 3));
-    r128 =  _mm_blendv_epi8(r128, a128, c128);
-    return _mm_movepi64_pi64(r128);
   #else
     simde_uint8x8_private
       r_,
@@ -208,10 +205,21 @@ simde_vtbx4_u8(simde_uint8x8_t a, simde_uint8x8x4_t b, simde_uint8x8_t c) {
       b_[4] = { simde_uint8x8_to_private(b.val[0]), simde_uint8x8_to_private(b.val[1]), simde_uint8x8_to_private(b.val[2]), simde_uint8x8_to_private(b.val[3]) },
       c_ = simde_uint8x8_to_private(c);
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = (c_.values[i] < 32) ? b_[c_.values[i] / 8].values[c_.values[i] & 7] : a_.values[i];
-    }
+    #if defined(SIMDE_X86_SSE4_1_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
+      __m128i a128 = _mm_set1_epi64(a_.m64);
+      __m128i c128 = _mm_set1_epi64(c_.m64);
+      c128 = _mm_or_si128(c128, _mm_cmpgt_epi8(c128, _mm_set1_epi8(31)));
+      __m128i r128_01 = _mm_shuffle_epi8(_mm_set_epi64(b_[1].m64, b_[0].m64), c128);
+      __m128i r128_23 = _mm_shuffle_epi8(_mm_set_epi64(b_[3].m64, b_[2].m64), c128);
+      __m128i r128 = _mm_blendv_epi8(r128_01, r128_23,  _mm_slli_epi32(c128, 3));
+      r128 =  _mm_blendv_epi8(r128, a128, c128);
+      r_.m64 = _mm_movepi64_pi64(r128);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+        r_.values[i] = (c_.values[i] < 32) ? b_[c_.values[i] / 8].values[c_.values[i] & 7] : a_.values[i];
+      }
+    #endif
 
     return simde_uint8x8_from_private(r_);
   #endif

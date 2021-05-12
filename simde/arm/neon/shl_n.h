@@ -57,7 +57,7 @@ simde_vshl_n_s8 (const simde_int8x8_t a, const int n)
   #define simde_vshl_n_s8(a, n) vshl_n_s8((a), (n))
 #elif defined(SIMDE_X86_MMX_NATIVE)
   #define simde_vshl_n_s8(a, n) \
-    _mm_andnot_si64(_mm_set1_pi8((1 << n) - 1), simde_int8x8_from_m64(_mm_slli_si64(simde_int8x8_to_m64(a), (n))))
+    simde_int8x8_from_m64(_mm_andnot_si64(_mm_set1_pi8((1 << n) - 1), _mm_slli_si64(simde_int8x8_to_m64(a), (n))))
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vshl_n_s8
@@ -174,7 +174,7 @@ simde_vshl_n_u8 (const simde_uint8x8_t a, const int n)
   #define simde_vshl_n_u8(a, n) vshl_n_u8((a), (n))
 #elif defined(SIMDE_X86_MMX_NATIVE)
   #define simde_vshl_n_u8(a, n) \
-    _mm_andnot_si64(_mm_set1_pi8((1 << n) - 1), simde_uint8x8_from_m64(_mm_slli_si64(simde_uint8x8_to_m64(a), (n))))
+    simde_uint8x8_from_m64(_mm_andnot_si64(_mm_set1_pi8((1 << n) - 1), _mm_slli_si64(simde_uint8x8_to_m64(a), (n))))
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vshl_n_u8

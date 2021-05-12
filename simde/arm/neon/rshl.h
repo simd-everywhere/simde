@@ -477,7 +477,7 @@ simde_vrshlq_s8 (const simde_int8x16_t a, const simde_int8x16_t b) {
       __m256i r256 = _mm256_blendv_epi8(_mm256_sllv_epi16(a256, b256),
                                         _mm256_srai_epi16(_mm256_sub_epi16(a256_shr, ff), 1),
                                         _mm256_cmpgt_epi16(zero, b256));
-      return _mm256_cvtepi16_epi8(r256);
+      r_.m128i = _mm256_cvtepi16_epi8(r256);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -528,7 +528,7 @@ simde_vrshlq_s16 (const simde_int16x8_t a, const simde_int16x8_t b) {
       const __m128i zero = _mm_setzero_si128();
       const __m128i ff   = _mm_cmpeq_epi16(zero, zero);
       __m128i B = _mm_srai_epi16(_mm_slli_epi16(b_.m128i, 8), 8);
-      __m128i a_shr = _mm_srav_epi16(a, _mm_xor_si128(B, ff));
+      __m128i a_shr = _mm_srav_epi16(a_.m128i, _mm_xor_si128(B, ff));
       r_.m128i = _mm_blendv_epi8(_mm_sllv_epi16(a_.m128i, B),
                             _mm_srai_epi16(_mm_sub_epi16(a_shr, ff), 1),
                             _mm_cmpgt_epi16(zero, B));
@@ -595,7 +595,7 @@ simde_vrshlq_s32 (const simde_int32x4_t a, const simde_int32x4_t b) {
       const __m128i zero = _mm_setzero_si128();
       const __m128i ff   = _mm_cmpeq_epi32(zero, zero);
       __m128i B = _mm_srai_epi32(_mm_slli_epi32(b_.m128i, 24), 24);
-      __m128i a_shr = _mm_srav_epi32(a, _mm_xor_si128(B, ff));
+      __m128i a_shr = _mm_srav_epi32(a_.m128i, _mm_xor_si128(B, ff));
       r_.m128i = _mm_blendv_epi8(_mm_sllv_epi32(a_.m128i, B),
                             _mm_srai_epi32(_mm_sub_epi32(a_shr, ff), 1),
                             _mm_cmpgt_epi32(zero, B));
@@ -656,18 +656,18 @@ simde_vrshlq_s64 (const simde_int64x2_t a, const simde_int64x2_t b) {
       const __m128i zero = _mm_setzero_si128();
       const __m128i ff   = _mm_cmpeq_epi32(zero, zero);
       __m128i B = _mm_srai_epi64(_mm_slli_epi64(b_.m128i, 56), 56);
-      __m128i a_shr = _mm_srav_epi64(a, _mm_xor_si128(B, ff));
+      __m128i a_shr = _mm_srav_epi64(a_.m128i, _mm_xor_si128(B, ff));
       r_.m128i = _mm_blendv_epi8(_mm_sllv_epi64(a_.m128i, B),
                             _mm_srai_epi64(_mm_sub_epi64(a_shr, ff), 1),
                             _mm_cmpgt_epi64(zero, B));
     #elif defined(SIMDE_X86_AVX2_NATIVE)
       const __m128i zero = _mm_setzero_si128();
       const __m128i ones = _mm_set1_epi64x(1);
-      __m128i maska = _mm_cmpgt_epi64(zero, a);
+      __m128i maska = _mm_cmpgt_epi64(zero, a_.m128i);
       __m128i b_abs = _mm_and_si128(_mm_abs_epi8(b_.m128i), _mm_set1_epi64x(0xFF));
-      __m128i a_rnd = _mm_and_si128(_mm_srlv_epi64(a, _mm_sub_epi64(b_abs, ones)), ones);
+      __m128i a_rnd = _mm_and_si128(_mm_srlv_epi64(a_.m128i, _mm_sub_epi64(b_abs, ones)), ones);
       r_.m128i = _mm_blendv_epi8(_mm_sllv_epi64(a_.m128i, b_abs),
-                            _mm_add_epi64(_mm_xor_si128(_mm_srlv_epi64(_mm_xor_si128(a, maska), b_abs), maska), a_rnd),
+                            _mm_add_epi64(_mm_xor_si128(_mm_srlv_epi64(_mm_xor_si128(a_.m128i, maska), b_abs), maska), a_rnd),
                             _mm_cmpgt_epi64(zero, _mm_slli_epi64(b_.m128i, 56)));
     #else
       SIMDE_VECTORIZE
@@ -720,7 +720,7 @@ simde_vrshlq_u8 (const simde_uint8x16_t a, const simde_int8x16_t b) {
       __m256i r256 = _mm256_blendv_epi8(_mm256_sllv_epi16(a256, b256),
                                         _mm256_srli_epi16(_mm256_sub_epi16(a256_shr, ff), 1),
                                         _mm256_cmpgt_epi16(zero, b256));
-      return _mm256_cvtepi16_epi8(r256);
+      r_.m128i = _mm256_cvtepi16_epi8(r256);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -771,7 +771,7 @@ simde_vrshlq_u16 (const simde_uint16x8_t a, const simde_int16x8_t b) {
       const __m128i zero = _mm_setzero_si128();
       const __m128i ff   = _mm_cmpeq_epi16(zero, zero);
       __m128i B = _mm_srai_epi16(_mm_slli_epi16(b_.m128i, 8), 8);
-      __m128i a_shr = _mm_srlv_epi16(a, _mm_xor_si128(B, ff));
+      __m128i a_shr = _mm_srlv_epi16(a_.m128i, _mm_xor_si128(B, ff));
       r_.m128i = _mm_blendv_epi8(_mm_sllv_epi16(a_.m128i, B),
                             _mm_srli_epi16(_mm_sub_epi16(a_shr, ff), 1),
                             _mm_cmpgt_epi16(zero, B));
@@ -838,7 +838,7 @@ simde_vrshlq_u32 (const simde_uint32x4_t a, const simde_int32x4_t b) {
       const __m128i zero = _mm_setzero_si128();
       const __m128i ff   = _mm_cmpeq_epi32(zero, zero);
       __m128i B = _mm_srai_epi32(_mm_slli_epi32(b_.m128i, 24), 24);
-      __m128i a_shr = _mm_srlv_epi32(a, _mm_xor_si128(B, ff));
+      __m128i a_shr = _mm_srlv_epi32(a_.m128i, _mm_xor_si128(B, ff));
       r_.m128i = _mm_blendv_epi8(_mm_sllv_epi32(a_.m128i, B),
                             _mm_srli_epi32(_mm_sub_epi32(a_shr, ff), 1),
                             _mm_cmpgt_epi32(zero, B));
@@ -898,14 +898,14 @@ simde_vrshlq_u64 (const simde_uint64x2_t a, const simde_int64x2_t b) {
       const __m128i zero = _mm_setzero_si128();
       const __m128i ff   = _mm_cmpeq_epi64(zero, zero);
       __m128i B = _mm_srai_epi64(_mm_slli_epi64(b_.m128i, 56), 56);
-      __m128i a_shr = _mm_srlv_epi64(a, _mm_xor_si128(B, ff));
+      __m128i a_shr = _mm_srlv_epi64(a_.m128i, _mm_xor_si128(B, ff));
       r_.m128i = _mm_blendv_epi8(_mm_sllv_epi64(a_.m128i, B),
                             _mm_srli_epi64(_mm_sub_epi64(a_shr, ff), 1),
                             _mm_cmpgt_epi64(zero, B));
     #elif defined(SIMDE_X86_AVX2_NATIVE)
       const __m128i ones = _mm_set1_epi64x(1);
       __m128i b_abs = _mm_and_si128(_mm_abs_epi8(b_.m128i), _mm_set1_epi64x(0xFF));
-      __m128i a_shr = _mm_srlv_epi64(a, _mm_sub_epi64(b_abs, ones));
+      __m128i a_shr = _mm_srlv_epi64(a_.m128i, _mm_sub_epi64(b_abs, ones));
       r_.m128i = _mm_blendv_epi8(_mm_sllv_epi64(a_.m128i, b_abs),
                             _mm_srli_epi64(_mm_add_epi64(a_shr, ones), 1),
                             _mm_cmpgt_epi64(_mm_setzero_si128(), _mm_slli_epi64(b_.m128i, 56)));

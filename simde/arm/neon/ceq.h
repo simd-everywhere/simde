@@ -389,7 +389,7 @@ simde_vceqq_f32(simde_float32x4_t a, simde_float32x4_t b) {
       b_ = simde_float32x4_to_private(b);
 
     #if defined(SIMDE_X86_SSE2_NATIVE)
-      return _mm_castps_si128(_mm_cmpeq_ps(a_.m128, b_.m128));
+      r_.m128i = _mm_castps_si128(_mm_cmpeq_ps(a_.m128, b_.m128));
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r_.v128 = wasm_f32x4_eq(a_.v128, b_.v128);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
@@ -423,7 +423,7 @@ simde_vceqq_f64(simde_float64x2_t a, simde_float64x2_t b) {
       b_ = simde_float64x2_to_private(b);
 
     #if defined(SIMDE_X86_SSE2_NATIVE)
-      return _mm_castpd_si128(_mm_cmpeq_pd(a_.m128d, b_.m128d));
+      r_.m128i = _mm_castpd_si128(_mm_cmpeq_pd(a_.m128d, b_.m128d));
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r_.v128 = wasm_f64x2_eq(a_.v128, b_.v128);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)

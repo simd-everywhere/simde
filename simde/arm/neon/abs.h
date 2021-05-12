@@ -292,7 +292,7 @@ simde_vabsq_s8(simde_int8x16_t a) {
     #if defined(SIMDE_X86_SSSE3_NATIVE)
       r_.m128i = _mm_abs_epi8(a_.m128i);
     #elif defined(SIMDE_X86_SSE2_NATIVE)
-      r_.m128i = _mm_min_epu8(a, _mm_sub_epi8(_mm_setzero_si128(), a_.m128i));
+      r_.m128i = _mm_min_epu8(a_.m128i, _mm_sub_epi8(_mm_setzero_si128(), a_.m128i));
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r_.v128 = wasm_i8x16_abs(a_.v128);
     #elif (SIMDE_NATURAL_VECTOR_SIZE > 0) && defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
@@ -328,7 +328,7 @@ simde_vabsq_s16(simde_int16x8_t a) {
     #if defined(SIMDE_X86_SSSE3_NATIVE)
       r_.m128i = _mm_abs_epi16(a_.m128i);
     #elif defined(SIMDE_X86_SSE2_NATIVE)
-      r_.m128i = _mm_max_epi16(a, _mm_sub_epi16(_mm_setzero_si128(), a_.m128i));
+      r_.m128i = _mm_max_epi16(a_.m128i, _mm_sub_epi16(_mm_setzero_si128(), a_.m128i));
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r_.v128 = wasm_i16x8_abs(a_.v128);
     #elif (SIMDE_NATURAL_VECTOR_SIZE > 0) && defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
@@ -364,7 +364,7 @@ simde_vabsq_s32(simde_int32x4_t a) {
     #if defined(SIMDE_X86_SSSE3_NATIVE)
     r_.m128i = _mm_abs_epi32(a_.m128i);
     #elif defined(SIMDE_X86_SSE2_NATIVE)
-      const __m128i m = _mm_cmpgt_epi32(_mm_setzero_si128(), a);
+      const __m128i m = _mm_cmpgt_epi32(_mm_setzero_si128(), a_.m128i);
       r_.m128i = _mm_sub_epi32(_mm_xor_si128(a_.m128i, m), m);
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r_.v128 = wasm_i32x4_abs(a_.v128);
@@ -403,7 +403,7 @@ simde_vabsq_s64(simde_int64x2_t a) {
     #if defined(SIMDE_X86_AVX512VL_NATIVE)
       r_.m128i = _mm_abs_epi64(a_.m128i);
     #elif defined(SIMDE_X86_SSE2_NATIVE)
-      const __m128i m = _mm_srai_epi32(_mm_shuffle_epi32(a, 0xF5), 31);
+      const __m128i m = _mm_srai_epi32(_mm_shuffle_epi32(a_.m128i, 0xF5), 31);
       r_.m128i = _mm_sub_epi64(_mm_xor_si128(a_.m128i, m), m);
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r_.v128 = wasm_i64x2_abs(a_.v128);

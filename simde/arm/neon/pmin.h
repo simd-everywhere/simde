@@ -175,7 +175,7 @@ simde_vpminq_f64(simde_float64x2_t a, simde_float64x2_t b) {
     #if defined(SIMDE_X86_SSE2_NATIVE)
       __m128d e = _mm_unpacklo_pd(a_.m128d, b_.m128d);
       __m128d o = _mm_unpackhi_pd(a_.m128d, b_.m128d);
-      return _mm_min_pd(e, o);
+      r_.m128d = _mm_min_pd(e, o);
     #endif
 
     return simde_float64x2_from_private(r_);
