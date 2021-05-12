@@ -5429,15 +5429,21 @@ simde_mm256_unpacklo_epi8 (simde__m256i a, simde__m256i b) {
       a_ = simde__m256i_to_private(a),
       b_ = simde__m256i_to_private(b);
 
-    #if defined(SIMDE_SHUFFLE_VECTOR_)
+    #if SIMDE_NATURAL_VECTOR_SIZE_LE(128)
+      r_.m128i[0] = simde_mm_unpacklo_epi8(a_.m128i[0], b_.m128i[0]);
+      r_.m128i[1] = simde_mm_unpacklo_epi8(a_.m128i[1], b_.m128i[1]);
+    #elif defined(SIMDE_SHUFFLE_VECTOR_)
       r_.i8 = SIMDE_SHUFFLE_VECTOR_(8, 32, a_.i8, b_.i8,
            0, 32,  1, 33,  2, 34,  3, 35,
            4, 36,  5, 37,  6, 38,  7, 39,
           16, 48, 17, 49, 18, 50, 19, 51,
           20, 52, 21, 53, 22, 54, 23, 55);
     #else
-      r_.m128i[0] = simde_mm_unpacklo_epi8(a_.m128i[0], b_.m128i[0]);
-      r_.m128i[1] = simde_mm_unpacklo_epi8(a_.m128i[1], b_.m128i[1]);
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.i8) / sizeof(r_.i8[0]) / 2) ; i++) {
+        r_.i8[2 * i] = a_.i8[i + ~(~i | 7)];
+        r_.i8[2 * i + 1] = b_.i8[i + ~(~i | 7)];
+      }
     #endif
 
     return simde__m256i_from_private(r_);
@@ -5459,12 +5465,18 @@ simde_mm256_unpacklo_epi16 (simde__m256i a, simde__m256i b) {
       a_ = simde__m256i_to_private(a),
       b_ = simde__m256i_to_private(b);
 
-    #if defined(SIMDE_SHUFFLE_VECTOR_)
+    #if SIMDE_NATURAL_VECTOR_SIZE_LE(128)
+      r_.m128i[0] = simde_mm_unpacklo_epi16(a_.m128i[0], b_.m128i[0]);
+      r_.m128i[1] = simde_mm_unpacklo_epi16(a_.m128i[1], b_.m128i[1]);
+    #elif defined(SIMDE_SHUFFLE_VECTOR_)
       r_.i16 =SIMDE_SHUFFLE_VECTOR_(16, 32, a_.i16, b_.i16,
         0, 16, 1, 17, 2, 18, 3, 19, 8, 24, 9, 25, 10, 26, 11, 27);
     #else
-      r_.m128i[0] = simde_mm_unpacklo_epi16(a_.m128i[0], b_.m128i[0]);
-      r_.m128i[1] = simde_mm_unpacklo_epi16(a_.m128i[1], b_.m128i[1]);
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.i16) / sizeof(r_.i16[0]) / 2) ; i++) {
+        r_.i16[2 * i] = a_.i16[i + ~(~i | 3)];
+        r_.i16[2 * i + 1] = b_.i16[i + ~(~i | 3)];
+      }
     #endif
 
     return simde__m256i_from_private(r_);
@@ -5486,12 +5498,18 @@ simde_mm256_unpacklo_epi32 (simde__m256i a, simde__m256i b) {
       a_ = simde__m256i_to_private(a),
       b_ = simde__m256i_to_private(b);
 
-    #if defined(SIMDE_SHUFFLE_VECTOR_)
+    #if SIMDE_NATURAL_VECTOR_SIZE_LE(128)
+      r_.m128i[0] = simde_mm_unpacklo_epi32(a_.m128i[0], b_.m128i[0]);
+      r_.m128i[1] = simde_mm_unpacklo_epi32(a_.m128i[1], b_.m128i[1]);
+    #elif defined(SIMDE_SHUFFLE_VECTOR_)
       r_.i32 = SIMDE_SHUFFLE_VECTOR_(32, 32, a_.i32, b_.i32,
                                     0, 8, 1, 9, 4, 12, 5, 13);
     #else
-      r_.m128i[0] = simde_mm_unpacklo_epi32(a_.m128i[0], b_.m128i[0]);
-      r_.m128i[1] = simde_mm_unpacklo_epi32(a_.m128i[1], b_.m128i[1]);
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0]) / 2) ; i++) {
+        r_.i32[2 * i] = a_.i32[i + ~(~i | 1)];
+        r_.i32[2 * i + 1] = b_.i32[i + ~(~i | 1)];
+      }
     #endif
 
     return simde__m256i_from_private(r_);
@@ -5513,11 +5531,17 @@ simde_mm256_unpacklo_epi64 (simde__m256i a, simde__m256i b) {
       a_ = simde__m256i_to_private(a),
       b_ = simde__m256i_to_private(b);
 
-    #if defined(SIMDE_SHUFFLE_VECTOR_)
-      r_.i64 = SIMDE_SHUFFLE_VECTOR_(64, 32, a_.i64, b_.i64, 0, 4, 2, 6);
-    #else
+    #if SIMDE_NATURAL_VECTOR_SIZE_LE(128)
       r_.m128i[0] = simde_mm_unpacklo_epi64(a_.m128i[0], b_.m128i[0]);
       r_.m128i[1] = simde_mm_unpacklo_epi64(a_.m128i[1], b_.m128i[1]);
+    #elif defined(SIMDE_SHUFFLE_VECTOR_)
+      r_.i64 = SIMDE_SHUFFLE_VECTOR_(64, 32, a_.i64, b_.i64, 0, 4, 2, 6);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.i64) / sizeof(r_.i64[0]) / 2) ; i++) {
+        r_.i64[2 * i] = a_.i64[2 * i];
+        r_.i64[2 * i + 1] = b_.i64[2 * i];
+      }
     #endif
 
     return simde__m256i_from_private(r_);
@@ -5539,15 +5563,21 @@ simde_mm256_unpackhi_epi8 (simde__m256i a, simde__m256i b) {
       a_ = simde__m256i_to_private(a),
       b_ = simde__m256i_to_private(b);
 
-    #if defined(SIMDE_SHUFFLE_VECTOR_)
+    #if SIMDE_NATURAL_VECTOR_SIZE_LE(128)
+      r_.m128i[0] = simde_mm_unpackhi_epi8(a_.m128i[0], b_.m128i[0]);
+      r_.m128i[1] = simde_mm_unpackhi_epi8(a_.m128i[1], b_.m128i[1]);
+    #elif defined(SIMDE_SHUFFLE_VECTOR_)
       r_.i8 = SIMDE_SHUFFLE_VECTOR_(8, 32, a_.i8, b_.i8,
            8, 40,  9, 41, 10, 42, 11, 43,
           12, 44, 13, 45, 14, 46, 15, 47,
           24, 56, 25, 57, 26, 58, 27, 59,
           28, 60, 29, 61, 30, 62, 31, 63);
     #else
-      r_.m128i[0] = simde_mm_unpackhi_epi8(a_.m128i[0], b_.m128i[0]);
-      r_.m128i[1] = simde_mm_unpackhi_epi8(a_.m128i[1], b_.m128i[1]);
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.i8) / sizeof(r_.i8[0]) / 2) ; i++) {
+        r_.i8[2 * i] = a_.i8[i + 8 + ~(~i | 7)];
+        r_.i8[2 * i + 1] = b_.i8[i + 8 + ~(~i | 7)];
+      }
     #endif
 
     return simde__m256i_from_private(r_);
@@ -5569,13 +5599,19 @@ simde_mm256_unpackhi_epi16 (simde__m256i a, simde__m256i b) {
       a_ = simde__m256i_to_private(a),
       b_ = simde__m256i_to_private(b);
 
-    #if defined(SIMDE_SHUFFLE_VECTOR_)
+    #if SIMDE_NATURAL_VECTOR_SIZE_LE(128)
+      r_.m128i[0] = simde_mm_unpackhi_epi16(a_.m128i[0], b_.m128i[0]);
+      r_.m128i[1] = simde_mm_unpackhi_epi16(a_.m128i[1], b_.m128i[1]);
+    #elif defined(SIMDE_SHUFFLE_VECTOR_)
       r_.i16 = SIMDE_SHUFFLE_VECTOR_(16, 32, a_.i16, b_.i16,
          4, 20,  5, 21,  6, 22,  7, 23,
         12, 28, 13, 29, 14, 30, 15, 31);
     #else
-      r_.m128i[0] = simde_mm_unpackhi_epi16(a_.m128i[0], b_.m128i[0]);
-      r_.m128i[1] = simde_mm_unpackhi_epi16(a_.m128i[1], b_.m128i[1]);
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.i16) / sizeof(r_.i16[0]) / 2) ; i++) {
+        r_.i16[2 * i] = a_.i16[i + 4 + ~(~i | 3)];
+        r_.i16[2 * i + 1] = b_.i16[i + 4 + ~(~i | 3)];
+      }
     #endif
 
     return simde__m256i_from_private(r_);
@@ -5597,12 +5633,18 @@ simde_mm256_unpackhi_epi32 (simde__m256i a, simde__m256i b) {
       a_ = simde__m256i_to_private(a),
       b_ = simde__m256i_to_private(b);
 
-    #if defined(SIMDE_SHUFFLE_VECTOR_)
+    #if SIMDE_NATURAL_VECTOR_SIZE_LE(128)
+      r_.m128i[0] = simde_mm_unpackhi_epi32(a_.m128i[0], b_.m128i[0]);
+      r_.m128i[1] = simde_mm_unpackhi_epi32(a_.m128i[1], b_.m128i[1]);
+    #elif defined(SIMDE_SHUFFLE_VECTOR_)
       r_.i32 = SIMDE_SHUFFLE_VECTOR_(32, 32, a_.i32, b_.i32,
                                     2, 10, 3, 11, 6, 14, 7, 15);
     #else
-      r_.m128i[0] = simde_mm_unpackhi_epi32(a_.m128i[0], b_.m128i[0]);
-      r_.m128i[1] = simde_mm_unpackhi_epi32(a_.m128i[1], b_.m128i[1]);
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0]) / 2) ; i++) {
+        r_.i32[2 * i] = a_.i32[i + 2 + ~(~i | 1)];
+        r_.i32[2 * i + 1] = b_.i32[i + 2 + ~(~i | 1)];
+      }
     #endif
 
     return simde__m256i_from_private(r_);
@@ -5624,11 +5666,17 @@ simde_mm256_unpackhi_epi64 (simde__m256i a, simde__m256i b) {
       a_ = simde__m256i_to_private(a),
       b_ = simde__m256i_to_private(b);
 
-    #if defined(SIMDE_SHUFFLE_VECTOR_)
-      r_.i64 = SIMDE_SHUFFLE_VECTOR_(64, 32, a_.i64, b_.i64, 1, 5, 3, 7);
-    #else
+    #if SIMDE_NATURAL_VECTOR_SIZE_LE(128)
       r_.m128i[0] = simde_mm_unpackhi_epi64(a_.m128i[0], b_.m128i[0]);
       r_.m128i[1] = simde_mm_unpackhi_epi64(a_.m128i[1], b_.m128i[1]);
+    #elif defined(SIMDE_SHUFFLE_VECTOR_)
+      r_.i64 = SIMDE_SHUFFLE_VECTOR_(64, 32, a_.i64, b_.i64, 1, 5, 3, 7);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.i64) / sizeof(r_.i64[0]) / 2) ; i++) {
+        r_.i64[2 * i] = a_.i64[2 * i + 1];
+        r_.i64[2 * i + 1] = b_.i64[2 * i + 1];
+      }
     #endif
 
     return simde__m256i_from_private(r_);
