@@ -488,6 +488,33 @@ typedef union {
     #define SIMDE_ARM_NEON_NEED_PORTABLE_U64X2
     #define SIMDE_ARM_NEON_NEED_PORTABLE_F64X2
   #endif
+#elif defined(SIMDE_VECTOR)
+  typedef simde_float32 simde_float32_t;
+  typedef simde_float64 simde_float64_t;
+  typedef int8_t          simde_int8x8_t    SIMDE_VECTOR(8);
+  typedef int16_t         simde_int16x4_t   SIMDE_VECTOR(8);
+  typedef int32_t         simde_int32x2_t   SIMDE_VECTOR(8);
+  typedef int64_t         simde_int64x1_t   SIMDE_VECTOR(8);
+  typedef uint8_t         simde_uint8x8_t   SIMDE_VECTOR(8);
+  typedef uint16_t        simde_uint16x4_t  SIMDE_VECTOR(8);
+  typedef uint32_t        simde_uint32x2_t  SIMDE_VECTOR(8);
+  typedef uint64_t        simde_uint64x1_t  SIMDE_VECTOR(8);
+  typedef simde_float32_t simde_float32x2_t SIMDE_VECTOR(8);
+  typedef simde_float64_t simde_float64x1_t SIMDE_VECTOR(8);
+  typedef int8_t          simde_int8x16_t   SIMDE_VECTOR(16);
+  typedef int16_t         simde_int16x8_t   SIMDE_VECTOR(16);
+  typedef int32_t         simde_int32x4_t   SIMDE_VECTOR(16);
+  typedef int64_t         simde_int64x2_t   SIMDE_VECTOR(16);
+  typedef uint8_t         simde_uint8x16_t  SIMDE_VECTOR(16);
+  typedef uint16_t        simde_uint16x8_t  SIMDE_VECTOR(16);
+  typedef uint32_t        simde_uint32x4_t  SIMDE_VECTOR(16);
+  typedef uint64_t        simde_uint64x2_t  SIMDE_VECTOR(16);
+  typedef simde_float32_t simde_float32x4_t SIMDE_VECTOR(16);
+  typedef simde_float64_t simde_float64x2_t SIMDE_VECTOR(16);
+
+  #define SIMDE_ARM_NEON_NEED_PORTABLE_VXN
+  #define SIMDE_ARM_NEON_NEED_PORTABLE_F64X1XN
+  #define SIMDE_ARM_NEON_NEED_PORTABLE_F64X2XN
 #else
   #define SIMDE_ARM_NEON_NEED_PORTABLE_F32
   #define SIMDE_ARM_NEON_NEED_PORTABLE_F64
