@@ -359,6 +359,8 @@ simde_float32x4_t
 simde_vld1q_dup_f32(simde_float32 const * ptr) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vld1q_dup_f32(ptr);
+  #elif defined(SIMDE_X86_SSE_NATIVE)
+    return _mm_load_ps1(ptr);
   #else
     simde_float32x4_private r_;
     SIMDE_VECTORIZE
@@ -380,10 +382,14 @@ simde_vld1q_dup_s8(int8_t const * ptr) {
     return vld1q_dup_s8(ptr);
   #else
     simde_int8x16_private r_;
-    SIMDE_VECTORIZE
-    for (size_t i = 0; i < (sizeof(r_.values) / sizeof(r_.values[0])); i++) {
-      r_.values[i] = *ptr;
-    }
+    #if defined(SIMDE_X86_SSE_NATIVE)
+      r_.m128i = _mm_set1_epi8(*ptr);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0; i < (sizeof(r_.values) / sizeof(r_.values[0])); i++) {
+        r_.values[i] = *ptr;
+      }
+    #endif
     return simde_int8x16_from_private(r_);
   #endif
 }
@@ -399,10 +405,14 @@ simde_vld1q_dup_s16(int16_t const * ptr) {
     return vld1q_dup_s16(ptr);
   #else
     simde_int16x8_private r_;
-    SIMDE_VECTORIZE
-    for (size_t i = 0; i < (sizeof(r_.values) / sizeof(r_.values[0])); i++) {
-      r_.values[i] = *ptr;
-    }
+    #if defined(SIMDE_X86_SSE_NATIVE)
+      r_.m128i = _mm_set1_epi16(*ptr);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0; i < (sizeof(r_.values) / sizeof(r_.values[0])); i++) {
+        r_.values[i] = *ptr;
+      }
+    #endif
     return simde_int16x8_from_private(r_);
   #endif
 }
@@ -418,10 +428,14 @@ simde_vld1q_dup_s32(int32_t const * ptr) {
     return vld1q_dup_s32(ptr);
   #else
     simde_int32x4_private r_;
-    SIMDE_VECTORIZE
-    for (size_t i = 0; i < (sizeof(r_.values) / sizeof(r_.values[0])); i++) {
-      r_.values[i] = *ptr;
-    }
+    #if defined(SIMDE_X86_SSE_NATIVE)
+      r_.m128i = _mm_set1_epi32(*ptr);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0; i < (sizeof(r_.values) / sizeof(r_.values[0])); i++) {
+        r_.values[i] = *ptr;
+      }
+    #endif
     return simde_int32x4_from_private(r_);
   #endif
 }
@@ -437,10 +451,14 @@ simde_vld1q_dup_s64(int64_t const * ptr) {
     return vld1q_dup_s64(ptr);
   #else
     simde_int64x2_private r_;
-    SIMDE_VECTORIZE
-    for (size_t i = 0; i < (sizeof(r_.values) / sizeof(r_.values[0])); i++) {
-      r_.values[i] = *ptr;
-    }
+    #if defined(SIMDE_X86_SSE_NATIVE)
+      r_.m128i = _mm_set1_epi64x(*ptr);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0; i < (sizeof(r_.values) / sizeof(r_.values[0])); i++) {
+        r_.values[i] = *ptr;
+      }
+    #endif
     return simde_int64x2_from_private(r_);
   #endif
 }
@@ -456,10 +474,14 @@ simde_vld1q_dup_u8(uint8_t const * ptr) {
     return vld1q_dup_u8(ptr);
   #else
     simde_uint8x16_private r_;
-    SIMDE_VECTORIZE
-    for (size_t i = 0; i < (sizeof(r_.values) / sizeof(r_.values[0])); i++) {
-      r_.values[i] = *ptr;
-    }
+    #if defined(SIMDE_X86_SSE_NATIVE)
+      r_.m128i = _mm_set1_epi8(*ptr);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0; i < (sizeof(r_.values) / sizeof(r_.values[0])); i++) {
+        r_.values[i] = *ptr;
+      }
+    #endif
     return simde_uint8x16_from_private(r_);
   #endif
 }
@@ -475,10 +497,14 @@ simde_vld1q_dup_u16(uint16_t const * ptr) {
     return vld1q_dup_u16(ptr);
   #else
     simde_uint16x8_private r_;
-    SIMDE_VECTORIZE
-    for (size_t i = 0; i < (sizeof(r_.values) / sizeof(r_.values[0])); i++) {
-      r_.values[i] = *ptr;
-    }
+    #if defined(SIMDE_X86_SSE_NATIVE)
+      r_.m128i = _mm_set1_epi16(*ptr);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0; i < (sizeof(r_.values) / sizeof(r_.values[0])); i++) {
+        r_.values[i] = *ptr;
+      }
+    #endif
     return simde_uint16x8_from_private(r_);
   #endif
 }
@@ -494,10 +520,14 @@ simde_vld1q_dup_u32(uint32_t const * ptr) {
     return vld1q_dup_u32(ptr);
   #else
     simde_uint32x4_private r_;
-    SIMDE_VECTORIZE
-    for (size_t i = 0; i < (sizeof(r_.values) / sizeof(r_.values[0])); i++) {
-      r_.values[i] = *ptr;
-    }
+    #if defined(SIMDE_X86_SSE_NATIVE)
+      r_.m128i = _mm_set1_epi32(*ptr);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0; i < (sizeof(r_.values) / sizeof(r_.values[0])); i++) {
+        r_.values[i] = *ptr;
+      }
+    #endif
     return simde_uint32x4_from_private(r_);
   #endif
 }
@@ -513,10 +543,14 @@ simde_vld1q_dup_u64(uint64_t const * ptr) {
     return vld1q_dup_u64(ptr);
   #else
     simde_uint64x2_private r_;
-    SIMDE_VECTORIZE
-    for (size_t i = 0; i < (sizeof(r_.values) / sizeof(r_.values[0])); i++) {
-      r_.values[i] = *ptr;
-    }
+    #if defined(SIMDE_X86_SSE_NATIVE)
+      r_.m128i = _mm_set1_epi64x(*ptr);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0; i < (sizeof(r_.values) / sizeof(r_.values[0])); i++) {
+        r_.values[i] = *ptr;
+      }
+    #endif
     return simde_uint64x2_from_private(r_);
   #endif
 }
