@@ -1,6 +1,6 @@
 simde_test_arm_neon_sources = []
 foreach name : simde_neon_families
-  if (name != 'ld1') and (name != 'ld3') and (name != 'ld4') and (name != 'st1')
+  if (name != 'ld3') and (name != 'ld4') and (name != 'st1')
     foreach lang : ['c', 'cpp']
       source_file = name + '.c'
       if lang == 'cpp'
