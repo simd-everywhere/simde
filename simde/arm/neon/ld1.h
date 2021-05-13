@@ -475,7 +475,7 @@ simde_vld1q_dup_u8(uint8_t const * ptr) {
   #else
     simde_uint8x16_private r_;
     #if defined(SIMDE_X86_SSE_NATIVE)
-      r_.m128i = _mm_set1_epi8(*ptr);
+      r_.m128i = _mm_set1_epi8(*HEDLEY_REINTERPRET_CAST(int8_t const *, ptr));
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0; i < (sizeof(r_.values) / sizeof(r_.values[0])); i++) {
@@ -498,7 +498,7 @@ simde_vld1q_dup_u16(uint16_t const * ptr) {
   #else
     simde_uint16x8_private r_;
     #if defined(SIMDE_X86_SSE_NATIVE)
-      r_.m128i = _mm_set1_epi16(*ptr);
+      r_.m128i = _mm_set1_epi16(*HEDLEY_REINTERPRET_CAST(int16_t const *, ptr));
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0; i < (sizeof(r_.values) / sizeof(r_.values[0])); i++) {
@@ -521,7 +521,7 @@ simde_vld1q_dup_u32(uint32_t const * ptr) {
   #else
     simde_uint32x4_private r_;
     #if defined(SIMDE_X86_SSE_NATIVE)
-      r_.m128i = _mm_set1_epi32(*ptr);
+      r_.m128i = _mm_set1_epi32(*HEDLEY_REINTERPRET_CAST(int32_t const *, ptr));
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0; i < (sizeof(r_.values) / sizeof(r_.values[0])); i++) {
@@ -544,7 +544,7 @@ simde_vld1q_dup_u64(uint64_t const * ptr) {
   #else
     simde_uint64x2_private r_;
     #if defined(SIMDE_X86_SSE_NATIVE)
-      r_.m128i = _mm_set1_epi64x(*ptr);
+      r_.m128i = _mm_set1_epi64x(*HEDLEY_REINTERPRET_CAST(int64_t const *, ptr));
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0; i < (sizeof(r_.values) / sizeof(r_.values[0])); i++) {
