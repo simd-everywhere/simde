@@ -471,6 +471,28 @@ simde_vdup_laneq_u64(simde_uint64x2_t vec, const int lane)
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float32x4_t
+simde_vdupq_lane_f32(simde_float32x2_t vec, const int lane)
+    SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 1) {
+  simde_float32x2_private vec_ = simde_float32x2_to_private(vec);
+  simde_float32x4_private r_;
+
+  SIMDE_VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+    r_.values[i] = vec_.values[lane];
+  }
+
+  return simde_float32x4_from_private(r_);
+}
+#if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+  #define simde_vdupq_lane_f32(vec, lane) vdupq_lane_f32(vec, lane)
+#endif
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vdupq_lane_f32
+  #define vdupq_lane_f32(vec, lane) simde_vdupq_lane_f32((vec), (lane))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_float32x4_t
 simde_vdupq_laneq_f32(simde_float32x4_t vec, const int lane)
     SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 3) {
   simde_float32x4_private
