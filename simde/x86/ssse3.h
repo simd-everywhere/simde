@@ -38,6 +38,8 @@ simde__m128i
 simde_mm_abs_epi8 (simde__m128i a) {
   #if defined(SIMDE_X86_SSSE3_NATIVE)
     return _mm_abs_epi8(a);
+  #elif defined(SIMDE_X86_SSE2_NATIVE)
+    return _mm_min_epu8(a, _mm_sub_epi8(_mm_setzero_si128(), a));
   #else
     simde__m128i_private
       r_,
@@ -45,8 +47,10 @@ simde_mm_abs_epi8 (simde__m128i a) {
 
     #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       r_.neon_i8 = vabsq_s8(a_.neon_i8);
-    #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+    #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
       r_.altivec_i8 = vec_abs(a_.altivec_i8);
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+      r_.wasm_v128 = wasm_i8x16_abs(a_.wasm_v128);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.i8) / sizeof(r_.i8[0])) ; i++) {
@@ -66,6 +70,8 @@ simde__m128i
 simde_mm_abs_epi16 (simde__m128i a) {
   #if defined(SIMDE_X86_SSSE3_NATIVE)
     return _mm_abs_epi16(a);
+  #elif defined(SIMDE_X86_SSE2_NATIVE)
+    return _mm_max_epi16(a, _mm_sub_epi16(_mm_setzero_si128(), a));
   #else
     simde__m128i_private
       r_,
@@ -73,8 +79,10 @@ simde_mm_abs_epi16 (simde__m128i a) {
 
     #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       r_.neon_i16 = vabsq_s16(a_.neon_i16);
-    #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+    #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
       r_.altivec_i16 = vec_abs(a_.altivec_i16);
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+      r_.wasm_v128 = wasm_i16x8_abs(a_.wasm_v128);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.i16) / sizeof(r_.i16[0])) ; i++) {
@@ -94,6 +102,9 @@ simde__m128i
 simde_mm_abs_epi32 (simde__m128i a) {
   #if defined(SIMDE_X86_SSSE3_NATIVE)
     return _mm_abs_epi32(a);
+  #elif defined(SIMDE_X86_SSE2_NATIVE)
+    const __m128i m = _mm_cmpgt_epi32(_mm_setzero_si128(), a);
+    return _mm_sub_epi32(_mm_xor_si128(a, m), m);
   #else
     simde__m128i_private
       r_,
@@ -101,8 +112,10 @@ simde_mm_abs_epi32 (simde__m128i a) {
 
     #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       r_.neon_i32 = vabsq_s32(a_.neon_i32);
-    #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+    #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
       r_.altivec_i32 = vec_abs(a_.altivec_i32);
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+      r_.wasm_v128 = wasm_i32x4_abs(a_.wasm_v128);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {

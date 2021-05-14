@@ -45,7 +45,7 @@
       HEDLEY_HAS_BUILTIN(__builtin_creal) || \
       HEDLEY_GCC_VERSION_CHECK(4,7,0) || \
       HEDLEY_INTEL_VERSION_CHECK(13,0,0) \
-    ) && (!defined(__cplusplus) || !defined(__STRICT_ANSI__))
+    ) && (!defined(__cplusplus) && !defined(__STRICT_ANSI__))
   HEDLEY_DIAGNOSTIC_PUSH
   SIMDE_DIAGNOSTIC_DISABLE_C99_EXTENSIONS_
     typedef __complex__ float simde_cfloat32;

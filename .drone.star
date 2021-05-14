@@ -63,11 +63,12 @@ def main(ctx):
             "environment": environment,
             "commands": [
               "cat /proc/cpuinfo",
+              "echo 'APT::Acquire::Retries \"3\";' > /etc/apt/apt.conf.d/80-retries",
               "apt-get update -y",
               "apt-get install -y " + " ".join(packages),
               "pip3 install meson",
               "meson build -Db_coverage=true || (cat build/meson-logs/meson-log.txt; false)",
-              "ninja -C build -v test",
+              "ninja -C build -v test || (cat build/meson-logs/testlog.txt; false)",
             ],
           }
         ],

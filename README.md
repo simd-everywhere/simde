@@ -62,23 +62,27 @@ If you have any questions, please feel free to use the
 ## Current Status
 
 There are currently complete implementations of the following instruction
-sets:
+set extensions:
 
- * [MMX](https://en.wikipedia.org/wiki/MMX_(instruction_set))
- * [SSE](https://en.wikipedia.org/wiki/Streaming_SIMD_Extensions)
- * [SSE2](https://en.wikipedia.org/wiki/SSE2)
- * [SSE3](https://en.wikipedia.org/wiki/SSE3)
- * [SSSE3](https://en.wikipedia.org/wiki/SSSE3)
- * [SSE4.1](https://en.wikipedia.org/wiki/SSE4#SSE4.1)
- * [AVX](https://en.wikipedia.org/wiki/Advanced_Vector_Extensions)
- * [AVX2](https://en.wikipedia.org/wiki/Advanced_Vector_Extensions#Advanced_Vector_Extensions_2)
- * [FMA](https://en.wikipedia.org/wiki/FMA_instruction_set)
- * [GFNI](https://en.wikipedia.org/wiki/AVX-512#GFNI)
- * [CLMUL](https://en.wikipedia.org/wiki/CLMUL_instruction_set)
- * [XOP](https://en.wikipedia.org/wiki/XOP_instruction_set)
- * [SVML](https://software.intel.com/content/www/us/en/develop/documentation/cpp-compiler-developer-guide-and-reference/top/compiler-reference/intrinsics/intrinsics-for-intel-advanced-vector-extensions-512-intel-avx-512-instructions/intrinsics-for-arithmetic-operations-1/intrinsics-for-short-vector-math-library-svml-operations.html)
+* x86 / x86_64
+  * [MMX](https://en.wikipedia.org/wiki/MMX_(instruction_set))
+  * [SSE](https://en.wikipedia.org/wiki/Streaming_SIMD_Extensions)
+  * [SSE2](https://en.wikipedia.org/wiki/SSE2)
+  * [SSE3](https://en.wikipedia.org/wiki/SSE3)
+  * [SSSE3](https://en.wikipedia.org/wiki/SSSE3)
+  * [SSE4.1](https://en.wikipedia.org/wiki/SSE4#SSE4.1)
+  * [AVX](https://en.wikipedia.org/wiki/Advanced_Vector_Extensions)
+  * [AVX2](https://en.wikipedia.org/wiki/Advanced_Vector_Extensions#Advanced_Vector_Extensions_2)
+  * [FMA](https://en.wikipedia.org/wiki/FMA_instruction_set)
+  * [GFNI](https://en.wikipedia.org/wiki/AVX-512#GFNI)
+  * [CLMUL](https://en.wikipedia.org/wiki/CLMUL_instruction_set)
+  * [XOP](https://en.wikipedia.org/wiki/XOP_instruction_set)
+  * [SVML](https://software.intel.com/content/www/us/en/develop/documentation/cpp-compiler-developer-guide-and-reference/top/compiler-reference/intrinsics/intrinsics-for-intel-advanced-vector-extensions-512-intel-avx-512-instructions/intrinsics-for-arithmetic-operations-1/intrinsics-for-short-vector-math-library-svml-operations.html)
+* WebAssembly
+  * [SIMD128](https://github.com/WebAssembly/simd)
 
-As well as partial support for many others; see the
+As well as partial support for many others, including NEON and SVE in
+addition to several AVX-512 extensions.  See the
 [instruction-set-support](https://github.com/simd-everywhere/simde/issues?q=is%3Aissue+is%3Aopen+label%3Ainstruction-set-support+sort%3Aupdated-desc)
 label in the issue tracker for details on progress.  If you'd like to
 be notified when an instruction set is available you may subscribe to
@@ -99,7 +103,6 @@ make sense since they will always be green, but here are the links:
 * [AppVeyor](https://ci.appveyor.com/project/nemequ/simde)
 * [Azure Pipelines](https://dev.azure.com/simd-everywhere/SIMDe/_build)
 * [Drone CI](https://cloud.drone.io/simd-everywhere/simde/)
-* [Travis CI](https://travis-ci.org/simd-everywhere/simde)
 
 If you're adding a new build I suggest Cirrus CI, which is where we
 currently have the most room given the number of builds currently on
@@ -185,20 +188,52 @@ That said, the changes are usually quite minor.  It's often enough to
 just use search and replace, manual changes are required pretty
 infrequently.
 
-For best performance, in addition to `-O3` (or whatever your compiler's
-equivalent is), you should enable OpenMP 4 SIMD support by defining
-`SIMDE_ENABLE_OPENMP` before including any SIMDe headers, and
-enabling OpenMP support in your compiler.  GCC and ICC both support a
-flag to enable only OpenMP SIMD support instead of full OpenMP (the OpenMP
-SIMD support doesn't require the OpenMP run-time library); for GCC the
-flag is `-fopenmp-simd` (requires GCC version 4.9 or later), for ICC
-the flag is `-qopenmp-simd`.  SIMDe also supports
+### OpenMP 4 SIMD
+
+SIMDe makes extensive use of annotations to help the compiler vectorize
+code.  By far the best annotations use the SIMD support built in to
+OpenMP 4, so if your compiler supports these annotations we strongly
+recommend you enable them.
+
+If you are already using OpenMP, SIMDe will automatically detect it
+using the `_OPENMP` macro and no further action is required.
+
+Some compilers allow you to enable OpenMP SIMD *without* enabling the
+full OpenMP.  In such cases there is no runtime dependency on OpenMP
+and no runtime overhead; SIMDe will just be faster.  Unfortunately,
+SIMDe has no way to detect such situations (the `_OPENMP` macro is not
+defined), so after enabling it in your compiler you'll need to define
+`SIMDE_ENABLE_OPENMP` (e.g., by passing `-DSIMDE_ENABLE_OPENMP`) to get
+SIMDe to output the relevant pragmas.
+
+Enabling OpenMP SIMD support varies by compiler:
+
+ * GCC 4.9+ and clang 6+ support a `-fopenmp-simd` command line flag.
+ * ICC supports a `-qopenmp-simd` command line flag.
+ * MCST's LCC enables OpenMP SIMD by default, so no flags are needed
+   (technically you don't even need to pass `-DSIMDE_ENABLE_OPENMP`).
+
+We are not currently aware of any other compilers which allow you to
+enable OpenMP SIMD support without enabling full OpenMP (if you are
+please file an issue to let us know).  You should determine whether you
+wish to enable full OpenMP support on a case-by-case basis, but it is
+likely that the overhead of linking to (but not using) the OpenMP
+runtime library will be dwarfed by the performance improvements from
+using the OpenMP SIMD annotations in SIMDe.
+
+If you choose not to use OpenMP SIMD, SIMDe also supports
 using [Cilk Plus](https://www.cilkplus.org/), [GCC loop-specific
 pragmas](https://gcc.gnu.org/onlinedocs/gcc/Loop-Specific-Pragmas.html),
 or [clang pragma loop hint
 directives](http://llvm.org/docs/Vectorizers.html#pragma-loop-hint-directives),
 though these are not nearly as effective as OpenMP SIMD and depending
-on them will likely result in less efficient code.
+on them will likely result in less efficient code.  All of these are
+detected automatically by SIMDe, so if they are enabled in your
+compiler nothing more is required.
+
+If for some reason you do not wish to enable OpenMP 4 SIMD support even
+though SIMDe detects it, you should define `SIMDE_DISABLE_OPENMP` prior
+to including SIMDe.
 
 ## Portability
 
@@ -221,9 +256,8 @@ Currently tested compilers include:
 
 I'm generally willing to accept patches to add support for other
 compilers, as long as they're not too disruptive, *especially* if we
-can get CI support going.  We currently use Travis CI, AppVeyor, and
-Microsoft Azure Pipelines, but other CI platforms can be added as
-necessary.
+can get CI support going.  If using one of our existing CI providers
+isn't an option then other CI platforms can be added.
 
 ### Hardware
 

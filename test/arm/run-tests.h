@@ -5,5 +5,6 @@
 
 #include "../test.h"
 #include "neon/run-tests.h"
+#include "sve/run-tests.h"
 
 MunitSuite* simde_tests_arm_get_suite(void);

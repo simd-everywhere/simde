@@ -128,6 +128,7 @@
     HEDLEY_TI_CL7X_VERSION_CHECK(1,2,0) || \
     HEDLEY_TI_CL430_VERSION_CHECK(16,9,0) || \
     HEDLEY_TI_CLPRU_VERSION_CHECK(2,3,2) || \
+    HEDLEY_MCST_LCC_VERSION_CHECK(1,25,10) || \
     defined(__IBM__ALIGNOF__) || \
     defined(__clang__)
   #define SIMDE_ALIGN_OF(Type) __alignof__(Type)

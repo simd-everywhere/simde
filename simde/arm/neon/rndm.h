@@ -84,10 +84,6 @@ simde_float32x4_t
 simde_vrndmq_f32(simde_float32x4_t a) {
   #if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
     return vrndmq_f32(a);
-  #elif defined(SIMDE_X86_SSE4_1_NATIVE)
-    return _mm_round_ps(a, _MM_FROUND_TO_NEG_INF);
-  #elif defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE_NATIVE)
-    return _mm_floor_ps(a);
   #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
     return vec_floor(a);
   #else
@@ -95,10 +91,16 @@ simde_vrndmq_f32(simde_float32x4_t a) {
       r_,
       a_ = simde_float32x4_to_private(a);
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = simde_math_floorf(a_.values[i]);
-    }
+    #if defined(SIMDE_X86_SSE4_1_NATIVE)
+      r_.m128 = _mm_round_ps(a_.m128, _MM_FROUND_TO_NEG_INF);
+    #elif defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE_NATIVE)
+      r_.m128 = _mm_floor_ps(a_.m128);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+        r_.values[i] = simde_math_floorf(a_.values[i]);
+      }
+    #endif
 
     return simde_float32x4_from_private(r_);
   #endif
@@ -113,10 +115,6 @@ simde_float64x2_t
 simde_vrndmq_f64(simde_float64x2_t a) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vrndmq_f64(a);
-  #elif defined(SIMDE_X86_SSE4_1_NATIVE)
-    return _mm_round_pd(a, _MM_FROUND_TO_NEG_INF);
-  #elif defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE_NATIVE)
-    return _mm_floor_pd(a);
   #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
     return vec_floor(a);
   #else
@@ -124,10 +122,16 @@ simde_vrndmq_f64(simde_float64x2_t a) {
       r_,
       a_ = simde_float64x2_to_private(a);
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = simde_math_floor(a_.values[i]);
-    }
+    #if defined(SIMDE_X86_SSE4_1_NATIVE)
+      r_.m128d = _mm_round_pd(a_.m128d, _MM_FROUND_TO_NEG_INF);
+    #elif defined(SIMDE_X86_SVML_NATIVE) && defined(SIMDE_X86_SSE_NATIVE)
+      r_.m128d = _mm_floor_pd(a_.m128d);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+        r_.values[i] = simde_math_floor(a_.values[i]);
+      }
+    #endif
 
     return simde_float64x2_from_private(r_);
   #endif

@@ -677,7 +677,7 @@ simde_mm_cvtm64_si64 (simde__m64 a) {
   #endif
 }
 #define simde_m_to_int64(a) simde_mm_cvtm64_si64(a)
-#if defined(SIMDE_X86_MMX_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_MMX_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && !defined(SIMDE_ARCH_AMD64))
 #  define _mm_cvtm64_si64(a) simde_mm_cvtm64_si64(a)
 #  define _m_to_int64(a) simde_mm_cvtm64_si64(a)
 #endif
@@ -725,7 +725,7 @@ simde_mm_cvtsi64_m64 (int64_t a) {
   #endif
 }
 #define simde_m_from_int64(a) simde_mm_cvtsi64_m64(a)
-#if defined(SIMDE_X86_MMX_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_MMX_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && !defined(SIMDE_ARCH_AMD64))
 #  define _mm_cvtsi64_m64(a) simde_mm_cvtsi64_m64(a)
 #  define _m_from_int64(a) simde_mm_cvtsi64_m64(a)
 #endif

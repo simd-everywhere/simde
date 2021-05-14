@@ -594,7 +594,9 @@ simde_mm256_blend_epi16(simde__m256i a, simde__m256i b, const int imm8)
 
   return simde__m256i_from_private(r_);
 }
-#if defined(SIMDE_X86_AVX2_NATIVE)
+#if defined(SIMDE_X86_AVX2_NATIVE) && defined(SIMDE_BUG_CLANG_REV_234560)
+#  define simde_mm256_blend_epi16(a, b, imm8) _mm256_castpd_si256(_mm256_blend_epi16(a, b, imm8))
+#elif defined(SIMDE_X86_AVX2_NATIVE)
 #  define simde_mm256_blend_epi16(a, b, imm8) _mm256_blend_epi16(a, b, imm8)
 #elif SIMDE_NATURAL_VECTOR_SIZE_LE(128)
 #  define simde_mm256_blend_epi16(a, b, imm8) \
@@ -1647,7 +1649,7 @@ simde_mm_i32gather_epi32(const int32_t* base_addr, simde__m128i vindex, const in
   #define simde_mm_i32gather_epi32(base_addr, vindex, scale) _mm_i32gather_epi32(SIMDE_CHECKED_REINTERPRET_CAST(int const*, int32_t const*, base_addr), vindex, scale)
 #endif
 #if defined(SIMDE_X86_AVX2_ENABLE_NATIVE_ALIASES)
-  #undef _mm_i32_gather_epi32
+  #undef _mm_i32gather_epi32
   #define _mm_i32gather_epi32(base_addr, vindex, scale) simde_mm_i32gather_epi32(SIMDE_CHECKED_REINTERPRET_CAST(int32_t const*, int const*, base_addr), vindex, scale)
 #endif
 
@@ -1710,7 +1712,7 @@ simde_mm256_i32gather_epi32(const int32_t* base_addr, simde__m256i vindex, const
   #define simde_mm256_i32gather_epi32(base_addr, vindex, scale) _mm256_i32gather_epi32(SIMDE_CHECKED_REINTERPRET_CAST(int const*, int32_t const*, base_addr), vindex, scale)
 #endif
 #if defined(SIMDE_X86_AVX2_ENABLE_NATIVE_ALIASES)
-  #undef _mm256_i32_gather_epi32
+  #undef _mm256_i32gather_epi32
   #define _mm256_i32gather_epi32(base_addr, vindex, scale) simde_mm256_i32gather_epi32(SIMDE_CHECKED_REINTERPRET_CAST(int32_t const*, int const*, base_addr), vindex, scale)
 #endif
 
@@ -1773,7 +1775,7 @@ simde_mm_i64gather_epi32(const int32_t* base_addr, simde__m128i vindex, const in
   #define simde_mm_i64gather_epi32(base_addr, vindex, scale) _mm_i64gather_epi32(SIMDE_CHECKED_REINTERPRET_CAST(int const*, int32_t const*, base_addr), vindex, scale)
 #endif
 #if defined(SIMDE_X86_AVX2_ENABLE_NATIVE_ALIASES)
-  #undef _mm_i64_gather_epi32
+  #undef _mm_i64gather_epi32
   #define _mm_i64gather_epi32(base_addr, vindex, scale) simde_mm_i64gather_epi32(SIMDE_CHECKED_REINTERPRET_CAST(int32_t const*, int const*, base_addr), vindex, scale)
 #endif
 
@@ -1837,7 +1839,7 @@ simde_mm256_i64gather_epi32(const int32_t* base_addr, simde__m256i vindex, const
   #define simde_mm256_i64gather_epi32(base_addr, vindex, scale) _mm256_i64gather_epi32(SIMDE_CHECKED_REINTERPRET_CAST(int const*, int32_t const*, base_addr), vindex, scale)
 #endif
 #if defined(SIMDE_X86_AVX2_ENABLE_NATIVE_ALIASES)
-  #undef _mm256_i64_gather_epi32
+  #undef _mm256_i64gather_epi32
   #define _mm256_i64gather_epi32(base_addr, vindex, scale) simde_mm256_i64gather_epi32(SIMDE_CHECKED_REINTERPRET_CAST(int32_t const*, int const*, base_addr), vindex, scale)
 #endif
 
@@ -1905,7 +1907,7 @@ simde_mm_i32gather_epi64(const int64_t* base_addr, simde__m128i vindex, const in
   #endif
 #endif
 #if defined(SIMDE_X86_AVX2_ENABLE_NATIVE_ALIASES)
-  #undef _mm_i32_gather_epi64
+  #undef _mm_i32gather_epi64
   #define _mm_i32gather_epi64(base_addr, vindex, scale) simde_mm_i32gather_epi64(HEDLEY_REINTERPRET_CAST(int64_t const*, base_addr), vindex, scale)
 #endif
 
@@ -1977,7 +1979,7 @@ simde_mm256_i32gather_epi64(const int64_t* base_addr, simde__m128i vindex, const
   #endif
 #endif
 #if defined(SIMDE_X86_AVX2_ENABLE_NATIVE_ALIASES)
-  #undef _mm256_i32_gather_epi64
+  #undef _mm256_i32gather_epi64
   #define _mm256_i32gather_epi64(base_addr, vindex, scale) simde_mm256_i32gather_epi64(HEDLEY_REINTERPRET_CAST(int64_t const*, base_addr), vindex, scale)
 #endif
 
@@ -2049,7 +2051,7 @@ simde_mm_i64gather_epi64(const int64_t* base_addr, simde__m128i vindex, const in
   #endif
 #endif
 #if defined(SIMDE_X86_AVX2_ENABLE_NATIVE_ALIASES)
-  #undef _mm_i64_gather_epi64
+  #undef _mm_i64gather_epi64
   #define _mm_i64gather_epi64(base_addr, vindex, scale) simde_mm_i64gather_epi64(HEDLEY_REINTERPRET_CAST(int64_t const*, base_addr), vindex, scale)
 #endif
 
@@ -2120,7 +2122,7 @@ simde_mm256_i64gather_epi64(const int64_t* base_addr, simde__m256i vindex, const
   #endif
 #endif
 #if defined(SIMDE_X86_AVX2_ENABLE_NATIVE_ALIASES)
-  #undef _mm256_i64_gather_epi64
+  #undef _mm256_i64gather_epi64
   #define _mm256_i64gather_epi64(base_addr, vindex, scale) simde_mm256_i64gather_epi64(HEDLEY_REINTERPRET_CAST(int64_t const*, base_addr), vindex, scale)
 #endif
 
@@ -2188,7 +2190,7 @@ simde_mm_i32gather_ps(const simde_float32* base_addr, simde__m128i vindex, const
   #define simde_mm_i32gather_ps(base_addr, vindex, scale) _mm_i32gather_ps(SIMDE_CHECKED_REINTERPRET_CAST(float const*, simde_float32 const*, base_addr), vindex, scale)
 #endif
 #if defined(SIMDE_X86_AVX2_ENABLE_NATIVE_ALIASES)
-  #undef _mm_i32_gather_ps
+  #undef _mm_i32gather_ps
   #define _mm_i32gather_ps(base_addr, vindex, scale) simde_mm_i32gather_ps(SIMDE_CHECKED_REINTERPRET_CAST(simde_float32 const*, float const*, base_addr), vindex, scale)
 #endif
 
@@ -2253,7 +2255,7 @@ simde_mm256_i32gather_ps(const simde_float32* base_addr, simde__m256i vindex, co
   #define simde_mm256_i32gather_ps(base_addr, vindex, scale) _mm256_i32gather_ps(SIMDE_CHECKED_REINTERPRET_CAST(float const*, simde_float32 const*, base_addr), vindex, scale)
 #endif
 #if defined(SIMDE_X86_AVX2_ENABLE_NATIVE_ALIASES)
-  #undef _mm256_i32_gather_ps
+  #undef _mm256_i32gather_ps
   #define _mm256_i32gather_ps(base_addr, vindex, scale) simde_mm256_i32gather_ps(SIMDE_CHECKED_REINTERPRET_CAST(simde_float32 const*, float const*, base_addr), vindex, scale)
 #endif
 
@@ -2318,7 +2320,7 @@ simde_mm_i64gather_ps(const simde_float32* base_addr, simde__m128i vindex, const
   #define simde_mm_i64gather_ps(base_addr, vindex, scale) _mm_i64gather_ps(SIMDE_CHECKED_REINTERPRET_CAST(float const*, simde_float32 const*, base_addr), vindex, scale)
 #endif
 #if defined(SIMDE_X86_AVX2_ENABLE_NATIVE_ALIASES)
-  #undef _mm_i64_gather_ps
+  #undef _mm_i64gather_ps
   #define _mm_i64gather_ps(base_addr, vindex, scale) simde_mm_i64gather_ps(SIMDE_CHECKED_REINTERPRET_CAST(simde_float32 const*, float const*, base_addr), vindex, scale)
 #endif
 
@@ -2383,7 +2385,7 @@ simde_mm256_i64gather_ps(const simde_float32* base_addr, simde__m256i vindex, co
   #define simde_mm256_i64gather_ps(base_addr, vindex, scale) _mm256_i64gather_ps(SIMDE_CHECKED_REINTERPRET_CAST(float const*, simde_float32 const*, base_addr), vindex, scale)
 #endif
 #if defined(SIMDE_X86_AVX2_ENABLE_NATIVE_ALIASES)
-  #undef _mm256_i64_gather_ps
+  #undef _mm256_i64gather_ps
   #define _mm256_i64gather_ps(base_addr, vindex, scale) simde_mm256_i64gather_ps(SIMDE_CHECKED_REINTERPRET_CAST(simde_float32 const*, float const*, base_addr), vindex, scale)
 #endif
 
@@ -2448,7 +2450,7 @@ simde_mm_i32gather_pd(const simde_float64* base_addr, simde__m128i vindex, const
   #define simde_mm_i32gather_pd(base_addr, vindex, scale) _mm_i32gather_pd(HEDLEY_REINTERPRET_CAST(simde_float64 const*, base_addr), vindex, scale)
 #endif
 #if defined(SIMDE_X86_AVX2_ENABLE_NATIVE_ALIASES)
-  #undef _mm_i32_gather_pd
+  #undef _mm_i32gather_pd
   #define _mm_i32gather_pd(base_addr, vindex, scale) simde_mm_i32gather_pd(HEDLEY_REINTERPRET_CAST(simde_float64 const*, base_addr), vindex, scale)
 #endif
 
@@ -2513,7 +2515,7 @@ simde_mm256_i32gather_pd(const simde_float64* base_addr, simde__m128i vindex, co
   #define simde_mm256_i32gather_pd(base_addr, vindex, scale) _mm256_i32gather_pd(HEDLEY_REINTERPRET_CAST(simde_float64 const*, base_addr), vindex, scale)
 #endif
 #if defined(SIMDE_X86_AVX2_ENABLE_NATIVE_ALIASES)
-  #undef _mm256_i32_gather_pd
+  #undef _mm256_i32gather_pd
   #define _mm256_i32gather_pd(base_addr, vindex, scale) simde_mm256_i32gather_pd(HEDLEY_REINTERPRET_CAST(simde_float64 const*, base_addr), vindex, scale)
 #endif
 
@@ -2578,7 +2580,7 @@ simde_mm_i64gather_pd(const simde_float64* base_addr, simde__m128i vindex, const
   #define simde_mm_i64gather_pd(base_addr, vindex, scale) _mm_i64gather_pd(HEDLEY_REINTERPRET_CAST(simde_float64 const*, base_addr), vindex, scale)
 #endif
 #if defined(SIMDE_X86_AVX2_ENABLE_NATIVE_ALIASES)
-  #undef _mm_i64_gather_pd
+  #undef _mm_i64gather_pd
   #define _mm_i64gather_pd(base_addr, vindex, scale) simde_mm_i64gather_pd(HEDLEY_REINTERPRET_CAST(simde_float64 const*, base_addr), vindex, scale)
 #endif
 
@@ -2643,7 +2645,7 @@ simde_mm256_i64gather_pd(const simde_float64* base_addr, simde__m256i vindex, co
   #define simde_mm256_i64gather_pd(base_addr, vindex, scale) _mm256_i64gather_pd(HEDLEY_REINTERPRET_CAST(simde_float64 const*, base_addr), vindex, scale)
 #endif
 #if defined(SIMDE_X86_AVX2_ENABLE_NATIVE_ALIASES)
-  #undef _mm256_i64_gather_pd
+  #undef _mm256_i64gather_pd
   #define _mm256_i64gather_pd(base_addr, vindex, scale) simde_mm256_i64gather_pd(HEDLEY_REINTERPRET_CAST(simde_float64 const*, base_addr), vindex, scale)
 #endif
 
@@ -2716,6 +2718,21 @@ simde_mm256_madd_epi16 (simde__m256i a, simde__m256i b) {
     #if SIMDE_NATURAL_VECTOR_SIZE_LE(128)
       r_.m128i[0] = simde_mm_madd_epi16(a_.m128i[0], b_.m128i[0]);
       r_.m128i[1] = simde_mm_madd_epi16(a_.m128i[1], b_.m128i[1]);
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && defined(SIMDE_CONVERT_VECTOR_) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
+      SIMDE_ALIGN_TO_32 int32_t product SIMDE_VECTOR(64);
+      SIMDE_ALIGN_TO_32 int32_t a32x16 SIMDE_VECTOR(64);
+      SIMDE_ALIGN_TO_32 int32_t b32x16 SIMDE_VECTOR(64);
+      SIMDE_ALIGN_TO_32 int32_t even SIMDE_VECTOR(32);
+      SIMDE_ALIGN_TO_32 int32_t odd SIMDE_VECTOR(32);
+
+      SIMDE_CONVERT_VECTOR_(a32x16, a_.i16);
+      SIMDE_CONVERT_VECTOR_(b32x16, b_.i16);
+      product = a32x16 * b32x16;
+
+      even = __builtin_shufflevector(product, product, 0, 2, 4, 6, 8, 10, 12, 14);
+      odd  = __builtin_shufflevector(product, product, 1, 3, 5, 7, 9, 11, 13, 15);
+
+      r_.i32 = even + odd;
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_) / sizeof(r_.i16[0])) ; i += 2) {
@@ -4714,7 +4731,7 @@ simde_mm256_srl_epi16 (simde__m256i a, simde__m128i count) {
       uint64_t shift = HEDLEY_STATIC_CAST(uint64_t , (count_.i64[0] > 16 ? 16 : count_.i64[0]));
 
       #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
-        r_.u16 = a_.u16 >> HEDLEY_STATIC_CAST(int16_t, shift);
+        r_.u16 = a_.u16 >> SIMDE_CAST_VECTOR_SHIFT_COUNT(16, shift);
       #else
         SIMDE_VECTORIZE
         for (size_t i = 0 ; i < (sizeof(r_.i16) / sizeof(r_.i16[0])) ; i++) {
@@ -4751,7 +4768,7 @@ simde_mm256_srl_epi32 (simde__m256i a, simde__m128i count) {
       uint64_t shift = HEDLEY_STATIC_CAST(uint64_t , (count_.i64[0] > 32 ? 32 : count_.i64[0]));
 
       #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
-        r_.u32 = a_.u32 >> HEDLEY_STATIC_CAST(int32_t, shift);
+        r_.u32 = a_.u32 >> SIMDE_CAST_VECTOR_SHIFT_COUNT(32, shift);
       #else
         SIMDE_VECTORIZE
         for (size_t i = 0 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {
@@ -4788,7 +4805,7 @@ simde_mm256_srl_epi64 (simde__m256i a, simde__m128i count) {
       uint64_t shift = HEDLEY_STATIC_CAST(uint64_t , (count_.i64[0] > 64 ? 64 : count_.i64[0]));
 
       #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
-        r_.u64 = a_.u64 >> HEDLEY_STATIC_CAST(int64_t, shift);
+        r_.u64 = a_.u64 >> SIMDE_CAST_VECTOR_SHIFT_COUNT(64, shift);
       #else
         SIMDE_VECTORIZE
         for (size_t i = 0 ; i < (sizeof(r_.i64) / sizeof(r_.i64[0])) ; i++) {
@@ -4826,7 +4843,7 @@ simde_mm256_srli_epi16 (simde__m256i a, const int imm8)
       simde_memset(&r_, 0, sizeof(r_));
     } else {
       #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
-        r_.u16 = a_.u16 >> HEDLEY_STATIC_CAST(int16_t, imm8);
+        r_.u16 = a_.u16 >> SIMDE_CAST_VECTOR_SHIFT_COUNT(16, imm8);
       #else
         SIMDE_VECTORIZE
         for (size_t i = 0 ; i < (sizeof(r_.u16) / sizeof(r_.u16[0])) ; i++) {
@@ -4865,7 +4882,7 @@ simde_mm256_srli_epi32 (simde__m256i a, const int imm8)
       r_.altivec_u32[i] = vec_sr(a_.altivec_u32[i], sv);
     }
   #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
-    r_.u32 = a_.u32 >> HEDLEY_STATIC_CAST(int16_t, imm8);
+    r_.u32 = a_.u32 >> SIMDE_CAST_VECTOR_SHIFT_COUNT(16, imm8);
   #else
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.u32) / sizeof(r_.u32[0])) ; i++) {
@@ -4897,7 +4914,7 @@ simde_mm256_srli_epi64 (simde__m256i a, const int imm8)
     a_ = simde__m256i_to_private(a);
 
 #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
-  r_.u64 = a_.u64 >> HEDLEY_STATIC_CAST(int32_t, imm8);
+  r_.u64 = a_.u64 >> SIMDE_CAST_VECTOR_SHIFT_COUNT(32, imm8);
 #else
   SIMDE_VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r_.u64) / sizeof(r_.u64[0])) ; i++) {

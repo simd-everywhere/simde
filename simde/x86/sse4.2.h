@@ -136,7 +136,7 @@ int simde_mm_cmpestrz (simde__m128i a, int la, simde__m128i b, int lb, const int
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_cmpgt_epi64 (simde__m128i a, simde__m128i b) {
-  #if defined(SIMDE_X86_SSE4_2_NATIVE) && 0
+  #if defined(SIMDE_X86_SSE4_2_NATIVE)
     return _mm_cmpgt_epi64(a, b);
   #elif defined(SIMDE_X86_SSE2_NATIVE)
     /* https://stackoverflow.com/a/65175746/501126 */
@@ -336,7 +336,7 @@ simde_mm_crc32_u64(uint64_t prevcrc, uint64_t v) {
     #endif
   #endif
 }
-#if defined(SIMDE_X86_SSE4_2_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_SSE4_2_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && !defined(SIMDE_ARCH_AMD64))
   #define _mm_crc32_u64(prevcrc, v) simde_mm_crc32_u64(prevcrc, v)
 #endif
 

@@ -1,7 +1,9 @@
 project('SIMDe', 'c', 'cpp',
         default_options: ['c_std=c99'],
         license: 'MIT',
-        version: '0.7.1')
+        meson_version : '>=0.54.0',
+        version: '0.7.3')
+# also update SIMDE_VESION_* in simde/simde-common.h
 
 cc = meson.get_compiler('c')
 cxx = meson.get_compiler('cpp')
@@ -19,8 +21,10 @@ simde_neon_families = [
   'addw',
   'addw_high',
   'and',
+  'bcax',
   'bic',
   'bsl',
+  'cage',
   'cagt',
   'ceq',
   'ceqz',
@@ -34,6 +38,10 @@ simde_neon_families = [
   'clt',
   'cltz',
   'clz',
+  'cmla',
+  'cmla_rot90',
+  'cmla_rot180',
+  'cmla_rot270',
   'cnt',
   'cvt',
   'combine',
@@ -44,12 +52,16 @@ simde_neon_families = [
   'dup_lane',
   'eor',
   'ext',
+  'fma',
+  'fma_n',
   'get_high',
   'get_lane',
   'get_low',
   'hadd',
   'hsub',
   'ld1',
+  'ld1_dup',
+  'ld2',
   'ld3',
   'ld4',
   'max',
@@ -101,6 +113,8 @@ simde_neon_families = [
   'qtbl',
   'qtbx',
   'rbit',
+  'recpe',
+  'recps',
   'reinterpret',
   'rev16',
   'rev32',
@@ -113,14 +127,19 @@ simde_neon_families = [
   'rndp',
   'rshl',
   'rshr_n',
+  'rsqrte',
+  'rsqrts',
   'rsra_n',
   'set_lane',
   'shl',
   'shl_n',
   'shr_n',
+  'shrn_n',
+  'sqadd',
   'sra_n',
   'st1',
   'st1_lane',
+  'st2',
   'st3',
   'st4',
   'sub',
@@ -137,9 +156,27 @@ simde_neon_families = [
   'uzp1',
   'uzp2',
   'uzp',
+  'xar',
   'zip1',
   'zip2',
   'zip',
+]
+
+simde_sve_families = [
+  'add',
+  'and',
+  'cnt',
+  'cmplt',
+  'dup',
+  'ld1',
+  'ptest',
+  'ptrue',
+  'qadd',
+  'sel',
+  'st1',
+  'sub',
+  'reinterpret',
+  'whilelt'
 ]
 
 simde_avx512_families = [
@@ -159,10 +196,14 @@ simde_avx512_families = [
   'cmpgt',
   'cmple',
   'cmplt',
+  'cmpneq',
+  'compress',
   'copysign',
   'cvt',
+  'cvtt',
   'cvts',
   'div',
+  'expand',
   'extract',
   'fmadd',
   'fmsub',
@@ -214,6 +255,7 @@ simde_avx512_families = [
   'sub',
   'subs',
   'test',
+  'testn',
   'unpacklo',
   'unpackhi',
   'xor',
@@ -227,6 +269,11 @@ endif
 simde_neon_family_headers = ['simde/arm/neon/types.h']
 foreach neon_family : simde_neon_families
   simde_neon_family_headers += 'simde/arm/neon/' + neon_family + '.h'
+endforeach
+
+simde_sve_family_headers = ['simde/arm/sve/types.h']
+foreach sve_family : simde_sve_families
+  simde_sve_family_headers += 'simde/arm/sve/' + sve_family + '.h'
 endforeach
 
 simde_avx512_family_headers = ['simde/x86/avx512/types.h']
@@ -246,6 +293,7 @@ if not meson.is_subproject()
       'simde/simde-constify.h',
       'simde/simde-detect-clang.h',
       'simde/simde-diagnostic.h',
+      'simde/simde-f16.h',
       'simde/simde-features.h',
       'simde/simde-math.h',
       'simde/simde-complex.h',
@@ -258,6 +306,7 @@ if not meson.is_subproject()
       'simde/x86/avx.h',
       'simde/x86/clmul.h',
       'simde/x86/fma.h',
+      'simde/x86/f16c.h',
       'simde/x86/gfni.h',
       'simde/x86/mmx.h',
       'simde/x86/sse2.h',
@@ -278,12 +327,23 @@ if not meson.is_subproject()
   install_headers(
     files([
       'simde/arm/neon.h',
+      'simde/arm/sve.h',
       ]),
     subdir: 'simde/arm')
 
   install_headers(
     files(simde_neon_family_headers),
     subdir: 'simde/arm/neon')
+
+  install_headers(
+    files(simde_sve_family_headers),
+    subdir: 'simde/arm/sve')
+
+  install_headers(
+    files([
+      'simde/wasm/simd128.h',
+      ]),
+    subdir: 'simde/wasm')
 
   import('pkgconfig').generate(
     version : meson.project_version(),

@@ -40,7 +40,7 @@ simde_kshiftli_mask16 (simde__mmask16 a, unsigned int count)
     SIMDE_REQUIRE_CONSTANT_RANGE(count, 0, 255) {
   return HEDLEY_STATIC_CAST(simde__mmask16, (count <= 15) ? (a << count) : 0);
 }
-#if defined(SIMDE_X86_AVX512F_NATIVE) && (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(7,0,0))
+#if defined(SIMDE_X86_AVX512F_NATIVE) && (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(7,0,0)) && (!defined(SIMDE_DETECT_CLANG_VERSION) && SIMDE_DETECT_CLANG_VERSION_CHECK(8,0,0))
   #define simde_kshiftli_mask16(a, count) _kshiftli_mask16(a, count)
 #endif
 #if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
@@ -54,7 +54,7 @@ simde_kshiftli_mask32 (simde__mmask32 a, unsigned int count)
     SIMDE_REQUIRE_CONSTANT_RANGE(count, 0, 255) {
   return (count <= 31) ? (a << count) : 0;
 }
-#if defined(SIMDE_X86_AVX512BW_NATIVE) && (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(7,0,0))
+#if defined(SIMDE_X86_AVX512BW_NATIVE) && (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(7,0,0)) && (!defined(SIMDE_DETECT_CLANG_VERSION) && SIMDE_DETECT_CLANG_VERSION_CHECK(8,0,0))
   #define simde_kshiftli_mask32(a, count) _kshiftli_mask32(a, count)
 #endif
 #if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
@@ -68,7 +68,7 @@ simde_kshiftli_mask64 (simde__mmask64 a, unsigned int count)
     SIMDE_REQUIRE_CONSTANT_RANGE(count, 0, 255) {
   return (count <= 63) ? (a << count) : 0;
 }
-#if defined(SIMDE_X86_AVX512BW_NATIVE) && (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(7,0,0))
+#if defined(SIMDE_X86_AVX512BW_NATIVE) && (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(7,0,0)) && (!defined(SIMDE_DETECT_CLANG_VERSION) && SIMDE_DETECT_CLANG_VERSION_CHECK(8,0,0))
   #define simde_kshiftli_mask64(a, count) _kshiftli_mask64(a, count)
 #endif
 #if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
@@ -82,7 +82,7 @@ simde_kshiftli_mask8 (simde__mmask8 a, unsigned int count)
     SIMDE_REQUIRE_CONSTANT_RANGE(count, 0, 255) {
   return HEDLEY_STATIC_CAST(simde__mmask8, (count <= 7) ? (a << count) : 0);
 }
-#if defined(SIMDE_X86_AVX512DQ_NATIVE) && (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(7,0,0))
+#if defined(SIMDE_X86_AVX512DQ_NATIVE) && (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(7,0,0)) && (!defined(SIMDE_DETECT_CLANG_VERSION) && SIMDE_DETECT_CLANG_VERSION_CHECK(8,0,0))
   #define simde_kshiftli_mask8(a, count) _kshiftli_mask8(a, count)
 #endif
 #if defined(SIMDE_X86_AVX512DQ_ENABLE_NATIVE_ALIASES)
@@ -96,7 +96,7 @@ simde_kshiftri_mask16 (simde__mmask16 a, unsigned int count)
     SIMDE_REQUIRE_CONSTANT_RANGE(count, 0, 255) {
   return HEDLEY_STATIC_CAST(simde__mmask16, (count <= 15) ? (a >> count) : 0);
 }
-#if defined(SIMDE_X86_AVX512F_NATIVE) && (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(7,0,0))
+#if defined(SIMDE_X86_AVX512F_NATIVE) && (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(7,0,0)) && (!defined(SIMDE_DETECT_CLANG_VERSION) && SIMDE_DETECT_CLANG_VERSION_CHECK(8,0,0))
   #define simde_kshiftri_mask16(a, count) _kshiftri_mask16(a, count)
 #endif
 #if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
@@ -110,7 +110,7 @@ simde_kshiftri_mask32 (simde__mmask32 a, unsigned int count)
     SIMDE_REQUIRE_CONSTANT_RANGE(count, 0, 255) {
   return (count <= 31) ? (a >> count) : 0;
 }
-#if defined(SIMDE_X86_AVX512BW_NATIVE) && (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(7,0,0))
+#if defined(SIMDE_X86_AVX512BW_NATIVE) && (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(7,0,0)) && (!defined(SIMDE_DETECT_CLANG_VERSION) && SIMDE_DETECT_CLANG_VERSION_CHECK(8,0,0))
   #define simde_kshiftri_mask32(a, count) _kshiftri_mask32(a, count)
 #endif
 #if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
@@ -124,7 +124,7 @@ simde_kshiftri_mask64 (simde__mmask64 a, unsigned int count)
     SIMDE_REQUIRE_CONSTANT_RANGE(count, 0, 255) {
   return (count <= 63) ? (a >> count) : 0;
 }
-#if defined(SIMDE_X86_AVX512BW_NATIVE) && (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(7,0,0))
+#if defined(SIMDE_X86_AVX512BW_NATIVE) && (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(7,0,0)) && (!defined(SIMDE_DETECT_CLANG_VERSION) && SIMDE_DETECT_CLANG_VERSION_CHECK(8,0,0))
   #define simde_kshiftri_mask64(a, count) _kshiftri_mask64(a, count)
 #endif
 #if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
@@ -138,7 +138,7 @@ simde_kshiftri_mask8 (simde__mmask8 a, unsigned int count)
     SIMDE_REQUIRE_CONSTANT_RANGE(count, 0, 255) {
   return HEDLEY_STATIC_CAST(simde__mmask8, (count <= 7) ? (a >> count) : 0);
 }
-#if defined(SIMDE_X86_AVX512DQ_NATIVE) && (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(7,0,0))
+#if defined(SIMDE_X86_AVX512DQ_NATIVE) && (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(7,0,0)) && (!defined(SIMDE_DETECT_CLANG_VERSION) && SIMDE_DETECT_CLANG_VERSION_CHECK(8,0,0))
   #define simde_kshiftri_mask8(a, count) _kshiftri_mask8(a, count)
 #endif
 #if defined(SIMDE_X86_AVX512DQ_ENABLE_NATIVE_ALIASES)

@@ -364,6 +364,26 @@ SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
   #endif
 #endif
 
+#if !defined(simde_math_labs)
+  #if SIMDE_MATH_BUILTIN_LIBM(labs)
+    #define simde_math_labs(v) __builtin_labs(v)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_labs(v) std::labs(v)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_labs(v) labs(v)
+  #endif
+#endif
+
+#if !defined(simde_math_llabs)
+  #if SIMDE_MATH_BUILTIN_LIBM(llabs)
+    #define simde_math_llabs(v) __builtin_llabs(v)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_llabs(v) std::llabs(v)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_llabs(v) llabs(v)
+  #endif
+#endif
+
 #if !defined(simde_math_fabsf)
   #if SIMDE_MATH_BUILTIN_LIBM(fabsf)
     #define simde_math_fabsf(v) __builtin_fabsf(v)
@@ -794,21 +814,21 @@ SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 
 #if !defined(simde_math_fmax)
   #if SIMDE_MATH_BUILTIN_LIBM(fmax)
-    #define simde_math_fmax(x, y, z) __builtin_fmax(x, y, z)
+    #define simde_math_fmax(x, y) __builtin_fmax(x, y)
   #elif defined(SIMDE_MATH_HAVE_CMATH)
-    #define simde_math_fmax(x, y, z) std::fmax(x, y, z)
+    #define simde_math_fmax(x, y) std::fmax(x, y)
   #elif defined(SIMDE_MATH_HAVE_MATH_H)
-    #define simde_math_fmax(x, y, z) fmax(x, y, z)
+    #define simde_math_fmax(x, y) fmax(x, y)
   #endif
 #endif
 
 #if !defined(simde_math_fmaxf)
   #if SIMDE_MATH_BUILTIN_LIBM(fmaxf)
-    #define simde_math_fmaxf(x, y, z) __builtin_fmaxf(x, y, z)
+    #define simde_math_fmaxf(x, y) __builtin_fmaxf(x, y)
   #elif defined(SIMDE_MATH_HAVE_CMATH)
-    #define simde_math_fmaxf(x, y, z) std::fmax(x, y, z)
+    #define simde_math_fmaxf(x, y) std::fmax(x, y)
   #elif defined(SIMDE_MATH_HAVE_MATH_H)
-    #define simde_math_fmaxf(x, y, z) fmaxf(x, y, z)
+    #define simde_math_fmaxf(x, y) fmaxf(x, y)
   #endif
 #endif
 
@@ -1190,6 +1210,29 @@ SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
   #elif defined(SIMDE_MATH_HAVE_MATH_H)
     #define simde_math_truncf(v) truncf(v)
   #endif
+#endif
+
+/*** Comparison macros (which don't raise invalid errors) ***/
+
+#if defined(isunordered)
+  #define simde_math_isunordered(x, y) isunordered(x, y)
+#elif HEDLEY_HAS_BUILTIN(__builtin_isunordered)
+  #define simde_math_isunordered(x, y) __builtin_isunordered(x, y)
+#else
+  static HEDLEY_INLINE
+  int simde_math_isunordered(double x, double y) {
+    return (x != y) && (x != x || y != y);
+  }
+  #define simde_math_isunordered simde_math_isunordered
+
+  static HEDLEY_INLINE
+  int simde_math_isunorderedf(float x, float y) {
+    return (x != y) && (x != x || y != y);
+  }
+  #define simde_math_isunorderedf simde_math_isunorderedf
+#endif
+#if !defined(simde_math_isunorderedf)
+  #define simde_math_isunorderedf simde_math_isunordered
 #endif
 
 /*** Additional functions not in libm ***/

@@ -69,7 +69,7 @@ test_simde_vrshl_s8 (SIMDE_MUNIT_TEST_ARGS) {
 
     for (size_t j = 0 ; j < (sizeof(b_.values) / sizeof(b_.values[0])) ; j++) {
       if (probability(PROBABILITY)) {
-        while (abs(b_.values[j]) > 8) {
+        while (simde_math_abs(b_.values[j]) > 8) {
           b_.values[j] >>= 1;
         }
       }
@@ -147,7 +147,7 @@ test_simde_vrshl_s16 (SIMDE_MUNIT_TEST_ARGS) {
 
     for (size_t j = 0 ; j < (sizeof(b_.values) / sizeof(b_.values[0])) ; j++) {
       if (probability(PROBABILITY)) {
-        while (abs(b_.values[j]) > 16) {
+        while (simde_math_abs(b_.values[j]) > 16) {
           b_.values[j] >>= 1;
         }
       }
@@ -227,7 +227,7 @@ test_simde_vrshl_s32 (SIMDE_MUNIT_TEST_ARGS) {
 
     for (size_t j = 0 ; j < (sizeof(b_.values) / sizeof(b_.values[0])) ; j++) {
       if (probability(PROBABILITY)) {
-        while (abs(b_.values[j]) > 32) {
+        while (simde_math_abs(b_.values[j]) > 32) {
           b_.values[j] >>= 1;
         }
       }
@@ -307,7 +307,7 @@ test_simde_vrshl_s64 (SIMDE_MUNIT_TEST_ARGS) {
 
     for (size_t j = 0 ; j < (sizeof(b_.values) / sizeof(b_.values[0])) ; j++) {
       if (probability(PROBABILITY)) {
-        while (llabs(b_.values[j]) > 64) {
+        while (simde_math_llabs(b_.values[j]) > 64) {
           b_.values[j] >>= 1;
         }
       }
@@ -386,7 +386,7 @@ test_simde_vrshl_u8 (SIMDE_MUNIT_TEST_ARGS) {
 
     for (size_t j = 0 ; j < (sizeof(b_.values) / sizeof(b_.values[0])) ; j++) {
       if (probability(PROBABILITY)) {
-        while (abs(b_.values[j]) > 8) {
+        while (simde_math_abs(b_.values[j]) > 8) {
           b_.values[j] >>= 1;
         }
       }
@@ -464,7 +464,7 @@ test_simde_vrshl_u16 (SIMDE_MUNIT_TEST_ARGS) {
 
     for (size_t j = 0 ; j < (sizeof(b_.values) / sizeof(b_.values[0])) ; j++) {
       if (probability(PROBABILITY)) {
-        while (abs(b_.values[j]) > 16) {
+        while (simde_math_abs(b_.values[j]) > 16) {
           b_.values[j] >>= 1;
         }
       }
@@ -542,7 +542,7 @@ test_simde_vrshl_u32 (SIMDE_MUNIT_TEST_ARGS) {
 
     for (size_t j = 0 ; j < (sizeof(b_.values) / sizeof(b_.values[0])) ; j++) {
       if (probability(PROBABILITY)) {
-        while (abs(b_.values[j]) > 32) {
+        while (simde_math_abs(b_.values[j]) > 32) {
           b_.values[j] >>= 1;
         }
       }
@@ -620,7 +620,7 @@ test_simde_vrshl_u64 (SIMDE_MUNIT_TEST_ARGS) {
 
     for (size_t j = 0 ; j < (sizeof(b_.values) / sizeof(b_.values[0])) ; j++) {
       if (probability(PROBABILITY)) {
-        while (llabs(b_.values[j]) > 64) {
+        while (simde_math_llabs(b_.values[j]) > 64) {
           b_.values[j] >>= 1;
         }
       }
@@ -724,7 +724,7 @@ test_simde_vrshlq_s8 (SIMDE_MUNIT_TEST_ARGS) {
 
     for (size_t j = 0 ; j < (sizeof(b_.values) / sizeof(b_.values[0])) ; j++) {
       if (probability(PROBABILITY)) {
-        while (abs(b_.values[j]) > 8) {
+        while (simde_math_abs(b_.values[j]) > 8) {
           b_.values[j] >>= 1;
         }
       }
@@ -804,7 +804,7 @@ test_simde_vrshlq_s16 (SIMDE_MUNIT_TEST_ARGS) {
 
     for (size_t j = 0 ; j < (sizeof(b_.values) / sizeof(b_.values[0])) ; j++) {
       if (probability(PROBABILITY)) {
-        while (abs(b_.values[j]) > 16) {
+        while (simde_math_abs(b_.values[j]) > 16) {
           b_.values[j] >>= 1;
         }
       }
@@ -883,7 +883,7 @@ test_simde_vrshlq_s32 (SIMDE_MUNIT_TEST_ARGS) {
 
     for (size_t j = 0 ; j < (sizeof(b_.values) / sizeof(b_.values[0])) ; j++) {
       if (probability(PROBABILITY)) {
-        while (abs(b_.values[j]) > 32) {
+        while (simde_math_abs(b_.values[j]) > 32) {
           b_.values[j] >>= 1;
         }
       }
@@ -962,7 +962,7 @@ test_simde_vrshlq_s64 (SIMDE_MUNIT_TEST_ARGS) {
 
     for (size_t j = 0 ; j < (sizeof(b_.values) / sizeof(b_.values[0])) ; j++) {
       if (probability(PROBABILITY)) {
-        while (llabs(b_.values[j]) > 64) {
+        while (simde_math_llabs(b_.values[j]) > 64) {
           b_.values[j] >>= 1;
         }
       }
@@ -1065,7 +1065,7 @@ test_simde_vrshlq_u8 (SIMDE_MUNIT_TEST_ARGS) {
 
     for (size_t j = 0 ; j < (sizeof(b_.values) / sizeof(b_.values[0])) ; j++) {
       if (probability(PROBABILITY)) {
-        while (abs(b_.values[j]) > 8) {
+        while (simde_math_abs(b_.values[j]) > 8) {
           b_.values[j] >>= 1;
         }
       }
@@ -1143,7 +1143,7 @@ test_simde_vrshlq_u16 (SIMDE_MUNIT_TEST_ARGS) {
 
     for (size_t j = 0 ; j < (sizeof(b_.values) / sizeof(b_.values[0])) ; j++) {
       if (probability(PROBABILITY)) {
-        while (abs(b_.values[j]) > 16) {
+        while (simde_math_abs(b_.values[j]) > 16) {
           b_.values[j] >>= 1;
         }
       }
@@ -1222,7 +1222,7 @@ test_simde_vrshlq_u32 (SIMDE_MUNIT_TEST_ARGS) {
 
     for (size_t j = 0 ; j < (sizeof(b_.values) / sizeof(b_.values[0])) ; j++) {
       if (probability(PROBABILITY)) {
-        while (abs(b_.values[j]) > 32) {
+        while (simde_math_abs(b_.values[j]) > 32) {
           b_.values[j] >>= 1;
         }
       }
@@ -1300,7 +1300,7 @@ test_simde_vrshlq_u64 (SIMDE_MUNIT_TEST_ARGS) {
 
     for (size_t j = 0 ; j < (sizeof(b_.values) / sizeof(b_.values[0])) ; j++) {
       if (probability(PROBABILITY)) {
-        while (llabs(b_.values[j]) > 64) {
+        while (simde_math_llabs(b_.values[j]) > 64) {
           b_.values[j] >>= 1;
         }
       }

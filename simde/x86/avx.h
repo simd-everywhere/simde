@@ -224,13 +224,16 @@ typedef union {
 #endif
 
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
-  #if !defined(HEDLEY_INTEL_VERSION)
+  #if !defined(HEDLEY_INTEL_VERSION) && !defined(_AVXINTRIN_H_INCLUDED) && !defined(__AVXINTRIN_H) && !defined(_CMP_EQ_OQ)
     typedef simde__m256 __m256;
     typedef simde__m256i __m256i;
     typedef simde__m256d __m256d;
   #else
+    #undef __m256
     #define __m256 simde__m256
+    #undef __m256i
     #define __m256i simde__m256i
+    #undef __m256d
     #define __m256d simde__m256d
   #endif
 #endif
@@ -3649,7 +3652,7 @@ simde_mm256_insert_epi64 (simde__m256i a, int64_t i, const int index)
     SIMDE_DETECT_CLANG_VERSION_CHECK(3,7,0)
   #define simde_mm256_insert_epi64(a, i, index) _mm256_insert_epi64(a, i, index)
 #endif
-#if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && !defined(SIMDE_ARCH_AMD64))
   #undef _mm256_insert_epi64
   #define _mm256_insert_epi64(a, i, index) simde_mm256_insert_epi64(a, i, index)
 #endif
@@ -3739,7 +3742,7 @@ simde_mm256_extract_epi64 (simde__m256i a, const int index)
     #define simde_mm256_extract_epi64(a, index) _mm256_extract_epi64(a, index)
   #endif
 #endif
-#if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && !defined(SIMDE_ARCH_AMD64))
   #undef _mm256_extract_epi64
   #define _mm256_extract_epi64(a, index) simde_mm256_extract_epi64(a, index)
 #endif
@@ -3843,7 +3846,7 @@ simde_mm256_loadu_ps (const float a[HEDLEY_ARRAY_PARAM(8)]) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m256i
 simde_mm256_loadu_epi8(void const * mem_addr) {
-  #if defined(SIMDE_X86_AVX512VL_NATIVE) && defined(SIMDE_X86_AVX512BW_NATIVE) && !defined(SIMDE_BUG_GCC_95483)
+  #if defined(SIMDE_X86_AVX512VL_NATIVE) && defined(SIMDE_X86_AVX512BW_NATIVE) && !defined(SIMDE_BUG_GCC_95483) && !defined(SIMDE_BUG_CLANG_REV_344862)
     return _mm256_loadu_epi8(mem_addr);
   #elif defined(SIMDE_X86_AVX_NATIVE)
     return _mm256_loadu_si256(SIMDE_ALIGN_CAST(__m256i const *, mem_addr));
@@ -3854,7 +3857,7 @@ simde_mm256_loadu_epi8(void const * mem_addr) {
   #endif
 }
 #define simde_x_mm256_loadu_epi8(mem_addr) simde_mm256_loadu_epi8(mem_addr)
-#if defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES) || defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && defined(SIMDE_BUG_GCC_95483))
+#if defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES) || defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && (defined(SIMDE_BUG_GCC_95483) || defined(SIMDE_BUG_CLANG_REV_344862)))
   #undef _mm256_loadu_epi8
   #define _mm256_loadu_epi8(a) simde_mm256_loadu_epi8(a)
 #endif
@@ -3862,7 +3865,7 @@ simde_mm256_loadu_epi8(void const * mem_addr) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m256i
 simde_mm256_loadu_epi16(void const * mem_addr) {
-  #if defined(SIMDE_X86_AVX512VL_NATIVE) && defined(SIMDE_X86_AVX512BW_NATIVE) && !defined(SIMDE_BUG_GCC_95483)
+  #if defined(SIMDE_X86_AVX512VL_NATIVE) && defined(SIMDE_X86_AVX512BW_NATIVE) && !defined(SIMDE_BUG_GCC_95483) && !defined(SIMDE_BUG_CLANG_REV_344862)
     return _mm256_loadu_epi16(mem_addr);
   #elif defined(SIMDE_X86_AVX_NATIVE)
     return _mm256_loadu_si256(SIMDE_ALIGN_CAST(__m256i const *, mem_addr));
@@ -3873,7 +3876,7 @@ simde_mm256_loadu_epi16(void const * mem_addr) {
   #endif
 }
 #define simde_x_mm256_loadu_epi16(mem_addr) simde_mm256_loadu_epi16(mem_addr)
-#if defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES) || defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && defined(SIMDE_BUG_GCC_95483))
+#if defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES) || defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && (defined(SIMDE_BUG_GCC_95483) || defined(SIMDE_BUG_CLANG_REV_344862)))
   #undef _mm256_loadu_epi16
   #define _mm256_loadu_epi16(a) simde_mm256_loadu_epi16(a)
 #endif
@@ -3881,7 +3884,7 @@ simde_mm256_loadu_epi16(void const * mem_addr) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m256i
 simde_mm256_loadu_epi32(void const * mem_addr) {
-  #if defined(SIMDE_X86_AVX512VL_NATIVE) && !defined(SIMDE_BUG_GCC_95483)
+  #if defined(SIMDE_X86_AVX512VL_NATIVE) && !defined(SIMDE_BUG_GCC_95483) && !defined(SIMDE_BUG_CLANG_REV_344862)
     return _mm256_loadu_epi32(mem_addr);
   #elif defined(SIMDE_X86_AVX_NATIVE)
     return _mm256_loadu_si256(SIMDE_ALIGN_CAST(__m256i const *, mem_addr));
@@ -3892,7 +3895,7 @@ simde_mm256_loadu_epi32(void const * mem_addr) {
   #endif
 }
 #define simde_x_mm256_loadu_epi32(mem_addr) simde_mm256_loadu_epi32(mem_addr)
-#if defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && defined(SIMDE_BUG_GCC_95483))
+#if defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && (defined(SIMDE_BUG_GCC_95483) || defined(SIMDE_BUG_CLANG_REV_344862)))
   #undef _mm256_loadu_epi32
   #define _mm256_loadu_epi32(a) simde_mm256_loadu_epi32(a)
 #endif
@@ -3900,7 +3903,7 @@ simde_mm256_loadu_epi32(void const * mem_addr) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m256i
 simde_mm256_loadu_epi64(void const * mem_addr) {
-  #if defined(SIMDE_X86_AVX512VL_NATIVE) && !defined(SIMDE_BUG_GCC_95483)
+  #if defined(SIMDE_X86_AVX512VL_NATIVE) && !defined(SIMDE_BUG_GCC_95483) && !defined(SIMDE_BUG_CLANG_REV_344862)
     return _mm256_loadu_epi64(mem_addr);
   #elif defined(SIMDE_X86_AVX_NATIVE)
     return _mm256_loadu_si256(SIMDE_ALIGN_CAST(__m256i const *, mem_addr));
@@ -3911,7 +3914,7 @@ simde_mm256_loadu_epi64(void const * mem_addr) {
   #endif
 }
 #define simde_x_mm256_loadu_epi64(mem_addr) simde_mm256_loadu_epi64(mem_addr)
-#if defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && defined(SIMDE_BUG_GCC_95483))
+#if defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && (defined(SIMDE_BUG_GCC_95483) || defined(SIMDE_BUG_CLANG_REV_344862)))
   #undef _mm256_loadu_epi64
   #define _mm256_loadu_epi64(a) simde_mm256_loadu_epi64(a)
 #endif
@@ -3935,7 +3938,7 @@ simde_mm256_loadu_si256 (void const * mem_addr) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m256
 simde_mm256_loadu2_m128 (const float hiaddr[HEDLEY_ARRAY_PARAM(4)], const float loaddr[HEDLEY_ARRAY_PARAM(4)]) {
-  #if defined(SIMDE_X86_AVX_NATIVE) && !defined(SIMDE_BUG_GCC_91341)
+  #if defined(SIMDE_X86_AVX_NATIVE) && !defined(SIMDE_BUG_GCC_91341) && !defined(SIMDE_BUG_MCST_LCC_MISSING_AVX_LOAD_STORE_M128_FUNCS)
     return _mm256_loadu2_m128(hiaddr, loaddr);
   #else
     return
@@ -3951,7 +3954,7 @@ simde_mm256_loadu2_m128 (const float hiaddr[HEDLEY_ARRAY_PARAM(4)], const float 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m256d
 simde_mm256_loadu2_m128d (const double hiaddr[HEDLEY_ARRAY_PARAM(2)], const double loaddr[HEDLEY_ARRAY_PARAM(2)]) {
-  #if defined(SIMDE_X86_AVX_NATIVE) && !defined(SIMDE_BUG_GCC_91341)
+  #if defined(SIMDE_X86_AVX_NATIVE) && !defined(SIMDE_BUG_GCC_91341) && !defined(SIMDE_BUG_MCST_LCC_MISSING_AVX_LOAD_STORE_M128_FUNCS)
     return _mm256_loadu2_m128d(hiaddr, loaddr);
   #else
     return
@@ -3967,7 +3970,7 @@ simde_mm256_loadu2_m128d (const double hiaddr[HEDLEY_ARRAY_PARAM(2)], const doub
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m256i
 simde_mm256_loadu2_m128i (const simde__m128i* hiaddr, const simde__m128i* loaddr) {
-  #if defined(SIMDE_X86_AVX_NATIVE) && !defined(SIMDE_BUG_GCC_91341)
+  #if defined(SIMDE_X86_AVX_NATIVE) && !defined(SIMDE_BUG_GCC_91341) && !defined(SIMDE_BUG_MCST_LCC_MISSING_AVX_LOAD_STORE_M128_FUNCS)
     return _mm256_loadu2_m128i(hiaddr, loaddr);
   #else
     return
@@ -5230,7 +5233,7 @@ simde_mm256_storeu_si256 (void* mem_addr, simde__m256i a) {
 SIMDE_FUNCTION_ATTRIBUTES
 void
 simde_mm256_storeu2_m128 (simde_float32 hi_addr[4], simde_float32 lo_addr[4], simde__m256 a) {
-  #if defined(SIMDE_X86_AVX_NATIVE) && !defined(SIMDE_BUG_GCC_91341)
+  #if defined(SIMDE_X86_AVX_NATIVE) && !defined(SIMDE_BUG_GCC_91341) && !defined(SIMDE_BUG_MCST_LCC_MISSING_AVX_LOAD_STORE_M128_FUNCS)
     _mm256_storeu2_m128(hi_addr, lo_addr, a);
   #else
     simde_mm_storeu_ps(lo_addr, simde_mm256_castps256_ps128(a));
@@ -5245,7 +5248,7 @@ simde_mm256_storeu2_m128 (simde_float32 hi_addr[4], simde_float32 lo_addr[4], si
 SIMDE_FUNCTION_ATTRIBUTES
 void
 simde_mm256_storeu2_m128d (simde_float64 hi_addr[2], simde_float64 lo_addr[2], simde__m256d a) {
-  #if defined(SIMDE_X86_AVX_NATIVE) && !defined(SIMDE_BUG_GCC_91341)
+  #if defined(SIMDE_X86_AVX_NATIVE) && !defined(SIMDE_BUG_GCC_91341) && !defined(SIMDE_BUG_MCST_LCC_MISSING_AVX_LOAD_STORE_M128_FUNCS)
     _mm256_storeu2_m128d(hi_addr, lo_addr, a);
   #else
     simde_mm_storeu_pd(lo_addr, simde_mm256_castpd256_pd128(a));
@@ -5260,7 +5263,7 @@ simde_mm256_storeu2_m128d (simde_float64 hi_addr[2], simde_float64 lo_addr[2], s
 SIMDE_FUNCTION_ATTRIBUTES
 void
 simde_mm256_storeu2_m128i (simde__m128i* hi_addr, simde__m128i* lo_addr, simde__m256i a) {
-  #if defined(SIMDE_X86_AVX_NATIVE) && !defined(SIMDE_BUG_GCC_91341)
+  #if defined(SIMDE_X86_AVX_NATIVE) && !defined(SIMDE_BUG_GCC_91341) && !defined(SIMDE_BUG_MCST_LCC_MISSING_AVX_LOAD_STORE_M128_FUNCS)
     _mm256_storeu2_m128i(hi_addr, lo_addr, a);
   #else
     simde_mm_storeu_si128(lo_addr, simde_mm256_castsi256_si128(a));

@@ -125,6 +125,9 @@ simde__m128i
 simde_mm_abs_epi64(simde__m128i a) {
   #if defined(SIMDE_X86_AVX512VL_NATIVE)
     return _mm_abs_epi64(a);
+  #elif defined(SIMDE_X86_SSE2_NATIVE)
+    const __m128i m = _mm_srai_epi32(_mm_shuffle_epi32(a, 0xF5), 31);
+    return _mm_sub_epi64(_mm_xor_si128(a, m), m);
   #else
     simde__m128i_private
       r_,
@@ -132,8 +135,17 @@ simde_mm_abs_epi64(simde__m128i a) {
 
     #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
       r_.neon_i64 = vabsq_s64(a_.neon_i64);
-    #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE) && !defined(HEDLEY_IBM_VERSION)
+    #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+      const int64x2_t m = vshrq_n_s64(a_.neon_i64, 63);
+      r_.neon_i64 = vsubq_s64(veorq_s64(a_.neon_i64, m), m);
+    #elif (defined(SIMDE_POWER_ALTIVEC_P8_NATIVE) && !defined(HEDLEY_IBM_VERSION)) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
       r_.altivec_i64 = vec_abs(a_.altivec_i64);
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE) && 0
+      r_.wasm_v128 = wasm_i64x2_abs(a_.wasm_v128);
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+      __typeof__(r_.i64) z = { 0, };
+      __typeof__(r_.i64) m = HEDLEY_REINTERPRET_CAST(__typeof__(r_.i64), a_.i64 < z);
+      r_.i64 = (-a_.i64 & m) | (a_.i64 & ~m);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0; i < (sizeof(r_.i64) / sizeof(r_.i64[0])); i++) {
@@ -512,8 +524,11 @@ simde_mm512_mask_abs_ps(simde__m512 src, simde__mmask16 k, simde__m512 v2) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m512d
 simde_mm512_abs_pd(simde__m512d v2) {
-  #if defined(SIMDE_X86_AVX512F_NATIVE) && (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(7,0,0))
+  #if defined(SIMDE_X86_AVX512F_NATIVE) && (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(8,3,0))
     return _mm512_abs_pd(v2);
+  #elif defined(SIMDE_X86_AVX512F_NATIVE) && (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(7,0,0))
+    /* gcc bug: https://gcc.gnu.org/legacy-ml/gcc-patches/2018-01/msg01962.html */
+    return _mm512_abs_pd(_mm512_castpd_ps(v2));
   #else
     simde__m512d_private
       r_,
@@ -545,8 +560,11 @@ simde_mm512_abs_pd(simde__m512d v2) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m512d
 simde_mm512_mask_abs_pd(simde__m512d src, simde__mmask8 k, simde__m512d v2) {
-  #if defined(SIMDE_X86_AVX512F_NATIVE) && (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(7,0,0))
+  #if defined(SIMDE_X86_AVX512F_NATIVE) && (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(8,3,0))
     return _mm512_mask_abs_pd(src, k, v2);
+  #elif defined(SIMDE_X86_AVX512F_NATIVE) && (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(7,0,0))
+    /* gcc bug: https://gcc.gnu.org/legacy-ml/gcc-patches/2018-01/msg01962.html */
+    return _mm512_mask_abs_pd(src, k, _mm512_castpd_ps(v2));
   #else
     return simde_mm512_mask_mov_pd(src, k, simde_mm512_abs_pd(v2));
   #endif

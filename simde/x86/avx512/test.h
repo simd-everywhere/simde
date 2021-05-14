@@ -24,6 +24,7 @@
  *   2020      Evan Nemerson <evan@nemerson.com>
  *   2020      Hidayat Khan <huk2209@gmail.com>
  *   2020      Christopher Moore <moore@free.fr>
+ *   2021      Andrew Rodriguez <anrodriguez@linkedin.com>
  */
 
 #if !defined(SIMDE_X86_AVX512_TEST_H)
@@ -34,6 +35,44 @@
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 SIMDE_BEGIN_DECLS_
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__mmask8
+simde_mm256_test_epi32_mask (simde__m256i a, simde__m256i b) {
+  #if defined(SIMDE_X86_AVX512VL_NATIVE)
+    return _mm256_test_epi32_mask(a, b);
+  #else
+    simde__m256i_private
+      a_ = simde__m256i_to_private(a),
+      b_ = simde__m256i_to_private(b);
+    simde__mmask8 r = 0;
+
+    SIMDE_VECTORIZE_REDUCTION(|:r)
+    for (size_t i = 0 ; i < (sizeof(a_.i32) / sizeof(a_.i32[0])) ; i++) {
+      r |= HEDLEY_STATIC_CAST(simde__mmask16, !!(a_.i32[i] & b_.i32[i]) << i);
+    }
+
+    return r;
+  #endif
+}
+#if defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_test_epi32_mask
+#define _mm256_test_epi32_mask(a, b) simde_mm256_test_epi32_mask(a, b)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__mmask8
+simde_mm256_mask_test_epi32_mask (simde__mmask8 k1, simde__m256i a, simde__m256i b) {
+  #if defined(SIMDE_X86_AVX512VL_NATIVE)
+    return _mm256_mask_test_epi32_mask(k1, a, b);
+  #else
+    return simde_mm256_test_epi32_mask(a, b) & k1;
+  #endif
+}
+#if defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_mask_test_epi32_mask
+  #define _mm256_mask_test_epi32_mask(k1, a, b) simde_mm256_mask_test_epi32_mask(k1, a, b)
+#endif
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__mmask32

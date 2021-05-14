@@ -58,7 +58,7 @@ simde_mm512_srli_epi16 (simde__m512i a, const unsigned int imm8)
       return simde_mm512_setzero_si512();
 
     #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
-      r_.u16 = a_.u16 >> HEDLEY_STATIC_CAST(int16_t, imm8);
+      r_.u16 = a_.u16 >> SIMDE_CAST_VECTOR_SHIFT_COUNT(16, imm8);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.u16) / sizeof(r_.u16[0])) ; i++) {

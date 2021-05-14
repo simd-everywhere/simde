@@ -36,7 +36,7 @@ SIMDE_BEGIN_DECLS_
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float32x2_t
 simde_vrndi_f32(simde_float32x2_t a) {
-  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && !defined(SIMDE_BUG_GCC_95399)
     return vrndi_f32(a);
   #else
     simde_float32x2_private
@@ -59,7 +59,7 @@ simde_vrndi_f32(simde_float32x2_t a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float64x1_t
 simde_vrndi_f64(simde_float64x1_t a) {
-  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && !defined(SIMDE_BUG_GCC_95399)
     return vrndi_f64(a);
   #else
     simde_float64x1_private
@@ -82,19 +82,21 @@ simde_vrndi_f64(simde_float64x1_t a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float32x4_t
 simde_vrndiq_f32(simde_float32x4_t a) {
-  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && !defined(SIMDE_BUG_GCC_95399)
     return vrndiq_f32(a);
-  #elif defined(SIMDE_X86_SSE4_1_NATIVE)
-    return _mm_round_ps(a, _MM_FROUND_CUR_DIRECTION);
   #else
     simde_float32x4_private
       r_,
       a_ = simde_float32x4_to_private(a);
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = simde_math_nearbyintf(a_.values[i]);
-    }
+    #if defined(SIMDE_X86_SSE4_1_NATIVE)
+      r_.m128 = _mm_round_ps(a_.m128, _MM_FROUND_CUR_DIRECTION);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+        r_.values[i] = simde_math_nearbyintf(a_.values[i]);
+      }
+    #endif
 
     return simde_float32x4_from_private(r_);
   #endif
@@ -107,19 +109,21 @@ simde_vrndiq_f32(simde_float32x4_t a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float64x2_t
 simde_vrndiq_f64(simde_float64x2_t a) {
-  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && !defined(SIMDE_BUG_GCC_95399)
     return vrndiq_f64(a);
-  #elif defined(SIMDE_X86_SSE4_1_NATIVE)
-    return _mm_round_pd(a, _MM_FROUND_CUR_DIRECTION);
   #else
     simde_float64x2_private
       r_,
       a_ = simde_float64x2_to_private(a);
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = simde_math_nearbyint(a_.values[i]);
-    }
+    #if defined(SIMDE_X86_SSE4_1_NATIVE)
+      r_.m128d = _mm_round_pd(a_.m128d, _MM_FROUND_CUR_DIRECTION);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+        r_.values[i] = simde_math_nearbyint(a_.values[i]);
+      }
+    #endif
 
     return simde_float64x2_from_private(r_);
   #endif
