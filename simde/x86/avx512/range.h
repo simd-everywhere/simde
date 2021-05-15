@@ -314,7 +314,7 @@ simde_mm512_range_ps (simde__m512 a, simde__m512 b, int imm8)
   #else
     simde__m512 r;
 
-    // #if SIMDE_NATURAL_VECTOR_SIZE_LE(256)
+    #if SIMDE_NATURAL_VECTOR_SIZE_LE(256)
       simde__m512_private
         r_,
         a_ = simde__m512_to_private(a),
@@ -324,38 +324,38 @@ simde_mm512_range_ps (simde__m512 a, simde__m512 b, int imm8)
       r_.m256[1] = simde_mm256_range_ps(a_.m256[1], b_.m256[1], imm8);
 
       r = simde__m512_from_private(r_);
-    // #else
-    //   switch (imm8 & 3) {
-    //     case 0:
-    //       r = simde_mm512_min_ps(a, b);
-    //       break;
-    //     case 1:
-    //       r = simde_mm512_max_ps(a, b);
-    //       break;
-    //     case 2:
-    //       r = simde_mm512_mask_mov_ps(b, simde_mm512_cmp_ps_mask(simde_mm512_abs_ps(a), simde_mm512_abs_ps(b), SIMDE_CMP_LE_OS), a);
-    //       break;
-    //     case 3:
-    //       r = simde_mm512_mask_mov_ps(a, simde_mm512_cmp_ps_mask(simde_mm512_abs_ps(b), simde_mm512_abs_ps(a), SIMDE_CMP_GE_OS), b);
-    //       break;
-    //     default:
-    //       break;
-    //   }
+    #else
+      switch (imm8 & 3) {
+        case 0:
+          r = simde_mm512_min_ps(a, b);
+          break;
+        case 1:
+          r = simde_mm512_max_ps(a, b);
+          break;
+        case 2:
+          r = simde_mm512_mask_mov_ps(b, simde_mm512_cmp_ps_mask(simde_mm512_abs_ps(a), simde_mm512_abs_ps(b), SIMDE_CMP_LE_OS), a);
+          break;
+        case 3:
+          r = simde_mm512_mask_mov_ps(a, simde_mm512_cmp_ps_mask(simde_mm512_abs_ps(b), simde_mm512_abs_ps(a), SIMDE_CMP_GE_OS), b);
+          break;
+        default:
+          break;
+      }
 
-    //   switch (imm8 & 12) {
-    //     case 0:
-    //       r = simde_x_mm512_copysign_ps(r, a);
-    //       break;
-    //     case 8:
-    //       r = simde_x_mm512_copysign_ps(r, simde_mm512_set1_ps(SIMDE_FLOAT32_C(0.0)));
-    //       break;
-    //     case 12:
-    //       r = simde_x_mm512_copysign_ps(r, simde_mm512_set1_ps(SIMDE_FLOAT32_C(-0.0)));
-    //       break;
-    //     default:
-    //       break;
-    //   }
-    // #endif
+      switch (imm8 & 12) {
+        case 0:
+          r = simde_x_mm512_copysign_ps(r, a);
+          break;
+        case 8:
+          r = simde_x_mm512_copysign_ps(r, simde_mm512_set1_ps(SIMDE_FLOAT32_C(0.0)));
+          break;
+        case 12:
+          r = simde_x_mm512_copysign_ps(r, simde_mm512_set1_ps(SIMDE_FLOAT32_C(-0.0)));
+          break;
+        default:
+          break;
+      }
+    #endif
 
     return r;
   #endif
