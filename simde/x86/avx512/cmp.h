@@ -29,7 +29,6 @@
 #define SIMDE_X86_AVX512_CMP_H
 
 #include "types.h"
-#include "../avx2.h"
 #include "mov.h"
 #include "mov_mask.h"
 #include "setzero.h"
@@ -310,42 +309,24 @@ simde_mm512_cmp_ps_mask (simde__m512 a, simde__m512 b, const int imm8)
   #define _mm512_cmp_ps_mask(a, b, imm8) simde_mm512_cmp_ps_mask((a), (b), (imm8))
 #endif
 
-SIMDE_FUNCTION_ATTRIBUTES
-simde__mmask8
-simde_mm_cmp_ps_mask (simde__m128 a, simde__m128 b, const int imm8)
-    SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 31) {
-  #if defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
-    simde__mmask8 r;
-    SIMDE_CONSTIFY_32_(_mm_cmp_ps_mask, r, (HEDLEY_UNREACHABLE(), 0), imm8, a, b);
-    return r;
-  #else
-    simde__m128 r;
-    SIMDE_CONSTIFY_32_(simde_mm_cmp_ps, r, (HEDLEY_UNREACHABLE(), simde_mm_setzero_ps()), imm8, a, b);
-    return simde_mm_movepi32_mask(simde_mm_castps_si128(r));
-  #endif
-}
-#if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES) && defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES)
-  #undef _mm_cmp_ps_mask
-  #define _mm_cmp_ps_mask(a, b, imm8) simde_mm_cmp_ps_mask((a), (b), (imm8))
+#if defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
+  #define simde_mm256_cmp_ps_mask(a, b, imm8) _mm256_cmp_ps_mask((a), (b), (imm8))
+#else
+  #define simde_mm256_cmp_ps_mask(a, b, imm8) simde_mm256_movepi32_mask(simde_mm256_castps_si256(simde_mm256_cmp_ps((a), (b), (imm8))))
 #endif
-
-SIMDE_FUNCTION_ATTRIBUTES
-simde__mmask8
-simde_mm256_cmp_ps_mask (simde__m256 a, simde__m256 b, const int imm8)
-    SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 31) {
-  #if defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
-    simde__mmask8 r;
-    SIMDE_CONSTIFY_32_(_mm256_cmp_ps_mask, r, (HEDLEY_UNREACHABLE(), 0), imm8, a, b);
-    return r;
-  #else
-    simde__m256 r;
-    SIMDE_CONSTIFY_32_(simde_mm256_cmp_ps, r, (HEDLEY_UNREACHABLE(), simde_mm256_setzero_ps()), imm8, a, b);
-    return simde_mm256_movepi32_mask(simde_mm256_castps_si256(r));
-  #endif
-}
 #if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES) && defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES)
   #undef _mm256_cmp_ps_mask
   #define _mm256_cmp_ps_mask(a, b, imm8) simde_mm256_cmp_ps_mask((a), (b), (imm8))
+#endif
+
+#if defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
+  #define simde_mm_cmp_ps_mask(a, b, imm8) _mm_cmp_ps_mask((a), (b), (imm8))
+#else
+  #define simde_mm_cmp_ps_mask(a, b, imm8) simde_mm_movepi32_mask(simde_mm_castps_si128(simde_mm_cmp_ps((a), (b), (imm8))))
+#endif
+#if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES) && defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES)
+  #undef _mm_cmp_ps_mask
+  #define _mm_cmp_ps_mask(a, b, imm8) simde_mm_cmp_ps_mask((a), (b), (imm8))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -619,39 +600,21 @@ simde_mm512_cmp_pd_mask (simde__m512d a, simde__m512d b, const int imm8)
   #define _mm512_cmp_pd_mask(a, b, imm8) simde_mm512_cmp_pd_mask((a), (b), (imm8))
 #endif
 
-SIMDE_FUNCTION_ATTRIBUTES
-simde__mmask8
-simde_mm256_cmp_pd_mask (simde__m256d a, simde__m256d b, const int imm8)
-    SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 31) {
-  #if defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
-    simde__mmask8 r;
-    SIMDE_CONSTIFY_32_(_mm256_cmp_pd_mask, r, (HEDLEY_UNREACHABLE(), 0), imm8, a, b);
-    return r;
-  #else
-    simde__m256d r;
-    SIMDE_CONSTIFY_32_(simde_mm256_cmp_pd, r, (HEDLEY_UNREACHABLE(), simde_mm256_setzero_pd()), imm8, a, b);
-    return simde_mm256_movepi64_mask(simde_mm256_castpd_si256(r));
-  #endif
-}
+#if defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
+  #define simde_mm256_cmp_pd_mask(a, b, imm8) _mm256_cmp_pd_mask((a), (b), (imm8))
+#else
+  #define simde_mm256_cmp_pd_mask(a, b, imm8) simde_mm256_movepi64_mask(simde_mm256_castpd_si256(simde_mm256_cmp_pd((a), (b), (imm8))))
+#endif
 #if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES) && defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES)
   #undef _mm256_cmp_pd_mask
   #define _mm256_cmp_pd_mask(a, b, imm8) simde_mm256_cmp_pd_mask((a), (b), (imm8))
 #endif
 
-SIMDE_FUNCTION_ATTRIBUTES
-simde__mmask8
-simde_mm_cmp_pd_mask (simde__m128d a, simde__m128d b, const int imm8)
-    SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 31) {
-  #if defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
-    simde__mmask8 r;
-    SIMDE_CONSTIFY_32_(_mm_cmp_pd_mask, r, (HEDLEY_UNREACHABLE(), 0), imm8, a, b);
-    return r;
-  #else
-    simde__m128d r;
-    SIMDE_CONSTIFY_32_(simde_mm_cmp_pd, r, (HEDLEY_UNREACHABLE(), simde_mm_setzero_pd()), imm8, a, b);
-    return simde_mm_movepi64_mask(simde_mm_castpd_si128(r));
-  #endif
-}
+#if defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
+  #define simde_mm_cmp_pd_mask(a, b, imm8) _mm_cmp_pd_mask((a), (b), (imm8))
+#else
+  #define simde_mm_cmp_pd_mask(a, b, imm8) simde_mm_movepi64_mask(simde_mm_castpd_si128(simde_mm_cmp_pd((a), (b), (imm8))))
+#endif
 #if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES) && defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES)
   #undef _mm_cmp_pd_mask
   #define _mm_cmp_pd_mask(a, b, imm8) simde_mm_cmp_pd_mask((a), (b), (imm8))
