@@ -43,10 +43,14 @@ simde_vget_low_f32(simde_float32x4_t a) {
     simde_float32x2_private r_;
     simde_float32x4_private a_ = simde_float32x4_to_private(a);
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = a_.values[i];
-    }
+    #if HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
+      r_.values = __builtin_shufflevector(a_.values, a_.values, 0, 1);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+        r_.values[i] = a_.values[i];
+      }
+    #endif
 
     return simde_float32x2_from_private(r_);
   #endif
@@ -65,10 +69,14 @@ simde_vget_low_f64(simde_float64x2_t a) {
     simde_float64x1_private r_;
     simde_float64x2_private a_ = simde_float64x2_to_private(a);
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = a_.values[i];
-    }
+    #if HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
+      r_.values = __builtin_shufflevector(a_.values, a_.values, 0);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+        r_.values[i] = a_.values[i];
+      }
+    #endif
 
     return simde_float64x1_from_private(r_);
   #endif
@@ -90,10 +98,14 @@ simde_vget_low_s8(simde_int8x16_t a) {
     #if defined(SIMDE_X86_SSE2_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
       r_.m64 = _mm_movepi64_pi64(a_.m128i);
     #else
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = a_.values[i];
-    }
+      #if HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
+        r_.values = __builtin_shufflevector(a_.values, a_.values, 0, 1, 2, 3, 4, 5, 6, 7);
+      #else
+        SIMDE_VECTORIZE
+        for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+          r_.values[i] = a_.values[i];
+        }
+      #endif
     #endif
 
     return simde_int8x8_from_private(r_);
@@ -116,10 +128,14 @@ simde_vget_low_s16(simde_int16x8_t a) {
     #if defined(SIMDE_X86_SSE2_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
       r_.m64 = _mm_movepi64_pi64(a_.m128i);
     #else
-      SIMDE_VECTORIZE
-      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-        r_.values[i] = a_.values[i];
-      }
+      #if HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
+        r_.values = __builtin_shufflevector(a_.values, a_.values, 0, 1, 2, 3);
+      #else
+        SIMDE_VECTORIZE
+        for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+          r_.values[i] = a_.values[i];
+        }
+      #endif
     #endif
 
     return simde_int16x4_from_private(r_);
@@ -142,10 +158,14 @@ simde_vget_low_s32(simde_int32x4_t a) {
     #if defined(SIMDE_X86_SSE2_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
       r_.m64 = _mm_movepi64_pi64(a_.m128i);
     #else
-      SIMDE_VECTORIZE
-      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-        r_.values[i] = a_.values[i];
-      }
+      #if HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
+        r_.values = __builtin_shufflevector(a_.values, a_.values, 0, 1);
+      #else
+        SIMDE_VECTORIZE
+        for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+          r_.values[i] = a_.values[i];
+        }
+      #endif
     #endif
 
     return simde_int32x2_from_private(r_);
@@ -168,10 +188,14 @@ simde_vget_low_s64(simde_int64x2_t a) {
     #if defined(SIMDE_X86_SSE2_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
       r_.m64 = _mm_movepi64_pi64(a_.m128i);
     #else
-      SIMDE_VECTORIZE
-      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-        r_.values[i] = a_.values[i];
-      }
+      #if HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
+        r_.values = __builtin_shufflevector(a_.values, a_.values, 0);
+      #else
+        SIMDE_VECTORIZE
+        for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+          r_.values[i] = a_.values[i];
+        }
+      #endif
     #endif
 
     return simde_int64x1_from_private(r_);
@@ -194,10 +218,14 @@ simde_vget_low_u8(simde_uint8x16_t a) {
     #if defined(SIMDE_X86_SSE2_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
       r_.m64 = _mm_movepi64_pi64(a_.m128i);
     #else
-      SIMDE_VECTORIZE
-      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-        r_.values[i] = a_.values[i];
-      }
+      #if HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
+        r_.values = __builtin_shufflevector(a_.values, a_.values, 0, 1, 2, 3, 4, 5, 6, 7);
+      #else
+        SIMDE_VECTORIZE
+        for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+          r_.values[i] = a_.values[i];
+        }
+      #endif
     #endif
 
     return simde_uint8x8_from_private(r_);
@@ -220,10 +248,14 @@ simde_vget_low_u16(simde_uint16x8_t a) {
     #if defined(SIMDE_X86_SSE2_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
       r_.m64 = _mm_movepi64_pi64(a_.m128i);
     #else
-      SIMDE_VECTORIZE
-      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-        r_.values[i] = a_.values[i];
-      }
+      #if HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
+        r_.values = __builtin_shufflevector(a_.values, a_.values, 0, 1, 2, 3);
+      #else
+        SIMDE_VECTORIZE
+        for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+          r_.values[i] = a_.values[i];
+        }
+      #endif
     #endif
 
     return simde_uint16x4_from_private(r_);
@@ -246,10 +278,14 @@ simde_vget_low_u32(simde_uint32x4_t a) {
     #if defined(SIMDE_X86_SSE2_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
       r_.m64 = _mm_movepi64_pi64(a_.m128i);
     #else
-      SIMDE_VECTORIZE
-      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-        r_.values[i] = a_.values[i];
-      }
+      #if HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
+        r_.values = __builtin_shufflevector(a_.values, a_.values, 0, 1);
+      #else
+        SIMDE_VECTORIZE
+        for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+          r_.values[i] = a_.values[i];
+        }
+      #endif
     #endif
 
     return simde_uint32x2_from_private(r_);
@@ -272,10 +308,14 @@ simde_vget_low_u64(simde_uint64x2_t a) {
     #if defined(SIMDE_X86_SSE2_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
       r_.m64 = _mm_movepi64_pi64(a_.m128i);
     #else
-      SIMDE_VECTORIZE
-      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-        r_.values[i] = a_.values[i];
-      }
+      #if HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
+        r_.values = __builtin_shufflevector(a_.values, a_.values, 0);
+      #else
+        SIMDE_VECTORIZE
+        for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+          r_.values[i] = a_.values[i];
+        }
+      #endif
     #endif
 
     return simde_uint64x1_from_private(r_);
