@@ -180,8 +180,8 @@ SIMDE_WASM_SIMD128_GENERATE_CONVERSION_FUNCTIONS(simde_v128_private, simde_v128_
   SIMDE_WASM_SIMD128_GENERATE_CONVERSION_FUNCTIONS(SIMDE_POWER_ALTIVEC_VECTOR(unsigned short), simde_v128_t, simde_v128_to_altivec_u16, simde_v128_from_altivec_u16)
   SIMDE_WASM_SIMD128_GENERATE_CONVERSION_FUNCTIONS(SIMDE_POWER_ALTIVEC_VECTOR(unsigned   int), simde_v128_t, simde_v128_to_altivec_u32, simde_v128_from_altivec_u32)
   #if defined(SIMDE_POWER_ALTIVEC_P7_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
-    SIMDE_WASM_SIMD128_GENERATE_CONVERSION_FUNCTIONS(SIMDE_POWER_ALTIVEC_VECTOR(  signed  long), simde_v128_t, simde_v128_to_altivec_i64, simde_v128_from_altivec_i64)
-    SIMDE_WASM_SIMD128_GENERATE_CONVERSION_FUNCTIONS(SIMDE_POWER_ALTIVEC_VECTOR(unsigned  long), simde_v128_t, simde_v128_to_altivec_u64, simde_v128_from_altivec_u64)
+    SIMDE_WASM_SIMD128_GENERATE_CONVERSION_FUNCTIONS(SIMDE_POWER_ALTIVEC_VECTOR(  signed  long long), simde_v128_t, simde_v128_to_altivec_i64, simde_v128_from_altivec_i64)
+    SIMDE_WASM_SIMD128_GENERATE_CONVERSION_FUNCTIONS(SIMDE_POWER_ALTIVEC_VECTOR(unsigned  long long), simde_v128_t, simde_v128_to_altivec_u64, simde_v128_from_altivec_u64)
   #endif
 
   #if defined(SIMDE_BUG_GCC_95782)
