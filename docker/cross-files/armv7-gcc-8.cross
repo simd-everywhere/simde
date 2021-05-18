@@ -1,0 +1,18 @@
+[binaries]
+c = '/usr/bin/arm-linux-gnueabihf-gcc-8'
+cpp = '/usr/bin/arm-linux-gnueabihf-g++-8'
+ar = '/usr/bin/arm-linux-gnueabihf-ar'
+strip = '/usr/bin/arm-linux-gnueabihf-strip'
+objcopy = '/usr/bin/arm-linux-gnueabihf-objcopy'
+ld = '/usr/bin/arm-linux-gnueabihf-ld'
+exe_wrapper = 'qemu-arm-static'
+
+[properties]
+c_args = ['-march=armv7-a+simd+neon-fp16', '-mfpu=auto', '-Wextra', '-Werror']
+cpp_args = ['-march=armv7-a+simd+neon-fp16', '-mfpu=auto', '-Wextra', '-Werror']
+
+[host_machine]
+system = 'linux'
+cpu_family = 'arm'
+cpu = 'armv7-a'
+endian = 'little'
