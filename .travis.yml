@@ -1,0 +1,50 @@
+language: c
+os: linux
+dist: focal
+
+jobs:
+  include:
+  - name: POWER9
+    if: branch != master OR type == pull_request
+    arch: ppc64le
+    compiler:
+    - clang
+    env:
+    - CC="clang"
+    - CXX="clang++"
+    - CFLAGS="-mcpu=power9 -Weverything -Werror"
+    - CXXFLAGS="-mcpu=power9 -Weverything -Werror"
+    addons:
+      apt:
+        packages: ninja-build python3-pip clang
+
+  - name: z/Arch 14
+    if: branch != master OR type == pull_request
+    arch: s390x
+    compiler:
+    - clang
+    env:
+    - CC="clang"
+    - CXX="clang++"
+    - CFLAGS="-march=z14 -mzvector -Weverything -Werror"
+    - CXXFLAGS="-march=z14 -mzvector -Weverything -Werror"
+    addons:
+      apt:
+        packages: ninja-build python3-pip clang
+
+before_install:
+- cat /proc/cpuinfo
+- cat /proc/meminfo
+
+install:
+- pip3 install meson
+
+script:
+- meson setup build -Db_coverage=true
+- ninja -C build -v -j 6
+
+after_success:
+- meson test -C build --print-errorlogs
+
+notifications:
+  email: false
