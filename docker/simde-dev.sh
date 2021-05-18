@@ -38,7 +38,7 @@ if [ "$IS_DOCKER" = true ]; then
     CURRENT_IMAGE_CREATED="$(date +"%s" -d "$DATE")"
   fi
 
-  if [ -z "${CURRENT_IMAGE_CREATED}" ]; then
+  if [[ -z "${CURRENT_IMAGE_CREATED}" || -z "${DATE}" ]]; then
     BUILD_IMAGE=y
   elif [ ${CURRENT_IMAGE_CREATED} -lt ${BUILD_CUTOFF_TIME} ]; then
     BUILD_IMAGE=y
