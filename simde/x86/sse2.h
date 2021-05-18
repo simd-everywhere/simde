@@ -2635,6 +2635,8 @@ simde_mm_cvtps_epi32 (simde__m128 a) {
       SIMDE_DIAGNOSTIC_DISABLE_VECTOR_CONVERSION_
       r_.altivec_i32 = vec_cts(a_.altivec_f32, 1);
       HEDLEY_DIAGNOSTIC_POP
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE) && defined(SIMDE_FAST_CONVERSION_RANGE) && defined(SIMDE_FAST_ROUND_TIES)
+      r_.wasm_v128 = wasm_i32x4_trunc_sat_f32x4(a_.wasm_v128);
     #else
       a_ = simde__m128_to_private(simde_x_mm_round_ps(a, SIMDE_MM_FROUND_TO_NEAREST_INT, 1));
       SIMDE_VECTORIZE
