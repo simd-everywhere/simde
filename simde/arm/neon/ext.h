@@ -506,6 +506,15 @@ simde_vextq_f32(simde_float32x4_t a, simde_float32x4_t b, const int n)
       } \
       simde_vextq_f32_r; \
     }))
+#elif HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
+  #define simde_vextq_f32(a, b, n) (__extension__ ({ \
+    simde_float32x4_private r_; \
+    r_.values = __builtin_shufflevector( \
+        simde_float32x4_to_private(a).values, \
+        simde_float32x4_to_private(b).values, \
+        n + 0, n + 1, n + 2, n + 3); \
+    simde_float32x4_from_private(r_); \
+    }))
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vextq_f32
@@ -548,6 +557,15 @@ simde_vextq_f64(simde_float64x2_t a, simde_float64x2_t b, const int n)
         simde_vextq_f64_r = simde_float64x2_from_private(simde_vextq_f64_r_); \
       } \
       simde_vextq_f64_r; \
+    }))
+#elif HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
+  #define simde_vextq_f64(a, b, n) (__extension__ ({ \
+    simde_float64x2_private r_; \
+    r_.values = __builtin_shufflevector( \
+        simde_float64x2_to_private(a).values, \
+        simde_float64x2_to_private(b).values, \
+        n + 0, n + 1); \
+    simde_float64x2_from_private(r_); \
     }))
 #endif
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
@@ -599,6 +617,16 @@ simde_vextq_s8(simde_int8x16_t a, simde_int8x16_t b, const int n)
       } \
       simde_vextq_s8_r; \
     }))
+#elif HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
+  #define simde_vextq_s8(a, b, n) (__extension__ ({ \
+    simde_int8x16_private r_; \
+    r_.values = __builtin_shufflevector( \
+        simde_int8x16_to_private(a).values, \
+        simde_int8x16_to_private(b).values, \
+        n + 0, n + 1, n + 2, n + 3, n + 4, n + 5, n + 6, n + 7, \
+        n + 8, n + 9, n + 10, n + 11, n + 12, n + 13, n + 14, n + 15); \
+    simde_int8x16_from_private(r_); \
+    }))
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vextq_s8
@@ -645,6 +673,15 @@ simde_vextq_s16(simde_int16x8_t a, simde_int16x8_t b, const int n)
       } \
       simde_vextq_s16_r; \
     }))
+#elif HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
+  #define simde_vextq_s16(a, b, n) (__extension__ ({ \
+    simde_int16x8_private r_; \
+    r_.values = __builtin_shufflevector( \
+        simde_int16x8_to_private(a).values, \
+        simde_int16x8_to_private(b).values, \
+        n + 0, n + 1, n + 2, n + 3, n + 4, n + 5, n + 6, n + 7); \
+    simde_int16x8_from_private(r_); \
+    }))
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vextq_s16
@@ -689,6 +726,15 @@ simde_vextq_s32(simde_int32x4_t a, simde_int32x4_t b, const int n)
       } \
       simde_vextq_s32_r; \
     }))
+#elif HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
+  #define simde_vextq_s32(a, b, n) (__extension__ ({ \
+    simde_int32x4_private r_; \
+    r_.values = __builtin_shufflevector( \
+        simde_int32x4_to_private(a).values, \
+        simde_int32x4_to_private(b).values, \
+        n + 0, n + 1, n + 2, n + 3); \
+    simde_int32x4_from_private(r_); \
+    }))
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vextq_s32
@@ -731,6 +777,15 @@ simde_vextq_s64(simde_int64x2_t a, simde_int64x2_t b, const int n)
         simde_vextq_s64_r = simde_int64x2_from_private(simde_vextq_s64_r_); \
       } \
       simde_vextq_s64_r; \
+    }))
+#elif HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
+  #define simde_vextq_s64(a, b, n) (__extension__ ({ \
+    simde_int64x2_private r_; \
+    r_.values = __builtin_shufflevector( \
+        simde_int64x2_to_private(a).values, \
+        simde_int64x2_to_private(b).values, \
+        n + 0, n + 1); \
+    simde_int64x2_from_private(r_); \
     }))
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
@@ -782,6 +837,16 @@ simde_vextq_u8(simde_uint8x16_t a, simde_uint8x16_t b, const int n)
       } \
       simde_vextq_u8_r; \
     }))
+#elif HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
+  #define simde_vextq_u8(a, b, n) (__extension__ ({ \
+    simde_uint8x16_private r_; \
+    r_.values = __builtin_shufflevector( \
+        simde_uint8x16_to_private(a).values, \
+        simde_uint8x16_to_private(b).values, \
+        n + 0, n + 1, n + 2, n + 3, n + 4, n + 5, n + 6, n + 7, \
+        n + 8, n + 9, n + 10, n + 11, n + 12, n + 13, n + 14, n + 15); \
+    simde_uint8x16_from_private(r_); \
+    }))
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vextq_u8
@@ -828,6 +893,15 @@ simde_vextq_u16(simde_uint16x8_t a, simde_uint16x8_t b, const int n)
       } \
       simde_vextq_u16_r; \
     }))
+#elif HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
+  #define simde_vextq_u16(a, b, n) (__extension__ ({ \
+    simde_uint16x8_private r_; \
+    r_.values = __builtin_shufflevector( \
+        simde_uint16x8_to_private(a).values, \
+        simde_uint16x8_to_private(b).values, \
+        n + 0, n + 1, n + 2, n + 3, n + 4, n + 5, n + 6, n + 7); \
+    simde_uint16x8_from_private(r_); \
+    }))
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vextq_u16
@@ -872,6 +946,15 @@ simde_vextq_u32(simde_uint32x4_t a, simde_uint32x4_t b, const int n)
       } \
       simde_vextq_u32_r; \
     }))
+#elif HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
+  #define simde_vextq_u32(a, b, n) (__extension__ ({ \
+    simde_uint32x4_private r_; \
+    r_.values = __builtin_shufflevector( \
+        simde_uint32x4_to_private(a).values, \
+        simde_uint32x4_to_private(b).values, \
+        n + 0, n + 1, n + 2, n + 3); \
+    simde_uint32x4_from_private(r_); \
+    }))
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vextq_u32
@@ -914,6 +997,15 @@ simde_vextq_u64(simde_uint64x2_t a, simde_uint64x2_t b, const int n)
         simde_vextq_u64_r = simde_uint64x2_from_private(simde_vextq_u64_r_); \
       } \
       simde_vextq_u64_r; \
+    }))
+#elif HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
+  #define simde_vextq_u64(a, b, n) (__extension__ ({ \
+    simde_uint64x2_private r_; \
+    r_.values = __builtin_shufflevector( \
+        simde_uint64x2_to_private(a).values, \
+        simde_uint64x2_to_private(b).values, \
+        n + 0, n + 1); \
+    simde_uint64x2_from_private(r_); \
     }))
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
