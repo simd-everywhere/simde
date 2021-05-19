@@ -227,6 +227,15 @@ simde_int8x16_t
 simde_vabdq_s8(simde_int8x16_t a, simde_int8x16_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vabdq_s8(a, b);
+  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+    v128_t a_low = wasm_i16x8_extend_low_i8x16(a);
+    v128_t a_high = wasm_i16x8_extend_high_i8x16(a);
+    v128_t b_low = wasm_i16x8_extend_low_i8x16(b);
+    v128_t b_high = wasm_i16x8_extend_high_i8x16(b);
+    v128_t low = wasm_i16x8_abs(wasm_i16x8_sub(a_low, b_low));
+    v128_t high = wasm_i16x8_abs(wasm_i16x8_sub(a_high, b_high));
+    // Do use narrow since it will saturate results, we just the low bits.
+    return wasm_i8x16_shuffle(low, high, 0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30);
   #else
     simde_int8x16_private
       r_,
@@ -252,6 +261,15 @@ simde_int16x8_t
 simde_vabdq_s16(simde_int16x8_t a, simde_int16x8_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vabdq_s16(a, b);
+  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+    v128_t a_low = wasm_i32x4_extend_low_i16x8(a);
+    v128_t a_high = wasm_i32x4_extend_high_i16x8(a);
+    v128_t b_low = wasm_i32x4_extend_low_i16x8(b);
+    v128_t b_high = wasm_i32x4_extend_high_i16x8(b);
+    v128_t low = wasm_i32x4_abs(wasm_i32x4_sub(a_low, b_low));
+    v128_t high = wasm_i32x4_abs(wasm_i32x4_sub(a_high, b_high));
+    // Do use narrow since it will saturate results, we just the low bits.
+    return wasm_i8x16_shuffle(low, high, 0,1,4,5,8,9,12,13,16,17,20,21,24,25,28,29);
   #else
     simde_int16x8_private
       r_,
@@ -304,6 +322,14 @@ simde_vabdq_u8(simde_uint8x16_t a, simde_uint8x16_t b) {
     return vabdq_u8(a, b);
   #elif defined(SIMDE_POWER_ALTIVEC_P9_NATIVE)
     return vec_absd(a, b);
+  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+    v128_t a_low = wasm_u16x8_extend_low_u8x16(a);
+    v128_t a_high = wasm_u16x8_extend_high_u8x16(a);
+    v128_t b_low = wasm_u16x8_extend_low_u8x16(b);
+    v128_t b_high = wasm_u16x8_extend_high_u8x16(b);
+    v128_t low = wasm_i16x8_abs(wasm_i16x8_sub(a_low, b_low));
+    v128_t high = wasm_i16x8_abs(wasm_i16x8_sub(a_high, b_high));
+    return wasm_u8x16_narrow_i16x8(low, high);
   #else
     simde_uint8x16_private
       r_,
@@ -331,6 +357,14 @@ simde_vabdq_u16(simde_uint16x8_t a, simde_uint16x8_t b) {
     return vabdq_u16(a, b);
   #elif defined(SIMDE_POWER_ALTIVEC_P9_NATIVE)
     return vec_absd(a, b);
+  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+    v128_t a_low = wasm_u32x4_extend_low_u16x8(a);
+    v128_t a_high = wasm_u32x4_extend_high_u16x8(a);
+    v128_t b_low = wasm_u32x4_extend_low_u16x8(b);
+    v128_t b_high = wasm_u32x4_extend_high_u16x8(b);
+    v128_t low = wasm_i32x4_abs(wasm_i32x4_sub(a_low, b_low));
+    v128_t high = wasm_i32x4_abs(wasm_i32x4_sub(a_high, b_high));
+    return wasm_u16x8_narrow_i32x4(low, high);
   #else
     simde_uint16x8_private
       r_,
