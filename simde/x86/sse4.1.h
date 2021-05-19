@@ -1806,7 +1806,7 @@ simde_mm_mpsadbw_epu8 (simde__m128i a, simde__m128i b, const int imm8)
 
   return simde__m128i_from_private(r_);
 }
-#if defined(SIMDE_X86_SSE4_1_NATIVE)
+#if defined(SIMDE_X86_SSE4_1_NATIVE) && !defined(SIMDE_BUG_PGI_30107)
 #  define simde_mm_mpsadbw_epu8(a, b, imm8) _mm_mpsadbw_epu8(a, b, imm8)
 #endif
 #if defined(SIMDE_X86_SSE4_1_ENABLE_NATIVE_ALIASES)

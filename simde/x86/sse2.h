@@ -2549,7 +2549,7 @@ simde_mm_cvtpd_pi32 (simde__m128d a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_cvtpd_epi32 (simde__m128d a) {
-  #if defined(SIMDE_X86_SSE2_NATIVE)
+  #if defined(SIMDE_X86_SSE2_NATIVE) && !defined(SIMDE_BUG_PGI_30107)
     return _mm_cvtpd_epi32(a);
   #else
     simde__m128i_private r_;
@@ -4112,7 +4112,7 @@ simde_x_mm_mod_epi64 (simde__m128i a, simde__m128i b) {
     a_ = simde__m128i_to_private(a),
     b_ = simde__m128i_to_private(b);
 
-  #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+  #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && !defined(SIMDE_BUG_PGI_30104)
     r_.i64 = a_.i64 % b_.i64;
   #else
     SIMDE_VECTORIZE

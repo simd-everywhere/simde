@@ -300,7 +300,7 @@ simde_mm256_alignr_epi8 (simde__m256i a, simde__m256i b, int count)
 
   return simde__m256i_from_private(r_);
 }
-#if defined(SIMDE_X86_AVX2_NATIVE)
+#if defined(SIMDE_X86_AVX2_NATIVE) && !defined(SIMDE_BUG_PGI_30106)
 #  define simde_mm256_alignr_epi8(a, b, count) _mm256_alignr_epi8(a, b, count)
 #elif SIMDE_NATURAL_VECTOR_SIZE_LE(128)
 #  define simde_mm256_alignr_epi8(a, b, count) \

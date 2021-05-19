@@ -21,10 +21,10 @@
  * SOFTWARE.
  */
 
-#include "test/test.h"
+#include "../test.h"
 #define SIMDE_TESTS_CURRENT_ISAX sse2
-#include <simde/x86/sse2.h>
-#include <test/x86/test-sse2.h>
+#include "../../simde/x86/sse2.h"
+#include "test-sse2.h"
 
 #if defined(HEDLEY_MSVC_VERSION)
 #  pragma warning(disable:4324)
