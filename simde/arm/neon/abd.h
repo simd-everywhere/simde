@@ -233,11 +233,22 @@ simde_vabdq_s8(simde_int8x16_t a, simde_int8x16_t b) {
       a_ = simde_int8x16_to_private(a),
       b_ = simde_int8x16_to_private(b);
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      int16_t tmp = HEDLEY_STATIC_CAST(int16_t, a_.values[i]) - HEDLEY_STATIC_CAST(int16_t, b_.values[i]);
-      r_.values[i] = HEDLEY_STATIC_CAST(int8_t, tmp < 0 ? -tmp : tmp);
-    }
+    #if defined(SIMDE_WASM_SIMD128_NATIVE)
+      v128_t a_low = wasm_i16x8_extend_low_i8x16(a_.v128);
+      v128_t a_high = wasm_i16x8_extend_high_i8x16(a_.v128);
+      v128_t b_low = wasm_i16x8_extend_low_i8x16(b_.v128);
+      v128_t b_high = wasm_i16x8_extend_high_i8x16(b_.v128);
+      v128_t low = wasm_i16x8_abs(wasm_i16x8_sub(a_low, b_low));
+      v128_t high = wasm_i16x8_abs(wasm_i16x8_sub(a_high, b_high));
+      // Do use narrow since it will saturate results, we just the low bits.
+      r_.v128 = wasm_i8x16_shuffle(low, high, 0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+        int16_t tmp = HEDLEY_STATIC_CAST(int16_t, a_.values[i]) - HEDLEY_STATIC_CAST(int16_t, b_.values[i]);
+        r_.values[i] = HEDLEY_STATIC_CAST(int8_t, tmp < 0 ? -tmp : tmp);
+      }
+    #endif
 
     return simde_int8x16_from_private(r_);
   #endif
@@ -257,13 +268,23 @@ simde_vabdq_s16(simde_int16x8_t a, simde_int16x8_t b) {
       r_,
       a_ = simde_int16x8_to_private(a),
       b_ = simde_int16x8_to_private(b);
+    #if defined(SIMDE_WASM_SIMD128_NATIVE)
+      v128_t a_low = wasm_i32x4_extend_low_i16x8(a_.v128);
+      v128_t a_high = wasm_i32x4_extend_high_i16x8(a_.v128);
+      v128_t b_low = wasm_i32x4_extend_low_i16x8(b_.v128);
+      v128_t b_high = wasm_i32x4_extend_high_i16x8(b_.v128);
+      v128_t low = wasm_i32x4_abs(wasm_i32x4_sub(a_low, b_low));
+      v128_t high = wasm_i32x4_abs(wasm_i32x4_sub(a_high, b_high));
+      // Do use narrow since it will saturate results, we just the low bits.
+      r_.v128 = wasm_i8x16_shuffle(low, high, 0,1,4,5,8,9,12,13,16,17,20,21,24,25,28,29);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+        int32_t tmp = HEDLEY_STATIC_CAST(int32_t, a_.values[i]) - HEDLEY_STATIC_CAST(int32_t, b_.values[i]);
+        r_.values[i] = HEDLEY_STATIC_CAST(int16_t, tmp < 0 ? -tmp : tmp);
+      }
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      int32_t tmp = HEDLEY_STATIC_CAST(int32_t, a_.values[i]) - HEDLEY_STATIC_CAST(int32_t, b_.values[i]);
-      r_.values[i] = HEDLEY_STATIC_CAST(int16_t, tmp < 0 ? -tmp : tmp);
-    }
-
+    #endif
     return simde_int16x8_from_private(r_);
   #endif
 }
@@ -309,12 +330,21 @@ simde_vabdq_u8(simde_uint8x16_t a, simde_uint8x16_t b) {
       r_,
       a_ = simde_uint8x16_to_private(a),
       b_ = simde_uint8x16_to_private(b);
-
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      int16_t tmp = HEDLEY_STATIC_CAST(int16_t, a_.values[i]) - HEDLEY_STATIC_CAST(int16_t, b_.values[i]);
-      r_.values[i] = HEDLEY_STATIC_CAST(uint8_t, tmp < 0 ? -tmp : tmp);
-    }
+    #if defined(SIMDE_WASM_SIMD128_NATIVE)
+      v128_t a_low = wasm_u16x8_extend_low_u8x16(a_.v128);
+      v128_t a_high = wasm_u16x8_extend_high_u8x16(a_.v128);
+      v128_t b_low = wasm_u16x8_extend_low_u8x16(b_.v128);
+      v128_t b_high = wasm_u16x8_extend_high_u8x16(b_.v128);
+      v128_t low = wasm_i16x8_abs(wasm_i16x8_sub(a_low, b_low));
+      v128_t high = wasm_i16x8_abs(wasm_i16x8_sub(a_high, b_high));
+      r_.v128 = wasm_u8x16_narrow_i16x8(low, high);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+        int16_t tmp = HEDLEY_STATIC_CAST(int16_t, a_.values[i]) - HEDLEY_STATIC_CAST(int16_t, b_.values[i]);
+        r_.values[i] = HEDLEY_STATIC_CAST(uint8_t, tmp < 0 ? -tmp : tmp);
+      }
+    #endif
 
     return simde_uint8x16_from_private(r_);
   #endif
@@ -336,12 +366,21 @@ simde_vabdq_u16(simde_uint16x8_t a, simde_uint16x8_t b) {
       r_,
       a_ = simde_uint16x8_to_private(a),
       b_ = simde_uint16x8_to_private(b);
-
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      int32_t tmp = HEDLEY_STATIC_CAST(int32_t, a_.values[i]) - HEDLEY_STATIC_CAST(int32_t, b_.values[i]);
-      r_.values[i] = HEDLEY_STATIC_CAST(uint16_t, tmp < 0 ? -tmp : tmp);
-    }
+    #if defined(SIMDE_WASM_SIMD128_NATIVE)
+      v128_t a_low = wasm_u32x4_extend_low_u16x8(a_.v128);
+      v128_t a_high = wasm_u32x4_extend_high_u16x8(a_.v128);
+      v128_t b_low = wasm_u32x4_extend_low_u16x8(b_.v128);
+      v128_t b_high = wasm_u32x4_extend_high_u16x8(b_.v128);
+      v128_t low = wasm_i32x4_abs(wasm_i32x4_sub(a_low, b_low));
+      v128_t high = wasm_i32x4_abs(wasm_i32x4_sub(a_high, b_high));
+      r_.v128 = wasm_u16x8_narrow_i32x4(low, high);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+        int32_t tmp = HEDLEY_STATIC_CAST(int32_t, a_.values[i]) - HEDLEY_STATIC_CAST(int32_t, b_.values[i]);
+        r_.values[i] = HEDLEY_STATIC_CAST(uint16_t, tmp < 0 ? -tmp : tmp);
+      }
+    #endif
 
     return simde_uint16x8_from_private(r_);
   #endif
