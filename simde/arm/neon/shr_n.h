@@ -298,7 +298,7 @@ simde_vshrq_n_s8 (const simde_int8x16_t a, const int n)
 
   #if defined(SIMDE_X86_GFNI_NATIVE)
     /* https://wunkolo.github.io/post/2020/11/gf2p8affineqb-int8-shifting/ */
-    const int shift = (n_ <= 7) ? n : 7;
+    const int shift = (n <= 7) ? n : 7;
     const uint64_t matrix = (UINT64_C(0x8182848890A0C000) << (shift * 8)) ^ UINT64_C(0x8080808080808080);
     r_.m128i = _mm_gf2p8affine_epi64_epi8(a_.m128i, _mm_set1_epi64x(HEDLEY_STATIC_CAST(int64_t, matrix)), 0);
   #elif defined(SIMDE_X86_SSE4_1_NATIVE)
