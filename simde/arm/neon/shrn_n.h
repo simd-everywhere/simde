@@ -30,6 +30,7 @@
 
 #include "types.h"
 #include "reinterpret.h"
+#include "movn.h"
 
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
