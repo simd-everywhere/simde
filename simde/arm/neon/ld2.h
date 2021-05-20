@@ -27,7 +27,10 @@
 #if !defined(SIMDE_ARM_NEON_LD2_H)
 #define SIMDE_ARM_NEON_LD2_H
 
+#include "get_low.h"
+#include "get_high.h"
 #include "types.h"
+#include "uzp.h"
 
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
@@ -40,13 +43,24 @@ SIMDE_BEGIN_DECLS_
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde_uint8x8x2_t
-simde_vld2_u8(uint8_t const ptr[HEDLEY_ARRAY_PARAM(8)]) {
+simde_vld2_u8(uint8_t const ptr[HEDLEY_ARRAY_PARAM(16)]) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vld2_u8(ptr);
+  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+    v128_t a = wasm_v128_load(ptr);
+    simde_uint8x16_private q_;
+    q_.v128 = wasm_i8x16_shuffle(a, a, 0, 2, 4, 6, 8, 10, 12, 14, 1, 3, 5, 7, 9, 11, 13, 15);
+    simde_uint8x16_t q = simde_uint8x16_from_private(q_);
+
+    simde_uint8x8x2_t u = {
+      simde_vget_low_u8(q),
+      simde_vget_high_u8(q)
+    };
+    return u;
   #else
     simde_uint8x8_private r_[2];
 
-    for (size_t i = 0; i < (sizeof(r_) / sizeof(r_[0])); i++) {
+    for (size_t i = 0 ; i < (sizeof(r_) / sizeof(r_[0])) ; i++) {
       for (size_t j = 0 ; j < (sizeof(r_[0].values) / sizeof(r_[0].values[0])) ; j++) {
         r_[i].values[j] = ptr[i + (j * (sizeof(r_) / sizeof(r_[0])))];
       }
@@ -73,7 +87,7 @@ simde_vld2_u16(uint16_t const ptr[HEDLEY_ARRAY_PARAM(8)]) {
   #else
     simde_uint16x4_private r_[2];
 
-    for (size_t i = 0; i < (sizeof(r_) / sizeof(r_[0])); i++) {
+    for (size_t i = 0 ; i < (sizeof(r_) / sizeof(r_[0])) ; i++) {
       for (size_t j = 0 ; j < (sizeof(r_[0].values) / sizeof(r_[0].values[0])) ; j++) {
         r_[i].values[j] = ptr[i + (j * (sizeof(r_) / sizeof(r_[0])))];
       }
@@ -94,13 +108,13 @@ simde_vld2_u16(uint16_t const ptr[HEDLEY_ARRAY_PARAM(8)]) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde_uint32x2x2_t
-simde_vld2_u32(uint32_t const ptr[HEDLEY_ARRAY_PARAM(8)]) {
+simde_vld2_u32(uint32_t const ptr[HEDLEY_ARRAY_PARAM(4)]) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vld2_u32(ptr);
   #else
     simde_uint32x2_private r_[2];
 
-    for (size_t i = 0; i < (sizeof(r_) / sizeof(r_[0])); i++) {
+    for (size_t i = 0 ; i < (sizeof(r_) / sizeof(r_[0])) ; i++) {
       for (size_t j = 0 ; j < (sizeof(r_[0].values) / sizeof(r_[0].values[0])) ; j++) {
         r_[i].values[j] = ptr[i + (j * (sizeof(r_) / sizeof(r_[0])))];
       }
@@ -121,22 +135,29 @@ simde_vld2_u32(uint32_t const ptr[HEDLEY_ARRAY_PARAM(8)]) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde_uint8x16x2_t
-simde_vld2q_u8(uint8_t const ptr[HEDLEY_ARRAY_PARAM(8)]) {
+simde_vld2q_u8(uint8_t const ptr[HEDLEY_ARRAY_PARAM(32)]) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vld2q_u8(ptr);
   #else
     simde_uint8x16_private r_[2];
 
-    for (size_t i = 0; i < (sizeof(r_) / sizeof(r_[0])); i++) {
-      for (size_t j = 0 ; j < (sizeof(r_[0].values) / sizeof(r_[0].values[0])) ; j++) {
-        r_[i].values[j] = ptr[i + (j * (sizeof(r_) / sizeof(r_[0])))];
+    #if defined(SIMDE_WASM_SIMD128_NATIVE)
+      r_[0].v128 = wasm_v128_load(ptr);
+      r_[1].v128 = wasm_v128_load(ptr+16);
+      simde_uint8x16x2_t r =
+        simde_vuzpq_u8(simde_uint8x16_from_private(r_[0]), simde_uint8x16_from_private(r_[1]));
+    #else
+      for (size_t i = 0 ; i < (sizeof(r_) / sizeof(r_[0])) ; i++) {
+        for (size_t j = 0 ; j < (sizeof(r_[0].values) / sizeof(r_[0].values[0])) ; j++) {
+          r_[i].values[j] = ptr[i + (j * (sizeof(r_) / sizeof(r_[0])))];
+        }
       }
-    }
 
-    simde_uint8x16x2_t r = { {
-      simde_uint8x16_from_private(r_[0]),
-      simde_uint8x16_from_private(r_[1]),
-    } };
+      simde_uint8x16x2_t r = { {
+        simde_uint8x16_from_private(r_[0]),
+        simde_uint8x16_from_private(r_[1]),
+      } };
+    #endif
 
     return r;
   #endif
@@ -148,22 +169,29 @@ simde_vld2q_u8(uint8_t const ptr[HEDLEY_ARRAY_PARAM(8)]) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde_uint16x8x2_t
-simde_vld2q_u16(uint16_t const ptr[HEDLEY_ARRAY_PARAM(8)]) {
+simde_vld2q_u16(uint16_t const ptr[HEDLEY_ARRAY_PARAM(16)]) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vld2q_u16(ptr);
   #else
     simde_uint16x8_private r_[2];
 
-    for (size_t i = 0; i < (sizeof(r_) / sizeof(r_[0])); i++) {
-      for (size_t j = 0 ; j < (sizeof(r_[0].values) / sizeof(r_[0].values[0])) ; j++) {
-        r_[i].values[j] = ptr[i + (j * (sizeof(r_) / sizeof(r_[0])))];
+    #if defined(SIMDE_WASM_SIMD128_NATIVE)
+      r_[0].v128 = wasm_v128_load(ptr);
+      r_[1].v128 = wasm_v128_load(ptr+8);
+      simde_uint16x8x2_t r =
+        simde_vuzpq_u16(simde_uint16x8_from_private(r_[0]), simde_uint16x8_from_private(r_[1]));
+    #else
+      for (size_t i = 0 ; i < (sizeof(r_) / sizeof(r_[0])) ; i++) {
+        for (size_t j = 0 ; j < (sizeof(r_[0].values) / sizeof(r_[0].values[0])) ; j++) {
+          r_[i].values[j] = ptr[i + (j * (sizeof(r_) / sizeof(r_[0])))];
+        }
       }
-    }
 
-    simde_uint16x8x2_t r = { {
-      simde_uint16x8_from_private(r_[0]),
-      simde_uint16x8_from_private(r_[1]),
-    } };
+      simde_uint16x8x2_t r = { {
+        simde_uint16x8_from_private(r_[0]),
+        simde_uint16x8_from_private(r_[1]),
+      } };
+    #endif
 
     return r;
   #endif
@@ -181,16 +209,23 @@ simde_vld2q_u32(uint32_t const ptr[HEDLEY_ARRAY_PARAM(8)]) {
   #else
     simde_uint32x4_private r_[2];
 
-    for (size_t i = 0; i < (sizeof(r_) / sizeof(r_[0])); i++) {
-      for (size_t j = 0 ; j < (sizeof(r_[0].values) / sizeof(r_[0].values[0])) ; j++) {
-        r_[i].values[j] = ptr[i + (j * (sizeof(r_) / sizeof(r_[0])))];
+    #if defined(SIMDE_WASM_SIMD128_NATIVE)
+      r_[0].v128 = wasm_v128_load(ptr);
+      r_[1].v128 = wasm_v128_load(ptr+4);
+      simde_uint32x4x2_t r =
+        simde_vuzpq_u32(simde_uint32x4_from_private(r_[0]), simde_uint32x4_from_private(r_[1]));
+    #else
+      for (size_t i = 0 ; i < (sizeof(r_) / sizeof(r_[0])) ; i++) {
+        for (size_t j = 0 ; j < (sizeof(r_[0].values) / sizeof(r_[0].values[0])) ; j++) {
+          r_[i].values[j] = ptr[i + (j * (sizeof(r_) / sizeof(r_[0])))];
+        }
       }
-    }
 
-    simde_uint32x4x2_t r = { {
-      simde_uint32x4_from_private(r_[0]),
-      simde_uint32x4_from_private(r_[1]),
-    } };
+      simde_uint32x4x2_t r = { {
+        simde_uint32x4_from_private(r_[0]),
+        simde_uint32x4_from_private(r_[1]),
+      } };
+    #endif
 
     return r;
   #endif
@@ -208,16 +243,23 @@ simde_vld2q_f32(simde_float32_t const ptr[HEDLEY_ARRAY_PARAM(8)]) {
   #else
     simde_float32x4_private r_[2];
 
-    for (size_t i = 0; i < (sizeof(r_) / sizeof(r_[0])); i++) {
-      for (size_t j = 0 ; j < (sizeof(r_[0].values) / sizeof(r_[0].values[0])) ; j++) {
-        r_[i].values[j] = ptr[i + (j * (sizeof(r_) / sizeof(r_[0])))];
+    #if defined(SIMDE_WASM_SIMD128_NATIVE)
+      r_[0].v128 = wasm_v128_load(ptr);
+      r_[1].v128 = wasm_v128_load(ptr+4);
+      simde_float32x4x2_t r =
+        simde_vuzpq_f32(simde_float32x4_from_private(r_[0]), simde_float32x4_from_private(r_[1]));
+    #else
+      for (size_t i = 0 ; i < (sizeof(r_) / sizeof(r_[0])) ; i++) {
+        for (size_t j = 0 ; j < (sizeof(r_[0].values) / sizeof(r_[0].values[0])) ; j++) {
+          r_[i].values[j] = ptr[i + (j * (sizeof(r_) / sizeof(r_[0])))];
+        }
       }
-    }
 
-    simde_float32x4x2_t r = { {
-      simde_float32x4_from_private(r_[0]),
-      simde_float32x4_from_private(r_[1]),
-    } };
+      simde_float32x4x2_t r = { {
+        simde_float32x4_from_private(r_[0]),
+        simde_float32x4_from_private(r_[1]),
+      } };
+    #endif
 
     return r;
   #endif
