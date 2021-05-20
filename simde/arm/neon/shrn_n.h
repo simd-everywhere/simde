@@ -39,16 +39,20 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde_int8x8_t
 simde_vshrn_n_s16 (const simde_int16x8_t a, const int n)
     SIMDE_REQUIRE_CONSTANT_RANGE(n, 1, 8) {
+#if defined(SIMDE_WASM_SIMD128_NATIVE)
+  simde_int16x8_private b_;
+  b_.v128 = wasm_i16x8_shr(simde_int16x8_to_private(a).v128, n);
+  return simde_vmovn_s16(simde_int16x8_from_private(b_));
+#else
   simde_int8x8_private r_;
   simde_int16x8_private a_ = simde_int16x8_to_private(a);
-  int32_t n_ = n;
-
   SIMDE_VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-    r_.values[i] = HEDLEY_STATIC_CAST(int8_t, (a_.values[i] >> n_) & UINT8_MAX);
+    r_.values[i] = HEDLEY_STATIC_CAST(int8_t, (a_.values[i] >> n) & UINT8_MAX);
   }
-
   return simde_int8x8_from_private(r_);
+#endif
+
 }
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vshrn_n_s16(a, n) vshrn_n_s16((a), (n))
