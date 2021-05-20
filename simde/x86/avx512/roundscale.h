@@ -3,6 +3,7 @@
 
 #include "types.h"
 #include "../sse.h"
+#include "cmp.h"
 
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
@@ -15,7 +16,7 @@ SIMDE_BEGIN_DECLS_
   simde__m128
   simde_mm_roundscale_ps (simde__m128 a, int imm8)
       SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 255) {
-    simde__m128 temp, r;
+    simde__m128 temp, r, clear_sign;
     int32_t
       exponent1 = (127 + ((imm8 >> 4) & 15)) << 23,
       exponent2 = (127 - ((imm8 >> 4) & 15)) << 23;
@@ -23,18 +24,10 @@ SIMDE_BEGIN_DECLS_
     SIMDE_CONSTIFY_16_(simde_mm_round_ps, temp, simde_mm_setzero_ps(), imm8 & 15, simde_mm_mul_ps(a, simde_mm_set1_ps(*HEDLEY_REINTERPRET_CAST(SIMDE_FLOAT32_TYPE*, &exponent1))));
     r = simde_mm_mul_ps(simde_mm_set1_ps(*HEDLEY_REINTERPRET_CAST(SIMDE_FLOAT32_TYPE*, &exponent2)), temp);
 
-    simde__m128_private
-      r_ = simde__m128_to_private(r),
-      a_ = simde__m128_to_private(a);
+    clear_sign = simde_mm_andnot_ps(simde_mm_set1_ps(SIMDE_FLOAT32_C(-0.0)), r);
+    r = simde_mm_mask_mov_ps(r, simde_mm_cmp_ps_mask(clear_sign, simde_mm_set1_ps(SIMDE_MATH_INFINITY), SIMDE_CMP_EQ_OQ), a);
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
-      if (simde_math_isinf(r_.f32[i])) {
-        r_.f32[i] = a_.f32[i];
-      }
-    }
-
-    return simde__m128_from_private(r_);
+    return r;
   }
 #endif
 #if defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES) && defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
