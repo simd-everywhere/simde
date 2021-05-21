@@ -123,6 +123,13 @@
   #define SIMDE_FAST_CONVERSION_RANGE
 #endif
 
+/* Due to differences across platforms, sometimes it can be much
+ * faster for us to allow spurious floating point exceptions,
+ * or to no generate them when we should. */
+#if !defined(SIMDE_FAST_EXCEPTIONS) && !defined(SIMDE_NO_FAST_EXCEPTIONS) && defined(SIMDE_FAST_MATH)
+  #define SIMDE_FAST_EXCEPTIONS
+#endif
+
 #if \
     HEDLEY_HAS_BUILTIN(__builtin_constant_p) || \
     HEDLEY_GCC_VERSION_CHECK(3,4,0) || \
