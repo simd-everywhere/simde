@@ -28,6 +28,9 @@
 #define SIMDE_ARM_NEON_RECPS_H
 
 #include "types.h"
+#include "sub.h"
+#include "mul.h"
+#include "dup_n.h"
 
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
@@ -39,17 +42,7 @@ simde_vrecps_f32(simde_float32x2_t a, simde_float32x2_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vrecps_f32(a, b);
   #else
-    simde_float32x2_private
-      r_,
-      a_ = simde_float32x2_to_private(a),
-      b_ = simde_float32x2_to_private(b);
-
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = SIMDE_FLOAT32_C(2.0) - (a_.values[i] * b_.values[i]);
-    }
-
-    return simde_float32x2_from_private(r_);
+    return simde_vsub_f32(simde_vdup_n_f32(SIMDE_FLOAT32_C(2.0)), simde_vmul_f32(a, b));
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
@@ -63,17 +56,7 @@ simde_vrecpsq_f32(simde_float32x4_t a, simde_float32x4_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vrecpsq_f32(a, b);
   #else
-    simde_float32x4_private
-      r_,
-      a_ = simde_float32x4_to_private(a),
-      b_ = simde_float32x4_to_private(b);
-
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = SIMDE_FLOAT32_C(2.0) - (a_.values[i] * b_.values[i]);
-    }
-
-    return simde_float32x4_from_private(r_);
+    return simde_vsubq_f32(simde_vdupq_n_f32(SIMDE_FLOAT32_C(2.0)), simde_vmulq_f32(a, b));
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
