@@ -27,6 +27,7 @@
 #if !defined(SIMDE_ARM_NEON_DUP_LANE_H)
 #define SIMDE_ARM_NEON_DUP_LANE_H
 
+#include "dup_n.h"
 #include "types.h"
 
 HEDLEY_DIAGNOSTIC_PUSH
@@ -690,15 +691,8 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde_float32x4_t
 simde_vdupq_lane_f32(simde_float32x2_t vec, const int lane)
     SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 1) {
-  simde_float32x2_private vec_ = simde_float32x2_to_private(vec);
-  simde_float32x4_private r_;
-
-  SIMDE_VECTORIZE
-  for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-    r_.values[i] = vec_.values[lane];
-  }
-
-  return simde_float32x4_from_private(r_);
+  float f = simde_float32x2_to_private(vec).values[lane];
+  return simde_vdupq_n_f32(f);
 }
 #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
   #define simde_vdupq_lane_f32(vec, lane) vdupq_lane_f32(vec, lane)
@@ -724,16 +718,8 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde_float32x4_t
 simde_vdupq_laneq_f32(simde_float32x4_t vec, const int lane)
     SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 3) {
-  simde_float32x4_private
-    vec_ = simde_float32x4_to_private(vec),
-    r_;
-
-  SIMDE_VECTORIZE
-  for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-    r_.values[i] = vec_.values[lane];
-  }
-
-  return simde_float32x4_from_private(r_);
+  float f = simde_float32x4_to_private(vec).values[lane];
+  return simde_vdupq_n_f32(f);
 }
 #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
   #define simde_vdupq_laneq_f32(vec, lane) vdupq_laneq_f32(vec, lane)
@@ -760,16 +746,8 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde_float64x2_t
 simde_vdupq_laneq_f64(simde_float64x2_t vec, const int lane)
     SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 1) {
-  simde_float64x2_private
-    vec_ = simde_float64x2_to_private(vec),
-    r_;
-
-  SIMDE_VECTORIZE
-  for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-    r_.values[i] = vec_.values[lane];
-  }
-
-  return simde_float64x2_from_private(r_);
+  double f = simde_float64x2_to_private(vec).values[lane];
+  return simde_vdupq_n_f64(f);
 }
 #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
   #define simde_vdupq_laneq_f64(vec, lane) vdupq_laneq_f64(vec, lane)
@@ -796,16 +774,8 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde_int8x16_t
 simde_vdupq_laneq_s8(simde_int8x16_t vec, const int lane)
     SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 15) {
-  simde_int8x16_private
-    vec_ = simde_int8x16_to_private(vec),
-    r_;
-
-  SIMDE_VECTORIZE
-  for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-    r_.values[i] = vec_.values[lane];
-  }
-
-  return simde_int8x16_from_private(r_);
+  int8_t i = simde_int8x16_to_private(vec).values[lane];
+  return simde_vdupq_n_s8(i);
 }
 #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
   #define simde_vdupq_laneq_s8(vec, lane) vdupq_laneq_s8(vec, lane)
@@ -832,16 +802,8 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde_int16x8_t
 simde_vdupq_laneq_s16(simde_int16x8_t vec, const int lane)
     SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 7) {
-  simde_int16x8_private
-    vec_ = simde_int16x8_to_private(vec),
-    r_;
-
-  SIMDE_VECTORIZE
-  for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-    r_.values[i] = vec_.values[lane];
-  }
-
-  return simde_int16x8_from_private(r_);
+  int16_t i = simde_int16x8_to_private(vec).values[lane];
+  return simde_vdupq_n_s16(i);
 }
 #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
   #define simde_vdupq_laneq_s16(vec, lane) vdupq_laneq_s16(vec, lane)
@@ -868,16 +830,8 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde_int32x4_t
 simde_vdupq_laneq_s32(simde_int32x4_t vec, const int lane)
     SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 3) {
-  simde_int32x4_private
-    vec_ = simde_int32x4_to_private(vec),
-    r_;
-
-  SIMDE_VECTORIZE
-  for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-    r_.values[i] = vec_.values[lane];
-  }
-
-  return simde_int32x4_from_private(r_);
+  int32_t i = simde_int32x4_to_private(vec).values[lane];
+  return simde_vdupq_n_s32(i);
 }
 #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
   #define simde_vdupq_laneq_s32(vec, lane) vdupq_laneq_s32(vec, lane)
@@ -904,16 +858,8 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde_int64x2_t
 simde_vdupq_laneq_s64(simde_int64x2_t vec, const int lane)
     SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 1) {
-  simde_int64x2_private
-    vec_ = simde_int64x2_to_private(vec),
-    r_;
-
-  SIMDE_VECTORIZE
-  for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-    r_.values[i] = vec_.values[lane];
-  }
-
-  return simde_int64x2_from_private(r_);
+  int64_t i = simde_int64x2_to_private(vec).values[lane];
+  return simde_vdupq_n_s64(i);
 }
 #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
   #define simde_vdupq_laneq_s64(vec, lane) vdupq_laneq_s64(vec, lane)
@@ -940,16 +886,8 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde_uint8x16_t
 simde_vdupq_laneq_u8(simde_uint8x16_t vec, const int lane)
     SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 15) {
-  simde_uint8x16_private
-    vec_ = simde_uint8x16_to_private(vec),
-    r_;
-
-  SIMDE_VECTORIZE
-  for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-    r_.values[i] = vec_.values[lane];
-  }
-
-  return simde_uint8x16_from_private(r_);
+  uint8_t i = simde_uint8x16_to_private(vec).values[lane];
+  return simde_vdupq_n_u8(i);
 }
 #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
   #define simde_vdupq_laneq_u8(vec, lane) vdupq_laneq_u8(vec, lane)
@@ -976,16 +914,8 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde_uint16x8_t
 simde_vdupq_laneq_u16(simde_uint16x8_t vec, const int lane)
     SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 7) {
-  simde_uint16x8_private
-    vec_ = simde_uint16x8_to_private(vec),
-    r_;
-
-  SIMDE_VECTORIZE
-  for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-    r_.values[i] = vec_.values[lane];
-  }
-
-  return simde_uint16x8_from_private(r_);
+  uint16_t i = simde_uint16x8_to_private(vec).values[lane];
+  return simde_vdupq_n_u16(i);
 }
 #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
   #define simde_vdupq_laneq_u16(vec, lane) vdupq_laneq_u16(vec, lane)
@@ -1012,16 +942,8 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde_uint32x4_t
 simde_vdupq_laneq_u32(simde_uint32x4_t vec, const int lane)
     SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 3) {
-  simde_uint32x4_private
-    vec_ = simde_uint32x4_to_private(vec),
-    r_;
-
-  SIMDE_VECTORIZE
-  for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-    r_.values[i] = vec_.values[lane];
-  }
-
-  return simde_uint32x4_from_private(r_);
+  uint32_t i = simde_uint32x4_to_private(vec).values[lane];
+  return simde_vdupq_n_u32(i);
 }
 #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
   #define simde_vdupq_laneq_u32(vec, lane) vdupq_laneq_u32(vec, lane)
@@ -1048,16 +970,8 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde_uint64x2_t
 simde_vdupq_laneq_u64(simde_uint64x2_t vec, const int lane)
     SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 1) {
-  simde_uint64x2_private
-    vec_ = simde_uint64x2_to_private(vec),
-    r_;
-
-  SIMDE_VECTORIZE
-  for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-    r_.values[i] = vec_.values[lane];
-  }
-
-  return simde_uint64x2_from_private(r_);
+  uint64_t i = simde_uint64x2_to_private(vec).values[lane];
+  return simde_vdupq_n_u64(i);
 }
 #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
   #define simde_vdupq_laneq_u64(vec, lane) vdupq_laneq_u64(vec, lane)
