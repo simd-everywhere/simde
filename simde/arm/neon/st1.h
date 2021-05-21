@@ -192,7 +192,11 @@ simde_vst1q_f32(simde_float32_t ptr[HEDLEY_ARRAY_PARAM(4)], simde_float32x4_t va
     vec_st(val, 0, ptr);
   #else
     simde_float32x4_private val_ = simde_float32x4_to_private(val);
-    simde_memcpy(ptr, &val_, sizeof(val_));
+    #if defined(SIMDE_WASM_SIMD128_NATIVE)
+      wasm_v128_store(ptr, val_.v128);
+    #else
+      simde_memcpy(ptr, &val_, sizeof(val_));
+    #endif
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
@@ -207,7 +211,11 @@ simde_vst1q_f64(simde_float64_t ptr[HEDLEY_ARRAY_PARAM(2)], simde_float64x2_t va
     vst1q_f64(ptr, val);
   #else
     simde_float64x2_private val_ = simde_float64x2_to_private(val);
-    simde_memcpy(ptr, &val_, sizeof(val_));
+    #if defined(SIMDE_WASM_SIMD128_NATIVE)
+      wasm_v128_store(ptr, val_.v128);
+    #else
+      simde_memcpy(ptr, &val_, sizeof(val_));
+    #endif
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
@@ -224,7 +232,11 @@ simde_vst1q_s8(int8_t ptr[HEDLEY_ARRAY_PARAM(16)], simde_int8x16_t val) {
     vec_st(val, 0, ptr);
   #else
     simde_int8x16_private val_ = simde_int8x16_to_private(val);
-    simde_memcpy(ptr, &val_, sizeof(val_));
+    #if defined(SIMDE_WASM_SIMD128_NATIVE)
+      wasm_v128_store(ptr, val_.v128);
+    #else
+      simde_memcpy(ptr, &val_, sizeof(val_));
+    #endif
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
@@ -241,7 +253,11 @@ simde_vst1q_s16(int16_t ptr[HEDLEY_ARRAY_PARAM(8)], simde_int16x8_t val) {
     vec_st(val, 0, ptr);
   #else
     simde_int16x8_private val_ = simde_int16x8_to_private(val);
-    simde_memcpy(ptr, &val_, sizeof(val_));
+    #if defined(SIMDE_WASM_SIMD128_NATIVE)
+      wasm_v128_store(ptr, val_.v128);
+    #else
+      simde_memcpy(ptr, &val_, sizeof(val_));
+    #endif
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
@@ -258,7 +274,11 @@ simde_vst1q_s32(int32_t ptr[HEDLEY_ARRAY_PARAM(4)], simde_int32x4_t val) {
     vec_st(val, 0, ptr);
   #else
     simde_int32x4_private val_ = simde_int32x4_to_private(val);
-    simde_memcpy(ptr, &val_, sizeof(val_));
+    #if defined(SIMDE_WASM_SIMD128_NATIVE)
+      wasm_v128_store(ptr, val_.v128);
+    #else
+      simde_memcpy(ptr, &val_, sizeof(val_));
+    #endif
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
@@ -273,7 +293,11 @@ simde_vst1q_s64(int64_t ptr[HEDLEY_ARRAY_PARAM(2)], simde_int64x2_t val) {
     vst1q_s64(ptr, val);
   #else
     simde_int64x2_private val_ = simde_int64x2_to_private(val);
-    simde_memcpy(ptr, &val_, sizeof(val_));
+    #if defined(SIMDE_WASM_SIMD128_NATIVE)
+      wasm_v128_store(ptr, val_.v128);
+    #else
+      simde_memcpy(ptr, &val_, sizeof(val_));
+    #endif
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
@@ -290,7 +314,11 @@ simde_vst1q_u8(uint8_t ptr[HEDLEY_ARRAY_PARAM(16)], simde_uint8x16_t val) {
     vec_st(val, 0, ptr);
   #else
     simde_uint8x16_private val_ = simde_uint8x16_to_private(val);
-    simde_memcpy(ptr, &val_, sizeof(val_));
+    #if defined(SIMDE_WASM_SIMD128_NATIVE)
+      wasm_v128_store(ptr, val_.v128);
+    #else
+      simde_memcpy(ptr, &val_, sizeof(val_));
+    #endif
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
@@ -307,7 +335,11 @@ simde_vst1q_u16(uint16_t ptr[HEDLEY_ARRAY_PARAM(8)], simde_uint16x8_t val) {
     vec_st(val, 0, ptr);
   #else
     simde_uint16x8_private val_ = simde_uint16x8_to_private(val);
-    simde_memcpy(ptr, &val_, sizeof(val_));
+    #if defined(SIMDE_WASM_SIMD128_NATIVE)
+      wasm_v128_store(ptr, val_.v128);
+    #else
+      simde_memcpy(ptr, &val_, sizeof(val_));
+    #endif
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
@@ -324,7 +356,11 @@ simde_vst1q_u32(uint32_t ptr[HEDLEY_ARRAY_PARAM(4)], simde_uint32x4_t val) {
     vec_st(val, 0, ptr);
   #else
     simde_uint32x4_private val_ = simde_uint32x4_to_private(val);
-    simde_memcpy(ptr, &val_, sizeof(val_));
+    #if defined(SIMDE_WASM_SIMD128_NATIVE)
+      wasm_v128_store(ptr, val_.v128);
+    #else
+      simde_memcpy(ptr, &val_, sizeof(val_));
+    #endif
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
@@ -339,7 +375,11 @@ simde_vst1q_u64(uint64_t ptr[HEDLEY_ARRAY_PARAM(2)], simde_uint64x2_t val) {
     vst1q_u64(ptr, val);
   #else
     simde_uint64x2_private val_ = simde_uint64x2_to_private(val);
-    simde_memcpy(ptr, &val_, sizeof(val_));
+    #if defined(SIMDE_WASM_SIMD128_NATIVE)
+      wasm_v128_store(ptr, val_.v128);
+    #else
+      simde_memcpy(ptr, &val_, sizeof(val_));
+    #endif
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
