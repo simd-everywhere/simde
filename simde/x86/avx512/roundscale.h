@@ -3,7 +3,6 @@
 
 #include "types.h"
 #include "../sse.h"
-#include "cmp.h"
 
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
@@ -25,7 +24,7 @@ SIMDE_BEGIN_DECLS_
     r = simde_mm_mul_ps(simde_mm_set1_ps(*HEDLEY_REINTERPRET_CAST(SIMDE_FLOAT32_TYPE*, &exponent2)), temp);
 
     clear_sign = simde_mm_andnot_ps(simde_mm_set1_ps(SIMDE_FLOAT32_C(-0.0)), r);
-    r = simde_mm_mask_mov_ps(r, simde_mm_cmp_ps_mask(clear_sign, simde_mm_set1_ps(SIMDE_MATH_INFINITY), SIMDE_CMP_EQ_OQ), a);
+    r = simde_x_mm_select_ps(r, a, simde_mm_cmpeq_ps(clear_sign, simde_mm_set1_ps(SIMDE_MATH_INFINITY)));
 
     return r;
   }
