@@ -9,12 +9,6 @@ VOLUME_OPTIONS=""
 CAPABILITIES=""
 RELEASE="testing"
 
-if [ "$(basename "${DOCKER}")" = "podman" ]; then
-  IS_DOCKER=false
-else
-  IS_DOCKER=true
-fi
-
 if [ "${OSTYPE}" == "linux-gnu" ] && [ "$(basename "${DOCKER}")" = "podman" ]; then
   CAPABILITIES="--cap-add=CAP_SYS_PTRACE";
 fi
@@ -26,11 +20,11 @@ fi
 IMAGE_NAME="simde-dev-${RELEASE}"
 
 # (Re)build image
-# We only do this if the current image is older than a week (if jq is installed)
-BUILD_IMAGE=auto
-if [ "$IS_DOCKER" = true ]; then
+# We only do this if the current image is older than a week, but ou can
+# use BUILD_IMAGE=y/n to force the image to build or not build.
+if [ -z "${BUILD_IMAGE}" ]; then
   BUILD_CUTOFF_TIME="$(expr $(date +%s) - \( 60 \* 60 \* 24 \* 7 \))"
-  DATE="$(docker images "${IMAGE_NAME}" --format '{{ .CreatedAt }}' | awk '{ print $1 " " $2 }')"
+  DATE="$(${DOCKER} images "${IMAGE_NAME}" --format '{{ .CreatedAt }}' | awk '{ print $1 " " $2 }')"
 
   if [ "$(uname)" == "Darwin" ]; then
     CURRENT_IMAGE_CREATED="$(date -jf "%Y-%m-%d %H:%M:%S" "$DATE" +%s)"
@@ -45,22 +39,12 @@ if [ "$IS_DOCKER" = true ]; then
   else
     BUILD_IMAGE=n
   fi
-elif command -v jq >/dev/null; then
-  BUILD_CUTOFF_TIME="$(expr $(date +%s) - \( 60 \* 60 \* 24 \* 7 \))"
-  CURRENT_IMAGE_CREATED="$(${DOCKER} images "${IMAGE_NAME}" --format json | jq '.[].Created')"
-
-  if [ -z "${CURRENT_IMAGE_CREATED}" ]; then
-    BUILD_IMAGE=y
-  elif [ ${CURRENT_IMAGE_CREATED} -lt ${BUILD_CUTOFF_TIME} ]; then
-    BUILD_IMAGE=y
-  else
-    BUILD_IMAGE=n
-  fi
 else
   BUILD_IMAGE=y
 fi
 
-if [ "${BUILD_IMAGE}" = "y" ]; then
+if [ "${BUILD_IMAGE}" != "n" ]; then
+  "${DOCKER}" rmi -f "${IMAGE_NAME}" 2>/dev/null || true
   "${DOCKER}" build --build-arg "release=${RELEASE}" -t "${IMAGE_NAME}" ${CAPABILITIES} -f "${DOCKER_DIR}/Dockerfile" "${DOCKER_DIR}/.."
 fi
 
