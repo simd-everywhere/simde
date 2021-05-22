@@ -62,6 +62,7 @@ simde_vdot_lane_s32(simde_int32x2_t r, simde_int8x8_t a, simde_int8x8_t b, const
       a_ = simde_int8x8_to_private(a),
       b_ = simde_int8x8_to_private(b);
 
+    SIMDE_VECTORIZE
     for (int i = 0 ; i < 2 ; i++) {
       int32_t acc = 0;
       SIMDE_VECTORIZE_REDUCTION(+:acc)
@@ -101,6 +102,7 @@ simde_vdot_lane_u32(simde_uint32x2_t r, simde_uint8x8_t a, simde_uint8x8_t b, co
       a_ = simde_uint8x8_to_private(a),
       b_ = simde_uint8x8_to_private(b);
 
+    SIMDE_VECTORIZE
     for (int i = 0 ; i < 2 ; i++) {
       uint32_t acc = 0;
       SIMDE_VECTORIZE_REDUCTION(+:acc)
@@ -140,6 +142,7 @@ simde_vdot_laneq_s32(simde_int32x2_t r, simde_int8x8_t a, simde_int8x16_t b, con
     simde_int8x8_private a_ = simde_int8x8_to_private(a);
     simde_int8x16_private b_ = simde_int8x16_to_private(b);
 
+    SIMDE_VECTORIZE
     for (int i = 0 ; i < 2 ; i++) {
       int32_t acc = 0;
       SIMDE_VECTORIZE_REDUCTION(+:acc)
@@ -179,6 +182,7 @@ simde_vdot_laneq_u32(simde_uint32x2_t r, simde_uint8x8_t a, simde_uint8x16_t b, 
     simde_uint8x8_private a_ = simde_uint8x8_to_private(a);
     simde_uint8x16_private b_ = simde_uint8x16_to_private(b);
 
+    SIMDE_VECTORIZE
     for (int i = 0 ; i < 2 ; i++) {
       uint32_t acc = 0;
       SIMDE_VECTORIZE_REDUCTION(+:acc)
