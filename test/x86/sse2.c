@@ -5152,6 +5152,51 @@ test_simde_mm_move_sd(SIMDE_MUNIT_TEST_ARGS) {
 }
 
 static int
+test_simde_x_mm_broadcastlow_pd (SIMDE_MUNIT_TEST_ARGS) {
+#if 1
+  static const struct {
+    const simde_float64 a[2];
+    const simde_float64 r[2];
+  } test_vec[] = {
+    { { SIMDE_FLOAT64_C(  -869.21), SIMDE_FLOAT64_C(   843.87) },
+      { SIMDE_FLOAT64_C(  -869.21), SIMDE_FLOAT64_C(  -869.21) } },
+    { { SIMDE_FLOAT64_C(   299.15), SIMDE_FLOAT64_C(    98.20) },
+      { SIMDE_FLOAT64_C(   299.15), SIMDE_FLOAT64_C(   299.15) } },
+    { { SIMDE_FLOAT64_C(  -882.49), SIMDE_FLOAT64_C(  -266.97) },
+      { SIMDE_FLOAT64_C(  -882.49), SIMDE_FLOAT64_C(  -882.49) } },
+    { { SIMDE_FLOAT64_C(   502.56), SIMDE_FLOAT64_C(  -828.93) },
+      { SIMDE_FLOAT64_C(   502.56), SIMDE_FLOAT64_C(   502.56) } },
+    { { SIMDE_FLOAT64_C(  -422.70), SIMDE_FLOAT64_C(  -534.88) },
+      { SIMDE_FLOAT64_C(  -422.70), SIMDE_FLOAT64_C(  -422.70) } },
+    { { SIMDE_FLOAT64_C(  -685.90), SIMDE_FLOAT64_C(  -253.25) },
+      { SIMDE_FLOAT64_C(  -685.90), SIMDE_FLOAT64_C(  -685.90) } },
+    { { SIMDE_FLOAT64_C(  -776.06), SIMDE_FLOAT64_C(  -764.66) },
+      { SIMDE_FLOAT64_C(  -776.06), SIMDE_FLOAT64_C(  -776.06) } },
+    { { SIMDE_FLOAT64_C(  -873.19), SIMDE_FLOAT64_C(  -694.67) },
+      { SIMDE_FLOAT64_C(  -873.19), SIMDE_FLOAT64_C(  -873.19) } }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
+    simde__m128d a = simde_mm_loadu_pd(test_vec[i].a);
+    simde__m128d r = simde_x_mm_broadcastlow_pd(a);
+    simde_test_x86_assert_equal_f64x2(r, simde_mm_loadu_pd(test_vec[i].r), 1);
+  }
+
+  return 0;
+#else
+  fputc('\n', stdout);
+  for (int i = 0 ; i < 8 ; i++) {
+    simde__m128d a = simde_test_x86_random_f64x2(SIMDE_FLOAT64_C(-1000.0), SIMDE_FLOAT64_C(1000.0));
+    simde__m128d r = simde_x_mm_broadcastlow_pd(a);
+
+    simde_test_x86_write_f64x2(2, a, SIMDE_TEST_VEC_POS_FIRST);
+    simde_test_x86_write_f64x2(2, r, SIMDE_TEST_VEC_POS_LAST);
+  }
+  return 1;
+#endif
+}
+
+static int
 test_simde_mm_movemask_epi8(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m128i a;
@@ -10428,6 +10473,7 @@ SIMDE_TEST_FUNC_LIST_BEGIN
 
   SIMDE_TEST_FUNC_LIST_ENTRY(mm_move_epi64)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm_move_sd)
+  SIMDE_TEST_FUNC_LIST_ENTRY(x_mm_broadcastlow_pd)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm_movepi64_pi64)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm_movpi64_epi64)
 
