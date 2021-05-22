@@ -96,6 +96,7 @@
 #include "neon/mlal_high.h"
 #include "neon/mlal_n.h"
 #include "neon/mls.h"
+#include "neon/mls_n.h"
 #include "neon/mlsl.h"
 #include "neon/mlsl_high.h"
 #include "neon/mlsl_n.h"
