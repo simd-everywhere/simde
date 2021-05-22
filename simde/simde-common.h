@@ -388,11 +388,8 @@
 #  define SIMDE_FUNCTION_POSSIBLY_UNUSED_
 #endif
 
-#if HEDLEY_HAS_WARNING("-Wused-but-marked-unused")
-#  define SIMDE_DIAGNOSTIC_DISABLE_USED_BUT_MARKED_UNUSED _Pragma("clang diagnostic ignored \"-Wused-but-marked-unused\"")
-#else
-#  define SIMDE_DIAGNOSTIC_DISABLE_USED_BUT_MARKED_UNUSED
-#endif
+HEDLEY_DIAGNOSTIC_PUSH
+SIMDE_DIAGNOSTIC_DISABLE_USED_BUT_MARKED_UNUSED_
 
 #if defined(_MSC_VER)
 #  define SIMDE_BEGIN_DECLS_ HEDLEY_DIAGNOSTIC_PUSH __pragma(warning(disable:4996 4204)) HEDLEY_BEGIN_C_DECLS
@@ -400,7 +397,7 @@
 #else
 #  define SIMDE_BEGIN_DECLS_ \
      HEDLEY_DIAGNOSTIC_PUSH \
-     SIMDE_DIAGNOSTIC_DISABLE_USED_BUT_MARKED_UNUSED \
+     SIMDE_DIAGNOSTIC_DISABLE_USED_BUT_MARKED_UNUSED_ \
      HEDLEY_BEGIN_C_DECLS
 #  define SIMDE_END_DECLS_ \
      HEDLEY_END_C_DECLS \
@@ -721,13 +718,18 @@ typedef SIMDE_FLOAT64_TYPE simde_float64;
 #endif
 
 #define SIMDE_DEFINE_CONVERSION_FUNCTION_(Name, T_To, T_From) \
-  static HEDLEY_ALWAYS_INLINE HEDLEY_CONST \
+  static HEDLEY_ALWAYS_INLINE HEDLEY_CONST SIMDE_FUNCTION_POSSIBLY_UNUSED_ \
   T_To \
   Name (T_From value) { \
     T_To r; \
     simde_memcpy(&r, &value, sizeof(r)); \
     return r; \
   }
+
+SIMDE_DEFINE_CONVERSION_FUNCTION_(simde_float32_as_uint32,      uint32_t, simde_float32)
+SIMDE_DEFINE_CONVERSION_FUNCTION_(simde_uint32_as_float32, simde_float32, uint32_t)
+SIMDE_DEFINE_CONVERSION_FUNCTION_(simde_float64_as_uint64,      uint64_t, simde_float64)
+SIMDE_DEFINE_CONVERSION_FUNCTION_(simde_uint64_as_float64, simde_float64, uint64_t)
 
 #include "check.h"
 
@@ -843,8 +845,6 @@ SIMDE_DIAGNOSTIC_DISABLE_CPP98_COMPAT_PEDANTIC_
     #define SIMDE_GENERIC_(...) _Generic(__VA_ARGS__)
   #endif
 #endif
-
-HEDLEY_DIAGNOSTIC_POP
 
 /* Sometimes we run into problems with specific versions of compilers
    which make the native versions unusable for us.  Often this is due
@@ -1011,5 +1011,8 @@ HEDLEY_DIAGNOSTIC_POP
 #else
   #define SIMDE_CAST_VECTOR_SHIFT_COUNT(width, value) HEDLEY_STATIC_CAST(int##width##_t, (value))
 #endif
+
+/* SIMDE_DIAGNOSTIC_DISABLE_USED_BUT_MARKED_UNUSED_ */
+HEDLEY_DIAGNOSTIC_POP
 
 #endif /* !defined(SIMDE_COMMON_H) */

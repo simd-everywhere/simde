@@ -31,6 +31,10 @@
 #if !defined(SIMDE_FLOAT16_H)
 #define SIMDE_FLOAT16_H
 
+HEDLEY_DIAGNOSTIC_PUSH
+SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
+SIMDE_BEGIN_DECLS_
+
 /* Portable version which should work on pretty much any compiler.
  * Obviously you can't rely on compiler support for things like
  * conversion to/from 32-bit floats, so make sure you always use the
@@ -96,10 +100,8 @@
  * intended for internal use.  However, on x86 half-precision floats
  * get stuffed into a __m128i/__m256i, so it may be useful. */
 
-SIMDE_DEFINE_CONVERSION_FUNCTION_(simde_float16_as_u16,               uint16_t, simde_float16)
-SIMDE_DEFINE_CONVERSION_FUNCTION_(simde_float16_reinterpret_u16, simde_float16,      uint16_t)
-SIMDE_DEFINE_CONVERSION_FUNCTION_(simde_float32_as_u32,               uint32_t, simde_float32)
-SIMDE_DEFINE_CONVERSION_FUNCTION_(simde_float32_reinterpret_u32, simde_float32,      uint32_t)
+SIMDE_DEFINE_CONVERSION_FUNCTION_(simde_float16_as_uint16,      uint16_t, simde_float16)
+SIMDE_DEFINE_CONVERSION_FUNCTION_(simde_uint16_as_float16, simde_float16,      uint16_t)
 
 /* Conversion -- convert between single-precision and half-precision
  * floats. */
@@ -117,7 +119,7 @@ simde_float16_from_float32 (simde_float32 value) {
     res.value = HEDLEY_STATIC_CAST(__fp16, value);
   #else
     /* This code is CC0, based heavily on code by Fabian Giesen. */
-    uint32_t f32u = simde_float32_as_u32(value);
+    uint32_t f32u = simde_float32_as_uint32(value);
     static const uint32_t f32u_infty = UINT32_C(255) << 23;
     static const uint32_t f16u_max = (UINT32_C(127) + UINT32_C(16)) << 23;
     static const uint32_t denorm_magic =
@@ -139,7 +141,7 @@ simde_float16_from_float32 (simde_float32 value) {
         /* use a magic value to align our 10 mantissa bits at the bottom of
         * the float. as long as FP addition is round-to-nearest-even this
         * just works. */
-        f32u = simde_float32_as_u32(simde_float32_reinterpret_u32(f32u) + simde_float32_reinterpret_u32(denorm_magic));
+        f32u = simde_float32_as_uint32(simde_uint32_as_float32(f32u) + simde_uint32_as_float32(denorm_magic));
 
         /* and one integer subtract of the bias later, we have our final float! */
         f16u = HEDLEY_STATIC_CAST(uint16_t, f32u - denorm_magic);
@@ -156,7 +158,7 @@ simde_float16_from_float32 (simde_float32 value) {
     }
 
     f16u |= sign >> 16;
-    res = simde_float16_reinterpret_u16(f16u);
+    res = simde_uint16_as_float16(f16u);
   #endif
 
   return res;
@@ -171,8 +173,8 @@ simde_float16_to_float32 (simde_float16 value) {
     res = HEDLEY_STATIC_CAST(simde_float32, value);
   #else
     /* This code is CC0, based heavily on code by Fabian Giesen. */
-    uint16_t half = simde_float16_as_u16(value);
-    const simde_float32 denorm_magic = simde_float32_reinterpret_u32((UINT32_C(113) << 23));
+    uint16_t half = simde_float16_as_uint16(value);
+    const simde_float32 denorm_magic = simde_uint32_as_float32((UINT32_C(113) << 23));
     const uint32_t shifted_exp = UINT32_C(0x7c00) << 13; /* exponent mask after shift */
     uint32_t f32u;
 
@@ -185,11 +187,11 @@ simde_float16_to_float32 (simde_float16 value) {
       f32u += (UINT32_C(128) - UINT32_C(16)) << 23; /* extra exp adjust */
     else if (exp == 0) { /* Zero/Denormal? */
       f32u += (1) << 23; /* extra exp adjust */
-      f32u = simde_float32_as_u32(simde_float32_reinterpret_u32(f32u) - denorm_magic); /* renormalize */
+      f32u = simde_float32_as_uint32(simde_uint32_as_float32(f32u) - denorm_magic); /* renormalize */
     }
 
     f32u |= (half & UINT32_C(0x8000)) << 16; /* sign bit */
-    res = simde_float32_reinterpret_u32(f32u);
+    res = simde_uint32_as_float32(f32u);
   #endif
 
   return res;
@@ -198,5 +200,8 @@ simde_float16_to_float32 (simde_float16 value) {
 #if !defined(SIMDE_FLOAT16_C)
   #define SIMDE_FLOAT16_C(value) simde_float16_from_float32(SIMDE_FLOAT32_C(value))
 #endif
+
+SIMDE_END_DECLS_
+HEDLEY_DIAGNOSTIC_POP
 
 #endif /* !defined(SIMDE_FLOAT16_H) */

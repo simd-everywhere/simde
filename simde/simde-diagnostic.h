@@ -231,6 +231,8 @@
   #define SIMDE_DIAGNOSTIC_DISABLE_VLA_
 #endif
 
+/* If you add an unused attribute to a function and don't use it, clang
+ * may emit this. */
 #if HEDLEY_HAS_WARNING("-Wused-but-marked-unused")
   #define SIMDE_DIAGNOSTIC_DISABLE_USED_BUT_MARKED_UNUSED_ _Pragma("clang diagnostic ignored \"-Wused-but-marked-unused\"")
 #else
