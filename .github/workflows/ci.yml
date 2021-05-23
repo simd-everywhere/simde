@@ -247,7 +247,7 @@ jobs:
     - name: Build
       run: ninja -C test/build -v
     - name: Test
-      run: ninja -C test/build -v test
+      run: ctest -C test/build ---output-on-failure
 
   clang:
     strategy:
@@ -305,7 +305,7 @@ jobs:
     - name: Build
       run: ninja -C test/build -v
     - name: Test
-      run: ninja -C test/build -v test
+      run: ctest -C test/build ---output-on-failure
 
   macos:
     runs-on: macos-latest
@@ -330,6 +330,8 @@ jobs:
       run: meson setup build -Db_coverage=true
     - name: Build
       run: ninja -C build -v
+    - name: Test
+      run: ninja -C build -v test
     - name: Coverage Report
       run: ninja -C build -v coverage-xml
     - name: CodeCov.io
