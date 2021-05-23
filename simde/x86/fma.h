@@ -437,10 +437,14 @@ simde_mm_fnmadd_pd (simde__m128d a, simde__m128d b, simde__m128d c) {
       b_ = simde__m128d_to_private(b),
       c_ = simde__m128d_to_private(c);
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
-      r_.f64[i] = -(a_.f64[i] * b_.f64[i]) + c_.f64[i];
-    }
+    #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+      return vmlsq_f64(c_.f64, a_.f64, b_.f64);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
+        r_.f64[i] = -(a_.f64[i] * b_.f64[i]) + c_.f64[i];
+      }
+    #endif
 
     return simde__m128d_from_private(r_);
   #endif
@@ -487,10 +491,14 @@ simde_mm_fnmadd_ps (simde__m128 a, simde__m128 b, simde__m128 c) {
       b_ = simde__m128_to_private(b),
       c_ = simde__m128_to_private(c);
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
-      r_.f32[i] = -(a_.f32[i] * b_.f32[i]) + c_.f32[i];
-    }
+    #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+      return vmlsq_f32(c_.f32, a_.f32, b_.f32);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
+        r_.f32[i] = -(a_.f32[i] * b_.f32[i]) + c_.f32[i];
+      }
+    #endif
 
     return simde__m128_from_private(r_);
   #endif
