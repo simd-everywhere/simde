@@ -533,8 +533,10 @@ simde__m128
 simde_mm_ceil_ss (simde__m128 a, simde__m128 b) {
   #if defined(SIMDE_X86_SSE4_1_NATIVE)
     return _mm_ceil_ss(a, b);
-  #elif (SIMDE_NATURAL_VECTOR_SIZE > 0)
+  #elif (SIMDE_NATURAL_VECTOR_SIZE > 0) && defined(SIMDE_FAST_EXCEPTIONS)
     return simde_mm_move_ss(a, simde_mm_ceil_ps(b));
+  #elif (SIMDE_NATURAL_VECTOR_SIZE > 0)
+    return simde_mm_move_ss(a, simde_mm_ceil_ps(simde_x_mm_broadcastlow_ps(b)));
   #else
     simde__m128_private
       r_,
@@ -1356,8 +1358,10 @@ simde__m128
 simde_mm_floor_ss (simde__m128 a, simde__m128 b) {
   #if defined(SIMDE_X86_SSE4_1_NATIVE)
     return _mm_floor_ss(a, b);
-  #elif (SIMDE_NATURAL_VECTOR_SIZE > 0)
+  #elif (SIMDE_NATURAL_VECTOR_SIZE > 0) && defined(SIMDE_FAST_EXCEPTIONS)
       return simde_mm_move_ss(a, simde_mm_floor_ps(b));
+  #elif (SIMDE_NATURAL_VECTOR_SIZE > 0)
+    return simde_mm_move_ss(a, simde_mm_floor_ps(simde_x_mm_broadcastlow_ps(b)));
   #else
     simde__m128_private
       r_,
@@ -1980,8 +1984,10 @@ simde_mm_round_sd (simde__m128d a, simde__m128d b, int rounding)
 }
 #if defined(SIMDE_X86_SSE4_1_NATIVE)
 #  define simde_mm_round_sd(a, b, rounding) _mm_round_sd(a, b, rounding)
-#elif SIMDE_NATURAL_VECTOR_SIZE_GE(128)
+#elif SIMDE_NATURAL_VECTOR_SIZE_GE(128) && defined(SIMDE_FAST_EXCEPTIONS)
 #  define simde_mm_round_sd(a, b, rounding) simde_mm_move_sd(a, simde_mm_round_pd(b, rounding))
+#elif SIMDE_NATURAL_VECTOR_SIZE_GE(128)
+  #define simde_mm_round_sd(a, b, rounding) simde_mm_move_sd(a, simde_mm_round_pd(simde_x_mm_broadcastlow_pd(b), rounding))
 #endif
 #if defined(SIMDE_X86_SSE4_1_ENABLE_NATIVE_ALIASES)
   #undef _mm_round_sd
@@ -2029,9 +2035,11 @@ simde_mm_round_ss (simde__m128 a, simde__m128 b, int rounding)
   return simde__m128_from_private(r_);
 }
 #if defined(SIMDE_X86_SSE4_1_NATIVE)
-#  define simde_mm_round_ss(a, b, rounding) _mm_round_ss(a, b, rounding)
-#elif SIMDE_NATURAL_VECTOR_SIZE_GE(128)
-#  define simde_mm_round_ss(a, b, rounding) simde_mm_move_ss(a, simde_mm_round_ps(b, rounding))
+  #define simde_mm_round_ss(a, b, rounding) _mm_round_ss(a, b, rounding)
+#elif SIMDE_NATURAL_VECTOR_SIZE > 0 && defined(SIMDE_FAST_EXCEPTIONS)
+  #define simde_mm_round_ss(a, b, rounding) simde_mm_move_ss((a), simde_mm_round_ps((b), (rounding)))
+#elif SIMDE_NATURAL_VECTOR_SIZE > 0
+  #define simde_mm_round_ss(a, b, rounding) simde_mm_move_ss((a), simde_mm_round_ps(simde_x_mm_broadcastlow_ps(b), (rounding)))
 #endif
 #if defined(SIMDE_X86_SSE4_1_ENABLE_NATIVE_ALIASES)
   #undef _mm_round_ss
