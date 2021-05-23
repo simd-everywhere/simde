@@ -707,7 +707,7 @@ simde_mm_move_sd (simde__m128d a, simde__m128d b) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128d
 simde_x_mm_broadcastlow_pd(simde__m128d a) {
-  /* This function broadcasts the first element in the inpu vector to
+  /* This function broadcasts the first element in the input vector to
    * all lanes.  It is used to avoid generating spurious exceptions in
    * *_sd functions since there may be garbage in the upper lanes. */
 
@@ -720,10 +720,8 @@ simde_x_mm_broadcastlow_pd(simde__m128d a) {
 
     #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
       r_.neon_f64 = vdupq_laneq_f64(a_.neon_f64, 0);
-    #elif defined(SIMDE_ARM_NEON_A64V8_NATIVE)
-      r_.neon_i64 = vdupq_laneq_s64(a_.neon_i64, 0);
     #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
-      r_.altivec_s64 = vec_splat(a_.altivec_s64, 0);
+      r_.altivec_f64 = vec_splat(a_.altivec_f64, 0);
     #elif defined(SIMDE_SHUFFLE_VECTOR_)
       r_.f64 = SIMDE_SHUFFLE_VECTOR_(64, 16, a_.f64, a_.f64, 0, 0);
     #else
