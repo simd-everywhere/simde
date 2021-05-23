@@ -5217,6 +5217,17 @@ simde_mm_shuffle_epi32 (simde__m128i a, const int imm8)
 }
 #if defined(SIMDE_X86_SSE2_NATIVE)
   #define simde_mm_shuffle_epi32(a, imm8) _mm_shuffle_epi32((a), (imm8))
+#elif defined(SIMDE_SHUFFLE_VECTOR_)
+  #define simde_mm_shuffle_epi32(a, imm8) (__extension__ ({ \
+      const simde__m128i_private simde__tmp_a_ = simde__m128i_to_private(a); \
+      simde__m128i_from_private((simde__m128i_private) { .i32 = \
+        SIMDE_SHUFFLE_VECTOR_(32, 16, \
+          (simde__tmp_a_).i32, \
+          (simde__tmp_a_).i32, \
+          ((imm8)     ) & 3, \
+          ((imm8) >> 2) & 3, \
+          ((imm8) >> 4) & 3, \
+          ((imm8) >> 6) & 3) }); }))
 #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_mm_shuffle_epi32(a, imm8)                                   \
     __extension__({                                                         \
@@ -5234,17 +5245,6 @@ simde_mm_shuffle_epi32 (simde__m128i a, const int imm8)
             ret, 3);                                                        \
         vreinterpretq_s64_s32(ret);                                       \
     })
-#elif defined(SIMDE_SHUFFLE_VECTOR_)
-  #define simde_mm_shuffle_epi32(a, imm8) (__extension__ ({ \
-      const simde__m128i_private simde__tmp_a_ = simde__m128i_to_private(a); \
-      simde__m128i_from_private((simde__m128i_private) { .i32 = \
-        SIMDE_SHUFFLE_VECTOR_(32, 16, \
-          (simde__tmp_a_).i32, \
-          (simde__tmp_a_).i32, \
-          ((imm8)     ) & 3, \
-          ((imm8) >> 2) & 3, \
-          ((imm8) >> 4) & 3, \
-          ((imm8) >> 6) & 3) }); }))
 #endif
 #if defined(SIMDE_X86_SSE2_ENABLE_NATIVE_ALIASES)
   #define _mm_shuffle_epi32(a, imm8) simde_mm_shuffle_epi32(a, imm8)
