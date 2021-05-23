@@ -112,8 +112,8 @@ simde_mm256_range_ps (simde__m256 a, simde__m256 b, int imm8)
         simde_mm256_range_ps_a_ = simde__m256_to_private(a), \
         simde_mm256_range_ps_b_ = simde__m256_to_private(b); \
       \
-      for (size_t i = 0 ; i < (sizeof(r_.m128) / sizeof(r_.m128[0])) ; i++) { \
-        r_.m128[i] = simde_mm_range_ps(a_.m128[i], b_.m128[i], imm8); \
+      for (size_t i = 0 ; i < (sizeof(simde_mm256_range_ps_r_.m128) / sizeof(simde_mm256_range_ps_r_.m128[0])) ; i++) { \
+        simde_mm256_range_ps_r_.m128[i] = simde_mm_range_ps(simde_mm256_range_ps_a_.m128[i], simde_mm256_range_ps_b_.m128[i], imm8); \
       } \
       \
       simde__m256_from_private(simde_mm256_range_ps_r_); \
@@ -173,7 +173,7 @@ simde_mm512_range_ps (simde__m512 a, simde__m512 b, int imm8)
         simde_mm512_range_ps_b_ = simde__m512_to_private(b); \
       \
       for (size_t i = 0 ; i < (sizeof(r_.m128) / sizeof(r_.m128[0])) ; i++) { \
-        r_.m256[i] = simde_mm256_range_ps(a_.m128[i], b_.m128[i], imm8); \
+        simde_mm256_range_ps_r_.m256[i] = simde_mm256_range_ps(simde_mm256_range_ps_a_.m128[i], simde_mm256_range_ps_b_.m128[i], imm8); \
       } \
       \
       simde__m512_from_private(simde_mm512_range_ps_r_); \
@@ -185,8 +185,8 @@ simde_mm512_range_ps (simde__m512 a, simde__m512 b, int imm8)
         simde_mm512_range_ps_a_ = simde__m512_to_private(a), \
         simde_mm512_range_ps_b_ = simde__m512_to_private(b); \
       \
-      for (size_t i = 0 ; i < (sizeof(r_.m256) / sizeof(r_.m256[0])) ; i++) { \
-        r_.m256[i] = simde_mm256_range_ps(a_.m256[i], b_.m256[i], imm8); \
+      for (size_t i = 0 ; i < (sizeof(simde_mm256_range_ps_r_.m256) / sizeof(simde_mm256_range_ps_r_.m256[0])) ; i++) { \
+        simde_mm256_range_ps_r_.m256[i] = simde_mm256_range_ps(simde_mm256_range_ps_a_.m256[i], simde_mm256_range_ps_b_.m256[i], imm8); \
       } \
       \
       simde__m256_from_private(simde_mm256_range_ps_r_); \
@@ -292,8 +292,8 @@ simde_mm256_range_pd (simde__m256d a, simde__m256d b, int imm8)
         simde_mm256_range_pd_a_ = simde__m256d_to_private(a), \
         simde_mm256_range_pd_b_ = simde__m256d_to_private(b); \
       \
-      for (size_t i = 0 ; i < (sizeof(r_.m128d) / sizeof(r_.m128d[0])) ; i++) { \
-        r_.m128d[i] = simde_mm_range_pd(a_.m128d[i], b_.m128d[i], imm8); \
+      for (size_t i = 0 ; i < (sizeof(simde_mm256_range_pd_r_.m128d) / sizeof(simde_mm256_range_pd_r_.m128d[0])) ; i++) { \
+        simde_mm256_range_pd_r_.m128d[i] = simde_mm_range_pd(simde_mm256_range_pd_a_.m128d[i], simde_mm256_range_pd_b_.m128d[i], imm8); \
       } \
       \
       simde__m256d_from_private(simde_mm256_range_pd_r_); \
@@ -352,8 +352,8 @@ simde_mm512_range_pd (simde__m512d a, simde__m512d b, int imm8)
         simde_mm512_range_pd_a_ = simde__m512d_to_private(a), \
         simde_mm512_range_pd_b_ = simde__m512d_to_private(b); \
       \
-      for (size_t i = 0 ; i < (sizeof(r_.m128d) / sizeof(r_.m128d[0])) ; i++) { \
-        r_.m256d[i] = simde_mm256_range_pd(a_.m128d[i], b_.m128d[i], imm8); \
+      for (size_t i = 0 ; i < (sizeof(rsimde_mm512_range_pd__.m128d) / sizeof(simde_mm512_range_pd_r_.m128d[0])) ; i++) { \
+        simde_mm512_range_pd_r_.m256d[i] = simde_mm256_range_pd(simde_mm512_range_pd_a_.m128d[i], simde_mm512_range_pd_b_.m128d[i], imm8); \
       } \
       \
       simde__m512d_from_private(simde_mm512_range_pd_r_); \
@@ -365,8 +365,8 @@ simde_mm512_range_pd (simde__m512d a, simde__m512d b, int imm8)
         simde_mm512_range_pd_a_ = simde__m512d_to_private(a), \
         simde_mm512_range_pd_b_ = simde__m512d_to_private(b); \
       \
-      for (size_t i = 0 ; i < (sizeof(r_.m256d) / sizeof(r_.m256d[0])) ; i++) { \
-        r_.m256d[i] = simde_mm256_range_pd(a_.m256d[i], b_.m256d[i], imm8); \
+      for (size_t i = 0 ; i < (sizeof(simde_mm512_range_pd_r_.m256d) / sizeof(simde_mm512_range_pd_r_.m256d[0])) ; i++) { \
+        simde_mm512_range_pd_r_.m256d[i] = simde_mm256_range_pd(simde_mm512_range_pd_a_.m256d[i], simde_mm512_range_pd_b_.m256d[i], imm8); \
       } \
       \
       simde__m256d_from_private(simde_mm256_range_pd_r_); \
