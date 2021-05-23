@@ -95,7 +95,7 @@ typedef union {
     SIMDE_ALIGN_TO_16 float16x8_t    neon_f16;
     #endif
     SIMDE_ALIGN_TO_16 float32x4_t    neon_f32;
-    #if defined(SIMDE_ARCH_AARCH64)
+    #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     SIMDE_ALIGN_TO_16 float64x2_t    neon_f64;
     #endif
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
@@ -170,7 +170,7 @@ typedef union {
     SIMDE_ALIGN_TO_16 uint32x4_t     neon_u32;
     SIMDE_ALIGN_TO_16 uint64x2_t     neon_u64;
     SIMDE_ALIGN_TO_16 float32x4_t    neon_f32;
-    #if defined(SIMDE_ARCH_AARCH64)
+    #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     SIMDE_ALIGN_TO_16 float64x2_t    neon_f64;
     #endif
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
@@ -206,7 +206,7 @@ typedef union {
   typedef __m128d simde__m128d;
 #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
    typedef int64x2_t simde__m128i;
-#  if defined(SIMDE_ARCH_AARCH64)
+#  if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
      typedef float64x2_t simde__m128d;
 #  elif defined(SIMDE_VECTOR_SUBSCRIPT)
      typedef simde_float64 simde__m128d SIMDE_VECTOR(16) SIMDE_MAY_ALIAS;
@@ -1731,7 +1731,7 @@ simde_mm_cmpeq_pd (simde__m128d a, simde__m128d b) {
       b_ = simde__m128d_to_private(b);
 
     #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
-      r_.neon_u64 = vceqq_s64(b_.neon_i64, a_.neon_i64);
+      r_.neon_u64 = vceqq_f64(b_.neon_f64, a_.neon_f64);
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r_.wasm_v128 = wasm_f64x2_eq(a_.wasm_v128, b_.wasm_v128);
     #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
