@@ -42,7 +42,7 @@ simde_vrecps_f32(simde_float32x2_t a, simde_float32x2_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vrecps_f32(a, b);
   #else
-    return simde_vsub_f32(simde_vdup_n_f32(SIMDE_FLOAT32_C(2.0)), simde_vmul_f32(a, b));
+    return simde_vmls_f32(simde_vdup_n_f32(SIMDE_FLOAT32_C(2.0)), a, b);
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
@@ -56,7 +56,7 @@ simde_vrecpsq_f32(simde_float32x4_t a, simde_float32x4_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vrecpsq_f32(a, b);
   #else
-    return simde_vsubq_f32(simde_vdupq_n_f32(SIMDE_FLOAT32_C(2.0)), simde_vmulq_f32(a, b));
+    return simde_vmlsq_f32(simde_vdup_n_f32(SIMDE_FLOAT32_C(2.0)), a, b);
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
