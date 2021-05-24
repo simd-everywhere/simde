@@ -48,7 +48,7 @@ simde_vdot_lane_s32(simde_int32x2_t r, simde_int8x8_t a, simde_int8x8_t b, const
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(__ARM_FEATURE_DOTPROD)
     SIMDE_CONSTIFY_2_(vdot_lane_s32, result, (HEDLEY_UNREACHABLE(), result), lane, r, a, b);
   #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-    simde_int32x2_t b_lane, b_32 = HEDLEY_STATIC_CAST(simde_int32x2_t, b);
+    simde_int32x2_t b_lane, b_32 = vreinterpret_s32_s8(b);
     SIMDE_CONSTIFY_2_(vdup_lane_s32, b_lane, (HEDLEY_UNREACHABLE(), b_lane), lane, b_32);
     result =
       vadd_s32(
@@ -56,7 +56,7 @@ simde_vdot_lane_s32(simde_int32x2_t r, simde_int8x8_t a, simde_int8x8_t b, const
         vmovn_s64(
           vpaddlq_s32(
             vpaddlq_s16(
-              vmull_s8(a,HEDLEY_STATIC_CAST(simde_int8x8_t, b_lane))
+              vmull_s8(a, vreinterpret_s8_s32(b_lane))
             )
           )
         )
@@ -95,7 +95,7 @@ simde_vdot_lane_u32(simde_uint32x2_t r, simde_uint8x8_t a, simde_uint8x8_t b, co
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(__ARM_FEATURE_DOTPROD)
     SIMDE_CONSTIFY_2_(vdot_lane_u32, result, (HEDLEY_UNREACHABLE(), result), lane, r, a, b);
   #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-    simde_uint32x2_t b_lane, b_32 = HEDLEY_STATIC_CAST(simde_uint32x2_t, b);
+    simde_uint32x2_t b_lane, b_32 = vreinterpret_u32_u8(b);
     SIMDE_CONSTIFY_2_(vdup_lane_u32, b_lane, (HEDLEY_UNREACHABLE(), b_lane), lane, b_32);
     result =
       vadd_u32(
@@ -103,7 +103,7 @@ simde_vdot_lane_u32(simde_uint32x2_t r, simde_uint8x8_t a, simde_uint8x8_t b, co
         vmovn_u64(
           vpaddlq_u32(
             vpaddlq_u16(
-              vmull_u8(a,HEDLEY_STATIC_CAST(simde_uint8x8_t, b_lane))
+              vmull_u8(a, vreinterpret_u8_u32(b_lane))
             )
           )
         )
@@ -143,7 +143,7 @@ simde_vdot_laneq_s32(simde_int32x2_t r, simde_int8x8_t a, simde_int8x16_t b, con
     SIMDE_CONSTIFY_4_(vdot_laneq_s32, result, (HEDLEY_UNREACHABLE(), result), lane, r, a, b);
   #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     simde_int32x2_t b_lane;
-    simde_int32x4_t b_32 = HEDLEY_STATIC_CAST(simde_int32x4_t, b);
+    simde_int32x4_t b_32 = vreinterpretq_s32_s8(b);
     SIMDE_CONSTIFY_4_(simde_vdup_laneq_s32, b_lane, (HEDLEY_UNREACHABLE(), b_lane), lane, b_32);
     result =
       vadd_s32(
@@ -151,7 +151,7 @@ simde_vdot_laneq_s32(simde_int32x2_t r, simde_int8x8_t a, simde_int8x16_t b, con
         vmovn_s64(
           vpaddlq_s32(
             vpaddlq_s16(
-              vmull_s8(a, HEDLEY_STATIC_CAST(simde_int8x8_t, b_lane))
+              vmull_s8(a, vreinterpret_s8_s32(b_lane))
             )
           )
         )
@@ -190,7 +190,7 @@ simde_vdot_laneq_u32(simde_uint32x2_t r, simde_uint8x8_t a, simde_uint8x16_t b, 
     SIMDE_CONSTIFY_4_(vdot_laneq_u32, result, (HEDLEY_UNREACHABLE(), result), lane, r, a, b);
   #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     simde_uint32x2_t b_lane;
-    simde_uint32x4_t b_32 = HEDLEY_STATIC_CAST(simde_uint32x4_t, b);
+    simde_uint32x4_t b_32 = vreinterpretq_u32_u8(b);
     SIMDE_CONSTIFY_4_(simde_vdup_laneq_u32, b_lane, (HEDLEY_UNREACHABLE(), b_lane), lane, b_32);
     result =
       vadd_u32(
@@ -198,7 +198,7 @@ simde_vdot_laneq_u32(simde_uint32x2_t r, simde_uint8x8_t a, simde_uint8x16_t b, 
         vmovn_u64(
           vpaddlq_u32(
             vpaddlq_u16(
-              vmull_u8(a, HEDLEY_STATIC_CAST(simde_uint8x8_t, b_lane))
+              vmull_u8(a, vreinterpret_u8_u32(b_lane))
             )
           )
         )
