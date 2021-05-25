@@ -3133,12 +3133,12 @@ simde_mm_movelh_ps (simde__m128 a, simde__m128 b) {
       a_ = simde__m128_to_private(a),
       b_ = simde__m128_to_private(b);
 
-    #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    #if defined(SIMDE_SHUFFLE_VECTOR_)
+      r_.f32 = SIMDE_SHUFFLE_VECTOR_(32, 16, a_.f32, b_.f32, 0, 1, 4, 5);
+    #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       float32x2_t a10 = vget_low_f32(a_.neon_f32);
       float32x2_t b10 = vget_low_f32(b_.neon_f32);
       r_.neon_f32 = vcombine_f32(a10, b10);
-    #elif defined(SIMDE_SHUFFLE_VECTOR_)
-      r_.f32 = SIMDE_SHUFFLE_VECTOR_(32, 16, a_.f32, b_.f32, 0, 1, 4, 5);
     #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
       r_.altivec_f32 = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(float),
           vec_mergeh(a_.altivec_i64, b_.altivec_i64));
@@ -4494,33 +4494,33 @@ simde_mm_stream_ps (simde_float32 mem_addr[4], simde__m128 a) {
 #  define _mm_stream_ps(mem_addr, a) simde_mm_stream_ps(SIMDE_CHECKED_REINTERPRET_CAST(float*, simde_float32*, mem_addr), (a))
 #endif
 
-#if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-#define SIMDE_MM_TRANSPOSE4_PS(row0, row1, row2, row3) \
-  do {                                                  \
-        float32x4x2_t ROW01 = vtrnq_f32(row0, row1);      \
-        float32x4x2_t ROW23 = vtrnq_f32(row2, row3);      \
-        row0 = vcombine_f32(vget_low_f32(ROW01.val[0]),   \
-                            vget_low_f32(ROW23.val[0]));  \
-        row1 = vcombine_f32(vget_low_f32(ROW01.val[1]),   \
-                            vget_low_f32(ROW23.val[1]));  \
-        row2 = vcombine_f32(vget_high_f32(ROW01.val[0]),  \
-                            vget_high_f32(ROW23.val[0])); \
-        row3 = vcombine_f32(vget_high_f32(ROW01.val[1]),  \
-                            vget_high_f32(ROW23.val[1])); \
-    } while (0)
+#if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && !defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+  #define SIMDE_MM_TRANSPOSE4_PS(row0, row1, row2, row3) \
+    do { \
+          float32x4x2_t SIMDE_MM_TRANSPOSE4_PS_ROW01 = vtrnq_f32(row0, row1); \
+          float32x4x2_t SIMDE_MM_TRANSPOSE4_PS_ROW23 = vtrnq_f32(row2, row3); \
+          row0 = vcombine_f32(vget_low_f32(SIMDE_MM_TRANSPOSE4_PS_ROW01.val[0]), \
+                              vget_low_f32(SIMDE_MM_TRANSPOSE4_PS_ROW23.val[0])); \
+          row1 = vcombine_f32(vget_low_f32(SIMDE_MM_TRANSPOSE4_PS_ROW01.val[1]), \
+                              vget_low_f32(SIMDE_MM_TRANSPOSE4_PS_ROW23.val[1])); \
+          row2 = vcombine_f32(vget_high_f32(SIMDE_MM_TRANSPOSE4_PS_ROW01.val[0]), \
+                              vget_high_f32(SIMDE_MM_TRANSPOSE4_PS_ROW23.val[0])); \
+          row3 = vcombine_f32(vget_high_f32(SIMDE_MM_TRANSPOSE4_PS_ROW01.val[1]), \
+                              vget_high_f32(SIMDE_MM_TRANSPOSE4_PS_ROW23.val[1])); \
+      } while (0)
 #else
-#define SIMDE_MM_TRANSPOSE4_PS(row0, row1, row2, row3) \
-  do { \
-    simde__m128 tmp3, tmp2, tmp1, tmp0; \
-    tmp0 = simde_mm_unpacklo_ps((row0), (row1)); \
-    tmp2 = simde_mm_unpacklo_ps((row2), (row3)); \
-    tmp1 = simde_mm_unpackhi_ps((row0), (row1)); \
-    tmp3 = simde_mm_unpackhi_ps((row2), (row3)); \
-    row0 = simde_mm_movelh_ps(tmp0, tmp2); \
-    row1 = simde_mm_movehl_ps(tmp2, tmp0); \
-    row2 = simde_mm_movelh_ps(tmp1, tmp3); \
-    row3 = simde_mm_movehl_ps(tmp3, tmp1); \
-  } while (0)
+  #define SIMDE_MM_TRANSPOSE4_PS(row0, row1, row2, row3) \
+    do { \
+      simde__m128 SIMDE_MM_TRANSPOSE4_PS_tmp3, SIMDE_MM_TRANSPOSE4_PS_tmp2, SIMDE_MM_TRANSPOSE4_PS_tmp1, SIMDE_MM_TRANSPOSE4_PS_tmp0; \
+      SIMDE_MM_TRANSPOSE4_PS_tmp0 = simde_mm_unpacklo_ps((row0), (row1)); \
+      SIMDE_MM_TRANSPOSE4_PS_tmp2 = simde_mm_unpacklo_ps((row2), (row3)); \
+      SIMDE_MM_TRANSPOSE4_PS_tmp1 = simde_mm_unpackhi_ps((row0), (row1)); \
+      SIMDE_MM_TRANSPOSE4_PS_tmp3 = simde_mm_unpackhi_ps((row2), (row3)); \
+      row0 = simde_mm_movelh_ps(SIMDE_MM_TRANSPOSE4_PS_tmp0, SIMDE_MM_TRANSPOSE4_PS_tmp2); \
+      row1 = simde_mm_movehl_ps(SIMDE_MM_TRANSPOSE4_PS_tmp2, SIMDE_MM_TRANSPOSE4_PS_tmp0); \
+      row2 = simde_mm_movelh_ps(SIMDE_MM_TRANSPOSE4_PS_tmp1, SIMDE_MM_TRANSPOSE4_PS_tmp3); \
+      row3 = simde_mm_movehl_ps(SIMDE_MM_TRANSPOSE4_PS_tmp3, SIMDE_MM_TRANSPOSE4_PS_tmp1); \
+    } while (0)
 #endif
 #if defined(SIMDE_X86_SSE_ENABLE_NATIVE_ALIASES)
 #  define _MM_TRANSPOSE4_PS(row0, row1, row2, row3) SIMDE_MM_TRANSPOSE4_PS(row0, row1, row2, row3)
