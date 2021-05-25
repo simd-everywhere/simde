@@ -128,6 +128,7 @@ simde_neon_families = [
   'rndp',
   'rshl',
   'rshr_n',
+  'rshrn_n',
   'rsqrte',
   'rsqrts',
   'rsra_n',
