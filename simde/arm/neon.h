@@ -148,6 +148,7 @@
 #include "neon/rndp.h"
 #include "neon/rshl.h"
 #include "neon/rshr_n.h"
+#include "neon/rshrn_n.h"
 #include "neon/rsqrte.h"
 #include "neon/rsqrts.h"
 #include "neon/rsra_n.h"
