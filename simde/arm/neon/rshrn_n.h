@@ -28,13 +28,7 @@
 #if !defined(SIMDE_ARM_NEON_RSHRN_N_H)
 #define SIMDE_ARM_NEON_RSHRN_N_H
 
-#include "combine.h"
-#include "dup_n.h"
-#include "get_low.h"
-#include "reinterpret.h"
 #include "shr_n.h"
-#include "sub.h"
-#include "tst.h"
 #include "types.h"
 
 HEDLEY_DIAGNOSTIC_PUSH
