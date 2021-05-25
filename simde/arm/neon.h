@@ -125,6 +125,7 @@
 #include "neon/qdmull.h"
 #include "neon/qrdmulh.h"
 #include "neon/qrdmulh_n.h"
+#include "neon/qrshrun_n.h"
 #include "neon/qmovn.h"
 #include "neon/qmovun.h"
 #include "neon/qmovn_high.h"

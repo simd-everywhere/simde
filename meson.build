@@ -105,6 +105,7 @@ simde_neon_families = [
   'qdmull',
   'qrdmulh',
   'qrdmulh_n',
+  'qrshrun_n',
   'qmovn',
   'qmovn_high',
   'qmovun',
