@@ -28,7 +28,8 @@
 #if !defined(SIMDE_ARM_NEON_RSHRN_N_H)
 #define SIMDE_ARM_NEON_RSHRN_N_H
 
-#include "shr_n.h"
+#include "rshr_n.h"
+#include "movn.h"
 #include "types.h"
 
 HEDLEY_DIAGNOSTIC_PUSH
@@ -39,16 +40,7 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde_int8x8_t
 simde_vrshrn_n_s16 (const simde_int16x8_t a, const int n)
     SIMDE_REQUIRE_CONSTANT_RANGE(n, 1, 8) {
-  simde_int8x8_private r_;
-  simde_int16x8_private a_ = simde_int16x8_to_private(a);
-
-  SIMDE_VECTORIZE
-  for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-    r_.values[i] = HEDLEY_STATIC_CAST(int8_t, (
-          HEDLEY_STATIC_CAST(uint16_t, a_.values[i]) + (1u << (n - 1))) >> n);
-  }
-
-  return simde_int8x8_from_private(r_);
+  return simde_vmovn_s16(simde_vrshrq_n_s16(a, n));
 }
 
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
@@ -63,16 +55,7 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde_int16x4_t
 simde_vrshrn_n_s32 (const simde_int32x4_t a, const int n)
     SIMDE_REQUIRE_CONSTANT_RANGE(n, 1, 16) {
-  simde_int16x4_private r_;
-  simde_int32x4_private a_ = simde_int32x4_to_private(a);
-
-  SIMDE_VECTORIZE
-  for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-    r_.values[i] = HEDLEY_STATIC_CAST(int16_t, (
-          HEDLEY_STATIC_CAST(uint32_t, a_.values[i]) + (1u << (n - 1))) >> n);
-  }
-
-  return simde_int16x4_from_private(r_);
+  return simde_vmovn_s32(simde_vrshrq_n_s32(a, n));
 }
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vrshrn_n_s32(a, n) vrshrn_n_s32((a), (n))
@@ -86,17 +69,7 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde_int32x2_t
 simde_vrshrn_n_s64 (const simde_int64x2_t a, const int n)
     SIMDE_REQUIRE_CONSTANT_RANGE(n, 1, 32) {
-  simde_int32x2_private r_;
-  simde_int64x2_private a_ = simde_int64x2_to_private(a);
-
-  SIMDE_VECTORIZE
-  for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-    r_.values[i] = HEDLEY_STATIC_CAST(
-        int32_t,
-        (HEDLEY_STATIC_CAST(uint64_t, a_.values[i]) + (1lu << (n - 1))) >> n);
-  }
-
-  return simde_int32x2_from_private(r_);
+  return simde_vmovn_s64(simde_vrshrq_n_s64(a, n));
 }
 
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
@@ -112,16 +85,7 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde_uint8x8_t
 simde_vrshrn_n_u16 (const simde_uint16x8_t a, const int n)
     SIMDE_REQUIRE_CONSTANT_RANGE(n, 1, 8) {
-  simde_uint8x8_private r_;
-  simde_uint16x8_private a_ = simde_uint16x8_to_private(a);
-
-  SIMDE_VECTORIZE
-  for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-    r_.values[i] =
-        HEDLEY_STATIC_CAST(uint8_t, (a_.values[i] + (1u << (n - 1))) >> n);
-  }
-
-  return simde_uint8x8_from_private(r_);
+  return simde_vmovn_u16(simde_vrshrq_n_u16(a, n));
 }
 
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
@@ -136,16 +100,7 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde_uint16x4_t
 simde_vrshrn_n_u32 (const simde_uint32x4_t a, const int n)
     SIMDE_REQUIRE_CONSTANT_RANGE(n, 1, 16) {
-  simde_uint16x4_private r_;
-  simde_uint32x4_private a_ = simde_uint32x4_to_private(a);
-
-  SIMDE_VECTORIZE
-  for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-    r_.values[i] =
-        HEDLEY_STATIC_CAST(uint16_t, (a_.values[i] + (1u << (n - 1))) >> n);
-  }
-
-  return simde_uint16x4_from_private(r_);
+  return simde_vmovn_u32(simde_vrshrq_n_u32(a, n));
 }
 
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
@@ -160,16 +115,7 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde_uint32x2_t
 simde_vrshrn_n_u64 (const simde_uint64x2_t a, const int n)
     SIMDE_REQUIRE_CONSTANT_RANGE(n, 1, 32) {
-  simde_uint32x2_private r_;
-  simde_uint64x2_private a_ = simde_uint64x2_to_private(a);
-
-  SIMDE_VECTORIZE
-  for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-    r_.values[i] =
-        HEDLEY_STATIC_CAST(uint32_t, (a_.values[i] + (1lu << (n - 1))) >> n);
-  }
-
-  return simde_uint32x2_from_private(r_);
+  return simde_vmovn_u64(simde_vrshrq_n_u64(a, n));
 }
 
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
