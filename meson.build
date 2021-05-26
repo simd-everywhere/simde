@@ -64,6 +64,7 @@ simde_neon_families = [
   'ld2',
   'ld3',
   'ld4',
+  'ld4_lane',
   'max',
   'maxnm',
   'maxv',

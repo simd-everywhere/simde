@@ -84,6 +84,7 @@
 #include "neon/ld2.h"
 #include "neon/ld3.h"
 #include "neon/ld4.h"
+#include "neon/ld4_lane.h"
 #include "neon/max.h"
 #include "neon/maxnm.h"
 #include "neon/maxv.h"
