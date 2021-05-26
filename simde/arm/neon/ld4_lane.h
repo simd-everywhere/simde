@@ -58,7 +58,7 @@ simde_int8x8x4_t simde_vld4_lane_s8(int8_t const *ptr, simde_int8x8x4_t src,
 
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vld4_lane_s8
-  #define vld4_lane_s8(a) simde_vld4_lane_s8((a))
+  #define vld4_lane_s8(ptr, src, lane) simde_vld4_lane_s8((ptr), (src), (lane))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -85,7 +85,7 @@ simde_int16x4x4_t simde_vld4_lane_s16(int16_t const *ptr, simde_int16x4x4_t src,
 
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vld4_lane_s16
-  #define vld4_lane_s16(a) simde_vld4_lane_s16((a))
+  #define vld4_lane_s16(ptr, src, lane) simde_vld4_lane_s16((ptr), (src), (lane))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -112,7 +112,7 @@ simde_int32x2x4_t simde_vld4_lane_s32(int32_t const *ptr, simde_int32x2x4_t src,
 
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vld4_lane_s32
-  #define vld4_lane_s32(a) simde_vld4_lane_s32((a))
+  #define vld4_lane_s32(ptr, src, lane) simde_vld4_lane_s32((ptr), (src), (lane))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -138,7 +138,7 @@ simde_vld4_lane_u8(uint8_t const *ptr, simde_uint8x8x4_t src, const int lane)
 
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vld4_lane_u8
-  #define vld4_lane_u8(a) simde_vld4_lane_u8((a))
+  #define vld4_lane_u8(ptr, src, lane) simde_vld4_lane_u8((ptr), (src), (lane))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -165,7 +165,7 @@ simde_uint16x4x4_t simde_vld4_lane_u16(uint16_t const *ptr, simde_uint16x4x4_t s
 
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vld4_lane_u16
-  #define vld4_lane_u16(a) simde_vld4_lane_u16((a))
+  #define vld4_lane_u16(ptr, src, lane) simde_vld4_lane_u16((ptr), (src), (lane))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -192,7 +192,7 @@ simde_uint32x2x4_t simde_vld4_lane_u32(uint32_t const *ptr, simde_uint32x2x4_t s
 
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vld4_lane_u32
-  #define vld4_lane_u32(a) simde_vld4_lane_u32((a))
+  #define vld4_lane_u32(ptr, src, lane) simde_vld4_lane_u32((ptr), (src), (lane))
 #endif
 
 SIMDE_END_DECLS_
