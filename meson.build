@@ -239,6 +239,7 @@ simde_avx512_families = [
   'permutexvar',
   'permutex2var',
   'range',
+  'round',
   'roundscale',
   'sad',
   'set',
