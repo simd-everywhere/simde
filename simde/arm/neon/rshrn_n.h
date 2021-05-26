@@ -35,90 +35,60 @@ HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 SIMDE_BEGIN_DECLS_
 
-SIMDE_FUNCTION_ATTRIBUTES
-simde_int8x8_t
-simde_vrshrn_n_s16 (const simde_int16x8_t a, const int n)
-    SIMDE_REQUIRE_CONSTANT_RANGE(n, 1, 8) {
-  return simde_vmovn_s16(simde_vrshrq_n_s16(a, n));
-}
-
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vrshrn_n_s16(a, n) vrshrn_n_s16((a), (n))
+#else
+  #define simde_vrshrn_n_s16(a, n) simde_vmovn_s16(simde_vrshrq_n_s16(a, n))
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vrshrn_n_s16
   #define vrshrn_n_s16(a, n) simde_vrshrn_n_s16((a), (n))
 #endif
 
-SIMDE_FUNCTION_ATTRIBUTES
-simde_int16x4_t
-simde_vrshrn_n_s32 (const simde_int32x4_t a, const int n)
-    SIMDE_REQUIRE_CONSTANT_RANGE(n, 1, 16) {
-  return simde_vmovn_s32(simde_vrshrq_n_s32(a, n));
-}
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vrshrn_n_s32(a, n) vrshrn_n_s32((a), (n))
+#else
+  #define simde_vrshrn_n_s32(a, n) simde_vmovn_s32(simde_vrshrq_n_s32(a, n))
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vrshrn_n_s32
   #define vrshrn_n_s32(a, n) simde_vrshrn_n_s32((a), (n))
 #endif
 
-SIMDE_FUNCTION_ATTRIBUTES
-simde_int32x2_t
-simde_vrshrn_n_s64 (const simde_int64x2_t a, const int n)
-    SIMDE_REQUIRE_CONSTANT_RANGE(n, 1, 32) {
-  return simde_vmovn_s64(simde_vrshrq_n_s64(a, n));
-}
-
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vrshrn_n_s64(a, n) vrshrn_n_s64((a), (n))
+#else
+  #define simde_vrshrn_n_s64(a, n) simde_vmovn_s64(simde_vrshrq_n_s64(a, n))
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vrshrn_n_s64
   #define vrshrn_n_s64(a, n) simde_vrshrn_n_s64((a), (n))
 #endif
 
-
-SIMDE_FUNCTION_ATTRIBUTES
-simde_uint8x8_t
-simde_vrshrn_n_u16 (const simde_uint16x8_t a, const int n)
-    SIMDE_REQUIRE_CONSTANT_RANGE(n, 1, 8) {
-  return simde_vmovn_u16(simde_vrshrq_n_u16(a, n));
-}
-
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vrshrn_n_u16(a, n) vrshrn_n_u16((a), (n))
+#else
+  #define simde_vrshrn_n_u16(a, n) simde_vmovn_u16(simde_vrshrq_n_u16(a, n))
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vrshrn_n_u16
   #define vrshrn_n_u16(a, n) simde_vrshrn_n_u16((a), (n))
 #endif
 
-SIMDE_FUNCTION_ATTRIBUTES
-simde_uint16x4_t
-simde_vrshrn_n_u32 (const simde_uint32x4_t a, const int n)
-    SIMDE_REQUIRE_CONSTANT_RANGE(n, 1, 16) {
-  return simde_vmovn_u32(simde_vrshrq_n_u32(a, n));
-}
-
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vrshrn_n_u32(a, n) vrshrn_n_u32((a), (n))
+#else
+  #define simde_vrshrn_n_u32(a, n) simde_vmovn_u32(simde_vrshrq_n_u32(a, n))
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vrshrn_n_u32
   #define vrshrn_n_u32(a, n) simde_vrshrn_n_u32((a), (n))
 #endif
 
-SIMDE_FUNCTION_ATTRIBUTES
-simde_uint32x2_t
-simde_vrshrn_n_u64 (const simde_uint64x2_t a, const int n)
-    SIMDE_REQUIRE_CONSTANT_RANGE(n, 1, 32) {
-  return simde_vmovn_u64(simde_vrshrq_n_u64(a, n));
-}
-
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vrshrn_n_u64(a, n) vrshrn_n_u64((a), (n))
+#else
+  #define simde_vrshrn_n_u64(a, n) simde_vmovn_u64(simde_vrshrq_n_u64(a, n))
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vrshrn_n_u64

@@ -1,8 +1,6 @@
 #if !defined(SIMDE_TESTS_H)
 #define SIMDE_TESTS_H
 
-#define SIMDE_NO_CHECK_IMMEDIATE_CONSTANT
-
 #include "../simde/simde-common.h"
 
 #include <time.h>
