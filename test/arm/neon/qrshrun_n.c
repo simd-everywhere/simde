@@ -1,5 +1,5 @@
 
-#define SIMDE_TEST_ARM_NEON_INSN rshrn_n
+#define SIMDE_TEST_ARM_NEON_INSN qrshrun_n
 
 #include "test-neon.h"
 #include "../../../simde/arm/neon/qrshrun_n.h"
