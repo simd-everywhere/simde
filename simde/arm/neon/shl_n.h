@@ -42,7 +42,7 @@ simde_vshl_n_s8 (const simde_int8x8_t a, const int n)
     r_,
     a_ = simde_int8x8_to_private(a);
 
-  #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+  #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && !defined(SIMDE_BUG_GCC_100762)
     r_.values = a_.values << HEDLEY_STATIC_CAST(int8_t, n);
   #else
     SIMDE_VECTORIZE
@@ -159,7 +159,7 @@ simde_vshl_n_u8 (const simde_uint8x8_t a, const int n)
     r_,
     a_ = simde_uint8x8_to_private(a);
 
-  #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+  #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && !defined(SIMDE_BUG_GCC_100762)
     r_.values = a_.values << HEDLEY_STATIC_CAST(uint8_t, n);
   #else
     SIMDE_VECTORIZE

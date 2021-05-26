@@ -105,7 +105,7 @@ simde_vabs_s8(simde_int8x8_t a) {
 
     #if defined(SIMDE_X86_SSSE3_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
       r_.m64 = _mm_abs_pi8(a_.m64);
-    #elif (SIMDE_NATURAL_VECTOR_SIZE > 0) && defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+    #elif (SIMDE_NATURAL_VECTOR_SIZE > 0) && defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && !defined(SIMDE_BUG_GCC_100762)
       __typeof__(r_.values) m = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), a_.values < INT8_C(0));
       r_.values = (-a_.values & m) | (a_.values & ~m);
     #else
@@ -135,7 +135,7 @@ simde_vabs_s16(simde_int16x4_t a) {
 
     #if defined(SIMDE_X86_SSSE3_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
       r_.m64 = _mm_abs_pi16(a_.m64);
-    #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && !defined(SIMDE_BUG_GCC_100761)
       __typeof__(r_.values) m = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), a_.values < INT16_C(0));
       r_.values = (-a_.values & m) | (a_.values & ~m);
     #else
@@ -165,7 +165,7 @@ simde_vabs_s32(simde_int32x2_t a) {
 
     #if defined(SIMDE_X86_SSSE3_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
       r_.m64 = _mm_abs_pi32(a_.m64);
-    #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && !defined(SIMDE_BUG_GCC_100761)
       __typeof__(r_.values) m = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), a_.values < INT32_C(0));
       r_.values = (-a_.values & m) | (a_.values & ~m);
     #else

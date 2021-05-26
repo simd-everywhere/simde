@@ -46,7 +46,7 @@ simde_vcmla_rot270_f32(simde_float32x2_t r, simde_float32x2_t a, simde_float32x2
       a_ = simde_float32x2_to_private(a),
       b_ = simde_float32x2_to_private(b);
 
-    #if defined(SIMDE_SHUFFLE_VECTOR_)
+    #if defined(SIMDE_SHUFFLE_VECTOR_) && !defined(SIMDE_BUG_GCC_100760)
       a_.values = SIMDE_SHUFFLE_VECTOR_(32, 8, a_.values, a_.values, 1, 1);
       b_.values = SIMDE_SHUFFLE_VECTOR_(32, 8, -b_.values, b_.values, 3, 0);
       r_.values += b_.values * a_.values;

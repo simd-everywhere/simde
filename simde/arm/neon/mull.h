@@ -49,7 +49,7 @@ simde_vmull_s8(simde_int8x8_t a, simde_int8x8_t b) {
       a_ = simde_int8x8_to_private(a),
       b_ = simde_int8x8_to_private(b);
 
-    #if defined(SIMDE_CONVERT_VECTOR_) && defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+    #if defined(SIMDE_CONVERT_VECTOR_) && defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && !defined(SIMDE_BUG_GCC_100761)
       __typeof__(r_.values) av, bv;
       SIMDE_CONVERT_VECTOR_(av, a_.values);
       SIMDE_CONVERT_VECTOR_(bv, b_.values);
@@ -82,7 +82,7 @@ simde_vmull_s16(simde_int16x4_t a, simde_int16x4_t b) {
       a_ = simde_int16x4_to_private(a),
       b_ = simde_int16x4_to_private(b);
 
-    #if defined(SIMDE_CONVERT_VECTOR_) && defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+    #if defined(SIMDE_CONVERT_VECTOR_) && defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && !defined(SIMDE_BUG_GCC_100761)
       __typeof__(r_.values) av, bv;
       SIMDE_CONVERT_VECTOR_(av, a_.values);
       SIMDE_CONVERT_VECTOR_(bv, b_.values);
@@ -146,7 +146,7 @@ simde_vmull_u8(simde_uint8x8_t a, simde_uint8x8_t b) {
       a_ = simde_uint8x8_to_private(a),
       b_ = simde_uint8x8_to_private(b);
 
-    #if defined(SIMDE_CONVERT_VECTOR_) && defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+    #if defined(SIMDE_CONVERT_VECTOR_) && defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && !defined(SIMDE_BUG_GCC_100761)
       __typeof__(r_.values) av, bv;
       SIMDE_CONVERT_VECTOR_(av, a_.values);
       SIMDE_CONVERT_VECTOR_(bv, b_.values);
@@ -179,7 +179,7 @@ simde_vmull_u16(simde_uint16x4_t a, simde_uint16x4_t b) {
       a_ = simde_uint16x4_to_private(a),
       b_ = simde_uint16x4_to_private(b);
 
-    #if defined(SIMDE_CONVERT_VECTOR_) && defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+    #if defined(SIMDE_CONVERT_VECTOR_) && defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && !defined(SIMDE_BUG_GCC_100761)
       __typeof__(r_.values) av, bv;
       SIMDE_CONVERT_VECTOR_(av, a_.values);
       SIMDE_CONVERT_VECTOR_(bv, b_.values);

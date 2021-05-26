@@ -307,7 +307,7 @@ simde_vtst_s8(simde_int8x8_t a, simde_int8x8_t b) {
       b_ = simde_int8x8_to_private(b);
     simde_uint8x8_private r_;
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+    #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && !defined(SIMDE_BUG_GCC_100762)
       r_.values = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), (a_.values & b_.values) != 0);
     #else
       SIMDE_VECTORIZE
@@ -337,7 +337,7 @@ simde_vtst_s16(simde_int16x4_t a, simde_int16x4_t b) {
       b_ = simde_int16x4_to_private(b);
     simde_uint16x4_private r_;
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+    #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && !defined(SIMDE_BUG_GCC_100762)
       r_.values = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), (a_.values & b_.values) != 0);
     #else
       SIMDE_VECTORIZE
@@ -367,7 +367,7 @@ simde_vtst_s32(simde_int32x2_t a, simde_int32x2_t b) {
       b_ = simde_int32x2_to_private(b);
     simde_uint32x2_private r_;
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+    #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && !defined(SIMDE_BUG_GCC_100762)
       r_.values = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), (a_.values & b_.values) != 0);
     #else
       SIMDE_VECTORIZE
@@ -427,7 +427,7 @@ simde_vtst_u8(simde_uint8x8_t a, simde_uint8x8_t b) {
       a_ = simde_uint8x8_to_private(a),
       b_ = simde_uint8x8_to_private(b);
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+    #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && !defined(SIMDE_BUG_GCC_100762)
       r_.values = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), (a_.values & b_.values) != 0);
     #else
       SIMDE_VECTORIZE
@@ -457,7 +457,7 @@ simde_vtst_u16(simde_uint16x4_t a, simde_uint16x4_t b) {
       a_ = simde_uint16x4_to_private(a),
       b_ = simde_uint16x4_to_private(b);
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+    #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && !defined(SIMDE_BUG_GCC_100762)
       r_.values = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), (a_.values & b_.values) != 0);
     #else
       SIMDE_VECTORIZE
@@ -487,7 +487,7 @@ simde_vtst_u32(simde_uint32x2_t a, simde_uint32x2_t b) {
       a_ = simde_uint32x2_to_private(a),
       b_ = simde_uint32x2_to_private(b);
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+    #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && !defined(SIMDE_BUG_GCC_100762)
       r_.values = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), (a_.values & b_.values) != 0);
     #else
       SIMDE_VECTORIZE
