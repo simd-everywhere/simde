@@ -95,7 +95,7 @@ simde_vst3_s8(int8_t ptr[HEDLEY_ARRAY_PARAM(24)], simde_int8x8x3_t val) {
     simde_int8x8_private a_[3] = { simde_int8x8_to_private(val.val[0]),
                                    simde_int8x8_to_private(val.val[1]),
                                    simde_int8x8_to_private(val.val[2]) };
-    #if defined(SIMDE_SHUFFLE_VECTOR_)
+    #if defined(SIMDE_SHUFFLE_VECTOR_) && !defined(SIMDE_BUG_GCC_100762)
       __typeof__(a_[0].values) r0 = SIMDE_SHUFFLE_VECTOR_(8, 8, a_[0].values, a_[1].values,
                                                           0, 8, 3, 1, 9, 4, 2, 10);
       __typeof__(a_[0].values) m0 = SIMDE_SHUFFLE_VECTOR_(8, 8, r0, a_[2].values,
@@ -177,7 +177,7 @@ simde_vst3_s32(int32_t ptr[HEDLEY_ARRAY_PARAM(6)], simde_int32x2x3_t val) {
     simde_int32x2_private a[3] = { simde_int32x2_to_private(val.val[0]),
                                     simde_int32x2_to_private(val.val[1]),
                                     simde_int32x2_to_private(val.val[2]) };
-    #if defined(SIMDE_SHUFFLE_VECTOR_)
+    #if defined(SIMDE_SHUFFLE_VECTOR_) && !defined(SIMDE_BUG_GCC_100762)
       __typeof__(a[0].values) r1 = SIMDE_SHUFFLE_VECTOR_(32, 8, a[0].values, a[1].values, 0, 2);
       __typeof__(a[0].values) r2 = SIMDE_SHUFFLE_VECTOR_(32, 8, a[2].values, a[0].values, 0, 3);
       __typeof__(a[0].values) r3 = SIMDE_SHUFFLE_VECTOR_(32, 8, a[1].values, a[2].values, 1, 3);
@@ -226,7 +226,7 @@ simde_vst3_u8(uint8_t ptr[HEDLEY_ARRAY_PARAM(24)], simde_uint8x8x3_t val) {
     simde_uint8x8_private a_[3] = { simde_uint8x8_to_private(val.val[0]),
                                     simde_uint8x8_to_private(val.val[1]),
                                     simde_uint8x8_to_private(val.val[2]) };
-    #if defined(SIMDE_SHUFFLE_VECTOR_)
+    #if defined(SIMDE_SHUFFLE_VECTOR_) && !defined(SIMDE_BUG_GCC_100762)
       __typeof__(a_[0].values) r0 = SIMDE_SHUFFLE_VECTOR_(8, 8, a_[0].values, a_[1].values,
                                                           0, 8, 3, 1, 9, 4, 2, 10);
       __typeof__(a_[0].values) m0 = SIMDE_SHUFFLE_VECTOR_(8, 8, r0, a_[2].values,
@@ -308,7 +308,7 @@ simde_vst3_u32(uint32_t ptr[HEDLEY_ARRAY_PARAM(6)], simde_uint32x2x3_t val) {
     simde_uint32x2_private a[3] = { simde_uint32x2_to_private(val.val[0]),
                                      simde_uint32x2_to_private(val.val[1]),
                                      simde_uint32x2_to_private(val.val[2]) };
-    #if defined(SIMDE_SHUFFLE_VECTOR_)
+    #if defined(SIMDE_SHUFFLE_VECTOR_) && !defined(SIMDE_BUG_GCC_100762)
       __typeof__(a[0].values) r1 = SIMDE_SHUFFLE_VECTOR_(32, 8, a[0].values, a[1].values, 0, 2);
       __typeof__(a[0].values) r2 = SIMDE_SHUFFLE_VECTOR_(32, 8, a[2].values, a[0].values, 0, 3);
       __typeof__(a[0].values) r3 = SIMDE_SHUFFLE_VECTOR_(32, 8, a[1].values, a[2].values, 1, 3);

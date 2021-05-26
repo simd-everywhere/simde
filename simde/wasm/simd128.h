@@ -5550,7 +5550,7 @@ simde_wasm_i16x8_extend_low_i8x16 (simde_v128_t a) {
       a_ = simde_v128_to_private(a),
       r_;
 
-    #if defined(SIMDE_CONVERT_VECTOR_)
+    #if defined(SIMDE_CONVERT_VECTOR_) && !defined(SIMDE_BUG_GCC_100762)
       const int8_t v SIMDE_VECTOR(8) = {
         a_.i8[0], a_.i8[1], a_.i8[2], a_.i8[3],
         a_.i8[4], a_.i8[5], a_.i8[6], a_.i8[7]
@@ -5581,7 +5581,7 @@ simde_wasm_i32x4_extend_low_i16x8 (simde_v128_t a) {
       a_ = simde_v128_to_private(a),
       r_;
 
-    #if defined(SIMDE_CONVERT_VECTOR_)
+    #if defined(SIMDE_CONVERT_VECTOR_) && !defined(SIMDE_BUG_GCC_100762)
       const int16_t v SIMDE_VECTOR(8) = { a_.i16[0], a_.i16[1], a_.i16[2], a_.i16[3] };
 
       SIMDE_CONVERT_VECTOR_(r_.i32, v);
@@ -5609,7 +5609,7 @@ simde_wasm_i64x2_extend_low_i32x4 (simde_v128_t a) {
       a_ = simde_v128_to_private(a),
       r_;
 
-    #if defined(SIMDE_CONVERT_VECTOR_)
+    #if defined(SIMDE_CONVERT_VECTOR_) && !defined(SIMDE_BUG_GCC_100762)
       const int32_t v SIMDE_VECTOR(8) = { a_.i32[0], a_.i32[1] };
 
       SIMDE_CONVERT_VECTOR_(r_.i64, v);
@@ -5637,7 +5637,7 @@ simde_wasm_u16x8_extend_low_u8x16 (simde_v128_t a) {
       a_ = simde_v128_to_private(a),
       r_;
 
-    #if defined(SIMDE_CONVERT_VECTOR_)
+    #if defined(SIMDE_CONVERT_VECTOR_) && !defined(SIMDE_BUG_GCC_100762)
       const uint8_t v SIMDE_VECTOR(8) = {
         a_.u8[0], a_.u8[1], a_.u8[2], a_.u8[3],
         a_.u8[4], a_.u8[5], a_.u8[6], a_.u8[7]
@@ -5668,7 +5668,7 @@ simde_wasm_u32x4_extend_low_u16x8 (simde_v128_t a) {
       a_ = simde_v128_to_private(a),
       r_;
 
-    #if defined(SIMDE_CONVERT_VECTOR_)
+    #if defined(SIMDE_CONVERT_VECTOR_) && !defined(SIMDE_BUG_GCC_100762)
       const uint16_t v SIMDE_VECTOR(8) = { a_.u16[0], a_.u16[1], a_.u16[2], a_.u16[3] };
 
       SIMDE_CONVERT_VECTOR_(r_.i32, v);
@@ -5696,7 +5696,7 @@ simde_wasm_u64x2_extend_low_u32x4 (simde_v128_t a) {
       a_ = simde_v128_to_private(a),
       r_;
 
-    #if defined(SIMDE_CONVERT_VECTOR_)
+    #if defined(SIMDE_CONVERT_VECTOR_) && !defined(SIMDE_BUG_GCC_100762)
       const uint32_t v SIMDE_VECTOR(8) = { a_.u32[0], a_.u32[1] };
 
       SIMDE_CONVERT_VECTOR_(r_.u64, v);
@@ -5750,7 +5750,7 @@ simde_wasm_i16x8_extend_high_i8x16 (simde_v128_t a) {
       a_ = simde_v128_to_private(a),
       r_;
 
-    #if defined(SIMDE_CONVERT_VECTOR_)
+    #if defined(SIMDE_CONVERT_VECTOR_) && !defined(SIMDE_BUG_GCC_100762)
       const int8_t v SIMDE_VECTOR(8) = {
         a_.i8[ 8], a_.i8[ 9], a_.i8[10], a_.i8[11],
         a_.i8[12], a_.i8[13], a_.i8[14], a_.i8[15]
@@ -5781,7 +5781,7 @@ simde_wasm_i32x4_extend_high_i16x8 (simde_v128_t a) {
       a_ = simde_v128_to_private(a),
       r_;
 
-    #if defined(SIMDE_CONVERT_VECTOR_)
+    #if defined(SIMDE_CONVERT_VECTOR_) && !defined(SIMDE_BUG_GCC_100762)
       const int16_t v SIMDE_VECTOR(8) = { a_.i16[4], a_.i16[5], a_.i16[6], a_.i16[7] };
 
       SIMDE_CONVERT_VECTOR_(r_.i32, v);
@@ -5809,7 +5809,7 @@ simde_wasm_i64x2_extend_high_i32x4 (simde_v128_t a) {
       a_ = simde_v128_to_private(a),
       r_;
 
-    #if defined(SIMDE_CONVERT_VECTOR_)
+    #if defined(SIMDE_CONVERT_VECTOR_) && !defined(SIMDE_BUG_GCC_100762)
       const int32_t v SIMDE_VECTOR(8) = { a_.i32[2], a_.i32[3] };
 
       SIMDE_CONVERT_VECTOR_(r_.i64, v);
@@ -5837,7 +5837,7 @@ simde_wasm_u16x8_extend_high_u8x16 (simde_v128_t a) {
       a_ = simde_v128_to_private(a),
       r_;
 
-    #if defined(SIMDE_CONVERT_VECTOR_)
+    #if defined(SIMDE_CONVERT_VECTOR_) && !defined(SIMDE_BUG_GCC_100762)
       const uint8_t v SIMDE_VECTOR(8) = {
         a_.u8[ 8], a_.u8[ 9], a_.u8[10], a_.u8[11],
         a_.u8[12], a_.u8[13], a_.u8[14], a_.u8[15]
@@ -5868,7 +5868,7 @@ simde_wasm_u32x4_extend_high_u16x8 (simde_v128_t a) {
       a_ = simde_v128_to_private(a),
       r_;
 
-    #if defined(SIMDE_CONVERT_VECTOR_)
+    #if defined(SIMDE_CONVERT_VECTOR_) && !defined(SIMDE_BUG_GCC_100762)
       const uint16_t v SIMDE_VECTOR(8) = { a_.u16[4], a_.u16[5], a_.u16[6], a_.u16[7] };
 
       SIMDE_CONVERT_VECTOR_(r_.u32, v);
@@ -5896,7 +5896,7 @@ simde_wasm_u64x2_extend_high_u32x4 (simde_v128_t a) {
       a_ = simde_v128_to_private(a),
       r_;
 
-    #if defined(SIMDE_CONVERT_VECTOR_)
+    #if defined(SIMDE_CONVERT_VECTOR_) && !defined(SIMDE_BUG_GCC_100762)
       const uint32_t v SIMDE_VECTOR(8) = { a_.u32[2], a_.u32[3] };
 
       SIMDE_CONVERT_VECTOR_(r_.u64, v);
@@ -6190,7 +6190,7 @@ simde_wasm_i16x8_load8x8 (const void * mem) {
   #else
     simde_v128_private r_;
 
-    #if defined(SIMDE_CONVERT_VECTOR_)
+    #if defined(SIMDE_CONVERT_VECTOR_) && !defined(SIMDE_BUG_GCC_100762)
       int8_t v SIMDE_VECTOR(8);
       simde_memcpy(&v, mem, sizeof(v));
       SIMDE_CONVERT_VECTOR_(r_.i16, v);
@@ -6219,7 +6219,7 @@ simde_wasm_i32x4_load16x4 (const void * mem) {
   #else
     simde_v128_private r_;
 
-    #if defined(SIMDE_CONVERT_VECTOR_)
+    #if defined(SIMDE_CONVERT_VECTOR_) && !defined(SIMDE_BUG_GCC_100762)
       int16_t v SIMDE_VECTOR(8);
       simde_memcpy(&v, mem, sizeof(v));
       SIMDE_CONVERT_VECTOR_(r_.i32, v);
@@ -6248,7 +6248,7 @@ simde_wasm_i64x2_load32x2 (const void * mem) {
   #else
     simde_v128_private r_;
 
-    #if defined(SIMDE_CONVERT_VECTOR_)
+    #if defined(SIMDE_CONVERT_VECTOR_) && !defined(SIMDE_BUG_GCC_100762)
       int32_t v SIMDE_VECTOR(8);
       simde_memcpy(&v, mem, sizeof(v));
       SIMDE_CONVERT_VECTOR_(r_.i64, v);
@@ -6277,7 +6277,7 @@ simde_wasm_u16x8_load8x8 (const void * mem) {
   #else
     simde_v128_private r_;
 
-    #if defined(SIMDE_CONVERT_VECTOR_)
+    #if defined(SIMDE_CONVERT_VECTOR_) && !defined(SIMDE_BUG_GCC_100762)
       uint8_t v SIMDE_VECTOR(8);
       simde_memcpy(&v, mem, sizeof(v));
       SIMDE_CONVERT_VECTOR_(r_.u16, v);
@@ -6306,7 +6306,7 @@ simde_wasm_u32x4_load16x4 (const void * mem) {
   #else
     simde_v128_private r_;
 
-    #if defined(SIMDE_CONVERT_VECTOR_)
+    #if defined(SIMDE_CONVERT_VECTOR_) && !defined(SIMDE_BUG_GCC_100762)
       uint16_t v SIMDE_VECTOR(8);
       simde_memcpy(&v, mem, sizeof(v));
       SIMDE_CONVERT_VECTOR_(r_.u32, v);
@@ -6335,7 +6335,7 @@ simde_wasm_u64x2_load32x2 (const void * mem) {
   #else
     simde_v128_private r_;
 
-    #if defined(SIMDE_CONVERT_VECTOR_)
+    #if defined(SIMDE_CONVERT_VECTOR_) && !defined(SIMDE_BUG_GCC_100762)
       uint32_t v SIMDE_VECTOR(8);
       simde_memcpy(&v, mem, sizeof(v));
       SIMDE_CONVERT_VECTOR_(r_.u64, v);

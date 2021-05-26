@@ -387,7 +387,7 @@ simde_vcge_f32(simde_float32x2_t a, simde_float32x2_t b) {
       b_ = simde_float32x2_to_private(b);
     simde_uint32x2_private r_;
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && !defined(SIMDE_BUG_GCC_100762)
       r_.values = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), a_.values >= b_.values);
     #else
       SIMDE_VECTORIZE
@@ -415,7 +415,7 @@ simde_vcge_f64(simde_float64x1_t a, simde_float64x1_t b) {
       b_ = simde_float64x1_to_private(b);
     simde_uint64x1_private r_;
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && !defined(SIMDE_BUG_GCC_100762)
       r_.values = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), a_.values >= b_.values);
     #else
       SIMDE_VECTORIZE
@@ -445,7 +445,7 @@ simde_vcge_s8(simde_int8x8_t a, simde_int8x8_t b) {
 
     #if defined(SIMDE_X86_MMX_NATIVE)
       r_.m64 = _mm_or_si64(_mm_cmpgt_pi8(a_.m64, b_.m64), _mm_cmpeq_pi8(a_.m64, b_.m64));
-    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && !defined(SIMDE_BUG_GCC_100762)
       r_.values = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), a_.values >= b_.values);
     #else
       SIMDE_VECTORIZE
@@ -475,7 +475,7 @@ simde_vcge_s16(simde_int16x4_t a, simde_int16x4_t b) {
 
     #if defined(SIMDE_X86_MMX_NATIVE)
       r_.m64 = _mm_or_si64(_mm_cmpgt_pi16(a_.m64, b_.m64), _mm_cmpeq_pi16(a_.m64, b_.m64));
-    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && !defined(SIMDE_BUG_GCC_100762)
       r_.values = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), a_.values >= b_.values);
     #else
       SIMDE_VECTORIZE
@@ -505,7 +505,7 @@ simde_vcge_s32(simde_int32x2_t a, simde_int32x2_t b) {
 
     #if defined(SIMDE_X86_MMX_NATIVE)
       r_.m64 = _mm_or_si64(_mm_cmpgt_pi32(a_.m64, b_.m64), _mm_cmpeq_pi32(a_.m64, b_.m64));
-    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && !defined(SIMDE_BUG_GCC_100762)
       r_.values = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), a_.values >= b_.values);
     #else
       SIMDE_VECTORIZE
@@ -564,7 +564,7 @@ simde_vcge_u8(simde_uint8x8_t a, simde_uint8x8_t b) {
     #if defined(SIMDE_X86_MMX_NATIVE)
       __m64 sign_bits = _mm_set1_pi8(INT8_MIN);
       r_.m64 = _mm_or_si64(_mm_cmpgt_pi8(_mm_xor_si64(a_.m64, sign_bits), _mm_xor_si64(b_.m64, sign_bits)), _mm_cmpeq_pi8(a_.m64, b_.m64));
-    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && !defined(SIMDE_BUG_GCC_100762)
       r_.values = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), a_.values >= b_.values);
     #else
       SIMDE_VECTORIZE
@@ -595,7 +595,7 @@ simde_vcge_u16(simde_uint16x4_t a, simde_uint16x4_t b) {
     #if defined(SIMDE_X86_MMX_NATIVE)
       __m64 sign_bits = _mm_set1_pi16(INT16_MIN);
       r_.m64 = _mm_or_si64(_mm_cmpgt_pi16(_mm_xor_si64(a_.m64, sign_bits), _mm_xor_si64(b_.m64, sign_bits)), _mm_cmpeq_pi16(a_.m64, b_.m64));
-    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && !defined(SIMDE_BUG_GCC_100762)
       r_.values = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), a_.values >= b_.values);
     #else
       SIMDE_VECTORIZE
@@ -626,7 +626,7 @@ simde_vcge_u32(simde_uint32x2_t a, simde_uint32x2_t b) {
     #if defined(SIMDE_X86_MMX_NATIVE)
       __m64 sign_bits = _mm_set1_pi32(INT32_MIN);
       r_.m64 = _mm_or_si64(_mm_cmpgt_pi32(_mm_xor_si64(a_.m64, sign_bits), _mm_xor_si64(b_.m64, sign_bits)), _mm_cmpeq_pi32(a_.m64, b_.m64));
-    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && !defined(SIMDE_BUG_GCC_100762)
       r_.values = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), a_.values >= b_.values);
     #else
       SIMDE_VECTORIZE

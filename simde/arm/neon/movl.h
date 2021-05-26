@@ -50,7 +50,7 @@ simde_vmovl_s8(simde_int8x8_t a) {
     simde_int16x8_private r_;
     simde_int8x8_private a_ = simde_int8x8_to_private(a);
 
-    #if defined(SIMDE_CONVERT_VECTOR_)
+    #if defined(SIMDE_CONVERT_VECTOR_) && !defined(SIMDE_BUG_GCC_100761)
       SIMDE_CONVERT_VECTOR_(r_.values, a_.values);
     #else
       SIMDE_VECTORIZE
@@ -83,7 +83,7 @@ simde_vmovl_s16(simde_int16x4_t a) {
     simde_int32x4_private r_;
     simde_int16x4_private a_ = simde_int16x4_to_private(a);
 
-    #if defined(SIMDE_CONVERT_VECTOR_)
+    #if defined(SIMDE_CONVERT_VECTOR_) && !defined(SIMDE_BUG_GCC_100761)
       SIMDE_CONVERT_VECTOR_(r_.values, a_.values);
     #else
       SIMDE_VECTORIZE
@@ -149,7 +149,7 @@ simde_vmovl_u8(simde_uint8x8_t a) {
     simde_uint16x8_private r_;
     simde_uint8x8_private a_ = simde_uint8x8_to_private(a);
 
-    #if defined(SIMDE_CONVERT_VECTOR_)
+    #if defined(SIMDE_CONVERT_VECTOR_) && !defined(SIMDE_BUG_GCC_100761)
       SIMDE_CONVERT_VECTOR_(r_.values, a_.values);
     #else
       SIMDE_VECTORIZE
@@ -182,7 +182,7 @@ simde_vmovl_u16(simde_uint16x4_t a) {
     simde_uint32x4_private r_;
     simde_uint16x4_private a_ = simde_uint16x4_to_private(a);
 
-    #if defined(SIMDE_CONVERT_VECTOR_)
+    #if defined(SIMDE_CONVERT_VECTOR_) && !defined(SIMDE_BUG_GCC_100761)
       SIMDE_CONVERT_VECTOR_(r_.values, a_.values);
     #else
       SIMDE_VECTORIZE

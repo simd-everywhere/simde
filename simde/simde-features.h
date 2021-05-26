@@ -436,6 +436,15 @@
   #include <loongson-mmiintrin.h>
 #endif
 
+#if !defined(SIMDE_MIPS_MSA_NATIVE) && !defined(SIMDE_MIPS_MSA_NO_NATIVE) && !defined(SIMDE_NO_NATIVE)
+  #if defined(SIMDE_ARCH_MIPS_MSA)
+    #define SIMDE_MIPS_MSA_NATIVE  1
+  #endif
+#endif
+#if defined(SIMDE_MIPS_MSA_NATIVE)
+  #include <msa.h>
+#endif
+
 /* This is used to determine whether or not to fall back on a vector
  * function in an earlier ISA extensions, as well as whether
  * we expected any attempts at vectorization to be fruitful or if we
@@ -451,7 +460,8 @@
       defined(SIMDE_ARM_NEON_A32V7_NATIVE) || \
       defined(SIMDE_WASM_SIMD128_NATIVE) || \
       defined(SIMDE_POWER_ALTIVEC_P5_NATIVE) || \
-      defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
+      defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE) || \
+      defined(SIMDE_MIPS_MSA_NATIVE)
     #define SIMDE_NATURAL_VECTOR_SIZE (128)
   #endif
 

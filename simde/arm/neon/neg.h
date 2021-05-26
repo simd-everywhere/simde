@@ -151,7 +151,7 @@ simde_vneg_s32(simde_int32x2_t a) {
       r_,
       a_ = simde_int32x2_to_private(a);
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && !defined(SIMDE_BUG_GCC_100762)
       r_.values = -a_.values;
     #else
       SIMDE_VECTORIZE

@@ -93,6 +93,15 @@ typedef union {
     #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
       SIMDE_ALIGN_TO_16 float64x2_t    neon_f64;
     #endif
+  #elif defined(SIMDE_MIPS_MSA_NATIVE)
+    v16i8 msa_i8;
+    v8i16 msa_i16;
+    v4i32 msa_i32;
+    v2i64 msa_i64;
+    v16u8 msa_u8;
+    v8u16 msa_u16;
+    v4u32 msa_u32;
+    v2u64 msa_u64;
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
     SIMDE_ALIGN_TO_16 v128_t         wasm_v128;
   #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
@@ -1039,7 +1048,7 @@ simde_mm_avg_pu16 (simde__m64 a, simde__m64 b) {
 
     #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       r_.neon_u16 = vrhadd_u16(b_.neon_u16, a_.neon_u16);
-    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && defined(SIMDE_CONVERT_VECTOR_)
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && defined(SIMDE_CONVERT_VECTOR_) && !defined(SIMDE_BUG_GCC_100761)
       uint32_t wa SIMDE_VECTOR(16);
       uint32_t wb SIMDE_VECTOR(16);
       uint32_t wr SIMDE_VECTOR(16);
@@ -1076,7 +1085,7 @@ simde_mm_avg_pu8 (simde__m64 a, simde__m64 b) {
 
     #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       r_.neon_u8 = vrhadd_u8(b_.neon_u8, a_.neon_u8);
-    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && defined(SIMDE_CONVERT_VECTOR_)
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && defined(SIMDE_CONVERT_VECTOR_) && !defined(SIMDE_BUG_GCC_100761)
       uint16_t wa SIMDE_VECTOR(16);
       uint16_t wb SIMDE_VECTOR(16);
       uint16_t wr SIMDE_VECTOR(16);
@@ -1920,7 +1929,7 @@ simde_mm_cvt_ps2pi (simde__m128 a) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     a_ = simde__m128_to_private(simde_mm_round_ps(a, SIMDE_MM_FROUND_CUR_DIRECTION));
     r_.neon_i32 = vcvt_s32_f32(vget_low_f32(a_.neon_f32));
-  #elif defined(SIMDE_CONVERT_VECTOR_) && SIMDE_NATURAL_VECTOR_SIZE_GE(128)
+  #elif defined(SIMDE_CONVERT_VECTOR_) && SIMDE_NATURAL_VECTOR_SIZE_GE(128) && !defined(SIMDE_BUG_GCC_100761)
     a_ = simde__m128_to_private(simde_mm_round_ps(a, SIMDE_MM_FROUND_CUR_DIRECTION));
     SIMDE_CONVERT_VECTOR_(r_.i32, a_.m64_private[0].f32);
   #else

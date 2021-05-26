@@ -10,6 +10,10 @@ CAPABILITIES=""
 RELEASE="testing"
 PROMPT=n
 
+if [ "x$QEMU_GIT" == 'x' ]; then
+  QEMU_GIT=n
+fi
+
 if [ "${OSTYPE}" == "linux-gnu" ] && [ "$(basename "${DOCKER}")" = "podman" ]; then
   CAPABILITIES="--cap-add=CAP_SYS_PTRACE";
 fi
@@ -51,7 +55,7 @@ fi
 
 if [ "${BUILD_IMAGE}" != "n" ]; then
   "${DOCKER}" rmi -f "${IMAGE_NAME}" 2>/dev/null || true
-  "${DOCKER}" build --build-arg "release=${RELEASE}" -t "${IMAGE_NAME}" ${CAPABILITIES} -f "${DOCKER_DIR}/Dockerfile" "${DOCKER_DIR}/.."
+  "${DOCKER}" build --build-arg "RELEASE=${RELEASE}" --build-arg "QEMU_GIT=${QEMU_GIT}" -t "${IMAGE_NAME}" ${CAPABILITIES} -f "${DOCKER_DIR}/Dockerfile" "${DOCKER_DIR}/.."
 fi
 
 if [ "$(basename "${DOCKER}")" = "podman" ]; then

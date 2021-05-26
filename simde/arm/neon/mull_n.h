@@ -47,7 +47,7 @@ simde_vmull_n_s16(simde_int16x4_t a, int16_t b) {
     simde_int32x4_private r_;
     simde_int16x4_private a_ = simde_int16x4_to_private(a);
 
-    #if defined(SIMDE_CONVERT_VECTOR_) && defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+    #if defined(SIMDE_CONVERT_VECTOR_) && defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && !defined(SIMDE_BUG_GCC_100761)
       __typeof__(r_.values) av;
       SIMDE_CONVERT_VECTOR_(av, a_.values);
       r_.values = av * b;
@@ -75,7 +75,7 @@ simde_vmull_n_s32(simde_int32x2_t a, int32_t b) {
     simde_int64x2_private r_;
     simde_int32x2_private a_ = simde_int32x2_to_private(a);
 
-    #if defined(SIMDE_CONVERT_VECTOR_) && defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+    #if defined(SIMDE_CONVERT_VECTOR_) && defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && !defined(SIMDE_BUG_GCC_100761)
       __typeof__(r_.values) av;
       SIMDE_CONVERT_VECTOR_(av, a_.values);
       r_.values = av * b;
@@ -105,7 +105,7 @@ simde_vmull_n_u16(simde_uint16x4_t a, uint16_t b) {
     simde_uint32x4_private r_;
     simde_uint16x4_private a_ = simde_uint16x4_to_private(a);
 
-    #if defined(SIMDE_CONVERT_VECTOR_) && defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+    #if defined(SIMDE_CONVERT_VECTOR_) && defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && !defined(SIMDE_BUG_GCC_100761)
       __typeof__(r_.values) av;
       SIMDE_CONVERT_VECTOR_(av, a_.values);
       r_.values = av * b;

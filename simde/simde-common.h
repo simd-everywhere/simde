@@ -929,6 +929,12 @@ SIMDE_DIAGNOSTIC_DISABLE_CPP98_COMPAT_PEDANTIC_
 #    elif defined(SIMDE_ARCH_ZARCH)
 #      define SIMDE_BUG_GCC_95782
 #    endif
+#    if defined(SIMDE_ARCH_MIPS_MSA)
+#      define SIMDE_BUG_GCC_97248
+#      define SIMDE_BUG_GCC_100760
+#      define SIMDE_BUG_GCC_100761
+#      define SIMDE_BUG_GCC_100762
+#    endif
 #    define SIMDE_BUG_GCC_95399
 #  elif defined(__clang__)
 #    if defined(SIMDE_ARCH_AARCH64)

@@ -155,7 +155,7 @@ simde_mm512_srli_epi64 (simde__m512i a, unsigned int imm8) {
       if (imm8 > 63) {
         simde_memset(&r_, 0, sizeof(r_));
       } else {
-        #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+        #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && !defined(SIMDE_BUG_GCC_97248)
           r_.u64 = a_.u64 >> imm8;
         #else
           SIMDE_VECTORIZE

@@ -43,7 +43,7 @@ simde_vshr_n_s8 (const simde_int8x8_t a, const int n)
     a_ = simde_int8x8_to_private(a);
   int32_t n_ = (n == 8) ? 7 : n;
 
-  #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+  #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && !defined(SIMDE_BUG_GCC_100762)
     r_.values = a_.values >> n_;
   #else
     SIMDE_VECTORIZE
@@ -76,7 +76,7 @@ simde_vshr_n_s16 (const simde_int16x4_t a, const int n)
     a_ = simde_int16x4_to_private(a);
   int32_t n_ = (n == 16) ? 15 : n;
 
-  #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+  #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && !defined(SIMDE_BUG_GCC_100762)
     r_.values = a_.values >> n_;
   #else
     SIMDE_VECTORIZE
@@ -166,7 +166,7 @@ simde_vshr_n_u8 (const simde_uint8x8_t a, const int n)
   if (n == 8) {
     simde_memset(&r_, 0, sizeof(r_));
   } else {
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+    #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && !defined(SIMDE_BUG_GCC_100762)
       r_.values = a_.values >> n;
     #else
       SIMDE_VECTORIZE
@@ -571,7 +571,7 @@ simde_vshrq_n_u64 (const simde_uint64x2_t a, const int n)
     if (n == 64) {
       simde_memset(&r_, 0, sizeof(r_));
     } else {
-      #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+      #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && !defined(SIMDE_BUG_GCC_97248)
         r_.values = a_.values >> n;
       #else
         SIMDE_VECTORIZE

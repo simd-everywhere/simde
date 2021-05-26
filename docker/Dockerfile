@@ -1,10 +1,10 @@
 # Dockerfile for SIMDe development
 
-ARG release=testing
-
-FROM debian:${release}-slim
+ARG RELEASE=testing
+FROM debian:${RELEASE}-slim
 
 ARG DEBIAN_FRONTEND=noninteractive
+ARG QEMU_GIT=n
 
 RUN \
   apt-get update -y && \
@@ -102,6 +102,18 @@ RUN \
 # Meson cross files
 RUN \
   mkdir -p "/usr/local/share/meson/cross" && ln -s /usr/local/src/simde/docker/cross-files /usr/local/share/meson/cross/simde
+
+# Install QEMU git (necessary for MIPS)
+RUN \
+  if [ ${QEMU_GIT} = "y" ]; then \
+    apt-get install -y pkg-config libglib2.0-dev libpixman-1-dev && \
+    git clone https://gitlab.com/qemu-project/qemu.git /usr/local/src/qemu && \
+    mkdir -p /usr/local/src/qemu/build && cd /usr/local/src/qemu/build && \
+    ../configure --prefix=/opt/qemu && \
+    make -j$(nproc) && \
+    make install; \
+    rm -rf /usr/local/src/qemu; \
+  fi
 
 RUN mkdir -p /opt/simde
 WORKDIR /opt/simde

@@ -42,7 +42,7 @@ simde_vdup_lane_f32(simde_float32x2_t vec, const int lane)
 }
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vdup_lane_f32(vec, lane) vdup_lane_f32(vec, lane)
-#elif defined(SIMDE_SHUFFLE_VECTOR_)
+#elif defined(SIMDE_SHUFFLE_VECTOR_) && !defined(SIMDE_BUG_GCC_100760)
   #define simde_vdup_lane_f32(vec, lane) (__extension__ ({ \
     simde_float32x2_private simde_vdup_lane_f32_vec_ = simde_float32x2_to_private(vec); \
     simde_float32x2_private simde_vdup_lane_f32_r_; \
@@ -84,7 +84,7 @@ simde_vdup_lane_s8(simde_int8x8_t vec, const int lane)
 }
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vdup_lane_s8(vec, lane) vdup_lane_s8(vec, lane)
-#elif defined(SIMDE_SHUFFLE_VECTOR_)
+#elif defined(SIMDE_SHUFFLE_VECTOR_) && !defined(SIMDE_BUG_GCC_100760)
   #define simde_vdup_lane_s8(vec, lane) (__extension__ ({ \
     simde_int8x8_private simde_vdup_lane_s8_vec_ = simde_int8x8_to_private(vec); \
     simde_int8x8_private simde_vdup_lane_s8_r_; \
@@ -111,7 +111,7 @@ simde_vdup_lane_s16(simde_int16x4_t vec, const int lane)
 }
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vdup_lane_s16(vec, lane) vdup_lane_s16(vec, lane)
-#elif defined(SIMDE_SHUFFLE_VECTOR_)
+#elif defined(SIMDE_SHUFFLE_VECTOR_) && !defined(SIMDE_BUG_GCC_100760)
   #define simde_vdup_lane_s16(vec, lane) (__extension__ ({ \
     simde_int16x4_private simde_vdup_lane_s16_vec_ = simde_int16x4_to_private(vec); \
     simde_int16x4_private simde_vdup_lane_s16_r_; \
@@ -138,7 +138,7 @@ simde_vdup_lane_s32(simde_int32x2_t vec, const int lane)
 }
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vdup_lane_s32(vec, lane) vdup_lane_s32(vec, lane)
-#elif defined(SIMDE_SHUFFLE_VECTOR_)
+#elif defined(SIMDE_SHUFFLE_VECTOR_) && !defined(SIMDE_BUG_GCC_100760)
   #define simde_vdup_lane_s32(vec, lane) (__extension__ ({ \
     simde_int32x2_private simde_vdup_lane_s32_vec_ = simde_int32x2_to_private(vec); \
     simde_int32x2_private simde_vdup_lane_s32_r_; \
@@ -180,7 +180,7 @@ simde_vdup_lane_u8(simde_uint8x8_t vec, const int lane)
 }
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vdup_lane_u8(vec, lane) vdup_lane_u8(vec, lane)
-#elif defined(SIMDE_SHUFFLE_VECTOR_)
+#elif defined(SIMDE_SHUFFLE_VECTOR_) && !defined(SIMDE_BUG_GCC_100760)
   #define simde_vdup_lane_u8(vec, lane) (__extension__ ({ \
     simde_uint8x8_private simde_vdup_lane_u8_vec_ = simde_uint8x8_to_private(vec); \
     simde_uint8x8_private simde_vdup_lane_u8_r_; \
@@ -207,7 +207,7 @@ simde_vdup_lane_u16(simde_uint16x4_t vec, const int lane)
 }
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vdup_lane_u16(vec, lane) vdup_lane_u16(vec, lane)
-#elif defined(SIMDE_SHUFFLE_VECTOR_)
+#elif defined(SIMDE_SHUFFLE_VECTOR_) && !defined(SIMDE_BUG_GCC_100760)
   #define simde_vdup_lane_u16(vec, lane) (__extension__ ({ \
     simde_uint16x4_private simde_vdup_lane_u16_vec_ = simde_uint16x4_to_private(vec); \
     simde_uint16x4_private simde_vdup_lane_u16_r_; \
@@ -234,7 +234,7 @@ simde_vdup_lane_u32(simde_uint32x2_t vec, const int lane)
 }
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vdup_lane_u32(vec, lane) vdup_lane_u32(vec, lane)
-#elif defined(SIMDE_SHUFFLE_VECTOR_)
+#elif defined(SIMDE_SHUFFLE_VECTOR_) && !defined(SIMDE_BUG_GCC_100760)
   #define simde_vdup_lane_u32(vec, lane) (__extension__ ({ \
     simde_uint32x2_private simde_vdup_lane_u32_vec_ = simde_uint32x2_to_private(vec); \
     simde_uint32x2_private simde_vdup_lane_u32_r_; \
