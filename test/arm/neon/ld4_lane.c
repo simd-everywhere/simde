@@ -2,7 +2,7 @@
 
 #include "test-neon.h"
 #include "../../../simde/arm/neon/ld4_lane.h"
-#include "../../../simde/arm/neon/ld4.h"
+#include "../../../simde/arm/neon/ld1.h"
 
 static int
 test_simde_vld4_lane_s8 (SIMDE_MUNIT_TEST_ARGS) {
