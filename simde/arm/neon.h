@@ -172,6 +172,7 @@
 #include "neon/st3.h"
 #include "neon/st3_lane.h"
 #include "neon/st4.h"
+#include "neon/st4_lane.h"
 #include "neon/sub.h"
 #include "neon/subl.h"
 #include "neon/subw.h"
