@@ -96,7 +96,7 @@ simde_vcgtzq_f32(simde_float32x4_t a) {
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-        r_.values[i] = (a_.values[i] > SIMDE_FLOAT32_C(0.0)) ? UINT32_MAX : 0;
+        r_.values[i] = simde_vcgtzs_f32(a_.values[i]);
       }
     #endif
 
@@ -124,7 +124,7 @@ simde_vcgtzq_f64(simde_float64x2_t a) {
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-        r_.values[i] = (a_.values[i] > SIMDE_FLOAT64_C(0.0)) ? UINT64_MAX : 0;
+        r_.values[i] = simde_vcgtzd_f64(a_.values[i]);
       }
     #endif
 
@@ -236,7 +236,7 @@ simde_vcgtzq_s64(simde_int64x2_t a) {
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-        r_.values[i] = (a_.values[i] > 0) ? UINT64_MAX : 0;
+        r_.values[i] = simde_vcgtzd_s64(a_.values[i]);
       }
     #endif
 
@@ -264,7 +264,7 @@ simde_vcgtz_f32(simde_float32x2_t a) {
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-        r_.values[i] = (a_.values[i] > SIMDE_FLOAT32_C(0.0)) ? UINT32_MAX : 0;
+        r_.values[i] = simde_vcgtzs_f32(a_.values[i]);
       }
     #endif
 
@@ -292,7 +292,7 @@ simde_vcgtz_f64(simde_float64x1_t a) {
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-        r_.values[i] = (a_.values[i] > SIMDE_FLOAT64_C(0.0)) ? UINT64_MAX : 0;
+        r_.values[i] = simde_vcgtzd_f64(a_.values[i]);
       }
     #endif
 
@@ -404,7 +404,7 @@ simde_vcgtz_s64(simde_int64x1_t a) {
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-        r_.values[i] = (a_.values[i] > 0) ? UINT64_MAX : 0;
+        r_.values[i] = simde_vcgtzd_s64(a_.values[i]);
       }
     #endif
 
