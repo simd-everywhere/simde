@@ -170,6 +170,7 @@
 #include "neon/st2.h"
 #include "neon/st2_lane.h"
 #include "neon/st3.h"
+#include "neon/st3_lane.h"
 #include "neon/st4.h"
 #include "neon/sub.h"
 #include "neon/subl.h"
