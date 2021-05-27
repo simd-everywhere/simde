@@ -9,7 +9,7 @@ test_simde_vld4_lane_s8 (SIMDE_MUNIT_TEST_ARGS) {
 #if 1
   static const struct {
     int8_t src[4][8];
-    int8_t buf[8];
+    int8_t buf[4];
     int8_t r[4][8];
   } test_vec[] = {
     {
@@ -229,7 +229,7 @@ test_simde_vld4_lane_s32 (SIMDE_MUNIT_TEST_ARGS) {
 #if 1
   static const struct {
     int32_t src[4][8];
-    int32_t buf[8];
+    int32_t buf[4];
     int32_t r[4][8];
   } test_vec[] = {
     {
@@ -361,7 +361,7 @@ test_simde_vld4_lane_u8 (SIMDE_MUNIT_TEST_ARGS) {
 #if 1
   static const struct {
     uint8_t src[4][8];
-    uint8_t buf[8];
+    uint8_t buf[4];
     uint8_t r[4][8];
   } test_vec[] = {
     {
@@ -581,7 +581,7 @@ test_simde_vld4_lane_u32 (SIMDE_MUNIT_TEST_ARGS) {
 #if 1
   static const struct {
     uint32_t src[4][8];
-    uint32_t buf[8];
+    uint32_t buf[4];
     uint32_t r[4][8];
   } test_vec[] = {
     {
