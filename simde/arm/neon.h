@@ -81,6 +81,7 @@
 #include "neon/hsub.h"
 #include "neon/ld1.h"
 #include "neon/ld1_dup.h"
+#include "neon/ld1_lane.h"
 #include "neon/ld2.h"
 #include "neon/ld3.h"
 #include "neon/ld4.h"
