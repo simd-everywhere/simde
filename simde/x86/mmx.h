@@ -1598,7 +1598,7 @@ simde_mm_srl_pi16 (simde__m64 a, simde__m64 count) {
       if (HEDLEY_UNLIKELY(count_.u64[0] > 15))
         return simde_mm_setzero_si64();
 
-      r_.i16 = a_.i16 >> HEDLEY_STATIC_CAST(int16_t, count_.u64[0]);
+      r_.u16 = a_.u16 >> HEDLEY_STATIC_CAST(uint16_t, count_.u64[0]);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
       r_.u16 = a_.u16 >> count_.u64[0];
     #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)

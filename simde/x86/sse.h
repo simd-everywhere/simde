@@ -1450,13 +1450,6 @@ simde_mm_cmpneq_ps (simde__m128 a, simde__m128 b) {
       r_.neon_u32 = vmvnq_u32(vceqq_f32(a_.neon_f32, b_.neon_f32));
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r_.wasm_v128 = wasm_f32x4_ne(a_.wasm_v128, b_.wasm_v128);
-    #elif defined(SIMDE_POWER_ALTIVEC_P9_NATIVE) && SIMDE_ARCH_POWER_CHECK(900) && !defined(HEDLEY_IBM_VERSION)
-      /* vec_cmpne(SIMDE_POWER_ALTIVEC_VECTOR(float), SIMDE_POWER_ALTIVEC_VECTOR(float))
-        is missing from XL C/C++ v16.1.1,
-        though the documentation (table 89 on page 432 of the IBM XL C/C++ for
-        Linux Compiler Reference, Version 16.1.1) shows that it should be
-        present.  Both GCC and clang support it. */
-      r_.altivec_f32 = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(float), vec_cmpne(a_.altivec_f32, b_.altivec_f32));
     #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_14_NATIVE)
       r_.altivec_f32 = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(float), vec_cmpeq(a_.altivec_f32, b_.altivec_f32));
       r_.altivec_f32 = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(float), vec_nor(r_.altivec_f32, r_.altivec_f32));
