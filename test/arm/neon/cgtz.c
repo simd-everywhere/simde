@@ -673,6 +673,138 @@ test_simde_vcgtzq_s64 (SIMDE_MUNIT_TEST_ARGS) {
 #endif
 }
 
+static int
+test_simde_vcgtzd_s64 (SIMDE_MUNIT_TEST_ARGS) {
+#if 1
+  static const struct {
+    int64_t a;
+    uint64_t r;
+  } test_vec[] = {
+    { -INT64_C( 7092078020180908211),
+      UINT64_C(                   0) },
+    { -INT64_C( 2081468342488495496),
+      UINT64_C(                   0) },
+    {  INT64_C( 4158752479517361129),
+                          UINT64_MAX },
+    { -INT64_C( 4468962310629773370),
+      UINT64_C(                   0) },
+    {  INT64_C( 1598791738623311349),
+                          UINT64_MAX },
+    { -INT64_C(  285058202827427690),
+      UINT64_C(                   0) },
+    {  INT64_C( 1448273756347069320),
+                          UINT64_MAX },
+    {  INT64_C( 7580350321362560764),
+                          UINT64_MAX }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
+    uint64_t r = simde_vcgtzd_s64(test_vec[i].a);
+    simde_assert_equal_u64(r, test_vec[i].r);
+  }
+
+  return 0;
+#else
+  fputc('\n', stdout);
+  for (int i = 0 ; i < 8 ; i++) {
+    int64_t a = simde_test_codegen_random_i64();
+    uint64_t r = simde_vcgtzd_s64(a);
+
+    simde_test_codegen_write_i64(2, a, SIMDE_TEST_VEC_POS_FIRST);
+    simde_test_codegen_write_u64(2, r, SIMDE_TEST_VEC_POS_LAST);
+  }
+  return 1;
+#endif
+}
+
+static int
+test_simde_vcgtzd_f64 (SIMDE_MUNIT_TEST_ARGS) {
+#if 1
+  static const struct {
+    simde_float64_t a;
+    uint64_t r;
+  } test_vec[] = {
+    { SIMDE_FLOAT64_C(  -807.76),
+      UINT64_C(                   0) },
+    { SIMDE_FLOAT64_C(   173.20),
+                          UINT64_MAX },
+    { SIMDE_FLOAT64_C(   642.73),
+                          UINT64_MAX },
+    { SIMDE_FLOAT64_C(   628.29),
+                          UINT64_MAX },
+    { SIMDE_FLOAT64_C(  -508.17),
+      UINT64_C(                   0) },
+    { SIMDE_FLOAT64_C(   480.29),
+                          UINT64_MAX },
+    { SIMDE_FLOAT64_C(  -490.40),
+      UINT64_C(                   0) },
+    { SIMDE_FLOAT64_C(   174.42),
+                          UINT64_MAX }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
+    uint64_t r = simde_vcgtzd_f64(test_vec[i].a);
+    simde_assert_equal_u64(r, test_vec[i].r);
+  }
+
+  return 0;
+#else
+  fputc('\n', stdout);
+  for (int i = 0 ; i < 8 ; i++) {
+    simde_float64_t a = simde_test_codegen_random_f64(-1000, 1000);
+    uint64_t r = simde_vcgtzd_f64(a);
+
+    simde_test_codegen_write_f64(2, a, SIMDE_TEST_VEC_POS_FIRST);
+    simde_test_codegen_write_u64(2, r, SIMDE_TEST_VEC_POS_LAST);
+  }
+  return 1;
+#endif
+}
+
+static int
+test_simde_vcgtzs_f32 (SIMDE_MUNIT_TEST_ARGS) {
+#if 1
+  static const struct {
+    simde_float32_t a;
+    uint32_t r;
+  } test_vec[] = {
+    { SIMDE_FLOAT32_C(   278.45),
+                UINT32_MAX },
+    { SIMDE_FLOAT32_C(  -325.45),
+      UINT32_C(         0) },
+    { SIMDE_FLOAT32_C(  -203.78),
+      UINT32_C(         0) },
+    { SIMDE_FLOAT32_C(  -992.26),
+      UINT32_C(         0) },
+    { SIMDE_FLOAT32_C(   215.89),
+                UINT32_MAX },
+    { SIMDE_FLOAT32_C(   908.52),
+                UINT32_MAX },
+    { SIMDE_FLOAT32_C(  -860.21),
+      UINT32_C(         0) },
+    { SIMDE_FLOAT32_C(  -813.65),
+      UINT32_C(         0) }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
+    uint32_t r = simde_vcgtzs_f32(test_vec[i].a);
+    simde_assert_equal_u32(r, test_vec[i].r);
+  }
+
+  return 0;
+#else
+  fputc('\n', stdout);
+  for (int i = 0 ; i < 8 ; i++) {
+    simde_float32_t a = simde_test_codegen_random_f32(-1000, 1000);
+    uint32_t r = simde_vcgtzs_f32(a);
+
+    simde_test_codegen_write_f32(2, a, SIMDE_TEST_VEC_POS_FIRST);
+    simde_test_codegen_write_u32(2, r, SIMDE_TEST_VEC_POS_LAST);
+  }
+  return 1;
+#endif
+}
+
 SIMDE_TEST_FUNC_LIST_BEGIN
 SIMDE_TEST_FUNC_LIST_ENTRY(vcgtz_f32)
 SIMDE_TEST_FUNC_LIST_ENTRY(vcgtz_f64)
@@ -687,6 +819,10 @@ SIMDE_TEST_FUNC_LIST_ENTRY(vcgtzq_s8)
 SIMDE_TEST_FUNC_LIST_ENTRY(vcgtzq_s16)
 SIMDE_TEST_FUNC_LIST_ENTRY(vcgtzq_s32)
 SIMDE_TEST_FUNC_LIST_ENTRY(vcgtzq_s64)
+
+SIMDE_TEST_FUNC_LIST_ENTRY(vcgtzd_s64)
+SIMDE_TEST_FUNC_LIST_ENTRY(vcgtzd_f64)
+SIMDE_TEST_FUNC_LIST_ENTRY(vcgtzs_f32)
 SIMDE_TEST_FUNC_LIST_END
 
 #include "test-neon-footer.h"
