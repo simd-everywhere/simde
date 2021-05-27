@@ -88,8 +88,8 @@ simde_vcgts_f32(simde_float32_t a, simde_float32_t b) {
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
-  #undef vcgts_f64
-  #define vcgts_f64(a, b) simde_vcgts_f64((a), (b))
+  #undef vcgts_f32
+  #define vcgts_f32(a, b) simde_vcgts_f32((a), (b))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
