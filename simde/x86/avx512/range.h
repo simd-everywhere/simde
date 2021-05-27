@@ -31,10 +31,10 @@ simde_mm_range_ps (simde__m128 a, simde__m128 b, int imm8)
       r = simde_mm_max_ps(a, b);
       break;
     case 2:
-      r = simde_mm_mask_mov_ps(b, simde_mm_cmp_ps_mask(simde_x_mm_abs_ps(a), simde_x_mm_abs_ps(b), SIMDE_CMP_LE_OS), a);
+      r = simde_x_mm_select_ps(b, a, simde_mm_cmple_ps(simde_x_mm_abs_ps(a), simde_x_mm_abs_ps(b)));
       break;
     case 3:
-      r = simde_mm_mask_mov_ps(a, simde_mm_cmp_ps_mask(simde_x_mm_abs_ps(b), simde_x_mm_abs_ps(a), SIMDE_CMP_GE_OS), b);
+      r = simde_x_mm_select_ps(b, a, simde_mm_cmpge_ps(simde_x_mm_abs_ps(a), simde_x_mm_abs_ps(b)));
       break;
     default:
       break;
@@ -98,10 +98,10 @@ simde_mm256_range_ps (simde__m256 a, simde__m256 b, int imm8)
       r = simde_mm256_max_ps(a, b);
       break;
     case 2:
-      r = simde_mm256_mask_mov_ps(b, simde_mm256_cmp_ps_mask(simde_x_mm256_abs_ps(a), simde_x_mm256_abs_ps(b), SIMDE_CMP_LE_OS), a);
+      r = simde_x_mm256_select_ps(b, a, simde_mm256_cmp_ps(simde_x_mm256_abs_ps(a), simde_x_mm256_abs_ps(b), SIMDE_CMP_LE_OQ));
       break;
     case 3:
-      r = simde_mm256_mask_mov_ps(a, simde_mm256_cmp_ps_mask(simde_x_mm256_abs_ps(b), simde_x_mm256_abs_ps(a), SIMDE_CMP_GE_OS), b);
+      r = simde_x_mm256_select_ps(b, a, simde_mm256_cmp_ps(simde_x_mm256_abs_ps(a), simde_x_mm256_abs_ps(b), SIMDE_CMP_GE_OQ));
       break;
     default:
       break;
@@ -271,10 +271,10 @@ simde_mm_range_pd (simde__m128d a, simde__m128d b, int imm8)
       r = simde_mm_max_pd(a, b);
       break;
     case 2:
-      r = simde_mm_mask_mov_pd(b, simde_mm_cmp_pd_mask(simde_x_mm_abs_pd(a), simde_x_mm_abs_pd(b), SIMDE_CMP_LE_OS), a);
+      r = simde_x_mm_select_pd(b, a, simde_mm_cmple_pd(simde_x_mm_abs_pd(a), simde_x_mm_abs_pd(b)));
       break;
     case 3:
-      r = simde_mm_mask_mov_pd(a, simde_mm_cmp_pd_mask(simde_x_mm_abs_pd(b), simde_x_mm_abs_pd(a), SIMDE_CMP_GE_OS), b);
+      r = simde_x_mm_select_pd(b, a, simde_mm_cmpge_pd(simde_x_mm_abs_pd(a), simde_x_mm_abs_pd(b)));
       break;
     default:
       break;
@@ -338,10 +338,10 @@ simde_mm256_range_pd (simde__m256d a, simde__m256d b, int imm8)
       r = simde_mm256_max_pd(a, b);
       break;
     case 2:
-      r = simde_mm256_mask_mov_pd(b, simde_mm256_cmp_pd_mask(simde_x_mm256_abs_pd(a), simde_x_mm256_abs_pd(b), SIMDE_CMP_LE_OS), a);
+      r = simde_x_mm256_select_pd(b, a, simde_mm256_cmp_pd(simde_x_mm256_abs_pd(a), simde_x_mm256_abs_pd(b), SIMDE_CMP_LE_OQ));
       break;
     case 3:
-      r = simde_mm256_mask_mov_pd(a, simde_mm256_cmp_pd_mask(simde_x_mm256_abs_pd(b), simde_x_mm256_abs_pd(a), SIMDE_CMP_GE_OS), b);
+      r = simde_x_mm256_select_pd(b, a, simde_mm256_cmp_pd(simde_x_mm256_abs_pd(a), simde_x_mm256_abs_pd(b), SIMDE_CMP_GE_OQ));
       break;
     default:
       break;
