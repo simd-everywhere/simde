@@ -25,8 +25,8 @@
  *   2021      Zhi An Ng <zhin@google.com> (Copyright owned by Google, LLC)
  */
 
-#if !defined(SIMDE_ARM_NEON_ld1_LANE_H)
-#define SIMDE_ARM_NEON_ld1_LANE_H
+#if !defined(SIMDE_ARM_NEON_LD1_LANE_H)
+#define SIMDE_ARM_NEON_LD1_LANE_H
 
 #include "types.h"
 
@@ -253,4 +253,4 @@ simde_uint32x4_t simde_vld1q_lane_u32(uint32_t const *ptr, simde_uint32x4_t src,
 SIMDE_END_DECLS_
 HEDLEY_DIAGNOSTIC_POP
 
-#endif /* !defined(SIMDE_ARM_NEON_ld1_LANE_H) */
+#endif /* !defined(SIMDE_ARM_NEON_LD1_LANE_H) */
