@@ -125,19 +125,19 @@ simde_mm256_range_ps (simde__m256 a, simde__m256 b, int imm8)
 }
 #if defined(SIMDE_X86_AVX512DQ_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
   #define simde_mm256_range_ps(a, b, imm8) _mm256_range_ps((a), (b), (imm8))
-#elif SIMDE_NATURAL_VECTOR_SIZE_LE(128) && defined(SIMDE_STATEMEN_EXPR_)
-  #define simde_mm256_range_ps(a, b, imm8) SIMDE_STATEMENT_EXPR_({ \
+#elif SIMDE_NATURAL_VECTOR_SIZE_LE(128) && defined(SIMDE_STATEMENT_EXPR_)
+  #define simde_mm256_range_ps(a, b, imm8) SIMDE_STATEMENT_EXPR_(({ \
       simde__m256_private \
         simde_mm256_range_ps_r_, \
         simde_mm256_range_ps_a_ = simde__m256_to_private(a), \
         simde_mm256_range_ps_b_ = simde__m256_to_private(b); \
       \
-      for (size_t i = 0 ; i < (sizeof(simde_mm256_range_ps_r_.m128) / sizeof(simde_mm256_range_ps_r_.m128[0])) ; i++) { \
-        simde_mm256_range_ps_r_.m128[i] = simde_mm_range_ps(simde_mm256_range_ps_a_.m128[i], simde_mm256_range_ps_b_.m128[i], imm8); \
+      for (size_t simde_mm256_range_ps_i = 0 ; simde_mm256_range_ps_i < (sizeof(simde_mm256_range_ps_r_.m128) / sizeof(simde_mm256_range_ps_r_.m128[0])) ; simde_mm256_range_ps_i++) { \
+        simde_mm256_range_ps_r_.m128[simde_mm256_range_ps_i] = simde_mm_range_ps(simde_mm256_range_ps_a_.m128[simde_mm256_range_ps_i], simde_mm256_range_ps_b_.m128[simde_mm256_range_ps_i], imm8); \
       } \
       \
       simde__m256_from_private(simde_mm256_range_ps_r_); \
-    })
+    }))
 #endif
 #if defined(SIMDE_X86_AVX512DQ_ENABLE_NATIVE_ALIASES) && defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES)
   #undef _mm256_range_ps
@@ -205,32 +205,32 @@ simde_mm512_range_ps (simde__m512 a, simde__m512 b, int imm8)
 }
 #if defined(SIMDE_X86_AVX512DQ_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
   #define simde_mm512_range_ps(a, b, imm8) _mm512_range_ps((a), (b), (imm8))
-#elif SIMDE_NATURAL_VECTOR_SIZE_LE(128) && defined(SIMDE_STATEMEN_EXPR_)
-  #define simde_mm512_range_ps(a, b, imm8) SIMDE_STATEMENT_EXPR_({ \
+#elif SIMDE_NATURAL_VECTOR_SIZE_LE(128) && defined(SIMDE_STATEMENT_EXPR_)
+  #define simde_mm512_range_ps(a, b, imm8) SIMDE_STATEMENT_EXPR_(({ \
       simde__m512_private \
         simde_mm512_range_ps_r_, \
         simde_mm512_range_ps_a_ = simde__m512_to_private(a), \
         simde_mm512_range_ps_b_ = simde__m512_to_private(b); \
       \
-      for (size_t i = 0 ; i < (sizeof(r_.m128) / sizeof(r_.m128[0])) ; i++) { \
-        simde_mm256_range_ps_r_.m256[i] = simde_mm256_range_ps(simde_mm256_range_ps_a_.m128[i], simde_mm256_range_ps_b_.m128[i], imm8); \
+      for (size_t simde_mm512_range_ps_i = 0 ; simde_mm512_range_ps_i < (sizeof(simde_mm512_range_ps_r_.m128) / sizeof(simde_mm512_range_ps_r_.m128[0])) ; simde_mm512_range_ps_i++) { \
+        simde_mm512_range_ps_r_.m128[simde_mm512_range_ps_i] = simde_mm_range_ps(simde_mm512_range_ps_a_.m128[simde_mm512_range_ps_i], simde_mm512_range_ps_b_.m128[simde_mm512_range_ps_i], imm8); \
       } \
       \
       simde__m512_from_private(simde_mm512_range_ps_r_); \
-    })
-#elif SIMDE_NATURAL_VECTOR_SIZE_LE(256) && defined(SIMDE_STATEMEN_EXPR_)
-  #define simde_mm512_range_ps(a, b, imm8) SIMDE_STATEMENT_EXPR_({ \
+    }))
+#elif SIMDE_NATURAL_VECTOR_SIZE_LE(256) && defined(SIMDE_STATEMENT_EXPR_)
+  #define simde_mm512_range_ps(a, b, imm8) SIMDE_STATEMENT_EXPR_(({ \
       simde__m512_private \
         simde_mm512_range_ps_r_, \
         simde_mm512_range_ps_a_ = simde__m512_to_private(a), \
         simde_mm512_range_ps_b_ = simde__m512_to_private(b); \
       \
-      for (size_t i = 0 ; i < (sizeof(simde_mm256_range_ps_r_.m256) / sizeof(simde_mm256_range_ps_r_.m256[0])) ; i++) { \
-        simde_mm256_range_ps_r_.m256[i] = simde_mm256_range_ps(simde_mm256_range_ps_a_.m256[i], simde_mm256_range_ps_b_.m256[i], imm8); \
+      for (size_t simde_mm512_range_ps_i = 0 ; simde_mm512_range_ps_i < (sizeof(simde_mm512_range_ps_r_.m256) / sizeof(simde_mm512_range_ps_r_.m256[0])) ; simde_mm512_range_ps_i++) { \
+        simde_mm512_range_ps_r_.m256[simde_mm512_range_ps_i] = simde_mm256_range_ps(simde_mm512_range_ps_a_.m256[simde_mm512_range_ps_i], simde_mm512_range_ps_b_.m256[simde_mm512_range_ps_i], imm8); \
       } \
       \
-      simde__m256_from_private(simde_mm256_range_ps_r_); \
-    })
+      simde__m512_from_private(simde_mm512_range_ps_r_); \
+    }))
 #endif
 #if defined(SIMDE_X86_AVX512DQ_ENABLE_NATIVE_ALIASES)
   #undef _mm512_range_ps
@@ -365,19 +365,19 @@ simde_mm256_range_pd (simde__m256d a, simde__m256d b, int imm8)
 }
 #if defined(SIMDE_X86_AVX512DQ_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
   #define simde_mm256_range_pd(a, b, imm8) _mm256_range_pd((a), (b), (imm8))
-#elif SIMDE_NATURAL_VECTOR_SIZE_LE(128) && defined(SIMDE_STATEMEN_EXPR_)
-  #define simde_mm256_range_pd(a, b, imm8) SIMDE_STATEMENT_EXPR_({ \
+#elif SIMDE_NATURAL_VECTOR_SIZE_LE(128) && defined(SIMDE_STATEMENT_EXPR_)
+  #define simde_mm256_range_pd(a, b, imm8) SIMDE_STATEMENT_EXPR_(({ \
       simde__m256d_private \
         simde_mm256_range_pd_r_, \
         simde_mm256_range_pd_a_ = simde__m256d_to_private(a), \
         simde_mm256_range_pd_b_ = simde__m256d_to_private(b); \
       \
-      for (size_t i = 0 ; i < (sizeof(simde_mm256_range_pd_r_.m128d) / sizeof(simde_mm256_range_pd_r_.m128d[0])) ; i++) { \
-        simde_mm256_range_pd_r_.m128d[i] = simde_mm_range_pd(simde_mm256_range_pd_a_.m128d[i], simde_mm256_range_pd_b_.m128d[i], imm8); \
+      for (size_t simde_mm256_range_pd_i = 0 ; simde_mm256_range_pd_i < (sizeof(simde_mm256_range_pd_r_.m128d) / sizeof(simde_mm256_range_pd_r_.m128d[0])) ; simde_mm256_range_pd_i++) { \
+        simde_mm256_range_pd_r_.m128d[simde_mm256_range_pd_i] = simde_mm_range_pd(simde_mm256_range_pd_a_.m128d[simde_mm256_range_pd_i], simde_mm256_range_pd_b_.m128d[simde_mm256_range_pd_i], imm8); \
       } \
       \
       simde__m256d_from_private(simde_mm256_range_pd_r_); \
-    })
+    }))
 #endif
 #if defined(SIMDE_X86_AVX512DQ_ENABLE_NATIVE_ALIASES) && defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES)
   #undef _mm256_range_pd
@@ -445,32 +445,32 @@ simde_mm512_range_pd (simde__m512d a, simde__m512d b, int imm8)
 }
 #if defined(SIMDE_X86_AVX512DQ_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
   #define simde_mm512_range_pd(a, b, imm8) _mm512_range_pd((a), (b), (imm8))
-#elif SIMDE_NATURAL_VECTOR_SIZE_LE(128) && defined(SIMDE_STATEMEN_EXPR_)
-  #define simde_mm512_range_pd(a, b, imm8) SIMDE_STATEMENT_EXPR_({ \
+#elif SIMDE_NATURAL_VECTOR_SIZE_LE(128) && defined(SIMDE_STATEMENT_EXPR_)
+  #define simde_mm512_range_pd(a, b, imm8) SIMDE_STATEMENT_EXPR_(({ \
       simde__m512d_private \
         simde_mm512_range_pd_r_, \
         simde_mm512_range_pd_a_ = simde__m512d_to_private(a), \
         simde_mm512_range_pd_b_ = simde__m512d_to_private(b); \
       \
-      for (size_t i = 0 ; i < (sizeof(rsimde_mm512_range_pd__.m128d) / sizeof(simde_mm512_range_pd_r_.m128d[0])) ; i++) { \
-        simde_mm512_range_pd_r_.m256d[i] = simde_mm256_range_pd(simde_mm512_range_pd_a_.m128d[i], simde_mm512_range_pd_b_.m128d[i], imm8); \
+      for (size_t simde_mm512_range_pd_i = 0 ; simde_mm512_range_pd_i < (sizeof(simde_mm512_range_pd_r_.m128d) / sizeof(simde_mm512_range_pd_r_.m128d[0])) ; simde_mm512_range_pd_i++) { \
+        simde_mm512_range_pd_r_.m128d[simde_mm512_range_pd_i] = simde_mm_range_pd(simde_mm512_range_pd_a_.m128d[simde_mm512_range_pd_i], simde_mm512_range_pd_b_.m128d[simde_mm512_range_pd_i], imm8); \
       } \
       \
       simde__m512d_from_private(simde_mm512_range_pd_r_); \
-    })
-#elif SIMDE_NATURAL_VECTOR_SIZE_LE(256) && defined(SIMDE_STATEMEN_EXPR_)
-  #define simde_mm512_range_pd(a, b, imm8) SIMDE_STATEMENT_EXPR_({ \
+    }))
+#elif SIMDE_NATURAL_VECTOR_SIZE_LE(256) && defined(SIMDE_STATEMENT_EXPR_)
+  #define simde_mm512_range_pd(a, b, imm8) SIMDE_STATEMENT_EXPR_(({ \
       simde__m512d_private \
         simde_mm512_range_pd_r_, \
         simde_mm512_range_pd_a_ = simde__m512d_to_private(a), \
         simde_mm512_range_pd_b_ = simde__m512d_to_private(b); \
       \
-      for (size_t i = 0 ; i < (sizeof(simde_mm512_range_pd_r_.m256d) / sizeof(simde_mm512_range_pd_r_.m256d[0])) ; i++) { \
-        simde_mm512_range_pd_r_.m256d[i] = simde_mm256_range_pd(simde_mm512_range_pd_a_.m256d[i], simde_mm512_range_pd_b_.m256d[i], imm8); \
+      for (size_t simde_mm512_range_pd_i = 0 ; simde_mm512_range_pd_i < (sizeof(simde_mm512_range_pd_r_.m256d) / sizeof(simde_mm512_range_pd_r_.m256d[0])) ; simde_mm512_range_pd_i++) { \
+        simde_mm512_range_pd_r_.m256d[simde_mm512_range_pd_i] = simde_mm256_range_pd(simde_mm512_range_pd_a_.m256d[simde_mm512_range_pd_i], simde_mm512_range_pd_b_.m256d[simde_mm512_range_pd_i], imm8); \
       } \
       \
-      simde__m256d_from_private(simde_mm256_range_pd_r_); \
-    })
+      simde__m512d_from_private(simde_mm512_range_pd_r_); \
+    }))
 #endif
 #if defined(SIMDE_X86_AVX512DQ_ENABLE_NATIVE_ALIASES)
   #undef _mm512_range_pd
