@@ -34,6 +34,8 @@ HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 SIMDE_BEGIN_DECLS_
 
+#if !defined(SIMDE_BUG_INTEL_857088)
+
 SIMDE_FUNCTION_ATTRIBUTES
 simde_int8x8x4_t simde_vld4_lane_s8(int8_t const *ptr, simde_int8x8x4_t src,
                                     const int lane)
@@ -189,6 +191,8 @@ simde_uint32x2x4_t simde_vld4_lane_u32(uint32_t const *ptr, simde_uint32x2x4_t s
   #undef vld4_lane_u32
   #define vld4_lane_u32(ptr, src, lane) simde_vld4_lane_u32((ptr), (src), (lane))
 #endif
+
+#endif /* !defined(SIMDE_BUG_INTEL_857088) */
 
 SIMDE_END_DECLS_
 HEDLEY_DIAGNOSTIC_POP
