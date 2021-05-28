@@ -121,7 +121,7 @@ simde_vqdmulhq_s32(simde_int32x4_t a, simde_int32x4_t b) {
 #endif
 
 #define simde_vqdmulhq_n_s16(a, b) simde_vqdmulhq_s16((a), simde_vdupq_n_s16(b))
-#if defined(SIMDE_ARM_NEON_A16V7_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vqdmulhq_n_s16
   #define vqdmulhq_n_s16(a, b) simde_vqdmulhq_n_s16((a), (b))
 #endif
