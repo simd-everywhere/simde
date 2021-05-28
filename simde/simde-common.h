@@ -196,6 +196,18 @@
   #define SIMDE_STATEMENT_EXPR_(expr) (__extension__ expr)
 #endif
 
+/* This is just a convenience macro to make it easy to call a single
+ * function with a specific diagnostic disabled. */
+#if defined(SIMDE_STATEMENT_EXPR_)
+  #define SIMDE_DISABLE_DIAGNOSTIC_EXPR_(diagnostic, expr) \
+    SIMDE_STATEMENT_EXPR_(({ \
+      HEDLEY_DIAGNOSTIC_PUSH \
+      diagnostic \
+      (expr); \
+      HEDLEY_DIAGNOSTIC_POP \
+    }))
+#endif
+
 #if defined(SIMDE_CHECK_CONSTANT_) && defined(SIMDE_STATIC_ASSERT)
   #define SIMDE_ASSERT_CONSTANT_(v) SIMDE_STATIC_ASSERT(SIMDE_CHECK_CONSTANT_(v), #v " must be constant.")
 #endif

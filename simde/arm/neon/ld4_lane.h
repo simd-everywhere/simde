@@ -25,6 +25,15 @@
  *   2021      Evan Nemerson <evan@nemerson.com>
  */
 
+/* In older versions of clang, __builtin_neon_vld4_lane_v would
+ * generate a diagnostic for most variants (those which didn't
+ * use signed 8-bit integers).  I believe this was fixed by
+ * 78ad22e0cc6390fcd44b2b7b5132f1b960ff975d.
+ *
+ * Since we have to use macros (due to the immediate-mode parameter)
+ * we can't just disable it once in this file; we have to use statement
+ * exprs and push / pop the stack for each macro. */
+
 #if !defined(SIMDE_ARM_NEON_LD4_LANE_H)
 #define SIMDE_ARM_NEON_LD4_LANE_H
 
@@ -51,7 +60,12 @@ simde_vld4_lane_s8(int8_t const ptr[HEDLEY_ARRAY_PARAM(4)], simde_int8x8x4_t src
   return r;
 }
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-  #define simde_vld4_lane_s8(ptr, src, lane) vld4_lane_s8(ptr, src, lane)
+  #if defined(__clang__) && !SIMDE_DETECT_CLANG_VERSION_CHECK(10,0,0)
+    #define simde_vld4_lane_s8(ptr, src, lane) \
+      SIMDE_DISABLE_DIAGNOSTIC_EXPR_(SIMDE_DIAGNOSTIC_DISABLE_VECTOR_CONVERSION_, vld4_lane_s8(ptr, src, lane))
+  #else
+    #define simde_vld4_lane_s8(ptr, src, lane) vld4_lane_s8(ptr, src, lane)
+  #endif
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vld4_lane_s8
@@ -73,7 +87,12 @@ simde_vld4_lane_s16(int16_t const ptr[HEDLEY_ARRAY_PARAM(4)], simde_int16x4x4_t 
   return r;
 }
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-  #define simde_vld4_lane_s16(ptr, src, lane) vld4_lane_s16(ptr, src, lane)
+  #if defined(__clang__) && !SIMDE_DETECT_CLANG_VERSION_CHECK(10,0,0)
+    #define simde_vld4_lane_s16(ptr, src, lane) \
+      SIMDE_DISABLE_DIAGNOSTIC_EXPR_(SIMDE_DIAGNOSTIC_DISABLE_VECTOR_CONVERSION_, vld4_lane_s16(ptr, src, lane))
+  #else
+    #define simde_vld4_lane_s16(ptr, src, lane) vld4_lane_s16(ptr, src, lane)
+  #endif
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vld4_lane_s16
@@ -95,7 +114,12 @@ simde_vld4_lane_s32(int32_t const ptr[HEDLEY_ARRAY_PARAM(4)], simde_int32x2x4_t 
   return r;
 }
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-  #define simde_vld4_lane_s32(ptr, src, lane) vld4_lane_s32(ptr, src, lane)
+  #if defined(__clang__) && !SIMDE_DETECT_CLANG_VERSION_CHECK(10,0,0)
+    #define simde_vld4_lane_s32(ptr, src, lane) \
+      SIMDE_DISABLE_DIAGNOSTIC_EXPR_(SIMDE_DIAGNOSTIC_DISABLE_VECTOR_CONVERSION_, vld4_lane_s32(ptr, src, lane))
+  #else
+    #define simde_vld4_lane_s32(ptr, src, lane) vld4_lane_s32(ptr, src, lane)
+  #endif
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vld4_lane_s32
@@ -117,7 +141,12 @@ simde_vld4_lane_u8(uint8_t const ptr[HEDLEY_ARRAY_PARAM(4)], simde_uint8x8x4_t s
   return r;
 }
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-  #define simde_vld4_lane_u8(ptr, src, lane) vld4_lane_u8(ptr, src, lane)
+  #if defined(__clang__) && !SIMDE_DETECT_CLANG_VERSION_CHECK(10,0,0)
+    #define simde_vld4_lane_u8(ptr, src, lane) \
+      SIMDE_DISABLE_DIAGNOSTIC_EXPR_(SIMDE_DIAGNOSTIC_DISABLE_VECTOR_CONVERSION_, vld4_lane_u8(ptr, src, lane))
+  #else
+    #define simde_vld4_lane_u8(ptr, src, lane) vld4_lane_u8(ptr, src, lane)
+  #endif
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vld4_lane_u8
@@ -139,7 +168,12 @@ simde_vld4_lane_u16(uint16_t const ptr[HEDLEY_ARRAY_PARAM(4)], simde_uint16x4x4_
   return r;
 }
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-  #define simde_vld4_lane_u16(ptr, src, lane) vld4_lane_u16(ptr, src, lane)
+  #if defined(__clang__) && !SIMDE_DETECT_CLANG_VERSION_CHECK(10,0,0)
+    #define simde_vld4_lane_u16(ptr, src, lane) \
+      SIMDE_DISABLE_DIAGNOSTIC_EXPR_(SIMDE_DIAGNOSTIC_DISABLE_VECTOR_CONVERSION_, vld4_lane_u16(ptr, src, lane))
+  #else
+    #define simde_vld4_lane_u16(ptr, src, lane) vld4_lane_u16(ptr, src, lane)
+  #endif
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vld4_lane_u16
@@ -161,7 +195,12 @@ simde_vld4_lane_u32(uint32_t const ptr[HEDLEY_ARRAY_PARAM(4)], simde_uint32x2x4_
   return r;
 }
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-  #define simde_vld4_lane_u32(ptr, src, lane) vld4_lane_u32(ptr, src, lane)
+  #if defined(__clang__) && !SIMDE_DETECT_CLANG_VERSION_CHECK(10,0,0)
+    #define simde_vld4_lane_u32(ptr, src, lane) \
+      SIMDE_DISABLE_DIAGNOSTIC_EXPR_(SIMDE_DIAGNOSTIC_DISABLE_VECTOR_CONVERSION_, vld4_lane_u32(ptr, src, lane))
+  #else
+    #define simde_vld4_lane_u32(ptr, src, lane) vld4_lane_u32(ptr, src, lane)
+  #endif
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vld4_lane_u32
