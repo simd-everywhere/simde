@@ -38,7 +38,7 @@ SIMDE_BEGIN_DECLS_
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float32x2_t
 simde_vfma_n_f32(simde_float32x2_t a, simde_float32x2_t b, simde_float32_t c) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && (defined(__ARM_FEATURE_FMA) && __ARM_FEATURE_FMA) && (!defined(__clang__) || SIMDE_DETECT_CLANG_VERSION_CHECK(7,0,0))
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && (defined(__ARM_FEATURE_FMA) && __ARM_FEATURE_FMA) && (!defined(__clang__) || SIMDE_DETECT_CLANG_VERSION_CHECK(7,0,0)) && !defined(SIMDE_BUG_GCC_95399)
     return vfma_n_f32(a, b, c);
   #else
     return simde_vfma_f32(a, b, simde_vdup_n_f32(c));
@@ -66,7 +66,7 @@ simde_vfma_n_f64(simde_float64x1_t a, simde_float64x1_t b, simde_float64_t c) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float32x4_t
 simde_vfmaq_n_f32(simde_float32x4_t a, simde_float32x4_t b, simde_float32_t c) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && (defined(__ARM_FEATURE_FMA) && __ARM_FEATURE_FMA) && (!defined(__clang__) || SIMDE_DETECT_CLANG_VERSION_CHECK(7,0,0))
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && (defined(__ARM_FEATURE_FMA) && __ARM_FEATURE_FMA) && (!defined(__clang__) || SIMDE_DETECT_CLANG_VERSION_CHECK(7,0,0)) && !defined(SIMDE_BUG_GCC_95399)
     return vfmaq_n_f32(a, b, c);
   #else
     return simde_vfmaq_f32(a, b, simde_vdupq_n_f32(c));
