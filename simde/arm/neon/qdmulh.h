@@ -120,13 +120,21 @@ simde_vqdmulhq_s32(simde_int32x4_t a, simde_int32x4_t b) {
   #define vqdmulhq_s32(a, b) simde_vqdmulhq_s32((a), (b))
 #endif
 
-#define simde_vqdmulhq_n_s16(a, b) simde_vqdmulhq_s16((a), simde_vdupq_n_s16(b))
+#if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #define simde_vqdmulhq_n_s16(a, b) vqdmulhq_n_s16((a), (b))
+#else
+  #define simde_vqdmulhq_n_s16(a, b) simde_vqdmulhq_s16((a), simde_vdupq_n_s16(b))
+#endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vqdmulhq_n_s16
   #define vqdmulhq_n_s16(a, b) simde_vqdmulhq_n_s16((a), (b))
 #endif
 
-#define simde_vqdmulhq_n_s32(a, b) simde_vqdmulhq_s32((a), simde_vdupq_n_s32(b))
+#if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #define simde_vqdmulhq_n_s32(a, b) vqdmulhq_n_s32((a), (b))
+#else
+  #define simde_vqdmulhq_n_s32(a, b) simde_vqdmulhq_s32((a), simde_vdupq_n_s32(b))
+#endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vqdmulhq_n_s32
   #define vqdmulhq_n_s32(a, b) simde_vqdmulhq_n_s32((a), (b))
