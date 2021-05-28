@@ -86,12 +86,12 @@ SIMDE_BEGIN_DECLS_
   #define vqrshrn_n_u32(a, n) simde_vqrshrn_n_u32((a), (n))
 #endif
 
-#if defined(SIMDE_ARM_NEON_A64V7_NATIVE)
+#if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vqrshrn_n_u64(a, n) vqrshrn_n_u64((a), (n))
 #else
   #define simde_vqrshrn_n_u64(a, n) simde_vqmovn_u64(simde_vrshrq_n_u64(a, n))
 #endif
-#if defined(SIMDE_ARM_NEON_A64V7_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vqrshrn_n_u64
   #define vqrshrn_n_u64(a, n) simde_vqrshrn_n_u64((a), (n))
 #endif
