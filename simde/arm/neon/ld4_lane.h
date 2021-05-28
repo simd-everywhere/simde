@@ -22,6 +22,7 @@
  *
  * Copyright:
  *   2021      Zhi An Ng <zhin@google.com> (Copyright owned by Google, LLC)
+ *   2021      Evan Nemerson <evan@nemerson.com>
  */
 
 #if !defined(SIMDE_ARM_NEON_LD4_LANE_H)
@@ -39,18 +40,15 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde_int8x8x4_t
 simde_vld4_lane_s8(int8_t const ptr[HEDLEY_ARRAY_PARAM(4)], simde_int8x8x4_t src, const int lane)
     SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 7) {
-  simde_int8x8_private a_[4];
+  simde_int8x8x4_t r;
 
   for (size_t i = 0 ; i < 4 ; i++) {
-    a_[i] = simde_int8x8_to_private(src.val[i]);
-    a_[i].values[lane] = ptr[i];
+    simde_int8x8_private tmp_ = simde_int8x8_to_private(src.val[i]);
+    tmp_.values[lane] = ptr[i];
+    r.val[i] = simde_int8x8_from_private(tmp_);
   }
 
-  simde_int8x8x4_t s_ = { {
-    simde_int8x8_from_private(a_[0]), simde_int8x8_from_private(a_[1]),
-    simde_int8x8_from_private(a_[2]), simde_int8x8_from_private(a_[3]) } };
-
-  return s_;
+  return r;
 }
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vld4_lane_s8(ptr, src, lane) vld4_lane_s8(ptr, src, lane)
@@ -64,18 +62,15 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde_int16x4x4_t
 simde_vld4_lane_s16(int16_t const ptr[HEDLEY_ARRAY_PARAM(4)], simde_int16x4x4_t src, const int lane)
     SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 3) {
-  simde_int16x4_private a_[4];
+  simde_int16x4x4_t r;
 
   for (size_t i = 0 ; i < 4 ; i++) {
-    a_[i] = simde_int16x4_to_private(src.val[i]);
-    a_[i].values[lane] = ptr[i];
+    simde_int16x4_private tmp_ = simde_int16x4_to_private(src.val[i]);
+    tmp_.values[lane] = ptr[i];
+    r.val[i] = simde_int16x4_from_private(tmp_);
   }
 
-  simde_int16x4x4_t s_ = { {
-    simde_int16x4_from_private(a_[0]), simde_int16x4_from_private(a_[1]),
-    simde_int16x4_from_private(a_[2]), simde_int16x4_from_private(a_[3]) } };
-
-  return s_;
+  return r;
 }
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vld4_lane_s16(ptr, src, lane) vld4_lane_s16(ptr, src, lane)
@@ -89,18 +84,15 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde_int32x2x4_t
 simde_vld4_lane_s32(int32_t const ptr[HEDLEY_ARRAY_PARAM(4)], simde_int32x2x4_t src, const int lane)
     SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 1) {
-  simde_int32x2_private a_[4];
+  simde_int32x2x4_t r;
 
   for (size_t i = 0 ; i < 4 ; i++) {
-    a_[i] = simde_int32x2_to_private(src.val[i]);
-    a_[i].values[lane] = ptr[i];
+    simde_int32x2_private tmp_ = simde_int32x2_to_private(src.val[i]);
+    tmp_.values[lane] = ptr[i];
+    r.val[i] = simde_int32x2_from_private(tmp_);
   }
 
-  simde_int32x2x4_t s_ = { {
-    simde_int32x2_from_private(a_[0]), simde_int32x2_from_private(a_[1]),
-    simde_int32x2_from_private(a_[2]), simde_int32x2_from_private(a_[3]) } };
-
-  return s_;
+  return r;
 }
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vld4_lane_s32(ptr, src, lane) vld4_lane_s32(ptr, src, lane)
@@ -114,18 +106,15 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde_uint8x8x4_t
 simde_vld4_lane_u8(uint8_t const ptr[HEDLEY_ARRAY_PARAM(4)], simde_uint8x8x4_t src, const int lane)
     SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 7) {
-  simde_uint8x8_private a_[4];
+  simde_uint8x8x4_t r;
 
   for (size_t i = 0 ; i < 4 ; i++) {
-    a_[i] = simde_uint8x8_to_private(src.val[i]);
-    a_[i].values[lane] = ptr[i];
+    simde_uint8x8_private tmp_ = simde_uint8x8_to_private(src.val[i]);
+    tmp_.values[lane] = ptr[i];
+    r.val[i] = simde_uint8x8_from_private(tmp_);
   }
 
-  simde_uint8x8x4_t s_ = { {
-    simde_uint8x8_from_private(a_[0]), simde_uint8x8_from_private(a_[1]),
-    simde_uint8x8_from_private(a_[2]), simde_uint8x8_from_private(a_[3]) } };
-
-  return s_;
+  return r;
 }
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vld4_lane_u8(ptr, src, lane) vld4_lane_u8(ptr, src, lane)
@@ -139,18 +128,15 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde_uint16x4x4_t
 simde_vld4_lane_u16(uint16_t const ptr[HEDLEY_ARRAY_PARAM(4)], simde_uint16x4x4_t src, const int lane)
     SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 3) {
-  simde_uint16x4_private a_[4];
+  simde_uint16x4x4_t r;
 
   for (size_t i = 0 ; i < 4 ; i++) {
-    a_[i] = simde_uint16x4_to_private(src.val[i]);
-    a_[i].values[lane] = ptr[i];
+    simde_uint16x4_private tmp_ = simde_uint16x4_to_private(src.val[i]);
+    tmp_.values[lane] = ptr[i];
+    r.val[i] = simde_uint16x4_from_private(tmp_);
   }
 
-  simde_uint16x4x4_t s_ = { {
-    simde_uint16x4_from_private(a_[0]), simde_uint16x4_from_private(a_[1]),
-    simde_uint16x4_from_private(a_[2]), simde_uint16x4_from_private(a_[3]) } };
-
-  return s_;
+  return r;
 }
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vld4_lane_u16(ptr, src, lane) vld4_lane_u16(ptr, src, lane)
@@ -164,18 +150,15 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde_uint32x2x4_t
 simde_vld4_lane_u32(uint32_t const ptr[HEDLEY_ARRAY_PARAM(4)], simde_uint32x2x4_t src, const int lane)
     SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 1) {
-  simde_uint32x2_private a_[4];
+  simde_uint32x2x4_t r;
 
   for (size_t i = 0 ; i < 4 ; i++) {
-    a_[i] = simde_uint32x2_to_private(src.val[i]);
-    a_[i].values[lane] = ptr[i];
+    simde_uint32x2_private tmp_ = simde_uint32x2_to_private(src.val[i]);
+    tmp_.values[lane] = ptr[i];
+    r.val[i] = simde_uint32x2_from_private(tmp_);
   }
 
-  simde_uint32x2x4_t s_ = { {
-    simde_uint32x2_from_private(a_[0]), simde_uint32x2_from_private(a_[1]),
-    simde_uint32x2_from_private(a_[2]), simde_uint32x2_from_private(a_[3]) } };
-
-  return s_;
+  return r;
 }
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vld4_lane_u32(ptr, src, lane) vld4_lane_u32(ptr, src, lane)
