@@ -450,7 +450,8 @@
       defined(SIMDE_X86_SSE_NATIVE) || \
       defined(SIMDE_ARM_NEON_A32V7_NATIVE) || \
       defined(SIMDE_WASM_SIMD128_NATIVE) || \
-      defined(SIMDE_POWER_ALTIVEC_P5_NATIVE)
+      defined(SIMDE_POWER_ALTIVEC_P5_NATIVE) || \
+      defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
     #define SIMDE_NATURAL_VECTOR_SIZE (128)
   #endif
 
