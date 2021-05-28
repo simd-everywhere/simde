@@ -34,6 +34,7 @@
 #include "get_high.h"
 #include "get_low.h"
 #include "qdmull.h"
+#include "reinterpret.h"
 
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
@@ -45,16 +46,25 @@ simde_vqdmulh_s16(simde_int16x4_t a, simde_int16x4_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vqdmulh_s16(a, b);
   #else
-    simde_int16x4_private
-      r_;
+    simde_int16x4_private r_;
 
-    simde_int32x4_t r = simde_vqdmull_s16(a, b);
-    simde_int32x4_private r_2 = simde_int32x4_to_private(r);
+    #if HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
+      simde_int16x8_private tmp_ =
+        simde_int16x8_to_private(
+          simde_vreinterpretq_s16_s32(
+            simde_vqdmull_s16(a, b)
+          )
+        );
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = HEDLEY_STATIC_CAST(int16_t, r_2.values[i] >> 16);
-    }
+      r_.values = __builtin_shufflevector(tmp_.values, tmp_.values, 1, 3, 5, 7);
+    #else
+      simde_int32x4_private tmp = simde_int32x4_to_private(simde_vqdmull_s16(a, b));
+
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+        r_.values[i] = HEDLEY_STATIC_CAST(int16_t, tmp.values[i] >> 16);
+      }
+    #endif
 
     return simde_int16x4_from_private(r_);
   #endif
@@ -70,16 +80,25 @@ simde_vqdmulh_s32(simde_int32x2_t a, simde_int32x2_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vqdmulh_s32(a, b);
   #else
-    simde_int32x2_private
-      r_;
+    simde_int32x2_private r_;
 
-    simde_int64x2_t r = simde_vqdmull_s32(a, b);
-    simde_int64x2_private r_2 = simde_int64x2_to_private(r);
+    #if HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
+      simde_int32x4_private tmp_ =
+        simde_int32x4_to_private(
+          simde_vreinterpretq_s32_s64(
+            simde_vqdmull_s32(a, b)
+          )
+        );
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = HEDLEY_STATIC_CAST(int32_t, r_2.values[i] >> 32);
-    }
+      r_.values = __builtin_shufflevector(tmp_.values, tmp_.values, 1, 3);
+    #else
+      simde_int64x2_private tmp = simde_int64x2_to_private(simde_vqdmull_s32(a, b));
+
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+        r_.values[i] = HEDLEY_STATIC_CAST(int32_t, tmp.values[i] >> 32);
+      }
+    #endif
 
     return simde_int32x2_from_private(r_);
   #endif
