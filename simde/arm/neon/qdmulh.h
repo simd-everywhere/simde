@@ -34,6 +34,7 @@
 #include "get_high.h"
 #include "get_low.h"
 #include "qdmull.h"
+#include "dup_n.h"
 
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
@@ -117,6 +118,18 @@ simde_vqdmulhq_s32(simde_int32x4_t a, simde_int32x4_t b) {
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vqdmulhq_s32
   #define vqdmulhq_s32(a, b) simde_vqdmulhq_s32((a), (b))
+#endif
+
+#define simde_vqdmulhq_n_s16(a, b) simde_vqdmulhq_s16((a), simde_vdupq_n_s16(b))
+#if defined(SIMDE_ARM_NEON_A16V7_ENABLE_NATIVE_ALIASES)
+  #undef vqdmulhq_n_s16
+  #define vqdmulhq_n_s16(a, b) simde_vqdmulhq_n_s16((a), (b))
+#endif
+
+#define simde_vqdmulhq_n_s32(a, b) simde_vqdmulhq_s32((a), simde_vdupq_n_s32(b))
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+  #undef vqdmulhq_n_s32
+  #define vqdmulhq_n_s32(a, b) simde_vqdmulhq_n_s32((a), (b))
 #endif
 
 SIMDE_END_DECLS_
