@@ -2123,7 +2123,19 @@ simde_mm256_round_ps (simde__m256 a, const int rounding) {
   return simde__m256_from_private(r_);
 }
 #if defined(SIMDE_X86_AVX_NATIVE)
-#  define simde_mm256_round_ps(a, rounding) _mm256_round_ps(a, rounding)
+  #define simde_mm256_round_ps(a, rounding) _mm256_round_ps(a, rounding)
+#elif SIMDE_NATURAL_VECTOR_SIZE_LE(128) && defined(SIMDE_STATEMENT_EXPR_)
+  #define simde_mm256_round_ps(a, rounding) SIMDE_STATEMENT_EXPR_(({ \
+    simde__m256_private \
+      simde_mm256_round_ps_r_, \
+      simde_mm256_round_ps_a_ = simde__m256_to_private(a); \
+    \
+    for (size_t simde_mm256_round_ps_i = 0 ; simde_mm256_round_ps_i < (sizeof(simde_mm256_round_ps_r_.m128) / sizeof(simde_mm256_round_ps_r_.m128[0])) ; simde_mm256_round_ps_i++) { \
+      simde_mm256_round_ps_r_.m128[simde_mm256_round_ps_i] = simde_mm_round_ps(simde_mm256_round_ps_a_.m128[simde_mm256_round_ps_i], rounding); \
+    } \
+    \
+    simde__m256_from_private(simde_mm256_round_ps_r_); \
+  }))
 #endif
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
   #undef _mm256_round_ps
@@ -2185,7 +2197,19 @@ simde_mm256_round_pd (simde__m256d a, const int rounding) {
   return simde__m256d_from_private(r_);
 }
 #if defined(SIMDE_X86_AVX_NATIVE)
-#  define simde_mm256_round_pd(a, rounding) _mm256_round_pd(a, rounding)
+  #define simde_mm256_round_pd(a, rounding) _mm256_round_pd(a, rounding)
+#elif SIMDE_NATURAL_VECTOR_SIZE_LE(128) && defined(SIMDE_STATEMENT_EXPR_)
+  #define simde_mm256_round_pd(a, rounding) SIMDE_STATEMENT_EXPR_(({ \
+    simde__m256d_private \
+      simde_mm256_round_pd_r_, \
+      simde_mm256_round_pd_a_ = simde__m256d_to_private(a); \
+    \
+    for (size_t simde_mm256_round_pd_i = 0 ; simde_mm256_round_pd_i < (sizeof(simde_mm256_round_pd_r_.m128d) / sizeof(simde_mm256_round_pd_r_.m128d[0])) ; simde_mm256_round_pd_i++) { \
+      simde_mm256_round_pd_r_.m128d[simde_mm256_round_pd_i] = simde_mm_round_pd(simde_mm256_round_pd_a_.m128d[simde_mm256_round_pd_i], rounding); \
+    } \
+    \
+    simde__m256d_from_private(simde_mm256_round_pd_r_); \
+  }))
 #endif
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
   #undef _mm256_round_pd
