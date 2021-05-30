@@ -257,6 +257,174 @@ simde_mm512_range_ps (simde__m512 a, simde__m512 b, int imm8)
   #define _mm512_maskz_range_ps(k, a, b, imm8) simde_mm512_maskz_range_ps(k, a, b, imm8)
 #endif
 
+#if defined(SIMDE_X86_AVX512DQ_NATIVE)
+  #define simde_mm512_range_round_ps(a, b, imm8, sae) _mm512_range_round_ps(a, b, imm8, sae)
+#elif defined(SIMDE_FAST_EXCEPTIONS)
+  #define simde_mm512_range_round_ps(a, b, imm8, sae) simde_mm512_range_ps(a, b, imm8)
+#elif defined(SIMDE_STATEMENT_EXPR_)
+  #if defined(SIMDE_HAVE_FENV_H)
+    #define simde_mm512_range_round_ps(a, b, imm8, sae) SIMDE_STATEMENT_EXPR_(({ \
+      simde__m512 simde_mm512_range_round_ps_r; \
+      \
+      if (sae & SIMDE_MM_FROUND_NO_EXC) { \
+        fenv_t simde_mm512_range_round_ps_envp; \
+        int simde_mm512_range_round_ps_x = feholdexcept(&simde_mm512_range_round_ps_envp); \
+        simde_mm512_range_round_ps_r = simde_mm512_range_ps(a, b, imm8); \
+        if (HEDLEY_LIKELY(simde_mm512_range_round_ps_x == 0)) \
+          fesetenv(&simde_mm512_range_round_ps_envp); \
+      } \
+      else { \
+        simde_mm512_range_round_ps_r = simde_mm512_range_ps(a, b, imm8); \
+      } \
+      \
+      simde_mm512_range_round_ps_r; \
+    }))
+  #else
+    #define simde_mm512_range_round_ps(a, b, imm8, sae) simde_mm512_range_ps(a, b, imm8)
+  #endif
+#else
+  SIMDE_FUNCTION_ATTRIBUTES
+  simde__m512
+  simde_mm512_range_round_ps (simde__m512 a, simde__m512 b, int imm8, int sae)
+      SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 15)
+      SIMDE_REQUIRE_CONSTANT(sae) {
+    simde__m512 r;
+
+    if (sae & SIMDE_MM_FROUND_NO_EXC) {
+      #if defined(SIMDE_HAVE_FENV_H)
+        fenv_t envp;
+        int x = feholdexcept(&envp);
+        r = simde_mm512_range_ps(a, b, imm8);
+        if (HEDLEY_LIKELY(x == 0))
+          fesetenv(&envp);
+      #else
+        r = simde_mm512_range_ps(a, b, imm8);
+      #endif
+    }
+    else {
+      r = simde_mm512_range_ps(a, b, imm8);
+    }
+
+    return r;
+  }
+#endif
+#if defined(SIMDE_X86_AVX512DQ_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_range_round_ps
+  #define _mm512_range_round_ps(a, b, imm8, sae) simde_mm512_range_round_ps(a, b, imm8, sae)
+#endif
+
+#if defined(SIMDE_X86_AVX512DQ_NATIVE)
+  #define simde_mm512_mask_range_round_ps(src, k, a, b, imm8, sae) _mm512_mask_range_round_ps(src, k, a, b, imm8, sae)
+#elif defined(SIMDE_FAST_EXCEPTIONS)
+  #define simde_mm512_mask_range_round_ps(src, k, a, b, imm8, sae) simde_mm512_mask_range_ps(src, k, a, b, imm8)
+#elif defined(SIMDE_STATEMENT_EXPR_)
+  #if defined(SIMDE_HAVE_FENV_H)
+    #define simde_mm512_mask_range_round_ps(src, k, a, b, imm8, sae) SIMDE_STATEMENT_EXPR_(({ \
+      simde__m512 simde_mm512_mask_range_round_ps_r; \
+      \
+      if (sae & SIMDE_MM_FROUND_NO_EXC) { \
+        fenv_t simde_mm512_mask_range_round_ps_envp; \
+        int simde_mm512_mask_range_round_ps_x = feholdexcept(&simde_mm512_mask_range_round_ps_envp); \
+        simde_mm512_mask_range_round_ps_r = simde_mm512_mask_range_ps(src, k, a, b, imm8); \
+        if (HEDLEY_LIKELY(simde_mm512_mask_range_round_ps_x == 0)) \
+          fesetenv(&simde_mm512_mask_range_round_ps_envp); \
+      } \
+      else { \
+        simde_mm512_mask_range_round_ps_r = simde_mm512_mask_range_ps(src, k, a, b, imm8); \
+      } \
+      \
+      simde_mm512_mask_range_round_ps_r; \
+    }))
+  #else
+    #define simde_mm512_mask_range_round_ps(src, k, a, b, imm8, sae) simde_mm512_mask_range_ps(src, k, a, b, imm8)
+  #endif
+#else
+  SIMDE_FUNCTION_ATTRIBUTES
+  simde__m512
+  simde_mm512_mask_range_round_ps (simde__m512 src, simde__mmask16 k, simde__m512 a, simde__m512 b, int imm8, int sae)
+      SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 15)
+      SIMDE_REQUIRE_CONSTANT(sae) {
+    simde__m512 r;
+
+    if (sae & SIMDE_MM_FROUND_NO_EXC) {
+      #if defined(SIMDE_HAVE_FENV_H)
+        fenv_t envp;
+        int x = feholdexcept(&envp);
+        r = simde_mm512_mask_range_ps(src, k, a, b, imm8);
+        if (HEDLEY_LIKELY(x == 0))
+          fesetenv(&envp);
+      #else
+        r = simde_mm512_mask_range_ps(src, k, a, b, imm8);
+      #endif
+    }
+    else {
+      r = simde_mm512_mask_range_ps(src, k, a, b, imm8);
+    }
+
+    return r;
+  }
+#endif
+#if defined(SIMDE_X86_AVX512DQ_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_mask_range_round_ps
+  #define _mm512_mask_range_round_ps(src, k, a, b, imm8) simde_mm512_mask_range_round_ps(src, k, a, b, imm8)
+#endif
+
+#if defined(SIMDE_X86_AVX512DQ_NATIVE)
+  #define simde_mm512_maskz_range_round_ps(k, a, b, imm8, sae) _mm512_maskz_range_round_ps(k, a, b, imm8, sae)
+#elif defined(SIMDE_FAST_EXCEPTIONS)
+  #define simde_mm512_maskz_range_round_ps(k, a, b, imm8, sae) simde_mm512_maskz_range_ps(k, a, b, imm8)
+#elif defined(SIMDE_STATEMENT_EXPR_)
+  #if defined(SIMDE_HAVE_FENV_H)
+    #define simde_mm512_maskz_range_round_ps(k, a, b, imm8, sae) SIMDE_STATEMENT_EXPR_(({ \
+      simde__m512 simde_mm512_maskz_range_round_ps_r; \
+      \
+      if (sae & SIMDE_MM_FROUND_NO_EXC) { \
+        fenv_t simde_mm512_maskz_range_round_ps_envp; \
+        int simde_mm512_maskz_range_round_ps_x = feholdexcept(&simde_mm512_maskz_range_round_ps_envp); \
+        simde_mm512_maskz_range_round_ps_r = simde_mm512_maskz_range_ps(k, a, b, imm8); \
+        if (HEDLEY_LIKELY(simde_mm512_maskz_range_round_ps_x == 0)) \
+          fesetenv(&simde_mm512_maskz_range_round_ps_envp); \
+      } \
+      else { \
+        simde_mm512_maskz_range_round_ps_r = simde_mm512_maskz_range_ps(k, a, b, imm8); \
+      } \
+      \
+      simde_mm512_maskz_range_round_ps_r; \
+    }))
+  #else
+    #define simde_mm512_maskz_range_round_ps(k, a, b, imm8, sae) simde_mm512_maskz_range_ps(k, a, b, imm8)
+  #endif
+#else
+  SIMDE_FUNCTION_ATTRIBUTES
+  simde__m512
+  simde_mm512_maskz_range_round_ps (simde__mmask16 k, simde__m512 a, simde__m512 b, int imm8, int sae)
+      SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 15)
+      SIMDE_REQUIRE_CONSTANT(sae) {
+    simde__m512 r;
+
+    if (sae & SIMDE_MM_FROUND_NO_EXC) {
+      #if defined(SIMDE_HAVE_FENV_H)
+        fenv_t envp;
+        int x = feholdexcept(&envp);
+        r = simde_mm512_maskz_range_ps(k, a, b, imm8);
+        if (HEDLEY_LIKELY(x == 0))
+          fesetenv(&envp);
+      #else
+        r = simde_mm512_maskz_range_ps(k, a, b, imm8);
+      #endif
+    }
+    else {
+      r = simde_mm512_maskz_range_ps(k, a, b, imm8);
+    }
+
+    return r;
+  }
+#endif
+#if defined(SIMDE_X86_AVX512DQ_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_maskz_range_round_ps
+  #define _mm512_maskz_range_round_ps(k, a, b, imm8) simde_mm512_maskz_range_round_ps(k, a, b, imm8)
+#endif
+
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128d
 simde_mm_range_pd (simde__m128d a, simde__m128d b, int imm8)
@@ -495,6 +663,752 @@ simde_mm512_range_pd (simde__m512d a, simde__m512d b, int imm8)
 #if defined(SIMDE_X86_AVX512DQ_ENABLE_NATIVE_ALIASES)
   #undef _mm512_maskz_range_pd
   #define _mm512_maskz_range_pd(k, a, b, imm8) simde_mm512_maskz_range_pd(k, a, b, imm8)
+#endif
+
+#if defined(SIMDE_X86_AVX512DQ_NATIVE)
+  #define simde_mm512_range_round_pd(a, b, imm8, sae) _mm512_range_round_pd(a, b, imm8, sae)
+#elif defined(SIMDE_FAST_EXCEPTIONS)
+  #define simde_mm512_range_round_pd(a, b, imm8, sae) simde_mm512_range_pd(a, b, imm8)
+#elif defined(SIMDE_STATEMENT_EXPR_)
+  #if defined(SIMDE_HAVE_FENV_H)
+    #define simde_mm512_range_round_pd(a, b, imm8, sae) SIMDE_STATEMENT_EXPR_(({ \
+      simde__m512d simde_mm512_range_round_pd_r; \
+      \
+      if (sae & SIMDE_MM_FROUND_NO_EXC) { \
+        fenv_t simde_mm512_range_round_pd_envp; \
+        int simde_mm512_range_round_pd_x = feholdexcept(&simde_mm512_range_round_pd_envp); \
+        simde_mm512_range_round_pd_r = simde_mm512_range_pd(a, b, imm8); \
+        if (HEDLEY_LIKELY(simde_mm512_range_round_pd_x == 0)) \
+          fesetenv(&simde_mm512_range_round_pd_envp); \
+      } \
+      else { \
+        simde_mm512_range_round_pd_r = simde_mm512_range_pd(a, b, imm8); \
+      } \
+      \
+      simde_mm512_range_round_pd_r; \
+    }))
+  #else
+    #define simde_mm512_range_round_pd(a, b, imm8, sae) simde_mm512_range_pd(a, b, imm8)
+  #endif
+#else
+  SIMDE_FUNCTION_ATTRIBUTES
+  simde__m512d
+  simde_mm512_range_round_pd (simde__m512d a, simde__m512d b, int imm8, int sae)
+      SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 15)
+      SIMDE_REQUIRE_CONSTANT(sae) {
+    simde__m512d r;
+
+    if (sae & SIMDE_MM_FROUND_NO_EXC) {
+      #if defined(SIMDE_HAVE_FENV_H)
+        fenv_t envp;
+        int x = feholdexcept(&envp);
+        r = simde_mm512_range_pd(a, b, imm8);
+        if (HEDLEY_LIKELY(x == 0))
+          fesetenv(&envp);
+      #else
+        r = simde_mm512_range_pd(a, b, imm8);
+      #endif
+    }
+    else {
+      r = simde_mm512_range_pd(a, b, imm8);
+    }
+
+    return r;
+  }
+#endif
+#if defined(SIMDE_X86_AVX512DQ_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_range_round_pd
+  #define _mm512_range_round_pd(a, b, imm8, sae) simde_mm512_range_round_pd(a, b, imm8, sae)
+#endif
+
+#if defined(SIMDE_X86_AVX512DQ_NATIVE)
+  #define simde_mm512_mask_range_round_pd(src, k, a, b, imm8, sae) _mm512_mask_range_round_pd(src, k, a, b, imm8, sae)
+#elif defined(SIMDE_FAST_EXCEPTIONS)
+  #define simde_mm512_mask_range_round_pd(src, k, a, b, imm8, sae) simde_mm512_mask_range_pd(src, k, a, b, imm8)
+#elif defined(SIMDE_STATEMENT_EXPR_)
+  #if defined(SIMDE_HAVE_FENV_H)
+    #define simde_mm512_mask_range_round_pd(src, k, a, b, imm8, sae) SIMDE_STATEMENT_EXPR_(({ \
+      simde__m512d simde_mm512_mask_range_round_pd_r; \
+      \
+      if (sae & SIMDE_MM_FROUND_NO_EXC) { \
+        fenv_t simde_mm512_mask_range_round_pd_envp; \
+        int simde_mm512_mask_range_round_pd_x = feholdexcept(&simde_mm512_mask_range_round_pd_envp); \
+        simde_mm512_mask_range_round_pd_r = simde_mm512_mask_range_pd(src, k, a, b, imm8); \
+        if (HEDLEY_LIKELY(simde_mm512_mask_range_round_pd_x == 0)) \
+          fesetenv(&simde_mm512_mask_range_round_pd_envp); \
+      } \
+      else { \
+        simde_mm512_mask_range_round_pd_r = simde_mm512_mask_range_pd(src, k, a, b, imm8); \
+      } \
+      \
+      simde_mm512_mask_range_round_pd_r; \
+    }))
+  #else
+    #define simde_mm512_mask_range_round_pd(src, k, a, b, imm8, sae) simde_mm512_mask_range_pd(src, k, a, b, imm8)
+  #endif
+#else
+  SIMDE_FUNCTION_ATTRIBUTES
+  simde__m512d
+  simde_mm512_mask_range_round_pd (simde__m512d src, simde__mmask8 k, simde__m512d a, simde__m512d b, int imm8, int sae)
+      SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 15)
+      SIMDE_REQUIRE_CONSTANT(sae) {
+    simde__m512d r;
+
+    if (sae & SIMDE_MM_FROUND_NO_EXC) {
+      #if defined(SIMDE_HAVE_FENV_H)
+        fenv_t envp;
+        int x = feholdexcept(&envp);
+        r = simde_mm512_mask_range_pd(src, k, a, b, imm8);
+        if (HEDLEY_LIKELY(x == 0))
+          fesetenv(&envp);
+      #else
+        r = simde_mm512_mask_range_pd(src, k, a, b, imm8);
+      #endif
+    }
+    else {
+      r = simde_mm512_mask_range_pd(src, k, a, b, imm8);
+    }
+
+    return r;
+  }
+#endif
+#if defined(SIMDE_X86_AVX512DQ_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_mask_range_round_pd
+  #define _mm512_mask_range_round_pd(src, k, a, b, imm8) simde_mm512_mask_range_round_pd(src, k, a, b, imm8)
+#endif
+
+#if defined(SIMDE_X86_AVX512DQ_NATIVE)
+  #define simde_mm512_maskz_range_round_pd(k, a, b, imm8, sae) _mm512_maskz_range_round_pd(k, a, b, imm8, sae)
+#elif defined(SIMDE_FAST_EXCEPTIONS)
+  #define simde_mm512_maskz_range_round_pd(k, a, b, imm8, sae) simde_mm512_maskz_range_pd(k, a, b, imm8)
+#elif defined(SIMDE_STATEMENT_EXPR_)
+  #if defined(SIMDE_HAVE_FENV_H)
+    #define simde_mm512_maskz_range_round_pd(k, a, b, imm8, sae) SIMDE_STATEMENT_EXPR_(({ \
+      simde__m512d simde_mm512_maskz_range_round_pd_r; \
+      \
+      if (sae & SIMDE_MM_FROUND_NO_EXC) { \
+        fenv_t simde_mm512_maskz_range_round_pd_envp; \
+        int simde_mm512_maskz_range_round_pd_x = feholdexcept(&simde_mm512_maskz_range_round_pd_envp); \
+        simde_mm512_maskz_range_round_pd_r = simde_mm512_maskz_range_pd(k, a, b, imm8); \
+        if (HEDLEY_LIKELY(simde_mm512_maskz_range_round_pd_x == 0)) \
+          fesetenv(&simde_mm512_maskz_range_round_pd_envp); \
+      } \
+      else { \
+        simde_mm512_maskz_range_round_pd_r = simde_mm512_maskz_range_pd(k, a, b, imm8); \
+      } \
+      \
+      simde_mm512_maskz_range_round_pd_r; \
+    }))
+  #else
+    #define simde_mm512_maskz_range_round_pd(k, a, b, imm8, sae) simde_mm512_maskz_range_pd(k, a, b, imm8)
+  #endif
+#else
+  SIMDE_FUNCTION_ATTRIBUTES
+  simde__m512d
+  simde_mm512_maskz_range_round_pd (simde__mmask8 k, simde__m512d a, simde__m512d b, int imm8, int sae)
+      SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 15)
+      SIMDE_REQUIRE_CONSTANT(sae) {
+    simde__m512d r;
+
+    if (sae & SIMDE_MM_FROUND_NO_EXC) {
+      #if defined(SIMDE_HAVE_FENV_H)
+        fenv_t envp;
+        int x = feholdexcept(&envp);
+        r = simde_mm512_maskz_range_pd(k, a, b, imm8);
+        if (HEDLEY_LIKELY(x == 0))
+          fesetenv(&envp);
+      #else
+        r = simde_mm512_maskz_range_pd(k, a, b, imm8);
+      #endif
+    }
+    else {
+      r = simde_mm512_maskz_range_pd(k, a, b, imm8);
+    }
+
+    return r;
+  }
+#endif
+#if defined(SIMDE_X86_AVX512DQ_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_maskz_range_round_pd
+  #define _mm512_maskz_range_round_pd(k, a, b, imm8) simde_mm512_maskz_range_round_pd(k, a, b, imm8)
+#endif
+
+#if (SIMDE_NATURAL_VECTOR_SIZE > 0) && defined(SIMDE_FAST_EXCEPTIONS)
+  #define simde_x_mm_range_ss(a, b, imm8) simde_mm_move_ss(a, simde_mm_range_ps(a, b, imm8))
+#elif (SIMDE_NATURAL_VECTOR_SIZE > 0)
+  #define simde_x_mm_range_ss(a, b, imm8) simde_mm_move_ss(a, simde_mm_range_ps(simde_x_mm_broadcastlow_ps(a), simde_x_mm_broadcastlow_ps(b), imm8))
+#else
+  SIMDE_FUNCTION_ATTRIBUTES
+  simde__m128
+  simde_x_mm_range_ss (simde__m128 a, simde__m128 b, int imm8)
+      SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 15) {
+    simde__m128_private
+      r_ = simde__m128_to_private(a),
+      a_ = simde__m128_to_private(a),
+      b_ = simde__m128_to_private(b);
+    simde_float32 abs_a = simde_uint32_as_float32(a_.u32[0] & UINT32_C(2147483647));
+    simde_float32 abs_b = simde_uint32_as_float32(b_.u32[0] & UINT32_C(2147483647));
+
+    switch (imm8 & 3) {
+      case 0:
+        r_ = simde__m128_to_private(simde_mm_min_ss(a, b));
+        break;
+      case 1:
+        r_ = simde__m128_to_private(simde_mm_max_ss(a, b));
+        break;
+      case 2:
+        r_.f32[0] = abs_a <= abs_b ? a_.f32[0] : b_.f32[0];
+        break;
+      case 3:
+        r_.f32[0] = abs_b >= abs_a ? b_.f32[0] : a_.f32[0];
+        break;
+      default:
+        break;
+    }
+
+    switch (imm8 & 12) {
+      case 0:
+        r_.f32[0] = simde_uint32_as_float32((a_.u32[0] & UINT32_C(2147483648)) ^ (r_.u32[0] & UINT32_C(2147483647)));
+        break;
+      case 8:
+        r_.f32[0] = simde_uint32_as_float32(r_.u32[0] & UINT32_C(2147483647));
+        break;
+      case 12:
+        r_.f32[0] = simde_uint32_as_float32(r_.u32[0] | UINT32_C(2147483648));
+        break;
+      default:
+        break;
+    }
+
+    return simde__m128_from_private(r_);
+  }
+#endif
+
+#if defined(SIMDE_X86_AVX512DQ_NATIVE)
+  #define simde_mm_mask_range_ss(src, k, a, b, imm8) _mm_mask_range_ss(src, k, a, b, imm8)
+#elif defined(SIMDE_STATEMENT_EXPR_)
+  #define simde_mm_mask_range_ss(src, k, a, b, imm8) SIMDE_STATEMENT_EXPR_(({ \
+    simde__m128_private  \
+      simde_mm_mask_range_ss_r_ = simde__m128_to_private(a), \
+      simde_mm_mask_range_ss_src_ = simde__m128_to_private(src); \
+    \
+    if (k & 1) \
+      simde_mm_mask_range_ss_r_ = simde__m128_to_private(simde_x_mm_range_ss(a, b, imm8)); \
+    else \
+      simde_mm_mask_range_ss_r_.f32[0] = simde_mm_mask_range_ss_src_.f32[0]; \
+    \
+    simde__m128_from_private(simde_mm_mask_range_ss_r_); \
+  }))
+#else
+  SIMDE_FUNCTION_ATTRIBUTES
+  simde__m128
+  simde_mm_mask_range_ss (simde__m128 src, simde__mmask8 k, simde__m128 a, simde__m128 b, int imm8)
+      SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 15) {
+    simde__m128_private
+      r_ = simde__m128_to_private(a),
+      src_ = simde__m128_to_private(src);
+
+    if (k & 1)
+      r_ = simde__m128_to_private(simde_x_mm_range_ss(a, b, imm8));
+    else
+      r_.f32[0] = src_.f32[0];
+
+    return simde__m128_from_private(r_);
+  }
+#endif
+#if defined(SIMDE_X86_AVX512DQ_ENABLE_NATIVE_ALIASES)
+  #undef _mm_mask_range_ss
+  #define _mm_mask_range_ss(src, k, a, b, imm8) simde_mm_mask_range_ss(src, k, a, b, imm8)
+#endif
+
+#if defined(SIMDE_X86_AVX512DQ_NATIVE)
+  #define simde_mm_maskz_range_ss(k, a, b, imm8) _mm_maskz_range_ss(k, a, b, imm8)
+#elif defined(SIMDE_STATEMENT_EXPR_)
+  #define simde_mm_maskz_range_ss(k, a, b, imm8) SIMDE_STATEMENT_EXPR_(({ \
+    simde__m128_private simde_mm_maskz_range_ss_r_ = simde__m128_to_private(a); \
+    \
+    if (k & 1) \
+      simde_mm_maskz_range_ss_r_ = simde__m128_to_private(simde_x_mm_range_ss(a, b, imm8)); \
+    else \
+      simde_mm_maskz_range_ss_r_.f32[0] = SIMDE_FLOAT32_C(0.0); \
+    \
+    simde__m128_from_private(simde_mm_maskz_range_ss_r_); \
+  }))
+#else
+  SIMDE_FUNCTION_ATTRIBUTES
+  simde__m128
+  simde_mm_maskz_range_ss (simde__mmask8 k, simde__m128 a, simde__m128 b, int imm8)
+      SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 15) {
+    simde__m128_private r_ = simde__m128_to_private(a);
+
+    if (k & 1)
+      r_ = simde__m128_to_private(simde_x_mm_range_ss(a, b, imm8));
+    else
+      r_.f32[0] = SIMDE_FLOAT32_C(0.0);
+
+    return simde__m128_from_private(r_);
+  }
+#endif
+#if defined(SIMDE_X86_AVX512DQ_ENABLE_NATIVE_ALIASES)
+  #undef _mm_maskz_range_ss
+  #define _mm_maskz_range_ss(k, a, b, imm8) simde_mm_mask_range_ss(k, a, b, imm8)
+#endif
+
+#if defined(SIMDE_X86_AVX512DQ_NATIVE)
+  #define simde_mm_range_round_ss(a, b, imm8, sae) _mm_range_round_ss(a, b, imm8, sae)
+#elif defined(SIMDE_FAST_EXCEPTIONS)
+  #define simde_mm_range_round_ss(a, b, imm8, sae) simde_x_mm_range_ss(a, b, imm8)
+#elif defined(SIMDE_STATEMENT_EXPR_)
+  #if defined(SIMDE_HAVE_FENV_H)
+    #define simde_mm_range_round_ss(a, b, imm8, sae) SIMDE_STATEMENT_EXPR_(({ \
+      simde__m128 simde_mm_range_round_ss_r; \
+      \
+      if (sae & SIMDE_MM_FROUND_NO_EXC) { \
+        fenv_t simde_mm_range_round_ss_envp; \
+        int simde_mm_range_round_ss_x = feholdexcept(&simde_mm_range_round_ss_envp); \
+        simde_mm_range_round_ss_r = simde_x_mm_range_ss(a, b, imm8); \
+        if (HEDLEY_LIKELY(simde_mm_range_round_ss_x == 0)) \
+          fesetenv(&simde_mm_range_round_ss_envp); \
+      } \
+      else { \
+        simde_mm_range_round_ss_r = simde_x_mm_range_ss(a, b, imm8); \
+      } \
+      \
+      simde_mm_range_round_ss_r; \
+    }))
+  #else
+    #define simde_mm_range_round_ss(a, b, imm8, sae) simde_x_mm_range_ss(a, b, imm8)
+  #endif
+#else
+  SIMDE_FUNCTION_ATTRIBUTES
+  simde__m128
+  simde_mm_range_round_ss (simde__m128 a, simde__m128 b, int imm8, int sae)
+      SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 15)
+      SIMDE_REQUIRE_CONSTANT(sae) {
+    simde__m128 r;
+
+    if (sae & SIMDE_MM_FROUND_NO_EXC) {
+      #if defined(SIMDE_HAVE_FENV_H)
+        fenv_t envp;
+        int x = feholdexcept(&envp);
+        r = simde_x_mm_range_ss(a, b, imm8);
+        if (HEDLEY_LIKELY(x == 0))
+          fesetenv(&envp);
+      #else
+        r = simde_x_mm_range_ss(a, b, imm8);
+      #endif
+    }
+    else {
+      r = simde_x_mm_range_ss(a, b, imm8);
+    }
+
+    return r;
+  }
+#endif
+#if defined(SIMDE_X86_AVX512DQ_ENABLE_NATIVE_ALIASES)
+  #undef _mm_range_round_ss
+  #define _mm_range_round_ss(a, b, imm8, sae) simde_mm_range_round_ss(a, b, imm8, sae)
+#endif
+
+#if defined(SIMDE_X86_AVX512DQ_NATIVE)
+  #define simde_mm_mask_range_round_ss(src, k, a, b, imm8, sae) _mm_mask_range_round_ss(src, k, a, b, imm8, sae)
+#elif defined(SIMDE_FAST_EXCEPTIONS)
+  #define simde_mm_mask_range_round_ss(src, k, a, b, imm8, sae) simde_mm_mask_range_ss(src, k, a, b, imm8)
+#elif defined(SIMDE_STATEMENT_EXPR_)
+  #if defined(SIMDE_HAVE_FENV_H)
+    #define simde_mm_mask_range_round_ss(src, k, a, b, imm8, sae) SIMDE_STATEMENT_EXPR_(({ \
+      simde__m128 simde_mm_mask_range_round_ss_r; \
+      \
+      if (sae & SIMDE_MM_FROUND_NO_EXC) { \
+        fenv_t simde_mm_mask_range_round_ss_envp; \
+        int simde_mm_mask_range_round_ss_x = feholdexcept(&simde_mm_mask_range_round_ss_envp); \
+        simde_mm_mask_range_round_ss_r = simde_mm_mask_range_ss(src, k, a, b, imm8); \
+        if (HEDLEY_LIKELY(simde_mm_mask_range_round_ss_x == 0)) \
+          fesetenv(&simde_mm_mask_range_round_ss_envp); \
+      } \
+      else { \
+        simde_mm_mask_range_round_ss_r = simde_mm_mask_range_ss(src, k, a, b, imm8); \
+      } \
+      \
+      simde_mm_mask_range_round_ss_r; \
+    }))
+  #else
+    #define simde_mm_mask_range_round_ss(src, k, a, b, imm8, sae) simde_mm_mask_range_ss(src, k, a, b, imm8)
+  #endif
+#else
+  SIMDE_FUNCTION_ATTRIBUTES
+  simde__m128
+  simde_mm_mask_range_round_ss (simde__m128 src, simde__mmask8 k, simde__m128 a, simde__m128 b, int imm8, int sae)
+      SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 15)
+      SIMDE_REQUIRE_CONSTANT(sae) {
+    simde__m128 r;
+
+    if (sae & SIMDE_MM_FROUND_NO_EXC) {
+      #if defined(SIMDE_HAVE_FENV_H)
+        fenv_t envp;
+        int x = feholdexcept(&envp);
+        r = simde_mm_mask_range_ss(src, k, a, b, imm8);
+        if (HEDLEY_LIKELY(x == 0))
+          fesetenv(&envp);
+      #else
+        r = simde_mm_mask_range_ss(src, k, a, b, imm8);
+      #endif
+    }
+    else {
+      r = simde_mm_mask_range_ss(src, k, a, b, imm8);
+    }
+
+    return r;
+  }
+#endif
+#if defined(SIMDE_X86_AVX512DQ_ENABLE_NATIVE_ALIASES)
+  #undef _mm_mask_range_round_ss
+  #define _mm_mask_range_round_ss(src, k, a, b, imm8) simde_mm_mask_range_round_ss(src, k, a, b, imm8)
+#endif
+
+#if defined(SIMDE_X86_AVX512DQ_NATIVE)
+  #define simde_mm_maskz_range_round_ss(k, a, b, imm8, sae) _mm_maskz_range_round_ss(k, a, b, imm8, sae)
+#elif defined(SIMDE_FAST_EXCEPTIONS)
+  #define simde_mm_maskz_range_round_ss(k, a, b, imm8, sae) simde_mm_maskz_range_ss(k, a, b, imm8)
+#elif defined(SIMDE_STATEMENT_EXPR_)
+  #if defined(SIMDE_HAVE_FENV_H)
+    #define simde_mm_maskz_range_round_ss(k, a, b, imm8, sae) SIMDE_STATEMENT_EXPR_(({ \
+      simde__m128 simde_mm_maskz_range_round_ss_r; \
+      \
+      if (sae & SIMDE_MM_FROUND_NO_EXC) { \
+        fenv_t simde_mm_maskz_range_round_ss_envp; \
+        int simde_mm_maskz_range_round_ss_x = feholdexcept(&simde_mm_maskz_range_round_ss_envp); \
+        simde_mm_maskz_range_round_ss_r = simde_mm_maskz_range_ss(k, a, b, imm8); \
+        if (HEDLEY_LIKELY(simde_mm_maskz_range_round_ss_x == 0)) \
+          fesetenv(&simde_mm_maskz_range_round_ss_envp); \
+      } \
+      else { \
+        simde_mm_maskz_range_round_ss_r = simde_mm_maskz_range_ss(k, a, b, imm8); \
+      } \
+      \
+      simde_mm_maskz_range_round_ss_r; \
+    }))
+  #else
+    #define simde_mm_maskz_range_round_ss(k, a, b, imm8, sae) simde_mm_maskz_range_ss(k, a, b, imm8)
+  #endif
+#else
+  SIMDE_FUNCTION_ATTRIBUTES
+  simde__m128
+  simde_mm_maskz_range_round_ss (simde__mmask8 k, simde__m128 a, simde__m128 b, int imm8, int sae)
+      SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 15)
+      SIMDE_REQUIRE_CONSTANT(sae) {
+    simde__m128 r;
+
+    if (sae & SIMDE_MM_FROUND_NO_EXC) {
+      #if defined(SIMDE_HAVE_FENV_H)
+        fenv_t envp;
+        int x = feholdexcept(&envp);
+        r = simde_mm_maskz_range_ss(k, a, b, imm8);
+        if (HEDLEY_LIKELY(x == 0))
+          fesetenv(&envp);
+      #else
+        r = simde_mm_maskz_range_ss(k, a, b, imm8);
+      #endif
+    }
+    else {
+      r = simde_mm_maskz_range_ss(k, a, b, imm8);
+    }
+
+    return r;
+  }
+#endif
+#if defined(SIMDE_X86_AVX512DQ_ENABLE_NATIVE_ALIASES)
+  #undef _mm_maskz_range_round_ss
+  #define _mm_maskz_range_round_ss(k, a, b, imm8) simde_mm_maskz_range_round_ss(k, a, b, imm8)
+#endif
+
+#if (SIMDE_NATURAL_VECTOR_SIZE > 0) && defined(SIMDE_FAST_EXCEPTIONS)
+  #define simde_x_mm_range_sd(a, b, imm8) simde_mm_move_sd(a, simde_mm_range_pd(a, b, imm8))
+#elif (SIMDE_NATURAL_VECTOR_SIZE > 0)
+  #define simde_x_mm_range_sd(a, b, imm8) simde_mm_move_sd(a, simde_mm_range_pd(simde_x_mm_broadcastlow_pd(a), simde_x_mm_broadcastlow_pd(b), imm8))
+#else
+  SIMDE_FUNCTION_ATTRIBUTES
+  simde__m128d
+  simde_x_mm_range_sd (simde__m128d a, simde__m128d b, int imm8)
+      SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 15) {
+    simde__m128d_private
+      r_ = simde__m128d_to_private(a),
+      a_ = simde__m128d_to_private(a),
+      b_ = simde__m128d_to_private(b);
+    simde_float64 abs_a = simde_uint64_as_float64(a_.u64[0] & UINT64_C(9223372036854775807));
+    simde_float64 abs_b = simde_uint64_as_float64(b_.u64[0] & UINT64_C(9223372036854775807));
+
+    switch (imm8 & 3) {
+      case 0:
+        r_ = simde__m128d_to_private(simde_mm_min_sd(a, b));
+        break;
+      case 1:
+        r_ = simde__m128d_to_private(simde_mm_max_sd(a, b));
+        break;
+      case 2:
+        r_.f64[0] = abs_a <= abs_b ? a_.f64[0] : b_.f64[0];
+        break;
+      case 3:
+        r_.f64[0] = abs_b >= abs_a ? b_.f64[0] : a_.f64[0];
+        break;
+      default:
+        break;
+    }
+
+    switch (imm8 & 12) {
+      case 0:
+        r_.f64[0] = simde_uint64_as_float64((a_.u64[0] & UINT64_C(9223372036854775808)) ^ (r_.u64[0] & UINT64_C(9223372036854775807)));
+        break;
+      case 8:
+        r_.f64[0] = simde_uint64_as_float64(r_.u64[0] & UINT64_C(9223372036854775807));
+        break;
+      case 12:
+        r_.f64[0] = simde_uint64_as_float64(r_.u64[0] | UINT64_C(9223372036854775808));
+        break;
+      default:
+        break;
+    }
+
+    return simde__m128d_from_private(r_);
+  }
+#endif
+
+#if defined(SIMDE_X86_AVX512DQ_NATIVE)
+  #define simde_mm_mask_range_sd(src, k, a, b, imm8) _mm_mask_range_sd(src, k, a, b, imm8)
+#elif defined(SIMDE_STATEMENT_EXPR_)
+  #define simde_mm_mask_range_sd(src, k, a, b, imm8) SIMDE_STATEMENT_EXPR_(({ \
+    simde__m128d_private  \
+      simde_mm_mask_range_sd_r_ = simde__m128d_to_private(a), \
+      simde_mm_mask_range_sd_src_ = simde__m128d_to_private(src); \
+    \
+    if (k & 1) \
+      simde_mm_mask_range_sd_r_ = simde__m128d_to_private(simde_x_mm_range_sd(a, b, imm8)); \
+    else \
+      simde_mm_mask_range_sd_r_.f64[0] = simde_mm_mask_range_sd_src_.f64[0]; \
+    \
+    simde__m128d_from_private(simde_mm_mask_range_sd_r_); \
+  }))
+#else
+  SIMDE_FUNCTION_ATTRIBUTES
+  simde__m128d
+  simde_mm_mask_range_sd (simde__m128d src, simde__mmask8 k, simde__m128d a, simde__m128d b, int imm8)
+      SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 15) {
+    simde__m128d_private
+      r_ = simde__m128d_to_private(a),
+      src_ = simde__m128d_to_private(src);
+
+    if (k & 1)
+      r_ = simde__m128d_to_private(simde_x_mm_range_sd(a, b, imm8));
+    else
+      r_.f64[0] = src_.f64[0];
+
+    return simde__m128d_from_private(r_);
+  }
+#endif
+#if defined(SIMDE_X86_AVX512DQ_ENABLE_NATIVE_ALIASES)
+  #undef _mm_mask_range_sd
+  #define _mm_mask_range_sd(src, k, a, b, imm8) simde_mm_mask_range_sd(src, k, a, b, imm8)
+#endif
+
+#if defined(SIMDE_X86_AVX512DQ_NATIVE)
+  #define simde_mm_maskz_range_sd(k, a, b, imm8) _mm_maskz_range_sd(k, a, b, imm8)
+#elif defined(SIMDE_STATEMENT_EXPR_)
+  #define simde_mm_maskz_range_sd(k, a, b, imm8) SIMDE_STATEMENT_EXPR_(({ \
+    simde__m128d_private simde_mm_maskz_range_sd_r_ = simde__m128d_to_private(a); \
+    \
+    if (k & 1) \
+      simde_mm_maskz_range_sd_r_ = simde__m128d_to_private(simde_x_mm_range_sd(a, b, imm8)); \
+    else \
+      simde_mm_maskz_range_sd_r_.f64[0] = SIMDE_FLOAT64_C(0.0); \
+    \
+    simde__m128d_from_private(simde_mm_maskz_range_sd_r_); \
+  }))
+#else
+  SIMDE_FUNCTION_ATTRIBUTES
+  simde__m128d
+  simde_mm_maskz_range_sd (simde__mmask8 k, simde__m128d a, simde__m128d b, int imm8)
+      SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 15) {
+    simde__m128d_private r_ = simde__m128d_to_private(a);
+
+    if (k & 1)
+      r_ = simde__m128d_to_private(simde_x_mm_range_sd(a, b, imm8));
+    else
+      r_.f64[0] = SIMDE_FLOAT64_C(0.0);
+
+    return simde__m128d_from_private(r_);
+  }
+#endif
+#if defined(SIMDE_X86_AVX512DQ_ENABLE_NATIVE_ALIASES)
+  #undef _mm_maskz_range_sd
+  #define _mm_maskz_range_sd(k, a, b, imm8) simde_mm_mask_range_sd(k, a, b, imm8)
+#endif
+
+#if defined(SIMDE_X86_AVX512DQ_NATIVE)
+  #define simde_mm_range_round_sd(a, b, imm8, sae) _mm_range_round_sd(a, b, imm8, sae)
+#elif defined(SIMDE_FAST_EXCEPTIONS)
+  #define simde_mm_range_round_sd(a, b, imm8, sae) simde_x_mm_range_sd(a, b, imm8)
+#elif defined(SIMDE_STATEMENT_EXPR_)
+  #if defined(SIMDE_HAVE_FENV_H)
+    #define simde_mm_range_round_sd(a, b, imm8, sae) SIMDE_STATEMENT_EXPR_(({ \
+      simde__m128d simde_mm_range_round_sd_r; \
+      \
+      if (sae & SIMDE_MM_FROUND_NO_EXC) { \
+        fenv_t simde_mm_range_round_sd_envp; \
+        int simde_mm_range_round_sd_x = feholdexcept(&simde_mm_range_round_sd_envp); \
+        simde_mm_range_round_sd_r = simde_x_mm_range_sd(a, b, imm8); \
+        if (HEDLEY_LIKELY(simde_mm_range_round_sd_x == 0)) \
+          fesetenv(&simde_mm_range_round_sd_envp); \
+      } \
+      else { \
+        simde_mm_range_round_sd_r = simde_x_mm_range_sd(a, b, imm8); \
+      } \
+      \
+      simde_mm_range_round_sd_r; \
+    }))
+  #else
+    #define simde_mm_range_round_sd(a, b, imm8, sae) simde_x_mm_range_sd(a, b, imm8)
+  #endif
+#else
+  SIMDE_FUNCTION_ATTRIBUTES
+  simde__m128d
+  simde_mm_range_round_sd (simde__m128d a, simde__m128d b, int imm8, int sae)
+      SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 15)
+      SIMDE_REQUIRE_CONSTANT(sae) {
+    simde__m128d r;
+
+    if (sae & SIMDE_MM_FROUND_NO_EXC) {
+      #if defined(SIMDE_HAVE_FENV_H)
+        fenv_t envp;
+        int x = feholdexcept(&envp);
+        r = simde_x_mm_range_sd(a, b, imm8);
+        if (HEDLEY_LIKELY(x == 0))
+          fesetenv(&envp);
+      #else
+        r = simde_x_mm_range_sd(a, b, imm8);
+      #endif
+    }
+    else {
+      r = simde_x_mm_range_sd(a, b, imm8);
+    }
+
+    return r;
+  }
+#endif
+#if defined(SIMDE_X86_AVX512DQ_ENABLE_NATIVE_ALIASES)
+  #undef _mm_range_round_sd
+  #define _mm_range_round_sd(a, b, imm8, sae) simde_mm_range_round_sd(a, b, imm8, sae)
+#endif
+
+#if defined(SIMDE_X86_AVX512DQ_NATIVE)
+  #define simde_mm_mask_range_round_sd(src, k, a, b, imm8, sae) _mm_mask_range_round_sd(src, k, a, b, imm8, sae)
+#elif defined(SIMDE_FAST_EXCEPTIONS)
+  #define simde_mm_mask_range_round_sd(src, k, a, b, imm8, sae) simde_mm_mask_range_sd(src, k, a, b, imm8)
+#elif defined(SIMDE_STATEMENT_EXPR_)
+  #if defined(SIMDE_HAVE_FENV_H)
+    #define simde_mm_mask_range_round_sd(src, k, a, b, imm8, sae) SIMDE_STATEMENT_EXPR_(({ \
+      simde__m128d simde_mm_mask_range_round_sd_r; \
+      \
+      if (sae & SIMDE_MM_FROUND_NO_EXC) { \
+        fenv_t simde_mm_mask_range_round_sd_envp; \
+        int simde_mm_mask_range_round_sd_x = feholdexcept(&simde_mm_mask_range_round_sd_envp); \
+        simde_mm_mask_range_round_sd_r = simde_mm_mask_range_sd(src, k, a, b, imm8); \
+        if (HEDLEY_LIKELY(simde_mm_mask_range_round_sd_x == 0)) \
+          fesetenv(&simde_mm_mask_range_round_sd_envp); \
+      } \
+      else { \
+        simde_mm_mask_range_round_sd_r = simde_mm_mask_range_sd(src, k, a, b, imm8); \
+      } \
+      \
+      simde_mm_mask_range_round_sd_r; \
+    }))
+  #else
+    #define simde_mm_mask_range_round_sd(src, k, a, b, imm8, sae) simde_mm_mask_range_sd(src, k, a, b, imm8)
+  #endif
+#else
+  SIMDE_FUNCTION_ATTRIBUTES
+  simde__m128d
+  simde_mm_mask_range_round_sd (simde__m128d src, simde__mmask8 k, simde__m128d a, simde__m128d b, int imm8, int sae)
+      SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 15)
+      SIMDE_REQUIRE_CONSTANT(sae) {
+    simde__m128d r;
+
+    if (sae & SIMDE_MM_FROUND_NO_EXC) {
+      #if defined(SIMDE_HAVE_FENV_H)
+        fenv_t envp;
+        int x = feholdexcept(&envp);
+        r = simde_mm_mask_range_sd(src, k, a, b, imm8);
+        if (HEDLEY_LIKELY(x == 0))
+          fesetenv(&envp);
+      #else
+        r = simde_mm_mask_range_sd(src, k, a, b, imm8);
+      #endif
+    }
+    else {
+      r = simde_mm_mask_range_sd(src, k, a, b, imm8);
+    }
+
+    return r;
+  }
+#endif
+#if defined(SIMDE_X86_AVX512DQ_ENABLE_NATIVE_ALIASES)
+  #undef _mm_mask_range_round_sd
+  #define _mm_mask_range_round_sd(src, k, a, b, imm8) simde_mm_mask_range_round_sd(src, k, a, b, imm8)
+#endif
+
+#if defined(SIMDE_X86_AVX512DQ_NATIVE)
+  #define simde_mm_maskz_range_round_sd(k, a, b, imm8, sae) _mm_maskz_range_round_sd(k, a, b, imm8, sae)
+#elif defined(SIMDE_FAST_EXCEPTIONS)
+  #define simde_mm_maskz_range_round_sd(k, a, b, imm8, sae) simde_mm_maskz_range_sd(k, a, b, imm8)
+#elif defined(SIMDE_STATEMENT_EXPR_)
+  #if defined(SIMDE_HAVE_FENV_H)
+    #define simde_mm_maskz_range_round_sd(k, a, b, imm8, sae) SIMDE_STATEMENT_EXPR_(({ \
+      simde__m128d simde_mm_maskz_range_round_sd_r; \
+      \
+      if (sae & SIMDE_MM_FROUND_NO_EXC) { \
+        fenv_t simde_mm_maskz_range_round_sd_envp; \
+        int simde_mm_maskz_range_round_sd_x = feholdexcept(&simde_mm_maskz_range_round_sd_envp); \
+        simde_mm_maskz_range_round_sd_r = simde_mm_maskz_range_sd(k, a, b, imm8); \
+        if (HEDLEY_LIKELY(simde_mm_maskz_range_round_sd_x == 0)) \
+          fesetenv(&simde_mm_maskz_range_round_sd_envp); \
+      } \
+      else { \
+        simde_mm_maskz_range_round_sd_r = simde_mm_maskz_range_sd(k, a, b, imm8); \
+      } \
+      \
+      simde_mm_maskz_range_round_sd_r; \
+    }))
+  #else
+    #define simde_mm_maskz_range_round_sd(k, a, b, imm8, sae) simde_mm_maskz_range_sd(k, a, b, imm8)
+  #endif
+#else
+  SIMDE_FUNCTION_ATTRIBUTES
+  simde__m128d
+  simde_mm_maskz_range_round_sd (simde__mmask8 k, simde__m128d a, simde__m128d b, int imm8, int sae)
+      SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 15)
+      SIMDE_REQUIRE_CONSTANT(sae) {
+    simde__m128d r;
+
+    if (sae & SIMDE_MM_FROUND_NO_EXC) {
+      #if defined(SIMDE_HAVE_FENV_H)
+        fenv_t envp;
+        int x = feholdexcept(&envp);
+        r = simde_mm_maskz_range_sd(k, a, b, imm8);
+        if (HEDLEY_LIKELY(x == 0))
+          fesetenv(&envp);
+      #else
+        r = simde_mm_maskz_range_sd(k, a, b, imm8);
+      #endif
+    }
+    else {
+      r = simde_mm_maskz_range_sd(k, a, b, imm8);
+    }
+
+    return r;
+  }
+#endif
+#if defined(SIMDE_X86_AVX512DQ_ENABLE_NATIVE_ALIASES)
+  #undef _mm_maskz_range_round_sd
+  #define _mm_maskz_range_round_sd(k, a, b, imm8) simde_mm_maskz_range_round_sd(k, a, b, imm8)
 #endif
 
 SIMDE_END_DECLS_
