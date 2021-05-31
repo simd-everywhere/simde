@@ -2648,7 +2648,12 @@ simde_mm_cmp_ss (simde__m128 a, simde__m128 b, const int imm8)
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m256d
-simde_mm256_cmp_pd (simde__m256d a, simde__m256d b, const int imm8)
+#if defined(__clang__) && defined(__AVX512DQ__)
+simde_mm256_cmp_pd_internal_
+#else
+simde_mm256_cmp_pd
+#endif
+(simde__m256d a, simde__m256d b, const int imm8)
     SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 31) {
   simde__m256d_private
     r_,
@@ -2853,7 +2858,7 @@ simde_mm256_cmp_pd (simde__m256d a, simde__m256d b, const int imm8)
         simde_mm256_cmp_pd_r = simde_x_mm256_setone_pd(); \
         break; \
       default: \
-        simde_mm256_cmp_pd_r = simde_mm256_cmp_pd(a, b, imm8); \
+        simde_mm256_cmp_pd_r = simde_mm256_cmp_pd_internal_(a, b, imm8); \
         break; \
     } \
     simde_mm256_cmp_pd_r; \
@@ -2868,7 +2873,12 @@ simde_mm256_cmp_pd (simde__m256d a, simde__m256d b, const int imm8)
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m256
-simde_mm256_cmp_ps (simde__m256 a, simde__m256 b, const int imm8)
+#if defined(__clang__) && defined(__AVX512DQ__)
+simde_mm256_cmp_ps_internal_
+#else
+simde_mm256_cmp_ps
+#endif
+(simde__m256 a, simde__m256 b, const int imm8)
     SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 31) {
   simde__m256_private
     r_,
@@ -3073,7 +3083,7 @@ simde_mm256_cmp_ps (simde__m256 a, simde__m256 b, const int imm8)
         simde_mm256_cmp_ps_r = simde_x_mm256_setone_ps(); \
         break; \
       default: \
-        simde_mm256_cmp_ps_r = simde_mm256_cmp_ps(a, b, imm8); \
+        simde_mm256_cmp_ps_r = simde_mm256_cmp_ps_internal_(a, b, imm8); \
         break; \
     } \
     simde_mm256_cmp_ps_r; \
