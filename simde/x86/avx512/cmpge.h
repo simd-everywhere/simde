@@ -1045,8 +1045,8 @@ simde_mm_cmpge_epi64_mask (simde__m128i a, simde__m128i b) {
   #endif
 }
 #if defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES)
-  #undef _mm512_cmpge_epi64_mask
-  #define _mm512_cmpge_epi64_mask(a, b) simde_mm512_cmpge_epi64_mask((a), (b))
+  #undef _mm_cmpge_epi64_mask
+  #define _mm_cmpge_epi64_mask(a, b) simde_mm_cmpge_epi64_mask((a), (b))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -1097,8 +1097,8 @@ simde_mm256_cmpge_epi64_mask (simde__m256i a, simde__m256i b) {
   #endif
 }
 #if defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES)
-  #undef _mm512_cmpge_epi64_mask
-  #define _mm512_cmpge_epi64_mask(a, b) simde_mm512_cmpge_epi64_mask((a), (b))
+  #undef _mm256_cmpge_epi64_mask
+  #define _mm256_cmpge_epi64_mask(a, b) simde_mm256_cmpge_epi64_mask((a), (b))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
