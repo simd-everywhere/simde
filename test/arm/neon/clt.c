@@ -1397,6 +1397,226 @@ test_simde_vcltq_u64 (SIMDE_MUNIT_TEST_ARGS) {
 #endif
 }
 
+static int
+test_simde_vcltd_f64 (SIMDE_MUNIT_TEST_ARGS) {
+#if 1
+  static const struct {
+    simde_float64_t a;
+    simde_float64_t b;
+    uint64_t r;
+  } test_vec[] = {
+    { SIMDE_FLOAT64_C(   533.95),
+      SIMDE_FLOAT64_C(   746.90),
+                          UINT64_MAX },
+    { SIMDE_FLOAT64_C(   573.36),
+      SIMDE_FLOAT64_C(   889.97),
+                          UINT64_MAX },
+    { SIMDE_FLOAT64_C(  -468.38),
+      SIMDE_FLOAT64_C(  -287.97),
+                          UINT64_MAX },
+    { SIMDE_FLOAT64_C(  -620.98),
+      SIMDE_FLOAT64_C(   535.88),
+                          UINT64_MAX },
+    { SIMDE_FLOAT64_C(   425.47),
+      SIMDE_FLOAT64_C(    98.32),
+      UINT64_C(                   0) },
+    { SIMDE_FLOAT64_C(  -160.48),
+      SIMDE_FLOAT64_C(   423.53),
+                          UINT64_MAX },
+    { SIMDE_FLOAT64_C(  -851.46),
+      SIMDE_FLOAT64_C(  -635.13),
+                          UINT64_MAX },
+    { SIMDE_FLOAT64_C(   951.90),
+      SIMDE_FLOAT64_C(  -927.56),
+      UINT64_C(                   0) }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
+    uint64_t r = simde_vcltd_f64(test_vec[i].a, test_vec[i].b);
+    simde_assert_equal_u64(r, test_vec[i].r);
+  }
+
+  return 0;
+#else
+  fputc('\n', stdout);
+  for (int i = 0 ; i < 8 ; i++) {
+    simde_float64_t a = simde_test_codegen_random_f64(-1000, 1000);
+    simde_float64_t b = simde_test_codegen_random_f64(-1000, 1000);
+    uint64_t r = simde_vcltd_f64(a, b);
+
+    simde_test_codegen_write_f64(2, a, SIMDE_TEST_VEC_POS_FIRST);
+    simde_test_codegen_write_f64(2, b, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_codegen_write_u64(2, r, SIMDE_TEST_VEC_POS_LAST);
+  }
+  return 1;
+#endif
+}
+
+static int
+test_simde_vcltd_s64 (SIMDE_MUNIT_TEST_ARGS) {
+#if 1
+  static const struct {
+    int64_t a;
+    int64_t b;
+    uint64_t r;
+  } test_vec[] = {
+    {  INT64_C(  255893999981097058),
+      INT64_C( 4825350567398967245),
+                         UINT64_MAX },
+   {  INT64_C( 6007846673558272820),
+     -INT64_C( 2265888410887594764),
+     UINT64_C(                   0) },
+   {  INT64_C( 9160927138501202914),
+     -INT64_C(  524970878510387539),
+     UINT64_C(                   0) },
+   {  INT64_C( 5040462918486993384),
+      INT64_C( 2705724683769958702),
+     UINT64_C(                   0) },
+   { -INT64_C(  473045855704439490),
+      INT64_C( 4238208662586090773),
+                         UINT64_MAX },
+   {  INT64_C( 4892260587991122765),
+     -INT64_C( 1547412342135848418),
+     UINT64_C(                   0) },
+   {  INT64_C( 5181191478929181602),
+     -INT64_C( 4162186453568170577),
+     UINT64_C(                   0) },
+   {  INT64_C(   75517635955332788),
+      INT64_C( 2009706568804924492),
+                         UINT64_MAX }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
+    uint64_t r = simde_vcltd_s64(test_vec[i].a, test_vec[i].b);
+    simde_assert_equal_u64(r, test_vec[i].r);
+  }
+
+  return 0;
+#else
+  fputc('\n', stdout);
+  for (int i = 0 ; i < 8 ; i++) {
+    int64_t a = simde_test_codegen_random_i64();
+    int64_t b = simde_test_codegen_random_i64();
+    uint64_t r = simde_vcltd_s64(a, b);
+
+    simde_test_codegen_write_i64(2, a, SIMDE_TEST_VEC_POS_FIRST);
+    simde_test_codegen_write_i64(2, b, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_codegen_write_u64(2, r, SIMDE_TEST_VEC_POS_LAST);
+  }
+  return 1;
+#endif
+}
+
+static int
+test_simde_vcltd_u64 (SIMDE_MUNIT_TEST_ARGS) {
+#if 1
+  static const struct {
+    uint64_t a;
+    uint64_t b;
+    uint64_t r;
+  } test_vec[] = {
+    { UINT64_C(13199469999607627188),
+      UINT64_C(17475643578917670213),
+                          UINT64_MAX },
+    { UINT64_C( 9291426536416340492),
+      UINT64_C(17318693780852396996),
+                          UINT64_MAX },
+    { UINT64_C(10941498941691552025),
+      UINT64_C(10556677798004887888),
+      UINT64_C(                   0) },
+    { UINT64_C(14373927621614517189),
+      UINT64_C( 7562489693708022726),
+      UINT64_C(                   0) },
+    { UINT64_C( 2208278725635197629),
+      UINT64_C(11100016101477383154),
+                          UINT64_MAX },
+    { UINT64_C(14353550357350878568),
+      UINT64_C( 5744549760829371905),
+      UINT64_C(                   0) },
+    { UINT64_C(10841012728057709191),
+      UINT64_C(13073415685580726270),
+                          UINT64_MAX },
+    { UINT64_C( 1256314152064909992),
+      UINT64_C( 9109404319922338185),
+                          UINT64_MAX }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
+    uint64_t r = simde_vcltd_u64(test_vec[i].a, test_vec[i].b);
+    simde_assert_equal_u64(r, test_vec[i].r);
+  }
+
+  return 0;
+#else
+  fputc('\n', stdout);
+  for (int i = 0 ; i < 8 ; i++) {
+    uint64_t a = simde_test_codegen_random_u64();
+    uint64_t b = simde_test_codegen_random_u64();
+    uint64_t r = simde_vcltd_u64(a, b);
+
+    simde_test_codegen_write_u64(2, a, SIMDE_TEST_VEC_POS_FIRST);
+    simde_test_codegen_write_u64(2, b, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_codegen_write_u64(2, r, SIMDE_TEST_VEC_POS_LAST);
+  }
+  return 1;
+#endif
+}
+
+static int
+test_simde_vclts_f32 (SIMDE_MUNIT_TEST_ARGS) {
+#if 1
+  static const struct {
+    simde_float32_t a;
+    simde_float32_t b;
+    uint32_t r;
+  } test_vec[] = {
+    { SIMDE_FLOAT32_C(  -190.08),
+      SIMDE_FLOAT32_C(   833.00),
+                UINT32_MAX },
+    { SIMDE_FLOAT32_C(   896.69),
+      SIMDE_FLOAT32_C(   900.72),
+                UINT32_MAX },
+    { SIMDE_FLOAT32_C(  -980.09),
+      SIMDE_FLOAT32_C(  -878.50),
+                UINT32_MAX },
+    { SIMDE_FLOAT32_C(  -545.23),
+      SIMDE_FLOAT32_C(  -846.74),
+      UINT32_C(         0) },
+    { SIMDE_FLOAT32_C(  -227.24),
+      SIMDE_FLOAT32_C(  -583.33),
+      UINT32_C(         0) },
+    { SIMDE_FLOAT32_C(  -329.70),
+      SIMDE_FLOAT32_C(   600.18),
+                UINT32_MAX },
+    { SIMDE_FLOAT32_C(  -438.24),
+      SIMDE_FLOAT32_C(   847.23),
+                UINT32_MAX },
+    { SIMDE_FLOAT32_C(   716.84),
+      SIMDE_FLOAT32_C(  -704.38),
+      UINT32_C(         0) }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
+    uint32_t r = simde_vclts_f32(test_vec[i].a, test_vec[i].b);
+    simde_assert_equal_u32(r, test_vec[i].r);
+  }
+
+  return 0;
+#else
+  fputc('\n', stdout);
+  for (int i = 0 ; i < 8 ; i++) {
+    simde_float32_t a = simde_test_codegen_random_f32(-1000, 1000);
+    simde_float32_t b = simde_test_codegen_random_f32(-1000, 1000);
+    uint32_t r = simde_vclts_f32(a, b);
+
+    simde_test_codegen_write_f32(2, a, SIMDE_TEST_VEC_POS_FIRST);
+    simde_test_codegen_write_f32(2, b, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_codegen_write_u32(2, r, SIMDE_TEST_VEC_POS_LAST);
+  }
+  return 1;
+#endif
+}
+
 SIMDE_TEST_FUNC_LIST_BEGIN
 SIMDE_TEST_FUNC_LIST_ENTRY(vclt_f32)
 SIMDE_TEST_FUNC_LIST_ENTRY(vclt_f64)
@@ -1419,6 +1639,11 @@ SIMDE_TEST_FUNC_LIST_ENTRY(vcltq_u8)
 SIMDE_TEST_FUNC_LIST_ENTRY(vcltq_u16)
 SIMDE_TEST_FUNC_LIST_ENTRY(vcltq_u32)
 SIMDE_TEST_FUNC_LIST_ENTRY(vcltq_u64)
+
+SIMDE_TEST_FUNC_LIST_ENTRY(vcltd_f64)
+SIMDE_TEST_FUNC_LIST_ENTRY(vcltd_s64)
+SIMDE_TEST_FUNC_LIST_ENTRY(vcltd_u64)
+SIMDE_TEST_FUNC_LIST_ENTRY(vclts_f32)
 SIMDE_TEST_FUNC_LIST_END
 
 #include "test-neon-footer.h"
