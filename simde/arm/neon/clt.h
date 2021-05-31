@@ -36,6 +36,62 @@ SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 SIMDE_BEGIN_DECLS_
 
 SIMDE_FUNCTION_ATTRIBUTES
+uint64_t
+simde_vcltd_f64(simde_float64_t a, simde_float64_t b) {
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+    return HEDLEY_STATIC_CAST(uint64_t, vcltd_f64(a, b));
+  #else
+    return (a < b) ? UINT64_MAX : 0;
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vcltd_f64
+  #define vcltd_f64(a, b) simde_vcltd_f64((a), (b))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+uint64_t
+simde_vcltd_s64(int64_t a, int64_t b) {
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+    return HEDLEY_STATIC_CAST(uint64_t, vcltd_s64(a, b));
+  #else
+    return (a < b) ? UINT64_MAX : 0;
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vcltd_s64
+  #define vcltd_s64(a, b) simde_vcltd_s64((a), (b))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+uint64_t
+simde_vcltd_u64(uint64_t a, uint64_t b) {
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+    return HEDLEY_STATIC_CAST(uint64_t, vcltd_u64(a, b));
+  #else
+    return (a < b) ? UINT64_MAX : 0;
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vcltd_u64
+  #define vcltd_u64(a, b) simde_vcltd_u64((a), (b))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+uint32_t
+simde_vclts_f32(simde_float32_t a, simde_float32_t b) {
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+    return HEDLEY_STATIC_CAST(uint32_t, vclts_f32(a, b));
+  #else
+    return (a < b) ? UINT32_MAX : 0;
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vclts_f32
+  #define vclts_f32(a, b) simde_vclts_f32((a), (b))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
 simde_uint32x4_t
 simde_vcltq_f32(simde_float32x4_t a, simde_float32x4_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
@@ -57,7 +113,7 @@ simde_vcltq_f32(simde_float32x4_t a, simde_float32x4_t b) {
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-        r_.values[i] = (a_.values[i] < b_.values[i]) ? UINT32_MAX : 0;
+        r_.values[i] = simde_vclts_f32(a_.values[i], b_.values[i]);
       }
     #endif
 
@@ -91,7 +147,7 @@ simde_vcltq_f64(simde_float64x2_t a, simde_float64x2_t b) {
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-        r_.values[i] = (a_.values[i] < b_.values[i]) ? UINT64_MAX : 0;
+        r_.values[i] = simde_vcltd_f64(a_.values[i], b_.values[i]);
       }
     #endif
 
@@ -227,7 +283,7 @@ simde_vcltq_s64(simde_int64x2_t a, simde_int64x2_t b) {
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-        r_.values[i] = (a_.values[i] < b_.values[i]) ? UINT64_MAX : 0;
+        r_.values[i] = simde_vcltd_s64(a_.values[i], b_.values[i]);
       }
     #endif
 
@@ -365,7 +421,7 @@ simde_vcltq_u64(simde_uint64x2_t a, simde_uint64x2_t b) {
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-        r_.values[i] = (a_.values[i] < b_.values[i]) ? UINT64_MAX : 0;
+        r_.values[i] = simde_vcltd_u64(a_.values[i], b_.values[i]);
       }
     #endif
 
@@ -393,7 +449,7 @@ simde_vclt_f32(simde_float32x2_t a, simde_float32x2_t b) {
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-        r_.values[i] = (a_.values[i] < b_.values[i]) ? UINT32_MAX : 0;
+        r_.values[i] = simde_vclts_f32(a_.values[i], b_.values[i]);
       }
     #endif
 
@@ -421,7 +477,7 @@ simde_vclt_f64(simde_float64x1_t a, simde_float64x1_t b) {
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-        r_.values[i] = (a_.values[i] < b_.values[i]) ? UINT64_MAX : 0;
+        r_.values[i] = simde_vcltd_f64(a_.values[i], b_.values[i]);
       }
     #endif
 
@@ -539,7 +595,7 @@ simde_vclt_s64(simde_int64x1_t a, simde_int64x1_t b) {
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-        r_.values[i] = (a_.values[i] < b_.values[i]) ? UINT64_MAX : 0;
+        r_.values[i] = simde_vcltd_s64(a_.values[i], b_.values[i]);
       }
     #endif
 
@@ -660,7 +716,7 @@ simde_vclt_u64(simde_uint64x1_t a, simde_uint64x1_t b) {
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-        r_.values[i] = (a_.values[i] < b_.values[i]) ? UINT64_MAX : 0;
+        r_.values[i] = simde_vcltd_u64(a_.values[i], b_.values[i]);
       }
     #endif
 
