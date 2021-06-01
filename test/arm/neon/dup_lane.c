@@ -1288,6 +1288,66 @@ test_simde_vdupq_lane_f32 (SIMDE_MUNIT_TEST_ARGS) {
 }
 
 static int
+test_simde_vdupq_lane_f64 (SIMDE_MUNIT_TEST_ARGS) {
+#if 1
+  struct {
+    simde_float64 vec[1];
+    int lane;
+    simde_float64 r[2];
+  } test_vec[] = {
+    { { SIMDE_FLOAT64_C(    23.83) },
+       INT8_C(   0),
+      { SIMDE_FLOAT64_C(    23.83), SIMDE_FLOAT64_C(    23.83) } },
+    { { SIMDE_FLOAT64_C(   360.45) },
+       INT8_C(   0),
+      { SIMDE_FLOAT64_C(   360.45), SIMDE_FLOAT64_C(   360.45) } },
+    { { SIMDE_FLOAT64_C(  -969.45) },
+       INT8_C(   0),
+      { SIMDE_FLOAT64_C(  -969.45), SIMDE_FLOAT64_C(  -969.45) } },
+    { { SIMDE_FLOAT64_C(   206.91) },
+       INT8_C(   0),
+      { SIMDE_FLOAT64_C(   206.91), SIMDE_FLOAT64_C(   206.91) } },
+    { { SIMDE_FLOAT64_C(   953.07) },
+       INT8_C(   0),
+      { SIMDE_FLOAT64_C(   953.07), SIMDE_FLOAT64_C(   953.07) } },
+    { { SIMDE_FLOAT64_C(  -531.18) },
+       INT8_C(   0),
+      { SIMDE_FLOAT64_C(  -531.18), SIMDE_FLOAT64_C(  -531.18) } },
+    { { SIMDE_FLOAT64_C(    31.72) },
+       INT8_C(   0),
+      { SIMDE_FLOAT64_C(    31.72), SIMDE_FLOAT64_C(    31.72) } },
+    { { SIMDE_FLOAT64_C(  -358.35) },
+       INT8_C(   0),
+      { SIMDE_FLOAT64_C(  -358.35), SIMDE_FLOAT64_C(  -358.35) } }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
+    simde_float64x1_t vec;
+    simde_float64x2_t r;
+
+    vec = simde_vld1_f64(test_vec[i].vec);
+    r = simde_vdupq_lane_f64(vec, 0);
+
+    simde_test_arm_neon_assert_equal_f64x2(r, simde_vld1q_f64(test_vec[i].r), 1);
+  }
+
+  return 0;
+#else
+  for (int i = 0 ; i < 8 ; i++) {
+    simde_float64x1_t vec = simde_test_arm_neon_random_f64x1(-1000.0, 1000.0);
+    int lane = 0;
+
+    simde_float64x2_t r = simde_vdupq_lane_f64(vec, 0);
+
+    simde_test_arm_neon_write_f64x1(2, vec, SIMDE_TEST_VEC_POS_FIRST);
+    simde_test_codegen_write_i8(2, HEDLEY_STATIC_CAST(int8_t, lane), SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_arm_neon_write_f64x2(2, r, SIMDE_TEST_VEC_POS_LAST);
+  }
+  return 1;
+#endif
+}
+
+static int
 test_simde_vdupq_lane_s8 (SIMDE_MUNIT_TEST_ARGS) {
 #if 1
   struct {
@@ -2469,6 +2529,7 @@ SIMDE_TEST_FUNC_LIST_ENTRY(vdup_laneq_u32)
 SIMDE_TEST_FUNC_LIST_ENTRY(vdup_laneq_u64)
 
 SIMDE_TEST_FUNC_LIST_ENTRY(vdupq_lane_f32)
+SIMDE_TEST_FUNC_LIST_ENTRY(vdupq_lane_f64)
 SIMDE_TEST_FUNC_LIST_ENTRY(vdupq_lane_s8)
 SIMDE_TEST_FUNC_LIST_ENTRY(vdupq_lane_s16)
 SIMDE_TEST_FUNC_LIST_ENTRY(vdupq_lane_s32)

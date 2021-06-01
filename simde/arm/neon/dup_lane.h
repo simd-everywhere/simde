@@ -161,7 +161,8 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde_int64x1_t
 simde_vdup_lane_s64(simde_int64x1_t vec, const int lane)
     SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 0) {
-  return simde_vdup_n_s64(simde_int64x1_to_private(vec).values[lane]);
+  (void) lane;
+  return vec;
 }
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vdup_lane_s64(vec, lane) vdup_lane_s64(vec, lane)
@@ -256,7 +257,8 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde_uint64x1_t
 simde_vdup_lane_u64(simde_uint64x1_t vec, const int lane)
     SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 0) {
-  return simde_vdup_n_u64(simde_uint64x1_to_private(vec).values[lane]);
+  (void) lane;
+  return vec;
 }
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vdup_lane_u64(vec, lane) vdup_lane_u64(vec, lane)
@@ -550,6 +552,32 @@ simde_vdupq_lane_f32(simde_float32x2_t vec, const int lane)
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vdupq_lane_f32
   #define vdupq_lane_f32(vec, lane) simde_vdupq_lane_f32((vec), (lane))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_float64x2_t
+simde_vdupq_lane_f64(simde_float64x1_t vec, const int lane)
+    SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 0) {
+  return simde_vdupq_n_f64(simde_float64x1_to_private(vec).values[lane]);
+}
+#if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+  #define simde_vdupq_lane_f64(vec, lane) vdupq_lane_f64(vec, lane)
+#elif HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
+  #define simde_vdupq_lane_f64(vec, lane) (__extension__ ({ \
+    simde_float64x1_private simde_vdupq_lane_f64_vec_ = simde_float64x1_to_private(vec); \
+    simde_float64x2_private simde_vdupq_lane_f64_r_; \
+    simde_vdupq_lane_f64_r_.values = \
+      __builtin_shufflevector( \
+        simde_vdupq_lane_f64_vec_.values, \
+        simde_vdupq_lane_f64_vec_.values, \
+        lane, lane \
+      ); \
+    simde_float64x2_from_private(simde_vdupq_lane_f64_r_); \
+  }))
+#endif
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+  #undef vdupq_lane_f64
+  #define vdupq_lane_f64(vec, lane) simde_vdupq_lane_f64((vec), (lane))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
