@@ -535,7 +535,7 @@ simde_vdupq_lane_f32(simde_float32x2_t vec, const int lane)
     SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 1) {
   return simde_vdupq_n_f32(simde_float32x2_to_private(vec).values[lane]);
 }
-#if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+#if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vdupq_lane_f32(vec, lane) vdupq_lane_f32(vec, lane)
 #elif HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
   #define simde_vdupq_lane_f32(vec, lane) (__extension__ ({ \
@@ -550,7 +550,7 @@ simde_vdupq_lane_f32(simde_float32x2_t vec, const int lane)
     simde_float32x4_from_private(simde_vdupq_lane_f32_r_); \
   }))
 #endif
-#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vdupq_lane_f32
   #define vdupq_lane_f32(vec, lane) simde_vdupq_lane_f32((vec), (lane))
 #endif
@@ -559,12 +559,13 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde_float64x2_t
 simde_vdupq_lane_f64(simde_float64x1_t vec, const int lane)
     SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 0) {
+  (void) lane;
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vdupq_lane_f64(vec, 0);
-  #elif defined(SIMDE_SHUFFLE_VECTOR_)
+  #elif HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
     simde_float64x1_private vec_ = simde_float64x1_to_private(vec);
     simde_float64x2_private r;
-    r.values = SIMDE_SHUFFLE_VECTOR_(64, 8, vec_.values, vec_.values, 0, 0);
+    r.values = __builtin_shufflevector(vec_.values, vec_.values, 0, 0);
     return simde_float64x2_from_private(r);
   #else
     return simde_vdupq_n_f64(simde_vget_lane_f64(vec, 0));
@@ -583,13 +584,12 @@ simde_vdupq_lane_s8(simde_int8x8_t vec, const int lane)
 }
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vdupq_lane_s8(vec, lane) vdupq_lane_s8(vec, lane)
-#elif defined(SIMDE_SHUFFLE_VECTOR_)
+#elif HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
   #define simde_vdupq_lane_s8(vec, lane) (__extension__ ({ \
     simde_int8x8_private simde_vdupq_lane_s8_vec_ = simde_int8x8_to_private(vec); \
     simde_int8x16_private simde_vdupq_lane_s8_r_; \
     simde_vdupq_lane_s8_r_.values = \
-      SIMDE_SHUFFLE_VECTOR_( \
-        8, 8, \
+      __builtin_shufflevector( \
         simde_vdupq_lane_s8_vec_.values, \
         simde_vdupq_lane_s8_vec_.values, \
         lane, lane, lane, lane, \
@@ -613,13 +613,12 @@ simde_vdupq_lane_s16(simde_int16x4_t vec, const int lane)
 }
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vdupq_lane_s16(vec, lane) vdupq_lane_s16(vec, lane)
-#elif defined(SIMDE_SHUFFLE_VECTOR_)
+#elif HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
   #define simde_vdupq_lane_s16(vec, lane) (__extension__ ({ \
     simde_int16x4_private simde_vdupq_lane_s16_vec_ = simde_int16x4_to_private(vec); \
     simde_int16x8_private simde_vdupq_lane_s16_r_; \
     simde_vdupq_lane_s16_r_.values = \
-      SIMDE_SHUFFLE_VECTOR_( \
-        16, 8, \
+      __builtin_shufflevector( \
         simde_vdupq_lane_s16_vec_.values, \
         simde_vdupq_lane_s16_vec_.values, \
         lane, lane, lane, lane, lane, lane, lane, lane \
@@ -640,13 +639,12 @@ simde_vdupq_lane_s32(simde_int32x2_t vec, const int lane)
 }
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vdupq_lane_s32(vec, lane) vdupq_lane_s32(vec, lane)
-#elif defined(SIMDE_SHUFFLE_VECTOR_)
+#elif HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
   #define simde_vdupq_lane_s32(vec, lane) (__extension__ ({ \
     simde_int32x2_private simde_vdupq_lane_s32_vec_ = simde_int32x2_to_private(vec); \
     simde_int32x4_private simde_vdupq_lane_s32_r_; \
     simde_vdupq_lane_s32_r_.values = \
-      SIMDE_SHUFFLE_VECTOR_( \
-        32, 8, \
+      __builtin_shufflevector( \
         simde_vdupq_lane_s32_vec_.values, \
         simde_vdupq_lane_s32_vec_.values, \
         lane, lane, lane, lane \
@@ -663,12 +661,13 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde_int64x2_t
 simde_vdupq_lane_s64(simde_int64x1_t vec, const int lane)
     SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 0) {
+  (void) lane;
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vdupq_lane_s64(vec, 0);
-  #elif defined(SIMDE_SHUFFLE_VECTOR_)
+  #elif HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
     simde_int64x1_private vec_ = simde_int64x1_to_private(vec);
     simde_int64x2_private r;
-    r.values = SIMDE_SHUFFLE_VECTOR_(64, 8, vec_.values, vec_.values, 0, 0);
+    r.values = __builtin_shufflevector(vec_.values, vec_.values, 0, 0);
     return simde_int64x2_from_private(r);
   #else
     return simde_vdupq_n_s64(simde_vget_lane_s64(vec, 0));
@@ -687,13 +686,12 @@ simde_vdupq_lane_u8(simde_uint8x8_t vec, const int lane)
 }
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vdupq_lane_u8(vec, lane) vdupq_lane_u8(vec, lane)
-#elif defined(SIMDE_SHUFFLE_VECTOR_)
+#elif HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
   #define simde_vdupq_lane_u8(vec, lane) (__extension__ ({ \
     simde_uint8x8_private simde_vdupq_lane_u8_vec_ = simde_uint8x8_to_private(vec); \
     simde_uint8x16_private simde_vdupq_lane_u8_r_; \
     simde_vdupq_lane_u8_r_.values = \
-      SIMDE_SHUFFLE_VECTOR_( \
-        8, 8, \
+      __builtin_shufflevector( \
         simde_vdupq_lane_u8_vec_.values, \
         simde_vdupq_lane_u8_vec_.values, \
         lane, lane, lane, lane, \
@@ -717,13 +715,12 @@ simde_vdupq_lane_u16(simde_uint16x4_t vec, const int lane)
 }
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vdupq_lane_u16(vec, lane) vdupq_lane_u16(vec, lane)
-#elif defined(SIMDE_SHUFFLE_VECTOR_)
+#elif HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
   #define simde_vdupq_lane_u16(vec, lane) (__extension__ ({ \
     simde_uint16x4_private simde_vdupq_lane_u16_vec_ = simde_uint16x4_to_private(vec); \
     simde_uint16x8_private simde_vdupq_lane_u16_r_; \
     simde_vdupq_lane_u16_r_.values = \
-      SIMDE_SHUFFLE_VECTOR_( \
-        16, 8, \
+      __builtin_shufflevector( \
         simde_vdupq_lane_u16_vec_.values, \
         simde_vdupq_lane_u16_vec_.values, \
         lane, lane, lane, lane, lane, lane, lane, lane \
@@ -744,13 +741,12 @@ simde_vdupq_lane_u32(simde_uint32x2_t vec, const int lane)
 }
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vdupq_lane_u32(vec, lane) vdupq_lane_u32(vec, lane)
-#elif defined(SIMDE_SHUFFLE_VECTOR_)
+#elif HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
   #define simde_vdupq_lane_u32(vec, lane) (__extension__ ({ \
     simde_uint32x2_private simde_vdupq_lane_u32_vec_ = simde_uint32x2_to_private(vec); \
     simde_uint32x4_private simde_vdupq_lane_u32_r_; \
     simde_vdupq_lane_u32_r_.values = \
-      SIMDE_SHUFFLE_VECTOR_( \
-        32, 8, \
+      __builtin_shufflevector( \
         simde_vdupq_lane_u32_vec_.values, \
         simde_vdupq_lane_u32_vec_.values, \
         lane, lane, lane, lane \
@@ -767,12 +763,13 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde_uint64x2_t
 simde_vdupq_lane_u64(simde_uint64x1_t vec, const int lane)
     SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 0) {
+  (void) lane;
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vdupq_lane_u64(vec, 0);
-  #elif defined(SIMDE_SHUFFLE_VECTOR_)
+  #elif HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
     simde_uint64x1_private vec_ = simde_uint64x1_to_private(vec);
     simde_uint64x2_private r;
-    r.values = SIMDE_SHUFFLE_VECTOR_(64, 8, vec_.values, vec_.values, 0, 0);
+    r.values = __builtin_shufflevector(vec_.values, vec_.values, 0, 0);
     return simde_uint64x2_from_private(r);
   #else
     return simde_vdupq_n_u64(simde_vget_lane_u64(vec, 0));
