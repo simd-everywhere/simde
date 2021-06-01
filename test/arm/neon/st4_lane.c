@@ -6,6 +6,8 @@
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DIAGNOSTIC_DISABLE_UNREACHABLE_
 
+#if !defined(SIMDE_BUG_INTEL_857088)
+
 static int
 test_simde_vst4_lane_s8 (SIMDE_MUNIT_TEST_ARGS) {
 #if 1
@@ -427,16 +429,19 @@ test_simde_vst4_lane_u32 (SIMDE_MUNIT_TEST_ARGS) {
   return 1;
 #endif
 }
+#endif /* !defined(SIMDE_BUG_INTEL_857088) */
 
 HEDLEY_DIAGNOSTIC_POP
 
 SIMDE_TEST_FUNC_LIST_BEGIN
+#if !defined(SIMDE_BUG_INTEL_857088)
 SIMDE_TEST_FUNC_LIST_ENTRY(vst4_lane_s8)
 SIMDE_TEST_FUNC_LIST_ENTRY(vst4_lane_s16)
 SIMDE_TEST_FUNC_LIST_ENTRY(vst4_lane_s32)
 SIMDE_TEST_FUNC_LIST_ENTRY(vst4_lane_u8)
 SIMDE_TEST_FUNC_LIST_ENTRY(vst4_lane_u16)
 SIMDE_TEST_FUNC_LIST_ENTRY(vst4_lane_u32)
+#endif /* !defined(SIMDE_BUG_INTEL_857088) */
 SIMDE_TEST_FUNC_LIST_END
 
 #include "test-neon-footer.h"
