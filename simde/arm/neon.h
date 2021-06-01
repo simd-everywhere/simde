@@ -34,6 +34,7 @@
 #include "neon/abdl.h"
 #include "neon/abs.h"
 #include "neon/add.h"
+#include "neon/addhn.h"
 #include "neon/addl.h"
 #include "neon/addlv.h"
 #include "neon/addl_high.h"
