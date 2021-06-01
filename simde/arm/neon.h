@@ -161,6 +161,7 @@
 #include "neon/set_lane.h"
 #include "neon/shl.h"
 #include "neon/shl_n.h"
+#include "neon/shll_n.h"
 #include "neon/shr_n.h"
 #include "neon/shrn_n.h"
 #include "neon/sqadd.h"
