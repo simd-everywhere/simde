@@ -105,6 +105,7 @@ simde_neon_families = [
   'qadd',
   'qabs',
   'qdmulh',
+  'qdmulh_lane',
   'qdmulh_n',
   'qdmull',
   'qrdmulh',

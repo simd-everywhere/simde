@@ -125,6 +125,7 @@
 #include "neon/qabs.h"
 #include "neon/qadd.h"
 #include "neon/qdmulh.h"
+#include "neon/qdmulh_lane.h"
 #include "neon/qdmulh_n.h"
 #include "neon/qdmull.h"
 #include "neon/qrdmulh.h"

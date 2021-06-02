@@ -21,60 +21,67 @@
  * SOFTWARE.
  *
  * Copyright:
+ *   2021      Evan Nemerson <evan@nemerson.com>
  *   2021      Zhi An Ng <zhin@google.com> (Copyright owned by Google, LLC)
  */
 
-#if !defined(SIMDE_ARM_NEON_QDMULH_N_H)
-#define SIMDE_ARM_NEON_QDMULH_N_H
+#if !defined(SIMDE_ARM_NEON_QDMULH_LANE_H)
+#define SIMDE_ARM_NEON_QDMULH_LANE_H
 
-#include "qdmulh.h"
-#include "dup_n.h"
+#include "types.h"
+
+#include "qdmulh_n.h"
+#include "get_lane.h"
 
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 SIMDE_BEGIN_DECLS_
 
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-  #define simde_vqdmulh_n_s16(a, b) vqdmulh_n_s16((a), (b))
+  #define simde_vqdmulh_lane_s16(a, v, lane) vqdmulh_lane_s16((a), (v), (lane))
 #else
-  #define simde_vqdmulh_n_s16(a, b) simde_vqdmulh_s16((a), simde_vdup_n_s16(b))
+  #define simde_vqdmulh_lane_s16(a, v, lane) \
+    simde_vqdmulh_n_s16((a), simde_vget_lane_s16((v), (lane)))
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
-  #undef vqdmulh_n_s16
-  #define vqdmulh_n_s16(a, b) simde_vqdmulh_n_s16((a), (b))
+  #undef vqdmulh_lane_s16
+  #define vqdmulh_lane_s16(a, v, lane) simde_vqdmulh_lane_s16((a), (v), (lane))
 #endif
 
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-  #define simde_vqdmulh_n_s32(a, b) vqdmulh_n_s32((a), (b))
+  #define simde_vqdmulh_lane_s32(a, v, lane) vqdmulh_lane_s32((a), (v), (lane))
 #else
-  #define simde_vqdmulh_n_s32(a, b) simde_vqdmulh_s32((a), simde_vdup_n_s32(b))
+  #define simde_vqdmulh_lane_s32(a, v, lane) \
+    simde_vqdmulh_n_s32((a), simde_vget_lane_s32((v), (lane)))
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
-  #undef vqdmulh_n_s32
-  #define vqdmulh_n_s32(a, b) simde_vqdmulh_n_s32((a), (b))
+  #undef vqdmulh_lane_s32
+  #define vqdmulh_lane_s32(a, v, lane) simde_vqdmulh_lane_s32((a), (v), (lane))
 #endif
 
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-  #define simde_vqdmulhq_n_s16(a, b) vqdmulhq_n_s16((a), (b))
+  #define simde_vqdmulhq_lane_s16(a, v, lane) vqdmulhq_lane_s16((a), (v), (lane))
 #else
-  #define simde_vqdmulhq_n_s16(a, b) simde_vqdmulhq_s16((a), simde_vdupq_n_s16(b))
+  #define simde_vqdmulhq_lane_s16(a, v, lane) \
+    simde_vqdmulhq_n_s16((a), simde_vget_lane_s16((v), (lane)))
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
-  #undef vqdmulhq_n_s16
-  #define vqdmulhq_n_s16(a, b) simde_vqdmulhq_n_s16((a), (b))
+  #undef vqdmulhq_lane_s16
+  #define vqdmulhq_lane_s16(a, v, lane) simde_vqdmulhq_lane_s16((a), (v), (lane))
 #endif
 
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-  #define simde_vqdmulhq_n_s32(a, b) vqdmulhq_n_s32((a), (b))
+  #define simde_vqdmulhq_lane_s32(a, v, lane) vqdmulhq_lane_s32((a), (v), (lane))
 #else
-  #define simde_vqdmulhq_n_s32(a, b) simde_vqdmulhq_s32((a), simde_vdupq_n_s32(b))
+  #define simde_vqdmulhq_lane_s32(a, v, lane) \
+    simde_vqdmulhq_n_s32((a), simde_vget_lane_s32((v), (lane)))
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
-  #undef vqdmulhq_n_s32
-  #define vqdmulhq_n_s32(a, b) simde_vqdmulhq_n_s32((a), (b))
+  #undef vqdmulhq_lane_s32
+  #define vqdmulhq_lane_s32(a, v, lane) simde_vqdmulhq_lane_s32((a), (v), (lane))
 #endif
 
 SIMDE_END_DECLS_
 HEDLEY_DIAGNOSTIC_POP
 
-#endif /* !defined(SIMDE_ARM_NEON_QDMULH_N_H) */
+#endif /* !defined(SIMDE_ARM_NEON_QDMULH_LANE_H) */
