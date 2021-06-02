@@ -247,6 +247,7 @@ simde_avx512_families = [
   'range_round',
   'round',
   'roundscale',
+  'roundscale_round',
   'sad',
   'set',
   'set1',

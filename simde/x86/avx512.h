@@ -84,6 +84,7 @@
 #include "avx512/range_round.h"
 #include "avx512/round.h"
 #include "avx512/roundscale.h"
+#include "avx512/roundscale_round.h"
 #include "avx512/sad.h"
 #include "avx512/set.h"
 #include "avx512/set1.h"
