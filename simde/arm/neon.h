@@ -168,6 +168,7 @@
 #include "neon/shrn_n.h"
 #include "neon/sqadd.h"
 #include "neon/sra_n.h"
+#include "neon/sri_n.h"
 #include "neon/st1.h"
 #include "neon/st1_lane.h"
 #include "neon/st2.h"
