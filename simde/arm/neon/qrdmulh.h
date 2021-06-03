@@ -43,7 +43,7 @@ simde_vqrdmulhh_s16(int16_t a, int16_t b) {
     return HEDLEY_STATIC_CAST(int16_t, (((1 << 15) + ((HEDLEY_STATIC_CAST(int32_t, (HEDLEY_STATIC_CAST(int32_t, a) * HEDLEY_STATIC_CAST(int32_t, b)))) << 1)) >> 16) & 0xffff);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
   #undef vqrdmulhh_s16
   #define vqrdmulhh_s16(a, b) simde_vqrdmulhh_s16((a), (b))
 #endif
@@ -57,7 +57,7 @@ simde_vqrdmulhs_s32(int32_t a, int32_t b) {
     return HEDLEY_STATIC_CAST(int32_t, (((HEDLEY_STATIC_CAST(int64_t, 1) << 31) + ((HEDLEY_STATIC_CAST(int64_t, (HEDLEY_STATIC_CAST(int64_t, a) * HEDLEY_STATIC_CAST(int64_t, b)))) << 1)) >> 32) & 0xffffffff);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
   #undef vqrdmulhs_s32
   #define vqrdmulhs_s32(a, b) simde_vqrdmulhs_s32((a), (b))
 #endif
