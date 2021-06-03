@@ -459,16 +459,16 @@ simde_vdup_laneq_u16(simde_uint16x8_t vec, const int lane)
 #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
   #define simde_vdup_laneq_u16(vec, lane) vdup_laneq_u16(vec, lane)
 #elif HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
-  #define simde_vdup_laneq_s16(vec, lane) (__extension__ ({ \
-    simde_int16x8_private simde_vdup_laneq_s16_vec_ = simde_int16x8_to_private(vec); \
-    simde_int16x4_private simde_vdup_laneq_s16_r_; \
-    simde_vdup_laneq_s16_r_.values = \
+  #define simde_vdup_laneq_u16(vec, lane) (__extension__ ({ \
+    simde_uint16x8_private simde_vdup_laneq_u16_vec_ = simde_uint16x8_to_private(vec); \
+    simde_uint16x4_private simde_vdup_laneq_u16_r_; \
+    simde_vdup_laneq_u16_r_.values = \
       __builtin_shufflevector( \
-        simde_vdup_laneq_s16_vec_.values, \
-        simde_vdup_laneq_s16_vec_.values, \
+        simde_vdup_laneq_u16_vec_.values, \
+        simde_vdup_laneq_u16_vec_.values, \
         lane, lane, lane, lane \
       ); \
-    simde_int16x4_from_private(simde_vdup_laneq_s16_r_); \
+    simde_uint16x4_from_private(simde_vdup_laneq_u16_r_); \
   }))
 #endif
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
