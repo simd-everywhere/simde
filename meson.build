@@ -77,6 +77,7 @@ simde_neon_families = [
   'mla_n',
   'mlal',
   'mlal_high',
+  'mlal_lane',
   'mlal_n',
   'mls',
   'mls_n',
