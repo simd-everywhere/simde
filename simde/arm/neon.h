@@ -142,6 +142,7 @@
 #include "neon/qneg.h"
 #include "neon/qsub.h"
 #include "neon/qshl.h"
+#include "neon/qshrn_n.h"
 #include "neon/qshrun_n.h"
 #include "neon/qtbl.h"
 #include "neon/qtbx.h"
