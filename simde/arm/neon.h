@@ -114,6 +114,7 @@
 #include "neon/mul_n.h"
 #include "neon/mull.h"
 #include "neon/mull_high.h"
+#include "neon/mull_lane.h"
 #include "neon/mull_n.h"
 #include "neon/mvn.h"
 #include "neon/neg.h"

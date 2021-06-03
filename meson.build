@@ -94,6 +94,7 @@ simde_neon_families = [
   'mul_n',
   'mull',
   'mull_high',
+  'mull_lane',
   'mull_n',
   'mvn',
   'neg',
