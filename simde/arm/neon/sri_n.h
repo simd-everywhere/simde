@@ -22,6 +22,7 @@
  *
  * Copyright:
  *   2021      Zhi An Ng <zhin@google.com> (Copyright owned by Google, LLC)
+ *   2021      Evan Nemerson <evan@nemerson.com>
  */
 
 #if !defined(SIMDE_ARM_NEON_SRI_N_H)
@@ -138,6 +139,108 @@ SIMDE_BEGIN_DECLS_
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vsri_n_u64
   #define vsri_n_u64(a, b, n) simde_vsri_n_u64((a), (b), (n))
+#endif
+
+#if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #define simde_vsriq_n_s8(a, b, n) vsriq_n_s8((a), (b), (n))
+#else
+  #define simde_vsriq_n_s8(a, b, n) \
+    simde_vreinterpretq_s8_u8(simde_vsriq_n_u8( \
+        simde_vreinterpretq_u8_s8((a)), simde_vreinterpretq_u8_s8((b)), (n)))
+#endif
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+  #undef vsriq_n_s8
+  #define vsriq_n_s8(a, b, n) simde_vsriq_n_s8((a), (b), (n))
+#endif
+
+#if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #define simde_vsriq_n_u8(a, b, n) vsriq_n_u8((a), (b), (n))
+#else
+  #define simde_vsriq_n_u8(a, b, n) \
+    simde_vorrq_u8( \
+        simde_vandq_u8((a), simde_vdupq_n_u8((UINT8_C(0xff) >> (8 - n) << (8 - n)))), \
+        simde_vshrq_n_u8((b), (n)))
+#endif
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+  #undef vsriq_n_u8
+  #define vsriq_n_u8(a, b, n) simde_vsriq_n_u8((a), (b), (n))
+#endif
+
+#if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #define simde_vsriq_n_s16(a, b, n) vsriq_n_s16((a), (b), (n))
+#else
+  #define simde_vsriq_n_s16(a, b, n) \
+    simde_vreinterpretq_s16_u16(simde_vsriq_n_u16( \
+        simde_vreinterpretq_u16_s16((a)), simde_vreinterpretq_u16_s16((b)), (n)))
+#endif
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+  #undef vsriq_n_s16
+  #define vsriq_n_s16(a, b, n) simde_vsriq_n_s16((a), (b), (n))
+#endif
+
+#if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #define simde_vsriq_n_u16(a, b, n) vsriq_n_u16((a), (b), (n))
+#else
+  #define simde_vsriq_n_u16(a, b, n) \
+    simde_vorrq_u16( \
+        simde_vandq_u16((a), simde_vdupq_n_u16((UINT16_C(0xffff) >> (16 - n) << (16 - n)))), \
+        simde_vshrq_n_u16((b), (n)))
+#endif
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+  #undef vsriq_n_u16
+  #define vsriq_n_u16(a, b, n) simde_vsriq_n_u16((a), (b), (n))
+#endif
+
+#if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #define simde_vsriq_n_s32(a, b, n) vsriq_n_s32((a), (b), (n))
+#else
+  #define simde_vsriq_n_s32(a, b, n) \
+    simde_vreinterpretq_s32_u32(simde_vsriq_n_u32( \
+        simde_vreinterpretq_u32_s32((a)), simde_vreinterpretq_u32_s32((b)), (n)))
+#endif
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+  #undef vsriq_n_s32
+  #define vsriq_n_s32(a, b, n) simde_vsriq_n_s32((a), (b), (n))
+#endif
+
+#if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #define simde_vsriq_n_u32(a, b, n) vsriq_n_u32((a), (b), (n))
+#else
+  #define simde_vsriq_n_u32(a, b, n) \
+    simde_vorrq_u32( \
+        simde_vandq_u32((a), \
+                      simde_vdupq_n_u32((UINT32_C(0xffffffff) >> (32 - n) << (32 - n)))), \
+        simde_vshrq_n_u32((b), (n)))
+#endif
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+  #undef vsriq_n_u32
+  #define vsriq_n_u32(a, b, n) simde_vsriq_n_u32((a), (b), (n))
+#endif
+
+#if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #define simde_vsriq_n_s64(a, b, n) vsriq_n_s64((a), (b), (n))
+#else
+  #define simde_vsriq_n_s64(a, b, n) \
+    simde_vreinterpretq_s64_u64(simde_vsriq_n_u64( \
+        simde_vreinterpretq_u64_s64((a)), simde_vreinterpretq_u64_s64((b)), (n)))
+#endif
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+  #undef vsriq_n_s64
+  #define vsriq_n_s64(a, b, n) simde_vsriq_n_s64((a), (b), (n))
+#endif
+
+#if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #define simde_vsriq_n_u64(a, b, n) vsriq_n_u64((a), (b), (n))
+#else
+#define simde_vsriq_n_u64(a, b, n) \
+    simde_vorrq_u64( \
+        simde_vandq_u64((a), simde_vdupq_n_u64( \
+                                (UINT64_C(0xffffffffffffffff) >> (64 - n) << (64 - n)))), \
+        simde_vshrq_n_u64((b), (n)))
+#endif
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+  #undef vsriq_n_u64
+  #define vsriq_n_u64(a, b, n) simde_vsriq_n_u64((a), (b), (n))
 #endif
 
 SIMDE_END_DECLS_
