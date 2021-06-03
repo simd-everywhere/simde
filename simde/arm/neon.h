@@ -181,6 +181,7 @@
 #include "neon/st4.h"
 #include "neon/st4_lane.h"
 #include "neon/sub.h"
+#include "neon/subhn.h"
 #include "neon/subl.h"
 #include "neon/subw.h"
 #include "neon/subw_high.h"
