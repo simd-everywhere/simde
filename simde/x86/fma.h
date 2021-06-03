@@ -99,11 +99,7 @@ simde_mm_fmadd_ps (simde__m128 a, simde__m128 b, simde__m128 c) {
       c_ = simde__m128_to_private(c),
       r_;
 
-    #if SIMDE_NATURAL_VECTOR_SIZE_LE(128)
-      for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
-        r_.f32[i] = simde_math_fmaf(a_.f32[i], b_.f32[i], c_.f32[i]);
-      }
-    #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
+    #if defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
       r_.altivec_f32 = vec_madd(a_.altivec_f32, b_.altivec_f32, c_.altivec_f32);
     #elif defined(SIMDE_ARM_NEON_A32V8_NATIVE)
       r_.neon_f32 = vmlaq_f32(c_.neon_f32, b_.neon_f32, a_.neon_f32);
