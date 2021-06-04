@@ -7,9 +7,9 @@ FROM debian:${release}-slim
 ARG DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update -y && \
-    apt-get install -y netselect-apt
-RUN netselect-apt -n testing
-RUN mv sources.list /etc/apt/sources.list
+    apt-get install -y netselect-apt && \
+    netselect-apt -n testing && \
+    mv sources.list /etc/apt/sources.list
 
 COPY docker/bin /tmp/simde-bin
 RUN \
