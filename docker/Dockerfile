@@ -6,6 +6,11 @@ FROM debian:${release}-slim
 
 ARG DEBIAN_FRONTEND=noninteractive
 
+RUN apt-get update -y && \
+    apt-get install -y netselect-apt
+RUN netselect-apt -n testing
+RUN mv sources.list /etc/apt/sources.list
+
 COPY docker/bin /tmp/simde-bin
 RUN \
   for script in simde-reset-build.sh; do \
