@@ -222,6 +222,17 @@ simde_vhaddq_u8(simde_uint8x16_t a, simde_uint8x16_t b) {
 
     #if defined(SIMDE_X86_AVX512VL_NATIVE) && defined(SIMDE_X86_AVX512BW_NATIVE)
       r_.m128i = _mm256_cvtepi16_epi8(_mm256_srli_epi16(_mm256_add_epi16(_mm256_cvtepu8_epi16(a_.m128i), _mm256_cvtepu8_epi16(b_.m128i)), 1));
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+      v128_t lo =
+          wasm_u16x8_shr(wasm_i16x8_add(wasm_u16x8_extend_low_u8x16(a_.v128),
+                                        wasm_u16x8_extend_low_u8x16(b_.v128)),
+                         1);
+      v128_t hi =
+          wasm_u16x8_shr(wasm_i16x8_add(wasm_u16x8_extend_high_u8x16(a_.v128),
+                                        wasm_u16x8_extend_high_u8x16(b_.v128)),
+                         1);
+      r_.v128 = wasm_i8x16_shuffle(lo, hi, 0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20,
+                                   22, 24, 26, 28, 30);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
