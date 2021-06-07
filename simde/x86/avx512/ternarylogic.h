@@ -2,6 +2,7 @@
 #define SIMDE_X86_AVX512_TERNARYLOGIC_H
 
 #include "types.h"
+#include "movm.h"
 
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
@@ -2458,7 +2459,7 @@ simde_x_mm_ternarylogic_impl_0xff_() {
 #if defined(SIMDE_X86_AVX512VL_NATIVE) && defined(SIMDE_X86_AVX512F_NATIVE)
   #define simde_mm_ternarylogic_epi32(a, b, c, imm8) _mm_ternarylogic_epi32(a, b, c, imm8)
 #else
-  SIMDE_FUNCTION_ATTRIBUTES
+  SIMDE_HUGE_FUNCTION_ATTRIBUTES
   simde__m128i
   simde_mm_ternarylogic_epi32(simde__m128i a, simde__m128i b, simde__m128i c, int imm8)
       SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 255) {
@@ -2468,7 +2469,11 @@ simde_x_mm_ternarylogic_impl_0xff_() {
       b_ = simde__m128i_to_private(b),
       c_ = simde__m128i_to_private(c);
 
+  #if defined(SIMDE_TERNARYLOGIC_COMPRESSION)
+    switch((imm8 ^ (HEDLEY_STATIC_CAST(int8_t, imm8) >> 7)) & 127) {
+  #else
     switch(imm8 & 255) {
+  #endif
       case 0:
         SIMDE_VECTORIZE
         for(size_t i = 0 ; i < (sizeof(r_.u32) / sizeof(r_.u32[0])) ; i++) {
@@ -3237,6 +3242,7 @@ simde_x_mm_ternarylogic_impl_0xff_() {
           r_.u32[i] = simde_x_mm_ternarylogic_impl_0x7f_(a_.u32[i], b_.u32[i], c_.u32[i]);
         }
         break;
+    #if !defined(SIMDE_TERNARYLOGIC_COMPRESSION)
       case 128:
         SIMDE_VECTORIZE
         for(size_t i = 0 ; i < (sizeof(r_.u32) / sizeof(r_.u32[0])) ; i++) {
@@ -4005,7 +4011,12 @@ simde_x_mm_ternarylogic_impl_0xff_() {
           r_.u32[i] = simde_x_mm_ternarylogic_impl_0xff_();
         }
         break;
+    #endif
     }
+
+  #if defined(SIMDE_TERNARYLOGIC_COMPRESSION)
+    r_ = simde__m128i_to_private(simde_mm_xor_si128(simde__m128i_from_private(r_), simde_mm_movm_epi32(HEDLEY_STATIC_CAST(uint8_t, (HEDLEY_STATIC_CAST(int8_t, imm8) >> 7)))));
+  #endif
 
     return simde__m128i_from_private(r_);
   }

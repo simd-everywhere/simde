@@ -14,8 +14,8 @@ jobs:
   variables:
     CC: clang-10
     CXX: clang++-10
-    # CFLAGS: -Weverything -Werror
-    # CXXFLAGS: -Weverything -Werror
+    CFLAGS: -Wextra -Werror -DSIMDE_CONSTRAINED_COMPILATION
+    CXXFLAGS: -Wextra -Werror -DSIMDE_CONSTRAINED_COMPILATION
   steps:
   - script: uname -a && cat /proc/cpuinfo /proc/meminfo
     displayName: System Information
@@ -34,8 +34,8 @@ jobs:
   variables:
     CC: gcc-10
     CXX: g++-10
-    CFLAGS: -fanalyzer -Wextra -Werror
-    CXXFLAGS: -fanalyzer -Wextra -Werror
+    CFLAGS: -fanalyzer -Wextra -Werror -DSIMDE_CONSTRAINED_COMPILATION
+    CXXFLAGS: -fanalyzer -Wextra -Werror -DSIMDE_CONSTRAINED_COMPILATION
   steps:
   - script: uname -a && cat /proc/cpuinfo /proc/meminfo
     displayName: System Information
