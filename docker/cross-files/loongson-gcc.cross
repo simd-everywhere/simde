@@ -8,8 +8,8 @@ ld = '/usr/bin/mips64el-linux-gnuabi64-ld'
 exe_wrapper = ['qemu-mips64el-static', '-cpu', 'Loongson-3A4000']
 
 [properties]
-c_args = ['-march=loongson3a']
-cpp_args = ['-march=loongson3a']
+c_args = ['-march=loongson3a', '-DSIMDE_CONSTRAINED_COMPILATION']
+cpp_args = ['-march=loongson3a', '-DSIMDE_CONSTRAINED_COMPILATION']
 
 [host_machine]
 system = 'linux'
