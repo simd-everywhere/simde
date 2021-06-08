@@ -359,12 +359,50 @@ simde_vld4q_s64(int64_t const *ptr) {
   #define vld4q_s64(a) simde_vld4q_s64((a))
 #endif
 
-
 SIMDE_FUNCTION_ATTRIBUTES
 simde_uint8x16x4_t
 simde_vld4q_u8(uint8_t const *ptr) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vld4q_u8(ptr);
+  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+    // Let a, b, c, d be the 4 uint8x16 to return, they are laid out in memory:
+    // [a0, b0, c0, d0, a1, b1, c1, d1, a2, b2, c2, d2, a3, b3, c3, d3,
+    //  a4, b4, c4, d4, a5, b5, c5, d5, a6, b6, c6, d6, a7, b7, c7, d7,
+    //  a8, b8, c8, d8, a9, b9, c9, d9, a10, b10, c10, d10, a11, b11, c11, d11,
+    //  a12, b12, c12, d12, a13, b13, c13, d13, a14, b14, c14, d14, a15, b15, c15, d15]
+    v128_t a_ = wasm_v128_load(ptr);
+    v128_t b_ = wasm_v128_load(ptr + 16);
+    v128_t c_ = wasm_v128_load(ptr + 32);
+    v128_t d_ = wasm_v128_load(ptr + 48);
+
+    v128_t a_low_b_low = wasm_i8x16_shuffle(a_, b_, 0, 4, 8, 12, 16, 20, 24, 28,
+                                            1, 5, 9, 13, 17, 21, 25, 29);
+    v128_t a_high_b_high = wasm_i8x16_shuffle(c_, d_, 0, 4, 8, 12, 16, 20, 24,
+                                              28, 1, 5, 9, 13, 17, 21, 25, 29);
+    v128_t a = wasm_i8x16_shuffle(a_low_b_low, a_high_b_high, 0, 1, 2, 3, 4, 5,
+                                  6, 7, 16, 17, 18, 19, 20, 21, 22, 23);
+    v128_t b = wasm_i8x16_shuffle(a_low_b_low, a_high_b_high, 8, 9, 10, 11, 12,
+                                  13, 14, 15, 24, 25, 26, 27, 28, 29, 30, 31);
+
+    v128_t c_low_d_low = wasm_i8x16_shuffle(a_, b_, 2, 6, 10, 14, 18, 22, 26,
+                                            30, 3, 7, 11, 15, 19, 23, 27, 31);
+    v128_t c_high_d_high = wasm_i8x16_shuffle(c_, d_, 2, 6, 10, 14, 18, 22, 26,
+                                              30, 3, 7, 11, 15, 19, 23, 27, 31);
+    v128_t c = wasm_i8x16_shuffle(c_low_d_low, c_high_d_high, 0, 1, 2, 3, 4, 5,
+                                  6, 7, 16, 17, 18, 19, 20, 21, 22, 23);
+    v128_t d = wasm_i8x16_shuffle(c_low_d_low, c_high_d_high, 8, 9, 10, 11, 12,
+                                  13, 14, 15, 24, 25, 26, 27, 28, 29, 30, 31);
+
+    simde_uint8x16_private r_[4];
+    r_[0].v128 = a;
+    r_[1].v128 = b;
+    r_[2].v128 = c;
+    r_[3].v128 = d;
+    simde_uint8x16x4_t s_ = {{simde_uint8x16_from_private(r_[0]),
+                              simde_uint8x16_from_private(r_[1]),
+                              simde_uint8x16_from_private(r_[2]),
+                              simde_uint8x16_from_private(r_[3])}};
+    return s_;
   #else
     simde_uint8x16_private a_[4];
     for (size_t i = 0; i < (sizeof(simde_uint8x16_t) / sizeof(*ptr)) * 4 ; i++) {
