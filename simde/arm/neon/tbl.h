@@ -48,6 +48,17 @@ simde_vtbl1_u8(simde_uint8x8_t a, simde_uint8x8_t b) {
 
   #if defined(SIMDE_X86_SSSE3_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
     r_.m64 = _mm_shuffle_pi8(a_.m64, _mm_or_si64(b_.m64, _mm_cmpgt_pi8(b_.m64, _mm_set1_pi8(7))));
+  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+    simde_uint8x16_private R, A, B;
+
+    A.values = __builtin_shufflevector(a_.values, b_.values, 0, 1, 2, 3, 4, 5,
+                                       6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
+    B.values = __builtin_shufflevector(b_.values, b_.values, 0, 1, 2, 3, 4, 5,
+                                       6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
+    R.v128 = wasm_i8x16_swizzle(A.v128, B.v128);
+    R.values &= B.values < 8;
+    r_.values =
+        __builtin_shufflevector(R.values, R.values, 0, 1, 2, 3, 4, 5, 6, 7);
   #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
