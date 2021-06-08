@@ -29,7 +29,8 @@
 #define SIMDE_ARM_NEON_TBL_H
 
 #include "reinterpret.h"
-#include "types.h"
+#include "combine.h"
+#include "get_low.h"
 
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
@@ -40,15 +41,25 @@ simde_uint8x8_t
 simde_vtbl1_u8(simde_uint8x8_t a, simde_uint8x8_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vtbl1_u8(a, b);
+  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+    simde_uint8x16_private
+      r_,
+      a_ = simde_uint8x16_to_private(simde_vcombine_u8(a, a)),
+      b_ = simde_uint8x16_to_private(simde_vcombine_u8(b, b));
+
+    r_.v128 = wasm_i8x16_swizzle(a_.v128, b_.v128);
+    r_.v128 = wasm_v128_and(r_.v128, wasm_u8x16_lt(b_.v128, wasm_i8x16_splat(8)));
+
+    return simde_vget_low_u8(simde_uint8x16_from_private(r_));
   #else
     simde_uint8x8_private
       r_,
       a_ = simde_uint8x8_to_private(a),
       b_ = simde_uint8x8_to_private(b);
 
-  #if defined(SIMDE_X86_SSSE3_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
-    r_.m64 = _mm_shuffle_pi8(a_.m64, _mm_or_si64(b_.m64, _mm_cmpgt_pi8(b_.m64, _mm_set1_pi8(7))));
-  #else
+    #if defined(SIMDE_X86_SSSE3_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
+      r_.m64 = _mm_shuffle_pi8(a_.m64, _mm_or_si64(b_.m64, _mm_cmpgt_pi8(b_.m64, _mm_set1_pi8(7))));
+    #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
         r_.values[i] = (b_.values[i] < 8) ? a_.values[b_.values[i]] : 0;
