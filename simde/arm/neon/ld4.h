@@ -372,6 +372,8 @@ simde_vld4q_u8(uint8_t const *ptr) {
     //  a12, b12, c12, d12, a13, b13, c13, d13, a14, b14, c14, d14, a15, b15, c15, d15]
     v128_t a_ = wasm_v128_load(ptr);
     v128_t b_ = wasm_v128_load(ptr + 16);
+    v128_t c_ = wasm_v128_load(ptr + 32);
+    v128_t d_ = wasm_v128_load(ptr + 48);
 
     v128_t a_low_b_low = wasm_i8x16_shuffle(a_, b_, 0, 4, 8, 12, 16, 20, 24, 28,
                                             1, 5, 9, 13, 17, 21, 25, 29);
@@ -382,8 +384,6 @@ simde_vld4q_u8(uint8_t const *ptr) {
     v128_t b = wasm_i8x16_shuffle(a_low_b_low, a_high_b_high, 8, 9, 10, 11, 12,
                                   13, 14, 15, 24, 25, 26, 27, 28, 29, 30, 31);
 
-    v128_t c_ = wasm_v128_load(ptr + 32);
-    v128_t d_ = wasm_v128_load(ptr + 48);
     v128_t c_low_d_low = wasm_i8x16_shuffle(a_, b_, 2, 6, 10, 14, 18, 22, 26,
                                             30, 3, 7, 11, 15, 19, 23, 27, 31);
     v128_t c_high_d_high = wasm_i8x16_shuffle(c_, d_, 2, 6, 10, 14, 18, 22, 26,
