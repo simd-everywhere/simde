@@ -74,6 +74,7 @@
 #include "neon/eor.h"
 #include "neon/ext.h"
 #include "neon/fma.h"
+#include "neon/fma_lane.h"
 #include "neon/fma_n.h"
 #include "neon/get_high.h"
 #include "neon/get_lane.h"
