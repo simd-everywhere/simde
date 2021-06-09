@@ -4017,7 +4017,6 @@ simde_x_ternarylogic_0xff_impl_(uint_fast32_t a, uint_fast32_t b, uint_fast32_t 
   #define _mm_ternarylogic_epi32(a, b, c, imm8) simde_mm_ternarylogic_epi32(a, b, c, imm8)
 #endif
 
-
 SIMDE_END_DECLS_
 HEDLEY_DIAGNOSTIC_POP
 
