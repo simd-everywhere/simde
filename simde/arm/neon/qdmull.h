@@ -35,7 +35,7 @@
 #if !defined(SIMDE_ARM_NEON_QDMULL_H)
 #define SIMDE_ARM_NEON_QDMULL_H
 
-#include "types.h"
+#include "combine.h"
 
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
@@ -76,6 +76,21 @@ simde_int32x4_t
 simde_vqdmull_s16(simde_int16x4_t a, simde_int16x4_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vqdmull_s16(a, b);
+  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+    simde_int32x4_private r_;
+    simde_int16x8_private v_ = simde_int16x8_to_private(simde_vcombine_s16(a, b));
+
+    const v128_t lo = wasm_i32x4_extend_low_i16x8(v_.v128);
+    const v128_t hi = wasm_i32x4_extend_high_i16x8(v_.v128);
+
+    const v128_t product = wasm_i32x4_mul(lo, hi);
+    const v128_t uflow = wasm_i32x4_lt(product, wasm_i32x4_splat(-INT32_C(0x40000000)));
+    const v128_t oflow = wasm_i32x4_gt(product, wasm_i32x4_splat( INT32_C(0x3FFFFFFF)));
+    r_.v128 = wasm_i32x4_shl(product, 1);
+    r_.v128 = wasm_v128_bitselect(wasm_i32x4_splat(INT32_MIN), r_.v128, uflow);
+    r_.v128 = wasm_v128_bitselect(wasm_i32x4_splat(INT32_MAX), r_.v128, oflow);
+
+    return simde_int32x4_from_private(r_);
   #else
     simde_int32x4_private r_;
     simde_int16x4_private
@@ -100,6 +115,21 @@ simde_int64x2_t
 simde_vqdmull_s32(simde_int32x2_t a, simde_int32x2_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vqdmull_s32(a, b);
+  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+    simde_int64x2_private r_;
+    simde_int32x4_private v_ = simde_int32x4_to_private(simde_vcombine_s32(a, b));
+
+    const v128_t lo = wasm_i64x2_extend_low_i32x4(v_.v128);
+    const v128_t hi = wasm_i64x2_extend_high_i32x4(v_.v128);
+
+    const v128_t product = wasm_i64x2_mul(lo, hi);
+    const v128_t uflow = wasm_i64x2_lt(product, wasm_i64x2_splat(-INT64_C(0x4000000000000000)));
+    const v128_t oflow = wasm_i64x2_gt(product, wasm_i64x2_splat( INT64_C(0x3FFFFFFFFFFFFFFF)));
+    r_.v128 = wasm_i64x2_shl(product, 1);
+    r_.v128 = wasm_v128_bitselect(wasm_i64x2_splat(INT64_MIN), r_.v128, uflow);
+    r_.v128 = wasm_v128_bitselect(wasm_i64x2_splat(INT64_MAX), r_.v128, oflow);
+
+    return simde_int64x2_from_private(r_);
   #else
     simde_int64x2_private r_;
     simde_int32x2_private
