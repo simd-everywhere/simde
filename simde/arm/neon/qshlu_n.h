@@ -37,11 +37,9 @@ simde_uint8x8_t
 simde_vqshlu_n_s8(simde_int8x8_t a, const int n)
     SIMDE_REQUIRE_CONSTANT_RANGE(n, 0, 7) {
   simde_uint8x8_t result;
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-    SIMDE_CONSTIFY_8_(vqshlu_n_s8, result, (HEDLEY_UNREACHABLE(), result), n, a);
-  #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
-      simde_int8x8_private a_ = simde_int8x8_to_private(a);
-      simde_uint8x8_private r_;
+  simde_int8x8_private a_ = simde_int8x8_to_private(a);
+  simde_uint8x8_private r_;
+  #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
       __typeof__(r_.values) shifted = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), a_.values) << n;
 
       __typeof__(r_.values) overflow = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), (shifted >> n) != HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), a_.values));
@@ -52,8 +50,6 @@ simde_vqshlu_n_s8(simde_int8x8_t a, const int n)
       result = simde_uint8x8_from_private(r_);
   #else
     #if defined(SIMDE_WASM_SIMD128_NATIVE)
-      simde_int8x8_private a_ = simde_int8x8_to_private(a);
-      simde_uint8x8_private r_;
       __typeof__(a_.values) zeros = { 0, };
 
       simde_int8x16_private
@@ -69,9 +65,6 @@ simde_vqshlu_n_s8(simde_int8x8_t a, const int n)
       r_.values = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), a_.values);
       result = simde_uint8x8_from_private(r_);
     #else
-      simde_int8x8_private a_ = simde_int8x8_to_private(a);
-      simde_uint8x8_private r_;
-
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
         if(a_.values[i] < 0) {
@@ -91,6 +84,9 @@ simde_vqshlu_n_s8(simde_int8x8_t a, const int n)
   #endif
   return result;
 }
+#if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #define simde_vqshlu_n_s8(a, n) vqshlu_n_s8(a, n)
+#endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vqshlu_n_s8
   #define vqshlu_n_s8(a, n) simde_vqshlu_n_s8((a), (n))
@@ -101,11 +97,9 @@ simde_uint16x4_t
 simde_vqshlu_n_s16(simde_int16x4_t a, const int n)
     SIMDE_REQUIRE_CONSTANT_RANGE(n, 0, 15) {
   simde_uint16x4_t result;
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-    SIMDE_CONSTIFY_16_(vqshlu_n_s16, result, (HEDLEY_UNREACHABLE(), result), n, a);
-  #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
-      simde_int16x4_private a_ = simde_int16x4_to_private(a);
-      simde_uint16x4_private r_;
+  simde_int16x4_private a_ = simde_int16x4_to_private(a);
+  simde_uint16x4_private r_;
+  #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
       __typeof__(r_.values) shifted = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), a_.values) << n;
 
       __typeof__(r_.values) overflow = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), (shifted >> n) != HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), a_.values));
@@ -116,8 +110,6 @@ simde_vqshlu_n_s16(simde_int16x4_t a, const int n)
       result = simde_uint16x4_from_private(r_);
   #else
     #if defined(SIMDE_WASM_SIMD128_NATIVE)
-      simde_int16x4_private a_ = simde_int16x4_to_private(a);
-      simde_uint16x4_private r_;
       __typeof__(a_.values) zeros = { 0, };
 
       simde_int16x8_private
@@ -133,9 +125,6 @@ simde_vqshlu_n_s16(simde_int16x4_t a, const int n)
       r_.values = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), a_.values);
       result = simde_uint16x4_from_private(r_);
     #else
-      simde_int16x4_private a_ = simde_int16x4_to_private(a);
-      simde_uint16x4_private r_;
-
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
         if(a_.values[i] < 0) {
@@ -155,6 +144,9 @@ simde_vqshlu_n_s16(simde_int16x4_t a, const int n)
   #endif
   return result;
 }
+#if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #define simde_vqshlu_n_s16(a, n) vqshlu_n_s16(a, n)
+#endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vqshlu_n_s16
   #define vqshlu_n_s16(a, n) simde_vqshlu_n_s16((a), (n))
@@ -165,11 +157,9 @@ simde_uint32x2_t
 simde_vqshlu_n_s32(simde_int32x2_t a, const int n)
     SIMDE_REQUIRE_CONSTANT_RANGE(n, 0, 31) {
   simde_uint32x2_t result;
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-    SIMDE_CONSTIFY_32_(vqshlu_n_s32, result, (HEDLEY_UNREACHABLE(), result), n, a);
-  #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
-      simde_int32x2_private a_ = simde_int32x2_to_private(a);
-      simde_uint32x2_private r_;
+  simde_int32x2_private a_ = simde_int32x2_to_private(a);
+  simde_uint32x2_private r_;
+  #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
       __typeof__(r_.values) shifted = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), a_.values) << n;
 
       __typeof__(r_.values) overflow = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), (shifted >> n) != HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), a_.values));
@@ -180,8 +170,6 @@ simde_vqshlu_n_s32(simde_int32x2_t a, const int n)
       result = simde_uint32x2_from_private(r_);
   #else
     #if defined(SIMDE_WASM_SIMD128_NATIVE)
-      simde_int32x2_private a_ = simde_int32x2_to_private(a);
-      simde_uint32x2_private r_;
       __typeof__(a_.values) zeros = { 0, };
 
       simde_int32x4_private
@@ -197,9 +185,6 @@ simde_vqshlu_n_s32(simde_int32x2_t a, const int n)
       r_.values = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), a_.values);
       result = simde_uint32x2_from_private(r_);
     #else
-      simde_int32x2_private a_ = simde_int32x2_to_private(a);
-      simde_uint32x2_private r_;
-
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
         if(a_.values[i] < 0) {
@@ -219,6 +204,9 @@ simde_vqshlu_n_s32(simde_int32x2_t a, const int n)
   #endif
   return result;
 }
+#if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #define simde_vqshlu_n_s32(a, n) vqshlu_n_s32(a, n)
+#endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vqshlu_n_s32
   #define vqshlu_n_s32(a, n) simde_vqshlu_n_s32((a), (n))
@@ -229,11 +217,9 @@ simde_uint64x1_t
 simde_vqshlu_n_s64(simde_int64x1_t a, const int n)
     SIMDE_REQUIRE_CONSTANT_RANGE(n, 0, 63) {
   simde_uint64x1_t result;
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-    SIMDE_CONSTIFY_64_(vqshlu_n_s64, result, (HEDLEY_UNREACHABLE(), result), n, a);
-  #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
-      simde_int64x1_private a_ = simde_int64x1_to_private(a);
-      simde_uint64x1_private r_;
+  simde_int64x1_private a_ = simde_int64x1_to_private(a);
+  simde_uint64x1_private r_;
+  #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
       __typeof__(r_.values) shifted = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), a_.values) << n;
 
       __typeof__(r_.values) overflow = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), (shifted >> n) != HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), a_.values));
@@ -244,8 +230,6 @@ simde_vqshlu_n_s64(simde_int64x1_t a, const int n)
       result = simde_uint64x1_from_private(r_);
   #else
     #if defined(SIMDE_WASM_SIMD128_NATIVE)
-      simde_int64x1_private a_ = simde_int64x1_to_private(a);
-      simde_uint64x1_private r_;
       __typeof__(a_.values) zeros = { 0, };
 
       simde_int64x2_private
@@ -261,9 +245,6 @@ simde_vqshlu_n_s64(simde_int64x1_t a, const int n)
       r_.values = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), a_.values);
       result = simde_uint64x1_from_private(r_);
     #else
-      simde_int64x1_private a_ = simde_int64x1_to_private(a);
-      simde_uint64x1_private r_;
-
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
         if(a_.values[i] < 0) {
@@ -283,6 +264,9 @@ simde_vqshlu_n_s64(simde_int64x1_t a, const int n)
   #endif
   return result;
 }
+#if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #define simde_vqshlu_n_s64(a, n) vqshlu_n_s64(a, n)
+#endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vqshlu_n_s64
   #define vqshlu_n_s64(a, n) simde_vqshlu_n_s64((a), (n))
@@ -293,11 +277,9 @@ simde_uint8x16_t
 simde_vqshluq_n_s8(simde_int8x16_t a, const int n)
     SIMDE_REQUIRE_CONSTANT_RANGE(n, 0, 7) {
   simde_uint8x16_t result;
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-    SIMDE_CONSTIFY_8_(vqshluq_n_s8, result, (HEDLEY_UNREACHABLE(), result), n, a);
-  #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
-      simde_int8x16_private a_ = simde_int8x16_to_private(a);
-      simde_uint8x16_private r_;
+  simde_int8x16_private a_ = simde_int8x16_to_private(a);
+  simde_uint8x16_private r_;
+  #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
       __typeof__(r_.values) shifted = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), a_.values) << n;
 
       __typeof__(r_.values) overflow = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), (shifted >> n) != HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), a_.values));
@@ -308,22 +290,16 @@ simde_vqshluq_n_s8(simde_int8x16_t a, const int n)
       result = simde_uint8x16_from_private(r_);
   #else
     #if defined(SIMDE_WASM_SIMD128_NATIVE)
-      simde_int8x16_private
-        A = simde_int8x16_to_private(a),
-        R;
-      simde_uint8x16_private r_;
+      simde_int8x16_private R;
 
-      v128_t shifted = wasm_i8x16_shl(A.v128, n);
-      v128_t overflow = wasm_i8x16_eq(A.v128, wasm_u8x16_shr(shifted, n));
+      v128_t shifted = wasm_i8x16_shl(a_.v128, n);
+      v128_t overflow = wasm_i8x16_eq(a_.v128, wasm_u8x16_shr(shifted, n));
       R.v128 = wasm_v128_bitselect(shifted, wasm_v128_not(wasm_i8x16_splat(0)), overflow);
-      R.v128 = wasm_v128_and(wasm_i8x16_gt(A.v128, wasm_i8x16_splat(0)), R.v128);
+      R.v128 = wasm_v128_and(wasm_i8x16_gt(a_.v128, wasm_i8x16_splat(0)), R.v128);
 
       r_.values = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), R.values);
       result = simde_uint8x16_from_private(r_);
     #else
-      simde_int8x16_private a_ = simde_int8x16_to_private(a);
-      simde_uint8x16_private r_;
-
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
         if(a_.values[i] < 0) {
@@ -343,6 +319,9 @@ simde_vqshluq_n_s8(simde_int8x16_t a, const int n)
   #endif
   return result;
 }
+#if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #define simde_vqshluq_n_s8(a, n) vqshluq_n_s8(a, n)
+#endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vqshluq_n_s8
   #define vqshluq_n_s8(a, n) simde_vqshluq_n_s8((a), (n))
@@ -353,11 +332,9 @@ simde_uint16x8_t
 simde_vqshluq_n_s16(simde_int16x8_t a, const int n)
     SIMDE_REQUIRE_CONSTANT_RANGE(n, 0, 15) {
   simde_uint16x8_t result;
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-    SIMDE_CONSTIFY_16_(vqshluq_n_s16, result, (HEDLEY_UNREACHABLE(), result), n, a);
-  #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
-      simde_int16x8_private a_ = simde_int16x8_to_private(a);
-      simde_uint16x8_private r_;
+  simde_int16x8_private a_ = simde_int16x8_to_private(a);
+  simde_uint16x8_private r_;
+  #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
       __typeof__(r_.values) shifted = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), a_.values) << n;
 
       __typeof__(r_.values) overflow = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), (shifted >> n) != HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), a_.values));
@@ -368,22 +345,16 @@ simde_vqshluq_n_s16(simde_int16x8_t a, const int n)
       result = simde_uint16x8_from_private(r_);
   #else
     #if defined(SIMDE_WASM_SIMD128_NATIVE)
-      simde_int16x8_private
-        A = simde_int16x8_to_private(a),
-        R;
-      simde_uint16x8_private r_;
+      simde_int16x8_private R;
 
-      v128_t shifted = wasm_i16x8_shl(A.v128, n);
-      v128_t overflow = wasm_i16x8_eq(A.v128, wasm_u16x8_shr(shifted, n));
+      v128_t shifted = wasm_i16x8_shl(a_.v128, n);
+      v128_t overflow = wasm_i16x8_eq(a_.v128, wasm_u16x8_shr(shifted, n));
       R.v128 = wasm_v128_bitselect(shifted, wasm_v128_not(wasm_i16x8_splat(0)), overflow);
-      R.v128 = wasm_v128_and(wasm_i16x8_gt(A.v128, wasm_i16x8_splat(0)), R.v128);
+      R.v128 = wasm_v128_and(wasm_i16x8_gt(a_.v128, wasm_i16x8_splat(0)), R.v128);
 
       r_.values = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), R.values);
       result = simde_uint16x8_from_private(r_);
     #else
-      simde_int16x8_private a_ = simde_int16x8_to_private(a);
-      simde_uint16x8_private r_;
-
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
         if(a_.values[i] < 0) {
@@ -403,6 +374,9 @@ simde_vqshluq_n_s16(simde_int16x8_t a, const int n)
   #endif
   return result;
 }
+#if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #define simde_vqshluq_n_s16(a, n) vqshluq_n_s16(a, n)
+#endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vqshluq_n_s16
   #define vqshluq_n_s16(a, n) simde_vqshluq_n_s16((a), (n))
@@ -413,11 +387,9 @@ simde_uint32x4_t
 simde_vqshluq_n_s32(simde_int32x4_t a, const int n)
     SIMDE_REQUIRE_CONSTANT_RANGE(n, 0, 31) {
   simde_uint32x4_t result;
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-    SIMDE_CONSTIFY_32_(vqshluq_n_s32, result, (HEDLEY_UNREACHABLE(), result), n, a);
-  #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
-      simde_int32x4_private a_ = simde_int32x4_to_private(a);
-      simde_uint32x4_private r_;
+  simde_int32x4_private a_ = simde_int32x4_to_private(a);
+  simde_uint32x4_private r_;
+  #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
       __typeof__(r_.values) shifted = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), a_.values) << n;
 
       __typeof__(r_.values) overflow = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), (shifted >> n) != HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), a_.values));
@@ -428,22 +400,16 @@ simde_vqshluq_n_s32(simde_int32x4_t a, const int n)
       result = simde_uint32x4_from_private(r_);
   #else
     #if defined(SIMDE_WASM_SIMD128_NATIVE)
-      simde_int32x4_private
-        A = simde_int32x4_to_private(a),
-        R;
-      simde_uint32x4_private r_;
+      simde_int32x4_private R;
 
-      v128_t shifted = wasm_i32x4_shl(A.v128, n);
-      v128_t overflow = wasm_i32x4_eq(A.v128, wasm_u32x4_shr(shifted, n));
+      v128_t shifted = wasm_i32x4_shl(a_.v128, n);
+      v128_t overflow = wasm_i32x4_eq(a_.v128, wasm_u32x4_shr(shifted, n));
       R.v128 = wasm_v128_bitselect(shifted, wasm_v128_not(wasm_i32x4_splat(0)), overflow);
-      R.v128 = wasm_v128_and(wasm_i32x4_gt(A.v128, wasm_i32x4_splat(0)), R.v128);
+      R.v128 = wasm_v128_and(wasm_i32x4_gt(a_.v128, wasm_i32x4_splat(0)), R.v128);
 
       r_.values = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), R.values);
       result = simde_uint32x4_from_private(r_);
     #else
-      simde_int32x4_private a_ = simde_int32x4_to_private(a);
-      simde_uint32x4_private r_;
-
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
         if(a_.values[i] < 0) {
@@ -463,6 +429,9 @@ simde_vqshluq_n_s32(simde_int32x4_t a, const int n)
   #endif
   return result;
 }
+#if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #define simde_vqshluq_n_s32(a, n) vqshluq_n_s32(a, n)
+#endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vqshluq_n_s32
   #define vqshluq_n_s32(a, n) simde_vqshluq_n_s32((a), (n))
@@ -473,11 +442,9 @@ simde_uint64x2_t
 simde_vqshluq_n_s64(simde_int64x2_t a, const int n)
     SIMDE_REQUIRE_CONSTANT_RANGE(n, 0, 63) {
   simde_uint64x2_t result;
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-    SIMDE_CONSTIFY_64_(vqshluq_n_s64, result, (HEDLEY_UNREACHABLE(), result), n, a);
-  #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
-      simde_int64x2_private a_ = simde_int64x2_to_private(a);
-      simde_uint64x2_private r_;
+  simde_int64x2_private a_ = simde_int64x2_to_private(a);
+  simde_uint64x2_private r_;
+  #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
       __typeof__(r_.values) shifted = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), a_.values) << n;
 
       __typeof__(r_.values) overflow = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), (shifted >> n) != HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), a_.values));
@@ -488,22 +455,16 @@ simde_vqshluq_n_s64(simde_int64x2_t a, const int n)
       result = simde_uint64x2_from_private(r_);
   #else
     #if defined(SIMDE_WASM_SIMD128_NATIVE)
-      simde_int64x2_private
-        A = simde_int64x2_to_private(a),
-        R;
-      simde_uint64x2_private r_;
+      simde_int64x2_private R;
 
-      v128_t shifted = wasm_i64x2_shl(A.v128, n);
-      v128_t overflow = wasm_i64x2_eq(A.v128, wasm_u64x2_shr(shifted, n));
+      v128_t shifted = wasm_i64x2_shl(a_.v128, n);
+      v128_t overflow = wasm_i64x2_eq(a_.v128, wasm_u64x2_shr(shifted, n));
       R.v128 = wasm_v128_bitselect(shifted, wasm_v128_not(wasm_i64x2_splat(0)), overflow);
-      R.v128 = wasm_v128_and(wasm_i64x2_gt(A.v128, wasm_i64x2_splat(0)), R.v128);
+      R.v128 = wasm_v128_and(wasm_i64x2_gt(a_.v128, wasm_i64x2_splat(0)), R.v128);
 
       r_.values = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), R.values);
       result = simde_uint64x2_from_private(r_);
     #else
-      simde_int64x2_private a_ = simde_int64x2_to_private(a);
-      simde_uint64x2_private r_;
-
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
         if(a_.values[i] < 0) {
@@ -523,6 +484,9 @@ simde_vqshluq_n_s64(simde_int64x2_t a, const int n)
   #endif
   return result;
 }
+#if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #define simde_vqshluq_n_s64(a, n) vqshluq_n_s64(a, n)
+#endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vqshluq_n_s64
   #define vqshluq_n_s64(a, n) simde_vqshluq_n_s64((a), (n))
