@@ -41,7 +41,7 @@ SIMDE_BEGIN_DECLS_
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float32x2x4_t
-simde_vld4_f32(simde_float32 const *ptr) {
+simde_vld4_f32(simde_float32 const ptr[HEDLEY_ARRAY_PARAM(8)]) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vld4_f32(ptr);
   #else
@@ -61,7 +61,7 @@ simde_vld4_f32(simde_float32 const *ptr) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float64x1x4_t
-simde_vld4_f64(simde_float64 const *ptr) {
+simde_vld4_f64(simde_float64 const ptr[HEDLEY_ARRAY_PARAM(4)]) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vld4_f64(ptr);
   #else
@@ -81,7 +81,7 @@ simde_vld4_f64(simde_float64 const *ptr) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde_int8x8x4_t
-simde_vld4_s8(int8_t const *ptr) {
+simde_vld4_s8(int8_t const ptr[HEDLEY_ARRAY_PARAM(32)]) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vld4_s8(ptr);
   #else
@@ -101,7 +101,7 @@ simde_vld4_s8(int8_t const *ptr) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde_int16x4x4_t
-simde_vld4_s16(int16_t const *ptr) {
+simde_vld4_s16(int16_t const ptr[HEDLEY_ARRAY_PARAM(16)]) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vld4_s16(ptr);
   #else
@@ -121,7 +121,7 @@ simde_vld4_s16(int16_t const *ptr) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde_int32x2x4_t
-simde_vld4_s32(int32_t const *ptr) {
+simde_vld4_s32(int32_t const ptr[HEDLEY_ARRAY_PARAM(8)]) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vld4_s32(ptr);
   #else
@@ -141,7 +141,7 @@ simde_vld4_s32(int32_t const *ptr) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde_int64x1x4_t
-simde_vld4_s64(int64_t const *ptr) {
+simde_vld4_s64(int64_t const ptr[HEDLEY_ARRAY_PARAM(4)]) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vld4_s64(ptr);
   #else
@@ -161,7 +161,7 @@ simde_vld4_s64(int64_t const *ptr) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde_uint8x8x4_t
-simde_vld4_u8(uint8_t const *ptr) {
+simde_vld4_u8(uint8_t const ptr[HEDLEY_ARRAY_PARAM(32)]) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vld4_u8(ptr);
   #else
@@ -181,7 +181,7 @@ simde_vld4_u8(uint8_t const *ptr) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde_uint16x4x4_t
-simde_vld4_u16(uint16_t const *ptr) {
+simde_vld4_u16(uint16_t const ptr[HEDLEY_ARRAY_PARAM(16)]) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vld4_u16(ptr);
   #else
@@ -201,7 +201,7 @@ simde_vld4_u16(uint16_t const *ptr) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde_uint32x2x4_t
-simde_vld4_u32(uint32_t const *ptr) {
+simde_vld4_u32(uint32_t const ptr[HEDLEY_ARRAY_PARAM(8)]) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vld4_u32(ptr);
   #else
@@ -221,7 +221,7 @@ simde_vld4_u32(uint32_t const *ptr) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde_uint64x1x4_t
-simde_vld4_u64(uint64_t const *ptr) {
+simde_vld4_u64(uint64_t const ptr[HEDLEY_ARRAY_PARAM(4)]) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vld4_u64(ptr);
   #else
@@ -241,7 +241,7 @@ simde_vld4_u64(uint64_t const *ptr) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float32x4x4_t
-simde_vld4q_f32(simde_float32 const *ptr) {
+simde_vld4q_f32(simde_float32 const ptr[HEDLEY_ARRAY_PARAM(16)]) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vld4q_f32(ptr);
   #else
@@ -261,7 +261,7 @@ simde_vld4q_f32(simde_float32 const *ptr) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float64x2x4_t
-simde_vld4q_f64(simde_float64 const *ptr) {
+simde_vld4q_f64(simde_float64 const ptr[HEDLEY_ARRAY_PARAM(8)]) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vld4q_f64(ptr);
   #else
@@ -281,7 +281,7 @@ simde_vld4q_f64(simde_float64 const *ptr) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde_int8x16x4_t
-simde_vld4q_s8(int8_t const *ptr) {
+simde_vld4q_s8(int8_t const ptr[HEDLEY_ARRAY_PARAM(64)]) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vld4q_s8(ptr);
   #else
@@ -301,7 +301,7 @@ simde_vld4q_s8(int8_t const *ptr) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde_int16x8x4_t
-simde_vld4q_s16(int16_t const *ptr) {
+simde_vld4q_s16(int16_t const ptr[HEDLEY_ARRAY_PARAM(32)]) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vld4q_s16(ptr);
   #else
@@ -321,7 +321,7 @@ simde_vld4q_s16(int16_t const *ptr) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde_int32x4x4_t
-simde_vld4q_s32(int32_t const *ptr) {
+simde_vld4q_s32(int32_t const ptr[HEDLEY_ARRAY_PARAM(16)]) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vld4q_s32(ptr);
   #else
@@ -341,7 +341,7 @@ simde_vld4q_s32(int32_t const *ptr) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde_int64x2x4_t
-simde_vld4q_s64(int64_t const *ptr) {
+simde_vld4q_s64(int64_t const ptr[HEDLEY_ARRAY_PARAM(8)]) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vld4q_s64(ptr);
   #else
@@ -361,7 +361,7 @@ simde_vld4q_s64(int64_t const *ptr) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde_uint8x16x4_t
-simde_vld4q_u8(uint8_t const *ptr) {
+simde_vld4q_u8(uint8_t const ptr[HEDLEY_ARRAY_PARAM(64)]) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vld4q_u8(ptr);
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
@@ -370,10 +370,10 @@ simde_vld4q_u8(uint8_t const *ptr) {
     //  a4, b4, c4, d4, a5, b5, c5, d5, a6, b6, c6, d6, a7, b7, c7, d7,
     //  a8, b8, c8, d8, a9, b9, c9, d9, a10, b10, c10, d10, a11, b11, c11, d11,
     //  a12, b12, c12, d12, a13, b13, c13, d13, a14, b14, c14, d14, a15, b15, c15, d15]
-    v128_t a_ = wasm_v128_load(ptr);
-    v128_t b_ = wasm_v128_load(ptr + 16);
-    v128_t c_ = wasm_v128_load(ptr + 32);
-    v128_t d_ = wasm_v128_load(ptr + 48);
+    v128_t a_ = wasm_v128_load(&ptr[0]);
+    v128_t b_ = wasm_v128_load(&ptr[16]);
+    v128_t c_ = wasm_v128_load(&ptr[32]);
+    v128_t d_ = wasm_v128_load(&ptr[48]);
 
     v128_t a_low_b_low = wasm_i8x16_shuffle(a_, b_, 0, 4, 8, 12, 16, 20, 24, 28,
                                             1, 5, 9, 13, 17, 21, 25, 29);
@@ -420,7 +420,7 @@ simde_vld4q_u8(uint8_t const *ptr) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde_uint16x8x4_t
-simde_vld4q_u16(uint16_t const *ptr) {
+simde_vld4q_u16(uint16_t const ptr[HEDLEY_ARRAY_PARAM(32)]) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vld4q_u16(ptr);
   #else
@@ -440,7 +440,7 @@ simde_vld4q_u16(uint16_t const *ptr) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde_uint32x4x4_t
-simde_vld4q_u32(uint32_t const *ptr) {
+simde_vld4q_u32(uint32_t const ptr[HEDLEY_ARRAY_PARAM(16)]) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vld4q_u32(ptr);
   #else
@@ -460,7 +460,7 @@ simde_vld4q_u32(uint32_t const *ptr) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde_uint64x2x4_t
-simde_vld4q_u64(uint64_t const *ptr) {
+simde_vld4q_u64(uint64_t const ptr[HEDLEY_ARRAY_PARAM(8)]) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vld4q_u64(ptr);
   #else
