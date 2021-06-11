@@ -3725,7 +3725,7 @@ test_simde_mm_cvttpd_epi32 (SIMDE_MUNIT_TEST_ARGS) {
     const simde_float64 a[2];
     const int32_t r[4];
   } test_vec[] = {
-    #if !defined(SIMDE_FAST_NANS)
+    #if !defined(SIMDE_FAST_NANS) && !defined(SIMDE_BUG_GCC_100927)
     { {             SIMDE_MATH_NAN,           -SIMDE_MATH_NAN },
       {            INT32_MIN,              INT32_MIN,  INT32_C(           0),  INT32_C(           0) } },
     #endif
@@ -3765,11 +3765,11 @@ test_simde_mm_cvttpd_pi32 (SIMDE_MUNIT_TEST_ARGS) {
     const simde_float64 a[2];
     const int32_t r[2];
   } test_vec[] = {
-    #if !defined(SIMDE_FAST_NANS)
+    #if !defined(SIMDE_FAST_NANS) && !defined(SIMDE_BUG_GCC_100927)
     { {             SIMDE_MATH_NAN,           -SIMDE_MATH_NAN },
       {            INT32_MIN,              INT32_MIN } },
     #endif
-    #if !defined(SIMDE_FAST_CONVERSION_RANGE)
+    #if !defined(SIMDE_FAST_CONVERSION_RANGE) && !defined(SIMDE_BUG_GCC_100927)
     { { HEDLEY_STATIC_CAST(simde_float64, HEDLEY_STATIC_CAST(int64_t, INT32_MAX) + 1),
         HEDLEY_STATIC_CAST(simde_float64, HEDLEY_STATIC_CAST(int64_t, INT32_MAX) - 100) },
       {             INT32_MIN,   INT32_C(   2147483547) } },
@@ -3806,11 +3806,11 @@ test_simde_mm_cvttps_epi32 (SIMDE_MUNIT_TEST_ARGS) {
     const simde_float32 a[4];
     const int32_t r[4];
   } test_vec[] = {
-    #if !defined(SIMDE_FAST_NANS)
+    #if !defined(SIMDE_FAST_NANS) && !defined(SIMDE_BUG_GCC_100927)
     { {            SIMDE_MATH_NANF, SIMDE_FLOAT32_C(  -859.90),            SIMDE_MATH_NANF, SIMDE_FLOAT32_C(  -330.33) },
       {            INT32_MIN, -INT32_C(         859),            INT32_MIN, -INT32_C(         330) } },
     #endif
-    #if !defined(SIMDE_FAST_CONVERSION_RANGE)
+    #if !defined(SIMDE_FAST_CONVERSION_RANGE) && !defined(SIMDE_BUG_GCC_100927)
     { { HEDLEY_STATIC_CAST(simde_float32, HEDLEY_STATIC_CAST(int64_t, INT32_MAX) + 1),
         HEDLEY_STATIC_CAST(simde_float32, HEDLEY_STATIC_CAST(int64_t, INT32_MAX) - 100),
         HEDLEY_STATIC_CAST(simde_float32, HEDLEY_STATIC_CAST(int64_t, INT32_MIN) - 1),
@@ -3848,13 +3848,13 @@ test_simde_mm_cvttsd_si32 (SIMDE_MUNIT_TEST_ARGS) {
     const simde_float64 a[2];
     const int32_t r;
   } test_vec[] = {
-    #if !defined(SIMDE_FAST_NANS)
+    #if !defined(SIMDE_FAST_NANS) && !defined(SIMDE_BUG_GCC_100927)
     { {             SIMDE_MATH_NAN, SIMDE_FLOAT64_C(   248.78) },
                  INT32_MIN },
     { {            -SIMDE_MATH_NAN, SIMDE_FLOAT64_C(   139.38) },
                  INT32_MIN },
     #endif
-    #if !defined(SIMDE_FAST_CONVERSION_RANGE)
+    #if !defined(SIMDE_FAST_CONVERSION_RANGE) && !defined(SIMDE_BUG_GCC_100927)
     { { HEDLEY_STATIC_CAST(simde_float64, HEDLEY_STATIC_CAST(int64_t, INT32_MAX) + 1),
         SIMDE_FLOAT64_C(  -850.89) },
       -INT32_C(  2147483648) },
