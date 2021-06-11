@@ -1,6 +1,12 @@
 [build]
   publish = 'web'
-  command = 'mkdir -p web/amalgamated/x86 && (cd simde && for header in x86/*.h; do ../amalgamate.py "$header" > ../web/amalgamated/"$header"; done); mkdir -p web/amalgamated/arm && (cd simde/arm && ../../amalgamate.py neon.h > ../../web/amalgamated/arm/neon.h && ../../amalgamate.py sve.h > ../../web/amalgamated/arm/sve.h)'
+  command = '''
+    for header in simde/*/*.h; do
+      header="$(echo "$header" | cut -b7-)"
+      mkdir -p web/amalgamated/$(dirname "$header");
+      ./amalgamate.py "simde/$header" > web/amalgamated/"${header}";
+    done
+  '''
 
 [[headers]]
   for = "/amalgamated/*/*.h"
