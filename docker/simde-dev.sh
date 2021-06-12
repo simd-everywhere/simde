@@ -8,6 +8,7 @@ DOCKER_DIR="$(dirname "${0}")"
 VOLUME_OPTIONS=""
 CAPABILITIES=""
 RELEASE="testing"
+PROMPT=n
 
 if [ "${OSTYPE}" == "linux-gnu" ] && [ "$(basename "${DOCKER}")" = "podman" ]; then
   CAPABILITIES="--cap-add=CAP_SYS_PTRACE";
@@ -34,11 +35,18 @@ if [ -z "${BUILD_IMAGE}" ]; then
 
   if [[ -z "${CURRENT_IMAGE_CREATED}" || -z "${DATE}" ]]; then
     BUILD_IMAGE=y
+    PROMPT=y
   elif [ ${CURRENT_IMAGE_CREATED} -lt ${BUILD_CUTOFF_TIME} ]; then
     BUILD_IMAGE=y
+    PROMPT=y
   else
     BUILD_IMAGE=n
   fi
+fi
+
+if [ "${PROMPT}" == "y" ]; then
+  read -p "Image older than a week, Rebuild? [Y/n]: " BUILD_IMAGE
+  BUILD_IMAGE=${BUILD_IMAGE:-y}
 fi
 
 if [ "${BUILD_IMAGE}" != "n" ]; then
