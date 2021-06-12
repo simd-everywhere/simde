@@ -39,8 +39,6 @@ if [ -z "${BUILD_IMAGE}" ]; then
   else
     BUILD_IMAGE=n
   fi
-else
-  BUILD_IMAGE=y
 fi
 
 if [ "${BUILD_IMAGE}" != "n" ]; then
