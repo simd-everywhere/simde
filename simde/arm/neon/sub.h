@@ -34,6 +34,34 @@ SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 SIMDE_BEGIN_DECLS_
 
 SIMDE_FUNCTION_ATTRIBUTES
+int64_t
+simde_vsubd_s64(int64_t a, int64_t b) {
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+    return vsubd_s64(a, b);
+  #else
+    return a - b;
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vsubd_s64
+  #define vsubd_s64(a, b) simde_vsubd_s64((a), (b))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+uint64_t
+simde_vsubd_u64(uint64_t a, uint64_t b) {
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+    return vsubd_u64(a, b);
+  #else
+    return a - b;
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vsubd_u64
+  #define vsubd_u64(a, b) simde_vsubd_u64((a), (b))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
 simde_float32x2_t
 simde_vsub_f32(simde_float32x2_t a, simde_float32x2_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
@@ -195,7 +223,7 @@ simde_vsub_s64(simde_int64x1_t a, simde_int64x1_t b) {
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-        r_.values[i] = a_.values[i] - b_.values[i];
+        r_.values[i] = simde_vsubd_s64(a_.values[i], b_.values[i]);
       }
     #endif
 
@@ -313,7 +341,7 @@ simde_vsub_u64(simde_uint64x1_t a, simde_uint64x1_t b) {
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-        r_.values[i] = a_.values[i] - b_.values[i];
+        r_.values[i] = simde_vsubd_u64(a_.values[i], b_.values[i]);
       }
     #endif
 
@@ -521,7 +549,7 @@ simde_vsubq_s64(simde_int64x2_t a, simde_int64x2_t b) {
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-        r_.values[i] = a_.values[i] - b_.values[i];
+        r_.values[i] = simde_vsubd_s64(a_.values[i], b_.values[i]);
       }
     #endif
 
@@ -641,7 +669,7 @@ simde_vsubq_u64(simde_uint64x2_t a, simde_uint64x2_t b) {
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-        r_.values[i] = a_.values[i] - b_.values[i];
+        r_.values[i] = simde_vsubd_u64(a_.values[i], b_.values[i]);
       }
     #endif
 
