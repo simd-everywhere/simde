@@ -35,6 +35,34 @@ SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 SIMDE_BEGIN_DECLS_
 
 SIMDE_FUNCTION_ATTRIBUTES
+int64_t
+simde_vshrd_n_s64(int64_t a, const int n)
+    SIMDE_REQUIRE_CONSTANT_RANGE(n, 1, 64) {
+  return a >> ((n == 64) ? 63 : n);
+}
+#if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+  #define simde_vshrd_n_s64(a, n) vshrd_n_s64(a, n)
+#endif
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vshrd_n_s64
+  #define vshrd_n_s64(a, n) simde_vshrd_n_s64((a), (n))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+uint64_t
+simde_vshrd_n_u64(uint64_t a, const int n)
+    SIMDE_REQUIRE_CONSTANT_RANGE(n, 1, 64) {
+  return (n == 64) ? 0 : a >> n;
+}
+#if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+  #define simde_vshrd_n_u64(a, n) vshrd_n_u64(a, n)
+#endif
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vshrd_n_u64
+  #define vshrd_n_u64(a, n) simde_vshrd_n_u64((a), (n))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
 simde_int8x8_t
 simde_vshr_n_s8 (const simde_int8x8_t a, const int n)
     SIMDE_REQUIRE_CONSTANT_RANGE(n, 1, 8) {
