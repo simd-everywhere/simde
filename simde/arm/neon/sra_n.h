@@ -36,6 +36,26 @@ HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 SIMDE_BEGIN_DECLS_
 
+#if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+  #define simde_vsrad_n_s64(a, b, n) vsrad_n_s64((a), (b), (n))
+#else
+  #define simde_vsrad_n_s64(a, b, n) simde_vaddd_s64((a), simde_vshrd_n_s64((b), (n)))
+#endif
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vsrad_n_s64
+  #define vsrad_n_s64(a, b, n) simde_vsrad_n_s64((a), (b), (n))
+#endif
+
+#if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+  #define simde_vsrad_n_u64(a, b, n) vsrad_n_u64((a), (b), (n))
+#else
+  #define simde_vsrad_n_u64(a, b, n) simde_vaddd_u64((a), simde_vshrd_n_u64((b), (n)))
+#endif
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vsrad_n_u64
+  #define vsrad_n_u64(a, b, n) simde_vsrad_n_u64((a), (b), (n))
+#endif
+
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vsra_n_s8(a, b, n) vsra_n_s8((a), (b), (n))
 #else
