@@ -29,7 +29,7 @@ simde_mm_rorv_epi32 (simde__m128i a, simde__m128i b) {
   #endif
 }
 #if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES) && defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES)
-  #undef _mm_rorv_epi32(a, b)
+  #undef _mm_rorv_epi32
   #define _mm_rorv_epi32(a, b) simde_mm_rorv_epi32(a, b)
 #endif
 
