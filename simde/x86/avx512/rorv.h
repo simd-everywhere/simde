@@ -13,6 +13,14 @@ simde__m128i
 simde_mm_rorv_epi32 (simde__m128i a, simde__m128i b) {
   #if defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
     return _mm_rorv_epi32(a, b);
+  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+    simde__m128i_private
+      r_,
+      a_ = simde__m128i_to_private(a),
+      b_ = simde__m128i_to_private(b);
+
+    r_.altivec_i32 = vec_rl(a_.altivec_i32, vec_sub(vec_splats(HEDLEY_STATIC_CAST(unsigned int, 32)), b_.altivec_u32));
+    return simde__m128i_from_private(r_);
   #else
     simde__m128i
       count1 = simde_mm_and_si128(b, simde_mm_set1_epi32(31)),
