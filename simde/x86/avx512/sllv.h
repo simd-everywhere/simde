@@ -62,6 +62,60 @@ simde_mm512_sllv_epi16 (simde__m512i a, simde__m512i b) {
   #define _mm512_sllv_epi16(a, b) simde_mm512_sllv_epi16(a, b)
 #endif
 
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512i
+simde_mm512_sllv_epi32 (simde__m512i a, simde__m512i b) {
+  simde__m512i_private
+    a_ = simde__m512i_to_private(a),
+    b_ = simde__m512i_to_private(b),
+    r_;
+
+  #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+    r_.u32 = HEDLEY_STATIC_CAST(__typeof__(r_.u32), (b_.u32 < 32) & (a_.u32 << b_.u32));
+  #else
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.u32) / sizeof(r_.u32[0])) ; i++) {
+      r_.u32[i] = (b_.u32[i] < 32) ? HEDLEY_STATIC_CAST(uint32_t, (a_.u32[i] << b_.u32[i])) : 0;
+    }
+  #endif
+
+  return simde__m512i_from_private(r_);
+}
+#if defined(SIMDE_X86_AVX512F_NATIVE)
+  #define simde_mm512_sllv_epi32(a, b) _mm512_sllv_epi32(a, b)
+#endif
+#if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_sllv_epi32
+  #define _mm512_sllv_epi32(a, b) simde_mm512_sllv_epi32(a, b)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512i
+simde_mm512_sllv_epi64 (simde__m512i a, simde__m512i b) {
+  simde__m512i_private
+    a_ = simde__m512i_to_private(a),
+    b_ = simde__m512i_to_private(b),
+    r_;
+
+  #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+    r_.u64 = HEDLEY_STATIC_CAST(__typeof__(r_.u64), (b_.u64 < 64) & (a_.u64 << b_.u64));
+  #else
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.u64) / sizeof(r_.u64[0])) ; i++) {
+      r_.u64[i] = (b_.u64[i] < 64) ? HEDLEY_STATIC_CAST(uint64_t, (a_.u64[i] << b_.u64[i])) : 0;
+    }
+  #endif
+
+  return simde__m512i_from_private(r_);
+}
+#if defined(SIMDE_X86_AVX512F_NATIVE)
+  #define simde_mm512_sllv_epi64(a, b) _mm512_sllv_epi64(a, b)
+#endif
+#if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_sllv_epi64
+  #define _mm512_sllv_epi64(a, b) simde_mm512_sllv_epi64(a, b)
+#endif
+
 SIMDE_END_DECLS_
 HEDLEY_DIAGNOSTIC_POP
 
