@@ -211,7 +211,7 @@ simde_mm_rorv_epi64 (simde__m128i a, simde__m128i b) {
       a_ = simde__m128i_to_private(a),
       b_ = simde__m128i_to_private(b);
 
-    r_.altivec_i64 = vec_rl(a_.altivec_i64, vec_sub(vec_splats(HEDLEY_STATIC_CAST(uint64_t, 64)), b_.altivec_u64));
+    r_.altivec_i64 = vec_rl(a_.altivec_i64, vec_sub(vec_splats(HEDLEY_STATIC_CAST(unsigned long long, 64)), b_.altivec_u64));
     return simde__m128i_from_private(r_);
   #else
     simde__m128i
@@ -265,7 +265,7 @@ simde_mm256_rorv_epi64 (simde__m256i a, simde__m256i b) {
       b_ = simde__m256i_to_private(b);
 
     for (size_t i = 0 ; i < (sizeof(r_.m128i_private) / sizeof(r_.m128i_private[0])) ; i++) {
-      r_.m128i_private[i].altivec_i64 = vec_rl(a_.m128i_private[i].altivec_i64, vec_sub(vec_splats(HEDLEY_STATIC_CAST(uint64_t, 64)), b_.m128i_private[i].altivec_u64));
+      r_.m128i_private[i].altivec_i64 = vec_rl(a_.m128i_private[i].altivec_i64, vec_sub(vec_splats(HEDLEY_STATIC_CAST(unsigned long long, 64)), b_.m128i_private[i].altivec_u64));
     }
 
     return simde__m256i_from_private(r_);
@@ -331,7 +331,7 @@ simde_mm512_rorv_epi64 (simde__m512i a, simde__m512i b) {
       b_ = simde__m512i_to_private(b);
 
     for (size_t i = 0 ; i < (sizeof(r_.m128i_private) / sizeof(r_.m128i_private[0])) ; i++) {
-      r_.m128i_private[i].altivec_i64 = vec_rl(a_.m128i_private[i].altivec_i64, vec_sub(vec_splats(HEDLEY_STATIC_CAST(uint64_t, 64)), b_.m128i_private[i].altivec_u64));
+      r_.m128i_private[i].altivec_i64 = vec_rl(a_.m128i_private[i].altivec_i64, vec_sub(vec_splats(HEDLEY_STATIC_CAST(unsigned long long, 64)), b_.m128i_private[i].altivec_u64));
     }
 
     return simde__m512i_from_private(r_);
