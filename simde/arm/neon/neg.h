@@ -34,6 +34,20 @@ SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 SIMDE_BEGIN_DECLS_
 
 SIMDE_FUNCTION_ATTRIBUTES
+int64_t
+simde_vnegd_s64(int64_t a) {
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(9,0,0))
+    return vnegd_s64(a);
+  #else
+    return -a;
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vnegd_s64
+  #define vnegd_s64(a) simde_vnegd_s64(a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
 simde_float32x2_t
 simde_vneg_f32(simde_float32x2_t a) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
@@ -183,7 +197,7 @@ simde_vneg_s64(simde_int64x1_t a) {
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-        r_.values[i] = -(a_.values[i]);
+        r_.values[i] = simde_vnegd_s64(a_.values[i]);
       }
     #endif
 
@@ -369,7 +383,7 @@ simde_vnegq_s64(simde_int64x2_t a) {
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-        r_.values[i] = -(a_.values[i]);
+        r_.values[i] = simde_vnegd_s64(a_.values[i]);
       }
     #endif
 
