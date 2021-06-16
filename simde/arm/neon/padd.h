@@ -32,10 +32,69 @@
 #include "uzp1.h"
 #include "uzp2.h"
 #include "types.h"
+#include "get_lane.h"
 
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 SIMDE_BEGIN_DECLS_
+
+SIMDE_FUNCTION_ATTRIBUTES
+int64_t
+simde_vpaddd_s64(simde_int64x2_t a) {
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+    return vpaddd_s64(a);
+  #else
+    return simde_vaddd_s64(simde_vgetq_lane_s64(a, 0), simde_vgetq_lane_s64(a, 1));
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vpaddd_s64
+  #define vpaddd_s64(a) simde_vpaddd_s64((a))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+uint64_t
+simde_vpaddd_u64(simde_uint64x2_t a) {
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+    return vpaddd_u64(a);
+  #else
+    return simde_vaddd_u64(simde_vgetq_lane_u64(a, 0), simde_vgetq_lane_u64(a, 1));
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vpaddd_u64
+  #define vpaddd_u64(a) simde_vpaddd_u64((a))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_float64_t
+simde_vpaddd_f64(simde_float64x2_t a) {
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+    return vpaddd_f64(a);
+  #else
+    simde_float64x2_private a_ = simde_float64x2_to_private(a);
+    return a_.values[0] + a_.values[1];
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vpaddd_f64
+  #define vpaddd_f64(a) simde_vpaddd_f64((a))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_float32_t
+simde_vpadds_f32(simde_float32x2_t a) {
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+    return vpadds_f32(a);
+  #else
+    simde_float32x2_private a_ = simde_float32x2_to_private(a);
+    return a_.values[0] + a_.values[1];
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vpadds_f32
+  #define vpadds_f32(a) simde_vpadds_f32((a))
+#endif
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float32x2_t
