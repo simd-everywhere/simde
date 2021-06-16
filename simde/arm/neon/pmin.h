@@ -37,6 +37,36 @@ SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 SIMDE_BEGIN_DECLS_
 
 SIMDE_FUNCTION_ATTRIBUTES
+simde_float32_t
+simde_vpmins_f32(simde_float32x2_t a) {
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+    return vpmins_f32(a);
+  #else
+    simde_float32x2_private a_ = simde_float32x2_to_private(a);
+    return (a_.values[0] < a_.values[1]) ? a_.values[0] : a_.values[1];
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vpmins_f32
+  #define vpmins_f32(a) simde_vpmins_f32((a))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_float64_t
+simde_vpminqd_f64(simde_float64x2_t a) {
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+    return vpminqd_f64(a);
+  #else
+    simde_float64x2_private a_ = simde_float64x2_to_private(a);
+    return (a_.values[0] < a_.values[1]) ? a_.values[0] : a_.values[1];
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vpminqd_f64
+  #define vpminqd_f64(a) simde_vpminqd_f64((a))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
 simde_float32x2_t
 simde_vpmin_f32(simde_float32x2_t a, simde_float32x2_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
