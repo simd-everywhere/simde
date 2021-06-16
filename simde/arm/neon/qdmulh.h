@@ -41,6 +41,21 @@ SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 SIMDE_BEGIN_DECLS_
 
 SIMDE_FUNCTION_ATTRIBUTES
+int32_t
+simde_vqdmulhs_s32(int32_t a, int32_t b) {
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+    return vqdmulhs_s32(a, b);
+  #else
+    int64_t tmp = simde_vqdmulls_s32(a, b);
+    return HEDLEY_STATIC_CAST(int32_t, tmp >> 32);
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vqdmulhs_s32
+  #define vqdmulhs_s32(a) simde_vqdmulhs_s32((a))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
 simde_int16x4_t
 simde_vqdmulh_s16(simde_int16x4_t a, simde_int16x4_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
@@ -92,11 +107,12 @@ simde_vqdmulh_s32(simde_int32x2_t a, simde_int32x2_t b) {
 
       r_.values = __builtin_shufflevector(tmp_.values, tmp_.values, 1, 3);
     #else
-      simde_int64x2_private tmp = simde_int64x2_to_private(simde_vqdmull_s32(a, b));
+      simde_int32x2_private a_ = simde_int32x2_to_private(a);
+      simde_int32x2_private b_ = simde_int32x2_to_private(b);
 
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-        r_.values[i] = HEDLEY_STATIC_CAST(int32_t, tmp.values[i] >> 32);
+        r_.values[i] = simde_vqdmulhs_s32(a_.values[i], b_.values[i]);
       }
     #endif
 
