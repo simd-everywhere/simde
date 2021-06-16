@@ -38,6 +38,36 @@ SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 SIMDE_BEGIN_DECLS_
 
 SIMDE_FUNCTION_ATTRIBUTES
+simde_float32_t
+simde_vpmaxs_f32(simde_float32x2_t a) {
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+    return vpmaxs_f32(a);
+  #else
+    simde_float32x2_private a_ = simde_float32x2_to_private(a);
+    return (a_.values[0] > a_.values[1]) ? a_.values[0] : a_.values[1];
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vpmaxs_f32
+  #define vpmaxs_f32(a) simde_vpmaxs_f32((a))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_float64_t
+simde_vpmaxqd_f64(simde_float64x2_t a) {
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+    return vpmaxqd_f64(a);
+  #else
+    simde_float64x2_private a_ = simde_float64x2_to_private(a);
+    return (a_.values[0] > a_.values[1]) ? a_.values[0] : a_.values[1];
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vpmaxqd_f64
+  #define vpmaxqd_f64(a) simde_vpmaxqd_f64((a))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
 simde_float32x2_t
 simde_vpmax_f32(simde_float32x2_t a, simde_float32x2_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
