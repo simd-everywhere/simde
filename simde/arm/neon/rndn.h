@@ -34,6 +34,20 @@ SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 SIMDE_BEGIN_DECLS_
 
 SIMDE_FUNCTION_ATTRIBUTES
+simde_float32_t
+simde_vrndns_f32(simde_float32_t a) {
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && (!defined(__clang__) || SIMDE_DETECT_CLANG_VERSION_CHECK(7,0,0))
+    return vrndns_f32(a);
+  #else
+    return simde_math_roundevenf(a);
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vrndns_f32
+  #define vrndns_f32(a) simde_vrndns_f32(a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
 simde_float32x2_t
 simde_vrndn_f32(simde_float32x2_t a) {
   #if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
@@ -45,7 +59,7 @@ simde_vrndn_f32(simde_float32x2_t a) {
 
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = simde_math_roundevenf(a_.values[i]);
+      r_.values[i] = simde_vrndns_f32(a_.values[i]);
     }
 
     return simde_float32x2_from_private(r_);
@@ -94,7 +108,7 @@ simde_vrndnq_f32(simde_float32x4_t a) {
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-        r_.values[i] = simde_math_roundevenf(a_.values[i]);
+        r_.values[i] = simde_vrndns_f32(a_.values[i]);
       }
     #endif
 
