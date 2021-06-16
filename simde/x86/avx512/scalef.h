@@ -11,10 +11,10 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde_float32
 simde_scalef_ps_impl_(simde_float32 a, simde_float32 b) {
   if(simde_math_isnanf(b)) {
-    if (!(simde_uint32_as_float32(simde_float32_as_uint32(b) & UINT32_C(4194304))))
+    if ((simde_uint32_as_float32(simde_float32_as_uint32(b) & UINT32_C(4194304)) == SIMDE_FLOAT32_C(0.0)))
       return simde_uint32_as_float32(simde_float32_as_uint32(b) | UINT32_C(4194304));
   } else if (simde_math_isnanf(a)) {
-    if (!(simde_uint32_as_float32(simde_float32_as_uint32(a) & UINT32_C(4194304))) || !simde_math_isinff(b)) {
+    if ((simde_uint32_as_float32(simde_float32_as_uint32(a) & UINT32_C(4194304)) == SIMDE_FLOAT32_C(0.0)) || !simde_math_isinff(b)) {
       return simde_uint32_as_float32(simde_float32_as_uint32(a) | UINT32_C(4194304));
     }
   } else {
