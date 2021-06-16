@@ -322,6 +322,16 @@ SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
   #endif
 #endif
 
+#if !defined(simde_math_issubnormalf)
+  #if SIMDE_MATH_BUILTIN_LIBM(fpclassify)
+    #define simde_math_issubnormalf(v) __builtin_fpclassify(0, 0, 0, 1, 0, v)
+  #elif defined(fpclassify)
+    #define simde_math_issubnormalf(v) (fpclassify(v) == FP_SUBNORMAL)
+  #elif defined(SIMDE_IEEE754_STORAGE)
+    #define simde_math_issubnormalf(v) (((simde_float32_as_uint32(v) & UINT32_C(0x7F800000)) == UINT32_C(0)) && ((simde_float32_as_uint32(v) & UINT32_C(0x007FFFFF)) != UINT32_C(0)))
+  #endif
+#endif
+
 /*** Manipulation functions ***/
 
 #if !defined(simde_math_nextafter)
