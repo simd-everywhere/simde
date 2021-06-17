@@ -54,6 +54,7 @@
 #include "avx512/div.h"
 #include "avx512/expand.h"
 #include "avx512/extract.h"
+#include "avx512/flushsubnormal.h"
 #include "avx512/fmadd.h"
 #include "avx512/fmsub.h"
 #include "avx512/fnmadd.h"
