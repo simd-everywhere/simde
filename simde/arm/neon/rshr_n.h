@@ -43,17 +43,10 @@ SIMDE_BEGIN_DECLS_
 
 SIMDE_FUNCTION_ATTRIBUTES
 int32_t
-simde_vrshrs_n_s32(int32_t a, const int n)
+simde_x_vrshrs_n_s32(int32_t a, const int n)
     SIMDE_REQUIRE_CONSTANT_RANGE(n, 1, 32){
   return (a >> ((n == 32) ? 31 : n)) + ((a & HEDLEY_STATIC_CAST(int32_t, UINT32_C(1) << (n - 1))) != 0);
 }
-#if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
-  #define simde_vrshrs_n_s32(a, n) vrshrs_n_s32((a), (n))
-#endif
-#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
-  #undef vrshrs_n_s32
-  #define vrshrs_n_s32(a, n) simde_vrshrs_n_s32((a), (n))
-#endif
 
 SIMDE_FUNCTION_ATTRIBUTES
 int64_t

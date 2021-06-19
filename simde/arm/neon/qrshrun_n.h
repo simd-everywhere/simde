@@ -38,7 +38,7 @@ SIMDE_BEGIN_DECLS_
 #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
   #define simde_vqrshruns_n_s32(a, n) vqrshruns_n_s32(a, n)
 #else
-  #define simde_vqrshruns_n_s32(a, n) simde_vqmovuns_s32(simde_vrshrs_n_s32(a, n))
+  #define simde_vqrshruns_n_s32(a, n) simde_vqmovuns_s32(simde_x_vrshrs_n_s32(a, n))
 #endif
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
   #undef vqrshruns_n_s32
