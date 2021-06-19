@@ -28,12 +28,32 @@
 #define SIMDE_ARM_NEON_QSHRUN_N_H
 
 #include "types.h"
-#include "rshr_n.h"
+#include "shr_n.h"
 #include "qmovun.h"
 
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 SIMDE_BEGIN_DECLS_
+
+#if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+  #define simde_vqshruns_n_s32(a, n) HEDLEY_STATIC_CAST(uint16_t, vqshruns_n_s32((a), (n)))
+#else
+  #define simde_vqshruns_n_s32(a, n) simde_vqmovuns_s32(simde_x_vshrs_n_s32(a, n))
+#endif
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vqshruns_n_s32
+  #define vqshruns_n_s32(a, n) simde_vqshruns_n_s32(a, n)
+#endif
+
+#if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+  #define simde_vqshrund_n_s64(a, n) HEDLEY_STATIC_CAST(uint32_t, vqshrund_n_s64((a), (n)))
+#else
+  #define simde_vqshrund_n_s64(a, n) simde_vqmovund_s64(simde_vshrd_n_s64(a, n))
+#endif
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vqshrund_n_s64
+  #define vqshrund_n_s64(a, n) simde_vqshrund_n_s64(a, n)
+#endif
 
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vqshrun_n_s16(a, n) vqshrun_n_s16((a), (n))
