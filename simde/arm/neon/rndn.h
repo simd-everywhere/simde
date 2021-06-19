@@ -36,13 +36,16 @@ SIMDE_BEGIN_DECLS_
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float32_t
 simde_vrndns_f32(simde_float32_t a) {
-  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && (!defined(__clang__) || SIMDE_DETECT_CLANG_VERSION_CHECK(7,0,0))
+  #if \
+      defined(SIMDE_ARM_NEON_A32V8_NATIVE) && \
+      (!defined(__clang__) || SIMDE_DETECT_CLANG_VERSION_CHECK(7,0,0)) && \
+      (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(8,0,0))
     return vrndns_f32(a);
   #else
     return simde_math_roundevenf(a);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
   #undef vrndns_f32
   #define vrndns_f32(a) simde_vrndns_f32(a)
 #endif
@@ -65,7 +68,7 @@ simde_vrndn_f32(simde_float32x2_t a) {
     return simde_float32x2_from_private(r_);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
   #undef vrndn_f32
   #define vrndn_f32(a) simde_vrndn_f32(a)
 #endif
@@ -73,7 +76,7 @@ simde_vrndn_f32(simde_float32x2_t a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float64x1_t
 simde_vrndn_f64(simde_float64x1_t a) {
-  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
     return vrndn_f64(a);
   #else
     simde_float64x1_private
@@ -88,7 +91,7 @@ simde_vrndn_f64(simde_float64x1_t a) {
     return simde_float64x1_from_private(r_);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
   #undef vrndn_f64
   #define vrndn_f64(a) simde_vrndn_f64(a)
 #endif
@@ -115,7 +118,7 @@ simde_vrndnq_f32(simde_float32x4_t a) {
     return simde_float32x4_from_private(r_);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
   #undef vrndnq_f32
   #define vrndnq_f32(a) simde_vrndnq_f32(a)
 #endif
@@ -123,7 +126,7 @@ simde_vrndnq_f32(simde_float32x4_t a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float64x2_t
 simde_vrndnq_f64(simde_float64x2_t a) {
-  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
     return vrndnq_f64(a);
   #else
     simde_float64x2_private
@@ -142,7 +145,7 @@ simde_vrndnq_f64(simde_float64x2_t a) {
     return simde_float64x2_from_private(r_);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
   #undef vrndnq_f64
   #define vrndnq_f64(a) simde_vrndnq_f64(a)
 #endif
