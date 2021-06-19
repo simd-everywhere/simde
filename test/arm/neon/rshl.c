@@ -1324,6 +1324,61 @@ test_simde_vrshlq_u64 (SIMDE_MUNIT_TEST_ARGS) {
 #endif
 }
 
+static int
+test_simde_vrshld_s64 (SIMDE_MUNIT_TEST_ARGS) {
+#if 1
+  struct {
+    int64_t a;
+    int64_t b;
+    int64_t r;
+  } test_vec[] = {
+    {  INT64_C( 7235246673386222188),
+      -INT64_C( 6802743124129050522),
+       INT64_C(                   0) },
+    {  INT64_C( 2374865386728665409),
+      -INT64_C( 5279494975934354335),
+       INT64_C(                   0) },
+    {  INT64_C( 7462768052823343018),
+      -INT64_C( 5876693465748496476),
+       INT64_C(                   0) },
+    {  INT64_C( 6888037920171935739),
+      -INT64_C( 5591869810952335003),
+       INT64_C(                   0) },
+    { -INT64_C( 3938554941343329809),
+       INT64_C( 5704947285483948560),
+       INT64_C( 8153187541293400064) },
+    {  INT64_C( 1022139723881607378),
+      -INT64_C( 4347624192171236113),
+       INT64_C(       7798307219556) },
+    {  INT64_C(  802215758266599987),
+      -INT64_C( 7478308790315926636),
+       INT64_C(                   0) },
+    {  INT64_C( 5538469170421235237),
+      -INT64_C( 1201353086719452740),
+       INT64_C(                   0) }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
+    int64_t r = simde_vrshld_s64(test_vec[i].a, test_vec[i].b);
+    simde_assert_equal_i64(r, test_vec[i].r);
+  }
+
+  return 0;
+#else
+  fputc('\n', stdout);
+  for (int i = 0 ; i < 8 ; i++) {
+    int64_t a = simde_test_codegen_random_i64();
+    int64_t b = simde_test_codegen_random_i64();
+    int64_t r = simde_vrshld_s64(a, b);
+
+    simde_test_codegen_write_i64(2, a, SIMDE_TEST_VEC_POS_FIRST);
+    simde_test_codegen_write_i64(2, b, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_codegen_write_i64(2, r, SIMDE_TEST_VEC_POS_LAST);
+  }
+  return 1;
+#endif
+}
+
 SIMDE_TEST_FUNC_LIST_BEGIN
 SIMDE_TEST_FUNC_LIST_ENTRY(vrshl_s8)
 SIMDE_TEST_FUNC_LIST_ENTRY(vrshl_s16)
@@ -1342,6 +1397,8 @@ SIMDE_TEST_FUNC_LIST_ENTRY(vrshlq_u8)
 SIMDE_TEST_FUNC_LIST_ENTRY(vrshlq_u16)
 SIMDE_TEST_FUNC_LIST_ENTRY(vrshlq_u32)
 SIMDE_TEST_FUNC_LIST_ENTRY(vrshlq_u64)
+
+SIMDE_TEST_FUNC_LIST_ENTRY(vrshld_s64)
 SIMDE_TEST_FUNC_LIST_END
 
 #include "test-neon-footer.h"
