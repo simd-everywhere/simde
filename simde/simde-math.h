@@ -328,7 +328,7 @@ SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
   #elif defined(fpclassify)
     #define simde_math_issubnormalf(v) (fpclassify(v) == FP_SUBNORMAL)
   #elif defined(SIMDE_IEEE754_STORAGE)
-    #define simde_math_issubnormalf(v) (((simde_float32_as_uint32(v) & UINT32_C(0x7F800000)) == UINT32_C(0)) && ((simde_float32_as_uint32(v) & UINT32_C(0x007FFFFF)) != UINT32_C(0)));
+    #define simde_math_issubnormalf(v) (((simde_float32_as_uint32(v) & UINT32_C(0x7F800000)) == UINT32_C(0)) && ((simde_float32_as_uint32(v) & UINT32_C(0x007FFFFF)) != UINT32_C(0)))
   #endif
 #endif
 
