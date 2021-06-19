@@ -70,7 +70,7 @@ test_simde_x_mm_flushsubnormal_pd (SIMDE_MUNIT_TEST_ARGS) {
     simde__m128d a, r;
     simde__m128i e;
     if (simde_test_codegen_random_i32() & 1) {
-      a = simde_mm_set1_pd(SIMDE_MATH_DBL_MIN / 2.0f);
+      a = simde_mm_set1_pd(SIMDE_MATH_DBL_MIN / 2.0);
       e = simde_mm_set1_epi64x(0);
     } else {
       a = simde_mm_set1_pd(SIMDE_FLOAT64_C(1.0));
@@ -90,7 +90,7 @@ test_simde_x_mm256_flushsubnormal_pd (SIMDE_MUNIT_TEST_ARGS) {
     simde__m256d a, r;
     simde__m256i e;
     if (simde_test_codegen_random_i32() & 1) {
-      a = simde_mm256_set1_pd(SIMDE_MATH_DBL_MIN / 2.0f);
+      a = simde_mm256_set1_pd(SIMDE_MATH_DBL_MIN / 2.0);
       e = simde_mm256_set1_epi64x(0);
     } else {
       a = simde_mm256_set1_pd(SIMDE_FLOAT64_C(1.0));
@@ -110,7 +110,7 @@ test_simde_x_mm512_flushsubnormal_pd (SIMDE_MUNIT_TEST_ARGS) {
     simde__m512d a, r;
     simde__m512i e;
     if (simde_test_codegen_random_i32() & 1) {
-      a = simde_mm512_set1_pd(SIMDE_MATH_DBL_MIN / 2.0f);
+      a = simde_mm512_set1_pd(SIMDE_MATH_DBL_MIN / 2.0);
       e = simde_mm512_set1_epi64(0);
     } else {
       a = simde_mm512_set1_pd(SIMDE_FLOAT64_C(1.0));
