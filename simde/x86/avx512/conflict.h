@@ -18,7 +18,9 @@ simde_mm_conflict_epi32 (simde__m128i a) {
       r_ = simde__m128i_to_private(simde_mm_setzero_si128()),
       a_ = simde__m128i_to_private(a);
 
-    SIMDE_VECTORIZE
+    #if !defined(__INTEL_COMPILER)
+      SIMDE_VECTORIZE
+    #endif
     for (size_t i = 1 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {
       r_.i32[i] = HEDLEY_STATIC_CAST(int32_t, simde_mm_movepi32_mask(simde_mm_cmpeq_epi32(simde_mm_set1_epi32(a_.i32[i]), a))) & ((1 << i) - 1);
     }
