@@ -1402,6 +1402,35 @@ simde_wasm_i32x4_ne (simde_v128_t a, simde_v128_t b) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde_v128_t
+simde_wasm_i64x2_ne (simde_v128_t a, simde_v128_t b) {
+  #if defined(SIMDE_WASM_SIMD128_NATIVE)
+    return wasm_i64x2_ne(a, b);
+  #else
+    simde_v128_private
+      a_ = simde_v128_to_private(a),
+      b_ = simde_v128_to_private(b),
+      r_;
+
+    #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+      r_.neon_u32 = vmvnq_u32(vreinterpretq_u32_u64(vceqq_s64(a_.neon_i64, b_.neon_i64)));
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT)
+      r_.i64 = HEDLEY_REINTERPRET_CAST(__typeof__(r_.i64), a_.i64 != b_.i64);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.i64) / sizeof(r_.i64[0])) ; i++) {
+        r_.i64[i] = (a_.i64[i] != b_.i64[i]) ? ~INT64_C(0) : INT64_C(0);
+      }
+    #endif
+
+    return simde_v128_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_WASM_SIMD128_ENABLE_NATIVE_ALIASES)
+  #define wasm_i64x2_ne(a, b) simde_wasm_i64x2_ne((a), (b))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_v128_t
 simde_wasm_f32x4_ne (simde_v128_t a, simde_v128_t b) {
   #if defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_f32x4_ne(a, b);
