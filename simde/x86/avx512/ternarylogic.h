@@ -2455,399 +2455,265 @@ simde_x_ternarylogic_0xff_impl_(uint_fast32_t a, uint_fast32_t b, uint_fast32_t 
     } \
     break;
 
-#if !defined(SIMDE_TERNARYLOGIC_COMPRESSION)
-  #define SIMDE_X_TERNARYLOGIC_SWITCH(value) \
-    switch(value) { \
-      SIMDE_X_TERNARYLOGIC_CASE(0x00) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x01) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x02) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x03) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x04) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x05) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x06) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x07) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x08) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x09) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x0a) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x0b) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x0c) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x0d) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x0e) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x0f) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x10) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x11) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x12) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x13) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x14) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x15) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x16) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x17) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x18) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x19) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x1a) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x1b) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x1c) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x1d) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x1e) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x1f) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x20) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x21) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x22) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x23) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x24) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x25) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x26) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x27) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x28) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x29) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x2a) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x2b) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x2c) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x2d) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x2e) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x2f) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x30) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x31) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x32) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x33) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x34) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x35) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x36) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x37) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x38) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x39) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x3a) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x3b) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x3c) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x3d) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x3e) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x3f) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x40) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x41) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x42) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x43) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x44) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x45) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x46) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x47) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x48) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x49) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x4a) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x4b) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x4c) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x4d) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x4e) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x4f) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x50) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x51) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x52) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x53) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x54) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x55) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x56) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x57) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x58) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x59) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x5a) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x5b) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x5c) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x5d) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x5e) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x5f) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x60) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x61) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x62) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x63) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x64) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x65) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x66) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x67) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x68) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x69) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x6a) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x6b) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x6c) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x6d) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x6e) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x6f) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x70) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x71) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x72) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x73) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x74) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x75) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x76) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x77) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x78) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x79) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x7a) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x7b) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x7c) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x7d) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x7e) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x7f) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x80) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x81) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x82) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x83) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x84) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x85) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x86) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x87) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x88) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x89) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x8a) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x8b) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x8c) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x8d) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x8e) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x8f) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x90) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x91) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x92) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x93) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x94) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x95) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x96) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x97) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x98) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x99) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x9a) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x9b) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x9c) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x9d) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x9e) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x9f) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xa0) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xa1) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xa2) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xa3) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xa4) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xa5) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xa6) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xa7) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xa8) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xa9) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xaa) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xab) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xac) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xad) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xae) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xaf) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xb0) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xb1) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xb2) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xb3) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xb4) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xb5) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xb6) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xb7) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xb8) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xb9) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xba) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xbb) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xbc) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xbd) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xbe) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xbf) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xc0) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xc1) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xc2) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xc3) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xc4) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xc5) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xc6) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xc7) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xc8) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xc9) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xca) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xcb) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xcc) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xcd) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xce) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xcf) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xd0) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xd1) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xd2) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xd3) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xd4) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xd5) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xd6) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xd7) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xd8) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xd9) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xda) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xdb) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xdc) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xdd) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xde) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xdf) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xe0) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xe1) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xe2) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xe3) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xe4) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xe5) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xe6) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xe7) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xe8) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xe9) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xea) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xeb) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xec) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xed) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xee) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xef) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xf0) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xf1) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xf2) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xf3) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xf4) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xf5) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xf6) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xf7) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xf8) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xf9) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xfa) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xfb) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xfc) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xfd) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xfe) \
-      SIMDE_X_TERNARYLOGIC_CASE(0xff) \
-    }
-#else
-  #define SIMDE_X_TERNARYLOGIC_SWITCH(value) \
-    switch(value) { \
-      SIMDE_X_TERNARYLOGIC_CASE(0x00) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x01) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x02) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x03) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x04) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x05) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x06) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x07) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x08) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x09) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x0a) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x0b) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x0c) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x0d) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x0e) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x0f) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x10) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x11) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x12) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x13) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x14) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x15) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x16) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x17) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x18) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x19) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x1a) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x1b) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x1c) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x1d) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x1e) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x1f) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x20) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x21) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x22) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x23) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x24) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x25) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x26) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x27) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x28) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x29) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x2a) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x2b) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x2c) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x2d) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x2e) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x2f) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x30) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x31) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x32) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x33) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x34) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x35) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x36) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x37) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x38) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x39) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x3a) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x3b) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x3c) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x3d) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x3e) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x3f) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x40) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x41) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x42) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x43) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x44) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x45) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x46) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x47) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x48) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x49) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x4a) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x4b) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x4c) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x4d) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x4e) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x4f) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x50) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x51) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x52) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x53) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x54) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x55) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x56) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x57) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x58) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x59) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x5a) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x5b) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x5c) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x5d) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x5e) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x5f) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x60) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x61) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x62) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x63) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x64) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x65) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x66) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x67) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x68) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x69) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x6a) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x6b) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x6c) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x6d) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x6e) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x6f) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x70) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x71) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x72) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x73) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x74) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x75) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x76) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x77) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x78) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x79) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x7a) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x7b) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x7c) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x7d) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x7e) \
-      SIMDE_X_TERNARYLOGIC_CASE(0x7f) \
-    }
-#endif
+#define SIMDE_X_TERNARYLOGIC_SWITCH(value) \
+  switch(value) { \
+    SIMDE_X_TERNARYLOGIC_CASE(0x00) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x01) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x02) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x03) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x04) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x05) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x06) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x07) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x08) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x09) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x0a) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x0b) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x0c) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x0d) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x0e) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x0f) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x10) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x11) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x12) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x13) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x14) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x15) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x16) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x17) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x18) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x19) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x1a) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x1b) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x1c) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x1d) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x1e) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x1f) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x20) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x21) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x22) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x23) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x24) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x25) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x26) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x27) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x28) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x29) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x2a) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x2b) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x2c) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x2d) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x2e) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x2f) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x30) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x31) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x32) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x33) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x34) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x35) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x36) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x37) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x38) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x39) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x3a) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x3b) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x3c) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x3d) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x3e) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x3f) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x40) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x41) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x42) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x43) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x44) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x45) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x46) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x47) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x48) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x49) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x4a) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x4b) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x4c) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x4d) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x4e) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x4f) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x50) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x51) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x52) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x53) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x54) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x55) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x56) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x57) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x58) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x59) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x5a) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x5b) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x5c) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x5d) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x5e) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x5f) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x60) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x61) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x62) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x63) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x64) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x65) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x66) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x67) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x68) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x69) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x6a) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x6b) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x6c) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x6d) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x6e) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x6f) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x70) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x71) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x72) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x73) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x74) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x75) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x76) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x77) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x78) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x79) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x7a) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x7b) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x7c) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x7d) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x7e) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x7f) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x80) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x81) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x82) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x83) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x84) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x85) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x86) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x87) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x88) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x89) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x8a) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x8b) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x8c) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x8d) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x8e) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x8f) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x90) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x91) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x92) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x93) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x94) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x95) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x96) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x97) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x98) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x99) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x9a) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x9b) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x9c) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x9d) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x9e) \
+    SIMDE_X_TERNARYLOGIC_CASE(0x9f) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xa0) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xa1) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xa2) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xa3) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xa4) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xa5) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xa6) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xa7) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xa8) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xa9) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xaa) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xab) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xac) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xad) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xae) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xaf) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xb0) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xb1) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xb2) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xb3) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xb4) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xb5) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xb6) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xb7) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xb8) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xb9) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xba) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xbb) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xbc) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xbd) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xbe) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xbf) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xc0) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xc1) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xc2) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xc3) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xc4) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xc5) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xc6) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xc7) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xc8) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xc9) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xca) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xcb) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xcc) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xcd) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xce) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xcf) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xd0) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xd1) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xd2) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xd3) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xd4) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xd5) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xd6) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xd7) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xd8) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xd9) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xda) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xdb) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xdc) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xdd) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xde) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xdf) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xe0) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xe1) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xe2) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xe3) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xe4) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xe5) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xe6) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xe7) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xe8) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xe9) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xea) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xeb) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xec) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xed) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xee) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xef) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xf0) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xf1) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xf2) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xf3) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xf4) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xf5) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xf6) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xf7) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xf8) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xf9) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xfa) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xfb) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xfc) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xfd) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xfe) \
+    SIMDE_X_TERNARYLOGIC_CASE(0xff) \
+  }
 
 #if defined(SIMDE_X86_AVX512VL_NATIVE) && defined(SIMDE_X86_AVX512F_NATIVE)
   #define simde_mm_ternarylogic_epi32(a, b, c, imm8) _mm_ternarylogic_epi32(a, b, c, imm8)
@@ -2863,8 +2729,269 @@ simde_x_ternarylogic_0xff_impl_(uint_fast32_t a, uint_fast32_t b, uint_fast32_t 
       c_ = simde__m128i_to_private(c);
 
     #if defined(SIMDE_TERNARYLOGIC_COMPRESSION)
-      SIMDE_X_TERNARYLOGIC_SWITCH((imm8 ^ (HEDLEY_STATIC_CAST(int8_t, imm8) >> 7)) & 127)
-      r_ = simde__m128i_to_private(simde_mm_xor_si128(simde__m128i_from_private(r_), simde_mm_movm_epi32(HEDLEY_STATIC_CAST(uint8_t, (HEDLEY_STATIC_CAST(int8_t, imm8) >> 7)))));
+      int to_do, mask;
+      #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+        simde__m128i_private t_;
+        to_do = imm8;
+
+        r_.u64 = a_.u64 ^ a_.u64;
+
+        mask = 0xFF;
+        if ((to_do & mask) == mask) {
+          r_.u64 = ~r_.u64;
+          to_do &= ~mask;
+        }
+
+        mask = 0xF0;
+        if ((to_do & mask) && ((imm8 & mask) == mask)) {
+          r_.u64 = a_.u64;
+          to_do &= ~mask;
+        }
+
+        mask = 0xCC;
+        if ((to_do & mask) && ((imm8 & mask) == mask)) {
+          r_.u64 |= b_.u64;
+          to_do &= ~mask;
+        }
+
+        mask = 0xAA;
+        if ((to_do & mask) && ((imm8 & mask) == mask)) {
+          r_.u64 |= c_.u64;
+          to_do &= ~mask;
+        }
+
+        mask = 0x0F;
+        if ((to_do & mask) && ((imm8 & mask) == mask)) {
+          r_.u64 |= ~a_.u64;
+          to_do &= ~mask;
+        }
+
+        mask = 0x33;
+        if ((to_do & mask) && ((imm8 & mask) == mask)) {
+          r_.u64 |= ~b_.u64;
+          to_do &= ~mask;
+        }
+
+        mask = 0x55;
+        if ((to_do & mask) && ((imm8 & mask) == mask)) {
+          r_.u64 |= ~c_.u64;
+          to_do &= ~mask;
+        }
+
+        mask = 0x3C;
+        if ((to_do & mask) && ((imm8 & mask) == mask)) {
+          r_.u64 |= a_.u64 ^ b_.u64;
+          to_do &= ~mask;
+        }
+
+        mask = 0x5A;
+        if ((to_do & mask) && ((imm8 & mask) == mask)) {
+          r_.u64 |= a_.u64 ^ c_.u64;
+          to_do &= ~mask;
+        }
+
+        mask = 0x66;
+        if ((to_do & mask) && ((imm8 & mask) == mask)) {
+          r_.u64 |= b_.u64 ^ c_.u64;
+          to_do &= ~mask;
+        }
+
+        mask = 0xA0;
+        if ((to_do & mask) && ((imm8 & mask) == mask)) {
+          r_.u64 |= a_.u64 & c_.u64;
+          to_do &= ~mask;
+        }
+
+        mask = 0x50;
+        if ((to_do & mask) && ((imm8 & mask) == mask)) {
+          r_.u64 |= ~c_.u64 & a_.u64;
+          to_do &= ~mask;
+        }
+
+        mask = 0x0A;
+        if ((to_do & mask) && ((imm8 & mask) == mask)) {
+          r_.u64 |= ~a_.u64 & c_.u64;
+          to_do &= ~mask;
+        }
+
+        mask = 0x88;
+        if ((to_do & mask) && ((imm8 & mask) == mask)) {
+          r_.u64 |= b_.u64 & c_.u64;
+          to_do &= ~mask;
+        }
+
+        mask = 0x44;
+        if ((to_do & mask) && ((imm8 & mask) == mask)) {
+          r_.u64 |= ~c_.u64 & b_.u64;
+          to_do &= ~mask;
+        }
+
+        mask = 0x22;
+        if ((to_do & mask) && ((imm8 & mask) == mask)) {
+          r_.u64 |= ~b_.u64 & c_.u64;
+          to_do &= ~mask;
+        }
+
+        if (to_do & 0xc0) {
+          t_.u64 = a_.u64 & b_.u64;
+          if ((to_do & 0xc0) == 0xc0) r_.u64 |= t_.u64;
+          else if (to_do & 0x80)      r_.u64 |=  c_.u64 & t_.u64;
+          else                        r_.u64 |= ~c_.u64 & t_.u64;
+        }
+
+        if (to_do & 0x30) {
+          t_.u64 = ~b_.u64 & a_.u64;
+          if ((to_do & 0x30) == 0x30) r_.u64 |= t_.u64;
+          else if (to_do & 0x20)      r_.u64 |=  c_.u64 & t_.u64;
+          else                        r_.u64 |= ~c_.u64 & t_.u64;
+        }
+
+        if (to_do & 0x0c) {
+          t_.u64 = ~a_.u64 & b_.u64;
+          if ((to_do & 0x0c) == 0x0c) r_.u64 |= t_.u64;
+          else if (to_do & 0x08)      r_.u64 |=  c_.u64 & t_.u64;
+          else                        r_.u64 |= ~c_.u64 & t_.u64;
+        }
+
+        if (to_do & 0x03) {
+          t_.u64 = ~(a_.u64 | b_.u64);
+          if ((to_do & 0x03) == 0x03) r_.u64 |= t_.u64;
+          else if (to_do & 0x02)      r_.u64 |=  c_.u64 & t_.u64;
+          else                        r_.u64 |= ~c_.u64 & t_.u64;
+        }
+      #else
+        uint64_t t;
+
+        SIMDE_VECTORIZE
+        for (size_t i = 0 ; i < (sizeof(r_.u64) / sizeof(r_.u64[0])) ; i++) {
+          to_do = imm8;
+
+          mask = 0xFF;
+          if ((to_do & mask) == mask) {
+            r_.u64[i] = UINT64_MAX;
+            to_do &= ~mask;
+          }
+          else r_.u64[i] = 0;
+
+          mask = 0xF0;
+          if ((to_do & mask) && ((imm8 & mask) == mask)) {
+            r_.u64[i] = a_.u64[i];
+            to_do &= ~mask;
+          }
+
+          mask = 0xCC;
+          if ((to_do & mask) && ((imm8 & mask) == mask)) {
+            r_.u64[i] |= b_.u64[i];
+            to_do &= ~mask;
+          }
+
+          mask = 0xAA;
+          if ((to_do & mask) && ((imm8 & mask) == mask)) {
+            r_.u64[i] |= c_.u64[i];
+            to_do &= ~mask;
+          }
+
+          mask = 0x0F;
+          if ((to_do & mask) && ((imm8 & mask) == mask)) {
+            r_.u64[i] |= ~a_.u64[i];
+            to_do &= ~mask;
+          }
+
+          mask = 0x33;
+          if ((to_do & mask) && ((imm8 & mask) == mask)) {
+            r_.u64[i] |= ~b_.u64[i];
+            to_do &= ~mask;
+          }
+
+          mask = 0x55;
+          if ((to_do & mask) && ((imm8 & mask) == mask)) {
+            r_.u64[i] |= ~c_.u64[i];
+            to_do &= ~mask;
+          }
+
+          mask = 0x3C;
+          if ((to_do & mask) && ((imm8 & mask) == mask)) {
+            r_.u64[i] |= a_.u64[i] ^ b_.u64[i];
+            to_do &= ~mask;
+          }
+
+          mask = 0x5A;
+          if ((to_do & mask) && ((imm8 & mask) == mask)) {
+            r_.u64[i] |= a_.u64[i] ^ c_.u64[i];
+            to_do &= ~mask;
+          }
+
+          mask = 0x66;
+          if ((to_do & mask) && ((imm8 & mask) == mask)) {
+            r_.u64[i] |= b_.u64[i] ^ c_.u64[i];
+            to_do &= ~mask;
+          }
+
+          mask = 0xA0;
+          if ((to_do & mask) && ((imm8 & mask) == mask)) {
+            r_.u64[i] |= a_.u64[i] & c_.u64[i];
+            to_do &= ~mask;
+          }
+
+          mask = 0x50;
+          if ((to_do & mask) && ((imm8 & mask) == mask)) {
+            r_.u64[i] |= ~c_.u64[i] & a_.u64[i];
+            to_do &= ~mask;
+          }
+
+          mask = 0x0A;
+          if ((to_do & mask) && ((imm8 & mask) == mask)) {
+            r_.u64[i] |= ~a_.u64[i] & c_.u64[i];
+            to_do &= ~mask;
+          }
+
+          mask = 0x88;
+          if ((to_do & mask) && ((imm8 & mask) == mask)) {
+            r_.u64[i] |= b_.u64[i] & c_.u64[i];
+            to_do &= ~mask;
+          }
+
+          mask = 0x44;
+          if ((to_do & mask) && ((imm8 & mask) == mask)) {
+            r_.u64[i] |= ~c_.u64[i] & b_.u64[i];
+            to_do &= ~mask;
+          }
+
+          mask = 0x22;
+          if ((to_do & mask) && ((imm8 & mask) == mask)) {
+            r_.u64[i] |= ~b_.u64[i] & c_.u64[i];
+            to_do &= ~mask;
+          }
+
+          if (to_do & 0xc0) {
+            t = a_.u64[i] & b_.u64[i];
+            if ((to_do & 0xc0) == 0xc0) r_.u64[i] |= t;
+            else if (to_do & 0x80)      r_.u64[i] |=  c_.u64[i] & t;
+            else                        r_.u64[i] |= ~c_.u64[i] & t;
+          }
+
+          if (to_do & 0x30) {
+            t = ~b_.u64[i] & a_.u64[i];
+            if ((to_do & 0x30) == 0x30) r_.u64[i] |= t;
+            else if (to_do & 0x20)      r_.u64[i] |=  c_.u64[i] & t;
+            else                        r_.u64[i] |= ~c_.u64[i] & t;
+          }
+
+          if (to_do & 0x0c) {
+            t = ~a_.u64[i] & b_.u64[i];
+            if ((to_do & 0x0c) == 0x0c) r_.u64[i] |= t;
+            else if (to_do & 0x08)      r_.u64[i] |=  c_.u64[i] & t;
+            else                        r_.u64[i] |= ~c_.u64[i] & t;
+          }
+
+          if (to_do & 0x03) {
+            t = ~(a_.u64[i] | b_.u64[i]);
+            if ((to_do & 0x03) == 0x03) r_.u64[i] |= t;
+            else if (to_do & 0x02)      r_.u64[i] |=  c_.u64[i] & t;
+            else                        r_.u64[i] |= ~c_.u64[i] & t;
+          }
+        }
+      #endif
     #else
       SIMDE_X_TERNARYLOGIC_SWITCH(imm8 & 255)
     #endif
