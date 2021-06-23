@@ -19,13 +19,8 @@ simde_mm_multishift_epi64_epi8 (simde__m128i a, simde__m128i b) {
       b_ = simde__m128i_to_private(b);
 
     SIMDE_VECTORIZE
-    for(size_t i = 0 ; i < (sizeof(r_.m64_private) / sizeof(r_.m64_private[0])) ; i++) {
-      SIMDE_VECTORIZE
-      for (size_t j = 0 ; j < (sizeof(r_.m64_private[i].i8) / sizeof(r_.m64_private[i].i8[0])) ; j++) {
-        for (size_t k = 0 ; k < 8 ; k++) {
-          r_.m64_private[i].i8[j] |= (((b_.i64[i] >> (((a_.m64_private[i].i8[j] & 63) + k) & 63)) & 1) << k);
-        }
-      }
+    for (size_t i = 0 ; i < sizeof(r_.u8) / sizeof(r_.u8[0]) ; i++) {
+      r_.u8[i] = HEDLEY_STATIC_CAST(uint8_t, (b_.u64[i / 8] >> (a_.u8[i] & 63)) | (b_.u64[i / 8] << (64 - (a_.u8[i] & 63))));
     }
 
     return simde__m128i_from_private(r_);
