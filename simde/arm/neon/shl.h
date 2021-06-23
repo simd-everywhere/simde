@@ -74,6 +74,48 @@ SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 SIMDE_BEGIN_DECLS_
 
 SIMDE_FUNCTION_ATTRIBUTES
+int64_t
+simde_vshld_s64 (const int64_t a, const int64_t b) {
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+    return vshld_s64(a, b);
+  #else
+    int8_t b_ = HEDLEY_STATIC_CAST(int8_t, b);
+    return
+      (b_ >=   0)
+        ? (b_ >=  64)
+          ? 0
+          : (a << b_)
+        : (b_ <= -64)
+          ? (a >> 63)
+          : (a >> -b_);
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vshld_s64
+  #define vshld_s64(a, b) simde_vshld_s64((a), (b))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+uint64_t
+simde_vshld_u64 (const uint64_t a, const int64_t b) {
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+    return vshld_u64(a, HEDLEY_STATIC_CAST(uint64_t, b));
+  #else
+    int8_t b_ = HEDLEY_STATIC_CAST(int8_t, b);
+    return
+      (simde_math_llabs(b_) >= 64)
+        ? 0
+        : (b_  >=  0)
+          ? (a <<  b_)
+          : (a >> -b_);
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vshld_u64
+  #define vshld_u64(a, b) simde_vshld_u64((a), (b))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
 simde_int8x8_t
 simde_vshl_s8 (const simde_int8x8_t a, const simde_int8x8_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
@@ -226,11 +268,7 @@ simde_vshl_s64 (const simde_int64x1_t a, const simde_int64x1_t b) {
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-        b_.values[i] = HEDLEY_STATIC_CAST(int8_t, b_.values[i]);
-        r_.values[i] =
-          (b_.values[i] >=   0) ?
-          (b_.values[i] >=  64) ?                    0 : (a_.values[i] <<  b_.values[i]) :
-          (b_.values[i] <= -64) ? (a_.values[i] >> 63) : (a_.values[i] >> -b_.values[i]);
+        r_.values[i] = simde_vshld_s64(a_.values[i], b_.values[i]);
       }
     #endif
 
@@ -393,11 +431,7 @@ simde_vshl_u64 (const simde_uint64x1_t a, const simde_int64x1_t b) {
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-        b_.values[i] = HEDLEY_STATIC_CAST(int8_t, b_.values[i]);
-        r_.values[i] =
-          (simde_math_llabs(b_.values[i]) >= 64) ? 0 :
-                (b_.values[i]  >=  0) ? (a_.values[i] <<  b_.values[i]) :
-                                        (a_.values[i] >> -b_.values[i]);
+        r_.values[i] = simde_vshld_u64(a_.values[i], b_.values[i]);
       }
     #endif
 
@@ -616,11 +650,7 @@ simde_vshlq_s64 (const simde_int64x2_t a, const simde_int64x2_t b) {
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-        b_.values[i] = HEDLEY_STATIC_CAST(int8_t, b_.values[i]);
-        r_.values[i] =
-          (b_.values[i] >=   0) ?
-          (b_.values[i] >=  64) ?                    0 : (a_.values[i] <<  b_.values[i]) :
-          (b_.values[i] <= -64) ? (a_.values[i] >> 63) : (a_.values[i] >> -b_.values[i]);
+        r_.values[i] = simde_vshld_s64(a_.values[i], b_.values[i]);
       }
     #endif
 
@@ -816,10 +846,7 @@ simde_vshlq_u64 (const simde_uint64x2_t a, const simde_int64x2_t b) {
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-        b_.values[i] = HEDLEY_STATIC_CAST(int8_t, b_.values[i]);
-        r_.values[i] = (simde_math_llabs(b_.values[i]) >= 64) ? 0 :
-                            (b_.values[i]  >=  0) ? (a_.values[i] <<  b_.values[i]) :
-                                                    (a_.values[i] >> -b_.values[i]);
+        r_.values[i] = simde_vshld_u64(a_.values[i], b_.values[i]);
       }
     #endif
 
