@@ -35,6 +35,46 @@ HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 SIMDE_BEGIN_DECLS_
 
+#if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+  #define simde_vqrshrns_n_s32(a, n) vqrshrns_n_s32(a, n)
+#else
+  #define simde_vqrshrns_n_s32(a, n) simde_vqmovns_s32(simde_x_vrshrs_n_s32(a, n))
+#endif
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vqrshrns_n_s32
+  #define vqrshrns_n_s32(a, n) simde_vqrshrns_n_s32(a, n)
+#endif
+
+#if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+  #define simde_vqrshrns_n_u32(a, n) vqrshrns_n_u32(a, n)
+#else
+  #define simde_vqrshrns_n_u32(a, n) simde_vqmovns_u32(simde_x_vrshrs_n_u32(a, n))
+#endif
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vqrshrns_n_u32
+  #define vqrshrns_n_u32(a, n) simde_vqrshrns_n_u32(a, n)
+#endif
+
+#if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+  #define simde_vqrshrnd_n_s64(a, n) vqrshrnd_n_s64(a, n)
+#else
+  #define simde_vqrshrnd_n_s64(a, n) simde_vqmovnd_s64(simde_vrshrd_n_s64(a, n))
+#endif
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vqrshrnd_n_s64
+  #define vqrshrnd_n_s64(a, n) simde_vqrshrnd_n_s64(a, n)
+#endif
+
+#if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+  #define simde_vqrshrnd_n_u64(a, n) vqrshrnd_n_u64(a, n)
+#else
+  #define simde_vqrshrnd_n_u64(a, n) simde_vqmovnd_u64(simde_vrshrd_n_u64(a, n))
+#endif
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vqrshrnd_n_u64
+  #define vqrshrnd_n_u64(a, n) simde_vqrshrnd_n_u64(a, n)
+#endif
+
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vqrshrn_n_s16(a, n) vqrshrn_n_s16((a), (n))
 #else
