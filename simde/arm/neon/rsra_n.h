@@ -43,6 +43,26 @@ SIMDE_BEGIN_DECLS_
  * so 0 <= n - 1 <  data element size in bits
  */
 
+#if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+  #define simde_vrsrad_n_s64(a, b, n) vrsrad_n_s64(a, b, n)
+#else
+  #define simde_vrsrad_n_s64(a, b, n) simde_vaddd_s64((a), simde_vrshrd_n_s64((b), (n)))
+#endif
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vrsrad_n_s64
+  #define vrsrad_n_s64(a, b, n) simde_vrsrad_n_s64((a), (b), (n))
+#endif
+
+#if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+  #define simde_vrsrad_n_u64(a, b, n) vrsrad_n_u64(a, b, n)
+#else
+  #define simde_vrsrad_n_u64(a, b, n) simde_vaddd_u64((a), simde_vrshrd_n_u64((b), (n)))
+#endif
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vrsrad_n_u64
+  #define vrsrad_n_u64(a, b, n) simde_vrsrad_n_u64((a), (b), (n))
+#endif
+
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vrsraq_n_s8(a, b, n) vrsraq_n_s8((a), (b), (n))
 #else
