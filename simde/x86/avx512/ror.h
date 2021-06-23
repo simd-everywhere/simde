@@ -23,17 +23,30 @@ SIMDE_BEGIN_DECLS_
       r_,
       a_ = simde__m128i_to_private(a);
 
-    switch (imm8 & 31) {
-      case 0:
-        r_ = a_;
-        break;
-      default:
-        SIMDE_VECTORIZE
-        for (size_t i = 0 ; i < (sizeof(r_.u32) / sizeof(r_.u32[0])) ; i++) {
-          r_.u32[i] = (a_.u32[i] >> (imm8 & 31)) | (a_.u32[i] << (32 - (imm8 & 31)));
-        }
-        break;
-    }
+    #if defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+      r_.altivec_i32 = vec_rl(a_.altivec_i32, vec_splats(HEDLEY_STATIC_CAST(unsigned int, 32 - imm8)));
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+      switch (imm8 & 31) {
+        case 0:
+          r_ = a_;
+          break;
+        default:
+          r_.u32 = (a_.u32 >> (imm8 & 31)) | (a_.u32 << (32 - (imm8 & 31)));
+          break;
+      }
+    #else
+      switch (imm8 & 31) {
+        case 0:
+          r_ = a_;
+          break;
+        default:
+          SIMDE_VECTORIZE
+          for (size_t i = 0 ; i < (sizeof(r_.u32) / sizeof(r_.u32[0])) ; i++) {
+            r_.u32[i] = (a_.u32[i] >> (imm8 & 31)) | (a_.u32[i] << (32 - (imm8 & 31)));
+          }
+          break;
+      }
+    #endif
 
     return simde__m128i_from_private(r_);
   }
@@ -74,17 +87,32 @@ SIMDE_BEGIN_DECLS_
       r_,
       a_ = simde__m256i_to_private(a);
 
-    switch (imm8 & 31) {
-      case 0:
-        r_ = a_;
-        break;
-      default:
-        SIMDE_VECTORIZE
-        for (size_t i = 0 ; i < (sizeof(r_.u32) / sizeof(r_.u32[0])) ; i++) {
-          r_.u32[i] = (a_.u32[i] >> (imm8 & 31)) | (a_.u32[i] << (32 - (imm8 & 31)));
-        }
-        break;
-    }
+    #if defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+      for (size_t i = 0 ; i < (sizeof(r_.m128i_private) / sizeof(r_.m128i_private[0])) ; i++) {
+        r_.m128i_private[i].altivec_i32 = vec_rl(a_.m128i_private[i].altivec_i32, vec_splats(HEDLEY_STATIC_CAST(unsigned int, 32 - imm8)));
+      }
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+      switch (imm8 & 31) {
+        case 0:
+          r_ = a_;
+          break;
+        default:
+          r_.u32 = (a_.u32 >> (imm8 & 31)) | (a_.u32 << (32 - (imm8 & 31)));
+          break;
+      }
+    #else
+      switch (imm8 & 31) {
+        case 0:
+          r_ = a_;
+          break;
+        default:
+          SIMDE_VECTORIZE
+          for (size_t i = 0 ; i < (sizeof(r_.u32) / sizeof(r_.u32[0])) ; i++) {
+            r_.u32[i] = (a_.u32[i] >> (imm8 & 31)) | (a_.u32[i] << (32 - (imm8 & 31)));
+          }
+          break;
+      }
+    #endif
 
     return simde__m256i_from_private(r_);
   }
@@ -125,17 +153,32 @@ SIMDE_BEGIN_DECLS_
       r_,
       a_ = simde__m512i_to_private(a);
 
-    switch (imm8 & 31) {
-      case 0:
-        r_ = a_;
-        break;
-      default:
-        SIMDE_VECTORIZE
-        for (size_t i = 0 ; i < (sizeof(r_.u32) / sizeof(r_.u32[0])) ; i++) {
-          r_.u32[i] = (a_.u32[i] >> (imm8 & 31)) | (a_.u32[i] << (32 - (imm8 & 31)));
-        }
-        break;
-    }
+    #if defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+      for (size_t i = 0 ; i < (sizeof(r_.m128i_private) / sizeof(r_.m128i_private[0])) ; i++) {
+        r_.m128i_private[i].altivec_i32 = vec_rl(a_.m128i_private[i].altivec_i32, vec_splats(HEDLEY_STATIC_CAST(unsigned int, 32 - imm8)));
+      }
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+      switch (imm8 & 31) {
+        case 0:
+          r_ = a_;
+          break;
+        default:
+          r_.u32 = (a_.u32 >> (imm8 & 31)) | (a_.u32 << (32 - (imm8 & 31)));
+          break;
+      }
+    #else
+      switch (imm8 & 31) {
+        case 0:
+          r_ = a_;
+          break;
+        default:
+          SIMDE_VECTORIZE
+          for (size_t i = 0 ; i < (sizeof(r_.u32) / sizeof(r_.u32[0])) ; i++) {
+            r_.u32[i] = (a_.u32[i] >> (imm8 & 31)) | (a_.u32[i] << (32 - (imm8 & 31)));
+          }
+          break;
+      }
+    #endif
 
     return simde__m512i_from_private(r_);
   }
@@ -176,17 +219,30 @@ SIMDE_BEGIN_DECLS_
       r_,
       a_ = simde__m128i_to_private(a);
 
-    switch (imm8 & 63) {
-      case 0:
-        r_ = a_;
-        break;
-      default:
-        SIMDE_VECTORIZE
-        for (size_t i = 0 ; i < (sizeof(r_.u64) / sizeof(r_.u64[0])) ; i++) {
-          r_.u64[i] = (a_.u64[i] >> (imm8 & 63)) | (a_.u64[i] << (64 - (imm8 & 63)));
-        }
-        break;
-    }
+    #if defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
+      r_.altivec_i64 = vec_rl(a_.altivec_i64, vec_splats(HEDLEY_STATIC_CAST(unsigned long long, 64 - imm8)));
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+      switch (imm8 & 63) {
+        case 0:
+          r_ = a_;
+          break;
+        default:
+          r_.u64 = (a_.u64 >> (imm8 & 63)) | (a_.u64 << (64 - (imm8 & 63)));
+          break;
+      }
+    #else
+      switch (imm8 & 63) {
+        case 0:
+          r_ = a_;
+          break;
+        default:
+          SIMDE_VECTORIZE
+          for (size_t i = 0 ; i < (sizeof(r_.u64) / sizeof(r_.u64[0])) ; i++) {
+            r_.u64[i] = (a_.u64[i] >> (imm8 & 63)) | (a_.u64[i] << (64 - (imm8 & 63)));
+          }
+          break;
+      }
+    #endif
 
     return simde__m128i_from_private(r_);
   }
@@ -227,17 +283,32 @@ SIMDE_BEGIN_DECLS_
       r_,
       a_ = simde__m256i_to_private(a);
 
-    switch (imm8 & 63) {
-      case 0:
-        r_ = a_;
-        break;
-      default:
-        SIMDE_VECTORIZE
-        for (size_t i = 0 ; i < (sizeof(r_.u64) / sizeof(r_.u64[0])) ; i++) {
-          r_.u64[i] = (a_.u64[i] >> (imm8 & 63)) | (a_.u64[i] << (64 - (imm8 & 63)));
-        }
-        break;
-    }
+    #if defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
+      for (size_t i = 0 ; i < (sizeof(r_.m128i_private) / sizeof(r_.m128i_private[0])) ; i++) {
+        r_.m128i_private[i].altivec_i64 = vec_rl(a_.m128i_private[i].altivec_i64, vec_splats(HEDLEY_STATIC_CAST(unsigned long long, 64 - imm8)));
+      }
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+      switch (imm8 & 63) {
+        case 0:
+          r_ = a_;
+          break;
+        default:
+          r_.u64 = (a_.u64 >> (imm8 & 63)) | (a_.u64 << (64 - (imm8 & 63)));
+          break;
+      }
+    #else
+      switch (imm8 & 63) {
+        case 0:
+          r_ = a_;
+          break;
+        default:
+          SIMDE_VECTORIZE
+          for (size_t i = 0 ; i < (sizeof(r_.u64) / sizeof(r_.u64[0])) ; i++) {
+            r_.u64[i] = (a_.u64[i] >> (imm8 & 63)) | (a_.u64[i] << (64 - (imm8 & 63)));
+          }
+          break;
+      }
+    #endif
 
     return simde__m256i_from_private(r_);
   }
@@ -278,17 +349,32 @@ SIMDE_BEGIN_DECLS_
       r_,
       a_ = simde__m512i_to_private(a);
 
-    switch (imm8 & 63) {
-      case 0:
-        r_ = a_;
-        break;
-      default:
-        SIMDE_VECTORIZE
-        for (size_t i = 0 ; i < (sizeof(r_.u64) / sizeof(r_.u64[0])) ; i++) {
-          r_.u64[i] = (a_.u64[i] >> (imm8 & 63)) | (a_.u64[i] << (64 - (imm8 & 63)));
-        }
-        break;
-    }
+    #if defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
+      for (size_t i = 0 ; i < (sizeof(r_.m128i_private) / sizeof(r_.m128i_private[0])) ; i++) {
+        r_.m128i_private[i].altivec_i64 = vec_rl(a_.m128i_private[i].altivec_i64, vec_splats(HEDLEY_STATIC_CAST(unsigned long long, 64 - imm8)));
+      }
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+      switch (imm8 & 63) {
+        case 0:
+          r_ = a_;
+          break;
+        default:
+          r_.u64 = (a_.u64 >> (imm8 & 63)) | (a_.u64 << (64 - (imm8 & 63)));
+          break;
+      }
+    #else
+      switch (imm8 & 63) {
+        case 0:
+          r_ = a_;
+          break;
+        default:
+          SIMDE_VECTORIZE
+          for (size_t i = 0 ; i < (sizeof(r_.u64) / sizeof(r_.u64[0])) ; i++) {
+            r_.u64[i] = (a_.u64[i] >> (imm8 & 63)) | (a_.u64[i] << (64 - (imm8 & 63)));
+          }
+          break;
+      }
+    #endif
 
     return simde__m512i_from_private(r_);
   }
