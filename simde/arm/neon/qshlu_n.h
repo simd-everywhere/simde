@@ -41,6 +41,54 @@ SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 SIMDE_BEGIN_DECLS_
 
 SIMDE_FUNCTION_ATTRIBUTES
+uint8_t
+simde_vqshlub_n_s8(int8_t a, const int n)
+    SIMDE_REQUIRE_CONSTANT_RANGE(n, 0, 7) {
+  uint8_t r = HEDLEY_STATIC_CAST(uint8_t, a << n);
+  r |= (((r >> n) != HEDLEY_STATIC_CAST(uint8_t, a)) ? UINT8_MAX : 0);
+  return (a < 0) ? 0 : r;
+}
+#if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+  #define simde_vqshlub_n_s8(a, n) HEDLEY_STATIC_CAST(uint8_t, vqshlub_n_s8(a, n))
+#endif
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vqshlub_n_s8
+  #define vqshlub_n_s8(a, n) simde_vqshlub_n_s8((a), (n))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+uint32_t
+simde_vqshlus_n_s32(int32_t a, const int n)
+    SIMDE_REQUIRE_CONSTANT_RANGE(n, 0, 31) {
+  uint32_t r = HEDLEY_STATIC_CAST(uint32_t, a << n);
+  r |= (((r >> n) != HEDLEY_STATIC_CAST(uint32_t, a)) ? UINT32_MAX : 0);
+  return (a < 0) ? 0 : r;
+}
+#if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+  #define simde_vqshlus_n_s32(a, n) HEDLEY_STATIC_CAST(uint32_t, vqshlus_n_s32(a, n))
+#endif
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vqshlus_n_s32
+  #define vqshlus_n_s32(a, n) simde_vqshlus_n_s32((a), (n))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+uint64_t
+simde_vqshlud_n_s64(int64_t a, const int n)
+    SIMDE_REQUIRE_CONSTANT_RANGE(n, 0, 63) {
+  uint32_t r = HEDLEY_STATIC_CAST(uint32_t, a << n);
+  r |= (((r >> n) != HEDLEY_STATIC_CAST(uint32_t, a)) ? UINT32_MAX : 0);
+  return (a < 0) ? 0 : r;
+}
+#if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+  #define simde_vqshlud_n_s64(a, n) HEDLEY_STATIC_CAST(uint64_t, vqshlud_n_s64(a, n))
+#endif
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vqshlud_n_s64
+  #define vqshlud_n_s64(a, n) simde_vqshlud_n_s64((a), (n))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
 simde_uint8x8_t
 simde_vqshlu_n_s8(simde_int8x8_t a, const int n)
     SIMDE_REQUIRE_CONSTANT_RANGE(n, 0, 7) {
@@ -69,16 +117,9 @@ simde_vqshlu_n_s8(simde_int8x8_t a, const int n)
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-        if(a_.values[i] < 0) {
-          r_.values[i] = 0;
-          continue;
-        }
-
         r_.values[i] = HEDLEY_STATIC_CAST(uint8_t, a_.values[i] << n);
-
-        if((r_.values[i] >> n) != HEDLEY_STATIC_CAST(uint8_t, a_.values[i])) {
-          r_.values[i] = UINT8_MAX;
-        }
+        r_.values[i] |= (((r_.values[i] >> n) != HEDLEY_STATIC_CAST(uint8_t, a_.values[i])) ? UINT8_MAX : 0);
+        r_.values[i] = (a_.values[i] < 0) ? 0 : r_.values[i];
       }
     #endif
 
@@ -122,16 +163,9 @@ simde_vqshlu_n_s16(simde_int16x4_t a, const int n)
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-        if(a_.values[i] < 0) {
-          r_.values[i] = 0;
-          continue;
-        }
-
         r_.values[i] = HEDLEY_STATIC_CAST(uint16_t, a_.values[i] << n);
-
-        if((r_.values[i] >> n) != HEDLEY_STATIC_CAST(uint16_t, a_.values[i])) {
-          r_.values[i] = UINT16_MAX;
-        }
+        r_.values[i] |= (((r_.values[i] >> n) != HEDLEY_STATIC_CAST(uint16_t, a_.values[i])) ? UINT16_MAX : 0);
+        r_.values[i] = (a_.values[i] < 0) ? 0 : r_.values[i];
       }
     #endif
 
@@ -177,16 +211,9 @@ simde_vqshlu_n_s32(simde_int32x2_t a, const int n)
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-        if(a_.values[i] < 0) {
-          r_.values[i] = 0;
-          continue;
-        }
-
         r_.values[i] = HEDLEY_STATIC_CAST(uint32_t, a_.values[i] << n);
-
-        if((r_.values[i] >> n) != HEDLEY_STATIC_CAST(uint32_t, a_.values[i])) {
-          r_.values[i] = UINT32_MAX;
-        }
+        r_.values[i] |= (((r_.values[i] >> n) != HEDLEY_STATIC_CAST(uint32_t, a_.values[i])) ? UINT32_MAX : 0);
+        r_.values[i] = (a_.values[i] < 0) ? 0 : r_.values[i];
       }
     #endif
 
@@ -231,16 +258,9 @@ simde_vqshlu_n_s64(simde_int64x1_t a, const int n)
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-        if(a_.values[i] < 0) {
-          r_.values[i] = 0;
-          continue;
-        }
-
         r_.values[i] = HEDLEY_STATIC_CAST(uint64_t, a_.values[i] << n);
-
-        if((r_.values[i] >> n) != HEDLEY_STATIC_CAST(uint64_t, a_.values[i])) {
-          r_.values[i] = UINT64_MAX;
-        }
+        r_.values[i] |= (((r_.values[i] >> n) != HEDLEY_STATIC_CAST(uint64_t, a_.values[i])) ? UINT64_MAX : 0);
+        r_.values[i] = (a_.values[i] < 0) ? 0 : r_.values[i];
       }
     #endif
 
@@ -278,16 +298,9 @@ simde_vqshluq_n_s8(simde_int8x16_t a, const int n)
   #else
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      if(a_.values[i] < 0) {
-        r_.values[i] = 0;
-        continue;
-      }
-
       r_.values[i] = HEDLEY_STATIC_CAST(uint8_t, a_.values[i] << n);
-
-      if((r_.values[i] >> n) != HEDLEY_STATIC_CAST(uint8_t, a_.values[i])) {
-        r_.values[i] = UINT8_MAX;
-      }
+      r_.values[i] |= (((r_.values[i] >> n) != HEDLEY_STATIC_CAST(uint8_t, a_.values[i])) ? UINT8_MAX : 0);
+      r_.values[i] = (a_.values[i] < 0) ? 0 : r_.values[i];
     }
   #endif
 
@@ -324,16 +337,9 @@ simde_vqshluq_n_s16(simde_int16x8_t a, const int n)
   #else
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      if(a_.values[i] < 0) {
-        r_.values[i] = 0;
-        continue;
-      }
-
       r_.values[i] = HEDLEY_STATIC_CAST(uint16_t, a_.values[i] << n);
-
-      if((r_.values[i] >> n) != HEDLEY_STATIC_CAST(uint16_t, a_.values[i])) {
-        r_.values[i] = UINT16_MAX;
-      }
+      r_.values[i] |= (((r_.values[i] >> n) != HEDLEY_STATIC_CAST(uint16_t, a_.values[i])) ? UINT16_MAX : 0);
+      r_.values[i] = (a_.values[i] < 0) ? 0 : r_.values[i];
     }
   #endif
 
@@ -370,16 +376,9 @@ simde_vqshluq_n_s32(simde_int32x4_t a, const int n)
   #else
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      if(a_.values[i] < 0) {
-        r_.values[i] = 0;
-        continue;
-      }
-
       r_.values[i] = HEDLEY_STATIC_CAST(uint32_t, a_.values[i] << n);
-
-      if((r_.values[i] >> n) != HEDLEY_STATIC_CAST(uint32_t, a_.values[i])) {
-        r_.values[i] = UINT32_MAX;
-      }
+      r_.values[i] |= (((r_.values[i] >> n) != HEDLEY_STATIC_CAST(uint32_t, a_.values[i])) ? UINT32_MAX : 0);
+      r_.values[i] = (a_.values[i] < 0) ? 0 : r_.values[i];
     }
   #endif
 
@@ -416,16 +415,9 @@ simde_vqshluq_n_s64(simde_int64x2_t a, const int n)
   #else
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      if(a_.values[i] < 0) {
-        r_.values[i] = 0;
-        continue;
-      }
-
       r_.values[i] = HEDLEY_STATIC_CAST(uint64_t, a_.values[i] << n);
-
-      if((r_.values[i] >> n) != HEDLEY_STATIC_CAST(uint64_t, a_.values[i])) {
-        r_.values[i] = UINT64_MAX;
-      }
+      r_.values[i] |= (((r_.values[i] >> n) != HEDLEY_STATIC_CAST(uint64_t, a_.values[i])) ? UINT64_MAX : 0);
+      r_.values[i] = (a_.values[i] < 0) ? 0 : r_.values[i];
     }
   #endif
 
