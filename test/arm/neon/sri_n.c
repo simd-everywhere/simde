@@ -1791,6 +1791,218 @@ test_simde_vsriq_n_u64 (SIMDE_MUNIT_TEST_ARGS) {
 #endif
 }
 
+static int
+test_simde_vsrid_n_s64 (SIMDE_MUNIT_TEST_ARGS) {
+#if 1
+  struct {
+    int64_t a;
+    int64_t b;
+    int64_t r13;
+    int64_t r26;
+    int64_t r39;
+    int64_t r52;
+    int64_t r64;
+  } test_vec[] = {
+    {  INT64_C( 3038338084825327649),
+      -INT64_C( 2639957407124750664),
+       INT64_C( 3039607488049410391),
+       INT64_C( 3038338166055448171),
+       INT64_C( 3038338084828002809),
+       INT64_C( 3038338084825329077),
+       INT64_C( 3038338084825327649) },
+    { -INT64_C( 7888945905166066395),
+      -INT64_C( 8445492395703210646),
+      -INT64_C( 7889085691235383609),
+      -INT64_C( 7888946027361379742),
+      -INT64_C( 7888945905152977110),
+      -INT64_C( 7888945905166067540),
+      -INT64_C( 7888945905166066395) },
+    {  INT64_C( 7497263785757333630),
+       INT64_C( 6283492565175448991),
+       INT64_C( 7497008607659212985),
+       INT64_C( 7497263669447543958),
+       INT64_C( 7497263785744164582),
+       INT64_C( 7497263785757332851),
+       INT64_C( 7497263785757333630) },
+    { -INT64_C( 4584099998333042608),
+       INT64_C( 5684127465250241263),
+      -INT64_C( 4583970557447191999),
+      -INT64_C( 4584100011620109290),
+      -INT64_C( 4584099998330928089),
+      -INT64_C( 4584099998333041426),
+      -INT64_C( 4584099998333042608) },
+    { -INT64_C( 7312655049053742741),
+       INT64_C( 6915600551404280688),
+      -INT64_C( 7313001605329250412),
+      -INT64_C( 7312655195584232472),
+      -INT64_C( 7312655049044266420),
+      -INT64_C( 7312655049053743617),
+      -INT64_C( 7312655049053742741) },
+    {  INT64_C( 7475010529852880806),
+      -INT64_C( 8941156987404614452),
+       INT64_C( 7474883931607459320),
+       INT64_C( 7475010426748028391),
+       INT64_C( 7475010529867060546),
+       INT64_C( 7475010529852880958),
+       INT64_C( 7475010529852880806) },
+    { -INT64_C( 4283165872800982534),
+       INT64_C( 5633263883237360063),
+      -INT64_C( 4284487391160405196),
+      -INT64_C( 4283165878879000077),
+      -INT64_C( 4283165872817939777),
+      -INT64_C( 4283165872800983838),
+      -INT64_C( 4283165872800982534) },
+    { -INT64_C( 4920736818446836266),
+       INT64_C( 1343834205961352715),
+      -INT64_C( 4922270350454482237),
+      -INT64_C( 4920737001615882808),
+      -INT64_C( 4920736818466042748),
+      -INT64_C( 4920736818446839510),
+      -INT64_C( 4920736818446836266) }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
+    int64_t r13 = simde_vsrid_n_s64(test_vec[i].a, test_vec[i].b, 13);
+    int64_t r26 = simde_vsrid_n_s64(test_vec[i].a, test_vec[i].b, 26);
+    int64_t r39 = simde_vsrid_n_s64(test_vec[i].a, test_vec[i].b, 39);
+    int64_t r52 = simde_vsrid_n_s64(test_vec[i].a, test_vec[i].b, 52);
+    int64_t r64 = simde_vsrid_n_s64(test_vec[i].a, test_vec[i].b, 64);
+
+    simde_assert_equal_i64(r13, test_vec[i].r13);
+    simde_assert_equal_i64(r26, test_vec[i].r26);
+    simde_assert_equal_i64(r39, test_vec[i].r39);
+    simde_assert_equal_i64(r52, test_vec[i].r52);
+    simde_assert_equal_i64(r64, test_vec[i].r64);
+  }
+  return 0;
+#else
+  for (int i = 0 ; i < 8 ; i++) {
+    int64_t a = simde_test_codegen_random_i64();
+    int64_t b = simde_test_codegen_random_i64();
+    int64_t r13 = simde_vsrid_n_s64(a, b, 13);
+    int64_t r26 = simde_vsrid_n_s64(a, b, 26);
+    int64_t r39 = simde_vsrid_n_s64(a, b, 39);
+    int64_t r52 = simde_vsrid_n_s64(a, b, 52);
+    int64_t r64 = simde_vsrid_n_s64(a, b, 64);
+
+    simde_test_codegen_write_i64(2, a, SIMDE_TEST_VEC_POS_FIRST);
+    simde_test_codegen_write_i64(2, b, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_codegen_write_i64(2, r13, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_codegen_write_i64(2, r26, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_codegen_write_i64(2, r39, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_codegen_write_i64(2, r52, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_codegen_write_i64(2, r64, SIMDE_TEST_VEC_POS_LAST);
+  }
+  return 1;
+#endif
+}
+
+static int
+test_simde_vsrid_n_u64 (SIMDE_MUNIT_TEST_ARGS) {
+#if 1
+  struct {
+    uint64_t a;
+    uint64_t b;
+    uint64_t r13;
+    uint64_t r26;
+    uint64_t r39;
+    uint64_t r52;
+    uint64_t r64;
+  } test_vec[] = {
+    { UINT64_C(17603990000659042020),
+      UINT64_C(18432033531320989821),
+      UINT64_C(17604569147670762447),
+      UINT64_C(17603990126154692028),
+      UINT64_C(17603990000678967161),
+      UINT64_C(17603990000659042300),
+      UINT64_C(17603990000659042020) },
+    { UINT64_C(15992106754582201151),
+      UINT64_C( 6090506551897131884),
+      UINT64_C(15990773947017019428),
+      UINT64_C(15992106720565713962),
+      UINT64_C(15992106754576550822),
+      UINT64_C(15992106754582201672),
+      UINT64_C(15992106754582201151) },
+    { UINT64_C(13904682717901902945),
+      UINT64_C( 7794180837573095508),
+      UINT64_C(13903563487783245211),
+      UINT64_C(13904682821108075338),
+      UINT64_C(13904682717898364156),
+      UINT64_C(13904682717901903554),
+      UINT64_C(13904682717901902945) },
+    { UINT64_C(17796933294910613953),
+      UINT64_C( 3726486603193843699),
+      UINT64_C(17796428820938693879),
+      UINT64_C(17796933306978727064),
+      UINT64_C(17796933294909517383),
+      UINT64_C(17796933294910612283),
+      UINT64_C(17796933294910613953) },
+    { UINT64_C( 8393353048649811319),
+      UINT64_C( 7942319691150601886),
+      UINT64_C( 8393427427051592953),
+      UINT64_C( 8393353026419714930),
+      UINT64_C( 8393353048643891603),
+      UINT64_C( 8393353048649811683),
+      UINT64_C( 8393353048649811319) },
+    { UINT64_C(  824871320512475378),
+      UINT64_C(12433916528002208136),
+      UINT64_C(  825676543884972912),
+      UINT64_C(  824871400623394070),
+      UINT64_C(  824871320525806666),
+      UINT64_C(  824871320512477896),
+      UINT64_C(  824871320512475378) },
+    { UINT64_C(10484347986743117034),
+      UINT64_C(15721104122295623185),
+      UINT64_C(10484047212797883104),
+      UINT64_C(10484348006066108911),
+      UINT64_C(10484347986748135721),
+      UINT64_C(10484347986743119266),
+      UINT64_C(10484347986743117034) },
+    { UINT64_C(14585410155087051077),
+      UINT64_C(16697855368363300826),
+      UINT64_C(14586945705662247206),
+      UINT64_C(14585410393748586307),
+      UINT64_C(14585410155094963557),
+      UINT64_C(14585410155087052411),
+      UINT64_C(14585410155087051077) }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
+    uint64_t r13 = simde_vsrid_n_u64(test_vec[i].a, test_vec[i].b, 13);
+    uint64_t r26 = simde_vsrid_n_u64(test_vec[i].a, test_vec[i].b, 26);
+    uint64_t r39 = simde_vsrid_n_u64(test_vec[i].a, test_vec[i].b, 39);
+    uint64_t r52 = simde_vsrid_n_u64(test_vec[i].a, test_vec[i].b, 52);
+    uint64_t r64 = simde_vsrid_n_u64(test_vec[i].a, test_vec[i].b, 64);
+
+    simde_assert_equal_u64(r13, test_vec[i].r13);
+    simde_assert_equal_u64(r26, test_vec[i].r26);
+    simde_assert_equal_u64(r39, test_vec[i].r39);
+    simde_assert_equal_u64(r52, test_vec[i].r52);
+    simde_assert_equal_u64(r64, test_vec[i].r64);
+  }
+  return 0;
+#else
+  for (int i = 0 ; i < 8 ; i++) {
+    uint64_t a = simde_test_codegen_random_u64();
+    uint64_t b = simde_test_codegen_random_u64();
+    uint64_t r13 = simde_vsrid_n_u64(a, b, 13);
+    uint64_t r26 = simde_vsrid_n_u64(a, b, 26);
+    uint64_t r39 = simde_vsrid_n_u64(a, b, 39);
+    uint64_t r52 = simde_vsrid_n_u64(a, b, 52);
+    uint64_t r64 = simde_vsrid_n_u64(a, b, 64);
+
+    simde_test_codegen_write_u64(2, a, SIMDE_TEST_VEC_POS_FIRST);
+    simde_test_codegen_write_u64(2, b, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_codegen_write_u64(2, r13, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_codegen_write_u64(2, r26, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_codegen_write_u64(2, r39, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_codegen_write_u64(2, r52, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_codegen_write_u64(2, r64, SIMDE_TEST_VEC_POS_LAST);
+  }
+  return 1;
+#endif
+}
+
 SIMDE_TEST_FUNC_LIST_BEGIN
 SIMDE_TEST_FUNC_LIST_ENTRY(vsri_n_s8)
 SIMDE_TEST_FUNC_LIST_ENTRY(vsri_n_s16)
@@ -1808,6 +2020,8 @@ SIMDE_TEST_FUNC_LIST_ENTRY(vsriq_n_u8)
 SIMDE_TEST_FUNC_LIST_ENTRY(vsriq_n_u16)
 SIMDE_TEST_FUNC_LIST_ENTRY(vsriq_n_u32)
 SIMDE_TEST_FUNC_LIST_ENTRY(vsriq_n_u64)
+SIMDE_TEST_FUNC_LIST_ENTRY(vsrid_n_s64)
+SIMDE_TEST_FUNC_LIST_ENTRY(vsrid_n_u64)
 SIMDE_TEST_FUNC_LIST_END
 
 #include <test/arm/neon/test-neon-footer.h>

@@ -39,6 +39,29 @@ HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 SIMDE_BEGIN_DECLS_
 
+#if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+  #define simde_vsrid_n_s64(a, b, n) vsrid_n_s64(a, b, n)
+#else
+  #define simde_vsrid_n_s64(a, b, n) \
+    HEDLEY_STATIC_CAST(int64_t, \
+      simde_vsrid_n_u64(HEDLEY_STATIC_CAST(uint64_t, a), HEDLEY_STATIC_CAST(uint64_t, b), n))
+#endif
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vsrid_n_s64
+  #define vsrid_n_s64(a, b, n) simde_vsrid_n_s64((a), (b), (n))
+#endif
+
+#if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+  #define simde_vsrid_n_u64(a, b, n) vsrid_n_u64(a, b, n)
+#else
+#define simde_vsrid_n_u64(a, b, n) \
+    (((a & (UINT64_C(0xffffffffffffffff) >> (64 - n) << (64 - n))) | simde_vshrd_n_u64((b), (n))))
+#endif
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vsrid_n_u64
+  #define vsrid_n_u64(a, b, n) simde_vsrid_n_u64((a), (b), (n))
+#endif
+
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vsri_n_s8(a, b, n) vsri_n_s8((a), (b), (n))
 #else
