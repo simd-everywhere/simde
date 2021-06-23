@@ -250,6 +250,7 @@ simde_avx512_families = [
   'mulhi',
   'mulhrs',
   'mullo',
+  'multishift',
   'negate',
   'or',
   'packs',

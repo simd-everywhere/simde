@@ -76,6 +76,7 @@
 #include "avx512/mulhi.h"
 #include "avx512/mulhrs.h"
 #include "avx512/mullo.h"
+#include "avx512/multishift.h"
 #include "avx512/negate.h"
 #include "avx512/or.h"
 #include "avx512/packs.h"
