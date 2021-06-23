@@ -44,14 +44,21 @@ SIMDE_BEGIN_DECLS_
 SIMDE_FUNCTION_ATTRIBUTES
 int32_t
 simde_x_vrshrs_n_s32(int32_t a, const int n)
-    SIMDE_REQUIRE_CONSTANT_RANGE(n, 1, 32){
+    SIMDE_REQUIRE_CONSTANT_RANGE(n, 1, 32) {
   return (a >> ((n == 32) ? 31 : n)) + ((a & HEDLEY_STATIC_CAST(int32_t, UINT32_C(1) << (n - 1))) != 0);
+}
+
+SIMDE_FUNCTION_ATTRIBUTES
+uint32_t
+simde_x_vrshrs_n_u32(uint32_t a, const int n)
+    SIMDE_REQUIRE_CONSTANT_RANGE(n, 1, 32) {
+  return ((n == 32) ? 0 : (a >> n)) + ((a & (UINT32_C(1) << (n - 1))) != 0);
 }
 
 SIMDE_FUNCTION_ATTRIBUTES
 int64_t
 simde_vrshrd_n_s64(int64_t a, const int n)
-    SIMDE_REQUIRE_CONSTANT_RANGE(n, 1, 64){
+    SIMDE_REQUIRE_CONSTANT_RANGE(n, 1, 64) {
   return (a >> ((n == 64) ? 63 : n)) + ((a & HEDLEY_STATIC_CAST(int64_t, UINT64_C(1) << (n - 1))) != 0);
 }
 #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
@@ -65,7 +72,7 @@ simde_vrshrd_n_s64(int64_t a, const int n)
 SIMDE_FUNCTION_ATTRIBUTES
 uint64_t
 simde_vrshrd_n_u64(uint64_t a, const int n)
-    SIMDE_REQUIRE_CONSTANT_RANGE(n, 1, 64){
+    SIMDE_REQUIRE_CONSTANT_RANGE(n, 1, 64) {
   return ((n == 64) ? 0 : (a >> n)) + ((a & (UINT64_C(1) << (n - 1))) != 0);
 }
 #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)

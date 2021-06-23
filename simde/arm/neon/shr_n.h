@@ -42,6 +42,13 @@ simde_x_vshrs_n_s32(int32_t a, const int n)
 }
 
 SIMDE_FUNCTION_ATTRIBUTES
+uint32_t
+simde_x_vshrs_n_u32(uint32_t a, const int n)
+    SIMDE_REQUIRE_CONSTANT_RANGE(n, 1, 32) {
+  return (n == 32) ? 0 : a >> n;
+}
+
+SIMDE_FUNCTION_ATTRIBUTES
 int64_t
 simde_vshrd_n_s64(int64_t a, const int n)
     SIMDE_REQUIRE_CONSTANT_RANGE(n, 1, 64) {
