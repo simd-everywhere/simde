@@ -30,10 +30,6 @@ simde_mm_rolv_epi32 (simde__m128i a, simde__m128i b) {
       r_.altivec_u32 = vec_rl(a_.altivec_u32, b_.altivec_u32);
 
       return simde__m128i_from_private(r_);
-    #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
-      r_.u32 = (a_.u32 << (b_.u32 & 31)) | (a_.u32 >> (32 - (b_.u32 & 31)));
-
-      return simde__m128i_from_private(r_);
     #else
       HEDLEY_STATIC_CAST(void, r_);
       HEDLEY_STATIC_CAST(void, a_);
@@ -100,10 +96,6 @@ simde_mm256_rolv_epi32 (simde__m256i a, simde__m256i b) {
     #elif SIMDE_NATURAL_VECTOR_SIZE_LE(128)
       r_.m128i[0] = simde_mm_rolv_epi32(a_.m128i[0], b_.m128i[0]);
       r_.m128i[1] = simde_mm_rolv_epi32(a_.m128i[1], b_.m128i[1]);
-
-      return simde__m256i_from_private(r_);
-    #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
-      r_.u32 = (a_.u32 << (b_.u32 & 31)) | (a_.u32 >> (32 - (b_.u32 & 31)));
 
       return simde__m256i_from_private(r_);
     #else
@@ -174,10 +166,6 @@ simde_mm512_rolv_epi32 (simde__m512i a, simde__m512i b) {
       r_.m256i[1] = simde_mm256_rolv_epi32(a_.m256i[1], b_.m256i[1]);
 
       return simde__m512i_from_private(r_);
-    #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
-      r_.u32 = (a_.u32 << (b_.u32 & 31)) | (a_.u32 >> (32 - (b_.u32 & 31)));
-
-      return simde__m512i_from_private(r_);
     #else
       HEDLEY_STATIC_CAST(void, r_);
       HEDLEY_STATIC_CAST(void, a_);
@@ -237,10 +225,6 @@ simde_mm_rolv_epi64 (simde__m128i a, simde__m128i b) {
 
     #if defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
       r_.altivec_u64 = vec_rl(a_.altivec_u64, b_.altivec_u64);
-
-      return simde__m128i_from_private(r_);
-    #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
-      r_.u64 = (a_.u64 << (b_.u64 & 63)) | (a_.u64 >> (64 - (b_.u64 & 63)));
 
       return simde__m128i_from_private(r_);
     #else
@@ -306,8 +290,9 @@ simde_mm256_rolv_epi64 (simde__m256i a, simde__m256i b) {
       }
 
       return simde__m256i_from_private(r_);
-    #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
-      r_.u64 = (a_.u64 << (b_.u64 & 63)) | (a_.u64 >> (64 - (b_.u64 & 63)));
+    #elif SIMDE_NATURAL_VECTOR_SIZE_LE(128)
+      r_.m128i[0] = simde_mm_rolv_epi64(a_.m128i[0], b_.m128i[0]);
+      r_.m128i[1] = simde_mm_rolv_epi64(a_.m128i[1], b_.m128i[1]);
 
       return simde__m256i_from_private(r_);
     #else
@@ -373,8 +358,9 @@ simde_mm512_rolv_epi64 (simde__m512i a, simde__m512i b) {
       }
 
       return simde__m512i_from_private(r_);
-    #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
-      r_.u64 = (a_.u64 << (b_.u64 & 63)) | (a_.u64 >> (64 - (b_.u64 & 63)));
+    #elif SIMDE_NATURAL_VECTOR_SIZE_LE(256)
+      r_.m256i[0] = simde_mm256_rolv_epi64(a_.m256i[0], b_.m256i[0]);
+      r_.m256i[1] = simde_mm256_rolv_epi64(a_.m256i[1], b_.m256i[1]);
 
       return simde__m512i_from_private(r_);
     #else
