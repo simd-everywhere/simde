@@ -35,6 +35,10 @@ simde_mm_rolv_epi32 (simde__m128i a, simde__m128i b) {
 
       return simde__m128i_from_private(r_);
     #else
+      HEDLEY_STATIC_CAST(void, r_);
+      HEDLEY_STATIC_CAST(void, a_);
+      HEDLEY_STATIC_CAST(void, b_);
+
       simde__m128i
         count1 = simde_mm_and_si128(b, simde_mm_set1_epi32(31)),
         count2 = simde_mm_sub_epi32(simde_mm_set1_epi32(32), count1);
@@ -103,9 +107,9 @@ simde_mm256_rolv_epi32 (simde__m256i a, simde__m256i b) {
 
       return simde__m256i_from_private(r_);
     #else
+      HEDLEY_STATIC_CAST(void, r_);
       HEDLEY_STATIC_CAST(void, a_);
       HEDLEY_STATIC_CAST(void, b_);
-      HEDLEY_STATIC_CAST(void, c_);
 
       simde__m256i
         count1 = simde_mm256_and_si256(b, simde_mm256_set1_epi32(31)),
@@ -175,9 +179,9 @@ simde_mm512_rolv_epi32 (simde__m512i a, simde__m512i b) {
 
       return simde__m512i_from_private(r_);
     #else
+      HEDLEY_STATIC_CAST(void, r_);
       HEDLEY_STATIC_CAST(void, a_);
       HEDLEY_STATIC_CAST(void, b_);
-      HEDLEY_STATIC_CAST(void, c_);
 
       simde__m512i
         count1 = simde_mm512_and_si512(b, simde_mm512_set1_epi32(31)),
@@ -240,6 +244,10 @@ simde_mm_rolv_epi64 (simde__m128i a, simde__m128i b) {
 
       return simde__m128i_from_private(r_);
     #else
+      HEDLEY_STATIC_CAST(void, r_);
+      HEDLEY_STATIC_CAST(void, a_);
+      HEDLEY_STATIC_CAST(void, b_);
+
       simde__m128i
         count1 = simde_mm_and_si128(b, simde_mm_set1_epi64x(63)),
         count2 = simde_mm_sub_epi64(simde_mm_set1_epi64x(64), count1);
@@ -303,6 +311,10 @@ simde_mm256_rolv_epi64 (simde__m256i a, simde__m256i b) {
 
       return simde__m256i_from_private(r_);
     #else
+      HEDLEY_STATIC_CAST(void, r_);
+      HEDLEY_STATIC_CAST(void, a_);
+      HEDLEY_STATIC_CAST(void, b_);
+
       simde__m256i
         count1 = simde_mm256_and_si256(b, simde_mm256_set1_epi64x(63)),
         count2 = simde_mm256_sub_epi64(simde_mm256_set1_epi64x(64), count1);
@@ -366,6 +378,10 @@ simde_mm512_rolv_epi64 (simde__m512i a, simde__m512i b) {
 
       return simde__m512i_from_private(r_);
     #else
+      HEDLEY_STATIC_CAST(void, r_);
+      HEDLEY_STATIC_CAST(void, a_);
+      HEDLEY_STATIC_CAST(void, b_);
+
       simde__m512i
         count1 = simde_mm512_and_si512(b, simde_mm512_set1_epi64(63)),
         count2 = simde_mm512_sub_epi64(simde_mm512_set1_epi64(64), count1);
