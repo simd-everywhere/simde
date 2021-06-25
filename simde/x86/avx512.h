@@ -112,6 +112,7 @@
 #include "avx512/storeu.h"
 #include "avx512/sub.h"
 #include "avx512/subs.h"
+#include "avx512/ternarylogic.h"
 #include "avx512/test.h"
 #include "avx512/testn.h"
 #include "avx512/unpacklo.h"
