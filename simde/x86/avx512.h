@@ -84,6 +84,7 @@
 #include "avx512/permutex2var.h"
 #include "avx512/range.h"
 #include "avx512/range_round.h"
+#include "avx512/rol.h"
 #include "avx512/rolv.h"
 #include "avx512/ror.h"
 #include "avx512/rorv.h"
