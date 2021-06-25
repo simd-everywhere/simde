@@ -286,6 +286,7 @@ simde_avx512_families = [
   'storeu',
   'sub',
   'subs',
+  'ternarylogic',
   'test',
   'testn',
   'unpacklo',
