@@ -6277,7 +6277,7 @@ simde_wasm_i64x2_load32x2 (const void * mem) {
   #else
     simde_v128_private r_;
 
-    #if defined(SIMDE_CONVERT_VECTOR_) && !defined(SIMDE_BUG_GCC_100762)
+    #if defined(SIMDE_CONVERT_VECTOR_) && !defined(SIMDE_BUG_GCC_100762) && !defined(SIMDE_BUG_CLANG_50893)
       int32_t v SIMDE_VECTOR(8);
       simde_memcpy(&v, mem, sizeof(v));
       SIMDE_CONVERT_VECTOR_(r_.i64, v);
@@ -6448,9 +6448,14 @@ simde_wasm_v128_load8_lane (const void * a, simde_v128_t vec, const int lane)
   simde_v128_private
     a_ = simde_v128_to_private(vec);
 
-  a_.i8[lane] = *HEDLEY_REINTERPRET_CAST(const int8_t *, a);
-
-  return simde_v128_from_private(a_);
+  #if defined(SIMDE_BUG_CLANG_50901)
+    simde_v128_private r_ = simde_v128_to_private(vec);
+    r_.altivec_i8 = vec_insert(*HEDLEY_REINTERPRET_CAST(const signed char *, a), a_.altivec_i8, lane);
+    return simde_v128_from_private(r_);
+  #else
+    a_.i8[lane] = *HEDLEY_REINTERPRET_CAST(const int8_t *, a);
+    return simde_v128_from_private(a_);
+  #endif
 }
 #if defined(SIMDE_WASM_SIMD128_NATIVE)
   #define simde_wasm_v128_load8_lane(a, vec, lane) wasm_v128_load8_lane(HEDLEY_CONST_CAST(int8_t *, (a)), (vec), (lane))
