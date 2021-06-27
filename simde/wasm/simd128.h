@@ -2902,6 +2902,11 @@ simde_wasm_i8x16_abs (simde_v128_t a) {
       r_.sse_m128i = _mm_abs_epi8(a_.sse_m128i);
     #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       r_.neon_i8 = vabsq_s8(a_.neon_i8);
+    #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+      r_.altivec_i8 = vec_abs(a_.altivec_i8);
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR_OPS)
+      __typeof__(r_.i8) mask = a_.i8 < 0;
+      r_.i8 = (a_.i8 & mask) | (-a_.i8 & ~mask);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.i8) / sizeof(r_.i8[0])) ; i++) {
