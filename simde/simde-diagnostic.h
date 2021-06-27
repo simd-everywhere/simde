@@ -49,6 +49,7 @@
 
 #include "hedley.h"
 #include "simde-detect-clang.h"
+#include "simde-arch.h"
 
 /* This is only to help us implement functions like _mm_undefined_ps. */
 #if defined(SIMDE_DIAGNOSTIC_DISABLE_UNINITIALIZED_)
