@@ -3266,6 +3266,8 @@ simde_wasm_v128_any_true (simde_v128_t a) {
       r = !_mm_test_all_zeros(a_.sse_m128i, _mm_set1_epi32(~INT32_C(0)));
     #elif defined(SIMDE_X86_SSE2_NATIVE)
       r = _mm_movemask_epi8(_mm_cmpeq_epi8(a_.sse_m128i, _mm_setzero_si128())) != 0xffff;
+    #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+      r = HEDLEY_STATIC_CAST(simde_bool, vec_any_ne(a_.altivec_i32, vec_splats(0)));
     #else
       SIMDE_VECTORIZE_REDUCTION(|:r)
       for (size_t i = 0 ; i < (sizeof(a_.i32f) / sizeof(a_.i32f[0])) ; i++) {
@@ -3294,6 +3296,8 @@ simde_wasm_i8x16_all_true (simde_v128_t a) {
       return _mm_test_all_zeros(_mm_cmpeq_epi8(a_.sse_m128i, _mm_set1_epi8(INT8_C(0))), _mm_set1_epi8(~INT8_C(0)));
     #elif defined(SIMDE_X86_SSE2_NATIVE)
       return _mm_movemask_epi8(_mm_cmpeq_epi8(a_.sse_m128i, _mm_setzero_si128())) == 0;
+    #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+      return HEDLEY_STATIC_CAST(simde_bool, vec_all_ne(a_.altivec_i8, vec_splats(HEDLEY_STATIC_CAST(signed char, 0))));
     #else
       int8_t r = !INT8_C(0);
 
@@ -3322,6 +3326,8 @@ simde_wasm_i16x8_all_true (simde_v128_t a) {
       return _mm_test_all_zeros(_mm_cmpeq_epi16(a_.sse_m128i, _mm_setzero_si128()), _mm_set1_epi16(~INT16_C(0)));
     #elif defined(SIMDE_X86_SSE2_NATIVE)
       return _mm_movemask_epi8(_mm_cmpeq_epi16(a_.sse_m128i, _mm_setzero_si128())) == 0;
+    #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+      return HEDLEY_STATIC_CAST(simde_bool, vec_all_ne(a_.altivec_i16, vec_splats(HEDLEY_STATIC_CAST(signed short, 0))));
     #else
       int16_t r = !INT16_C(0);
 
@@ -3350,6 +3356,8 @@ simde_wasm_i32x4_all_true (simde_v128_t a) {
       return _mm_test_all_zeros(_mm_cmpeq_epi32(a_.sse_m128i, _mm_setzero_si128()), _mm_set1_epi32(~INT32_C(0)));
     #elif defined(SIMDE_X86_SSE2_NATIVE)
       return _mm_movemask_ps(_mm_castsi128_ps(_mm_cmpeq_epi32(a_.sse_m128i, _mm_setzero_si128()))) == 0;
+    #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+      return HEDLEY_STATIC_CAST(simde_bool, vec_all_ne(a_.altivec_i32, vec_splats(HEDLEY_STATIC_CAST(signed int, 0))));
     #else
       int32_t r = !INT32_C(0);
 
@@ -3378,6 +3386,8 @@ simde_wasm_i64x2_all_true (simde_v128_t a) {
       return _mm_test_all_zeros(_mm_cmpeq_epi64(a_.sse_m128i, _mm_setzero_si128()), _mm_set1_epi32(~INT32_C(0)));
     #elif defined(SIMDE_X86_SSE2_NATIVE)
       return _mm_movemask_pd(_mm_cmpeq_pd(a_.sse_m128d, _mm_setzero_pd())) == 0;
+    #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
+      return HEDLEY_STATIC_CAST(simde_bool, vec_all_ne(a_.altivec_i64, HEDLEY_REINTERPRET_CAST(__typeof__(a_.altivec_i64), vec_splats(0))));
     #else
       int64_t r = !INT32_C(0);
 
