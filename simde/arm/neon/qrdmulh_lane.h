@@ -30,32 +30,63 @@
 #include "types.h"
 #include "qrdmulh.h"
 #include "dup_lane.h"
+#include "get_lane.h"
 
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 SIMDE_BEGIN_DECLS_
 
-#if defined(SIMDE_ARM_NEON_A32V7)
+#if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+  #if defined(__clang__) && !SIMDE_DETECT_CLANG_VERSION_CHECK(11,0,0)
+    #define simde_vqrdmulhs_lane_s32(a, v, lane) \
+    SIMDE_DISABLE_DIAGNOSTIC_EXPR_(SIMDE_DIAGNOSTIC_DISABLE_VECTOR_CONVERSION_, vqrdmulhs_lane_s32((a), (v), (lane)))
+  #else
+    #define simde_vqrdmulhs_lane_s32(a, v, lane) vqrdmulhs_lane_s32((a), (v), (lane))
+  #endif
+#else
+  #define simde_vqrdmulhs_lane_s32(a, v, lane) simde_vqrdmulhs_s32((a), simde_vget_lane_s32((v), (lane)))
+#endif
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vqrdmulhs_lane_s32
+  #define vqrdmulhs_lane_s32(a, v, lane) simde_vqrdmulhs_lane_s32((a), (v), (lane))
+#endif
+
+#if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+  #if defined(__clang__) && !SIMDE_DETECT_CLANG_VERSION_CHECK(11,0,0)
+    #define simde_vqrdmulhs_laneq_s32(a, v, lane) \
+    SIMDE_DISABLE_DIAGNOSTIC_EXPR_(SIMDE_DIAGNOSTIC_DISABLE_VECTOR_CONVERSION_, vqrdmulhs_laneq_s32((a), (v), (lane)))
+  #else
+    #define simde_vqrdmulhs_laneq_s32(a, v, lane) vqrdmulhs_laneq_s32((a), (v), (lane))
+  #endif
+#else
+  #define simde_vqrdmulhs_laneq_s32(a, v, lane) simde_vqrdmulhs_s32((a), simde_vgetq_lane_s32((v), (lane)))
+#endif
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vqrdmulhs_laneq_s32
+  #define vqrdmulhs_laneq_s32(a, v, lane) simde_vqrdmulhs_laneq_s32((a), (v), (lane))
+#endif
+
+#if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vqrdmulh_lane_s16(a, v, lane) vqrdmulh_lane_s16((a), (v), (lane))
 #else
   #define simde_vqrdmulh_lane_s16(a, v, lane) simde_vqrdmulh_s16((a), simde_vdup_lane_s16((v), (lane)))
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
-  #undef vqrdmulh_s16
+  #undef vqrdmulh_lane_s16
   #define vqrdmulh_lane_s16(a, v, lane) simde_vqrdmulh_lane_s16((a), (v), (lane))
 #endif
 
-#if defined(SIMDE_ARM_NEON_A32V7)
+#if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vqrdmulh_lane_s32(a, v, lane) vqrdmulh_lane_s32((a), (v), (lane))
 #else
   #define simde_vqrdmulh_lane_s32(a, v, lane) simde_vqrdmulh_s32((a), simde_vdup_lane_s32((v), (lane)))
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
-  #undef vqrdmulh_s32
+  #undef vqrdmulh_lane_s32
   #define vqrdmulh_lane_s32(a, v, lane) simde_vqrdmulh_lane_s32((a), (v), (lane))
 #endif
 
-#if defined(SIMDE_ARM_NEON_A32V7)
+#if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vqrdmulhq_lane_s16(a, v, lane) vqrdmulhq_lane_s16((a), (v), (lane))
 #else
   #define simde_vqrdmulhq_lane_s16(a, v, lane) simde_vqrdmulhq_s16((a), simde_vdupq_lane_s16((v), (lane)))
@@ -65,7 +96,7 @@ SIMDE_BEGIN_DECLS_
   #define vqrdmulhq_lane_s16(a, v, lane) simde_vqrdmulhq_lane_s16((a), (v), (lane))
 #endif
 
-#if defined(SIMDE_ARM_NEON_A32V7)
+#if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vqrdmulhq_lane_s32(a, v, lane) vqrdmulhq_lane_s32((a), (v), (lane))
 #else
   #define simde_vqrdmulhq_lane_s32(a, v, lane) simde_vqrdmulhq_s32((a), simde_vdupq_lane_s32((v), (lane)))
@@ -75,27 +106,27 @@ SIMDE_BEGIN_DECLS_
   #define vqrdmulhq_lane_s32(a, v, lane) simde_vqrdmulhq_lane_s32((a), (v), (lane))
 #endif
 
-#if defined(SIMDE_ARM_NEON_A64V8)
+#if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
   #define simde_vqrdmulh_laneq_s16(a, v, lane) vqrdmulh_laneq_s16((a), (v), (lane))
 #else
   #define simde_vqrdmulh_laneq_s16(a, v, lane) simde_vqrdmulh_s16((a), simde_vdup_laneq_s16((v), (lane)))
 #endif
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
-  #undef vqrdmulh_s16
+  #undef vqrdmulh_laneq_s16
   #define vqrdmulh_laneq_s16(a, v, lane) simde_vqrdmulh_laneq_s16((a), (v), (lane))
 #endif
 
-#if defined(SIMDE_ARM_NEON_A64V8)
+#if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
   #define simde_vqrdmulh_laneq_s32(a, v, lane) vqrdmulh_laneq_s32((a), (v), (lane))
 #else
   #define simde_vqrdmulh_laneq_s32(a, v, lane) simde_vqrdmulh_s32((a), simde_vdup_laneq_s32((v), (lane)))
 #endif
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
-  #undef vqrdmulh_s32
+  #undef vqrdmulh_laneq_s32
   #define vqrdmulh_laneq_s32(a, v, lane) simde_vqrdmulh_laneq_s32((a), (v), (lane))
 #endif
 
-#if defined(SIMDE_ARM_NEON_A64V8)
+#if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
   #define simde_vqrdmulhq_laneq_s16(a, v, lane) vqrdmulhq_laneq_s16((a), (v), (lane))
 #else
   #define simde_vqrdmulhq_laneq_s16(a, v, lane) simde_vqrdmulhq_s16((a), simde_vdupq_laneq_s16((v), (lane)))
@@ -105,7 +136,7 @@ SIMDE_BEGIN_DECLS_
   #define vqrdmulhq_laneq_s16(a, v, lane) simde_vqrdmulhq_laneq_s16((a), (v), (lane))
 #endif
 
-#if defined(SIMDE_ARM_NEON_A64V8)
+#if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
   #define simde_vqrdmulhq_laneq_s32(a, v, lane) vqrdmulhq_laneq_s32((a), (v), (lane))
 #else
   #define simde_vqrdmulhq_laneq_s32(a, v, lane) simde_vqrdmulhq_s32((a), simde_vdupq_laneq_s32((v), (lane)))
