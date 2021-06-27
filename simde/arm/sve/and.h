@@ -424,7 +424,7 @@ simde_svand_s64_x(simde_svbool_t pg, simde_svint64_t op1, simde_svint64_t op2) {
       for (int i = 0 ; i < HEDLEY_STATIC_CAST(int, sizeof(r.m128i) / sizeof(r.m128i[0])) ; i++) {
         r.m128i[i] = _mm_and_si128(op1.m128i[i], op2.m128i[i]);
       }
-    #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+    #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
       r.altivec = vec_and(op1.altivec, op2.altivec);
     #elif defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
       r.altivec = op1.altivec & op2.altivec;

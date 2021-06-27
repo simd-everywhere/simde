@@ -360,7 +360,7 @@ simde_svcmplt_f32(simde_svbool_t pg, simde_svfloat32_t op1, simde_svfloat32_t op
       }
     #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
       r.altivec_b32 = vec_and(pg.altivec_b32, vec_cmplt(op1.altivec, op2.altivec));
-    #elif defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
+    #elif defined(SIMDE_ZARCH_ZVECTOR_14_NATIVE)
       r.altivec_b32 = pg.altivec_b32 & vec_cmplt(op1.altivec, op2.altivec);
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r.v128 = wasm_v128_and(pg.v128, wasm_f32x4_lt(op1.v128, op2.v128));

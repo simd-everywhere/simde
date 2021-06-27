@@ -1101,7 +1101,7 @@ simde_svsub_f64_x(simde_svbool_t pg, simde_svfloat64_t op1, simde_svfloat64_t op
       for (int i = 0 ; i < HEDLEY_STATIC_CAST(int, sizeof(r.m128d) / sizeof(r.m128d[0])) ; i++) {
         r.m128d[i] = _mm_sub_pd(op1.m128d[i], op2.m128d[i]);
       }
-    #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
+    #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
       r.altivec = vec_sub(op1.altivec, op2.altivec);
     #elif defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
       r.altivec = op1.altivec - op2.altivec;

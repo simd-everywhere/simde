@@ -775,7 +775,7 @@ simde_wasm_f32x4_splat (simde_float32 a) {
       r_.sse_m128 = _mm_set1_ps(a);
     #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       r_.neon_f32 = vdupq_n_f32(a);
-    #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
+    #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_14_NATIVE)
       r_.altivec_f32 = vec_splats(a);
     #else
       SIMDE_VECTORIZE

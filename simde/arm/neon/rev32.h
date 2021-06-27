@@ -131,7 +131,7 @@ simde_vrev32q_s8(simde_int8x16_t a) {
                                    vec_revb(HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(signed int), a)));
   #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
     return HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(signed char),
-                                   vec_reve(HEDLEY_REINTERPRET_CAST(SIMDE1_POWER_ALTIVEC_VECTOR(signed int), vec_reve(a))));
+                                   vec_reve(HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(signed int), vec_reve(a))));
   #else
     simde_int8x16_private
       r_,

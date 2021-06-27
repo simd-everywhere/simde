@@ -319,7 +319,7 @@ simde_x_svsel_s64_z(simde_svbool_t pg, simde_svint64_t op1) {
       for (int i = 0 ; i < HEDLEY_STATIC_CAST(int, sizeof(r.m128i) / sizeof(r.m128i[0])) ; i++) {
         r.m128i[i] = _mm_and_si128(pg.m128i[i], op1.m128i[i]);
       }
-    #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+    #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
       r.altivec = vec_and(pg.altivec_b64, op1.altivec);
     #elif defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
       r.altivec = HEDLEY_REINTERPRET_CAST(__typeof__(op1.altivec), pg.values_i64) & op1.altivec;
@@ -364,7 +364,7 @@ simde_svsel_s64(simde_svbool_t pg, simde_svint64_t op1, simde_svint64_t op2) {
       for (int i = 0 ; i < HEDLEY_STATIC_CAST(int, sizeof(r.m128i) / sizeof(r.m128i[0])) ; i++) {
         r.m128i[i] = _mm_or_si128(_mm_and_si128(pg.m128i[i], op1.m128i[i]), _mm_andnot_si128(pg.m128i[i], op2.m128i[i]));
       }
-    #elif (defined(SIMDE_POWER_ALTIVEC_P6_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)) && !defined(SIMDE_BUG_CLANG_46770)
+    #elif (defined(SIMDE_POWER_ALTIVEC_P7_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)) && !defined(SIMDE_BUG_CLANG_46770)
       r.altivec = vec_sel(op2.altivec, op1.altivec, pg.altivec_b64);
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r.v128 = wasm_v128_bitselect(op1.v128, op2.v128, pg.v128);
