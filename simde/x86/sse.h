@@ -576,7 +576,7 @@ simde_x_mm_round_ps (simde__m128 a, int rounding, int lax_rounding)
       break;
 
     case SIMDE_MM_FROUND_TO_NEAREST_INT:
-      #if defined(SIMDE_POWER_ALTIVEC_P8_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_14_NATIVE)
+      #if defined(SIMDE_POWER_ALTIVEC_P7_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_14_NATIVE)
         r_.altivec_f32 = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(float), vec_rint(a_.altivec_f32));
       #elif defined(SIMDE_ARM_NEON_A32V8_NATIVE)
         r_.neon_f32 = vrndnq_f32(a_.neon_f32);
@@ -1857,7 +1857,7 @@ simde_x_mm_copysign_ps(simde__m128 dest, simde__m128 src) {
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
     const v128_t sign_pos = wasm_f32x4_splat(-0.0f);
     r_.wasm_v128 = wasm_v128_bitselect(src_.wasm_v128, dest_.wasm_v128, sign_pos);
-  #elif defined(SIMDE_POWER_ALTIVEC_P9_NATIVE)
+  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
     #if !defined(HEDLEY_IBM_VERSION)
       r_.altivec_f32 = vec_cpsgn(dest_.altivec_f32, src_.altivec_f32);
     #else
@@ -3401,10 +3401,7 @@ simde_x_mm_negate_ps(simde__m128 a) {
       r_,
       a_ = simde__m128_to_private(a);
 
-    #if defined(SIMDE_POWER_ALTIVEC_P8_NATIVE) && \
-        (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(8,1,0))
-      r_.altivec_f32 = vec_neg(a_.altivec_f32);
-    #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       r_.neon_f32 = vnegq_f32(a_.neon_f32);
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r_.wasm_v128 = wasm_f32x4_neg(a_.wasm_v128);

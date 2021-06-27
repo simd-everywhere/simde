@@ -115,7 +115,7 @@ simde_float64x2_t
 simde_vrndq_f64(simde_float64x2_t a) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vrndq_f64(a);
-  #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
+  #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
     return vec_trunc(a);
   #else
     simde_float64x2_private

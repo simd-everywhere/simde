@@ -538,7 +538,7 @@ simde_mm512_abs_pd(simde__m512d v2) {
       for (size_t i = 0 ; i < (sizeof(r_.m128d_private) / sizeof(r_.m128d_private[0])) ; i++) {
         r_.m128d_private[i].neon_f64 = vabsq_f64(v2_.m128d_private[i].neon_f64);
       }
-    #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
+    #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
       for (size_t i = 0 ; i < (sizeof(r_.m128d_private) / sizeof(r_.m128d_private[0])) ; i++) {
         r_.m128d_private[i].altivec_f64 = vec_abs(v2_.m128d_private[i].altivec_f64);
       }
