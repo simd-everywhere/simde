@@ -36,6 +36,48 @@ SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 SIMDE_BEGIN_DECLS_
 
 SIMDE_FUNCTION_ATTRIBUTES
+simde_float32_t
+simde_vrecpss_f32(simde_float32_t a, simde_float32_t b) {
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+    return vrecpss_f32(a, b);
+  #else
+    return SIMDE_FLOAT32_C(2.0) - (a * b);
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vrecpss_f32
+  #define vrecpss_f32(a, b) simde_vrecpss_f32((a), (b))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_float64_t
+simde_vrecpsd_f64(simde_float64_t a, simde_float64_t b) {
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+    return vrecpsd_f64(a, b);
+  #else
+    return SIMDE_FLOAT64_C(2.0) - (a * b);
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vrecpsd_f64
+  #define vrecpsd_f64(a, b) simde_vrecpsd_f64((a), (b))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_float64x1_t
+simde_vrecps_f64(simde_float64x1_t a, simde_float64x1_t b) {
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+    return vrecps_f64(a, b);
+  #else
+    return simde_vmls_f64(simde_vdup_n_f64(SIMDE_FLOAT64_C(2.0)), a, b);
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vrecps_f64
+  #define vrecps_f64(a, b) simde_vrecps_f64((a), (b))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
 simde_float32x2_t
 simde_vrecps_f32(simde_float32x2_t a, simde_float32x2_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
@@ -47,6 +89,20 @@ simde_vrecps_f32(simde_float32x2_t a, simde_float32x2_t b) {
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vrecps_f32
   #define vrecps_f32(a, b) simde_vrecps_f32((a), (b))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_float64x2_t
+simde_vrecpsq_f64(simde_float64x2_t a, simde_float64x2_t b) {
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+    return vrecpsq_f64(a, b);
+  #else
+    return simde_vmlsq_f64(simde_vdupq_n_f64(SIMDE_FLOAT64_C(2.0)), a, b);
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vrecpsq_f64
+  #define vrecpsq_f64(a, b) simde_vrecpsq_f64((a), (b))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
