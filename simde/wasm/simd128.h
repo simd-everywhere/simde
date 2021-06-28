@@ -5389,7 +5389,7 @@ simde_wasm_i8x16_swizzle (simde_v128_t a, simde_v128_t b) {
       r_;
 
     #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-      int8x8x2_t tmp = { vget_low_s8(a_.neon_i8), vget_high_s8(a_.neon_i8) };
+      int8x8x2_t tmp = { { vget_low_s8(a_.neon_i8), vget_high_s8(a_.neon_i8) } };
       r_.neon_i8 = vcombine_s8(
         vtbl2_s8(tmp, vget_low_s8(b_.neon_i8)),
         vtbl2_s8(tmp, vget_high_s8(b_.neon_i8))
@@ -5412,7 +5412,7 @@ simde_wasm_i8x16_swizzle (simde_v128_t a, simde_v128_t b) {
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.i8) / sizeof(r_.i8[0])) ; i++) {
-        r_.i8[i] = (b_.i8[i] > 15) ? INT8_C(0) : a_.i8[b_.i8[i]];
+        r_.i8[i] = (b_.u8[i] > 15) ? INT8_C(0) : a_.i8[b_.u8[i]];
       }
     #endif
 
