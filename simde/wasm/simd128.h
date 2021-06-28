@@ -5388,10 +5388,33 @@ simde_wasm_i8x16_swizzle (simde_v128_t a, simde_v128_t b) {
       b_ = simde_v128_to_private(b),
       r_;
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.i8) / sizeof(r_.i8[0])) ; i++) {
-      r_.i8[i] = ((b_.i8[i] & 15) == b_.i8[i]) ? a_.i8[b_.i8[i]] : INT8_C(0);
-    }
+    #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+      int8x8x2_t tmp = { vget_low_s8(a_.neon_i8), vget_high_s8(a_.neon_i8) };
+      r_.neon_i8 = vcombine_s8(
+        vtbl2_s8(tmp, vget_low_s8(b_.neon_i8)),
+        vtbl2_s8(tmp, vget_high_s8(b_.neon_i8))
+      );
+    #elif defined(SIMDE_X86_SSSE3_NATIVE)
+      /* https://github.com/WebAssembly/simd/issues/68#issuecomment-470825324 */
+      r_.sse_m128i =
+        _mm_shuffle_epi8(
+          a_.sse_m128i,
+          _mm_adds_epu8(
+            _mm_set1_epi8(0x70),
+            b_.sse_m128i));
+    #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+      r_.altivec_i8 = vec_perm(
+        a_.altivec_i8,
+        a_.altivec_i8,
+        b_.altivec_u8
+      );
+      r_.altivec_i8 = vec_and(r_.altivec_i8, vec_cmple(b_.altivec_u8, vec_splat_u8(15)));
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.i8) / sizeof(r_.i8[0])) ; i++) {
+        r_.i8[i] = (b_.i8[i] > 15) ? INT8_C(0) : a_.i8[b_.i8[i]];
+      }
+    #endif
 
     return simde_v128_from_private(r_);
   #endif
