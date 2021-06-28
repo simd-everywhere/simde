@@ -29,6 +29,7 @@
 #define SIMDE_ARM_NEON_LD1_DUP_H
 
 #include "dup_n.h"
+#include "reinterpret.h"
 
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
@@ -46,6 +47,22 @@ simde_vld1_dup_f32(simde_float32 const * ptr) {
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vld1_dup_f32
   #define vld1_dup_f32(a) simde_vld1_dup_f32((a))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_float64x1_t
+simde_vld1_dup_f64(simde_float64 const * ptr) {
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+    return vld1_dup_f64(ptr);
+  #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    return simde_vreinterpret_f64_s64(vld1_dup_s64(HEDLEY_REINTERPRET_CAST(int64_t const*, ptr)));
+  #else
+    return simde_vdup_n_f64(*ptr);
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vld1_dup_f64
+  #define vld1_dup_f64(a) simde_vld1_dup_f64((a))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -184,6 +201,20 @@ simde_vld1q_dup_f32(simde_float32 const * ptr) {
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vld1q_dup_f32
   #define vld1q_dup_f32(a) simde_vld1q_dup_f32((a))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_float64x2_t
+simde_vld1q_dup_f64(simde_float64 const * ptr) {
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+    return vld1q_dup_f64(ptr);
+  #else
+    return simde_vdupq_n_f64(*ptr);
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vld1q_dup_f64
+  #define vld1q_dup_f64(a) simde_vld1q_dup_f64((a))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
