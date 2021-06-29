@@ -226,6 +226,7 @@ simde_avx512_families = [
   'cvt',
   'cvtt',
   'cvts',
+  'dbsad',
   'div',
   'dpbusd',
   'expand',
