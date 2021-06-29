@@ -16,22 +16,25 @@ SIMDE_BEGIN_DECLS_
       SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 255) {
     HEDLEY_STATIC_CAST(void, imm8);
     simde__m128i_private
-      r_ = simde__m128i_to_private(simde_mm_setzero_si128()),
+      r_,
       a_ = simde__m128i_to_private(a),
       b_ = simde__m128i_to_private(b);
 
     for (size_t i = 0 ; i < (sizeof(r_.m64_private) / sizeof(r_.m64_private[0])) ; i++) {
       for (size_t j = 0 ; j < (sizeof(r_.m64_private[i].u16) / sizeof(r_.m64_private[i].u16[0])) ; j++) {
+        uint16_t tmp = 0;
+        SIMDE_VECTORIZE_REDUCTION(+:tmp)
         for (size_t k = 0 ; k < (sizeof(uint32_t) / sizeof(uint8_t)) ; k++) {
           const size_t e1 = j + k;
           const size_t e2 = ((j >> 1) << 2) + k;
-          r_.m64_private[i].u16[j] += HEDLEY_STATIC_CAST(
+          tmp += HEDLEY_STATIC_CAST(
                                         uint16_t,
                                         (a_.m64_private[i].u8[e2] > b_.m64_private[i].u8[e1]) ?
                                         (a_.m64_private[i].u8[e2] - b_.m64_private[i].u8[e1]) :
                                         (b_.m64_private[i].u8[e1] - a_.m64_private[i].u8[e2])
                                       );
         }
+        r_.m64_private[i].u16[j] = tmp;
       }
     }
 
