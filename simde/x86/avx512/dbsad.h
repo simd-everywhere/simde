@@ -27,12 +27,13 @@ SIMDE_BEGIN_DECLS_
         for (size_t k = 0 ; k < (sizeof(uint32_t) / sizeof(uint8_t)) ; k++) {
           const size_t e1 = j + k;
           const size_t e2 = ((j >> 1) << 2) + k;
-          tmp += HEDLEY_STATIC_CAST(
-                                        uint16_t,
-                                        (a_.m64_private[i].u8[e2] > b_.m64_private[i].u8[e1]) ?
-                                        (a_.m64_private[i].u8[e2] - b_.m64_private[i].u8[e1]) :
-                                        (b_.m64_private[i].u8[e1] - a_.m64_private[i].u8[e2])
-                                      );
+          tmp +=
+            HEDLEY_STATIC_CAST(
+              uint16_t,
+              (a_.m64_private[i].u8[e2] > b_.m64_private[i].u8[e1]) ?
+              (a_.m64_private[i].u8[e2] - b_.m64_private[i].u8[e1]) :
+              (b_.m64_private[i].u8[e1] - a_.m64_private[i].u8[e2])
+            );
         }
         r_.m64_private[i].u16[j] = tmp;
       }
