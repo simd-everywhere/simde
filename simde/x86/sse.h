@@ -3201,18 +3201,36 @@ simde_mm_movemask_ps (simde__m128 a) {
     int r = 0;
     simde__m128_private a_ = simde__m128_to_private(a);
 
-    #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
-      static const int32_t shift_amount[] = { 0, 1, 2, 3 };
-      const int32x4_t shift = vld1q_s32(shift_amount);
-      uint32x4_t tmp = vshrq_n_u32(a_.neon_u32, 31);
-      return HEDLEY_STATIC_CAST(int, vaddvq_u32(vshlq_u32(tmp, shift)));
-    #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       // Shift out everything but the sign bits with a 32-bit unsigned shift right.
       uint64x2_t high_bits = vreinterpretq_u64_u32(vshrq_n_u32(a_.neon_u32, 31));
       // Merge the two pairs together with a 64-bit unsigned shift right + add.
       uint8x16_t paired = vreinterpretq_u8_u64(vsraq_n_u64(high_bits, high_bits, 31));
       // Extract the result.
       return vgetq_lane_u8(paired, 0) | (vgetq_lane_u8(paired, 8) << 2);
+    #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+      static const uint32_t md[4] = {
+        1 << 0, 1 << 1, 1 << 2, 1 << 3
+      };
+
+      uint32x4_t extended = vreinterpretq_u32_s32(vshrq_n_s32(a_.neon_i32, 31));
+      uint32x4_t masked = vandq_u32(vld1q_u32(md), extended);
+      #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+        return HEDLEY_STATIC_CAST(int32_t, vaddvq_u32(masked));
+      #else
+        uint64x2_t t64 = vpaddlq_u32(masked);
+        return
+          HEDLEY_STATIC_CAST(int, vgetq_lane_u64(t64, 0)) +
+          HEDLEY_STATIC_CAST(int, vgetq_lane_u64(t64, 1));
+      #endif
+    #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE) && defined(SIMDE_BUG_CLANG_50932)
+      SIMDE_POWER_ALTIVEC_VECTOR(unsigned char) idx = { 96, 64, 32, 0, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128 };
+      SIMDE_POWER_ALTIVEC_VECTOR(unsigned char) res = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned char), vec_bperm(HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned __int128), a_.altivec_u64), idx));
+      return HEDLEY_STATIC_CAST(int32_t, vec_extract(HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(signed int), res), 2));
+    #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
+      SIMDE_POWER_ALTIVEC_VECTOR(unsigned char) idx = { 96, 64, 32, 0, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128 };
+      SIMDE_POWER_ALTIVEC_VECTOR(unsigned char) res = vec_bperm(a_.altivec_u8, idx);
+      return HEDLEY_STATIC_CAST(int32_t, vec_extract(HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(signed int), res), 2));
     #else
       SIMDE_VECTORIZE_REDUCTION(|:r)
       for (size_t i = 0 ; i < sizeof(a_.u32) / sizeof(a_.u32[0]) ; i++) {

@@ -972,6 +972,9 @@ SIMDE_DIAGNOSTIC_DISABLE_CPP98_COMPAT_PEDANTIC_
 #    if defined(_ARCH_PWR9) && !SIMDE_DETECT_CLANG_VERSION_CHECK(12,0,0) && !defined(__OPTIMIZE__)
 #      define SIMDE_BUG_CLANG_POWER9_16x4_BAD_SHIFT
 #    endif
+#    if defined(SIMDE_ARCH_POWER)
+#      define SIMDE_BUG_CLANG_50932
+#    endif
 #    if defined(SIMDE_ARCH_X86) || defined(SIMDE_ARCH_AMD64)
 #      if SIMDE_DETECT_CLANG_VERSION_NOT(5,0,0)
 #        define SIMDE_BUG_CLANG_REV_298042 /* 6afc436a7817a52e78ae7bcdc3faafd460124cac */
