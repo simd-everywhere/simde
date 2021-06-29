@@ -8,7 +8,7 @@ SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 SIMDE_BEGIN_DECLS_
 
 #if defined(SIMDE_X86_AVX512BW_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
-  #define simde_mm_dbsad_epu8(a, b, imm8) _mm_dbsad_epu8((a), (b), (imm8));
+  #define simde_mm_dbsad_epu8(a, b, imm8) _mm_dbsad_epu8((a), (b), (imm8))
 #else
   SIMDE_FUNCTION_ATTRIBUTES
   simde__m128i
