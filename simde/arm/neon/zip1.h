@@ -39,6 +39,9 @@ simde_float32x2_t
 simde_vzip1_f32(simde_float32x2_t a, simde_float32x2_t b) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vzip1_f32(a, b);
+  #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    float32x2x2_t tmp = vzip_f32(a, b);
+    return tmp.val[0];
   #else
     simde_float32x2_private
       r_,
@@ -71,6 +74,9 @@ simde_int8x8_t
 simde_vzip1_s8(simde_int8x8_t a, simde_int8x8_t b) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vzip1_s8(a, b);
+  #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    int8x8x2_t tmp = vzip_s8(a, b);
+    return tmp.val[0];
   #else
     simde_int8x8_private
       r_,
@@ -103,6 +109,9 @@ simde_int16x4_t
 simde_vzip1_s16(simde_int16x4_t a, simde_int16x4_t b) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vzip1_s16(a, b);
+  #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    int16x4x2_t tmp = vzip_s16(a, b);
+    return tmp.val[0];
   #else
     simde_int16x4_private
       r_,
@@ -135,6 +144,9 @@ simde_int32x2_t
 simde_vzip1_s32(simde_int32x2_t a, simde_int32x2_t b) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vzip1_s32(a, b);
+  #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    int32x2x2_t tmp = vzip_s32(a, b);
+    return tmp.val[0];
   #else
     simde_int32x2_private
       r_,
@@ -167,6 +179,9 @@ simde_uint8x8_t
 simde_vzip1_u8(simde_uint8x8_t a, simde_uint8x8_t b) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vzip1_u8(a, b);
+  #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    uint8x8x2_t tmp = vzip_u8(a, b);
+    return tmp.val[0];
   #else
     simde_uint8x8_private
       r_,
@@ -199,6 +214,9 @@ simde_uint16x4_t
 simde_vzip1_u16(simde_uint16x4_t a, simde_uint16x4_t b) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vzip1_u16(a, b);
+  #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    uint16x4x2_t tmp = vzip_u16(a, b);
+    return tmp.val[0];
   #else
     simde_uint16x4_private
       r_,
@@ -231,6 +249,9 @@ simde_uint32x2_t
 simde_vzip1_u32(simde_uint32x2_t a, simde_uint32x2_t b) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vzip1_u32(a, b);
+  #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    uint32x2x2_t tmp = vzip_u32(a, b);
+    return tmp.val[0];
   #else
     simde_uint32x2_private
       r_,
@@ -263,6 +284,9 @@ simde_float32x4_t
 simde_vzip1q_f32(simde_float32x4_t a, simde_float32x4_t b) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vzip1q_f32(a, b);
+  #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    float32x2x2_t tmp = vzip_f32(vget_low_f32(a), vget_low_f32(b));
+    return vcombine_f32(tmp.val[0], tmp.val[1]);
   #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
     return vec_mergeh(a, b);
   #else
@@ -335,6 +359,9 @@ simde_int8x16_t
 simde_vzip1q_s8(simde_int8x16_t a, simde_int8x16_t b) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vzip1q_s8(a, b);
+  #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    int8x8x2_t tmp = vzip_s8(vget_low_s8(a), vget_low_s8(b));
+    return vcombine_s8(tmp.val[0], tmp.val[1]);
   #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
     return vec_mergeh(a, b);
   #else
@@ -371,6 +398,9 @@ simde_int16x8_t
 simde_vzip1q_s16(simde_int16x8_t a, simde_int16x8_t b) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vzip1q_s16(a, b);
+  #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    int16x4x2_t tmp = vzip_s16(vget_low_s16(a), vget_low_s16(b));
+    return vcombine_s16(tmp.val[0], tmp.val[1]);
   #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
     return vec_mergeh(a, b);
   #else
@@ -407,6 +437,9 @@ simde_int32x4_t
 simde_vzip1q_s32(simde_int32x4_t a, simde_int32x4_t b) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vzip1q_s32(a, b);
+  #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    int32x2x2_t tmp = vzip_s32(vget_low_s32(a), vget_low_s32(b));
+    return vcombine_s32(tmp.val[0], tmp.val[1]);
   #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
     return vec_mergeh(a, b);
   #else
@@ -480,6 +513,9 @@ simde_uint8x16_t
 simde_vzip1q_u8(simde_uint8x16_t a, simde_uint8x16_t b) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vzip1q_u8(a, b);
+  #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    uint8x8x2_t tmp = vzip_u8(vget_low_u8(a), vget_low_u8(b));
+    return vcombine_u8(tmp.val[0], tmp.val[1]);
   #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
     return vec_mergeh(a, b);
   #else
@@ -516,6 +552,9 @@ simde_uint16x8_t
 simde_vzip1q_u16(simde_uint16x8_t a, simde_uint16x8_t b) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vzip1q_u16(a, b);
+  #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    uint16x4x2_t tmp = vzip_u16(vget_low_u16(a), vget_low_u16(b));
+    return vcombine_u16(tmp.val[0], tmp.val[1]);
   #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
     return vec_mergeh(a, b);
   #else
@@ -552,6 +591,9 @@ simde_uint32x4_t
 simde_vzip1q_u32(simde_uint32x4_t a, simde_uint32x4_t b) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vzip1q_u32(a, b);
+  #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    uint32x2x2_t tmp = vzip_u32(vget_low_u32(a), vget_low_u32(b));
+    return vcombine_u32(tmp.val[0], tmp.val[1]);
   #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
     return vec_mergeh(a, b);
   #else
