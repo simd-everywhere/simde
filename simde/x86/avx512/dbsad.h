@@ -12,9 +12,7 @@ SIMDE_BEGIN_DECLS_
 #else
   SIMDE_FUNCTION_ATTRIBUTES
   simde__m128i
-  simde_mm_dbsad_epu8_internal_ (simde__m128i a, simde__m128i b, int imm8)
-      SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 255) {
-    HEDLEY_STATIC_CAST(void, imm8);
+  simde_mm_dbsad_epu8_internal_ (simde__m128i a, simde__m128i b) {
     simde__m128i_private
       r_,
       a_ = simde__m128i_to_private(a),
@@ -41,7 +39,7 @@ SIMDE_BEGIN_DECLS_
 
     return simde__m128i_from_private(r_);
   }
-  #define simde_mm_dbsad_epu8(a, b, imm8) simde_mm_dbsad_epu8_internal_((a), simde_mm_shuffle_epi32(b, imm8), (imm8))
+  #define simde_mm_dbsad_epu8(a, b, imm8) simde_mm_dbsad_epu8_internal_((a), simde_mm_shuffle_epi32(b, imm8))
 #endif
 #if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES) && defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES)
   #undef _mm_dbsad_epu8
