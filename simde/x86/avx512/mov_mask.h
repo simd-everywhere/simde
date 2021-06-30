@@ -56,7 +56,7 @@ simde_mm_movepi8_mask (simde__m128i a) {
     return r;
   #endif
 }
-#if defined(SIMDE_X86_AVX256BW_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
   #undef _mm_movepi8_mask
   #define _mm_movepi8_mask(a) simde_mm_movepi8_mask(a)
 #endif
@@ -87,7 +87,7 @@ simde_mm_movepi16_mask (simde__m128i a) {
     return r;
   #endif
 }
-#if defined(SIMDE_X86_AVX256BW_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
   #undef _mm_movepi16_mask
   #define _mm_movepi16_mask(a) simde_mm_movepi16_mask(a)
 #endif
@@ -97,7 +97,7 @@ simde__mmask8
 simde_mm_movepi32_mask (simde__m128i a) {
   #if defined(SIMDE_X86_AVX512VL_NATIVE) && defined(SIMDE_X86_AVX512DQ_NATIVE)
     return _mm_movepi32_mask(a);
-  #elif defined(SIMDE_X86_SSE2_NATIVE)
+  #elif SIMDE_NATURAL_VECTOR_SIZE_GE(128)
     return HEDLEY_STATIC_CAST(simde__mmask8, simde_mm_movemask_ps(simde_mm_castsi128_ps(a)));
   #else
     simde__m128i_private a_ = simde__m128i_to_private(a);
@@ -111,7 +111,7 @@ simde_mm_movepi32_mask (simde__m128i a) {
     return r;
   #endif
 }
-#if defined(SIMDE_X86_AVX256DQ_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_AVX512DQ_ENABLE_NATIVE_ALIASES)
   #undef _mm_movepi32_mask
   #define _mm_movepi32_mask(a) simde_mm_movepi32_mask(a)
 #endif
@@ -135,7 +135,7 @@ simde_mm_movepi64_mask (simde__m128i a) {
     return r;
   #endif
 }
-#if defined(SIMDE_X86_AVX256DQ_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_AVX512DQ_ENABLE_NATIVE_ALIASES)
   #undef _mm_movepi64_mask
   #define _mm_movepi64_mask(a) simde_mm_movepi64_mask(a)
 #endif
@@ -163,7 +163,7 @@ simde_mm256_movepi8_mask (simde__m256i a) {
     return HEDLEY_STATIC_CAST(simde__mmask32, r);
   #endif
 }
-#if defined(SIMDE_X86_AVX256BW_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
   #undef _mm256_movepi8_mask
   #define _mm256_movepi8_mask(a) simde_mm256_movepi8_mask(a)
 #endif
@@ -191,7 +191,7 @@ simde_mm256_movepi16_mask (simde__m256i a) {
     return r;
   #endif
 }
-#if defined(SIMDE_X86_AVX256BW_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
   #undef _mm256_movepi16_mask
   #define _mm256_movepi16_mask(a) simde_mm256_movepi16_mask(a)
 #endif
@@ -219,7 +219,7 @@ simde_mm256_movepi32_mask (simde__m256i a) {
     return r;
   #endif
 }
-#if defined(SIMDE_X86_AVX256DQ_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_AVX512DQ_ENABLE_NATIVE_ALIASES)
   #undef _mm256_movepi32_mask
   #define _mm256_movepi32_mask(a) simde_mm256_movepi32_mask(a)
 #endif
@@ -247,7 +247,7 @@ simde_mm256_movepi64_mask (simde__m256i a) {
     return r;
   #endif
 }
-#if defined(SIMDE_X86_AVX256DQ_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_AVX512DQ_ENABLE_NATIVE_ALIASES)
   #undef _mm256_movepi64_mask
   #define _mm256_movepi64_mask(a) simde_mm256_movepi64_mask(a)
 #endif

@@ -44,7 +44,7 @@ simde_mm_mask_blend_epi8(simde__mmask16 k, simde__m128i a, simde__m128i b) {
     return simde_mm_mask_mov_epi8(a, k, b);
   #endif
 }
-#if defined(SIMDE_X86_AVX256BW_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
   #undef _mm_mask_blend_epi8
   #define _mm_mask_blend_epi8(k, a, b) simde_mm_mask_blend_epi8(k, a, b)
 #endif
@@ -58,7 +58,7 @@ simde_mm_mask_blend_epi16(simde__mmask8 k, simde__m128i a, simde__m128i b) {
     return simde_mm_mask_mov_epi16(a, k, b);
   #endif
 }
-#if defined(SIMDE_X86_AVX256BW_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
   #undef _mm_mask_blend_epi16
   #define _mm_mask_blend_epi16(k, a, b) simde_mm_mask_blend_epi16(k, a, b)
 #endif
@@ -128,7 +128,7 @@ simde_mm256_mask_blend_epi8(simde__mmask32 k, simde__m256i a, simde__m256i b) {
     return simde_mm256_mask_mov_epi8(a, k, b);
   #endif
 }
-#if defined(SIMDE_X86_AVX256BW_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
   #undef _mm256_mask_blend_epi8
   #define _mm256_mask_blend_epi8(k, a, b) simde_mm256_mask_blend_epi8(k, a, b)
 #endif
@@ -142,7 +142,7 @@ simde_mm256_mask_blend_epi16(simde__mmask16 k, simde__m256i a, simde__m256i b) {
     return simde_mm256_mask_mov_epi16(a, k, b);
   #endif
 }
-#if defined(SIMDE_X86_AVX256BW_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
   #undef _mm256_mask_blend_epi16
   #define _mm256_mask_blend_epi16(k, a, b) simde_mm256_mask_blend_epi16(k, a, b)
 #endif
