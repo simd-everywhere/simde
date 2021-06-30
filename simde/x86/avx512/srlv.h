@@ -39,7 +39,7 @@ SIMDE_BEGIN_DECLS_
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_srlv_epi16 (simde__m128i a, simde__m128i b) {
-  #if defined(SIMDE_X86_AVX256VL_NATIVE) && defined(SIMDE_X86_AVX256BW_NATIVE)
+  #if defined(SIMDE_X86_AVX512VL_NATIVE) && defined(SIMDE_X86_AVX512BW_NATIVE)
     return _mm_srlv_epi16(a, b);
   #else
     simde__m128i_private
@@ -151,7 +151,7 @@ simde_mm_maskz_srlv_epi64(simde__mmask8 k, simde__m128i a, simde__m128i b) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m256i
 simde_mm256_srlv_epi16 (simde__m256i a, simde__m256i b) {
-  #if defined(SIMDE_X86_AVX256VL_NATIVE) && defined(SIMDE_X86_AVX256BW_NATIVE)
+  #if defined(SIMDE_X86_AVX512VL_NATIVE) && defined(SIMDE_X86_AVX512BW_NATIVE)
     return _mm256_srlv_epi16(a, b);
   #else
     simde__m256i_private
