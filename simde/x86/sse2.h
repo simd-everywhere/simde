@@ -3742,10 +3742,13 @@ simde_mm_movemask_pd (simde__m128d a) {
     simde__m128d_private a_ = simde__m128d_to_private(a);
 
     #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+      HEDLEY_DIAGNOSTIC_PUSH
+      SIMDE_DIAGNOSTIC_DISABLE_VECTOR_CONVERSION_
       uint64x2_t shifted = vshrq_n_u64(a_.neon_u64, 63);
       r =
         HEDLEY_STATIC_CAST(int32_t, vgetq_lane_u64(shifted, 0)) +
         (HEDLEY_STATIC_CAST(int32_t, vgetq_lane_u64(shifted, 1)) << 1);
+      HEDLEY_DIAGNOSTIC_POP
     #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE) && defined(SIMDE_BUG_CLANG_50932)
       SIMDE_POWER_ALTIVEC_VECTOR(unsigned char) idx = { 64, 0, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128 };
       SIMDE_POWER_ALTIVEC_VECTOR(unsigned char) res = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned char), vec_bperm(HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned __int128), a_.altivec_u64), idx));
