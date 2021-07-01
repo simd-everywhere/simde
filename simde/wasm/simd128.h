@@ -7235,7 +7235,7 @@ simde_wasm_f32x4_floor (simde_v128_t a) {
             _mm_set1_ps(SIMDE_FLOAT32_C(1.0))
           )
         );
-    #elif defined(SIMDE_ARM_NEON_A32V8_NATIVE) && 0
+    #elif defined(SIMDE_ARM_NEON_A32V8_NATIVE)
       r_.neon_f32 = vrndmq_f32(a_.f32);
     #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       const int32x4_t input_as_int = vcvtq_s32_f32(a_.f32);
