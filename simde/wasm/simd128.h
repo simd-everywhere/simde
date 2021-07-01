@@ -7204,10 +7204,74 @@ simde_wasm_f32x4_floor (simde_v128_t a) {
       a_ = simde_v128_to_private(a),
       r_;
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
-      r_.f32[i] = simde_math_floorf(a_.f32[i]);
-    }
+    #if defined(SIMDE_X86_SSE4_1_NATIVE)
+      r_.sse_m128 = _mm_floor_ps(a_.sse_m128);
+    #elif defined(SIMDE_X86_SSE2_NATIVE)
+      const __m128i vint_min = _mm_set1_epi32(INT_MIN);
+      const __m128i input_as_int = _mm_cvttps_epi32(a_.sse_m128);
+      const __m128 input_truncated = _mm_cvtepi32_ps(input_as_int);
+      const __m128i oor_all_or_neg = _mm_or_si128(_mm_cmpeq_epi32(input_as_int, vint_min), vint_min);
+      const __m128 tmp =
+        _mm_castsi128_ps(
+          _mm_or_si128(
+            _mm_andnot_si128(
+              oor_all_or_neg,
+              _mm_castps_si128(input_truncated)
+            ),
+            _mm_and_si128(
+              oor_all_or_neg,
+              _mm_castps_si128(a_.sse_m128)
+            )
+          )
+        );
+      r_.sse_m128 =
+        _mm_sub_ps(
+          tmp,
+          _mm_and_ps(
+            _mm_cmplt_ps(
+              a_.sse_m128,
+              tmp
+            ),
+            _mm_set1_ps(SIMDE_FLOAT32_C(1.0))
+          )
+        );
+    #elif defined(SIMDE_ARM_NEON_A32V8_NATIVE) && 0
+      r_.neon_f32 = vrndmq_f32(a_.f32);
+    #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+      const int32x4_t input_as_int = vcvtq_s32_f32(a_.f32);
+      const float32x4_t input_truncated = vcvtq_f32_s32(input_as_int);
+      const float32x4_t tmp =
+        vbslq_f32(
+          vbicq_u32(
+            vcagtq_f32(
+              vreinterpretq_f32_u32(vdupq_n_u32(UINT32_C(0x4B000000))),
+              a_.f32
+            ),
+            vdupq_n_u32(UINT32_C(0x80000000))
+          ),
+          input_truncated,
+          a_.f32);
+      r_.neon_f32 =
+        vsubq_f32(
+          tmp,
+          vreinterpretq_f32_u32(
+            vandq_u32(
+              vcgtq_f32(
+                tmp,
+                a_.f32
+              ),
+              vdupq_n_u32(UINT32_C(0x3F800000))
+            )
+          )
+        );
+    #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_14_NATIVE)
+      r_.altivec_f32 = vec_floor(a_.altivec_f32);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
+        r_.f32[i] = simde_math_floorf(a_.f32[i]);
+      }
+    #endif
 
     return simde_v128_from_private(r_);
   #endif
