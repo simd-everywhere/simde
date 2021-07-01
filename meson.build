@@ -227,6 +227,7 @@ simde_avx512_families = [
   'cvtt',
   'cvts',
   'div',
+  'dpbusd',
   'expand',
   'extract',
   'flushsubnormal',
