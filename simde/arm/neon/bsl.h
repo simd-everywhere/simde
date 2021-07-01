@@ -49,7 +49,7 @@ simde_vbsl_f32(simde_uint32x2_t a, simde_float32x2_t b, simde_float32x2_t c) {
       b_ = simde_uint32x2_to_private(simde_vreinterpret_u32_f32(b)),
       c_ = simde_uint32x2_to_private(simde_vreinterpret_u32_f32(c));
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && 0
+    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       r_.values = c_.values ^ ((b_.values ^ c_.values) & a_.values);
     #else
       SIMDE_VECTORIZE

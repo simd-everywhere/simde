@@ -3729,12 +3729,11 @@ test_simde_mm_cvttpd_epi32 (SIMDE_MUNIT_TEST_ARGS) {
     { {             SIMDE_MATH_NAN,           -SIMDE_MATH_NAN },
       {            INT32_MIN,              INT32_MIN,  INT32_C(           0),  INT32_C(           0) } },
     #endif
-    #if !defined(SIMDE_FAST_CONVERSION_RANGE) && 0
+    #if !defined(SIMDE_FAST_CONVERSION_RANGE)
     { { SIMDE_FLOAT64_C(   524.21), SIMDE_FLOAT64_C(    51.51) },
       {  INT32_C(         524),  INT32_C(          51),  INT32_C(           0),  INT32_C(           0) } },
     { { SIMDE_FLOAT64_C(   146.80), SIMDE_FLOAT64_C(  -434.11) },
       {  INT32_C(         146), -INT32_C(         434),  INT32_C(           0),  INT32_C(           0) } },
-    { { SIMDE_FLOAT64_C(  -150.72), SIMDE_FLOAT64_C(   743.64) },
     #endif
     { { SIMDE_FLOAT64_C(   788.74), SIMDE_FLOAT64_C(   212.17) },
       {  INT32_C(         788),  INT32_C(         212),  INT32_C(           0),  INT32_C(           0) } },

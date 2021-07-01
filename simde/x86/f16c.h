@@ -59,7 +59,7 @@ simde_mm_cvtps_ph(simde__m128 a, const int sae) {
 
     HEDLEY_STATIC_CAST(void, sae);
 
-    #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && (__ARM_FP & 2) && 0
+    #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && (__ARM_FP & 2)
       r_.neon_f16 = vcombine_f16(vcvt_f16_f32(a_.neon_f32), vdup_n_f16(SIMDE_FLOAT16_C(0.0)));
     #else
       SIMDE_VECTORIZE
@@ -84,7 +84,7 @@ simde_mm_cvtph_ps(simde__m128i a) {
     simde__m128i_private a_ = simde__m128i_to_private(a);
     simde__m128_private r_;
 
-    #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && (__ARM_FP & 2) && 0
+    #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && (__ARM_FP & 2)
       r_.neon_f32 = vcvt_f32_f16(vget_low_f16(a_.neon_f16));
     #else
       SIMDE_VECTORIZE

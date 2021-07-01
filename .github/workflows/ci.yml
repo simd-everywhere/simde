@@ -59,6 +59,8 @@ jobs:
     # Check indentation of preprocessor directives.
     - name: Preprocessor directive indentation
       run: find simde/*/ -name 'avx*.h' -exec pcre2grep -M '{\n#' {} + && exit 1 || exit 0
+    - name: Stray `&& 0`
+      run: git grep ' && 0' simde/ test/ && exit 1 || exit 0
 
   x86:
     runs-on: ubuntu-latest

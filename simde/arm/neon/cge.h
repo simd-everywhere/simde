@@ -39,7 +39,7 @@ simde_uint32x4_t
 simde_vcgeq_f32(simde_float32x4_t a, simde_float32x4_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vcgeq_f32(a, b);
-  #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE) && 0
+  #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
     return HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned int), vec_cmpge(a, b));
   #else
     simde_float32x4_private
@@ -73,7 +73,7 @@ simde_uint64x2_t
 simde_vcgeq_f64(simde_float64x2_t a, simde_float64x2_t b) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vcgeq_f64(a, b);
-  #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE) && 0
+  #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
     return HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned long long), vec_cmpge(a, b));
   #else
     simde_float64x2_private
@@ -107,7 +107,7 @@ simde_uint8x16_t
 simde_vcgeq_s8(simde_int8x16_t a, simde_int8x16_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vcgeq_s8(a, b);
-  #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE) && 0
+  #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
     return HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned char), vec_cmpge(a, b));
   #else
     simde_int8x16_private
@@ -141,7 +141,7 @@ simde_uint16x8_t
 simde_vcgeq_s16(simde_int16x8_t a, simde_int16x8_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vcgeq_s16(a, b);
-  #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE) && 0
+  #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
     return HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned short), vec_cmpge(a, b));
   #else
     simde_int16x8_private
@@ -175,7 +175,7 @@ simde_uint32x4_t
 simde_vcgeq_s32(simde_int32x4_t a, simde_int32x4_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vcgeq_s32(a, b);
-  #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE) && 0
+  #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
     return HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned int), vec_cmpge(a, b));
   #else
     simde_int32x4_private
@@ -211,7 +211,7 @@ simde_vcgeq_s64(simde_int64x2_t a, simde_int64x2_t b) {
     return vcgeq_s64(a, b);
   #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vreinterpretq_u64_s32(vmvnq_s32(vreinterpretq_s32_s64(vshrq_n_s64(vqsubq_s64(a, b), 63))));
-  #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE) && 0
+  #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
     return HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned long long), vec_cmpge(a, b));
   #else
     simde_int64x2_private
@@ -243,7 +243,7 @@ simde_uint8x16_t
 simde_vcgeq_u8(simde_uint8x16_t a, simde_uint8x16_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vcgeq_u8(a, b);
-  #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE) && 0
+  #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
     return HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned char), vec_cmpge(a, b));
   #else
     simde_uint8x16_private
@@ -278,7 +278,7 @@ simde_uint16x8_t
 simde_vcgeq_u16(simde_uint16x8_t a, simde_uint16x8_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vcgeq_u16(a, b);
-  #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE) && 0
+  #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
     return HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned short), vec_cmpge(a, b));
   #else
     simde_uint16x8_private
@@ -313,7 +313,7 @@ simde_uint32x4_t
 simde_vcgeq_u32(simde_uint32x4_t a, simde_uint32x4_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vcgeq_u32(a, b);
-  #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE) && 0
+  #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
     return HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned int), vec_cmpge(a, b));
   #else
     simde_uint32x4_private
@@ -348,7 +348,7 @@ simde_uint64x2_t
 simde_vcgeq_u64(simde_uint64x2_t a, simde_uint64x2_t b) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vcgeq_u64(a, b);
-  #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE) && 0
+  #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
     return HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned long long), vec_cmpge(a, b));
   #else
     simde_uint64x2_private
