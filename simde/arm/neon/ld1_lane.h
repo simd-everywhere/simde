@@ -82,6 +82,22 @@ simde_int32x2_t simde_vld1_lane_s32(int32_t const *ptr, simde_int32x2_t src,
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
+simde_int64x1_t simde_vld1_lane_s64(int64_t const *ptr, simde_int64x1_t src,
+                                      const int lane)
+    SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 0) {
+  simde_int64x1_private r = simde_int64x1_to_private(src);
+  r.values[lane] = *ptr;
+  return simde_int64x1_from_private(r);
+}
+#if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #define simde_vld1_lane_s64(ptr, src, lane) vld1_lane_s64(ptr, src, lane)
+#endif
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+  #undef vld1_lane_s64
+  #define vld1_lane_s64(ptr, src, lane) simde_vld1_lane_s64((ptr), (src), (lane))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
 simde_uint8x8_t simde_vld1_lane_u8(uint8_t const *ptr, simde_uint8x8_t src,
                                    const int lane)
     SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 7) {
@@ -127,6 +143,54 @@ simde_uint32x2_t simde_vld1_lane_u32(uint32_t const *ptr, simde_uint32x2_t src,
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vld1_lane_u32
   #define vld1_lane_u32(ptr, src, lane) simde_vld1_lane_u32((ptr), (src), (lane))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_uint64x1_t simde_vld1_lane_u64(uint64_t const *ptr, simde_uint64x1_t src,
+                                     const int lane)
+    SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 0) {
+  simde_uint64x1_private r = simde_uint64x1_to_private(src);
+  r.values[lane] = *ptr;
+  return simde_uint64x1_from_private(r);
+}
+#if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #define simde_vld1_lane_u64(ptr, src, lane) vld1_lane_u64(ptr, src, lane)
+#endif
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+  #undef vld1_lane_u64
+  #define vld1_lane_u64(ptr, src, lane) simde_vld1_lane_u64((ptr), (src), (lane))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_float32x2_t simde_vld1_lane_f32(simde_float32_t const *ptr, simde_float32x2_t src,
+                                     const int lane)
+    SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 1) {
+  simde_float32x2_private r = simde_float32x2_to_private(src);
+  r.values[lane] = *ptr;
+  return simde_float32x2_from_private(r);
+}
+#if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #define simde_vld1_lane_f32(ptr, src, lane) vld1_lane_f32(ptr, src, lane)
+#endif
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+  #undef vld1_lane_f32
+  #define vld1_lane_f32(ptr, src, lane) simde_vld1_lane_f32((ptr), (src), (lane))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_float64x1_t simde_vld1_lane_f64(simde_float64_t const *ptr, simde_float64x1_t src,
+                                     const int lane)
+    SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 0) {
+  simde_float64x1_private r = simde_float64x1_to_private(src);
+  r.values[lane] = *ptr;
+  return simde_float64x1_from_private(r);
+}
+#if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+  #define simde_vld1_lane_f64(ptr, src, lane) vld1_lane_f64(ptr, src, lane)
+#endif
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vld1_lane_f64
+  #define vld1_lane_f64(ptr, src, lane) simde_vld1_lane_f64((ptr), (src), (lane))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -178,6 +242,22 @@ simde_int32x4_t simde_vld1q_lane_s32(int32_t const *ptr, simde_int32x4_t src,
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
+simde_int64x2_t simde_vld1q_lane_s64(int64_t const *ptr, simde_int64x2_t src,
+                                      const int lane)
+    SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 1) {
+  simde_int64x2_private r = simde_int64x2_to_private(src);
+  r.values[lane] = *ptr;
+  return simde_int64x2_from_private(r);
+}
+#if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #define simde_vld1q_lane_s64(ptr, src, lane) vld1q_lane_s64(ptr, src, lane)
+#endif
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+  #undef vld1q_lane_s64
+  #define vld1q_lane_s64(ptr, src, lane) simde_vld1q_lane_s64((ptr), (src), (lane))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
 simde_uint8x16_t simde_vld1q_lane_u8(uint8_t const *ptr, simde_uint8x16_t src,
                                      const int lane)
     SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 15) {
@@ -223,6 +303,54 @@ simde_uint32x4_t simde_vld1q_lane_u32(uint32_t const *ptr, simde_uint32x4_t src,
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vld1q_lane_u32
   #define vld1q_lane_u32(ptr, src, lane) simde_vld1q_lane_u32((ptr), (src), (lane))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_uint64x2_t simde_vld1q_lane_u64(uint64_t const *ptr, simde_uint64x2_t src,
+                                     const int lane)
+    SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 1) {
+  simde_uint64x2_private r = simde_uint64x2_to_private(src);
+  r.values[lane] = *ptr;
+  return simde_uint64x2_from_private(r);
+}
+#if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #define simde_vld1q_lane_u64(ptr, src, lane) vld1q_lane_u64(ptr, src, lane)
+#endif
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+  #undef vld1q_lane_u64
+  #define vld1q_lane_u64(ptr, src, lane) simde_vld1q_lane_u64((ptr), (src), (lane))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_float32x4_t simde_vld1q_lane_f32(simde_float32_t const *ptr, simde_float32x4_t src,
+                                     const int lane)
+    SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 3) {
+  simde_float32x4_private r = simde_float32x4_to_private(src);
+  r.values[lane] = *ptr;
+  return simde_float32x4_from_private(r);
+}
+#if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #define simde_vld1q_lane_f32(ptr, src, lane) vld1q_lane_f32(ptr, src, lane)
+#endif
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+  #undef vld1q_lane_f32
+  #define vld1q_lane_f32(ptr, src, lane) simde_vld1q_lane_f32((ptr), (src), (lane))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_float64x2_t simde_vld1q_lane_f64(simde_float64_t const *ptr, simde_float64x2_t src,
+                                     const int lane)
+    SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 1) {
+  simde_float64x2_private r = simde_float64x2_to_private(src);
+  r.values[lane] = *ptr;
+  return simde_float64x2_from_private(r);
+}
+#if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+  #define simde_vld1q_lane_f64(ptr, src, lane) vld1q_lane_f64(ptr, src, lane)
+#endif
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vld1q_lane_f64
+  #define vld1q_lane_f64(ptr, src, lane) simde_vld1q_lane_f64((ptr), (src), (lane))
 #endif
 
 SIMDE_END_DECLS_
