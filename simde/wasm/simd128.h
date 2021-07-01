@@ -3416,6 +3416,17 @@ simde_wasm_i8x16_all_true (simde_v128_t a) {
       return _mm_test_all_zeros(_mm_cmpeq_epi8(a_.sse_m128i, _mm_set1_epi8(INT8_C(0))), _mm_set1_epi8(~INT8_C(0)));
     #elif defined(SIMDE_X86_SSE2_NATIVE)
       return _mm_movemask_epi8(_mm_cmpeq_epi8(a_.sse_m128i, _mm_setzero_si128())) == 0;
+    #elif defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+      return !vmaxvq_u8(vceqzq_u8(a_.neon_u8));
+    #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+      uint8x16_t zeroes = vdupq_n_u8(0);
+      uint8x16_t false_set = vceqq_u8(a_.neon_u8, vdupq_n_u8(0));
+      uint32x4_t d_all_true = vceqq_u32(vreinterpretq_u32_u8(false_set), vreinterpretq_u32_u8(zeroes));
+      uint32x2_t q_all_true = vpmin_u32(vget_low_u32(d_all_true), vget_high_u32(d_all_true));
+
+      return !!(
+        vget_lane_u32(q_all_true, 0) &
+        vget_lane_u32(q_all_true, 1));
     #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
       return HEDLEY_STATIC_CAST(simde_bool, vec_all_ne(a_.altivec_i8, vec_splats(HEDLEY_STATIC_CAST(signed char, 0))));
     #else
@@ -3446,6 +3457,17 @@ simde_wasm_i16x8_all_true (simde_v128_t a) {
       return _mm_test_all_zeros(_mm_cmpeq_epi16(a_.sse_m128i, _mm_setzero_si128()), _mm_set1_epi16(~INT16_C(0)));
     #elif defined(SIMDE_X86_SSE2_NATIVE)
       return _mm_movemask_epi8(_mm_cmpeq_epi16(a_.sse_m128i, _mm_setzero_si128())) == 0;
+    #elif defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+      return !vmaxvq_u16(vceqzq_u16(a_.neon_u16));
+    #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+      uint16x8_t zeroes = vdupq_n_u16(0);
+      uint16x8_t false_set = vceqq_u16(a_.neon_u16, vdupq_n_u16(0));
+      uint32x4_t d_all_true = vceqq_u32(vreinterpretq_u32_u16(false_set), vreinterpretq_u32_u16(zeroes));
+      uint32x2_t q_all_true = vpmin_u32(vget_low_u32(d_all_true), vget_high_u32(d_all_true));
+
+      return !!(
+        vget_lane_u32(q_all_true, 0) &
+        vget_lane_u32(q_all_true, 1));
     #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
       return HEDLEY_STATIC_CAST(simde_bool, vec_all_ne(a_.altivec_i16, vec_splats(HEDLEY_STATIC_CAST(signed short, 0))));
     #else
@@ -3476,6 +3498,15 @@ simde_wasm_i32x4_all_true (simde_v128_t a) {
       return _mm_test_all_zeros(_mm_cmpeq_epi32(a_.sse_m128i, _mm_setzero_si128()), _mm_set1_epi32(~INT32_C(0)));
     #elif defined(SIMDE_X86_SSE2_NATIVE)
       return _mm_movemask_ps(_mm_castsi128_ps(_mm_cmpeq_epi32(a_.sse_m128i, _mm_setzero_si128()))) == 0;
+    #elif defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+      return !vmaxvq_u32(vceqzq_u32(a_.neon_u32));
+    #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+      uint32x4_t d_all_true = vmvnq_u32(vceqq_u32(a_.neon_u32, vdupq_n_u32(0)));
+      uint32x2_t q_all_true = vpmin_u32(vget_low_u32(d_all_true), vget_high_u32(d_all_true));
+
+      return !!(
+        vget_lane_u32(q_all_true, 0) &
+        vget_lane_u32(q_all_true, 1));
     #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
       return HEDLEY_STATIC_CAST(simde_bool, vec_all_ne(a_.altivec_i32, vec_splats(HEDLEY_STATIC_CAST(signed int, 0))));
     #else
