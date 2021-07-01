@@ -4850,6 +4850,16 @@ simde_wasm_i8x16_add_sat (simde_v128_t a, simde_v128_t b) {
 
     #if defined(SIMDE_X86_SSE2_NATIVE)
       r_.sse_m128i = _mm_adds_epi8(a_.sse_m128i, b_.sse_m128i);
+    #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+      r_.neon_i8 = vqaddq_s8(a_.neon_i8, b_.neon_i8);
+    #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+      r_.altivec_i8 = vec_adds(a_.altivec_i8, b_.altivec_i8);
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+      __typeof__(a_.u8) r1, r2, m;
+      r1 = a_.u8 + b_.u8;
+      r2 = (a_.u8 >> 7) + INT8_MAX;
+      m = HEDLEY_REINTERPRET_CAST(__typeof__(m), HEDLEY_REINTERPRET_CAST(__typeof__(r_.i8), (r2 ^ b_.u8) | ~(b_.u8 ^ r1)) < 0);
+      r_.i8 = HEDLEY_REINTERPRET_CAST(__typeof__(r_.i8), (r1 & m) | (r2 & ~m));
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.i8) / sizeof(r_.i8[0])) ; i++) {
@@ -4877,6 +4887,16 @@ simde_wasm_i16x8_add_sat (simde_v128_t a, simde_v128_t b) {
 
     #if defined(SIMDE_X86_SSE2_NATIVE)
       r_.sse_m128i = _mm_adds_epi16(a_.sse_m128i, b_.sse_m128i);
+    #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+      r_.neon_i16 = vqaddq_s16(a_.neon_i16, b_.neon_i16);
+    #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+      r_.altivec_i16 = vec_adds(a_.altivec_i16, b_.altivec_i16);
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+      __typeof__(a_.u16) r1, r2, m;
+      r1 = a_.u16 + b_.u16;
+      r2 = (a_.u16 >> 15) + INT16_MAX;
+      m = HEDLEY_REINTERPRET_CAST(__typeof__(m), HEDLEY_REINTERPRET_CAST(__typeof__(r_.i16), (r2 ^ b_.u16) | ~(b_.u16 ^ r1)) < 0);
+      r_.i16 = HEDLEY_REINTERPRET_CAST(__typeof__(r_.i16), (r1 & m) | (r2 & ~m));
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.i16) / sizeof(r_.i16[0])) ; i++) {
@@ -4904,6 +4924,13 @@ simde_wasm_u8x16_add_sat (simde_v128_t a, simde_v128_t b) {
 
     #if defined(SIMDE_X86_SSE2_NATIVE)
       r_.sse_m128i = _mm_adds_epu8(a_.sse_m128i, b_.sse_m128i);
+    #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+      r_.neon_u8 = vqaddq_u8(a_.neon_u8, b_.neon_u8);
+    #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+      r_.altivec_u8 = vec_adds(a_.altivec_u8, b_.altivec_u8);
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+      r_.u8 = a_.u8 + b_.u8;
+      r_.u8 |= HEDLEY_REINTERPRET_CAST(__typeof__(r_.u8), r_.u8 < a_.u8);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.u8) / sizeof(r_.u8[0])) ; i++) {
@@ -4931,6 +4958,13 @@ simde_wasm_u16x8_add_sat (simde_v128_t a, simde_v128_t b) {
 
     #if defined(SIMDE_X86_SSE2_NATIVE)
       r_.sse_m128i = _mm_adds_epu16(a_.sse_m128i, b_.sse_m128i);
+    #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+      r_.neon_u16 = vqaddq_u16(a_.neon_u16, b_.neon_u16);
+    #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+      r_.altivec_u16 = vec_adds(a_.altivec_u16, b_.altivec_u16);
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+      r_.u16 = a_.u16 + b_.u16;
+      r_.u16 |= HEDLEY_REINTERPRET_CAST(__typeof__(r_.u16), r_.u16 < a_.u16);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.u16) / sizeof(r_.u16[0])) ; i++) {
