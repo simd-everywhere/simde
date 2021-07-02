@@ -10,6 +10,8 @@ exe_wrapper = ['/usr/bin/v8', '--experimental-wasm-simd']
 skip_sanity_check = true
 c_args = ['-Weverything', '-Werror', '-O3', '-msimd128']
 cpp_args = ['-Weverything', '-Werror', '-O3', '-msimd128']
+c_link_args = ['-s', 'ENVIRONMENT=shell']
+cpp_link_args = ['-s', 'ENVIRONMENT=shell']
 
 [host_machine]
 system = 'emscripten'

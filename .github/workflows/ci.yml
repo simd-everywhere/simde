@@ -114,6 +114,7 @@ jobs:
     env:
       CFLAGS: -Weverything -Werror -O3 -msimd128
       CXXFLAGS: -Weverything -Werror -O3 -msimd128
+      LDFLAGS: -s ENVIRONMENT=shell -s ASSERTIONS=1
     steps:
     - uses: actions/checkout@v2
       with:
