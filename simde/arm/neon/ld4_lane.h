@@ -127,6 +127,33 @@ simde_vld4_lane_s32(int32_t const ptr[HEDLEY_ARRAY_PARAM(4)], simde_int32x2x4_t 
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
+simde_int64x1x4_t
+simde_vld4_lane_s64(int64_t const ptr[HEDLEY_ARRAY_PARAM(4)], simde_int64x1x4_t src, const int lane)
+    SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 0) {
+  simde_int64x1x4_t r;
+
+  for (size_t i = 0 ; i < 4 ; i++) {
+    simde_int64x1_private tmp_ = simde_int64x1_to_private(src.val[i]);
+    tmp_.values[lane] = ptr[i];
+    r.val[i] = simde_int64x1_from_private(tmp_);
+  }
+
+  return r;
+}
+#if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+  #if defined(__clang__) && !SIMDE_DETECT_CLANG_VERSION_CHECK(10,0,0)
+    #define simde_vld4_lane_s64(ptr, src, lane) \
+      SIMDE_DISABLE_DIAGNOSTIC_EXPR_(SIMDE_DIAGNOSTIC_DISABLE_VECTOR_CONVERSION_, vld4_lane_s64(ptr, src, lane))
+  #else
+    #define simde_vld4_lane_s64(ptr, src, lane) vld4_lane_s64(ptr, src, lane)
+  #endif
+#endif
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vld4_lane_s64
+  #define vld4_lane_s64(ptr, src, lane) simde_vld4_lane_s64((ptr), (src), (lane))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
 simde_uint8x8x4_t
 simde_vld4_lane_u8(uint8_t const ptr[HEDLEY_ARRAY_PARAM(4)], simde_uint8x8x4_t src, const int lane)
     SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 7) {
@@ -205,6 +232,357 @@ simde_vld4_lane_u32(uint32_t const ptr[HEDLEY_ARRAY_PARAM(4)], simde_uint32x2x4_
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vld4_lane_u32
   #define vld4_lane_u32(ptr, src, lane) simde_vld4_lane_u32((ptr), (src), (lane))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_uint64x1x4_t
+simde_vld4_lane_u64(uint64_t const ptr[HEDLEY_ARRAY_PARAM(4)], simde_uint64x1x4_t src, const int lane)
+    SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 0) {
+  simde_uint64x1x4_t r;
+
+  for (size_t i = 0 ; i < 4 ; i++) {
+    simde_uint64x1_private tmp_ = simde_uint64x1_to_private(src.val[i]);
+    tmp_.values[lane] = ptr[i];
+    r.val[i] = simde_uint64x1_from_private(tmp_);
+  }
+
+  return r;
+}
+#if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+  #if defined(__clang__) && !SIMDE_DETECT_CLANG_VERSION_CHECK(10,0,0)
+    #define simde_vld4_lane_u64(ptr, src, lane) \
+      SIMDE_DISABLE_DIAGNOSTIC_EXPR_(SIMDE_DIAGNOSTIC_DISABLE_VECTOR_CONVERSION_, vld4_lane_u64(ptr, src, lane))
+  #else
+    #define simde_vld4_lane_u64(ptr, src, lane) vld4_lane_u64(ptr, src, lane)
+  #endif
+#endif
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vld4_lane_u64
+  #define vld4_lane_u64(ptr, src, lane) simde_vld4_lane_u64((ptr), (src), (lane))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_float32x2x4_t
+simde_vld4_lane_f32(simde_float32_t const ptr[HEDLEY_ARRAY_PARAM(4)], simde_float32x2x4_t src, const int lane)
+    SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 1) {
+  simde_float32x2x4_t r;
+
+  for (size_t i = 0 ; i < 4 ; i++) {
+    simde_float32x2_private tmp_ = simde_float32x2_to_private(src.val[i]);
+    tmp_.values[lane] = ptr[i];
+    r.val[i] = simde_float32x2_from_private(tmp_);
+  }
+
+  return r;
+}
+#if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #if defined(__clang__) && !SIMDE_DETECT_CLANG_VERSION_CHECK(10,0,0)
+    #define simde_vld4_lane_f32(ptr, src, lane) \
+      SIMDE_DISABLE_DIAGNOSTIC_EXPR_(SIMDE_DIAGNOSTIC_DISABLE_VECTOR_CONVERSION_, vld4_lane_f32(ptr, src, lane))
+  #else
+    #define simde_vld4_lane_f32(ptr, src, lane) vld4_lane_f32(ptr, src, lane)
+  #endif
+#endif
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+  #undef vld4_lane_f32
+  #define vld4_lane_f32(ptr, src, lane) simde_vld4_lane_f32((ptr), (src), (lane))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_float64x1x4_t
+simde_vld4_lane_f64(simde_float64_t const ptr[HEDLEY_ARRAY_PARAM(4)], simde_float64x1x4_t src, const int lane)
+    SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 0) {
+  simde_float64x1x4_t r;
+
+  for (size_t i = 0 ; i < 4 ; i++) {
+    simde_float64x1_private tmp_ = simde_float64x1_to_private(src.val[i]);
+    tmp_.values[lane] = ptr[i];
+    r.val[i] = simde_float64x1_from_private(tmp_);
+  }
+
+  return r;
+}
+#if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+  #if defined(__clang__) && !SIMDE_DETECT_CLANG_VERSION_CHECK(10,0,0)
+    #define simde_vld4_lane_f64(ptr, src, lane) \
+      SIMDE_DISABLE_DIAGNOSTIC_EXPR_(SIMDE_DIAGNOSTIC_DISABLE_VECTOR_CONVERSION_, vld4_lane_f64(ptr, src, lane))
+  #else
+    #define simde_vld4_lane_f64(ptr, src, lane) vld4_lane_f64(ptr, src, lane)
+  #endif
+#endif
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vld4_lane_f64
+  #define vld4_lane_f64(ptr, src, lane) simde_vld4_lane_f64((ptr), (src), (lane))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_int8x16x4_t
+simde_vld4q_lane_s8(int8_t const ptr[HEDLEY_ARRAY_PARAM(4)], simde_int8x16x4_t src, const int lane)
+    SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 15) {
+  simde_int8x16x4_t r;
+
+  for (size_t i = 0 ; i < 4 ; i++) {
+    simde_int8x16_private tmp_ = simde_int8x16_to_private(src.val[i]);
+    tmp_.values[lane] = ptr[i];
+    r.val[i] = simde_int8x16_from_private(tmp_);
+  }
+
+  return r;
+}
+#if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+  #if defined(__clang__) && !SIMDE_DETECT_CLANG_VERSION_CHECK(10,0,0)
+    #define simde_vld4q_lane_s8(ptr, src, lane) \
+      SIMDE_DISABLE_DIAGNOSTIC_EXPR_(SIMDE_DIAGNOSTIC_DISABLE_VECTOR_CONVERSION_, vld4q_lane_s8(ptr, src, lane))
+  #else
+    #define simde_vld4q_lane_s8(ptr, src, lane) vld4q_lane_s8(ptr, src, lane)
+  #endif
+#endif
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vld4q_lane_s8
+  #define vld4q_lane_s8(ptr, src, lane) simde_vld4q_lane_s8((ptr), (src), (lane))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_int16x8x4_t
+simde_vld4q_lane_s16(int16_t const ptr[HEDLEY_ARRAY_PARAM(4)], simde_int16x8x4_t src, const int lane)
+    SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 7) {
+  simde_int16x8x4_t r;
+
+  for (size_t i = 0 ; i < 4 ; i++) {
+    simde_int16x8_private tmp_ = simde_int16x8_to_private(src.val[i]);
+    tmp_.values[lane] = ptr[i];
+    r.val[i] = simde_int16x8_from_private(tmp_);
+  }
+
+  return r;
+}
+#if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #if defined(__clang__) && !SIMDE_DETECT_CLANG_VERSION_CHECK(10,0,0)
+    #define simde_vld4q_lane_s16(ptr, src, lane) \
+      SIMDE_DISABLE_DIAGNOSTIC_EXPR_(SIMDE_DIAGNOSTIC_DISABLE_VECTOR_CONVERSION_, vld4q_lane_s16(ptr, src, lane))
+  #else
+    #define simde_vld4q_lane_s16(ptr, src, lane) vld4q_lane_s16(ptr, src, lane)
+  #endif
+#endif
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+  #undef vld4q_lane_s16
+  #define vld4q_lane_s16(ptr, src, lane) simde_vld4q_lane_s16((ptr), (src), (lane))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_int32x4x4_t
+simde_vld4q_lane_s32(int32_t const ptr[HEDLEY_ARRAY_PARAM(4)], simde_int32x4x4_t src, const int lane)
+    SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 3) {
+  simde_int32x4x4_t r;
+
+  for (size_t i = 0 ; i < 4 ; i++) {
+    simde_int32x4_private tmp_ = simde_int32x4_to_private(src.val[i]);
+    tmp_.values[lane] = ptr[i];
+    r.val[i] = simde_int32x4_from_private(tmp_);
+  }
+
+  return r;
+}
+#if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #if defined(__clang__) && !SIMDE_DETECT_CLANG_VERSION_CHECK(10,0,0)
+    #define simde_vld4q_lane_s32(ptr, src, lane) \
+      SIMDE_DISABLE_DIAGNOSTIC_EXPR_(SIMDE_DIAGNOSTIC_DISABLE_VECTOR_CONVERSION_, vld4q_lane_s32(ptr, src, lane))
+  #else
+    #define simde_vld4q_lane_s32(ptr, src, lane) vld4q_lane_s32(ptr, src, lane)
+  #endif
+#endif
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+  #undef vld4q_lane_s32
+  #define vld4q_lane_s32(ptr, src, lane) simde_vld4q_lane_s32((ptr), (src), (lane))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_int64x2x4_t
+simde_vld4q_lane_s64(int64_t const ptr[HEDLEY_ARRAY_PARAM(4)], simde_int64x2x4_t src, const int lane)
+    SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 1) {
+  simde_int64x2x4_t r;
+
+  for (size_t i = 0 ; i < 4 ; i++) {
+    simde_int64x2_private tmp_ = simde_int64x2_to_private(src.val[i]);
+    tmp_.values[lane] = ptr[i];
+    r.val[i] = simde_int64x2_from_private(tmp_);
+  }
+
+  return r;
+}
+#if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+  #if defined(__clang__) && !SIMDE_DETECT_CLANG_VERSION_CHECK(10,0,0)
+    #define simde_vld4q_lane_s64(ptr, src, lane) \
+      SIMDE_DISABLE_DIAGNOSTIC_EXPR_(SIMDE_DIAGNOSTIC_DISABLE_VECTOR_CONVERSION_, vld4q_lane_s64(ptr, src, lane))
+  #else
+    #define simde_vld4q_lane_s64(ptr, src, lane) vld4q_lane_s64(ptr, src, lane)
+  #endif
+#endif
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vld4q_lane_s64
+  #define vld4q_lane_s64(ptr, src, lane) simde_vld4q_lane_s64((ptr), (src), (lane))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_uint8x16x4_t
+simde_vld4q_lane_u8(uint8_t const ptr[HEDLEY_ARRAY_PARAM(4)], simde_uint8x16x4_t src, const int lane)
+    SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 15) {
+  simde_uint8x16x4_t r;
+
+  for (size_t i = 0 ; i < 4 ; i++) {
+    simde_uint8x16_private tmp_ = simde_uint8x16_to_private(src.val[i]);
+    tmp_.values[lane] = ptr[i];
+    r.val[i] = simde_uint8x16_from_private(tmp_);
+  }
+
+  return r;
+}
+#if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+  #if defined(__clang__) && !SIMDE_DETECT_CLANG_VERSION_CHECK(10,0,0)
+    #define simde_vld4q_lane_u8(ptr, src, lane) \
+      SIMDE_DISABLE_DIAGNOSTIC_EXPR_(SIMDE_DIAGNOSTIC_DISABLE_VECTOR_CONVERSION_, vld4q_lane_u8(ptr, src, lane))
+  #else
+    #define simde_vld4q_lane_u8(ptr, src, lane) vld4q_lane_u8(ptr, src, lane)
+  #endif
+#endif
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vld4q_lane_u8
+  #define vld4q_lane_u8(ptr, src, lane) simde_vld4q_lane_u8((ptr), (src), (lane))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_uint16x8x4_t
+simde_vld4q_lane_u16(uint16_t const ptr[HEDLEY_ARRAY_PARAM(4)], simde_uint16x8x4_t src, const int lane)
+    SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 7) {
+  simde_uint16x8x4_t r;
+
+  for (size_t i = 0 ; i < 4 ; i++) {
+    simde_uint16x8_private tmp_ = simde_uint16x8_to_private(src.val[i]);
+    tmp_.values[lane] = ptr[i];
+    r.val[i] = simde_uint16x8_from_private(tmp_);
+  }
+
+  return r;
+}
+#if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #if defined(__clang__) && !SIMDE_DETECT_CLANG_VERSION_CHECK(10,0,0)
+    #define simde_vld4q_lane_u16(ptr, src, lane) \
+      SIMDE_DISABLE_DIAGNOSTIC_EXPR_(SIMDE_DIAGNOSTIC_DISABLE_VECTOR_CONVERSION_, vld4q_lane_u16(ptr, src, lane))
+  #else
+    #define simde_vld4q_lane_u16(ptr, src, lane) vld4q_lane_u16(ptr, src, lane)
+  #endif
+#endif
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+  #undef vld4q_lane_u16
+  #define vld4q_lane_u16(ptr, src, lane) simde_vld4q_lane_u16((ptr), (src), (lane))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_uint32x4x4_t
+simde_vld4q_lane_u32(uint32_t const ptr[HEDLEY_ARRAY_PARAM(4)], simde_uint32x4x4_t src, const int lane)
+    SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 3) {
+  simde_uint32x4x4_t r;
+
+  for (size_t i = 0 ; i < 4 ; i++) {
+    simde_uint32x4_private tmp_ = simde_uint32x4_to_private(src.val[i]);
+    tmp_.values[lane] = ptr[i];
+    r.val[i] = simde_uint32x4_from_private(tmp_);
+  }
+
+  return r;
+}
+#if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #if defined(__clang__) && !SIMDE_DETECT_CLANG_VERSION_CHECK(10,0,0)
+    #define simde_vld4q_lane_u32(ptr, src, lane) \
+      SIMDE_DISABLE_DIAGNOSTIC_EXPR_(SIMDE_DIAGNOSTIC_DISABLE_VECTOR_CONVERSION_, vld4q_lane_u32(ptr, src, lane))
+  #else
+    #define simde_vld4q_lane_u32(ptr, src, lane) vld4q_lane_u32(ptr, src, lane)
+  #endif
+#endif
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+  #undef vld4q_lane_u32
+  #define vld4q_lane_u32(ptr, src, lane) simde_vld4q_lane_u32((ptr), (src), (lane))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_uint64x2x4_t
+simde_vld4q_lane_u64(uint64_t const ptr[HEDLEY_ARRAY_PARAM(4)], simde_uint64x2x4_t src, const int lane)
+    SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 1) {
+  simde_uint64x2x4_t r;
+
+  for (size_t i = 0 ; i < 4 ; i++) {
+    simde_uint64x2_private tmp_ = simde_uint64x2_to_private(src.val[i]);
+    tmp_.values[lane] = ptr[i];
+    r.val[i] = simde_uint64x2_from_private(tmp_);
+  }
+
+  return r;
+}
+#if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+  #if defined(__clang__) && !SIMDE_DETECT_CLANG_VERSION_CHECK(10,0,0)
+    #define simde_vld4q_lane_u64(ptr, src, lane) \
+      SIMDE_DISABLE_DIAGNOSTIC_EXPR_(SIMDE_DIAGNOSTIC_DISABLE_VECTOR_CONVERSION_, vld4q_lane_u64(ptr, src, lane))
+  #else
+    #define simde_vld4q_lane_u64(ptr, src, lane) vld4q_lane_u64(ptr, src, lane)
+  #endif
+#endif
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vld4q_lane_u64
+  #define vld4q_lane_u64(ptr, src, lane) simde_vld4q_lane_u64((ptr), (src), (lane))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_float32x4x4_t
+simde_vld4q_lane_f32(simde_float32_t const ptr[HEDLEY_ARRAY_PARAM(4)], simde_float32x4x4_t src, const int lane)
+    SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 3) {
+  simde_float32x4x4_t r;
+
+  for (size_t i = 0 ; i < 4 ; i++) {
+    simde_float32x4_private tmp_ = simde_float32x4_to_private(src.val[i]);
+    tmp_.values[lane] = ptr[i];
+    r.val[i] = simde_float32x4_from_private(tmp_);
+  }
+
+  return r;
+}
+#if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #if defined(__clang__) && !SIMDE_DETECT_CLANG_VERSION_CHECK(10,0,0)
+    #define simde_vld4q_lane_f32(ptr, src, lane) \
+      SIMDE_DISABLE_DIAGNOSTIC_EXPR_(SIMDE_DIAGNOSTIC_DISABLE_VECTOR_CONVERSION_, vld4q_lane_f32(ptr, src, lane))
+  #else
+    #define simde_vld4q_lane_f32(ptr, src, lane) vld4q_lane_f32(ptr, src, lane)
+  #endif
+#endif
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+  #undef vld4q_lane_f32
+  #define vld4q_lane_f32(ptr, src, lane) simde_vld4q_lane_f32((ptr), (src), (lane))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_float64x2x4_t
+simde_vld4q_lane_f64(simde_float64_t const ptr[HEDLEY_ARRAY_PARAM(4)], simde_float64x2x4_t src, const int lane)
+    SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 1) {
+  simde_float64x2x4_t r;
+
+  for (size_t i = 0 ; i < 4 ; i++) {
+    simde_float64x2_private tmp_ = simde_float64x2_to_private(src.val[i]);
+    tmp_.values[lane] = ptr[i];
+    r.val[i] = simde_float64x2_from_private(tmp_);
+  }
+
+  return r;
+}
+#if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+  #if defined(__clang__) && !SIMDE_DETECT_CLANG_VERSION_CHECK(10,0,0)
+    #define simde_vld4q_lane_f64(ptr, src, lane) \
+      SIMDE_DISABLE_DIAGNOSTIC_EXPR_(SIMDE_DIAGNOSTIC_DISABLE_VECTOR_CONVERSION_, vld4q_lane_f64(ptr, src, lane))
+  #else
+    #define simde_vld4q_lane_f64(ptr, src, lane) vld4q_lane_f64(ptr, src, lane)
+  #endif
+#endif
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vld4q_lane_f64
+  #define vld4q_lane_f64(ptr, src, lane) simde_vld4q_lane_f64((ptr), (src), (lane))
 #endif
 
 #endif /* !defined(SIMDE_BUG_INTEL_857088) */
