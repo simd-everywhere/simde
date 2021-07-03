@@ -6328,7 +6328,6 @@ simde_mm512_cdfnorminv_ps (simde__m512 a) {
 
       /* else */
       simde__mmask16 mask_el = ~matched;
-      mask = mask | mask_el;
 
       /* r = a - 0.5f */
       simde__m512 r = simde_mm512_sub_ps(a, simde_mm512_set1_ps(SIMDE_FLOAT32_C(0.5)));
@@ -6437,7 +6436,6 @@ simde_mm512_cdfnorminv_pd (simde__m512d a) {
 
       /* else */
       simde__mmask8 mask_el = ~matched;
-      mask = mask | mask_el;
 
       /* r = a - 0.5f */
       simde__m512d r = simde_mm512_sub_pd(a, simde_mm512_set1_pd(SIMDE_FLOAT64_C(0.5)));
