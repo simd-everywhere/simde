@@ -28,9 +28,9 @@ blocks:
             - ninja -C build coverage-xml
           env_vars:
             - name: CFLAGS
-              value: -Wextra -Werror -march=native -DSIMDE_CONSTRAINED_COMPILATION
+              value: -Wextra -Werror -march=native
             - name: CXXFLAGS
-              value: -Wextra -Werror -march=native -DSIMDE_CONSTRAINED_COMPILATION
+              value: -Wextra -Werror -march=native
 
         - name: clang
           matrix:
@@ -50,6 +50,6 @@ blocks:
             - ninja -C build coverage-xml
           env_vars:
             - name: CFLAGS
-              value: -Weverything -Werror -march=native -DSIMDE_CONSTRAINED_COMPILATION
+              value: -Weverything -Werror -march=native
             - name: CXXFLAGS
-              value: -Weverything -Werror -march=native -DSIMDE_CONSTRAINED_COMPILATION
+              value: -Weverything -Werror -march=native

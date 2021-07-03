@@ -7,8 +7,8 @@ task:
   env:
     CC: clang
     CXX: clang++
-    CFLAGS: -Wextra -Werror -march=native -DSIMDE_CONSTRAINED_COMPILATION
-    CXXFLAGS: -Wextra -Werror -march=native -DSIMDE_CONSTRAINED_COMPILATION
+    CFLAGS: -Wextra -Werror -march=native
+    CXXFLAGS: -Wextra -Werror -march=native
   system_info_script:
   - cat /proc/cpuinfo
   - cat /proc/meminfo
