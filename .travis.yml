@@ -4,6 +4,20 @@ dist: focal
 
 jobs:
   include:
+  - name: z/Arch
+    if: branch != master OR type == pull_request
+    arch: s390x
+    compiler:
+    - gcc
+    env:
+    - CC="gcc"
+    - CXX="g++"
+    - CFLAGS="-march=native -mzvector -Wextra -Werror -DSIMDE_CONSTRAINED_COMPILATION"
+    - CXXFLAGS="-march=native -mzvector -Wextra -Werror -DSIMDE_CONSTRAINED_COMPILATION"
+    addons:
+      apt:
+        packages: ninja-build python3-pip gcc g++
+
   - name: POWER9
     if: branch != master OR type == pull_request
     arch: ppc64le
@@ -18,19 +32,47 @@ jobs:
       apt:
         packages: ninja-build python3-pip clang
 
-  - name: z/Arch
+  - name: POWER8
     if: branch != master OR type == pull_request
-    arch: s390x
+    arch: ppc64le
     compiler:
-    - gcc
+    - clang
     env:
-    - CC="gcc"
-    - CXX="g++"
-    - CFLAGS="-march=native -mzvector -Wextra -Werror -DSIMDE_CONSTRAINED_COMPILATION"
-    - CXXFLAGS="-march=native -mzvector -Wextra -Werror -DSIMDE_CONSTRAINED_COMPILATION"
+    - CC="clang"
+    - CXX="clang++"
+    - CFLAGS="-mcpu=power8 -Weverything -Werror -DSIMDE_CONSTRAINED_COMPILATION"
+    - CXXFLAGS="-mcpu=power8 -Weverything -Werror -DSIMDE_CONSTRAINED_COMPILATION"
     addons:
       apt:
-        packages: ninja-build python3-pip gcc g++
+        packages: ninja-build python3-pip clang
+
+  - name: POWER7
+    if: branch != master OR type == pull_request
+    arch: ppc64le
+    compiler:
+    - clang
+    env:
+    - CC="clang"
+    - CXX="clang++"
+    - CFLAGS="-mcpu=power7 -Weverything -Werror -DSIMDE_CONSTRAINED_COMPILATION"
+    - CXXFLAGS="-mcpu=power7 -Weverything -Werror -DSIMDE_CONSTRAINED_COMPILATION"
+    addons:
+      apt:
+        packages: ninja-build python3-pip clang
+
+  - name: POWER6
+    if: branch != master OR type == pull_request
+    arch: ppc64le
+    compiler:
+    - clang
+    env:
+    - CC="clang"
+    - CXX="clang++"
+    - CFLAGS="-mcpu=power6 -maltivec -Weverything -Werror -DSIMDE_CONSTRAINED_COMPILATION"
+    - CXXFLAGS="-mcpu=power6 -maltivec -Weverything -Werror -DSIMDE_CONSTRAINED_COMPILATION"
+    addons:
+      apt:
+        packages: ninja-build python3-pip clang
 
 before_install:
 - cat /proc/cpuinfo
