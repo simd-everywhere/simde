@@ -150,6 +150,8 @@ if(BUILD_CPP_TESTS)
   add_definitions(-DSIMDE_BUILD_CPP_TESTS)
 endif(BUILD_CPP_TESTS)
 
+add_definitions(-DSIMDE_CONSTRAINED_COMPILATION)
+
 foreach(native native emul)
   add_library(simde-test-${native} STATIC ${TEST_SOURCES_C} ${TEST_SOURCES_CPP})
 

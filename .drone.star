@@ -26,10 +26,10 @@ def main(ctx):
 
       if compiler == 'gcc':
         cxx = 'g++'
-        compiler_flags.extend(['-Wextra', '-Werror', '-DSIMDE_CONSTRAINED_COMPILATION'])
+        compiler_flags.extend(['-Wextra', '-Werror'])
         packages.extend(['gcc', 'g++'])
       elif compiler == 'clang':
-        compiler_flags.extend(['-Weverything', '-Werror', '-DSIMDE_CONSTRAINED_COMPILATION'])
+        compiler_flags.extend(['-Weverything', '-Werror'])
         packages.extend(['clang'])
 
       cflags = ' '.join(compiler_flags)
