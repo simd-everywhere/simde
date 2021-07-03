@@ -2240,7 +2240,7 @@ HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DIAGNOSTIC_DISABLE_FLOAT_EQUAL
 
 /* This implementation does not support signaling NaNs (yet?) */
-SIMDE_FUNCTION_ATTRIBUTES
+SIMDE_HUGE_FUNCTION_ATTRIBUTES
 simde__m128d
 simde_mm_cmp_pd (simde__m128d a, simde__m128d b, const int imm8)
     SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 31) {
@@ -2339,7 +2339,7 @@ simde_mm_cmp_pd (simde__m128d a, simde__m128d b, const int imm8)
   #define _mm_cmp_pd(a, b, imm8) simde_mm_cmp_pd(a, b, imm8)
 #endif
 
-SIMDE_FUNCTION_ATTRIBUTES
+SIMDE_HUGE_FUNCTION_ATTRIBUTES
 simde__m128
 simde_mm_cmp_ps (simde__m128 a, simde__m128 b, const int imm8)
     SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 31) {
@@ -2440,7 +2440,7 @@ simde_mm_cmp_ps (simde__m128 a, simde__m128 b, const int imm8)
   #define _mm_cmp_ps(a, b, imm8) simde_mm_cmp_ps(a, b, imm8)
 #endif
 
-SIMDE_FUNCTION_ATTRIBUTES
+SIMDE_HUGE_FUNCTION_ATTRIBUTES
 simde__m128d
 simde_mm_cmp_sd (simde__m128d a, simde__m128d b, const int imm8)
     SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 31) {
@@ -2543,7 +2543,7 @@ simde_mm_cmp_sd (simde__m128d a, simde__m128d b, const int imm8)
   #define _mm_cmp_sd(a, b, imm8) simde_mm_cmp_sd(a, b, imm8)
 #endif
 
-SIMDE_FUNCTION_ATTRIBUTES
+SIMDE_HUGE_FUNCTION_ATTRIBUTES
 simde__m128
 simde_mm_cmp_ss (simde__m128 a, simde__m128 b, const int imm8)
     SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 31) {
@@ -2646,7 +2646,7 @@ simde_mm_cmp_ss (simde__m128 a, simde__m128 b, const int imm8)
   #define _mm_cmp_ss(a, b, imm8) simde_mm_cmp_ss(a, b, imm8)
 #endif
 
-SIMDE_FUNCTION_ATTRIBUTES
+SIMDE_HUGE_FUNCTION_ATTRIBUTES
 simde__m256d
 #if defined(__clang__) && defined(__AVX512DQ__)
 simde_mm256_cmp_pd_internal_
@@ -2871,7 +2871,7 @@ simde_mm256_cmp_pd
   #define _mm256_cmp_pd(a, b, imm8) simde_mm256_cmp_pd(a, b, imm8)
 #endif
 
-SIMDE_FUNCTION_ATTRIBUTES
+SIMDE_HUGE_FUNCTION_ATTRIBUTES
 simde__m256
 #if defined(__clang__) && defined(__AVX512DQ__)
 simde_mm256_cmp_ps_internal_
