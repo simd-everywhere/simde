@@ -38,7 +38,7 @@ HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 SIMDE_BEGIN_DECLS_
 
-SIMDE_FUNCTION_ATTRIBUTES
+SIMDE_HUGE_FUNCTION_ATTRIBUTES
 simde__mmask16
 simde_mm512_cmp_ps_mask (simde__m512 a, simde__m512 b, const int imm8)
     SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 31) {
@@ -286,7 +286,7 @@ simde_mm512_cmp_ps_mask (simde__m512 a, simde__m512 b, const int imm8)
   #define _mm_cmp_ps_mask(a, b, imm8) simde_mm_cmp_ps_mask((a), (b), (imm8))
 #endif
 
-SIMDE_FUNCTION_ATTRIBUTES
+SIMDE_HUGE_FUNCTION_ATTRIBUTES
 simde__mmask8
 simde_mm512_cmp_pd_mask (simde__m512d a, simde__m512d b, const int imm8)
     SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 31) {
