@@ -353,8 +353,10 @@ simde_int64x2_t
 simde_vcvtq_s64_f64(simde_float64x2_t a) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vcvtq_s64_f64(a);
-  #elif defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
+  #elif defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE) && defined(SIMDE_FAST_NANS)
     return vec_signed(a);
+  #elif defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
+    return (a == a) & vec_signed(a);
   #else
     simde_float64x2_private a_ = simde_float64x2_to_private(a);
     simde_int64x2_private r_;
@@ -383,8 +385,10 @@ simde_uint64x2_t
 simde_vcvtq_u64_f64(simde_float64x2_t a) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && !defined(SIMDE_BUG_CLANG_46844)
     return vcvtq_u64_f64(a);
+  #elif defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE) && defined(SIMDE_FAST_NANS)
+    return vec_unsigned(a);
   #elif defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
-    return vec_ctul(a, 0);
+    return HEDLEY_REINTERPRET_CAST(simde_uint64x2_t, (a == a)) & vec_unsigned(a);
   #else
     simde_float64x2_private a_ = simde_float64x2_to_private(a);
     simde_uint64x2_private r_;
