@@ -1,8 +1,8 @@
 cc = meson.get_compiler('c')
 libm = cc.find_library('m', required : false)
 
-simde_c_defs = []
-simde_cxx_defs = []
+simde_c_defs = ['-DSIMDE_CONSTRAINED_COMPILATION']
+simde_cxx_defs = ['-DSIMDE_CONSTRAINED_COMPILATION']
 simde_c_args = []
 simde_cxx_args = []
 simde_deps = [libm]

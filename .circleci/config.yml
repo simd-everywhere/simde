@@ -7,8 +7,8 @@ jobs:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
     environment:
-      CFLAGS: -Wextra -Werror -march=native -DSIMDE_CONSTRAINED_COMPILATION
-      CXXFLAGS: -Wextra -Werror -march=native -DSIMDE_CONSTRAINED_COMPILATION
+      CFLAGS: -Wextra -Werror -march=native
+      CXXFLAGS: -Wextra -Werror -march=native
     steps:
       - checkout
       - run: cat /proc/cpuinfo /proc/meminfo
@@ -26,8 +26,8 @@ jobs:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
     environment:
-      CFLAGS: -Weverything -Werror -march=native -DSIMDE_CONSTRAINED_COMPILATION
-      CXXFLAGS: -Weverything -Werror -march=native -DSIMDE_CONSTRAINED_COMPILATION
+      CFLAGS: -Weverything -Werror -march=native
+      CXXFLAGS: -Weverything -Werror -march=native
     steps:
       - checkout
       - run: cat /proc/cpuinfo /proc/meminfo
@@ -47,8 +47,8 @@ jobs:
     environment:
       CC: mips64el-linux-gnuabi64-gcc
       CXX: mips64el-linux-gnuabi64-g++
-      CFLAGS: -Wextra -Werror -DSIMDE_CONSTRAINED_COMPILATION
-      CXXFLAGS: -Wextra -Werror -DSIMDE_CONSTRAINED_COMPILATION
+      CFLAGS: -Wextra -Werror
+      CXXFLAGS: -Wextra -Werror
     steps:
       - checkout
       - run: cat /proc/cpuinfo /proc/meminfo
@@ -67,8 +67,8 @@ jobs:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
     environment:
-      CFLAGS: -Wextra -Werror -march=native -DSIMDE_CONSTRAINED_COMPILATION
-      CXXFLAGS: -Wextra -Werror -march=native -DSIMDE_CONSTRAINED_COMPILATION
+      CFLAGS: -Wextra -Werror -march=native
+      CXXFLAGS: -Wextra -Werror -march=native
     steps:
       - checkout
       - run:
