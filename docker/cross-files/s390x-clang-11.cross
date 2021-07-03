@@ -8,9 +8,9 @@ ld = '/usr/bin/llvm-ld-11'
 exe_wrapper = ['qemu-s390x-static', '-cpu', 'z14.2-base']
 
 [properties]
-c_args = ['--target=s390x-ibm-linux', '-march=z13', '-mzvector', '-isystem=/usr/s390x-ibm-linux/include', '-Weverything', '-Werror']
-cpp_args = ['--target=s390x-ibm-linux', '-march=z13', '-mzvector', '-isystem=/usr/s390x-ibm-linux/include', '-Weverything', '-Werror']
-c_link_args = ['--target=s390x-ibm-linux']
+c_args        = ['--target=s390x-ibm-linux', '-march=z13', '-mzvector', '-isystem=/usr/s390x-ibm-linux/include', '-Weverything', '-Werror']
+cpp_args      = ['--target=s390x-ibm-linux', '-march=z13', '-mzvector', '-isystem=/usr/s390x-ibm-linux/include', '-Weverything', '-Werror']
+c_link_args   = ['--target=s390x-ibm-linux']
 cpp_link_args = ['--target=s390x-ibm-linux']
 
 [host_machine]
