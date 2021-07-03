@@ -108,11 +108,15 @@ aux_source_directory("x86" X86_SOURCES_C)
 list(REMOVE_ITEM X86_SOURCES_C "x86/skel.c")
 list(REMOVE_ITEM X86_SOURCES_C "x86/run-tests.c")
 
+aux_source_directory("wasm/simd128" WASM_SOURCES_C)
+list(REMOVE_ITEM WASM_SOURCES_C "wasm/simd128/run-tests.c")
+
 set(TEST_SOURCES_C
   ${X86_SOURCES_C}
   ${X86_AVX512_SOURCES_C}
   ${ARM_NEON_SOURCES_C}
-  ${ARM_SVE_SOURCES_C})
+  ${ARM_SVE_SOURCES_C}
+  ${WASM_SOURCES_C})
 
 set(TEST_RUNNER_SOURCES
   run-tests.c
@@ -120,7 +124,9 @@ set(TEST_RUNNER_SOURCES
   x86/avx512/run-tests.c
   arm/run-tests.c
   arm/neon/run-tests.c
-  arm/sve/run-tests.c)
+  arm/sve/run-tests.c
+  wasm/run-tests.c
+  wasm/simd128/run-tests.c)
 add_executable(run-tests ${TEST_RUNNER_SOURCES})
 set_property(TARGET run-tests PROPERTY C_STANDARD "99")
 target_add_compiler_flags(run-tests "-Wno-psabi")
