@@ -1029,7 +1029,11 @@ simde_wasm_i8x16_replace_lane (simde_v128_t a, const int lane, int8_t value) {
 #if defined(SIMDE_WASM_SIMD128_NATIVE)
   #define simde_wasm_i8x16_replace_lane(a, lane, value) wasm_i8x16_replace_lane((a), (lane), (value))
 #elif defined(SIMDE_X86_SSE4_1_NATIVE)
-  #define simde_wasm_i8x16_replace_lane(a, lane, value) _mm_insert_epi8((a), (value), (lane) & 15)
+  #if defined(__clang__) && !SIMDE_DETECT_CLANG_VERSION_CHECK(7,0,0)
+    #define simde_wasm_i8x16_replace_lane(a, lane, value) HEDLEY_REINTERPRET_CAST(simde_v128_t, _mm_insert_epi8((a), (value), (lane) & 15))
+  #else
+    #define simde_wasm_i8x16_replace_lane(a, lane, value) _mm_insert_epi8((a), (value), (lane) & 15)
+  #endif
 #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_wasm_i8x16_replace_lane(a, lane, value) simde_v128_from_neon_i8(vsetq_lane_s8((value), simde_v128_to_neon_i8(a), (lane) & 15))
 #endif
@@ -1065,7 +1069,11 @@ simde_wasm_i32x4_replace_lane (simde_v128_t a, const int lane, int32_t value) {
 #if defined(SIMDE_WASM_SIMD128_NATIVE)
   #define simde_wasm_i32x4_replace_lane(a, lane, value) wasm_i32x4_replace_lane((a), (lane), (value))
 #elif defined(SIMDE_X86_SSE4_1_NATIVE)
-  #define simde_wasm_i32x4_replace_lane(a, lane, value) _mm_insert_epi32((a), (value), (lane) & 3)
+  #if defined(__clang__) && !SIMDE_DETECT_CLANG_VERSION_CHECK(7,0,0)
+    #define simde_wasm_i32x4_replace_lane(a, lane, value) HEDLEY_REINTERPRET_CAST(simde_v128_t, _mm_insert_epi32((a), (value), (lane) & 3))
+  #else
+    #define simde_wasm_i32x4_replace_lane(a, lane, value) _mm_insert_epi32((a), (value), (lane) & 3)
+  #endif
 #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE) && !defined(SIMDE_BUG_CLANG_BAD_VGET_SET_LANE_TYPES)
   #define simde_wasm_i32x4_replace_lane(a, lane, value) simde_v128_from_neon_i32(vsetq_lane_s32((value), simde_v128_to_neon_i32(a), (lane) & 3))
 #endif
