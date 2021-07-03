@@ -435,8 +435,6 @@
 
 #if defined(__ALTIVEC__)
 #  define SIMDE_ARCH_POWER_ALTIVEC SIMDE_ARCH_POWER
-#endif
-#if defined(SIMDE_ARCH_POWER)
   #define SIMDE_ARCH_POWER_ALTIVEC_CHECK(version) ((version) <= SIMDE_ARCH_POWER)
 #else
   #define SIMDE_ARCH_POWER_ALTIVEC_CHECK(version) (0)
