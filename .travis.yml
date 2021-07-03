@@ -18,19 +18,19 @@ jobs:
       apt:
         packages: ninja-build python3-pip clang
 
-  - name: z/Arch 14
+  - name: z/Arch
     if: branch != master OR type == pull_request
     arch: s390x
     compiler:
-    - clang
+    - gcc
     env:
-    - CC="clang"
-    - CXX="clang++"
-    - CFLAGS="-march=z14 -mzvector -Weverything -Werror -DSIMDE_CONSTRAINED_COMPILATION"
-    - CXXFLAGS="-march=z14 -mzvector -Weverything -Werror -DSIMDE_CONSTRAINED_COMPILATION"
+    - CC="gcc"
+    - CXX="g++"
+    - CFLAGS="-march=native -mzvector -Wextra -Werror -DSIMDE_CONSTRAINED_COMPILATION"
+    - CXXFLAGS="-march=native -mzvector -Wextra -Werror -DSIMDE_CONSTRAINED_COMPILATION"
     addons:
       apt:
-        packages: ninja-build python3-pip clang
+        packages: ninja-build python3-pip gcc g++
 
 before_install:
 - cat /proc/cpuinfo
