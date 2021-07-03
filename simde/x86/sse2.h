@@ -2694,17 +2694,20 @@ simde_mm_cvtps_epi32 (simde__m128 a) {
     return _mm_cvtps_epi32(a);
   #else
     simde__m128i_private r_;
-    simde__m128_private a_ = simde__m128_to_private(a);
+    simde__m128_private a_;
 
     #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_FAST_CONVERSION_RANGE) && defined(SIMDE_FAST_ROUND_TIES) && !defined(SIMDE_BUG_GCC_95399)
+      a_ = simde__m128_to_private(a);
       r_.neon_i32 = vcvtnq_s32_f32(a_.neon_f32);
     #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE) && defined(SIMDE_FAST_CONVERSION_RANGE) && defined(SIMDE_FAST_ROUND_TIES)
+      a_ = simde__m128_to_private(a);
       HEDLEY_DIAGNOSTIC_PUSH
       SIMDE_DIAGNOSTIC_DISABLE_C11_EXTENSIONS_
       SIMDE_DIAGNOSTIC_DISABLE_VECTOR_CONVERSION_
       r_.altivec_i32 = vec_cts(a_.altivec_f32, 1);
       HEDLEY_DIAGNOSTIC_POP
     #elif defined(SIMDE_WASM_SIMD128_NATIVE) && defined(SIMDE_FAST_CONVERSION_RANGE) && defined(SIMDE_FAST_ROUND_TIES)
+      a_ = simde__m128_to_private(a);
       r_.wasm_v128 = wasm_i32x4_trunc_sat_f32x4(a_.wasm_v128);
     #else
       a_ = simde__m128_to_private(simde_x_mm_round_ps(a, SIMDE_MM_FROUND_TO_NEAREST_INT, 1));
