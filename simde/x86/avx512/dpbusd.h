@@ -30,10 +30,10 @@ simde_mm_dpbusd_epi32(simde__m128i src, simde__m128i a, simde__m128i b) {
 
       src_.i32 =
         src_.i32 +
-        (HEDLEY_REINTERPRET_CAST(__typeof__(r2_.m128i_private[0].i32), r1_.m128i_private[0].u32) * r2_.m128i_private[0].i32) +
-        (HEDLEY_REINTERPRET_CAST(__typeof__(r2_.m128i_private[1].i32), r1_.m128i_private[1].u32) * r2_.m128i_private[1].i32) +
-        (HEDLEY_REINTERPRET_CAST(__typeof__(r2_.m128i_private[2].i32), r1_.m128i_private[2].u32) * r2_.m128i_private[2].i32) +
-        (HEDLEY_REINTERPRET_CAST(__typeof__(r2_.m128i_private[3].i32), r1_.m128i_private[3].u32) * r2_.m128i_private[3].i32);
+        (HEDLEY_REINTERPRET_CAST(__typeof__(a_.i32), r1_.m128i_private[0].u32) * r2_.m128i_private[0].i32) +
+        (HEDLEY_REINTERPRET_CAST(__typeof__(a_.i32), r1_.m128i_private[1].u32) * r2_.m128i_private[1].i32) +
+        (HEDLEY_REINTERPRET_CAST(__typeof__(a_.i32), r1_.m128i_private[2].u32) * r2_.m128i_private[2].i32) +
+        (HEDLEY_REINTERPRET_CAST(__typeof__(a_.i32), r1_.m128i_private[3].u32) * r2_.m128i_private[3].i32);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(a_.u8) / sizeof(a_.u8[0])) ; i++) {
