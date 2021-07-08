@@ -85,6 +85,7 @@
 #include "avx512/packus.h"
 #include "avx512/permutexvar.h"
 #include "avx512/permutex2var.h"
+#include "avx512/popcnt.h"
 #include "avx512/range.h"
 #include "avx512/range_round.h"
 #include "avx512/rol.h"
