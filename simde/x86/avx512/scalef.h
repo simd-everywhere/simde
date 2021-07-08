@@ -261,6 +261,128 @@ simde_mm512_maskz_scalef_pd (simde__mmask8 k, simde__m512d a, simde__m512d b) {
   #define _mm512_maskz_scalef_pd(k, a, b) simde_mm512_maskz_scalef_pd(k, a, b)
 #endif
 
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m128
+simde_mm_scalef_ss (simde__m128 a, simde__m128 b) {
+  #if defined(SIMDE_X86_AVX512F_NATIVE)
+    return _mm_scalef_ss(a, b);
+  #else
+    simde__m128_private
+      a_ = simde__m128_to_private(a),
+      b_ = simde__m128_to_private(b);
+
+    a_.f32[0] = (simde_math_issubnormalf(a_.f32[0]) ? 0 : a_.f32[0]) * simde_math_exp2f(simde_math_floorf((simde_math_issubnormalf(b_.f32[0]) ? 0 : b_.f32[0])));
+
+    return simde__m128_from_private(a_);
+  #endif
+}
+#if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
+  #undef _mm_scalef_ss
+  #define _mm_scalef_ss(a, b) simde_mm_scalef_ss(a, b)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m128
+simde_mm_mask_scalef_ss (simde__m128 src, simde__mmask8 k, simde__m128 a, simde__m128 b) {
+  #if defined(SIMDE_X86_AVX512F_NATIVE) && !defined(SIMDE_BUG_GCC_95483)
+    return _mm_mask_scalef_ss(src, k, a, b);
+  #else
+    simde__m128_private
+      src_ = simde__m128_to_private(src),
+      a_ = simde__m128_to_private(a),
+      b_ = simde__m128_to_private(b);
+
+    a_.f32[0] = ((k & 1) ? ((simde_math_issubnormalf(a_.f32[0]) ? 0 : a_.f32[0]) * simde_math_exp2f(simde_math_floorf((simde_math_issubnormalf(b_.f32[0]) ? 0 : b_.f32[0])))) : src_.f32[0]);
+
+    return simde__m128_from_private(a_);
+  #endif
+}
+#if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
+  #undef _mm_mask_scalef_ss
+  #define _mm_mask_scalef_ss(src, k, a, b) simde_mm_mask_scalef_ss(src, k, a, b)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m128
+simde_mm_maskz_scalef_ss (simde__mmask8 k, simde__m128 a, simde__m128 b) {
+  #if defined(SIMDE_X86_AVX512F_NATIVE) && !defined(SIMDE_BUG_GCC_95483)
+    return _mm_maskz_scalef_ss(k, a, b);
+  #else
+    simde__m128_private
+      a_ = simde__m128_to_private(a),
+      b_ = simde__m128_to_private(b);
+
+    a_.f32[0] = ((k & 1) ? ((simde_math_issubnormalf(a_.f32[0]) ? 0 : a_.f32[0]) * simde_math_exp2f(simde_math_floorf((simde_math_issubnormalf(b_.f32[0]) ? 0 : b_.f32[0])))) : SIMDE_FLOAT32_C(0.0));
+
+    return simde__m128_from_private(a_);
+  #endif
+}
+#if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
+  #undef _mm_maskz_scalef_ss
+  #define _mm_maskz_scalef_ss(k, a, b) simde_mm_maskz_scalef_ss(k, a, b)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m128d
+simde_mm_scalef_sd (simde__m128d a, simde__m128d b) {
+  #if defined(SIMDE_X86_AVX512F_NATIVE)
+    return _mm_scalef_sd(a, b);
+  #else
+    simde__m128d_private
+      a_ = simde__m128d_to_private(a),
+      b_ = simde__m128d_to_private(b);
+
+    a_.f64[0] = (simde_math_issubnormal(a_.f64[0]) ? 0 : a_.f64[0]) * simde_math_exp2(simde_math_floor((simde_math_issubnormal(b_.f64[0]) ? 0 : b_.f64[0])));
+
+    return simde__m128d_from_private(a_);
+  #endif
+}
+#if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
+  #undef _mm_scalef_sd
+  #define _mm_scalef_sd(a, b) simde_mm_scalef_sd(a, b)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m128d
+simde_mm_mask_scalef_sd (simde__m128d src, simde__mmask8 k, simde__m128d a, simde__m128d b) {
+  #if defined(SIMDE_X86_AVX512F_NATIVE) && !defined(SIMDE_BUG_GCC_95483)
+    return _mm_mask_scalef_sd(src, k, a, b);
+  #else
+    simde__m128d_private
+      src_ = simde__m128d_to_private(src),
+      a_ = simde__m128d_to_private(a),
+      b_ = simde__m128d_to_private(b);
+
+    a_.f64[0] = ((k & 1) ? ((simde_math_issubnormal(a_.f64[0]) ? 0 : a_.f64[0]) * simde_math_exp2(simde_math_floor((simde_math_issubnormal(b_.f64[0]) ? 0 : b_.f64[0])))) : src_.f64[0]);
+
+    return simde__m128d_from_private(a_);
+  #endif
+}
+#if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
+  #undef _mm_mask_scalef_sd
+  #define _mm_mask_scalef_sd(src, k, a, b) simde_mm_mask_scalef_sd(src, k, a, b)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m128d
+simde_mm_maskz_scalef_sd (simde__mmask8 k, simde__m128d a, simde__m128d b) {
+  #if defined(SIMDE_X86_AVX512F_NATIVE) && !defined(SIMDE_BUG_GCC_95483)
+    return _mm_maskz_scalef_sd(k, a, b);
+  #else
+    simde__m128d_private
+      a_ = simde__m128d_to_private(a),
+      b_ = simde__m128d_to_private(b);
+
+    a_.f64[0] = ((k & 1) ? ((simde_math_issubnormal(a_.f64[0]) ? 0 : a_.f64[0]) * simde_math_exp2(simde_math_floor(simde_math_issubnormal(b_.f64[0]) ? 0 : b_.f64[0]))) : SIMDE_FLOAT64_C(0.0));
+
+    return simde__m128d_from_private(a_);
+  #endif
+}
+#if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
+  #undef _mm_maskz_scalef_sd
+  #define _mm_maskz_scalef_sd(k, a, b) simde_mm_maskz_scalef_sd(k, a, b)
+#endif
+
 SIMDE_END_DECLS_
 HEDLEY_DIAGNOSTIC_POP
 
