@@ -22,14 +22,13 @@ simde_mm_dpbusd_epi32(simde__m128i src, simde__m128i a, simde__m128i b) {
         r1_,
         r2_;
 
-      a_.u8 = SIMDE_SHUFFLE_VECTOR_(8, 16, a_.u8, a_.u8, 0, 4, 8, 12, 1, 5, 9, 13, 2, 6, 10, 14, 3, 7, 11, 15);
+      a_.u8 = SIMDE_SHUFFLE_VECTOR_(8, 16, a_.u8, a_.u8,  0,  4,  8, 12,  1,  5,  9, 13,  2,  6, 10, 14,  3,  7, 11, 15);
       b_.i8 = SIMDE_SHUFFLE_VECTOR_(8, 16, b_.i8, b_.i8, 16, 20, 24, 28, 17, 21, 25, 29, 18, 22, 26, 30, 19, 23, 27, 31);
 
       SIMDE_CONVERT_VECTOR_(r1_.u32, a_.u8);
       SIMDE_CONVERT_VECTOR_(r2_.i32, b_.i8);
 
-      src_.i32 =
-        src_.i32 +
+      src_.i32 +=
         (HEDLEY_REINTERPRET_CAST(__typeof__(a_.i32), r1_.m128i_private[0].u32) * r2_.m128i_private[0].i32) +
         (HEDLEY_REINTERPRET_CAST(__typeof__(a_.i32), r1_.m128i_private[1].u32) * r2_.m128i_private[1].i32) +
         (HEDLEY_REINTERPRET_CAST(__typeof__(a_.i32), r1_.m128i_private[2].u32) * r2_.m128i_private[2].i32) +
