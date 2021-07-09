@@ -381,6 +381,7 @@ if not meson.is_subproject()
   install_headers(
     files([
       'simde/wasm/simd128.h',
+      'simde/wasm/relaxed-simd.h',
       ]),
     subdir: 'simde/wasm')
 

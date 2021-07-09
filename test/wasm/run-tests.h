@@ -5,5 +5,6 @@
 
 #include "../test.h"
 #include "simd128/run-tests.h"
+#include "relaxed-simd/run-tests.h"
 
 MunitSuite* simde_tests_wasm_get_suite(void);

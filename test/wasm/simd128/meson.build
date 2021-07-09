@@ -82,7 +82,7 @@ foreach name : simde_test_wasm_simd128_tests
           include_directories: simde_include_dir,
           dependencies: simde_deps)
 
-      test('wasm_simd/' + name + '/' + emul + '/' + lang, x,
+      test('wasm_simd128/' + name + '/' + emul + '/' + lang, x,
           protocol: 'tap',
           # Emscripten tests must be run from builddir
           workdir: meson.current_build_dir())
