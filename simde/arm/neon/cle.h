@@ -308,14 +308,11 @@ simde_vcleq_u8(simde_uint8x16_t a, simde_uint8x16_t b) {
       b_ = simde_uint8x16_to_private(b);
 
     #if defined(SIMDE_X86_SSE2_NATIVE)
-      __m128i sign_bits = _mm_set1_epi8(INT8_MIN);
+      /* http://www.alfredklomp.com/programming/sse-intrinsics/ */
       r_.m128i =
-        _mm_or_si128(
-          _mm_cmpgt_epi8(
-            _mm_xor_si128(b_.m128i, sign_bits),
-            _mm_xor_si128(a_.m128i, sign_bits)
-          ),
-          _mm_cmpeq_epi8(a_.m128i, b_.m128i)
+        _mm_cmpeq_epi8(
+          _mm_min_epu8(a_.m128i, b_.m128i),
+          a_.m128i
         );
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r_.v128 = wasm_u8x16_le(a_.v128, b_.v128);
@@ -349,7 +346,13 @@ simde_vcleq_u16(simde_uint16x8_t a, simde_uint16x8_t b) {
       a_ = simde_uint16x8_to_private(a),
       b_ = simde_uint16x8_to_private(b);
 
-    #if defined(SIMDE_X86_SSE2_NATIVE)
+    #if defined(SIMDE_X86_SSE4_1_NATIVE)
+      r_.m128i =
+        _mm_cmpeq_epi16(
+          _mm_min_epu16(a_.m128i, b_.m128i),
+          a_.m128i
+        );
+    #elif defined(SIMDE_X86_SSE2_NATIVE)
       __m128i sign_bits = _mm_set1_epi16(INT16_MIN);
       r_.m128i =
         _mm_or_si128(
@@ -391,7 +394,13 @@ simde_vcleq_u32(simde_uint32x4_t a, simde_uint32x4_t b) {
       a_ = simde_uint32x4_to_private(a),
       b_ = simde_uint32x4_to_private(b);
 
-    #if defined(SIMDE_X86_SSE2_NATIVE)
+    #if defined(SIMDE_X86_SSE4_1_NATIVE)
+      r_.m128i =
+        _mm_cmpeq_epi32(
+          _mm_min_epu32(a_.m128i, b_.m128i),
+          a_.m128i
+        );
+    #elif defined(SIMDE_X86_SSE2_NATIVE)
       __m128i sign_bits = _mm_set1_epi32(INT32_MIN);
       r_.m128i =
         _mm_or_si128(
@@ -433,7 +442,13 @@ simde_vcleq_u64(simde_uint64x2_t a, simde_uint64x2_t b) {
       a_ = simde_uint64x2_to_private(a),
       b_ = simde_uint64x2_to_private(b);
 
-    #if defined(SIMDE_X86_SSE4_2_NATIVE)
+    #if defined(SIMDE_X86_AVX512VL_NATIVE)
+      r_.m128i =
+        _mm_cmpeq_epi64(
+          _mm_min_epu64(a_.m128i, b_.m128i),
+          a_.m128i
+        );
+    #elif defined(SIMDE_X86_SSE4_2_NATIVE)
       __m128i sign_bits = _mm_set1_epi64x(INT64_MIN);
       r_.m128i =
         _mm_or_si128(
