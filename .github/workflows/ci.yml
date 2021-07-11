@@ -41,6 +41,9 @@ jobs:
     # Make sure sve.h includes all the SVE headers.
     - name: Missing SVE includes
       run: for f in simde/arm/sve/*.h; do grep -q "include \"sve/$(basename "$f")\"" simde/arm/sve.h || (echo "Missing $f" && exit 1); done
+    # Make sure msa.h includes all the MSA headers.
+    - name: Missing SVE includes
+      run: for f in simde/mips/msa/*.h; do grep -q "include \"msa/$(basename "$f")\"" simde/mips/msa.h || (echo "Missing $f" && exit 1); done
     # Make sure we can find the expected header guards.  It's easy to miss this when doing C&P
     - name: Header guards
       run: for file in $(find simde/*/ -name '*.h'); do grep -q "$(echo "$file" | tr '[:lower:]' '[:upper:]' | tr '[:punct:]' '_')" "$file" || (echo "Missing or incorrect header guard in $file" && exit 1); done

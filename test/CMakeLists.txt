@@ -114,13 +114,17 @@ list(REMOVE_ITEM WASM_SIMD128_SOURCES_C "wasm/simd128/run-tests.c")
 aux_source_directory("wasm/relaxed-simd" WASM_SIMD128_SOURCES_C)
 list(REMOVE_ITEM WASM_SIMD128_SOURCES_C "wasm/relaxed-simd/run-tests.c")
 
+aux_source_directory("mips/msa" MIPS_MSA_SOURCES_C)
+list(REMOVE_ITEM MIPS_MSA_SOURCES_C "mips/msa/run-tests.c")
+
 set(TEST_SOURCES_C
   ${X86_SOURCES_C}
   ${X86_AVX512_SOURCES_C}
   ${ARM_NEON_SOURCES_C}
   ${ARM_SVE_SOURCES_C}
   ${WASM_SIMD128_SOURCES_C}
-  ${WASM_RELAXED_SIMD_SOURCES_C})
+  ${WASM_RELAXED_SIMD_SOURCES_C}
+  ${MIPS_MSA_SOURCES_C})
 
 set(TEST_RUNNER_SOURCES
   run-tests.c
@@ -131,7 +135,8 @@ set(TEST_RUNNER_SOURCES
   arm/sve/run-tests.c
   wasm/run-tests.c
   wasm/simd128/run-tests.c
-  wasm/relaxed-simd/run-tests.c)
+  wasm/relaxed-simd/run-tests.c
+  mips/msa/run-tests.c)
 add_executable(run-tests ${TEST_RUNNER_SOURCES})
 set_property(TARGET run-tests PROPERTY C_STANDARD "99")
 target_add_compiler_flags(run-tests "-Wno-psabi")

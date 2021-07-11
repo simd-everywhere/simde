@@ -301,6 +301,12 @@ simde_avx512_families = [
   'xorsign',
 ]
 
+simde_msa_families = [
+  'addv',
+  'ld',
+  'st',
+]
+
 if not meson.is_subproject() and get_option('tests')
   subdir('test')
 endif
@@ -318,6 +324,11 @@ endforeach
 simde_avx512_family_headers = ['simde/x86/avx512/types.h']
 foreach avx512_family : simde_avx512_families
   simde_avx512_family_headers += 'simde/x86/avx512/' + avx512_family + '.h'
+endforeach
+
+simde_msa_family_headers = ['simde/mips/msa/types.h']
+foreach msa_family : simde_msa_families
+  simde_msa_family_headers += 'simde/mips/msa/' + msa_family + '.h'
 endforeach
 
 if not meson.is_subproject()
@@ -384,6 +395,16 @@ if not meson.is_subproject()
       'simde/wasm/relaxed-simd.h',
       ]),
     subdir: 'simde/wasm')
+
+  install_headers(
+    files([
+      'simde/mips/msa.h',
+      ]),
+    subdir: 'simde/mips')
+
+  install_headers(
+    files(simde_msa_family_headers),
+    subdir: 'simde/mips/msa')
 
   import('pkgconfig').generate(
     version : meson.project_version(),
