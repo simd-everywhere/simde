@@ -302,6 +302,7 @@ simde_avx512_families = [
 ]
 
 simde_msa_families = [
+  'add_a',
   'addv',
   'addvi',
   'ld',
