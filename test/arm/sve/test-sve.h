@@ -12,7 +12,7 @@ simde_test_arm_sve_random_length(size_t buf_size, size_t elem_size) {
 
 #if !defined(SIMDE_TEST_BARE)
   #define SIMDE_TEST_DECLARE_SUITE(name) SIMDE_TEST_SUITE_DECLARE_GETTERS(HEDLEY_CONCAT(simde_test_arm_sve_get_suite_,name))
-  #include "declare-suites.h"
+  #include <test/arm/sve/declare-suites.h>
   #undef SIMDE_TEST_DECLARE_SUITE
 #endif
 

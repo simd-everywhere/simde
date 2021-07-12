@@ -522,7 +522,7 @@ SIMDE_TEST_ARM_NEON_GENERATE_X4_VECTOR_FLOAT_TYPE_FUNCS_(float64x2x4_t, simde_fl
 
 #if !defined(SIMDE_TEST_BARE)
   #define SIMDE_TEST_DECLARE_SUITE(name) SIMDE_TEST_SUITE_DECLARE_GETTERS(HEDLEY_CONCAT(simde_test_arm_neon_get_suite_,name))
-  #include "declare-suites.h"
+  #include <test/arm/neon/declare-suites.h>
   #undef SIMDE_TEST_DECLARE_SUITE
 #endif
 

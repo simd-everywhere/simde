@@ -46,7 +46,7 @@ SIMDE_TEST_X86_GENERATE_MASK_FUNCS_(64)
 
 #if !defined(SIMDE_TEST_BARE)
   #define SIMDE_TEST_DECLARE_SUITE(name) SIMDE_TEST_SUITE_DECLARE_GETTERS(HEDLEY_CONCAT(simde_test_x86_avx512_get_suite_,name))
-  #include "declare-suites.h"
+  #include <test/x86/avx512/declare-suites.h>
   #undef SIMDE_TEST_DECLARE_SUITE
 #endif
 
