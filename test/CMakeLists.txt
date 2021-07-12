@@ -91,31 +91,50 @@ if("${CMAKE_C_COMPILER_ID}" STREQUAL "Intel")
   add_definitions(-DSIMDE_FAST_MATH)
 endif()
 
+include_directories("${CMAKE_CURRENT_BINARY_DIR}")
+
+function(generate_declare_suites OUTFILE SOURCES)
+  file(WRITE "${OUTFILE}" "")
+  foreach(SOURCE ${SOURCES})
+    get_filename_component(SUITE ${SOURCE} NAME_WLE)
+    string(REPLACE "." "_" SUITE "${SUITE}")
+    # message(FATAL_ERROR "${SUITE}")
+    file(APPEND "${OUTFILE}" "SIMDE_TEST_DECLARE_SUITE(${SUITE})\n")
+  endforeach(SOURCE ${SOURCES})
+endfunction(generate_declare_suites)
+
 aux_source_directory("arm/neon" ARM_NEON_SOURCES_C)
 list(REMOVE_ITEM ARM_NEON_SOURCES_C "arm/neon/run-tests.c")
 list(REMOVE_ITEM ARM_NEON_SOURCES_C "arm/neon/skel.c")
 list(REMOVE_ITEM ARM_NEON_SOURCES_C "arm/neon/skel-single.c")
 list(REMOVE_ITEM ARM_NEON_SOURCES_C "arm/neon/skel-triple.c")
+generate_declare_suites("${CMAKE_CURRENT_BINARY_DIR}/test/arm/neon/declare-suites.h" "${ARM_NEON_SOURCES_C}")
 
 aux_source_directory("arm/sve" ARM_SVE_SOURCES_C)
 list(REMOVE_ITEM ARM_SVE_SOURCES_C "arm/sve/run-tests.c")
+generate_declare_suites("${CMAKE_CURRENT_BINARY_DIR}/test/arm/sve/declare-suites.h" "${ARM_SVE_SOURCES_C}")
 
 aux_source_directory("x86/avx512" X86_AVX512_SOURCES_C)
 list(REMOVE_ITEM X86_AVX512_SOURCES_C "x86/avx512/run-tests.c")
 list(REMOVE_ITEM X86_AVX512_SOURCES_C "x86/avx512/skel.c")
+generate_declare_suites("${CMAKE_CURRENT_BINARY_DIR}/test/x86/avx512/declare-suites.h" "${X86_AVX512_SOURCES_C}")
 
 aux_source_directory("x86" X86_SOURCES_C)
 list(REMOVE_ITEM X86_SOURCES_C "x86/skel.c")
 list(REMOVE_ITEM X86_SOURCES_C "x86/run-tests.c")
+generate_declare_suites("${CMAKE_CURRENT_BINARY_DIR}/test/x86/declare-suites.h" "${X86_SOURCES_C}")
 
 aux_source_directory("wasm/simd128" WASM_SIMD128_SOURCES_C)
 list(REMOVE_ITEM WASM_SIMD128_SOURCES_C "wasm/simd128/run-tests.c")
+generate_declare_suites("${CMAKE_CURRENT_BINARY_DIR}/test/wasm/simd128/declare-suites.h" "${WASM_SIMD128_SOURCES_C}")
 
-aux_source_directory("wasm/relaxed-simd" WASM_SIMD128_SOURCES_C)
-list(REMOVE_ITEM WASM_SIMD128_SOURCES_C "wasm/relaxed-simd/run-tests.c")
+aux_source_directory("wasm/relaxed-simd" WASM_RELAXED_SIMD_SOURCES_C)
+list(REMOVE_ITEM WASM_RELAXED_SIMD_SOURCES_C "wasm/relaxed-simd/run-tests.c")
+generate_declare_suites("${CMAKE_CURRENT_BINARY_DIR}/test/wasm/relaxed-simd/declare-suites.h" "${WASM_RELAXED_SIMD_SOURCES_C}")
 
 aux_source_directory("mips/msa" MIPS_MSA_SOURCES_C)
 list(REMOVE_ITEM MIPS_MSA_SOURCES_C "mips/msa/run-tests.c")
+generate_declare_suites("${CMAKE_CURRENT_BINARY_DIR}/test/mips/msa/declare-suites.h" "${MIPS_MSA_SOURCES_C}")
 
 set(TEST_SOURCES_C
   ${X86_SOURCES_C}
@@ -136,6 +155,7 @@ set(TEST_RUNNER_SOURCES
   wasm/run-tests.c
   wasm/simd128/run-tests.c
   wasm/relaxed-simd/run-tests.c
+  mips/run-tests.c
   mips/msa/run-tests.c)
 add_executable(run-tests ${TEST_RUNNER_SOURCES})
 set_property(TARGET run-tests PROPERTY C_STANDARD "99")

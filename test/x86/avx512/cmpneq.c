@@ -24,7 +24,7 @@
  *   2021      Evan Nemerson <evan@nemerson.com>
  */
 
-#define SIMDE_TEST_X86_AVX512_INSN cmpeq
+#define SIMDE_TEST_X86_AVX512_INSN cmpneq
 
 #include <test/x86/avx512/test-avx512.h>
 #include <simde/x86/avx512/set.h>
