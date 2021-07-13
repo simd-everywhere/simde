@@ -6948,18 +6948,59 @@ simde_wasm_i32x4_trunc_sat_f32x4 (simde_v128_t a) {
       a_ = simde_v128_to_private(a),
       r_;
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {
-      if (simde_math_isnanf(a_.f32[i])) {
-        r_.i32[i] = INT32_C(0);
-      } else if (a_.f32[i] < HEDLEY_STATIC_CAST(simde_float32, INT32_MIN)) {
-        r_.i32[i] = INT32_MIN;
-      } else if (a_.f32[i] > HEDLEY_STATIC_CAST(simde_float32, INT32_MAX)) {
-        r_.i32[i] = INT32_MAX;
-      } else {
-        r_.i32[i] = HEDLEY_STATIC_CAST(int32_t, a_.f32[i]);
+    #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+      r_.neon_i32 = vcvtq_s32_f32(a_.neon_f32);
+    #elif defined(SIMDE_CONVERT_VECTOR_) && defined(SIMDE_FAST_CONVERSION_RANGE)
+      SIMDE_CONVERT_VECTOR_(r_.f32, a_.f32);
+    #elif defined(SIMDE_X86_SSE2_NATIVE)
+      const __m128i i32_max_mask = _mm_castps_si128(_mm_cmpgt_ps(a_.sse_m128, _mm_set1_ps(SIMDE_FLOAT32_C(2147483520.0))));
+      const __m128 clamped = _mm_max_ps(a_.sse_m128, _mm_set1_ps(HEDLEY_STATIC_CAST(simde_float32, INT32_MIN)));
+      r_.sse_m128i = _mm_cvttps_epi32(clamped);
+      #if defined(SIMDE_X86_SSE4_1_NATIVE)
+        r_.sse_m128i =
+          _mm_castps_si128(
+            _mm_blendv_ps(
+              _mm_castsi128_ps(r_.sse_m128i),
+              _mm_castsi128_ps(_mm_set1_epi32(INT32_MAX)),
+              _mm_castsi128_ps(i32_max_mask)
+            )
+          );
+      #else
+        r_.sse_m128i =
+          _mm_or_si128(
+            _mm_and_si128(i32_max_mask, _mm_set1_epi32(INT32_MAX)),
+            _mm_andnot_si128(i32_max_mask, r_.sse_m128i)
+          );
+      #endif
+      r_.sse_m128i = _mm_and_si128(r_.sse_m128i, _mm_castps_si128(_mm_cmpord_ps(a_.sse_m128, a_.sse_m128)));
+    #elif defined(SIMDE_CONVERT_VECTOR_) && defined(SIMDE_IEEE754_STORAGE)
+      SIMDE_CONVERT_VECTOR_(r_.i32, a_.f32);
+
+      static const float max_representable SIMDE_VECTOR(16) = { SIMDE_FLOAT32_C(2147483520.0), SIMDE_FLOAT32_C(2147483520.0), SIMDE_FLOAT32_C(2147483520.0), SIMDE_FLOAT32_C(2147483520.0) };
+      int32_t max_mask SIMDE_VECTOR(16) = HEDLEY_REINTERPRET_CAST(__typeof__(max_mask), a_.f32 > max_representable);
+      int32_t max_i32 SIMDE_VECTOR(16) = { INT32_MAX, INT32_MAX, INT32_MAX, INT32_MAX };
+      r_.i32  = (max_i32 & max_mask) | (r_.i32 & ~max_mask);
+
+      static const float min_representable SIMDE_VECTOR(16) = { HEDLEY_STATIC_CAST(simde_float32, INT32_MIN), HEDLEY_STATIC_CAST(simde_float32, INT32_MIN), HEDLEY_STATIC_CAST(simde_float32, INT32_MIN), HEDLEY_STATIC_CAST(simde_float32, INT32_MIN) };
+      int32_t min_mask SIMDE_VECTOR(16) = HEDLEY_REINTERPRET_CAST(__typeof__(min_mask), a_.f32 < min_representable);
+      int32_t min_i32 SIMDE_VECTOR(16) = { INT32_MIN, INT32_MIN, INT32_MIN, INT32_MIN };
+      r_.i32  = (min_i32 & min_mask) | (r_.i32 & ~min_mask);
+
+      r_.i32 &= (a_.f32 == a_.f32);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {
+        if (simde_math_isnanf(a_.f32[i])) {
+          r_.i32[i] = INT32_C(0);
+        } else if (a_.f32[i] < HEDLEY_STATIC_CAST(simde_float32, INT32_MIN)) {
+          r_.i32[i] = INT32_MIN;
+        } else if (a_.f32[i] > HEDLEY_STATIC_CAST(simde_float32, INT32_MAX)) {
+          r_.i32[i] = INT32_MAX;
+        } else {
+          r_.i32[i] = HEDLEY_STATIC_CAST(int32_t, a_.f32[i]);
+        }
       }
-    }
+    #endif
 
     return simde_v128_from_private(r_);
   #endif
@@ -6978,17 +7019,58 @@ simde_wasm_u32x4_trunc_sat_f32x4 (simde_v128_t a) {
       a_ = simde_v128_to_private(a),
       r_;
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.u32) / sizeof(r_.u32[0])) ; i++) {
-      if (simde_math_isnan(a_.f32[i]) ||
-          a_.f32[i] < SIMDE_FLOAT32_C(0.0)) {
-        r_.u32[i] = UINT32_C(0);
-      } else if (a_.f32[i] > HEDLEY_STATIC_CAST(simde_float32, UINT32_MAX)) {
-        r_.u32[i] = UINT32_MAX;
-      } else {
-        r_.u32[i] = HEDLEY_STATIC_CAST(uint32_t, a_.f32[i]);
+    #if defined(SIMDE_X86_SSE2_NATIVE)
+      #if defined(SIMDE_X86_AVX512VL_NATIVE)
+        r_.sse_m128i = _mm_cvttps_epu32(a_.sse_m128);
+      #else
+        __m128 first_oob_high = _mm_set1_ps(SIMDE_FLOAT32_C(4294967296.0));
+        __m128 neg_zero_if_too_high =
+          _mm_castsi128_ps(
+            _mm_slli_epi32(
+              _mm_castps_si128(_mm_cmple_ps(first_oob_high, a_.sse_m128)),
+              31
+            )
+          );
+        r_.sse_m128i =
+          _mm_xor_si128(
+            _mm_cvttps_epi32(
+              _mm_sub_ps(a_.sse_m128, _mm_and_ps(neg_zero_if_too_high, first_oob_high))
+            ),
+            _mm_castps_si128(neg_zero_if_too_high)
+          );
+      #endif
+
+      #if !defined(SIMDE_FAST_CONVERSION_RANGE)
+        r_.sse_m128i = _mm_and_si128(r_.sse_m128i, _mm_castps_si128(_mm_cmpgt_ps(a_.sse_m128, _mm_set1_ps(SIMDE_FLOAT32_C(0.0)))));
+        r_.sse_m128i = _mm_or_si128 (r_.sse_m128i, _mm_castps_si128(_mm_cmpge_ps(a_.sse_m128, _mm_set1_ps(SIMDE_FLOAT32_C(4294967296.0)))));
+      #endif
+
+      #if !defined(SIMDE_FAST_NANS)
+        r_.sse_m128i = _mm_and_si128(r_.sse_m128i, _mm_castps_si128(_mm_cmpord_ps(a_.sse_m128, a_.sse_m128)));
+      #endif
+    #elif defined(SIMDE_CONVERT_VECTOR_) && defined(SIMDE_IEEE754_STORAGE)
+      SIMDE_CONVERT_VECTOR_(r_.u32, a_.f32);
+
+      static const float max_representable SIMDE_VECTOR(16) = { SIMDE_FLOAT32_C(4294967040.0), SIMDE_FLOAT32_C(4294967040.0), SIMDE_FLOAT32_C(4294967040.0), SIMDE_FLOAT32_C(4294967040.0) };
+      r_.u32 |= HEDLEY_REINTERPRET_CAST(__typeof__(r_.u32), a_.f32 > max_representable);
+
+      static const float min_representable SIMDE_VECTOR(16) = { SIMDE_FLOAT32_C(0.0), };
+      r_.u32 &= HEDLEY_REINTERPRET_CAST(__typeof__(r_.u32), a_.f32 > min_representable);
+
+      r_.u32 &= (a_.f32 == a_.f32);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.u32) / sizeof(r_.u32[0])) ; i++) {
+        if (simde_math_isnan(a_.f32[i]) ||
+            a_.f32[i] < SIMDE_FLOAT32_C(0.0)) {
+          r_.u32[i] = UINT32_C(0);
+        } else if (a_.f32[i] > HEDLEY_STATIC_CAST(simde_float32, UINT32_MAX)) {
+          r_.u32[i] = UINT32_MAX;
+        } else {
+          r_.u32[i] = HEDLEY_STATIC_CAST(uint32_t, a_.f32[i]);
+        }
       }
-    }
+    #endif
 
     return simde_v128_from_private(r_);
   #endif
