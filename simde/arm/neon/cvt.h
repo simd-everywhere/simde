@@ -355,6 +355,27 @@ simde_vcvtq_s32_f32(simde_float32x4_t a) {
 
     #if defined(SIMDE_WASM_SIMD128_NATIVE)
       r_.v128 = wasm_i32x4_trunc_sat_f32x4(a_.v128);
+    #elif defined(SIMDE_X86_SSE2_NATIVE)
+      const __m128i i32_max_mask = _mm_castps_si128(_mm_cmpgt_ps(a_.m128, _mm_set1_ps(SIMDE_FLOAT32_C(2147483520.0))));
+      const __m128 clamped = _mm_max_ps(a_.m128, _mm_set1_ps(HEDLEY_STATIC_CAST(simde_float32, INT32_MIN)));
+      r_.m128i = _mm_cvttps_epi32(clamped);
+      #if defined(SIMDE_X86_SSE4_1_NATIVE)
+        r_.m128i =
+          _mm_castps_si128(
+            _mm_blendv_ps(
+              _mm_castsi128_ps(r_.m128i),
+              _mm_castsi128_ps(_mm_set1_epi32(INT32_MAX)),
+              _mm_castsi128_ps(i32_max_mask)
+            )
+          );
+      #else
+        r_.m128i =
+          _mm_or_si128(
+            _mm_and_si128(i32_max_mask, _mm_set1_epi32(INT32_MAX)),
+            _mm_andnot_si128(i32_max_mask, r_.m128i)
+          );
+      #endif
+      r_.m128i = _mm_and_si128(r_.m128i, _mm_castps_si128(_mm_cmpord_ps(a_.m128, a_.m128)));
     #elif defined(SIMDE_CONVERT_VECTOR_) && defined(SIMDE_FAST_CONVERSION_RANGE)
       SIMDE_CONVERT_VECTOR_(r_.values, a_.values);
     #else
@@ -385,6 +406,45 @@ simde_vcvtq_u32_f32(simde_float32x4_t a) {
       r_.v128 = wasm_u32x4_trunc_sat_f32x4(a_.v128);
     #elif defined(SIMDE_CONVERT_VECTOR_) && defined(SIMDE_FAST_CONVERSION_RANGE)
       SIMDE_CONVERT_VECTOR_(r_.values, a_.values);
+    #elif defined(SIMDE_X86_SSE2_NATIVE)
+      const __m128i i32_max_mask = _mm_castps_si128(_mm_cmpgt_ps(a_.m128, _mm_set1_ps(SIMDE_FLOAT32_C(4294967040.0))));
+      const __m128 clamped = _mm_max_ps(a_.m128, _mm_set1_ps(SIMDE_FLOAT32_C(0.0)));
+      #if defined(SIMDE_X86_AVX512VL_NATIVE)
+        r_.m128i = _mm_cvttps_epu32(clamped);
+      #else
+        __m128 tmp1 = _mm_castsi128_ps(_mm_set1_epi32(UINT32_C(0x4F000000 /* (float) 2^32 */)));
+        __m128 tmp2 =
+          _mm_castsi128_ps(
+            _mm_slli_epi32(
+              _mm_castps_si128(_mm_cmple_ps(tmp1, clamped)),
+              31
+            )
+          );
+        r_.m128i =
+          _mm_xor_si128(
+            _mm_cvttps_epi32(
+              _mm_sub_ps(clamped, _mm_and_ps(tmp2, tmp1))
+            ),
+            _mm_castps_si128(tmp2)
+          );
+      #endif
+      #if defined(SIMDE_X86_SSE4_1_NATIVE)
+        r_.m128i =
+          _mm_castps_si128(
+            _mm_blendv_ps(
+              _mm_castsi128_ps(r_.m128i),
+              _mm_castsi128_ps(_mm_set1_epi32(~INT32_C(0))),
+              _mm_castsi128_ps(i32_max_mask)
+            )
+          );
+      #else
+        r_.m128i =
+          _mm_or_si128(
+            _mm_and_si128(i32_max_mask, _mm_set1_epi32(~INT32_C(0))),
+            _mm_andnot_si128(i32_max_mask, r_.m128i)
+          );
+      #endif
+      r_.m128i = _mm_and_si128(r_.m128i, _mm_castps_si128(_mm_cmpord_ps(a_.m128, a_.m128)));
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
