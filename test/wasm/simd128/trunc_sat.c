@@ -81,8 +81,8 @@ test_simde_wasm_u32x4_trunc_sat_f32x4(SIMDE_MUNIT_TEST_ARGS) {
       simde_float32 a[sizeof(simde_v128_t) / sizeof(simde_float32)];
       uint32_t r[sizeof(simde_v128_t) / sizeof(uint32_t)];
     } test_vec[8] = {
-      { {            SIMDE_MATH_NANF, SIMDE_FLOAT32_C(   -10.72),            SIMDE_MATH_NANF, SIMDE_FLOAT32_C(  -998.02) },
-        { UINT32_C(         0), UINT32_C(         0), UINT32_C(         0), UINT32_C(         0) } },
+      { {            SIMDE_MATH_NANF, SIMDE_FLOAT32_C(   -10.72),       SIMDE_MATH_INFINITYF, SIMDE_FLOAT32_C(4294977296.0) },
+        { UINT32_C(         0), UINT32_C(         0), UINT32_C(4294967295), UINT32_C(4294967295) } },
       { { SIMDE_FLOAT32_C(  -998.33),            SIMDE_MATH_NANF,            SIMDE_MATH_NANF, SIMDE_FLOAT32_C(  -998.02) },
         { UINT32_C(         0), UINT32_C(         0), UINT32_C(         0), UINT32_C(         0) } },
       { { SIMDE_FLOAT32_C(    -4.97), SIMDE_FLOAT32_C(   621.77), SIMDE_FLOAT32_C(    94.46), SIMDE_FLOAT32_C(    95.10) },

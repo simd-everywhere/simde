@@ -43,7 +43,17 @@ simde_mm_cvttpd_epi64 (simde__m128d a) {
     simde__m128i_private r_;
     simde__m128d_private a_ = simde__m128d_to_private(a);
 
-    #if defined(SIMDE_CONVERT_VECTOR_)
+    #if defined(SIMDE_X86_SSE2_NATIVE)
+      r_.n =
+        _mm_set_epi64x(
+          _mm_cvttsd_si64(_mm_unpackhi_pd(a_.n, a_.n)),
+          _mm_cvttsd_si64(a_.n)
+        );
+    #elif defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+      r_.neon_i64 = vcvtq_s64_f64(a_.neon_f64);
+    #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
+      r_.altivec_i64 = vec_signed(a_.altivec_f64);
+    #elif defined(SIMDE_CONVERT_VECTOR_)
       SIMDE_CONVERT_VECTOR_(r_.i64, a_.f64);
     #else
       SIMDE_VECTORIZE

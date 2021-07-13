@@ -3111,14 +3111,67 @@ simde_mm_cvttps_epi32 (simde__m128 a) {
     simde__m128i_private r_;
     simde__m128_private a_ = simde__m128_to_private(a);
 
-    #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_FAST_CONVERSION_RANGE)
+    #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       r_.neon_i32 = vcvtq_s32_f32(a_.neon_f32);
-    #elif defined(SIMDE_CONVERT_VECTOR_) && defined(SIMDE_FAST_CONVERSION_RANGE)
+
+      #if !defined(SIMDE_FAST_CONVERSION_RANGE) || !defined(SIMDE_FAST_NANS)
+        /* Values below INT32_MIN saturate anyways, so we don't need to
+         * test for that. */
+        #if !defined(SIMDE_FAST_CONVERSION_RANGE) && !defined(SIMDE_FAST_NANS)
+          uint32x4_t valid_input =
+            vandq_u32(
+              vcltq_f32(a_.neon_f32, vdupq_n_f32(SIMDE_FLOAT32_C(2147483648.0))),
+              vceqq_f32(a_.neon_f32, a_.neon_f32)
+            );
+        #elif !defined(SIMDE_FAST_CONVERSION_RANGE)
+          uint32x4_t valid_input = vcltq_f32(a_.neon_f32, vdupq_n_f32(SIMDE_FLOAT32_C(2147483648.0)));
+        #elif !defined(SIMDE_FAST_NANS)
+          uint32x4_t valid_input = vceqq_f32(a_.neon_f32, a_.neon_f32);
+        #endif
+
+        r_.neon_i32 = vbslq_s32(valid_input, r_.neon_i32, vdupq_n_s32(INT32_MIN));
+      #endif
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+      r_.wasm_v128 = wasm_i32x4_trunc_sat_f32x4(a_.wasm_v128);
+
+      #if !defined(SIMDE_FAST_CONVERSION_RANGE) || !defined(SIMDE_FAST_NANS)
+        #if !defined(SIMDE_FAST_CONVERSION_RANGE) && !defined(SIMDE_FAST_NANS)
+          v128_t valid_input =
+            wasm_v128_and(
+              wasm_f32x4_lt(a_.wasm_v128, wasm_f32x4_splat(SIMDE_FLOAT32_C(2147483648.0))),
+              wasm_f32x4_eq(a_.wasm_v128, a_.wasm_v128)
+            );
+        #elif !defined(SIMDE_FAST_CONVERSION_RANGE)
+          v128_t valid_input = wasm_f32x4_lt(a_.wasm_v128, wasm_f32x4_splat(SIMDE_FLOAT32_C(2147483648.0)));
+        #elif !defined(SIMDE_FAST_NANS)
+          v128_t valid_input = wasm_f32x4_eq(a_.wasm_v128, a_.wasm_v128);
+        #endif
+
+        r_.wasm_v128 = wasm_v128_bitselect(r_.wasm_v128, wasm_i32x4_splat(INT32_MIN), valid_input);
+      #endif
+    #elif defined(SIMDE_CONVERT_VECTOR_)
       SIMDE_CONVERT_VECTOR_(r_.i32, a_.f32);
+
+      #if !defined(SIMDE_FAST_CONVERSION_RANGE) || !defined(SIMDE_FAST_NANS)
+        #if !defined(SIMDE_FAST_CONVERSION_RANGE)
+          static const simde_float32 first_too_high SIMDE_VECTOR(16) = { SIMDE_FLOAT32_C(2147483648.0), SIMDE_FLOAT32_C(2147483648.0), SIMDE_FLOAT32_C(2147483648.0), SIMDE_FLOAT32_C(2147483648.0) };
+
+          __typeof__(r_.i32) valid_input =
+            HEDLEY_REINTERPRET_CAST(
+              __typeof__(r_.i32),
+              (a_.f32 < first_too_high) & (a_.f32 >= -first_too_high)
+            );
+        #elif !defined(SIMDE_FAST_NANS)
+          __typeof__(r_.i32) valid_input = HEDLEY_REINTERPRET_CAST( __typeof__(valid_input), a_.f32 == a_.f32);
+        #endif
+
+        __typeof__(r_.i32) invalid_output = { INT32_MIN, INT32_MIN, INT32_MIN, INT32_MIN };
+        r_.i32 = (r_.i32 & valid_input) | (invalid_output & ~valid_input);
+      #endif
     #else
       for (size_t i = 0 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {
         simde_float32 v = a_.f32[i];
-        #if defined(SIMDE_FAST_CONVERSION_RANGE)
+        #if defined(SIMDE_FAST_CONVERSION_RANGE) && defined(SIMDE_FAST_NANS)
           r_.i32[i] = SIMDE_CONVERT_FTOI(int32_t, v);
         #else
           r_.i32[i] = ((v > HEDLEY_STATIC_CAST(simde_float32, INT32_MIN)) && (v < HEDLEY_STATIC_CAST(simde_float32, INT32_MAX))) ?
