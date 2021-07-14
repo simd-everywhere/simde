@@ -115,8 +115,8 @@ jobs:
   emscripten:
     runs-on: ubuntu-latest
     env:
-      CFLAGS: -Weverything -Werror -O3 -msimd128
-      CXXFLAGS: -Weverything -Werror -O3 -msimd128
+      CFLAGS: -Weverything -Werror -O2 -msimd128
+      CXXFLAGS: -Weverything -Werror -O2 -msimd128
       LDFLAGS: -s ENVIRONMENT=shell -s ASSERTIONS=1
     steps:
     - uses: actions/checkout@v2
