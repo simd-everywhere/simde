@@ -22,26 +22,58 @@ simde_mm_popcnt_epi8 (simde__m128i a) {
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r_.wasm_v128 = wasm_i8x16_popcnt(a_.wasm_v128);
     #elif defined(SIMDE_X86_SSSE3_NATIVE)
-      HEDLEY_STATIC_CAST(void, a_);
-      __m128i tmp0 = _mm_set1_epi8(0x0f);
-      __m128i tmp1 = _mm_andnot_si128(tmp0, a);
-      __m128i y = _mm_and_si128(tmp0, a);
-      tmp0 = _mm_set_epi8(4, 3, 3, 2, 3, 2, 2, 1, 3, 2, 2, 1, 2, 1, 1, 0);
-      tmp1 = _mm_srli_epi16(tmp1, 4);
-      y = _mm_shuffle_epi8(tmp0, y);
-      tmp1 = _mm_shuffle_epi8(tmp0, tmp1);
-      r_ = simde__m128i_to_private(_mm_add_epi8(y, tmp1));
+      const __m128i low_nibble_set = _mm_set1_epi8(0x0f);
+      const __m128i high_nibble_of_input = _mm_andnot_si128(low_nibble_set, a_.n);
+      const __m128i low_nibble_of_input = _mm_and_si128(low_nibble_set, a_.n);
+      const __m128i lut = _mm_set_epi8(4, 3, 3, 2, 3, 2, 2, 1, 3, 2, 2, 1, 2, 1, 1, 0);
+
+      r_.n =
+        _mm_add_epi8(
+          _mm_shuffle_epi8(
+            lut,
+            low_nibble_of_input
+          ),
+          _mm_shuffle_epi8(
+            lut,
+            _mm_srli_epi16(
+              high_nibble_of_input,
+              4
+            )
+          )
+        );
     #elif defined(SIMDE_X86_SSE2_NATIVE)
-      HEDLEY_STATIC_CAST(void, a_);
-      __m128i tmp0 = _mm_and_si128(_mm_srli_epi16(a, 1), _mm_set1_epi8(0x55));
-      __m128i tmp1 = _mm_sub_epi8(a, tmp0);
-      tmp0 = tmp1;
-      tmp1 = _mm_and_si128(tmp1, _mm_set1_epi8(0x33));
-      tmp0 = _mm_and_si128(_mm_srli_epi16(tmp0, 2), _mm_set1_epi8(0x33));
-      tmp1 = _mm_add_epi8(tmp1, tmp0);
-      tmp0 = _mm_srli_epi16(tmp1, 4);
-      tmp1 = _mm_add_epi8(tmp1, tmp0);
-      r_ = simde__m128i_to_private(_mm_and_si128(tmp1, _mm_set1_epi8(0x0f)));
+      /* v -= ((v >> 1) & 0x55); */
+      r_.n =
+        _mm_sub_epi8(
+          a_.n,
+          _mm_and_si128(
+            _mm_srli_epi16(a_.n, 1),
+            _mm_set1_epi8(0x55)
+          )
+        );
+
+      /* v  = (v & 0x33) + ((v >> 2) & 0x33); */
+      r_.n =
+        _mm_add_epi8(
+          _mm_and_si128(
+            r_.n,
+            _mm_set1_epi8(0x33)
+          ),
+          _mm_and_si128(
+            _mm_srli_epi16(r_.n, 2),
+            _mm_set1_epi8(0x33)
+          )
+        );
+
+      /* v = (v + (v >> 4)) & 0xf */
+      r_.n =
+        _mm_and_si128(
+          _mm_add_epi8(
+            r_.n,
+            _mm_srli_epi16(r_.n, 4)
+          ),
+          _mm_set1_epi8(0x0f)
+        );
     #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
       r_.altivec_i8 = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(signed char), vec_popcnt(HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned char), a_.altivec_i8)));
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
@@ -85,15 +117,27 @@ simde_mm_popcnt_epi16 (simde__m128i a) {
     #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
       r_.altivec_u16 = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned short), vec_popcnt(HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned short), a_.altivec_u16)));
     #elif defined(SIMDE_X86_XOP_NATIVE)
-      HEDLEY_STATIC_CAST(void, a_);
-      __m128i tmp0 = _mm_set1_epi8(0x0f);
-      __m128i tmp1 = _mm_andnot_si128(tmp0, a);
-      __m128i y = _mm_and_si128(tmp0, a);
-      tmp0 = _mm_set_epi8(4, 3, 3, 2, 3, 2, 2, 1, 3, 2, 2, 1, 2, 1, 1, 0);
-      tmp1 = _mm_srli_epi16(tmp1, 4);
-      y = _mm_shuffle_epi8(tmp0, y);
-      tmp1 = _mm_shuffle_epi8(tmp0, tmp1);
-      r_ = simde__m128i_to_private(_mm_haddw_epi8(_mm_add_epi8(y, tmp1)));
+      const __m128i low_nibble_set = _mm_set1_epi8(0x0f);
+      const __m128i high_nibble_of_input = _mm_andnot_si128(low_nibble_set, a_.n);
+      const __m128i low_nibble_of_input = _mm_and_si128(low_nibble_set, a_.n);
+      const __m128i lut = _mm_set_epi8(4, 3, 3, 2, 3, 2, 2, 1, 3, 2, 2, 1, 2, 1, 1, 0);
+
+      r_.n =
+        _mm_haddw_epi8(
+          _mm_add_epi8(
+            _mm_shuffle_epi8(
+              lut,
+              low_nibble_of_input
+            ),
+            _mm_shuffle_epi8(
+              lut,
+              _mm_srli_epi16(
+                high_nibble_of_input,
+                4
+              )
+            )
+          );
+        )
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
       a_.u16 -= ((a_.u16 >> 1) & 0x5555);
       a_.u16  = ((a_.u16 & 0x3333) + ((a_.u16 >> 2) & 0x3333));
