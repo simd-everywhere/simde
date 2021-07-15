@@ -109,9 +109,101 @@ test_simde_mm_popcnt_epi16 (SIMDE_MUNIT_TEST_ARGS) {
 #endif
 }
 
+static int
+test_simde_mm_popcnt_epi32 (SIMDE_MUNIT_TEST_ARGS) {
+#if 1
+  static const struct {
+    const int32_t a[4];
+    const int32_t r[4];
+  } test_vec[] = {
+    { { -INT32_C(   257302130),  INT32_C(   843701006), -INT32_C(  1571721565), -INT32_C(  1251033202) },
+      {  INT32_C(          16),  INT32_C(          15),  INT32_C(          15),  INT32_C(          21) } },
+    { { -INT32_C(   257155824), -INT32_C(  1201709097), -INT32_C(    76945165),  INT32_C(   359760263) },
+      {  INT32_C(          13),  INT32_C(          22),  INT32_C(          21),  INT32_C(          13) } },
+    { {  INT32_C(  1879382626), -INT32_C(  1734127627),  INT32_C(  1262154941), -INT32_C(  1023366989) },
+      {  INT32_C(          11),  INT32_C(          18),  INT32_C(          19),  INT32_C(          12) } },
+    { { -INT32_C(  1649169210), -INT32_C(    11201780), -INT32_C(  2097496325), -INT32_C(  1583912129) },
+      {  INT32_C(          18),  INT32_C(          17),  INT32_C(          21),  INT32_C(          19) } },
+    { {  INT32_C(  2064817541), -INT32_C(  1458326036),  INT32_C(  1559514793), -INT32_C(  1138690826) },
+      {  INT32_C(          16),  INT32_C(          17),  INT32_C(          17),  INT32_C(          17) } },
+    { { -INT32_C(  1386622047), -INT32_C(   491999514), -INT32_C(  1402689939), -INT32_C(  1773208559) },
+      {  INT32_C(          17),  INT32_C(          18),  INT32_C(          16),  INT32_C(          16) } },
+    { { -INT32_C(  2062458727), -INT32_C(  1104272107),  INT32_C(  1763320435), -INT32_C(  1222231530) },
+      {  INT32_C(          11),  INT32_C(          16),  INT32_C(          14),  INT32_C(          16) } },
+    { { -INT32_C(   194740466), -INT32_C(  1680469970), -INT32_C(   951632970), -INT32_C(   799107785) },
+      {  INT32_C(          18),  INT32_C(          15),  INT32_C(          19),  INT32_C(          17) } },
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
+    simde__m128i a = simde_x_mm_loadu_epi32(test_vec[i].a);
+    simde__m128i r = simde_mm_popcnt_epi32(a);
+    simde_test_x86_assert_equal_i32x4(r, simde_x_mm_loadu_epi32(test_vec[i].r));
+  }
+
+  return 0;
+#else
+  fputc('\n', stdout);
+  for (int i = 0 ; i < 8 ; i++) {
+    simde__m128i a = simde_test_x86_random_i32x4();
+    simde__m128i r = simde_mm_popcnt_epi32(a);
+
+    simde_test_x86_write_i32x4(2, a, SIMDE_TEST_VEC_POS_FIRST);
+    simde_test_x86_write_i32x4(2, r, SIMDE_TEST_VEC_POS_LAST);
+  }
+  return 1;
+#endif
+}
+
+static int
+test_simde_mm_popcnt_epi64 (SIMDE_MUNIT_TEST_ARGS) {
+#if 1
+  static const struct {
+    const int64_t a[2];
+    const int64_t r[2];
+  } test_vec[] = {
+    { { -INT64_C( 3426434154627122044), -INT64_C( 4165654989628200704) },
+      {  INT64_C(                  31),  INT64_C(                  26) } },
+    { {  INT64_C( 6488701872467398292),  INT64_C(  560774584721515154) },
+      {  INT64_C(                  35),  INT64_C(                  23) } },
+    { { -INT64_C( 3126393329426630527),  INT64_C( 3394460239127116922) },
+      {  INT64_C(                  34),  INT64_C(                  37) } },
+    { {  INT64_C(  120942359153274714), -INT64_C( 2893198449337822897) },
+      {  INT64_C(                  33),  INT64_C(                  32) } },
+    { { -INT64_C( 8868925732892231613),  INT64_C( 3172211798448883259) },
+      {  INT64_C(                  30),  INT64_C(                  33) } },
+    { { -INT64_C( 6821778803459643932),  INT64_C( 7308300006718691134) },
+      {  INT64_C(                  31),  INT64_C(                  32) } },
+    { { -INT64_C( 8569673553837027451), -INT64_C( 4202873432559326034) },
+      {  INT64_C(                  30),  INT64_C(                  32) } },
+    { { -INT64_C( 7638829170975757558),  INT64_C( 4741048768649654340) },
+      {  INT64_C(                  34),  INT64_C(                  28) } },
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
+    simde__m128i a = simde_x_mm_loadu_epi64(test_vec[i].a);
+    simde__m128i r = simde_mm_popcnt_epi64(a);
+    simde_test_x86_assert_equal_i64x2(r, simde_x_mm_loadu_epi64(test_vec[i].r));
+  }
+
+  return 0;
+#else
+  fputc('\n', stdout);
+  for (int i = 0 ; i < 8 ; i++) {
+    simde__m128i a = simde_test_x86_random_i64x2();
+    simde__m128i r = simde_mm_popcnt_epi64(a);
+
+    simde_test_x86_write_i64x2(2, a, SIMDE_TEST_VEC_POS_FIRST);
+    simde_test_x86_write_i64x2(2, r, SIMDE_TEST_VEC_POS_LAST);
+  }
+  return 1;
+#endif
+}
+
 SIMDE_TEST_FUNC_LIST_BEGIN
   SIMDE_TEST_FUNC_LIST_ENTRY(mm_popcnt_epi8)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm_popcnt_epi16)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm_popcnt_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm_popcnt_epi64)
 SIMDE_TEST_FUNC_LIST_END
 
 #include <test/x86/avx512/test-avx512-footer.h>
