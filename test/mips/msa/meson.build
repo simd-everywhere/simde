@@ -1,5 +1,6 @@
 simde_test_mips_msa_simd_tests = [
   'add_a',
+  'adds_a',
   'addv',
   'addvi',
   'ld',
