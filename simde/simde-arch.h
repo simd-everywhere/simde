@@ -288,6 +288,9 @@
 #  if defined(__AVX512VBMI__)
 #    define SIMDE_ARCH_X86_AVX512VBMI 1
 #  endif
+#  if defined(__AVX512VBMI2__)
+#    define SIMDE_ARCH_X86_AVX512VBMI2 1
+#  endif
 #  if defined(__AVX512VNNI__)
 #    define SIMDE_ARCH_X86_AVX512VNNI 1
 #  endif

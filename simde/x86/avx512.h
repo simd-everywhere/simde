@@ -104,6 +104,7 @@
 #include "avx512/setr4.h"
 #include "avx512/setzero.h"
 #include "avx512/setone.h"
+#include "avx512/shldv.h"
 #include "avx512/shuffle.h"
 #include "avx512/sll.h"
 #include "avx512/slli.h"
