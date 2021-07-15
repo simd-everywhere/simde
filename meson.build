@@ -277,6 +277,7 @@ simde_avx512_families = [
   'setr4',
   'setzero',
   'setone',
+  'shldv',
   'shuffle',
   'sll',
   'slli',
