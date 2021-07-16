@@ -38,5 +38,6 @@
 #include "msa/andi.h"
 #include "msa/ld.h"
 #include "msa/st.h"
+#include "msa/subv.h"
 
 #endif /* SIMDE_MIPS_MSA_H */

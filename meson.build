@@ -313,6 +313,7 @@ simde_msa_families = [
   'andi',
   'ld',
   'st',
+  'subv',
 ]
 
 if not meson.is_subproject() and get_option('tests')
