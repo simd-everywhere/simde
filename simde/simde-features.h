@@ -641,4 +641,8 @@
   #define SIMDE_IEEE754_STORAGE
 #endif
 
+#if defined(SIMDE_ARCH_ARM_NEON_FP16)
+  #define SIMDE_ARM_NEON_FP16
+#endif
+
 #endif /* !defined(SIMDE_FEATURES_H) */
