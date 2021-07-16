@@ -482,44 +482,44 @@ simde_vqaddq_s32(simde_int32x4_t a, simde_int32x4_t b) {
       b_ = simde_int32x4_to_private(b);
 
     #if defined(SIMDE_X86_SSE2_NATIVE)
-      r_.m128i = _mm_add_epi32(a_.m128i, b_.m128i);
-      a_.m128i =
-        _mm_add_epi32(
-          _mm_srli_epi32(a_.m128i, 31),
-          _mm_set1_epi32(INT32_MAX)
-        );
+      /* https://stackoverflow.com/a/56544654/501126 */
+      const __m128i int_max = _mm_set1_epi32(INT32_MAX);
 
-      /* tmp = (a ^ b) | ~(b ^ r) */
+      /* normal result (possibly wraps around) */
+      const __m128i sum = _mm_add_epi32(a_.m128i, b_.m128i);
+
+      /* If result saturates, it has the same sign as both a and b */
+      const __m128i sign_bit = _mm_srli_epi32(a_.m128i, 31); /* shift sign to lowest bit */
+
       #if defined(SIMDE_X86_AVX512VL_NATIVE)
-        __m128i tmp = _mm_ternarylogic_epi32(a_.m128i, b_.m128i, r_.m128i, 0xbd);
+        const __m128i overflow = _mm_ternarylogic_epi32(a_.m128i, b_.m128i, sum, 0x42);
       #else
-        __m128i tmp =
-          _mm_or_si128(
-            _mm_xor_si128(a_.m128i, b_.m128i),
-            _mm_xor_si128(
-              _mm_xor_si128(b_.m128i, r_.m128i),
-              _mm_set1_epi32(~INT32_C(0))
-            )
-          );
+        const __m128i sign_xor = _mm_xor_si128(a_.m128i, b_.m128i);
+        const __m128i overflow = _mm_andnot_si128(sign_xor, _mm_xor_si128(a_.m128i, sum));
       #endif
 
-      /* if (tmp >= 0) r = a; */
-      #if defined(__SSE4_1__)
-        r_.m128i =
-          _mm_castps_si128(
-            _mm_blendv_ps(
-              _mm_castsi128_ps(a_.m128i),
-              _mm_castsi128_ps(r_.m128i),
-              _mm_castsi128_ps(tmp)
-            )
-          );
+      #if defined(SIMDE_X86_AVX512DQ_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
+        r_.m128i = _mm_mask_add_epi32(sum, _mm_movepi32_mask(overflow), int_max, sign_bit);
       #else
-        __m128i m = _mm_srai_epi32(tmp, 31);
-        r_.m128i =
-          _mm_or_si128(
-            _mm_and_si128(m, r_.m128i),
-            _mm_andnot_si128(m, a_.m128i)
-          );
+        const __m128i saturated = _mm_add_epi32(int_max, sign_bit);
+
+        #if defined(SIMDE_X86_SSE4_1_NATIVE)
+          r_.m128i =
+            _mm_castps_si128(
+              _mm_blendv_ps(
+                _mm_castsi128_ps(sum),
+                _mm_castsi128_ps(saturated),
+                _mm_castsi128_ps(overflow)
+              )
+            );
+        #else
+          const __m128i overflow_mask = _mm_srai_epi32(overflow, 31);
+          r_.m128i =
+            _mm_or_si128(
+              _mm_and_si128(overflow_mask, saturated),
+              _mm_andnot_si128(overflow_mask, sum)
+            );
+        #endif
       #endif
     #elif defined(SIMDE_VECTOR_SCALAR)
       uint32_t au SIMDE_VECTOR(16) = HEDLEY_REINTERPRET_CAST(__typeof__(au), a_.values);
@@ -557,36 +557,36 @@ simde_vqaddq_s64(simde_int64x2_t a, simde_int64x2_t b) {
       b_ = simde_int64x2_to_private(b);
 
     #if defined(SIMDE_X86_SSE4_1_NATIVE)
-      r_.m128i = _mm_add_epi64(a_.m128i, b_.m128i);
-      a_.m128i =
-        _mm_add_epi64(
-          _mm_srli_epi64(a_.m128i, 63),
-          _mm_set1_epi64x(INT64_MAX)
-        );
+      /* https://stackoverflow.com/a/56544654/501126 */
+      const __m128i int_max = _mm_set1_epi64x(INT64_MAX);
 
-      /* tmp = (a ^ b) | ~(b ^ r) */
+      /* normal result (possibly wraps around) */
+      const __m128i sum = _mm_add_epi64(a_.m128i, b_.m128i);
+
+      /* If result saturates, it has the same sign as both a and b */
+      const __m128i sign_bit = _mm_srli_epi64(a_.m128i, 63); /* shift sign to lowest bit */
+
       #if defined(SIMDE_X86_AVX512VL_NATIVE)
-        __m128i tmp = _mm_ternarylogic_epi64(a_.m128i, b_.m128i, r_.m128i, 0xbd);
+        const __m128i overflow = _mm_ternarylogic_epi64(a_.m128i, b_.m128i, sum, 0x42);
       #else
-        __m128i tmp =
-          _mm_or_si128(
-            _mm_xor_si128(a_.m128i, b_.m128i),
-            _mm_xor_si128(
-              _mm_xor_si128(b_.m128i, r_.m128i),
-              _mm_set1_epi64x(~INT64_C(0))
+        const __m128i sign_xor = _mm_xor_si128(a_.m128i, b_.m128i);
+        const __m128i overflow = _mm_andnot_si128(sign_xor, _mm_xor_si128(a_.m128i, sum));
+      #endif
+
+      #if defined(SIMDE_X86_AVX512VL_NATIVE) && defined(SIMDE_X86_AVX512DQ_NATIVE)
+        r_.m128i = _mm_mask_add_epi64(sum, _mm_movepi64_mask(overflow), int_max, sign_bit);
+      #else
+        const __m128i saturated = _mm_add_epi64(int_max, sign_bit);
+
+        r_.m128i =
+          _mm_castpd_si128(
+            _mm_blendv_pd(
+              _mm_castsi128_pd(sum),
+              _mm_castsi128_pd(saturated),
+              _mm_castsi128_pd(overflow)
             )
           );
       #endif
-
-      /* if (tmp >= 0) r = a; */
-      r_.m128i =
-        _mm_castpd_si128(
-          _mm_blendv_pd(
-            _mm_castsi128_pd(a_.m128i),
-            _mm_castsi128_pd(r_.m128i),
-            _mm_castsi128_pd(tmp)
-          )
-        );
     #elif defined(SIMDE_VECTOR_SCALAR)
       uint64_t au SIMDE_VECTOR(16) = HEDLEY_REINTERPRET_CAST(__typeof__(au), a_.values);
       uint64_t bu SIMDE_VECTOR(16) = HEDLEY_REINTERPRET_CAST(__typeof__(bu), b_.values);
