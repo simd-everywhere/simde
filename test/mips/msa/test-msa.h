@@ -23,7 +23,7 @@
   } \
   \
   static int \
-  simde_test_msa_v##Element_Width##u##Element_Count##_assert_equal_( \
+  simde_test_msa_v##Element_Count##u##Element_Width##_assert_equal_( \
       simde_v##Element_Count##u##Element_Width a, simde_v##Element_Count##u##Element_Width b, \
       const char* filename, int line, const char* astr, const char* bstr) { \
     uint##Element_Width##_t a_[sizeof(a) / sizeof(uint##Element_Width##_t)]; \
@@ -41,7 +41,7 @@
   } \
   \
   static void \
-  simde_test_msa_v##Element_Count##u##Element_Width##_write(int indent, simde_v##Element_Count##i##Element_Width v, SimdeTestVecPos pos) { \
+  simde_test_msa_v##Element_Count##u##Element_Width##_write(int indent, simde_v##Element_Count##u##Element_Width v, SimdeTestVecPos pos) { \
     uint##Element_Width##_t v_[sizeof(v) / sizeof(int##Element_Width##_t)]; \
     simde_memcpy(v_, &v, sizeof(v)); \
     simde_test_codegen_write_vu##Element_Width(indent, sizeof(v_) / sizeof(v_[0]), v_, pos); \

@@ -335,6 +335,16 @@ typedef union {
 #define SIMDE_MIPS_MSA_TYPE_DEFINE_CONVERSIONS_(T) \
   SIMDE_DEFINE_CONVERSION_FUNCTION_(simde_##T##_to_private,   simde_##T##_private, simde_##T) \
   SIMDE_DEFINE_CONVERSION_FUNCTION_(simde_##T##_from_private, simde_##T,           simde_##T##_private) \
+  SIMDE_DEFINE_CONVERSION_FUNCTION_(simde_x_##T##_to_v16i8,   simde_v16i8,         simde_##T) \
+  SIMDE_DEFINE_CONVERSION_FUNCTION_(simde_x_##T##_to_v8i16,   simde_v8i16,         simde_##T) \
+  SIMDE_DEFINE_CONVERSION_FUNCTION_(simde_x_##T##_to_v4i32,   simde_v4i32,         simde_##T) \
+  SIMDE_DEFINE_CONVERSION_FUNCTION_(simde_x_##T##_to_v2i64,   simde_v2i64,         simde_##T) \
+  SIMDE_DEFINE_CONVERSION_FUNCTION_(simde_x_##T##_to_v16u8,   simde_v16u8,         simde_##T) \
+  SIMDE_DEFINE_CONVERSION_FUNCTION_(simde_x_##T##_to_v8u16,   simde_v8u16,         simde_##T) \
+  SIMDE_DEFINE_CONVERSION_FUNCTION_(simde_x_##T##_to_v4u32,   simde_v4u32,         simde_##T) \
+  SIMDE_DEFINE_CONVERSION_FUNCTION_(simde_x_##T##_to_v2u64,   simde_v2u64,         simde_##T) \
+  SIMDE_DEFINE_CONVERSION_FUNCTION_(simde_x_##T##_to_v4f32,   simde_v4f32,         simde_##T) \
+  SIMDE_DEFINE_CONVERSION_FUNCTION_(simde_x_##T##_to_v2f64,   simde_v2f64,         simde_##T)
 
 SIMDE_MIPS_MSA_TYPE_DEFINE_CONVERSIONS_(v16i8)
 SIMDE_MIPS_MSA_TYPE_DEFINE_CONVERSIONS_(v8i16)

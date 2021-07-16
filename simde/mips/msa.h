@@ -30,6 +30,7 @@
 #include "msa/types.h"
 
 #include "msa/add_a.h"
+#include "msa/adds.h"
 #include "msa/adds_a.h"
 #include "msa/addv.h"
 #include "msa/addvi.h"

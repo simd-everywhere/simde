@@ -112,6 +112,69 @@ simde_msa_ld_d(const void * rs, const int s10)
   #define __msa_ld_d(rs, s10) simde_msa_ld_d((rs), (s10))
 #endif
 
+SIMDE_FUNCTION_ATTRIBUTES
+simde_v16u8
+simde_x_msa_ld_u_b(const void * rs, const int s10)
+    SIMDE_REQUIRE_CONSTANT_RANGE(s10, 0, 1023) {
+  #if defined(SIMDE_MIPS_MSA_NATIVE)
+    return HEDLEY_REINTERPRET_CAST(simde_v16u8, __msa_ld_b(rs, s10));
+  #else
+    simde_v16u8 r;
+
+    simde_memcpy(&r, &(HEDLEY_REINTERPRET_CAST(const int8_t*, rs)[s10]), sizeof(r));
+
+    return r;
+  #endif
+}
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_v8u16
+simde_x_msa_ld_u_h(const void * rs, const int s10)
+    SIMDE_REQUIRE_CONSTANT_RANGE(s10, 0, 1023)
+    HEDLEY_REQUIRE_MSG((s10 % sizeof(int16_t)) == 0, "`s10' must be a multiple of sizeof(int16_t)") {
+  #if defined(SIMDE_MIPS_MSA_NATIVE)
+    return HEDLEY_REINTERPRET_CAST(simde_v8u16, __msa_ld_b(rs, s10));
+  #else
+    simde_v8u16 r;
+
+    simde_memcpy(&r, &(HEDLEY_REINTERPRET_CAST(const int8_t*, rs)[s10]), sizeof(r));
+
+    return r;
+  #endif
+}
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_v4u32
+simde_x_msa_ld_u_w(const void * rs, const int s10)
+    SIMDE_REQUIRE_CONSTANT_RANGE(s10, 0, 1023)
+    HEDLEY_REQUIRE_MSG((s10 % sizeof(int32_t)) == 0, "`s10' must be a multiple of sizeof(int32_t)") {
+  #if defined(SIMDE_MIPS_MSA_NATIVE)
+    return HEDLEY_REINTERPRET_CAST(simde_v4u32, __msa_ld_b(rs, s10));
+  #else
+    simde_v4u32 r;
+
+    simde_memcpy(&r, &(HEDLEY_REINTERPRET_CAST(const int8_t*, rs)[s10]), sizeof(r));
+
+    return r;
+  #endif
+}
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_v2u64
+simde_x_msa_ld_u_d(const void * rs, const int s10)
+    SIMDE_REQUIRE_CONSTANT_RANGE(s10, 0, 1023)
+    HEDLEY_REQUIRE_MSG((s10 % sizeof(int64_t)) == 0, "`s10' must be a multiple of sizeof(int64_t)") {
+  #if defined(SIMDE_MIPS_MSA_NATIVE)
+    return HEDLEY_REINTERPRET_CAST(simde_v2u64, __msa_ld_b(rs, s10));
+  #else
+    simde_v2u64 r;
+
+    simde_memcpy(&r, &(HEDLEY_REINTERPRET_CAST(const int8_t*, rs)[s10]), sizeof(r));
+
+    return r;
+  #endif
+}
+
 SIMDE_END_DECLS_
 HEDLEY_DIAGNOSTIC_POP
 

@@ -1,11 +1,4 @@
-simde_test_mips_msa_simd_tests = [
-  'add_a',
-  'adds_a',
-  'addv',
-  'addvi',
-  'ld',
-  'st',
-]
+simde_test_mips_msa_simd_tests = simde_msa_families
 
 simde_test_mips_msa_simd_sources = []
 simde_test_mips_msa_simd_libs = []
