@@ -563,4 +563,9 @@
 #  define SIMDE_ARCH_XTENSA 1
 #endif
 
+/* Availability of 16-bit floating-point arithmetic intrinsics */
+#if defined(__ARM_FEATURE_FP16_VECTOR_ARITHMETIC)
+#  define SIMDE_ARCH_ARM_NEON_FP16
+#endif
+
 #endif /* !defined(SIMDE_ARCH_H) */

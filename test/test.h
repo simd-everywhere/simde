@@ -2,6 +2,7 @@
 #define SIMDE_TESTS_H
 
 #include "../simde/simde-common.h"
+#include "../simde/simde-f16.h"
 
 #include <time.h>
 #include <stdlib.h>
@@ -108,6 +109,18 @@ simde_test_codegen_snprintf_(char* str, size_t size, const char* format, ...) {
 
   if (w > HEDLEY_STATIC_CAST(int, size)) {
     simde_test_debug_printf_("Not enough space to write value (given %zu bytes, need %d bytes)\n", size, w + 1);
+  }
+}
+
+static void
+simde_test_codegen_f16(size_t buf_len, char buf[HEDLEY_ARRAY_PARAM(buf_len)], simde_float16 value) {
+  simde_float32 valuef = simde_float16_to_float32(value);
+  if (simde_math_isnanf(valuef)) {
+    simde_test_codegen_snprintf_(buf, buf_len, "           SIMDE_NANHF");
+  } else if (simde_math_isinf(valuef)) {
+    simde_test_codegen_snprintf_(buf, buf_len, "%5cSIMDE_INFINITYHF", valuef < 0 ? '-' : ' ');
+  } else {
+    simde_test_codegen_snprintf_(buf, buf_len, "SIMDE_FLOAT16_VALUE(%9.2f)", HEDLEY_STATIC_CAST(double, valuef));
   }
 }
 
@@ -262,6 +275,17 @@ simde_test_codegen_random_f32(simde_float32 min, simde_float32 max) {
   return simde_math_roundf(v * SIMDE_FLOAT32_C(100.0)) / SIMDE_FLOAT32_C(100.0);
 }
 
+static simde_float16
+simde_test_codegen_random_f16(simde_float16 min, simde_float16 max) {
+  return
+    simde_float16_from_float32(
+      simde_test_codegen_random_f32(
+        simde_float16_to_float32(min),
+        simde_float16_to_float32(max)
+      )
+    );
+}
+
 static simde_float64
 simde_test_codegen_random_f64(simde_float64 min, simde_float64 max) {
   simde_float64 v = (HEDLEY_STATIC_CAST(simde_float64, simde_test_codegen_rand()) / (HEDLEY_STATIC_CAST(simde_float64, RAND_MAX) / (max - min))) + min;
@@ -308,6 +332,9 @@ simde_test_codegen_calc_pair(int pairwise, size_t test_sets, size_t vectors_per_
 static void
 simde_test_codegen_float_set_value_(size_t element_size, size_t pos, void* values, simde_float32 f32_val, simde_float64 f64_val) {
   switch (element_size) {
+    case sizeof(simde_float16):
+      HEDLEY_REINTERPRET_CAST(simde_float16*, values)[pos] = simde_float16_from_float32(f32_val);
+      break;
     case sizeof(simde_float32):
       HEDLEY_REINTERPRET_CAST(simde_float32*, values)[pos] = f32_val;
       break;
@@ -362,6 +389,19 @@ simde_test_codegen_random_vfX_full_(
 }
 
 static void
+simde_test_codegen_random_vf16_full(
+    size_t test_sets, size_t vectors_per_set, size_t elements_per_vector,
+    simde_float16 values[HEDLEY_ARRAY_PARAM(test_sets * vectors_per_set * elements_per_vector)],
+    simde_float16 min, simde_float16 max,
+    SimdeTestVecFloatType vec_type) {
+  simde_test_codegen_random_vfX_full_(test_sets, vectors_per_set, elements_per_vector,
+      sizeof(simde_float16), values,
+      HEDLEY_STATIC_CAST(simde_float64, simde_float16_to_float32(min)),
+      HEDLEY_STATIC_CAST(simde_float64, simde_float16_to_float32(max)),
+      vec_type);
+}
+
+static void
 simde_test_codegen_random_vf32_full(
     size_t test_sets, size_t vectors_per_set, size_t elements_per_vector,
     simde_float32 values[HEDLEY_ARRAY_PARAM(test_sets * vectors_per_set * elements_per_vector)],
@@ -383,6 +423,13 @@ simde_test_codegen_random_vf64_full(
       sizeof(simde_float64), values,
       min, max,
       vec_type);
+}
+
+static void
+simde_test_codegen_random_vf16(size_t elem_count, simde_float16 values[HEDLEY_ARRAY_PARAM(elem_count)], simde_float16 min, simde_float16 max) {
+  for (size_t i = 0 ; i < elem_count ; i++) {
+    values[i] = simde_test_codegen_random_f16(min, max);
+  }
 }
 
 static void
@@ -475,6 +522,7 @@ SIMDE_TEST_CODEGEN_GENERATE_RANDOM_INT_FUNC_(uint64_t, u64)
     simde_test_codegen_write_v##symbol_identifier##_full(indent, elem_count, "???", values, pos); \
   }
 
+SIMDE_TEST_CODEGEN_GENERATE_WRITE_VECTOR_FUNC_(simde_float16, f16, 4)
 SIMDE_TEST_CODEGEN_GENERATE_WRITE_VECTOR_FUNC_(simde_float32, f32, 4)
 SIMDE_TEST_CODEGEN_GENERATE_WRITE_VECTOR_FUNC_(simde_float64, f64, 4)
 SIMDE_TEST_CODEGEN_GENERATE_WRITE_VECTOR_FUNC_(int8_t, i8, 8)
@@ -494,6 +542,7 @@ SIMDE_TEST_CODEGEN_GENERATE_WRITE_VECTOR_FUNC_(uint64_t, u64, 4)
 #define simde_test_codegen_write_1vu16(indent, elem_count, values) simde_test_codegen_write_vu16_full((indent), (elem_count), #values, (values), SIMDE_TEST_VEC_POS_SINGLE)
 #define simde_test_codegen_write_1vu32(indent, elem_count, values) simde_test_codegen_write_vu32_full((indent), (elem_count), #values, (values), SIMDE_TEST_VEC_POS_SINGLE)
 #define simde_test_codegen_write_1vu64(indent, elem_count, values) simde_test_codegen_write_vu64_full((indent), (elem_count), #values, (values), SIMDE_TEST_VEC_POS_SINGLE)
+#define simde_test_codegen_write_1vf16(indent, elem_count, values) simde_test_codegen_write_vf16_full((indent), (elem_count), #values, (values), SIMDE_TEST_VEC_POS_SINGLE)
 #define simde_test_codegen_write_1vf32(indent, elem_count, values) simde_test_codegen_write_vf32_full((indent), (elem_count), #values, (values), SIMDE_TEST_VEC_POS_SINGLE)
 #define simde_test_codegen_write_1vf64(indent, elem_count, values) simde_test_codegen_write_vf64_full((indent), (elem_count), #values, (values), SIMDE_TEST_VEC_POS_SINGLE)
 
@@ -552,6 +601,7 @@ SIMDE_TEST_CODEGEN_WRITE_SCALAR_FUNC_(uint8_t,   u8)
 SIMDE_TEST_CODEGEN_WRITE_SCALAR_FUNC_(uint16_t, u16)
 SIMDE_TEST_CODEGEN_WRITE_SCALAR_FUNC_(uint32_t, u32)
 SIMDE_TEST_CODEGEN_WRITE_SCALAR_FUNC_(uint64_t, u64)
+SIMDE_TEST_CODEGEN_WRITE_SCALAR_FUNC_(simde_float16, f16)
 SIMDE_TEST_CODEGEN_WRITE_SCALAR_FUNC_(simde_float32, f32)
 SIMDE_TEST_CODEGEN_WRITE_SCALAR_FUNC_(simde_float64, f64)
 
@@ -563,6 +613,7 @@ SIMDE_TEST_CODEGEN_WRITE_SCALAR_FUNC_(simde_float64, f64)
 #define simde_test_codegen_write_1u16(indent, value) simde_test_codegen_write_u16_full((indent), #value, (value), SIMDE_TEST_VEC_POS_SINGLE)
 #define simde_test_codegen_write_1u32(indent, value) simde_test_codegen_write_u32_full((indent), #value, (value), SIMDE_TEST_VEC_POS_SINGLE)
 #define simde_test_codegen_write_1u64(indent, value) simde_test_codegen_write_u64_full((indent), #value, (value), SIMDE_TEST_VEC_POS_SINGLE)
+#define simde_test_codegen_write_1f16(indent, value) simde_test_codegen_write_f16_full((indent), #value, (value), SIMDE_TEST_VEC_POS_SINGLE)
 #define simde_test_codegen_write_1f32(indent, value) simde_test_codegen_write_f32_full((indent), #value, (value), SIMDE_TEST_VEC_POS_SINGLE)
 #define simde_test_codegen_write_1f64(indent, value) simde_test_codegen_write_f64_full((indent), #value, (value), SIMDE_TEST_VEC_POS_SINGLE)
 
@@ -591,6 +642,15 @@ simde_test_equal_f32(simde_float32 a, simde_float32 b, simde_float32 slop) {
 }
 
 static int
+simde_test_equal_f16(simde_float16 a, simde_float16 b, simde_float16 slop) {
+  simde_float32
+    af = simde_float16_to_float32(a),
+    bf = simde_float16_to_float32(b),
+    slopf = simde_float16_to_float32(slop);
+  return simde_test_equal_f32(af, bf, slopf);
+}
+
+static int
 simde_test_equal_f64(simde_float64 a, simde_float64 b, simde_float64 slop) {
   if (simde_math_isnan(a)) {
     return simde_math_isnan(b);
@@ -613,6 +673,11 @@ simde_test_equal_f64(simde_float64 a, simde_float64 b, simde_float64 slop) {
 
 HEDLEY_DIAGNOSTIC_POP
 
+static simde_float16
+simde_test_f16_precision_to_slop(int precision) {
+  return HEDLEY_UNLIKELY(precision == INT_MAX) ? SIMDE_FLOAT16_VALUE(0.0) : simde_float16_from_float32(simde_math_powf(SIMDE_FLOAT32_C(10.0), -HEDLEY_STATIC_CAST(float, precision)));
+}
+
 static float
 simde_test_f32_precision_to_slop(int precision) {
   return HEDLEY_UNLIKELY(precision == INT_MAX) ? SIMDE_FLOAT32_C(0.0) : simde_math_powf(SIMDE_FLOAT32_C(10.0), -HEDLEY_STATIC_CAST(float, precision));
@@ -622,6 +687,42 @@ static double
 simde_test_f64_precision_to_slop(int precision) {
   return HEDLEY_UNLIKELY(precision == INT_MAX) ? SIMDE_FLOAT64_C(0.0) : simde_math_pow(SIMDE_FLOAT64_C(10.0), -HEDLEY_STATIC_CAST(double, precision));
 }
+
+static int
+simde_assert_equal_vf16_(
+    size_t vec_len, simde_float16 const a[HEDLEY_ARRAY_PARAM(vec_len)], simde_float16 const b[HEDLEY_ARRAY_PARAM(vec_len)], simde_float16 slop,
+    const char* filename, int line, const char* astr, const char* bstr) {
+  simde_float32 slop_ = simde_float16_to_float32(slop);
+  for (size_t i = 0 ; i < vec_len ; i++) {
+    simde_float32 a_ = simde_float16_to_float32(a[i]);
+    simde_float32 b_ = simde_float16_to_float32(b[i]);
+    
+    if (HEDLEY_UNLIKELY(!simde_test_equal_f32(a_, b_, slop_))) {
+      simde_test_debug_printf_("%s:%d: assertion failed: %s[%zu] ~= %s[%zu] (%f ~= %f)\n",
+              filename, line, astr, i, bstr, i, HEDLEY_STATIC_CAST(double, a_), 
+              HEDLEY_STATIC_CAST(double, b_));
+      SIMDE_TEST_ASSERT_RETURN(1);
+    }
+  }
+  return 0;
+}
+#define simde_assert_equal_vf16(vec_len, a, b, precision) simde_assert_equal_vf16_(vec_len, a, b, simde_test_f16_precision_to_slop(precision), __FILE__, __LINE__, #a, #b)
+
+static int
+simde_assert_equal_f16_(simde_float16 a, simde_float16 b, simde_float16 slop,
+    const char* filename, int line, const char* astr, const char* bstr) {
+  simde_float32 a_ = simde_float16_to_float32(a);
+  simde_float32 b_ = simde_float16_to_float32(b);
+  simde_float32 slop_ = simde_float16_to_float32(slop);
+  if (HEDLEY_UNLIKELY(!simde_test_equal_f32(a_, b_, slop_))) {
+    simde_test_debug_printf_("%s:%d: assertion failed: %s ~= %s (%f ~= %f)\n",
+        filename, line, astr, bstr, HEDLEY_STATIC_CAST(double, a_),
+        HEDLEY_STATIC_CAST(double, b_));
+    SIMDE_TEST_ASSERT_RETURN(1);
+  }
+  return 0;
+}
+#define simde_assert_equal_f16(a, b, precision) simde_assert_equal_f16_(a, b, simde_test_f16_precision_to_slop(precision), __FILE__, __LINE__, #a, #b)
 
 static int
 simde_assert_equal_vf32_(
