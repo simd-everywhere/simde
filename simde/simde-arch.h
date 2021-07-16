@@ -87,6 +87,8 @@
 #  else
 #    define SIMDE_ARCH_ARM (_M_ARM * 100)
 #  endif
+#elif defined(_M_ARM64)
+#  define SIMDE_ARCH_ARM 800
 #elif defined(__arm__) || defined(__thumb__) || defined(__TARGET_ARCH_ARM) || defined(_ARM) || defined(_M_ARM) || defined(_M_ARM)
 #  define SIMDE_ARCH_ARM 1
 #endif
@@ -108,7 +110,7 @@
 #endif
 
 /* ARM SIMD ISA extensions */
-#if defined(__ARM_NEON)
+#if defined(__ARM_NEON) || defined(SIMDE_ARCH_AARCH64)
 #  if defined(SIMDE_ARCH_AARCH64)
 #    define SIMDE_ARCH_ARM_NEON SIMDE_ARCH_AARCH64
 #  elif defined(SIMDE_ARCH_ARM)
