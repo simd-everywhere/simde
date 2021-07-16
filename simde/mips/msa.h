@@ -34,6 +34,7 @@
 #include "msa/adds_a.h"
 #include "msa/addv.h"
 #include "msa/addvi.h"
+#include "msa/and.h"
 #include "msa/ld.h"
 #include "msa/st.h"
 
