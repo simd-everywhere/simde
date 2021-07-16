@@ -204,7 +204,12 @@ simde_x_mm_gf2p8matrix_multiply_epi64_epi8 (simde__m128i x, simde__m128i A) {
       SIMDE_VECTORIZE
     #endif
     for (int i = 0 ; i < 8 ; i++) {
-      p = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned char), vec_bperm_u128(a, bit_select));
+      #if defined(SIMDE_BUG_CLANG_50932)
+        p = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned char),
+                              vec_bperm(HEDLEY_STATIC_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned __int128), a), bit_select));
+      #else
+        p = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned char), vec_bperm_u128(a, bit_select));
+      #endif
       p = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned char),
                                   vec_splat(HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned short), p), 3));
       p &= X < zero;
@@ -260,7 +265,7 @@ simde_x_mm_gf2p8matrix_multiply_epi64_epi8 (simde__m128i x, simde__m128i A) {
       SIMDE_VECTORIZE
     #endif
     for (int i = 0 ; i < 8 ; i++) {
-      #if defined(__clang__) && !SIMDE_DETECT_CLANG_VERSION_CHECK(11,0,0)
+      #if defined(SIMDE_BUG_CLANG_50932)
         p = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned char),
                                     vec_bperm(HEDLEY_STATIC_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned __int128), a), bit_select));
       #else
