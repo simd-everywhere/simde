@@ -134,6 +134,12 @@ simde_vqsub_s8(simde_int8x8_t a, simde_int8x8_t b) {
 
     #if defined(SIMDE_X86_MMX_NATIVE)
       r_.m64 = _mm_subs_pi8(a_.m64, b_.m64);
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+      const __typeof__(r_.values) diff_sat = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), (b_.values > a_.values) ^ INT8_MAX);
+      const __typeof__(r_.values) diff = a_.values - b_.values;
+      const __typeof__(r_.values) saturate = diff_sat ^ diff;
+      const __typeof__(r_.values) m = saturate >> 7;
+      r_.values = (diff_sat & m) | (diff & ~m);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -162,6 +168,12 @@ simde_vqsub_s16(simde_int16x4_t a, simde_int16x4_t b) {
 
     #if defined(SIMDE_X86_MMX_NATIVE)
       r_.m64 = _mm_subs_pi16(a_.m64, b_.m64);
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+      const __typeof__(r_.values) diff_sat = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), (b_.values > a_.values) ^ INT16_MAX);
+      const __typeof__(r_.values) diff = a_.values - b_.values;
+      const __typeof__(r_.values) saturate = diff_sat ^ diff;
+      const __typeof__(r_.values) m = saturate >> 15;
+      r_.values = (diff_sat & m) | (diff & ~m);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -188,10 +200,18 @@ simde_vqsub_s32(simde_int32x2_t a, simde_int32x2_t b) {
       a_ = simde_int32x2_to_private(a),
       b_ = simde_int32x2_to_private(b);
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = simde_vqsubs_s32(a_.values[i], b_.values[i]);
-    }
+    #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+      const __typeof__(r_.values) diff_sat = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), (b_.values > a_.values) ^ INT32_MAX);
+      const __typeof__(r_.values) diff = a_.values - b_.values;
+      const __typeof__(r_.values) saturate = diff_sat ^ diff;
+      const __typeof__(r_.values) m = saturate >> 31;
+      r_.values = (diff_sat & m) | (diff & ~m);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+        r_.values[i] = simde_vqsubs_s32(a_.values[i], b_.values[i]);
+      }
+    #endif
 
     return simde_int32x2_from_private(r_);
   #endif
@@ -212,10 +232,18 @@ simde_vqsub_s64(simde_int64x1_t a, simde_int64x1_t b) {
       a_ = simde_int64x1_to_private(a),
       b_ = simde_int64x1_to_private(b);
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = simde_vqsubd_s64(a_.values[i], b_.values[i]);
-    }
+    #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+      const __typeof__(r_.values) diff_sat = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), (b_.values > a_.values) ^ INT64_MAX);
+      const __typeof__(r_.values) diff = a_.values - b_.values;
+      const __typeof__(r_.values) saturate = diff_sat ^ diff;
+      const __typeof__(r_.values) m = saturate >> 63;
+      r_.values = (diff_sat & m) | (diff & ~m);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+        r_.values[i] = simde_vqsubd_s64(a_.values[i], b_.values[i]);
+      }
+    #endif
 
     return simde_int64x1_from_private(r_);
   #endif
@@ -238,6 +266,9 @@ simde_vqsub_u8(simde_uint8x8_t a, simde_uint8x8_t b) {
 
     #if defined(SIMDE_X86_MMX_NATIVE)
       r_.m64 = _mm_subs_pu8(a_.m64, b_.m64);
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+      r_.values  = a_.values - b_.values;
+      r_.values &= (r_.values <= a_.values);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -266,6 +297,9 @@ simde_vqsub_u16(simde_uint16x4_t a, simde_uint16x4_t b) {
 
     #if defined(SIMDE_X86_MMX_NATIVE)
       r_.m64 = _mm_subs_pu16(a_.m64, b_.m64);
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+      r_.values  = a_.values - b_.values;
+      r_.values &= (r_.values <= a_.values);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -292,10 +326,15 @@ simde_vqsub_u32(simde_uint32x2_t a, simde_uint32x2_t b) {
       a_ = simde_uint32x2_to_private(a),
       b_ = simde_uint32x2_to_private(b);
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = simde_vqsubs_u32(a_.values[i], b_.values[i]);
-    }
+    #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+      r_.values  = a_.values - b_.values;
+      r_.values &= (r_.values <= a_.values);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+        r_.values[i] = simde_vqsubs_u32(a_.values[i], b_.values[i]);
+      }
+    #endif
 
     return simde_uint32x2_from_private(r_);
   #endif
@@ -316,10 +355,15 @@ simde_vqsub_u64(simde_uint64x1_t a, simde_uint64x1_t b) {
       a_ = simde_uint64x1_to_private(a),
       b_ = simde_uint64x1_to_private(b);
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = simde_vqsubd_u64(a_.values[i], b_.values[i]);
-    }
+    #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+      r_.values  = a_.values - b_.values;
+      r_.values &= (r_.values <= a_.values);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+        r_.values[i] = simde_vqsubd_u64(a_.values[i], b_.values[i]);
+      }
+    #endif
 
     return simde_uint64x1_from_private(r_);
   #endif
@@ -346,11 +390,17 @@ simde_vqsubq_s8(simde_int8x16_t a, simde_int8x16_t b) {
       r_.v128 = wasm_i8x16_sub_sat(a_.v128, b_.v128);
     #elif defined(SIMDE_X86_SSE2_NATIVE)
       r_.m128i = _mm_subs_epi8(a_.m128i, b_.m128i);
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+      const __typeof__(r_.values) diff_sat = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), (b_.values > a_.values) ^ INT8_MAX);
+      const __typeof__(r_.values) diff = a_.values - b_.values;
+      const __typeof__(r_.values) saturate = diff_sat ^ diff;
+      const __typeof__(r_.values) m = saturate >> 7;
+      r_.values = (diff_sat & m) | (diff & ~m);
     #else
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = simde_vqsubb_s8(a_.values[i], b_.values[i]);
-    }
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+        r_.values[i] = simde_vqsubb_s8(a_.values[i], b_.values[i]);
+      }
     #endif
 
     return simde_int8x16_from_private(r_);
@@ -378,6 +428,12 @@ simde_vqsubq_s16(simde_int16x8_t a, simde_int16x8_t b) {
       r_.v128 = wasm_i16x8_sub_sat(a_.v128, b_.v128);
     #elif defined(SIMDE_X86_SSE2_NATIVE)
       r_.m128i = _mm_subs_epi16(a_.m128i, b_.m128i);
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+      const __typeof__(r_.values) diff_sat = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), (b_.values > a_.values) ^ INT16_MAX);
+      const __typeof__(r_.values) diff = a_.values - b_.values;
+      const __typeof__(r_.values) saturate = diff_sat ^ diff;
+      const __typeof__(r_.values) m = saturate >> 15;
+      r_.values = (diff_sat & m) | (diff & ~m);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -406,8 +462,29 @@ simde_vqsubq_s32(simde_int32x4_t a, simde_int32x4_t b) {
       a_ = simde_int32x4_to_private(a),
       b_ = simde_int32x4_to_private(b);
 
-    #if defined(SIMDE_X86_AVX512VL_NATIVE)
-      r_.m128i = _mm256_cvtsepi64_epi32(_mm256_sub_epi64(_mm256_cvtepi32_epi64(a_.m128i), _mm256_cvtepi32_epi64(b_.m128i)));
+    #if defined(SIMDE_X86_SSE2_NATIVE)
+      const __m128i diff_sat = _mm_xor_si128(_mm_set1_epi32(INT32_MAX), _mm_cmpgt_epi32(b_.m128i, a_.m128i));
+      const __m128i diff = _mm_sub_epi32(a_.m128i, b_.m128i);
+
+      const __m128i t = _mm_xor_si128(diff_sat, diff);
+      #if defined(SIMDE_X86_SSE4_1_NATIVE)
+        r_.m128i =
+          _mm_castps_si128(
+            _mm_blendv_ps(
+              _mm_castsi128_ps(diff),
+              _mm_castsi128_ps(diff_sat),
+              _mm_castsi128_ps(t)
+            )
+          );
+      #else
+        r_.m128i = _mm_xor_si128(diff, _mm_and_si128(t, _mm_srai_epi32(t, 31)));
+      #endif
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+      const __typeof__(r_.values) diff_sat = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), (b_.values > a_.values) ^ INT32_MAX);
+      const __typeof__(r_.values) diff = a_.values - b_.values;
+      const __typeof__(r_.values) saturate = diff_sat ^ diff;
+      const __typeof__(r_.values) m = saturate >> 31;
+      r_.values = (diff_sat & m) | (diff & ~m);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -434,10 +511,18 @@ simde_vqsubq_s64(simde_int64x2_t a, simde_int64x2_t b) {
       a_ = simde_int64x2_to_private(a),
       b_ = simde_int64x2_to_private(b);
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = simde_vqsubd_s64(a_.values[i], b_.values[i]);
-    }
+    #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+      const __typeof__(r_.values) diff_sat = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), (b_.values > a_.values) ^ INT64_MAX);
+      const __typeof__(r_.values) diff = a_.values - b_.values;
+      const __typeof__(r_.values) saturate = diff_sat ^ diff;
+      const __typeof__(r_.values) m = saturate >> 63;
+      r_.values = (diff_sat & m) | (diff & ~m);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+        r_.values[i] = simde_vqsubd_s64(a_.values[i], b_.values[i]);
+      }
+    #endif
 
     return simde_int64x2_from_private(r_);
   #endif
@@ -464,6 +549,9 @@ simde_vqsubq_u8(simde_uint8x16_t a, simde_uint8x16_t b) {
       r_.v128 = wasm_u8x16_sub_sat(a_.v128, b_.v128);
     #elif defined(SIMDE_X86_SSE2_NATIVE)
       r_.m128i = _mm_subs_epu8(a_.m128i, b_.m128i);
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+      r_.values  = a_.values - b_.values;
+      r_.values &= (r_.values <= a_.values);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -496,6 +584,9 @@ simde_vqsubq_u16(simde_uint16x8_t a, simde_uint16x8_t b) {
       r_.v128 = wasm_u16x8_sub_sat(a_.v128, b_.v128);
     #elif defined(SIMDE_X86_SSE2_NATIVE)
       r_.m128i = _mm_subs_epu16(a_.m128i, b_.m128i);
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+      r_.values  = a_.values - b_.values;
+      r_.values &= (r_.values <= a_.values);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -524,10 +615,15 @@ simde_vqsubq_u32(simde_uint32x4_t a, simde_uint32x4_t b) {
       a_ = simde_uint32x4_to_private(a),
       b_ = simde_uint32x4_to_private(b);
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = simde_vqsubs_u32(a_.values[i], b_.values[i]);
-    }
+    #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+      r_.values  = a_.values - b_.values;
+      r_.values &= (r_.values <= a_.values);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+        r_.values[i] = simde_vqsubs_u32(a_.values[i], b_.values[i]);
+      }
+    #endif
 
     return simde_uint32x4_from_private(r_);
   #endif
@@ -548,10 +644,15 @@ simde_vqsubq_u64(simde_uint64x2_t a, simde_uint64x2_t b) {
       a_ = simde_uint64x2_to_private(a),
       b_ = simde_uint64x2_to_private(b);
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = simde_vqsubd_u64(a_.values[i], b_.values[i]);
-    }
+    #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+      r_.values  = a_.values - b_.values;
+      r_.values &= (r_.values <= a_.values);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+        r_.values[i] = simde_vqsubd_u64(a_.values[i], b_.values[i]);
+      }
+    #endif
 
     return simde_uint64x2_from_private(r_);
   #endif
