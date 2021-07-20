@@ -210,6 +210,7 @@ simde_avx512_families = [
   'and',
   'andnot',
   'avg',
+  'bitshuffle',
   'blend',
   'broadcast',
   'cast',

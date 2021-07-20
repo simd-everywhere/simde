@@ -36,6 +36,7 @@
 #include "avx512/and.h"
 #include "avx512/andnot.h"
 #include "avx512/avg.h"
+#include "avx512/bitshuffle.h"
 #include "avx512/blend.h"
 #include "avx512/broadcast.h"
 #include "avx512/cast.h"
