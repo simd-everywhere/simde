@@ -3650,25 +3650,20 @@ simde_mm_sad_pu8 (simde__m64 a, simde__m64 b) {
       b_ = simde__m64_to_private(b);
 
     #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-      uint16x4_t t = vpaddl_u8(vabd_u8(a_.neon_u8, b_.neon_u8));
-      uint16_t r0 = t[0] + t[1] + t[2] + t[3];
-      r_.neon_u16 = vset_lane_u16(r0, vdup_n_u16(0), 0);
+      uint64x1_t t = vpaddl_u32(vpaddl_u16(vpaddl_u8(vabd_u8(a_.neon_u8, b_.neon_u8))));
+      r_.neon_u16 = vset_lane_u16(HEDLEY_STATIC_CAST(uint64_t, vget_lane_u64(t, 0)), vdup_n_u16(0), 0);
     #else
       uint16_t sum = 0;
 
-      #if defined(SIMDE_HAVE_STDLIB_H)
-        SIMDE_VECTORIZE_REDUCTION(+:sum)
-        for (size_t i = 0 ; i < (sizeof(r_.u8) / sizeof(r_.u8[0])) ; i++) {
-          sum += HEDLEY_STATIC_CAST(uint8_t, abs(a_.u8[i] - b_.u8[i]));
-        }
+      SIMDE_VECTORIZE_REDUCTION(+:sum)
+      for (size_t i = 0 ; i < (sizeof(r_.u8) / sizeof(r_.u8[0])) ; i++) {
+        sum += HEDLEY_STATIC_CAST(uint8_t, simde_math_abs(a_.u8[i] - b_.u8[i]));
+      }
 
-        r_.i16[0] = HEDLEY_STATIC_CAST(int16_t, sum);
-        r_.i16[1] = 0;
-        r_.i16[2] = 0;
-        r_.i16[3] = 0;
-      #else
-        HEDLEY_UNREACHABLE();
-      #endif
+      r_.i16[0] = HEDLEY_STATIC_CAST(int16_t, sum);
+      r_.i16[1] = 0;
+      r_.i16[2] = 0;
+      r_.i16[3] = 0;
     #endif
 
     return simde__m64_from_private(r_);

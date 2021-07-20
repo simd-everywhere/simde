@@ -436,7 +436,7 @@ simde_mm_fnmadd_pd (simde__m128d a, simde__m128d b, simde__m128d c) {
       c_ = simde__m128d_to_private(c);
 
     #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
-      return vfmsq_f64(c_.f64, a_.f64, b_.f64);
+      r_.neon_f64 = vfmsq_f64(c_.neon_f64, a_.neon_f64, b_.neon_f64);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {

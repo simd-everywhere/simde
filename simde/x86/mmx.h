@@ -691,7 +691,7 @@ simde_mm_cvtsi32_si64 (int32_t a) {
     simde__m64_private r_;
 
     #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-      const int32_t av[sizeof(r_.neon_i32) / sizeof(r_.neon_i32[0])] = { a, 0 };
+      const int32_t av[2] = { a, 0 };
       r_.neon_i32 = vld1_s32(av);
     #else
       r_.i32[0] = a;

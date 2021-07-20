@@ -2165,7 +2165,7 @@ simde_mm_testc_si128 (simde__m128i a, simde__m128i b) {
       b_ = simde__m128i_to_private(b);
 
     #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-      int64x2_t s64 = vandq_s64(~a_.neon_i64, b_.neon_i64);
+      int64x2_t s64 = vbicq_s64(b_.neon_i64, a_.neon_i64);
       return !(vgetq_lane_s64(s64, 0) & vgetq_lane_s64(s64, 1));
     #else
       int_fast32_t r = 0;
@@ -2195,8 +2195,8 @@ simde_mm_testnzc_si128 (simde__m128i a, simde__m128i b) {
       b_ = simde__m128i_to_private(b);
 
     #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-      int64x2_t s640 = vandq_s64(a_.neon_i64, b_.neon_i64);
-      int64x2_t s641 = vandq_s64(~a_.neon_i64, b_.neon_i64);
+      int64x2_t s640 = vandq_s64(b_.neon_i64, a_.neon_i64);
+      int64x2_t s641 = vbicq_s64(b_.neon_i64, a_.neon_i64);
       return (((vgetq_lane_s64(s640, 0) | vgetq_lane_s64(s640, 1)) & (vgetq_lane_s64(s641, 0) | vgetq_lane_s64(s641, 1)))!=0);
     #else
       for (size_t i = 0 ; i < (sizeof(a_.u64) / sizeof(a_.u64[0])) ; i++) {
