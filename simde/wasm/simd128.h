@@ -5344,6 +5344,24 @@ simde_wasm_f32x4_pmin (simde_v128_t a, simde_v128_t b) {
 
     #if defined(SIMDE_X86_SSE2_NATIVE)
       r_.sse_m128 = _mm_min_ps(b_.sse_m128, a_.sse_m128);
+    #elif defined(SIMDE_FAST_NANS) && defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+      r_.neon_f32 = vminq_f32(a_.neon_f32, b_.neon_f32);
+    #elif defined(SIMDE_FAST_NANS) && defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+      r_.altivec_f32 = vec_min(a_.altivec_f32, b_.altivec_f32);
+    #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+      r_.neon_f32 =
+        vbslq_f32(
+          vcltq_f32(b_.neon_f32, a_.neon_f32),
+          b_.neon_f32,
+          a_.neon_f32
+        );
+    #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+      r_.altivec_f32 =
+        vec_sel(
+          b_.altivec_f32,
+          a_.altivec_f32,
+          vec_cmplt(b_.altivec_f32, a_.altivec_f32)
+        );
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
@@ -5371,6 +5389,24 @@ simde_wasm_f64x2_pmin (simde_v128_t a, simde_v128_t b) {
 
     #if defined(SIMDE_X86_SSE2_NATIVE)
       r_.sse_m128d = _mm_min_pd(b_.sse_m128d, a_.sse_m128d);
+    #elif defined(SIMDE_FAST_NANS) && defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+      r_.neon_f32 = vminq_f64(a_.neon_f64, b_.neon_f64);
+    #elif defined(SIMDE_FAST_NANS) && defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
+      r_.altivec_f64 = vec_min(a_.altivec_f64, b_.altivec_f64);
+    #elif defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+      r_.neon_f64 =
+        vbslq_f64(
+          vcltq_f64(b_.neon_f64, a_.neon_f64),
+          b_.neon_f64,
+          a_.neon_f64
+        );
+    #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
+      r_.altivec_f32 =
+        vec_sel(
+          b_.altivec_f32,
+          a_.altivec_f32,
+          vec_cmplt(b_.altivec_f32, a_.altivec_f32)
+        );
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
