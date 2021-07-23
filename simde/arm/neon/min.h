@@ -603,6 +603,29 @@ simde_vminq_u32(simde_uint32x4_t a, simde_uint32x4_t b) {
 
     #if defined(SIMDE_X86_SSE4_1_NATIVE)
       r_.m128i = _mm_min_epu32(a_.m128i, b_.m128i);
+    #elif defined(SIMDE_X86_SSE2_NATIVE)
+      const __m128i i32_min = _mm_set1_epi32(INT32_MIN);
+      const __m128i difference = _mm_sub_epi32(a_.m128i, b_.m128i);
+      __m128i m =
+        _mm_cmpeq_epi32(
+          /* _mm_subs_epu32(a_.sse_m128i, b_.sse_m128i) */
+          _mm_and_si128(
+            difference,
+            _mm_xor_si128(
+              _mm_cmpgt_epi32(
+                _mm_xor_si128(difference, i32_min),
+                _mm_xor_si128(a_.m128i, i32_min)
+              ),
+              _mm_set1_epi32(~INT32_C(0))
+            )
+          ),
+          _mm_setzero_si128()
+        );
+      r_.m128i =
+        _mm_or_si128(
+          _mm_and_si128(m, a_.m128i),
+          _mm_andnot_si128(m, b_.m128i)
+        );
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r_.v128 = wasm_u32x4_min(a_.v128, b_.v128);
     #else
