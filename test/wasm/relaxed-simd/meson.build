@@ -1,5 +1,6 @@
 simde_test_wasm_relaxed_simd_tests = [
   'swizzle',
+  'trunc',
 ]
 
 simde_test_wasm_relaxed_simd_sources = []
