@@ -315,8 +315,8 @@ simde_vcgtq_u8(simde_uint8x16_t a, simde_uint8x16_t b) {
       b_ = simde_uint8x16_to_private(b);
 
     #if defined(SIMDE_X86_SSE2_NATIVE)
-      __m128i sign_bit = _mm_set1_epi8(INT8_MIN);
-      r_.m128i = _mm_cmpgt_epi8(_mm_xor_si128(a_.m128i, sign_bit), _mm_xor_si128(b_.m128i, sign_bit));
+      __m128i tmp = _mm_subs_epu8(a_.m128i, b_.m128i);
+      r_.m128i = _mm_adds_epu8(tmp, _mm_sub_epi8(_mm_setzero_si128(), tmp));
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r_.v128 = wasm_u8x16_gt(a_.v128, b_.v128);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
@@ -350,8 +350,8 @@ simde_vcgtq_u16(simde_uint16x8_t a, simde_uint16x8_t b) {
       b_ = simde_uint16x8_to_private(b);
 
     #if defined(SIMDE_X86_SSE2_NATIVE)
-      __m128i sign_bit = _mm_set1_epi16(INT16_MIN);
-      r_.m128i = _mm_cmpgt_epi16(_mm_xor_si128(a_.m128i, sign_bit), _mm_xor_si128(b_.m128i, sign_bit));
+      __m128i tmp = _mm_subs_epu16(a_.m128i, b_.m128i);
+      r_.m128i = _mm_adds_epu16(tmp, _mm_sub_epi16(_mm_setzero_si128(), tmp));
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r_.v128 = wasm_u16x8_gt(a_.v128, b_.v128);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
@@ -385,8 +385,11 @@ simde_vcgtq_u32(simde_uint32x4_t a, simde_uint32x4_t b) {
       b_ = simde_uint32x4_to_private(b);
 
     #if defined(SIMDE_X86_SSE2_NATIVE)
-      __m128i sign_bit = _mm_set1_epi32(INT32_MIN);
-      r_.m128i = _mm_cmpgt_epi32(_mm_xor_si128(a_.m128i, sign_bit), _mm_xor_si128(b_.m128i, sign_bit));
+      r_.m128i =
+        _mm_xor_si128(
+          _mm_cmpgt_epi32(a_.m128i, b_.m128i),
+          _mm_srai_epi32(_mm_xor_si128(a_.m128i, b_.m128i), 31)
+        );
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r_.v128 = wasm_u32x4_gt(a_.v128, b_.v128);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
