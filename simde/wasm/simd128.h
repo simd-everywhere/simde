@@ -4606,16 +4606,8 @@ simde_wasm_u16x8_min (simde_v128_t a, simde_v128_t b) {
     #if defined(SIMDE_X86_SSE4_1_NATIVE)
       r_.sse_m128i = _mm_min_epu16(a_.sse_m128i, b_.sse_m128i);
     #elif defined(SIMDE_X86_SSE2_NATIVE)
-      __m128i m =
-        _mm_cmpeq_epi16(
-          _mm_subs_epu16(a_.sse_m128i, b_.sse_m128i),
-          _mm_setzero_si128()
-        );
-      r_.sse_m128i =
-        _mm_or_si128(
-          _mm_and_si128(m, a_.sse_m128i),
-          _mm_andnot_si128(m, b_.sse_m128i)
-        );
+      /* https://github.com/simd-everywhere/simde/issues/855#issuecomment-881656284 */
+      r_.sse_m128i = _mm_sub_epi16(a, _mm_subs_epu16(a_.sse_m128i, b_.sse_m128i));
     #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       r_.neon_u16 = vminq_u16(a_.neon_u16, b_.neon_u16);
     #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
@@ -4918,6 +4910,9 @@ simde_wasm_u16x8_max (simde_v128_t a, simde_v128_t b) {
 
     #if defined(SIMDE_X86_SSE4_1_NATIVE)
       r_.sse_m128i = _mm_max_epu16(a_.sse_m128i, b_.sse_m128i);
+    #elif defined(SIMDE_X86_SSE2_NATIVE)
+      /* https://github.com/simd-everywhere/simde/issues/855#issuecomment-881656284 */
+      r_.sse_m128i = _mm_add_epi16(b, _mm_subs_epu16(a_.sse_m128i, b_.sse_m128i));
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.u16) / sizeof(r_.u16[0])) ; i++) {

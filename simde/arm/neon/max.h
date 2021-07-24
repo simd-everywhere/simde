@@ -221,7 +221,7 @@ simde_uint16x4_t
 simde_vmax_u16(simde_uint16x4_t a, simde_uint16x4_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vmax_u16(a, b);
-  #elif SIMDE_NATURAL_VECTOR_SIZE > 0
+  #elif (SIMDE_NATURAL_VECTOR_SIZE > 0) && !defined(SIMDE_X86_SSE2_NATIVE)
     return simde_vbsl_u16(simde_vcgt_u16(a, b), a, b);
   #else
     simde_uint16x4_private
@@ -229,10 +229,15 @@ simde_vmax_u16(simde_uint16x4_t a, simde_uint16x4_t b) {
       a_ = simde_uint16x4_to_private(a),
       b_ = simde_uint16x4_to_private(b);
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = (a_.values[i] > b_.values[i]) ? a_.values[i] : b_.values[i];
-    }
+    #if defined(SIMDE_X86_MMX_NATIVE)
+      /* https://github.com/simd-everywhere/simde/issues/855#issuecomment-881656284 */
+      r_.m64 = _mm_add_pi16(b_.m64, _mm_subs_pu16(a_.m64, b_.m64));
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+        r_.values[i] = (a_.values[i] > b_.values[i]) ? a_.values[i] : b_.values[i];
+      }
+    #endif
 
     return simde_uint16x4_from_private(r_);
   #endif
@@ -518,7 +523,7 @@ simde_vmaxq_u16(simde_uint16x8_t a, simde_uint16x8_t b) {
   #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
     return vec_max(a, b);
   #elif \
-      defined(SIMDE_X86_SSE4_1_NATIVE) || \
+      defined(SIMDE_X86_SSE2_NATIVE) || \
       defined(SIMDE_WASM_SIMD128_NATIVE)
     simde_uint16x8_private
       r_,
@@ -527,6 +532,9 @@ simde_vmaxq_u16(simde_uint16x8_t a, simde_uint16x8_t b) {
 
     #if defined(SIMDE_X86_SSE4_1_NATIVE)
       r_.m128i = _mm_max_epu16(a_.m128i, b_.m128i);
+    #elif defined(SIMDE_X86_SSE2_NATIVE)
+      /* https://github.com/simd-everywhere/simde/issues/855#issuecomment-881656284 */
+      r_.m128i = _mm_add_epi16(b_.m128i, _mm_subs_epu16(a_.m128i, b_.m128i));
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r_.v128 = wasm_u16x8_max(a_.v128, b_.v128);
     #endif

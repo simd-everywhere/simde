@@ -159,10 +159,14 @@ simde_vmin_s16(simde_int16x4_t a, simde_int16x4_t b) {
       a_ = simde_int16x4_to_private(a),
       b_ = simde_int16x4_to_private(b);
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = (a_.values[i] < b_.values[i]) ? a_.values[i] : b_.values[i];
-    }
+    #if defined(SIMDE_X86_MMX_NATIVE)
+      r_.m64 = _mm_sub_pi16(a_.m64, _mm_subs_pu16(b_.m64));
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+        r_.values[i] = (a_.values[i] < b_.values[i]) ? a_.values[i] : b_.values[i];
+      }
+    #endif
 
     return simde_int16x4_from_private(r_);
   #endif
@@ -249,7 +253,7 @@ simde_uint16x4_t
 simde_vmin_u16(simde_uint16x4_t a, simde_uint16x4_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vmin_u16(a, b);
-  #elif SIMDE_NATURAL_VECTOR_SIZE > 0
+  #elif (SIMDE_NATURAL_VECTOR_SIZE > 0) && !defined(SIMDE_X86_SSE2_NATIVE)
     return simde_vbsl_u16(simde_vcgt_u16(b, a), a, b);
   #else
     simde_uint16x4_private
@@ -257,10 +261,15 @@ simde_vmin_u16(simde_uint16x4_t a, simde_uint16x4_t b) {
       a_ = simde_uint16x4_to_private(a),
       b_ = simde_uint16x4_to_private(b);
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = (a_.values[i] < b_.values[i]) ? a_.values[i] : b_.values[i];
-    }
+    #if defined(SIMDE_X86_MMX_NATIVE)
+      /* https://github.com/simd-everywhere/simde/issues/855#issuecomment-881656284 */
+      r_.m64 = _mm_sub_pi16(a_.m64, _mm_subs_pu16(a_.m64, b_.m64));
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+        r_.values[i] = (a_.values[i] < b_.values[i]) ? a_.values[i] : b_.values[i];
+      }
+    #endif
 
     return simde_uint16x4_from_private(r_);
   #endif
@@ -571,6 +580,9 @@ simde_vminq_u16(simde_uint16x8_t a, simde_uint16x8_t b) {
 
     #if defined(SIMDE_X86_SSE4_1_NATIVE)
       r_.m128i = _mm_min_epu16(a_.m128i, b_.m128i);
+    #elif defined(SIMDE_X86_SSE2_NATIVE)
+      /* https://github.com/simd-everywhere/simde/issues/855#issuecomment-881656284 */
+      r_.m128i = _mm_sub_epi16(a_.m128i, _mm_subs_epu16(a_.m128i, b_.m128i));
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r_.v128 = wasm_u16x8_min(a_.v128, b_.v128);
     #else

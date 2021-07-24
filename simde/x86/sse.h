@@ -2982,36 +2982,37 @@ simde__m128
 simde_mm_min_ps (simde__m128 a, simde__m128 b) {
   #if defined(SIMDE_X86_SSE_NATIVE)
     return _mm_min_ps(a, b);
-  #elif defined(SIMDE_FAST_NANS) && defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-    return simde__m128_from_neon_f32(vminq_f32(simde__m128_to_neon_f32(a), simde__m128_to_neon_f32(b)));
-  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    r_.wasm_v128 = wasm_f32x4_pmin(a_.wasm_v128, b_.wasm_v128);
-  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_14_NATIVE)
-    simde__m128_private
-      r_,
-      a_ = simde__m128_to_private(a),
-      b_ = simde__m128_to_private(b);
-
-    #if defined(SIMDE_FAST_NANS)
-      r_.altivec_f32 = vec_min(a_.altivec_f32, b_.altivec_f32);
-    #else
-      r_.altivec_f32 = vec_sel(b_.altivec_f32, a_.altivec_f32, vec_cmpgt(b_.altivec_f32, a_.altivec_f32));
-    #endif
-
-    return simde__m128_from_private(r_);
-  #elif (SIMDE_NATURAL_VECTOR_SIZE > 0)
-    simde__m128 mask = simde_mm_cmplt_ps(a, b);
-    return simde_mm_or_ps(simde_mm_and_ps(mask, a), simde_mm_andnot_ps(mask, b));
   #else
     simde__m128_private
       r_,
       a_ = simde__m128_to_private(a),
       b_ = simde__m128_to_private(b);
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
-      r_.f32[i] = (a_.f32[i] < b_.f32[i]) ? a_.f32[i] : b_.f32[i];
-    }
+    #if defined(SIMDE_FAST_NANS) && defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+      r_.neon_f32 = vminq_f32(a_.neon_f32, b_.neon_f32);
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+      r_.wasm_v128 = wasm_f32x4_pmin(b_.wasm_v128, a_.wasm_v128);
+    #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_14_NATIVE)
+      #if defined(SIMDE_FAST_NANS)
+        r_.altivec_f32 = vec_min(a_.altivec_f32, b_.altivec_f32);
+      #else
+        r_.altivec_f32 = vec_sel(b_.altivec_f32, a_.altivec_f32, vec_cmpgt(b_.altivec_f32, a_.altivec_f32));
+      #endif
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+      uint32_t SIMDE_VECTOR(16) m = HEDLEY_REINTERPRET_CAST(__typeof__(m), a_.f32 < b_.f32);
+      r_.f32 =
+        HEDLEY_REINTERPRET_CAST(
+          __typeof__(r_.f32),
+          ( (HEDLEY_REINTERPRET_CAST(__typeof__(m), a_.f32) &  m) |
+            (HEDLEY_REINTERPRET_CAST(__typeof__(m), b_.f32) & ~m)
+          )
+        );
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
+        r_.f32[i] = (a_.f32[i] < b_.f32[i]) ? a_.f32[i] : b_.f32[i];
+      }
+    #endif
 
     return simde__m128_from_private(r_);
   #endif

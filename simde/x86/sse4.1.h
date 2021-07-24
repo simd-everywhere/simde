@@ -1571,6 +1571,9 @@ simde__m128i
 simde_mm_max_epu16 (simde__m128i a, simde__m128i b) {
   #if defined(SIMDE_X86_SSE4_1_NATIVE)
     return _mm_max_epu16(a, b);
+  #elif defined(SIMDE_X86_SSE2_NATIVE)
+    /* https://github.com/simd-everywhere/simde/issues/855#issuecomment-881656284 */
+    return _mm_add_epi16(b, _mm_subs_epu16(a, b));
   #else
     simde__m128i_private
       r_,
@@ -1699,6 +1702,9 @@ simde__m128i
 simde_mm_min_epu16 (simde__m128i a, simde__m128i b) {
   #if defined(SIMDE_X86_SSE4_1_NATIVE)
     return _mm_min_epu16(a, b);
+  #elif defined(SIMDE_X86_SSE2_NATIVE)
+    /* https://github.com/simd-everywhere/simde/issues/855#issuecomment-881656284 */
+    return _mm_sub_epi16(a, _mm_subs_epu16(a, b));
   #else
     simde__m128i_private
       r_,
