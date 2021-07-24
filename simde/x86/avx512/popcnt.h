@@ -515,14 +515,6 @@ simde_mm256_popcnt_epi8 (simde__m256i a) {
       for (size_t i = 0 ; i < (sizeof(r_.m128i) / sizeof(r_.m128i[0])) ; i++) {
         r_.m128i[i] = simde_mm_popcnt_epi8(a_.m128i[i]);
       }
-    #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-      for (size_t i = 0 ; i < (sizeof(r_.m128i_private) / sizeof(r_.m128i_priavte[0])) ; i++) {
-        r_.m128i_private[i].neon_i8 = vcntq_s8(a_.m128i_private[i].neon_i8);
-      }
-    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-      for (size_t i = 0 ; i < (sizeof(r_.m128i_private) / sizeof(r_.m128i_priavte[0])) ; i++) {
-        r_.m128i_private[i].wasm_v128 = wasm_i8x16_popcnt(a_.m128i_private[i].wasm_v128);
-      }
     #elif defined(SIMDE_X86_AVX2_NATIVE)
       const __m256i low_nibble_set = _mm256_set1_epi8(0x0f);
       const __m256i high_nibble_of_input = _mm256_andnot_si256(low_nibble_set, a_.n);
@@ -547,10 +539,6 @@ simde_mm256_popcnt_epi8 (simde__m256i a) {
             )
           )
         );
-    #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
-      for (size_t i = 0 ; i < (sizeof(r_.m128i_private) / sizeof(r_.m128i_priavte[0])) ; i++) {
-        r_.m128i_private[i].altivec_i8 = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(signed char), vec_popcnt(HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned char), a_.m128i_private[i].altivec_i8)));
-      }
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
       a_.u8 -= ((a_.u8 >> 1) & 0x55);
       a_.u8  = ((a_.u8 & 0x33) + ((a_.u8 >> 2) & 0x33));
@@ -616,18 +604,6 @@ simde_mm256_popcnt_epi16 (simde__m256i a) {
     #if SIMDE_NATURAL_VECTOR_SIZE_LE(128)
       for (size_t i = 0 ; i < (sizeof(r_.m128i) / sizeof(r_.m128i[0])) ; i++) {
         r_.m128i[i] = simde_mm_popcnt_epi16(a_.m128i[i]);
-      }
-    #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-      for (size_t i = 0 ; i < (sizeof(r_.m128i_private) / sizeof(r_.m128i_private[0])) ; i++) {
-        r_.m128i_private[i].neon_i16 = vpaddlq_s8(vcntq_s8(a_.m128i_private[i].neon_i8));
-      }
-    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-      for (size_t i = 0 ; i < (sizeof(r_.m128i_private) / sizeof(r_.m128i_private[0])) ; i++) {
-        r_.m128i_private[i].wasm_v128 = wasm_i16x8_extadd_pairwise_i8x16(wasm_i8x16_popcnt(a_.m128i_privatep[i].wasm_v128));
-      }
-    #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
-      for (size_t i = 0 ; i < (sizeof(r_.m128i_private) / sizeof(r_.m128i_private[0])) ; i++) {
-        r_.m128i_private[i].altivec_u16 = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned short), vec_popcnt(HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned short), a_.m128i_private[i].altivec_u16)));
       }
     #elif defined(SIMDE_X86_AVX2_NATIVE)
       r_.n =
@@ -734,14 +710,6 @@ simde_mm256_popcnt_epi32 (simde__m256i a) {
       for (size_t i = 0 ; i < (sizeof(r_.m128i) / sizeof(r_.m128i[0])) ; i++) {
         r_.m128i[i] = simde_mm_popcnt_epi32(a_.m128i[i]);
       }
-    #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-      for (size_t i = 0 ; i < (sizeof(r_.m128i_private) / sizeof(r_.m128i_private[0])) ; i++) {
-        r_.m128i_private[i].neon_i32 = vpaddlq_s16(vpaddlq_s8(vcntq_s8(a_.m128i_private[i].neon_i8)));
-      }
-    #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
-      for (size_t i = 0 ; i < (sizeof(r_.m128i_private) / sizeof(r_.m128i_private[0])) ; i++) {
-        r_.m128i_private[i].altivec_u32 = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned int), vec_popcnt(HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned int), a_.m128i_private[i].altivec_u32)));
-      }
     #elif defined(SIMDE_X86_AVX2_NATIVE)
       r_.n =
         _mm256_sub_epi32(
@@ -847,14 +815,6 @@ simde_mm256_popcnt_epi64 (simde__m256i a) {
       for (size_t i = 0 ; i < sizeof(r_.m128i) / sizeof(r_.m128i[0]) ; i++) {
         r_.m128i[i] = simde_mm_popcnt_epi64(a_.m128i[i]);
       }
-    #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-      for (size_t i = 0 ; i < (sizeof(r_.m128i_private) / sizeof(r_.m128i_private[0])) ; i++) {
-        r_.neon_i64 = vpaddlq_s32(vpaddlq_s16(vpaddlq_s8(vcntq_s8(a_.neon_i8))));
-      }
-    #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
-      for (size_t i = 0 ; i < (sizeof(r_.m128i_private) / sizeof(r_.m128i_private[0])) ; i++) {
-        r_.altivec_u64 = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned long long), vec_popcnt(HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned long long), a_.altivec_u64)));
-      }
     #elif defined(SIMDE_X86_AVX2_NATIVE)
       const __m256i low_nibble_set = _mm256_set1_epi8(0x0f);
       const __m256i high_nibble_of_input = _mm256_andnot_si256(low_nibble_set, a_.n);
@@ -949,14 +909,6 @@ simde_mm512_popcnt_epi8 (simde__m512i a) {
       for (size_t i = 0 ; i < (sizeof(r_.m256i) / sizeof(r_.m256i[0])) ; i++) {
         r_.m256i[i] = simde_mm256_popcnt_epi8(a_.m256i[i]);
       }
-    #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-      for (size_t i = 0 ; i < (sizeof(r_.m128i_private) / sizeof(r_.m128i_priavte[0])) ; i++) {
-        r_.m128i_private[i].neon_i8 = vcntq_s8(a_.m128i_private[i].neon_i8);
-      }
-    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-      for (size_t i = 0 ; i < (sizeof(r_.m128i_private) / sizeof(r_.m128i_priavte[0])) ; i++) {
-        r_.m128i_private[i].wasm_v128 = wasm_i8x16_popcnt(a_.m128i_private[i].wasm_v128);
-      }
     #elif defined(SIMDE_X86_AVX512BW_NATIVE) && defined(SIMDE_X86_AVX512F_NATIVE)
       const __m512i low_nibble_set = _mm512_set1_epi8(0x0f);
       const __m512i high_nibble_of_input = _mm512_andnot_si512(low_nibble_set, a_.n);
@@ -983,10 +935,6 @@ simde_mm512_popcnt_epi8 (simde__m512i a) {
             )
           )
         );
-    #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
-      for (size_t i = 0 ; i < (sizeof(r_.m128i_private) / sizeof(r_.m128i_priavte[0])) ; i++) {
-        r_.m128i_private[i].altivec_i8 = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(signed char), vec_popcnt(HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned char), a_.m128i_private[i].altivec_i8)));
-      }
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
       a_.u8 -= ((a_.u8 >> 1) & 0x55);
       a_.u8  = ((a_.u8 & 0x33) + ((a_.u8 >> 2) & 0x33));
@@ -1056,18 +1004,6 @@ simde_mm512_popcnt_epi16 (simde__m512i a) {
     #elif SIMDE_NATURAL_VECTOR_SIZE_LE(256)
       for (size_t i = 0 ; i < (sizeof(r_.m256i) / sizeof(r_.m256i[0])) ; i++) {
         r_.m256i[i] = simde_mm256_popcnt_epi16(a_.m256i[i]);
-      }
-    #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-      for (size_t i = 0 ; i < (sizeof(r_.m128i_private) / sizeof(r_.m128i_private[0])) ; i++) {
-        r_.m128i_private[i].neon_i16 = vpaddlq_s8(vcntq_s8(a_.m128i_private[i].neon_i8));
-      }
-    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-      for (size_t i = 0 ; i < (sizeof(r_.m128i_private) / sizeof(r_.m128i_private[0])) ; i++) {
-        r_.m128i_private[i].wasm_v128 = wasm_i16x8_extadd_pairwise_i8x16(wasm_i8x16_popcnt(a_.m128i_privatep[i].wasm_v128));
-      }
-    #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
-      for (size_t i = 0 ; i < (sizeof(r_.m128i_private) / sizeof(r_.m128i_private[0])) ; i++) {
-        r_.m128i_private[i].altivec_u16 = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned short), vec_popcnt(HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned short), a_.m128i_private[i].altivec_u16)));
       }
     #elif defined(SIMDE_X86_AVX512BW_NATIVE) && defined(SIMDE_X86_AVX512F_NATIVE)
       r_.n =
@@ -1178,14 +1114,6 @@ simde_mm512_popcnt_epi32 (simde__m512i a) {
       for (size_t i = 0 ; i < (sizeof(r_.m256i) / sizeof(r_.m256i[0])) ; i++) {
         r_.m256i[i] = simde_mm256_popcnt_epi32(a_.m256i[i]);
       }
-    #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-      for (size_t i = 0 ; i < (sizeof(r_.m128i_private) / sizeof(r_.m128i_private[0])) ; i++) {
-        r_.m128i_private[i].neon_i32 = vpaddlq_s16(vpaddlq_s8(vcntq_s8(a_.m128i_private[i].neon_i8)));
-      }
-    #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
-      for (size_t i = 0 ; i < (sizeof(r_.m128i_private) / sizeof(r_.m128i_private[0])) ; i++) {
-        r_.m128i_private[i].altivec_u32 = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned int), vec_popcnt(HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned int), a_.m128i_private[i].altivec_u32)));
-      }
     #elif defined(SIMDE_X86_AVX512F_NATIVE)
       r_.n =
         _mm512_sub_epi32(
@@ -1294,14 +1222,6 @@ simde_mm512_popcnt_epi64 (simde__m512i a) {
     #elif SIMDE_NATURAL_VECTOR_SIZE_LE(256)
       for (size_t i = 0 ; i < sizeof(r_.m256i) / sizeof(r_.m256i[0]) ; i++) {
         r_.m256i[i] = simde_mm256_popcnt_epi64(a_.m256i[i]);
-      }
-    #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-      for (size_t i = 0 ; i < (sizeof(r_.m128i_private) / sizeof(r_.m128i_private[0])) ; i++) {
-        r_.neon_i64 = vpaddlq_s32(vpaddlq_s16(vpaddlq_s8(vcntq_s8(a_.neon_i8))));
-      }
-    #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
-      for (size_t i = 0 ; i < (sizeof(r_.m128i_private) / sizeof(r_.m128i_private[0])) ; i++) {
-        r_.altivec_u64 = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned long long), vec_popcnt(HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned long long), a_.altivec_u64)));
       }
     #elif defined(SIMDE_X86_AVX512BW_NATIVE) && defined(SIMDE_X86_AVX512F_NATIVE)
       const __m512i low_nibble_set = _mm512_set1_epi8(0x0f);
