@@ -1858,10 +1858,10 @@ simde_x_mm_copysign_ps(simde__m128 dest, simde__m128 src) {
     const v128_t sign_pos = wasm_f32x4_splat(-0.0f);
     r_.wasm_v128 = wasm_v128_bitselect(src_.wasm_v128, dest_.wasm_v128, sign_pos);
   #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
-    #if !defined(HEDLEY_IBM_VERSION)
-      r_.altivec_f32 = vec_cpsgn(dest_.altivec_f32, src_.altivec_f32);
-    #else
+    #if defined(SIMDE_BUG_VEC_CPSGN_REVERSED_ARGS)
       r_.altivec_f32 = vec_cpsgn(src_.altivec_f32, dest_.altivec_f32);
+    #else
+      r_.altivec_f32 = vec_cpsgn(dest_.altivec_f32, src_.altivec_f32);
     #endif
   #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_14_NATIVE)
     const SIMDE_POWER_ALTIVEC_VECTOR(unsigned int) sign_pos = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned int), vec_splats(-0.0f));
