@@ -6007,10 +6007,25 @@ simde_wasm_f32x4_demote_f64x2_zero (simde_v128_t a) {
       a_ = simde_v128_to_private(a),
       r_;
 
-    r_.f32[0] = HEDLEY_STATIC_CAST(simde_float32, a_.f64[0]);
-    r_.f32[1] = HEDLEY_STATIC_CAST(simde_float32, a_.f64[1]);
-    r_.f32[2] = SIMDE_FLOAT32_C(0.0);
-    r_.f32[3] = SIMDE_FLOAT32_C(0.0);
+    #if defined(SIMDE_X86_SSE2_NATIVE)
+      r_.sse_m128 = _mm_cvtpd_ps(a_.sse_m128d);
+    #elif defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+      r_.neon_f32 = vcombine_f32(vcvt_f32_f64(a_.neon_f64), vdup_n_f32(0.0f));
+    #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
+      r_.altivec_f32 = vec_float2(a_.altivec_f64, vec_splats(0.0));
+    #elif HEDLEY_HAS_BUILTIN(__builtin_shufflevector) && HEDLEY_HAS_BUILTIN(__builtin_convertvector)
+      float __attribute__((__vector_size__(8))) z = { 0.0f, 0.0f };
+      r_.f32 =
+        __builtin_shufflevector(
+          __builtin_convertvector(__builtin_shufflevector(a_.f64, a_.f64, 0, 1), __typeof__(z)), z,
+          0, 1, 2, 3
+        );
+    #else
+      r_.f32[0] = HEDLEY_STATIC_CAST(simde_float32, a_.f64[0]);
+      r_.f32[1] = HEDLEY_STATIC_CAST(simde_float32, a_.f64[1]);
+      r_.f32[2] = SIMDE_FLOAT32_C(0.0);
+      r_.f32[3] = SIMDE_FLOAT32_C(0.0);
+    #endif
 
     return simde_v128_from_private(r_);
   #endif

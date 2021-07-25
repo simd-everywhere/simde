@@ -2642,17 +2642,24 @@ simde_mm_cvtpd_ps (simde__m128d a) {
     simde__m128_private r_;
     simde__m128d_private a_ = simde__m128d_to_private(a);
 
-    #if defined(SIMDE_CONVERT_VECTOR_)
-      SIMDE_CONVERT_VECTOR_(r_.m64_private[0].f32, a_.f64);
-      r_.m64_private[1] = simde__m64_to_private(simde_mm_setzero_si64());
-    #elif defined(SIMDE_ARM_NEON_A64V8_NATIVE)
-      r_.neon_f32 = vreinterpretq_f32_f64(vcombine_f64(vreinterpret_f64_f32(vcvtx_f32_f64(a_.neon_f64)), vdup_n_f64(0)));
+    #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+      r_.neon_f32 = vcombine_f32(vcvt_f32_f64(a_.neon_f64), vdup_n_f32(0.0f));
+    #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
+      r_.altivec_f32 = vec_float2(a_.altivec_f64, vec_splats(0.0));
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+      r_.wasm_v128 = wasm_f32x4_demote_f64x2_zero(a_.wasm_v128);
+    #elif HEDLEY_HAS_BUILTIN(__builtin_shufflevector) && HEDLEY_HAS_BUILTIN(__builtin_convertvector)
+      float __attribute__((__vector_size__(8))) z = { 0.0f, 0.0f };
+      r_.f32 =
+        __builtin_shufflevector(
+          __builtin_convertvector(__builtin_shufflevector(a_.f64, a_.f64, 0, 1), __typeof__(z)), z,
+          0, 1, 2, 3
+        );
     #else
-      SIMDE_VECTORIZE
-      for (size_t i = 0 ; i < (sizeof(a_.f64) / sizeof(a_.f64[0])) ; i++) {
-        r_.f32[i] = (simde_float32) a_.f64[i];
-      }
-      simde_memset(&(r_.m64_private[1]), 0, sizeof(r_.m64_private[1]));
+      r_.f32[0] = HEDLEY_STATIC_CAST(simde_float32, a_.f64[0]);
+      r_.f32[1] = HEDLEY_STATIC_CAST(simde_float32, a_.f64[1]);
+      r_.f32[2] = SIMDE_FLOAT32_C(0.0);
+      r_.f32[3] = SIMDE_FLOAT32_C(0.0);
     #endif
 
     return simde__m128_from_private(r_);
