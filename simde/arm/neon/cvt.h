@@ -502,7 +502,7 @@ simde_vcvtq_s64_f64(simde_float64x2_t a) {
     simde_float64x2_private a_ = simde_float64x2_to_private(a);
     simde_int64x2_private r_;
 
-    #if defined(SIMDE_X86_SSE2_NATIVE)
+    #if defined(SIMDE_X86_SSE2_NATIVE) && (defined(SIMDE_ARCH_AMD64) || (defined(SIMDE_X86_AVX512DQ_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)))
       #if !defined(SIMDE_FAST_CONVERSION_RANGE)
         const __m128i i64_max_mask = _mm_castpd_si128(_mm_cmpge_pd(a_.m128d, _mm_set1_pd(HEDLEY_STATIC_CAST(simde_float64, INT64_MAX))));
         const __m128d clamped_low = _mm_max_pd(a_.m128d, _mm_set1_pd(HEDLEY_STATIC_CAST(simde_float64, INT64_MIN)));
@@ -590,7 +590,7 @@ simde_vcvtq_u64_f64(simde_float64x2_t a) {
 
     #if defined(SIMDE_CONVERT_VECTOR_) && defined(SIMDE_FAST_CONVERSION_RANGE)
       SIMDE_CONVERT_VECTOR_(r_.values, a_.values);
-    #elif defined(SIMDE_X86_SSE2_NATIVE)
+    #elif defined(SIMDE_X86_SSE2_NATIVE) && (defined(SIMDE_ARCH_AMD64) || (defined(SIMDE_X86_AVX512DQ_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)))
       #if defined(SIMDE_X86_AVX512DQ_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
         r_.m128i = _mm_cvttpd_epu64(a_.m128d);
       #else
