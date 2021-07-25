@@ -116,7 +116,7 @@ simde_mm_shldv_epi32(simde__m128i a, simde__m128i b, simde__m128i c) {
               221)
           )
         );
-    #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && defined(SIMDE_SHUFFLE_VECTOR_) && defined(SIMDE_CONVERT_VECTOR_)
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && defined(SIMDE_SHUFFLE_VECTOR_) && defined(SIMDE_CONVERT_VECTOR_) && (SIMDE_ENDIAN_ORDER == SIMDE_ENDIAN_LITTLE)
       simde__m128i_private
         c_ = simde__m128i_to_private(c);
       simde__m256i_private
