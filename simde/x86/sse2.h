@@ -1508,7 +1508,7 @@ simde_x_mm_copysign_pd(simde__m128d dest, simde__m128d src) {
     #endif
     r_.neon_u64 = vbslq_u64(sign_pos, src_.neon_u64, dest_.neon_u64);
   #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
-    #if !defined(HEDLEY_IBM_VERSION)
+    #if !defined(HEDLEY_IBM_VERSION) && !SIMDE_DETECT_CLANG_VERSION_CHECK(12, 0, 0)
       r_.altivec_f64 = vec_cpsgn(dest_.altivec_f64, src_.altivec_f64);
     #else
       r_.altivec_f64 = vec_cpsgn(src_.altivec_f64, dest_.altivec_f64);
