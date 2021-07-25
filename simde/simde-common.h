@@ -937,6 +937,9 @@ SIMDE_DIAGNOSTIC_DISABLE_CPP98_COMPAT_PEDANTIC_
 #      endif
 #    elif defined(SIMDE_ARCH_ZARCH)
 #      define SIMDE_BUG_GCC_95782
+#      if HEDLEY_GCC_VERSION_CHECK(10,0,0)
+#        define SIMDE_BUG_GCC_101614
+#      endif
 #    endif
 #    if defined(SIMDE_ARCH_MIPS_MSA)
 #      define SIMDE_BUG_GCC_97248

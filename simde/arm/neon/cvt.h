@@ -351,7 +351,7 @@ simde_vcvtq_s32_f32(simde_float32x4_t a) {
     return vcvtq_s32_f32(a);
   #elif defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE) && defined(SIMDE_FAST_NANS)
     return vec_signed(a);
-  #elif defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
+  #elif defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE) && !defined(SIMDE_BUG_GCC_101614)
     return (a == a) & vec_signed(a);
   #else
     simde_float32x4_private a_ = simde_float32x4_to_private(a);

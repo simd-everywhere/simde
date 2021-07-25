@@ -90,7 +90,7 @@ simde_wasm_i32x4_trunc_f32x4 (simde_v128_t a) {
       r_.neon_i32 = vcvtq_s32_f32(a_.neon_f32);
     #elif defined(SIMDE_X86_SSE2_NATIVE)
       r_.sse_m128i = _mm_cvtps_epi32(a_.sse_m128);
-    #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
+    #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE) || (defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE) && !defined(SIMDE_BUG_GCC_101614))
       r_.altivec_i32 = vec_signed(a_.altivec_f32);
     #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
       r_.altivec_i32 = vec_cts(a_.altivec_f32, 1);
