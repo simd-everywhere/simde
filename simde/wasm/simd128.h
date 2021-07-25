@@ -5283,6 +5283,16 @@ simde_wasm_i8x16_sub_sat (simde_v128_t a, simde_v128_t b) {
 
     #if defined(SIMDE_X86_SSE2_NATIVE)
       r_.sse_m128i = _mm_subs_epi8(a_.sse_m128i, b_.sse_m128i);
+    #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+      r_.neon_i8 = vqsubq_s8(a_.neon_i8, b_.neon_i8);
+    #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+      r_.altivec_i8 = vec_subs(a_.altivec_i8, b_.altivec_i8);
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+      const __typeof__(r_.i8) diff_sat = HEDLEY_REINTERPRET_CAST(__typeof__(r_.i8), (b_.i8 > a_.i8) ^ INT8_MAX);
+      const __typeof__(r_.i8) diff = a_.i8 - b_.i8;
+      const __typeof__(r_.i8) saturate = diff_sat ^ diff;
+      const __typeof__(r_.i8) m = saturate >> 7;
+      r_.i8 = (diff_sat & m) | (diff & ~m);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.i8) / sizeof(r_.i8[0])) ; i++) {
@@ -5310,6 +5320,16 @@ simde_wasm_i16x8_sub_sat (simde_v128_t a, simde_v128_t b) {
 
     #if defined(SIMDE_X86_SSE2_NATIVE)
       r_.sse_m128i = _mm_subs_epi16(a_.sse_m128i, b_.sse_m128i);
+    #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+      r_.neon_i16 = vqsubq_s16(a_.neon_i16, b_.neon_i16);
+    #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+      r_.altivec_i16 = vec_subs(a_.altivec_i16, b_.altivec_i16);
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+      const __typeof__(r_.i16) diff_sat = HEDLEY_REINTERPRET_CAST(__typeof__(r_.i16), (b_.i16 > a_.i16) ^ INT16_MAX);
+      const __typeof__(r_.i16) diff = a_.i16 - b_.i16;
+      const __typeof__(r_.i16) saturate = diff_sat ^ diff;
+      const __typeof__(r_.i16) m = saturate >> 15;
+      r_.i16 = (diff_sat & m) | (diff & ~m);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.i16) / sizeof(r_.i16[0])) ; i++) {
@@ -5337,6 +5357,13 @@ simde_wasm_u8x16_sub_sat (simde_v128_t a, simde_v128_t b) {
 
     #if defined(SIMDE_X86_SSE2_NATIVE)
       r_.sse_m128i = _mm_subs_epu8(a_.sse_m128i, b_.sse_m128i);
+    #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+      r_.neon_u8 = vqsubq_u8(a_.neon_u8, b_.neon_u8);
+    #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+      r_.altivec_u8 = vec_subs(a_.altivec_u8, b_.altivec_u8);
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+      r_.u8  = a_.u8 - b_.u8;
+      r_.u8 &= (r_.u8 <= a_.u8);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.u8) / sizeof(r_.u8[0])) ; i++) {
@@ -5364,6 +5391,13 @@ simde_wasm_u16x8_sub_sat (simde_v128_t a, simde_v128_t b) {
 
     #if defined(SIMDE_X86_SSE2_NATIVE)
       r_.sse_m128i = _mm_subs_epu16(a_.sse_m128i, b_.sse_m128i);
+    #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+      r_.neon_u16 = vqsubq_u16(a_.neon_u16, b_.neon_u16);
+    #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+      r_.altivec_u16 = vec_subs(a_.altivec_u16, b_.altivec_u16);
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+      r_.u16  = a_.u16 - b_.u16;
+      r_.u16 &= (r_.u16 <= a_.u16);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.u16) / sizeof(r_.u16[0])) ; i++) {
