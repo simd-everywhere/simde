@@ -38,6 +38,20 @@ SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 SIMDE_BEGIN_DECLS_
 
 SIMDE_FUNCTION_ATTRIBUTES
+simde_uint16x4_t
+simde_vceqz_f16(simde_float16x4_t a) {
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
+    return vceqz_f16(a);
+  #else
+    return simde_vceq_f16(a, simde_vdup_n_f16(SIMDE_FLOAT16_VALUE(0.0)));
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+  #undef vceqz_f16
+  #define vceqz_f16(a) simde_vceqz_f16((a))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
 simde_uint32x2_t
 simde_vceqz_f32(simde_float32x2_t a) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
@@ -175,6 +189,20 @@ simde_vceqz_u64(simde_uint64x1_t a) {
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vceqz_u64
   #define vceqz_u64(a) simde_vceqz_u64((a))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_uint16x8_t
+simde_vceqzq_f16(simde_float16x8_t a) {
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
+    return vceqzq_f16(a);
+  #else
+    return simde_vceqq_f16(a, simde_vdupq_n_f16(SIMDE_FLOAT16_VALUE(0.0)));
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+  #undef vceqzq_f16
+  #define vceqzq_f16(a) simde_vceqzq_f16((a))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -343,6 +371,20 @@ simde_vceqzd_u64(uint64_t a) {
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vceqzd_u64
   #define vceqzd_u64(a) simde_vceqzd_u64((a))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+uint16_t
+simde_vceqzh_f16(simde_float16 a) {
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
+    return vceqzh_f16(a);
+  #else
+    return simde_vceqh_f16(a, SIMDE_FLOAT16_VALUE(0.0));
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vceqzh_f16
+  #define vceqzh_f16(a) simde_vceqzh_f16((a))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
