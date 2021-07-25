@@ -43,7 +43,7 @@ simde_mm_cvttpd_epi64 (simde__m128d a) {
     simde__m128i_private r_;
     simde__m128d_private a_ = simde__m128d_to_private(a);
 
-    #if defined(SIMDE_X86_SSE2_NATIVE)
+    #if defined(SIMDE_X86_SSE2_NATIVE) && defined(SIMDE_ARCH_AMD64)
       r_.n =
         _mm_set_epi64x(
           _mm_cvttsd_si64(_mm_unpackhi_pd(a_.n, a_.n)),
