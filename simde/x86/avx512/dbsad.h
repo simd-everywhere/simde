@@ -21,17 +21,15 @@ SIMDE_BEGIN_DECLS_
       a_ = simde__m128i_to_private(a),
       b_ = simde__m128i_to_private(b);
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
-      __typeof__(r_.u16) tmp;
-
-      __typeof__(r_.u8) a1 =
+    #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
+      uint8_t a1 SIMDE_VECTOR(16) =
         SIMDE_SHUFFLE_VECTOR_(
           8, 16, a_.u8, a_.u8,
            0,  1,  0,  1,
            4,  5,  4,  5,
            8,  9,  8,  9,
           12, 13, 12, 13);
-      __typeof__(r_.u8) b1 =
+      uint8_t b1 SIMDE_VECTOR(16) =
         SIMDE_SHUFFLE_VECTOR_(
           8, 16, b_.u8, b_.u8,
             0,  1,  1,  2,
@@ -42,18 +40,18 @@ SIMDE_BEGIN_DECLS_
       __typeof__(r_.u8) abd1_mask = HEDLEY_REINTERPRET_CAST(__typeof__(abd1_mask), a1 < b1);
       __typeof__(r_.u8) abd1 = (((b1 - a1) & abd1_mask) | ((a1 - b1) & ~abd1_mask));
 
-      SIMDE_CONVERT_VECTOR_(r_.u16, SIMDE_SHUFFLE_VECTOR_(8, 16, abd1, abd1, 0, 2, 4, 6, 8, 10, 12, 14));
-      SIMDE_CONVERT_VECTOR_(   tmp, SIMDE_SHUFFLE_VECTOR_(8, 16, abd1, abd1, 1, 3, 5, 7, 9, 11, 13, 15));
-      r_.u16 += tmp;
+      r_.u16 =
+        __builtin_convertvector(__builtin_shufflevector(abd1, abd1, 0, 2, 4, 6, 8, 10, 12, 14), __typeof__(r_.u16)) +
+        __builtin_convertvector(__builtin_shufflevector(abd1, abd1, 1, 3, 5, 7, 9, 11, 13, 15), __typeof__(r_.u16));
 
-      __typeof__(r_.u8) a2 =
+      uint8_t a2 SIMDE_VECTOR(16) =
         SIMDE_SHUFFLE_VECTOR_(
           8, 16, a_.u8, a_.u8,
            2,  3,  2,  3,
            6,  7,  6,  7,
           10, 11, 10, 11,
           14, 15, 14, 15);
-      __typeof__(r_.u8) b2 =
+      uint8_t b2 SIMDE_VECTOR(16) =
         SIMDE_SHUFFLE_VECTOR_(
           8, 16, b_.u8, b_.u8,
             2,  3,  3,  4,
@@ -64,10 +62,9 @@ SIMDE_BEGIN_DECLS_
       __typeof__(r_.u8) abd2_mask = HEDLEY_REINTERPRET_CAST(__typeof__(abd2_mask), a2 < b2);
       __typeof__(r_.u8) abd2 = (((b2 - a2) & abd2_mask) | ((a2 - b2) & ~abd2_mask));
 
-      SIMDE_CONVERT_VECTOR_(tmp, SIMDE_SHUFFLE_VECTOR_(8, 16, abd2, abd2, 0, 2, 4, 6, 8, 10, 12, 14));
-      r_.u16 += tmp;
-      SIMDE_CONVERT_VECTOR_(tmp, SIMDE_SHUFFLE_VECTOR_(8, 16, abd2, abd2, 1, 3, 5, 7, 9, 11, 13, 15));
-      r_.u16 += tmp;
+      r_.u16 +=
+        __builtin_convertvector(__builtin_shufflevector(abd2, abd2, 0, 2, 4, 6, 8, 10, 12, 14), __typeof__(r_.u16)) +
+        __builtin_convertvector(__builtin_shufflevector(abd2, abd2, 1, 3, 5, 7, 9, 11, 13, 15), __typeof__(r_.u16));
     #else
       for (size_t i = 0 ; i < (sizeof(r_.u16) / sizeof(r_.u16[0])) ; i++) {
         r_.u16[i] = 0;
@@ -130,12 +127,10 @@ SIMDE_BEGIN_DECLS_
       a_ = simde__m256i_to_private(a),
       b_ = simde__m256i_to_private(b);
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
-      __typeof__(r_.u16) tmp;
-
-      __typeof__(r_.u8) a1 =
+    #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
+      uint8_t a1 SIMDE_VECTOR(32) =
         SIMDE_SHUFFLE_VECTOR_(
-          8, 16, a_.u8, a_.u8,
+          8, 32, a_.u8, a_.u8,
            0,  1,  0,  1,
            4,  5,  4,  5,
            8,  9,  8,  9,
@@ -144,7 +139,7 @@ SIMDE_BEGIN_DECLS_
           20, 21, 20, 21,
           24, 25, 24, 25,
           28, 29, 28, 29);
-      __typeof__(r_.u8) b1 =
+      uint8_t b1 SIMDE_VECTOR(32) =
         SIMDE_SHUFFLE_VECTOR_(
           8, 16, b_.u8, b_.u8,
             0,  1,  1,  2,
@@ -159,13 +154,13 @@ SIMDE_BEGIN_DECLS_
       __typeof__(r_.u8) abd1_mask = HEDLEY_REINTERPRET_CAST(__typeof__(abd1_mask), a1 < b1);
       __typeof__(r_.u8) abd1 = (((b1 - a1) & abd1_mask) | ((a1 - b1) & ~abd1_mask));
 
-      SIMDE_CONVERT_VECTOR_(r_.u16, SIMDE_SHUFFLE_VECTOR_(8, 16, abd1, abd1, 0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30));
-      SIMDE_CONVERT_VECTOR_(   tmp, SIMDE_SHUFFLE_VECTOR_(8, 16, abd1, abd1, 1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31));
-      r_.u16 += tmp;
+      r_.u16 =
+        __builtin_convertvector(__builtin_shufflevector(abd1, abd1, 0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30), __typeof__(r_.u16)) +
+        __builtin_convertvector(__builtin_shufflevector(abd1, abd1, 1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31), __typeof__(r_.u16));
 
-      __typeof__(r_.u8) a2 =
+      uint8_t a2 SIMDE_VECTOR(32) =
         SIMDE_SHUFFLE_VECTOR_(
-          8, 16, a_.u8, a_.u8,
+          8, 32, a_.u8, a_.u8,
            2,  3,  2,  3,
            6,  7,  6,  7,
           10, 11, 10, 11,
@@ -174,7 +169,7 @@ SIMDE_BEGIN_DECLS_
           22, 23, 22, 23,
           26, 27, 26, 27,
           30, 31, 30, 31);
-      __typeof__(r_.u8) b2 =
+      uint8_t b2 SIMDE_VECTOR(32) =
         SIMDE_SHUFFLE_VECTOR_(
           8, 16, b_.u8, b_.u8,
             2,  3,  3,  4,
@@ -189,10 +184,9 @@ SIMDE_BEGIN_DECLS_
       __typeof__(r_.u8) abd2_mask = HEDLEY_REINTERPRET_CAST(__typeof__(abd2_mask), a2 < b2);
       __typeof__(r_.u8) abd2 = (((b2 - a2) & abd2_mask) | ((a2 - b2) & ~abd2_mask));
 
-      SIMDE_CONVERT_VECTOR_(tmp, SIMDE_SHUFFLE_VECTOR_(8, 16, abd2, abd2, 0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30));
-      r_.u16 += tmp;
-      SIMDE_CONVERT_VECTOR_(tmp, SIMDE_SHUFFLE_VECTOR_(8, 16, abd2, abd2, 1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31));
-      r_.u16 += tmp;
+      r_.u16 +=
+        __builtin_convertvector(__builtin_shufflevector(abd2, abd2, 0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30), __typeof__(r_.u16)) +
+        __builtin_convertvector(__builtin_shufflevector(abd2, abd2, 1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31), __typeof__(r_.u16));
     #else
       for (size_t i = 0 ; i < (sizeof(r_.u16) / sizeof(r_.u16[0])) ; i++) {
         r_.u16[i] = 0;
@@ -235,7 +229,7 @@ SIMDE_BEGIN_DECLS_
 
 #if defined(SIMDE_X86_AVX512BW_NATIVE)
   #define simde_mm512_dbsad_epu8(a, b, imm8) _mm512_dbsad_epu8((a), (b), (imm8))
-#elif SIMDE_NATURAL_VECTOR_SIZE_LE(256) && defined(SIMDE_STATEMENT_EXPR_) && 0
+#elif SIMDE_NATURAL_VECTOR_SIZE_LE(256) && defined(SIMDE_STATEMENT_EXPR_)
   #define simde_mm512_dbsad_epu8(a, b, imm8) SIMDE_STATEMENT_EXPR_(({ \
     simde__m512i_private \
       simde_mm512_dbsad_epu8_a_ = simde__m512i_to_private(a), \
@@ -255,12 +249,10 @@ SIMDE_BEGIN_DECLS_
       a_ = simde__m512i_to_private(a),
       b_ = simde__m512i_to_private(b);
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
-      __typeof__(r_.u16) tmp;
-
-      __typeof__(r_.u8) a1 =
+    #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
+      uint8_t a1 SIMDE_VECTOR(64) =
         SIMDE_SHUFFLE_VECTOR_(
-          8, 16, a_.u8, a_.u8,
+          8, 64, a_.u8, a_.u8,
            0,  1,  0,  1,
            4,  5,  4,  5,
            8,  9,  8,  9,
@@ -277,9 +269,9 @@ SIMDE_BEGIN_DECLS_
           52, 53, 52, 53,
           56, 57, 56, 57,
           60, 61, 60, 61);
-      __typeof__(r_.u8) b1 =
+      uint8_t b1 SIMDE_VECTOR(64) =
         SIMDE_SHUFFLE_VECTOR_(
-          8, 16, b_.u8, b_.u8,
+          8, 64, b_.u8, b_.u8,
             0,  1,  1,  2,
             2,  3,  3,  4,
             8,  9,  9, 10,
@@ -300,13 +292,13 @@ SIMDE_BEGIN_DECLS_
       __typeof__(r_.u8) abd1_mask = HEDLEY_REINTERPRET_CAST(__typeof__(abd1_mask), a1 < b1);
       __typeof__(r_.u8) abd1 = (((b1 - a1) & abd1_mask) | ((a1 - b1) & ~abd1_mask));
 
-      SIMDE_CONVERT_VECTOR_(r_.u16, SIMDE_SHUFFLE_VECTOR_(8, 16, abd1, abd1, 0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60, 62));
-      SIMDE_CONVERT_VECTOR_(   tmp, SIMDE_SHUFFLE_VECTOR_(8, 16, abd1, abd1, 1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33, 35, 37, 39, 41, 43, 45, 47, 49, 51, 53, 55, 57, 59, 61, 63));
-      r_.u16 += tmp;
+      r_.u16 =
+        __builtin_convertvector(__builtin_shufflevector(abd1, abd1, 0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60, 62), __typeof__(r_.u16)) +
+        __builtin_convertvector(__builtin_shufflevector(abd1, abd1, 1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33, 35, 37, 39, 41, 43, 45, 47, 49, 51, 53, 55, 57, 59, 61, 63), __typeof__(r_.u16));
 
-      __typeof__(r_.u8) a2 =
+      uint8_t a2 SIMDE_VECTOR(64) =
         SIMDE_SHUFFLE_VECTOR_(
-          8, 16, a_.u8, a_.u8,
+          8, 64, a_.u8, a_.u8,
            2,  3,  2,  3,
            6,  7,  6,  7,
           10, 11, 10, 11,
@@ -323,9 +315,9 @@ SIMDE_BEGIN_DECLS_
           54, 55, 54, 55,
           58, 59, 58, 59,
           62, 63, 62, 63);
-      __typeof__(r_.u8) b2 =
+      uint8_t b2 SIMDE_VECTOR(64) =
         SIMDE_SHUFFLE_VECTOR_(
-          8, 16, b_.u8, b_.u8,
+          8, 64, b_.u8, b_.u8,
             2,  3,  3,  4,
             4,  5,  5,  6,
            10, 11, 11, 12,
@@ -346,10 +338,9 @@ SIMDE_BEGIN_DECLS_
       __typeof__(r_.u8) abd2_mask = HEDLEY_REINTERPRET_CAST(__typeof__(abd2_mask), a2 < b2);
       __typeof__(r_.u8) abd2 = (((b2 - a2) & abd2_mask) | ((a2 - b2) & ~abd2_mask));
 
-      SIMDE_CONVERT_VECTOR_(tmp, SIMDE_SHUFFLE_VECTOR_(8, 16, abd2, abd2, 0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60, 62));
-      r_.u16 += tmp;
-      SIMDE_CONVERT_VECTOR_(tmp, SIMDE_SHUFFLE_VECTOR_(8, 16, abd2, abd2, 1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33, 35, 37, 39, 41, 43, 45, 47, 49, 51, 53, 55, 57, 59, 61, 63));
-      r_.u16 += tmp;
+      r_.u16 +=
+        __builtin_convertvector(__builtin_shufflevector(abd2, abd2, 0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60, 62), __typeof__(r_.u16)) +
+        __builtin_convertvector(__builtin_shufflevector(abd2, abd2, 1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33, 35, 37, 39, 41, 43, 45, 47, 49, 51, 53, 55, 57, 59, 61, 63), __typeof__(r_.u16));
     #else
       for (size_t i = 0 ; i < (sizeof(r_.u16) / sizeof(r_.u16[0])) ; i++) {
         r_.u16[i] = 0;
