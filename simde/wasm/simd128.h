@@ -7478,6 +7478,28 @@ simde_wasm_i32x4_dot_i16x8 (simde_v128_t a, simde_v128_t b) {
 
     #if defined(SIMDE_X86_SSE2_NATIVE)
       r_.sse_m128i = _mm_madd_epi16(a_.sse_m128i, b_.sse_m128i);
+    #elif defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+      int32x4_t pl = vmull_s16(vget_low_s16(a_.neon_i16),  vget_low_s16(b_.neon_i16));
+      int32x4_t ph = vmull_high_s16(a_.neon_i16, b_.neon_i16);
+      r_.neon_i32 = vpaddq_s32(pl, ph);
+    #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+      int32x4_t pl = vmull_s16(vget_low_s16(a_.neon_i16),  vget_low_s16(b_.neon_i16));
+      int32x4_t ph = vmull_s16(vget_high_s16(a_.neon_i16), vget_high_s16(b_.neon_i16));
+      int32x2_t rl = vpadd_s32(vget_low_s32(pl), vget_high_s32(pl));
+      int32x2_t rh = vpadd_s32(vget_low_s32(ph), vget_high_s32(ph));
+      r_.neon_i32 = vcombine_s32(rl, rh);
+    #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+      r_.altivec_i32 = vec_msum(a_.altivec_i16, b_.altivec_i16, vec_splats(0));
+    #elif defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
+      r_.altivec_i32 = vec_mule(a_.altivec_i16, b_.altivec_i16) + vec_mulo(a_.altivec_i16, b_.altivec_i16);
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && defined(SIMDE_CONVERT_VECTOR_) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
+      int32_t SIMDE_VECTOR(32) a32, b32, p32;
+      SIMDE_CONVERT_VECTOR_(a32, a_.i16);
+      SIMDE_CONVERT_VECTOR_(b32, b_.i16);
+      p32 = a32 * b32;
+      r_.i32 =
+        __builtin_shufflevector(p32, p32, 0, 2, 4, 6) +
+        __builtin_shufflevector(p32, p32, 1, 3, 5, 7);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_) / sizeof(r_.i16[0])) ; i += 2) {

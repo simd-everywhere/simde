@@ -3696,9 +3696,18 @@ simde_mm_madd_epi16 (simde__m128i a, simde__m128i b) {
       int32x2_t rl = vpadd_s32(vget_low_s32(pl), vget_high_s32(pl));
       int32x2_t rh = vpadd_s32(vget_low_s32(ph), vget_high_s32(ph));
       r_.neon_i32 = vcombine_s32(rl, rh);
-    #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
-      static const SIMDE_POWER_ALTIVEC_VECTOR(int) tz = { 0, 0, 0, 0 };
-      r_.altivec_i32 = vec_msum(a_.altivec_i16, b_.altivec_i16, tz);
+    #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+      r_.altivec_i32 = vec_msum(a_.altivec_i16, b_.altivec_i16, vec_splats(0));
+    #elif defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
+      r_.altivec_i32 = vec_mule(a_.altivec_i16, b_.altivec_i16) + vec_mulo(a_.altivec_i16, b_.altivec_i16);
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && defined(SIMDE_CONVERT_VECTOR_) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
+      int32_t SIMDE_VECTOR(32) a32, b32, p32;
+      SIMDE_CONVERT_VECTOR_(a32, a_.i16);
+      SIMDE_CONVERT_VECTOR_(b32, b_.i16);
+      p32 = a32 * b32;
+      r_.i32 =
+        __builtin_shufflevector(p32, p32, 0, 2, 4, 6) +
+        __builtin_shufflevector(p32, p32, 1, 3, 5, 7);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_) / sizeof(r_.i16[0])) ; i += 2) {
