@@ -7811,10 +7811,52 @@ simde_wasm_f32x4_ceil (simde_v128_t a) {
       a_ = simde_v128_to_private(a),
       r_;
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
-      r_.f32[i] = simde_math_ceilf(a_.f32[i]);
-    }
+    #if defined(SIMDE_X86_SSE4_1_NATIVE)
+      r_.sse_m128 = _mm_round_ps(a_.sse_m128, _MM_FROUND_TO_POS_INF | _MM_FROUND_NO_EXC);
+    #elif defined(SIMDE_X86_SSE2_NATIVE)
+      /* https://github.com/WebAssembly/simd/pull/232 */
+      const __m128i input_as_i32 = _mm_cvttps_epi32(a_.sse_m128);
+      const __m128i i32_min = _mm_set1_epi32(INT32_MIN);
+      const __m128i input_is_out_of_range = _mm_or_si128(_mm_cmpeq_epi32(input_as_i32, i32_min), i32_min);
+      const __m128 truncated =
+        _mm_or_ps(
+          _mm_andnot_ps(
+            _mm_castsi128_ps(input_is_out_of_range),
+            _mm_cvtepi32_ps(input_as_i32)
+          ),
+          _mm_castsi128_ps(
+            _mm_castps_si128(
+              _mm_and_ps(
+                _mm_castsi128_ps(input_is_out_of_range),
+                a_.sse_m128
+              )
+            )
+          )
+        );
+
+      const __m128 trunc_is_ge_input =
+        _mm_or_ps(
+          _mm_cmple_ps(a_.sse_m128, truncated),
+          _mm_castsi128_ps(i32_min)
+        );
+      r_.sse_m128 =
+        _mm_or_ps(
+          _mm_andnot_ps(
+            trunc_is_ge_input,
+            _mm_add_ps(truncated, _mm_set1_ps(SIMDE_FLOAT32_C(1.0)))
+          ),
+          _mm_and_ps(trunc_is_ge_input, truncated)
+        );
+    #elif defined(SIMDE_ARM_NEON_A32V8_NATIVE)
+      r_.neon_f32 = vrndpq_f32(a_.neon_f32);
+    #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+      r_.altivec_f32 = vec_ceil(a_.altivec_f32);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
+        r_.f32[i] = simde_math_ceilf(a_.f32[i]);
+      }
+    #endif
 
     return simde_v128_from_private(r_);
   #endif
@@ -7833,10 +7875,42 @@ simde_wasm_f64x2_ceil (simde_v128_t a) {
       a_ = simde_v128_to_private(a),
       r_;
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
-      r_.f64[i] = simde_math_ceil(a_.f64[i]);
-    }
+    #if defined(SIMDE_X86_SSE4_1_NATIVE)
+      r_.sse_m128d = _mm_round_pd(a_.sse_m128d, _MM_FROUND_TO_POS_INF | _MM_FROUND_NO_EXC);
+    #elif defined(SIMDE_X86_SSE2_NATIVE)
+      /* https://github.com/WebAssembly/simd/pull/232 */
+
+      const __m128d all_but_sign_set = _mm_castsi128_pd(_mm_set1_epi64x(INT64_C(0x7FFFFFFFFFFFFFFF)));
+      /* https://stackoverflow.com/a/55077612 explains this a bit */
+      const __m128d bignum = _mm_set1_pd(4.50359962737049600000e+15);
+      const __m128d sign_cleared = _mm_and_pd(a_.sse_m128d, all_but_sign_set);
+
+      __m128d mask =
+        _mm_and_pd(
+          _mm_cmpnle_pd(bignum, sign_cleared),
+          all_but_sign_set
+        );
+      const __m128d tmp =
+        _mm_or_pd(
+          _mm_andnot_pd(mask, a_.sse_m128d),
+          _mm_and_pd   (mask, _mm_sub_pd(_mm_add_pd(sign_cleared, bignum), bignum))
+        );
+
+      r_.sse_m128d =
+        _mm_add_pd(
+          tmp,
+          _mm_and_pd(_mm_and_pd(_mm_cmplt_pd(tmp, a_.sse_m128d), all_but_sign_set), _mm_set1_pd(1.0))
+        );
+    #elif defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+      r_.neon_f64 = vrndpq_f64(a_.neon_f64);
+    #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
+      r_.altivec_f64 = vec_ceil(a_.altivec_f64);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
+        r_.f64[i] = simde_math_ceil(a_.f64[i]);
+      }
+    #endif
 
     return simde_v128_from_private(r_);
   #endif
