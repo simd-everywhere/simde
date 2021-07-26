@@ -298,23 +298,45 @@ simde_float32x4_t
 simde_vmaxq_f32(simde_float32x4_t a, simde_float32x4_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vmaxq_f32(a, b);
-  #elif (defined(SIMDE_POWER_ALTIVEC_P6_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)) && defined(SIMDE_FAST_NANS)
-    return vec_max(a, b);
+  #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
+    return
+      vec_sel(
+        b,
+        a,
+        vec_orc(
+          vec_cmpgt(a, b),
+          vec_cmpeq(a, a)
+        )
+      );
+  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+    SIMDE_POWER_ALTIVEC_VECTOR(SIMDE_POWER_ALTIVEC_BOOL int) cmpres = vec_cmpeq(a, a);
+    return
+      vec_sel(
+        b,
+        a,
+        vec_or(
+          vec_cmpgt(a, b),
+          vec_nor(cmpres, cmpres)
+        )
+      );
   #else
     simde_float32x4_private
       r_,
       a_ = simde_float32x4_to_private(a),
       b_ = simde_float32x4_to_private(b);
 
-    #if defined(SIMDE_X86_SSE_NATIVE)
-      #if !defined(SIMDE_FAST_NANS)
-        __m128 nan_mask = _mm_cmpunord_ps(a_.m128, b_.m128);
-        __m128 res = _mm_max_ps(a_.m128, b_.m128);
-        res = _mm_andnot_ps(nan_mask, res);
-        res = _mm_or_ps(res, _mm_and_ps(_mm_set1_ps(SIMDE_MATH_NANF), nan_mask));
-        r_.m128 = res;
+    #if defined(SIMDE_X86_SSE_NATIVE) && defined(SIMDE_FAST_NANS)
+      r_.m128 = _mm_max_ps(a_.m128, b_.m128);
+    #elif defined(SIMDE_X86_SSE_NATIVE)
+      __m128 m = _mm_or_ps(_mm_cmpneq_ps(a_.m128, a_.m128), _mm_cmpgt_ps(a_.m128, b_.m128));
+      #if defined(SIMDE_X86_SSE4_1_NATIVE)
+        r_.m128 = _mm_blendv_ps(b_.m128, a_.m128, m);
       #else
-        r_.m128 = _mm_max_ps(a_.m128, b_.m128);
+        r_.m128 =
+          _mm_or_ps(
+            _mm_and_ps(m, a_.m128),
+            _mm_andnot_ps(m, b_.m128)
+          );
       #endif
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r_.v128 = wasm_f32x4_max(a_.v128, b_.v128);
@@ -350,15 +372,18 @@ simde_vmaxq_f64(simde_float64x2_t a, simde_float64x2_t b) {
       a_ = simde_float64x2_to_private(a),
       b_ = simde_float64x2_to_private(b);
 
-    #if defined(SIMDE_X86_SSE2_NATIVE)
-      #if !defined(SIMDE_FAST_NANS)
-        __m128d nan_mask = _mm_cmpunord_pd(a_.m128d, b_.m128d);
-        __m128d res = _mm_max_pd(a_.m128d, b_.m128d);
-        res = _mm_andnot_pd(nan_mask, res);
-        res = _mm_or_pd(res, _mm_and_pd(_mm_set1_pd(SIMDE_MATH_NAN), nan_mask));
-        r_.m128d = res;
+    #if defined(SIMDE_X86_SSE2_NATIVE) && defined(SIMDE_FAST_NANS)
+      r_.m128d = _mm_max_pd(a_.m128d, b_.m128d);
+    #elif defined(SIMDE_X86_SSE2_NATIVE)
+      __m128d m = _mm_or_pd(_mm_cmpneq_pd(a_.m128d, a_.m128d), _mm_cmpgt_pd(a_.m128d, b_.m128d));
+      #if defined(SIMDE_X86_SSE4_1_NATIVE)
+        r_.m128d = _mm_blendv_pd(b_.m128d, a_.m128d, m);
       #else
-        r_.m128d = _mm_max_pd(a, b);
+        r_.m128d =
+          _mm_or_pd(
+            _mm_and_pd(m, a_.m128d),
+            _mm_andnot_pd(m, b_.m128d)
+          );
       #endif
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r_.v128 = wasm_f64x2_max(a_.v128, b_.v128);
@@ -389,7 +414,7 @@ simde_vmaxq_s8(simde_int8x16_t a, simde_int8x16_t b) {
   #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
     return vec_max(a, b);
   #elif \
-      defined(SIMDE_X86_SSE4_1_NATIVE) || \
+      defined(SIMDE_X86_SSE2_NATIVE) || \
       defined(SIMDE_WASM_SIMD128_NATIVE)
     simde_int8x16_private
       r_,
@@ -398,6 +423,9 @@ simde_vmaxq_s8(simde_int8x16_t a, simde_int8x16_t b) {
 
     #if defined(SIMDE_X86_SSE4_1_NATIVE)
       r_.m128i = _mm_max_epi8(a_.m128i, b_.m128i);
+    #elif defined(SIMDE_X86_SSE2_NATIVE)
+      __m128i m = _mm_cmpgt_epi8(a_.m128i, b_.m128i);
+      r_.m128i = _mm_or_si128(_mm_and_si128(m, a_.m128i), _mm_andnot_si128(m, b_.m128i));
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r_.v128 = wasm_i8x16_max(a_.v128, b_.v128);
     #endif

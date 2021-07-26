@@ -1507,6 +1507,9 @@ simde__m128i
 simde_mm_max_epi8 (simde__m128i a, simde__m128i b) {
   #if defined(SIMDE_X86_SSE4_1_NATIVE) && !defined(__PGI)
     return _mm_max_epi8(a, b);
+  #elif defined(SIMDE_X86_SSE2_NATIVE)
+    __m128i m = _mm_cmpgt_epi8(a, b);
+    return _mm_or_si128(_mm_and_si128(m, a), _mm_andnot_si128(m, b));
   #else
     simde__m128i_private
       r_,
@@ -1539,6 +1542,9 @@ simde__m128i
 simde_mm_max_epi32 (simde__m128i a, simde__m128i b) {
   #if defined(SIMDE_X86_SSE4_1_NATIVE) && !defined(__PGI)
     return _mm_max_epi32(a, b);
+  #elif defined(SIMDE_X86_SSE2_NATIVE)
+    __m128i m = _mm_cmpgt_epi32(a, b);
+    return _mm_or_si128(_mm_and_si128(m, a), _mm_andnot_si128(m, b));
   #else
     simde__m128i_private
       r_,
