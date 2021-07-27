@@ -377,27 +377,3 @@ jobs:
       run: ninja -C build -v
     - name: Test
       run: ninja -C build -v test
-
-  msvc-arm64:
-    name: Windows msvc-arm64
-    runs-on: [windows-latest] 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-        with:
-          submodules: recursive
-      - name: Install Meson, Ninja and coverage
-        run: |
-          python3 -m pip install --upgrade ninja meson
-          choco install opencppcoverage codecov
-      - name: Use ARM64 Developer Command Prompt
-        uses: ilammy/msvc-dev-cmd@v1
-        with:
-          arch: amd64_arm64
-      - name: Configure and Build
-        run: |
-          meson --backend=ninja build --cross-file test/arm64cl.txt
-          ninja -C build -v test
-
-
-  
