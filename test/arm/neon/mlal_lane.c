@@ -1,4 +1,3 @@
-#include "simde/simde-constify.h"
 #define SIMDE_TEST_ARM_NEON_INSN mlal_lane
 
 #include "test-neon.h"
