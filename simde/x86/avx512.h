@@ -54,6 +54,7 @@
 #include "avx512/cvts.h"
 #include "avx512/dbsad.h"
 #include "avx512/div.h"
+#include "avx512/dpbf16.h"
 #include "avx512/dpbusd.h"
 #include "avx512/expand.h"
 #include "avx512/extract.h"
