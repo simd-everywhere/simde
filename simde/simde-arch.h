@@ -70,7 +70,9 @@
 /* AMD64 / x86_64
    <https://en.wikipedia.org/wiki/X86-64> */
 #if defined(__amd64__) || defined(__amd64) || defined(__x86_64__) || defined(__x86_64) || defined(_M_X64) || defined(_M_AMD64)
-#  define SIMDE_ARCH_AMD64 1000
+#  if !defined(_M_ARM64EC)
+#     define SIMDE_ARCH_AMD64 1000
+#  endif
 #endif
 
 /* ARM
@@ -87,7 +89,7 @@
 #  else
 #    define SIMDE_ARCH_ARM (_M_ARM * 100)
 #  endif
-#elif defined(_M_ARM64)
+#elif defined(_M_ARM64) || defined(_M_ARM64EC)
 #  define SIMDE_ARCH_ARM 800
 #elif defined(__arm__) || defined(__thumb__) || defined(__TARGET_ARCH_ARM) || defined(_ARM) || defined(_M_ARM) || defined(_M_ARM)
 #  define SIMDE_ARCH_ARM 1
@@ -100,7 +102,7 @@
 
 /* AArch64
    <https://en.wikipedia.org/wiki/ARM_architecture> */
-#if defined(__aarch64__) || defined(_M_ARM64)
+#if defined(__aarch64__) || defined(_M_ARM64) || defined(_M_ARM64EC)
 #  define SIMDE_ARCH_AARCH64 1000
 #endif
 #if defined(SIMDE_ARCH_AARCH64)
