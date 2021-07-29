@@ -302,6 +302,9 @@
 #  if defined(__AVX512BW__)
 #    define SIMDE_ARCH_X86_AVX512BW 1
 #  endif
+#  if defined(__AVX512BF16__)
+#    define SIMDE_ARCH_X86_AVX512BF16 1
+#  endif
 #  if defined(__AVX512CD__)
 #    define SIMDE_ARCH_X86_AVX512CD 1
 #  endif
