@@ -43,7 +43,7 @@ simde_mm512_mask_4dpwssd_epi32 (simde__m512i src, simde__mmask16 k, simde__m512i
 }
 #if defined(SIMDE_X86_AVX5124VNNIW_ENABLE_NATIVE_ALIASES)
   #undef simde_mm512_mask_4dpwssd_epi32
-  #define _mm512_mask_4dpwssd_epi32(src, k, a0, a1, a2, a3, b) simde_mm512_4dpwssd_epi32(src, k, a0, a1, a2, a3, b)
+  #define _mm512_mask_4dpwssd_epi32(src, k, a0, a1, a2, a3, b) simde_mm512_mask_4dpwssd_epi32(src, k, a0, a1, a2, a3, b)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -57,7 +57,7 @@ simde_mm512_maskz_4dpwssd_epi32 (simde__mmask16 k, simde__m512i src, simde__m512
 }
 #if defined(SIMDE_X86_AVX5124VNNIW_ENABLE_NATIVE_ALIASES)
   #undef simde_mm512_maskz_4dpwssd_epi32
-  #define _mm512_mask_4dpwssd_epi32(k, src, a0, a1, a2, a3, b) simde_mm512_4dpwssd_epi32(k, src, a0, a1, a2, a3, b)
+  #define _mm512_maskz_4dpwssd_epi32(k, src, a0, a1, a2, a3, b) simde_mm512_maskz_4dpwssd_epi32(k, src, a0, a1, a2, a3, b)
 #endif
 
 SIMDE_END_DECLS_
