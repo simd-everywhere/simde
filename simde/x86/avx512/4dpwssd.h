@@ -5,6 +5,7 @@
 #include "dpwssd.h"
 #include "set1.h"
 #include "mov.h"
+#include "add.h"
 
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
@@ -19,10 +20,10 @@ simde_mm512_4dpwssd_epi32 (simde__m512i src, simde__m512i a0, simde__m512i a1, s
     simde__m128i_private bv = simde__m128i_to_private(simde_mm_loadu_epi32(b));
     simde__m512i r;
 
-    r  = simde_mm512_dpwssd_epi32(src, a0, simde_mm512_set1_epi32(bv.i32[0]));
-    r += simde_mm512_dpwssd_epi32(src, a1, simde_mm512_set1_epi32(bv.i32[1]));
-    r += simde_mm512_dpwssd_epi32(src, a2, simde_mm512_set1_epi32(bv.i32[2]));
-    r += simde_mm512_dpwssd_epi32(src, a3, simde_mm512_set1_epi32(bv.i32[3]));
+    r = simde_mm512_dpwssd_epi32(src, a0, simde_mm512_set1_epi32(bv.i32[0]));
+    r = simde_mm512_add_epi32(simde_mm512_dpwssd_epi32(src, a1, simde_mm512_set1_epi32(bv.i32[1])), r);
+    r = simde_mm512_add_epi32(simde_mm512_dpwssd_epi32(src, a2, simde_mm512_set1_epi32(bv.i32[2])), r);
+    r = simde_mm512_add_epi32(simde_mm512_dpwssd_epi32(src, a3, simde_mm512_set1_epi32(bv.i32[3])), r);
 
     return r;
   #endif
