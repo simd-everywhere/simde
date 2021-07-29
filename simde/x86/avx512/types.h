@@ -96,7 +96,7 @@ typedef union {
     SIMDE_ALIGN_TO_16 simde__m64_private m64_private[2];
     SIMDE_ALIGN_TO_16 simde__m64         m64[2];
 
-  #if defined(SIMDE_X86_AVX512F_NATIVE)
+  #if defined(SIMDE_X86_AVX512BF16_NATIVE)
     SIMDE_ALIGN_TO_16 __m128bh         n;
   #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     SIMDE_ALIGN_TO_16 int8x16_t      neon_i8;
@@ -343,7 +343,6 @@ typedef union {
  * As for the ICC check, unlike other compilers, merely using the
  * AVX-512 types causes ICC to generate AVX-512 instructions. */
 #if (defined(_MM_CMPINT_GE) || defined(_MM_CMPINT_NLT)) && (defined(SIMDE_X86_AVX512F_NATIVE) || !defined(HEDLEY_INTEL_VERSION))
-  typedef __m128bh simde__m128bh;
   typedef __m512 simde__m512;
   typedef __m512i simde__m512i;
   typedef __m512d simde__m512d;
@@ -352,12 +351,10 @@ typedef union {
   typedef __mmask16 simde__mmask16;
 #else
  #if defined(SIMDE_VECTOR_SUBSCRIPT)
-   typedef simde_float32 simde__m128bh SIMDE_ALIGN_TO_16  SIMDE_VECTOR(16) SIMDE_MAY_ALIAS;
    typedef simde_float32 simde__m512   SIMDE_AVX512_ALIGN SIMDE_VECTOR(64) SIMDE_MAY_ALIAS;
    typedef int_fast32_t  simde__m512i  SIMDE_AVX512_ALIGN SIMDE_VECTOR(64) SIMDE_MAY_ALIAS;
    typedef simde_float64 simde__m512d  SIMDE_AVX512_ALIGN SIMDE_VECTOR(64) SIMDE_MAY_ALIAS;
   #else
-    typedef simde__m128bh_private simde__m128bh;
     typedef simde__m512_private   simde__m512;
     typedef simde__m512i_private  simde__m512i;
     typedef simde__m512d_private  simde__m512d;
@@ -365,6 +362,16 @@ typedef union {
 
   typedef uint8_t simde__mmask8;
   typedef uint16_t simde__mmask16;
+#endif
+
+#if defined(SIMDE_X86_AVX512BF16_NATIVE) || !defined(HEDLEY_INTEL_VERSION)
+  typedef __m128bh simde__m128bh;
+#else
+ #if defined(SIMDE_VECTOR_SUBSCRIPT)
+   typedef simde_float32 simde__m128bh SIMDE_ALIGN_TO_16  SIMDE_VECTOR(16) SIMDE_MAY_ALIAS;
+  #else
+    typedef simde__m128bh_private simde__m128bh;
+  #endif
 #endif
 
 /* These are really part of AVX-512VL / AVX-512BW (in GCC __mmask32 is
@@ -384,15 +391,21 @@ typedef uint64_t simde__mmask64;
 
 #if !defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_ENABLE_NATIVE_ALIASES)
   #if !defined(HEDLEY_INTEL_VERSION)
-    typedef simde__m128bh __m128bh;
     typedef simde__m512 __m512;
     typedef simde__m512i __m512i;
     typedef simde__m512d __m512d;
   #else
-    #define __m128bh simde__m128bh
     #define __m512 simde__m512
     #define __m512i simde__m512i
     #define __m512d simde__m512d
+  #endif
+#endif
+
+#if !defined(SIMDE_X86_AVX512BF16_NATIVE) && defined(SIMDE_ENABLE_NATIVE_ALIASES)
+  #if !defined(HEDLEY_INTEL_VERSION)
+    typedef simde__m128bh __m128bh;
+  #else
+    #define __m128bh simde__m128bh
   #endif
 #endif
 
