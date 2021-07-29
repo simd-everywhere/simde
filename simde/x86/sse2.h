@@ -1509,9 +1509,9 @@ simde_x_mm_copysign_pd(simde__m128d dest, simde__m128d src) {
     r_.neon_u64 = vbslq_u64(sign_pos, src_.neon_u64, dest_.neon_u64);
   #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
     #if defined(SIMDE_BUG_VEC_CPSGN_REVERSED_ARGS)
-      r_.altivec_f64 = vec_cpsgn(src_.altivec_f64, dest_.altivec_f64);
-    #else
       r_.altivec_f64 = vec_cpsgn(dest_.altivec_f64, src_.altivec_f64);
+    #else
+      r_.altivec_f64 = vec_cpsgn(src_.altivec_f64, dest_.altivec_f64);
     #endif
   #elif defined(simde_math_copysign)
     SIMDE_VECTORIZE
