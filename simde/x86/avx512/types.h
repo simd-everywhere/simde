@@ -351,13 +351,13 @@ typedef union {
   typedef __mmask16 simde__mmask16;
 #else
  #if defined(SIMDE_VECTOR_SUBSCRIPT)
-   typedef simde_float32 simde__m512   SIMDE_AVX512_ALIGN SIMDE_VECTOR(64) SIMDE_MAY_ALIAS;
-   typedef int_fast32_t  simde__m512i  SIMDE_AVX512_ALIGN SIMDE_VECTOR(64) SIMDE_MAY_ALIAS;
-   typedef simde_float64 simde__m512d  SIMDE_AVX512_ALIGN SIMDE_VECTOR(64) SIMDE_MAY_ALIAS;
+   typedef simde_float32 simde__m512  SIMDE_AVX512_ALIGN SIMDE_VECTOR(64) SIMDE_MAY_ALIAS;
+   typedef int_fast32_t  simde__m512i SIMDE_AVX512_ALIGN SIMDE_VECTOR(64) SIMDE_MAY_ALIAS;
+   typedef simde_float64 simde__m512d SIMDE_AVX512_ALIGN SIMDE_VECTOR(64) SIMDE_MAY_ALIAS;
   #else
-    typedef simde__m512_private   simde__m512;
-    typedef simde__m512i_private  simde__m512i;
-    typedef simde__m512d_private  simde__m512d;
+    typedef simde__m512_private  simde__m512;
+    typedef simde__m512i_private simde__m512i;
+    typedef simde__m512d_private simde__m512d;
   #endif
 
   typedef uint8_t simde__mmask8;
