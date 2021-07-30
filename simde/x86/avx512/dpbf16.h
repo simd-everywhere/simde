@@ -54,6 +54,7 @@ simde_mm_dpbf16_ps (simde__m128 src, simde__m128bh a, simde__m128bh b) {
         HEDLEY_REINTERPRET_CAST(__typeof__(a_.f32), r1_[0].u32) * HEDLEY_REINTERPRET_CAST(__typeof__(a_.f32), r2_[0].u32) +
         HEDLEY_REINTERPRET_CAST(__typeof__(a_.f32), r1_[1].u32) * HEDLEY_REINTERPRET_CAST(__typeof__(a_.f32), r2_[1].u32);
     #else
+      SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(a_.u16) / sizeof(a_.u16[0])) ; i++) {
         src_.f32[i / 2] += (simde_uint32_as_float32(HEDLEY_STATIC_CAST(uint32_t, a_.u16[i]) << 16) * simde_uint32_as_float32(HEDLEY_STATIC_CAST(uint32_t, b_.u16[i]) << 16));
       }
