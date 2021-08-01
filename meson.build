@@ -233,6 +233,7 @@ simde_avx512_families = [
   'dpbf16',
   'dpbusd',
   'dpwssd',
+  'dpwssds',
   'expand',
   'extract',
   'flushsubnormal',
