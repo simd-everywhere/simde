@@ -18,7 +18,7 @@ simde_mm_dpwssds_epi32 (simde__m128i src, simde__m128i a, simde__m128i b) {
       a_   = simde__m128i_to_private(a),
       b_   = simde__m128i_to_private(b);
 
-    #if defined(SIMDE_SHUFFLE_VECTOR_) && defined(SIMDE_CONVERT_VECTOR_)
+    #if defined(SIMDE_SHUFFLE_VECTOR_) && defined(SIMDE_CONVERT_VECTOR_) && defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
       int32_t x1_ SIMDE_VECTOR(32);
       int32_t x2_ SIMDE_VECTOR(32);
       simde__m128i_private
