@@ -18,7 +18,7 @@ simde_mm_dpwssds_epi32 (simde__m128i src, simde__m128i a, simde__m128i b) {
       a_   = simde__m128i_to_private(a),
       b_   = simde__m128i_to_private(b);
 
-    #if defined(SIMDE_SHUFFLE_VECTOR_) && defined(SIMDE_CONVERT_VECTOR_) || 1
+    #if defined(SIMDE_SHUFFLE_VECTOR_) && defined(SIMDE_CONVERT_VECTOR_)
       int32_t x1_ SIMDE_VECTOR(32);
       int32_t x2_ SIMDE_VECTOR(32);
       simde__m128i_private
@@ -46,9 +46,9 @@ simde_mm_dpwssds_epi32 (simde__m128i src, simde__m128i a, simde__m128i b) {
       simde_memcpy(&r1_, &x1_, sizeof(x1_));
       simde_memcpy(&r2_, &x2_, sizeof(x2_));
 
-      __typeof__(src_.u32) au = HEDLEY_REINTERPRET_CAST(__typeof__(src_.u32), (r1_[0].i32 * r2_[0].i32));
-      __typeof__(src_.u32) bu = HEDLEY_REINTERPRET_CAST(__typeof__(src_.u32), (r1_[1].i32 * r2_[1].i32));
-      __typeof__(src_.u32) ru = au + bu;
+      uint32_t au SIMDE_VECTOR(16) = HEDLEY_REINTERPRET_CAST(__typeof__(src_.u32), (r1_[0].i32 * r2_[0].i32));
+      uint32_t bu SIMDE_VECTOR(16) = HEDLEY_REINTERPRET_CAST(__typeof__(src_.u32), (r1_[1].i32 * r2_[1].i32));
+      uint32_t ru SIMDE_VECTOR(16) = au + bu;
 
       au = (au >> 31) + INT32_MAX;
 
