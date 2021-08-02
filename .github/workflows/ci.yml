@@ -125,23 +125,31 @@ jobs:
     - name: CPU Information
       run: cat /proc/cpuinfo
     - name: Install APT Dependencies
-      run: sudo add-apt-repository ppa:ubuntu-toolchain-r/test && sudo apt-get update && sudo apt-get -yq install ninja-build
+      run: sudo add-apt-repository ppa:ubuntu-toolchain-r/test && sudo apt-get update && sudo apt-get -yq install ninja-build ninja-build python3-pip python3-setuptools python3-wheel gcovr
+    - name: Install pip Dependencies
+      run: pip3 install meson
     - name: Install emscripten
       run: |
-        git clone https://github.com/emscripten-core/emsdk.git
-        cd emsdk
+        git clone https://github.com/emscripten-core/emsdk.git /opt/emsdk
+        cd /opt/emsdk
         ./emsdk update-tags
         ./emsdk install tot
         ./emsdk activate tot
         source emsdk_env.sh
     - name: Install v8
-      run: sudo npm install jsvu -g && jsvu --os=linux64 --engines=v8
+      run: |
+        sudo npm install jsvu -g
+        jsvu --os=linux64 --engines=v8
+        sudo ln -s $HOME/.jsvu/v8 /usr/bin/v8
+        ls -l /usr/bin/v8
+        ls -l ~/.jsvu || true
+        /usr/bin/v8 --help
     - name: Configure
-      run: mkdir test/build && cd test/build && ../../emsdk/upstream/emscripten/emcmake cmake -G Ninja ..
+      run: ~/.local/bin/meson setup build --optimization 2 --cross-file docker/cross-files/emscripten.cross
     - name: Build
-      run: ninja -C test/build -v
+      run: ninja -C build -v
     - name: Test
-      run: cd test/build && ~/.jsvu/v8 --experimental-wasm-simd run-tests.js
+      run: ninja -C build -v test
 
   native-aliases:
     runs-on: ubuntu-latest
