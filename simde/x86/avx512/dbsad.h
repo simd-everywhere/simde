@@ -78,7 +78,7 @@ SIMDE_BEGIN_DECLS_
 
     return simde__m128i_from_private(r_);
   }
-  #define simde_mm_dbsad_epu8(a, b, imm8) simde_mm_dbsad_epu8_internal_((a), simde_mm_shuffle_epi32(b, imm8))
+  #define simde_mm_dbsad_epu8(a, b, imm8) simde_mm_dbsad_epu8_internal_((a), simde_mm_shuffle_epi32((b), (imm8)))
 #endif
 #if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES) && defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES)
   #undef _mm_dbsad_epu8
