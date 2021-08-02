@@ -494,7 +494,7 @@ typedef union {
   #else
     typedef simde__m128bh_private simde__m128bh;
     typedef simde__m256bh_private simde__m256bh;
-    typedef simde__m512bh_private simde__m5126bh;
+    typedef simde__m512bh_private simde__m512bh;
   #endif
 #endif
 
