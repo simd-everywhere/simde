@@ -3824,6 +3824,22 @@ HEDLEY_DIAGNOSTIC_POP
 #  define _m_pshufw(a, imm8) simde_mm_shuffle_pi16(a, imm8)
 #endif
 
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m128
+simde_mm_shuffle_ps (simde__m128 a, simde__m128 b, const int imm8)
+    SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 255) {
+  simde__m128_private
+    r_,
+    a_ = simde__m128_to_private(a),
+    b_ = simde__m128_to_private(b);
+
+  r_.f32[0] = a_.f32[(imm8 >> 0) & 3];
+  r_.f32[1] = a_.f32[(imm8 >> 2) & 3];
+  r_.f32[2] = b_.f32[(imm8 >> 4) & 3];
+  r_.f32[3] = b_.f32[(imm8 >> 6) & 3];
+
+  return simde__m128_from_private(r_);
+}
 #if defined(SIMDE_X86_SSE_NATIVE) && !defined(__PGI)
 #  define simde_mm_shuffle_ps(a, b, imm8) _mm_shuffle_ps(a, b, imm8)
 #elif defined(SIMDE_SHUFFLE_VECTOR_)
@@ -3836,39 +3852,18 @@ HEDLEY_DIAGNOSTIC_POP
           (((imm8) >> 2) & 3), \
           (((imm8) >> 4) & 3) + 4, \
           (((imm8) >> 6) & 3) + 4) }); }))
-#elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+#elif defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_STATEMENT_EXPR_)
   #define simde_mm_shuffle_ps(a, b, imm8) \
-     __extension__({ \
-        float32x4_t ret; \
-        ret = vmovq_n_f32( \
-            vgetq_lane_f32(a, (imm8) & (0x3))); \
-        ret = vsetq_lane_f32( \
-            vgetq_lane_f32(a, ((imm8) >> 2) & 0x3), \
-            ret, 1); \
-        ret = vsetq_lane_f32( \
-            vgetq_lane_f32(b, ((imm8) >> 4) & 0x3), \
-            ret, 2); \
-        ret = vsetq_lane_f32( \
-            vgetq_lane_f32(b, ((imm8) >> 6) & 0x3), \
-            ret, 3); \
-    })
-#else
-  SIMDE_FUNCTION_ATTRIBUTES
-  simde__m128
-  simde_mm_shuffle_ps (simde__m128 a, simde__m128 b, const int imm8)
-      SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 255) {
-    simde__m128_private
-      r_,
-      a_ = simde__m128_to_private(a),
-      b_ = simde__m128_to_private(b);
-
-    r_.f32[0] = a_.f32[(imm8 >> 0) & 3];
-    r_.f32[1] = a_.f32[(imm8 >> 2) & 3];
-    r_.f32[2] = b_.f32[(imm8 >> 4) & 3];
-    r_.f32[3] = b_.f32[(imm8 >> 6) & 3];
-
-    return simde__m128_from_private(r_);
-  }
+    (__extension__({ \
+      float32x4_t simde_mm_shuffle_ps_a_ = simde__m128i_to_neon_f32(a); \
+      float32x4_t simde_mm_shuffle_ps_b_ = simde__m128i_to_neon_f32(b); \
+      float32x4_t simde_mm_shuffle_ps_r_; \
+      \
+      simde_mm_shuffle_ps_r_ = vmovq_n_f32(vgetq_lane_f32(simde_mm_shuffle_ps_a_, (imm8) & (0x3))); \
+      simde_mm_shuffle_ps_r_ = vsetq_lane_f32(vgetq_lane_f32(simde_mm_shuffle_ps_a_, ((imm8) >> 2) & 0x3), simde_mm_shuffle_ps_r_, 1); \
+      simde_mm_shuffle_ps_r_ = vsetq_lane_f32(vgetq_lane_f32(simde_mm_shuffle_ps_b_, ((imm8) >> 4) & 0x3), simde_mm_shuffle_ps_r_, 2); \
+                               vsetq_lane_f32(vgetq_lane_f32(simde_mm_shuffle_ps_b_, ((imm8) >> 6) & 0x3), simde_mm_shuffle_ps_r_, 3); \
+    }))
 #endif
 #if defined(SIMDE_X86_SSE_ENABLE_NATIVE_ALIASES)
 #  define _mm_shuffle_ps(a, b, imm8) simde_mm_shuffle_ps((a), (b), imm8)
