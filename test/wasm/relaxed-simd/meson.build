@@ -1,5 +1,6 @@
 simde_test_wasm_relaxed_simd_tests = [
   'fma',
+  'fms',
   'swizzle',
   'trunc',
 ]
