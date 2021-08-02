@@ -914,7 +914,7 @@ simde_mm512_popcnt_epi8 (simde__m512i a) {
       const __m512i high_nibble_of_input = _mm512_andnot_si512(low_nibble_set, a_.n);
       const __m512i low_nibble_of_input = _mm512_and_si512(low_nibble_set, a_.n);
       const __m512i lut =
-        _mm512_set_epi8(
+        simde_mm512_set_epi8(
           4, 3, 3, 2, 3, 2, 2, 1, 3, 2, 2, 1, 2, 1, 1, 0,
           4, 3, 3, 2, 3, 2, 2, 1, 3, 2, 2, 1, 2, 1, 1, 0,
           4, 3, 3, 2, 3, 2, 2, 1, 3, 2, 2, 1, 2, 1, 1, 0,
@@ -1228,7 +1228,7 @@ simde_mm512_popcnt_epi64 (simde__m512i a) {
       const __m512i high_nibble_of_input = _mm512_andnot_si512(low_nibble_set, a_.n);
       const __m512i low_nibble_of_input = _mm512_and_si512(low_nibble_set, a_.n);
       const __m512i lut =
-        _mm512_set_epi8(
+        simde_mm512_set_epi8(
           4, 3, 3, 2, 3, 2, 2, 1, 3, 2, 2, 1, 2, 1, 1, 0,
           4, 3, 3, 2, 3, 2, 2, 1, 3, 2, 2, 1, 2, 1, 1, 0,
           4, 3, 3, 2, 3, 2, 2, 1, 3, 2, 2, 1, 2, 1, 1, 0,
