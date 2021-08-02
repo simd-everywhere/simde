@@ -46,26 +46,23 @@ simde_mm_dpwssds_epi32 (simde__m128i src, simde__m128i a, simde__m128i b) {
       simde_memcpy(&r1_, &x1_, sizeof(x1_));
       simde_memcpy(&r2_, &x2_, sizeof(x2_));
 
-      uint32_t au SIMDE_VECTOR(16) = HEDLEY_REINTERPRET_CAST(__typeof__(src_.u32), (r1_[0].i32 * r2_[0].i32));
-      uint32_t bu SIMDE_VECTOR(16) = HEDLEY_REINTERPRET_CAST(__typeof__(src_.u32), (r1_[1].i32 * r2_[1].i32));
+      uint32_t au SIMDE_VECTOR(16) = HEDLEY_REINTERPRET_CAST(__typeof__(src_.u32), ((r1_[0].i32 * r2_[0].i32) + (r1_[1].i32 * r2_[1].i32)));
+      uint32_t bu SIMDE_VECTOR(16) = HEDLEY_REINTERPRET_CAST(__typeof__(src_.u32), src_.i32);
       uint32_t ru SIMDE_VECTOR(16) = au + bu;
 
       au = (au >> 31) + INT32_MAX;
 
       uint32_t m SIMDE_VECTOR(16) = HEDLEY_REINTERPRET_CAST(__typeof__(m), HEDLEY_REINTERPRET_CAST(__typeof__(src_.i32), (au ^ bu) | ~(bu ^ ru)) < 0);
-      bu = HEDLEY_REINTERPRET_CAST(__typeof__(bu), (au & ~m) | (ru & m));
-
-      au = HEDLEY_REINTERPRET_CAST(__typeof__(src_.u32), src_.i32);
-      ru = au + bu;
-
-      au = (au >> 31) + INT32_MAX;
-
-      m = HEDLEY_REINTERPRET_CAST(__typeof__(m), HEDLEY_REINTERPRET_CAST(__typeof__(src_.i32), (au ^ bu) | ~(bu ^ ru)) < 0);
       src_.i32 = HEDLEY_REINTERPRET_CAST(__typeof__(src_.i32), (au & ~m) | (ru & m));
     #else
       SIMDE_VECTORIZE
-      for (size_t i = 0 ; i < (sizeof(a_.u16) / sizeof(a_.i16[0])) ; i++) {
-        src_.i32[i / 2] = simde_math_adds_i32(src_.i32[i / 2], HEDLEY_STATIC_CAST(int32_t, a_.i16[i]) * HEDLEY_STATIC_CAST(int32_t, b_.i16[i]));
+      for (size_t i = 0 ; i < (sizeof(a_.i16) / sizeof(a_.i16[0]) / 2) ; i++) {
+        src_.i32[i] =
+          simde_math_adds_i32(
+            src_.i32[i],
+            HEDLEY_STATIC_CAST(int32_t, a_.i16[(2 * i)    ]) * HEDLEY_STATIC_CAST(int32_t, b_.i16[(2 * i)    ]) +
+            HEDLEY_STATIC_CAST(int32_t, a_.i16[(2 * i) + 1]) * HEDLEY_STATIC_CAST(int32_t, b_.i16[(2 * i) + 1])
+          );
       }
     #endif
 
