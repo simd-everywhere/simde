@@ -70,7 +70,7 @@ simde_wasm_i8x16_swizzle_relaxed (simde_v128_t a, simde_v128_t b) {
     return simde_v128_from_private(r_);
   #endif
 }
-#if defined(SIMDE_WASM_SIMD128_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_WASM_RELAXED_SIMD_ENABLE_NATIVE_ALIASES)
   #define wasm_i8x16_swizzle_relaxed(a, b) simde_wasm_i8x16_swizzle_relaxed((a), (b))
 #endif
 
@@ -106,7 +106,7 @@ simde_wasm_i32x4_trunc_f32x4 (simde_v128_t a) {
     return simde_v128_from_private(r_);
   #endif
 }
-#if defined(SIMDE_WASM_SIMD128_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_WASM_RELAXED_SIMD_ENABLE_NATIVE_ALIASES)
   #define wasm_i32x4_trunc_f32x4(a) simde_wasm_i32x4_trunc_f32x4((a))
 #endif
 
@@ -151,7 +151,7 @@ simde_wasm_u32x4_trunc_f32x4 (simde_v128_t a) {
     return simde_v128_from_private(r_);
   #endif
 }
-#if defined(SIMDE_WASM_SIMD128_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_WASM_RELAXED_SIMD_ENABLE_NATIVE_ALIASES)
   #define wasm_u32x4_trunc_f32x4(a) simde_wasm_u32x4_trunc_f32x4((a))
 #endif
 
@@ -208,7 +208,7 @@ simde_wasm_i32x4_trunc_f64x2_zero (simde_v128_t a) {
     return simde_v128_from_private(r_);
   #endif
 }
-#if defined(SIMDE_WASM_SIMD128_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_WASM_RELAXED_SIMD_ENABLE_NATIVE_ALIASES)
   #define wasm_i32x4_trunc_f64x2_zero(a) simde_wasm_i32x4_trunc_f64x2_zero((a))
 #endif
 
@@ -253,8 +253,84 @@ simde_wasm_u32x4_trunc_f64x2_zero (simde_v128_t a) {
     return simde_v128_from_private(r_);
   #endif
 }
-#if defined(SIMDE_WASM_SIMD128_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_WASM_RELAXED_SIMD_ENABLE_NATIVE_ALIASES)
   #define wasm_u32x4_trunc_f64x2_zero(a) simde_wasm_u32x4_trunc_f64x2_zero((a))
+#endif
+
+/* fma */
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_v128_t
+simde_wasm_f32x4_fma (simde_v128_t a, simde_v128_t b, simde_v128_t c) {
+  #if defined(SIMDE_WASM_RELAXED_SIMD_NATIVE)
+    return wasm_f32x4_fma(a, b, c);
+  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+    return wasm_f32x4_add(a, wasm_f32x4_mul(b, c));
+  #else
+    simde_v128_private
+      a_ = simde_v128_to_private(a),
+      b_ = simde_v128_to_private(b),
+      c_ = simde_v128_to_private(c),
+      r_;
+
+    #if defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
+      r_.altivec_f32 = vec_madd(c_.altivec_f32, b_.altivec_f32, a_.altivec_f32);
+    #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(__ARM_FEATURE_FMA)
+      r_.neon_f32 = vfmaq_f32(a_.neon_f32, c_.neon_f32, b_.neon_f32);
+    #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+      r_.neon_f32 = vmlaq_f32(a_.neon_f32, b_.neon_f32, c_.neon_f32);
+    #elif defined(SIMDE_X86_FMA_NATIVE)
+      r_.sse_m128 = _mm_fmadd_ps(c_.sse_m128, b_.sse_m128, a_.sse_m128);
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT)
+      r_.f32 = a_.f32 + (b_.f32 * c_.f32);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
+        r_.f32[i] = simde_math_fmaf(c_.f32[i], b_.f32[i], a_.f32[i]);
+      }
+    #endif
+
+    return simde_v128_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_WASM_RELAXED_SIMD_ENABLE_NATIVE_ALIASES)
+  #define wasm_f32x4_fma(a, b) simde_wasm_f32x4_fma((a), (b))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_v128_t
+simde_wasm_f64x2_fma (simde_v128_t a, simde_v128_t b, simde_v128_t c) {
+  #if defined(SIMDE_WASM_RELAXED_SIMD_NATIVE)
+    return wasm_f64x2_fma(a, b, c);
+  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+    return wasm_f64x2_add(a, wasm_f64x2_mul(b, c));
+  #else
+    simde_v128_private
+      a_ = simde_v128_to_private(a),
+      b_ = simde_v128_to_private(b),
+      c_ = simde_v128_to_private(c),
+      r_;
+
+    #if defined(SIMDE_POWER_ALTIVEC_P7_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
+      r_.altivec_f64 = vec_madd(c_.altivec_f64, b_.altivec_f64, a_.altivec_f64);
+    #elif defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+      r_.neon_f64 = vfmaq_f64(a_.neon_f64, c_.neon_f64, b_.neon_f64);
+    #elif defined(SIMDE_X86_FMA_NATIVE)
+      r_.sse_m128d = _mm_fmadd_pd(c_.sse_m128d, b_.sse_m128d, a_.sse_m128d);
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT)
+      r_.f64 = a_.f64 + (b_.f64 * c_.f64);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
+        r_.f64[i] = simde_math_fma(c_.f64[i], b_.f64[i], a_.f64[i]);
+      }
+    #endif
+
+    return simde_v128_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_WASM_RELAXED_SIMD_ENABLE_NATIVE_ALIASES)
+  #define wasm_f64x2_fma(a, b) simde_wasm_f64x2_fma((a), (b))
 #endif
 
 SIMDE_END_DECLS_
