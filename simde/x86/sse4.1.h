@@ -55,38 +55,43 @@ simde_mm_blend_epi16 (simde__m128i a, simde__m128i b, const int imm8)
   return simde__m128i_from_private(r_);
 }
 #if defined(SIMDE_X86_SSE4_1_NATIVE)
-#  define simde_mm_blend_epi16(a, b, imm8) _mm_blend_epi16(a, b, imm8)
+  #define simde_mm_blend_epi16(a, b, imm8) _mm_blend_epi16(a, b, imm8)
 #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-#  define simde_mm_blend_epi16(a, b, imm8) \
-     (__extension__ ({ \
-           const uint16_t _mask[8] = {               \
-               ((imm8) & (1 << 0)) ? 0xFFFF : 0x0000, \
-               ((imm8) & (1 << 1)) ? 0xFFFF : 0x0000, \
-               ((imm8) & (1 << 2)) ? 0xFFFF : 0x0000, \
-               ((imm8) & (1 << 3)) ? 0xFFFF : 0x0000, \
-               ((imm8) & (1 << 4)) ? 0xFFFF : 0x0000, \
-               ((imm8) & (1 << 5)) ? 0xFFFF : 0x0000, \
-               ((imm8) & (1 << 6)) ? 0xFFFF : 0x0000, \
-               ((imm8) & (1 << 7)) ? 0xFFFF : 0x0000  \
-           };                                        \
-           uint16x8_t _mask_vec = vld1q_u16(_mask);  \
-           simde__m128i_from_neon_u16(vbslq_u16(_mask_vec, simde__m128i_to_neon_u16(b), simde__m128i_to_neon_u16(a))); \
-       }))
+  #define simde_mm_blend_epi16(a, b, imm8) \
+    simde__m128i_from_neon_u16( \
+      vbslq_u16( \
+        vld1q_u16( \
+          ((const uint16_t[]) { \
+            ((imm8) & (1 << 0)) ? 0xFFFF : 0x0000, \
+            ((imm8) & (1 << 1)) ? 0xFFFF : 0x0000, \
+            ((imm8) & (1 << 2)) ? 0xFFFF : 0x0000, \
+            ((imm8) & (1 << 3)) ? 0xFFFF : 0x0000, \
+            ((imm8) & (1 << 4)) ? 0xFFFF : 0x0000, \
+            ((imm8) & (1 << 5)) ? 0xFFFF : 0x0000, \
+            ((imm8) & (1 << 6)) ? 0xFFFF : 0x0000, \
+            ((imm8) & (1 << 7)) ? 0xFFFF : 0x0000 \
+          }) \
+        ), \
+        simde__m128i_to_neon_u16(b), \
+        simde__m128i_to_neon_u16(a)))
 #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
-#  define simde_mm_blend_epi16(a, b, imm8)      \
-     (__extension__ ({ \
-           const SIMDE_POWER_ALTIVEC_VECTOR(unsigned short) _mask = {      \
-               ((imm8) & (1 << 0)) ? 0xFFFF : 0x0000, \
-               ((imm8) & (1 << 1)) ? 0xFFFF : 0x0000, \
-               ((imm8) & (1 << 2)) ? 0xFFFF : 0x0000, \
-               ((imm8) & (1 << 3)) ? 0xFFFF : 0x0000, \
-               ((imm8) & (1 << 4)) ? 0xFFFF : 0x0000, \
-               ((imm8) & (1 << 5)) ? 0xFFFF : 0x0000, \
-               ((imm8) & (1 << 6)) ? 0xFFFF : 0x0000, \
-               ((imm8) & (1 << 7)) ? 0xFFFF : 0x0000  \
-           };                                         \
-           simde__m128i_from_altivec_u16(vec_sel(simde__m128i_to_altivec_u16(a), simde__m128i_to_altivec_u16(b), _mask)); \
-       }))
+  #define simde_mm_blend_epi16(a, b, imm8) \
+    simde__m128i_from_altivec_u16(\
+      vec_sel( \
+        simde__m128i_to_altivec_u16(a), \
+        simde__m128i_to_altivec_u16(b), \
+        ((const SIMDE_POWER_ALTIVEC_VECTOR(unsigned short)) { \
+          ((imm8) & (1 << 0)) ? 0xFFFF : 0x0000, \
+          ((imm8) & (1 << 1)) ? 0xFFFF : 0x0000, \
+          ((imm8) & (1 << 2)) ? 0xFFFF : 0x0000, \
+          ((imm8) & (1 << 3)) ? 0xFFFF : 0x0000, \
+          ((imm8) & (1 << 4)) ? 0xFFFF : 0x0000, \
+          ((imm8) & (1 << 5)) ? 0xFFFF : 0x0000, \
+          ((imm8) & (1 << 6)) ? 0xFFFF : 0x0000, \
+          ((imm8) & (1 << 7)) ? 0xFFFF : 0x0000 \
+        }) \
+      ) \
+    )
 #endif
 #if defined(SIMDE_X86_SSE4_1_ENABLE_NATIVE_ALIASES)
   #undef _mm_blend_epi16
@@ -109,24 +114,24 @@ simde_mm_blend_pd (simde__m128d a, simde__m128d b, const int imm8)
   return simde__m128d_from_private(r_);
 }
 #if defined(SIMDE_X86_SSE4_1_NATIVE)
-#  define simde_mm_blend_pd(a, b, imm8) _mm_blend_pd(a, b, imm8)
+  #define simde_mm_blend_pd(a, b, imm8) _mm_blend_pd(a, b, imm8)
 #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-#  define simde_mm_blend_pd(a, b, imm8) \
+  #define simde_mm_blend_pd(a, b, imm8) \
      (__extension__ ({ \
-           const uint64_t _mask[2] = {               \
+           const uint64_t _mask[2] = { \
                ((imm8) & (1 << 0)) ? UINT64_MAX : 0, \
-               ((imm8) & (1 << 1)) ? UINT64_MAX : 0  \
-           };                                        \
-           uint64x2_t _mask_vec = vld1q_u64(_mask);  \
+               ((imm8) & (1 << 1)) ? UINT64_MAX : 0 \
+           }; \
+           uint64x2_t _mask_vec = vld1q_u64(_mask); \
            simde__m128d_from_neon_u64(vbslq_u64(_mask_vec, simde__m128d_to_neon_u64(b), simde__m128d_to_neon_u64(a))); \
        }))
 #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
-#  define simde_mm_blend_pd(a, b, imm8)         \
+#  define simde_mm_blend_pd(a, b, imm8) \
      (__extension__ ({ \
            const SIMDE_POWER_ALTIVEC_VECTOR(unsigned long long) _mask = { \
                ((imm8) & (1 << 0)) ? UINT64_MAX : 0, \
-               ((imm8) & (1 << 1)) ? UINT64_MAX : 0  \
-           };                                        \
+               ((imm8) & (1 << 1)) ? UINT64_MAX : 0 \
+           }; \
            simde__m128d_from_altivec_f64(vec_sel(simde__m128d_to_altivec_f64(a), simde__m128d_to_altivec_f64(b), _mask)); \
        }))
 #endif
@@ -155,24 +160,24 @@ simde_mm_blend_ps (simde__m128 a, simde__m128 b, const int imm8)
 #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
 #  define simde_mm_blend_ps(a, b, imm8) \
      (__extension__ ({ \
-           const uint32_t _mask[4] = {               \
+           const uint32_t _mask[4] = { \
                ((imm8) & (1 << 0)) ? UINT32_MAX : 0, \
                ((imm8) & (1 << 1)) ? UINT32_MAX : 0, \
                ((imm8) & (1 << 2)) ? UINT32_MAX : 0, \
-               ((imm8) & (1 << 3)) ? UINT32_MAX : 0  \
-           };                                        \
-           uint32x4_t _mask_vec = vld1q_u32(_mask);  \
+               ((imm8) & (1 << 3)) ? UINT32_MAX : 0 \
+           }; \
+           uint32x4_t _mask_vec = vld1q_u32(_mask); \
            simde__m128_from_neon_f32(vbslq_f32(_mask_vec, simde__m128_to_neon_f32(b), simde__m128_to_neon_f32(a))); \
        }))
 #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
 #  define simde_mm_blend_ps(a, b, imm8) \
      (__extension__ ({ \
-           const SIMDE_POWER_ALTIVEC_VECTOR(unsigned int) _mask = {       \
+           const SIMDE_POWER_ALTIVEC_VECTOR(unsigned int) _mask = { \
                ((imm8) & (1 << 0)) ? UINT32_MAX : 0, \
                ((imm8) & (1 << 1)) ? UINT32_MAX : 0, \
                ((imm8) & (1 << 2)) ? UINT32_MAX : 0, \
-               ((imm8) & (1 << 3)) ? UINT32_MAX : 0  \
-           };                                        \
+               ((imm8) & (1 << 3)) ? UINT32_MAX : 0 \
+           }; \
            simde__m128_from_altivec_f32(vec_sel(simde__m128_to_altivec_f32(a), simde__m128_to_altivec_f32(b), _mask)); \
        }))
 #endif
