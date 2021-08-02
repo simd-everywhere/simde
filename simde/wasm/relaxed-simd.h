@@ -257,6 +257,98 @@ simde_wasm_u32x4_trunc_f64x2_zero (simde_v128_t a) {
   #define wasm_u32x4_trunc_f64x2_zero(a) simde_wasm_u32x4_trunc_f64x2_zero((a))
 #endif
 
+SIMDE_FUNCTION_ATTRIBUTES
+simde_v128_t
+simde_wasm_i8x16_blend(simde_v128_t a, simde_v128_t b, simde_v128_t mask) {
+  #if defined(SIMDE_WASM_RELAXED_SIMD_NATIVE)
+    return wasm_i8x16_blend(a, b, mask);
+  #elif defined(SIMDE_X86_SSE4_1_NATIVE)
+    simde_v128_private
+      a_ = simde_v128_to_private(a),
+      b_ = simde_v128_to_private(b),
+      mask_ = simde_v128_to_private(mask),
+      r_;
+
+    r_.sse_m128i = _mm_blendv_epi8(b_.sse_m128i, a_.sse_m128i, mask_.sse_m128i);
+
+    return simde_v128_from_private(r_);
+  #else
+    return simde_wasm_v128_bitselect(a, b, mask);
+  #endif
+}
+#if defined(SIMDE_WASM_SIMD128_ENABLE_NATIVE_ALIASES)
+  #define wasm_i8x16_blend(a, b, c) simde_wasm_i8x16_blend((a), (b), (c))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_v128_t
+simde_wasm_i16x8_blend(simde_v128_t a, simde_v128_t b, simde_v128_t mask) {
+  #if defined(SIMDE_WASM_RELAXED_SIMD_NATIVE)
+    return wasm_i16x8_blend(a, b, mask);
+  #elif defined(SIMDE_X86_SSE4_1_NATIVE)
+    simde_v128_private
+      a_ = simde_v128_to_private(a),
+      b_ = simde_v128_to_private(b),
+      mask_ = simde_v128_to_private(mask),
+      r_;
+
+    r_.sse_m128i = _mm_blendv_epi8(b_.sse_m128i, a_.sse_m128i, _mm_srai_epi16(mask_.sse_m128i, 15));
+
+    return simde_v128_from_private(r_);
+  #else
+    return simde_wasm_v128_bitselect(a, b, mask);
+  #endif
+}
+#if defined(SIMDE_WASM_SIMD128_ENABLE_NATIVE_ALIASES)
+  #define wasm_i16x8_blend(a, b, c) simde_wasm_i16x8_blend((a), (b), (c))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_v128_t
+simde_wasm_i32x4_blend(simde_v128_t a, simde_v128_t b, simde_v128_t mask) {
+  #if defined(SIMDE_WASM_RELAXED_SIMD_NATIVE)
+    return wasm_i32x4_blend(a, b, mask);
+  #elif defined(SIMDE_X86_SSE4_1_NATIVE)
+    simde_v128_private
+      a_ = simde_v128_to_private(a),
+      b_ = simde_v128_to_private(b),
+      mask_ = simde_v128_to_private(mask),
+      r_;
+
+    r_.sse_m128 = _mm_blendv_ps(b_.sse_m128, a_.sse_m128, mask_.sse_m128);
+
+    return simde_v128_from_private(r_);
+  #else
+    return simde_wasm_v128_bitselect(a, b, mask);
+  #endif
+}
+#if defined(SIMDE_WASM_SIMD128_ENABLE_NATIVE_ALIASES)
+  #define wasm_i32x4_blend(a, b, c) simde_wasm_i32x4_blend((a), (b), (c))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_v128_t
+simde_wasm_i64x2_blend(simde_v128_t a, simde_v128_t b, simde_v128_t mask) {
+  #if defined(SIMDE_WASM_RELAXED_SIMD_NATIVE)
+    return wasm_i64x2_blend(a, b, mask);
+  #elif defined(SIMDE_X86_SSE4_1_NATIVE)
+    simde_v128_private
+      a_ = simde_v128_to_private(a),
+      b_ = simde_v128_to_private(b),
+      mask_ = simde_v128_to_private(mask),
+      r_;
+
+    r_.sse_m128d = _mm_blendv_pd(b_.sse_m128d, a_.sse_m128d, mask_.sse_m128d);
+
+    return simde_v128_from_private(r_);
+  #else
+    return simde_wasm_v128_bitselect(a, b, mask);
+  #endif
+}
+#if defined(SIMDE_WASM_SIMD128_ENABLE_NATIVE_ALIASES)
+  #define wasm_i64x2_blend(a, b, c) simde_wasm_i64x2_blend((a), (b), (c))
+#endif
+
 /* fma */
 
 SIMDE_FUNCTION_ATTRIBUTES
