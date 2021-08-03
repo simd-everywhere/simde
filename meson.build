@@ -205,6 +205,7 @@ simde_sve_families = [
 simde_avx512_families = [
   '2intersect',
   '4dpwssd',
+  '4dpwssds',
   'abs',
   'add',
   'adds',
