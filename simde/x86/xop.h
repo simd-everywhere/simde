@@ -2844,8 +2844,8 @@ simde_mm_maccs_epi16 (simde__m128i a, simde__m128i b, simde__m128i c) {
       c_ = simde__m128i_to_private(c);
 
     #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
-      int32x4_t c_lo = vmovl_s16(vget_low_s16(c_.i16));
-      int32x4_t c_hi = vmovl_high_s16(c_.i16);
+      int32x4_t c_lo = vmovl_s16(vget_low_s16(c_.neon_i16));
+      int32x4_t c_hi = vmovl_high_s16(c_.neon_i16);
       int32x4_t lo = vmlal_s16(c_lo, vget_low_s16(a_.neon_i16), vget_low_s16(b_.neon_i16));
       int32x4_t hi = vmlal_high_s16(c_hi, a_.neon_i16, b_.neon_i16);
       r_.neon_i16 = vcombine_s16(vqmovn_s32(lo), vqmovn_s32(hi));
@@ -2883,8 +2883,8 @@ simde_mm_maccs_epi32 (simde__m128i a, simde__m128i b, simde__m128i c) {
       c_ = simde__m128i_to_private(c);
 
     #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
-      int64x2_t c_lo = vmovl_s32(vget_low_s32(c_.i32));
-      int64x2_t c_hi = vmovl_high_s32(c_.i32);
+      int64x2_t c_lo = vmovl_s32(vget_low_s32(c_.neon_i32));
+      int64x2_t c_hi = vmovl_high_s32(c_.neon_i32);
       int64x2_t lo = vmlal_s32(c_lo, vget_low_s32(a_.neon_i32), vget_low_s32(b_.neon_i32));
       int64x2_t hi = vmlal_high_s32(c_hi, a_.neon_i32, b_.neon_i32);
       r_.neon_i32 = vcombine_s32(vqmovn_s64(lo), vqmovn_s64(hi));
