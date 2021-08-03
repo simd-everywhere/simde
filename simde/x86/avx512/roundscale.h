@@ -24,7 +24,7 @@ SIMDE_BEGIN_DECLS_
     simde__m128 r, clear_sign;
 
     clear_sign = simde_mm_andnot_ps(simde_mm_set1_ps(SIMDE_FLOAT32_C(-0.0)), result);
-    r = simde_x_mm_select_ps(result, a, simde_mm_cmpeq_ps(clear_sign, simde_mm_set1_ps(SIMDE_MATH_INFINITY)));
+    r = simde_x_mm_select_ps(result, a, simde_mm_cmpeq_ps(clear_sign, simde_mm_set1_ps(SIMDE_MATH_INFINITYF)));
 
     return r;
   }
@@ -92,7 +92,7 @@ SIMDE_BEGIN_DECLS_
     simde__m256 r, clear_sign;
 
     clear_sign = simde_mm256_andnot_ps(simde_mm256_set1_ps(SIMDE_FLOAT32_C(-0.0)), result);
-    r = simde_x_mm256_select_ps(result, a, simde_mm256_castsi256_ps(simde_mm256_cmpeq_epi32(simde_mm256_castps_si256(clear_sign), simde_mm256_castps_si256(simde_mm256_set1_ps(SIMDE_MATH_INFINITY)))));
+    r = simde_x_mm256_select_ps(result, a, simde_mm256_castsi256_ps(simde_mm256_cmpeq_epi32(simde_mm256_castps_si256(clear_sign), simde_mm256_castps_si256(simde_mm256_set1_ps(SIMDE_MATH_INFINITYF)))));
 
     return r;
   }
@@ -160,7 +160,7 @@ SIMDE_BEGIN_DECLS_
     simde__m512 r, clear_sign;
 
     clear_sign = simde_mm512_andnot_ps(simde_mm512_set1_ps(SIMDE_FLOAT32_C(-0.0)), result);
-    r = simde_mm512_mask_mov_ps(result, simde_mm512_cmpeq_epi32_mask(simde_mm512_castps_si512(clear_sign), simde_mm512_castps_si512(simde_mm512_set1_ps(SIMDE_MATH_INFINITY))), a);
+    r = simde_mm512_mask_mov_ps(result, simde_mm512_cmpeq_epi32_mask(simde_mm512_castps_si512(clear_sign), simde_mm512_castps_si512(simde_mm512_set1_ps(SIMDE_MATH_INFINITYF))), a);
 
     return r;
   }
@@ -409,8 +409,8 @@ SIMDE_BEGIN_DECLS_
       r_ = simde__m128_to_private(result),
       b_ = simde__m128_to_private(b);
 
-    if((simde_uint32_as_float32(r_.u32[0] & UINT32_C(2147483647)) == SIMDE_MATH_INFINITYF))
-      r_.u32[0] = b_.u32[0];
+    if(simde_math_isinff(r_.f32[0]))
+      r_.f32[0] = b_.f32[0];
 
     return simde__m128_from_private(r_);
   }
@@ -516,8 +516,8 @@ SIMDE_BEGIN_DECLS_
       r_ = simde__m128d_to_private(result),
       b_ = simde__m128d_to_private(b);
 
-    if((simde_uint64_as_float64(r_.u64[0] & UINT64_C(9223372036854775807)) == SIMDE_MATH_INFINITY))
-      r_.u64[0] = b_.u64[0];
+    if(simde_math_isinf(r_.f64[0]))
+      r_.f64[0] = b_.f64[0];
 
     return simde__m128d_from_private(r_);
   }
