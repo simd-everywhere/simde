@@ -5830,18 +5830,12 @@ simde_mm_slli_epi16 (simde__m128i a, const int imm8)
   #define simde_mm_slli_epi16(a, imm8) _mm_slli_epi16(a, imm8)
 #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_mm_slli_epi16(a, imm8) \
-     (__extension__ ({ \
-        simde__m128i ret; \
-        if ((imm8) <= 0) { \
-            ret = a; \
-        } else if ((imm8) > 15) { \
-            ret = simde_mm_setzero_si128(); \
-        } else { \
-            ret = simde__m128i_from_neon_i16( \
-                vshlq_n_s16(simde__m128i_to_neon_i16(a), ((imm8) & 15))); \
-        } \
-        ret; \
-    }))
+    (((imm8) <= 0) ? \
+      (a) : \
+      simde__m128i_from_neon_i16( \
+        ((imm8) > 15) ? \
+          vandq_s16(simde__m128i_to_neon_i16(a), vdupq_n_s16(0)) : \
+          vshlq_n_s16(simde__m128i_to_neon_i16(a), ((imm8) & 15))))
 #elif defined(SIMDE_WASM_SIMD128_NATIVE)
   #define simde_mm_slli_epi16(a, imm8) \
     ((imm8 < 16) ? wasm_i16x8_shl(simde__m128i_to_private(a).wasm_v128, imm8) : wasm_i16x8_const(0,0,0,0,0,0,0,0))
@@ -5879,18 +5873,12 @@ simde_mm_slli_epi32 (simde__m128i a, const int imm8)
   #define simde_mm_slli_epi32(a, imm8) _mm_slli_epi32(a, imm8)
 #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_mm_slli_epi32(a, imm8) \
-     (__extension__ ({ \
-       simde__m128i ret; \
-       if ((imm8) <= 0) { \
-         ret = a; \
-       } else if ((imm8) > 31) { \
-         ret = simde_mm_setzero_si128(); \
-       } else { \
-         ret = simde__m128i_from_neon_i32( \
-           vshlq_n_s32(simde__m128i_to_neon_i32(a), ((imm8) & 31))); \
-       } \
-       ret; \
-    }))
+    (((imm8) <= 0) ? \
+      (a) : \
+      simde__m128i_from_neon_i32( \
+        ((imm8) > 31) ? \
+          vandq_s32(simde__m128i_to_neon_i32(a), vdupq_n_s32(0)) : \
+          vshlq_n_s32(simde__m128i_to_neon_i32(a), ((imm8) & 31))))
 #elif defined(SIMDE_WASM_SIMD128_NATIVE)
   #define simde_mm_slli_epi32(a, imm8) \
     ((imm8 < 32) ? wasm_i32x4_shl(simde__m128i_to_private(a).wasm_v128, imm8) : wasm_i32x4_const(0,0,0,0))
@@ -5940,18 +5928,12 @@ simde_mm_slli_epi64 (simde__m128i a, const int imm8)
   #define simde_mm_slli_epi64(a, imm8) _mm_slli_epi64(a, imm8)
 #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_mm_slli_epi64(a, imm8) \
-     (__extension__ ({ \
-        simde__m128i ret; \
-        if ((imm8) <= 0) { \
-            ret = a; \
-        } else if ((imm8) > 63) { \
-            ret = simde_mm_setzero_si128(); \
-        } else { \
-            ret = simde__m128i_from_neon_i64( \
-                vshlq_n_s64(simde__m128i_to_neon_i64(a), ((imm8) & 63))); \
-        } \
-        ret; \
-    }))
+    (((imm8) <= 0) ? \
+      (a) : \
+      simde__m128i_from_neon_i64( \
+        ((imm8) > 63) ? \
+          vandq_s64(simde__m128i_to_neon_i64(a), vdupq_n_s64(0)) : \
+          vshlq_n_s64(simde__m128i_to_neon_i64(a), ((imm8) & 63))))
 #elif defined(SIMDE_WASM_SIMD128_NATIVE)
   #define simde_mm_slli_epi64(a, imm8) \
     ((imm8 < 64) ? wasm_i64x2_shl(simde__m128i_to_private(a).wasm_v128, imm8) : wasm_i64x2_const(0,0))
@@ -5986,18 +5968,12 @@ simde_mm_srli_epi16 (simde__m128i a, const int imm8)
   #define simde_mm_srli_epi16(a, imm8) _mm_srli_epi16(a, imm8)
 #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_mm_srli_epi16(a, imm8) \
-     (__extension__ ({ \
-        simde__m128i ret; \
-        if ((imm8) <= 0) { \
-            ret = a; \
-        } else if ((imm8) > 15) { \
-            ret = simde_mm_setzero_si128(); \
-        } else { \
-            ret = simde__m128i_from_neon_u16( \
-                vshrq_n_u16(simde__m128i_to_neon_u16(a), (((imm8) & 15) | (((imm8) & 15) == 0)))); \
-        } \
-        ret; \
-    }))
+    (((imm8) <= 0) ? \
+      (a) : \
+      simde__m128i_from_neon_u16( \
+        ((imm8) > 15) ? \
+          vandq_u16(simde__m128i_to_neon_u16(a), vdupq_n_u16(0)) : \
+          vshrq_n_u16(simde__m128i_to_neon_u16(a), ((imm8) & 15) | (((imm8) & 15) == 0))))
 #elif defined(SIMDE_WASM_SIMD128_NATIVE)
   #define simde_mm_srli_epi16(a, imm8) \
     ((imm8 < 16) ? wasm_u16x8_shr(simde__m128i_to_private(a).wasm_v128, imm8) : wasm_i16x8_const(0,0,0,0,0,0,0,0))
@@ -6035,18 +6011,12 @@ simde_mm_srli_epi32 (simde__m128i a, const int imm8)
   #define simde_mm_srli_epi32(a, imm8) _mm_srli_epi32(a, imm8)
 #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_mm_srli_epi32(a, imm8) \
-    (__extension__ ({ \
-        simde__m128i ret; \
-        if ((imm8) <= 0) { \
-            ret = a; \
-        } else if ((imm8) > 31) { \
-            ret = simde_mm_setzero_si128(); \
-        } else { \
-            ret = simde__m128i_from_neon_u32( \
-              vshrq_n_u32(simde__m128i_to_neon_u32(a), (((imm8) & 31) | (((imm8) & 31) == 0)))); \
-        } \
-        ret; \
-    }))
+    (((imm8) <= 0) ? \
+      (a) : \
+      simde__m128i_from_neon_u32( \
+        ((imm8) > 31) ? \
+          vandq_u32(simde__m128i_to_neon_u32(a), vdupq_n_u32(0)) : \
+          vshrq_n_u32(simde__m128i_to_neon_u32(a), ((imm8) & 31) | (((imm8) & 31) == 0))))
 #elif defined(SIMDE_WASM_SIMD128_NATIVE)
   #define simde_mm_srli_epi32(a, imm8) \
     ((imm8 < 32) ? wasm_u32x4_shr(simde__m128i_to_private(a).wasm_v128, imm8) : wasm_i32x4_const(0,0,0,0))
@@ -6100,18 +6070,12 @@ simde_mm_srli_epi64 (simde__m128i a, const int imm8)
   #define simde_mm_srli_epi64(a, imm8) _mm_srli_epi64(a, imm8)
 #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_mm_srli_epi64(a, imm8) \
-    (__extension__ ({ \
-        simde__m128i ret; \
-        if ((imm8) <= 0) { \
-            ret = a; \
-        } else if ((imm8) > 63) { \
-            ret = simde_mm_setzero_si128(); \
-        } else { \
-            ret = simde__m128i_from_neon_u64( \
-              vshrq_n_u64(simde__m128i_to_neon_u64(a), (((imm8) & 63) | (((imm8) & 63) == 0)))); \
-        } \
-        ret; \
-    }))
+    (((imm8) <= 0) ? \
+      (a) : \
+      simde__m128i_from_neon_u64( \
+        ((imm8) > 63) ? \
+          vandq_u64(simde__m128i_to_neon_u64(a), vdupq_n_u64(0)) : \
+          vshrq_n_u64(simde__m128i_to_neon_u64(a), ((imm8) & 63) | (((imm8) & 63) == 0))))
 #elif defined(SIMDE_WASM_SIMD128_NATIVE)
   #define simde_mm_srli_epi64(a, imm8) \
     ((imm8 < 64) ? wasm_u64x2_shr(simde__m128i_to_private(a).wasm_v128, imm8) : wasm_i64x2_const(0,0))
