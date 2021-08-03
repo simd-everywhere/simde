@@ -1398,7 +1398,7 @@ simde_mm_insert_epi8 (simde__m128i a, int i, const int imm8)
     #define simde_mm_insert_epi8(a, i, imm8) _mm_insert_epi8(a, i, imm8)
   #endif
 #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-#  define simde_mm_insert_epi8(a, i, imm8) simde__m128i_from_neon_i8(vsetq_lane_s8(i, simde__m128i_to_private(a).i8, imm8))
+#  define simde_mm_insert_epi8(a, i, imm8) simde__m128i_from_neon_i8(vsetq_lane_s8(i, simde__m128i_to_neon_i8(a), imm8))
 #endif
 #if defined(SIMDE_X86_SSE4_1_ENABLE_NATIVE_ALIASES)
   #undef _mm_insert_epi8
@@ -1423,7 +1423,7 @@ simde_mm_insert_epi32 (simde__m128i a, int i, const int imm8)
     #define simde_mm_insert_epi32(a, i, imm8) _mm_insert_epi32(a, i, imm8)
   #endif
 #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-#  define simde_mm_insert_epi32(a, i, imm8) simde__m128i_from_neon_i32(vsetq_lane_s32(i, simde__m128i_to_private(a).i32, imm8))
+#  define simde_mm_insert_epi32(a, i, imm8) simde__m128i_from_neon_i32(vsetq_lane_s32(i, simde__m128i_to_neon_i32(a), imm8))
 #endif
 #if defined(SIMDE_X86_SSE4_1_ENABLE_NATIVE_ALIASES)
   #undef _mm_insert_epi32
@@ -1460,7 +1460,7 @@ simde_mm_insert_epi64 (simde__m128i a, int64_t i, const int imm8)
 #if defined(SIMDE_X86_SSE4_1_NATIVE) && defined(SIMDE_ARCH_AMD64)
 #  define simde_mm_insert_epi64(a, i, imm8) _mm_insert_epi64(a, i, imm8)
 #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-#  define simde_mm_insert_epi64(a, i, imm8) simde__m128i_from_neon_i64(vsetq_lane_s64(i, simde__m128i_to_private(a).i64, imm8))
+#  define simde_mm_insert_epi64(a, i, imm8) simde__m128i_from_neon_i64(vsetq_lane_s64(i, simde__m128i_to_neon_i64(a), imm8))
 #endif
 #if defined(SIMDE_X86_SSE4_1_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && !defined(SIMDE_ARCH_AMD64))
   #undef _mm_insert_epi64
