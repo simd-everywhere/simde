@@ -99,8 +99,8 @@ simde_mm_maskz_dpwssds_epi32 (simde__mmask8 k, simde__m128i src, simde__m128i a,
   #endif
 }
 #if defined(SIMDE_X86_AVX512VNNI_ENABLE_NATIVE_ALIASES) && defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES)
-  #undef _mm_maskzz_dpwssds_epi32
-  #define _mm_mask_dpwssds_epi32(k, src, a, b) simde_mm_maskz_dpwssds_epi32(k, src, a, b)
+  #undef _mm_maskz_dpwssds_epi32
+  #define _mm_maskz_dpwssds_epi32(k, src, a, b) simde_mm_maskz_dpwssds_epi32(k, src, a, b)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
