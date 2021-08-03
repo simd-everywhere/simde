@@ -108,6 +108,7 @@ simde_mm256_dpbusd_epi32(simde__m256i src, simde__m256i a, simde__m256i b) {
       src_ = simde__m256i_to_private(src),
       a_ = simde__m256i_to_private(a),
       b_ = simde__m256i_to_private(b);
+
     #if SIMDE_NATURAL_VECTOR_SIZE_LE(128)
       src_.m128i[0] = simde_mm_dpbusd_epi32(src_.m128i[0], a_.m128i[0], b_.m128i[0]);
       src_.m128i[1] = simde_mm_dpbusd_epi32(src_.m128i[1], a_.m128i[1], b_.m128i[1]);
@@ -201,6 +202,7 @@ simde_mm512_dpbusd_epi32(simde__m512i src, simde__m512i a, simde__m512i b) {
       src_ = simde__m512i_to_private(src),
       a_ = simde__m512i_to_private(a),
       b_ = simde__m512i_to_private(b);
+
     #if SIMDE_NATURAL_VECTOR_SIZE_LE(256)
       src_.m256i[0] = simde_mm256_dpbusd_epi32(src_.m256i[0], a_.m256i[0], b_.m256i[0]);
       src_.m256i[1] = simde_mm256_dpbusd_epi32(src_.m256i[1], a_.m256i[1], b_.m256i[1]);
