@@ -19,7 +19,7 @@ simde_mm_dpbusds_epi32(simde__m128i src, simde__m128i a, simde__m128i b) {
       a_ = simde__m128i_to_private(a),
       b_ = simde__m128i_to_private(b);
 
-    #if defined(SIMDE_SHUFFLE_VECTOR_) && defined(SIMDE_CONVERT_VECTOR_)
+    #if defined(SIMDE_SHUFFLE_VECTOR_) && defined(SIMDE_CONVERT_VECTOR_) && defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
       uint32_t x1_ SIMDE_VECTOR(64);
       int32_t  x2_ SIMDE_VECTOR(64);
       simde__m128i_private
@@ -130,7 +130,7 @@ simde_mm256_dpbusds_epi32(simde__m256i src, simde__m256i a, simde__m256i b) {
     #if SIMDE_NATURAL_VECTOR_SIZE_LE(128)
       src_.m128i[0] = simde_mm_dpbusds_epi32(src_.m128i[0], a_.m128i[0], b_.m128i[0]);
       src_.m128i[1] = simde_mm_dpbusds_epi32(src_.m128i[1], a_.m128i[1], b_.m128i[1]);
-    #elif defined(SIMDE_SHUFFLE_VECTOR_) && defined(SIMDE_CONVERT_VECTOR_)
+    #elif defined(SIMDE_SHUFFLE_VECTOR_) && defined(SIMDE_CONVERT_VECTOR_) && defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
       uint32_t x1_ SIMDE_VECTOR(128);
       int32_t  x2_ SIMDE_VECTOR(128);
       simde__m256i_private
@@ -241,7 +241,7 @@ simde_mm512_dpbusds_epi32(simde__m512i src, simde__m512i a, simde__m512i b) {
     #if SIMDE_NATURAL_VECTOR_SIZE_LE(256)
       src_.m256i[0] = simde_mm256_dpbusds_epi32(src_.m256i[0], a_.m256i[0], b_.m256i[0]);
       src_.m256i[1] = simde_mm256_dpbusds_epi32(src_.m256i[1], a_.m256i[1], b_.m256i[1]);
-    #elif defined(SIMDE_SHUFFLE_VECTOR_) && defined(SIMDE_CONVERT_VECTOR_)
+    #elif defined(SIMDE_SHUFFLE_VECTOR_) && defined(SIMDE_CONVERT_VECTOR_) && defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
       uint32_t x1_ SIMDE_VECTOR(256);
       int32_t  x2_ SIMDE_VECTOR(256);
       simde__m512i_private
