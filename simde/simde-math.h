@@ -222,30 +222,62 @@ SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 #endif
 
 #if !defined(SIMDE_MATH_FLT_MIN)
-  #if defined(FLT_MIN)
-    #define SIMDE_MATH_FLT_MIN FLT_MIN
-  #elif defined(__FLT_MIN__)
+  #if defined(__FLT_MIN__)
     #define SIMDE_MATH_FLT_MIN __FLT_MIN__
-  #elif defined(__cplusplus)
-    #include <cfloat>
-    #define SIMDE_MATH_FLT_MIN FLT_MIN
   #else
-    #include <float.h>
+    #if !defined(FLT_MIN)
+      #if defined(__cplusplus)
+        #include <cfloat>
+      #else
+        #include <float.h>
+      #endif
+    #endif
     #define SIMDE_MATH_FLT_MIN FLT_MIN
   #endif
 #endif
 
-#if !defined(SIMDE_MATH_DBL_MIN)
-  #if defined(DBL_MIN)
-    #define SIMDE_MATH_DBL_MIN DBL_MIN
-  #elif defined(__DBL_MIN__)
-    #define SIMDE_MATH_DBL_MIN __DBL_MIN__
-  #elif defined(__cplusplus)
-    #include <cfloat>
-    #define SIMDE_MATH_DBL_MIN DBL_MIN
+#if !defined(SIMDE_MATH_FLT_MAX)
+  #if defined(__FLT_MAX__)
+    #define SIMDE_MATH_FLT_MAX __FLT_MAX__
   #else
-    #include <float.h>
+    #if !defined(FLT_MAX)
+      #if defined(__cplusplus)
+        #include <cfloat>
+      #else
+        #include <float.h>
+      #endif
+    #endif
+    #define SIMDE_MATH_FLT_MAX FLT_MAX
+  #endif
+#endif
+
+#if !defined(SIMDE_MATH_DBL_MIN)
+  #if defined(__DBL_MIN__)
+    #define SIMDE_MATH_DBL_MIN __DBL_MIN__
+  #else
+    #if !defined(DBL_MIN)
+      #if defined(__cplusplus)
+        #include <cfloat>
+      #else
+        #include <float.h>
+      #endif
+    #endif
     #define SIMDE_MATH_DBL_MIN DBL_MIN
+  #endif
+#endif
+
+#if !defined(SIMDE_MATH_DBL_MAX)
+  #if defined(__DBL_MAX__)
+    #define SIMDE_MATH_DBL_MAX __DBL_MAX__
+  #else
+    #if !defined(DBL_MAX)
+      #if defined(__cplusplus)
+        #include <cfloat>
+      #else
+        #include <float.h>
+      #endif
+    #endif
+    #define SIMDE_MATH_DBL_MAX DBL_MAX
   #endif
 #endif
 
@@ -341,6 +373,66 @@ SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
     #define simde_math_issubnormal(v) (((simde_float64_as_uint64(v) & UINT64_C(0x7FF0000000000000)) == UINT64_C(0)) && ((simde_float64_as_uint64(v) & UINT64_C(0x00FFFFFFFFFFFFF)) != UINT64_C(0)))
   #endif
 #endif
+
+#if defined(FP_NAN)
+  #define SIMDE_MATH_FP_NAN FP_NAN
+#else
+  #define SIMDE_MATH_FP_NAN 0
+#endif
+#if defined(FP_INFINITE)
+  #define SIMDE_MATH_FP_INFINITE FP_INFINITE
+#else
+  #define SIMDE_MATH_FP_INFINITE 1
+#endif
+#if defined(FP_ZERO)
+  #define SIMDE_MATH_FP_ZERO FP_ZERO
+#else
+  #define SIMDE_MATH_FP_ZERO 2
+#endif
+#if defined(FP_SUBNORMAL)
+  #define SIMDE_MATH_FP_SUBNORMAL FP_SUBNORMAL
+#else
+  #define SIMDE_MATH_FP_SUBNORMAL 3
+#endif
+#if defined(FP_NORMAL)
+  #define SIMDE_MATH_FP_NORMAL FP_NORMAL
+#else
+  #define SIMDE_MATH_FP_NORMAL 4
+#endif
+
+static HEDLEY_INLINE
+int
+simde_math_fpclassifyf(float v) {
+  #if SIMDE_MATH_BUILTIN_LIBM(fpclassify)
+    return __builtin_fpclassify(SIMDE_MATH_FP_NAN, SIMDE_MATH_FP_INFINITE, SIMDE_MATH_FP_NORMAL, SIMDE_MATH_FP_SUBNORMAL, SIMDE_MATH_FP_ZERO, v);
+  #elif defined(fpclassify)
+    return fpclassify(v);
+  #else
+    return
+      simde_math_isnormalf(v) ? SIMDE_MATH_FP_NORMAL    :
+      (v == 0.0f)             ? SIMDE_MATH_FP_ZERO      :
+      simde_math_isnanf(v)    ? SIMDE_MATH_FP_NAN       :
+      simde_math_isinff(v)    ? SIMDE_MATH_FP_INFINITE  :
+                                SIMDE_MATH_FP_SUBNORMAL;
+  #endif
+}
+
+static HEDLEY_INLINE
+int
+simde_math_fpclassify(double v) {
+  #if SIMDE_MATH_BUILTIN_LIBM(fpclassify)
+    return __builtin_fpclassify(SIMDE_MATH_FP_NAN, SIMDE_MATH_FP_INFINITE, SIMDE_MATH_FP_NORMAL, SIMDE_MATH_FP_SUBNORMAL, SIMDE_MATH_FP_ZERO, v);
+  #elif defined(fpclassify)
+    return fpclassify(v);
+  #else
+    return
+      simde_math_isnormal(v) ? SIMDE_MATH_FP_NORMAL    :
+      (v == 0.0)             ? SIMDE_MATH_FP_ZERO      :
+      simde_math_isnan(v)    ? SIMDE_MATH_FP_NAN       :
+      simde_math_isinf(v)    ? SIMDE_MATH_FP_INFINITE  :
+                               SIMDE_MATH_FP_SUBNORMAL;
+  #endif
+}
 
 /*** Manipulation functions ***/
 

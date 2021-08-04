@@ -238,6 +238,8 @@ simde_avx512_families = [
   'dpwssds',
   'expand',
   'extract',
+  'fixupimm',
+  'fixupimm_round',
   'flushsubnormal',
   'fmadd',
   'fmsub',
