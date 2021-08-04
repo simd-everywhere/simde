@@ -222,57 +222,61 @@ SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 #endif
 
 #if !defined(SIMDE_MATH_FLT_MIN)
-  #if defined(FLT_MIN)
-    #define SIMDE_MATH_FLT_MIN FLT_MIN
-  #elif defined(__FLT_MIN__)
+  #if defined(__FLT_MIN__)
     #define SIMDE_MATH_FLT_MIN __FLT_MIN__
-  #elif defined(__cplusplus)
-    #include <cfloat>
-    #define SIMDE_MATH_FLT_MIN FLT_MIN
   #else
-    #include <float.h>
+    #if !defined(FLT_MIN)
+      #if defined(__cplusplus)
+        #include <cfloat>
+      #else
+        #include <float.h>
+      #endif
+    #endif
     #define SIMDE_MATH_FLT_MIN FLT_MIN
   #endif
 #endif
 
 #if !defined(SIMDE_MATH_FLT_MAX)
-  #if defined(FLT_MAX)
-    #define SIMDE_MATH_FLT_MAX FLT_MAX
-  #elif defined(__FLT_MAX__)
+  #if defined(__FLT_MAX__)
     #define SIMDE_MATH_FLT_MAX __FLT_MAX__
-  #elif defined(__cplusplus)
-    #include <cfloat>
-    #define SIMDE_MATH_FLT_MAX FLT_MAX
   #else
-    #include <float.h>
+    #if !defined(FLT_MAX)
+      #if defined(__cplusplus)
+        #include <cfloat>
+      #else
+        #include <float.h>
+      #endif
+    #endif
     #define SIMDE_MATH_FLT_MAX FLT_MAX
   #endif
 #endif
 
 #if !defined(SIMDE_MATH_DBL_MIN)
-  #if defined(DBL_MIN)
-    #define SIMDE_MATH_DBL_MIN DBL_MIN
-  #elif defined(__DBL_MIN__)
+  #if defined(__DBL_MIN__)
     #define SIMDE_MATH_DBL_MIN __DBL_MIN__
-  #elif defined(__cplusplus)
-    #include <cfloat>
-    #define SIMDE_MATH_DBL_MIN DBL_MIN
   #else
-    #include <float.h>
+    #if !defined(DBL_MIN)
+      #if defined(__cplusplus)
+        #include <cfloat>
+      #else
+        #include <float.h>
+      #endif
+    #endif
     #define SIMDE_MATH_DBL_MIN DBL_MIN
   #endif
 #endif
 
 #if !defined(SIMDE_MATH_DBL_MAX)
-  #if defined(DBL_MAX)
-    #define SIMDE_MATH_DBL_MAX DBL_MAX
-  #elif defined(__DBL_MAX__)
+  #if defined(__DBL_MAX__)
     #define SIMDE_MATH_DBL_MAX __DBL_MAX__
-  #elif defined(__cplusplus)
-    #include <cfloat>
-    #define SIMDE_MATH_DBL_MAX DBL_MAX
   #else
-    #include <float.h>
+    #if !defined(DBL_MAX)
+      #if defined(__cplusplus)
+        #include <cfloat>
+      #else
+        #include <float.h>
+      #endif
+    #endif
     #define SIMDE_MATH_DBL_MAX DBL_MAX
   #endif
 #endif
