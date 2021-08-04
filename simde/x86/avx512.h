@@ -63,6 +63,7 @@
 #include "avx512/dpwssds.h"
 #include "avx512/expand.h"
 #include "avx512/extract.h"
+#include "avx512/fixupimm.h"
 #include "avx512/flushsubnormal.h"
 #include "avx512/fmadd.h"
 #include "avx512/fmsub.h"

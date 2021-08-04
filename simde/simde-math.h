@@ -235,6 +235,20 @@ SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
   #endif
 #endif
 
+#if !defined(SIMDE_MATH_FLT_MAX)
+  #if defined(FLT_MAX)
+    #define SIMDE_MATH_FLT_MAX FLT_MAX
+  #elif defined(__FLT_MAX__)
+    #define SIMDE_MATH_FLT_MAX __FLT_MAX__
+  #elif defined(__cplusplus)
+    #include <cfloat>
+    #define SIMDE_MATH_FLT_MAX FLT_MAX
+  #else
+    #include <float.h>
+    #define SIMDE_MATH_FLT_MAX FLT_MAX
+  #endif
+#endif
+
 #if !defined(SIMDE_MATH_DBL_MIN)
   #if defined(DBL_MIN)
     #define SIMDE_MATH_DBL_MIN DBL_MIN
@@ -246,6 +260,20 @@ SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
   #else
     #include <float.h>
     #define SIMDE_MATH_DBL_MIN DBL_MIN
+  #endif
+#endif
+
+#if !defined(SIMDE_MATH_DBL_MAX)
+  #if defined(DBL_MAX)
+    #define SIMDE_MATH_DBL_MAX DBL_MAX
+  #elif defined(__DBL_MAX__)
+    #define SIMDE_MATH_DBL_MAX __DBL_MAX__
+  #elif defined(__cplusplus)
+    #include <cfloat>
+    #define SIMDE_MATH_DBL_MAX DBL_MAX
+  #else
+    #include <float.h>
+    #define SIMDE_MATH_DBL_MAX DBL_MAX
   #endif
 #endif
 
