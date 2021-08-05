@@ -39,7 +39,7 @@ simde_vrndns_f32(simde_float32_t a) {
   #if \
       defined(SIMDE_ARM_NEON_A32V8_NATIVE) && \
       (!defined(__clang__) || SIMDE_DETECT_CLANG_VERSION_CHECK(7,0,0)) && \
-      (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(8,0,0))
+      (!defined(HEDLEY_GCC_VERSION) || (defined(SIMDE_ARM_NEON_A64V8_NATIVE) && HEDLEY_GCC_VERSION_CHECK(8,0,0)))
     return vrndns_f32(a);
   #else
     return simde_math_roundevenf(a);
@@ -76,7 +76,9 @@ simde_vrndn_f32(simde_float32x2_t a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float64x1_t
 simde_vrndn_f64(simde_float64x1_t a) {
-  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
+  #if \
+      defined(SIMDE_ARM_NEON_A32V8_NATIVE) && \
+      (!defined(HEDLEY_GCC_VERSION) || defined(SIMDE_ARM_NEON_A64V8_NATIVE))
     return vrndn_f64(a);
   #else
     simde_float64x1_private
@@ -126,7 +128,9 @@ simde_vrndnq_f32(simde_float32x4_t a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float64x2_t
 simde_vrndnq_f64(simde_float64x2_t a) {
-  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
+  #if \
+      defined(SIMDE_ARM_NEON_A32V8_NATIVE) && \
+      (!defined(HEDLEY_GCC_VERSION) || defined(SIMDE_ARM_NEON_A64V8_NATIVE))
     return vrndnq_f64(a);
   #else
     simde_float64x2_private
