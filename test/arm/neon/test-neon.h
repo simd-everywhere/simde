@@ -520,6 +520,10 @@ SIMDE_TEST_ARM_NEON_GENERATE_X4_VECTOR_FLOAT_TYPE_FUNCS_(float64x2x4_t, simde_fl
 #define simde_test_arm_neon_assert_equal_f32x4(a, b, precision) do { if (simde_test_arm_neon_assert_equal_f32x4_(a, b, simde_test_f32_precision_to_slop(precision), __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 #define simde_test_arm_neon_assert_equal_f64x2(a, b, precision) do { if (simde_test_arm_neon_assert_equal_f64x2_(a, b, simde_test_f64_precision_to_slop(precision),    __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 
+#define simde_test_arm_neon_assert_equal_u8x16x2(a, b) do { if (simde_test_arm_neon_assert_equal_u8x16x2_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+#define simde_test_arm_neon_assert_equal_u8x16x3(a, b) do { if (simde_test_arm_neon_assert_equal_u8x16x3_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+#define simde_test_arm_neon_assert_equal_u8x16x4(a, b) do { if (simde_test_arm_neon_assert_equal_u8x16x4_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+
 #if !defined(SIMDE_TEST_BARE)
   #define SIMDE_TEST_DECLARE_SUITE(name) SIMDE_TEST_SUITE_DECLARE_GETTERS(HEDLEY_CONCAT(simde_test_arm_neon_get_suite_,name))
   #include <test/arm/neon/declare-suites.h>
