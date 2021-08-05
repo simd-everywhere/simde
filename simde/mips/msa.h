@@ -37,6 +37,7 @@
 #include "msa/and.h"
 #include "msa/andi.h"
 #include "msa/ld.h"
+#include "msa/madd.h"
 #include "msa/st.h"
 #include "msa/subv.h"
 

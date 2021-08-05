@@ -318,6 +318,7 @@ simde_msa_families = [
   'and',
   'andi',
   'ld',
+  'madd',
   'st',
   'subv',
 ]
