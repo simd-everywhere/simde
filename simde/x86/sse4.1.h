@@ -1920,21 +1920,49 @@ simde__m128i
 simde_mm_packus_epi32 (simde__m128i a, simde__m128i b) {
   #if defined(SIMDE_X86_SSE4_1_NATIVE)
     return _mm_packus_epi32(a, b);
+  #elif defined(SIMDE_X86_SSE2_NATIVE)
+    const __m128i max = _mm_set1_epi32(UINT16_MAX);
+    const __m128i tmpa = _mm_andnot_si128(_mm_srai_epi32(a, 31), a);
+    const __m128i tmpb = _mm_andnot_si128(_mm_srai_epi32(b, 31), b);
+    return
+      _mm_packs_epi32(
+        _mm_srai_epi32(_mm_slli_epi32(_mm_or_si128(tmpa, _mm_cmpgt_epi32(tmpa, max)), 16), 16),
+        _mm_srai_epi32(_mm_slli_epi32(_mm_or_si128(tmpb, _mm_cmpgt_epi32(tmpb, max)), 16), 16)
+      );
   #else
     simde__m128i_private
-      r_,
       a_ = simde__m128i_to_private(a),
-      b_ = simde__m128i_to_private(b);
+      b_ = simde__m128i_to_private(b),
+      r_;
 
-    #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-      const int32x4_t z = vdupq_n_s32(0);
-      r_.neon_u16 = vcombine_u16(
-          vqmovn_u32(vreinterpretq_u32_s32(vmaxq_s32(z, a_.neon_i32))),
-          vqmovn_u32(vreinterpretq_u32_s32(vmaxq_s32(z, b_.neon_i32))));
+    #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+      #if defined(__clang__)
+        r_.neon_u16 = SIMDE_DISABLE_DIAGNOSTIC_EXPR_(_Pragma("clang diagnostic ignored \"-Wvector-conversion\""), vqmovun_high_s32(vqmovun_s32(a_.neon_i32), b_.neon_i32));
+      #else
+        r_.neon_u16 = vqmovun_high_s32(vqmovun_s32(a_.neon_i32), b_.neon_i32);
+      #endif
+    #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+      r_.neon_u16 =
+        vcombine_u16(
+          vqmovun_s32(a_.neon_i32),
+          vqmovun_s32(b_.neon_i32)
+        );
+    #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+      r_.altivec_u16 = vec_packsu(a_.altivec_i32, b_.altivec_i32);
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+      r_.wasm_v128 = wasm_u16x8_narrow_i32x4(a_.wasm_v128, b_.wasm_v128);
+    #elif defined(SIMDE_CONVERT_VECTOR_) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector) && defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+      int32_t v SIMDE_VECTOR(32) = SIMDE_SHUFFLE_VECTOR_(32, 32, a_.i32, b_.i32, 0, 1, 2, 3, 4, 5, 6, 7);
+
+      v &= ~(v >> 31);
+      v |= HEDLEY_REINTERPRET_CAST(__typeof__(v), v > UINT16_MAX);
+
+      SIMDE_CONVERT_VECTOR_(r_.i16, v);
     #else
-      for (size_t i = 0 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {
-        r_.u16[i + 0] = (a_.i32[i] < 0) ? UINT16_C(0) : ((a_.i32[i] > UINT16_MAX) ? (UINT16_MAX) : HEDLEY_STATIC_CAST(uint16_t, a_.i32[i]));
-        r_.u16[i + 4] = (b_.i32[i] < 0) ? UINT16_C(0) : ((b_.i32[i] > UINT16_MAX) ? (UINT16_MAX) : HEDLEY_STATIC_CAST(uint16_t, b_.i32[i]));
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.i16) / sizeof(r_.i16[0])) ; i++) {
+        int32_t v = (i < (sizeof(a_.i32) / sizeof(a_.i32[0]))) ? a_.i32[i] : b_.i32[i & 3];
+        r_.u16[i] = (v < 0) ? UINT16_C(0) : ((v > UINT16_MAX) ? UINT16_MAX : HEDLEY_STATIC_CAST(uint16_t, v));
       }
     #endif
 
