@@ -4,6 +4,8 @@
 #include "../../../simde/arm/neon/ld1.h"
 #include "../../../simde/arm/neon/ld1_lane.h"
 
+#if !defined(SIMDE_BUG_INTEL_857088)
+
 static int
 test_simde_vld1q_u8_x2 (SIMDE_MUNIT_TEST_ARGS) {
 #if 1
@@ -416,11 +418,14 @@ test_simde_vld1q_u8_x4 (SIMDE_MUNIT_TEST_ARGS) {
 #endif
 }
 
+#endif /* !defined(SIMDE_BUG_INTEL_857088) */
 
 SIMDE_TEST_FUNC_LIST_BEGIN
+#if !defined(SIMDE_BUG_INTEL_857088)
 SIMDE_TEST_FUNC_LIST_ENTRY(vld1q_u8_x2)
 SIMDE_TEST_FUNC_LIST_ENTRY(vld1q_u8_x3)
 SIMDE_TEST_FUNC_LIST_ENTRY(vld1q_u8_x4)
+#endif /* !defined(SIMDE_BUG_INTEL_857088) */
 SIMDE_TEST_FUNC_LIST_END
 
 #include "test-neon-footer.h"

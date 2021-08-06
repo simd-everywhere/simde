@@ -334,6 +334,8 @@ simde_vld1q_u8(uint8_t const ptr[HEDLEY_ARRAY_PARAM(16)]) {
   #define vld1q_u8(a) simde_vld1q_u8((a))
 #endif
 
+#if !defined(SIMDE_BUG_INTEL_857088)
+
 SIMDE_FUNCTION_ATTRIBUTES
 simde_uint8x16x2_t
 simde_vld1q_u8_x2(uint8_t const ptr[HEDLEY_ARRAY_PARAM(32)]) {
@@ -396,6 +398,8 @@ simde_vld1q_u8_x4(uint8_t const ptr[HEDLEY_ARRAY_PARAM(64)]) {
   #undef vld1q_u8_x4
   #define vld1q_u8_x4(a) simde_vld1q_u8_x4((a))
 #endif
+
+#endif /* !defined(SIMDE_BUG_INTEL_857088) */
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde_uint16x8_t
