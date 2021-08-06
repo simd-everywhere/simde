@@ -6271,14 +6271,28 @@ simde_wasm_f32x4_demote_f64x2_zero (simde_v128_t a) {
     #elif defined(SIMDE_ARM_NEON_A64V8_NATIVE)
       r_.neon_f32 = vcombine_f32(vcvt_f32_f64(a_.neon_f64), vdup_n_f32(0.0f));
     #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
-      r_.altivec_f32 = vec_float2(a_.altivec_f64, vec_splats(0.0));
+      r_.altivec_f32 = vec_floate(a_.altivec_f64);
+      #if defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
+        r_.altivec_f32 =
+          HEDLEY_REINTERPRET_CAST(
+            SIMDE_POWER_ALTIVEC_VECTOR(float),
+            vec_pack(
+              HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(long long), r_.altivec_f32),
+              HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(long long), vec_splat_s32(0))
+            )
+          );
+      #else
+        const SIMDE_POWER_ALTIVEC_VECTOR(unsigned char) perm = {
+          0x00, 0x01, 0x02, 0x03, /* 0 */
+          0x08, 0x09, 0x0a, 0x0b, /* 2 */
+          0x10, 0x11, 0x12, 0x13, /* 4 */
+          0x18, 0x19, 0x1a, 0x1b  /* 6 */
+        };
+        r_.altivec_f32 = vec_perm(r_.altivec_f32, HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(float), vec_splat_s32(0)), perm);
+      #endif
     #elif HEDLEY_HAS_BUILTIN(__builtin_shufflevector) && HEDLEY_HAS_BUILTIN(__builtin_convertvector)
       float __attribute__((__vector_size__(8))) z = { 0.0f, 0.0f };
-      r_.f32 =
-        __builtin_shufflevector(
-          __builtin_convertvector(__builtin_shufflevector(a_.f64, a_.f64, 0, 1), __typeof__(z)), z,
-          0, 1, 2, 3
-        );
+      r_.f32 = __builtin_shufflevector(__builtin_convertvector(a_.f64, __typeof__(z)), z, 0, 1, 2, 3);
     #else
       r_.f32[0] = HEDLEY_STATIC_CAST(simde_float32, a_.f64[0]);
       r_.f32[1] = HEDLEY_STATIC_CAST(simde_float32, a_.f64[1]);
@@ -6549,7 +6563,13 @@ simde_wasm_f64x2_promote_low_f32x4 (simde_v128_t a) {
       a_ = simde_v128_to_private(a),
       r_;
 
-    #if HEDLEY_HAS_BUILTIN(__builtin_shufflevector) && HEDLEY_HAS_BUILTIN(__builtin_convertvector)
+    #if defined(SIMDE_X86_SSE2_NATIVE)
+      r_.sse_m128d = _mm_cvtps_pd(a_.sse_m128);
+    #elif defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+      r_.neon_f64 = vcvt_f64_f32(vget_low_f32(a_.neon_f32));
+    #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
+      r_.altivec_f64 = vec_unpackh(a_.altivec_f32);
+    #elif HEDLEY_HAS_BUILTIN(__builtin_shufflevector) && HEDLEY_HAS_BUILTIN(__builtin_convertvector)
       r_.f64 = __builtin_convertvector(__builtin_shufflevector(a_.f32, a_.f32, 0, 1), __typeof__(r_.f64));
     #else
       r_.f64[0] = HEDLEY_STATIC_CAST(simde_float64, a_.f32[0]);
