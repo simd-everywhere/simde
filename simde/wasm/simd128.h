@@ -963,23 +963,31 @@ simde_wasm_i64x2_extract_lane (simde_v128_t a, const int lane) {
   #define wasm_i64x2_extract_lane(a, lane) simde_wasm_i64x2_extract_lane((a), (lane))
 #endif
 
+SIMDE_FUNCTION_ATTRIBUTES
+uint8_t
+simde_wasm_u8x16_extract_lane (simde_v128_t a, const int lane) {
+  simde_v128_private a_ = simde_v128_to_private(a);
+  return a_.u8[lane & 15];
+}
 #if defined(SIMDE_WASM_SIMD128_NATIVE)
   #define simde_wasm_u8x16_extract_lane(a, lane) HEDLEY_STATIC_CAST(uint8_t, wasm_u8x16_extract_lane((a), (lane)))
 #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_wasm_u8x16_extract_lane(a, lane) vgetq_lane_u8(simde_v128_to_neon_u8(a), (lane) & 15)
-#else
-  #define simde_wasm_u8x16_extract_lane(a, lane) HEDLEY_STATIC_CAST(uint8_t, simde_wasm_i8x16_extract_lane((a), (lane)))
 #endif
 #if defined(SIMDE_WASM_SIMD128_ENABLE_NATIVE_ALIASES)
   #define wasm_u8x16_extract_lane(a, lane) simde_wasm_u8x16_extract_lane((a), (lane))
 #endif
 
+SIMDE_FUNCTION_ATTRIBUTES
+uint16_t
+simde_wasm_u16x8_extract_lane (simde_v128_t a, const int lane) {
+  simde_v128_private a_ = simde_v128_to_private(a);
+  return a_.u16[lane & 7];
+}
 #if defined(SIMDE_WASM_SIMD128_NATIVE)
   #define simde_wasm_u16x8_extract_lane(a, lane) HEDLEY_STATIC_CAST(uint16_t, wasm_u16x8_extract_lane((a), (lane)))
 #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE) && !defined(SIMDE_BUG_CLANG_BAD_VGET_SET_LANE_TYPES)
   #define simde_wasm_u16x8_extract_lane(a, lane) vgetq_lane_u16(simde_v128_to_neon_u16(a), (lane) & 7)
-#else
-  #define simde_wasm_u16x8_extract_lane(a, lane) HEDLEY_STATIC_CAST(uint16_t, simde_wasm_i16x8_extract_lane((a), (lane)))
 #endif
 #if defined(SIMDE_WASM_SIMD128_ENABLE_NATIVE_ALIASES)
   #define wasm_u16x8_extract_lane(a, lane) simde_wasm_u16x8_extract_lane((a), (lane))
@@ -2783,7 +2791,7 @@ simde_wasm_v128_andnot (simde_v128_t a, simde_v128_t b) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde_v128_t
-simde_wasm_v128_bitselect(simde_v128_t a, simde_v128_t b, simde_v128_t mask) {
+simde_wasm_v128_bitselect (simde_v128_t a, simde_v128_t b, simde_v128_t mask) {
   #if defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_v128_bitselect(a, b, mask);
   #else
@@ -2824,7 +2832,7 @@ simde_wasm_v128_bitselect(simde_v128_t a, simde_v128_t b, simde_v128_t mask) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 int32_t
-simde_wasm_i8x16_bitmask(simde_v128_t a) {
+simde_wasm_i8x16_bitmask (simde_v128_t a) {
   #if defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_i8x16_bitmask(a);
   #else
@@ -2881,7 +2889,7 @@ simde_wasm_i8x16_bitmask(simde_v128_t a) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 int32_t
-simde_wasm_i16x8_bitmask(simde_v128_t a) {
+simde_wasm_i16x8_bitmask (simde_v128_t a) {
   #if defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_i16x8_bitmask(a);
   #else
@@ -2930,7 +2938,7 @@ simde_wasm_i16x8_bitmask(simde_v128_t a) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 int32_t
-simde_wasm_i32x4_bitmask(simde_v128_t a) {
+simde_wasm_i32x4_bitmask (simde_v128_t a) {
   #if defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_i32x4_bitmask(a);
   #else
@@ -2978,7 +2986,7 @@ simde_wasm_i32x4_bitmask(simde_v128_t a) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 int32_t
-simde_wasm_i64x2_bitmask(simde_v128_t a) {
+simde_wasm_i64x2_bitmask (simde_v128_t a) {
   #if defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_i64x2_bitmask(a);
   #else
