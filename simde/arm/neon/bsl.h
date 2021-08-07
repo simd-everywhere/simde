@@ -38,6 +38,35 @@ SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 SIMDE_BEGIN_DECLS_
 
 SIMDE_FUNCTION_ATTRIBUTES
+simde_float16x4_t
+simde_vbsl_f16(simde_uint16x4_t a, simde_float16x4_t b, simde_float16x4_t c) {
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
+    return vbsl_f16(a, b, c);
+  #else
+    simde_uint16x4_private
+      r_,
+      a_ = simde_uint16x4_to_private(a),
+      b_ = simde_uint16x4_to_private(simde_vreinterpret_u16_f16(b)),
+      c_ = simde_uint16x4_to_private(simde_vreinterpret_u16_f16(c));
+
+    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+      r_.values = c_.values ^ ((b_.values ^ c_.values) & a_.values);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+        r_.values[i] = (b_.values[i] & a_.values[i]) | (c_.values[i] & ~a_.values[i]);
+      }
+    #endif
+
+    return simde_vreinterpret_f16_u16(simde_uint16x4_from_private(r_));
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+  #undef vbsl_f16
+  #define vbsl_f16(a, b, c) simde_vbsl_f16((a), (b), (c))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
 simde_float32x2_t
 simde_vbsl_f32(simde_uint32x2_t a, simde_float32x2_t b, simde_float32x2_t c) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
@@ -325,6 +354,35 @@ simde_vbsl_u64(simde_uint64x1_t a, simde_uint64x1_t b, simde_uint64x1_t c) {
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vbsl_u64
   #define vbsl_u64(a, b, c) simde_vbsl_u64((a), (b), (c))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_float16x8_t
+simde_vbslq_f16(simde_uint16x8_t a, simde_float16x8_t b, simde_float16x8_t c) {
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
+    return vbslq_f16(a, b, c);
+  #else
+    simde_uint16x8_private
+      r_,
+      a_ = simde_uint16x8_to_private(a),
+      b_ = simde_uint16x8_to_private(simde_vreinterpretq_u16_f16(b)),
+      c_ = simde_uint16x8_to_private(simde_vreinterpretq_u16_f16(c));
+
+    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+      r_.values = c_.values ^ ((b_.values ^ c_.values) & a_.values);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+        r_.values[i] = (b_.values[i] & a_.values[i]) | (c_.values[i] & ~a_.values[i]);
+      }
+    #endif
+
+    return simde_vreinterpretq_f16_u16(simde_uint16x8_from_private(r_));
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+  #undef vbslq_f16
+  #define vbslq_f16(a, b, c) simde_vbslq_f16((a), (b), (c))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
