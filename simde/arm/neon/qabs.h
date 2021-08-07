@@ -30,6 +30,12 @@
 #include "types.h"
 
 #include "abs.h"
+#include "add.h"
+#include "bsl.h"
+#include "dup_n.h"
+#include "mvn.h"
+#include "reinterpret.h"
+#include "shr_n.h"
 
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
@@ -97,16 +103,8 @@ simde_vqabs_s8(simde_int8x8_t a) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vqabs_s8(a);
   #else
-    simde_int8x8_private
-      r_,
-      a_ = simde_int8x8_to_private(a);
-
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = simde_vqabsb_s8(a_.values[i]);
-    }
-
-    return simde_int8x8_from_private(r_);
+    simde_int8x8_t tmp = simde_vabs_s8(a);
+    return simde_vadd_s8(tmp, simde_vshr_n_s8(tmp, 7));
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
@@ -120,16 +118,8 @@ simde_vqabs_s16(simde_int16x4_t a) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vqabs_s16(a);
   #else
-    simde_int16x4_private
-      r_,
-      a_ = simde_int16x4_to_private(a);
-
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = simde_vqabsh_s16(a_.values[i]);
-    }
-
-    return simde_int16x4_from_private(r_);
+    simde_int16x4_t tmp = simde_vabs_s16(a);
+    return simde_vadd_s16(tmp, simde_vshr_n_s16(tmp, 15));
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
@@ -143,16 +133,8 @@ simde_vqabs_s32(simde_int32x2_t a) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vqabs_s32(a);
   #else
-    simde_int32x2_private
-      r_,
-      a_ = simde_int32x2_to_private(a);
-
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = simde_vqabss_s32(a_.values[i]);
-    }
-
-    return simde_int32x2_from_private(r_);
+    simde_int32x2_t tmp = simde_vabs_s32(a);
+    return simde_vadd_s32(tmp, simde_vshr_n_s32(tmp, 31));
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
@@ -166,16 +148,8 @@ simde_vqabs_s64(simde_int64x1_t a) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vqabs_s64(a);
   #else
-    simde_int64x1_private
-      r_,
-      a_ = simde_int64x1_to_private(a);
-
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = simde_vqabsd_s64(a_.values[i]);
-    }
-
-    return simde_int64x1_from_private(r_);
+    simde_int64x1_t tmp = simde_vabs_s64(a);
+    return simde_vadd_s64(tmp, simde_vshr_n_s64(tmp, 63));
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
@@ -188,17 +162,30 @@ simde_int8x16_t
 simde_vqabsq_s8(simde_int8x16_t a) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vqabsq_s8(a);
-  #else
+  #elif defined(SIMDE_X86_SSE4_1_NATIVE)
     simde_int8x16_private
       r_,
-      a_ = simde_int8x16_to_private(a);
+      a_ = simde_int8x16_to_private(simde_vabsq_s8(a));
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = simde_vqabsb_s8(a_.values[i]);
-    }
+    #if defined(SIMDE_X86_SSE4_1_NATIVE)
+      r_.m128i = _mm_min_epu8(a_.m128i, _mm_set1_epi8(INT8_MAX));
+    #else
+      r_.m128i =
+        _mm_add_epi8(
+          a_.m128i,
+          _mm_cmpgt_epi8(_mm_setzero_si128(), a_.m128i)
+        );
+    #endif
 
     return simde_int8x16_from_private(r_);
+  #else
+    simde_int8x16_t tmp = simde_vabsq_s8(a);
+    return
+      simde_vbslq_s8(
+        simde_vreinterpretq_u8_s8(simde_vshrq_n_s8(tmp, 7)),
+        simde_vmvnq_s8(tmp),
+        tmp
+      );
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
@@ -211,17 +198,30 @@ simde_int16x8_t
 simde_vqabsq_s16(simde_int16x8_t a) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vqabsq_s16(a);
-  #else
+  #elif defined(SIMDE_X86_SSE2_NATIVE)
     simde_int16x8_private
       r_,
-      a_ = simde_int16x8_to_private(a);
+      a_ = simde_int16x8_to_private(simde_vabsq_s16(a));
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = simde_vqabsh_s16(a_.values[i]);
-    }
+    #if defined(SIMDE_X86_SSE4_1_NATIVE)
+      r_.m128i = _mm_min_epu16(a_.m128i, _mm_set1_epi16(INT16_MAX));
+    #else
+      r_.m128i =
+        _mm_add_epi16(
+          a_.m128i,
+          _mm_srai_epi16(a_.m128i, 15)
+        );
+    #endif
 
     return simde_int16x8_from_private(r_);
+  #else
+    simde_int16x8_t tmp = simde_vabsq_s16(a);
+    return
+      simde_vbslq_s16(
+        simde_vreinterpretq_u16_s16(simde_vshrq_n_s16(tmp, 15)),
+        simde_vmvnq_s16(tmp),
+        tmp
+      );
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
@@ -234,17 +234,30 @@ simde_int32x4_t
 simde_vqabsq_s32(simde_int32x4_t a) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vqabsq_s32(a);
-  #else
+  #elif defined(SIMDE_X86_SSE2_NATIVE)
     simde_int32x4_private
       r_,
-      a_ = simde_int32x4_to_private(a);
+      a_ = simde_int32x4_to_private(simde_vabsq_s32(a));
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = simde_vqabss_s32(a_.values[i]);
-    }
+    #if defined(SIMDE_X86_SSE4_1_NATIVE)
+      r_.m128i = _mm_min_epu32(a_.m128i, _mm_set1_epi32(INT32_MAX));
+    #else
+      r_.m128i =
+        _mm_add_epi32(
+          a_.m128i,
+          _mm_srai_epi32(a_.m128i, 31)
+        );
+    #endif
 
     return simde_int32x4_from_private(r_);
+  #else
+    simde_int32x4_t tmp = simde_vabsq_s32(a);
+    return
+      simde_vbslq_s32(
+        simde_vreinterpretq_u32_s32(simde_vshrq_n_s32(tmp, 31)),
+        simde_vmvnq_s32(tmp),
+        tmp
+      );
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
@@ -257,17 +270,37 @@ simde_int64x2_t
 simde_vqabsq_s64(simde_int64x2_t a) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vqabsq_s64(a);
-  #else
+  #elif defined(SIMDE_X86_SSE2_NATIVE)
     simde_int64x2_private
       r_,
-      a_ = simde_int64x2_to_private(a);
+      a_ = simde_int64x2_to_private(simde_vabsq_s64(a));
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = simde_vqabsd_s64(a_.values[i]);
-    }
+    #if defined(SIMDE_X86_SSE4_2_NATIVE)
+      r_.m128i =
+        _mm_add_epi64(
+          a_.m128i,
+          _mm_cmpgt_epi64(_mm_setzero_si128(), a_.m128i)
+        );
+    #else
+      r_.m128i =
+        _mm_add_epi64(
+          a_.m128i,
+          _mm_shuffle_epi32(
+            _mm_srai_epi32(a_.m128i, 31),
+            _MM_SHUFFLE(3, 3, 1, 1)
+          )
+        );
+    #endif
 
     return simde_int64x2_from_private(r_);
+  #else
+    simde_int64x2_t tmp = simde_vabsq_s64(a);
+    return
+      simde_vbslq_s64(
+        simde_vreinterpretq_u64_s64(simde_vshrq_n_s64(tmp, 63)),
+        simde_vreinterpretq_s64_s32(simde_vmvnq_s32(simde_vreinterpretq_s32_s64(tmp))),
+        tmp
+      );
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
