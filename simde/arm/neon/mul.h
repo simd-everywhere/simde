@@ -371,13 +371,36 @@ simde_int8x16_t
 simde_vmulq_s8(simde_int8x16_t a, simde_int8x16_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vmulq_s8(a, b);
+  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+    return vec_mul(a, b);
   #else
     simde_int8x16_private
       r_,
       a_ = simde_int8x16_to_private(a),
       b_ = simde_int8x16_to_private(b);
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+    #if defined(SIMDE_X86_SSE2_NATIVE)
+      /* https://stackoverflow.com/a/29155682/501126 */
+      const __m128i dst_even = _mm_mullo_epi16(a_.m128i, b_.m128i);
+      r_.m128i =
+        _mm_or_si128(
+          _mm_slli_epi16(
+            _mm_mullo_epi16(
+              _mm_srli_epi16(a_.m128i, 8),
+              _mm_srli_epi16(b_.m128i, 8)
+            ),
+            8
+          ),
+          #if defined(SIMDE_X86_AVX2_NATIVE)
+            _mm_and_si128(dst_even, _mm_set1_epi16(0xFF))
+          #else
+            _mm_srli_epi16(
+              _mm_slli_epi16(dst_even, 8),
+              8
+            )
+          #endif
+        );
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       r_.values = a_.values * b_.values;
     #else
       SIMDE_VECTORIZE
