@@ -36,6 +36,10 @@
   #include <windows.h>
 #endif
 
+#if defined(__ARM_ACLE)
+  #include <arm_acle.h>
+#endif
+
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 SIMDE_BEGIN_DECLS_
@@ -3362,8 +3366,8 @@ simde_mm_mulhi_pu16 (simde__m64 a, simde__m64 b) {
   #define _MM_HINT_T1   SIMDE_MM_HINT_T1
   #undef  _MM_HINT_T2
   #define _MM_HINT_T2   SIMDE_MM_HINT_T2
-  #undef  _MM_HINT_ETNA
-  #define _MM_HINT_ETNA SIMDE_MM_HINT_ETNA
+  #undef  _MM_HINT_ENTA
+  #define _MM_HINT_ETNA SIMDE_MM_HINT_ENTA
   #undef  _MM_HINT_ET0
   #define _MM_HINT_ET0  SIMDE_MM_HINT_ET0
   #undef  _MM_HINT_ET1
@@ -3375,14 +3379,119 @@ simde_mm_mulhi_pu16 (simde__m64 a, simde__m64 b) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 void
-simde_mm_prefetch (char const* p, int i) {
-  #if defined(HEDLEY_GCC_VERSION)
-    __builtin_prefetch(p);
-  #else
-    (void) p;
+simde_mm_prefetch (const void* p, int i) {
+  #if \
+      HEDLEY_HAS_BUILTIN(__builtin_prefetch) || \
+      HEDLEY_GCC_VERSION_CHECK(3,4,0) || \
+      HEDLEY_INTEL_VERSION_CHECK(13,0,0)
+    switch(i) {
+      case SIMDE_MM_HINT_NTA:
+        __builtin_prefetch(p, 0, 0);
+        break;
+      case SIMDE_MM_HINT_T0:
+        __builtin_prefetch(p, 0, 3);
+        break;
+      case SIMDE_MM_HINT_T1:
+        __builtin_prefetch(p, 0, 2);
+        break;
+      case SIMDE_MM_HINT_T2:
+        __builtin_prefetch(p, 0, 1);
+        break;
+      case SIMDE_MM_HINT_ENTA:
+        __builtin_prefetch(p, 1, 0);
+        break;
+      case SIMDE_MM_HINT_ET0:
+        __builtin_prefetch(p, 1, 3);
+        break;
+      case SIMDE_MM_HINT_ET1:
+        __builtin_prefetch(p, 1, 2);
+        break;
+      case SIMDE_MM_HINT_ET2:
+        __builtin_prefetch(p, 0, 1);
+        break;
+    }
+  #elif defined(__ARM_ACLE)
+    #if (__ARM_ACLE >= 101)
+      switch(i) {
+        case SIMDE_MM_HINT_NTA:
+          __pldx(0, 0, 1, p);
+          break;
+        case SIMDE_MM_HINT_T0:
+          __pldx(0, 0, 0, p);
+          break;
+        case SIMDE_MM_HINT_T1:
+          __pldx(0, 1, 0, p);
+          break;
+        case SIMDE_MM_HINT_T2:
+          __pldx(0, 2, 0, p);
+          break;
+        case SIMDE_MM_HINT_ENTA:
+          __pldx(1, 0, 1, p);
+          break;
+        case SIMDE_MM_HINT_ET0:
+          __pldx(1, 0, 0, p);
+          break;
+        case SIMDE_MM_HINT_ET1:
+          __pldx(1, 1, 0, p);
+          break;
+        case SIMDE_MM_HINT_ET2:
+          __pldx(1, 2, 0, p);
+          break;
+      }
+    #else
+      (void) i;
+      __pld(p)
+    #endif
+  #elif HEDLEY_PGI_VERSION_CHECK(10,0,0)
+    (void) i;
+    #pragma mem prefetch p
+  #elif HEDLEY_CRAY_VERSION_CHECK(8,1,0)
+    switch (i) {
+      case SIMDE_MM_HINT_NTA:
+        #pragma _CRI prefetch (nt) p
+        break;
+      case SIMDE_MM_HINT_T0:
+      case SIMDE_MM_HINT_T1:
+      case SIMDE_MM_HINT_T2:
+        #pragma _CRI prefetch p
+        break;
+      case SIMDE_MM_HINT_ENTA:
+        #pragma _CRI prefetch (write, nt) p
+        break;
+      case SIMDE_MM_HINT_ET0:
+      case SIMDE_MM_HINT_ET1:
+      case SIMDE_MM_HINT_ET2:
+        #pragma _CRI prefetch (write) p
+        break;
+    }
+  #elif HEDLEY_IBM_VERSION_CHECK(11,0,0)
+    switch(i) {
+      case SIMDE_MM_HINT_NTA:
+        __prefetch_by_load(p, 0, 0);
+        break;
+      case SIMDE_MM_HINT_T0:
+        __prefetch_by_load(p, 0, 3);
+        break;
+      case SIMDE_MM_HINT_T1:
+        __prefetch_by_load(p, 0, 2);
+        break;
+      case SIMDE_MM_HINT_T2:
+        __prefetch_by_load(p, 0, 1);
+        break;
+      case SIMDE_MM_HINT_ENTA:
+        __prefetch_by_load(p, 1, 0);
+        break;
+      case SIMDE_MM_HINT_ET0:
+        __prefetch_by_load(p, 1, 3);
+        break;
+      case SIMDE_MM_HINT_ET1:
+        __prefetch_by_load(p, 1, 2);
+        break;
+      case SIMDE_MM_HINT_ET2:
+        __prefetch_by_load(p, 0, 1);
+        break;
+    }
   #endif
-
-  (void) i;
 }
 #if defined(SIMDE_X86_SSE_NATIVE)
   #if defined(__clang__) && !SIMDE_DETECT_CLANG_VERSION_CHECK(10,0,0) /* https://reviews.llvm.org/D71718 */
