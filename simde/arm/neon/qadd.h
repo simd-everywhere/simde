@@ -696,7 +696,7 @@ simde_vqaddq_u32(simde_uint32x4_t a, simde_uint32x4_t b) {
 
     #if defined(SIMDE_X86_SSE4_1_NATIVE)
       #if defined(__AVX512VL__)
-        __m128i notb = _mm_ternarylogic_epi32(b, b, b, 0x0f);
+        __m128i notb = _mm_ternarylogic_epi32(b_.m128i, b_.m128i, b_.m128i, 0x0f);
       #else
         __m128i notb = _mm_xor_si128(b_.m128i, _mm_set1_epi32(~INT32_C(0)));
       #endif

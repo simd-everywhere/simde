@@ -175,6 +175,38 @@ simde_x_msa_ld_u_d(const void * rs, const int s10)
   #endif
 }
 
+SIMDE_FUNCTION_ATTRIBUTES
+simde_v4f32
+simde_x_msa_fld_w(const void * rs, const int s10)
+    SIMDE_REQUIRE_CONSTANT_RANGE(s10, 0, 1023)
+    HEDLEY_REQUIRE_MSG((s10 % sizeof(int32_t)) == 0, "`s10' must be a multiple of sizeof(int32_t)") {
+  #if defined(SIMDE_MIPS_MSA_NATIVE)
+    return HEDLEY_REINTERPRET_CAST(simde_v4f32, __msa_ld_b(rs, s10));
+  #else
+    simde_v4f32 r;
+
+    simde_memcpy(&r, &(HEDLEY_REINTERPRET_CAST(const int8_t*, rs)[s10]), sizeof(r));
+
+    return r;
+  #endif
+}
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_v2f64
+simde_x_msa_fld_d(const void * rs, const int s10)
+    SIMDE_REQUIRE_CONSTANT_RANGE(s10, 0, 1023)
+    HEDLEY_REQUIRE_MSG((s10 % sizeof(int64_t)) == 0, "`s10' must be a multiple of sizeof(int64_t)") {
+  #if defined(SIMDE_MIPS_MSA_NATIVE)
+    return HEDLEY_REINTERPRET_CAST(simde_v2f64, __msa_ld_b(rs, s10));
+  #else
+    simde_v2f64 r;
+
+    simde_memcpy(&r, &(HEDLEY_REINTERPRET_CAST(const int8_t*, rs)[s10]), sizeof(r));
+
+    return r;
+  #endif
+}
+
 SIMDE_END_DECLS_
 HEDLEY_DIAGNOSTIC_POP
 

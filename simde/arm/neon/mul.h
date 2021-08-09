@@ -30,6 +30,8 @@
 
 #include "types.h"
 
+#include "reinterpret.h"
+
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 SIMDE_BEGIN_DECLS_
@@ -462,6 +464,8 @@ simde_x_vmulq_s64(simde_int64x2_t a, simde_int64x2_t b) {
 
   #if defined(SIMDE_WASM_SIMD128_NATIVE)
     r_.v128 = wasm_i64x2_mul(a_.v128, b_.v128);
+  #elif defined(SIMDE_X86_AVX512VL_NATIVE) && defined(SIMDE_X86_AVX512DQ_NATIVE)
+    r_.m128i = _mm_mullo_epi64(a_.m128i, b_.m128i);
   #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
     r_.values = a_.values * b_.values;
   #else
@@ -480,21 +484,13 @@ simde_vmulq_u8(simde_uint8x16_t a, simde_uint8x16_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vmulq_u8(a, b);
   #else
-    simde_uint8x16_private
-      r_,
-      a_ = simde_uint8x16_to_private(a),
-      b_ = simde_uint8x16_to_private(b);
-
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-      r_.values = a_.values * b_.values;
-    #else
-      SIMDE_VECTORIZE
-      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-        r_.values[i] = a_.values[i] * b_.values[i];
-      }
-    #endif
-
-    return simde_uint8x16_from_private(r_);
+    return
+      simde_vreinterpretq_u8_s8(
+        simde_vmulq_s8(
+          simde_vreinterpretq_s8_u8(a),
+          simde_vreinterpretq_s8_u8(b)
+        )
+      );
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
@@ -508,23 +504,13 @@ simde_vmulq_u16(simde_uint16x8_t a, simde_uint16x8_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vmulq_u16(a, b);
   #else
-    simde_uint16x8_private
-      r_,
-      a_ = simde_uint16x8_to_private(a),
-      b_ = simde_uint16x8_to_private(b);
-
-    #if defined(SIMDE_WASM_SIMD128_NATIVE)
-      r_.v128 = wasm_i16x8_mul(a_.v128, b_.v128);
-    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-      r_.values = a_.values * b_.values;
-    #else
-      SIMDE_VECTORIZE
-      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-        r_.values[i] = a_.values[i] * b_.values[i];
-      }
-    #endif
-
-    return simde_uint16x8_from_private(r_);
+    return
+      simde_vreinterpretq_u16_s16(
+        simde_vmulq_s16(
+          simde_vreinterpretq_s16_u16(a),
+          simde_vreinterpretq_s16_u16(b)
+        )
+      );
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
@@ -538,23 +524,13 @@ simde_vmulq_u32(simde_uint32x4_t a, simde_uint32x4_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vmulq_u32(a, b);
   #else
-    simde_uint32x4_private
-      r_,
-      a_ = simde_uint32x4_to_private(a),
-      b_ = simde_uint32x4_to_private(b);
-
-    #if defined(SIMDE_WASM_SIMD128_NATIVE)
-      r_.v128 = wasm_i32x4_mul(a_.v128, b_.v128);
-    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-      r_.values = a_.values * b_.values;
-    #else
-      SIMDE_VECTORIZE
-      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-        r_.values[i] = a_.values[i] * b_.values[i];
-      }
-    #endif
-
-    return simde_uint32x4_from_private(r_);
+    return
+      simde_vreinterpretq_u32_s32(
+        simde_vmulq_s32(
+          simde_vreinterpretq_s32_u32(a),
+          simde_vreinterpretq_s32_u32(b)
+        )
+      );
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
@@ -565,23 +541,13 @@ simde_vmulq_u32(simde_uint32x4_t a, simde_uint32x4_t b) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_uint64x2_t
 simde_x_vmulq_u64(simde_uint64x2_t a, simde_uint64x2_t b) {
-  simde_uint64x2_private
-    r_,
-    a_ = simde_uint64x2_to_private(a),
-    b_ = simde_uint64x2_to_private(b);
-
-  #if defined(SIMDE_WASM_SIMD128_NATIVE)
-    r_.v128 = wasm_i64x2_mul(a_.v128, b_.v128);
-  #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-    r_.values = a_.values * b_.values;
-  #else
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = a_.values[i] * b_.values[i];
-    }
-  #endif
-
-  return simde_uint64x2_from_private(r_);
+  return
+    simde_vreinterpretq_u64_s64(
+      simde_x_vmulq_s64(
+        simde_vreinterpretq_s64_u64(a),
+        simde_vreinterpretq_s64_u64(b)
+      )
+    );
 }
 
 SIMDE_END_DECLS_

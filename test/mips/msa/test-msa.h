@@ -63,7 +63,7 @@
 
 #define SIMDE_TEST_MIPS_MSA_GENERATE_FLOAT_FUNCS_(Element_Width, Element_Count, Variant_Name) \
   static int \
-  simde_test_msa_v##Element_Width##f##Element_Count##_assert_equal_( \
+  simde_test_msa_v##Element_Count##f##Element_Width##_assert_equal_( \
       simde_v##Element_Count##f##Element_Width a, simde_v##Element_Count##f##Element_Width b, simde_float##Element_Width slop, \
       const char* filename, int line, const char* astr, const char* bstr) { \
     simde_float##Element_Width a_[sizeof(a) / sizeof(simde_float##Element_Width)]; \
@@ -81,7 +81,7 @@
   } \
   \
   static simde_v##Element_Count##f##Element_Width \
-  simde_test_msa_f##Element_Width##x##Element_Count##_random(simde_float##Element_Width min, simde_float##Element_Width max) { \
+  simde_test_msa_v##Element_Count##f##Element_Width##_random(simde_float##Element_Width min, simde_float##Element_Width max) { \
     simde_float##Element_Width r_[sizeof(simde_v##Element_Count##f##Element_Width) / sizeof(simde_float##Element_Width)]; \
     simde_v##Element_Count##f##Element_Width r; \
     simde_test_codegen_random_vf##Element_Width(sizeof(simde_v##Element_Count##f##Element_Width) / sizeof(simde_float##Element_Width), r_, min, max); \
@@ -90,7 +90,7 @@
   } \
   \
   static void \
-  simde_test_msa_f##Element_Width##x##Element_Count##_random_full( \
+  simde_test_msa_v##Element_Count##f##Element_Width##_random_full( \
       size_t test_sets, size_t vectors_per_set, \
       simde_float##Element_Width v[HEDLEY_ARRAY_PARAM(test_sets * vectors_per_set * (sizeof(simde_v##Element_Count##f##Element_Width) / sizeof(simde_float##Element_Width)))], \
       simde_float##Element_Width min, simde_float##Element_Width max, \
