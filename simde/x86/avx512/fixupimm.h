@@ -926,7 +926,6 @@ simde_mm_fixupimm_sd (simde__m128d a, simde__m128d b, simde__m128i c, int imm8)
   #define _mm_maskz_fixupimm_sd(k, a, b, c, imm8) simde_mm_maskz_fixupimm_sd(k, a, b, c, imm8)
 #endif
 
-
 SIMDE_END_DECLS_
 HEDLEY_DIAGNOSTIC_POP
 
