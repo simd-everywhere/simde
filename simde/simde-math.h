@@ -410,10 +410,27 @@ simde_math_fpclassifyf(float v) {
   #else
     return
       simde_math_isnormalf(v) ? SIMDE_MATH_FP_NORMAL    :
-      (v == 0.0f)           ? SIMDE_MATH_FP_ZERO      :
+      (v == 0.0f)             ? SIMDE_MATH_FP_ZERO      :
       simde_math_isnanf(v)    ? SIMDE_MATH_FP_NAN       :
       simde_math_isinff(v)    ? SIMDE_MATH_FP_INFINITE  :
                                 SIMDE_MATH_FP_SUBNORMAL;
+  #endif
+}
+
+static HEDLEY_INLINE
+int
+simde_math_fpclassify(double v) {
+  #if SIMDE_MATH_BUILTIN_LIBM(fpclassify)
+    return __builtin_fpclassify(SIMDE_MATH_FP_NAN, SIMDE_MATH_FP_INFINITE, SIMDE_MATH_FP_NORMAL, SIMDE_MATH_FP_SUBNORMAL, SIMDE_MATH_FP_ZERO, v);
+  #elif defined(fpclassify)
+    return fpclassify(v);
+  #else
+    return
+      simde_math_isnormal(v) ? SIMDE_MATH_FP_NORMAL    :
+      (v == 0.0)             ? SIMDE_MATH_FP_ZERO      :
+      simde_math_isnan(v)    ? SIMDE_MATH_FP_NAN       :
+      simde_math_isinf(v)    ? SIMDE_MATH_FP_INFINITE  :
+                               SIMDE_MATH_FP_SUBNORMAL;
   #endif
 }
 
