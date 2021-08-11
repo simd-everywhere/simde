@@ -59,11 +59,7 @@ simde_mm_fixupimm_ps (simde__m128 a, simde__m128 b, simde__m128i c, int imm8)
         r_.f32[i] =  SIMDE_MATH_INFINITYF;
         break;
       case 6:
-      #if defined(simde_math_copysignf)
-        r_.f32[i] =  simde_math_copysignf(SIMDE_MATH_INFINITYF, s_.f32[i]);
-      #else
-        r_.f32[i] =  simde_uint32_as_float32((simde_float32_as_uint32(s_.f32[i]) & 0x80000000) | simde_float32_as_uint32(SIMDE_MATH_INFINITYF));
-      #endif
+        r_.f32[i] =  s_.f32[i] < SIMDE_FLOAT32_C(0.0) ? -SIMDE_MATH_INFINITYF : SIMDE_MATH_INFINITYF;
         break;
       case 7:
         r_.f32[i] =  SIMDE_FLOAT32_C(-0.0);
@@ -175,11 +171,7 @@ simde_mm256_fixupimm_ps (simde__m256 a, simde__m256 b, simde__m256i c, int imm8)
         r_.f32[i] =  SIMDE_MATH_INFINITYF;
         break;
       case 6:
-      #if defined(simde_math_copysignf)
-        r_.f32[i] =  simde_math_copysignf(SIMDE_MATH_INFINITYF, s_.f32[i]);
-      #else
-        r_.f32[i] =  simde_uint32_as_float32((simde_float32_as_uint32(s_.f32[i]) & 0x80000000) | simde_float32_as_uint32(SIMDE_MATH_INFINITYF));
-      #endif
+        r_.f32[i] =  s_.f32[i] < SIMDE_FLOAT32_C(0.0) ? -SIMDE_MATH_INFINITYF : SIMDE_MATH_INFINITYF;
         break;
       case 7:
         r_.f32[i] =  SIMDE_FLOAT32_C(-0.0);
@@ -291,11 +283,7 @@ simde_mm512_fixupimm_ps (simde__m512 a, simde__m512 b, simde__m512i c, int imm8)
         r_.f32[i] =  SIMDE_MATH_INFINITYF;
         break;
       case 6:
-      #if defined(simde_math_copysignf)
-        r_.f32[i] =  simde_math_copysignf(SIMDE_MATH_INFINITYF, s_.f32[i]);
-      #else
-        r_.f32[i] =  simde_uint32_as_float32((simde_float32_as_uint32(s_.f32[i]) & 0x80000000) | simde_float32_as_uint32(SIMDE_MATH_INFINITYF));
-      #endif
+        r_.f32[i] =  s_.f32[i] < SIMDE_FLOAT32_C(0.0) ? -SIMDE_MATH_INFINITYF : SIMDE_MATH_INFINITYF;
         break;
       case 7:
         r_.f32[i] =  SIMDE_FLOAT32_C(-0.0);
@@ -401,11 +389,7 @@ simde_mm_fixupimm_ss (simde__m128 a, simde__m128 b, simde__m128i c, int imm8)
       b_.f32[0] =  SIMDE_MATH_INFINITYF;
       break;
     case 6:
-    #if defined(simde_math_copysignf)
-      b_.f32[0] =  simde_math_copysignf(SIMDE_MATH_INFINITYF, s_.f32[0]);
-    #else
-      b_.f32[0] =  simde_uint32_as_float32((simde_float32_as_uint32(s_.f32[0]) & 0x80000000) | simde_float32_as_uint32(SIMDE_MATH_INFINITYF));
-    #endif
+      b_.f32[0] =  s_.f32[0] < SIMDE_FLOAT32_C(0.0) ? -SIMDE_MATH_INFINITYF : SIMDE_MATH_INFINITYF;
       break;
     case 7:
       b_.f32[0] =  SIMDE_FLOAT32_C(-0.0);
@@ -516,11 +500,7 @@ simde_mm_fixupimm_pd (simde__m128d a, simde__m128d b, simde__m128i c, int imm8)
         r_.f64[i] =  SIMDE_MATH_INFINITY;
         break;
       case 6:
-      #if defined(simde_math_copysign)
-        r_.f64[i] =  simde_math_copysign(SIMDE_MATH_INFINITY, s_.f64[i]);
-      #else
-        r_.f64[i] =  simde_uint64_as_float64((simde_float64_as_uint64(s_.f64[i]) & 0x8000000000000000) | simde_float64_as_uint64(SIMDE_MATH_INFINITY));
-      #endif
+        r_.f64[i] =  s_.f64[i] < SIMDE_FLOAT64_C(0.0) ? -SIMDE_MATH_INFINITY : SIMDE_MATH_INFINITY;
         break;
       case 7:
         r_.f64[i] =  SIMDE_FLOAT64_C(-0.0);
@@ -632,11 +612,7 @@ simde_mm256_fixupimm_pd (simde__m256d a, simde__m256d b, simde__m256i c, int imm
         r_.f64[i] =  SIMDE_MATH_INFINITY;
         break;
       case 6:
-      #if defined(simde_math_copysign)
-        r_.f64[i] =  simde_math_copysign(SIMDE_MATH_INFINITY, s_.f64[i]);
-      #else
-        r_.f64[i] =  simde_uint64_as_float64((simde_float64_as_uint64(s_.f64[i]) & 0x8000000000000000) | simde_float64_as_uint64(SIMDE_MATH_INFINITY));
-      #endif
+        r_.f64[i] =  s_.f64[i] < SIMDE_FLOAT64_C(0.0) ? -SIMDE_MATH_INFINITY : SIMDE_MATH_INFINITY;
         break;
       case 7:
         r_.f64[i] =  SIMDE_FLOAT64_C(-0.0);
@@ -748,11 +724,7 @@ simde_mm512_fixupimm_pd (simde__m512d a, simde__m512d b, simde__m512i c, int imm
         r_.f64[i] =  SIMDE_MATH_INFINITY;
         break;
       case 6:
-      #if defined(simde_math_copysign)
-        r_.f64[i] =  simde_math_copysign(SIMDE_MATH_INFINITY, s_.f64[i]);
-      #else
-        r_.f64[i] =  simde_uint64_as_float64((simde_float64_as_uint64(s_.f64[i]) & 0x8000000000000000) | simde_float64_as_uint64(SIMDE_MATH_INFINITY));
-      #endif
+        r_.f64[i] =  s_.f64[i] < SIMDE_FLOAT64_C(0.0) ? -SIMDE_MATH_INFINITY : SIMDE_MATH_INFINITY;
         break;
       case 7:
         r_.f64[i] =  SIMDE_FLOAT64_C(-0.0);
@@ -861,11 +833,7 @@ simde_mm_fixupimm_sd (simde__m128d a, simde__m128d b, simde__m128i c, int imm8)
       b_.f64[0] =  SIMDE_MATH_INFINITY;
       break;
     case 6:
-    #if defined(simde_math_copysign)
-      b_.f64[0] =  simde_math_copysign(SIMDE_MATH_INFINITY, s_.f64[0]);
-    #else
-      b_.f64[0] =  simde_uint64_as_float64((simde_float64_as_uint64(s_.f64[0]) & 0x8000000000000000) | simde_float64_as_uint64(SIMDE_MATH_INFINITY));
-    #endif
+      b_.f64[0] =  s_.f64[0] < SIMDE_FLOAT64_C(0.0) ? -SIMDE_MATH_INFINITY : SIMDE_MATH_INFINITY;
       break;
     case 7:
       b_.f64[0] =  SIMDE_FLOAT64_C(-0.0);
