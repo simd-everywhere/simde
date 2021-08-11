@@ -9,30 +9,6 @@ HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 SIMDE_BEGIN_DECLS_
 
-SIMDE_FUNCTION_ATTRIBUTES
-simde__m512
-simde_mm512_fixupimm_round_ps (simde__m512 a, simde__m512 b, simde__m512i c, int imm8, int sae)
-    SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 255)
-    SIMDE_REQUIRE_CONSTANT(sae) {
-  simde__m512 r;
-
-  if (sae & SIMDE_MM_FROUND_NO_EXC) {
-    #if defined(SIMDE_HAVE_FENV_H)
-      fenv_t envp;
-      int x = feholdexcept(&envp);
-      r = simde_mm512_fixupimm_ps(a, b, c, imm8);
-      if (HEDLEY_LIKELY(x == 0))
-        fesetenv(&envp);
-    #else
-      r = simde_mm512_fixupimm_ps(a, b, c, imm8);
-    #endif
-  }
-  else {
-    r = simde_mm512_fixupimm_ps(a, b, c, imm8);
-  }
-
-  return r;
-}
 #if defined(SIMDE_X86_AVX512F_NATIVE)
   #define simde_mm512_fixupimm_round_ps(a, b, c, imm8, sae) _mm512_fixupimm_round_ps(a, b, c, imm8, sae)
 #elif defined(SIMDE_FAST_EXCEPTIONS)
@@ -58,36 +34,37 @@ simde_mm512_fixupimm_round_ps (simde__m512 a, simde__m512 b, simde__m512i c, int
   #else
     #define simde_mm512_fixupimm_round_ps(a, b, c, imm8, sae) simde_mm512_fixupimm_ps(a, b, c, imm8)
   #endif
+#else
+  SIMDE_FUNCTION_ATTRIBUTES
+  simde__m512
+  simde_mm512_fixupimm_round_ps (simde__m512 a, simde__m512 b, simde__m512i c, int imm8, int sae)
+      SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 255)
+      SIMDE_REQUIRE_CONSTANT(sae) {
+    simde__m512 r;
+
+    if (sae & SIMDE_MM_FROUND_NO_EXC) {
+      #if defined(SIMDE_HAVE_FENV_H)
+        fenv_t envp;
+        int x = feholdexcept(&envp);
+        r = simde_mm512_fixupimm_ps(a, b, c, imm8);
+        if (HEDLEY_LIKELY(x == 0))
+          fesetenv(&envp);
+      #else
+        r = simde_mm512_fixupimm_ps(a, b, c, imm8);
+      #endif
+    }
+    else {
+      r = simde_mm512_fixupimm_ps(a, b, c, imm8);
+    }
+
+    return r;
+  }
 #endif
 #if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
   #undef _mm512_fixupimm_round_ps
   #define _mm512_fixupimm_round_ps(a, b, c, imm8, sae) simde_mm512_fixupimm_round_ps(a, b, c, imm8, sae)
 #endif
 
-SIMDE_FUNCTION_ATTRIBUTES
-simde__m512
-simde_mm512_mask_fixupimm_round_ps (simde__m512 a, simde__mmask16 k, simde__m512 b, simde__m512i c, int imm8, int sae)
-    SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 255)
-    SIMDE_REQUIRE_CONSTANT(sae) {
-  simde__m512 r;
-
-  if (sae & SIMDE_MM_FROUND_NO_EXC) {
-    #if defined(SIMDE_HAVE_FENV_H)
-      fenv_t envp;
-      int x = feholdexcept(&envp);
-      r = simde_mm512_mask_fixupimm_ps(a, k, b, c, imm8);
-      if (HEDLEY_LIKELY(x == 0))
-        fesetenv(&envp);
-    #else
-      r = simde_mm512_mask_fixupimm_ps(a, k, b, c, imm8);
-    #endif
-  }
-  else {
-    r = simde_mm512_mask_fixupimm_ps(a, k, b, c, imm8);
-  }
-
-  return r;
-}
 #if defined(SIMDE_X86_AVX512F_NATIVE)
   #define simde_mm512_mask_fixupimm_round_ps(a, k, b, c, imm8, sae) _mm512_mask_fixupimm_round_ps(a, k, b, c, imm8, sae)
 #elif defined(SIMDE_FAST_EXCEPTIONS)
@@ -113,36 +90,37 @@ simde_mm512_mask_fixupimm_round_ps (simde__m512 a, simde__mmask16 k, simde__m512
   #else
     #define simde_mm512_mask_fixupimm_round_ps(a, k, b, c, imm8, sae) simde_mm512_mask_fixupimm_ps(a, k, b, c, imm8)
   #endif
+#else
+  SIMDE_FUNCTION_ATTRIBUTES
+  simde__m512
+  simde_mm512_mask_fixupimm_round_ps (simde__m512 a, simde__mmask16 k, simde__m512 b, simde__m512i c, int imm8, int sae)
+      SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 255)
+      SIMDE_REQUIRE_CONSTANT(sae) {
+    simde__m512 r;
+
+    if (sae & SIMDE_MM_FROUND_NO_EXC) {
+      #if defined(SIMDE_HAVE_FENV_H)
+        fenv_t envp;
+        int x = feholdexcept(&envp);
+        r = simde_mm512_mask_fixupimm_ps(a, k, b, c, imm8);
+        if (HEDLEY_LIKELY(x == 0))
+          fesetenv(&envp);
+      #else
+        r = simde_mm512_mask_fixupimm_ps(a, k, b, c, imm8);
+      #endif
+    }
+    else {
+      r = simde_mm512_mask_fixupimm_ps(a, k, b, c, imm8);
+    }
+
+    return r;
+  }
 #endif
 #if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
   #undef _mm512_mask_fixupimm_round_ps
   #define _mm512_mask_fixupimm_round_ps(a, k, b, c, imm8, sae) simde_mm512_mask_fixupimm_round_ps(a, k, b, c, imm8, sae)
 #endif
 
-SIMDE_FUNCTION_ATTRIBUTES
-simde__m512
-simde_mm512_maskz_fixupimm_round_ps (simde__mmask16 k, simde__m512 a, simde__m512 b, simde__m512i c, int imm8, int sae)
-    SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 255)
-    SIMDE_REQUIRE_CONSTANT(sae) {
-  simde__m512 r;
-
-  if (sae & SIMDE_MM_FROUND_NO_EXC) {
-    #if defined(SIMDE_HAVE_FENV_H)
-      fenv_t envp;
-      int x = feholdexcept(&envp);
-      r = simde_mm512_maskz_fixupimm_ps(k, a, b, c, imm8);
-      if (HEDLEY_LIKELY(x == 0))
-        fesetenv(&envp);
-    #else
-      r = simde_mm512_maskz_fixupimm_ps(k, a, b, c, imm8);
-    #endif
-  }
-  else {
-    r = simde_mm512_maskz_fixupimm_ps(k, a, b, c, imm8);
-  }
-
-  return r;
-}
 #if defined(SIMDE_X86_AVX512F_NATIVE)
   #define simde_mm512_maskz_fixupimm_round_ps(k, a, b, c, imm8, sae) _mm512_maskz_fixupimm_round_ps(k, a, b, c, imm8, sae)
 #elif defined(SIMDE_FAST_EXCEPTIONS)
@@ -168,36 +146,37 @@ simde_mm512_maskz_fixupimm_round_ps (simde__mmask16 k, simde__m512 a, simde__m51
   #else
     #define simde_mm512_maskz_fixupimm_round_ps(k, a, b, c, imm8, sae) simde_mm512_maskz_fixupimm_ps(k, a, b, c, imm8)
   #endif
+#else
+  SIMDE_FUNCTION_ATTRIBUTES
+  simde__m512
+  simde_mm512_maskz_fixupimm_round_ps (simde__mmask16 k, simde__m512 a, simde__m512 b, simde__m512i c, int imm8, int sae)
+      SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 255)
+      SIMDE_REQUIRE_CONSTANT(sae) {
+    simde__m512 r;
+
+    if (sae & SIMDE_MM_FROUND_NO_EXC) {
+      #if defined(SIMDE_HAVE_FENV_H)
+        fenv_t envp;
+        int x = feholdexcept(&envp);
+        r = simde_mm512_maskz_fixupimm_ps(k, a, b, c, imm8);
+        if (HEDLEY_LIKELY(x == 0))
+          fesetenv(&envp);
+      #else
+        r = simde_mm512_maskz_fixupimm_ps(k, a, b, c, imm8);
+      #endif
+    }
+    else {
+      r = simde_mm512_maskz_fixupimm_ps(k, a, b, c, imm8);
+    }
+
+    return r;
+  }
 #endif
 #if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
   #undef _mm512_maskz_fixupimm_round_ps
   #define _mm512_maskz_fixupimm_round_ps(k, a, b, c, imm8, sae) simde_mm512_maskz_fixupimm_round_ps(k, a, b, c, imm8, sae)
 #endif
 
-SIMDE_FUNCTION_ATTRIBUTES
-simde__m512d
-simde_mm512_fixupimm_round_pd (simde__m512d a, simde__m512d b, simde__m512i c, int imm8, int sae)
-    SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 255)
-    SIMDE_REQUIRE_CONSTANT(sae) {
-  simde__m512d r;
-
-  if (sae & SIMDE_MM_FROUND_NO_EXC) {
-    #if defined(SIMDE_HAVE_FENV_H)
-      fenv_t envp;
-      int x = feholdexcept(&envp);
-      r = simde_mm512_fixupimm_pd(a, b, c, imm8);
-      if (HEDLEY_LIKELY(x == 0))
-        fesetenv(&envp);
-    #else
-      r = simde_mm512_fixupimm_pd(a, b, c, imm8);
-    #endif
-  }
-  else {
-    r = simde_mm512_fixupimm_pd(a, b, c, imm8);
-  }
-
-  return r;
-}
 #if defined(SIMDE_X86_AVX512F_NATIVE)
   #define simde_mm512_fixupimm_round_pd(a, b, c, imm8, sae) _mm512_fixupimm_round_pd(a, b, c, imm8, sae)
 #elif defined(SIMDE_FAST_EXCEPTIONS)
@@ -223,36 +202,37 @@ simde_mm512_fixupimm_round_pd (simde__m512d a, simde__m512d b, simde__m512i c, i
   #else
     #define simde_mm512_fixupimm_round_pd(a, b, c, imm8, sae) simde_mm512_fixupimm_pd(a, b, c, imm8)
   #endif
+#else
+  SIMDE_FUNCTION_ATTRIBUTES
+  simde__m512d
+  simde_mm512_fixupimm_round_pd (simde__m512d a, simde__m512d b, simde__m512i c, int imm8, int sae)
+      SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 255)
+      SIMDE_REQUIRE_CONSTANT(sae) {
+    simde__m512d r;
+
+    if (sae & SIMDE_MM_FROUND_NO_EXC) {
+      #if defined(SIMDE_HAVE_FENV_H)
+        fenv_t envp;
+        int x = feholdexcept(&envp);
+        r = simde_mm512_fixupimm_pd(a, b, c, imm8);
+        if (HEDLEY_LIKELY(x == 0))
+          fesetenv(&envp);
+      #else
+        r = simde_mm512_fixupimm_pd(a, b, c, imm8);
+      #endif
+    }
+    else {
+      r = simde_mm512_fixupimm_pd(a, b, c, imm8);
+    }
+
+    return r;
+  }
 #endif
 #if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
   #undef _mm512_fixupimm_round_pd
   #define _mm512_fixupimm_round_pd(a, b, c, imm8, sae) simde_mm512_fixupimm_round_pd(a, b, c, imm8, sae)
 #endif
 
-SIMDE_FUNCTION_ATTRIBUTES
-simde__m512d
-simde_mm512_mask_fixupimm_round_pd (simde__m512d a, simde__mmask8 k, simde__m512d b, simde__m512i c, int imm8, int sae)
-    SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 255)
-    SIMDE_REQUIRE_CONSTANT(sae) {
-  simde__m512d r;
-
-  if (sae & SIMDE_MM_FROUND_NO_EXC) {
-    #if defined(SIMDE_HAVE_FENV_H)
-      fenv_t envp;
-      int x = feholdexcept(&envp);
-      r = simde_mm512_mask_fixupimm_pd(a, k, b, c, imm8);
-      if (HEDLEY_LIKELY(x == 0))
-        fesetenv(&envp);
-    #else
-      r = simde_mm512_mask_fixupimm_pd(a, k, b, c, imm8);
-    #endif
-  }
-  else {
-    r = simde_mm512_mask_fixupimm_pd(a, k, b, c, imm8);
-  }
-
-  return r;
-}
 #if defined(SIMDE_X86_AVX512F_NATIVE)
   #define simde_mm512_mask_fixupimm_round_pd(a, k, b, c, imm8, sae) _mm512_mask_fixupimm_round_pd(a, k, b, c, imm8, sae)
 #elif defined(SIMDE_FAST_EXCEPTIONS)
@@ -278,36 +258,37 @@ simde_mm512_mask_fixupimm_round_pd (simde__m512d a, simde__mmask8 k, simde__m512
   #else
     #define simde_mm512_mask_fixupimm_round_pd(a, k, b, c, imm8, sae) simde_mm512_mask_fixupimm_pd(a, k, b, c, imm8)
   #endif
+#else
+  SIMDE_FUNCTION_ATTRIBUTES
+  simde__m512d
+  simde_mm512_mask_fixupimm_round_pd (simde__m512d a, simde__mmask8 k, simde__m512d b, simde__m512i c, int imm8, int sae)
+      SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 255)
+      SIMDE_REQUIRE_CONSTANT(sae) {
+    simde__m512d r;
+
+    if (sae & SIMDE_MM_FROUND_NO_EXC) {
+      #if defined(SIMDE_HAVE_FENV_H)
+        fenv_t envp;
+        int x = feholdexcept(&envp);
+        r = simde_mm512_mask_fixupimm_pd(a, k, b, c, imm8);
+        if (HEDLEY_LIKELY(x == 0))
+          fesetenv(&envp);
+      #else
+        r = simde_mm512_mask_fixupimm_pd(a, k, b, c, imm8);
+      #endif
+    }
+    else {
+      r = simde_mm512_mask_fixupimm_pd(a, k, b, c, imm8);
+    }
+
+    return r;
+  }
 #endif
 #if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
   #undef _mm512_mask_fixupimm_round_pd
   #define _mm512_mask_fixupimm_round_pd(a, k, b, c, imm8, sae) simde_mm512_mask_fixupimm_round_pd(a, k, b, c, imm8, sae)
 #endif
 
-SIMDE_FUNCTION_ATTRIBUTES
-simde__m512d
-simde_mm512_maskz_fixupimm_round_pd (simde__mmask8 k, simde__m512d a, simde__m512d b, simde__m512i c, int imm8, int sae)
-    SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 255)
-    SIMDE_REQUIRE_CONSTANT(sae) {
-  simde__m512d r;
-
-  if (sae & SIMDE_MM_FROUND_NO_EXC) {
-    #if defined(SIMDE_HAVE_FENV_H)
-      fenv_t envp;
-      int x = feholdexcept(&envp);
-      r = simde_mm512_maskz_fixupimm_pd(k, a, b, c, imm8);
-      if (HEDLEY_LIKELY(x == 0))
-        fesetenv(&envp);
-    #else
-      r = simde_mm512_maskz_fixupimm_pd(k, a, b, c, imm8);
-    #endif
-  }
-  else {
-    r = simde_mm512_maskz_fixupimm_pd(k, a, b, c, imm8);
-  }
-
-  return r;
-}
 #if defined(SIMDE_X86_AVX512F_NATIVE)
   #define simde_mm512_maskz_fixupimm_round_pd(k, a, b, c, imm8, sae) _mm512_maskz_fixupimm_round_pd(k, a, b, c, imm8, sae)
 #elif defined(SIMDE_FAST_EXCEPTIONS)
@@ -333,36 +314,37 @@ simde_mm512_maskz_fixupimm_round_pd (simde__mmask8 k, simde__m512d a, simde__m51
   #else
     #define simde_mm512_maskz_fixupimm_round_pd(k, a, b, c, imm8, sae) simde_mm512_maskz_fixupimm_pd(k, a, b, c, imm8)
   #endif
+#else
+  SIMDE_FUNCTION_ATTRIBUTES
+  simde__m512d
+  simde_mm512_maskz_fixupimm_round_pd (simde__mmask8 k, simde__m512d a, simde__m512d b, simde__m512i c, int imm8, int sae)
+      SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 255)
+      SIMDE_REQUIRE_CONSTANT(sae) {
+    simde__m512d r;
+
+    if (sae & SIMDE_MM_FROUND_NO_EXC) {
+      #if defined(SIMDE_HAVE_FENV_H)
+        fenv_t envp;
+        int x = feholdexcept(&envp);
+        r = simde_mm512_maskz_fixupimm_pd(k, a, b, c, imm8);
+        if (HEDLEY_LIKELY(x == 0))
+          fesetenv(&envp);
+      #else
+        r = simde_mm512_maskz_fixupimm_pd(k, a, b, c, imm8);
+      #endif
+    }
+    else {
+      r = simde_mm512_maskz_fixupimm_pd(k, a, b, c, imm8);
+    }
+
+    return r;
+  }
 #endif
 #if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
   #undef _mm512_maskz_fixupimm_round_pd
   #define _mm512_maskz_fixupimm_round_pd(k, a, b, c, imm8, sae) simde_mm512_maskz_fixupimm_round_pd(k, a, b, c, imm8, sae)
 #endif
 
-SIMDE_FUNCTION_ATTRIBUTES
-simde__m128
-simde_mm_fixupimm_round_ss (simde__m128 a, simde__m128 b, simde__m128i c, int imm8, int sae)
-    SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 15)
-    SIMDE_REQUIRE_CONSTANT(sae) {
-  simde__m128 r;
-
-  if (sae & SIMDE_MM_FROUND_NO_EXC) {
-    #if defined(SIMDE_HAVE_FENV_H)
-      fenv_t envp;
-      int x = feholdexcept(&envp);
-      r = simde_mm_fixupimm_ss(a, b, c, imm8);
-      if (HEDLEY_LIKELY(x == 0))
-        fesetenv(&envp);
-    #else
-      r = simde_mm_fixupimm_ss(a, b, c, imm8);
-    #endif
-  }
-  else {
-    r = simde_mm_fixupimm_ss(a, b, c, imm8);
-  }
-
-  return r;
-}
 #if defined(SIMDE_X86_AVX512F_NATIVE)
   #define simde_mm_fixupimm_round_ss(a, b, c, imm8, sae) _mm_fixupimm_round_ss(a, b, c, imm8, sae)
 #elif defined(SIMDE_FAST_EXCEPTIONS)
@@ -388,36 +370,37 @@ simde_mm_fixupimm_round_ss (simde__m128 a, simde__m128 b, simde__m128i c, int im
   #else
     #define simde_mm_fixupimm_round_ss(a, b, c, imm8, sae) simde_mm_fixupimm_ss(a, b, c, imm8)
   #endif
+#else
+  SIMDE_FUNCTION_ATTRIBUTES
+  simde__m128
+  simde_mm_fixupimm_round_ss (simde__m128 a, simde__m128 b, simde__m128i c, int imm8, int sae)
+      SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 15)
+      SIMDE_REQUIRE_CONSTANT(sae) {
+    simde__m128 r;
+
+    if (sae & SIMDE_MM_FROUND_NO_EXC) {
+      #if defined(SIMDE_HAVE_FENV_H)
+        fenv_t envp;
+        int x = feholdexcept(&envp);
+        r = simde_mm_fixupimm_ss(a, b, c, imm8);
+        if (HEDLEY_LIKELY(x == 0))
+          fesetenv(&envp);
+      #else
+        r = simde_mm_fixupimm_ss(a, b, c, imm8);
+      #endif
+    }
+    else {
+      r = simde_mm_fixupimm_ss(a, b, c, imm8);
+    }
+
+    return r;
+  }
 #endif
 #if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
   #undef _mm_fixupimm_round_ss
   #define _mm_fixupimm_round_ss(a, b, c, imm8, sae) simde_mm_fixupimm_round_ss(a, b, c, imm8, sae)
 #endif
 
-SIMDE_FUNCTION_ATTRIBUTES
-simde__m128
-simde_mm_mask_fixupimm_round_ss (simde__m128 a, simde__mmask8 k, simde__m128 b, simde__m128i c, int imm8, int sae)
-    SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 15)
-    SIMDE_REQUIRE_CONSTANT(sae) {
-  simde__m128 r;
-
-  if (sae & SIMDE_MM_FROUND_NO_EXC) {
-    #if defined(SIMDE_HAVE_FENV_H)
-      fenv_t envp;
-      int x = feholdexcept(&envp);
-      r = simde_mm_mask_fixupimm_ss(a, k, b, c, imm8);
-      if (HEDLEY_LIKELY(x == 0))
-        fesetenv(&envp);
-    #else
-      r = simde_mm_mask_fixupimm_ss(a, k, b, c, imm8);
-    #endif
-  }
-  else {
-    r = simde_mm_mask_fixupimm_ss(a, k, b, c, imm8);
-  }
-
-  return r;
-}
 #if defined(SIMDE_X86_AVX512F_NATIVE)
   #define simde_mm_mask_fixupimm_round_ss(a, k, b, c, imm8, sae) _mm_mask_fixupimm_round_ss(a, k, b, c, imm8, sae)
 #elif defined(SIMDE_FAST_EXCEPTIONS)
@@ -443,36 +426,37 @@ simde_mm_mask_fixupimm_round_ss (simde__m128 a, simde__mmask8 k, simde__m128 b, 
   #else
     #define simde_mm_mask_fixupimm_round_ss(a, k, b, c, imm8, sae) simde_mm_mask_fixupimm_ss(a, k, b, c, imm8)
   #endif
+#else
+  SIMDE_FUNCTION_ATTRIBUTES
+  simde__m128
+  simde_mm_mask_fixupimm_round_ss (simde__m128 a, simde__mmask8 k, simde__m128 b, simde__m128i c, int imm8, int sae)
+      SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 15)
+      SIMDE_REQUIRE_CONSTANT(sae) {
+    simde__m128 r;
+
+    if (sae & SIMDE_MM_FROUND_NO_EXC) {
+      #if defined(SIMDE_HAVE_FENV_H)
+        fenv_t envp;
+        int x = feholdexcept(&envp);
+        r = simde_mm_mask_fixupimm_ss(a, k, b, c, imm8);
+        if (HEDLEY_LIKELY(x == 0))
+          fesetenv(&envp);
+      #else
+        r = simde_mm_mask_fixupimm_ss(a, k, b, c, imm8);
+      #endif
+    }
+    else {
+      r = simde_mm_mask_fixupimm_ss(a, k, b, c, imm8);
+    }
+
+    return r;
+  }
 #endif
 #if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
   #undef _mm_mask_fixupimm_round_ss
   #define _mm_mask_fixupimm_round_ss(a, k, b, c, imm8, sae) simde_mm_mask_fixupimm_round_ss(a, k, b, c, imm8, sae)
 #endif
 
-SIMDE_FUNCTION_ATTRIBUTES
-simde__m128
-simde_mm_maskz_fixupimm_round_ss (simde__mmask8 k, simde__m128 a, simde__m128 b, simde__m128i c, int imm8, int sae)
-    SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 15)
-    SIMDE_REQUIRE_CONSTANT(sae) {
-  simde__m128 r;
-
-  if (sae & SIMDE_MM_FROUND_NO_EXC) {
-    #if defined(SIMDE_HAVE_FENV_H)
-      fenv_t envp;
-      int x = feholdexcept(&envp);
-      r = simde_mm_maskz_fixupimm_ss(k, a, b, c, imm8);
-      if (HEDLEY_LIKELY(x == 0))
-        fesetenv(&envp);
-    #else
-      r = simde_mm_maskz_fixupimm_ss(k, a, b, c, imm8);
-    #endif
-  }
-  else {
-    r = simde_mm_maskz_fixupimm_ss(k, a, b, c, imm8);
-  }
-
-  return r;
-}
 #if defined(SIMDE_X86_AVX512F_NATIVE)
   #define simde_mm_maskz_fixupimm_round_ss(k, a, b, c, imm8, sae) _mm_maskz_fixupimm_round_ss(k, a, b, c, imm8, sae)
 #elif defined(SIMDE_FAST_EXCEPTIONS)
@@ -498,36 +482,37 @@ simde_mm_maskz_fixupimm_round_ss (simde__mmask8 k, simde__m128 a, simde__m128 b,
   #else
     #define simde_mm_maskz_fixupimm_round_ss(k, a, b, c, imm8, sae) simde_mm_maskz_fixupimm_ss(k, a, b, c, imm8)
   #endif
+#else
+  SIMDE_FUNCTION_ATTRIBUTES
+  simde__m128
+  simde_mm_maskz_fixupimm_round_ss (simde__mmask8 k, simde__m128 a, simde__m128 b, simde__m128i c, int imm8, int sae)
+      SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 15)
+      SIMDE_REQUIRE_CONSTANT(sae) {
+    simde__m128 r;
+
+    if (sae & SIMDE_MM_FROUND_NO_EXC) {
+      #if defined(SIMDE_HAVE_FENV_H)
+        fenv_t envp;
+        int x = feholdexcept(&envp);
+        r = simde_mm_maskz_fixupimm_ss(k, a, b, c, imm8);
+        if (HEDLEY_LIKELY(x == 0))
+          fesetenv(&envp);
+      #else
+        r = simde_mm_maskz_fixupimm_ss(k, a, b, c, imm8);
+      #endif
+    }
+    else {
+      r = simde_mm_maskz_fixupimm_ss(k, a, b, c, imm8);
+    }
+
+    return r;
+  }
 #endif
 #if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
   #undef _mm_maskz_fixupimm_round_ss
   #define _mm_maskz_fixupimm_round_ss(k, a, b, c, imm8, sae) simde_mm_maskz_fixupimm_round_ss(k, a, b, c, imm8, sae)
 #endif
 
-SIMDE_FUNCTION_ATTRIBUTES
-simde__m128d
-simde_mm_fixupimm_round_sd (simde__m128d a, simde__m128d b, simde__m128i c, int imm8, int sae)
-    SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 15)
-    SIMDE_REQUIRE_CONSTANT(sae) {
-  simde__m128d r;
-
-  if (sae & SIMDE_MM_FROUND_NO_EXC) {
-    #if defined(SIMDE_HAVE_FENV_H)
-      fenv_t envp;
-      int x = feholdexcept(&envp);
-      r = simde_mm_fixupimm_sd(a, b, c, imm8);
-      if (HEDLEY_LIKELY(x == 0))
-        fesetenv(&envp);
-    #else
-      r = simde_mm_fixupimm_sd(a, b, c, imm8);
-    #endif
-  }
-  else {
-    r = simde_mm_fixupimm_sd(a, b, c, imm8);
-  }
-
-  return r;
-}
 #if defined(SIMDE_X86_AVX512F_NATIVE)
   #define simde_mm_fixupimm_round_sd(a, b, c, imm8, sae) _mm_fixupimm_round_sd(a, b, c, imm8, sae)
 #elif defined(SIMDE_FAST_EXCEPTIONS)
@@ -553,36 +538,37 @@ simde_mm_fixupimm_round_sd (simde__m128d a, simde__m128d b, simde__m128i c, int 
   #else
     #define simde_mm_fixupimm_round_sd(a, b, c, imm8, sae) simde_mm_fixupimm_sd(a, b, c, imm8)
   #endif
+#else
+  SIMDE_FUNCTION_ATTRIBUTES
+  simde__m128d
+  simde_mm_fixupimm_round_sd (simde__m128d a, simde__m128d b, simde__m128i c, int imm8, int sae)
+      SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 15)
+      SIMDE_REQUIRE_CONSTANT(sae) {
+    simde__m128d r;
+
+    if (sae & SIMDE_MM_FROUND_NO_EXC) {
+      #if defined(SIMDE_HAVE_FENV_H)
+        fenv_t envp;
+        int x = feholdexcept(&envp);
+        r = simde_mm_fixupimm_sd(a, b, c, imm8);
+        if (HEDLEY_LIKELY(x == 0))
+          fesetenv(&envp);
+      #else
+        r = simde_mm_fixupimm_sd(a, b, c, imm8);
+      #endif
+    }
+    else {
+      r = simde_mm_fixupimm_sd(a, b, c, imm8);
+    }
+
+    return r;
+  }
 #endif
 #if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
   #undef _mm_fixupimm_round_sd
   #define _mm_fixupimm_round_sd(a, b, c, imm8, sae) simde_mm_fixupimm_round_sd(a, b, c, imm8, sae)
 #endif
 
-SIMDE_FUNCTION_ATTRIBUTES
-simde__m128d
-simde_mm_mask_fixupimm_round_sd (simde__m128d a, simde__mmask8 k, simde__m128d b, simde__m128i c, int imm8, int sae)
-    SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 15)
-    SIMDE_REQUIRE_CONSTANT(sae) {
-  simde__m128d r;
-
-  if (sae & SIMDE_MM_FROUND_NO_EXC) {
-    #if defined(SIMDE_HAVE_FENV_H)
-      fenv_t envp;
-      int x = feholdexcept(&envp);
-      r = simde_mm_mask_fixupimm_sd(a, k, b, c, imm8);
-      if (HEDLEY_LIKELY(x == 0))
-        fesetenv(&envp);
-    #else
-      r = simde_mm_mask_fixupimm_sd(a, k, b, c, imm8);
-    #endif
-  }
-  else {
-    r = simde_mm_mask_fixupimm_sd(a, k, b, c, imm8);
-  }
-
-  return r;
-}
 #if defined(SIMDE_X86_AVX512F_NATIVE)
   #define simde_mm_mask_fixupimm_round_sd(a, k, b, c, imm8, sae) _mm_mask_fixupimm_round_sd(a, k, b, c, imm8, sae)
 #elif defined(SIMDE_FAST_EXCEPTIONS)
@@ -608,36 +594,37 @@ simde_mm_mask_fixupimm_round_sd (simde__m128d a, simde__mmask8 k, simde__m128d b
   #else
     #define simde_mm_mask_fixupimm_round_sd(a, k, b, c, imm8, sae) simde_mm_mask_fixupimm_sd(a, k, b, c, imm8)
   #endif
+#else
+  SIMDE_FUNCTION_ATTRIBUTES
+  simde__m128d
+  simde_mm_mask_fixupimm_round_sd (simde__m128d a, simde__mmask8 k, simde__m128d b, simde__m128i c, int imm8, int sae)
+      SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 15)
+      SIMDE_REQUIRE_CONSTANT(sae) {
+    simde__m128d r;
+
+    if (sae & SIMDE_MM_FROUND_NO_EXC) {
+      #if defined(SIMDE_HAVE_FENV_H)
+        fenv_t envp;
+        int x = feholdexcept(&envp);
+        r = simde_mm_mask_fixupimm_sd(a, k, b, c, imm8);
+        if (HEDLEY_LIKELY(x == 0))
+          fesetenv(&envp);
+      #else
+        r = simde_mm_mask_fixupimm_sd(a, k, b, c, imm8);
+      #endif
+    }
+    else {
+      r = simde_mm_mask_fixupimm_sd(a, k, b, c, imm8);
+    }
+
+    return r;
+  }
 #endif
 #if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
   #undef _mm_mask_fixupimm_round_sd
   #define _mm_mask_fixupimm_round_sd(a, k, b, c, imm8, sae) simde_mm_mask_fixupimm_round_sd(a, k, b, c, imm8, sae)
 #endif
 
-SIMDE_FUNCTION_ATTRIBUTES
-simde__m128d
-simde_mm_maskz_fixupimm_round_sd (simde__mmask8 k, simde__m128d a, simde__m128d b, simde__m128i c, int imm8, int sae)
-    SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 15)
-    SIMDE_REQUIRE_CONSTANT(sae) {
-  simde__m128d r;
-
-  if (sae & SIMDE_MM_FROUND_NO_EXC) {
-    #if defined(SIMDE_HAVE_FENV_H)
-      fenv_t envp;
-      int x = feholdexcept(&envp);
-      r = simde_mm_maskz_fixupimm_sd(k, a, b, c, imm8);
-      if (HEDLEY_LIKELY(x == 0))
-        fesetenv(&envp);
-    #else
-      r = simde_mm_maskz_fixupimm_sd(k, a, b, c, imm8);
-    #endif
-  }
-  else {
-    r = simde_mm_maskz_fixupimm_sd(k, a, b, c, imm8);
-  }
-
-  return r;
-}
 #if defined(SIMDE_X86_AVX512F_NATIVE)
   #define simde_mm_maskz_fixupimm_round_sd(k, a, b, c, imm8, sae) _mm_maskz_fixupimm_round_sd(k, a, b, c, imm8, sae)
 #elif defined(SIMDE_FAST_EXCEPTIONS)
@@ -663,6 +650,31 @@ simde_mm_maskz_fixupimm_round_sd (simde__mmask8 k, simde__m128d a, simde__m128d 
   #else
     #define simde_mm_maskz_fixupimm_round_sd(k, a, b, c, imm8, sae) simde_mm_maskz_fixupimm_sd(k, a, b, c, imm8)
   #endif
+#else
+  SIMDE_FUNCTION_ATTRIBUTES
+  simde__m128d
+  simde_mm_maskz_fixupimm_round_sd (simde__mmask8 k, simde__m128d a, simde__m128d b, simde__m128i c, int imm8, int sae)
+      SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 15)
+      SIMDE_REQUIRE_CONSTANT(sae) {
+    simde__m128d r;
+
+    if (sae & SIMDE_MM_FROUND_NO_EXC) {
+      #if defined(SIMDE_HAVE_FENV_H)
+        fenv_t envp;
+        int x = feholdexcept(&envp);
+        r = simde_mm_maskz_fixupimm_sd(k, a, b, c, imm8);
+        if (HEDLEY_LIKELY(x == 0))
+          fesetenv(&envp);
+      #else
+        r = simde_mm_maskz_fixupimm_sd(k, a, b, c, imm8);
+      #endif
+    }
+    else {
+      r = simde_mm_maskz_fixupimm_sd(k, a, b, c, imm8);
+    }
+
+    return r;
+  }
 #endif
 #if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
   #undef _mm_maskz_fixupimm_round_sd
