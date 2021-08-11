@@ -238,6 +238,7 @@ simde_avx512_families = [
   'expand',
   'extract',
   'fixupimm',
+  'fixupimm_round',
   'flushsubnormal',
   'fmadd',
   'fmsub',
