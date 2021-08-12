@@ -630,7 +630,7 @@ simde_vcvtq_u64_f64(simde_float64x2_t a) {
       static const double min_representable SIMDE_VECTOR(16) = { SIMDE_FLOAT64_C(0.0), };
       r_.values &= HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), a_.values > min_representable);
 
-      r_.values &= (a_.values == a_.values);
+      r_.values &= HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), (a_.values == a_.values));
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {

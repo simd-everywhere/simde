@@ -715,7 +715,7 @@ simde_vqaddq_u32(simde_uint32x4_t a, simde_uint32x4_t b) {
       r_.m128i = _mm_or_si128(_mm_cmpgt_epi32(a_.m128i, _mm_xor_si128(i32min, sum)), sum);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT)
       r_.values = a_.values + b_.values;
-      r_.values |= HEDLEY_STATIC_CAST(__typeof__(r_.values), r_.values < a_.values);
+      r_.values |= HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), r_.values < a_.values);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
