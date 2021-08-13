@@ -304,8 +304,8 @@ jobs:
     env:
       CC: clang-${{ matrix.version }}
       CXX: clang++-${{ matrix.version }}
-      CFLAGS: ${{ matrix.arch_flags }} -Wall -Weverything -Werror
-      CXXFLAGS: ${{ matrix.arch_flags }} -Wall -Weverything -Werror
+      CFLAGS: ${{ matrix.arch_flags }} -Wall -Weverything -Werror -fno-lax-vector-conversions
+      CXXFLAGS: ${{ matrix.arch_flags }} -Wall -Weverything -Werror -fno-lax-vector-conversions
     steps:
     - uses: actions/checkout@v2
       with:

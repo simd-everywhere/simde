@@ -8,8 +8,8 @@ ld = '/usr/bin/llvm-ld-6.0'
 exe_wrapper = 'qemu-arm-static'
 
 [properties]
-c_args = ['--target=arm-linux-gnueabihf', '-march=armv7-a', '-mfpu=neon', '-isystem=/usr/arm-linux-gnueabihf/include', '-Weverything', '-Werror']
-cpp_args = ['--target=arm-linux-gnueabihf', '-march=armv7-a', '-mfpu=neon', '-isystem=/usr/arm-linux-gnueabihf/include', '-Weverything', '-Werror']
+c_args = ['--target=arm-linux-gnueabihf', '-march=armv7-a', '-mfpu=neon', '-isystem=/usr/arm-linux-gnueabihf/include', '-Weverything', '-fno-lax-vector-conversions', '-Werror']
+cpp_args = ['--target=arm-linux-gnueabihf', '-march=armv7-a', '-mfpu=neon', '-isystem=/usr/arm-linux-gnueabihf/include', '-Weverything', '-fno-lax-vector-conversions', '-Werror']
 c_link_args = ['--target=arm-linux-gnueabihf']
 cpp_link_args = ['--target=arm-linux-gnueabihf']
 

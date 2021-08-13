@@ -8,7 +8,7 @@ ld = '/usr/bin/llvm-ld-12'
 exe_wrapper = 'qemu-arm-static'
 
 [properties]
-c_args = ['--target=i686-linux-gnu', '-isystem=/usr/i686-linux-gnu/include', '-Weverything', '-Werror']
-cpp_args = ['--target=i686-linux-gnu', '-isystem=/usr/i686-linux-gnu/include', '-Weverything', '-Werror']
+c_args = ['--target=i686-linux-gnu', '-isystem=/usr/i686-linux-gnu/include', '-Weverything', '-fno-lax-vector-conversions', '-Werror']
+cpp_args = ['--target=i686-linux-gnu', '-isystem=/usr/i686-linux-gnu/include', '-Weverything', '-fno-lax-vector-conversions', '-Werror']
 c_link_args = ['--target=i686-linux-gnu']
 cpp_link_args = ['--target=i686-linux-gnu']

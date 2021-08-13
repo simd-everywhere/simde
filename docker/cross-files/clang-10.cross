@@ -7,5 +7,5 @@ objcopy = '/usr/bin/llvm-objcopy-10'
 ld = '/usr/bin/llvm-ld-10'
 
 [properties]
-c_args = ['-march=native','-Weverything', '-Werror']
-cpp_args = ['-march=native', '-Weverything', '-Werror']
+c_args = ['-march=native','-Weverything', '-fno-lax-vector-conversions', '-Werror']
+cpp_args = ['-march=native', '-Weverything', '-fno-lax-vector-conversions', '-Werror']

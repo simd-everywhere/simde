@@ -8,8 +8,8 @@ ld = '/usr/bin/llvm-ld-10'
 exe_wrapper = ['sde64', '-future', '--']
 
 [properties]
-c_args = ['-march=tigerlake', '-Weverything', '-Wno-newline-eof', '-Wno-missing-variable-declarations', '-Werror']
-cpp_args = ['-march=tigerlake', '-Weverything', '-Wno-newline-eof', '-Wno-missing-variable-declarations', '-Werror']
+c_args = ['-march=tigerlake', '-Weverything', '-fno-lax-vector-conversions', '-Wno-newline-eof', '-Wno-missing-variable-declarations', '-Werror']
+cpp_args = ['-march=tigerlake', '-Weverything', '-fno-lax-vector-conversions', '-Wno-newline-eof', '-Wno-missing-variable-declarations', '-Werror']
 
 [host_machine]
 system = 'linux'
