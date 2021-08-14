@@ -287,7 +287,7 @@ simde_msa_adds_u_b(simde_v16u8 a, simde_v16u8 b) {
       r_.m128i = _mm_adds_epu8(a_.m128i, b_.m128i);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT)
       r_.values = a_.values + b_.values;
-      r_.values |= HEDLEY_STATIC_CAST(__typeof__(r_.values), r_.values < a_.values);
+      r_.values |= HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), r_.values < a_.values);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -324,7 +324,7 @@ simde_msa_adds_u_h(simde_v8u16 a, simde_v8u16 b) {
       r_.m128i = _mm_adds_epu16(a_.m128i, b_.m128i);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT)
       r_.values = a_.values + b_.values;
-      r_.values |= HEDLEY_STATIC_CAST(__typeof__(r_.values), r_.values < a_.values);
+      r_.values |= HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), r_.values < a_.values);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -376,7 +376,7 @@ simde_msa_adds_u_w(simde_v4u32 a, simde_v4u32 b) {
       r_.m128i = _mm_or_si128(_mm_cmpgt_epi32(a_.m128i, _mm_xor_si128(i32min, sum)), sum);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT)
       r_.values = a_.values + b_.values;
-      r_.values |= HEDLEY_STATIC_CAST(__typeof__(r_.values), r_.values < a_.values);
+      r_.values |= HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), r_.values < a_.values);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {

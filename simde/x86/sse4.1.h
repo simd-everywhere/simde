@@ -201,7 +201,7 @@ simde_mm_blendv_epi8 (simde__m128i a, simde__m128i b, simde__m128i mask) {
       /* https://software.intel.com/en-us/forums/intel-c-compiler/topic/850087 */
       #if defined(HEDLEY_INTEL_VERSION_CHECK)
         __typeof__(mask_.i8) z = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-        mask_.i8 = HEDLEY_STATIC_CAST(__typeof__(mask_.i8), mask_.i8 < z);
+        mask_.i8 = HEDLEY_REINTERPRET_CAST(__typeof__(mask_.i8), mask_.i8 < z);
       #else
         mask_.i8 >>= (CHAR_BIT * sizeof(mask_.i8[0])) - 1;
       #endif
@@ -285,7 +285,7 @@ simde_x_mm_blendv_epi32 (simde__m128i a, simde__m128i b, simde__m128i mask) {
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       #if defined(HEDLEY_INTEL_VERSION_CHECK)
         __typeof__(mask_.i32) z = { 0, 0, 0, 0 };
-        mask_.i32 = HEDLEY_STATIC_CAST(__typeof__(mask_.i32), mask_.i32 < z);
+        mask_.i32 = HEDLEY_REINTERPRET_CAST(__typeof__(mask_.i32), mask_.i32 < z);
       #else
         mask_.i32 >>= (CHAR_BIT * sizeof(mask_.i32[0])) - 1;
       #endif
@@ -329,7 +329,7 @@ simde_x_mm_blendv_epi64 (simde__m128i a, simde__m128i b, simde__m128i mask) {
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       #if defined(HEDLEY_INTEL_VERSION_CHECK)
         __typeof__(mask_.i64) z = { 0, 0 };
-        mask_.i64 = HEDLEY_STATIC_CAST(__typeof__(mask_.i64), mask_.i64 < z);
+        mask_.i64 = HEDLEY_REINTERPRET_CAST(__typeof__(mask_.i64), mask_.i64 < z);
       #else
         mask_.i64 >>= (CHAR_BIT * sizeof(mask_.i64[0])) - 1;
       #endif
@@ -568,7 +568,7 @@ simde_mm_cmpeq_epi64 (simde__m128i a, simde__m128i b) {
       uint32x4_t swapped = vrev64q_u32(cmp);
       r_.neon_u32 = vandq_u32(cmp, swapped);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-      r_.i64 = HEDLEY_STATIC_CAST(__typeof__(r_.i64), a_.i64 == b_.i64);
+      r_.i64 = HEDLEY_REINTERPRET_CAST(__typeof__(r_.i64), a_.i64 == b_.i64);
     #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
       r_.altivec_i64 = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(signed long long), vec_cmpeq(a_.altivec_i64, b_.altivec_i64));
     #else
@@ -1393,7 +1393,7 @@ simde_mm_insert_epi8 (simde__m128i a, int i, const int imm8)
    * can't handle the cast ("error C2440: 'type cast': cannot convert
    * from '__m128i' to '__m128i'").  */
   #if defined(__clang__)
-    #define simde_mm_insert_epi8(a, i, imm8) HEDLEY_STATIC_CAST(__m128i, _mm_insert_epi8(a, i, imm8))
+    #define simde_mm_insert_epi8(a, i, imm8) HEDLEY_REINTERPRET_CAST(__m128i, _mm_insert_epi8(a, i, imm8))
   #else
     #define simde_mm_insert_epi8(a, i, imm8) _mm_insert_epi8(a, i, imm8)
   #endif
@@ -1418,7 +1418,7 @@ simde_mm_insert_epi32 (simde__m128i a, int i, const int imm8)
 }
 #if defined(SIMDE_X86_SSE4_1_NATIVE)
   #if defined(__clang__)
-    #define simde_mm_insert_epi32(a, i, imm8) HEDLEY_STATIC_CAST(__m128i, _mm_insert_epi32(a, i, imm8))
+    #define simde_mm_insert_epi32(a, i, imm8) HEDLEY_REINTERPRET_CAST(__m128i, _mm_insert_epi32(a, i, imm8))
   #else
     #define simde_mm_insert_epi32(a, i, imm8) _mm_insert_epi32(a, i, imm8)
   #endif
@@ -1936,8 +1936,8 @@ simde_mm_packus_epi32 (simde__m128i a, simde__m128i b) {
       r_;
 
     #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
-      #if defined(__clang__)
-        r_.neon_u16 = SIMDE_DISABLE_DIAGNOSTIC_EXPR_(_Pragma("clang diagnostic ignored \"-Wvector-conversion\""), vqmovun_high_s32(vqmovun_s32(a_.neon_i32), b_.neon_i32));
+      #if defined(SIMDE_BUG_CLANG_46840)
+        r_.neon_u16 = vqmovun_high_s32(vreinterpret_s16_u16(vqmovun_s32(a_.neon_i32)), b_.neon_i32);
       #else
         r_.neon_u16 = vqmovun_high_s32(vqmovun_s32(a_.neon_i32), b_.neon_i32);
       #endif

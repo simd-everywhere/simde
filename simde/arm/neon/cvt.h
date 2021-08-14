@@ -396,17 +396,17 @@ simde_vcvtq_s32_f32(simde_float32x4_t a) {
     #elif defined(SIMDE_CONVERT_VECTOR_) && defined(SIMDE_IEEE754_STORAGE)
       SIMDE_CONVERT_VECTOR_(r_.values, a_.values);
 
-      static const float max_representable SIMDE_VECTOR(16) = { SIMDE_FLOAT32_C(2147483520.0), SIMDE_FLOAT32_C(2147483520.0), SIMDE_FLOAT32_C(2147483520.0), SIMDE_FLOAT32_C(2147483520.0) };
-      int32_t max_mask SIMDE_VECTOR(16) = HEDLEY_REINTERPRET_CAST(__typeof__(max_mask), a_.values > max_representable);
-      int32_t max_i32 SIMDE_VECTOR(16) = { INT32_MAX, INT32_MAX, INT32_MAX, INT32_MAX };
+      static const float SIMDE_VECTOR(16) max_representable = { SIMDE_FLOAT32_C(2147483520.0), SIMDE_FLOAT32_C(2147483520.0), SIMDE_FLOAT32_C(2147483520.0), SIMDE_FLOAT32_C(2147483520.0) };
+      int32_t SIMDE_VECTOR(16) max_mask = HEDLEY_REINTERPRET_CAST(__typeof__(max_mask), a_.values > max_representable);
+      int32_t SIMDE_VECTOR(16) max_i32 = { INT32_MAX, INT32_MAX, INT32_MAX, INT32_MAX };
       r_.values  = (max_i32 & max_mask) | (r_.values & ~max_mask);
 
-      static const float min_representable SIMDE_VECTOR(16) = { HEDLEY_STATIC_CAST(simde_float32, INT32_MIN), HEDLEY_STATIC_CAST(simde_float32, INT32_MIN), HEDLEY_STATIC_CAST(simde_float32, INT32_MIN), HEDLEY_STATIC_CAST(simde_float32, INT32_MIN) };
-      int32_t min_mask SIMDE_VECTOR(16) = HEDLEY_REINTERPRET_CAST(__typeof__(min_mask), a_.values < min_representable);
-      int32_t min_i32 SIMDE_VECTOR(16) = { INT32_MIN, INT32_MIN, INT32_MIN, INT32_MIN };
+      static const float SIMDE_VECTOR(16) min_representable = { HEDLEY_STATIC_CAST(simde_float32, INT32_MIN), HEDLEY_STATIC_CAST(simde_float32, INT32_MIN), HEDLEY_STATIC_CAST(simde_float32, INT32_MIN), HEDLEY_STATIC_CAST(simde_float32, INT32_MIN) };
+      int32_t SIMDE_VECTOR(16) min_mask = HEDLEY_REINTERPRET_CAST(__typeof__(min_mask), a_.values < min_representable);
+      int32_t SIMDE_VECTOR(16) min_i32 = { INT32_MIN, INT32_MIN, INT32_MIN, INT32_MIN };
       r_.values  = (min_i32 & min_mask) | (r_.values & ~min_mask);
 
-      r_.values &= (a_.values == a_.values);
+      r_.values &= HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), a_.values == a_.values);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -467,13 +467,13 @@ simde_vcvtq_u32_f32(simde_float32x4_t a) {
     #elif defined(SIMDE_CONVERT_VECTOR_) && defined(SIMDE_IEEE754_STORAGE)
       SIMDE_CONVERT_VECTOR_(r_.values, a_.values);
 
-      static const float max_representable SIMDE_VECTOR(16) = { SIMDE_FLOAT32_C(4294967040.0), SIMDE_FLOAT32_C(4294967040.0), SIMDE_FLOAT32_C(4294967040.0), SIMDE_FLOAT32_C(4294967040.0) };
+      const __typeof__(a_.values) max_representable = { SIMDE_FLOAT32_C(4294967040.0), SIMDE_FLOAT32_C(4294967040.0), SIMDE_FLOAT32_C(4294967040.0), SIMDE_FLOAT32_C(4294967040.0) };
       r_.values |= HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), a_.values > max_representable);
 
-      static const float min_representable SIMDE_VECTOR(16) = { SIMDE_FLOAT32_C(0.0), };
+      const __typeof__(a_.values) min_representable = { SIMDE_FLOAT32_C(0.0), };
       r_.values &= HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), a_.values > min_representable);
 
-      r_.values &= (a_.values == a_.values);
+      r_.values &= HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), a_.values == a_.values);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -547,18 +547,18 @@ simde_vcvtq_s64_f64(simde_float64x2_t a) {
     #elif defined(SIMDE_CONVERT_VECTOR_) && defined(SIMDE_IEEE754_STORAGE)
       SIMDE_CONVERT_VECTOR_(r_.values, a_.values);
 
-      static const double max_representable SIMDE_VECTOR(16) = { SIMDE_FLOAT64_C(9223372036854774784.0), SIMDE_FLOAT64_C(9223372036854774784.0) };
-      int64_t max_mask SIMDE_VECTOR(16) = HEDLEY_REINTERPRET_CAST(__typeof__(max_mask), a_.values > max_representable);
-      int64_t max_i64 SIMDE_VECTOR(16) = { INT64_MAX, INT64_MAX };
+      const __typeof__((a_.values)) max_representable = { SIMDE_FLOAT64_C(9223372036854774784.0), SIMDE_FLOAT64_C(9223372036854774784.0) };
+      __typeof__(r_.values) max_mask = HEDLEY_REINTERPRET_CAST(__typeof__(max_mask), a_.values > max_representable);
+      __typeof__(r_.values) max_i64 = { INT64_MAX, INT64_MAX };
       r_.values  = (max_i64 & max_mask) | (r_.values & ~max_mask);
 
-      static const double min_representable SIMDE_VECTOR(16) = { HEDLEY_STATIC_CAST(simde_float64, INT64_MIN), HEDLEY_STATIC_CAST(simde_float64, INT64_MIN) };
-      int64_t min_mask SIMDE_VECTOR(16) = HEDLEY_REINTERPRET_CAST(__typeof__(min_mask), a_.values < min_representable);
-      int64_t min_i64 SIMDE_VECTOR(16) = { INT64_MIN, INT64_MIN };
+      const __typeof__((a_.values)) min_representable = { HEDLEY_STATIC_CAST(simde_float64, INT64_MIN), HEDLEY_STATIC_CAST(simde_float64, INT64_MIN) };
+      __typeof__(r_.values) min_mask = HEDLEY_REINTERPRET_CAST(__typeof__(min_mask), a_.values < min_representable);
+      __typeof__(r_.values) min_i64 = { INT64_MIN, INT64_MIN };
       r_.values  = (min_i64 & min_mask) | (r_.values & ~min_mask);
 
       #if !defined(SIMDE_FAST_NANS)
-        r_.values &= (a_.values == a_.values);
+        r_.values &= HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), a_.values == a_.values);
       #endif
     #else
       SIMDE_VECTORIZE
@@ -624,10 +624,10 @@ simde_vcvtq_u64_f64(simde_float64x2_t a) {
     #elif defined(SIMDE_CONVERT_VECTOR_) && defined(SIMDE_IEEE754_STORAGE)
       SIMDE_CONVERT_VECTOR_(r_.values, a_.values);
 
-      static const double max_representable SIMDE_VECTOR(16) = { SIMDE_FLOAT64_C(18446744073709549568.0), SIMDE_FLOAT64_C(18446744073709549568.0) };
+      const __typeof__(a_.values) max_representable = { SIMDE_FLOAT64_C(18446744073709549568.0), SIMDE_FLOAT64_C(18446744073709549568.0) };
       r_.values |= HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), a_.values > max_representable);
 
-      static const double min_representable SIMDE_VECTOR(16) = { SIMDE_FLOAT64_C(0.0), };
+      const __typeof__(a_.values) min_representable = { SIMDE_FLOAT64_C(0.0), };
       r_.values &= HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), a_.values > min_representable);
 
       r_.values &= HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), (a_.values == a_.values));

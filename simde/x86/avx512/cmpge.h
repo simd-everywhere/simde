@@ -56,7 +56,7 @@ simde_x_mm_cmpge_epi8 (simde__m128i a, simde__m128i b) {
     #elif defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
       r_.altivec_i8 = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(signed char), vec_cmpge(a_.altivec_i8, b_.altivec_i8));
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-      r_.i8 = HEDLEY_STATIC_CAST(__typeof__(r_.i8), a_.i8 >= b_.i8);
+      r_.i8 = HEDLEY_REINTERPRET_CAST(__typeof__(r_.i8), a_.i8 >= b_.i8);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(a_.i8) / sizeof(a_.i8[0])) ; i++) {
@@ -112,7 +112,7 @@ simde_x_mm256_cmpge_epi8 (simde__m256i a, simde__m256i b) {
         r_.m128i[i] = simde_x_mm_cmpge_epi8(a_.m128i[i], b_.m128i[i]);
       }
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-      r_.i8 = HEDLEY_STATIC_CAST(__typeof__(r_.i8), a_.i8 >= b_.i8);
+      r_.i8 = HEDLEY_REINTERPRET_CAST(__typeof__(r_.i8), a_.i8 >= b_.i8);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(a_.i8) / sizeof(a_.i8[0])) ; i++) {
@@ -172,7 +172,7 @@ simde_x_mm512_cmpge_epi8 (simde__m512i a, simde__m512i b) {
         r_.m256i[i] = simde_x_mm256_cmpge_epi8(a_.m256i[i], b_.m256i[i]);
       }
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-      r_.i8 = HEDLEY_STATIC_CAST(__typeof__(r_.i8), a_.i8 >= b_.i8);
+      r_.i8 = HEDLEY_REINTERPRET_CAST(__typeof__(r_.i8), a_.i8 >= b_.i8);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(a_.i8) / sizeof(a_.i8[0])) ; i++) {
@@ -230,7 +230,7 @@ simde_x_mm_cmpge_epu8 (simde__m128i a, simde__m128i b) {
     #elif defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
       r_.altivec_u8 = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned char), vec_cmpge(a_.altivec_u8, b_.altivec_u8));
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-      r_.u8 = HEDLEY_STATIC_CAST(__typeof__(r_.u8), a_.u8 >= b_.u8);
+      r_.u8 = HEDLEY_REINTERPRET_CAST(__typeof__(r_.u8), a_.u8 >= b_.u8);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(a_.u8) / sizeof(a_.u8[0])) ; i++) {
@@ -286,7 +286,7 @@ simde_x_mm256_cmpge_epu8 (simde__m256i a, simde__m256i b) {
         r_.m128i[i] = simde_x_mm_cmpge_epu8(a_.m128i[i], b_.m128i[i]);
       }
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-      r_.u8 = HEDLEY_STATIC_CAST(__typeof__(r_.u8), a_.u8 >= b_.u8);
+      r_.u8 = HEDLEY_REINTERPRET_CAST(__typeof__(r_.u8), a_.u8 >= b_.u8);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(a_.u8) / sizeof(a_.u8[0])) ; i++) {
@@ -346,7 +346,7 @@ simde_x_mm512_cmpge_epu8 (simde__m512i a, simde__m512i b) {
         r_.m256i[i] = simde_x_mm256_cmpge_epu8(a_.m256i[i], b_.m256i[i]);
       }
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-      r_.u8 = HEDLEY_STATIC_CAST(__typeof__(r_.u8), a_.u8 >= b_.u8);
+      r_.u8 = HEDLEY_REINTERPRET_CAST(__typeof__(r_.u8), a_.u8 >= b_.u8);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(a_.u8) / sizeof(a_.u8[0])) ; i++) {
@@ -404,7 +404,7 @@ simde_x_mm_cmpge_epi16 (simde__m128i a, simde__m128i b) {
     #elif defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
       r_.altivec_i16 = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(signed short), vec_cmpge(a_.altivec_i16, b_.altivec_i16));
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-      r_.i16 = HEDLEY_STATIC_CAST(__typeof__(r_.i16), a_.i16 >= b_.i16);
+      r_.i16 = HEDLEY_REINTERPRET_CAST(__typeof__(r_.i16), a_.i16 >= b_.i16);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(a_.i16) / sizeof(a_.i16[0])) ; i++) {
@@ -460,7 +460,7 @@ simde_x_mm256_cmpge_epi16 (simde__m256i a, simde__m256i b) {
         r_.m128i[i] = simde_x_mm_cmpge_epi16(a_.m128i[i], b_.m128i[i]);
       }
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-      r_.i16 = HEDLEY_STATIC_CAST(__typeof__(r_.i16), a_.i16 >= b_.i16);
+      r_.i16 = HEDLEY_REINTERPRET_CAST(__typeof__(r_.i16), a_.i16 >= b_.i16);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(a_.i16) / sizeof(a_.i16[0])) ; i++) {
@@ -520,7 +520,7 @@ simde_x_mm512_cmpge_epi16 (simde__m512i a, simde__m512i b) {
         r_.m256i[i] = simde_x_mm256_cmpge_epi16(a_.m256i[i], b_.m256i[i]);
       }
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-      r_.i16 = HEDLEY_STATIC_CAST(__typeof__(r_.i16), a_.i16 >= b_.i16);
+      r_.i16 = HEDLEY_REINTERPRET_CAST(__typeof__(r_.i16), a_.i16 >= b_.i16);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(a_.i16) / sizeof(a_.i16[0])) ; i++) {
@@ -578,7 +578,7 @@ simde_x_mm_cmpge_epu16 (simde__m128i a, simde__m128i b) {
     #elif defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
       r_.altivec_u16 = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned short), vec_cmpge(a_.altivec_u16, b_.altivec_u16));
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-      r_.u16 = HEDLEY_STATIC_CAST(__typeof__(r_.u16), a_.u16 >= b_.u16);
+      r_.u16 = HEDLEY_REINTERPRET_CAST(__typeof__(r_.u16), a_.u16 >= b_.u16);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(a_.u16) / sizeof(a_.u16[0])) ; i++) {
@@ -634,7 +634,7 @@ simde_x_mm256_cmpge_epu16 (simde__m256i a, simde__m256i b) {
         r_.m128i[i] = simde_x_mm_cmpge_epu16(a_.m128i[i], b_.m128i[i]);
       }
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-      r_.u16 = HEDLEY_STATIC_CAST(__typeof__(r_.u16), a_.u16 >= b_.u16);
+      r_.u16 = HEDLEY_REINTERPRET_CAST(__typeof__(r_.u16), a_.u16 >= b_.u16);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(a_.u16) / sizeof(a_.u16[0])) ; i++) {
@@ -694,7 +694,7 @@ simde_x_mm512_cmpge_epu16 (simde__m512i a, simde__m512i b) {
         r_.m256i[i] = simde_x_mm256_cmpge_epu16(a_.m256i[i], b_.m256i[i]);
       }
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-      r_.u16 = HEDLEY_STATIC_CAST(__typeof__(r_.u16), a_.u16 >= b_.u16);
+      r_.u16 = HEDLEY_REINTERPRET_CAST(__typeof__(r_.u16), a_.u16 >= b_.u16);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(a_.u16) / sizeof(a_.u16[0])) ; i++) {
@@ -752,7 +752,7 @@ simde_x_mm_cmpge_epi32 (simde__m128i a, simde__m128i b) {
     #elif defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
       r_.altivec_i32 = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(signed int), vec_cmpge(a_.altivec_i32, b_.altivec_i32));
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-      r_.i32 = HEDLEY_STATIC_CAST(__typeof__(r_.i32), a_.i32 >= b_.i32);
+      r_.i32 = HEDLEY_REINTERPRET_CAST(__typeof__(r_.i32), a_.i32 >= b_.i32);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(a_.i32) / sizeof(a_.i32[0])) ; i++) {
@@ -808,7 +808,7 @@ simde_x_mm256_cmpge_epi32 (simde__m256i a, simde__m256i b) {
         r_.m128i[i] = simde_x_mm_cmpge_epi32(a_.m128i[i], b_.m128i[i]);
       }
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-      r_.i32 = HEDLEY_STATIC_CAST(__typeof__(r_.i32), a_.i32 >= b_.i32);
+      r_.i32 = HEDLEY_REINTERPRET_CAST(__typeof__(r_.i32), a_.i32 >= b_.i32);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(a_.i32) / sizeof(a_.i32[0])) ; i++) {
@@ -868,7 +868,7 @@ simde_x_mm512_cmpge_epi32 (simde__m512i a, simde__m512i b) {
         r_.m256i[i] = simde_x_mm256_cmpge_epi32(a_.m256i[i], b_.m256i[i]);
       }
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-      r_.i32 = HEDLEY_STATIC_CAST(__typeof__(r_.i32), a_.i32 >= b_.i32);
+      r_.i32 = HEDLEY_REINTERPRET_CAST(__typeof__(r_.i32), a_.i32 >= b_.i32);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(a_.i32) / sizeof(a_.i32[0])) ; i++) {
@@ -926,7 +926,7 @@ simde_x_mm_cmpge_epu32 (simde__m128i a, simde__m128i b) {
     #elif defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
       r_.altivec_u32 = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned int), vec_cmpge(a_.altivec_u32, b_.altivec_u32));
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-      r_.u32 = HEDLEY_STATIC_CAST(__typeof__(r_.u32), a_.u32 >= b_.u32);
+      r_.u32 = HEDLEY_REINTERPRET_CAST(__typeof__(r_.u32), a_.u32 >= b_.u32);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(a_.u32) / sizeof(a_.u32[0])) ; i++) {
@@ -982,7 +982,7 @@ simde_x_mm256_cmpge_epu32 (simde__m256i a, simde__m256i b) {
         r_.m128i[i] = simde_x_mm_cmpge_epu32(a_.m128i[i], b_.m128i[i]);
       }
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-      r_.u32 = HEDLEY_STATIC_CAST(__typeof__(r_.u32), a_.u32 >= b_.u32);
+      r_.u32 = HEDLEY_REINTERPRET_CAST(__typeof__(r_.u32), a_.u32 >= b_.u32);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(a_.u32) / sizeof(a_.u32[0])) ; i++) {
@@ -1042,7 +1042,7 @@ simde_x_mm512_cmpge_epu32 (simde__m512i a, simde__m512i b) {
         r_.m256i[i] = simde_x_mm256_cmpge_epu32(a_.m256i[i], b_.m256i[i]);
       }
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-      r_.u32 = HEDLEY_STATIC_CAST(__typeof__(r_.u32), a_.u32 >= b_.u32);
+      r_.u32 = HEDLEY_REINTERPRET_CAST(__typeof__(r_.u32), a_.u32 >= b_.u32);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(a_.u32) / sizeof(a_.u32[0])) ; i++) {
@@ -1100,7 +1100,7 @@ simde_x_mm_cmpge_epi64 (simde__m128i a, simde__m128i b) {
     #elif defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
       r_.altivec_i64 = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(signed long long), vec_cmpge(a_.altivec_i64, b_.altivec_i64));
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-      r_.i64 = HEDLEY_STATIC_CAST(__typeof__(r_.i64), a_.i64 >= b_.i64);
+      r_.i64 = HEDLEY_REINTERPRET_CAST(__typeof__(r_.i64), a_.i64 >= b_.i64);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(a_.i64) / sizeof(a_.i64[0])) ; i++) {
@@ -1156,7 +1156,7 @@ simde_x_mm256_cmpge_epi64 (simde__m256i a, simde__m256i b) {
         r_.m128i[i] = simde_x_mm_cmpge_epi64(a_.m128i[i], b_.m128i[i]);
       }
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-      r_.i64 = HEDLEY_STATIC_CAST(__typeof__(r_.i64), a_.i64 >= b_.i64);
+      r_.i64 = HEDLEY_REINTERPRET_CAST(__typeof__(r_.i64), a_.i64 >= b_.i64);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(a_.i64) / sizeof(a_.i64[0])) ; i++) {
@@ -1216,7 +1216,7 @@ simde_x_mm512_cmpge_epi64 (simde__m512i a, simde__m512i b) {
         r_.m256i[i] = simde_x_mm256_cmpge_epi64(a_.m256i[i], b_.m256i[i]);
       }
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-      r_.i64 = HEDLEY_STATIC_CAST(__typeof__(r_.i64), a_.i64 >= b_.i64);
+      r_.i64 = HEDLEY_REINTERPRET_CAST(__typeof__(r_.i64), a_.i64 >= b_.i64);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(a_.i64) / sizeof(a_.i64[0])) ; i++) {
@@ -1272,7 +1272,7 @@ simde_x_mm_cmpge_epu64 (simde__m128i a, simde__m128i b) {
     #elif defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
       r_.altivec_u64 = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned long long), vec_cmpge(a_.altivec_u64, b_.altivec_u64));
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-      r_.u64 = HEDLEY_STATIC_CAST(__typeof__(r_.u64), a_.u64 >= b_.u64);
+      r_.u64 = HEDLEY_REINTERPRET_CAST(__typeof__(r_.u64), a_.u64 >= b_.u64);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(a_.u64) / sizeof(a_.u64[0])) ; i++) {
@@ -1328,7 +1328,7 @@ simde_x_mm256_cmpge_epu64 (simde__m256i a, simde__m256i b) {
         r_.m128i[i] = simde_x_mm_cmpge_epu64(a_.m128i[i], b_.m128i[i]);
       }
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-      r_.u64 = HEDLEY_STATIC_CAST(__typeof__(r_.u64), a_.u64 >= b_.u64);
+      r_.u64 = HEDLEY_REINTERPRET_CAST(__typeof__(r_.u64), a_.u64 >= b_.u64);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(a_.u64) / sizeof(a_.u64[0])) ; i++) {
@@ -1388,7 +1388,7 @@ simde_x_mm512_cmpge_epu64 (simde__m512i a, simde__m512i b) {
         r_.m256i[i] = simde_x_mm256_cmpge_epu64(a_.m256i[i], b_.m256i[i]);
       }
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-      r_.u64 = HEDLEY_STATIC_CAST(__typeof__(r_.u64), a_.u64 >= b_.u64);
+      r_.u64 = HEDLEY_REINTERPRET_CAST(__typeof__(r_.u64), a_.u64 >= b_.u64);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(a_.u64) / sizeof(a_.u64[0])) ; i++) {

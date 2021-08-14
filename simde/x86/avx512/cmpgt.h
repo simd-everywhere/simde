@@ -59,7 +59,7 @@ simde_mm512_cmpgt_epi8_mask (simde__m512i a, simde__m512i b) {
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       simde__m512i_private tmp;
 
-      tmp.i8 = HEDLEY_STATIC_CAST(__typeof__(tmp.i8), a_.i8 > b_.i8);
+      tmp.i8 = HEDLEY_REINTERPRET_CAST(__typeof__(tmp.i8), a_.i8 > b_.i8);
       r = simde_mm512_movepi8_mask(simde__m512i_from_private(tmp));
     #else
       r = 0;
@@ -92,7 +92,7 @@ simde_mm512_cmpgt_epu8_mask (simde__m512i a, simde__m512i b) {
     #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       simde__m512i_private tmp;
 
-      tmp.i8 = HEDLEY_STATIC_CAST(__typeof__(tmp.i8), a_.u8 > b_.u8);
+      tmp.i8 = HEDLEY_REINTERPRET_CAST(__typeof__(tmp.i8), a_.u8 > b_.u8);
       r = simde_mm512_movepi8_mask(simde__m512i_from_private(tmp));
     #else
       SIMDE_VECTORIZE_REDUCTION(|:r)

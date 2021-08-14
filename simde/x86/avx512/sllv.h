@@ -44,7 +44,7 @@ simde_mm512_sllv_epi16 (simde__m512i a, simde__m512i b) {
     r_;
 
   #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
-    r_.u16 = HEDLEY_STATIC_CAST(__typeof__(r_.u16), (b_.u16 < 16) & (a_.u16 << b_.u16));
+    r_.u16 = HEDLEY_REINTERPRET_CAST(__typeof__(r_.u16), (b_.u16 < 16)) & (a_.u16 << b_.u16);
   #else
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.u16) / sizeof(r_.u16[0])) ; i++) {
@@ -71,7 +71,7 @@ simde_mm512_sllv_epi32 (simde__m512i a, simde__m512i b) {
     r_;
 
   #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
-    r_.u32 = HEDLEY_STATIC_CAST(__typeof__(r_.u32), (b_.u32 < 32) & (a_.u32 << b_.u32));
+    r_.u32 = HEDLEY_REINTERPRET_CAST(__typeof__(r_.u32), (b_.u32 < 32)) & (a_.u32 << b_.u32);
   #else
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.u32) / sizeof(r_.u32[0])) ; i++) {
@@ -98,7 +98,7 @@ simde_mm512_sllv_epi64 (simde__m512i a, simde__m512i b) {
     r_;
 
   #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
-    r_.u64 = HEDLEY_STATIC_CAST(__typeof__(r_.u64), (b_.u64 < 64) & (a_.u64 << b_.u64));
+    r_.u64 = HEDLEY_REINTERPRET_CAST(__typeof__(r_.u64), (b_.u64 < 64)) & (a_.u64 << b_.u64);
   #else
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.u64) / sizeof(r_.u64[0])) ; i++) {

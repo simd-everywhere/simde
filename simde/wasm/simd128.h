@@ -5509,7 +5509,7 @@ simde_wasm_u8x16_sub_sat (simde_v128_t a, simde_v128_t b) {
       r_.altivec_u8 = vec_subs(a_.altivec_u8, b_.altivec_u8);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
       r_.u8  = a_.u8 - b_.u8;
-      r_.u8 &= (r_.u8 <= a_.u8);
+      r_.u8 &= HEDLEY_REINTERPRET_CAST(__typeof__(r_.u8), r_.u8 <= a_.u8);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.u8) / sizeof(r_.u8[0])) ; i++) {
@@ -5543,7 +5543,7 @@ simde_wasm_u16x8_sub_sat (simde_v128_t a, simde_v128_t b) {
       r_.altivec_u16 = vec_subs(a_.altivec_u16, b_.altivec_u16);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
       r_.u16  = a_.u16 - b_.u16;
-      r_.u16 &= (r_.u16 <= a_.u16);
+      r_.u16 &= HEDLEY_REINTERPRET_CAST(__typeof__(r_.u16), r_.u16 <= a_.u16);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.u16) / sizeof(r_.u16[0])) ; i++) {
@@ -6067,9 +6067,9 @@ simde_wasm_i8x16_narrow_i16x8 (simde_v128_t a, simde_v128_t b) {
     #elif defined(SIMDE_X86_SSE2_NATIVE)
       r_.sse_m128i = _mm_packs_epi16(a_.sse_m128i, b_.sse_m128i);
     #elif defined(SIMDE_CONVERT_VECTOR_) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
-      int16_t v SIMDE_VECTOR(32) = SIMDE_SHUFFLE_VECTOR_(16, 32, a_.i16, b_.i16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
-      const int16_t min SIMDE_VECTOR(32) = { INT8_MIN, INT8_MIN, INT8_MIN, INT8_MIN, INT8_MIN, INT8_MIN, INT8_MIN, INT8_MIN, INT8_MIN, INT8_MIN, INT8_MIN, INT8_MIN, INT8_MIN, INT8_MIN, INT8_MIN, INT8_MIN };
-      const int16_t max SIMDE_VECTOR(32) = { INT8_MAX, INT8_MAX, INT8_MAX, INT8_MAX, INT8_MAX, INT8_MAX, INT8_MAX, INT8_MAX, INT8_MAX, INT8_MAX, INT8_MAX, INT8_MAX, INT8_MAX, INT8_MAX, INT8_MAX, INT8_MAX };
+      int16_t SIMDE_VECTOR(32) v = SIMDE_SHUFFLE_VECTOR_(16, 32, a_.i16, b_.i16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
+      const int16_t SIMDE_VECTOR(32) min = { INT8_MIN, INT8_MIN, INT8_MIN, INT8_MIN, INT8_MIN, INT8_MIN, INT8_MIN, INT8_MIN, INT8_MIN, INT8_MIN, INT8_MIN, INT8_MIN, INT8_MIN, INT8_MIN, INT8_MIN, INT8_MIN };
+      const int16_t SIMDE_VECTOR(32) max = { INT8_MAX, INT8_MAX, INT8_MAX, INT8_MAX, INT8_MAX, INT8_MAX, INT8_MAX, INT8_MAX, INT8_MAX, INT8_MAX, INT8_MAX, INT8_MAX, INT8_MAX, INT8_MAX, INT8_MAX, INT8_MAX };
 
       int16_t m SIMDE_VECTOR(32);
       m = HEDLEY_REINTERPRET_CAST(__typeof__(m), v < min);
@@ -6114,9 +6114,9 @@ simde_wasm_i16x8_narrow_i32x4 (simde_v128_t a, simde_v128_t b) {
     #elif defined(SIMDE_X86_SSE2_NATIVE)
       r_.sse_m128i = _mm_packs_epi32(a_.sse_m128i, b_.sse_m128i);
     #elif defined(SIMDE_CONVERT_VECTOR_) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
-      int32_t v SIMDE_VECTOR(32) = SIMDE_SHUFFLE_VECTOR_(32, 32, a_.i32, b_.i32, 0, 1, 2, 3, 4, 5, 6, 7);
-      const int32_t min SIMDE_VECTOR(32) = { INT16_MIN, INT16_MIN, INT16_MIN, INT16_MIN, INT16_MIN, INT16_MIN, INT16_MIN, INT16_MIN };
-      const int32_t max SIMDE_VECTOR(32) = { INT16_MAX, INT16_MAX, INT16_MAX, INT16_MAX, INT16_MAX, INT16_MAX, INT16_MAX, INT16_MAX };
+      int32_t SIMDE_VECTOR(32) v = SIMDE_SHUFFLE_VECTOR_(32, 32, a_.i32, b_.i32, 0, 1, 2, 3, 4, 5, 6, 7);
+      const int32_t SIMDE_VECTOR(32) min = { INT16_MIN, INT16_MIN, INT16_MIN, INT16_MIN, INT16_MIN, INT16_MIN, INT16_MIN, INT16_MIN };
+      const int32_t SIMDE_VECTOR(32) max = { INT16_MAX, INT16_MAX, INT16_MAX, INT16_MAX, INT16_MAX, INT16_MAX, INT16_MAX, INT16_MAX };
 
       int32_t m SIMDE_VECTOR(32);
       m = HEDLEY_REINTERPRET_CAST(__typeof__(m), v < min);
@@ -6153,8 +6153,8 @@ simde_wasm_u8x16_narrow_i16x8 (simde_v128_t a, simde_v128_t b) {
       r_;
 
     #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
-      #if defined(__clang__) /* clang bug #46840 */
-        r_.neon_u8 = SIMDE_DISABLE_DIAGNOSTIC_EXPR_(_Pragma("clang diagnostic ignored \"-Wvector-conversion\""), vqmovun_high_s16(vqmovun_s16(a_.neon_i16), b_.neon_i16));
+      #if defined(SIMDE_BUG_CLANG_46840)
+        r_.neon_u8 = vqmovun_high_s16(vreinterpret_s8_u8(vqmovun_s16(a_.neon_i16)), b_.neon_i16);
       #else
         r_.neon_u8 = vqmovun_high_s16(vqmovun_s16(a_.neon_i16), b_.neon_i16);
       #endif
@@ -6202,8 +6202,8 @@ simde_wasm_u16x8_narrow_i32x4 (simde_v128_t a, simde_v128_t b) {
       r_;
 
     #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
-      #if defined(__clang__)
-        r_.neon_u16 = SIMDE_DISABLE_DIAGNOSTIC_EXPR_(_Pragma("clang diagnostic ignored \"-Wvector-conversion\""), vqmovun_high_s32(vqmovun_s32(a_.neon_i32), b_.neon_i32));
+      #if defined(SIMDE_BUG_CLANG_46840)
+        r_.neon_u16 = vqmovun_high_s32(vreinterpret_s16_u16(vqmovun_s32(a_.neon_i32)), b_.neon_i32);
       #else
         r_.neon_u16 = vqmovun_high_s32(vqmovun_s32(a_.neon_i32), b_.neon_i32);
       #endif
@@ -8208,17 +8208,17 @@ simde_wasm_i32x4_trunc_sat_f32x4 (simde_v128_t a) {
     #elif defined(SIMDE_CONVERT_VECTOR_) && defined(SIMDE_IEEE754_STORAGE)
       SIMDE_CONVERT_VECTOR_(r_.i32, a_.f32);
 
-      static const float max_representable SIMDE_VECTOR(16) = { SIMDE_FLOAT32_C(2147483520.0), SIMDE_FLOAT32_C(2147483520.0), SIMDE_FLOAT32_C(2147483520.0), SIMDE_FLOAT32_C(2147483520.0) };
-      int32_t max_mask SIMDE_VECTOR(16) = HEDLEY_REINTERPRET_CAST(__typeof__(max_mask), a_.f32 > max_representable);
-      int32_t max_i32 SIMDE_VECTOR(16) = { INT32_MAX, INT32_MAX, INT32_MAX, INT32_MAX };
+      const __typeof__(a_.f32) max_representable = { SIMDE_FLOAT32_C(2147483520.0), SIMDE_FLOAT32_C(2147483520.0), SIMDE_FLOAT32_C(2147483520.0), SIMDE_FLOAT32_C(2147483520.0) };
+      __typeof__(r_.i32) max_mask = HEDLEY_REINTERPRET_CAST(__typeof__(max_mask), a_.f32 > max_representable);
+      __typeof__(r_.i32) max_i32 = { INT32_MAX, INT32_MAX, INT32_MAX, INT32_MAX };
       r_.i32  = (max_i32 & max_mask) | (r_.i32 & ~max_mask);
 
-      static const float min_representable SIMDE_VECTOR(16) = { HEDLEY_STATIC_CAST(simde_float32, INT32_MIN), HEDLEY_STATIC_CAST(simde_float32, INT32_MIN), HEDLEY_STATIC_CAST(simde_float32, INT32_MIN), HEDLEY_STATIC_CAST(simde_float32, INT32_MIN) };
-      int32_t min_mask SIMDE_VECTOR(16) = HEDLEY_REINTERPRET_CAST(__typeof__(min_mask), a_.f32 < min_representable);
-      int32_t min_i32 SIMDE_VECTOR(16) = { INT32_MIN, INT32_MIN, INT32_MIN, INT32_MIN };
+      const __typeof__(a_.f32) min_representable = { HEDLEY_STATIC_CAST(simde_float32, INT32_MIN), HEDLEY_STATIC_CAST(simde_float32, INT32_MIN), HEDLEY_STATIC_CAST(simde_float32, INT32_MIN), HEDLEY_STATIC_CAST(simde_float32, INT32_MIN) };
+      __typeof__(r_.i32) min_mask = HEDLEY_REINTERPRET_CAST(__typeof__(min_mask), a_.f32 < min_representable);
+      __typeof__(r_.i32) min_i32 = { INT32_MIN, INT32_MIN, INT32_MIN, INT32_MIN };
       r_.i32  = (min_i32 & min_mask) | (r_.i32 & ~min_mask);
 
-      r_.i32 &= (a_.f32 == a_.f32);
+      r_.i32 &= HEDLEY_REINTERPRET_CAST(__typeof__(r_.i32), a_.f32 == a_.f32);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {
@@ -8285,13 +8285,13 @@ simde_wasm_u32x4_trunc_sat_f32x4 (simde_v128_t a) {
     #elif defined(SIMDE_CONVERT_VECTOR_) && defined(SIMDE_IEEE754_STORAGE)
       SIMDE_CONVERT_VECTOR_(r_.u32, a_.f32);
 
-      static const float max_representable SIMDE_VECTOR(16) = { SIMDE_FLOAT32_C(4294967040.0), SIMDE_FLOAT32_C(4294967040.0), SIMDE_FLOAT32_C(4294967040.0), SIMDE_FLOAT32_C(4294967040.0) };
+      const __typeof__(a_.f32) max_representable = { SIMDE_FLOAT32_C(4294967040.0), SIMDE_FLOAT32_C(4294967040.0), SIMDE_FLOAT32_C(4294967040.0), SIMDE_FLOAT32_C(4294967040.0) };
       r_.u32 |= HEDLEY_REINTERPRET_CAST(__typeof__(r_.u32), a_.f32 > max_representable);
 
-      static const float min_representable SIMDE_VECTOR(16) = { SIMDE_FLOAT32_C(0.0), };
+      const __typeof__(a_.f32) min_representable = { SIMDE_FLOAT32_C(0.0), };
       r_.u32 &= HEDLEY_REINTERPRET_CAST(__typeof__(r_.u32), a_.f32 > min_representable);
 
-      r_.u32 &= (a_.f32 == a_.f32);
+      r_.u32 &= HEDLEY_REINTERPRET_CAST(__typeof__(r_.u32), a_.f32 == a_.f32);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.u32) / sizeof(r_.u32[0])) ; i++) {

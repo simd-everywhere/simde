@@ -51,7 +51,7 @@ simde_mm512_cmp_ps_mask (simde__m512 a, simde__m512 b, const int imm8)
     case SIMDE_CMP_EQ_OQ:
     case SIMDE_CMP_EQ_OS:
       #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-        r_.i32 = HEDLEY_STATIC_CAST(__typeof__(r_.i32), (a_.f32 == b_.f32));
+        r_.i32 = HEDLEY_REINTERPRET_CAST(__typeof__(r_.i32), (a_.f32 == b_.f32));
       #else
         SIMDE_VECTORIZE
         for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
@@ -63,7 +63,7 @@ simde_mm512_cmp_ps_mask (simde__m512 a, simde__m512 b, const int imm8)
     case SIMDE_CMP_LT_OQ:
     case SIMDE_CMP_LT_OS:
       #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-        r_.i32 = HEDLEY_STATIC_CAST(__typeof__(r_.i32), (a_.f32 < b_.f32));
+        r_.i32 = HEDLEY_REINTERPRET_CAST(__typeof__(r_.i32), (a_.f32 < b_.f32));
       #else
         SIMDE_VECTORIZE
         for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
@@ -75,7 +75,7 @@ simde_mm512_cmp_ps_mask (simde__m512 a, simde__m512 b, const int imm8)
     case SIMDE_CMP_LE_OQ:
     case SIMDE_CMP_LE_OS:
       #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-        r_.i32 = HEDLEY_STATIC_CAST(__typeof__(r_.i32), (a_.f32 <= b_.f32));
+        r_.i32 = HEDLEY_REINTERPRET_CAST(__typeof__(r_.i32), (a_.f32 <= b_.f32));
       #else
         SIMDE_VECTORIZE
         for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
@@ -87,7 +87,7 @@ simde_mm512_cmp_ps_mask (simde__m512 a, simde__m512 b, const int imm8)
     case SIMDE_CMP_UNORD_Q:
     case SIMDE_CMP_UNORD_S:
       #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-        r_.i32 = HEDLEY_STATIC_CAST(__typeof__(r_.i32), (a_.f32 != a_.f32) | (b_.f32 != b_.f32));
+        r_.i32 = HEDLEY_REINTERPRET_CAST(__typeof__(r_.i32), (a_.f32 != a_.f32) | (b_.f32 != b_.f32));
       #else
         SIMDE_VECTORIZE
         for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
@@ -99,7 +99,7 @@ simde_mm512_cmp_ps_mask (simde__m512 a, simde__m512 b, const int imm8)
     case SIMDE_CMP_NEQ_UQ:
     case SIMDE_CMP_NEQ_US:
       #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-        r_.i32 = HEDLEY_STATIC_CAST(__typeof__(r_.i32), (a_.f32 != b_.f32));
+        r_.i32 = HEDLEY_REINTERPRET_CAST(__typeof__(r_.i32), (a_.f32 != b_.f32));
       #else
         SIMDE_VECTORIZE
         for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
@@ -111,7 +111,7 @@ simde_mm512_cmp_ps_mask (simde__m512 a, simde__m512 b, const int imm8)
     case SIMDE_CMP_NEQ_OQ:
     case SIMDE_CMP_NEQ_OS:
       #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-        r_.i32 = HEDLEY_STATIC_CAST(__typeof__(r_.i32), (a_.f32 == a_.f32) & (b_.f32 == b_.f32) & (a_.f32 != b_.f32));
+        r_.i32 = HEDLEY_REINTERPRET_CAST(__typeof__(r_.i32), (a_.f32 == a_.f32) & (b_.f32 == b_.f32) & (a_.f32 != b_.f32));
       #else
         SIMDE_VECTORIZE
         for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
@@ -123,7 +123,7 @@ simde_mm512_cmp_ps_mask (simde__m512 a, simde__m512 b, const int imm8)
     case SIMDE_CMP_NLT_UQ:
     case SIMDE_CMP_NLT_US:
       #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-        r_.i32 = HEDLEY_STATIC_CAST(__typeof__(r_.i32), ~(a_.f32 < b_.f32));
+        r_.i32 = HEDLEY_REINTERPRET_CAST(__typeof__(r_.i32), ~(a_.f32 < b_.f32));
       #else
         SIMDE_VECTORIZE
         for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
@@ -135,7 +135,7 @@ simde_mm512_cmp_ps_mask (simde__m512 a, simde__m512 b, const int imm8)
     case SIMDE_CMP_NLE_UQ:
     case SIMDE_CMP_NLE_US:
       #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-        r_.i32 = HEDLEY_STATIC_CAST(__typeof__(r_.i32), ~(a_.f32 <= b_.f32));
+        r_.i32 = HEDLEY_REINTERPRET_CAST(__typeof__(r_.i32), ~(a_.f32 <= b_.f32));
       #else
         SIMDE_VECTORIZE
         for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
@@ -147,7 +147,7 @@ simde_mm512_cmp_ps_mask (simde__m512 a, simde__m512 b, const int imm8)
     case SIMDE_CMP_ORD_Q:
     case SIMDE_CMP_ORD_S:
       #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-        r_.i32 = HEDLEY_STATIC_CAST(__typeof__(r_.i32), ((a_.f32 == a_.f32) & (b_.f32 == b_.f32)));
+        r_.i32 = HEDLEY_REINTERPRET_CAST(__typeof__(r_.i32), ((a_.f32 == a_.f32) & (b_.f32 == b_.f32)));
       #else
         SIMDE_VECTORIZE
         for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
@@ -159,7 +159,7 @@ simde_mm512_cmp_ps_mask (simde__m512 a, simde__m512 b, const int imm8)
     case SIMDE_CMP_EQ_UQ:
     case SIMDE_CMP_EQ_US:
       #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-        r_.i32 = HEDLEY_STATIC_CAST(__typeof__(r_.i32), (a_.f32 != a_.f32) | (b_.f32 != b_.f32) | (a_.f32 == b_.f32));
+        r_.i32 = HEDLEY_REINTERPRET_CAST(__typeof__(r_.i32), (a_.f32 != a_.f32) | (b_.f32 != b_.f32) | (a_.f32 == b_.f32));
       #else
         SIMDE_VECTORIZE
         for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
@@ -171,7 +171,7 @@ simde_mm512_cmp_ps_mask (simde__m512 a, simde__m512 b, const int imm8)
     case SIMDE_CMP_NGE_UQ:
     case SIMDE_CMP_NGE_US:
       #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-        r_.i32 = HEDLEY_STATIC_CAST(__typeof__(r_.i32), ~(a_.f32 >= b_.f32));
+        r_.i32 = HEDLEY_REINTERPRET_CAST(__typeof__(r_.i32), ~(a_.f32 >= b_.f32));
       #else
         SIMDE_VECTORIZE
         for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
@@ -183,7 +183,7 @@ simde_mm512_cmp_ps_mask (simde__m512 a, simde__m512 b, const int imm8)
     case SIMDE_CMP_NGT_UQ:
     case SIMDE_CMP_NGT_US:
       #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-        r_.i32 = HEDLEY_STATIC_CAST(__typeof__(r_.i32), ~(a_.f32 > b_.f32));
+        r_.i32 = HEDLEY_REINTERPRET_CAST(__typeof__(r_.i32), ~(a_.f32 > b_.f32));
       #else
         SIMDE_VECTORIZE
         for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
@@ -200,7 +200,7 @@ simde_mm512_cmp_ps_mask (simde__m512 a, simde__m512 b, const int imm8)
     case SIMDE_CMP_GE_OQ:
     case SIMDE_CMP_GE_OS:
       #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-        r_.i32 = HEDLEY_STATIC_CAST(__typeof__(r_.i32), (a_.f32 >= b_.f32));
+        r_.i32 = HEDLEY_REINTERPRET_CAST(__typeof__(r_.i32), (a_.f32 >= b_.f32));
       #else
         SIMDE_VECTORIZE
         for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
@@ -212,7 +212,7 @@ simde_mm512_cmp_ps_mask (simde__m512 a, simde__m512 b, const int imm8)
     case SIMDE_CMP_GT_OQ:
     case SIMDE_CMP_GT_OS:
       #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-        r_.i32 = HEDLEY_STATIC_CAST(__typeof__(r_.i32), (a_.f32 > b_.f32));
+        r_.i32 = HEDLEY_REINTERPRET_CAST(__typeof__(r_.i32), (a_.f32 > b_.f32));
       #else
         SIMDE_VECTORIZE
         for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
@@ -299,7 +299,7 @@ simde_mm512_cmp_pd_mask (simde__m512d a, simde__m512d b, const int imm8)
     case SIMDE_CMP_EQ_OQ:
     case SIMDE_CMP_EQ_OS:
       #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-        r_.i64 = HEDLEY_STATIC_CAST(__typeof__(r_.i64), (a_.f64 == b_.f64));
+        r_.i64 = HEDLEY_REINTERPRET_CAST(__typeof__(r_.i64), (a_.f64 == b_.f64));
       #else
         SIMDE_VECTORIZE
         for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
@@ -311,7 +311,7 @@ simde_mm512_cmp_pd_mask (simde__m512d a, simde__m512d b, const int imm8)
     case SIMDE_CMP_LT_OQ:
     case SIMDE_CMP_LT_OS:
       #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-        r_.i64 = HEDLEY_STATIC_CAST(__typeof__(r_.i64), (a_.f64 < b_.f64));
+        r_.i64 = HEDLEY_REINTERPRET_CAST(__typeof__(r_.i64), (a_.f64 < b_.f64));
       #else
         SIMDE_VECTORIZE
         for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
@@ -323,7 +323,7 @@ simde_mm512_cmp_pd_mask (simde__m512d a, simde__m512d b, const int imm8)
     case SIMDE_CMP_LE_OQ:
     case SIMDE_CMP_LE_OS:
       #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-        r_.i64 = HEDLEY_STATIC_CAST(__typeof__(r_.i64), (a_.f64 <= b_.f64));
+        r_.i64 = HEDLEY_REINTERPRET_CAST(__typeof__(r_.i64), (a_.f64 <= b_.f64));
       #else
         SIMDE_VECTORIZE
         for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
@@ -335,7 +335,7 @@ simde_mm512_cmp_pd_mask (simde__m512d a, simde__m512d b, const int imm8)
     case SIMDE_CMP_UNORD_Q:
     case SIMDE_CMP_UNORD_S:
       #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-        r_.i64 = HEDLEY_STATIC_CAST(__typeof__(r_.i64), (a_.f64 != a_.f64) | (b_.f64 != b_.f64));
+        r_.i64 = HEDLEY_REINTERPRET_CAST(__typeof__(r_.i64), (a_.f64 != a_.f64) | (b_.f64 != b_.f64));
       #else
         SIMDE_VECTORIZE
         for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
@@ -347,7 +347,7 @@ simde_mm512_cmp_pd_mask (simde__m512d a, simde__m512d b, const int imm8)
     case SIMDE_CMP_NEQ_UQ:
     case SIMDE_CMP_NEQ_US:
       #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-        r_.i64 = HEDLEY_STATIC_CAST(__typeof__(r_.i64), (a_.f64 != b_.f64));
+        r_.i64 = HEDLEY_REINTERPRET_CAST(__typeof__(r_.i64), (a_.f64 != b_.f64));
       #else
         SIMDE_VECTORIZE
         for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
@@ -359,7 +359,7 @@ simde_mm512_cmp_pd_mask (simde__m512d a, simde__m512d b, const int imm8)
     case SIMDE_CMP_NEQ_OQ:
     case SIMDE_CMP_NEQ_OS:
       #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-        r_.i64 = HEDLEY_STATIC_CAST(__typeof__(r_.i64), (a_.f64 == a_.f64) & (b_.f64 == b_.f64) & (a_.f64 != b_.f64));
+        r_.i64 = HEDLEY_REINTERPRET_CAST(__typeof__(r_.i64), (a_.f64 == a_.f64) & (b_.f64 == b_.f64) & (a_.f64 != b_.f64));
       #else
         SIMDE_VECTORIZE
         for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
@@ -371,7 +371,7 @@ simde_mm512_cmp_pd_mask (simde__m512d a, simde__m512d b, const int imm8)
     case SIMDE_CMP_NLT_UQ:
     case SIMDE_CMP_NLT_US:
       #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-        r_.i64 = HEDLEY_STATIC_CAST(__typeof__(r_.i64), ~(a_.f64 < b_.f64));
+        r_.i64 = HEDLEY_REINTERPRET_CAST(__typeof__(r_.i64), ~(a_.f64 < b_.f64));
       #else
         SIMDE_VECTORIZE
         for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
@@ -383,7 +383,7 @@ simde_mm512_cmp_pd_mask (simde__m512d a, simde__m512d b, const int imm8)
     case SIMDE_CMP_NLE_UQ:
     case SIMDE_CMP_NLE_US:
       #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-        r_.i64 = HEDLEY_STATIC_CAST(__typeof__(r_.i64), ~(a_.f64 <= b_.f64));
+        r_.i64 = HEDLEY_REINTERPRET_CAST(__typeof__(r_.i64), ~(a_.f64 <= b_.f64));
       #else
         SIMDE_VECTORIZE
         for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
@@ -395,7 +395,7 @@ simde_mm512_cmp_pd_mask (simde__m512d a, simde__m512d b, const int imm8)
     case SIMDE_CMP_ORD_Q:
     case SIMDE_CMP_ORD_S:
       #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-        r_.i64 = HEDLEY_STATIC_CAST(__typeof__(r_.i64), ((a_.f64 == a_.f64) & (b_.f64 == b_.f64)));
+        r_.i64 = HEDLEY_REINTERPRET_CAST(__typeof__(r_.i64), ((a_.f64 == a_.f64) & (b_.f64 == b_.f64)));
       #else
         SIMDE_VECTORIZE
         for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
@@ -407,7 +407,7 @@ simde_mm512_cmp_pd_mask (simde__m512d a, simde__m512d b, const int imm8)
     case SIMDE_CMP_EQ_UQ:
     case SIMDE_CMP_EQ_US:
       #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-        r_.i64 = HEDLEY_STATIC_CAST(__typeof__(r_.i64), (a_.f64 != a_.f64) | (b_.f64 != b_.f64) | (a_.f64 == b_.f64));
+        r_.i64 = HEDLEY_REINTERPRET_CAST(__typeof__(r_.i64), (a_.f64 != a_.f64) | (b_.f64 != b_.f64) | (a_.f64 == b_.f64));
       #else
         SIMDE_VECTORIZE
         for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
@@ -419,7 +419,7 @@ simde_mm512_cmp_pd_mask (simde__m512d a, simde__m512d b, const int imm8)
     case SIMDE_CMP_NGE_UQ:
     case SIMDE_CMP_NGE_US:
       #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-        r_.i64 = HEDLEY_STATIC_CAST(__typeof__(r_.i64), ~(a_.f64 >= b_.f64));
+        r_.i64 = HEDLEY_REINTERPRET_CAST(__typeof__(r_.i64), ~(a_.f64 >= b_.f64));
       #else
         SIMDE_VECTORIZE
         for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
@@ -431,7 +431,7 @@ simde_mm512_cmp_pd_mask (simde__m512d a, simde__m512d b, const int imm8)
     case SIMDE_CMP_NGT_UQ:
     case SIMDE_CMP_NGT_US:
       #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-        r_.i64 = HEDLEY_STATIC_CAST(__typeof__(r_.i64), ~(a_.f64 > b_.f64));
+        r_.i64 = HEDLEY_REINTERPRET_CAST(__typeof__(r_.i64), ~(a_.f64 > b_.f64));
       #else
         SIMDE_VECTORIZE
         for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
@@ -448,7 +448,7 @@ simde_mm512_cmp_pd_mask (simde__m512d a, simde__m512d b, const int imm8)
     case SIMDE_CMP_GE_OQ:
     case SIMDE_CMP_GE_OS:
       #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-        r_.i64 = HEDLEY_STATIC_CAST(__typeof__(r_.i64), (a_.f64 >= b_.f64));
+        r_.i64 = HEDLEY_REINTERPRET_CAST(__typeof__(r_.i64), (a_.f64 >= b_.f64));
       #else
         SIMDE_VECTORIZE
         for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
@@ -460,7 +460,7 @@ simde_mm512_cmp_pd_mask (simde__m512d a, simde__m512d b, const int imm8)
     case SIMDE_CMP_GT_OQ:
     case SIMDE_CMP_GT_OS:
       #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-        r_.i64 = HEDLEY_STATIC_CAST(__typeof__(r_.i64), (a_.f64 > b_.f64));
+        r_.i64 = HEDLEY_REINTERPRET_CAST(__typeof__(r_.i64), (a_.f64 > b_.f64));
       #else
         SIMDE_VECTORIZE
         for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
