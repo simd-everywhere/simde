@@ -2549,19 +2549,10 @@ simde_mm_extract_pi16 (simde__m64 a, const int imm8)
   simde__m64_private a_ = simde__m64_to_private(a);
   return a_.i16[imm8];
 }
-#if defined(SIMDE_X86_SSE_NATIVE) && defined(SIMDE_X86_MMX_NATIVE) && !defined(HEDLEY_PGI_VERSION)
-#  if defined(SIMDE_BUG_CLANG_44589)
-#    define simde_mm_extract_pi16(a, imm8) ( \
-         HEDLEY_DIAGNOSTIC_PUSH \
-         _Pragma("clang diagnostic ignored \"-Wvector-conversion\"") \
-         HEDLEY_STATIC_CAST(int16_t, _mm_extract_pi16((a), (imm8))) \
-         HEDLEY_DIAGNOSTIC_POP \
-       )
-#  else
-#    define simde_mm_extract_pi16(a, imm8) HEDLEY_STATIC_CAST(int16_t, _mm_extract_pi16(a, imm8))
-#  endif
+#if defined(SIMDE_X86_SSE_NATIVE) && defined(SIMDE_X86_MMX_NATIVE) && !defined(HEDLEY_PGI_VERSION) && !defined(SIMDE_BUG_CLANG_44589)
+  #define simde_mm_extract_pi16(a, imm8) HEDLEY_STATIC_CAST(int16_t, _mm_extract_pi16(a, imm8))
 #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-#  define simde_mm_extract_pi16(a, imm8) vget_lane_s16(simde__m64_to_private(a).neon_i16, imm8)
+  #define simde_mm_extract_pi16(a, imm8) vget_lane_s16(simde__m64_to_private(a).neon_i16, imm8)
 #endif
 #define simde_m_pextrw(a, imm8) simde_mm_extract_pi16(a, imm8)
 #if defined(SIMDE_X86_SSE_ENABLE_NATIVE_ALIASES)
@@ -2574,27 +2565,16 @@ simde__m64
 simde_mm_insert_pi16 (simde__m64 a, int16_t i, const int imm8)
     SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 3) {
   simde__m64_private
-    r_,
     a_ = simde__m64_to_private(a);
 
-  r_.i64[0] = a_.i64[0];
-  r_.i16[imm8] = i;
+  a_.i16[imm8] = i;
 
-  return simde__m64_from_private(r_);
+  return simde__m64_from_private(a_);
 }
-#if defined(SIMDE_X86_SSE_NATIVE) && defined(SIMDE_X86_MMX_NATIVE) && !defined(__PGI)
-#  if defined(SIMDE_BUG_CLANG_44589)
-#    define ssimde_mm_insert_pi16(a, i, imm8) ( \
-         HEDLEY_DIAGNOSTIC_PUSH \
-         _Pragma("clang diagnostic ignored \"-Wvector-conversion\"") \
-        (_mm_insert_pi16((a), (i), (imm8))) \
-         HEDLEY_DIAGNOSTIC_POP \
-       )
-#  else
-#    define simde_mm_insert_pi16(a, i, imm8) _mm_insert_pi16(a, i, imm8)
-#  endif
+#if defined(SIMDE_X86_SSE_NATIVE) && defined(SIMDE_X86_MMX_NATIVE) && !defined(__PGI) && !defined(SIMDE_BUG_CLANG_44589)
+  #define simde_mm_insert_pi16(a, i, imm8) _mm_insert_pi16(a, i, imm8)
 #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-#  define simde_mm_insert_pi16(a, i, imm8) simde__m64_from_neon_i16(vset_lane_s16((i), simde__m64_to_neon_i16(a), (imm8)))
+  #define simde_mm_insert_pi16(a, i, imm8) simde__m64_from_neon_i16(vset_lane_s16((i), simde__m64_to_neon_i16(a), (imm8)))
 #endif
 #define simde_m_pinsrw(a, i, imm8) (simde_mm_insert_pi16(a, i, imm8))
 #if defined(SIMDE_X86_SSE_ENABLE_NATIVE_ALIASES)
