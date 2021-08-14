@@ -3847,7 +3847,11 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde__m256
 simde_mm256_permutevar8x32_ps (simde__m256 a, simde__m256i idx) {
   #if defined(SIMDE_X86_AVX2_NATIVE)
-    return _mm256_permutevar8x32_ps(a, idx);
+    #if defined(__clang__) && !SIMDE_DETECT_CLANG_VERSION_CHECK(3,8,0)
+      return _mm256_permutevar8x32_ps(a, HEDLEY_REINTERPRET_CAST(simde__m256, idx));
+    #else
+      return _mm256_permutevar8x32_ps(a, idx);
+    #endif
   #else
     simde__m256_private
       r_,

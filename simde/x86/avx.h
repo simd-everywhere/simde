@@ -3933,7 +3933,11 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde__m128d
 simde_mm_maskload_pd (const simde_float64 mem_addr[HEDLEY_ARRAY_PARAM(4)], simde__m128i mask) {
   #if defined(SIMDE_X86_AVX_NATIVE)
-    return _mm_maskload_pd(mem_addr, mask);
+    #if defined(__clang__) && !SIMDE_DETECT_CLANG_VERSION_CHECK(3,8,0)
+      return _mm_maskload_pd(mem_addr, HEDLEY_REINTERPRET_CAST(simde__m128d, mask));
+    #else
+      return _mm_maskload_pd(mem_addr, mask);
+    #endif
   #else
     simde__m128d_private
       mem_ = simde__m128d_to_private(simde_mm_loadu_pd(mem_addr)),
@@ -3961,7 +3965,11 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde__m256d
 simde_mm256_maskload_pd (const simde_float64 mem_addr[HEDLEY_ARRAY_PARAM(4)], simde__m256i mask) {
   #if defined(SIMDE_X86_AVX_NATIVE)
-    return _mm256_maskload_pd(mem_addr, mask);
+    #if defined(__clang__) && !SIMDE_DETECT_CLANG_VERSION_CHECK(3,8,0)
+      return _mm256_maskload_pd(mem_addr, HEDLEY_REINTERPRET_CAST(simde__m256d, mask));
+    #else
+      return _mm256_maskload_pd(mem_addr, mask);
+    #endif
   #else
     simde__m256d_private r_;
     simde__m256i_private mask_ = simde__m256i_to_private(mask);
@@ -3984,7 +3992,11 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde__m128
 simde_mm_maskload_ps (const simde_float32 mem_addr[HEDLEY_ARRAY_PARAM(4)], simde__m128i mask) {
   #if defined(SIMDE_X86_AVX_NATIVE)
-    return _mm_maskload_ps(mem_addr, mask);
+    #if defined(__clang__) && !SIMDE_DETECT_CLANG_VERSION_CHECK(3,8,0)
+      return _mm_maskload_ps(mem_addr, HEDLEY_REINTERPRET_CAST(simde__m128, mask));
+    #else
+      return _mm_maskload_ps(mem_addr, mask);
+    #endif
   #else
     simde__m128_private
       mem_ = simde__m128_to_private(simde_mm_loadu_ps(mem_addr)),
@@ -4012,7 +4024,11 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde__m256
 simde_mm256_maskload_ps (const simde_float32 mem_addr[HEDLEY_ARRAY_PARAM(4)], simde__m256i mask) {
   #if defined(SIMDE_X86_AVX_NATIVE)
-    return _mm256_maskload_ps(mem_addr, mask);
+    #if defined(__clang__) && !SIMDE_DETECT_CLANG_VERSION_CHECK(3,8,0)
+      return _mm256_maskload_ps(mem_addr, HEDLEY_REINTERPRET_CAST(simde__m256, mask));
+    #else
+      return _mm256_maskload_ps(mem_addr, mask);
+    #endif
   #else
     simde__m256_private r_;
     simde__m256i_private mask_ = simde__m256i_to_private(mask);
@@ -4035,7 +4051,11 @@ SIMDE_FUNCTION_ATTRIBUTES
 void
 simde_mm_maskstore_pd (simde_float64 mem_addr[HEDLEY_ARRAY_PARAM(2)], simde__m128i mask, simde__m128d a) {
   #if defined(SIMDE_X86_AVX_NATIVE)
-    _mm_maskstore_pd(mem_addr, mask, a);
+    #if defined(__clang__) && !SIMDE_DETECT_CLANG_VERSION_CHECK(3,8,0)
+      _mm_maskstore_pd(mem_addr, HEDLEY_REINTERPRET_CAST(simde__m128d, mask), a);
+    #else
+      _mm_maskstore_pd(mem_addr, mask, a);
+    #endif
   #else
     simde__m128i_private mask_ = simde__m128i_to_private(mask);
     simde__m128d_private a_ = simde__m128d_to_private(a);
@@ -4056,7 +4076,11 @@ SIMDE_FUNCTION_ATTRIBUTES
 void
 simde_mm256_maskstore_pd (simde_float64 mem_addr[HEDLEY_ARRAY_PARAM(4)], simde__m256i mask, simde__m256d a) {
   #if defined(SIMDE_X86_AVX_NATIVE)
-    _mm256_maskstore_pd(mem_addr, mask, a);
+    #if defined(__clang__) && !SIMDE_DETECT_CLANG_VERSION_CHECK(3,8,0)
+      _mm256_maskstore_pd(mem_addr, HEDLEY_REINTERPRET_CAST(simde__m256d, mask), a);
+    #else
+      _mm256_maskstore_pd(mem_addr, mask, a);
+    #endif
   #else
     simde__m256i_private mask_ = simde__m256i_to_private(mask);
     simde__m256d_private a_ = simde__m256d_to_private(a);
@@ -4077,7 +4101,11 @@ SIMDE_FUNCTION_ATTRIBUTES
 void
 simde_mm_maskstore_ps (simde_float32 mem_addr[HEDLEY_ARRAY_PARAM(4)], simde__m128i mask, simde__m128 a) {
   #if defined(SIMDE_X86_AVX_NATIVE)
-    _mm_maskstore_ps(mem_addr, mask, a);
+    #if defined(__clang__) && !SIMDE_DETECT_CLANG_VERSION_CHECK(3,8,0)
+      _mm_maskstore_ps(mem_addr, HEDLEY_REINTERPRET_CAST(simde__m128, mask), a);
+    #else
+      _mm_maskstore_ps(mem_addr, mask, a);
+    #endif
   #else
     simde__m128i_private mask_ = simde__m128i_to_private(mask);
     simde__m128_private a_ = simde__m128_to_private(a);
@@ -4098,7 +4126,11 @@ SIMDE_FUNCTION_ATTRIBUTES
 void
 simde_mm256_maskstore_ps (simde_float32 mem_addr[HEDLEY_ARRAY_PARAM(8)], simde__m256i mask, simde__m256 a) {
   #if defined(SIMDE_X86_AVX_NATIVE)
-    _mm256_maskstore_ps(mem_addr, mask, a);
+    #if defined(__clang__) && !SIMDE_DETECT_CLANG_VERSION_CHECK(3,8,0)
+      _mm256_maskstore_ps(mem_addr, HEDLEY_REINTERPRET_CAST(simde__m256, mask), a);
+    #else
+      _mm256_maskstore_ps(mem_addr, mask, a);
+    #endif
   #else
     simde__m256i_private mask_ = simde__m256i_to_private(mask);
     simde__m256_private a_ = simde__m256_to_private(a);
