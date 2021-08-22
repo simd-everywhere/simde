@@ -97,7 +97,7 @@ simde_vqshlu_n_s8(simde_int8x8_t a, const int n)
       R_,
       A_ = simde_int16x8_to_private(simde_vmovl_s8(a));
 
-    const v128_t shifted = wasm_i16x8_shl(A_.v128, n);
+    const v128_t shifted = wasm_i16x8_shl(A_.v128, HEDLEY_STATIC_CAST(uint32_t, n));
     R_.v128 = wasm_i16x8_min(shifted, wasm_i16x8_const_splat(UINT8_MAX));
     R_.v128 = wasm_i16x8_max(R_.v128, wasm_i16x8_const_splat(0));
 
@@ -143,7 +143,7 @@ simde_vqshlu_n_s16(simde_int16x4_t a, const int n)
       R_,
       A_ = simde_int32x4_to_private(simde_vmovl_s16(a));
 
-    const v128_t shifted = wasm_i32x4_shl(A_.v128, n);
+    const v128_t shifted = wasm_i32x4_shl(A_.v128, HEDLEY_STATIC_CAST(uint32_t, n));
     R_.v128 = wasm_i32x4_min(shifted, wasm_i32x4_const_splat(UINT16_MAX));
     R_.v128 = wasm_i32x4_max(R_.v128, wasm_i32x4_const_splat(0));
 
@@ -191,7 +191,7 @@ simde_vqshlu_n_s32(simde_int32x2_t a, const int n)
 
     const v128_t max = wasm_i64x2_const_splat(UINT32_MAX);
 
-    const v128_t shifted = wasm_i64x2_shl(A_.v128, n);
+    const v128_t shifted = wasm_i64x2_shl(A_.v128, HEDLEY_STATIC_CAST(uint32_t, n));
     R_.v128 = wasm_v128_bitselect(shifted, max, wasm_i64x2_gt(max, shifted));
     R_.v128 = wasm_v128_and(R_.v128, wasm_i64x2_gt(R_.v128, wasm_i64x2_const_splat(0)));
 
@@ -237,8 +237,8 @@ simde_vqshlu_n_s64(simde_int64x1_t a, const int n)
       R_,
       A_ = simde_uint64x2_to_private(simde_vreinterpretq_u64_s64(simde_vcombine_s64(a, a)));
 
-    R_.v128 = wasm_i64x2_shl(A_.v128, n);
-    const v128_t overflow = wasm_i64x2_ne(A_.v128, wasm_u64x2_shr(R_.v128, n));
+    R_.v128 = wasm_i64x2_shl(A_.v128, HEDLEY_STATIC_CAST(uint32_t, n));
+    const v128_t overflow = wasm_i64x2_ne(A_.v128, wasm_u64x2_shr(R_.v128, HEDLEY_STATIC_CAST(uint32_t, n)));
     R_.v128 = wasm_v128_or(R_.v128, overflow);
     R_.v128 = wasm_v128_andnot(R_.v128, wasm_i64x2_shr(A_.v128, 63));
 
@@ -283,8 +283,8 @@ simde_vqshluq_n_s8(simde_int8x16_t a, const int n)
   simde_uint8x16_private r_;
 
   #if defined(SIMDE_WASM_SIMD128_NATIVE)
-    r_.v128 = wasm_i8x16_shl(a_.v128, n);
-    const v128_t overflow = wasm_i8x16_ne(a_.v128, wasm_u8x16_shr(r_.v128, n));
+    r_.v128 = wasm_i8x16_shl(a_.v128, HEDLEY_STATIC_CAST(uint32_t, n));
+    const v128_t overflow = wasm_i8x16_ne(a_.v128, wasm_u8x16_shr(r_.v128, HEDLEY_STATIC_CAST(uint32_t, n)));
     r_.v128 = wasm_v128_or(r_.v128, overflow);
     r_.v128 = wasm_v128_andnot(r_.v128, wasm_i8x16_shr(a_.v128, 7));
   #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
@@ -322,8 +322,8 @@ simde_vqshluq_n_s16(simde_int16x8_t a, const int n)
   simde_uint16x8_private r_;
 
   #if defined(SIMDE_WASM_SIMD128_NATIVE)
-    r_.v128 = wasm_i16x8_shl(a_.v128, n);
-    const v128_t overflow = wasm_i16x8_ne(a_.v128, wasm_u16x8_shr(r_.v128, n));
+    r_.v128 = wasm_i16x8_shl(a_.v128, HEDLEY_STATIC_CAST(uint32_t, n));
+    const v128_t overflow = wasm_i16x8_ne(a_.v128, wasm_u16x8_shr(r_.v128, HEDLEY_STATIC_CAST(uint32_t, n)));
     r_.v128 = wasm_v128_or(r_.v128, overflow);
     r_.v128 = wasm_v128_andnot(r_.v128, wasm_i16x8_shr(a_.v128, 15));
   #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
@@ -361,8 +361,8 @@ simde_vqshluq_n_s32(simde_int32x4_t a, const int n)
   simde_uint32x4_private r_;
 
   #if defined(SIMDE_WASM_SIMD128_NATIVE)
-    r_.v128 = wasm_i32x4_shl(a_.v128, n);
-    const v128_t overflow = wasm_i32x4_ne(a_.v128, wasm_u32x4_shr(r_.v128, n));
+    r_.v128 = wasm_i32x4_shl(a_.v128, HEDLEY_STATIC_CAST(uint32_t, n));
+    const v128_t overflow = wasm_i32x4_ne(a_.v128, wasm_u32x4_shr(r_.v128, HEDLEY_STATIC_CAST(uint32_t, n)));
     r_.v128 = wasm_v128_or(r_.v128, overflow);
     r_.v128 = wasm_v128_andnot(r_.v128, wasm_i32x4_shr(a_.v128, 31));
   #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
@@ -400,8 +400,8 @@ simde_vqshluq_n_s64(simde_int64x2_t a, const int n)
   simde_uint64x2_private r_;
 
   #if defined(SIMDE_WASM_SIMD128_NATIVE)
-    r_.v128 = wasm_i64x2_shl(a_.v128, n);
-    const v128_t overflow = wasm_i64x2_ne(a_.v128, wasm_u64x2_shr(r_.v128, n));
+    r_.v128 = wasm_i64x2_shl(a_.v128, HEDLEY_STATIC_CAST(uint32_t, n));
+    const v128_t overflow = wasm_i64x2_ne(a_.v128, wasm_u64x2_shr(r_.v128, HEDLEY_STATIC_CAST(uint32_t, n)));
     r_.v128 = wasm_v128_or(r_.v128, overflow);
     r_.v128 = wasm_v128_andnot(r_.v128, wasm_i64x2_shr(a_.v128, 63));
   #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
