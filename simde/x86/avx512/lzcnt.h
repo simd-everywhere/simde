@@ -29,6 +29,13 @@
 
 #include "types.h"
 #include "mov.h"
+#if HEDLEY_MSVC_VERSION_CHECK(14,0,0)
+#include <intrin.h>
+#pragma intrinsic(_BitScanReverse)
+  #if defined(_M_AMD64) || defined(_M_ARM64)
+  #pragma intrinsic(_BitScanReverse64)
+  #endif
+#endif
 
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
