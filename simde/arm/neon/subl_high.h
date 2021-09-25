@@ -125,4 +125,4 @@ simde_vsubl_high_u32(simde_uint32x4_t a, simde_uint32x4_t b) {
 SIMDE_END_DECLS_
 HEDLEY_DIAGNOSTIC_POP
 
-#endif /* !defined(SIMDE_ARM_NEON_SUBL_H) */
+#endif /* !defined(SIMDE_ARM_NEON_SUBL_HIGH_H) */
