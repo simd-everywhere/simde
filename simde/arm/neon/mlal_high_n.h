@@ -121,7 +121,7 @@ simde_vmlal_high_n_u32(simde_uint64x2_t a, simde_uint32x4_t b, uint32_t c) {
 }
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
   #undef vmlal_high_n_u32
-  #define vmlal_high_u32(a, b, c) simde_vmlal_high_n_u32((a), (b), (c))
+  #define vmlal_high_n_u32(a, b, c) simde_vmlal_high_n_u32((a), (b), (c))
 #endif
 
 SIMDE_END_DECLS_
