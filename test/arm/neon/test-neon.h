@@ -193,8 +193,8 @@ HEDLEY_DIAGNOSTIC_POP
   static int \
   simde_test_arm_neon_assert_equal_##symbol_identifier##x##element_count##x2_(simde_##NT a, simde_##NT b, ET slop, \
      const char* filename, int line, const char* astr, const char* bstr) { \
-    SET a0_[sizeof(a) / sizeof(ET) / 2], b0_[sizeof(b) / sizeof(ET)]; \
-    SET a1_[sizeof(a) / sizeof(ET) / 2], b1_[sizeof(b) / sizeof(ET)]; \
+    SET a0_[sizeof(a.val[0]) / sizeof(ET)], b0_[sizeof(b.val[0]) / sizeof(ET)]; \
+    SET a1_[sizeof(a.val[1]) / sizeof(ET)], b1_[sizeof(b.val[1]) / sizeof(ET)]; \
  \
     simde_vst1##modifier##_##symbol_identifier(a0_, a.val[0]); \
     simde_vst1##modifier##_##symbol_identifier(b0_, b.val[0]);       \
