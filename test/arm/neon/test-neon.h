@@ -193,8 +193,8 @@ HEDLEY_DIAGNOSTIC_POP
   static int \
   simde_test_arm_neon_assert_equal_##symbol_identifier##x##element_count##x2_(simde_##NT a, simde_##NT b, ET slop, \
      const char* filename, int line, const char* astr, const char* bstr) { \
-    SET a0_[sizeof(a) / sizeof(ET)], b0_[sizeof(b) / sizeof(ET)]; \
-    SET a1_[sizeof(a) / sizeof(ET)], b1_[sizeof(b) / sizeof(ET)]; \
+    SET a0_[sizeof(a) / sizeof(ET) / 2], b0_[sizeof(b) / sizeof(ET)]; \
+    SET a1_[sizeof(a) / sizeof(ET) / 2], b1_[sizeof(b) / sizeof(ET)]; \
  \
     simde_vst1##modifier##_##symbol_identifier(a0_, a.val[0]); \
     simde_vst1##modifier##_##symbol_identifier(b0_, b.val[0]);       \
@@ -534,7 +534,30 @@ SIMDE_TEST_ARM_NEON_GENERATE_X4_VECTOR_FLOAT_TYPE_FUNCS_(float64x2x4_t, simde_fl
 #define simde_test_arm_neon_assert_equal_f32x4(a, b, precision) do { if (simde_test_arm_neon_assert_equal_f32x4_(a, b, simde_test_f32_precision_to_slop(precision), __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 #define simde_test_arm_neon_assert_equal_f64x2(a, b, precision) do { if (simde_test_arm_neon_assert_equal_f64x2_(a, b, simde_test_f64_precision_to_slop(precision),    __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 
+#define simde_test_arm_neon_assert_equal_i8x8x2(a, b) do { if (simde_test_arm_neon_assert_equal_i8x8x2_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+#define simde_test_arm_neon_assert_equal_i16x4x2(a, b) do { if (simde_test_arm_neon_assert_equal_i16x4x2_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+#define simde_test_arm_neon_assert_equal_i32x2x2(a, b) do { if (simde_test_arm_neon_assert_equal_i32x2x2_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+#define simde_test_arm_neon_assert_equal_i64x1x2(a, b) do { if (simde_test_arm_neon_assert_equal_i64x1x2_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+#define simde_test_arm_neon_assert_equal_u8x8x2(a, b) do { if (simde_test_arm_neon_assert_equal_u8x8x2_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+#define simde_test_arm_neon_assert_equal_u16x4x2(a, b) do { if (simde_test_arm_neon_assert_equal_u16x4x2_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+#define simde_test_arm_neon_assert_equal_u32x2x2(a, b) do { if (simde_test_arm_neon_assert_equal_u32x2x2_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+#define simde_test_arm_neon_assert_equal_u64x1x2(a, b) do { if (simde_test_arm_neon_assert_equal_u64x1x2_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+#define simde_test_arm_neon_assert_equal_f16x4x2(a, b, precision) do { if (simde_test_arm_neon_assert_equal_f16x4x2_(a, b, simde_test_f16_precision_to_slop(precision), __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+#define simde_test_arm_neon_assert_equal_f32x2x2(a, b, precision) do { if (simde_test_arm_neon_assert_equal_f32x2x2_(a, b, simde_test_f32_precision_to_slop(precision), __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+#define simde_test_arm_neon_assert_equal_f64x1x2(a, b, precision) do { if (simde_test_arm_neon_assert_equal_f64x1x2_(a, b, simde_test_f64_precision_to_slop(precision),    __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+
+#define simde_test_arm_neon_assert_equal_i8x16x2(a, b) do { if (simde_test_arm_neon_assert_equal_i8x16x2_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+#define simde_test_arm_neon_assert_equal_i16x8x2(a, b) do { if (simde_test_arm_neon_assert_equal_i16x8x2_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+#define simde_test_arm_neon_assert_equal_i32x4x2(a, b) do { if (simde_test_arm_neon_assert_equal_i32x4x2_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+#define simde_test_arm_neon_assert_equal_i64x2x2(a, b) do { if (simde_test_arm_neon_assert_equal_i64x2x2_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 #define simde_test_arm_neon_assert_equal_u8x16x2(a, b) do { if (simde_test_arm_neon_assert_equal_u8x16x2_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+#define simde_test_arm_neon_assert_equal_u16x8x2(a, b) do { if (simde_test_arm_neon_assert_equal_u16x8x2_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+#define simde_test_arm_neon_assert_equal_u32x4x2(a, b) do { if (simde_test_arm_neon_assert_equal_u32x4x2_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+#define simde_test_arm_neon_assert_equal_u64x2x2(a, b) do { if (simde_test_arm_neon_assert_equal_u64x2x2_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+#define simde_test_arm_neon_assert_equal_f16x8x2(a, b, precision) do { if (simde_test_arm_neon_assert_equal_f16x8x2_(a, b, simde_test_f16_precision_to_slop(precision), __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+#define simde_test_arm_neon_assert_equal_f32x4x2(a, b, precision) do { if (simde_test_arm_neon_assert_equal_f32x4x2_(a, b, simde_test_f32_precision_to_slop(precision), __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+#define simde_test_arm_neon_assert_equal_f64x2x2(a, b, precision) do { if (simde_test_arm_neon_assert_equal_f64x2x2_(a, b, simde_test_f64_precision_to_slop(precision),    __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+
 #define simde_test_arm_neon_assert_equal_u8x16x3(a, b) do { if (simde_test_arm_neon_assert_equal_u8x16x3_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 #define simde_test_arm_neon_assert_equal_u8x16x4(a, b) do { if (simde_test_arm_neon_assert_equal_u8x16x4_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 
