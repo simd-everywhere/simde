@@ -43,7 +43,7 @@ simde_vld1q_f32_x3(simde_float32 const ptr[HEDLEY_ARRAY_PARAM(12)]) {
       defined(SIMDE_ARM_NEON_A32V7_NATIVE) && \
       (!defined(HEDLEY_GCC_VERSION) || (HEDLEY_GCC_VERSION_CHECK(8,0,0) && defined(SIMDE_ARM_NEON_A64V8_NATIVE))) && \
       (!defined(__clang__) || SIMDE_DETECT_CLANG_VERSION_CHECK(7,0,0))
-    return vld1_f32_x3(ptr);
+    return vld1q_f32_x3(ptr);
   #else
     simde_float32x4_private a_[3];
     for (size_t i = 0; i < 12; i++) {
