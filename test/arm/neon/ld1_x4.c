@@ -1,4 +1,4 @@
-#define SIMDE_TEST_ARM_NEON_INSN ld1
+#define SIMDE_TEST_ARM_NEON_INSN ld1_x4
 #include "test/test.h"
 #include "test-neon.h"
 #include "../../../simde/arm/neon/ld1_x4.h"
