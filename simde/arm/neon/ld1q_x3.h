@@ -47,7 +47,7 @@ simde_vld1q_f32_x3(simde_float32 const ptr[HEDLEY_ARRAY_PARAM(12)]) {
   #else
     simde_float32x4_private a_[3];
     for (size_t i = 0; i < 12; i++) {
-      a_[i / 3].values[i % 3] = ptr[i];
+      a_[i / 4].values[i % 4] = ptr[i];
     }
     simde_float32x4x3_t s_ = { { simde_float32x4_from_private(a_[0]),
                                  simde_float32x4_from_private(a_[1]),
@@ -70,8 +70,8 @@ simde_vld1q_f64_x3(simde_float64 const ptr[HEDLEY_ARRAY_PARAM(6)]) {
     return vld1q_f64_x3(ptr);
   #else
     simde_float64x2_private a_[3];
-    for (size_t i = 0; i < 3; i++) {
-      a_[i].values[0] = ptr[i];
+    for (size_t i = 0; i < 6; i++) {
+      a_[i / 2].values[i % 2] = ptr[i];
     }
     simde_float64x2x3_t s_ = { { simde_float64x2_from_private(a_[0]),
                                  simde_float64x2_from_private(a_[1]),
