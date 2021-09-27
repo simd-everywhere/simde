@@ -5564,7 +5564,7 @@ simde_mm_sll_epi64 (simde__m128i a, simde__m128i count) {
     #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       r_.neon_u64 = vshlq_u64(a_.neon_u64, vdupq_n_s64(HEDLEY_STATIC_CAST(int64_t, s)));
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-      r_.wasm_v128 = (s < 64) ? wasm_i64x2_shl(a_.wasm_v128, s) : wasm_i64x2_const(0,0);
+      r_.wasm_v128 = (s < 64) ? wasm_i64x2_shl(a_.wasm_v128, HEDLEY_STATIC_CAST(uint32_t, s)) : wasm_i64x2_const(0,0);
     #else
       #if !defined(SIMDE_BUG_GCC_94488)
         SIMDE_VECTORIZE
@@ -5687,7 +5687,7 @@ simde_mm_srl_epi32 (simde__m128i a, simde__m128i count) {
     #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       r_.neon_u32 = vshlq_u32(a_.neon_u32, vdupq_n_s32(HEDLEY_STATIC_CAST(int32_t, -cnt)));
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-      r_.wasm_v128 = wasm_u32x4_shr(a_.wasm_v128, cnt);
+      r_.wasm_v128 = wasm_u32x4_shr(a_.wasm_v128, HEDLEY_STATIC_CAST(uint32_t, cnt));
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.u32) / sizeof(r_.u32[0])) ; i++) {
@@ -5718,7 +5718,7 @@ simde_mm_srl_epi64 (simde__m128i a, simde__m128i count) {
     #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       r_.neon_u64 = vshlq_u64(a_.neon_u64, vdupq_n_s64(HEDLEY_STATIC_CAST(int64_t, -cnt)));
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-      r_.wasm_v128 = wasm_u64x2_shr(a_.wasm_v128, cnt);
+      r_.wasm_v128 = wasm_u64x2_shr(a_.wasm_v128, HEDLEY_STATIC_CAST(uint32_t, cnt));
     #else
       #if !defined(SIMDE_BUG_GCC_94488)
         SIMDE_VECTORIZE
@@ -5749,7 +5749,7 @@ simde_mm_srai_epi16 (simde__m128i a, const int imm8)
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     r_.neon_i16 = vshlq_s16(a_.neon_i16, vdupq_n_s16(HEDLEY_STATIC_CAST(int16_t, -cnt)));
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    r_.wasm_v128 = wasm_i16x8_shr(a_.wasm_v128, cnt);
+    r_.wasm_v128 = wasm_i16x8_shr(a_.wasm_v128, HEDLEY_STATIC_CAST(uint32_t, cnt));
   #else
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_) / sizeof(r_.i16[0])) ; i++) {
@@ -5780,7 +5780,7 @@ simde_mm_srai_epi32 (simde__m128i a, const int imm8)
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     r_.neon_i32 = vshlq_s32(a_.neon_i32, vdupq_n_s32(-cnt));
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    r_.wasm_v128 = wasm_i32x4_shr(a_.wasm_v128, cnt);
+    r_.wasm_v128 = wasm_i32x4_shr(a_.wasm_v128, HEDLEY_STATIC_CAST(uint32_t, cnt));
   #else
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_) / sizeof(r_.i32[0])) ; i++) {
@@ -5813,7 +5813,7 @@ simde_mm_sra_epi16 (simde__m128i a, simde__m128i count) {
     #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       r_.neon_i16 = vshlq_s16(a_.neon_i16, vdupq_n_s16(HEDLEY_STATIC_CAST(int16_t, -cnt)));
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-      r_.wasm_v128 = wasm_i16x8_shr(a_.wasm_v128, cnt);
+      r_.wasm_v128 = wasm_i16x8_shr(a_.wasm_v128, HEDLEY_STATIC_CAST(uint32_t, cnt));
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.i16) / sizeof(r_.i16[0])) ; i++) {
@@ -5844,7 +5844,7 @@ simde_mm_sra_epi32 (simde__m128i a, simde__m128i count) {
     #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       r_.neon_i32 = vshlq_s32(a_.neon_i32, vdupq_n_s32(HEDLEY_STATIC_CAST(int32_t, -cnt)));
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-      r_.wasm_v128 = wasm_i32x4_shr(a_.wasm_v128, cnt);
+      r_.wasm_v128 = wasm_i32x4_shr(a_.wasm_v128, HEDLEY_STATIC_CAST(uint32_t, cnt));
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {

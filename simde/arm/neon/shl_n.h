@@ -310,7 +310,7 @@ simde_vshlq_n_s8 (const simde_int8x16_t a, const int n)
   #elif defined(SIMDE_X86_SSE2_NATIVE)
     r_.m128i = _mm_andnot_si128(_mm_set1_epi8(HEDLEY_STATIC_CAST(int8_t, (1 << n) - 1)), _mm_slli_epi64(a_.m128i, n));
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    r_.v128 = wasm_i8x16_shl(a_.v128, n);
+    r_.v128 = wasm_i8x16_shl(a_.v128, HEDLEY_STATIC_CAST(uint32_t, n));
   #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
     r_.values = a_.values << HEDLEY_STATIC_CAST(int8_t, n);
   #else
@@ -343,7 +343,7 @@ simde_vshlq_n_s16 (const simde_int16x8_t a, const int n)
   #if defined(SIMDE_X86_SSE2_NATIVE)
     r_.m128i = _mm_slli_epi16(a_.m128i, (n));
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    r_.v128 = wasm_i16x8_shl(a_.v128, (n));
+    r_.v128 = wasm_i16x8_shl(a_.v128, HEDLEY_STATIC_CAST(uint32_t, n));
   #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
     r_.values = a_.values << HEDLEY_STATIC_CAST(int16_t, n);
   #else
@@ -376,7 +376,7 @@ simde_vshlq_n_s32 (const simde_int32x4_t a, const int n)
   #if defined(SIMDE_X86_SSE2_NATIVE)
     r_.m128i = _mm_slli_epi32(a_.m128i, (n));
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    r_.v128 = wasm_i32x4_shl(a_.v128, (n));
+    r_.v128 = wasm_i32x4_shl(a_.v128, HEDLEY_STATIC_CAST(uint32_t, n));
   #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
     r_.values = a_.values << n;
   #else
@@ -409,7 +409,7 @@ simde_vshlq_n_s64 (const simde_int64x2_t a, const int n)
   #if defined(SIMDE_X86_SSE2_NATIVE)
     r_.m128i = _mm_slli_epi64(a_.m128i, (n));
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    r_.v128 = wasm_i64x2_shl(a_.v128, (n));
+    r_.v128 = wasm_i64x2_shl(a_.v128, HEDLEY_STATIC_CAST(uint32_t, n));
   #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
     r_.values = a_.values << n;
   #else
@@ -445,7 +445,7 @@ simde_vshlq_n_u8 (const simde_uint8x16_t a, const int n)
   #elif defined(SIMDE_X86_SSE2_NATIVE)
     r_.m128i = _mm_andnot_si128(_mm_set1_epi8(HEDLEY_STATIC_CAST(int8_t, (1 << n) - 1)), _mm_slli_epi64(a_.m128i, (n)));
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    r_.v128 = wasm_i8x16_shl(a_.v128, (n));
+    r_.v128 = wasm_i8x16_shl(a_.v128, HEDLEY_STATIC_CAST(uint32_t, n));
   #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
     r_.values = a_.values << HEDLEY_STATIC_CAST(uint8_t, n);
   #else
@@ -478,7 +478,7 @@ simde_vshlq_n_u16 (const simde_uint16x8_t a, const int n)
     #if defined(SIMDE_X86_SSE2_NATIVE)
       r_.m128i = _mm_slli_epi16(a_.m128i, (n));
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-      r_.v128 = wasm_i16x8_shl(a_.v128, (n));
+      r_.v128 = wasm_i16x8_shl(a_.v128, HEDLEY_STATIC_CAST(uint32_t, n));
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
       r_.values = a_.values << HEDLEY_STATIC_CAST(uint16_t, n);
     #else
@@ -511,7 +511,7 @@ simde_vshlq_n_u32 (const simde_uint32x4_t a, const int n)
   #if defined(SIMDE_X86_SSE2_NATIVE)
     r_.m128i = _mm_slli_epi32(a_.m128i, (n));
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    r_.v128 = wasm_i32x4_shl(a_.v128, (n));
+    r_.v128 = wasm_i32x4_shl(a_.v128, HEDLEY_STATIC_CAST(uint32_t, n));
   #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
     r_.values = a_.values << n;
   #else
@@ -544,7 +544,7 @@ simde_vshlq_n_u64 (const simde_uint64x2_t a, const int n)
   #if defined(SIMDE_X86_SSE2_NATIVE)
     r_.m128i = _mm_slli_epi64(a_.m128i, (n));
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    r_.v128 = wasm_i64x2_shl(a_.v128, (n));
+    r_.v128 = wasm_i64x2_shl(a_.v128, HEDLEY_STATIC_CAST(uint32_t, n));
   #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
     r_.values = a_.values << n;
   #else

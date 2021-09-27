@@ -2772,16 +2772,16 @@ simde_wasm_v128_bitselect (simde_v128_t a, simde_v128_t b, simde_v128_t mask) {
 /* bitmask */
 
 SIMDE_FUNCTION_ATTRIBUTES
-int32_t
+uint32_t
 simde_wasm_i8x16_bitmask (simde_v128_t a) {
   #if defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_i8x16_bitmask(a);
   #else
     simde_v128_private a_ = simde_v128_to_private(a);
-    int32_t r = 0;
+    uint32_t r = 0;
 
     #if defined(SIMDE_X86_SSE2_NATIVE)
-      r = _mm_movemask_epi8(a_.sse_m128i);
+      r = HEDLEY_STATIC_CAST(uint32_t, _mm_movemask_epi8(a_.sse_m128i));
     #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       /* https://github.com/WebAssembly/simd/pull/201#issue-380682845 */
       static const uint8_t md[16] = {
@@ -2803,21 +2803,21 @@ simde_wasm_i8x16_bitmask (simde_v128_t a) {
       #else
         uint64x2_t t64 = vpaddlq_u32(vpaddlq_u16(x));
         r =
-          HEDLEY_STATIC_CAST(int32_t, vgetq_lane_u64(t64, 0)) +
-          HEDLEY_STATIC_CAST(int32_t, vgetq_lane_u64(t64, 1));
+          HEDLEY_STATIC_CAST(uint32_t, vgetq_lane_u64(t64, 0)) +
+          HEDLEY_STATIC_CAST(uint32_t, vgetq_lane_u64(t64, 1));
       #endif
     #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE) && defined(SIMDE_BUG_CLANG_50932)
       SIMDE_POWER_ALTIVEC_VECTOR(unsigned char) idx = { 120, 112, 104, 96, 88, 80, 72, 64, 56, 48, 40, 32, 24, 16, 8, 0 };
       SIMDE_POWER_ALTIVEC_VECTOR(unsigned char) res = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned char), vec_bperm(HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned __int128), a_.altivec_u64), idx));
-      r = HEDLEY_STATIC_CAST(int32_t, vec_extract(HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(signed int), res), 2));
+      r = HEDLEY_STATIC_CAST(uint32_t, vec_extract(HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(signed int), res), 2));
     #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
       SIMDE_POWER_ALTIVEC_VECTOR(unsigned char) idx = { 120, 112, 104, 96, 88, 80, 72, 64, 56, 48, 40, 32, 24, 16, 8, 0 };
       SIMDE_POWER_ALTIVEC_VECTOR(unsigned char) res = vec_bperm(a_.altivec_u8, idx);
-      r = HEDLEY_STATIC_CAST(int32_t, vec_extract(HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(signed int), res), 2));
+      r = HEDLEY_STATIC_CAST(uint32_t, vec_extract(HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(signed int), res), 2));
     #else
       SIMDE_VECTORIZE_REDUCTION(|:r)
       for (size_t i = 0 ; i < (sizeof(a_.i8) / sizeof(a_.i8[0])) ; i++) {
-        r |= (a_.i8[i] < 0) << i;
+        r |= HEDLEY_STATIC_CAST(uint32_t, (a_.i8[i] < 0) << i);
       }
     #endif
 
@@ -2829,16 +2829,16 @@ simde_wasm_i8x16_bitmask (simde_v128_t a) {
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
-int32_t
+uint32_t
 simde_wasm_i16x8_bitmask (simde_v128_t a) {
   #if defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_i16x8_bitmask(a);
   #else
     simde_v128_private a_ = simde_v128_to_private(a);
-    int32_t r = 0;
+    uint32_t r = 0;
 
     #if defined(SIMDE_X86_SSE2_NATIVE)
-      r = _mm_movemask_epi8(_mm_packs_epi16(a_.sse_m128i, _mm_setzero_si128()));
+      r = HEDLEY_STATIC_CAST(uint32_t, _mm_movemask_epi8(_mm_packs_epi16(a_.sse_m128i, _mm_setzero_si128())));
     #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       static const uint16_t md[8] = {
         1 << 0, 1 << 1, 1 << 2, 1 << 3,
@@ -2852,21 +2852,21 @@ simde_wasm_i16x8_bitmask (simde_v128_t a) {
       #else
         uint64x2_t t64 = vpaddlq_u32(vpaddlq_u16(masked));
         r =
-          HEDLEY_STATIC_CAST(int32_t, vgetq_lane_u64(t64, 0)) +
-          HEDLEY_STATIC_CAST(int32_t, vgetq_lane_u64(t64, 1));
+          HEDLEY_STATIC_CAST(uint32_t, vgetq_lane_u64(t64, 0)) +
+          HEDLEY_STATIC_CAST(uint32_t, vgetq_lane_u64(t64, 1));
       #endif
     #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE) && defined(SIMDE_BUG_CLANG_50932)
       SIMDE_POWER_ALTIVEC_VECTOR(unsigned char) idx = { 112, 96, 80, 64, 48, 32, 16, 0, 128, 128, 128, 128, 128, 128, 128, 128 };
       SIMDE_POWER_ALTIVEC_VECTOR(unsigned char) res = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned char), vec_bperm(HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned __int128), a_.altivec_u64), idx));
-      r = HEDLEY_STATIC_CAST(int32_t, vec_extract(HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(signed int), res), 2));
+      r = HEDLEY_STATIC_CAST(uint32_t, vec_extract(HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(signed int), res), 2));
     #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
       SIMDE_POWER_ALTIVEC_VECTOR(unsigned char) idx = { 112, 96, 80, 64, 48, 32, 16, 0, 128, 128, 128, 128, 128, 128, 128, 128 };
       SIMDE_POWER_ALTIVEC_VECTOR(unsigned char) res = vec_bperm(a_.altivec_u8, idx);
-      r = HEDLEY_STATIC_CAST(int32_t, vec_extract(HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(signed int), res), 2));
+      r = HEDLEY_STATIC_CAST(uint32_t, vec_extract(HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(signed int), res), 2));
     #else
       SIMDE_VECTORIZE_REDUCTION(|:r)
       for (size_t i = 0 ; i < (sizeof(a_.i16) / sizeof(a_.i16[0])) ; i++) {
-        r |= (a_.i16[i] < 0) << i;
+        r |= HEDLEY_STATIC_CAST(uint32_t, (a_.i16[i] < 0) << i);
       }
     #endif
 
@@ -2878,16 +2878,16 @@ simde_wasm_i16x8_bitmask (simde_v128_t a) {
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
-int32_t
+uint32_t
 simde_wasm_i32x4_bitmask (simde_v128_t a) {
   #if defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_i32x4_bitmask(a);
   #else
     simde_v128_private a_ = simde_v128_to_private(a);
-    int32_t r = 0;
+    uint32_t r = 0;
 
     #if defined(SIMDE_X86_SSE_NATIVE)
-      r = _mm_movemask_ps(a_.sse_m128);
+      r = HEDLEY_STATIC_CAST(uint32_t, _mm_movemask_ps(a_.sse_m128));
     #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       static const uint32_t md[4] = {
         1 << 0, 1 << 1, 1 << 2, 1 << 3
@@ -2896,25 +2896,25 @@ simde_wasm_i32x4_bitmask (simde_v128_t a) {
       uint32x4_t extended = vreinterpretq_u32_s32(vshrq_n_s32(a_.neon_i32, 31));
       uint32x4_t masked = vandq_u32(vld1q_u32(md), extended);
       #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
-        r = HEDLEY_STATIC_CAST(int32_t, vaddvq_u32(masked));
+        r = HEDLEY_STATIC_CAST(uint32_t, vaddvq_u32(masked));
       #else
         uint64x2_t t64 = vpaddlq_u32(masked);
         r =
-          HEDLEY_STATIC_CAST(int32_t, vgetq_lane_u64(t64, 0)) +
-          HEDLEY_STATIC_CAST(int32_t, vgetq_lane_u64(t64, 1));
+          HEDLEY_STATIC_CAST(uint32_t, vgetq_lane_u64(t64, 0)) +
+          HEDLEY_STATIC_CAST(uint32_t, vgetq_lane_u64(t64, 1));
       #endif
     #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE) && defined(SIMDE_BUG_CLANG_50932)
       SIMDE_POWER_ALTIVEC_VECTOR(unsigned char) idx = { 96, 64, 32, 0, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128 };
       SIMDE_POWER_ALTIVEC_VECTOR(unsigned char) res = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned char), vec_bperm(HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned __int128), a_.altivec_u64), idx));
-      r = HEDLEY_STATIC_CAST(int32_t, vec_extract(HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(signed int), res), 2));
+      r = HEDLEY_STATIC_CAST(uint32_t, vec_extract(HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(signed int), res), 2));
     #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
       SIMDE_POWER_ALTIVEC_VECTOR(unsigned char) idx = { 96, 64, 32, 0, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128 };
       SIMDE_POWER_ALTIVEC_VECTOR(unsigned char) res = vec_bperm(a_.altivec_u8, idx);
-      r = HEDLEY_STATIC_CAST(int32_t, vec_extract(HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(signed int), res), 2));
+      r = HEDLEY_STATIC_CAST(uint32_t, vec_extract(HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(signed int), res), 2));
     #else
       SIMDE_VECTORIZE_REDUCTION(|:r)
       for (size_t i = 0 ; i < (sizeof(a_.i32) / sizeof(a_.i32[0])) ; i++) {
-        r |= (a_.i32[i] < 0) << i;
+        r |= HEDLEY_STATIC_CAST(uint32_t, (a_.i32[i] < 0) << i);
       }
     #endif
 
@@ -2926,36 +2926,36 @@ simde_wasm_i32x4_bitmask (simde_v128_t a) {
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
-int32_t
+uint32_t
 simde_wasm_i64x2_bitmask (simde_v128_t a) {
   #if defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_i64x2_bitmask(a);
   #else
     simde_v128_private a_ = simde_v128_to_private(a);
-    int32_t r = 0;
+    uint32_t r = 0;
 
     #if defined(SIMDE_X86_SSE2_NATIVE)
-      r = _mm_movemask_pd(a_.sse_m128d);
+      r = HEDLEY_STATIC_CAST(uint32_t, _mm_movemask_pd(a_.sse_m128d));
     #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       HEDLEY_DIAGNOSTIC_PUSH
       SIMDE_DIAGNOSTIC_DISABLE_VECTOR_CONVERSION_
       uint64x2_t shifted = vshrq_n_u64(a_.neon_u64, 63);
       r =
-        HEDLEY_STATIC_CAST(int32_t, vgetq_lane_u64(shifted, 0)) +
-        (HEDLEY_STATIC_CAST(int32_t, vgetq_lane_u64(shifted, 1)) << 1);
+        HEDLEY_STATIC_CAST(uint32_t, vgetq_lane_u64(shifted, 0)) +
+        (HEDLEY_STATIC_CAST(uint32_t, vgetq_lane_u64(shifted, 1)) << 1);
       HEDLEY_DIAGNOSTIC_POP
     #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE) && defined(SIMDE_BUG_CLANG_50932)
       SIMDE_POWER_ALTIVEC_VECTOR(unsigned char) idx = { 64, 0, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128 };
       SIMDE_POWER_ALTIVEC_VECTOR(unsigned char) res = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned char), vec_bperm(HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned __int128), a_.altivec_u64), idx));
-      r = HEDLEY_STATIC_CAST(int32_t, vec_extract(HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(signed int), res), 2));
+      r = HEDLEY_STATIC_CAST(uint32_t, vec_extract(HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(signed int), res), 2));
     #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
       SIMDE_POWER_ALTIVEC_VECTOR(unsigned char) idx = { 64, 0, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128 };
       SIMDE_POWER_ALTIVEC_VECTOR(unsigned char) res = vec_bperm(a_.altivec_u8, idx);
-      r = HEDLEY_STATIC_CAST(int32_t, vec_extract(HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(signed int), res), 2));
+      r = HEDLEY_STATIC_CAST(uint32_t, vec_extract(HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(signed int), res), 2));
     #else
       SIMDE_VECTORIZE_REDUCTION(|:r)
       for (size_t i = 0 ; i < (sizeof(a_.i64) / sizeof(a_.i64[0])) ; i++) {
-        r |= (a_.i64[i] < 0) << i;
+        r |= HEDLEY_STATIC_CAST(uint32_t, (a_.i64[i] < 0) << i);
       }
     #endif
 
@@ -3570,7 +3570,7 @@ simde_wasm_i64x2_all_true (simde_v128_t a) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde_v128_t
-simde_wasm_i8x16_shl (simde_v128_t a, int32_t count) {
+simde_wasm_i8x16_shl (simde_v128_t a, uint32_t count) {
   #if defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_i8x16_shl(a, count);
   #else
@@ -3600,7 +3600,7 @@ simde_wasm_i8x16_shl (simde_v128_t a, int32_t count) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde_v128_t
-simde_wasm_i16x8_shl (simde_v128_t a, int32_t count) {
+simde_wasm_i16x8_shl (simde_v128_t a, uint32_t count) {
   #if defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_i16x8_shl(a, count);
   #else
@@ -3632,7 +3632,7 @@ simde_wasm_i16x8_shl (simde_v128_t a, int32_t count) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde_v128_t
-simde_wasm_i32x4_shl (simde_v128_t a, int32_t count) {
+simde_wasm_i32x4_shl (simde_v128_t a, uint32_t count) {
   #if defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_i32x4_shl(a, count);
   #else
@@ -3664,7 +3664,7 @@ simde_wasm_i32x4_shl (simde_v128_t a, int32_t count) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde_v128_t
-simde_wasm_i64x2_shl (simde_v128_t a, int32_t count) {
+simde_wasm_i64x2_shl (simde_v128_t a, uint32_t count) {
   #if defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_i64x2_shl(a, count);
   #else
@@ -3698,7 +3698,7 @@ simde_wasm_i64x2_shl (simde_v128_t a, int32_t count) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde_v128_t
-simde_wasm_i8x16_shr (simde_v128_t a, int32_t count) {
+simde_wasm_i8x16_shr (simde_v128_t a, uint32_t count) {
   #if defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_i8x16_shr(a, count);
   #else
@@ -3728,7 +3728,7 @@ simde_wasm_i8x16_shr (simde_v128_t a, int32_t count) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde_v128_t
-simde_wasm_i16x8_shr (simde_v128_t a, int32_t count) {
+simde_wasm_i16x8_shr (simde_v128_t a, uint32_t count) {
   #if defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_i16x8_shr(a, count);
   #else
@@ -3760,7 +3760,7 @@ simde_wasm_i16x8_shr (simde_v128_t a, int32_t count) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde_v128_t
-simde_wasm_i32x4_shr (simde_v128_t a, int32_t count) {
+simde_wasm_i32x4_shr (simde_v128_t a, uint32_t count) {
   #if defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_i32x4_shr(a, count);
   #else
@@ -3792,7 +3792,7 @@ simde_wasm_i32x4_shr (simde_v128_t a, int32_t count) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde_v128_t
-simde_wasm_i64x2_shr (simde_v128_t a, int32_t count) {
+simde_wasm_i64x2_shr (simde_v128_t a, uint32_t count) {
   #if defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_i64x2_shr(a, count);
   #else
@@ -3824,7 +3824,7 @@ simde_wasm_i64x2_shr (simde_v128_t a, int32_t count) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde_v128_t
-simde_wasm_u8x16_shr (simde_v128_t a, int32_t count) {
+simde_wasm_u8x16_shr (simde_v128_t a, uint32_t count) {
   #if defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_u8x16_shr(a, count);
   #else
@@ -3854,7 +3854,7 @@ simde_wasm_u8x16_shr (simde_v128_t a, int32_t count) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde_v128_t
-simde_wasm_u16x8_shr (simde_v128_t a, int32_t count) {
+simde_wasm_u16x8_shr (simde_v128_t a, uint32_t count) {
   #if defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_u16x8_shr(a, count);
   #else
@@ -3886,7 +3886,7 @@ simde_wasm_u16x8_shr (simde_v128_t a, int32_t count) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde_v128_t
-simde_wasm_u32x4_shr (simde_v128_t a, int32_t count) {
+simde_wasm_u32x4_shr (simde_v128_t a, uint32_t count) {
   #if defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_u32x4_shr(a, count);
   #else
@@ -3918,7 +3918,7 @@ simde_wasm_u32x4_shr (simde_v128_t a, int32_t count) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde_v128_t
-simde_wasm_u64x2_shr (simde_v128_t a, int32_t count) {
+simde_wasm_u64x2_shr (simde_v128_t a, uint32_t count) {
   #if defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_u64x2_shr(a, count);
   #else

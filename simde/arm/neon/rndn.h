@@ -77,8 +77,7 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde_float64x1_t
 simde_vrndn_f64(simde_float64x1_t a) {
   #if \
-      defined(SIMDE_ARM_NEON_A32V8_NATIVE) && \
-      (!defined(HEDLEY_GCC_VERSION) || defined(SIMDE_ARM_NEON_A64V8_NATIVE))
+      defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vrndn_f64(a);
   #else
     simde_float64x1_private
@@ -129,8 +128,7 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde_float64x2_t
 simde_vrndnq_f64(simde_float64x2_t a) {
   #if \
-      defined(SIMDE_ARM_NEON_A32V8_NATIVE) && \
-      (!defined(HEDLEY_GCC_VERSION) || defined(SIMDE_ARM_NEON_A64V8_NATIVE))
+      defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vrndnq_f64(a);
   #else
     simde_float64x2_private
