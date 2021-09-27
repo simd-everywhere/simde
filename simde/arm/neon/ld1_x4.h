@@ -119,7 +119,7 @@ simde_vld1_s16_x4(int16_t const ptr[HEDLEY_ARRAY_PARAM(16)]) {
       defined(SIMDE_ARM_NEON_A32V7_NATIVE) && \
       (!defined(HEDLEY_GCC_VERSION) || (HEDLEY_GCC_VERSION_CHECK(8,0,0) && defined(SIMDE_ARM_NEON_A64V8_NATIVE))) && \
       (!defined(__clang__) || SIMDE_DETECT_CLANG_VERSION_CHECK(7,0,0))
-    return vld1_s16_x2(ptr);
+    return vld1_s16_x4(ptr);
   #else
     simde_int16x4_private a_[4];
     for (size_t i = 0; i < 16; i++) {
