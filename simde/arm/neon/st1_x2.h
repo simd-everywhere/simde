@@ -34,6 +34,8 @@ HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 SIMDE_BEGIN_DECLS_
 
+#if !defined(SIMDE_BUG_INTEL_857088)
+
 SIMDE_FUNCTION_ATTRIBUTES
 void
 simde_vst1_f32_x2(simde_float32 ptr[HEDLEY_ARRAY_PARAM(4)], simde_float32x2x2_t val) {
@@ -183,6 +185,8 @@ simde_vst1_u64_x2(uint64_t ptr[HEDLEY_ARRAY_PARAM(2)], simde_uint64x1x2_t val) {
   #undef vst1_u64_x2
   #define vst1_u64_x2(a, b) simde_vst1_u64_x2((a), (b))
 #endif
+
+#endif /* !defined(SIMDE_BUG_INTEL_857088) */
 
 SIMDE_END_DECLS_
 HEDLEY_DIAGNOSTIC_POP
