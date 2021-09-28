@@ -225,7 +225,7 @@ jobs:
         #   distro: ubuntu-16.04
         #   arch_flags: -mavx2
         - version: 5
-          distro: ubuntu-16.04
+          distro: ubuntu-18.04
           arch_flags: -mavx2
         # - version: 6
         #   distro: ubuntu-18.04
@@ -267,9 +267,9 @@ jobs:
     strategy:
       matrix:
         include:
-        - version: "3.5"
-          distro: ubuntu-16.04
-          arch_flags: -mavx2
+        # - version: "3.5"
+        #   distro: ubuntu-16.04
+        #   arch_flags: -mavx2
         # - version: "3.6"
         #   distro: ubuntu-16.04
         #   arch_flags: -mavx2
@@ -279,9 +279,9 @@ jobs:
         # - version: "3.8"
         #   distro: ubuntu-16.04
         #   arch_flags: -mavx2
-        # - version: "3.9"
-        #   distro: ubuntu-18.04
-        #   arch_flags: -mavx2
+        - version: "3.9"
+          distro: ubuntu-18.04
+          arch_flags: -mavx2
         # - version: "4.0"
         #   distro: ubuntu-18.04
         #   arch_flags: -mavx2
