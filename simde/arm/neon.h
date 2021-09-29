@@ -187,6 +187,7 @@
 #include "neon/sub.h"
 #include "neon/subhn.h"
 #include "neon/subl.h"
+#include "neon/subl_high.h"
 #include "neon/subw.h"
 #include "neon/subw_high.h"
 #include "neon/tbl.h"

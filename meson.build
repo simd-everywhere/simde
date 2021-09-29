@@ -167,6 +167,7 @@ simde_neon_families = [
   'sub',
   'subhn',
   'subl',
+  'subl_high',
   'subw',
   'subw_high',
   'tbl',
