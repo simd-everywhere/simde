@@ -105,6 +105,7 @@
 #include "neon/mls_n.h"
 #include "neon/mlsl.h"
 #include "neon/mlsl_high.h"
+#include "neon/mlsl_high_n.h"
 #include "neon/mlsl_lane.h"
 #include "neon/mlsl_n.h"
 #include "neon/movl.h"

@@ -85,6 +85,7 @@ simde_neon_families = [
   'mls_n',
   'mlsl',
   'mlsl_high',
+  'mlsl_high_n',
   'mlsl_lane',
   'mlsl_n',
   'movl',
