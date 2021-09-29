@@ -87,9 +87,9 @@ SIMDE_BEGIN_DECLS_
 #elif SIMDE_FLOAT16_API == SIMDE_FLOAT16_API_FP16_NO_ABI
   typedef struct { __fp16 value; } simde_float16;
   #if defined(SIMDE_STATEMENT_EXPR_)
-  #define SIMDE_FLOAT16_C(value) (__extension__({ ((simde_float16) { HEDLEY_DIAGNOSTIC_PUSH SIMDE_DIAGNOSTIC_DISABLE_C99_EXTENSIONS_ HEDLEY_STATIC_CAST(__fp16, (value)) }); HEDLEY_DIAGNOSTIC_POP }))
+    #define SIMDE_FLOAT16_C(value) (__extension__({ ((simde_float16) { HEDLEY_DIAGNOSTIC_PUSH SIMDE_DIAGNOSTIC_DISABLE_C99_EXTENSIONS_ HEDLEY_STATIC_CAST(__fp16, (value)) }); HEDLEY_DIAGNOSTIC_POP }))
   #else
-  #define SIMDE_FLOAT16_C(value) ((simde_float16) { HEDLEY_STATIC_CAST(__fp16, (value)) })
+    #define SIMDE_FLOAT16_C(value) ((simde_float16) { HEDLEY_STATIC_CAST(__fp16, (value)) })
   #endif
 #elif SIMDE_FLOAT16_API == SIMDE_FLOAT16_API_FP16
   typedef __fp16 simde_float16;
