@@ -76,8 +76,8 @@ else
   if [ -z "${PERSISTENT_BUILD_DIR}" ]; then
     PERSISTENT_BUILD_ARGS="";
   else
-    PERSISTENT_BUILD_DIR="$(realpath "${PERSISTENT_BUILD_DIR}")"
-    PERSISTENT_BUILD_ARGS="-v \"${PERSISTENT_BUILD_DIR}\":/opt/simde${VOLUME_OPTIONS}"
+    PERSISTENT_BUILD_DIR=$(realpath "${PERSISTENT_BUILD_DIR}")
+    PERSISTENT_BUILD_ARGS=-v\ "${PERSISTENT_BUILD_DIR}:/opt/simde${VOLUME_OPTIONS}"
   fi
   "${DOCKER}" run -v "$(realpath "${DOCKER_DIR}/..")":/usr/local/src/simde${VOLUME_OPTIONS} ${PERSISTENT_BUILD_ARGS} ${CAPABILITIES} --rm -it "${IMAGE_NAME}" /bin/bash
 fi
