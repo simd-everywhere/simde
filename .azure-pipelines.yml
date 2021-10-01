@@ -29,6 +29,10 @@ jobs:
     displayName: Build
   - script: ninja -C build -v test
     displayName: Test
+  - task: PublishTestResults@2
+    inputs:
+      testResultsFormat: 'JUnit'
+      testResultsFiles: 'build/meson-logs/testlog.junit.xml'
 
 - job: gcc_analysis
   variables:
@@ -49,6 +53,10 @@ jobs:
     displayName: Build
   - script: ninja -C build -v test
     displayName: Test
+  - task: PublishTestResults@2
+    inputs:
+      testResultsFormat: 'JUnit'
+      testResultsFiles: 'build/meson-logs/testlog.junit.xml'
 
 # - job: loongson3a
 #   container:
