@@ -2245,6 +2245,43 @@ simde_mm_testnzc_si128 (simde__m128i a, simde__m128i b) {
   #define _mm_testnzc_si128(a, b) simde_mm_testnzc_si128(a, b)
 #endif
 
+// Count the number of bits set to 1 in unsigned 32-bit integer a, and
+// return that count in dst.
+// ~ Copied from https://github.com/DLTcollab/sse2neon
+// https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_popcnt_u32
+SIMDE_FUNCTION_ATTRIBUTES int simde_mm_popcnt_u32(unsigned int a)
+{
+#if defined(__aarch64__)
+  #if defined(__has_builtin)
+    #if __has_builtin(__builtin_popcount)
+      return __builtin_popcount(a);
+    #else
+      return (int) vaddlv_u8(vcnt_u8(vcreate_u8((uint64_t) a)));
+    #endif
+  #else
+    return (int) vaddlv_u8(vcnt_u8(vcreate_u8((uint64_t) a)));
+  #endif
+#else
+  uint32_t count = 0;
+  uint8x8_t input_val, count8x8_val;
+  uint16x4_t count16x4_val;
+  uint32x2_t count32x2_val;
+
+  input_val = vld1_u8((uint8_t *) &a);
+  count8x8_val = vcnt_u8(input_val);
+  count16x4_val = vpaddl_u8(count8x8_val);
+  count32x2_val = vpaddl_u16(count16x4_val);
+
+  vst1_u32(&count, count32x2_val);
+  return count;
+#endif
+}
+
+#if defined(SIMDE_X86_SSE4_1_ENABLE_NATIVE_ALIASES)
+  #undef _mm_popcnt_u32
+  #define _mm_popcnt_u32(a) simde_mm_popcnt_u32(a)
+#endif
+
 SIMDE_FUNCTION_ATTRIBUTES
 int
 simde_mm_testz_si128 (simde__m128i a, simde__m128i b) {
