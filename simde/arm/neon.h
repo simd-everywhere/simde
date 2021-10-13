@@ -101,6 +101,7 @@
 #include "neon/minnm.h"
 #include "neon/minv.h"
 #include "neon/mla.h"
+#include "neon/mla_lane.h"
 #include "neon/mla_n.h"
 #include "neon/mlal.h"
 #include "neon/mlal_high.h"

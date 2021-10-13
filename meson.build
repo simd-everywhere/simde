@@ -80,6 +80,7 @@ simde_neon_families = [
   'minnm',
   'minv',
   'mla',
+  'mla_lane',
   'mla_n',
   'mlal',
   'mlal_high',
