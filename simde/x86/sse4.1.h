@@ -1476,12 +1476,12 @@ simde_mm_insert_ps (simde__m128 a, simde__m128 b, const int imm8)
     a_ = simde__m128_to_private(a),
     b_ = simde__m128_to_private(b);
 
-  a_.f32[0] = b_.f32[(imm8 >> 6) & 3];
-  a_.f32[(imm8 >> 4) & 3] = a_.f32[0];
+  float tmp1_ = b_.f32[(imm8 >> 6) & 3];
+  a_.f32[(imm8 >> 4) & 3] = tmp1_;
 
   SIMDE_VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
-    r_.f32[i] = (imm8 >> i) ? SIMDE_FLOAT32_C(0.0) : a_.f32[i];
+    r_.f32[i] = ((imm8 >> i) & 1 ) ? SIMDE_FLOAT32_C(0.0) : a_.f32[i];
   }
 
   return simde__m128_from_private(r_);
