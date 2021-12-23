@@ -66,8 +66,8 @@ simde_mm512_setzero_ps(void) {
   #endif
 }
 #if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
-  #undef _mm512_setzero_si512
-  #define _mm512_setzero_si512() simde_mm512_setzero_si512()
+  #undef _mm512_setzero_ps
+  #define _mm512_setzero_ps() simde_mm512_setzero_ps()
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -80,8 +80,8 @@ simde_mm512_setzero_pd(void) {
   #endif
 }
 #if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
-  #undef _mm512_setzero_si512
-  #define _mm512_setzero_si512() simde_mm512_setzero_si512()
+  #undef _mm512_setzero_pd
+  #define _mm512_setzero_pd() simde_mm512_setzero_pd()
 #endif
 
 SIMDE_END_DECLS_
