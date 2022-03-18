@@ -273,6 +273,9 @@
 #  endif
 #  if defined(__AVX2__)
 #    define SIMDE_ARCH_X86_AVX2 1
+#    if defined(_MSC_VER)
+#      define SIMDE_ARCH_X86_FMA 1
+#    endif
 #  endif
 #  if defined(__FMA__)
 #    define SIMDE_ARCH_X86_FMA 1
