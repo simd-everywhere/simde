@@ -1,9 +1,10 @@
 #!/bin/sh
 
-FRAGMENT="$(curl -sL 'https://software.intel.com/content/www/us/en/develop/articles/pre-release-license-agreement-for-intel-software-development-emulator-accept-end-user-license-agreement-and-download.html' | \
-    grep -oP '(?<=href=")/([a-zA-Z0-9\-/]+)/sde-external-([0-9\.\-]+)-lin.tar.bz2' | head -n1)"
+URL="$(curl -sL 'https://www.intel.com/content/www/us/en/download/684897/intel-software-development-emulator.html' | \
+    grep -oP '(?<=data\-direct\-path=")(https://[^\"]+)/sde-external-([0-9\.\-]+)-lin.tar.xz' | head -n1)"
+echo "${URL}"
 if [ ! -e "$1" ]; then
   mkdir -p "$1"
 fi
-curl -sL "https://software.intel.com${FRAGMENT}" | \
-  tar --strip-components 1 -jxC "$1"
+curl -sL "${URL}" | \
+  tar --strip-components 1 -JxC "$1"
