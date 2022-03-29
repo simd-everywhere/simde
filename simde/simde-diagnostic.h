@@ -281,6 +281,14 @@
   #define SIMDE_DIAGNOSTIC_DISABLE_C99_EXTENSIONS_
 #endif
 
+/* Similar problm as above; we rely on some basic C99 support, but clang
+ * has started warning obut this even in C17 mode with -Weverything. */
+#if HEDLEY_HAS_WARNING("-Wdeclaration-after-statement")
+  #define SIMDE_DIAGNOSTIC_DISABLE_DECLARATION_AFTER_STATEMENT_ _Pragma("clang diagnostic ignored \"-Wdeclaration-after-statement\"")
+#else
+  #define SIMDE_DIAGNOSTIC_DISABLE_DECLARATION_AFTER_STATEMENT_
+#endif
+
 /* https://github.com/simd-everywhere/simde/issues/277 */
 #if defined(HEDLEY_GCC_VERSION) && HEDLEY_GCC_VERSION_CHECK(4,6,0) && !HEDLEY_GCC_VERSION_CHECK(6,4,0) && defined(__cplusplus)
   #define SIMDE_DIAGNOSTIC_DISABLE_BUGGY_UNUSED_BUT_SET_VARIBALE_ _Pragma("GCC diagnostic ignored \"-Wunused-but-set-variable\"")
@@ -429,6 +437,7 @@
   SIMDE_DIAGNOSTIC_DISABLE_NO_EMMS_INSTRUCTION_ \
   SIMDE_DIAGNOSTIC_DISABLE_SIMD_PRAGMA_DEPRECATED_ \
   SIMDE_DIAGNOSTIC_DISABLE_CONDITIONAL_UNINITIALIZED_ \
+  SIMDE_DIAGNOSTIC_DISABLE_DECLARATION_AFTER_STATEMENT_ \
   SIMDE_DIAGNOSTIC_DISABLE_FLOAT_EQUAL_ \
   SIMDE_DIAGNOSTIC_DISABLE_NON_CONSTANT_AGGREGATE_INITIALIZER_ \
   SIMDE_DIAGNOSTIC_DISABLE_EXTRA_SEMI_ \
