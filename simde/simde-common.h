@@ -910,7 +910,7 @@ SIMDE_DIAGNOSTIC_DISABLE_CPP98_COMPAT_PEDANTIC_
 #      if HEDLEY_GCC_VERSION_CHECK(4,3,0) /* -Wsign-conversion */
 #        define SIMDE_BUG_GCC_95144
 #      endif
-#      if !HEDLEY_GCC_VERSION_CHECK(11,0,0)
+#      if !HEDLEY_GCC_VERSION_CHECK(11,2,0)
 #        define SIMDE_BUG_GCC_95483
 #      endif
 #      if defined(__OPTIMIZE__)
