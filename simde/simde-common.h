@@ -177,11 +177,24 @@
       HEDLEY_INTEL_VERSION_CHECK(13,0,0) || \
       defined(_Static_assert) \
     )
-#  define SIMDE_STATIC_ASSERT(expr, message) _Static_assert(expr, message)
+  /* Sometimes _Static_assert is defined (in cdefs.h) using a symbol which
+   * starts with a double-underscore. This is a system header so we have no
+   * control over it, but since it's a macro it will emit a diagnostic which
+   * prevents compilation with -Werror. */
+  #if HEDLEY_HAS_WARNING("-Wreserved-identifier")
+    #define SIMDE_STATIC_ASSERT(expr, message) (__extension__({ \
+      HEDLEY_DIAGNOSTIC_PUSH \
+      _Pragma("clang diagnostic ignored \"-Wreserved-identifier\"") \
+      _Static_assert(expr, message); \
+      HEDLEY_DIAGNOSTIC_POP \
+    }))
+  #else
+    #define SIMDE_STATIC_ASSERT(expr, message) _Static_assert(expr, message)
+  #endif
 #elif \
   (defined(__cplusplus) && (__cplusplus >= 201103L)) || \
   HEDLEY_MSVC_VERSION_CHECK(16,0,0)
-#  define SIMDE_STATIC_ASSERT(expr, message) HEDLEY_DIAGNOSTIC_DISABLE_CPP98_COMPAT_WRAP_(static_assert(expr, message))
+  #define SIMDE_STATIC_ASSERT(expr, message) HEDLEY_DIAGNOSTIC_DISABLE_CPP98_COMPAT_WRAP_(static_assert(expr, message))
 #endif
 
 /* Statement exprs */
