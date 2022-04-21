@@ -284,8 +284,8 @@ simde_mm_scalef_ss (simde__m128 a, simde__m128 b) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128
 simde_mm_mask_scalef_ss (simde__m128 src, simde__mmask8 k, simde__m128 a, simde__m128 b) {
-  #if defined(SIMDE_X86_AVX512F_NATIVE) && !defined(SIMDE_BUG_GCC_95483)
-    return _mm_mask_scalef_ss(src, k, a, b);
+  #if defined(SIMDE_X86_AVX512F_NATIVE) && !defined(HEDLEY_GCC_VERSION)
+    return _mm_mask_scalef_round_ss(src, k, a, b, _MM_FROUND_CUR_DIRECTION);
   #else
     simde__m128_private
       src_ = simde__m128_to_private(src),
