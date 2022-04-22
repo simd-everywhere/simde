@@ -961,6 +961,9 @@ SIMDE_DIAGNOSTIC_DISABLE_CPP98_COMPAT_PEDANTIC_
 #      define SIMDE_BUG_GCC_100762
 #    endif
 #    define SIMDE_BUG_GCC_95399
+#    if !defined(__OPTIMIZE__)
+#      define SIMDE_BUG_GCC_105339
+#    endif
 #  elif defined(__clang__)
 #    if defined(SIMDE_ARCH_AARCH64)
 #      define SIMDE_BUG_CLANG_45541
