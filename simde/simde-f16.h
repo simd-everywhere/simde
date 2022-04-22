@@ -100,6 +100,13 @@ SIMDE_BEGIN_DECLS_
   #error No 16-bit floating point API.
 #endif
 
+#if \
+    defined(SIMDE_VECTOR_OPS) && \
+    (SIMDE_FLOAT16_API != SIMDE_FLOAT16_API_PORTABLE) && \
+    (SIMDE_FLOAT16_API != SIMDE_FLOAT16_API_FP16_NO_ABI)
+  #define SIMDE_FLOAT16_VECTOR
+#endif
+
 /* Reinterpret -- you *generally* shouldn't need these, they're really
  * intended for internal use.  However, on x86 half-precision floats
  * get stuffed into a __m128i/__m256i, so it may be useful. */

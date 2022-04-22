@@ -43,7 +43,7 @@ simde_vcvt_f16_f32(simde_float32x4_t a) {
     simde_float32x4_private a_ = simde_float32x4_to_private(a);
     simde_float16x4_private r_;
 
-    #if defined(SIMDE_CONVERT_VECTOR_) && (SIMDE_FLOAT16_API == SIMDE_FLOAT16_API_FP16)
+    #if defined(SIMDE_CONVERT_VECTOR_) && defined(SIMDE_FLOAT16_VECTOR)
       SIMDE_CONVERT_VECTOR_(r_.values, a_.values);
     #else
       SIMDE_VECTORIZE
@@ -69,7 +69,7 @@ simde_vcvt_f32_f16(simde_float16x4_t a) {
     simde_float16x4_private a_ = simde_float16x4_to_private(a);
     simde_float32x4_private r_;
 
-    #if defined(SIMDE_CONVERT_VECTOR_) && (SIMDE_FLOAT16_API == SIMDE_FLOAT16_API_FP16)
+    #if defined(SIMDE_CONVERT_VECTOR_) && defined(SIMDE_FLOAT16_VECTOR)
       SIMDE_CONVERT_VECTOR_(r_.values, a_.values);
     #else
       SIMDE_VECTORIZE
@@ -338,7 +338,7 @@ simde_vcvt_s16_f16(simde_float16x4_t a) {
     simde_float16x4_private a_ = simde_float16x4_to_private(a);
     simde_int16x4_private r_;
 
-    #if defined(SIMDE_CONVERT_VECTOR_) && defined(SIMDE_FAST_CONVERSION_RANGE)
+    #if defined(SIMDE_CONVERT_VECTOR_) && defined(SIMDE_FAST_CONVERSION_RANGE) && defined(SIMDE_FLOAT16_VECTOR)
       SIMDE_CONVERT_VECTOR_(r_.values, a_.values);
     #else
       SIMDE_VECTORIZE
@@ -390,7 +390,7 @@ simde_vcvt_u16_f16(simde_float16x4_t a) {
     simde_float16x4_private a_ = simde_float16x4_to_private(a);
     simde_uint16x4_private r_;
 
-    #if defined(SIMDE_CONVERT_VECTOR_) && defined(SIMDE_FAST_CONVERSION_RANGE)
+    #if defined(SIMDE_CONVERT_VECTOR_) && defined(SIMDE_FAST_CONVERSION_RANGE) && defined(SIMDE_FLOAT16_VECTOR)
       SIMDE_CONVERT_VECTOR_(r_.values, a_.values);
     #else
       SIMDE_VECTORIZE
@@ -496,7 +496,7 @@ simde_vcvtq_s16_f16(simde_float16x8_t a) {
     simde_float16x8_private a_ = simde_float16x8_to_private(a);
     simde_int16x8_private r_;
 
-    #if defined(SIMDE_CONVERT_VECTOR_) && defined(SIMDE_FAST_CONVERSION_RANGE)
+    #if defined(SIMDE_CONVERT_VECTOR_) && defined(SIMDE_FAST_CONVERSION_RANGE) && defined(SIMDE_FLOAT16_VECTOR)
       SIMDE_CONVERT_VECTOR_(r_.values, a_.values);
     #else
       SIMDE_VECTORIZE
@@ -600,7 +600,7 @@ simde_vcvtq_u16_f16(simde_float16x8_t a) {
     simde_float16x8_private a_ = simde_float16x8_to_private(a);
     simde_uint16x8_private r_;
 
-    #if defined(SIMDE_CONVERT_VECTOR_) && defined(SIMDE_FAST_CONVERSION_RANGE)
+    #if defined(SIMDE_CONVERT_VECTOR_) && defined(SIMDE_FAST_CONVERSION_RANGE) && defined(SIMDE_FLOAT16_VECTOR)
       SIMDE_CONVERT_VECTOR_(r_.values, a_.values);
     #else
       SIMDE_VECTORIZE
@@ -850,7 +850,7 @@ simde_vcvt_f16_s16(simde_int16x4_t a) {
     simde_int16x4_private a_ = simde_int16x4_to_private(a);
     simde_float16x4_private r_;
 
-    #if defined(SIMDE_CONVERT_VECTOR_) && (SIMDE_FLOAT16_API == SIMDE_FLOAT16_API_FP16)
+    #if defined(SIMDE_CONVERT_VECTOR_) && defined(SIMDE_FLOAT16_VECTOR)
       SIMDE_CONVERT_VECTOR_(r_.values, a_.values);
     #else
       SIMDE_VECTORIZE
@@ -1010,7 +1010,7 @@ simde_vcvtq_f16_s16(simde_int16x8_t a) {
     simde_int16x8_private a_ = simde_int16x8_to_private(a);
     simde_float16x8_private r_;
 
-    #if defined(SIMDE_CONVERT_VECTOR_) && (SIMDE_FLOAT16_API == SIMDE_FLOAT16_API_FP16)
+    #if defined(SIMDE_CONVERT_VECTOR_) && defined(SIMDE_FLOAT16_VECTOR)
       SIMDE_CONVERT_VECTOR_(r_.values, a_.values);
     #else
       SIMDE_VECTORIZE
@@ -1066,7 +1066,7 @@ simde_vcvtq_f16_u16(simde_uint16x8_t a) {
     simde_uint16x8_private a_ = simde_uint16x8_to_private(a);
     simde_float16x8_private r_;
 
-    #if defined(SIMDE_CONVERT_VECTOR_) && (SIMDE_FLOAT16_API == SIMDE_FLOAT16_API_FP16)
+    #if defined(SIMDE_CONVERT_VECTOR_) && defined(SIMDE_FLOAT16_VECTOR)
       SIMDE_CONVERT_VECTOR_(r_.values, a_.values);
     #else
       SIMDE_VECTORIZE
