@@ -242,6 +242,9 @@ jobs:
         - version: 10
           distro: ubuntu-20.04
           arch_flags: -march=native
+        - version: 10
+          distro: ubuntu-20.04
+          arch_flags: -ffast-math
     runs-on: ${{ matrix.distro }}
     env:
       CC: gcc-${{ matrix.version }}
@@ -300,6 +303,12 @@ jobs:
         - version: "10"
           distro: ubuntu-20.04
           arch_flags: -march=native
+        - version: "12"
+          distro: ubuntu-20.04
+          arch_flags: -march=native
+        - version: "12"
+          distro: ubuntu-20.04
+          arch_flags: -ffast-math
     runs-on: ${{ matrix.distro }}
     env:
       CC: clang-${{ matrix.version }}
