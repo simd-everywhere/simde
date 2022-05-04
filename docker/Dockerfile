@@ -64,8 +64,9 @@ RUN \
 RUN \
   apt-get update -y && \
   apt-get install -yq curl gpg && \
-  curl -s "https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS-2023.PUB" | gpg --dearmor > /etc/apt/trusted.gpg.d/intel.gpg && \
-  echo "deb [arch=amd64] https://apt.repos.intel.com/oneapi all main" > /etc/apt/sources.list.d/oneAPI.list && \
+  wget -O- https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB \
+   | gpg --dearmor > /usr/share/keyrings/oneapi-archive-keyring.gpg && \
+  echo "deb [signed-by=/usr/share/keyrings/oneapi-archive-keyring.gpg] https://apt.repos.intel.com/oneapi all main" > /etc/apt/sources.list.d/oneAPI.list && \
   apt-get update && \
   apt-get install -yq intel-oneapi-compiler-dpcpp-cpp-and-cpp-classic && \
   for exe in icc icpc; do \

@@ -12,7 +12,7 @@ on:
 
 jobs:
   formatting:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
     - uses: actions/checkout@v2
       with:
@@ -66,7 +66,7 @@ jobs:
       run: git grep ' && 0' simde/ test/ && exit 1 || exit 0
 
   x86:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     strategy:
       matrix:
         isax:
@@ -96,11 +96,9 @@ jobs:
     - name: CPU Information
       run: cat /proc/cpuinfo
     - name: Install APT Dependencies
-      run: sudo add-apt-repository 'ppa:ubuntu-toolchain-r/test' && sudo apt-get update && sudo apt-get install -y ninja-build ninja-build python3-pip python3-setuptools python3-wheel parallel gcovr
-    - name: Install pip Dependencies
-      run: pip3 install meson
+      run: sudo apt-get update && sudo apt-get install -y ninja-build ninja-build meson parallel gcovr
     - name: Configure
-      run: ~/.local/bin/meson setup build -Db_coverage=true
+      run: meson setup build -Db_coverage=true
     - name: Build
       run: ninja -C build -v
     - name: Test
@@ -113,7 +111,7 @@ jobs:
         file: ./build/meson-logs/coverage.xml
 
   emscripten:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     env:
       CFLAGS: -Weverything -Werror -O2 -msimd128
       CXXFLAGS: -Weverything -Werror -O2 -msimd128
@@ -125,9 +123,7 @@ jobs:
     - name: CPU Information
       run: cat /proc/cpuinfo
     - name: Install APT Dependencies
-      run: sudo add-apt-repository ppa:ubuntu-toolchain-r/test && sudo apt-get update && sudo apt-get -yq install ninja-build ninja-build python3-pip python3-setuptools python3-wheel gcovr
-    - name: Install pip Dependencies
-      run: pip3 install meson
+      run: sudo apt-get update && sudo apt-get install -y ninja-build ninja-build meson parallel gcovr
     - name: Install emscripten
       run: |
         git clone https://github.com/emscripten-core/emsdk.git /opt/emsdk
@@ -145,17 +141,15 @@ jobs:
         ls -l ~/.jsvu || true
         /usr/bin/v8 --help
     - name: Configure
-      run: ~/.local/bin/meson setup build --optimization 2 --cross-file docker/cross-files/emscripten.cross
+      run: meson setup build --optimization 2 --cross-file docker/cross-files/emscripten.cross
     - name: Build
       run: ninja -C build -v
     - name: Test
       run: ninja -C build -v test
 
   native-aliases:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     env:
-      CC: gcc-10
-      CXX: g++-10
       CFLAGS: -DSIMDE_ENABLE_NATIVE_ALIASES -DSIMDE_NATIVE_ALIASES_TESTING -march=native -Wall -Wextra -Werror
       CXXFLAGS: -DSIMDE_ENABLE_NATIVE_ALIASES -DSIMDE_NATIVE_ALIASES_TESTING -march=native -Wall -Wextra -Werror
     steps:
@@ -165,13 +159,11 @@ jobs:
     - name: CPU Information
       run: cat /proc/cpuinfo
     - name: Install APT Dependencies
-      run: sudo add-apt-repository ppa:ubuntu-toolchain-r/test && sudo apt-get update && sudo apt-get -yq install libxml2-utils ninja-build python3-pip python3-setuptools python3-wheel gcc-10 g++-10 parallel gcovr
-    - name: Install pip Dependencies
-      run: pip3 install meson
+      run: sudo apt-get update && sudo apt-get -yq install libxml2-utils ninja-build meson parallel gcovr
     - name: Convert
       run: ./test/native-aliases.sh
     - name: Configure
-      run: ~/.local/bin/meson setup build -Db_coverage=true
+      run: meson setup build -Db_coverage=true
     - name: Build
       run: ninja -C build -v
     - name: Test
@@ -184,7 +176,7 @@ jobs:
         file: ./build/meson-logs/coverage.xml
 
   sleef:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     env:
       CFLAGS: -march=native -Wall -Wextra -Werror
       CXXFLAGS: -march=native -Wall -Wextra -Werror
@@ -195,11 +187,9 @@ jobs:
     - name: CPU Information
       run: cat /proc/cpuinfo
     - name: Install APT Dependencies
-      run: sudo add-apt-repository 'ppa:ubuntu-toolchain-r/test' && sudo apt-get update && sudo apt-get install -y ninja-build ninja-build python3-pip python3-setuptools python3-wheel parallel gcovr libsleef-dev
-    - name: Install pip Dependencies
-      run: pip3 install meson
+      run: sudo apt-get update && sudo apt-get install -y ninja-build ninja-build meson parallel gcovr libsleef-dev
     - name: Configure
-      run: ~/.local/bin/meson setup build -Dsleef=enabled -Db_coverage=true
+      run: meson setup build -Dsleef=enabled -Db_coverage=true
     - name: Build
       run: ninja -C build -v
     - name: Test
@@ -244,6 +234,12 @@ jobs:
           arch_flags: -march=native
         - version: 10
           distro: ubuntu-20.04
+          arch_flags: -ffast-math
+        - version: 11
+          distro: ubuntu-22.04
+          arch_flags: -march=native
+        - version: 11
+          distro: ubuntu-22.04
           arch_flags: -ffast-math
     runs-on: ${{ matrix.distro }}
     env:
@@ -309,6 +305,12 @@ jobs:
         - version: "12"
           distro: ubuntu-20.04
           arch_flags: -ffast-math
+        - version: "13"
+          distro: ubuntu-22.04
+          arch_flags: -march=native
+        - version: "13"
+          distro: ubuntu-22.04
+          arch_flags: -ffast-math
     runs-on: ${{ matrix.distro }}
     env:
       CC: clang-${{ matrix.version }}
@@ -336,7 +338,7 @@ jobs:
       matrix:
         # https://www.jessesquires.com/blog/2020/01/06/selecting-an-xcode-version-on-github-ci/
         # https://github.com/actions/virtual-environments/blob/master/images/macos/macos-10.15-Readme.md#xcode
-        xcode: ["11.3.1", "11.7", "12.3"]
+        xcode: ["11.3.1", "11.7", "12.3", "12.4"]
         # xcode: ["11.7", "12.4", "12.5.1"] # for macos-11
     env:
       DEVELOPER_DIR:  /Applications/Xcode_${{ matrix.xcode }}.app
@@ -364,7 +366,7 @@ jobs:
         file: ./build/meson-logs/coverage.xml
 
   icc:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     env:
       CC: /home/runner/.local/bin/icc
       CXX: /home/runner/.local/bin/icpc
@@ -375,22 +377,23 @@ jobs:
     - name: CPU Information
       run: cat /proc/cpuinfo
     - name: Install APT Dependencies
-      run: sudo apt-get install -y ninja-build ninja-build python3-pip python3-setuptools python3-wheel
+      run: sudo apt-get install -y ninja-build ninja-build meson
     - name: Install ICC
       run: |
-        curl -s https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS-2023.PUB | sudo apt-key add -
-        sudo add-apt-repository 'deb https://apt.repos.intel.com/oneapi all main'
+        # download the key to system keyring
+        wget -O- https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB \
+        | gpg --dearmor | sudo tee /usr/share/keyrings/oneapi-archive-keyring.gpg > /dev/null
+        # add signed entry to apt sources and configure the APT client to use Intel repository:
+        echo "deb [signed-by=/usr/share/keyrings/oneapi-archive-keyring.gpg] https://apt.repos.intel.com/oneapi all main" | sudo tee /etc/apt/sources.list.d/oneAPI.list
         sudo apt-get update
-        sudo apt-get install -y intel-oneapi-compiler-dpcpp-cpp-and-cpp-classic ninja-build ninja-build python3-pip python3-setuptools python3-wheel
+        sudo apt-get install -y intel-oneapi-compiler-dpcpp-cpp-and-cpp-classic
         mkdir -p ~/.local/bin/ || true
         for exe in icc icpc; do
           printf '#!/bin/bash\nARGS="$@"\nsource /opt/intel/oneapi/compiler/latest/env/vars.sh >/dev/null\n%s ${ARGS}\n' "${exe}" > ~/.local/bin/"${exe}"
           chmod 0755 ~/.local/bin/"${exe}";
         done
-    - name: Install pip Dependencies
-      run: pip3 install meson
     - name: Configure
-      run: ~/.local/bin/meson setup build
+      run: meson setup build
     - name: Build
       run: ninja -C build -v
     - name: Test
