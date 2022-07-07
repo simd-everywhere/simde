@@ -571,4 +571,22 @@
 #  define SIMDE_ARCH_ARM_NEON_FP16
 #endif
 
+/* LoongArch
+   <https://en.wikipedia.org/wiki/Loongson#LoongArch> */
+#if defined(__loongarch32)
+#  define SIMDE_ARCH_LOONGARCH 1
+#elif defined(__loongarch64)
+#  define SIMDE_ARCH_LOONGARCH 2
+#endif
+
+/* LSX: LoongArch 128-bits SIMD extension */
+#if defined(__loongarch_sx)
+#  define SIMDE_ARCH_LOONGARCH_LSX 1
+#endif
+
+/* LASX: LoongArch 256-bits SIMD extension */
+#if defined(__loongarch_asx)
+#  define SIMDE_ARCH_LOONGARCH_LASX 2
+#endif
+
 #endif /* !defined(SIMDE_ARCH_H) */

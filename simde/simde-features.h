@@ -682,4 +682,23 @@
   #define SIMDE_ARM_NEON_FP16
 #endif
 
+#if !defined(SIMDE_LOONGARCH_LASX_NATIVE) && !defined(SIMDE_LOONGARCH_LASX_NO_NATIVE) && !defined(SIMDE_NO_NATIVE)
+  #if defined(SIMDE_ARCH_LOONGARCH_LASX)
+    #define SIMDE_LOONGARCH_LASX_NATIVE
+  #endif
+#endif
+
+#if !defined(SIMDE_LOONGARCH_LSX_NATIVE) && !defined(SIMDE_LOONGARCH_LSX_NO_NATIVE) && !defined(SIMDE_NO_NATIVE)
+  #if defined(SIMDE_ARCH_LOONGARCH_LSX)
+    #define SIMDE_LOONGARCH_LSX_NATIVE
+  #endif
+#endif
+
+#if defined(SIMDE_LOONGARCH_LASX_NATIVE)
+  #include <lasxintrin.h>
+#endif
+#if defined(SIMDE_LOONGARCH_LSX_NATIVE)
+  #include <lsxintrin.h>
+#endif
+
 #endif /* !defined(SIMDE_FEATURES_H) */
