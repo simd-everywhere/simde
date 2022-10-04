@@ -3606,12 +3606,16 @@ simde_mm256_insert_epi64 (simde__m256i a, int64_t i, const int index)
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m256d simde_mm256_insertf128_pd(simde__m256d a, simde__m128d b, int imm8)
     SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 1) {
+#if defined(SIMDE_X86_AVX_NATIVE)
+    return _mm256_insertf128_pd(a, b, imm8);
+#else
   simde__m256d_private a_ = simde__m256d_to_private(a);
   simde__m128d_private b_ = simde__m128d_to_private(b);
 
   a_.m128d_private[imm8] = b_;
 
   return simde__m256d_from_private(a_);
+#endif  
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
   #undef _mm256_insertf128_pd
@@ -3621,12 +3625,16 @@ simde__m256d simde_mm256_insertf128_pd(simde__m256d a, simde__m128d b, int imm8)
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m256 simde_mm256_insertf128_ps(simde__m256 a, simde__m128 b, int imm8)
     SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 1) {
+#if defined(SIMDE_X86_AVX_NATIVE)
+   return _mm256_insertf128_ps(a, b, imm8);
+#else
   simde__m256_private a_ = simde__m256_to_private(a);
   simde__m128_private b_ = simde__m128_to_private(b);
 
   a_.m128_private[imm8] = b_;
 
   return simde__m256_from_private(a_);
+#endif  
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
   #undef _mm256_insertf128_ps
@@ -3636,6 +3644,9 @@ simde__m256 simde_mm256_insertf128_ps(simde__m256 a, simde__m128 b, int imm8)
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m256i simde_mm256_insertf128_si256(simde__m256i a, simde__m128i b, int imm8)
     SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 1) {
+  #if defined(SIMDE_X86_AVX_NATIVE)
+    return _mm256_insertf128_si256(a, b, imm8);
+  #else
   simde__m256i_private a_ = simde__m256i_to_private(a);
   simde__m128i_private b_ = simde__m128i_to_private(b);
 
