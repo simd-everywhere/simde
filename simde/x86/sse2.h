@@ -5862,7 +5862,8 @@ simde_mm_sra_epi32 (simde__m128i a, simde__m128i count) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_slli_epi16 (simde__m128i a, const int imm8)
-    SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 255)  {
+    // SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 255)   - this API can use non-constant values
+{
   if (HEDLEY_UNLIKELY((imm8 > 15))) {
     return simde_mm_setzero_si128();
   }
@@ -5892,7 +5893,7 @@ simde_mm_slli_epi16 (simde__m128i a, const int imm8)
       simde__m128i_from_neon_i16( \
         ((imm8) > 15) ? \
           vandq_s16(simde__m128i_to_neon_i16(a), vdupq_n_s16(0)) : \
-          vshlq_n_s16(simde__m128i_to_neon_i16(a), ((imm8) & 15))))
+          vshlq_s16(simde__m128i_to_neon_i16(a), vdupq_n_s16((imm8) & 15))))
 #elif defined(SIMDE_WASM_SIMD128_NATIVE)
   #define simde_mm_slli_epi16(a, imm8) \
     ((imm8 < 16) ? wasm_i16x8_shl(simde__m128i_to_private(a).wasm_v128, imm8) : wasm_i16x8_const(0,0,0,0,0,0,0,0))
@@ -5907,7 +5908,8 @@ simde_mm_slli_epi16 (simde__m128i a, const int imm8)
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_slli_epi32 (simde__m128i a, const int imm8)
-    SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 255)  {
+    // SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 255)  
+{
   if (HEDLEY_UNLIKELY((imm8 > 31))) {
     return simde_mm_setzero_si128();
   }
@@ -5935,7 +5937,7 @@ simde_mm_slli_epi32 (simde__m128i a, const int imm8)
       simde__m128i_from_neon_i32( \
         ((imm8) > 31) ? \
           vandq_s32(simde__m128i_to_neon_i32(a), vdupq_n_s32(0)) : \
-          vshlq_n_s32(simde__m128i_to_neon_i32(a), ((imm8) & 31))))
+          vshlq_s32(simde__m128i_to_neon_i32(a), vdupq_n_s32((imm8) & 31))))
 #elif defined(SIMDE_WASM_SIMD128_NATIVE)
   #define simde_mm_slli_epi32(a, imm8) \
     ((imm8 < 32) ? wasm_i32x4_shl(simde__m128i_to_private(a).wasm_v128, imm8) : wasm_i32x4_const(0,0,0,0))
@@ -5962,7 +5964,8 @@ simde_mm_slli_epi32 (simde__m128i a, const int imm8)
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_slli_epi64 (simde__m128i a, const int imm8)
-    SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 255)  {
+    // SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 255)  
+{
   if (HEDLEY_UNLIKELY((imm8 > 63))) {
     return simde_mm_setzero_si128();
   }
@@ -5990,7 +5993,7 @@ simde_mm_slli_epi64 (simde__m128i a, const int imm8)
       simde__m128i_from_neon_i64( \
         ((imm8) > 63) ? \
           vandq_s64(simde__m128i_to_neon_i64(a), vdupq_n_s64(0)) : \
-          vshlq_n_s64(simde__m128i_to_neon_i64(a), ((imm8) & 63))))
+          vshlq_s64(simde__m128i_to_neon_i64(a), vdupq_n_s64((imm8) & 63))))
 #elif defined(SIMDE_WASM_SIMD128_NATIVE)
   #define simde_mm_slli_epi64(a, imm8) \
     ((imm8 < 64) ? wasm_i64x2_shl(simde__m128i_to_private(a).wasm_v128, imm8) : wasm_i64x2_const(0,0))

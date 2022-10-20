@@ -7702,6 +7702,10 @@ test_simde_mm_slli_epi16(SIMDE_MUNIT_TEST_ARGS) {
     simde__m128i r = simde_mm_slli_epi16(test_vec[i].a, 3);
     simde_assert_m128i_i16(r, ==, test_vec[i].r);
 
+    int shift = 3;
+    r = simde_mm_slli_epi16(test_vec[i].a, shift);
+    simde_assert_m128i_i16(r, ==, test_vec[i].r);
+
     r = simde_mm_slli_epi16(test_vec[i].a, 0);
     simde_assert_m128i_i16(r, ==, test_vec[i].a);
 
@@ -7826,6 +7830,10 @@ test_simde_mm_slli_epi32(SIMDE_MUNIT_TEST_ARGS) {
     simde__m128i r = simde_mm_slli_epi32(test_vec[i].a, 5);
     simde_assert_m128i_i32(r, ==, test_vec[i].r);
 
+    int shift=5; // SSE2 allows non-immediate shifts
+    r = simde_mm_slli_epi32(test_vec[i].a, shift);
+    simde_assert_m128i_i32(r, ==, test_vec[i].r);
+
     r = simde_mm_slli_epi32(test_vec[i].a, 0);
     simde_assert_m128i_i32(r, ==, test_vec[i].a);
 
@@ -7944,6 +7952,10 @@ test_simde_mm_slli_epi64(SIMDE_MUNIT_TEST_ARGS) {
     simde__m128i zeros = simde_mm_set1_epi64x(INT64_C(0));
 
     simde__m128i r = simde_mm_slli_epi64(test_vec[i].a, 7);
+    simde_assert_m128i_i32(r, ==, test_vec[i].r);
+
+    int shift = 7;
+    r = simde_mm_slli_epi64(test_vec[i].a, shift);
     simde_assert_m128i_i32(r, ==, test_vec[i].r);
 
     r = simde_mm_slli_epi64(test_vec[i].a, 0);
