@@ -7934,7 +7934,9 @@ simde_wasm_v128_load16_lane (const void * a, simde_v128_t vec, const int lane)
   simde_v128_private
     a_ = simde_v128_to_private(vec);
 
-  a_.i16[lane] = *HEDLEY_REINTERPRET_CAST(const int16_t *, a);
+  int16_t tmp = 0;
+  simde_memcpy(&tmp, a, sizeof(int16_t));
+  a_.i16[lane] = tmp;
 
   return simde_v128_from_private(a_);
 }
@@ -7952,7 +7954,9 @@ simde_wasm_v128_load32_lane (const void * a, simde_v128_t vec, const int lane)
   simde_v128_private
     a_ = simde_v128_to_private(vec);
 
-  a_.i32[lane] = *HEDLEY_REINTERPRET_CAST(const int32_t *, a);
+  int32_t tmp = 0;
+  simde_memcpy(&tmp, a, sizeof(int32_t));
+  a_.i32[lane] = tmp;
 
   return simde_v128_from_private(a_);
 }
@@ -7970,7 +7974,9 @@ simde_wasm_v128_load64_lane (const void * a, simde_v128_t vec, const int lane)
   simde_v128_private
     a_ = simde_v128_to_private(vec);
 
-  a_.i64[lane] = *HEDLEY_REINTERPRET_CAST(const int64_t *, a);
+  int64_t tmp = 0;
+  simde_memcpy(&tmp, a, sizeof(int64_t));
+  a_.i64[lane] = tmp;
 
   return simde_v128_from_private(a_);
 }
