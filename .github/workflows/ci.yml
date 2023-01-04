@@ -136,7 +136,7 @@ jobs:
       run: |
         sudo npm install jsvu -g
         jsvu --os=linux64 --engines=v8
-        sudo ln -s $HOME/.jsvu/v8 /usr/bin/v8
+        sudo ln -s $HOME/.jsvu/bin/v8 /usr/bin/v8
         ls -l /usr/bin/v8
         ls -l ~/.jsvu || true
         /usr/bin/v8 --help
