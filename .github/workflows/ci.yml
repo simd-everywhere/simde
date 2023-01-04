@@ -70,9 +70,10 @@ jobs:
     strategy:
       matrix:
         isax:
-        - -mavx512bw -mavx512vl -mavx512cd -mavx512dq -mavx512vbmi -mavx512ifma -mavx512vpopcntdq -mavx512bitalg -mavx512vnni -mvpclmulqdq
-        - -mavx512bw -mavx512vl -DSIMDE_NATURAL_VECTOR_SIZE=256
-        - -mavx512f
+          # some SDE issue: TID 0 SDE-ERROR: Executed instruction not valid for host's cpuid: 0x561817503852: vpshufbitqmb k0{k1}, xmm0, xmm1
+          # - -mavx512bw -mavx512vl -mavx512cd -mavx512dq -mavx512vbmi -mavx512ifma -mavx512vpopcntdq -mavx512bitalg -mavx512vnni -mvpclmulqdq
+          # - -mavx512bw -mavx512vl -DSIMDE_NATURAL_VECTOR_SIZE=256
+          # - -mavx512f
         - -mavx512bw
         - -mavx512vl
         - -mavx512vl -mavx512dq
