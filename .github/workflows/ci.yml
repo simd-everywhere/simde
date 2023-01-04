@@ -114,8 +114,8 @@ jobs:
   emscripten:
     runs-on: ubuntu-22.04
     env:
-      CFLAGS: -Weverything -Werror -O2 -msimd128
-      CXXFLAGS: -Weverything -Werror -O2 -msimd128
+      CFLAGS: -Weverything -Werror -O2 -msimd128 -Wno-unsafe-buffer-usage
+      CXXFLAGS: -Weverything -Werror -O2 -msimd128 -Wno-unsafe-buffer-usage
       LDFLAGS: -s ENVIRONMENT=shell -s ASSERTIONS=1
     steps:
     - uses: actions/checkout@v2
