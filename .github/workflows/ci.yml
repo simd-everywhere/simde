@@ -368,8 +368,8 @@ jobs:
   icc:
     runs-on: ubuntu-22.04
     env:
-      CC: /home/runner/.local/bin/icc
-      CXX: /home/runner/.local/bin/icpc
+      CC: /home/runner/.local/bin/icx
+      CXX: /home/runner/.local/bin/icpx
       CFLAGS: -Werror -wd13200 -wd13203 -wd16219 -Wall -Werror -march=native
       CXXFLAGS: -wd13200 -wd13203 -wd16219 -Wall -Werror -march=native
     steps:
@@ -377,7 +377,7 @@ jobs:
     - name: CPU Information
       run: cat /proc/cpuinfo
     - name: Install APT Dependencies
-      run: sudo apt-get install -y ninja-build ninja-build meson
+      run: sudo apt-get install -y ninja-build ninja-build python3-pip && sudo pip install meson==0.64
     - name: Install ICC
       run: |
         # download the key to system keyring
@@ -386,9 +386,9 @@ jobs:
         # add signed entry to apt sources and configure the APT client to use Intel repository:
         echo "deb [signed-by=/usr/share/keyrings/oneapi-archive-keyring.gpg] https://apt.repos.intel.com/oneapi all main" | sudo tee /etc/apt/sources.list.d/oneAPI.list
         sudo apt-get update
-        sudo apt-get install -y intel-oneapi-compiler-dpcpp-cpp-and-cpp-classic
+        sudo apt-get install -y intel-oneapi-compiler-dpcpp-cpp
         mkdir -p ~/.local/bin/ || true
-        for exe in icc icpc; do
+        for exe in icx icpx; do
           printf '#!/bin/bash\nARGS="$@"\nsource /opt/intel/oneapi/compiler/latest/env/vars.sh >/dev/null\n%s ${ARGS}\n' "${exe}" > ~/.local/bin/"${exe}"
           chmod 0755 ~/.local/bin/"${exe}";
         done
