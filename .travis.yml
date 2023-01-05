@@ -14,7 +14,7 @@ jobs:
     - CXX="clang++"
     - CFLAGS="-mcpu=power9 -Weverything -Werror"
     - CXXFLAGS="-mcpu=power9 -Weverything -Werror"
-    - JOBS="$(expr $(nproc) / 2)"
+    - JOBS="$(nproc)"
     addons:
       apt:
         packages: ninja-build python3-pip clang
