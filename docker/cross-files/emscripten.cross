@@ -4,7 +4,7 @@ cpp = '/opt/emsdk/upstream/emscripten/em++'
 ar = '/opt/emsdk/upstream/emscripten/emar'
 strip = '/opt/emsdk/upstream/bin/llvm-strip'
 objcopy = '/opt/emsdk/upstream/bin/llvm-objcopy'
-exe_wrapper = ['/usr/bin/v8', '--experimental-wasm-simd']
+exe_wrapper = ['/usr/bin/v8']
 
 [properties]
 skip_sanity_check = true
