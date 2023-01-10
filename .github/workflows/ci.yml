@@ -70,15 +70,6 @@ jobs:
     strategy:
       matrix:
         isax:
-          # some SDE issue: TID 0 SDE-ERROR: Executed instruction not valid for host's cpuid: 0x561817503852: vpshufbitqmb k0{k1}, xmm0, xmm1
-          # - -mavx512bw -mavx512vl -mavx512cd -mavx512dq -mavx512vbmi -mavx512ifma -mavx512vpopcntdq -mavx512bitalg -mavx512vnni -mvpclmulqdq
-          # - -mavx512bw -mavx512vl -DSIMDE_NATURAL_VECTOR_SIZE=256
-          # - -mavx512f
-        - -mavx512bw
-        - -mavx512vl
-        - -mavx512vl -mavx512dq
-        - -mavx512cd
-        - -mavx512dq
         - -msse2
         - -msse3
         - -mssse3
@@ -96,6 +87,47 @@ jobs:
         submodules: recursive
     - name: CPU Information
       run: cat /proc/cpuinfo
+    - name: Install APT Dependencies
+      run: sudo apt-get update && sudo apt-get install -y ninja-build ninja-build meson parallel gcovr
+    - name: Configure
+      run: meson setup build -Db_coverage=true
+    - name: Build
+      run: ninja -C build -v
+    - name: Test
+      run: meson test -C build --print-errorlogs --wrapper "${GITHUB_WORKSPACE}/test/check-flags.sh sde"
+    - name: Coverage Report
+      run: ninja -C build -v coverage-xml
+    - name: CodeCov.io
+      uses: codecov/codecov-action@v1
+      with:
+        file: ./build/meson-logs/coverage.xml
+
+  x86-avx512:
+    runs-on: ubuntu-22.04
+    continue-on-error: true
+    strategy:
+      matrix:
+        isax:
+        # mavx512vnni and mavx512vpopcntdq require Knights Mill architecture
+        #- -mavx512bw -mavx512vl -mavx512cd -mavx512dq -mavx512vbmi -mavx512ifma -mavx512vpopcntdq -mavx512bitalg -mavx512vnni -mvpclmulqdq
+        - -mavx512bw -mavx512vl -DSIMDE_NATURAL_VECTOR_SIZE=256
+        - -mavx512f
+        - -mavx512bw
+        - -mavx512vl
+        - -mavx512vl -mavx512dq
+        - -mavx512cd
+        - -mavx512dq
+    env:
+      CFLAGS: -Wall -Wextra -Werror ${{ matrix.isax }}
+      CXXFLAGS: -Wall -Wextra -Werror ${{ matrix.isax }}
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: recursive
+    - name: CPU Information
+      run: cat /proc/cpuinfo
+    - name: AVX512 Feature Check
+      run: cat /proc/cpuinfo | grep avx512
     - name: Install APT Dependencies
       run: sudo apt-get update && sudo apt-get install -y ninja-build ninja-build meson parallel gcovr
     - name: Configure
