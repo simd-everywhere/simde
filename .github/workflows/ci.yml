@@ -371,8 +371,8 @@ jobs:
     env:
       CC: /home/runner/.local/bin/icx
       CXX: /home/runner/.local/bin/icpx
-      CFLAGS: -Wall -Werror -march=native -wno-tautological-constant-compare
-      CXXFLAGS: -Wall -Werror -march=native -wno-tautological-constant-compare
+      CFLAGS: -Wall -Werror -march=native -fp-model precise
+      CXXFLAGS: -Wall -Werror -march=native -fp-model precise
     steps:
     - uses: actions/checkout@v2
     - name: CPU Information
