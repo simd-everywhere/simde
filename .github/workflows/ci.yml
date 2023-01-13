@@ -215,18 +215,18 @@ jobs:
         # - version: 4.9
         #   distro: ubuntu-16.04
         #   arch_flags: -mavx2
-        - version: 5
-          distro: ubuntu-18.04
-          arch_flags: -mavx2
+        #- version: 5
+        #  distro: ubuntu-18.04
+        #  arch_flags: -mavx2
         # - version: 6
         #   distro: ubuntu-18.04
         #   arch_flags: -march=native
         # - version: 7
         #   distro: ubuntu-18.04
         #   arch_flags: -march=native
-        - version: 8
-          distro: ubuntu-18.04
-          arch_flags: -march=native
+        #- version: 8
+        #  distro: ubuntu-18.04
+        #  arch_flags: -march=native
         # - version: 9
         #   distro: ubuntu-20.04
         #   arch_flags: -march=native
@@ -279,15 +279,15 @@ jobs:
         # - version: "3.8"
         #   distro: ubuntu-16.04
         #   arch_flags: -mavx2
-        - version: "3.9"
-          distro: ubuntu-18.04
-          arch_flags: -mavx2
+        #- version: "3.9"
+        #  distro: ubuntu-18.04
+        #  arch_flags: -mavx2
         # - version: "4.0"
         #   distro: ubuntu-18.04
         #   arch_flags: -mavx2
-        - version: "5.0"
-          distro: ubuntu-18.04
-          arch_flags: -mavx2
+        #- version: "5.0"
+        #  distro: ubuntu-18.04
+        #  arch_flags: -mavx2
         # - version: "6.0"
         #   distro: ubuntu-20.04
         #   arch_flags: -march=native
