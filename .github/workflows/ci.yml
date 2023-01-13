@@ -15,7 +15,7 @@ jobs:
   formatting:
     runs-on: ubuntu-22.04
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
         fetch-depth: 2
     - name: Install pcre2grep
@@ -91,7 +91,7 @@ jobs:
       CFLAGS: -Wall -Wextra -Werror ${{ matrix.isax }}
       CXXFLAGS: -Wall -Wextra -Werror ${{ matrix.isax }}
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
         submodules: recursive
     - name: CPU Information
@@ -118,7 +118,7 @@ jobs:
       CXXFLAGS: -Weverything -Werror -O2 -msimd128 -Wno-unsafe-buffer-usage
       LDFLAGS: -s ENVIRONMENT=shell -s ASSERTIONS=1
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
         submodules: recursive
     - name: CPU Information
@@ -154,7 +154,7 @@ jobs:
       CFLAGS: -DSIMDE_ENABLE_NATIVE_ALIASES -DSIMDE_NATIVE_ALIASES_TESTING -march=native -Wall -Wextra -Werror
       CXXFLAGS: -DSIMDE_ENABLE_NATIVE_ALIASES -DSIMDE_NATIVE_ALIASES_TESTING -march=native -Wall -Wextra -Werror
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
         submodules: recursive
     - name: CPU Information
@@ -182,7 +182,7 @@ jobs:
       CFLAGS: -march=native -Wall -Wextra -Werror
       CXXFLAGS: -march=native -Wall -Wextra -Werror
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
         submodules: recursive
     - name: CPU Information
@@ -249,7 +249,7 @@ jobs:
       CFLAGS: ${{ matrix.arch_flags }} -Wall -Wextra -Werror
       CXXFLAGS: ${{ matrix.arch_flags }} -Wall -Wextra -Werror
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
         submodules: recursive
     - name: CPU Information
@@ -319,7 +319,7 @@ jobs:
       CFLAGS: ${{ matrix.arch_flags }} -Wall -Weverything -Werror -fno-lax-vector-conversions
       CXXFLAGS: ${{ matrix.arch_flags }} -Wall -Weverything -Werror -fno-lax-vector-conversions
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
         submodules: recursive
     - name: CPU Information
@@ -344,7 +344,7 @@ jobs:
     env:
       DEVELOPER_DIR:  /Applications/Xcode_${{ matrix.xcode }}.app
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
         submodules: recursive
     - name: System Information
@@ -374,7 +374,7 @@ jobs:
       CFLAGS: -Wall -Werror -march=native -fp-model precise
       CXXFLAGS: -Wall -Werror -march=native -fp-model precise
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: CPU Information
       run: cat /proc/cpuinfo
     - name: Install APT Dependencies
