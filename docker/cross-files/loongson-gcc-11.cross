@@ -1,15 +1,15 @@
 [binaries]
-c = '/usr/bin/mips64el-linux-gnuabi64-gcc-10'
-cpp = '/usr/bin/mips64el-linux-gnuabi64-g++-10'
+c = '/usr/bin/mips64el-linux-gnuabi64-gcc-11'
+cpp = '/usr/bin/mips64el-linux-gnuabi64-g++-11'
 ar = '/usr/bin/mips64el-linux-gnuabi64-ar'
 strip = '/usr/bin/mips64el-linux-gnuabi64-strip'
 objcopy = '/usr/bin/mips64el-linux-gnuabi64-objcopy'
 ld = '/usr/bin/mips64el-linux-gnuabi64-ld'
-exe_wrapper = ['/usr/bin/qemu-mips64el-static', '-cpu', 'Loongson-3A4000']
+exe_wrapper = ['qemu-mips64el-static', '-cpu', 'Loongson-3A4000']
 
 [properties]
-c_args = ['-march=loongson3a', '-mmsa', '-Wextra', '-Werror']
-cpp_args = ['-march=loongson3a', '-mmsa', '-Wextra', '-Werror']
+c_args = ['-march=loongson3a', '-Wextra', '-Werror']
+cpp_args = ['-march=loongson3a', '-Wextra', '-Werror']
 
 [host_machine]
 system = 'linux'
