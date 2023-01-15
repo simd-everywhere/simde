@@ -33,9 +33,9 @@ code to SIMDe you'll need to build them.
 Here is the basic procedure for compiling and running the tests:
 
 ```bash
-mkdir build
+mkdir -p build
 cd build
-CFLAGS="-march=native" CXXFLAGS="-march=native" meson ..
+CFLAGS="-march=native" CXXFLAGS="-march=native" meson setup ..
 ninja test
 ```
 
