@@ -37,7 +37,7 @@ RUN \
     '^clang-[0-9\.]+$' \
     '^g(cc|\+\+)-[0-9\.]+$' \
     gdb valgrind \
-    qemu binfmt-support qemu-user-static \
+    binfmt-support qemu-user-static \
     creduce screen htop parallel nano rsync strace \
     npm libsleef-dev \
     python3-pip
