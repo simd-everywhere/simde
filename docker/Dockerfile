@@ -8,6 +8,7 @@ ARG QEMU_GIT=n
 
 RUN \
   apt-get update -y && \
+  apt-get upgrade -y && \
   apt-get install -y netselect-apt && \
   if netselect-apt -n ${release}; then \
     mv sources.list /etc/apt/sources.list; \
@@ -23,7 +24,7 @@ RUN \
 RUN \
   apt-get update -y && \
   apt-get upgrade -y && \
-  for arch in armhf arm64 ppc64el s390x i386 mips64el; do \
+  for arch in armhf arm64 ppc64el s390x i386; do \
     dpkg --add-architecture "$arch"; \
   done; \
   apt-get update -y
@@ -31,6 +32,7 @@ RUN \
 # Common packages
 RUN \
   apt-get update -y && \
+  apt-get upgrade -y && \
   apt-get install -yq \
     git build-essential \
     cmake ninja-build \
@@ -49,6 +51,7 @@ RUN pip3 install meson==0.55.0
 # GCC cross-compilers
 RUN \
   apt-get update -y && \
+  apt-get upgrade -y && \
   apt-get install -y apt-file && \
   apt-file update && \
   PACKAGES_TO_INSTALL=""; \
@@ -64,6 +67,7 @@ RUN \
 # ICC
 RUN \
   apt-get update -y && \
+  apt-get upgrade -y && \
   apt-get install -yq curl gpg && \
   wget -O- https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB \
    | gpg --dearmor > /usr/share/keyrings/oneapi-archive-keyring.gpg && \
