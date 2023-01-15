@@ -68,8 +68,8 @@ RUN \
    | gpg --dearmor > /usr/share/keyrings/oneapi-archive-keyring.gpg && \
   echo "deb [signed-by=/usr/share/keyrings/oneapi-archive-keyring.gpg] https://apt.repos.intel.com/oneapi all main" > /etc/apt/sources.list.d/oneAPI.list && \
   apt-get update && \
-  apt-get install -yq intel-oneapi-compiler-dpcpp-cpp-and-cpp-classic && \
-  for exe in icc icpc; do \
+  apt-get install -yq intel-oneapi-compiler-dpcpp-cpp-and-cpp-classic intel-oneapi-compiler-dpcpp-cpp && \
+  for exe in icc icpc icx icpx; do \
     printf '#!/bin/bash\nARGS="$@"\nsource /opt/intel/oneapi/compiler/latest/env/vars.sh >/dev/null\n%s ${ARGS}\n' "${exe}" > /usr/bin/"${exe}" && \
     chmod 0755 /usr/bin/"${exe}" ; \
   done
