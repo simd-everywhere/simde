@@ -45,8 +45,8 @@ jobs:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
     environment:
-      CC: mips64el-linux-gnuabi64-gcc
-      CXX: mips64el-linux-gnuabi64-g++
+      CC: gcc-mips64el-linux-gnuabi64
+      CXX: g++-mips64el-linux-gnuabi64
       CFLAGS: -Wextra -Werror
       CXXFLAGS: -Wextra -Werror
     steps:
