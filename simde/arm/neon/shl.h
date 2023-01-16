@@ -99,7 +99,7 @@ SIMDE_FUNCTION_ATTRIBUTES
 uint64_t
 simde_vshld_u64 (const uint64_t a, const int64_t b) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
-    return vshld_u64(a, HEDLEY_STATIC_CAST(uint64_t, b));
+    return vshld_u64(a, HEDLEY_STATIC_CAST(int64_t, b));
   #else
     int8_t b_ = HEDLEY_STATIC_CAST(int8_t, b);
     return
