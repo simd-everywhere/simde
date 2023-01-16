@@ -45,8 +45,8 @@ jobs:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
     environment:
-      CC: mips64el-linux-gnuabi64-gcc
-      CXX: mips64el-linux-gnuabi64-g++
+      CC: gcc-mips64el-linux-gnuabi64
+      CXX: g++-mips64el-linux-gnuabi64
       CFLAGS: -Wextra -Werror
       CXXFLAGS: -Wextra -Werror
     steps:
@@ -54,7 +54,7 @@ jobs:
       - run: cat /proc/cpuinfo /proc/meminfo
       - run: dpkg --add-architecture mips64el
       - run: apt-get update && apt-get install -y ninja-build ninja-build python3-pip python3-setuptools python3-wheel gcovr
-      - run: apt-get install -y gcc-mips64el-linux-gnuabi64 g++-mips64el-linux-gnuabi64 qemu-user-static libc6-dev:mips64el libstdc++6:mips64el
+      - run: apt-get install -y gcc-mips64el-linux-gnuabi64 g++-mips64el-linux-gnuabi64 qemu-user-static libc6:mips64el libstdc++6:mips64el
       - run: pip3 install meson
       - run: /usr/local/bin/meson setup build -Db_coverage=true --cross-file=docker/cross-files/loongson-gcc.cross
       - run: ninja -C build -v -j 3
