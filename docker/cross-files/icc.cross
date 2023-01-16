@@ -7,5 +7,7 @@ objcopy = '/usr/bin/objcopy'
 ld = '/usr/bin/ld'
 
 [properties]
-c_args = ['-Wextra', '-wd13200', '-wd13203', '-wd16219', '-Werror', '-march=native']
-cpp_args = ['-Wextra', '-wd13200', '-wd13203', '-wd16219', '-Werror', '-march=native']
+c_args = ['-Wextra', '-wd13200', '-wd13203', '-wd16219', '-diag-disable=10441', '-Werror', '-march=native']
+c_link_args = ['-diag-disable=10441']
+cpp_args = ['-Wextra', '-wd13200', '-wd13203', '-wd16219', '-diag-disable=10441', '-Werror', '-march=native']
+cpp_link_args = ['-diag-disable=10441']

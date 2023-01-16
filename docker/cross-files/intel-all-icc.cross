@@ -8,8 +8,10 @@ ld = '/usr/bin/ld'
 exe_wrapper = ['sde64', '-future', '--']
 
 [properties]
-c_args = ['-march=tigerlake', '-Wextra', '-wd13200', '-wd13203', '-wd16219', '-Werror']
-cpp_args = ['-march=tigerlake', '-Wextra', '-wd13200', '-wd13203', '-wd16219', '-Werror']
+c_args = ['-march=tigerlake', '-Wextra', '-wd13200', '-wd13203', '-wd16219', '-diag-disable=10441', '-Werror']
+c_link_args = ['-diag-disable=10441']
+cpp_args = ['-march=tigerlake', '-Wextra', '-wd13200', '-wd13203', '-wd16219', '-diag-disable=10441', '-Werror']
+cpp_link_args = ['-diag-disable=10441']
 
 [host_machine]
 system = 'linux'
