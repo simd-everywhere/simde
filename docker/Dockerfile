@@ -53,11 +53,12 @@ RUN \
   apt-file update && \
   PACKAGES_TO_INSTALL=""; \
   for ARCH in $(dpkg --print-foreign-architectures); do \
-    PACKAGES_TO_INSTALL="${PACKAGES_TO_INSTALL} libc6:${ARCH} ^libstdc\+\+\-[0-9]+\-dev:${ARCH}"; \
+    PACKAGES_TO_INSTALL="${PACKAGES_TO_INSTALL} libc6:${ARCH} ^libstdc\+\+\-[0-9]+\-dev$:${ARCH}"; \
     for pkg in $(apt-file search -x "/usr/bin/$(/tmp/simde-bin/arch2gcc.sh ${ARCH})-g(cc|\+\+)-[0-9\.]+" | grep -Po '^([^ ]+)(?<!:)'); do \
       PACKAGES_TO_INSTALL="${PACKAGES_TO_INSTALL} ${pkg}"; \
     done; \
   done; \
+  echo ${PACKAGES_TO_INSTALL} ; \
   apt-get install -yq ${PACKAGES_TO_INSTALL}
 
 # ICC
