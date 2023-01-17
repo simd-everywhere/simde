@@ -10,6 +10,10 @@ on:
     branches:
       - 'master'
 
+concurrency:
+  group: build-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   formatting:
     runs-on: ubuntu-22.04
@@ -239,6 +243,12 @@ jobs:
           distro: ubuntu-22.04
           arch_flags: -march=native
         - version: 11
+          distro: ubuntu-22.04
+          arch_flags: -ffast-math
+        - version: 12
+          distro: ubuntu-22.04
+          arch_flags: -march=native
+        - version: 12
           distro: ubuntu-22.04
           arch_flags: -ffast-math
     runs-on: ${{ matrix.distro }}

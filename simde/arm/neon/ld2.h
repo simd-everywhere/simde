@@ -296,7 +296,7 @@ simde_vld2_u32(uint32_t const ptr[HEDLEY_ARRAY_PARAM(4)]) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde_uint64x1x2_t
-simde_vld2_u64(uint64_t const ptr[HEDLEY_ARRAY_PARAM(4)]) {
+simde_vld2_u64(uint64_t const ptr[HEDLEY_ARRAY_PARAM(2)]) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vld2_u64(ptr);
   #elif SIMDE_NATURAL_VECTOR_SIZE_GE(128) && defined(SIMDE_SHUFFLE_VECTOR_)
@@ -362,7 +362,7 @@ simde_vld2_f32(simde_float32_t const ptr[HEDLEY_ARRAY_PARAM(4)]) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float64x1x2_t
-simde_vld2_f64(simde_float64_t const ptr[HEDLEY_ARRAY_PARAM(4)]) {
+simde_vld2_f64(simde_float64_t const ptr[HEDLEY_ARRAY_PARAM(2)]) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vld2_f64(ptr);
   #elif SIMDE_NATURAL_VECTOR_SIZE_GE(128) && defined(SIMDE_SHUFFLE_VECTOR_)
