@@ -1,10 +1,10 @@
 [binaries]
-c = '/usr/bin/powerpc64le-linux-gnu-gcc-12'
-cpp = '/usr/bin/powerpc64le-linux-gnu-g++-12'
-ar = '/usr/bin/powerpc64le-linux-gnu-ar'
-strip = '/usr/bin/powerpc64le-linux-gnu-strip'
-objcopy = '/usr/bin/powerpc64le-linux-gnu-objcopy'
-ld = '/usr/bin/powerpc64le-linux-gnu-ld'
+c = 'powerpc64le-linux-gnu-gcc-12'
+cpp = 'powerpc64le-linux-gnu-g++-12'
+ar = 'powerpc64le-linux-gnu-ar'
+strip = 'powerpc64le-linux-gnu-strip'
+objcopy = 'powerpc64le-linux-gnu-objcopy'
+ld = 'powerpc64le-linux-gnu-ld'
 exe_wrapper = ['qemu-ppc64le-static', '-cpu', 'power9']
 
 [properties]

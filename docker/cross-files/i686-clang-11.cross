@@ -1,10 +1,10 @@
 [binaries]
-c = '/usr/bin/clang-11'
-cpp = '/usr/bin/clang++-11'
-ar = '/usr/bin/llvm-ar-11'
-strip = '/usr/bin/llvm-strip-11'
-objcopy = '/usr/bin/llvm-objcopy-11'
-ld = '/usr/bin/llvm-ld-11'
+c = 'clang-11'
+cpp = 'clang++-11'
+ar = 'llvm-ar-11'
+strip = 'llvm-strip-11'
+objcopy = 'llvm-objcopy-11'
+ld = 'llvm-ld-11'
 exe_wrapper = 'qemu-arm-static'
 
 [properties]

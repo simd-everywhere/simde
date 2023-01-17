@@ -35,7 +35,7 @@ RUN \
   apt-get upgrade -y && \
   apt-get install -yq \
     git build-essential \
-    cmake ninja-build \
+    ccache cmake ninja-build \
     '^clang-[0-9\.]+$' \
     '^g(cc|\+\+)-[0-9\.]+$' \
     gdb valgrind \
@@ -63,6 +63,8 @@ RUN \
   done; \
   echo ${PACKAGES_TO_INSTALL} ; \
   apt-get install -yq ${PACKAGES_TO_INSTALL}
+
+ENV PATH="/usr/lib/ccache:$PATH"
 
 # ICC
 RUN \

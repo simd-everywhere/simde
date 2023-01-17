@@ -1,10 +1,10 @@
 [binaries]
-c = '/usr/bin/clang-12'
-cpp = '/usr/bin/clang++-12'
-ar = '/usr/bin/llvm-ar-12'
-strip = '/usr/bin/llvm-strip-12'
-objcopy = '/usr/bin/llvm-objcopy-12'
-ld = '/usr/bin/llvm-ld-12'
+c = 'clang-12'
+cpp = 'clang++-12'
+ar = 'llvm-ar-12'
+strip = 'llvm-strip-12'
+objcopy = 'llvm-objcopy-12'
+ld = 'llvm-ld-12'
 exe_wrapper = ['qemu-s390x-static', '-cpu', 'z14.2-base']
 
 [properties]

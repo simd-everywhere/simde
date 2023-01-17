@@ -1,10 +1,10 @@
 [binaries]
-c = '/usr/bin/gcc-10'
-cpp = '/usr/bin/g++-10'
-ar = '/usr/bin/ar'
-strip = '/usr/bin/strip'
-objcopy = '/usr/bin/objcopy'
-ld = '/usr/bin/ld'
+c = 'gcc-10'
+cpp = 'g++-10'
+ar = 'ar'
+strip = 'strip'
+objcopy = 'objcopy'
+ld = 'ld'
 exe_wrapper = ['sde64', '-future', '--']
 
 [properties]

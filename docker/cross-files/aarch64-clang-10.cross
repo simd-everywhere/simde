@@ -1,10 +1,10 @@
 [binaries]
-c = '/usr/bin/clang-10'
-cpp = '/usr/bin/clang++-10'
-ar = '/usr/bin/llvm-ar-10'
-strip = '/usr/bin/llvm-strip-10'
-objcopy = '/usr/bin/llvm-objcopy-10'
-ld = '/usr/bin/llvm-ld-10'
+c = 'clang-10'
+cpp = 'clang++-10'
+ar = 'llvm-ar-10'
+strip = 'llvm-strip-10'
+objcopy = 'llvm-objcopy-10'
+ld = 'llvm-ld-10'
 exe_wrapper = 'qemu-aarch64-static'
 
 [properties]
