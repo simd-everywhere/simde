@@ -183,7 +183,7 @@
     #define SIMDE_X86_AVX_NATIVE
   #endif
 #endif
-#if defined(SIMDE_X86_AVX_NATIVE) && !defined(SIMDE_X86_SSE4_1_NATIVE)
+#if defined(SIMDE_X86_AVX_NATIVE) && !defined(SIMDE_X86_SSE4_2_NATIVE)
   #define SIMDE_X86_SSE4_2_NATIVE
 #endif
 
