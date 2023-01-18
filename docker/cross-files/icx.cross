@@ -7,5 +7,5 @@ objcopy = 'objcopy'
 ld = 'ld'
 
 [properties]
-c_args = ['-Wextra', '-Werror', '-march=native']
-cpp_args = ['-Wextra', '-Werror', '-march=native']
+c_args = ['-Wextra', '-Werror', '-march=native', '-Wno-tautological-constant-compare']
+cpp_args = ['-Wextra', '-Werror', '-march=native', '-Wno-tautological-constant-compare']
