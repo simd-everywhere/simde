@@ -5,7 +5,7 @@ ar = 'ar'
 strip = 'strip'
 objcopy = 'objcopy'
 ld = 'ld'
-exe_wrapper = ['sde', '-future', '--']
+exe_wrapper = ['sde', '-tgl', '--']
 
 [properties]
 c_args = ['-march=icelake-server', '-Wextra', '-Werror']

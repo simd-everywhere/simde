@@ -50,7 +50,7 @@ elif [ "$COMMAND" = "sde" ]; then
       "$(dirname "$0")"/download-sde.sh "${SDE_PATH}"
     fi
   ) 9>/tmp/sde-download.lock
-  "${SDE_PATH}/sde64" -future -- $@
+  "${SDE_PATH}/sde64" -tgl -- $@
   exit $?
 else
   echo "Flags not supported, skipping"

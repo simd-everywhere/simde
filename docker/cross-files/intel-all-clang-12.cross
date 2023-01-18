@@ -5,7 +5,7 @@ ar = 'llvm-ar-12'
 strip = 'llvm-strip-12'
 objcopy = 'llvm-objcopy-12'
 ld = 'llvm-ld-12'
-exe_wrapper = ['sde64', '-future', '--']
+exe_wrapper = ['sde64', '-tgl', '--']
 
 [properties]
 c_args =   ['-mavx512bw', '-mavx512dq', '-mavx512vl', '-mbmi2', '-DSIMDE_NATURAL_VECTOR_SIZE=256', '-Weverything', '-fno-lax-vector-conversions', '-Wno-newline-eof', '-Wno-missing-variable-declarations', '-Werror']
