@@ -8,8 +8,8 @@ ld = 'llvm-ld-14'
 exe_wrapper = ['qemu-ppc64le-static', '-cpu', 'power9']
 
 [properties]
-c_args = ['--target=powerpc64le-linux-gnu', '-mcpu=power9', '-isystem=/usr/powerpc64le-linux-gnu/include', '-Weverything', '-fno-lax-vector-conversions', '-Werror']
-cpp_args = ['--target=powerpc64le-linux-gnu', '-mcpu=power9', '-isystem=/usr/powerpc64le-linux-gnu/include', '-Weverything', '-fno-lax-vector-conversions', '-Werror']
+c_args = ['--target=powerpc64le-linux-gnu', '-mcpu=power9', '-isystem=/usr/powerpc64le-linux-gnu/include', '-Weverything', '-fno-lax-vector-conversions', '-Werror', '-Wno-deprecated-altivec-src-compat']
+cpp_args = ['--target=powerpc64le-linux-gnu', '-mcpu=power9', '-isystem=/usr/powerpc64le-linux-gnu/include', '-Weverything', '-fno-lax-vector-conversions', '-Werror', '-Wno-deprecated-altivec-src-compat']
 c_link_args = ['--target=powerpc64le-linux-gnu']
 cpp_link_args = ['--target=powerpc64le-linux-gnu']
 
