@@ -7155,11 +7155,18 @@ test_simde_mm_i32gather_pd (SIMDE_MUNIT_TEST_ARGS) {
   };
   for (size_t i = 0 ; i < (sizeof(f64gather_buffer) / sizeof(f64gather_buffer[0])) ; i++) { f64gather_buffer[i] = HEDLEY_STATIC_CAST(simde_float64, i); }
 
+  #if defined(SIMDE_DIAGNOSTIC_DISABLE_UNINITIALIZED_) && HEDLEY_GCC_VERSION_CHECK(12,0,0)
+    HEDLEY_DIAGNOSTIC_PUSH
+    SIMDE_DIAGNOSTIC_DISABLE_UNINITIALIZED_
+  #endif
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
     simde__m128i vindex = simde_x_mm_loadu_epi32(test_vec[i].vindex);
     simde__m128d r = simde_mm_i32gather_pd(f64gather_buffer, vindex, 8);
     simde_test_x86_assert_equal_f64x2(r, simde_mm_loadu_pd(test_vec[i].r), 1);
   }
+  #if defined(SIMDE_DIAGNOSTIC_DISABLE_UNINITIALIZED_) && HEDLEY_GCC_VERSION_CHECK(12,0,0)
+    HEDLEY_DIAGNOSTIC_POP
+  #endif
 
   return 0;
 }
@@ -7243,11 +7250,18 @@ test_simde_mm256_i32gather_pd (SIMDE_MUNIT_TEST_ARGS) {
   };
   for (size_t i = 0 ; i < (sizeof(f64gather_buffer) / sizeof(f64gather_buffer[0])) ; i++) { f64gather_buffer[i] = HEDLEY_STATIC_CAST(simde_float64, i); }
 
+  #if defined(SIMDE_DIAGNOSTIC_DISABLE_UNINITIALIZED_) && HEDLEY_GCC_VERSION_CHECK(12,0,0)
+    HEDLEY_DIAGNOSTIC_PUSH
+    SIMDE_DIAGNOSTIC_DISABLE_UNINITIALIZED_
+  #endif
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
     simde__m128i vindex = simde_x_mm_loadu_epi32(test_vec[i].vindex);
     simde__m256d r = simde_mm256_i32gather_pd(f64gather_buffer, vindex, 8);
     simde_test_x86_assert_equal_f64x4(r, simde_mm256_loadu_pd(test_vec[i].r), 1);
   }
+  #if defined(SIMDE_DIAGNOSTIC_DISABLE_UNINITIALIZED_) && HEDLEY_GCC_VERSION_CHECK(12,0,0)
+    HEDLEY_DIAGNOSTIC_POP
+  #endif
 
   return 0;
 }

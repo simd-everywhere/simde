@@ -24,7 +24,7 @@ RUN \
 RUN \
   apt-get update -y && \
   apt-get upgrade -y && \
-  for arch in armhf arm64 ppc64el s390x i386; do \
+  for arch in armel armhf arm64 ppc64el s390x i386; do \
     dpkg --add-architecture "$arch"; \
   done; \
   apt-get update -y
