@@ -38,8 +38,6 @@ simde_v16u8
 simde_msa_and_v(simde_v16u8 a, simde_v16u8 b) {
   #if defined(SIMDE_MIPS_MSA_NATIVE)
     return __msa_and_v(a, b);
-  #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-    return vandq_u8(a, b);
   #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
     return vec_and(a, b);
   #else
@@ -50,6 +48,8 @@ simde_msa_and_v(simde_v16u8 a, simde_v16u8 b) {
 
     #if defined(SIMDE_X86_SSSE3_NATIVE)
       r_.m128i = _mm_and_si128(a_.m128i, b_.m128i);
+    #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+      r_.neon = vandq_u8(a_.neon, b_.neon);
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r_.v128 = wasm_v128_and(a_.v128, b_.v128);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)

@@ -37,9 +37,8 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde_v16i8
 simde_msa_addvi_b(simde_v16i8 a, const int imm0_31)
     SIMDE_REQUIRE_CONSTANT_RANGE(imm0_31, 0, 31) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-    return vaddq_s8(a, vdupq_n_s8(HEDLEY_STATIC_CAST(int8_t, imm0_31)));
-  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+  
+  #if defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
     return vec_add(a, vec_splats(HEDLEY_STATIC_CAST(signed char, imm0_31)));
   #else
     simde_v16i8_private
@@ -48,6 +47,8 @@ simde_msa_addvi_b(simde_v16i8 a, const int imm0_31)
 
     #if defined(SIMDE_X86_SSE2_NATIVE)
       r_.m128i = _mm_add_epi8(a_.m128i, _mm_set1_epi8(HEDLEY_STATIC_CAST(int8_t, imm0_31)));
+    #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+      r_.neon = vaddq_s8(a_.neon, vdupq_n_s8(HEDLEY_STATIC_CAST(int8_t, imm0_31)));
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r_.v128 = wasm_i8x16_add(a_.v128, wasm_i8x16_splat(HEDLEY_STATIC_CAST(int8_t, imm0_31)));
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
@@ -74,9 +75,8 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde_v8i16
 simde_msa_addvi_h(simde_v8i16 a, const int imm0_31)
     SIMDE_REQUIRE_CONSTANT_RANGE(imm0_31, 0, 31) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-    return vaddq_s16(a, vdupq_n_s16(HEDLEY_STATIC_CAST(int16_t, imm0_31)));
-  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+  
+  #if defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
     return vec_add(a, vec_splats(HEDLEY_STATIC_CAST(signed short, imm0_31)));
   #else
     simde_v8i16_private
@@ -85,6 +85,8 @@ simde_msa_addvi_h(simde_v8i16 a, const int imm0_31)
 
     #if defined(SIMDE_X86_SSE2_NATIVE)
       r_.m128i = _mm_add_epi16(a_.m128i, _mm_set1_epi16(HEDLEY_STATIC_CAST(int16_t, imm0_31)));
+    #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+      r_.neon = vaddq_s16(a_.neon, vdupq_n_s16(HEDLEY_STATIC_CAST(int16_t, imm0_31)));
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r_.v128 = wasm_i16x8_add(a_.v128, wasm_i16x8_splat(HEDLEY_STATIC_CAST(int16_t, imm0_31)));
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
@@ -111,9 +113,7 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde_v4i32
 simde_msa_addvi_w(simde_v4i32 a, const int imm0_31)
     SIMDE_REQUIRE_CONSTANT_RANGE(imm0_31, 0, 31) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-    return vaddq_s32(a, vdupq_n_s32(HEDLEY_STATIC_CAST(int32_t, imm0_31)));
-  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+  #if defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
     return vec_add(a, vec_splats(HEDLEY_STATIC_CAST(signed int, imm0_31)));
   #else
     simde_v4i32_private
@@ -122,6 +122,8 @@ simde_msa_addvi_w(simde_v4i32 a, const int imm0_31)
 
     #if defined(SIMDE_X86_SSE2_NATIVE)
       r_.m128i = _mm_add_epi32(a_.m128i, _mm_set1_epi32(HEDLEY_STATIC_CAST(int32_t, imm0_31)));
+    #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+      r_.neon = vaddq_s32(a_.neon, vdupq_n_s32(HEDLEY_STATIC_CAST(int32_t, imm0_31)));
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r_.v128 = wasm_i32x4_add(a_.v128, wasm_i32x4_splat(HEDLEY_STATIC_CAST(int32_t, imm0_31)));
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
@@ -148,9 +150,7 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde_v2i64
 simde_msa_addvi_d(simde_v2i64 a, const int imm0_31)
     SIMDE_REQUIRE_CONSTANT_RANGE(imm0_31, 0, 31) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-    return vaddq_s64(a, vdupq_n_s64(HEDLEY_STATIC_CAST(int64_t, imm0_31)));
-  #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
+  #if defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
     return vec_add(a, vec_splats(HEDLEY_STATIC_CAST(signed long long, imm0_31)));
   #else
     simde_v2i64_private
@@ -159,6 +159,8 @@ simde_msa_addvi_d(simde_v2i64 a, const int imm0_31)
 
     #if defined(SIMDE_X86_SSE2_NATIVE)
       r_.m128i = _mm_add_epi64(a_.m128i, _mm_set1_epi64x(HEDLEY_STATIC_CAST(int64_t, imm0_31)));
+    #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+      r_.neon = vaddq_s64(a_.neon, vdupq_n_s64(HEDLEY_STATIC_CAST(int64_t, imm0_31)));
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r_.v128 = wasm_i64x2_add(a_.v128, wasm_i64x2_splat(HEDLEY_STATIC_CAST(int64_t, imm0_31)));
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)

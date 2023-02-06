@@ -37,9 +37,8 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde_v16u8
 simde_msa_andi_b(simde_v16u8 a, const int imm0_255)
     SIMDE_REQUIRE_CONSTANT_RANGE(imm0_255, 0, 255) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-    return vandq_u8(a, vdupq_n_u8(HEDLEY_STATIC_CAST(uint8_t, imm0_255)));
-  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+  
+  #if defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
     return vec_and(a, vec_splats(HEDLEY_STATIC_CAST(unsigned char, imm0_255)));
   #else
     simde_v16u8_private
@@ -48,6 +47,8 @@ simde_msa_andi_b(simde_v16u8 a, const int imm0_255)
 
     #if defined(SIMDE_X86_SSE2_NATIVE)
       r_.m128i = _mm_and_si128(a_.m128i, _mm_set1_epi8(HEDLEY_STATIC_CAST(int8_t, imm0_255)));
+    #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+      r_.neon = vandq_u8(a_.neon, vdupq_n_u8(HEDLEY_STATIC_CAST(uint8_t, imm0_255)));
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r_.v128 = wasm_v128_and(a_.v128, wasm_i8x16_splat(HEDLEY_STATIC_CAST(int8_t, imm0_255)));
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)

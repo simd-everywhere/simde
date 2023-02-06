@@ -49,7 +49,7 @@ typedef union {
   #if defined(SIMDE_X86_SSE2_NATIVE)
     __m128i m128i;
   #endif
-  #if defined(SIMDE_MIPS_MSA_A32V7_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     int8x16_t neon;
   #endif
   #if defined(SIMDE_WASM_SIMD128_NATIVE)
@@ -67,7 +67,7 @@ typedef union {
   #if defined(SIMDE_X86_SSE2_NATIVE)
     __m128i m128i;
   #endif
-  #if defined(SIMDE_MIPS_MSA_A32V7_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     int16x8_t neon;
   #endif
   #if defined(SIMDE_WASM_SIMD128_NATIVE)
@@ -85,7 +85,7 @@ typedef union {
   #if defined(SIMDE_X86_SSE2_NATIVE)
     __m128i m128i;
   #endif
-  #if defined(SIMDE_MIPS_MSA_A32V7_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     int32x4_t neon;
   #endif
   #if defined(SIMDE_WASM_SIMD128_NATIVE)
@@ -103,7 +103,7 @@ typedef union {
   #if defined(SIMDE_X86_SSE2_NATIVE)
     __m128i m128i;
   #endif
-  #if defined(SIMDE_MIPS_MSA_A32V7_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     int64x2_t neon;
   #endif
   #if defined(SIMDE_WASM_SIMD128_NATIVE)
@@ -121,7 +121,7 @@ typedef union {
   #if defined(SIMDE_X86_SSE2_NATIVE)
     __m128i m128i;
   #endif
-  #if defined(SIMDE_MIPS_MSA_A32V7_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     int8x16_t neon;
   #endif
   #if defined(SIMDE_WASM_SIMD128_NATIVE)
@@ -139,7 +139,7 @@ typedef union {
   #if defined(SIMDE_X86_SSE2_NATIVE)
     __m128i m128i;
   #endif
-  #if defined(SIMDE_MIPS_MSA_A32V7_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     int16x8_t neon;
   #endif
   #if defined(SIMDE_WASM_SIMD128_NATIVE)
@@ -157,7 +157,7 @@ typedef union {
   #if defined(SIMDE_X86_SSE2_NATIVE)
     __m128i m128i;
   #endif
-  #if defined(SIMDE_MIPS_MSA_A32V7_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     int32x4_t neon;
   #endif
   #if defined(SIMDE_WASM_SIMD128_NATIVE)
@@ -175,7 +175,7 @@ typedef union {
   #if defined(SIMDE_X86_SSE2_NATIVE)
     __m128i m128i;
   #endif
-  #if defined(SIMDE_MIPS_MSA_A32V7_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     int64x2_t neon;
   #endif
   #if defined(SIMDE_WASM_SIMD128_NATIVE)
@@ -193,7 +193,7 @@ typedef union {
   #if defined(SIMDE_X86_SSE2_NATIVE)
     __m128 m128;
   #endif
-  #if defined(SIMDE_MIPS_MSA_A32V7_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     int32x4_t neon;
   #endif
   #if defined(SIMDE_WASM_SIMD128_NATIVE)
@@ -211,7 +211,7 @@ typedef union {
   #if defined(SIMDE_X86_SSE2_NATIVE)
     __m128d m128d;
   #endif
-  #if defined(SIMDE_MIPS_MSA_A32V7_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     int64x2_t neon;
   #endif
   #if defined(SIMDE_WASM_SIMD128_NATIVE)
