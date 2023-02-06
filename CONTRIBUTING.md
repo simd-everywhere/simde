@@ -32,6 +32,7 @@ code to SIMDe you'll need to build them.
 
 Here is the basic procedure for compiling and running the tests:
 
+### On Unix
 ```bash
 mkdir -p build
 cd build
@@ -55,6 +56,18 @@ platform.  Here are a few to try:
 
 If you need a flag not listed above, please let us know so we can add
 it to the list.
+
+### On Windows:
+```bash
+"C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvars64.bat" arm64
+mkdir build
+cd build
+set CFLAGS="/std:c11"
+set CXXFLAGS="/Zc:preprocessor"
+meson setup ..
+ninja test
+```
+Note change arm64 to x64 on x86_64 CPU.
 
 You may also want to take a look at the
 [Docker container](https://github.com/simd-everywhere/simde/tree/master/docker)
