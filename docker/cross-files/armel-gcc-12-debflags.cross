@@ -5,7 +5,7 @@ ar = 'arm-linux-gnueabi-ar'
 strip = 'arm-linux-gnueabi-strip'
 objcopy = 'arm-linux-gnueabi-objcopy'
 ld = 'arm-linux-gnueabi-ld'
-exe_wrapper = 'qemu-arm-static'
+exe_wrapper = ['qemu-arm-static', '-L', '/usr/arm-linux-gnueabi']
 
 [properties]
 c_args = ['-Wextra', '-Werror', '-g', '-O2', '-fstack-protector-strong', '-Wformat', '-Werror=format-security', '-Wdate-time', '-D_FORTIFY_SOURCE=2']

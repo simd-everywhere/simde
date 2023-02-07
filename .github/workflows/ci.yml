@@ -272,6 +272,48 @@ jobs:
     - name: Test
       run: ctest -C test/build ---output-on-failure
 
+  gcc-qemu:
+    strategy:
+      matrix:
+        include:
+        - version: 12
+          distro: ubuntu-22.04
+          cross: aarch64
+          arch_gnu: aarch64
+          arch_deb: arm64
+        # - version: 12
+        #   distro: ubuntu-22.04
+        #   cross: power9
+        #   arch_gnu: powerpc64le
+        #   arch_deb: ppc64el
+        # - version: 12
+        #   distro: ubuntu-22.04
+        #   cross: s390x
+        #   arch_gnu: s390x
+        #   arch_deb: s390x
+
+    runs-on: ${{ matrix.distro }}
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: recursive
+    - name: CPU Information
+      run: cat /proc/cpuinfo
+    - name: Install APT Dependencies
+      run: |
+        sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+        sudo apt-get update -y
+        sudo apt-get -yq install ninja-build parallel \
+          gcc-${{ matrix.version }}-${{ matrix.arch_gnu }}-linux-gnu \
+          g++-${{ matrix.version }}-${{ matrix.arch_gnu }}-linux-gnu binfmt-support \
+          qemu-user-static meson libc6-${{ matrix.arch_deb }}-cross libstdc++-${{ matrix.version }}-dev-${{ matrix.arch_deb }}-cross
+    - name: Configure
+      run: meson setup --cross-file=docker/cross-files/${{ matrix.cross }}-gcc-${{ matrix.version }}.cross build
+    - name: Build
+      run: ninja -C build -v
+    - name: Test
+      run: meson test -C build --print-errorlogs
+
   clang:
     strategy:
       matrix:

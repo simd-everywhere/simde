@@ -5,7 +5,7 @@ ar = 'llvm-ar-11'
 strip = 'llvm-strip-11'
 objcopy = 'llvm-objcopy-11'
 ld = 'llvm-ld-11'
-exe_wrapper = ['qemu-mips64el-static']
+exe_wrapper = ['qemu-mips64el-static', '-L', '/usr/mips64el-linux-gnuabi64']
 
 [properties]
 c_args = ['--target=mips64el-linux-gnuabi64', '-march=mips64r5', '-mmsa', '-isystem=/usr/mips64el-linux-gnuabi64/include', '-Weverything', '-fno-lax-vector-conversions', '-Werror']
