@@ -272,6 +272,38 @@ jobs:
     - name: Test
       run: ctest -C test/build ---output-on-failure
 
+  gcc-aarch64:
+    strategy:
+      matrix:
+        include:
+        - version: 12
+          distro: ubuntu-22.04
+          arch_flags: -march=armv8-a+simd+crypto+crc
+        - version: 12
+          distro: ubuntu-22.04
+          arch_flags: -ffast-math
+    runs-on: ${{ matrix.distro }}
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: recursive
+    - name: CPU Information
+      run: cat /proc/cpuinfo
+    - name: Install APT Dependencies
+      run: |
+        sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+        sudo apt-get update -y
+        sudo apt-get -yq install ninja-build parallel \
+          gcc-${{ matrix.version }}-aarch64-linux-gnu \
+          g++-${{ matrix.version }}-aarch64-linux-gnu binfmt-support \
+          qemu-user-static meson libc6-arm64-cross libstdc++-${{ matrix.version }}-dev-arm64-cross
+    - name: Configure
+      run: meson setup --cross-file=docker/cross-files/aarch64-gcc-${{ matrix.version }}.cross build
+    - name: Build
+      run: ninja -C build -v
+    - name: Test
+      run: meson test -C build --print-errorlogs
+
   clang:
     strategy:
       matrix:
