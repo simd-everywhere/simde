@@ -5,7 +5,7 @@ ar = 'llvm-ar-10'
 strip = 'llvm-strip-10'
 objcopy = 'llvm-objcopy-10'
 ld = 'llvm-ld-10'
-exe_wrapper = 'qemu-aarch64-static'
+exe_wrapper = ['qemu-aarch64-static', '-L', '/usr/aarch64-linux-gnu']
 
 [properties]
 c_args = ['--target=aarch64-linux-gnu', '-march=armv8-a+sve', '-isystem=/usr/aarch64-linux-gnu/include', '-Weverything', '-fno-lax-vector-conversions', '-Werror']

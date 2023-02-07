@@ -5,7 +5,7 @@ ar = 'mips64el-linux-gnuabi64-ar'
 strip = 'mips64el-linux-gnuabi64-strip'
 objcopy = 'mips64el-linux-gnuabi64-objcopy'
 ld = 'mips64el-linux-gnuabi64-ld'
-exe_wrapper = ['qemu-mips64el-static']
+exe_wrapper = ['qemu-mips64el-static', '-L', '/usr/mips64el-linux-gnuabi64']
 
 [properties]
 c_args = ['-mmsa', '-Wextra', '-Werror']

@@ -5,7 +5,6 @@ ar = 'llvm-ar-14'
 strip = 'llvm-strip-14'
 objcopy = 'llvm-objcopy-14'
 ld = 'llvm-ld-14'
-exe_wrapper = 'qemu-arm-static'
 
 [properties]
 c_args = ['--target=i686-linux-gnu', '-isystem=/usr/i686-linux-gnu/include', '-Weverything', '-fno-lax-vector-conversions', '-Werror']

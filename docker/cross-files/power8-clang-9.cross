@@ -5,7 +5,7 @@ ar = 'llvm-ar-9'
 strip = 'llvm-strip-9'
 objcopy = 'llvm-objcopy-9'
 ld = 'llvm-ld-9'
-exe_wrapper = ['qemu-ppc64le-static', '-cpu', 'power8']
+exe_wrapper = ['qemu-ppc64le-static', '-cpu', 'power8', '-L', '/usr/powerpc64le-linux-gnu/']
 
 [properties]
 c_args = ['--target=powerpc64le-linux-gnu', '-mcpu=power8', '-isystem=/usr/powerpc64le-linux-gnu/include', '-Weverything', '-fno-lax-vector-conversions', '-Werror']

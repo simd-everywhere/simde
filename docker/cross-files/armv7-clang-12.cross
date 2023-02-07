@@ -5,7 +5,7 @@ ar = 'llvm-ar-12'
 strip = 'llvm-strip-12'
 objcopy = 'llvm-objcopy-12'
 ld = 'llvm-ld-12'
-exe_wrapper = 'qemu-arm-static'
+exe_wrapper = ['qemu-arm-static', '-L', '/usr/arm-linux-gnueabihf']
 
 [properties]
 c_args = ['--target=arm-linux-gnueabihf', '-march=armv7-a', '-mfpu=neon', '-isystem=/usr/arm-linux-gnueabihf/include', '-Weverything', '-fno-lax-vector-conversions', '-Werror']

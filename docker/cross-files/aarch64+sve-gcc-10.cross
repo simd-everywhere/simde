@@ -5,7 +5,7 @@ ar = 'aarch64-linux-gnu-ar'
 strip = 'aarch64-linux-gnu-strip'
 objcopy = 'aarch64-linux-gnu-objcopy'
 ld = 'aarch64-linux-gnu-ld'
-exe_wrapper = 'qemu-aarch64-static'
+exe_wrapper = ['qemu-aarch64-static', '-L', '/usr/aarch64-linux-gnu']
 
 [properties]
 c_args = ['-march=armv8-a+sve', '-Wextra', '-Werror']

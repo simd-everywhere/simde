@@ -5,7 +5,7 @@ ar = 's390x-linux-gnu-ar'
 strip = 's390x-linux-gnu-strip'
 objcopy = 's390x-linux-gnu-objcopy'
 ld = 's390x-linux-gnu-ld'
-exe_wrapper = ['qemu-s390x-static']
+exe_wrapper = ['qemu-s390x-static', '-L', '/usr/s390x-linux-gnu/']
 
 [properties]
 c_args   = ['-Wextra', '-Werror']
