@@ -37,7 +37,6 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde_v16i8
 simde_msa_addvi_b(simde_v16i8 a, const int imm0_31)
     SIMDE_REQUIRE_CONSTANT_RANGE(imm0_31, 0, 31) {
-  
   #if defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
     return vec_add(a, vec_splats(HEDLEY_STATIC_CAST(signed char, imm0_31)));
   #else
@@ -75,7 +74,6 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde_v8i16
 simde_msa_addvi_h(simde_v8i16 a, const int imm0_31)
     SIMDE_REQUIRE_CONSTANT_RANGE(imm0_31, 0, 31) {
-  
   #if defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
     return vec_add(a, vec_splats(HEDLEY_STATIC_CAST(signed short, imm0_31)));
   #else

@@ -37,7 +37,6 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde_v16u8
 simde_msa_andi_b(simde_v16u8 a, const int imm0_255)
     SIMDE_REQUIRE_CONSTANT_RANGE(imm0_255, 0, 255) {
-  
   #if defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
     return vec_and(a, vec_splats(HEDLEY_STATIC_CAST(unsigned char, imm0_255)));
   #else
