@@ -281,11 +281,22 @@ jobs:
           cross: aarch64
           arch_gnu: aarch64
           arch_deb: arm64
+        - version: 12
+          distro: ubuntu-22.04
+          cross: riscv64
+          arch_gnu: riscv64
+          arch_deb: riscv64
+
+        # power: 150 failures: x86/{avx512/range,sse,sse3}, arm/neon/*, wasm_simd128/, wasm_relexad_simd/*
+        # https://github.com/simd-everywhere/simde/issues/903
         # - version: 12
         #   distro: ubuntu-22.04
         #   cross: power9
         #   arch_gnu: powerpc64le
         #   arch_deb: ppc64el
+
+        # s390x: arm/neon/qdmulh{,_lane,_n} fails
+        # probably related to https://github.com/simd-everywhere/simde/issues/869
         # - version: 12
         #   distro: ubuntu-22.04
         #   cross: s390x
@@ -361,6 +372,18 @@ jobs:
           distro: ubuntu-22.04
           arch_flags: -march=native
         - version: "13"
+          distro: ubuntu-22.04
+          arch_flags: -ffast-math
+        - version: "14"
+          distro: ubuntu-22.04
+          arch_flags: -march=native
+        - version: "14"
+          distro: ubuntu-22.04
+          arch_flags: -ffast-math
+        - version: "15"
+          distro: ubuntu-22.04
+          arch_flags: -march=native
+        - version: "15"
           distro: ubuntu-22.04
           arch_flags: -ffast-math
     runs-on: ${{ matrix.distro }}
