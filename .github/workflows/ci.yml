@@ -99,8 +99,13 @@ jobs:
         submodules: recursive
     - name: CPU Information
       run: cat /proc/cpuinfo
+    - run: sudo apt-get update
+    - name: ccache
+      uses: hendrikmuhs/ccache-action@v1.2
+      with:
+        key: ${{ github.job }}-${{ matrix.isax }}
     - name: Install APT Dependencies
-      run: sudo apt-get update && sudo apt-get install -y ninja-build ninja-build meson parallel gcovr
+      run: sudo apt-get install -y ninja-build ninja-build meson parallel gcovr
     - name: Configure
       run: meson setup build -Db_coverage=true
     - name: Build
@@ -188,10 +193,15 @@ jobs:
     - uses: actions/checkout@v3
       with:
         submodules: recursive
+    - run: sudo apt-get update
+    - name: ccache
+      uses: hendrikmuhs/ccache-action@v1.2
+      with:
+        key: ${{ github.job }}
     - name: CPU Information
       run: cat /proc/cpuinfo
     - name: Install APT Dependencies
-      run: sudo apt-get update && sudo apt-get install -y ninja-build ninja-build meson parallel gcovr libsleef-dev
+      run: sudo apt-get install -y ninja-build ninja-build meson parallel gcovr libsleef-dev
     - name: Configure
       run: meson setup build -Dsleef=enabled -Db_coverage=true
     - name: Build
@@ -281,11 +291,22 @@ jobs:
           cross: aarch64
           arch_gnu: aarch64
           arch_deb: arm64
+        - version: 12
+          distro: ubuntu-22.04
+          cross: riscv64
+          arch_gnu: riscv64
+          arch_deb: riscv64
+
+        # power: 150 failures: x86/{avx512/range,sse,sse3}, arm/neon/*, wasm_simd128/, wasm_relexad_simd/*
+        # https://github.com/simd-everywhere/simde/issues/903
         # - version: 12
         #   distro: ubuntu-22.04
         #   cross: power9
         #   arch_gnu: powerpc64le
         #   arch_deb: ppc64el
+
+        # s390x: arm/neon/qdmulh{,_lane,_n} fails
+        # probably related to https://github.com/simd-everywhere/simde/issues/869
         # - version: 12
         #   distro: ubuntu-22.04
         #   cross: s390x
@@ -297,6 +318,7 @@ jobs:
     - uses: actions/checkout@v3
       with:
         submodules: recursive
+    - run: sudo apt-get update
     - name: CPU Information
       run: cat /proc/cpuinfo
     - name: Install APT Dependencies
@@ -307,8 +329,15 @@ jobs:
           gcc-${{ matrix.version }}-${{ matrix.arch_gnu }}-linux-gnu \
           g++-${{ matrix.version }}-${{ matrix.arch_gnu }}-linux-gnu binfmt-support \
           qemu-user-static meson libc6-${{ matrix.arch_deb }}-cross libstdc++-${{ matrix.version }}-dev-${{ matrix.arch_deb }}-cross
+    - name: ccache
+      uses: hendrikmuhs/ccache-action@v1.2
+      with:
+        key: ${{ github.job }}-${{ matrix.distro }}-${{ matrix.cross }}
+    - name: add ccache to the build path
+      run: |
+        export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
     - name: Configure
-      run: meson setup --cross-file=docker/cross-files/${{ matrix.cross }}-gcc-${{ matrix.version }}.cross build
+      run: meson setup --cross-file=docker/cross-files/${{ matrix.cross }}-gcc-${{ matrix.version }}-ccache.cross build
     - name: Build
       run: ninja -C build -v
     - name: Test
@@ -363,6 +392,18 @@ jobs:
         - version: "13"
           distro: ubuntu-22.04
           arch_flags: -ffast-math
+        - version: "14"
+          distro: ubuntu-22.04
+          arch_flags: -march=native
+        - version: "14"
+          distro: ubuntu-22.04
+          arch_flags: -ffast-math
+        - version: "15"
+          distro: ubuntu-22.04
+          arch_flags: -march=native
+        - version: "15"
+          distro: ubuntu-22.04
+          arch_flags: -ffast-math
     runs-on: ${{ matrix.distro }}
     env:
       CC: clang-${{ matrix.version }}
@@ -398,10 +439,14 @@ jobs:
     - uses: actions/checkout@v3
       with:
         submodules: recursive
-    - name: System Information
-      run: system_profiler
+    # - name: System Information
+    #   run: system_profiler
     - name: Compiler version
       run: cc --version
+    - name: ccache
+      uses: hendrikmuhs/ccache-action@v1.2
+      with:
+        key: ${{ github.job }}-${{ matrix.xcode }}
     - name: Install Homebrew Dependencies
       run: brew install meson ninja gcovr
     - name: Configure

@@ -1,6 +1,6 @@
 [binaries]
-c = 'powerpc64le-linux-gnu-gcc-11'
-cpp = 'powerpc64le-linux-gnu-g++-11'
+c = ['ccache', 'powerpc64le-linux-gnu-gcc-12']
+cpp = ['ccache', 'powerpc64le-linux-gnu-g++-12']
 ar = 'powerpc64le-linux-gnu-ar'
 strip = 'powerpc64le-linux-gnu-strip'
 objcopy = 'powerpc64le-linux-gnu-objcopy'
