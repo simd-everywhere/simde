@@ -3581,7 +3581,7 @@ simde_wasm_i8x16_shl (simde_v128_t a, uint32_t count) {
     #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       r_.neon_i8 = vshlq_s8(a_.neon_i8, vdupq_n_s8(HEDLEY_STATIC_CAST(int8_t, count & 7)));
     #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
-      r_.altivec_i8 = vec_sl(a_.altivec_i8, vec_splats(HEDLEY_STATIC_CAST(unsigned char, count)));
+      r_.altivec_i8 = vec_sl(a_.altivec_i8, vec_splats(HEDLEY_STATIC_CAST(unsigned char, count & 7)));
     #elif defined(SIMDE_VECTOR_SUBSCRIPT) && defined(SIMDE_VECTOR_SCALAR)
       r_.i8 = a_.i8 << (count & 7);
     #else
@@ -3613,7 +3613,7 @@ simde_wasm_i16x8_shl (simde_v128_t a, uint32_t count) {
     #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       r_.neon_i16 = vshlq_s16(a_.neon_i16, vdupq_n_s16(HEDLEY_STATIC_CAST(int16_t, count & 15)));
     #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
-      r_.altivec_i16 = vec_sl(a_.altivec_i16, vec_splats(HEDLEY_STATIC_CAST(unsigned short, count)));
+      r_.altivec_i16 = vec_sl(a_.altivec_i16, vec_splats(HEDLEY_STATIC_CAST(unsigned short, count & 15)));
     #elif defined(SIMDE_VECTOR_SUBSCRIPT) && defined(SIMDE_VECTOR_SCALAR)
       r_.i16 = a_.i16 << (count & 15);
     #else
@@ -3645,7 +3645,7 @@ simde_wasm_i32x4_shl (simde_v128_t a, uint32_t count) {
     #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       r_.neon_i32 = vshlq_s32(a_.neon_i32, vdupq_n_s32(HEDLEY_STATIC_CAST(int32_t, count & 31)));
     #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
-      r_.altivec_i32 = vec_sl(a_.altivec_i32, vec_splats(HEDLEY_STATIC_CAST(unsigned int, count)));
+      r_.altivec_i32 = vec_sl(a_.altivec_i32, vec_splats(HEDLEY_STATIC_CAST(unsigned int, count & 31)));
     #elif defined(SIMDE_VECTOR_SUBSCRIPT) && defined(SIMDE_VECTOR_SCALAR)
       r_.i32 = a_.i32 << (count & 31);
     #else
@@ -3677,7 +3677,7 @@ simde_wasm_i64x2_shl (simde_v128_t a, uint32_t count) {
     #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       r_.neon_i64 = vshlq_s64(a_.neon_i64, vdupq_n_s64(HEDLEY_STATIC_CAST(int64_t, count & 63)));
     #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
-      r_.altivec_i64 = vec_sl(a_.altivec_i64, vec_splats(HEDLEY_STATIC_CAST(unsigned long long, count)));
+      r_.altivec_i64 = vec_sl(a_.altivec_i64, vec_splats(HEDLEY_STATIC_CAST(unsigned long long, count & 63)));
     #elif defined(SIMDE_VECTOR_SUBSCRIPT) && defined(SIMDE_VECTOR_SCALAR)
       r_.i64 = a_.i64 << (count & 63);
     #else
@@ -3709,7 +3709,7 @@ simde_wasm_i8x16_shr (simde_v128_t a, uint32_t count) {
     #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       r_.neon_i8 = vshlq_s8(a_.neon_i8, vdupq_n_s8(HEDLEY_STATIC_CAST(int8_t, -(count & 7))));
     #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
-      r_.altivec_i8 = vec_sra(a_.altivec_i8, vec_splats(HEDLEY_STATIC_CAST(unsigned char, count)));
+      r_.altivec_i8 = vec_sra(a_.altivec_i8, vec_splats(HEDLEY_STATIC_CAST(unsigned char, count & 7)));
     #elif defined(SIMDE_VECTOR_SUBSCRIPT) && defined(SIMDE_VECTOR_SCALAR)
       r_.i8 = a_.i8 >> (count & 7);
     #else
@@ -3741,7 +3741,7 @@ simde_wasm_i16x8_shr (simde_v128_t a, uint32_t count) {
     #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       r_.neon_i16 = vshlq_s16(a_.neon_i16, vdupq_n_s16(HEDLEY_STATIC_CAST(int16_t, -(count & 15))));
     #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
-      r_.altivec_i16 = vec_sra(a_.altivec_i16, vec_splats(HEDLEY_STATIC_CAST(unsigned short, count)));
+      r_.altivec_i16 = vec_sra(a_.altivec_i16, vec_splats(HEDLEY_STATIC_CAST(unsigned short, count & 15)));
     #elif defined(SIMDE_VECTOR_SUBSCRIPT) && defined(SIMDE_VECTOR_SCALAR)
       r_.i16 = a_.i16 >> (count & 15);
     #else
@@ -3773,7 +3773,7 @@ simde_wasm_i32x4_shr (simde_v128_t a, uint32_t count) {
     #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       r_.neon_i32 = vshlq_s32(a_.neon_i32, vdupq_n_s32(HEDLEY_STATIC_CAST(int32_t, -(count & 31))));
     #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
-      r_.altivec_i32 = vec_sra(a_.altivec_i32, vec_splats(HEDLEY_STATIC_CAST(unsigned int, count)));
+      r_.altivec_i32 = vec_sra(a_.altivec_i32, vec_splats(HEDLEY_STATIC_CAST(unsigned int, count & 31)));
     #elif defined(SIMDE_VECTOR_SUBSCRIPT) && defined(SIMDE_VECTOR_SCALAR)
       r_.i32 = a_.i32 >> (count & 31);
     #else
@@ -3805,7 +3805,7 @@ simde_wasm_i64x2_shr (simde_v128_t a, uint32_t count) {
     #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       r_.neon_i64 = vshlq_s64(a_.neon_i64, vdupq_n_s64(HEDLEY_STATIC_CAST(int64_t, -(count & 63))));
     #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
-      r_.altivec_i64 = vec_sra(a_.altivec_i64, vec_splats(HEDLEY_STATIC_CAST(unsigned long long, count)));
+      r_.altivec_i64 = vec_sra(a_.altivec_i64, vec_splats(HEDLEY_STATIC_CAST(unsigned long long, count & 63)));
     #elif defined(SIMDE_VECTOR_SUBSCRIPT) && defined(SIMDE_VECTOR_SCALAR)
       r_.i64 = a_.i64 >> (count & 63);
     #else
@@ -3835,7 +3835,7 @@ simde_wasm_u8x16_shr (simde_v128_t a, uint32_t count) {
     #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       r_.neon_u8 = vshlq_u8(a_.neon_u8, vdupq_n_s8(HEDLEY_STATIC_CAST(int8_t, -(count & 7))));
     #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
-      r_.altivec_u8 = vec_sr(a_.altivec_u8, vec_splats(HEDLEY_STATIC_CAST(unsigned char, count)));
+      r_.altivec_u8 = vec_sr(a_.altivec_u8, vec_splats(HEDLEY_STATIC_CAST(unsigned char, count & 7)));
     #elif defined(SIMDE_VECTOR_SUBSCRIPT) && defined(SIMDE_VECTOR_SCALAR)
       r_.u8 = a_.u8 >> (count & 7);
     #else
@@ -3867,7 +3867,7 @@ simde_wasm_u16x8_shr (simde_v128_t a, uint32_t count) {
     #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       r_.neon_u16 = vshlq_u16(a_.neon_u16, vdupq_n_s16(HEDLEY_STATIC_CAST(int16_t, -(count & 15))));
     #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
-      r_.altivec_i16 = vec_sra(a_.altivec_i16, vec_splats(HEDLEY_STATIC_CAST(unsigned short, count)));
+      r_.altivec_i16 = vec_sra(a_.altivec_i16, vec_splats(HEDLEY_STATIC_CAST(unsigned short, count & 15)));
     #elif defined(SIMDE_VECTOR_SUBSCRIPT) && defined(SIMDE_VECTOR_SCALAR)
       r_.u16 = a_.u16 >> (count & 15);
     #else
@@ -3899,7 +3899,7 @@ simde_wasm_u32x4_shr (simde_v128_t a, uint32_t count) {
     #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       r_.neon_u32 = vshlq_u32(a_.neon_u32, vdupq_n_s32(HEDLEY_STATIC_CAST(int32_t, -(count & 31))));
     #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
-      r_.altivec_i32 = vec_sra(a_.altivec_i32, vec_splats(HEDLEY_STATIC_CAST(unsigned int, count)));
+      r_.altivec_i32 = vec_sra(a_.altivec_i32, vec_splats(HEDLEY_STATIC_CAST(unsigned int, count & 31)));
     #elif defined(SIMDE_VECTOR_SUBSCRIPT) && defined(SIMDE_VECTOR_SCALAR)
       r_.u32 = a_.u32 >> (count & 31);
     #else
@@ -3931,7 +3931,7 @@ simde_wasm_u64x2_shr (simde_v128_t a, uint32_t count) {
     #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       r_.neon_u64 = vshlq_u64(a_.neon_u64, vdupq_n_s64(HEDLEY_STATIC_CAST(int64_t, -(count & 63))));
     #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
-      r_.altivec_i64 = vec_sra(a_.altivec_i64, vec_splats(HEDLEY_STATIC_CAST(unsigned long long, count)));
+      r_.altivec_i64 = vec_sra(a_.altivec_i64, vec_splats(HEDLEY_STATIC_CAST(unsigned long long, count & 63)));
     #elif defined(SIMDE_VECTOR_SUBSCRIPT) && defined(SIMDE_VECTOR_SCALAR)
       r_.u64 = a_.u64 >> (count & 63);
     #else
