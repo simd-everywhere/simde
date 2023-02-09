@@ -230,7 +230,7 @@ typedef union {
   typedef v2u64 simde_v2u64;
   typedef v4f32 simde_v4f32;
   typedef v2f64 simde_v2f64;
-#elif defined(SIMDE_MIPS_MSA_A32V7_NATIVE)
+#elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   typedef   int8x16_t simde_v16i8;
   typedef   int16x8_t simde_v8i16;
   typedef   int32x4_t simde_v4i32;
@@ -240,7 +240,7 @@ typedef union {
   typedef  uint32x4_t simde_v4u32;
   typedef  uint64x2_t simde_v2u64;
   typedef float32x4_t simde_v4f32;
-  #if defined(SIMDE_MIPS_MSA_A64V8_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     typedef float64x2_t simde_v2f64;
   #elif defined(SIMDE_VECTOR)
     typedef double simde_v2f64 __attribute__((__vector_size__(16)));

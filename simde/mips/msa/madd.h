@@ -38,6 +38,10 @@ simde_v4f32
 simde_msa_fmadd_w(simde_v4f32 a, simde_v4f32 b, simde_v4f32 c) {
   #if defined(SIMDE_MIPS_MSA_NATIVE)
     return __msa_fmadd_w(a, b, c);
+  #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(__ARM_FEATURE_FMA)
+    return vfmaq_f32(a, c, b);
+  #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    return vmlaq_f32(a, b, c);
   #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
     return vec_madd(c, b, a);
   #else
@@ -49,10 +53,6 @@ simde_msa_fmadd_w(simde_v4f32 a, simde_v4f32 b, simde_v4f32 c) {
 
     #if defined(SIMDE_X86_FMA_NATIVE)
       r_.m128 = _mm_fmadd_ps(c_.m128, b_.m128, a_.m128);
-    #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(__ARM_FEATURE_FMA)
-      r_.neon = vfmaq_f32(a_.neon, c_.neon, b_.neon);
-    #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-      r_.neon = vmlaq_f32(a_.neon, b_.neon, c_.neon);
     #elif defined(SIMDE_X86_SSE_NATIVE)
       r_.m128 = _mm_add_ps(a_.m128, _mm_mul_ps(b_.m128, c_.m128));
     #elif defined(SIMDE_WASM_RELAXED_SIMD_NATIVE)
@@ -83,6 +83,8 @@ simde_msa_fmadd_d(simde_v2f64 a, simde_v2f64 b, simde_v2f64 c) {
     return __msa_fmadd_d(a, b, c);
   #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
     return vec_madd(c, b, a);
+  #elif defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+    return vfmaq_f64(a, c, b);
   #else
     simde_v2f64_private
       a_ = simde_v2f64_to_private(a),
@@ -94,8 +96,6 @@ simde_msa_fmadd_d(simde_v2f64 a, simde_v2f64 b, simde_v2f64 c) {
       r_.m128d = _mm_fmadd_pd(c_.m128d, b_.m128d, a_.m128d);
     #elif defined(SIMDE_X86_SSE2_NATIVE)
       r_.m128d = _mm_add_pd(a_.m128d, _mm_mul_pd(b_.m128d, c_.m128d));
-    #elif defined(SIMDE_ARM_NEON_A64V8_NATIVE)
-      r_.neon = vfmaq_f64(a_.neon, c_.neon, b_.neon);
     #elif defined(SIMDE_WASM_RELAXED_SIMD_NATIVE)
       r_.v128 = wasm_f64x2_fma(a_.v128, b_.v128, c_.v128);
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)

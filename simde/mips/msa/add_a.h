@@ -38,6 +38,8 @@ simde_v16i8
 simde_msa_add_a_b(simde_v16i8 a, simde_v16i8 b) {
   #if defined(SIMDE_MIPS_MSA_NATIVE)
     return __msa_add_a_b(a, b);
+  #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    return vaddq_s8(vabsq_s8(a), vabsq_s8(b));
   #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
     return vec_add(vec_abs(a), vec_abs(b));
   #else
@@ -48,8 +50,6 @@ simde_msa_add_a_b(simde_v16i8 a, simde_v16i8 b) {
 
     #if defined(SIMDE_X86_SSSE3_NATIVE)
       r_.m128i = _mm_add_epi8(_mm_abs_epi8(a_.m128i), _mm_abs_epi8(b_.m128i));
-    #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-      r_.neon = vaddq_s8(vabsq_s8(a_.neon), vabsq_s8(b_.neon));
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r_.v128 = wasm_i8x16_add(wasm_i8x16_abs(a_.v128), wasm_i8x16_abs(b_.v128));
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
@@ -80,6 +80,8 @@ simde_v8i16
 simde_msa_add_a_h(simde_v8i16 a, simde_v8i16 b) {
   #if defined(SIMDE_MIPS_MSA_NATIVE)
     return __msa_add_a_h(a, b);
+  #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    return vaddq_s16(vabsq_s16(a), vabsq_s16(b));
   #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
     return vec_add(vec_abs(a), vec_abs(b));
   #else
@@ -90,8 +92,6 @@ simde_msa_add_a_h(simde_v8i16 a, simde_v8i16 b) {
 
     #if defined(SIMDE_X86_SSSE3_NATIVE)
       r_.m128i = _mm_add_epi16(_mm_abs_epi16(a_.m128i), _mm_abs_epi16(b_.m128i));
-    #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-      r_.neon = vaddq_s16(vabsq_s16(a_.neon), vabsq_s16(b_.neon));
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r_.v128 = wasm_i16x8_add(wasm_i16x8_abs(a_.v128), wasm_i16x8_abs(b_.v128));
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
@@ -122,6 +122,8 @@ simde_v4i32
 simde_msa_add_a_w(simde_v4i32 a, simde_v4i32 b) {
   #if defined(SIMDE_MIPS_MSA_NATIVE)
     return __msa_add_a_w(a, b);
+  #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    return vaddq_s32(vabsq_s32(a), vabsq_s32(b));
   #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
     return vec_add(vec_abs(a), vec_abs(b));
   #else
@@ -132,8 +134,6 @@ simde_msa_add_a_w(simde_v4i32 a, simde_v4i32 b) {
 
     #if defined(SIMDE_X86_SSSE3_NATIVE)
       r_.m128i = _mm_add_epi32(_mm_abs_epi32(a_.m128i), _mm_abs_epi32(b_.m128i));
-     #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-      r_.neon = vaddq_s32(vabsq_s32(a_.neon), vabsq_s32(b_.neon));
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r_.v128 = wasm_i32x4_add(wasm_i32x4_abs(a_.v128), wasm_i32x4_abs(b_.v128));
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
@@ -164,6 +164,8 @@ simde_v2i64
 simde_msa_add_a_d(simde_v2i64 a, simde_v2i64 b) {
   #if defined(SIMDE_MIPS_MSA_NATIVE)
     return __msa_add_a_d(a, b);
+  #elif defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+    return vaddq_s64(vabsq_s64(a), vabsq_s64(b));
   #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
     return vec_add(vec_abs(a), vec_abs(b));
   #else
@@ -174,8 +176,6 @@ simde_msa_add_a_d(simde_v2i64 a, simde_v2i64 b) {
 
     #if defined(SIMDE_X86_AVX512VL_NATIVE)
       r_.m128i = _mm_add_epi64(_mm_abs_epi64(a_.m128i), _mm_abs_epi64(b_.m128i));
-    #elif defined(SIMDE_ARM_NEON_A64V8_NATIVE)
-      r_.neon = vaddq_s64(vabsq_s64(a_.neon), vabsq_s64(b_.neon));
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r_.v128 = wasm_i64x2_add(wasm_i64x2_abs(a_.v128), wasm_i64x2_abs(b_.v128));
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)

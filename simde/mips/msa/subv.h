@@ -38,6 +38,8 @@ simde_v16i8
 simde_msa_subv_b(simde_v16i8 a, simde_v16i8 b) {
   #if defined(SIMDE_MIPS_MSA_NATIVE)
     return __msa_subv_b(a, b);
+  #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    return vsubq_s8(a, b);
   #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
     return vec_sub(a, b);
   #else
@@ -48,8 +50,6 @@ simde_msa_subv_b(simde_v16i8 a, simde_v16i8 b) {
 
     #if defined(SIMDE_X86_SSE2_NATIVE)
       r_.m128i = _mm_sub_epi8(a_.m128i, b_.m128i);
-    #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-      r_.neon = vsubq_s8(a_.neon, b_.neon);
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r_.v128 = wasm_i8x16_sub(a_.v128, b_.v128);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
@@ -74,6 +74,8 @@ simde_v8i16
 simde_msa_subv_h(simde_v8i16 a, simde_v8i16 b) {
   #if defined(SIMDE_MIPS_MSA_NATIVE)
     return __msa_subv_h(a, b);
+  #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    return vsubq_s16(a, b);
   #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
     return vec_sub(a, b);
   #else
@@ -84,8 +86,6 @@ simde_msa_subv_h(simde_v8i16 a, simde_v8i16 b) {
 
     #if defined(SIMDE_X86_SSE2_NATIVE)
       r_.m128i = _mm_sub_epi16(a_.m128i, b_.m128i);
-    #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-      r_.neon = vsubq_s16(a_.neon, b_.neon);
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r_.v128 = wasm_i16x8_sub(a_.v128, b_.v128);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
@@ -110,6 +110,8 @@ simde_v4i32
 simde_msa_subv_w(simde_v4i32 a, simde_v4i32 b) {
   #if defined(SIMDE_MIPS_MSA_NATIVE)
     return __msa_subv_w(a, b);
+  #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    return vsubq_s32(a, b);
   #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
     return vec_sub(a, b);
   #else
@@ -120,8 +122,6 @@ simde_msa_subv_w(simde_v4i32 a, simde_v4i32 b) {
 
     #if defined(SIMDE_X86_SSE2_NATIVE)
       r_.m128i = _mm_sub_epi32(a_.m128i, b_.m128i);
-    #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-      r_.neon = vsubq_s32(a_.neon, b_.neon);
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r_.v128 = wasm_i32x4_sub(a_.v128, b_.v128);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
@@ -146,6 +146,8 @@ simde_v2i64
 simde_msa_subv_d(simde_v2i64 a, simde_v2i64 b) {
   #if defined(SIMDE_MIPS_MSA_NATIVE)
     return __msa_subv_d(a, b);
+  #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    return vsubq_s64(a, b);
   #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
     return vec_sub(a, b);
   #else
@@ -156,8 +158,6 @@ simde_msa_subv_d(simde_v2i64 a, simde_v2i64 b) {
 
     #if defined(SIMDE_X86_SSE2_NATIVE)
       r_.m128i = _mm_sub_epi64(a_.m128i, b_.m128i);
-    #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-      r_.neon = vsubq_s64(a_.neon, b_.neon);
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r_.v128 = wasm_i64x2_sub(a_.v128, b_.v128);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
