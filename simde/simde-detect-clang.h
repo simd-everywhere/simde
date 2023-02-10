@@ -57,7 +57,9 @@
  * anything we can detect. */
 
 #if defined(__clang__) && !defined(SIMDE_DETECT_CLANG_VERSION)
-#  if __has_warning("-Wformat-insufficient-args")
+#  if __has_warning("-Wwaix-compat")
+#    define SIMDE_DETECT_CLANG_VERSION 130000
+#  elif __has_warning("-Wformat-insufficient-args")
 #    define SIMDE_DETECT_CLANG_VERSION 120000
 #  elif __has_warning("-Wimplicit-const-int-float-conversion")
 #    define SIMDE_DETECT_CLANG_VERSION 110000
