@@ -1026,6 +1026,9 @@ SIMDE_DIAGNOSTIC_DISABLE_CPP98_COMPAT_PEDANTIC_
 #      define SIMDE_BUG_CLANG_48673
 #    endif
 #    define SIMDE_BUG_CLANG_45959
+#    if defined(SIMDE_ARCH_WASM_SIMD128)
+#      define SIMDE_BUG_CLANG_60655
+#    endif
 #  elif defined(HEDLEY_MSVC_VERSION)
 #    if defined(SIMDE_ARCH_X86)
 #      define SIMDE_BUG_MSVC_ROUND_EXTRACT

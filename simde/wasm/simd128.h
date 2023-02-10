@@ -3666,6 +3666,9 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde_v128_t
 simde_wasm_i64x2_shl (simde_v128_t a, uint32_t count) {
   #if defined(SIMDE_WASM_SIMD128_NATIVE)
+    #if defined(SIMDE_BUG_CLANG_60655)
+      count = count & 63;
+    #endif
     return wasm_i64x2_shl(a, count);
   #else
     simde_v128_private
@@ -3794,6 +3797,9 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde_v128_t
 simde_wasm_i64x2_shr (simde_v128_t a, uint32_t count) {
   #if defined(SIMDE_WASM_SIMD128_NATIVE)
+    #if defined(SIMDE_BUG_CLANG_60655)
+      count = count & 63;
+    #endif
     return wasm_i64x2_shr(a, count);
   #else
     simde_v128_private
@@ -3920,6 +3926,9 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde_v128_t
 simde_wasm_u64x2_shr (simde_v128_t a, uint32_t count) {
   #if defined(SIMDE_WASM_SIMD128_NATIVE)
+    #if defined(SIMDE_BUG_CLANG_60655)
+      count = count & 63;
+    #endif
     return wasm_u64x2_shr(a, count);
   #else
     simde_v128_private
