@@ -943,7 +943,9 @@ SIMDE_DIAGNOSTIC_DISABLE_CPP98_COMPAT_PEDANTIC_
 #    elif defined(SIMDE_ARCH_POWER)
 #      define SIMDE_BUG_GCC_95227
 #      define SIMDE_BUG_GCC_95782
-#      define SIMDE_BUG_VEC_CPSGN_REVERSED_ARGS
+#      if !HEDLEY_GCC_VERSION_CHECK(12,0,0)
+#        define SIMDE_BUG_VEC_CPSGN_REVERSED_ARGS
+#      endif
 #    elif defined(SIMDE_ARCH_X86) || defined(SIMDE_ARCH_AMD64)
 #      if !HEDLEY_GCC_VERSION_CHECK(10,2,0) && !defined(__OPTIMIZE__)
 #        define SIMDE_BUG_GCC_96174
