@@ -7,5 +7,11 @@ objcopy = 'i686-linux-gnu-objcopy'
 ld = 'i686-linux-gnu-ld'
 
 [properties]
-c_args = ['-Wextra', '-Werror', '-march=native']
-cpp_args = ['-Wextra', '-Werror', '-march=native']
+c_args = ['-Wextra', '-Werror', '-march=prescott']
+cpp_args = ['-Wextra', '-Werror', '-march=prescott']
+
+[host_machine]
+system = 'linux'
+cpu_family = 'x86'
+cpu = 'prescott'
+endian = 'little'

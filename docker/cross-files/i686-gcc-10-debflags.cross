@@ -11,3 +11,9 @@ c_args = ['-Wextra', '-Werror', '-g', '-O2', '-fstack-protector-strong', '-Wform
 cpp_args = ['-Wextra', '-Werror', '-g', '-O2', '-fstack-protector-strong', '-Wformat', '-Werror=format-security', '-Wdate-time', '-D_FORTIFY_SOURCE=2']
 c_link_args = ['-Wl,-z,relro', '-Wl,-z,now']
 cpp_link_args = ['-Wl,-z,relro', '-Wl,-z,now']
+
+[host_machine]
+system = 'linux'
+cpu_family = 'x86'
+cpu = 'i686'
+endian = 'little'
