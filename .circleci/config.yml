@@ -10,12 +10,14 @@ jobs:
     environment:
       CFLAGS: -Wextra -Werror -march=native
       CXXFLAGS: -Wextra -Werror -march=native
+      CC: gcc
+      CXX: g++
     steps:
       - run: apt-get update && apt-get install -y git ssh ninja-build python3-pip python3-setuptools python3-wheel gcovr gcc g++
       - checkout
       - run: cat /proc/cpuinfo /proc/meminfo
       - run: pip3 install meson
-      - run: CC=gcc CXX=g++ CFLAGS=-Wno-error=stringop-overread CXXFLAGS=-Wno-error=stringop-overread /usr/local/bin/meson setup build -Db_coverage=true
+      - run: /usr/local/bin/meson setup build -Db_coverage=true
       - run: ninja -C build -v -j 5
       - run: ninja -C build -v test
 
@@ -46,17 +48,29 @@ jobs:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
     environment:
-      CC: gcc-mips64el-linux-gnuabi64
-      CXX: g++-mips64el-linux-gnuabi64
       CFLAGS: -Wextra -Werror
       CXXFLAGS: -Wextra -Werror
     steps:
-      - run: apt-get update && apt-get install -y git ssh ninja-build python3-pip python3-setuptools python3-wheel gcovr gcc-mips64el-linux-gnuabi64 g++-mips64el-linux-gnuabi64 qemu-user-static libc6-mips64el-cross
+      - run: apt-get update && apt-get install -y git ssh ninja-build python3-pip python3-setuptools python3-wheel gcovr gcc-mips64el-linux-gnuabi64 g++-mips64el-linux-gnuabi64 qemu-user-static libc6-mips64el-cross ccache
       - checkout
       - run: cat /proc/cpuinfo /proc/meminfo
+      - run:
+          command: |
+            ccache --set-config=max_size='500M'
+            ccache --set-config=compression=true
+            ccache -p
+            ccache -z
       - run: pip3 install meson
-      - run: /usr/local/bin/meson setup build -Db_coverage=true --cross-file=docker/cross-files/loongson-gcc.cross
+      - run: /usr/local/bin/meson setup build -Db_coverage=true --cross-file=docker/cross-files/loongson-gcc-ccache.cross
+      - restore_cache:
+          keys:
+            - v1-loongson-ccache-{{ .Branch }}-
+            - v1-loongson-ccache-
       - run: ninja -C build -v -j 5
+      - run: /usr/bin/ccache -s
+      - save_cache:
+          key: v1-loongson-ccache-{{ .Branch }}-{{ .Revision }}
+          paths: [ "/root/.cache/ccache" ]
       # - run: ninja -C build -v -j 3 test
 
   i686:
@@ -67,16 +81,30 @@ jobs:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
     steps:
-      - run: apt-get update && apt-get install -y git ssh ninja-build python3-pip python3-setuptools python3-wheel gcovr {gcc,g++}-i686-linux-gnu libc6-i386-cross qemu-user-static
+      - run: apt-get update && apt-get install -y git ssh ninja-build python3-pip python3-setuptools python3-wheel gcovr {gcc,g++}-i686-linux-gnu libc6-i386-cross qemu-user-static ccache
       - checkout
       - run:
           name: System Information
           command: cat /proc/cpuinfo /proc/meminfo
       - run: dpkg --add-architecture i386
+      - run:
+          command: |
+            ccache --set-config=max_size='500M'
+            ccache --set-config=compression=true
+            ccache -p
+            ccache -z
       - run: pip3 install meson
       - run: /usr/local/bin/meson setup build -Db_coverage=true --cross-file docker/cross-files/i686-gcc-qemu.cross
+      - restore_cache:
+          keys:
+            - v1-i686-ccache-{{ .Branch }}-
+            - v1-i686-ccache-
       - run: /usr/local/bin/meson compile -C build --verbose -j 5
       - run: /usr/local/bin/meson test -C build --num-processes 5 --print-errorlogs
+      - run: /usr/bin/ccache -s
+      - save_cache:
+          key: v1-i686-ccache-{{ .Branch }}-{{ .Revision }}
+          paths: [ "/root/.cache/ccache" ]
 
   i686-gcc11-O2:
     resource_class: large
@@ -86,16 +114,30 @@ jobs:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
     steps:
-      - run: apt-get update && apt-get install -y git ssh ninja-build python3-pip python3-setuptools python3-wheel gcovr {gcc,g++}-11-i686-linux-gnu libc6-i386-cross qemu-user-static
+      - run: apt-get update && apt-get install -y git ssh ninja-build python3-pip python3-setuptools python3-wheel gcovr {gcc,g++}-11-i686-linux-gnu libc6-i386-cross qemu-user-static ccache
       - checkout
       - run:
           name: System Information
           command: cat /proc/cpuinfo /proc/meminfo
       - run: dpkg --add-architecture i386
+      - run:
+          command: |
+            ccache --set-config=max_size='500M'
+            ccache --set-config=compression=true
+            ccache -p
+            ccache -z
       - run: pip3 install meson
       - run: /usr/local/bin/meson setup build -Db_coverage=true --cross-file docker/cross-files/i686-gcc-11-qemu.cross
+      - restore_cache:
+          keys:
+            - v1-i686-gcc11-O2-ccache-{{ .Branch }}-
+            - v1-i686-gcc11-O2-ccache-
       - run: /usr/local/bin/meson compile -C build --verbose -j 5
       - run: /usr/local/bin/meson test -C build --num-processes 5 --print-errorlogs
+      - run: /usr/bin/ccache -s
+      - save_cache:
+          key: v1-i686-gcc11-O2-ccache-{{ .Branch }}-{{ .Revision }}
+          paths: [ "/root/.cache/ccache" ]
 
 
 workflows:
