@@ -162,12 +162,12 @@ workflows:
               ignore:
               - master
               - /^ci/(?!circleci).*$/
-      - i686:
-          filters:
-            branches:
-              ignore:
-              - master
-              - /^ci/(?!circleci).*$/
+      # - i686:
+      #     filters:
+      #       branches:
+      #         ignore:
+      #         - master
+      #         - /^ci/(?!circleci).*$/
       - i686-gcc11-O2:
           filters:
             branches:
