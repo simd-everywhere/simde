@@ -22,7 +22,7 @@ if [ ! -z "${1}" ]; then
   RELEASE="${1}"
 fi
 
-IMAGE_NAME="simde-dev-${RELEASE}"
+IMAGE_NAME="simde-dev-${RELEASE}${SUFFIX}"
 
 # (Re)build image
 # We only do this if the current image is older than a week, but ou can
@@ -55,7 +55,7 @@ fi
 
 if [ "${BUILD_IMAGE}" != "n" ]; then
   "${DOCKER}" rmi -f "${IMAGE_NAME}" 2>/dev/null || true
-  "${DOCKER}" build --build-arg "RELEASE=${RELEASE}" --build-arg "QEMU_GIT=${QEMU_GIT}" -t "${IMAGE_NAME}" ${CAPABILITIES} -f "${DOCKER_DIR}/Dockerfile" "${DOCKER_DIR}/.."
+  "${DOCKER}" build --build-arg "RELEASE=${RELEASE}" --build-arg "QEMU_GIT=${QEMU_GIT}" -t "${IMAGE_NAME}" ${CAPABILITIES} -f "${DOCKER_DIR}/Dockerfile${SUFFIX}" "${DOCKER_DIR}/.."
 fi
 
 if [ "$(basename "${DOCKER}")" = "podman" ]; then

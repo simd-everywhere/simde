@@ -1,0 +1,20 @@
+[binaries]
+c = 's390x-linux-gnu-gcc-11'
+cpp = 's390x-linux-gnu-g++-11'
+ar = 's390x-linux-gnu-ar'
+strip = 's390x-linux-gnu-strip'
+objcopy = 's390x-linux-gnu-objcopy'
+ld = 's390x-linux-gnu-ld'
+exe_wrapper = ['qemu-s390x-static', '-L', '/usr/s390x-linux-gnu/']
+
+[properties]
+c_args = ['-Wextra', '-Werror', '-g', '-O2', '-fstack-protector-strong', '-Wformat', '-Werror=format-security', '-Wdate-time', '-D_FORTIFY_SOURCE=2']
+cpp_args = ['-Wextra', '-Werror', '-g', '-O2', '-fstack-protector-strong', '-Wformat', '-Werror=format-security', '-Wdate-time', '-D_FORTIFY_SOURCE=2']
+c_link_args = ['-Wl,-z,relro', '-Wl,-z,now']
+cpp_link_args = ['-Wl,-z,relro', '-Wl,-z,now']
+
+[host_machine]
+system = 'linux'
+cpu_family = 's390x'
+cpu = 's390x'
+endian = 'big'

@@ -1,0 +1,18 @@
+[binaries]
+c = ['ccache', 's390x-linux-gnu-gcc-12']
+cpp = ['ccache', 's390x-linux-gnu-g++-12']
+ar = 's390x-linux-gnu-ar'
+strip = 's390x-linux-gnu-strip'
+objcopy = 's390x-linux-gnu-objcopy'
+ld = 's390x-linux-gnu-ld'
+exe_wrapper = ['qemu-s390x-static', '-L', '/usr/s390x-linux-gnu/']
+
+[properties]
+c_args   = ['-march=z13', '-mzvector', '-Wextra', '-Werror']
+cpp_args = ['-march=z13', '-mzvector', '-Wextra', '-Werror']
+
+[host_machine]
+system = 'linux'
+cpu_family = 's390x'
+cpu = 's390x'
+endian = 'big'

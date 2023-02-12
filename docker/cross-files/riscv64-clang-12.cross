@@ -1,0 +1,20 @@
+[binaries]
+c = 'clang-12'
+cpp = 'clang++-12'
+ar = 'llvm-ar-12'
+strip = 'llvm-strip-12'
+objcopy = 'llvm-objcopy-12'
+ld = 'llvm-ld-12'
+exe_wrapper = ['qemu-riscv64-static', '-L', '/usr/riscv64-linux-gnu/']
+
+[properties]
+c_args   = ['--target=riscv64-linux-gnu', '-I/usr/riscv64-linux-gnu/include', '-Wextra', '-Werror']
+cpp_args = ['--target=riscv64-linux-gnu', '-I/usr/riscv64-linux-gnu/include', '-I/usr/riscv64-linux-gnu/include/c++/10/riscv64-linux-gnu', '-Wextra', '-Werror']
+c_link_args = ['--target=riscv64-linux-gnu']
+cpp_link_args = ['--target=riscv64-linux-gnu']
+
+[host_machine]
+system = 'linux'
+cpu_family = 'riscv64'
+cpu = 'rv64'
+endian = 'little'

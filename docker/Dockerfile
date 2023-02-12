@@ -117,3 +117,4 @@ RUN \
 
 RUN mkdir -p /opt/simde
 WORKDIR /opt/simde
+ENV CCACHE_DIR=/opt/simde/.ccache CCACHE_COMPRESS=1
