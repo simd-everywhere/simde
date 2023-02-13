@@ -33,6 +33,7 @@
 #include "mmx.h"
 
 #if defined(_WIN32) && !defined(SIMDE_X86_SSE_NATIVE) && defined(_MSC_VER)
+  #define NOMINMAX
   #include <windows.h>
 #endif
 
