@@ -292,7 +292,11 @@ jobs:
           cross: riscv64
           arch_gnu: riscv64
           arch_deb: riscv64
-
+        - version: 12
+          distro: ubuntu-22.04
+          cross: s390x
+          arch_gnu: s390x
+          arch_deb: s390x
         # power: 150 failures: x86/{avx512/range,sse,sse3}, arm/neon/*, wasm_simd128/, wasm_relexad_simd/*
         # https://github.com/simd-everywhere/simde/issues/903
         # - version: 12
@@ -300,14 +304,6 @@ jobs:
         #   cross: power9
         #   arch_gnu: powerpc64le
         #   arch_deb: ppc64el
-
-        # s390x: arm/neon/qdmulh{,_lane,_n} fails
-        # probably related to https://github.com/simd-everywhere/simde/issues/869
-        # - version: 12
-        #   distro: ubuntu-22.04
-        #   cross: s390x
-        #   arch_gnu: s390x
-        #   arch_deb: s390x
 
     runs-on: ${{ matrix.distro }}
     steps:
