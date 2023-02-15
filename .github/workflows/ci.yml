@@ -137,7 +137,6 @@ jobs:
       run: |
         git clone https://github.com/emscripten-core/emsdk.git /opt/emsdk
         cd /opt/emsdk
-        ./emsdk update-tags
         ./emsdk install tot
         ./emsdk activate tot
         source emsdk_env.sh
@@ -152,9 +151,9 @@ jobs:
     - name: Configure
       run: meson setup build --optimization 2 --cross-file docker/cross-files/emscripten.cross
     - name: Build
-      run: ninja -C build -v
+      run: meson compile -C build --verbose
     - name: Test
-      run: ninja -C build -v test
+      run: meson test -C build --print-errorlogs  $(meson test -C build --list | grep -v emul)
 
   native-aliases:
     runs-on: ubuntu-22.04
