@@ -25,12 +25,12 @@ jobs:
       run: sudo apt-get update && sudo apt-get install -y pcre2-utils
     # Check for trailing whitespace
     - name: Trailing whitespace
-      run: find simde/ -name '*.c' -o -name '*.h' -exec grep -nP '\s+$' {} + && exit 1 || exit 0
+      run: find simde/ \( -name '*.c' -o -name '*.h' \) -exec grep -nP '\s+$' {} + && exit 1 || exit 0
     # We use spaces, not tabs.  I don't want to start a holy war here;
     # I don't actually have a strong preference between the two, but I
     # do have a strong preference for consistency, so don't @ me.
     - name: Tabs
-      run: find simde/ -name '*.c' -o -name '*.h' -exec grep -nP '\t' {} + && exit 1 || exit 0
+      run: find simde/ \( -name '*.c' -o -name '*.h' \) -exec grep -nP '\t' {} + && exit 1 || exit 0
     # s/8/16/ will result in this if the input is x86.
     - name: Bad substitutions
       run: git grep -i 'x''1''6''6' && exit 1 || exit 0
@@ -53,7 +53,7 @@ jobs:
       run: for file in $(find simde/*/ -name '*.h'); do grep -q "$(echo "$file" | tr '[:lower:]' '[:upper:]' | tr '[:punct:]' '_')" "$file" || (echo "Missing or incorrect header guard in $file" && exit 1); done
     # There should be an empty line at the end of every file
     - name: Newline at EOF
-      run: for file in $(find simde -name '*.h'); do if [ ! -z "$(tail -c 1 "$file")" ]; then echo "No newline at end of $file" && exit 1; fi; done
+      run: for file in $(find simde -name '*.h'); do if [ -n "$(tail -c 1 "$file")" ]; then echo "No newline at end of $file" && exit 1; fi; done
     # Don't #ifndef ; use !defined(...) instead.  ifndef leads to annoying inconsistencies
     - name: ifndef
       run: for file in $(find simde -name '*.h'); do grep -qP '^ *# *ifndef ' "${file}" && exit 1 || exit 0; done
@@ -62,7 +62,7 @@ jobs:
       run: for file in $(find simde -name '*.h'); do grep -qF "$(basename "${file}" .h)" meson.build || (echo "${file} missing from top-level meson.build" && exit 1); done
     # Make sure we don't accidentally use `vector ...` instead of SIMDE_POWER_ALTIVEC_VECTOR(...)
     - name: AltiVec raw vector keyword
-      run: find simde/ -name '*.c' -o -name '*.h' -exec grep -nP 'vector( +)((bool|signed|unsigned) +)?(double|float|long long|long|int|short|char)' {} + && exit 1 || exit 0
+      run: find simde/ \( -name '*.c' -o -name '*.h' \) -exec grep -nP 'vector( +)((bool|signed|unsigned) +)?(double|float|long long|long|int|short|char)' {} + && exit 1 || exit 0
     # Check indentation of preprocessor directives.
     - name: Preprocessor directive indentation
       run: find simde/*/ -name 'avx*.h' -exec pcre2grep -M '{\n#' {} + && exit 1 || exit 0
@@ -145,7 +145,7 @@ jobs:
       run: |
         sudo npm install jsvu -g
         jsvu --os=linux64 --engines=v8
-        sudo ln -s $HOME/.jsvu/bin/v8 /usr/bin/v8
+        sudo ln -s "$HOME/.jsvu/bin/v8" /usr/bin/v8
         ls -l /usr/bin/v8
         ls -l ~/.jsvu || true
         /usr/bin/v8 --help
