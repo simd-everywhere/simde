@@ -255,6 +255,8 @@ simde_avx512_families = [
   'fnmsub',
   'insert',
   'kshift',
+  'knot',
+  'kxor',
   'load',
   'loadu',
   'lzcnt',

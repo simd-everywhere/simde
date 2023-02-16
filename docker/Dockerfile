@@ -95,11 +95,9 @@ RUN \
 # Emscripten
 RUN \
   git clone https://github.com/emscripten-core/emsdk.git /opt/emsdk && \
-  cd /opt/emsdk && ./emsdk install tot ccache-git-emscripten-64bit && ./emsdk activate tot ccache-git-emscripten-64bit && \
+  cd /opt/emsdk && ./emsdk install tot && ./emsdk activate tot && \
   ln -s /opt/emsdk/upstream/bin/wasm-ld /usr/bin/wasm-ld && \
-  npm install jsvu -g && jsvu --os=linux64 --engines=v8 && ln -s "/root/.jsvu/bin/v8" "/usr/bin/v8" && \
-  echo 'source "/opt/emsdk/emsdk_env.sh"' >> $HOME/.bash_profile && \
-  echo 'export PATH=/opt/emsdk/ccache/git-emscripten_64bit/bin:$PATH' >> $HOME/.bash_profile
+  npm install jsvu -g && jsvu --os=linux64 --engines=v8 && ln -s "/root/.jsvu/v8" "/usr/bin/v8"
 
 # Meson cross files
 RUN \

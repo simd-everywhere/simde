@@ -555,6 +555,33 @@ simde_mm512_mask_compress_epi32 (simde__m512i src, simde__mmask16 k, simde__m512
 
 SIMDE_FUNCTION_ATTRIBUTES
 void
+simde_mm512_mask_compressstoreu_epi16 (void* base_addr, simde__mmask32 k, simde__m512i a) {
+  #if defined(SIMDE_X86_AVX512VBMI2_NATIVE)
+    _mm512_mask_compressstoreu_epi16(base_addr, k, a);
+  #else
+    simde__m512i_private
+      a_ = simde__m512i_to_private(a);
+    size_t ri = 0;
+
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(a_.i16) / sizeof(a_.i16[0])) ; i++) {
+      if ((k >> i) & 1) {
+        a_.i16[ri++] = a_.i16[i];
+      }
+    }
+
+    simde_memcpy(base_addr, &a_, ri * sizeof(a_.i16[0]));
+
+    return;
+  #endif
+}
+#if defined(SIMDE_X86_AVX512VBMI2_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_mask_compressstoreu_epi16
+  #define _mm512_mask_compressstoreu_epi16(base_addr, k, a) simde_mm512_mask_compressstoreu_epi16(base_addr, k, a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+void
 simde_mm512_mask_compressstoreu_epi32 (void* base_addr, simde__mmask16 k, simde__m512i a) {
   #if defined(SIMDE_X86_AVX512VL_NATIVE) && defined(SIMDE_X86_AVX512F_NATIVE)
     _mm512_mask_compressstoreu_epi32(base_addr, k, a);
