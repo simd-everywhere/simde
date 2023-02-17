@@ -113,7 +113,7 @@ jobs:
     - name: Build
       run: ninja -C build -v
     - name: Test
-      run: meson test -C build --print-errorlogs --wrapper "${GITHUB_WORKSPACE}/test/check-flags.sh sde"
+      run: meson test -C build --print-errorlogs --wrapper "${GITHUB_WORKSPACE}/test/check-flags.sh sde" $(meson test -C build --list | grep -v emul)
     - name: Coverage Report
       run: ninja -C build -v coverage-xml
     - name: CodeCov.io
@@ -158,7 +158,7 @@ jobs:
     - name: Build
       run: meson compile -C build --verbose
     - name: Test
-      run: meson test -C build --print-errorlogs  $(meson test -C build --list | grep -v emul)
+      run: meson test -C build --print-errorlogs $(meson test -C build --list | grep -v emul)
 
   native-aliases:
     runs-on: ubuntu-22.04
@@ -212,7 +212,7 @@ jobs:
     - name: Build
       run: ninja -C build -v
     - name: Test
-      run: ninja -C build -v test
+      run: meson test -C build --print-errorlogs $(meson test -C build --list | grep -v emul)
     - name: Coverage Report
       run: ninja -C build -v coverage-xml
     - name: CodeCov.io
@@ -297,7 +297,7 @@ jobs:
     - name: Build
       run: meson compile -C build --verbose
     - name: Test
-      run: meson test -C build --print-errorlogs
+      run: meson test -C build --print-errorlogs $(meson test -C build --list | grep -v emul)
 
   gcc-qemu:
     strategy:
@@ -354,7 +354,7 @@ jobs:
     - name: Build
       run: ninja -C build -v
     - name: Test
-      run: meson test -C build --print-errorlogs
+      run: meson test -C build --print-errorlogs --print-errorlogs $(meson test -C build --list | grep -v emul)
 
   clang:
     strategy:
@@ -449,7 +449,7 @@ jobs:
     - name: Build
       run: meson compile -C build --verbose
     - name: Test
-      run: meson test -C build --print-errorlogs
+      run: meson test -C build --print-errorlogs $(meson test -C build --list | grep -v emul)
 
   macos:
     runs-on: macos-11
@@ -480,7 +480,7 @@ jobs:
     - name: Build
       run: ninja -C build -v
     - name: Test
-      run: ninja -C build -v test
+      run: meson test -C build --print-errorlogs $(meson test -C build --list | grep -v emul)
     - name: Coverage Report
       run: ninja -C build -v coverage-xml
     - name: CodeCov.io
@@ -500,7 +500,7 @@ jobs:
     - name: CPU Information
       run: cat /proc/cpuinfo
     - name: Install APT Dependencies
-      run: sudo apt-get install -y ninja-build ninja-build python3-pip && sudo pip install meson==0.64
+      run: sudo apt-get install -y ninja-build python3-pip && sudo pip install meson==0.64
     - name: Install ICC
       run: |
         # download the key to system keyring
@@ -520,7 +520,7 @@ jobs:
     - name: Build
       run: ninja -C build -v
     - name: Test
-      run: ninja -C build -v test
+      run: meson test -C build --print-errorlogs $(meson test -C build --list | grep -v emul)
 
   msvc-arm64:
     name: Windows MSVC-AArch64
@@ -541,4 +541,4 @@ jobs:
       - name: Configure and Build
         run: |
           meson --backend=ninja build --cross-file test/arm64cl.txt
-          ninja -C build -v test
+          meson test -C build --print-errorlogs $(meson test -C build --list | grep -v emul)
