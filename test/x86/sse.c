@@ -1591,6 +1591,7 @@ test_simde_mm_cmpnlt_ss(SIMDE_MUNIT_TEST_ARGS) {
   return 0;
 }
 
+#if !defined(SIMDE_FAST_MATH)
 static int
 test_simde_mm_cmpord_ps(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
@@ -1677,6 +1678,7 @@ test_simde_mm_cmpunord_ps(SIMDE_MUNIT_TEST_ARGS) {
 
   return 0;
 }
+#endif
 
 static int
 test_simde_mm_comieq_ss(SIMDE_MUNIT_TEST_ARGS) {
@@ -1924,6 +1926,7 @@ test_simde_mm_comineq_ss(SIMDE_MUNIT_TEST_ARGS) {
   return 0;
 }
 
+#if !defined(SIMDE_FAST_MATH)
 static int
 test_simde_mm_cmpunord_ss(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
@@ -1964,6 +1967,7 @@ test_simde_mm_cmpunord_ss(SIMDE_MUNIT_TEST_ARGS) {
 
   return 0;
 }
+#endif
 
 static int
 test_simde_x_mm_copysign_ps (SIMDE_MUNIT_TEST_ARGS) {
@@ -5801,10 +5805,12 @@ SIMDE_TEST_FUNC_LIST_BEGIN
   SIMDE_TEST_FUNC_LIST_ENTRY(mm_cmpnle_ss)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm_cmpnlt_ps)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm_cmpnlt_ss)
-  SIMDE_TEST_FUNC_LIST_ENTRY(mm_cmpord_ps)
-  SIMDE_TEST_FUNC_LIST_ENTRY(mm_cmpord_ss)
-  SIMDE_TEST_FUNC_LIST_ENTRY(mm_cmpunord_ps)
-  SIMDE_TEST_FUNC_LIST_ENTRY(mm_cmpunord_ss)
+  #if !defined(SIMDE_FAST_MATH)
+    SIMDE_TEST_FUNC_LIST_ENTRY(mm_cmpord_ps)
+    SIMDE_TEST_FUNC_LIST_ENTRY(mm_cmpord_ss)
+    SIMDE_TEST_FUNC_LIST_ENTRY(mm_cmpunord_ps)
+    SIMDE_TEST_FUNC_LIST_ENTRY(mm_cmpunord_ss)
+  #endif
   SIMDE_TEST_FUNC_LIST_ENTRY(mm_comieq_ss)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm_comige_ss)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm_comigt_ss)

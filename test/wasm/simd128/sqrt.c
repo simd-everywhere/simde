@@ -25,6 +25,7 @@
 #include "../../../simde/wasm/simd128.h"
 #include "test-simd128.h"
 
+#if !defined(SIMDE_FAST_MATH)
 static int
 test_simde_wasm_f32x4_sqrt(SIMDE_MUNIT_TEST_ARGS) {
   #if 1
@@ -73,6 +74,7 @@ test_simde_wasm_f32x4_sqrt(SIMDE_MUNIT_TEST_ARGS) {
     return 1;
   #endif
 }
+#endif
 
 static int
 test_simde_wasm_f64x2_sqrt(SIMDE_MUNIT_TEST_ARGS) {
@@ -81,6 +83,7 @@ test_simde_wasm_f64x2_sqrt(SIMDE_MUNIT_TEST_ARGS) {
       simde_float64 a[sizeof(simde_v128_t) / sizeof(simde_float32)];
       simde_float64 r[sizeof(simde_v128_t) / sizeof(simde_float32)];
     } test_vec[8] = {
+      #if !defined(SIMDE_FAST_MATH)
       { {             SIMDE_MATH_NAN, SIMDE_FLOAT64_C(   558.45) },
         {             SIMDE_MATH_NAN, SIMDE_FLOAT64_C(    23.63) } },
       { {             SIMDE_MATH_NAN, SIMDE_FLOAT64_C(   191.40) },
@@ -91,12 +94,13 @@ test_simde_wasm_f64x2_sqrt(SIMDE_MUNIT_TEST_ARGS) {
         {             SIMDE_MATH_NAN,             SIMDE_MATH_NAN } },
       { { SIMDE_FLOAT64_C(  -896.18), SIMDE_FLOAT64_C(   904.07) },
         {             SIMDE_MATH_NAN, SIMDE_FLOAT64_C(    30.07) } },
-      { { SIMDE_FLOAT64_C(   611.51), SIMDE_FLOAT64_C(    40.74) },
-        { SIMDE_FLOAT64_C(    24.73), SIMDE_FLOAT64_C(     6.38) } },
       { { SIMDE_FLOAT64_C(  -197.48), SIMDE_FLOAT64_C(  -839.74) },
         {             SIMDE_MATH_NAN,             SIMDE_MATH_NAN } },
       { { SIMDE_FLOAT64_C(  -744.46), SIMDE_FLOAT64_C(   -29.22) },
-        {             SIMDE_MATH_NAN,             SIMDE_MATH_NAN } }
+        {             SIMDE_MATH_NAN,             SIMDE_MATH_NAN } },
+      #endif
+      { { SIMDE_FLOAT64_C(   611.51), SIMDE_FLOAT64_C(    40.74) },
+        { SIMDE_FLOAT64_C(    24.73), SIMDE_FLOAT64_C(     6.38) } },
     };
 
     for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
@@ -124,7 +128,9 @@ test_simde_wasm_f64x2_sqrt(SIMDE_MUNIT_TEST_ARGS) {
 }
 
 SIMDE_TEST_FUNC_LIST_BEGIN
+#if !defined(SIMDE_FAST_MATH)
   SIMDE_TEST_FUNC_LIST_ENTRY(wasm_f32x4_sqrt)
+#endif
   SIMDE_TEST_FUNC_LIST_ENTRY(wasm_f64x2_sqrt)
 SIMDE_TEST_FUNC_LIST_END
 

@@ -10,7 +10,7 @@ test_simde_vrndn_f32 (SIMDE_MUNIT_TEST_ARGS) {
     simde_float32 a[2];
     simde_float32 r[2];
   } test_vec[] = {
-    #if defined(SIMDE_FAST_NANS)
+    #if defined(SIMDE_FAST_NANS) && !defined(SIMDE_FAST_MATH)
     { {            SIMDE_MATH_NANF,           -SIMDE_MATH_NANF },
       {            SIMDE_MATH_NANF,           -SIMDE_MATH_NANF } },
     #endif

@@ -109,25 +109,31 @@ test_simde_mm512_roundscale_round_ps (SIMDE_MUNIT_TEST_ARGS) {
   r = simde_mm512_roundscale_round_ps(a, INT32_C(         226), INT32_C(           4));
   simde_test_x86_assert_equal_f32x16(r, simde_mm512_loadu_ps(test_vec[2].r), 1);
 
+  #if !defined(SIMDE_FAST_MATH)
   a = simde_mm512_loadu_ps(test_vec[3].a);
   r = simde_mm512_roundscale_round_ps(a, INT32_C(         243), INT32_C(           8));
   simde_test_x86_assert_equal_f32x16(r, simde_mm512_loadu_ps(test_vec[3].r), 1);
+  #endif
 
   a = simde_mm512_loadu_ps(test_vec[4].a);
   r = simde_mm512_roundscale_round_ps(a, INT32_C(          68), INT32_C(           4));
   simde_test_x86_assert_equal_f32x16(r, simde_mm512_loadu_ps(test_vec[4].r), 1);
 
+  #if !defined(SIMDE_FAST_MATH)
   a = simde_mm512_loadu_ps(test_vec[5].a);
   r = simde_mm512_roundscale_round_ps(a, INT32_C(          16), INT32_C(           4));
   simde_test_x86_assert_equal_f32x16(r, simde_mm512_loadu_ps(test_vec[5].r), 1);
+  #endif
 
   a = simde_mm512_loadu_ps(test_vec[6].a);
   r = simde_mm512_roundscale_round_ps(a, INT32_C(         209), INT32_C(           8));
   simde_test_x86_assert_equal_f32x16(r, simde_mm512_loadu_ps(test_vec[6].r), 1);
 
+  #if !defined(SIMDE_FAST_MATH)
   a = simde_mm512_loadu_ps(test_vec[7].a);
   r = simde_mm512_roundscale_round_ps(a, INT32_C(         146), INT32_C(           8));
   simde_test_x86_assert_equal_f32x16(r, simde_mm512_loadu_ps(test_vec[7].r), 1);
+  #endif
 
   return 0;
 #else
@@ -304,20 +310,24 @@ test_simde_mm512_mask_roundscale_round_ps (SIMDE_MUNIT_TEST_ARGS) {
   r = simde_mm512_mask_roundscale_round_ps(src, test_vec[1].k, a, INT32_C(         177), INT32_C(           4));
   simde_test_x86_assert_equal_f32x16(r, simde_mm512_loadu_ps(test_vec[1].r), 1);
 
+  #if !defined(SIMDE_FAST_MATH)
   src = simde_mm512_loadu_ps(test_vec[2].src);
   a = simde_mm512_loadu_ps(test_vec[2].a);
   r = simde_mm512_mask_roundscale_round_ps(src, test_vec[2].k, a, INT32_C(         242), INT32_C(           4));
   simde_test_x86_assert_equal_f32x16(r, simde_mm512_loadu_ps(test_vec[2].r), 1);
+  #endif
 
   src = simde_mm512_loadu_ps(test_vec[3].src);
   a = simde_mm512_loadu_ps(test_vec[3].a);
   r = simde_mm512_mask_roundscale_round_ps(src, test_vec[3].k, a, INT32_C(          83), INT32_C(           4));
   simde_test_x86_assert_equal_f32x16(r, simde_mm512_loadu_ps(test_vec[3].r), 1);
 
+  #if !defined(SIMDE_FAST_MATH)
   src = simde_mm512_loadu_ps(test_vec[4].src);
   a = simde_mm512_loadu_ps(test_vec[4].a);
   r = simde_mm512_mask_roundscale_round_ps(src, test_vec[4].k, a, INT32_C(         100), INT32_C(           4));
   simde_test_x86_assert_equal_f32x16(r, simde_mm512_loadu_ps(test_vec[4].r), 1);
+  #endif
 
   src = simde_mm512_loadu_ps(test_vec[5].src);
   a = simde_mm512_loadu_ps(test_vec[5].a);
@@ -599,9 +609,11 @@ test_simde_mm512_roundscale_round_pd (SIMDE_MUNIT_TEST_ARGS) {
   r = simde_mm512_roundscale_round_pd(a, INT32_C(         224), INT32_C(           8));
   simde_test_x86_assert_equal_f64x8(r, simde_mm512_loadu_pd(test_vec[0].r), 1);
 
+  #if !defined(SIMDE_FAST_MATH)
   a = simde_mm512_loadu_pd(test_vec[1].a);
   r = simde_mm512_roundscale_round_pd(a, INT32_C(         225), INT32_C(           8));
   simde_test_x86_assert_equal_f64x8(r, simde_mm512_loadu_pd(test_vec[1].r), 1);
+  #endif
 
   a = simde_mm512_loadu_pd(test_vec[2].a);
   r = simde_mm512_roundscale_round_pd(a, INT32_C(         114), INT32_C(           4));
@@ -611,9 +623,11 @@ test_simde_mm512_roundscale_round_pd (SIMDE_MUNIT_TEST_ARGS) {
   r = simde_mm512_roundscale_round_pd(a, INT32_C(          35), INT32_C(           4));
   simde_test_x86_assert_equal_f64x8(r, simde_mm512_loadu_pd(test_vec[3].r), 1);
 
+  #if !defined(SIMDE_FAST_MATH)
   a = simde_mm512_loadu_pd(test_vec[4].a);
   r = simde_mm512_roundscale_round_pd(a, INT32_C(         100), INT32_C(           4));
   simde_test_x86_assert_equal_f64x8(r, simde_mm512_loadu_pd(test_vec[4].r), 1);
+  #endif
 
   a = simde_mm512_loadu_pd(test_vec[5].a);
   r = simde_mm512_roundscale_round_pd(a, INT32_C(          48), INT32_C(           8));
@@ -749,6 +763,7 @@ test_simde_mm512_mask_roundscale_round_pd (SIMDE_MUNIT_TEST_ARGS) {
   r = simde_mm512_mask_roundscale_round_pd(src, test_vec[0].k, a, INT32_C(          16), INT32_C(           4));
   simde_test_x86_assert_equal_f64x8(r, simde_mm512_loadu_pd(test_vec[0].r), 1);
 
+  #if !defined(SIMDE_FAST_MATH)
   src = simde_mm512_loadu_pd(test_vec[1].src);
   a = simde_mm512_loadu_pd(test_vec[1].a);
   r = simde_mm512_mask_roundscale_round_pd(src, test_vec[1].k, a, INT32_C(         241), INT32_C(           8));
@@ -758,6 +773,7 @@ test_simde_mm512_mask_roundscale_round_pd (SIMDE_MUNIT_TEST_ARGS) {
   a = simde_mm512_loadu_pd(test_vec[2].a);
   r = simde_mm512_mask_roundscale_round_pd(src, test_vec[2].k, a, INT32_C(           2), INT32_C(           4));
   simde_test_x86_assert_equal_f64x8(r, simde_mm512_loadu_pd(test_vec[2].r), 1);
+  #endif
 
   src = simde_mm512_loadu_pd(test_vec[3].src);
   a = simde_mm512_loadu_pd(test_vec[3].a);
@@ -904,9 +920,11 @@ test_simde_mm512_maskz_roundscale_round_pd (SIMDE_MUNIT_TEST_ARGS) {
   r = simde_mm512_maskz_roundscale_round_pd(test_vec[3].k, a, INT32_C(         243), INT32_C(           4));
   simde_test_x86_assert_equal_f64x8(r, simde_mm512_loadu_pd(test_vec[3].r), 1);
 
+  #if !defined(SIMDE_FAST_MATH)
   a = simde_mm512_loadu_pd(test_vec[4].a);
   r = simde_mm512_maskz_roundscale_round_pd(test_vec[4].k, a, INT32_C(         148), INT32_C(           8));
   simde_test_x86_assert_equal_f64x8(r, simde_mm512_loadu_pd(test_vec[4].r), 1);
+  #endif
 
   a = simde_mm512_loadu_pd(test_vec[5].a);
   r = simde_mm512_maskz_roundscale_round_pd(test_vec[5].k, a, INT32_C(           0), INT32_C(           4));
@@ -1026,20 +1044,24 @@ test_simde_mm_roundscale_round_ss (SIMDE_MUNIT_TEST_ARGS) {
   r = simde_mm_roundscale_round_ss(a, b, INT32_C(         131), INT32_C(           4));
   simde_test_x86_assert_equal_f32x4(r, simde_mm_loadu_ps(test_vec[3].r), 1);
 
+  #if !defined(SIMDE_FAST_MATH)
   a = simde_mm_loadu_ps(test_vec[4].a);
   b = simde_mm_loadu_ps(test_vec[4].b);
   r = simde_mm_roundscale_round_ss(a, b, INT32_C(         132), INT32_C(           8));
   simde_test_x86_assert_equal_f32x4(r, simde_mm_loadu_ps(test_vec[4].r), 1);
+  #endif
 
   a = simde_mm_loadu_ps(test_vec[5].a);
   b = simde_mm_loadu_ps(test_vec[5].b);
   r = simde_mm_roundscale_round_ss(a, b, INT32_C(         160), INT32_C(           8));
   simde_test_x86_assert_equal_f32x4(r, simde_mm_loadu_ps(test_vec[5].r), 1);
 
+  #if !defined(SIMDE_FAST_MATH)
   a = simde_mm_loadu_ps(test_vec[6].a);
   b = simde_mm_loadu_ps(test_vec[6].b);
   r = simde_mm_roundscale_round_ss(a, b, INT32_C(          65), INT32_C(           8));
   simde_test_x86_assert_equal_f32x4(r, simde_mm_loadu_ps(test_vec[6].r), 1);
+  #endif
 
   a = simde_mm_loadu_ps(test_vec[7].a);
   b = simde_mm_loadu_ps(test_vec[7].b);
@@ -1186,11 +1208,13 @@ test_simde_mm_mask_roundscale_round_ss (SIMDE_MUNIT_TEST_ARGS) {
   r = simde_mm_mask_roundscale_round_ss(src, test_vec[5].k, a, b, INT32_C(           0), INT32_C(           4));
   simde_test_x86_assert_equal_f32x4(r, simde_mm_loadu_ps(test_vec[5].r), 1);
 
+  #if !defined(SIMDE_FAST_MATH)
   src = simde_mm_loadu_ps(test_vec[6].src);
   a = simde_mm_loadu_ps(test_vec[6].a);
   b = simde_mm_loadu_ps(test_vec[6].b);
   r = simde_mm_mask_roundscale_round_ss(src, test_vec[6].k, a, b, INT32_C(         113), INT32_C(           4));
   simde_test_x86_assert_equal_f32x4(r, simde_mm_loadu_ps(test_vec[6].r), 1);
+  #endif
 
   src = simde_mm_loadu_ps(test_vec[7].src);
   a = simde_mm_loadu_ps(test_vec[7].a);
@@ -1317,6 +1341,7 @@ test_simde_mm_maskz_roundscale_round_ss (SIMDE_MUNIT_TEST_ARGS) {
   r = simde_mm_maskz_roundscale_round_ss(test_vec[3].k, a, b, INT32_C(          83), INT32_C(           8));
   simde_test_x86_assert_equal_f32x4(r, simde_mm_loadu_ps(test_vec[3].r), 1);
 
+  #if !defined(SIMDE_FAST_MATH)
   a = simde_mm_loadu_ps(test_vec[4].a);
   b = simde_mm_loadu_ps(test_vec[4].b);
   r = simde_mm_maskz_roundscale_round_ss(test_vec[4].k, a, b, INT32_C(         180), INT32_C(           8));
@@ -1326,6 +1351,7 @@ test_simde_mm_maskz_roundscale_round_ss (SIMDE_MUNIT_TEST_ARGS) {
   b = simde_mm_loadu_ps(test_vec[5].b);
   r = simde_mm_maskz_roundscale_round_ss(test_vec[5].k, a, b, INT32_C(         128), INT32_C(           4));
   simde_test_x86_assert_equal_f32x4(r, simde_mm_loadu_ps(test_vec[5].r), 1);
+  #endif
 
   a = simde_mm_loadu_ps(test_vec[6].a);
   b = simde_mm_loadu_ps(test_vec[6].b);
@@ -1425,6 +1451,7 @@ test_simde_mm_roundscale_round_sd (SIMDE_MUNIT_TEST_ARGS) {
 
   simde__m128d a, b, r;
 
+  #if !defined(SIMDE_FAST_MATH)
   a = simde_mm_loadu_pd(test_vec[0].a);
   b = simde_mm_loadu_pd(test_vec[0].b);
   r = simde_mm_roundscale_round_sd(a, b, INT32_C(          64), INT32_C(           8));
@@ -1434,16 +1461,19 @@ test_simde_mm_roundscale_round_sd (SIMDE_MUNIT_TEST_ARGS) {
   b = simde_mm_loadu_pd(test_vec[1].b);
   r = simde_mm_roundscale_round_sd(a, b, INT32_C(          97), INT32_C(           4));
   simde_test_x86_assert_equal_f64x2(r, simde_mm_loadu_pd(test_vec[1].r), 1);
+  #endif
 
   a = simde_mm_loadu_pd(test_vec[2].a);
   b = simde_mm_loadu_pd(test_vec[2].b);
   r = simde_mm_roundscale_round_sd(a, b, INT32_C(         210), INT32_C(           8));
   simde_test_x86_assert_equal_f64x2(r, simde_mm_loadu_pd(test_vec[2].r), 1);
 
+  #if !defined(SIMDE_FAST_MATH)
   a = simde_mm_loadu_pd(test_vec[3].a);
   b = simde_mm_loadu_pd(test_vec[3].b);
   r = simde_mm_roundscale_round_sd(a, b, INT32_C(          19), INT32_C(           8));
   simde_test_x86_assert_equal_f64x2(r, simde_mm_loadu_pd(test_vec[3].r), 1);
+  #endif
 
   a = simde_mm_loadu_pd(test_vec[4].a);
   b = simde_mm_loadu_pd(test_vec[4].b);
@@ -1741,10 +1771,12 @@ test_simde_mm_maskz_roundscale_round_sd (SIMDE_MUNIT_TEST_ARGS) {
   r = simde_mm_maskz_roundscale_round_sd(test_vec[4].k, a, b, INT32_C(         100), INT32_C(           4));
   simde_test_x86_assert_equal_f64x2(r, simde_mm_loadu_pd(test_vec[4].r), 1);
 
+  #if !defined(SIMDE_FAST_MATH)
   a = simde_mm_loadu_pd(test_vec[5].a);
   b = simde_mm_loadu_pd(test_vec[5].b);
   r = simde_mm_maskz_roundscale_round_sd(test_vec[5].k, a, b, INT32_C(          64), INT32_C(           4));
   simde_test_x86_assert_equal_f64x2(r, simde_mm_loadu_pd(test_vec[5].r), 1);
+  #endif
 
   a = simde_mm_loadu_pd(test_vec[6].a);
   b = simde_mm_loadu_pd(test_vec[6].b);

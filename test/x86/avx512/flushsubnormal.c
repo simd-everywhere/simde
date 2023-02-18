@@ -4,6 +4,7 @@
 #include <simde/x86/avx512/flushsubnormal.h>
 #include <simde/x86/avx512/set1.h>
 
+#if !defined(SIMDE_FAST_MATH)
 static int
 test_simde_x_mm_flushsubnormal_ps (SIMDE_MUNIT_TEST_ARGS) {
   for (size_t i = 0 ; i < 8 ; i++) {
@@ -124,13 +125,27 @@ test_simde_x_mm512_flushsubnormal_pd (SIMDE_MUNIT_TEST_ARGS) {
   return 0;
 }
 
+#else
+/* To avoid a warning about expr < 0 always evaluating to false
+ * (-Wtype-limits) because there are no functions to test. */
+
+static int
+test_simde_dummy (SIMDE_MUNIT_TEST_ARGS) {
+  return 0;
+}
+#endif /* !defined(SIMDE_FAST_MATH) */
+
 SIMDE_TEST_FUNC_LIST_BEGIN
-  SIMDE_TEST_FUNC_LIST_ENTRY(x_mm_flushsubnormal_ps)
-  SIMDE_TEST_FUNC_LIST_ENTRY(x_mm256_flushsubnormal_ps)
-  SIMDE_TEST_FUNC_LIST_ENTRY(x_mm512_flushsubnormal_ps)
-  SIMDE_TEST_FUNC_LIST_ENTRY(x_mm_flushsubnormal_pd)
-  SIMDE_TEST_FUNC_LIST_ENTRY(x_mm256_flushsubnormal_pd)
-  SIMDE_TEST_FUNC_LIST_ENTRY(x_mm512_flushsubnormal_pd)
+  #if !defined(SIMDE_FAST_MATH)
+    SIMDE_TEST_FUNC_LIST_ENTRY(x_mm_flushsubnormal_ps)
+    SIMDE_TEST_FUNC_LIST_ENTRY(x_mm256_flushsubnormal_ps)
+    SIMDE_TEST_FUNC_LIST_ENTRY(x_mm512_flushsubnormal_ps)
+    SIMDE_TEST_FUNC_LIST_ENTRY(x_mm_flushsubnormal_pd)
+    SIMDE_TEST_FUNC_LIST_ENTRY(x_mm256_flushsubnormal_pd)
+    SIMDE_TEST_FUNC_LIST_ENTRY(x_mm512_flushsubnormal_pd)
+  #else
+    SIMDE_TEST_FUNC_LIST_ENTRY(dummy)
+  #endif
 SIMDE_TEST_FUNC_LIST_END
 
 #include <test/x86/avx512/test-avx512-footer.h>

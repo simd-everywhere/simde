@@ -37,8 +37,6 @@ static simde_float64 u64_to_f64(uint64_t u64) {
   return f64;
 }
 
-#define SIMDE_F64_ALL_SET (u64_to_f64(~UINT64_C(0)))
-
 static int
 test_simde_mm256_set_epi8(SIMDE_MUNIT_TEST_ARGS) {
   for (size_t i = 0 ; i < 32 ; i++) {
@@ -3015,6 +3013,12 @@ test_simde_mm256_ceil_ps(SIMDE_MUNIT_TEST_ARGS) {
 
   return 0;
 }
+
+#if !defined(SIMDE_FAST_MATH)
+// Could be re-enabled if test cases without NAN arguments or results are added
+// But will need to make sure only those NAN-less tests are run in FAST_MATH mode
+
+#define SIMDE_F64_ALL_SET (u64_to_f64(~UINT64_C(0)))
 
 static int
 test_simde_mm_cmp_pd (SIMDE_MUNIT_TEST_ARGS) {
@@ -6923,6 +6927,8 @@ test_simde_mm256_cmp_ps (SIMDE_MUNIT_TEST_ARGS) {
   return 1;
 #endif
 }
+
+#endif /* if !defined(SIMDE_FAST_MATH) */
 
 static int
 test_simde_mm256_cvtepi32_pd(SIMDE_MUNIT_TEST_ARGS) {
@@ -16212,12 +16218,14 @@ SIMDE_TEST_FUNC_LIST_BEGIN
   SIMDE_TEST_FUNC_LIST_ENTRY(mm256_ceil_ps)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm256_ceil_pd)
 
-  SIMDE_TEST_FUNC_LIST_ENTRY(mm_cmp_sd)
-  SIMDE_TEST_FUNC_LIST_ENTRY(mm_cmp_ss)
-  SIMDE_TEST_FUNC_LIST_ENTRY(mm_cmp_pd)
-  SIMDE_TEST_FUNC_LIST_ENTRY(mm_cmp_ps)
-  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_cmp_pd)
-  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_cmp_ps)
+  #if !defined(SIMDE_FAST_MATH)
+    SIMDE_TEST_FUNC_LIST_ENTRY(mm_cmp_sd)
+    SIMDE_TEST_FUNC_LIST_ENTRY(mm_cmp_ss)
+    SIMDE_TEST_FUNC_LIST_ENTRY(mm_cmp_pd)
+    SIMDE_TEST_FUNC_LIST_ENTRY(mm_cmp_ps)
+    SIMDE_TEST_FUNC_LIST_ENTRY(mm256_cmp_pd)
+    SIMDE_TEST_FUNC_LIST_ENTRY(mm256_cmp_ps)
+  #endif
 
   SIMDE_TEST_FUNC_LIST_ENTRY(mm256_cvtepi32_pd)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm256_cvtepi32_ps)

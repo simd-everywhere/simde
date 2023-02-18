@@ -33,7 +33,10 @@
 #include <simde/x86/avx512/mov.h>
 #include <simde/x86/avx512/set1.h>
 
-#if !defined(SIMDE_NATIVE_ALIASES_TESTING)
+#if !defined(SIMDE_NATIVE_ALIASES_TESTING) && !defined(SIMDE_FAST_MATH)
+// TODO: SIMDE_FAST_MATH can be tested, but only for tests cases with no
+// NAN in the parameters or results
+
 static int
 test_simde_mm512_cmp_ps_mask (SIMDE_MUNIT_TEST_ARGS) {
 #if 1
@@ -2436,10 +2439,10 @@ test_simde_dummy (SIMDE_MUNIT_TEST_ARGS) {
   return 0;
 }
 
-#endif /* !defined(SIMDE_NATIVE_ALIASES_TESTING */
+#endif /* !defined(SIMDE_NATIVE_ALIASES_TESTING) && !defined(SIMDE_FAST_MATH) */
 
 SIMDE_TEST_FUNC_LIST_BEGIN
-  #if !defined(SIMDE_NATIVE_ALIASES_TESTING)
+  #if !defined(SIMDE_NATIVE_ALIASES_TESTING) && !defined(SIMDE_FAST_MATH)
     SIMDE_TEST_FUNC_LIST_ENTRY(mm512_cmp_ps_mask)
     SIMDE_TEST_FUNC_LIST_ENTRY(mm256_cmp_ps_mask)
     SIMDE_TEST_FUNC_LIST_ENTRY(mm_cmp_ps_mask)
