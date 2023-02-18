@@ -244,18 +244,21 @@ jobs:
         - version: 10
           distro: ubuntu-20.04
           arch_flags: -ffast-math
+          ccache: 'true'
         - version: 11
           distro: ubuntu-22.04
           arch_flags: -march=native
         - version: 11
           distro: ubuntu-22.04
           arch_flags: -ffast-math
+          ccache: 'true'
         - version: 12
           distro: ubuntu-22.04
           arch_flags: -march=native
         - version: 12
           distro: ubuntu-22.04
           arch_flags: -ffast-math
+          ccache: 'true'
     runs-on: ${{ matrix.distro }}
     env:
       CC: gcc-${{ matrix.version }}
@@ -268,14 +271,23 @@ jobs:
         submodules: recursive
     - name: CPU Information
       run: cat /proc/cpuinfo
+    - name: ccache
+      uses: hendrikmuhs/ccache-action@v1.2
+      if: ${{ matrix.ccache == 'true' }}
+      with:
+        key: ${{ github.job }}-${{ matrix.version }}-${{ matrix.distro }}-${{ matrix.arch_flags }}
     - name: Install APT Dependencies
-      run: sudo add-apt-repository ppa:ubuntu-toolchain-r/test && sudo apt-get update && sudo apt-get -yq install ninja-build parallel "${CC}" "${CXX}"
+      run: |
+        sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+        sudo apt-get update
+        sudo apt-get -yq install gcovr python3-pip ninja-build parallel "${CC}" "${CXX}"
+        sudo python3 -m pip install meson
     - name: Configure
-      run: mkdir test/build && cd test/build && cmake -G Ninja ..
+      run: meson setup build
     - name: Build
-      run: ninja -C test/build -v
+      run: meson compile -C build --verbose
     - name: Test
-      run: ctest -C test/build ---output-on-failure
+      run: meson test -C build --print-errorlogs
 
   gcc-qemu:
     strategy:
@@ -303,7 +315,6 @@ jobs:
         #   cross: power9
         #   arch_gnu: powerpc64le
         #   arch_deb: ppc64el
-
     runs-on: ${{ matrix.distro }}
     steps:
     - uses: actions/checkout@v3
@@ -377,24 +388,28 @@ jobs:
         - version: "12"
           distro: ubuntu-20.04
           arch_flags: -ffast-math
+          ccache: 'true'
         - version: "13"
           distro: ubuntu-22.04
           arch_flags: -march=native
         - version: "13"
           distro: ubuntu-22.04
           arch_flags: -ffast-math
+          ccache: 'true'
         - version: "14"
           distro: ubuntu-22.04
           arch_flags: -march=native
         - version: "14"
           distro: ubuntu-22.04
           arch_flags: -ffast-math
+          ccache: 'true'
         - version: "15"
           distro: ubuntu-22.04
           arch_flags: -march=native
         - version: "15"
           distro: ubuntu-22.04
           arch_flags: -ffast-math
+          ccache: 'true'
     runs-on: ${{ matrix.distro }}
     env:
       CC: clang-${{ matrix.version }}
@@ -407,14 +422,23 @@ jobs:
         submodules: recursive
     - name: CPU Information
       run: cat /proc/cpuinfo
+    - name: ccache
+      uses: hendrikmuhs/ccache-action@v1.2
+      if: ${{ matrix.ccache == 'true' }}
+      with:
+        key: ${{ github.job }}-${{ matrix.version }}-${{ matrix.distro }}-${{ matrix.arch_flags }}
     - name: Install APT Dependencies
-      run: sudo add-apt-repository ppa:ubuntu-toolchain-r/test && sudo apt-get update && sudo apt-get -yq install ninja-build parallel clang-${{ matrix.version }}
+      run: |
+        sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+        sudo apt-get update
+        sudo apt-get -yq install gcovr ninja-build python3-pip clang-${{ matrix.version }}
+        sudo python3 -m pip install meson
     - name: Configure
-      run: mkdir test/build && cd test/build && cmake -G Ninja ..
+      run: meson setup build
     - name: Build
-      run: ninja -C test/build -v
+      run: meson compile -C build --verbose
     - name: Test
-      run: ctest -C test/build ---output-on-failure
+      run: meson test -C build --print-errorlogs
 
   macos:
     runs-on: macos-11
