@@ -8198,7 +8198,7 @@ simde_wasm_i32x4_trunc_sat_f32x4 (simde_v128_t a) {
     #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       r_.neon_i32 = vcvtq_s32_f32(a_.neon_f32);
     #elif defined(SIMDE_CONVERT_VECTOR_) && defined(SIMDE_FAST_CONVERSION_RANGE)
-      SIMDE_CONVERT_VECTOR_(r_.f32, a_.f32);
+      SIMDE_CONVERT_VECTOR_(r_.i32, a_.f32);
     #elif defined(SIMDE_X86_SSE2_NATIVE)
       const __m128i i32_max_mask = _mm_castps_si128(_mm_cmpgt_ps(a_.sse_m128, _mm_set1_ps(SIMDE_FLOAT32_C(2147483520.0))));
       const __m128 clamped = _mm_max_ps(a_.sse_m128, _mm_set1_ps(HEDLEY_STATIC_CAST(simde_float32, INT32_MIN)));
