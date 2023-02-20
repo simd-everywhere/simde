@@ -15,7 +15,7 @@ task:
   install_dependencies_script:
     - apt-get update
     - apt-get install -y ninja-build ninja-build python3-pip python3-setuptools python3-wheel gcovr clang
-    - pip3 install meson
+    - pip3 install meson==0.55.0
   configure_script:
     - /usr/local/bin/meson setup build -Db_coverage=true -Db_sanitize=address,undefined -Db_lundef=false
   build_script:

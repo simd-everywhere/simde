@@ -105,7 +105,9 @@ jobs:
       with:
         key: ${{ github.job }}-${{ matrix.isax }}
     - name: Install APT Dependencies
-      run: sudo apt-get install -y ninja-build ninja-build meson parallel gcovr
+      run: |
+        sudo apt-get install -y ninja-build ninja-build python3-pip parallel gcovr
+        sudo python3 -m pip install meson==0.55.0
     - name: Configure
       run: meson setup build -Db_coverage=true
     - name: Build
@@ -132,7 +134,10 @@ jobs:
     - name: CPU Information
       run: cat /proc/cpuinfo
     - name: Install APT Dependencies
-      run: sudo apt-get update && sudo apt-get install -y ninja-build ninja-build meson parallel gcovr
+      run: |
+        sudo apt-get update && \
+        sudo apt-get install -y ninja-build ninja-build python3-pip parallel gcovr &&\
+        sudo python3 -m pip install meson==0.55.0
     - name: Install emscripten
       run: |
         git clone https://github.com/emscripten-core/emsdk.git /opt/emsdk
@@ -167,7 +172,10 @@ jobs:
     - name: CPU Information
       run: cat /proc/cpuinfo
     - name: Install APT Dependencies
-      run: sudo apt-get update && sudo apt-get -yq install libxml2-utils ninja-build meson parallel gcovr
+      run: |
+        sudo apt-get update && \
+        sudo apt-get -yq install libxml2-utils ninja-build parallel gcovr && \
+        sudo python3 -m pip install meson==0.55.0
     - name: Convert
       run: ./test/native-aliases.sh
     - name: Configure
@@ -196,7 +204,9 @@ jobs:
     - name: CPU Information
       run: cat /proc/cpuinfo
     - name: Install APT Dependencies
-      run: sudo apt-get install -y ninja-build ninja-build meson parallel gcovr libsleef-dev
+      run: |
+        sudo apt-get install -y ninja-build ninja-build parallel gcovr libsleef-dev
+        sudo python3 -m pip install meson==0.55.0
     - name: Configure
       run: meson setup build -Dsleef=enabled -Db_coverage=true
     - name: Build
@@ -281,7 +291,7 @@ jobs:
         sudo add-apt-repository ppa:ubuntu-toolchain-r/test
         sudo apt-get update
         sudo apt-get -yq install gcovr python3-pip ninja-build parallel "${CC}" "${CXX}"
-        sudo python3 -m pip install meson
+        sudo python3 -m pip install meson==0.55.0
     - name: Configure
       run: meson setup build
     - name: Build
@@ -330,7 +340,8 @@ jobs:
         sudo apt-get -yq install ninja-build parallel \
           gcc-${{ matrix.version }}-${{ matrix.arch_gnu }}-linux-gnu \
           g++-${{ matrix.version }}-${{ matrix.arch_gnu }}-linux-gnu binfmt-support \
-          qemu-user-static meson libc6-${{ matrix.arch_deb }}-cross libstdc++-${{ matrix.version }}-dev-${{ matrix.arch_deb }}-cross
+          qemu-user-static python3-pip libc6-${{ matrix.arch_deb }}-cross libstdc++-${{ matrix.version }}-dev-${{ matrix.arch_deb }}-cross
+        sudo python3 -m pip install meson==0.55.0
     - name: ccache
       uses: hendrikmuhs/ccache-action@v1.2
       with:
@@ -432,7 +443,7 @@ jobs:
         sudo add-apt-repository ppa:ubuntu-toolchain-r/test
         sudo apt-get update
         sudo apt-get -yq install gcovr ninja-build python3-pip clang-${{ matrix.version }}
-        sudo python3 -m pip install meson
+        sudo python3 -m pip install meson==0.55.0
     - name: Configure
       run: meson setup build
     - name: Build

@@ -16,7 +16,7 @@ jobs:
       - run: apt-get update && apt-get install -y git ssh ninja-build python3-pip python3-setuptools python3-wheel gcovr gcc g++
       - checkout
       - run: cat /proc/cpuinfo /proc/meminfo
-      - run: pip3 install meson
+      - run: pip3 install meson==0.55.0
       - run: /usr/local/bin/meson setup build -Db_coverage=true
       - run: ninja -C build -v -j 5
       - run: ninja -C build -v test
@@ -35,7 +35,7 @@ jobs:
       - run: apt-get update && apt-get install -y git ssh ninja-build python3-pip python3-setuptools python3-wheel gcovr clang
       - checkout
       - run: cat /proc/cpuinfo /proc/meminfo
-      - run: pip3 install meson
+      - run: pip3 install meson==0.55.0
       - run: CC=clang CXX=clang++ /usr/local/bin/meson setup build -Db_coverage=true
       - run: ninja -C build -v -j 5
       - run: ninja -C build -v test
@@ -60,7 +60,7 @@ jobs:
             ccache --set-config=compression=true
             ccache -p
             ccache -z
-      - run: pip3 install meson
+      - run: pip3 install meson==0.55.0
       - run: /usr/local/bin/meson setup build -Db_coverage=true --cross-file=docker/cross-files/loongson-gcc-ccache.cross
       - restore_cache:
           keys:
@@ -87,7 +87,7 @@ jobs:
           name: System Information
           command: cat /proc/cpuinfo /proc/meminfo
       - run: dpkg --add-architecture i386
-      - run: pip3 install meson
+      - run: pip3 install meson==0.55.0
       - run: /usr/local/bin/meson setup build -Db_coverage=true --cross-file docker/cross-files/i686-gcc-qemu.cross
       - restore_cache:
           keys:
@@ -120,7 +120,7 @@ jobs:
           name: System Information
           command: cat /proc/cpuinfo /proc/meminfo
       - run: dpkg --add-architecture i386
-      - run: pip3 install meson
+      - run: pip3 install meson==0.55.0
       - run: /usr/local/bin/meson setup build -Db_coverage=true --cross-file docker/cross-files/i686-gcc-11-qemu.cross
       - restore_cache:
           keys:
