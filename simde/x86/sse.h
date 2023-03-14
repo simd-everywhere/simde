@@ -3472,6 +3472,9 @@ simde_mm_prefetch (const void* p, int i) {
         __prefetch_by_load(p, 0, 1);
         break;
     }
+  #elif HEDLEY_MSVC_VERSION
+    (void) i;
+    (void) p;
   #endif
 }
 #if defined(SIMDE_X86_SSE_NATIVE)
