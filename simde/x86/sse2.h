@@ -1354,7 +1354,7 @@ simde_mm_clflush (void const* p) {
   #endif
 }
 #if defined(SIMDE_X86_SSE2_ENABLE_NATIVE_ALIASES)
-  #define _mm_clflush(a, b) simde_mm_clflush()
+  #define _mm_clflush(p) simde_mm_clflush(p)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
