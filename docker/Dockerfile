@@ -35,11 +35,11 @@ RUN \
     binfmt-support qemu-user-static \
     creduce screen htop parallel nano rsync strace \
     npm libsleef-dev \
-    python3-pip wget
+    pipx wget
 
 # Meson on stable is too old, and we want to make sure we keep 0.55
 # working for a while.
-RUN pip3 install meson==0.55.0
+RUN pipx install meson==0.55.0
 
 # GCC cross-compilers
 RUN \
