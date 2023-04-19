@@ -1,5 +1,6 @@
 environment:
   MESON_EXE_WRAPPER: "['C:\\Program Files\\OpenCppCoverage\\OpenCppCoverage.exe', '--export_type=cobertura', '--']"
+  CCACHE_MAXSIZE: '500Mi'
   matrix:
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
       VCVARSALL: C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvarsall.bat
@@ -17,11 +18,15 @@ branches:
 
 platform:
   - x64
-
+cache:
+  - '%SystemDrive%\ccache'
+init:
+  - pwsh: |
+      $Env:APPVEYOR_SAVE_CACHE_ON_ERROR = 'true'
 install:
   - cmd: set PATH=%PYTHON_DIR%;%PYTHON_DIR%\scripts;%PATH%
   - cmd: pip install --upgrade ninja meson
-  - cmd: choco install opencppcoverage codecov
+  - cmd: choco install opencppcoverage codecov ccache
   - cmd: call "%VCVARSALL%" amd64
 
 before_build:
@@ -29,7 +34,11 @@ before_build:
       git submodule -q update --init --recursive
 
 build_script:
-  - cmd: meson --backend=ninja build
+  - cmd: |
+      set CCACHE_DIR=%SystemDrive%\ccache
+      set CC=ccache.exe cl.exe
+      set CXX=ccache.exe cl.exe
+      meson --backend=ninja build
   - cmd: ninja -C build -v test
 
 ## This seems to work; data shows up on CodeCov, but it emits an error
