@@ -13,11 +13,11 @@ jobs:
       CC: gcc
       CXX: g++
     steps:
-      - run: apt-get update && apt-get install -y git ssh ninja-build python3-pip python3-setuptools python3-wheel gcovr gcc g++
+      - run: apt-get update && apt-get install -y git ssh ninja-build pipx python3-setuptools python3-wheel gcovr gcc g++
       - checkout
       - run: cat /proc/cpuinfo /proc/meminfo
-      - run: pip3 install meson==0.55.0
-      - run: /usr/local/bin/meson setup build -Db_coverage=true
+      - run: pipx install meson==0.55.0
+      - run: /root/.local/bin/meson setup build -Db_coverage=true
       - run: ninja -C build -v -j 5
       - run: ninja -C build -v test
 
@@ -32,11 +32,11 @@ jobs:
       CFLAGS: -Weverything -Werror -march=native
       CXXFLAGS: -Weverything -Werror -march=native
     steps:
-      - run: apt-get update && apt-get install -y git ssh ninja-build python3-pip python3-setuptools python3-wheel gcovr clang
+      - run: apt-get update && apt-get install -y git ssh ninja-build pipx python3-setuptools python3-wheel gcovr clang
       - checkout
       - run: cat /proc/cpuinfo /proc/meminfo
-      - run: pip3 install meson==0.55.0
-      - run: CC=clang CXX=clang++ /usr/local/bin/meson setup build -Db_coverage=true
+      - run: pipx install meson==0.55.0
+      - run: CC=clang CXX=clang++ /root/.local/bin/meson setup build -Db_coverage=true
       - run: ninja -C build -v -j 5
       - run: ninja -C build -v test
 
@@ -51,7 +51,7 @@ jobs:
       CFLAGS: -Wextra -Werror
       CXXFLAGS: -Wextra -Werror
     steps:
-      - run: apt-get update && apt-get install -y git ssh ninja-build python3-pip python3-setuptools python3-wheel gcovr gcc-mips64el-linux-gnuabi64 g++-mips64el-linux-gnuabi64 qemu-user-static libc6-mips64el-cross ccache
+      - run: apt-get update && apt-get install -y git ssh ninja-build pipx python3-setuptools python3-wheel gcovr gcc-mips64el-linux-gnuabi64 g++-mips64el-linux-gnuabi64 qemu-user-static libc6-mips64el-cross ccache build-essential
       - checkout
       - run: cat /proc/cpuinfo /proc/meminfo
       - run:
@@ -60,8 +60,8 @@ jobs:
             ccache --set-config=compression=true
             ccache -p
             ccache -z
-      - run: pip3 install meson==0.55.0
-      - run: /usr/local/bin/meson setup build -Db_coverage=true --cross-file=docker/cross-files/loongson-gcc-ccache.cross
+      - run: pipx install meson==0.55.0
+      - run: /root/.local/bin/meson setup build -Db_coverage=true --cross-file=docker/cross-files/loongson-gcc-ccache.cross
       - restore_cache:
           keys:
             - v1-loongson-ccache-{{ .Branch }}-
@@ -81,14 +81,14 @@ jobs:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
     steps:
-      - run: apt-get update && apt-get install -y git ssh ninja-build python3-pip python3-setuptools python3-wheel gcovr {gcc,g++}-i686-linux-gnu libc6-i386-cross qemu-user-static ccache
+      - run: apt-get update && apt-get install -y git ssh ninja-build pipx python3-setuptools python3-wheel gcovr {gcc,g++}-i686-linux-gnu libc6-i386-cross qemu-user-static ccache
       - checkout
       - run:
           name: System Information
           command: cat /proc/cpuinfo /proc/meminfo
       - run: dpkg --add-architecture i386
-      - run: pip3 install meson==0.55.0
-      - run: /usr/local/bin/meson setup build -Db_coverage=true --cross-file docker/cross-files/i686-gcc-qemu.cross
+      - run: pipx install meson==0.55.0
+      - run: /root/.local/bin/meson setup build -Db_coverage=true --cross-file docker/cross-files/i686-gcc-qemu.cross
       - restore_cache:
           keys:
             - v1-i686-ccache-{{ .Branch }}-
@@ -99,12 +99,12 @@ jobs:
             ccache --set-config=compression=true
             ccache -p
             ccache -z
-      - run: /usr/local/bin/meson compile -C build --verbose -j 5
+      - run: /root/.local/bin/meson compile -C build --verbose -j 5
       - run: /usr/bin/ccache -s
       - save_cache:
           key: v1-i686-ccache-{{ .Branch }}-{{ .Revision }}
           paths: [ "/root/.cache/ccache" ]
-      - run: /usr/local/bin/meson test -C build --num-processes 5 --print-errorlogs
+      - run: /root/.local/bin/meson test -C build --num-processes 5 --print-errorlogs
 
   i686-gcc11-O2:
     resource_class: large
@@ -114,14 +114,14 @@ jobs:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
     steps:
-      - run: apt-get update && apt-get install -y git ssh ninja-build python3-pip python3-setuptools python3-wheel gcovr {gcc,g++}-11-i686-linux-gnu libc6-i386-cross qemu-user-static ccache
+      - run: apt-get update && apt-get install -y git ssh ninja-build pipx python3-setuptools python3-wheel gcovr {gcc,g++}-11-i686-linux-gnu libc6-i386-cross qemu-user-static ccache build-essential
       - checkout
       - run:
           name: System Information
           command: cat /proc/cpuinfo /proc/meminfo
       - run: dpkg --add-architecture i386
-      - run: pip3 install meson==0.55.0
-      - run: /usr/local/bin/meson setup build -Db_coverage=true --cross-file docker/cross-files/i686-gcc-11-qemu.cross
+      - run: pipx install meson==0.55.0
+      - run: /root/.local/bin/meson setup build -Db_coverage=true --cross-file docker/cross-files/i686-gcc-11-qemu.cross
       - restore_cache:
           keys:
             - v1-i686-gcc11-O2-ccache-{{ .Branch }}-
@@ -132,12 +132,12 @@ jobs:
             ccache --set-config=compression=true
             ccache -p
             ccache -z
-      - run: /usr/local/bin/meson compile -C build --verbose -j 5
+      - run: /root/.local/bin/meson compile -C build --verbose -j 5
       - run: /usr/bin/ccache -s
       - save_cache:
           key: v1-i686-gcc11-O2-ccache-{{ .Branch }}-{{ .Revision }}
           paths: [ "/root/.cache/ccache" ]
-      - run: /usr/local/bin/meson test -C build --num-processes 5 --print-errorlogs
+      - run: /root/.local/bin/meson test -C build --num-processes 5 --print-errorlogs
 
 
 workflows:

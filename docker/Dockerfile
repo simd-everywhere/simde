@@ -35,11 +35,11 @@ RUN \
     binfmt-support qemu-user-static \
     creduce screen htop parallel nano rsync strace \
     npm libsleef-dev \
-    python3-pip wget
+    pipx wget
 
 # Meson on stable is too old, and we want to make sure we keep 0.55
 # working for a while.
-RUN pip3 install meson==0.55.0
+RUN pipx install meson==0.55.0
 
 # GCC cross-compilers
 RUN \
@@ -95,11 +95,9 @@ RUN \
 # Emscripten
 RUN \
   git clone https://github.com/emscripten-core/emsdk.git /opt/emsdk && \
-  cd /opt/emsdk && ./emsdk install tot ccache-git-emscripten-64bit && ./emsdk activate tot ccache-git-emscripten-64bit && \
+  cd /opt/emsdk && ./emsdk install tot && ./emsdk activate tot && \
   ln -s /opt/emsdk/upstream/bin/wasm-ld /usr/bin/wasm-ld && \
-  npm install jsvu -g && jsvu --os=linux64 --engines=v8 && ln -s "/root/.jsvu/bin/v8" "/usr/bin/v8" && \
-  echo 'source "/opt/emsdk/emsdk_env.sh"' >> $HOME/.bash_profile && \
-  echo 'export PATH=/opt/emsdk/ccache/git-emscripten_64bit/bin:$PATH' >> $HOME/.bash_profile
+  npm install jsvu -g && jsvu --os=linux64 --engines=v8 && ln -s "/root/.jsvu/v8" "/usr/bin/v8"
 
 # Meson cross files
 RUN \

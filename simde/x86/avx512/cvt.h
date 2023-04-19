@@ -32,6 +32,7 @@
 
 #include "types.h"
 #include "mov.h"
+#include "../f16c.h"
 
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
@@ -250,6 +251,27 @@ simde_mm512_cvtepu32_ps (simde__m512i a) {
   #undef _mm512_cvtepu32_epi32
   #define _mm512_cvtepu32_epi32(a) simde_mm512_cvtepu32_ps(a)
 #endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512
+simde_mm512_cvtph_ps(simde__m256i a) {
+  #if defined(SIMDE_X86_AVX512F_NATIVE)
+    return _mm512_cvtph_ps(a);
+  #endif
+  simde__m256i_private a_ = simde__m256i_to_private(a);
+  simde__m512_private r_;
+
+  SIMDE_VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
+    r_.f32[i] = simde_float16_to_float32(simde_uint16_as_float16(a_.u16[i]));
+  }
+
+  return simde__m512_from_private(r_);
+}
+#if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
+  #define _mm512_cvtph_ps(a) simde_mm512_cvtph_ps(a)
+#endif
+
 
 SIMDE_END_DECLS_
 HEDLEY_DIAGNOSTIC_POP

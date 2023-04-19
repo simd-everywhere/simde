@@ -73,6 +73,8 @@
 #include "avx512/fnmsub.h"
 #include "avx512/insert.h"
 #include "avx512/kshift.h"
+#include "avx512/knot.h"
+#include "avx512/kxor.h"
 #include "avx512/load.h"
 #include "avx512/loadu.h"
 #include "avx512/lzcnt.h"

@@ -564,6 +564,25 @@ HEDLEY_STATIC_ASSERT(SIMDE_ALIGN_OF(simde__m512d) == 32, "simde__m512d is not 32
 HEDLEY_STATIC_ASSERT(SIMDE_ALIGN_OF(simde__m512d_private) == 32, "simde__m512d_private is not 32-byte aligned");
 #endif
 
+#define SIMDE_MM_CMPINT_EQ     0
+#define SIMDE_MM_CMPINT_LT     1
+#define SIMDE_MM_CMPINT_LE     2
+#define SIMDE_MM_CMPINT_FALSE  3
+#define SIMDE_MM_CMPINT_NE     4
+#define SIMDE_MM_CMPINT_NLT    5
+#define SIMDE_MM_CMPINT_NLE    6
+#define SIMDE_MM_CMPINT_TRUE   7
+#if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES) && !defined(_MM_CMPINT_EQ)
+#define _MM_CMPINT_EQ SIMDE_MM_CMPINT_EQ
+#define _MM_CMPINT_LT SIMDE_MM_CMPINT_LT
+#define _MM_CMPINT_LE SIMDE_MM_CMPINT_LE
+#define _MM_CMPINT_FALSE SIMDE_MM_CMPINT_FALSE
+#define _MM_CMPINT_NE SIMDE_MM_CMPINT_NE
+#define _MM_CMPINT_NLT SIMDE_MM_CMPINT_NLT
+#define _MM_CMPINT_NLE SIMDE_MM_CMPINT_NLE
+#define _MM_CMPINT_TRUE SIMDE_CMPINT_TRUE
+#endif
+
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128bh
 simde__m128bh_from_private(simde__m128bh_private v) {
