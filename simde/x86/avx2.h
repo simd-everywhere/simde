@@ -2864,7 +2864,7 @@ simde_mm_maskload_epi64 (const int64_t mem_addr[HEDLEY_ARRAY_PARAM(2)], simde__m
       mask_shr_;
 
     #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-      r_.neon_i64 = vandq_s64(mem_.neon_i64, vshrq_n_s64(mask_.neon_i64, 63));
+      mask_shr_.neon_i64 = vshrq_n_s64(mask_.neon_i64, 63);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(mask_.i64) / sizeof(mask_.i64[0])) ; i++) {
