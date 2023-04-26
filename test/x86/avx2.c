@@ -7801,9 +7801,9 @@ test_simde_mm_maskload_epi32_no_illegal_memory_access (SIMDE_MUNIT_TEST_ARGS) {
   // make sure maskload never accesses memory for masked out regions
   // will segfault in case memory is accessed
   #if defined(_GNU_SOURCE)
-    simde_int32 *ptr = HEDLEY_STATIC_CAST(simde_int32 *, mmap(NULL, 4 * sizeof(simde_int32), PROT_NONE , MAP_PRIVATE | MAP_ANONYMOUS, -1, 0));
+    int32_t *ptr = HEDLEY_STATIC_CAST(int32_t *, mmap(NULL, 4 * sizeof(int32_t), PROT_NONE , MAP_PRIVATE | MAP_ANONYMOUS, -1, 0));
   #else
-    simde_int32 *ptr = HEDLEY_STATIC_CAST(simde_int32 *, mmap(NULL, 4 * sizeof(simde_int32), PROT_NONE , MAP_PRIVATE, -1, 0));
+    int32_t *ptr = HEDLEY_STATIC_CAST(int32_t *, mmap(NULL, 4 * sizeof(int32_t), PROT_NONE , MAP_PRIVATE, -1, 0));
   #endif
   const simde__m128i mask = simde_mm_set_epi32(0, 0, 0, 0);
   simde__m128i test = simde_mm_maskload_epi32(ptr, mask);
@@ -7862,9 +7862,9 @@ test_simde_mm256_maskload_epi32_no_illegal_memory_access (SIMDE_MUNIT_TEST_ARGS)
   // make sure maskload never accesses memory for masked out regions
   // will segfault in case memory is accessed
   #if defined(_GNU_SOURCE)
-    simde_int32 *ptr = HEDLEY_STATIC_CAST(simde_int32 *, mmap(NULL, 8 * sizeof(simde_int32), PROT_NONE , MAP_PRIVATE | MAP_ANONYMOUS, -1, 0));
+    int32_t *ptr = HEDLEY_STATIC_CAST(int32_t *, mmap(NULL, 8 * sizeof(int32_t), PROT_NONE , MAP_PRIVATE | MAP_ANONYMOUS, -1, 0));
   #else
-    simde_int32 *ptr = HEDLEY_STATIC_CAST(simde_int32 *, mmap(NULL, 8 * sizeof(simde_int32), PROT_NONE , MAP_PRIVATE, -1, 0));
+    int32_t *ptr = HEDLEY_STATIC_CAST(int32_t *, mmap(NULL, 8 * sizeof(int32_t), PROT_NONE , MAP_PRIVATE, -1, 0));
   #endif
   const simde__m256i mask = simde_mm_set_epi32(0, 0, 0, 0, 0, 0, 0, 0);
   simde__m256i test = simde_mm256_maskload_epi32(ptr, mask);
@@ -7929,9 +7929,9 @@ test_simde_mm_maskload_epi64_no_illegal_memory_access (SIMDE_MUNIT_TEST_ARGS) {
   // make sure maskload never accesses memory for masked out regions
   // will segfault in case memory is accessed
   #if defined(_GNU_SOURCE)
-    simde_int64 *ptr = HEDLEY_STATIC_CAST(simde_int64 *, mmap(NULL, 2 * sizeof(simde_int64), PROT_NONE , MAP_PRIVATE | MAP_ANONYMOUS, -1, 0));
+    int64_t *ptr = HEDLEY_STATIC_CAST(int64_t *, mmap(NULL, 2 * sizeof(int64_t), PROT_NONE , MAP_PRIVATE | MAP_ANONYMOUS, -1, 0));
   #else
-    simde_int64 *ptr = HEDLEY_STATIC_CAST(simde_int64 *, mmap(NULL, 2 * sizeof(simde_int64), PROT_NONE , MAP_PRIVATE, -1, 0));
+    int64_t *ptr = HEDLEY_STATIC_CAST(int64_t *, mmap(NULL, 2 * sizeof(int64_t), PROT_NONE , MAP_PRIVATE, -1, 0));
   #endif
   const simde__m128i mask = simde_mm_set_epi64(INT64_C(0), INT64_C(0));
   simde__m128i test = simde_mm_maskload_epi64(ptr, mask);
@@ -7995,9 +7995,9 @@ test_simde_mm256_maskload_epi64_no_illegal_memory_access (SIMDE_MUNIT_TEST_ARGS)
   // make sure maskload never accesses memory for masked out regions
   // will segfault in case memory is accessed
   #if defined(_GNU_SOURCE)
-    simde_int64 *ptr = HEDLEY_STATIC_CAST(simde_int64 *, mmap(NULL, 4 * sizeof(simde_int64), PROT_NONE , MAP_PRIVATE | MAP_ANONYMOUS, -1, 0));
+    int64_t *ptr = HEDLEY_STATIC_CAST(int64_t *, mmap(NULL, 4 * sizeof(int64_t), PROT_NONE , MAP_PRIVATE | MAP_ANONYMOUS, -1, 0));
   #else
-    simde_int64 *ptr = HEDLEY_STATIC_CAST(simde_int64 *, mmap(NULL, 4 * sizeof(simde_int64), PROT_NONE , MAP_PRIVATE, -1, 0));
+    int64_t *ptr = HEDLEY_STATIC_CAST(int64_t *, mmap(NULL, 4 * sizeof(int64_t), PROT_NONE , MAP_PRIVATE, -1, 0));
   #endif
   const simde__m256i mask = simde_mm256_set_epi64(INT64_C(0), INT64_C(0), INT64_C(0), INT64_C(0));
   simde__m256i test = simde_mm256_maskload_epi64(ptr, mask);
@@ -16712,6 +16712,13 @@ SIMDE_TEST_FUNC_LIST_BEGIN
   SIMDE_TEST_FUNC_LIST_ENTRY(mm256_maskload_epi32)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm_maskload_epi64)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm256_maskload_epi64)
+
+  #if !defined(HEDLEY_MSVC_VERSION)
+    SIMDE_TEST_FUNC_LIST_ENTRY(mm_maskload_epi32_no_illegal_memory_access)
+    SIMDE_TEST_FUNC_LIST_ENTRY(mm256_maskload_epi32_no_illegal_memory_access)
+    SIMDE_TEST_FUNC_LIST_ENTRY(mm_maskload_epi64_no_illegal_memory_access)
+    SIMDE_TEST_FUNC_LIST_ENTRY(mm256_maskload_epi64_no_illegal_memory_access)
+  #endif
 
   SIMDE_TEST_FUNC_LIST_ENTRY(mm_maskstore_epi32)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm256_maskstore_epi32)
