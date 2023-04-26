@@ -7934,7 +7934,12 @@ test_simde_mm_maskload_epi64_no_illegal_memory_access (SIMDE_MUNIT_TEST_ARGS) {
     int64_t *ptr = HEDLEY_STATIC_CAST(int64_t *, mmap(NULL, 2 * sizeof(int64_t), PROT_NONE , MAP_PRIVATE, -1, 0));
   #endif
   const simde__m128i mask = simde_mm_set_epi64x(INT64_C(0), INT64_C(0));
-  simde__m128i test = simde_mm_maskload_epi64(ptr, mask);
+  simde__m128i test;
+  #if defined(SIMDE_X86_AVX2_NATIVE) && defined(SIMDE_NATIVE_ALIASES_TESTING)
+    test = simde_mm_maskload_epi64(HEDLEY_REINTERPRET_CAST(const long long *, ptr), mask);
+  #else
+    test = simde_mm_maskload_epi64(ptr, mask);
+  #endif
   int64_t r[2] = { INT64_C(0), INT64_C(0) };
   simde_test_x86_assert_equal_i64x2(test, simde_x_mm_loadu_epi64(r));
   return 0;
@@ -8000,7 +8005,12 @@ test_simde_mm256_maskload_epi64_no_illegal_memory_access (SIMDE_MUNIT_TEST_ARGS)
     int64_t *ptr = HEDLEY_STATIC_CAST(int64_t *, mmap(NULL, 4 * sizeof(int64_t), PROT_NONE , MAP_PRIVATE, -1, 0));
   #endif
   const simde__m256i mask = simde_mm256_set_epi64x(INT64_C(0), INT64_C(0), INT64_C(0), INT64_C(0));
-  simde__m256i test = simde_mm256_maskload_epi64(ptr, mask);
+  simde__m256i test;
+  #if defined(SIMDE_X86_AVX2_NATIVE) && defined(SIMDE_NATIVE_ALIASES_TESTING)
+    test = simde_mm256_maskload_epi64(HEDLEY_REINTERPRET_CAST(const long long *, ptr), mask);
+  #else
+    test = simde_mm256_maskload_epi64(ptr, mask);
+  #endif
   int64_t r[4] = { INT64_C(0), INT64_C(0), INT64_C(0), INT64_C(0) };
   simde_test_x86_assert_equal_i64x4(test, simde_x_mm256_loadu_epi64(r));
   return 0;
