@@ -22,8 +22,14 @@
  */
 
 #define SIMDE_TESTS_CURRENT_ISAX avx2
+#if !defined(__clang__) && (defined(__linux__) || defined(__linux) || defined(__gnu_linux__)) && !defined(_GNU_SOURCE)
+  #define _GNU_SOURCE 1  // for MAP_ANONYMOUS
+#endif
 #include <simde/x86/avx2.h>
 #include <test/x86/test-avx.h>
+#if !defined(HEDLEY_MSVC_VERSION)
+  #include <sys/mman.h>
+#endif
 
 static int
 test_simde_mm256_abs_epi8(SIMDE_MUNIT_TEST_ARGS) {
@@ -7788,6 +7794,25 @@ test_simde_mm_maskload_epi32 (SIMDE_MUNIT_TEST_ARGS) {
   return 0;
 }
 
+#if !defined(HEDLEY_MSVC_VERSION)
+static int
+test_simde_mm_maskload_epi32_no_illegal_memory_access (SIMDE_MUNIT_TEST_ARGS) {
+  // ref: https://github.com/simd-everywhere/simde/issues/998
+  // make sure maskload never accesses memory for masked out regions
+  // will segfault in case memory is accessed
+  #if defined(_GNU_SOURCE)
+    simde_int32 *ptr = HEDLEY_STATIC_CAST(simde_int32 *, mmap(NULL, 4 * sizeof(simde_int32), PROT_NONE , MAP_PRIVATE | MAP_ANONYMOUS, -1, 0));
+  #else
+    simde_int32 *ptr = HEDLEY_STATIC_CAST(simde_int32 *, mmap(NULL, 4 * sizeof(simde_int32), PROT_NONE , MAP_PRIVATE, -1, 0));
+  #endif
+  const simde__m128i mask = simde_mm_set_epi32(0, 0, 0, 0);
+  simde__m128i test = simde_mm_maskload_epi32(ptr, mask);
+  int32_t r[4] = { SIMDE_INT32_C(0), SIMDE_INT32_C(0), SIMDE_INT32_C(0), SIMDE_INT32_C(0) };
+  simde_test_x86_assert_equal_i32x4(test, simde_mm_loadu_epi32(r), 1);
+  return 0;
+}
+#endif
+
 static int
 test_simde_mm256_maskload_epi32 (SIMDE_MUNIT_TEST_ARGS) {
   static const struct {
@@ -7829,6 +7854,26 @@ test_simde_mm256_maskload_epi32 (SIMDE_MUNIT_TEST_ARGS) {
 
   return 0;
 }
+
+#if !defined(HEDLEY_MSVC_VERSION)
+static int
+test_simde_mm256_maskload_epi32_no_illegal_memory_access (SIMDE_MUNIT_TEST_ARGS) {
+  // ref: https://github.com/simd-everywhere/simde/issues/998
+  // make sure maskload never accesses memory for masked out regions
+  // will segfault in case memory is accessed
+  #if defined(_GNU_SOURCE)
+    simde_int32 *ptr = HEDLEY_STATIC_CAST(simde_int32 *, mmap(NULL, 8 * sizeof(simde_int32), PROT_NONE , MAP_PRIVATE | MAP_ANONYMOUS, -1, 0));
+  #else
+    simde_int32 *ptr = HEDLEY_STATIC_CAST(simde_int32 *, mmap(NULL, 8 * sizeof(simde_int32), PROT_NONE , MAP_PRIVATE, -1, 0));
+  #endif
+  const simde__m256i mask = simde_mm_set_epi32(0, 0, 0, 0, 0, 0, 0, 0);
+  simde__m256i test = simde_mm256_maskload_epi32(ptr, mask);
+  int32_t r[8] = { SIMDE_INT32_C(0), SIMDE_INT32_C(0), SIMDE_INT32_C(0), SIMDE_INT32_C(0),
+                   SIMDE_INT32_C(0), SIMDE_INT32_C(0), SIMDE_INT32_C(0), SIMDE_INT32_C(0)};
+  simde_test_x86_assert_equal_i32x8(test, simde_mm256_loadu_epi32(r), 1);
+  return 0;
+}
+#endif
 
 static int
 test_simde_mm_maskload_epi64 (SIMDE_MUNIT_TEST_ARGS) {
@@ -7877,6 +7922,25 @@ test_simde_mm_maskload_epi64 (SIMDE_MUNIT_TEST_ARGS) {
   return 0;
 }
 
+#if !defined(HEDLEY_MSVC_VERSION)
+static int
+test_simde_mm_maskload_epi64_no_illegal_memory_access (SIMDE_MUNIT_TEST_ARGS) {
+  // ref: https://github.com/simd-everywhere/simde/issues/998
+  // make sure maskload never accesses memory for masked out regions
+  // will segfault in case memory is accessed
+  #if defined(_GNU_SOURCE)
+    simde_int64 *ptr = HEDLEY_STATIC_CAST(simde_int64 *, mmap(NULL, 2 * sizeof(simde_int64), PROT_NONE , MAP_PRIVATE | MAP_ANONYMOUS, -1, 0));
+  #else
+    simde_int64 *ptr = HEDLEY_STATIC_CAST(simde_int64 *, mmap(NULL, 2 * sizeof(simde_int64), PROT_NONE , MAP_PRIVATE, -1, 0));
+  #endif
+  const simde__m128i mask = simde_mm_set_epi64(INT64_C(0), INT64_C(0));
+  simde__m128i test = simde_mm_maskload_epi64(ptr, mask);
+  int64_t r[2] = { INT64_C(0), INT64_C(0) };
+  simde_test_x86_assert_equal_i64x2(test, simde_mm_loadu_pd(r), 1);
+  return 0;
+}
+#endif
+
 static int
 test_simde_mm256_maskload_epi64 (SIMDE_MUNIT_TEST_ARGS) {
   static const struct {
@@ -7923,6 +7987,25 @@ test_simde_mm256_maskload_epi64 (SIMDE_MUNIT_TEST_ARGS) {
 
   return 0;
 }
+
+#if !defined(HEDLEY_MSVC_VERSION)
+static int
+test_simde_mm256_maskload_epi64_no_illegal_memory_access (SIMDE_MUNIT_TEST_ARGS) {
+  // ref: https://github.com/simd-everywhere/simde/issues/998
+  // make sure maskload never accesses memory for masked out regions
+  // will segfault in case memory is accessed
+  #if defined(_GNU_SOURCE)
+    simde_int64 *ptr = HEDLEY_STATIC_CAST(simde_int64 *, mmap(NULL, 4 * sizeof(simde_int64), PROT_NONE , MAP_PRIVATE | MAP_ANONYMOUS, -1, 0));
+  #else
+    simde_int64 *ptr = HEDLEY_STATIC_CAST(simde_int64 *, mmap(NULL, 4 * sizeof(simde_int64), PROT_NONE , MAP_PRIVATE, -1, 0));
+  #endif
+  const simde__m256i mask = simde_mm256_set_epi64(INT64_C(0), INT64_C(0), INT64_C(0), INT64_C(0));
+  simde__m256i test = simde_mm256_maskload_epi64(ptr, mask);
+  int64_t r[4] = { INT64_C(0), INT64_C(0), INT64_C(0), INT64_C(0) };
+  simde_test_x86_assert_equal_i64x4(test, simde_mm_loadu_pd(r), 1);
+  return 0;
+}
+#endif
 
 static int
 test_simde_mm_maskstore_epi32 (SIMDE_MUNIT_TEST_ARGS) {
