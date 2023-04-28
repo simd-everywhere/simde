@@ -2818,7 +2818,7 @@ simde_mm_maskload_epi32 (const int32_t mem_addr[HEDLEY_ARRAY_PARAM(4)], simde__m
 
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {
-        r_.i32[i] = mask_shr_.i32[i] ? mem_addr[i] : 0.0;
+        r_.i32[i] = mask_shr_.i32[i] ? mem_addr[i] : INT32_C(0);
       }
 
     return simde__m128i_from_private(r_);
@@ -2841,7 +2841,7 @@ simde_mm256_maskload_epi32 (const int32_t mem_addr[HEDLEY_ARRAY_PARAM(4)], simde
 
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {
-      r_.i32[i] = (mask_.i32[i] >> 31) ? mem_addr[i] : 0;
+      r_.i32[i] = (mask_.i32[i] >> 31) ? mem_addr[i] : INT32_C(0);
     }
 
     return simde__m256i_from_private(r_);
@@ -2874,7 +2874,7 @@ simde_mm_maskload_epi64 (const int64_t mem_addr[HEDLEY_ARRAY_PARAM(2)], simde__m
 
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.i64) / sizeof(r_.i64[0])) ; i++) {
-      r_.i64[i] = mask_shr_.i64[i] ? mem_addr[i] : 0;
+      r_.i64[i] = mask_shr_.i64[i] ? mem_addr[i] : INT64_C(0);
     }
 
     return simde__m128i_from_private(r_);
@@ -2897,7 +2897,7 @@ simde_mm256_maskload_epi64 (const int64_t mem_addr[HEDLEY_ARRAY_PARAM(4)], simde
 
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.i64) / sizeof(r_.i64[0])) ; i++) {
-      r_.i64[i] = (mask_.i64[i] >> 63) ? mem_addr[i] : 0;
+      r_.i64[i] = (mask_.i64[i] >> 63) ? mem_addr[i] : INT64_C(0);
     }
 
     return simde__m256i_from_private(r_);
