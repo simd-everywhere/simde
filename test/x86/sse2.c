@@ -3417,9 +3417,9 @@ test_simde_mm_cvtps_epi32(SIMDE_MUNIT_TEST_ARGS) {
     { { SIMDE_FLOAT32_C(  -314.21), SIMDE_FLOAT32_C(   -16.38), SIMDE_FLOAT32_C(   852.78), SIMDE_FLOAT32_C(   590.27) },
       { -INT32_C(         314), -INT32_C(          16),  INT32_C(         853),  INT32_C(         590) } },
     { { SIMDE_FLOAT32_C(-2147483650.0), SIMDE_FLOAT32_C(-2147483650.0), SIMDE_FLOAT32_C(-2147483650.0), SIMDE_FLOAT32_C(-2147483650.0) },
-      { -INT32_C(  2147483648), -INT32_C(  2147483648), -INT32_C(  2147483648), -INT32_C(  2147483648) } },
+      {  INT32_MIN            ,  INT32_MIN            ,  INT32_MIN           ,  INT32_MIN              } },
     { { SIMDE_FLOAT32_C( 2147483649.0), SIMDE_FLOAT32_C( 2147483649.0), SIMDE_FLOAT32_C( 2147483649.0), SIMDE_FLOAT32_C( 2147483649.0) },
-      { -INT32_C(  2147483648), -INT32_C(  2147483648), -INT32_C(  2147483648), -INT32_C(  2147483648) } }
+      {  INT32_MIN            ,  INT32_MIN            ,  INT32_MIN           ,  INT32_MIN              } }
   };
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
@@ -4035,16 +4035,16 @@ test_simde_mm_cvttsd_si32 (SIMDE_MUNIT_TEST_ARGS) {
     #if !defined(SIMDE_FAST_CONVERSION_RANGE) && !defined(SIMDE_BUG_GCC_100927)
     { { HEDLEY_STATIC_CAST(simde_float64, HEDLEY_STATIC_CAST(int64_t, INT32_MAX) + 1),
         SIMDE_FLOAT64_C(  -850.89) },
-      -INT32_C(  2147483648) },
+       INT32_MIN             },
     { { HEDLEY_STATIC_CAST(simde_float64, HEDLEY_STATIC_CAST(int64_t, INT32_MIN) - 1),
         SIMDE_FLOAT64_C(   -30.56) },
-      -INT32_C(  2147483648) },
+       INT32_MIN             },
     { { HEDLEY_STATIC_CAST(simde_float64, HEDLEY_STATIC_CAST(int64_t, INT32_MAX) - 100),
         SIMDE_FLOAT64_C(  -742.09) },
        INT32_C(  2147483547) },
     { { HEDLEY_STATIC_CAST(simde_float64, HEDLEY_STATIC_CAST(int64_t, INT32_MIN) + 100),
         SIMDE_FLOAT64_C(  -496.27) },
-      -INT32_C(  2147483548) },
+       INT32_C( -2147483548) },
     #endif
     { { SIMDE_FLOAT64_C(   -57.42), SIMDE_FLOAT64_C(  -705.99) },
       -INT32_C(          57) },
