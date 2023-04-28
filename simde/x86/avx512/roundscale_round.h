@@ -8,6 +8,11 @@ HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 SIMDE_BEGIN_DECLS_
 
+#if defined(HEDLEY_MSVC_VERSION)
+#pragma warning( push )
+#pragma warning( disable : 4244 )
+#endif
+
 #if defined(SIMDE_X86_AVX512F_NATIVE)
   #define simde_mm512_roundscale_round_ps(a, imm8, sae) _mm512_roundscale_round_ps(a, imm8, sae)
 #elif defined(SIMDE_FAST_EXCEPTIONS)
@@ -511,6 +516,11 @@ SIMDE_BEGIN_DECLS_
   #undef _mm_maskz_roundscale_round_ss
   #define _mm_maskz_roundscale_round_ss(k, a, b, imm8, sae) simde_mm_maskz_roundscale_round_ss(k, a, b, imm8, sae)
 #endif
+
+#if defined(HEDLEY_MSVC_VERSION)
+#pragma warning( pop )
+#endif
+
 
 #if defined(SIMDE_X86_AVX512F_NATIVE)
   #define simde_mm_roundscale_round_sd(a, b, imm8, sae) _mm_roundscale_round_sd(a, b, imm8, sae)
