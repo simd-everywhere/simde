@@ -73,7 +73,7 @@ SIMDE_BEGIN_DECLS_
 #elif SIMDE_NATURAL_VECTOR_SIZE_LE(128) && defined(SIMDE_STATEMENT_EXPR_)
   #define simde_mm256_roundscale_ps(a, imm8) SIMDE_STATEMENT_EXPR_(({ \
     simde__m256_private \
-      simde_mm256_roundscale_ps_r_, \
+      simde_mm256_roundscale_ps_r_ = simde__m256_to_private(simde_mm256_setzero_ps()), \
       simde_mm256_roundscale_ps_a_ = simde__m256_to_private(a); \
     \
     for (size_t simde_mm256_roundscale_ps_i = 0 ; simde_mm256_roundscale_ps_i < (sizeof(simde_mm256_roundscale_ps_r_.m128) / sizeof(simde_mm256_roundscale_ps_r_.m128[0])) ; simde_mm256_roundscale_ps_i++) { \
@@ -141,7 +141,7 @@ SIMDE_BEGIN_DECLS_
 #elif SIMDE_NATURAL_VECTOR_SIZE_LE(256) && defined(SIMDE_STATEMENT_EXPR_)
   #define simde_mm512_roundscale_ps(a, imm8) SIMDE_STATEMENT_EXPR_(({ \
     simde__m512_private \
-      simde_mm512_roundscale_ps_r_, \
+      simde_mm512_roundscale_ps_r_ = simde__m512_to_private(simde_mm512_setzero_ps()), \
       simde_mm512_roundscale_ps_a_ = simde__m512_to_private(a); \
     \
     for (size_t simde_mm512_roundscale_ps_i = 0 ; simde_mm512_roundscale_ps_i < (sizeof(simde_mm512_roundscale_ps_r_.m256) / sizeof(simde_mm512_roundscale_ps_r_.m256[0])) ; simde_mm512_roundscale_ps_i++) { \
@@ -265,7 +265,7 @@ SIMDE_BEGIN_DECLS_
 #elif SIMDE_NATURAL_VECTOR_SIZE_LE(128) && defined(SIMDE_STATEMENT_EXPR_)
   #define simde_mm256_roundscale_pd(a, imm8) SIMDE_STATEMENT_EXPR_(({ \
     simde__m256d_private \
-      simde_mm256_roundscale_pd_r_, \
+      simde_mm256_roundscale_pd_r_ = simde__m256d_to_private(simde_mm256_setzero_pd()), \
       simde_mm256_roundscale_pd_a_ = simde__m256d_to_private(a); \
     \
     for (size_t simde_mm256_roundscale_pd_i = 0 ; simde_mm256_roundscale_pd_i < (sizeof(simde_mm256_roundscale_pd_r_.m128d) / sizeof(simde_mm256_roundscale_pd_r_.m128d[0])) ; simde_mm256_roundscale_pd_i++) { \
@@ -333,7 +333,7 @@ SIMDE_BEGIN_DECLS_
 #elif SIMDE_NATURAL_VECTOR_SIZE_LE(256) && defined(SIMDE_STATEMENT_EXPR_)
   #define simde_mm512_roundscale_pd(a, imm8) SIMDE_STATEMENT_EXPR_(({ \
     simde__m512d_private \
-      simde_mm512_roundscale_pd_r_, \
+      simde_mm512_roundscale_pd_r_ = simde__m512d_to_private(simde_mm512_setzero_pd()), \
       simde_mm512_roundscale_pd_a_ = simde__m512d_to_private(a); \
     \
     for (size_t simde_mm512_roundscale_pd_i = 0 ; simde_mm512_roundscale_pd_i < (sizeof(simde_mm512_roundscale_pd_r_.m256d) / sizeof(simde_mm512_roundscale_pd_r_.m256d[0])) ; simde_mm512_roundscale_pd_i++) { \

@@ -3982,11 +3982,11 @@ simde_mm_sfence (void) {
 #  define simde_mm_shuffle_pi16(a, imm8) _mm_shuffle_pi16(a, imm8)
 #elif defined(SIMDE_SHUFFLE_VECTOR_)
 #  define simde_mm_shuffle_pi16(a, imm8) (__extension__ ({ \
-      const simde__m64_private simde__tmp_a_ = simde__m64_to_private(a); \
+      const simde__m64_private simde_tmp_a_ = simde__m64_to_private(a); \
       simde__m64_from_private((simde__m64_private) { .i16 = \
         SIMDE_SHUFFLE_VECTOR_(16, 8, \
-          (simde__tmp_a_).i16, \
-          (simde__tmp_a_).i16, \
+          (simde_tmp_a_).i16, \
+          (simde_tmp_a_).i16, \
           (((imm8)     ) & 3), \
           (((imm8) >> 2) & 3), \
           (((imm8) >> 4) & 3), \
@@ -4590,11 +4590,6 @@ simde_mm_ucomineq_ss (simde__m128 a, simde__m128 b) {
 #  elif !defined(__PGI) && !defined(SIMDE_BUG_GCC_REV_208793) && !defined(_MSC_VER)
 #    define SIMDE_HAVE_UNDEFINED128
 #  endif
-#endif
-
-#if defined(SIMDE_DIAGNOSTIC_DISABLE_UNINITIALIZED_)
-  HEDLEY_DIAGNOSTIC_PUSH
-  SIMDE_DIAGNOSTIC_DISABLE_UNINITIALIZED_
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES

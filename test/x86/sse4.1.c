@@ -25,6 +25,8 @@
 #include <simde/x86/sse4.1.h>
 #include <test/x86/test-sse2.h>
 
+SIMDE_DIAGNOSTIC_DISABLE_RESERVED_ID_
+
 static int
 test_simde_mm_blendv_epi8(SIMDE_MUNIT_TEST_ARGS) {
   const struct {

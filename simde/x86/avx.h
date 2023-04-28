@@ -2127,7 +2127,7 @@ simde_mm256_round_ps (simde__m256 a, const int rounding) {
 #elif SIMDE_NATURAL_VECTOR_SIZE_LE(128) && defined(SIMDE_STATEMENT_EXPR_)
   #define simde_mm256_round_ps(a, rounding) SIMDE_STATEMENT_EXPR_(({ \
     simde__m256_private \
-      simde_mm256_round_ps_r_, \
+      simde_mm256_round_ps_r_ = simde__m256_to_private(simde_mm256_setzero_ps()), \
       simde_mm256_round_ps_a_ = simde__m256_to_private(a); \
     \
     for (size_t simde_mm256_round_ps_i = 0 ; simde_mm256_round_ps_i < (sizeof(simde_mm256_round_ps_r_.m128) / sizeof(simde_mm256_round_ps_r_.m128[0])) ; simde_mm256_round_ps_i++) { \
@@ -2201,7 +2201,7 @@ simde_mm256_round_pd (simde__m256d a, const int rounding) {
 #elif SIMDE_NATURAL_VECTOR_SIZE_LE(128) && defined(SIMDE_STATEMENT_EXPR_)
   #define simde_mm256_round_pd(a, rounding) SIMDE_STATEMENT_EXPR_(({ \
     simde__m256d_private \
-      simde_mm256_round_pd_r_, \
+      simde_mm256_round_pd_r_ = simde__m256d_to_private(simde_mm256_setzero_pd()), \
       simde_mm256_round_pd_a_ = simde__m256d_to_private(a); \
     \
     for (size_t simde_mm256_round_pd_i = 0 ; simde_mm256_round_pd_i < (sizeof(simde_mm256_round_pd_r_.m128d) / sizeof(simde_mm256_round_pd_r_.m128d[0])) ; simde_mm256_round_pd_i++) { \
@@ -3093,7 +3093,7 @@ simde_mm256_cmp_ps
 #elif defined(SIMDE_STATEMENT_EXPR_) && SIMDE_NATURAL_VECTOR_SIZE_LE(128)
   #define simde_mm256_cmp_ps(a, b, imm8) SIMDE_STATEMENT_EXPR_(({ \
     simde__m256_private \
-      simde_mm256_cmp_ps_r_, \
+      simde_mm256_cmp_ps_r_ = simde__m256_to_private(simde_mm256_setzero_ps()), \
       simde_mm256_cmp_ps_a_ = simde__m256_to_private((a)), \
       simde_mm256_cmp_ps_b_ = simde__m256_to_private((b)); \
     \

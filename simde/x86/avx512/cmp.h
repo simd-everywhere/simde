@@ -237,7 +237,7 @@ simde_mm512_cmp_ps_mask (simde__m512 a, simde__m512 b, const int imm8)
 #elif defined(SIMDE_STATEMENT_EXPR_) && SIMDE_NATURAL_VECTOR_SIZE_LE(128)
   #define simde_mm512_cmp_ps_mask(a, b, imm8) SIMDE_STATEMENT_EXPR_(({ \
     simde__m512_private \
-      simde_mm512_cmp_ps_mask_r_, \
+      simde_mm512_cmp_ps_mask_r_ = simde__m512_to_private(simde_mm512_setzero_ps()), \
       simde_mm512_cmp_ps_mask_a_ = simde__m512_to_private((a)), \
       simde_mm512_cmp_ps_mask_b_ = simde__m512_to_private((b)); \
     \
@@ -250,7 +250,7 @@ simde_mm512_cmp_ps_mask (simde__m512 a, simde__m512 b, const int imm8)
 #elif defined(SIMDE_STATEMENT_EXPR_) && SIMDE_NATURAL_VECTOR_SIZE_LE(256)
   #define simde_mm512_cmp_ps_mask(a, b, imm8) SIMDE_STATEMENT_EXPR_(({ \
     simde__m512_private \
-      simde_mm512_cmp_ps_mask_r_, \
+      simde_mm512_cmp_ps_mask_r_ = simde__m512_to_private(simde_mm512_setzero_ps()), \
       simde_mm512_cmp_ps_mask_a_ = simde__m512_to_private((a)), \
       simde_mm512_cmp_ps_mask_b_ = simde__m512_to_private((b)); \
     \
@@ -485,7 +485,7 @@ simde_mm512_cmp_pd_mask (simde__m512d a, simde__m512d b, const int imm8)
 #elif defined(SIMDE_STATEMENT_EXPR_) && SIMDE_NATURAL_VECTOR_SIZE_LE(128)
   #define simde_mm512_cmp_pd_mask(a, b, imm8) SIMDE_STATEMENT_EXPR_(({ \
     simde__m512d_private \
-      simde_mm512_cmp_pd_mask_r_, \
+      simde_mm512_cmp_pd_mask_r_ = simde__m512d_to_private(simde_mm512_setzero_pd()), \
       simde_mm512_cmp_pd_mask_a_ = simde__m512d_to_private((a)), \
       simde_mm512_cmp_pd_mask_b_ = simde__m512d_to_private((b)); \
     \
@@ -498,7 +498,7 @@ simde_mm512_cmp_pd_mask (simde__m512d a, simde__m512d b, const int imm8)
 #elif defined(SIMDE_STATEMENT_EXPR_) && SIMDE_NATURAL_VECTOR_SIZE_LE(256)
   #define simde_mm512_cmp_pd_mask(a, b, imm8) SIMDE_STATEMENT_EXPR_(({ \
     simde__m512d_private \
-      simde_mm512_cmp_pd_mask_r_, \
+      simde_mm512_cmp_pd_mask_r_ = simde__m512d_to_private(simde_mm512_setzero_pd()), \
       simde_mm512_cmp_pd_mask_a_ = simde__m512d_to_private((a)), \
       simde_mm512_cmp_pd_mask_b_ = simde__m512d_to_private((b)); \
     \
