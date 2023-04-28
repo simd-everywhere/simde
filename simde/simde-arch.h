@@ -331,7 +331,7 @@
 #  if defined(__VPCLMULQDQ__)
 #    define SIMDE_ARCH_X86_VPCLMULQDQ 1
 #  endif
-#  if defined(__F16C__)
+#  if defined(__F16C__) || ( HEDLEY_MSVC_VERSION_CHECK(19,30,0) && defined(SIMDE_ARCH_X86_AVX2) )
 #    define SIMDE_ARCH_X86_F16C 1
 #  endif
 #endif
