@@ -43,8 +43,8 @@ build_script:
       set CC=ccache.exe cl.exe
       set CXX=ccache.exe cl.exe
       ccache.exe --zero-stats
-      set CFLAGS=/WX
-      set CXXFLAGS=/WX
+      set CFLAGS=/WX /Z7
+      set CXXFLAGS=/WX /Z7
       meson --backend=ninja build
   - cmd: ninja -C build -v test
   - cmd: ccache.exe --show-stats
