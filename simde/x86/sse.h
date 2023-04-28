@@ -3172,7 +3172,7 @@ simde_mm_movemask_pi8 (simde__m64 a) {
 SIMDE_FUNCTION_ATTRIBUTES
 int
 simde_mm_movemask_ps (simde__m128 a) {
-  #if defined(SIMDE_X86_SSE_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
+  #if defined(SIMDE_X86_SSE_NATIVE)
     return _mm_movemask_ps(a);
   #else
     int r = 0;
