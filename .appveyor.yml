@@ -1,6 +1,7 @@
 environment:
   MESON_EXE_WRAPPER: "['C:\\Program Files\\OpenCppCoverage\\OpenCppCoverage.exe', '--export_type=cobertura', '--']"
   CCACHE_MAXSIZE: '500Mi'
+  APPVEYOR_CACHE_ENTRY_ZIP_ARGS: '-t7z -m0=lzma -mx=9'
   matrix:
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
       VCVARSALL: C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvarsall.bat
@@ -41,8 +42,10 @@ build_script:
       set CCACHE_DIR=%SystemDrive%\ccache
       set CC=ccache.exe cl.exe
       set CXX=ccache.exe cl.exe
+      ccache.exe --zero-stats
       meson --backend=ninja build
   - cmd: ninja -C build -v test
+  - cmd: ccache.exe --show-stats
 
 ## This seems to work; data shows up on CodeCov, but it emits an error
 ## which makes AppVeyor thing the whole build failed.  Example:
