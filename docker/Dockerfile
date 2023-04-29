@@ -56,7 +56,7 @@ RUN \
   echo ${PACKAGES_TO_INSTALL} ; \
   apt-get install -yq ${PACKAGES_TO_INSTALL}
 
-ENV PATH="/usr/lib/ccache:$PATH"
+ENV PATH="/usr/lib/ccache:$PATH:/root/.local/bin"
 
 # ICC
 RUN \
