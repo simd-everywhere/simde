@@ -970,6 +970,7 @@ test_simde_mm512_maskz_roundscale_round_pd (SIMDE_MUNIT_TEST_ARGS) {
 #endif
 }
 
+#if !(defined(HEDLEY_MSVC_VERSION) && defined(SIMDE_X86_AVX_NATIVE))
 static int
 test_simde_mm_roundscale_round_ss (SIMDE_MUNIT_TEST_ARGS) {
 #if 1
@@ -1821,6 +1822,7 @@ test_simde_mm_maskz_roundscale_round_sd (SIMDE_MUNIT_TEST_ARGS) {
   return 1;
 #endif
 }
+#endif
 
 SIMDE_TEST_FUNC_LIST_BEGIN
   SIMDE_TEST_FUNC_LIST_ENTRY(mm512_roundscale_round_ps)
@@ -1829,12 +1831,14 @@ SIMDE_TEST_FUNC_LIST_BEGIN
   SIMDE_TEST_FUNC_LIST_ENTRY(mm512_roundscale_round_pd)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_roundscale_round_pd)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm512_maskz_roundscale_round_pd)
+  #if !(defined(HEDLEY_MSVC_VERSION) && defined(SIMDE_X86_AVX_NATIVE))
   SIMDE_TEST_FUNC_LIST_ENTRY(mm_roundscale_round_ss)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm_mask_roundscale_round_ss)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm_maskz_roundscale_round_ss)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm_roundscale_round_sd)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm_mask_roundscale_round_sd)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm_maskz_roundscale_round_sd)
+  #endif
 SIMDE_TEST_FUNC_LIST_END
 
 #include <test/x86/avx512/test-avx512-footer.h>
