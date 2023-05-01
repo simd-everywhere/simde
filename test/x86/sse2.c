@@ -877,7 +877,14 @@ test_simde_mm_bslli_si128(SIMDE_MUNIT_TEST_ARGS) {
                         INT8_C( -58), INT8_C(-112), INT8_C(  23), INT8_C(-126),
                         INT8_C(  -8), INT8_C( -11), INT8_C(  18), INT8_C(  30),
                         INT8_C( 114), INT8_C(  65), INT8_C(  26), INT8_C(-121));
+  #if defined(HEDLEY_MSVC_VERSION) && defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    #pragma warning( push )
+    #pragma warning( disable : 4556 )
+  #endif
   r = simde_mm_bslli_si128(a, 0);
+  #if defined(HEDLEY_MSVC_VERSION) && defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    #pragma warning( pop )
+  #endif
   simde_assert_m128i_i8(r, ==, e);
 
   e = simde_mm_set_epi8(INT8_C(  87), INT8_C( -58), INT8_C(-112), INT8_C(  23),
@@ -905,7 +912,14 @@ test_simde_mm_bslli_si128(SIMDE_MUNIT_TEST_ARGS) {
                         INT8_C(   0), INT8_C(   0), INT8_C(   0), INT8_C(   0),
                         INT8_C(   0), INT8_C(   0), INT8_C(   0), INT8_C(   0),
                         INT8_C(   0), INT8_C(   0), INT8_C(   0), INT8_C(   0));
+  #if defined(HEDLEY_MSVC_VERSION) && defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    #pragma warning( push )
+    #pragma warning( disable : 4556 )
+  #endif
   r = simde_mm_bslli_si128(a, 19);
+  #if defined(HEDLEY_MSVC_VERSION) && defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    #pragma warning( pop )
+  #endif
   simde_assert_m128i_i8(r, ==, e);
 
   return 0;
@@ -952,7 +966,14 @@ test_simde_mm_bsrli_si128(SIMDE_MUNIT_TEST_ARGS) {
                         INT8_C(   0), INT8_C(   0), INT8_C(   0), INT8_C(   0),
                         INT8_C(   0), INT8_C(   0), INT8_C(   0), INT8_C(   0),
                         INT8_C(   0), INT8_C(   0), INT8_C(   0), INT8_C(   0));
+  #if defined(HEDLEY_MSVC_VERSION) && defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    #pragma warning( push )
+    #pragma warning( disable : 4556 )
+  #endif
   r = simde_mm_bsrli_si128(a, 19);
+  #if defined(HEDLEY_MSVC_VERSION) && defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    #pragma warning( pop )
+  #endif
   simde_assert_m128i_i8(r, ==, e);
 
   return 0;
