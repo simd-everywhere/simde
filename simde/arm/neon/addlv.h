@@ -212,7 +212,7 @@ int32_t
 simde_vaddlvq_s16(simde_int16x8_t a) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vaddlvq_s16(a);
-  #elif defined(SIMDE_X86_SSSE3_NATIVE)
+  #elif defined(SIMDE_X86_SSSE3_NATIVE) && !defined(HEDLEY_MSVC_VERSION)
     __m128i a_ = simde_int16x8_to_m128i(a);
     a_ = _mm_xor_si128(a_, _mm_set1_epi16(HEDLEY_STATIC_CAST(int16_t, 0x8000)));
     a_ = _mm_shuffle_epi8(a_, _mm_set_epi8(15, 13, 11, 9, 7, 5, 3, 1, 14, 12, 10, 8, 6, 4, 2, 0));
