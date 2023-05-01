@@ -525,6 +525,9 @@ jobs:
   msvc-arm64:
     name: Windows MSVC-AArch64
     runs-on: [windows-latest]
+    env:
+      CFLAGS: /WX /Z7
+      CXXFLAGS: /WX /Z7
     steps:
       - name: Checkout
         uses: actions/checkout@v3
