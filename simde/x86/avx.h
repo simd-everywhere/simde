@@ -3539,7 +3539,8 @@ simde_mm256_insert_epi8 (simde__m256i a, int8_t i, const int index)
 
   return simde__m256i_from_private(a_);
 }
-#if defined(SIMDE_X86_AVX_NATIVE)
+#if defined(SIMDE_X86_AVX_NATIVE) && \
+    (!defined(HEDLEY_MSVC_VERSION) || HEDLEY_MSVC_VERSION_CHECK(19,10,0))
   #define simde_mm256_insert_epi8(a, i, index) _mm256_insert_epi8(a, i, index)
 #endif
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
@@ -3557,7 +3558,8 @@ simde_mm256_insert_epi16 (simde__m256i a, int16_t i, const int index)
 
   return simde__m256i_from_private(a_);
 }
-#if defined(SIMDE_X86_AVX_NATIVE)
+#if defined(SIMDE_X86_AVX_NATIVE) && \
+    (!defined(HEDLEY_MSVC_VERSION) || HEDLEY_MSVC_VERSION_CHECK(19,10,0))
   #define simde_mm256_insert_epi16(a, i, index) _mm256_insert_epi16(a, i, index)
 #endif
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
@@ -3575,7 +3577,8 @@ simde_mm256_insert_epi32 (simde__m256i a, int32_t i, const int index)
 
   return simde__m256i_from_private(a_);
 }
-#if defined(SIMDE_X86_AVX_NATIVE)
+#if defined(SIMDE_X86_AVX_NATIVE) && \
+    (!defined(HEDLEY_MSVC_VERSION) || HEDLEY_MSVC_VERSION_CHECK(19,10,0))
   #define simde_mm256_insert_epi32(a, i, index) _mm256_insert_epi32(a, i, index)
 #endif
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
@@ -3677,7 +3680,8 @@ simde_mm256_extract_epi32 (simde__m256i a, const int index)
   simde__m256i_private a_ = simde__m256i_to_private(a);
   return a_.i32[index];
 }
-#if defined(SIMDE_X86_AVX_NATIVE)
+#if defined(SIMDE_X86_AVX_NATIVE) && \
+    (!defined(HEDLEY_MSVC_VERSION) || HEDLEY_MSVC_VERSION_CHECK(19,10,0))
   #define simde_mm256_extract_epi32(a, index) _mm256_extract_epi32(a, index)
 #endif
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
