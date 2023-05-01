@@ -400,6 +400,8 @@
  * more elegantly, but until then... */
 #if defined(HEDLEY_MSVC_VERSION)
   #define SIMDE_DIAGNOSTIC_DISABLE_UNREACHABLE_ __pragma(warning(disable:4702))
+#elif defined(__clang__)
+  #define SIMDE_DIAGNOSTIC_DISABLE_UNREACHABLE_ HEDLEY_PRAGMA(clang diagnostic ignored "-Wunreachable-code")
 #else
   #define SIMDE_DIAGNOSTIC_DISABLE_UNREACHABLE_
 #endif
