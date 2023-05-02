@@ -8482,7 +8482,7 @@ simde_wasm_f32x4_ceil (simde_v128_t a) {
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
-        r_.f32[i] = simde_math_ceilf(a_.f32[i]);
+        r_.f32[i] = simde_math_quietf(simde_math_ceilf(a_.f32[i]));
       }
     #endif
 
@@ -8505,30 +8505,6 @@ simde_wasm_f64x2_ceil (simde_v128_t a) {
 
     #if defined(SIMDE_X86_SSE4_1_NATIVE)
       r_.sse_m128d = _mm_round_pd(a_.sse_m128d, _MM_FROUND_TO_POS_INF | _MM_FROUND_NO_EXC);
-    #elif defined(SIMDE_X86_SSE2_NATIVE)
-      /* https://github.com/WebAssembly/simd/pull/232 */
-
-      const __m128d all_but_sign_set = _mm_castsi128_pd(_mm_set1_epi64x(INT64_C(0x7FFFFFFFFFFFFFFF)));
-      /* https://stackoverflow.com/a/55077612 explains this a bit */
-      const __m128d bignum = _mm_set1_pd(4.50359962737049600000e+15);
-      const __m128d sign_cleared = _mm_and_pd(a_.sse_m128d, all_but_sign_set);
-
-      __m128d mask =
-        _mm_and_pd(
-          _mm_cmpnle_pd(bignum, sign_cleared),
-          all_but_sign_set
-        );
-      const __m128d tmp =
-        _mm_or_pd(
-          _mm_andnot_pd(mask, a_.sse_m128d),
-          _mm_and_pd   (mask, _mm_sub_pd(_mm_add_pd(sign_cleared, bignum), bignum))
-        );
-
-      r_.sse_m128d =
-        _mm_add_pd(
-          tmp,
-          _mm_and_pd(_mm_and_pd(_mm_cmplt_pd(tmp, a_.sse_m128d), all_but_sign_set), _mm_set1_pd(1.0))
-        );
     #elif defined(SIMDE_ARM_NEON_A64V8_NATIVE)
       r_.neon_f64 = vrndpq_f64(a_.neon_f64);
     #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
@@ -8536,7 +8512,7 @@ simde_wasm_f64x2_ceil (simde_v128_t a) {
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
-        r_.f64[i] = simde_math_ceil(a_.f64[i]);
+        r_.f64[i] = simde_math_quiet(simde_math_ceil(a_.f64[i]));
       }
     #endif
 
@@ -8624,7 +8600,7 @@ simde_wasm_f32x4_floor (simde_v128_t a) {
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
-        r_.f32[i] = simde_math_floorf(a_.f32[i]);
+        r_.f32[i] = simde_math_quietf(simde_math_floorf(a_.f32[i]));
       }
     #endif
 
@@ -8647,7 +8623,7 @@ simde_wasm_f64x2_floor (simde_v128_t a) {
 
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
-      r_.f64[i] = simde_math_floor(a_.f64[i]);
+      r_.f64[i] = simde_math_quiet(simde_math_floor(a_.f64[i]));
     }
 
     return simde_v128_from_private(r_);
@@ -8671,7 +8647,7 @@ simde_wasm_f32x4_trunc (simde_v128_t a) {
 
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
-      r_.f32[i] = simde_math_truncf(a_.f32[i]);
+      r_.f32[i] = simde_math_quietf(simde_math_truncf(a_.f32[i]));
     }
 
     return simde_v128_from_private(r_);
@@ -8693,7 +8669,7 @@ simde_wasm_f64x2_trunc (simde_v128_t a) {
 
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
-      r_.f64[i] = simde_math_trunc(a_.f64[i]);
+      r_.f64[i] = simde_math_quiet(simde_math_trunc(a_.f64[i]));
     }
 
     return simde_v128_from_private(r_);
@@ -8770,7 +8746,7 @@ simde_wasm_f32x4_sqrt (simde_v128_t a) {
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
-        r_.f32[i] = simde_math_sqrtf(a_.f32[i]);
+        r_.f32[i] = simde_math_quietf(simde_math_sqrtf(a_.f32[i]));
       }
     #endif
 
@@ -8800,7 +8776,7 @@ simde_wasm_f64x2_sqrt (simde_v128_t a) {
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
-        r_.f64[i] = simde_math_sqrt(a_.f64[i]);
+        r_.f64[i] = simde_math_quiet(simde_math_sqrt(a_.f64[i]));
       }
     #endif
 
