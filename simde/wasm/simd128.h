@@ -3127,20 +3127,10 @@ simde_wasm_f32x4_abs (simde_v128_t a) {
       r_.neon_f32 = vabsq_f32(a_.neon_f32);
     #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
       r_.altivec_f32 = vec_abs(a_.altivec_f32);
-    #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
-      int32_t SIMDE_VECTOR(16) m = HEDLEY_REINTERPRET_CAST(__typeof__(m), a_.f32 < SIMDE_FLOAT32_C(0.0));
-      r_.f32 =
-        HEDLEY_REINTERPRET_CAST(
-          __typeof__(r_.f32),
-          (
-            (HEDLEY_REINTERPRET_CAST(__typeof__(m), -a_.f32) & m) |
-            (HEDLEY_REINTERPRET_CAST(__typeof__(m), a_.f32) & ~m)
-          )
-        );
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
-        r_.f32[i] = (a_.f32[i] < SIMDE_FLOAT32_C(0.0)) ? -a_.f32[i] : a_.f32[i];
+        r_.f32[i] = simde_math_signbit(a_.f32[i]) ? -a_.f32[i] : a_.f32[i];
       }
     #endif
 
@@ -3167,20 +3157,10 @@ simde_wasm_f64x2_abs (simde_v128_t a) {
       r_.neon_f64 = vabsq_f64(a_.neon_f64);
     #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
       r_.altivec_f64 = vec_abs(a_.altivec_f64);
-    #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
-      int64_t SIMDE_VECTOR(16) m = HEDLEY_REINTERPRET_CAST(__typeof__(m), a_.f64 < SIMDE_FLOAT64_C(0.0));
-      r_.f64 =
-        HEDLEY_REINTERPRET_CAST(
-          __typeof__(r_.f64),
-          (
-            (HEDLEY_REINTERPRET_CAST(__typeof__(m), -a_.f64) &  m) |
-            (HEDLEY_REINTERPRET_CAST(__typeof__(m),  a_.f64) & ~m)
-          )
-        );
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
-        r_.f64[i] = (a_.f64[i] < SIMDE_FLOAT64_C(0.0)) ? -a_.f64[i] : a_.f64[i];
+        r_.f64[i] = simde_math_signbit(a_.f64[i]) ? -a_.f64[i] : a_.f64[i];
       }
     #endif
 
