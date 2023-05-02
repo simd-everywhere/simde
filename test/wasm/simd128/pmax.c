@@ -65,7 +65,7 @@ test_simde_wasm_f32x4_pmax(SIMDE_MUNIT_TEST_ARGS) {
       simde_v128_t a = simde_wasm_v128_load(test_vec[i].a);
       simde_v128_t b = simde_wasm_v128_load(test_vec[i].b);
       simde_v128_t r = simde_wasm_f32x4_pmax(a, b);
-      simde_test_wasm_f32x4_assert_equal(r, simde_wasm_v128_load(test_vec[i].r), 1);
+      simde_test_wasm_f32x4_assert_equal(r, simde_wasm_v128_load(test_vec[i].r), INT_MAX);
     }
     return 0;
   #else
@@ -128,7 +128,7 @@ test_simde_wasm_f64x2_pmax(SIMDE_MUNIT_TEST_ARGS) {
       simde_v128_t a = simde_wasm_v128_load(test_vec[i].a);
       simde_v128_t b = simde_wasm_v128_load(test_vec[i].b);
       simde_v128_t r = simde_wasm_f64x2_pmax(a, b);
-      simde_test_wasm_f64x2_assert_equal(r, simde_wasm_v128_load(test_vec[i].r), 1);
+      simde_test_wasm_f64x2_assert_equal(r, simde_wasm_v128_load(test_vec[i].r), INT_MAX);
     }
     return 0;
   #else

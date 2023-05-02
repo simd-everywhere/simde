@@ -55,7 +55,7 @@ test_simde_wasm_f32x4_floor(SIMDE_MUNIT_TEST_ARGS) {
     for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
       simde_v128_t a = simde_wasm_v128_load(test_vec[i].a);
       simde_v128_t r = simde_wasm_f32x4_floor(a);
-      simde_test_wasm_f32x4_assert_equal(r, simde_wasm_v128_load(test_vec[i].r), 1);
+      simde_test_wasm_f32x4_assert_equal(r, simde_wasm_v128_load(test_vec[i].r), INT_MAX);
     }
     return 0;
   #else
@@ -106,7 +106,7 @@ test_simde_wasm_f64x2_floor(SIMDE_MUNIT_TEST_ARGS) {
     for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
       simde_v128_t a = simde_wasm_v128_load(test_vec[i].a);
       simde_v128_t r = simde_wasm_f64x2_floor(a);
-      simde_test_wasm_f64x2_assert_equal(r, simde_wasm_v128_load(test_vec[i].r), 1);
+      simde_test_wasm_f64x2_assert_equal(r, simde_wasm_v128_load(test_vec[i].r), INT_MAX);
     }
     return 0;
   #else
