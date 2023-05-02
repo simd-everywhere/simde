@@ -712,6 +712,36 @@ typedef SIMDE_FLOAT64_TYPE simde_float64;
   #endif
 #endif
 
+/*** Functions that quiet a signaling NaN ***/
+
+static HEDLEY_INLINE
+double
+simde_math_quiet(double x) {
+  uint64_t tmp, mask;
+  if (!simde_math_isnan(x)) {
+    return x;
+  }
+  simde_memcpy(&tmp, &x, 8);
+  mask = 0x7ff80000;
+  mask <<= 32;
+  tmp |= mask;
+  simde_memcpy(&x, &tmp, 8);
+  return x;
+}
+
+static HEDLEY_INLINE
+float
+simde_math_quietf(float x) {
+  uint32_t tmp;
+  if (!simde_math_isnanf(x)) {
+    return x;
+  }
+  simde_memcpy(&tmp, &x, 4);
+  tmp |= 0x7fc00000lu;
+  simde_memcpy(&x, &tmp, 4);
+  return x;
+}
+
 #if defined(FE_ALL_EXCEPT)
   #define SIMDE_HAVE_FENV_H
 #elif defined(__has_include)
