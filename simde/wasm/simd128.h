@@ -5065,59 +5065,23 @@ simde_wasm_f32x4_max (simde_v128_t a, simde_v128_t b) {
       b_ = simde_v128_to_private(b),
       r_;
 
-    #if defined(SIMDE_X86_SSE4_1_NATIVE)
-      r_.sse_m128 = _mm_blendv_ps(
-          _mm_set1_ps(SIMDE_MATH_NANF),
-          _mm_max_ps(a_.sse_m128, b_.sse_m128),
-          _mm_cmpord_ps(a_.sse_m128, b_.sse_m128));
-    #elif defined(SIMDE_X86_SSE_NATIVE)
-      __m128 m = _mm_or_ps(_mm_cmpneq_ps(a_.sse_m128, a_.sse_m128), _mm_cmpgt_ps(a_.sse_m128, b_.sse_m128));
-      #if defined(SIMDE_X86_SSE4_1_NATIVE)
-        r_.ssse_m128 = _mm_blendv_ps(b_.sse_m128, a_.sse_m128, m);
-      #else
-        r_.sse_m128 =
-          _mm_or_ps(
-            _mm_and_ps(m, a_.sse_m128),
-            _mm_andnot_ps(m, b_.sse_m128)
-          );
-      #endif
-    #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-      r_.neon_f32 = vmaxq_f32(a_.neon_f32, b_.neon_f32);
-    #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
-      r_.altivec_f32 =
-        vec_sel(
-          b_.altivec_f32,
-          a_.altivec_f32,
-          vec_orc(
-            vec_cmpgt(a_.altivec_f32, b_.altivec_f32),
-            vec_cmpeq(a_.altivec_f32, a_.altivec_f32)
-          )
-        );
-    #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
-      SIMDE_POWER_ALTIVEC_VECTOR(SIMDE_POWER_ALTIVEC_BOOL int) cmpres = vec_cmpeq(a_.altivec_f32, a_.altivec_f32);
-      r_.altivec_f32 =
-        vec_sel(
-          b_.altivec_f32,
-          a_.altivec_f32,
-          vec_or(
-            vec_cmpgt(a_.altivec_f32, b_.altivec_f32),
-            vec_nor(cmpres, cmpres)
-          )
-        );
-    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-      int32_t SIMDE_VECTOR(16) m = HEDLEY_REINTERPRET_CAST(__typeof__(m), (a_.f32 != a_.f32) | (a_.f32 > b_.f32));
-      r_.f32 =
-        HEDLEY_REINTERPRET_CAST(
-          __typeof__(r_.f32),
-          (
-            ( m & HEDLEY_REINTERPRET_CAST(__typeof__(m), a_.f32)) |
-            (~m & HEDLEY_REINTERPRET_CAST(__typeof__(m), b_.f32))
-          )
-        );
+    #if defined(SIMDE_X86_SSE_NATIVE)
+        // Inspired by https://github.com/v8/v8/blob/c750b6c85bd1ad1d27f7acc1812165f465515144/src/codegen/shared-ia32-x64/macro-assembler-shared-ia32-x64.cc#L231
+        simde_v128_private scratch;
+        scratch.sse_m128 = a_.sse_m128;
+        scratch.sse_m128 = _mm_max_ps(scratch.sse_m128, b_.sse_m128);
+        r_.sse_m128 = b_.sse_m128;
+        r_.sse_m128 = _mm_max_ps(r_.sse_m128, a_.sse_m128);
+        r_.sse_m128 = _mm_xor_ps(r_.sse_m128, scratch.sse_m128);
+        scratch.sse_m128 = _mm_or_ps(scratch.sse_m128, r_.sse_m128);
+        scratch.sse_m128 = _mm_sub_ps(scratch.sse_m128, r_.sse_m128);
+        r_.sse_m128 = _mm_cmpunord_ps(r_.sse_m128, scratch.sse_m128);
+        r_.sse_m128i = _mm_srli_epi32(r_.sse_m128i, 10);
+        r_.sse_m128 = _mm_andnot_ps(r_.sse_m128, scratch.sse_m128);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
-        r_.f32[i] = (simde_math_isnan(a_.f32[i]) || (a_.f32[i] > b_.f32[i])) ? a_.f32[i] : b_.f32[i];
+        r_.f32[i] = SIMDE_WASM_SIMD128_FMAX(a_.f32[i], b_.f32[i]);
       }
     #endif
 
@@ -5139,59 +5103,23 @@ simde_wasm_f64x2_max (simde_v128_t a, simde_v128_t b) {
       b_ = simde_v128_to_private(b),
       r_;
 
-    #if defined(SIMDE_X86_SSE4_1_NATIVE)
-      r_.sse_m128d = _mm_blendv_pd(
-          _mm_set1_pd(SIMDE_MATH_NAN),
-          _mm_max_pd(a_.sse_m128d, b_.sse_m128d),
-          _mm_cmpord_pd(a_.sse_m128d, b_.sse_m128d));
-    #elif defined(SIMDE_X86_SSE2_NATIVE)
-      __m128d m = _mm_or_pd(_mm_cmpneq_pd(a_.sse_m128d, a_.sse_m128d), _mm_cmpgt_pd(a_.sse_m128d, b_.sse_m128d));
-      #if defined(SIMDE_X86_SSE4_1_NATIVE)
-        r_.ssse_m128d = _mm_blendv_pd(b_.sse_m128d, a_.sse_m128d, m);
-      #else
-        r_.sse_m128d =
-          _mm_or_pd(
-            _mm_and_pd(m, a_.sse_m128d),
-            _mm_andnot_pd(m, b_.sse_m128d)
-          );
-      #endif
-    #elif defined(SIMDE_ARM_NEON_A64V8_NATIVE)
-      r_.neon_f64 = vmaxq_f64(a_.neon_f64, b_.neon_f64);
-    #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
-      r_.altivec_f64 =
-        vec_sel(
-          b_.altivec_f64,
-          a_.altivec_f64,
-          vec_orc(
-            vec_cmpgt(a_.altivec_f64, b_.altivec_f64),
-            vec_cmpeq(a_.altivec_f64, a_.altivec_f64)
-          )
-        );
-    #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
-      SIMDE_POWER_ALTIVEC_VECTOR(SIMDE_POWER_ALTIVEC_BOOL long long) cmpres = vec_cmpeq(a_.altivec_f64, a_.altivec_f64);
-      r_.altivec_f64 =
-        vec_sel(
-          b_.altivec_f64,
-          a_.altivec_f64,
-          vec_or(
-            vec_cmpgt(a_.altivec_f64, b_.altivec_f64),
-            vec_nor(cmpres, cmpres)
-          )
-        );
-    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-      int64_t SIMDE_VECTOR(16) m = HEDLEY_REINTERPRET_CAST(__typeof__(m), (a_.f64 != a_.f64) | (a_.f64 > b_.f64));
-      r_.f64 =
-        HEDLEY_REINTERPRET_CAST(
-          __typeof__(r_.f64),
-          (
-            ( m & HEDLEY_REINTERPRET_CAST(__typeof__(m), a_.f64)) |
-            (~m & HEDLEY_REINTERPRET_CAST(__typeof__(m), b_.f64))
-          )
-        );
+    #if defined(SIMDE_X86_SSE_NATIVE)
+        // Inspired by https://github.com/v8/v8/blob/c750b6c85bd1ad1d27f7acc1812165f465515144/src/codegen/shared-ia32-x64/macro-assembler-shared-ia32-x64.cc#L301
+        simde_v128_private scratch;
+        scratch.sse_m128d = a_.sse_m128d;
+        scratch.sse_m128d = _mm_max_pd(scratch.sse_m128d, b_.sse_m128d);
+        r_.sse_m128d = b_.sse_m128d;
+        r_.sse_m128d = _mm_max_pd(r_.sse_m128d, a_.sse_m128d);
+        r_.sse_m128d = _mm_xor_pd(r_.sse_m128d, scratch.sse_m128d);
+        scratch.sse_m128d = _mm_or_pd(scratch.sse_m128d, r_.sse_m128d);
+        scratch.sse_m128d = _mm_sub_pd(scratch.sse_m128d, r_.sse_m128d);
+        r_.sse_m128d = _mm_cmpunord_pd(r_.sse_m128d, scratch.sse_m128d);
+        r_.sse_m128i = _mm_srli_epi64(r_.sse_m128i, 13);
+        r_.sse_m128d = _mm_andnot_pd(r_.sse_m128d, scratch.sse_m128d);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
-        r_.f64[i] = (simde_math_isnan(a_.f64[i]) || (a_.f64[i] > b_.f64[i])) ? a_.f64[i] : b_.f64[i];
+        r_.f64[i] = SIMDE_WASM_SIMD128_FMAX(a_.f64[i], b_.f64[i]);
       }
     #endif
 
