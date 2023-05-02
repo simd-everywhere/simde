@@ -8693,7 +8693,7 @@ simde_wasm_f32x4_nearest (simde_v128_t a) {
 
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
-      r_.f32[i] = simde_math_roundevenf(a_.f32[i]);
+      r_.f32[i] = simde_math_quietf(simde_math_nearbyintf(a_.f32[i]));
     }
 
     return simde_v128_from_private(r_);
@@ -8715,7 +8715,7 @@ simde_wasm_f64x2_nearest (simde_v128_t a) {
 
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
-      r_.f64[i] = simde_math_roundeven(a_.f64[i]);
+      r_.f64[i] = simde_math_quiet(simde_math_nearbyint(a_.f64[i]));
     }
 
     return simde_v128_from_private(r_);
