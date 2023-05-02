@@ -4472,26 +4472,6 @@ simde_wasm_i16x8_q15mulr_sat (simde_v128_t a, simde_v128_t b) {
     /* https://github.com/WebAssembly/simd/pull/365 */
     #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       r_.neon_i16 = vqrdmulhq_s16(a_.neon_i16, b_.neon_i16);
-    #elif defined(SIMDE_X86_SSSE3_NATIVE)
-      __m128i y = _mm_mulhrs_epi16(a_.sse_m128i, b_.sse_m128i);
-      __m128i tmp = _mm_cmpeq_epi16(y, _mm_set1_epi16(INT16_MAX));
-      r_.sse_m128i = _mm_xor_si128(y, tmp);
-    #elif defined(SIMDE_X86_SSE2_NATIVE)
-      const __m128i prod_lo = _mm_mullo_epi16(a_.sse_m128i, b_.sse_m128i);
-      const __m128i prod_hi = _mm_mulhi_epi16(a_.sse_m128i, b_.sse_m128i);
-      const __m128i tmp =
-        _mm_add_epi16(
-          _mm_avg_epu16(
-            _mm_srli_epi16(prod_lo, 14),
-            _mm_setzero_si128()
-          ),
-          _mm_add_epi16(prod_hi, prod_hi)
-        );
-      r_.sse_m128i =
-        _mm_xor_si128(
-          tmp,
-          _mm_cmpeq_epi16(_mm_set1_epi16(INT16_MAX), tmp)
-        );
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.i16) / sizeof(r_.i16[0])) ; i++) {
