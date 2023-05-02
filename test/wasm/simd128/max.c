@@ -439,6 +439,9 @@ test_simde_wasm_f32x4_max(SIMDE_MUNIT_TEST_ARGS) {
       { {            SIMDE_MATH_NANF, SIMDE_FLOAT32_C(   354.79),            SIMDE_MATH_NANF, SIMDE_FLOAT32_C(   338.79) },
         { SIMDE_FLOAT32_C(   864.37),            SIMDE_MATH_NANF,            SIMDE_MATH_NANF, SIMDE_FLOAT32_C(   338.79) },
         {            SIMDE_MATH_NANF,            SIMDE_MATH_NANF,            SIMDE_MATH_NANF, SIMDE_FLOAT32_C(   338.79) } },
+      { { SIMDE_FLOAT32_C(    -0.00), SIMDE_FLOAT32_C(     0.00), SIMDE_FLOAT32_C(    -0.00), SIMDE_FLOAT32_C(     0.00) },
+        { SIMDE_FLOAT32_C(     0.00), SIMDE_FLOAT32_C(    -0.00), SIMDE_FLOAT32_C(     0.00), SIMDE_FLOAT32_C(    -0.00) },
+        { SIMDE_FLOAT32_C(     0.00), SIMDE_FLOAT32_C(     0.00), SIMDE_FLOAT32_C(     0.00), SIMDE_FLOAT32_C(     0.00) } },
       #endif
       { { SIMDE_FLOAT32_C(  -920.07), SIMDE_FLOAT32_C(   830.32), SIMDE_FLOAT32_C(  -196.85), SIMDE_FLOAT32_C(   291.81) },
         { SIMDE_FLOAT32_C(  -289.04), SIMDE_FLOAT32_C(    49.93), SIMDE_FLOAT32_C(  -928.55), SIMDE_FLOAT32_C(    69.77) },
@@ -505,6 +508,9 @@ test_simde_wasm_f64x2_max(SIMDE_MUNIT_TEST_ARGS) {
       { {             SIMDE_MATH_NAN, SIMDE_FLOAT64_C(   450.40) },
         {             SIMDE_MATH_NAN, SIMDE_FLOAT64_C(   652.50) },
         {             SIMDE_MATH_NAN, SIMDE_FLOAT64_C(   652.50) } },
+      { { SIMDE_FLOAT64_C(    -0.00), SIMDE_FLOAT64_C(     0.00) },
+        { SIMDE_FLOAT64_C(     0.00), SIMDE_FLOAT64_C(    -0.00) },
+        { SIMDE_FLOAT64_C(     0.00), SIMDE_FLOAT64_C(     0.00) } },
       #endif
       { { SIMDE_FLOAT64_C(   523.06), SIMDE_FLOAT64_C(  -600.30) },
         { SIMDE_FLOAT64_C(   212.57), SIMDE_FLOAT64_C(  -725.13) },
