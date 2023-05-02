@@ -151,6 +151,18 @@ HEDLEY_STATIC_ASSERT(SIMDE_ALIGN_OF(simde_v128_private) == 16, "simde_v128_priva
 
 SIMDE_WASM_SIMD128_GENERATE_CONVERSION_FUNCTIONS(simde_v128_private, simde_v128_t, simde_v128_to_private, simde_v128_from_private)
 
+#define SIMDE_WASM_SIMD128_FMIN(x, y)                                  \
+  (simde_math_isnan(x)          ? SIMDE_MATH_NAN                       \
+   : simde_math_isnan(y)        ? SIMDE_MATH_NAN                       \
+   : (((x) == 0) && ((y) == 0)) ? (simde_math_signbit(x) ? (x) : (y))  \
+                                : ((x) < (y) ? (x) : (y)))
+
+#define SIMDE_WASM_SIMD128_FMAX(x, y)                                  \
+  (simde_math_isnan(x)          ? SIMDE_MATH_NAN                       \
+   : simde_math_isnan(y)        ? SIMDE_MATH_NAN                       \
+   : (((x) == 0) && ((y) == 0)) ? (simde_math_signbit(x) ? (y) : (x))  \
+                                : ((x) > (y) ? (x) : (y)))
+
 #if defined(SIMDE_X86_SSE2_NATIVE)
   SIMDE_WASM_SIMD128_GENERATE_CONVERSION_FUNCTIONS(__m128 , simde_v128_t, simde_v128_to_m128 , simde_v128_from_m128 )
   SIMDE_WASM_SIMD128_GENERATE_CONVERSION_FUNCTIONS(__m128i, simde_v128_t, simde_v128_to_m128i, simde_v128_from_m128i)
@@ -4756,43 +4768,22 @@ simde_wasm_f32x4_min (simde_v128_t a, simde_v128_t b) {
       b_ = simde_v128_to_private(b),
       r_;
 
-    #if defined(SIMDE_X86_SSE4_1_NATIVE)
-      r_.sse_m128 = _mm_blendv_ps(
-          _mm_set1_ps(SIMDE_MATH_NANF),
-          _mm_min_ps(a_.sse_m128, b_.sse_m128),
-          _mm_cmpord_ps(a_.sse_m128, b_.sse_m128));
-    #elif defined(SIMDE_X86_SSE2_NATIVE)
-      __m128 m = _mm_cmpord_ps(a_.sse_m128, b_.sse_m128);
-      r_.sse_m128 =
-        _mm_or_ps(
-          _mm_and_ps(m, _mm_min_ps(a_.sse_m128, b_.sse_m128)),
-          _mm_andnot_ps(m, _mm_set1_ps(SIMDE_MATH_NANF))
-        );
-    #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-      r_.neon_f32 = vminq_f32(a_.neon_f32, b_.neon_f32);
-    #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
-      SIMDE_POWER_ALTIVEC_VECTOR(SIMDE_POWER_ALTIVEC_BOOL int) condition;
-      SIMDE_POWER_ALTIVEC_VECTOR(SIMDE_POWER_ALTIVEC_BOOL int) a_lt_b =
-        vec_cmpgt(b_.altivec_f32, a_.altivec_f32);
-
-      #if defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
-        condition = vec_orc(a_lt_b, vec_cmpeq(a_.altivec_f32, a_.altivec_f32));
-      #else
-        SIMDE_POWER_ALTIVEC_VECTOR(SIMDE_POWER_ALTIVEC_BOOL int) a_not_nan =
-          vec_cmpeq(a_.altivec_f32, a_.altivec_f32);
-        condition = vec_or(a_lt_b, vec_nor(a_not_nan, a_not_nan));
-      #endif
-
-      r_.altivec_f32 =
-        vec_sel(
-          b_.altivec_f32,
-          a_.altivec_f32,
-          condition
-        );
+    #if defined(SIMDE_X86_SSE_NATIVE)
+        // Inspired by https://github.com/v8/v8/blob/c750b6c85bd1ad1d27f7acc1812165f465515144/src/codegen/shared-ia32-x64/macro-assembler-shared-ia32-x64.cc#L202
+        simde_v128_private scratch;
+        scratch.sse_m128 = a_.sse_m128;
+        scratch.sse_m128 = _mm_min_ps(scratch.sse_m128, b_.sse_m128);
+        r_.sse_m128 = b_.sse_m128;
+        r_.sse_m128 = _mm_min_ps(r_.sse_m128, a_.sse_m128);
+        scratch.sse_m128 = _mm_or_ps(scratch.sse_m128, r_.sse_m128);
+        r_.sse_m128 = _mm_cmpunord_ps(r_.sse_m128, scratch.sse_m128);
+        scratch.sse_m128 = _mm_or_ps(scratch.sse_m128, r_.sse_m128);
+        r_.sse_m128i = _mm_srli_epi32(r_.sse_m128i, 10);
+        r_.sse_m128 = _mm_andnot_ps(r_.sse_m128, scratch.sse_m128);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
-        r_.f32[i] = (simde_math_isnan(a_.f32[i]) || (a_.f32[i] < b_.f32[i])) ? a_.f32[i] : b_.f32[i];
+        r_.f32[i] = SIMDE_WASM_SIMD128_FMIN(a_.f32[i], b_.f32[i]);
       }
     #endif
 
@@ -4814,34 +4805,22 @@ simde_wasm_f64x2_min (simde_v128_t a, simde_v128_t b) {
       b_ = simde_v128_to_private(b),
       r_;
 
-    #if defined(SIMDE_X86_SSE4_1_NATIVE)
-      r_.sse_m128d = _mm_blendv_pd(
-          _mm_set1_pd(SIMDE_MATH_NAN),
-          _mm_min_pd(a_.sse_m128d, b_.sse_m128d),
-          _mm_cmpord_pd(a_.sse_m128d, b_.sse_m128d));
-    #elif defined(SIMDE_X86_SSE2_NATIVE)
-      __m128d m = _mm_cmpord_pd(a_.sse_m128d, b_.sse_m128d);
-      r_.sse_m128d =
-        _mm_or_pd(
-          _mm_and_pd(m, _mm_min_pd(a_.sse_m128d, b_.sse_m128d)),
-          _mm_andnot_pd(m, _mm_set1_pd(SIMDE_MATH_NAN))
-        );
-    #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
-      r_.altivec_f64 =
-        vec_sel(
-          b_.altivec_f64,
-          a_.altivec_f64,
-          vec_orc(
-            vec_cmpgt(b_.altivec_f64, a_.altivec_f64),
-            vec_cmpeq(a_.altivec_f64, a_.altivec_f64)
-          )
-        );
-    #elif defined(SIMDE_ARM_NEON_A64V8_NATIVE)
-      r_.neon_f64 = vminq_f64(a_.neon_f64, b_.neon_f64);
+    #if defined(SIMDE_X86_SSE_NATIVE)
+        // Inspired by https://github.com/v8/v8/blob/c750b6c85bd1ad1d27f7acc1812165f465515144/src/codegen/shared-ia32-x64/macro-assembler-shared-ia32-x64.cc#L263
+        simde_v128_private scratch;
+        scratch.sse_m128d = a_.sse_m128d;
+        scratch.sse_m128d = _mm_min_pd(scratch.sse_m128d, b_.sse_m128d);
+        r_.sse_m128d = b_.sse_m128d;
+        r_.sse_m128d = _mm_min_pd(r_.sse_m128d, a_.sse_m128d);
+        scratch.sse_m128d = _mm_or_pd(scratch.sse_m128d, r_.sse_m128d);
+        r_.sse_m128d = _mm_cmpunord_pd(r_.sse_m128d, scratch.sse_m128d);
+        scratch.sse_m128d = _mm_or_pd(scratch.sse_m128d, r_.sse_m128d);
+        r_.sse_m128i = _mm_srli_epi64(r_.sse_m128i, 13);
+        r_.sse_m128d = _mm_andnot_pd(r_.sse_m128d, scratch.sse_m128d);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
-        r_.f64[i] = (simde_math_isnan(a_.f64[i]) || (a_.f64[i] < b_.f64[i])) ? a_.f64[i] : b_.f64[i];
+        r_.f64[i] = SIMDE_WASM_SIMD128_FMIN(a_.f64[i], b_.f64[i]);
       }
     #endif
 

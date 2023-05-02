@@ -706,6 +706,16 @@ simde_math_fpclassify(double v) {
   #endif
 #endif
 
+#if !defined(simde_math_signbit)
+  #if SIMDE_MATH_BUILTIN_LIBM(signbit)
+    #define simde_math_signbit(x) __builtin_signbit(x)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_signbit(x) std::signbit(x)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_signbit(x) signbit(x)
+  #endif
+#endif
+
 #if !defined(simde_math_cos)
   #if SIMDE_MATH_BUILTIN_LIBM(cos)
     #define simde_math_cos(v) __builtin_cos(v)
