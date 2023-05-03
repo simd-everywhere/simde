@@ -158,7 +158,7 @@ jobs:
     - name: Build
       run: meson compile -C build --verbose
     - name: Test
-      run: meson test -C build --print-errorlogs $(meson test -C build --list | grep -v emul)
+      run: meson test -C build --print-errorlogs
 
   native-aliases:
     runs-on: ubuntu-22.04
