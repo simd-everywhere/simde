@@ -36,7 +36,9 @@ SIMDE_BEGIN_DECLS_
 SIMDE_FUNCTION_ATTRIBUTES
 simde__mmask8
 simde_kxor_mask8 (simde__mmask8 a, simde__mmask8 b) {
-  #if defined(SIMDE_X86_AVX512DQ_NATIVE) && (!defined(__clang__) || SIMDE_DETECT_CLANG_VERSION_CHECK(8,0,0))
+  #if defined(SIMDE_X86_AVX512DQ_NATIVE) \
+      && (!defined(__clang__) || SIMDE_DETECT_CLANG_VERSION_CHECK(8,0,0)) \
+      && (!defined(HEDLEY_MSVC_VERSION) || HEDLEY_MSVC_VERSION_CHECK(19,20,0))
     return _kxor_mask8(a, b);
   #else
     return a^b;
@@ -50,7 +52,9 @@ simde_kxor_mask8 (simde__mmask8 a, simde__mmask8 b) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__mmask16
 simde_kxor_mask16 (simde__mmask16 a, simde__mmask16 b) {
-  #if defined(SIMDE_X86_AVX512F_NATIVE) && (!defined(__clang__) || SIMDE_DETECT_CLANG_VERSION_CHECK(8,0,0))
+  #if defined(SIMDE_X86_AVX512F_NATIVE) \
+      && (!defined(__clang__) || SIMDE_DETECT_CLANG_VERSION_CHECK(8,0,0)) \
+      && (!defined(HEDLEY_MSVC_VERSION) || HEDLEY_MSVC_VERSION_CHECK(19,20,0))
     return _kxor_mask16(a, b);
   #else
     return a^b;
@@ -68,7 +72,9 @@ simde_kxor_mask16 (simde__mmask16 a, simde__mmask16 b) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__mmask32
 simde_kxor_mask32 (simde__mmask32 a, simde__mmask32 b) {
-  #if defined(SIMDE_X86_AVX512BW_NATIVE) && (!defined(__clang__) || SIMDE_DETECT_CLANG_VERSION_CHECK(8,0,0))
+  #if defined(SIMDE_X86_AVX512BW_NATIVE) \
+      && (!defined(__clang__) || SIMDE_DETECT_CLANG_VERSION_CHECK(8,0,0)) \
+      && (!defined(HEDLEY_MSVC_VERSION) || HEDLEY_MSVC_VERSION_CHECK(19,20,0))
     return _kxor_mask32(a, b);
   #else
     return a^b;
@@ -82,7 +88,9 @@ simde_kxor_mask32 (simde__mmask32 a, simde__mmask32 b) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__mmask64
 simde_kxor_mask64 (simde__mmask64 a, simde__mmask64 b) {
-  #if defined(SIMDE_X86_AVX512BW_NATIVE) && (!defined(__clang__) || SIMDE_DETECT_CLANG_VERSION_CHECK(8,0,0))
+  #if defined(SIMDE_X86_AVX512BW_NATIVE) \
+      && (!defined(__clang__) || SIMDE_DETECT_CLANG_VERSION_CHECK(8,0,0)) \
+      && (!defined(HEDLEY_MSVC_VERSION) || HEDLEY_MSVC_VERSION_CHECK(19,20,0))
     return _kxor_mask64(a, b);
   #else
     return a^b;
