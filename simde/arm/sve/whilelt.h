@@ -267,7 +267,7 @@ simde_svwhilelt_b16_s64(int64_t op1, int64_t op2) {
       return simde_svbool_from_mmask32(HEDLEY_STATIC_CAST(__mmask32, 0));
 
     int_fast64_t remaining = (HEDLEY_STATIC_CAST(int_fast64_t, op2) - HEDLEY_STATIC_CAST(int_fast64_t, op1));
-    __mmask32 r = HEDLEY_STATIC_CAST(__mmask32, ~UINT64_C(0));
+    __mmask32 r = HEDLEY_STATIC_CAST(__mmask32, ~UINT32_C(0));
     if (HEDLEY_UNLIKELY(remaining < 32)) {
       r >>= 32 - remaining;
     }
@@ -627,7 +627,7 @@ simde_svwhilelt_b16_u64(uint64_t op1, uint64_t op2) {
       return simde_svbool_from_mmask32(HEDLEY_STATIC_CAST(__mmask32, 0));
 
     uint_fast64_t remaining = (HEDLEY_STATIC_CAST(uint_fast64_t, op2) - HEDLEY_STATIC_CAST(uint_fast64_t, op1));
-    __mmask32 r = HEDLEY_STATIC_CAST(__mmask32, ~UINT64_C(0));
+    __mmask32 r = HEDLEY_STATIC_CAST(__mmask32, ~UINT32_C(0));
     if (HEDLEY_UNLIKELY(remaining < 32)) {
       r >>= 32 - remaining;
     }
