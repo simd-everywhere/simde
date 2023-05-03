@@ -708,7 +708,11 @@ simde_math_fpclassify(double v) {
 
 #if !defined(simde_math_signbit)
   #if SIMDE_MATH_BUILTIN_LIBM(signbit)
-    #define simde_math_signbit(x) __builtin_signbit(x)
+    #if (!defined(__clang__) || SIMDE_DETECT_CLANG_VERSION_CHECK(7,0,0))
+      #define simde_math_signbit(x) __builtin_signbit(x)
+    #else
+      #define simde_math_signbit(x) __builtin_signbit(HEDLEY_STATIC_CAST(double, (x)))
+    #endif
   #elif defined(SIMDE_MATH_HAVE_CMATH)
     #define simde_math_signbit(x) std::signbit(x)
   #elif defined(SIMDE_MATH_HAVE_MATH_H)
