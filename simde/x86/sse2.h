@@ -3553,7 +3553,9 @@ simde_mm_loadu_pd (simde_float64 const mem_addr[HEDLEY_ARRAY_PARAM(2)]) {
   #define _mm_loadu_pd(mem_addr) simde_mm_loadu_pd(mem_addr)
 #endif
 
-#if defined(SIMDE_X86_AVX512VL_NATIVE) && defined(SIMDE_X86_AVX512BW_NATIVE) && !defined(SIMDE_BUG_GCC_95483) && !defined(SIMDE_BUG_CLANG_REV_344862)
+#if defined(SIMDE_X86_AVX512VL_NATIVE) && defined(SIMDE_X86_AVX512BW_NATIVE) \
+    && !defined(SIMDE_BUG_GCC_95483) && !defined(SIMDE_BUG_CLANG_REV_344862) \
+    && (!defined(HEDLEY_MSVC_VERSION) || HEDLEY_MSVC_VERSION_CHECK(19,20,0))
   #define simde_mm_loadu_epi8(mem_addr) _mm_loadu_epi8(mem_addr)
 #else
 SIMDE_FUNCTION_ATTRIBUTES
@@ -3580,7 +3582,9 @@ simde_mm_loadu_epi8(void const * mem_addr) {
   #define _mm_loadu_epi8(a) simde_mm_loadu_epi8(a)
 #endif
 
-#if defined(SIMDE_X86_AVX512VL_NATIVE) && defined(SIMDE_X86_AVX512BW_NATIVE) && !defined(SIMDE_BUG_GCC_95483) && !defined(SIMDE_BUG_CLANG_REV_344862)
+#if defined(SIMDE_X86_AVX512VL_NATIVE) && defined(SIMDE_X86_AVX512BW_NATIVE) \
+    && !defined(SIMDE_BUG_GCC_95483) && !defined(SIMDE_BUG_CLANG_REV_344862) \
+    && (!defined(HEDLEY_MSVC_VERSION) || HEDLEY_MSVC_VERSION_CHECK(19,20,0))
   #define simde_mm_loadu_epi16(mem_addr) _mm_loadu_epi16(mem_addr)
 #else
 SIMDE_FUNCTION_ATTRIBUTES
@@ -3607,7 +3611,8 @@ simde_mm_loadu_epi16(void const * mem_addr) {
   #define _mm_loadu_epi16(a) simde_mm_loadu_epi16(a)
 #endif
 
-#if defined(SIMDE_X86_AVX512VL_NATIVE) && !defined(SIMDE_BUG_GCC_95483) && !defined(SIMDE_BUG_CLANG_REV_344862)
+#if defined(SIMDE_X86_AVX512VL_NATIVE) && !defined(SIMDE_BUG_GCC_95483) \
+    && !defined(SIMDE_BUG_CLANG_REV_344862) && (!defined(HEDLEY_MSVC_VERSION) || HEDLEY_MSVC_VERSION_CHECK(19,20,0))
   #define simde_mm_loadu_epi32(mem_addr) _mm_loadu_epi32(mem_addr)
 #else
 SIMDE_FUNCTION_ATTRIBUTES
@@ -3634,7 +3639,9 @@ simde_mm_loadu_epi32(void const * mem_addr) {
   #define _mm_loadu_epi32(a) simde_mm_loadu_epi32(a)
 #endif
 
-#if defined(SIMDE_X86_AVX512VL_NATIVE) && !defined(SIMDE_BUG_GCC_95483) && !defined(SIMDE_BUG_CLANG_REV_344862)
+#if defined(SIMDE_X86_AVX512VL_NATIVE) && !defined(SIMDE_BUG_GCC_95483) \
+    && !defined(SIMDE_BUG_CLANG_REV_344862) \
+    && (!defined(HEDLEY_MSVC_VERSION) || HEDLEY_MSVC_VERSION_CHECK(19,20,0))
   #define simde_mm_loadu_epi64(mem_addr) _mm_loadu_epi64(mem_addr)
 #else
 SIMDE_FUNCTION_ATTRIBUTES
