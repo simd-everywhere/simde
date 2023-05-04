@@ -204,6 +204,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "Artoria2e5",
+      "name": "Mingye Wang",
+      "avatar_url": "https://avatars.githubusercontent.com/u/6459309?v=4",
+      "profile": "https://zh.wikipedia.org/wiki/User:Artoria2e5",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7
