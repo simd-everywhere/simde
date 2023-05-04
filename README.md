@@ -1,6 +1,6 @@
 # SIMD Everywhere
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-43-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-44-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 [![Chat](https://badges.gitter.im/gitterHQ/gitter.png)](https://matrix.to/#/#simd-everywhere_community:gitter.im)
 [![codecov](https://codecov.io/gh/simd-everywhere/simde/branch/master/graph/badge.svg?token=jcMBoRk0ui)](https://codecov.io/gh/simd-everywhere/simde)
@@ -446,6 +446,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   </tr>
   <tr>
     <td align="center"><a href="https://github.com/zekehul"><img src="https://avatars.githubusercontent.com/u/8780526?v=4" width="100px;" alt=""/><br /><sub><b>zekehul</b></sub></a><br /><a href="https://github.com/nemequ/simde/commits?author=zekehul" title="Code">💻</a> <a href="#maintenance-zekehul" title="Maintenance">🚧</a></td>
+    <td align="center"><a href="https://open-cells.com"><img src="https://avatars.githubusercontent.com/u/40661368?v=4" width="100px;" alt=""/><br /><sub><b>Laurent Thomas</b></sub></a><br /><a href="https://github.com/nemequ/simde/commits?author=LaurentThomas" title="Code">💻</a></td>
   </tr>
 </table>
 
