@@ -565,6 +565,15 @@
         "bug",
         "code"
       ]
+    },
+    {
+      "login": "johnplatts",
+      "name": "John Platts",
+      "avatar_url": "https://avatars.githubusercontent.com/u/28941113?v=4",
+      "profile": "https://github.com/johnplatts",
+      "contributions": [
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7
