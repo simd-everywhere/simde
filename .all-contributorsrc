@@ -488,6 +488,17 @@
       "contributions": [
         "maintenance"
       ]
+    },
+    {
+      "login": "tlively",
+      "name": "Thomas Lively",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7121787?v=4",
+      "profile": "https://twitter.com/tlively52",
+      "contributions": [
+        "bug",
+        "ideas",
+        "maintenance"
+      ]
     }
   ],
   "contributorsPerLine": 7

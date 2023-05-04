@@ -1,6 +1,6 @@
 # SIMD Everywhere
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-47-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-48-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 [![Chat](https://badges.gitter.im/gitterHQ/gitter.png)](https://matrix.to/#/#simd-everywhere_community:gitter.im)
 [![codecov](https://codecov.io/gh/simd-everywhere/simde/branch/master/graph/badge.svg?token=jcMBoRk0ui)](https://codecov.io/gh/simd-everywhere/simde)
@@ -450,6 +450,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/maxbachmann"><img src="https://avatars.githubusercontent.com/u/44199644?v=4" width="100px;" alt=""/><br /><sub><b>Max Bachmann</b></sub></a><br /><a href="https://github.com/nemequ/simde/commits?author=maxbachmann" title="Documentation">📖</a></td>
     <td align="center"><a href="https://github.com/psaab"><img src="https://avatars.githubusercontent.com/u/196946?v=4" width="100px;" alt=""/><br /><sub><b>psaab</b></sub></a><br /><a href="#maintenance-psaab" title="Maintenance">🚧</a></td>
     <td align="center"><a href="http://superduper.net/"><img src="https://avatars.githubusercontent.com/u/515813?v=4" width="100px;" alt=""/><br /><sub><b>Sam Clegg</b></sub></a><br /><a href="#maintenance-sbc100" title="Maintenance">🚧</a></td>
+    <td align="center"><a href="https://twitter.com/tlively52"><img src="https://avatars.githubusercontent.com/u/7121787?v=4" width="100px;" alt=""/><br /><sub><b>Thomas Lively</b></sub></a><br /><a href="https://github.com/nemequ/simde/issues?q=author%3Atlively" title="Bug reports">🐛</a> <a href="#ideas-tlively" title="Ideas, Planning, & Feedback">🤔</a> <a href="#maintenance-tlively" title="Maintenance">🚧</a></td>
   </tr>
 </table>
 
