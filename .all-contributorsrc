@@ -265,6 +265,17 @@
         "maintenance",
         "test"
       ]
+    },
+    {
+      "login": "keithw",
+      "name": "Keith Winstein",
+      "avatar_url": "https://avatars.githubusercontent.com/u/208955?v=4",
+      "profile": "https://cs.stanford.edu/~keithw",
+      "contributions": [
+        "code",
+        "maintenance",
+        "test"
+      ]
     }
   ],
   "contributorsPerLine": 7
