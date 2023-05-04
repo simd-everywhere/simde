@@ -296,6 +296,16 @@
         "maintenance",
         "test"
       ]
+    },
+    {
+      "login": "aqrit",
+      "name": "aqrit",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4021602?v=4",
+      "profile": "http://bitpatch.com",
+      "contributions": [
+        "code",
+        "maintenance"
+      ]
     }
   ],
   "contributorsPerLine": 7
