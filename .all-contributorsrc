@@ -254,6 +254,17 @@
         "code",
         "test"
       ]
+    },
+    {
+      "login": "wrv",
+      "name": "Willy R. Vasquez",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5039686?v=4",
+      "profile": "https://alum.mit.edu/www/wrv/",
+      "contributions": [
+        "code",
+        "maintenance",
+        "test"
+      ]
     }
   ],
   "contributorsPerLine": 7
