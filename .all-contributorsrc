@@ -213,6 +213,16 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "ngzhian",
+      "name": "Ng Zhi An",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1749303?v=4",
+      "profile": "http://www.ngzhian.com",
+      "contributions": [
+        "code",
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7

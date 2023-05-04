@@ -1,6 +1,6 @@
 # SIMD Everywhere
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-19-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-20-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 [![Chat](https://badges.gitter.im/gitterHQ/gitter.png)](https://matrix.to/#/#simd-everywhere_community:gitter.im)
 [![codecov](https://codecov.io/gh/simd-everywhere/simde/branch/master/graph/badge.svg?token=jcMBoRk0ui)](https://codecov.io/gh/simd-everywhere/simde)
@@ -414,6 +414,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/GorePradnyesh"><img src="https://avatars0.githubusercontent.com/u/843197?v=4" width="100px;" alt=""/><br /><sub><b>Pradnyesh Gore</b></sub></a><br /><a href="https://github.com/nemequ/simde/commits?author=GorePradnyesh" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/seanptmaher"><img src="https://avatars0.githubusercontent.com/u/39571964?v=4" width="100px;" alt=""/><br /><sub><b>Sean Maher</b></sub></a><br /><a href="https://github.com/nemequ/simde/commits?author=seanptmaher" title="Code">💻</a></td>
     <td align="center"><a href="https://zh.wikipedia.org/wiki/User:Artoria2e5"><img src="https://avatars.githubusercontent.com/u/6459309?v=4" width="100px;" alt=""/><br /><sub><b>Mingye Wang</b></sub></a><br /><a href="https://github.com/nemequ/simde/commits?author=Artoria2e5" title="Documentation">📖</a></td>
+    <td align="center"><a href="http://www.ngzhian.com"><img src="https://avatars.githubusercontent.com/u/1749303?v=4" width="100px;" alt=""/><br /><sub><b>Ng Zhi An</b></sub></a><br /><a href="https://github.com/nemequ/simde/commits?author=ngzhian" title="Code">💻</a> <a href="https://github.com/nemequ/simde/commits?author=ngzhian" title="Documentation">📖</a></td>
   </tr>
 </table>
 
