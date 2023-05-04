@@ -328,6 +328,17 @@
         "maintenance",
         "platform"
       ]
+    },
+    {
+      "login": "anrodrig",
+      "name": "Andrew Rodriguez",
+      "avatar_url": "https://avatars.githubusercontent.com/u/35815808?v=4",
+      "profile": "https://github.com/anrodrig",
+      "contributions": [
+        "code",
+        "maintenance",
+        "test"
+      ]
     }
   ],
   "contributorsPerLine": 7
