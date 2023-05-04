@@ -368,6 +368,16 @@
         "code",
         "platform"
       ]
+    },
+    {
+      "login": "ktgw0316",
+      "name": "Masahiro Kitagawa",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3116763?v=4",
+      "profile": "https://github.com/ktgw0316",
+      "contributions": [
+        "code",
+        "test"
+      ]
     }
   ],
   "contributorsPerLine": 7
