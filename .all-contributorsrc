@@ -415,6 +415,15 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "boris-kuz",
+      "name": "boris-kuz",
+      "avatar_url": "https://avatars.githubusercontent.com/u/18011434?v=4",
+      "profile": "https://github.com/boris-kuz",
+      "contributions": [
+        "maintenance"
+      ]
     }
   ],
   "contributorsPerLine": 7
