@@ -244,6 +244,16 @@
         "code",
         "test"
       ]
+    },
+    {
+      "login": "ashnewmanjones",
+      "name": "Ashleigh Newman-Jones",
+      "avatar_url": "https://avatars.githubusercontent.com/u/29983014?v=4",
+      "profile": "https://ashnewmanjones.com",
+      "contributions": [
+        "code",
+        "test"
+      ]
     }
   ],
   "contributorsPerLine": 7

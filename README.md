@@ -1,6 +1,6 @@
 # SIMD Everywhere
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-22-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-23-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 [![Chat](https://badges.gitter.im/gitterHQ/gitter.png)](https://matrix.to/#/#simd-everywhere_community:gitter.im)
 [![codecov](https://codecov.io/gh/simd-everywhere/simde/branch/master/graph/badge.svg?token=jcMBoRk0ui)](https://codecov.io/gh/simd-everywhere/simde)
@@ -419,6 +419,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   </tr>
   <tr>
     <td align="center"><a href="https://github.com/simba611"><img src="https://avatars.githubusercontent.com/u/59763921?v=4" width="100px;" alt=""/><br /><sub><b>simba611</b></sub></a><br /><a href="https://github.com/nemequ/simde/commits?author=simba611" title="Code">💻</a> <a href="https://github.com/nemequ/simde/commits?author=simba611" title="Tests">⚠️</a></td>
+    <td align="center"><a href="https://ashnewmanjones.com"><img src="https://avatars.githubusercontent.com/u/29983014?v=4" width="100px;" alt=""/><br /><sub><b>Ashleigh Newman-Jones</b></sub></a><br /><a href="https://github.com/nemequ/simde/commits?author=ashnewmanjones" title="Code">💻</a> <a href="https://github.com/nemequ/simde/commits?author=ashnewmanjones" title="Tests">⚠️</a></td>
   </tr>
 </table>
 
