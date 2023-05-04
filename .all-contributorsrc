@@ -499,6 +499,16 @@
         "ideas",
         "maintenance"
       ]
+    },
+    {
+      "login": "coderzh",
+      "name": "coderzh",
+      "avatar_url": "https://avatars.githubusercontent.com/u/329164?v=4",
+      "profile": "http://blog.coderzh.com/",
+      "contributions": [
+        "code",
+        "test"
+      ]
     }
   ],
   "contributorsPerLine": 7
