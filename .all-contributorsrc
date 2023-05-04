@@ -348,6 +348,16 @@
       "contributions": [
         "maintenance"
       ]
+    },
+    {
+      "login": "jpcima",
+      "name": "JP Cimalando",
+      "avatar_url": "https://avatars.githubusercontent.com/u/17614485?v=4",
+      "profile": "http://jpcima.sdf1.org/",
+      "contributions": [
+        "code",
+        "infra"
+      ]
     }
   ],
   "contributorsPerLine": 7

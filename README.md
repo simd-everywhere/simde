@@ -1,6 +1,6 @@
 # SIMD Everywhere
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-32-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-33-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 [![Chat](https://badges.gitter.im/gitterHQ/gitter.png)](https://matrix.to/#/#simd-everywhere_community:gitter.im)
 [![codecov](https://codecov.io/gh/simd-everywhere/simde/branch/master/graph/badge.svg?token=jcMBoRk0ui)](https://codecov.io/gh/simd-everywhere/simde)
@@ -431,6 +431,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="http://vk.com/muzzdiez"><img src="https://avatars.githubusercontent.com/u/16463967?v=4" width="100px;" alt=""/><br /><sub><b>Igor Molchanov</b></sub></a><br /><a href="https://github.com/nemequ/simde/commits?author=makise-homura" title="Code">💻</a> <a href="#maintenance-makise-homura" title="Maintenance">🚧</a> <a href="#platform-makise-homura" title="Packaging/porting to new platform">📦</a></td>
     <td align="center"><a href="https://github.com/anrodrig"><img src="https://avatars.githubusercontent.com/u/35815808?v=4" width="100px;" alt=""/><br /><sub><b>Andrew Rodriguez</b></sub></a><br /><a href="https://github.com/nemequ/simde/commits?author=anrodrig" title="Code">💻</a> <a href="#maintenance-anrodrig" title="Maintenance">🚧</a> <a href="https://github.com/nemequ/simde/commits?author=anrodrig" title="Tests">⚠️</a></td>
     <td align="center"><a href="https://github.com/Changqing-JING"><img src="https://avatars.githubusercontent.com/u/59640930?v=4" width="100px;" alt=""/><br /><sub><b>Changqing  Jing</b></sub></a><br /><a href="#maintenance-Changqing-JING" title="Maintenance">🚧</a></td>
+    <td align="center"><a href="http://jpcima.sdf1.org/"><img src="https://avatars.githubusercontent.com/u/17614485?v=4" width="100px;" alt=""/><br /><sub><b>JP Cimalando</b></sub></a><br /><a href="https://github.com/nemequ/simde/commits?author=jpcima" title="Code">💻</a> <a href="#infra-jpcima" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
   </tr>
 </table>
 
