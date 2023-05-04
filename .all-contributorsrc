@@ -317,6 +317,17 @@
         "maintenance",
         "test"
       ]
+    },
+    {
+      "login": "makise-homura",
+      "name": "Igor Molchanov",
+      "avatar_url": "https://avatars.githubusercontent.com/u/16463967?v=4",
+      "profile": "http://vk.com/muzzdiez",
+      "contributions": [
+        "code",
+        "maintenance",
+        "platform"
+      ]
     }
   ],
   "contributorsPerLine": 7
