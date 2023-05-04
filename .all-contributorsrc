@@ -285,6 +285,17 @@
       "contributions": [
         "maintenance"
       ]
+    },
+    {
+      "login": "milot-mirdita",
+      "name": "Milot Mirdita",
+      "avatar_url": "https://avatars.githubusercontent.com/u/63657?v=4",
+      "profile": "https://mirdita.de",
+      "contributions": [
+        "code",
+        "maintenance",
+        "test"
+      ]
     }
   ],
   "contributorsPerLine": 7

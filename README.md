@@ -1,6 +1,6 @@
 # SIMD Everywhere
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-26-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-27-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 [![Chat](https://badges.gitter.im/gitterHQ/gitter.png)](https://matrix.to/#/#simd-everywhere_community:gitter.im)
 [![codecov](https://codecov.io/gh/simd-everywhere/simde/branch/master/graph/badge.svg?token=jcMBoRk0ui)](https://codecov.io/gh/simd-everywhere/simde)
@@ -423,6 +423,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://alum.mit.edu/www/wrv/"><img src="https://avatars.githubusercontent.com/u/5039686?v=4" width="100px;" alt=""/><br /><sub><b>Willy R. Vasquez</b></sub></a><br /><a href="https://github.com/nemequ/simde/commits?author=wrv" title="Code">💻</a> <a href="#maintenance-wrv" title="Maintenance">🚧</a> <a href="https://github.com/nemequ/simde/commits?author=wrv" title="Tests">⚠️</a></td>
     <td align="center"><a href="https://cs.stanford.edu/~keithw"><img src="https://avatars.githubusercontent.com/u/208955?v=4" width="100px;" alt=""/><br /><sub><b>Keith Winstein</b></sub></a><br /><a href="https://github.com/nemequ/simde/commits?author=keithw" title="Code">💻</a> <a href="#maintenance-keithw" title="Maintenance">🚧</a> <a href="https://github.com/nemequ/simde/commits?author=keithw" title="Tests">⚠️</a></td>
     <td align="center"><a href="https://github.com/SoapGentoo"><img src="https://avatars.githubusercontent.com/u/16636962?v=4" width="100px;" alt=""/><br /><sub><b>David Seifert</b></sub></a><br /><a href="#maintenance-SoapGentoo" title="Maintenance">🚧</a></td>
+    <td align="center"><a href="https://mirdita.de"><img src="https://avatars.githubusercontent.com/u/63657?v=4" width="100px;" alt=""/><br /><sub><b>Milot Mirdita</b></sub></a><br /><a href="https://github.com/nemequ/simde/commits?author=milot-mirdita" title="Code">💻</a> <a href="#maintenance-milot-mirdita" title="Maintenance">🚧</a> <a href="https://github.com/nemequ/simde/commits?author=milot-mirdita" title="Tests">⚠️</a></td>
   </tr>
 </table>
 
