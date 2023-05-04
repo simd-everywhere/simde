@@ -406,6 +406,15 @@
       "contributions": [
         "maintenance"
       ]
+    },
+    {
+      "login": "adamnovak",
+      "name": "Adam Novak",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5062495?v=4",
+      "profile": "https://github.com/adamnovak",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7
