@@ -1,6 +1,6 @@
 # SIMD Everywhere
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-50-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-51-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 [![Chat](https://badges.gitter.im/gitterHQ/gitter.png)](https://matrix.to/#/#simd-everywhere_community:gitter.im)
 [![codecov](https://codecov.io/gh/simd-everywhere/simde/branch/master/graph/badge.svg?token=jcMBoRk0ui)](https://codecov.io/gh/simd-everywhere/simde)
@@ -455,6 +455,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   </tr>
   <tr>
     <td align="center"><a href="https://github.com/k-dominik"><img src="https://avatars.githubusercontent.com/u/24434157?v=4" width="100px;" alt=""/><br /><sub><b>Dominik Kutra</b></sub></a><br /><a href="https://github.com/nemequ/simde/commits?author=k-dominik" title="Code">💻</a> <a href="https://github.com/nemequ/simde/commits?author=k-dominik" title="Tests">⚠️</a></td>
+    <td align="center"><a href="https://github.com/Lithrein"><img src="https://avatars.githubusercontent.com/u/207981?v=4" width="100px;" alt=""/><br /><sub><b>Lithrein</b></sub></a><br /><a href="#maintenance-Lithrein" title="Maintenance">🚧</a></td>
   </tr>
 </table>
 

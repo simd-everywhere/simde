@@ -519,6 +519,15 @@
         "code",
         "test"
       ]
+    },
+    {
+      "login": "Lithrein",
+      "name": "Lithrein",
+      "avatar_url": "https://avatars.githubusercontent.com/u/207981?v=4",
+      "profile": "https://github.com/Lithrein",
+      "contributions": [
+        "maintenance"
+      ]
     }
   ],
   "contributorsPerLine": 7
