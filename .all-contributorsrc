@@ -306,6 +306,17 @@
         "code",
         "maintenance"
       ]
+    },
+    {
+      "login": "dgazzoni",
+      "name": "Décio Luiz Gazzoni Filho",
+      "avatar_url": "https://avatars.githubusercontent.com/u/17934171?v=4",
+      "profile": "https://github.com/dgazzoni",
+      "contributions": [
+        "code",
+        "maintenance",
+        "test"
+      ]
     }
   ],
   "contributorsPerLine": 7
