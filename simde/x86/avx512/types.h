@@ -512,6 +512,20 @@ typedef union {
  * issue and we'll try to figure out a work-around. */
 typedef uint32_t simde__mmask32;
 typedef uint64_t simde__mmask64;
+#if !defined(__mmask32) && defined(SIMDE_ENABLE_NATIVE_ALIASES)
+  #if !defined(HEDLEY_INTEL_VERSION)
+    typedef uint32_t __mmask32;
+  #else
+    #define __mmask32 uint32_t;
+  #endif
+#endif
+#if !defined(__mmask64) && defined(SIMDE_ENABLE_NATIVE_ALIASES)
+  #if !defined(HEDLEY_INTEL_VERSION)
+    typedef uint64_t __mask64;
+  #else
+    #define __mmask64 uint64_t;
+  #endif
+#endif
 
 #if !defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_ENABLE_NATIVE_ALIASES)
   #if !defined(HEDLEY_INTEL_VERSION)
