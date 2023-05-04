@@ -397,6 +397,15 @@
       "contributions": [
         "maintenance"
       ]
+    },
+    {
+      "login": "rscohn2",
+      "name": "Robert Cohn",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1936730?v=4",
+      "profile": "https://github.com/rscohn2",
+      "contributions": [
+        "maintenance"
+      ]
     }
   ],
   "contributorsPerLine": 7
