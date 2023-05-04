@@ -509,6 +509,16 @@
         "code",
         "test"
       ]
+    },
+    {
+      "login": "k-dominik",
+      "name": "Dominik Kutra",
+      "avatar_url": "https://avatars.githubusercontent.com/u/24434157?v=4",
+      "profile": "https://github.com/k-dominik",
+      "contributions": [
+        "code",
+        "test"
+      ]
     }
   ],
   "contributorsPerLine": 7
