@@ -574,6 +574,15 @@
       "contributions": [
         "bug"
       ]
+    },
+    {
+      "login": "tycho",
+      "name": "Steven Noonan",
+      "avatar_url": "https://avatars.githubusercontent.com/u/29616?v=4",
+      "profile": "https://github.com/tycho",
+      "contributions": [
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7
