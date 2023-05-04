@@ -479,6 +479,15 @@
       "contributions": [
         "maintenance"
       ]
+    },
+    {
+      "login": "sbc100",
+      "name": "Sam Clegg",
+      "avatar_url": "https://avatars.githubusercontent.com/u/515813?v=4",
+      "profile": "http://superduper.net/",
+      "contributions": [
+        "maintenance"
+      ]
     }
   ],
   "contributorsPerLine": 7
