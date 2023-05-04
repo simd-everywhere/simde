@@ -13795,9 +13795,12 @@ test_simde_mm256_shuffle_pd(SIMDE_MUNIT_TEST_ARGS) {
       simde_mm256_set_pd(SIMDE_FLOAT64_C( -365.57), SIMDE_FLOAT64_C(  918.52),
                          SIMDE_FLOAT64_C(  333.70), SIMDE_FLOAT64_C(   26.68)) }
   };
+  uint64_t a[] = {1, 0, 0, 0};
+  uint64_t b[] = {0, 0, 1, 0};
+  int64_t target[4] = {INT64_C(1),  INT64_C(0),  INT64_C(0),  INT64_C(0) };
+  simde__m256d r, tmp_0_yd, tmp_1_yd;
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
-    simde__m256d r;
 
     r = simde_mm256_shuffle_pd(test_vec[i].a, test_vec[i].b, 0x5);
     simde_assert_m256d_close(r, test_vec[i].r1, 1);
@@ -13805,6 +13808,14 @@ test_simde_mm256_shuffle_pd(SIMDE_MUNIT_TEST_ARGS) {
     r = simde_mm256_shuffle_pd(test_vec[i].a, test_vec[i].b, 0xa);
     simde_assert_m256d_close(r, test_vec[i].r2, 1);
   }
+
+  tmp_0_yd = simde_mm256_loadu_pd(HEDLEY_STATIC_CAST(double*, a));
+  tmp_1_yd = simde_mm256_loadu_pd(HEDLEY_STATIC_CAST(double*, b));
+  r = simde_mm256_shuffle_pd(tmp_0_yd, tmp_1_yd, 0xc); // 0b1100
+
+  simde_test_x86_assert_equal_i64x4(simde_mm256_castpd_si256(r), simde_mm256_loadu_epi64(target));
+
+  //simde_test_x86_write_i64x4(2, simde_mm256_castpd_si256(r), SIMDE_TEST_VEC_POS_LAST);
 
   return 0;
 }
