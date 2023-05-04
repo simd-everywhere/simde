@@ -546,6 +546,15 @@
       "contributions": [
         "maintenance"
       ]
+    },
+    {
+      "login": "Remnant44",
+      "name": "Stephen",
+      "avatar_url": "https://avatars.githubusercontent.com/u/54461740?v=4",
+      "profile": "https://github.com/Remnant44",
+      "contributions": [
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7
