@@ -1,6 +1,6 @@
 # SIMD Everywhere
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-57-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-58-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 [![Chat](https://badges.gitter.im/gitterHQ/gitter.png)](https://matrix.to/#/#simd-everywhere_community:gitter.im)
 [![codecov](https://codecov.io/gh/simd-everywhere/simde/branch/master/graph/badge.svg?token=jcMBoRk0ui)](https://codecov.io/gh/simd-everywhere/simde)
@@ -464,6 +464,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   </tr>
   <tr>
     <td align="center"><a href="https://github.com/tycho"><img src="https://avatars.githubusercontent.com/u/29616?v=4" width="100px;" alt=""/><br /><sub><b>Steven Noonan</b></sub></a><br /><a href="https://github.com/nemequ/simde/issues?q=author%3Atycho" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="https://github.com/p0nce"><img src="https://avatars.githubusercontent.com/u/1067485?v=4" width="100px;" alt=""/><br /><sub><b>p0nce </b></sub></a><br /><a href="https://github.com/nemequ/simde/issues?q=author%3Ap0nce" title="Bug reports">🐛</a></td>
   </tr>
 </table>
 
