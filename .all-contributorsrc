@@ -461,6 +461,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "maxbachmann",
+      "name": "Max Bachmann",
+      "avatar_url": "https://avatars.githubusercontent.com/u/44199644?v=4",
+      "profile": "https://github.com/maxbachmann",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7
