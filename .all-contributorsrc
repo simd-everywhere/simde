@@ -339,6 +339,15 @@
         "maintenance",
         "test"
       ]
+    },
+    {
+      "login": "Changqing-JING",
+      "name": "Changqing  Jing",
+      "avatar_url": "https://avatars.githubusercontent.com/u/59640930?v=4",
+      "profile": "https://github.com/Changqing-JING",
+      "contributions": [
+        "maintenance"
+      ]
     }
   ],
   "contributorsPerLine": 7
