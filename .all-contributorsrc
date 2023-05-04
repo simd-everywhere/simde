@@ -276,6 +276,15 @@
         "maintenance",
         "test"
       ]
+    },
+    {
+      "login": "SoapGentoo",
+      "name": "David Seifert",
+      "avatar_url": "https://avatars.githubusercontent.com/u/16636962?v=4",
+      "profile": "https://github.com/SoapGentoo",
+      "contributions": [
+        "maintenance"
+      ]
     }
   ],
   "contributorsPerLine": 7
