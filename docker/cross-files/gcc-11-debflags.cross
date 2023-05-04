@@ -1,0 +1,13 @@
+[binaries]
+c = 'gcc-11'
+cpp = 'g++-11'
+ar = 'ar'
+strip = 'strip'
+objcopy = 'objcopy'
+ld = 'ld'
+
+[properties]
+c_args = ['-Wextra', '-Werror', '-g', '-O2', '-fstack-protector-strong', '-Wformat', '-Werror=format-security', '-Wdate-time', '-D_FORTIFY_SOURCE=2']
+cpp_args = ['-Wextra', '-Werror', '-g', '-O2', '-fstack-protector-strong', '-Wformat', '-Werror=format-security', '-Wdate-time', '-D_FORTIFY_SOURCE=2']
+c_link_args = ['-Wl,-z,relro', '-Wl,-z,now']
+cpp_link_args = ['-Wl,-z,relro', '-Wl,-z,now']

@@ -33,6 +33,7 @@
 #include "mmx.h"
 
 #if defined(_WIN32) && !defined(SIMDE_X86_SSE_NATIVE) && defined(_MSC_VER)
+  #define NOMINMAX
   #include <windows.h>
 #endif
 
@@ -3263,7 +3264,7 @@ simde_mm_movemask_pi8 (simde__m64 a) {
 SIMDE_FUNCTION_ATTRIBUTES
 int
 simde_mm_movemask_ps (simde__m128 a) {
-  #if defined(SIMDE_X86_SSE_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
+  #if defined(SIMDE_X86_SSE_NATIVE)
     return _mm_movemask_ps(a);
   #else
     int r = 0;
@@ -3568,6 +3569,9 @@ simde_mm_prefetch (const void* p, int i) {
         __prefetch_by_load(p, 0, 1);
         break;
     }
+  #elif HEDLEY_MSVC_VERSION
+    (void) i;
+    (void) p;
   #endif
 }
 #if defined(SIMDE_X86_SSE_NATIVE)

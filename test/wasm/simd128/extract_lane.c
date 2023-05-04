@@ -455,7 +455,7 @@ test_simde_wasm_f32x4_extract_lane(SIMDE_MUNIT_TEST_ARGS) {
       simde_v128_t a = simde_wasm_v128_load(test_vec[i].a);
       simde_float32 r;
 
-      SIMDE_CONSTIFY_8_(simde_wasm_f32x4_extract_lane, r, (HEDLEY_UNREACHABLE(), -1), test_vec[i].lane, a);
+      SIMDE_CONSTIFY_8_(simde_wasm_f32x4_extract_lane, r, (HEDLEY_UNREACHABLE(), SIMDE_FLOAT32_C(-1.0)), test_vec[i].lane, a);
 
       simde_assert_equal_f32(r, test_vec[i].r, 1);
     }

@@ -32,10 +32,12 @@ test_simde_wasm_f32x4_ceil(SIMDE_MUNIT_TEST_ARGS) {
       simde_float32 a[sizeof(simde_v128_t) / sizeof(simde_float32)];
       simde_float32 r[sizeof(simde_v128_t) / sizeof(simde_float32)];
     } test_vec[8] = {
+      #if !defined(SIMDE_FAST_MATH)
       { {            SIMDE_MATH_NANF, SIMDE_FLOAT32_C(   967.55),            SIMDE_MATH_NANF, SIMDE_FLOAT32_C(   -75.07) },
         {            SIMDE_MATH_NANF, SIMDE_FLOAT32_C(   968.00),            SIMDE_MATH_NANF, SIMDE_FLOAT32_C(   -75.00) } },
       { { SIMDE_FLOAT32_C(  -267.65),            SIMDE_MATH_NANF,            SIMDE_MATH_NANF, SIMDE_FLOAT32_C(   -75.07) },
         { SIMDE_FLOAT32_C(  -267.00),            SIMDE_MATH_NANF,            SIMDE_MATH_NANF, SIMDE_FLOAT32_C(   -75.00) } },
+      #endif
       { { SIMDE_FLOAT32_C(   -94.64), SIMDE_FLOAT32_C(  -954.54), SIMDE_FLOAT32_C(  -214.03), SIMDE_FLOAT32_C(   659.13) },
         { SIMDE_FLOAT32_C(   -94.00), SIMDE_FLOAT32_C(  -954.00), SIMDE_FLOAT32_C(  -214.00), SIMDE_FLOAT32_C(   660.00) } },
       { { SIMDE_FLOAT32_C(   631.62), SIMDE_FLOAT32_C(  -350.98), SIMDE_FLOAT32_C(  -517.69), SIMDE_FLOAT32_C(  -532.20) },
@@ -81,12 +83,14 @@ test_simde_wasm_f64x2_ceil(SIMDE_MUNIT_TEST_ARGS) {
       simde_float64 a[sizeof(simde_v128_t) / sizeof(simde_float32)];
       simde_float64 r[sizeof(simde_v128_t) / sizeof(simde_float32)];
     } test_vec[8] = {
+      #if !defined(SIMDE_FAST_MATH)
       { {             SIMDE_MATH_NAN, SIMDE_FLOAT64_C(   880.91) },
         {             SIMDE_MATH_NAN, SIMDE_FLOAT64_C(   881.00) } },
       { {             SIMDE_MATH_NAN, SIMDE_FLOAT64_C(   442.61) },
         {             SIMDE_MATH_NAN, SIMDE_FLOAT64_C(   443.00) } },
       { {             SIMDE_MATH_NAN, SIMDE_FLOAT64_C(   442.61) },
         {             SIMDE_MATH_NAN, SIMDE_FLOAT64_C(   443.00) } },
+      #endif
       { { SIMDE_FLOAT64_C(  -532.09), SIMDE_FLOAT64_C(  -243.41) },
         { SIMDE_FLOAT64_C(  -532.00), SIMDE_FLOAT64_C(  -243.00) } },
       { { SIMDE_FLOAT64_C(   458.58), SIMDE_FLOAT64_C(   510.66) },

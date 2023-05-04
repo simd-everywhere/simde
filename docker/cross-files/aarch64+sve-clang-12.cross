@@ -1,0 +1,20 @@
+[binaries]
+c = 'clang-12'
+cpp = 'clang++-12'
+ar = 'llvm-ar-12'
+strip = 'llvm-strip-12'
+objcopy = 'llvm-objcopy-12'
+ld = 'llvm-ld-12'
+exe_wrapper = ['qemu-aarch64-static', '-L', '/usr/aarch64-linux-gnu']
+
+[properties]
+c_args = ['--target=aarch64-linux-gnu', '-march=armv8-a+sve', '-isystem=/usr/aarch64-linux-gnu/include', '-Weverything', '-fno-lax-vector-conversions', '-Werror']
+cpp_args = ['--target=aarch64-linux-gnu', '-march=armv8-a+sve', '-isystem=/usr/aarch64-linux-gnu/include', '-Weverything', '-fno-lax-vector-conversions', '-Werror']
+c_link_args = ['--target=aarch64-linux-gnu']
+cpp_link_args = ['--target=aarch64-linux-gnu']
+
+[host_machine]
+system = 'linux'
+cpu_family = 'aarch64'
+cpu = 'arm64'
+endian = 'little'

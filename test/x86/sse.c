@@ -1591,6 +1591,7 @@ test_simde_mm_cmpnlt_ss(SIMDE_MUNIT_TEST_ARGS) {
   return 0;
 }
 
+#if !defined(SIMDE_FAST_MATH)
 static int
 test_simde_mm_cmpord_ps(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
@@ -1677,6 +1678,7 @@ test_simde_mm_cmpunord_ps(SIMDE_MUNIT_TEST_ARGS) {
 
   return 0;
 }
+#endif
 
 static int
 test_simde_mm_comieq_ss(SIMDE_MUNIT_TEST_ARGS) {
@@ -1924,6 +1926,7 @@ test_simde_mm_comineq_ss(SIMDE_MUNIT_TEST_ARGS) {
   return 0;
 }
 
+#if !defined(SIMDE_FAST_MATH)
 static int
 test_simde_mm_cmpunord_ss(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
@@ -1964,6 +1967,7 @@ test_simde_mm_cmpunord_ss(SIMDE_MUNIT_TEST_ARGS) {
 
   return 0;
 }
+#endif
 
 static int
 test_simde_x_mm_copysign_ps (SIMDE_MUNIT_TEST_ARGS) {
@@ -2180,13 +2184,13 @@ test_simde_mm_cvt_ss2si (SIMDE_MUNIT_TEST_ARGS) {
     #endif
     #if !defined(SIMDE_FAST_CONVERSION_RANGE)
     { { HEDLEY_STATIC_CAST(float, INT32_MAX), SIMDE_FLOAT32_C(   264.19), SIMDE_FLOAT32_C(  -247.70), SIMDE_FLOAT32_C(  -466.34) },
-                 INT32_MIN },
+       INT32_MIN             },
     { { HEDLEY_STATIC_CAST(float, INT32_MIN), SIMDE_FLOAT32_C(  -656.10), SIMDE_FLOAT32_C(   528.97), SIMDE_FLOAT32_C(  -664.65) },
-      -INT32_C(  2147483648) },
+       INT32_MIN             },
     { { HEDLEY_STATIC_CAST(float, INT32_MAX - 100), SIMDE_FLOAT32_C(  -572.40), SIMDE_FLOAT32_C(   986.43), SIMDE_FLOAT32_C(   789.86) },
        INT32_C(  2147483520) },
     { { HEDLEY_STATIC_CAST(float, INT32_MIN + 100), SIMDE_FLOAT32_C(  -226.55), SIMDE_FLOAT32_C(  -926.20), SIMDE_FLOAT32_C(   130.01) },
-      -INT32_C(  2147483520) },
+       INT32_C( -2147483520) },
     #endif
     { { SIMDE_FLOAT32_C(   555.67), SIMDE_FLOAT32_C(   330.04), SIMDE_FLOAT32_C(  -110.18), SIMDE_FLOAT32_C(   679.85) },
        INT32_C(         556) },
@@ -2794,11 +2798,11 @@ test_simde_mm_cvtt_ss2si (SIMDE_MUNIT_TEST_ARGS) {
     { { HEDLEY_STATIC_CAST(float, INT32_MAX), SIMDE_FLOAT32_C(   264.19), SIMDE_FLOAT32_C(  -247.70), SIMDE_FLOAT32_C(  -466.34) },
                  INT32_MIN },
     { { HEDLEY_STATIC_CAST(float, INT32_MIN), SIMDE_FLOAT32_C(  -656.10), SIMDE_FLOAT32_C(   528.97), SIMDE_FLOAT32_C(  -664.65) },
-      -INT32_C(  2147483648) },
+       INT32_MIN             },
     { { HEDLEY_STATIC_CAST(float, INT32_MAX - 100), SIMDE_FLOAT32_C(  -572.40), SIMDE_FLOAT32_C(   986.43), SIMDE_FLOAT32_C(   789.86) },
        INT32_C(  2147483520) },
     { { HEDLEY_STATIC_CAST(float, INT32_MIN + 100), SIMDE_FLOAT32_C(  -226.55), SIMDE_FLOAT32_C(  -926.20), SIMDE_FLOAT32_C(   130.01) },
-      -INT32_C(  2147483520) },
+       INT32_C( -2147483520) },
     #endif
     { { SIMDE_FLOAT32_C(   555.67), SIMDE_FLOAT32_C(   330.04), SIMDE_FLOAT32_C(  -110.18), SIMDE_FLOAT32_C(   679.85) },
        INT32_C(         555) },
@@ -5801,10 +5805,12 @@ SIMDE_TEST_FUNC_LIST_BEGIN
   SIMDE_TEST_FUNC_LIST_ENTRY(mm_cmpnle_ss)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm_cmpnlt_ps)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm_cmpnlt_ss)
-  SIMDE_TEST_FUNC_LIST_ENTRY(mm_cmpord_ps)
-  SIMDE_TEST_FUNC_LIST_ENTRY(mm_cmpord_ss)
-  SIMDE_TEST_FUNC_LIST_ENTRY(mm_cmpunord_ps)
-  SIMDE_TEST_FUNC_LIST_ENTRY(mm_cmpunord_ss)
+  #if !defined(SIMDE_FAST_MATH)
+    SIMDE_TEST_FUNC_LIST_ENTRY(mm_cmpord_ps)
+    SIMDE_TEST_FUNC_LIST_ENTRY(mm_cmpord_ss)
+    SIMDE_TEST_FUNC_LIST_ENTRY(mm_cmpunord_ps)
+    SIMDE_TEST_FUNC_LIST_ENTRY(mm_cmpunord_ss)
+  #endif
   SIMDE_TEST_FUNC_LIST_ENTRY(mm_comieq_ss)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm_comige_ss)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm_comigt_ss)

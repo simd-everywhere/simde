@@ -1,0 +1,18 @@
+[binaries]
+c = 'mips64el-linux-gnuabi64-gcc-11'
+cpp = 'mips64el-linux-gnuabi64-g++-11'
+ar = 'mips64el-linux-gnuabi64-ar'
+strip = 'mips64el-linux-gnuabi64-strip'
+objcopy = 'mips64el-linux-gnuabi64-objcopy'
+ld = 'mips64el-linux-gnuabi64-ld'
+exe_wrapper = ['qemu-mips64el-static', '-L', '/usr/mips64el-linux-gnuabi64']
+
+[properties]
+c_args = ['-mmsa', '-Wextra', '-Werror']
+cpp_args = ['-mmsa', '-Wextra', '-Werror']
+
+[host_machine]
+system = 'linux'
+cpu_family = 'mips64el'
+cpu = 'mips64el'
+endian = 'little'

@@ -25,7 +25,7 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     # Initializes the CodeQL tools for scanning.
     - name: Initialize CodeQL
@@ -35,8 +35,8 @@ jobs:
 
     - run: |
        sudo add-apt-repository 'ppa:ubuntu-toolchain-r/test' && sudo apt-get update && sudo apt-get install -y ninja-build ninja-build python3-pip python3-setuptools python3-wheel gcc-10 g++-10
-       pip3 install meson
-       $HOME/.local/bin/meson setup build
+       pip3 install meson==0.55.0
+       "$HOME/.local/bin/meson" setup build
        ninja -C build -v
        ninja -C build -v test
 

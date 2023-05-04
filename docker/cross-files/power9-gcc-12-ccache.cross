@@ -1,0 +1,18 @@
+[binaries]
+c = ['ccache', 'powerpc64le-linux-gnu-gcc-12']
+cpp = ['ccache', 'powerpc64le-linux-gnu-g++-12']
+ar = 'powerpc64le-linux-gnu-ar'
+strip = 'powerpc64le-linux-gnu-strip'
+objcopy = 'powerpc64le-linux-gnu-objcopy'
+ld = 'powerpc64le-linux-gnu-ld'
+exe_wrapper = ['qemu-ppc64le-static', '-cpu', 'power9', '-L', '/usr/powerpc64le-linux-gnu/']
+
+[properties]
+c_args = ['-mcpu=power9', '-Wextra', '-Werror']
+cpp_args = ['-mcpu=power9', '-Wextra', '-Werror']
+
+[host_machine]
+system = 'linux'
+cpu_family = 'powerpc64'
+cpu = 'ppc64el'
+endian = 'little'

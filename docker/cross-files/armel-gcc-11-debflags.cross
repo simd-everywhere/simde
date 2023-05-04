@@ -1,0 +1,20 @@
+[binaries]
+c = 'arm-linux-gnueabi-gcc-11'
+cpp = 'arm-linux-gnueabi-g++-11'
+ar = 'arm-linux-gnueabi-ar'
+strip = 'arm-linux-gnueabi-strip'
+objcopy = 'arm-linux-gnueabi-objcopy'
+ld = 'arm-linux-gnueabi-ld'
+exe_wrapper = ['qemu-arm-static', '-L', '/usr/arm-linux-gnueabi']
+
+[properties]
+c_args = ['-Wextra', '-Werror', '-g', '-O2', '-fstack-protector-strong', '-Wformat', '-Werror=format-security', '-Wdate-time', '-D_FORTIFY_SOURCE=2']
+cpp_args = ['-Wextra', '-Werror', '-g', '-O2', '-fstack-protector-strong', '-Wformat', '-Werror=format-security', '-Wdate-time', '-D_FORTIFY_SOURCE=2']
+c_link_args = ['-Wl,-z,relro', '-Wl,-z,now']
+cpp_link_args = ['-Wl,-z,relro', '-Wl,-z,now']
+
+[host_machine]
+system = 'linux'
+cpu_family = 'arm'
+cpu = 'armv7-a'
+endian = 'little'

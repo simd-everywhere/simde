@@ -1,0 +1,12 @@
+[binaries]
+c = 'gcc-11'
+cpp = 'g++-11'
+ar = 'ar'
+strip = 'strip'
+objcopy = 'objcopy'
+ld = 'ld'
+
+[properties]
+c_args = ['-Wextra', '-Werror', '-march=native']
+cpp_args = ['-Wextra', '-Werror', '-march=native']
+sleef = true

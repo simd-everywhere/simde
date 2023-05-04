@@ -2,7 +2,7 @@ project('SIMDe', 'c', 'cpp',
         default_options: ['c_std=c99'],
         license: 'MIT',
         meson_version : '>=0.54.0',
-        version: '0.7.3')
+        version: '0.7.4')
 # also update SIMDE_VESION_* in simde/simde-common.h
 
 cc = meson.get_compiler('c')
@@ -61,9 +61,14 @@ simde_neon_families = [
   'get_low',
   'hadd',
   'hsub',
-  'ld1',
   'ld1_dup',
   'ld1_lane',
+  'ld1_x2',
+  'ld1_x3',
+  'ld1_x4',
+  'ld1q_x2',
+  'ld1q_x3',
+  'ld1q_x4',
   'ld2',
   'ld3',
   'ld4',
@@ -250,6 +255,8 @@ simde_avx512_families = [
   'fnmsub',
   'insert',
   'kshift',
+  'knot',
+  'kxor',
   'load',
   'loadu',
   'lzcnt',

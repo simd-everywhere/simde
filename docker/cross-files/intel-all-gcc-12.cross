@@ -1,0 +1,18 @@
+[binaries]
+c = 'gcc-12'
+cpp = 'g++-12'
+ar = 'ar'
+strip = 'strip'
+objcopy = 'objcopy'
+ld = 'ld'
+exe_wrapper = ['sde64', '-tgl', '--']
+
+[properties]
+c_args = ['-march=tigerlake', '-Wall', '-Wextra', '-Werror']
+cpp_args = ['-march=tigerlake', '-Wall', '-Wextra', '-Werror']
+
+[host_machine]
+system = 'linux'
+cpu_family = 'x86_64'
+cpu = 'x86_64'
+endian = 'little'

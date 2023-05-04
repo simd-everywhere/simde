@@ -1,0 +1,19 @@
+[binaries]
+c = 'i686-linux-gnu-gcc-11'
+cpp = 'i686-linux-gnu-g++-11'
+ar = 'i686-linux-gnu-ar'
+strip = 'i686-linux-gnu-strip'
+objcopy = 'i686-linux-gnu-objcopy'
+ld = 'i686-linux-gnu-ld'
+exe_wrapper = ['qemu-i386-static', '-L', '/usr/i686-linux-gnu']
+
+[properties]
+c_args = ['-Wextra', '-Werror', '-O2']
+cpp_args = ['-Wextra', '-Werror', '-O2']
+needs_exe_wrapper = true
+
+[host_machine]
+system = 'linux'
+cpu_family = 'x86'
+cpu = 'prescott'
+endian = 'little'

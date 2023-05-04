@@ -22,8 +22,14 @@
  */
 
 #define SIMDE_TESTS_CURRENT_ISAX avx
+#if !defined(__clang__) && (defined(__linux__) || defined(__linux) || defined(__gnu_linux__)) && !defined(_GNU_SOURCE)
+  #define _GNU_SOURCE 1  // for MAP_ANONYMOUS
+#endif
 #include <simde/x86/avx.h>
 #include <test/x86/test-avx.h>
+#if !defined(HEDLEY_MSVC_VERSION)
+  #include <sys/mman.h>
+#endif
 
 static simde_float32 u32_to_f32(uint32_t u32) {
   simde_float32 f32;
@@ -36,8 +42,6 @@ static simde_float64 u64_to_f64(uint64_t u64) {
   simde_memcpy(&f64, &u64, sizeof(f64));
   return f64;
 }
-
-#define SIMDE_F64_ALL_SET (u64_to_f64(~UINT64_C(0)))
 
 static int
 test_simde_mm256_set_epi8(SIMDE_MUNIT_TEST_ARGS) {
@@ -3015,6 +3019,12 @@ test_simde_mm256_ceil_ps(SIMDE_MUNIT_TEST_ARGS) {
 
   return 0;
 }
+
+#if !defined(SIMDE_FAST_MATH)
+// Could be re-enabled if test cases without NAN arguments or results are added
+// But will need to make sure only those NAN-less tests are run in FAST_MATH mode
+
+#define SIMDE_F64_ALL_SET (u64_to_f64(~UINT64_C(0)))
 
 static int
 test_simde_mm_cmp_pd (SIMDE_MUNIT_TEST_ARGS) {
@@ -6924,6 +6934,8 @@ test_simde_mm256_cmp_ps (SIMDE_MUNIT_TEST_ARGS) {
 #endif
 }
 
+#endif /* if !defined(SIMDE_FAST_MATH) */
+
 static int
 test_simde_mm256_cvtepi32_pd(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
@@ -9779,6 +9791,25 @@ test_simde_mm_maskload_pd (SIMDE_MUNIT_TEST_ARGS) {
   return 0;
 }
 
+#if !defined(HEDLEY_MSVC_VERSION)
+static int
+test_simde_mm_maskload_pd_no_illegal_memory_access (SIMDE_MUNIT_TEST_ARGS) {
+  // ref: https://github.com/simd-everywhere/simde/issues/998
+  // make sure maskload never accesses memory for masked out regions
+  // will segfault in case memory is accessed
+  #if defined(_GNU_SOURCE)
+    simde_float64 *ptr = HEDLEY_STATIC_CAST(simde_float64 *, mmap(NULL, 2 * sizeof(simde_float64), PROT_NONE , MAP_PRIVATE | MAP_ANONYMOUS, -1, 0));
+  #else
+    simde_float64 *ptr = HEDLEY_STATIC_CAST(simde_float64 *, mmap(NULL, 2 * sizeof(simde_float64), PROT_NONE , MAP_PRIVATE, -1, 0));
+  #endif
+  const simde__m128i mask = simde_mm_set_epi64x(INT64_C(0), INT64_C(0));
+  simde__m128d test = simde_mm_maskload_pd(ptr, mask);
+  simde_float64 r[2] = { SIMDE_FLOAT64_C(0.00), SIMDE_FLOAT64_C(0.00) };
+  simde_test_x86_assert_equal_f64x2(test, simde_mm_loadu_pd(r), 1);
+  return 0;
+}
+#endif
+
 static int
 test_simde_mm256_maskload_pd (SIMDE_MUNIT_TEST_ARGS) {
   static const struct {
@@ -9821,6 +9852,25 @@ test_simde_mm256_maskload_pd (SIMDE_MUNIT_TEST_ARGS) {
   return 0;
 }
 
+#if !defined(HEDLEY_MSVC_VERSION)
+static int
+test_simde_mm256_maskload_pd_no_illegal_memory_access (SIMDE_MUNIT_TEST_ARGS) {
+  // ref: https://github.com/simd-everywhere/simde/issues/998
+  // make sure maskload never accesses memory for masked out regions
+  // will segfault in case memory is accessed
+  #if defined(_GNU_SOURCE)
+    simde_float64 *ptr = HEDLEY_STATIC_CAST(simde_float64 *, mmap(NULL, 4 * sizeof(simde_float64), PROT_NONE , MAP_PRIVATE | MAP_ANONYMOUS, -1, 0));
+  #else
+    simde_float64 *ptr = HEDLEY_STATIC_CAST(simde_float64 *, mmap(NULL, 4 * sizeof(simde_float64), PROT_NONE , MAP_PRIVATE, -1, 0));
+  #endif
+  const simde__m256i mask = simde_mm256_set_epi64x(INT64_C(0), INT64_C(0), INT64_C(0), INT64_C(0));
+  simde__m256d test = simde_mm256_maskload_pd(ptr, mask);
+  simde_float64 r[4] = { SIMDE_FLOAT64_C(0.00), SIMDE_FLOAT64_C(0.00), SIMDE_FLOAT64_C(0.00), SIMDE_FLOAT64_C(0.00) };
+  simde_test_x86_assert_equal_f64x4(test, simde_mm256_loadu_pd(r), 1);
+  return 0;
+}
+#endif
+
 static int
 test_simde_mm_maskload_ps (SIMDE_MUNIT_TEST_ARGS) {
   static const struct {
@@ -9862,6 +9912,26 @@ test_simde_mm_maskload_ps (SIMDE_MUNIT_TEST_ARGS) {
 
   return 0;
 }
+
+#if !defined(HEDLEY_MSVC_VERSION)
+static int
+test_simde_mm_maskload_ps_no_illegal_memory_access (SIMDE_MUNIT_TEST_ARGS) {
+  // ref: https://github.com/simd-everywhere/simde/issues/998
+  // make sure maskload never accesses memory for masked out regions
+  // will segfault in case memory is accessed
+  #if defined(_GNU_SOURCE)
+    simde_float32 *ptr = HEDLEY_STATIC_CAST(simde_float32 *, mmap(NULL, 4 * sizeof(simde_float32), PROT_NONE , MAP_PRIVATE | MAP_ANONYMOUS, -1, 0));
+  #else
+    simde_float32 *ptr = HEDLEY_STATIC_CAST(simde_float32 *, mmap(NULL, 4 * sizeof(simde_float32), PROT_NONE , MAP_PRIVATE, -1, 0));
+  #endif
+  const simde__m128i mask = simde_mm_set_epi32(0, 0, 0, 0);
+  simde__m128 test = simde_mm_maskload_ps(ptr, mask);
+  simde_float32 r[4] = { SIMDE_FLOAT32_C(0.00), SIMDE_FLOAT32_C(0.00), SIMDE_FLOAT32_C(0.00), SIMDE_FLOAT32_C(0.00) };
+  simde_test_x86_assert_equal_f32x4(test, simde_mm_loadu_ps(r), 1);
+  return 0;
+}
+#endif
+
 
 static int
 test_simde_mm256_maskload_ps (SIMDE_MUNIT_TEST_ARGS) {
@@ -9920,6 +9990,26 @@ test_simde_mm256_maskload_ps (SIMDE_MUNIT_TEST_ARGS) {
 
   return 0;
 }
+
+#if !defined(HEDLEY_MSVC_VERSION)
+static int
+test_simde_mm256_maskload_ps_no_illegal_memory_access (SIMDE_MUNIT_TEST_ARGS) {
+  // ref: https://github.com/simd-everywhere/simde/issues/998
+  // make sure maskload never accesses memory for masked out regions
+  // will segfault in case memory is accessed
+  #if defined(_GNU_SOURCE)
+    simde_float32 *ptr = HEDLEY_STATIC_CAST(simde_float32 *, mmap(NULL, 8 * sizeof(simde_float32), PROT_NONE , MAP_PRIVATE | MAP_ANONYMOUS, -1, 0));
+  #else
+    simde_float32 *ptr = HEDLEY_STATIC_CAST(simde_float32 *, mmap(NULL, 8 * sizeof(simde_float32), PROT_NONE , MAP_PRIVATE, -1, 0));
+  #endif
+  const simde__m256i mask = simde_mm256_set_epi32(0, 0, 0, 0, 0, 0, 0, 0);
+  simde__m256 test = simde_mm256_maskload_ps(ptr, mask);
+  simde_float32 r[8] = { SIMDE_FLOAT32_C(0.00), SIMDE_FLOAT32_C(0.00), SIMDE_FLOAT32_C(0.00), SIMDE_FLOAT32_C(0.00),
+                         SIMDE_FLOAT32_C(0.00), SIMDE_FLOAT32_C(0.00), SIMDE_FLOAT32_C(0.00), SIMDE_FLOAT32_C(0.00) };
+  simde_test_x86_assert_equal_f32x8(test, simde_mm256_loadu_ps(r), 1);
+  return 0;
+}
+#endif
 
 static int
 test_simde_mm_maskstore_pd(SIMDE_MUNIT_TEST_ARGS) {
@@ -16212,12 +16302,14 @@ SIMDE_TEST_FUNC_LIST_BEGIN
   SIMDE_TEST_FUNC_LIST_ENTRY(mm256_ceil_ps)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm256_ceil_pd)
 
-  SIMDE_TEST_FUNC_LIST_ENTRY(mm_cmp_sd)
-  SIMDE_TEST_FUNC_LIST_ENTRY(mm_cmp_ss)
-  SIMDE_TEST_FUNC_LIST_ENTRY(mm_cmp_pd)
-  SIMDE_TEST_FUNC_LIST_ENTRY(mm_cmp_ps)
-  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_cmp_pd)
-  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_cmp_ps)
+  #if !defined(SIMDE_FAST_MATH)
+    SIMDE_TEST_FUNC_LIST_ENTRY(mm_cmp_sd)
+    SIMDE_TEST_FUNC_LIST_ENTRY(mm_cmp_ss)
+    SIMDE_TEST_FUNC_LIST_ENTRY(mm_cmp_pd)
+    SIMDE_TEST_FUNC_LIST_ENTRY(mm_cmp_ps)
+    SIMDE_TEST_FUNC_LIST_ENTRY(mm256_cmp_pd)
+    SIMDE_TEST_FUNC_LIST_ENTRY(mm256_cmp_ps)
+  #endif
 
   SIMDE_TEST_FUNC_LIST_ENTRY(mm256_cvtepi32_pd)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm256_cvtepi32_ps)
@@ -16272,6 +16364,13 @@ SIMDE_TEST_FUNC_LIST_BEGIN
   SIMDE_TEST_FUNC_LIST_ENTRY(mm256_maskload_pd)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm_maskload_ps)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm256_maskload_ps)
+
+  #if !defined(HEDLEY_MSVC_VERSION)
+    SIMDE_TEST_FUNC_LIST_ENTRY(mm_maskload_pd_no_illegal_memory_access)
+    SIMDE_TEST_FUNC_LIST_ENTRY(mm256_maskload_pd_no_illegal_memory_access)
+    SIMDE_TEST_FUNC_LIST_ENTRY(mm_maskload_ps_no_illegal_memory_access)
+    SIMDE_TEST_FUNC_LIST_ENTRY(mm256_maskload_ps_no_illegal_memory_access)
+  #endif
 
   SIMDE_TEST_FUNC_LIST_ENTRY(mm_maskstore_pd)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm256_maskstore_pd)

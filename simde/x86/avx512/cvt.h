@@ -32,6 +32,7 @@
 
 #include "types.h"
 #include "mov.h"
+#include "../f16c.h"
 
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
@@ -190,6 +191,32 @@ simde_mm512_cvtepi8_epi16 (simde__m256i a) {
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
+simde__m512
+simde_mm512_cvtepi32_ps (simde__m512i a) {
+  #if defined(SIMDE_X86_AVX512F_NATIVE)
+    return _mm512_cvtepi32_ps(a);
+  #else
+    simde__m512_private r_;
+    simde__m512i_private a_ = simde__m512i_to_private(a);
+
+    #if defined(SIMDE_CONVERT_VECTOR_)
+      SIMDE_CONVERT_VECTOR_(r_.f32, a_.i32);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {
+        r_.f32[i] = HEDLEY_STATIC_CAST(simde_float32, a_.i32[i]);
+      }
+    #endif
+
+    return simde__m512_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_cvtepi32_ps
+  #define _mm512_cvtepi32_ps(a) simde_mm512_cvtepi32_ps(a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
 simde__m256i
 simde_mm512_cvtepi64_epi32 (simde__m512i a) {
   #if defined(SIMDE_X86_AVX512F_NATIVE)
@@ -247,9 +274,31 @@ simde_mm512_cvtepu32_ps (simde__m512i a) {
   #endif
 }
 #if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
-  #undef _mm512_cvtepu32_epi32
-  #define _mm512_cvtepu32_epi32(a) simde_mm512_cvtepu32_ps(a)
+  #undef _mm512_cvtepu32_ps
+  #define _mm512_cvtepu32_ps(a) simde_mm512_cvtepu32_ps(a)
 #endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512
+simde_mm512_cvtph_ps(simde__m256i a) {
+  #if defined(SIMDE_X86_AVX512F_NATIVE)
+    return _mm512_cvtph_ps(a);
+  #endif
+  simde__m256i_private a_ = simde__m256i_to_private(a);
+  simde__m512_private r_;
+
+  SIMDE_VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
+    r_.f32[i] = simde_float16_to_float32(simde_uint16_as_float16(a_.u16[i]));
+  }
+
+  return simde__m512_from_private(r_);
+}
+#if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_cvtph_ps
+  #define _mm512_cvtph_ps(a) simde_mm512_cvtph_ps(a)
+#endif
+
 
 SIMDE_END_DECLS_
 HEDLEY_DIAGNOSTIC_POP

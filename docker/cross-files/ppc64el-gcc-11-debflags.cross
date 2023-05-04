@@ -1,0 +1,20 @@
+[binaries]
+c = 'powerpc64le-linux-gnu-gcc-11'
+cpp = 'powerpc64le-linux-gnu-g++-11'
+ar = 'powerpc64le-linux-gnu-ar'
+strip = 'powerpc64le-linux-gnu-strip'
+objcopy = 'powerpc64le-linux-gnu-objcopy'
+ld = 'powerpc64le-linux-gnu-ld'
+exe_wrapper = ['qemu-ppc64le-static', '-L', '/usr/powerpc64le-linux-gnu/']
+
+[properties]
+c_args = ['-Wextra', '-Werror', '-g', '-O2', '-fstack-protector-strong', '-Wformat', '-Werror=format-security', '-Wdate-time', '-D_FORTIFY_SOURCE=2']
+cpp_args = ['-Wextra', '-Werror', '-g', '-O2', '-fstack-protector-strong', '-Wformat', '-Werror=format-security', '-Wdate-time', '-D_FORTIFY_SOURCE=2']
+c_link_args = ['-Wl,-z,relro', '-Wl,-z,now']
+cpp_link_args = ['-Wl,-z,relro', '-Wl,-z,now']
+
+[host_machine]
+system = 'linux'
+cpu_family = 'powerpc64'
+cpu = 'ppc64el'
+endian = 'little'

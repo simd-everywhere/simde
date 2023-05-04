@@ -1,36 +1,109 @@
 environment:
   MESON_EXE_WRAPPER: "['C:\\Program Files\\OpenCppCoverage\\OpenCppCoverage.exe', '--export_type=cobertura', '--']"
+  CCACHE_MAXSIZE: '500Mi'
+  APPVEYOR_CACHE_ENTRY_ZIP_ARGS: '-t7z -m0=lzma -mx=9'
   matrix:
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+      VCVARSALL: C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvarsall.bat
+      PYTHON_DIR: C:\Python311-x64
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
       VCVARSALL: C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvarsall.bat
-      PYTHON_DIR: C:\Python38-x64
+      PYTHON_DIR: C:\Python311-x64
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
       VCVARSALL: C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat
       PYTHON_DIR: C:\Python38-x64
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
       VCVARSALL: C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat
       PYTHON_DIR: C:\Python38-x64
-
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+      VCVARSALL: C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvarsall.bat
+      PYTHON_DIR: C:\Python311-x64
+      FLAGS: /arch:AVX
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+      VCVARSALL: C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvarsall.bat
+      PYTHON_DIR: C:\Python311-x64
+      FLAGS: /arch:AVX
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+      VCVARSALL: C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat
+      PYTHON_DIR: C:\Python38-x64
+      FLAGS: /arch:AVX
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+      VCVARSALL: C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat
+      PYTHON_DIR: C:\Python38-x64
+      FLAGS: /arch:AVX
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+      VCVARSALL: C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvarsall.bat
+      PYTHON_DIR: C:\Python311-x64
+      FLAGS: /arch:AVX2
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+      VCVARSALL: C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvarsall.bat
+      PYTHON_DIR: C:\Python311-x64
+      FLAGS: /arch:AVX2
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+      VCVARSALL: C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat
+      PYTHON_DIR: C:\Python38-x64
+      FLAGS: /arch:AVX2
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+      VCVARSALL: C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat
+      PYTHON_DIR: C:\Python38-x64
+      FLAGS: /arch:AVX2
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+      VCVARSALL: C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvarsall.bat
+      PYTHON_DIR: C:\Python311-x64
+      FLAGS: /arch:AVX512
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+      VCVARSALL: C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvarsall.bat
+      PYTHON_DIR: C:\Python311-x64
+      FLAGS: /arch:AVX512
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+      VCVARSALL: C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat
+      PYTHON_DIR: C:\Python38-x64
+      FLAGS: /arch:AVX512
 branches:
   except:
     - /^ci/(?!appveyor)(/.+)?/
 
 platform:
   - x64
-
+cache:
+  - '%SystemDrive%\ccache'
+init:
+  - pwsh: |
+      $Env:APPVEYOR_SAVE_CACHE_ON_ERROR = 'true'
 install:
   - cmd: set PATH=%PYTHON_DIR%;%PYTHON_DIR%\scripts;%PATH%
   - cmd: pip install --upgrade ninja meson
-  - cmd: choco install opencppcoverage codecov
+  - cmd: choco install opencppcoverage codecov ccache
   - cmd: call "%VCVARSALL%" amd64
 
 before_build:
   - ps: |
       git submodule -q update --init --recursive
+      if ($ENV:FLAGS -notlike "*ARCH*") {
+        echo "tests will be run"
+      } else {
+        echo "FLAGS is $ENV:FLAGS"
+      }
 
 build_script:
-  - cmd: meson --backend=ninja build
-  - cmd: ninja -C build -v test
+  - cmd: |
+      set CCACHE_DIR=%SystemDrive%\ccache
+      set CC=ccache.exe cl.exe
+      set CXX=ccache.exe cl.exe
+      ccache.exe --zero-stats
+      set CFLAGS=/WX /Z7 %FLAGS%
+      set CXXFLAGS=/WX /Z7 %FLAGS%
+      meson --backend=ninja build
+      meson compile -C build --verbose
+      ccache.exe --show-stats
+test_script:
+  # "meson test -C build" fails due to excessively long command line
+  - ps: |
+      if ($ENV:FLAGS -notlike "*ARCH*") {
+        ninja -C build test
+      } else {
+        echo "skipping test"
+      }
 
 ## This seems to work; data shows up on CodeCov, but it emits an error
 ## which makes AppVeyor thing the whole build failed.  Example:

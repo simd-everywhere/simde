@@ -1,11 +1,11 @@
 [binaries]
-c = '/usr/bin/i686-linux-gnu-gcc-9'
-cpp = '/usr/bin/i686-linux-gnu-g++-9'
-ar = '/usr/bin/ar'
-strip = '/usr/bin/strip'
-objcopy = '/usr/bin/objcopy'
-ld = '/usr/bin/ld'
-exe_wrapper = ['sde', '--']
+c = 'i686-linux-gnu-gcc-9'
+cpp = 'i686-linux-gnu-g++-9'
+ar = 'ar'
+strip = 'strip'
+objcopy = 'objcopy'
+ld = 'ld'
+exe_wrapper = ['sde', '-tgl', '--']
 
 [properties]
 c_args = ['-march=icelake-server', '-Wextra', '-Werror']

@@ -409,7 +409,7 @@ simde_mm512_clmulepi64_epi128 (simde__m512i a, simde__m512i b, const int imm8)
 
   return simde__m512i_from_private(r_);
 }
-#if defined(SIMDE_X86_VPCLMULQDQ_NATIVE)
+#if defined(SIMDE_X86_VPCLMULQDQ_NATIVE) && defined(SIMDE_X86_AVX512F_NATIVE)
   #define simde_mm512_clmulepi64_epi128(a, b, imm8) _mm512_clmulepi64_epi128(a, b, imm8)
 #endif
 #if defined(SIMDE_X86_VPCLMULQDQ_ENABLE_NATIVE_ALIASES)

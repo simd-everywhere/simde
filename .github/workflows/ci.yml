@@ -10,23 +10,27 @@ on:
     branches:
       - 'master'
 
+concurrency:
+  group: build-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   formatting:
     runs-on: ubuntu-22.04
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
         fetch-depth: 2
     - name: Install pcre2grep
       run: sudo apt-get update && sudo apt-get install -y pcre2-utils
     # Check for trailing whitespace
     - name: Trailing whitespace
-      run: find simde/ -name '*.c' -o -name '*.h' -exec grep -nP '\s+$' {} + && exit 1 || exit 0
+      run: find simde/ \( -name '*.c' -o -name '*.h' \) -exec grep -nP '\s+$' {} + && exit 1 || exit 0
     # We use spaces, not tabs.  I don't want to start a holy war here;
     # I don't actually have a strong preference between the two, but I
     # do have a strong preference for consistency, so don't @ me.
     - name: Tabs
-      run: find simde/ -name '*.c' -o -name '*.h' -exec grep -nP '\t' {} + && exit 1 || exit 0
+      run: find simde/ \( -name '*.c' -o -name '*.h' \) -exec grep -nP '\t' {} + && exit 1 || exit 0
     # s/8/16/ will result in this if the input is x86.
     - name: Bad substitutions
       run: git grep -i 'x''1''6''6' && exit 1 || exit 0
@@ -49,7 +53,7 @@ jobs:
       run: for file in $(find simde/*/ -name '*.h'); do grep -q "$(echo "$file" | tr '[:lower:]' '[:upper:]' | tr '[:punct:]' '_')" "$file" || (echo "Missing or incorrect header guard in $file" && exit 1); done
     # There should be an empty line at the end of every file
     - name: Newline at EOF
-      run: for file in $(find simde -name '*.h'); do if [ ! -z "$(tail -c 1 "$file")" ]; then echo "No newline at end of $file" && exit 1; fi; done
+      run: for file in $(find simde -name '*.h'); do if [ -n "$(tail -c 1 "$file")" ]; then echo "No newline at end of $file" && exit 1; fi; done
     # Don't #ifndef ; use !defined(...) instead.  ifndef leads to annoying inconsistencies
     - name: ifndef
       run: for file in $(find simde -name '*.h'); do grep -qP '^ *# *ifndef ' "${file}" && exit 1 || exit 0; done
@@ -58,7 +62,7 @@ jobs:
       run: for file in $(find simde -name '*.h'); do grep -qF "$(basename "${file}" .h)" meson.build || (echo "${file} missing from top-level meson.build" && exit 1); done
     # Make sure we don't accidentally use `vector ...` instead of SIMDE_POWER_ALTIVEC_VECTOR(...)
     - name: AltiVec raw vector keyword
-      run: find simde/ -name '*.c' -o -name '*.h' -exec grep -nP 'vector( +)((bool|signed|unsigned) +)?(double|float|long long|long|int|short|char)' {} + && exit 1 || exit 0
+      run: find simde/ \( -name '*.c' -o -name '*.h' \) -exec grep -nP 'vector( +)((bool|signed|unsigned) +)?(double|float|long long|long|int|short|char)' {} + && exit 1 || exit 0
     # Check indentation of preprocessor directives.
     - name: Preprocessor directive indentation
       run: find simde/*/ -name 'avx*.h' -exec pcre2grep -M '{\n#' {} + && exit 1 || exit 0
@@ -90,45 +94,54 @@ jobs:
       CFLAGS: -Wall -Wextra -Werror ${{ matrix.isax }}
       CXXFLAGS: -Wall -Wextra -Werror ${{ matrix.isax }}
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
         submodules: recursive
     - name: CPU Information
       run: cat /proc/cpuinfo
+    - run: sudo apt-get update
+    - name: ccache
+      uses: hendrikmuhs/ccache-action@v1.2
+      with:
+        key: ${{ github.job }}-${{ matrix.isax }}
     - name: Install APT Dependencies
-      run: sudo apt-get update && sudo apt-get install -y ninja-build ninja-build meson parallel gcovr
+      run: |
+        sudo apt-get install -y ninja-build ninja-build python3-pip parallel gcovr
+        sudo python3 -m pip install meson==0.55.0
     - name: Configure
       run: meson setup build -Db_coverage=true
     - name: Build
       run: ninja -C build -v
     - name: Test
-      run: meson test -C build --print-errorlogs --wrapper "${GITHUB_WORKSPACE}/test/check-flags.sh sde"
+      run: meson test -C build --print-errorlogs --wrapper "${GITHUB_WORKSPACE}/test/check-flags.sh sde" $(meson test -C build --list | grep -v emul)
     - name: Coverage Report
       run: ninja -C build -v coverage-xml
     - name: CodeCov.io
-      uses: codecov/codecov-action@v1
+      uses: codecov/codecov-action@v3
       with:
         file: ./build/meson-logs/coverage.xml
 
   emscripten:
     runs-on: ubuntu-22.04
     env:
-      CFLAGS: -Weverything -Werror -O2 -msimd128
-      CXXFLAGS: -Weverything -Werror -O2 -msimd128
+      CFLAGS: -Weverything -Werror -O2 -msimd128 -Wno-unsafe-buffer-usage
+      CXXFLAGS: -Weverything -Werror -O2 -msimd128 -Wno-unsafe-buffer-usage
       LDFLAGS: -s ENVIRONMENT=shell -s ASSERTIONS=1
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
         submodules: recursive
     - name: CPU Information
       run: cat /proc/cpuinfo
     - name: Install APT Dependencies
-      run: sudo apt-get update && sudo apt-get install -y ninja-build ninja-build meson parallel gcovr
+      run: |
+        sudo apt-get update && \
+        sudo apt-get install -y ninja-build ninja-build python3-pip parallel gcovr &&\
+        sudo python3 -m pip install meson==0.55.0
     - name: Install emscripten
       run: |
         git clone https://github.com/emscripten-core/emsdk.git /opt/emsdk
         cd /opt/emsdk
-        ./emsdk update-tags
         ./emsdk install tot
         ./emsdk activate tot
         source emsdk_env.sh
@@ -136,16 +149,16 @@ jobs:
       run: |
         sudo npm install jsvu -g
         jsvu --os=linux64 --engines=v8
-        sudo ln -s $HOME/.jsvu/v8 /usr/bin/v8
+        sudo ln -s "$HOME/.jsvu/bin/v8" /usr/bin/v8
         ls -l /usr/bin/v8
         ls -l ~/.jsvu || true
         /usr/bin/v8 --help
     - name: Configure
       run: meson setup build --optimization 2 --cross-file docker/cross-files/emscripten.cross
     - name: Build
-      run: ninja -C build -v
+      run: meson compile -C build --verbose
     - name: Test
-      run: ninja -C build -v test
+      run: meson test -C build --print-errorlogs
 
   native-aliases:
     runs-on: ubuntu-22.04
@@ -153,13 +166,16 @@ jobs:
       CFLAGS: -DSIMDE_ENABLE_NATIVE_ALIASES -DSIMDE_NATIVE_ALIASES_TESTING -march=native -Wall -Wextra -Werror
       CXXFLAGS: -DSIMDE_ENABLE_NATIVE_ALIASES -DSIMDE_NATIVE_ALIASES_TESTING -march=native -Wall -Wextra -Werror
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
         submodules: recursive
     - name: CPU Information
       run: cat /proc/cpuinfo
     - name: Install APT Dependencies
-      run: sudo apt-get update && sudo apt-get -yq install libxml2-utils ninja-build meson parallel gcovr
+      run: |
+        sudo apt-get update && \
+        sudo apt-get -yq install libxml2-utils ninja-build parallel gcovr && \
+        sudo python3 -m pip install meson==0.55.0
     - name: Convert
       run: ./test/native-aliases.sh
     - name: Configure
@@ -171,7 +187,7 @@ jobs:
     - name: Coverage Report
       run: ninja -C build -v coverage-xml
     - name: CodeCov.io
-      uses: codecov/codecov-action@v1
+      uses: codecov/codecov-action@v3
       with:
         file: ./build/meson-logs/coverage.xml
 
@@ -181,23 +197,26 @@ jobs:
       CFLAGS: -march=native -Wall -Wextra -Werror
       CXXFLAGS: -march=native -Wall -Wextra -Werror
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
         submodules: recursive
+    - run: sudo apt-get update
     - name: CPU Information
       run: cat /proc/cpuinfo
     - name: Install APT Dependencies
-      run: sudo apt-get update && sudo apt-get install -y ninja-build ninja-build meson parallel gcovr libsleef-dev
+      run: |
+        sudo apt-get install -y ninja-build ninja-build parallel gcovr libsleef-dev
+        sudo python3 -m pip install meson==0.55.0
     - name: Configure
       run: meson setup build -Dsleef=enabled -Db_coverage=true
     - name: Build
       run: ninja -C build -v
     - name: Test
-      run: ninja -C build -v test
+      run: meson test -C build --print-errorlogs $(meson test -C build --list | grep -v emul)
     - name: Coverage Report
       run: ninja -C build -v coverage-xml
     - name: CodeCov.io
-      uses: codecov/codecov-action@v1
+      uses: codecov/codecov-action@v3
       with:
         file: ./build/meson-logs/coverage.xml
 
@@ -214,18 +233,18 @@ jobs:
         # - version: 4.9
         #   distro: ubuntu-16.04
         #   arch_flags: -mavx2
-        - version: 5
-          distro: ubuntu-18.04
-          arch_flags: -mavx2
+        #- version: 5
+        #  distro: ubuntu-18.04
+        #  arch_flags: -mavx2
         # - version: 6
         #   distro: ubuntu-18.04
         #   arch_flags: -march=native
         # - version: 7
         #   distro: ubuntu-18.04
         #   arch_flags: -march=native
-        - version: 8
-          distro: ubuntu-18.04
-          arch_flags: -march=native
+        #- version: 8
+        #  distro: ubuntu-18.04
+        #  arch_flags: -march=native
         # - version: 9
         #   distro: ubuntu-20.04
         #   arch_flags: -march=native
@@ -235,12 +254,21 @@ jobs:
         - version: 10
           distro: ubuntu-20.04
           arch_flags: -ffast-math
+          ccache: 'true'
         - version: 11
           distro: ubuntu-22.04
           arch_flags: -march=native
         - version: 11
           distro: ubuntu-22.04
           arch_flags: -ffast-math
+          ccache: 'true'
+        - version: 12
+          distro: ubuntu-22.04
+          arch_flags: -march=native
+        - version: 12
+          distro: ubuntu-22.04
+          arch_flags: -ffast-math
+          ccache: 'true'
     runs-on: ${{ matrix.distro }}
     env:
       CC: gcc-${{ matrix.version }}
@@ -248,19 +276,85 @@ jobs:
       CFLAGS: ${{ matrix.arch_flags }} -Wall -Wextra -Werror
       CXXFLAGS: ${{ matrix.arch_flags }} -Wall -Wextra -Werror
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
         submodules: recursive
     - name: CPU Information
       run: cat /proc/cpuinfo
+    - name: ccache
+      uses: hendrikmuhs/ccache-action@v1.2
+      if: ${{ matrix.ccache == 'true' }}
+      with:
+        key: ${{ github.job }}-${{ matrix.version }}-${{ matrix.distro }}-${{ matrix.arch_flags }}
     - name: Install APT Dependencies
-      run: sudo add-apt-repository ppa:ubuntu-toolchain-r/test && sudo apt-get update && sudo apt-get -yq install ninja-build parallel "${CC}" "${CXX}"
+      run: |
+        sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+        sudo apt-get update
+        sudo apt-get -yq install gcovr python3-pip ninja-build parallel "${CC}" "${CXX}"
+        sudo python3 -m pip install meson==0.55.0
     - name: Configure
-      run: mkdir test/build && cd test/build && cmake -G Ninja ..
+      run: meson setup build
     - name: Build
-      run: ninja -C test/build -v
+      run: meson compile -C build --verbose
     - name: Test
-      run: ctest -C test/build ---output-on-failure
+      run: meson test -C build --print-errorlogs $(meson test -C build --list | grep -v emul)
+
+  gcc-qemu:
+    strategy:
+      matrix:
+        include:
+        - version: 12
+          distro: ubuntu-22.04
+          cross: aarch64
+          arch_gnu: aarch64
+          arch_deb: arm64
+        - version: 12
+          distro: ubuntu-22.04
+          cross: riscv64
+          arch_gnu: riscv64
+          arch_deb: riscv64
+        - version: 12
+          distro: ubuntu-22.04
+          cross: s390x
+          arch_gnu: s390x
+          arch_deb: s390x
+        # power: 150 failures: x86/{avx512/range,sse,sse3}, arm/neon/*, wasm_simd128/, wasm_relexad_simd/*
+        # https://github.com/simd-everywhere/simde/issues/903
+        # - version: 12
+        #   distro: ubuntu-22.04
+        #   cross: power9
+        #   arch_gnu: powerpc64le
+        #   arch_deb: ppc64el
+    runs-on: ${{ matrix.distro }}
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: recursive
+    - run: sudo apt-get update
+    - name: CPU Information
+      run: cat /proc/cpuinfo
+    - name: Install APT Dependencies
+      run: |
+        sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+        sudo apt-get update -y
+        sudo apt-get -yq install ninja-build parallel \
+          gcc-${{ matrix.version }}-${{ matrix.arch_gnu }}-linux-gnu \
+          g++-${{ matrix.version }}-${{ matrix.arch_gnu }}-linux-gnu binfmt-support \
+          qemu-user-static python3-pip libc6-${{ matrix.arch_deb }}-cross libstdc++-${{ matrix.version }}-dev-${{ matrix.arch_deb }}-cross
+        sudo python3 -m pip install meson==0.55.0
+    - name: ccache
+      uses: hendrikmuhs/ccache-action@v1.2
+      with:
+        key: ${{ github.job }}-${{ matrix.distro }}-${{ matrix.cross }}
+    - name: add ccache to the build path
+      run: |
+        export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
+    - name: Configure
+      run: meson setup --cross-file=docker/cross-files/${{ matrix.cross }}-gcc-${{ matrix.version }}-ccache.cross build
+    - name: Build
+      run: ninja -C build -v
+    - name: Test
+      run: meson test -C build --print-errorlogs --print-errorlogs $(meson test -C build --list | grep -v emul)
 
   clang:
     strategy:
@@ -278,15 +372,15 @@ jobs:
         # - version: "3.8"
         #   distro: ubuntu-16.04
         #   arch_flags: -mavx2
-        - version: "3.9"
-          distro: ubuntu-18.04
-          arch_flags: -mavx2
+        #- version: "3.9"
+        #  distro: ubuntu-18.04
+        #  arch_flags: -mavx2
         # - version: "4.0"
         #   distro: ubuntu-18.04
         #   arch_flags: -mavx2
-        - version: "5.0"
-          distro: ubuntu-18.04
-          arch_flags: -mavx2
+        #- version: "5.0"
+        #  distro: ubuntu-18.04
+        #  arch_flags: -mavx2
         # - version: "6.0"
         #   distro: ubuntu-20.04
         #   arch_flags: -march=native
@@ -305,12 +399,28 @@ jobs:
         - version: "12"
           distro: ubuntu-20.04
           arch_flags: -ffast-math
+          ccache: 'true'
         - version: "13"
           distro: ubuntu-22.04
           arch_flags: -march=native
         - version: "13"
           distro: ubuntu-22.04
           arch_flags: -ffast-math
+          ccache: 'true'
+        - version: "14"
+          distro: ubuntu-22.04
+          arch_flags: -march=native
+        - version: "14"
+          distro: ubuntu-22.04
+          arch_flags: -ffast-math
+          ccache: 'true'
+        - version: "15"
+          distro: ubuntu-22.04
+          arch_flags: -march=native
+        - version: "15"
+          distro: ubuntu-22.04
+          arch_flags: -ffast-math
+          ccache: 'true'
     runs-on: ${{ matrix.distro }}
     env:
       CC: clang-${{ matrix.version }}
@@ -318,38 +428,51 @@ jobs:
       CFLAGS: ${{ matrix.arch_flags }} -Wall -Weverything -Werror -fno-lax-vector-conversions
       CXXFLAGS: ${{ matrix.arch_flags }} -Wall -Weverything -Werror -fno-lax-vector-conversions
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
         submodules: recursive
     - name: CPU Information
       run: cat /proc/cpuinfo
+    - name: ccache
+      uses: hendrikmuhs/ccache-action@v1.2
+      if: ${{ matrix.ccache == 'true' }}
+      with:
+        key: ${{ github.job }}-${{ matrix.version }}-${{ matrix.distro }}-${{ matrix.arch_flags }}
     - name: Install APT Dependencies
-      run: sudo add-apt-repository ppa:ubuntu-toolchain-r/test && sudo apt-get update && sudo apt-get -yq install ninja-build parallel clang-${{ matrix.version }}
+      run: |
+        sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+        sudo apt-get update
+        sudo apt-get -yq install gcovr ninja-build python3-pip clang-${{ matrix.version }}
+        sudo python3 -m pip install meson==0.55.0
     - name: Configure
-      run: mkdir test/build && cd test/build && cmake -G Ninja ..
+      run: meson setup build
     - name: Build
-      run: ninja -C test/build -v
+      run: meson compile -C build --verbose
     - name: Test
-      run: ctest -C test/build ---output-on-failure
+      run: meson test -C build --print-errorlogs $(meson test -C build --list | grep -v emul)
 
   macos:
-    runs-on: macos-10.15
+    runs-on: macos-11
     strategy:
       matrix:
         # https://www.jessesquires.com/blog/2020/01/06/selecting-an-xcode-version-on-github-ci/
         # https://github.com/actions/virtual-environments/blob/master/images/macos/macos-10.15-Readme.md#xcode
-        xcode: ["11.3.1", "11.7", "12.3", "12.4"]
-        # xcode: ["11.7", "12.4", "12.5.1"] # for macos-11
+        # xcode: ["11.3.1", "11.7", "12.3", "12.4"]
+        xcode: ["11.7", "12.4", "12.5.1"] # for macos-11
     env:
       DEVELOPER_DIR:  /Applications/Xcode_${{ matrix.xcode }}.app
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
         submodules: recursive
-    - name: System Information
-      run: system_profiler
+    # - name: System Information
+    #   run: system_profiler
     - name: Compiler version
       run: cc --version
+    - name: ccache
+      uses: hendrikmuhs/ccache-action@v1.2
+      with:
+        key: ${{ github.job }}-${{ matrix.xcode }}
     - name: Install Homebrew Dependencies
       run: brew install meson ninja gcovr
     - name: Configure
@@ -357,27 +480,27 @@ jobs:
     - name: Build
       run: ninja -C build -v
     - name: Test
-      run: ninja -C build -v test
+      run: meson test -C build --print-errorlogs $(meson test -C build --list | grep -v emul)
     - name: Coverage Report
       run: ninja -C build -v coverage-xml
     - name: CodeCov.io
-      uses: codecov/codecov-action@v1
+      uses: codecov/codecov-action@v3
       with:
         file: ./build/meson-logs/coverage.xml
 
   icc:
     runs-on: ubuntu-22.04
     env:
-      CC: /home/runner/.local/bin/icc
-      CXX: /home/runner/.local/bin/icpc
-      CFLAGS: -Werror -wd13200 -wd13203 -wd16219 -Wall -Werror -march=native
-      CXXFLAGS: -wd13200 -wd13203 -wd16219 -Wall -Werror -march=native
+      CC: /home/runner/.local/bin/icx
+      CXX: /home/runner/.local/bin/icpx
+      CFLAGS: -Wall -Werror -march=native -fp-model precise
+      CXXFLAGS: -Wall -Werror -march=native -fp-model precise
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: CPU Information
       run: cat /proc/cpuinfo
     - name: Install APT Dependencies
-      run: sudo apt-get install -y ninja-build ninja-build meson
+      run: sudo apt-get install -y ninja-build python3-pip && sudo pip install meson==0.64
     - name: Install ICC
       run: |
         # download the key to system keyring
@@ -386,9 +509,9 @@ jobs:
         # add signed entry to apt sources and configure the APT client to use Intel repository:
         echo "deb [signed-by=/usr/share/keyrings/oneapi-archive-keyring.gpg] https://apt.repos.intel.com/oneapi all main" | sudo tee /etc/apt/sources.list.d/oneAPI.list
         sudo apt-get update
-        sudo apt-get install -y intel-oneapi-compiler-dpcpp-cpp-and-cpp-classic
+        sudo apt-get install -y intel-oneapi-compiler-dpcpp-cpp
         mkdir -p ~/.local/bin/ || true
-        for exe in icc icpc; do
+        for exe in icx icpx; do
           printf '#!/bin/bash\nARGS="$@"\nsource /opt/intel/oneapi/compiler/latest/env/vars.sh >/dev/null\n%s ${ARGS}\n' "${exe}" > ~/.local/bin/"${exe}"
           chmod 0755 ~/.local/bin/"${exe}";
         done
@@ -397,4 +520,28 @@ jobs:
     - name: Build
       run: ninja -C build -v
     - name: Test
-      run: ninja -C build -v test
+      run: meson test -C build --print-errorlogs $(meson test -C build --list | grep -v emul)
+
+  msvc-arm64:
+    name: Windows MSVC-AArch64
+    runs-on: [windows-latest]
+    env:
+      CFLAGS: /WX /Z7
+      CXXFLAGS: /WX /Z7
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          submodules: recursive
+      - name: Install Meson, Ninja and coverage
+        run: |
+          python3 -m pip install --upgrade ninja meson
+          choco install opencppcoverage codecov
+      - name: Use ARM64 Developer Command Prompt
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: amd64_arm64
+      - name: Configure and Build
+        run: |
+          meson --backend=ninja build --cross-file test/arm64cl.txt
+          meson test -C build --print-errorlogs $(meson test -C build --list | grep -v emul)

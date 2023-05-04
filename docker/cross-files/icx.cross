@@ -1,0 +1,11 @@
+[binaries]
+c = 'icx'
+cpp = 'icpx'
+ar = 'ar'
+strip = 'strip'
+objcopy = 'objcopy'
+ld = 'ld'
+
+[properties]
+c_args = ['-Wextra', '-Werror', '-march=native', '-Wno-tautological-constant-compare']
+cpp_args = ['-Wextra', '-Werror', '-march=native', '-Wno-tautological-constant-compare']

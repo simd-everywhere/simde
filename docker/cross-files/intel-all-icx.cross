@@ -1,0 +1,18 @@
+[binaries]
+c = 'icx'
+cpp = 'icpx'
+ar = 'ar'
+strip = 'strip'
+objcopy = 'objcopy'
+ld = 'ld'
+exe_wrapper = ['sde64', '-tgl', '--']
+
+[properties]
+c_args = ['-march=tigerlake', '-Wextra', '-Werror', '-Wno-tautological-constant-compare']
+cpp_args = ['-march=tigerlake', '-Wextra', '-Werror', '-Wno-tautological-constant-compare']
+
+[host_machine]
+system = 'linux'
+cpu_family = 'x86_64-all'
+cpu = 'x86_64'
+endian = 'little'

@@ -1,0 +1,18 @@
+[binaries]
+c = 'i686-linux-gnu-gcc-12'
+cpp = 'i686-linux-gnu-g++-12'
+ar = 'ar'
+strip = 'strip'
+objcopy = 'objcopy'
+ld = 'ld'
+exe_wrapper = ['sde', '-tgl', '--']
+
+[properties]
+c_args = ['-march=tigerlake', '-Wextra', '-Werror']
+cpp_args = ['-march=tigerlake', '-Wextra', '-Werror']
+
+[host_machine]
+system = 'linux'
+cpu_family = 'i686-all'
+cpu = 'i686'
+endian = 'little'

@@ -1,0 +1,20 @@
+[binaries]
+c = 'clang-14'
+cpp = 'clang++-14'
+ar = 'llvm-ar-14'
+strip = 'llvm-strip-14'
+objcopy = 'llvm-objcopy-14'
+ld = 'llvm-ld-14'
+exe_wrapper = ['qemu-ppc64le-static', '-cpu', 'power9', '-L', '/usr/powerpc64le-linux-gnu/']
+
+[properties]
+c_args = ['--target=powerpc64le-linux-gnu', '-mcpu=power9', '-isystem=/usr/powerpc64le-linux-gnu/include', '-Weverything', '-fno-lax-vector-conversions', '-Werror', '-Wno-deprecated-altivec-src-compat']
+cpp_args = ['--target=powerpc64le-linux-gnu', '-mcpu=power9', '-isystem=/usr/powerpc64le-linux-gnu/include', '-Weverything', '-fno-lax-vector-conversions', '-Werror', '-Wno-deprecated-altivec-src-compat']
+c_link_args = ['--target=powerpc64le-linux-gnu']
+cpp_link_args = ['--target=powerpc64le-linux-gnu']
+
+[host_machine]
+system = 'linux'
+cpu_family = 'powerpc64'
+cpu = 'ppc64el'
+endian = 'little'

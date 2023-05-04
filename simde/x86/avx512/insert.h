@@ -41,7 +41,13 @@ simde_mm512_insertf32x4 (simde__m512 a, simde__m128 b, int imm8)
     SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 3) {
   #if defined(SIMDE_X86_AVX512F_NATIVE)
     simde__m512 r;
-    SIMDE_CONSTIFY_4_(_mm512_insertf32x4, r, (HEDLEY_UNREACHABLE(), simde_mm512_setzero_ps ()), imm8, a, b);
+    switch(imm8) {
+      case 0: r = _mm512_insertf32x4(a, b, 0); break;
+      case 1: r = _mm512_insertf32x4(a, b, 1); break;
+      case 2: r = _mm512_insertf32x4(a, b, 2); break;
+      case 3: r = _mm512_insertf32x4(a, b, 3); break;
+      default: HEDLEY_UNREACHABLE(); r = simde_mm512_setzero_ps(); break;
+    }
     return r;
   #else
     simde__m512_private a_ = simde__m512_to_private(a);

@@ -1,0 +1,20 @@
+[binaries]
+c = 'clang-13'
+cpp = 'clang++-13'
+ar = 'llvm-ar-13'
+strip = 'llvm-strip-13'
+objcopy = 'llvm-objcopy-13'
+ld = 'llvm-ld-13'
+exe_wrapper = ['qemu-s390x-static', '-cpu', 'z14.2-base', '-L', '/usr/s390x-linux-gnu/']
+
+[properties]
+c_args        = ['--target=s390x-ibm-linux', '-march=z13', '-mzvector', '-isystem=/usr/s390x-linux-gnu/include', '-Weverything', '-fno-lax-vector-conversions', '-Werror']
+cpp_args      = ['--target=s390x-ibm-linux', '-march=z13', '-mzvector', '-isystem=/usr/s390x-linux-gnu/include', '-Weverything', '-fno-lax-vector-conversions', '-Werror']
+c_link_args   = ['--target=s390x-ibm-linux']
+cpp_link_args = ['--target=s390x-ibm-linux']
+
+[host_machine]
+system = 'linux'
+cpu_family = 's390x'
+cpu = 's390x'
+endian = 'big'
