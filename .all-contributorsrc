@@ -388,6 +388,15 @@
         "code",
         "test"
       ]
+    },
+    {
+      "login": "tommyvct",
+      "name": "Tommy Vercetti",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7903172?v=4",
+      "profile": "https://tommyvct.tk",
+      "contributions": [
+        "maintenance"
+      ]
     }
   ],
   "contributorsPerLine": 7
