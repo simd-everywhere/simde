@@ -224,6 +224,16 @@
         "code",
         "doc"
       ]
+    },
+    {
+      "login": "Glitch18",
+      "name": "Atharva Nimbalkar",
+      "avatar_url": "https://avatars.githubusercontent.com/u/30515829?v=4",
+      "profile": "https://github.com/Glitch18",
+      "contributions": [
+        "code",
+        "test"
+      ]
     }
   ],
   "contributorsPerLine": 7
