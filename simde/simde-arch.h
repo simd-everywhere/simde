@@ -42,6 +42,8 @@
 #if !defined(SIMDE_ARCH_H)
 #define SIMDE_ARCH_H
 
+#include "hedley.h"
+
 /* Alpha
    <https://en.wikipedia.org/wiki/DEC_Alpha> */
 #if defined(__alpha__) || defined(__alpha) || defined(_M_ALPHA)
@@ -331,7 +333,7 @@
 #  if defined(__VPCLMULQDQ__)
 #    define SIMDE_ARCH_X86_VPCLMULQDQ 1
 #  endif
-#  if defined(__F16C__) || ( HEDLEY_MSVC_VERSION_CHECK(19,30,0) && defined(SIMDE_ARCH_X86_AVX2) )
+#  if defined(__F16C__) || (defined(HEDLEY_MSVC_VERSION) && HEDLEY_MSVC_VERSION_CHECK(19,30,0) && defined(SIMDE_ARCH_X86_AVX2) )
 #    define SIMDE_ARCH_X86_F16C 1
 #  endif
 #endif
