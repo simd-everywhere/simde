@@ -10,6 +10,9 @@
   #undef SIMDE_TEST_DECLARE_SUITE
 #endif
 
+HEDLEY_DIAGNOSTIC_PUSH
+HEDLEY_DIAGNOSTIC_DISABLE_UNUSED_FUNCTION
+
 #define SIMDE_TEST_MIPS_MSA_GENERATE_INT_FUNCS_(Element_Width, Element_Count, Variant_Name) \
   static int \
   simde_test_msa_v##Element_Count##i##Element_Width##_assert_equal_( \
@@ -125,5 +128,8 @@ SIMDE_TEST_MIPS_MSA_GENERATE_FLOAT_FUNCS_(64,  2, d)
 #define simde_test_msa_v2u64_assert_equal(a, b) do { if (simde_test_msa_v2u64_assert_equal_(a, b, __FILE__, __LINE__, #a, #b)) return 1; } while (0)
 #define simde_test_msa_v4f32_assert_equal(a, b, precision) do { if (simde_test_msa_v4f32_assert_equal_(a, b, simde_test_f32_precision_to_slop(precision), __FILE__, __LINE__, #a, #b)) return 1; } while (0)
 #define simde_test_msa_v2f64_assert_equal(a, b, precision) do { if (simde_test_msa_v2f64_assert_equal_(a, b, simde_test_f64_precision_to_slop(precision), __FILE__, __LINE__, #a, #b)) return 1; } while (0)
+
+/* HEDLEY_DIAGNOSTIC_DISABLE_UNUSED_FUNCTION */
+HEDLEY_DIAGNOSTIC_POP
 
 #endif /* !defined(SIMDE_TEST_MIPS_TEST_MSA_H) */

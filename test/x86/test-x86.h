@@ -3,6 +3,9 @@
 
 #include "../test.h"
 
+HEDLEY_DIAGNOSTIC_PUSH
+HEDLEY_DIAGNOSTIC_DISABLE_UNUSED_FUNCTION
+
 #define SIMDE_TEST_X86_GENERATE_FLOAT_TYPE_FUNCS_(NT, EL, EC, SF) \
   static simde##NT \
   simde_test_x86_random_f##EL##x##EC(simde_float##EL min, simde_float##EL max) { \
@@ -172,6 +175,9 @@
 #define simde_assert_equal_mmask16(a, b) simde_assert_equal_u16(a, b)
 #define simde_assert_equal_mmask32(a, b) simde_assert_equal_u32(a, b)
 #define simde_assert_equal_mmask64(a, b) simde_assert_equal_u64(a, b)
+
+/* HEDLEY_DIAGNOSTIC_DISABLE_UNUSED_FUNCTION */
+HEDLEY_DIAGNOSTIC_POP
 
 #if !defined(SIMDE_TEST_BARE)
   #define SIMDE_TEST_DECLARE_SUITE(name) SIMDE_TEST_SUITE_DECLARE_GETTERS(HEDLEY_CONCAT(simde_test_x86_get_suite_,name))

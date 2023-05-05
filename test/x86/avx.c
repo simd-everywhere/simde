@@ -31,6 +31,9 @@
   #include <sys/mman.h>
 #endif
 
+HEDLEY_DIAGNOSTIC_PUSH
+HEDLEY_DIAGNOSTIC_DISABLE_UNUSED_FUNCTION
+
 static simde_float32 u32_to_f32(uint32_t u32) {
   simde_float32 f32;
   simde_memcpy(&f32, &u32, sizeof(f32));
@@ -42,6 +45,8 @@ static simde_float64 u64_to_f64(uint64_t u64) {
   simde_memcpy(&f64, &u64, sizeof(f64));
   return f64;
 }
+
+HEDLEY_DIAGNOSTIC_POP
 
 static int
 test_simde_mm256_set_epi8(SIMDE_MUNIT_TEST_ARGS) {

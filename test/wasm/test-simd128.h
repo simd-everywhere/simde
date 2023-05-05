@@ -4,6 +4,9 @@
 #include "../../simde/wasm/simd128.h"
 #include "../test.h"
 
+HEDLEY_DIAGNOSTIC_PUSH
+HEDLEY_DIAGNOSTIC_DISABLE_UNUSED_FUNCTION
+
 #define SIMDE_TEST_WASM_SIMD128_GENERATE_INT_FUNCS_(Element_Width, Element_Count) \
   static int \
   simde_test_wasm_i##Element_Width##x##Element_Count##_assert_equal_( \
@@ -115,5 +118,8 @@ SIMDE_TEST_WASM_SIMD128_GENERATE_FLOAT_FUNCS_(64,  2)
 #define simde_test_wasm_u64x2_assert_equal(a, b) do { if (simde_test_wasm_u64x2_assert_equal_(a, b, __FILE__, __LINE__, #a, #b)) return 1; } while (0)
 #define simde_test_wasm_f32x4_assert_equal(a, b, precision) do { if (simde_test_wasm_f32x4_assert_equal_(a, b, simde_test_f32_precision_to_slop(precision), __FILE__, __LINE__, #a, #b)) return 1; } while (0)
 #define simde_test_wasm_f64x2_assert_equal(a, b, precision) do { if (simde_test_wasm_f64x2_assert_equal_(a, b, simde_test_f64_precision_to_slop(precision), __FILE__, __LINE__, #a, #b)) return 1; } while (0)
+
+/* HEDLEY_DIAGNOSTIC_DISABLE_UNUSED_FUNCTION */
+HEDLEY_DIAGNOSTIC_POP
 
 #endif /* !defined(SIMDE_TEST_WASM_TEST_SIMD128_H) */

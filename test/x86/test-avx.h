@@ -5,6 +5,9 @@
 #include "test-sse2.h"
 #include "../../simde/x86/avx.h"
 
+HEDLEY_DIAGNOSTIC_PUSH
+SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
+
 SIMDE_TEST_X86_GENERATE_FLOAT_TYPE_FUNCS_(__m256, 32, 8, simde_mm256_storeu_ps)
 SIMDE_TEST_X86_GENERATE_FLOAT_TYPE_FUNCS_(__m256d, 64, 4, simde_mm256_storeu_pd)
 SIMDE_TEST_X86_GENERATE_INT_TYPE_FUNCS_(__m256i, 8, 32, simde_mm256_storeu_si256)
@@ -27,9 +30,11 @@ SIMDE_TEST_X86_GENERATE_UINT_TYPE_FUNCS_(__m256i, 64, 4, simde_mm256_storeu_si25
 #define simde_test_x86_assert_equal_u32x8(a, b) do { if (simde_test_x86_assert_equal_u32x8_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 #define simde_test_x86_assert_equal_u64x4(a, b) do { if (simde_test_x86_assert_equal_u64x4_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 
+/* SIMDE_DISABLE_UNWANTED_DIAGNOSTICS */
+HEDLEY_DIAGNOSTIC_POP
+
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DIAGNOSTIC_DISABLE_VARIADIC_MACROS_
-SIMDE_DIAGNOSTIC_DISABLE_CPP98_COMPAT_PEDANTIC_
 
 #define SIMDE_CONSTIFY_256_(func_name, result, default_case, imm, ...) \
   do { \
