@@ -1,0 +1,18 @@
+[binaries]
+c = ['ccache', 'riscv64-linux-gnu-gcc-12']
+cpp = ['ccache', 'riscv64-linux-gnu-g++-12']
+ar = 'riscv64-linux-gnu-ar'
+strip = 'riscv64-linux-gnu-strip'
+objcopy = 'riscv64-linux-gnu-objcopy'
+ld = 'riscv64-linux-gnu-ld'
+exe_wrapper = ['qemu-riscv64-static', '-L', '/usr/riscv64-linux-gnu/']
+
+[properties]
+c_args   = ['-Wextra', '-Werror']
+cpp_args = ['-Wextra', '-Werror']
+
+[host_machine]
+system = 'linux'
+cpu_family = 'riscv64'
+cpu = 'riscv64'
+endian = 'litte'

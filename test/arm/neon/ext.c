@@ -736,7 +736,13 @@ test_simde_vextq_f32 (SIMDE_MUNIT_TEST_ARGS) {
     simde_float32x4_t b = simde_vld1q_f32(test_vec[i].b);
     int n = test_vec[i].n;
     simde_float32x4_t r;
-    SIMDE_CONSTIFY_4_(simde_vextq_f32, r, (HEDLEY_UNREACHABLE(), a), n, a, b);
+    switch(n) {
+      case 0: r = simde_vextq_f32(a, b, 0); break;
+      case 1: r = simde_vextq_f32(a, b, 1); break;
+      case 2: r = simde_vextq_f32(a, b, 2); break;
+      case 3: r = simde_vextq_f32(a, b, 3); break;
+      default: HEDLEY_UNREACHABLE(); r = a; break;
+    }
     simde_test_arm_neon_assert_equal_f32x4(r, simde_vld1q_f32(test_vec[i].r), 1);
   }
 
@@ -807,7 +813,11 @@ test_simde_vextq_f64 (SIMDE_MUNIT_TEST_ARGS) {
     simde_float64x2_t b = simde_vld1q_f64(test_vec[i].b);
     int n = test_vec[i].n;
     simde_float64x2_t r;
-    SIMDE_CONSTIFY_2_(simde_vextq_f64, r, (HEDLEY_UNREACHABLE(), a), n, a, b);
+    switch(n) {
+      case 0: r = simde_vextq_f64(a, b, 0); break;
+      case 1: r = simde_vextq_f64(a, b, 1); break;
+      default: HEDLEY_UNREACHABLE(); r = a; break;
+    }
 
     simde_test_arm_neon_assert_equal_f64x2(r, simde_vld1q_f64(test_vec[i].r), 1);
   }
@@ -902,7 +912,25 @@ test_simde_vextq_s8 (SIMDE_MUNIT_TEST_ARGS) {
     simde_int8x16_t b = simde_vld1q_s8(test_vec[i].b);
     int n = test_vec[i].n;
     simde_int8x16_t r;
-    SIMDE_CONSTIFY_16_(simde_vextq_s8, r, (HEDLEY_UNREACHABLE(), a), n, a, b);
+    switch(n) {
+      case 0: r = simde_vextq_s8(a, b, 0); break;
+      case 1: r = simde_vextq_s8(a, b, 1); break;
+      case 2: r = simde_vextq_s8(a, b, 2); break;
+      case 3: r = simde_vextq_s8(a, b, 3); break;
+      case 4: r = simde_vextq_s8(a, b, 4); break;
+      case 5: r = simde_vextq_s8(a, b, 5); break;
+      case 6: r = simde_vextq_s8(a, b, 6); break;
+      case 7: r = simde_vextq_s8(a, b, 7); break;
+      case 8: r = simde_vextq_s8(a, b, 8); break;
+      case 9: r = simde_vextq_s8(a, b, 9); break;
+      case 10: r = simde_vextq_s8(a, b, 10); break;
+      case 11: r = simde_vextq_s8(a, b, 11); break;
+      case 12: r = simde_vextq_s8(a, b, 12); break;
+      case 13: r = simde_vextq_s8(a, b, 13); break;
+      case 14: r = simde_vextq_s8(a, b, 14); break;
+      case 15: r = simde_vextq_s8(a, b, 15); break;
+      default: HEDLEY_UNREACHABLE(); r = a; break;
+    }
 
     simde_test_arm_neon_assert_equal_i8x16(r, simde_vld1q_s8(test_vec[i].r));
   }
@@ -974,7 +1002,17 @@ test_simde_vextq_s16 (SIMDE_MUNIT_TEST_ARGS) {
     simde_int16x8_t b = simde_vld1q_s16(test_vec[i].b);
     int n = test_vec[i].n;
     simde_int16x8_t r;
-    SIMDE_CONSTIFY_8_(simde_vextq_s16, r, (HEDLEY_UNREACHABLE(), a), n, a, b);
+    switch(n) {
+      case 0: r = simde_vextq_s16(a, b, 0); break;
+      case 1: r = simde_vextq_s16(a, b, 1); break;
+      case 2: r = simde_vextq_s16(a, b, 2); break;
+      case 3: r = simde_vextq_s16(a, b, 3); break;
+      case 4: r = simde_vextq_s16(a, b, 4); break;
+      case 5: r = simde_vextq_s16(a, b, 5); break;
+      case 6: r = simde_vextq_s16(a, b, 6); break;
+      case 7: r = simde_vextq_s16(a, b, 7); break;
+      default: HEDLEY_UNREACHABLE(); r = a; break;
+    }
 
     simde_test_arm_neon_assert_equal_i16x8(r, simde_vld1q_s16(test_vec[i].r));
   }
@@ -1046,7 +1084,13 @@ test_simde_vextq_s32 (SIMDE_MUNIT_TEST_ARGS) {
     simde_int32x4_t b = simde_vld1q_s32(test_vec[i].b);
     int n = test_vec[i].n;
     simde_int32x4_t r;
-    SIMDE_CONSTIFY_4_(simde_vextq_s32, r, (HEDLEY_UNREACHABLE(), a), n, a, b);
+    switch(n) {
+      case 0: r = simde_vextq_s32(a, b, 0); break;
+      case 1: r = simde_vextq_s32(a, b, 1); break;
+      case 2: r = simde_vextq_s32(a, b, 2); break;
+      case 3: r = simde_vextq_s32(a, b, 3); break;
+      default: HEDLEY_UNREACHABLE(); r = a; break;
+    }
     simde_test_arm_neon_assert_equal_i32x4(r, simde_vld1q_s32(test_vec[i].r));
   }
 
@@ -1117,7 +1161,11 @@ test_simde_vextq_s64 (SIMDE_MUNIT_TEST_ARGS) {
     simde_int64x2_t b = simde_vld1q_s64(test_vec[i].b);
     int n = test_vec[i].n;
     simde_int64x2_t r;
-    SIMDE_CONSTIFY_2_(simde_vextq_s64, r, (HEDLEY_UNREACHABLE(), a), n, a, b);
+    switch(n) {
+      case 0: r = simde_vextq_s64(a, b, 0); break;
+      case 1: r = simde_vextq_s64(a, b, 1); break;
+      default: HEDLEY_UNREACHABLE(); r = a; break;
+    }
     simde_test_arm_neon_assert_equal_i64x2(r, simde_vld1q_s64(test_vec[i].r));
   }
 
@@ -1212,7 +1260,25 @@ test_simde_vextq_u8 (SIMDE_MUNIT_TEST_ARGS) {
     simde_uint8x16_t b = simde_vld1q_u8(test_vec[i].b);
     int n = test_vec[i].n;
     simde_uint8x16_t r;
-    SIMDE_CONSTIFY_16_(simde_vextq_u8, r, (HEDLEY_UNREACHABLE(), a), n, a, b);
+    switch(n) {
+      case 0: r = simde_vextq_u8(a, b, 0); break;
+      case 1: r = simde_vextq_u8(a, b, 1); break;
+      case 2: r = simde_vextq_u8(a, b, 2); break;
+      case 3: r = simde_vextq_u8(a, b, 3); break;
+      case 4: r = simde_vextq_u8(a, b, 4); break;
+      case 5: r = simde_vextq_u8(a, b, 5); break;
+      case 6: r = simde_vextq_u8(a, b, 6); break;
+      case 7: r = simde_vextq_u8(a, b, 7); break;
+      case 8: r = simde_vextq_u8(a, b, 8); break;
+      case 9: r = simde_vextq_u8(a, b, 9); break;
+      case 10: r = simde_vextq_u8(a, b, 10); break;
+      case 11: r = simde_vextq_u8(a, b, 11); break;
+      case 12: r = simde_vextq_u8(a, b, 12); break;
+      case 13: r = simde_vextq_u8(a, b, 13); break;
+      case 14: r = simde_vextq_u8(a, b, 14); break;
+      case 15: r = simde_vextq_u8(a, b, 15); break;
+      default: HEDLEY_UNREACHABLE(); r = a; break;
+    }
 
     simde_test_arm_neon_assert_equal_u8x16(r, simde_vld1q_u8(test_vec[i].r));
   }
@@ -1284,7 +1350,17 @@ test_simde_vextq_u16 (SIMDE_MUNIT_TEST_ARGS) {
     simde_uint16x8_t b = simde_vld1q_u16(test_vec[i].b);
     int n = test_vec[i].n;
     simde_uint16x8_t r;
-    SIMDE_CONSTIFY_8_(simde_vextq_u16, r, (HEDLEY_UNREACHABLE(), a), n, a, b);
+    switch(n) {
+      case 0: r = simde_vextq_u16(a, b, 0); break;
+      case 1: r = simde_vextq_u16(a, b, 1); break;
+      case 2: r = simde_vextq_u16(a, b, 2); break;
+      case 3: r = simde_vextq_u16(a, b, 3); break;
+      case 4: r = simde_vextq_u16(a, b, 4); break;
+      case 5: r = simde_vextq_u16(a, b, 5); break;
+      case 6: r = simde_vextq_u16(a, b, 6); break;
+      case 7: r = simde_vextq_u16(a, b, 7); break;
+      default: HEDLEY_UNREACHABLE(); r = a; break;
+    }
     simde_test_arm_neon_assert_equal_u16x8(r, simde_vld1q_u16(test_vec[i].r));
   }
 
@@ -1355,7 +1431,13 @@ test_simde_vextq_u32 (SIMDE_MUNIT_TEST_ARGS) {
     simde_uint32x4_t b = simde_vld1q_u32(test_vec[i].b);
     int n = test_vec[i].n;
     simde_uint32x4_t r;
-    SIMDE_CONSTIFY_4_(simde_vextq_u32, r, (HEDLEY_UNREACHABLE(), a), n, a, b);
+    switch(n) {
+      case 0: r = simde_vextq_u32(a, b, 0); break;
+      case 1: r = simde_vextq_u32(a, b, 1); break;
+      case 2: r = simde_vextq_u32(a, b, 2); break;
+      case 3: r = simde_vextq_u32(a, b, 3); break;
+      default: HEDLEY_UNREACHABLE(); r = a; break;
+    }
 
     simde_test_arm_neon_assert_equal_u32x4(r, simde_vld1q_u32(test_vec[i].r));
   }
@@ -1427,7 +1509,11 @@ test_simde_vextq_u64 (SIMDE_MUNIT_TEST_ARGS) {
     simde_uint64x2_t b = simde_vld1q_u64(test_vec[i].b);
     int n = test_vec[i].n;
     simde_uint64x2_t r;
-    SIMDE_CONSTIFY_2_(simde_vextq_u64, r, (HEDLEY_UNREACHABLE(), a), n, a, b);
+    switch(n) {
+      case 0: r = simde_vextq_u64(a, b, 0); break;
+      case 1: r = simde_vextq_u64(a, b, 1); break;
+      default: HEDLEY_UNREACHABLE(); r = a; break;
+    }
     simde_test_arm_neon_assert_equal_u64x2(r, simde_vld1q_u64(test_vec[i].r));
   }
 

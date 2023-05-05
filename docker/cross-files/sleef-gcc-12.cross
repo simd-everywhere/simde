@@ -1,10 +1,10 @@
 [binaries]
-c = '/usr/bin/gcc-12'
-cpp = '/usr/bin/g++-12'
-ar = '/usr/bin/ar'
-strip = '/usr/bin/strip'
-objcopy = '/usr/bin/objcopy'
-ld = '/usr/bin/ld'
+c = 'gcc-12'
+cpp = 'g++-12'
+ar = 'ar'
+strip = 'strip'
+objcopy = 'objcopy'
+ld = 'ld'
 
 [properties]
 c_args = ['-Wextra', '-Werror', '-march=native']

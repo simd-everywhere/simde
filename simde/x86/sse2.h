@@ -1235,16 +1235,16 @@ simde_mm_bslli_si128 (simde__m128i a, const int imm8)
   simde__m128i_from_neon_i8(((imm8) <= 0) ? simde__m128i_to_neon_i8(a) : (((imm8) > 15) ? (vdupq_n_s8(0)) : (vextq_s8(vdupq_n_s8(0), simde__m128i_to_neon_i8(a), 16 - (imm8)))))
 #elif defined(SIMDE_SHUFFLE_VECTOR_) && !defined(SIMDE_POWER_ALTIVEC_P6_NATIVE) && !defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
   #define simde_mm_bslli_si128(a, imm8) (__extension__ ({ \
-    const simde__m128i_private simde__tmp_a_ = simde__m128i_to_private(a); \
-    const simde__m128i_private simde__tmp_z_ = simde__m128i_to_private(simde_mm_setzero_si128()); \
-    simde__m128i_private simde__tmp_r_; \
+    const simde__m128i_private simde_tmp_a_ = simde__m128i_to_private(a); \
+    const simde__m128i_private simde_tmp_z_ = simde__m128i_to_private(simde_mm_setzero_si128()); \
+    simde__m128i_private simde_tmp_r_; \
     if (HEDLEY_UNLIKELY(imm8 > 15)) { \
-      simde__tmp_r_ = simde__m128i_to_private(simde_mm_setzero_si128()); \
+      simde_tmp_r_ = simde__m128i_to_private(simde_mm_setzero_si128()); \
     } else { \
-      simde__tmp_r_.i8 = \
+      simde_tmp_r_.i8 = \
         SIMDE_SHUFFLE_VECTOR_(8, 16, \
-          simde__tmp_z_.i8, \
-          (simde__tmp_a_).i8, \
+          simde_tmp_z_.i8, \
+          (simde_tmp_a_).i8, \
           HEDLEY_STATIC_CAST(int8_t, (16 - imm8) & 31), \
           HEDLEY_STATIC_CAST(int8_t, (17 - imm8) & 31), \
           HEDLEY_STATIC_CAST(int8_t, (18 - imm8) & 31), \
@@ -1262,7 +1262,7 @@ simde_mm_bslli_si128 (simde__m128i a, const int imm8)
           HEDLEY_STATIC_CAST(int8_t, (30 - imm8) & 31), \
           HEDLEY_STATIC_CAST(int8_t, (31 - imm8) & 31)); \
     } \
-    simde__m128i_from_private(simde__tmp_r_); }))
+    simde__m128i_from_private(simde_tmp_r_); }))
 #endif
 #define simde_mm_slli_si128(a, imm8) simde_mm_bslli_si128(a, imm8)
 #if defined(SIMDE_X86_SSE2_ENABLE_NATIVE_ALIASES)
@@ -1309,16 +1309,16 @@ simde_mm_bsrli_si128 (simde__m128i a, const int imm8)
   simde__m128i_from_neon_i8(((imm8 < 0) || (imm8 > 15)) ? vdupq_n_s8(0) : (vextq_s8(simde__m128i_to_private(a).neon_i8, vdupq_n_s8(0), ((imm8 & 15) != 0) ? imm8 : (imm8 & 15))))
 #elif defined(SIMDE_SHUFFLE_VECTOR_) && !defined(SIMDE_POWER_ALTIVEC_P6_NATIVE) && !defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
   #define simde_mm_bsrli_si128(a, imm8) (__extension__ ({ \
-    const simde__m128i_private simde__tmp_a_ = simde__m128i_to_private(a); \
-    const simde__m128i_private simde__tmp_z_ = simde__m128i_to_private(simde_mm_setzero_si128()); \
-    simde__m128i_private simde__tmp_r_ = simde__m128i_to_private(a); \
+    const simde__m128i_private simde_tmp_a_ = simde__m128i_to_private(a); \
+    const simde__m128i_private simde_tmp_z_ = simde__m128i_to_private(simde_mm_setzero_si128()); \
+    simde__m128i_private simde_tmp_r_ = simde__m128i_to_private(a); \
     if (HEDLEY_UNLIKELY(imm8 > 15)) { \
-      simde__tmp_r_ = simde__m128i_to_private(simde_mm_setzero_si128()); \
+      simde_tmp_r_ = simde__m128i_to_private(simde_mm_setzero_si128()); \
     } else { \
-      simde__tmp_r_.i8 = \
+      simde_tmp_r_.i8 = \
       SIMDE_SHUFFLE_VECTOR_(8, 16, \
-        simde__tmp_z_.i8, \
-        (simde__tmp_a_).i8, \
+        simde_tmp_z_.i8, \
+        (simde_tmp_a_).i8, \
         HEDLEY_STATIC_CAST(int8_t, (imm8 + 16) & 31), \
         HEDLEY_STATIC_CAST(int8_t, (imm8 + 17) & 31), \
         HEDLEY_STATIC_CAST(int8_t, (imm8 + 18) & 31), \
@@ -1336,7 +1336,7 @@ simde_mm_bsrli_si128 (simde__m128i a, const int imm8)
         HEDLEY_STATIC_CAST(int8_t, (imm8 + 30) & 31), \
         HEDLEY_STATIC_CAST(int8_t, (imm8 + 31) & 31)); \
     } \
-    simde__m128i_from_private(simde__tmp_r_); }))
+    simde__m128i_from_private(simde_tmp_r_); }))
 #endif
 #define simde_mm_srli_si128(a, imm8) simde_mm_bsrli_si128((a), (imm8))
 #if defined(SIMDE_X86_SSE2_ENABLE_NATIVE_ALIASES)
@@ -1354,7 +1354,7 @@ simde_mm_clflush (void const* p) {
   #endif
 }
 #if defined(SIMDE_X86_SSE2_ENABLE_NATIVE_ALIASES)
-  #define _mm_clflush(a, b) simde_mm_clflush()
+  #define _mm_clflush(p) simde_mm_clflush(p)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -3553,12 +3553,15 @@ simde_mm_loadu_pd (simde_float64 const mem_addr[HEDLEY_ARRAY_PARAM(2)]) {
   #define _mm_loadu_pd(mem_addr) simde_mm_loadu_pd(mem_addr)
 #endif
 
+#if defined(SIMDE_X86_AVX512VL_NATIVE) && defined(SIMDE_X86_AVX512BW_NATIVE) \
+    && !defined(SIMDE_BUG_GCC_95483) && !defined(SIMDE_BUG_CLANG_REV_344862) \
+    && (!defined(HEDLEY_MSVC_VERSION) || HEDLEY_MSVC_VERSION_CHECK(19,20,0))
+  #define simde_mm_loadu_epi8(mem_addr) _mm_loadu_epi8(mem_addr)
+#else
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_loadu_epi8(void const * mem_addr) {
-  #if defined(SIMDE_X86_AVX512VL_NATIVE) && defined(SIMDE_X86_AVX512BW_NATIVE) && !defined(SIMDE_BUG_GCC_95483) && !defined(SIMDE_BUG_CLANG_REV_344862)
-    return _mm_loadu_epi8(mem_addr);
-  #elif defined(SIMDE_X86_SSE2_NATIVE)
+  #if defined(SIMDE_X86_SSE2_NATIVE)
     return _mm_loadu_si128(SIMDE_ALIGN_CAST(__m128i const *, mem_addr));
   #else
     simde__m128i_private r_;
@@ -3572,18 +3575,22 @@ simde_mm_loadu_epi8(void const * mem_addr) {
     return simde__m128i_from_private(r_);
   #endif
 }
+#endif
 #define simde_x_mm_loadu_epi8(mem_addr) simde_mm_loadu_epi8(mem_addr)
 #if defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES) || defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && (defined(SIMDE_BUG_GCC_95483) || defined(SIMDE_BUG_CLANG_REV_344862)))
   #undef _mm_loadu_epi8
   #define _mm_loadu_epi8(a) simde_mm_loadu_epi8(a)
 #endif
 
+#if defined(SIMDE_X86_AVX512VL_NATIVE) && defined(SIMDE_X86_AVX512BW_NATIVE) \
+    && !defined(SIMDE_BUG_GCC_95483) && !defined(SIMDE_BUG_CLANG_REV_344862) \
+    && (!defined(HEDLEY_MSVC_VERSION) || HEDLEY_MSVC_VERSION_CHECK(19,20,0))
+  #define simde_mm_loadu_epi16(mem_addr) _mm_loadu_epi16(mem_addr)
+#else
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_loadu_epi16(void const * mem_addr) {
-  #if defined(SIMDE_X86_AVX512VL_NATIVE) && defined(SIMDE_X86_AVX512BW_NATIVE) && !defined(SIMDE_BUG_GCC_95483) && !defined(SIMDE_BUG_CLANG_REV_344862)
-    return _mm_loadu_epi16(mem_addr);
-  #elif defined(SIMDE_X86_SSE2_NATIVE)
+  #if defined(SIMDE_X86_SSE2_NATIVE)
     return _mm_loadu_si128(SIMDE_ALIGN_CAST(__m128i const *, mem_addr));
   #else
     simde__m128i_private r_;
@@ -3597,18 +3604,21 @@ simde_mm_loadu_epi16(void const * mem_addr) {
     return simde__m128i_from_private(r_);
   #endif
 }
+#endif
 #define simde_x_mm_loadu_epi16(mem_addr) simde_mm_loadu_epi16(mem_addr)
 #if defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES) || defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && (defined(SIMDE_BUG_GCC_95483) || defined(SIMDE_BUG_CLANG_REV_344862)))
   #undef _mm_loadu_epi16
   #define _mm_loadu_epi16(a) simde_mm_loadu_epi16(a)
 #endif
 
+#if defined(SIMDE_X86_AVX512VL_NATIVE) && !defined(SIMDE_BUG_GCC_95483) \
+    && !defined(SIMDE_BUG_CLANG_REV_344862) && (!defined(HEDLEY_MSVC_VERSION) || HEDLEY_MSVC_VERSION_CHECK(19,20,0))
+  #define simde_mm_loadu_epi32(mem_addr) _mm_loadu_epi32(mem_addr)
+#else
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_loadu_epi32(void const * mem_addr) {
-  #if defined(SIMDE_X86_AVX512VL_NATIVE) && !defined(SIMDE_BUG_GCC_95483) && !defined(SIMDE_BUG_CLANG_REV_344862)
-    return _mm_loadu_epi32(mem_addr);
-  #elif defined(SIMDE_X86_SSE2_NATIVE)
+  #if defined(SIMDE_X86_SSE2_NATIVE)
     return _mm_loadu_si128(SIMDE_ALIGN_CAST(__m128i const *, mem_addr));
   #else
     simde__m128i_private r_;
@@ -3622,18 +3632,22 @@ simde_mm_loadu_epi32(void const * mem_addr) {
     return simde__m128i_from_private(r_);
   #endif
 }
+#endif
 #define simde_x_mm_loadu_epi32(mem_addr) simde_mm_loadu_epi32(mem_addr)
 #if defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && (defined(SIMDE_BUG_GCC_95483) || defined(SIMDE_BUG_CLANG_REV_344862)))
   #undef _mm_loadu_epi32
   #define _mm_loadu_epi32(a) simde_mm_loadu_epi32(a)
 #endif
 
+#if defined(SIMDE_X86_AVX512VL_NATIVE) && !defined(SIMDE_BUG_GCC_95483) \
+    && !defined(SIMDE_BUG_CLANG_REV_344862) \
+    && (!defined(HEDLEY_MSVC_VERSION) || HEDLEY_MSVC_VERSION_CHECK(19,20,0))
+  #define simde_mm_loadu_epi64(mem_addr) _mm_loadu_epi64(mem_addr)
+#else
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_loadu_epi64(void const * mem_addr) {
-  #if defined(SIMDE_X86_AVX512VL_NATIVE) && !defined(SIMDE_BUG_GCC_95483) && !defined(SIMDE_BUG_CLANG_REV_344862)
-    return _mm_loadu_epi64(mem_addr);
-  #elif defined(SIMDE_X86_SSE2_NATIVE)
+  #if defined(SIMDE_X86_SSE2_NATIVE)
     return _mm_loadu_si128(SIMDE_ALIGN_CAST(__m128i const *, mem_addr));
   #else
     simde__m128i_private r_;
@@ -3647,6 +3661,7 @@ simde_mm_loadu_epi64(void const * mem_addr) {
     return simde__m128i_from_private(r_);
   #endif
 }
+#endif
 #define simde_x_mm_loadu_epi64(mem_addr) simde_mm_loadu_epi64(mem_addr)
 #if defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && (defined(SIMDE_BUG_GCC_95483) || defined(SIMDE_BUG_CLANG_REV_344862)))
   #undef _mm_loadu_epi64
@@ -4768,7 +4783,8 @@ simde__m128i
 simde_mm_loadu_si16 (void const* mem_addr) {
   #if defined(SIMDE_X86_SSE2_NATIVE) && ( \
       SIMDE_DETECT_CLANG_VERSION_CHECK(8,0,0) || \
-      HEDLEY_INTEL_VERSION_CHECK(20,21,1))
+      HEDLEY_INTEL_VERSION_CHECK(20,21,1) || \
+      HEDLEY_GCC_VERSION_CHECK(12,1,0))
     return _mm_loadu_si16(mem_addr);
   #else
     int16_t val;
@@ -4812,7 +4828,8 @@ simde__m128i
 simde_mm_loadu_si32 (void const* mem_addr) {
   #if defined(SIMDE_X86_SSE2_NATIVE) && ( \
       SIMDE_DETECT_CLANG_VERSION_CHECK(8,0,0) || \
-      HEDLEY_INTEL_VERSION_CHECK(20,21,1))
+      HEDLEY_INTEL_VERSION_CHECK(20,21,1) || \
+      HEDLEY_GCC_VERSION_CHECK(12,1,0))
     return _mm_loadu_si32(mem_addr);
   #else
     int32_t val;
@@ -5328,11 +5345,11 @@ simde_mm_shuffle_epi32 (simde__m128i a, const int imm8)
   #define simde_mm_shuffle_epi32(a, imm8) _mm_shuffle_epi32((a), (imm8))
 #elif defined(SIMDE_SHUFFLE_VECTOR_)
   #define simde_mm_shuffle_epi32(a, imm8) (__extension__ ({ \
-      const simde__m128i_private simde__tmp_a_ = simde__m128i_to_private(a); \
+      const simde__m128i_private simde_tmp_a_ = simde__m128i_to_private(a); \
       simde__m128i_from_private((simde__m128i_private) { .i32 = \
         SIMDE_SHUFFLE_VECTOR_(32, 16, \
-          (simde__tmp_a_).i32, \
-          (simde__tmp_a_).i32, \
+          (simde_tmp_a_).i32, \
+          (simde_tmp_a_).i32, \
           ((imm8)     ) & 3, \
           ((imm8) >> 2) & 3, \
           ((imm8) >> 4) & 3, \
@@ -5404,11 +5421,11 @@ simde_mm_shufflehi_epi16 (simde__m128i a, const int imm8)
   #define simde_mm_shufflehi_epi16(a, imm8) _mm_shufflehi_epi16((a), (imm8))
 #elif defined(SIMDE_SHUFFLE_VECTOR_)
   #define simde_mm_shufflehi_epi16(a, imm8) (__extension__ ({ \
-      const simde__m128i_private simde__tmp_a_ = simde__m128i_to_private(a); \
+      const simde__m128i_private simde_tmp_a_ = simde__m128i_to_private(a); \
       simde__m128i_from_private((simde__m128i_private) { .i16 = \
         SIMDE_SHUFFLE_VECTOR_(16, 16, \
-          (simde__tmp_a_).i16, \
-          (simde__tmp_a_).i16, \
+          (simde_tmp_a_).i16, \
+          (simde_tmp_a_).i16, \
           0, 1, 2, 3, \
           (((imm8)     ) & 3) + 4, \
           (((imm8) >> 2) & 3) + 4, \
@@ -5452,11 +5469,11 @@ simde_mm_shufflelo_epi16 (simde__m128i a, const int imm8)
   #define simde_mm_shufflelo_epi16(a, imm8) _mm_shufflelo_epi16((a), (imm8))
 #elif defined(SIMDE_SHUFFLE_VECTOR_)
   #define simde_mm_shufflelo_epi16(a, imm8) (__extension__ ({ \
-      const simde__m128i_private simde__tmp_a_ = simde__m128i_to_private(a); \
+      const simde__m128i_private simde_tmp_a_ = simde__m128i_to_private(a); \
       simde__m128i_from_private((simde__m128i_private) { .i16 = \
         SIMDE_SHUFFLE_VECTOR_(16, 16, \
-          (simde__tmp_a_).i16, \
-          (simde__tmp_a_).i16, \
+          (simde_tmp_a_).i16, \
+          (simde_tmp_a_).i16, \
           (((imm8)     ) & 3), \
           (((imm8) >> 2) & 3), \
           (((imm8) >> 4) & 3), \
@@ -7003,15 +7020,6 @@ simde_mm_ucomineq_sd (simde__m128d a, simde__m128d b) {
 }
 #if defined(SIMDE_X86_SSE2_ENABLE_NATIVE_ALIASES)
   #define _mm_ucomineq_sd(a, b) simde_mm_ucomineq_sd(a, b)
-#endif
-
-#if defined(SIMDE_DIAGNOSTIC_DISABLE_UNINITIALIZED_)
-  HEDLEY_DIAGNOSTIC_PUSH
-  SIMDE_DIAGNOSTIC_DISABLE_UNINITIALIZED_
-#endif
-
-#if defined(SIMDE_DIAGNOSTIC_DISABLE_UNINITIALIZED_)
-  HEDLEY_DIAGNOSTIC_POP
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES

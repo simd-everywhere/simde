@@ -1,0 +1,19 @@
+[binaries]
+c = 'i686-linux-gnu-gcc-12'
+cpp = 'i686-linux-gnu-g++-12'
+ar = 'i686-linux-gnu-ar'
+strip = 'i686-linux-gnu-strip'
+objcopy = 'i686-linux-gnu-objcopy'
+ld = 'i686-linux-gnu-ld'
+
+[properties]
+c_args = ['-Wextra', '-Werror', '-g', '-O2', '-fstack-protector-strong', '-Wformat', '-Werror=format-security', '-Wdate-time', '-D_FORTIFY_SOURCE=2']
+cpp_args = ['-Wextra', '-Werror', '-g', '-O2', '-fstack-protector-strong', '-Wformat', '-Werror=format-security', '-Wdate-time', '-D_FORTIFY_SOURCE=2']
+c_link_args = ['-Wl,-z,relro', '-Wl,-z,now']
+cpp_link_args = ['-Wl,-z,relro', '-Wl,-z,now']
+
+[host_machine]
+system = 'linux'
+cpu_family = 'x86'
+cpu = 'i686'
+endian = 'little'

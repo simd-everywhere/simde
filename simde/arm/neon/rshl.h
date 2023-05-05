@@ -27,7 +27,7 @@
 
 #if !defined(SIMDE_ARM_NEON_RSHL_H)
 #define SIMDE_ARM_NEON_RSHL_H
-
+#include <simde/x86/avx.h>
 #include "types.h"
 
 /* Notes from the implementer (Christopher Moore aka rosbif)
@@ -141,7 +141,7 @@ simde_vrshl_s8 (const simde_int8x8_t a, const simde_int8x8_t b) {
                                         _mm256_srai_epi32(_mm256_sub_epi32(a256_shr, ff), 1),
                                         _mm256_cmpgt_epi32(zero, b256));
       r256 = _mm256_shuffle_epi8(r256, _mm256_set1_epi32(0x0C080400));
-      r_.m64 = _mm_set_pi32(_mm256_extract_epi32(r256, 4), _mm256_extract_epi32(r256, 0));
+      r_.m64 = _mm_set_pi32(simde_mm256_extract_epi32(r256, 4), simde_mm256_extract_epi32(r256, 0));
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -322,7 +322,7 @@ simde_vrshl_u8 (const simde_uint8x8_t a, const simde_int8x8_t b) {
                                         _mm256_srli_epi32(_mm256_sub_epi32(a256_shr, ff), 1),
                                         _mm256_cmpgt_epi32(zero, b256));
       r256 = _mm256_shuffle_epi8(r256, _mm256_set1_epi32(0x0C080400));
-      r_.m64 = _mm_set_pi32(_mm256_extract_epi32(r256, 4), _mm256_extract_epi32(r256, 0));
+      r_.m64 = _mm_set_pi32(simde_mm256_extract_epi32(r256, 4), simde_mm256_extract_epi32(r256, 0));
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -572,7 +572,7 @@ simde_vrshlq_s16 (const simde_int16x8_t a, const simde_int16x8_t b) {
                                         _mm256_srai_epi32(_mm256_sub_epi32(a256_shr, ff), 1),
                                         _mm256_cmpgt_epi32(zero, b256));
       r256 = _mm256_shuffle_epi8(r256, _mm256_set1_epi64x(0x0D0C090805040100));
-      r_.m128i = _mm_set_epi64x(_mm256_extract_epi64(r256, 2), _mm256_extract_epi64(r256, 0));
+      r_.m128i = _mm_set_epi64x(simde_mm256_extract_epi64(r256, 2), simde_mm256_extract_epi64(r256, 0));
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -811,7 +811,7 @@ simde_vrshlq_u16 (const simde_uint16x8_t a, const simde_int16x8_t b) {
                                         _mm256_srli_epi32(_mm256_sub_epi32(a256_shr, ff), 1),
                                         _mm256_cmpgt_epi32(zero, b256));
       r256 = _mm256_shuffle_epi8(r256, _mm256_set1_epi64x(0x0D0C090805040100));
-      r_.m128i = _mm_set_epi64x(_mm256_extract_epi64(r256, 2), _mm256_extract_epi64(r256, 0));
+      r_.m128i = _mm_set_epi64x(simde_mm256_extract_epi64(r256, 2), simde_mm256_extract_epi64(r256, 0));
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {

@@ -1,11 +1,11 @@
 [binaries]
-c = '/usr/bin/arm-linux-gnueabihf-gcc-12'
-cpp = '/usr/bin/arm-linux-gnueabihf-g++-12'
-ar = '/usr/bin/arm-linux-gnueabihf-ar'
-strip = '/usr/bin/arm-linux-gnueabihf-strip'
-objcopy = '/usr/bin/arm-linux-gnueabihf-objcopy'
-ld = '/usr/bin/arm-linux-gnueabihf-ld'
-exe_wrapper = 'qemu-arm-static'
+c = 'arm-linux-gnueabihf-gcc-12'
+cpp = 'arm-linux-gnueabihf-g++-12'
+ar = 'arm-linux-gnueabihf-ar'
+strip = 'arm-linux-gnueabihf-strip'
+objcopy = 'arm-linux-gnueabihf-objcopy'
+ld = 'arm-linux-gnueabihf-ld'
+exe_wrapper = ['qemu-arm-static', '-L', '/usr/arm-linux-gnueabihf']
 
 [properties]
 c_args = ['-march=armv7-a+simd+neon-fp16', '-mfpu=auto', '-Wextra', '-Werror']

@@ -628,7 +628,7 @@ simde_test_equal_f32(simde_float32 a, simde_float32 b, simde_float32 slop) {
   } else if (simde_math_isinf(a)) {
     return !((a < b) || (a > b));
   } else if (slop == SIMDE_FLOAT32_C(0.0)) {
-    return a == b;
+    return !simde_memcmp(&a, &b, sizeof(simde_float32));
   } else {
     simde_float32 lo = a - slop;
     if (HEDLEY_UNLIKELY(lo == a))
@@ -658,7 +658,7 @@ simde_test_equal_f64(simde_float64 a, simde_float64 b, simde_float64 slop) {
   } else if (simde_math_isinf(a)) {
     return !((a < b) || (a > b));
   } else if (slop == SIMDE_FLOAT64_C(0.0)) {
-    return a == b;
+    return !simde_memcmp(&a, &b, sizeof(simde_float64));
   } else {
     simde_float64 lo = a - slop;
     if (HEDLEY_UNLIKELY(lo == a))

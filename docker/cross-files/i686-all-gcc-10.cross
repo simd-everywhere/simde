@@ -1,11 +1,11 @@
 [binaries]
-c = '/usr/bin/i686-linux-gnu-gcc-10'
-cpp = '/usr/bin/i686-linux-gnu-g++-10'
-ar = '/usr/bin/ar'
-strip = '/usr/bin/strip'
-objcopy = '/usr/bin/objcopy'
-ld = '/usr/bin/ld'
-exe_wrapper = ['sde', '-future', '--']
+c = 'i686-linux-gnu-gcc-10'
+cpp = 'i686-linux-gnu-g++-10'
+ar = 'ar'
+strip = 'strip'
+objcopy = 'objcopy'
+ld = 'ld'
+exe_wrapper = ['sde', '-tgl', '--']
 
 [properties]
 c_args = ['-march=tigerlake', '-Wextra', '-Werror']

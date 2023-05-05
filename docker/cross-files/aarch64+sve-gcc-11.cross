@@ -1,11 +1,11 @@
 [binaries]
-c = '/usr/bin/aarch64-linux-gnu-gcc-11'
-cpp = '/usr/bin/aarch64-linux-gnu-g++-11'
-ar = '/usr/bin/aarch64-linux-gnu-ar'
-strip = '/usr/bin/aarch64-linux-gnu-strip'
-objcopy = '/usr/bin/aarch64-linux-gnu-objcopy'
-ld = '/usr/bin/aarch64-linux-gnu-ld'
-exe_wrapper = 'qemu-aarch64-static'
+c = 'aarch64-linux-gnu-gcc-11'
+cpp = 'aarch64-linux-gnu-g++-11'
+ar = 'aarch64-linux-gnu-ar'
+strip = 'aarch64-linux-gnu-strip'
+objcopy = 'aarch64-linux-gnu-objcopy'
+ld = 'aarch64-linux-gnu-ld'
+exe_wrapper = ['qemu-aarch64-static', '-L', '/usr/aarch64-linux-gnu']
 
 [properties]
 c_args = ['-march=armv8-a+sve', '-Wextra', '-Werror']

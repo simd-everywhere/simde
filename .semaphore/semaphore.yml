@@ -20,11 +20,11 @@ blocks:
             - git submodule update --init
             - sudo apt-get update
             - sudo apt-get install -y ninja-build python3-pip python3-setuptools gcovr gcc-${GCC_VERSION} g++-${GCC_VERSION}
-            - pip3 install meson
+            - pip3 install meson==0.55.0
             - mkdir build
             - CC="gcc-${GCC_VERSION}" CXX="g++-${GCC_VERSION}" ~/.local/bin/meson setup build -Db_coverage=true --optimization $(expr $RANDOM % 3)
-            - ninja -C build -v
-            - './build/test/run-tests --list | grep -oP ''^/([^\/]+)/([^\/]+)'' | sort -u | xargs parallel ./build/test/run-tests --color always {} :::'
+            - ~/.local/bin/meson compile -C build --ninja-args=-v
+            - ~/.local/bin/meson test -C build --print-errorlogs $(~/.local/bin/meson test -C build --list | grep -v emul)
             - ninja -C build coverage-xml
           env_vars:
             - name: CFLAGS
@@ -42,11 +42,11 @@ blocks:
             - git submodule update --init
             - sudo apt-get update
             - sudo apt-get install -y ninja-build python3-pip python3-setuptools gcovr clang-${CLANG_VERSION}
-            - pip3 install meson
+            - pip3 install meson==0.55.0
             - mkdir build
             - CC="clang-${CLANG_VERSION}" CXX="clang++-${CLANG_VERSION}" ~/.local/bin/meson setup build -Db_coverage=true
-            - ninja -C build -v
-            - './build/test/run-tests --list | grep -oP ''^/([^\/]+)/([^\/]+)'' | sort -u | xargs parallel ./build/test/run-tests --color always {} :::'
+            - ~/.local/bin/meson compile -C build --ninja-args=-v
+            - ~/.local/bin/meson test -C build --print-errorlogs $(~/.local/bin/meson test -C build --list | grep -v emul)
             - ninja -C build coverage-xml
           env_vars:
             - name: CFLAGS

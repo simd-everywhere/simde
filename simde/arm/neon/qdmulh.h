@@ -63,7 +63,7 @@ simde_vqdmulh_s16(simde_int16x4_t a, simde_int16x4_t b) {
   #else
     simde_int16x4_private r_;
 
-    #if HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
+    #if HEDLEY_HAS_BUILTIN(__builtin_shufflevector) && !(HEDLEY_GCC_VERSION_CHECK(12,1,0) && defined(SIMDE_ARCH_ZARCH))
       simde_int16x8_private tmp_ =
         simde_int16x8_to_private(
           simde_vreinterpretq_s16_s32(
@@ -97,7 +97,7 @@ simde_vqdmulh_s32(simde_int32x2_t a, simde_int32x2_t b) {
   #else
     simde_int32x2_private r_;
 
-    #if HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
+    #if HEDLEY_HAS_BUILTIN(__builtin_shufflevector) && !(HEDLEY_GCC_VERSION_CHECK(12,1,0) && defined(SIMDE_ARCH_ZARCH))
       simde_int32x4_private tmp_ =
         simde_int32x4_to_private(
           simde_vreinterpretq_s32_s64(

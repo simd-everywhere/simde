@@ -5,6 +5,7 @@ FROM debian:${RELEASE}-slim
 
 ARG DEBIAN_FRONTEND=noninteractive
 ARG QEMU_GIT=n
+ARG ARCHS="arm64 armel armhf i386 mips64el ppc64el s390x"
 
 RUN \
   apt-get update -y && \
@@ -20,49 +21,42 @@ RUN \
     ln -s /usr/local/src/simde/docker/bin/"${script}" /usr/bin/"${script}"; \
   done
 
-# Multiarch
-RUN \
-  apt-get update -y && \
-  apt-get upgrade -y && \
-  for arch in armhf arm64 ppc64el s390x i386; do \
-    dpkg --add-architecture "$arch"; \
-  done; \
-  apt-get update -y
-
 # Common packages
 RUN \
   apt-get update -y && \
   apt-get upgrade -y && \
-  apt-get install -yq \
+  apt-get install -yq --no-install-recommends \
     git build-essential \
-    cmake ninja-build \
+    ccache cmake ninja-build \
     '^clang-[0-9\.]+$' \
+    '^llvm-[0-9\.]+$' \
     '^g(cc|\+\+)-[0-9\.]+$' \
     gdb valgrind \
     binfmt-support qemu-user-static \
     creduce screen htop parallel nano rsync strace \
     npm libsleef-dev \
-    python3-pip
+    pipx wget
 
-# Meson on stable is too old, and we want to make sure we keep 0.54
+# Meson on stable is too old, and we want to make sure we keep 0.55
 # working for a while.
-RUN pip3 install meson==0.55.0
+RUN pipx install meson==0.55.0
 
 # GCC cross-compilers
 RUN \
   apt-get update -y && \
   apt-get upgrade -y && \
   apt-get install -y apt-file && \
-  apt-file update && \
+  apt-file update
+RUN \
   PACKAGES_TO_INSTALL=""; \
-  for ARCH in $(dpkg --print-foreign-architectures); do \
-    PACKAGES_TO_INSTALL="${PACKAGES_TO_INSTALL} libc6:${ARCH} ^libstdc\+\+\-[0-9]+\-dev$:${ARCH}"; \
-    for pkg in $(apt-file search -x "/usr/bin/$(/tmp/simde-bin/arch2gcc.sh ${ARCH})-g(cc|\+\+)-[0-9\.]+" | grep -Po '^([^ ]+)(?<!:)'); do \
-      PACKAGES_TO_INSTALL="${PACKAGES_TO_INSTALL} ${pkg}"; \
-    done; \
+  for ARCH in ${ARCHS}; do \
+    PACKAGES_TO_INSTALL="${PACKAGES_TO_INSTALL} libc6-${ARCH}-cross libstdc++-[0-9]*-dev-${ARCH}-cross"; \
+    PACKAGES_TO_INSTALL="${PACKAGES_TO_INSTALL} $(apt-file search -x "/usr/bin/$(/tmp/simde-bin/arch2gcc.sh ${ARCH})-(ar|g(cc|\+\+)-[0-9\.]+)" | awk -F: '{ print $1}')"; \
   done; \
   echo ${PACKAGES_TO_INSTALL} ; \
   apt-get install -yq ${PACKAGES_TO_INSTALL}
+
+ENV PATH="/usr/lib/ccache:$PATH:/root/.local/bin"
 
 # ICC
 RUN \
@@ -73,7 +67,7 @@ RUN \
    | gpg --dearmor > /usr/share/keyrings/oneapi-archive-keyring.gpg && \
   echo "deb [signed-by=/usr/share/keyrings/oneapi-archive-keyring.gpg] https://apt.repos.intel.com/oneapi all main" > /etc/apt/sources.list.d/oneAPI.list && \
   apt-get update && \
-  apt-get install -yq intel-oneapi-compiler-dpcpp-cpp-and-cpp-classic intel-oneapi-compiler-dpcpp-cpp && \
+  apt-get install -yq --no-install-recommends intel-oneapi-compiler-dpcpp-cpp-and-cpp-classic intel-oneapi-compiler-dpcpp-cpp && \
   for exe in icc icpc icx icpx; do \
     printf '#!/bin/bash\nARGS="$@"\nsource /opt/intel/oneapi/compiler/latest/env/vars.sh >/dev/null\n%s ${ARGS}\n' "${exe}" > /usr/bin/"${exe}" && \
     chmod 0755 /usr/bin/"${exe}" ; \
@@ -101,7 +95,7 @@ RUN \
 # Emscripten
 RUN \
   git clone https://github.com/emscripten-core/emsdk.git /opt/emsdk && \
-  cd /opt/emsdk && ./emsdk update-tags && ./emsdk install tot && ./emsdk activate tot && \
+  cd /opt/emsdk && ./emsdk install tot && ./emsdk activate tot && \
   ln -s /opt/emsdk/upstream/bin/wasm-ld /usr/bin/wasm-ld && \
   npm install jsvu -g && jsvu --os=linux64 --engines=v8 && ln -s "/root/.jsvu/v8" "/usr/bin/v8"
 
@@ -123,3 +117,4 @@ RUN \
 
 RUN mkdir -p /opt/simde
 WORKDIR /opt/simde
+ENV CCACHE_DIR=/opt/simde/.ccache CCACHE_COMPRESS=1

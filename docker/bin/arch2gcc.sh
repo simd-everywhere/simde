@@ -13,6 +13,9 @@ case "${1}" in
   "armhf")
     echo "arm-linux-gnueabihf"
     ;;
+  "armel")
+    echo "arm-linux-gnueabi"
+    ;;
   "hppa")
     echo "hppa-linux-gnu"
     ;;

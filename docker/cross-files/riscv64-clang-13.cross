@@ -1,0 +1,20 @@
+[binaries]
+c = 'clang-13'
+cpp = 'clang++-13'
+ar = 'llvm-ar-13'
+strip = 'llvm-strip-13'
+objcopy = 'llvm-objcopy-13'
+ld = 'llvm-ld-13'
+exe_wrapper = ['qemu-riscv64-static', '-cpu', 'sifive-u54', '-L', '/usr/riscv64-linux-gnu/']
+
+[properties]
+c_args   = ['--target=riscv64-linux-gnu', '-mcpu=sifive-u54', '-isystem=/usr/riscv64-linux-gnu/include', '-Wextra', '-Werror']
+cpp_args = ['--target=riscv64-linux-gnu', '-mcpu=sifive-u54', '-isystem=/usr/riscv64-linux-gnu/include', '-Wextra', '-Werror']
+c_link_args = ['--target=riscv64-linux-gnu']
+cpp_link_args = ['--target=riscv64-linux-gnu']
+
+[host_machine]
+system = 'linux'
+cpu_family = 'riscv64'
+cpu = 'sifive-u54'
+endian = 'little'

@@ -1,11 +1,11 @@
 [binaries]
-c = '/usr/bin/clang-13'
-cpp = '/usr/bin/clang++-13'
-ar = '/usr/bin/llvm-ar-13'
-strip = '/usr/bin/llvm-strip-13'
-objcopy = '/usr/bin/llvm-objcopy-13'
-ld = '/usr/bin/llvm-ld-13'
-exe_wrapper = ['qemu-mips64el-static']
+c = 'clang-13'
+cpp = 'clang++-13'
+ar = 'llvm-ar-13'
+strip = 'llvm-strip-13'
+objcopy = 'llvm-objcopy-13'
+ld = 'llvm-ld-13'
+exe_wrapper = ['qemu-mips64el-static', '-L', '/usr/mips64el-linux-gnuabi64']
 
 [properties]
 c_args = ['--target=mips64el-linux-gnuabi64', '-march=mips64r5', '-mmsa', '-isystem=/usr/mips64el-linux-gnuabi64/include', '-Weverything', '-fno-lax-vector-conversions', '-Werror']

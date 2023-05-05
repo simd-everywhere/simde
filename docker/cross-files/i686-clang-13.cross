@@ -1,14 +1,19 @@
 [binaries]
-c = '/usr/bin/clang-13'
-cpp = '/usr/bin/clang++-13'
-ar = '/usr/bin/llvm-ar-13'
-strip = '/usr/bin/llvm-strip-13'
-objcopy = '/usr/bin/llvm-objcopy-13'
-ld = '/usr/bin/llvm-ld-13'
-exe_wrapper = 'qemu-arm-static'
+c = 'clang-13'
+cpp = 'clang++-13'
+ar = 'llvm-ar-13'
+strip = 'llvm-strip-13'
+objcopy = 'llvm-objcopy-13'
+ld = 'llvm-ld-13'
 
 [properties]
-c_args = ['--target=i686-linux-gnu', '-isystem=/usr/i686-linux-gnu/include', '-Weverything', '-fno-lax-vector-conversions', '-Werror']
-cpp_args = ['--target=i686-linux-gnu', '-isystem=/usr/i686-linux-gnu/include', '-Weverything', '-fno-lax-vector-conversions', '-Werror']
+c_args = ['--target=i686-linux-gnu', '-isystem=/usr/i686-linux-gnu/include', '-march=x86', '-mattr=prescott', '-Weverything', '-fno-lax-vector-conversions', '-Werror']
+cpp_args = ['--target=i686-linux-gnu', '-isystem=/usr/i686-linux-gnu/include', '-march=x86', '-mattr=prescott', '-Weverything', '-fno-lax-vector-conversions', '-Werror']
 c_link_args = ['--target=i686-linux-gnu']
 cpp_link_args = ['--target=i686-linux-gnu']
+
+[host_machine]
+system = 'linux'
+cpu_family = 'x86'
+cpu = 'prescott'
+endian = 'little'

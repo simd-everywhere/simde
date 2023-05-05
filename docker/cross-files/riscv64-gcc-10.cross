@@ -1,0 +1,18 @@
+[binaries]
+c = 'riscv64-linux-gnu-gcc-10'
+cpp = 'riscv64-linux-gnu-g++-10'
+ar = 'riscv64-linux-gnu-ar'
+strip = 'riscv64-linux-gnu-strip'
+objcopy = 'riscv64-linux-gnu-objcopy'
+ld = 'riscv64-linux-gnu-ld'
+exe_wrapper = ['qemu-riscv64-static', '-cpu', 'sifive-u54', '-L', '/usr/riscv64-linux-gnu/']
+
+[properties]
+c_args   = ['-Wextra', '-Werror', '-march=sifive-u54']
+cpp_args = ['-Wextra', '-Werror', '-march=sifive-u54']
+
+[host_machine]
+system = 'linux'
+cpu_family = 'riscv64'
+cpu = 'sifive-u54'
+endian = 'litte'

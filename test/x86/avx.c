@@ -22,8 +22,14 @@
  */
 
 #define SIMDE_TESTS_CURRENT_ISAX avx
+#if !defined(__clang__) && (defined(__linux__) || defined(__linux) || defined(__gnu_linux__)) && !defined(_GNU_SOURCE)
+  #define _GNU_SOURCE 1  // for MAP_ANONYMOUS
+#endif
 #include <simde/x86/avx.h>
 #include <test/x86/test-avx.h>
+#if !defined(HEDLEY_MSVC_VERSION)
+  #include <sys/mman.h>
+#endif
 
 static simde_float32 u32_to_f32(uint32_t u32) {
   simde_float32 f32;
@@ -36,8 +42,6 @@ static simde_float64 u64_to_f64(uint64_t u64) {
   simde_memcpy(&f64, &u64, sizeof(f64));
   return f64;
 }
-
-#define SIMDE_F64_ALL_SET (u64_to_f64(~UINT64_C(0)))
 
 static int
 test_simde_mm256_set_epi8(SIMDE_MUNIT_TEST_ARGS) {
@@ -3015,6 +3019,12 @@ test_simde_mm256_ceil_ps(SIMDE_MUNIT_TEST_ARGS) {
 
   return 0;
 }
+
+#if !defined(SIMDE_FAST_MATH)
+// Could be re-enabled if test cases without NAN arguments or results are added
+// But will need to make sure only those NAN-less tests are run in FAST_MATH mode
+
+#define SIMDE_F64_ALL_SET (u64_to_f64(~UINT64_C(0)))
 
 static int
 test_simde_mm_cmp_pd (SIMDE_MUNIT_TEST_ARGS) {
@@ -6924,6 +6934,8 @@ test_simde_mm256_cmp_ps (SIMDE_MUNIT_TEST_ARGS) {
 #endif
 }
 
+#endif /* if !defined(SIMDE_FAST_MATH) */
+
 static int
 test_simde_mm256_cvtepi32_pd(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
@@ -9779,6 +9791,25 @@ test_simde_mm_maskload_pd (SIMDE_MUNIT_TEST_ARGS) {
   return 0;
 }
 
+#if !defined(HEDLEY_MSVC_VERSION)
+static int
+test_simde_mm_maskload_pd_no_illegal_memory_access (SIMDE_MUNIT_TEST_ARGS) {
+  // ref: https://github.com/simd-everywhere/simde/issues/998
+  // make sure maskload never accesses memory for masked out regions
+  // will segfault in case memory is accessed
+  #if defined(_GNU_SOURCE)
+    simde_float64 *ptr = HEDLEY_STATIC_CAST(simde_float64 *, mmap(NULL, 2 * sizeof(simde_float64), PROT_NONE , MAP_PRIVATE | MAP_ANONYMOUS, -1, 0));
+  #else
+    simde_float64 *ptr = HEDLEY_STATIC_CAST(simde_float64 *, mmap(NULL, 2 * sizeof(simde_float64), PROT_NONE , MAP_PRIVATE, -1, 0));
+  #endif
+  const simde__m128i mask = simde_mm_set_epi64x(INT64_C(0), INT64_C(0));
+  simde__m128d test = simde_mm_maskload_pd(ptr, mask);
+  simde_float64 r[2] = { SIMDE_FLOAT64_C(0.00), SIMDE_FLOAT64_C(0.00) };
+  simde_test_x86_assert_equal_f64x2(test, simde_mm_loadu_pd(r), 1);
+  return 0;
+}
+#endif
+
 static int
 test_simde_mm256_maskload_pd (SIMDE_MUNIT_TEST_ARGS) {
   static const struct {
@@ -9821,6 +9852,25 @@ test_simde_mm256_maskload_pd (SIMDE_MUNIT_TEST_ARGS) {
   return 0;
 }
 
+#if !defined(HEDLEY_MSVC_VERSION)
+static int
+test_simde_mm256_maskload_pd_no_illegal_memory_access (SIMDE_MUNIT_TEST_ARGS) {
+  // ref: https://github.com/simd-everywhere/simde/issues/998
+  // make sure maskload never accesses memory for masked out regions
+  // will segfault in case memory is accessed
+  #if defined(_GNU_SOURCE)
+    simde_float64 *ptr = HEDLEY_STATIC_CAST(simde_float64 *, mmap(NULL, 4 * sizeof(simde_float64), PROT_NONE , MAP_PRIVATE | MAP_ANONYMOUS, -1, 0));
+  #else
+    simde_float64 *ptr = HEDLEY_STATIC_CAST(simde_float64 *, mmap(NULL, 4 * sizeof(simde_float64), PROT_NONE , MAP_PRIVATE, -1, 0));
+  #endif
+  const simde__m256i mask = simde_mm256_set_epi64x(INT64_C(0), INT64_C(0), INT64_C(0), INT64_C(0));
+  simde__m256d test = simde_mm256_maskload_pd(ptr, mask);
+  simde_float64 r[4] = { SIMDE_FLOAT64_C(0.00), SIMDE_FLOAT64_C(0.00), SIMDE_FLOAT64_C(0.00), SIMDE_FLOAT64_C(0.00) };
+  simde_test_x86_assert_equal_f64x4(test, simde_mm256_loadu_pd(r), 1);
+  return 0;
+}
+#endif
+
 static int
 test_simde_mm_maskload_ps (SIMDE_MUNIT_TEST_ARGS) {
   static const struct {
@@ -9862,6 +9912,26 @@ test_simde_mm_maskload_ps (SIMDE_MUNIT_TEST_ARGS) {
 
   return 0;
 }
+
+#if !defined(HEDLEY_MSVC_VERSION)
+static int
+test_simde_mm_maskload_ps_no_illegal_memory_access (SIMDE_MUNIT_TEST_ARGS) {
+  // ref: https://github.com/simd-everywhere/simde/issues/998
+  // make sure maskload never accesses memory for masked out regions
+  // will segfault in case memory is accessed
+  #if defined(_GNU_SOURCE)
+    simde_float32 *ptr = HEDLEY_STATIC_CAST(simde_float32 *, mmap(NULL, 4 * sizeof(simde_float32), PROT_NONE , MAP_PRIVATE | MAP_ANONYMOUS, -1, 0));
+  #else
+    simde_float32 *ptr = HEDLEY_STATIC_CAST(simde_float32 *, mmap(NULL, 4 * sizeof(simde_float32), PROT_NONE , MAP_PRIVATE, -1, 0));
+  #endif
+  const simde__m128i mask = simde_mm_set_epi32(0, 0, 0, 0);
+  simde__m128 test = simde_mm_maskload_ps(ptr, mask);
+  simde_float32 r[4] = { SIMDE_FLOAT32_C(0.00), SIMDE_FLOAT32_C(0.00), SIMDE_FLOAT32_C(0.00), SIMDE_FLOAT32_C(0.00) };
+  simde_test_x86_assert_equal_f32x4(test, simde_mm_loadu_ps(r), 1);
+  return 0;
+}
+#endif
+
 
 static int
 test_simde_mm256_maskload_ps (SIMDE_MUNIT_TEST_ARGS) {
@@ -9920,6 +9990,26 @@ test_simde_mm256_maskload_ps (SIMDE_MUNIT_TEST_ARGS) {
 
   return 0;
 }
+
+#if !defined(HEDLEY_MSVC_VERSION)
+static int
+test_simde_mm256_maskload_ps_no_illegal_memory_access (SIMDE_MUNIT_TEST_ARGS) {
+  // ref: https://github.com/simd-everywhere/simde/issues/998
+  // make sure maskload never accesses memory for masked out regions
+  // will segfault in case memory is accessed
+  #if defined(_GNU_SOURCE)
+    simde_float32 *ptr = HEDLEY_STATIC_CAST(simde_float32 *, mmap(NULL, 8 * sizeof(simde_float32), PROT_NONE , MAP_PRIVATE | MAP_ANONYMOUS, -1, 0));
+  #else
+    simde_float32 *ptr = HEDLEY_STATIC_CAST(simde_float32 *, mmap(NULL, 8 * sizeof(simde_float32), PROT_NONE , MAP_PRIVATE, -1, 0));
+  #endif
+  const simde__m256i mask = simde_mm256_set_epi32(0, 0, 0, 0, 0, 0, 0, 0);
+  simde__m256 test = simde_mm256_maskload_ps(ptr, mask);
+  simde_float32 r[8] = { SIMDE_FLOAT32_C(0.00), SIMDE_FLOAT32_C(0.00), SIMDE_FLOAT32_C(0.00), SIMDE_FLOAT32_C(0.00),
+                         SIMDE_FLOAT32_C(0.00), SIMDE_FLOAT32_C(0.00), SIMDE_FLOAT32_C(0.00), SIMDE_FLOAT32_C(0.00) };
+  simde_test_x86_assert_equal_f32x8(test, simde_mm256_loadu_ps(r), 1);
+  return 0;
+}
+#endif
 
 static int
 test_simde_mm_maskstore_pd(SIMDE_MUNIT_TEST_ARGS) {
@@ -11936,6 +12026,110 @@ test_simde_mm256_permutevar_pd(SIMDE_MUNIT_TEST_ARGS) {
 }
 
 static int
+test_simde_mm256_permute2f128_pd(SIMDE_MUNIT_TEST_ARGS) {
+#if 1
+  const struct {
+    const simde_float64 a[4];
+    const simde_float64 b[4];
+    const int imm8;
+    const simde_float64 r[4];
+  } test_vec[] = {
+    { { SIMDE_FLOAT64_C(    15.55), SIMDE_FLOAT64_C(  -461.51), SIMDE_FLOAT64_C(   514.66), SIMDE_FLOAT64_C(  -513.58) },
+      { SIMDE_FLOAT64_C(    95.37), SIMDE_FLOAT64_C(  -239.15), SIMDE_FLOAT64_C(  -315.05), SIMDE_FLOAT64_C(   844.04) },
+       INT32_C(         108),
+      { SIMDE_FLOAT64_C(     0.00), SIMDE_FLOAT64_C(     0.00), SIMDE_FLOAT64_C(    95.37), SIMDE_FLOAT64_C(  -239.15) } },
+    { { SIMDE_FLOAT64_C(   410.02), SIMDE_FLOAT64_C(  -232.21), SIMDE_FLOAT64_C(   585.19), SIMDE_FLOAT64_C(   989.33) },
+      { SIMDE_FLOAT64_C(   192.64), SIMDE_FLOAT64_C(  -316.14), SIMDE_FLOAT64_C(  -537.95), SIMDE_FLOAT64_C(  -941.52) },
+       INT32_C(          27),
+      { SIMDE_FLOAT64_C(     0.00), SIMDE_FLOAT64_C(     0.00), SIMDE_FLOAT64_C(   585.19), SIMDE_FLOAT64_C(   989.33) } },
+    { { SIMDE_FLOAT64_C(   573.89), SIMDE_FLOAT64_C(    20.06), SIMDE_FLOAT64_C(   715.65), SIMDE_FLOAT64_C(   911.84) },
+      { SIMDE_FLOAT64_C(  -412.11), SIMDE_FLOAT64_C(   406.05), SIMDE_FLOAT64_C(   758.60), SIMDE_FLOAT64_C(   603.44) },
+       INT32_C(          70),
+      { SIMDE_FLOAT64_C(  -412.11), SIMDE_FLOAT64_C(   406.05), SIMDE_FLOAT64_C(   573.89), SIMDE_FLOAT64_C(    20.06) } },
+    { { SIMDE_FLOAT64_C(  -965.88), SIMDE_FLOAT64_C(  -225.19), SIMDE_FLOAT64_C(  -116.04), SIMDE_FLOAT64_C(  -623.14) },
+      { SIMDE_FLOAT64_C(  -940.20), SIMDE_FLOAT64_C(  -698.12), SIMDE_FLOAT64_C(  -941.06), SIMDE_FLOAT64_C(   469.82) },
+       INT32_C(         185),
+      { SIMDE_FLOAT64_C(     0.00), SIMDE_FLOAT64_C(     0.00), SIMDE_FLOAT64_C(     0.00), SIMDE_FLOAT64_C(     0.00) } },
+    { { SIMDE_FLOAT64_C(  -672.02), SIMDE_FLOAT64_C(   921.19), SIMDE_FLOAT64_C(  -679.20), SIMDE_FLOAT64_C(   392.39) },
+      { SIMDE_FLOAT64_C(  -774.03), SIMDE_FLOAT64_C(  -268.72), SIMDE_FLOAT64_C(   639.82), SIMDE_FLOAT64_C(   799.86) },
+       INT32_C(          61),
+      { SIMDE_FLOAT64_C(     0.00), SIMDE_FLOAT64_C(     0.00), SIMDE_FLOAT64_C(   639.82), SIMDE_FLOAT64_C(   799.86) } },
+    { { SIMDE_FLOAT64_C(  -238.48), SIMDE_FLOAT64_C(   470.30), SIMDE_FLOAT64_C(   942.67), SIMDE_FLOAT64_C(  -293.93) },
+      { SIMDE_FLOAT64_C(  -256.44), SIMDE_FLOAT64_C(  -967.47), SIMDE_FLOAT64_C(   745.99), SIMDE_FLOAT64_C(  -222.32) },
+       INT32_C(         123),
+      { SIMDE_FLOAT64_C(     0.00), SIMDE_FLOAT64_C(     0.00), SIMDE_FLOAT64_C(   745.99), SIMDE_FLOAT64_C(  -222.32) } },
+    { { SIMDE_FLOAT64_C(   -68.16), SIMDE_FLOAT64_C(   213.48), SIMDE_FLOAT64_C(  -663.05), SIMDE_FLOAT64_C(  -998.49) },
+      { SIMDE_FLOAT64_C(  -142.40), SIMDE_FLOAT64_C(   796.10), SIMDE_FLOAT64_C(  -736.18), SIMDE_FLOAT64_C(   185.58) },
+       INT32_C(         170),
+      { SIMDE_FLOAT64_C(     0.00), SIMDE_FLOAT64_C(     0.00), SIMDE_FLOAT64_C(     0.00), SIMDE_FLOAT64_C(     0.00) } },
+    { { SIMDE_FLOAT64_C(   315.90), SIMDE_FLOAT64_C(  -782.21), SIMDE_FLOAT64_C(   743.12), SIMDE_FLOAT64_C(    67.24) },
+      { SIMDE_FLOAT64_C(   573.26), SIMDE_FLOAT64_C(   454.82), SIMDE_FLOAT64_C(   406.47), SIMDE_FLOAT64_C(  -665.22) },
+       INT32_C(         241),
+      { SIMDE_FLOAT64_C(   743.12), SIMDE_FLOAT64_C(    67.24), SIMDE_FLOAT64_C(     0.00), SIMDE_FLOAT64_C(     0.00) } },
+  };
+
+  simde__m256d a, b, r;
+
+  a = simde_mm256_loadu_pd(test_vec[0].a);
+  b = simde_mm256_loadu_pd(test_vec[0].b);
+  r = simde_mm256_permute2f128_pd(a, b, 108);
+  simde_test_x86_assert_equal_f64x4(r, simde_mm256_loadu_pd(test_vec[0].r), 1);
+
+  a = simde_mm256_loadu_pd(test_vec[1].a);
+  b = simde_mm256_loadu_pd(test_vec[1].b);
+  r = simde_mm256_permute2f128_pd(a, b, 27);
+  simde_test_x86_assert_equal_f64x4(r, simde_mm256_loadu_pd(test_vec[1].r), 1);
+
+  a = simde_mm256_loadu_pd(test_vec[2].a);
+  b = simde_mm256_loadu_pd(test_vec[2].b);
+  r = simde_mm256_permute2f128_pd(a, b, 70);
+  simde_test_x86_assert_equal_f64x4(r, simde_mm256_loadu_pd(test_vec[2].r), 1);
+
+  a = simde_mm256_loadu_pd(test_vec[3].a);
+  b = simde_mm256_loadu_pd(test_vec[3].b);
+  r = simde_mm256_permute2f128_pd(a, b, 185);
+  simde_test_x86_assert_equal_f64x4(r, simde_mm256_loadu_pd(test_vec[3].r), 1);
+
+  a = simde_mm256_loadu_pd(test_vec[4].a);
+  b = simde_mm256_loadu_pd(test_vec[4].b);
+  r = simde_mm256_permute2f128_pd(a, b, 61);
+  simde_test_x86_assert_equal_f64x4(r, simde_mm256_loadu_pd(test_vec[4].r), 1);
+
+  a = simde_mm256_loadu_pd(test_vec[5].a);
+  b = simde_mm256_loadu_pd(test_vec[5].b);
+  r = simde_mm256_permute2f128_pd(a, b, 123);
+  simde_test_x86_assert_equal_f64x4(r, simde_mm256_loadu_pd(test_vec[5].r), 1);
+
+  a = simde_mm256_loadu_pd(test_vec[6].a);
+  b = simde_mm256_loadu_pd(test_vec[6].b);
+  r = simde_mm256_permute2f128_pd(a, b, 170);
+  simde_test_x86_assert_equal_f64x4(r, simde_mm256_loadu_pd(test_vec[6].r), 1);
+
+  a = simde_mm256_loadu_pd(test_vec[7].a);
+  b = simde_mm256_loadu_pd(test_vec[7].b);
+  r = simde_mm256_permute2f128_pd(a, b, 241);
+  simde_test_x86_assert_equal_f64x4(r, simde_mm256_loadu_pd(test_vec[7].r), 1);
+
+  return 0;
+#else
+  fputc('\n', stdout);
+  for (int i = 0 ; i < 8 ; i++) {
+    simde__m256d a = simde_test_x86_random_f64x4(SIMDE_FLOAT64_C(-1000.0), SIMDE_FLOAT64_C(1000.0));
+    simde__m256d b = simde_test_x86_random_f64x4(SIMDE_FLOAT64_C(-1000.0), SIMDE_FLOAT64_C(1000.0));
+    int imm8 = simde_test_codegen_random_i32() & 255;
+    simde__m256d r;
+    SIMDE_CONSTIFY_256_(simde_mm256_permute2f128_pd, r, (HEDLEY_UNREACHABLE(), simde_mm256_setzero_pd()), imm8, a, b);
+
+    simde_test_x86_write_f64x4(2, a, SIMDE_TEST_VEC_POS_FIRST);
+    simde_test_x86_write_f64x4(2, b, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_codegen_write_i32(2, imm8, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_x86_write_f64x4(2, r, SIMDE_TEST_VEC_POS_LAST);
+  }
+  return 1;
+#endif
+}
+
+static int
 test_simde_mm256_permute2f128_ps(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256 a;
@@ -12187,6 +12381,100 @@ test_simde_mm256_permute2f128_ps(SIMDE_MUNIT_TEST_ARGS) {
   simde_assert_m256_close(r, test_vec[0xf].r, 1);
 
   return 0;
+}
+
+static int
+test_simde_mm256_permute2f128_si256(SIMDE_MUNIT_TEST_ARGS) {
+#if 1
+  const struct {
+    const int16_t a[16];
+    const int16_t b[16];
+    const int imm8;
+    const int16_t r[16];
+  } test_vec[] = {
+    { {  INT16_C(  8272), -INT16_C( 27274),  INT16_C( 13557), -INT16_C( 17507), -INT16_C( 29588), -INT16_C( 29778),  INT16_C(  1080),  INT16_C( 31493),
+         INT16_C( 20143), -INT16_C( 24612), -INT16_C( 24508), -INT16_C( 26033), -INT16_C( 18817),  INT16_C( 13712), -INT16_C( 15934),  INT16_C(  4959) },
+      { -INT16_C( 10526), -INT16_C( 10328),  INT16_C( 17674),  INT16_C( 30354),  INT16_C( 16594),  INT16_C(  2562),  INT16_C(  1860), -INT16_C(  2939),
+         INT16_C( 24918), -INT16_C( 25965), -INT16_C(  7679), -INT16_C( 32716), -INT16_C( 15207),  INT16_C( 23477),  INT16_C(  5510),  INT16_C( 26734) },
+       INT32_C(         235),
+      {  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),
+         INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0) } },
+    { { -INT16_C( 11684),  INT16_C( 11884),  INT16_C( 28178),  INT16_C( 22328), -INT16_C( 16779), -INT16_C( 13493), -INT16_C(  8673),  INT16_C(  8549),
+        -INT16_C( 26176),  INT16_C( 22945),  INT16_C( 22366), -INT16_C(  6987),  INT16_C(  9068),  INT16_C( 22348), -INT16_C( 29894), -INT16_C( 27060) },
+      { -INT16_C( 18339),  INT16_C( 28868), -INT16_C(   986), -INT16_C( 25401),  INT16_C(  4794), -INT16_C(  9625), -INT16_C( 12816), -INT16_C( 20229),
+        -INT16_C( 25498), -INT16_C( 15350), -INT16_C( 16397),  INT16_C( 24488), -INT16_C(  2846),  INT16_C(  7350),  INT16_C(   896), -INT16_C(  8782) },
+       INT32_C(         187),
+      {  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),
+         INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0) } },
+    { {  INT16_C(  5235),  INT16_C( 11646), -INT16_C(  6874),  INT16_C(  5639),  INT16_C(   690),  INT16_C(  6599), -INT16_C( 11873), -INT16_C( 27939),
+        -INT16_C( 31088),  INT16_C( 29426), -INT16_C( 22406), -INT16_C(  1393),  INT16_C( 16811),  INT16_C( 26584),  INT16_C(  9656),  INT16_C( 11081) },
+      { -INT16_C( 14534),  INT16_C( 24664),  INT16_C( 24748),  INT16_C( 24439),  INT16_C( 15970),  INT16_C(   376),  INT16_C( 21775), -INT16_C( 24684),
+        -INT16_C( 31013),  INT16_C( 22033), -INT16_C( 24530), -INT16_C(  9648),  INT16_C( 10466), -INT16_C( 26047), -INT16_C( 30130), -INT16_C( 30523) },
+       INT32_C(          81),
+      { -INT16_C( 31088),  INT16_C( 29426), -INT16_C( 22406), -INT16_C(  1393),  INT16_C( 16811),  INT16_C( 26584),  INT16_C(  9656),  INT16_C( 11081),
+        -INT16_C( 31088),  INT16_C( 29426), -INT16_C( 22406), -INT16_C(  1393),  INT16_C( 16811),  INT16_C( 26584),  INT16_C(  9656),  INT16_C( 11081) } },
+    { {  INT16_C( 24445), -INT16_C(  8100), -INT16_C( 11107), -INT16_C( 21279),  INT16_C( 29994),  INT16_C(  1355),  INT16_C( 24059),  INT16_C( 10843),
+        -INT16_C( 21251), -INT16_C(  8444),  INT16_C( 17876),  INT16_C(  8825),  INT16_C( 16079),  INT16_C(  8362), -INT16_C( 27812), -INT16_C(  9955) },
+      {  INT16_C( 31474), -INT16_C( 28487), -INT16_C( 25778),  INT16_C( 30780), -INT16_C( 30704),  INT16_C(  3198), -INT16_C(  9755), -INT16_C(  7626),
+         INT16_C( 14981),  INT16_C( 23234),  INT16_C( 15231),  INT16_C( 20092),  INT16_C( 10106), -INT16_C( 10642), -INT16_C( 29766), -INT16_C( 21329) },
+       INT32_C(           5),
+      { -INT16_C( 21251), -INT16_C(  8444),  INT16_C( 17876),  INT16_C(  8825),  INT16_C( 16079),  INT16_C(  8362), -INT16_C( 27812), -INT16_C(  9955),
+         INT16_C( 24445), -INT16_C(  8100), -INT16_C( 11107), -INT16_C( 21279),  INT16_C( 29994),  INT16_C(  1355),  INT16_C( 24059),  INT16_C( 10843) } },
+    { {  INT16_C( 30980),  INT16_C(  5324),  INT16_C( 18945), -INT16_C(  6624),  INT16_C( 22052), -INT16_C( 22072), -INT16_C( 30064),  INT16_C(  3843),
+        -INT16_C( 32570),  INT16_C( 16477), -INT16_C( 13401),  INT16_C( 24854), -INT16_C( 15017),  INT16_C( 23565),  INT16_C( 18990),  INT16_C( 12976) },
+      {  INT16_C( 32195), -INT16_C( 15289),  INT16_C( 26567), -INT16_C(  5206),  INT16_C( 29374),  INT16_C( 20117), -INT16_C( 26371), -INT16_C( 15522),
+        -INT16_C( 17640), -INT16_C( 16637),  INT16_C(  6535), -INT16_C(  8672),  INT16_C( 11998),  INT16_C(  3386), -INT16_C(  5256),  INT16_C( 15167) },
+       INT32_C(         104),
+      {  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),
+         INT16_C( 32195), -INT16_C( 15289),  INT16_C( 26567), -INT16_C(  5206),  INT16_C( 29374),  INT16_C( 20117), -INT16_C( 26371), -INT16_C( 15522) } },
+    { { -INT16_C( 22034), -INT16_C( 21477), -INT16_C( 20453),  INT16_C(  6394),  INT16_C( 22600),  INT16_C( 25051), -INT16_C(  8684), -INT16_C( 25824),
+         INT16_C( 16887), -INT16_C( 10631), -INT16_C( 19601), -INT16_C(  6173),  INT16_C(  8862),  INT16_C(  1570),  INT16_C(  8617), -INT16_C( 26826) },
+      {  INT16_C( 20938), -INT16_C(  6845),  INT16_C( 15617),  INT16_C( 18942), -INT16_C(  9834), -INT16_C( 21846), -INT16_C( 13384), -INT16_C( 20667),
+        -INT16_C( 16884),  INT16_C( 31621),  INT16_C( 26737),  INT16_C(  4194), -INT16_C( 31605),  INT16_C( 13334),  INT16_C( 19621),  INT16_C( 28619) },
+       INT32_C(         157),
+      {  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),
+         INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0) } },
+    { {  INT16_C( 21067), -INT16_C(  7704), -INT16_C( 28116), -INT16_C(  7029), -INT16_C( 12195),  INT16_C( 27027),  INT16_C(  6542),  INT16_C(   228),
+         INT16_C( 18049),  INT16_C(  3088),  INT16_C(  9930),  INT16_C( 28480),  INT16_C(  2931),  INT16_C(  4318),  INT16_C( 13081),  INT16_C( 26031) },
+      { -INT16_C( 26747), -INT16_C( 20154), -INT16_C( 11735), -INT16_C( 30827),  INT16_C( 10658),  INT16_C( 12784), -INT16_C( 10942), -INT16_C( 15567),
+         INT16_C( 16667), -INT16_C(  6448),  INT16_C(  4199), -INT16_C(  9643),  INT16_C( 13340),  INT16_C( 13803), -INT16_C( 26009), -INT16_C(  4966) },
+       INT32_C(          49),
+      {  INT16_C( 18049),  INT16_C(  3088),  INT16_C(  9930),  INT16_C( 28480),  INT16_C(  2931),  INT16_C(  4318),  INT16_C( 13081),  INT16_C( 26031),
+         INT16_C( 16667), -INT16_C(  6448),  INT16_C(  4199), -INT16_C(  9643),  INT16_C( 13340),  INT16_C( 13803), -INT16_C( 26009), -INT16_C(  4966) } },
+    { {  INT16_C( 13235),  INT16_C( 21985), -INT16_C( 11684), -INT16_C( 24954), -INT16_C( 18521), -INT16_C( 15774),  INT16_C( 13048),  INT16_C( 24744),
+        -INT16_C(   446),  INT16_C( 24122),  INT16_C(  9522), -INT16_C( 26220),  INT16_C( 11967), -INT16_C(  3963),  INT16_C(  8975), -INT16_C( 15797) },
+      {  INT16_C( 11351), -INT16_C( 19688), -INT16_C( 24834), -INT16_C( 23214), -INT16_C( 19370),  INT16_C( 20072),  INT16_C(  4326),  INT16_C( 10414),
+        -INT16_C(  5874),  INT16_C( 16519),  INT16_C(  6926), -INT16_C( 12583),  INT16_C( 24393),  INT16_C( 22974),  INT16_C(  2434), -INT16_C(  9957) },
+       INT32_C(          54),
+      {  INT16_C( 11351), -INT16_C( 19688), -INT16_C( 24834), -INT16_C( 23214), -INT16_C( 19370),  INT16_C( 20072),  INT16_C(  4326),  INT16_C( 10414),
+        -INT16_C(  5874),  INT16_C( 16519),  INT16_C(  6926), -INT16_C( 12583),  INT16_C( 24393),  INT16_C( 22974),  INT16_C(  2434), -INT16_C(  9957) } },
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    simde__m256i a = simde_mm256_loadu_epi16(test_vec[i].a);
+    simde__m256i b = simde_mm256_loadu_epi16(test_vec[i].b);
+    simde__m256i r;
+    SIMDE_CONSTIFY_256_(simde_mm256_permute2f128_si256, r, (HEDLEY_UNREACHABLE(), simde_mm256_setzero_si256()), test_vec[i].imm8, a, b);
+    simde_test_x86_assert_equal_i16x16(r, simde_mm256_loadu_epi16(test_vec[i].r));
+  }
+
+  return 0;
+#else
+  fputc('\n', stdout);
+  for (int i = 0 ; i < 8 ; i++) {
+    simde__m256i a = simde_test_x86_random_i16x16();
+    simde__m256i b = simde_test_x86_random_i16x16();
+    int imm8 = simde_test_codegen_random_i32() & 255;
+    simde__m256i r;
+    SIMDE_CONSTIFY_256_(simde_mm256_permute2f128_si256, r, (HEDLEY_UNREACHABLE(), simde_mm256_setzero_si256()), imm8, a, b);
+
+    simde_test_x86_write_i16x16(2, a, SIMDE_TEST_VEC_POS_FIRST);
+    simde_test_x86_write_i16x16(2, b, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_codegen_write_i32(2, imm8, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_x86_write_i16x16(2, r, SIMDE_TEST_VEC_POS_LAST);
+  }
+  return 1;
+#endif
 }
 
 static int
@@ -16212,12 +16500,14 @@ SIMDE_TEST_FUNC_LIST_BEGIN
   SIMDE_TEST_FUNC_LIST_ENTRY(mm256_ceil_ps)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm256_ceil_pd)
 
-  SIMDE_TEST_FUNC_LIST_ENTRY(mm_cmp_sd)
-  SIMDE_TEST_FUNC_LIST_ENTRY(mm_cmp_ss)
-  SIMDE_TEST_FUNC_LIST_ENTRY(mm_cmp_pd)
-  SIMDE_TEST_FUNC_LIST_ENTRY(mm_cmp_ps)
-  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_cmp_pd)
-  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_cmp_ps)
+  #if !defined(SIMDE_FAST_MATH)
+    SIMDE_TEST_FUNC_LIST_ENTRY(mm_cmp_sd)
+    SIMDE_TEST_FUNC_LIST_ENTRY(mm_cmp_ss)
+    SIMDE_TEST_FUNC_LIST_ENTRY(mm_cmp_pd)
+    SIMDE_TEST_FUNC_LIST_ENTRY(mm_cmp_ps)
+    SIMDE_TEST_FUNC_LIST_ENTRY(mm256_cmp_pd)
+    SIMDE_TEST_FUNC_LIST_ENTRY(mm256_cmp_ps)
+  #endif
 
   SIMDE_TEST_FUNC_LIST_ENTRY(mm256_cvtepi32_pd)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm256_cvtepi32_ps)
@@ -16273,6 +16563,13 @@ SIMDE_TEST_FUNC_LIST_BEGIN
   SIMDE_TEST_FUNC_LIST_ENTRY(mm_maskload_ps)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm256_maskload_ps)
 
+  #if !defined(HEDLEY_MSVC_VERSION)
+    SIMDE_TEST_FUNC_LIST_ENTRY(mm_maskload_pd_no_illegal_memory_access)
+    SIMDE_TEST_FUNC_LIST_ENTRY(mm256_maskload_pd_no_illegal_memory_access)
+    SIMDE_TEST_FUNC_LIST_ENTRY(mm_maskload_ps_no_illegal_memory_access)
+    SIMDE_TEST_FUNC_LIST_ENTRY(mm256_maskload_ps_no_illegal_memory_access)
+  #endif
+
   SIMDE_TEST_FUNC_LIST_ENTRY(mm_maskstore_pd)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm256_maskstore_pd)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm_maskstore_ps)
@@ -16306,7 +16603,9 @@ SIMDE_TEST_FUNC_LIST_BEGIN
   SIMDE_TEST_FUNC_LIST_ENTRY(mm256_permutevar_ps)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm256_permutevar_pd)
 
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_permute2f128_pd)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm256_permute2f128_ps)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_permute2f128_si256)
 
   SIMDE_TEST_FUNC_LIST_ENTRY(mm256_rcp_ps)
 

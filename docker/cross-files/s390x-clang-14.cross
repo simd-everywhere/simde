@@ -1,15 +1,15 @@
 [binaries]
-c = '/usr/bin/clang-14'
-cpp = '/usr/bin/clang++-14'
-ar = '/usr/bin/llvm-ar-14'
-strip = '/usr/bin/llvm-strip-14'
-objcopy = '/usr/bin/llvm-objcopy-14'
-ld = '/usr/bin/llvm-ld-14'
-exe_wrapper = ['qemu-s390x-static', '-cpu', 'z14.2-base']
+c = 'clang-14'
+cpp = 'clang++-14'
+ar = 'llvm-ar-14'
+strip = 'llvm-strip-14'
+objcopy = 'llvm-objcopy-14'
+ld = 'llvm-ld-14'
+exe_wrapper = ['qemu-s390x-static', '-cpu', 'z14.2-base', '-L', '/usr/s390x-linux-gnu/']
 
 [properties]
-c_args        = ['--target=s390x-ibm-linux', '-march=z13', '-mzvector', '-isystem=/usr/s390x-ibm-linux/include', '-Weverything', '-fno-lax-vector-conversions', '-Werror']
-cpp_args      = ['--target=s390x-ibm-linux', '-march=z13', '-mzvector', '-isystem=/usr/s390x-ibm-linux/include', '-Weverything', '-fno-lax-vector-conversions', '-Werror']
+c_args        = ['--target=s390x-ibm-linux', '-march=z13', '-mzvector', '-isystem=/usr/s390x-linux-gnu/include', '-Weverything', '-fno-lax-vector-conversions', '-Werror']
+cpp_args      = ['--target=s390x-ibm-linux', '-march=z13', '-mzvector', '-isystem=/usr/s390x-linux-gnu/include', '-Weverything', '-fno-lax-vector-conversions', '-Werror']
 c_link_args   = ['--target=s390x-ibm-linux']
 cpp_link_args = ['--target=s390x-ibm-linux']
 

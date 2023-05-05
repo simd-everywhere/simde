@@ -1,15 +1,15 @@
 [binaries]
-c = '/usr/bin/icx'
-cpp = '/usr/bin/icpx'
-ar = '/usr/bin/ar'
-strip = '/usr/bin/strip'
-objcopy = '/usr/bin/objcopy'
-ld = '/usr/bin/ld'
-exe_wrapper = ['sde64', '-future', '--']
+c = 'icx'
+cpp = 'icpx'
+ar = 'ar'
+strip = 'strip'
+objcopy = 'objcopy'
+ld = 'ld'
+exe_wrapper = ['sde64', '-tgl', '--']
 
 [properties]
-c_args = ['-march=tigerlake', '-Wextra', 'Werror']
-cpp_args = ['-march=tigerlake', '-Wextra', '-Werror']
+c_args = ['-march=tigerlake', '-Wextra', '-Werror', '-Wno-tautological-constant-compare']
+cpp_args = ['-march=tigerlake', '-Wextra', '-Werror', '-Wno-tautological-constant-compare']
 
 [host_machine]
 system = 'linux'

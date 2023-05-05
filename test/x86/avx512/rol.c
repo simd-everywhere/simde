@@ -43,6 +43,7 @@ test_simde_mm_rol_epi32 (SIMDE_MUNIT_TEST_ARGS) {
   r = simde_mm_rol_epi32(a, INT32_C(           7));
   simde_test_x86_assert_equal_i32x4(r, simde_x_mm_loadu_epi32(test_vec[0].r));
 
+  #if !(defined(HEDLEY_MSVC_VERSION) && defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE))
   a = simde_x_mm_loadu_epi32(test_vec[1].a);
   r = simde_mm_rol_epi32(a, INT32_C(          90));
   simde_test_x86_assert_equal_i32x4(r, simde_x_mm_loadu_epi32(test_vec[1].r));
@@ -54,11 +55,13 @@ test_simde_mm_rol_epi32 (SIMDE_MUNIT_TEST_ARGS) {
   a = simde_x_mm_loadu_epi32(test_vec[3].a);
   r = simde_mm_rol_epi32(a, INT32_C(         217));
   simde_test_x86_assert_equal_i32x4(r, simde_x_mm_loadu_epi32(test_vec[3].r));
+  #endif
 
   a = simde_x_mm_loadu_epi32(test_vec[4].a);
   r = simde_mm_rol_epi32(a, INT32_C(          18));
   simde_test_x86_assert_equal_i32x4(r, simde_x_mm_loadu_epi32(test_vec[4].r));
 
+  #if !(defined(HEDLEY_MSVC_VERSION) && defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE))
   a = simde_x_mm_loadu_epi32(test_vec[5].a);
   r = simde_mm_rol_epi32(a, INT32_C(         232));
   simde_test_x86_assert_equal_i32x4(r, simde_x_mm_loadu_epi32(test_vec[5].r));
@@ -70,6 +73,7 @@ test_simde_mm_rol_epi32 (SIMDE_MUNIT_TEST_ARGS) {
   a = simde_x_mm_loadu_epi32(test_vec[7].a);
   r = simde_mm_rol_epi32(a, INT32_C(         142));
   simde_test_x86_assert_equal_i32x4(r, simde_x_mm_loadu_epi32(test_vec[7].r));
+  #endif
 
   return 0;
 #else
@@ -138,10 +142,46 @@ test_simde_mm_mask_rol_epi32 (SIMDE_MUNIT_TEST_ARGS) {
       { -INT32_C(   714946685),  INT32_C(  1324231532), -INT32_C(   451690715), -INT32_C(  1935981930) },
        INT32_C(          17),
       {  INT32_C(  1540355766),  INT32_C(  1457036764),  INT32_C(  2118896167), -INT32_C(  2060641994) } },
+   { { -INT32_C(  1440149080), -INT32_C(  1834033526),  INT32_C(  2034518563), -INT32_C(   499314856) },
+      UINT8_C( 37),
+      { -INT32_C(   444251277), -INT32_C(   343596048), -INT32_C(  1962280208),  INT32_C(   791930398) },
+       INT32_C(          15),
+      { -INT32_C(  1581649214), -INT32_C(  1834033526), -INT32_C(    42449532), -INT32_C(   499314856) } },
+    { { -INT32_C(   720286837), -INT32_C(  1641117041),  INT32_C(  1002705095),  INT32_C(  1142966611) },
+      UINT8_C(109),
+      { -INT32_C(  1604505690),  INT32_C(   532605241), -INT32_C(    97587684), -INT32_C(   209380441) },
+       INT32_C(          12),
+      { -INT32_C(   755340795), -INT32_C(  1641117041), -INT32_C(   287191134),  INT32_C(  1371176760) } },
+    { { -INT32_C(  1719787127),  INT32_C(   787266021), -INT32_C(  2137313062), -INT32_C(  1725892256) },
+      UINT8_C(226),
+      { -INT32_C(   855721762),  INT32_C(    24443110), -INT32_C(   651270274),  INT32_C(   174253545) },
+       INT32_C(           3),
+      { -INT32_C(  1719787127),  INT32_C(   195544880), -INT32_C(  2137313062), -INT32_C(  1725892256) } },
+    { {  INT32_C(   418848487), -INT32_C(  1300727879),  INT32_C(  1972638103), -INT32_C(  1354591287) },
+      UINT8_C(139),
+      {  INT32_C(   487174326), -INT32_C(  1022958882),  INT32_C(  1059524932),  INT32_C(   505889792) },
+       INT32_C(          27),
+      { -INT32_C(  1326953083), -INT32_C(   166185194),  INT32_C(  1972638103),  INT32_C(    15809056) } },
+    { { -INT32_C(   934704457), -INT32_C(  1299071457), -INT32_C(  1237499904), -INT32_C(   808237072) },
+      UINT8_C( 41),
+      { -INT32_C(   345074982), -INT32_C(    34886215),  INT32_C(   322439892),  INT32_C(  1825237730) },
+       INT32_C(          19),
+      { -INT32_C(  1764271244), -INT32_C(  1299071457), -INT32_C(  1237499904),  INT32_C(  1460889175) } },
+    { {  INT32_C(  1676819747), -INT32_C(  1034638981),  INT32_C(  1458250620),  INT32_C(  1866553781) },
+      UINT8_C(  7),
+      {  INT32_C(   937126957), -INT32_C(  1894125659),  INT32_C(  1287882169),  INT32_C(  1315943697) },
+       INT32_C(           7),
+      { -INT32_C(   306833765), -INT32_C(  1929915705),  INT32_C(  1640160422),  INT32_C(  1866553781) } },
+    { {  INT32_C(  1254984487), -INT32_C(   788585609), -INT32_C(  1831375259), -INT32_C(  2134264869) },
+      UINT8_C(162),
+      {  INT32_C(  1734021090), -INT32_C(  2022135854), -INT32_C(   365967593),  INT32_C(   470908816) },
+       INT32_C(          12),
+      {  INT32_C(  1254984487), -INT32_C(  1971509129), -INT32_C(  1831375259), -INT32_C(  2134264869) } },
   };
 
   simde__m128i src, a, r;
 
+  #if !(defined(HEDLEY_MSVC_VERSION) && defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE))
   src = simde_x_mm_loadu_epi32(test_vec[0].src);
   a = simde_x_mm_loadu_epi32(test_vec[0].a);
   r = simde_mm_mask_rol_epi32(src, test_vec[0].k, a, INT32_C(         214));
@@ -176,11 +216,47 @@ test_simde_mm_mask_rol_epi32 (SIMDE_MUNIT_TEST_ARGS) {
   a = simde_x_mm_loadu_epi32(test_vec[6].a);
   r = simde_mm_mask_rol_epi32(src, test_vec[6].k, a, INT32_C(         197));
   simde_test_x86_assert_equal_i32x4(r, simde_x_mm_loadu_epi32(test_vec[6].r));
+  #endif
 
   src = simde_x_mm_loadu_epi32(test_vec[7].src);
   a = simde_x_mm_loadu_epi32(test_vec[7].a);
   r = simde_mm_mask_rol_epi32(src, test_vec[7].k, a, INT32_C(          17));
   simde_test_x86_assert_equal_i32x4(r, simde_x_mm_loadu_epi32(test_vec[7].r));
+
+  src = simde_x_mm_loadu_epi32(test_vec[8].src);
+  a = simde_x_mm_loadu_epi32(test_vec[8].a);
+  r = simde_mm_mask_rol_epi32(src, test_vec[8].k, a, INT32_C(          15));
+  simde_test_x86_assert_equal_i32x4(r, simde_x_mm_loadu_epi32(test_vec[8].r));
+
+  src = simde_x_mm_loadu_epi32(test_vec[9].src);
+  a = simde_x_mm_loadu_epi32(test_vec[9].a);
+  r = simde_mm_mask_rol_epi32(src, test_vec[9].k, a, INT32_C(          12));
+  simde_test_x86_assert_equal_i32x4(r, simde_x_mm_loadu_epi32(test_vec[9].r));
+
+  src = simde_x_mm_loadu_epi32(test_vec[10].src);
+  a = simde_x_mm_loadu_epi32(test_vec[10].a);
+  r = simde_mm_mask_rol_epi32(src, test_vec[10].k, a, INT32_C(          3));
+  simde_test_x86_assert_equal_i32x4(r, simde_x_mm_loadu_epi32(test_vec[10].r));
+
+  src = simde_x_mm_loadu_epi32(test_vec[11].src);
+  a = simde_x_mm_loadu_epi32(test_vec[11].a);
+  r = simde_mm_mask_rol_epi32(src, test_vec[11].k, a, INT32_C(          27));
+  simde_test_x86_assert_equal_i32x4(r, simde_x_mm_loadu_epi32(test_vec[11].r));
+
+  src = simde_x_mm_loadu_epi32(test_vec[12].src);
+  a = simde_x_mm_loadu_epi32(test_vec[12].a);
+  r = simde_mm_mask_rol_epi32(src, test_vec[12].k, a, INT32_C(          19));
+  simde_test_x86_assert_equal_i32x4(r, simde_x_mm_loadu_epi32(test_vec[12].r));
+
+  src = simde_x_mm_loadu_epi32(test_vec[13].src);
+  a = simde_x_mm_loadu_epi32(test_vec[13].a);
+  r = simde_mm_mask_rol_epi32(src, test_vec[13].k, a, INT32_C(           7));
+  simde_test_x86_assert_equal_i32x4(r, simde_x_mm_loadu_epi32(test_vec[13].r));
+
+  src = simde_x_mm_loadu_epi32(test_vec[14].src);
+  a = simde_x_mm_loadu_epi32(test_vec[14].a);
+  r = simde_mm_mask_rol_epi32(src, test_vec[14].k, a, INT32_C(          12));
+  simde_test_x86_assert_equal_i32x4(r, simde_x_mm_loadu_epi32(test_vec[14].r));
 
   return 0;
 #else
@@ -189,7 +265,7 @@ test_simde_mm_mask_rol_epi32 (SIMDE_MUNIT_TEST_ARGS) {
     simde__m128i src = simde_test_x86_random_i32x4();
     simde__mmask8 k = simde_test_x86_random_mmask8();
     simde__m128i a = simde_test_x86_random_i32x4();
-    int imm8 = simde_test_codegen_random_i32() & 255;
+    int imm8 = simde_test_codegen_random_i32() & 31;
     simde__m128i r;
     SIMDE_CONSTIFY_256_(simde_mm_mask_rol_epi32, r, simde_mm_setzero_si128(), imm8, src, k, a);
 
@@ -248,6 +324,7 @@ test_simde_mm_maskz_rol_epi32 (SIMDE_MUNIT_TEST_ARGS) {
 
   simde__m128i a, r;
 
+  #if !(defined(HEDLEY_MSVC_VERSION) && defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE))
   a = simde_x_mm_loadu_epi32(test_vec[0].a);
   r = simde_mm_maskz_rol_epi32(test_vec[0].k, a, INT32_C(         218));
   simde_test_x86_assert_equal_i32x4(r, simde_x_mm_loadu_epi32(test_vec[0].r));
@@ -259,11 +336,13 @@ test_simde_mm_maskz_rol_epi32 (SIMDE_MUNIT_TEST_ARGS) {
   a = simde_x_mm_loadu_epi32(test_vec[2].a);
   r = simde_mm_maskz_rol_epi32(test_vec[2].k, a, INT32_C(         250));
   simde_test_x86_assert_equal_i32x4(r, simde_x_mm_loadu_epi32(test_vec[2].r));
+  #endif
 
   a = simde_x_mm_loadu_epi32(test_vec[3].a);
   r = simde_mm_maskz_rol_epi32(test_vec[3].k, a, INT32_C(           9));
   simde_test_x86_assert_equal_i32x4(r, simde_x_mm_loadu_epi32(test_vec[3].r));
 
+  #if !(defined(HEDLEY_MSVC_VERSION) && defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE))
   a = simde_x_mm_loadu_epi32(test_vec[4].a);
   r = simde_mm_maskz_rol_epi32(test_vec[4].k, a, INT32_C(         110));
   simde_test_x86_assert_equal_i32x4(r, simde_x_mm_loadu_epi32(test_vec[4].r));
@@ -271,6 +350,7 @@ test_simde_mm_maskz_rol_epi32 (SIMDE_MUNIT_TEST_ARGS) {
   a = simde_x_mm_loadu_epi32(test_vec[5].a);
   r = simde_mm_maskz_rol_epi32(test_vec[5].k, a, INT32_C(         159));
   simde_test_x86_assert_equal_i32x4(r, simde_x_mm_loadu_epi32(test_vec[5].r));
+  #endif
 
   a = simde_x_mm_loadu_epi32(test_vec[6].a);
   r = simde_mm_maskz_rol_epi32(test_vec[6].k, a, INT32_C(          16));
@@ -335,6 +415,7 @@ test_simde_mm256_rol_epi32 (SIMDE_MUNIT_TEST_ARGS) {
 
   simde__m256i a, r;
 
+  #if !(defined(HEDLEY_MSVC_VERSION) && defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE))
   a = simde_x_mm256_loadu_epi32(test_vec[0].a);
   r = simde_mm256_rol_epi32(a, INT32_C(          62));
   simde_test_x86_assert_equal_i32x8(r, simde_x_mm256_loadu_epi32(test_vec[0].r));
@@ -342,11 +423,13 @@ test_simde_mm256_rol_epi32 (SIMDE_MUNIT_TEST_ARGS) {
   a = simde_x_mm256_loadu_epi32(test_vec[1].a);
   r = simde_mm256_rol_epi32(a, INT32_C(         183));
   simde_test_x86_assert_equal_i32x8(r, simde_x_mm256_loadu_epi32(test_vec[1].r));
+  #endif
 
   a = simde_x_mm256_loadu_epi32(test_vec[2].a);
   r = simde_mm256_rol_epi32(a, INT32_C(          18));
   simde_test_x86_assert_equal_i32x8(r, simde_x_mm256_loadu_epi32(test_vec[2].r));
 
+  #if !(defined(HEDLEY_MSVC_VERSION) && defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE))
   a = simde_x_mm256_loadu_epi32(test_vec[3].a);
   r = simde_mm256_rol_epi32(a, INT32_C(         129));
   simde_test_x86_assert_equal_i32x8(r, simde_x_mm256_loadu_epi32(test_vec[3].r));
@@ -354,11 +437,13 @@ test_simde_mm256_rol_epi32 (SIMDE_MUNIT_TEST_ARGS) {
   a = simde_x_mm256_loadu_epi32(test_vec[4].a);
   r = simde_mm256_rol_epi32(a, INT32_C(         139));
   simde_test_x86_assert_equal_i32x8(r, simde_x_mm256_loadu_epi32(test_vec[4].r));
+  #endif
 
   a = simde_x_mm256_loadu_epi32(test_vec[5].a);
   r = simde_mm256_rol_epi32(a, INT32_C(           3));
   simde_test_x86_assert_equal_i32x8(r, simde_x_mm256_loadu_epi32(test_vec[5].r));
 
+  #if !(defined(HEDLEY_MSVC_VERSION) && defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE))
   a = simde_x_mm256_loadu_epi32(test_vec[6].a);
   r = simde_mm256_rol_epi32(a, INT32_C(          59));
   simde_test_x86_assert_equal_i32x8(r, simde_x_mm256_loadu_epi32(test_vec[6].r));
@@ -366,6 +451,7 @@ test_simde_mm256_rol_epi32 (SIMDE_MUNIT_TEST_ARGS) {
   a = simde_x_mm256_loadu_epi32(test_vec[7].a);
   r = simde_mm256_rol_epi32(a, INT32_C(         198));
   simde_test_x86_assert_equal_i32x8(r, simde_x_mm256_loadu_epi32(test_vec[7].r));
+  #endif
 
   return 0;
 #else
@@ -438,6 +524,7 @@ test_simde_mm256_mask_rol_epi32 (SIMDE_MUNIT_TEST_ARGS) {
 
   simde__m256i src, a, r;
 
+  #if !(defined(HEDLEY_MSVC_VERSION) && defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE))
   src = simde_x_mm256_loadu_epi32(test_vec[0].src);
   a = simde_x_mm256_loadu_epi32(test_vec[0].a);
   r = simde_mm256_mask_rol_epi32(src, test_vec[0].k, a, INT32_C(         161));
@@ -452,12 +539,14 @@ test_simde_mm256_mask_rol_epi32 (SIMDE_MUNIT_TEST_ARGS) {
   a = simde_x_mm256_loadu_epi32(test_vec[2].a);
   r = simde_mm256_mask_rol_epi32(src, test_vec[2].k, a, INT32_C(          94));
   simde_test_x86_assert_equal_i32x8(r, simde_x_mm256_loadu_epi32(test_vec[2].r));
+  #endif
 
   src = simde_x_mm256_loadu_epi32(test_vec[3].src);
   a = simde_x_mm256_loadu_epi32(test_vec[3].a);
   r = simde_mm256_mask_rol_epi32(src, test_vec[3].k, a, INT32_C(           5));
   simde_test_x86_assert_equal_i32x8(r, simde_x_mm256_loadu_epi32(test_vec[3].r));
 
+  #if !(defined(HEDLEY_MSVC_VERSION) && defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE))
   src = simde_x_mm256_loadu_epi32(test_vec[4].src);
   a = simde_x_mm256_loadu_epi32(test_vec[4].a);
   r = simde_mm256_mask_rol_epi32(src, test_vec[4].k, a, INT32_C(         152));
@@ -467,16 +556,19 @@ test_simde_mm256_mask_rol_epi32 (SIMDE_MUNIT_TEST_ARGS) {
   a = simde_x_mm256_loadu_epi32(test_vec[5].a);
   r = simde_mm256_mask_rol_epi32(src, test_vec[5].k, a, INT32_C(          33));
   simde_test_x86_assert_equal_i32x8(r, simde_x_mm256_loadu_epi32(test_vec[5].r));
+  #endif
 
   src = simde_x_mm256_loadu_epi32(test_vec[6].src);
   a = simde_x_mm256_loadu_epi32(test_vec[6].a);
   r = simde_mm256_mask_rol_epi32(src, test_vec[6].k, a, INT32_C(          12));
   simde_test_x86_assert_equal_i32x8(r, simde_x_mm256_loadu_epi32(test_vec[6].r));
 
+  #if !(defined(HEDLEY_MSVC_VERSION) && defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE))
   src = simde_x_mm256_loadu_epi32(test_vec[7].src);
   a = simde_x_mm256_loadu_epi32(test_vec[7].a);
   r = simde_mm256_mask_rol_epi32(src, test_vec[7].k, a, INT32_C(         108));
   simde_test_x86_assert_equal_i32x8(r, simde_x_mm256_loadu_epi32(test_vec[7].r));
+  #endif
 
   return 0;
 #else
@@ -540,10 +632,43 @@ test_simde_mm256_maskz_rol_epi32 (SIMDE_MUNIT_TEST_ARGS) {
       {  INT32_C(  1391722573),  INT32_C(   643480432),  INT32_C(  1176881258),  INT32_C(  2143233921),  INT32_C(  1266494954), -INT32_C(  1560251884),  INT32_C(   384998455), -INT32_C(   751944571) },
        INT32_C(          60),
       {  INT32_C(           0),  INT32_C(           0),  INT32_C(           0),  INT32_C(   402387576), -INT32_C(  1531456802),  INT32_C(           0),  INT32_C(           0),  INT32_C(           0) } },
+    { UINT8_C(199),
+      {  INT32_C(   367748229), -INT32_C(   268427402), -INT32_C(  1293774043), -INT32_C(   781214915),  INT32_C(  1249291236),  INT32_C(   742553139), -INT32_C(   184967471), -INT32_C(  1162072523) },
+       INT32_C(          18),
+      { -INT32_C(  1844160595),  INT32_C(  2111553536),  INT32_C(  1284950922),  INT32_C(           0),  INT32_C(           0),  INT32_C(           0),  INT32_C(  2068304870), -INT32_C(  1193874704) } },
+    { UINT8_C(198),
+      {  INT32_C(  1676409296),  INT32_C(  1990303451), -INT32_C(  1202032115),  INT32_C(  1609278697), -INT32_C(  2060445721),  INT32_C(  1069229329), -INT32_C(  1999538719),  INT32_C(   357554757) },
+       INT32_C(          19),
+      {  INT32_C(           0), -INT32_C(   153373428), -INT32_C(  1871854893),  INT32_C(           0),  INT32_C(           0),  INT32_C(           0), -INT32_C(  1358150005), -INT32_C(   769086850) } },
+    { UINT8_C(216),
+      { -INT32_C(  1931140071),  INT32_C(   594910591), -INT32_C(  1609902967),  INT32_C(   716279813), -INT32_C(  1072959413), -INT32_C(  1677356094),  INT32_C(   493886178), -INT32_C(  1393221997) },
+       INT32_C(           3),
+      {  INT32_C(           0),  INT32_C(           0),  INT32_C(           0),  INT32_C(  1435271209),  INT32_C(     6259294),  INT32_C(           0), -INT32_C(   343877872),  INT32_C(  1739125917) } },
+    { UINT8_C(120),
+      { -INT32_C(  2113804883), -INT32_C(  2138594576),  INT32_C(  1154199891),  INT32_C(  1325829052), -INT32_C(  1422744943),  INT32_C(   826167058),  INT32_C(   527756100), -INT32_C(   778553821) },
+       INT32_C(          27),
+      {  INT32_C(           0),  INT32_C(           0),  INT32_C(           0), -INT32_C(   495438755), -INT32_C(  1923508972), -INT32_C(  1853230472),  INT32_C(   553363290),  INT32_C(           0) } },
+    { UINT8_C( 59),
+      { -INT32_C(  1953526822), -INT32_C(   498609322),  INT32_C(  2071172825),  INT32_C(   395189960),  INT32_C(  1214037853),  INT32_C(  1768651571), -INT32_C(  1383842797),  INT32_C(  1776849039) },
+       INT32_C(          27),
+      { -INT32_C(   732136354), -INT32_C(  1223541094),  INT32_C(           0),  INT32_C(  1086091510), -INT32_C(   364714502), -INT32_C(  1689560103),  INT32_C(           0),  INT32_C(           0) } },
+    { UINT8_C( 74),
+      { -INT32_C(   769436613), -INT32_C(   442851385), -INT32_C(   331173331), -INT32_C(  1994421746),  INT32_C(   849185014), -INT32_C(  1664988660), -INT32_C(  1430770894),  INT32_C(  1542728224) },
+       INT32_C(          30),
+      {  INT32_C(           0), -INT32_C(   110712847),  INT32_C(           0), -INT32_C(  1572347261),  INT32_C(           0),  INT32_C(           0), -INT32_C(  1431434548),  INT32_C(           0) } },
+    { UINT8_C(183),
+      {  INT32_C(  2061773512), -INT32_C(   142028691),  INT32_C(  2012025327), -INT32_C(   125624146),  INT32_C(   220930274),  INT32_C(    36558296), -INT32_C(   511669815),  INT32_C(  2123941302) },
+       INT32_C(          15),
+      {  INT32_C(   358890866),  INT32_C(  1748433860), -INT32_C(  1997030410),  INT32_C(           0), -INT32_C(  1871640939), -INT32_C(   353631978),  INT32_C(           0),  INT32_C(  1658535756) } },
+    { UINT8_C( 76),
+      { -INT32_C(  1841605504),  INT32_C(  1631629889),  INT32_C(  1447246134),  INT32_C(   959336804),  INT32_C(   117583998),  INT32_C(  1975444656), -INT32_C(   110871428), -INT32_C(  1253719755) },
+       INT32_C(          21),
+      {  INT32_C(           0),  INT32_C(           0),  INT32_C(   650823783),  INT32_C(   747054538),  INT32_C(           0),  INT32_C(           0), -INT32_C(  1885393785),  INT32_C(           0) } },
   };
 
   simde__m256i a, r;
 
+  #if !(defined(HEDLEY_MSVC_VERSION) && defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE))
   a = simde_x_mm256_loadu_epi32(test_vec[0].a);
   r = simde_mm256_maskz_rol_epi32(test_vec[0].k, a, INT32_C(         160));
   simde_test_x86_assert_equal_i32x8(r, simde_x_mm256_loadu_epi32(test_vec[0].r));
@@ -575,6 +700,39 @@ test_simde_mm256_maskz_rol_epi32 (SIMDE_MUNIT_TEST_ARGS) {
   a = simde_x_mm256_loadu_epi32(test_vec[7].a);
   r = simde_mm256_maskz_rol_epi32(test_vec[7].k, a, INT32_C(          60));
   simde_test_x86_assert_equal_i32x8(r, simde_x_mm256_loadu_epi32(test_vec[7].r));
+  #endif
+
+  a = simde_x_mm256_loadu_epi32(test_vec[8].a);
+  r = simde_mm256_maskz_rol_epi32(test_vec[8].k, a, INT32_C(          18));
+  simde_test_x86_assert_equal_i32x8(r, simde_x_mm256_loadu_epi32(test_vec[8].r));
+
+  a = simde_x_mm256_loadu_epi32(test_vec[9].a);
+  r = simde_mm256_maskz_rol_epi32(test_vec[9].k, a, INT32_C(          19));
+  simde_test_x86_assert_equal_i32x8(r, simde_x_mm256_loadu_epi32(test_vec[9].r));
+
+  a = simde_x_mm256_loadu_epi32(test_vec[10].a);
+  r = simde_mm256_maskz_rol_epi32(test_vec[10].k, a, INT32_C(           3));
+  simde_test_x86_assert_equal_i32x8(r, simde_x_mm256_loadu_epi32(test_vec[10].r));
+
+  a = simde_x_mm256_loadu_epi32(test_vec[11].a);
+  r = simde_mm256_maskz_rol_epi32(test_vec[11].k, a, INT32_C(          27));
+  simde_test_x86_assert_equal_i32x8(r, simde_x_mm256_loadu_epi32(test_vec[11].r));
+
+  a = simde_x_mm256_loadu_epi32(test_vec[12].a);
+  r = simde_mm256_maskz_rol_epi32(test_vec[12].k, a, INT32_C(          27));
+  simde_test_x86_assert_equal_i32x8(r, simde_x_mm256_loadu_epi32(test_vec[12].r));
+
+  a = simde_x_mm256_loadu_epi32(test_vec[13].a);
+  r = simde_mm256_maskz_rol_epi32(test_vec[13].k, a, INT32_C(          30));
+  simde_test_x86_assert_equal_i32x8(r, simde_x_mm256_loadu_epi32(test_vec[13].r));
+
+  a = simde_x_mm256_loadu_epi32(test_vec[14].a);
+  r = simde_mm256_maskz_rol_epi32(test_vec[14].k, a, INT32_C(          15));
+  simde_test_x86_assert_equal_i32x8(r, simde_x_mm256_loadu_epi32(test_vec[14].r));
+
+  a = simde_x_mm256_loadu_epi32(test_vec[15].a);
+  r = simde_mm256_maskz_rol_epi32(test_vec[15].k, a, INT32_C(          21));
+  simde_test_x86_assert_equal_i32x8(r, simde_x_mm256_loadu_epi32(test_vec[15].r));
 
   return 0;
 #else
@@ -582,7 +740,7 @@ test_simde_mm256_maskz_rol_epi32 (SIMDE_MUNIT_TEST_ARGS) {
   for (int i = 0 ; i < 8 ; i++) {
     simde__mmask8 k = simde_test_x86_random_mmask8();
     simde__m256i a = simde_test_x86_random_i32x8();
-    int imm8 = simde_test_codegen_random_i32() & 255;
+    int imm8 = simde_test_codegen_random_i32() & 31;
     simde__m256i r;
     SIMDE_CONSTIFY_256_(simde_mm256_maskz_rol_epi32, r, simde_mm256_setzero_si256(), imm8, k, a);
 
@@ -647,6 +805,7 @@ test_simde_mm512_rol_epi32 (SIMDE_MUNIT_TEST_ARGS) {
 
   simde__m512i a, r;
 
+  #if !(defined(HEDLEY_MSVC_VERSION) && defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE))
   a = simde_mm512_loadu_epi32(test_vec[0].a);
   r = simde_mm512_rol_epi32(a, INT32_C(         222));
   simde_test_x86_assert_equal_i32x16(r, simde_mm512_loadu_epi32(test_vec[0].r));
@@ -654,11 +813,13 @@ test_simde_mm512_rol_epi32 (SIMDE_MUNIT_TEST_ARGS) {
   a = simde_mm512_loadu_epi32(test_vec[1].a);
   r = simde_mm512_rol_epi32(a, INT32_C(          98));
   simde_test_x86_assert_equal_i32x16(r, simde_mm512_loadu_epi32(test_vec[1].r));
+  #endif
 
   a = simde_mm512_loadu_epi32(test_vec[2].a);
   r = simde_mm512_rol_epi32(a, INT32_C(          13));
   simde_test_x86_assert_equal_i32x16(r, simde_mm512_loadu_epi32(test_vec[2].r));
 
+  #if !(defined(HEDLEY_MSVC_VERSION) && defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE))
   a = simde_mm512_loadu_epi32(test_vec[3].a);
   r = simde_mm512_rol_epi32(a, INT32_C(          45));
   simde_test_x86_assert_equal_i32x16(r, simde_mm512_loadu_epi32(test_vec[3].r));
@@ -670,14 +831,17 @@ test_simde_mm512_rol_epi32 (SIMDE_MUNIT_TEST_ARGS) {
   a = simde_mm512_loadu_epi32(test_vec[5].a);
   r = simde_mm512_rol_epi32(a, INT32_C(         161));
   simde_test_x86_assert_equal_i32x16(r, simde_mm512_loadu_epi32(test_vec[5].r));
+  #endif
 
   a = simde_mm512_loadu_epi32(test_vec[6].a);
   r = simde_mm512_rol_epi32(a, INT32_C(          30));
   simde_test_x86_assert_equal_i32x16(r, simde_mm512_loadu_epi32(test_vec[6].r));
 
+  #if !(defined(HEDLEY_MSVC_VERSION) && defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE))
   a = simde_mm512_loadu_epi32(test_vec[7].a);
   r = simde_mm512_rol_epi32(a, INT32_C(         177));
   simde_test_x86_assert_equal_i32x16(r, simde_mm512_loadu_epi32(test_vec[7].r));
+  #endif
 
   return 0;
 #else
@@ -774,6 +938,7 @@ test_simde_mm512_mask_rol_epi32 (SIMDE_MUNIT_TEST_ARGS) {
 
   simde__m512i src, a, r;
 
+  #if !(defined(HEDLEY_MSVC_VERSION) && defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE))
   src = simde_mm512_loadu_epi32(test_vec[0].src);
   a = simde_mm512_loadu_epi32(test_vec[0].a);
   r = simde_mm512_mask_rol_epi32(src, test_vec[0].k, a, INT32_C(         130));
@@ -788,6 +953,7 @@ test_simde_mm512_mask_rol_epi32 (SIMDE_MUNIT_TEST_ARGS) {
   a = simde_mm512_loadu_epi32(test_vec[2].a);
   r = simde_mm512_mask_rol_epi32(src, test_vec[2].k, a, INT32_C(          84));
   simde_test_x86_assert_equal_i32x16(r, simde_mm512_loadu_epi32(test_vec[2].r));
+  #endif
 
   src = simde_mm512_loadu_epi32(test_vec[3].src);
   a = simde_mm512_loadu_epi32(test_vec[3].a);
@@ -799,20 +965,24 @@ test_simde_mm512_mask_rol_epi32 (SIMDE_MUNIT_TEST_ARGS) {
   r = simde_mm512_mask_rol_epi32(src, test_vec[4].k, a, INT32_C(          29));
   simde_test_x86_assert_equal_i32x16(r, simde_mm512_loadu_epi32(test_vec[4].r));
 
+  #if !(defined(HEDLEY_MSVC_VERSION) && defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE))
   src = simde_mm512_loadu_epi32(test_vec[5].src);
   a = simde_mm512_loadu_epi32(test_vec[5].a);
   r = simde_mm512_mask_rol_epi32(src, test_vec[5].k, a, INT32_C(         198));
   simde_test_x86_assert_equal_i32x16(r, simde_mm512_loadu_epi32(test_vec[5].r));
+  #endif
 
   src = simde_mm512_loadu_epi32(test_vec[6].src);
   a = simde_mm512_loadu_epi32(test_vec[6].a);
   r = simde_mm512_mask_rol_epi32(src, test_vec[6].k, a, INT32_C(          17));
   simde_test_x86_assert_equal_i32x16(r, simde_mm512_loadu_epi32(test_vec[6].r));
 
+  #if !(defined(HEDLEY_MSVC_VERSION) && defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE))
   src = simde_mm512_loadu_epi32(test_vec[7].src);
   a = simde_mm512_loadu_epi32(test_vec[7].a);
   r = simde_mm512_mask_rol_epi32(src, test_vec[7].k, a, INT32_C(          85));
   simde_test_x86_assert_equal_i32x16(r, simde_mm512_loadu_epi32(test_vec[7].r));
+  #endif
 
   return 0;
 #else
@@ -892,10 +1062,59 @@ test_simde_mm512_maskz_rol_epi32 (SIMDE_MUNIT_TEST_ARGS) {
        INT32_C(         184),
       {  INT32_C(   434907093),  INT32_C(           0), -INT32_C(   830167273), -INT32_C(  1125007737),  INT32_C(           0), -INT32_C(   556405827),  INT32_C(           0),  INT32_C(   405900391),
          INT32_C(           0),  INT32_C(  1192611157),  INT32_C(  1814600308), -INT32_C(    77063592),  INT32_C(           0), -INT32_C(  1277619628), -INT32_C(  1834321972),  INT32_C(   879876868) } },
+    { UINT16_C(34867),
+      { -INT32_C(    71210568), -INT32_C(   313776705),  INT32_C(  1612565342), -INT32_C(  1874539054), -INT32_C(  1479687870), -INT32_C(     9960774), -INT32_C(     8356425), -INT32_C(  1954040621),
+        -INT32_C(   578336739), -INT32_C(   875900051),  INT32_C(  1898703006), -INT32_C(   134123339), -INT32_C(   341848527), -INT32_C(  1997928496),  INT32_C(  1468492676),  INT32_C(  1021513247) },
+       INT32_C(          22),
+      {  INT32_C(  1849618522),  INT32_C(  1878741769),  INT32_C(           0),  INT32_C(           0),  INT32_C(  1353315184), -INT32_C(  1363158528),  INT32_C(           0),  INT32_C(           0),
+         INT32_C(           0),  INT32_C(           0),  INT32_C(           0),  INT32_C(   763232348),  INT32_C(           0),  INT32_C(           0),  INT32_C(           0), -INT32_C(  2016462653) } },
+    { UINT16_C(58429),
+      { -INT32_C(  1177756530),  INT32_C(  1311342925),  INT32_C(   404576889),  INT32_C(   807398725), -INT32_C(    56908939), -INT32_C(   569722117),  INT32_C(   273178870), -INT32_C(  1309375197),
+        -INT32_C(  1368670111), -INT32_C(  1141009343),  INT32_C(   886250223),  INT32_C(  2103767815), -INT32_C(  1854275690), -INT32_C(  1334868807),  INT32_C(   146847716), -INT32_C(  1631996867) },
+       INT32_C(          20),
+      { -INT32_C(   924082995),  INT32_C(           0), -INT32_C(  1483636267), -INT32_C(   732757506),  INT32_C(   929024442), -INT32_C(  1346510677),  INT32_C(           0),  INT32_C(           0),
+         INT32_C(           0),  INT32_C(           0), -INT32_C(  1359786703),  INT32_C(           0),  INT32_C(           0),  INT32_C(  1268451064),  INT32_C(  2118159371),  INT32_C(  1138355099) } },
+    { UINT16_C(19129),
+      {  INT32_C(  1147447408),  INT32_C(  1094151132),  INT32_C(  1648414184), -INT32_C(   823723425),  INT32_C(  1787218602), -INT32_C(  1944140846), -INT32_C(  1364159903), -INT32_C(  1191679673),
+        -INT32_C(   285451247), -INT32_C(  1339083832),  INT32_C(  1595043584),  INT32_C(   321845353), -INT32_C(  1786923837), -INT32_C(   668886153),  INT32_C(  1971835437),  INT32_C(  1294827323) },
+       INT32_C(          28),
+      {  INT32_C(    71715463),  INT32_C(           0),  INT32_C(           0), -INT32_C(    51482715), -INT32_C(  1498911574),  INT32_C(   683797565),  INT32_C(           0),  INT32_C(  2073003668),
+         INT32_C(           0), -INT32_C(  1962740932),  INT32_C(           0), -INT32_C(  1858932858),  INT32_C(           0),  INT32_C(           0), -INT32_C(   682066654),  INT32_C(           0) } },
+    { UINT16_C(27228),
+      {  INT32_C(  1742298196), -INT32_C(   362855492), -INT32_C(   727834026), -INT32_C(   647031368),  INT32_C(  1957404141),  INT32_C(  1073014546),  INT32_C(  1869140020), -INT32_C(   925252492),
+        -INT32_C(   600853984),  INT32_C(  1288081397),  INT32_C(  1763730609),  INT32_C(  1732480889),  INT32_C(  1054600748),  INT32_C(   159240149),  INT32_C(   326690207), -INT32_C(   891530839) },
+       INT32_C(           4),
+      {  INT32_C(           0),  INT32_C(           0),  INT32_C(  1239557485), -INT32_C(  1762567283),  INT32_C(  1253695191),  INT32_C(           0), -INT32_C(   158530746),  INT32_C(           0),
+         INT32_C(           0), -INT32_C(   865534124),  INT32_C(           0),  INT32_C(  1949890454),  INT32_C(           0), -INT32_C(  1747124912),  INT32_C(   932076017),  INT32_C(           0) } },
+    { UINT16_C(28058),
+      {  INT32_C(  1708215365), -INT32_C(   118142027), -INT32_C(  1914232398), -INT32_C(   581059488),  INT32_C(  1053031622), -INT32_C(   326079472), -INT32_C(   570977226), -INT32_C(   750087539),
+        -INT32_C(  1825039394),  INT32_C(   411839846), -INT32_C(  1348046001), -INT32_C(   175373521),  INT32_C(   255086591), -INT32_C(   218381124), -INT32_C(   439356584),  INT32_C(  1673009541) },
+       INT32_C(          21),
+      {  INT32_C(           0),  INT32_C(  1992236713),  INT32_C(           0), -INT32_C(  1944343625), -INT32_C(  1731733377),  INT32_C(           0),  INT32_C(           0),  INT32_C(  1371171154),
+         INT32_C(  2077386499),  INT32_C(           0),  INT32_C(  1777726670),  INT32_C(  1711190400),  INT32_C(           0), -INT32_C(  1751228552),  INT32_C(  1797044734),  INT32_C(           0) } },
+    { UINT16_C(33310),
+      {  INT32_C(  1526033844), -INT32_C(  1453513444),  INT32_C(  1324899354),  INT32_C(  1729279084),  INT32_C(  1985637031),  INT32_C(   143712080),  INT32_C(   972670274),  INT32_C(   347805792),
+        -INT32_C(  1569803899), -INT32_C(   263468074), -INT32_C(  1807793368), -INT32_C(  1610919432),  INT32_C(   202725052),  INT32_C(  2014618933), -INT32_C(   877588886), -INT32_C(  1411421146) },
+       INT32_C(          29),
+      {  INT32_C(           0), -INT32_C(  1792301917),  INT32_C(  1239354243), -INT32_C(  1931323763), -INT32_C(   288666284),  INT32_C(           0),  INT32_C(           0),  INT32_C(           0),
+         INT32_C(           0), -INT32_C(   569804422),  INT32_C(           0),  INT32_C(           0),  INT32_C(           0),  INT32_C(           0),  INT32_C(           0), -INT32_C(   713298556) } },
+    { UINT16_C(38937),
+      {  INT32_C(   601637348), -INT32_C(   780872491), -INT32_C(  2010697613),  INT32_C(  1361992764), -INT32_C(  2057332524),  INT32_C(  1139967331),  INT32_C(  2123435824), -INT32_C(   417945085),
+        -INT32_C(  1056247060),  INT32_C(   965902022), -INT32_C(   339560017), -INT32_C(   365105130), -INT32_C(   328164472),  INT32_C(  1362059808),  INT32_C(  1959772273),  INT32_C(  1448863082) },
+       INT32_C(          24),
+      { -INT32_C(   467411903),  INT32_C(           0),  INT32_C(           0),  INT32_C(  1011953244), -INT32_C(   729456744),  INT32_C(           0),  INT32_C(           0),  INT32_C(           0),
+         INT32_C(           0),  INT32_C(           0),  INT32_C(           0),  INT32_C(   384449776), -INT32_C(  1997770597),  INT32_C(           0),  INT32_C(           0),  INT32_C(  1784044517) } },
+    { UINT16_C(43748),
+      { -INT32_C(  1704684584), -INT32_C(  1148552578), -INT32_C(   732556700),  INT32_C(   758544382), -INT32_C(  1746032440),  INT32_C(  2021414940), -INT32_C(   958573394), -INT32_C(   881737229),
+        -INT32_C(   748300972), -INT32_C(  1282478257),  INT32_C(     8971265),  INT32_C(   590200411), -INT32_C(  2084955290),  INT32_C(   570111859),  INT32_C(  2129189003), -INT32_C(   297182822) },
+       INT32_C(          14),
+      {  INT32_C(           0),  INT32_C(           0), -INT32_C(  2070334187),  INT32_C(           0),  INT32_C(           0),  INT32_C(   369565215),  INT32_C(  1428926903),  INT32_C(  1887236828),
+         INT32_C(           0), -INT32_C(  1143739165),  INT32_C(           0),  INT32_C(  1872152779),  INT32_C(           0), -INT32_C(   841168770),  INT32_C(           0),  INT32_C(  1449573266) } },
   };
 
   simde__m512i a, r;
 
+  #if !(defined(HEDLEY_MSVC_VERSION) && defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE))
   a = simde_mm512_loadu_epi32(test_vec[0].a);
   r = simde_mm512_maskz_rol_epi32(test_vec[0].k, a, INT32_C(          56));
   simde_test_x86_assert_equal_i32x16(r, simde_mm512_loadu_epi32(test_vec[0].r));
@@ -927,6 +1146,39 @@ test_simde_mm512_maskz_rol_epi32 (SIMDE_MUNIT_TEST_ARGS) {
   a = simde_mm512_loadu_epi32(test_vec[7].a);
   r = simde_mm512_maskz_rol_epi32(test_vec[7].k, a, INT32_C(         184));
   simde_test_x86_assert_equal_i32x16(r, simde_mm512_loadu_epi32(test_vec[7].r));
+  #endif
+
+  a = simde_mm512_loadu_epi32(test_vec[8].a);
+  r = simde_mm512_maskz_rol_epi32(test_vec[8].k, a, INT32_C(          22));
+  simde_test_x86_assert_equal_i32x16(r, simde_mm512_loadu_epi32(test_vec[8].r));
+
+  a = simde_mm512_loadu_epi32(test_vec[9].a);
+  r = simde_mm512_maskz_rol_epi32(test_vec[9].k, a, INT32_C(          20));
+  simde_test_x86_assert_equal_i32x16(r, simde_mm512_loadu_epi32(test_vec[9].r));
+
+  a = simde_mm512_loadu_epi32(test_vec[10].a);
+  r = simde_mm512_maskz_rol_epi32(test_vec[10].k, a, INT32_C(          28));
+  simde_test_x86_assert_equal_i32x16(r, simde_mm512_loadu_epi32(test_vec[10].r));
+
+  a = simde_mm512_loadu_epi32(test_vec[11].a);
+  r = simde_mm512_maskz_rol_epi32(test_vec[11].k, a, INT32_C(           4));
+  simde_test_x86_assert_equal_i32x16(r, simde_mm512_loadu_epi32(test_vec[11].r));
+
+  a = simde_mm512_loadu_epi32(test_vec[12].a);
+  r = simde_mm512_maskz_rol_epi32(test_vec[12].k, a, INT32_C(          21));
+  simde_test_x86_assert_equal_i32x16(r, simde_mm512_loadu_epi32(test_vec[12].r));
+
+  a = simde_mm512_loadu_epi32(test_vec[13].a);
+  r = simde_mm512_maskz_rol_epi32(test_vec[13].k, a, INT32_C(          29));
+  simde_test_x86_assert_equal_i32x16(r, simde_mm512_loadu_epi32(test_vec[13].r));
+
+  a = simde_mm512_loadu_epi32(test_vec[14].a);
+  r = simde_mm512_maskz_rol_epi32(test_vec[14].k, a, INT32_C(          24));
+  simde_test_x86_assert_equal_i32x16(r, simde_mm512_loadu_epi32(test_vec[14].r));
+
+  a = simde_mm512_loadu_epi32(test_vec[15].a);
+  r = simde_mm512_maskz_rol_epi32(test_vec[15].k, a, INT32_C(         14));
+  simde_test_x86_assert_equal_i32x16(r, simde_mm512_loadu_epi32(test_vec[15].r));
 
   return 0;
 #else
@@ -934,7 +1186,7 @@ test_simde_mm512_maskz_rol_epi32 (SIMDE_MUNIT_TEST_ARGS) {
   for (int i = 0 ; i < 8 ; i++) {
     simde__mmask16 k = simde_test_x86_random_mmask16();
     simde__m512i a = simde_test_x86_random_i32x16();
-    int imm8 = simde_test_codegen_random_i32() & 255;
+    int imm8 = simde_test_codegen_random_i32() & 31;
     simde__m512i r;
     SIMDE_CONSTIFY_256_(simde_mm512_maskz_rol_epi32, r, simde_mm512_setzero_si512(), imm8, k, a);
 
@@ -979,10 +1231,35 @@ test_simde_mm_rol_epi64 (SIMDE_MUNIT_TEST_ARGS) {
     { {  INT64_C( 3910347420833612837),  INT64_C( 1312799135472024268) },
        INT32_C(          90),
       {  INT64_C(  836715225814733153),  INT64_C( 7984037625013526527) } },
+    { { -INT64_C( 8097551068840308835),  INT64_C( 6512325903802158199) },
+       INT32_C(          36),
+      { -INT64_C(  935348112283958455), -INT64_C( 2649023172690125187) } },
+    { { -INT64_C( 1460018685074840524),  INT64_C(  136120421134663334) },
+       INT32_C(          17),
+      { -INT64_C( 1046069466608576647),  INT64_C( 3574319685456102343) } },
+    { {  INT64_C( 6237492842103915598),  INT64_C( 3270515412550683745) },
+       INT32_C(          44),
+      {  INT64_C( 6072230436743615338),  INT64_C( 6973281784222386520) } },
+    { {  INT64_C( 7669060727559651486), -INT64_C(  936512040632910212) },
+       INT32_C(          29),
+      {  INT64_C( 3270440247263870787),  INT64_C( 6432934463065299688) } },
+    { {  INT64_C( 3475433127526322077), -INT64_C( 1341761712016894888) },
+       INT32_C(          20),
+      { -INT64_C( 9205096723480640589), -INT64_C( 5958438000071354863) } },
+    { {  INT64_C( 4468234252715788748),  INT64_C( 2276659889876847596) },
+       INT32_C(          10),
+      {  INT64_C(  679344500998877432),  INT64_C( 7009973946488434814) } },
+    { { -INT64_C( 9013610034649083097),  INT64_C( 3162492081253007624) },
+       INT32_C(           9),
+      { -INT64_C( 3282319312942641403), -INT64_C( 4117532884900638633) } },
+    { { -INT64_C( 4365440247706687696),  INT64_C( 8849147816151726763) },
+       INT32_C(          55),
+      { -INT64_C( 7466487233409343501),  INT64_C( 6178207782071259869) } },
   };
 
   simde__m128i a, r;
 
+  #if !(defined(HEDLEY_MSVC_VERSION) && defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE))
   a = simde_x_mm_loadu_epi64(test_vec[0].a);
   r = simde_mm_rol_epi64(a, INT32_C(         202));
   simde_test_x86_assert_equal_i64x2(r, simde_x_mm_loadu_epi64(test_vec[0].r));
@@ -1014,13 +1291,46 @@ test_simde_mm_rol_epi64 (SIMDE_MUNIT_TEST_ARGS) {
   a = simde_x_mm_loadu_epi64(test_vec[7].a);
   r = simde_mm_rol_epi64(a, INT32_C(          90));
   simde_test_x86_assert_equal_i64x2(r, simde_x_mm_loadu_epi64(test_vec[7].r));
+  #endif
+
+  a = simde_x_mm_loadu_epi64(test_vec[8].a);
+  r = simde_mm_rol_epi64(a, INT32_C(          36));
+  simde_test_x86_assert_equal_i64x2(r, simde_x_mm_loadu_epi64(test_vec[8].r));
+
+  a = simde_x_mm_loadu_epi64(test_vec[9].a);
+  r = simde_mm_rol_epi64(a, INT32_C(          17));
+  simde_test_x86_assert_equal_i64x2(r, simde_x_mm_loadu_epi64(test_vec[9].r));
+
+  a = simde_x_mm_loadu_epi64(test_vec[10].a);
+  r = simde_mm_rol_epi64(a, INT32_C(          44));
+  simde_test_x86_assert_equal_i64x2(r, simde_x_mm_loadu_epi64(test_vec[10].r));
+
+  a = simde_x_mm_loadu_epi64(test_vec[11].a);
+  r = simde_mm_rol_epi64(a, INT32_C(          29));
+  simde_test_x86_assert_equal_i64x2(r, simde_x_mm_loadu_epi64(test_vec[11].r));
+
+  a = simde_x_mm_loadu_epi64(test_vec[12].a);
+  r = simde_mm_rol_epi64(a, INT32_C(          20));
+  simde_test_x86_assert_equal_i64x2(r, simde_x_mm_loadu_epi64(test_vec[12].r));
+
+  a = simde_x_mm_loadu_epi64(test_vec[13].a);
+  r = simde_mm_rol_epi64(a, INT32_C(          10));
+  simde_test_x86_assert_equal_i64x2(r, simde_x_mm_loadu_epi64(test_vec[13].r));
+
+  a = simde_x_mm_loadu_epi64(test_vec[14].a);
+  r = simde_mm_rol_epi64(a, INT32_C(           9));
+  simde_test_x86_assert_equal_i64x2(r, simde_x_mm_loadu_epi64(test_vec[14].r));
+
+  a = simde_x_mm_loadu_epi64(test_vec[15].a);
+  r = simde_mm_rol_epi64(a, INT32_C(         55));
+  simde_test_x86_assert_equal_i64x2(r, simde_x_mm_loadu_epi64(test_vec[15].r));
 
   return 0;
 #else
   fputc('\n', stdout);
   for (int i = 0 ; i < 8 ; i++) {
     simde__m128i a = simde_test_x86_random_i64x2();
-    int imm8 = simde_test_codegen_random_i32() & 255;
+    int imm8 = simde_test_codegen_random_i32() & 63;
     simde__m128i r;
     SIMDE_CONSTIFY_256_(simde_mm_rol_epi64, r, simde_mm_setzero_si128(), imm8, a);
 
@@ -1086,6 +1396,7 @@ test_simde_mm_mask_rol_epi64 (SIMDE_MUNIT_TEST_ARGS) {
 
   simde__m128i src, a, r;
 
+  #if !(defined(HEDLEY_MSVC_VERSION) && defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE))
   src = simde_x_mm_loadu_epi64(test_vec[0].src);
   a = simde_x_mm_loadu_epi64(test_vec[0].a);
   r = simde_mm_mask_rol_epi64(src, test_vec[0].k, a, INT32_C(         169));
@@ -1095,6 +1406,7 @@ test_simde_mm_mask_rol_epi64 (SIMDE_MUNIT_TEST_ARGS) {
   a = simde_x_mm_loadu_epi64(test_vec[1].a);
   r = simde_mm_mask_rol_epi64(src, test_vec[1].k, a, INT32_C(         164));
   simde_test_x86_assert_equal_i64x2(r, simde_x_mm_loadu_epi64(test_vec[1].r));
+  #endif
 
   src = simde_x_mm_loadu_epi64(test_vec[2].src);
   a = simde_x_mm_loadu_epi64(test_vec[2].a);
@@ -1106,6 +1418,7 @@ test_simde_mm_mask_rol_epi64 (SIMDE_MUNIT_TEST_ARGS) {
   r = simde_mm_mask_rol_epi64(src, test_vec[3].k, a, INT32_C(          54));
   simde_test_x86_assert_equal_i64x2(r, simde_x_mm_loadu_epi64(test_vec[3].r));
 
+  #if !(defined(HEDLEY_MSVC_VERSION) && defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE))
   src = simde_x_mm_loadu_epi64(test_vec[4].src);
   a = simde_x_mm_loadu_epi64(test_vec[4].a);
   r = simde_mm_mask_rol_epi64(src, test_vec[4].k, a, INT32_C(         167));
@@ -1120,6 +1433,7 @@ test_simde_mm_mask_rol_epi64 (SIMDE_MUNIT_TEST_ARGS) {
   a = simde_x_mm_loadu_epi64(test_vec[6].a);
   r = simde_mm_mask_rol_epi64(src, test_vec[6].k, a, INT32_C(         232));
   simde_test_x86_assert_equal_i64x2(r, simde_x_mm_loadu_epi64(test_vec[6].r));
+  #endif
 
   src = simde_x_mm_loadu_epi64(test_vec[7].src);
   a = simde_x_mm_loadu_epi64(test_vec[7].a);
@@ -1192,6 +1506,7 @@ test_simde_mm_maskz_rol_epi64 (SIMDE_MUNIT_TEST_ARGS) {
 
   simde__m128i a, r;
 
+  #if !(defined(HEDLEY_MSVC_VERSION) && defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE))
   a = simde_x_mm_loadu_epi64(test_vec[0].a);
   r = simde_mm_maskz_rol_epi64(test_vec[0].k, a, INT32_C(          64));
   simde_test_x86_assert_equal_i64x2(r, simde_x_mm_loadu_epi64(test_vec[0].r));
@@ -1203,6 +1518,7 @@ test_simde_mm_maskz_rol_epi64 (SIMDE_MUNIT_TEST_ARGS) {
   a = simde_x_mm_loadu_epi64(test_vec[2].a);
   r = simde_mm_maskz_rol_epi64(test_vec[2].k, a, INT32_C(         227));
   simde_test_x86_assert_equal_i64x2(r, simde_x_mm_loadu_epi64(test_vec[2].r));
+  #endif
 
   a = simde_x_mm_loadu_epi64(test_vec[3].a);
   r = simde_mm_maskz_rol_epi64(test_vec[3].k, a, INT32_C(          37));
@@ -1212,17 +1528,21 @@ test_simde_mm_maskz_rol_epi64 (SIMDE_MUNIT_TEST_ARGS) {
   r = simde_mm_maskz_rol_epi64(test_vec[4].k, a, INT32_C(          21));
   simde_test_x86_assert_equal_i64x2(r, simde_x_mm_loadu_epi64(test_vec[4].r));
 
+  #if !(defined(HEDLEY_MSVC_VERSION) && defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE))
   a = simde_x_mm_loadu_epi64(test_vec[5].a);
   r = simde_mm_maskz_rol_epi64(test_vec[5].k, a, INT32_C(         148));
   simde_test_x86_assert_equal_i64x2(r, simde_x_mm_loadu_epi64(test_vec[5].r));
+  #endif
 
   a = simde_x_mm_loadu_epi64(test_vec[6].a);
   r = simde_mm_maskz_rol_epi64(test_vec[6].k, a, INT32_C(          36));
   simde_test_x86_assert_equal_i64x2(r, simde_x_mm_loadu_epi64(test_vec[6].r));
 
+  #if !(defined(HEDLEY_MSVC_VERSION) && defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE))
   a = simde_x_mm_loadu_epi64(test_vec[7].a);
   r = simde_mm_maskz_rol_epi64(test_vec[7].k, a, INT32_C(         254));
   simde_test_x86_assert_equal_i64x2(r, simde_x_mm_loadu_epi64(test_vec[7].r));
+  #endif
 
   return 0;
 #else
@@ -1279,14 +1599,17 @@ test_simde_mm256_rol_epi64 (SIMDE_MUNIT_TEST_ARGS) {
 
   simde__m256i a, r;
 
+  #if !(defined(HEDLEY_MSVC_VERSION) && defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE))
   a = simde_x_mm256_loadu_epi64(test_vec[0].a);
   r = simde_mm256_rol_epi64(a, INT32_C(         221));
   simde_test_x86_assert_equal_i64x4(r, simde_x_mm256_loadu_epi64(test_vec[0].r));
+  #endif
 
   a = simde_x_mm256_loadu_epi64(test_vec[1].a);
   r = simde_mm256_rol_epi64(a, INT32_C(          42));
   simde_test_x86_assert_equal_i64x4(r, simde_x_mm256_loadu_epi64(test_vec[1].r));
 
+  #if !(defined(HEDLEY_MSVC_VERSION) && defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE))
   a = simde_x_mm256_loadu_epi64(test_vec[2].a);
   r = simde_mm256_rol_epi64(a, INT32_C(         196));
   simde_test_x86_assert_equal_i64x4(r, simde_x_mm256_loadu_epi64(test_vec[2].r));
@@ -1294,11 +1617,13 @@ test_simde_mm256_rol_epi64 (SIMDE_MUNIT_TEST_ARGS) {
   a = simde_x_mm256_loadu_epi64(test_vec[3].a);
   r = simde_mm256_rol_epi64(a, INT32_C(         194));
   simde_test_x86_assert_equal_i64x4(r, simde_x_mm256_loadu_epi64(test_vec[3].r));
+  #endif
 
   a = simde_x_mm256_loadu_epi64(test_vec[4].a);
   r = simde_mm256_rol_epi64(a, INT32_C(           6));
   simde_test_x86_assert_equal_i64x4(r, simde_x_mm256_loadu_epi64(test_vec[4].r));
 
+  #if !(defined(HEDLEY_MSVC_VERSION) && defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE))
   a = simde_x_mm256_loadu_epi64(test_vec[5].a);
   r = simde_mm256_rol_epi64(a, INT32_C(         166));
   simde_test_x86_assert_equal_i64x4(r, simde_x_mm256_loadu_epi64(test_vec[5].r));
@@ -1306,6 +1631,7 @@ test_simde_mm256_rol_epi64 (SIMDE_MUNIT_TEST_ARGS) {
   a = simde_x_mm256_loadu_epi64(test_vec[6].a);
   r = simde_mm256_rol_epi64(a, INT32_C(         195));
   simde_test_x86_assert_equal_i64x4(r, simde_x_mm256_loadu_epi64(test_vec[6].r));
+  #endif
 
   a = simde_x_mm256_loadu_epi64(test_vec[7].a);
   r = simde_mm256_rol_epi64(a, INT32_C(          54));
@@ -1392,10 +1718,12 @@ test_simde_mm256_mask_rol_epi64 (SIMDE_MUNIT_TEST_ARGS) {
   r = simde_mm256_mask_rol_epi64(src, test_vec[1].k, a, INT32_C(          55));
   simde_test_x86_assert_equal_i64x4(r, simde_x_mm256_loadu_epi64(test_vec[1].r));
 
+  #if !(defined(HEDLEY_MSVC_VERSION) && defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE))
   src = simde_x_mm256_loadu_epi64(test_vec[2].src);
   a = simde_x_mm256_loadu_epi64(test_vec[2].a);
   r = simde_mm256_mask_rol_epi64(src, test_vec[2].k, a, INT32_C(         202));
   simde_test_x86_assert_equal_i64x4(r, simde_x_mm256_loadu_epi64(test_vec[2].r));
+  #endif
 
   src = simde_x_mm256_loadu_epi64(test_vec[3].src);
   a = simde_x_mm256_loadu_epi64(test_vec[3].a);
@@ -1417,10 +1745,12 @@ test_simde_mm256_mask_rol_epi64 (SIMDE_MUNIT_TEST_ARGS) {
   r = simde_mm256_mask_rol_epi64(src, test_vec[6].k, a, INT32_C(          63));
   simde_test_x86_assert_equal_i64x4(r, simde_x_mm256_loadu_epi64(test_vec[6].r));
 
+  #if !(defined(HEDLEY_MSVC_VERSION) && defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE))
   src = simde_x_mm256_loadu_epi64(test_vec[7].src);
   a = simde_x_mm256_loadu_epi64(test_vec[7].a);
   r = simde_mm256_mask_rol_epi64(src, test_vec[7].k, a, INT32_C(         194));
   simde_test_x86_assert_equal_i64x4(r, simde_x_mm256_loadu_epi64(test_vec[7].r));
+  #endif
 
   return 0;
 #else
@@ -1488,6 +1818,7 @@ test_simde_mm256_maskz_rol_epi64 (SIMDE_MUNIT_TEST_ARGS) {
 
   simde__m256i a, r;
 
+  #if !(defined(HEDLEY_MSVC_VERSION) && defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE))
   a = simde_x_mm256_loadu_epi64(test_vec[0].a);
   r = simde_mm256_maskz_rol_epi64(test_vec[0].k, a, INT32_C(         205));
   simde_test_x86_assert_equal_i64x4(r, simde_x_mm256_loadu_epi64(test_vec[0].r));
@@ -1499,19 +1830,23 @@ test_simde_mm256_maskz_rol_epi64 (SIMDE_MUNIT_TEST_ARGS) {
   a = simde_x_mm256_loadu_epi64(test_vec[2].a);
   r = simde_mm256_maskz_rol_epi64(test_vec[2].k, a, INT32_C(         229));
   simde_test_x86_assert_equal_i64x4(r, simde_x_mm256_loadu_epi64(test_vec[2].r));
+  #endif
 
   a = simde_x_mm256_loadu_epi64(test_vec[3].a);
   r = simde_mm256_maskz_rol_epi64(test_vec[3].k, a, INT32_C(          42));
   simde_test_x86_assert_equal_i64x4(r, simde_x_mm256_loadu_epi64(test_vec[3].r));
 
+  #if !(defined(HEDLEY_MSVC_VERSION) && defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE))
   a = simde_x_mm256_loadu_epi64(test_vec[4].a);
   r = simde_mm256_maskz_rol_epi64(test_vec[4].k, a, INT32_C(         254));
   simde_test_x86_assert_equal_i64x4(r, simde_x_mm256_loadu_epi64(test_vec[4].r));
+  #endif
 
   a = simde_x_mm256_loadu_epi64(test_vec[5].a);
   r = simde_mm256_maskz_rol_epi64(test_vec[5].k, a, INT32_C(          30));
   simde_test_x86_assert_equal_i64x4(r, simde_x_mm256_loadu_epi64(test_vec[5].r));
 
+  #if !(defined(HEDLEY_MSVC_VERSION) && defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE))
   a = simde_x_mm256_loadu_epi64(test_vec[6].a);
   r = simde_mm256_maskz_rol_epi64(test_vec[6].k, a, INT32_C(         198));
   simde_test_x86_assert_equal_i64x4(r, simde_x_mm256_loadu_epi64(test_vec[6].r));
@@ -1519,6 +1854,7 @@ test_simde_mm256_maskz_rol_epi64 (SIMDE_MUNIT_TEST_ARGS) {
   a = simde_x_mm256_loadu_epi64(test_vec[7].a);
   r = simde_mm256_maskz_rol_epi64(test_vec[7].k, a, INT32_C(         235));
   simde_test_x86_assert_equal_i64x4(r, simde_x_mm256_loadu_epi64(test_vec[7].r));
+  #endif
 
   return 0;
 #else
@@ -1591,9 +1927,11 @@ test_simde_mm512_rol_epi64 (SIMDE_MUNIT_TEST_ARGS) {
 
   simde__m512i a, r;
 
+  #if !(defined(HEDLEY_MSVC_VERSION) && defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE))
   a = simde_mm512_loadu_epi64(test_vec[0].a);
   r = simde_mm512_rol_epi64(a, INT32_C(         133));
   simde_test_x86_assert_equal_i64x8(r, simde_mm512_loadu_epi64(test_vec[0].r));
+  #endif
 
   a = simde_mm512_loadu_epi64(test_vec[1].a);
   r = simde_mm512_rol_epi64(a, INT32_C(          51));
@@ -1607,17 +1945,21 @@ test_simde_mm512_rol_epi64 (SIMDE_MUNIT_TEST_ARGS) {
   r = simde_mm512_rol_epi64(a, INT32_C(          17));
   simde_test_x86_assert_equal_i64x8(r, simde_mm512_loadu_epi64(test_vec[3].r));
 
+  #if !(defined(HEDLEY_MSVC_VERSION) && defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE))
   a = simde_mm512_loadu_epi64(test_vec[4].a);
   r = simde_mm512_rol_epi64(a, INT32_C(         181));
   simde_test_x86_assert_equal_i64x8(r, simde_mm512_loadu_epi64(test_vec[4].r));
+  #endif
 
   a = simde_mm512_loadu_epi64(test_vec[5].a);
   r = simde_mm512_rol_epi64(a, INT32_C(          55));
   simde_test_x86_assert_equal_i64x8(r, simde_mm512_loadu_epi64(test_vec[5].r));
 
+  #if !(defined(HEDLEY_MSVC_VERSION) && defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE))
   a = simde_mm512_loadu_epi64(test_vec[6].a);
   r = simde_mm512_rol_epi64(a, INT32_C(         131));
   simde_test_x86_assert_equal_i64x8(r, simde_mm512_loadu_epi64(test_vec[6].r));
+  #endif
 
   a = simde_mm512_loadu_epi64(test_vec[7].a);
   r = simde_mm512_rol_epi64(a, INT32_C(          28));
@@ -1714,10 +2056,67 @@ test_simde_mm512_mask_rol_epi64 (SIMDE_MUNIT_TEST_ARGS) {
        INT32_C(         120),
       {  INT64_C( 4484149204861311561),  INT64_C( 5951494647325415536),  INT64_C( 7615370746164785574),  INT64_C( 7518492525724043657),
         -INT64_C( 2263859614544236867), -INT64_C( 2599265540496380907),  INT64_C( 3729137153505231961),  INT64_C( 8194039744515917244) } },
+    { {  INT64_C( 5039376786280091641),  INT64_C( 8851607641537599835),  INT64_C(  689019942657147410),  INT64_C( 1141240387957120608),
+         INT64_C( 4346468283404413583), -INT64_C( 7433860210490848230),  INT64_C( 6261945176048341729),  INT64_C( 8748318049480567363) },
+      UINT8_C(174),
+      {  INT64_C( 2384316073153299514),  INT64_C( 6418544564174877074),  INT64_C( 4737405103434035606), -INT64_C( 5114782409972574446),
+        -INT64_C( 1215747195312696791), -INT64_C( 6999379935171065795), -INT64_C( 2143757605005612250),  INT64_C( 4046268827170269934) },
+       INT32_C(          14),
+      {  INT64_C( 5039376786280091641), -INT64_C( 3453824776967776700), -INT64_C( 6253847506553827217),  INT64_C( 2963321871833280065),
+         INT64_C( 4346468283404413583),  INT64_C( 5567048409540421559),  INT64_C( 6261945176048341729), -INT64_C( 3529736554425905655) } },
+    { {  INT64_C( 2840148618417755816),  INT64_C( 4797986661298685809),  INT64_C( 5553602714629625014), -INT64_C( 4714499055491401320),
+         INT64_C( 6582027254419991826), -INT64_C( 5545469371868832427),  INT64_C( 2659492727784746844),  INT64_C( 4357264704541519268) },
+      UINT8_C(203),
+      { -INT64_C( 2125399110114251491), -INT64_C( 9014075241632151293), -INT64_C( 2884500129072643350),  INT64_C( 5234657400438502077),
+         INT64_C( 7949403559554144938), -INT64_C( 6047241648839446467),  INT64_C( 1199639014081110371), -INT64_C( 8277738281829161300) },
+       INT32_C(          43),
+      { -INT64_C( 6095359226324571811), -INT64_C(  412048479778333602),  INT64_C( 5553602714629625014),  INT64_C(  978946076799753936),
+         INT64_C( 6582027254419991826), -INT64_C( 5545469371868832427),  INT64_C(  651641531396693608),  INT64_C( 6716384821369052863) } },
+    { {  INT64_C( 4635820843124149639), -INT64_C( 2390867650618234464), -INT64_C(   41982529742407961), -INT64_C( 6653074369234040470),
+        -INT64_C( 3561013398677786667),  INT64_C( 6237101134546305318), -INT64_C( 4597238065383441128),  INT64_C( 2134073213814423518) },
+      UINT8_C( 48),
+      { -INT64_C( 8798014948109291516), -INT64_C( 6649482220531312387), -INT64_C( 2276646437695853259),  INT64_C(  270291837773111760),
+         INT64_C( 5206069131207777973), -INT64_C( 5544317626426576060), -INT64_C( 7886184741425313651), -INT64_C( 5834444129284410106) },
+       INT32_C(           2),
+      {  INT64_C( 4635820843124149639), -INT64_C( 2390867650618234464), -INT64_C(   41982529742407961), -INT64_C( 6653074369234040470),
+         INT64_C( 2377532451121560277), -INT64_C( 3730526431996752622), -INT64_C( 4597238065383441128),  INT64_C( 2134073213814423518) } },
+    { {  INT64_C( 6423959201694132088), -INT64_C(   47206171675904995), -INT64_C( 7567819112608307474),  INT64_C( 4964846733495697560),
+         INT64_C( 1479757895183661909), -INT64_C( 3488293132972353957),  INT64_C( 8444456961289955582),  INT64_C( 8633107064393004477) },
+      UINT8_C(112),
+      { -INT64_C( 4084346833035810866), -INT64_C( 6318137409180997317), -INT64_C( 8019510038416200902), -INT64_C( 2706898620003500791),
+        -INT64_C( 8085614635793786927),  INT64_C( 2536146618296726025), -INT64_C( 4915170253440633058),  INT64_C( 8642736052751727628) },
+       INT32_C(           1),
+      {  INT64_C( 6423959201694132088), -INT64_C(   47206171675904995), -INT64_C( 7567819112608307474),  INT64_C( 4964846733495697560),
+         INT64_C( 2275514802121977763),  INT64_C( 5072293236593452050),  INT64_C( 8616403566828285501),  INT64_C( 8633107064393004477) } },
+    { { -INT64_C( 6956715935924927263),  INT64_C( 1176527323902682875),  INT64_C( 4525984141007330475),  INT64_C( 7135725468182298800),
+        -INT64_C( 5851932166026498956),  INT64_C( 1501699137593707369), -INT64_C( 2878193611750792649),  INT64_C( 7511883184335406171) },
+      UINT8_C(125),
+      { -INT64_C( 1749121396976348531), -INT64_C(  434206660491247449), -INT64_C( 7195350495636829905), -INT64_C( 3561510301661593212),
+         INT64_C( 5318425304633361292), -INT64_C( 5717596246906298793),  INT64_C( 5206898686637558222),  INT64_C( 6462367282346513311) },
+       INT32_C(          51),
+      { -INT64_C( 7750908474500152956),  INT64_C( 1176527323902682875),  INT64_C( 5295354823104153878),  INT64_C(  875515372848065672),
+         INT64_C( 2045283452665149686), -INT64_C(  955461069763153832),  INT64_C( 5652653140099806166),  INT64_C( 7511883184335406171) } },
+    { { -INT64_C( 5861248900079415389), -INT64_C( 2512206938635284562),  INT64_C(  429956566366905463),  INT64_C( 1476510461676397940),
+         INT64_C( 8325386347054242733),  INT64_C( 4105895006423738373),  INT64_C( 1779562475860992373),  INT64_C( 6661032409745592555) },
+      UINT8_C(216),
+      { -INT64_C( 6324724308985956482),  INT64_C( 8468633531741460735), -INT64_C(  710668351846140943),  INT64_C( 7928308899623829362),
+        -INT64_C( 5358758307947109063), -INT64_C( 7134181559585404363), -INT64_C( 4874030272790390657),  INT64_C( 4383675908740546934) },
+       INT32_C(          23),
+      { -INT64_C( 5861248900079415389), -INT64_C( 2512206938635284562),  INT64_C(  429956566366905463),  INT64_C( 8653616929903674241),
+        -INT64_C( 2667026176805252882),  INT64_C( 4105895006423738373), -INT64_C( 6542909970283876869),  INT64_C(  122570810624731897) } },
+    { { -INT64_C( 8424889235701311915),  INT64_C( 8428482487418098195),  INT64_C( 6255529927478629107),  INT64_C( 8282901594833593614),
+        -INT64_C( 3528270431314447203),  INT64_C( 2360546106290549027),  INT64_C( 2041354452040544938),  INT64_C( 5516263778481727486) },
+      UINT8_C(168),
+      {  INT64_C(  269428532338542986), -INT64_C( 4641152045620917356), -INT64_C( 3444433577179245094),  INT64_C( 7280011465728150955),
+         INT64_C( 3777039729845824660), -INT64_C( 4227551927746913336), -INT64_C( 5330525781779471796), -INT64_C( 1893731412480785032) },
+       INT32_C(           9),
+      { -INT64_C( 8424889235701311915),  INT64_C( 8428482487418098195),  INT64_C( 6255529927478629107),  INT64_C( 1123567563483862730),
+        -INT64_C( 3528270431314447203), -INT64_C( 6237530382402088566),  INT64_C( 2041354452040544938),  INT64_C( 8086952716444299723) } },
   };
 
   simde__m512i src, a, r;
 
+  #if !(defined(HEDLEY_MSVC_VERSION) && defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE))
   src = simde_mm512_loadu_epi64(test_vec[0].src);
   a = simde_mm512_loadu_epi64(test_vec[0].a);
   r = simde_mm512_mask_rol_epi64(src, test_vec[0].k, a, INT32_C(         114));
@@ -1742,12 +2141,14 @@ test_simde_mm512_mask_rol_epi64 (SIMDE_MUNIT_TEST_ARGS) {
   a = simde_mm512_loadu_epi64(test_vec[4].a);
   r = simde_mm512_mask_rol_epi64(src, test_vec[4].k, a, INT32_C(         140));
   simde_test_x86_assert_equal_i64x8(r, simde_mm512_loadu_epi64(test_vec[4].r));
+  #endif
 
   src = simde_mm512_loadu_epi64(test_vec[5].src);
   a = simde_mm512_loadu_epi64(test_vec[5].a);
   r = simde_mm512_mask_rol_epi64(src, test_vec[5].k, a, INT32_C(           4));
   simde_test_x86_assert_equal_i64x8(r, simde_mm512_loadu_epi64(test_vec[5].r));
 
+  #if !(defined(HEDLEY_MSVC_VERSION) && defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE))
   src = simde_mm512_loadu_epi64(test_vec[6].src);
   a = simde_mm512_loadu_epi64(test_vec[6].a);
   r = simde_mm512_mask_rol_epi64(src, test_vec[6].k, a, INT32_C(         136));
@@ -1757,6 +2158,42 @@ test_simde_mm512_mask_rol_epi64 (SIMDE_MUNIT_TEST_ARGS) {
   a = simde_mm512_loadu_epi64(test_vec[7].a);
   r = simde_mm512_mask_rol_epi64(src, test_vec[7].k, a, INT32_C(         120));
   simde_test_x86_assert_equal_i64x8(r, simde_mm512_loadu_epi64(test_vec[7].r));
+  #endif
+
+  src = simde_mm512_loadu_epi64(test_vec[8].src);
+  a = simde_mm512_loadu_epi64(test_vec[8].a);
+  r = simde_mm512_mask_rol_epi64(src, test_vec[8].k, a, INT32_C(         14));
+  simde_test_x86_assert_equal_i64x8(r, simde_mm512_loadu_epi64(test_vec[8].r));
+
+  src = simde_mm512_loadu_epi64(test_vec[9].src);
+  a = simde_mm512_loadu_epi64(test_vec[9].a);
+  r = simde_mm512_mask_rol_epi64(src, test_vec[9].k, a, INT32_C(          43));
+  simde_test_x86_assert_equal_i64x8(r, simde_mm512_loadu_epi64(test_vec[9].r));
+
+  src = simde_mm512_loadu_epi64(test_vec[10].src);
+  a = simde_mm512_loadu_epi64(test_vec[10].a);
+  r = simde_mm512_mask_rol_epi64(src, test_vec[10].k, a, INT32_C(           2));
+  simde_test_x86_assert_equal_i64x8(r, simde_mm512_loadu_epi64(test_vec[10].r));
+
+  src = simde_mm512_loadu_epi64(test_vec[11].src);
+  a = simde_mm512_loadu_epi64(test_vec[11].a);
+  r = simde_mm512_mask_rol_epi64(src, test_vec[11].k, a, INT32_C(           1));
+  simde_test_x86_assert_equal_i64x8(r, simde_mm512_loadu_epi64(test_vec[11].r));
+
+  src = simde_mm512_loadu_epi64(test_vec[12].src);
+  a = simde_mm512_loadu_epi64(test_vec[12].a);
+  r = simde_mm512_mask_rol_epi64(src, test_vec[12].k, a, INT32_C(          51));
+  simde_test_x86_assert_equal_i64x8(r, simde_mm512_loadu_epi64(test_vec[12].r));
+
+  src = simde_mm512_loadu_epi64(test_vec[13].src);
+  a = simde_mm512_loadu_epi64(test_vec[13].a);
+  r = simde_mm512_mask_rol_epi64(src, test_vec[13].k, a, INT32_C(         23));
+  simde_test_x86_assert_equal_i64x8(r, simde_mm512_loadu_epi64(test_vec[13].r));
+
+  src = simde_mm512_loadu_epi64(test_vec[14].src);
+  a = simde_mm512_loadu_epi64(test_vec[14].a);
+  r = simde_mm512_mask_rol_epi64(src, test_vec[14].k, a, INT32_C(           9));
+  simde_test_x86_assert_equal_i64x8(r, simde_mm512_loadu_epi64(test_vec[14].r));
 
   return 0;
 #else
@@ -1765,7 +2202,7 @@ test_simde_mm512_mask_rol_epi64 (SIMDE_MUNIT_TEST_ARGS) {
     simde__m512i src = simde_test_x86_random_i64x8();
     simde__mmask8 k = simde_test_x86_random_mmask8();
     simde__m512i a = simde_test_x86_random_i64x8();
-    int imm8 = simde_test_codegen_random_i32() & 255;
+    int imm8 = simde_test_codegen_random_i32() & 63;
     simde__m512i r;
     SIMDE_CONSTIFY_256_(simde_mm512_mask_rol_epi64, r, simde_mm512_setzero_si512(), imm8, src, k, a);
 
@@ -1836,10 +2273,59 @@ test_simde_mm512_maskz_rol_epi64 (SIMDE_MUNIT_TEST_ARGS) {
        INT32_C(         228),
       {  INT64_C(                   0),  INT64_C(                   0),  INT64_C(                   0),  INT64_C( 1762832689458295531),
          INT64_C(                   0), -INT64_C( 4862784575182425691),  INT64_C(                   0),  INT64_C(                   0) } },
+    { UINT8_C(228),
+      { -INT64_C( 7892356482648893564),  INT64_C( 5899253657785541596), -INT64_C(  460271700206115533), -INT64_C( 4612092583882982590),
+        -INT64_C( 8588529775877687899), -INT64_C( 7291434009127482484), -INT64_C( 1760063421952042171),  INT64_C( 3888013373157212922) },
+       INT32_C(          52),
+      {  INT64_C(                   0),  INT64_C(                   0),  INT64_C( 5998682332636942538),  INT64_C(                   0),
+         INT64_C(                   0), -INT64_C( 5131380110831129584), -INT64_C( 5449785252102175171),  INT64_C( 3432692138071248912) } },
+    { UINT8_C( 78),
+      { -INT64_C( 8452313212780926654), -INT64_C( 5717205721254245080), -INT64_C( 8030797122189488135),  INT64_C( 8505088804686971604),
+         INT64_C( 7260778124802253647), -INT64_C(  926314380945485116), -INT64_C( 8880679898298986592), -INT64_C( 4978370485789244098) },
+       INT32_C(          41),
+      {  INT64_C(                   0), -INT64_C( 7018207590894051319),  INT64_C( 6133888540993462777),  INT64_C(  686140250082929013),
+         INT64_C(                   0),  INT64_C(                   0), -INT64_C( 2333074572846735773),  INT64_C(                   0) } },
+    { UINT8_C( 35),
+      {  INT64_C( 4846820094550526647), -INT64_C( 6773109110261663870),  INT64_C(  686328090672006614), -INT64_C( 1509664422074564548),
+        -INT64_C( 3181660844946295710), -INT64_C( 6379307289015960401), -INT64_C( 1767863328089876310), -INT64_C( 6509429607160042870) },
+       INT32_C(          16),
+      {  INT64_C( 6715511258545079107),  INT64_C( 1523995564537192961),  INT64_C(                   0),  INT64_C(                   0),
+         INT64_C(                   0),  INT64_C( 2725193603297027960),  INT64_C(                   0),  INT64_C(                   0) } },
+    { UINT8_C( 85),
+      {  INT64_C( 4512846626712515602),  INT64_C( 6077139355295041618), -INT64_C( 1605080210521309747), -INT64_C( 6090878149049360827),
+        -INT64_C( 6258567142313394738),  INT64_C( 3513556903803424098), -INT64_C( 9016662485223628569),  INT64_C( 4612563919819872191) },
+       INT32_C(          27),
+      { -INT64_C( 4145519886397536560),  INT64_C(                   0),  INT64_C( 7763908814005193952),  INT64_C(                   0),
+        -INT64_C( 4666903567715981102),  INT64_C(                   0), -INT64_C( 1178468626205314295),  INT64_C(                   0) } },
+    { UINT8_C(151),
+      { -INT64_C( 7440676735919940788), -INT64_C(  718478528357601751),  INT64_C( 5574064562748426577),  INT64_C( 1091519018158299921),
+        -INT64_C( 5693913841437958283),  INT64_C( 4585088757702228501),  INT64_C( 8540939689122092811), -INT64_C( 4687920339814682849) },
+       INT32_C(           9),
+      {  INT64_C( 8849534466867501361),  INT64_C( 1073874955098936300), -INT64_C( 5324275297786092902),  INT64_C(                   0),
+        -INT64_C(  698323170125485215),  INT64_C(                   0),  INT64_C(                   0), -INT64_C( 2138484402875908227) } },
+    { UINT8_C(130),
+      {  INT64_C( 8972650381441466397),  INT64_C( 8187194397222749666),  INT64_C( 4755926656987698248), -INT64_C(  198057362776670621),
+        -INT64_C(  336896848846071845), -INT64_C( 2000209989088191777), -INT64_C( 6682607102657245720),  INT64_C(  304171268526165339) },
+       INT32_C(          57),
+      {  INT64_C(                   0), -INT64_C( 4259493186047373429),  INT64_C(                   0),  INT64_C(                   0),
+         INT64_C(                   0),  INT64_C(                   0),  INT64_C(                   0), -INT64_C( 5329885620771306598) } },
+    { UINT8_C(230),
+      { -INT64_C( 7591781705476370899), -INT64_C( 4477564134275249969), -INT64_C( 8955592707722674239), -INT64_C( 4376778011899544689),
+         INT64_C( 7599384127926372125),  INT64_C( 3881507442177537528), -INT64_C( 2322031873686701726),  INT64_C( 7967287006084186679) },
+       INT32_C(           4),
+      {  INT64_C(                   0),  INT64_C( 2145950146434206972),  INT64_C( 4284469266113625112),  INT64_C(                   0),
+         INT64_C(                   0),  INT64_C( 6763886853711945603), -INT64_C(  259021831568124371), -INT64_C( 1650616418619874442) } },
+    { UINT8_C(204),
+      {  INT64_C( 8011587686467143621), -INT64_C( 6627024686560484418), -INT64_C( 6922409611079456806),  INT64_C( 8098108384691379514),
+        -INT64_C( 4195850689292130615), -INT64_C( 8752600001986914372),  INT64_C( 5056998177205609324),  INT64_C( 6740269697651790446) },
+       INT32_C(          38),
+      {  INT64_C(                   0),  INT64_C(                   0),  INT64_C( 8573154567018662055), -INT64_C( 8568293333715080475),
+         INT64_C(                   0),  INT64_C(                   0), -INT64_C( 8585871821180222685), -INT64_C( 5236389392229079802) } },
   };
 
   simde__m512i a, r;
 
+  #if !(defined(HEDLEY_MSVC_VERSION) && defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE))
   a = simde_mm512_loadu_epi64(test_vec[0].a);
   r = simde_mm512_maskz_rol_epi64(test_vec[0].k, a, INT32_C(          89));
   simde_test_x86_assert_equal_i64x8(r, simde_mm512_loadu_epi64(test_vec[0].r));
@@ -1871,6 +2357,39 @@ test_simde_mm512_maskz_rol_epi64 (SIMDE_MUNIT_TEST_ARGS) {
   a = simde_mm512_loadu_epi64(test_vec[7].a);
   r = simde_mm512_maskz_rol_epi64(test_vec[7].k, a, INT32_C(         228));
   simde_test_x86_assert_equal_i64x8(r, simde_mm512_loadu_epi64(test_vec[7].r));
+  #endif
+
+  a = simde_mm512_loadu_epi64(test_vec[8].a);
+  r = simde_mm512_maskz_rol_epi64(test_vec[8].k, a, INT32_C(          52));
+  simde_test_x86_assert_equal_i64x8(r, simde_mm512_loadu_epi64(test_vec[8].r));
+
+  a = simde_mm512_loadu_epi64(test_vec[9].a);
+  r = simde_mm512_maskz_rol_epi64(test_vec[9].k, a, INT32_C(          41));
+  simde_test_x86_assert_equal_i64x8(r, simde_mm512_loadu_epi64(test_vec[9].r));
+
+  a = simde_mm512_loadu_epi64(test_vec[10].a);
+  r = simde_mm512_maskz_rol_epi64(test_vec[10].k, a, INT32_C(          16));
+  simde_test_x86_assert_equal_i64x8(r, simde_mm512_loadu_epi64(test_vec[10].r));
+
+  a = simde_mm512_loadu_epi64(test_vec[11].a);
+  r = simde_mm512_maskz_rol_epi64(test_vec[11].k, a, INT32_C(          27));
+  simde_test_x86_assert_equal_i64x8(r, simde_mm512_loadu_epi64(test_vec[11].r));
+
+  a = simde_mm512_loadu_epi64(test_vec[12].a);
+  r = simde_mm512_maskz_rol_epi64(test_vec[12].k, a, INT32_C(           9));
+  simde_test_x86_assert_equal_i64x8(r, simde_mm512_loadu_epi64(test_vec[12].r));
+
+  a = simde_mm512_loadu_epi64(test_vec[13].a);
+  r = simde_mm512_maskz_rol_epi64(test_vec[13].k, a, INT32_C(          57));
+  simde_test_x86_assert_equal_i64x8(r, simde_mm512_loadu_epi64(test_vec[13].r));
+
+  a = simde_mm512_loadu_epi64(test_vec[14].a);
+  r = simde_mm512_maskz_rol_epi64(test_vec[14].k, a, INT32_C(           4));
+  simde_test_x86_assert_equal_i64x8(r, simde_mm512_loadu_epi64(test_vec[14].r));
+
+  a = simde_mm512_loadu_epi64(test_vec[15].a);
+  r = simde_mm512_maskz_rol_epi64(test_vec[15].k, a, INT32_C(          38));
+  simde_test_x86_assert_equal_i64x8(r, simde_mm512_loadu_epi64(test_vec[15].r));
 
   return 0;
 #else
@@ -1878,7 +2397,7 @@ test_simde_mm512_maskz_rol_epi64 (SIMDE_MUNIT_TEST_ARGS) {
   for (int i = 0 ; i < 8 ; i++) {
     simde__mmask8 k = simde_test_x86_random_mmask8();
     simde__m512i a = simde_test_x86_random_i64x8();
-    int imm8 = simde_test_codegen_random_i32() & 255;
+    int imm8 = simde_test_codegen_random_i32() & 63;
     simde__m512i r;
     SIMDE_CONSTIFY_256_(simde_mm512_maskz_rol_epi64, r, simde_mm512_setzero_si512(), imm8, k, a);
 

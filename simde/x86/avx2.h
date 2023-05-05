@@ -1602,7 +1602,8 @@ simde_mm256_extract_epi8 (simde__m256i a, const int index)
   simde__m256i_private a_ = simde__m256i_to_private(a);
   return a_.i8[index];
 }
-#if defined(SIMDE_X86_AVX2_NATIVE)
+#if defined(SIMDE_X86_AVX2_NATIVE) && \
+    (!defined(HEDLEY_MSVC_VERSION) || HEDLEY_MSVC_VERSION_CHECK(19,10,0))
   #define simde_mm256_extract_epi8(a, index) _mm256_extract_epi8(a, index)
 #endif
 #if defined(SIMDE_X86_AVX2_ENABLE_NATIVE_ALIASES)
@@ -1617,7 +1618,8 @@ simde_mm256_extract_epi16 (simde__m256i a, const int index)
   simde__m256i_private a_ = simde__m256i_to_private(a);
   return a_.i16[index];
 }
-#if defined(SIMDE_X86_AVX2_NATIVE)
+#if defined(SIMDE_X86_AVX2_NATIVE) && \
+    (!defined(HEDLEY_MSVC_VERSION) || HEDLEY_MSVC_VERSION_CHECK(19,10,0))
   #define simde_mm256_extract_epi16(a, index) _mm256_extract_epi16(a, index)
 #endif
 #if defined(SIMDE_X86_AVX2_ENABLE_NATIVE_ALIASES)
@@ -2803,18 +2805,23 @@ simde_mm_maskload_epi32 (const int32_t mem_addr[HEDLEY_ARRAY_PARAM(4)], simde__m
     return _mm_maskload_epi32(mem_addr, mask);
   #else
     simde__m128i_private
-      mem_ = simde__m128i_to_private(simde_x_mm_loadu_epi32(mem_addr)),
       r_,
-      mask_ = simde__m128i_to_private(mask);
+      mask_ = simde__m128i_to_private(mask),
+      mask_shr_;
 
     #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-      r_.neon_i32 = vandq_s32(mem_.neon_i32, vshrq_n_s32(mask_.neon_i32, 31));
+      mask_shr_.neon_i32 = vshrq_n_s32(mask_.neon_i32, 31);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {
-        r_.i32[i] = mem_.i32[i] & (mask_.i32[i] >> 31);
+        mask_shr_.i32[i] = mask_.i32[i] >> 31;
       }
     #endif
+
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {
+        r_.i32[i] = mask_shr_.i32[i] ? mem_addr[i] : INT32_C(0);
+      }
 
     return simde__m128i_from_private(r_);
   #endif
@@ -2832,11 +2839,11 @@ simde_mm256_maskload_epi32 (const int32_t mem_addr[HEDLEY_ARRAY_PARAM(4)], simde
   #else
     simde__m256i_private
       mask_ = simde__m256i_to_private(mask),
-      r_ = simde__m256i_to_private(simde_x_mm256_loadu_epi32(mem_addr));
+      r_;
 
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {
-      r_.i32[i] &= mask_.i32[i] >> 31;
+      r_.i32[i] = (mask_.i32[i] >> 31) ? mem_addr[i] : INT32_C(0);
     }
 
     return simde__m256i_from_private(r_);
@@ -2849,23 +2856,28 @@ simde_mm256_maskload_epi32 (const int32_t mem_addr[HEDLEY_ARRAY_PARAM(4)], simde
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128i
-simde_mm_maskload_epi64 (const int64_t mem_addr[HEDLEY_ARRAY_PARAM(4)], simde__m128i mask) {
+simde_mm_maskload_epi64 (const int64_t mem_addr[HEDLEY_ARRAY_PARAM(2)], simde__m128i mask) {
   #if defined(SIMDE_X86_AVX2_NATIVE)
     return _mm_maskload_epi64(HEDLEY_REINTERPRET_CAST(const long long *, mem_addr), mask);
   #else
     simde__m128i_private
-      mem_ = simde__m128i_to_private(simde_x_mm_loadu_epi64((mem_addr))),
       r_,
-      mask_ = simde__m128i_to_private(mask);
+      mask_ = simde__m128i_to_private(mask),
+      mask_shr_;
 
     #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-      r_.neon_i64 = vandq_s64(mem_.neon_i64, vshrq_n_s64(mask_.neon_i64, 63));
+      mask_shr_.neon_i64 = vshrq_n_s64(mask_.neon_i64, 63);
     #else
       SIMDE_VECTORIZE
-      for (size_t i = 0 ; i < (sizeof(r_.i64) / sizeof(r_.i64[0])) ; i++) {
-        r_.i64[i] = mem_.i64[i] & (mask_.i64[i] >> 63);
+      for (size_t i = 0 ; i < (sizeof(mask_.i64) / sizeof(mask_.i64[0])) ; i++) {
+        mask_shr_.i64[i] = mask_.i64[i] >> 63;
       }
     #endif
+
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.i64) / sizeof(r_.i64[0])) ; i++) {
+      r_.i64[i] = mask_shr_.i64[i] ? mem_addr[i] : INT64_C(0);
+    }
 
     return simde__m128i_from_private(r_);
   #endif
@@ -2883,11 +2895,11 @@ simde_mm256_maskload_epi64 (const int64_t mem_addr[HEDLEY_ARRAY_PARAM(4)], simde
   #else
     simde__m256i_private
       mask_ = simde__m256i_to_private(mask),
-      r_ = simde__m256i_to_private(simde_x_mm256_loadu_epi64((mem_addr)));
+      r_;
 
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.i64) / sizeof(r_.i64[0])) ; i++) {
-      r_.i64[i] &= mask_.i64[i] >> 63;
+      r_.i64[i] = (mask_.i64[i] >> 63) ? mem_addr[i] : INT64_C(0);
     }
 
     return simde__m256i_from_private(r_);
@@ -3977,11 +3989,11 @@ simde_mm256_shuffle_epi32 (simde__m256i a, const int imm8)
        simde_mm_shuffle_epi32(simde_mm256_extracti128_si256(a, 0), (imm8)))
 #elif defined(SIMDE_SHUFFLE_VECTOR_)
 #  define simde_mm256_shuffle_epi32(a, imm8) (__extension__ ({ \
-      const simde__m256i_private simde__tmp_a_ = simde__m256i_to_private(a); \
+      const simde__m256i_private simde_tmp_a_ = simde__m256i_to_private(a); \
       simde__m256i_from_private((simde__m256i_private) { .i32 = \
           SIMDE_SHUFFLE_VECTOR_(32, 32, \
-                                (simde__tmp_a_).i32, \
-                                (simde__tmp_a_).i32, \
+                                (simde_tmp_a_).i32, \
+                                (simde_tmp_a_).i32, \
                                 ((imm8)     ) & 3, \
                                 ((imm8) >> 2) & 3, \
                                 ((imm8) >> 4) & 3, \
@@ -4005,11 +4017,11 @@ simde_mm256_shuffle_epi32 (simde__m256i a, const int imm8)
        simde_mm_shufflehi_epi16(simde_mm256_extracti128_si256(a, 0), (imm8)))
 #elif defined(SIMDE_SHUFFLE_VECTOR_)
 #  define simde_mm256_shufflehi_epi16(a, imm8) (__extension__ ({ \
-      const simde__m256i_private simde__tmp_a_ = simde__m256i_to_private(a); \
+      const simde__m256i_private simde_tmp_a_ = simde__m256i_to_private(a); \
       simde__m256i_from_private((simde__m256i_private) { .i16 = \
         SIMDE_SHUFFLE_VECTOR_(16, 32, \
-          (simde__tmp_a_).i16, \
-          (simde__tmp_a_).i16, \
+          (simde_tmp_a_).i16, \
+          (simde_tmp_a_).i16, \
           0, 1, 2, 3, \
           (((imm8)     ) & 3) + 4, \
           (((imm8) >> 2) & 3) + 4, \
@@ -4041,11 +4053,11 @@ simde_mm256_shuffle_epi32 (simde__m256i a, const int imm8)
        simde_mm_shufflelo_epi16(simde_mm256_extracti128_si256(a, 0), (imm8)))
 #elif defined(SIMDE_SHUFFLE_VECTOR_)
 #  define simde_mm256_shufflelo_epi16(a, imm8) (__extension__ ({ \
-      const simde__m256i_private simde__tmp_a_ = simde__m256i_to_private(a); \
+      const simde__m256i_private simde_tmp_a_ = simde__m256i_to_private(a); \
       simde__m256i_from_private((simde__m256i_private) { .i16 = \
         SIMDE_SHUFFLE_VECTOR_(16, 32, \
-          (simde__tmp_a_).i16, \
-          (simde__tmp_a_).i16, \
+          (simde_tmp_a_).i16, \
+          (simde_tmp_a_).i16, \
           (((imm8)     ) & 3), \
           (((imm8) >> 2) & 3), \
           (((imm8) >> 4) & 3), \

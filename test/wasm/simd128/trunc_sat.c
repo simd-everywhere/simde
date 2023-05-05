@@ -32,7 +32,7 @@ test_simde_wasm_i32x4_trunc_sat_f32x4(SIMDE_MUNIT_TEST_ARGS) {
       simde_float32 a[sizeof(simde_v128_t) / sizeof(simde_float32)];
       int32_t r[sizeof(simde_v128_t) / sizeof(int32_t)];
     } test_vec[] = {
-      #if !defined(SIMDE_FAST_NANS)
+      #if !defined(SIMDE_FAST_NANS) && !defined(SIMDE_FAST_MATH)
       { {            SIMDE_MATH_NANF, SIMDE_FLOAT32_C(   453.46),            SIMDE_MATH_NANF, SIMDE_FLOAT32_C(   490.85) },
         {  INT32_C(           0),  INT32_C(         453),  INT32_C(           0),  INT32_C(         490) } },
       { { SIMDE_FLOAT32_C(   719.41),            SIMDE_MATH_NANF,            SIMDE_MATH_NANF, SIMDE_FLOAT32_C(   490.85) },

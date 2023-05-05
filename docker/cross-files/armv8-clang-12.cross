@@ -1,11 +1,11 @@
 [binaries]
-c = '/usr/bin/clang-12'
-cpp = '/usr/bin/clang++-12'
-ar = '/usr/bin/llvm-ar-12'
-strip = '/usr/bin/llvm-strip-12'
-objcopy = '/usr/bin/llvm-objcopy-12'
-ld = '/usr/bin/llvm-ld-12'
-exe_wrapper = 'qemu-arm-static'
+c = 'clang-12'
+cpp = 'clang++-12'
+ar = 'llvm-ar-12'
+strip = 'llvm-strip-12'
+objcopy = 'llvm-objcopy-12'
+ld = 'llvm-ld-12'
+exe_wrapper = ['qemu-arm-static', '-L', '/usr/arm-linux-gnueabihf']
 
 [properties]
 c_args = ['--target=arm-linux-gnueabihf', '-march=armv8-a', '-isystem=/usr/arm-linux-gnueabihf/include', '-Weverything', '-fno-lax-vector-conversions', '-Werror']
