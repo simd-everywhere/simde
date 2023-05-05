@@ -31,7 +31,7 @@
 
 #define SIMDE_VERSION_MAJOR 0
 #define SIMDE_VERSION_MINOR 7
-#define SIMDE_VERSION_MICRO 4
+#define SIMDE_VERSION_MICRO 5
 #define SIMDE_VERSION HEDLEY_VERSION_ENCODE(SIMDE_VERSION_MAJOR, SIMDE_VERSION_MINOR, SIMDE_VERSION_MICRO)
 // Also update meson.build in the root directory of the repository
 
