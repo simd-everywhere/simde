@@ -557,16 +557,6 @@
       ]
     },
     {
-      "login": "Pabs",
-      "name": "pabs",
-      "avatar_url": "https://avatars.githubusercontent.com/u/238903?v=4",
-      "profile": "https://github.com/Pabs",
-      "contributions": [
-        "bug",
-        "code"
-      ]
-    },
-    {
       "login": "johnplatts",
       "name": "John Platts",
       "avatar_url": "https://avatars.githubusercontent.com/u/28941113?v=4",
@@ -589,6 +579,15 @@
       "name": "p0nce ",
       "avatar_url": "https://avatars.githubusercontent.com/u/1067485?v=4",
       "profile": "https://github.com/p0nce",
+      "contributions": [
+        "bug"
+      ]
+    },
+    {
+      "login": "pabs3",
+      "name": "Paul Wise",
+      "avatar_url": "https://avatars.githubusercontent.com/u/328602?v=4",
+      "profile": "https://bonedaddy.net/pabs3/",
       "contributions": [
         "bug"
       ]

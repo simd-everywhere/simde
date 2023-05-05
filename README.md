@@ -459,12 +459,12 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/quyykk"><img src="https://avatars.githubusercontent.com/u/85879619?v=4" width="100px;" alt=""/><br /><sub><b>Nick</b></sub></a><br /><a href="#maintenance-quyykk" title="Maintenance">🚧</a></td>
     <td align="center"><a href="https://github.com/thomasdwu"><img src="https://avatars.githubusercontent.com/u/6819659?v=4" width="100px;" alt=""/><br /><sub><b>thomasdwu</b></sub></a><br /><a href="#maintenance-thomasdwu" title="Maintenance">🚧</a></td>
     <td align="center"><a href="https://github.com/Remnant44"><img src="https://avatars.githubusercontent.com/u/54461740?v=4" width="100px;" alt=""/><br /><sub><b>Stephen</b></sub></a><br /><a href="https://github.com/nemequ/simde/issues?q=author%3ARemnant44" title="Bug reports">🐛</a></td>
-    <td align="center"><a href="https://github.com/Pabs"><img src="https://avatars.githubusercontent.com/u/238903?v=4" width="100px;" alt=""/><br /><sub><b>pabs</b></sub></a><br /><a href="https://github.com/nemequ/simde/issues?q=author%3APabs" title="Bug reports">🐛</a> <a href="https://github.com/nemequ/simde/commits?author=Pabs" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/johnplatts"><img src="https://avatars.githubusercontent.com/u/28941113?v=4" width="100px;" alt=""/><br /><sub><b>John Platts</b></sub></a><br /><a href="https://github.com/nemequ/simde/issues?q=author%3Ajohnplatts" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="https://github.com/tycho"><img src="https://avatars.githubusercontent.com/u/29616?v=4" width="100px;" alt=""/><br /><sub><b>Steven Noonan</b></sub></a><br /><a href="https://github.com/nemequ/simde/issues?q=author%3Atycho" title="Bug reports">🐛</a></td>
   </tr>
   <tr>
-    <td align="center"><a href="https://github.com/tycho"><img src="https://avatars.githubusercontent.com/u/29616?v=4" width="100px;" alt=""/><br /><sub><b>Steven Noonan</b></sub></a><br /><a href="https://github.com/nemequ/simde/issues?q=author%3Atycho" title="Bug reports">🐛</a></td>
     <td align="center"><a href="https://github.com/p0nce"><img src="https://avatars.githubusercontent.com/u/1067485?v=4" width="100px;" alt=""/><br /><sub><b>p0nce </b></sub></a><br /><a href="https://github.com/nemequ/simde/issues?q=author%3Ap0nce" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="https://bonedaddy.net/pabs3/"><img src="https://avatars.githubusercontent.com/u/328602?v=4" width="100px;" alt=""/><br /><sub><b>Paul Wise</b></sub></a><br /><a href="https://github.com/nemequ/simde/issues?q=author%3Apabs3" title="Bug reports">🐛</a></td>
   </tr>
 </table>
 
