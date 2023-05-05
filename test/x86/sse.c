@@ -2325,11 +2325,11 @@ test_simde_mm_cvtpi32x2_ps(SIMDE_MUNIT_TEST_ARGS) {
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
     simde__m64 a, b;
-    simde__m128 e;
+    simde__m128 e, r;
     simde_memcpy(&a, test_vec[i].a, sizeof(a));
     simde_memcpy(&b, test_vec[i].b, sizeof(a));
     simde_memcpy(&e, test_vec[i].r, sizeof(e));
-    simde__m128 r = simde_mm_cvtpi32x2_ps(a, b);
+    r = simde_mm_cvtpi32x2_ps(a, b);
     simde_test_x86_assert_equal_f32x4(r, e, 1);
   }
 

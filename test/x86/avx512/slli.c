@@ -237,16 +237,17 @@ test_simde_mm512_slli_epi16 (SIMDE_MUNIT_TEST_ARGS) {
   };
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
-    simde__m512i a = simde_mm512_loadu_epi16(test_vec[i].a);
-    simde__m512i r0 = simde_mm512_slli_epi16(a, 0);
+    simde__m512i a, r0, r3, r7, r13, r24;
+    a = simde_mm512_loadu_epi16(test_vec[i].a);
+    r0 = simde_mm512_slli_epi16(a, 0);
     simde_test_x86_assert_equal_i16x32(r0, simde_mm512_loadu_epi16(test_vec[i].r0));
-    simde__m512i r3 = simde_mm512_slli_epi16(a, 3);
+    r3 = simde_mm512_slli_epi16(a, 3);
     simde_test_x86_assert_equal_i16x32(r3, simde_mm512_loadu_epi16(test_vec[i].r3));
-    simde__m512i r7 = simde_mm512_slli_epi16(a, 7);
+    r7 = simde_mm512_slli_epi16(a, 7);
     simde_test_x86_assert_equal_i16x32(r7, simde_mm512_loadu_epi16(test_vec[i].r7));
-    simde__m512i r13 = simde_mm512_slli_epi16(a, 13);
+    r13 = simde_mm512_slli_epi16(a, 13);
     simde_test_x86_assert_equal_i16x32(r13, simde_mm512_loadu_epi16(test_vec[i].r13));
-    simde__m512i r24 = simde_mm512_slli_epi16(a, 24);
+    r24 = simde_mm512_slli_epi16(a, 24);
     simde_test_x86_assert_equal_i16x32(r24, simde_mm512_loadu_epi16(test_vec[i].r24));
   }
 

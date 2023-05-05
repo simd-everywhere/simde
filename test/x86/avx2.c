@@ -4525,8 +4525,6 @@ test_simde_mm256_bslli_epi128(SIMDE_MUNIT_TEST_ARGS) {
         -INT8_C( 122),  INT8_C(  94), -INT8_C( 113), -INT8_C(  23), -INT8_C(  99), -INT8_C( 110), -INT8_C(  42),  INT8_C( 105),
          INT8_C(   5), -INT8_C(  23), -INT8_C(  24),  INT8_C(  36), -INT8_C(  20),  INT8_C(   8), -INT8_C(  24),  INT8_C(  71),
         -INT8_C( 117),  INT8_C(  77), -INT8_C(  78), -INT8_C( 120), -INT8_C(  92),  INT8_C(  20),  INT8_C(  10),  INT8_C(  64) };
-  r = simde_mm256_bslli_epi128(simde_x_mm256_loadu_epi8(a1), 0);
-  simde_test_x86_assert_equal_i8x32(r, simde_x_mm256_loadu_epi8(e1));
 
   const int8_t a2[32] = {  INT8_C(  62),  INT8_C(  94),  INT8_C(  58), -INT8_C(  15),  INT8_C(  92),  INT8_C( 124),  INT8_C(  43), -INT8_C(  58),
         -INT8_C(   7),  INT8_C(  63),  INT8_C(  54),  INT8_C(  76), -INT8_C(  88), -INT8_C(  90), -INT8_C(   2), -INT8_C(  57),
@@ -4537,8 +4535,6 @@ test_simde_mm256_bslli_epi128(SIMDE_MUNIT_TEST_ARGS) {
          INT8_C( 124),  INT8_C(  43), -INT8_C(  58), -INT8_C(   7),  INT8_C(  63),  INT8_C(  54),  INT8_C(  76), -INT8_C(  88),
          INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(  73),  INT8_C( 106),  INT8_C(  57),  INT8_C(  44),  INT8_C( 105),
         -INT8_C(  54), -INT8_C(  66),  INT8_C(  62), -INT8_C(  71), -INT8_C(  67), -INT8_C( 106), -INT8_C(  54),  INT8_C(  54) };
-  r = simde_mm256_bslli_epi128(simde_x_mm256_loadu_epi8(a2), 3);
-  simde_test_x86_assert_equal_i8x32(r, simde_x_mm256_loadu_epi8(e2));
 
   const int8_t a3[32] = { -INT8_C( 109),  INT8_C(  56),  INT8_C( 107), -INT8_C(  88),  INT8_C( 124),  INT8_C( 123), -INT8_C( 108), -INT8_C(  79),
          INT8_C(  10), -INT8_C( 123), -INT8_C(  57), -INT8_C(  23), -INT8_C(  32), -INT8_C(  10), -INT8_C(  85), -INT8_C(  22),
@@ -4549,8 +4545,6 @@ test_simde_mm256_bslli_epi128(SIMDE_MUNIT_TEST_ARGS) {
          INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0), -INT8_C( 109),  INT8_C(  56),  INT8_C( 107),
          INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),
          INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(  91), -INT8_C(  91),  INT8_C(   0) };
-  r = simde_mm256_bslli_epi128(simde_x_mm256_loadu_epi8(a3), 13);
-  simde_test_x86_assert_equal_i8x32(r, simde_x_mm256_loadu_epi8(e3));
 
   const int8_t a4[32] = {  INT8_C(  74), -INT8_C( 109), -INT8_C(  57),  INT8_C(  52),  INT8_C(  64), -INT8_C( 101),  INT8_C(  54), -INT8_C( 122),
         -INT8_C(  85),      INT8_MAX, -INT8_C( 106),  INT8_C(  80), -INT8_C(  15), -INT8_C(  65),  INT8_C(  88),  INT8_C(  92),
@@ -4561,8 +4555,6 @@ test_simde_mm256_bslli_epi128(SIMDE_MUNIT_TEST_ARGS) {
          INT8_C(  54), -INT8_C( 122), -INT8_C(  85),      INT8_MAX, -INT8_C( 106),  INT8_C(  80), -INT8_C(  15), -INT8_C(  65),
          INT8_C(   0),  INT8_C(   0), -INT8_C(  12),  INT8_C( 103), -INT8_C(   4), -INT8_C(  36), -INT8_C(  67), -INT8_C( 101),
         -INT8_C(  91),      INT8_MAX, -INT8_C(  39), -INT8_C(  89), -INT8_C(  86), -INT8_C(  94), -INT8_C(  33), -INT8_C(  28) };
-  r = simde_mm256_bslli_epi128(simde_x_mm256_loadu_epi8(a4), 2);
-  simde_test_x86_assert_equal_i8x32(r, simde_x_mm256_loadu_epi8(e4));
 
   const int8_t a5[32] = {  INT8_C( 102), -INT8_C(   9),  INT8_C(  57), -INT8_C(  65), -INT8_C(  51),  INT8_C(  43), -INT8_C(  30),  INT8_C(  53),
          INT8_C(  68),  INT8_C(  76), -INT8_C(  34), -INT8_C(  69),  INT8_C(  55),  INT8_C(  91), -INT8_C( 101), -INT8_C(  32),
@@ -4573,6 +4565,19 @@ test_simde_mm256_bslli_epi128(SIMDE_MUNIT_TEST_ARGS) {
          INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),
          INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),
          INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0) };
+
+  r = simde_mm256_bslli_epi128(simde_x_mm256_loadu_epi8(a1), 0);
+  simde_test_x86_assert_equal_i8x32(r, simde_x_mm256_loadu_epi8(e1));
+
+  r = simde_mm256_bslli_epi128(simde_x_mm256_loadu_epi8(a2), 3);
+  simde_test_x86_assert_equal_i8x32(r, simde_x_mm256_loadu_epi8(e2));
+
+  r = simde_mm256_bslli_epi128(simde_x_mm256_loadu_epi8(a3), 13);
+  simde_test_x86_assert_equal_i8x32(r, simde_x_mm256_loadu_epi8(e3));
+
+  r = simde_mm256_bslli_epi128(simde_x_mm256_loadu_epi8(a4), 2);
+  simde_test_x86_assert_equal_i8x32(r, simde_x_mm256_loadu_epi8(e4));
+
   r = simde_mm256_bslli_epi128(simde_x_mm256_loadu_epi8(a5), 19);
   simde_test_x86_assert_equal_i8x32(r, simde_x_mm256_loadu_epi8(e5));
 
@@ -4592,8 +4597,6 @@ test_simde_mm256_bsrli_epi128(SIMDE_MUNIT_TEST_ARGS) {
         -INT8_C( 122),  INT8_C(  94), -INT8_C( 113), -INT8_C(  23), -INT8_C(  99), -INT8_C( 110), -INT8_C(  42),  INT8_C( 105),
          INT8_C(   5), -INT8_C(  23), -INT8_C(  24),  INT8_C(  36), -INT8_C(  20),  INT8_C(   8), -INT8_C(  24),  INT8_C(  71),
         -INT8_C( 117),  INT8_C(  77), -INT8_C(  78), -INT8_C( 120), -INT8_C(  92),  INT8_C(  20),  INT8_C(  10),  INT8_C(  64) };
-  r = simde_mm256_bsrli_epi128(simde_x_mm256_loadu_epi8(a1), 0);
-  simde_test_x86_assert_equal_i8x32(r, simde_x_mm256_loadu_epi8(e1));
 
   const int8_t a2[32] = {  INT8_C(  16), -INT8_C(  10), -INT8_C( 116),  INT8_C(  62), -INT8_C(  37), -INT8_C(  30), -INT8_C( 105),  INT8_C(  80),
          INT8_C(   0), -INT8_C(  81),  INT8_C(  44),  INT8_C(  72), -INT8_C(  47), -INT8_C(  51),  INT8_C(  72), -INT8_C( 102),
@@ -4604,8 +4607,6 @@ test_simde_mm256_bsrli_epi128(SIMDE_MUNIT_TEST_ARGS) {
          INT8_C(  72), -INT8_C(  47), -INT8_C(  51),  INT8_C(  72), -INT8_C( 102),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),
          INT8_C( 111),  INT8_C(  75), -INT8_C(   3), -INT8_C(  50), -INT8_C(  67), -INT8_C( 112), -INT8_C(  59),  INT8_C(  80),
          INT8_C(   2), -INT8_C(  10),  INT8_C(   8), -INT8_C(  72),  INT8_C(   7),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0) };
-  r = simde_mm256_bsrli_epi128(simde_x_mm256_loadu_epi8(a2), 3);
-  simde_test_x86_assert_equal_i8x32(r, simde_x_mm256_loadu_epi8(e2));
 
   const int8_t a3[32] = { -INT8_C(  90),  INT8_C(  37),  INT8_C(   2),  INT8_C(  43),  INT8_C(  12),  INT8_C(   1), -INT8_C(  14), -INT8_C( 108),
         -INT8_C( 108), -INT8_C(  85),  INT8_C(  63),  INT8_C( 117), -INT8_C(  64),  INT8_C( 115), -INT8_C(  42), -INT8_C(  20),
@@ -4616,8 +4617,6 @@ test_simde_mm256_bsrli_epi128(SIMDE_MUNIT_TEST_ARGS) {
          INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),
         -INT8_C(  64),  INT8_C(  14), -INT8_C( 100),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),
          INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0) };
-  r = simde_mm256_bsrli_epi128(simde_x_mm256_loadu_epi8(a3), 13);
-  simde_test_x86_assert_equal_i8x32(r, simde_x_mm256_loadu_epi8(e3));
 
   const int8_t a4[32] = { -INT8_C( 103), -INT8_C(  46), -INT8_C(  10),  INT8_C(  82), -INT8_C(  74), -INT8_C(  94), -INT8_C( 122), -INT8_C(   9),
          INT8_C( 105), -INT8_C(  36), -INT8_C(  46), -INT8_C(  40), -INT8_C( 102), -INT8_C(  76),  INT8_C(  23), -INT8_C(  45),
@@ -4628,8 +4627,6 @@ test_simde_mm256_bsrli_epi128(SIMDE_MUNIT_TEST_ARGS) {
         -INT8_C(  46), -INT8_C(  40), -INT8_C( 102), -INT8_C(  76),  INT8_C(  23), -INT8_C(  45),  INT8_C(   0),  INT8_C(   0),
          INT8_C( 102),  INT8_C( 124), -INT8_C( 122),  INT8_C(   8),  INT8_C(  49), -INT8_C(  57), -INT8_C(  70), -INT8_C(  95),
         -INT8_C(  12), -INT8_C( 115), -INT8_C(  68),  INT8_C(  77),  INT8_C(  94),  INT8_C(  85),  INT8_C(   0),  INT8_C(   0) };
-  r = simde_mm256_bsrli_epi128(simde_x_mm256_loadu_epi8(a4), 2);
-  simde_test_x86_assert_equal_i8x32(r, simde_x_mm256_loadu_epi8(e4));
 
   const int8_t a5[32] = {  INT8_C(   3), -INT8_C(  11),  INT8_C(  13), -INT8_C(  50),  INT8_C( 113), -INT8_C(  14), -INT8_C(  91), -INT8_C(  97),
         -INT8_C(  82), -INT8_C(  41), -INT8_C(  48),  INT8_C(  51),  INT8_C(   0),  INT8_C(  74),  INT8_C(  95), -INT8_C(  86),
@@ -4640,6 +4637,19 @@ test_simde_mm256_bsrli_epi128(SIMDE_MUNIT_TEST_ARGS) {
          INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),
          INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),
          INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0),  INT8_C(   0) };
+
+  r = simde_mm256_bsrli_epi128(simde_x_mm256_loadu_epi8(a1), 0);
+  simde_test_x86_assert_equal_i8x32(r, simde_x_mm256_loadu_epi8(e1));
+
+  r = simde_mm256_bsrli_epi128(simde_x_mm256_loadu_epi8(a2), 3);
+  simde_test_x86_assert_equal_i8x32(r, simde_x_mm256_loadu_epi8(e2));
+
+  r = simde_mm256_bsrli_epi128(simde_x_mm256_loadu_epi8(a3), 13);
+  simde_test_x86_assert_equal_i8x32(r, simde_x_mm256_loadu_epi8(e3));
+
+  r = simde_mm256_bsrli_epi128(simde_x_mm256_loadu_epi8(a4), 2);
+  simde_test_x86_assert_equal_i8x32(r, simde_x_mm256_loadu_epi8(e4));
+
   r = simde_mm256_bsrli_epi128(simde_x_mm256_loadu_epi8(a5), 19);
   simde_test_x86_assert_equal_i8x32(r, simde_x_mm256_loadu_epi8(e5));
 
@@ -7935,12 +7945,12 @@ test_simde_mm_maskload_epi64_no_illegal_memory_access (SIMDE_MUNIT_TEST_ARGS) {
   #endif
   const simde__m128i mask = simde_mm_set_epi64x(INT64_C(0), INT64_C(0));
   simde__m128i test;
+  int64_t r[2] = { INT64_C(0), INT64_C(0) };
   #if defined(SIMDE_X86_AVX2_NATIVE) && defined(SIMDE_NATIVE_ALIASES_TESTING)
     test = simde_mm_maskload_epi64(HEDLEY_REINTERPRET_CAST(const long long *, ptr), mask);
   #else
     test = simde_mm_maskload_epi64(ptr, mask);
   #endif
-  int64_t r[2] = { INT64_C(0), INT64_C(0) };
   simde_test_x86_assert_equal_i64x2(test, simde_x_mm_loadu_epi64(r));
   return 0;
 }
@@ -8006,12 +8016,12 @@ test_simde_mm256_maskload_epi64_no_illegal_memory_access (SIMDE_MUNIT_TEST_ARGS)
   #endif
   const simde__m256i mask = simde_mm256_set_epi64x(INT64_C(0), INT64_C(0), INT64_C(0), INT64_C(0));
   simde__m256i test;
+  int64_t r[4] = { INT64_C(0), INT64_C(0), INT64_C(0), INT64_C(0) };
   #if defined(SIMDE_X86_AVX2_NATIVE) && defined(SIMDE_NATIVE_ALIASES_TESTING)
     test = simde_mm256_maskload_epi64(HEDLEY_REINTERPRET_CAST(const long long *, ptr), mask);
   #else
     test = simde_mm256_maskload_epi64(ptr, mask);
   #endif
-  int64_t r[4] = { INT64_C(0), INT64_C(0), INT64_C(0), INT64_C(0) };
   simde_test_x86_assert_equal_i64x4(test, simde_x_mm256_loadu_epi64(r));
   return 0;
 }

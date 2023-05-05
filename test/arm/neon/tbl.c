@@ -203,10 +203,11 @@ test_simde_vtbl2_s8 (SIMDE_MUNIT_TEST_ARGS) {
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
     simde_int8x8x2_t a;
+    simde_int8x8_t b, r;
     a.val[0]  = simde_vld1_s8(test_vec[i].a[0]);
     a.val[1]  = simde_vld1_s8(test_vec[i].a[1]);
-    simde_int8x8_t b = simde_vld1_s8(test_vec[i].b);
-    simde_int8x8_t r = simde_vtbl2_s8(a, b);
+    b = simde_vld1_s8(test_vec[i].b);
+    r = simde_vtbl2_s8(a, b);
 
     simde_test_arm_neon_assert_equal_i8x8(r, simde_vld1_s8(test_vec[i].r));
   }
@@ -288,10 +289,11 @@ test_simde_vtbl2_u8 (SIMDE_MUNIT_TEST_ARGS) {
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
     simde_uint8x8x2_t a;
+    simde_uint8x8_t b, r;
     a.val[0]  = simde_vld1_u8(test_vec[i].a[0]);
     a.val[1]  = simde_vld1_u8(test_vec[i].a[1]);
-    simde_uint8x8_t b = simde_vld1_u8(test_vec[i].b);
-    simde_uint8x8_t r = simde_vtbl2_u8(a, b);
+    b = simde_vld1_u8(test_vec[i].b);
+    r = simde_vtbl2_u8(a, b);
 
     simde_test_arm_neon_assert_equal_u8x8(r, simde_vld1_u8(test_vec[i].r));
   }
@@ -382,11 +384,12 @@ test_simde_vtbl3_s8 (SIMDE_MUNIT_TEST_ARGS) {
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
     simde_int8x8x3_t a;
+    simde_int8x8_t b, r;
     a.val[0]  = simde_vld1_s8(test_vec[i].a[0]);
     a.val[1]  = simde_vld1_s8(test_vec[i].a[1]);
     a.val[2]  = simde_vld1_s8(test_vec[i].a[2]);
-    simde_int8x8_t b = simde_vld1_s8(test_vec[i].b);
-    simde_int8x8_t r = simde_vtbl3_s8(a, b);
+    b = simde_vld1_s8(test_vec[i].b);
+    r = simde_vtbl3_s8(a, b);
 
     simde_test_arm_neon_assert_equal_i8x8(r, simde_vld1_s8(test_vec[i].r));
   }
@@ -476,11 +479,12 @@ test_simde_vtbl3_u8 (SIMDE_MUNIT_TEST_ARGS) {
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
     simde_uint8x8x3_t a;
+    simde_uint8x8_t b, r;
     a.val[0]  = simde_vld1_u8(test_vec[i].a[0]);
     a.val[1]  = simde_vld1_u8(test_vec[i].a[1]);
     a.val[2]  = simde_vld1_u8(test_vec[i].a[2]);
-    simde_uint8x8_t b = simde_vld1_u8(test_vec[i].b);
-    simde_uint8x8_t r = simde_vtbl3_u8(a, b);
+    b = simde_vld1_u8(test_vec[i].b);
+    r = simde_vtbl3_u8(a, b);
 
     simde_test_arm_neon_assert_equal_u8x8(r, simde_vld1_u8(test_vec[i].r));
   }
@@ -579,12 +583,13 @@ test_simde_vtbl4_s8 (SIMDE_MUNIT_TEST_ARGS) {
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
     simde_int8x8x4_t a;
+    simde_int8x8_t b, r;
     a.val[0]  = simde_vld1_s8(test_vec[i].a[0]);
     a.val[1]  = simde_vld1_s8(test_vec[i].a[1]);
     a.val[2]  = simde_vld1_s8(test_vec[i].a[2]);
     a.val[3]  = simde_vld1_s8(test_vec[i].a[3]);
-    simde_int8x8_t b = simde_vld1_s8(test_vec[i].b);
-    simde_int8x8_t r = simde_vtbl4_s8(a, b);
+    b = simde_vld1_s8(test_vec[i].b);
+    r = simde_vtbl4_s8(a, b);
 
     simde_test_arm_neon_assert_equal_i8x8(r, simde_vld1_s8(test_vec[i].r));
   }
@@ -682,12 +687,13 @@ test_simde_vtbl4_u8 (SIMDE_MUNIT_TEST_ARGS) {
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
     simde_uint8x8x4_t a;
+    simde_uint8x8_t b, r;
     a.val[0]  = simde_vld1_u8(test_vec[i].a[0]);
     a.val[1]  = simde_vld1_u8(test_vec[i].a[1]);
     a.val[2]  = simde_vld1_u8(test_vec[i].a[2]);
     a.val[3]  = simde_vld1_u8(test_vec[i].a[3]);
-    simde_uint8x8_t b = simde_vld1_u8(test_vec[i].b);
-    simde_uint8x8_t r = simde_vtbl4_u8(a, b);
+    b = simde_vld1_u8(test_vec[i].b);
+    r = simde_vtbl4_u8(a, b);
 
     simde_test_arm_neon_assert_equal_u8x8(r, simde_vld1_u8(test_vec[i].r));
   }

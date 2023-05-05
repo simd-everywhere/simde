@@ -176,22 +176,22 @@ test_simde_x_mm512_round_ps (SIMDE_MUNIT_TEST_ARGS) {
   };
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
-    simde__m512 r;
-    simde__m512 a = simde_mm512_loadu_ps(test_vec[i].a);
+    simde__m512 r, a, nearest, neginf, posinf, truncate;
+    a = simde_mm512_loadu_ps(test_vec[i].a);
 
-    simde__m512 nearest = simde_mm512_loadu_ps(test_vec[i].nearest);
+    nearest = simde_mm512_loadu_ps(test_vec[i].nearest);
     r = simde_x_mm512_round_ps(a, SIMDE_MM_FROUND_TO_NEAREST_INT);
     simde_assert_m512_close(r, nearest, 1);
 
-    simde__m512 neginf = simde_mm512_loadu_ps(test_vec[i].neginf);
+    neginf = simde_mm512_loadu_ps(test_vec[i].neginf);
     r = simde_x_mm512_round_ps(a, SIMDE_MM_FROUND_TO_NEG_INF);
     simde_assert_m512_close(r, neginf, 1);
 
-    simde__m512 posinf = simde_mm512_loadu_ps(test_vec[i].posinf);
+    posinf = simde_mm512_loadu_ps(test_vec[i].posinf);
     r = simde_x_mm512_round_ps(a, SIMDE_MM_FROUND_TO_POS_INF);
     simde_assert_m512_close(r, posinf, 1);
 
-    simde__m512 truncate = simde_mm512_loadu_ps(test_vec[i].truncate);
+    truncate = simde_mm512_loadu_ps(test_vec[i].truncate);
     r = simde_x_mm512_round_ps(a, SIMDE_MM_FROUND_TO_ZERO);
     simde_assert_m512_close(r, truncate, 1);
   }
@@ -309,22 +309,22 @@ test_simde_x_mm512_round_pd (SIMDE_MUNIT_TEST_ARGS) {
   };
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
-    simde__m512d r;
-    simde__m512d a = simde_mm512_loadu_pd(test_vec[i].a);
+    simde__m512d r, a, nearest, neginf, posinf, truncate;
+    a = simde_mm512_loadu_pd(test_vec[i].a);
 
-    simde__m512d nearest = simde_mm512_loadu_pd(test_vec[i].nearest);
+    nearest = simde_mm512_loadu_pd(test_vec[i].nearest);
     r = simde_x_mm512_round_pd(a, SIMDE_MM_FROUND_TO_NEAREST_INT);
     simde_assert_m512d_close(r, nearest, 1);
 
-    simde__m512d neginf = simde_mm512_loadu_pd(test_vec[i].neginf);
+    neginf = simde_mm512_loadu_pd(test_vec[i].neginf);
     r = simde_x_mm512_round_pd(a, SIMDE_MM_FROUND_TO_NEG_INF);
     simde_assert_m512d_close(r, neginf, 1);
 
-    simde__m512d posinf = simde_mm512_loadu_pd(test_vec[i].posinf);
+    posinf = simde_mm512_loadu_pd(test_vec[i].posinf);
     r = simde_x_mm512_round_pd(a, SIMDE_MM_FROUND_TO_POS_INF);
     simde_assert_m512d_close(r, posinf, 1);
 
-    simde__m512d truncate = simde_mm512_loadu_pd(test_vec[i].truncate);
+    truncate = simde_mm512_loadu_pd(test_vec[i].truncate);
     r = simde_x_mm512_round_pd(a, SIMDE_MM_FROUND_TO_ZERO);
     simde_assert_m512d_close(r, truncate, 1);
   }
