@@ -740,70 +740,71 @@ test_simde_svand_s8_m (SIMDE_MUNIT_TEST_ARGS) {
 #endif
 }
 
-static int
-test_simde_svand_n_s8_m (SIMDE_MUNIT_TEST_ARGS) {
-#if 0
-
-
-  static int8_t r[sizeof(e) / sizeof(e[0])];
-  static const int32_t len = HEDLEY_STATIC_CAST(int32_t, sizeof(e) / sizeof(e[0]));
-  int32_t i = 0;
-  simde_svbool_t pg = simde_svwhilelt_b8_s32(i, len);
-  while (simde_svptest_first(simde_svptrue_b8(), pg)) {
-    simde_svint8_t
-      rv,
-      av = simde_svld1_s8(pg, &(a[i])),
-      bv = simde_svld1_s8(pg, &(b[i]));
-    simde_svbool_t pv;
-
-    pv = simde_svcmplt_s8(pg, simde_svld1_s8(pg, &(p[i])), simde_svdup_n_s8(INT8_C(0)));
-    rv = simde_svand_s8_m(pv, av, bv);
-
-    simde_svst1_s8(pg, &(r[i]), rv);
-
-    i += simde_svcntb();
-    pg = simde_svwhilelt_b8_s32(i, len);
-  }
-
-  simde_assert_equal_vi8(len, e, r);
-
-  return 0;
-#else
-  int8_t p[1024], a[1024], b, e[1024];
-  int32_t len = simde_test_arm_sve_random_length(sizeof(e), sizeof(e[0]));
-
-  fputc('\n', stdout);
-
-  simde_test_codegen_random_memory(sizeof(p), HEDLEY_REINTERPRET_CAST(uint8_t*, p));
-  simde_test_codegen_random_memory(sizeof(a), HEDLEY_REINTERPRET_CAST(uint8_t*, a));
-  b = simde_test_codegen_random_i8();
-
-  int32_t i = 0;
-  simde_svbool_t pg = simde_svwhilelt_b8_s32(i, len);
-  while (simde_svptest_first(simde_svptrue_b8(), pg)) {
-    simde_svint8_t av, ev;
-    simde_svbool_t pv;
-
-    pv = simde_svcmplt_s8(pg, simde_svld1_s8(pg, &(p[i])), simde_svdup_n_s8(0));
-    av = simde_svld1_s8(pg, &(a[i]));
-
-    ev = simde_svand_n_s8_m(pv, av, b);
-
-    simde_svst1_s8(pg, &(e[i]), ev);
-    simde_svst1_s8(pg, &(p[i]), simde_svdup_n_s8_z(pv, ~INT8_C(0)));
-
-    i += simde_svcntb();
-    pg = simde_svwhilelt_b8_s32(i, len);
-  }
-
-  simde_test_codegen_write_1vi8(1, HEDLEY_STATIC_CAST(size_t, len), p);
-  simde_test_codegen_write_1vi8(1, HEDLEY_STATIC_CAST(size_t, len), a);
-  simde_test_codegen_write_1i8(1, b);
-  simde_test_codegen_write_1vi8(1, HEDLEY_STATIC_CAST(size_t, len), e);
-
-  return 1;
-#endif
-}
+/* the simde_svand_n_s8_m test needs finishing */
+//static int
+//test_simde_svand_n_s8_m (SIMDE_MUNIT_TEST_ARGS) {
+//#if 0
+//
+//
+//  static int8_t r[sizeof(e) / sizeof(e[0])];
+//  static const int32_t len = HEDLEY_STATIC_CAST(int32_t, sizeof(e) / sizeof(e[0]));
+//  int32_t i = 0;
+//  simde_svbool_t pg = simde_svwhilelt_b8_s32(i, len);
+//  while (simde_svptest_first(simde_svptrue_b8(), pg)) {
+//    simde_svint8_t
+//      rv,
+//      av = simde_svld1_s8(pg, &(a[i])),
+//      bv = simde_svld1_s8(pg, &(b[i]));
+//    simde_svbool_t pv;
+//
+//    pv = simde_svcmplt_s8(pg, simde_svld1_s8(pg, &(p[i])), simde_svdup_n_s8(INT8_C(0)));
+//    rv = simde_svand_s8_m(pv, av, bv);
+//
+//    simde_svst1_s8(pg, &(r[i]), rv);
+//
+//    i += simde_svcntb();
+//    pg = simde_svwhilelt_b8_s32(i, len);
+//  }
+//
+//  simde_assert_equal_vi8(len, e, r);
+//
+//  return 0;
+//#else
+//  int8_t p[1024], a[1024], b, e[1024];
+//  int32_t len = simde_test_arm_sve_random_length(sizeof(e), sizeof(e[0]));
+//
+//  fputc('\n', stdout);
+//
+//  simde_test_codegen_random_memory(sizeof(p), HEDLEY_REINTERPRET_CAST(uint8_t*, p));
+//  simde_test_codegen_random_memory(sizeof(a), HEDLEY_REINTERPRET_CAST(uint8_t*, a));
+//  b = simde_test_codegen_random_i8();
+//
+//  int32_t i = 0;
+//  simde_svbool_t pg = simde_svwhilelt_b8_s32(i, len);
+//  while (simde_svptest_first(simde_svptrue_b8(), pg)) {
+//    simde_svint8_t av, ev;
+//    simde_svbool_t pv;
+//
+//    pv = simde_svcmplt_s8(pg, simde_svld1_s8(pg, &(p[i])), simde_svdup_n_s8(0));
+//    av = simde_svld1_s8(pg, &(a[i]));
+//
+//    ev = simde_svand_n_s8_m(pv, av, b);
+//
+//    simde_svst1_s8(pg, &(e[i]), ev);
+//    simde_svst1_s8(pg, &(p[i]), simde_svdup_n_s8_z(pv, ~INT8_C(0)));
+//
+//    i += simde_svcntb();
+//    pg = simde_svwhilelt_b8_s32(i, len);
+//  }
+//
+//  simde_test_codegen_write_1vi8(1, HEDLEY_STATIC_CAST(size_t, len), p);
+//  simde_test_codegen_write_1vi8(1, HEDLEY_STATIC_CAST(size_t, len), a);
+//  simde_test_codegen_write_1i8(1, b);
+//  simde_test_codegen_write_1vi8(1, HEDLEY_STATIC_CAST(size_t, len), e);
+//
+//  return 1;
+//#endif
+//}
 
 static int
 test_simde_svand_s16_z (SIMDE_MUNIT_TEST_ARGS) {
