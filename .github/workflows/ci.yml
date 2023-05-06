@@ -15,6 +15,21 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  checkinstall:
+    runs-on: ubuntu-22.04
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 2
+    - name: Install APT Dependencies
+      run: |
+        sudo apt-get install -y ninja-build ninja-build pipx
+        pipx install meson==0.55.0
+    - run: |
+        meson setup build --prefix $PWD/install -Dtests=false
+        meson install -C build --quiet
+        diff <(find simde/ -type f -name "*.h")  <(cd install/include/; find simde -type f -name "*.h" )
+
   formatting:
     runs-on: ubuntu-22.04
     steps:
