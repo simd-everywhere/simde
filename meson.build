@@ -69,6 +69,7 @@ simde_neon_families = [
   'ld1q_x2',
   'ld1q_x3',
   'ld1q_x4',
+  'ld1',
   'ld2',
   'ld3',
   'ld4',
@@ -382,6 +383,7 @@ if not meson.is_subproject()
 
   install_headers(
     files([
+      'simde/x86/avx512.h',
       'simde/x86/avx2.h',
       'simde/x86/avx.h',
       'simde/x86/clmul.h',
