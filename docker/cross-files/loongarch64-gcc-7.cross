@@ -1,0 +1,18 @@
+[binaries]
+c = 'loongarch64-unknown-linux-gnu-gcc'
+cpp = 'loongarch64-unknown-linux-gnu-g++'
+ar = 'loongarch64-unknown-linux-gnu-ar'
+strip = 'loongarch64-unknown-linux-gnu-strip'
+objcopy = 'loongarch64-unknown-linux-gnu-objcopy'
+ld = 'loongarch64-unknown-linux-gnu-ld'
+exe_wrapper = ['qemu-loongarch64', '-L', '/opt/cross-tools/target/usr']
+
+[properties]
+c_args = ['-march=loongarch64', '-Wextra', '-Werror']
+cpp_args = ['-march=loongarch64', '-Wextra', '-Werror']
+
+[host_machine]
+system = 'linux'
+cpu_family = 'loongarch64'
+cpu = 'loongarch64'
+endian = 'little'

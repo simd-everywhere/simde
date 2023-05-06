@@ -644,3 +644,30 @@ jobs:
         run: |
           meson --backend=ninja build --cross-file test/arm64cl.txt
           meson test -C build --print-errorlogs $(meson test -C build --list | grep -v emul)
+
+  linux-gcc-loongarch64:
+    runs-on: ubuntu-22.04
+    steps:
+    - uses: actions/checkout@v3
+    - name: CPU Information
+      run: cat /proc/cpuinfo
+    - name: Install APT Dependencies
+      run: sudo apt-get install -y ninja-build ninja-build meson
+    - name: loongarch64-toolchain
+      run: |
+        wget https://github.com/loongson/build-tools/releases/download/2022.09.06/loongarch64-clfs-7.3-cross-tools-gcc-glibc.tar.xz
+        tar -xvf loongarch64-clfs-7.3-cross-tools-gcc-glibc.tar.xz -C /opt
+        wget https://github.com/loongson/build-tools/releases/download/2022.09.06/qemu-loongarch64
+        chmod +x qemu-loongarch64
+    - name: set env
+      run: |
+        echo "LD_LIBRARY_PATH=/opt/cross-tools/target/usr/lib64:/opt/cross-tools/loongarch64-unknown-linux-gnu/lib64:$LD_LIBRARY_PATH" >> $GITHUB_ENV
+        echo "PATH=$GITHUB_WORKSPACE:/opt/cross-tools/bin:$PATH" >> $GITHUB_ENV
+    - name: Configure
+      run: meson setup build --cross-file=docker/cross-files/loongarch64-gcc-7.cross
+    - name: Build
+      run: ninja -C build -v
+    # Due to the qemu-loongarch64(v2022.09.06) provided by Loongson causing timeouts in four sets of test cases,
+    # the tests have been temporarily disabled.
+    #- name: Test
+    #  run: ninja -C build -v test
