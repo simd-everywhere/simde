@@ -27,7 +27,7 @@
 
 #if !defined(SIMDE_ARM_NEON_RSHL_H)
 #define SIMDE_ARM_NEON_RSHL_H
-#include <simde/x86/avx.h>
+#include "../../x86/avx.h"
 #include "types.h"
 
 /* Notes from the implementer (Christopher Moore aka rosbif)

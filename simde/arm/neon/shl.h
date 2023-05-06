@@ -29,7 +29,7 @@
 #define SIMDE_ARM_NEON_SHL_H
 
 #include "types.h"
-#include <simde/x86/avx.h>
+#include "../../x86/avx.h"
 
 /* Notes from the implementer (Christopher Moore aka rosbif)
  *
