@@ -3355,7 +3355,7 @@ test_simde_mm_test_all_zeros(SIMDE_MUNIT_TEST_ARGS) {
     simde__m128i a;
     simde__m128i b;
     int r;
-  } test_vec[8] = {
+  } test_vec[] = {
     { simde_x_mm_set_epu32(UINT32_C(1201894317), UINT32_C(2319231887), UINT32_C(1402528928), UINT32_C(3687328034)),
       simde_x_mm_set_epu32(UINT32_C(1967137742), UINT32_C(1472851836), UINT32_C(2181608867), UINT32_C(1889365185)),
       0 },
@@ -3379,7 +3379,22 @@ test_simde_mm_test_all_zeros(SIMDE_MUNIT_TEST_ARGS) {
       0 },
     { simde_x_mm_set_epu32(UINT32_C(3588833624), UINT32_C( 610042197), UINT32_C(1310204993), UINT32_C(1509811379)),
       simde_x_mm_set_epu32(UINT32_C( 571869223), UINT32_C(1235317762), UINT32_C(  29362474), UINT32_C( 570561100)),
-      1 }
+      1 },
+    { simde_x_mm_set_epu32(UINT32_C(         0), UINT32_C(         0),           UINT32_MAX, UINT32_C(         0)),
+      simde_x_mm_set_epu32(          UINT32_MAX,           UINT32_MAX,           UINT32_MAX,           UINT32_MAX),
+      0 },
+    { simde_x_mm_set_epu32(UINT32_C(         0), UINT32_C(         0),           UINT32_MAX,           UINT32_MAX),
+      simde_x_mm_set_epu32(          UINT32_MAX,           UINT32_MAX,           UINT32_MAX,           UINT32_MAX),
+      0 },
+    { simde_x_mm_set_epu32(          UINT32_MAX,           UINT32_MAX, UINT32_C(         0), UINT32_C(         0)),
+      simde_x_mm_set_epu32(          UINT32_MAX,           UINT32_MAX,           UINT32_MAX,           UINT32_MAX),
+      0 },
+    { simde_x_mm_set_epu32(UINT32_C(         0), UINT32_C(         0), UINT32_C(         0),           UINT32_MAX),
+      simde_x_mm_set_epu32(          UINT32_MAX,           UINT32_MAX,           UINT32_MAX,           UINT32_MAX),
+      0 },
+    { simde_x_mm_set_epu32(UINT32_C(         0),           UINT32_MAX, UINT32_C(         0), UINT32_C(         0)),
+      simde_x_mm_set_epu32(          UINT32_MAX,           UINT32_MAX,           UINT32_MAX,           UINT32_MAX),
+      0 },
   };
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {

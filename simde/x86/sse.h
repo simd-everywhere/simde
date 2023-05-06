@@ -596,6 +596,8 @@ simde_x_mm_round_ps (simde__m128 a, int rounding, int lax_rounding)
         r_.altivec_f32 = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(float), vec_round(a_.altivec_f32));
       #elif defined(SIMDE_ARM_NEON_A32V8_NATIVE) && !defined(SIMDE_BUG_GCC_95399)
         r_.neon_f32 = vrndiq_f32(a_.neon_f32);
+      #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+        r_.wasm_v128 = wasm_f32x4_nearest(a_.wasm_v128);
       #elif defined(simde_math_nearbyintf)
         SIMDE_VECTORIZE
         for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
@@ -613,6 +615,8 @@ simde_x_mm_round_ps (simde__m128 a, int rounding, int lax_rounding)
         r_.neon_f32 = vrndnq_f32(a_.neon_f32);
       #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
         r_.lsx_i64 = __lsx_vfrintrne_s(a_.lsx_f32);
+      #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+        r_.wasm_v128 = wasm_f32x4_nearest(a_.wasm_v128);
       #elif defined(simde_math_roundevenf)
         SIMDE_VECTORIZE
         for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
@@ -630,6 +634,8 @@ simde_x_mm_round_ps (simde__m128 a, int rounding, int lax_rounding)
         r_.neon_f32 = vrndmq_f32(a_.neon_f32);
       #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
         r_.lsx_i64 = __lsx_vfrintrm_s(a_.lsx_f32);
+      #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+        r_.wasm_v128 = wasm_f32x4_floor(a_.wasm_v128);
       #elif defined(simde_math_floorf)
         SIMDE_VECTORIZE
         for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
@@ -647,6 +653,8 @@ simde_x_mm_round_ps (simde__m128 a, int rounding, int lax_rounding)
         r_.neon_f32 = vrndpq_f32(a_.neon_f32);
       #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
         r_.lsx_i64 = __lsx_vfrintrp_s(a_.lsx_f32);
+      #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+        r_.wasm_v128 = wasm_f32x4_ceil(a_.wasm_v128);
       #elif defined(simde_math_ceilf)
         SIMDE_VECTORIZE
         for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
@@ -664,6 +672,8 @@ simde_x_mm_round_ps (simde__m128 a, int rounding, int lax_rounding)
         r_.neon_f32 = vrndq_f32(a_.neon_f32);
       #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
         r_.lsx_i64 = __lsx_vfrintrz_s(a_.lsx_f32);
+      #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+        r_.wasm_v128 = wasm_f32x4_trunc(a_.wasm_v128);
       #elif defined(simde_math_truncf)
         SIMDE_VECTORIZE
         for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
@@ -728,6 +738,8 @@ simde_mm_set_ps1 (simde_float32 a) {
     return vec_splats(a);
   #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
     return (simde__m128)__lsx_vldrepl_w(&a, 0);
+  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+    return wasm_f32x4_splat(a);
   #else
     return simde_mm_set_ps(a, a, a, a);
   #endif
@@ -794,6 +806,8 @@ simde_x_mm_broadcastlow_ps(simde__m128 a) {
       r_.altivec_f32 = vec_splat(a_.altivec_f32, 0);
     #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
       r_.lsx_i64 = __lsx_vreplvei_w(a_.lsx_i64, 0);
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+      r_.wasm_v128 = wasm_f32x4_splat(a_.f32[0]);
     #elif defined(SIMDE_SHUFFLE_VECTOR_)
       r_.f32 = SIMDE_SHUFFLE_VECTOR_(32, 16, a_.f32, a_.f32, 0, 0, 0, 0);
     #else
@@ -1785,6 +1799,8 @@ simde_mm_comieq_ss (simde__m128 a, simde__m128 b) {
       uint32x4_t a_or_b_nan = vmvnq_u32(vandq_u32(a_not_nan, b_not_nan));
       uint32x4_t a_eq_b = vceqq_f32(a_.neon_f32, b_.neon_f32);
       return !!(vgetq_lane_u32(vorrq_u32(a_or_b_nan, a_eq_b), 0) != 0);
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+      return wasm_f32x4_extract_lane(a_.wasm_v128, 0) == wasm_f32x4_extract_lane(b_.wasm_v128, 0);
     #else
       return a_.f32[0] == b_.f32[0];
     #endif
@@ -1810,6 +1826,8 @@ simde_mm_comige_ss (simde__m128 a, simde__m128 b) {
       uint32x4_t a_and_b_not_nan = vandq_u32(a_not_nan, b_not_nan);
       uint32x4_t a_ge_b = vcgeq_f32(a_.neon_f32, b_.neon_f32);
       return !!(vgetq_lane_u32(vandq_u32(a_and_b_not_nan, a_ge_b), 0) != 0);
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+      return wasm_f32x4_extract_lane(a_.wasm_v128, 0) >= wasm_f32x4_extract_lane(b_.wasm_v128, 0);
     #else
       return a_.f32[0] >= b_.f32[0];
     #endif
@@ -1835,6 +1853,8 @@ simde_mm_comigt_ss (simde__m128 a, simde__m128 b) {
       uint32x4_t a_and_b_not_nan = vandq_u32(a_not_nan, b_not_nan);
       uint32x4_t a_gt_b = vcgtq_f32(a_.neon_f32, b_.neon_f32);
       return !!(vgetq_lane_u32(vandq_u32(a_and_b_not_nan, a_gt_b), 0) != 0);
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+      return wasm_f32x4_extract_lane(a_.wasm_v128, 0) > wasm_f32x4_extract_lane(b_.wasm_v128, 0);
     #else
       return a_.f32[0] > b_.f32[0];
     #endif
@@ -1860,6 +1880,8 @@ simde_mm_comile_ss (simde__m128 a, simde__m128 b) {
       uint32x4_t a_or_b_nan = vmvnq_u32(vandq_u32(a_not_nan, b_not_nan));
       uint32x4_t a_le_b = vcleq_f32(a_.neon_f32, b_.neon_f32);
       return !!(vgetq_lane_u32(vorrq_u32(a_or_b_nan, a_le_b), 0) != 0);
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+      return wasm_f32x4_extract_lane(a_.wasm_v128, 0) <= wasm_f32x4_extract_lane(b_.wasm_v128, 0);
     #else
       return a_.f32[0] <= b_.f32[0];
     #endif
@@ -1885,6 +1907,8 @@ simde_mm_comilt_ss (simde__m128 a, simde__m128 b) {
       uint32x4_t a_or_b_nan = vmvnq_u32(vandq_u32(a_not_nan, b_not_nan));
       uint32x4_t a_lt_b = vcltq_f32(a_.neon_f32, b_.neon_f32);
       return !!(vgetq_lane_u32(vorrq_u32(a_or_b_nan, a_lt_b), 0) != 0);
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+      return wasm_f32x4_extract_lane(a_.wasm_v128, 0) < wasm_f32x4_extract_lane(b_.wasm_v128, 0);
     #else
       return a_.f32[0] < b_.f32[0];
     #endif
@@ -1910,6 +1934,8 @@ simde_mm_comineq_ss (simde__m128 a, simde__m128 b) {
       uint32x4_t a_and_b_not_nan = vandq_u32(a_not_nan, b_not_nan);
       uint32x4_t a_neq_b = vmvnq_u32(vceqq_f32(a_.neon_f32, b_.neon_f32));
       return !!(vgetq_lane_u32(vandq_u32(a_and_b_not_nan, a_neq_b), 0) != 0);
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+      return wasm_f32x4_extract_lane(a_.wasm_v128, 0) != wasm_f32x4_extract_lane(b_.wasm_v128, 0);
     #else
       return a_.f32[0] != b_.f32[0];
     #endif
@@ -2675,6 +2701,8 @@ simde_mm_load_ps (simde_float32 const mem_addr[HEDLEY_ARRAY_PARAM(4)]) {
     r_.altivec_f32 = vec_ld(0, mem_addr);
   #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
     r_.lsx_i64 = __lsx_vld(mem_addr, 0);
+  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+    r_.wasm_v128 = wasm_v128_load(mem_addr);
   #else
     simde_memcpy(&r_, SIMDE_ALIGN_ASSUME_LIKE(mem_addr, simde__m128), sizeof(r_));
   #endif
@@ -2698,6 +2726,8 @@ simde_mm_load1_ps (simde_float32 const* mem_addr) {
       r_.neon_f32 = vld1q_dup_f32(mem_addr);
     #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
       r_.lsx_i64 = __lsx_vldrepl_w(mem_addr, 0);
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+      r_.wasm_v128 = wasm_v128_load32_splat(mem_addr);
     #else
       r_ = simde__m128_to_private(simde_mm_set1_ps(*mem_addr));
     #endif
@@ -2721,6 +2751,8 @@ simde_mm_load_ss (simde_float32 const* mem_addr) {
 
     #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       r_.neon_f32 = vsetq_lane_f32(*mem_addr, vdupq_n_f32(0), 0);
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+      r_.wasm_v128 = wasm_v128_load32_zero(mem_addr);
     #else
       r_.f32[0] = *mem_addr;
       r_.i32[1] = 0;
@@ -2747,6 +2779,8 @@ simde_mm_loadh_pi (simde__m128 a, simde__m64 const* mem_addr) {
 
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     r_.neon_f32 = vcombine_f32(vget_low_f32(a_.neon_f32), vld1_f32(HEDLEY_REINTERPRET_CAST(const float32_t*, mem_addr)));
+  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+    r_.wasm_v128 = wasm_v128_load64_lane(mem_addr, a_.wasm_v128, 1);
   #else
     simde__m64_private b_ = *HEDLEY_REINTERPRET_CAST(simde__m64_private const*, mem_addr);
     r_.f32[0] = a_.f32[0];
@@ -2788,6 +2822,8 @@ simde_mm_loadl_pi (simde__m128 a, simde__m64 const* mem_addr) {
     #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       r_.neon_f32 = vcombine_f32(vld1_f32(
         HEDLEY_REINTERPRET_CAST(const float32_t*, mem_addr)), vget_high_f32(a_.neon_f32));
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+      r_.wasm_v128 = wasm_v128_load64_lane(mem_addr, a_.wasm_v128, 0);
     #else
       simde__m64_private b_;
       simde_memcpy(&b_, mem_addr, sizeof(b_));
@@ -3303,6 +3339,8 @@ simde_mm_movemask_ps (simde__m128 a) {
     #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
       v2i64 t64 = __lsx_vmskltz_w(a_.lsx_i64);
       r = __lsx_vpickve2gr_wu(t64, 0);
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+      return HEDLEY_STATIC_CAST(int32_t, wasm_i32x4_bitmask(a_.wasm_v128));
     #else
       SIMDE_VECTORIZE_REDUCTION(|:r)
       for (size_t i = 0 ; i < sizeof(a_.u32) / sizeof(a_.u32[0]) ; i++) {
@@ -3719,6 +3757,8 @@ simde_mm_rsqrt_ps (simde__m128 a) {
       r_.altivec_f32 = vec_rsqrte(a_.altivec_f32);
     #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
       r_.lsx_f32 = __lsx_vfrsqrt_s(a_.lsx_f32);
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+      r_.wasm_v128 = wasm_f32x4_div(simde_mm_set1_ps(1.0f), wasm_f32x4_sqrt(a_.wasm_v128));
     #elif defined(SIMDE_IEEE754_STORAGE)
       /* https://basesandframes.files.wordpress.com/2020/04/even_faster_math_functions_green_2020.pdf
         Pages 100 - 103 */
@@ -3901,6 +3941,8 @@ simde_mm_setzero_ps (void) {
     return vdupq_n_f32(SIMDE_FLOAT32_C(0.0));
   #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
     return vec_splats(SIMDE_FLOAT32_C(0.0));
+  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+    return wasm_f32x4_const(0.f, 0.f, 0.f, 0.f);
   #else
     simde__m128 r;
     simde_memset(&r, 0, sizeof(r));
@@ -4213,6 +4255,8 @@ simde_mm_store_ss (simde_float32* mem_addr, simde__m128 a) {
       vst1q_lane_f32(mem_addr, a_.neon_f32, 0);
     #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
       __lsx_vstelm_w(a_.lsx_f32, mem_addr, 0, 0);
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+      wasm_v128_store32_lane(HEDLEY_REINTERPRET_CAST(void*, mem_addr), a_.wasm_v128, 0);
     #else
       *mem_addr = a_.f32[0];
     #endif
@@ -4232,6 +4276,8 @@ simde_mm_storeh_pi (simde__m64* mem_addr, simde__m128 a) {
 
     #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       vst1_f32(HEDLEY_REINTERPRET_CAST(float32_t*, mem_addr), vget_high_f32(a_.neon_f32));
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+      wasm_v128_store64_lane(HEDLEY_REINTERPRET_CAST(void*, mem_addr), a_.wasm_v128, 1);
     #else
       simde_memcpy(mem_addr, &(a_.m64[1]), sizeof(a_.m64[1]));
     #endif
@@ -4246,6 +4292,9 @@ void
 simde_mm_storel_pi (simde__m64* mem_addr, simde__m128 a) {
   #if defined(SIMDE_X86_SSE_NATIVE)
     _mm_storel_pi(HEDLEY_REINTERPRET_CAST(__m64*, mem_addr), a);
+  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+    simde__m128_private a_ = simde__m128_to_private(a);
+    wasm_v128_store64_lane(HEDLEY_REINTERPRET_CAST(void*, mem_addr), a_.wasm_v128, 0);
   #else
     simde__m64_private* dest_ = HEDLEY_REINTERPRET_CAST(simde__m64_private*, mem_addr);
     simde__m128_private a_ = simde__m128_to_private(a);
@@ -4306,6 +4355,8 @@ simde_mm_storeu_ps (simde_float32 mem_addr[4], simde__m128 a) {
       vec_vsx_st(a_.altivec_f32, 0, mem_addr);
     #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
       __lsx_vst(a_.lsx_f32, mem_addr, 0);
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+      wasm_v128_store(mem_addr, a_.wasm_v128);
     #else
       simde_memcpy(mem_addr, &a_, sizeof(a_));
     #endif
@@ -4395,6 +4446,8 @@ simde_mm_ucomieq_ss (simde__m128 a, simde__m128 b) {
       uint32x4_t a_or_b_nan = vmvnq_u32(vandq_u32(a_not_nan, b_not_nan));
       uint32x4_t a_eq_b = vceqq_f32(a_.neon_f32, b_.neon_f32);
       r = !!(vgetq_lane_u32(vorrq_u32(a_or_b_nan, a_eq_b), 0) != 0);
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+      r = wasm_f32x4_extract_lane(a_.wasm_v128, 0) == wasm_f32x4_extract_lane(b_.wasm_v128, 0);
     #elif defined(SIMDE_HAVE_FENV_H)
       fenv_t envp;
       int x = feholdexcept(&envp);
@@ -4429,6 +4482,8 @@ simde_mm_ucomige_ss (simde__m128 a, simde__m128 b) {
       uint32x4_t a_and_b_not_nan = vandq_u32(a_not_nan, b_not_nan);
       uint32x4_t a_ge_b = vcgeq_f32(a_.neon_f32, b_.neon_f32);
       r = !!(vgetq_lane_u32(vandq_u32(a_and_b_not_nan, a_ge_b), 0) != 0);
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+      r = wasm_f32x4_extract_lane(a_.wasm_v128, 0) >= wasm_f32x4_extract_lane(b_.wasm_v128, 0);
     #elif defined(SIMDE_HAVE_FENV_H)
       fenv_t envp;
       int x = feholdexcept(&envp);
@@ -4463,6 +4518,8 @@ simde_mm_ucomigt_ss (simde__m128 a, simde__m128 b) {
       uint32x4_t a_and_b_not_nan = vandq_u32(a_not_nan, b_not_nan);
       uint32x4_t a_gt_b = vcgtq_f32(a_.neon_f32, b_.neon_f32);
       r = !!(vgetq_lane_u32(vandq_u32(a_and_b_not_nan, a_gt_b), 0) != 0);
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+      r = wasm_f32x4_extract_lane(a_.wasm_v128, 0) > wasm_f32x4_extract_lane(b_.wasm_v128, 0);
     #elif defined(SIMDE_HAVE_FENV_H)
       fenv_t envp;
       int x = feholdexcept(&envp);
@@ -4497,6 +4554,8 @@ simde_mm_ucomile_ss (simde__m128 a, simde__m128 b) {
       uint32x4_t a_or_b_nan = vmvnq_u32(vandq_u32(a_not_nan, b_not_nan));
       uint32x4_t a_le_b = vcleq_f32(a_.neon_f32, b_.neon_f32);
       r = !!(vgetq_lane_u32(vorrq_u32(a_or_b_nan, a_le_b), 0) != 0);
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+      r = wasm_f32x4_extract_lane(a_.wasm_v128, 0) <= wasm_f32x4_extract_lane(b_.wasm_v128, 0);
     #elif defined(SIMDE_HAVE_FENV_H)
       fenv_t envp;
       int x = feholdexcept(&envp);
@@ -4531,6 +4590,8 @@ simde_mm_ucomilt_ss (simde__m128 a, simde__m128 b) {
       uint32x4_t a_or_b_nan = vmvnq_u32(vandq_u32(a_not_nan, b_not_nan));
       uint32x4_t a_lt_b = vcltq_f32(a_.neon_f32, b_.neon_f32);
       r = !!(vgetq_lane_u32(vorrq_u32(a_or_b_nan, a_lt_b), 0) != 0);
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+      r = wasm_f32x4_extract_lane(a_.wasm_v128, 0) < wasm_f32x4_extract_lane(b_.wasm_v128, 0);
     #elif defined(SIMDE_HAVE_FENV_H)
       fenv_t envp;
       int x = feholdexcept(&envp);
@@ -4565,6 +4626,8 @@ simde_mm_ucomineq_ss (simde__m128 a, simde__m128 b) {
       uint32x4_t a_and_b_not_nan = vandq_u32(a_not_nan, b_not_nan);
       uint32x4_t a_neq_b = vmvnq_u32(vceqq_f32(a_.neon_f32, b_.neon_f32));
       r = !!(vgetq_lane_u32(vandq_u32(a_and_b_not_nan, a_neq_b), 0) != 0);
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+      r = wasm_f32x4_extract_lane(a_.wasm_v128, 0) != wasm_f32x4_extract_lane(b_.wasm_v128, 0);
     #elif defined(SIMDE_HAVE_FENV_H)
       fenv_t envp;
       int x = feholdexcept(&envp);

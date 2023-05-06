@@ -1943,6 +1943,8 @@ simde__m128
 simde_mm_broadcast_ss (simde_float32 const * a) {
   #if defined(SIMDE_X86_AVX_NATIVE)
     return _mm_broadcast_ss(a);
+  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+    return simde__m128_from_wasm_v128(wasm_v128_load32_splat(a));
   #else
     return simde_mm_set1_ps(*a);
   #endif
@@ -3975,6 +3977,9 @@ simde_mm_maskload_pd (const simde_float64 mem_addr[HEDLEY_ARRAY_PARAM(2)], simde
 
     #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       mask_shr_.neon_i64 = vshrq_n_s64(mask_.neon_i64, 63);
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+      return simde_mm_and_pd(simde_mm_load_pd(mem_addr),
+          simde__m128d_from_wasm_v128(wasm_i64x2_shr(mask_.wasm_v128, 63)));
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(mask_.i64) / sizeof(mask_.i64[0])) ; i++) {
@@ -4037,6 +4042,9 @@ simde_mm_maskload_ps (const simde_float32 mem_addr[HEDLEY_ARRAY_PARAM(4)], simde
 
     #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       mask_shr_.neon_i32 = vshrq_n_s32(mask_.neon_i32, 31);
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+      return simde_mm_and_ps(simde_mm_load_ps(mem_addr),
+          simde__m128_from_wasm_v128(wasm_i32x4_shr(mask_.wasm_v128, 31)));
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(mask_.i32) / sizeof(mask_.i32[0])) ; i++) {
@@ -4096,11 +4104,18 @@ simde_mm_maskstore_pd (simde_float64 mem_addr[HEDLEY_ARRAY_PARAM(2)], simde__m12
     simde__m128i_private mask_ = simde__m128i_to_private(mask);
     simde__m128d_private a_ = simde__m128d_to_private(a);
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(a_.f64) / sizeof(a_.f64[0])) ; i++) {
-      if (mask_.u64[i] >> 63)
-        mem_addr[i] = a_.f64[i];
-    }
+    #if defined(SIMDE_WASM_SIMD128_NATIVE)
+      if ((HEDLEY_STATIC_CAST(unsigned long long, wasm_i64x2_extract_lane(mask_.wasm_v128, 0)) & 0x8000000000000000ull) != 0)
+        mem_addr[0] = wasm_f64x2_extract_lane(a_.wasm_v128, 0);
+      if ((HEDLEY_STATIC_CAST(unsigned long long, wasm_i64x2_extract_lane(mask_.wasm_v128, 1)) & 0x8000000000000000ull) != 0)
+        mem_addr[1] = wasm_f64x2_extract_lane(a_.wasm_v128, 1);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(a_.f64) / sizeof(a_.f64[0])) ; i++) {
+        if (mask_.u64[i] >> 63)
+          mem_addr[i] = a_.f64[i];
+      }
+    #endif
   #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
@@ -4146,11 +4161,22 @@ simde_mm_maskstore_ps (simde_float32 mem_addr[HEDLEY_ARRAY_PARAM(4)], simde__m12
     simde__m128i_private mask_ = simde__m128i_to_private(mask);
     simde__m128_private a_ = simde__m128_to_private(a);
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(a_.f32) / sizeof(a_.f32[0])) ; i++) {
-      if (mask_.u32[i] & (UINT32_C(1) << 31))
-        mem_addr[i] = a_.f32[i];
-    }
+    #if defined(SIMDE_WASM_SIMD128_NATIVE)
+      if ((HEDLEY_STATIC_CAST(unsigned long long, wasm_i32x4_extract_lane(mask_.wasm_v128, 0)) & 0x80000000ull) != 0)
+        mem_addr[0] = wasm_f32x4_extract_lane(a_.wasm_v128, 0);
+      if ((HEDLEY_STATIC_CAST(unsigned long long, wasm_i32x4_extract_lane(mask_.wasm_v128, 1)) & 0x80000000ull) != 0)
+        mem_addr[1] = wasm_f32x4_extract_lane(a_.wasm_v128, 1);
+      if ((HEDLEY_STATIC_CAST(unsigned long long, wasm_i32x4_extract_lane(mask_.wasm_v128, 2)) & 0x80000000ull) != 0)
+        mem_addr[2] = wasm_f32x4_extract_lane(a_.wasm_v128, 2);
+      if ((HEDLEY_STATIC_CAST(unsigned long long, wasm_i32x4_extract_lane(mask_.wasm_v128, 3)) & 0x80000000ull) != 0)
+        mem_addr[3] = wasm_f32x4_extract_lane(a_.wasm_v128, 3);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(a_.f32) / sizeof(a_.f32[0])) ; i++) {
+        if (mask_.u32[i] & (UINT32_C(1) << 31))
+          mem_addr[i] = a_.f32[i];
+      }
+    #endif
   #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
@@ -4652,10 +4678,18 @@ simde_mm_permutevar_ps (simde__m128 a, simde__m128i b) {
       a_ = simde__m128_to_private(a);
     simde__m128i_private b_ = simde__m128i_to_private(b);
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
-      r_.f32[i] = a_.f32[b_.i32[i] & 3];
-    }
+    #if defined(SIMDE_WASM_SIMD128_NATIVE)
+      r_.wasm_v128 = wasm_f32x4_make(
+        (a_.f32[wasm_i32x4_extract_lane(b_.wasm_v128, 0) & 3]),
+        (a_.f32[wasm_i32x4_extract_lane(b_.wasm_v128, 1) & 3]),
+        (a_.f32[wasm_i32x4_extract_lane(b_.wasm_v128, 2) & 3]),
+        (a_.f32[wasm_i32x4_extract_lane(b_.wasm_v128, 3) & 3]));
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
+        r_.f32[i] = a_.f32[b_.i32[i] & 3];
+      }
+    #endif
 
     return simde__m128_from_private(r_);
   #endif
@@ -4676,10 +4710,16 @@ simde_mm_permutevar_pd (simde__m128d a, simde__m128i b) {
       a_ = simde__m128d_to_private(a);
     simde__m128i_private b_ = simde__m128i_to_private(b);
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
-      r_.f64[i] = a_.f64[(b_.i64[i] & 2) >> 1];
-    }
+    #if defined(SIMDE_WASM_SIMD128_NATIVE)
+      r_.wasm_v128 = wasm_f64x2_make(
+        (a_.f64[(wasm_i64x2_extract_lane(b_.wasm_v128, 0) >> 1) & 1]),
+        (a_.f64[(wasm_i64x2_extract_lane(b_.wasm_v128, 1) >> 1) & 1]));
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
+        r_.f64[i] = a_.f64[(b_.i64[i] & 2) >> 1];
+      }
+    #endif
 
     return simde__m128d_from_private(r_);
   #endif
@@ -6108,7 +6148,7 @@ simde_mm_testnzc_pd (simde__m128d a, simde__m128d b) {
       v128_t m = wasm_u64x2_shr(wasm_v128_and(a_.wasm_v128, b_.wasm_v128), 63);
       v128_t m2 = wasm_u64x2_shr(wasm_v128_andnot(b_.wasm_v128, a_.wasm_v128), 63);
       return HEDLEY_STATIC_CAST(int, (wasm_i64x2_extract_lane(m, 0)  | wasm_i64x2_extract_lane(m, 1))
-        & (wasm_i64x2_extract_lane(m2, 0) | wasm_i64x2_extract_lane(m2, 1)));
+                                   & (wasm_i64x2_extract_lane(m2, 0) | wasm_i64x2_extract_lane(m2, 1)));
     #else
       uint64_t rc = 0, rz = 0;
       for (size_t i = 0 ; i < (sizeof(a_.u64) / sizeof(a_.u64[0])) ; i++) {
