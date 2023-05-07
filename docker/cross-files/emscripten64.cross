@@ -1,0 +1,28 @@
+[binaries]
+c = '/opt/emsdk/upstream/emscripten/emcc'
+cpp = '/opt/emsdk/upstream/emscripten/em++'
+ar = '/opt/emsdk/upstream/emscripten/emar'
+strip = '/opt/emsdk/upstream/bin/llvm-strip'
+objcopy = '/opt/emsdk/upstream/bin/llvm-objcopy'
+exe_wrapper = ['v8', '--experimental-wasm-memory64']
+
+[properties]
+skip_sanity_check = true
+c_args = ['-sMEMORY64', '-Weverything', '-Wno-experimental', '-Werror', '-fno-lax-vector-conversions', '-O2', '-msimd128', '-Wno-unsafe-buffer-usage']
+cpp_args = ['-sMEMORY64', '-Weverything', '-Wno-experimental', '-Werror', '-fno-lax-vector-conversions', '-O2', '-msimd128', '-Wno-unsafe-buffer-usage']
+c_link_args = ['-sMEMORY64', '-Wno-experimental', '-s', 'ENVIRONMENT=shell']
+cpp_link_args = ['-sMEMORY64', '-Wno-experimental', '-s', 'ENVIRONMENT=shell']
+
+[host_machine]
+system = 'emscripten'
+cpu_family = 'wasm64'
+cpu = 'wasm64'
+endian = 'little'
+
+# ok 1298
+# fail 37
+# skipped 211
+
+# test_simde_mm_set1_pi8
+# test_simde_vabd_f32
+# test_simde_vadd_f16
