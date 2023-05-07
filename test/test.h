@@ -713,7 +713,7 @@ simde_assert_equal_vf16_(
   }
   return 0;
 }
-#define simde_assert_equal_vf16(vec_len, a, b, precision) simde_assert_equal_vf16_(vec_len, a, b, simde_test_f16_precision_to_slop(precision), __FILE__, __LINE__, #a, #b)
+#define simde_assert_equal_vf16(vec_len, a, b, precision) do { if (simde_assert_equal_vf16_(vec_len, a, b, simde_test_f16_precision_to_slop(precision), __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 
 static int
 simde_assert_equal_f16_(simde_float16 a, simde_float16 b, simde_float16 slop,
@@ -729,7 +729,7 @@ simde_assert_equal_f16_(simde_float16 a, simde_float16 b, simde_float16 slop,
   }
   return 0;
 }
-#define simde_assert_equal_f16(a, b, precision) simde_assert_equal_f16_(a, b, simde_test_f16_precision_to_slop(precision), __FILE__, __LINE__, #a, #b)
+#define simde_assert_equal_f16(a, b, precision) do { if (simde_assert_equal_f16_(a, b, simde_test_f16_precision_to_slop(precision), __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 
 static int
 simde_assert_equal_vf32_(
@@ -744,7 +744,7 @@ simde_assert_equal_vf32_(
   }
   return 0;
 }
-#define simde_assert_equal_vf32(vec_len, a, b, precision) simde_assert_equal_vf32_(vec_len, a, b, simde_test_f32_precision_to_slop(precision), __FILE__, __LINE__, #a, #b)
+#define simde_assert_equal_vf32(vec_len, a, b, precision) do { if (simde_assert_equal_vf32_(vec_len, a, b, simde_test_f32_precision_to_slop(precision), __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 
 static int
 simde_assert_equal_f32_(simde_float32 a, simde_float32 b, simde_float32 slop,
@@ -756,7 +756,7 @@ simde_assert_equal_f32_(simde_float32 a, simde_float32 b, simde_float32 slop,
   }
   return 0;
 }
-#define simde_assert_equal_f32(a, b, precision) simde_assert_equal_f32_(a, b, simde_test_f32_precision_to_slop(precision), __FILE__, __LINE__, #a, #b)
+#define simde_assert_equal_f32(a, b, precision) do { if (simde_assert_equal_f32_(a, b, simde_test_f32_precision_to_slop(precision), __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 
 static int
 simde_assert_equal_vf64_(
@@ -771,7 +771,7 @@ simde_assert_equal_vf64_(
   }
   return 0;
 }
-#define simde_assert_equal_vf64(vec_len, a, b, precision) simde_assert_equal_vf64_(vec_len, a, b, simde_test_f64_precision_to_slop(precision), __FILE__, __LINE__, #a, #b)
+#define simde_assert_equal_vf64(vec_len, a, b, precision) do { if (simde_assert_equal_vf64_(vec_len, a, b, simde_test_f64_precision_to_slop(precision), __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 
 static int
 simde_assert_equal_f64_(simde_float64 a, simde_float64 b, simde_float64 slop,
@@ -783,7 +783,7 @@ simde_assert_equal_f64_(simde_float64 a, simde_float64 b, simde_float64 slop,
   }
   return 0;
 }
-#define simde_assert_equal_f64(a, b, precision) simde_assert_equal_f64_(a, b, simde_test_f64_precision_to_slop(precision), __FILE__, __LINE__, #a, #b)
+#define simde_assert_equal_f64(a, b, precision) do { if (simde_assert_equal_f64_(a, b, simde_test_f64_precision_to_slop(precision), __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 
 #define SIMDE_TEST_GENERATE_ASSERT_EQUAL_FUNC_(T, symbol_identifier, fmt) \
   static int \
