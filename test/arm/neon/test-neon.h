@@ -5,9 +5,9 @@
 #include "../../../simde/arm/neon/ld1.h"
 #include "../../../simde/arm/neon/st1.h"
 
+
 HEDLEY_DIAGNOSTIC_PUSH
 HEDLEY_DIAGNOSTIC_DISABLE_UNUSED_FUNCTION
-SIMDE_DIAGNOSTIC_DISABLE_C99_EXTENSIONS_
 
 #define SIMDE_TEST_ARM_NEON_GENERATE_INT_TYPE_FUNCS_(NT, ET, element_count, modifier, symbol_identifier, neon_identifier) \
   static simde_##NT \
