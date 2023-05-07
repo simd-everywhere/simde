@@ -527,19 +527,18 @@ test_simde_vshll_n_u32 (SIMDE_MUNIT_TEST_ARGS) {
   };
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
-    simde_uint32x2_t a = simde_test_arm_neon_random_u32x2();
+    simde_uint32x2_t a = simde_vld1_u32(test_vec[i].a);
     simde_uint64x2_t r6 = simde_vshll_n_u32(a, 6);
     simde_uint64x2_t r13 = simde_vshll_n_u32(a, 13);
     simde_uint64x2_t r19 = simde_vshll_n_u32(a, 19);
     simde_uint64x2_t r26 = simde_vshll_n_u32(a, 26);
     simde_uint64x2_t r31 = simde_vshll_n_u32(a, 31);
 
-    simde_test_arm_neon_write_u32x2(2, a, SIMDE_TEST_VEC_POS_FIRST);
-    simde_test_arm_neon_write_u64x2(2, r6, SIMDE_TEST_VEC_POS_MIDDLE);
-    simde_test_arm_neon_write_u64x2(2, r13, SIMDE_TEST_VEC_POS_MIDDLE);
-    simde_test_arm_neon_write_u64x2(2, r19, SIMDE_TEST_VEC_POS_MIDDLE);
-    simde_test_arm_neon_write_u64x2(2, r26, SIMDE_TEST_VEC_POS_MIDDLE);
-    simde_test_arm_neon_write_u64x2(2, r31, SIMDE_TEST_VEC_POS_LAST);
+    simde_test_arm_neon_assert_equal_u64x2(r6, simde_vld1q_u64(test_vec[i].r6));
+    simde_test_arm_neon_assert_equal_u64x2(r13, simde_vld1q_u64(test_vec[i].r13));
+    simde_test_arm_neon_assert_equal_u64x2(r19, simde_vld1q_u64(test_vec[i].r19));
+    simde_test_arm_neon_assert_equal_u64x2(r26, simde_vld1q_u64(test_vec[i].r26));
+    simde_test_arm_neon_assert_equal_u64x2(r31, simde_vld1q_u64(test_vec[i].r31));
   }
 
   return 0;
