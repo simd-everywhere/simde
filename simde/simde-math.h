@@ -1413,9 +1413,6 @@ simde_math_fpclassify(double v) {
   #define simde_math_cdfnormf simde_math_cdfnormf
 #endif
 
-HEDLEY_DIAGNOSTIC_PUSH
-SIMDE_DIAGNOSTIC_DISABLE_FLOAT_EQUAL_
-
 #if !defined(simde_math_cdfnorminv) && defined(simde_math_log) && defined(simde_math_sqrt)
   /*https://web.archive.org/web/20150910081113/http://home.online.no/~pjacklam/notes/invnorm/impl/sprouse/ltqnorm.c*/
   static HEDLEY_INLINE
@@ -1688,8 +1685,6 @@ SIMDE_DIAGNOSTIC_DISABLE_FLOAT_EQUAL_
 
   #define simde_math_erfcinvf simde_math_erfcinvf
 #endif
-
-HEDLEY_DIAGNOSTIC_POP
 
 static HEDLEY_INLINE
 double
