@@ -138,10 +138,11 @@ jobs:
 
   emscripten:
     runs-on: ubuntu-22.04
-    env:
-      CFLAGS: -Weverything -Werror -O2 -msimd128 -Wno-unsafe-buffer-usage
-      CXXFLAGS: -Weverything -Werror -O2 -msimd128 -Wno-unsafe-buffer-usage
-      LDFLAGS: -s ENVIRONMENT=shell -s ASSERTIONS=1
+    strategy:
+      matrix:
+        variant:
+          - "32"
+          - "64"
     steps:
     - uses: actions/checkout@v3
       with:
@@ -169,7 +170,7 @@ jobs:
         ls -l ~/.jsvu || true
         /usr/bin/v8 --help
     - name: Configure
-      run: meson setup build --optimization 2 --cross-file docker/cross-files/emscripten.cross
+      run: meson setup build --optimization 2 --cross-file docker/cross-files/emscripten${{ matrix.variant }}.cross
     - name: Build
       run: meson compile -C build --verbose
     - name: Test

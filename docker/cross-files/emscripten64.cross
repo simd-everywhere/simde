@@ -1,3 +1,7 @@
+# 2023-05-08 All tests pass
+# emscripten "tip of tree" sdk-releases-2aeb471c31cf388d7e25b81d090144453fadf463-64bit
+# V8 version 11.5.69
+
 [binaries]
 c = '/opt/emsdk/upstream/emscripten/emcc'
 cpp = '/opt/emsdk/upstream/emscripten/em++'
@@ -18,11 +22,3 @@ system = 'emscripten'
 cpu_family = 'wasm64'
 cpu = 'wasm64'
 endian = 'little'
-
-# ok 1298
-# fail 37
-# skipped 211
-
-# test_simde_mm_set1_pi8
-# test_simde_vabd_f32
-# test_simde_vadd_f16
