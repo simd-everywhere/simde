@@ -730,3 +730,28 @@ jobs:
       run: meson compile -C build -v
     - name: Test
       run: meson test -C build --print-errorlogs
+
+  freebsd:
+    runs-on: ubuntu-latest
+    env:
+      CC: clang
+      CXX: clang++
+      CFLAGS: -O3 -Wall -Weverything -Werror -fno-lax-vector-conversions -Wno-complex-component-init -Wno-pass-failed
+      CXXFLAGS: -O3 -Wall -Weverything -Werror -fno-lax-vector-conversions -Wno-complex-component-init -Wno-pass-failed
+    steps:
+    - name: Test in FreeBSD
+      id: test
+      uses: vmactions/freebsd-vm@v1
+      with:
+        envs: 'CC CXX CFLAGS CXXFLAGS'
+        usesh: true
+        mem: 10240
+        copyback: false
+        prepare: |
+          pkg install -y git meson
+          git clone https://git.FreeBSD.org/ports.git /usr/ports
+        run: |
+          pwd
+          freebsd-version
+          cd /usr/ports/devel/simde
+          make test
