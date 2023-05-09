@@ -77,7 +77,9 @@ simde_vcmlaq_f32(simde_float32x4_t r, simde_float32x4_t a, simde_float32x4_t b) 
       a_ = simde_float32x4_to_private(a),
       b_ = simde_float32x4_to_private(b);
 
-    #if defined(SIMDE_SHUFFLE_VECTOR_)
+    #if defined(SIMDE_WASM_SIMD128_NATIVE)
+      r_.v128 = wasm_f32x4_add(r_.v128, wasm_f32x4_mul(b_.v128, wasm_i32x4_shuffle(a_.v128, a_.v128, 0, 0, 2, 2)));
+    #elif defined(SIMDE_SHUFFLE_VECTOR_)
       a_.values = SIMDE_SHUFFLE_VECTOR_(32, 16, a_.values, a_.values, 0, 0, 2, 2);
       r_.values += b_.values * a_.values;
     #else
@@ -108,7 +110,9 @@ simde_vcmlaq_f64(simde_float64x2_t r, simde_float64x2_t a, simde_float64x2_t b) 
       a_ = simde_float64x2_to_private(a),
       b_ = simde_float64x2_to_private(b);
 
-    #if defined(SIMDE_SHUFFLE_VECTOR_)
+    #if defined(SIMDE_WASM_SIMD128_NATIVE)
+      r_.v128 = wasm_f64x2_add(r_.v128, wasm_f64x2_mul(b_.v128, wasm_i64x2_shuffle(a_.v128, a_.v128, 0, 0)));
+    #elif defined(SIMDE_SHUFFLE_VECTOR_)
       a_.values = SIMDE_SHUFFLE_VECTOR_(64, 16, a_.values, a_.values, 0, 0);
       r_.values += b_.values * a_.values;
     #else

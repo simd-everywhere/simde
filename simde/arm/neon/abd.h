@@ -348,6 +348,8 @@ simde_vabdq_s32(simde_int32x4_t a, simde_int32x4_t b) {
 
     #if defined(SIMDE_X86_SSE4_1_NATIVE)
       r_.m128i = _mm_sub_epi32(_mm_max_epi32(a_.m128i, b_.m128i), _mm_min_epi32(a_.m128i, b_.m128i));
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+      r_.v128 = wasm_i32x4_sub(wasm_i32x4_max(a_.v128, b_.v128), wasm_i32x4_min(a_.v128, b_.v128));
     #elif defined(SIMDE_X86_SSE2_NATIVE)
       const __m128i m = _mm_cmpgt_epi32(b_.m128i, a_.m128i);
       r_.m128i =
@@ -467,6 +469,8 @@ simde_vabdq_u32(simde_uint32x4_t a, simde_uint32x4_t b) {
 
     #if defined(SIMDE_X86_SSE4_2_NATIVE)
       r_.m128i = _mm_sub_epi32(_mm_max_epu32(a_.m128i, b_.m128i), _mm_min_epu32(a_.m128i, b_.m128i));
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+      r_.v128 = wasm_i32x4_sub(wasm_u32x4_max(a_.v128, b_.v128), wasm_u32x4_min(a_.v128, b_.v128));
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
