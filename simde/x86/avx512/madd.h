@@ -120,7 +120,7 @@ simde_mm512_madd_epi16 (simde__m512i a, simde__m512i b) {
 }
 #if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
   #undef _mm512_madd_epi16
-  #define _mm512_madd_epi16(src, k, a, b) simde_mm512_madd_epi16(src, k, a, b)
+  #define _mm512_madd_epi16(a, b) simde_mm512_madd_epi16(a, b)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
