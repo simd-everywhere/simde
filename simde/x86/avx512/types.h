@@ -521,7 +521,11 @@ typedef uint64_t simde__mmask64;
 #endif
 #if !defined(__mmask64) && defined(SIMDE_ENABLE_NATIVE_ALIASES)
   #if !defined(HEDLEY_INTEL_VERSION)
-    typedef uint64_t __mask64;
+    #if defined(HEDLEY_GCC_VERSION)
+      typedef unsigned long long __mask64;
+    #else
+      typedef uint64_t __mmask64;
+    #endif
   #else
     #define __mmask64 uint64_t;
   #endif
