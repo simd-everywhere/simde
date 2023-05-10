@@ -12,7 +12,7 @@ jobs:
         with:
          persist-credentials: false
          fetch-depth: 0
-      - uses: actions/setup-python@v1
+      - uses: actions/setup-python@v4
       - name: Filter Repository
         run: |
           pip install git-filter-repo
