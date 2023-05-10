@@ -4637,6 +4637,8 @@ simde_mm_permute_ps (simde__m128 a, const int imm8)
 }
 #if defined(SIMDE_X86_AVX_NATIVE)
 #  define simde_mm_permute_ps(a, imm8) _mm_permute_ps(a, imm8)
+#elif defined(SIMDE_WASM_SIMD128_NATIVE)
+#  define simde_mm_permute_ps(a, imm8) simde__m128_from_wasm_v128(wasm_i32x4_shuffle(simde__m128_to_wasm_v128(a), simde__m128_to_wasm_v128(a), ((imm8) & 3), (((imm8) >> 2) & 3 ), (((imm8) >> 4) & 3), (((imm8) >> 6) & 3)))
 #endif
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
   #undef _mm_permute_ps
@@ -4661,6 +4663,8 @@ simde_mm_permute_pd (simde__m128d a, const int imm8)
 }
 #if defined(SIMDE_X86_AVX_NATIVE)
 #  define simde_mm_permute_pd(a, imm8) _mm_permute_pd(a, imm8)
+#elif defined(SIMDE_WASM_SIMD128_NATIVE)
+#  define simde_mm_permute_pd(a, imm8) simde__m128d_from_wasm_v128(wasm_i64x2_shuffle(simde__m128d_to_wasm_v128(a), simde__m128d_to_wasm_v128(a), ((imm8) & 1), (((imm8) >> 1) & 1 )))
 #endif
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
   #undef _mm_permute_pd

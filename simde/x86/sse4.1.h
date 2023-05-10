@@ -705,6 +705,10 @@ simde_mm_cvtepi8_epi64 (simde__m128i a) {
       int32x4_t s32x4 = vmovl_s16(vget_low_s16(s16x8)); /* 000x 000x 000B 000A */
       int64x2_t s64x2 = vmovl_s32(vget_low_s32(s32x4)); /* 0000 000B 0000 000A */
       r_.neon_i64 = s64x2;
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+      v128_t extra = wasm_i32x4_extend_low_i16x8(wasm_i16x8_extend_low_i8x16(a_.wasm_v128));
+      v128_t sign = wasm_i32x4_gt(wasm_i64x2_const(0, 0), extra);
+      r_.wasm_v128 = wasm_i32x4_shuffle(extra, sign, 0, 4, 1, 5);
     #elif (!defined(SIMDE_ARCH_X86) && !defined(SIMDE_ARCH_AMD64)) && defined(SIMDE_SHUFFLE_VECTOR_) && defined(SIMDE_VECTOR_SCALAR) && (SIMDE_ENDIAN_ORDER == SIMDE_ENDIAN_LITTLE)
       /* Disabled on x86 due to lack of 64-bit arithmetic shift until
        * until AVX-512 (at which point we would be using the native
