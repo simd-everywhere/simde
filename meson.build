@@ -45,6 +45,7 @@ simde_neon_families = [
   'cmla_rot270',
   'cnt',
   'cvt',
+  'cvtn',
   'combine',
   'create',
   'dot',
