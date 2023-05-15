@@ -42,10 +42,21 @@ simde_vcvtnq_s32_f32(simde_float32x4_t a) {
     simde_float32x4_private a_ = simde_float32x4_to_private(a);
     simde_int32x4_private r_;
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = HEDLEY_STATIC_CAST(int32_t, simde_math_roundevenf(a_.values[i]));
-    }
+    #if defined(SIMDE_X86_SSE2_NATIVE)
+      if (HEDLEY_UNLIKELY(_MM_GET_ROUNDING_MODE() != _MM_ROUND_NEAREST)) {
+        unsigned int rounding_mode = _MM_GET_ROUNDING_MODE();
+        _MM_SET_ROUNDING_MODE(_MM_ROUND_NEAREST);
+        r_.m128i = _mm_cvtps_epi32(a_.m128);
+        _MM_SET_ROUNDING_MODE(rounding_mode);
+      } else {
+        r_.m128i = _mm_cvtps_epi32(a_.m128);
+      }
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+        r_.values[i] = HEDLEY_STATIC_CAST(int32_t, simde_math_roundevenf(a_.values[i]));
+      }
+    #endif
 
     return simde_int32x4_from_private(r_);
   #endif
@@ -64,10 +75,21 @@ simde_vcvtnq_s64_f64(simde_float64x2_t a) {
     simde_float64x2_private a_ = simde_float64x2_to_private(a);
     simde_int64x2_private r_;
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = HEDLEY_STATIC_CAST(int64_t, simde_math_roundeven(a_.values[i]));
-    }
+    #if defined(SIMDE_X86_AVX512DQ_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
+      if (HEDLEY_UNLIKELY(_MM_GET_ROUNDING_MODE() != _MM_ROUND_NEAREST)) {
+        unsigned int rounding_mode = _MM_GET_ROUNDING_MODE();
+        _MM_SET_ROUNDING_MODE(_MM_ROUND_NEAREST);
+        r_.m128i = _mm_cvtpd_epi64(a_.m128d);
+        _MM_SET_ROUNDING_MODE(rounding_mode);
+      } else {
+        r_.m128i = _mm_cvtpd_epi64(a_.m128d);
+      }
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+        r_.values[i] = HEDLEY_STATIC_CAST(int64_t, simde_math_roundeven(a_.values[i]));
+      }
+    #endif
 
     return simde_int64x2_from_private(r_);
   #endif
@@ -110,10 +132,22 @@ simde_vcvtnq_u32_f32(simde_float32x4_t a) {
     simde_float32x4_private a_ = simde_float32x4_to_private(a);
     simde_uint32x4_private r_;
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = simde_vcvtns_u32_f32(a_.values[i]);
-    }
+    #if 0 && defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
+      // Hmm.. this doesn't work, unlike the signed versions
+      if (HEDLEY_UNLIKELY(_MM_GET_ROUNDING_MODE() != _MM_ROUND_NEAREST)) {
+        unsigned int rounding_mode = _MM_GET_ROUNDING_MODE();
+        _MM_SET_ROUNDING_MODE(_MM_ROUND_NEAREST);
+        r_.m128i = _mm_cvtps_epu32(a_.m128);
+        _MM_SET_ROUNDING_MODE(rounding_mode);
+      } else {
+        r_.m128i = _mm_cvtps_epu32(a_.m128);
+      }
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+        r_.values[i] = simde_vcvtns_u32_f32(a_.values[i]);
+      }
+    #endif
 
     return simde_uint32x4_from_private(r_);
   #endif
@@ -156,10 +190,22 @@ simde_vcvtnq_u64_f64(simde_float64x2_t a) {
     simde_float64x2_private a_ = simde_float64x2_to_private(a);
     simde_uint64x2_private r_;
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = simde_vcvtnd_u64_f64(a_.values[i]);
-    }
+    #if 0 && defined(SIMDE_X86_AVX512DQ_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
+      // Hmm.. this doesn't work, unlike the signed versions
+      if (HEDLEY_UNLIKELY(_MM_GET_ROUNDING_MODE() != _MM_ROUND_NEAREST)) {
+        unsigned int rounding_mode = _MM_GET_ROUNDING_MODE();
+        _MM_SET_ROUNDING_MODE(_MM_ROUND_NEAREST);
+        r_.m128i = _mm_cvtpd_epu64(a_.m128d);
+        _MM_SET_ROUNDING_MODE(rounding_mode);
+      } else {
+        r_.m128i = _mm_cvtpd_epu64(a_.m128d);
+      }
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+        r_.values[i] = simde_vcvtnd_u64_f64(a_.values[i]);
+      }
+    #endif
 
     return simde_uint64x2_from_private(r_);
   #endif
