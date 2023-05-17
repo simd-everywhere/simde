@@ -5506,11 +5506,11 @@ simde_wasm_f64x2_pmin (simde_v128_t a, simde_v128_t b) {
           a_.neon_f64
         );
     #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
-      r_.altivec_f32 =
+      r_.altivec_f64 =
         vec_sel(
-          a_.altivec_f32,
-          b_.altivec_f32,
-          vec_cmpgt(a_.altivec_f32, b_.altivec_f32)
+          a_.altivec_f64,
+          b_.altivec_f64,
+          vec_cmpgt(a_.altivec_f64, b_.altivec_f64)
         );
     #else
       SIMDE_VECTORIZE
