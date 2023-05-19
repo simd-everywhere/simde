@@ -74,6 +74,7 @@ set extensions:
   * [SSE4.1](https://en.wikipedia.org/wiki/SSE4#SSE4.1)
   * [AVX](https://en.wikipedia.org/wiki/Advanced_Vector_Extensions)
   * [AVX2](https://en.wikipedia.org/wiki/Advanced_Vector_Extensions#Advanced_Vector_Extensions_2)
+  * [F16C](https://en.wikipedia.org/wiki/F16C)
   * [FMA](https://en.wikipedia.org/wiki/FMA_instruction_set)
   * [GFNI](https://en.wikipedia.org/wiki/AVX-512#GFNI)
   * [CLMUL](https://en.wikipedia.org/wiki/CLMUL_instruction_set)
