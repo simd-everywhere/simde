@@ -22,6 +22,7 @@
  *
  * Copyright:
  *   2021      Evan Nemerson <evan@nemerson.com>
+ *   2023      Michael R. Crusoe <crusoe@debian.org>
  */
 
 #if !defined(SIMDE_WASM_SIMD128_H)
@@ -308,6 +309,55 @@ simde_wasm_i8x16_make (
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde_v128_t
+simde_wasm_u8x16_make (
+    uint8_t c0, uint8_t c1, uint8_t  c2, uint8_t  c3, uint8_t  c4, uint8_t  c5, uint8_t  c6, uint8_t  c7,
+    uint8_t c8, uint8_t c9, uint8_t c10, uint8_t c11, uint8_t c12, uint8_t c13, uint8_t c14, uint8_t c15) {
+  #if defined(SIMDE_WASM_SIMD128_NATIVE)
+    return
+      wasm_u8x16_make(
+        c0, c1,  c2,  c3,  c4,  c5,  c6,  c7,
+        c8, c9, c10, c11, c12, c13, c14, c15);
+  #elif defined(SIMDE_X86_SSE2_NATIVE)
+    return _mm_set_epi8(
+      HEDLEY_STATIC_CAST(char, c15), HEDLEY_STATIC_CAST(char, c14), HEDLEY_STATIC_CAST(char, c13), HEDLEY_STATIC_CAST(char, c12),
+      HEDLEY_STATIC_CAST(char, c11), HEDLEY_STATIC_CAST(char, c10), HEDLEY_STATIC_CAST(char,  c9), HEDLEY_STATIC_CAST(char,  c8),
+      HEDLEY_STATIC_CAST(char,  c7), HEDLEY_STATIC_CAST(char,  c6), HEDLEY_STATIC_CAST(char,  c5), HEDLEY_STATIC_CAST(char,  c4),
+      HEDLEY_STATIC_CAST(char,  c3), HEDLEY_STATIC_CAST(char,  c2), HEDLEY_STATIC_CAST(char,  c1), HEDLEY_STATIC_CAST(char,  c0));
+  #else
+    simde_v128_private r_;
+
+    r_.u8[ 0] =  c0;
+    r_.u8[ 1] =  c1;
+    r_.u8[ 2] =  c2;
+    r_.u8[ 3] =  c3;
+    r_.u8[ 4] =  c4;
+    r_.u8[ 5] =  c5;
+    r_.u8[ 6] =  c6;
+    r_.u8[ 7] =  c7;
+    r_.u8[ 8] =  c8;
+    r_.u8[ 9] =  c9;
+    r_.u8[10] = c10;
+    r_.u8[11] = c11;
+    r_.u8[12] = c12;
+    r_.u8[13] = c13;
+    r_.u8[14] = c14;
+    r_.u8[15] = c15;
+
+    return simde_v128_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_WASM_SIMD128_ENABLE_NATIVE_ALIASES)
+  #define \
+    wasm_u8x16_make( \
+        c0, c1,  c2,  c3,  c4,  c5,  c6,  c7, \
+        c8, c9, c10, c11, c12, c13, c14, c15) \
+      simde_wasm_u8x16_make( \
+          (c0), (c1),  (c2),  (c3),  (c4),  (c5),  (c6),  (c7), \
+          (c8), (c9), (c10), (c11), (c12), (c13), (c14), (c15))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_v128_t
 simde_wasm_i16x8_make (
     int16_t c0, int16_t c1, int16_t  c2, int16_t  c3, int16_t  c4, int16_t  c5, int16_t  c6, int16_t  c7) {
   #if defined(SIMDE_WASM_SIMD128_NATIVE)
@@ -337,6 +387,37 @@ simde_wasm_i16x8_make (
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde_v128_t
+simde_wasm_u16x8_make (
+    uint16_t c0, uint16_t c1, uint16_t  c2, uint16_t  c3, uint16_t  c4, uint16_t  c5, uint16_t  c6, uint16_t  c7) {
+  #if defined(SIMDE_WASM_SIMD128_NATIVE)
+    return wasm_u16x8_make(c0, c1, c2, c3, c4, c5, c6, c7);
+  #elif defined(SIMDE_X86_SSE2_NATIVE)
+    return _mm_set_epi16(
+      HEDLEY_STATIC_CAST(short,  c7), HEDLEY_STATIC_CAST(short,  c6), HEDLEY_STATIC_CAST(short,  c5), HEDLEY_STATIC_CAST(short,  c4),
+      HEDLEY_STATIC_CAST(short,  c3), HEDLEY_STATIC_CAST(short,  c2), HEDLEY_STATIC_CAST(short,  c1), HEDLEY_STATIC_CAST(short,  c0));
+  #else
+    simde_v128_private r_;
+
+    r_.u16[0] = c0;
+    r_.u16[1] = c1;
+    r_.u16[2] = c2;
+    r_.u16[3] = c3;
+    r_.u16[4] = c4;
+    r_.u16[5] = c5;
+    r_.u16[6] = c6;
+    r_.u16[7] = c7;
+
+    return simde_v128_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_WASM_SIMD128_ENABLE_NATIVE_ALIASES)
+  #define \
+    wasm_u16x8_make(c0, c1,  c2,  c3,  c4,  c5,  c6,  c7) \
+      simde_wasm_u16x8_make((c0), (c1),  (c2),  (c3),  (c4),  (c5),  (c6),  (c7))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_v128_t
 simde_wasm_i32x4_make (int32_t c0, int32_t c1, int32_t  c2, int32_t  c3) {
   #if defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_i32x4_make(c0, c1, c2, c3);
@@ -359,6 +440,30 @@ simde_wasm_i32x4_make (int32_t c0, int32_t c1, int32_t  c2, int32_t  c3) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde_v128_t
+simde_wasm_u32x4_make (uint32_t c0, uint32_t c1, uint32_t  c2, uint32_t  c3) {
+  #if defined(SIMDE_WASM_SIMD128_NATIVE)
+    return wasm_u32x4_make(c0, c1, c2, c3);
+  #elif defined(SIMDE_X86_SSE2_NATIVE)
+    return _mm_set_epi32(
+      HEDLEY_STATIC_CAST(int,  c3), HEDLEY_STATIC_CAST(int,  c2), HEDLEY_STATIC_CAST(int,  c1), HEDLEY_STATIC_CAST(int,  c0));
+  #else
+    simde_v128_private r_;
+
+    r_.u32[0] = c0;
+    r_.u32[1] = c1;
+    r_.u32[2] = c2;
+    r_.u32[3] = c3;
+
+    return simde_v128_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_WASM_SIMD128_ENABLE_NATIVE_ALIASES)
+  #define wasm_u32x4_make(c0, c1,  c2,  c3) simde_wasm_u32x4_make((c0), (c1),  (c2),  (c3))
+#endif
+
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_v128_t
 simde_wasm_i64x2_make (int64_t c0, int64_t c1) {
   #if defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_i64x2_make(c0, c1);
@@ -367,8 +472,8 @@ simde_wasm_i64x2_make (int64_t c0, int64_t c1) {
   #else
     simde_v128_private r_;
 
-    r_.i64[ 0] = c0;
-    r_.i64[ 1] = c1;
+    r_.i64[0] = c0;
+    r_.i64[1] = c1;
 
     return simde_v128_from_private(r_);
   #endif
@@ -376,6 +481,27 @@ simde_wasm_i64x2_make (int64_t c0, int64_t c1) {
 #if defined(SIMDE_WASM_SIMD128_ENABLE_NATIVE_ALIASES)
   #define wasm_i64x2_make(c0, c1) simde_wasm_i64x2_make((c0), (c1))
 #endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_v128_t
+simde_wasm_u64x2_make (uint64_t c0, uint64_t c1) {
+  #if defined(SIMDE_WASM_SIMD128_NATIVE)
+    return wasm_u64x2_make(c0, c1);
+  #elif defined(SIMDE_X86_SSE2_NATIVE)
+    return _mm_set_epi64x(HEDLEY_STATIC_CAST(int64_t,  c1), HEDLEY_STATIC_CAST(int64_t,  c0));
+  #else
+    simde_v128_private r_;
+
+    r_.u64[0] = c0;
+    r_.u64[1] = c1;
+
+    return simde_v128_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_WASM_SIMD128_ENABLE_NATIVE_ALIASES)
+  #define wasm_u64x2_make(c0, c1) simde_wasm_u64x2_make((c0), (c1))
+#endif
+
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde_v128_t
@@ -483,6 +609,62 @@ simde_wasm_f64x2_make (simde_float64 c0, simde_float64 c1) {
 
 #if defined(SIMDE_WASM_SIMD128_NATIVE)
   #define \
+    simde_wasm_u8x16_const( \
+        c0, c1,  c2,  c3,  c4,  c5,  c6,  c7, \
+        c8, c9, c10, c11, c12, c13, c14, c15) \
+      wasm_u8x16_const( \
+          (c0), (c1),  (c2),  (c3),  (c4),  (c5),  (c6),  (c7), \
+          (c8), (c9), (c10), (c11), (c12), (c13), (c14), (c15))
+#elif defined(SIMDE_STATEMENT_EXPR_) && defined(SIMDE_ASSERT_CONSTANT_) && defined(SIMDE_STATIC_ASSERT)
+  #define \
+    simde_wasm_u8x16_const( \
+        c0, c1,  c2,  c3,  c4,  c5,  c6,  c7, \
+        c8, c9, c10, c11, c12, c13, c14, c15) \
+    SIMDE_STATEMENT_EXPR_(({ \
+      SIMDE_ASSERT_CONSTANT_(c0); \
+      SIMDE_ASSERT_CONSTANT_(c1); \
+      SIMDE_ASSERT_CONSTANT_(c2); \
+      SIMDE_ASSERT_CONSTANT_(c3); \
+      SIMDE_ASSERT_CONSTANT_(c4); \
+      SIMDE_ASSERT_CONSTANT_(c5); \
+      SIMDE_ASSERT_CONSTANT_(c6); \
+      SIMDE_ASSERT_CONSTANT_(c7); \
+      SIMDE_ASSERT_CONSTANT_(c8); \
+      SIMDE_ASSERT_CONSTANT_(c9); \
+      SIMDE_ASSERT_CONSTANT_(c10); \
+      SIMDE_ASSERT_CONSTANT_(c11); \
+      SIMDE_ASSERT_CONSTANT_(c12); \
+      SIMDE_ASSERT_CONSTANT_(c13); \
+      SIMDE_ASSERT_CONSTANT_(c13); \
+      SIMDE_ASSERT_CONSTANT_(c15); \
+      \
+      simde_wasm_u8x16_make( \
+        c0, c1,  c2,  c3,  c4,  c5,  c6,  c7, \
+        c8, c9, c10, c11, c12, c13, c14, c15); \
+    }))
+#else
+  SIMDE_FUNCTION_ATTRIBUTES
+  simde_v128_t
+  simde_wasm_u8x16_const (
+      uint8_t c0, uint8_t c1, uint8_t  c2, uint8_t  c3, uint8_t  c4, uint8_t  c5, uint8_t  c6, uint8_t  c7,
+      uint8_t c8, uint8_t c9, uint8_t c10, uint8_t c11, uint8_t c12, uint8_t c13, uint8_t c14, uint8_t c15) {
+    return simde_wasm_u8x16_make(
+        c0, c1,  c2,  c3,  c4,  c5,  c6,  c7,
+        c8, c9, c10, c11, c12, c13, c14, c15);
+  }
+#endif
+#if defined(SIMDE_WASM_SIMD128_ENABLE_NATIVE_ALIASES)
+  #define \
+    wasm_u8x16_const( \
+        c0, c1,  c2,  c3,  c4,  c5,  c6,  c7, \
+        c8, c9, c10, c11, c12, c13, c14, c15) \
+      simde_wasm_u8x16_const( \
+          (c0), (c1),  (c2),  (c3),  (c4),  (c5),  (c6),  (c7), \
+          (c8), (c9), (c10), (c11), (c12), (c13), (c14), (c15))
+#endif
+
+#if defined(SIMDE_WASM_SIMD128_NATIVE)
+  #define \
     simde_wasm_i16x8_const( \
         c0, c1,  c2,  c3,  c4,  c5,  c6,  c7) \
       wasm_i16x8_const( \
@@ -518,6 +700,46 @@ simde_wasm_f64x2_make (simde_float64 c0, simde_float64 c1) {
     wasm_i16x8_const( \
         c0, c1, c2, c3, c4, c5, c6, c7) \
       simde_wasm_i16x8_const( \
+          (c0), (c1), (c2), (c3), (c4), (c5), (c6), (c7))
+#endif
+
+#if defined(SIMDE_WASM_SIMD128_NATIVE)
+  #define \
+    simde_wasm_u16x8_const( \
+        c0, c1,  c2,  c3,  c4,  c5,  c6,  c7) \
+      wasm_u16x8_const( \
+          (c0), (c1),  (c2),  (c3),  (c4),  (c5),  (c6),  (c7))
+#elif defined(SIMDE_STATEMENT_EXPR_) && defined(SIMDE_ASSERT_CONSTANT_) && defined(SIMDE_STATIC_ASSERT)
+  #define \
+    simde_wasm_u16x8_const( \
+        c0, c1,  c2,  c3,  c4,  c5,  c6,  c7) \
+    SIMDE_STATEMENT_EXPR_(({ \
+      SIMDE_ASSERT_CONSTANT_(c0); \
+      SIMDE_ASSERT_CONSTANT_(c1); \
+      SIMDE_ASSERT_CONSTANT_(c2); \
+      SIMDE_ASSERT_CONSTANT_(c3); \
+      SIMDE_ASSERT_CONSTANT_(c4); \
+      SIMDE_ASSERT_CONSTANT_(c5); \
+      SIMDE_ASSERT_CONSTANT_(c6); \
+      SIMDE_ASSERT_CONSTANT_(c7); \
+      \
+      simde_wasm_u16x8_make( \
+        c0, c1,  c2,  c3,  c4,  c5,  c6,  c7); \
+    }))
+#else
+  SIMDE_FUNCTION_ATTRIBUTES
+  simde_v128_t
+  simde_wasm_u16x8_const (
+      uint16_t c0, uint16_t c1, uint16_t  c2, uint16_t  c3, uint16_t  c4, uint16_t  c5, uint16_t  c6, uint16_t  c7) {
+    return simde_wasm_u16x8_make(
+        c0, c1,  c2,  c3,  c4,  c5,  c6,  c7);
+  }
+#endif
+#if defined(SIMDE_WASM_SIMD128_ENABLE_NATIVE_ALIASES)
+  #define \
+    wasm_u16x8_const( \
+        c0, c1, c2, c3, c4, c5, c6, c7) \
+      simde_wasm_u16x8_const( \
           (c0), (c1), (c2), (c3), (c4), (c5), (c6), (c7))
 #endif
 
@@ -559,6 +781,42 @@ simde_wasm_f64x2_make (simde_float64 c0, simde_float64 c1) {
 
 #if defined(SIMDE_WASM_SIMD128_NATIVE)
   #define \
+    simde_wasm_u32x4_const( \
+        c0, c1,  c2,  c3) \
+      wasm_u32x4_const( \
+          (c0), (c1),  (c2),  (c3))
+#elif defined(SIMDE_STATEMENT_EXPR_) && defined(SIMDE_ASSERT_CONSTANT_) && defined(SIMDE_STATIC_ASSERT)
+  #define \
+    simde_wasm_u32x4_const( \
+        c0, c1,  c2,  c3) \
+    SIMDE_STATEMENT_EXPR_(({ \
+      SIMDE_ASSERT_CONSTANT_(c0); \
+      SIMDE_ASSERT_CONSTANT_(c1); \
+      SIMDE_ASSERT_CONSTANT_(c2); \
+      SIMDE_ASSERT_CONSTANT_(c3); \
+      \
+      simde_wasm_u32x4_make( \
+        c0, c1,  c2,  c3); \
+    }))
+#else
+  SIMDE_FUNCTION_ATTRIBUTES
+  simde_v128_t
+  simde_wasm_u32x4_const (
+      uint32_t c0, uint32_t c1, uint32_t  c2, uint32_t  c3) {
+    return simde_wasm_u32x4_make(
+        c0, c1,  c2,  c3);
+  }
+#endif
+#if defined(SIMDE_WASM_SIMD128_ENABLE_NATIVE_ALIASES)
+  #define \
+    wasm_u32x4_const( \
+        c0, c1,  c2,  c3) \
+      simde_wasm_u32x4_const( \
+          (c0), (c1),  (c2),  (c3))
+#endif
+
+#if defined(SIMDE_WASM_SIMD128_NATIVE)
+  #define \
     simde_wasm_i64x2_const( \
         c0, c1) \
       wasm_i64x2_const( \
@@ -588,6 +846,40 @@ simde_wasm_f64x2_make (simde_float64 c0, simde_float64 c1) {
     wasm_i64x2_const( \
         c0, c1) \
       simde_wasm_i64x2_const( \
+          (c0), (c1))
+#endif
+
+#if defined(SIMDE_WASM_SIMD128_NATIVE)
+  #define \
+    simde_wasm_u64x2_const( \
+        c0, c1) \
+      wasm_u64x2_const( \
+          (c0), (c1))
+#elif defined(SIMDE_STATEMENT_EXPR_) && defined(SIMDE_ASSERT_CONSTANT_) && defined(SIMDE_STATIC_ASSERT)
+  #define \
+    simde_wasm_u64x2_const( \
+        c0, c1) \
+    SIMDE_STATEMENT_EXPR_(({ \
+      SIMDE_ASSERT_CONSTANT_(c0); \
+      SIMDE_ASSERT_CONSTANT_(c1); \
+      \
+      simde_wasm_u64x2_make( \
+        c0, c1); \
+    }))
+#else
+  SIMDE_FUNCTION_ATTRIBUTES
+  simde_v128_t
+  simde_wasm_u64x2_const (
+      uint64_t c0, uint64_t c1) {
+    return simde_wasm_u64x2_make(
+        c0, c1);
+  }
+#endif
+#if defined(SIMDE_WASM_SIMD128_ENABLE_NATIVE_ALIASES)
+  #define \
+    wasm_u64x2_const( \
+        c0, c1) \
+      simde_wasm_u64x2_const( \
           (c0), (c1))
 #endif
 
@@ -654,11 +946,7 @@ simde_wasm_f64x2_make (simde_float64 c0, simde_float64 c1) {
   }
 #endif
 #if defined(SIMDE_WASM_SIMD128_ENABLE_NATIVE_ALIASES)
-  #define \
-    wasm_f64x2_const( \
-        c0, c1) \
-      simde_wasm_f64x2_const( \
-          (c0), (c1))
+  #define wasm_f64x2_const(c0, c1) simde_wasm_f64x2_const((c0), (c1))
 #endif
 
 /* splat */
@@ -693,6 +981,52 @@ simde_wasm_i8x16_splat (int8_t a) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde_v128_t
+simde_wasm_u8x16_splat (uint8_t a) {
+  #if defined(SIMDE_WASM_SIMD128_NATIVE)
+    return wasm_u8x16_splat(a);
+  #else
+    simde_v128_private r_;
+
+    #if defined(SIMDE_X86_SSE2_NATIVE)
+      r_.sse_m128i = _mm_set1_epi8(HEDLEY_STATIC_CAST(int8_t, a));
+    #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+      r_.neon_u8 = vdupq_n_u8(a);
+    #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
+      r_.altivec_u8 = vec_splats(HEDLEY_STATIC_CAST(unsigned char, a));
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.u8) / sizeof(r_.u8[0])) ; i++) {
+        r_.u8[i] = a;
+      }
+    #endif
+
+    return simde_v128_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_WASM_SIMD128_ENABLE_NATIVE_ALIASES)
+  #define wasm_u8x16_splat(a) simde_wasm_u8x16_splat((a))
+#endif
+
+#if defined(SIMDE_WASM_SIMD128_NATIVE)
+  #define simde_wasm_i8x16_const_splat(a) wasm_i8x16_const_splat((a))
+#else
+  #define simde_wasm_i8x16_const_splat(a) simde_wasm_i8x16_splat(a);
+#endif
+#if defined(SIMDE_WASM_SIMD128_ENABLE_NATIVE_ALIASES)
+  #define wasm_i8x16_const_splat(a) simde_wasm_i8x16_const_splat((a))
+#endif
+
+#if defined(SIMDE_WASM_SIMD128_NATIVE)
+  #define simde_wasm_u8x16_const_splat(a) wasm_u8x16_const_splat((a))
+#else
+  #define simde_wasm_u8x16_const_splat(a) simde_wasm_u8x16_splat(a);
+#endif
+#if defined(SIMDE_WASM_SIMD128_ENABLE_NATIVE_ALIASES)
+  #define wasm_u8x16_const_splat(a) simde_wasm_u8x16_const_splat((a))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_v128_t
 simde_wasm_i16x8_splat (int16_t a) {
   #if defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_i16x8_splat(a);
@@ -717,6 +1051,52 @@ simde_wasm_i16x8_splat (int16_t a) {
 }
 #if defined(SIMDE_WASM_SIMD128_ENABLE_NATIVE_ALIASES)
   #define wasm_i16x8_splat(a) simde_wasm_i16x8_splat((a))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_v128_t
+simde_wasm_u16x8_splat (uint16_t a) {
+  #if defined(SIMDE_WASM_SIMD128_NATIVE)
+    return wasm_u16x8_splat(a);
+  #else
+    simde_v128_private r_;
+
+    #if defined(SIMDE_X86_SSE2_NATIVE)
+      r_.sse_m128i = _mm_set1_epi16(HEDLEY_STATIC_CAST(int16_t, a));
+    #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+      r_.neon_u16 = vdupq_n_u16(a);
+    #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
+      r_.altivec_u16 = vec_splats(HEDLEY_STATIC_CAST(unsigned short, a));
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.u16) / sizeof(r_.u16[0])) ; i++) {
+        r_.u16[i] = a;
+      }
+    #endif
+
+    return simde_v128_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_WASM_SIMD128_ENABLE_NATIVE_ALIASES)
+  #define wasm_u16x8_splat(a) simde_wasm_u16x8_splat((a))
+#endif
+
+#if defined(SIMDE_WASM_SIMD128_NATIVE)
+  #define simde_wasm_i16x8_const_splat(a) wasm_i16x8_const_splat((a))
+#else
+  #define simde_wasm_i16x8_const_splat(a) simde_wasm_i16x8_splat(a);
+#endif
+#if defined(SIMDE_WASM_SIMD128_ENABLE_NATIVE_ALIASES)
+  #define wasm_i16x8_const_splat(a) simde_wasm_i16x8_const_splat((a))
+#endif
+
+#if defined(SIMDE_WASM_SIMD128_NATIVE)
+  #define simde_wasm_u16x8_const_splat(a) wasm_u16x8_const_splat((a))
+#else
+  #define simde_wasm_u16x8_const_splat(a) simde_wasm_u16x8_splat(a);
+#endif
+#if defined(SIMDE_WASM_SIMD128_ENABLE_NATIVE_ALIASES)
+  #define wasm_u16x8_const_splat(a) simde_wasm_u16x8_const_splat((a))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -749,6 +1129,52 @@ simde_wasm_i32x4_splat (int32_t a) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde_v128_t
+simde_wasm_u32x4_splat (uint32_t a) {
+  #if defined(SIMDE_WASM_SIMD128_NATIVE)
+    return wasm_u32x4_splat(a);
+  #else
+    simde_v128_private r_;
+
+    #if defined(SIMDE_X86_SSE2_NATIVE)
+      r_.sse_m128i = _mm_set1_epi32(HEDLEY_STATIC_CAST(int32_t, a));
+    #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+      r_.neon_u32 = vdupq_n_u32(a);
+    #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
+      r_.altivec_u32 = vec_splats(a);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.u32) / sizeof(r_.u32[0])) ; i++) {
+        r_.u32[i] = a;
+      }
+    #endif
+
+    return simde_v128_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_WASM_SIMD128_ENABLE_NATIVE_ALIASES)
+  #define wasm_u32x4_splat(a) simde_wasm_u32x4_splat((a))
+#endif
+
+#if defined(SIMDE_WASM_SIMD128_NATIVE)
+  #define simde_wasm_i32x4_const_splat(a) wasm_i32x4_const_splat((a))
+#else
+  #define simde_wasm_i32x4_const_splat(a) simde_wasm_i32x4_splat(a);
+#endif
+#if defined(SIMDE_WASM_SIMD128_ENABLE_NATIVE_ALIASES)
+  #define wasm_i32x4_const_splat(a) simde_wasm_i32x4_const_splat((a))
+#endif
+
+#if defined(SIMDE_WASM_SIMD128_NATIVE)
+  #define simde_wasm_u32x4_const_splat(a) wasm_u32x4_const_splat((a))
+#else
+  #define simde_wasm_u32x4_const_splat(a) simde_wasm_u32x4_splat(a);
+#endif
+#if defined(SIMDE_WASM_SIMD128_ENABLE_NATIVE_ALIASES)
+  #define wasm_u32x4_const_splat(a) simde_wasm_u32x4_const_splat((a))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_v128_t
 simde_wasm_i64x2_splat (int64_t a) {
   #if defined(SIMDE_WASM_SIMD128_NATIVE)
     return wasm_i64x2_splat(a);
@@ -773,6 +1199,52 @@ simde_wasm_i64x2_splat (int64_t a) {
 }
 #if defined(SIMDE_WASM_SIMD128_ENABLE_NATIVE_ALIASES)
   #define wasm_i64x2_splat(a) simde_wasm_i64x2_splat((a))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_v128_t
+simde_wasm_u64x2_splat (uint64_t a) {
+  #if defined(SIMDE_WASM_SIMD128_NATIVE)
+    return wasm_u64x2_splat(a);
+  #else
+    simde_v128_private r_;
+
+    #if defined(SIMDE_X86_SSE2_NATIVE) && (!defined(HEDLEY_MSVC_VERSION) || HEDLEY_MSVC_VERSION_CHECK(19,0,0))
+      r_.sse_m128i = _mm_set1_epi64x(HEDLEY_STATIC_CAST(int64_t, a));
+    #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+      r_.neon_u64 = vdupq_n_u64(a);
+    #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
+      r_.altivec_u64 = vec_splats(HEDLEY_STATIC_CAST(unsigned long long, a));
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.u64) / sizeof(r_.u64[0])) ; i++) {
+        r_.u64[i] = a;
+      }
+    #endif
+
+    return simde_v128_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_WASM_SIMD128_ENABLE_NATIVE_ALIASES)
+  #define wasm_u64x2_splat(a) simde_wasm_u64x2_splat((a))
+#endif
+
+#if defined(SIMDE_WASM_SIMD128_NATIVE)
+  #define simde_wasm_i64x2_const_splat(a) wasm_i64x2_const_splat((a))
+#else
+  #define simde_wasm_i64x2_const_splat(a) simde_wasm_i64x2_splat(a);
+#endif
+#if defined(SIMDE_WASM_SIMD128_ENABLE_NATIVE_ALIASES)
+  #define wasm_i64x2_const_splat(a) simde_wasm_i64x2_const_splat((a))
+#endif
+
+#if defined(SIMDE_WASM_SIMD128_NATIVE)
+  #define simde_wasm_u64x2_const_splat(a) wasm_u64x2_const_splat((a))
+#else
+  #define simde_wasm_u64x2_const_splat(a) simde_wasm_u64x2_splat(a);
+#endif
+#if defined(SIMDE_WASM_SIMD128_ENABLE_NATIVE_ALIASES)
+  #define wasm_i64x2_const_splat(a) simde_wasm_i64x2_const_splat((a))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -1003,6 +1475,36 @@ simde_wasm_u16x8_extract_lane (simde_v128_t a, const int lane) {
 #endif
 #if defined(SIMDE_WASM_SIMD128_ENABLE_NATIVE_ALIASES)
   #define wasm_u16x8_extract_lane(a, lane) simde_wasm_u16x8_extract_lane((a), (lane))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+uint32_t
+simde_wasm_u32x4_extract_lane (simde_v128_t a, const int lane) {
+  simde_v128_private a_ = simde_v128_to_private(a);
+  return a_.u32[lane & 3];
+}
+#if defined(SIMDE_WASM_SIMD128_NATIVE)
+  #define simde_wasm_u32x4_extract_lane(a, lane) HEDLEY_STATIC_CAST(uint32_t, wasm_u32x4_extract_lane((a), (lane)))
+#elif defined(SIMDE_ARM_NEON_A32V7_NATIVE) && !defined(SIMDE_BUG_CLANG_BAD_VGET_SET_LANE_TYPES)
+  #define simde_wasm_u32x4_extract_lane(a, lane) vgetq_lane_u32(simde_v128_to_neon_u32(a), (lane) & 3)
+#endif
+#if defined(SIMDE_WASM_SIMD128_ENABLE_NATIVE_ALIASES)
+  #define wasm_u32x4_extract_lane(a, lane) simde_wasm_u32x4_extract_lane((a), (lane))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+uint64_t
+simde_wasm_u64x2_extract_lane (simde_v128_t a, const int lane) {
+  simde_v128_private a_ = simde_v128_to_private(a);
+  return a_.u64[lane & 1];
+}
+#if defined(SIMDE_WASM_SIMD128_NATIVE)
+  #define simde_wasm_u64x2_extract_lane(a, lane) HEDLEY_STATIC_CAST(uint64_t, wasm_u64x2_extract_lane((a), (lane)))
+#elif defined(SIMDE_ARM_NEON_A32V7_NATIVE) && !defined(SIMDE_BUG_CLANG_BAD_VGET_SET_LANE_TYPES)
+  #define simde_wasm_u64x2_extract_lane(a, lane) vgetq_lane_u64(simde_v128_to_neon_u64(a), (lane) & 1)
+#endif
+#if defined(SIMDE_WASM_SIMD128_ENABLE_NATIVE_ALIASES)
+  #define wasm_u64x2_extract_lane(a, lane) simde_wasm_u64x2_extract_lane((a), (lane))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES

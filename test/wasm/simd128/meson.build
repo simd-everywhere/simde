@@ -10,6 +10,7 @@ simde_test_wasm_simd128_tests = [
   'bitmask',
   'bitselect',
   'ceil',
+  'const',
   'convert',
   'demote',
   'div',
