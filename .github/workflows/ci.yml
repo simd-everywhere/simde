@@ -663,11 +663,15 @@ jobs:
       run: |
         echo "LD_LIBRARY_PATH=/opt/cross-tools/target/usr/lib64:/opt/cross-tools/loongarch64-unknown-linux-gnu/lib64:$LD_LIBRARY_PATH" >> $GITHUB_ENV
         echo "PATH=$GITHUB_WORKSPACE:/opt/cross-tools/bin:$PATH" >> $GITHUB_ENV
+    - name: Disable SVML tests
+      run: |
+        sed -i "/svml/d" test/x86/meson.build
+        rm test/x86/svml.c
+        echo "Due to the qemu-loongarch64(v2022.09.06) provided by Loongson causing timeouts in four sets of test cases,"
+        echo "the SVML tests have been temporarily disabled."
     - name: Configure
       run: meson setup build --cross-file=docker/cross-files/loongarch64-gcc-7.cross
     - name: Build
-      run: ninja -C build -v
-    # Due to the qemu-loongarch64(v2022.09.06) provided by Loongson causing timeouts in four sets of test cases,
-    # the tests have been temporarily disabled.
-    #- name: Test
-    #  run: ninja -C build -v test
+      run: meson compile -C build -v
+    - name: Test
+      run: meson test -C build --print-errorlogs
