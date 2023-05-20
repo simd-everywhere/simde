@@ -120,21 +120,7 @@ simde_mm_clmulepi64_si128 (simde__m128i a, simde__m128i b, const int imm8)
     b_ = simde__m128i_to_private(b),
     r_;
 
-  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(__ARM_FEATURE_AES)
-    uint64x1_t A = ((imm8) & 0x01) ? vget_high_u64(a_.neon_u64) : vget_low_u64(a_.neon_u64);
-    uint64x1_t B = ((imm8) & 0x10) ? vget_high_u64(b_.neon_u64) : vget_low_u64(b_.neon_u64);
-    #if defined(SIMDE_BUG_CLANG_48257)
-      HEDLEY_DIAGNOSTIC_PUSH
-      SIMDE_DIAGNOSTIC_DISABLE_VECTOR_CONVERSION_
-    #endif
-    poly64_t A_ = vget_lane_p64(vreinterpret_p64_u64(A), 0);
-    poly64_t B_ = vget_lane_p64(vreinterpret_p64_u64(B), 0);
-    #if defined(SIMDE_BUG_CLANG_48257)
-      HEDLEY_DIAGNOSTIC_POP
-    #endif
-    poly128_t R = vmull_p64(A_, B_);
-    r_.neon_u64 = vreinterpretq_u64_p128(R);
-  #elif SIMDE_NATURAL_VECTOR_SIZE_GE(128)
+  #if SIMDE_NATURAL_VECTOR_SIZE_GE(128)
     #if defined(SIMDE_SHUFFLE_VECTOR_)
       switch (imm8 & 0x11) {
         case 0x00:
@@ -211,9 +197,9 @@ simde_mm_clmulepi64_si128 (simde__m128i a, simde__m128i b, const int imm8)
       SIMDE_LCC_REVERT_DEPRECATED_WARNINGS \
     }))
   #else
-    #define simde_mm_clmulepi64_si128(a, b, imm8) simde_mm_clmulepi64_si128(a, b, imm8)
+    #define simde_mm_clmulepi64_si128(a, b, imm8) _mm_clmulepi64_si128(a, b, imm8)
   #endif
-#elif defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(__ARM_FEATURE_AES)
+#elif defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(__ARM_FEATURE_AES) && !defined(__clang__)
   #define simde_mm_clmulepi64_si128(a, b, imm8) \
     simde__m128i_from_neon_u64( \
       vreinterpretq_u64_p128( \
