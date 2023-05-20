@@ -8589,7 +8589,7 @@ simde_wasm_i32x4_trunc_sat_f32x4 (simde_v128_t a) {
           );
       #endif
       r_.sse_m128i = _mm_and_si128(r_.sse_m128i, _mm_castps_si128(_mm_cmpord_ps(a_.sse_m128, a_.sse_m128)));
-    #elif defined(SIMDE_CONVERT_VECTOR_) && defined(SIMDE_IEEE754_STORAGE)
+    #elif defined(SIMDE_CONVERT_VECTOR_) && defined(SIMDE_IEEE754_STORAGE) && !defined(SIMDE_ARCH_POWER)
       SIMDE_CONVERT_VECTOR_(r_.i32, a_.f32);
 
       const __typeof__(a_.f32) max_representable = { SIMDE_FLOAT32_C(2147483520.0), SIMDE_FLOAT32_C(2147483520.0), SIMDE_FLOAT32_C(2147483520.0), SIMDE_FLOAT32_C(2147483520.0) };

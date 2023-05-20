@@ -3227,7 +3227,7 @@ simde_mm_cvttps_epi32 (simde__m128 a) {
 
         r_.wasm_v128 = wasm_v128_bitselect(r_.wasm_v128, wasm_i32x4_splat(INT32_MIN), valid_input);
       #endif
-    #elif defined(SIMDE_CONVERT_VECTOR_)
+    #elif defined(SIMDE_CONVERT_VECTOR_) && !defined(SIMDE_ARCH_POWER)
       SIMDE_CONVERT_VECTOR_(r_.i32, a_.f32);
 
       #if !defined(SIMDE_FAST_CONVERSION_RANGE) || !defined(SIMDE_FAST_NANS)
