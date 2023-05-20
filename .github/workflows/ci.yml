@@ -336,11 +336,11 @@ jobs:
           arch_deb: s390x
         # power: 150 failures: x86/{avx512/range,sse,sse3}, arm/neon/*, wasm_simd128/, wasm_relexad_simd/*
         # https://github.com/simd-everywhere/simde/issues/903
-        # - version: 12
-        #   distro: ubuntu-22.04
-        #   cross: power9
-        #   arch_gnu: powerpc64le
-        #   arch_deb: ppc64el
+        - version: 12
+          distro: ubuntu-22.04
+          cross: power9
+          arch_gnu: powerpc64le
+          arch_deb: ppc64el
     runs-on: ${{ matrix.distro }}
     steps:
     - uses: actions/checkout@v3

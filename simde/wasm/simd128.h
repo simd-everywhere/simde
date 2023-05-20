@@ -4367,7 +4367,7 @@ simde_wasm_u16x8_shr (simde_v128_t a, uint32_t count) {
     #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       r_.neon_u16 = vshlq_u16(a_.neon_u16, vdupq_n_s16(-HEDLEY_STATIC_CAST(int16_t, count & 15)));
     #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
-      r_.altivec_i16 = vec_sra(a_.altivec_i16, vec_splats(HEDLEY_STATIC_CAST(unsigned short, count & 15)));
+      r_.altivec_u16 = vec_sr(a_.altivec_u16, vec_splats(HEDLEY_STATIC_CAST(unsigned short, count & 15)));
     #elif defined(SIMDE_VECTOR_SUBSCRIPT) && defined(SIMDE_VECTOR_SCALAR)
       r_.u16 = a_.u16 >> (count & 15);
     #else
@@ -4399,7 +4399,7 @@ simde_wasm_u32x4_shr (simde_v128_t a, uint32_t count) {
     #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       r_.neon_u32 = vshlq_u32(a_.neon_u32, vdupq_n_s32(-HEDLEY_STATIC_CAST(int32_t, count & 31)));
     #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
-      r_.altivec_i32 = vec_sra(a_.altivec_i32, vec_splats(HEDLEY_STATIC_CAST(unsigned int, count & 31)));
+      r_.altivec_u32 = vec_sr(a_.altivec_u32, vec_splats(HEDLEY_STATIC_CAST(unsigned int, count & 31)));
     #elif defined(SIMDE_VECTOR_SUBSCRIPT) && defined(SIMDE_VECTOR_SCALAR)
       r_.u32 = a_.u32 >> (count & 31);
     #else
@@ -4434,7 +4434,7 @@ simde_wasm_u64x2_shr (simde_v128_t a, uint32_t count) {
     #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       r_.neon_u64 = vshlq_u64(a_.neon_u64, vdupq_n_s64(-HEDLEY_STATIC_CAST(int64_t, count & 63)));
     #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
-      r_.altivec_i64 = vec_sra(a_.altivec_i64, vec_splats(HEDLEY_STATIC_CAST(unsigned long long, count & 63)));
+      r_.altivec_u64 = vec_sr(a_.altivec_u64, vec_splats(HEDLEY_STATIC_CAST(unsigned long long, count & 63)));
     #elif defined(SIMDE_VECTOR_SUBSCRIPT) && defined(SIMDE_VECTOR_SCALAR)
       r_.u64 = a_.u64 >> (count & 63);
     #else
@@ -4820,12 +4820,6 @@ simde_wasm_i16x8_mul (simde_v128_t a, simde_v128_t b) {
       r_.sse_m128i = _mm_mullo_epi16(a_.sse_m128i, b_.sse_m128i);
     #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       r_.neon_i16 = vmulq_s16(a_.neon_i16, b_.neon_i16);
-    #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
-      r_.altivec_i16 =
-        vec_pack(
-          vec_mule(a_.altivec_i16, b_.altivec_i16),
-          vec_mulo(a_.altivec_i16, b_.altivec_i16)
-        );
     #elif defined(SIMDE_VECTOR_SUBSCRIPT)
       r_.i16 = a_.i16 * b_.i16;
     #else

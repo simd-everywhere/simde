@@ -338,7 +338,7 @@ simde_vdupq_n_f16(simde_float16 value) {
     return simde_float16x8_from_private(r_);
   #endif
 }
-#define simde_vmovq_n_f32 simde_vdupq_n_f32
+#define simde_vmovq_n_f16 simde_vdupq_n_f16
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vdupq_n_f16
   #define vdupq_n_f16(value) simde_vdupq_n_f16((value))
