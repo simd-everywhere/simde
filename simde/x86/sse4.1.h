@@ -2299,8 +2299,8 @@ simde_mm_testnzc_si128 (simde__m128i a, simde__m128i b) {
     #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       int64x2_t s640 = vandq_s64(b_.neon_i64, a_.neon_i64);
       int64x2_t s641 = vbicq_s64(b_.neon_i64, a_.neon_i64);
-      return !( !(vgetq_lane_s64(s641, 0) | vgetq_lane_s64(s641, 1)) \
-          | !(vgetq_lane_s64(s640, 0) | vgetq_lane_s64(s640, 1)) );
+      return !( !(vgetq_lane_s64(s641, 0) || vgetq_lane_s64(s641, 1)) \
+             || !(vgetq_lane_s64(s640, 0) || vgetq_lane_s64(s640, 1)) );
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       v128_t m1 = wasm_v128_and(a_.wasm_v128, b_.wasm_v128);
       v128_t m2 = wasm_v128_andnot(b_.wasm_v128, a_.wasm_v128);
