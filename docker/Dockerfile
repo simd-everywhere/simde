@@ -106,7 +106,9 @@ RUN \
 # Install QEMU git (necessary for MIPS)
 RUN \
   if [ ${QEMU_GIT} = "y" ]; then \
-    apt-get install -y pkg-config libglib2.0-dev libpixman-1-dev && \
+    apt-get install -y pkg-config libglib2.0-dev libpixman-1-dev libaio-dev \
+      libbpf-dev libdw-dev libcapstone-dev flex bison \
+      liburing-dev libseccomp-dev libcap-ng-dev libzstd-dev libudev-dev libgnutls28-dev linux-headers-amd64 && \
     git clone https://gitlab.com/qemu-project/qemu.git /usr/local/src/qemu && \
     mkdir -p /usr/local/src/qemu/build && cd /usr/local/src/qemu/build && \
     ../configure --prefix=/opt/qemu && \
