@@ -8,8 +8,8 @@ ld = 'llvm-ld-15'
 exe_wrapper = ['qemu-s390x-static', '-L', '/usr/s390x-linux-gnu/']
 
 [properties]
-c_args        = ['--target=s390x-ibm-linux', '-isystem=/usr/s390x-linux-gnu/include', '-Weverything', '-fno-lax-vector-conversions', '-Werror']
-cpp_args      = ['--target=s390x-ibm-linux', '-isystem=/usr/s390x-linux-gnu/include', '-Weverything', '-fno-lax-vector-conversions', '-Werror']
+c_args        = ['--target=s390x-ibm-linux', '-mpcu=z196', '-isystem=/usr/s390x-linux-gnu/include', '-Weverything', '-fno-lax-vector-conversions', '-Werror']
+cpp_args      = ['--target=s390x-ibm-linux', '-mpcu=z196', '-isystem=/usr/s390x-linux-gnu/include', '-Weverything', '-fno-lax-vector-conversions', '-Werror']
 c_link_args   = ['--target=s390x-ibm-linux']
 cpp_link_args = ['--target=s390x-ibm-linux']
 

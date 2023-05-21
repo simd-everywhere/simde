@@ -15,6 +15,6 @@ cpp_link_args = ['--target=powerpc64le-linux-gnu']
 
 [host_machine]
 system = 'linux'
-cpu_family = 'powerpc64'
+cpu_family = 'ppc64'
 cpu = 'ppc64el'
 endian = 'little'
