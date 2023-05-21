@@ -320,6 +320,12 @@ jobs:
       matrix:
         include:
         - version: 12
+          cross: armv7
+          arch_gnu: arm
+          arch_gnu_abi: eabihf
+          arch_deb: armhf
+          distro: ubuntu-22.04
+        - version: 12
           cross: aarch64
           arch_gnu: aarch64
           arch_deb: arm64
@@ -352,8 +358,8 @@ jobs:
         sudo add-apt-repository ppa:savoury1/virtualisation
         sudo apt-get update -y
         sudo apt-get -yq install ninja-build parallel \
-          gcc-${{ matrix.version }}-${{ matrix.arch_gnu }}-linux-gnu \
-          g++-${{ matrix.version }}-${{ matrix.arch_gnu }}-linux-gnu binfmt-support \
+          gcc-${{ matrix.version }}-${{ matrix.arch_gnu }}-linux-gnu${{ matrix.arch_gnu_abi }} \
+          g++-${{ matrix.version }}-${{ matrix.arch_gnu }}-linux-gnu${{ matrix.arch_gnu_abi }} binfmt-support \
           qemu-user-static python3-pip libc6-${{ matrix.arch_deb }}-cross libstdc++-${{ matrix.version }}-dev-${{ matrix.arch_deb }}-cross
         sudo python3 -m pip install meson==0.55.0
     - name: ccache
