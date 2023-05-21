@@ -72,6 +72,7 @@
 #include "avx512/fnmadd.h"
 #include "avx512/fnmsub.h"
 #include "avx512/fpclass.h"
+#include "avx512/gather.h"
 #include "avx512/insert.h"
 #include "avx512/kshift.h"
 #include "avx512/knot.h"
