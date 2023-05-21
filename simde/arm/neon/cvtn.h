@@ -126,7 +126,7 @@ simde_vcvtns_u32_f32(simde_float32 a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_uint32x4_t
 simde_vcvtnq_u32_f32(simde_float32x4_t a) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && !defined(SIMDE_BUG_CLANG_46844)
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && !defined(SIMDE_BUG_CLANG_46844)
     return vcvtnq_u32_f32(a);
   #else
     simde_float32x4_private a_ = simde_float32x4_to_private(a);
