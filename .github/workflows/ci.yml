@@ -320,6 +320,12 @@ jobs:
       matrix:
         include:
         - version: 12
+          cross: armel
+          arch_gnu_abi: eabi
+          arch_deb: armel
+          arch_gnu: arm
+          distro: ubuntu-22.04
+        - version: 12
           cross: armv7
           arch_gnu: arm
           arch_gnu_abi: eabihf
@@ -390,6 +396,12 @@ jobs:
           cross: aarch64
           arch_gnu: aarch64
           arch_deb: arm64
+          distro: ubuntu-22.04
+        - version: 15
+          cross: armel
+          arch_gnu_abi: eabi
+          arch_deb: armel
+          arch_gnu: arm
           distro: ubuntu-22.04
         # - version: 15
         #   cross: armel
