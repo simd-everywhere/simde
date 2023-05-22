@@ -381,10 +381,22 @@ jobs:
       matrix:
         include:
         - version: 15
+          cross: armv7
+          arch_deb: armhf
+          arch_gnu_abi: eabihf
+          arch_gnu: arm
+          distro: ubuntu-22.04
+        - version: 15
           cross: aarch64
           arch_gnu: aarch64
           arch_deb: arm64
           distro: ubuntu-22.04
+        # - version: 15
+        #   cross: armel
+        #   arch_gnu_abi: eabi
+        #   arch_deb: armel
+        #   arch_gnu: arm
+        #   distro: ubuntu-22.04
         # - version: 15
         #   cross: riscv64
         #   arch_gnu: riscv64
@@ -415,7 +427,7 @@ jobs:
         sudo apt-get -yq install ninja-build parallel \
           binfmt-support clang-${{ matrix.version }} clang++-${{ matrix.version }} \
           qemu-user-static python3-pip libc6-${{ matrix.arch_deb }}-cross libstdc++-12-dev-${{ matrix.arch_deb }}-cross \
-          binutils-${{ matrix.arch_gnu }}-linux-gnu
+          binutils-${{ matrix.arch_gnu }}-linux-gnu${{ matrix.arch_gnu_abi }}
         sudo python3 -m pip install meson==0.55.0
     - name: ccache
       uses: hendrikmuhs/ccache-action@v1.2

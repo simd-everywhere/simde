@@ -1,0 +1,20 @@
+[binaries]
+c = ['ccache', 'clang-15']
+cpp = ['ccache', 'clang++-15']
+ar = 'llvm-ar-15'
+strip = 'llvm-strip-15'
+objcopy = 'llvm-objcopy-15'
+ld = 'llvm-ld-15'
+exe_wrapper = ['qemu-arm-static', '-L', '/usr/arm-linux-gnueabi']
+
+[properties]
+c_args = ['--target=arm-linux-gnueabi', '-isystem=/usr/arm-linux-gnueabi/include', '-Weverything', '-fno-lax-vector-conversions', '-Werror']
+cpp_args = ['--target=arm-linux-gnueabi', '-isystem=/usr/arm-linux-gnueabi/include', '-Weverything', '-fno-lax-vector-conversions', '-Werror']
+c_link_args = ['--target=arm-linux-gnueabi']
+cpp_link_args = ['--target=arm-linux-gnueabi']
+
+[host_machine]
+system = 'linux'
+cpu_family = 'arm'
+cpu = 'generic'
+endian = 'little'
