@@ -434,6 +434,91 @@ simde_math_fpclassify(double v) {
   #endif
 }
 
+#define SIMDE_MATH_FP_QNAN      0x01
+#define SIMDE_MATH_FP_PZERO     0x02
+#define SIMDE_MATH_FP_NZERO     0x04
+#define SIMDE_MATH_FP_PINF      0x08
+#define SIMDE_MATH_FP_NINF      0x10
+#define SIMDE_MATH_FP_DENORMAL  0x20
+#define SIMDE_MATH_FP_NEGATIVE  0x40
+#define SIMDE_MATH_FP_SNAN      0x80
+
+static HEDLEY_INLINE
+int8_t
+simde_math_fpclassf(float v, const int imm8) {
+  union {
+    float f;
+    uint32_t u;
+  } fu;
+  fu.f = v;
+  uint32_t bits = fu.u;
+  int8_t NegNum = (bits >> 31) & 1;
+  uint32_t const ExpMask =  0x3F800000; // [30:23]
+  uint32_t const MantMask = 0x007FFFFF; // [22:0]
+  int8_t ExpAllOnes = ((bits & ExpMask) == ExpMask);
+  int8_t ExpAllZeros = ((bits & ExpMask) == 0);
+  int8_t MantAllZeros = ((bits & MantMask) == 0);
+  int8_t ZeroNumber = ExpAllZeros && MantAllZeros;
+  int8_t SignalingBit = (bits >> 22) & 1;
+
+  int8_t result = 0;
+  int8_t qNaN_res = ExpAllOnes && !MantAllZeros && SignalingBit;
+  int8_t Pzero_res = !NegNum && ExpAllZeros && MantAllZeros;
+  int8_t Nzero_res = NegNum && ExpAllZeros && MantAllZeros;
+  int8_t Pinf_res = !NegNum && ExpAllOnes && MantAllZeros;
+  int8_t Ninf_res = NegNum && ExpAllOnes && MantAllZeros;
+  int8_t Denorm_res = ExpAllZeros && !MantAllZeros;
+  int8_t FinNeg_res = NegNum && !ExpAllOnes && !ZeroNumber;
+  int8_t sNaN_res = ExpAllOnes && !MantAllZeros && !SignalingBit;
+  result = ((((imm8 >> 0) & 1) && qNaN_res)   || \
+            (((imm8 >> 1) & 1) && Pzero_res)  || \
+            (((imm8 >> 2) & 1) && Nzero_res)  || \
+            (((imm8 >> 3) & 1) && Pinf_res)   || \
+            (((imm8 >> 4) & 1) && Ninf_res)   || \
+            (((imm8 >> 5) & 1) && Denorm_res) || \
+            (((imm8 >> 6) & 1) && FinNeg_res) || \
+            (((imm8 >> 7) & 1) && sNaN_res));
+  return result;
+}
+
+static HEDLEY_INLINE
+int8_t
+simde_math_fpclass(double v, const int imm8) {
+  union {
+    double d;
+    uint64_t u;
+  } du;
+  du.d = v;
+  uint64_t bits = du.u;
+  int8_t NegNum = (bits >> 63) & 1;
+  uint64_t const ExpMask =  0x3FF0000000000000; // [62:52]
+  uint64_t const MantMask = 0x000FFFFFFFFFFFFF; // [51:0]
+  int8_t ExpAllOnes = ((bits & ExpMask) == ExpMask);
+  int8_t ExpAllZeros = ((bits & ExpMask) == 0);
+  int8_t MantAllZeros = ((bits & MantMask) == 0);
+  int8_t ZeroNumber = ExpAllZeros && MantAllZeros;
+  int8_t SignalingBit = (bits >> 51) & 1;
+
+  int8_t result = 0;
+  int8_t qNaN_res = ExpAllOnes && !MantAllZeros && SignalingBit;
+  int8_t Pzero_res = !NegNum && ExpAllZeros && MantAllZeros;
+  int8_t Nzero_res = NegNum && ExpAllZeros && MantAllZeros;
+  int8_t Pinf_res = !NegNum && ExpAllOnes && MantAllZeros;
+  int8_t Ninf_res = NegNum && ExpAllOnes && MantAllZeros;
+  int8_t Denorm_res = ExpAllZeros && !MantAllZeros;
+  int8_t FinNeg_res = NegNum && !ExpAllOnes && !ZeroNumber;
+  int8_t sNaN_res = ExpAllOnes && !MantAllZeros && !SignalingBit;
+  result = ((((imm8 >> 0) & 1) && qNaN_res)   || \
+            (((imm8 >> 1) & 1) && Pzero_res)  || \
+            (((imm8 >> 2) & 1) && Nzero_res)  || \
+            (((imm8 >> 3) & 1) && Pinf_res)   || \
+            (((imm8 >> 4) & 1) && Ninf_res)   || \
+            (((imm8 >> 5) & 1) && Denorm_res) || \
+            (((imm8 >> 6) & 1) && FinNeg_res) || \
+            (((imm8 >> 7) & 1) && sNaN_res));
+  return result;
+}
+
 /*** Manipulation functions ***/
 
 #if !defined(simde_math_nextafter)
