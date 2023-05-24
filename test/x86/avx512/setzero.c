@@ -52,10 +52,18 @@ test_simde_mm512_setzero_pd(SIMDE_MUNIT_TEST_ARGS) {
   return 0;
 }
 
+static int
+test_simde_mm512_setzero_ph(SIMDE_MUNIT_TEST_ARGS) {
+  simde_test_x86_assert_equal_f16x32(simde_mm512_setzero_ph(), simde_mm512_set1_ph(SIMDE_FLOAT16_VALUE(0.0)), 1);
+
+  return 0;
+}
+
 SIMDE_TEST_FUNC_LIST_BEGIN
   SIMDE_TEST_FUNC_LIST_ENTRY(mm512_setzero_si512)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm512_setzero_ps)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm512_setzero_pd)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_setzero_ph)
 SIMDE_TEST_FUNC_LIST_END
 
 #include <test/x86/avx512/test-avx512-footer.h>
