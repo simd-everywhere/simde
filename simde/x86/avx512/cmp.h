@@ -536,6 +536,235 @@ simde_mm512_cmp_pd_mask (simde__m512d a, simde__m512d b, const int imm8)
 
 SIMDE_HUGE_FUNCTION_ATTRIBUTES
 simde__mmask32
+simde_mm512_cmp_ph_mask (simde__m512h a, simde__m512h b, const int imm8)
+    SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 31) {
+  simde__m512h_private
+    r_,
+    a_ = simde__m512h_to_private(a),
+    b_ = simde__m512h_to_private(b);
+
+  switch (imm8) {
+    case SIMDE_CMP_EQ_OQ:
+    case SIMDE_CMP_EQ_OS:
+      #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && defined(SIMDE_FLOAT16_VECTOR)
+        r_.i16 = HEDLEY_REINTERPRET_CAST(__typeof__(r_.i16), (a_.f16 == b_.f16));
+      #else
+        SIMDE_VECTORIZE
+        for (size_t i = 0 ; i < (sizeof(r_.f16) / sizeof(r_.f16[0])) ; i++) {
+          r_.i16[i] = (
+              simde_float16_as_uint16(a_.f16[i]) == simde_float16_as_uint16(b_.f16[i])
+              && !simde_isnanhf(a_.f16[i]) && !simde_isnanhf(b_.f16[i])
+              ) ? ~INT16_C(0) : INT16_C(0);
+        }
+      #endif
+      break;
+
+    case SIMDE_CMP_LT_OQ:
+    case SIMDE_CMP_LT_OS:
+      #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && defined(SIMDE_FLOAT16_VECTOR)
+        r_.i16 = HEDLEY_REINTERPRET_CAST(__typeof__(r_.i16), (a_.f16 < b_.f16));
+      #else
+        SIMDE_VECTORIZE
+        for (size_t i = 0 ; i < (sizeof(r_.f16) / sizeof(r_.f16[0])) ; i++) {
+          r_.i16[i] = (simde_float16_to_float32(a_.f16[i]) < simde_float16_to_float32(b_.f16[i])) ? ~INT16_C(0) : INT16_C(0);
+        }
+      #endif
+      break;
+
+    case SIMDE_CMP_LE_OQ:
+    case SIMDE_CMP_LE_OS:
+      #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && defined(SIMDE_FLOAT16_VECTOR)
+        r_.i16 = HEDLEY_REINTERPRET_CAST(__typeof__(r_.i16), (a_.f16 <= b_.f16));
+      #else
+        SIMDE_VECTORIZE
+        for (size_t i = 0 ; i < (sizeof(r_.f16) / sizeof(r_.f16[0])) ; i++) {
+          r_.i16[i] = (simde_float16_to_float32(a_.f16[i]) <= simde_float16_to_float32(b_.f16[i])) ? ~INT16_C(0) : INT16_C(0);
+        }
+      #endif
+      break;
+
+    case SIMDE_CMP_UNORD_Q:
+    case SIMDE_CMP_UNORD_S:
+      #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && defined(SIMDE_FLOAT16_VECTOR)
+        r_.i16 = HEDLEY_REINTERPRET_CAST(__typeof__(r_.i16), (a_.f16 != a_.f16) | (b_.f16 != b_.f16));
+      #else
+        SIMDE_VECTORIZE
+        for (size_t i = 0 ; i < (sizeof(r_.f16) / sizeof(r_.f16[0])) ; i++) {
+          r_.i16[i] = (
+            (simde_float16_to_float32(a_.f16[i]) != simde_float16_to_float32(a_.f16[i]))
+            || (simde_float16_to_float32(b_.f16[i]) != simde_float16_to_float32(b_.f16[i]))
+            ) ? ~INT16_C(0) : INT16_C(0);
+        }
+      #endif
+      break;
+
+    case SIMDE_CMP_NEQ_UQ:
+    case SIMDE_CMP_NEQ_US:
+      #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && defined(SIMDE_FLOAT16_VECTOR)
+        r_.i16 = HEDLEY_REINTERPRET_CAST(__typeof__(r_.i16), (a_.f16 != b_.f16));
+      #else
+        SIMDE_VECTORIZE
+        for (size_t i = 0 ; i < (sizeof(r_.f16) / sizeof(r_.f16[0])) ; i++) {
+          r_.i16[i] = (
+            (simde_float16_as_uint16(a_.f16[i]) != simde_float16_as_uint16(b_.f16[i]))
+            || simde_isnanhf(a_.f16[i]) || simde_isnanhf(b_.f16[i])
+            ) ? ~INT16_C(0) : INT16_C(0);
+        }
+      #endif
+      break;
+
+    case SIMDE_CMP_NEQ_OQ:
+    case SIMDE_CMP_NEQ_OS:
+      #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && defined(SIMDE_FLOAT16_VECTOR)
+        r_.i16 = HEDLEY_REINTERPRET_CAST(__typeof__(r_.i16), (a_.f16 == a_.f16) & (b_.f16 == b_.f16) & (a_.f16 != b_.f16));
+      #else
+        SIMDE_VECTORIZE
+        for (size_t i = 0 ; i < (sizeof(r_.f16) / sizeof(r_.f16[0])) ; i++) {
+          r_.i16[i] = (
+              !(simde_isnanhf(a_.f16[i]) || simde_isnanhf(b_.f16[i]))
+              && (simde_float16_as_uint16(a_.f16[i]) != simde_float16_as_uint16(b_.f16[i]))
+            ) ? ~INT16_C(0) : INT16_C(0);
+        }
+      #endif
+      break;
+
+    case SIMDE_CMP_NLT_UQ:
+    case SIMDE_CMP_NLT_US:
+      #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && defined(SIMDE_FLOAT16_VECTOR)
+        r_.i16 = HEDLEY_REINTERPRET_CAST(__typeof__(r_.i16), ~(a_.f16 < b_.f16));
+      #else
+        SIMDE_VECTORIZE
+        for (size_t i = 0 ; i < (sizeof(r_.f16) / sizeof(r_.f16[0])) ; i++) {
+          r_.i16[i] = !(
+            simde_float16_to_float32(a_.f16[i]) < simde_float16_to_float32(b_.f16[i])
+            ) ? ~INT16_C(0) : INT16_C(0);
+        }
+      #endif
+      break;
+
+    case SIMDE_CMP_NLE_UQ:
+    case SIMDE_CMP_NLE_US:
+      #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && defined(SIMDE_FLOAT16_VECTOR)
+        r_.i16 = HEDLEY_REINTERPRET_CAST(__typeof__(r_.i16), ~(a_.f16 <= b_.f16));
+      #else
+        SIMDE_VECTORIZE
+        for (size_t i = 0 ; i < (sizeof(r_.f16) / sizeof(r_.f16[0])) ; i++) {
+          r_.i16[i] = !(
+            simde_float16_to_float32(a_.f16[i]) <= simde_float16_to_float32(b_.f16[i])
+            ) ? ~INT16_C(0) : INT16_C(0);
+        }
+      #endif
+      break;
+
+    case SIMDE_CMP_ORD_Q:
+    case SIMDE_CMP_ORD_S:
+      #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && defined(SIMDE_FLOAT16_VECTOR)
+        r_.i16 = HEDLEY_REINTERPRET_CAST(__typeof__(r_.i16), ((a_.f16 == a_.f16) & (b_.f16 == b_.f16)));
+      #else
+        SIMDE_VECTORIZE
+        for (size_t i = 0 ; i < (sizeof(r_.f16) / sizeof(r_.f16[0])) ; i++) {
+          r_.i16[i] = (simde_isnanhf(a_.f16[i]) || simde_isnanhf(b_.f16[i])) ? INT16_C(0) : ~INT16_C(0);
+        }
+      #endif
+      break;
+
+    case SIMDE_CMP_EQ_UQ:
+    case SIMDE_CMP_EQ_US:
+      #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && defined(SIMDE_FLOAT16_VECTOR)
+        r_.i16 = HEDLEY_REINTERPRET_CAST(__typeof__(r_.i16), (a_.f16 != a_.f16) | (b_.f16 != b_.f16) | (a_.f16 == b_.f16));
+      #else
+        SIMDE_VECTORIZE
+        for (size_t i = 0 ; i < (sizeof(r_.f16) / sizeof(r_.f16[0])) ; i++) {
+          r_.i16[i] = (
+              (simde_isnanhf(a_.f16[i]) || simde_isnanhf(b_.f16[i]))
+              || (simde_float16_as_uint16(a_.f16[i]) == simde_float16_as_uint16(b_.f16[i]))
+            ) ? ~INT16_C(0) : INT16_C(0);
+        }
+      #endif
+      break;
+
+    case SIMDE_CMP_NGE_UQ:
+    case SIMDE_CMP_NGE_US:
+      #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && defined(SIMDE_FLOAT16_VECTOR)
+        r_.i16 = HEDLEY_REINTERPRET_CAST(__typeof__(r_.i16), ~(a_.f16 >= b_.f16));
+      #else
+        SIMDE_VECTORIZE
+        for (size_t i = 0 ; i < (sizeof(r_.f16) / sizeof(r_.f16[0])) ; i++) {
+          r_.i16[i] = !(
+            simde_float16_to_float32(a_.f16[i]) >= simde_float16_to_float32(b_.f16[i])
+            ) ? ~INT16_C(0) : INT16_C(0);
+        }
+      #endif
+      break;
+
+    case SIMDE_CMP_NGT_UQ:
+    case SIMDE_CMP_NGT_US:
+      #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && defined(SIMDE_FLOAT16_VECTOR)
+        r_.i16 = HEDLEY_REINTERPRET_CAST(__typeof__(r_.i16), ~(a_.f16 > b_.f16));
+      #else
+        SIMDE_VECTORIZE
+        for (size_t i = 0 ; i < (sizeof(r_.f16) / sizeof(r_.f16[0])) ; i++) {
+          r_.i16[i] = !(
+            simde_float16_to_float32(a_.f16[i]) > simde_float16_to_float32(b_.f16[i])
+            ) ? ~INT16_C(0) : INT16_C(0);
+        }
+      #endif
+      break;
+
+    case SIMDE_CMP_FALSE_OQ:
+    case SIMDE_CMP_FALSE_OS:
+      r_ = simde__m512h_to_private(simde_mm512_setzero_ph());
+      break;
+
+    case SIMDE_CMP_GE_OQ:
+    case SIMDE_CMP_GE_OS:
+      #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && defined(SIMDE_FLOAT16_VECTOR)
+        r_.i16 = HEDLEY_REINTERPRET_CAST(__typeof__(r_.i16), (a_.f16 >= b_.f16));
+      #else
+        SIMDE_VECTORIZE
+        for (size_t i = 0 ; i < (sizeof(r_.f16) / sizeof(r_.f16[0])) ; i++) {
+          r_.i16[i] = (
+            simde_float16_to_float32(a_.f16[i]) >= simde_float16_to_float32(b_.f16[i])
+            ) ? ~INT16_C(0) : INT16_C(0);
+        }
+      #endif
+      break;
+
+    case SIMDE_CMP_GT_OQ:
+    case SIMDE_CMP_GT_OS:
+      #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && defined(SIMDE_FLOAT16_VECTOR)
+        r_.i16 = HEDLEY_REINTERPRET_CAST(__typeof__(r_.i16), (a_.f16 > b_.f16));
+      #else
+        SIMDE_VECTORIZE
+        for (size_t i = 0 ; i < (sizeof(r_.f16) / sizeof(r_.f16[0])) ; i++) {
+          r_.i16[i] = (
+            simde_float16_to_float32(a_.f16[i]) > simde_float16_to_float32(b_.f16[i])
+            ) ? ~INT16_C(0) : INT16_C(0);
+        }
+      #endif
+      break;
+
+    case SIMDE_CMP_TRUE_UQ:
+    case SIMDE_CMP_TRUE_US:
+      r_ = simde__m512h_to_private(simde_x_mm512_setone_ph());
+      break;
+
+    default:
+      HEDLEY_UNREACHABLE();
+  }
+
+  return simde_mm512_movepi16_mask(simde_mm512_castph_si512(simde__m512h_from_private(r_)));
+}
+#if defined(SIMDE_X86_AVX512FP16_NATIVE)
+  #define simde_mm512_cmp_ph_mask(a, b, imm8) _mm512_cmp_ph_mask((a), (b), (imm8))
+#endif
+#if defined(SIMDE_X86_AVX512FP16_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_cmp_ph_mask
+  #define _mm512_cmp_ph_mask(a, b, imm8) simde_mm512_cmp_ph_mask((a), (b), (imm8))
+#endif
+
+SIMDE_HUGE_FUNCTION_ATTRIBUTES
+simde__mmask32
 simde_mm512_cmp_epu16_mask (simde__m512i a, simde__m512i b, const int imm8)
     SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 7) {
   simde__m512i_private
