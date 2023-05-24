@@ -484,6 +484,56 @@ simde_mm512_set_pd (simde_float64 e7, simde_float64 e6, simde_float64 e5, simde_
   #define _mm512_set_pd(e7, e6, e5, e4, e3, e2, e1, e0) simde_mm512_set_pd(e7, e6, e5, e4, e3, e2, e1, e0)
 #endif
 
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512h
+simde_mm512_set_ph (simde_float16 e31, simde_float16 e30, simde_float16 e29, simde_float16 e28, simde_float16 e27, simde_float16 e26, simde_float16 e25, simde_float16 e24,
+                    simde_float16 e23, simde_float16 e22, simde_float16 e21, simde_float16 e20, simde_float16 e19, simde_float16 e18, simde_float16 e17, simde_float16 e16,
+                    simde_float16 e15, simde_float16 e14, simde_float16 e13, simde_float16 e12, simde_float16 e11, simde_float16 e10, simde_float16  e9, simde_float16  e8,
+                    simde_float16  e7, simde_float16  e6, simde_float16  e5, simde_float16  e4, simde_float16  e3, simde_float16  e2, simde_float16  e1, simde_float16  e0) {
+  simde__m512h_private r_;
+
+  r_.f16[0] = e0;
+  r_.f16[1] = e1;
+  r_.f16[2] = e2;
+  r_.f16[3] = e3;
+  r_.f16[4] = e4;
+  r_.f16[5] = e5;
+  r_.f16[6] = e6;
+  r_.f16[7] = e7;
+  r_.f16[8] = e8;
+  r_.f16[9] = e9;
+  r_.f16[10] = e10;
+  r_.f16[11] = e11;
+  r_.f16[12] = e12;
+  r_.f16[13] = e13;
+  r_.f16[14] = e14;
+  r_.f16[15] = e15;
+  r_.f16[16] = e16;
+  r_.f16[17] = e17;
+  r_.f16[18] = e18;
+  r_.f16[19] = e19;
+  r_.f16[20] = e20;
+  r_.f16[21] = e21;
+  r_.f16[22] = e22;
+  r_.f16[23] = e23;
+  r_.f16[24] = e24;
+  r_.f16[25] = e25;
+  r_.f16[26] = e26;
+  r_.f16[27] = e27;
+  r_.f16[28] = e28;
+  r_.f16[29] = e29;
+  r_.f16[30] = e30;
+  r_.f16[31] = e31;
+
+  return simde__m512h_from_private(r_);
+}
+#if defined(SIMDE_X86_AVX512FP16_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_set_ph
+  #define _mm512_set_ph(e31, e30, e29, e28, e27, e26, e25, e24, e23, e22, e21, e20, e19, e18, e17, e16, e15, e14, e13, e12, e11, e10, e9, e8, e7, e6, e5, e4, e3, e2, e1, e0) \
+    simde_mm512_set_ph(e31, e30, e29, e28, e27, e26, e25, e24, e23, e22, e21, e20, e19, e18, e17, e16, e15, e14, e13, e12, e11, e10, e9, e8, e7, e6, e5, e4, e3, e2, e1, e0)
+#endif
+
+
 SIMDE_END_DECLS_
 HEDLEY_DIAGNOSTIC_POP
 
