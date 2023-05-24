@@ -128,9 +128,9 @@ simde_test_codegen_snprintf_(char* str, size_t size, const char* format, ...) {
 static void
 simde_test_codegen_f16(size_t buf_len, char buf[HEDLEY_ARRAY_PARAM(buf_len)], simde_float16 value) {
   simde_float32 valuef = simde_float16_to_float32(value);
-  if (simde_math_isnanf(valuef)) {
+  if (simde_isnanhf(value)) {
     simde_test_codegen_snprintf_(buf, buf_len, "           SIMDE_NANHF");
-  } else if (simde_math_isinf(valuef)) {
+  } else if (simde_isinfhf(value)) {
     simde_test_codegen_snprintf_(buf, buf_len, "%5cSIMDE_INFINITYHF", valuef < 0 ? '-' : ' ');
   } else {
     simde_test_codegen_snprintf_(buf, buf_len, "SIMDE_FLOAT16_VALUE(%9.2f)", HEDLEY_STATIC_CAST(double, valuef));
