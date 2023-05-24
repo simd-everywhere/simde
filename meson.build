@@ -141,6 +141,7 @@ simde_neon_families = [
   'rbit',
   'recpe',
   'recps',
+  'reduce',
   'reinterpret',
   'rev16',
   'rev32',
