@@ -131,6 +131,9 @@ jobs:
       run: |
         sudo apt-get install -y ninja-build ninja-build python3-pip parallel gcovr g++-12 gcc-12
         sudo python3 -m pip install meson==0.55.0
+    - name: add ccache to the build path
+      run: |
+        export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
     - name: Configure
       run: meson setup build -Db_coverage=true || (cat build/meson-logs/meson-log.txt ; false)
     - name: Build
@@ -317,6 +320,9 @@ jobs:
         sudo apt-get update
         sudo apt-get -yq install gcovr python3-pip ninja-build parallel "${CC}" "${CXX}"
         sudo python3 -m pip install meson==0.55.0
+    - name: add ccache to the build path
+      run: |
+        export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
     - name: Configure
       run: meson setup build
     - name: Build
@@ -533,6 +539,10 @@ jobs:
         sudo apt-get update
         sudo apt-get -yq install gcovr ninja-build python3-pip clang-${{ matrix.version }}
         sudo python3 -m pip install meson==0.55.0
+    - name: add ccache to the build path
+      if: ${{ matrix.ccache == 'true' }}
+      run: |
+        export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
     - name: Configure
       run: meson setup build
     - name: Build
