@@ -12,7 +12,7 @@ test_simde_vbsl_f16 (SIMDE_MUNIT_TEST_ARGS) {
       simde_float16 c[4];
       simde_float16 r[4];
     } test_vec[] = {
-    #if !defined(SIMDE_FAST_MATH)
+    #if !defined(SIMDE_FAST_MATH) && defined(SIMDE_FLOAT16_IS_SCALAR)
     { { UINT16_C(18704), UINT16_C(47545), UINT16_C( 6410), UINT16_C(57433) },
       { SIMDE_FLOAT16_VALUE(  -614.50), SIMDE_FLOAT16_VALUE(  -671.50), SIMDE_FLOAT16_VALUE(  -876.00), SIMDE_FLOAT16_VALUE(   515.00) },
       { SIMDE_FLOAT16_VALUE(  -446.00), SIMDE_FLOAT16_VALUE(   385.00), SIMDE_FLOAT16_VALUE(  -263.00), SIMDE_FLOAT16_VALUE(  -438.00) },

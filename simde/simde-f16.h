@@ -65,14 +65,19 @@ SIMDE_BEGIN_DECLS_
  * any ideas on how to improve it.  If you do, patches are definitely
  * welcome. */
 #if !defined(SIMDE_FLOAT16_API)
-  #if 0 && !defined(__cplusplus)
-    /* I haven't found a way to detect this.  It seems like defining
+  #if !defined(__EMSCRIPTEN__) && !(defined(__clang__) && defined(SIMDE_ARCH_POWER)) && ( \
+      defined(SIMDE_X86_AVX512FP16_NATIVE) || \
+      (defined(SIMDE_ARCH_X86_SSE2) && HEDLEY_GCC_VERSION_CHECK(12,0,0)) || \
+      (defined(SIMDE_ARCH_AARCH64) && HEDLEY_GCC_VERSION_CHECK(7,0,0) && !defined(__cplusplus)) || \
+      ((defined(SIMDE_ARCH_X86) || defined(SIMDE_ARCH_AMD64)) && SIMDE_DETECT_CLANG_VERSION_CHECK(15,0,0)) || \
+      (!(defined(SIMDE_ARCH_X86) || defined(SIMDE_ARCH_AMD64)) && SIMDE_DETECT_CLANG_VERSION_CHECK(6,0,0)))
+    /* We haven't found a better way to detect this.  It seems like defining
     * __STDC_WANT_IEC_60559_TYPES_EXT__, then including float.h, then
     * checking for defined(FLT16_MAX) should work, but both gcc and
     * clang will define the constants even if _Float16 is not
     * supported.  Ideas welcome. */
     #define SIMDE_FLOAT16_API SIMDE_FLOAT16_API_FLOAT16
-  #elif defined(__ARM_FP16_FORMAT_IEEE) && defined(SIMDE_ARM_NEON_FP16)
+  #elif defined(__ARM_FP16_FORMAT_IEEE) && (defined(SIMDE_ARM_NEON_FP16) || defined(__ARM_FP16_ARGS))
     #define SIMDE_FLOAT16_API SIMDE_FLOAT16_API_FP16
   #elif defined(__FLT16_MIN__) && (defined(__clang__) && (!defined(SIMDE_ARCH_AARCH64) || SIMDE_DETECT_CLANG_VERSION_CHECK(7,0,0)))
     #define SIMDE_FLOAT16_API SIMDE_FLOAT16_API_FP16_NO_ABI
@@ -83,7 +88,12 @@ SIMDE_BEGIN_DECLS_
 
 #if SIMDE_FLOAT16_API == SIMDE_FLOAT16_API_FLOAT16
   typedef _Float16 simde_float16;
-  #define SIMDE_FLOAT16_C(value) value##f16
+  #define SIMDE_FLOAT16_IS_SCALAR 1
+  #if !defined(__cplusplus)
+    #define SIMDE_FLOAT16_C(value) value##f16
+  #else
+    #define SIMDE_FLOAT16_C(value) HEDLEY_STATIC_CAST(_Float16, (value))
+  #endif
 #elif SIMDE_FLOAT16_API == SIMDE_FLOAT16_API_FP16_NO_ABI
   typedef struct { __fp16 value; } simde_float16;
   #if defined(SIMDE_STATEMENT_EXPR_)
@@ -93,6 +103,7 @@ SIMDE_BEGIN_DECLS_
   #endif
 #elif SIMDE_FLOAT16_API == SIMDE_FLOAT16_API_FP16
   typedef __fp16 simde_float16;
+  #define SIMDE_FLOAT16_IS_SCALAR 1
   #define SIMDE_FLOAT16_C(value) HEDLEY_STATIC_CAST(__fp16, (value))
 #elif SIMDE_FLOAT16_API == SIMDE_FLOAT16_API_PORTABLE
   typedef struct { uint16_t value; } simde_float16;
@@ -114,9 +125,39 @@ SIMDE_BEGIN_DECLS_
 SIMDE_DEFINE_CONVERSION_FUNCTION_(simde_float16_as_uint16,      uint16_t, simde_float16)
 SIMDE_DEFINE_CONVERSION_FUNCTION_(simde_uint16_as_float16, simde_float16,      uint16_t)
 
-#define SIMDE_NANHF simde_uint16_as_float16(0x7E00)
-#define SIMDE_INFINITYHF simde_uint16_as_float16(0x7C00)
-
+#if SIMDE_FLOAT16_API == SIMDE_FLOAT16_API_PORTABLE
+  #define SIMDE_NANHF simde_uint16_as_float16(0x7E00)
+  #define SIMDE_INFINITYHF simde_uint16_as_float16(0x7C00)
+  #define SIMDE_NINFINITYHF simde_uint16_as_float16(0xFC00)
+#else
+  #if SIMDE_FLOAT16_API == SIMDE_FLOAT16_API_FP16_NO_ABI
+    #if SIMDE_MATH_BUILTIN_LIBM(nanf16)
+      #define SIMDE_NANHF SIMDE_FLOAT16_C(__builtin_nanf16(""))
+    #elif defined(SIMDE_MATH_NAN)
+      #define SIMDE_NANHF SIMDE_FLOAT16_C(SIMDE_MATH_NAN)
+    #endif
+    #if SIMDE_MATH_BUILTIN_LIBM(inf16)
+      #define SIMDE_INFINITYHF SIMDE_FLOAT16_C(__builtin_inf16())
+      #define SIMDE_NINFINITYHF SIMDE_FLOAT16_C(-__builtin_inf16())
+    #else
+      #define SIMDE_INFINITYHF SIMDE_FLOAT16_C(SIMDE_MATH_INFINITY)
+      #define SIMDE_NINFINITYHF SIMDE_FLOAT16_C(-SIMDE_MATH_INFINITY)
+    #endif
+  #else
+    #if SIMDE_MATH_BUILTIN_LIBM(nanf16)
+      #define SIMDE_NANHF HEDLEY_STATIC_CAST(simde_float16, __builtin_nanf16(""))
+    #elif defined(SIMDE_MATH_NAN)
+      #define SIMDE_NANHF HEDLEY_STATIC_CAST(simde_float16, SIMDE_MATH_NAN)
+    #endif
+    #if SIMDE_MATH_BUILTIN_LIBM(inf16)
+      #define SIMDE_INFINITYHF __builtin_inf16()
+      #define SIMDE_NINFINITYHF -(__builtin_inf16())
+    #else
+      #define SIMDE_INFINITYHF HEDLEY_STATIC_CAST(simde_float16, SIMDE_MATH_INFINITY)
+      #define SIMDE_NINFINITYHF HEDLEY_STATIC_CAST(simde_float16, -SIMDE_MATH_INFINITY)
+    #endif
+  #endif
+#endif
 /* Conversion -- convert between single-precision and half-precision
  * floats. */
 
