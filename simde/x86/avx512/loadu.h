@@ -91,7 +91,7 @@ simde_mm512_loadu_si512 (void const * mem_addr) {
 
   return r;
 }
-#if defined(SIMDE_X86_AVX512F_NATIVE) && (!defined(__clang__) || SIMDE_DETECT_CLANG_VERSION_CHECK(8,0,0))
+#if defined(SIMDE_X86_AVX512F_NATIVE) && (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(10,0,0)) && (!defined(__clang__) || SIMDE_DETECT_CLANG_VERSION_CHECK(8,0,0))
   #define simde_mm512_loadu_si512(mem_addr) _mm512_loadu_si512(mem_addr)
   #define simde_mm512_loadu_epi32(mem_addr) _mm512_loadu_epi32(mem_addr)
   #define simde_mm512_loadu_epi64(mem_addr) _mm512_loadu_epi64(mem_addr)

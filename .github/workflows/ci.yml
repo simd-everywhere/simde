@@ -113,8 +113,6 @@ jobs:
     env:
       CFLAGS: -Wall -Wextra -Werror ${{ matrix.isax }}
       CXXFLAGS: -Wall -Wextra -Werror ${{ matrix.isax }}
-      CC: gcc-12
-      CXX: g++-12
       INTEL_TARGET: ${{ matrix.target }}
     steps:
     - uses: actions/checkout@v3
@@ -130,6 +128,9 @@ jobs:
     - name: Install APT Dependencies
       run: |
         sudo apt-get install -y ninja-build ninja-build python3-pip parallel gcovr g++-12 gcc-12
+        sudo apt-get purge -y gcc g++
+        sudo ln -s /usr/bin/gcc-12 /usr/bin/gcc
+        sudo ln -s /usr/bin/g++-12 /usr/bin/g++
         sudo python3 -m pip install meson==0.55.0
     - name: add ccache to the build path
       run: |
@@ -252,30 +253,9 @@ jobs:
       fail-fast: false
       matrix:
         include:
-        # - version: 4.7
-        #   distro: ubuntu-16.04
-        #   arch_flags: -mavx2
-        # - version: 4.8
-        #   distro: ubuntu-16.04
-        #   arch_flags: -mavx2
-        # - version: 4.9
-        #   distro: ubuntu-16.04
-        #   arch_flags: -mavx2
-        #- version: 5
-        #  distro: ubuntu-18.04
-        #  arch_flags: -mavx2
-        # - version: 6
-        #   distro: ubuntu-18.04
-        #   arch_flags: -march=native
-        # - version: 7
-        #   distro: ubuntu-18.04
-        #   arch_flags: -march=native
-        #- version: 8
-        #  distro: ubuntu-18.04
-        #  arch_flags: -march=native
-        # - version: 9
-        #   distro: ubuntu-20.04
-        #   arch_flags: -march=native
+        - version: 9
+          distro: ubuntu-20.04
+          arch_flags: -march=native
         - version: 10
           distro: ubuntu-20.04
           arch_flags: -march=native
@@ -299,8 +279,6 @@ jobs:
           ccache: 'true'
     runs-on: ${{ matrix.distro }}
     env:
-      CC: gcc-${{ matrix.version }}
-      CXX: g++-${{ matrix.version }}
       CFLAGS: ${{ matrix.arch_flags }} -Wall -Wextra -Werror
       CXXFLAGS: ${{ matrix.arch_flags }} -Wall -Wextra -Werror
     steps:
@@ -309,20 +287,23 @@ jobs:
         submodules: recursive
     - name: CPU Information
       run: cat /proc/cpuinfo
+    - name: Install APT Dependencies
+      run: |
+        sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+        sudo apt-get update
+        sudo apt-get -yq install gcovr python3-pip ninja-build parallel gcc-${{ matrix.version }} g++-${{ matrix.version }}
+        sudo apt-get -y purge g++ gcc
+        sudo python3 -m pip install meson==0.55.0
     - name: ccache
       uses: hendrikmuhs/ccache-action@v1.2
       if: ${{ matrix.ccache == 'true' }}
       with:
         key: ${{ github.job }}-${{ matrix.version }}-${{ matrix.distro }}-${{ matrix.arch_flags }}
-    - name: Install APT Dependencies
-      run: |
-        sudo add-apt-repository ppa:ubuntu-toolchain-r/test
-        sudo apt-get update
-        sudo apt-get -yq install gcovr python3-pip ninja-build parallel "${CC}" "${CXX}"
-        sudo python3 -m pip install meson==0.55.0
     - name: add ccache to the build path
       run: |
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
+        sudo ln -s /usr/bin/gcc-${{ matrix.version }} /usr/bin/gcc
+        sudo ln -s /usr/bin/g++-${{ matrix.version }} /usr/bin/g++
     - name: Configure
       run: meson setup build
     - name: Build
@@ -476,17 +457,16 @@ jobs:
       fail-fast: false
       matrix:
         include:
-        # - version: "6.0"
-        #   distro: ubuntu-20.04
-        #   arch_flags: -march=native
         - version: "7"
           distro: ubuntu-20.04
           arch_flags: -march=native
-        # - version: "8"
-        #   distro: ubuntu-20.04
-        #   arch_flags: -march=native
-        - version: "10"
+        # clang-8 is tested on Semaphore-CI https://nemequ.semaphoreci.com/projects/simde
+        - version: "9"
           distro: ubuntu-20.04
+          arch_flags: -march=native
+        # clang-10 is tested on Semaphore-CI https://nemequ.semaphoreci.com/projects/simde
+        - version: "11"
+          distro: ubuntu-22.04
           arch_flags: -march=native
         - version: "12"
           distro: ubuntu-20.04
@@ -518,8 +498,6 @@ jobs:
           ccache: 'true'
     runs-on: ${{ matrix.distro }}
     env:
-      CC: clang-${{ matrix.version }}
-      CXX: clang++-${{ matrix.version }}
       CFLAGS: ${{ matrix.arch_flags }} -Wall -Weverything -Werror -fno-lax-vector-conversions
       CXXFLAGS: ${{ matrix.arch_flags }} -Wall -Weverything -Werror -fno-lax-vector-conversions
     steps:
@@ -528,17 +506,20 @@ jobs:
         submodules: recursive
     - name: CPU Information
       run: cat /proc/cpuinfo
-    - name: ccache
-      uses: hendrikmuhs/ccache-action@v1.2
-      if: ${{ matrix.ccache == 'true' }}
-      with:
-        key: ${{ github.job }}-${{ matrix.version }}-${{ matrix.distro }}-${{ matrix.arch_flags }}
     - name: Install APT Dependencies
       run: |
         sudo add-apt-repository ppa:ubuntu-toolchain-r/test
         sudo apt-get update
         sudo apt-get -yq install gcovr ninja-build python3-pip clang-${{ matrix.version }}
         sudo python3 -m pip install meson==0.55.0
+        sudo rm /usr/bin/gcc /usr/bin/g++ /usr/bin/cc /usr/bin/c++
+        sudo ln -s $(command -v clang-${{ matrix.version }}) /usr/bin/cc
+        sudo ln -s $(command -v clang-${{ matrix.version }}) /usr/bin/c++
+    - name: ccache
+      uses: hendrikmuhs/ccache-action@v1.2
+      if: ${{ matrix.ccache == 'true' }}
+      with:
+        key: ${{ github.job }}-${{ matrix.version }}-${{ matrix.distro }}-${{ matrix.arch_flags }}
     - name: add ccache to the build path
       if: ${{ matrix.ccache == 'true' }}
       run: |
