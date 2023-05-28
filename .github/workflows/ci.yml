@@ -87,6 +87,7 @@ jobs:
   x86:
     runs-on: ubuntu-22.04
     strategy:
+      fail-fast: false
       matrix:
         isax:
         - -mavx512bw -mavx512vl -mavx512cd -mavx512dq -mavx512vbmi -mavx512ifma -mavx512vpopcntdq -mavx512bitalg -mavx512vnni -mvpclmulqdq
@@ -105,9 +106,16 @@ jobs:
         - -mavx
         - -mfma
         - -mavx2
+        include:
+          - target: tgl
+          - isax: -mavx512bw -mavx512vl -mavx512cd -mavx512dq -mavx512vbmi -mavx512ifma -mavx512vpopcntdq -mavx512bitalg -mavx512vnni -mvpclmulqdq -mavx512fp16
+            target: spr
     env:
       CFLAGS: -Wall -Wextra -Werror ${{ matrix.isax }}
       CXXFLAGS: -Wall -Wextra -Werror ${{ matrix.isax }}
+      CC: gcc-12
+      CXX: g++-12
+      INTEL_TARGET: ${{ matrix.target }}
     steps:
     - uses: actions/checkout@v3
       with:
@@ -121,10 +129,10 @@ jobs:
         key: ${{ github.job }}-${{ matrix.isax }}
     - name: Install APT Dependencies
       run: |
-        sudo apt-get install -y ninja-build ninja-build python3-pip parallel gcovr
+        sudo apt-get install -y ninja-build ninja-build python3-pip parallel gcovr g++-12 gcc-12
         sudo python3 -m pip install meson==0.55.0
     - name: Configure
-      run: meson setup build -Db_coverage=true
+      run: meson setup build -Db_coverage=true || (cat build/meson-logs/meson-log.txt ; false)
     - name: Build
       run: ninja -C build -v
     - name: Test
@@ -238,6 +246,7 @@ jobs:
 
   gcc:
     strategy:
+      fail-fast: false
       matrix:
         include:
         # - version: 4.7
@@ -317,6 +326,7 @@ jobs:
 
   gcc-qemu:
     strategy:
+      fail-fast: false
       matrix:
         include:
         - version: 12
@@ -457,29 +467,9 @@ jobs:
 
   clang:
     strategy:
+      fail-fast: false
       matrix:
         include:
-        # - version: "3.5"
-        #   distro: ubuntu-16.04
-        #   arch_flags: -mavx2
-        # - version: "3.6"
-        #   distro: ubuntu-16.04
-        #   arch_flags: -mavx2
-        # - version: "3.7"
-        #   distro: ubuntu-16.04
-        #   arch_flags: -mavx2
-        # - version: "3.8"
-        #   distro: ubuntu-16.04
-        #   arch_flags: -mavx2
-        #- version: "3.9"
-        #  distro: ubuntu-18.04
-        #  arch_flags: -mavx2
-        # - version: "4.0"
-        #   distro: ubuntu-18.04
-        #   arch_flags: -mavx2
-        #- version: "5.0"
-        #  distro: ubuntu-18.04
-        #  arch_flags: -mavx2
         # - version: "6.0"
         #   distro: ubuntu-20.04
         #   arch_flags: -march=native

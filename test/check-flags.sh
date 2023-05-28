@@ -4,6 +4,8 @@
 # run the tests if the extension is supported, but skip them if it
 # isn't.  Currently this only works on x86.
 
+INTEL_TARGET=${INTEL_TARGET:-tgl}
+
 if [ -z "${SDE_PATH}" ]; then
   SDE_PATH="/opt/intel/sde"
 fi
@@ -50,7 +52,7 @@ elif [ "$COMMAND" = "sde" ]; then
       "$(dirname "$0")"/download-sde.sh "${SDE_PATH}"
     fi
   ) 9>/tmp/sde-download.lock
-  "${SDE_PATH}/sde64" -tgl -- $@
+  "${SDE_PATH}/sde64" -${INTEL_TARGET} -- $@
   exit $?
 else
   echo "Flags not supported, skipping"
