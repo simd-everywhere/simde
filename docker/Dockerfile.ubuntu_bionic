@@ -1,19 +1,11 @@
 # Dockerfile for SIMDe development
 
-ARG RELEASE=testing
-FROM debian:${RELEASE}-slim
+FROM ubuntu:bionic
 
 ARG DEBIAN_FRONTEND=noninteractive
 ARG QEMU_GIT=n
-ARG ARCHS="arm64 armel armhf i386 mips64el ppc64el s390x riscv64"
-
-RUN \
-  apt-get update -y && \
-  apt-get upgrade -y && \
-  apt-get install -y netselect-apt && \
-  if netselect-apt -n ${release}; then \
-    mv sources.list /etc/apt/sources.list; \
-  fi
+ARG ARCHS="arm64"
+#"arm64 armel armhf i386 mips64el ppc64el s390x riscv64"
 
 COPY docker/bin /tmp/simde-bin
 RUN \
@@ -34,12 +26,12 @@ RUN \
     gdb valgrind \
     binfmt-support qemu-user-static \
     creduce screen htop parallel nano rsync strace \
-    npm libsleef-dev \
-    pipx wget
+    npm \
+    python3-pip wget curl python3-setuptools  python3-wheel
 
 # Meson on stable is too old, and we want to make sure we keep 0.55
 # working for a while.
-RUN pipx install meson==0.55.0
+RUN pip3 install meson==0.55.0
 
 # GCC cross-compilers
 RUN \
@@ -59,19 +51,19 @@ RUN \
 ENV PATH="/usr/lib/ccache:$PATH:/root/.local/bin:/root/.jsvu/bin"
 
 # ICC
-RUN \
-  apt-get update -y && \
-  apt-get upgrade -y && \
-  apt-get install -yq curl gpg && \
-  wget -O- https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB \
-   | gpg --dearmor > /usr/share/keyrings/oneapi-archive-keyring.gpg && \
-  echo "deb [signed-by=/usr/share/keyrings/oneapi-archive-keyring.gpg] https://apt.repos.intel.com/oneapi all main" > /etc/apt/sources.list.d/oneAPI.list && \
-  apt-get update && \
-  apt-get install -yq --no-install-recommends intel-oneapi-compiler-dpcpp-cpp-and-cpp-classic intel-oneapi-compiler-dpcpp-cpp && \
-  for exe in icc icpc icx icpx; do \
-    printf '#!/bin/bash\nARGS="$@"\nsource /opt/intel/oneapi/compiler/latest/env/vars.sh >/dev/null\n%s ${ARGS}\n' "${exe}" > /usr/bin/"${exe}" && \
-    chmod 0755 /usr/bin/"${exe}" ; \
-  done
+# RUN \
+#   apt-get update -y && \
+#   apt-get upgrade -y && \
+#   apt-get install -yq gpg && \
+#   wget -O- https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB \
+#    | gpg --dearmor > /usr/share/keyrings/oneapi-archive-keyring.gpg && \
+#   echo "deb [signed-by=/usr/share/keyrings/oneapi-archive-keyring.gpg] https://apt.repos.intel.com/oneapi all main" > /etc/apt/sources.list.d/oneAPI.list && \
+#   apt-get update && \
+#   apt-get install -yq --no-install-recommends intel-oneapi-compiler-dpcpp-cpp-and-cpp-classic intel-oneapi-compiler-dpcpp-cpp && \
+#   for exe in icc icpc icx icpx; do \
+#     printf '#!/bin/bash\nARGS="$@"\nsource /opt/intel/oneapi/compiler/latest/env/vars.sh >/dev/null\n%s ${ARGS}\n' "${exe}" > /usr/bin/"${exe}" && \
+#     chmod 0755 /usr/bin/"${exe}" ; \
+#   done
 
 # # xlc -- Install fails.
 # # Once IBM releases a version for Ubuntu Focal (20.04) I hope I can
@@ -85,19 +77,19 @@ RUN \
 #   /opt/ibm/xlC/${XLC_VERSION}/bin/xlc_configure <<< 1 >/dev/null
 
 # Intel SDE
-COPY test/download-sde.sh /tmp/simde-bin/download-sde.sh
-RUN \
-  "/tmp/simde-bin/download-sde.sh" "/opt/intel/sde" && \
-  for executable in sde sde64; do \
-    ln -s "/opt/intel/sde/${executable}" "/usr/bin/${executable}"; \
-  done
+# COPY test/download-sde.sh /tmp/simde-bin/download-sde.sh
+# RUN \
+#   "/tmp/simde-bin/download-sde.sh" "/opt/intel/sde" && \
+#   for executable in sde sde64; do \
+#     ln -s "/opt/intel/sde/${executable}" "/usr/bin/${executable}"; \
+#   done
 
 # Emscripten
-RUN \
-  git clone https://github.com/emscripten-core/emsdk.git /opt/emsdk && \
-  cd /opt/emsdk && ./emsdk install tot && ./emsdk activate tot && \
-  ln -s /opt/emsdk/upstream/bin/wasm-ld /usr/bin/wasm-ld && \
-  npm install jsvu -g && jsvu --os=linux64 --engines=v8 && ln -s "/root/.jsvu/v8" "/usr/bin/v8"
+# RUN \
+#   git clone https://github.com/emscripten-core/emsdk.git /opt/emsdk && \
+#   cd /opt/emsdk && ./emsdk install tot && ./emsdk activate tot && \
+#   ln -s /opt/emsdk/upstream/bin/wasm-ld /usr/bin/wasm-ld && \
+#   npm install jsvu -g && jsvu --os=linux64 --engines=v8 && ln -s "/root/.jsvu/v8" "/usr/bin/v8"
 
 # Meson cross files
 RUN \
@@ -106,9 +98,7 @@ RUN \
 # Install QEMU git (necessary for MIPS)
 RUN \
   if [ ${QEMU_GIT} = "y" ]; then \
-    apt-get install -y pkg-config libglib2.0-dev libpixman-1-dev libaio-dev \
-      libbpf-dev libdw-dev libcapstone-dev flex bison \
-      liburing-dev libseccomp-dev libcap-ng-dev libzstd-dev libudev-dev libgnutls28-dev linux-headers-amd64 && \
+    apt-get install -y pkg-config libglib2.0-dev libpixman-1-dev && \
     git clone https://gitlab.com/qemu-project/qemu.git /usr/local/src/qemu && \
     mkdir -p /usr/local/src/qemu/build && cd /usr/local/src/qemu/build && \
     ../configure --prefix=/opt/qemu && \

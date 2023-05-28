@@ -8,8 +8,8 @@ ld = 'llvm-ld-16'
 exe_wrapper = ['qemu-riscv64-static', '-cpu', 'sifive-u54', '-L', '/usr/riscv64-linux-gnu/']
 
 [properties]
-c_args   = ['--target=riscv64-linux-gnu', '-mcpu=sifive-u54', '-isystem=/usr/riscv64-linux-gnu/include', '-Wextra', '-Werror']
-cpp_args = ['--target=riscv64-linux-gnu', '-mcpu=sifive-u54', '-isystem=/usr/riscv64-linux-gnu/include', '-Wextra', '-Werror']
+c_args   = ['--target=riscv64-linux-gnu', '-mcpu=sifive-u54', '-isystem=/usr/riscv64-linux-gnu/include', '-Wextra', '-Werror', '-Wno-unsafe-buffer-usage']
+cpp_args = ['--target=riscv64-linux-gnu', '-mcpu=sifive-u54', '-isystem=/usr/riscv64-linux-gnu/include', '-Wextra', '-Werror', '-Wno-unsafe-buffer-usage']
 c_link_args = ['--target=riscv64-linux-gnu']
 cpp_link_args = ['--target=riscv64-linux-gnu']
 

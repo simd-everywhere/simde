@@ -1,10 +1,10 @@
 [binaries]
-c = 'clang-9'
-cpp = 'clang++-9'
-ar = 'llvm-ar-9'
-strip = 'llvm-strip-9'
-objcopy = 'llvm-objcopy-9'
-ld = 'llvm-ld-9'
+c = 'clang-8'
+cpp = 'clang++-8'
+ar = 'llvm-ar-8'
+strip = 'llvm-strip-8'
+objcopy = 'llvm-objcopy-8'
+ld = 'llvm-ld-8'
 
 [properties]
 c_args = ['-march=native', '-Weverything', '-fno-lax-vector-conversions', '-Werror']

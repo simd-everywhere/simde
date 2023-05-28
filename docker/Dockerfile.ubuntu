@@ -1,19 +1,11 @@
 # Dockerfile for SIMDe development
 
-ARG RELEASE=testing
-FROM debian:${RELEASE}-slim
+FROM ubuntu:focal
 
 ARG DEBIAN_FRONTEND=noninteractive
 ARG QEMU_GIT=n
-ARG ARCHS="arm64 armel armhf i386 mips64el ppc64el s390x riscv64"
-
-RUN \
-  apt-get update -y && \
-  apt-get upgrade -y && \
-  apt-get install -y netselect-apt && \
-  if netselect-apt -n ${release}; then \
-    mv sources.list /etc/apt/sources.list; \
-  fi
+ARG ARCHS="arm64"
+#"arm64 armel armhf i386 mips64el ppc64el s390x riscv64"
 
 COPY docker/bin /tmp/simde-bin
 RUN \
@@ -106,9 +98,7 @@ RUN \
 # Install QEMU git (necessary for MIPS)
 RUN \
   if [ ${QEMU_GIT} = "y" ]; then \
-    apt-get install -y pkg-config libglib2.0-dev libpixman-1-dev libaio-dev \
-      libbpf-dev libdw-dev libcapstone-dev flex bison \
-      liburing-dev libseccomp-dev libcap-ng-dev libzstd-dev libudev-dev libgnutls28-dev linux-headers-amd64 && \
+    apt-get install -y pkg-config libglib2.0-dev libpixman-1-dev && \
     git clone https://gitlab.com/qemu-project/qemu.git /usr/local/src/qemu && \
     mkdir -p /usr/local/src/qemu/build && cd /usr/local/src/qemu/build && \
     ../configure --prefix=/opt/qemu && \
