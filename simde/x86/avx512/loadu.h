@@ -106,6 +106,11 @@ simde_mm512_loadu_si512 (void const * mem_addr) {
   #define simde_mm512_loadu_epi8(mem_addr) simde_mm512_loadu_si512(mem_addr)
   #define simde_mm512_loadu_epi16(mem_addr) simde_mm512_loadu_si512(mem_addr)
 #endif
+#if defined(SIMDE_X86_AVX512FP16_NATIVE)
+  #define simde_mm512_loadu_ph(a) _mm512_loadu_ph(a)
+#else
+  #define simde_mm512_loadu_ph(a) simde_mm512_loadu_si512(a)
+#endif
 #if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
   #undef _mm512_loadu_epi8
   #undef _mm512_loadu_epi16
@@ -119,6 +124,10 @@ simde_mm512_loadu_si512 (void const * mem_addr) {
   #define _mm512_loadu_si512(a) simde_mm512_loadu_si512(a)
   #define _mm512_loadu_epi32(a) simde_mm512_loadu_epi32(a)
   #define _mm512_loadu_epi64(a) simde_mm512_loadu_epi64(a)
+#endif
+#if defined(SIMDE_X86_AVX512FP16_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_loadu_ph
+  #define _mm512_loadu_ph(a) simde_mm512_loadu_ph(a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
