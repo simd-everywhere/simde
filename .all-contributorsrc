@@ -591,6 +591,16 @@
       "contributions": [
         "bug"
       ]
+    },
+    {
+      "login": "easyaspi314",
+      "name": "easyaspi314 (Devin)",
+      "avatar_url": "https://avatars.githubusercontent.com/u/6258309?v=4",
+      "profile": "https://github.com/easyaspi314",
+      "contributions": [
+        "bug",
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7
