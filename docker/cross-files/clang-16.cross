@@ -1,0 +1,11 @@
+[binaries]
+c = 'clang-16'
+cpp = 'clang++-16'
+ar = 'llvm-ar-16'
+strip = 'llvm-strip-16'
+objcopy = 'llvm-objcopy-16'
+ld = 'llvm-ld-16'
+
+[properties]
+c_args = ['-march=native','-Weverything', '-fno-lax-vector-conversions', '-Werror', '-Wno-unsafe-buffer-usage']
+cpp_args = ['-march=native', '-Weverything', '-fno-lax-vector-conversions', '-Werror', '-Wno-unsafe-buffer-usage']

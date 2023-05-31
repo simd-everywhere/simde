@@ -5,11 +5,11 @@ ar = 'ar'
 strip = 'strip'
 objcopy = 'objcopy'
 ld = 'ld'
-exe_wrapper = ['sde64', '-tgl', '--']
+exe_wrapper = ['sde64', '-spr', '--']
 
 [properties]
-c_args = ['-march=tigerlake', '-Wall', '-Wextra', '-Werror']
-cpp_args = ['-march=tigerlake', '-Wall', '-Wextra', '-Werror']
+c_args = ['-march=sapphirerapids', '-Wall', '-Wextra', '-Werror']
+cpp_args = ['-march=sapphirerapids', '-Wall', '-Wextra', '-Werror']
 
 [host_machine]
 system = 'linux'

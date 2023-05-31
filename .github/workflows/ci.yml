@@ -87,6 +87,7 @@ jobs:
   x86:
     runs-on: ubuntu-22.04
     strategy:
+      fail-fast: false
       matrix:
         isax:
         - -mavx512bw -mavx512vl -mavx512cd -mavx512dq -mavx512vbmi -mavx512ifma -mavx512vpopcntdq -mavx512bitalg -mavx512vnni -mvpclmulqdq
@@ -105,9 +106,16 @@ jobs:
         - -mavx
         - -mfma
         - -mavx2
+        include:
+          - target: tgl
+          - isax: -mavx512bw -mavx512vl -mavx512cd -mavx512dq -mavx512vbmi -mavx512ifma -mavx512vpopcntdq -mavx512bitalg -mavx512vnni -mvpclmulqdq -mavx512fp16
+            target: spr
     env:
       CFLAGS: -Wall -Wextra -Werror ${{ matrix.isax }}
       CXXFLAGS: -Wall -Wextra -Werror ${{ matrix.isax }}
+      CC: gcc-12
+      CXX: g++-12
+      INTEL_TARGET: ${{ matrix.target }}
     steps:
     - uses: actions/checkout@v3
       with:
@@ -121,10 +129,13 @@ jobs:
         key: ${{ github.job }}-${{ matrix.isax }}
     - name: Install APT Dependencies
       run: |
-        sudo apt-get install -y ninja-build ninja-build python3-pip parallel gcovr
+        sudo apt-get install -y ninja-build ninja-build python3-pip parallel gcovr g++-12 gcc-12
         sudo python3 -m pip install meson==0.55.0
+    - name: add ccache to the build path
+      run: |
+        export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
     - name: Configure
-      run: meson setup build -Db_coverage=true
+      run: meson setup build -Db_coverage=true || (cat build/meson-logs/meson-log.txt ; false)
     - name: Build
       run: ninja -C build -v
     - name: Test
@@ -238,6 +249,7 @@ jobs:
 
   gcc:
     strategy:
+      fail-fast: false
       matrix:
         include:
         # - version: 4.7
@@ -308,6 +320,9 @@ jobs:
         sudo apt-get update
         sudo apt-get -yq install gcovr python3-pip ninja-build parallel "${CC}" "${CXX}"
         sudo python3 -m pip install meson==0.55.0
+    - name: add ccache to the build path
+      run: |
+        export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
     - name: Configure
       run: meson setup build
     - name: Build
@@ -317,8 +332,21 @@ jobs:
 
   gcc-qemu:
     strategy:
+      fail-fast: false
       matrix:
         include:
+        - version: 12
+          cross: armel
+          arch_gnu_abi: eabi
+          arch_deb: armel
+          arch_gnu: arm
+          distro: ubuntu-22.04
+        - version: 12
+          cross: armv7
+          arch_gnu: arm
+          arch_gnu_abi: eabihf
+          arch_deb: armhf
+          distro: ubuntu-22.04
         - version: 12
           cross: aarch64
           arch_gnu: aarch64
@@ -352,8 +380,8 @@ jobs:
         sudo add-apt-repository ppa:savoury1/virtualisation
         sudo apt-get update -y
         sudo apt-get -yq install ninja-build parallel \
-          gcc-${{ matrix.version }}-${{ matrix.arch_gnu }}-linux-gnu \
-          g++-${{ matrix.version }}-${{ matrix.arch_gnu }}-linux-gnu binfmt-support \
+          gcc-${{ matrix.version }}-${{ matrix.arch_gnu }}-linux-gnu${{ matrix.arch_gnu_abi }} \
+          g++-${{ matrix.version }}-${{ matrix.arch_gnu }}-linux-gnu${{ matrix.arch_gnu_abi }} binfmt-support \
           qemu-user-static python3-pip libc6-${{ matrix.arch_deb }}-cross libstdc++-${{ matrix.version }}-dev-${{ matrix.arch_deb }}-cross
         sudo python3 -m pip install meson==0.55.0
     - name: ccache
@@ -370,31 +398,84 @@ jobs:
     - name: Test
       run: meson test -C build --print-errorlogs --print-errorlogs $(meson test -C build --list | grep -v emul)
 
-  clang:
+  clang-qemu:
     strategy:
       matrix:
         include:
-        # - version: "3.5"
-        #   distro: ubuntu-16.04
-        #   arch_flags: -mavx2
-        # - version: "3.6"
-        #   distro: ubuntu-16.04
-        #   arch_flags: -mavx2
-        # - version: "3.7"
-        #   distro: ubuntu-16.04
-        #   arch_flags: -mavx2
-        # - version: "3.8"
-        #   distro: ubuntu-16.04
-        #   arch_flags: -mavx2
-        #- version: "3.9"
-        #  distro: ubuntu-18.04
-        #  arch_flags: -mavx2
-        # - version: "4.0"
-        #   distro: ubuntu-18.04
-        #   arch_flags: -mavx2
-        #- version: "5.0"
-        #  distro: ubuntu-18.04
-        #  arch_flags: -mavx2
+        - version: 15
+          cross: armv7
+          arch_deb: armhf
+          arch_gnu_abi: eabihf
+          arch_gnu: arm
+          distro: ubuntu-22.04
+        - version: 15
+          cross: aarch64
+          arch_gnu: aarch64
+          arch_deb: arm64
+          distro: ubuntu-22.04
+        - version: 15
+          cross: armel
+          arch_gnu_abi: eabi
+          arch_deb: armel
+          arch_gnu: arm
+          distro: ubuntu-22.04
+        # - version: 15
+        #   cross: armel
+        #   arch_gnu_abi: eabi
+        #   arch_deb: armel
+        #   arch_gnu: arm
+        #   distro: ubuntu-22.04
+        # - version: 15
+        #   cross: riscv64
+        #   arch_gnu: riscv64
+        #   arch_deb: riscv64
+        #   distro: ubuntu-22.04
+        # - version: 15
+        #   cross: s390x
+        #   arch_gnu: s390x
+        #   arch_deb: s390x
+        #   distro: ubuntu-22.04
+        - version: 15
+          cross: ppc64el
+          arch_deb: ppc64el
+          arch_gnu: powerpc64le
+          distro: ubuntu-22.04
+    runs-on: ${{ matrix.distro }}
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: recursive
+    - run: sudo apt-get update
+    - name: CPU Information
+      run: cat /proc/cpuinfo
+    - name: Install APT Dependencies
+      run: |
+        sudo add-apt-repository ppa:savoury1/virtualisation
+        sudo apt-get update -y
+        sudo apt-get -yq install ninja-build parallel \
+          binfmt-support clang-${{ matrix.version }} clang++-${{ matrix.version }} \
+          qemu-user-static python3-pip libc6-${{ matrix.arch_deb }}-cross libstdc++-12-dev-${{ matrix.arch_deb }}-cross \
+          binutils-${{ matrix.arch_gnu }}-linux-gnu${{ matrix.arch_gnu_abi }}
+        sudo python3 -m pip install meson==0.55.0
+    - name: ccache
+      uses: hendrikmuhs/ccache-action@v1.2
+      with:
+        key: ${{ github.job }}-${{ matrix.distro }}-${{ matrix.cross }}
+    - name: add ccache to the build path
+      run: |
+        export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
+    - name: Configure
+      run: meson setup --cross-file=docker/cross-files/${{ matrix.cross }}-clang-${{ matrix.version }}-ccache.cross build
+    - name: Build
+      run: ninja -C build -v
+    - name: Test
+      run: meson test -C build --print-errorlogs --print-errorlogs $(meson test -C build --list | grep -v emul)
+
+  clang:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
         # - version: "6.0"
         #   distro: ubuntu-20.04
         #   arch_flags: -march=native
@@ -458,6 +539,10 @@ jobs:
         sudo apt-get update
         sudo apt-get -yq install gcovr ninja-build python3-pip clang-${{ matrix.version }}
         sudo python3 -m pip install meson==0.55.0
+    - name: add ccache to the build path
+      if: ${{ matrix.ccache == 'true' }}
+      run: |
+        export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
     - name: Configure
       run: meson setup build
     - name: Build
@@ -559,3 +644,38 @@ jobs:
         run: |
           meson --backend=ninja build --cross-file test/arm64cl.txt
           meson test -C build --print-errorlogs $(meson test -C build --list | grep -v emul)
+
+  linux-gcc-loongarch64:
+    runs-on: ubuntu-22.04
+    steps:
+    - uses: actions/checkout@v3
+    - name: CPU Information
+      run: cat /proc/cpuinfo
+    - name: Install APT Dependencies
+      run: |
+        sudo add-apt-repository ppa:savoury1/virtualisation
+        sudo apt-get install -y ninja-build ninja-build meson qemu-user-static
+    - name: Download and install loongarch64-toolchain
+      run: |
+        wget https://github.com/loongson/build-tools/releases/download/2022.09.06/loongarch64-clfs-7.3-cross-tools-gcc-glibc.tar.xz
+        tar -xf loongarch64-clfs-7.3-cross-tools-gcc-glibc.tar.xz -C /opt
+    - name: ccache
+      uses: hendrikmuhs/ccache-action@v1.2
+      with:
+        key: ${{ github.job }}-loongarch64-gcc-13
+    - name: set env
+      run: |
+        echo "LD_LIBRARY_PATH=/opt/cross-tools/target/usr/lib64:/opt/cross-tools/loongarch64-unknown-linux-gnu/lib64:$LD_LIBRARY_PATH" >> $GITHUB_ENV
+        echo "PATH=$GITHUB_WORKSPACE:/opt/cross-tools/bin:$PATH" >> $GITHUB_ENV
+    - name: Disable SVML tests
+      run: |
+        sed -i "/svml/d" test/x86/meson.build
+        rm test/x86/svml.c
+        echo "Due to the qemu versions 7.2 through 8.0 causing timeouts in four sets of test cases,"
+        echo "the SVML tests have been temporarily disabled."
+    - name: Configure
+      run: meson setup build --cross-file=docker/cross-files/loongarch64-gcc-13-ccache.cross
+    - name: Build
+      run: meson compile -C build -v
+    - name: Test
+      run: meson test -C build --print-errorlogs

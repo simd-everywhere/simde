@@ -1,0 +1,18 @@
+[binaries]
+c = 'clang-7'
+cpp = 'clang++-7'
+ar = 'llvm-ar-7'
+strip = 'llvm-strip-7'
+objcopy = 'llvm-objcopy-7'
+ld = 'llvm-ld-7'
+exe_wrapper = ['sde64', '-clx', '--']
+
+[properties]
+c_args = ['-march=skylake-avx512', '-Weverything', '-fno-lax-vector-conversions', '-Werror']
+cpp_args = ['-march=skylake-avx512', '-Weverything', '-fno-lax-vector-conversions', '-Werror']
+
+[host_machine]
+system = 'linux'
+cpu_family = 'x86_64-all'
+cpu = 'x86_64'
+endian = 'little'

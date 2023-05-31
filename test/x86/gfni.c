@@ -5648,6 +5648,8 @@ test_simde_mm512_gf2p8mul_epi8(SIMDE_MUNIT_TEST_ARGS) {
   return 0;
 }
 
+#if !(defined(__clang__) && defined(__arm__) && defined(__ARM_EABI__) && !defined(__ARM_PCS_VFP))
+
 static int
 test_simde_mm_mask_gf2p8mul_epi8(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
@@ -7375,6 +7377,8 @@ test_simde_mm512_maskz_gf2p8mul_epi8(SIMDE_MUNIT_TEST_ARGS) {
   return 0;
 }
 
+#endif // armel clang skip
+
 SIMDE_TEST_FUNC_LIST_BEGIN
   SIMDE_TEST_FUNC_LIST_ENTRY(mm_gf2p8affine_epi64_epi8)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm256_gf2p8affine_epi64_epi8)
@@ -7404,6 +7408,7 @@ SIMDE_TEST_FUNC_LIST_BEGIN
   SIMDE_TEST_FUNC_LIST_ENTRY(mm256_gf2p8mul_epi8)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm512_gf2p8mul_epi8)
 
+  #if !(defined(__clang__) && defined(__arm__) && defined(__ARM_EABI__) && !defined(__ARM_PCS_VFP))
   SIMDE_TEST_FUNC_LIST_ENTRY(mm_mask_gf2p8mul_epi8)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm256_mask_gf2p8mul_epi8)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_gf2p8mul_epi8)
@@ -7411,6 +7416,7 @@ SIMDE_TEST_FUNC_LIST_BEGIN
   SIMDE_TEST_FUNC_LIST_ENTRY(mm_maskz_gf2p8mul_epi8)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm256_maskz_gf2p8mul_epi8)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm512_maskz_gf2p8mul_epi8)
+  #endif
 SIMDE_TEST_FUNC_LIST_END
 
 #include <test/x86/test-x86-footer.h>

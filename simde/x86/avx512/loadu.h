@@ -76,43 +76,49 @@ simde_mm512_loadu_pd (void const * mem_addr) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m512i
 simde_mm512_loadu_si512 (void const * mem_addr) {
-  #if defined(SIMDE_X86_AVX512F_NATIVE)
-    return _mm512_loadu_si512(HEDLEY_REINTERPRET_CAST(void const*, mem_addr));
+  simde__m512i r;
+  #if HEDLEY_GNUC_HAS_ATTRIBUTE(may_alias,3,3,0)
+    HEDLEY_DIAGNOSTIC_PUSH
+    SIMDE_DIAGNOSTIC_DISABLE_PACKED_
+    struct simde_mm512_loadu_si512_s {
+      __typeof__(r) v;
+    } __attribute__((__packed__, __may_alias__));
+    r = HEDLEY_REINTERPRET_CAST(const struct simde_mm512_loadu_si512_s *, mem_addr)->v;
+    HEDLEY_DIAGNOSTIC_POP
   #else
-    simde__m512i r;
-
-    #if HEDLEY_GNUC_HAS_ATTRIBUTE(may_alias,3,3,0)
-      HEDLEY_DIAGNOSTIC_PUSH
-      SIMDE_DIAGNOSTIC_DISABLE_PACKED_
-      struct simde_mm512_loadu_si512_s {
-        __typeof__(r) v;
-      } __attribute__((__packed__, __may_alias__));
-      r = HEDLEY_REINTERPRET_CAST(const struct simde_mm512_loadu_si512_s *, mem_addr)->v;
-      HEDLEY_DIAGNOSTIC_POP
-    #else
-      simde_memcpy(&r, mem_addr, sizeof(r));
-    #endif
-
-    return r;
+    simde_memcpy(&r, mem_addr, sizeof(r));
   #endif
+
+  return r;
 }
-#define simde_mm512_loadu_epi8(mem_addr) simde_mm512_loadu_si512(mem_addr)
-#define simde_mm512_loadu_epi16(mem_addr) simde_mm512_loadu_si512(mem_addr)
-#define simde_mm512_loadu_epi32(mem_addr) simde_mm512_loadu_si512(mem_addr)
-#define simde_mm512_loadu_epi64(mem_addr) simde_mm512_loadu_si512(mem_addr)
+#if defined(SIMDE_X86_AVX512F_NATIVE) && (!defined(__clang__) || SIMDE_DETECT_CLANG_VERSION_CHECK(8,0,0))
+  #define simde_mm512_loadu_si512(mem_addr) _mm512_loadu_si512(mem_addr)
+  #define simde_mm512_loadu_epi32(mem_addr) _mm512_loadu_epi32(mem_addr)
+  #define simde_mm512_loadu_epi64(mem_addr) _mm512_loadu_epi64(mem_addr)
+#else
+  #define simde_mm512_loadu_epi32(mem_addr) simde_mm512_loadu_si512(mem_addr)
+  #define simde_mm512_loadu_epi64(mem_addr) simde_mm512_loadu_si512(mem_addr)
+#endif
+#if defined(SIMDE_X86_AVX512BW_NATIVE) && (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(11,0,0)) && (!defined(__clang__) || SIMDE_DETECT_CLANG_VERSION_CHECK(8,0,0))
+  #define simde_mm512_loadu_epi8(mem_addr) _mm512_loadu_epi8(mem_addr)
+  #define simde_mm512_loadu_epi16(mem_addr) _mm512_loadu_epi16(mem_addr)
+#else
+  #define simde_mm512_loadu_epi8(mem_addr) simde_mm512_loadu_si512(mem_addr)
+  #define simde_mm512_loadu_epi16(mem_addr) simde_mm512_loadu_si512(mem_addr)
+#endif
 #if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
   #undef _mm512_loadu_epi8
   #undef _mm512_loadu_epi16
-  #define _mm512_loadu_epi8(a) simde_mm512_loadu_si512(a)
-  #define _mm512_loadu_epi16(a) simde_mm512_loadu_si512(a)
+  #define _mm512_loadu_epi8(a) simde_mm512_loadu_epi8(a)
+  #define _mm512_loadu_epi16(a) simde_mm512_loadu_epi16(a)
 #endif
 #if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
   #undef _mm512_loadu_epi32
   #undef _mm512_loadu_epi64
   #undef _mm512_loadu_si512
   #define _mm512_loadu_si512(a) simde_mm512_loadu_si512(a)
-  #define _mm512_loadu_epi32(a) simde_mm512_loadu_si512(a)
-  #define _mm512_loadu_epi64(a) simde_mm512_loadu_si512(a)
+  #define _mm512_loadu_epi32(a) simde_mm512_loadu_epi32(a)
+  #define _mm512_loadu_epi64(a) simde_mm512_loadu_epi64(a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES

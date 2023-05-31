@@ -40,6 +40,10 @@ simde_uint8x8_t
 simde_vqtbx1_u8(simde_uint8x8_t a, simde_uint8x16_t t, simde_uint8x8_t idx) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vqtbx1_u8(a, t, idx);
+  #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    uint8x8x2_t split;
+    simde_memcpy(&split, &t, sizeof(split));
+    return vtbx2_u8(a, split, idx);
   #else
     simde_uint8x16_private t_ = simde_uint8x16_to_private(t);
     simde_uint8x8_private
@@ -89,6 +93,10 @@ simde_uint8x8_t
 simde_vqtbx2_u8(simde_uint8x8_t a, simde_uint8x16x2_t t, simde_uint8x8_t idx) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vqtbx2_u8(a, t, idx);
+  #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    uint8x8x4_t split;
+    simde_memcpy(&split, &t, sizeof(split));
+    return vtbx4_u8(a, split, idx);
   #else
     simde_uint8x16_private t_[2] = { simde_uint8x16_to_private(t.val[0]), simde_uint8x16_to_private(t.val[1]) };
     simde_uint8x8_private
@@ -140,6 +148,14 @@ simde_uint8x8_t
 simde_vqtbx3_u8(simde_uint8x8_t a, simde_uint8x16x3_t t, simde_uint8x8_t idx) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vqtbx3_u8(a, t, idx);
+  #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    uint8x8_t idx_hi = vsub_u8(idx, vdup_n_u8(32));
+    uint8x8x4_t split_lo;
+    uint8x8x2_t split_hi;
+    simde_memcpy(&split_lo, &t.val[0], sizeof(split_lo));
+    simde_memcpy(&split_hi, &t.val[2], sizeof(split_hi));
+    uint8x8_t hi = vtbx2_u8(a, split_hi, idx_hi);
+    return vtbx4_u8(hi, split_lo, idx);
   #else
     simde_uint8x16_private t_[3] = { simde_uint8x16_to_private(t.val[0]), simde_uint8x16_to_private(t.val[1]), simde_uint8x16_to_private(t.val[2]) };
     simde_uint8x8_private
@@ -193,6 +209,14 @@ simde_uint8x8_t
 simde_vqtbx4_u8(simde_uint8x8_t a, simde_uint8x16x4_t t, simde_uint8x8_t idx) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vqtbx4_u8(a, t, idx);
+  #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    uint8x8_t idx_hi = vsub_u8(idx, vdup_n_u8(32));
+    uint8x8x4_t split_lo;
+    uint8x8x4_t split_hi;
+    simde_memcpy(&split_lo, &t.val[0], sizeof(split_lo));
+    simde_memcpy(&split_hi, &t.val[2], sizeof(split_hi));
+    uint8x8_t lo = vtbx4_u8(a, split_lo, idx);
+    return vtbx4_u8(lo, split_hi, idx_hi);
   #else
     simde_uint8x16_private t_[4] = { simde_uint8x16_to_private(t.val[0]), simde_uint8x16_to_private(t.val[1]), simde_uint8x16_to_private(t.val[2]), simde_uint8x16_to_private(t.val[3]) };
     simde_uint8x8_private
@@ -251,6 +275,12 @@ simde_uint8x16_t
 simde_vqtbx1q_u8(simde_uint8x16_t a, simde_uint8x16_t t, simde_uint8x16_t idx) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vqtbx1q_u8(a, t, idx);
+  #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    uint8x8x2_t split;
+    simde_memcpy(&split, &t, sizeof(split));
+    uint8x8_t lo = vtbx2_u8(vget_low_u8(a), split, vget_low_u8(idx));
+    uint8x8_t hi = vtbx2_u8(vget_high_u8(a), split, vget_high_u8(idx));
+    return vcombine_u8(lo, hi);
   #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
     return vec_sel(a,
                    vec_perm(t, t, idx),
@@ -304,6 +334,12 @@ simde_uint8x16_t
 simde_vqtbx2q_u8(simde_uint8x16_t a, simde_uint8x16x2_t t, simde_uint8x16_t idx) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vqtbx2q_u8(a, t, idx);
+  #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    uint8x8x4_t split;
+    simde_memcpy(&split, &t, sizeof(split));
+    uint8x8_t lo = vtbx4_u8(vget_low_u8(a), split, vget_low_u8(idx));
+    uint8x8_t hi = vtbx4_u8(vget_high_u8(a), split, vget_high_u8(idx));
+    return vcombine_u8(lo, hi);
   #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
     return vec_sel(a, vec_perm(t.val[0], t.val[1], idx),
                    vec_cmplt(idx, vec_splats(HEDLEY_STATIC_CAST(unsigned char, 32))));
@@ -360,6 +396,17 @@ simde_uint8x16_t
 simde_vqtbx3q_u8(simde_uint8x16_t a, simde_uint8x16x3_t t, simde_uint8x16_t idx) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vqtbx3q_u8(a, t, idx);
+  #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    uint8x16_t idx_hi = vsubq_u8(idx, vdupq_n_u8(32));
+    uint8x8x4_t split_lo;
+    uint8x8x2_t split_hi;
+    simde_memcpy(&split_lo, &t.val[0], sizeof(split_lo));
+    simde_memcpy(&split_hi, &t.val[2], sizeof(split_hi));
+    uint8x8_t hi_lo = vtbx2_u8(vget_low_u8(a), split_hi, vget_low_u8(idx_hi));
+    uint8x8_t hi_hi = vtbx2_u8(vget_high_u8(a), split_hi, vget_high_u8(idx_hi));
+    uint8x8_t lo_lo = vtbx4_u8(hi_lo, split_lo, vget_low_u8(idx));
+    uint8x8_t lo_hi = vtbx4_u8(hi_hi, split_lo, vget_high_u8(idx));
+    return vcombine_u8(lo_lo, lo_hi);
   #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
     SIMDE_POWER_ALTIVEC_VECTOR(unsigned char) r_01 = vec_perm(t.val[0], t.val[1], idx);
     SIMDE_POWER_ALTIVEC_VECTOR(unsigned char) r_2  = vec_perm(t.val[2], t.val[2], idx);
@@ -422,6 +469,17 @@ simde_uint8x16_t
 simde_vqtbx4q_u8(simde_uint8x16_t a, simde_uint8x16x4_t t, simde_uint8x16_t idx) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vqtbx4q_u8(a, t, idx);
+  #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    uint8x16_t idx_hi = vsubq_u8(idx, vdupq_n_u8(32));
+    uint8x8x4_t split_lo;
+    uint8x8x4_t split_hi;
+    simde_memcpy(&split_lo, &t.val[0], sizeof(split_lo));
+    simde_memcpy(&split_hi, &t.val[2], sizeof(split_hi));
+    uint8x8_t lo_lo = vtbx4_u8(vget_low_u8(a), split_lo, vget_low_u8(idx));
+    uint8x8_t lo_hi = vtbx4_u8(vget_high_u8(a), split_lo, vget_high_u8(idx));
+    uint8x8_t lo = vtbx4_u8(lo_lo, split_hi, vget_low_u8(idx_hi));
+    uint8x8_t hi = vtbx4_u8(lo_hi, split_hi, vget_high_u8(idx_hi));
+    return vcombine_u8(lo, hi);
   #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
     SIMDE_POWER_ALTIVEC_VECTOR(unsigned char) r_01 = vec_perm(t.val[0], t.val[1], idx);
     SIMDE_POWER_ALTIVEC_VECTOR(unsigned char) r_23 = vec_perm(t.val[2], t.val[3], idx);

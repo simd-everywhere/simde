@@ -5,7 +5,7 @@ FROM debian:${RELEASE}-slim
 
 ARG DEBIAN_FRONTEND=noninteractive
 ARG QEMU_GIT=n
-ARG ARCHS="arm64 armel armhf i386 mips64el ppc64el s390x"
+ARG ARCHS="arm64 armel armhf i386 mips64el ppc64el s390x riscv64"
 
 RUN \
   apt-get update -y && \
@@ -26,7 +26,7 @@ RUN \
   apt-get update -y && \
   apt-get upgrade -y && \
   apt-get install -yq --no-install-recommends \
-    git build-essential \
+    git build-essential vim \
     ccache cmake ninja-build \
     '^clang-[0-9\.]+$' \
     '^llvm-[0-9\.]+$' \
@@ -56,7 +56,7 @@ RUN \
   echo ${PACKAGES_TO_INSTALL} ; \
   apt-get install -yq ${PACKAGES_TO_INSTALL}
 
-ENV PATH="/usr/lib/ccache:$PATH:/root/.local/bin"
+ENV PATH="/usr/lib/ccache:$PATH:/root/.local/bin:/root/.jsvu/bin"
 
 # ICC
 RUN \

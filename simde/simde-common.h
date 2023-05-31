@@ -1003,8 +1003,10 @@ HEDLEY_DIAGNOSTIC_POP
 #    endif
 #  elif defined(__clang__)
 #    if defined(SIMDE_ARCH_AARCH64)
-#      define SIMDE_BUG_CLANG_45541
 #      define SIMDE_BUG_CLANG_48257
+#      if !SIMDE_DETECT_CLANG_VERSION_CHECK(15,0,0)
+#        define SIMDE_BUG_CLANG_45541
+#      endif
 #      if !SIMDE_DETECT_CLANG_VERSION_CHECK(12,0,0)
 #        define SIMDE_BUG_CLANG_46840
 #        define SIMDE_BUG_CLANG_46844
@@ -1035,7 +1037,9 @@ HEDLEY_DIAGNOSTIC_POP
 #      define SIMDE_BUG_CLANG_POWER9_16x4_BAD_SHIFT
 #    endif
 #    if defined(SIMDE_ARCH_POWER)
-#      define SIMDE_BUG_CLANG_50932
+#      if !SIMDE_DETECT_CLANG_VERSION_CHECK(14,0,0)
+#        define SIMDE_BUG_CLANG_50932
+#      endif
 #      if !SIMDE_DETECT_CLANG_VERSION_CHECK(12,0,0)
 #        define SIMDE_BUG_VEC_CPSGN_REVERSED_ARGS
 #      endif
