@@ -1076,7 +1076,7 @@ HEDLEY_DIAGNOSTIC_POP
 #      define SIMDE_BUG_CLANG_48673
 #    endif
 #    define SIMDE_BUG_CLANG_45959
-#    if defined(SIMDE_ARCH_WASM_SIMD128)
+#    if defined(SIMDE_ARCH_WASM_SIMD128) && !SIMDE_DETECT_CLANG_VERSION_CHECK(17,0,0)
 #      define SIMDE_BUG_CLANG_60655
 #    endif
 #  elif defined(HEDLEY_MSVC_VERSION)
