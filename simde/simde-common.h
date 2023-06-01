@@ -964,7 +964,9 @@ HEDLEY_DIAGNOSTIC_POP
 #      if defined(__OPTIMIZE__)
 #        define SIMDE_BUG_GCC_100927
 #      endif
-#      define SIMDE_BUG_GCC_98521
+#      if !(HEDLEY_GCC_VERSION_CHECK(10,3,0))
+#        define SIMDE_BUG_GCC_98521
+#      endif
 #    endif
 #    if !HEDLEY_GCC_VERSION_CHECK(9,4,0) && defined(SIMDE_ARCH_AARCH64)
 #      define SIMDE_BUG_GCC_94488
