@@ -126,39 +126,9 @@ SIMDE_BEGIN_DECLS_
 SIMDE_DEFINE_CONVERSION_FUNCTION_(simde_float16_as_uint16,      uint16_t, simde_float16)
 SIMDE_DEFINE_CONVERSION_FUNCTION_(simde_uint16_as_float16, simde_float16,      uint16_t)
 
-#if SIMDE_FLOAT16_API == SIMDE_FLOAT16_API_PORTABLE
-  #define SIMDE_NANHF simde_uint16_as_float16(0x7E00) // a quiet Not-a-Number
-  #define SIMDE_INFINITYHF simde_uint16_as_float16(0x7C00)
-  #define SIMDE_NINFINITYHF simde_uint16_as_float16(0xFC00)
-#else
-  #if SIMDE_FLOAT16_API == SIMDE_FLOAT16_API_FP16_NO_ABI
-    #if SIMDE_MATH_BUILTIN_LIBM(nanf16)
-      #define SIMDE_NANHF SIMDE_FLOAT16_C(__builtin_nanf16(""))
-    #elif defined(SIMDE_MATH_NAN)
-      #define SIMDE_NANHF SIMDE_FLOAT16_C(SIMDE_MATH_NAN)
-    #endif
-    #if SIMDE_MATH_BUILTIN_LIBM(inf16)
-      #define SIMDE_INFINITYHF SIMDE_FLOAT16_C(__builtin_inf16())
-      #define SIMDE_NINFINITYHF SIMDE_FLOAT16_C(-__builtin_inf16())
-    #else
-      #define SIMDE_INFINITYHF SIMDE_FLOAT16_C(SIMDE_MATH_INFINITY)
-      #define SIMDE_NINFINITYHF SIMDE_FLOAT16_C(-SIMDE_MATH_INFINITY)
-    #endif
-  #else
-    #if SIMDE_MATH_BUILTIN_LIBM(nanf16)
-      #define SIMDE_NANHF HEDLEY_STATIC_CAST(simde_float16, __builtin_nanf16(""))
-    #elif defined(SIMDE_MATH_NAN)
-      #define SIMDE_NANHF HEDLEY_STATIC_CAST(simde_float16, SIMDE_MATH_NAN)
-    #endif
-    #if SIMDE_MATH_BUILTIN_LIBM(inf16)
-      #define SIMDE_INFINITYHF __builtin_inf16()
-      #define SIMDE_NINFINITYHF -(__builtin_inf16())
-    #else
-      #define SIMDE_INFINITYHF HEDLEY_STATIC_CAST(simde_float16, SIMDE_MATH_INFINITY)
-      #define SIMDE_NINFINITYHF HEDLEY_STATIC_CAST(simde_float16, -SIMDE_MATH_INFINITY)
-    #endif
-  #endif
-#endif
+#define SIMDE_NANHF simde_uint16_as_float16(0x7E00) // a quiet Not-a-Number
+#define SIMDE_INFINITYHF simde_uint16_as_float16(0x7C00)
+#define SIMDE_NINFINITYHF simde_uint16_as_float16(0xFC00)
 
 /* Conversion -- convert between single-precision and half-precision
  * floats. */
