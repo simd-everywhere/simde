@@ -532,13 +532,30 @@ jobs:
       run: meson test -C build --print-errorlogs $(meson test -C build --list | grep -v emul)
 
   macos:
-    runs-on: macos-11
     strategy:
+      fail-fast: false
       matrix:
         # https://www.jessesquires.com/blog/2020/01/06/selecting-an-xcode-version-on-github-ci/
-        # https://github.com/actions/virtual-environments/blob/master/images/macos/macos-10.15-Readme.md#xcode
-        # xcode: ["11.3.1", "11.7", "12.3", "12.4"]
-        xcode: ["11.7", "12.4", "12.5.1"] # for macos-11
+        # https://github.com/actions/runner-images/blob/main/images/macos/macos-11-Readme.md#xcode
+        # https://github.com/actions/runner-images/blob/main/images/macos/macos-12-Readme.md#xcode
+        # https://github.com/actions/runner-images/blob/main/images/macos/macos-13-Readme.md#xcode
+        # https://trac.macports.org/wiki/XcodeVersionInfo
+        include:
+          - xcode: "11.7"
+            os: macos-11
+          - xcode: "12.4"
+            os: macos-11
+          - xcode: "12.5.1"
+            os: macos-11
+          - xcode: "13.1"
+            os: macos-12
+          - xcode: "13.3.1"
+            os: macos-12
+          - xcode: "13.4.1"
+            os: macos-12
+          - xcode: "14.2"
+            os: macos-13
+    runs-on: ${{ matrix.os }}
     env:
       DEVELOPER_DIR:  /Applications/Xcode_${{ matrix.xcode }}.app
     steps:
