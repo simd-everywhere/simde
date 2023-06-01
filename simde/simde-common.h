@@ -1002,7 +1002,10 @@ HEDLEY_DIAGNOSTIC_POP
 #      endif
 #    endif
 #    define SIMDE_BUG_GCC_95399
-#    if !defined(__OPTIMIZE__)
+#    if !defined(__OPTIMIZE__) && !(\
+       HEDLEY_GCC_VERSION_CHECK(11,4,0) \
+       || (HEDLEY_GCC_VERSION_CHECK(10,4,0) && !(HEDLEY_GCC_VERSION_CHECK(11,0,0))) \
+       || (HEDLEY_GCC_VERSION_CHECK(9,5,0) && !(HEDLEY_GCC_VERSION_CHECK(10,0,0))))
 #      define SIMDE_BUG_GCC_105339
 #    endif
 #  elif defined(__clang__)
