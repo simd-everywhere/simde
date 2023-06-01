@@ -96,10 +96,11 @@ SIMDE_BEGIN_DECLS_
   #endif
 #elif SIMDE_FLOAT16_API == SIMDE_FLOAT16_API_FP16_NO_ABI
   typedef struct { __fp16 value; } simde_float16;
-  #if defined(SIMDE_STATEMENT_EXPR_)
+  #if defined(SIMDE_STATEMENT_EXPR_) && !defined(SIMDE_TESTS_H)
     #define SIMDE_FLOAT16_C(value) (__extension__({ ((simde_float16) { HEDLEY_DIAGNOSTIC_PUSH SIMDE_DIAGNOSTIC_DISABLE_C99_EXTENSIONS_ HEDLEY_STATIC_CAST(__fp16, (value)) }); HEDLEY_DIAGNOSTIC_POP }))
   #else
     #define SIMDE_FLOAT16_C(value) ((simde_float16) { HEDLEY_STATIC_CAST(__fp16, (value)) })
+    #define SIMDE_FLOAT16_IS_SCALAR 1
   #endif
 #elif SIMDE_FLOAT16_API == SIMDE_FLOAT16_API_FP16
   typedef __fp16 simde_float16;
@@ -126,7 +127,7 @@ SIMDE_DEFINE_CONVERSION_FUNCTION_(simde_float16_as_uint16,      uint16_t, simde_
 SIMDE_DEFINE_CONVERSION_FUNCTION_(simde_uint16_as_float16, simde_float16,      uint16_t)
 
 #if SIMDE_FLOAT16_API == SIMDE_FLOAT16_API_PORTABLE
-  #define SIMDE_NANHF simde_uint16_as_float16(0x7E00)
+  #define SIMDE_NANHF simde_uint16_as_float16(0x7E00) // a quiet Not-a-Number
   #define SIMDE_INFINITYHF simde_uint16_as_float16(0x7C00)
   #define SIMDE_NINFINITYHF simde_uint16_as_float16(0xFC00)
 #else
@@ -145,9 +146,9 @@ SIMDE_DEFINE_CONVERSION_FUNCTION_(simde_uint16_as_float16, simde_float16,      u
     #endif
   #else
     #if SIMDE_MATH_BUILTIN_LIBM(nanf16)
-      #define SIMDE_NANHF HEDLEY_STATIC_CAST(simde_float16, __builtin_nanf16(""))
+      #define SIMDE_NANHF  __builtin_nanf16("")
     #elif defined(SIMDE_MATH_NAN)
-      #define SIMDE_NANHF HEDLEY_STATIC_CAST(simde_float16, SIMDE_MATH_NAN)
+      #define SIMDE_NANHF SIMDE_MATH_NAN
     #endif
     #if SIMDE_MATH_BUILTIN_LIBM(inf16)
       #define SIMDE_INFINITYHF __builtin_inf16()
@@ -158,9 +159,9 @@ SIMDE_DEFINE_CONVERSION_FUNCTION_(simde_uint16_as_float16, simde_float16,      u
     #endif
   #endif
 #endif
+
 /* Conversion -- convert between single-precision and half-precision
  * floats. */
-
 static HEDLEY_ALWAYS_INLINE HEDLEY_CONST
 simde_float16
 simde_float16_from_float32 (simde_float32 value) {
@@ -257,6 +258,54 @@ simde_float16_to_float32 (simde_float16 value) {
 #else
   #define SIMDE_FLOAT16_VALUE(value) simde_float16_from_float32(SIMDE_FLOAT32_C(value))
 #endif
+
+#if !defined(simde_isinfhf) && defined(simde_math_isinff)
+  #define simde_isinfhf(a) simde_math_isinff(simde_float16_to_float32(a))
+#endif
+#if !defined(simde_isnanhf) && defined(simde_math_isnanf)
+  #define simde_isnanhf(a) simde_math_isnanf(simde_float16_to_float32(a))
+#endif
+#if !defined(simde_isnormalhf) && defined(simde_math_isnormalf)
+  #define simde_isnormalhf(a) simde_math_isnormalf(simde_float16_to_float32(a))
+#endif
+#if !defined(simde_issubnormalhf) && defined(simde_math_issubnormalf)
+  #define simde_issubnormalhf(a) simde_math_issubnormalf(simde_float16_to_float32(a))
+#endif
+
+#define simde_fpclassifyhf(a) simde_math_fpclassifyf(simde_float16_to_float32(a))
+
+static HEDLEY_INLINE
+uint8_t
+simde_fpclasshf(simde_float16 v, const int imm8) {
+  uint16_t bits = simde_float16_as_uint16(v);
+  uint8_t negative = (bits >> 15) & 1;
+  uint16_t const ExpMask = 0x7C00; // [14:10]
+  uint16_t const MantMask = 0x03FF; // [9:0]
+  uint8_t exponent_all_ones = ((bits & ExpMask) == ExpMask);
+  uint8_t exponent_all_zeros = ((bits & ExpMask) == 0);
+  uint8_t mantissa_all_zeros = ((bits & MantMask) == 0);
+  uint8_t zero = exponent_all_zeros & mantissa_all_zeros;
+  uint8_t signaling_bit = (bits >> 9) & 1;
+
+  uint8_t result = 0;
+  uint8_t snan = exponent_all_ones & (!mantissa_all_zeros) & (!signaling_bit);
+  uint8_t qnan = exponent_all_ones & (!mantissa_all_zeros) & signaling_bit;
+  uint8_t positive_zero = (!negative) & zero;
+  uint8_t negative_zero = negative & zero;
+  uint8_t positive_infinity = (!negative) & exponent_all_ones & mantissa_all_zeros;
+  uint8_t negative_infinity = negative & exponent_all_ones & mantissa_all_zeros;
+  uint8_t denormal = exponent_all_zeros & (!mantissa_all_zeros);
+  uint8_t finite_negative = negative & (!exponent_all_ones) & (!zero);
+  result = (((imm8 >> 0) & qnan)              | \
+            ((imm8 >> 1) & positive_zero)     | \
+            ((imm8 >> 2) & negative_zero)     | \
+            ((imm8 >> 3) & positive_infinity) | \
+            ((imm8 >> 4) & negative_infinity) | \
+            ((imm8 >> 5) & denormal)          | \
+            ((imm8 >> 6) & finite_negative)   | \
+            ((imm8 >> 7) & snan));
+  return result;
+}
 
 SIMDE_END_DECLS_
 HEDLEY_DIAGNOSTIC_POP
