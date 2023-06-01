@@ -94,6 +94,81 @@ test_simde_mm256_fpclass_ps_mask (SIMDE_MUNIT_TEST_ARGS) {
 }
 
 static int
+test_simde_mm512_fpclass_ph_mask (SIMDE_MUNIT_TEST_ARGS) {
+#if 1
+  simde_float16 qNaN = SIMDE_NANHF, //simde_uint16_as_float16(0x7E00),
+                denormal = simde_uint16_as_float16(0x0001),
+                pzero = simde_uint16_as_float16(0x0000),
+                nzero = simde_uint16_as_float16(0x8000),
+                pinfinity = SIMDE_INFINITYHF, //simde_uint16_as_float16(0x7C00),
+                ninfinity = SIMDE_NINFINITYHF, //simde_uint16_as_float16(0xFC00),
+                sNaN = simde_uint16_as_float16(0x7C01);
+  simde__m512h a = simde_mm512_set_ph(
+      SIMDE_FLOAT16_VALUE(    31.00), SIMDE_FLOAT16_VALUE(    30.00), SIMDE_FLOAT16_VALUE(    29.00), SIMDE_FLOAT16_VALUE(    28.00),
+      SIMDE_FLOAT16_VALUE(    27.00), SIMDE_FLOAT16_VALUE(    26.00), SIMDE_FLOAT16_VALUE(    25.00), SIMDE_FLOAT16_VALUE(    24.00),
+      SIMDE_FLOAT16_VALUE(    23.00), SIMDE_FLOAT16_VALUE(    22.00), SIMDE_FLOAT16_VALUE(    21.00), SIMDE_FLOAT16_VALUE(    20.00),
+      SIMDE_FLOAT16_VALUE(    19.00), SIMDE_FLOAT16_VALUE(    18.00), SIMDE_FLOAT16_VALUE(    17.00), SIMDE_FLOAT16_VALUE(    16.00),
+      SIMDE_FLOAT16_VALUE(    15.00), SIMDE_FLOAT16_VALUE(    14.00), SIMDE_FLOAT16_VALUE(    13.00), SIMDE_FLOAT16_VALUE(    12.00),
+      SIMDE_FLOAT16_VALUE(    11.00), SIMDE_FLOAT16_VALUE(    10.00), SIMDE_FLOAT16_VALUE(     9.00), SIMDE_FLOAT16_VALUE(     8.00),
+      qNaN                       , pzero,
+      nzero                      , pinfinity,
+      ninfinity                  , denormal,
+      SIMDE_FLOAT16_VALUE(-42.23), sNaN);
+  simde_assert_equal_mmask32(simde_mm512_fpclass_ph_mask(a, 0x01), 128);
+  simde_assert_equal_mmask32(simde_mm512_fpclass_ph_mask(a, 0x02), 64);
+  simde_assert_equal_mmask32(simde_mm512_fpclass_ph_mask(a, 0x04), 32);
+  simde_assert_equal_mmask32(simde_mm512_fpclass_ph_mask(a, 0x08), 16);
+  simde_assert_equal_mmask32(simde_mm512_fpclass_ph_mask(a, 0x10), 8);
+  simde_assert_equal_mmask32(simde_mm512_fpclass_ph_mask(a, 0x20), 4);
+  simde_assert_equal_mmask32(simde_mm512_fpclass_ph_mask(a, 0x40), 2);
+  simde_assert_equal_mmask32(simde_mm512_fpclass_ph_mask(a, 0x80), 1);
+
+  return 0;
+#else
+  fputc('\n', stdout);
+
+  simde_float16 qNaN = simde_uint16_as_float16(0x7E00),
+                denormal = simde_uint16_as_float16(0x0001),
+                pzero = simde_uint16_as_float16(0x0000),
+                nzero = simde_uint16_as_float16(0x8000),
+                pinfinity = simde_uint16_as_float16(0x7C00),
+                ninfinity = simde_uint16_as_float16(0xFC00),
+                sNaN = simde_uint16_as_float16(0x7C01);
+  simde__m512h a = simde_mm512_set_ph(
+      SIMDE_FLOAT16_VALUE(    31.00), SIMDE_FLOAT16_VALUE(    30.00), SIMDE_FLOAT16_VALUE(    29.00), SIMDE_FLOAT16_VALUE(    28.00),
+      SIMDE_FLOAT16_VALUE(    27.00), SIMDE_FLOAT16_VALUE(    26.00), SIMDE_FLOAT16_VALUE(    25.00), SIMDE_FLOAT16_VALUE(    24.00),
+      SIMDE_FLOAT16_VALUE(    23.00), SIMDE_FLOAT16_VALUE(    22.00), SIMDE_FLOAT16_VALUE(    21.00), SIMDE_FLOAT16_VALUE(    20.00),
+      SIMDE_FLOAT16_VALUE(    19.00), SIMDE_FLOAT16_VALUE(    18.00), SIMDE_FLOAT16_VALUE(    17.00), SIMDE_FLOAT16_VALUE(    16.00),
+      SIMDE_FLOAT16_VALUE(    15.00), SIMDE_FLOAT16_VALUE(    14.00), SIMDE_FLOAT16_VALUE(    13.00), SIMDE_FLOAT16_VALUE(    12.00),
+      SIMDE_FLOAT16_VALUE(    11.00), SIMDE_FLOAT16_VALUE(    10.00), SIMDE_FLOAT16_VALUE(     9.00), SIMDE_FLOAT16_VALUE(     8.00),
+      qNaN                       , pzero,
+      nzero                      , pinfinity,
+      ninfinity                  , denormal,
+      SIMDE_FLOAT16_VALUE(-42.23), sNaN);
+  simde__mmask32 r0 = simde_mm512_fpclass_ph_mask(a, SIMDE_MATH_FP_QNAN);
+  simde__mmask32 r1 = simde_mm512_fpclass_ph_mask(a, SIMDE_MATH_FP_PZERO);
+  simde__mmask32 r2 = simde_mm512_fpclass_ph_mask(a, SIMDE_MATH_FP_NZERO);
+  simde__mmask32 r3 = simde_mm512_fpclass_ph_mask(a, SIMDE_MATH_FP_PINF);
+  simde__mmask32 r4 = simde_mm512_fpclass_ph_mask(a, SIMDE_MATH_FP_NINF);
+  simde__mmask32 r5 = simde_mm512_fpclass_ph_mask(a, SIMDE_MATH_FP_DENORMAL);
+  simde__mmask32 r6 = simde_mm512_fpclass_ph_mask(a, SIMDE_MATH_FP_NEGATIVE);
+  simde__mmask32 r7 = simde_mm512_fpclass_ph_mask(a, SIMDE_MATH_FP_SNAN);
+
+  simde_test_x86_write_f16x32(2, a, SIMDE_TEST_VEC_POS_FIRST);
+  simde_test_x86_write_mmask32(2, r0, SIMDE_TEST_VEC_POS_MIDDLE);
+  simde_test_x86_write_mmask32(2, r1, SIMDE_TEST_VEC_POS_MIDDLE);
+  simde_test_x86_write_mmask32(2, r2, SIMDE_TEST_VEC_POS_MIDDLE);
+  simde_test_x86_write_mmask32(2, r3, SIMDE_TEST_VEC_POS_MIDDLE);
+  simde_test_x86_write_mmask32(2, r4, SIMDE_TEST_VEC_POS_MIDDLE);
+  simde_test_x86_write_mmask32(2, r5, SIMDE_TEST_VEC_POS_MIDDLE);
+  simde_test_x86_write_mmask32(2, r6, SIMDE_TEST_VEC_POS_MIDDLE);
+  simde_test_x86_write_mmask32(2, r7, SIMDE_TEST_VEC_POS_LAST);
+  return 1;
+#endif
+}
+
+
+static int
 test_simde_mm512_fpclass_pd_mask (SIMDE_MUNIT_TEST_ARGS) {
 #if 1
   union {
@@ -159,6 +234,7 @@ test_simde_mm512_fpclass_pd_mask (SIMDE_MUNIT_TEST_ARGS) {
 
 SIMDE_TEST_FUNC_LIST_BEGIN
   SIMDE_TEST_FUNC_LIST_ENTRY(mm256_fpclass_ps_mask)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_fpclass_ph_mask)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm512_fpclass_pd_mask)
 SIMDE_TEST_FUNC_LIST_END
 

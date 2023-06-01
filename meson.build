@@ -285,6 +285,7 @@ simde_avx512_families = [
   'popcnt',
   'range',
   'range_round',
+  'reduce',
   'rol',
   'rolv',
   'ror',
