@@ -97,6 +97,20 @@ simde_mm512_storeu_pd (void * mem_addr, simde__m512d a) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 void
+simde_mm512_storeu_ph (void * mem_addr, simde__m512h a) {
+  #if defined(SIMDE_X86_AVX512FP16_NATIVE)
+    _mm512_storeu_ph(mem_addr, a);
+  #else
+    simde_memcpy(mem_addr, &a, sizeof(a));
+  #endif
+}
+#if defined(SIMDE_X86_AVX512FP16_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_storeu_ph
+  #define _mm512_storeu_ph(mem_addr, a) simde_mm512_storeu_ph(mem_addr, a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+void
 simde_mm512_storeu_si512 (void * mem_addr, simde__m512i a) {
   #if defined(SIMDE_X86_AVX512F_NATIVE)
     _mm512_storeu_si512(HEDLEY_REINTERPRET_CAST(void*, mem_addr), a);
