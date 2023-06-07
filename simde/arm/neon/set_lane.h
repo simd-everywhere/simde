@@ -227,6 +227,25 @@ simde_vset_lane_u64(uint64_t a, simde_uint64x1_t v, const int lane)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
+simde_float16x8_t
+simde_vsetq_lane_f16(simde_float16_t a, simde_float16x8_t v, const int lane)
+    SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 7) {
+  simde_float16x8_t r;
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    SIMDE_CONSTIFY_8_(vsetq_lane_f16, r, (HEDLEY_UNREACHABLE(), v), lane, a, v);
+  #else
+    simde_float16x8_private v_ = simde_float16x8_to_private(v);
+    v_.values[lane] = a;
+    r = simde_float16x8_from_private(v_);
+  #endif
+  return r;
+}
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+  #undef vsetq_lane_f16
+  #define vsetq_lane_f16(a, b, c) simde_vsetq_lane_f16((a), (b), (c))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
 simde_float32x4_t
 simde_vsetq_lane_f32(simde_float32_t a, simde_float32x4_t v, const int lane)
     SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 3) {
