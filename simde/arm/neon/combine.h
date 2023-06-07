@@ -35,6 +35,32 @@ SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 SIMDE_BEGIN_DECLS_
 
 SIMDE_FUNCTION_ATTRIBUTES
+simde_float16x8_t
+simde_vcombine_f16(simde_float16x4_t low, simde_float16x4_t high) {
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    return vcombine_f16(low, high);
+  #else
+    simde_float16x8_private r_;
+    simde_float16x4_private
+      low_ = simde_float16x4_to_private(low),
+      high_ = simde_float16x4_to_private(high);
+
+      size_t halfway = (sizeof(r_.values) / sizeof(r_.values[0])) / 2;
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < halfway ; i++) {
+        r_.values[i] = low_.values[i];
+        r_.values[i + halfway] = high_.values[i];
+      }
+
+    return simde_float16x8_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+  #undef vcombine_f16
+  #define vcombine_f16(low, high) simde_vcombine_f16((low), (high))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
 simde_float32x4_t
 simde_vcombine_f32(simde_float32x2_t low, simde_float32x2_t high) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
