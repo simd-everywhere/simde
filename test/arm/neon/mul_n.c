@@ -4,6 +4,38 @@
 #include "../../../simde/arm/neon/mul_n.h"
 
 static int
+test_simde_vmul_n_f16 (SIMDE_MUNIT_TEST_ARGS) {
+  static const struct {
+    simde_float16 a[4];
+    simde_float16 b;
+    simde_float16 r[4];
+  } test_vec[] = {
+  { { SIMDE_FLOAT16_VALUE( 218.125), SIMDE_FLOAT16_VALUE( 147.75), SIMDE_FLOAT16_VALUE( 163.875), SIMDE_FLOAT16_VALUE( 3.16796875) },
+      SIMDE_FLOAT16_VALUE( 1.25),
+    { SIMDE_FLOAT16_VALUE(272.65625), SIMDE_FLOAT16_VALUE(184.6875), SIMDE_FLOAT16_VALUE(204.84375), SIMDE_FLOAT16_VALUE(3.95947265625) } },
+  { { SIMDE_FLOAT16_VALUE( -190.5), SIMDE_FLOAT16_VALUE( -167.5), SIMDE_FLOAT16_VALUE( -108.0), SIMDE_FLOAT16_VALUE( -18.5) },
+      SIMDE_FLOAT16_VALUE( 17.5),
+    { SIMDE_FLOAT16_VALUE(-3333.75), SIMDE_FLOAT16_VALUE(-2931.25), SIMDE_FLOAT16_VALUE(-1890.0), SIMDE_FLOAT16_VALUE(-323.75) } },
+  { { SIMDE_FLOAT16_VALUE( 19.0), SIMDE_FLOAT16_VALUE( 83.2), SIMDE_FLOAT16_VALUE( 7.75), SIMDE_FLOAT16_VALUE( 12.125) },
+      SIMDE_FLOAT16_VALUE( -9.2),
+    { SIMDE_FLOAT16_VALUE(-174.875), SIMDE_FLOAT16_VALUE(-765.44), SIMDE_FLOAT16_VALUE(-71.4), SIMDE_FLOAT16_VALUE(-111.55) } },
+  { { SIMDE_FLOAT16_VALUE( -46.25), SIMDE_FLOAT16_VALUE( -74.5), SIMDE_FLOAT16_VALUE( -14.5), SIMDE_FLOAT16_VALUE( -1.125) },
+      SIMDE_FLOAT16_VALUE( -2.5),
+    { SIMDE_FLOAT16_VALUE( 115.625), SIMDE_FLOAT16_VALUE( 186.25), SIMDE_FLOAT16_VALUE( 36.25), SIMDE_FLOAT16_VALUE( 2.8125) } }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
+    simde_float16x4_t a = simde_vld1_f16(test_vec[i].a);
+    simde_float16 b = test_vec[i].b;
+    simde_float16x4_t r = simde_vmul_n_f16(a, b);
+
+    simde_test_arm_neon_assert_equal_f16x4(r, simde_vld1_f16(test_vec[i].r), 1);
+  }
+
+  return 0;
+}
+
+static int
 test_simde_vmul_n_f32 (SIMDE_MUNIT_TEST_ARGS) {
 #if 1
   static const struct {
@@ -736,6 +768,7 @@ test_simde_vmulq_n_u32 (SIMDE_MUNIT_TEST_ARGS) {
 
 
 SIMDE_TEST_FUNC_LIST_BEGIN
+SIMDE_TEST_FUNC_LIST_ENTRY(vmul_n_f16)
 SIMDE_TEST_FUNC_LIST_ENTRY(vmul_n_f32)
 SIMDE_TEST_FUNC_LIST_ENTRY(vmul_n_f64)
 SIMDE_TEST_FUNC_LIST_ENTRY(vmul_n_s16)
