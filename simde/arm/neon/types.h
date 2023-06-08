@@ -711,6 +711,9 @@ typedef union {
   typedef struct simde_float32x4x2_t {
     simde_float32x4_t val[2];
   } simde_float32x4x2_t;
+  typedef struct simde_float16x8x2_t {
+    simde_float16x8_t val[2];
+  } simde_float16x8x2_t;
 
   typedef struct    simde_int8x8x3_t {
     simde_int8x8_t val[3];
