@@ -1198,6 +1198,31 @@ simde_vcvtas_s32_f32(simde_float32 a) {
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
+uint32_t
+simde_vcvtas_u32_f32(simde_float32 a) {
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+    return vcvtas_u32_f32(a);
+  #else
+    if (HEDLEY_UNLIKELY(a > HEDLEY_STATIC_CAST(simde_float32, UINT32_MAX))) {
+      return UINT32_MAX;
+    } else if (HEDLEY_UNLIKELY(simde_math_isnanf(a))) {
+      return 0;
+    } else {
+      // Round to Nearest with Ties to Away (a.k.a Rounding away from zero) rounding mode.
+      // For example, 23.2 gets rounded to 24, and −23.2 gets rounded to −24.
+      if (a > 0)
+        return HEDLEY_STATIC_CAST(int32_t, (a+1));
+      else
+        return HEDLEY_STATIC_CAST(uint32_t, 0);
+    }
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vcvtas_u32_f32
+  #define vcvtas_u32_f32(a) simde_vcvtas_u32_f32(a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
 simde_int32x2_t
 simde_vcvta_s32_f32(simde_float32x2_t a) {
     simde_float32x2_private a_ = simde_float32x2_to_private(a);
@@ -1214,6 +1239,7 @@ simde_vcvta_s32_f32(simde_float32x2_t a) {
   #undef vcvta_s32_f32
   #define vcvta_s32_f32(a) simde_vcvta_s32_f32(a)
 #endif
+
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde_int32x4_t
@@ -1235,6 +1261,46 @@ simde_vcvtaq_s32_f32(simde_float32x4_t a) {
 #if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
   #undef vcvtaq_s32_f32
   #define vcvtaq_s32_f32(a) simde_vcvtaq_s32_f32(a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_uint32x2_t
+simde_vcvta_u32_f32(simde_float32x2_t a) {
+    simde_float32x2_private a_ = simde_float32x2_to_private(a);
+    simde_uint32x2_private r_;
+
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+      r_.values[i] = simde_vcvtas_u32_f32(a_.values[i]);
+    }
+
+    return simde_uint32x2_from_private(r_);
+}
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+  #undef vcvta_u32_f32
+  #define vcvta_u32_f32(a) simde_vcvta_u32_f32(a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_uint32x4_t
+simde_vcvtaq_u32_f32(simde_float32x4_t a) {
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
+    return vcvtaq_u32_f32(a);
+  #else
+    simde_float32x4_private a_ = simde_float32x4_to_private(a);
+    simde_uint32x4_private r_;
+
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+      r_.values[i] = simde_vcvtas_u32_f32(a_.values[i]);
+    }
+
+    return simde_uint32x4_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+  #undef vcvtaq_u32_f32
+  #define vcvtaq_u32_f32(a) simde_vcvtaq_u32_f32(a)
 #endif
 
 
