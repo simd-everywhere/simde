@@ -78,6 +78,20 @@ simde_vcltd_u64(uint64_t a, uint64_t b) {
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
+uint16_t
+simde_vclth_f16(simde_float16_t a, simde_float16_t b) {
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+    return HEDLEY_STATIC_CAST(uint16_t, vclth_f16(a, b));
+  #else
+    return (a < b) ? UINT16_MAX : 0;
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vclth_f16
+  #define vclth_f16(a, b) simde_vclth_f16((a), (b))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
 uint32_t
 simde_vclts_f32(simde_float32_t a, simde_float32_t b) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
@@ -89,6 +103,30 @@ simde_vclts_f32(simde_float32_t a, simde_float32_t b) {
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
   #undef vclts_f32
   #define vclts_f32(a, b) simde_vclts_f32((a), (b))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_uint16x8_t
+simde_vcltq_f16(simde_float16x8_t a, simde_float16x8_t b) {
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
+    return vcltq_f16(a, b);
+  #else
+    simde_float16x8_private
+      a_ = simde_float16x8_to_private(a),
+      b_ = simde_float16x8_to_private(b);
+    simde_uint16x8_private r_;
+
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+      r_.values[i] = simde_vclth_f16(a_.values[i], b_.values[i]);
+    }
+
+    return simde_uint16x8_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+  #undef vcltq_f16
+  #define vcltq_f16(a, b) simde_vcltq_f16((a), (b))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
