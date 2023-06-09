@@ -34,6 +34,25 @@ SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 SIMDE_BEGIN_DECLS_
 
 SIMDE_FUNCTION_ATTRIBUTES
+simde_float16x4_t
+simde_vset_lane_f16(simde_float16_t a, simde_float16x4_t v, const int lane)
+    SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 3) {
+  simde_float16x4_t r;
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    SIMDE_CONSTIFY_4_(vset_lane_f16, r, (HEDLEY_UNREACHABLE(), v), lane, a, v);
+  #else
+    simde_float16x4_private v_ = simde_float16x4_to_private(v);
+    v_.values[lane] = a;
+    r = simde_float16x4_from_private(v_);
+  #endif
+  return r;
+}
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+  #undef vset_lane_f16
+  #define vset_lane_f16(a, b, c) simde_vset_lane_f16((a), (b), (c))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
 simde_float32x2_t
 simde_vset_lane_f32(simde_float32_t a, simde_float32x2_t v, const int lane)
     SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 1) {
