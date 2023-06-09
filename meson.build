@@ -48,6 +48,7 @@ simde_neon_families = [
   'cvtn',
   'combine',
   'create',
+  'div',
   'dot',
   'dot_lane',
   'dup_n',
