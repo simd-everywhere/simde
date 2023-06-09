@@ -10,6 +10,38 @@
 #endif
 
 static int
+test_simde_vclt_f16 (SIMDE_MUNIT_TEST_ARGS) {
+  static const struct {
+    simde_float16 a[4];
+    simde_float16 b[4];
+    uint16_t r[4];
+  } test_vec[] = {
+    { { SIMDE_FLOAT16_C(  -259.46), SIMDE_FLOAT16_C(  -774.65), SIMDE_FLOAT16_C(   628.16), SIMDE_FLOAT16_C(  -707.60) },
+      { SIMDE_FLOAT16_C(  -259.46), SIMDE_FLOAT16_C(  -774.65), SIMDE_FLOAT16_C(   628.16), SIMDE_FLOAT16_C(  -992.75) },
+      { UINT16_C(         0), UINT16_C(         0), UINT16_C(         0), UINT16_C(         0) } },
+    { { SIMDE_FLOAT16_C(  -215.26), SIMDE_FLOAT16_C(  -475.25), SIMDE_FLOAT16_C(  -570.04), SIMDE_FLOAT16_C(  -866.16) },
+      { SIMDE_FLOAT16_C(   466.70), SIMDE_FLOAT16_C(   282.12), SIMDE_FLOAT16_C(  -570.04), SIMDE_FLOAT16_C(  -866.16) },
+      {           UINT16_MAX,           UINT16_MAX, UINT16_C(         0), UINT16_C(         0) } },
+    { { SIMDE_FLOAT16_C(  -190.21), SIMDE_FLOAT16_C(   504.54), SIMDE_FLOAT16_C(   219.24), SIMDE_FLOAT16_C(  -723.52) },
+      { SIMDE_FLOAT16_C(   342.57), SIMDE_FLOAT16_C(   504.54), SIMDE_FLOAT16_C(   219.24), SIMDE_FLOAT16_C(  -166.34) },
+      {           UINT16_MAX, UINT16_C(         0), UINT16_C(         0),           UINT16_MAX } },
+    { { SIMDE_FLOAT16_C(   841.66), SIMDE_FLOAT16_C(   110.40), SIMDE_FLOAT16_C(   593.11), SIMDE_FLOAT16_C(   184.23) },
+      { SIMDE_FLOAT16_C(   841.66), SIMDE_FLOAT16_C(   572.39), SIMDE_FLOAT16_C(   594.22), SIMDE_FLOAT16_C(  -491.55) },
+      { UINT16_C(         0),           UINT16_MAX,           UINT16_MAX, UINT16_C(         0) } }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
+    simde_float16x4_t a = simde_vld1_f16(test_vec[i].a);
+    simde_float16x4_t b = simde_vld1_f16(test_vec[i].b);
+    simde_uint16x4_t r = simde_vclt_f16(a, b);
+
+    simde_test_arm_neon_assert_equal_u16x4(r, simde_vld1_u16(test_vec[i].r));
+  }
+
+  return 0;
+}
+
+static int
 test_simde_vclt_f32 (SIMDE_MUNIT_TEST_ARGS) {
 #if 1
   static const struct {
@@ -1703,6 +1735,7 @@ test_simde_vclts_f32 (SIMDE_MUNIT_TEST_ARGS) {
 }
 
 SIMDE_TEST_FUNC_LIST_BEGIN
+SIMDE_TEST_FUNC_LIST_ENTRY(vclt_f16)
 SIMDE_TEST_FUNC_LIST_ENTRY(vclt_f32)
 SIMDE_TEST_FUNC_LIST_ENTRY(vclt_f64)
 SIMDE_TEST_FUNC_LIST_ENTRY(vclt_s8)

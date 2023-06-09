@@ -489,6 +489,30 @@ simde_vcltq_u64(simde_uint64x2_t a, simde_uint64x2_t b) {
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
+simde_uint16x4_t
+simde_vclt_f16(simde_float16x4_t a, simde_float16x4_t b) {
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
+    return vclt_f16(a, b);
+  #else
+    simde_float16x4_private
+      a_ = simde_float16x4_to_private(a),
+      b_ = simde_float16x4_to_private(b);
+    simde_uint16x4_private r_;
+
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+      r_.values[i] = simde_vclth_f16(a_.values[i], b_.values[i]);
+    }
+
+    return simde_uint16x4_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+  #undef vclt_f16
+  #define vclt_f16(a, b) simde_vclt_f16((a), (b))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
 simde_uint32x2_t
 simde_vclt_f32(simde_float32x2_t a, simde_float32x2_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
