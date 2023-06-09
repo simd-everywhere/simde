@@ -79,6 +79,42 @@ simde_vclezs_f32(simde_float32_t a) {
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
+uint16_t
+simde_vclezh_f16(simde_float16_t a) {
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+    return HEDLEY_STATIC_CAST(uint16_t, vclezh_f16(a));
+  #else
+    return (a <= SIMDE_FLOAT16_C(0.0)) ? UINT16_MAX : 0;
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vclezh_f16
+  #define vclezh_f16(a) simde_vclezh_f16(a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_uint16x8_t
+simde_vclezq_f16(simde_float16x8_t a) {
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
+    return vclezq_f16(a);
+  #else
+    simde_float16x8_private a_ = simde_float16x8_to_private(a);
+    simde_uint16x8_private r_;
+
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+      r_.values[i] = (a_.values[i] <= SIMDE_FLOAT16_C(0.0)) ? UINT16_MAX : 0;
+    }
+
+    return simde_uint16x8_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+  #undef vclezq_f16
+  #define vclezq_f16(a) simde_vclezq_f16(a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
 simde_uint32x4_t
 simde_vclezq_f32(simde_float32x4_t a) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
@@ -244,6 +280,28 @@ simde_vclezq_s64(simde_int64x2_t a) {
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
   #undef vclezq_s64
   #define vclezq_s64(a) simde_vclezq_s64(a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_uint16x4_t
+simde_vclez_f16(simde_float16x4_t a) {
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
+    return vclez_f16(a);
+  #else
+    simde_float16x4_private a_ = simde_float16x4_to_private(a);
+    simde_uint16x4_private r_;
+
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+      r_.values[i] = (a_.values[i] <= SIMDE_FLOAT16_C(0.0)) ? UINT16_MAX : 0;
+    }
+
+    return simde_uint16x4_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+  #undef vclez_f16
+  #define vclez_f16(a) simde_vclez_f16(a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
