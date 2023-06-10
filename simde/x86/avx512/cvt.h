@@ -32,7 +32,7 @@
 
 #include "types.h"
 #include "mov.h"
-#include "../f16c.h"
+#include "../../simde-f16.h"
 
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
@@ -173,7 +173,10 @@ simde_mm512_cvtepi8_epi16 (simde__m256i a) {
     simde__m512i_private r_;
     simde__m256i_private a_ = simde__m256i_to_private(a);
 
-    #if defined(SIMDE_CONVERT_VECTOR_)
+    #if defined(SIMDE_X86_AVX2_NATIVE)
+      r_.m256i[0] = _mm256_cvtepi8_epi16(a_.m128i[0]);
+      r_.m256i[1] = _mm256_cvtepi8_epi16(a_.m128i[1]);
+    #elif defined(SIMDE_CONVERT_VECTOR_)
       SIMDE_CONVERT_VECTOR_(r_.i16, a_.i8);
     #else
       SIMDE_VECTORIZE
@@ -199,7 +202,10 @@ simde_mm512_cvtepi32_ps (simde__m512i a) {
     simde__m512_private r_;
     simde__m512i_private a_ = simde__m512i_to_private(a);
 
-    #if defined(SIMDE_CONVERT_VECTOR_)
+    #if defined(SIMDE_X86_AVX_NATIVE)
+      r_.m256[0] = _mm256_cvtepi32_ps(a_.m256i[0]);
+      r_.m256[1] = _mm256_cvtepi32_ps(a_.m256i[1]);
+    #elif defined(SIMDE_CONVERT_VECTOR_)
       SIMDE_CONVERT_VECTOR_(r_.f32, a_.i32);
     #else
       SIMDE_VECTORIZE
@@ -287,10 +293,20 @@ simde_mm512_cvtph_ps(simde__m256i a) {
   simde__m256i_private a_ = simde__m256i_to_private(a);
   simde__m512_private r_;
 
-  SIMDE_VECTORIZE
-  for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
-    r_.f32[i] = simde_float16_to_float32(simde_uint16_as_float16(a_.u16[i]));
-  }
+  #if defined(SIMDE_X86_F16C_NATIVE)
+    r_.m256[0] = _mm256_cvtph_ps(a_.m128i[0]);
+    r_.m256[1] = _mm256_cvtph_ps(a_.m128i[1]);
+  #elif defined(SIMDE_FLOAT16_VECTOR)
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
+      r_.f32[i] = simde_float16_to_float32(a_.f16[i]);
+    }
+  #else
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
+      r_.f32[i] = simde_float16_to_float32(simde_uint16_as_float16(a_.u16[i]));
+    }
+  #endif
 
   return simde__m512_from_private(r_);
 }
@@ -299,6 +315,33 @@ simde_mm512_cvtph_ps(simde__m256i a) {
   #define _mm512_cvtph_ps(a) simde_mm512_cvtph_ps(a)
 #endif
 
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512i
+simde_mm512_cvtps_epi32(simde__m512 a) {
+  #if defined(SIMDE_X86_AVX512F_NATIVE)
+    return _mm512_cvtps_epi32(a);
+  #endif
+  simde__m512_private a_ = simde__m512_to_private(a);
+  simde__m512i_private r_;
+
+  #if defined(SIMDE_X86_AVX_NATIVE)
+    r_.m256i[0] = _mm256_cvtps_epi32(a_.m256[0]);
+    r_.m256i[1] = _mm256_cvtps_epi32(a_.m256[1]);
+  #elif defined(simde_math_nearbyintf)
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {
+      r_.i32[i] = SIMDE_CONVERT_FTOI(int32_t, simde_math_nearbyintf(a_.f32[i]));
+    }
+  #else
+    HEDLEY_UNREACHABLE();
+  #endif
+
+  return simde__m512i_from_private(r_);
+}
+#if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_cvtps_epi32
+  #define _mm512_cvtps_epi32(a) simde_mm512_cvtps_epi32(a)
+#endif
 
 SIMDE_END_DECLS_
 HEDLEY_DIAGNOSTIC_POP
