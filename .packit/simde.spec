@@ -67,7 +67,6 @@ export CI_GCC_RPM_LDFLAGS="%{build_ldflags}"
 # - set_build_flags macro to check the set environment variables.
 unset CC
 unset CFLAGS
-unset LDFLAGS
 unset CXX
 unset CXXFLAGS
 unset LDFLAGS
