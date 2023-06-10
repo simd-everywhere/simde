@@ -310,7 +310,7 @@ simde_mm_addsub_ps (simde__m128 a, simde__m128 b) {
   #endif
 }
 #if defined(SIMDE_X86_SSE3_ENABLE_NATIVE_ALIASES)
-#  define _mm_addsub_ps(a, b) simde_mm_addsub_ps(a, b)
+#  define _mm_addsub_ps(a, b) simde_mm_addsub_ps((a), (b))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
