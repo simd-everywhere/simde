@@ -6,6 +6,10 @@ This document is to use Packit CI that enables us to test SIMDe on Fedora projec
 * Report issues (bugs or feature suggestions): https://github.com/packit/packit/issues
 * Pipeline history: https://dashboard.packit.dev/pipelines
 
+## Motivation and context
+
+We want to keep [Fedora rawhide](https://docs.fedoraproject.org/en-US/releases/rawhide/) cases in the CI. Fedora rawhide is the latest development version of Fedora Linux, not a named release that might go out of support later. Because the gcc and clang new versions are landing on Fedora rawhide earlier than other Linux distributions.
+
 ## How to check the CI results
 
 1. Enable Packit CI for your forked simde repository. See the [onboarding guide](https://packit.dev/docs/guide/).

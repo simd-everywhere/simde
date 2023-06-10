@@ -12,9 +12,11 @@ jobs:
     trigger: pull_request
     # Enable internet access in the COPR.
     enable_net: true
-    # Executed targets in the CI.
-    # Available targets are below.
+    # Executed targets in the CI. Available targets are below.
     # https://packit.dev/docs/configuration/#available-copr-build-targets
+    #
+    # Note that we keep the Fedora rawhide. See the `.packit/README.md` -
+    # "Motivation and context" for details.
     targets:
       - fedora-rawhide-x86_64
       # Comment out the i386 (i686) case as it takes much longer time.
