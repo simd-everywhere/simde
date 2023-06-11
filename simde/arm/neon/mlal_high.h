@@ -28,8 +28,8 @@
 #if !defined(SIMDE_ARM_NEON_MLAL_HIGH_H)
 #define SIMDE_ARM_NEON_MLAL_HIGH_H
 
-#include "movl_high.h"
-#include "mla.h"
+#include "get_high.h"
+#include "mlal.h"
 #include "types.h"
 
 HEDLEY_DIAGNOSTIC_PUSH
@@ -42,7 +42,7 @@ simde_vmlal_high_s8(simde_int16x8_t a, simde_int8x16_t b, simde_int8x16_t c) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vmlal_high_s8(a, b, c);
   #else
-    return simde_vmlaq_s16(a, simde_vmovl_high_s8(b), simde_vmovl_high_s8(c));
+    return simde_vmlal_s8(a, simde_vget_high_s8(b), simde_vget_high_s8(c));
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
@@ -56,7 +56,7 @@ simde_vmlal_high_s16(simde_int32x4_t a, simde_int16x8_t b, simde_int16x8_t c) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vmlal_high_s16(a, b, c);
   #else
-    return simde_vmlaq_s32(a, simde_vmovl_high_s16(b), simde_vmovl_high_s16(c));
+    return simde_vmlal_s16(a, simde_vget_high_s16(b), simde_vget_high_s16(c));
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
@@ -70,22 +70,7 @@ simde_vmlal_high_s32(simde_int64x2_t a, simde_int32x4_t b, simde_int32x4_t c) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vmlal_high_s32(a, b, c);
   #else
-    simde_int64x2_private
-      r_,
-      a_ = simde_int64x2_to_private(a),
-      b_ = simde_int64x2_to_private(simde_vmovl_high_s32(b)),
-      c_ = simde_int64x2_to_private(simde_vmovl_high_s32(c));
-
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-      r_.values = (b_.values * c_.values) + a_.values;
-    #else
-      SIMDE_VECTORIZE
-      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-        r_.values[i] = (b_.values[i] * c_.values[i]) + a_.values[i];
-      }
-    #endif
-
-    return simde_int64x2_from_private(r_);
+    return simde_vmlal_s32(a, simde_vget_high_s32(b), simde_vget_high_s32(c));
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
@@ -99,7 +84,7 @@ simde_vmlal_high_u8(simde_uint16x8_t a, simde_uint8x16_t b, simde_uint8x16_t c) 
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vmlal_high_u8(a, b, c);
   #else
-    return simde_vmlaq_u16(a, simde_vmovl_high_u8(b), simde_vmovl_high_u8(c));
+    return simde_vmlal_u8(a, simde_vget_high_u8(b), simde_vget_high_u8(c));
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
@@ -113,7 +98,7 @@ simde_vmlal_high_u16(simde_uint32x4_t a, simde_uint16x8_t b, simde_uint16x8_t c)
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vmlal_high_u16(a, b, c);
   #else
-    return simde_vmlaq_u32(a, simde_vmovl_high_u16(b), simde_vmovl_high_u16(c));
+    return simde_vmlal_u16(a, simde_vget_high_u16(b), simde_vget_high_u16(c));
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
@@ -127,22 +112,7 @@ simde_vmlal_high_u32(simde_uint64x2_t a, simde_uint32x4_t b, simde_uint32x4_t c)
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vmlal_high_u32(a, b, c);
   #else
-    simde_uint64x2_private
-      r_,
-      a_ = simde_uint64x2_to_private(a),
-      b_ = simde_uint64x2_to_private(simde_vmovl_high_u32(b)),
-      c_ = simde_uint64x2_to_private(simde_vmovl_high_u32(c));
-
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-      r_.values = (b_.values * c_.values) + a_.values;
-    #else
-      SIMDE_VECTORIZE
-      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-        r_.values[i] = (b_.values[i] * c_.values[i]) + a_.values[i];
-      }
-    #endif
-
-    return simde_uint64x2_from_private(r_);
+    return simde_vmlal_u32(a, simde_vget_high_u32(b), simde_vget_high_u32(c));
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
