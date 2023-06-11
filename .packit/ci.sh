@@ -4,6 +4,7 @@ set -euxo pipefail
 
 # Define variables
 JOBS="$(nproc)"
+HOST_CPU="$(uname -m)"
 
 # Functions
 function _time {
@@ -62,13 +63,27 @@ pip3 install meson==0.55.0
 # If the value is true, the CI returns the exit status zero even if the tests
 # fail as a compromised way.
 IGNORE_EXIT_STATUS=
-# Set true if you want to skip specific tests to save total running time.
-SKIP_GCC=
-SKIP_GCC_O2=
-SKIP_GCC_RPM=true
-SKIP_CLANG=true
-SKIP_CLANG_O2=true
-SKIP_CLANG_RPM=true
+# Set true if you want to skip specific tests to save total running time in all
+# the CPU cases.
+SKIP_ALL_GCC_DEFAULT=
+SKIP_ALL_GCC_O2=
+SKIP_ALL_GCC_RPM=true
+SKIP_ALL_CLANG_DEFAULT=true
+SKIP_ALL_CLANG_O2=true
+SKIP_ALL_CLANG_RPM=true
+# Set true if you want to skip specific tests in the specific CPU cases.
+# The host machine CPU name is used in the constant names.
+#
+# Skip the test as it fails, and the i686 case takes longer running time.
+SKIP_i686_GCC_DEFAULT=true
+
+# Generate the current CPU specific skip flags.
+SKIP_CPU_GCC_DEFAULT=$(eval echo "\${SKIP_${HOST_CPU}_GCC_DEFAULT:-}")
+SKIP_CPU_GCC_O2=$(eval echo "\${SKIP_${HOST_CPU}_GCC_O2:-}")
+SKIP_CPU_GCC_RPM=$(eval echo "\${SKIP_${HOST_CPU}_GCC_RPM:-}")
+SKIP_CPU_CLANG_DEFAULT=$(eval echo "\${SKIP_${HOST_CPU}_CLANG_DEFAULT:-}")
+SKIP_CPU_CLANG_O2=$(eval echo "\${SKIP_${HOST_CPU}_CLANG_O2:-}")
+SKIP_CPU_CLANG_RPM=$(eval echo "\${SKIP_${HOST_CPU}_CLANG_RPM:-}")
 
 exit_status=0
 result_gcc="skipped"
@@ -84,8 +99,9 @@ g++ --version
 clang --version
 clang++ --version
 
-echo "== Tests on gcc without flags =="
-if [ ! "${SKIP_GCC}" = true ]; then
+echo "== Tests on gcc in a default status =="
+if [ "${SKIP_ALL_GCC_DEFAULT}" != true ] && \
+  [ "${SKIP_CPU_GCC_DEFAULT}" != true ]; then
   result_gcc="ok"
   if ! BUILD_DIR="build/gcc" CC="gcc" CXX="g++" \
     _run_test; then
@@ -94,8 +110,9 @@ if [ ! "${SKIP_GCC}" = true ]; then
   fi
 fi
 
-echo "== Tests on clang without flags =="
-if [ ! "${SKIP_CLANG}" = true ]; then
+echo "== Tests on clang in a default status =="
+if [ "${SKIP_ALL_CLANG_DEFAULT}" != true ] && \
+  [ "${SKIP_CPU_CLANG_DEFAULT}" != true ]; then
   result_clang="ok"
   if ! BUILD_DIR="build/clang" CC="clang" CXX="clang++" \
     _run_test; then
@@ -105,7 +122,8 @@ if [ ! "${SKIP_CLANG}" = true ]; then
 fi
 
 echo "== Tests on gcc with O2 flag =="
-if [ ! "${SKIP_GCC_O2}" = true ]; then
+if [ "${SKIP_ALL_GCC_O2}" != true ] && \
+  [ "${SKIP_CPU_GCC_O2}" != true ]; then
   result_gcc_O2="ok"
   if ! BUILD_DIR="build/gcc-O2" CC="gcc" CXX="g++" \
     CFLAGS="-O2" CXXFLAGS="-O2" \
@@ -116,7 +134,8 @@ if [ ! "${SKIP_GCC_O2}" = true ]; then
 fi
 
 echo "== Tests on clang with O2 flag =="
-if [ ! "${SKIP_CLANG_O2}" = true ]; then
+if [ "${SKIP_ALL_CLANG_O2}" != true ] && \
+  [ "${SKIP_CPU_CLANG_O2}" != true ]; then
   result_clang_O2="ok"
   if ! BUILD_DIR="build/clang-O2" CC="clang" CXX="clang++" \
     CFLAGS="-O2" CXXFLAGS="-O2" \
@@ -128,7 +147,8 @@ fi
 
 # This is an advanced test.
 echo "== Tests on gcc with flags used in RPM package build =="
-if [ ! "${SKIP_GCC_RPM}" = true ]; then
+if [ "${SKIP_ALL_GCC_RPM}" != true ] && \
+  [ "${SKIP_CPU_GCC_RPM}" != true ]; then
   result_gcc_rpm="ok"
   if ! BUILD_DIR="build/gcc-rpm" CC="gcc" CXX="g++" \
     CFLAGS="${CI_GCC_RPM_CFLAGS}" CXXFLAGS="${CI_GCC_RPM_CXXFLAGS}" \
@@ -141,7 +161,8 @@ fi
 
 # This is an advanced test.
 echo "== Tests on clang with flags used in RPM package build =="
-if [ ! "${SKIP_CLANG_RPM}" = true ]; then
+if [ "${SKIP_ALL_CLANG_RPM}" != true ] && \
+  [ "${SKIP_CPU_CLANG_RPM}" != true ]; then
   result_clang_rpm="ok"
   if ! BUILD_DIR="build/clang-rpm" CC="clang" CXX="clang++" \
     CFLAGS="${CI_CLANG_RPM_CFLAGS}" CXXFLAGS="${CI_CLANG_RPM_CXXFLAGS}" \
