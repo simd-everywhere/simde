@@ -30,6 +30,7 @@
 #define SIMDE_X86_AVX_H
 
 #include "sse4.2.h"
+#include "../simde-f16.h"
 
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
@@ -165,6 +166,11 @@ typedef union {
     SIMDE_ALIGN_TO_32 simde_int128  i128 SIMDE_VECTOR(32) SIMDE_MAY_ALIAS;
     SIMDE_ALIGN_TO_32 simde_uint128 u128 SIMDE_VECTOR(32) SIMDE_MAY_ALIAS;
     #endif
+    #if defined(SIMDE_FLOAT16_VECTOR)
+    SIMDE_ALIGN_TO_32 simde_float16  f16 SIMDE_VECTOR(32) SIMDE_MAY_ALIAS;
+    #else
+    SIMDE_ALIGN_TO_32 simde_float16  f16[16];
+    #endif
     SIMDE_ALIGN_TO_32 simde_float32  f32 SIMDE_VECTOR(32) SIMDE_MAY_ALIAS;
     SIMDE_ALIGN_TO_32 simde_float64  f64 SIMDE_VECTOR(32) SIMDE_MAY_ALIAS;
     SIMDE_ALIGN_TO_32 int_fast32_t  i32f SIMDE_VECTOR(32) SIMDE_MAY_ALIAS;
@@ -184,6 +190,7 @@ typedef union {
     SIMDE_ALIGN_TO_32 simde_int128  i128[2];
     SIMDE_ALIGN_TO_32 simde_uint128 u128[2];
     #endif
+    SIMDE_ALIGN_TO_32 simde_float16  f16[16];
     SIMDE_ALIGN_TO_32 simde_float32  f32[8];
     SIMDE_ALIGN_TO_32 simde_float64  f64[4];
   #endif
