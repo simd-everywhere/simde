@@ -1146,6 +1146,83 @@ test_simde_mm512_cvtph_ps (SIMDE_MUNIT_TEST_ARGS) {
 #endif
 }
 
+static int
+test_simde_mm512_cvtps_epi32 (SIMDE_MUNIT_TEST_ARGS) {
+#if 1
+  static const struct {
+    const simde_float32 a[16];
+    const int32_t r[16];
+  } test_vec[] = {
+    { { SIMDE_FLOAT32_C(  -664.31), SIMDE_FLOAT32_C(    46.87), SIMDE_FLOAT32_C(  -293.16), SIMDE_FLOAT32_C(   296.83),
+        SIMDE_FLOAT32_C(   133.30), SIMDE_FLOAT32_C(  -856.99), SIMDE_FLOAT32_C(  -918.09), SIMDE_FLOAT32_C(   891.16),
+        SIMDE_FLOAT32_C(  -796.45), SIMDE_FLOAT32_C(  -376.63), SIMDE_FLOAT32_C(   772.49), SIMDE_FLOAT32_C(  -594.73),
+        SIMDE_FLOAT32_C(   306.50), SIMDE_FLOAT32_C(   620.07), SIMDE_FLOAT32_C(   -54.46), SIMDE_FLOAT32_C(    57.44) },
+      { -INT32_C(         664),  INT32_C(          47), -INT32_C(         293),  INT32_C(         297),  INT32_C(         133), -INT32_C(         857), -INT32_C(         918),  INT32_C(         891),
+        -INT32_C(         796), -INT32_C(         377),  INT32_C(         772), -INT32_C(         595),  INT32_C(         306),  INT32_C(         620), -INT32_C(          54),  INT32_C(          57) } },
+    { { SIMDE_FLOAT32_C(  -873.70), SIMDE_FLOAT32_C(  -956.33), SIMDE_FLOAT32_C(  -412.63), SIMDE_FLOAT32_C(   232.64),
+        SIMDE_FLOAT32_C(   228.03), SIMDE_FLOAT32_C(   396.65), SIMDE_FLOAT32_C(   283.06), SIMDE_FLOAT32_C(   677.47),
+        SIMDE_FLOAT32_C(  -618.05), SIMDE_FLOAT32_C(   365.83), SIMDE_FLOAT32_C(   689.36), SIMDE_FLOAT32_C(  -939.18),
+        SIMDE_FLOAT32_C(  -776.84), SIMDE_FLOAT32_C(    26.86), SIMDE_FLOAT32_C(  -820.35), SIMDE_FLOAT32_C(  -441.16) },
+      { -INT32_C(         874), -INT32_C(         956), -INT32_C(         413),  INT32_C(         233),  INT32_C(         228),  INT32_C(         397),  INT32_C(         283),  INT32_C(         677),
+        -INT32_C(         618),  INT32_C(         366),  INT32_C(         689), -INT32_C(         939), -INT32_C(         777),  INT32_C(          27), -INT32_C(         820), -INT32_C(         441) } },
+    { { SIMDE_FLOAT32_C(  -926.28), SIMDE_FLOAT32_C(  -113.51), SIMDE_FLOAT32_C(   855.67), SIMDE_FLOAT32_C(   207.03),
+        SIMDE_FLOAT32_C(    29.50), SIMDE_FLOAT32_C(   937.58), SIMDE_FLOAT32_C(    98.19), SIMDE_FLOAT32_C(   233.05),
+        SIMDE_FLOAT32_C(  -439.05), SIMDE_FLOAT32_C(  -129.32), SIMDE_FLOAT32_C(   638.32), SIMDE_FLOAT32_C(   867.44),
+        SIMDE_FLOAT32_C(  -509.26), SIMDE_FLOAT32_C(  -416.14), SIMDE_FLOAT32_C(   -75.12), SIMDE_FLOAT32_C(  -382.95) },
+      { -INT32_C(         926), -INT32_C(         114),  INT32_C(         856),  INT32_C(         207),  INT32_C(          30),  INT32_C(         938),  INT32_C(          98),  INT32_C(         233),
+        -INT32_C(         439), -INT32_C(         129),  INT32_C(         638),  INT32_C(         867), -INT32_C(         509), -INT32_C(         416), -INT32_C(          75), -INT32_C(         383) } },
+    { { SIMDE_FLOAT32_C(  -372.47), SIMDE_FLOAT32_C(   512.25), SIMDE_FLOAT32_C(   849.68), SIMDE_FLOAT32_C(   855.56),
+        SIMDE_FLOAT32_C(   -91.10), SIMDE_FLOAT32_C(   132.74), SIMDE_FLOAT32_C(   533.03), SIMDE_FLOAT32_C(   290.85),
+        SIMDE_FLOAT32_C(  -501.43), SIMDE_FLOAT32_C(   222.39), SIMDE_FLOAT32_C(   351.67), SIMDE_FLOAT32_C(  -278.27),
+        SIMDE_FLOAT32_C(  -750.75), SIMDE_FLOAT32_C(   531.32), SIMDE_FLOAT32_C(   280.57), SIMDE_FLOAT32_C(  -677.03) },
+      { -INT32_C(         372),  INT32_C(         512),  INT32_C(         850),  INT32_C(         856), -INT32_C(          91),  INT32_C(         133),  INT32_C(         533),  INT32_C(         291),
+        -INT32_C(         501),  INT32_C(         222),  INT32_C(         352), -INT32_C(         278), -INT32_C(         751),  INT32_C(         531),  INT32_C(         281), -INT32_C(         677) } },
+    { { SIMDE_FLOAT32_C(  -582.19), SIMDE_FLOAT32_C(   136.24), SIMDE_FLOAT32_C(   530.00), SIMDE_FLOAT32_C(   447.31),
+        SIMDE_FLOAT32_C(    73.82), SIMDE_FLOAT32_C(  -371.81), SIMDE_FLOAT32_C(  -319.64), SIMDE_FLOAT32_C(   634.77),
+        SIMDE_FLOAT32_C(   498.87), SIMDE_FLOAT32_C(  -681.32), SIMDE_FLOAT32_C(   502.21), SIMDE_FLOAT32_C(   989.61),
+        SIMDE_FLOAT32_C(   -97.45), SIMDE_FLOAT32_C(  -572.91), SIMDE_FLOAT32_C(  -393.34), SIMDE_FLOAT32_C(   530.08) },
+      { -INT32_C(         582),  INT32_C(         136),  INT32_C(         530),  INT32_C(         447),  INT32_C(          74), -INT32_C(         372), -INT32_C(         320),  INT32_C(         635),
+         INT32_C(         499), -INT32_C(         681),  INT32_C(         502),  INT32_C(         990), -INT32_C(          97), -INT32_C(         573), -INT32_C(         393),  INT32_C(         530) } },
+    { { SIMDE_FLOAT32_C(   939.33), SIMDE_FLOAT32_C(  -543.66), SIMDE_FLOAT32_C(   385.63), SIMDE_FLOAT32_C(  -151.77),
+        SIMDE_FLOAT32_C(   589.09), SIMDE_FLOAT32_C(   -81.34), SIMDE_FLOAT32_C(  -860.92), SIMDE_FLOAT32_C(  -912.34),
+        SIMDE_FLOAT32_C(  -858.95), SIMDE_FLOAT32_C(   490.75), SIMDE_FLOAT32_C(  -190.61), SIMDE_FLOAT32_C(  -609.70),
+        SIMDE_FLOAT32_C(    22.08), SIMDE_FLOAT32_C(  -910.04), SIMDE_FLOAT32_C(  -286.73), SIMDE_FLOAT32_C(   439.89) },
+      {  INT32_C(         939), -INT32_C(         544),  INT32_C(         386), -INT32_C(         152),  INT32_C(         589), -INT32_C(          81), -INT32_C(         861), -INT32_C(         912),
+        -INT32_C(         859),  INT32_C(         491), -INT32_C(         191), -INT32_C(         610),  INT32_C(          22), -INT32_C(         910), -INT32_C(         287),  INT32_C(         440) } },
+    { { SIMDE_FLOAT32_C(   226.20), SIMDE_FLOAT32_C(  -756.73), SIMDE_FLOAT32_C(  -112.80), SIMDE_FLOAT32_C(  -699.98),
+        SIMDE_FLOAT32_C(  -128.54), SIMDE_FLOAT32_C(   567.57), SIMDE_FLOAT32_C(   934.79), SIMDE_FLOAT32_C(  -629.67),
+        SIMDE_FLOAT32_C(   886.25), SIMDE_FLOAT32_C(   437.00), SIMDE_FLOAT32_C(  -640.06), SIMDE_FLOAT32_C(  -211.20),
+        SIMDE_FLOAT32_C(   864.09), SIMDE_FLOAT32_C(   -33.40), SIMDE_FLOAT32_C(  -681.12), SIMDE_FLOAT32_C(   803.42) },
+      {  INT32_C(         226), -INT32_C(         757), -INT32_C(         113), -INT32_C(         700), -INT32_C(         129),  INT32_C(         568),  INT32_C(         935), -INT32_C(         630),
+         INT32_C(         886),  INT32_C(         437), -INT32_C(         640), -INT32_C(         211),  INT32_C(         864), -INT32_C(          33), -INT32_C(         681),  INT32_C(         803) } },
+    { { SIMDE_FLOAT32_C(   422.95), SIMDE_FLOAT32_C(   704.51), SIMDE_FLOAT32_C(  -348.34), SIMDE_FLOAT32_C(    12.03),
+        SIMDE_FLOAT32_C(  -376.83), SIMDE_FLOAT32_C(  -209.26), SIMDE_FLOAT32_C(    99.69), SIMDE_FLOAT32_C(  -235.78),
+        SIMDE_FLOAT32_C(  -718.51), SIMDE_FLOAT32_C(   909.08), SIMDE_FLOAT32_C(   154.52), SIMDE_FLOAT32_C(   303.57),
+        SIMDE_FLOAT32_C(   999.03), SIMDE_FLOAT32_C(   867.79), SIMDE_FLOAT32_C(  -256.54), SIMDE_FLOAT32_C(   225.23) },
+      {  INT32_C(         423),  INT32_C(         705), -INT32_C(         348),  INT32_C(          12), -INT32_C(         377), -INT32_C(         209),  INT32_C(         100), -INT32_C(         236),
+        -INT32_C(         719),  INT32_C(         909),  INT32_C(         155),  INT32_C(         304),  INT32_C(         999),  INT32_C(         868), -INT32_C(         257),  INT32_C(         225) } }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
+    simde__m512 a = simde_mm512_loadu_ps(test_vec[i].a);
+    simde__m512i r = simde_mm512_cvtps_epi32(a);
+    simde_test_x86_assert_equal_i32x16(r, simde_mm512_loadu_epi32(test_vec[i].r));
+  }
+
+  return 0;
+#else
+  fputc('\n', stdout);
+  for (int i = 0 ; i < 8 ; i++) {
+    simde__m512 a = simde_test_x86_random_f32x16(SIMDE_FLOAT32_C(-1000.0), SIMDE_FLOAT32_C(1000.0));
+    simde__m512i r = simde_mm512_cvtps_epi32(a);
+
+    simde_test_x86_write_f32x16(2, a, SIMDE_TEST_VEC_POS_FIRST);
+    simde_test_x86_write_i32x16(2, r, SIMDE_TEST_VEC_POS_LAST);
+  }
+  return 1;
+#endif
+}
+
 SIMDE_TEST_FUNC_LIST_BEGIN
   SIMDE_TEST_FUNC_LIST_ENTRY(mm_cvtepi64_pd)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm_mask_cvtepi64_pd)
@@ -1158,6 +1235,7 @@ SIMDE_TEST_FUNC_LIST_BEGIN
   SIMDE_TEST_FUNC_LIST_ENTRY(mm512_cvtepi64_epi32)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm512_cvtepu32_ps)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm512_cvtph_ps)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_cvtps_epi32)
 SIMDE_TEST_FUNC_LIST_END
 
 #include <test/x86/avx512/test-avx512-footer.h>
