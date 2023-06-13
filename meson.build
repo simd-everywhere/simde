@@ -309,6 +309,8 @@ simde_avx512_families = [
   'setone',
   'shldv',
   'shuffle',
+  'shufflelo',
+  'shufflehi',
   'sll',
   'slli',
   'sllv',
