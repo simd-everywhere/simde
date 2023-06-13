@@ -53,8 +53,8 @@ simde_mm512_shuffle_epi8 (simde__m512i a, simde__m512i b) {
     }
   #else
   SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.u8) / sizeof(r_.u8[0])) ; i++) {
-      r_.u8[i] = (b_.u8[i] & 0x80) ? 0 : a_.u8[(b_.u8[i] & 0x0f) + (i & 0x30)];
+    for (size_t i = 0 ; i < (sizeof(r_.i8) / sizeof(r_.i8[0])) ; i++) {
+      r_.i8[i] = (b_.i8[i] & 0x80) ? 0 : a_.i8[(b_.i8[i] & 0x0f) + (i & 0x30)];
     }
   #endif
 
