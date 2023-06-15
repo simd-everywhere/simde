@@ -65,7 +65,8 @@ SIMDE_BEGIN_DECLS_
  * any ideas on how to improve it.  If you do, patches are definitely
  * welcome. */
 #if !defined(SIMDE_FLOAT16_API)
-  #if !defined(__EMSCRIPTEN__) && !(defined(__clang__) && defined(SIMDE_ARCH_POWER)) && ( \
+  #if !defined(__EMSCRIPTEN__) && !(defined(__clang__) && defined(SIMDE_ARCH_POWER)) && \
+    !(defined(__clang__) && defined(SIMDE_ARCH_RISCV64)) && ( \
       defined(SIMDE_X86_AVX512FP16_NATIVE) || \
       (defined(SIMDE_ARCH_X86_SSE2) && HEDLEY_GCC_VERSION_CHECK(12,0,0)) || \
       (defined(SIMDE_ARCH_AARCH64) && HEDLEY_GCC_VERSION_CHECK(7,0,0) && !defined(__cplusplus)) || \
@@ -79,7 +80,10 @@ SIMDE_BEGIN_DECLS_
     #define SIMDE_FLOAT16_API SIMDE_FLOAT16_API_FLOAT16
   #elif defined(__ARM_FP16_FORMAT_IEEE) && (defined(SIMDE_ARM_NEON_FP16) || defined(__ARM_FP16_ARGS))
     #define SIMDE_FLOAT16_API SIMDE_FLOAT16_API_FP16
-  #elif defined(__FLT16_MIN__) && (defined(__clang__) && (!defined(SIMDE_ARCH_AARCH64) || SIMDE_DETECT_CLANG_VERSION_CHECK(7,0,0)))
+  #elif defined(__FLT16_MIN__) && \
+      (defined(__clang__) && \
+      (!defined(SIMDE_ARCH_AARCH64) || SIMDE_DETECT_CLANG_VERSION_CHECK(7,0,0)) \
+      && !defined(SIMDE_ARCH_RISCV64))
     #define SIMDE_FLOAT16_API SIMDE_FLOAT16_API_FP16_NO_ABI
   #else
     #define SIMDE_FLOAT16_API SIMDE_FLOAT16_API_PORTABLE

@@ -467,6 +467,10 @@
   #define SIMDE_ARCH_POWER_ALTIVEC_CHECK(version) (0)
 #endif
 
+#if defined(__riscv) && __riscv_xlen==64
+#  define SIMDE_ARCH_RISCV64
+#endif
+
 /* SPARC
    <https://en.wikipedia.org/wiki/SPARC> */
 #if defined(__sparc_v9__) || defined(__sparcv9)
