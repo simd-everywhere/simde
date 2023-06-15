@@ -39,9 +39,11 @@ simde_float16
 simde_vsqrth_f16(simde_float16 a) {
   #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
     return vsqrth_f16(a, b);
-  #else
+  #elif defined(simde_math_sqrtf)
     simde_float32 af = simde_float16_to_float32(a);
     return simde_float16_from_float32(simde_math_sqrtf(af));
+  #else
+    HEDLEY_UNREACHABLE();
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
@@ -77,7 +79,7 @@ simde_float32x2_t
 simde_vsqrt_f32(simde_float32x2_t a) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vsqrt_f32(a, b);
-  #else
+  #elif defined(simde_math_sqrtf)
     simde_float32x2_private
       r_,
       a_ = simde_float32x2_to_private(a);
@@ -88,6 +90,8 @@ simde_vsqrt_f32(simde_float32x2_t a) {
     }
 
     return simde_float32x2_from_private(r_);
+  #else
+    HEDLEY_UNREACHABLE();
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
@@ -100,7 +104,7 @@ simde_float64x1_t
 simde_vsqrt_f64(simde_float64x1_t a) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vsqrt_f64(a, b);
-  #else
+  #elif defined(simde_math_sqrtl)
     simde_float64x1_private
       r_,
       a_ = simde_float64x1_to_private(a);
@@ -111,6 +115,8 @@ simde_vsqrt_f64(simde_float64x1_t a) {
     }
 
     return simde_float64x1_from_private(r_);
+  #else
+    HEDLEY_UNREACHABLE();
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
@@ -145,7 +151,7 @@ simde_float32x4_t
 simde_vsqrtq_f32(simde_float32x4_t a) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vsqrtq_f32(a);
-  #else
+  #elif defined(simde_math_sqrtf)
     simde_float32x4_private
       r_,
       a_ = simde_float32x4_to_private(a);
@@ -156,6 +162,8 @@ simde_vsqrtq_f32(simde_float32x4_t a) {
     }
 
     return simde_float32x4_from_private(r_);
+  #else
+    HEDLEY_UNREACHABLE();
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
@@ -168,7 +176,7 @@ simde_float64x2_t
 simde_vsqrtq_f64(simde_float64x2_t a) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vsqrtq_f64(a);
-  #else
+  #elif defined(simde_math_sqrtl)
     simde_float64x2_private
       r_,
       a_ = simde_float64x2_to_private(a);
@@ -179,6 +187,8 @@ simde_vsqrtq_f64(simde_float64x2_t a) {
     }
 
     return simde_float64x2_from_private(r_);
+  #else
+    HEDLEY_UNREACHABLE();
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
