@@ -400,16 +400,16 @@ jobs:
           arch_deb: armel
           arch_gnu: arm
           distro: ubuntu-22.04
+        - version: 15
+          cross: riscv64
+          arch_gnu: riscv64
+          arch_deb: riscv64
+          distro: ubuntu-22.04
         # - version: 15
         #   cross: armel
         #   arch_gnu_abi: eabi
         #   arch_deb: armel
         #   arch_gnu: arm
-        #   distro: ubuntu-22.04
-        # - version: 15
-        #   cross: riscv64
-        #   arch_gnu: riscv64
-        #   arch_deb: riscv64
         #   distro: ubuntu-22.04
         # - version: 15
         #   cross: s390x
