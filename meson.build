@@ -165,6 +165,7 @@ simde_neon_families = [
   'shr_n',
   'shrn_n',
   'sqadd',
+  'sqrt',
   'sra_n',
   'sri_n',
   'st1',
