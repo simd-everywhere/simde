@@ -35,7 +35,7 @@ RUN \
     binfmt-support qemu-user-static \
     creduce screen htop parallel nano rsync strace \
     npm libsleef-dev \
-    pipx wget
+    pipx wget curl
 
 # Meson on stable is too old, and we want to make sure we keep 0.55
 # working for a while.
@@ -62,7 +62,7 @@ ENV PATH="/usr/lib/ccache:$PATH:/root/.local/bin:/root/.jsvu/bin"
 RUN \
   apt-get update -y && \
   apt-get upgrade -y && \
-  apt-get install -yq curl gpg && \
+  apt-get install -yq gpg && \
   wget -O- https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB \
    | gpg --dearmor > /usr/share/keyrings/oneapi-archive-keyring.gpg && \
   echo "deb [signed-by=/usr/share/keyrings/oneapi-archive-keyring.gpg] https://apt.repos.intel.com/oneapi all main" > /etc/apt/sources.list.d/oneAPI.list && \
