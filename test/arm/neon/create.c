@@ -366,6 +366,39 @@ test_simde_vcreate_u64 (SIMDE_MUNIT_TEST_ARGS) {
 }
 
 static int
+test_simde_vcreate_f16 (SIMDE_MUNIT_TEST_ARGS) {
+  static const struct {
+    uint64_t a;
+    uint64_t r[1];
+  } test_vec[] = {
+    { UINT64_C(14121171741695809290),
+      { UINT64_C(14121171741695809290) } },
+    { UINT64_C(14036155041624243569),
+      { UINT64_C(14036155041624243569) } },
+    { UINT64_C( 4933549844381694689),
+      { UINT64_C( 4933549844381694689) } },
+    { UINT64_C( 4721956654897595679),
+      { UINT64_C( 4721956654897595679) } },
+    { UINT64_C( 4794791124775457096),
+      { UINT64_C( 4794791124775457096) } },
+    { UINT64_C(14142503323827870106),
+      { UINT64_C(14142503323827870106) } },
+    { UINT64_C(14093049577892322181),
+      { UINT64_C(14093049577892322181) } },
+    { UINT64_C( 4932300799177322332),
+      { UINT64_C( 4932300799177322332) } },
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
+    simde_float16x4_t r = simde_vcreate_f16(test_vec[i].a);
+    simde_test_arm_neon_assert_equal_u64x1(simde_vreinterpret_u64_f16(r), simde_vld1_u64(test_vec[i].r));
+  }
+
+  return 0;
+}
+
+
+static int
 test_simde_vcreate_f32 (SIMDE_MUNIT_TEST_ARGS) {
 #if 1
   static const struct {
@@ -466,6 +499,7 @@ SIMDE_TEST_FUNC_LIST_ENTRY(vcreate_u16)
 SIMDE_TEST_FUNC_LIST_ENTRY(vcreate_u32)
 SIMDE_TEST_FUNC_LIST_ENTRY(vcreate_u64)
 
+SIMDE_TEST_FUNC_LIST_ENTRY(vcreate_f16)
 SIMDE_TEST_FUNC_LIST_ENTRY(vcreate_f32)
 SIMDE_TEST_FUNC_LIST_ENTRY(vcreate_f64)
 SIMDE_TEST_FUNC_LIST_END
