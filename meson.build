@@ -29,6 +29,8 @@ simde_neon_families = [
   'bsl',
   'cage',
   'cagt',
+  'cale',
+  'calt',
   'ceq',
   'ceqz',
   'cge',
