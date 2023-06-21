@@ -10,6 +10,8 @@ cxx = meson.get_compiler('cpp')
 
 simde_neon_families = [
   'aba',
+  'abal',
+  'abal_high',
   'abd',
   'abdl',
   'abs',
