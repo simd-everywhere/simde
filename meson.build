@@ -31,6 +31,8 @@ simde_neon_families = [
   'cadd_rot90',
   'cage',
   'cagt',
+  'cale',
+  'calt',
   'ceq',
   'ceqz',
   'cge',
