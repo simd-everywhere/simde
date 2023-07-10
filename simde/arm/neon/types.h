@@ -428,6 +428,15 @@ typedef union {
     #define SIMDE_ARM_NEON_NEED_PORTABLE_F64X2XN
   #endif
 
+  #if SIMDE_FLOAT16_API == SIMDE_FLOAT16_API_FP16
+    typedef     float16_t     simde_float16_t;
+    typedef   float16x4_t   simde_float16x4_t;
+    typedef float16x4x2_t simde_float16x4x2_t;
+    typedef   float16x8_t   simde_float16x8_t;
+    typedef float16x8x2_t simde_float16x8x2_t;
+  #else
+    #define SIMDE_ARM_NEON_NEED_PORTABLE_F16
+  #endif
 #elif (defined(SIMDE_X86_MMX_NATIVE) || defined(SIMDE_X86_SSE_NATIVE)) && defined(SIMDE_ARM_NEON_FORCE_NATIVE_TYPES)
   #define SIMDE_ARM_NEON_NEED_PORTABLE_F16
   #define SIMDE_ARM_NEON_NEED_PORTABLE_F32
