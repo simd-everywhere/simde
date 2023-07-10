@@ -2,12 +2,13 @@
 
 #include "test-neon.h"
 #include "../../../simde/arm/neon/cvt_n.h"
+#include "../../../simde/arm/neon/dup_n.h"
 
 static int
 test_simde_vcvt_n_s16_f16 (SIMDE_MUNIT_TEST_ARGS) {
   struct {
     simde_float16 a[4];
-    int32_t n;
+    int16_t n;
     int16_t r[4];
   } test_vec[] = {
     { { SIMDE_FLOAT16_C(0.0), SIMDE_FLOAT16_C(9.7), SIMDE_FLOAT16_C(4.3), SIMDE_FLOAT16_C(-2.6) },
@@ -44,7 +45,8 @@ test_simde_vcvt_n_s16_f16 (SIMDE_MUNIT_TEST_ARGS) {
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
     simde_float16x4_t a = simde_vld1_f16(test_vec[i].a);
-    simde_int16x4_t r = simde_vcvt_n_s16_f16(a, test_vec[i].n);
+    simde_int16x4_t r;
+    SIMDE_CONSTIFY_4_(simde_vcvt_n_s16_f16, r, (HEDLEY_UNREACHABLE(), simde_vdup_n_s16(INT16_C(0))), test_vec[i].n, a);
 
     simde_test_arm_neon_assert_equal_i16x4(r, simde_vld1_s16(test_vec[i].r));
   }
@@ -174,7 +176,7 @@ static int
 test_simde_vcvt_n_u16_f16 (SIMDE_MUNIT_TEST_ARGS) {
   struct {
     simde_float16 a[4];
-    int32_t n;
+    const int32_t n;
     uint16_t r[4];
   } test_vec[] = {
     { { SIMDE_FLOAT16_C(5.6), SIMDE_FLOAT16_C(7.4), SIMDE_FLOAT16_C(9.1), SIMDE_FLOAT16_C(7.9) },
