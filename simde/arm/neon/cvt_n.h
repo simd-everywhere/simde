@@ -374,7 +374,7 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde_uint64x2_t
 simde_vcvtq_n_u64_f64(simde_float64x2_t a, const int n) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && !defined(SIMDE_BUG_CLANG_46844)
-    return vcvtq_n_u64_f64(a);
+    return vcvtq_n_u64_f64(a, n);
   #else
     simde_float64x2_private a_ = simde_float64x2_to_private(a);
     simde_uint64x2_private r_;
