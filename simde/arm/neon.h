@@ -72,6 +72,7 @@
 #include "neon/cmla_rot270.h"
 #include "neon/cnt.h"
 #include "neon/cvt.h"
+#include "neon/cvt_n.h"
 #include "neon/cvtn.h"
 #include "neon/combine.h"
 #include "neon/create.h"
