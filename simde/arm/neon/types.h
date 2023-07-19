@@ -432,8 +432,12 @@ typedef union {
     typedef     float16_t     simde_float16_t;
     typedef   float16x4_t   simde_float16x4_t;
     typedef float16x4x2_t simde_float16x4x2_t;
+    typedef float16x4x3_t simde_float16x4x3_t;
+    typedef float16x4x4_t simde_float16x4x4_t;
     typedef   float16x8_t   simde_float16x8_t;
     typedef float16x8x2_t simde_float16x8x2_t;
+    typedef float16x8x3_t simde_float16x8x3_t;
+    typedef float16x8x4_t simde_float16x8x4_t;
   #else
     #define SIMDE_ARM_NEON_NEED_PORTABLE_F16
   #endif
@@ -763,6 +767,9 @@ typedef union {
   typedef struct simde_float32x2x3_t {
     simde_float32x2_t val[3];
   } simde_float32x2x3_t;
+  typedef struct simde_float16x4x3_t {
+    simde_float16x4_t val[3];
+  } simde_float16x4x3_t;
 
   typedef struct   simde_int8x16x3_t {
     simde_int8x16_t val[3];
@@ -791,6 +798,9 @@ typedef union {
   typedef struct simde_float32x4x3_t {
     simde_float32x4_t val[3];
   } simde_float32x4x3_t;
+  typedef struct simde_float16x8x3_t {
+    simde_float16x8_t val[3];
+  } simde_float16x8x3_t;
 
   typedef struct    simde_int8x8x4_t {
     simde_int8x8_t val[4];
@@ -819,6 +829,9 @@ typedef union {
   typedef struct simde_float32x2x4_t {
     simde_float32x2_t val[4];
   } simde_float32x2x4_t;
+  typedef struct simde_float16x4x4_t {
+    simde_float16x4_t val[4];
+  } simde_float16x4x4_t;
 
   typedef struct   simde_int8x16x4_t {
     simde_int8x16_t val[4];
@@ -847,6 +860,9 @@ typedef union {
   typedef struct simde_float32x4x4_t {
     simde_float32x4_t val[4];
   } simde_float32x4x4_t;
+  typedef struct simde_float16x8x4_t {
+    simde_float16x8_t val[4];
+  } simde_float16x8x4_t;
 #endif
 
 #if defined(SIMDE_ARM_NEON_NEED_PORTABLE_F64X1XN)
