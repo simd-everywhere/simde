@@ -98,6 +98,8 @@
 #include "neon/ld1q_x3.h"
 #include "neon/ld1q_x4.h"
 #include "neon/ld2.h"
+#include "neon/ld2_dup.h"
+#include "neon/ld2_lane.h"
 #include "neon/ld3.h"
 #include "neon/ld4.h"
 #include "neon/ld4_lane.h"
