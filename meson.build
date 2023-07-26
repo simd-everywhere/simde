@@ -81,6 +81,8 @@ simde_neon_families = [
   'ld1q_x4',
   'ld1',
   'ld2',
+  'ld2_dup',
+  'ld2_lane',
   'ld3',
   'ld4',
   'ld4_lane',
