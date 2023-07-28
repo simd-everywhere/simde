@@ -455,4 +455,4 @@ simde_vld2q_dup_u64(uint64_t const * ptr) {
 SIMDE_END_DECLS_
 HEDLEY_DIAGNOSTIC_POP
 
-#endif /* !defined(SIMDE_ARM_NEON_LD1_DUP_H) */
+#endif /* !defined(SIMDE_ARM_NEON_LD2_DUP_H) */
