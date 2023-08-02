@@ -111,8 +111,8 @@ SIMDE_BEGIN_DECLS_
   #define simde_vqdmlals_laneq_s32(a, b, v, lane) simde_vqdmlals_s32((a), (b), (v[lane]))
 #endif
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
-  #undef vqdmlals_lane_s32
-  #define vqdmlals_lane_s32(a, b, c, lane) simde_vqdmlals_lane_s32((a), (b), (c), (lane))
+  #undef vqdmlals_laneq_s32
+  #define vqdmlals_laneq_s32(a, b, c, lane) simde_vqdmlals_laneq_s32((a), (b), (c), (lane))
 #endif
 
 SIMDE_END_DECLS_
