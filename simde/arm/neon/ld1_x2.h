@@ -61,8 +61,8 @@ simde_vld1_f16_x2(simde_float16 const ptr[HEDLEY_ARRAY_PARAM(8)]) {
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
-  #undef vld1_f16_x4
-  #define vld1_f16_x4(a) simde_vld1_f16_x4((a))
+  #undef vld1_f16_x2
+  #define vld1_f16_x2(a) simde_vld1_f16_x2((a))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
