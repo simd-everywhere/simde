@@ -606,6 +606,160 @@ test_simde_vqshrn_n_u64 (SIMDE_MUNIT_TEST_ARGS) {
 }
 
 static int
+test_simde_vqshrnh_n_s16 (SIMDE_MUNIT_TEST_ARGS) {
+  static const struct {
+    int16_t a;
+    int8_t r1;
+    int8_t r3;
+    int8_t r5;
+    int8_t r6;
+    int8_t r8;
+  } test_vec[] = {
+    {  INT16_C( 11473),
+           INT8_MAX,
+           INT8_MAX,
+           INT8_MAX,
+           INT8_MAX,
+       INT8_C(  44) },
+    {  INT16_C( 17084),
+           INT8_MAX,
+           INT8_MAX,
+           INT8_MAX,
+           INT8_MAX,
+       INT8_C(  66) },
+    { -INT16_C( 29873),
+           INT8_MIN,
+           INT8_MIN,
+           INT8_MIN,
+           INT8_MIN,
+      -INT8_C( 117) },
+    {  INT16_C( 32294),
+           INT8_MAX,
+           INT8_MAX,
+           INT8_MAX,
+           INT8_MAX,
+       INT8_C( 126) },
+    {  INT16_C(  7196),
+           INT8_MAX,
+           INT8_MAX,
+           INT8_MAX,
+       INT8_C( 112),
+       INT8_C(  28) },
+    { -INT16_C( 17570),
+           INT8_MIN,
+           INT8_MIN,
+           INT8_MIN,
+           INT8_MIN,
+      -INT8_C(  69) },
+    {  INT16_C(  7104),
+           INT8_MAX,
+           INT8_MAX,
+           INT8_MAX,
+       INT8_C( 111),
+       INT8_C(  27) },
+    { -INT16_C( 28856),
+           INT8_MIN,
+           INT8_MIN,
+           INT8_MIN,
+           INT8_MIN,
+      -INT8_C( 113) },
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
+    int8_t r1 = simde_vqshrnh_n_s16(test_vec[i].a, 1);
+    int8_t r3 = simde_vqshrnh_n_s16(test_vec[i].a, 3);
+    int8_t r5 = simde_vqshrnh_n_s16(test_vec[i].a, 5);
+    int8_t r6 = simde_vqshrnh_n_s16(test_vec[i].a, 6);
+    int8_t r8 = simde_vqshrnh_n_s16(test_vec[i].a, 8);
+
+    simde_assert_equal_i8(r1, test_vec[i].r1);
+    simde_assert_equal_i8(r3, test_vec[i].r3);
+    simde_assert_equal_i8(r5, test_vec[i].r5);
+    simde_assert_equal_i8(r6, test_vec[i].r6);
+    simde_assert_equal_i8(r8, test_vec[i].r8);
+  }
+
+  return 0;
+}
+
+static int
+test_simde_vqshrnh_n_u16 (SIMDE_MUNIT_TEST_ARGS) {
+  static const struct {
+    uint16_t a;
+    uint8_t r1;
+    uint8_t r3;
+    uint8_t r5;
+    uint8_t r6;
+    uint8_t r8;
+  } test_vec[] = {
+    { UINT16_C( 6711),
+         UINT8_MAX,
+         UINT8_MAX,
+      UINT8_C(209),
+      UINT8_C(104),
+      UINT8_C( 26) },
+    { UINT16_C(44505),
+         UINT8_MAX,
+         UINT8_MAX,
+         UINT8_MAX,
+         UINT8_MAX,
+      UINT8_C(173) },
+    { UINT16_C(23584),
+         UINT8_MAX,
+         UINT8_MAX,
+         UINT8_MAX,
+         UINT8_MAX,
+      UINT8_C( 92) },
+    { UINT16_C(28962),
+         UINT8_MAX,
+         UINT8_MAX,
+         UINT8_MAX,
+         UINT8_MAX,
+      UINT8_C(113) },
+    { UINT16_C(15333),
+         UINT8_MAX,
+         UINT8_MAX,
+         UINT8_MAX,
+      UINT8_C(239),
+      UINT8_C( 59) },
+    { UINT16_C(65383),
+         UINT8_MAX,
+         UINT8_MAX,
+         UINT8_MAX,
+         UINT8_MAX,
+         UINT8_MAX },
+    { UINT16_C(28623),
+         UINT8_MAX,
+         UINT8_MAX,
+         UINT8_MAX,
+         UINT8_MAX,
+      UINT8_C(111) },
+    { UINT16_C(45572),
+         UINT8_MAX,
+         UINT8_MAX,
+         UINT8_MAX,
+         UINT8_MAX,
+      UINT8_C(178) },
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
+    uint8_t r1 = simde_vqshrnh_n_u16(test_vec[i].a, 1);
+    uint8_t r3 = simde_vqshrnh_n_u16(test_vec[i].a, 3);
+    uint8_t r5 = simde_vqshrnh_n_u16(test_vec[i].a, 5);
+    uint8_t r6 = simde_vqshrnh_n_u16(test_vec[i].a, 6);
+    uint8_t r8 = simde_vqshrnh_n_u16(test_vec[i].a, 8);
+
+    simde_assert_equal_u8(r1, test_vec[i].r1);
+    simde_assert_equal_u8(r3, test_vec[i].r3);
+    simde_assert_equal_u8(r5, test_vec[i].r5);
+    simde_assert_equal_u8(r6, test_vec[i].r6);
+    simde_assert_equal_u8(r8, test_vec[i].r8);
+  }
+
+  return 0;
+}
+
+static int
 test_simde_vqshrns_n_s32 (SIMDE_MUNIT_TEST_ARGS) {
 #if 1
   static const struct {
@@ -1004,6 +1158,8 @@ SIMDE_TEST_FUNC_LIST_ENTRY(vqshrn_n_s64)
 SIMDE_TEST_FUNC_LIST_ENTRY(vqshrn_n_u16)
 SIMDE_TEST_FUNC_LIST_ENTRY(vqshrn_n_u32)
 SIMDE_TEST_FUNC_LIST_ENTRY(vqshrn_n_u64)
+SIMDE_TEST_FUNC_LIST_ENTRY(vqshrnh_n_s16)
+SIMDE_TEST_FUNC_LIST_ENTRY(vqshrnh_n_u16)
 SIMDE_TEST_FUNC_LIST_ENTRY(vqshrns_n_s32)
 SIMDE_TEST_FUNC_LIST_ENTRY(vqshrns_n_u32)
 SIMDE_TEST_FUNC_LIST_ENTRY(vqshrnd_n_s64)
