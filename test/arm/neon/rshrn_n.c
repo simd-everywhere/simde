@@ -1,4 +1,3 @@
-
 #define SIMDE_TEST_ARM_NEON_INSN rshrn_n
 
 #include "test-neon.h"
