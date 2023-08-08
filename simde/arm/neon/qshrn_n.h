@@ -37,6 +37,26 @@ SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 SIMDE_BEGIN_DECLS_
 
 #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+  #define simde_vqshrnh_n_s16(a, n) vqshrnh_n_s16(a, n)
+#else
+  #define simde_vqshrnh_n_s16(a, n) simde_vqmovnh_s16(simde_x_vshrh_n_s16(a, n))
+#endif
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vqshrnh_n_s16
+  #define vqshrnh_n_s16(a, n) simde_vqshrnh_n_s16(a, n)
+#endif
+
+#if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+  #define simde_vqshrnh_n_u16(a, n) vqshrnh_n_u16(a, n)
+#else
+  #define simde_vqshrnh_n_u16(a, n) simde_vqmovnh_u16(simde_x_vshrh_n_u16(a, n))
+#endif
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vqshrnh_n_u16
+  #define vqshrnh_n_u16(a, n) simde_vqshrnh_n_u16(a, n)
+#endif
+
+#if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
   #define simde_vqshrns_n_s32(a, n) vqshrns_n_s32(a, n)
 #else
   #define simde_vqshrns_n_s32(a, n) simde_vqmovns_s32(simde_x_vshrs_n_s32(a, n))
