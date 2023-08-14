@@ -39,6 +39,27 @@ SIMDE_BEGIN_DECLS_
 
 SIMDE_FUNCTION_ATTRIBUTES
 void
+simde_vst3_f16(simde_float16_t ptr[HEDLEY_ARRAY_PARAM(12)], simde_float16x4x3_t val) {
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    vst3_f16(ptr, val);
+  #else
+    simde_float16x4_private a[3] = { simde_float16x4_to_private(val.val[0]),
+                                      simde_float16x4_to_private(val.val[1]),
+                                      simde_float16x4_to_private(val.val[2]) };
+    simde_float16_t buf[12];
+    for (size_t i = 0; i < (sizeof(val.val[0]) / sizeof(*ptr)) * 3 ; i++) {
+      buf[i] = a[i % 3].values[i / 3];
+    }
+    simde_memcpy(ptr, buf, sizeof(buf));
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+  #undef vst3_f16
+  #define vst3_f16(a, b) simde_vst3_f16((a), (b))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+void
 simde_vst3_f32(simde_float32_t ptr[HEDLEY_ARRAY_PARAM(6)], simde_float32x2x3_t val) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     vst3_f32(ptr, val);
@@ -346,6 +367,27 @@ simde_vst3_u64(uint64_t ptr[HEDLEY_ARRAY_PARAM(3)], simde_uint64x1x3_t val) {
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
   #undef vst3_u64
   #define vst3_u64(a, b) simde_vst3_u64((a), (b))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+void
+simde_vst3q_f16(simde_float16_t ptr[HEDLEY_ARRAY_PARAM(24)], simde_float16x8x3_t val) {
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    vst3q_f16(ptr, val);
+  #else
+    simde_float16x8_private a_[3] = { simde_float16x8_to_private(val.val[0]),
+                                      simde_float16x8_to_private(val.val[1]),
+                                      simde_float16x8_to_private(val.val[2]) };
+    simde_float16_t buf[24];
+    for (size_t i = 0; i < (sizeof(val.val[0]) / sizeof(*ptr)) * 3 ; i++) {
+      buf[i] = a_[i % 3].values[i / 3];
+    }
+    simde_memcpy(ptr, buf, sizeof(buf));
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+  #undef vst3q_f16
+  #define vst3q_f16(a, b) simde_vst3q_f16((a), (b))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
