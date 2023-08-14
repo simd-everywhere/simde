@@ -37,6 +37,21 @@ SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 SIMDE_BEGIN_DECLS_
 
 SIMDE_FUNCTION_ATTRIBUTES
+simde_float16x4x2_t
+simde_vtrn_f16(simde_float16x4_t a, simde_float16x4_t b) {
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    return vtrn_f16(a, b);
+  #else
+    simde_float16x4x2_t r = { { simde_vtrn1_f16(a, b), simde_vtrn2_f16(a, b) } };
+    return r;
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+  #undef vtrn_f16
+  #define vtrn_f16(a, b) simde_vtrn_f16((a), (b))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
 simde_float32x2x2_t
 simde_vtrn_f32(simde_float32x2_t a, simde_float32x2_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
@@ -139,6 +154,21 @@ simde_vtrn_u32(simde_uint32x2_t a, simde_uint32x2_t b) {
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vtrn_u32
   #define vtrn_u32(a, b) simde_vtrn_u32((a), (b))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_float16x8x2_t
+simde_vtrnq_f16(simde_float16x8_t a, simde_float16x8_t b) {
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    return vtrnq_f16(a, b);
+  #else
+    simde_float16x8x2_t r = { { simde_vtrn1q_f16(a, b), simde_vtrn2q_f16(a, b) } };
+    return r;
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+  #undef vtrnq_f16
+  #define vtrnq_f16(a, b) simde_vtrnq_f16((a), (b))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
