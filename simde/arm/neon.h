@@ -187,7 +187,7 @@
 #include "neon/qrdmulh.h"
 #include "neon/qrdmulh_lane.h"
 #include "neon/qrdmulh_n.h"
-//#include "neon/qrshl.h"
+#include "neon/qrshl.h"
 #include "neon/qrshrn_high_n.h"
 #include "neon/qrshrn_n.h"
 #include "neon/qrshrun_high_n.h"

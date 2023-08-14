@@ -166,7 +166,7 @@ simde_neon_families = [
   'qrdmulh',
   'qrdmulh_lane',
   'qrdmulh_n',
-  #'qrshl',
+  'qrshl',
   'qrshrn_high_n',
   'qrshrn_n',
   'qrshrun_high_n',
