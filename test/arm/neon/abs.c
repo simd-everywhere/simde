@@ -4,6 +4,39 @@
 #include "../../../simde/arm/neon/abs.h"
 
 static int
+test_simde_vabsh_f16 (SIMDE_MUNIT_TEST_ARGS) {
+  static const struct {
+    simde_float16 a;
+    simde_float16 r;
+  } test_vec[] = {
+    { -SIMDE_FLOAT16_VALUE(  24.786),
+       SIMDE_FLOAT16_VALUE(  24.786) },
+    {  SIMDE_FLOAT16_VALUE(  27.135),
+       SIMDE_FLOAT16_VALUE(  27.135) },
+    {  SIMDE_FLOAT16_VALUE(  16.821),
+       SIMDE_FLOAT16_VALUE(  16.821) },
+    { -SIMDE_FLOAT16_VALUE(  25.652),
+       SIMDE_FLOAT16_VALUE(  25.652) },
+    {  SIMDE_FLOAT16_VALUE(   8.252),
+       SIMDE_FLOAT16_VALUE(   8.252) },
+    {  SIMDE_FLOAT16_VALUE(   1.127),
+       SIMDE_FLOAT16_VALUE(   1.127) },
+    { -SIMDE_FLOAT16_VALUE(  26.641),
+       SIMDE_FLOAT16_VALUE(  26.641) },
+    { -SIMDE_FLOAT16_VALUE(   2.663),
+       SIMDE_FLOAT16_VALUE(   2.663) },
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
+    simde_float16_t r = simde_vabsh_f16(test_vec[i].a);
+
+    simde_assert_equal_f16(r, test_vec[i].r, 1);
+  }
+
+  return 0;
+}
+
+static int
 test_simde_vabsd_s64 (SIMDE_MUNIT_TEST_ARGS) {
 #if 1
   static const struct {
@@ -545,6 +578,7 @@ test_simde_vabsq_s64 (SIMDE_MUNIT_TEST_ARGS) {
 }
 
 SIMDE_TEST_FUNC_LIST_BEGIN
+SIMDE_TEST_FUNC_LIST_ENTRY(vabsh_f16)
 SIMDE_TEST_FUNC_LIST_ENTRY(vabsd_s64)
 
 SIMDE_TEST_FUNC_LIST_ENTRY(vabs_f16)
