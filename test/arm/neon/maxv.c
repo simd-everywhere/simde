@@ -4,6 +4,40 @@
 #include "../../../simde/arm/neon/maxv.h"
 
 static int
+test_simde_vmaxv_f16 (SIMDE_MUNIT_TEST_ARGS) {
+  static const struct {
+    simde_float16_t a[4];
+    simde_float16_t r;
+  } test_vec[] = {
+    { { -SIMDE_FLOAT16_C(    26.278),  SIMDE_FLOAT16_C(    12.438),  SIMDE_FLOAT16_C(     0.772),  SIMDE_FLOAT16_C(     8.886) },
+         SIMDE_FLOAT16_C(    12.438) },
+    { {  SIMDE_FLOAT16_C(    15.990),  SIMDE_FLOAT16_C(     4.320),  SIMDE_FLOAT16_C(    27.892),  SIMDE_FLOAT16_C(    20.752) },
+         SIMDE_FLOAT16_C(    27.892) },
+    { { -SIMDE_FLOAT16_C(    23.233), -SIMDE_FLOAT16_C(    22.873),  SIMDE_FLOAT16_C(    16.757), -SIMDE_FLOAT16_C(     3.197) },
+         SIMDE_FLOAT16_C(    16.757) },
+    { { -SIMDE_FLOAT16_C(    29.490),  SIMDE_FLOAT16_C(    27.230), -SIMDE_FLOAT16_C(    27.085), -SIMDE_FLOAT16_C(    22.127) },
+         SIMDE_FLOAT16_C(    27.230) },
+    { {  SIMDE_FLOAT16_C(    20.332),  SIMDE_FLOAT16_C(     8.419),  SIMDE_FLOAT16_C(     5.876),  SIMDE_FLOAT16_C(     7.152) },
+         SIMDE_FLOAT16_C(    20.332) },
+    { {  SIMDE_FLOAT16_C(    16.550),  SIMDE_FLOAT16_C(     2.490), -SIMDE_FLOAT16_C(    28.675), -SIMDE_FLOAT16_C(    21.015) },
+         SIMDE_FLOAT16_C(    16.550) },
+    { { -SIMDE_FLOAT16_C(    19.524), -SIMDE_FLOAT16_C(     6.765),  SIMDE_FLOAT16_C(     4.090),  SIMDE_FLOAT16_C(    11.578) },
+         SIMDE_FLOAT16_C(    11.578) },
+    { {  SIMDE_FLOAT16_C(    21.102),  SIMDE_FLOAT16_C(    12.176), -SIMDE_FLOAT16_C(     6.730), -SIMDE_FLOAT16_C(    26.459) },
+         SIMDE_FLOAT16_C(    21.102) },
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
+    simde_float16x4_t a = simde_vld1_f16(test_vec[i].a);
+    simde_float16_t r = simde_vmaxv_f16(a);
+
+    simde_assert_equal_f16(r, test_vec[i].r, 1);
+  }
+
+  return 0;
+}
+
+static int
 test_simde_vmaxv_f32 (SIMDE_MUNIT_TEST_ARGS) {
 #if 1
   static const struct {
@@ -323,6 +357,48 @@ test_simde_vmaxv_u32 (SIMDE_MUNIT_TEST_ARGS) {
   }
   return 1;
 #endif
+}
+
+static int
+test_simde_vmaxvq_f16 (SIMDE_MUNIT_TEST_ARGS) {
+  static const struct {
+    simde_float16_t a[8];
+    simde_float16_t r;
+  } test_vec[] = {
+    { {  SIMDE_FLOAT16_C(     4.885),  SIMDE_FLOAT16_C(    14.061),  SIMDE_FLOAT16_C(    24.410),  SIMDE_FLOAT16_C(     0.332),
+         SIMDE_FLOAT16_C(     5.829),  SIMDE_FLOAT16_C(    21.791),  SIMDE_FLOAT16_C(    18.243),  SIMDE_FLOAT16_C(    13.849) },
+         SIMDE_FLOAT16_C(    24.410) },
+    { {  SIMDE_FLOAT16_C(    14.830), -SIMDE_FLOAT16_C(    28.410), -SIMDE_FLOAT16_C(     4.101),  SIMDE_FLOAT16_C(    15.940),
+        -SIMDE_FLOAT16_C(    20.244),  SIMDE_FLOAT16_C(     9.212), -SIMDE_FLOAT16_C(     1.386),  SIMDE_FLOAT16_C(    16.187) },
+         SIMDE_FLOAT16_C(    16.187) },
+    { { -SIMDE_FLOAT16_C(    18.499), -SIMDE_FLOAT16_C(    25.266), -SIMDE_FLOAT16_C(     0.554), -SIMDE_FLOAT16_C(    26.492),
+         SIMDE_FLOAT16_C(     0.738), -SIMDE_FLOAT16_C(    18.793), -SIMDE_FLOAT16_C(    15.576), -SIMDE_FLOAT16_C(    14.038) },
+         SIMDE_FLOAT16_C(     0.738) },
+    { { -SIMDE_FLOAT16_C(    18.830),  SIMDE_FLOAT16_C(    16.900), -SIMDE_FLOAT16_C(     7.860), -SIMDE_FLOAT16_C(     5.629),
+         SIMDE_FLOAT16_C(    25.500),  SIMDE_FLOAT16_C(    17.551),  SIMDE_FLOAT16_C(     9.775), -SIMDE_FLOAT16_C(    20.365) },
+         SIMDE_FLOAT16_C(    25.500) },
+    { {  SIMDE_FLOAT16_C(    25.470),  SIMDE_FLOAT16_C(     7.313),  SIMDE_FLOAT16_C(     2.892),  SIMDE_FLOAT16_C(    20.410),
+        -SIMDE_FLOAT16_C(    23.064), -SIMDE_FLOAT16_C(    12.701),  SIMDE_FLOAT16_C(     9.908),  SIMDE_FLOAT16_C(     0.399) },
+         SIMDE_FLOAT16_C(    25.470) },
+    { {  SIMDE_FLOAT16_C(    27.728),  SIMDE_FLOAT16_C(     8.047),  SIMDE_FLOAT16_C(     3.228), -SIMDE_FLOAT16_C(    18.095),
+         SIMDE_FLOAT16_C(    14.505),  SIMDE_FLOAT16_C(    10.946), -SIMDE_FLOAT16_C(    25.064),  SIMDE_FLOAT16_C(    23.821) },
+         SIMDE_FLOAT16_C(    27.728) },
+    { {  SIMDE_FLOAT16_C(     5.865),  SIMDE_FLOAT16_C(    16.581), -SIMDE_FLOAT16_C(    11.784), -SIMDE_FLOAT16_C(    25.258),
+         SIMDE_FLOAT16_C(    18.406), -SIMDE_FLOAT16_C(    15.968), -SIMDE_FLOAT16_C(     1.377), -SIMDE_FLOAT16_C(    27.014) },
+         SIMDE_FLOAT16_C(    18.406) },
+    { {  SIMDE_FLOAT16_C(    17.065),  SIMDE_FLOAT16_C(    11.552),  SIMDE_FLOAT16_C(     5.348), -SIMDE_FLOAT16_C(    19.625),
+        -SIMDE_FLOAT16_C(    18.151),  SIMDE_FLOAT16_C(     3.809),  SIMDE_FLOAT16_C(     6.334), -SIMDE_FLOAT16_C(    12.699) },
+         SIMDE_FLOAT16_C(    17.065) },
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
+    simde_float16x8_t a = simde_vld1q_f16(test_vec[i].a);
+    simde_float16_t r = simde_vmaxvq_f16(a);
+
+    simde_assert_equal_f16(r, test_vec[i].r, 1);
+  }
+
+  return 0;
 }
 
 static int
@@ -710,6 +786,7 @@ test_simde_vmaxvq_u32 (SIMDE_MUNIT_TEST_ARGS) {
 }
 
 SIMDE_TEST_FUNC_LIST_BEGIN
+SIMDE_TEST_FUNC_LIST_ENTRY(vmaxv_f16)
 SIMDE_TEST_FUNC_LIST_ENTRY(vmaxv_f32)
 SIMDE_TEST_FUNC_LIST_ENTRY(vmaxv_s8)
 SIMDE_TEST_FUNC_LIST_ENTRY(vmaxv_s16)
@@ -718,6 +795,7 @@ SIMDE_TEST_FUNC_LIST_ENTRY(vmaxv_u8)
 SIMDE_TEST_FUNC_LIST_ENTRY(vmaxv_u16)
 SIMDE_TEST_FUNC_LIST_ENTRY(vmaxv_u32)
 
+SIMDE_TEST_FUNC_LIST_ENTRY(vmaxvq_f16)
 SIMDE_TEST_FUNC_LIST_ENTRY(vmaxvq_f32)
 SIMDE_TEST_FUNC_LIST_ENTRY(vmaxvq_f64)
 SIMDE_TEST_FUNC_LIST_ENTRY(vmaxvq_s8)
