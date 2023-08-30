@@ -38,6 +38,36 @@ SIMDE_BEGIN_DECLS_
 
 #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
   #if defined(__clang__) && !SIMDE_DETECT_CLANG_VERSION_CHECK(11,0,0)
+    #define simde_vqrdmulhh_lane_s16(a, v, lane) \
+    SIMDE_DISABLE_DIAGNOSTIC_EXPR_(SIMDE_DIAGNOSTIC_DISABLE_VECTOR_CONVERSION_, vqrdmulhh_lane_s16((a), (v), (lane)))
+  #else
+    #define simde_vqrdmulhh_lane_s16(a, v, lane) vqrdmulhh_lane_s16((a), (v), (lane))
+  #endif
+#else
+  #define simde_vqrdmulhh_lane_s16(a, v, lane) simde_vqrdmulhh_s16((a), simde_vget_lane_s16((v), (lane)))
+#endif
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vqrdmulhh_lane_s16
+  #define vqrdmulhh_lane_s16(a, v, lane) simde_vqrdmulhh_lane_s16((a), (v), (lane))
+#endif
+
+#if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+  #if defined(__clang__) && !SIMDE_DETECT_CLANG_VERSION_CHECK(11,0,0)
+    #define simde_vqrdmulhh_laneq_s16(a, v, lane) \
+    SIMDE_DISABLE_DIAGNOSTIC_EXPR_(SIMDE_DIAGNOSTIC_DISABLE_VECTOR_CONVERSION_, vqrdmulhh_laneq_s16((a), (v), (lane)))
+  #else
+    #define simde_vqrdmulhh_laneq_s16(a, v, lane) vqrdmulhh_laneq_s16((a), (v), (lane))
+  #endif
+#else
+  #define simde_vqrdmulhh_laneq_s16(a, v, lane) simde_vqrdmulhh_s16((a), simde_vgetq_lane_s16((v), (lane)))
+#endif
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vqrdmulhh_laneq_s16
+  #define vqrdmulhh_laneq_s16(a, v, lane) simde_vqrdmulhh_laneq_s16((a), (v), (lane))
+#endif
+
+#if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+  #if defined(__clang__) && !SIMDE_DETECT_CLANG_VERSION_CHECK(11,0,0)
     #define simde_vqrdmulhs_lane_s32(a, v, lane) \
     SIMDE_DISABLE_DIAGNOSTIC_EXPR_(SIMDE_DIAGNOSTIC_DISABLE_VECTOR_CONVERSION_, vqrdmulhs_lane_s32((a), (v), (lane)))
   #else
