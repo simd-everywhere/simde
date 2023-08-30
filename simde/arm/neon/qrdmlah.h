@@ -35,7 +35,6 @@ HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 SIMDE_BEGIN_DECLS_
 
-//[TODO]
 SIMDE_FUNCTION_ATTRIBUTES
 int16_t
 simde_vqrdmlahh_s16(int16_t a, int16_t b, int16_t c) {
@@ -43,12 +42,7 @@ simde_vqrdmlahh_s16(int16_t a, int16_t b, int16_t c) {
     return vqrdmlahh_s16(a, b, c);
   #else
     int64_t r = (((1 << 15) + (HEDLEY_STATIC_CAST(int64_t, a) << 16) + ((HEDLEY_STATIC_CAST(int64_t, (HEDLEY_STATIC_CAST(int64_t, b) * HEDLEY_STATIC_CAST(int64_t, c)))) << 1)) >> 16);
-    return simde_vqmovns_s32(r);
-    // SignedSatQ
-    int64_t bound = (1 << 15);
-    if (r > (bound - 1)) r = (bound - 1);
-    else if(r < -bound) r = -bound;
-    return HEDLEY_STATIC_CAST(int16_t, r);
+    return simde_vqmovns_s32(HEDLEY_STATIC_CAST(int32_t, r));
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
@@ -64,8 +58,10 @@ simde_vqrdmlahs_s32(int32_t a, int32_t b, int32_t c) {
   #else
     int64_t round_const = (HEDLEY_STATIC_CAST(int64_t, 1) << 31);
     int64_t a_ = (HEDLEY_STATIC_CAST(int64_t, a) << 32);
-    int64_t sum = round_const + a_;                                                               int64_t mul = (HEDLEY_STATIC_CAST(int64_t, b) * HEDLEY_STATIC_CAST(int64_t, c));
-    int64_t mul2 = mul << 1;                                                                      if(mul2 >> 1 != mul) {
+    int64_t sum = round_const + a_;
+    int64_t mul = (HEDLEY_STATIC_CAST(int64_t, b) * HEDLEY_STATIC_CAST(int64_t, c));
+    int64_t mul2 = mul << 1;
+    if(mul2 >> 1 != mul) {
       if(mul > 0) return INT32_MAX;
       else if(mul < 0) return INT32_MIN;
     }
