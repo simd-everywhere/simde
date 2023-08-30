@@ -7,6 +7,106 @@ HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DIAGNOSTIC_DISABLE_UNREACHABLE_
 
 static int
+test_simde_vqshluh_n_s16 (SIMDE_MUNIT_TEST_ARGS) {
+  static const struct {
+    int16_t a[1];
+    uint16_t r0[1];
+    uint16_t r2[1];
+    uint16_t r5[1];
+    uint16_t r9[1];
+    uint16_t r10[1];
+    uint16_t r13[1];
+    uint16_t r15[1];
+  } test_vec[] = {
+    { {  INT16_C( 10390) },
+      { UINT16_C(10390) },
+      { UINT16_C(41560) },
+      {      UINT16_MAX },
+      {      UINT16_MAX },
+      {      UINT16_MAX },
+      {      UINT16_MAX },
+      {      UINT16_MAX } },
+    { {  INT16_C( 23503) },
+      { UINT16_C(23503) },
+      {      UINT16_MAX },
+      {      UINT16_MAX },
+      {      UINT16_MAX },
+      {      UINT16_MAX },
+      {      UINT16_MAX },
+      {      UINT16_MAX } },
+    { {  INT16_C( 15091) },
+      { UINT16_C(15091) },
+      { UINT16_C(60364) },
+      {      UINT16_MAX },
+      {      UINT16_MAX },
+      {      UINT16_MAX },
+      {      UINT16_MAX },
+      {      UINT16_MAX } },
+    { { -INT16_C( 28563) },
+      { UINT16_C(    0) },
+      { UINT16_C(    0) },
+      { UINT16_C(    0) },
+      { UINT16_C(    0) },
+      { UINT16_C(    0) },
+      { UINT16_C(    0) },
+      { UINT16_C(    0) } },
+    { { -INT16_C( 24923) },
+      { UINT16_C(    0) },
+      { UINT16_C(    0) },
+      { UINT16_C(    0) },
+      { UINT16_C(    0) },
+      { UINT16_C(    0) },
+      { UINT16_C(    0) },
+      { UINT16_C(    0) } },
+    { { -INT16_C( 12223) },
+      { UINT16_C(    0) },
+      { UINT16_C(    0) },
+      { UINT16_C(    0) },
+      { UINT16_C(    0) },
+      { UINT16_C(    0) },
+      { UINT16_C(    0) },
+      { UINT16_C(    0) } },
+    { { -INT16_C( 12133) },
+      { UINT16_C(    0) },
+      { UINT16_C(    0) },
+      { UINT16_C(    0) },
+      { UINT16_C(    0) },
+      { UINT16_C(    0) },
+      { UINT16_C(    0) },
+      { UINT16_C(    0) } },
+    { {  INT16_C( 31833) },
+      { UINT16_C(31833) },
+      {      UINT16_MAX },
+      {      UINT16_MAX },
+      {      UINT16_MAX },
+      {      UINT16_MAX },
+      {      UINT16_MAX },
+      {      UINT16_MAX } },
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
+    int16_t a = test_vec[i].a[0];
+    uint16_t r0 = simde_vqshluh_n_s16(a, 0);
+    uint16_t r2 = simde_vqshluh_n_s16(a, 2);
+    uint16_t r5 = simde_vqshluh_n_s16(a, 5);
+    uint16_t r9 = simde_vqshluh_n_s16(a, 9);
+    uint16_t r10 = simde_vqshluh_n_s16(a, 10);
+    uint16_t r13 = simde_vqshluh_n_s16(a, 13);
+    uint16_t r15 = simde_vqshluh_n_s16(a, 15);
+
+    simde_assert_equal_u16(r0, test_vec[i].r0[0]);
+    simde_assert_equal_u16(r2, test_vec[i].r2[0]);
+    simde_assert_equal_u16(r5, test_vec[i].r5[0]);
+    simde_assert_equal_u16(r9, test_vec[i].r9[0]);
+    simde_assert_equal_u16(r10, test_vec[i].r10[0]);
+    simde_assert_equal_u16(r13, test_vec[i].r13[0]);
+    simde_assert_equal_u16(r15, test_vec[i].r15[0]);
+  }
+
+  return 0;
+}
+
+static int
 test_simde_vqshlu_n_s8 (SIMDE_MUNIT_TEST_ARGS) {
 #if 1
   static const struct {
@@ -885,6 +985,8 @@ test_simde_vqshluq_n_s64 (SIMDE_MUNIT_TEST_ARGS) {
 }
 
 SIMDE_TEST_FUNC_LIST_BEGIN
+SIMDE_TEST_FUNC_LIST_ENTRY(vqshluh_n_s16)
+
 SIMDE_TEST_FUNC_LIST_ENTRY(vqshlu_n_s8)
 SIMDE_TEST_FUNC_LIST_ENTRY(vqshlu_n_s16)
 SIMDE_TEST_FUNC_LIST_ENTRY(vqshlu_n_s32)
