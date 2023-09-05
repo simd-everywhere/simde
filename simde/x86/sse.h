@@ -262,6 +262,14 @@ enum {
     SIMDE_MM_ROUND_TOWARD_ZERO = 0x6000
   #endif
 };
+#if defined(_MM_ROUND_MASK)
+#  define SIMDE_MM_ROUND_MASK _MM_ROUND_MASK
+#else
+#  define SIMDE_MM_ROUND_MASK (0x6000)
+#endif
+#if defined(SIMDE_X86_SSE_ENABLE_NATIVE_ALIASES)
+  #define _MM_ROUND_MASK SIMDE_MM_ROUND_MASK
+#endif
 
 #if defined(_MM_FROUND_TO_NEAREST_INT)
 #  define SIMDE_MM_FROUND_TO_NEAREST_INT _MM_FROUND_TO_NEAREST_INT
@@ -531,7 +539,7 @@ SIMDE_MM_GET_FLUSH_ZERO_MODE (void) {
   #endif
 }
 #if defined(SIMDE_X86_SSE_ENABLE_NATIVE_ALIASES)
-  #define _MM_SET_FLUSH_ZERO_MODE(a) SIMDE_MM_SET_FLUSH_ZERO_MODE(a)
+  #define _MM_GET_FLUSH_ZERO_MODE(a) SIMDE_MM_GET_FLUSH_ZERO_MODE(a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -566,7 +574,7 @@ simde_mm_setcsr (uint32_t a) {
   #if defined(SIMDE_X86_SSE_NATIVE)
     _mm_setcsr(a);
   #else
-    SIMDE_MM_SET_ROUNDING_MODE(HEDLEY_STATIC_CAST(unsigned int, a));
+    SIMDE_MM_SET_ROUNDING_MODE(HEDLEY_STATIC_CAST(unsigned int, a & SIMDE_MM_ROUND_MASK));
   #endif
 }
 #if defined(SIMDE_X86_SSE_ENABLE_NATIVE_ALIASES)
