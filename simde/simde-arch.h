@@ -333,7 +333,7 @@
 #  if defined(__PCLMUL__)
 #    define SIMDE_ARCH_X86_PCLMUL 1
 #  endif
-#  if defined(__VPCLMULQDQ__)
+#  if defined(__VPCLMULQDQ__) && defined(__AVX512F__)
 #    define SIMDE_ARCH_X86_VPCLMULQDQ 1
 #  endif
 #  if defined(__F16C__) || (defined(HEDLEY_MSVC_VERSION) && HEDLEY_MSVC_VERSION_CHECK(19,30,0) && defined(SIMDE_ARCH_X86_AVX2) )
