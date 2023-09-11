@@ -9,6 +9,7 @@ cc = meson.get_compiler('c')
 cxx = meson.get_compiler('cpp')
 
 simde_neon_families = [
+  '__crc32',
   'aba',
   'abal',
   'abal_high',
@@ -25,6 +26,7 @@ simde_neon_families = [
   'addv',
   'addw',
   'addw_high',
+  'aes',
   'and',
   'bcax',
   'bic',
@@ -208,6 +210,7 @@ simde_neon_families = [
   'qtbx',
   'raddhn',
   'raddhn_high',
+  'rax',
   'rbit',
   'recpe',
   'recps',
@@ -238,6 +241,9 @@ simde_neon_families = [
   'rsubhn',
   'rsubhn_high',
   'set_lane',
+  'sha1',
+  'sha256',
+  'sha512',
   'shl',
   'shl_n',
   'shll_high_n',
@@ -246,6 +252,8 @@ simde_neon_families = [
   'shrn_high_n',
   'shrn_n',
   'sli_n',
+  'sm3',
+  'sm4',
   'sqadd',
   'sqrt',
   'sra_n',
