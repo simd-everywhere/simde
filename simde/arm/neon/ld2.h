@@ -802,6 +802,76 @@ simde_vld2q_f64(simde_float64_t const ptr[HEDLEY_ARRAY_PARAM(4)]) {
   #define vld2q_f64(a) simde_vld2q_f64((a))
 #endif
 
+/*
+// [Eric] Pre-implemented bf16-related intrinsics
+SIMDE_FUNCTION_ATTRIBUTES
+simde_bfloat16x4x2_t
+simde_vld2_bf16(simde_bfloat16_t const ptr[HEDLEY_ARRAY_PARAM(8)]) {
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
+    return vld2_bf16(ptr);
+  #elif SIMDE_NATURAL_VECTOR_SIZE_GE(128) && defined(SIMDE_SHUFFLE_VECTOR_)
+    simde_bfloat16x8_private a_ = simde_bfloat16x8_to_private(simde_vld1q_bf16(ptr));
+    a_.values = SIMDE_SHUFFLE_VECTOR_(16, 16, a_.values, a_.values, 0, 2, 4, 6, 1, 3, 5, 7);
+    simde_bfloat16x4x2_t r;
+    simde_memcpy(&r, &a_, sizeof(r));
+    return r;
+  #else
+    simde_bfloat16x4_private r_[2];
+
+    for (size_t i = 0 ; i < (sizeof(r_) / sizeof(r_[0])) ; i++) {
+      for (size_t j = 0 ; j < (sizeof(r_[0].values) / sizeof(r_[0].values[0])) ; j++) {
+        r_[i].values[j] = ptr[i + (j * (sizeof(r_) / sizeof(r_[0])))];
+      }
+    }
+
+    simde_bfloat16x4x2_t r = { {
+      simde_bfloat16x4_from_private(r_[0]),
+      simde_bfloat16x4_from_private(r_[1]),
+    } };
+
+    return r;
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+  #undef vld2_bf16
+  #define vld2_bf16(a) simde_vld2_bf16((a))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_bfloat16x8x2_t
+simde_vld2q_bf16(simde_bfloat16_t const ptr[HEDLEY_ARRAY_PARAM(16)]) {
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
+    return vld2q_bf16(ptr);
+  #else
+    #if defined(SIMDE_DIAGNOSTIC_DISABLE_UNINITIALIZED_) && HEDLEY_GCC_VERSION_CHECK(12,0,0)
+      HEDLEY_DIAGNOSTIC_PUSH
+      SIMDE_DIAGNOSTIC_DISABLE_UNINITIALIZED_
+    #endif
+    simde_bfloat16x8_private r_[2];
+
+    for (size_t i = 0 ; i < (sizeof(r_) / sizeof(r_[0])); i++) {
+      for (size_t j = 0 ; j < (sizeof(r_[0].values) / sizeof(r_[0].values[0])) ; j++) {
+        r_[i].values[j] = ptr[i + (j * (sizeof(r_) / sizeof(r_[0])))];
+      }
+    }
+    #if defined(SIMDE_DIAGNOSTIC_DISABLE_UNINITIALIZED_) && HEDLEY_GCC_VERSION_CHECK(12,0,0)
+      HEDLEY_DIAGNOSTIC_POP
+    #endif
+
+    simde_bfloat16x8x2_t r = { {
+      simde_bfloat16x8_from_private(r_[0]),
+      simde_bfloat16x8_from_private(r_[1]),
+    } };
+
+    return r;
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+  #undef vld2q_bf16
+  #define vld2q_bf16(a) simde_vld2q_bf16((a))
+#endif
+*/
+
 #endif /* !defined(SIMDE_BUG_INTEL_857088) */
 
 SIMDE_END_DECLS_

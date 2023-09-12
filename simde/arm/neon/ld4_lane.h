@@ -641,6 +641,63 @@ simde_vld4q_lane_f64(simde_float64_t const ptr[HEDLEY_ARRAY_PARAM(4)], simde_flo
   #define vld4q_lane_f64(ptr, src, lane) simde_vld4q_lane_f64((ptr), (src), (lane))
 #endif
 
+/*
+// [Eric] Pre-implemented bf16-related intrinsics
+SIMDE_FUNCTION_ATTRIBUTES
+simde_bfloat16x4x4_t
+simde_vld4_lane_bf16(simde_bfloat16_t const ptr[HEDLEY_ARRAY_PARAM(4)], simde_bfloat16x4x4_t src, const int lane)
+    SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 3) {
+  simde_bfloat16x4x4_t r;
+
+  for (size_t i = 0 ; i < 4 ; i++) {
+    simde_bfloat16x4_private tmp_ = simde_bfloat16x4_to_private(src.val[i]);
+    tmp_.values[lane] = ptr[i];
+    r.val[i] = simde_bfloat16x4_from_private(tmp_);
+  }
+
+  return r;
+}
+#if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
+  #if defined(__clang__) && !SIMDE_DETECT_CLANG_VERSION_CHECK(10,0,0)
+    #define simde_vld4_lane_bf16(ptr, src, lane) \
+      SIMDE_DISABLE_DIAGNOSTIC_EXPR_(SIMDE_DIAGNOSTIC_DISABLE_VECTOR_CONVERSION_, vld4_lane_bf16(ptr, src, lane))
+  #else
+    #define simde_vld4_lane_bf16(ptr, src, lane) vld4_lane_bf16(ptr, src, lane)
+  #endif
+#endif
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+  #undef vld4_lane_bf16
+  #define vld4_lane_bf16(ptr, src, lane) simde_vld4_lane_bf16((ptr), (src), (lane))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_bfloat16x8x4_t
+simde_vld4q_lane_bf16(simde_bfloat16_t const ptr[HEDLEY_ARRAY_PARAM(4)], simde_bfloat16x8x4_t src, const int lane)
+    SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 7) {
+  simde_bfloat16x8x4_t r;
+
+  for (size_t i = 0 ; i < 4 ; i++) {
+    simde_bfloat16x8_private tmp_ = simde_bfloat16x8_to_private(src.val[i]);
+    tmp_.values[lane] = ptr[i];
+    r.val[i] = simde_bfloat16x8_from_private(tmp_);
+  }
+
+  return r;
+}
+#if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
+  #if defined(__clang__) && !SIMDE_DETECT_CLANG_VERSION_CHECK(10,0,0)
+    #define simde_vld4q_lane_bf16(ptr, src, lane) \
+      SIMDE_DISABLE_DIAGNOSTIC_EXPR_(SIMDE_DIAGNOSTIC_DISABLE_VECTOR_CONVERSION_, vld4q_lane_bf16(ptr, src, lane))
+  #else
+    #define simde_vld4q_lane_bf16(ptr, src, lane) vld4q_lane_bf16(ptr, src, lane)
+  #endif
+#endif
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+  #undef vld4q_lane_bf16
+  #define vld4q_lane_bf16(ptr, src, lane) simde_vld4q_lane_bf16((ptr), (src), (lane))
+#endif
+*/
+
 #endif /* !defined(SIMDE_BUG_INTEL_857088) */
 
 SIMDE_END_DECLS_

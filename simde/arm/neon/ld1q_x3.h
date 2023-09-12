@@ -304,6 +304,33 @@ simde_vld1q_u64_x3(uint64_t const ptr[HEDLEY_ARRAY_PARAM(3)]) {
   #define vld1q_u64_x3(a) simde_vld1q_u64_x3((a))
 #endif
 
+/*
+// [Eric] Pre-implemented bf16-related intrinsics
+SIMDE_FUNCTION_ATTRIBUTES
+simde_bfloat16x8x3_t
+simde_vld1q_bf16_x3(simde_bfloat16 const ptr[HEDLEY_ARRAY_PARAM(24)]) {
+  #if \
+      defined(SIMDE_ARM_NEON_A32V8_NATIVE) && \
+      (!defined(HEDLEY_GCC_VERSION) || (HEDLEY_GCC_VERSION_CHECK(8,0,0) && defined(SIMDE_ARM_NEON_A64V8_NATIVE))) && \
+      (!defined(__clang__) || (SIMDE_DETECT_CLANG_VERSION_CHECK(7,0,0) && defined(SIMDE_ARM_NEON_A64V8_NATIVE)))
+    return vld1q_bf16_x3(ptr);
+  #else
+    simde_bfloat16x8_private a_[3];
+    for (size_t i = 0; i < 24; i++) {
+      a_[i / 8].values[i % 8] = ptr[i];
+    }
+    simde_bfloat16x8x3_t s_ = { { simde_bfloat16x8_from_private(a_[0]),
+                                 simde_bfloat16x8_from_private(a_[1]),
+                                 simde_bfloat16x8_from_private(a_[2]) } };
+    return s_;
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+  #undef vld1q_bf16_x3
+  #define vld1q_bf16_x3(a) simde_vld1q_bf16_x3((a))
+#endif
+*/
+
 #endif /* !defined(SIMDE_BUG_INTEL_857088) */
 
 SIMDE_END_DECLS_

@@ -452,6 +452,47 @@ simde_vld2q_dup_u64(uint64_t const * ptr) {
   #define vld2q_dup_u64(a) simde_vld2q_dup_u64((a))
 #endif
 
+/*
+// [Eric] Pre-implemented bf16-related intrinsics
+SIMDE_FUNCTION_ATTRIBUTES
+simde_bfloat16x4x2_t
+simde_vld2_dup_bf16(simde_bfloat16_t const ptr[HEDLEY_ARRAY_PARAM(2)]) {
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
+    return vld2_dup_bf16(ptr);
+  #else
+    simde_bfloat16x4x2_t r;
+
+    for (size_t i = 0 ; i < 2 ; i++) {
+      r.val[i] = simde_vdup_n_bf16(ptr[i]);
+    }
+    return r;
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+  #undef vld2_dup_bf16
+  #define vld2_dup_bf16(a) simde_vld2_dup_bf16((a))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_bfloat16x8x2_t
+simde_vld2q_dup_bf16(simde_bfloat16 const * ptr) {
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
+    return vld2q_dup_bf16(ptr);
+  #else
+    simde_bfloat16x8x2_t r;
+
+    for (size_t i = 0 ; i < 2 ; i++) {
+      r.val[i] = simde_vdupq_n_bf16(ptr[i]);
+    }
+    return r;
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+  #undef vld2q_dup_bf16
+  #define vld2q_dup_bf16(a) simde_vld2q_dup_bf16((a))
+#endif
+*/
+
 SIMDE_END_DECLS_
 HEDLEY_DIAGNOSTIC_POP
 

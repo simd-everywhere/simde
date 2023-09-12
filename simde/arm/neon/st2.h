@@ -446,6 +446,45 @@ simde_vst2q_u64(uint64_t *ptr, simde_uint64x2x2_t val) {
   #define vst2q_u64(a, b) simde_vst2q_u64((a), (b))
 #endif
 
+/*
+// [Eric] Pre-implemented bf16-related intrinsics
+SIMDE_FUNCTION_ATTRIBUTES
+void
+simde_vst2_bf16(simde_bfloat16_t *ptr, simde_bfloat16x4x2_t val) {
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
+    vst2_bf16(ptr, val);
+  #else
+    simde_bfloat16_t buf[8];
+    simde_bfloat16x4_private a_[2] = {simde_bfloat16x4_to_private(val.val[0]),
+                                     simde_bfloat16x4_to_private(val.val[1])};
+    for (size_t i = 0; i < (sizeof(val.val[0]) / sizeof(*ptr)) * 2 ; i++) {
+      buf[i] = a_[i % 2].values[i / 2];
+    }
+    simde_memcpy(ptr, buf, sizeof(buf));
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+  #undef vst2_bf16
+  #define vst2_bf16(a, b) simde_vst2_bf16((a), (b))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+void
+simde_vst2q_bf16(simde_bfloat16_t *ptr, simde_bfloat16x8x2_t val) {
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
+    vst2q_bf16(ptr, val);
+  #else
+    simde_bfloat16x8x2_t r = simde_vzipq_bf16(val.val[0], val.val[1]);
+    simde_vst1q_bf16(ptr, r.val[0]);
+    simde_vst1q_bf16(ptr+8, r.val[1]);
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+  #undef vst2q_bf16
+  #define vst2q_bf16(a, b) simde_vst2q_bf16((a), (b))
+#endif
+*/
+
 #endif /* !defined(SIMDE_BUG_INTEL_857088) */
 
 SIMDE_END_DECLS_
