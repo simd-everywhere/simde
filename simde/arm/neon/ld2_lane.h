@@ -472,6 +472,49 @@ simde_float64x2x2_t simde_vld2q_lane_f64(simde_float64_t const ptr[HEDLEY_ARRAY_
   #define vld2q_lane_f64(ptr, src, lane) simde_vld2q_lane_f64((ptr), (src), (lane))
 #endif
 
+/*
+// [Eric] Pre-implemented bf16-related intrinsics
+SIMDE_FUNCTION_ATTRIBUTES
+simde_bfloat16x4x2_t simde_vld2_lane_bf16(simde_bfloat16_t const ptr[HEDLEY_ARRAY_PARAM(2)], simde_bfloat16x4x2_t src, const int lane)
+    SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 3) {
+  simde_bfloat16x4x2_t r;
+
+  for (size_t i = 0 ; i < 2 ; i++) {
+    simde_bfloat16x4_private tmp_ = simde_bfloat16x4_to_private(src.val[i]);
+    tmp_.values[lane] = ptr[i];
+    r.val[i] = simde_bfloat16x4_from_private(tmp_);
+  }
+  return r;
+}
+#if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
+  #define simde_vld2_lane_bf16(ptr, src, lane) vld2_lane_bf16(ptr, src, lane)
+#endif
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+  #undef vld2_lane_bf16
+  #define vld2_lane_bf16(ptr, src, lane) simde_vld2_lane_bf16((ptr), (src), (lane))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_bfloat16x8x2_t simde_vld2q_lane_bf16(simde_bfloat16_t const ptr[HEDLEY_ARRAY_PARAM(2)], simde_bfloat16x8x2_t src, const int lane)
+    SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 7) {
+  simde_bfloat16x8x2_t r;
+
+  for (size_t i = 0 ; i < 2 ; i++) {
+    simde_bfloat16x8_private tmp_ = simde_bfloat16x8_to_private(src.val[i]);
+    tmp_.values[lane] = ptr[i];
+    r.val[i] = simde_bfloat16x8_from_private(tmp_);
+  }
+  return r;
+}
+#if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
+  #define simde_vld2q_lane_bf16(ptr, src, lane) vld2q_lane_bf16(ptr, src, lane)
+#endif
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+  #undef vld2q_lane_bf16
+  #define vld2q_lane_bf16(ptr, src, lane) simde_vld2q_lane_bf16((ptr), (src), (lane))
+#endif
+*/
+
 SIMDE_END_DECLS_
 HEDLEY_DIAGNOSTIC_POP
 

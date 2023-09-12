@@ -196,6 +196,23 @@ simde_vcreate_f64(uint64_t a) {
   #define vcreate_f64(a) simde_vcreate_f64(a)
 #endif
 
+/*
+// [Eric] Pre-implemented bf16-related intrinsics
+SIMDE_FUNCTION_ATTRIBUTES
+simde_bfloat16x4_t
+simde_vcreate_bf16(uint64_t a) {
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
+    return vcreate_bf16(a);
+  #else
+    return simde_vreinterpret_bf16_u64(simde_vdup_n_u64(a));
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+  #undef vcreate_bf16
+  #define vcreate_bf16(a) simde_vcreate_bf16(a)
+#endif
+*/
+
 SIMDE_END_DECLS_
 HEDLEY_DIAGNOSTIC_POP
 

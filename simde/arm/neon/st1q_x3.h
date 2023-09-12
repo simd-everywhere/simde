@@ -231,6 +231,26 @@ simde_vst1q_u64_x3(uint64_t ptr[HEDLEY_ARRAY_PARAM(6)], simde_uint64x2x3_t val) 
   #define vst1q_u64_x3(a, b) simde_vst1q_u64_x3((a), (b))
 #endif
 
+/*
+// [Eric] Pre-implemented bf16-related intrinsics
+SIMDE_FUNCTION_ATTRIBUTES
+void
+simde_vst1q_bf16_x3(simde_bfloat16_t ptr[HEDLEY_ARRAY_PARAM(24)], simde_bfloat16x8x3_t val) {
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
+    vst1q_bf16_x3(ptr, val);
+  #else
+    simde_bfloat16x8_private val_[3];
+    for (size_t i = 0; i < 3; i++) {
+      val_[i] = simde_bfloat16x8_to_private(val.val[i]);
+    }
+    simde_memcpy(ptr, &val_, sizeof(val_));
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+  #undef vst1q_bf16_x3
+  #define vst1q_bf16_x3(a, b) simde_vst1q_bf16_x3((a), (b))
+#endif
+*/
 
 SIMDE_END_DECLS_
 HEDLEY_DIAGNOSTIC_POP
