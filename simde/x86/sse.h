@@ -437,7 +437,7 @@ enum {
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
-unsigned int
+uint32_t
 SIMDE_MM_GET_ROUNDING_MODE(void) {
   #if defined(SIMDE_X86_SSE_NATIVE)
     return _MM_GET_ROUNDING_MODE();
@@ -485,7 +485,7 @@ SIMDE_MM_GET_ROUNDING_MODE(void) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 void
-SIMDE_MM_SET_ROUNDING_MODE(unsigned int a) {
+SIMDE_MM_SET_ROUNDING_MODE(uint32_t a) {
   #if defined(SIMDE_X86_SSE_NATIVE)
     _MM_SET_ROUNDING_MODE(a);
   #elif defined(SIMDE_HAVE_FENV_H)
@@ -574,7 +574,7 @@ simde_mm_setcsr (uint32_t a) {
   #if defined(SIMDE_X86_SSE_NATIVE)
     _mm_setcsr(a);
   #else
-    SIMDE_MM_SET_ROUNDING_MODE(HEDLEY_STATIC_CAST(unsigned int, a & SIMDE_MM_ROUND_MASK));
+    SIMDE_MM_SET_ROUNDING_MODE(HEDLEY_STATIC_CAST(uint32_t, a & SIMDE_MM_ROUND_MASK));
   #endif
 }
 #if defined(SIMDE_X86_SSE_ENABLE_NATIVE_ALIASES)
