@@ -5769,7 +5769,8 @@ test_simde_MM_TRANSPOSE4_PS (SIMDE_MUNIT_TEST_ARGS) {
 static int
 test_simde_MXCSR (SIMDE_MUNIT_TEST_ARGS) {
   uint32_t original_mxcsr = simde_mm_getcsr();
-  uint32_t masked_mxcsr = original_mxcsr & ~(SIMDE_MM_ROUND_MASK | SIMDE_MM_FLUSH_ZERO_MASK);
+  uint32_t mask_rm_fzm = SIMDE_MM_ROUND_MASK | SIMDE_MM_FLUSH_ZERO_MASK;
+  uint32_t masked_mxcsr = original_mxcsr & ~mask_rm_fzm;
 
   simde_mm_setcsr(masked_mxcsr | SIMDE_MM_ROUND_NEAREST | SIMDE_MM_FLUSH_ZERO_OFF);
   uint32_t rm_nearest_off = HEDLEY_STATIC_CAST(uint32_t, SIMDE_MM_GET_ROUNDING_MODE());
