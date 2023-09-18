@@ -277,6 +277,66 @@ simde_vuzpq_u32(simde_uint32x4_t a, simde_uint32x4_t b) {
   #define vuzpq_u32(a, b) simde_vuzpq_u32((a), (b))
 #endif
 
+SIMDE_FUNCTION_ATTRIBUTES
+simde_poly8x8x2_t
+simde_vuzp_p8(simde_poly8x8_t a, simde_poly8x8_t b) {
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    return vuzp_p8(a, b);
+  #else
+    simde_poly8x8x2_t r = { { simde_vuzp1_p8(a, b), simde_vuzp2_p8(a, b) } };
+    return r;
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+  #undef vuzp_p8
+  #define vuzp_p8(a, b) simde_vuzp_p8((a), (b))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_poly16x4x2_t
+simde_vuzp_p16(simde_poly16x4_t a, simde_poly16x4_t b) {
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    return vuzp_p16(a, b);
+  #else
+    simde_poly16x4x2_t r = { { simde_vuzp1_p16(a, b), simde_vuzp2_p16(a, b) } };
+    return r;
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+  #undef vuzp_p16
+  #define vuzp_p16(a, b) simde_vuzp_p16((a), (b))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_poly8x16x2_t
+simde_vuzpq_p8(simde_poly8x16_t a, simde_poly8x16_t b) {
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    return vuzpq_p8(a, b);
+  #else
+    simde_poly8x16x2_t r = { { simde_vuzp1q_p8(a, b), simde_vuzp2q_p8(a, b) } };
+    return r;
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+  #undef vuzpq_p8
+  #define vuzpq_p8(a, b) simde_vuzpq_p8((a), (b))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_poly16x8x2_t
+simde_vuzpq_p16(simde_poly16x8_t a, simde_poly16x8_t b) {
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    return vuzpq_p16(a, b);
+  #else
+    simde_poly16x8x2_t r = { { simde_vuzp1q_p16(a, b), simde_vuzp2q_p16(a, b) } };
+    return r;
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+  #undef vuzpq_p16
+  #define vuzpq_p16(a, b) simde_vuzpq_p16((a), (b))
+#endif
+
 SIMDE_END_DECLS_
 HEDLEY_DIAGNOSTIC_POP
 

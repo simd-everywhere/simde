@@ -364,6 +364,7 @@ typedef union {
   typedef       poly8_t       simde_poly8_t;
   typedef      poly16_t      simde_poly16_t;
   typedef      poly64_t      simde_poly64_t;
+  typedef     poly128_t     simde_poly128_t;
 
   typedef      int8x8_t      simde_int8x8_t;
   typedef     int16x4_t     simde_int16x4_t;
@@ -697,6 +698,7 @@ typedef union {
   typedef       uint8_t       simde_poly8_t;
   typedef      uint16_t      simde_poly16_t;
   typedef      uint64_t      simde_poly64_t;
+  typedef unsigned __int128 simde_poly128_t;
 #endif
 #if defined(SIMDE_ARM_NEON_NEED_PORTABLE_I8X8) || defined(SIMDE_ARM_NEON_NEED_PORTABLE_64BIT)
   typedef simde_int8x8_private simde_int8x8_t;

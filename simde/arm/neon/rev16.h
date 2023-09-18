@@ -129,6 +129,34 @@ simde_vrev16q_u8(simde_uint8x16_t a) {
   #define vrev16q_u8(a) simde_vrev16q_u8(a)
 #endif
 
+SIMDE_FUNCTION_ATTRIBUTES
+simde_poly8x8_t
+simde_vrev16_p8(simde_poly8x8_t a) {
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    return vrev16_p8(a);
+  #else
+    return simde_vreinterpret_p8_s8(simde_vrev16_s8(simde_vreinterpret_s8_p8(a)));
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+  #undef vrev16_p8
+  #define vrev16_p8(a) simde_vrev16_p8(a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_poly8x16_t
+simde_vrev16q_p8(simde_poly8x16_t a) {
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    return vrev16q_p8(a);
+  #else
+    return simde_vreinterpretq_p8_s8(simde_vrev16q_s8(simde_vreinterpretq_s8_p8(a)));
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+  #undef vrev16q_p8
+  #define vrev16q_p8(a) simde_vrev16q_p8(a)
+#endif
+
 SIMDE_END_DECLS_
 HEDLEY_DIAGNOSTIC_POP
 
