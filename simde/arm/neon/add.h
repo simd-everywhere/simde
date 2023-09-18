@@ -882,6 +882,23 @@ simde_vaddq_p64(simde_poly64x2_t a, simde_poly64x2_t b) {
   #define vaddq_p64(a, b) simde_vaddq_p64((a), (b))
 #endif
 
+SIMDE_FUNCTION_ATTRIBUTES
+simde_poly128_t
+simde_vaddq_p128(simde_poly128_t a, simde_poly128_t b) {
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
+    return vaddq_p128(a, b);
+  #else
+    simde_poly128_t mask = 0xFFFFFFFFFFFFFFFFull;
+    mask = mask << 64;
+    mask = mask | 0xFFFFFFFFFFFFFFFFull;
+    return b ^ ((0 ^ a) & mask);
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+  #undef vaddq_p128
+  #define vaddq_p128(a, b) simde_vaddq_p128((a), (b))
+#endif
+
 SIMDE_END_DECLS_
 HEDLEY_DIAGNOSTIC_POP
 
