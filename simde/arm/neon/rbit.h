@@ -159,6 +159,34 @@ simde_vrbitq_s8(simde_int8x16_t a) {
   #define vrbitq_s8(a) simde_vrbitq_s8(a)
 #endif
 
+SIMDE_FUNCTION_ATTRIBUTES
+simde_poly8x8_t
+simde_vrbit_p8(simde_poly8x8_t a) {
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+    return vrbit_p8(a);
+  #else
+    return simde_vreinterpret_p8_u8(simde_vrbit_u8(simde_vreinterpret_u8_p8(a)));
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vrbit_p8
+  #define vrbit_p8(a) simde_vrbit_p8(a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_poly8x16_t
+simde_vrbitq_p8(simde_poly8x16_t a) {
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+    return vrbitq_p8(a);
+  #else
+    return simde_vreinterpretq_p8_u8(simde_vrbitq_u8(simde_vreinterpretq_u8_p8(a)));
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vrbitq_p8
+  #define vrbitq_p8(a) simde_vrbitq_p8(a)
+#endif
+
 SIMDE_END_DECLS_
 HEDLEY_DIAGNOSTIC_POP
 
