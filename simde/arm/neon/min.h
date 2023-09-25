@@ -159,14 +159,10 @@ simde_vmin_s16(simde_int16x4_t a, simde_int16x4_t b) {
       a_ = simde_int16x4_to_private(a),
       b_ = simde_int16x4_to_private(b);
 
-    #if defined(SIMDE_X86_MMX_NATIVE)
-      r_.m64 = _mm_sub_pi16(a_.m64, _mm_subs_pu16(b_.m64));
-    #else
-      SIMDE_VECTORIZE
-      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-        r_.values[i] = (a_.values[i] < b_.values[i]) ? a_.values[i] : b_.values[i];
-      }
-    #endif
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+      r_.values[i] = (a_.values[i] < b_.values[i]) ? a_.values[i] : b_.values[i];
+    }
 
     return simde_int16x4_from_private(r_);
   #endif
