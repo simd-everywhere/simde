@@ -36,7 +36,7 @@ jobs:
       - checkout
       - run: cat /proc/cpuinfo /proc/meminfo
       - run: pipx install meson==0.55.0
-      - run: CC=clang CXX=clang++ /root/.local/bin/meson setup build -Db_coverage=true
+      - run: CFLAGS="-Wno-unsafe-buffer-usage" CXXFLAGS="-Wno-unsafe-buffer-usage" CC=clang CXX=clang++ /root/.local/bin/meson setup build -Db_coverage=true
       - run: ninja -C build -v -j 5
       - run: ninja -C build -v test
 
