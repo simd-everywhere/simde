@@ -1,4 +1,3 @@
-
 #define SIMDE_TEST_ARM_NEON_INSN qrshrun_n
 
 #include "test-neon.h"

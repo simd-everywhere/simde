@@ -37,9 +37,31 @@ SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 SIMDE_BEGIN_DECLS_
 
 SIMDE_FUNCTION_ATTRIBUTES
+simde_float16_t
+simde_vmaxh_f16(simde_float16_t a, simde_float16_t b) {
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
+    return vmaxh_f16(a, b);
+  #else
+    simde_float32_t r_;
+    simde_float32_t a_ = simde_float16_to_float32(a);
+    simde_float32_t b_ = simde_float16_to_float32(b);
+    #if !defined(SIMDE_FAST_NANS)
+      r_ = (a_ >= b_) ? a_ : ((a_ < b_) ? b_ : SIMDE_MATH_NANF);
+    #else
+      r_ = (a_ > b_) ? a_ : b_;
+    #endif
+    return simde_float16_from_float32(r_);
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+  #undef vmaxh_f16
+  #define vmaxh_f16(a, b) simde_vmaxh_f16((a), (b))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
 simde_float16x4_t
 simde_vmax_f16(simde_float16x4_t a, simde_float16x4_t b) {
-  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
     return vmax_f16(a, b);
   #else
     simde_float16x4_private
@@ -49,11 +71,7 @@ simde_vmax_f16(simde_float16x4_t a, simde_float16x4_t b) {
 
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      #if !defined(SIMDE_FAST_NANS)
-        r_.values[i] = (a_.values[i] >= b_.values[i]) ? a_.values[i] : ((a_.values[i] < b_.values[i]) ? b_.values[i] : SIMDE_MATH_NANF);
-      #else
-        r_.values[i] = (a_.values[i] > b_.values[i]) ? a_.values[i] : b_.values[i];
-      #endif
+      r_.values[i] = simde_vmaxh_f16(a_.values[i], b_.values[i]);
     }
 
     return simde_float16x4_from_private(r_);
@@ -324,7 +342,7 @@ simde_x_vmax_u64(simde_uint64x1_t a, simde_uint64x1_t b) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float16x8_t
 simde_vmaxq_f16(simde_float16x8_t a, simde_float16x8_t b) {
-  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
     return vmaxq_f16(a, b);
   #else
     simde_float16x8_private
@@ -334,11 +352,7 @@ simde_vmaxq_f16(simde_float16x8_t a, simde_float16x8_t b) {
 
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-        #if !defined(SIMDE_FAST_NANS)
-          r_.values[i] = (a_.values[i] >= b_.values[i]) ? a_.values[i] : ((a_.values[i] < b_.values[i]) ? b_.values[i] : SIMDE_MATH_NANF);
-        #else
-          r_.values[i] = (a_.values[i] > b_.values[i]) ? a_.values[i] : b_.values[i];
-        #endif
+        r_.values[i] = simde_vmaxh_f16(a_.values[i], b_.values[i]);
       }
 
     return simde_float16x8_from_private(r_);
