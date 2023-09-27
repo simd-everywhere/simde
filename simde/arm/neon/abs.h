@@ -48,9 +48,25 @@ simde_vabsd_s64(int64_t a) {
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
+simde_float16_t
+simde_vabsh_f16(simde_float16_t a) {
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
+    return vabsh_f16(a);
+  #else
+    simde_float32_t a_ = simde_float16_to_float32(a);
+
+    return (a_ >= 0.0f) ? simde_float16_from_float32(a_) : simde_float16_from_float32(-a_);
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+  #undef vabsh_f16
+  #define vabsh_f16(a) simde_vabsh_f16(a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
 simde_float16x4_t
 simde_vabs_f16(simde_float16x4_t a) {
-  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
     return vabs_f16(a);
   #else
     simde_float16x4_private
@@ -59,7 +75,7 @@ simde_vabs_f16(simde_float16x4_t a) {
 
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = a_.values[i] >= 0 ? a_.values[i] : -a_.values[i];
+      r_.values[i] = simde_vabsh_f16(a_.values[i]);
     }
 
     return simde_float16x4_from_private(r_);
@@ -237,7 +253,7 @@ simde_vabs_s64(simde_int64x1_t a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float16x8_t
 simde_vabsq_f16(simde_float16x8_t a) {
-  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
     return vabsq_f16(a);
   #else
     simde_float16x8_private
@@ -246,7 +262,7 @@ simde_vabsq_f16(simde_float16x8_t a) {
 
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = a_.values[i] >= 0 ? a_.values[i] : -a_.values[i];
+      r_.values[i] = simde_vabsh_f16(a_.values[i]);
     }
 
     return simde_float16x8_from_private(r_);

@@ -28,6 +28,7 @@
 #define SIMDE_ARM_NEON_MUL_LANE_H
 
 #include "types.h"
+#include "mul.h"
 
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
@@ -364,7 +365,7 @@ simde_vmulq_lane_f16(simde_float16x8_t a, simde_float16x4_t b, const int lane)
 
   SIMDE_VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-    r_.values[i] = a_.values[i] * b_.values[lane];
+    r_.values[i] = simde_vmulh_f16(a_.values[i], b_.values[lane]);
   }
 
   return simde_float16x8_from_private(r_);

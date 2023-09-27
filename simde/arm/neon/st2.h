@@ -40,7 +40,7 @@ SIMDE_BEGIN_DECLS_
 SIMDE_FUNCTION_ATTRIBUTES
 void
 simde_vst2_f16(simde_float16_t *ptr, simde_float16x4x2_t val) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
     vst2_f16(ptr, val);
   #else
     simde_float16_t buf[8];
@@ -260,7 +260,7 @@ simde_vst2_u64(uint64_t *ptr, simde_uint64x1x2_t val) {
 SIMDE_FUNCTION_ATTRIBUTES
 void
 simde_vst2q_f16(simde_float16_t *ptr, simde_float16x8x2_t val) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
     vst2q_f16(ptr, val);
   #else
     simde_float16x8x2_t r = simde_vzipq_f16(val.val[0], val.val[1]);

@@ -35,6 +35,23 @@ SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 SIMDE_BEGIN_DECLS_
 
 SIMDE_FUNCTION_ATTRIBUTES
+simde_float16_t
+simde_vrecpeh_f16(simde_float16_t a) {
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
+    return vrecpeh_f16(a);
+  #else
+    simde_float32_t r_;
+    simde_float32_t a_ = simde_float16_to_float32(a);
+    r_ = 1.0f / a_;
+    return simde_float16_from_float32(r_);
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+  #undef vrecpeh_f16
+  #define vrecpeh_f16(a) simde_vrecpeh_f16((a))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
 simde_float32_t
 simde_vrecpes_f32(simde_float32_t a) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
@@ -65,7 +82,7 @@ simde_vrecped_f64(simde_float64_t a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float16x4_t
 simde_vrecpe_f16(simde_float16x4_t a) {
-  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
     return vrecpe_f16(a);
   #else
     simde_float16x4_private
@@ -74,7 +91,7 @@ simde_vrecpe_f16(simde_float16x4_t a) {
 
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = SIMDE_FLOAT16_C(1.0) / a_.values[i];
+      r_.values[i] = simde_vrecpeh_f16(a_.values[i]);
     }
 
     return simde_float16x4_from_private(r_);
@@ -224,7 +241,7 @@ simde_vrecpeq_f32(simde_float32x4_t a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float16x8_t
 simde_vrecpeq_f16(simde_float16x8_t a) {
-  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
     return vrecpeq_f16(a);
   #else
     simde_float16x8_private
@@ -233,7 +250,7 @@ simde_vrecpeq_f16(simde_float16x8_t a) {
 
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = SIMDE_FLOAT16_C(1.0) / a_.values[i];
+      r_.values[i] = simde_vrecpeh_f16(a_.values[i]);
     }
 
     return simde_float16x8_from_private(r_);

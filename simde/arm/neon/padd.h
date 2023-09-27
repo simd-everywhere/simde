@@ -99,7 +99,7 @@ simde_vpadds_f32(simde_float32x2_t a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float16x4_t
 simde_vpadd_f16(simde_float16x4_t a, simde_float16x4_t b) {
-  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && !SIMDE_DETECT_CLANG_VERSION_NOT(9,0,0)
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && !SIMDE_DETECT_CLANG_VERSION_NOT(9,0,0) && defined(SIMDE_ARM_NEON_FP16)
     return vpadd_f16(a, b);
   #else
     return simde_vadd_f16(simde_vuzp1_f16(a, b), simde_vuzp2_f16(a, b));

@@ -37,11 +37,14 @@ SIMDE_BEGIN_DECLS_
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float16_t
 simde_vrsqrteh_f16(simde_float16_t a) {
-  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
     return vrsqrteh_f16(a);
   #else
     #if defined(simde_math_sqrtf)
-      return 1.0f / simde_math_sqrtf(a);
+      simde_float32_t r_;
+      simde_float32_t a_ = simde_float16_to_float32(a);
+      r_ = 1.0f / simde_math_sqrtf(a_);
+      return simde_float16_from_float32(r_);
     #else
       HEDLEY_UNREACHABLE();
     #endif
@@ -165,7 +168,7 @@ simde_vrsqrte_u32(simde_uint32x2_t a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float16x4_t
 simde_vrsqrte_f16(simde_float16x4_t a) {
-  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
     return vrsqrte_f16(a);
   #else
     simde_float16x4_private
@@ -175,7 +178,7 @@ simde_vrsqrte_f16(simde_float16x4_t a) {
     #if defined(simde_math_sqrtf)
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-        r_.values[i] = 1.0f / simde_math_sqrtf(a_.values[i]);
+        r_.values[i] = simde_vrsqrteh_f16(a_.values[i]);
       }
     #else
       HEDLEY_UNREACHABLE();
@@ -327,7 +330,7 @@ simde_vrsqrteq_u32(simde_uint32x4_t a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float16x8_t
 simde_vrsqrteq_f16(simde_float16x8_t a) {
-  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
     return vrsqrteq_f16(a);
   #else
     simde_float16x8_private
@@ -337,7 +340,7 @@ simde_vrsqrteq_f16(simde_float16x8_t a) {
     #if defined(simde_math_sqrtf)
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-        r_.values[i] = 1.0f / simde_math_sqrtf(a_.values[i]);
+        r_.values[i] = simde_vrsqrteh_f16(a_.values[i]);
       }
     #else
       HEDLEY_UNREACHABLE();

@@ -402,9 +402,9 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde_float16x8_t
 simde_vextq_f16(simde_float16x8_t a, simde_float16x8_t b, const int n)
     SIMDE_REQUIRE_CONSTANT_RANGE(n, 0, 7) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-    simde_float32x4_t r;
-    SIMDE_CONSTIFY_4_(vextq_f32, r, (HEDLEY_UNREACHABLE(), a), n, a, b);
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
+    simde_float16x8_t r;
+    SIMDE_CONSTIFY_8_(vextq_f16, r, (HEDLEY_UNREACHABLE(), a), n, a, b);
     return r;
   #else
     simde_float16x8_private
@@ -420,8 +420,8 @@ simde_vextq_f16(simde_float16x8_t a, simde_float16x8_t b, const int n)
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
-  #undef vextq_f32
-  #define vextq_f32(a, b, n) simde_vextq_f32((a), (b), (n))
+  #undef vextq_f16
+  #define vextq_f16(a, b, n) simde_vextq_f16((a), (b), (n))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
