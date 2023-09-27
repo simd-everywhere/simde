@@ -5,7 +5,7 @@
 
 static int
 test_simde_vmax_f16 (SIMDE_MUNIT_TEST_ARGS) {
-  static const struct {
+  struct {
     simde_float16 a[4];
     simde_float16 b[4];
     simde_float16 r[4];
@@ -540,7 +540,7 @@ test_simde_x_vmax_u64 (SIMDE_MUNIT_TEST_ARGS) {
 
 static int
 test_simde_vmaxq_f16 (SIMDE_MUNIT_TEST_ARGS) {
-  static const struct {
+  struct {
     simde_float16 a[8];
     simde_float16 b[8];
     simde_float16 r[8];
