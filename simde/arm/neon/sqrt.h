@@ -78,7 +78,7 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde_float32x2_t
 simde_vsqrt_f32(simde_float32x2_t a) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
-    return vsqrt_f32(a, b);
+    return vsqrt_f32(a);
   #elif defined(simde_math_sqrtf)
     simde_float32x2_private
       r_,
@@ -103,15 +103,15 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde_float64x1_t
 simde_vsqrt_f64(simde_float64x1_t a) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
-    return vsqrt_f64(a, b);
-  #elif defined(simde_math_sqrtl)
+    return vsqrt_f64(a);
+  #elif defined(simde_math_sqrt)
     simde_float64x1_private
       r_,
       a_ = simde_float64x1_to_private(a);
 
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = simde_math_sqrtl(a_.values[i]);
+      r_.values[i] = simde_math_sqrt(a_.values[i]);
     }
 
     return simde_float64x1_from_private(r_);
@@ -176,14 +176,14 @@ simde_float64x2_t
 simde_vsqrtq_f64(simde_float64x2_t a) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vsqrtq_f64(a);
-  #elif defined(simde_math_sqrtl)
+  #elif defined(simde_math_sqrt)
     simde_float64x2_private
       r_,
       a_ = simde_float64x2_to_private(a);
 
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = simde_math_sqrtl(a_.values[i]);
+      r_.values[i] = simde_math_sqrt(a_.values[i]);
     }
 
     return simde_float64x2_from_private(r_);

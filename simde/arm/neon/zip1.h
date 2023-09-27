@@ -37,7 +37,7 @@ SIMDE_BEGIN_DECLS_
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float16x4_t
 simde_vzip1_f16(simde_float16x4_t a, simde_float16x4_t b) {
-  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
     return vzip1_f16(a, b);
   #else
     simde_float16x4_private
@@ -308,7 +308,7 @@ simde_vzip1_u32(simde_uint32x2_t a, simde_uint32x2_t b) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float16x8_t
 simde_vzip1q_f16(simde_float16x8_t a, simde_float16x8_t b) {
-  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
     return vzip1q_f16(a, b);
   #else
     simde_float16x8_private

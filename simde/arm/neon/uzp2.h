@@ -37,7 +37,7 @@ SIMDE_BEGIN_DECLS_
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float16x4_t
 simde_vuzp2_f16(simde_float16x4_t a, simde_float16x4_t b) {
-  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
     return vuzp2_f16(a, b);
   #else
     simde_float16x4_private

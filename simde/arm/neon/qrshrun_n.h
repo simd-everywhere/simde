@@ -56,7 +56,7 @@ SIMDE_BEGIN_DECLS_
 #endif
 
 #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
-  #define simde_vqrshrunh_n_s16(a, n) vqrshrunh_n_s16((a), (n))
+  #define simde_vqrshrunh_n_s16(a, n) HEDLEY_STATIC_CAST(uint8_t, vqrshrunh_n_s16((a), (n)))
 #else
   #define simde_vqrshrunh_n_s16(a, n) simde_vqmovunh_s16(simde_x_vrshrh_n_s16(a, n))
 #endif

@@ -65,7 +65,7 @@ simde_vfma_f64(simde_float64x1_t a, simde_float64x1_t b, simde_float64x1_t c) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float16x8_t
 simde_vfmaq_f16(simde_float16x8_t a, simde_float16x8_t b, simde_float16x8_t c) {
-  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && (defined(__ARM_FEATURE_FMA) && __ARM_FEATURE_FMA)
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && (defined(__ARM_FEATURE_FMA) && __ARM_FEATURE_FMA) && defined(SIMDE_ARM_NEON_FP16)
     return vfmaq_f16(a, b, c);
   #else
     return simde_vaddq_f16(a, simde_vmulq_f16(b, c));

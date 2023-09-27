@@ -1183,12 +1183,7 @@ simde_vcvtas_s32_f32(simde_float32 a) {
     } else {
       // Round to Nearest with Ties to Away (a.k.a Rounding away from zero) rounding mode.
       // For example, 23.2 gets rounded to 24, and −23.2 gets rounded to −24.
-      if (a > 0)
-        return HEDLEY_STATIC_CAST(int32_t, (a+1));
-      else if (a < 0)
-        return HEDLEY_STATIC_CAST(int32_t, (a-1));
-      else
-        return HEDLEY_STATIC_CAST(int32_t, 0);
+      return HEDLEY_STATIC_CAST(int32_t, simde_math_roundf(a));
     }
   #endif
 }
@@ -1210,10 +1205,8 @@ simde_vcvtas_u32_f32(simde_float32 a) {
     } else {
       // Round to Nearest with Ties to Away (a.k.a Rounding away from zero) rounding mode.
       // For example, 23.2 gets rounded to 24, and −23.2 gets rounded to −24.
-      if (a > 0)
-        return HEDLEY_STATIC_CAST(int32_t, (a+1));
-      else
-        return HEDLEY_STATIC_CAST(uint32_t, 0);
+      if(a < 0) return 0;
+      return HEDLEY_STATIC_CAST(uint32_t, simde_math_roundf(a));
     }
   #endif
 }
