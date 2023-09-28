@@ -977,6 +977,7 @@ HEDLEY_DIAGNOSTIC_POP
 #    if defined(SIMDE_ARCH_ARM)
 #      define SIMDE_BUG_GCC_95399
 #      define SIMDE_BUG_GCC_95471
+#      define SIMDE_BUG_GCC_111609
 #    elif defined(SIMDE_ARCH_POWER)
 #      define SIMDE_BUG_GCC_95227
 #      define SIMDE_BUG_GCC_95782
