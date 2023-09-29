@@ -23,6 +23,7 @@
  * Copyright:
  *   2020      Evan Nemerson <evan@nemerson.com>
  *   2021      Décio Luiz Gazzoni Filho <decio@decpp.net>
+ *   2023      Yi-Yen Chung <eric681@andestech.com> (Copyright owned by Andes Technology)
  */
 
 #if !defined(SIMDE_ARM_NEON_ST1_X2_H)
@@ -39,7 +40,7 @@ SIMDE_BEGIN_DECLS_
 SIMDE_FUNCTION_ATTRIBUTES
 void
 simde_vst1_f32_x2(simde_float32 ptr[HEDLEY_ARRAY_PARAM(4)], simde_float32x2x2_t val) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && !defined(SIMDE_BUG_GCC_REV_260989)
     vst1_f32_x2(ptr, val);
   #else
     simde_vst1_f32(ptr, val.val[0]);
@@ -48,28 +49,28 @@ simde_vst1_f32_x2(simde_float32 ptr[HEDLEY_ARRAY_PARAM(4)], simde_float32x2x2_t 
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vst1_f32_x2
-  #define vst1_f32_x2(a, b) simde_vst1_f32_x2((a), (b))
+  #define vst1_f32_x2(ptr, val) simde_vst1_f32_x2((ptr), (val))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
 void
 simde_vst1_f64_x2(simde_float64 ptr[HEDLEY_ARRAY_PARAM(2)], simde_float64x1x2_t val) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     vst1_f64_x2(ptr, val);
   #else
     simde_vst1_f64(ptr, val.val[0]);
     simde_vst1_f64(ptr+1, val.val[1]);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
   #undef vst1_f64_x2
-  #define vst1_f64_x2(a, b) simde_vst1_f64_x2((a), (b))
+  #define vst1_f64_x2(ptr, val) simde_vst1_f64_x2((ptr), (val))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
 void
 simde_vst1_s8_x2(int8_t ptr[HEDLEY_ARRAY_PARAM(16)], simde_int8x8x2_t val) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && !defined(SIMDE_BUG_GCC_REV_260989)
     vst1_s8_x2(ptr, val);
   #else
     simde_vst1_s8(ptr, val.val[0]);
@@ -78,13 +79,13 @@ simde_vst1_s8_x2(int8_t ptr[HEDLEY_ARRAY_PARAM(16)], simde_int8x8x2_t val) {
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vst1_s8_x2
-  #define vst1_s8_x2(a, b) simde_vst1_s8_x2((a), (b))
+  #define vst1_s8_x2(ptr, val) simde_vst1_s8_x2((ptr), (val))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
 void
 simde_vst1_s16_x2(int16_t ptr[HEDLEY_ARRAY_PARAM(8)], simde_int16x4x2_t val) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && !defined(SIMDE_BUG_GCC_REV_260989)
     vst1_s16_x2(ptr, val);
   #else
     simde_vst1_s16(ptr, val.val[0]);
@@ -93,13 +94,13 @@ simde_vst1_s16_x2(int16_t ptr[HEDLEY_ARRAY_PARAM(8)], simde_int16x4x2_t val) {
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vst1_s16_x2
-  #define vst1_s16_x2(a, b) simde_vst1_s16_x2((a), (b))
+  #define vst1_s16_x2(ptr, val) simde_vst1_s16_x2((ptr), (val))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
 void
 simde_vst1_s32_x2(int32_t ptr[HEDLEY_ARRAY_PARAM(4)], simde_int32x2x2_t val) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && !defined(SIMDE_BUG_GCC_REV_260989)
     vst1_s32_x2(ptr, val);
   #else
     simde_vst1_s32(ptr, val.val[0]);
@@ -108,13 +109,13 @@ simde_vst1_s32_x2(int32_t ptr[HEDLEY_ARRAY_PARAM(4)], simde_int32x2x2_t val) {
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vst1_s32_x2
-  #define vst1_s32_x2(a, b) simde_vst1_s32_x2((a), (b))
+  #define vst1_s32_x2(ptr, val) simde_vst1_s32_x2((ptr), (val))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
 void
 simde_vst1_s64_x2(int64_t ptr[HEDLEY_ARRAY_PARAM(2)], simde_int64x1x2_t val) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && !defined(SIMDE_BUG_GCC_REV_260989)
     vst1_s64_x2(ptr, val);
   #else
     simde_vst1_s64(ptr, val.val[0]);
@@ -123,13 +124,13 @@ simde_vst1_s64_x2(int64_t ptr[HEDLEY_ARRAY_PARAM(2)], simde_int64x1x2_t val) {
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vst1_s64_x2
-  #define vst1_s64_x2(a, b) simde_vst1_s64_x2((a), (b))
+  #define vst1_s64_x2(ptr, val) simde_vst1_s64_x2((ptr), (val))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
 void
 simde_vst1_u8_x2(uint8_t ptr[HEDLEY_ARRAY_PARAM(16)], simde_uint8x8x2_t val) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && !defined(SIMDE_BUG_GCC_REV_260989)
     vst1_u8_x2(ptr, val);
   #else
     simde_vst1_u8(ptr, val.val[0]);
@@ -138,13 +139,13 @@ simde_vst1_u8_x2(uint8_t ptr[HEDLEY_ARRAY_PARAM(16)], simde_uint8x8x2_t val) {
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vst1_u8_x2
-  #define vst1_u8_x2(a, b) simde_vst1_u8_x2((a), (b))
+  #define vst1_u8_x2(ptr, val) simde_vst1_u8_x2((ptr), (val))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
 void
 simde_vst1_u16_x2(uint16_t ptr[HEDLEY_ARRAY_PARAM(8)], simde_uint16x4x2_t val) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && !defined(SIMDE_BUG_GCC_REV_260989)
     vst1_u16_x2(ptr, val);
   #else
     simde_vst1_u16(ptr, val.val[0]);
@@ -153,13 +154,13 @@ simde_vst1_u16_x2(uint16_t ptr[HEDLEY_ARRAY_PARAM(8)], simde_uint16x4x2_t val) {
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vst1_u16_x2
-  #define vst1_u16_x2(a, b) simde_vst1_u16_x2((a), (b))
+  #define vst1_u16_x2(ptr, val) simde_vst1_u16_x2((ptr), (val))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
 void
 simde_vst1_u32_x2(uint32_t ptr[HEDLEY_ARRAY_PARAM(4)], simde_uint32x2x2_t val) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && !defined(SIMDE_BUG_GCC_REV_260989)
     vst1_u32_x2(ptr, val);
   #else
     simde_vst1_u32(ptr, val.val[0]);
@@ -168,13 +169,13 @@ simde_vst1_u32_x2(uint32_t ptr[HEDLEY_ARRAY_PARAM(4)], simde_uint32x2x2_t val) {
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vst1_u32_x2
-  #define vst1_u32_x2(a, b) simde_vst1_u32_x2((a), (b))
+  #define vst1_u32_x2(ptr, val) simde_vst1_u32_x2((ptr), (val))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
 void
 simde_vst1_u64_x2(uint64_t ptr[HEDLEY_ARRAY_PARAM(2)], simde_uint64x1x2_t val) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && !defined(SIMDE_BUG_GCC_REV_260989)
     vst1_u64_x2(ptr, val);
   #else
     simde_vst1_u64(ptr, val.val[0]);
@@ -183,7 +184,7 @@ simde_vst1_u64_x2(uint64_t ptr[HEDLEY_ARRAY_PARAM(2)], simde_uint64x1x2_t val) {
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vst1_u64_x2
-  #define vst1_u64_x2(a, b) simde_vst1_u64_x2((a), (b))
+  #define vst1_u64_x2(ptr, val) simde_vst1_u64_x2((ptr), (val))
 #endif
 
 #endif /* !defined(SIMDE_BUG_INTEL_857088) */
