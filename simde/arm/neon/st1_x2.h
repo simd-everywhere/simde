@@ -54,14 +54,14 @@ simde_vst1_f32_x2(simde_float32 ptr[HEDLEY_ARRAY_PARAM(4)], simde_float32x2x2_t 
 SIMDE_FUNCTION_ATTRIBUTES
 void
 simde_vst1_f64_x2(simde_float64 ptr[HEDLEY_ARRAY_PARAM(2)], simde_float64x1x2_t val) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     vst1_f64_x2(ptr, val);
   #else
     simde_vst1_f64(ptr, val.val[0]);
     simde_vst1_f64(ptr+1, val.val[1]);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
   #undef vst1_f64_x2
   #define vst1_f64_x2(a, b) simde_vst1_f64_x2((a), (b))
 #endif
