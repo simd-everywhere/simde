@@ -55,7 +55,7 @@ simde_vst1q_f32_x3(simde_float32 ptr[HEDLEY_ARRAY_PARAM(12)], simde_float32x4x3_
 SIMDE_FUNCTION_ATTRIBUTES
 void
 simde_vst1q_f64_x3(simde_float64 ptr[HEDLEY_ARRAY_PARAM(6)], simde_float64x2x3_t val) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     vst1q_f64_x3(ptr, val);
   #else
     simde_vst1q_f64(ptr, val.val[0]);
@@ -63,7 +63,7 @@ simde_vst1q_f64_x3(simde_float64 ptr[HEDLEY_ARRAY_PARAM(6)], simde_float64x2x3_t
     simde_vst1q_f64(ptr+4, val.val[2]);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
   #undef vst1q_f64_x3
   #define vst1q_f64_x3(a, b) simde_vst1q_f64_x3((a), (b))
 #endif
