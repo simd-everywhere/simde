@@ -5136,8 +5136,8 @@ simde_mm256_shuffle_pd (simde__m256d a, simde__m256d b, const int imm8)
 #elif SIMDE_NATURAL_VECTOR_SIZE_LE(128)
   #define simde_mm256_shuffle_pd(a, b, imm8) \
       simde_mm256_set_m128d( \
-          simde_mm_shuffle_pd(simde_mm256_extractf128_pd(a, 1), simde_mm256_extractf128_pd(b, 1), (imm8 >> 0) & 3), \
-          simde_mm_shuffle_pd(simde_mm256_extractf128_pd(a, 0), simde_mm256_extractf128_pd(b, 0), (imm8 >> 2) & 3))
+          simde_mm_shuffle_pd(simde_mm256_extractf128_pd(a, 1), simde_mm256_extractf128_pd(b, 1), (imm8 >> 2) & 3), \
+          simde_mm_shuffle_pd(simde_mm256_extractf128_pd(a, 0), simde_mm256_extractf128_pd(b, 0), (imm8 >> 0) & 3))
 #elif defined(SIMDE_SHUFFLE_VECTOR_)
   #define simde_mm256_shuffle_pd(a, b, imm8) \
     SIMDE_SHUFFLE_VECTOR_(64, 32, a, b, \
