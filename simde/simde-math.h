@@ -1363,6 +1363,16 @@ simde_math_fpclass(double v, const int imm8) {
   #endif
 #endif
 
+#if !defined(simde_math_sqrtl)
+  #if SIMDE_MATH_BUILTIN_LIBM(sqrtl)
+    #define simde_math_sqrtl(v) __builtin_sqrtl(v)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_sqrtl(v) std::sqrt(v)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_sqrtl(v) sqrtl(v)
+  #endif
+#endif
+
 #if !defined(simde_math_tan)
   #if SIMDE_MATH_BUILTIN_LIBM(tan)
     #define simde_math_tan(v) __builtin_tan(v)
