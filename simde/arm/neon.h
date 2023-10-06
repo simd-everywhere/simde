@@ -22,6 +22,7 @@
  *
  * Copyright:
  *   2020      Evan Nemerson <evan@nemerson.com>
+ *   2023      Yi-Yen Chung <eric681@andestech.com> (Copyright owned by Andes Technology)
  */
 
 #if !defined(SIMDE_ARM_NEON_H)
@@ -68,6 +69,7 @@
 #include "neon/cvtn.h"
 #include "neon/combine.h"
 #include "neon/create.h"
+#include "neon/div.h"
 #include "neon/dot.h"
 #include "neon/dot_lane.h"
 #include "neon/dup_lane.h"
@@ -184,6 +186,7 @@
 #include "neon/shr_n.h"
 #include "neon/shrn_n.h"
 #include "neon/sqadd.h"
+#include "neon/sqrt.h"
 #include "neon/sra_n.h"
 #include "neon/sri_n.h"
 #include "neon/st1.h"
