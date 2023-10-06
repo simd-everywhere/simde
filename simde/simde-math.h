@@ -22,6 +22,7 @@
  *
  * Copyright:
  *   2017-2020 Evan Nemerson <evan@nemerson.com>
+ *   2023      Yi-Yen Chung <eric681@andestech.com> (Copyright owned by Andes Technology)
  */
 
 /* Attempt to find math functions.  Functions may be in <cmath>,
@@ -1360,6 +1361,16 @@ simde_math_fpclass(double v, const int imm8) {
     #define simde_math_sqrtf(v) std::sqrt(v)
   #elif defined(SIMDE_MATH_HAVE_MATH_H)
     #define simde_math_sqrtf(v) sqrtf(v)
+  #endif
+#endif
+
+#if !defined(simde_math_sqrtl)
+  #if SIMDE_MATH_BUILTIN_LIBM(sqrtl)
+    #define simde_math_sqrtl(v) __builtin_sqrtl(v)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_sqrtl(v) std::sqrt(v)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_sqrtl(v) sqrtl(v)
   #endif
 #endif
 

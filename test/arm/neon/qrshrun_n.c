@@ -1,8 +1,86 @@
-
 #define SIMDE_TEST_ARM_NEON_INSN qrshrun_n
 
 #include "test-neon.h"
 #include "../../../simde/arm/neon/qrshrun_n.h"
+
+static int
+test_simde_vqrshrunh_n_s16 (SIMDE_MUNIT_TEST_ARGS) {
+  static const struct {
+    int16_t a;
+    uint8_t r1;
+    uint8_t r3;
+    uint8_t r5;
+    uint8_t r6;
+    uint8_t r8;
+  } test_vec[] = {
+    { -INT16_C( 14576),
+      UINT8_C(  0),
+      UINT8_C(  0),
+      UINT8_C(  0),
+      UINT8_C(  0),
+      UINT8_C(  0) },
+    {  INT16_C( 14737),
+         UINT8_MAX,
+         UINT8_MAX,
+         UINT8_MAX,
+      UINT8_C(230),
+      UINT8_C( 58) },
+    { -INT16_C( 20270),
+      UINT8_C(  0),
+      UINT8_C(  0),
+      UINT8_C(  0),
+      UINT8_C(  0),
+      UINT8_C(  0) },
+    {  INT16_C( 19750),
+         UINT8_MAX,
+         UINT8_MAX,
+         UINT8_MAX,
+         UINT8_MAX,
+      UINT8_C( 77) },
+    { -INT16_C( 27309),
+      UINT8_C(  0),
+      UINT8_C(  0),
+      UINT8_C(  0),
+      UINT8_C(  0),
+      UINT8_C(  0) },
+    {  INT16_C( 10024),
+         UINT8_MAX,
+         UINT8_MAX,
+         UINT8_MAX,
+      UINT8_C(157),
+      UINT8_C( 39) },
+    { -INT16_C( 24653),
+      UINT8_C(  0),
+      UINT8_C(  0),
+      UINT8_C(  0),
+      UINT8_C(  0),
+      UINT8_C(  0) },
+    { -INT16_C( 14574),
+      UINT8_C(  0),
+      UINT8_C(  0),
+      UINT8_C(  0),
+      UINT8_C(  0),
+      UINT8_C(  0) }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
+    int16_t a = test_vec[i].a;
+
+    uint8_t r1 = simde_vqrshrunh_n_s16(a, 1);
+    uint8_t r3 = simde_vqrshrunh_n_s16(a, 3);
+    uint8_t r5 = simde_vqrshrunh_n_s16(a, 5);
+    uint8_t r6 = simde_vqrshrunh_n_s16(a, 6);
+    uint8_t r8 = simde_vqrshrunh_n_s16(a, 8);
+
+    simde_assert_equal_u8(r1, test_vec[i].r1);
+    simde_assert_equal_u8(r3, test_vec[i].r3);
+    simde_assert_equal_u8(r5, test_vec[i].r5);
+    simde_assert_equal_u8(r6, test_vec[i].r6);
+    simde_assert_equal_u8(r8, test_vec[i].r8);
+  }
+
+  return 0;
+}
 
 static int
 test_simde_vqrshrun_n_s16 (SIMDE_MUNIT_TEST_ARGS) {
@@ -502,6 +580,7 @@ test_simde_vqrshruns_n_s32 (SIMDE_MUNIT_TEST_ARGS) {
 }
 
 SIMDE_TEST_FUNC_LIST_BEGIN
+SIMDE_TEST_FUNC_LIST_ENTRY(vqrshrunh_n_s16)
 SIMDE_TEST_FUNC_LIST_ENTRY(vqrshrun_n_s16)
 SIMDE_TEST_FUNC_LIST_ENTRY(vqrshrun_n_s32)
 SIMDE_TEST_FUNC_LIST_ENTRY(vqrshrun_n_s64)

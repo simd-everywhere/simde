@@ -23,6 +23,7 @@
  * Copyright:
  *   2020      Evan Nemerson <evan@nemerson.com>
  *   2020      Sean Maher <seanptmaher@gmail.com> (Copyright owned by Google, LLC)
+ *   2023      Yi-Yen Chung <eric681@andestech.com> (Copyright owned by Andes Technology)
  */
 
 #if !defined(SIMDE_ARM_NEON_ZIP1_H)
@@ -33,6 +34,32 @@
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 SIMDE_BEGIN_DECLS_
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_float16x4_t
+simde_vzip1_f16(simde_float16x4_t a, simde_float16x4_t b) {
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
+    return vzip1_f16(a, b);
+  #else
+    simde_float16x4_private
+      r_,
+      a_ = simde_float16x4_to_private(a),
+      b_ = simde_float16x4_to_private(b);
+
+    const size_t halfway_point = sizeof(r_.values) / sizeof(r_.values[0]) / 2;
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < halfway_point ; i++) {
+      r_.values[2 * i    ] = a_.values[i];
+      r_.values[2 * i + 1] = b_.values[i];
+    }
+
+    return simde_float16x4_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vzip1_f16
+  #define vzip1_f16(a, b) simde_vzip1_f16((a), (b))
+#endif
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float32x2_t
@@ -277,6 +304,32 @@ simde_vzip1_u32(simde_uint32x2_t a, simde_uint32x2_t b) {
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
   #undef vzip1_u32
   #define vzip1_u32(a, b) simde_vzip1_u32((a), (b))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_float16x8_t
+simde_vzip1q_f16(simde_float16x8_t a, simde_float16x8_t b) {
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
+    return vzip1q_f16(a, b);
+  #else
+    simde_float16x8_private
+      r_,
+      a_ = simde_float16x8_to_private(a),
+      b_ = simde_float16x8_to_private(b);
+
+    const size_t halfway_point = sizeof(r_.values) / sizeof(r_.values[0]) / 2;
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < halfway_point ; i++) {
+      r_.values[2 * i    ] = a_.values[i];
+      r_.values[2 * i + 1] = b_.values[i];
+    }
+
+    return simde_float16x8_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vzip1q_f16
+  #define vzip1q_f16(a, b) simde_vzip1q_f16((a), (b))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES

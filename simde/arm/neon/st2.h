@@ -23,6 +23,7 @@
  * Copyright:
  *   2020      Evan Nemerson <evan@nemerson.com>
  *   2021      Zhi An Ng <zhin@google.com> (Copyright owned by Google, LLC)
+ *   2023      Yi-Yen Chung <eric681@andestech.com> (Copyright owned by Andes Technology)
  */
 
 #if !defined(SIMDE_ARM_NEON_ST2_H)
@@ -36,6 +37,26 @@ SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 SIMDE_BEGIN_DECLS_
 
 #if !defined(SIMDE_BUG_INTEL_857088)
+
+SIMDE_FUNCTION_ATTRIBUTES
+void
+simde_vst2_f16(simde_float16_t *ptr, simde_float16x4x2_t val) {
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
+    vst2_f16(ptr, val);
+  #else
+    simde_float16_t buf[8];
+    simde_float16x4_private a_[2] = {simde_float16x4_to_private(val.val[0]),
+                                     simde_float16x4_to_private(val.val[1])};
+    for (size_t i = 0; i < (sizeof(val.val[0]) / sizeof(*ptr)) * 2 ; i++) {
+      buf[i] = a_[i % 2].values[i / 2];
+    }
+    simde_memcpy(ptr, buf, sizeof(buf));
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+  #undef vst2_f16
+  #define vst2_f16(a, b) simde_vst2_f16((a), (b))
+#endif
 
 SIMDE_FUNCTION_ATTRIBUTES
 void
@@ -235,6 +256,22 @@ simde_vst2_u64(uint64_t *ptr, simde_uint64x1x2_t val) {
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vst2_u64
   #define vst2_u64(a, b) simde_vst2_u64((a), (b))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+void
+simde_vst2q_f16(simde_float16_t *ptr, simde_float16x8x2_t val) {
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
+    vst2q_f16(ptr, val);
+  #else
+    simde_float16x8x2_t r = simde_vzipq_f16(val.val[0], val.val[1]);
+    simde_vst1q_f16(ptr, r.val[0]);
+    simde_vst1q_f16(ptr+8, r.val[1]);
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+  #undef vst2q_f16
+  #define vst2q_f16(a, b) simde_vst2q_f16((a), (b))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
