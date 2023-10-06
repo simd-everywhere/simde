@@ -23,6 +23,7 @@
  * Copyright:
  *   2020      Sean Maher <seanptmaher@gmail.com>
  *   2020-2021 Evan Nemerson <evan@nemerson.com>
+ *   2023      Yi-Yen Chung <eric681@andestech.com> (Copyright owned by Andes Technology)
  */
 
 #if !defined(SIMDE_ARM_NEON_CVT_H)
