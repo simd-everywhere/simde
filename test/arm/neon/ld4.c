@@ -8,7 +8,7 @@
 
 static int
 test_simde_vld4_f16 (SIMDE_MUNIT_TEST_ARGS) {
-  static const struct {
+  struct {
     simde_float16_t a[16];
     simde_float16_t r[4][4];
   } test_vec[] = {
