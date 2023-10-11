@@ -38,7 +38,7 @@ SIMDE_BEGIN_DECLS_
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float16x4_t
 simde_vfms_n_f16(simde_float16x4_t a, simde_float16x4_t b, simde_float16_t c) {
-  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && (defined(__ARM_FEATURE_FMA) && __ARM_FEATURE_FMA) && (!defined(__clang__) || SIMDE_DETECT_CLANG_VERSION_CHECK(7,0,0)) && !defined(SIMDE_BUG_GCC_95399)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && (defined(__ARM_FEATURE_FMA) && __ARM_FEATURE_FMA) && (!defined(__clang__) || SIMDE_DETECT_CLANG_VERSION_CHECK(7,0,0)) && !defined(SIMDE_BUG_GCC_95399) && defined(SIMDE_ARM_NEON_FP16)
     return vfms_n_f16(a, b, c);
   #else
     return simde_vfms_f16(a, b, simde_vdup_n_f16(c));
@@ -52,7 +52,7 @@ simde_vfms_n_f16(simde_float16x4_t a, simde_float16x4_t b, simde_float16_t c) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float16x8_t
 simde_vfmsq_n_f16(simde_float16x8_t a, simde_float16x8_t b, simde_float16_t c) {
-  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && (defined(__ARM_FEATURE_FMA) && __ARM_FEATURE_FMA) && (!defined(__clang__) || SIMDE_DETECT_CLANG_VERSION_CHECK(7,0,0)) && !defined(SIMDE_BUG_GCC_95399)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && (defined(__ARM_FEATURE_FMA) && __ARM_FEATURE_FMA) && (!defined(__clang__) || SIMDE_DETECT_CLANG_VERSION_CHECK(7,0,0)) && !defined(SIMDE_BUG_GCC_95399) && defined(SIMDE_ARM_NEON_FP16)
     return vfmsq_n_f16(a, b, c);
   #else
     return simde_vfmsq_f16(a, b, simde_vdupq_n_f16(c));

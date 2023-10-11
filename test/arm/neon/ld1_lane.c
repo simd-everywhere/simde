@@ -385,7 +385,7 @@ test_simde_vld1_lane_u64 (SIMDE_MUNIT_TEST_ARGS) {
 
 static int
 test_simde_vld1_lane_f16 (SIMDE_MUNIT_TEST_ARGS) {
-  static const struct {
+  struct {
     simde_float16_t src[4];
     simde_float16_t buf;
     simde_float16_t r[4];
@@ -1028,7 +1028,7 @@ test_simde_vld1q_lane_u64 (SIMDE_MUNIT_TEST_ARGS) {
 
 static int
 test_simde_vld1q_lane_f16 (SIMDE_MUNIT_TEST_ARGS) {
-  static const struct {
+  struct {
     simde_float16_t src[8];
     simde_float16_t buf;
     simde_float16_t r[8];
