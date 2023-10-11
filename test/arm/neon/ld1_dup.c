@@ -7,7 +7,7 @@
 
 static int
 test_simde_vld1_dup_f16 (SIMDE_MUNIT_TEST_ARGS) {
-  static const struct {
+  struct {
     simde_float16_t a;
     simde_float16_t unused;
     simde_float16_t r[4];

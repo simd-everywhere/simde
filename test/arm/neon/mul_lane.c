@@ -9,7 +9,7 @@ SIMDE_DIAGNOSTIC_DISABLE_UNREACHABLE_
 
 static int
 test_simde_vmul_lane_f16 (SIMDE_MUNIT_TEST_ARGS) {
-  static const struct {
+  struct {
     simde_float16 a[4];
     simde_float16 b[4];
     int lane;
@@ -42,7 +42,7 @@ test_simde_vmul_lane_f16 (SIMDE_MUNIT_TEST_ARGS) {
     simde_float16x4_t b = simde_vld1_f16(test_vec[i].b);
 
     simde_float16x4_t r;
-    SIMDE_CONSTIFY_4_(simde_vmul_lane_f16, r, (HEDLEY_UNREACHABLE(), simde_vdup_n_f16(SIMDE_FLOAT16_C(0.0))), test_vec[i].lane, a, b);
+    SIMDE_CONSTIFY_4_(simde_vmul_lane_f16, r, (HEDLEY_UNREACHABLE(), simde_vdup_n_f16(SIMDE_FLOAT16_VALUE(0.0))), test_vec[i].lane, a, b);
 
     simde_test_arm_neon_assert_equal_f16x4(r, simde_vld1_f16(test_vec[i].r), 1);
   }
@@ -1238,7 +1238,7 @@ test_simde_vmulq_lane_u32 (SIMDE_MUNIT_TEST_ARGS) {
 
 static int
 test_simde_vmulq_laneq_f16 (SIMDE_MUNIT_TEST_ARGS) {
-  static const struct {
+  struct {
     simde_float16 a[8];
     simde_float16 b[8];
     int lane;
@@ -1307,7 +1307,7 @@ test_simde_vmulq_laneq_f16 (SIMDE_MUNIT_TEST_ARGS) {
     simde_float16x8_t b = simde_vld1q_f16(test_vec[i].b);
 
     simde_float16x8_t r;
-    SIMDE_CONSTIFY_8_(simde_vmulq_laneq_f16, r, (HEDLEY_UNREACHABLE(), simde_vdupq_n_f16(SIMDE_FLOAT16_C(0.0))), test_vec[i].lane, a, b);
+    SIMDE_CONSTIFY_8_(simde_vmulq_laneq_f16, r, (HEDLEY_UNREACHABLE(), simde_vdupq_n_f16(SIMDE_FLOAT16_VALUE(0.0))), test_vec[i].lane, a, b);
 
     simde_test_arm_neon_assert_equal_f16x8(r, simde_vld1q_f16(test_vec[i].r), 1);
   }
@@ -1879,7 +1879,7 @@ test_simde_vmuld_laneq_f64 (SIMDE_MUNIT_TEST_ARGS) {
 
 static int
 test_simde_vmulh_lane_f16 (SIMDE_MUNIT_TEST_ARGS) {
-  static const struct {
+  struct {
     simde_float16_t a;
     simde_float16_t b[4];
     int lane;
@@ -1988,7 +1988,7 @@ test_simde_vmuls_lane_f32 (SIMDE_MUNIT_TEST_ARGS) {
 
 static int
 test_simde_vmulh_laneq_f16 (SIMDE_MUNIT_TEST_ARGS) {
-  static const struct {
+  struct {
     simde_float16_t a;
     simde_float16_t b[8];
     int lane;
@@ -2102,7 +2102,7 @@ test_simde_vmuls_laneq_f32 (SIMDE_MUNIT_TEST_ARGS) {
 
 static int
 test_simde_vmul_laneq_f16 (SIMDE_MUNIT_TEST_ARGS) {
-  static const struct {
+  struct {
     simde_float16 a[4];
     simde_float16 b[8];
     int lane;
