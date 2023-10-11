@@ -31,6 +31,8 @@
 #include "neon/types.h"
 
 #include "neon/aba.h"
+#include "neon/abal.h"
+#include "neon/abal_high.h"
 #include "neon/abd.h"
 #include "neon/abdl.h"
 #include "neon/abs.h"
@@ -48,6 +50,8 @@
 #include "neon/bsl.h"
 #include "neon/cage.h"
 #include "neon/cagt.h"
+#include "neon/cale.h"
+#include "neon/calt.h"
 #include "neon/ceq.h"
 #include "neon/ceqz.h"
 #include "neon/cge.h"

@@ -30,6 +30,7 @@
 #include "movl_high.h"
 #include "add.h"
 #include "mul.h"
+#include "mul_n.h"
 #include "dup_n.h"
 #include "mla.h"
 #include "types.h"
@@ -42,9 +43,10 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde_int32x4_t
 simde_vqdmlal_high_lane_s16(simde_int32x4_t a, simde_int16x8_t b, simde_int16x4_t v, const int lane) SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 3) {
     return simde_vaddq_s32(
+        simde_vmulq_n_s32(
         simde_vmulq_s32(
         simde_vmovl_high_s16(b),
-        simde_vmovl_high_s16(simde_vdupq_n_s16(v[lane]))) * 2, a);
+        simde_vmovl_high_s16(simde_vdupq_n_s16(simde_int16x4_to_private(v).values[lane]))), 2), a);
 }
 #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
   #define simde_vqdmlal_high_lane_s16(a, b, v, lane) vqdmlal_high_lane_s16(a, b, v, lane)
@@ -58,9 +60,10 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde_int32x4_t
 simde_vqdmlal_high_laneq_s16(simde_int32x4_t a, simde_int16x8_t b, simde_int16x8_t v, const int lane) SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 7) {
     return simde_vaddq_s32(
+        simde_vmulq_n_s32(
         simde_vmulq_s32(
         simde_vmovl_high_s16(b),
-        simde_vmovl_high_s16(simde_vdupq_n_s16(v[lane]))) * 2, a);
+        simde_vmovl_high_s16(simde_vdupq_n_s16(simde_int16x8_to_private(v).values[lane]))), 2), a);
 }
 #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
   #define simde_vqdmlal_high_laneq_s16(a, b, v, lane) vqdmlal_high_laneq_s16(a, b, v, lane)
@@ -73,10 +76,17 @@ simde_vqdmlal_high_laneq_s16(simde_int32x4_t a, simde_int16x8_t b, simde_int16x8
 SIMDE_FUNCTION_ATTRIBUTES
 simde_int64x2_t
 simde_vqdmlal_high_lane_s32(simde_int64x2_t a, simde_int32x4_t b, simde_int32x2_t v, const int lane) SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 1) {
-    return simde_vaddq_s64(
+  simde_int64x2_private r_ = simde_int64x2_to_private(
         simde_x_vmulq_s64(
         simde_vmovl_high_s32(b),
-        simde_vmovl_high_s32(simde_vdupq_n_s32(v[lane]))) * 2, a);
+        simde_vmovl_high_s32(simde_vdupq_n_s32(simde_int32x2_to_private(v).values[lane]))));
+
+  SIMDE_VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+    r_.values[i] = r_.values[i] * HEDLEY_STATIC_CAST(int64_t, 2);
+  }
+
+  return simde_vaddq_s64(a, simde_int64x2_from_private(r_));
 }
 #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
   #define simde_vqdmlal_high_lane_s32(a, b, v, lane) vqdmlal_high_lane_s32(a, b, v, lane)
@@ -89,10 +99,17 @@ simde_vqdmlal_high_lane_s32(simde_int64x2_t a, simde_int32x4_t b, simde_int32x2_
 SIMDE_FUNCTION_ATTRIBUTES
 simde_int64x2_t
 simde_vqdmlal_high_laneq_s32(simde_int64x2_t a, simde_int32x4_t b, simde_int32x4_t v, const int lane) SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 3) {
-    return simde_vaddq_s64(
+  simde_int64x2_private r_ = simde_int64x2_to_private(
         simde_x_vmulq_s64(
         simde_vmovl_high_s32(b),
-        simde_vmovl_high_s32(simde_vdupq_n_s32(v[lane]))) * 2, a);
+        simde_vmovl_high_s32(simde_vdupq_n_s32(simde_int32x4_to_private(v).values[lane]))));
+
+  SIMDE_VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+    r_.values[i] = r_.values[i] * HEDLEY_STATIC_CAST(int64_t, 2);
+  }
+
+  return simde_vaddq_s64(a, simde_int64x2_from_private(r_));
 }
 #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
   #define simde_vqdmlal_high_laneq_s32(a, b, v, lane) vqdmlal_high_laneq_s32(a, b, v, lane)
