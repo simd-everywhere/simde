@@ -7,7 +7,7 @@
 
 static int
 test_simde_vld3_dup_f16 (SIMDE_MUNIT_TEST_ARGS) {
-  static const struct {
+  struct {
     simde_float16_t a[3];
     simde_float16_t unused[3];
     simde_float16_t r[3][4];
@@ -737,7 +737,7 @@ test_simde_vld3_dup_u64 (SIMDE_MUNIT_TEST_ARGS) {
 
 static int
 test_simde_vld3q_dup_f16 (SIMDE_MUNIT_TEST_ARGS) {
-  static const struct {
+  struct {
     simde_float16_t a[3];
     simde_float16_t unused[3];
     simde_float16_t r[3][8];

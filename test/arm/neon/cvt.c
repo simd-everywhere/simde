@@ -4,6 +4,74 @@
 #include "../../../simde/arm/neon/cvt.h"
 
 static int
+test_simde_vcvth_s16_f16 (SIMDE_MUNIT_TEST_ARGS) {
+  struct {
+    simde_float16 a;
+    int16_t r;
+  } test_vec[] = {
+    {    SIMDE_FLOAT16_VALUE(  -0.604),
+         INT16_C(       0) },
+    {    SIMDE_FLOAT16_VALUE(  24.671),
+         INT16_C(      24) },
+    {    SIMDE_FLOAT16_VALUE( -23.744),
+        -INT16_C(      23) },
+    {    SIMDE_FLOAT16_VALUE(  -7.939),
+        -INT16_C(       7) },
+    {    SIMDE_FLOAT16_VALUE( -18.393),
+        -INT16_C(      18) },
+    {    SIMDE_FLOAT16_VALUE(  29.124),
+         INT16_C(      29) },
+    {    SIMDE_FLOAT16_VALUE(  26.359),
+         INT16_C(      26) },
+    {    SIMDE_FLOAT16_VALUE(  19.447),
+         INT16_C(      19) },
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
+    simde_float16_t a = test_vec[i].a;
+    int16_t r = simde_vcvth_s16_f16(a);
+
+    simde_assert_equal_i16(r, test_vec[i].r);
+  }
+
+  return 0;
+}
+
+static int
+test_simde_vcvth_u16_f16 (SIMDE_MUNIT_TEST_ARGS) {
+  struct {
+    simde_float16 a;
+    uint16_t r;
+  } test_vec[] = {
+    {    SIMDE_FLOAT16_VALUE(  25.639),
+         UINT16_C(      25) },
+    {    SIMDE_FLOAT16_VALUE( -25.081),
+         UINT16_C(       0) },
+    {    SIMDE_FLOAT16_VALUE(  15.061),
+         UINT16_C(      15) },
+    {    SIMDE_FLOAT16_VALUE( -21.777),
+         UINT16_C(       0) },
+    {    SIMDE_FLOAT16_VALUE( -26.635),
+         UINT16_C(       0) },
+    {    SIMDE_FLOAT16_VALUE(  -9.047),
+         UINT16_C(       0) },
+    {    SIMDE_FLOAT16_VALUE( -27.803),
+         UINT16_C(       0) },
+    {    SIMDE_FLOAT16_VALUE(   3.276),
+         UINT16_C(       3) },
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
+    simde_float16_t a = test_vec[i].a;
+    uint16_t r = simde_vcvth_u16_f16(a);
+
+    simde_assert_equal_u16(r, test_vec[i].r);
+  }
+
+  return 0;
+}
+
+static int
 test_simde_vcvts_s32_f32 (SIMDE_MUNIT_TEST_ARGS) {
 #if 1
   static const struct {
@@ -1797,6 +1865,8 @@ test_simde_vcvtaq_u32_f32 (SIMDE_MUNIT_TEST_ARGS) {
 }
 
 SIMDE_TEST_FUNC_LIST_BEGIN
+SIMDE_TEST_FUNC_LIST_ENTRY(vcvth_s16_f16)
+SIMDE_TEST_FUNC_LIST_ENTRY(vcvth_u16_f16)
 SIMDE_TEST_FUNC_LIST_ENTRY(vcvts_s32_f32)
 SIMDE_TEST_FUNC_LIST_ENTRY(vcvtd_s64_f64)
 SIMDE_TEST_FUNC_LIST_ENTRY(vcvts_u32_f32)
