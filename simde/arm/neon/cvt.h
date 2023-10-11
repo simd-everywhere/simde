@@ -266,7 +266,7 @@ simde_vcvtd_s64_f64(simde_float64 a) {
       return INT64_MIN;
     } else if (HEDLEY_UNLIKELY(a > HEDLEY_STATIC_CAST(simde_float64, INT64_MAX))) {
       return INT64_MAX;
-    } else if (simde_math_isnanf(a)) {
+    } else if (simde_math_isnan(a)) {
       return 0;
     } else {
       return HEDLEY_STATIC_CAST(int64_t, a);
@@ -1214,7 +1214,7 @@ simde_vcvtas_s32_f32(simde_float32 a) {
     } else if (HEDLEY_UNLIKELY(simde_math_isnanf(a))) {
       return 0;
     } else {
-      return HEDLEY_STATIC_CAST(int32_t, simde_math_round(a));
+      return HEDLEY_STATIC_CAST(int32_t, simde_math_roundf(a));
     }
   #endif
 }
@@ -1237,7 +1237,7 @@ simde_vcvtas_u32_f32(simde_float32 a) {
       return 0;
     } else {
       if(a < 0) return 0;
-      return HEDLEY_STATIC_CAST(int32_t, simde_math_round(a));
+      return HEDLEY_STATIC_CAST(uint32_t, simde_math_roundf(a));
     }
   #endif
 }

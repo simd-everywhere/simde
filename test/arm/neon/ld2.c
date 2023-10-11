@@ -603,7 +603,7 @@ test_simde_vld2_u64 (SIMDE_MUNIT_TEST_ARGS) {
 
 static int
 test_simde_vld2_f16 (SIMDE_MUNIT_TEST_ARGS) {
-  static const struct {
+  struct {
     simde_float16_t a[8];
     simde_float16_t r[2][4];
   } test_vec[] = {
