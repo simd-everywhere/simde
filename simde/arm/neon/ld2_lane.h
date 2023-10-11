@@ -205,7 +205,7 @@ simde_float16x4x2_t simde_vld2_lane_f16(simde_float16_t const ptr[HEDLEY_ARRAY_P
   }
   return r;
 }
-#if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+#if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
   #define simde_vld2_lane_f16(ptr, src, lane) vld2_lane_f16(ptr, src, lane)
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
@@ -424,7 +424,7 @@ simde_float16x8x2_t simde_vld2q_lane_f16(simde_float16_t const ptr[HEDLEY_ARRAY_
   }
   return r;
 }
-#if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+#if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
   #define simde_vld2q_lane_f16(ptr, src, lane) vld2q_lane_f16(ptr, src, lane)
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
