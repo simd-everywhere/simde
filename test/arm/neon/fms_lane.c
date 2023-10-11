@@ -90,7 +90,7 @@ test_simde_vfmsd_laneq_f64 (SIMDE_MUNIT_TEST_ARGS) {
 
 static int
 test_simde_vfmsh_lane_f16 (SIMDE_MUNIT_TEST_ARGS) {
-  static const struct {
+  struct {
     simde_float16_t a;
     simde_float16_t b;
     simde_float16_t v[4];
@@ -153,7 +153,7 @@ test_simde_vfmsh_lane_f16 (SIMDE_MUNIT_TEST_ARGS) {
 
 static int
 test_simde_vfmsh_laneq_f16 (SIMDE_MUNIT_TEST_ARGS) {
-  static const struct {
+  struct {
     simde_float16_t a;
     simde_float16_t b;
     simde_float16_t v[8];
@@ -365,7 +365,7 @@ test_simde_vfmss_laneq_f32 (SIMDE_MUNIT_TEST_ARGS) {
 
 static int
 test_simde_vfms_lane_f16 (SIMDE_MUNIT_TEST_ARGS) {
-  static const struct {
+  struct {
     simde_float16_t a[4];
     simde_float16_t b[4];
     simde_float16_t v[4];
@@ -518,7 +518,7 @@ test_simde_vfms_lane_f64 (SIMDE_MUNIT_TEST_ARGS) {
 
 static int
 test_simde_vfms_laneq_f16 (SIMDE_MUNIT_TEST_ARGS) {
-  static const struct {
+  struct {
     simde_float16_t a[4];
     simde_float16_t b[4];
     simde_float16_t v[8];
@@ -734,7 +734,7 @@ test_simde_vfms_laneq_f64 (SIMDE_MUNIT_TEST_ARGS) {
 
 static int
 test_simde_vfmsq_lane_f16 (SIMDE_MUNIT_TEST_ARGS) {
-  static const struct {
+  struct {
     simde_float16_t a[8];
     simde_float16_t b[8];
     simde_float16_t v[4];
@@ -919,7 +919,7 @@ test_simde_vfmsq_lane_f64 (SIMDE_MUNIT_TEST_ARGS) {
 
 static int
 test_simde_vfmsq_laneq_f16 (SIMDE_MUNIT_TEST_ARGS) {
-  static const struct {
+  struct {
     simde_float16_t a[8];
     simde_float16_t b[8];
     simde_float16_t v[8];

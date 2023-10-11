@@ -38,7 +38,7 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde_float16x4_t
 simde_vext_f16(simde_float16x4_t a, simde_float16x4_t b, const int n)
     SIMDE_REQUIRE_CONSTANT_RANGE(n, 0, 3) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
     simde_float16x4_t r;
     SIMDE_CONSTIFY_4_(vext_f16, r, (HEDLEY_UNREACHABLE(), a), n, a, b);
     return r;

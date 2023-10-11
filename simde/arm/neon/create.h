@@ -26,9 +26,6 @@
  *   2023      Yi-Yen Chung <eric681@andestech.com> (Copyright owned by Andes Technology)
  */
 
-/* N.B. CM: vcreate_f16 and vcreate_bf16 are omitted as
- * SIMDe has no 16-bit floating point support.
- * Idem for the poly types. */
 /* Yi-Yen Chung: Added vcreate_f16 */
 
 #if !defined(SIMDE_ARM_NEON_CREATE_H)
@@ -157,7 +154,7 @@ simde_vcreate_u64(uint64_t a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float16x4_t
 simde_vcreate_f16(uint64_t a) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
     return vcreate_f16(a);
   #else
     return simde_vreinterpret_f16_u64(simde_vdup_n_u64(a));

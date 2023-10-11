@@ -29,6 +29,7 @@
 
 #include "movl_high.h"
 #include "mla.h"
+#include "mul_n.h"
 #include "types.h"
 
 HEDLEY_DIAGNOSTIC_PUSH
@@ -41,7 +42,10 @@ simde_vqdmlal_high_s16(simde_int32x4_t a, simde_int16x8_t b, simde_int16x8_t c) 
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vqdmlal_high_s16(a, b, c);
   #else
-    return simde_vaddq_s32(simde_vmulq_s32(simde_vmovl_high_s16(b), simde_vmovl_high_s16(c)) * 2, a);
+    return simde_vaddq_s32(
+        simde_vmulq_n_s32(
+        simde_vmulq_s32(
+        simde_vmovl_high_s16(b), simde_vmovl_high_s16(c)), 2), a);
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
@@ -55,7 +59,17 @@ simde_vqdmlal_high_s32(simde_int64x2_t a, simde_int32x4_t b, simde_int32x4_t c) 
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vqdmlal_high_s32(a, b, c);
   #else
-    return simde_vaddq_s64(simde_x_vmulq_s64(simde_vmovl_high_s32(b), simde_vmovl_high_s32(c)) * 2, a);
+    simde_int64x2_private r_ = simde_int64x2_to_private(
+          simde_x_vmulq_s64(
+          simde_vmovl_high_s32(b),
+          simde_vmovl_high_s32(c)));
+
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+      r_.values[i] = r_.values[i] * HEDLEY_STATIC_CAST(int64_t, 2);
+    }
+
+    return simde_vaddq_s64(a, simde_int64x2_from_private(r_));
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)

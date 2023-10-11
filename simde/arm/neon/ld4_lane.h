@@ -277,7 +277,7 @@ simde_vld4_lane_f16(simde_float16_t const ptr[HEDLEY_ARRAY_PARAM(4)], simde_floa
 
   return r;
 }
-#if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+#if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
   #if defined(__clang__) && !SIMDE_DETECT_CLANG_VERSION_CHECK(10,0,0)
     #define simde_vld4_lane_f16(ptr, src, lane) \
       SIMDE_DISABLE_DIAGNOSTIC_EXPR_(SIMDE_DIAGNOSTIC_DISABLE_VECTOR_CONVERSION_, vld4_lane_f16(ptr, src, lane))
@@ -574,7 +574,7 @@ simde_vld4q_lane_f16(simde_float16_t const ptr[HEDLEY_ARRAY_PARAM(4)], simde_flo
 
   return r;
 }
-#if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+#if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
   #if defined(__clang__) && !SIMDE_DETECT_CLANG_VERSION_CHECK(10,0,0)
     #define simde_vld4q_lane_f16(ptr, src, lane) \
       SIMDE_DISABLE_DIAGNOSTIC_EXPR_(SIMDE_DIAGNOSTIC_DISABLE_VECTOR_CONVERSION_, vld4q_lane_f16(ptr, src, lane))

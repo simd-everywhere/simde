@@ -43,7 +43,7 @@ SIMDE_BEGIN_DECLS_
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float16x4x4_t
 simde_vld4_f16(simde_float16 const ptr[HEDLEY_ARRAY_PARAM(16)]) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
     return vld4_f16(ptr);
   #else
     simde_float16x4_private a_[4];

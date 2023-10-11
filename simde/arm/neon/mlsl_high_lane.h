@@ -40,7 +40,7 @@ SIMDE_BEGIN_DECLS_
 SIMDE_FUNCTION_ATTRIBUTES
 simde_int32x4_t
 simde_vmlsl_high_lane_s16(simde_int32x4_t a, simde_int16x8_t b, simde_int16x4_t v, const int lane) SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 3) {
-    return simde_vmlsl_high_s16(a, b, simde_vdupq_n_s16(v[lane]));
+    return simde_vmlsl_high_s16(a, b, simde_vdupq_n_s16(simde_int16x4_to_private(v).values[lane]));
 }
 #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
   #define simde_vmlsl_high_lane_s16(a, b, v, lane) vmlsl_high_lane_s16(a, b, v, lane)
@@ -53,7 +53,7 @@ simde_vmlsl_high_lane_s16(simde_int32x4_t a, simde_int16x8_t b, simde_int16x4_t 
 SIMDE_FUNCTION_ATTRIBUTES
 simde_int32x4_t
 simde_vmlsl_high_laneq_s16(simde_int32x4_t a, simde_int16x8_t b, simde_int16x8_t v, const int lane) SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 7) {
-    return simde_vmlsl_high_s16(a, b, simde_vdupq_n_s16(v[lane]));
+    return simde_vmlsl_high_s16(a, b, simde_vdupq_n_s16(simde_int16x8_to_private(v).values[lane]));
 }
 #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
   #define simde_vmlsl_high_laneq_s16(a, b, v, lane) vmlsl_high_laneq_s16(a, b, v, lane)
@@ -66,7 +66,7 @@ simde_vmlsl_high_laneq_s16(simde_int32x4_t a, simde_int16x8_t b, simde_int16x8_t
 SIMDE_FUNCTION_ATTRIBUTES
 simde_int64x2_t
 simde_vmlsl_high_lane_s32(simde_int64x2_t a, simde_int32x4_t b, simde_int32x2_t v, const int lane) SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 1) {
-    return simde_vmlsl_high_s32(a, b, simde_vdupq_n_s32(v[lane]));
+    return simde_vmlsl_high_s32(a, b, simde_vdupq_n_s32(simde_int32x2_to_private(v).values[lane]));
 }
 #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
   #define simde_vmlsl_high_lane_s32(a, b, v, lane) vmlsl_high_lane_s32(a, b, v, lane)
@@ -79,7 +79,7 @@ simde_vmlsl_high_lane_s32(simde_int64x2_t a, simde_int32x4_t b, simde_int32x2_t 
 SIMDE_FUNCTION_ATTRIBUTES
 simde_int64x2_t
 simde_vmlsl_high_laneq_s32(simde_int64x2_t a, simde_int32x4_t b, simde_int32x4_t v, const int lane) SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 3) {
-    return simde_vmlsl_high_s32(a, b, simde_vdupq_n_s32(v[lane]));
+    return simde_vmlsl_high_s32(a, b, simde_vdupq_n_s32(simde_int32x4_to_private(v).values[lane]));
 }
 #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
   #define simde_vmlsl_high_laneq_s32(a, b, v, lane) vmlsl_high_laneq_s32(a, b, v, lane)
@@ -92,7 +92,7 @@ simde_vmlsl_high_laneq_s32(simde_int64x2_t a, simde_int32x4_t b, simde_int32x4_t
 SIMDE_FUNCTION_ATTRIBUTES
 simde_uint32x4_t
 simde_vmlsl_high_lane_u16(simde_uint32x4_t a, simde_uint16x8_t b, simde_uint16x4_t v, const int lane) SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 3) {
-    return simde_vmlsl_high_u16(a, b, simde_vdupq_n_u16(v[lane]));
+    return simde_vmlsl_high_u16(a, b, simde_vdupq_n_u16(simde_uint16x4_to_private(v).values[lane]));
 }
 #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
   #define simde_vmlsl_high_lane_u16(a, b, v, lane) vmlsl_high_lane_u16(a, b, v, lane)
@@ -105,7 +105,7 @@ simde_vmlsl_high_lane_u16(simde_uint32x4_t a, simde_uint16x8_t b, simde_uint16x4
 SIMDE_FUNCTION_ATTRIBUTES
 simde_uint32x4_t
 simde_vmlsl_high_laneq_u16(simde_uint32x4_t a, simde_uint16x8_t b, simde_uint16x8_t v, const int lane) SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 7) {
-    return simde_vmlsl_high_u16(a, b, simde_vdupq_n_u16(v[lane]));
+    return simde_vmlsl_high_u16(a, b, simde_vdupq_n_u16(simde_uint16x8_to_private(v).values[lane]));
 }
 #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
   #define simde_vmlsl_high_laneq_u16(a, b, v, lane) vmlsl_high_laneq_u16(a, b, v, lane)
@@ -118,7 +118,7 @@ simde_vmlsl_high_laneq_u16(simde_uint32x4_t a, simde_uint16x8_t b, simde_uint16x
 SIMDE_FUNCTION_ATTRIBUTES
 simde_uint64x2_t
 simde_vmlsl_high_lane_u32(simde_uint64x2_t a, simde_uint32x4_t b, simde_uint32x2_t v, const int lane) SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 1) {
-    return simde_vmlsl_high_u32(a, b, simde_vdupq_n_u32(v[lane]));
+    return simde_vmlsl_high_u32(a, b, simde_vdupq_n_u32(simde_uint32x2_to_private(v).values[lane]));
 }
 #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
   #define simde_vmlsl_high_lane_u32(a, b, v, lane) vmlsl_high_lane_u32(a, b, v, lane)
@@ -131,7 +131,7 @@ simde_vmlsl_high_lane_u32(simde_uint64x2_t a, simde_uint32x4_t b, simde_uint32x2
 SIMDE_FUNCTION_ATTRIBUTES
 simde_uint64x2_t
 simde_vmlsl_high_laneq_u32(simde_uint64x2_t a, simde_uint32x4_t b, simde_uint32x4_t v, const int lane) SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 3) {
-    return simde_vmlsl_high_u32(a, b, simde_vdupq_n_u32(v[lane]));
+    return simde_vmlsl_high_u32(a, b, simde_vdupq_n_u32(simde_uint32x4_to_private(v).values[lane]));
 }
 #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
   #define simde_vmlsl_high_laneq_u32(a, b, v, lane) vmlsl_high_laneq_u32(a, b, v, lane)
