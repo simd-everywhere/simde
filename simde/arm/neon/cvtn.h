@@ -30,6 +30,8 @@
 
 #include "types.h"
 #include "cvt.h"
+#include "calt.h"
+#include "cagt.h"
 
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
@@ -107,16 +109,17 @@ simde_vcvtnh_s64_f16(simde_float16 a) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
     return vcvtnh_s64_f16(a);
   #elif defined(SIMDE_FAST_CONVERSION_RANGE)
-    return HEDLEY_STATIC_CAST(int64_t, simde_math_roundevenf(a));
+    return HEDLEY_STATIC_CAST(int64_t, simde_math_roundevenf(simde_float16_to_float32(a)));
   #else
-    if (HEDLEY_UNLIKELY(a <= HEDLEY_STATIC_CAST(simde_float16, INT64_MIN))) {
+    simde_float32 a_ = simde_float16_to_float32(a);
+    if (HEDLEY_UNLIKELY(a_ < HEDLEY_STATIC_CAST(simde_float32, INT64_MIN))) {
       return INT64_MIN;
-    } else if (HEDLEY_UNLIKELY(a >= HEDLEY_STATIC_CAST(simde_float16, INT64_MAX))) {
+    } else if (HEDLEY_UNLIKELY(a_ > HEDLEY_STATIC_CAST(simde_float32, INT64_MAX))) {
       return INT64_MAX;
-    } else if (simde_math_isnan(a)) {
+    } else if (simde_math_isnanf(a_)) {
       return 0;
     } else {
-      return HEDLEY_STATIC_CAST(int64_t, simde_math_roundevenf(a));
+      return HEDLEY_STATIC_CAST(int64_t, simde_math_roundevenf(a_));
     }
   #endif
 }
@@ -131,16 +134,17 @@ simde_vcvtnh_s32_f16(simde_float16 a) {
   #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
     return vcvtnh_s32_f16(a);
   #elif defined(SIMDE_FAST_CONVERSION_RANGE)
-    return HEDLEY_STATIC_CAST(int32_t, simde_math_roundevenf(a));
+    return HEDLEY_STATIC_CAST(int32_t, simde_math_roundevenf(simde_float16_to_float32(a)));
   #else
-    if (HEDLEY_UNLIKELY(a <= HEDLEY_STATIC_CAST(simde_float16, INT32_MIN))) {
+    simde_float32 a_ = simde_float16_to_float32(a);
+    if (HEDLEY_UNLIKELY(a_ < HEDLEY_STATIC_CAST(simde_float32, INT32_MIN))) {
       return INT32_MIN;
-    } else if (HEDLEY_UNLIKELY(a >= HEDLEY_STATIC_CAST(simde_float16, INT32_MAX))) {
+    } else if (HEDLEY_UNLIKELY(a_ > HEDLEY_STATIC_CAST(simde_float32, INT32_MAX))) {
       return INT32_MAX;
-    } else if (simde_math_isnan(a)) {
+    } else if (simde_math_isnanf(a_)) {
       return 0;
     } else {
-      return HEDLEY_STATIC_CAST(int32_t, simde_math_roundevenf(a));
+      return HEDLEY_STATIC_CAST(int32_t, simde_math_roundevenf(a_));
     }
   #endif
 }
@@ -155,14 +159,17 @@ simde_vcvtnh_s16_f16(simde_float16 a) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
     return vcvtnh_s16_f16(a);
   #elif defined(SIMDE_FAST_CONVERSION_RANGE)
-    return HEDLEY_STATIC_CAST(int16_t, simde_math_roundevenf(a));
+    return HEDLEY_STATIC_CAST(int16_t, simde_math_roundevenf(simde_float16_to_float32(a)));
   #else
-    if (HEDLEY_UNLIKELY(a < HEDLEY_STATIC_CAST(simde_float16, INT16_MIN))) {
+    simde_float32 a_ = simde_float16_to_float32(a);
+    if (HEDLEY_UNLIKELY(a_ < HEDLEY_STATIC_CAST(simde_float32, INT16_MIN))) {
       return INT16_MIN;
-    } else if (HEDLEY_UNLIKELY(a > HEDLEY_STATIC_CAST(simde_float16, INT16_MAX))) {
+    } else if (HEDLEY_UNLIKELY(a_ > HEDLEY_STATIC_CAST(simde_float32, INT16_MAX))) {
       return INT16_MAX;
+    } else if (simde_math_isnanf(a_)) {
+      return 0;
     } else {
-      return HEDLEY_STATIC_CAST(int16_t, simde_math_roundevenf(a));
+      return HEDLEY_STATIC_CAST(int16_t, simde_math_roundevenf(a_));
     }
   #endif
 }
@@ -174,19 +181,20 @@ simde_vcvtnh_s16_f16(simde_float16 a) {
 SIMDE_FUNCTION_ATTRIBUTES
 uint64_t
 simde_vcvtnh_u64_f16(simde_float16 a) {
-  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
     return vcvtnh_u64_f16(a);
   #elif defined(SIMDE_FAST_CONVERSION_RANGE)
-    return HEDLEY_STATIC_CAST(uint64_t, simde_math_roundevenf(a));
+    return HEDLEY_STATIC_CAST(uint64_t, simde_math_roundevenf(simde_float16_to_float32(a)));
   #else
-    if (HEDLEY_UNLIKELY(a <= SIMDE_FLOAT16_C(0.0))) {
+    simde_float32 a_ = simde_float16_to_float32(a);
+    if (HEDLEY_UNLIKELY(a_ < HEDLEY_STATIC_CAST(simde_float32, 0))) {
       return 0;
-    } else if (HEDLEY_UNLIKELY(a >= HEDLEY_STATIC_CAST(simde_float16, UINT64_MAX))) {
+    } else if (HEDLEY_UNLIKELY(a_ > HEDLEY_STATIC_CAST(simde_float32, UINT64_MAX))) {
       return UINT64_MAX;
-    } else if (simde_math_isnan(a)) {
+    } else if (simde_math_isnanf(a_)) {
       return 0;
     } else {
-      return HEDLEY_STATIC_CAST(uint64_t, simde_math_roundevenf(a));
+      return HEDLEY_STATIC_CAST(uint64_t, simde_math_roundevenf(a_));
     }
   #endif
 }
@@ -198,19 +206,20 @@ simde_vcvtnh_u64_f16(simde_float16 a) {
 SIMDE_FUNCTION_ATTRIBUTES
 uint32_t
 simde_vcvtnh_u32_f16(simde_float16 a) {
-  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
     return vcvtnh_u32_f16(a);
   #elif defined(SIMDE_FAST_CONVERSION_RANGE)
-    return HEDLEY_STATIC_CAST(uint32_t, simde_math_roundevenf(a));
+    return HEDLEY_STATIC_CAST(uint32_t, simde_math_roundevenf(simde_float16_to_float32(a)));
   #else
-    if (HEDLEY_UNLIKELY(a <= SIMDE_FLOAT16_C(0.0))) {
+    simde_float32 a_ = simde_float16_to_float32(a);
+    if (HEDLEY_UNLIKELY(a_ < HEDLEY_STATIC_CAST(simde_float32, 0))) {
       return 0;
-    } else if (HEDLEY_UNLIKELY(a >= HEDLEY_STATIC_CAST(simde_float16, UINT32_MAX))) {
+    } else if (HEDLEY_UNLIKELY(a_ > HEDLEY_STATIC_CAST(simde_float32, UINT32_MAX))) {
       return UINT32_MAX;
-    } else if (simde_math_isnan(a)) {
+    } else if (simde_math_isnanf(a_)) {
       return 0;
     } else {
-      return HEDLEY_STATIC_CAST(uint32_t, simde_math_roundevenf(a));
+      return HEDLEY_STATIC_CAST(uint32_t, simde_math_roundevenf(a_));
     }
   #endif
 }
@@ -222,19 +231,20 @@ simde_vcvtnh_u32_f16(simde_float16 a) {
 SIMDE_FUNCTION_ATTRIBUTES
 uint16_t
 simde_vcvtnh_u16_f16(simde_float16 a) {
-  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
     return vcvtnh_u16_f16(a);
   #elif defined(SIMDE_FAST_CONVERSION_RANGE)
-    return HEDLEY_STATIC_CAST(uint16_t, simde_math_roundevenf(a));
+    return HEDLEY_STATIC_CAST(uint16_t, simde_math_roundevenf(simde_float16_to_float32(a)));
   #else
-    if (HEDLEY_UNLIKELY(a <= SIMDE_FLOAT16_C(0.0))) {
+    simde_float32 a_ = simde_float16_to_float32(a);
+    if (HEDLEY_UNLIKELY(a_ < HEDLEY_STATIC_CAST(simde_float32, 0))) {
       return 0;
-    } else if (HEDLEY_UNLIKELY(a >= HEDLEY_STATIC_CAST(simde_float16, UINT16_MAX))) {
+    } else if (HEDLEY_UNLIKELY(a_ > HEDLEY_STATIC_CAST(simde_float32, UINT16_MAX))) {
       return UINT16_MAX;
-    } else if (simde_math_isnan(a)) {
+    } else if (simde_math_isnanf(a_)) {
       return 0;
     } else {
-      return HEDLEY_STATIC_CAST(uint16_t, simde_math_roundevenf(a));
+      return HEDLEY_STATIC_CAST(uint16_t, simde_math_roundevenf(a_));
     }
   #endif
 }
@@ -426,7 +436,7 @@ simde_vcvtnq_s16_f16(simde_float16x8_t a) {
 }
 #if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
   #undef vcvtnq_s16_f16
-  #define vcvtnq_s16_f16(a, n) simde_vcvtnq_s16_f16(a, n)
+  #define vcvtnq_s16_f16(a) simde_vcvtnq_s16_f16(a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -448,7 +458,7 @@ simde_vcvtn_s16_f16(simde_float16x4_t a) {
 }
 #if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
   #undef vcvtn_s16_f16
-  #define vcvtn_s16_f16(a, n) simde_vcvtn_s16_f16(a, n)
+  #define vcvtn_s16_f16(a) simde_vcvtn_s16_f16(a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -470,7 +480,7 @@ simde_vcvtnq_u16_f16(simde_float16x8_t a) {
 }
 #if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
   #undef vcvtnq_u16_f16
-  #define vcvtnq_u16_f16(a, n) simde_vcvtnq_u16_f16(a, n)
+  #define vcvtnq_u16_f16(a) simde_vcvtnq_u16_f16(a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -492,7 +502,7 @@ simde_vcvtn_u16_f16(simde_float16x4_t a) {
 }
 #if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
   #undef vcvtn_u16_f16
-  #define vcvtn_u16_f16(a, n) simde_vcvtn_u16_f16(a, n)
+  #define vcvtn_u16_f16(a) simde_vcvtn_u16_f16(a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -514,7 +524,7 @@ simde_vcvtn_u32_f32(simde_float32x2_t a) {
 }
 #if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
   #undef vcvtn_u32_f32
-  #define vcvtn_u32_f32(a, n) simde_vcvtn_u32_f32(a, n)
+  #define vcvtn_u32_f32(a) simde_vcvtn_u32_f32(a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -536,7 +546,7 @@ simde_vcvtn_s32_f32(simde_float32x2_t a) {
 }
 #if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
   #undef vcvtn_s32_f32
-  #define vcvtn_s32_f32(a, n) simde_vcvtn_s32_f32(a, n)
+  #define vcvtn_s32_f32(a) simde_vcvtn_s32_f32(a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -558,7 +568,7 @@ simde_vcvtn_s64_f64(simde_float64x1_t a) {
 }
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
   #undef vcvtn_s64_f64
-  #define vcvtn_s64_f64(a, n) simde_vcvtn_s64_f64(a, n)
+  #define vcvtn_s64_f64(a) simde_vcvtn_s64_f64(a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -580,7 +590,7 @@ simde_vcvtn_u64_f64(simde_float64x1_t a) {
 }
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
   #undef vcvtn_u64_f64
-  #define vcvtn_u64_f64(a, n) simde_vcvtn_u64_f64(a, n)
+  #define vcvtn_u64_f64(a) simde_vcvtn_u64_f64(a)
 #endif
 
 SIMDE_END_DECLS_

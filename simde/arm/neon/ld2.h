@@ -345,14 +345,8 @@ simde_vld2_u64(uint64_t const ptr[HEDLEY_ARRAY_PARAM(2)]) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float16x4x2_t
 simde_vld2_f16(simde_float16_t const ptr[HEDLEY_ARRAY_PARAM(8)]) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
     return vld2_f16(ptr);
-  #elif SIMDE_NATURAL_VECTOR_SIZE_GE(128) && defined(SIMDE_SHUFFLE_VECTOR_)
-    simde_float16x8_private a_ = simde_float16x8_to_private(simde_vld1q_f16(ptr));
-    a_.values = SIMDE_SHUFFLE_VECTOR_(16, 16, a_.values, a_.values, 0, 2, 4, 6, 1, 3, 5, 7);
-    simde_float16x4x2_t r;
-    simde_memcpy(&r, &a_, sizeof(r));
-    return r;
   #else
     simde_float16x4_private r_[2];
 

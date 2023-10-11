@@ -157,7 +157,7 @@ simde_vcreate_u64(uint64_t a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float16x4_t
 simde_vcreate_f16(uint64_t a) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
     return vcreate_f16(a);
   #else
     return simde_vreinterpret_f16_u64(simde_vdup_n_u64(a));

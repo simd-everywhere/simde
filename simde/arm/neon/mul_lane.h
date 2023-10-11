@@ -39,9 +39,9 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde_float16_t
 simde_vmulh_lane_f16(simde_float16_t a, simde_float16x4_t b, const int lane)
     SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 3) {
-  return a * simde_float16x4_to_private(b).values[lane];
+  return simde_vmulh_f16(a, simde_float16x4_to_private(b).values[lane]);
 }
-#if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+#if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
   #if defined(__clang__) && !SIMDE_DETECT_CLANG_VERSION_CHECK(11,0,0)
     #define simde_vmulh_lane_f16(a, b, lane) \
     SIMDE_DISABLE_DIAGNOSTIC_EXPR_(SIMDE_DIAGNOSTIC_DISABLE_VECTOR_CONVERSION_, vmulh_lane_f16(a, b, lane))
@@ -115,9 +115,9 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde_float16_t
 simde_vmulh_laneq_f16(simde_float16_t a, simde_float16x8_t b, const int lane)
     SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 7) {
-  return a * simde_float16x8_to_private(b).values[lane];
+  return simde_vmulh_f16(a, simde_float16x8_to_private(b).values[lane]);
 }
-#if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+#if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
   #if defined(__clang__) && !SIMDE_DETECT_CLANG_VERSION_CHECK(11,0,0)
     #define simde_vmulh_laneq_f16(a, b, lane) \
     SIMDE_DISABLE_DIAGNOSTIC_EXPR_(SIMDE_DIAGNOSTIC_DISABLE_VECTOR_CONVERSION_, vmulh_laneq_f16(a, b, lane))
@@ -160,7 +160,7 @@ simde_vmul_lane_f16(simde_float16x4_t a, simde_float16x4_t b, const int lane)
 
   SIMDE_VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-    r_.values[i] = a_.values[i] * b_.values[lane];
+    r_.values[i] = simde_vmulh_f16(a_.values[i], b_.values[lane]);
   }
 
   return simde_float16x4_from_private(r_);
@@ -433,6 +433,9 @@ simde_vmulq_lane_f16(simde_float16x8_t a, simde_float16x4_t b, const int lane)
 
   return simde_float16x8_from_private(r_);
 }
+#if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
+  #define simde_vmulq_lane_f16(a, b, lane) vmulq_lane_f16((a), (b), (lane))
+#endif
 #if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
   #undef vmulq_lane_f16
   #define vmulq_lane_f16(a, b, lane) simde_vmulq_lane_f16((a), (b), (lane))
@@ -593,7 +596,7 @@ simde_vmulq_laneq_f16(simde_float16x8_t a, simde_float16x8_t b, const int lane)
 
   SIMDE_VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-    r_.values[i] = a_.values[i] * b_.values[lane];
+    r_.values[i] = simde_vmulh_f16(a_.values[i], b_.values[lane]);
   }
 
   return simde_float16x8_from_private(r_);
@@ -761,7 +764,7 @@ simde_vmul_laneq_f16(simde_float16x4_t a, simde_float16x8_t b, const int lane)
 
   SIMDE_VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-    r_.values[i] = a_.values[i] * b_.values[lane];
+    r_.values[i] = simde_vmulh_f16(a_.values[i], b_.values[lane]);
   }
 
   return simde_float16x4_from_private(r_);
