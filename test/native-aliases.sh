@@ -21,6 +21,11 @@ cd "${DIRNAME}"
 PATTERN="$(xmllint --xpath '//intrinsic/@name' "${DIRNAME}/iig.xml" | grep -Po '(?<=")[^"]+' | grep -Pv '^(_mm256_cvtsi256_si32|_mm512_loadu_epi.+)$' | xargs printf '%s|' | rev | cut -c 2- | rev)"
 echo "s/([^_])simde(${PATTERN})/\1\2/g" > pattern
 ls x86/*.c | xargs -n1 -P$(nproc) sed -i -E -f pattern
+ls x86/avx512/*.c | xargs -n1 -P$(nproc) sed -i -E -f pattern
+
+# MSA
+
+perl -p -i -e 's/([^a-zA-Z0-9_])simde_msa_/$1__msa_/g' mips/msa/*.{c,h}
 
 # NEON
 
@@ -32,4 +37,4 @@ perl -p -i -e 's/([^a-zA-Z0-9_])simde_sv/$1sv/g' arm/sve/*.{c,h}
 
 # WASM SIMD128
 
-perl -p -i -e 's/([^a-zA-Z0-9_])simde_wasm_/$1wasm_/g' wasm/*.{c,h}
+perl -p -i -e 's/([^a-zA-Z0-9_])simde_wasm_/$1wasm_/g' wasm/simd128/*.{c,h}

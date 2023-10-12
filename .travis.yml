@@ -1,6 +1,6 @@
 language: c
 os: linux
-dist: focal
+dist: jammy
 
 jobs:
   include:
