@@ -105,6 +105,7 @@ jobs:
         - -mavx
         - -mfma
         - -mavx2
+        - -maes
     env:
       CFLAGS: -Wall -Wextra -Werror ${{ matrix.isax }}
       CXXFLAGS: -Wall -Wextra -Werror ${{ matrix.isax }}
