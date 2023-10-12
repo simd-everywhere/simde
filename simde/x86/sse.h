@@ -31,6 +31,7 @@
 #define SIMDE_X86_SSE_H
 
 #include "mmx.h"
+#include "../simde-f16.h"
 
 #if defined(_WIN32) && !defined(SIMDE_X86_SSE_NATIVE) && defined(_MSC_VER)
   #define NOMINMAX
@@ -59,6 +60,11 @@ typedef union {
     SIMDE_ALIGN_TO_16 simde_int128  i128 SIMDE_VECTOR(16) SIMDE_MAY_ALIAS;
     SIMDE_ALIGN_TO_16 simde_uint128 u128 SIMDE_VECTOR(16) SIMDE_MAY_ALIAS;
     #endif
+    #if defined(SIMDE_FLOAT16_VECTOR)
+    SIMDE_ALIGN_TO_16 simde_float16  f16 SIMDE_VECTOR(16) SIMDE_MAY_ALIAS;
+    #else
+    SIMDE_ALIGN_TO_16 simde_float16  f16[8];
+    #endif
     SIMDE_ALIGN_TO_16 simde_float32  f32 SIMDE_VECTOR(16) SIMDE_MAY_ALIAS;
     SIMDE_ALIGN_TO_16 int_fast32_t  i32f SIMDE_VECTOR(16) SIMDE_MAY_ALIAS;
     SIMDE_ALIGN_TO_16 uint_fast32_t u32f SIMDE_VECTOR(16) SIMDE_MAY_ALIAS;
@@ -75,6 +81,7 @@ typedef union {
     SIMDE_ALIGN_TO_16 simde_int128  i128[1];
     SIMDE_ALIGN_TO_16 simde_uint128 u128[1];
     #endif
+    SIMDE_ALIGN_TO_16 simde_float16  f16[8];
     SIMDE_ALIGN_TO_16 simde_float32  f32[4];
     SIMDE_ALIGN_TO_16 int_fast32_t  i32f[16 / sizeof(int_fast32_t)];
     SIMDE_ALIGN_TO_16 uint_fast32_t u32f[16 / sizeof(uint_fast32_t)];
@@ -255,6 +262,14 @@ enum {
     SIMDE_MM_ROUND_TOWARD_ZERO = 0x6000
   #endif
 };
+#if defined(_MM_ROUND_MASK)
+#  define SIMDE_MM_ROUND_MASK _MM_ROUND_MASK
+#else
+#  define SIMDE_MM_ROUND_MASK (0x6000)
+#endif
+#if defined(SIMDE_X86_SSE_ENABLE_NATIVE_ALIASES)
+  #define _MM_ROUND_MASK SIMDE_MM_ROUND_MASK
+#endif
 
 #if defined(_MM_FROUND_TO_NEAREST_INT)
 #  define SIMDE_MM_FROUND_TO_NEAREST_INT _MM_FROUND_TO_NEAREST_INT
@@ -422,7 +437,7 @@ enum {
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
-unsigned int
+uint32_t
 SIMDE_MM_GET_ROUNDING_MODE(void) {
   #if defined(SIMDE_X86_SSE_NATIVE)
     return _MM_GET_ROUNDING_MODE();
@@ -470,7 +485,7 @@ SIMDE_MM_GET_ROUNDING_MODE(void) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 void
-SIMDE_MM_SET_ROUNDING_MODE(unsigned int a) {
+SIMDE_MM_SET_ROUNDING_MODE(uint32_t a) {
   #if defined(SIMDE_X86_SSE_NATIVE)
     _MM_SET_ROUNDING_MODE(a);
   #elif defined(SIMDE_HAVE_FENV_H)
@@ -524,7 +539,7 @@ SIMDE_MM_GET_FLUSH_ZERO_MODE (void) {
   #endif
 }
 #if defined(SIMDE_X86_SSE_ENABLE_NATIVE_ALIASES)
-  #define _MM_SET_FLUSH_ZERO_MODE(a) SIMDE_MM_SET_FLUSH_ZERO_MODE(a)
+  #define _MM_GET_FLUSH_ZERO_MODE(a) SIMDE_MM_GET_FLUSH_ZERO_MODE(a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -559,7 +574,7 @@ simde_mm_setcsr (uint32_t a) {
   #if defined(SIMDE_X86_SSE_NATIVE)
     _mm_setcsr(a);
   #else
-    SIMDE_MM_SET_ROUNDING_MODE(HEDLEY_STATIC_CAST(unsigned int, a));
+    SIMDE_MM_SET_ROUNDING_MODE(HEDLEY_STATIC_CAST(uint32_t, a & SIMDE_MM_ROUND_MASK));
   #endif
 }
 #if defined(SIMDE_X86_SSE_ENABLE_NATIVE_ALIASES)

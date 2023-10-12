@@ -13,6 +13,6 @@ cpp_args = ['-mcpu=power9', '-Wextra', '-Werror']
 
 [host_machine]
 system = 'linux'
-cpu_family = 'powerpc64'
+cpu_family = 'ppc64'
 cpu = 'ppc64el'
 endian = 'little'

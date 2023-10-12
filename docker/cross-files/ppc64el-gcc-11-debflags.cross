@@ -15,6 +15,6 @@ cpp_link_args = ['-Wl,-z,relro', '-Wl,-z,now']
 
 [host_machine]
 system = 'linux'
-cpu_family = 'powerpc64'
+cpu_family = 'ppc64'
 cpu = 'ppc64el'
 endian = 'little'

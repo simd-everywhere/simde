@@ -22,12 +22,14 @@
  *
  * Copyright:
  *   2020      Evan Nemerson <evan@nemerson.com>
+ *   2023      Yi-Yen Chung <eric681@andestech.com> (Copyright owned by Andes Technology)
  */
 
 #if !defined(SIMDE_ARM_NEON_MUL_LANE_H)
 #define SIMDE_ARM_NEON_MUL_LANE_H
 
 #include "types.h"
+#include "mul.h"
 
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
@@ -351,6 +353,27 @@ simde_vmul_laneq_u32(simde_uint32x2_t a, simde_uint32x4_t b, const int lane)
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
   #undef vmul_laneq_u32
   #define vmul_laneq_u32(a, b, lane) simde_vmul_laneq_u32((a), (b), (lane))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_float16x8_t
+simde_vmulq_lane_f16(simde_float16x8_t a, simde_float16x4_t b, const int lane)
+    SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 3) {
+  simde_float16x8_private
+    r_,
+    a_ = simde_float16x8_to_private(a);
+  simde_float16x4_private b_ = simde_float16x4_to_private(b);
+
+  SIMDE_VECTORIZE
+  for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+    r_.values[i] = simde_vmulh_f16(a_.values[i], b_.values[lane]);
+  }
+
+  return simde_float16x8_from_private(r_);
+}
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+  #undef vmulq_lane_f16
+  #define vmulq_lane_f16(a, b, lane) simde_vmulq_lane_f16((a), (b), (lane))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES

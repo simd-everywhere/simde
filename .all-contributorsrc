@@ -591,6 +591,52 @@
       "contributions": [
         "bug"
       ]
+    },
+    {
+      "login": "easyaspi314",
+      "name": "easyaspi314 (Devin)",
+      "avatar_url": "https://avatars.githubusercontent.com/u/6258309?v=4",
+      "profile": "https://github.com/easyaspi314",
+      "contributions": [
+        "bug",
+        "code"
+      ]
+    },
+    {
+      "login": "JonLiu1993",
+      "name": "JonLiu1993",
+      "avatar_url": "https://avatars.githubusercontent.com/u/63675417?v=4",
+      "profile": "https://github.com/JonLiu1993",
+      "contributions": [
+        "platform"
+      ]
+    },
+    {
+      "login": "Cheney-W",
+      "name": "Cheney Wang",
+      "avatar_url": "https://avatars.githubusercontent.com/u/38240633?v=4",
+      "profile": "https://github.com/Cheney-W",
+      "contributions": [
+        "platform"
+      ]
+    },
+    {
+      "login": "myd7349",
+      "name": "myd7349 ",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5435649?v=4",
+      "profile": "http://myd7349.github.io/",
+      "contributions": [
+        "platform"
+      ]
+    },
+    {
+      "login": "chausner",
+      "name": "chausner",
+      "avatar_url": "https://avatars.githubusercontent.com/u/15180557?v=4",
+      "profile": "https://github.com/chausner",
+      "contributions": [
+        "platform"
+      ]
     }
   ],
   "contributorsPerLine": 7

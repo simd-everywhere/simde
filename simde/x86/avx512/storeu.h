@@ -97,6 +97,20 @@ simde_mm512_storeu_pd (void * mem_addr, simde__m512d a) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 void
+simde_mm512_storeu_ph (void * mem_addr, simde__m512h a) {
+  #if defined(SIMDE_X86_AVX512FP16_NATIVE)
+    _mm512_storeu_ph(mem_addr, a);
+  #else
+    simde_memcpy(mem_addr, &a, sizeof(a));
+  #endif
+}
+#if defined(SIMDE_X86_AVX512FP16_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_storeu_ph
+  #define _mm512_storeu_ph(mem_addr, a) simde_mm512_storeu_ph(mem_addr, a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+void
 simde_mm512_storeu_si512 (void * mem_addr, simde__m512i a) {
   #if defined(SIMDE_X86_AVX512F_NATIVE)
     _mm512_storeu_si512(HEDLEY_REINTERPRET_CAST(void*, mem_addr), a);
@@ -136,6 +150,36 @@ simde_mm512_mask_storeu_epi16 (void * mem_addr, simde__mmask32 k, simde__m512i a
 #if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
   #undef _mm512_mask_storeu_epi16
   #define _mm512_mask_storeu_epi16(mem_addr, k, a) simde_mm512_mask_storeu_epi16(mem_addr, k, a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+void
+simde_mm512_mask_storeu_epi32 (void * mem_addr, simde__mmask16 k, simde__m512i a) {
+  #if defined(SIMDE_X86_AVX512F_NATIVE)
+    _mm512_mask_storeu_epi32(HEDLEY_REINTERPRET_CAST(void*, mem_addr), k, a);
+  #else
+    const simde__m512i zero = simde_mm512_setzero_si512();
+    simde_mm512_storeu_epi32(mem_addr, simde_mm512_mask_mov_epi32(zero, k, a));
+  #endif
+}
+#if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_mask_storeu_epi32
+  #define _mm512_mask_storeu_epi32(mem_addr, k, a) simde_mm512_mask_storeu_epi32(mem_addr, k, a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+void
+simde_mm512_mask_storeu_epi64 (void * mem_addr, simde__mmask8 k, simde__m512i a) {
+  #if defined(SIMDE_X86_AVX512F_NATIVE)
+    _mm512_mask_storeu_epi64(HEDLEY_REINTERPRET_CAST(void*, mem_addr), k, a);
+  #else
+    const simde__m512i zero = simde_mm512_setzero_si512();
+    simde_mm512_storeu_epi64(mem_addr, simde_mm512_mask_mov_epi64(zero, k, a));
+  #endif
+}
+#if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_mask_storeu_epi64
+  #define _mm512_mask_storeu_epi64(mem_addr, k, a) simde_mm512_mask_storeu_epi64(mem_addr, k, a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES

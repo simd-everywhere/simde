@@ -7,8 +7,7 @@ jobs:
   - name: POWER9
     if: branch != master OR type == pull_request
     arch: ppc64le
-    compiler:
-    - clang
+    compiler: clang
     env:
     - CC="clang"
     - CXX="clang++"
@@ -22,8 +21,7 @@ jobs:
   - name: z/Arch
     if: branch != master OR type == pull_request
     arch: s390x
-    compiler:
-    - gcc
+    compiler: gcc
     env:
     - CC="gcc"
     - CXX="g++"

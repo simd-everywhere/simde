@@ -23,6 +23,7 @@
  * Copyright:
  *   2020      Evan Nemerson <evan@nemerson.com>
  *   2020      Sean Maher <seanptmaher@gmail.com> (Copyright owned by Google, LLC)
+ *   2023      Yi-Yen Chung <eric681@andestech.com> (Copyright owned by Andes Technology)
  */
 
 #if !defined(SIMDE_ARM_NEON_GET_LANE_H)
@@ -33,6 +34,27 @@
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 SIMDE_BEGIN_DECLS_
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_float16_t
+simde_vget_lane_f16(simde_float16x4_t v, const int lane)
+    SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 3) {
+  simde_float16_t r;
+
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
+    SIMDE_CONSTIFY_4_(vget_lane_f16, r, (HEDLEY_UNREACHABLE(), SIMDE_FLOAT16_VALUE(0.0)), lane, v);
+  #else
+    simde_float16x4_private v_ = simde_float16x4_to_private(v);
+
+    r = v_.values[lane];
+  #endif
+
+  return r;
+}
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+  #undef vget_lane_f16
+  #define vget_lane_f16(v, lane) simde_vget_lane_f16((v), (lane))
+#endif
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float32_t
@@ -245,6 +267,27 @@ simde_vget_lane_u64(simde_uint64x1_t v, const int lane)
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vget_lane_u64
   #define vget_lane_u64(v, lane) simde_vget_lane_u64((v), (lane))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_float16_t
+simde_vgetq_lane_f16(simde_float16x8_t v, const int lane)
+    SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 7) {
+  simde_float16_t r;
+
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
+    SIMDE_CONSTIFY_8_(vget_lane_f16, r, (HEDLEY_UNREACHABLE(), SIMDE_FLOAT16_VALUE(0.0)), lane, v);
+  #else
+    simde_float16x8_private v_ = simde_float16x8_to_private(v);
+
+    r = v_.values[lane];
+  #endif
+
+  return r;
+}
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+  #undef vgetq_lane_f16
+  #define vgetq_lane_f16(v, lane) simde_vgetq_lane_f16((v), (lane))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES

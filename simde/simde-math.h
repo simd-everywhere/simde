@@ -22,6 +22,7 @@
  *
  * Copyright:
  *   2017-2020 Evan Nemerson <evan@nemerson.com>
+ *   2023      Yi-Yen Chung <eric681@andestech.com> (Copyright owned by Andes Technology)
  */
 
 /* Attempt to find math functions.  Functions may be in <cmath>,
@@ -432,6 +433,91 @@ simde_math_fpclassify(double v) {
       simde_math_isinf(v)    ? SIMDE_MATH_FP_INFINITE  :
                                SIMDE_MATH_FP_SUBNORMAL;
   #endif
+}
+
+#define SIMDE_MATH_FP_QNAN      0x01
+#define SIMDE_MATH_FP_PZERO     0x02
+#define SIMDE_MATH_FP_NZERO     0x04
+#define SIMDE_MATH_FP_PINF      0x08
+#define SIMDE_MATH_FP_NINF      0x10
+#define SIMDE_MATH_FP_DENORMAL  0x20
+#define SIMDE_MATH_FP_NEGATIVE  0x40
+#define SIMDE_MATH_FP_SNAN      0x80
+
+static HEDLEY_INLINE
+uint8_t
+simde_math_fpclassf(float v, const int imm8) {
+  union {
+    float f;
+    uint32_t u;
+  } fu;
+  fu.f = v;
+  uint32_t bits = fu.u;
+  uint8_t NegNum = (bits >> 31) & 1;
+  uint32_t const ExpMask = 0x3F800000; // [30:23]
+  uint32_t const MantMask = 0x007FFFFF; // [22:0]
+  uint8_t ExpAllOnes = ((bits & ExpMask) == ExpMask);
+  uint8_t ExpAllZeros = ((bits & ExpMask) == 0);
+  uint8_t MantAllZeros = ((bits & MantMask) == 0);
+  uint8_t ZeroNumber = ExpAllZeros & MantAllZeros;
+  uint8_t SignalingBit = (bits >> 22) & 1;
+
+  uint8_t result = 0;
+  uint8_t qNaN_res = ExpAllOnes & (!MantAllZeros) & SignalingBit;
+  uint8_t Pzero_res = (!NegNum) & ExpAllZeros & MantAllZeros;
+  uint8_t Nzero_res = NegNum & ExpAllZeros & MantAllZeros;
+  uint8_t Pinf_res = (!NegNum) & ExpAllOnes & MantAllZeros;
+  uint8_t Ninf_res = NegNum & ExpAllOnes & MantAllZeros;
+  uint8_t Denorm_res = ExpAllZeros & (!MantAllZeros);
+  uint8_t FinNeg_res = NegNum & (!ExpAllOnes) & (!ZeroNumber);
+  uint8_t sNaN_res = ExpAllOnes & (!MantAllZeros) & (!SignalingBit);
+  result = (((imm8 >> 0) & qNaN_res)   | \
+            ((imm8 >> 1) & Pzero_res)  | \
+            ((imm8 >> 2) & Nzero_res)  | \
+            ((imm8 >> 3) & Pinf_res)   | \
+            ((imm8 >> 4) & Ninf_res)   | \
+            ((imm8 >> 5) & Denorm_res) | \
+            ((imm8 >> 6) & FinNeg_res) | \
+            ((imm8 >> 7) & sNaN_res));
+  return result;
+}
+
+static HEDLEY_INLINE
+uint8_t
+simde_math_fpclass(double v, const int imm8) {
+  union {
+    double d;
+    uint64_t u;
+  } du;
+  du.d = v;
+  uint64_t bits = du.u;
+  uint8_t NegNum = (bits >> 63) & 1;
+  uint64_t const ExpMask =  0x3FF0000000000000; // [62:52]
+  uint64_t const MantMask = 0x000FFFFFFFFFFFFF; // [51:0]
+  uint8_t ExpAllOnes = ((bits & ExpMask) == ExpMask);
+  uint8_t ExpAllZeros = ((bits & ExpMask) == 0);
+  uint8_t MantAllZeros = ((bits & MantMask) == 0);
+  uint8_t ZeroNumber = ExpAllZeros & MantAllZeros;
+  uint8_t SignalingBit = (bits >> 51) & 1;
+
+  uint8_t result = 0;
+  uint8_t qNaN_res = ExpAllOnes & (!MantAllZeros) & SignalingBit;
+  uint8_t Pzero_res = (!NegNum) & ExpAllZeros & MantAllZeros;
+  uint8_t Nzero_res = NegNum & ExpAllZeros & MantAllZeros;
+  uint8_t Pinf_res = (!NegNum) & ExpAllOnes & MantAllZeros;
+  uint8_t Ninf_res = NegNum & ExpAllOnes & MantAllZeros;
+  uint8_t Denorm_res = ExpAllZeros & (!MantAllZeros);
+  uint8_t FinNeg_res = NegNum & (!ExpAllOnes) & (!ZeroNumber);
+  uint8_t sNaN_res = ExpAllOnes & (!MantAllZeros) & (!SignalingBit);
+  result = (((imm8 >> 0) & qNaN_res)   | \
+            ((imm8 >> 1) & Pzero_res)  | \
+            ((imm8 >> 2) & Nzero_res)  | \
+            ((imm8 >> 3) & Pinf_res)   | \
+            ((imm8 >> 4) & Ninf_res)   | \
+            ((imm8 >> 5) & Denorm_res) | \
+            ((imm8 >> 6) & FinNeg_res) | \
+            ((imm8 >> 7) & sNaN_res));
+  return result;
 }
 
 /*** Manipulation functions ***/
@@ -1275,6 +1361,16 @@ simde_math_fpclassify(double v) {
     #define simde_math_sqrtf(v) std::sqrt(v)
   #elif defined(SIMDE_MATH_HAVE_MATH_H)
     #define simde_math_sqrtf(v) sqrtf(v)
+  #endif
+#endif
+
+#if !defined(simde_math_sqrtl)
+  #if SIMDE_MATH_BUILTIN_LIBM(sqrtl)
+    #define simde_math_sqrtl(v) __builtin_sqrtl(v)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_sqrtl(v) std::sqrt(v)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_sqrtl(v) sqrtl(v)
   #endif
 #endif
 

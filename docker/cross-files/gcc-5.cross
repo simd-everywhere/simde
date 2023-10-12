@@ -1,0 +1,11 @@
+[binaries]
+c = 'gcc-5'
+cpp = 'g++-5'
+ar = 'ar'
+strip = 'strip'
+objcopy = 'objcopy'
+ld = 'ld'
+
+[properties]
+c_args = ['-Wextra', '-Werror', '-march=haswell']
+cpp_args = ['-Wextra', '-Werror', '-march=haswell']

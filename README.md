@@ -1,6 +1,6 @@
 # SIMD Everywhere
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-58-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-63-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 [![Chat](https://badges.gitter.im/gitterHQ/gitter.png)](https://matrix.to/#/#simd-everywhere_community:gitter.im)
 [![codecov](https://codecov.io/gh/simd-everywhere/simde/branch/master/graph/badge.svg?token=jcMBoRk0ui)](https://codecov.io/gh/simd-everywhere/simde)
@@ -74,6 +74,7 @@ set extensions:
   * [SSE4.1](https://en.wikipedia.org/wiki/SSE4#SSE4.1)
   * [AVX](https://en.wikipedia.org/wiki/Advanced_Vector_Extensions)
   * [AVX2](https://en.wikipedia.org/wiki/Advanced_Vector_Extensions#Advanced_Vector_Extensions_2)
+  * [F16C](https://en.wikipedia.org/wiki/F16C)
   * [FMA](https://en.wikipedia.org/wiki/FMA_instruction_set)
   * [GFNI](https://en.wikipedia.org/wiki/AVX-512#GFNI)
   * [CLMUL](https://en.wikipedia.org/wiki/CLMUL_instruction_set)
@@ -104,6 +105,8 @@ make sense since they will always be green, but here are the links:
 * [AppVeyor](https://ci.appveyor.com/project/nemequ/simde)
 * [Azure Pipelines](https://dev.azure.com/simd-everywhere/SIMDe/_build)
 * [Drone CI](https://cloud.drone.io/simd-everywhere/simde/)
+* [Travis CI](https://app.travis-ci.com/github/simd-everywhere/simde/)
+* [Packit CI](https://dashboard.packit.dev/pipelines)
 
 If you're adding a new build I suggest Cirrus CI, which is where we
 currently have the most room given the number of builds currently on
@@ -465,6 +468,11 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   <tr>
     <td align="center"><a href="https://github.com/p0nce"><img src="https://avatars.githubusercontent.com/u/1067485?v=4" width="100px;" alt=""/><br /><sub><b>p0nce </b></sub></a><br /><a href="https://github.com/nemequ/simde/issues?q=author%3Ap0nce" title="Bug reports">🐛</a></td>
     <td align="center"><a href="https://bonedaddy.net/pabs3/"><img src="https://avatars.githubusercontent.com/u/328602?v=4" width="100px;" alt=""/><br /><sub><b>Paul Wise</b></sub></a><br /><a href="https://github.com/nemequ/simde/issues?q=author%3Apabs3" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="https://github.com/easyaspi314"><img src="https://avatars.githubusercontent.com/u/6258309?v=4" width="100px;" alt=""/><br /><sub><b>easyaspi314 (Devin)</b></sub></a><br /><a href="https://github.com/nemequ/simde/issues?q=author%3Aeasyaspi314" title="Bug reports">🐛</a> <a href="https://github.com/nemequ/simde/commits?author=easyaspi314" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/JonLiu1993"><img src="https://avatars.githubusercontent.com/u/63675417?v=4" width="100px;" alt=""/><br /><sub><b>JonLiu1993</b></sub></a><br /><a href="#platform-JonLiu1993" title="Packaging/porting to new platform">📦</a></td>
+    <td align="center"><a href="https://github.com/Cheney-W"><img src="https://avatars.githubusercontent.com/u/38240633?v=4" width="100px;" alt=""/><br /><sub><b>Cheney Wang</b></sub></a><br /><a href="#platform-Cheney-W" title="Packaging/porting to new platform">📦</a></td>
+    <td align="center"><a href="http://myd7349.github.io/"><img src="https://avatars.githubusercontent.com/u/5435649?v=4" width="100px;" alt=""/><br /><sub><b>myd7349 </b></sub></a><br /><a href="#platform-myd7349" title="Packaging/porting to new platform">📦</a></td>
+    <td align="center"><a href="https://github.com/chausner"><img src="https://avatars.githubusercontent.com/u/15180557?v=4" width="100px;" alt=""/><br /><sub><b>chausner</b></sub></a><br /><a href="#platform-chausner" title="Packaging/porting to new platform">📦</a></td>
   </tr>
 </table>
 

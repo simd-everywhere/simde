@@ -22,6 +22,7 @@
 *
 * Copyright:
 *   2021      Atharva Nimbalkar <atharvakn@gmail.com>
+*   2023      Yi-Yen Chung <eric681@andestech.com> (Copyright owned by Andes Technology)
 */
 
 #if !defined(SIMDE_ARM_NEON_FMA_H)
@@ -60,6 +61,20 @@ simde_vfma_f64(simde_float64x1_t a, simde_float64x1_t b, simde_float64x1_t c) {
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vfma_f64
   #define vfma_f64(a, b, c) simde_vfma_f64(a, b, c)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_float16x8_t
+simde_vfmaq_f16(simde_float16x8_t a, simde_float16x8_t b, simde_float16x8_t c) {
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && (defined(__ARM_FEATURE_FMA) && __ARM_FEATURE_FMA) && defined(SIMDE_ARM_NEON_FP16)
+    return vfmaq_f16(a, b, c);
+  #else
+    return simde_vaddq_f16(a, simde_vmulq_f16(b, c));
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+  #undef vfmaq_f16
+  #define vfmaq_f16(a, b, c) simde_vfmaq_f16(a, b, c)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES

@@ -223,8 +223,6 @@ void
 simde_vst1q_f32(simde_float32_t ptr[HEDLEY_ARRAY_PARAM(4)], simde_float32x4_t val) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     vst1q_f32(ptr, val);
-  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
-    vec_st(val, 0, ptr);
   #else
     simde_float32x4_private val_ = simde_float32x4_to_private(val);
 

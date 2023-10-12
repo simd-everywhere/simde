@@ -30,6 +30,7 @@
 #define SIMDE_X86_AVX_H
 
 #include "sse4.2.h"
+#include "../simde-f16.h"
 
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
@@ -165,6 +166,11 @@ typedef union {
     SIMDE_ALIGN_TO_32 simde_int128  i128 SIMDE_VECTOR(32) SIMDE_MAY_ALIAS;
     SIMDE_ALIGN_TO_32 simde_uint128 u128 SIMDE_VECTOR(32) SIMDE_MAY_ALIAS;
     #endif
+    #if defined(SIMDE_FLOAT16_VECTOR)
+    SIMDE_ALIGN_TO_32 simde_float16  f16 SIMDE_VECTOR(32) SIMDE_MAY_ALIAS;
+    #else
+    SIMDE_ALIGN_TO_32 simde_float16  f16[16];
+    #endif
     SIMDE_ALIGN_TO_32 simde_float32  f32 SIMDE_VECTOR(32) SIMDE_MAY_ALIAS;
     SIMDE_ALIGN_TO_32 simde_float64  f64 SIMDE_VECTOR(32) SIMDE_MAY_ALIAS;
     SIMDE_ALIGN_TO_32 int_fast32_t  i32f SIMDE_VECTOR(32) SIMDE_MAY_ALIAS;
@@ -184,6 +190,7 @@ typedef union {
     SIMDE_ALIGN_TO_32 simde_int128  i128[2];
     SIMDE_ALIGN_TO_32 simde_uint128 u128[2];
     #endif
+    SIMDE_ALIGN_TO_32 simde_float16  f16[16];
     SIMDE_ALIGN_TO_32 simde_float32  f32[8];
     SIMDE_ALIGN_TO_32 simde_float64  f64[4];
   #endif
@@ -5129,8 +5136,8 @@ simde_mm256_shuffle_pd (simde__m256d a, simde__m256d b, const int imm8)
 #elif SIMDE_NATURAL_VECTOR_SIZE_LE(128)
   #define simde_mm256_shuffle_pd(a, b, imm8) \
       simde_mm256_set_m128d( \
-          simde_mm_shuffle_pd(simde_mm256_extractf128_pd(a, 1), simde_mm256_extractf128_pd(b, 1), (imm8 >> 0) & 3), \
-          simde_mm_shuffle_pd(simde_mm256_extractf128_pd(a, 0), simde_mm256_extractf128_pd(b, 0), (imm8 >> 2) & 3))
+          simde_mm_shuffle_pd(simde_mm256_extractf128_pd(a, 1), simde_mm256_extractf128_pd(b, 1), (imm8 >> 2) & 3), \
+          simde_mm_shuffle_pd(simde_mm256_extractf128_pd(a, 0), simde_mm256_extractf128_pd(b, 0), (imm8 >> 0) & 3))
 #elif defined(SIMDE_SHUFFLE_VECTOR_)
   #define simde_mm256_shuffle_pd(a, b, imm8) \
     SIMDE_SHUFFLE_VECTOR_(64, 32, a, b, \

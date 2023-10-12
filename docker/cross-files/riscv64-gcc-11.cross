@@ -15,4 +15,4 @@ cpp_args = ['-Wextra', '-Werror', '-march=sifive-u54']
 system = 'linux'
 cpu_family = 'riscv64'
 cpu = 'sifive-u54'
-endian = 'litte'
+endian = 'little'

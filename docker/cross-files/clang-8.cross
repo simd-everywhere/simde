@@ -1,0 +1,11 @@
+[binaries]
+c = 'clang-8'
+cpp = 'clang++-8'
+ar = 'llvm-ar-8'
+strip = 'llvm-strip-8'
+objcopy = 'llvm-objcopy-8'
+ld = 'llvm-ld-8'
+
+[properties]
+c_args = ['-march=native', '-Weverything', '-fno-lax-vector-conversions', '-Werror']
+cpp_args = ['-march=native', '-Weverything', '-fno-lax-vector-conversions', '-Werror']

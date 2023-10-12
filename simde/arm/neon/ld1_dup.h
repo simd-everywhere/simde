@@ -23,6 +23,7 @@
  * Copyright:
  *   2021      Zhi An Ng <zhin@google.com> (Copyright owned by Google, LLC)
  *   2021      Evan Nemerson <evan@nemerson.com>
+ *   2023      Yi-Yen Chung <eric681@andestech.com> (Copyright owned by Andes Technology)
  */
 
 #if !defined(SIMDE_ARM_NEON_LD1_DUP_H)
@@ -175,6 +176,20 @@ simde_vld1_dup_u64(uint64_t const * ptr) {
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vld1_dup_u64
   #define vld1_dup_u64(a) simde_vld1_dup_u64((a))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_float16x8_t
+simde_vld1q_dup_f16(simde_float16 const * ptr) {
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
+    return vld1q_dup_f16(ptr);
+  #else
+    return simde_vdupq_n_f16(*ptr);
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+  #undef vld1q_dup_f16
+  #define vld1q_dup_f16(a) simde_vld1q_dup_f16((a))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES

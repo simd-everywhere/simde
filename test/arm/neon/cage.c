@@ -6,7 +6,7 @@
 static int
 test_simde_vcageh_f16 (SIMDE_MUNIT_TEST_ARGS) {
 #if 1
-  static const struct {
+  struct {
     simde_float32 a;
     simde_float32 b;
     uint16_t r;

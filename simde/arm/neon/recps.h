@@ -22,6 +22,7 @@
  *
  * Copyright:
  *   2021      Zhi An Ng <zhin@google.com> (Copyright owned by Google, LLC)
+ *   2023      Yi-Yen Chung <eric681@andestech.com> (Copyright owned by Andes Technology)
  */
 
 #if !defined(SIMDE_ARM_NEON_RECPS_H)
@@ -78,6 +79,23 @@ simde_vrecps_f64(simde_float64x1_t a, simde_float64x1_t b) {
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
+simde_float16x4_t
+simde_vrecps_f16(simde_float16x4_t a, simde_float16x4_t b) {
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
+    return vrecps_f16(a, b);
+  #else
+    return
+        simde_vsub_f16(
+          simde_vdup_n_f16(SIMDE_FLOAT16_VALUE(2.0)),
+          simde_vmul_f16(a, b));
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+  #undef vrecps_f16
+  #define vrecps_f16(a, b) simde_vrecps_f16((a), (b))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
 simde_float32x2_t
 simde_vrecps_f32(simde_float32x2_t a, simde_float32x2_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
@@ -117,6 +135,23 @@ simde_vrecpsq_f32(simde_float32x4_t a, simde_float32x4_t b) {
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vrecpsq_f32
   #define vrecpsq_f32(a, b) simde_vrecpsq_f32((a), (b))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_float16x8_t
+simde_vrecpsq_f16(simde_float16x8_t a, simde_float16x8_t b) {
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
+    return vrecpsq_f16(a, b);
+  #else
+    return
+        simde_vsubq_f16(
+          simde_vdupq_n_f16(SIMDE_FLOAT16_VALUE(2.0)),
+          simde_vmulq_f16(a, b));
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+  #undef vrecpsq_f16
+  #define vrecpsq_f16(a, b) simde_vrecpsq_f16((a), (b))
 #endif
 
 SIMDE_END_DECLS_

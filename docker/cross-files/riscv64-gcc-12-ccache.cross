@@ -15,4 +15,4 @@ cpp_args = ['-Wextra', '-Werror']
 system = 'linux'
 cpu_family = 'riscv64'
 cpu = 'riscv64'
-endian = 'litte'
+endian = 'little'

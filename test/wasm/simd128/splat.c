@@ -79,6 +79,59 @@ test_simde_wasm_i8x16_splat(SIMDE_MUNIT_TEST_ARGS) {
 }
 
 static int
+test_simde_wasm_u8x16_splat(SIMDE_MUNIT_TEST_ARGS) {
+  #if 1
+    SIMDE_TEST_STRUCT_MODIFIERS struct {
+      uint8_t a;
+      uint8_t r[sizeof(simde_v128_t) / sizeof(uint8_t)];
+    } test_vec[] = {
+      { UINT8_C( 92),
+        { UINT8_C( 92), UINT8_C( 92), UINT8_C( 92), UINT8_C( 92), UINT8_C( 92), UINT8_C( 92), UINT8_C( 92), UINT8_C( 92),
+          UINT8_C( 92), UINT8_C( 92), UINT8_C( 92), UINT8_C( 92), UINT8_C( 92), UINT8_C( 92), UINT8_C( 92), UINT8_C( 92) } },
+      { UINT8_C(128),
+        { UINT8_C(128), UINT8_C(128), UINT8_C(128), UINT8_C(128), UINT8_C(128), UINT8_C(128), UINT8_C(128), UINT8_C(128),
+          UINT8_C(128), UINT8_C(128), UINT8_C(128), UINT8_C(128), UINT8_C(128), UINT8_C(128), UINT8_C(128), UINT8_C(128) } },
+      { UINT8_C(238),
+        { UINT8_C(238), UINT8_C(238), UINT8_C(238), UINT8_C(238), UINT8_C(238), UINT8_C(238), UINT8_C(238), UINT8_C(238),
+          UINT8_C(238), UINT8_C(238), UINT8_C(238), UINT8_C(238), UINT8_C(238), UINT8_C(238), UINT8_C(238), UINT8_C(238) } },
+      { UINT8_C(244),
+        { UINT8_C(244), UINT8_C(244), UINT8_C(244), UINT8_C(244), UINT8_C(244), UINT8_C(244), UINT8_C(244), UINT8_C(244),
+          UINT8_C(244), UINT8_C(244), UINT8_C(244), UINT8_C(244), UINT8_C(244), UINT8_C(244), UINT8_C(244), UINT8_C(244) } },
+      { UINT8_C( 54),
+        { UINT8_C( 54), UINT8_C( 54), UINT8_C( 54), UINT8_C( 54), UINT8_C( 54), UINT8_C( 54), UINT8_C( 54), UINT8_C( 54),
+          UINT8_C( 54), UINT8_C( 54), UINT8_C( 54), UINT8_C( 54), UINT8_C( 54), UINT8_C( 54), UINT8_C( 54), UINT8_C( 54) } },
+      { UINT8_C(148),
+        { UINT8_C(148), UINT8_C(148), UINT8_C(148), UINT8_C(148), UINT8_C(148), UINT8_C(148), UINT8_C(148), UINT8_C(148),
+          UINT8_C(148), UINT8_C(148), UINT8_C(148), UINT8_C(148), UINT8_C(148), UINT8_C(148), UINT8_C(148), UINT8_C(148) } },
+      { UINT8_C(253),
+        { UINT8_C(253), UINT8_C(253), UINT8_C(253), UINT8_C(253), UINT8_C(253), UINT8_C(253), UINT8_C(253), UINT8_C(253),
+          UINT8_C(253), UINT8_C(253), UINT8_C(253), UINT8_C(253), UINT8_C(253), UINT8_C(253), UINT8_C(253), UINT8_C(253) } },
+      { UINT8_C(185),
+        { UINT8_C(185), UINT8_C(185), UINT8_C(185), UINT8_C(185), UINT8_C(185), UINT8_C(185), UINT8_C(185), UINT8_C(185),
+          UINT8_C(185), UINT8_C(185), UINT8_C(185), UINT8_C(185), UINT8_C(185), UINT8_C(185), UINT8_C(185), UINT8_C(185) } },
+    };
+
+    for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
+      simde_v128_t r = simde_wasm_u8x16_splat(test_vec[i].a);
+      simde_test_wasm_u8x16_assert_equal(r, simde_wasm_v128_load(test_vec[i].r));
+    }
+    return 0;
+  #else
+    fputc('\n', stdout);
+    for (int i = 0 ; i < 8 ; i++) {
+      uint8_t a = simde_test_codegen_random_u8();
+      simde_v128_t r;
+
+      r = simde_wasm_u8x16_splat(a);
+
+      simde_test_codegen_write_u8(3, a, SIMDE_TEST_VEC_POS_FIRST);
+      simde_test_wasm_u8x16_write(3, r, SIMDE_TEST_VEC_POS_LAST);
+    }
+    return 1;
+  #endif
+}
+
+static int
 test_simde_wasm_i16x8_splat(SIMDE_MUNIT_TEST_ARGS) {
   #if 1
     SIMDE_TEST_STRUCT_MODIFIERS struct {
@@ -118,6 +171,51 @@ test_simde_wasm_i16x8_splat(SIMDE_MUNIT_TEST_ARGS) {
 
       simde_test_codegen_write_i16(3, a, SIMDE_TEST_VEC_POS_FIRST);
       simde_test_wasm_i16x8_write(3, r, SIMDE_TEST_VEC_POS_LAST);
+    }
+    return 1;
+  #endif
+}
+
+static int
+test_simde_wasm_u16x8_splat(SIMDE_MUNIT_TEST_ARGS) {
+  #if 1
+    SIMDE_TEST_STRUCT_MODIFIERS struct {
+      uint16_t a;
+      uint16_t r[sizeof(simde_v128_t) / sizeof(uint16_t)];
+    } test_vec[8] = {
+      { UINT16_C(14861),
+        { UINT16_C(14861), UINT16_C(14861), UINT16_C(14861), UINT16_C(14861), UINT16_C(14861), UINT16_C(14861), UINT16_C(14861), UINT16_C(14861) } },
+      { UINT16_C(33042),
+        { UINT16_C(33042), UINT16_C(33042), UINT16_C(33042), UINT16_C(33042), UINT16_C(33042), UINT16_C(33042), UINT16_C(33042), UINT16_C(33042) } },
+      { UINT16_C(45949),
+        { UINT16_C(45949), UINT16_C(45949), UINT16_C(45949), UINT16_C(45949), UINT16_C(45949), UINT16_C(45949), UINT16_C(45949), UINT16_C(45949) } },
+      { UINT16_C(30008),
+        { UINT16_C(30008), UINT16_C(30008), UINT16_C(30008), UINT16_C(30008), UINT16_C(30008), UINT16_C(30008), UINT16_C(30008), UINT16_C(30008) } },
+      { UINT16_C(33394),
+        { UINT16_C(33394), UINT16_C(33394), UINT16_C(33394), UINT16_C(33394), UINT16_C(33394), UINT16_C(33394), UINT16_C(33394), UINT16_C(33394) } },
+      { UINT16_C(15014),
+        { UINT16_C(15014), UINT16_C(15014), UINT16_C(15014), UINT16_C(15014), UINT16_C(15014), UINT16_C(15014), UINT16_C(15014), UINT16_C(15014) } },
+      { UINT16_C( 5927),
+        { UINT16_C( 5927), UINT16_C( 5927), UINT16_C( 5927), UINT16_C( 5927), UINT16_C( 5927), UINT16_C( 5927), UINT16_C( 5927), UINT16_C( 5927) } },
+      { UINT16_C( 3319),
+        { UINT16_C( 3319), UINT16_C( 3319), UINT16_C( 3319), UINT16_C( 3319), UINT16_C( 3319), UINT16_C( 3319), UINT16_C( 3319), UINT16_C( 3319) } },
+    };
+
+    for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
+      simde_v128_t r = simde_wasm_u16x8_splat(test_vec[i].a);
+      simde_test_wasm_u16x8_assert_equal(r, simde_wasm_v128_load(test_vec[i].r));
+    }
+    return 0;
+  #else
+    fputc('\n', stdout);
+    for (int i = 0 ; i < 8 ; i++) {
+      uint16_t a = simde_test_codegen_random_u16();
+      simde_v128_t r;
+
+      r = simde_wasm_u16x8_splat(a);
+
+      simde_test_codegen_write_u16(3, a, SIMDE_TEST_VEC_POS_FIRST);
+      simde_test_wasm_u16x8_write(3, r, SIMDE_TEST_VEC_POS_LAST);
     }
     return 1;
   #endif
@@ -169,6 +267,51 @@ test_simde_wasm_i32x4_splat(SIMDE_MUNIT_TEST_ARGS) {
 }
 
 static int
+test_simde_wasm_u32x4_splat(SIMDE_MUNIT_TEST_ARGS) {
+  #if 1
+    SIMDE_TEST_STRUCT_MODIFIERS struct {
+      uint32_t a;
+      uint32_t r[sizeof(simde_v128_t) / sizeof(uint32_t)];
+    } test_vec[8] = {
+      { UINT32_C(2975126680),
+        { UINT32_C(2975126680), UINT32_C(2975126680), UINT32_C(2975126680), UINT32_C(2975126680) } },
+      { UINT32_C(1285121060),
+        { UINT32_C(1285121060), UINT32_C(1285121060), UINT32_C(1285121060), UINT32_C(1285121060) } },
+      { UINT32_C(2413518924),
+        { UINT32_C(2413518924), UINT32_C(2413518924), UINT32_C(2413518924), UINT32_C(2413518924) } },
+      { UINT32_C( 491903476),
+        { UINT32_C( 491903476), UINT32_C( 491903476), UINT32_C( 491903476), UINT32_C( 491903476) } },
+      { UINT32_C(3103709002),
+        { UINT32_C(3103709002), UINT32_C(3103709002), UINT32_C(3103709002), UINT32_C(3103709002) } },
+      { UINT32_C( 801096537),
+        { UINT32_C( 801096537), UINT32_C( 801096537), UINT32_C( 801096537), UINT32_C( 801096537) } },
+      { UINT32_C(2605969948),
+        { UINT32_C(2605969948), UINT32_C(2605969948), UINT32_C(2605969948), UINT32_C(2605969948) } },
+      { UINT32_C(1567561904),
+        { UINT32_C(1567561904), UINT32_C(1567561904), UINT32_C(1567561904), UINT32_C(1567561904) } },
+    };
+
+    for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
+      simde_v128_t r = simde_wasm_u32x4_splat(test_vec[i].a);
+      simde_test_wasm_u32x4_assert_equal(r, simde_wasm_v128_load(test_vec[i].r));
+    }
+    return 0;
+  #else
+    fputc('\n', stdout);
+    for (int i = 0 ; i < 8 ; i++) {
+      uint32_t a = simde_test_codegen_random_u32();
+      simde_v128_t r;
+
+      r = simde_wasm_u32x4_splat(a);
+
+      simde_test_codegen_write_u32(3, a, SIMDE_TEST_VEC_POS_FIRST);
+      simde_test_wasm_u32x4_write(3, r, SIMDE_TEST_VEC_POS_LAST);
+    }
+    return 1;
+  #endif
+}
+
+static int
 test_simde_wasm_i64x2_splat(SIMDE_MUNIT_TEST_ARGS) {
   #if 1
     SIMDE_TEST_STRUCT_MODIFIERS struct {
@@ -208,6 +351,51 @@ test_simde_wasm_i64x2_splat(SIMDE_MUNIT_TEST_ARGS) {
 
       simde_test_codegen_write_i64(3, a, SIMDE_TEST_VEC_POS_FIRST);
       simde_test_wasm_i64x2_write(3, r, SIMDE_TEST_VEC_POS_LAST);
+    }
+    return 1;
+  #endif
+}
+
+static int
+test_simde_wasm_u64x2_splat(SIMDE_MUNIT_TEST_ARGS) {
+  #if 1
+    SIMDE_TEST_STRUCT_MODIFIERS struct {
+      uint64_t a;
+      uint64_t r[sizeof(simde_v128_t) / sizeof(uint64_t)];
+    } test_vec[8] = {
+      { UINT64_C( 7132691792976625565),
+        { UINT64_C( 7132691792976625565), UINT64_C( 7132691792976625565) } },
+      { UINT64_C(14300499752629954042),
+        { UINT64_C(14300499752629954042), UINT64_C(14300499752629954042) } },
+      { UINT64_C( 7097148800183537898),
+        { UINT64_C( 7097148800183537898), UINT64_C( 7097148800183537898) } },
+      { UINT64_C( 2779430508868147369),
+        { UINT64_C( 2779430508868147369), UINT64_C( 2779430508868147369) } },
+      { UINT64_C( 4010387163490798142),
+        { UINT64_C( 4010387163490798142), UINT64_C( 4010387163490798142) } },
+      { UINT64_C(15656940686994346834),
+        { UINT64_C(15656940686994346834), UINT64_C(15656940686994346834) } },
+      { UINT64_C(17812203231116185058),
+        { UINT64_C(17812203231116185058), UINT64_C(17812203231116185058) } },
+      { UINT64_C( 8883241973645748423),
+        { UINT64_C( 8883241973645748423), UINT64_C( 8883241973645748423) } },
+    };
+
+    for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
+      simde_v128_t r = simde_wasm_u64x2_splat(test_vec[i].a);
+      simde_test_wasm_u64x2_assert_equal(r, simde_wasm_v128_load(test_vec[i].r));
+    }
+    return 0;
+  #else
+    fputc('\n', stdout);
+    for (int i = 0 ; i < 8 ; i++) {
+      uint64_t a = simde_test_codegen_random_u64();
+      simde_v128_t r;
+
+      r = simde_wasm_u64x2_splat(a);
+
+      simde_test_codegen_write_u64(3, a, SIMDE_TEST_VEC_POS_FIRST);
+      simde_test_wasm_u64x2_write(3, r, SIMDE_TEST_VEC_POS_LAST);
     }
     return 1;
   #endif
@@ -305,9 +493,13 @@ test_simde_wasm_f64x2_splat(SIMDE_MUNIT_TEST_ARGS) {
 
 SIMDE_TEST_FUNC_LIST_BEGIN
   SIMDE_TEST_FUNC_LIST_ENTRY(wasm_i8x16_splat)
+  SIMDE_TEST_FUNC_LIST_ENTRY(wasm_u8x16_splat)
   SIMDE_TEST_FUNC_LIST_ENTRY(wasm_i16x8_splat)
+  SIMDE_TEST_FUNC_LIST_ENTRY(wasm_u16x8_splat)
   SIMDE_TEST_FUNC_LIST_ENTRY(wasm_i32x4_splat)
+  SIMDE_TEST_FUNC_LIST_ENTRY(wasm_u32x4_splat)
   SIMDE_TEST_FUNC_LIST_ENTRY(wasm_i64x2_splat)
+  SIMDE_TEST_FUNC_LIST_ENTRY(wasm_u64x2_splat)
   SIMDE_TEST_FUNC_LIST_ENTRY(wasm_f32x4_splat)
   SIMDE_TEST_FUNC_LIST_ENTRY(wasm_f64x2_splat)
 SIMDE_TEST_FUNC_LIST_END
