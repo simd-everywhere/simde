@@ -597,7 +597,7 @@ simde__m128i simde_mm_aesimc_si128(simde__m128i a) {
   #endif
 }
 #if defined(SIMDE_X86_AES_ENABLE_NATIVE_ALIASES)
-  #define _mm_aesimc_si128(a, b) simde_mm_aesimc_si128(a, b)
+  #define _mm_aesimc_si128(a) simde_mm_aesimc_si128(a)
 #endif
 
 #undef simde_x_aes_Nb
