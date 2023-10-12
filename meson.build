@@ -384,6 +384,7 @@ if not meson.is_subproject()
 
   install_headers(
     files([
+      'simde/x86/aes.h',
       'simde/x86/avx512.h',
       'simde/x86/avx2.h',
       'simde/x86/avx.h',
