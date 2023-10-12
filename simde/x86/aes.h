@@ -62,7 +62,7 @@ uint8_t gmult(uint8_t a, uint8_t b) {
 }
  */
 
-static uint8_t softaes_gmult_lookup_table[8][256] = {
+static uint8_t _simde_softaes_gmult_lookup_table[8][256] = {
 { // gmult(0x02, b);
   0x00, 0x02, 0x04, 0x06, 0x08, 0x0a, 0x0c, 0x0e, 0x10, 0x12, 0x14, 0x16, 0x18, 0x1a, 0x1c, 0x1e,
   0x20, 0x22, 0x24, 0x26, 0x28, 0x2a, 0x2c, 0x2e, 0x30, 0x32, 0x34, 0x36, 0x38, 0x3a, 0x3c, 0x3e,
@@ -225,10 +225,10 @@ void coef_mult(uint8_t *a, uint8_t *b, uint8_t *d) {
 */
 
 SIMDE_FUNCTION_ATTRIBUTES
-void softaes_coef_mult_lookup(int lookup_table_offset, uint8_t *b, uint8_t *d) {
+void _simde_softaes_coef_mult_lookup(int lookup_table_offset, uint8_t *b, uint8_t *d) {
   int o = lookup_table_offset;
 
-  #define gmultl(o,b) softaes_gmult_lookup_table[o][b]
+  #define gmultl(o,b) _simde_softaes_gmult_lookup_table[o][b]
   d[0] = gmultl(o+0,b[0])^gmultl(o+3,b[1])^gmultl(o+2,b[2])^gmultl(o+1,b[3]);
   d[1] = gmultl(o+1,b[0])^gmultl(o+0,b[1])^gmultl(o+3,b[2])^gmultl(o+2,b[3]);
   d[2] = gmultl(o+2,b[0])^gmultl(o+1,b[1])^gmultl(o+0,b[2])^gmultl(o+3,b[3]);
@@ -240,12 +240,12 @@ void softaes_coef_mult_lookup(int lookup_table_offset, uint8_t *b, uint8_t *d) {
  * Number of columns (32-bit words) comprising the State. For this
  * standard, Nb = 4.
  */
-#define softaes_Nb 4;
+#define _simde_softaes_Nb 4
 
 /*
  * S-box transformation table
  */
-static uint8_t softaes_s_box[256] = {
+static uint8_t _simde_softaes_s_box[256] = {
   // 0     1     2     3     4     5     6     7     8     9     a     b     c     d     e     f
   0x63, 0x7c, 0x77, 0x7b, 0xf2, 0x6b, 0x6f, 0xc5, 0x30, 0x01, 0x67, 0x2b, 0xfe, 0xd7, 0xab, 0x76, // 0
   0xca, 0x82, 0xc9, 0x7d, 0xfa, 0x59, 0x47, 0xf0, 0xad, 0xd4, 0xa2, 0xaf, 0x9c, 0xa4, 0x72, 0xc0, // 1
@@ -267,7 +267,7 @@ static uint8_t softaes_s_box[256] = {
 /*
  * Inverse S-box transformation table
  */
-static uint8_t softaes_inv_s_box[256] = {
+static uint8_t _simde_softaes_inv_s_box[256] = {
   // 0     1     2     3     4     5     6     7     8     9     a     b     c     d     e     f
   0x52, 0x09, 0x6a, 0xd5, 0x30, 0x36, 0xa5, 0x38, 0xbf, 0x40, 0xa3, 0x9e, 0x81, 0xf3, 0xd7, 0xfb, // 0
   0x7c, 0xe3, 0x39, 0x82, 0x9b, 0x2f, 0xff, 0x87, 0x34, 0x8e, 0x43, 0x44, 0xc4, 0xde, 0xe9, 0xcb, // 1
@@ -294,9 +294,9 @@ static uint8_t softaes_inv_s_box[256] = {
  * Key length equals 128 bits/16 bytes).
  */
 SIMDE_FUNCTION_ATTRIBUTES
-void softaes_add_round_key(uint8_t *state, uint8_t *w, uint8_t r) {
+void _simde_softaes_add_round_key(uint8_t *state, uint8_t *w, uint8_t r) {
 
-  int Nb = softaes_Nb;
+  int Nb = _simde_softaes_Nb;
   uint8_t c;
 
   for (c = 0; c < Nb; c++) {
@@ -313,9 +313,9 @@ void softaes_add_round_key(uint8_t *state, uint8_t *w, uint8_t r) {
  * produce new columns.
  */
 SIMDE_FUNCTION_ATTRIBUTES
-void softaes_mix_columns(uint8_t *state) {
+void _simde_softaes_mix_columns(uint8_t *state) {
 
-  int Nb = softaes_Nb;
+  int Nb = _simde_softaes_Nb;
   // uint8_t k[] = {0x02, 0x01, 0x01, 0x03}; // a(x) = {02} + {01}x + {01}x2 + {03}x3
   uint8_t i, j, col[4], res[4];
 
@@ -325,7 +325,7 @@ void softaes_mix_columns(uint8_t *state) {
     }
 
     //coef_mult(k, col, res);
-    softaes_coef_mult_lookup(0, col, res);
+    _simde_softaes_coef_mult_lookup(0, col, res);
 
     for (i = 0; i < 4; i++) {
       state[Nb*i+j] = res[i];
@@ -338,9 +338,9 @@ void softaes_mix_columns(uint8_t *state) {
  * MixColumns().
  */
 SIMDE_FUNCTION_ATTRIBUTES
-void softaes_inv_mix_columns(uint8_t *state) {
+void _simde_softaes_inv_mix_columns(uint8_t *state) {
 
-  int Nb = softaes_Nb;
+  int Nb = _simde_softaes_Nb;
   // uint8_t k[] = {0x0e, 0x09, 0x0d, 0x0b}; // a(x) = {0e} + {09}x + {0d}x2 + {0b}x3
   uint8_t i, j, col[4], res[4];
 
@@ -350,7 +350,7 @@ void softaes_inv_mix_columns(uint8_t *state) {
     }
 
     //coef_mult(k, col, res);
-    softaes_coef_mult_lookup(4, col, res);
+    _simde_softaes_coef_mult_lookup(4, col, res);
 
     for (i = 0; i < 4; i++) {
       state[Nb*i+j] = res[i];
@@ -363,9 +363,9 @@ void softaes_inv_mix_columns(uint8_t *state) {
  * shifting the last three rows of the State by different offsets.
  */
 SIMDE_FUNCTION_ATTRIBUTES
-void softaes_shift_rows(uint8_t *state) {
+void _simde_softaes_shift_rows(uint8_t *state) {
 
-  int Nb = softaes_Nb;
+  int Nb = _simde_softaes_Nb;
   uint8_t i, k, s, tmp;
 
   for (i = 1; i < 4; i++) {
@@ -390,9 +390,9 @@ void softaes_shift_rows(uint8_t *state) {
  * ShiftRows().
  */
 SIMDE_FUNCTION_ATTRIBUTES
-void softaes_inv_shift_rows(uint8_t *state) {
+void _simde_softaes_inv_shift_rows(uint8_t *state) {
 
-  int Nb = softaes_Nb;
+  uint8_t Nb = _simde_softaes_Nb;
   uint8_t i, k, s, tmp;
 
   for (i = 1; i < 4; i++) {
@@ -416,9 +416,9 @@ void softaes_inv_shift_rows(uint8_t *state) {
  * State bytes independently.
  */
 SIMDE_FUNCTION_ATTRIBUTES
-void softaes_sub_bytes(uint8_t *state) {
+void _simde_softaes_sub_bytes(uint8_t *state) {
 
-  int Nb = softaes_Nb;
+  int Nb = _simde_softaes_Nb;
   uint8_t i, j;
 
   for (i = 0; i < 4; i++) {
@@ -426,7 +426,7 @@ void softaes_sub_bytes(uint8_t *state) {
       // s_box row: yyyy ----
       // s_box col: ---- xxxx
       // s_box[16*(yyyy) + xxxx] == s_box[yyyyxxxx]
-      state[Nb*i+j] = softaes_s_box[state[Nb*i+j]];
+      state[Nb*i+j] = _simde_softaes_s_box[state[Nb*i+j]];
     }
   }
 }
@@ -436,14 +436,14 @@ void softaes_sub_bytes(uint8_t *state) {
  * SubBytes().
  */
 SIMDE_FUNCTION_ATTRIBUTES
-void softaes_inv_sub_bytes(uint8_t *state) {
+void _simde_softaes_inv_sub_bytes(uint8_t *state) {
 
-  int Nb = softaes_Nb;
+  int Nb = _simde_softaes_Nb;
   uint8_t i, j;
 
   for (i = 0; i < 4; i++) {
     for (j = 0; j < Nb; j++) {
-      state[Nb*i+j] = softaes_inv_s_box[state[Nb*i+j]];
+      state[Nb*i+j] = _simde_softaes_inv_s_box[state[Nb*i+j]];
     }
   }
 }
@@ -452,10 +452,10 @@ void softaes_inv_sub_bytes(uint8_t *state) {
  * Performs the AES cipher operation
  */
 SIMDE_FUNCTION_ATTRIBUTES
-void softaes_enc(uint8_t *in, uint8_t *out, uint8_t *w, int is_last) {
+void _simde_softaes_enc(uint8_t *in, uint8_t *out, uint8_t *w, int is_last) {
 
-  int Nb = softaes_Nb;
-  uint8_t state[4*Nb];
+  int Nb = _simde_softaes_Nb;
+  uint8_t state[4*_simde_softaes_Nb];
   uint8_t r = 0, i, j;
 
   for (i = 0; i < 4; i++) {
@@ -464,13 +464,13 @@ void softaes_enc(uint8_t *in, uint8_t *out, uint8_t *w, int is_last) {
     }
   }
 
-  softaes_sub_bytes(state);
-  softaes_shift_rows(state);
+  _simde_softaes_sub_bytes(state);
+  _simde_softaes_shift_rows(state);
 
   if (!is_last)
-    softaes_mix_columns(state);
+    _simde_softaes_mix_columns(state);
 
-  softaes_add_round_key(state, w, r);
+  _simde_softaes_add_round_key(state, w, r);
 
   for (i = 0; i < 4; i++) {
     for (j = 0; j < Nb; j++) {
@@ -483,10 +483,10 @@ void softaes_enc(uint8_t *in, uint8_t *out, uint8_t *w, int is_last) {
  * Performs the AES inverse cipher operation
  */
 SIMDE_FUNCTION_ATTRIBUTES
-void softaes_dec(uint8_t *in, uint8_t *out, uint8_t *w, int is_last) {
+void _simde_softaes_dec(uint8_t *in, uint8_t *out, uint8_t *w, int is_last) {
 
-  int Nb = softaes_Nb;
-  uint8_t state[4*Nb];
+  int Nb = _simde_softaes_Nb;
+  uint8_t state[4*_simde_softaes_Nb];
   uint8_t r = 0, i, j;
 
   for (i = 0; i < 4; i++) {
@@ -495,13 +495,13 @@ void softaes_dec(uint8_t *in, uint8_t *out, uint8_t *w, int is_last) {
     }
   }
 
-  softaes_inv_shift_rows(state);
-  softaes_inv_sub_bytes(state);
+  _simde_softaes_inv_shift_rows(state);
+  _simde_softaes_inv_sub_bytes(state);
 
   if (!is_last)
-    softaes_inv_mix_columns(state);
+    _simde_softaes_inv_mix_columns(state);
 
-  softaes_add_round_key(state, w, r);
+  _simde_softaes_add_round_key(state, w, r);
 
   for (i = 0; i < 4; i++) {
     for (j = 0; j < Nb; j++) {
@@ -516,7 +516,7 @@ simde__m128i simde_mm_aesenc_si128(simde__m128i a, simde__m128i round_key) {
     return _mm_aesenc_si128(a, round_key);
   #else
     simde__m128i result;
-    softaes_enc((uint8_t *) &a, (uint8_t *) &result, (uint8_t *) &round_key, 0);
+    _simde_softaes_enc(HEDLEY_REINTERPRET_CAST(uint8_t *, &a), HEDLEY_REINTERPRET_CAST(uint8_t *, &result), HEDLEY_REINTERPRET_CAST(uint8_t *, &round_key), 0);
     return result;
   #endif
 }
@@ -530,7 +530,7 @@ simde__m128i simde_mm_aesdec_si128(simde__m128i a, simde__m128i round_key) {
     return _mm_aesdec_si128(a, round_key);
   #else
     simde__m128i result;
-    softaes_dec((uint8_t *) &a, (uint8_t *) &result, (uint8_t *) &round_key, 0);
+    _simde_softaes_dec(HEDLEY_REINTERPRET_CAST(uint8_t *, &a), HEDLEY_REINTERPRET_CAST(uint8_t *, &result), HEDLEY_REINTERPRET_CAST(uint8_t *, &round_key), 0);
     return result;
   #endif
 }
@@ -541,11 +541,11 @@ simde__m128i simde_mm_aesdec_si128(simde__m128i a, simde__m128i round_key) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128i simde_mm_aesenclast_si128(simde__m128i a, simde__m128i round_key) {
   #if defined(SIMDE_X86_AES_NATIVE)
-  return _mm_aesenclast_si128(a, round_key);
+    return _mm_aesenclast_si128(a, round_key);
   #else
-  simde__m128i result;
-  softaes_enc((uint8_t *) &a, (uint8_t *) &result, (uint8_t *) &round_key, 1);
-  return result;
+    simde__m128i result;
+    _simde_softaes_enc(HEDLEY_REINTERPRET_CAST(uint8_t *, &a), HEDLEY_REINTERPRET_CAST(uint8_t *, &result), HEDLEY_REINTERPRET_CAST(uint8_t *, &round_key), 1);
+    return result;
   #endif
 }
 #if defined(SIMDE_X86_AES_ENABLE_NATIVE_ALIASES)
@@ -555,11 +555,11 @@ simde__m128i simde_mm_aesenclast_si128(simde__m128i a, simde__m128i round_key) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128i simde_mm_aesdeclast_si128(simde__m128i a, simde__m128i round_key) {
   #if defined(SIMDE_X86_AES_NATIVE)
-  return _mm_aesdeclast_si128(a, round_key);
+    return _mm_aesdeclast_si128(a, round_key);
   #else
-  simde__m128i result;
-  softaes_dec((uint8_t *) &a, (uint8_t *) &result, (uint8_t *) &round_key, 1);
-  return result;
+    simde__m128i result;
+    _simde_softaes_dec(HEDLEY_REINTERPRET_CAST(uint8_t *, &a), HEDLEY_REINTERPRET_CAST(uint8_t *, &result), HEDLEY_REINTERPRET_CAST(uint8_t *, &round_key), 1);
+    return result;
   #endif
 }
 #if defined(SIMDE_X86_AES_ENABLE_NATIVE_ALIASES)
@@ -569,37 +569,37 @@ simde__m128i simde_mm_aesdeclast_si128(simde__m128i a, simde__m128i round_key) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128i simde_mm_aesimc_si128(simde__m128i a) {
   #if defined(SIMDE_X86_AES_NATIVE)
-  return _mm_aesimc_si128(a);
+    return _mm_aesimc_si128(a);
   #else
-  simde__m128i result;
+    simde__m128i result;
 
-  uint8_t *in = (uint8_t *) &a;
-  uint8_t *out = (uint8_t *) &result;
+    uint8_t *in = (uint8_t *) &a;
+    uint8_t *out = (uint8_t *) &result;
 
-  int Nb = softaes_Nb;
-  // uint8_t k[] = {0x0e, 0x09, 0x0d, 0x0b}; // a(x) = {0e} + {09}x + {0d}x2 + {0b}x3
-  uint8_t i, j, col[4], res[4];
+    int Nb = _simde_softaes_Nb;
+    // uint8_t k[] = {0x0e, 0x09, 0x0d, 0x0b}; // a(x) = {0e} + {09}x + {0d}x2 + {0b}x3
+    uint8_t i, j, col[4], res[4];
 
-  for (j = 0; j < Nb; j++) {
-    for (i = 0; i < 4; i++) {
-      col[i] = in[Nb*j+i];
+    for (j = 0; j < Nb; j++) {
+      for (i = 0; i < 4; i++) {
+        col[i] = in[Nb*j+i];
+      }
+
+      //coef_mult(k, col, res);
+      _simde_softaes_coef_mult_lookup(4, col, res);
+
+      for (i = 0; i < 4; i++) {
+        out[Nb*j+i] = res[i];
+      }
     }
 
-    //coef_mult(k, col, res);
-    softaes_coef_mult_lookup(4, col, res);
-
-    for (i = 0; i < 4; i++) {
-      out[Nb*j+i] = res[i];
-    }
-  }
-
-  return result;
+    return result;
   #endif
 }
 #if defined(SIMDE_X86_AES_ENABLE_NATIVE_ALIASES)
   #define _mm_aesimc_si128(a, b) simde_mm_aesimc_si128(a, b)
 #endif
 
-#undef softaes_Nb
+#undef _simde_softaes_Nb
 
 #endif /* !defined(SIMDE_X86_AES_H) */
