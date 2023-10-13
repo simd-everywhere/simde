@@ -37,6 +37,20 @@ SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 SIMDE_BEGIN_DECLS_
 
 SIMDE_FUNCTION_ATTRIBUTES
+simde_float16x4_t
+simde_vld1_dup_f16(simde_float16 const * ptr) {
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
+    return vld1_dup_f16(ptr);
+  #else
+    return simde_vdup_n_f16(*ptr);
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+  #undef vld1_dup_f16
+  #define vld1_dup_f16(a) simde_vld1_dup_f16((a))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
 simde_float32x2_t
 simde_vld1_dup_f32(simde_float32 const * ptr) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
