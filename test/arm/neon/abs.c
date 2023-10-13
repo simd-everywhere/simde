@@ -9,21 +9,21 @@ test_simde_vabsh_f16 (SIMDE_MUNIT_TEST_ARGS) {
     simde_float16 a;
     simde_float16 r;
   } test_vec[] = {
-    { -SIMDE_FLOAT16_VALUE(  24.786),
+    { SIMDE_FLOAT16_VALUE( -24.786),
        SIMDE_FLOAT16_VALUE(  24.786) },
     {  SIMDE_FLOAT16_VALUE(  27.135),
        SIMDE_FLOAT16_VALUE(  27.135) },
     {  SIMDE_FLOAT16_VALUE(  16.821),
        SIMDE_FLOAT16_VALUE(  16.821) },
-    { -SIMDE_FLOAT16_VALUE(  25.652),
+    { SIMDE_FLOAT16_VALUE( -25.652),
        SIMDE_FLOAT16_VALUE(  25.652) },
     {  SIMDE_FLOAT16_VALUE(   8.252),
        SIMDE_FLOAT16_VALUE(   8.252) },
     {  SIMDE_FLOAT16_VALUE(   1.127),
        SIMDE_FLOAT16_VALUE(   1.127) },
-    { -SIMDE_FLOAT16_VALUE(  26.641),
+    { SIMDE_FLOAT16_VALUE( -26.641),
        SIMDE_FLOAT16_VALUE(  26.641) },
-    { -SIMDE_FLOAT16_VALUE(   2.663),
+    { SIMDE_FLOAT16_VALUE( -2.663),
        SIMDE_FLOAT16_VALUE(   2.663) },
   };
 

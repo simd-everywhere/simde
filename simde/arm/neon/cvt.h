@@ -1395,7 +1395,7 @@ simde_vcvtah_u16_f16(simde_float16 a) {
   #elif defined(SIMDE_FAST_CONVERSION_RANGE)
     return HEDLEY_STATIC_CAST(uint16_t, a);
   #else
-    if (HEDLEY_UNLIKELY(a < SIMDE_FLOAT16_C(0.0))) {
+    if (HEDLEY_UNLIKELY(a < SIMDE_FLOAT16_VALUE(0.0))) {
       return 0;
     } else if (HEDLEY_UNLIKELY(a > HEDLEY_STATIC_CAST(simde_float16, UINT16_MAX))) {
       return UINT16_MAX;
@@ -1441,7 +1441,7 @@ simde_vcvtah_u32_f16(simde_float16 a) {
   #elif defined(SIMDE_FAST_CONVERSION_RANGE)
     return HEDLEY_STATIC_CAST(uint32_t, a);
   #else
-    if (HEDLEY_UNLIKELY(a < SIMDE_FLOAT16_C(0.0))) {
+    if (HEDLEY_UNLIKELY(a < SIMDE_FLOAT16_VALUE(0.0))) {
       return 0;
     } else if (HEDLEY_UNLIKELY(a > HEDLEY_STATIC_CAST(simde_float16, UINT32_MAX))) {
       return UINT32_MAX;
@@ -1487,7 +1487,7 @@ simde_vcvtah_u64_f16(simde_float16 a) {
   #elif defined(SIMDE_FAST_CONVERSION_RANGE)
     return HEDLEY_STATIC_CAST(uint64_t, a);
   #else
-    if (HEDLEY_UNLIKELY(a < SIMDE_FLOAT16_C(0.0))) {
+    if (HEDLEY_UNLIKELY(a < SIMDE_FLOAT16_VALUE(0.0))) {
       return 0;
     } else if (HEDLEY_UNLIKELY(a > HEDLEY_STATIC_CAST(simde_float16, UINT64_MAX))) {
       return UINT64_MAX;

@@ -87,7 +87,7 @@ simde_vcltzh_f16(simde_float16_t a) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return HEDLEY_STATIC_CAST(uint16_t, vcltzh_f16(a));
   #else
-    return (a < SIMDE_FLOAT16_C(0.0)) ? UINT16_MAX : 0;
+    return (a < SIMDE_FLOAT16_VALUE(0.0)) ? UINT16_MAX : 0;
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
