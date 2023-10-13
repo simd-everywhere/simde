@@ -4,6 +4,48 @@
 #include "../../../simde/arm/neon/qdmulh.h"
 
 static int
+test_simde_vqdmulhh_s16 (SIMDE_MUNIT_TEST_ARGS) {
+  static const struct {
+    int16_t a;
+    int16_t b;
+    int16_t r;
+  } test_vec[] = {
+     {    -INT16_C( 7721),
+          -INT16_C( 4968),
+           INT16_C( 1170) },
+     {     INT16_C( 9092),
+          -INT16_C( 8726),
+          -INT16_C( 2422) },
+     {     INT16_C( 3840),
+           INT16_C( 7805),
+           INT16_C(  914) },
+     {    -INT16_C( 4379),
+          -INT16_C( 9567),
+           INT16_C( 1278) },
+     {     INT16_C( 2038),
+           INT16_C( 2751),
+           INT16_C(  171) },
+     {     INT16_C( 7989),
+          -INT16_C( 7314),
+          -INT16_C( 1784) },
+     {     INT16_C( 6979),
+          -INT16_C(  191),
+          -INT16_C(   41) },
+     {    -INT16_C( 9609),
+          -INT16_C(   68),
+           INT16_C(   19) },
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
+    int16_t r = simde_vqdmulhh_s16(test_vec[i].a, test_vec[i].b);
+
+    simde_assert_equal_i16(r, test_vec[i].r);
+  }
+
+  return 0;
+}
+
+static int
 test_simde_vqdmulh_s16 (SIMDE_MUNIT_TEST_ARGS) {
 #if 1
   static const struct {
@@ -239,6 +281,7 @@ test_simde_vqdmulhq_s32 (SIMDE_MUNIT_TEST_ARGS) {
 }
 
 SIMDE_TEST_FUNC_LIST_BEGIN
+SIMDE_TEST_FUNC_LIST_ENTRY(vqdmulhh_s16)
 SIMDE_TEST_FUNC_LIST_ENTRY(vqdmulh_s16)
 SIMDE_TEST_FUNC_LIST_ENTRY(vqdmulh_s32)
 

@@ -23,6 +23,7 @@
  * Copyright:
  *   2021      Zhi An Ng <zhin@google.com> (Copyright owned by Google, LLC)
  *   2021      Evan Nemerson <evan@nemerson.com>
+ *   2023      Yi-Yen Chung <eric681@andestech.com> (Copyright owned by Andes Technology)
  */
 
 /* In older versions of clang, __builtin_neon_vld4_lane_v would
@@ -98,6 +99,7 @@ simde_vld4_lane_s16(int16_t const ptr[HEDLEY_ARRAY_PARAM(4)], simde_int16x4x4_t 
   #undef vld4_lane_s16
   #define vld4_lane_s16(ptr, src, lane) simde_vld4_lane_s16((ptr), (src), (lane))
 #endif
+
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde_int32x2x4_t
@@ -259,6 +261,33 @@ simde_vld4_lane_u64(uint64_t const ptr[HEDLEY_ARRAY_PARAM(4)], simde_uint64x1x4_
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
   #undef vld4_lane_u64
   #define vld4_lane_u64(ptr, src, lane) simde_vld4_lane_u64((ptr), (src), (lane))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_float16x4x4_t
+simde_vld4_lane_f16(simde_float16_t const ptr[HEDLEY_ARRAY_PARAM(4)], simde_float16x4x4_t src, const int lane)
+    SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 3) {
+  simde_float16x4x4_t r;
+
+  for (size_t i = 0 ; i < 4 ; i++) {
+    simde_float16x4_private tmp_ = simde_float16x4_to_private(src.val[i]);
+    tmp_.values[lane] = ptr[i];
+    r.val[i] = simde_float16x4_from_private(tmp_);
+  }
+
+  return r;
+}
+#if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
+  #if defined(__clang__) && !SIMDE_DETECT_CLANG_VERSION_CHECK(10,0,0)
+    #define simde_vld4_lane_f16(ptr, src, lane) \
+      SIMDE_DISABLE_DIAGNOSTIC_EXPR_(SIMDE_DIAGNOSTIC_DISABLE_VECTOR_CONVERSION_, vld4_lane_f16(ptr, src, lane))
+  #else
+    #define simde_vld4_lane_f16(ptr, src, lane) vld4_lane_f16(ptr, src, lane)
+  #endif
+#endif
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+  #undef vld4_lane_f16
+  #define vld4_lane_f16(ptr, src, lane) simde_vld4_lane_f16((ptr), (src), (lane))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -529,6 +558,33 @@ simde_vld4q_lane_u64(uint64_t const ptr[HEDLEY_ARRAY_PARAM(4)], simde_uint64x2x4
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
   #undef vld4q_lane_u64
   #define vld4q_lane_u64(ptr, src, lane) simde_vld4q_lane_u64((ptr), (src), (lane))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_float16x8x4_t
+simde_vld4q_lane_f16(simde_float16_t const ptr[HEDLEY_ARRAY_PARAM(4)], simde_float16x8x4_t src, const int lane)
+    SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 7) {
+  simde_float16x8x4_t r;
+
+  for (size_t i = 0 ; i < 4 ; i++) {
+    simde_float16x8_private tmp_ = simde_float16x8_to_private(src.val[i]);
+    tmp_.values[lane] = ptr[i];
+    r.val[i] = simde_float16x8_from_private(tmp_);
+  }
+
+  return r;
+}
+#if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
+  #if defined(__clang__) && !SIMDE_DETECT_CLANG_VERSION_CHECK(10,0,0)
+    #define simde_vld4q_lane_f16(ptr, src, lane) \
+      SIMDE_DISABLE_DIAGNOSTIC_EXPR_(SIMDE_DIAGNOSTIC_DISABLE_VECTOR_CONVERSION_, vld4q_lane_f16(ptr, src, lane))
+  #else
+    #define simde_vld4q_lane_f16(ptr, src, lane) vld4q_lane_f16(ptr, src, lane)
+  #endif
+#endif
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+  #undef vld4q_lane_f16
+  #define vld4q_lane_f16(ptr, src, lane) simde_vld4q_lane_f16((ptr), (src), (lane))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES

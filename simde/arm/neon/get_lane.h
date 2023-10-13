@@ -276,7 +276,7 @@ simde_vgetq_lane_f16(simde_float16x8_t v, const int lane)
   simde_float16_t r;
 
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
-    SIMDE_CONSTIFY_8_(vget_lane_f16, r, (HEDLEY_UNREACHABLE(), SIMDE_FLOAT16_VALUE(0.0)), lane, v);
+    SIMDE_CONSTIFY_8_(vgetq_lane_f16, r, (HEDLEY_UNREACHABLE(), SIMDE_FLOAT16_VALUE(0.0)), lane, v);
   #else
     simde_float16x8_private v_ = simde_float16x8_to_private(v);
 
