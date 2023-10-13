@@ -241,6 +241,15 @@
   #define SIMDE_X86_SSE2_NATIVE
 #endif
 
+#if !defined(SIMDE_X86_AES_NATIVE) && !defined(SIMDE_X86_AES_NO_NATIVE) && !defined(SIMDE_NO_NATIVE)
+  #if defined(SIMDE_ARCH_X86_AES)
+    #define SIMDE_X86_AES_NATIVE
+  #endif
+#endif
+#if defined(SIMDE_X86_AES_NATIVE) && !defined(SIMDE_X86_SSE2_NATIVE)
+  #define SIMDE_X86_SSE2_NATIVE
+#endif
+
 #if !defined(SIMDE_X86_SSE2_NATIVE) && !defined(SIMDE_X86_SSE2_NO_NATIVE) && !defined(SIMDE_NO_NATIVE)
   #if defined(SIMDE_ARCH_X86_SSE2)
     #define SIMDE_X86_SSE2_NATIVE
@@ -322,6 +331,10 @@
   #else
     #include <x86intrin.h>
   #endif
+#endif
+
+#if defined(SIMDE_X86_AES_NATIVE)
+  #include <wmmintrin.h>
 #endif
 
 #if defined(HEDLEY_MSVC_VERSION)
@@ -646,6 +659,9 @@
   #endif
   #if !defined(SIMDE_X86_F16C_NATIVE)
     #define SIMDE_X86_F16C_ENABLE_NATIVE_ALIASES
+  #endif
+  #if !defined(SIMDE_X86_AES_NATIVE)
+    #define SIMDE_X86_AES_ENABLE_NATIVE_ALIASES
   #endif
 
   #if !defined(SIMDE_ARM_NEON_A32V7_NATIVE)

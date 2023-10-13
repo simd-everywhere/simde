@@ -106,6 +106,7 @@ jobs:
         - -mavx
         - -mfma
         - -mavx2
+        - -maes
         include:
           - target: tgl
           - isax: -mavx512bw -mavx512vl -mavx512cd -mavx512dq -mavx512vbmi -mavx512ifma -mavx512vpopcntdq -mavx512bitalg -mavx512vnni -mvpclmulqdq -mavx512fp16
