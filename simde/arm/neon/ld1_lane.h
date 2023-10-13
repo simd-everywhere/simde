@@ -22,6 +22,7 @@
  *
  * Copyright:
  *   2021      Zhi An Ng <zhin@google.com> (Copyright owned by Google, LLC)
+ *   2023      Yi-Yen Chung <eric681@andestech.com> (Copyright owned by Andes Technology)
  */
 
 #if !defined(SIMDE_ARM_NEON_LD1_LANE_H)
@@ -159,6 +160,22 @@ simde_uint64x1_t simde_vld1_lane_u64(uint64_t const *ptr, simde_uint64x1_t src,
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vld1_lane_u64
   #define vld1_lane_u64(ptr, src, lane) simde_vld1_lane_u64((ptr), (src), (lane))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_float16x4_t simde_vld1_lane_f16(simde_float16_t const *ptr, simde_float16x4_t src,
+                                     const int lane)
+    SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 3) {
+  simde_float16x4_private r = simde_float16x4_to_private(src);
+  r.values[lane] = *ptr;
+  return simde_float16x4_from_private(r);
+}
+#if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
+  #define simde_vld1_lane_f16(ptr, src, lane) vld1_lane_f16(ptr, src, lane)
+#endif
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+  #undef vld1_lane_f16
+  #define vld1_lane_f16(ptr, src, lane) simde_vld1_lane_f16((ptr), (src), (lane))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -319,6 +336,22 @@ simde_uint64x2_t simde_vld1q_lane_u64(uint64_t const *ptr, simde_uint64x2_t src,
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vld1q_lane_u64
   #define vld1q_lane_u64(ptr, src, lane) simde_vld1q_lane_u64((ptr), (src), (lane))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_float16x8_t simde_vld1q_lane_f16(simde_float16_t const *ptr, simde_float16x8_t src,
+                                     const int lane)
+    SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 7) {
+  simde_float16x8_private r = simde_float16x8_to_private(src);
+  r.values[lane] = *ptr;
+  return simde_float16x8_from_private(r);
+}
+#if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
+  #define simde_vld1q_lane_f16(ptr, src, lane) vld1q_lane_f16(ptr, src, lane)
+#endif
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+  #undef vld1q_lane_f16
+  #define vld1q_lane_f16(ptr, src, lane) simde_vld1q_lane_f16((ptr), (src), (lane))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
