@@ -571,6 +571,10 @@ jobs:
       uses: hendrikmuhs/ccache-action@v1.2
       with:
         key: ${{ github.job }}-${{ matrix.xcode }}
+    - name: Python install bug workaround # https://github.com/actions/setup-python/issues/577
+      run: |
+          find /usr/local/bin -type l -exec sh -c 'readlink -f "$1" \
+          | grep -q ^/Library/Frameworks/Python.framework/Versions/' _ {} \; -exec rm -v {} \;
     - name: Install Homebrew Dependencies
       run: brew install meson ninja gcovr
     - name: Configure
