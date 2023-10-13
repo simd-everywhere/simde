@@ -162,6 +162,34 @@ simde_mm256_shuffle_i32x4 (simde__m256i a, simde__m256i b, const int imm8)
 #define simde_mm256_maskz_shuffle_f64x2(k, a, b, imm8) simde_mm256_maskz_mov_pd(k, simde_mm256_shuffle_f64x2(a, b, imm8))
 #define simde_mm256_mask_shuffle_f64x2(src, k, a, b, imm8) simde_mm256_mask_mov_pd(src, k, simde_mm256_shuffle_f64x2(a, b, imm8))
 
+#if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES) && defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_maskz_shuffle_i32x4
+  #undef _mm256_mask_shuffle_i32x4
+  #define _mm256_maskz_shuffle_i32x4(k, a, b, imm8) simde_mm256_maskz_shuffle_i32x4(k, a, b, imm8)
+  #define _mm256_mask_shuffle_i32x4(src, k, a, b, imm8) simde_mm256_mask_shuffle_i32x4(src, k, a, b, imm8)
+
+  #undef _mm256_shuffle_f32x4
+  #undef _mm256_maskz_shuffle_f32x4
+  #undef _mm256_mask_shuffle_f32x4
+  #define _mm256_shuffle_f32x4(a, b, imm8) simde_mm256_shuffle_f32x4(a, b, imm8)
+  #define _mm256_maskz_shuffle_f32x4(k, a, b, imm8) simde_mm256_maskz_shuffle_f32x4(k, a, b, imm8)
+  #define _mm256_mask_shuffle_f32x4(src, k, a, b, imm8) simde_mm256_mask_shuffle_f32x4(src, k, a, b, imm8)
+
+  #undef _mm256_shuffle_i64x2
+  #undef _mm256_maskz_shuffle_i64x2
+  #undef _mm256_mask_shuffle_i64x2
+  #define _mm256_shuffle_i64x2(a, b, imm8) simde_mm256_shuffle_i64x2(a, b, imm8)
+  #define _mm256_maskz_shuffle_i64x2(k, a, b, imm8) simde_mm256_maskz_shuffle_i64x2(k, a, b, imm8)
+  #define _mm256_mask_shuffle_i64x2(src, k, a, b, imm8) simde_mm256_mask_shuffle_i64x2(src, k, a, b, imm8)
+
+  #undef _mm256_shuffle_f64x2
+  #undef _mm256_maskz_shuffle_f64x2
+  #undef _mm256_mask_shuffle_f64x2
+  #define _mm256_shuffle_f64x2(a, b, imm8) simde_mm256_shuffle_f64x2(a, b, imm8)
+  #define _mm256_maskz_shuffle_f64x2(k, a, b, imm8) simde_mm256_maskz_shuffle_f64x2(k, a, b, imm8)
+  #define _mm256_mask_shuffle_f64x2(src, k, a, b, imm8) simde_mm256_mask_shuffle_f64x2(src, k, a, b, imm8)
+#endif
+
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m512i
 simde_mm512_shuffle_i32x4 (simde__m512i a, simde__m512i b, const int imm8)
@@ -200,6 +228,34 @@ simde_mm512_shuffle_i32x4 (simde__m512i a, simde__m512i b, const int imm8)
 #define simde_mm512_shuffle_f64x2(a, b, imm8) simde_mm512_castsi512_pd(simde_mm512_shuffle_i64x2(simde_mm512_castpd_si512(a), simde_mm512_castpd_si512(b), imm8))
 #define simde_mm512_maskz_shuffle_f64x2(k, a, b, imm8) simde_mm512_maskz_mov_pd(k, simde_mm512_shuffle_f64x2(a, b, imm8))
 #define simde_mm512_mask_shuffle_f64x2(src, k, a, b, imm8) simde_mm512_mask_mov_pd(src, k, simde_mm512_shuffle_f64x2(a, b, imm8))
+
+#if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_maskz_shuffle_i32x4
+  #undef _mm512_mask_shuffle_i32x4
+  #define _mm512_maskz_shuffle_i32x4(k, a, b, imm8) simde_mm512_maskz_shuffle_i32x4(k, a, b, imm8)
+  #define _mm512_mask_shuffle_i32x4(src, k, a, b, imm8) simde_mm512_mask_shuffle_i32x4(src, k, a, b, imm8)
+
+  #undef _mm512_shuffle_f32x4
+  #undef _mm512_maskz_shuffle_f32x4
+  #undef _mm512_mask_shuffle_f32x4
+  #define _mm512_shuffle_f32x4(a, b, imm8) simde_mm512_shuffle_f32x4(a, b, imm8)
+  #define _mm512_maskz_shuffle_f32x4(k, a, b, imm8) simde_mm512_maskz_shuffle_f32x4(k, a, b, imm8)
+  #define _mm512_mask_shuffle_f32x4(src, k, a, b, imm8) simde_mm512_mask_shuffle_f32x4(src, k, a, b, imm8)
+
+  #undef _mm512_shuffle_i64x2
+  #undef _mm512_maskz_shuffle_i64x2
+  #undef _mm512_mask_shuffle_i64x2
+  #define _mm512_shuffle_i64x2(a, b, imm8) simde_mm512_shuffle_i64x2(a, b, imm8)
+  #define _mm512_maskz_shuffle_i64x2(k, a, b, imm8) simde_mm512_maskz_shuffle_i64x2(k, a, b, imm8)
+  #define _mm512_mask_shuffle_i64x2(src, k, a, b, imm8) simde_mm512_mask_shuffle_i64x2(src, k, a, b, imm8)
+
+  #undef _mm512_shuffle_f64x2
+  #undef _mm512_maskz_shuffle_f64x2
+  #undef _mm512_mask_shuffle_f64x2
+  #define _mm512_shuffle_f64x2(a, b, imm8) simde_mm512_shuffle_f64x2(a, b, imm8)
+  #define _mm512_maskz_shuffle_f64x2(k, a, b, imm8) simde_mm512_maskz_shuffle_f64x2(k, a, b, imm8)
+  #define _mm512_mask_shuffle_f64x2(src, k, a, b, imm8) simde_mm512_mask_shuffle_f64x2(src, k, a, b, imm8)
+#endif
 
 #if defined(SIMDE_X86_AVX512F_NATIVE)
   #define simde_mm512_shuffle_ps(a, b, imm8) _mm512_shuffle_ps(a, b, imm8)

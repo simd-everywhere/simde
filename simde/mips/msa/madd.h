@@ -73,7 +73,7 @@ simde_msa_fmadd_w(simde_v4f32 a, simde_v4f32 b, simde_v4f32 c) {
 }
 #if defined(SIMDE_MIPS_MSA_ENABLE_NATIVE_ALIASES)
   #undef __msa_fmadd_w
-  #define __msa_fmadd_w(a, b) simde_msa_fmadd_w((a), (b))
+  #define __msa_fmadd_w(a, b, c) simde_msa_fmadd_w((a), (b), (c))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -114,7 +114,7 @@ simde_msa_fmadd_d(simde_v2f64 a, simde_v2f64 b, simde_v2f64 c) {
 }
 #if defined(SIMDE_MIPS_MSA_ENABLE_NATIVE_ALIASES)
   #undef __msa_fmadd_d
-  #define __msa_fmadd_d(a, b) simde_msa_fmadd_d((a), (b))
+  #define __msa_fmadd_d(a, b, c) simde_msa_fmadd_d((a), (b), (c))
 #endif
 
 SIMDE_END_DECLS_

@@ -42,14 +42,14 @@ SIMDE_BEGIN_DECLS_
 #if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES) && defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES)
   #undef _mm256_storeu_epi8
   #undef _mm256_storeu_epi16
-  #define _mm256_storeu_epi8(mem_addr, a) simde_mm512_storeu_si256(mem_addr, a)
-  #define _mm256_storeu_epi16(mem_addr, a) simde_mm512_storeu_si256(mem_addr, a)
+  #define _mm256_storeu_epi8(mem_addr, a) simde_mm256_storeu_si256(mem_addr, a)
+  #define _mm256_storeu_epi16(mem_addr, a) simde_mm256_storeu_si256(mem_addr, a)
 #endif
 #if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES) && defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES)
   #undef _mm256_storeu_epi32
   #undef _mm256_storeu_epi64
-  #define _mm256_storeu_epi32(mem_addr, a) simde_mm512_storeu_si256(mem_addr, a)
-  #define _mm256_storeu_epi64(mem_addr, a) simde_mm512_storeu_si256(mem_addr, a)
+  #define _mm256_storeu_epi32(mem_addr, a) simde_mm256_storeu_si256(mem_addr, a)
+  #define _mm256_storeu_epi64(mem_addr, a) simde_mm256_storeu_si256(mem_addr, a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
