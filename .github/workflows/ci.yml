@@ -192,8 +192,8 @@ jobs:
   native-aliases:
     runs-on: ubuntu-22.04
     env:
-      CFLAGS: -DSIMDE_ENABLE_NATIVE_ALIASES -DSIMDE_NATIVE_ALIASES_TESTING -march=native -Wall -Wextra -Werror
-      CXXFLAGS: -DSIMDE_ENABLE_NATIVE_ALIASES -DSIMDE_NATIVE_ALIASES_TESTING -march=native -Wall -Wextra -Werror
+      CFLAGS: -DSIMDE_ENABLE_NATIVE_ALIASES -DSIMDE_NATIVE_ALIASES_TESTING -Wall -Wextra -Werror
+      CXXFLAGS: -DSIMDE_ENABLE_NATIVE_ALIASES -DSIMDE_NATIVE_ALIASES_TESTING -Wall -Wextra -Werror
     steps:
     - uses: actions/checkout@v3
       with:

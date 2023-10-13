@@ -334,43 +334,43 @@ test_simde_mm256_cmp_epi32_mask (SIMDE_MUNIT_TEST_ARGS) {
   simde__m256i a, b;
   simde__mmask8 r;
 
-  a = simde_mm256_loadu_si256(test_vec[0].a);
-  b = simde_mm256_loadu_si256(test_vec[0].b);
+  a = simde_mm256_loadu_epi32(test_vec[0].a);
+  b = simde_mm256_loadu_epi32(test_vec[0].b);
   r = simde_mm256_cmp_epi32_mask(a, b, SIMDE_MM_CMPINT_EQ);
   simde_assert_equal_mmask8(r, test_vec[0].r);
 
-  a = simde_mm256_loadu_si256(test_vec[1].a);
-  b = simde_mm256_loadu_si256(test_vec[1].b);
+  a = simde_mm256_loadu_epi32(test_vec[1].a);
+  b = simde_mm256_loadu_epi32(test_vec[1].b);
   r = simde_mm256_cmp_epi32_mask(a, b, SIMDE_MM_CMPINT_LT);
   simde_assert_equal_mmask8(r, test_vec[1].r);
 
-  a = simde_mm256_loadu_si256(test_vec[2].a);
-  b = simde_mm256_loadu_si256(test_vec[2].b);
+  a = simde_mm256_loadu_epi32(test_vec[2].a);
+  b = simde_mm256_loadu_epi32(test_vec[2].b);
   r = simde_mm256_cmp_epi32_mask(a, b, SIMDE_MM_CMPINT_LE);
   simde_assert_equal_mmask8(r, test_vec[2].r);
 
-  a = simde_mm256_loadu_si256(test_vec[3].a);
-  b = simde_mm256_loadu_si256(test_vec[3].b);
+  a = simde_mm256_loadu_epi32(test_vec[3].a);
+  b = simde_mm256_loadu_epi32(test_vec[3].b);
   r = simde_mm256_cmp_epi32_mask(a, b, SIMDE_MM_CMPINT_FALSE);
   simde_assert_equal_mmask8(r, test_vec[3].r);
 
-  a = simde_mm256_loadu_si256(test_vec[4].a);
-  b = simde_mm256_loadu_si256(test_vec[4].b);
+  a = simde_mm256_loadu_epi32(test_vec[4].a);
+  b = simde_mm256_loadu_epi32(test_vec[4].b);
   r = simde_mm256_cmp_epi32_mask(a, b, SIMDE_MM_CMPINT_NE);
   simde_assert_equal_mmask8(r, test_vec[4].r);
 
-  a = simde_mm256_loadu_si256(test_vec[5].a);
-  b = simde_mm256_loadu_si256(test_vec[5].b);
+  a = simde_mm256_loadu_epi32(test_vec[5].a);
+  b = simde_mm256_loadu_epi32(test_vec[5].b);
   r = simde_mm256_cmp_epi32_mask(a, b, SIMDE_MM_CMPINT_NLT);
   simde_assert_equal_mmask8(r, test_vec[5].r);
 
-  a = simde_mm256_loadu_si256(test_vec[6].a);
-  b = simde_mm256_loadu_si256(test_vec[6].b);
+  a = simde_mm256_loadu_epi32(test_vec[6].a);
+  b = simde_mm256_loadu_epi32(test_vec[6].b);
   r = simde_mm256_cmp_epi32_mask(a, b, SIMDE_MM_CMPINT_NLE);
   simde_assert_equal_mmask8(r, test_vec[6].r);
 
-  a = simde_mm256_loadu_si256(test_vec[7].a);
-  b = simde_mm256_loadu_si256(test_vec[7].b);
+  a = simde_mm256_loadu_epi32(test_vec[7].a);
+  b = simde_mm256_loadu_epi32(test_vec[7].b);
   r = simde_mm256_cmp_epi32_mask(a, b, SIMDE_MM_CMPINT_TRUE);
   simde_assert_equal_mmask8(r, test_vec[7].r);
 
@@ -1676,43 +1676,43 @@ test_simde_mm256_cmp_epu32_mask (SIMDE_MUNIT_TEST_ARGS) {
   simde__m256i a, b;
   simde__mmask8 r;
 
-  a = simde_mm256_loadu_si256(test_vec[0].a);
-  b = simde_mm256_loadu_si256(test_vec[0].b);
+  a = simde_mm256_loadu_epi32(test_vec[0].a);
+  b = simde_mm256_loadu_epi32(test_vec[0].b);
   r = simde_mm256_cmp_epu32_mask(a, b, SIMDE_MM_CMPINT_EQ);
   simde_assert_equal_mmask8(r, test_vec[0].r);
 
-  a = simde_mm256_loadu_si256(test_vec[1].a);
-  b = simde_mm256_loadu_si256(test_vec[1].b);
+  a = simde_mm256_loadu_epi32(test_vec[1].a);
+  b = simde_mm256_loadu_epi32(test_vec[1].b);
   r = simde_mm256_cmp_epu32_mask(a, b, SIMDE_MM_CMPINT_LT);
   simde_assert_equal_mmask8(r, test_vec[1].r);
 
-  a = simde_mm256_loadu_si256(test_vec[2].a);
-  b = simde_mm256_loadu_si256(test_vec[2].b);
+  a = simde_mm256_loadu_epi32(test_vec[2].a);
+  b = simde_mm256_loadu_epi32(test_vec[2].b);
   r = simde_mm256_cmp_epu32_mask(a, b, SIMDE_MM_CMPINT_LE);
   simde_assert_equal_mmask8(r, test_vec[2].r);
 
-  a = simde_mm256_loadu_si256(test_vec[3].a);
-  b = simde_mm256_loadu_si256(test_vec[3].b);
+  a = simde_mm256_loadu_epi32(test_vec[3].a);
+  b = simde_mm256_loadu_epi32(test_vec[3].b);
   r = simde_mm256_cmp_epu32_mask(a, b, SIMDE_MM_CMPINT_FALSE);
   simde_assert_equal_mmask8(r, test_vec[3].r);
 
-  a = simde_mm256_loadu_si256(test_vec[4].a);
-  b = simde_mm256_loadu_si256(test_vec[4].b);
+  a = simde_mm256_loadu_epi32(test_vec[4].a);
+  b = simde_mm256_loadu_epi32(test_vec[4].b);
   r = simde_mm256_cmp_epu32_mask(a, b, SIMDE_MM_CMPINT_NE);
   simde_assert_equal_mmask8(r, test_vec[4].r);
 
-  a = simde_mm256_loadu_si256(test_vec[5].a);
-  b = simde_mm256_loadu_si256(test_vec[5].b);
+  a = simde_mm256_loadu_epi32(test_vec[5].a);
+  b = simde_mm256_loadu_epi32(test_vec[5].b);
   r = simde_mm256_cmp_epu32_mask(a, b, SIMDE_MM_CMPINT_NLT);
   simde_assert_equal_mmask8(r, test_vec[5].r);
 
-  a = simde_mm256_loadu_si256(test_vec[6].a);
-  b = simde_mm256_loadu_si256(test_vec[6].b);
+  a = simde_mm256_loadu_epi32(test_vec[6].a);
+  b = simde_mm256_loadu_epi32(test_vec[6].b);
   r = simde_mm256_cmp_epu32_mask(a, b, SIMDE_MM_CMPINT_NLE);
   simde_assert_equal_mmask8(r, test_vec[6].r);
 
-  a = simde_mm256_loadu_si256(test_vec[7].a);
-  b = simde_mm256_loadu_si256(test_vec[7].b);
+  a = simde_mm256_loadu_epi32(test_vec[7].a);
+  b = simde_mm256_loadu_epi32(test_vec[7].b);
   r = simde_mm256_cmp_epu32_mask(a, b, SIMDE_MM_CMPINT_TRUE);
   simde_assert_equal_mmask8(r, test_vec[7].r);
 
