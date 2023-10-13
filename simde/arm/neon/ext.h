@@ -35,6 +35,32 @@ SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 SIMDE_BEGIN_DECLS_
 
 SIMDE_FUNCTION_ATTRIBUTES
+simde_float16x4_t
+simde_vext_f16(simde_float16x4_t a, simde_float16x4_t b, const int n)
+    SIMDE_REQUIRE_CONSTANT_RANGE(n, 0, 3) {
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
+    simde_float16x4_t r;
+    SIMDE_CONSTIFY_4_(vext_f16, r, (HEDLEY_UNREACHABLE(), a), n, a, b);
+    return r;
+  #else
+    simde_float16x4_private
+      a_ = simde_float16x4_to_private(a),
+      b_ = simde_float16x4_to_private(b),
+      r_ = a_;
+    const size_t n_ = HEDLEY_STATIC_CAST(size_t, n);
+    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+      size_t src = i + n_;
+      r_.values[i] = (src < (sizeof(r_.values) / sizeof(r_.values[0]))) ? a_.values[src] : b_.values[src & 3];
+    }
+    return simde_float16x4_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+  #undef vext_f16
+  #define vext_f16(a, b, n) simde_vext_f16((a), (b), (n))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
 simde_float32x2_t
 simde_vext_f32(simde_float32x2_t a, simde_float32x2_t b, const int n)
     SIMDE_REQUIRE_CONSTANT_RANGE(n, 0, 1) {
