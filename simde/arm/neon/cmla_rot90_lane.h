@@ -51,18 +51,12 @@ simde_float16x4_t simde_vcmla_rot90_lane_f16(simde_float16x4_t r,
                           b_ = simde_float16x4_to_private(simde_vdup_n_f16(
                               simde_float16x4_to_private(b).values[lane]));
 
-#if defined(SIMDE_SHUFFLE_VECTOR_) && !defined(SIMDE_BUG_GCC_100760)
-  a_.values = SIMDE_SHUFFLE_VECTOR_(16, 4, a_.values, a_.values, 1, 1, 3, 3);
-  b_.values = SIMDE_SHUFFLE_VECTOR_(16, 4, -b_.values, b_.values, 1, 4, 3, 6);
-  r_.values += b_.values * a_.values;
-#else
   SIMDE_VECTORIZE
   for (size_t i = 0; i < (sizeof(r_.values) / (2 * sizeof(r_.values[0])));
        i++) {
     r_.values[2 * i] += -(b_.values[2 * i + 1]) * a_.values[2 * i + 1];
     r_.values[2 * i + 1] += b_.values[2 * i] * a_.values[2 * i + 1];
   }
-#endif
   result = simde_float16x4_from_private(r_);
   return result;
 #endif
@@ -129,20 +123,12 @@ simde_float16x8_t simde_vcmlaq_rot90_lane_f16(simde_float16x8_t r,
                           b_ = simde_float16x8_to_private(simde_vdupq_n_f16(
                               simde_float16x4_to_private(b).values[lane]));
 
-#if defined(SIMDE_SHUFFLE_VECTOR_) && !defined(SIMDE_BUG_GCC_100760)
-  a_.values = SIMDE_SHUFFLE_VECTOR_(16, 8, a_.values, a_.values, 1, 1, 3, 3, 5,
-                                    5, 7, 7);
-  b_.values = SIMDE_SHUFFLE_VECTOR_(16, 8, -b_.values, b_.values, 1, 8, 3, 10,
-                                    5, 12, 7, 14);
-  r_.values += b_.values * a_.values;
-#else
   SIMDE_VECTORIZE
   for (size_t i = 0; i < (sizeof(r_.values) / (2 * sizeof(r_.values[0])));
        i++) {
     r_.values[2 * i] += -(b_.values[2 * i + 1]) * a_.values[2 * i + 1];
     r_.values[2 * i + 1] += b_.values[2 * i] * a_.values[2 * i + 1];
   }
-#endif
 
   result = simde_float16x8_from_private(r_);
   return result;
@@ -210,18 +196,12 @@ simde_float16x4_t simde_vcmla_rot90_laneq_f16(simde_float16x4_t r,
                           b_ = simde_float16x4_to_private(simde_vdup_n_f16(
                               simde_float16x8_to_private(b).values[lane]));
 
-#if defined(SIMDE_SHUFFLE_VECTOR_) && !defined(SIMDE_BUG_GCC_100760)
-  a_.values = SIMDE_SHUFFLE_VECTOR_(16, 4, a_.values, a_.values, 1, 1, 3, 3);
-  b_.values = SIMDE_SHUFFLE_VECTOR_(16, 4, -b_.values, b_.values, 1, 4, 3, 6);
-  r_.values += b_.values * a_.values;
-#else
   SIMDE_VECTORIZE
   for (size_t i = 0; i < (sizeof(r_.values) / (2 * sizeof(r_.values[0])));
        i++) {
     r_.values[2 * i] += -(b_.values[2 * i + 1]) * a_.values[2 * i + 1];
     r_.values[2 * i + 1] += b_.values[2 * i] * a_.values[2 * i + 1];
   }
-#endif
 
   result = simde_float16x4_from_private(r_);
   return result;
@@ -292,20 +272,12 @@ simde_float16x8_t simde_vcmlaq_rot90_laneq_f16(simde_float16x8_t r,
                           b_ = simde_float16x8_to_private(simde_vdupq_n_f16(
                               simde_float16x8_to_private(b).values[lane]));
 
-#if defined(SIMDE_SHUFFLE_VECTOR_) && !defined(SIMDE_BUG_GCC_100760)
-  a_.values = SIMDE_SHUFFLE_VECTOR_(16, 8, a_.values, a_.values, 1, 1, 3, 3, 5,
-                                    5, 7, 7);
-  b_.values = SIMDE_SHUFFLE_VECTOR_(16, 8, -b_.values, b_.values, 1, 8, 3, 10,
-                                    5, 12, 7, 14);
-  r_.values += b_.values * a_.values;
-#else
   SIMDE_VECTORIZE
   for (size_t i = 0; i < (sizeof(r_.values) / (2 * sizeof(r_.values[0])));
        i++) {
     r_.values[2 * i] += -(b_.values[2 * i + 1]) * a_.values[2 * i + 1];
     r_.values[2 * i + 1] += b_.values[2 * i] * a_.values[2 * i + 1];
   }
-#endif
 
   result = simde_float16x8_from_private(r_);
   return result;
