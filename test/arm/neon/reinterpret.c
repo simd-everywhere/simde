@@ -5641,6 +5641,33 @@ test_simde_vreinterpret_u32_f32 (SIMDE_MUNIT_TEST_ARGS) {
 }
 
 static int
+test_simde_vreinterpret_u64_f16 (SIMDE_MUNIT_TEST_ARGS) {
+  struct {
+    simde_float16 a[4];
+  } test_vec[] = {
+    { { SIMDE_FLOAT16_VALUE(   -49.28), SIMDE_FLOAT16_VALUE(  -109.00), SIMDE_FLOAT16_VALUE(  -626.50), SIMDE_FLOAT16_VALUE(  -567.00) } },
+    { { SIMDE_FLOAT16_VALUE(  -178.88), SIMDE_FLOAT16_VALUE(    10.22), SIMDE_FLOAT16_VALUE(   976.50), SIMDE_FLOAT16_VALUE(   -31.19) } },
+    { { SIMDE_FLOAT16_VALUE(  -228.12), SIMDE_FLOAT16_VALUE(   -98.75), SIMDE_FLOAT16_VALUE(   350.00), SIMDE_FLOAT16_VALUE(  -598.00) } },
+    { { SIMDE_FLOAT16_VALUE(  -226.00), SIMDE_FLOAT16_VALUE(  -520.50), SIMDE_FLOAT16_VALUE(  -252.38), SIMDE_FLOAT16_VALUE(  -407.50) } },
+    { { SIMDE_FLOAT16_VALUE(    89.44), SIMDE_FLOAT16_VALUE(  -200.50), SIMDE_FLOAT16_VALUE(  -439.75), SIMDE_FLOAT16_VALUE(  -450.75) } },
+    { { SIMDE_FLOAT16_VALUE(  -136.50), SIMDE_FLOAT16_VALUE(  -721.00), SIMDE_FLOAT16_VALUE(  -692.00), SIMDE_FLOAT16_VALUE(  -858.00) } },
+    { { SIMDE_FLOAT16_VALUE(  -833.00), SIMDE_FLOAT16_VALUE(  -714.00), SIMDE_FLOAT16_VALUE(   428.50), SIMDE_FLOAT16_VALUE(   871.50) } },
+    { { SIMDE_FLOAT16_VALUE(  -157.12), SIMDE_FLOAT16_VALUE(   972.50), SIMDE_FLOAT16_VALUE(   298.75), SIMDE_FLOAT16_VALUE(  -919.50) } },
+    { { SIMDE_FLOAT16_VALUE(  -990.00), SIMDE_FLOAT16_VALUE(   258.50), SIMDE_FLOAT16_VALUE(   727.00), SIMDE_FLOAT16_VALUE(   -48.00) } },
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
+    simde_float16x4_t a = simde_vld1_f16(test_vec[i].a);
+    simde_float16x4_private a_ = simde_float16x4_to_private(a);
+    simde_uint64x1_t r = simde_vreinterpret_u64_f16(a);
+    simde_uint64x1_private r_ = simde_uint64x1_to_private(r);
+    simde_assert_equal_i(0, simde_memcmp(&r_, &a_, sizeof(r_)));
+  }
+
+  return 0;
+}
+
+static int
 test_simde_vreinterpret_u64_f32 (SIMDE_MUNIT_TEST_ARGS) {
   struct {
     simde_float32 a[2];
@@ -7460,36 +7487,24 @@ SIMDE_TEST_FUNC_LIST_ENTRY(vreinterpretq_u8_f64)
 SIMDE_TEST_FUNC_LIST_ENTRY(vreinterpretq_u16_f64)
 SIMDE_TEST_FUNC_LIST_ENTRY(vreinterpretq_u32_f64)
 SIMDE_TEST_FUNC_LIST_ENTRY(vreinterpretq_u64_f64)
+
+SIMDE_TEST_FUNC_LIST_ENTRY(vreinterpret_u64_f16)
+
 SIMDE_TEST_FUNC_LIST_ENTRY(vreinterpret_f16_f32)
-
 SIMDE_TEST_FUNC_LIST_ENTRY(vreinterpret_f16_s16)
-
 SIMDE_TEST_FUNC_LIST_ENTRY(vreinterpret_f16_s32)
-
 SIMDE_TEST_FUNC_LIST_ENTRY(vreinterpret_f16_s64)
-
 SIMDE_TEST_FUNC_LIST_ENTRY(vreinterpret_f16_s8)
-
 SIMDE_TEST_FUNC_LIST_ENTRY(vreinterpret_f16_u32)
-
 SIMDE_TEST_FUNC_LIST_ENTRY(vreinterpret_f16_u64)
-
 SIMDE_TEST_FUNC_LIST_ENTRY(vreinterpret_f16_u8)
-
 SIMDE_TEST_FUNC_LIST_ENTRY(vreinterpretq_f16_f32)
-
 SIMDE_TEST_FUNC_LIST_ENTRY(vreinterpretq_f16_s16)
-
 SIMDE_TEST_FUNC_LIST_ENTRY(vreinterpretq_f16_s32)
-
 SIMDE_TEST_FUNC_LIST_ENTRY(vreinterpretq_f16_s64)
-
 SIMDE_TEST_FUNC_LIST_ENTRY(vreinterpretq_f16_s8)
-
 SIMDE_TEST_FUNC_LIST_ENTRY(vreinterpretq_f16_u32)
-
 SIMDE_TEST_FUNC_LIST_ENTRY(vreinterpretq_f16_u64)
-
 SIMDE_TEST_FUNC_LIST_ENTRY(vreinterpretq_f16_u8)
 
 SIMDE_TEST_FUNC_LIST_END
