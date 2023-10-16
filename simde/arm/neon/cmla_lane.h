@@ -52,15 +52,18 @@ simde_float16x4_t simde_vcmla_lane_f16(simde_float16x4_t r, simde_float16x4_t a,
                           b_ = simde_float16x4_to_private(simde_vdup_n_f16(
                               simde_float16x4_to_private(b).values[lane]));
 
-  SIMDE_VECTORIZE
-  for (size_t i = 0; i < (sizeof(r_.values) / (2 * sizeof(r_.values[0])));
-       i++) {
-    r_.values[2 * i] = simde_vaddh_f16(
-        r_.values[2 * i], simde_vmulh_f16(b_.values[lane], a_.values[2 * i]));
-    r_.values[2 * i + 1] =
-        simde_vaddh_f16(r_.values[2 * i + 1],
-                        simde_vmulh_f16(b_.values[lane], a_.values[2 * i]));
-  }
+  #if defined(SIMDE_SHUFFLE_VECTOR_) && ((SIMDE_FLOAT16_API == SIMDE_FLOAT16_API_FP16) || (SIMDE_FLOAT16_API == SIMDE_FLOAT16_API_FLOAT16))
+    a_.values = SIMDE_SHUFFLE_VECTOR_(16, 4, a_.values, a_.values, 0, 0, 2, 2);
+    r_.values += b_.values * a_.values;
+  #else
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.values) / (2 * sizeof(r_.values[0]))) ; i++) {
+      r_.values[2 * i] = simde_float16_from_float32(
+      simde_float16_to_float32(r_.values[2 * i]) + simde_float16_to_float32(b_.values[lane]) * simde_float16_to_float32(a_.values[2 * i]));
+      r_.values[2 * i + 1] = simde_float16_from_float32(
+        simde_float16_to_float32(r_.values[2 * i + 1]) + simde_float16_to_float32(b_.values[lane]) * simde_float16_to_float32(a_.values[2 * i]));
+    }
+  #endif
   result = simde_float16x4_from_private(r_);
   return result;
 #endif
@@ -121,15 +124,18 @@ simde_float16x4_t simde_vcmla_laneq_f16(simde_float16x4_t r,
                           b_ = simde_float16x4_to_private(simde_vdup_n_f16(
                               simde_float16x8_to_private(b).values[lane]));
 
-  SIMDE_VECTORIZE
-  for (size_t i = 0; i < (sizeof(r_.values) / (2 * sizeof(r_.values[0])));
-       i++) {
-    r_.values[2 * i] = simde_vaddh_f16(
-        r_.values[2 * i], simde_vmulh_f16(b_.values[lane], a_.values[2 * i]));
-    r_.values[2 * i + 1] =
-        simde_vaddh_f16(r_.values[2 * i + 1],
-                        simde_vmulh_f16(b_.values[lane], a_.values[2 * i]));
-  }
+  #if defined(SIMDE_SHUFFLE_VECTOR_) && ((SIMDE_FLOAT16_API == SIMDE_FLOAT16_API_FP16) || (SIMDE_FLOAT16_API == SIMDE_FLOAT16_API_FLOAT16))
+    a_.values = SIMDE_SHUFFLE_VECTOR_(16, 4, a_.values, a_.values, 0, 0, 2, 2);
+    r_.values += b_.values * a_.values;
+  #else
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.values) / (2 * sizeof(r_.values[0]))) ; i++) {
+      r_.values[2 * i] = simde_float16_from_float32(
+      simde_float16_to_float32(r_.values[2 * i]) + simde_float16_to_float32(b_.values[lane]) * simde_float16_to_float32(a_.values[2 * i]));
+      r_.values[2 * i + 1] = simde_float16_from_float32(
+        simde_float16_to_float32(r_.values[2 * i + 1]) + simde_float16_to_float32(b_.values[lane]) * simde_float16_to_float32(a_.values[2 * i]));
+    }
+  #endif
   result = simde_float16x4_from_private(r_);
   return result;
 #endif
@@ -193,15 +199,18 @@ simde_float16x8_t simde_vcmlaq_lane_f16(simde_float16x8_t r,
                           b_ = simde_float16x8_to_private(simde_vdupq_n_f16(
                               simde_float16x4_to_private(b).values[lane]));
 
-  SIMDE_VECTORIZE
-  for (size_t i = 0; i < (sizeof(r_.values) / (2 * sizeof(r_.values[0])));
-       i++) {
-    r_.values[2 * i] = simde_vaddh_f16(
-        r_.values[2 * i], simde_vmulh_f16(b_.values[lane], a_.values[2 * i]));
-    r_.values[2 * i + 1] =
-        simde_vaddh_f16(r_.values[2 * i + 1],
-                        simde_vmulh_f16(b_.values[lane], a_.values[2 * i]));
-  }
+  #if defined(SIMDE_SHUFFLE_VECTOR_) && ((SIMDE_FLOAT16_API == SIMDE_FLOAT16_API_FP16) || (SIMDE_FLOAT16_API == SIMDE_FLOAT16_API_FLOAT16))
+    a_.values = SIMDE_SHUFFLE_VECTOR_(16, 8, a_.values, a_.values, 0, 0, 2, 2, 4, 4, 6, 6);
+    r_.values += b_.values * a_.values;
+  #else
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.values) / (2 * sizeof(r_.values[0]))) ; i++) {
+      r_.values[2 * i] = simde_float16_from_float32(
+      simde_float16_to_float32(r_.values[2 * i]) + simde_float16_to_float32(b_.values[lane]) * simde_float16_to_float32(a_.values[2 * i]));
+      r_.values[2 * i + 1] = simde_float16_from_float32(
+        simde_float16_to_float32(r_.values[2 * i + 1]) + simde_float16_to_float32(b_.values[lane]) * simde_float16_to_float32(a_.values[2 * i]));
+    }
+  #endif
   result = simde_float16x8_from_private(r_);
   return result;
 #endif
@@ -263,15 +272,18 @@ simde_float16x8_t simde_vcmlaq_laneq_f16(simde_float16x8_t r,
                           b_ = simde_float16x8_to_private(simde_vdupq_n_f16(
                               simde_float16x8_to_private(b).values[lane]));
 
-  SIMDE_VECTORIZE
-  for (size_t i = 0; i < (sizeof(r_.values) / (2 * sizeof(r_.values[0])));
-       i++) {
-    r_.values[2 * i] = simde_vaddh_f16(
-        r_.values[2 * i], simde_vmulh_f16(b_.values[lane], a_.values[2 * i]));
-    r_.values[2 * i + 1] =
-        simde_vaddh_f16(r_.values[2 * i + 1],
-                        simde_vmulh_f16(b_.values[lane], a_.values[2 * i]));
-  }
+  #if defined(SIMDE_SHUFFLE_VECTOR_) && ((SIMDE_FLOAT16_API == SIMDE_FLOAT16_API_FP16) || (SIMDE_FLOAT16_API == SIMDE_FLOAT16_API_FLOAT16))
+    a_.values = SIMDE_SHUFFLE_VECTOR_(16, 8, a_.values, a_.values, 0, 0, 2, 2, 4, 4, 6, 6);
+      r_.values += b_.values * a_.values;
+  #else
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.values) / (2 * sizeof(r_.values[0]))) ; i++) {
+      r_.values[2 * i] = simde_float16_from_float32(
+      simde_float16_to_float32(r_.values[2 * i]) + simde_float16_to_float32(b_.values[lane]) * simde_float16_to_float32(a_.values[2 * i]));
+      r_.values[2 * i + 1] = simde_float16_from_float32(
+        simde_float16_to_float32(r_.values[2 * i + 1]) + simde_float16_to_float32(b_.values[lane]) * simde_float16_to_float32(a_.values[2 * i]));
+    }
+  #endif
   result = simde_float16x8_from_private(r_);
   return result;
 #endif
