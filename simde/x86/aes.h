@@ -62,6 +62,7 @@ uint8_t gmult(uint8_t a, uint8_t b) {
 }
  */
 
+#if !(defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_ARCH_ARM_CRYPTO))
 static uint8_t simde_x_aes_gmult_lookup_table[8][256] = {
 { // gmult(0x02, b);
   0x00, 0x02, 0x04, 0x06, 0x08, 0x0a, 0x0c, 0x0e, 0x10, 0x12, 0x14, 0x16, 0x18, 0x1a, 0x1c, 0x1e,
@@ -509,6 +510,7 @@ void simde_x_aes_dec(uint8_t *in, uint8_t *out, uint8_t *w, int is_last) {
     }
   }
 }
+#endif // if !(defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_ARCH_ARM_CRYPTO))
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128i simde_mm_aesenc_si128(simde__m128i a, simde__m128i round_key) {
