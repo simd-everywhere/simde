@@ -48,8 +48,9 @@ simde_float16x4_t simde_vcadd_rot270_f16(simde_float16x4_t a,
   for (size_t i = 0; i < (sizeof(r_.values) / (2 * sizeof(r_.values[0])));
        i++) {
     r_.values[2 * i] = simde_vaddh_f16(b_.values[2 * i + 1], a_.values[2 * i]);
-    r_.values[2 * i + 1] =
-        simde_vaddh_f16(-(b_.values[2 * i]), a_.values[2 * i + 1]);
+    r_.values[2 * i + 1] = simde_vaddh_f16(
+        simde_float16_from_float32(-simde_float16_to_float32(b_.values[2 * i])),
+        a_.values[2 * i + 1]);
   }
 
   return simde_float16x4_from_private(r_);
@@ -75,8 +76,9 @@ simde_float16x8_t simde_vcaddq_rot270_f16(simde_float16x8_t a,
   for (size_t i = 0; i < (sizeof(r_.values) / (2 * sizeof(r_.values[0])));
        i++) {
     r_.values[2 * i] = simde_vaddh_f16(b_.values[2 * i + 1], a_.values[2 * i]);
-    r_.values[2 * i + 1] =
-        simde_vaddh_f16(-(b_.values[2 * i]), a_.values[2 * i + 1]);
+    r_.values[2 * i + 1] = simde_vaddh_f16(
+        simde_float16_from_float32(-simde_float16_to_float32(b_.values[2 * i])),
+        a_.values[2 * i + 1]);
   }
 
   return simde_float16x8_from_private(r_);

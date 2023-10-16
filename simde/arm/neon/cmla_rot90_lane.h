@@ -58,7 +58,9 @@ simde_float16x4_t simde_vcmla_rot90_lane_f16(simde_float16x4_t r,
        i++) {
     r_.values[2 * i] = simde_vaddh_f16(
         r_.values[2 * i],
-        simde_vmulh_f16(-(b_.values[2 * i + 1]), a_.values[2 * i + 1]));
+        simde_vmulh_f16(simde_float16_from_float32(
+                            -simde_float16_to_float32(b_.values[2 * i + 1])),
+                        a_.values[2 * i + 1]));
     r_.values[2 * i + 1] = simde_vaddh_f16(
         r_.values[2 * i + 1],
         simde_vmulh_f16(b_.values[2 * i], a_.values[2 * i + 1]));
@@ -134,7 +136,9 @@ simde_float16x8_t simde_vcmlaq_rot90_lane_f16(simde_float16x8_t r,
        i++) {
     r_.values[2 * i] = simde_vaddh_f16(
         r_.values[2 * i],
-        simde_vmulh_f16(-(b_.values[2 * i + 1]), a_.values[2 * i + 1]));
+        simde_vmulh_f16(simde_float16_from_float32(
+                            -simde_float16_to_float32(b_.values[2 * i + 1])),
+                        a_.values[2 * i + 1]));
     r_.values[2 * i + 1] = simde_vaddh_f16(
         r_.values[2 * i + 1],
         simde_vmulh_f16(b_.values[2 * i], a_.values[2 * i + 1]));
@@ -211,7 +215,9 @@ simde_float16x4_t simde_vcmla_rot90_laneq_f16(simde_float16x4_t r,
        i++) {
     r_.values[2 * i] = simde_vaddh_f16(
         r_.values[2 * i],
-        simde_vmulh_f16(-(b_.values[2 * i + 1]), a_.values[2 * i + 1]));
+        simde_vmulh_f16(simde_float16_from_float32(
+                            -simde_float16_to_float32(b_.values[2 * i + 1])),
+                        a_.values[2 * i + 1]));
     r_.values[2 * i + 1] = simde_vaddh_f16(
         r_.values[2 * i + 1],
         simde_vmulh_f16(b_.values[2 * i], a_.values[2 * i + 1]));
@@ -291,7 +297,9 @@ simde_float16x8_t simde_vcmlaq_rot90_laneq_f16(simde_float16x8_t r,
        i++) {
     r_.values[2 * i] = simde_vaddh_f16(
         r_.values[2 * i],
-        simde_vmulh_f16(-(b_.values[2 * i + 1]), a_.values[2 * i + 1]));
+        simde_vmulh_f16(simde_float16_from_float32(
+                            -simde_float16_to_float32(b_.values[2 * i + 1])),
+                        a_.values[2 * i + 1]));
     r_.values[2 * i + 1] = simde_vaddh_f16(
         r_.values[2 * i + 1],
         simde_vmulh_f16(b_.values[2 * i], a_.values[2 * i + 1]));
