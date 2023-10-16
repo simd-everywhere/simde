@@ -6,7 +6,7 @@
 
 static int test_simde_vcadd_rot90_f16(SIMDE_MUNIT_TEST_ARGS) {
 #if 1
-  static const struct {
+  struct {
     simde_float16_t a[4];
     simde_float16_t b[4];
     simde_float16_t r[4];
@@ -86,7 +86,7 @@ static int test_simde_vcadd_rot90_f16(SIMDE_MUNIT_TEST_ARGS) {
 
 static int test_simde_vcaddq_rot90_f16(SIMDE_MUNIT_TEST_ARGS) {
 #if 1
-  static const struct {
+  struct {
     simde_float16_t a[8];
     simde_float16_t b[8];
     simde_float16_t r[8];
