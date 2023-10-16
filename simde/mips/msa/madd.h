@@ -38,7 +38,7 @@ simde_v4f32
 simde_msa_fmadd_w(simde_v4f32 a, simde_v4f32 b, simde_v4f32 c) {
   #if defined(SIMDE_MIPS_MSA_NATIVE)
     return __msa_fmadd_w(a, b, c);
-  #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(__ARM_FEATURE_FMA)
+  #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_ARCH_ARM_FMA)
     return vfmaq_f32(a, c, b);
   #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vmlaq_f32(a, b, c);
