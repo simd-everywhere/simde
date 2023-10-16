@@ -7,7 +7,7 @@
 
 static int test_simde_vcmla_rot180_lane_f16(SIMDE_MUNIT_TEST_ARGS) {
 #if 1
-  static const struct {
+  struct {
     simde_float16_t r_[4];
     simde_float16_t a[4];
     simde_float16_t b[4];
@@ -209,7 +209,7 @@ static int test_simde_vcmla_rot180_lane_f32(SIMDE_MUNIT_TEST_ARGS) {
 
 static int test_simde_vcmla_rot180_laneq_f16(SIMDE_MUNIT_TEST_ARGS) {
 #if 1
-  static const struct {
+  struct {
     simde_float16_t r_[4];
     simde_float16_t a[4];
     simde_float16_t b[8];
@@ -438,7 +438,7 @@ static int test_simde_vcmla_rot180_laneq_f32(SIMDE_MUNIT_TEST_ARGS) {
 
 static int test_simde_vcmlaq_rot180_lane_f16(SIMDE_MUNIT_TEST_ARGS) {
 #if 1
-  static const struct {
+  struct {
     simde_float16_t r_[8];
     simde_float16_t a[8];
     simde_float16_t b[4];
@@ -712,7 +712,7 @@ static int test_simde_vcmlaq_rot180_lane_f32(SIMDE_MUNIT_TEST_ARGS) {
 
 static int test_simde_vcmlaq_rot180_laneq_f16(SIMDE_MUNIT_TEST_ARGS) {
 #if 1
-  static const struct {
+  struct {
     simde_float16_t r_[8];
     simde_float16_t a[8];
     simde_float16_t b[8];
