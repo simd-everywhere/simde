@@ -295,16 +295,16 @@ static uint8_t simde_x_aes_inv_s_box[256] = {
  * Key length equals 128 bits/16 bytes).
  */
 SIMDE_FUNCTION_ATTRIBUTES
-void simde_x_aes_add_round_key(uint8_t *state, uint8_t *w, uint8_t r) {
+void simde_x_aes_add_round_key(uint8_t *state, simde__m128i_private w, uint8_t r) {
 
   int Nb = simde_x_aes_Nb;
   uint8_t c;
 
   for (c = 0; c < Nb; c++) {
-    state[Nb*0+c] = state[Nb*0+c]^w[4*Nb*r+4*c+0];
-    state[Nb*1+c] = state[Nb*1+c]^w[4*Nb*r+4*c+1];
-    state[Nb*2+c] = state[Nb*2+c]^w[4*Nb*r+4*c+2];
-    state[Nb*3+c] = state[Nb*3+c]^w[4*Nb*r+4*c+3];
+    state[Nb*0+c] = state[Nb*0+c]^w.u8[4*Nb*r+4*c+0];
+    state[Nb*1+c] = state[Nb*1+c]^w.u8[4*Nb*r+4*c+1];
+    state[Nb*2+c] = state[Nb*2+c]^w.u8[4*Nb*r+4*c+2];
+    state[Nb*3+c] = state[Nb*3+c]^w.u8[4*Nb*r+4*c+3];
   }
 }
 
@@ -453,7 +453,7 @@ void simde_x_aes_inv_sub_bytes(uint8_t *state) {
  * Performs the AES cipher operation
  */
 SIMDE_FUNCTION_ATTRIBUTES
-void simde_x_aes_enc(uint8_t *in, uint8_t *out, uint8_t *w, int is_last) {
+void simde_x_aes_enc(simde__m128i_private in, simde__m128i_private *out, simde__m128i_private w, int is_last) {
 
   int Nb = simde_x_aes_Nb;
   uint8_t state[4*simde_x_aes_Nb];
@@ -461,7 +461,7 @@ void simde_x_aes_enc(uint8_t *in, uint8_t *out, uint8_t *w, int is_last) {
 
   for (i = 0; i < 4; i++) {
     for (j = 0; j < Nb; j++) {
-      state[Nb*i+j] = in[i+4*j];
+      state[Nb*i+j] = in.u8[i+4*j];
     }
   }
 
@@ -475,7 +475,7 @@ void simde_x_aes_enc(uint8_t *in, uint8_t *out, uint8_t *w, int is_last) {
 
   for (i = 0; i < 4; i++) {
     for (j = 0; j < Nb; j++) {
-      out[i+4*j] = state[Nb*i+j];
+      out->u8[i+4*j] = state[Nb*i+j];
     }
   }
 }
@@ -484,7 +484,7 @@ void simde_x_aes_enc(uint8_t *in, uint8_t *out, uint8_t *w, int is_last) {
  * Performs the AES inverse cipher operation
  */
 SIMDE_FUNCTION_ATTRIBUTES
-void simde_x_aes_dec(uint8_t *in, uint8_t *out, uint8_t *w, int is_last) {
+void simde_x_aes_dec(simde__m128i_private in, simde__m128i_private *out, simde__m128i_private w, int is_last) {
 
   int Nb = simde_x_aes_Nb;
   uint8_t state[4*simde_x_aes_Nb];
@@ -492,7 +492,7 @@ void simde_x_aes_dec(uint8_t *in, uint8_t *out, uint8_t *w, int is_last) {
 
   for (i = 0; i < 4; i++) {
     for (j = 0; j < Nb; j++) {
-      state[Nb*i+j] = in[i+4*j];
+      state[Nb*i+j] = in.u8[i+4*j];
     }
   }
 
@@ -506,7 +506,7 @@ void simde_x_aes_dec(uint8_t *in, uint8_t *out, uint8_t *w, int is_last) {
 
   for (i = 0; i < 4; i++) {
     for (j = 0; j < Nb; j++) {
-      out[i+4*j] = state[Nb*i+j];
+      out->u8[i+4*j] = state[Nb*i+j];
     }
   }
 }
@@ -517,9 +517,17 @@ simde__m128i simde_mm_aesenc_si128(simde__m128i a, simde__m128i round_key) {
   #if defined(SIMDE_X86_AES_NATIVE)
     return _mm_aesenc_si128(a, round_key);
   #else
-    simde__m128i result;
-    simde_x_aes_enc(HEDLEY_REINTERPRET_CAST(uint8_t *, &a), HEDLEY_REINTERPRET_CAST(uint8_t *, &result), HEDLEY_REINTERPRET_CAST(uint8_t *, &round_key), 0);
-    return result;
+    simde__m128i_private result_;
+    simde__m128i_private a_ = simde__m128i_to_private(a);
+    simde__m128i_private round_key_ = simde__m128i_to_private(round_key);
+    #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_ARCH_ARM_CRYPTO)
+      result_.neon_u8 = veorq_u8(
+        vaesmcq_u8(vaeseq_u8(a_.neon_u8, vdupq_n_u8(0))),
+        round_key_.neon_u8);
+    #else
+      simde_x_aes_enc(a_, &result_, round_key_, 0);
+    #endif
+    return simde__m128i_from_private(result_);
   #endif
 }
 #if defined(SIMDE_X86_AES_ENABLE_NATIVE_ALIASES)
@@ -531,9 +539,17 @@ simde__m128i simde_mm_aesdec_si128(simde__m128i a, simde__m128i round_key) {
   #if defined(SIMDE_X86_AES_NATIVE)
     return _mm_aesdec_si128(a, round_key);
   #else
-    simde__m128i result;
-    simde_x_aes_dec(HEDLEY_REINTERPRET_CAST(uint8_t *, &a), HEDLEY_REINTERPRET_CAST(uint8_t *, &result), HEDLEY_REINTERPRET_CAST(uint8_t *, &round_key), 0);
-    return result;
+    simde__m128i_private result_;
+    simde__m128i_private a_ = simde__m128i_to_private(a);
+    simde__m128i_private round_key_ = simde__m128i_to_private(round_key);
+    #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_ARCH_ARM_CRYPTO)
+      result_.neon_u8 = veorq_u8(
+        vaesimcq_u8(vaesdq_u8(a_.neon_u8, vdupq_n_u8(0))),
+        round_key_.neon_u8);
+    #else
+      simde_x_aes_dec(a_, &result_, round_key_, 0);
+    #endif
+    return simde__m128i_from_private(result_);
   #endif
 }
 #if defined(SIMDE_X86_AES_ENABLE_NATIVE_ALIASES)
@@ -545,9 +561,16 @@ simde__m128i simde_mm_aesenclast_si128(simde__m128i a, simde__m128i round_key) {
   #if defined(SIMDE_X86_AES_NATIVE)
     return _mm_aesenclast_si128(a, round_key);
   #else
-    simde__m128i result;
-    simde_x_aes_enc(HEDLEY_REINTERPRET_CAST(uint8_t *, &a), HEDLEY_REINTERPRET_CAST(uint8_t *, &result), HEDLEY_REINTERPRET_CAST(uint8_t *, &round_key), 1);
-    return result;
+    simde__m128i_private result_;
+    simde__m128i_private a_ = simde__m128i_to_private(a);
+    simde__m128i_private round_key_ = simde__m128i_to_private(round_key);
+    #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_ARCH_ARM_CRYPTO)
+      result_.neon_u8 = vaeseq_u8(a_.neon_u8, vdupq_n_u8(0));
+      result_.neon_i32 = veorq_s32(result_.neon_i32, round_key_.neon_i32); // _mm_xor_si128
+    #else
+      simde_x_aes_enc(a_, &result_, round_key_, 1);
+    #endif
+    return simde__m128i_from_private(result_);
   #endif
 }
 #if defined(SIMDE_X86_AES_ENABLE_NATIVE_ALIASES)
@@ -559,9 +582,17 @@ simde__m128i simde_mm_aesdeclast_si128(simde__m128i a, simde__m128i round_key) {
   #if defined(SIMDE_X86_AES_NATIVE)
     return _mm_aesdeclast_si128(a, round_key);
   #else
-    simde__m128i result;
-    simde_x_aes_dec(HEDLEY_REINTERPRET_CAST(uint8_t *, &a), HEDLEY_REINTERPRET_CAST(uint8_t *, &result), HEDLEY_REINTERPRET_CAST(uint8_t *, &round_key), 1);
-    return result;
+    simde__m128i_private result_;
+    simde__m128i_private a_ = simde__m128i_to_private(a);
+    simde__m128i_private round_key_ = simde__m128i_to_private(round_key);
+    #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_ARCH_ARM_CRYPTO)
+      result_.neon_u8 = veorq_u8(
+        vaesdq_u8(a_.neon_u8, vdupq_n_u8(0)),
+        round_key_.neon_u8);
+    #else
+      simde_x_aes_dec(a_, &result_, round_key_, 1);
+    #endif
+    return simde__m128i_from_private(result_);
   #endif
 }
 #if defined(SIMDE_X86_AES_ENABLE_NATIVE_ALIASES)
@@ -573,29 +604,30 @@ simde__m128i simde_mm_aesimc_si128(simde__m128i a) {
   #if defined(SIMDE_X86_AES_NATIVE)
     return _mm_aesimc_si128(a);
   #else
-    simde__m128i result;
+    simde__m128i_private result_ = simde__m128i_to_private(simde_mm_setzero_si128());
+    simde__m128i_private a_ = simde__m128i_to_private(a);
 
-    uint8_t *in = HEDLEY_REINTERPRET_CAST(uint8_t *, &a);
-    uint8_t *out = HEDLEY_REINTERPRET_CAST(uint8_t *, &result);
+    #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_ARCH_ARM_CRYPTO)
+      result_.neon_u8 = vaesimcq_u8(a_.neon_u8);
+    #else
+      int Nb = simde_x_aes_Nb;
+      // uint8_t k[] = {0x0e, 0x09, 0x0d, 0x0b}; // a(x) = {0e} + {09}x + {0d}x2 + {0b}x3
+      uint8_t i, j, col[4], res[4];
 
-    int Nb = simde_x_aes_Nb;
-    // uint8_t k[] = {0x0e, 0x09, 0x0d, 0x0b}; // a(x) = {0e} + {09}x + {0d}x2 + {0b}x3
-    uint8_t i, j, col[4], res[4];
+      for (j = 0; j < Nb; j++) {
+        for (i = 0; i < 4; i++) {
+          col[i] = a_.u8[Nb*j+i];
+        }
 
-    for (j = 0; j < Nb; j++) {
-      for (i = 0; i < 4; i++) {
-        col[i] = in[Nb*j+i];
+        //coef_mult(k, col, res);
+        simde_x_aes_coef_mult_lookup(4, col, res);
+
+        for (i = 0; i < 4; i++) {
+          result_.u8[Nb*j+i] = res[i];
+        }
       }
-
-      //coef_mult(k, col, res);
-      simde_x_aes_coef_mult_lookup(4, col, res);
-
-      for (i = 0; i < 4; i++) {
-        out[Nb*j+i] = res[i];
-      }
-    }
-
-    return result;
+    #endif
+    return simde__m128i_from_private(result_);
   #endif
 }
 #if defined(SIMDE_X86_AES_ENABLE_NATIVE_ALIASES)
