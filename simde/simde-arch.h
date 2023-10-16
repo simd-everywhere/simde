@@ -127,6 +127,9 @@
 #if defined(__ARM_FEATURE_FMA) && __ARM_FEATURE_FMA
 #  define SIMDE_ARCH_ARM_FMA
 #endif
+#if defined(__ARM_FEATURE_CRYPTO)
+#  define SIMDE_ARCH_ARM_CRYPTO
+#endif
 
 /* Blackfin
    <https://en.wikipedia.org/wiki/Blackfin> */
