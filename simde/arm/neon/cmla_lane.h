@@ -192,16 +192,27 @@ simde_float16x8_t simde_vcmlaq_lane_f16(simde_float16x8_t r,
     r_.values += b_.values * a_.values;
     return simde_float16x8_from_private(r_);
   #else
-    simde_float16x4_t high, low;
-    SIMDE_CONSTIFY_2_(
-        simde_vcmla_lane_f16, high,
-        (HEDLEY_UNREACHABLE(), simde_vdup_n_f16(SIMDE_FLOAT16_VALUE(0.0))),
-        lane, simde_vget_high_f16(r), simde_vget_high_f16(a), b);
-    SIMDE_CONSTIFY_2_(
-        simde_vcmla_lane_f16, low,
-        (HEDLEY_UNREACHABLE(), simde_vdup_n_f16(SIMDE_FLOAT16_VALUE(0.0))),
-        lane, simde_vget_low_f16(r), simde_vget_low_f16(a), b);
-    return simde_vcombine_f16(low, high);
+    simde_float32x4_private r_low =
+                            simde_float32x4_to_private(simde_vcvt_f32_f16(simde_vget_low_f16(r))),
+                        a_low =
+                            simde_float32x4_to_private(simde_vcvt_f32_f16(simde_vget_low_f16(a))),
+                        r_high =
+                            simde_float32x4_to_private(simde_vcvt_f32_f16(simde_vget_high_f16(r))),
+                        a_high =
+                            simde_float32x4_to_private(simde_vcvt_f32_f16(simde_vget_high_f16(a))),
+                        b_ = simde_float32x4_to_private(
+                            simde_vcvt_f32_f16(simde_vdup_n_f16(
+                                simde_float16x4_to_private(b).values[lane])));
+    SIMDE_VECTORIZE
+    for (size_t i = 0; i < (sizeof(r_low.values) / (2 * sizeof(r_low.values[0])));
+        i++) {
+      r_low.values[2 * i] += b_.values[lane] * a_low.values[2 * i];
+      r_low.values[2 * i + 1] += b_.values[lane] * a_low.values[2 * i];
+      r_high.values[2 * i] += b_.values[lane] * a_high.values[2 * i];
+      r_high.values[2 * i + 1] += b_.values[lane] * a_high.values[2 * i];
+    }
+    return simde_vcombine_f16(simde_vcvt_f16_f32(simde_float32x4_from_private(r_low)),
+                              simde_vcvt_f16_f32(simde_float32x4_from_private(r_high)));
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
@@ -263,17 +274,27 @@ simde_float16x8_t simde_vcmlaq_laneq_f16(simde_float16x8_t r,
     r_.values += b_.values * a_.values;
     return simde_float16x8_from_private(r_);
   #else
-    simde_float16x4_t high, low, b_ = simde_vdup_n_f16(
-                              simde_float16x8_to_private(b).values[lane]);
-    SIMDE_CONSTIFY_2_(
-        simde_vcmla_lane_f16, high,
-        (HEDLEY_UNREACHABLE(), simde_vdup_n_f16(SIMDE_FLOAT16_VALUE(0.0))),
-        0, simde_vget_high_f16(r), simde_vget_high_f16(a), b_);
-    SIMDE_CONSTIFY_2_(
-        simde_vcmla_lane_f16, low,
-        (HEDLEY_UNREACHABLE(), simde_vdup_n_f16(SIMDE_FLOAT16_VALUE(0.0))),
-        0, simde_vget_low_f16(r), simde_vget_low_f16(a), b_);
-    return simde_vcombine_f16(low, high);
+    simde_float32x4_private r_low =
+                            simde_float32x4_to_private(simde_vcvt_f32_f16(simde_vget_low_f16(r))),
+                        a_low =
+                            simde_float32x4_to_private(simde_vcvt_f32_f16(simde_vget_low_f16(a))),
+                        r_high =
+                            simde_float32x4_to_private(simde_vcvt_f32_f16(simde_vget_high_f16(r))),
+                        a_high =
+                            simde_float32x4_to_private(simde_vcvt_f32_f16(simde_vget_high_f16(a))),
+                        b_ = simde_float32x4_to_private(
+                            simde_vcvt_f32_f16(simde_vdup_n_f16(
+                                simde_float16x8_to_private(b).values[lane])));
+    SIMDE_VECTORIZE
+    for (size_t i = 0; i < (sizeof(r_low.values) / (2 * sizeof(r_low.values[0])));
+        i++) {
+      r_low.values[2 * i] += b_.values[lane] * a_low.values[2 * i];
+      r_low.values[2 * i + 1] += b_.values[lane] * a_low.values[2 * i];
+      r_high.values[2 * i] += b_.values[lane] * a_high.values[2 * i];
+      r_high.values[2 * i + 1] += b_.values[lane] * a_high.values[2 * i];
+    }
+    return simde_vcombine_f16(simde_vcvt_f16_f32(simde_float32x4_from_private(r_low)),
+                              simde_vcvt_f16_f32(simde_float32x4_from_private(r_high)));
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
