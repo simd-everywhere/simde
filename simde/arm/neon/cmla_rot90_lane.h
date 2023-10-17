@@ -127,10 +127,6 @@ simde_vcmla_rot90_laneq_f16(simde_float16x4_t r, simde_float16x4_t a,
   #if defined(SIMDE_SHUFFLE_VECTOR_) && !defined(SIMDE_BUG_GCC_100760) &&        \
       ((SIMDE_FLOAT16_API == SIMDE_FLOAT16_API_FP16) ||                          \
       (SIMDE_FLOAT16_API == SIMDE_FLOAT16_API_FLOAT16))
-    simde_float16x4_private
-      r_ = simde_float16x4_to_private(r),
-      a_ = simde_float16x4_to_private(a),
-      b_ = simde_float16x4_to_private(simde_vdup_n_f16(simde_float16x8_to_private(b).values[lane]));
     a_.values = SIMDE_SHUFFLE_VECTOR_(16, 4, a_.values, a_.values, 1, 1, 3, 3);
     b_.values = SIMDE_SHUFFLE_VECTOR_(16, 4, -b_.values, b_.values, 1, 4, 3, 6);
     r_.values += b_.values * a_.values;
