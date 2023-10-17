@@ -203,12 +203,9 @@ simde_vcmlaq_rot90_lane_f16(simde_float16x8_t r, simde_float16x8_t a,
   #if defined(SIMDE_SHUFFLE_VECTOR_) && !defined(SIMDE_BUG_GCC_100760) &&        \
       ((SIMDE_FLOAT16_API == SIMDE_FLOAT16_API_FP16) ||                          \
       (SIMDE_FLOAT16_API == SIMDE_FLOAT16_API_FLOAT16))
-    a_low.values = SIMDE_SHUFFLE_VECTOR_(16, 8, a_low.values, a_low.values, 1, 1, 3, 3, 5,
-                                      5, 7, 7);
-    a_high.values = SIMDE_SHUFFLE_VECTOR_(16, 8, a_high.values, a_high.values, 1, 1, 3, 3, 5,
-                                      5, 7, 7);
-    b_.values = SIMDE_SHUFFLE_VECTOR_(16, 8, -b_.values, b_.values, 1, 8, 3, 10,
-                                      5, 12, 7, 14);
+    a_low.values = SIMDE_SHUFFLE_VECTOR_(16, 4, a_low.values, a_low.values, 1, 1, 3, 3);
+    a_high.values = SIMDE_SHUFFLE_VECTOR_(16, 4, a_high.values, a_high.values, 1, 1, 3, 3);
+    b_.values = SIMDE_SHUFFLE_VECTOR_(16, 4, -b_.values, b_.values, 1, 4, 3, 6);
     r_low.values += b_.values * a_low.values;
     r_high.values += b_.values * a_high.values;
   #else
@@ -287,12 +284,9 @@ simde_vcmlaq_rot90_laneq_f16(simde_float16x8_t r, simde_float16x8_t a,
   #if defined(SIMDE_SHUFFLE_VECTOR_) &&                                          \
       ((SIMDE_FLOAT16_API == SIMDE_FLOAT16_API_FP16) ||                          \
       (SIMDE_FLOAT16_API == SIMDE_FLOAT16_API_FLOAT16))
-    a_low.values = SIMDE_SHUFFLE_VECTOR_(16, 8, a_low.values, a_low.values, 1, 1, 3, 3, 5,
-                                      5, 7, 7);
-    a_high.values = SIMDE_SHUFFLE_VECTOR_(16, 8, a_high.values, a_high.values, 1, 1, 3, 3, 5,
-                                      5, 7, 7);
-    b_.values = SIMDE_SHUFFLE_VECTOR_(16, 8, -b_.values, b_.values, 1, 8, 3, 10,
-                                      5, 12, 7, 14);
+    a_low.values = SIMDE_SHUFFLE_VECTOR_(16, 4, a_low.values, a_low.values, 1, 1, 3, 3);
+    a_high.values = SIMDE_SHUFFLE_VECTOR_(16, 4, a_high.values, a_high.values, 1, 1, 3, 3);
+    b_.values = SIMDE_SHUFFLE_VECTOR_(16, 4, -b_.values, b_.values, 1, 4, 3, 6);
     r_low.values += b_.values * a_low.values;
     r_high.values += b_.values * a_high.values;
   #else
