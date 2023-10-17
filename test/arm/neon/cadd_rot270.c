@@ -44,8 +44,6 @@ test_simde_vcadd_rot270_f16 (SIMDE_MUNIT_TEST_ARGS) {
 
     simde_test_arm_neon_assert_equal_f16x4(r, simde_vld1_f16(test_vec[i].r), 1);
   }
-  
-
   return 0;
 #else
   fputc('\n', stdout);
@@ -126,8 +124,6 @@ test_simde_vcaddq_rot270_f16 (SIMDE_MUNIT_TEST_ARGS) {
     simde_float16x8_t r = simde_vcaddq_rot270_f16(a, b);
     simde_test_arm_neon_assert_equal_f16x8(r, simde_vld1q_f16(test_vec[i].r), 1);
   }
-  
-
   return 0;
 #else
   fputc('\n', stdout);
@@ -185,8 +181,6 @@ test_simde_vcadd_rot270_f32 (SIMDE_MUNIT_TEST_ARGS) {
 
     simde_test_arm_neon_assert_equal_f32x2(r, simde_vld1_f32(test_vec[i].r), 1);
   }
-  
-  
   return 0;
 #else
   fputc('\n', stdout);
@@ -203,7 +197,7 @@ test_simde_vcadd_rot270_f32 (SIMDE_MUNIT_TEST_ARGS) {
 #endif
 }
 
-static int 
+static int
 test_simde_vcaddq_rot270_f32 (SIMDE_MUNIT_TEST_ARGS) {
 #if 1
   static const struct {
@@ -243,7 +237,6 @@ test_simde_vcaddq_rot270_f32 (SIMDE_MUNIT_TEST_ARGS) {
     simde_float32x4_t r = simde_vcaddq_rot270_f32(a, b);
     simde_test_arm_neon_assert_equal_f32x4(r, simde_vld1q_f32(test_vec[i].r), 1);
   }
-  
   return 0;
 #else
   fputc('\n', stdout);
@@ -301,7 +294,6 @@ test_simde_vcaddq_rot270_f64 (SIMDE_MUNIT_TEST_ARGS) {
     simde_test_arm_neon_assert_equal_f64x2(r, simde_vld1q_f64(test_vec[i].r), 1);
   }
 
-  
   return 0;
 #else
   fputc('\n', stdout);
