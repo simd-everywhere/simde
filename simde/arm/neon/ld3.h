@@ -23,6 +23,7 @@
  * Copyright:
  *   2020      Evan Nemerson <evan@nemerson.com>
  *   2020      Sean Maher <seanptmaher@gmail.com>
+ *   2023      Yi-Yen Chung <eric681@andestech.com> (Copyright owned by Andes Technology)
  */
 
 #if !defined(SIMDE_ARM_NEON_LD3_H)
@@ -39,6 +40,34 @@ SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 SIMDE_BEGIN_DECLS_
 
 #if !defined(SIMDE_BUG_INTEL_857088)
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_float16x4x3_t
+simde_vld3_f16(simde_float16 const *ptr) {
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
+    return vld3_f16(ptr);
+  #else
+    simde_float16x4_private r_[3];
+
+    for (size_t i = 0; i < (sizeof(r_) / sizeof(r_[0])); i++) {
+      for (size_t j = 0 ; j < (sizeof(r_[0].values) / sizeof(r_[0].values[0])) ; j++) {
+        r_[i].values[j] = ptr[i + (j * (sizeof(r_) / sizeof(r_[0])))];
+      }
+    }
+
+    simde_float16x4x3_t r = { {
+      simde_float16x4_from_private(r_[0]),
+      simde_float16x4_from_private(r_[1]),
+      simde_float16x4_from_private(r_[2])
+    } };
+
+    return r;
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+  #undef vld3_f16
+  #define vld3_f16(a) simde_vld3_f16((a))
+#endif
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float32x2x3_t
