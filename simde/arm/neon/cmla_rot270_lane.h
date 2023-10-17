@@ -31,6 +31,10 @@
 #include "dup_lane.h"
 #include "mul.h"
 #include "types.h"
+#include "cvt.h"
+#include "get_high.h"
+#include "get_low.h"
+#include "combine.h"
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 SIMDE_BEGIN_DECLS_
@@ -40,31 +44,33 @@ simde_float16x4_t
 simde_vcmla_rot270_lane_f16(simde_float16x4_t r, simde_float16x4_t a,
                             simde_float16x4_t b, const int lane)
     SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 1) {
-  simde_float16x4_private r_ = simde_float16x4_to_private(r),
-                          a_ = simde_float16x4_to_private(a),
-                          b_ = simde_float16x4_to_private(simde_vdup_n_f16(
-                              simde_float16x4_to_private(b).values[lane]));
   #if defined(SIMDE_SHUFFLE_VECTOR_) && !defined(SIMDE_BUG_GCC_100760) &&        \
       ((SIMDE_FLOAT16_API == SIMDE_FLOAT16_API_FP16) ||                          \
       (SIMDE_FLOAT16_API == SIMDE_FLOAT16_API_FLOAT16))
+    simde_float16x4_private r_ = simde_float16x4_to_private(r),
+                          a_ = simde_float16x4_to_private(a),
+                          b_ = simde_float16x4_to_private(simde_vdup_n_f16(
+                              simde_float16x4_to_private(b).values[lane]));
     a_.values = SIMDE_SHUFFLE_VECTOR_(16, 4, a_.values, a_.values, 1, 1, 3, 3);
     b_.values = SIMDE_SHUFFLE_VECTOR_(16, 4, -b_.values, b_.values, 5, 0, 7, 2);
     r_.values += b_.values * a_.values;
+    return simde_float16x4_from_private(r_);
   #else
+    simde_float32x4_private r_ =
+                              simde_float32x4_to_private(simde_vcvt_f32_f16(r)),
+                          a_ =
+                              simde_float32x4_to_private(simde_vcvt_f32_f16(a)),
+                          b_ = simde_float32x4_to_private(
+                              simde_vcvt_f32_f16(simde_vdup_n_f16(
+                                  simde_float16x4_to_private(b).values[lane])));
     SIMDE_VECTORIZE
     for (size_t i = 0; i < (sizeof(r_.values) / (2 * sizeof(r_.values[0])));
         i++) {
-      r_.values[2 * i] = simde_float16_from_float32(
-          simde_float16_to_float32(r_.values[2 * i]) +
-          simde_float16_to_float32(b_.values[2 * i + 1]) *
-              simde_float16_to_float32(a_.values[2 * i + 1]));
-      r_.values[2 * i + 1] = simde_float16_from_float32(
-          simde_float16_to_float32(r_.values[2 * i + 1]) +
-          (-simde_float16_to_float32(b_.values[2 * i])) *
-              simde_float16_to_float32(a_.values[2 * i + 1]));
+      r_.values[2 * i] += b_.values[2 * i + 1] * a_.values[2 * i + 1];
+      r_.values[2 * i + 1] += -(b_.values[2 * i]) * a_.values[2 * i + 1];
     }
+    return simde_vcvt_f16_f32(simde_float32x4_from_private(r_));
   #endif
-  return simde_float16x4_from_private(r_);
 }
 #if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
   #undef vcmla_rot270_lane_f16
@@ -114,33 +120,31 @@ simde_float16x8_t
 simde_vcmlaq_rot270_lane_f16(simde_float16x8_t r, simde_float16x8_t a,
                              simde_float16x4_t b, const int lane)
     SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 1) {
-  simde_float16x8_private r_ = simde_float16x8_to_private(r),
-                          a_ = simde_float16x8_to_private(a),
-                          b_ = simde_float16x8_to_private(simde_vdupq_n_f16(
-                              simde_float16x4_to_private(b).values[lane]));
   #if defined(SIMDE_SHUFFLE_VECTOR_) && !defined(SIMDE_BUG_GCC_100760) &&        \
       ((SIMDE_FLOAT16_API == SIMDE_FLOAT16_API_FP16) ||                          \
       (SIMDE_FLOAT16_API == SIMDE_FLOAT16_API_FLOAT16))
+    simde_float16x8_private r_ = simde_float16x8_to_private(r),
+                          a_ = simde_float16x8_to_private(a),
+                          b_ = simde_float16x8_to_private(simde_vdupq_n_f16(
+                              simde_float16x4_to_private(b).values[lane]));
     a_.values = SIMDE_SHUFFLE_VECTOR_(16, 8, a_.values, a_.values, 1, 1, 3, 3, 5,
                                       5, 7, 7);
     b_.values = SIMDE_SHUFFLE_VECTOR_(16, 8, -b_.values, b_.values, 9, 0, 11, 2,
                                       13, 4, 15, 6);
     r_.values += b_.values * a_.values;
+    return simde_float16x8_from_private(r_);
   #else
-    SIMDE_VECTORIZE
-    for (size_t i = 0; i < (sizeof(r_.values) / (2 * sizeof(r_.values[0])));
-        i++) {
-      r_.values[2 * i] = simde_float16_from_float32(
-          simde_float16_to_float32(r_.values[2 * i]) +
-          simde_float16_to_float32(b_.values[2 * i + 1]) *
-              simde_float16_to_float32(a_.values[2 * i + 1]));
-      r_.values[2 * i + 1] = simde_float16_from_float32(
-          simde_float16_to_float32(r_.values[2 * i + 1]) +
-          (-simde_float16_to_float32(b_.values[2 * i])) *
-              simde_float16_to_float32(a_.values[2 * i + 1]));
-    }
+    simde_float16x4_t high, low;
+    SIMDE_CONSTIFY_2_(
+        simde_vcmla_rot270_lane_f16, high,
+        (HEDLEY_UNREACHABLE(), simde_vdup_n_f16(SIMDE_FLOAT16_VALUE(0.0))),
+        lane, simde_vget_high_f16(r), simde_vget_high_f16(a), b);
+    SIMDE_CONSTIFY_2_(
+        simde_vcmla_rot270_lane_f16, low,
+        (HEDLEY_UNREACHABLE(), simde_vdup_n_f16(SIMDE_FLOAT16_VALUE(0.0))),
+        lane, simde_vget_low_f16(r), simde_vget_low_f16(a), b);
+    return simde_vcombine_f16(low, high);
   #endif
-  return simde_float16x8_from_private(r_);
 }
 #if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
   #undef vcmlaq_rot270_lane_f16
@@ -190,31 +194,33 @@ simde_float16x4_t
 simde_vcmla_rot270_laneq_f16(simde_float16x4_t r, simde_float16x4_t a,
                              simde_float16x8_t b, const int lane)
     SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 1) {
-  simde_float16x4_private r_ = simde_float16x4_to_private(r),
-                          a_ = simde_float16x4_to_private(a),
-                          b_ = simde_float16x4_to_private(simde_vdup_n_f16(
-                              simde_float16x8_to_private(b).values[lane]));
   #if defined(SIMDE_SHUFFLE_VECTOR_) && !defined(SIMDE_BUG_GCC_100760) &&        \
       ((SIMDE_FLOAT16_API == SIMDE_FLOAT16_API_FP16) ||                          \
       (SIMDE_FLOAT16_API == SIMDE_FLOAT16_API_FLOAT16))
+    simde_float16x4_private r_ = simde_float16x4_to_private(r),
+                          a_ = simde_float16x4_to_private(a),
+                          b_ = simde_float16x4_to_private(simde_vdup_n_f16(
+                              simde_float16x8_to_private(b).values[lane]));
     a_.values = SIMDE_SHUFFLE_VECTOR_(16, 4, a_.values, a_.values, 1, 1, 3, 3);
     b_.values = SIMDE_SHUFFLE_VECTOR_(16, 4, -b_.values, b_.values, 5, 0, 7, 2);
     r_.values += b_.values * a_.values;
+    return simde_float16x4_from_private(r_);
   #else
+    simde_float32x4_private r_ =
+                              simde_float32x4_to_private(simde_vcvt_f32_f16(r)),
+                          a_ =
+                              simde_float32x4_to_private(simde_vcvt_f32_f16(a)),
+                          b_ = simde_float32x4_to_private(
+                              simde_vcvt_f32_f16(simde_vdup_n_f16(
+                                  simde_float16x8_to_private(b).values[lane])));
     SIMDE_VECTORIZE
     for (size_t i = 0; i < (sizeof(r_.values) / (2 * sizeof(r_.values[0])));
         i++) {
-      r_.values[2 * i] = simde_float16_from_float32(
-          simde_float16_to_float32(r_.values[2 * i]) +
-          simde_float16_to_float32(b_.values[2 * i + 1]) *
-              simde_float16_to_float32(a_.values[2 * i + 1]));
-      r_.values[2 * i + 1] = simde_float16_from_float32(
-          simde_float16_to_float32(r_.values[2 * i + 1]) +
-          (-simde_float16_to_float32(b_.values[2 * i])) *
-              simde_float16_to_float32(a_.values[2 * i + 1]));
+      r_.values[2 * i] += b_.values[2 * i + 1] * a_.values[2 * i + 1];
+      r_.values[2 * i + 1] += -(b_.values[2 * i]) * a_.values[2 * i + 1];
     }
+    return simde_vcvt_f16_f32(simde_float32x4_from_private(r_));
   #endif
-  return simde_float16x4_from_private(r_);
 }
 #if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
   #undef vcmla_rot270_laneq_f16
@@ -265,33 +271,32 @@ simde_float16x8_t
 simde_vcmlaq_rot270_laneq_f16(simde_float16x8_t r, simde_float16x8_t a,
                               simde_float16x8_t b, const int lane)
     SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 3) {
-  simde_float16x8_private r_ = simde_float16x8_to_private(r),
-                          a_ = simde_float16x8_to_private(a),
-                          b_ = simde_float16x8_to_private(simde_vdupq_n_f16(
-                              simde_float16x8_to_private(b).values[lane]));
   #if defined(SIMDE_SHUFFLE_VECTOR_) && !defined(SIMDE_BUG_GCC_100760) &&        \
       ((SIMDE_FLOAT16_API == SIMDE_FLOAT16_API_FP16) ||                          \
       (SIMDE_FLOAT16_API == SIMDE_FLOAT16_API_FLOAT16))
+    simde_float16x8_private r_ = simde_float16x8_to_private(r),
+                          a_ = simde_float16x8_to_private(a),
+                          b_ = simde_float16x8_to_private(simde_vdupq_n_f16(
+                              simde_float16x8_to_private(b).values[lane]));
     a_.values = SIMDE_SHUFFLE_VECTOR_(16, 8, a_.values, a_.values, 1, 1, 3, 3, 5,
                                       5, 7, 7);
     b_.values = SIMDE_SHUFFLE_VECTOR_(16, 8, -b_.values, b_.values, 9, 0, 11, 2,
                                       13, 4, 15, 6);
     r_.values += b_.values * a_.values;
+    return simde_float16x8_from_private(r_);
   #else
-    SIMDE_VECTORIZE
-    for (size_t i = 0; i < (sizeof(r_.values) / (2 * sizeof(r_.values[0])));
-        i++) {
-      r_.values[2 * i] = simde_float16_from_float32(
-          simde_float16_to_float32(r_.values[2 * i]) +
-          simde_float16_to_float32(b_.values[2 * i + 1]) *
-              simde_float16_to_float32(a_.values[2 * i + 1]));
-      r_.values[2 * i + 1] = simde_float16_from_float32(
-          simde_float16_to_float32(r_.values[2 * i + 1]) +
-          (-simde_float16_to_float32(b_.values[2 * i])) *
-              simde_float16_to_float32(a_.values[2 * i + 1]));
-    }
+    simde_float16x4_t high, low, b_ = simde_vdup_n_f16(
+                              simde_float16x8_to_private(b).values[lane]);
+    SIMDE_CONSTIFY_2_(
+        simde_vcmla_rot270_lane_f16, high,
+        (HEDLEY_UNREACHABLE(), simde_vdup_n_f16(SIMDE_FLOAT16_VALUE(0.0))),
+        0, simde_vget_high_f16(r), simde_vget_high_f16(a), b_);
+    SIMDE_CONSTIFY_2_(
+        simde_vcmla_rot270_lane_f16, low,
+        (HEDLEY_UNREACHABLE(), simde_vdup_n_f16(SIMDE_FLOAT16_VALUE(0.0))),
+        0, simde_vget_low_f16(r), simde_vget_low_f16(a), b_);
+    return simde_vcombine_f16(low, high);
   #endif
-  return simde_float16x8_from_private(r_);
 }
 #if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
   #undef vcmlaq_rot270_laneq_f16
