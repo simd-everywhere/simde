@@ -21,7 +21,7 @@
  * SOFTWARE.
  *
  * Copyright:
- *   2020      Evan Nemerson <evan@nemerson.com>
+ *   2023      Yi-Yen Chung <eric681@andestech.com> (Copyright owned by Andes Technology)
  */
 
 #if !defined(SIMDE_ARM_NEON_AES_H)
