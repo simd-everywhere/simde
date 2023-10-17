@@ -22,6 +22,7 @@
  *
  * Copyright:
  *   2020-2021 Evan Nemerson <evan@nemerson.com>
+ *   2023      Yi-Yen Chung <eric681@andestech.com> (Copyright owned by Andes Technology)
  */
 
 #if !defined(SIMDE_ARM_NEON_DUP_LANE_H)
@@ -144,6 +145,46 @@ simde_vdupd_lane_u64(simde_uint64x1_t vec, const int lane)
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
   #undef vdupd_lane_u64
   #define vdupd_lane_u64(vec, lane) simde_vdupd_lane_u64((vec), (lane))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_float16_t
+simde_vduph_lane_f16(simde_float16x4_t vec, const int lane)
+    SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 3) {
+  return simde_float16x4_to_private(vec).values[lane];
+}
+#if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
+  #define simde_vduph_lane_f16(vec, lane) vduph_lane_f16(vec, lane)
+#endif
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vduph_lane_f16
+  #define vduph_lane_f16(vec, lane) simde_vduph_lane_f16((vec), (lane))
+#endif
+
+// simde_vdup_lane_f16
+#if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
+  #define simde_vdup_lane_f16(vec, lane) vdup_lane_f16(vec, lane)
+#else
+  #define simde_vdup_lane_f16(vec, lane) simde_vdup_n_f16(simde_vduph_lane_f16(vec, lane))
+#endif
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+  #undef vdup_lane_f16
+  #define vdup_lane_f16(vec, lane) simde_vdup_lane_f16((vec), (lane))
+#endif
+
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_float16x8_t
+simde_vdupq_lane_f16(simde_float16x4_t vec, const int lane)
+  SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 3) {
+  return simde_vdupq_n_f16(simde_float16x4_to_private(vec).values[lane]);
+}
+#if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
+#define simde_vdupq_lane_f16(vec, lane) vdupq_lane_f16(vec, lane)
+#endif
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+  #undef vdupq_lane_f16
+  #define vdupq_lane_f16(vec, lane) simde_vdupq_lane_f16((vec), (lane))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
