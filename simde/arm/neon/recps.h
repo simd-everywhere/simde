@@ -37,6 +37,20 @@ SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 SIMDE_BEGIN_DECLS_
 
 SIMDE_FUNCTION_ATTRIBUTES
+simde_float16_t
+simde_vrecpsh_f16(simde_float16_t a, simde_float16_t b) {
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+    return vrecpsh_f16(a, b);
+  #else
+    return SIMDE_FLOAT16_C(2.0) - (a * b);
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vrecpsh_f16
+  #define vrecpsh_f16(a, b) simde_vrecpsh_f16((a), (b))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
 simde_float32_t
 simde_vrecpss_f32(simde_float32_t a, simde_float32_t b) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)

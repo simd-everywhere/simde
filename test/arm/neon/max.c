@@ -4,6 +4,50 @@
 #include "../../../simde/arm/neon/max.h"
 
 static int
+test_simde_vmaxh_f16 (SIMDE_MUNIT_TEST_ARGS) {
+  static const struct {
+    simde_float16 a;
+    simde_float16 b;
+    simde_float16 r;
+  } test_vec[] = {
+    {    SIMDE_FLOAT16_VALUE(    27.944),
+         SIMDE_FLOAT16_VALUE(     4.766),
+         SIMDE_FLOAT16_VALUE(    27.944) },
+    {   SIMDE_FLOAT16_VALUE( -6.101),
+         SIMDE_FLOAT16_VALUE(     6.573),
+         SIMDE_FLOAT16_VALUE(     6.573) },
+    {    SIMDE_FLOAT16_VALUE(    16.846),
+         SIMDE_FLOAT16_VALUE(     3.658),
+         SIMDE_FLOAT16_VALUE(    16.846) },
+    {   SIMDE_FLOAT16_VALUE( -4.194),
+        SIMDE_FLOAT16_VALUE( -13.220),
+        SIMDE_FLOAT16_VALUE( -4.194) },
+    {    SIMDE_FLOAT16_VALUE(    12.582),
+         SIMDE_FLOAT16_VALUE(     4.663),
+         SIMDE_FLOAT16_VALUE(    12.582) },
+    {    SIMDE_FLOAT16_VALUE(    14.203),
+        SIMDE_FLOAT16_VALUE( -15.993),
+         SIMDE_FLOAT16_VALUE(    14.203) },
+    {    SIMDE_FLOAT16_VALUE(    13.812),
+         SIMDE_FLOAT16_VALUE(     1.543),
+         SIMDE_FLOAT16_VALUE(    13.812) },
+    {    SIMDE_FLOAT16_VALUE(    25.248),
+         SIMDE_FLOAT16_VALUE(     4.234),
+         SIMDE_FLOAT16_VALUE(    25.248) },
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
+    simde_float16_t a = test_vec[i].a;
+    simde_float16_t b = test_vec[i].b;
+    simde_float16_t r = simde_vmaxh_f16(a, b);
+
+    simde_assert_equal_f16(r, test_vec[i].r, 1);
+  }
+
+  return 0;
+}
+
+static int
 test_simde_vmax_f16 (SIMDE_MUNIT_TEST_ARGS) {
   struct {
     simde_float16 a[4];
@@ -1133,6 +1177,7 @@ test_simde_x_vmaxq_u64 (SIMDE_MUNIT_TEST_ARGS) {
 }
 
 SIMDE_TEST_FUNC_LIST_BEGIN
+SIMDE_TEST_FUNC_LIST_ENTRY(vmaxh_f16)
 SIMDE_TEST_FUNC_LIST_ENTRY(vmax_f16)
 SIMDE_TEST_FUNC_LIST_ENTRY(vmax_f32)
 SIMDE_TEST_FUNC_LIST_ENTRY(vmax_f64)

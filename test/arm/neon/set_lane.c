@@ -1607,6 +1607,352 @@ test_simde_vsetq_lane_u64 (SIMDE_MUNIT_TEST_ARGS) {
 #endif
 }
 
+static int
+test_simde_vset_lane_p8 (SIMDE_MUNIT_TEST_ARGS) {
+  static const struct {
+    simde_poly8_t a;
+    simde_poly8_t v[8];
+    simde_poly8_t r[8];
+    int lane;
+  } test_vec[] = {
+    { UINT8_C(107),
+      { UINT8_C(232), UINT8_C( 68), UINT8_C( 62), UINT8_C( 98), UINT8_C(251), UINT8_C(241), UINT8_C(101), UINT8_C( 54) },
+      { UINT8_C(107), UINT8_C( 68), UINT8_C( 62), UINT8_C( 98), UINT8_C(251), UINT8_C(241), UINT8_C(101), UINT8_C( 54) },
+       INT32_C(           0) },
+    { UINT8_C(150),
+      { UINT8_C( 83), UINT8_C( 39), UINT8_C(121), UINT8_C(113), UINT8_C(247), UINT8_C( 41), UINT8_C(120), UINT8_C(159) },
+      { UINT8_C( 83), UINT8_C(150), UINT8_C(121), UINT8_C(113), UINT8_C(247), UINT8_C( 41), UINT8_C(120), UINT8_C(159) },
+       INT32_C(           1) },
+    { UINT8_C(173),
+      { UINT8_C(167), UINT8_C( 57), UINT8_C(216), UINT8_C( 30), UINT8_C( 55), UINT8_C( 36), UINT8_C(109), UINT8_C(248) },
+      { UINT8_C(167), UINT8_C( 57), UINT8_C(173), UINT8_C( 30), UINT8_C( 55), UINT8_C( 36), UINT8_C(109), UINT8_C(248) },
+       INT32_C(           2) },
+    { UINT8_C( 60),
+      { UINT8_C(242), UINT8_C(234), UINT8_C(103), UINT8_C( 93), UINT8_C(211), UINT8_C(171), UINT8_C(155), UINT8_C( 53) },
+      { UINT8_C(242), UINT8_C(234), UINT8_C(103), UINT8_C( 60), UINT8_C(211), UINT8_C(171), UINT8_C(155), UINT8_C( 53) },
+       INT32_C(           3) },
+    { UINT8_C(167),
+      { UINT8_C(141), UINT8_C(154), UINT8_C(221), UINT8_C( 35), UINT8_C(237), UINT8_C(  5), UINT8_C(156), UINT8_C( 95) },
+      { UINT8_C(141), UINT8_C(154), UINT8_C(221), UINT8_C( 35), UINT8_C(167), UINT8_C(  5), UINT8_C(156), UINT8_C( 95) },
+       INT32_C(           4) },
+    { UINT8_C(252),
+      { UINT8_C(198), UINT8_C(215), UINT8_C(155), UINT8_C(115), UINT8_C(126), UINT8_C(212), UINT8_C( 76), UINT8_C(156) },
+      { UINT8_C(198), UINT8_C(215), UINT8_C(155), UINT8_C(115), UINT8_C(126), UINT8_C(252), UINT8_C( 76), UINT8_C(156) },
+       INT32_C(           5) },
+    { UINT8_C( 11),
+      { UINT8_C(112), UINT8_C( 10), UINT8_C(  4), UINT8_C(172), UINT8_C(252), UINT8_C(238), UINT8_C( 19), UINT8_C( 89) },
+      { UINT8_C(112), UINT8_C( 10), UINT8_C(  4), UINT8_C(172), UINT8_C(252), UINT8_C(238), UINT8_C( 11), UINT8_C( 89) },
+       INT32_C(           6) },
+    { UINT8_C(193),
+      { UINT8_C(191), UINT8_C(245), UINT8_C(246), UINT8_C(102), UINT8_C(130), UINT8_C(144), UINT8_C( 67), UINT8_C(165) },
+      { UINT8_C(191), UINT8_C(245), UINT8_C(246), UINT8_C(102), UINT8_C(130), UINT8_C(144), UINT8_C( 67), UINT8_C(193) },
+       INT32_C(           7) },
+
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
+    simde_poly8_t a = test_vec[i].a;
+    simde_poly8x8_t v = simde_vld1_p8(test_vec[i].v);
+    int lane = test_vec[i].lane;
+    simde_poly8x8_t r;
+    SIMDE_CONSTIFY_8_(simde_vset_lane_p8, r, (HEDLEY_UNREACHABLE(), v), lane, a, v);
+
+    simde_test_arm_neon_assert_equal_p8x8(r, simde_vld1_p8(test_vec[i].r));
+  }
+
+  return 0;
+}
+
+static int
+test_simde_vset_lane_p16 (SIMDE_MUNIT_TEST_ARGS) {
+  static const struct {
+    simde_poly16_t a;
+    simde_poly16_t v[4];
+    simde_poly16_t r[4];
+    int lane;
+  } test_vec[] = {
+    { UINT16_C(45765),
+      { UINT16_C(30953), UINT16_C(24357), UINT16_C( 4588), UINT16_C(51685) },
+      { UINT16_C(45765), UINT16_C(24357), UINT16_C( 4588), UINT16_C(51685) },
+       INT32_C(           0) },
+    { UINT16_C( 3768),
+      { UINT16_C(49965), UINT16_C(13884), UINT16_C( 6907), UINT16_C(15397) },
+      { UINT16_C(49965), UINT16_C( 3768), UINT16_C( 6907), UINT16_C(15397) },
+       INT32_C(           1) },
+    { UINT16_C(43298),
+      { UINT16_C(51529), UINT16_C(   48), UINT16_C(59229), UINT16_C(37787) },
+      { UINT16_C(51529), UINT16_C(   48), UINT16_C(43298), UINT16_C(37787) },
+       INT32_C(           2) },
+    { UINT16_C(24647),
+      { UINT16_C(12357), UINT16_C(27352), UINT16_C(50320), UINT16_C(30075) },
+      { UINT16_C(12357), UINT16_C(27352), UINT16_C(50320), UINT16_C(24647) },
+       INT32_C(           3) },
+    { UINT16_C(13197),
+      { UINT16_C(47747), UINT16_C(49143), UINT16_C(62192), UINT16_C( 5594) },
+      { UINT16_C(13197), UINT16_C(49143), UINT16_C(62192), UINT16_C( 5594) },
+       INT32_C(           0) },
+    { UINT16_C(64558),
+      { UINT16_C(30654), UINT16_C(61125), UINT16_C( 8823), UINT16_C( 4821) },
+      { UINT16_C(30654), UINT16_C(64558), UINT16_C( 8823), UINT16_C( 4821) },
+       INT32_C(           1) },
+    { UINT16_C( 7349),
+      { UINT16_C(64114), UINT16_C(19021), UINT16_C(56676), UINT16_C(57358) },
+      { UINT16_C(64114), UINT16_C(19021), UINT16_C( 7349), UINT16_C(57358) },
+       INT32_C(           2) },
+    { UINT16_C(39762),
+      { UINT16_C(54547), UINT16_C( 2645), UINT16_C(17812), UINT16_C(28412) },
+      { UINT16_C(54547), UINT16_C( 2645), UINT16_C(17812), UINT16_C(39762) },
+       INT32_C(           3) },
+
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
+    simde_poly16_t a = test_vec[i].a;
+    simde_poly16x4_t v = simde_vld1_p16(test_vec[i].v);
+    int lane = test_vec[i].lane;
+    simde_poly16x4_t r;
+    SIMDE_CONSTIFY_4_(simde_vset_lane_p16, r, (HEDLEY_UNREACHABLE(), v), lane, a, v);
+    simde_test_arm_neon_assert_equal_p16x4(r, simde_vld1_p16(test_vec[i].r));
+  }
+
+  return 0;
+}
+
+static int
+test_simde_vset_lane_p64 (SIMDE_MUNIT_TEST_ARGS) {
+  static const struct {
+    simde_poly64_t a;
+    simde_poly64_t v[1];
+    simde_poly64_t r[1];
+    int lane;
+  } test_vec[] = {
+    { UINT64_C( 6406044039131507225),
+      { UINT64_C( 1703588918030527433) },
+      { UINT64_C( 6406044039131507225) },
+       INT32_C(           0) },
+    { UINT64_C( 6803362325393349286),
+      { UINT64_C( 9198016635619938545) },
+      { UINT64_C( 6803362325393349286) },
+       INT32_C(           0) },
+    { UINT64_C( 4002095255047804694),
+      { UINT64_C( 1073592190821075895) },
+      { UINT64_C( 4002095255047804694) },
+       INT32_C(           0) },
+    { UINT64_C(10745787330633285317),
+      { UINT64_C( 7217255135707226948) },
+      { UINT64_C(10745787330633285317) },
+       INT32_C(           0) },
+    { UINT64_C(10597851576315383662),
+      { UINT64_C( 9917851913051871532) },
+      { UINT64_C(10597851576315383662) },
+       INT32_C(           0) },
+    { UINT64_C(16555350570174246279),
+      { UINT64_C( 3999680018493928142) },
+      { UINT64_C(16555350570174246279) },
+       INT32_C(           0) },
+    { UINT64_C( 7400582118781425734),
+      { UINT64_C(16649137534843688896) },
+      { UINT64_C( 7400582118781425734) },
+       INT32_C(           0) },
+    { UINT64_C(10525426639353108619),
+      { UINT64_C(11296488388647952325) },
+      { UINT64_C(10525426639353108619) },
+       INT32_C(           0) },
+
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
+    simde_poly64_t a = test_vec[i].a;
+    simde_poly64x1_t v = simde_vld1_p64(test_vec[i].v);
+    simde_poly64x1_t r = simde_vset_lane_p64(a, v, 0);
+    simde_test_arm_neon_assert_equal_p64x1(r, simde_vld1_p64(test_vec[i].r));
+  }
+
+  return 0;
+}
+
+static int
+test_simde_vsetq_lane_p8 (SIMDE_MUNIT_TEST_ARGS) {
+  static const struct {
+    simde_poly8_t a;
+    simde_poly8_t v[16];
+    simde_poly8_t r[16];
+    int lane;
+  } test_vec[] = {
+    { UINT8_C(238),
+      { UINT8_C( 34), UINT8_C( 29), UINT8_C(146), UINT8_C( 44), UINT8_C(194), UINT8_C( 98), UINT8_C(109), UINT8_C(200),
+        UINT8_C( 43), UINT8_C(150), UINT8_C( 94),    UINT8_MAX, UINT8_C(180), UINT8_C(219), UINT8_C( 87), UINT8_C(201) },
+      { UINT8_C(238), UINT8_C( 29), UINT8_C(146), UINT8_C( 44), UINT8_C(194), UINT8_C( 98), UINT8_C(109), UINT8_C(200),
+        UINT8_C( 43), UINT8_C(150), UINT8_C( 94),    UINT8_MAX, UINT8_C(180), UINT8_C(219), UINT8_C( 87), UINT8_C(201) },
+       INT32_C(           0) },
+    { UINT8_C( 62),
+      { UINT8_C(200), UINT8_C( 35), UINT8_C( 96), UINT8_C( 42), UINT8_C( 87), UINT8_C(172), UINT8_C(236), UINT8_C( 73),
+        UINT8_C(  8), UINT8_C( 33), UINT8_C(247), UINT8_C( 76), UINT8_C( 81), UINT8_C(229), UINT8_C(110), UINT8_C(110) },
+      { UINT8_C(200), UINT8_C( 35), UINT8_C( 62), UINT8_C( 42), UINT8_C( 87), UINT8_C(172), UINT8_C(236), UINT8_C( 73),
+        UINT8_C(  8), UINT8_C( 33), UINT8_C(247), UINT8_C( 76), UINT8_C( 81), UINT8_C(229), UINT8_C(110), UINT8_C(110) },
+       INT32_C(           2) },
+    { UINT8_C(119),
+      { UINT8_C(154), UINT8_C( 48), UINT8_C(217), UINT8_C(  7), UINT8_C(248), UINT8_C(  5), UINT8_C(158), UINT8_C( 86),
+        UINT8_C(  4), UINT8_C( 82), UINT8_C( 49), UINT8_C( 91), UINT8_C( 27), UINT8_C(112), UINT8_C( 35), UINT8_C( 63) },
+      { UINT8_C(154), UINT8_C( 48), UINT8_C(217), UINT8_C(  7), UINT8_C(119), UINT8_C(  5), UINT8_C(158), UINT8_C( 86),
+        UINT8_C(  4), UINT8_C( 82), UINT8_C( 49), UINT8_C( 91), UINT8_C( 27), UINT8_C(112), UINT8_C( 35), UINT8_C( 63) },
+       INT32_C(           4) },
+    { UINT8_C(208),
+      { UINT8_C( 77), UINT8_C(150), UINT8_C(124), UINT8_C( 57), UINT8_C(223), UINT8_C(133), UINT8_C( 90), UINT8_C(214),
+        UINT8_C(209), UINT8_C(172), UINT8_C(187), UINT8_C( 63), UINT8_C( 26), UINT8_C( 51), UINT8_C(218), UINT8_C( 75) },
+      { UINT8_C( 77), UINT8_C(150), UINT8_C(124), UINT8_C( 57), UINT8_C(223), UINT8_C(133), UINT8_C(208), UINT8_C(214),
+        UINT8_C(209), UINT8_C(172), UINT8_C(187), UINT8_C( 63), UINT8_C( 26), UINT8_C( 51), UINT8_C(218), UINT8_C( 75) },
+       INT32_C(           6) },
+    { UINT8_C( 12),
+      { UINT8_C(225), UINT8_C( 67), UINT8_C( 17), UINT8_C(127), UINT8_C(154), UINT8_C( 21), UINT8_C(210), UINT8_C(203),
+        UINT8_C(112), UINT8_C(237), UINT8_C( 59), UINT8_C(147), UINT8_C( 44), UINT8_C( 11), UINT8_C(224), UINT8_C(194) },
+      { UINT8_C(225), UINT8_C( 67), UINT8_C( 17), UINT8_C(127), UINT8_C(154), UINT8_C( 21), UINT8_C(210), UINT8_C(203),
+        UINT8_C( 12), UINT8_C(237), UINT8_C( 59), UINT8_C(147), UINT8_C( 44), UINT8_C( 11), UINT8_C(224), UINT8_C(194) },
+       INT32_C(           8) },
+    { UINT8_C(136),
+      { UINT8_C( 25), UINT8_C(162), UINT8_C( 13), UINT8_C(116), UINT8_C(120), UINT8_C(222), UINT8_C( 32), UINT8_C( 52),
+        UINT8_C( 29), UINT8_C( 58), UINT8_C(103), UINT8_C(247), UINT8_C(133), UINT8_C(115), UINT8_C(217), UINT8_C(201) },
+      { UINT8_C( 25), UINT8_C(162), UINT8_C( 13), UINT8_C(116), UINT8_C(120), UINT8_C(222), UINT8_C( 32), UINT8_C( 52),
+        UINT8_C( 29), UINT8_C( 58), UINT8_C(136), UINT8_C(247), UINT8_C(133), UINT8_C(115), UINT8_C(217), UINT8_C(201) },
+       INT32_C(          10) },
+    { UINT8_C(133),
+      { UINT8_C( 88), UINT8_C( 99), UINT8_C(154), UINT8_C( 42), UINT8_C( 46), UINT8_C( 11), UINT8_C( 24), UINT8_C(106),
+        UINT8_C(158), UINT8_C( 68), UINT8_C(117), UINT8_C(127), UINT8_C(  7), UINT8_C(253), UINT8_C(152), UINT8_C(169) },
+      { UINT8_C( 88), UINT8_C( 99), UINT8_C(154), UINT8_C( 42), UINT8_C( 46), UINT8_C( 11), UINT8_C( 24), UINT8_C(106),
+        UINT8_C(158), UINT8_C( 68), UINT8_C(117), UINT8_C(127), UINT8_C(133), UINT8_C(253), UINT8_C(152), UINT8_C(169) },
+       INT32_C(          12) },
+    { UINT8_C( 10),
+      { UINT8_C( 12), UINT8_C( 33), UINT8_C(232), UINT8_C( 44), UINT8_C( 85), UINT8_C(  6), UINT8_C(103), UINT8_C(188),
+        UINT8_C(253), UINT8_C(236), UINT8_C( 48), UINT8_C(214), UINT8_C(181), UINT8_C(181), UINT8_C( 47), UINT8_C( 24) },
+      { UINT8_C( 12), UINT8_C( 33), UINT8_C(232), UINT8_C( 44), UINT8_C( 85), UINT8_C(  6), UINT8_C(103), UINT8_C(188),
+        UINT8_C(253), UINT8_C(236), UINT8_C( 48), UINT8_C(214), UINT8_C(181), UINT8_C(181), UINT8_C( 10), UINT8_C( 24) },
+       INT32_C(          14) },
+
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
+    simde_poly8_t a = test_vec[i].a;
+    simde_poly8x16_t v = simde_vld1q_p8(test_vec[i].v);
+    int lane = test_vec[i].lane;
+    simde_poly8x16_t r;
+    SIMDE_CONSTIFY_16_(simde_vsetq_lane_p8, r, (HEDLEY_UNREACHABLE(), v), lane, a, v);
+
+    simde_test_arm_neon_assert_equal_p8x16(r, simde_vld1q_p8(test_vec[i].r));
+  }
+
+  return 0;
+}
+
+static int
+test_simde_vsetq_lane_p16 (SIMDE_MUNIT_TEST_ARGS) {
+  static const struct {
+    simde_poly16_t a;
+    simde_poly16_t v[8];
+    simde_poly16_t r[8];
+    int lane;
+  } test_vec[] = {
+    { UINT16_C(32446),
+      { UINT16_C(19553), UINT16_C(61358), UINT16_C(14924), UINT16_C( 6732), UINT16_C(13757), UINT16_C(36062), UINT16_C(42840), UINT16_C(27459) },
+      { UINT16_C(32446), UINT16_C(61358), UINT16_C(14924), UINT16_C( 6732), UINT16_C(13757), UINT16_C(36062), UINT16_C(42840), UINT16_C(27459) },
+       INT32_C(           0) },
+    { UINT16_C(48560),
+      { UINT16_C(32777), UINT16_C(43662), UINT16_C(65055), UINT16_C( 2648), UINT16_C(36938), UINT16_C( 2492), UINT16_C( 7695), UINT16_C(48469) },
+      { UINT16_C(32777), UINT16_C(48560), UINT16_C(65055), UINT16_C( 2648), UINT16_C(36938), UINT16_C( 2492), UINT16_C( 7695), UINT16_C(48469) },
+       INT32_C(           1) },
+    { UINT16_C(41229),
+      { UINT16_C(23031), UINT16_C(46267), UINT16_C(39566), UINT16_C(58944), UINT16_C(33601), UINT16_C(61778), UINT16_C(23360), UINT16_C(53106) },
+      { UINT16_C(23031), UINT16_C(46267), UINT16_C(41229), UINT16_C(58944), UINT16_C(33601), UINT16_C(61778), UINT16_C(23360), UINT16_C(53106) },
+       INT32_C(           2) },
+    { UINT16_C(37126),
+      { UINT16_C(24269), UINT16_C( 6043), UINT16_C(22767), UINT16_C(65056), UINT16_C(30326), UINT16_C(33723), UINT16_C(45591), UINT16_C(54237) },
+      { UINT16_C(24269), UINT16_C( 6043), UINT16_C(22767), UINT16_C(37126), UINT16_C(30326), UINT16_C(33723), UINT16_C(45591), UINT16_C(54237) },
+       INT32_C(           3) },
+    { UINT16_C(27494),
+      { UINT16_C(42605), UINT16_C(44626), UINT16_C(42025), UINT16_C(27295), UINT16_C( 4607), UINT16_C( 1337), UINT16_C( 1698), UINT16_C(15972) },
+      { UINT16_C(42605), UINT16_C(44626), UINT16_C(42025), UINT16_C(27295), UINT16_C(27494), UINT16_C( 1337), UINT16_C( 1698), UINT16_C(15972) },
+       INT32_C(           4) },
+    { UINT16_C(21277),
+      { UINT16_C(16022), UINT16_C( 3153), UINT16_C( 3252), UINT16_C(52111), UINT16_C(27838), UINT16_C( 9374), UINT16_C( 3032), UINT16_C(10954) },
+      { UINT16_C(16022), UINT16_C( 3153), UINT16_C( 3252), UINT16_C(52111), UINT16_C(27838), UINT16_C(21277), UINT16_C( 3032), UINT16_C(10954) },
+       INT32_C(           5) },
+    { UINT16_C(62393),
+      { UINT16_C(22990), UINT16_C(52573), UINT16_C(38506), UINT16_C( 3539), UINT16_C(14236), UINT16_C(47691), UINT16_C(57738), UINT16_C(56312) },
+      { UINT16_C(22990), UINT16_C(52573), UINT16_C(38506), UINT16_C( 3539), UINT16_C(14236), UINT16_C(47691), UINT16_C(62393), UINT16_C(56312) },
+       INT32_C(           6) },
+    { UINT16_C(44269),
+      { UINT16_C(31975), UINT16_C(42359), UINT16_C( 5865), UINT16_C(49609), UINT16_C(37665), UINT16_C(56299), UINT16_C(47494), UINT16_C(58420) },
+      { UINT16_C(31975), UINT16_C(42359), UINT16_C( 5865), UINT16_C(49609), UINT16_C(37665), UINT16_C(56299), UINT16_C(47494), UINT16_C(44269) },
+       INT32_C(           7) },
+
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
+    simde_poly16_t a = test_vec[i].a;
+    simde_poly16x8_t v = simde_vld1q_p16(test_vec[i].v);
+    int lane = test_vec[i].lane;
+    simde_poly16x8_t r;
+    SIMDE_CONSTIFY_8_(simde_vsetq_lane_p16, r, (HEDLEY_UNREACHABLE(), v), lane, a, v);
+    simde_test_arm_neon_assert_equal_p16x8(r, simde_vld1q_p16(test_vec[i].r));
+  }
+
+  return 0;
+}
+
+static int
+test_simde_vsetq_lane_p64 (SIMDE_MUNIT_TEST_ARGS) {
+  static const struct {
+    simde_poly64_t a;
+    simde_poly64_t v[2];
+    simde_poly64_t r[2];
+    int lane;
+  } test_vec[] = {
+    { UINT64_C( 5390401428211676195),
+      { UINT64_C(14829740467812854006), UINT64_C( 6030377659942938448) },
+      { UINT64_C( 5390401428211676195), UINT64_C( 6030377659942938448) },
+       INT32_C(           0) },
+    { UINT64_C(16865715377620681228),
+      { UINT64_C(16327746488354496450), UINT64_C(17394597901878546230) },
+      { UINT64_C(16327746488354496450), UINT64_C(16865715377620681228) },
+       INT32_C(           1) },
+    { UINT64_C(18413438712080547758),
+      { UINT64_C( 5178889453871920686), UINT64_C(16377951018670153595) },
+      { UINT64_C(18413438712080547758), UINT64_C(16377951018670153595) },
+       INT32_C(           0) },
+    { UINT64_C( 4075162322782160122),
+      { UINT64_C( 7175633015332112801), UINT64_C( 4123669697782129006) },
+      { UINT64_C( 7175633015332112801), UINT64_C( 4075162322782160122) },
+       INT32_C(           1) },
+    { UINT64_C(17557542605282201111),
+      { UINT64_C(12047721669956871279), UINT64_C(  593579713905861028) },
+      { UINT64_C(17557542605282201111), UINT64_C(  593579713905861028) },
+       INT32_C(           0) },
+    { UINT64_C(16386687870275654770),
+      { UINT64_C( 7345177435188955651), UINT64_C( 4477019592935308915) },
+      { UINT64_C( 7345177435188955651), UINT64_C(16386687870275654770) },
+       INT32_C(           1) },
+    { UINT64_C(11661319370131856691),
+      { UINT64_C(  763142462340452840), UINT64_C(  188859325098639172) },
+      { UINT64_C(11661319370131856691), UINT64_C(  188859325098639172) },
+       INT32_C(           0) },
+    { UINT64_C(14000456004831804788),
+      { UINT64_C(11513844660171662330), UINT64_C( 1749344802057787957) },
+      { UINT64_C(11513844660171662330), UINT64_C(14000456004831804788) },
+       INT32_C(           1) },
+
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
+    simde_poly64_t a = test_vec[i].a;
+    simde_poly64x2_t v = simde_vld1q_p64(test_vec[i].v);
+    int lane = test_vec[i].lane;
+    simde_poly64x2_t r;
+    SIMDE_CONSTIFY_2_(simde_vsetq_lane_p64, r, (HEDLEY_UNREACHABLE(), v), lane, a, v);
+    simde_test_arm_neon_assert_equal_p64x2(r, simde_vld1q_p64(test_vec[i].r));
+  }
+
+  return 0;
+}
+
 HEDLEY_DIAGNOSTIC_POP
 
 SIMDE_TEST_FUNC_LIST_BEGIN
@@ -1633,6 +1979,13 @@ SIMDE_TEST_FUNC_LIST_ENTRY(vsetq_lane_u8)
 SIMDE_TEST_FUNC_LIST_ENTRY(vsetq_lane_u16)
 SIMDE_TEST_FUNC_LIST_ENTRY(vsetq_lane_u32)
 SIMDE_TEST_FUNC_LIST_ENTRY(vsetq_lane_u64)
+
+SIMDE_TEST_FUNC_LIST_ENTRY(vset_lane_p8)
+SIMDE_TEST_FUNC_LIST_ENTRY(vset_lane_p16)
+SIMDE_TEST_FUNC_LIST_ENTRY(vset_lane_p64)
+SIMDE_TEST_FUNC_LIST_ENTRY(vsetq_lane_p8)
+SIMDE_TEST_FUNC_LIST_ENTRY(vsetq_lane_p16)
+SIMDE_TEST_FUNC_LIST_ENTRY(vsetq_lane_p64)
 SIMDE_TEST_FUNC_LIST_END
 
 #include "test-neon-footer.h"

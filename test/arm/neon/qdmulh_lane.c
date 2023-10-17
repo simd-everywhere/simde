@@ -4,6 +4,83 @@
 #include "../../../simde/arm/neon/qdmulh_lane.h"
 
 static int
+test_simde_vqdmulhh_lane_s16 (SIMDE_MUNIT_TEST_ARGS) {
+  static const struct {
+    int16_t a;
+    int16_t v[4];
+    int16_t r0[1];
+    int16_t r1[1];
+    int16_t r2[1];
+    int16_t r3[1];
+  } test_vec[] = {
+     {     INT16_C( 6416),
+       {   INT16_C( 6214), -INT16_C( 2315),  INT16_C( 9709), -INT16_C( 1624)},
+       {   INT16_C( 1216) },
+       {  -INT16_C(  454) },
+       {   INT16_C( 1901) },
+       {  -INT16_C(  318) } },
+     {    -INT16_C( 9056),
+       {   INT16_C( 7376),  INT16_C( 9070), -INT16_C( 9545),  INT16_C( 4821)},
+       {  -INT16_C( 2039) },
+       {  -INT16_C( 2507) },
+       {   INT16_C( 2637) },
+       {  -INT16_C( 1333) } },
+     {     INT16_C( 3256),
+       {  -INT16_C( 3529),  INT16_C( 7444), -INT16_C( 7737), -INT16_C( 2078)},
+       {  -INT16_C(  351) },
+       {   INT16_C(  739) },
+       {  -INT16_C(  769) },
+       {  -INT16_C(  207) } },
+     {    -INT16_C( 4075),
+       {   INT16_C( 6455), -INT16_C( 4295),  INT16_C( 2208),  INT16_C( 2378)},
+       {  -INT16_C(  803) },
+       {   INT16_C(  534) },
+       {  -INT16_C(  275) },
+       {  -INT16_C(  296) } },
+     {    -INT16_C(  233),
+       {  -INT16_C(  420), -INT16_C(  295),  INT16_C( 8774),  INT16_C( 7993)},
+       {   INT16_C(    2) },
+       {   INT16_C(    2) },
+       {  -INT16_C(   63) },
+       {  -INT16_C(   57) } },
+     {     INT16_C( 3967),
+       {   INT16_C( 7619),  INT16_C( 8580), -INT16_C( 5182), -INT16_C( 9998)},
+       {   INT16_C(  922) },
+       {   INT16_C( 1038) },
+       {  -INT16_C(  628) },
+       {  -INT16_C( 1211) } },
+     {     INT16_C( 9811),
+       {   INT16_C( 2852),  INT16_C( 8414), -INT16_C( 7570), -INT16_C(  260)},
+       {   INT16_C(  853) },
+       {   INT16_C( 2519) },
+       {  -INT16_C( 2267) },
+       {  -INT16_C(   78) } },
+     {     INT16_C( 5774),
+       {  -INT16_C(  265),  INT16_C( 5424),  INT16_C( 5625),  INT16_C( 8653)},
+       {  -INT16_C(   47) },
+       {   INT16_C(  955) },
+       {   INT16_C(  991) },
+       {   INT16_C( 1524) } },
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
+    int16_t a = test_vec[i].a;
+    simde_int16x4_t v = simde_vld1_s16(test_vec[i].v);
+    int16_t r0 = simde_vqdmulhh_lane_s16(a, v, 0);
+    int16_t r1 = simde_vqdmulhh_lane_s16(a, v, 1);
+    int16_t r2 = simde_vqdmulhh_lane_s16(a, v, 2);
+    int16_t r3 = simde_vqdmulhh_lane_s16(a, v, 3);
+
+    simde_assert_equal_i16(r0, test_vec[i].r0[0]);
+    simde_assert_equal_i16(r1, test_vec[i].r1[0]);
+    simde_assert_equal_i16(r2, test_vec[i].r2[0]);
+    simde_assert_equal_i16(r3, test_vec[i].r3[0]);
+  }
+
+  return 0;
+}
+
+static int
 test_simde_vqdmulh_lane_s16 (SIMDE_MUNIT_TEST_ARGS) {
 #if 1
   static const struct {
@@ -333,6 +410,135 @@ test_simde_vqdmulhq_lane_s32 (SIMDE_MUNIT_TEST_ARGS) {
   }
   return 1;
 #endif
+}
+
+static int
+test_simde_vqdmulhh_laneq_s16 (SIMDE_MUNIT_TEST_ARGS) {
+  static const struct {
+    int16_t a;
+    int16_t v[8];
+    int16_t r0[1];
+    int16_t r1[1];
+    int16_t r2[1];
+    int16_t r3[1];
+    int16_t r4[1];
+    int16_t r5[1];
+    int16_t r6[1];
+    int16_t r7[1];
+  } test_vec[] = {
+     {     INT16_C( 5809),
+       {  -INT16_C( 2772), -INT16_C(  797), -INT16_C( 4978),  INT16_C( 8613),
+          -INT16_C(   20),  INT16_C( 4225), -INT16_C( 7234),  INT16_C( 1124)},
+       {  -INT16_C(  492) },
+       {  -INT16_C(  142) },
+       {  -INT16_C(  883) },
+       {   INT16_C( 1526) },
+       {  -INT16_C(    4) },
+       {   INT16_C(  748) },
+       {  -INT16_C( 1283) },
+       {   INT16_C(  199) } },
+     {     INT16_C( 4731),
+       {  -INT16_C( 9548), -INT16_C( 4228), -INT16_C( 8704), -INT16_C( 7130),
+           INT16_C( 3047), -INT16_C( 5127), -INT16_C( 6443), -INT16_C( 3552)},
+       {  -INT16_C( 1379) },
+       {  -INT16_C(  611) },
+       {  -INT16_C( 1257) },
+       {  -INT16_C( 1030) },
+       {   INT16_C(  439) },
+       {  -INT16_C(  741) },
+       {  -INT16_C(  931) },
+       {  -INT16_C(  513) } },
+     {     INT16_C( 6067),
+       {  -INT16_C( 5590),  INT16_C( 3122), -INT16_C( 6932),  INT16_C( 6267),
+          -INT16_C( 9214),  INT16_C( 2040), -INT16_C( 1505), -INT16_C( 6302)},
+       {  -INT16_C( 1035) },
+       {   INT16_C(  578) },
+       {  -INT16_C( 1284) },
+       {   INT16_C( 1160) },
+       {  -INT16_C( 1706) },
+       {   INT16_C(  377) },
+       {  -INT16_C(  279) },
+       {  -INT16_C( 1167) } },
+     {     INT16_C( 5951),
+       {  -INT16_C( 5817),  INT16_C( 2584), -INT16_C( 9319),  INT16_C( 4946),
+           INT16_C( 7972), -INT16_C( 1620),  INT16_C( 5847),  INT16_C( 9934)},
+       {  -INT16_C( 1057) },
+       {   INT16_C(  469) },
+       {  -INT16_C( 1693) },
+       {   INT16_C(  898) },
+       {   INT16_C( 1447) },
+       {  -INT16_C(  295) },
+       {   INT16_C( 1061) },
+       {   INT16_C( 1804) } },
+     {     INT16_C( 1786),
+       {   INT16_C( 7054), -INT16_C( 8079), -INT16_C( 4300),  INT16_C( 9724),
+           INT16_C( 1177),  INT16_C( 9725),  INT16_C( 5095), -INT16_C( 9211)},
+       {   INT16_C(  384) },
+       {  -INT16_C(  441) },
+       {  -INT16_C(  235) },
+       {   INT16_C(  530) },
+       {   INT16_C(   64) },
+       {   INT16_C(  530) },
+       {   INT16_C(  277) },
+       {  -INT16_C(  503) } },
+     {     INT16_C( 4383),
+       {   INT16_C( 2330), -INT16_C(  843),  INT16_C( 6942), -INT16_C( 5843),
+          -INT16_C( 7143), -INT16_C( 5753), -INT16_C( 4465),  INT16_C( 7919)},
+       {   INT16_C(  311) },
+       {  -INT16_C(  113) },
+       {   INT16_C(  928) },
+       {  -INT16_C(  782) },
+       {  -INT16_C(  956) },
+       {  -INT16_C(  770) },
+       {  -INT16_C(  598) },
+       {   INT16_C( 1059) } },
+     {    -INT16_C( 4333),
+       {   INT16_C( 3054), -INT16_C(  192), -INT16_C( 9375),  INT16_C(  365),
+          -INT16_C( 9633), -INT16_C( 8348), -INT16_C( 4002), -INT16_C( 2684)},
+       {  -INT16_C(  404) },
+       {   INT16_C(   25) },
+       {   INT16_C( 1239) },
+       {  -INT16_C(   49) },
+       {   INT16_C( 1273) },
+       {   INT16_C( 1103) },
+       {   INT16_C(  529) },
+       {   INT16_C(  354) } },
+     {     INT16_C( 3910),
+       {  -INT16_C( 7968),  INT16_C( 2464),  INT16_C( 8236),  INT16_C( 2662),
+           INT16_C( 9529),  INT16_C( 1827), -INT16_C( 3400), -INT16_C( 6818)},
+       {  -INT16_C(  951) },
+       {   INT16_C(  294) },
+       {   INT16_C(  982) },
+       {   INT16_C(  317) },
+       {   INT16_C( 1137) },
+       {   INT16_C(  218) },
+       {  -INT16_C(  406) },
+       {  -INT16_C(  814) } },
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
+    int16_t a = test_vec[i].a;
+    simde_int16x8_t v = simde_vld1q_s16(test_vec[i].v);
+    int16_t r0 = simde_vqdmulhh_laneq_s16(a, v, 0);
+    int16_t r1 = simde_vqdmulhh_laneq_s16(a, v, 1);
+    int16_t r2 = simde_vqdmulhh_laneq_s16(a, v, 2);
+    int16_t r3 = simde_vqdmulhh_laneq_s16(a, v, 3);
+    int16_t r4 = simde_vqdmulhh_laneq_s16(a, v, 4);
+    int16_t r5 = simde_vqdmulhh_laneq_s16(a, v, 5);
+    int16_t r6 = simde_vqdmulhh_laneq_s16(a, v, 6);
+    int16_t r7 = simde_vqdmulhh_laneq_s16(a, v, 7);
+
+    simde_assert_equal_i16(r0, test_vec[i].r0[0]);
+    simde_assert_equal_i16(r1, test_vec[i].r1[0]);
+    simde_assert_equal_i16(r2, test_vec[i].r2[0]);
+    simde_assert_equal_i16(r3, test_vec[i].r3[0]);
+    simde_assert_equal_i16(r4, test_vec[i].r4[0]);
+    simde_assert_equal_i16(r5, test_vec[i].r5[0]);
+    simde_assert_equal_i16(r6, test_vec[i].r6[0]);
+    simde_assert_equal_i16(r7, test_vec[i].r7[0]);
+  }
+
+  return 0;
 }
 
 static int
@@ -964,10 +1170,12 @@ test_simde_vqdmulhs_laneq_s32 (SIMDE_MUNIT_TEST_ARGS) {
 }
 
 SIMDE_TEST_FUNC_LIST_BEGIN
+SIMDE_TEST_FUNC_LIST_ENTRY(vqdmulhh_lane_s16)
 SIMDE_TEST_FUNC_LIST_ENTRY(vqdmulh_lane_s16)
 SIMDE_TEST_FUNC_LIST_ENTRY(vqdmulh_lane_s32)
 SIMDE_TEST_FUNC_LIST_ENTRY(vqdmulhq_lane_s16)
 SIMDE_TEST_FUNC_LIST_ENTRY(vqdmulhq_lane_s32)
+SIMDE_TEST_FUNC_LIST_ENTRY(vqdmulhh_laneq_s16)
 SIMDE_TEST_FUNC_LIST_ENTRY(vqdmulh_laneq_s16)
 SIMDE_TEST_FUNC_LIST_ENTRY(vqdmulh_laneq_s32)
 SIMDE_TEST_FUNC_LIST_ENTRY(vqdmulhq_laneq_s16)

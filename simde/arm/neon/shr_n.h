@@ -35,6 +35,20 @@ SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 SIMDE_BEGIN_DECLS_
 
 SIMDE_FUNCTION_ATTRIBUTES
+int16_t
+simde_x_vshrh_n_s16(int16_t a, const int n)
+    SIMDE_REQUIRE_CONSTANT_RANGE(n, 1, 16) {
+  return a >> ((n == 16) ? 15 : n);
+}
+
+SIMDE_FUNCTION_ATTRIBUTES
+uint16_t
+simde_x_vshrh_n_u16(uint16_t a, const int n)
+    SIMDE_REQUIRE_CONSTANT_RANGE(n, 1, 16) {
+  return (n == 16) ? 0 : a >> n;
+}
+
+SIMDE_FUNCTION_ATTRIBUTES
 int32_t
 simde_x_vshrs_n_s32(int32_t a, const int n)
     SIMDE_REQUIRE_CONSTANT_RANGE(n, 1, 32) {

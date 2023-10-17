@@ -4,6 +4,40 @@
 #include "../../../simde/arm/neon/recpe.h"
 
 static int
+test_simde_vrecpeh_f16 (SIMDE_MUNIT_TEST_ARGS) {
+  static const struct {
+    simde_float16 a;
+    simde_float16 r;
+  } test_vec[] = {
+    {    SIMDE_FLOAT16_C(  12.162),
+         SIMDE_FLOAT16_C(   0.082) },
+    {   -SIMDE_FLOAT16_C(   8.396),
+        -SIMDE_FLOAT16_C(   0.119) },
+    {    SIMDE_FLOAT16_C(   8.495),
+         SIMDE_FLOAT16_C(   0.118) },
+    {   -SIMDE_FLOAT16_C(   3.825),
+        -SIMDE_FLOAT16_C(   0.261) },
+    {   -SIMDE_FLOAT16_C(   3.074),
+        -SIMDE_FLOAT16_C(   0.325) },
+    {    SIMDE_FLOAT16_C(   2.898),
+         SIMDE_FLOAT16_C(   0.345) },
+    {   -SIMDE_FLOAT16_C(  12.082),
+        -SIMDE_FLOAT16_C(   0.083) },
+    {   -SIMDE_FLOAT16_C(   7.771),
+        -SIMDE_FLOAT16_C(   0.129) },
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
+    simde_float16_t a = test_vec[i].a;
+    simde_float16_t r = simde_vrecpeh_f16(a);
+
+    simde_assert_equal_f16(r, test_vec[i].r, 1);
+  }
+
+  return 0;
+}
+
+static int
 test_simde_vrecpes_f32 (SIMDE_MUNIT_TEST_ARGS) {
 #if 1
   static const struct {
@@ -454,6 +488,7 @@ test_simde_vrecpeq_u32 (SIMDE_MUNIT_TEST_ARGS) {
 }
 
 SIMDE_TEST_FUNC_LIST_BEGIN
+SIMDE_TEST_FUNC_LIST_ENTRY(vrecpeh_f16)
 SIMDE_TEST_FUNC_LIST_ENTRY(vrecpes_f32)
 SIMDE_TEST_FUNC_LIST_ENTRY(vrecped_f64)
 
