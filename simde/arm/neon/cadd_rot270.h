@@ -36,15 +36,15 @@ SIMDE_BEGIN_DECLS_
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float16x4_t simde_vcadd_rot270_f16(simde_float16x4_t a,
                                          simde_float16x4_t b) {
-#if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && SIMDE_ARCH_ARM_CHECK(8, 3) &&  \
-    (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(9, 0, 0)) && \
+#if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && SIMDE_ARCH_ARM_CHECK(8, 3) &&      \
+    (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(9, 0, 0)) &&     \
     (!defined(__clang__) || SIMDE_DETECT_CLANG_VERSION_CHECK(12, 0, 0))
   return vcadd_rot270_f16(a, b);
 #else
   simde_float16x4_private r_, a_ = simde_float16x4_to_private(a),
                               b_ = simde_float16x4_to_private(b);
-#if defined(SIMDE_SHUFFLE_VECTOR_) && !defined(SIMDE_BUG_GCC_100760) && \
-    ((SIMDE_FLOAT16_API == SIMDE_FLOAT16_API_FP16) ||                   \
+#if defined(SIMDE_SHUFFLE_VECTOR_) && !defined(SIMDE_BUG_GCC_100760) &&        \
+    ((SIMDE_FLOAT16_API == SIMDE_FLOAT16_API_FP16) ||                          \
      (SIMDE_FLOAT16_API == SIMDE_FLOAT16_API_FLOAT16))
   b_.values = SIMDE_SHUFFLE_VECTOR_(16, 4, -b_.values, b_.values, 5, 0, 7, 2);
   r_.values = b_.values + a_.values;
@@ -69,16 +69,16 @@ simde_float16x4_t simde_vcadd_rot270_f16(simde_float16x4_t a,
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float16x8_t simde_vcaddq_rot270_f16(simde_float16x8_t a,
                                           simde_float16x8_t b) {
-#if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && SIMDE_ARCH_ARM_CHECK(8, 3) &&  \
-    (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(9, 0, 0)) && \
+#if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && SIMDE_ARCH_ARM_CHECK(8, 3) &&      \
+    (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(9, 0, 0)) &&     \
     (!defined(__clang__) || SIMDE_DETECT_CLANG_VERSION_CHECK(12, 0, 0))
   return vcaddq_rot270_f16(a, b);
 #else
   simde_float16x8_private r_, a_ = simde_float16x8_to_private(a),
                               b_ = simde_float16x8_to_private(b);
 
-#if defined(SIMDE_SHUFFLE_VECTOR_) &&                 \
-    ((SIMDE_FLOAT16_API == SIMDE_FLOAT16_API_FP16) || \
+#if defined(SIMDE_SHUFFLE_VECTOR_) &&                                          \
+    ((SIMDE_FLOAT16_API == SIMDE_FLOAT16_API_FP16) ||                          \
      (SIMDE_FLOAT16_API == SIMDE_FLOAT16_API_FLOAT16))
   b_.values = SIMDE_SHUFFLE_VECTOR_(16, 8, -b_.values, b_.values, 9, 0, 11, 2,
                                     13, 4, 15, 6);
@@ -104,8 +104,8 @@ simde_float16x8_t simde_vcaddq_rot270_f16(simde_float16x8_t a,
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float32x2_t simde_vcadd_rot270_f32(simde_float32x2_t a,
                                          simde_float32x2_t b) {
-#if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && SIMDE_ARCH_ARM_CHECK(8, 3) &&  \
-    (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(9, 0, 0)) && \
+#if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && SIMDE_ARCH_ARM_CHECK(8, 3) &&      \
+    (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(9, 0, 0)) &&     \
     (!defined(__clang__) || SIMDE_DETECT_CLANG_VERSION_CHECK(12, 0, 0))
   return vcadd_rot270_f32(a, b);
 #else
@@ -135,8 +135,8 @@ simde_float32x2_t simde_vcadd_rot270_f32(simde_float32x2_t a,
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float32x4_t simde_vcaddq_rot270_f32(simde_float32x4_t a,
                                           simde_float32x4_t b) {
-#if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && SIMDE_ARCH_ARM_CHECK(8, 3) &&  \
-    (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(9, 0, 0)) && \
+#if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && SIMDE_ARCH_ARM_CHECK(8, 3) &&      \
+    (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(9, 0, 0)) &&     \
     (!defined(__clang__) || SIMDE_DETECT_CLANG_VERSION_CHECK(12, 0, 0))
   return vcaddq_rot270_f32(a, b);
 #else
@@ -166,8 +166,8 @@ simde_float32x4_t simde_vcaddq_rot270_f32(simde_float32x4_t a,
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float64x2_t simde_vcaddq_rot270_f64(simde_float64x2_t a,
                                           simde_float64x2_t b) {
-#if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && SIMDE_ARCH_ARM_CHECK(8, 3) &&  \
-    (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(9, 0, 0)) && \
+#if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && SIMDE_ARCH_ARM_CHECK(8, 3) &&      \
+    (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(9, 0, 0)) &&     \
     (!defined(__clang__) || SIMDE_DETECT_CLANG_VERSION_CHECK(12, 0, 0))
   return vcaddq_rot270_f64(a, b);
 #else
