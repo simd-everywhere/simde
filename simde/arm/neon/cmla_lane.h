@@ -194,10 +194,8 @@ simde_float16x8_t simde_vcmlaq_lane_f16(simde_float16x8_t r,
   #if defined(SIMDE_SHUFFLE_VECTOR_) &&                                          \
       ((SIMDE_FLOAT16_API == SIMDE_FLOAT16_API_FP16) ||                          \
       (SIMDE_FLOAT16_API == SIMDE_FLOAT16_API_FLOAT16))
-    a_low.values = SIMDE_SHUFFLE_VECTOR_(16, 8, a_low.values, a_low.values,
-                                      0, 0, 2, 2, 4, 4, 6, 6);
-    a_high.values = SIMDE_SHUFFLE_VECTOR_(16, 8, a_high.values, a_high.values,
-                                      0, 0, 2, 2, 4, 4, 6, 6);
+    a_low.values = SIMDE_SHUFFLE_VECTOR_(16, 4, a_low.values, a_low.values, 0, 0, 2, 2);
+    a_high.values = SIMDE_SHUFFLE_VECTOR_(16, 4, a_high.values, a_high.values, 0, 0, 2, 2);
     r_low.values += b_.values * a_low.values;
     r_high.values += b_.values * a_high.values;
   #else
@@ -274,11 +272,9 @@ simde_float16x8_t simde_vcmlaq_laneq_f16(simde_float16x8_t r,
   #if defined(SIMDE_SHUFFLE_VECTOR_) &&                                          \
       ((SIMDE_FLOAT16_API == SIMDE_FLOAT16_API_FP16) ||                          \
       (SIMDE_FLOAT16_API == SIMDE_FLOAT16_API_FLOAT16))
-    a_low.values = SIMDE_SHUFFLE_VECTOR_(16, 8, a_low.values, a_low.values, 0, 0, 2, 2, 4,
-                                      4, 6, 6);
+    a_low.values = SIMDE_SHUFFLE_VECTOR_(16, 4, a_low.values, a_low.values, 0, 0, 2, 2);
     r_low.values += b_.values * a_low.values;
-    a_high.values = SIMDE_SHUFFLE_VECTOR_(16, 8, a_high.values, a_high.values, 0, 0, 2, 2, 4,
-                                      4, 6, 6);
+    a_high.values = SIMDE_SHUFFLE_VECTOR_(16, 4, a_high.values, a_high.values, 0, 0, 2, 2);
     r_high.values += b_.values * a_high.values;
   #else
     SIMDE_VECTORIZE
