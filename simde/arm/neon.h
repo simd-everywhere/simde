@@ -144,6 +144,8 @@
 #include "neon/qdmulh_lane.h"
 #include "neon/qdmulh_n.h"
 #include "neon/qdmull.h"
+#include "neon/qrdmlah.h"
+#include "neon/qrdmlsh.h"
 #include "neon/qrdmulh.h"
 #include "neon/qrdmulh_lane.h"
 #include "neon/qrdmulh_n.h"
