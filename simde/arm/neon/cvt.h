@@ -141,9 +141,9 @@ simde_vcvt_f64_f32(simde_float32x2_t a) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 int16_t
-simde_x_vcvts_s16_f16(simde_float16 a) {
-  #if defined(SIMDE_FAST_CONVERSION_RANGE) && defined(SIMDE_ARM_NEON_FP16)
-    return HEDLEY_STATIC_CAST(int16_t, a);
+simde_vcvth_s16_f16(simde_float16 a) {
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
+    return vcvth_s16_f16(a);
   #else
     simde_float32 af = simde_float16_to_float32(a);
     if (HEDLEY_UNLIKELY(af < HEDLEY_STATIC_CAST(simde_float32, INT16_MIN))) {
@@ -157,12 +157,16 @@ simde_x_vcvts_s16_f16(simde_float16 a) {
     }
   #endif
 }
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vcvth_s16_f16
+  #define vcvth_s16_f16(a) simde_vcvth_s16_f16(a)
+#endif
 
 SIMDE_FUNCTION_ATTRIBUTES
 uint16_t
-simde_x_vcvts_u16_f16(simde_float16 a) {
-  #if defined(SIMDE_FAST_CONVERSION_RANGE)
-    return HEDLEY_STATIC_CAST(uint16_t, simde_float16_to_float32(a));
+simde_vcvth_u16_f16(simde_float16 a) {
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
+    return vcvth_u16_f16(a);
   #else
     simde_float32 af = simde_float16_to_float32(a);
     if (HEDLEY_UNLIKELY(af < SIMDE_FLOAT32_C(0.0))) {
@@ -176,6 +180,10 @@ simde_x_vcvts_u16_f16(simde_float16 a) {
     }
   #endif
 }
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vcvth_u16_f16
+  #define vcvth_u16_f16(a) simde_vcvth_u16_f16(a)
+#endif
 
 SIMDE_FUNCTION_ATTRIBUTES
 int32_t
@@ -266,7 +274,7 @@ simde_vcvtd_s64_f64(simde_float64 a) {
       return INT64_MIN;
     } else if (HEDLEY_UNLIKELY(a > HEDLEY_STATIC_CAST(simde_float64, INT64_MAX))) {
       return INT64_MAX;
-    } else if (simde_math_isnanf(a)) {
+    } else if (simde_math_isnan(a)) {
       return 0;
     } else {
       return HEDLEY_STATIC_CAST(int64_t, a);
@@ -344,7 +352,7 @@ simde_vcvt_s16_f16(simde_float16x4_t a) {
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-        r_.values[i] = simde_x_vcvts_s16_f16(a_.values[i]);
+        r_.values[i] = simde_vcvth_s16_f16(a_.values[i]);
       }
     #endif
 
@@ -396,7 +404,7 @@ simde_vcvt_u16_f16(simde_float16x4_t a) {
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-        r_.values[i] = simde_x_vcvts_u16_f16(a_.values[i]);
+        r_.values[i] = simde_vcvth_u16_f16(a_.values[i]);
       }
     #endif
 
@@ -501,7 +509,7 @@ simde_vcvtq_s16_f16(simde_float16x8_t a) {
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-        r_.values[i] = simde_x_vcvts_s16_f16(a_.values[i]);
+        r_.values[i] = simde_vcvth_s16_f16(a_.values[i]);
       }
     #endif
 
@@ -605,7 +613,7 @@ simde_vcvtq_u16_f16(simde_float16x8_t a) {
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-        r_.values[i] = simde_x_vcvts_u16_f16(a_.values[i]);
+        r_.values[i] = simde_vcvth_u16_f16(a_.values[i]);
       }
     #endif
 
@@ -1182,8 +1190,6 @@ simde_vcvtas_s32_f32(simde_float32 a) {
     } else if (HEDLEY_UNLIKELY(simde_math_isnanf(a))) {
       return 0;
     } else {
-      // Round to Nearest with Ties to Away (a.k.a Rounding away from zero) rounding mode.
-      // For example, 23.2 gets rounded to 24, and −23.2 gets rounded to −24.
       return HEDLEY_STATIC_CAST(int32_t, simde_math_roundf(a));
     }
   #endif
@@ -1199,13 +1205,13 @@ simde_vcvtas_u32_f32(simde_float32 a) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vcvtas_u32_f32(a);
   #else
-    if (HEDLEY_UNLIKELY(a > HEDLEY_STATIC_CAST(simde_float32, UINT32_MAX))) {
+    if (HEDLEY_UNLIKELY(a < SIMDE_FLOAT32_C(0.0))) {
+      return 0;
+    } else if (HEDLEY_UNLIKELY(a >= HEDLEY_STATIC_CAST(simde_float32, UINT32_MAX))) {
       return UINT32_MAX;
     } else if (HEDLEY_UNLIKELY(simde_math_isnanf(a))) {
       return 0;
     } else {
-      // Round to Nearest with Ties to Away (a.k.a Rounding away from zero) rounding mode.
-      // For example, 23.2 gets rounded to 24, and −23.2 gets rounded to −24.
       if(a < 0) return 0;
       return HEDLEY_STATIC_CAST(uint32_t, simde_math_roundf(a));
     }
