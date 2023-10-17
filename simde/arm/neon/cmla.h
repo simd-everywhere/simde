@@ -22,6 +22,7 @@
 *
 * Copyright:
 *   2021      Atharva Nimbalkar <atharvakn@gmail.com>
+*   2023      Yi-Yen Chung <eric681@andestech.com> (Copyright owned by Andes Technology)
 */
 
 #if !defined(SIMDE_ARM_NEON_CMLA_H)
@@ -32,6 +33,33 @@
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 SIMDE_BEGIN_DECLS_
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_float16x4_t
+simde_vcmla_f16(simde_float16x4_t r, simde_float16x4_t a, simde_float16x4_t b) {
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && SIMDE_ARCH_ARM_CHECK(8,3) && \
+      (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(9,0,0)) && \
+      (!defined(__clang__) || SIMDE_DETECT_CLANG_VERSION_CHECK(12,0,0))
+    return vcmla_f16(r, a, b);
+  #else
+    simde_float16x4_private
+      r_ = simde_float16x4_to_private(r),
+      a_ = simde_float16x4_to_private(a),
+      b_ = simde_float16x4_to_private(b);
+
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0]) / 2) ; i++) {
+        r_.values[i*2] += a_.values[i*2] * b_.values[i * 2];
+        r_.values[i*2+1] += a_.values[i*2] * b_.values[i * 2 + 1];
+      }
+
+    return simde_float16x4_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+  #undef vcmla_f16
+  #define vcmla_f16(r, a, b) simde_vcmla_f16(r, a, b)
+#endif
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float32x2_t
@@ -62,6 +90,33 @@ simde_vcmla_f32(simde_float32x2_t r, simde_float32x2_t a, simde_float32x2_t b) {
 #if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
   #undef vcmla_f32
   #define vcmla_f32(r, a, b) simde_vcmla_f32(r, a, b)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_float16x8_t
+simde_vcmlaq_f16(simde_float16x8_t r, simde_float16x8_t a, simde_float16x8_t b) {
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && SIMDE_ARCH_ARM_CHECK(8,3) && \
+      (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(9,0,0)) && \
+      (!defined(__clang__) || SIMDE_DETECT_CLANG_VERSION_CHECK(12,0,0))
+    return vcmlaq_f16(r, a, b);
+  #else
+    simde_float16x8_private
+      r_ = simde_float16x8_to_private(r),
+      a_ = simde_float16x8_to_private(a),
+      b_ = simde_float16x8_to_private(b);
+
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0]) / 2) ; i++) {
+      r_.values[i*2] += a_.values[i*2] * b_.values[i * 2];
+      r_.values[i*2+1] += a_.values[i*2] * b_.values[i * 2 + 1];
+    }
+
+    return simde_float16x8_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+  #undef vcmlaq_f16
+  #define vcmlaq_f16(r, a, b) simde_vcmlaq_f16(r, a, b)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES

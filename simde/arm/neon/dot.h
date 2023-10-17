@@ -23,6 +23,7 @@
  * Copyright:
  *   2020      Evan Nemerson <evan@nemerson.com>
  *   2020      Sean Maher <seanptmaher@gmail.com> (Copyright owned by Google, LLC)
+ *   2023      Yi-Yen Chung <eric681@andestech.com> (Copyright owned by Andes Technology)
  */
 
 #if !defined(SIMDE_ARM_NEON_DOT_H)
@@ -164,6 +165,60 @@ simde_vdotq_u32(simde_uint32x4_t r, simde_uint8x16_t a, simde_uint8x16_t b) {
   #define vdotq_u32(r, a, b) simde_vdotq_u32((r), (a), (b))
 #endif
 
+/*
+// [Eric] Pre-implemented bf16-related intrinsics
+SIMDE_FUNCTION_ATTRIBUTES
+simde_float32x2_t
+simde_vbfdot_f32(simde_float32x2_t r, simde_bfloat16x4_t a, simde_bfloat16x4_t b) {
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(__ARM_FEATURE_DOTPROD)
+    return vbfdot_f32(r, a, b);
+  #else
+    simde_float32x2_private r_ = simde_float32x2_to_private(r);
+    simde_bfloat16x4_private
+      a_ = simde_bfloat16x4_to_private(a),
+      b_ = simde_bfloat16x4_to_private(b);
+
+    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+      bfloat16 elt1_a = a_.values[2 * i + 0];
+      bfloat16 elt1_b = a_.values[2 * i + 1];
+      bfloat16 elt2_a = b_.values[2 * i + 0];
+      bfloat16 elt2_b = b_.values[2 * i + 1];
+      r_.values[i] = r_.values[i] + elt1_a * elt2_a + elt1_b * elt2_b;
+    }
+    return simde_float32x2_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && !defined(__ARM_FEATURE_DOTPROD))
+  #undef vbfdot_f32
+  #define vbfdot_f32(r, a, b) simde_vbfdot_f32((r), (a), (b))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_float32x4_t
+simde_vbfdotq_f32(simde_float32x4_t r, simde_bfloat16x8_t a, simde_bfloat16x8_t b) {
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(__ARM_FEATURE_dotqPROD)
+    return vbfdotq_f32(r, a, b);
+  #else
+    simde_float32x4_private r_ = simde_float32x4_to_private(r);
+    simde_bfloat16x8_private
+      a_ = simde_bfloat16x8_to_private(a),
+      b_ = simde_bfloat16x8_to_private(b);
+
+    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+      bfloat16 elt1_a = a_.values[2 * i + 0];
+      bfloat16 elt1_b = a_.values[2 * i + 1];
+      bfloat16 elt2_a = b_.values[2 * i + 0];
+      bfloat16 elt2_b = b_.values[2 * i + 1];
+      r_.values[i] = r_.values[i] + elt1_a * elt2_a + elt1_b * elt2_b;
+    }
+    return simde_float32x4_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && !defined(__ARM_FEATURE_dotqPROD))
+  #undef vbfdotq_f32
+  #define vbfdotq_f32(r, a, b) simde_vbfdotq_f32((r), (a), (b))
+#endif
+*/
 
 SIMDE_END_DECLS_
 HEDLEY_DIAGNOSTIC_POP

@@ -96,6 +96,15 @@ SIMDE_TEST_ARM_NEON_GENERATE_INT_TYPE_FUNCS_(   uint32x2_t, uint32_t,  2,  , u32
 SIMDE_TEST_ARM_NEON_GENERATE_INT_TYPE_FUNCS_(   uint64x1_t, uint64_t,  1,  , u64, u64)
 SIMDE_TEST_ARM_NEON_GENERATE_FLOAT_TYPE_FUNCS_(float32x2_t, simde_float32_t, simde_float32, 2,  , f32)
 SIMDE_TEST_ARM_NEON_GENERATE_FLOAT_TYPE_FUNCS_(float64x1_t, simde_float64_t, simde_float64, 1,  , f64)
+#if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+SIMDE_TEST_ARM_NEON_GENERATE_INT_TYPE_FUNCS_(    poly8x8_t,  poly8_t,  8,  ,  p8,  p8)
+SIMDE_TEST_ARM_NEON_GENERATE_INT_TYPE_FUNCS_(   poly16x4_t, poly16_t,  4,  , p16, p16)
+SIMDE_TEST_ARM_NEON_GENERATE_INT_TYPE_FUNCS_(   poly64x1_t, poly64_t,  1,  , p64, p64)
+#else
+SIMDE_TEST_ARM_NEON_GENERATE_INT_TYPE_FUNCS_(    poly8x8_t,  simde_poly8_t,  8,  ,  p8,  p8)
+SIMDE_TEST_ARM_NEON_GENERATE_INT_TYPE_FUNCS_(   poly16x4_t, simde_poly16_t,  4,  , p16, p16)
+SIMDE_TEST_ARM_NEON_GENERATE_INT_TYPE_FUNCS_(   poly64x1_t, simde_poly64_t,  1,  , p64, p64)
+#endif
 
 SIMDE_TEST_ARM_NEON_GENERATE_INT_TYPE_FUNCS_(    int8x16_t,   int8_t, 16, q,  i8,  s8)
 SIMDE_TEST_ARM_NEON_GENERATE_INT_TYPE_FUNCS_(    int16x8_t,  int16_t,  8, q, i16, s16)
@@ -107,6 +116,15 @@ SIMDE_TEST_ARM_NEON_GENERATE_INT_TYPE_FUNCS_(   uint32x4_t,  uint32_t,  4, q, u3
 SIMDE_TEST_ARM_NEON_GENERATE_INT_TYPE_FUNCS_(   uint64x2_t,  uint64_t,  2, q, u64, u64)
 SIMDE_TEST_ARM_NEON_GENERATE_FLOAT_TYPE_FUNCS_(float32x4_t, simde_float32_t, simde_float32, 4, q, f32)
 SIMDE_TEST_ARM_NEON_GENERATE_FLOAT_TYPE_FUNCS_(float64x2_t, simde_float64_t, simde_float64, 2, q, f64)
+#if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+SIMDE_TEST_ARM_NEON_GENERATE_INT_TYPE_FUNCS_(   poly8x16_t,  poly8_t, 16, q,  p8,  p8)
+SIMDE_TEST_ARM_NEON_GENERATE_INT_TYPE_FUNCS_(   poly16x8_t,  poly16_t,  8, q, p16, p16)
+SIMDE_TEST_ARM_NEON_GENERATE_INT_TYPE_FUNCS_(   poly64x2_t,  poly64_t,  2, q, p64, p64)
+#else
+SIMDE_TEST_ARM_NEON_GENERATE_INT_TYPE_FUNCS_(   poly8x16_t,  simde_poly8_t, 16, q,  p8,  p8)
+SIMDE_TEST_ARM_NEON_GENERATE_INT_TYPE_FUNCS_(   poly16x8_t,  simde_poly16_t,  8, q, p16, p16)
+SIMDE_TEST_ARM_NEON_GENERATE_INT_TYPE_FUNCS_(   poly64x2_t,  simde_poly64_t,  2, q, p64, p64)
+#endif
 
 #if SIMDE_FLOAT16_API == SIMDE_FLOAT16_API_FP16
 SIMDE_TEST_ARM_NEON_GENERATE_FLOAT_TYPE_FUNCS_(float16x4_t, simde_float16_t, simde_float16, 4,  , f16)
@@ -162,6 +180,22 @@ HEDLEY_DIAGNOSTIC_POP
       && simde_assert_equal_v##symbol_identifier##_(sizeof(a1_) / sizeof(a1_[0]), a1_, b1_, filename, line, astr, bstr); \
   }
 
+#define SIMDE_TEST_ARM_NEON_GENERATE_X2_VECTOR_FLOAT_TYPE_EQUAL_FUNC_(NT, ET, SET, element_count, modifier, symbol_identifier) \
+  static int \
+  simde_test_arm_neon_assert_equal_##symbol_identifier##x##element_count##x2_(simde_##NT a, simde_##NT b, ET slop, \
+      const char* filename, int line, const char* astr, const char* bstr) { \
+    SET a0_[sizeof(a.val[0]) / sizeof(ET)], b0_[sizeof(b.val[0]) / sizeof(ET)]; \
+    SET a1_[sizeof(a.val[1]) / sizeof(ET)], b1_[sizeof(b.val[1]) / sizeof(ET)]; \
+ \
+    simde_vst1##modifier##_##symbol_identifier(a0_, a.val[0]); \
+    simde_vst1##modifier##_##symbol_identifier(b0_, b.val[0]);       \
+    simde_vst1##modifier##_##symbol_identifier(a1_, a.val[1]); \
+    simde_vst1##modifier##_##symbol_identifier(b1_, b.val[1]); \
+ \
+    return simde_assert_equal_v##symbol_identifier##_(sizeof(a0_) / sizeof(ET), HEDLEY_REINTERPRET_CAST(SET*, a0_), HEDLEY_REINTERPRET_CAST(SET*, b0_), slop, filename, line, astr, bstr) && \
+      simde_assert_equal_v##symbol_identifier##_(sizeof(a1_) / sizeof(ET), HEDLEY_REINTERPRET_CAST(SET*, a1_), HEDLEY_REINTERPRET_CAST(SET*, b1_), slop, filename, line, astr, bstr); \
+  } \
+
 #define SIMDE_TEST_ARM_NEON_GENERATE_X2_VECTOR_FLOAT_TYPE_FUNCS_(NT, ET, SET, element_count, modifier, symbol_identifier) \
   static simde_##NT \
   simde_test_arm_neon_random_##symbol_identifier##x##element_count##x2(ET min, ET max) { \
@@ -194,20 +228,7 @@ HEDLEY_DIAGNOSTIC_POP
     } \
   } \
  \
-  static int \
-  simde_test_arm_neon_assert_equal_##symbol_identifier##x##element_count##x2_(simde_##NT a, simde_##NT b, ET slop, \
-     const char* filename, int line, const char* astr, const char* bstr) { \
-    SET a0_[sizeof(a.val[0]) / sizeof(ET)], b0_[sizeof(b.val[0]) / sizeof(ET)]; \
-    SET a1_[sizeof(a.val[1]) / sizeof(ET)], b1_[sizeof(b.val[1]) / sizeof(ET)]; \
- \
-    simde_vst1##modifier##_##symbol_identifier(a0_, a.val[0]); \
-    simde_vst1##modifier##_##symbol_identifier(b0_, b.val[0]);       \
-    simde_vst1##modifier##_##symbol_identifier(a1_, a.val[1]); \
-    simde_vst1##modifier##_##symbol_identifier(b1_, b.val[1]); \
- \
-    return simde_assert_equal_v##symbol_identifier##_(sizeof(a0_) / sizeof(ET), HEDLEY_REINTERPRET_CAST(SET*, a0_), HEDLEY_REINTERPRET_CAST(SET*, b0_), slop, filename, line, astr, bstr) && \
-      simde_assert_equal_v##symbol_identifier##_(sizeof(a1_) / sizeof(ET), HEDLEY_REINTERPRET_CAST(SET*, a1_), HEDLEY_REINTERPRET_CAST(SET*, b1_), slop, filename, line, astr, bstr); \
-  }
+  SIMDE_TEST_ARM_NEON_GENERATE_X2_VECTOR_FLOAT_TYPE_EQUAL_FUNC_(NT, ET, SET, element_count, modifier, symbol_identifier) \
 
 #if !defined(SIMDE_BUG_INTEL_857088)
 HEDLEY_DIAGNOSTIC_PUSH
@@ -223,6 +244,15 @@ SIMDE_TEST_ARM_NEON_GENERATE_X2_VECTOR_INT_TYPE_FUNCS_(   uint32x2x2_t, uint32_t
 SIMDE_TEST_ARM_NEON_GENERATE_X2_VECTOR_INT_TYPE_FUNCS_(   uint64x1x2_t, uint64_t,  1,  , u64, u64)
 SIMDE_TEST_ARM_NEON_GENERATE_X2_VECTOR_FLOAT_TYPE_FUNCS_(float32x2x2_t, simde_float32_t, simde_float32, 2, , f32)
 SIMDE_TEST_ARM_NEON_GENERATE_X2_VECTOR_FLOAT_TYPE_FUNCS_(float64x1x2_t, simde_float64_t, simde_float64, 1, , f64)
+#if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+SIMDE_TEST_ARM_NEON_GENERATE_X2_VECTOR_INT_TYPE_FUNCS_(    poly8x8x2_t,  poly8_t,  8,  ,  p8,  p8)
+SIMDE_TEST_ARM_NEON_GENERATE_X2_VECTOR_INT_TYPE_FUNCS_(   poly16x4x2_t, poly16_t,  4,  , p16, p16)
+SIMDE_TEST_ARM_NEON_GENERATE_X2_VECTOR_INT_TYPE_FUNCS_(   poly64x1x2_t, poly64_t,  1,  , p64, p64)
+#else
+SIMDE_TEST_ARM_NEON_GENERATE_X2_VECTOR_INT_TYPE_FUNCS_(    poly8x8x2_t,  simde_poly8_t,  8,  ,  p8,  p8)
+SIMDE_TEST_ARM_NEON_GENERATE_X2_VECTOR_INT_TYPE_FUNCS_(   poly16x4x2_t, simde_poly16_t,  4,  , p16, p16)
+SIMDE_TEST_ARM_NEON_GENERATE_X2_VECTOR_INT_TYPE_FUNCS_(   poly64x1x2_t, simde_poly64_t,  1,  , p64, p64)
+#endif
 
 SIMDE_TEST_ARM_NEON_GENERATE_X2_VECTOR_INT_TYPE_FUNCS_(    int8x16x2_t,   int8_t, 16, q,  i8,  s8)
 SIMDE_TEST_ARM_NEON_GENERATE_X2_VECTOR_INT_TYPE_FUNCS_(    int16x8x2_t,  int16_t,  8, q, i16, s16)
@@ -234,6 +264,23 @@ SIMDE_TEST_ARM_NEON_GENERATE_X2_VECTOR_INT_TYPE_FUNCS_(   uint32x4x2_t,  uint32_
 SIMDE_TEST_ARM_NEON_GENERATE_X2_VECTOR_INT_TYPE_FUNCS_(   uint64x2x2_t,  uint64_t,  2, q, u64, u64)
 SIMDE_TEST_ARM_NEON_GENERATE_X2_VECTOR_FLOAT_TYPE_FUNCS_(float32x4x2_t, simde_float32_t, simde_float32, 4, q, f32)
 SIMDE_TEST_ARM_NEON_GENERATE_X2_VECTOR_FLOAT_TYPE_FUNCS_(float64x2x2_t, simde_float64_t, simde_float64, 2, q, f64)
+#if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+SIMDE_TEST_ARM_NEON_GENERATE_X2_VECTOR_INT_TYPE_FUNCS_(   poly8x16x2_t,  poly8_t, 16, q,  p8,  p8)
+SIMDE_TEST_ARM_NEON_GENERATE_X2_VECTOR_INT_TYPE_FUNCS_(   poly16x8x2_t,  poly16_t,  8, q, p16, p16)
+SIMDE_TEST_ARM_NEON_GENERATE_X2_VECTOR_INT_TYPE_FUNCS_(   poly64x2x2_t,  poly64_t,  2, q, p64, p64)
+#else
+SIMDE_TEST_ARM_NEON_GENERATE_X2_VECTOR_INT_TYPE_FUNCS_(   poly8x16x2_t,  simde_poly8_t, 16, q,  p8,  p8)
+SIMDE_TEST_ARM_NEON_GENERATE_X2_VECTOR_INT_TYPE_FUNCS_(   poly16x8x2_t,  simde_poly16_t,  8, q, p16, p16)
+SIMDE_TEST_ARM_NEON_GENERATE_X2_VECTOR_INT_TYPE_FUNCS_(   poly64x2x2_t,  simde_poly64_t,  2, q, p64, p64)
+#endif
+
+#if SIMDE_FLOAT16_API == SIMDE_FLOAT16_API_FP16
+SIMDE_TEST_ARM_NEON_GENERATE_X2_VECTOR_FLOAT_TYPE_FUNCS_(float16x4x2_t, simde_float16_t, simde_float16, 4, , f16)
+SIMDE_TEST_ARM_NEON_GENERATE_X2_VECTOR_FLOAT_TYPE_FUNCS_(float16x8x2_t, simde_float16_t, simde_float16, 8, q, f16)
+#else
+SIMDE_TEST_ARM_NEON_GENERATE_X2_VECTOR_FLOAT_TYPE_EQUAL_FUNC_(float16x4x2_t, simde_float16_t, simde_float16, 4, , f16)
+SIMDE_TEST_ARM_NEON_GENERATE_X2_VECTOR_FLOAT_TYPE_EQUAL_FUNC_(float16x8x2_t, simde_float16_t, simde_float16, 8, q, f16)
+#endif
 
 HEDLEY_DIAGNOSTIC_POP
 #endif
@@ -289,6 +336,26 @@ HEDLEY_DIAGNOSTIC_POP
       && simde_assert_equal_v##symbol_identifier##_(sizeof(a2_) / sizeof(a2_[0]), a2_, b2_, filename, line, astr, bstr); \
   }
 
+#define SIMDE_TEST_ARM_NEON_GENERATE_X3_VECTOR_FLOAT_TYPE_EQUAL_FUNC_(NT, ET, SET, element_count, modifier, symbol_identifier) \
+  static int \
+  simde_test_arm_neon_assert_equal_##symbol_identifier##x##element_count##x3_(simde_##NT a, simde_##NT b, ET slop, \
+     const char* filename, int line, const char* astr, const char* bstr) { \
+    SET a0_[sizeof(a.val[0]) / sizeof(ET)], b0_[sizeof(b.val[0]) / sizeof(ET)]; \
+    SET a1_[sizeof(a.val[1]) / sizeof(ET)], b1_[sizeof(b.val[1]) / sizeof(ET)]; \
+    SET a2_[sizeof(a.val[2]) / sizeof(ET)], b2_[sizeof(b.val[2]) / sizeof(ET)]; \
+ \
+    simde_vst1##modifier##_##symbol_identifier(a0_, a.val[0]); \
+    simde_vst1##modifier##_##symbol_identifier(b0_, b.val[0]);       \
+    simde_vst1##modifier##_##symbol_identifier(a1_, a.val[1]); \
+    simde_vst1##modifier##_##symbol_identifier(b1_, b.val[1]); \
+    simde_vst1##modifier##_##symbol_identifier(a2_, a.val[2]); \
+    simde_vst1##modifier##_##symbol_identifier(b2_, b.val[2]); \
+ \
+    return simde_assert_equal_v##symbol_identifier##_(sizeof(a0_) / sizeof(ET), HEDLEY_REINTERPRET_CAST(SET*, a0_), HEDLEY_REINTERPRET_CAST(SET*, b0_), slop, filename, line, astr, bstr) && \
+      simde_assert_equal_v##symbol_identifier##_(sizeof(a1_) / sizeof(ET), HEDLEY_REINTERPRET_CAST(SET*, a1_), HEDLEY_REINTERPRET_CAST(SET*, b1_), slop, filename, line, astr, bstr) && \
+      simde_assert_equal_v##symbol_identifier##_(sizeof(a2_) / sizeof(ET), HEDLEY_REINTERPRET_CAST(SET*, a2_), HEDLEY_REINTERPRET_CAST(SET*, b2_), slop, filename, line, astr, bstr); \
+  } \
+
 #define SIMDE_TEST_ARM_NEON_GENERATE_X3_VECTOR_FLOAT_TYPE_FUNCS_(NT, ET, SET, element_count, modifier, symbol_identifier) \
   static simde_##NT \
   simde_test_arm_neon_random_##symbol_identifier##x##element_count##x3(ET min, ET max) { \
@@ -327,24 +394,7 @@ HEDLEY_DIAGNOSTIC_POP
     } \
   } \
  \
-  static int \
-  simde_test_arm_neon_assert_equal_##symbol_identifier##x##element_count##x3_(simde_##NT a, simde_##NT b, ET slop, \
-     const char* filename, int line, const char* astr, const char* bstr) { \
-    SET a0_[sizeof(a.val[0]) / sizeof(ET)], b0_[sizeof(b.val[0]) / sizeof(ET)]; \
-    SET a1_[sizeof(a.val[1]) / sizeof(ET)], b1_[sizeof(b.val[1]) / sizeof(ET)]; \
-    SET a2_[sizeof(a.val[2]) / sizeof(ET)], b2_[sizeof(b.val[2]) / sizeof(ET)]; \
- \
-    simde_vst1##modifier##_##symbol_identifier(a0_, a.val[0]); \
-    simde_vst1##modifier##_##symbol_identifier(b0_, b.val[0]);       \
-    simde_vst1##modifier##_##symbol_identifier(a1_, a.val[1]); \
-    simde_vst1##modifier##_##symbol_identifier(b1_, b.val[1]); \
-    simde_vst1##modifier##_##symbol_identifier(a2_, a.val[2]); \
-    simde_vst1##modifier##_##symbol_identifier(b2_, b.val[2]); \
- \
-    return simde_assert_equal_v##symbol_identifier##_(sizeof(a0_) / sizeof(ET), HEDLEY_REINTERPRET_CAST(SET*, a0_), HEDLEY_REINTERPRET_CAST(SET*, b0_), slop, filename, line, astr, bstr) && \
-      simde_assert_equal_v##symbol_identifier##_(sizeof(a1_) / sizeof(ET), HEDLEY_REINTERPRET_CAST(SET*, a1_), HEDLEY_REINTERPRET_CAST(SET*, b1_), slop, filename, line, astr, bstr) && \
-      simde_assert_equal_v##symbol_identifier##_(sizeof(a2_) / sizeof(ET), HEDLEY_REINTERPRET_CAST(SET*, a2_), HEDLEY_REINTERPRET_CAST(SET*, b2_), slop, filename, line, astr, bstr); \
-  }
+  SIMDE_TEST_ARM_NEON_GENERATE_X3_VECTOR_FLOAT_TYPE_EQUAL_FUNC_(NT, ET, SET, element_count, modifier, symbol_identifier) \
 
 #if !defined(SIMDE_BUG_INTEL_857088)
 HEDLEY_DIAGNOSTIC_PUSH
@@ -360,6 +410,15 @@ SIMDE_TEST_ARM_NEON_GENERATE_X3_VECTOR_INT_TYPE_FUNCS_(   uint32x2x3_t, uint32_t
 SIMDE_TEST_ARM_NEON_GENERATE_X3_VECTOR_INT_TYPE_FUNCS_(   uint64x1x3_t, uint64_t,  1,  , u64, u64)
 SIMDE_TEST_ARM_NEON_GENERATE_X3_VECTOR_FLOAT_TYPE_FUNCS_(float32x2x3_t, simde_float32_t, simde_float32, 2, , f32)
 SIMDE_TEST_ARM_NEON_GENERATE_X3_VECTOR_FLOAT_TYPE_FUNCS_(float64x1x3_t, simde_float64_t, simde_float64, 1, , f64)
+#if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+SIMDE_TEST_ARM_NEON_GENERATE_X3_VECTOR_INT_TYPE_FUNCS_(    poly8x8x3_t,  poly8_t,  8,  ,  p8,  p8)
+SIMDE_TEST_ARM_NEON_GENERATE_X3_VECTOR_INT_TYPE_FUNCS_(   poly16x4x3_t, poly16_t,  4,  , p16, p16)
+SIMDE_TEST_ARM_NEON_GENERATE_X3_VECTOR_INT_TYPE_FUNCS_(   poly64x1x3_t, poly64_t,  1,  , p64, p64)
+#else
+SIMDE_TEST_ARM_NEON_GENERATE_X3_VECTOR_INT_TYPE_FUNCS_(    poly8x8x3_t,  simde_poly8_t,  8,  ,  p8,  p8)
+SIMDE_TEST_ARM_NEON_GENERATE_X3_VECTOR_INT_TYPE_FUNCS_(   poly16x4x3_t, simde_poly16_t,  4,  , p16, p16)
+SIMDE_TEST_ARM_NEON_GENERATE_X3_VECTOR_INT_TYPE_FUNCS_(   poly64x1x3_t, simde_poly64_t,  1,  , p64, p64)
+#endif
 
 SIMDE_TEST_ARM_NEON_GENERATE_X3_VECTOR_INT_TYPE_FUNCS_(    int8x16x3_t,   int8_t, 16, q,  i8,  s8)
 SIMDE_TEST_ARM_NEON_GENERATE_X3_VECTOR_INT_TYPE_FUNCS_(    int16x8x3_t,  int16_t,  8, q, i16, s16)
@@ -371,6 +430,23 @@ SIMDE_TEST_ARM_NEON_GENERATE_X3_VECTOR_INT_TYPE_FUNCS_(   uint32x4x3_t,  uint32_
 SIMDE_TEST_ARM_NEON_GENERATE_X3_VECTOR_INT_TYPE_FUNCS_(   uint64x2x3_t,  uint64_t,  2, q, u64, u64)
 SIMDE_TEST_ARM_NEON_GENERATE_X3_VECTOR_FLOAT_TYPE_FUNCS_(float32x4x3_t, simde_float32_t, simde_float32, 4, q, f32)
 SIMDE_TEST_ARM_NEON_GENERATE_X3_VECTOR_FLOAT_TYPE_FUNCS_(float64x2x3_t, simde_float64_t, simde_float64, 2, q, f64)
+#if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+SIMDE_TEST_ARM_NEON_GENERATE_X3_VECTOR_INT_TYPE_FUNCS_(   poly8x16x3_t,  poly8_t, 16, q,  p8,  p8)
+SIMDE_TEST_ARM_NEON_GENERATE_X3_VECTOR_INT_TYPE_FUNCS_(   poly16x8x3_t,  poly16_t,  8, q, p16, p16)
+SIMDE_TEST_ARM_NEON_GENERATE_X3_VECTOR_INT_TYPE_FUNCS_(   poly64x2x3_t,  poly64_t,  2, q, p64, p64)
+#else
+SIMDE_TEST_ARM_NEON_GENERATE_X3_VECTOR_INT_TYPE_FUNCS_(   poly8x16x3_t,  simde_poly8_t, 16, q,  p8,  p8)
+SIMDE_TEST_ARM_NEON_GENERATE_X3_VECTOR_INT_TYPE_FUNCS_(   poly16x8x3_t,  simde_poly16_t,  8, q, p16, p16)
+SIMDE_TEST_ARM_NEON_GENERATE_X3_VECTOR_INT_TYPE_FUNCS_(   poly64x2x3_t,  simde_poly64_t,  2, q, p64, p64)
+#endif
+
+#if SIMDE_FLOAT16_API == SIMDE_FLOAT16_API_FP16
+SIMDE_TEST_ARM_NEON_GENERATE_X3_VECTOR_FLOAT_TYPE_FUNCS_(float16x4x3_t, simde_float16_t, simde_float16, 4, , f16)
+SIMDE_TEST_ARM_NEON_GENERATE_X3_VECTOR_FLOAT_TYPE_FUNCS_(float16x8x3_t, simde_float16_t, simde_float16, 8, q, f16)
+#else
+SIMDE_TEST_ARM_NEON_GENERATE_X3_VECTOR_FLOAT_TYPE_EQUAL_FUNC_(float16x4x3_t, simde_float16_t, simde_float16, 4, , f16)
+SIMDE_TEST_ARM_NEON_GENERATE_X3_VECTOR_FLOAT_TYPE_EQUAL_FUNC_(float16x8x3_t, simde_float16_t, simde_float16, 8, q, f16)
+#endif
 
 HEDLEY_DIAGNOSTIC_POP
 #endif
@@ -433,6 +509,30 @@ HEDLEY_DIAGNOSTIC_POP
       && simde_assert_equal_v##symbol_identifier##_(sizeof(a3_) / sizeof(a3_[0]), a3_, b3_, filename, line, astr, bstr); \
   }
 
+#define SIMDE_TEST_ARM_NEON_GENERATE_X4_VECTOR_FLOAT_TYPE_EQUAL_FUNC_(NT, ET, SET, element_count, modifier, symbol_identifier) \
+  static int \
+  simde_test_arm_neon_assert_equal_##symbol_identifier##x##element_count##x4_(simde_##NT a, simde_##NT b, ET slop, \
+     const char* filename, int line, const char* astr, const char* bstr) { \
+    SET a0_[sizeof(a.val[0]) / sizeof(ET)], b0_[sizeof(b.val[0]) / sizeof(ET)]; \
+    SET a1_[sizeof(a.val[1]) / sizeof(ET)], b1_[sizeof(b.val[1]) / sizeof(ET)]; \
+    SET a2_[sizeof(a.val[2]) / sizeof(ET)], b2_[sizeof(b.val[2]) / sizeof(ET)]; \
+    SET a3_[sizeof(a.val[3]) / sizeof(ET)], b3_[sizeof(b.val[3]) / sizeof(ET)]; \
+ \
+    simde_vst1##modifier##_##symbol_identifier(a0_, a.val[0]); \
+    simde_vst1##modifier##_##symbol_identifier(b0_, b.val[0]);       \
+    simde_vst1##modifier##_##symbol_identifier(a1_, a.val[1]); \
+    simde_vst1##modifier##_##symbol_identifier(b1_, b.val[1]); \
+    simde_vst1##modifier##_##symbol_identifier(a2_, a.val[2]); \
+    simde_vst1##modifier##_##symbol_identifier(b2_, b.val[2]); \
+    simde_vst1##modifier##_##symbol_identifier(a3_, a.val[3]); \
+    simde_vst1##modifier##_##symbol_identifier(b3_, b.val[3]); \
+ \
+    return simde_assert_equal_v##symbol_identifier##_(sizeof(a0_) / sizeof(ET), HEDLEY_REINTERPRET_CAST(SET*, a0_), HEDLEY_REINTERPRET_CAST(SET*, b0_), slop, filename, line, astr, bstr) && \
+      simde_assert_equal_v##symbol_identifier##_(sizeof(a1_) / sizeof(ET), HEDLEY_REINTERPRET_CAST(SET*, a1_), HEDLEY_REINTERPRET_CAST(SET*, b1_), slop, filename, line, astr, bstr) && \
+      simde_assert_equal_v##symbol_identifier##_(sizeof(a2_) / sizeof(ET), HEDLEY_REINTERPRET_CAST(SET*, a2_), HEDLEY_REINTERPRET_CAST(SET*, b2_), slop, filename, line, astr, bstr) && \
+      simde_assert_equal_v##symbol_identifier##_(sizeof(a3_) / sizeof(ET), HEDLEY_REINTERPRET_CAST(SET*, a3_), HEDLEY_REINTERPRET_CAST(SET*, b3_), slop, filename, line, astr, bstr); \
+  } \
+
 #define SIMDE_TEST_ARM_NEON_GENERATE_X4_VECTOR_FLOAT_TYPE_FUNCS_(NT, ET, SET, element_count, modifier, symbol_identifier) \
   static simde_##NT \
   simde_test_arm_neon_random_##symbol_identifier##x##element_count##x4(ET min, ET max) { \
@@ -477,28 +577,7 @@ HEDLEY_DIAGNOSTIC_POP
     } \
   } \
  \
-  static int \
-  simde_test_arm_neon_assert_equal_##symbol_identifier##x##element_count##x4_(simde_##NT a, simde_##NT b, ET slop, \
-     const char* filename, int line, const char* astr, const char* bstr) { \
-    SET a0_[sizeof(a.val[0]) / sizeof(ET)], b0_[sizeof(b.val[0]) / sizeof(ET)]; \
-    SET a1_[sizeof(a.val[1]) / sizeof(ET)], b1_[sizeof(b.val[1]) / sizeof(ET)]; \
-    SET a2_[sizeof(a.val[2]) / sizeof(ET)], b2_[sizeof(b.val[2]) / sizeof(ET)]; \
-    SET a3_[sizeof(a.val[3]) / sizeof(ET)], b3_[sizeof(b.val[3]) / sizeof(ET)]; \
- \
-    simde_vst1##modifier##_##symbol_identifier(a0_, a.val[0]); \
-    simde_vst1##modifier##_##symbol_identifier(b0_, b.val[0]);       \
-    simde_vst1##modifier##_##symbol_identifier(a1_, a.val[1]); \
-    simde_vst1##modifier##_##symbol_identifier(b1_, b.val[1]); \
-    simde_vst1##modifier##_##symbol_identifier(a2_, a.val[2]); \
-    simde_vst1##modifier##_##symbol_identifier(b2_, b.val[2]); \
-    simde_vst1##modifier##_##symbol_identifier(a3_, a.val[3]); \
-    simde_vst1##modifier##_##symbol_identifier(b3_, b.val[3]); \
- \
-    return simde_assert_equal_v##symbol_identifier##_(sizeof(a0_) / sizeof(ET), HEDLEY_REINTERPRET_CAST(SET*, a0_), HEDLEY_REINTERPRET_CAST(SET*, b0_), slop, filename, line, astr, bstr) && \
-      simde_assert_equal_v##symbol_identifier##_(sizeof(a1_) / sizeof(ET), HEDLEY_REINTERPRET_CAST(SET*, a1_), HEDLEY_REINTERPRET_CAST(SET*, b1_), slop, filename, line, astr, bstr) && \
-      simde_assert_equal_v##symbol_identifier##_(sizeof(a2_) / sizeof(ET), HEDLEY_REINTERPRET_CAST(SET*, a2_), HEDLEY_REINTERPRET_CAST(SET*, b2_), slop, filename, line, astr, bstr) && \
-      simde_assert_equal_v##symbol_identifier##_(sizeof(a3_) / sizeof(ET), HEDLEY_REINTERPRET_CAST(SET*, a3_), HEDLEY_REINTERPRET_CAST(SET*, b3_), slop, filename, line, astr, bstr); \
-  }
+  SIMDE_TEST_ARM_NEON_GENERATE_X4_VECTOR_FLOAT_TYPE_EQUAL_FUNC_(NT, ET, SET, element_count, modifier, symbol_identifier) \
 
 #if !defined(SIMDE_BUG_INTEL_857088)
 HEDLEY_DIAGNOSTIC_PUSH
@@ -514,6 +593,15 @@ SIMDE_TEST_ARM_NEON_GENERATE_X4_VECTOR_INT_TYPE_FUNCS_(   uint32x2x4_t, uint32_t
 SIMDE_TEST_ARM_NEON_GENERATE_X4_VECTOR_INT_TYPE_FUNCS_(   uint64x1x4_t, uint64_t,  1,  , u64, u64)
 SIMDE_TEST_ARM_NEON_GENERATE_X4_VECTOR_FLOAT_TYPE_FUNCS_(float32x2x4_t, simde_float32_t, simde_float32, 2, , f32)
 SIMDE_TEST_ARM_NEON_GENERATE_X4_VECTOR_FLOAT_TYPE_FUNCS_(float64x1x4_t, simde_float64_t, simde_float64, 1, , f64)
+#if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+SIMDE_TEST_ARM_NEON_GENERATE_X4_VECTOR_INT_TYPE_FUNCS_(    poly8x8x4_t,  poly8_t,  8,  ,  p8,  p8)
+SIMDE_TEST_ARM_NEON_GENERATE_X4_VECTOR_INT_TYPE_FUNCS_(   poly16x4x4_t, poly16_t,  4,  , p16, p16)
+SIMDE_TEST_ARM_NEON_GENERATE_X4_VECTOR_INT_TYPE_FUNCS_(   poly64x1x4_t, poly64_t,  1,  , p64, p64)
+#else
+SIMDE_TEST_ARM_NEON_GENERATE_X4_VECTOR_INT_TYPE_FUNCS_(    poly8x8x4_t,  simde_poly8_t,  8,  ,  p8,  p8)
+SIMDE_TEST_ARM_NEON_GENERATE_X4_VECTOR_INT_TYPE_FUNCS_(   poly16x4x4_t, simde_poly16_t,  4,  , p16, p16)
+SIMDE_TEST_ARM_NEON_GENERATE_X4_VECTOR_INT_TYPE_FUNCS_(   poly64x1x4_t, simde_poly64_t,  1,  , p64, p64)
+#endif
 
 SIMDE_TEST_ARM_NEON_GENERATE_X4_VECTOR_INT_TYPE_FUNCS_(    int8x16x4_t,   int8_t, 16, q,  i8,  s8)
 SIMDE_TEST_ARM_NEON_GENERATE_X4_VECTOR_INT_TYPE_FUNCS_(    int16x8x4_t,  int16_t,  8, q, i16, s16)
@@ -525,6 +613,23 @@ SIMDE_TEST_ARM_NEON_GENERATE_X4_VECTOR_INT_TYPE_FUNCS_(   uint32x4x4_t,  uint32_
 SIMDE_TEST_ARM_NEON_GENERATE_X4_VECTOR_INT_TYPE_FUNCS_(   uint64x2x4_t,  uint64_t,  2, q, u64, u64)
 SIMDE_TEST_ARM_NEON_GENERATE_X4_VECTOR_FLOAT_TYPE_FUNCS_(float32x4x4_t, simde_float32_t, simde_float32, 4, q, f32)
 SIMDE_TEST_ARM_NEON_GENERATE_X4_VECTOR_FLOAT_TYPE_FUNCS_(float64x2x4_t, simde_float64_t, simde_float64, 2, q, f64)
+#if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+SIMDE_TEST_ARM_NEON_GENERATE_X4_VECTOR_INT_TYPE_FUNCS_(   poly8x16x4_t,  poly8_t, 16, q,  p8,  p8)
+SIMDE_TEST_ARM_NEON_GENERATE_X4_VECTOR_INT_TYPE_FUNCS_(   poly16x8x4_t,  poly16_t,  8, q, p16, p16)
+SIMDE_TEST_ARM_NEON_GENERATE_X4_VECTOR_INT_TYPE_FUNCS_(   poly64x2x4_t,  poly64_t,  2, q, p64, p64)
+#else
+SIMDE_TEST_ARM_NEON_GENERATE_X4_VECTOR_INT_TYPE_FUNCS_(   poly8x16x4_t,  simde_poly8_t, 16, q,  p8,  p8)
+SIMDE_TEST_ARM_NEON_GENERATE_X4_VECTOR_INT_TYPE_FUNCS_(   poly16x8x4_t,  simde_poly16_t,  8, q, p16, p16)
+SIMDE_TEST_ARM_NEON_GENERATE_X4_VECTOR_INT_TYPE_FUNCS_(   poly64x2x4_t,  simde_poly64_t,  2, q, p64, p64)
+#endif
+
+#if SIMDE_FLOAT16_API == SIMDE_FLOAT16_API_FP16
+SIMDE_TEST_ARM_NEON_GENERATE_X4_VECTOR_FLOAT_TYPE_FUNCS_(float16x4x4_t, simde_float16_t, simde_float16, 4, , f16)
+SIMDE_TEST_ARM_NEON_GENERATE_X4_VECTOR_FLOAT_TYPE_FUNCS_(float16x8x4_t, simde_float16_t, simde_float16, 8, q, f16)
+#else
+SIMDE_TEST_ARM_NEON_GENERATE_X4_VECTOR_FLOAT_TYPE_EQUAL_FUNC_(float16x4x4_t, simde_float16_t, simde_float16, 4, , f16)
+SIMDE_TEST_ARM_NEON_GENERATE_X4_VECTOR_FLOAT_TYPE_EQUAL_FUNC_(float16x8x4_t, simde_float16_t, simde_float16, 8, q, f16)
+#endif
 
 HEDLEY_DIAGNOSTIC_POP
 #endif
@@ -540,6 +645,9 @@ HEDLEY_DIAGNOSTIC_POP
 #define simde_test_arm_neon_assert_equal_f16x4(a, b, precision) do { if (simde_test_arm_neon_assert_equal_f16x4_(a, b, simde_test_f16_precision_to_slop(precision), __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 #define simde_test_arm_neon_assert_equal_f32x2(a, b, precision) do { if (simde_test_arm_neon_assert_equal_f32x2_(a, b, simde_test_f32_precision_to_slop(precision), __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 #define simde_test_arm_neon_assert_equal_f64x1(a, b, precision) do { if (simde_test_arm_neon_assert_equal_f64x1_(a, b, simde_test_f64_precision_to_slop(precision),    __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+#define simde_test_arm_neon_assert_equal_p8x8(a, b)   do { if (simde_test_arm_neon_assert_equal_p8x8_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+#define simde_test_arm_neon_assert_equal_p16x4(a, b) do { if (simde_test_arm_neon_assert_equal_p16x4_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+#define simde_test_arm_neon_assert_equal_p64x1(a, b) do { if (simde_test_arm_neon_assert_equal_p64x1_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 
 #define simde_test_arm_neon_assert_equal_i8x16(a, b) do { if (simde_test_arm_neon_assert_equal_i8x16_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 #define simde_test_arm_neon_assert_equal_i16x8(a, b) do { if (simde_test_arm_neon_assert_equal_i16x8_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
@@ -552,6 +660,9 @@ HEDLEY_DIAGNOSTIC_POP
 #define simde_test_arm_neon_assert_equal_f16x8(a, b, precision) do { if (simde_test_arm_neon_assert_equal_f16x8_(a, b, simde_test_f16_precision_to_slop(precision), __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 #define simde_test_arm_neon_assert_equal_f32x4(a, b, precision) do { if (simde_test_arm_neon_assert_equal_f32x4_(a, b, simde_test_f32_precision_to_slop(precision), __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 #define simde_test_arm_neon_assert_equal_f64x2(a, b, precision) do { if (simde_test_arm_neon_assert_equal_f64x2_(a, b, simde_test_f64_precision_to_slop(precision),    __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+#define simde_test_arm_neon_assert_equal_p8x16(a, b) do { if (simde_test_arm_neon_assert_equal_p8x16_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+#define simde_test_arm_neon_assert_equal_p16x8(a, b) do { if (simde_test_arm_neon_assert_equal_p16x8_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+#define simde_test_arm_neon_assert_equal_p64x2(a, b) do { if (simde_test_arm_neon_assert_equal_p64x2_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 
 #define simde_test_arm_neon_assert_equal_i8x8x2(a, b) do { if (simde_test_arm_neon_assert_equal_i8x8x2_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 #define simde_test_arm_neon_assert_equal_i16x4x2(a, b) do { if (simde_test_arm_neon_assert_equal_i16x4x2_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
@@ -564,6 +675,9 @@ HEDLEY_DIAGNOSTIC_POP
 #define simde_test_arm_neon_assert_equal_f16x4x2(a, b, precision) do { if (simde_test_arm_neon_assert_equal_f16x4x2_(a, b, simde_test_f16_precision_to_slop(precision), __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 #define simde_test_arm_neon_assert_equal_f32x2x2(a, b, precision) do { if (simde_test_arm_neon_assert_equal_f32x2x2_(a, b, simde_test_f32_precision_to_slop(precision), __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 #define simde_test_arm_neon_assert_equal_f64x1x2(a, b, precision) do { if (simde_test_arm_neon_assert_equal_f64x1x2_(a, b, simde_test_f64_precision_to_slop(precision),    __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+#define simde_test_arm_neon_assert_equal_p8x8x2(a, b) do { if (simde_test_arm_neon_assert_equal_p8x8x2_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+#define simde_test_arm_neon_assert_equal_p16x4x2(a, b) do { if (simde_test_arm_neon_assert_equal_p16x4x2_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+#define simde_test_arm_neon_assert_equal_p64x1x2(a, b) do { if (simde_test_arm_neon_assert_equal_p64x1x2_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 
 #define simde_test_arm_neon_assert_equal_i8x16x2(a, b) do { if (simde_test_arm_neon_assert_equal_i8x16x2_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 #define simde_test_arm_neon_assert_equal_i16x8x2(a, b) do { if (simde_test_arm_neon_assert_equal_i16x8x2_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
@@ -576,6 +690,9 @@ HEDLEY_DIAGNOSTIC_POP
 #define simde_test_arm_neon_assert_equal_f16x8x2(a, b, precision) do { if (simde_test_arm_neon_assert_equal_f16x8x2_(a, b, simde_test_f16_precision_to_slop(precision), __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 #define simde_test_arm_neon_assert_equal_f32x4x2(a, b, precision) do { if (simde_test_arm_neon_assert_equal_f32x4x2_(a, b, simde_test_f32_precision_to_slop(precision), __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 #define simde_test_arm_neon_assert_equal_f64x2x2(a, b, precision) do { if (simde_test_arm_neon_assert_equal_f64x2x2_(a, b, simde_test_f64_precision_to_slop(precision),    __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+#define simde_test_arm_neon_assert_equal_p8x16x2(a, b) do { if (simde_test_arm_neon_assert_equal_p8x16x2_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+#define simde_test_arm_neon_assert_equal_p16x8x2(a, b) do { if (simde_test_arm_neon_assert_equal_p16x8x2_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+#define simde_test_arm_neon_assert_equal_p64x2x2(a, b) do { if (simde_test_arm_neon_assert_equal_p64x2x2_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 
 #define simde_test_arm_neon_assert_equal_i8x8x3(a, b) do { if (simde_test_arm_neon_assert_equal_i8x8x3_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 #define simde_test_arm_neon_assert_equal_i16x4x3(a, b) do { if (simde_test_arm_neon_assert_equal_i16x4x3_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
@@ -588,6 +705,9 @@ HEDLEY_DIAGNOSTIC_POP
 #define simde_test_arm_neon_assert_equal_f16x4x3(a, b, precision) do { if (simde_test_arm_neon_assert_equal_f16x4x3_(a, b, simde_test_f16_precision_to_slop(precision), __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 #define simde_test_arm_neon_assert_equal_f32x2x3(a, b, precision) do { if (simde_test_arm_neon_assert_equal_f32x2x3_(a, b, simde_test_f32_precision_to_slop(precision), __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 #define simde_test_arm_neon_assert_equal_f64x1x3(a, b, precision) do { if (simde_test_arm_neon_assert_equal_f64x1x3_(a, b, simde_test_f64_precision_to_slop(precision),    __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+#define simde_test_arm_neon_assert_equal_p8x8x3(a, b) do { if (simde_test_arm_neon_assert_equal_p8x8x3_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+#define simde_test_arm_neon_assert_equal_p16x4x3(a, b) do { if (simde_test_arm_neon_assert_equal_p16x4x3_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+#define simde_test_arm_neon_assert_equal_p64x1x3(a, b) do { if (simde_test_arm_neon_assert_equal_p64x1x3_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 
 #define simde_test_arm_neon_assert_equal_i8x16x3(a, b) do { if (simde_test_arm_neon_assert_equal_i8x16x3_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 #define simde_test_arm_neon_assert_equal_i16x8x3(a, b) do { if (simde_test_arm_neon_assert_equal_i16x8x3_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
@@ -600,6 +720,9 @@ HEDLEY_DIAGNOSTIC_POP
 #define simde_test_arm_neon_assert_equal_f16x8x3(a, b, precision) do { if (simde_test_arm_neon_assert_equal_f16x8x3_(a, b, simde_test_f16_precision_to_slop(precision), __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 #define simde_test_arm_neon_assert_equal_f32x4x3(a, b, precision) do { if (simde_test_arm_neon_assert_equal_f32x4x3_(a, b, simde_test_f32_precision_to_slop(precision), __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 #define simde_test_arm_neon_assert_equal_f64x2x3(a, b, precision) do { if (simde_test_arm_neon_assert_equal_f64x2x3_(a, b, simde_test_f64_precision_to_slop(precision),    __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+#define simde_test_arm_neon_assert_equal_p8x16x3(a, b) do { if (simde_test_arm_neon_assert_equal_p8x16x3_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+#define simde_test_arm_neon_assert_equal_p16x8x3(a, b) do { if (simde_test_arm_neon_assert_equal_p16x8x3_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+#define simde_test_arm_neon_assert_equal_p64x2x3(a, b) do { if (simde_test_arm_neon_assert_equal_p64x2x3_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 
 #define simde_test_arm_neon_assert_equal_i8x8x4(a, b) do { if (simde_test_arm_neon_assert_equal_i8x8x4_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 #define simde_test_arm_neon_assert_equal_i16x4x4(a, b) do { if (simde_test_arm_neon_assert_equal_i16x4x4_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
@@ -612,6 +735,9 @@ HEDLEY_DIAGNOSTIC_POP
 #define simde_test_arm_neon_assert_equal_f16x4x4(a, b, precision) do { if (simde_test_arm_neon_assert_equal_f16x4x4_(a, b, simde_test_f16_precision_to_slop(precision), __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 #define simde_test_arm_neon_assert_equal_f32x2x4(a, b, precision) do { if (simde_test_arm_neon_assert_equal_f32x2x4_(a, b, simde_test_f32_precision_to_slop(precision), __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 #define simde_test_arm_neon_assert_equal_f64x1x4(a, b, precision) do { if (simde_test_arm_neon_assert_equal_f64x1x4_(a, b, simde_test_f64_precision_to_slop(precision),    __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+#define simde_test_arm_neon_assert_equal_p8x8x4(a, b) do { if (simde_test_arm_neon_assert_equal_p8x8x4_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+#define simde_test_arm_neon_assert_equal_p16x4x4(a, b) do { if (simde_test_arm_neon_assert_equal_p16x4x4_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+#define simde_test_arm_neon_assert_equal_p64x1x4(a, b) do { if (simde_test_arm_neon_assert_equal_p64x1x4_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 
 #define simde_test_arm_neon_assert_equal_i8x16x4(a, b) do { if (simde_test_arm_neon_assert_equal_i8x16x4_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 #define simde_test_arm_neon_assert_equal_i16x8x4(a, b) do { if (simde_test_arm_neon_assert_equal_i16x8x4_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
@@ -624,6 +750,9 @@ HEDLEY_DIAGNOSTIC_POP
 #define simde_test_arm_neon_assert_equal_f16x8x4(a, b, precision) do { if (simde_test_arm_neon_assert_equal_f16x8x4_(a, b, simde_test_f16_precision_to_slop(precision), __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 #define simde_test_arm_neon_assert_equal_f32x4x4(a, b, precision) do { if (simde_test_arm_neon_assert_equal_f32x4x4_(a, b, simde_test_f32_precision_to_slop(precision), __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 #define simde_test_arm_neon_assert_equal_f64x2x4(a, b, precision) do { if (simde_test_arm_neon_assert_equal_f64x2x4_(a, b, simde_test_f64_precision_to_slop(precision),    __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+#define simde_test_arm_neon_assert_equal_p8x16x4(a, b) do { if (simde_test_arm_neon_assert_equal_p8x16x4_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+#define simde_test_arm_neon_assert_equal_p16x8x4(a, b) do { if (simde_test_arm_neon_assert_equal_p16x8x4_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+#define simde_test_arm_neon_assert_equal_p64x2x4(a, b) do { if (simde_test_arm_neon_assert_equal_p64x2x4_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 
 /* HEDLEY_DIAGNOSTIC_DISABLE_UNUSED_FUNCTION */
 HEDLEY_DIAGNOSTIC_POP
