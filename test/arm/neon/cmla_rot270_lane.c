@@ -178,7 +178,6 @@ static int test_simde_vcmla_rot270_lane_f32(SIMDE_MUNIT_TEST_ARGS) {
     simde_float32x2_t r = simde_vcmla_rot270_lane_f32(r_, a, b, 0);
 
     simde_test_arm_neon_assert_equal_f32x2(r, simde_vld1_f32(test_vec[i].r), 1);
-    // simde_test_arm_neon_write_f32x2(2, r, SIMDE_TEST_VEC_POS_LAST);
   }
 
   return 0;
@@ -400,7 +399,6 @@ static int test_simde_vcmla_rot270_laneq_f32(SIMDE_MUNIT_TEST_ARGS) {
         (HEDLEY_UNREACHABLE(), simde_vdup_n_f32(SIMDE_FLOAT32_C(0.0))),
         test_vec[i].lane, r_, a, b);
     simde_test_arm_neon_assert_equal_f32x2(r, simde_vld1_f32(test_vec[i].r), 1);
-    // simde_test_arm_neon_write_f32x2(2, r, SIMDE_TEST_VEC_POS_LAST);
   }
 
   return 0;
@@ -670,7 +668,6 @@ static int test_simde_vcmlaq_rot270_lane_f32(SIMDE_MUNIT_TEST_ARGS) {
     simde_float32x4_t r = simde_vcmlaq_rot270_lane_f32(r_, a, b, 0);
     simde_test_arm_neon_assert_equal_f32x4(r, simde_vld1q_f32(test_vec[i].r),
                                            1);
-    // simde_test_arm_neon_write_f32x4(2, r, SIMDE_TEST_VEC_POS_LAST);
   }
 
   return 0;
@@ -966,7 +963,6 @@ static int test_simde_vcmlaq_rot270_laneq_f32(SIMDE_MUNIT_TEST_ARGS) {
         test_vec[i].lane, r_, a, b);
     simde_test_arm_neon_assert_equal_f32x4(r, simde_vld1q_f32(test_vec[i].r),
                                            1);
-    // simde_test_arm_neon_write_f32x4(2, r, SIMDE_TEST_VEC_POS_LAST);
   }
 
   return 0;
