@@ -82,7 +82,7 @@ simde_vqrshlb_s8(int8_t a, int8_t b) {
     if (b < -8) {
       r = 0;
     } else if (b < 0) {
-      r = ((a + (1 << (-b - 1))) >> -b);
+      r = HEDLEY_STATIC_CAST(int8_t, ((a + (1 << (-b - 1))) >> -b));
     } else if (b == 0) {
       r = a;
     } else if (b < 7) {
@@ -117,7 +117,7 @@ simde_vqrshlh_s16(int16_t a, int16_t b) {
     if (b8 <= -16) {
       r = 0;
     } else if (b8 < 0) {
-      r = ((a + (1 << (-b8 - 1))) >> -b8);
+      r = HEDLEY_STATIC_CAST(int16_t, ((a + (1 << (-b8 - 1))) >> -b8));
     } else if (b8 == 0) {
       r = a;
     } else if (b8 < 15) {

@@ -82,10 +82,10 @@ simde_vcgezs_f32(simde_float32_t a) {
 SIMDE_FUNCTION_ATTRIBUTES
 uint16_t
 simde_vcgezh_f16(simde_float16_t a) {
-  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
     return HEDLEY_STATIC_CAST(uint16_t, vcgezh_f16(a));
   #else
-    return (a >= SIMDE_FLOAT16_C(0.0)) ? UINT16_MAX : 0;
+    return (simde_float16_to_float32(a) >= SIMDE_FLOAT32_C(0.0)) ? UINT16_MAX : 0;
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
@@ -96,7 +96,7 @@ simde_vcgezh_f16(simde_float16_t a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_uint16x8_t
 simde_vcgezq_f16(simde_float16x8_t a) {
-  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
     return vcgezq_f16(a);
   #else
     simde_float16x8_private a_ = simde_float16x8_to_private(a);
@@ -286,7 +286,7 @@ simde_vcgezq_s64(simde_int64x2_t a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_uint16x4_t
 simde_vcgez_f16(simde_float16x4_t a) {
-  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
     return vcgez_f16(a);
   #else
     simde_float16x4_private a_ = simde_float16x4_to_private(a);

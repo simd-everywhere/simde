@@ -195,7 +195,7 @@ SIMDE_FUNCTION_ATTRIBUTES
 void
 simde_vst4_lane_f16(simde_float16_t ptr[HEDLEY_ARRAY_PARAM(4)], simde_float16x4x4_t val, const int lane)
     SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 3) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
     SIMDE_CONSTIFY_4_NO_RESULT_(vst4_lane_f16, HEDLEY_UNREACHABLE(), lane, ptr, val);
   #else
     simde_float16x4_private r;
@@ -405,7 +405,7 @@ SIMDE_FUNCTION_ATTRIBUTES
 void
 simde_vst4q_lane_f16(simde_float16_t ptr[HEDLEY_ARRAY_PARAM(4)], simde_float16x8x4_t val, const int lane)
     SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 7) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
     SIMDE_CONSTIFY_8_NO_RESULT_(vst4q_lane_f16, HEDLEY_UNREACHABLE(), lane, ptr, val);
   #else
     simde_float16x8_private r;

@@ -3763,7 +3763,7 @@ simde_vreinterpretq_u32_f16(simde_float16x8_t a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_uint64x2_t
 simde_vreinterpretq_u64_f16(simde_float16x8_t a) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
     return vreinterpretq_u64_f16(a);
   #else
     simde_uint64x2_private r_;
