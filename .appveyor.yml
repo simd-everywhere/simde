@@ -5,6 +5,7 @@ environment:
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
       VCVARSALL: C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsamd64_x86.bat
       PYTHON_DIR: C:\Python38-x64
+      FLAGS: /fp:strict
 branches:
   except:
     - /^ci/(?!appveyor)(/.+)?/
