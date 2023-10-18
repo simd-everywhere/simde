@@ -158,8 +158,6 @@ simde_neon_families = [
   'qdmulh_lane',
   'qdmulh_n',
   'qdmull',
-<<<<<<< HEAD
-=======
   'qdmull_high',
   'qdmull_high_lane',
   'qdmull_high_n',
@@ -167,7 +165,6 @@ simde_neon_families = [
   'qdmull_n',
   'qrdmlah',
   'qrdmlsh',
->>>>>>> master
   'qrdmulh',
   'qrdmulh_lane',
   'qrdmulh_n',
