@@ -22,6 +22,7 @@
  *
  * Copyright:
  *   2021      Zhi An Ng <zhin@google.com> (Copyright owned by Google, LLC)
+ *   2023      Yi-Yen Chung <eric681@andestech.com> (Copyright owned by Andes Technology)
  */
 
 #if !defined(SIMDE_ARM_NEON_MLA_LANE_H)
@@ -44,6 +45,28 @@ SIMDE_BEGIN_DECLS_
   #define vmla_lane_f32(a, b, v, lane) simde_vmla_lane_f32((a), (b), (v), (lane))
 #endif
 
+#if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+  #define simde_vmla_laneq_f32(a, b, v, lane) vmla_laneq_f32((a), (b), (v), (lane))
+#else
+  #define simde_vmla_laneq_f32(a, b, v, lane) simde_vmla_f32((a), (b), simde_vdup_laneq_f32((v), (lane)))
+#endif
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vmla_laneq_f32
+  #define vmla_laneq_f32(a, b, v, lane) simde_vmla_laneq_f32((a), (b), (v), (lane))
+#endif
+
+/* Eric: Skip this function since it will trigger a compiler error when using i686-linux-gnu-g++-11.
+#if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+  #define simde_vmlaq_laneq_f32(a, b, v, lane) vmlaq_laneq_f32((a), (b), (v), (lane))
+#else
+  #define simde_vmlaq_laneq_f32(a, b, v, lane) simde_vmlaq_f32((a), (b), simde_vdupq_laneq_f32((v), (lane)))
+#endif
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vmlaq_laneq_f32
+  #define vmlaq_laneq_f32(a, b, v, lane) simde_vmlaq_laneq_f32((a), (b), (v), (lane))
+#endif
+*/
+
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vmla_lane_s16(a, b, v, lane) vmla_lane_s16((a), (b), (v), (lane))
 #else
@@ -52,6 +75,26 @@ SIMDE_BEGIN_DECLS_
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vmla_lane_s16
   #define vmla_lane_s16(a, b, v, lane) simde_vmla_lane_s16((a), (b), (v), (lane))
+#endif
+
+#if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+  #define simde_vmla_laneq_s16(a, b, v, lane) vmla_laneq_s16((a), (b), (v), (lane))
+#else
+  #define simde_vmla_laneq_s16(a, b, v, lane) simde_vmla_s16((a), (b), simde_vdup_laneq_s16((v), (lane)))
+#endif
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vmla_laneq_s16
+  #define vmla_laneq_s16(a, b, v, lane) simde_vmla_laneq_s16((a), (b), (v), (lane))
+#endif
+
+#if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+  #define simde_vmlaq_laneq_s16(a, b, v, lane) vmlaq_laneq_s16((a), (b), (v), (lane))
+#else
+  #define simde_vmlaq_laneq_s16(a, b, v, lane) simde_vmlaq_s16((a), (b), simde_vdupq_laneq_s16((v), (lane)))
+#endif
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vmlaq_laneq_s16
+  #define vmlaq_laneq_s16(a, b, v, lane) simde_vmlaq_laneq_s16((a), (b), (v), (lane))
 #endif
 
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
@@ -64,6 +107,26 @@ SIMDE_BEGIN_DECLS_
   #define vmla_lane_s32(a, b, v, lane) simde_vmla_lane_s32((a), (b), (v), (lane))
 #endif
 
+#if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+  #define simde_vmla_laneq_s32(a, b, v, lane) vmla_laneq_s32((a), (b), (v), (lane))
+#else
+  #define simde_vmla_laneq_s32(a, b, v, lane) simde_vmla_s32((a), (b), simde_vdup_laneq_s32((v), (lane)))
+#endif
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vmla_laneq_s32
+  #define vmla_laneq_s32(a, b, v, lane) simde_vmla_laneq_s32((a), (b), (v), (lane))
+#endif
+
+#if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+  #define simde_vmlaq_laneq_s32(a, b, v, lane) vmlaq_laneq_s32((a), (b), (v), (lane))
+#else
+  #define simde_vmlaq_laneq_s32(a, b, v, lane) simde_vmlaq_s32((a), (b), simde_vdupq_laneq_s32((v), (lane)))
+#endif
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vmlaq_laneq_s32
+  #define vmlaq_laneq_s32(a, b, v, lane) simde_vmlaq_laneq_s32((a), (b), (v), (lane))
+#endif
+
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vmla_lane_u16(a, b, v, lane) vmla_lane_u16((a), (b), (v), (lane))
 #else
@@ -74,6 +137,26 @@ SIMDE_BEGIN_DECLS_
   #define vmla_lane_u16(a, b, v, lane) simde_vmla_lane_u16((a), (b), (v), (lane))
 #endif
 
+#if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+  #define simde_vmla_laneq_u16(a, b, v, lane) vmla_laneq_u16((a), (b), (v), (lane))
+#else
+  #define simde_vmla_laneq_u16(a, b, v, lane) simde_vmla_u16((a), (b), simde_vdup_laneq_u16((v), (lane)))
+#endif
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vmla_laneq_u16
+  #define vmla_laneq_u16(a, b, v, lane) simde_vmla_laneq_u16((a), (b), (v), (lane))
+#endif
+
+#if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+  #define simde_vmlaq_laneq_u16(a, b, v, lane) vmlaq_laneq_u16((a), (b), (v), (lane))
+#else
+  #define simde_vmlaq_laneq_u16(a, b, v, lane) simde_vmlaq_u16((a), (b), simde_vdupq_laneq_u16((v), (lane)))
+#endif
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vmlaq_laneq_u16
+  #define vmlaq_laneq_u16(a, b, v, lane) simde_vmlaq_laneq_u16((a), (b), (v), (lane))
+#endif
+
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vmla_lane_u32(a, b, v, lane) vmla_lane_u32((a), (b), (v), (lane))
 #else
@@ -82,6 +165,26 @@ SIMDE_BEGIN_DECLS_
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vmla_lane_u32
   #define vmla_lane_u32(a, b, v, lane) simde_vmla_lane_u32((a), (b), (v), (lane))
+#endif
+
+#if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+  #define simde_vmla_laneq_u32(a, b, v, lane) vmla_laneq_u32((a), (b), (v), (lane))
+#else
+  #define simde_vmla_laneq_u32(a, b, v, lane) simde_vmla_u32((a), (b), simde_vdup_laneq_u32((v), (lane)))
+#endif
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vmla_laneq_u32
+  #define vmla_laneq_u32(a, b, v, lane) simde_vmla_laneq_u32((a), (b), (v), (lane))
+#endif
+
+#if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+  #define simde_vmlaq_laneq_u32(a, b, v, lane) vmlaq_laneq_u32((a), (b), (v), (lane))
+#else
+  #define simde_vmlaq_laneq_u32(a, b, v, lane) simde_vmlaq_u32((a), (b), simde_vdupq_laneq_u32((v), (lane)))
+#endif
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vmlaq_laneq_u32
+  #define vmlaq_laneq_u32(a, b, v, lane) simde_vmlaq_laneq_u32((a), (b), (v), (lane))
 #endif
 
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
