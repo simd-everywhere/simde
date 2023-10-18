@@ -40,7 +40,7 @@ simde_vaddhn_high_s16(simde_int8x8_t r, simde_int16x8_t a, simde_int16x8_t b) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vaddhn_high_s16(r, a, b);
   #else
-    return simde_vcombine_s16(r, simde_vaddhn_s16(a, b));
+    return simde_vcombine_s8(r, simde_vaddhn_s16(a, b));
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
@@ -54,7 +54,7 @@ simde_vaddhn_high_s32(simde_int16x4_t r, simde_int32x4_t a, simde_int32x4_t b) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vaddhn_high_s32(r, a, b);
   #else
-    return simde_vcombine_s32(r, simde_vaddhn_s32(a, b));
+    return simde_vcombine_s16(r, simde_vaddhn_s32(a, b));
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
@@ -68,7 +68,7 @@ simde_vaddhn_high_s64(simde_int32x2_t r, simde_int64x2_t a, simde_int64x2_t b) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vaddhn_high_s64(r, a, b);
   #else
-    return simde_vcombine_s64(r, simde_vaddhn_s64(a, b));
+    return simde_vcombine_s32(r, simde_vaddhn_s64(a, b));
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
@@ -82,7 +82,7 @@ simde_vaddhn_high_u16(simde_uint8x8_t r, simde_uint16x8_t a, simde_uint16x8_t b)
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vaddhn_high_u16(r, a, b);
   #else
-    return simde_vcombine_u16(r, simde_vaddhn_u16(a, b));
+    return simde_vcombine_u8(r, simde_vaddhn_u16(a, b));
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
@@ -96,7 +96,7 @@ simde_vaddhn_high_u32(simde_uint16x4_t r, simde_uint32x4_t a, simde_uint32x4_t b
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vaddhn_high_u32(r, a, b);
   #else
-    return simde_vcombine_u32(r, simde_vaddhn_u32(a, b));
+    return simde_vcombine_u16(r, simde_vaddhn_u32(a, b));
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
@@ -110,7 +110,7 @@ simde_vaddhn_high_u64(simde_uint32x2_t r, simde_uint64x2_t a, simde_uint64x2_t b
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vaddhn_high_u64(r, a, b);
   #else
-    return simde_vcombine_u64(r, simde_vaddhn_u64(a, b));
+    return simde_vcombine_u32(r, simde_vaddhn_u64(a, b));
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)

@@ -94,10 +94,10 @@ simde_vcles_f32(simde_float32_t a, simde_float32_t b) {
 SIMDE_FUNCTION_ATTRIBUTES
 uint16_t
 simde_vcleh_f16(simde_float16_t a, simde_float16_t b) {
-  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
     return HEDLEY_STATIC_CAST(uint16_t, vcleh_f16(a, b));
   #else
-    return (a <= b) ? UINT16_MAX : 0;
+    return (simde_float16_to_float32(a) <= simde_float16_to_float32(b)) ? UINT16_MAX : 0;
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
@@ -108,7 +108,7 @@ simde_vcleh_f16(simde_float16_t a, simde_float16_t b) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_uint16x8_t
 simde_vcleq_f16(simde_float16x8_t a, simde_float16x8_t b) {
-  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
     return vcleq_f16(a, b);
   #else
     simde_float16x8_private
@@ -517,7 +517,7 @@ simde_vcleq_u64(simde_uint64x2_t a, simde_uint64x2_t b) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_uint16x4_t
 simde_vcle_f16(simde_float16x4_t a, simde_float16x4_t b) {
-  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
     return vcle_f16(a, b);
   #else
     simde_float16x4_private

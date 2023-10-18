@@ -37,6 +37,7 @@ test_simde_vreinterpret_f32_s8 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -73,6 +74,7 @@ test_simde_vreinterpret_f64_s8 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -109,6 +111,7 @@ test_simde_vreinterpret_s16_s8 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -145,6 +148,7 @@ test_simde_vreinterpret_s32_s8 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -181,6 +185,7 @@ test_simde_vreinterpret_s64_s8 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -217,6 +222,7 @@ test_simde_vreinterpret_u8_s8 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -252,6 +258,7 @@ test_simde_vreinterpret_u16_s8 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -287,6 +294,7 @@ test_simde_vreinterpret_u32_s8 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -322,6 +330,7 @@ test_simde_vreinterpret_u64_s8 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -365,6 +374,7 @@ test_simde_vreinterpretq_f32_s8 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -409,6 +419,7 @@ test_simde_vreinterpretq_f64_s8 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -453,6 +464,7 @@ test_simde_vreinterpretq_s16_s8 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -496,6 +508,7 @@ test_simde_vreinterpretq_s32_s8 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -539,6 +552,7 @@ test_simde_vreinterpretq_s64_s8 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -583,6 +597,7 @@ test_simde_vreinterpretq_u8_s8 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -626,6 +641,7 @@ test_simde_vreinterpretq_u16_s8 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -670,6 +686,7 @@ test_simde_vreinterpretq_u32_s8 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -713,6 +730,7 @@ test_simde_vreinterpretq_u64_s8 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -749,6 +767,7 @@ test_simde_vreinterpret_f32_s16 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -785,6 +804,7 @@ test_simde_vreinterpret_f64_s16 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -821,6 +841,7 @@ test_simde_vreinterpret_s8_s16 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -857,6 +878,7 @@ test_simde_vreinterpret_s32_s16 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -893,6 +915,7 @@ test_simde_vreinterpret_s64_s16 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -929,6 +952,7 @@ test_simde_vreinterpret_u8_s16 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -964,6 +988,7 @@ test_simde_vreinterpret_u16_s16 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -999,6 +1024,7 @@ test_simde_vreinterpret_u32_s16 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -1034,6 +1060,7 @@ test_simde_vreinterpret_u64_s16 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -1069,6 +1096,7 @@ test_simde_vreinterpretq_f32_s16 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -1105,6 +1133,7 @@ test_simde_vreinterpretq_f64_s16 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -1141,6 +1170,7 @@ test_simde_vreinterpretq_s8_s16 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -1176,6 +1206,7 @@ test_simde_vreinterpretq_s32_s16 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -1211,6 +1242,7 @@ test_simde_vreinterpretq_s64_s16 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -1247,6 +1279,7 @@ test_simde_vreinterpretq_u8_s16 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -1282,6 +1315,7 @@ test_simde_vreinterpretq_u16_s16 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -1318,6 +1352,7 @@ test_simde_vreinterpretq_u32_s16 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -1353,6 +1388,7 @@ test_simde_vreinterpretq_u64_s16 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -1389,6 +1425,7 @@ test_simde_vreinterpret_f32_s32 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -1425,6 +1462,7 @@ test_simde_vreinterpret_f64_s32 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -1461,6 +1499,7 @@ test_simde_vreinterpret_s8_s32 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -1497,6 +1536,7 @@ test_simde_vreinterpret_s16_s32 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -1533,6 +1573,7 @@ test_simde_vreinterpret_s64_s32 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -1569,6 +1610,7 @@ test_simde_vreinterpret_u8_s32 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -1604,6 +1646,7 @@ test_simde_vreinterpret_u16_s32 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -1639,6 +1682,7 @@ test_simde_vreinterpret_u32_s32 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -1674,6 +1718,7 @@ test_simde_vreinterpret_u64_s32 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -1709,6 +1754,7 @@ test_simde_vreinterpretq_f32_s32 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -1745,6 +1791,7 @@ test_simde_vreinterpretq_f64_s32 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -1781,6 +1828,7 @@ test_simde_vreinterpretq_s8_s32 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -1817,6 +1865,7 @@ test_simde_vreinterpretq_s16_s32 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -1852,6 +1901,7 @@ test_simde_vreinterpretq_s64_s32 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -1888,6 +1938,7 @@ test_simde_vreinterpretq_u8_s32 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -1923,6 +1974,7 @@ test_simde_vreinterpretq_u16_s32 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -1959,6 +2011,7 @@ test_simde_vreinterpretq_u32_s32 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -1994,6 +2047,7 @@ test_simde_vreinterpretq_u64_s32 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -2030,6 +2084,7 @@ test_simde_vreinterpret_f32_s64 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -2066,6 +2121,7 @@ test_simde_vreinterpret_f64_s64 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -2102,6 +2158,7 @@ test_simde_vreinterpret_s8_s64 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -2138,6 +2195,7 @@ test_simde_vreinterpret_s16_s64 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -2174,6 +2232,7 @@ test_simde_vreinterpret_s32_s64 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -2210,6 +2269,7 @@ test_simde_vreinterpret_u8_s64 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -2245,6 +2305,7 @@ test_simde_vreinterpret_u16_s64 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -2280,6 +2341,7 @@ test_simde_vreinterpret_u32_s64 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -2315,6 +2377,7 @@ test_simde_vreinterpret_u64_s64 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -2350,6 +2413,7 @@ test_simde_vreinterpretq_f32_s64 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -2386,6 +2450,7 @@ test_simde_vreinterpretq_f64_s64 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -2422,6 +2487,7 @@ test_simde_vreinterpretq_s8_s64 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -2458,6 +2524,7 @@ test_simde_vreinterpretq_s16_s64 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -2493,6 +2560,7 @@ test_simde_vreinterpretq_s32_s64 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -2529,6 +2597,7 @@ test_simde_vreinterpretq_u8_s64 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -2564,6 +2633,7 @@ test_simde_vreinterpretq_u16_s64 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -2600,6 +2670,7 @@ test_simde_vreinterpretq_u32_s64 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -2635,6 +2706,7 @@ test_simde_vreinterpretq_u64_s64 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -2671,6 +2743,7 @@ test_simde_vreinterpret_f32_u8 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -2707,6 +2780,7 @@ test_simde_vreinterpret_f64_u8 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -2743,6 +2817,7 @@ test_simde_vreinterpret_s8_u8 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -2779,6 +2854,7 @@ test_simde_vreinterpret_s16_u8 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -2815,6 +2891,7 @@ test_simde_vreinterpret_s32_u8 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -2851,6 +2928,7 @@ test_simde_vreinterpret_s64_u8 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -2886,6 +2964,7 @@ test_simde_vreinterpret_u16_u8 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -2921,6 +3000,7 @@ test_simde_vreinterpret_u32_u8 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -2956,6 +3036,7 @@ test_simde_vreinterpret_u64_u8 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -2999,6 +3080,7 @@ test_simde_vreinterpretq_f32_u8 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -3043,6 +3125,7 @@ test_simde_vreinterpretq_f64_u8 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -3087,6 +3170,7 @@ test_simde_vreinterpretq_s8_u8 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -3131,6 +3215,7 @@ test_simde_vreinterpretq_s16_u8 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -3174,6 +3259,7 @@ test_simde_vreinterpretq_s32_u8 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -3217,6 +3303,7 @@ test_simde_vreinterpretq_s64_u8 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -3260,6 +3347,7 @@ test_simde_vreinterpretq_u16_u8 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -3304,6 +3392,7 @@ test_simde_vreinterpretq_u32_u8 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -3347,6 +3436,7 @@ test_simde_vreinterpretq_u64_u8 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -3383,6 +3473,7 @@ test_simde_vreinterpret_f32_u16 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -3419,6 +3510,7 @@ test_simde_vreinterpret_f64_u16 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -3455,6 +3547,7 @@ test_simde_vreinterpret_s8_u16 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -3491,6 +3584,7 @@ test_simde_vreinterpret_s16_u16 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -3527,6 +3621,7 @@ test_simde_vreinterpret_s32_u16 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -3563,6 +3658,7 @@ test_simde_vreinterpret_s64_u16 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -3599,6 +3695,7 @@ test_simde_vreinterpret_u8_u16 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -3634,6 +3731,7 @@ test_simde_vreinterpret_u32_u16 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -3669,6 +3767,7 @@ test_simde_vreinterpret_u64_u16 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -3704,6 +3803,7 @@ test_simde_vreinterpretq_f32_u16 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -3740,6 +3840,7 @@ test_simde_vreinterpretq_f64_u16 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -3776,6 +3877,7 @@ test_simde_vreinterpretq_s8_u16 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -3812,6 +3914,7 @@ test_simde_vreinterpretq_s16_u16 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -3847,6 +3950,7 @@ test_simde_vreinterpretq_s32_u16 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -3882,6 +3986,7 @@ test_simde_vreinterpretq_s64_u16 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -3918,6 +4023,7 @@ test_simde_vreinterpretq_u8_u16 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -3954,6 +4060,7 @@ test_simde_vreinterpretq_u32_u16 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -3989,6 +4096,7 @@ test_simde_vreinterpretq_u64_u16 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -4016,6 +4124,7 @@ test_simde_vreinterpret_f16_u16 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -4052,6 +4161,7 @@ test_simde_vreinterpret_f32_u32 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -4088,6 +4198,7 @@ test_simde_vreinterpret_f64_u32 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -4124,6 +4235,7 @@ test_simde_vreinterpret_s8_u32 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -4160,6 +4272,7 @@ test_simde_vreinterpret_s16_u32 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -4196,6 +4309,7 @@ test_simde_vreinterpret_s32_u32 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -4232,6 +4346,7 @@ test_simde_vreinterpret_s64_u32 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -4268,6 +4383,7 @@ test_simde_vreinterpret_u8_u32 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -4303,6 +4419,7 @@ test_simde_vreinterpret_u16_u32 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -4338,6 +4455,7 @@ test_simde_vreinterpret_u64_u32 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -4365,6 +4483,7 @@ test_simde_vreinterpretq_f16_u16 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -4400,6 +4519,7 @@ test_simde_vreinterpretq_f32_u32 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -4436,6 +4556,7 @@ test_simde_vreinterpretq_f64_u32 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -4472,6 +4593,7 @@ test_simde_vreinterpretq_s8_u32 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -4508,6 +4630,7 @@ test_simde_vreinterpretq_s16_u32 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -4543,6 +4666,7 @@ test_simde_vreinterpretq_s32_u32 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -4578,6 +4702,7 @@ test_simde_vreinterpretq_s64_u32 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -4614,6 +4739,7 @@ test_simde_vreinterpretq_u8_u32 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -4649,6 +4775,7 @@ test_simde_vreinterpretq_u16_u32 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -4684,6 +4811,7 @@ test_simde_vreinterpretq_u64_u32 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -4720,6 +4848,7 @@ test_simde_vreinterpret_f32_u64 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -4756,6 +4885,7 @@ test_simde_vreinterpret_f64_u64 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -4792,6 +4922,7 @@ test_simde_vreinterpret_s8_u64 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -4828,6 +4959,7 @@ test_simde_vreinterpret_s16_u64 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -4864,6 +4996,7 @@ test_simde_vreinterpret_s32_u64 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -4900,6 +5033,7 @@ test_simde_vreinterpret_s64_u64 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -4936,6 +5070,7 @@ test_simde_vreinterpret_u8_u64 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -4971,6 +5106,7 @@ test_simde_vreinterpret_u16_u64 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -5006,6 +5142,7 @@ test_simde_vreinterpret_u32_u64 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -5041,6 +5178,7 @@ test_simde_vreinterpretq_f32_u64 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -5077,6 +5215,7 @@ test_simde_vreinterpretq_f64_u64 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -5113,6 +5252,7 @@ test_simde_vreinterpretq_s8_u64 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -5149,6 +5289,7 @@ test_simde_vreinterpretq_s16_u64 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -5184,6 +5325,7 @@ test_simde_vreinterpretq_s32_u64 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -5219,6 +5361,7 @@ test_simde_vreinterpretq_s64_u64 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -5255,6 +5398,7 @@ test_simde_vreinterpretq_u8_u64 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -5290,6 +5434,7 @@ test_simde_vreinterpretq_u16_u64 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -5326,6 +5471,7 @@ test_simde_vreinterpretq_u32_u64 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -5362,6 +5508,7 @@ test_simde_vreinterpret_f64_f32 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -5398,6 +5545,7 @@ test_simde_vreinterpret_s8_f32 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -5434,6 +5582,7 @@ test_simde_vreinterpret_s16_f32 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -5470,6 +5619,7 @@ test_simde_vreinterpret_s32_f32 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -5506,6 +5656,7 @@ test_simde_vreinterpret_s64_f32 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -5542,6 +5693,7 @@ test_simde_vreinterpret_u8_f32 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -5577,6 +5729,7 @@ test_simde_vreinterpret_u16_f32 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -5603,6 +5756,7 @@ test_simde_vreinterpret_u16_f16 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -5638,6 +5792,7 @@ test_simde_vreinterpret_u32_f32 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -5673,6 +5828,7 @@ test_simde_vreinterpret_u64_f32 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -5709,6 +5865,7 @@ test_simde_vreinterpretq_f64_f32 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -5745,6 +5902,7 @@ test_simde_vreinterpretq_s8_f32 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -5781,6 +5939,7 @@ test_simde_vreinterpretq_s16_f32 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -5816,6 +5975,7 @@ test_simde_vreinterpretq_s32_f32 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -5851,6 +6011,7 @@ test_simde_vreinterpretq_s64_f32 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -5887,6 +6048,7 @@ test_simde_vreinterpretq_u8_f32 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -5922,6 +6084,7 @@ test_simde_vreinterpretq_u16_f32 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -5956,6 +6119,7 @@ test_simde_vreinterpretq_u16_f16 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -5992,6 +6156,7 @@ test_simde_vreinterpretq_u32_f32 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -6027,6 +6192,7 @@ test_simde_vreinterpretq_u64_f32 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -6063,6 +6229,7 @@ test_simde_vreinterpret_f32_f64 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -6099,6 +6266,7 @@ test_simde_vreinterpret_s8_f64 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -6135,6 +6303,7 @@ test_simde_vreinterpret_s16_f64 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -6171,6 +6340,7 @@ test_simde_vreinterpret_s32_f64 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -6207,6 +6377,7 @@ test_simde_vreinterpret_s64_f64 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -6243,6 +6414,7 @@ test_simde_vreinterpret_u8_f64 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -6278,6 +6450,7 @@ test_simde_vreinterpret_u16_f64 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -6313,6 +6486,7 @@ test_simde_vreinterpret_u32_f64 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -6348,6 +6522,7 @@ test_simde_vreinterpret_u64_f64 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -6383,6 +6558,7 @@ test_simde_vreinterpretq_f32_f64 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -6419,6 +6595,7 @@ test_simde_vreinterpretq_s8_f64 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -6455,6 +6632,7 @@ test_simde_vreinterpretq_s16_f64 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -6490,6 +6668,7 @@ test_simde_vreinterpretq_s32_f64 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -6525,6 +6704,7 @@ test_simde_vreinterpretq_s64_f64 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -6561,6 +6741,7 @@ test_simde_vreinterpretq_u8_f64 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -6596,6 +6777,7 @@ test_simde_vreinterpretq_u16_f64 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -6632,6 +6814,7 @@ test_simde_vreinterpretq_u32_f64 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -6667,6 +6850,7 @@ test_simde_vreinterpretq_u64_f64 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -6703,6 +6887,7 @@ test_simde_vreinterpret_f16_f32 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -6739,6 +6924,7 @@ test_simde_vreinterpret_f16_s16 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -6775,6 +6961,7 @@ test_simde_vreinterpret_f16_s32 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -6811,6 +6998,7 @@ test_simde_vreinterpret_f16_s64 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -6847,6 +7035,7 @@ test_simde_vreinterpret_f16_s8 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -6883,6 +7072,7 @@ test_simde_vreinterpret_f16_u32 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -6919,6 +7109,7 @@ test_simde_vreinterpret_f16_u64 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -6955,6 +7146,7 @@ test_simde_vreinterpret_f16_u8 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -6991,6 +7183,7 @@ test_simde_vreinterpretq_f16_f32 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -7026,6 +7219,7 @@ test_simde_vreinterpretq_f16_s16 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -7062,6 +7256,7 @@ test_simde_vreinterpretq_f16_s32 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -7097,6 +7292,7 @@ test_simde_vreinterpretq_f16_s64 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -7140,6 +7336,7 @@ test_simde_vreinterpretq_f16_s8 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -7176,6 +7373,7 @@ test_simde_vreinterpretq_f16_u32 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -7211,6 +7409,7 @@ test_simde_vreinterpretq_f16_u64 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -7254,6 +7453,7 @@ test_simde_vreinterpretq_f16_u8 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -7290,6 +7490,7 @@ test_simde_vreinterpret_f16_f64 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -7325,6 +7526,7 @@ test_simde_vreinterpretq_f16_f64 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -7352,6 +7554,7 @@ test_simde_vreinterpret_f32_f16 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -7386,6 +7589,7 @@ test_simde_vreinterpretq_f32_f16 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -7413,6 +7617,7 @@ test_simde_vreinterpret_f64_f16 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -7447,6 +7652,7 @@ test_simde_vreinterpretq_f64_f16 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -7474,6 +7680,7 @@ test_simde_vreinterpret_s8_f16 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -7508,6 +7715,7 @@ test_simde_vreinterpretq_s8_f16 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -7535,6 +7743,7 @@ test_simde_vreinterpret_s16_f16 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -7569,6 +7778,7 @@ test_simde_vreinterpretq_s16_f16 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -7596,6 +7806,7 @@ test_simde_vreinterpret_s32_f16 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -7630,6 +7841,7 @@ test_simde_vreinterpretq_s32_f16 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -7657,6 +7869,7 @@ test_simde_vreinterpret_s64_f16 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -7691,6 +7904,7 @@ test_simde_vreinterpretq_s64_f16 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int
@@ -7718,6 +7932,7 @@ test_simde_vreinterpret_u8_f16 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
 }
 
 static int

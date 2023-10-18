@@ -40,7 +40,7 @@ SIMDE_BEGIN_DECLS_
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float16x4x2_t
 simde_vuzp_f16(simde_float16x4_t a, simde_float16x4_t b) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
     return vuzp_f16(a, b);
   #else
     simde_float16x4x2_t r = { { simde_vuzp1_f16(a, b), simde_vuzp2_f16(a, b) } };
@@ -160,7 +160,7 @@ simde_vuzp_u32(simde_uint32x2_t a, simde_uint32x2_t b) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float16x8x2_t
 simde_vuzpq_f16(simde_float16x8_t a, simde_float16x8_t b) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
     return vuzpq_f16(a, b);
   #else
     simde_float16x8x2_t r = { { simde_vuzp1q_f16(a, b), simde_vuzp2q_f16(a, b) } };

@@ -41,7 +41,7 @@ SIMDE_BEGIN_DECLS_
 SIMDE_FUNCTION_ATTRIBUTES
 void
 simde_vst3_f16(simde_float16_t ptr[HEDLEY_ARRAY_PARAM(12)], simde_float16x4x3_t val) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
     vst3_f16(ptr, val);
   #else
     simde_float16x4_private a[3] = { simde_float16x4_to_private(val.val[0]),
@@ -373,7 +373,7 @@ simde_vst3_u64(uint64_t ptr[HEDLEY_ARRAY_PARAM(3)], simde_uint64x1x3_t val) {
 SIMDE_FUNCTION_ATTRIBUTES
 void
 simde_vst3q_f16(simde_float16_t ptr[HEDLEY_ARRAY_PARAM(24)], simde_float16x8x3_t val) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
     vst3q_f16(ptr, val);
   #else
     simde_float16x8_private a_[3] = { simde_float16x8_to_private(val.val[0]),

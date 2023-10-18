@@ -44,14 +44,14 @@ simde_vqrshrun_high_n_s16(simde_uint8x8_t r, simde_int16x8_t a, const int n)
 
   SIMDE_VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-    int16_t tmp = (a_.values[i] + (1 << (n - 1))) >> n;
+    int16_t tmp = HEDLEY_STATIC_CAST(int16_t, (a_.values[i] + (1 << (n - 1))) >> n);
     if (tmp > UINT8_MAX) tmp = UINT8_MAX;
     else if (tmp < 0) tmp = 0;
     r_.values[i] = HEDLEY_STATIC_CAST(uint8_t, tmp);
   }
   return simde_vcombine_u8(r, simde_vqmovn_u16(simde_uint16x8_from_private(r_)));
 }
-#if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+#if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && !defined(__clang__)
   #define simde_vqrshrun_high_n_s16(r, a, n) vqrshrun_high_n_s16((r), (a), (n))
 #endif
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
@@ -75,7 +75,7 @@ simde_vqrshrun_high_n_s32(simde_uint16x4_t r, simde_int32x4_t a, const int n)
   }
   return simde_vcombine_u16(r, simde_vqmovn_u32(simde_uint32x4_from_private(r_)));
 }
-#if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+#if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && !defined(__clang__)
   #define simde_vqrshrun_high_n_s32(r, a, n) vqrshrun_high_n_s32((r), (a), (n))
 #endif
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
@@ -99,7 +99,7 @@ simde_vqrshrun_high_n_s64(simde_uint32x2_t r, simde_int64x2_t a, const int n)
   }
   return simde_vcombine_u32(r, simde_vqmovn_u64(simde_uint64x2_from_private(r_)));
 }
-#if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+#if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && !defined(__clang__)
   #define simde_vqrshrun_high_n_s64(r, a, n) vqrshrun_high_n_s64((r), (a), (n))
 #endif
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)

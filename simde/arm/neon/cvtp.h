@@ -40,16 +40,19 @@ simde_vcvtph_s64_f16(simde_float16 a) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
     return vcvtph_s64_f16(a);
   #elif defined(SIMDE_FAST_CONVERSION_RANGE)
-    return HEDLEY_STATIC_CAST(int64_t, simde_math_ceil(a));
+    return HEDLEY_STATIC_CAST(int64_t,
+        simde_math_ceilf(
+        simde_float16_to_float32(a)));
   #else
-    if (HEDLEY_UNLIKELY(a <= HEDLEY_STATIC_CAST(simde_float16, INT64_MIN))) {
+    simde_float32 af = simde_float16_to_float32(a);
+    if (HEDLEY_UNLIKELY(af <= HEDLEY_STATIC_CAST(simde_float32, INT64_MIN))) {
       return INT64_MIN;
-    } else if (HEDLEY_UNLIKELY(a >= HEDLEY_STATIC_CAST(simde_float16, INT64_MAX))) {
+    } else if (HEDLEY_UNLIKELY(af >= HEDLEY_STATIC_CAST(simde_float32, INT64_MAX))) {
       return INT64_MAX;
-    } else if (simde_math_isnan(a)) {
+    } else if (HEDLEY_UNLIKELY(simde_math_isnanf(af))) {
       return 0;
     } else {
-      return HEDLEY_STATIC_CAST(int64_t, simde_math_ceil(a));
+      return HEDLEY_STATIC_CAST(int64_t, simde_math_ceilf(af));
     }
   #endif
 }
@@ -64,16 +67,19 @@ simde_vcvtph_s32_f16(simde_float16 a) {
   #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
     return vcvtph_s32_f16(a);
   #elif defined(SIMDE_FAST_CONVERSION_RANGE)
-    return HEDLEY_STATIC_CAST(int32_t, simde_math_ceil(a));
+    return HEDLEY_STATIC_CAST(int32_t,
+        simde_math_ceilf(
+        simde_float16_to_float32(a)));
   #else
-    if (HEDLEY_UNLIKELY(a <= HEDLEY_STATIC_CAST(simde_float16, INT32_MIN))) {
+    simde_float32 af = simde_float16_to_float32(a);
+    if (HEDLEY_UNLIKELY(af <= HEDLEY_STATIC_CAST(simde_float32, INT32_MIN))) {
       return INT32_MIN;
-    } else if (HEDLEY_UNLIKELY(a >= HEDLEY_STATIC_CAST(simde_float16, INT32_MAX))) {
+    } else if (HEDLEY_UNLIKELY(af >= HEDLEY_STATIC_CAST(simde_float32, INT32_MAX))) {
       return INT32_MAX;
-    } else if (simde_math_isnan(a)) {
+    } else if (HEDLEY_UNLIKELY(simde_math_isnanf(af))) {
       return 0;
     } else {
-      return HEDLEY_STATIC_CAST(int32_t, simde_math_ceil(a));
+      return HEDLEY_STATIC_CAST(int32_t, simde_math_ceilf(af));
     }
   #endif
 }
@@ -88,14 +94,19 @@ simde_vcvtph_s16_f16(simde_float16 a) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
     return vcvtph_s16_f16(a);
   #elif defined(SIMDE_FAST_CONVERSION_RANGE)
-    return HEDLEY_STATIC_CAST(int16_t, simde_math_ceil(a));
+    return HEDLEY_STATIC_CAST(int16_t,
+        simde_math_ceilf(
+        simde_float16_to_float32(a)));
   #else
-    if (HEDLEY_UNLIKELY(a < HEDLEY_STATIC_CAST(simde_float16, INT16_MIN))) {
+    simde_float32 af = simde_float16_to_float32(a);
+    if (HEDLEY_UNLIKELY(af <= HEDLEY_STATIC_CAST(simde_float32, INT16_MIN))) {
       return INT16_MIN;
-    } else if (HEDLEY_UNLIKELY(a > HEDLEY_STATIC_CAST(simde_float16, INT16_MAX))) {
+    } else if (HEDLEY_UNLIKELY(af >= HEDLEY_STATIC_CAST(simde_float32, INT16_MAX))) {
       return INT16_MAX;
+    } else if (HEDLEY_UNLIKELY(simde_math_isnanf(af))) {
+      return 0;
     } else {
-      return HEDLEY_STATIC_CAST(int16_t, simde_math_ceil(a));
+      return HEDLEY_STATIC_CAST(int16_t, simde_math_ceilf(af));
     }
   #endif
 }
@@ -107,19 +118,22 @@ simde_vcvtph_s16_f16(simde_float16 a) {
 SIMDE_FUNCTION_ATTRIBUTES
 uint64_t
 simde_vcvtph_u64_f16(simde_float16 a) {
-  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
     return vcvtph_u64_f16(a);
   #elif defined(SIMDE_FAST_CONVERSION_RANGE)
-    return HEDLEY_STATIC_CAST(uint64_t, simde_math_ceil(a));
+    return HEDLEY_STATIC_CAST(uint64_t,
+        simde_math_ceilf(
+        simde_float16_to_float32(a)));
   #else
-    if (HEDLEY_UNLIKELY(a <= SIMDE_FLOAT16_C(0.0))) {
+    simde_float32 af = simde_float16_to_float32(a);
+    if (HEDLEY_UNLIKELY(af <= HEDLEY_STATIC_CAST(simde_float32, 0.0))) {
       return 0;
-    } else if (HEDLEY_UNLIKELY(a >= HEDLEY_STATIC_CAST(simde_float16, UINT64_MAX))) {
+    } else if (HEDLEY_UNLIKELY(af >= HEDLEY_STATIC_CAST(simde_float32, UINT64_MAX))) {
       return UINT64_MAX;
-    } else if (simde_math_isnan(a)) {
+    } else if (HEDLEY_UNLIKELY(simde_math_isnanf(af))) {
       return 0;
     } else {
-      return HEDLEY_STATIC_CAST(uint64_t, simde_math_ceil(a));
+      return HEDLEY_STATIC_CAST(uint64_t, simde_math_ceilf(af));
     }
   #endif
 }
@@ -131,19 +145,22 @@ simde_vcvtph_u64_f16(simde_float16 a) {
 SIMDE_FUNCTION_ATTRIBUTES
 uint32_t
 simde_vcvtph_u32_f16(simde_float16 a) {
-  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
     return vcvtph_u32_f16(a);
   #elif defined(SIMDE_FAST_CONVERSION_RANGE)
-    return HEDLEY_STATIC_CAST(uint32_t, simde_math_ceil(a));
+    return HEDLEY_STATIC_CAST(uint32_t,
+        simde_math_ceilf(
+        simde_float16_to_float32(a)));
   #else
-    if (HEDLEY_UNLIKELY(a <= SIMDE_FLOAT16_C(0.0))) {
+    simde_float32 af = simde_float16_to_float32(a);
+    if (HEDLEY_UNLIKELY(af <= HEDLEY_STATIC_CAST(simde_float32, 0.0))) {
       return 0;
-    } else if (HEDLEY_UNLIKELY(a >= HEDLEY_STATIC_CAST(simde_float16, UINT32_MAX))) {
+    } else if (HEDLEY_UNLIKELY(af >= HEDLEY_STATIC_CAST(simde_float32, UINT32_MAX))) {
       return UINT32_MAX;
-    } else if (simde_math_isnan(a)) {
+    } else if (HEDLEY_UNLIKELY(simde_math_isnanf(af))) {
       return 0;
     } else {
-      return HEDLEY_STATIC_CAST(uint32_t, simde_math_ceil(a));
+      return HEDLEY_STATIC_CAST(uint32_t, simde_math_ceilf(af));
     }
   #endif
 }
@@ -155,19 +172,22 @@ simde_vcvtph_u32_f16(simde_float16 a) {
 SIMDE_FUNCTION_ATTRIBUTES
 uint16_t
 simde_vcvtph_u16_f16(simde_float16 a) {
-  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
     return vcvtph_u16_f16(a);
   #elif defined(SIMDE_FAST_CONVERSION_RANGE)
-    return HEDLEY_STATIC_CAST(uint16_t, simde_math_ceil(a));
+    return HEDLEY_STATIC_CAST(uint16_t,
+        simde_math_ceilf(
+        simde_float16_to_float32(a)));
   #else
-    if (HEDLEY_UNLIKELY(a <= SIMDE_FLOAT16_C(0.0))) {
+    simde_float32 af = simde_float16_to_float32(a);
+    if (HEDLEY_UNLIKELY(af <= HEDLEY_STATIC_CAST(simde_float32, 0.0))) {
       return 0;
-    } else if (HEDLEY_UNLIKELY(a >= HEDLEY_STATIC_CAST(simde_float16, UINT16_MAX))) {
+    } else if (HEDLEY_UNLIKELY(af >= HEDLEY_STATIC_CAST(simde_float32, UINT16_MAX))) {
       return UINT16_MAX;
-    } else if (simde_math_isnan(a)) {
+    } else if (HEDLEY_UNLIKELY(simde_math_isnanf(af))) {
       return 0;
     } else {
-      return HEDLEY_STATIC_CAST(uint16_t, simde_math_ceil(a));
+      return HEDLEY_STATIC_CAST(uint16_t, simde_math_ceilf(af));
     }
   #endif
 }
@@ -179,10 +199,10 @@ simde_vcvtph_u16_f16(simde_float16 a) {
 SIMDE_FUNCTION_ATTRIBUTES
 int32_t
 simde_vcvtps_s32_f32(simde_float32 a) {
-  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vcvtps_s32_f32(a);
   #elif defined(SIMDE_FAST_CONVERSION_RANGE)
-    return HEDLEY_STATIC_CAST(int32_t, simde_math_ceil(a));
+    return HEDLEY_STATIC_CAST(int32_t, simde_math_ceilf(a));
   #else
     if (HEDLEY_UNLIKELY(a < HEDLEY_STATIC_CAST(simde_float32, INT32_MIN))) {
       return INT32_MIN;
@@ -191,11 +211,11 @@ simde_vcvtps_s32_f32(simde_float32 a) {
     } else if (HEDLEY_UNLIKELY(simde_math_isnanf(a))) {
       return 0;
     } else {
-      return HEDLEY_STATIC_CAST(int32_t, simde_math_ceil(a));
+      return HEDLEY_STATIC_CAST(int32_t, simde_math_ceilf(a));
     }
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
   #undef vcvtps_s32_f32
   #define vcvtps_s32_f32(a) simde_vcvtps_s32_f32(a)
 #endif
@@ -203,10 +223,10 @@ simde_vcvtps_s32_f32(simde_float32 a) {
 SIMDE_FUNCTION_ATTRIBUTES
 uint32_t
 simde_vcvtps_u32_f32(simde_float32 a) {
-  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vcvtps_u32_f32(a);
   #elif defined(SIMDE_FAST_CONVERSION_RANGE)
-    return HEDLEY_STATIC_CAST(uint32_t, simde_math_ceil(a));
+    return HEDLEY_STATIC_CAST(uint32_t, simde_math_ceilf(a));
   #else
     if (HEDLEY_UNLIKELY(a < SIMDE_FLOAT32_C(0.0))) {
       return 0;
@@ -215,11 +235,11 @@ simde_vcvtps_u32_f32(simde_float32 a) {
     } else if (HEDLEY_UNLIKELY(simde_math_isnanf(a))) {
       return 0;
     } else {
-      return HEDLEY_STATIC_CAST(uint32_t, simde_math_ceil(a));
+      return HEDLEY_STATIC_CAST(uint32_t, simde_math_ceilf(a));
     }
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
   #undef vcvtps_u32_f32
   #define vcvtps_u32_f32(a) simde_vcvtps_u32_f32(a)
 #endif
