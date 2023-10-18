@@ -307,6 +307,8 @@ We would love to add more, so patches are extremely welcome!
      [powerveclib](https://www.ibm.com/developerworks/community/groups/community/powerveclib/)
    * [SSE-to-NEON](https://github.com/otim/SSE-to-NEON) — implementing
      SSE with NEON.  Non-free, C++.
+   * [AvxToNeon](https://github.com/kunpengcompute/AvxToNeon) — Popular
+      AVX+ intrinsincs implemented in NEON. C, Apache 2.0 license.     
  * [arm-neon-tests](https://github.com/christophe-lyon/arm-neon-tests)
    contains tests to verify NEON implementations.
 
