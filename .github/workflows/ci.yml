@@ -278,6 +278,13 @@ jobs:
           distro: ubuntu-22.04
           arch_flags: -ffast-math
           ccache: 'true'
+        - version: 13
+          distro: ubuntu-22.04
+          arch_flags: -march=native
+        - version: 13
+          distro: ubuntu-22.04
+          arch_flags: -ffast-math
+          ccache: 'true'
     runs-on: ${{ matrix.distro }}
     env:
       CFLAGS: ${{ matrix.arch_flags }} -Wall -Wextra -Werror
