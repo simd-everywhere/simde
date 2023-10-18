@@ -72,6 +72,7 @@ init:
 
 on_failure:
 - appveyor PushArtifact build\meson-logs\meson-log.txt
+- appveyor PushArtifact build\meson-logs\testlog.txt
 
 install:
   - cmd: set PATH=%PYTHON_DIR%;%PYTHON_DIR%\scripts;%PATH%
