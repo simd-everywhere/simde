@@ -79,7 +79,7 @@ simde_vqrdmlsh_s16(simde_int16x4_t a, simde_int16x4_t b, simde_int16x4_t c) {
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
       r_.values[i] = simde_vqrdmlshh_s16(a_.values[i], b_.values[i], c_.values[i]);
     }
-    
+
     return simde_int16x4_from_private(r_);
 
   #endif
@@ -105,7 +105,7 @@ simde_vqrdmlsh_s32(simde_int32x2_t a, simde_int32x2_t b, simde_int32x2_t c) {
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
       r_.values[i] = simde_vqrdmlshs_s32(a_.values[i], b_.values[i], c_.values[i]);
     }
-    
+
     return simde_int32x2_from_private(r_);
 
   #endif
@@ -131,7 +131,7 @@ simde_vqrdmlshq_s16(simde_int16x8_t a, simde_int16x8_t b, simde_int16x8_t c) {
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
       r_.values[i] = simde_vqrdmlshh_s16(a_.values[i], b_.values[i], c_.values[i]);
     }
-    
+
     return simde_int16x8_from_private(r_);
 
   #endif
@@ -157,7 +157,7 @@ simde_vqrdmlshq_s32(simde_int32x4_t a, simde_int32x4_t b, simde_int32x4_t c) {
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
       r_.values[i] = simde_vqrdmlshs_s32(a_.values[i], b_.values[i], c_.values[i]);
     }
-    
+
     return simde_int32x4_from_private(r_);
 
   #endif
