@@ -39,7 +39,7 @@ SIMDE_FUNCTION_ATTRIBUTES
 int8_t
 simde_vqshlb_n_s8(int8_t a, const int n)
     SIMDE_REQUIRE_CONSTANT_RANGE(n, 0, 7) {
-  return simde_vqshlb_s8(a, n);
+  return simde_vqshlb_s8(a, HEDLEY_STATIC_CAST(int8_t, n));
 }
 #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
   #define simde_vqshlb_n_s8(a, n) vqshlb_n_s8((a), (n))
@@ -53,7 +53,7 @@ SIMDE_FUNCTION_ATTRIBUTES
 int16_t
 simde_vqshlh_n_s16(int16_t a, const int n)
     SIMDE_REQUIRE_CONSTANT_RANGE(n, 0, 15) {
-  return simde_vqshlh_s16(a, n);
+  return simde_vqshlh_s16(a, HEDLEY_STATIC_CAST(int16_t, n));
 }
 #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
   #define simde_vqshlh_n_s16(a, n) vqshlh_n_s16((a), (n))
@@ -95,7 +95,7 @@ SIMDE_FUNCTION_ATTRIBUTES
 uint8_t
 simde_vqshlb_n_u8(uint8_t a, const int n)
     SIMDE_REQUIRE_CONSTANT_RANGE(n, 0, 7) {
-  return simde_vqshlb_u8(a, n);
+  return simde_vqshlb_u8(a, HEDLEY_STATIC_CAST(int8_t, n));
 }
 #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
   #define simde_vqshlb_n_u8(a, n) vqshlb_n_u8((a), (n))
@@ -109,7 +109,7 @@ SIMDE_FUNCTION_ATTRIBUTES
 uint16_t
 simde_vqshlh_n_u16(uint16_t a, const int n)
     SIMDE_REQUIRE_CONSTANT_RANGE(n, 0, 15) {
-  return simde_vqshlh_u16(a, n);
+  return simde_vqshlh_u16(a, HEDLEY_STATIC_CAST(int16_t, n));
 }
 #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
   #define simde_vqshlh_n_u16(a, n) vqshlh_n_u16((a), (n))
@@ -157,7 +157,7 @@ simde_vqshl_n_s8 (const simde_int8x8_t a, const int n)
 
   SIMDE_VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-    r_.values[i] = simde_vqshlb_s8(a_.values[i], n);
+    SIMDE_CONSTIFY_8_(simde_vqshlb_n_s8, r_.values[i], (HEDLEY_UNREACHABLE(), 0), n, a_.values[i]);
   }
   return simde_int8x8_from_private(r_);
 }
@@ -179,7 +179,7 @@ simde_vqshl_n_s16 (const simde_int16x4_t a, const int n)
 
   SIMDE_VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-    r_.values[i] = simde_vqshlh_s16(a_.values[i], n);
+    SIMDE_CONSTIFY_16_(simde_vqshlh_n_s16, r_.values[i], (HEDLEY_UNREACHABLE(), 0), n, a_.values[i]);
   }
   return simde_int16x4_from_private(r_);
 }
@@ -245,7 +245,7 @@ simde_vqshl_n_u8 (const simde_uint8x8_t a, const int n)
 
   SIMDE_VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-    r_.values[i] = simde_vqshlb_u8(a_.values[i], n);
+    SIMDE_CONSTIFY_8_(simde_vqshlb_n_u8, r_.values[i], (HEDLEY_UNREACHABLE(), 0), n, a_.values[i]);
   }
   return simde_uint8x8_from_private(r_);
 }
@@ -267,7 +267,7 @@ simde_vqshl_n_u16 (const simde_uint16x4_t a, const int n)
 
   SIMDE_VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-    r_.values[i] = simde_vqshlh_u16(a_.values[i], n);
+    SIMDE_CONSTIFY_16_(simde_vqshlh_n_u16, r_.values[i], (HEDLEY_UNREACHABLE(), 0), n, a_.values[i]);
   }
   return simde_uint16x4_from_private(r_);
 }
@@ -333,7 +333,7 @@ simde_vqshlq_n_s8 (const simde_int8x16_t a, const int n)
 
   SIMDE_VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-    r_.values[i] = simde_vqshlb_s8(a_.values[i], n);
+    SIMDE_CONSTIFY_8_(simde_vqshlb_n_s8, r_.values[i], (HEDLEY_UNREACHABLE(), 0), n, a_.values[i]);
   }
 
   return simde_int8x16_from_private(r_);
@@ -356,7 +356,7 @@ simde_vqshlq_n_s16 (const simde_int16x8_t a, const int n)
 
   SIMDE_VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-    r_.values[i] = simde_vqshlh_s16(a_.values[i], n);
+    SIMDE_CONSTIFY_16_(simde_vqshlh_n_s16, r_.values[i], (HEDLEY_UNREACHABLE(), 0), n, a_.values[i]);
   }
 
   return simde_int16x8_from_private(r_);
@@ -425,7 +425,7 @@ simde_vqshlq_n_u8 (const simde_uint8x16_t a, const int n)
 
   SIMDE_VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-    r_.values[i] = simde_vqshlb_u8(a_.values[i], n);
+    SIMDE_CONSTIFY_8_(simde_vqshlb_n_u8, r_.values[i], (HEDLEY_UNREACHABLE(), 0), n, a_.values[i]);
   }
 
   return simde_uint8x16_from_private(r_);
@@ -448,7 +448,7 @@ simde_vqshlq_n_u16 (const simde_uint16x8_t a, const int n)
 
   SIMDE_VECTORIZE
   for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-    r_.values[i] = simde_vqshlh_u16(a_.values[i], n);
+    SIMDE_CONSTIFY_16_(simde_vqshlh_n_u16, r_.values[i], (HEDLEY_UNREACHABLE(), 0), n, a_.values[i]);
   }
 
   return simde_uint16x8_from_private(r_);

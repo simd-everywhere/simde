@@ -26,9 +26,6 @@
  *   2023      Yi-Yen Chung <eric681@andestech.com> (Copyright owned by Andes Technology)
  */
 
-/* N.B. CM: vrev64_f16 and vrev64q_f16 are omitted as
- * SIMDe has no 16-bit floating point support. */
-
 #if !defined(SIMDE_ARM_NEON_REV64_H)
 #define SIMDE_ARM_NEON_REV64_H
 
@@ -171,7 +168,7 @@ simde_vrev64_u32(simde_uint32x2_t a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float16x4_t
 simde_vrev64_f16(simde_float16x4_t a) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
     return vrev64_f16(a);
   #else
     return simde_vreinterpret_f16_s16(simde_vrev64_s16(simde_vreinterpret_s16_f16(a)));
@@ -352,7 +349,7 @@ simde_vrev64q_u32(simde_uint32x4_t a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float16x8_t
 simde_vrev64q_f16(simde_float16x8_t a) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
     return vrev64q_f16(a);
   #else
     return simde_vreinterpretq_f16_s16(simde_vrev64q_s16(simde_vreinterpretq_s16_f16(a)));

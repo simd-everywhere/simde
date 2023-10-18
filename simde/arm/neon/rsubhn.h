@@ -47,10 +47,10 @@ simde_vrsubhn_s16(simde_int16x8_t a, simde_int16x8_t b) {
       r_,
       a_ = simde_int16x8_to_private(a),
       b_ = simde_int16x8_to_private(b);
-    int round_cast = 1 << 7;
+    int16_t round_cast = 1 << 7;
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = a_.values[i] - b_.values[i] + round_cast;
+      r_.values[i] = HEDLEY_STATIC_CAST(int16_t, a_.values[i] - b_.values[i] + round_cast);
     }
     return simde_vmovn_s16(simde_vshrq_n_s16(simde_int16x8_from_private(r_), 8));
   #endif
@@ -93,11 +93,10 @@ simde_vrsubhn_s64(simde_int64x2_t a, simde_int64x2_t b) {
       r_,
       a_ = simde_int64x2_to_private(a),
       b_ = simde_int64x2_to_private(b);
-    int round_cast = 1 << 31;
+    int64_t round_cast = 1ll << 31;
     SIMDE_VECTORIZE
-    // Strangely, the answer needs to be increased by one to be the same as QEMU's result.
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = ((a_.values[i] - b_.values[i] + round_cast) >> 32) + 1;
+      r_.values[i] = ((a_.values[i] - b_.values[i] + round_cast) >> 32);
     }
     return simde_vmovn_s64(simde_int64x2_from_private(r_));
   #endif
@@ -117,10 +116,10 @@ simde_vrsubhn_u16(simde_uint16x8_t a, simde_uint16x8_t b) {
       r_,
       a_ = simde_uint16x8_to_private(a),
       b_ = simde_uint16x8_to_private(b);
-    int round_cast = 1 << 7;
+    uint16_t round_cast = 1 << 7;
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = a_.values[i] - b_.values[i] + round_cast;
+      r_.values[i] = HEDLEY_STATIC_CAST(uint16_t, a_.values[i] - b_.values[i] + round_cast);
     }
     return simde_vmovn_u16(simde_vshrq_n_u16(simde_uint16x8_from_private(r_), 8));
   #endif
@@ -140,7 +139,7 @@ simde_vrsubhn_u32(simde_uint32x4_t a, simde_uint32x4_t b) {
       r_,
       a_ = simde_uint32x4_to_private(a),
       b_ = simde_uint32x4_to_private(b);
-    int round_cast = 1 << 15;
+    uint32_t round_cast = 1 << 15;
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
       r_.values[i] = a_.values[i] - b_.values[i] + round_cast;
@@ -163,11 +162,10 @@ simde_vrsubhn_u64(simde_uint64x2_t a, simde_uint64x2_t b) {
       r_,
       a_ = simde_uint64x2_to_private(a),
       b_ = simde_uint64x2_to_private(b);
-    int round_cast = 1 << 31;
+    uint64_t round_cast = 1ull << 31;
     SIMDE_VECTORIZE
-    // Strangely, the answer needs to be increased by one to be the same as QEMU's result.
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = ((a_.values[i] - b_.values[i] + round_cast) >> 32) + 1;
+      r_.values[i] = ((a_.values[i] - b_.values[i] + round_cast) >> 32);
     }
     return simde_vmovn_u64(simde_uint64x2_from_private(r_));
   #endif
