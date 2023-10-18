@@ -389,42 +389,37 @@ jobs:
 
   clang-qemu:
     strategy:
+      fail-fast: false
       matrix:
         include:
-        - version: 15
+        - version: 16
           cross: armv7
           arch_deb: armhf
           arch_gnu_abi: eabihf
           arch_gnu: arm
           distro: ubuntu-22.04
-        - version: 15
+        - version: 16
           cross: aarch64
           arch_gnu: aarch64
           arch_deb: arm64
           distro: ubuntu-22.04
-        - version: 15
+        - version: 16
           cross: armel
           arch_gnu_abi: eabi
           arch_deb: armel
           arch_gnu: arm
           distro: ubuntu-22.04
-        - version: 15
+        - version: 16
           cross: riscv64
           arch_gnu: riscv64
           arch_deb: riscv64
           distro: ubuntu-22.04
-        # - version: 15
-        #   cross: armel
-        #   arch_gnu_abi: eabi
-        #   arch_deb: armel
-        #   arch_gnu: arm
-        #   distro: ubuntu-22.04
-        # - version: 15
+        # - version: 16
         #   cross: s390x
         #   arch_gnu: s390x
         #   arch_deb: s390x
         #   distro: ubuntu-22.04
-        - version: 15
+        - version: 16
           cross: ppc64el
           arch_deb: ppc64el
           arch_gnu: powerpc64le
@@ -440,6 +435,7 @@ jobs:
     - name: Install APT Dependencies
       run: |
         sudo add-apt-repository ppa:savoury1/virtualisation
+        sudo add-apt-repository ppa:savoury1/display
         sudo apt-get update -y
         sudo apt-get -yq install ninja-build parallel \
           binfmt-support clang-${{ matrix.version }} clang++-${{ matrix.version }} \
@@ -454,7 +450,9 @@ jobs:
       run: |
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
     - name: Configure
-      run: meson setup --cross-file=docker/cross-files/${{ matrix.cross }}-clang-${{ matrix.version }}-ccache.cross build
+      run: |
+        meson setup --cross-file=docker/cross-files/${{ matrix.cross }}-clang-${{ matrix.version }}-ccache.cross build \
+          || (cat build/meson-logs/meson-log.txt ; false)
     - name: Build
       run: ninja -C build -v
     - name: Test
@@ -504,6 +502,13 @@ jobs:
           distro: ubuntu-22.04
           arch_flags: -ffast-math
           ccache: 'true'
+        - version: "16"
+          distro: ubuntu-22.04
+          arch_flags: -march=native -Wno-unsafe-buffer-usage
+        - version: "16"
+          distro: ubuntu-22.04
+          arch_flags: -ffast-math -Wno-unsafe-buffer-usage
+          ccache: 'true'
     runs-on: ${{ matrix.distro }}
     env:
       CFLAGS: ${{ matrix.arch_flags }} -Wall -Weverything -Werror -fno-lax-vector-conversions
@@ -517,6 +522,7 @@ jobs:
     - name: Install APT Dependencies
       run: |
         sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+        sudo add-apt-repository ppa:savoury1/display
         sudo apt-get update
         sudo apt-get -yq install gcovr ninja-build python3-pip clang-${{ matrix.version }}
         sudo python3 -m pip install meson==0.55.0

@@ -1,0 +1,20 @@
+[binaries]
+c = ['ccache', 'clang-16']
+cpp = ['ccache', 'clang++-16']
+ar = 'llvm-ar-16'
+strip = 'llvm-strip-16'
+objcopy = 'llvm-objcopy-16'
+ld = 'llvm-ld-16'
+exe_wrapper = ['qemu-s390x-static', '-L', '/usr/s390x-linux-gnu/']
+
+[properties]
+c_args        = ['--target=s390x-ibm-linux', '-mpcu=z196', '-isystem=/usr/s390x-linux-gnu/include', '-Weverything', '-fno-lax-vector-conversions', '-Werror', '-Wno-unsafe-buffer-usage']
+cpp_args      = ['--target=s390x-ibm-linux', '-mpcu=z196', '-isystem=/usr/s390x-linux-gnu/include', '-Weverything', '-fno-lax-vector-conversions', '-Werror', '-Wno-unsafe-buffer-usage']
+c_link_args   = ['--target=s390x-ibm-linux']
+cpp_link_args = ['--target=s390x-ibm-linux']
+
+[host_machine]
+system = 'linux'
+cpu_family = 's390x'
+cpu = 's390x'
+endian = 'big'
