@@ -21,7 +21,7 @@
  * SOFTWARE.
  *
  * Copyright:
- *   2020      Evan Nemerson <evan@nemerson.com>
+ *   2023      Yi-Yen Chung <eric681@andestech.com> (Copyright owned by Andes Technology)
  */
 
 #if !defined(SIMDE_ARM_NEON_AES_H)
@@ -73,7 +73,7 @@ static const uint8_t rsbox[256] = {
 
 static uint8_t xtime(uint8_t x)
 {
-  return ((x<<1) ^ (((x>>7) & 1) * 0x1b));
+  return HEDLEY_STATIC_CAST(uint8_t, (x<<1) ^ (((x>>7) & 1) * 0x1b));
 }
 
 SIMDE_FUNCTION_ATTRIBUTES

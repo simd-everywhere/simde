@@ -1657,16 +1657,18 @@ test_simde_vaddq_p128 (SIMDE_MUNIT_TEST_ARGS) {
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
     simde_poly128_t a = test_vec[i].a[0];
+    simde_poly128_t b = test_vec[i].b[0];
+    simde_poly128_t r, mask;
+    simde_poly64_t top_r, bottom_r;
     a = a << 64;
     a = a | test_vec[i].a[1];
-    simde_poly128_t b = test_vec[i].b[0];
     b =  b << 64;
     b =  b | test_vec[i].b[1];
-    simde_poly128_t r = simde_vaddq_p128(a, b);
+    r = simde_vaddq_p128(a, b);
 
-    simde_poly128_t mask = (simde_poly128_t)0xFFFFFFFFFFFFFFFFull;
-    simde_poly64_t top_r = (simde_poly64_t)((r >> 64) & mask);
-    simde_poly64_t bottom_r = (simde_poly64_t)((r << 64) >> 64);
+    mask = HEDLEY_STATIC_CAST(simde_poly128_t, 0xFFFFFFFFFFFFFFFFull);
+    top_r = HEDLEY_STATIC_CAST(simde_poly64_t, (r >> 64) & mask);
+    bottom_r = HEDLEY_STATIC_CAST(simde_poly64_t, (r << 64) >> 64);
 
     simde_assert_equal_p64(top_r, test_vec[i].r[0]);
     simde_assert_equal_p64(bottom_r, test_vec[i].r[1]);
