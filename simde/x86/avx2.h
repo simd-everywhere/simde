@@ -5117,6 +5117,8 @@ simde__m256i
 simde_mm256_stream_load_si256 (const simde__m256i* mem_addr) {
   #if defined(SIMDE_X86_AVX2_NATIVE)
     return _mm256_stream_load_si256(HEDLEY_CONST_CAST(simde__m256i*, mem_addr));
+  #elif HEDLEY_HAS_BUILTIN(__builtin_nontemporal_store) && defined(SIMDE_VECTOR_SUBSCRIPT)
+    return __builtin_nontemporal_load(mem_addr);
   #else
     simde__m256i r;
     simde_memcpy(&r, SIMDE_ALIGN_ASSUME_LIKE(mem_addr, simde__m256i), sizeof(r));

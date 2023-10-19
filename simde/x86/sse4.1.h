@@ -2139,10 +2139,13 @@ simde__m128i
 simde_mm_stream_load_si128 (const simde__m128i* mem_addr) {
   #if defined(SIMDE_X86_SSE4_1_NATIVE)
     return _mm_stream_load_si128(HEDLEY_CONST_CAST(simde__m128i*, mem_addr));
-  #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-    return vreinterpretq_s64_s32(vld1q_s32(HEDLEY_REINTERPRET_CAST(int32_t const*, mem_addr)));
+  #elif HEDLEY_HAS_BUILTIN(__builtin_nontemporal_load) && ( \
+      defined(SIMDE_ARM_NEON_A32V7_NATIVE) || defined(SIMDE_VECTOR_SUBSCRIPT) || \
+      defined(SIMDE_WASM_SIMD128_NATIVE) || defined(SIMDE_POWER_ALTIVEC_P6_NATIVE) || \
+      defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE))
+    return __builtin_nontemporal_load(mem_addr);
   #else
-    return *mem_addr;
+    return simde_mm_load_si128(mem_addr);
   #endif
 }
 #if defined(SIMDE_X86_SSE4_1_ENABLE_NATIVE_ALIASES)
