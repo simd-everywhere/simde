@@ -44,7 +44,6 @@ test_simde_vcadd_rot90_f16 (SIMDE_MUNIT_TEST_ARGS) {
 
     simde_test_arm_neon_assert_equal_f16x4(r, simde_vld1_f16(test_vec[i].r), 1);
   }
-  
 
   return 0;
 #else
