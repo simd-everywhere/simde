@@ -3323,28 +3323,17 @@ simde_mm_movemask_ps (simde__m128 a) {
     int r = 0;
     simde__m128_private a_ = simde__m128_to_private(a);
 
-    #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+      static const int32_t shift[4] = {0, 1, 2, 3};
+      uint32x4_t tmp = vshrq_n_u32(a_.neon_u32, 31);
+      return HEDLEY_STATIC_CAST(int32_t, vaddvq_u32(vshlq_u32(tmp, vld1q_s32(shift))));
+    #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       // Shift out everything but the sign bits with a 32-bit unsigned shift right.
       uint64x2_t high_bits = vreinterpretq_u64_u32(vshrq_n_u32(a_.neon_u32, 31));
       // Merge the two pairs together with a 64-bit unsigned shift right + add.
       uint8x16_t paired = vreinterpretq_u8_u64(vsraq_n_u64(high_bits, high_bits, 31));
       // Extract the result.
       return vgetq_lane_u8(paired, 0) | (vgetq_lane_u8(paired, 8) << 2);
-    #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-      static const uint32_t md[4] = {
-        1 << 0, 1 << 1, 1 << 2, 1 << 3
-      };
-
-      uint32x4_t extended = vreinterpretq_u32_s32(vshrq_n_s32(a_.neon_i32, 31));
-      uint32x4_t masked = vandq_u32(vld1q_u32(md), extended);
-      #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
-        return HEDLEY_STATIC_CAST(int32_t, vaddvq_u32(masked));
-      #else
-        uint64x2_t t64 = vpaddlq_u32(masked);
-        return
-          HEDLEY_STATIC_CAST(int, vgetq_lane_u64(t64, 0)) +
-          HEDLEY_STATIC_CAST(int, vgetq_lane_u64(t64, 1));
-      #endif
     #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE) && defined(SIMDE_BUG_CLANG_50932)
       SIMDE_POWER_ALTIVEC_VECTOR(unsigned char) idx = { 96, 64, 32, 0, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128 };
       SIMDE_POWER_ALTIVEC_VECTOR(unsigned char) res = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned char), vec_bperm(HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned __int128), a_.altivec_u64), idx));
@@ -4786,9 +4775,15 @@ void
 simde_mm_stream_ps (simde_float32 mem_addr[4], simde__m128 a) {
   #if defined(SIMDE_X86_SSE_NATIVE)
     _mm_stream_ps(mem_addr, a);
+  #elif HEDLEY_HAS_BUILTIN(__builtin_nontemporal_store) && defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    simde__m128_private a_ = simde__m128_to_private(a);
+    __builtin_nontemporal_store(a_.neon_f32, SIMDE_ALIGN_CAST(__typeof__(a_.neon_f32)*, mem_addr));
   #elif HEDLEY_HAS_BUILTIN(__builtin_nontemporal_store) && defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
     simde__m128_private a_ = simde__m128_to_private(a);
     __builtin_nontemporal_store(a_.f32, SIMDE_ALIGN_CAST(__typeof__(a_.f32)*, mem_addr));
+  #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    simde__m128_private a_ = simde__m128_to_private(a);
+    vst1q_f32((float32_t *) mem_addr, a_.neon_f32);
   #else
     simde_mm_store_ps(mem_addr, a);
   #endif
