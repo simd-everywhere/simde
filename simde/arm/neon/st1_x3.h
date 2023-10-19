@@ -21,8 +21,6 @@
  * SOFTWARE.
  *
  * Copyright:
- *   2020      Evan Nemerson <evan@nemerson.com>
- *   2021      Décio Luiz Gazzoni Filho <decio@decpp.net>
  *   2023      Yi-Yen Chung <eric681@andestech.com> (Copyright owned by Andes Technology)
  */
 
