@@ -21,7 +21,7 @@
  * SOFTWARE.
  *
  * Copyright:
- *   2023      Michael R. Crusoe <crusoe@debian.org>
+ *   2023      Yi-Yen Chung <eric681@andestech.com> (Copyright owned by Andes Technology)
  */
 
 #if !defined(SIMDE_ARM_NEON_COPY_LANE_H)
