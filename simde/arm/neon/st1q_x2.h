@@ -68,6 +68,7 @@ simde_vst1q_f32_x2(simde_float32 ptr[HEDLEY_ARRAY_PARAM(8)], simde_float32x4x2_t
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vst1q_f32_x2
   #define vst1q_f32_x2(ptr, val) simde_vst1q_f32_x2((ptr), (val))
+#endif
 
 SIMDE_FUNCTION_ATTRIBUTES
 void
