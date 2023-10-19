@@ -21,7 +21,7 @@
  * SOFTWARE.
  *
  * Copyright:
- *   2020      Evan Nemerson <evan@nemerson.com>
+ *   2023      Yi-Yen Chung <eric681@andestech.com> (Copyright owned by Andes Technology)
  */
 
 #if !defined(SIMDE_ARM_NEON___CRC32_H)
@@ -33,6 +33,7 @@ HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 SIMDE_BEGIN_DECLS_
 
+SIMDE_FUNCTION_ATTRIBUTES
 uint64_t reverseBits(uint64_t num, int num_of_bits)
 {
   uint64_t reverse_num = 0;
@@ -43,6 +44,7 @@ uint64_t reverseBits(uint64_t num, int num_of_bits)
   return reverse_num;
 }
 
+SIMDE_FUNCTION_ATTRIBUTES
 uint32_t eor_mask(uint32_t a, uint32_t b, uint32_t mask) {
   uint32_t part_a = a & mask;
   uint32_t part_result = part_a ^ b;
@@ -53,8 +55,8 @@ uint32_t eor_mask(uint32_t a, uint32_t b, uint32_t mask) {
 SIMDE_FUNCTION_ATTRIBUTES
 uint32_t
 simde___crc32b(uint32_t a, uint8_t b) {
-  uint32_t r_acc = reverseBits(a, 32);
-  uint32_t r_val = (reverseBits(b, 8) << 24);
+  uint32_t r_acc = HEDLEY_STATIC_CAST(uint32_t, reverseBits(a, 32));
+  uint32_t r_val = HEDLEY_STATIC_CAST(uint32_t, (reverseBits(b, 8) << 24));
   uint32_t head = r_acc ^ r_val;
   uint32_t tail = 0;
   const uint32_t poly = 0x04C11DB7;
@@ -65,7 +67,7 @@ simde___crc32b(uint32_t a, uint8_t b) {
     }
   }
   uint32_t result = ((head & 0x00FFFFFF) << 8) | ((tail & 0xFF000000) >> 24);
-  return reverseBits(result, 32);
+  return HEDLEY_STATIC_CAST(uint32_t, reverseBits(result, 32));
 }
 #if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
   #define simde___crc32b(a, b) __crc32b((a), (b))
@@ -78,8 +80,8 @@ simde___crc32b(uint32_t a, uint8_t b) {
 SIMDE_FUNCTION_ATTRIBUTES
 uint32_t
 simde___crc32h(uint32_t a, uint16_t b) {
-  uint32_t r_acc = reverseBits(a, 32);
-  uint32_t r_val = (reverseBits(b, 16) << 16);
+  uint32_t r_acc = HEDLEY_STATIC_CAST(uint32_t, reverseBits(a, 32));
+  uint32_t r_val = HEDLEY_STATIC_CAST(uint32_t, (reverseBits(b, 16) << 16));
   uint32_t head = r_acc ^ r_val;
   uint32_t tail = 0;
   const uint32_t poly = 0x04C11DB7;
@@ -90,7 +92,7 @@ simde___crc32h(uint32_t a, uint16_t b) {
     }
   }
   uint32_t result = ((head & 0x0000FFFF) << 16) | ((tail & 0xFFFF0000) >> 16);
-  return reverseBits(result, 32);
+  return HEDLEY_STATIC_CAST(uint32_t, reverseBits(result, 32));
 }
 #if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
   #define simde___crc32h(a, b) __crc32h((a), (b))
@@ -103,8 +105,8 @@ simde___crc32h(uint32_t a, uint16_t b) {
 SIMDE_FUNCTION_ATTRIBUTES
 uint32_t
 simde___crc32w(uint32_t a, uint32_t b) {
-  uint32_t r_acc = reverseBits(a, 32);
-  uint32_t r_val = reverseBits(b, 32);
+  uint32_t r_acc = HEDLEY_STATIC_CAST(uint32_t, reverseBits(a, 32));
+  uint32_t r_val = HEDLEY_STATIC_CAST(uint32_t, reverseBits(b, 32));
   uint32_t head = r_acc ^ r_val;
   uint32_t tail = 0;
   const uint32_t poly = 0x04C11DB7;
@@ -114,7 +116,7 @@ simde___crc32w(uint32_t a, uint32_t b) {
       tail = eor_mask(tail, poly << i, 0xFFFFFFFF);
     }
   }
-  return reverseBits(tail, 32);
+  return HEDLEY_STATIC_CAST(uint32_t, reverseBits(tail, 32));
 }
 #if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
   #define simde___crc32w(a, b) __crc32w((a), (b))
@@ -127,10 +129,10 @@ simde___crc32w(uint32_t a, uint32_t b) {
 SIMDE_FUNCTION_ATTRIBUTES
 uint32_t
 simde___crc32d(uint32_t a, uint64_t b) {
-  uint32_t r_acc = reverseBits(a, 32);
+  uint32_t r_acc = HEDLEY_STATIC_CAST(uint32_t, reverseBits(a, 32));
   uint64_t r_val = reverseBits(b, 64);
-  uint32_t val_head = (uint32_t)((r_val >> 32));
-  uint32_t val_mid = (uint32_t)(r_val & 0x00000000FFFFFFFF);
+  uint32_t val_head = HEDLEY_STATIC_CAST(uint32_t, r_val >> 32);
+  uint32_t val_mid = HEDLEY_STATIC_CAST(uint32_t, r_val & 0x00000000FFFFFFFF);
   uint32_t head = r_acc ^ val_head;
   uint32_t mid = 0u ^ val_mid;
   uint32_t tail = 0u;
@@ -148,7 +150,7 @@ simde___crc32d(uint32_t a, uint64_t b) {
       tail = eor_mask(tail, poly << i, 0xFFFFFFFF);
     }
   }
-  return reverseBits(tail, 32);
+  return HEDLEY_STATIC_CAST(uint32_t, reverseBits(tail, 32));
 }
 
 #if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
@@ -162,8 +164,8 @@ simde___crc32d(uint32_t a, uint64_t b) {
 SIMDE_FUNCTION_ATTRIBUTES
 uint32_t
 simde___crc32cb(uint32_t a, uint8_t b) {
-  uint32_t r_acc = reverseBits(a, 32);
-  uint32_t r_val = (reverseBits(b, 8) << 24);
+  uint32_t r_acc = HEDLEY_STATIC_CAST(uint32_t, reverseBits(a, 32));
+  uint32_t r_val = HEDLEY_STATIC_CAST(uint32_t, (reverseBits(b, 8) << 24));
   uint32_t head = r_acc ^ r_val;
   uint32_t tail = 0;
   const uint32_t poly = 0x1EDC6F41;
@@ -174,7 +176,7 @@ simde___crc32cb(uint32_t a, uint8_t b) {
     }
   }
   uint32_t result = ((head & 0x00FFFFFF) << 8) | ((tail & 0xFF000000) >> 24);
-  return reverseBits(result, 32);
+  return HEDLEY_STATIC_CAST(uint32_t, reverseBits(result, 32));
 }
 #if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
   #define simde___crc32cb(a, b) __crc32cb((a), (b))
@@ -187,8 +189,8 @@ simde___crc32cb(uint32_t a, uint8_t b) {
 SIMDE_FUNCTION_ATTRIBUTES
 uint32_t
 simde___crc32ch(uint32_t a, uint16_t b) {
-  uint32_t r_acc = reverseBits(a, 32);
-  uint32_t r_val = (reverseBits(b, 16) << 16);
+  uint32_t r_acc = HEDLEY_STATIC_CAST(uint32_t, reverseBits(a, 32));
+  uint32_t r_val = HEDLEY_STATIC_CAST(uint32_t, reverseBits(b, 16) << 16);
   uint32_t head = r_acc ^ r_val;
   uint32_t tail = 0;
   const uint32_t poly = 0x1EDC6F41;
@@ -199,7 +201,7 @@ simde___crc32ch(uint32_t a, uint16_t b) {
     }
   }
   uint32_t result = ((head & 0x0000FFFF) << 16) | ((tail & 0xFFFF0000) >> 16);
-  return reverseBits(result, 32);
+  return HEDLEY_STATIC_CAST(uint32_t, reverseBits(result, 32));
 }
 #if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
   #define simde___crc32ch(a, b) __crc32ch((a), (b))
@@ -212,8 +214,8 @@ simde___crc32ch(uint32_t a, uint16_t b) {
 SIMDE_FUNCTION_ATTRIBUTES
 uint32_t
 simde___crc32cw(uint32_t a, uint32_t b) {
-  uint32_t r_acc = reverseBits(a, 32);
-  uint32_t r_val = reverseBits(b, 32);
+  uint32_t r_acc = HEDLEY_STATIC_CAST(uint32_t, reverseBits(a, 32));
+  uint32_t r_val = HEDLEY_STATIC_CAST(uint32_t, reverseBits(b, 32));
   uint32_t head = r_acc ^ r_val;
   uint32_t tail = 0;
   const uint32_t poly = 0x1EDC6F41;
@@ -223,7 +225,7 @@ simde___crc32cw(uint32_t a, uint32_t b) {
       tail = eor_mask(tail, poly << i, 0xFFFFFFFF);
     }
   }
-  return reverseBits(tail, 32);
+  return HEDLEY_STATIC_CAST(uint32_t, reverseBits(tail, 32));
 }
 #if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
   #define simde___crc32cw(a, b) __crc32cw((a), (b))
@@ -236,10 +238,10 @@ simde___crc32cw(uint32_t a, uint32_t b) {
 SIMDE_FUNCTION_ATTRIBUTES
 uint32_t
 simde___crc32cd(uint32_t a, uint64_t b) {
-  uint32_t r_acc = reverseBits(a, 32);
+  uint32_t r_acc = HEDLEY_STATIC_CAST(uint32_t, reverseBits(a, 32));
   uint64_t r_val = reverseBits(b, 64);
-  uint32_t val_head = (uint32_t)((r_val >> 32));
-  uint32_t val_mid = (uint32_t)(r_val & 0x00000000FFFFFFFF);
+  uint32_t val_head = HEDLEY_STATIC_CAST(uint32_t, r_val >> 32);
+  uint32_t val_mid = HEDLEY_STATIC_CAST(uint32_t, r_val & 0x00000000FFFFFFFF);
   uint32_t head = r_acc ^ val_head;
   uint32_t mid = 0u ^ val_mid;
   uint32_t tail = 0u;
@@ -257,7 +259,7 @@ simde___crc32cd(uint32_t a, uint64_t b) {
       tail = eor_mask(tail, poly << i, 0xFFFFFFFF);
     }
   }
-  return reverseBits(tail, 32);
+  return HEDLEY_STATIC_CAST(uint32_t, reverseBits(tail, 32));
 }
 
 #if defined(SIMDE_ARM_NEON_A32V8_NATIVE)

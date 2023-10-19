@@ -779,7 +779,7 @@ simde_vceq_p8(simde_poly8x8_t a, simde_poly8x8_t b) {
 
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = (a_.values[i] == b_.values[i]) ? ~UINT8_C(0) : UINT8_C(0);
+      r_.values[i] = (a_.values[i] == b_.values[i]) ? HEDLEY_STATIC_CAST(uint8_t, ~UINT8_C(0)) : HEDLEY_STATIC_CAST(uint8_t, UINT8_C(0));
     }
 
     return simde_uint8x8_from_private(r_);
@@ -803,7 +803,7 @@ simde_vceqq_p8(simde_poly8x16_t a, simde_poly8x16_t b) {
 
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = (a_.values[i] == b_.values[i]) ? ~UINT8_C(0) : UINT8_C(0);
+      r_.values[i] = (a_.values[i] == b_.values[i]) ? HEDLEY_STATIC_CAST(uint8_t, ~UINT8_C(0)) : HEDLEY_STATIC_CAST(uint8_t, UINT8_C(0));
     }
 
     return simde_uint8x16_from_private(r_);
