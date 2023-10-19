@@ -5117,6 +5117,14 @@ simde__m256i
 simde_mm256_stream_load_si256 (const simde__m256i* mem_addr) {
   #if defined(SIMDE_X86_AVX2_NATIVE)
     return _mm256_stream_load_si256(HEDLEY_CONST_CAST(simde__m256i*, mem_addr));
+  #elif HEDLEY_HAS_BUILTIN(__builtin_nontemporal_load) && defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && defined(SIMDE_HAVE_INT128_)
+    simde__m256i_private r_;
+    r_.i128 = __builtin_nontemporal_load(HEDLEY_REINTERPRET_CAST(simde_int128 SIMDE_VECTOR(32) const *, mem_addr));
+    return simde__m256i_from_private(r_);
+  #elif HEDLEY_HAS_BUILTIN(__builtin_nontemporal_load) && defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+    simde__m256i_private r_;
+    r_.i64 = __builtin_nontemporal_load(HEDLEY_REINTERPRET_CAST(int64_t SIMDE_VECTOR(32) const *, mem_addr));
+    return simde__m256i_from_private(r_);
   #else
     simde__m256i r;
     simde_memcpy(&r, SIMDE_ALIGN_ASSUME_LIKE(mem_addr, simde__m256i), sizeof(r));

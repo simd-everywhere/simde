@@ -2139,8 +2139,26 @@ simde__m128i
 simde_mm_stream_load_si128 (const simde__m128i* mem_addr) {
   #if defined(SIMDE_X86_SSE4_1_NATIVE)
     return _mm_stream_load_si128(HEDLEY_CONST_CAST(simde__m128i*, mem_addr));
+  #elif HEDLEY_HAS_BUILTIN(__builtin_nontemporal_load) && defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    simde__m128i_private r_;
+    r_.neon_i64 = __builtin_nontemporal_load(HEDLEY_REINTERPRET_CAST(const int64x2_t *, mem_addr));
+    return simde__m128i_from_private(r_);
+  #elif HEDLEY_HAS_BUILTIN(__builtin_nontemporal_load) && defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && defined(SIMDE_HAVE_INT128_)
+    simde__m128i_private r_;
+    r_.i128 = __builtin_nontemporal_load(HEDLEY_REINTERPRET_CAST(simde_int128 SIMDE_VECTOR(16) const *, mem_addr));
+    return simde__m128i_from_private(r_);
+  #elif HEDLEY_HAS_BUILTIN(__builtin_nontemporal_load) && !defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && defined(SIMDE_HAVE_INT128_)
+    simde__m128i_private r_;
+    r_.i128 = __builtin_nontemporal_load(HEDLEY_REINTERPRET_CAST(simde_int128 const *, mem_addr));
+    return simde__m128i_from_private(r_);
+  #elif HEDLEY_HAS_BUILTIN(__builtin_nontemporal_load) && defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+    simde__m128i_private r_;
+    r_.i64 = __builtin_nontemporal_load(HEDLEY_REINTERPRET_CAST(int64_t SIMDE_VECTOR(16) const *, mem_addr));
+    return simde__m128i_from_private(r_);
   #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-    return vreinterpretq_s64_s32(vld1q_s32(HEDLEY_REINTERPRET_CAST(int32_t const*, mem_addr)));
+    simde__m128i_private r_;
+    r_.neon_i64 = vld1q_s64(HEDLEY_REINTERPRET_CAST(int64_t const*, mem_addr));
+    return simde__m128i_from_private(r_);
   #else
     return *mem_addr;
   #endif
