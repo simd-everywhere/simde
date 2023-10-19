@@ -234,6 +234,7 @@
 #include "neon/shll_n.h"
 #include "neon/shr_n.h"
 #include "neon/shrn_n.h"
+#include "neon/sli_n.h"
 #include "neon/sqadd.h"
 #include "neon/sqrt.h"
 #include "neon/sra_n.h"
