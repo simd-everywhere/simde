@@ -527,7 +527,9 @@ typedef union {
  *
  * As for the ICC check, unlike other compilers, merely using the
  * AVX-512 types causes ICC to generate AVX-512 instructions. */
-#if (defined(_MM_CMPINT_GE) || defined(_MM_CMPINT_NLT)) && (defined(SIMDE_X86_AVX512F_NATIVE) || !defined(HEDLEY_INTEL_VERSION))
+#if (defined(_MM_CMPINT_GE) || defined(_MM_CMPINT_NLT)) && \
+  (defined(SIMDE_X86_AVX512F_NATIVE) || \
+   !(defined(HEDLEY_INTEL_VERSION) || (defined(HEDLEY_MSVC_VERSION) && !defined(__clang__))))
   typedef __m512 simde__m512;
   typedef __m512i simde__m512i;
   typedef __m512d simde__m512d;
