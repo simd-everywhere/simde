@@ -109,21 +109,27 @@ simde_vmaxnmvq_f64(simde_float64x2_t a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float16_t
 simde_vmaxnmv_f16(simde_float16x4_t a) {
-  simde_float16_t r;
-
-  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
-    r = vmaxnmv_f16(a);
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
+    return vmaxnmv_f16(a);
   #else
+    simde_float32_t r_ = simde_float16_to_float32(SIMDE_NINFINITYHF);
     simde_float16x4_private a_ = simde_float16x4_to_private(a);
 
-    r = -SIMDE_MATH_INFINITYF;
-    SIMDE_VECTORIZE_REDUCTION(max:r)
+    #if defined(SIMDE_FAST_NANS)
+      SIMDE_VECTORIZE_REDUCTION(max:r)
+    #else
+      SIMDE_VECTORIZE
+    #endif
     for (size_t i = 0 ; i < (sizeof(a_.values) / sizeof(a_.values[0])) ; i++) {
-      r = a_.values[i] > r ? a_.values[i] : r;
+      simde_float32_t tmp_a = simde_float16_to_float32(a_.values[i]);
+      #if defined(SIMDE_FAST_NANS)
+        r_ = tmp_a > r_ ? tmp_a : r_;
+      #else
+        r_ = (tmp_a > r_) ? tmp_a : ((tmp_a <= r_) ? r_ : ((tmp_a == tmp_a) ? r_ : tmp_a));
+      #endif
     }
+    return simde_float16_from_float32(r_);
   #endif
-
-  return r;
 }
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
   #undef vmaxnmv_f16
@@ -133,21 +139,27 @@ simde_vmaxnmv_f16(simde_float16x4_t a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float16_t
 simde_vmaxnmvq_f16(simde_float16x8_t a) {
-  simde_float16_t r;
-
-  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
     r = vmaxnmvq_f16(a);
   #else
+    simde_float32_t r_ = simde_float16_to_float32(SIMDE_NINFINITYHF);
     simde_float16x8_private a_ = simde_float16x8_to_private(a);
 
-    r = -SIMDE_MATH_INFINITYF;
-    SIMDE_VECTORIZE_REDUCTION(max:r)
+    #if defined(SIMDE_FAST_NANS)
+      SIMDE_VECTORIZE_REDUCTION(max:r)
+    #else
+      SIMDE_VECTORIZE
+    #endif
     for (size_t i = 0 ; i < (sizeof(a_.values) / sizeof(a_.values[0])) ; i++) {
-      r = a_.values[i] > r ? a_.values[i] : r;
+      simde_float32_t tmp_a = simde_float16_to_float32(a_.values[i]);
+      #if defined(SIMDE_FAST_NANS)
+        r_ = tmp_a > r_ ? tmp_a : r_;
+      #else
+        r_ = (tmp_a > r_) ? tmp_a : ((tmp_a <= r_) ? r_ : ((tmp_a == tmp_a) ? r_ : tmp_a));
+      #endif
     }
+    return simde_float16_from_float32(r_);
   #endif
-
-  return r;
 }
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
   #undef vmaxnmvq_f16
