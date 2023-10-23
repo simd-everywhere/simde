@@ -370,9 +370,9 @@ test_simde_vmull_p64 (SIMDE_MUNIT_TEST_ARGS) {
     simde_poly64_t a = test_vec[i].a[0];
     simde_poly64_t b = test_vec[i].b[0];
     simde_poly128_t r = simde_vmull_p64(a, b);
-    simde_poly128_t mask = (simde_poly128_t)0xFFFFFFFFFFFFFFFFull;
-    simde_poly64_t top_r = (simde_poly64_t)((r >> 64) & mask);
-    simde_poly64_t bottom_r = (simde_poly64_t)(r & mask);
+    simde_poly128_t mask = HEDLEY_STATIC_CAST(simde_poly128_t, 0xFFFFFFFFFFFFFFFFull);
+    simde_poly64_t top_r = HEDLEY_STATIC_CAST(simde_poly64_t, ((r >> 64) & mask));
+    simde_poly64_t bottom_r = HEDLEY_STATIC_CAST(simde_poly64_t, (r & mask));
 
     simde_assert_equal_p64(top_r, test_vec[i].r[0]);
     simde_assert_equal_p64(bottom_r, test_vec[i].r[1]);

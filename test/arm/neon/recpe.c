@@ -9,22 +9,22 @@ test_simde_vrecpeh_f16 (SIMDE_MUNIT_TEST_ARGS) {
     simde_float16 a;
     simde_float16 r;
   } test_vec[] = {
-    {    SIMDE_FLOAT16_C(  12.162),
-         SIMDE_FLOAT16_C(   0.082) },
-    {   -SIMDE_FLOAT16_C(   8.396),
-        -SIMDE_FLOAT16_C(   0.119) },
-    {    SIMDE_FLOAT16_C(   8.495),
-         SIMDE_FLOAT16_C(   0.118) },
-    {   -SIMDE_FLOAT16_C(   3.825),
-        -SIMDE_FLOAT16_C(   0.261) },
-    {   -SIMDE_FLOAT16_C(   3.074),
-        -SIMDE_FLOAT16_C(   0.325) },
-    {    SIMDE_FLOAT16_C(   2.898),
-         SIMDE_FLOAT16_C(   0.345) },
-    {   -SIMDE_FLOAT16_C(  12.082),
-        -SIMDE_FLOAT16_C(   0.083) },
-    {   -SIMDE_FLOAT16_C(   7.771),
-        -SIMDE_FLOAT16_C(   0.129) },
+    {    SIMDE_FLOAT16_VALUE(  12.162),
+         SIMDE_FLOAT16_VALUE(   0.082) },
+    {    SIMDE_FLOAT16_VALUE(  -8.396),
+         SIMDE_FLOAT16_VALUE(  -0.119) },
+    {    SIMDE_FLOAT16_VALUE(   8.495),
+         SIMDE_FLOAT16_VALUE(   0.118) },
+    {    SIMDE_FLOAT16_VALUE(  -3.825),
+         SIMDE_FLOAT16_VALUE(  -0.261) },
+    {    SIMDE_FLOAT16_VALUE(  -3.074),
+         SIMDE_FLOAT16_VALUE(  -0.325) },
+    {    SIMDE_FLOAT16_VALUE(   2.898),
+         SIMDE_FLOAT16_VALUE(   0.345) },
+    {    SIMDE_FLOAT16_VALUE( -12.082),
+         SIMDE_FLOAT16_VALUE(  -0.083) },
+    {    SIMDE_FLOAT16_VALUE(  -7.771),
+         SIMDE_FLOAT16_VALUE(  -0.129) },
   };
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
