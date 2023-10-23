@@ -29,44 +29,6 @@
 #include "../../x86/avx.h"
 #include "types.h"
 
-/* Notes from the implementer (Christopher Moore aka rosbif)
- *
- * I have tried to exactly reproduce the documented behaviour of the
- * ARM NEON rshl and rshlq intrinsics.
- * This is complicated for the following reasons:-
- *
- * a) Negative shift counts shift right.
- *
- * b) Only the low byte of the shift count is used but the shift count
- * is not limited to 8-bit values (-128 to 127).
- *
- * c) Overflow must be avoided when rounding, together with sign change
- * warning/errors in the C versions.
- *
- * d) Intel SIMD is not nearly as complete as NEON and AltiVec.
- * There were no intrisics with a vector shift count before AVX2 which
- * only has 32 and 64-bit logical ones and only a 32-bit arithmetic
- * one. The others need AVX512. There are no 8-bit shift intrinsics at
- * all, even with a scalar shift count. It is surprising to use AVX2
- * and even AVX512 to implement a 64-bit vector operation.
- *
- * e) Many shift implementations, and the C standard, do not treat a
- * shift count >= the object's size in bits as one would expect.
- * (Personally I feel that > is silly but == can be useful.)
- *
- * Note that even the C17/18 standard does not define the behaviour of
- * a right shift of a negative value.
- * However Evan and I agree that all compilers likely to be used
- * implement this as an arithmetic right shift with sign extension.
- * If this is not the case it could be replaced by a logical right shift
- * if negative values are complemented before and after the shift.
- *
- * Some of the SIMD translations may be slower than the portable code,
- * particularly those for vectors with only one or two elements.
- * But I had fun writing them ;-)
- *
- */
-
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 SIMDE_BEGIN_DECLS_
