@@ -42,7 +42,7 @@ simde_vqmovun_high_s16(simde_uint8x8_t r, simde_int16x8_t a) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vqmovun_high_s16(r, a);
   #else
-    return simde_vcombine_s8(r, simde_vqmovun_s16(a));
+    return simde_vcombine_u8(r, simde_vqmovun_s16(a));
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
@@ -56,7 +56,7 @@ simde_vqmovun_high_s32(simde_uint16x4_t r, simde_int32x4_t a) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vqmovun_high_s32(r, a);
   #else
-    return simde_vcombine_s16(r, simde_vqmovun_s32(a));
+    return simde_vcombine_u16(r, simde_vqmovun_s32(a));
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
@@ -70,7 +70,7 @@ simde_vqmovun_high_s64(simde_uint32x2_t r, simde_int64x2_t a) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vqmovun_high_s64(r, a);
   #else
-    return simde_vcombine_s32(r, simde_vqmovun_s64(a));
+    return simde_vcombine_u32(r, simde_vqmovun_s64(a));
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
