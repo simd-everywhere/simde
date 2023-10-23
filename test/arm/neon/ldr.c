@@ -31,12 +31,14 @@ test_simde_vldrq_p128 (SIMDE_MUNIT_TEST_ARGS) {
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
     simde_poly128_t a = test_vec[i].a[0];
+    simde_poly128_t r, mask;
+    simde_poly64_t top_r, bottom_r;
     a = a << 64;
     a = a | test_vec[i].a[1];
-    simde_poly128_t r = simde_vldrq_p128(&a);
-    simde_poly128_t mask = (simde_poly128_t)0xFFFFFFFFFFFFFFFFull;
-    simde_poly64_t top_r = (simde_poly64_t)((r >> 64) & mask);
-    simde_poly64_t bottom_r = (simde_poly64_t)(r & mask);
+    r = simde_vldrq_p128(&a);
+    mask = HEDLEY_STATIC_CAST(simde_poly128_t, 0xFFFFFFFFFFFFFFFFull);
+    top_r = HEDLEY_STATIC_CAST(simde_poly64_t, ((r >> 64) & mask));
+    bottom_r = HEDLEY_STATIC_CAST(simde_poly64_t, (r & mask));
 
     simde_assert_equal_p64(top_r, test_vec[i].r[0]);
     simde_assert_equal_p64(bottom_r, test_vec[i].r[1]);

@@ -352,7 +352,7 @@ test_simde_vcvth_f16_s16 (SIMDE_MUNIT_TEST_ARGS) {
     {    INT16_C(    8656),
          SIMDE_FLOAT16_VALUE(8656.000) },
     {   -INT16_C(   16437),
-        -SIMDE_FLOAT16_VALUE(16437.000) },
+         SIMDE_FLOAT16_VALUE(-16437.000) },
     {    INT16_C(   22652),
          SIMDE_FLOAT16_VALUE(22652.000) },
   };

@@ -127,10 +127,10 @@ test_simde_vrnd32xq_f64 (SIMDE_MUNIT_TEST_ARGS) {
     simde_float64 r[2];
   } test_vec[] = {
     #if !defined(SIMDE_FAST_NANS)
-    { {            SIMDE_MATH_INFINITY,           -SIMDE_MATH_NANF },
-      {  SIMDE_FLOAT32_C(-2147483648.000),  SIMDE_FLOAT32_C(-2147483648.000) } },
-    { {           -SIMDE_MATH_INFINITY,            SIMDE_MATH_NANF },
-      {  SIMDE_FLOAT32_C(-2147483648.000),  SIMDE_FLOAT32_C(-2147483648.000) } },
+    { {            SIMDE_MATH_INFINITY,           -SIMDE_MATH_NAN },
+      {  SIMDE_FLOAT64_C(-2147483648.000),  SIMDE_FLOAT64_C(-2147483648.000) } },
+    { {           -SIMDE_MATH_INFINITY,            SIMDE_MATH_NAN },
+      {  SIMDE_FLOAT64_C(-2147483648.000),  SIMDE_FLOAT64_C(-2147483648.000) } },
     #endif
     { {  SIMDE_FLOAT64_C( 40696.578),  SIMDE_FLOAT64_C(  5235.766) },
       {  SIMDE_FLOAT64_C( 40697.000),  SIMDE_FLOAT64_C(  5236.000) } },

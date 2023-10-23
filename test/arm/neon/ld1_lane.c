@@ -1538,11 +1538,11 @@ test_simde_vld1q_lane_p64 (SIMDE_MUNIT_TEST_ARGS) {
   };
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
-    simde_poly64x2_t r, src;
+    simde_poly64x2_t r, src, expected;
     src = simde_vld1q_p64(test_vec[i].src);
     SIMDE_CONSTIFY_2_(simde_vld1q_lane_p64, r, (HEDLEY_UNREACHABLE(), r), i, &test_vec[i].buf, src);
 
-    simde_poly64x2_t expected = simde_vld1q_p64(test_vec[i].r);
+    expected = simde_vld1q_p64(test_vec[i].r);
 
     simde_test_arm_neon_assert_equal_p64x2(r, expected);
   }

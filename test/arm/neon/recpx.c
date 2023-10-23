@@ -11,12 +11,12 @@ test_simde_vrecpxh_f16 (SIMDE_MUNIT_TEST_ARGS) {
   } test_vec[] = {
     {            SIMDE_MATH_NANF,
                  SIMDE_MATH_NANF },
-    {   -SIMDE_FLOAT16_C(   0.0003834),
-        -SIMDE_FLOAT16_C(    8192.000) },
-    {   -SIMDE_FLOAT16_C(       178.5),
-        -SIMDE_FLOAT16_C(      0.0156) },
-    {    SIMDE_FLOAT16_C(   0.0003405),
-         SIMDE_FLOAT16_C(    8192.000) },
+    {    SIMDE_FLOAT16_VALUE(  -0.0003834),
+         SIMDE_FLOAT16_VALUE(   -8192.000) },
+    {    SIMDE_FLOAT16_VALUE(      -178.5),
+         SIMDE_FLOAT16_VALUE(     -0.0156) },
+    {    SIMDE_FLOAT16_VALUE(   0.0003405),
+         SIMDE_FLOAT16_VALUE(    8192.000) },
   };
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {

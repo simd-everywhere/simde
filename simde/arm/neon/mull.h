@@ -243,7 +243,7 @@ simde_vmull_p8(simde_poly8x8_t a, simde_poly8x8_t b) {
 
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-    	uint16_t extend_op2 = (uint16_t)b_.values[i];
+    	uint16_t extend_op2 = HEDLEY_STATIC_CAST(uint16_t, b_.values[i]);
     	uint16_t result = 0;
     	for(size_t j = 0; j < 8; ++j) {
     	  if(a_.values[i] & (1 << j)) {
@@ -267,7 +267,7 @@ simde_vmull_p64(simde_poly64_t a, simde_poly64_t b) {
   #if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
     return vmull_p64(a, b);
   #else
-    simde_poly128_t extend_op2 = (simde_poly128_t)b;
+    simde_poly128_t extend_op2 = HEDLEY_STATIC_CAST(simde_poly128_t, b);
     simde_poly128_t result = 0;
     SIMDE_VECTORIZE
     for(size_t j = 0; j < 64; ++j) {

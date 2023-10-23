@@ -517,12 +517,15 @@ test_simde_vmull_high_p64 (SIMDE_MUNIT_TEST_ARGS) {
   };
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
-    simde_poly64x2_t a = simde_vld1q_p64(test_vec[i].a);
-    simde_poly64x2_t b = simde_vld1q_p64(test_vec[i].b);
-    simde_poly128_t r = simde_vmull_high_p64(a, b);
-    simde_poly128_t mask = (simde_poly128_t)0xFFFFFFFFFFFFFFFFull;
-    simde_poly64_t top_r = (simde_poly64_t)((r >> 64) & mask);
-    simde_poly64_t bottom_r = (simde_poly64_t)(r & mask);
+    simde_poly64x2_t a, b;
+    simde_poly64_t top_r, bottom_r;
+    simde_poly128_t r, mask;
+    a = simde_vld1q_p64(test_vec[i].a);
+    b = simde_vld1q_p64(test_vec[i].b);
+    r = simde_vmull_high_p64(a, b);
+    mask = HEDLEY_STATIC_CAST(simde_poly128_t, 0xFFFFFFFFFFFFFFFFull);
+    top_r = HEDLEY_STATIC_CAST(simde_poly64_t, ((r >> 64) & mask));
+    bottom_r = HEDLEY_STATIC_CAST(simde_poly64_t, (r & mask));
 
     simde_assert_equal_p64(top_r, test_vec[i].r[0]);
     simde_assert_equal_p64(bottom_r, test_vec[i].r[1]);
