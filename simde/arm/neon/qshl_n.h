@@ -166,7 +166,7 @@ simde_vqshl_n_s8 (const simde_int8x8_t a, const int n)
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vqshl_n_s8
-  #define vqshl_n_s8(a, n) simde_vqshl_n_s8((a), (b))
+  #define vqshl_n_s8(a, n) simde_vqshl_n_s8((a), (n))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -188,7 +188,7 @@ simde_vqshl_n_s16 (const simde_int16x4_t a, const int n)
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vqshl_n_s16
-  #define vqshl_n_s16(a, n) simde_vqshl_n_s16((a), (b))
+  #define vqshl_n_s16(a, n) simde_vqshl_n_s16((a), (n))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -210,7 +210,7 @@ simde_vqshl_n_s32 (const simde_int32x2_t a, const int n)
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vqshl_n_s32
-  #define vqshl_n_s32(a, n) simde_vqshl_n_s32((a), (b))
+  #define vqshl_n_s32(a, n) simde_vqshl_n_s32((a), (n))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -232,7 +232,7 @@ simde_vqshl_n_s64 (const simde_int64x1_t a, const int n)
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vqshl_n_s64
-  #define vqshl_n_s64(a, n) simde_vqshl_n_s64((a), (b))
+  #define vqshl_n_s64(a, n) simde_vqshl_n_s64((a), (n))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -254,7 +254,7 @@ simde_vqshl_n_u8 (const simde_uint8x8_t a, const int n)
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vqshl_n_u8
-  #define vqshl_n_u8(a, n) simde_vqshl_n_u8((a), (b))
+  #define vqshl_n_u8(a, n) simde_vqshl_n_u8((a), (n))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -276,7 +276,7 @@ simde_vqshl_n_u16 (const simde_uint16x4_t a, const int n)
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vqshl_n_u16
-  #define vqshl_n_u16(a, n) simde_vqshl_n_u16((a), (b))
+  #define vqshl_n_u16(a, n) simde_vqshl_n_u16((a), (n))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -298,7 +298,7 @@ simde_vqshl_n_u32 (const simde_uint32x2_t a, const int n)
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vqshl_n_u32
-  #define vqshl_n_u32(a, n) simde_vqshl_n_u32((a), (b))
+  #define vqshl_n_u32(a, n) simde_vqshl_n_u32((a), (n))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -320,7 +320,7 @@ simde_vqshl_n_u64 (const simde_uint64x1_t a, const int n)
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vqshl_n_u64
-  #define vqshl_n_u64(a, n) simde_vqshl_n_u64((a), (b))
+  #define vqshl_n_u64(a, n) simde_vqshl_n_u64((a), (n))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
