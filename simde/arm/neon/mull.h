@@ -247,7 +247,7 @@ simde_vmull_p8(simde_poly8x8_t a, simde_poly8x8_t b) {
     	uint16_t result = 0;
     	for(size_t j = 0; j < 8; ++j) {
     	  if(a_.values[i] & (1 << j)) {
-    	    result = result ^ (extend_op2 << j);
+    	    result = HEDLEY_STATIC_CAST(uint16_t, result ^ (extend_op2 << j));
     	  }
     	}
       r_.values[i] = result;

@@ -48,7 +48,7 @@ simde_vusdot_lane_s32(simde_int32x2_t r, simde_uint8x8_t a, simde_int8x8_t b, co
     for (int j = 0 ; j < 4 ; j++) {
       const int idx_b = j + (lane << 2);
       const int idx_a = j + (i << 2);
-      acc += HEDLEY_STATIC_CAST(uint32_t, a_.values[idx_a]) * HEDLEY_STATIC_CAST(int32_t, b_.values[idx_b]);
+      acc += HEDLEY_STATIC_CAST(int32_t, a_.values[idx_a]) * HEDLEY_STATIC_CAST(int32_t, b_.values[idx_b]);
     }
     r_.values[i] += acc;
   }
@@ -57,7 +57,7 @@ simde_vusdot_lane_s32(simde_int32x2_t r, simde_uint8x8_t a, simde_int8x8_t b, co
 
   return result;
 }
-#if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
+#if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(__ARM_FEATURE_DOTPROD)
   #define simde_vusdot_lane_s32(r, a, b, lane) vusdot_lane_s32((r), (a), (b), (lane))
 #endif
 #if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
@@ -80,7 +80,7 @@ simde_vusdot_laneq_s32(simde_int32x2_t r, simde_uint8x8_t a, simde_int8x16_t b, 
     for (int j = 0 ; j < 4 ; j++) {
       const int idx_b = j + (lane << 2);
       const int idx_a = j + (i << 2);
-      acc += HEDLEY_STATIC_CAST(uint32_t, a_.values[idx_a]) * HEDLEY_STATIC_CAST(int32_t, b_.values[idx_b]);
+      acc += HEDLEY_STATIC_CAST(int32_t, a_.values[idx_a]) * HEDLEY_STATIC_CAST(int32_t, b_.values[idx_b]);
     }
     r_.values[i] += acc;
   }
@@ -89,7 +89,7 @@ simde_vusdot_laneq_s32(simde_int32x2_t r, simde_uint8x8_t a, simde_int8x16_t b, 
 
   return result;
 }
-#if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+#if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(__ARM_FEATURE_DOTPROD)
   #define simde_vusdot_laneq_s32(r, a, b, lane) vusdot_laneq_s32((r), (a), (b), (lane))
 #endif
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
@@ -112,7 +112,7 @@ simde_vusdotq_laneq_s32(simde_int32x4_t r, simde_uint8x16_t a, simde_int8x16_t b
     for(int j = 0 ; j < 4 ; j++) {
       const int idx_b = j + (lane << 2);
       const int idx_a = j + (i << 2);
-      acc += HEDLEY_STATIC_CAST(uint32_t, a_.values[idx_a]) * HEDLEY_STATIC_CAST(int32_t, b_.values[idx_b]);
+      acc += HEDLEY_STATIC_CAST(int32_t, a_.values[idx_a]) * HEDLEY_STATIC_CAST(int32_t, b_.values[idx_b]);
     }
     r_.values[i] += acc;
   }
@@ -120,7 +120,7 @@ simde_vusdotq_laneq_s32(simde_int32x4_t r, simde_uint8x16_t a, simde_int8x16_t b
   result = simde_int32x4_from_private(r_);
   return result;
 }
-#if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+#if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(__ARM_FEATURE_DOTPROD)
   #define simde_vusdotq_laneq_s32(r, a, b, lane) vusdotq_laneq_s32((r), (a), (b), (lane))
 #endif
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
@@ -143,7 +143,7 @@ simde_vusdotq_lane_s32(simde_int32x4_t r, simde_uint8x16_t a, simde_int8x8_t b, 
     for(int j = 0 ; j < 4 ; j++) {
       const int idx_b = j + (lane << 2);
       const int idx_a = j + (i << 2);
-      acc += HEDLEY_STATIC_CAST(uint32_t, a_.values[idx_a]) * HEDLEY_STATIC_CAST(int32_t, b_.values[idx_b]);
+      acc += HEDLEY_STATIC_CAST(int32_t, a_.values[idx_a]) * HEDLEY_STATIC_CAST(int32_t, b_.values[idx_b]);
     }
     r_.values[i] += acc;
   }
@@ -151,7 +151,7 @@ simde_vusdotq_lane_s32(simde_int32x4_t r, simde_uint8x16_t a, simde_int8x8_t b, 
   result = simde_int32x4_from_private(r_);
   return result;
 }
-#if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
+#if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(__ARM_FEATURE_DOTPROD)
   #define simde_vusdotq_lane_s32(r, a, b, lane) vusdotq_lane_s32((r), (a), (b), (lane))
 #endif
 #if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)

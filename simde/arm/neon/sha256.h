@@ -38,23 +38,23 @@ SIMDE_BEGIN_DECLS_
 #define LSR(operand, shift) ((operand) >> (shift))
 #define LSL(operand, shift) ((operand) << (shift))
 
-uint32_t SHAchoose(uint32_t x, uint32_t y, uint32_t z) {
+static uint32_t SHAchoose(uint32_t x, uint32_t y, uint32_t z) {
   return (((y ^ z) & x) ^ z);
 }
 
-uint32_t SHAmajority(uint32_t x, uint32_t y, uint32_t z) {
+static uint32_t SHAmajority(uint32_t x, uint32_t y, uint32_t z) {
   return ((x & y) | ((x | y) & z));
 }
 
-uint32_t SHAhashSIGMA0(uint32_t x) {
+static uint32_t SHAhashSIGMA0(uint32_t x) {
   return ROR32(x, 2) ^ ROR32(x, 13) ^ ROR32(x, 22);
 }
 
-uint32_t SHAhashSIGMA1(uint32_t x) {
+static uint32_t SHAhashSIGMA1(uint32_t x) {
   return ROR32(x, 6) ^ ROR32(x, 11) ^ ROR32(x, 25);
 }
 
-simde_uint32x4_t
+static simde_uint32x4_t
 x_simde_sha256hash(simde_uint32x4_t x, simde_uint32x4_t y, simde_uint32x4_t w, int part1) {
   uint32_t chs, maj, t;
   simde_uint32x4_private

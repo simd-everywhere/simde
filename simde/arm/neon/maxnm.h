@@ -42,19 +42,19 @@ simde_vmaxnmh_f16(simde_float16_t a, simde_float16_t b) {
     return vmaxnmh_f16(a, b);
   #else
     #if defined(simde_math_fmaxf)
-      return simde_float16_from_float32(simde_math_fmaxf(simde_float16_to_float32(a_.values[i]), simde_float16_to_float32(b_.values[i])));
+      return simde_float16_from_float32(simde_math_fmaxf(simde_float16_to_float32(a), simde_float16_to_float32(b)));
     #else
       simde_float32_t a_ = simde_float16_to_float32(a);
       simde_float32_t b_ = simde_float16_to_float32(b);
       simde_float32_t r_;
       if (a_ > b_) {
-        return r_ = a_;
+        r_ = a_;
       } else if (a_ < b_) {
-        return r_ = b_;
+        r_ = b_;
       } else if (a_ == a_) {
-        return r_ = a_;
+        r_ = a_;
       } else {
-        return r_ = b_;
+        r_ = b_;
       }
       return simde_float16_from_float32(r_);
     #endif
