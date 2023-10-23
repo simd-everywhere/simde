@@ -23,6 +23,7 @@
  * Copyright:
  *   2020      Evan Nemerson <evan@nemerson.com>
  *   2020      Sean Maher <seanptmaher@gmail.com>
+ *   2023      Yi-Yen Chung <eric681@andestech.com> (Copyright owned by Andes Technology)
  */
 
 #if !defined(SIMDE_ARM_NEON_ST4_H)
@@ -35,6 +36,26 @@ SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 SIMDE_BEGIN_DECLS_
 
 #if !defined(SIMDE_BUG_INTEL_857088)
+
+SIMDE_FUNCTION_ATTRIBUTES
+void
+simde_vst4_f16(simde_float16_t *ptr, simde_float16x4x4_t val) {
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
+    vst4_f16(ptr, val);
+  #else
+    simde_float16_t buf[16];
+    simde_float16x4_private a_[4] = { simde_float16x4_to_private(val.val[0]), simde_float16x4_to_private(val.val[1]),
+                                      simde_float16x4_to_private(val.val[2]), simde_float16x4_to_private(val.val[3]) };
+    for (size_t i = 0; i < (sizeof(val.val[0]) / sizeof(*ptr)) * 4 ; i++) {
+      buf[i] = a_[i % 4].values[i / 4];
+    }
+    simde_memcpy(ptr, buf, sizeof(buf));
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+  #undef vst4_f16
+  #define vst4_f16(a, b) simde_vst4_f16((a), (b))
+#endif
 
 SIMDE_FUNCTION_ATTRIBUTES
 void
@@ -234,6 +255,26 @@ simde_vst4_u64(uint64_t *ptr, simde_uint64x1x4_t val) {
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
   #undef vst4_u64
   #define vst4_u64(a, b) simde_vst4_u64((a), (b))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+void
+simde_vst4q_f16(simde_float16_t *ptr, simde_float16x8x4_t val) {
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
+    vst4q_f16(ptr, val);
+  #else
+    simde_float16_t buf[32];
+    simde_float16x8_private a_[4] = { simde_float16x8_to_private(val.val[0]), simde_float16x8_to_private(val.val[1]),
+                                      simde_float16x8_to_private(val.val[2]), simde_float16x8_to_private(val.val[3]) };
+    for (size_t i = 0; i < (sizeof(val.val[0]) / sizeof(*ptr)) * 4 ; i++) {
+      buf[i] = a_[i % 4].values[i / 4];
+    }
+    simde_memcpy(ptr, buf, sizeof(buf));
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+  #undef vst4q_f16
+  #define vst4q_f16(a, b) simde_vst4q_f16((a), (b))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES

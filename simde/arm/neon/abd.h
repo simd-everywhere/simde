@@ -22,6 +22,7 @@
  *
  * Copyright:
  *   2020      Evan Nemerson <evan@nemerson.com>
+ *   2023      Yi-Yen Chung <eric681@andestech.com> (Copyright owned by Andes Technology)
  */
 
 #if !defined(SIMDE_ARM_NEON_ABD_H)
@@ -36,6 +37,23 @@
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 SIMDE_BEGIN_DECLS_
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_float16_t
+simde_vabdh_f16(simde_float16_t a, simde_float16_t b) {
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
+    return vabdh_f16(a, b);
+  #else
+    simde_float32_t a_ = simde_float16_to_float32(a);
+    simde_float32_t b_ = simde_float16_to_float32(b);
+    simde_float32_t r_ = a_ - b_;
+    return r_ < 0 ? simde_float16_from_float32(-r_) : simde_float16_from_float32(r_);
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vabdh_f16
+  #define vabdh_f16(a, b) simde_vabdh_f16((a), (b))
+#endif
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float32_t
@@ -65,6 +83,20 @@ simde_vabdd_f64(simde_float64_t a, simde_float64_t b) {
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
   #undef vabdd_f64
   #define vabdd_f64(a, b) simde_vabdd_f64((a), (b))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_float16x4_t
+simde_vabd_f16(simde_float16x4_t a, simde_float16x4_t b) {
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
+    return vabd_f16(a, b);
+  #else
+    return simde_vabs_f16(simde_vsub_f16(a, b));
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+  #undef vabd_f16
+  #define vabd_f16(a, b) simde_vabd_f16((a), (b))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -218,6 +250,20 @@ simde_vabd_u32(simde_uint32x2_t a, simde_uint32x2_t b) {
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vabd_u32
   #define vabd_u32(a, b) simde_vabd_u32((a), (b))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_float16x8_t
+simde_vabdq_f16(simde_float16x8_t a, simde_float16x8_t b) {
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
+    return vabdq_f16(a, b);
+  #else
+    return simde_vabsq_f16(simde_vsubq_f16(a, b));
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+  #undef vabdq_f16
+  #define vabdq_f16(a, b) simde_vabdq_f16((a), (b))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
