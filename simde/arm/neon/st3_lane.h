@@ -22,6 +22,7 @@
  *
  * Copyright:
  *   2021      Zhi An Ng <zhin@google.com> (Copyright owned by Google, LLC)
+ *   2023      Yi-Yen Chung <eric681@andestech.com> (Copyright owned by Andes Technology)
  */
 
 #if !defined(SIMDE_ARM_NEON_ST3_LANE_H)
@@ -187,6 +188,25 @@ simde_vst3_lane_u64(uint64_t ptr[HEDLEY_ARRAY_PARAM(3)], simde_uint64x1x3_t val,
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
   #undef vst3_lane_u64
   #define vst3_lane_u64(a, b, c) simde_vst3_lane_u64((a), (b), (c))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+void
+simde_vst3_lane_f16(simde_float16_t ptr[HEDLEY_ARRAY_PARAM(3)], simde_float16x4x3_t val, const int lane)
+    SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 3) {
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
+    SIMDE_CONSTIFY_4_NO_RESULT_(vst3_lane_f16, HEDLEY_UNREACHABLE(), lane, ptr, val);
+  #else
+    simde_float16x4_private r;
+    for (size_t i = 0 ; i < 3 ; i++) {
+      r = simde_float16x4_to_private(val.val[i]);
+      ptr[i] = r.values[lane];
+    }
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+  #undef vst3_lane_f16
+  #define vst3_lane_f16(a, b, c) simde_vst3_lane_f16((a), (b), (c))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -378,6 +398,25 @@ simde_vst3q_lane_u64(uint64_t ptr[HEDLEY_ARRAY_PARAM(3)], simde_uint64x2x3_t val
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
   #undef vst3q_lane_u64
   #define vst3q_lane_u64(a, b, c) simde_vst3q_lane_u64((a), (b), (c))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+void
+simde_vst3q_lane_f16(simde_float16_t ptr[HEDLEY_ARRAY_PARAM(3)], simde_float16x8x3_t val, const int lane)
+    SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 7) {
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
+    SIMDE_CONSTIFY_8_NO_RESULT_(vst3q_lane_f16, HEDLEY_UNREACHABLE(), lane, ptr, val);
+  #else
+    simde_float16x8_private r;
+    for (size_t i = 0 ; i < 3 ; i++) {
+      r = simde_float16x8_to_private(val.val[i]);
+      ptr[i] = r.values[lane];
+    }
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+  #undef vst3q_lane_f16
+  #define vst3q_lane_f16(a, b, c) simde_vst3q_lane_f16((a), (b), (c))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
