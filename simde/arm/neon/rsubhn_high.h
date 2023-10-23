@@ -43,7 +43,7 @@ SIMDE_BEGIN_DECLS_
 #endif
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
   #undef vrsubhn_high_s16
-  #define vrsubhn_high_s16(a, b) simde_vrsubhn_high_s16((a), (b))
+  #define vrsubhn_high_s16(r, a, b) simde_vrsubhn_high_s16((r), (a), (b))
 #endif
 
 #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
@@ -53,7 +53,7 @@ SIMDE_BEGIN_DECLS_
 #endif
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
   #undef vrsubhn_high_s32
-  #define vrsubhn_high_s32(a, b) simde_vrsubhn_high_s32((a), (b))
+  #define vrsubhn_high_s32(r, a, b) simde_vrsubhn_high_s32((r), (a), (b))
 #endif
 
 #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
@@ -63,7 +63,7 @@ SIMDE_BEGIN_DECLS_
 #endif
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
   #undef vrsubhn_high_s64
-  #define vrsubhn_high_s64(a, b) simde_vrsubhn_high_s64((a), (b))
+  #define vrsubhn_high_s64(r, a, b) simde_vrsubhn_high_s64((r), (a), (b))
 #endif
 
 #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
@@ -73,7 +73,7 @@ SIMDE_BEGIN_DECLS_
 #endif
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
   #undef vrsubhn_high_u16
-  #define vrsubhn_high_u16(a, b) simde_vrsubhn_high_u16((a), (b))
+  #define vrsubhn_high_u16(r, a, b) simde_vrsubhn_high_u16((r), (a), (b))
 #endif
 
 #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
@@ -83,7 +83,7 @@ SIMDE_BEGIN_DECLS_
 #endif
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
   #undef vrsubhn_high_u32
-  #define vrsubhn_high_u32(a, b) simde_vrsubhn_high_u32((a), (b))
+  #define vrsubhn_high_u32(r, a, b) simde_vrsubhn_high_u32((r), (a), (b))
 #endif
 
 #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
@@ -93,7 +93,7 @@ SIMDE_BEGIN_DECLS_
 #endif
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
   #undef vrsubhn_high_u64
-  #define vrsubhn_high_u64(a, b) simde_vrsubhn_high_u64((a), (b))
+  #define vrsubhn_high_u64(r, a, b) simde_vrsubhn_high_u64((r), (a), (b))
 #endif
 
 SIMDE_END_DECLS_
