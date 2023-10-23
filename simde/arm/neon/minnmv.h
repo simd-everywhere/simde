@@ -172,7 +172,7 @@ simde_vminnmvq_f64(simde_float64x2_t a) {
   #else
     simde_float64x2_private a_ = simde_float64x2_to_private(a);
 
-    r = SIMDE_MATH_INFINITYF;
+    r = SIMDE_MATH_INFINITY;
     #if defined(SIMDE_FAST_NANS)
       SIMDE_VECTORIZE_REDUCTION(min:r)
     #else
