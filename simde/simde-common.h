@@ -562,6 +562,55 @@ typedef SIMDE_FLOAT32_TYPE simde_float32;
 #endif
 typedef SIMDE_FLOAT64_TYPE simde_float64;
 
+#if defined(SIMDE_POLY8_TYPE)
+#  undef SIMDE_POLY8_TYPE
+#endif
+#if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+#  define SIMDE_POLY8_TYPE poly8_t
+#  define SIMDE_POLY8_C(value) ((SIMDE_POLY8_TYPE) value)
+#else
+#  define SIMDE_POLY8_TYPE uint8_t
+#  define SIMDE_POLY8_C(value) ((uint8_t) value)
+#endif
+typedef SIMDE_POLY8_TYPE simde_poly8;
+
+#if defined(SIMDE_POLY16_TYPE)
+#  undef SIMDE_POLY16_TYPE
+#endif
+#if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+#  define SIMDE_POLY16_TYPE poly16_t
+#  define SIMDE_POLY16_C(value) ((SIMDE_POLY16_TYPE) value)
+#else
+#  define SIMDE_POLY16_TYPE uint16_t
+#  define SIMDE_POLY16_C(value) ((uint16_t) value)
+#endif
+typedef SIMDE_POLY16_TYPE simde_poly16;
+
+#if defined(SIMDE_POLY64_TYPE)
+#  undef SIMDE_POLY64_TYPE
+#endif
+#if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+#  define SIMDE_POLY64_TYPE poly64_t
+#  define SIMDE_POLY64_C(value) ((SIMDE_POLY64_TYPE) value)
+#else
+#  define SIMDE_POLY64_TYPE uint64_t
+#  define SIMDE_POLY64_C(value) ((uint64_t) value)
+#endif
+typedef SIMDE_POLY64_TYPE simde_poly64;
+
+// [Eric] Current implementation replaces poly128_t with two poly64_t
+#if defined(SIMDE_POLY128_TYPE)
+#  undef SIMDE_POLY128_TYPE
+#endif
+#if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+#  define SIMDE_POLY128_TYPE poly128_t
+#  define SIMDE_POLY128_C(value) ((SIMDE_POLY128_TYPE) value)
+#else
+#  define SIMDE_POLY128_TYPE __uint128_t
+#  define SIMDE_POLY128_C(value) ((__uint128_t) value)
+#endif
+typedef SIMDE_POLY128_TYPE simde_poly128;
+
 #if defined(__cplusplus)
   typedef bool simde_bool;
 #elif defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 199901L)

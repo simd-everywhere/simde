@@ -59,14 +59,14 @@ static const uint8_t sbox_sm4[256] = {
 
 static void u32_to_u8x4(uint32_t src, uint8_t* dst) {
   for(int i = 0; i < 4; ++i) {
-    *(dst + i) = (uint8_t)((src << (i * 8)) >> 24);
+    *(dst + i) = HEDLEY_STATIC_CAST(uint8_t, ((src << (i * 8)) >> 24));
   }
 }
 
 static void u32_from_u8x4(uint8_t* src, uint32_t* dst) {
   *dst = 0;
   for(int i = 0; i < 4; ++i) {
-    *dst = *dst | ((uint32_t)src[i] << (24 - i * 8));
+    *dst = *dst | (HEDLEY_STATIC_CAST(uint32_t, src[i]) << (24 - i * 8));
   }
 }
 

@@ -4443,7 +4443,7 @@ simde_vreinterpret_p64_p16(simde_poly16x4_t a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_poly64x1_t
 simde_vreinterpret_p64_f16(simde_float16x4_t a) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
     return vreinterpret_p64_f16(a);
   #else
     simde_poly64x1_private r_;
@@ -4664,7 +4664,7 @@ simde_vreinterpretq_p8_f16(simde_float16x8_t a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_poly64x2_t
 simde_vreinterpretq_p64_f16(simde_float16x8_t a) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
     return vreinterpretq_p64_f16(a);
   #else
     simde_poly64x2_private r_;
@@ -6347,7 +6347,7 @@ simde_vreinterpretq_p128_p16(simde_poly16x8_t a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_poly128_t
 simde_vreinterpretq_p128_f16(simde_float16x8_t a) {
-  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
     return vreinterpretq_p128_f16(a);
   #else
     simde_poly128_t r_;
@@ -6568,7 +6568,7 @@ simde_vreinterpretq_p16_p128(simde_poly128_t a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float16x8_t
 simde_vreinterpretq_f16_p128(simde_poly128_t a) {
-  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
     return vreinterpretq_f16_p128(a);
   #else
     simde_float16x8_private r_;

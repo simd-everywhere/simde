@@ -724,7 +724,7 @@ simde_veor3q_u32(simde_uint32x4_t a, simde_uint32x4_t b, simde_uint32x4_t c) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_uint64x2_t
 simde_veor3q_u64(simde_uint64x2_t a, simde_uint64x2_t b, simde_uint64x2_t c) {
-  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && 0 // [TODO] undeclared function on aarch64-clang-15-ccache.cross
     return veor3q_u64(a, b, c);
   #else
     simde_uint64x2_private
