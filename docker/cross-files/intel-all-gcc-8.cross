@@ -1,0 +1,18 @@
+[binaries]
+c = 'gcc-8'
+cpp = 'g++-8'
+ar = 'ar'
+strip = 'strip'
+objcopy = 'objcopy'
+ld = 'ld'
+exe_wrapper = ['sde64', '-skx', '--']
+
+[properties]
+c_args = ['-march=icelake-server', '-Wextra', '-Werror']
+cpp_args = ['-march=icelake-server', '-Wextra', '-Werror']
+
+[host_machine]
+system = 'linux'
+cpu_family = 'x86_64-all'
+cpu = 'x86_64'
+endian = 'little'
