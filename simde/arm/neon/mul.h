@@ -656,13 +656,13 @@ simde_vmul_p8(simde_poly8x8_t a, simde_poly8x8_t b) {
 
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-    	uint16_t extend_op2 = HEDLEY_STATIC_CAST(uint16_t, b_.values[i]);
-    	uint16_t result = 0;
-    	for(uint16_t j = 0; j < 8; ++j) {
-    	  if(a_.values[i] & (1 << j)) {
-    	    result = HEDLEY_STATIC_CAST(uint16_t, result ^ (extend_op2 << j));
-    	  }
-    	}
+      uint16_t extend_op2 = HEDLEY_STATIC_CAST(uint16_t, b_.values[i]);
+      uint16_t result = 0;
+      for(uint16_t j = 0; j < 8; ++j) {
+        if(a_.values[i] & (1 << j)) {
+          result = HEDLEY_STATIC_CAST(uint16_t, result ^ (extend_op2 << j));
+        }
+      }
       r_.values[i] = HEDLEY_STATIC_CAST(uint8_t, (result & (0xFF)));
     }
 
@@ -687,13 +687,13 @@ simde_vmulq_p8(simde_poly8x16_t a, simde_poly8x16_t b) {
 
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-    	uint16_t extend_op2 = HEDLEY_STATIC_CAST(uint16_t, b_.values[i]);
-    	uint16_t result = 0;
-    	for(uint16_t j = 0; j < 8; ++j) {
-    	  if(a_.values[i] & (1 << j)) {
-    	    result = HEDLEY_STATIC_CAST(uint16_t, result ^ (extend_op2 << j));
-    	  }
-    	}
+      uint16_t extend_op2 = HEDLEY_STATIC_CAST(uint16_t, b_.values[i]);
+      uint16_t result = 0;
+      for(uint16_t j = 0; j < 8; ++j) {
+        if(a_.values[i] & (1 << j)) {
+          result = HEDLEY_STATIC_CAST(uint16_t, result ^ (extend_op2 << j));
+        }
+      }
       r_.values[i] = HEDLEY_STATIC_CAST(uint8_t, (result & (0xFF)));
     }
 

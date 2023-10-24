@@ -32,11 +32,11 @@ test_simde_vstrq_p128 (SIMDE_MUNIT_TEST_ARGS) {
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
     simde_poly128_t r_ = test_vec[i].r[0];
+    simde_poly128_t a, a_;
     r_ = r_ << 64;
     r_ = r_ | test_vec[i].r[1];
-    simde_poly128_t a_;
     simde_vstrq_p128(&a_, r_);
-    simde_poly128_t a = test_vec[i].a[0];
+    a = test_vec[i].a[0];
     a = a << 64;
     a = a | test_vec[i].a[1];
 

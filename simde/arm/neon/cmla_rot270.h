@@ -36,7 +36,7 @@ SIMDE_BEGIN_DECLS_
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float16x4_t
 simde_vcmla_rot270_f16(simde_float16x4_t r, simde_float16x4_t a, simde_float16x4_t b) {
-  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
     return vcmla_rot270_f16(r, a, b);
   #else
     simde_float16x4_private
@@ -46,8 +46,14 @@ simde_vcmla_rot270_f16(simde_float16x4_t r, simde_float16x4_t a, simde_float16x4
 
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.values) / (2 * sizeof(r_.values[0]))) ; i++) {
-      r_.values[2 * i] += b_.values[2 * i + 1] * a_.values[2 * i + 1];
-      r_.values[2 * i + 1] += -(b_.values[2 * i]) * a_.values[2 * i + 1];
+      r_.values[2 * i] = simde_float16_from_float32(
+          simde_float16_to_float32(r_.values[2 * i]) +
+          simde_float16_to_float32(b_.values[2 * i + 1]) *
+          simde_float16_to_float32(a_.values[2 * i + 1]));
+      r_.values[2 * i + 1] = simde_float16_from_float32(
+          simde_float16_to_float32(r_.values[2 * i + 1]) -
+          simde_float16_to_float32(b_.values[2 * i]) *
+          simde_float16_to_float32(a_.values[2 * i + 1]));
     }
 
     return simde_float16x4_from_private(r_);
@@ -61,7 +67,7 @@ simde_vcmla_rot270_f16(simde_float16x4_t r, simde_float16x4_t a, simde_float16x4
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float16x8_t
 simde_vcmlaq_rot270_f16(simde_float16x8_t r, simde_float16x8_t a, simde_float16x8_t b) {
-  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
     return vcmlaq_rot270_f16(r, a, b);
   #else
     simde_float16x8_private
@@ -71,8 +77,14 @@ simde_vcmlaq_rot270_f16(simde_float16x8_t r, simde_float16x8_t a, simde_float16x
 
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.values) / (2 * sizeof(r_.values[0]))) ; i++) {
-      r_.values[2 * i] += b_.values[2 * i + 1] * a_.values[2 * i + 1];
-      r_.values[2 * i + 1] += -(b_.values[2 * i]) * a_.values[2 * i + 1];
+      r_.values[2 * i] = simde_float16_from_float32(
+          simde_float16_to_float32(r_.values[2 * i]) +
+          simde_float16_to_float32(b_.values[2 * i + 1]) *
+          simde_float16_to_float32(a_.values[2 * i + 1]));
+      r_.values[2 * i + 1] = simde_float16_from_float32(
+          simde_float16_to_float32(r_.values[2 * i + 1]) -
+          simde_float16_to_float32(b_.values[2 * i]) *
+          simde_float16_to_float32(a_.values[2 * i + 1]));
     }
 
     return simde_float16x8_from_private(r_);

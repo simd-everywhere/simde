@@ -38,10 +38,10 @@ SIMDE_BEGIN_DECLS_
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float16_t
 simde_vdivh_f16(simde_float16_t a, simde_float16_t b) {
-  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
     return vdivh_f16(a, b);
   #else
-    return a / b;
+    return simde_float16_from_float32(simde_float16_to_float32(a) / simde_float16_to_float32(b));
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
@@ -52,7 +52,7 @@ simde_vdivh_f16(simde_float16_t a, simde_float16_t b) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float16x4_t
 simde_vdiv_f16(simde_float16x4_t a, simde_float16x4_t b) {
-  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
     return vdiv_f16(a, b);
   #else
     simde_float16x4_private
@@ -62,7 +62,7 @@ simde_vdiv_f16(simde_float16x4_t a, simde_float16x4_t b) {
 
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = a_.values[i] / b_.values[i];
+      r_.values[i] = simde_vdivh_f16(a_.values[i], b_.values[i]);
     }
 
     return simde_float16x4_from_private(r_);
@@ -76,7 +76,7 @@ simde_vdiv_f16(simde_float16x4_t a, simde_float16x4_t b) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float16x8_t
 simde_vdivq_f16(simde_float16x8_t a, simde_float16x8_t b) {
-  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
     return vdivq_f16(a, b);
   #else
     simde_float16x8_private
@@ -86,7 +86,7 @@ simde_vdivq_f16(simde_float16x8_t a, simde_float16x8_t b) {
 
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = a_.values[i] / b_.values[i];
+      r_.values[i] = simde_vdivh_f16(a_.values[i], b_.values[i]);
     }
 
     return simde_float16x8_from_private(r_);

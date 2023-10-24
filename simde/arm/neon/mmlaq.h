@@ -38,6 +38,7 @@ SIMDE_BEGIN_DECLS_
 SIMDE_FUNCTION_ATTRIBUTES
 simde_int32x4_t
 simde_vmmlaq_s32(simde_int32x4_t r, simde_int8x16_t a, simde_int8x16_t b) {
+  // [TODO] I8MM is optional feature. src: https://developer.arm.com/documentation/ddi0596/2021-03/SIMD-FP-Instructions/SMMLA--vector---Signed-8-bit-integer-matrix-multiply-accumulate--vector--?lang=en
   #if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
     return vmmlaq_s32(r, a, b);
   #else

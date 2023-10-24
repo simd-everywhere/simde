@@ -11,10 +11,6 @@
 #include <inttypes.h>
 #include <stdarg.h>
 
-#if !defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-#include "../simde/arm/neon/types.h"
-#endif
-
 typedef enum SimdeTestVecPos {
   SIMDE_TEST_VEC_POS_SINGLE =  2,
   SIMDE_TEST_VEC_POS_FIRST  =  1,
@@ -517,15 +513,9 @@ SIMDE_TEST_CODEGEN_GENERATE_RANDOM_INT_FUNC_(uint8_t,   u8)
 SIMDE_TEST_CODEGEN_GENERATE_RANDOM_INT_FUNC_(uint16_t, u16)
 SIMDE_TEST_CODEGEN_GENERATE_RANDOM_INT_FUNC_(uint32_t, u32)
 SIMDE_TEST_CODEGEN_GENERATE_RANDOM_INT_FUNC_(uint64_t, u64)
-#if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-SIMDE_TEST_CODEGEN_GENERATE_RANDOM_INT_FUNC_(poly8_t,   p8)
-SIMDE_TEST_CODEGEN_GENERATE_RANDOM_INT_FUNC_(poly16_t, p16)
-SIMDE_TEST_CODEGEN_GENERATE_RANDOM_INT_FUNC_(poly64_t, p64)
-#else
-SIMDE_TEST_CODEGEN_GENERATE_RANDOM_INT_FUNC_(simde_poly8_t,   p8)
-SIMDE_TEST_CODEGEN_GENERATE_RANDOM_INT_FUNC_(simde_poly16_t, p16)
-SIMDE_TEST_CODEGEN_GENERATE_RANDOM_INT_FUNC_(simde_poly64_t, p64)
-#endif
+SIMDE_TEST_CODEGEN_GENERATE_RANDOM_INT_FUNC_(simde_poly8,   p8)
+SIMDE_TEST_CODEGEN_GENERATE_RANDOM_INT_FUNC_(simde_poly16, p16)
+SIMDE_TEST_CODEGEN_GENERATE_RANDOM_INT_FUNC_(simde_poly64, p64)
 
 #define SIMDE_TEST_CODEGEN_GENERATE_WRITE_VECTOR_FUNC_(T, symbol_identifier, elements_per_line) \
   static void \
@@ -598,15 +588,9 @@ SIMDE_TEST_CODEGEN_GENERATE_WRITE_VECTOR_FUNC_(uint8_t, u8, 8)
 SIMDE_TEST_CODEGEN_GENERATE_WRITE_VECTOR_FUNC_(uint16_t, u16, 8)
 SIMDE_TEST_CODEGEN_GENERATE_WRITE_VECTOR_FUNC_(uint32_t, u32, 8)
 SIMDE_TEST_CODEGEN_GENERATE_WRITE_VECTOR_FUNC_(uint64_t, u64, 4)
-#if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-SIMDE_TEST_CODEGEN_GENERATE_WRITE_VECTOR_FUNC_(poly8_t, p8, 8)
-SIMDE_TEST_CODEGEN_GENERATE_WRITE_VECTOR_FUNC_(poly16_t, p16, 8)
-SIMDE_TEST_CODEGEN_GENERATE_WRITE_VECTOR_FUNC_(poly64_t, p64, 4)
-#else
-SIMDE_TEST_CODEGEN_GENERATE_WRITE_VECTOR_FUNC_(simde_poly8_t, p8, 8)
-SIMDE_TEST_CODEGEN_GENERATE_WRITE_VECTOR_FUNC_(simde_poly16_t, p16, 8)
-SIMDE_TEST_CODEGEN_GENERATE_WRITE_VECTOR_FUNC_(simde_poly64_t, p64, 4)
-#endif
+SIMDE_TEST_CODEGEN_GENERATE_WRITE_VECTOR_FUNC_(simde_poly8, p8, 8)
+SIMDE_TEST_CODEGEN_GENERATE_WRITE_VECTOR_FUNC_(simde_poly16, p16, 8)
+SIMDE_TEST_CODEGEN_GENERATE_WRITE_VECTOR_FUNC_(simde_poly64, p64, 4)
 
 #define simde_test_codegen_write_1vi8(indent, elem_count, values)  simde_test_codegen_write_vi8_full( (indent), (elem_count), #values, (values), SIMDE_TEST_VEC_POS_SINGLE)
 #define simde_test_codegen_write_1vi16(indent, elem_count, values) simde_test_codegen_write_vi16_full((indent), (elem_count), #values, (values), SIMDE_TEST_VEC_POS_SINGLE)
@@ -678,15 +662,9 @@ SIMDE_TEST_CODEGEN_WRITE_SCALAR_FUNC_(uint64_t, u64)
 SIMDE_TEST_CODEGEN_WRITE_SCALAR_FUNC_(simde_float16, f16)
 SIMDE_TEST_CODEGEN_WRITE_SCALAR_FUNC_(simde_float32, f32)
 SIMDE_TEST_CODEGEN_WRITE_SCALAR_FUNC_(simde_float64, f64)
-#if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-SIMDE_TEST_CODEGEN_WRITE_SCALAR_FUNC_(poly8_t,   p8)
-SIMDE_TEST_CODEGEN_WRITE_SCALAR_FUNC_(poly16_t, p16)
-SIMDE_TEST_CODEGEN_WRITE_SCALAR_FUNC_(poly64_t, p64)
-#else
-SIMDE_TEST_CODEGEN_WRITE_SCALAR_FUNC_(simde_poly8_t,   p8)
-SIMDE_TEST_CODEGEN_WRITE_SCALAR_FUNC_(simde_poly16_t, p16)
-SIMDE_TEST_CODEGEN_WRITE_SCALAR_FUNC_(simde_poly64_t, p64)
-#endif
+SIMDE_TEST_CODEGEN_WRITE_SCALAR_FUNC_(simde_poly8,   p8)
+SIMDE_TEST_CODEGEN_WRITE_SCALAR_FUNC_(simde_poly16, p16)
+SIMDE_TEST_CODEGEN_WRITE_SCALAR_FUNC_(simde_poly64, p64)
 
 #define simde_test_codegen_write_1i8(indent, value)  simde_test_codegen_write_i8_full((indent), #value, (value), SIMDE_TEST_VEC_POS_SINGLE)
 #define simde_test_codegen_write_1i16(indent, value) simde_test_codegen_write_i16_full((indent), #value, (value), SIMDE_TEST_VEC_POS_SINGLE)
@@ -930,15 +908,9 @@ SIMDE_TEST_GENERATE_ASSERT_EQUAL_FUNC_(uint8_t,   u8,  PRIu8)
 SIMDE_TEST_GENERATE_ASSERT_EQUAL_FUNC_(uint16_t, u16, PRIu16)
 SIMDE_TEST_GENERATE_ASSERT_EQUAL_FUNC_(uint32_t, u32, PRIu32)
 SIMDE_TEST_GENERATE_ASSERT_EQUAL_FUNC_(uint64_t, u64, PRIu64)
-#if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-SIMDE_TEST_GENERATE_ASSERT_EQUAL_FUNC_(poly8_t,   p8,  PRIu8)
-SIMDE_TEST_GENERATE_ASSERT_EQUAL_FUNC_(poly16_t, p16, PRIu16)
-SIMDE_TEST_GENERATE_ASSERT_EQUAL_FUNC_(poly64_t, p64, PRIu64)
-#else
-SIMDE_TEST_GENERATE_ASSERT_EQUAL_FUNC_(simde_poly8_t,   p8,  PRIu8)
-SIMDE_TEST_GENERATE_ASSERT_EQUAL_FUNC_(simde_poly16_t, p16, PRIu16)
-SIMDE_TEST_GENERATE_ASSERT_EQUAL_FUNC_(simde_poly64_t, p64, PRIu64)
-#endif
+SIMDE_TEST_GENERATE_ASSERT_EQUAL_FUNC_(simde_poly8,   p8,  PRIu8)
+SIMDE_TEST_GENERATE_ASSERT_EQUAL_FUNC_(simde_poly16, p16, PRIu16)
+SIMDE_TEST_GENERATE_ASSERT_EQUAL_FUNC_(simde_poly64, p64, PRIu64)
 
 #define simde_assert_equal_vi8(vec_len, a, b) do { if (simde_assert_equal_vi8_(vec_len, a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 #define simde_assert_equal_vi16(vec_len, a, b) do { if (simde_assert_equal_vi16_(vec_len, a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
