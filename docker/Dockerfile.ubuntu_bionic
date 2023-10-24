@@ -77,12 +77,12 @@ ENV PATH="/usr/lib/ccache:$PATH:/root/.local/bin:/root/.jsvu/bin"
 #   /opt/ibm/xlC/${XLC_VERSION}/bin/xlc_configure <<< 1 >/dev/null
 
 # Intel SDE
-# COPY test/download-sde.sh /tmp/simde-bin/download-sde.sh
-# RUN \
-#   "/tmp/simde-bin/download-sde.sh" "/opt/intel/sde" && \
-#   for executable in sde sde64; do \
-#     ln -s "/opt/intel/sde/${executable}" "/usr/bin/${executable}"; \
-#   done
+COPY test/download-sde.sh /tmp/simde-bin/download-sde.sh
+RUN \
+  "/tmp/simde-bin/download-sde.sh" "/opt/intel/sde" && \
+  for executable in sde sde64; do \
+    ln -s "/opt/intel/sde/${executable}" "/usr/bin/${executable}"; \
+  done
 
 # Emscripten
 # RUN \
