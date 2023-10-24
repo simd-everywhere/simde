@@ -115,12 +115,13 @@ simde_mm512_i64gather_epi32(simde__m512i vindex, const void* base_addr, const in
   }))
 #elif defined(SIMDE_X86_AVX2_NATIVE) && !defined(SIMDE_STATEMENT_EXPR_)
   #define simde_mm512_i64gather_epi32(vindex, base_addr, scale) \
-    _mm256_set_m128i( \
+    _mm256_insertf128_si256( \
+      _mm256_castsi128_si256( \
+        _mm256_i64gather_epi32(HEDLEY_STATIC_CAST(int const*, (base_addr)), \
+          simde_mm512_extracti64x4_epi64((vindex), 0), (scale))), \
       _mm256_i64gather_epi32(HEDLEY_STATIC_CAST(int const*, (base_addr)), \
         simde_mm512_extracti64x4_epi64((vindex), 1), (scale)), \
-      _mm256_i64gather_epi32(HEDLEY_STATIC_CAST(int const*, (base_addr)), \
-        simde_mm512_extracti64x4_epi64((vindex), 0), (scale)), \
-      )
+      1)
 #endif
 #if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
   #undef _mm512_i64gather_epi32
@@ -285,12 +286,13 @@ simde_mm512_i64gather_ps(simde__m512i vindex, const void* base_addr, const int32
   }))
 #elif defined(SIMDE_X86_AVX2_NATIVE) && !defined(SIMDE_STATEMENT_EXPR_)
   #define simde_mm512_i64gather_ps(vindex, base_addr, scale) \
-    _mm256_set_m128( \
+    _mm256_insertf128_si256( \
+      _mm256_castps128_ps256( \
+        _mm256_i64gather_ps(HEDLEY_STATIC_CAST(float const*, (base_addr)), \
+          simde_mm512_extracti64x4_epi64((vindex), 0), (scale))), \
       _mm256_i64gather_ps(HEDLEY_STATIC_CAST(float const*, (base_addr)), \
         simde_mm512_extracti64x4_epi64((vindex), 1), (scale)), \
-      _mm256_i64gather_pd(HEDLEY_STATIC_CAST(float const*, (base_addr)), \
-        simde_mm512_extracti64x4_epi64((vindex), 0), (scale)), \
-      )
+      1)
 #endif
 #if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
   #undef _mm512_i64gather_ps
