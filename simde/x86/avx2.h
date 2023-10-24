@@ -2269,11 +2269,11 @@ simde_mm256_i32gather_ps(const simde_float32* base_addr, simde__m256i vindex, co
   return simde__m256_from_private(r_);
 }
 #if defined(SIMDE_X86_AVX2_NATIVE)
-  #define simde_mm256_i32gather_ps(base_addr, vindex, scale) _mm256_i32gather_ps(SIMDE_CHECKED_REINTERPRET_CAST(float const*, simde_float32 const*, base_addr), vindex, scale)
+  #define simde_mm256_i32gather_ps(base_addr, vindex, scale) _mm256_i32gather_ps(SIMDE_CHECKED_REINTERPRET_CAST(float const*, simde_float32 const*, (base_addr)), (vindex), (scale))
 #endif
 #if defined(SIMDE_X86_AVX2_ENABLE_NATIVE_ALIASES)
   #undef _mm256_i32gather_ps
-  #define _mm256_i32gather_ps(base_addr, vindex, scale) simde_mm256_i32gather_ps(SIMDE_CHECKED_REINTERPRET_CAST(simde_float32 const*, float const*, base_addr), vindex, scale)
+  #define _mm256_i32gather_ps(base_addr, vindex, scale) simde_mm256_i32gather_ps(SIMDE_CHECKED_REINTERPRET_CAST(simde_float32 const*, float const*, (base_addr)), (vindex), (scale))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
