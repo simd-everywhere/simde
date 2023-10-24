@@ -659,7 +659,7 @@ jobs:
       - name: Configure and Build
         run: |
           meson --backend=ninja build --cross-file test/arm64cl.txt
-          meson test -C build --print-errorlogs $(meson test -C build --list | grep -v emul)
+          ninja -C build test
 
   linux-gcc-loongarch64:
     runs-on: ubuntu-22.04

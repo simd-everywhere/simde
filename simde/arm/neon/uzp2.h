@@ -301,6 +301,36 @@ simde_vuzp2_u32(simde_uint32x2_t a, simde_uint32x2_t b) {
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
+simde_float16x8_t
+simde_vuzp2q_f16(simde_float16x8_t a, simde_float16x8_t b) {
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
+    return vuzp2q_f16(a, b);
+  #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
+    float16x8x2_t t = vuzpq_f16(a, b);
+    return t.val[1];
+  #else
+    simde_float16x8_private
+      r_,
+      a_ = simde_float16x8_to_private(a),
+      b_ = simde_float16x8_to_private(b);
+
+    const size_t halfway_point = sizeof(r_.values) / sizeof(r_.values[0]) / 2;
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < halfway_point ; i++) {
+      const size_t idx = i << 1;
+      r_.values[        i        ] = a_.values[idx | 1];
+      r_.values[i + halfway_point] = b_.values[idx | 1];
+    }
+
+    return simde_float16x8_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vuzp2q_f16
+  #define vuzp2q_f16(a, b) simde_vuzp2q_f16((a), (b))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
 simde_float32x4_t
 simde_vuzp2q_f32(simde_float32x4_t a, simde_float32x4_t b) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
