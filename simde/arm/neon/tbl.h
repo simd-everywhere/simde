@@ -241,7 +241,7 @@ simde_vtbl1_p8(simde_poly8x8_t a, simde_uint8x8_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vtbl1_p8(a, b);
   #else
-    return simde_vreinterpret_p8_u8(simde_vtbl1_u8(simde_vreinterpret_u8_p8(a), simde_vreinterpret_u8_p8(b)));
+    return simde_vreinterpret_p8_u8(simde_vtbl1_u8(simde_vreinterpret_u8_p8(a), b));
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
@@ -257,7 +257,7 @@ simde_vtbl2_p8(simde_poly8x8x2_t a, simde_uint8x8_t b) {
   #else
     simde_uint8x8x2_t a_;
     simde_memcpy(&a_, &a, sizeof(a_));
-    return simde_vreinterpret_p8_u8(simde_vtbl2_u8(a_, simde_vreinterpret_u8_p8(b)));
+    return simde_vreinterpret_p8_u8(simde_vtbl2_u8(a_, b));
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
@@ -273,7 +273,7 @@ simde_vtbl3_p8(simde_poly8x8x3_t a, simde_uint8x8_t b) {
   #else
     simde_uint8x8x3_t a_;
     simde_memcpy(&a_, &a, sizeof(a_));
-    return simde_vreinterpret_p8_u8(simde_vtbl3_u8(a_, simde_vreinterpret_u8_p8(b)));
+    return simde_vreinterpret_p8_u8(simde_vtbl3_u8(a_, b));
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
@@ -289,7 +289,7 @@ simde_vtbl4_p8(simde_poly8x8x4_t a, simde_uint8x8_t b) {
   #else
     simde_uint8x8x4_t a_;
     simde_memcpy(&a_, &a, sizeof(a_));
-    return simde_vreinterpret_p8_u8(simde_vtbl4_u8(a_, simde_vreinterpret_u8_p8(b)));
+    return simde_vreinterpret_p8_u8(simde_vtbl4_u8(a_, b));
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)

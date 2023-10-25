@@ -839,6 +839,102 @@ simde_assert_equal_f64_(simde_float64 a, simde_float64 b, simde_float64 slop,
 }
 #define simde_assert_equal_f64(a, b, precision) do { if (simde_assert_equal_f64_(a, b, simde_test_f64_precision_to_slop(precision), __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 
+static int
+simde_assert_equal_vp8_(
+    size_t vec_len, simde_poly8 const a[HEDLEY_ARRAY_PARAM(vec_len)], simde_poly8 const b[HEDLEY_ARRAY_PARAM(vec_len)],
+    const char* filename, int line, const char* astr, const char* bstr) {
+  for (size_t i = 0 ; i < vec_len ; i++) {
+    uint8_t a_ = HEDLEY_STATIC_CAST(uint8_t, a[i]);
+    uint8_t b_ = HEDLEY_STATIC_CAST(uint8_t, b[i]);
+
+    if (HEDLEY_UNLIKELY(a_ != b_)) {
+      simde_test_debug_printf_("%s:%d: assertion failed: %s[%zu] ~= %s[%zu] (%" PRIu8 " ~= %" PRIu8 ")\n",
+              filename, line, astr, i, bstr, i, a_, b_);
+      SIMDE_TEST_ASSERT_RETURN(1);
+    }
+  }
+  return 0;
+}
+#define simde_assert_equal_vp8(vec_len, a, b) do { if (simde_assert_equal_vp8_(vec_len, a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+
+static int
+simde_assert_equal_p8_(simde_poly8 a, simde_poly8 b,
+    const char* filename, int line, const char* astr, const char* bstr) {
+  uint8_t a_ = HEDLEY_STATIC_CAST(uint8_t, a);
+  uint8_t b_ = HEDLEY_STATIC_CAST(uint8_t, b);
+  if (HEDLEY_UNLIKELY(a_ != b_)) {
+    simde_test_debug_printf_("%s:%d: assertion failed: %s ~= %s (%" PRIu8 " ~= %" PRIu8 ")\n",
+        filename, line, astr, bstr, a_, b_);
+    SIMDE_TEST_ASSERT_RETURN(1);
+  }
+  return 0;
+}
+#define simde_assert_equal_p8(a, b) do { if (simde_assert_equal_p8_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+
+static int
+simde_assert_equal_vp16_(
+    size_t vec_len, simde_poly16 const a[HEDLEY_ARRAY_PARAM(vec_len)], simde_poly16 const b[HEDLEY_ARRAY_PARAM(vec_len)],
+    const char* filename, int line, const char* astr, const char* bstr) {
+  for (size_t i = 0 ; i < vec_len ; i++) {
+    uint16_t a_ = HEDLEY_STATIC_CAST(uint16_t, a[i]);
+    uint16_t b_ = HEDLEY_STATIC_CAST(uint16_t, b[i]);
+
+    if (HEDLEY_UNLIKELY(a_ != b_)) {
+      simde_test_debug_printf_("%s:%d: assertion failed: %s[%zu] ~= %s[%zu] (%" PRIu16 " ~= %" PRIu16 ")\n",
+              filename, line, astr, i, bstr, i, a_, b_);
+      SIMDE_TEST_ASSERT_RETURN(1);
+    }
+  }
+  return 0;
+}
+#define simde_assert_equal_vp16(vec_len, a, b) do { if (simde_assert_equal_vp16_(vec_len, a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+
+static int
+simde_assert_equal_p16_(simde_poly16 a, simde_poly16 b,
+    const char* filename, int line, const char* astr, const char* bstr) {
+  uint16_t a_ = HEDLEY_STATIC_CAST(uint16_t, a);
+  uint16_t b_ = HEDLEY_STATIC_CAST(uint16_t, b);
+  if (HEDLEY_UNLIKELY(a_ != b_)) {
+    simde_test_debug_printf_("%s:%d: assertion failed: %s ~= %s (%" PRIu16 " ~= %" PRIu16 ")\n",
+        filename, line, astr, bstr, a_, b_);
+    SIMDE_TEST_ASSERT_RETURN(1);
+  }
+  return 0;
+}
+#define simde_assert_equal_p16(a, b) do { if (simde_assert_equal_p16_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+
+static int
+simde_assert_equal_vp64_(
+    size_t vec_len, simde_poly64 const a[HEDLEY_ARRAY_PARAM(vec_len)], simde_poly64 const b[HEDLEY_ARRAY_PARAM(vec_len)],
+    const char* filename, int line, const char* astr, const char* bstr) {
+  for (size_t i = 0 ; i < vec_len ; i++) {
+    uint64_t a_ = HEDLEY_STATIC_CAST(uint64_t, a[i]);
+    uint64_t b_ = HEDLEY_STATIC_CAST(uint64_t, b[i]);
+
+    if (HEDLEY_UNLIKELY(a_ != b_)) {
+      simde_test_debug_printf_("%s:%d: assertion failed: %s[%zu] ~= %s[%zu] (%" PRIu64 " ~= %" PRIu64 ")\n",
+              filename, line, astr, i, bstr, i, a_, b_);
+      SIMDE_TEST_ASSERT_RETURN(1);
+    }
+  }
+  return 0;
+}
+#define simde_assert_equal_vp64(vec_len, a, b) do { if (simde_assert_equal_vp64_(vec_len, a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+
+static int
+simde_assert_equal_p64_(simde_poly64 a, simde_poly64 b,
+    const char* filename, int line, const char* astr, const char* bstr) {
+  uint64_t a_ = HEDLEY_STATIC_CAST(uint64_t, a);
+  uint64_t b_ = HEDLEY_STATIC_CAST(uint64_t, b);
+  if (HEDLEY_UNLIKELY(a_ != b_)) {
+    simde_test_debug_printf_("%s:%d: assertion failed: %s ~= %s (%" PRIu64 " ~= %" PRIu64 ")\n",
+        filename, line, astr, bstr, a_, b_);
+    SIMDE_TEST_ASSERT_RETURN(1);
+  }
+  return 0;
+}
+#define simde_assert_equal_p64(a, b) do { if (simde_assert_equal_p64_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+
 #define SIMDE_TEST_GENERATE_ASSERT_EQUAL_FUNC_(T, symbol_identifier, fmt) \
   static int \
   simde_assert_equal_v##symbol_identifier##_( \
@@ -908,9 +1004,6 @@ SIMDE_TEST_GENERATE_ASSERT_EQUAL_FUNC_(uint8_t,   u8,  PRIu8)
 SIMDE_TEST_GENERATE_ASSERT_EQUAL_FUNC_(uint16_t, u16, PRIu16)
 SIMDE_TEST_GENERATE_ASSERT_EQUAL_FUNC_(uint32_t, u32, PRIu32)
 SIMDE_TEST_GENERATE_ASSERT_EQUAL_FUNC_(uint64_t, u64, PRIu64)
-SIMDE_TEST_GENERATE_ASSERT_EQUAL_FUNC_(simde_poly8,   p8,  PRIu8)
-SIMDE_TEST_GENERATE_ASSERT_EQUAL_FUNC_(simde_poly16, p16, PRIu16)
-SIMDE_TEST_GENERATE_ASSERT_EQUAL_FUNC_(simde_poly64, p64, PRIu64)
 
 #define simde_assert_equal_vi8(vec_len, a, b) do { if (simde_assert_equal_vi8_(vec_len, a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 #define simde_assert_equal_vi16(vec_len, a, b) do { if (simde_assert_equal_vi16_(vec_len, a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)

@@ -1,7 +1,7 @@
-#define SIMDE_TEST_ARM_NEON_INSN __crc32
+#define SIMDE_TEST_ARM_NEON_INSN crc32
 
 #include "test-neon.h"
-#include "../../../simde/arm/neon/__crc32.h"
+#include "../../../simde/arm/neon/crc32.h"
 
 static int
 test_simde___crc32b(SIMDE_MUNIT_TEST_ARGS) {

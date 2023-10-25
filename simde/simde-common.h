@@ -567,10 +567,10 @@ typedef SIMDE_FLOAT64_TYPE simde_float64;
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
 #  define SIMDE_POLY8_TYPE poly8_t
-#  define SIMDE_POLY8_C(value) ((SIMDE_POLY8_TYPE) value)
+#  define SIMDE_POLY8_C(value) value
 #else
 #  define SIMDE_POLY8_TYPE uint8_t
-#  define SIMDE_POLY8_C(value) ((uint8_t) value)
+#  define SIMDE_POLY8_C(value) (HEDLEY_STATIC_CAST(uint8_t, value))
 #endif
 typedef SIMDE_POLY8_TYPE simde_poly8;
 
@@ -579,22 +579,22 @@ typedef SIMDE_POLY8_TYPE simde_poly8;
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
 #  define SIMDE_POLY16_TYPE poly16_t
-#  define SIMDE_POLY16_C(value) ((SIMDE_POLY16_TYPE) value)
+#  define SIMDE_POLY16_C(value) value
 #else
 #  define SIMDE_POLY16_TYPE uint16_t
-#  define SIMDE_POLY16_C(value) ((uint16_t) value)
+#  define SIMDE_POLY16_C(value) (HEDLEY_STATIC_CAST(uint16_t, value))
 #endif
 typedef SIMDE_POLY16_TYPE simde_poly16;
 
 #if defined(SIMDE_POLY64_TYPE)
 #  undef SIMDE_POLY64_TYPE
 #endif
-#if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+#if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARCH_ARM_CRYPTO)
 #  define SIMDE_POLY64_TYPE poly64_t
-#  define SIMDE_POLY64_C(value) ((SIMDE_POLY64_TYPE) value)
+#  define SIMDE_POLY64_C(value) value ## ull
 #else
 #  define SIMDE_POLY64_TYPE uint64_t
-#  define SIMDE_POLY64_C(value) ((uint64_t) value)
+#  define SIMDE_POLY64_C(value) value ## ull
 #endif
 typedef SIMDE_POLY64_TYPE simde_poly64;
 
@@ -602,12 +602,12 @@ typedef SIMDE_POLY64_TYPE simde_poly64;
 #if defined(SIMDE_POLY128_TYPE)
 #  undef SIMDE_POLY128_TYPE
 #endif
-#if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+#if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARCH_ARM_CRYPTO)
 #  define SIMDE_POLY128_TYPE poly128_t
-#  define SIMDE_POLY128_C(value) ((SIMDE_POLY128_TYPE) value)
+#  define SIMDE_POLY128_C(value) value
 #else
-#  define SIMDE_POLY128_TYPE __uint128_t
-#  define SIMDE_POLY128_C(value) ((__uint128_t) value)
+#  define SIMDE_POLY128_TYPE __int128
+#  define SIMDE_POLY128_C(value) (HEDLEY_STATIC_CAST(__int128, value))
 #endif
 typedef SIMDE_POLY128_TYPE simde_poly128;
 

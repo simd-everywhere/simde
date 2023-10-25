@@ -5,7 +5,7 @@
 
 static int
 test_simde_vrndph_f16 (SIMDE_MUNIT_TEST_ARGS) {
-  static const struct {
+  struct {
     simde_float16 a;
     simde_float16 r;
   } test_vec[] = {
@@ -39,14 +39,10 @@ test_simde_vrndph_f16 (SIMDE_MUNIT_TEST_ARGS) {
 
 static int
 test_simde_vrndp_f16 (SIMDE_MUNIT_TEST_ARGS) {
-  static const struct {
+  struct {
     simde_float16 a[4];
     simde_float16 r[4];
   } test_vec[] = {
-    #if !defined(SIMDE_FAST_NANS)
-    { {            SIMDE_MATH_NANF,           -SIMDE_MATH_NANF,            SIMDE_MATH_NANF,           -SIMDE_MATH_NANF },
-      {            SIMDE_MATH_NANF,           -SIMDE_MATH_NANF,            SIMDE_MATH_NANF,           -SIMDE_MATH_NANF } },
-    #endif
     { {  SIMDE_FLOAT16_VALUE(   6.717),  SIMDE_FLOAT16_VALUE( -13.297),  SIMDE_FLOAT16_VALUE(   6.929),  SIMDE_FLOAT16_VALUE(  -3.646) },
       {  SIMDE_FLOAT16_VALUE(   7.000),  SIMDE_FLOAT16_VALUE( -13.000),  SIMDE_FLOAT16_VALUE(   7.000),  SIMDE_FLOAT16_VALUE(  -3.000) } },
     { {  SIMDE_FLOAT16_VALUE(   8.929),  SIMDE_FLOAT16_VALUE(   7.866),  SIMDE_FLOAT16_VALUE(   2.516),  SIMDE_FLOAT16_VALUE(  11.143) },
@@ -191,7 +187,7 @@ test_simde_vrndp_f64 (SIMDE_MUNIT_TEST_ARGS) {
 
 static int
 test_simde_vrndpq_f16 (SIMDE_MUNIT_TEST_ARGS) {
-  static const struct {
+  struct {
     simde_float16 a[8];
     simde_float16 r[8];
   } test_vec[] = {

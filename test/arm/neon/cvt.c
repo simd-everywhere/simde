@@ -335,7 +335,7 @@ test_simde_vcvth_u64_f16 (SIMDE_MUNIT_TEST_ARGS) {
 
 static int
 test_simde_vcvth_f16_s16 (SIMDE_MUNIT_TEST_ARGS) {
-  static const struct {
+  struct {
     int16_t a;
     simde_float16 r;
   } test_vec[] = {
@@ -458,7 +458,7 @@ test_simde_vcvth_f16_s64 (SIMDE_MUNIT_TEST_ARGS) {
 
 static int
 test_simde_vcvth_f16_u16 (SIMDE_MUNIT_TEST_ARGS) {
-  static const struct {
+  struct {
     uint16_t a;
     simde_float16 r;
   } test_vec[] = {

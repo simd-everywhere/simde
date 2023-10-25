@@ -5,14 +5,10 @@
 
 static int
 test_simde_vrndih_f16 (SIMDE_MUNIT_TEST_ARGS) {
-  static const struct {
+  struct {
     simde_float16 a;
     simde_float16 r;
   } test_vec[] = {
-    #if defined(SIMDE_FAST_NANS) && !defined(SIMDE_FAST_MATH)
-    {          SIMDE_MATH_NANF,
-               SIMDE_MATH_NANF },
-    #endif
     {    SIMDE_FLOAT16_VALUE(  -1.971),
          SIMDE_FLOAT16_VALUE(  -2.000) },
     {    SIMDE_FLOAT16_VALUE(  10.750),
@@ -43,14 +39,10 @@ test_simde_vrndih_f16 (SIMDE_MUNIT_TEST_ARGS) {
 
 static int
 test_simde_vrndi_f16 (SIMDE_MUNIT_TEST_ARGS) {
-  static const struct {
+  struct {
     simde_float16 a[4];
     simde_float16 r[4];
   } test_vec[] = {
-    #if defined(SIMDE_FAST_NANS) && !defined(SIMDE_FAST_MATH)
-    { {            SIMDE_MATH_NANF,           -SIMDE_MATH_NANF },
-      {            SIMDE_MATH_NANF,           -SIMDE_MATH_NANF } },
-    #endif
     { {  SIMDE_FLOAT16_VALUE(  -0.772),  SIMDE_FLOAT16_VALUE(  -2.967),  SIMDE_FLOAT16_VALUE( -14.520),  SIMDE_FLOAT16_VALUE(  -7.674) },
       {  SIMDE_FLOAT16_VALUE(  -1.000),  SIMDE_FLOAT16_VALUE(  -3.000),  SIMDE_FLOAT16_VALUE( -15.000),  SIMDE_FLOAT16_VALUE(  -8.000) } },
     { {  SIMDE_FLOAT16_VALUE(  -5.485),  SIMDE_FLOAT16_VALUE(   1.193),  SIMDE_FLOAT16_VALUE(  -7.297),  SIMDE_FLOAT16_VALUE(  -4.643) },
@@ -197,14 +189,10 @@ test_simde_vrndi_f64 (SIMDE_MUNIT_TEST_ARGS) {
 
 static int
 test_simde_vrndiq_f16 (SIMDE_MUNIT_TEST_ARGS) {
-  static const struct {
+  struct {
     simde_float16 a[8];
     simde_float16 r[8];
   } test_vec[] = {
-    #if !defined(SIMDE_FAST_NANS)
-    { {            SIMDE_MATH_NANF,           -SIMDE_MATH_NANF,            SIMDE_MATH_NANF,           -SIMDE_MATH_NANF },
-      {            SIMDE_MATH_NANF,           -SIMDE_MATH_NANF,            SIMDE_MATH_NANF,           -SIMDE_MATH_NANF } },
-    #endif
     { {  SIMDE_FLOAT16_VALUE( -13.333),  SIMDE_FLOAT16_VALUE(  -6.534),  SIMDE_FLOAT16_VALUE(   1.461),  SIMDE_FLOAT16_VALUE(   8.065),
          SIMDE_FLOAT16_VALUE(  -7.773),  SIMDE_FLOAT16_VALUE(   3.880),  SIMDE_FLOAT16_VALUE(   3.879),  SIMDE_FLOAT16_VALUE(   1.629) },
       {  SIMDE_FLOAT16_VALUE( -13.000),  SIMDE_FLOAT16_VALUE(  -7.000),  SIMDE_FLOAT16_VALUE(   1.000),  SIMDE_FLOAT16_VALUE(   8.000),

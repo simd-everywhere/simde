@@ -264,7 +264,7 @@ simde_vst1_p16_x4(simde_poly16_t ptr[HEDLEY_ARRAY_PARAM(16)], simde_poly16x4x4_t
 SIMDE_FUNCTION_ATTRIBUTES
 void
 simde_vst1_p64_x4(simde_poly64_t ptr[HEDLEY_ARRAY_PARAM(4)], simde_poly64x1x4_t val) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
     vst1_p64_x4(ptr, val);
   #else
     simde_poly64x1_private val_[4];
@@ -274,7 +274,7 @@ simde_vst1_p64_x4(simde_poly64_t ptr[HEDLEY_ARRAY_PARAM(4)], simde_poly64x1x4_t 
     simde_memcpy(ptr, &val_, sizeof(val_));
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
   #undef vst1_p64_x4
   #define vst1_p64_x4(a, b) simde_vst1_p64_x4((a), (b))
 #endif

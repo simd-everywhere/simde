@@ -9,7 +9,7 @@ SIMDE_DIAGNOSTIC_DISABLE_UNREACHABLE_
 
 static int
 test_simde_vmulx_lane_f16 (SIMDE_MUNIT_TEST_ARGS) {
-  static const struct {
+  struct {
     simde_float16 a[4];
     simde_float16 b[4];
     int lane;
@@ -183,7 +183,7 @@ test_simde_vmulx_lane_f64 (SIMDE_MUNIT_TEST_ARGS) {
 
 static int
 test_simde_vmulxq_lane_f16 (SIMDE_MUNIT_TEST_ARGS) {
-  static const struct {
+  struct {
     simde_float16 a[8];
     simde_float16 b[4];
     int lane;
@@ -362,7 +362,7 @@ test_simde_vmulxq_lane_f64 (SIMDE_MUNIT_TEST_ARGS) {
 
 static int
 test_simde_vmulxq_laneq_f16 (SIMDE_MUNIT_TEST_ARGS) {
-  static const struct {
+  struct {
     simde_float16 a[8];
     simde_float16 b[8];
     int lane;
@@ -711,7 +711,7 @@ test_simde_vmulxd_laneq_f64 (SIMDE_MUNIT_TEST_ARGS) {
 
 static int
 test_simde_vmulxh_lane_f16 (SIMDE_MUNIT_TEST_ARGS) {
-  static const struct {
+  struct {
     simde_float16_t a;
     simde_float16_t b[4];
     int lane;
@@ -820,7 +820,7 @@ test_simde_vmulxs_lane_f32 (SIMDE_MUNIT_TEST_ARGS) {
 
 static int
 test_simde_vmulxh_laneq_f16 (SIMDE_MUNIT_TEST_ARGS) {
-  static const struct {
+  struct {
     simde_float16_t a;
     simde_float16_t b[8];
     int lane;
@@ -934,7 +934,7 @@ test_simde_vmulxs_laneq_f32 (SIMDE_MUNIT_TEST_ARGS) {
 
 static int
 test_simde_vmulx_laneq_f16 (SIMDE_MUNIT_TEST_ARGS) {
-  static const struct {
+  struct {
     simde_float16 a[4];
     simde_float16 b[8];
     int lane;

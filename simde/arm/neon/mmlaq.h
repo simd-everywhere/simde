@@ -38,8 +38,8 @@ SIMDE_BEGIN_DECLS_
 SIMDE_FUNCTION_ATTRIBUTES
 simde_int32x4_t
 simde_vmmlaq_s32(simde_int32x4_t r, simde_int8x16_t a, simde_int8x16_t b) {
-  // [TODO] I8MM is optional feature. src: https://developer.arm.com/documentation/ddi0596/2021-03/SIMD-FP-Instructions/SMMLA--vector---Signed-8-bit-integer-matrix-multiply-accumulate--vector--?lang=en
-  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
+  // I8MM is optional feature. src: https://patchwork.ffmpeg.org/project/ffmpeg/patch/20230530123043.52940-2-martin@martin.st/
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(__ARM_FEATURE_MATMUL_INT8)
     return vmmlaq_s32(r, a, b);
   #else
     simde_int8x16_private
@@ -66,7 +66,7 @@ simde_vmmlaq_s32(simde_int32x4_t r, simde_int8x16_t a, simde_int8x16_t b) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_uint32x4_t
 simde_vmmlaq_u32(simde_uint32x4_t r, simde_uint8x16_t a, simde_uint8x16_t b) {
-  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(__ARM_FEATURE_MATMUL_INT8)
     return vmmlaq_u32(r, a, b);
   #else
     simde_uint8x16_private
@@ -93,7 +93,7 @@ simde_vmmlaq_u32(simde_uint32x4_t r, simde_uint8x16_t a, simde_uint8x16_t b) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_int32x4_t
 simde_vusmmlaq_s32(simde_int32x4_t r, simde_uint8x16_t a, simde_int8x16_t b) {
-  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(__ARM_FEATURE_MATMUL_INT8)
     return vusmmlaq_s32(r, a, b);
   #else
     simde_uint8x16_private
@@ -123,7 +123,7 @@ simde_vusmmlaq_s32(simde_int32x4_t r, simde_uint8x16_t a, simde_int8x16_t b) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float32x4_t
 simde_vbfmmlaq_f32(simde_float32x4_t r, simde_bfloat16x8_t a, simde_bfloat16x8_t b) {
-  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(__ARM_FEATURE_MATMUL_INT8)
     return vbfmmlaq_f32(r, a, b);
   #else
     simde_bfloat16x8_private
