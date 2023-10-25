@@ -24,8 +24,8 @@
  *   2023      Yi-Yen Chung <eric681@andestech.com> (Copyright owned by Andes Technology)
  */
 
-#if !defined(SIMDE_ARM_NEON___CRC32_H)
-#define SIMDE_ARM_NEON___CRC32_H
+#if !defined(SIMDE_ARM_NEON_CRC32_H)
+#define SIMDE_ARM_NEON_CRC32_H
 
 #include "types.h"
 

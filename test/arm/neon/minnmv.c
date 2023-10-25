@@ -5,7 +5,7 @@
 
 static int
 test_simde_vminnmv_f16 (SIMDE_MUNIT_TEST_ARGS) {
-  static const struct {
+  struct {
     simde_float16_t a[4];
     simde_float16_t r;
   } test_vec[] = {
@@ -67,7 +67,7 @@ test_simde_vminnmv_f32 (SIMDE_MUNIT_TEST_ARGS) {
 
 static int
 test_simde_vminnmvq_f16 (SIMDE_MUNIT_TEST_ARGS) {
-  static const struct {
+  struct {
     simde_float16_t a[8];
     simde_float16_t r;
   } test_vec[] = {

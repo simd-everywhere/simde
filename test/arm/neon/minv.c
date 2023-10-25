@@ -12,6 +12,14 @@ test_simde_vminv_f16 (SIMDE_MUNIT_TEST_ARGS) {
     #if !defined(SIMDE_FAST_NANS)
     { {            SIMDE_NANHF, SIMDE_FLOAT16_VALUE(   534.24), SIMDE_FLOAT16_VALUE(  -385.00),            SIMDE_NANHF },
                  SIMDE_NANHF },
+    { {            SIMDE_NANHF, SIMDE_NANHF, SIMDE_NANHF,            SIMDE_NANHF },
+      SIMDE_NANHF},
+    { {            SIMDE_INFINITYHF,      SIMDE_INFINITYHF,    SIMDE_INFINITYHF,            SIMDE_INFINITYHF},
+                 SIMDE_INFINITYHF},
+    { {            SIMDE_NINFINITYHF,      SIMDE_NINFINITYHF,    SIMDE_NINFINITYHF,            SIMDE_NINFINITYHF},
+                 SIMDE_NINFINITYHF},
+    { {            SIMDE_NINFINITYHF,      SIMDE_INFINITYHF,    SIMDE_NINFINITYHF,            SIMDE_INFINITYHF},
+                 SIMDE_NINFINITYHF},
     #endif
     { {  SIMDE_FLOAT16_VALUE(    26.103),  SIMDE_FLOAT16_VALUE(   -29.074),  SIMDE_FLOAT16_VALUE(    -9.550),  SIMDE_FLOAT16_VALUE(   -11.583) },
          SIMDE_FLOAT16_VALUE(   -29.074) },

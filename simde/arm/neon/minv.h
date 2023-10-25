@@ -41,10 +41,18 @@ simde_vminv_f16(simde_float16x4_t a) {
   simde_float16x4_private a_ = simde_float16x4_to_private(a);
 
   r = simde_float16_to_float32(SIMDE_INFINITYHF);
-  SIMDE_VECTORIZE_REDUCTION(max:r)
+  #if defined(SIMDE_FAST_NANS)
+    SIMDE_VECTORIZE_REDUCTION(min:r)
+  #else
+    SIMDE_VECTORIZE
+  #endif
   for (size_t i = 0 ; i < (sizeof(a_.values) / sizeof(a_.values[0])) ; i++) {
-    r = simde_float16_to_float32(a_.values[i]) < r ?
-        simde_float16_to_float32(a_.values[i]) : r;
+    simde_float32_t a32 = simde_float16_to_float32(a_.values[i]);
+    #if defined(SIMDE_FAST_NANS)
+      r = a32 < r ? a32 : r;
+    #else
+      r = a32 < r ? a32 : (a32 >= r ? r : ((a32 == a32) ? r : a32));
+    #endif
   }
 
   return simde_float16_from_float32(r);
@@ -240,10 +248,18 @@ simde_vminvq_f16(simde_float16x8_t a) {
   simde_float16x8_private a_ = simde_float16x8_to_private(a);
 
   r = simde_float16_to_float32(SIMDE_INFINITYHF);
-  SIMDE_VECTORIZE_REDUCTION(max:r)
+  #if defined(SIMDE_FAST_NANS)
+    SIMDE_VECTORIZE_REDUCTION(min:r)
+  #else
+    SIMDE_VECTORIZE
+  #endif
   for (size_t i = 0 ; i < (sizeof(a_.values) / sizeof(a_.values[0])) ; i++) {
-    r = simde_float16_to_float32(a_.values[i]) < r ?
-        simde_float16_to_float32(a_.values[i]) : r;
+    simde_float32_t a32 = simde_float16_to_float32(a_.values[i]);
+    #if defined(SIMDE_FAST_NANS)
+      r = a32 < r ? a32 : r;
+    #else
+      r = a32 < r ? a32 : (a32 >= r ? r : ((a32 == a32) ? r : a32));
+    #endif
   }
 
   return simde_float16_from_float32(r);

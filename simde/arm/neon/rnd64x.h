@@ -33,10 +33,11 @@ HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 SIMDE_BEGIN_DECLS_
 
+// src: https://gcc.gnu.org/legacy-ml/gcc-patches/2019-09/msg00053.html
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float32x2_t
 simde_vrnd64x_f32(simde_float32x2_t a) {
-  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(__ARM_FEATURE_FRINT)
     return vrnd64x_f32(a);
   #else
     simde_float32x2_private
@@ -66,7 +67,7 @@ simde_vrnd64x_f32(simde_float32x2_t a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float64x1_t
 simde_vrnd64x_f64(simde_float64x1_t a) {
-  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(__ARM_FEATURE_FRINT)
     return vrnd64x_f64(a);
   #else
     simde_float64x1_private
@@ -96,7 +97,7 @@ simde_vrnd64x_f64(simde_float64x1_t a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float32x4_t
 simde_vrnd64xq_f32(simde_float32x4_t a) {
-  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(__ARM_FEATURE_FRINT)
     return vrnd64xq_f32(a);
   #else
     simde_float32x4_private
@@ -126,7 +127,7 @@ simde_vrnd64xq_f32(simde_float32x4_t a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float64x2_t
 simde_vrnd64xq_f64(simde_float64x2_t a) {
-  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(__ARM_FEATURE_FRINT)
     return vrnd64xq_f64(a);
   #else
     simde_float64x2_private

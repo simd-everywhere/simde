@@ -741,7 +741,7 @@ simde_vaddq_u64(simde_uint64x2_t a, simde_uint64x2_t b) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_poly8x8_t
 simde_vadd_p8(simde_poly8x8_t a, simde_poly8x8_t b) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && !defined(_GCC_ARM_NEON_H)
     return vadd_p8(a, b);
   #else
     simde_poly8x8_private
@@ -765,7 +765,7 @@ simde_vadd_p8(simde_poly8x8_t a, simde_poly8x8_t b) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_poly16x4_t
 simde_vadd_p16(simde_poly16x4_t a, simde_poly16x4_t b) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && !defined(_GCC_ARM_NEON_H)
     return vadd_p16(a, b);
   #else
     simde_poly16x4_private
@@ -789,7 +789,8 @@ simde_vadd_p16(simde_poly16x4_t a, simde_poly16x4_t b) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_poly64x1_t
 simde_vadd_p64(simde_poly64x1_t a, simde_poly64x1_t b) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_CRYPTO) && \
+      !defined(_GCC_ARM_NEON_H)
     return vadd_p64(a, b);
   #else
     simde_poly64x1_private
@@ -813,7 +814,7 @@ simde_vadd_p64(simde_poly64x1_t a, simde_poly64x1_t b) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_poly8x16_t
 simde_vaddq_p8(simde_poly8x16_t a, simde_poly8x16_t b) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && !defined(_GCC_ARM_NEON_H)
     return vaddq_p8(a, b);
   #else
     simde_poly8x16_private
@@ -837,7 +838,7 @@ simde_vaddq_p8(simde_poly8x16_t a, simde_poly8x16_t b) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_poly16x8_t
 simde_vaddq_p16(simde_poly16x8_t a, simde_poly16x8_t b) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && !defined(_GCC_ARM_NEON_H)
     return vaddq_p16(a, b);
   #else
     simde_poly16x8_private
@@ -861,7 +862,8 @@ simde_vaddq_p16(simde_poly16x8_t a, simde_poly16x8_t b) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_poly64x2_t
 simde_vaddq_p64(simde_poly64x2_t a, simde_poly64x2_t b) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_CRYPTO) && \
+      !defined(_GCC_ARM_NEON_H)
     return vaddq_p64(a, b);
   #else
     simde_poly64x2_private
@@ -877,7 +879,7 @@ simde_vaddq_p64(simde_poly64x2_t a, simde_poly64x2_t b) {
     return simde_poly64x2_from_private(r_);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
   #undef vaddq_p64
   #define vaddq_p64(a, b) simde_vaddq_p64((a), (b))
 #endif
@@ -885,7 +887,8 @@ simde_vaddq_p64(simde_poly64x2_t a, simde_poly64x2_t b) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_poly128_t
 simde_vaddq_p128(simde_poly128_t a, simde_poly128_t b) {
-  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_CRYPTO) && \
+      !defined(_GCC_ARM_NEON_H)
     return vaddq_p128(a, b);
   #else
     simde_poly128_t mask = 0xFFFFFFFFFFFFFFFFull;

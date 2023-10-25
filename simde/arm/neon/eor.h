@@ -546,10 +546,11 @@ simde_veorq_u64(simde_uint64x2_t a, simde_uint64x2_t b) {
   #define veorq_u64(a, b) simde_veorq_u64((a), (b))
 #endif
 
+// Note: EOR3 instructions are implemented only when FEAT_SHA3 is implemented.
 SIMDE_FUNCTION_ATTRIBUTES
 simde_int8x16_t
 simde_veor3q_s8(simde_int8x16_t a, simde_int8x16_t b, simde_int8x16_t c) {
-  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(__ARM_FEATURE_SHA3)
     return veor3q_s8(a, b, c);
   #else
     simde_int8x16_private
@@ -574,7 +575,7 @@ simde_veor3q_s8(simde_int8x16_t a, simde_int8x16_t b, simde_int8x16_t c) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_int16x8_t
 simde_veor3q_s16(simde_int16x8_t a, simde_int16x8_t b, simde_int16x8_t c) {
-  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(__ARM_FEATURE_SHA3)
     return veor3q_s16(a, b, c);
   #else
     simde_int16x8_private
@@ -599,7 +600,7 @@ simde_veor3q_s16(simde_int16x8_t a, simde_int16x8_t b, simde_int16x8_t c) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_int32x4_t
 simde_veor3q_s32(simde_int32x4_t a, simde_int32x4_t b, simde_int32x4_t c) {
-  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(__ARM_FEATURE_SHA3)
     return veor3q_s32(a, b, c);
   #else
     simde_int32x4_private
@@ -624,7 +625,7 @@ simde_veor3q_s32(simde_int32x4_t a, simde_int32x4_t b, simde_int32x4_t c) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_int64x2_t
 simde_veor3q_s64(simde_int64x2_t a, simde_int64x2_t b, simde_int64x2_t c) {
-  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(__ARM_FEATURE_SHA3)
     return veor3q_s64(a, b, c);
   #else
     simde_int64x2_private
@@ -649,7 +650,7 @@ simde_veor3q_s64(simde_int64x2_t a, simde_int64x2_t b, simde_int64x2_t c) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_uint8x16_t
 simde_veor3q_u8(simde_uint8x16_t a, simde_uint8x16_t b, simde_uint8x16_t c) {
-  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(__ARM_FEATURE_SHA3)
     return veor3q_u8(a, b, c);
   #else
     simde_uint8x16_private
@@ -674,7 +675,7 @@ simde_veor3q_u8(simde_uint8x16_t a, simde_uint8x16_t b, simde_uint8x16_t c) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_uint16x8_t
 simde_veor3q_u16(simde_uint16x8_t a, simde_uint16x8_t b, simde_uint16x8_t c) {
-  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(__ARM_FEATURE_SHA3)
     return veor3q_u16(a, b, c);
   #else
     simde_uint16x8_private
@@ -699,7 +700,7 @@ simde_veor3q_u16(simde_uint16x8_t a, simde_uint16x8_t b, simde_uint16x8_t c) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_uint32x4_t
 simde_veor3q_u32(simde_uint32x4_t a, simde_uint32x4_t b, simde_uint32x4_t c) {
-  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(__ARM_FEATURE_SHA3)
     return veor3q_u32(a, b, c);
   #else
     simde_uint32x4_private
@@ -724,7 +725,7 @@ simde_veor3q_u32(simde_uint32x4_t a, simde_uint32x4_t b, simde_uint32x4_t c) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_uint64x2_t
 simde_veor3q_u64(simde_uint64x2_t a, simde_uint64x2_t b, simde_uint64x2_t c) {
-  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && 0 // [TODO] undeclared function on aarch64-clang-15-ccache.cross
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(__ARM_FEATURE_SHA3)
     return veor3q_u64(a, b, c);
   #else
     simde_uint64x2_private

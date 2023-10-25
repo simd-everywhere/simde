@@ -9,7 +9,6 @@ cc = meson.get_compiler('c')
 cxx = meson.get_compiler('cpp')
 
 simde_neon_families = [
-  '__crc32',
   'aba',
   'abal',
   'abal_high',
@@ -65,6 +64,7 @@ simde_neon_families = [
   'cvtp',
   'combine',
   'copy_lane',
+  'crc32',
   'create',
   'div',
   'dot',

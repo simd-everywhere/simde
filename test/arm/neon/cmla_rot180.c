@@ -5,7 +5,7 @@
 
 static int
 test_simde_vcmla_rot180_f16 (SIMDE_MUNIT_TEST_ARGS) {
-  static const struct {
+  struct {
     simde_float16 a[4];
     simde_float16 b[4];
     simde_float16 r[4];
@@ -59,7 +59,7 @@ test_simde_vcmla_rot180_f16 (SIMDE_MUNIT_TEST_ARGS) {
 
 static int
 test_simde_vcmlaq_rot180_f16 (SIMDE_MUNIT_TEST_ARGS) {
-  static const struct {
+  struct {
     simde_float16 a[8];
     simde_float16 b[8];
     simde_float16 r[8];

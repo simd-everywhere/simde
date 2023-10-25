@@ -568,7 +568,12 @@ simde_vget_lane_p8(simde_poly8x8_t v, const int lane)
   return r;
 }
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-  #define simde_vget_lane_p8(v, lane) vget_lane_p8((v), (lane))
+  #if defined(__clang__) && !SIMDE_DETECT_CLANG_VERSION_CHECK(11,0,0)
+    #define simde_vget_lane_p8(v, lane) \
+    SIMDE_DISABLE_DIAGNOSTIC_EXPR_(SIMDE_DIAGNOSTIC_DISABLE_VECTOR_CONVERSION_, vget_lane_p8(v, lane))
+  #else
+    #define simde_vget_lane_p8(v, lane) vget_lane_p8((v), (lane))
+  #endif
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vget_lane_p8
@@ -587,7 +592,12 @@ simde_vget_lane_p16(simde_poly16x4_t v, const int lane)
   return r;
 }
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-  #define simde_vget_lane_p16(v, lane) vget_lane_p16((v), (lane))
+  #if defined(__clang__) && !SIMDE_DETECT_CLANG_VERSION_CHECK(11,0,0)
+    #define simde_vget_lane_p16(v, lane) \
+    SIMDE_DISABLE_DIAGNOSTIC_EXPR_(SIMDE_DIAGNOSTIC_DISABLE_VECTOR_CONVERSION_, vget_lane_p16(v, lane))
+  #else
+    #define simde_vget_lane_p16(v, lane) vget_lane_p16((v), (lane))
+  #endif
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vget_lane_p16
@@ -606,7 +616,12 @@ simde_vget_lane_p64(simde_poly64x1_t v, const int lane)
   return r;
 }
 #if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
-  #define simde_vget_lane_p64(v, lane) vget_lane_p64((v), (lane))
+  #if defined(__clang__) && !SIMDE_DETECT_CLANG_VERSION_CHECK(11,0,0)
+    #define simde_vget_lane_p64(v, lane) \
+    SIMDE_DISABLE_DIAGNOSTIC_EXPR_(SIMDE_DIAGNOSTIC_DISABLE_VECTOR_CONVERSION_, vget_lane_p64(v, lane))
+  #else
+    #define simde_vget_lane_p64(v, lane) vget_lane_p64((v), (lane))
+  #endif
 #endif
 #if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
   #undef vget_lane_p64
@@ -625,7 +640,12 @@ simde_vgetq_lane_p8(simde_poly8x16_t v, const int lane)
   return r;
 }
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-  #define simde_vgetq_lane_p8(v, lane) vgetq_lane_p8((v), (lane))
+  #if defined(__clang__) && !SIMDE_DETECT_CLANG_VERSION_CHECK(11,0,0)
+    #define simde_vgetq_lane_p8(v, lane) \
+    SIMDE_DISABLE_DIAGNOSTIC_EXPR_(SIMDE_DIAGNOSTIC_DISABLE_VECTOR_CONVERSION_, vgetq_lane_p8(v, lane))
+  #else
+    #define simde_vgetq_lane_p8(v, lane) vgetq_lane_p8((v), (lane))
+  #endif
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vgetq_lane_p8
@@ -644,7 +664,12 @@ simde_vgetq_lane_p16(simde_poly16x8_t v, const int lane)
   return r;
 }
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-  #define simde_vgetq_lane_p16(v, lane) vgetq_lane_p16((v), (lane))
+  #if defined(__clang__) && !SIMDE_DETECT_CLANG_VERSION_CHECK(11,0,0)
+    #define simde_vgetq_lane_p16(v, lane) \
+    SIMDE_DISABLE_DIAGNOSTIC_EXPR_(SIMDE_DIAGNOSTIC_DISABLE_VECTOR_CONVERSION_, vgetq_lane_p16(v, lane))
+  #else
+    #define simde_vgetq_lane_p16(v, lane) vgetq_lane_p16((v), (lane))
+  #endif
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vgetq_lane_p16
@@ -663,15 +688,19 @@ simde_vgetq_lane_p64(simde_poly64x2_t v, const int lane)
   return r;
 }
 #if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
-  #define simde_vgetq_lane_p64(v, lane) vgetq_lane_p64((v), (lane))
+  #if defined(__clang__) && !SIMDE_DETECT_CLANG_VERSION_CHECK(11,0,0)
+    #define simde_vgetq_lane_p64(v, lane) \
+    SIMDE_DISABLE_DIAGNOSTIC_EXPR_(SIMDE_DIAGNOSTIC_DISABLE_VECTOR_CONVERSION_, vgetq_lane_p64(v, lane))
+  #else
+    #define simde_vgetq_lane_p64(v, lane) vgetq_lane_p64((v), (lane))
+  #endif
 #endif
 #if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
   #undef vgetq_lane_p64
   #define vgetq_lane_p64(v, lane) simde_vgetq_lane_p64((v), (lane))
 #endif
 
-/*
-// [Eric] Pre-implemented bf16-related intrinsics
+#if defined(SIMDE_ARM_NEON_BFLOAT16)
 SIMDE_FUNCTION_ATTRIBUTES
 simde_bfloat16_t
 simde_vget_lane_bf16(simde_bfloat16x4_t v, const int lane)
@@ -713,7 +742,8 @@ simde_vgetq_lane_bf16(simde_bfloat16x8_t v, const int lane)
   #undef vgetq_lane_bf16
   #define vgetq_lane_bf16(v, lane) simde_vgetq_lane_bf16((v), (lane))
 #endif
-*/
+
+#endif /* defined(SIMDE_ARM_NEON_BFLOAT16) */
 
 SIMDE_END_DECLS_
 HEDLEY_DIAGNOSTIC_POP

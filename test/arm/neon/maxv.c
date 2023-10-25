@@ -9,6 +9,18 @@ test_simde_vmaxv_f16 (SIMDE_MUNIT_TEST_ARGS) {
     simde_float16_t a[4];
     simde_float16_t r;
   } test_vec[] = {
+#if !defined(SIMDE_FAST_NANS)
+    { {            SIMDE_NANHF, SIMDE_FLOAT16_VALUE(   534.24), SIMDE_FLOAT16_VALUE(  -385.00),            SIMDE_NANHF },
+      SIMDE_NANHF},
+    { {            SIMDE_NANHF, SIMDE_NANHF, SIMDE_NANHF,            SIMDE_NANHF },
+      SIMDE_NANHF},
+    { {            SIMDE_INFINITYHF,      SIMDE_INFINITYHF,    SIMDE_INFINITYHF,            SIMDE_INFINITYHF},
+      SIMDE_INFINITYHF},
+    { {            SIMDE_NINFINITYHF,      SIMDE_NINFINITYHF,    SIMDE_NINFINITYHF,            SIMDE_NINFINITYHF},
+      SIMDE_NINFINITYHF},
+    { {            SIMDE_NINFINITYHF,      SIMDE_INFINITYHF,    SIMDE_NINFINITYHF,            SIMDE_INFINITYHF},
+      SIMDE_INFINITYHF},
+    #endif
     { {  SIMDE_FLOAT16_VALUE(   -26.278),  SIMDE_FLOAT16_VALUE(    12.438),  SIMDE_FLOAT16_VALUE(     0.772),  SIMDE_FLOAT16_VALUE(     8.886) },
          SIMDE_FLOAT16_VALUE(    12.438) },
     { {  SIMDE_FLOAT16_VALUE(    15.990),  SIMDE_FLOAT16_VALUE(     4.320),  SIMDE_FLOAT16_VALUE(    27.892),  SIMDE_FLOAT16_VALUE(    20.752) },

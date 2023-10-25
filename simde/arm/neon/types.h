@@ -621,9 +621,6 @@ typedef union {
   typedef uint16_t        simde_uint16x4_t  SIMDE_VECTOR(8);
   typedef uint32_t        simde_uint32x2_t  SIMDE_VECTOR(8);
   typedef uint64_t        simde_uint64x1_t  SIMDE_VECTOR(8);
-  typedef uint8_t         simde_poly8x8_t   SIMDE_VECTOR(8);
-  typedef uint16_t        simde_poly16x4_t  SIMDE_VECTOR(8);
-  typedef uint64_t        simde_poly64x1_t  SIMDE_VECTOR(8);
   typedef simde_float32_t simde_float32x2_t SIMDE_VECTOR(8);
   typedef simde_float64_t simde_float64x1_t SIMDE_VECTOR(8);
   typedef int8_t          simde_int8x16_t   SIMDE_VECTOR(16);
@@ -634,9 +631,6 @@ typedef union {
   typedef uint16_t        simde_uint16x8_t  SIMDE_VECTOR(16);
   typedef uint32_t        simde_uint32x4_t  SIMDE_VECTOR(16);
   typedef uint64_t        simde_uint64x2_t  SIMDE_VECTOR(16);
-  typedef uint8_t         simde_poly8x16_t  SIMDE_VECTOR(16);
-  typedef uint16_t        simde_poly16x8_t  SIMDE_VECTOR(16);
-  typedef uint64_t        simde_poly64x2_t  SIMDE_VECTOR(16);
   typedef simde_float32_t simde_float32x4_t SIMDE_VECTOR(16);
   typedef simde_float64_t simde_float64x2_t SIMDE_VECTOR(16);
 
@@ -688,6 +682,70 @@ typedef union {
   typedef  simde_poly16   simde_poly16_t;
   typedef  simde_poly64   simde_poly64_t;
   typedef simde_poly128  simde_poly128_t;
+
+  typedef simde_poly8x8_private simde_poly8x8_t;
+  typedef simde_poly16x4_private simde_poly16x4_t;
+  typedef simde_poly64x1_private simde_poly64x1_t;
+  typedef simde_poly8x16_private simde_poly8x16_t;
+  typedef simde_poly16x8_private simde_poly16x8_t;
+  typedef simde_poly64x2_private simde_poly64x2_t;
+
+  typedef struct   simde_poly8x8x2_t {
+    simde_poly8x8_t val[2];
+  } simde_poly8x8x2_t;
+  typedef struct  simde_poly16x4x2_t {
+    simde_poly16x4_t val[2];
+  } simde_poly16x4x2_t;
+  typedef struct  simde_poly64x1x2_t {
+    simde_poly64x1_t val[2];
+  } simde_poly64x1x2_t;
+  typedef struct  simde_poly8x16x2_t {
+    simde_poly8x16_t val[2];
+  } simde_poly8x16x2_t;
+  typedef struct  simde_poly16x8x2_t {
+    simde_poly16x8_t val[2];
+  } simde_poly16x8x2_t;
+  typedef struct  simde_poly64x2x2_t {
+    simde_poly64x2_t val[2];
+  } simde_poly64x2x2_t;
+
+  typedef struct   simde_poly8x8x3_t {
+    simde_poly8x8_t val[3];
+  } simde_poly8x8x3_t;
+  typedef struct  simde_poly16x4x3_t {
+    simde_poly16x4_t val[3];
+  } simde_poly16x4x3_t;
+  typedef struct  simde_poly64x1x3_t {
+    simde_poly64x1_t val[3];
+  } simde_poly64x1x3_t;
+  typedef struct  simde_poly8x16x3_t {
+    simde_poly8x16_t val[3];
+  } simde_poly8x16x3_t;
+  typedef struct  simde_poly16x8x3_t {
+    simde_poly16x8_t val[3];
+  } simde_poly16x8x3_t;
+  typedef struct  simde_poly64x2x3_t {
+    simde_poly64x2_t val[3];
+  } simde_poly64x2x3_t;
+
+  typedef struct   simde_poly8x8x4_t {
+    simde_poly8x8_t val[4];
+  } simde_poly8x8x4_t;
+  typedef struct  simde_poly16x4x4_t {
+    simde_poly16x4_t val[4];
+  } simde_poly16x4x4_t;
+  typedef struct  simde_poly64x1x4_t {
+    simde_poly64x1_t val[4];
+  } simde_poly64x1x4_t;
+  typedef struct  simde_poly8x16x4_t {
+    simde_poly8x16_t val[4];
+  } simde_poly8x16x4_t;
+  typedef struct  simde_poly16x8x4_t {
+    simde_poly16x8_t val[4];
+  } simde_poly16x8x4_t;
+  typedef struct  simde_poly64x2x4_t {
+    simde_poly64x2_t val[4];
+  } simde_poly64x2x4_t;
 #endif
 #if defined(SIMDE_ARM_NEON_NEED_PORTABLE_I8X8) || defined(SIMDE_ARM_NEON_NEED_PORTABLE_64BIT)
   typedef simde_int8x8_private simde_int8x8_t;
@@ -719,15 +777,6 @@ typedef union {
 #if defined(SIMDE_ARM_NEON_NEED_PORTABLE_F64X1) || defined(SIMDE_ARM_NEON_NEED_PORTABLE_64BIT)
   typedef simde_float64x1_private simde_float64x1_t;
 #endif
-#if defined(SIMDE_ARM_NEON_NEED_PORTABLE_U8X8) || defined(SIMDE_ARM_NEON_NEED_PORTABLE_64BIT)
-  typedef simde_poly8x8_private simde_poly8x8_t;
-#endif
-#if defined(SIMDE_ARM_NEON_NEED_PORTABLE_U16X4) || defined(SIMDE_ARM_NEON_NEED_PORTABLE_64BIT)
-  typedef simde_poly16x4_private simde_poly16x4_t;
-#endif
-#if defined(SIMDE_ARM_NEON_NEED_PORTABLE_U64X1) || defined(SIMDE_ARM_NEON_NEED_PORTABLE_64BIT)
-  typedef simde_poly64x1_private simde_poly64x1_t;
-#endif
 
 #if defined(SIMDE_ARM_NEON_NEED_PORTABLE_I8X16) || defined(SIMDE_ARM_NEON_NEED_PORTABLE_128BIT)
   typedef simde_int8x16_private simde_int8x16_t;
@@ -758,15 +807,6 @@ typedef union {
 #endif
 #if defined(SIMDE_ARM_NEON_NEED_PORTABLE_F64X2) || defined(SIMDE_ARM_NEON_NEED_PORTABLE_128BIT)
   typedef simde_float64x2_private simde_float64x2_t;
-#endif
-#if defined(SIMDE_ARM_NEON_NEED_PORTABLE_U8X16) || defined(SIMDE_ARM_NEON_NEED_PORTABLE_128BIT)
-  typedef simde_poly8x16_private simde_poly8x16_t;
-#endif
-#if defined(SIMDE_ARM_NEON_NEED_PORTABLE_U16X8) || defined(SIMDE_ARM_NEON_NEED_PORTABLE_128BIT)
-  typedef simde_poly16x8_private simde_poly16x8_t;
-#endif
-#if defined(SIMDE_ARM_NEON_NEED_PORTABLE_U64X2) || defined(SIMDE_ARM_NEON_NEED_PORTABLE_128BIT)
-  typedef simde_poly64x2_private simde_poly64x2_t;
 #endif
 
 #if defined(SIMDE_ARM_NEON_NEED_PORTABLE_F16)
@@ -828,15 +868,6 @@ typedef union {
   typedef struct simde_float32x2x2_t {
     simde_float32x2_t val[2];
   } simde_float32x2x2_t;
-  typedef struct   simde_poly8x8x2_t {
-    simde_poly8x8_t val[2];
-  } simde_poly8x8x2_t;
-  typedef struct  simde_poly16x4x2_t {
-    simde_poly16x4_t val[2];
-  } simde_poly16x4x2_t;
-  typedef struct  simde_poly64x1x2_t {
-    simde_poly64x1_t val[2];
-  } simde_poly64x1x2_t;
 
   typedef struct   simde_int8x16x2_t {
     simde_int8x16_t val[2];
@@ -865,15 +896,6 @@ typedef union {
   typedef struct simde_float32x4x2_t {
     simde_float32x4_t val[2];
   } simde_float32x4x2_t;
-  typedef struct  simde_poly8x16x2_t {
-    simde_poly8x16_t val[2];
-  } simde_poly8x16x2_t;
-  typedef struct  simde_poly16x8x2_t {
-    simde_poly16x8_t val[2];
-  } simde_poly16x8x2_t;
-  typedef struct  simde_poly64x2x2_t {
-    simde_poly64x2_t val[2];
-  } simde_poly64x2x2_t;
 
   typedef struct    simde_int8x8x3_t {
     simde_int8x8_t val[3];
@@ -902,15 +924,6 @@ typedef union {
   typedef struct simde_float32x2x3_t {
     simde_float32x2_t val[3];
   } simde_float32x2x3_t;
-  typedef struct   simde_poly8x8x3_t {
-    simde_poly8x8_t val[3];
-  } simde_poly8x8x3_t;
-  typedef struct  simde_poly16x4x3_t {
-    simde_poly16x4_t val[3];
-  } simde_poly16x4x3_t;
-  typedef struct  simde_poly64x1x3_t {
-    simde_poly64x1_t val[3];
-  } simde_poly64x1x3_t;
 
   typedef struct   simde_int8x16x3_t {
     simde_int8x16_t val[3];
@@ -939,15 +952,6 @@ typedef union {
   typedef struct simde_float32x4x3_t {
     simde_float32x4_t val[3];
   } simde_float32x4x3_t;
-  typedef struct  simde_poly8x16x3_t {
-    simde_poly8x16_t val[3];
-  } simde_poly8x16x3_t;
-  typedef struct  simde_poly16x8x3_t {
-    simde_poly16x8_t val[3];
-  } simde_poly16x8x3_t;
-  typedef struct  simde_poly64x2x3_t {
-    simde_poly64x2_t val[3];
-  } simde_poly64x2x3_t;
 
   typedef struct    simde_int8x8x4_t {
     simde_int8x8_t val[4];
@@ -976,15 +980,6 @@ typedef union {
   typedef struct simde_float32x2x4_t {
     simde_float32x2_t val[4];
   } simde_float32x2x4_t;
-  typedef struct   simde_poly8x8x4_t {
-    simde_poly8x8_t val[4];
-  } simde_poly8x8x4_t;
-  typedef struct  simde_poly16x4x4_t {
-    simde_poly16x4_t val[4];
-  } simde_poly16x4x4_t;
-  typedef struct  simde_poly64x1x4_t {
-    simde_poly64x1_t val[4];
-  } simde_poly64x1x4_t;
 
   typedef struct   simde_int8x16x4_t {
     simde_int8x16_t val[4];
@@ -1013,15 +1008,6 @@ typedef union {
   typedef struct simde_float32x4x4_t {
     simde_float32x4_t val[4];
   } simde_float32x4x4_t;
-  typedef struct  simde_poly8x16x4_t {
-    simde_poly8x16_t val[4];
-  } simde_poly8x16x4_t;
-  typedef struct  simde_poly16x8x4_t {
-    simde_poly16x8_t val[4];
-  } simde_poly16x8x4_t;
-  typedef struct  simde_poly64x2x4_t {
-    simde_poly64x2_t val[4];
-  } simde_poly64x2x4_t;
 #endif
 
 #if defined(SIMDE_ARM_NEON_NEED_PORTABLE_F64X1XN)

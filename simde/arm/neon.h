@@ -30,7 +30,6 @@
 
 #include "neon/types.h"
 
-#include "neon/__crc32.h"
 #include "neon/aba.h"
 #include "neon/abal.h"
 #include "neon/abal_high.h"
@@ -86,6 +85,7 @@
 #include "neon/cvtp.h"
 #include "neon/combine.h"
 #include "neon/copy_lane.h"
+#include "neon/crc32.h"
 #include "neon/create.h"
 #include "neon/div.h"
 #include "neon/dot.h"

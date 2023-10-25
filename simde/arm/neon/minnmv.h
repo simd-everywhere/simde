@@ -44,7 +44,7 @@ simde_vminnmv_f16(simde_float16x4_t a) {
     simde_float16x4_private a_ = simde_float16x4_to_private(a);
 
     #if defined(SIMDE_FAST_NANS)
-      SIMDE_VECTORIZE_REDUCTION(min:r)
+      SIMDE_VECTORIZE_REDUCTION(min:r_)
     #else
       SIMDE_VECTORIZE
     #endif
@@ -106,7 +106,7 @@ simde_vminnmvq_f16(simde_float16x8_t a) {
     simde_float16x8_private a_ = simde_float16x8_to_private(a);
 
     #if defined(SIMDE_FAST_NANS)
-      SIMDE_VECTORIZE_REDUCTION(min:r)
+      SIMDE_VECTORIZE_REDUCTION(min:r_)
     #else
       SIMDE_VECTORIZE
     #endif
