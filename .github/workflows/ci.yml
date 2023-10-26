@@ -91,12 +91,10 @@ jobs:
         isax:
         - -DSIMDE_NATURAL_VECTOR_SIZE=256 -march=x86-64-v3 -mavx512bw -mavx512vl
         # https://en.wikipedia.org/wiki/X86-64#Microarchitecture_levels
-        - -march=x86-64 -maes  # the x86-64 baseline is CMOV, CX8, FPU, FXSR, MMX, OSFXSR, SCE, SSE, SSE2
+        - -march=x86-64 -maes -mpclmul  # the x86-64 baseline is CMOV, CX8, FPU, FXSR, MMX, OSFXSR, SCE, SSE, SSE2
         - -march=x86-64-v2  # CMPXCHG16B, LAHF-SAHF, POPCNT, SSE3, SSE4_1, SSE4_2, SSSE3
         - -march=x86-64-v3  # AVX, AVX2, BMI1, BMI2, F16C, FMA, LZCNT, MOVBE, OSXSAVE
         - -march=x86-64-v4  # AVX512F, AVX512BW, AVX512CD, AVX512DQ, AVX512VL a.k.a. skylake+ (including zen4)
-        # - -mpclmul
-        # See https://github.com/simd-everywhere/simde/issues/1094
         include:
           - target: tgl
           - isax: -march=x86-64-v4 -mcx16 -mxsave -mpclmul -mfsgsbase -mrdrnd -mhle -mrdseed -maes -mclflushopt -mxsavec -mxsaves -msgx -mpku -msha -mrdpid -mavx512vpopcntdq -mavx512ifma -mavx512vbmi -mavx512vnni -mavx512vbmi2 -mavx512bitalg -mvpclmulqdq -mgfni -mvaes  # icelake
