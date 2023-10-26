@@ -719,7 +719,7 @@ simde_vdup_n_p16(simde_poly16_t value) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_poly64x1_t
 simde_vdup_n_p64(simde_poly64_t value) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
     return vdup_n_p64(value);
   #else
     simde_poly64x1_private r_;
@@ -732,7 +732,7 @@ simde_vdup_n_p64(simde_poly64_t value) {
     return simde_poly64x1_from_private(r_);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
   #undef vdup_n_p64
   #define vdup_n_p64(value) simde_vdup_n_p64((value))
 #endif
@@ -788,7 +788,7 @@ simde_vdupq_n_p16(simde_poly16_t value) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_poly64x2_t
 simde_vdupq_n_p64(simde_poly64_t value) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
     return vdupq_n_p64(value);
   #else
     simde_poly64x2_private r_;
@@ -801,7 +801,7 @@ simde_vdupq_n_p64(simde_poly64_t value) {
     return simde_poly64x2_from_private(r_);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
   #undef vdupq_n_p64
   #define vdupq_n_p64(value) simde_vdupq_n_p64((value))
 #endif

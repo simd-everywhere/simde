@@ -54,7 +54,7 @@ simde_vmulxh_f16(simde_float16_t a, simde_float16_t b) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float32_t
 simde_vmulxs_f32(simde_float32_t a, simde_float32_t b) {
-  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARM_NEON_FP32)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vmulxs_f32(a, b);
   #else
     return a * b;
@@ -68,7 +68,7 @@ simde_vmulxs_f32(simde_float32_t a, simde_float32_t b) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float64_t
 simde_vmulxd_f64(simde_float64_t a, simde_float64_t b) {
-  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARM_NEON_FP64)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vmulxd_f64(a, b);
   #else
     return a * b;

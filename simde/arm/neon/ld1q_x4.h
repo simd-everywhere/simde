@@ -370,7 +370,7 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde_poly64x2x4_t
 simde_vld1q_p64_x4(simde_poly64_t const ptr[HEDLEY_ARRAY_PARAM(8)]) {
   #if \
-      defined(SIMDE_ARM_NEON_A32V7_NATIVE) && \
+      defined(SIMDE_ARM_NEON_A32V8_NATIVE) && \
       (!defined(HEDLEY_GCC_VERSION) || (HEDLEY_GCC_VERSION_CHECK(8,0,0) && defined(SIMDE_ARM_NEON_A64V8_NATIVE))) && \
       (!defined(__clang__) || (SIMDE_DETECT_CLANG_VERSION_CHECK(7,0,0) && defined(SIMDE_ARM_NEON_A64V8_NATIVE)))
     return vld1q_p64_x4(ptr);
@@ -386,7 +386,7 @@ simde_vld1q_p64_x4(simde_poly64_t const ptr[HEDLEY_ARRAY_PARAM(8)]) {
     return s_;
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
   #undef vld1q_p64_x4
   #define vld1q_p64_x4(a) simde_vld1q_p64_x4((a))
 #endif

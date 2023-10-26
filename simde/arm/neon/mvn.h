@@ -448,8 +448,6 @@ simde_poly8x16_t
 simde_vmvnq_p8(simde_poly8x16_t a) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vmvnq_p8(a);
-  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
-    return vec_nor(a, a);
   #else
     simde_poly8x16_private
       r_,

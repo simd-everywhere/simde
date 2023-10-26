@@ -1432,7 +1432,7 @@ simde_vdup_lane_p64(simde_poly64x1_t vec, const int lane)
     SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 0) {
   return simde_vdup_n_p64(simde_poly64x1_to_private(vec).values[lane]);
 }
-#if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+#if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
   #if defined(__clang__) && !SIMDE_DETECT_CLANG_VERSION_CHECK(11,0,0)
     #define simde_vdup_lane_p64(vec, lane) \
     SIMDE_DISABLE_DIAGNOSTIC_EXPR_(SIMDE_DIAGNOSTIC_DISABLE_VECTOR_CONVERSION_, vdup_lane_p64(vec, lane))
@@ -1440,7 +1440,7 @@ simde_vdup_lane_p64(simde_poly64x1_t vec, const int lane)
     #define simde_vdup_lane_p64(vec, lane) vdup_lane_p64((vec), (lane))
   #endif
 #endif
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
   #undef vdup_lane_p64
   #define vdup_lane_p64(vec, lane) simde_vdup_lane_p64((vec), (lane))
 #endif
@@ -1489,7 +1489,7 @@ simde_vdup_laneq_p64(simde_poly64x2_t vec, const int lane)
     SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 1) {
   return simde_vdup_n_p64(simde_poly64x2_to_private(vec).values[lane]);
 }
-#if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+#if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
   #if defined(__clang__) && !SIMDE_DETECT_CLANG_VERSION_CHECK(11,0,0)
     #define simde_vdup_laneq_p64(vec, lane) \
     SIMDE_DISABLE_DIAGNOSTIC_EXPR_(SIMDE_DIAGNOSTIC_DISABLE_VECTOR_CONVERSION_, vdup_laneq_p64(vec, lane))
@@ -1497,7 +1497,7 @@ simde_vdup_laneq_p64(simde_poly64x2_t vec, const int lane)
     #define simde_vdup_laneq_p64(vec, lane) vdup_laneq_p64((vec), (lane))
   #endif
 #endif
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
   #undef vdup_laneq_p64
   #define vdup_laneq_p64(vec, lane) simde_vdup_laneq_p64((vec), (lane))
 #endif
@@ -1603,7 +1603,7 @@ simde_vdupq_laneq_p64(simde_poly64x2_t vec, const int lane)
     SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 1) {
   return simde_vdupq_n_p64(simde_poly64x2_to_private(vec).values[lane]);
 }
-#if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+#if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
   #if defined(__clang__) && !SIMDE_DETECT_CLANG_VERSION_CHECK(11,0,0)
     #define simde_vdupq_laneq_p64(vec, lane) \
     SIMDE_DISABLE_DIAGNOSTIC_EXPR_(SIMDE_DIAGNOSTIC_DISABLE_VECTOR_CONVERSION_, vdupq_laneq_p64(vec, lane))
@@ -1611,7 +1611,7 @@ simde_vdupq_laneq_p64(simde_poly64x2_t vec, const int lane)
     #define simde_vdupq_laneq_p64(vec, lane) vdupq_laneq_p64((vec), (lane))
   #endif
 #endif
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
   #undef vdupq_laneq_p64
   #define vdupq_laneq_p64(vec, lane) simde_vdupq_laneq_p64((vec), (lane))
 #endif
