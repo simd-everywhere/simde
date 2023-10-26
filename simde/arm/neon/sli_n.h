@@ -265,6 +265,78 @@ SIMDE_BEGIN_DECLS_
   #define vsliq_n_u64(a, b, n) simde_vsliq_n_u64((a), (b), (n))
 #endif
 
+#if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #define simde_vsli_n_p8(a, b, n) vsli_n_p8((a), (b), (n))
+#else
+  #define simde_vsli_n_p8(a, b, n) \
+    simde_vreinterpret_p8_u8(simde_vsli_n_u8( \
+        simde_vreinterpret_u8_p8((a)), simde_vreinterpret_u8_p8((b)), (n)))
+#endif
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+  #undef vsli_n_p8
+  #define vsli_n_p8(a, b, n) simde_vsli_n_p8((a), (b), (n))
+#endif
+
+#if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #define simde_vsli_n_p16(a, b, n) vsli_n_p16((a), (b), (n))
+#else
+  #define simde_vsli_n_p16(a, b, n) \
+    simde_vreinterpret_p16_u16(simde_vsli_n_u16( \
+        simde_vreinterpret_u16_p16((a)), simde_vreinterpret_u16_p16((b)), (n)))
+#endif
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+  #undef vsli_n_p16
+  #define vsli_n_p16(a, b, n) simde_vsli_n_p16((a), (b), (n))
+#endif
+
+#if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
+  #define simde_vsli_n_p64(a, b, n) vsli_n_p64((a), (b), (n))
+#else
+  #define simde_vsli_n_p64(a, b, n) \
+    simde_vreinterpret_p64_u64(simde_vsli_n_u64( \
+        simde_vreinterpret_u64_p64((a)), simde_vreinterpret_u64_p64((b)), (n)))
+#endif
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+  #undef vsli_n_p64
+  #define vsli_n_p64(a, b, n) simde_vsli_n_p64((a), (b), (n))
+#endif
+
+#if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #define simde_vsliq_n_p8(a, b, n) vsliq_n_p8((a), (b), (n))
+#else
+  #define simde_vsliq_n_p8(a, b, n) \
+    simde_vreinterpretq_p8_u8(simde_vsliq_n_u8( \
+        simde_vreinterpretq_u8_p8((a)), simde_vreinterpretq_u8_p8((b)), (n)))
+#endif
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+  #undef vsliq_n_p8
+  #define vsliq_n_p8(a, b, n) simde_vsliq_n_p8((a), (b), (n))
+#endif
+
+#if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #define simde_vsliq_n_p16(a, b, n) vsliq_n_p16((a), (b), (n))
+#else
+  #define simde_vsliq_n_p16(a, b, n) \
+    simde_vreinterpretq_p16_u16(simde_vsliq_n_u16( \
+        simde_vreinterpretq_u16_p16((a)), simde_vreinterpretq_u16_p16((b)), (n)))
+#endif
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+  #undef vsliq_n_p16
+  #define vsliq_n_p16(a, b, n) simde_vsliq_n_p16((a), (b), (n))
+#endif
+
+#if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
+  #define simde_vsliq_n_p64(a, b, n) vsliq_n_p64((a), (b), (n))
+#else
+  #define simde_vsliq_n_p64(a, b, n) \
+    simde_vreinterpretq_p64_u64(simde_vsliq_n_u64( \
+        simde_vreinterpretq_u64_p64((a)), simde_vreinterpretq_u64_p64((b)), (n)))
+#endif
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+  #undef vsliq_n_p64
+  #define vsliq_n_p64(a, b, n) simde_vsliq_n_p64((a), (b), (n))
+#endif
+
 SIMDE_END_DECLS_
 HEDLEY_DIAGNOSTIC_POP
 
