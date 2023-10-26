@@ -138,6 +138,10 @@ jobs:
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
     - name: Configure
       run: meson setup build -Db_coverage=true || (cat build/meson-logs/meson-log.txt ; false)
+    - name: Test run native?
+      run: |
+        test/check-flags.sh query && echo Tests with $CFLAGS will be run natively
+        test/check-flags.sh query || echo Tests with $CFLAGS will be run using SDE
     - name: Build
       run: ninja -C build -v
     - name: Test
