@@ -483,6 +483,7 @@ test_simde_vmull_high_p8 (SIMDE_MUNIT_TEST_ARGS) {
   return 0;
 }
 
+#if !defined(SIMDE_TARGET_NOT_SUPPORT_INT128_TYPE)
 static int
 test_simde_vmull_high_p64 (SIMDE_MUNIT_TEST_ARGS) {
   static const struct {
@@ -533,6 +534,7 @@ test_simde_vmull_high_p64 (SIMDE_MUNIT_TEST_ARGS) {
 
   return 0;
 }
+#endif /* !defined(SIMDE_TARGET_NOT_SUPPORT_INT128_TYPE) */
 
 SIMDE_TEST_FUNC_LIST_BEGIN
 SIMDE_TEST_FUNC_LIST_ENTRY(vmull_high_s8)
@@ -543,7 +545,9 @@ SIMDE_TEST_FUNC_LIST_ENTRY(vmull_high_u16)
 SIMDE_TEST_FUNC_LIST_ENTRY(vmull_high_u32)
 
 SIMDE_TEST_FUNC_LIST_ENTRY(vmull_high_p8)
+#if !defined(SIMDE_TARGET_NOT_SUPPORT_INT128_TYPE)
 SIMDE_TEST_FUNC_LIST_ENTRY(vmull_high_p64)
+#endif /* !defined(SIMDE_TARGET_NOT_SUPPORT_INT128_TYPE) */
 SIMDE_TEST_FUNC_LIST_END
 
 #include "test-neon-footer.h"

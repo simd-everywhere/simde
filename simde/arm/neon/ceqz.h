@@ -424,7 +424,7 @@ simde_vceqz_p8(simde_poly8x8_t a) {
     return simde_vceq_p8(a, simde_vdup_n_p8(0));
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
   #undef vceqz_p8
   #define vceqz_p8(a) simde_vceqz_p8((a))
 #endif
@@ -438,7 +438,7 @@ simde_vceqzq_p8(simde_poly8x16_t a) {
     return simde_vceqq_p8(a, simde_vdupq_n_p8(0));
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
   #undef vceqzq_p8
   #define vceqzq_p8(a) simde_vceqzq_p8((a))
 #endif
@@ -452,7 +452,7 @@ simde_vceqz_p64(simde_poly64x1_t a) {
     return simde_vceq_p64(a, simde_vdup_n_p64(0));
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
   #undef vceqz_p64
   #define vceqz_p64(a) simde_vceqz_p64((a))
 #endif
@@ -466,7 +466,7 @@ simde_vceqzq_p64(simde_poly64x2_t a) {
     return simde_vceqq_p64(a, simde_vdupq_n_p64(0));
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
   #undef vceqzq_p64
   #define vceqzq_p64(a) simde_vceqzq_p64((a))
 #endif

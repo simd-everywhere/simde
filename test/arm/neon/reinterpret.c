@@ -13202,6 +13202,7 @@ test_simde_vreinterpretq_u64_p64 (SIMDE_MUNIT_TEST_ARGS) {
   return 0;
 }
 
+#if !defined(SIMDE_TARGET_NOT_SUPPORT_INT128_TYPE)
 static int
 test_simde_vreinterpretq_p128_u8 (SIMDE_MUNIT_TEST_ARGS) {
   struct {
@@ -14144,6 +14145,7 @@ test_simde_vreinterpretq_f64_p128 (SIMDE_MUNIT_TEST_ARGS) {
   return 0;
 }
 
+#endif /* !defined(SIMDE_TARGET_NOT_SUPPORT_INT128_TYPE) */
 
 SIMDE_TEST_FUNC_LIST_BEGIN
 SIMDE_TEST_FUNC_LIST_ENTRY(vreinterpret_f32_s8)
@@ -14550,6 +14552,7 @@ SIMDE_TEST_FUNC_LIST_ENTRY(vreinterpretq_u16_p16)
 SIMDE_TEST_FUNC_LIST_ENTRY(vreinterpret_u64_p64)
 SIMDE_TEST_FUNC_LIST_ENTRY(vreinterpretq_u64_p64)
 
+#if !defined(SIMDE_TARGET_NOT_SUPPORT_INT128_TYPE)
 SIMDE_TEST_FUNC_LIST_ENTRY(vreinterpretq_p128_u8)
 SIMDE_TEST_FUNC_LIST_ENTRY(vreinterpretq_p128_u16)
 SIMDE_TEST_FUNC_LIST_ENTRY(vreinterpretq_p128_u32)
@@ -14576,6 +14579,7 @@ SIMDE_TEST_FUNC_LIST_ENTRY(vreinterpretq_f16_p128)
 SIMDE_TEST_FUNC_LIST_ENTRY(vreinterpretq_f64_p128)
 SIMDE_TEST_FUNC_LIST_ENTRY(vreinterpretq_p8_p128)
 SIMDE_TEST_FUNC_LIST_ENTRY(vreinterpretq_p16_p128)
+#endif /* !defined(SIMDE_TARGET_NOT_SUPPORT_INT128_TYPE) */
 SIMDE_TEST_FUNC_LIST_END
 
 #include "test-neon-footer.h"

@@ -22,6 +22,7 @@
  *
  * Copyright:
  *   2020      Evan Nemerson <evan@nemerson.com>
+ *   2023      Yi-Yen Chung <eric681@andestech.com> (Copyright owned by Andes Technology)
  */
 
 #if !defined(SIMDE_ARM_NEON_MULL_HIGH_H)
@@ -152,10 +153,11 @@ simde_vmull_high_p8(simde_poly8x16_t a, simde_poly8x16_t b) {
   #define vmull_high_p8(a, b) simde_vmull_high_p8((a), (b))
 #endif
 
+#if !defined(SIMDE_TARGET_NOT_SUPPORT_INT128_TYPE)
 SIMDE_FUNCTION_ATTRIBUTES
 simde_poly128_t
 simde_vmull_high_p64(simde_poly64x2_t a, simde_poly64x2_t b) {
-  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARCH_ARM_CRYPTO)
     return vmull_high_p64(a, b);
   #else
     simde_poly64x2_private
@@ -168,6 +170,7 @@ simde_vmull_high_p64(simde_poly64x2_t a, simde_poly64x2_t b) {
   #undef vmull_high_p64
   #define vmull_high_p64(a, b) simde_vmull_high_p64((a), (b))
 #endif
+#endif /* !defined(SIMDE_TARGET_NOT_SUPPORT_INT128_TYPE) */
 
 SIMDE_END_DECLS_
 HEDLEY_DIAGNOSTIC_POP

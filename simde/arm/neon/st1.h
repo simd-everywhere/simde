@@ -22,6 +22,7 @@
  *
  * Copyright:
  *   2020      Evan Nemerson <evan@nemerson.com>
+ *   2023      Yi-Yen Chung <eric681@andestech.com> (Copyright owned by Andes Technology)
  */
 
 #if !defined(SIMDE_ARM_NEON_ST1_H)
@@ -507,6 +508,22 @@ simde_vst1q_p64(simde_poly64_t ptr[HEDLEY_ARRAY_PARAM(2)], simde_poly64x2_t val)
   #undef vst1q_p64
   #define vst1q_p64(a, b) simde_vst1q_p64((a), (b))
 #endif
+
+#if !defined(SIMDE_TARGET_NOT_SUPPORT_INT128_TYPE)
+SIMDE_FUNCTION_ATTRIBUTES
+void
+simde_vstrq_p128(simde_poly128_t ptr[HEDLEY_ARRAY_PARAM(1)], simde_poly128_t val) {
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARCH_ARM_CRYPTO)
+    vstrq_p128(ptr, val);
+  #else
+    simde_memcpy(ptr, &val, sizeof(val));
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+  #undef vstrq_p128
+  #define vstrq_p128(a, b) simde_vstrq_p128((a), (b))
+#endif
+#endif /* !defined(SIMDE_TARGET_NOT_SUPPORT_INT128_TYPE) */
 
 /*
 // [Eric] Pre-implemented bf16-related intrinsics
