@@ -561,7 +561,7 @@ simde_vld4_p16(simde_poly16_t const ptr[HEDLEY_ARRAY_PARAM(16)]) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_poly64x1x4_t
 simde_vld4_p64(simde_poly64_t const ptr[HEDLEY_ARRAY_PARAM(4)]) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
     return vld4_p64(ptr);
   #else
     simde_poly64x1_private a_[4];

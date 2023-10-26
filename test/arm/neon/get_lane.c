@@ -1041,7 +1041,17 @@ test_simde_vget_lane_p8 (SIMDE_MUNIT_TEST_ARGS) {
     simde_poly8x8_t a = simde_vld1_p8(test_vec[i].a);
     int b = test_vec[i].b;
     simde_poly8_t r;
-    SIMDE_CONSTIFY_8_(simde_vget_lane_p8, r, (HEDLEY_UNREACHABLE(), 0), b, a);
+    switch(b) {
+      case 0: r = simde_vget_lane_p8(a, 0); break;
+      case 1: r = simde_vget_lane_p8(a, 1); break;
+      case 2: r = simde_vget_lane_p8(a, 2); break;
+      case 3: r = simde_vget_lane_p8(a, 3); break;
+      case 4: r = simde_vget_lane_p8(a, 4); break;
+      case 5: r = simde_vget_lane_p8(a, 5); break;
+      case 6: r = simde_vget_lane_p8(a, 6); break;
+      case 7: r = simde_vget_lane_p8(a, 7); break;
+      default: HEDLEY_UNREACHABLE(); r = 0; break;
+    }
 
     simde_assert_equal_p8(r, test_vec[i].r);
   }

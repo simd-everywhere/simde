@@ -590,9 +590,9 @@ typedef SIMDE_POLY16_TYPE simde_poly16;
 #if defined(SIMDE_POLY64_TYPE)
 #  undef SIMDE_POLY64_TYPE
 #endif
-#if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+#if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARCH_ARM_CRYPTO)
 #  define SIMDE_POLY64_TYPE poly64_t
-#  define SIMDE_POLY64_C(value) value ## ull
+#  define SIMDE_POLY64_C(value) (HEDLEY_STATIC_CAST(poly64_t, value ## ull))
 #else
 #  define SIMDE_POLY64_TYPE uint64_t
 #  define SIMDE_POLY64_C(value) value ## ull
@@ -1064,6 +1064,9 @@ HEDLEY_DIAGNOSTIC_POP
        || (HEDLEY_GCC_VERSION_CHECK(10,4,0) && !(HEDLEY_GCC_VERSION_CHECK(11,0,0))) \
        || (HEDLEY_GCC_VERSION_CHECK(9,5,0) && !(HEDLEY_GCC_VERSION_CHECK(10,0,0))))
 #      define SIMDE_BUG_GCC_105339
+#    endif
+#    if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && !defined(SIMDE_ARM_NEON_A32V8_NATIVE)
+#      define SIMDE_BUG_GCC_A32V7_MISSFUNC
 #    endif
 #  elif defined(__clang__)
 #    if defined(SIMDE_ARCH_AARCH64)
