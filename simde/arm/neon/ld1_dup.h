@@ -461,13 +461,13 @@ simde_vld1_dup_p16(simde_poly16_t const * ptr) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_poly64x1_t
 simde_vld1_dup_p64(simde_poly64_t const * ptr) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
     return vld1_dup_p64(ptr);
   #else
     return simde_vdup_n_p64(*ptr);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
   #undef vld1_dup_p64
   #define vld1_dup_p64(a) simde_vld1_dup_p64((a))
 #endif
@@ -503,13 +503,13 @@ simde_vld1q_dup_p16(simde_poly16_t const * ptr) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_poly64x2_t
 simde_vld1q_dup_p64(simde_poly64_t const * ptr) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
     return vld1q_dup_p64(ptr);
   #else
     return simde_vdupq_n_p64(*ptr);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
   #undef vld1q_dup_p64
   #define vld1q_dup_p64(a) simde_vld1q_dup_p64((a))
 #endif

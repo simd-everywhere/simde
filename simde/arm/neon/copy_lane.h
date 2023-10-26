@@ -869,7 +869,7 @@ simde_vcopy_lane_p8(simde_poly8x8_t a, const int lane1, simde_poly8x8_t b, const
 #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
   #if defined(__clang__) && !SIMDE_DETECT_CLANG_VERSION_CHECK(11,0,0)
     #define simde_vcopy_lane_p8(a, lane1, b, lane2) \
-    SIMDE_DISABLE_DIAGNOSTIC_EXPR_(SIMDE_DIAGNOSTIC_DISABLE_VECTOR_CONVERSION_, vcopy_lane_p8(a, lane1, b, lane2))
+    SIMDE_DISABLE_DIAGNOSTIC_EXPR_(SIMDE_DIAGNOSTIC_DISABLE_VECTOR_CONVERSION_, vcopy_lane_p8((a), (lane1), (b), (lane2)))
   #else
     #define simde_vcopy_lane_p8(a, lane1, b, lane2) vcopy_lane_p8((a), (lane1), (b), (lane2))
   #endif

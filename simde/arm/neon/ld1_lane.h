@@ -426,10 +426,10 @@ simde_poly64x1_t simde_vld1_lane_p64(simde_poly64_t const *ptr, simde_poly64x1_t
   r.values[lane] = *ptr;
   return simde_poly64x1_from_private(r);
 }
-#if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+#if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
   #define simde_vld1_lane_p64(ptr, src, lane) vld1_lane_p64(ptr, src, lane)
 #endif
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
   #undef vld1_lane_p64
   #define vld1_lane_p64(ptr, src, lane) simde_vld1_lane_p64((ptr), (src), (lane))
 #endif
@@ -474,10 +474,10 @@ simde_poly64x2_t simde_vld1q_lane_p64(simde_poly64_t const *ptr, simde_poly64x2_
   r.values[lane] = *ptr;
   return simde_poly64x2_from_private(r);
 }
-#if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+#if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
   #define simde_vld1q_lane_p64(ptr, src, lane) vld1q_lane_p64(ptr, src, lane)
 #endif
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
   #undef vld1q_lane_p64
   #define vld1q_lane_p64(ptr, src, lane) simde_vld1q_lane_p64((ptr), (src), (lane))
 #endif

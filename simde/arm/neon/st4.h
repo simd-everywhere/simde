@@ -521,7 +521,7 @@ simde_vst4_p16(simde_poly16_t *ptr, simde_poly16x4x4_t val) {
 SIMDE_FUNCTION_ATTRIBUTES
 void
 simde_vst4_p64(simde_poly64_t *ptr, simde_poly64x1x4_t val) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
     vst4_p64(ptr, val);
   #else
     simde_poly64_t buf[4];
@@ -533,7 +533,7 @@ simde_vst4_p64(simde_poly64_t *ptr, simde_poly64x1x4_t val) {
     simde_memcpy(ptr, buf, sizeof(buf));
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
   #undef vst4_p64
   #define vst4_p64(a, b) simde_vst4_p64((a), (b))
 #endif

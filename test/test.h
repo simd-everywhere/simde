@@ -240,43 +240,34 @@ simde_test_codegen_u64(size_t buf_len, char buf[HEDLEY_ARRAY_PARAM(buf_len)], ui
 }
 
 static void
-simde_test_codegen_p8(size_t buf_len, char buf[HEDLEY_ARRAY_PARAM(buf_len)], uint8_t value) {
-  if (value == UINT8_MAX) {
-    simde_test_codegen_snprintf_(buf, buf_len, "   UINT8_MAX");
+simde_test_codegen_p8(size_t buf_len, char buf[HEDLEY_ARRAY_PARAM(buf_len)], simde_poly8 value) {
+  uint8_t value_ = HEDLEY_STATIC_CAST(uint8_t, value);
+  if (value_ == UINT8_MAX) {
+    simde_test_codegen_snprintf_(buf, buf_len, "   SIMDE_POLY8_C(UINT8_MAX)");
   } else {
-    simde_test_codegen_snprintf_(buf, buf_len, "UINT8_C(%3" PRIu8 ")", value);
+    simde_test_codegen_snprintf_(buf, buf_len, "SIMDE_POLY8_C(%3" PRIu8 ")", value_);
   }
 }
 
 static void
-simde_test_codegen_p16(size_t buf_len, char buf[HEDLEY_ARRAY_PARAM(buf_len)], uint16_t value) {
-  if (value == UINT16_MAX) {
-    simde_test_codegen_snprintf_(buf, buf_len, "%15s", "UINT16_MAX");
+simde_test_codegen_p16(size_t buf_len, char buf[HEDLEY_ARRAY_PARAM(buf_len)], simde_poly16 value) {
+  uint16_t value_ = HEDLEY_STATIC_CAST(uint16_t, value);
+  if (value_ == UINT16_MAX) {
+    simde_test_codegen_snprintf_(buf, buf_len, "%15s", "SIMDE_POLY16_C(UINT16_MAX)");
   } else {
-    simde_test_codegen_snprintf_(buf, buf_len, "UINT16_C(%5" PRIu16 ")", value);
+    simde_test_codegen_snprintf_(buf, buf_len, "SIMDE_POLY16_C(%5" PRIu16 ")", value_);
   }
 }
 
-#if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
 static void
-simde_test_codegen_p64(size_t buf_len, char buf[HEDLEY_ARRAY_PARAM(buf_len)], uint64_t value) {
-  if (value == UINT64_MAX) {
-    simde_test_codegen_snprintf_(buf, buf_len, "%30s", "UINT64_MAX");
+simde_test_codegen_p64(size_t buf_len, char buf[HEDLEY_ARRAY_PARAM(buf_len)], simde_poly64 value) {
+  uint64_t value_ = HEDLEY_STATIC_CAST(uint64_t, value);
+  if (value_ == UINT64_MAX) {
+    simde_test_codegen_snprintf_(buf, buf_len, "%30s", "SIMDE_POLY64_C(UINT64_MAX)");
   } else {
-    simde_test_codegen_snprintf_(buf, buf_len, "UINT64_C(%20" PRIx64 ")", value);
+    simde_test_codegen_snprintf_(buf, buf_len, "SIMDE_POLY64_C(%20" PRIu64 ")", value_);
   }
 }
-#else
-static void
-simde_test_codegen_p64(size_t buf_len, char buf[HEDLEY_ARRAY_PARAM(buf_len)], uint64_t value) {
-  if (value == UINT64_MAX) {
-    simde_test_codegen_snprintf_(buf, buf_len, "%30s", "UINT64_MAX");
-  } else {
-    simde_test_codegen_snprintf_(buf, buf_len, "UINT64_C(%20" PRIu64 ")", value);
-  }
-}
-#endif
-
 
 static void
 simde_test_codegen_write_indent(int indent) {
@@ -603,6 +594,9 @@ SIMDE_TEST_CODEGEN_GENERATE_WRITE_VECTOR_FUNC_(simde_poly64, p64, 4)
 #define simde_test_codegen_write_1vf16(indent, elem_count, values) simde_test_codegen_write_vf16_full((indent), (elem_count), #values, (values), SIMDE_TEST_VEC_POS_SINGLE)
 #define simde_test_codegen_write_1vf32(indent, elem_count, values) simde_test_codegen_write_vf32_full((indent), (elem_count), #values, (values), SIMDE_TEST_VEC_POS_SINGLE)
 #define simde_test_codegen_write_1vf64(indent, elem_count, values) simde_test_codegen_write_vf64_full((indent), (elem_count), #values, (values), SIMDE_TEST_VEC_POS_SINGLE)
+#define simde_test_codegen_write_1vp8(indent, elem_count, values)  simde_test_codegen_write_vp8_full( (indent), (elem_count), #values, (values), SIMDE_TEST_VEC_POS_SINGLE)
+#define simde_test_codegen_write_1vp16(indent, elem_count, values) simde_test_codegen_write_vp16_full((indent), (elem_count), #values, (values), SIMDE_TEST_VEC_POS_SINGLE)
+#define simde_test_codegen_write_1vp64(indent, elem_count, values) simde_test_codegen_write_vp64_full((indent), (elem_count), #values, (values), SIMDE_TEST_VEC_POS_SINGLE)
 
 #define SIMDE_TEST_CODEGEN_WRITE_SCALAR_FUNC_(T, symbol_identifier) \
   static void \
@@ -677,6 +671,9 @@ SIMDE_TEST_CODEGEN_WRITE_SCALAR_FUNC_(simde_poly64, p64)
 #define simde_test_codegen_write_1f16(indent, value) simde_test_codegen_write_f16_full((indent), #value, (value), SIMDE_TEST_VEC_POS_SINGLE)
 #define simde_test_codegen_write_1f32(indent, value) simde_test_codegen_write_f32_full((indent), #value, (value), SIMDE_TEST_VEC_POS_SINGLE)
 #define simde_test_codegen_write_1f64(indent, value) simde_test_codegen_write_f64_full((indent), #value, (value), SIMDE_TEST_VEC_POS_SINGLE)
+#define simde_test_codegen_write_1p8(indent, value)  simde_test_codegen_write_p8_full((indent), #value, (value), SIMDE_TEST_VEC_POS_SINGLE)
+#define simde_test_codegen_write_1p16(indent, value) simde_test_codegen_write_p16_full((indent), #value, (value), SIMDE_TEST_VEC_POS_SINGLE)
+#define simde_test_codegen_write_1p64(indent, value) simde_test_codegen_write_p64_full((indent), #value, (value), SIMDE_TEST_VEC_POS_SINGLE)
 
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DIAGNOSTIC_DISABLE_FLOAT_EQUAL_
@@ -1028,7 +1025,6 @@ SIMDE_TEST_GENERATE_ASSERT_EQUAL_FUNC_(uint64_t, u64, PRIu64)
 #define simde_assert_equal_i(a, b) do { if (simde_assert_equal_i_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 #define simde_assert_equal_p8(a, b) do { if (simde_assert_equal_p8_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 #define simde_assert_equal_p16(a, b) do { if (simde_assert_equal_p16_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
-#define simde_assert_equal_p32(a, b) do { if (simde_assert_equal_p32_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 #define simde_assert_equal_p64(a, b) do { if (simde_assert_equal_p64_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 
 #define simde_assert_close_vi8(vec_len, a, b, slop) do { if (simde_assert_close_vi8_(vec_len, a, b, slop, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
