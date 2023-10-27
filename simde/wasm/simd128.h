@@ -5224,7 +5224,7 @@ simde_wasm_f32x4_min (simde_v128_t a, simde_v128_t b) {
       b_ = simde_v128_to_private(b),
       r_;
 
-    #if defined(SIMDE_X86_SSE_NATIVE)
+    #if defined(SIMDE_X86_SSE_NATIVE) && (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(6,0,0))
         // Inspired by https://github.com/v8/v8/blob/c750b6c85bd1ad1d27f7acc1812165f465515144/src/codegen/shared-ia32-x64/macro-assembler-shared-ia32-x64.cc#L202
         simde_v128_private scratch;
         scratch.sse_m128 = a_.sse_m128;
@@ -5261,7 +5261,7 @@ simde_wasm_f64x2_min (simde_v128_t a, simde_v128_t b) {
       b_ = simde_v128_to_private(b),
       r_;
 
-    #if defined(SIMDE_X86_SSE_NATIVE)
+    #if defined(SIMDE_X86_SSE_NATIVE) && (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(6,0,0))
         // Inspired by https://github.com/v8/v8/blob/c750b6c85bd1ad1d27f7acc1812165f465515144/src/codegen/shared-ia32-x64/macro-assembler-shared-ia32-x64.cc#L263
         simde_v128_private scratch;
         scratch.sse_m128d = a_.sse_m128d;
@@ -5521,7 +5521,7 @@ simde_wasm_f32x4_max (simde_v128_t a, simde_v128_t b) {
       b_ = simde_v128_to_private(b),
       r_;
 
-    #if defined(SIMDE_X86_SSE_NATIVE)
+    #if defined(SIMDE_X86_SSE_NATIVE) && (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(6,0,0))
         // Inspired by https://github.com/v8/v8/blob/c750b6c85bd1ad1d27f7acc1812165f465515144/src/codegen/shared-ia32-x64/macro-assembler-shared-ia32-x64.cc#L231
         simde_v128_private scratch;
         scratch.sse_m128 = a_.sse_m128;
@@ -5559,7 +5559,7 @@ simde_wasm_f64x2_max (simde_v128_t a, simde_v128_t b) {
       b_ = simde_v128_to_private(b),
       r_;
 
-    #if defined(SIMDE_X86_SSE_NATIVE)
+    #if defined(SIMDE_X86_SSE_NATIVE) && (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(6,0,0))
         // Inspired by https://github.com/v8/v8/blob/c750b6c85bd1ad1d27f7acc1812165f465515144/src/codegen/shared-ia32-x64/macro-assembler-shared-ia32-x64.cc#L301
         simde_v128_private scratch;
         scratch.sse_m128d = a_.sse_m128d;
