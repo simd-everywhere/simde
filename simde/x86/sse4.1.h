@@ -2340,14 +2340,19 @@ simde_mm_testz_si128 (simde__m128i a, simde__m128i b) {
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       v128_t m = wasm_v128_and(a_.wasm_v128, b_.wasm_v128);
       return (wasm_i64x2_extract_lane(m, 0) | wasm_i64x2_extract_lane(m, 1)) == 0;
+    #elif defined(SIMDE_HAVE_INT128_)
+      if ((a_.u128[0] & b_.u128[0]) == 0) {
+        return 1;
+      }
+      return 0;
     #else
       for (size_t i = 0 ; i < (sizeof(a_.u64) / sizeof(a_.u64[0])) ; i++) {
-        if ((a_.u64[i] & b_.u64[i]) == 0)
-          return 1;
+        if ((a_.u64[i] & b_.u64[i]) > 0)
+          return 0;
       }
     #endif
 
-    return 0;
+    return 1;
   #endif
 }
 #if defined(SIMDE_X86_SSE4_1_ENABLE_NATIVE_ALIASES)

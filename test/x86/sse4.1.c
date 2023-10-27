@@ -3552,7 +3552,7 @@ test_simde_mm_testz_si128(SIMDE_MUNIT_TEST_ARGS) {
     simde__m128i a;
     simde__m128i b;
     int r;
-  } test_vec[8] = {
+  } test_vec[] = {
     { simde_x_mm_set_epu32(UINT32_C(3990889899), UINT32_C(4230789057), UINT32_C(3808461042), UINT32_C(3371427410)),
       simde_x_mm_set_epu32(UINT32_C(    331792), UINT32_C(  63127558), UINT32_C( 483990789), UINT32_C(    530828)),
       1 },
@@ -3576,7 +3576,10 @@ test_simde_mm_testz_si128(SIMDE_MUNIT_TEST_ARGS) {
       1 },
     { simde_x_mm_set_epu32(UINT32_C(3782150825), UINT32_C(3325635017), UINT32_C(1617333560), UINT32_C(3634437083)),
       simde_x_mm_set_epu32(UINT32_C( 167825730), UINT32_C( 294047748), UINT32_C( 126906945), UINT32_C(  17884164)),
-      1 }
+      1 },
+    { simde_x_mm_set_epu8(UINT8_C(0), UINT8_C(1), UINT8_C(0), UINT8_C(0), UINT8_C(0), UINT8_C(0), UINT8_C(0), UINT8_C(0), UINT8_C(0), UINT8_C(0), UINT8_C(0), UINT8_C(0), UINT8_C(0), UINT8_C(0), UINT8_C(0), UINT8_C(0)),
+      simde_x_mm_set_epu8(UINT8_C(0), UINT8_C(1), UINT8_C(0), UINT8_C(0), UINT8_C(0), UINT8_C(0), UINT8_C(0), UINT8_C(0), UINT8_C(0), UINT8_C(0), UINT8_C(0), UINT8_C(0), UINT8_C(0), UINT8_C(0), UINT8_C(0), UINT8_C(0)),
+      0 }
   };
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
