@@ -43,7 +43,8 @@ simde_vrecpxh_f16(simde_float16_t a) {
     if(simde_isnanhf(a)) {
       return SIMDE_NANHF;
     }
-    uint16_t n = *(HEDLEY_REINTERPRET_CAST(uint16_t*, &a));
+    uint16_t n;
+    simde_memcpy(&n, &a, sizeof(a));
     uint16_t sign = n & 0x8000;
     uint16_t exp = n & 0x7c00;
     uint16_t result;
@@ -55,7 +56,8 @@ simde_vrecpxh_f16(simde_float16_t a) {
       exp = ~(exp) & 0x7c00;
       result = sign|exp;
     }
-    return *(HEDLEY_REINTERPRET_CAST(simde_float16_t*, &result));
+    simde_memcpy(&a, &result, sizeof(result));
+    return a;
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
@@ -72,7 +74,8 @@ simde_vrecpxs_f32(simde_float32_t a) {
     if(simde_math_isnanf(a)) {
       return SIMDE_MATH_NANF;
     }
-    uint32_t n = *(HEDLEY_REINTERPRET_CAST(uint32_t*, &a));
+    uint32_t n;
+    simde_memcpy(&n, &a, sizeof(a));
     uint32_t sign = n & 0x80000000;
     uint32_t exp = n & 0x7f800000;
     uint32_t result;
@@ -84,7 +87,8 @@ simde_vrecpxs_f32(simde_float32_t a) {
       exp = ~(exp) & 0x7f800000;
       result = sign|exp;
     }
-    return *(HEDLEY_REINTERPRET_CAST(simde_float32_t*, &result));
+    simde_memcpy(&a, &result, sizeof(result));
+    return a;
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
@@ -101,7 +105,8 @@ simde_vrecpxd_f64(simde_float64_t a) {
     if(simde_math_isnan(a)) {
       return SIMDE_MATH_NAN;
     }
-    uint64_t n = *(HEDLEY_REINTERPRET_CAST(uint64_t*, &(a)));
+    uint64_t n;
+    simde_memcpy(&n, &a, sizeof(a));
     uint64_t sign = n & 0x8000000000000000ull;
     uint64_t exp = n & 0x7ff0000000000000ull;
     uint64_t result;
@@ -113,7 +118,8 @@ simde_vrecpxd_f64(simde_float64_t a) {
       exp = ~(exp) & 0x7ff0000000000000ull;
       result = sign|exp;
     }
-    return *(HEDLEY_REINTERPRET_CAST(simde_float64_t*, &result));
+    simde_memcpy(&a, &result, sizeof(result));
+    return a;
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)

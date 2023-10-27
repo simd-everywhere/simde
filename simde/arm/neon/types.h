@@ -456,9 +456,8 @@ typedef union {
     #define SIMDE_ARM_NEON_NEED_PORTABLE_F16
   #endif
 
-  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARCH_ARM_CRYPTO)
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
     typedef      poly64_t      simde_poly64_t;
-    typedef     poly128_t     simde_poly128_t;
     typedef    poly64x1_t    simde_poly64x1_t;
     typedef    poly64x2_t    simde_poly64x2_t;
     typedef  poly64x1x2_t  simde_poly64x1x2_t;
@@ -467,8 +466,13 @@ typedef union {
     typedef  poly64x2x3_t  simde_poly64x2x3_t;
     typedef  poly64x1x4_t  simde_poly64x1x4_t;
     typedef  poly64x2x4_t  simde_poly64x2x4_t;
+    #if defined(SIMDE_ARCH_ARM_CRYPTO)
+      typedef     poly128_t     simde_poly128_t;
+    #else
+      #define SIMDE_ARM_NEON_NEED_PORTABLE_POLY_128_BIT
+    #endif
   #else
-    #define SIMDE_ARM_NEON_NEED_PORTABLE_POLY_LONG_BIT
+    #define SIMDE_ARM_NEON_NEED_PORTABLE_POLY_64_BIT
   #endif
 
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
@@ -494,7 +498,8 @@ typedef union {
   #define SIMDE_ARM_NEON_NEED_PORTABLE_F32
   #define SIMDE_ARM_NEON_NEED_PORTABLE_F64
   #define SIMDE_ARM_NEON_NEED_PORTABLE_POLY
-  #define SIMDE_ARM_NEON_NEED_PORTABLE_POLY_LONG_BIT
+  #define SIMDE_ARM_NEON_NEED_PORTABLE_POLY_64_BIT
+  #define SIMDE_ARM_NEON_NEED_PORTABLE_POLY_128_BIT
   #define SIMDE_ARM_NEON_NEED_PORTABLE_POLY_VXN
 
   #define SIMDE_ARM_NEON_NEED_PORTABLE_VXN
@@ -556,7 +561,8 @@ typedef union {
   #define SIMDE_ARM_NEON_NEED_PORTABLE_F32
   #define SIMDE_ARM_NEON_NEED_PORTABLE_F64
   #define SIMDE_ARM_NEON_NEED_PORTABLE_POLY
-  #define SIMDE_ARM_NEON_NEED_PORTABLE_POLY_LONG_BIT
+  #define SIMDE_ARM_NEON_NEED_PORTABLE_POLY_64_BIT
+  #define SIMDE_ARM_NEON_NEED_PORTABLE_POLY_128_BIT
   #define SIMDE_ARM_NEON_NEED_PORTABLE_POLY_VXN
 
   #define SIMDE_ARM_NEON_NEED_PORTABLE_64BIT
@@ -581,7 +587,8 @@ typedef union {
   #define SIMDE_ARM_NEON_NEED_PORTABLE_F32
   #define SIMDE_ARM_NEON_NEED_PORTABLE_F64
   #define SIMDE_ARM_NEON_NEED_PORTABLE_POLY
-  #define SIMDE_ARM_NEON_NEED_PORTABLE_POLY_LONG_BIT
+  #define SIMDE_ARM_NEON_NEED_PORTABLE_POLY_64_BIT
+  #define SIMDE_ARM_NEON_NEED_PORTABLE_POLY_128_BIT
   #define SIMDE_ARM_NEON_NEED_PORTABLE_POLY_VXN
 
   #define SIMDE_ARM_NEON_NEED_PORTABLE_64BIT
@@ -656,51 +663,17 @@ typedef union {
     #define SIMDE_ARM_NEON_NEED_PORTABLE_F16
   #endif
 
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-    typedef       poly8_t       simde_poly8_t;
-    typedef      poly16_t      simde_poly16_t;
-
-    typedef     poly8x8_t     simde_poly8x8_t SIMDE_VECTOR(8);
-    typedef    poly16x4_t    simde_poly16x4_t SIMDE_VECTOR(8);
-    typedef    poly8x16_t    simde_poly8x16_t SIMDE_VECTOR(16);
-    typedef    poly16x8_t    simde_poly16x8_t SIMDE_VECTOR(16);
-  #else
-    #define SIMDE_ARM_NEON_NEED_PORTABLE_POLY
-  #endif
-
-  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARCH_ARM_CRYPTO)
-    typedef      poly64_t      simde_poly64_t;
-    typedef     poly128_t     simde_poly128_t;
-    typedef    poly64x1_t    simde_poly64x1_t SIMDE_VECTOR(8);
-    typedef    poly64x2_t    simde_poly64x2_t SIMDE_VECTOR(16);
-    typedef struct  simde_poly64x1x2_t {
-      simde_poly64x1_t val[2];
-    } simde_poly64x1x2_t;
-    typedef struct  simde_poly64x2x2_t {
-      simde_poly64x2_t val[2];
-    } simde_poly64x2x2_t;
-    typedef struct  simde_poly64x1x3_t {
-      simde_poly64x1_t val[3];
-    } simde_poly64x1x3_t;
-    typedef struct  simde_poly64x2x3_t {
-      simde_poly64x2_t val[3];
-    } simde_poly64x2x3_t;
-    typedef struct  simde_poly64x1x4_t {
-      simde_poly64x1_t val[4];
-    } simde_poly64x1x4_t;
-    typedef struct  simde_poly64x2x4_t {
-      simde_poly64x2_t val[4];
-    } simde_poly64x2x4_t;
-  #else
-    #define SIMDE_ARM_NEON_NEED_PORTABLE_POLY_LONG_BIT
-  #endif
+  #define SIMDE_ARM_NEON_NEED_PORTABLE_POLY
+  #define SIMDE_ARM_NEON_NEED_PORTABLE_POLY_64_BIT
+  #define SIMDE_ARM_NEON_NEED_PORTABLE_POLY_128_BIT
   #define SIMDE_ARM_NEON_NEED_PORTABLE_POLY_VXN
   #define SIMDE_ARM_NEON_NEED_PORTABLE_VXN
   #define SIMDE_ARM_NEON_NEED_PORTABLE_F64X1XN
   #define SIMDE_ARM_NEON_NEED_PORTABLE_F64X2XN
 #else
   #define SIMDE_ARM_NEON_NEED_PORTABLE_POLY
-  #define SIMDE_ARM_NEON_NEED_PORTABLE_POLY_LONG_BIT
+  #define SIMDE_ARM_NEON_NEED_PORTABLE_POLY_64_BIT
+  #define SIMDE_ARM_NEON_NEED_PORTABLE_POLY_128_BIT
   #define SIMDE_ARM_NEON_NEED_PORTABLE_POLY_VXN
   #define SIMDE_ARM_NEON_NEED_PORTABLE_F16
   #define SIMDE_ARM_NEON_NEED_PORTABLE_F32
@@ -723,11 +696,10 @@ typedef union {
   typedef simde_poly16x8_private simde_poly16x8_t;
 #endif
 
-#if defined(SIMDE_ARM_NEON_NEED_PORTABLE_POLY_LONG_BIT)
+#if defined(SIMDE_ARM_NEON_NEED_PORTABLE_POLY_64_BIT)
   typedef  simde_poly64   simde_poly64_t;
   typedef simde_poly64x1_private simde_poly64x1_t;
   typedef simde_poly64x2_private simde_poly64x2_t;
-  typedef simde_poly128  simde_poly128_t;
   typedef struct  simde_poly64x1x2_t {
     simde_poly64x1_t val[2];
   } simde_poly64x1x2_t;
@@ -746,6 +718,10 @@ typedef union {
   typedef struct  simde_poly64x2x4_t {
     simde_poly64x2_t val[4];
   } simde_poly64x2x4_t;
+#endif
+
+#if defined(SIMDE_ARM_NEON_NEED_PORTABLE_POLY_128_BIT)
+  typedef simde_poly128  simde_poly128_t;
 #endif
 
 #if defined(SIMDE_ARM_NEON_NEED_PORTABLE_POLY_VXN)
