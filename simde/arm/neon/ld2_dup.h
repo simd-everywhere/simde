@@ -512,7 +512,8 @@ simde_vld2_dup_p64(simde_poly64_t const * ptr) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_poly8x16x2_t
 simde_vld2q_dup_p8(simde_poly8_t const * ptr) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && !defined(SIMDE_BUG_GCC_A32V7_MISSFUNC)
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && !defined(SIMDE_BUG_GCC_A32V7_MISSFUNC) && \
+      !defined(SIMDE_BUG_CLANG_A32V7_MISSFUNC)
     return vld2q_dup_p8(ptr);
   #else
     simde_poly8x16x2_t r;
@@ -531,7 +532,8 @@ simde_vld2q_dup_p8(simde_poly8_t const * ptr) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_poly16x8x2_t
 simde_vld2q_dup_p16(simde_poly16_t const * ptr) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && !defined(SIMDE_BUG_GCC_A32V7_MISSFUNC)
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && !defined(SIMDE_BUG_GCC_A32V7_MISSFUNC) && \
+      !defined(SIMDE_BUG_CLANG_A32V7_MISSFUNC)
     return vld2q_dup_p16(ptr);
   #else
     simde_poly16x8x2_t r;
