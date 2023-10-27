@@ -452,6 +452,161 @@ simde_vld3q_dup_u64(uint64_t const * ptr) {
   #define vld3q_dup_u64(a) simde_vld3q_dup_u64((a))
 #endif
 
+SIMDE_FUNCTION_ATTRIBUTES
+simde_poly8x8x3_t
+simde_vld3_dup_p8(simde_poly8_t const * ptr) {
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && !defined(SIMDE_BUG_GCC_A32V7_MISSFUNC)
+    return vld3_dup_p8(ptr);
+  #else
+    simde_poly8x8x3_t r;
+
+    for (size_t i = 0 ; i < 3 ; i++) {
+      r.val[i] = simde_vdup_n_p8(ptr[i]);
+    }
+    return r;
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+  #undef vld3_dup_p8
+  #define vld3_dup_p8(a) simde_vld3_dup_p8((a))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_poly16x4x3_t
+simde_vld3_dup_p16(simde_poly16_t const * ptr) {
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && !defined(SIMDE_BUG_GCC_A32V7_MISSFUNC)
+    return vld3_dup_p16(ptr);
+  #else
+    simde_poly16x4x3_t r;
+
+    for (size_t i = 0 ; i < 3 ; i++) {
+      r.val[i] = simde_vdup_n_p16(ptr[i]);
+    }
+    return r;
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+  #undef vld3_dup_p16
+  #define vld3_dup_p16(a) simde_vld3_dup_p16((a))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_poly64x1x3_t
+simde_vld3_dup_p64(simde_poly64_t const * ptr) {
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
+    return vld3_dup_p64(ptr);
+  #else
+    simde_poly64x1x3_t r;
+
+    for (size_t i = 0 ; i < 3 ; i++) {
+      r.val[i] = simde_vdup_n_p64(ptr[i]);
+    }
+    return r;
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+  #undef vld3_dup_p64
+  #define vld3_dup_p64(a) simde_vld3_dup_p64((a))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_poly8x16x3_t
+simde_vld3q_dup_p8(simde_poly8_t const * ptr) {
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && !defined(SIMDE_BUG_GCC_A32V7_MISSFUNC)
+    return vld3q_dup_p8(ptr);
+  #else
+    simde_poly8x16x3_t r;
+
+    for (size_t i = 0 ; i < 3 ; i++) {
+      r.val[i] = simde_vdupq_n_p8(ptr[i]);
+    }
+    return r;
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+  #undef vld3q_dup_p8
+  #define vld3q_dup_p8(a) simde_vld3q_dup_p8((a))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_poly16x8x3_t
+simde_vld3q_dup_p16(simde_poly16_t const * ptr) {
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && !defined(SIMDE_BUG_GCC_A32V7_MISSFUNC)
+    return vld3q_dup_p16(ptr);
+  #else
+    simde_poly16x8x3_t r;
+
+    for (size_t i = 0 ; i < 3 ; i++) {
+      r.val[i] = simde_vdupq_n_p16(ptr[i]);
+    }
+    return r;
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+  #undef vld3q_dup_p16
+  #define vld3q_dup_p16(a) simde_vld3q_dup_p16((a))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_poly64x2x3_t
+simde_vld3q_dup_p64(simde_poly64_t const * ptr) {
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
+    return vld3q_dup_p64(ptr);
+  #else
+    simde_poly64x2x3_t r;
+
+    for (size_t i = 0 ; i < 3 ; i++) {
+      r.val[i] = simde_vdupq_n_p64(ptr[i]);
+    }
+    return r;
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+  #undef vld3q_dup_p64
+  #define vld3q_dup_p64(a) simde_vld3q_dup_p64((a))
+#endif
+
+#if defined(SIMDE_ARM_NEON_BFLOAT16)
+SIMDE_FUNCTION_ATTRIBUTES
+simde_bfloat16x4x3_t
+simde_vld3_dup_bf16(simde_bfloat16_t const ptr[HEDLEY_ARRAY_PARAM(2)]) {
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
+    return vld3_dup_bf16(ptr);
+  #else
+    simde_bfloat16x4x3_t r;
+
+    for (size_t i = 0 ; i < 3 ; i++) {
+      r.val[i] = simde_vdup_n_bf16(ptr[i]);
+    }
+    return r;
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+  #undef vld3_dup_bf16
+  #define vld3_dup_bf16(a) simde_vld3_dup_bf16((a))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_bfloat16x8x3_t
+simde_vld3q_dup_bf16(simde_bfloat16 const * ptr) {
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
+    return vld3q_dup_bf16(ptr);
+  #else
+    simde_bfloat16x8x3_t r;
+
+    for (size_t i = 0 ; i < 3 ; i++) {
+      r.val[i] = simde_vdupq_n_bf16(ptr[i]);
+    }
+    return r;
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+  #undef vld3q_dup_bf16
+  #define vld3q_dup_bf16(a) simde_vld3q_dup_bf16((a))
+#endif
+
+#endif /* defined(SIMDE_ARM_NEON_BFLOAT16) */
+
 SIMDE_END_DECLS_
 HEDLEY_DIAGNOSTIC_POP
 

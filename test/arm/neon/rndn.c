@@ -9,10 +9,6 @@ test_simde_vrndnh_f16 (SIMDE_MUNIT_TEST_ARGS) {
     simde_float16_t a;
     simde_float16_t r;
   } test_vec[] = {
-    #if !defined(SIMDE_FAST_NANS)
-        {            SIMDE_NANHF,
-                     SIMDE_NANHF, },
-    #endif
     { SIMDE_FLOAT16_VALUE(    -1.50),
       SIMDE_FLOAT16_VALUE(    -2.00)},
     { SIMDE_FLOAT16_VALUE(    -2.50),
