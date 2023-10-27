@@ -89,26 +89,18 @@ jobs:
       fail-fast: false
       matrix:
         isax:
-        - -mavx512bw -mavx512vl -mavx512cd -mavx512dq -mavx512vbmi -mavx512ifma -mavx512vpopcntdq -mavx512bitalg -mavx512vnni -mvpclmulqdq
-        - -mavx512bw -mavx512vl -DSIMDE_NATURAL_VECTOR_SIZE=256
-        - -mavx512f
-        - -mavx512bw
-        - -mavx512vl
-        - -mavx512vl -mavx512dq
-        - -mavx512cd
-        - -mavx512dq
-        - -msse2
-        - -msse3
-        - -mssse3
-        - -msse4.1
-        - -msse4.2
-        - -mavx
-        - -mfma
-        - -mavx2
-        - -maes
+        - -DSIMDE_NATURAL_VECTOR_SIZE=256 -march=x86-64-v3 -mavx512bw -mavx512vl
+        # https://en.wikipedia.org/wiki/X86-64#Microarchitecture_levels
+        - -march=x86-64 -maes -mpclmul  # the x86-64 baseline is CMOV, CX8, FPU, FXSR, MMX, OSFXSR, SCE, SSE, SSE2
+        - -march=x86-64-v2  # CMPXCHG16B, LAHF-SAHF, POPCNT, SSE3, SSE4_1, SSE4_2, SSSE3
+        - -march=x86-64-v3  # AVX, AVX2, BMI1, BMI2, F16C, FMA, LZCNT, MOVBE, OSXSAVE
+        - -march=x86-64-v4  # AVX512F, AVX512BW, AVX512CD, AVX512DQ, AVX512VL a.k.a. skylake+ (including zen4)
         include:
           - target: tgl
-          - isax: -mavx512bw -mavx512vl -mavx512cd -mavx512dq -mavx512vbmi -mavx512ifma -mavx512vpopcntdq -mavx512bitalg -mavx512vnni -mvpclmulqdq -mavx512fp16
+          - isax: -march=x86-64-v4 -mcx16 -mxsave -mpclmul -mfsgsbase -mrdrnd -mhle -mrdseed -maes -mclflushopt -mxsavec -mxsaves -msgx -mpku -msha -mrdpid -mavx512vpopcntdq -mavx512ifma -mavx512vbmi -mavx512vnni -mavx512vbmi2 -mavx512bitalg -mvpclmulqdq -mgfni -mvaes  # icelake
+            target: icl
+          - isax: -march=x86-64-v4 -mcx16 -mxsave -mpclmul -mfsgsbase -mrdrnd -mhle -mrdseed -maes -mclflushopt -mxsavec -mxsaves -msgx -mpku -msha -mrdpid -mavx512vpopcntdq -mavx512ifma -mavx512vbmi -mavx512vnni -mavx512vbmi2 -mavx512bitalg -mvpclmulqdq -mgfni -mvaes -mpconfig -mwbnoinvd -mclwb -mmovdiri -mmovdir64b -menqcmd -mcldemote -mptwrite -mwaitpkg -mserialize -mtsxldtrk -muintr -mavxvnni -mavx512fp16  # sapphire rapids without bf16
+            # See https://github.com/simd-everywhere/simde/issues/1095
             target: spr
     env:
       CFLAGS: -Wall -Wextra -Werror ${{ matrix.isax }}
@@ -137,6 +129,10 @@ jobs:
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
     - name: Configure
       run: meson setup build -Db_coverage=true || (cat build/meson-logs/meson-log.txt ; false)
+    - name: Test run native?
+      run: |
+        test/check-flags.sh query && echo Tests with $CFLAGS will be run natively
+        test/check-flags.sh query || echo Tests with $CFLAGS will be run using SDE
     - name: Build
       run: ninja -C build -v
     - name: Test
