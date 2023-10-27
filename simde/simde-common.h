@@ -1071,6 +1071,7 @@ HEDLEY_DIAGNOSTIC_POP
 #  elif defined(__clang__)
 #    if defined(SIMDE_ARCH_AARCH64)
 #      define SIMDE_BUG_CLANG_48257
+#      define SIMDE_BUG_CLANG_BAD_VGET_SET_LANE_TYPES
 #      if !SIMDE_DETECT_CLANG_VERSION_CHECK(15,0,0)
 #        define SIMDE_BUG_CLANG_45541
 #      endif
@@ -1089,6 +1090,9 @@ HEDLEY_DIAGNOSTIC_POP
 #    if defined(SIMDE_ARCH_ARM)
 #      if !SIMDE_DETECT_CLANG_VERSION_CHECK(11,0,0)
 #        define SIMDE_BUG_CLANG_BAD_VGET_SET_LANE_TYPES
+#      endif
+#      if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && !defined(SIMDE_ARM_NEON_A32V8_NATIVE)
+#        define SIMDE_BUG_CLANG_A32V7_MISSFUNC
 #      endif
 #    endif
 #    if defined(SIMDE_ARCH_POWER) && !SIMDE_DETECT_CLANG_VERSION_CHECK(12,0,0)
@@ -1138,9 +1142,6 @@ HEDLEY_DIAGNOSTIC_POP
 #    define SIMDE_BUG_CLANG_45959
 #    if defined(SIMDE_ARCH_WASM_SIMD128) && !SIMDE_DETECT_CLANG_VERSION_CHECK(17,0,0)
 #      define SIMDE_BUG_CLANG_60655
-#    endif
-#    if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && !defined(SIMDE_ARM_NEON_A32V8_NATIVE)
-#      define SIMDE_BUG_CLANG_A32V7_MISSFUNC
 #    endif
 #  elif defined(HEDLEY_MSVC_VERSION)
 #    if defined(SIMDE_ARCH_X86)
