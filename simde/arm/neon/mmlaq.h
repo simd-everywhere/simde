@@ -118,8 +118,7 @@ simde_vusmmlaq_s32(simde_int32x4_t r, simde_uint8x16_t a, simde_int8x16_t b) {
   #define vusmmlaq_s32(r, a, b) simde_vusmmlaq_s32((r), (a), (b))
 #endif
 
-/*
-// [Eric] Pre-implemented bf16-related intrinsics
+#if defined(SIMDE_ARM_NEON_BFLOAT16)
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float32x4_t
 simde_vbfmmlaq_f32(simde_float32x4_t r, simde_bfloat16x8_t a, simde_bfloat16x8_t b) {
@@ -146,7 +145,8 @@ simde_vbfmmlaq_f32(simde_float32x4_t r, simde_bfloat16x8_t a, simde_bfloat16x8_t
   #undef vbfmmlaq_f32
   #define vbfmmlaq_f32(r, a, b) simde_vbfmmlaq_f32((r), (a), (b))
 #endif
-*/
+
+#endif /* defined(SIMDE_ARM_NEON_BFLOAT16) */
 
 SIMDE_END_DECLS_
 HEDLEY_DIAGNOSTIC_POP

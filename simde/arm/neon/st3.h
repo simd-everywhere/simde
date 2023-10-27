@@ -937,8 +937,7 @@ simde_vst3q_p64(simde_poly64_t ptr[HEDLEY_ARRAY_PARAM(6)], simde_poly64x2x3_t va
   #define vst3q_p64(a, b) simde_vst3q_p64((a), (b))
 #endif
 
-/*
-// [Eric] Pre-implemented bf16-related intrinsics
+#if defined(SIMDE_ARM_NEON_BFLOAT16)
 SIMDE_FUNCTION_ATTRIBUTES
 void
 simde_vst3_bf16(simde_bfloat16_t ptr[HEDLEY_ARRAY_PARAM(12)], simde_bfloat16x4x3_t val) {
@@ -980,7 +979,8 @@ simde_vst3q_bf16(simde_bfloat16_t ptr[HEDLEY_ARRAY_PARAM(24)], simde_bfloat16x8x
   #undef vst3q_bf16
   #define vst3q_bf16(a, b) simde_vst3q_bf16((a), (b))
 #endif
-*/
+
+#endif /* defined(SIMDE_ARM_NEON_BFLOAT16) */
 
 #endif /* !defined(SIMDE_BUG_INTEL_857088) */
 

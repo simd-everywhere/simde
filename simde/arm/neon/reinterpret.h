@@ -6602,9 +6602,7 @@ simde_vreinterpretq_f64_p128(simde_poly128_t a) {
 
 #endif /* !defined(SIMDE_TARGET_NOT_SUPPORT_INT128_TYPE) */
 
-/*
-// [Eric] Pre-implemented bf16-related intrinsics
-
+#if defined(SIMDE_ARM_NEON_BFLOAT16)
 SIMDE_FUNCTION_ATTRIBUTES
 simde_bfloat16x4_t
 simde_vreinterpret_bf16_s8(simde_int8x8_t a) {
@@ -7521,7 +7519,8 @@ simde_vreinterpretq_bf16_p128(simde_poly128_t a) {
   #undef vreinterpretq_bf16_p128
   #define vreinterpretq_bf16_p128(a) simde_vreinterpretq_bf16_p128(a)
 #endif
-*/
+
+#endif /* defined(SIMDE_ARM_NEON_BFLOAT16) */
 
 SIMDE_END_DECLS_
 HEDLEY_DIAGNOSTIC_POP

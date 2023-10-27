@@ -486,8 +486,7 @@ simde_vst1q_lane_p64(simde_poly64_t *ptr, simde_poly64x2_t val, const int lane)
   #define vst1q_lane_p64(a, b, c) simde_vst1q_lane_p64((a), (b), (c))
 #endif
 
-/*
-// [Eric] Pre-implemented bf16-related intrinsics
+#if defined(SIMDE_ARM_NEON_BFLOAT16)
 SIMDE_FUNCTION_ATTRIBUTES
 void
 simde_vst1_lane_bf16(simde_bfloat16_t *ptr, simde_bfloat16x4_t val, const int lane)
@@ -519,7 +518,8 @@ simde_vst1q_lane_bf16(simde_bfloat16_t *ptr, simde_bfloat16x8_t val, const int l
   #undef vst1q_lane_bf16
   #define vst1q_lane_bf16(a, b, c) simde_vst1q_lane_bf16((a), (b), (c))
 #endif
-*/
+
+#endif /* defined(SIMDE_ARM_NEON_BFLOAT16) */
 
 SIMDE_END_DECLS_
 HEDLEY_DIAGNOSTIC_POP

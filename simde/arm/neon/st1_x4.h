@@ -279,8 +279,7 @@ simde_vst1_p64_x4(simde_poly64_t ptr[HEDLEY_ARRAY_PARAM(4)], simde_poly64x1x4_t 
   #define vst1_p64_x4(a, b) simde_vst1_p64_x4((a), (b))
 #endif
 
-/*
-// [Eric] Pre-implemented bf16-related intrinsics
+#if defined(SIMDE_ARM_NEON_BFLOAT16)
 SIMDE_FUNCTION_ATTRIBUTES
 void
 simde_vst1_bf16_x4(simde_bfloat16_t ptr[HEDLEY_ARRAY_PARAM(16)], simde_bfloat16x4x4_t val) {
@@ -298,7 +297,8 @@ simde_vst1_bf16_x4(simde_bfloat16_t ptr[HEDLEY_ARRAY_PARAM(16)], simde_bfloat16x
   #undef vst1_bf16_x4
   #define vst1_bf16_x4(a, b) simde_vst1_bf16_x4((a), (b))
 #endif
-*/
+
+#endif /* defined(SIMDE_ARM_NEON_BFLOAT16) */
 
 #endif /* !defined(SIMDE_BUG_INTEL_857088) */
 

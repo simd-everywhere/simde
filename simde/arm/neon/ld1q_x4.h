@@ -391,8 +391,7 @@ simde_vld1q_p64_x4(simde_poly64_t const ptr[HEDLEY_ARRAY_PARAM(8)]) {
   #define vld1q_p64_x4(a) simde_vld1q_p64_x4((a))
 #endif
 
-/*
-// [Eric] Pre-implemented bf16-related intrinsics
+#if defined(SIMDE_ARM_NEON_BFLOAT16)
 SIMDE_FUNCTION_ATTRIBUTES
 simde_bfloat16x8x4_t
 simde_vld1q_bf16_x4(simde_bfloat16 const ptr[HEDLEY_ARRAY_PARAM(32)]) {
@@ -417,7 +416,8 @@ simde_vld1q_bf16_x4(simde_bfloat16 const ptr[HEDLEY_ARRAY_PARAM(32)]) {
   #undef vld1q_bf16_x4
   #define vld1q_bf16_x4(a) simde_vld1q_bf16_x4((a))
 #endif
-*/
+
+#endif /* defined(SIMDE_ARM_NEON_BFLOAT16) */
 
 #endif /* !defined(SIMDE_BUG_INTEL_857088) */
 

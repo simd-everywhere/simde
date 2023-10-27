@@ -803,8 +803,7 @@ simde_vld4q_lane_p64(simde_poly64_t const ptr[HEDLEY_ARRAY_PARAM(4)], simde_poly
   #define vld4q_lane_p64(ptr, src, lane) simde_vld4q_lane_p64((ptr), (src), (lane))
 #endif
 
-/*
-// [Eric] Pre-implemented bf16-related intrinsics
+#if defined(SIMDE_ARM_NEON_BFLOAT16)
 SIMDE_FUNCTION_ATTRIBUTES
 simde_bfloat16x4x4_t
 simde_vld4_lane_bf16(simde_bfloat16_t const ptr[HEDLEY_ARRAY_PARAM(4)], simde_bfloat16x4x4_t src, const int lane)
@@ -858,7 +857,8 @@ simde_vld4q_lane_bf16(simde_bfloat16_t const ptr[HEDLEY_ARRAY_PARAM(4)], simde_b
   #undef vld4q_lane_bf16
   #define vld4q_lane_bf16(ptr, src, lane) simde_vld4q_lane_bf16((ptr), (src), (lane))
 #endif
-*/
+
+#endif /* defined(SIMDE_ARM_NEON_BFLOAT16) */
 
 #endif /* !defined(SIMDE_BUG_INTEL_857088) */
 

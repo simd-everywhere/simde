@@ -572,8 +572,7 @@ simde_vst2q_lane_p64(simde_poly64_t ptr[HEDLEY_ARRAY_PARAM(2)], simde_poly64x2x2
   #define vst2q_lane_p64(a, b, c) simde_vst2q_lane_p64((a), (b), (c))
 #endif
 
-/*
-// [Eric] Pre-implemented bf16-related intrinsics
+#if defined(SIMDE_ARM_NEON_BFLOAT16)
 SIMDE_FUNCTION_ATTRIBUTES
 void
 simde_vst2_lane_bf16(simde_bfloat16_t ptr[HEDLEY_ARRAY_PARAM(2)], simde_bfloat16x4x2_t val, const int lane)
@@ -611,7 +610,8 @@ simde_vst2q_lane_bf16(simde_bfloat16_t ptr[HEDLEY_ARRAY_PARAM(2)], simde_bfloat1
   #undef vst2q_lane_bf16
   #define vst2q_lane_bf16(a, b, c) simde_vst2q_lane_bf16((a), (b), (c))
 #endif
-*/
+
+#endif /* defined(SIMDE_ARM_NEON_BFLOAT16) */
 
 #endif /* !defined(SIMDE_BUG_INTEL_857088) */
 

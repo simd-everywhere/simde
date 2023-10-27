@@ -2068,8 +2068,7 @@ simde_vcvtx_high_f32_f64(simde_float32x2_t r, simde_float64x2_t a) {
   #define vcvtx_high_f32_f64(r, a) simde_vcvtx_high_f32_f64((r), (a))
 #endif
 
-/*
-// [Eric] Pre-implemented bf16-related intrinsics
+#if defined(SIMDE_ARM_NEON_BFLOAT16)
 SIMDE_FUNCTION_ATTRIBUTES
 simde_bfloat16x4_t
 simde_vcvt_bf16_f32(simde_float32x4_t a) {
@@ -2231,7 +2230,8 @@ simde_vcvtq_high_bf16_f32(simde_float32x4_t a) {
   #undef vcvtq_high_bf16_f32
   #define vcvtq_high_bf16_f32(a) simde_vcvtq_high_bf16_f32(a)
 #endif
-*/
+
+#endif /* defined(SIMDE_ARM_NEON_BFLOAT16) */
 
 SIMDE_END_DECLS_
 HEDLEY_DIAGNOSTIC_POP

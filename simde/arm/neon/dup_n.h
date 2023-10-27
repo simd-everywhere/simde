@@ -23,6 +23,7 @@
  * Copyright:
  *   2020      Sean Maher <seanptmaher@gmail.com> (Copyright owned by Google, LLC)
  *   2020      Evan Nemerson <evan@nemerson.com>
+ *   2023      Yi-Yen Chung <eric681@andestech.com> (Copyright owned by Andes Technology)
  */
 
 #if !defined(SIMDE_ARM_NEON_DUP_N_H)
@@ -806,9 +807,7 @@ simde_vdupq_n_p64(simde_poly64_t value) {
   #define vdupq_n_p64(value) simde_vdupq_n_p64((value))
 #endif
 
-/*
-// [Eric] Pre-implemented bf16-related intrinsics
-SIMDE_FUNCTION_ATTRIBUTES
+#if defined(SIMDE_ARM_NEON_BFLOAT16)
 SIMDE_FUNCTION_ATTRIBUTES
 simde_bfloat16x4_t
 simde_vdup_n_bf16(simde_bfloat16 value) {
@@ -850,7 +849,8 @@ simde_vdupq_n_bf16(simde_bfloat16 value) {
   #undef vdupq_n_bf16
   #define vdupq_n_bf16(value) simde_vdupq_n_bf16((value))
 #endif
-*/
+
+#endif /* defined(SIMDE_ARM_NEON_BFLOAT16) */
 
 SIMDE_END_DECLS_
 HEDLEY_DIAGNOSTIC_POP

@@ -826,8 +826,7 @@ simde_vld3q_p64(simde_poly64_t const *ptr) {
   #define vld3q_p64(a) simde_vld3q_p64((a))
 #endif
 
-/*
-// [Eric] Pre-implemented bf16-related intrinsics
+#if defined(SIMDE_ARM_NEON_BFLOAT16)
 SIMDE_FUNCTION_ATTRIBUTES
 simde_bfloat16x4x3_t
 simde_vld3_bf16(simde_bfloat16 const *ptr) {
@@ -883,7 +882,8 @@ simde_vld3q_bf16(simde_bfloat16 const *ptr) {
   #undef vld3q_bf16
   #define vld3q_bf16(a) simde_vld3q_bf16((a))
 #endif
-*/
+
+#endif /* defined(SIMDE_ARM_NEON_BFLOAT16) */
 
 #endif /* !defined(SIMDE_BUG_INTEL_857088) */
 

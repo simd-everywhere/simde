@@ -415,8 +415,7 @@ simde_vget_low_p64(simde_poly64x2_t a) {
   #define vget_low_p64(a) simde_vget_low_p64((a))
 #endif
 
-/*
-// [Eric] Pre-implemented bf16-related intrinsics
+#if defined(SIMDE_ARM_NEON_BFLOAT16)
 SIMDE_FUNCTION_ATTRIBUTES
 simde_bfloat16x4_t
 simde_vget_low_bf16(simde_bfloat16x8_t a) {
@@ -438,7 +437,8 @@ simde_vget_low_bf16(simde_bfloat16x8_t a) {
   #undef vget_low_bf16
   #define vget_low_bf16(a) simde_vget_low_bf16((a))
 #endif
-*/
+
+#endif /* defined(SIMDE_ARM_NEON_BFLOAT16) */
 
 SIMDE_END_DECLS_
 HEDLEY_DIAGNOSTIC_POP
