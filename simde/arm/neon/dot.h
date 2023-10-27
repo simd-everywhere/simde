@@ -164,8 +164,7 @@ simde_vdotq_u32(simde_uint32x4_t r, simde_uint8x16_t a, simde_uint8x16_t b) {
   #define vdotq_u32(r, a, b) simde_vdotq_u32((r), (a), (b))
 #endif
 
-/*
-// [Eric] Pre-implemented bf16-related intrinsics
+#if defined(SIMDE_ARM_NEON_BFLOAT16)
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float32x2_t
 simde_vbfdot_f32(simde_float32x2_t r, simde_bfloat16x4_t a, simde_bfloat16x4_t b) {
@@ -217,7 +216,8 @@ simde_vbfdotq_f32(simde_float32x4_t r, simde_bfloat16x8_t a, simde_bfloat16x8_t 
   #undef vbfdotq_f32
   #define vbfdotq_f32(r, a, b) simde_vbfdotq_f32((r), (a), (b))
 #endif
-*/
+
+#endif /* defined(SIMDE_ARM_NEON_BFLOAT16) */
 
 SIMDE_END_DECLS_
 HEDLEY_DIAGNOSTIC_POP

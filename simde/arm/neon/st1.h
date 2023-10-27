@@ -525,8 +525,7 @@ simde_vstrq_p128(simde_poly128_t ptr[HEDLEY_ARRAY_PARAM(1)], simde_poly128_t val
 #endif
 #endif /* !defined(SIMDE_TARGET_NOT_SUPPORT_INT128_TYPE) */
 
-/*
-// [Eric] Pre-implemented bf16-related intrinsics
+#if defined(SIMDE_ARM_NEON_BFLOAT16)
 SIMDE_FUNCTION_ATTRIBUTES
 void
 simde_vst1_bf16(simde_bfloat16_t ptr[HEDLEY_ARRAY_PARAM(4)], simde_bfloat16x4_t val) {
@@ -556,7 +555,8 @@ simde_vst1q_bf16(simde_bfloat16_t ptr[HEDLEY_ARRAY_PARAM(8)], simde_bfloat16x8_t
   #undef vst1q_bf16
   #define vst1q_bf16(a, b) simde_vst1q_bf16((a), (b))
 #endif
-*/
+
+#endif /* defined(SIMDE_ARM_NEON_BFLOAT16) */
 
 SIMDE_END_DECLS_
 HEDLEY_DIAGNOSTIC_POP

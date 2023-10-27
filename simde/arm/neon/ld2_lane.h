@@ -592,8 +592,7 @@ simde_poly64x2x2_t simde_vld2q_lane_p64(simde_poly64_t const ptr[HEDLEY_ARRAY_PA
   #define vld2q_lane_p64(ptr, src, lane) simde_vld2q_lane_p64((ptr), (src), (lane))
 #endif
 
-/*
-// [Eric] Pre-implemented bf16-related intrinsics
+#if defined(SIMDE_ARM_NEON_BFLOAT16)
 SIMDE_FUNCTION_ATTRIBUTES
 simde_bfloat16x4x2_t simde_vld2_lane_bf16(simde_bfloat16_t const ptr[HEDLEY_ARRAY_PARAM(2)], simde_bfloat16x4x2_t src, const int lane)
     SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 3) {
@@ -633,7 +632,8 @@ simde_bfloat16x8x2_t simde_vld2q_lane_bf16(simde_bfloat16_t const ptr[HEDLEY_ARR
   #undef vld2q_lane_bf16
   #define vld2q_lane_bf16(ptr, src, lane) simde_vld2q_lane_bf16((ptr), (src), (lane))
 #endif
-*/
+
+#endif /* defined(SIMDE_ARM_NEON_BFLOAT16) */
 
 SIMDE_END_DECLS_
 HEDLEY_DIAGNOSTIC_POP

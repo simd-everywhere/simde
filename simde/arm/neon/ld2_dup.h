@@ -566,8 +566,7 @@ simde_vld2q_dup_p64(simde_poly64_t const * ptr) {
   #define vld2q_dup_p64(a) simde_vld2q_dup_p64((a))
 #endif
 
-/*
-// [Eric] Pre-implemented bf16-related intrinsics
+#if defined(SIMDE_ARM_NEON_BFLOAT16)
 SIMDE_FUNCTION_ATTRIBUTES
 simde_bfloat16x4x2_t
 simde_vld2_dup_bf16(simde_bfloat16_t const ptr[HEDLEY_ARRAY_PARAM(2)]) {
@@ -605,7 +604,8 @@ simde_vld2q_dup_bf16(simde_bfloat16 const * ptr) {
   #undef vld2q_dup_bf16
   #define vld2q_dup_bf16(a) simde_vld2q_dup_bf16((a))
 #endif
-*/
+
+#endif /* defined(SIMDE_ARM_NEON_BFLOAT16) */
 
 SIMDE_END_DECLS_
 HEDLEY_DIAGNOSTIC_POP

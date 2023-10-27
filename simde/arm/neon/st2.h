@@ -566,8 +566,7 @@ simde_vst2q_p64(simde_poly64_t *ptr, simde_poly64x2x2_t val) {
   #define vst2q_p64(a, b) simde_vst2q_p64((a), (b))
 #endif
 
-/*
-// [Eric] Pre-implemented bf16-related intrinsics
+#if defined(SIMDE_ARM_NEON_BFLOAT16)
 SIMDE_FUNCTION_ATTRIBUTES
 void
 simde_vst2_bf16(simde_bfloat16_t *ptr, simde_bfloat16x4x2_t val) {
@@ -603,7 +602,8 @@ simde_vst2q_bf16(simde_bfloat16_t *ptr, simde_bfloat16x8x2_t val) {
   #undef vst2q_bf16
   #define vst2q_bf16(a, b) simde_vst2q_bf16((a), (b))
 #endif
-*/
+
+#endif /* defined(SIMDE_ARM_NEON_BFLOAT16) */
 
 #endif /* !defined(SIMDE_BUG_INTEL_857088) */
 

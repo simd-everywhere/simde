@@ -563,8 +563,7 @@ simde_vsetq_lane_p64(simde_poly64_t a, simde_poly64x2_t v, const int lane)
   #define vsetq_lane_p64(a, b, c) simde_vsetq_lane_p64((a), (b), (c))
 #endif
 
-/*
-// [Eric] Pre-implemented bf16-related intrinsics
+#if defined(SIMDE_ARM_NEON_BFLOAT16)
 SIMDE_FUNCTION_ATTRIBUTES
 simde_bfloat16x4_t
 simde_vset_lane_bf16(simde_bfloat16_t a, simde_bfloat16x4_t v, const int lane)
@@ -602,7 +601,8 @@ simde_vsetq_lane_bf16(simde_bfloat16_t a, simde_bfloat16x8_t v, const int lane)
   #undef vsetq_lane_bf16
   #define vsetq_lane_bf16(a, b, c) simde_vsetq_lane_bf16((a), (b), (c))
 #endif
-*/
+
+#endif /* defined(SIMDE_ARM_NEON_BFLOAT16) */
 
 SIMDE_END_DECLS_
 HEDLEY_DIAGNOSTIC_POP

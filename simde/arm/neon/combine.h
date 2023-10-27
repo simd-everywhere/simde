@@ -442,8 +442,7 @@ simde_vcombine_p64(simde_poly64x1_t low, simde_poly64x1_t high) {
   #define vcombine_p64(low, high) simde_vcombine_p64((low), (high))
 #endif
 
-/*
-// [Eric] Pre-implemented bf16-related intrinsics
+#if defined(SIMDE_ARM_NEON_BFLOAT16)
 SIMDE_FUNCTION_ATTRIBUTES
 simde_bfloat16x8_t
 simde_vcombine_bf16(simde_bfloat16x4_t low, simde_bfloat16x4_t high) {
@@ -469,7 +468,8 @@ simde_vcombine_bf16(simde_bfloat16x4_t low, simde_bfloat16x4_t high) {
   #undef vcombine_bf16
   #define vcombine_bf16(low, high) simde_vcombine_bf16((low), (high))
 #endif
-*/
+
+#endif /* defined(SIMDE_ARM_NEON_BFLOAT16) */
 
 SIMDE_END_DECLS_
 HEDLEY_DIAGNOSTIC_POP

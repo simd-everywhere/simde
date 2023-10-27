@@ -235,8 +235,7 @@ simde_vcreate_p64(simde_poly64_t a) {
   #define vcreate_p64(a) simde_vcreate_p64(a)
 #endif
 
-/*
-// [Eric] Pre-implemented bf16-related intrinsics
+#if defined(SIMDE_ARM_NEON_BFLOAT16)
 SIMDE_FUNCTION_ATTRIBUTES
 simde_bfloat16x4_t
 simde_vcreate_bf16(uint64_t a) {
@@ -250,7 +249,8 @@ simde_vcreate_bf16(uint64_t a) {
   #undef vcreate_bf16
   #define vcreate_bf16(a) simde_vcreate_bf16(a)
 #endif
-*/
+
+#endif /* defined(SIMDE_ARM_NEON_BFLOAT16) */
 
 SIMDE_END_DECLS_
 HEDLEY_DIAGNOSTIC_POP
