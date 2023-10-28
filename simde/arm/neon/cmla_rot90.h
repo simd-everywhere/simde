@@ -22,6 +22,7 @@
 *
 * Copyright:
 *   2021      Atharva Nimbalkar <atharvakn@gmail.com>
+*   2023      Yi-Yen Chung <eric681@andestech.com> (Copyright owned by Andes Technology)
 */
 
 #if !defined(SIMDE_ARM_NEON_CMLA_ROT90_H)
