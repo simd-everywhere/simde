@@ -46,6 +46,7 @@
 #include "neon/addv.h"
 #include "neon/addw.h"
 #include "neon/addw_high.h"
+#include "neon/aes.h"
 #include "neon/and.h"
 #include "neon/bcax.h"
 #include "neon/bic.h"
