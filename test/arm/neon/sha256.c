@@ -5,6 +5,7 @@
 
 static int
 test_simde_vsha256hq_u32(SIMDE_MUNIT_TEST_ARGS) {
+#if 1
   static const struct {
     uint32_t a[4];
     uint32_t b[4];
@@ -55,10 +56,27 @@ test_simde_vsha256hq_u32(SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
+#else
+  fputc('\n', stdout);
+  for (int i = 0 ; i < 8 ; i++) {
+    simde_uint32x4_t a = simde_test_arm_neon_random_u32x4();
+    simde_uint32x4_t b = simde_test_arm_neon_random_u32x4();
+    simde_uint32x4_t c = simde_test_arm_neon_random_u32x4();
+    simde_uint32x4_t r = simde_vsha256hq_u32(a, b, c);
+
+    simde_test_arm_neon_write_u32x4(2, a, SIMDE_TEST_VEC_POS_FIRST);
+    simde_test_arm_neon_write_u32x4(2, b, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_arm_neon_write_u32x4(2, c, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_arm_neon_write_u32x4(2, r, SIMDE_TEST_VEC_POS_LAST);
+  }
+  return 1;
+#endif
 }
 
 static int
 test_simde_vsha256h2q_u32(SIMDE_MUNIT_TEST_ARGS) {
+#if 1
   static const struct {
     uint32_t a[4];
     uint32_t b[4];
@@ -109,10 +127,27 @@ test_simde_vsha256h2q_u32(SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
+#else
+  fputc('\n', stdout);
+  for (int i = 0 ; i < 8 ; i++) {
+    simde_uint32x4_t a = simde_test_arm_neon_random_u32x4();
+    simde_uint32x4_t b = simde_test_arm_neon_random_u32x4();
+    simde_uint32x4_t c = simde_test_arm_neon_random_u32x4();
+    simde_uint32x4_t r = simde_vsha256h2q_u32(a, b, c);
+
+    simde_test_arm_neon_write_u32x4(2, a, SIMDE_TEST_VEC_POS_FIRST);
+    simde_test_arm_neon_write_u32x4(2, b, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_arm_neon_write_u32x4(2, c, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_arm_neon_write_u32x4(2, r, SIMDE_TEST_VEC_POS_LAST);
+  }
+  return 1;
+#endif
 }
 
 static int
 test_simde_vsha256su0q_u32(SIMDE_MUNIT_TEST_ARGS) {
+#if 1
   static const struct {
     uint32_t a[4];
     uint32_t b[4];
@@ -153,10 +188,25 @@ test_simde_vsha256su0q_u32(SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
+#else
+  fputc('\n', stdout);
+  for (int i = 0 ; i < 8 ; i++) {
+    simde_uint32x4_t a = simde_test_arm_neon_random_u32x4();
+    simde_uint32x4_t b = simde_test_arm_neon_random_u32x4();
+    simde_uint32x4_t r = simde_vsha256su0q_u32(a, b);
+
+    simde_test_arm_neon_write_u32x4(2, a, SIMDE_TEST_VEC_POS_FIRST);
+    simde_test_arm_neon_write_u32x4(2, b, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_arm_neon_write_u32x4(2, r, SIMDE_TEST_VEC_POS_LAST);
+  }
+  return 1;
+#endif
 }
 
 static int
 test_simde_vsha256su1q_u32(SIMDE_MUNIT_TEST_ARGS) {
+#if 1
   static const struct {
     uint32_t a[4];
     uint32_t b[4];
@@ -207,6 +257,22 @@ test_simde_vsha256su1q_u32(SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
+#else
+  fputc('\n', stdout);
+  for (int i = 0 ; i < 8 ; i++) {
+    simde_uint32x4_t a = simde_test_arm_neon_random_u32x4();
+    simde_uint32x4_t b = simde_test_arm_neon_random_u32x4();
+    simde_uint32x4_t c = simde_test_arm_neon_random_u32x4();
+    simde_uint32x4_t r = simde_vsha256su1q_u32(a, b, c);
+
+    simde_test_arm_neon_write_u32x4(2, a, SIMDE_TEST_VEC_POS_FIRST);
+    simde_test_arm_neon_write_u32x4(2, b, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_arm_neon_write_u32x4(2, c, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_arm_neon_write_u32x4(2, r, SIMDE_TEST_VEC_POS_LAST);
+  }
+  return 1;
+#endif
 }
 
 SIMDE_TEST_FUNC_LIST_BEGIN

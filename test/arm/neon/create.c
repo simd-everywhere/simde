@@ -367,6 +367,7 @@ test_simde_vcreate_u64 (SIMDE_MUNIT_TEST_ARGS) {
 
 static int
 test_simde_vcreate_f16 (SIMDE_MUNIT_TEST_ARGS) {
+#if 1
   static const struct {
     uint64_t a;
     uint64_t r[1];
@@ -395,6 +396,18 @@ test_simde_vcreate_f16 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
+#else
+  fputc('\n', stdout);
+  for (int i = 0 ; i < 8 ; i++) {
+    simde_uint64_t a = simde_test_codegen_random_u64();
+    simde_uint64x1_t r = simde_vcreate_f16(a);
+
+    simde_test_codegen_write_u64(2, a, SIMDE_TEST_VEC_POS_FIRST);
+    simde_test_arm_neon_write_u64x1(2, r, SIMDE_TEST_VEC_POS_LAST);
+  }
+  return 1;
+#endif
 }
 
 
@@ -490,6 +503,7 @@ test_simde_vcreate_f64 (SIMDE_MUNIT_TEST_ARGS) {
 
 static int
 test_simde_vcreate_p8 (SIMDE_MUNIT_TEST_ARGS) {
+#if 1
   static const struct {
     simde_poly64_t a;
     simde_poly64_t r[1];
@@ -518,10 +532,23 @@ test_simde_vcreate_p8 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
+#else
+  fputc('\n', stdout);
+  for (int i = 0 ; i < 8 ; i++) {
+    simde_poly64_t a = simde_test_codegen_random_p64();
+    simde_poly64x1_t r = simde_vcreate_p8(a);
+
+    simde_test_codegen_write_p64(2, a, SIMDE_TEST_VEC_POS_FIRST);
+    simde_test_arm_neon_write_p64x1(2, r, SIMDE_TEST_VEC_POS_LAST);
+  }
+  return 1;
+#endif
 }
 
 static int
 test_simde_vcreate_p16 (SIMDE_MUNIT_TEST_ARGS) {
+#if 1
   static const struct {
     simde_poly64_t a;
     simde_poly64_t r[1];
@@ -550,10 +577,23 @@ test_simde_vcreate_p16 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
+#else
+  fputc('\n', stdout);
+  for (int i = 0 ; i < 8 ; i++) {
+    simde_poly64_t a = simde_test_codegen_random_p64();
+    simde_poly64x1_t r = simde_vcreate_p16(a);
+
+    simde_test_codegen_write_p64(2, a, SIMDE_TEST_VEC_POS_FIRST);
+    simde_test_arm_neon_write_p64x1(2, r, SIMDE_TEST_VEC_POS_LAST);
+  }
+  return 1;
+#endif
 }
 
 static int
 test_simde_vcreate_p64 (SIMDE_MUNIT_TEST_ARGS) {
+#if 1
   static const struct {
     simde_poly64_t a;
     simde_poly64_t r[1];
@@ -582,6 +622,18 @@ test_simde_vcreate_p64 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
+#else
+  fputc('\n', stdout);
+  for (int i = 0 ; i < 8 ; i++) {
+    simde_poly64_t a = simde_test_codegen_random_p64();
+    simde_poly64x1_t r = simde_vcreate_p64(a);
+
+    simde_test_codegen_write_p64(2, a, SIMDE_TEST_VEC_POS_FIRST);
+    simde_test_arm_neon_write_p64x1(2, r, SIMDE_TEST_VEC_POS_LAST);
+  }
+  return 1;
+#endif
 }
 
 SIMDE_TEST_FUNC_LIST_BEGIN

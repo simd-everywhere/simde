@@ -24,13 +24,6 @@
  *   2023      Yi-Yen Chung <eric681@andestech.com> (Copyright owned by Andes Technology)
  */
 
-/* Implementation notes (seanptmaher):
- *
- * It won't overflow during the multiplication, it'll ever only double
- * the bit length, we only care about the overflow during the shift,
- * so do the multiplication, then the shift with saturation
- */
-
 #if !defined(SIMDE_ARM_NEON_MULL_HIGH_N_H)
 #define SIMDE_ARM_NEON_MULL_HIGH_N_H
 

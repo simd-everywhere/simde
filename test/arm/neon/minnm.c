@@ -5,6 +5,7 @@
 
 static int
 test_simde_vminnmh_f16 (SIMDE_MUNIT_TEST_ARGS) {
+#if 1
   struct {
     simde_float16 a;
     simde_float16 b;
@@ -45,10 +46,25 @@ test_simde_vminnmh_f16 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
+#else
+  fputc('\n', stdout);
+  for (int i = 0 ; i < 8 ; i++) {
+    simde_float16_t a = simde_test_codegen_random_f16(-100.0f, 100.0f);
+    simde_float16_t b = simde_test_codegen_random_f16(-100.0f, 100.0f);
+    simde_float16_t r = simde_vminnmh_f16(a, b);
+
+    simde_test_codegen_write_f16(2, a, SIMDE_TEST_VEC_POS_FIRST);
+    simde_test_codegen_write_f16(2, b, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_codegen_write_f16(2, r, SIMDE_TEST_VEC_POS_LAST);
+  }
+  return 1;
+#endif
 }
 
 static int
 test_simde_vminnm_f16 (SIMDE_MUNIT_TEST_ARGS) {
+#if 1
   struct {
     simde_float16 a[4];
     simde_float16 b[4];
@@ -94,6 +110,20 @@ test_simde_vminnm_f16 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
+#else
+  fputc('\n', stdout);
+  for (int i = 0 ; i < 8 ; i++) {
+    simde_float16x4_t a = simde_test_arm_neon_random_f16x4(-100.0f, 100.0f);
+    simde_float16x4_t b = simde_test_arm_neon_random_f16x4(-100.0f, 100.0f);
+    simde_float16x4_t r = simde_vminnm_f16(a, b);
+
+    simde_test_arm_neon_write_f16x4(2, a, SIMDE_TEST_VEC_POS_FIRST);
+    simde_test_arm_neon_write_f16x4(2, b, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_arm_neon_write_f16x4(2, r, SIMDE_TEST_VEC_POS_LAST);
+  }
+  return 1;
+#endif
 }
 
 static int
@@ -224,6 +254,7 @@ test_simde_vminnm_f64 (SIMDE_MUNIT_TEST_ARGS) {
 
 static int
 test_simde_vminnmq_f16 (SIMDE_MUNIT_TEST_ARGS) {
+#if 1
   struct {
     simde_float16 a[8];
     simde_float16 b[8];
@@ -288,6 +319,20 @@ test_simde_vminnmq_f16 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
+#else
+  fputc('\n', stdout);
+  for (int i = 0 ; i < 8 ; i++) {
+    simde_float16x8_t a = simde_test_arm_neon_random_f16x8(-100.0f, 100.0f);
+    simde_float16x8_t b = simde_test_arm_neon_random_f16x8(-100.0f, 100.0f);
+    simde_float16x8_t r = simde_vminnmq_f16(a, b);
+
+    simde_test_arm_neon_write_f16x8(2, a, SIMDE_TEST_VEC_POS_FIRST);
+    simde_test_arm_neon_write_f16x8(2, b, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_arm_neon_write_f16x8(2, r, SIMDE_TEST_VEC_POS_LAST);
+  }
+  return 1;
+#endif
 }
 
 static int

@@ -5,6 +5,7 @@
 
 static int
 test_simde_vmmlaq_s32 (SIMDE_MUNIT_TEST_ARGS) {
+#if 1
   struct {
     int32_t buf[4];
     int8_t a[16];
@@ -106,10 +107,27 @@ test_simde_vmmlaq_s32 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
+#else
+  fputc('\n', stdout);
+  for (int i = 0 ; i < 8 ; i++) {
+    simde_int32x4_t buf = simde_test_arm_neon_random_i32x4();
+    simde_int8x16_t a = simde_test_arm_neon_random_i8x16();
+    simde_int8x16_t b = simde_test_arm_neon_random_i8x16();
+    simde_int32x4_t r = simde_vmmlaq_s32(buf, a, b);
+
+    simde_test_arm_neon_write_i32x4(2, buf, SIMDE_TEST_VEC_POS_FIRST);
+    simde_test_arm_neon_write_i8x16(2, a, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_arm_neon_write_i8x16(2, b, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_arm_neon_write_i32x4(2, r, SIMDE_TEST_VEC_POS_LAST);
+  }
+  return 1;
+#endif
 }
 
 static int
 test_simde_vmmlaq_u32 (SIMDE_MUNIT_TEST_ARGS) {
+#if 1
   struct {
     uint32_t buf[4];
     uint8_t a[16];
@@ -211,10 +229,27 @@ test_simde_vmmlaq_u32 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
+#else
+  fputc('\n', stdout);
+  for (int i = 0 ; i < 8 ; i++) {
+    simde_uint32x4_t buf = simde_test_arm_neon_random_u32x4();
+    simde_uint8x16_t a = simde_test_arm_neon_random_u8x16();
+    simde_uint8x16_t b = simde_test_arm_neon_random_u8x16();
+    simde_uint32x4_t r = simde_vmmlaq_u32(buf, a, b);
+
+    simde_test_arm_neon_write_u32x4(2, buf, SIMDE_TEST_VEC_POS_FIRST);
+    simde_test_arm_neon_write_u8x16(2, a, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_arm_neon_write_u8x16(2, b, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_arm_neon_write_u32x4(2, r, SIMDE_TEST_VEC_POS_LAST);
+  }
+  return 1;
+#endif
 }
 
 static int
 test_simde_vusmmlaq_s32 (SIMDE_MUNIT_TEST_ARGS) {
+#if 1
   struct {
     int32_t buf[4];
     uint8_t a[16];
@@ -317,6 +352,22 @@ test_simde_vusmmlaq_s32 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
+#else
+  fputc('\n', stdout);
+  for (int i = 0 ; i < 8 ; i++) {
+    simde_int32x4_t buf = simde_test_arm_neon_random_i32x4();
+    simde_uint8x16_t a = simde_test_arm_neon_random_u8x16();
+    simde_int8x16_t b = simde_test_arm_neon_random_i8x16();
+    simde_int32x4_t r = simde_vusmmlaq_s32(buf, a, b);
+
+    simde_test_arm_neon_write_i32x4(2, buf, SIMDE_TEST_VEC_POS_FIRST);
+    simde_test_arm_neon_write_u8x16(2, a, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_arm_neon_write_i8x16(2, b, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_arm_neon_write_i32x4(2, r, SIMDE_TEST_VEC_POS_LAST);
+  }
+  return 1;
+#endif
 }
 
 SIMDE_TEST_FUNC_LIST_BEGIN

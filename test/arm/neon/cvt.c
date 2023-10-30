@@ -335,6 +335,7 @@ test_simde_vcvth_u64_f16 (SIMDE_MUNIT_TEST_ARGS) {
 
 static int
 test_simde_vcvth_f16_s16 (SIMDE_MUNIT_TEST_ARGS) {
+#if 1
   struct {
     int16_t a;
     simde_float16 r;
@@ -364,6 +365,18 @@ test_simde_vcvth_f16_s16 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
+#else
+  fputc('\n', stdout);
+  for (int i = 0 ; i < 8 ; i++) {
+    simde_int16_t a = simde_test_codegen_random_i16();
+    simde_float16_t r = simde_vcvth_f16_s16(a);
+
+    simde_test_codegen_write_i16(2, a, SIMDE_TEST_VEC_POS_FIRST);
+    simde_test_codegen_write_f16(2, r, SIMDE_TEST_VEC_POS_LAST);
+  }
+  return 1;
+#endif
 }
 
 static int
@@ -458,6 +471,7 @@ test_simde_vcvth_f16_s64 (SIMDE_MUNIT_TEST_ARGS) {
 
 static int
 test_simde_vcvth_f16_u16 (SIMDE_MUNIT_TEST_ARGS) {
+#if 1
   struct {
     uint16_t a;
     simde_float16 r;
@@ -487,6 +501,18 @@ test_simde_vcvth_f16_u16 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
+#else
+  fputc('\n', stdout);
+  for (int i = 0 ; i < 8 ; i++) {
+    simde_uint16_t a = simde_test_codegen_random_u16();
+    simde_float16_t r = simde_vcvth_f16_u16(a);
+
+    simde_test_codegen_write_u16(2, a, SIMDE_TEST_VEC_POS_FIRST);
+    simde_test_codegen_write_f16(2, r, SIMDE_TEST_VEC_POS_LAST);
+  }
+  return 1;
+#endif
 }
 
 static int

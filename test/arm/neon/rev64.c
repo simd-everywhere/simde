@@ -791,6 +791,7 @@ test_simde_vrev64q_f32 (SIMDE_MUNIT_TEST_ARGS) {
 
 static int
 test_simde_vrev64_p8 (SIMDE_MUNIT_TEST_ARGS) {
+#if 1
   static const struct {
     simde_poly8_t a[8];
     simde_poly8_t r[8];
@@ -821,10 +822,23 @@ test_simde_vrev64_p8 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
+#else
+  fputc('\n', stdout);
+  for (int i = 0 ; i < 8 ; i++) {
+    simde_poly8x8_t a = simde_test_arm_neon_random_p8x8();
+    simde_poly8x8_t r = simde_vrev64_p8(a);
+
+    simde_test_arm_neon_write_p8x8(2, a, SIMDE_TEST_VEC_POS_FIRST);
+    simde_test_arm_neon_write_p8x8(2, r, SIMDE_TEST_VEC_POS_LAST);
+  }
+  return 1;
+#endif
 }
 
 static int
 test_simde_vrev64_p16 (SIMDE_MUNIT_TEST_ARGS) {
+#if 1
   static const struct {
     simde_poly16_t a[4];
     simde_poly16_t r[4];
@@ -854,10 +868,23 @@ test_simde_vrev64_p16 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
+#else
+  fputc('\n', stdout);
+  for (int i = 0 ; i < 8 ; i++) {
+    simde_poly16x4_t a = simde_test_arm_neon_random_p16x4();
+    simde_poly16x4_t r = simde_vrev64_p16(a);
+
+    simde_test_arm_neon_write_p16x4(2, a, SIMDE_TEST_VEC_POS_FIRST);
+    simde_test_arm_neon_write_p16x4(2, r, SIMDE_TEST_VEC_POS_LAST);
+  }
+  return 1;
+#endif
 }
 
 static int
 test_simde_vrev64q_p8 (SIMDE_MUNIT_TEST_ARGS) {
+#if 1
   static const struct {
     simde_poly8_t a[16];
     simde_poly8_t r[16];
@@ -904,10 +931,23 @@ test_simde_vrev64q_p8 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
+#else
+  fputc('\n', stdout);
+  for (int i = 0 ; i < 8 ; i++) {
+    simde_poly8x16_t a = simde_test_arm_neon_random_p8x16();
+    simde_poly8x16_t r = simde_vrev64q_p8(a);
+
+    simde_test_arm_neon_write_p8x16(2, a, SIMDE_TEST_VEC_POS_FIRST);
+    simde_test_arm_neon_write_p8x16(2, r, SIMDE_TEST_VEC_POS_LAST);
+  }
+  return 1;
+#endif
 }
 
 static int
 test_simde_vrev64q_p16 (SIMDE_MUNIT_TEST_ARGS) {
+#if 1
   static const struct {
     simde_poly16_t a[8];
     simde_poly16_t r[8];
@@ -937,6 +977,18 @@ test_simde_vrev64q_p16 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
+#else
+  fputc('\n', stdout);
+  for (int i = 0 ; i < 8 ; i++) {
+    simde_poly16x8_t a = simde_test_arm_neon_random_p16x8();
+    simde_poly16x8_t r = simde_vrev64q_p16(a);
+
+    simde_test_arm_neon_write_p16x8(2, a, SIMDE_TEST_VEC_POS_FIRST);
+    simde_test_arm_neon_write_p16x8(2, r, SIMDE_TEST_VEC_POS_LAST);
+  }
+  return 1;
+#endif
 }
 
 SIMDE_TEST_FUNC_LIST_BEGIN
