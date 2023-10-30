@@ -180,28 +180,31 @@ simde_vaesimcq_u8(simde_uint8x16_t data) {
   #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(__ARM_FEATURE_AES)
     return vaesimcq_u8(data);
   #else
-    /* ref: https://github.com/kokke/tiny-AES-c/blob/master/aes.c */
     simde_uint8x16_private
-      a_ = simde_uint8x16_to_private(data);
+      a_ = simde_uint8x16_to_private(data),
+      r_;
+    /* ref: simde/simde/x86/aes.h */
     #if defined(SIMDE_X86_AES_NATIVE)
-      a_.m128i = _mm_aesimc_si128(a_.m128i);
+      r_.m128i = _mm_aesimc_si128(a_.m128i);
     #else
-      int i;
-      uint8_t a, b, c, d;
-      for (i = 0; i < 4; ++i)
-      {
-        a = a_.values[i*4+0];
-        b = a_.values[i*4+1];
-        c = a_.values[i*4+2];
-        d = a_.values[i*4+3];
+      int Nb = simde_x_aes_Nb;
+      // uint8_t k[] = {0x0e, 0x09, 0x0d, 0x0b}; // a(x) = {0e} + {09}x + {0d}x2 + {0b}x3
+      uint8_t i, j, col[4], res[4];
 
-        a_.values[i*4+0] = Multiply(a, 0x0e) ^ Multiply(b, 0x0b) ^ Multiply(c, 0x0d) ^ Multiply(d, 0x09);
-        a_.values[i*4+1] = Multiply(a, 0x09) ^ Multiply(b, 0x0e) ^ Multiply(c, 0x0b) ^ Multiply(d, 0x0d);
-        a_.values[i*4+2] = Multiply(a, 0x0d) ^ Multiply(b, 0x09) ^ Multiply(c, 0x0e) ^ Multiply(d, 0x0b);
-        a_.values[i*4+3] = Multiply(a, 0x0b) ^ Multiply(b, 0x0d) ^ Multiply(c, 0x09) ^ Multiply(d, 0x0e);
+      for (j = 0; j < Nb; j++) {
+        for (i = 0; i < 4; i++) {
+          col[i] = a_.values[Nb*j+i];
+        }
+
+        //coef_mult(k, col, res);
+        simde_x_aes_coef_mult_lookup(4, col, res);
+
+        for (i = 0; i < 4; i++) {
+          r_.values[Nb*j+i] = res[i];
+        }
       }
     #endif
-    return simde_uint8x16_from_private(a_);
+    return simde_uint8x16_from_private(r_);
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
