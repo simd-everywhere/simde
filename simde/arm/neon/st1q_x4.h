@@ -281,26 +281,6 @@ simde_vst1q_p64_x4(simde_poly64_t ptr[HEDLEY_ARRAY_PARAM(8)], simde_poly64x2x4_t
   #define vst1q_p64_x4(a, b) simde_vst1q_p64_x4((a), (b))
 #endif
 
-#if defined(SIMDE_ARM_NEON_BFLOAT16)
-SIMDE_FUNCTION_ATTRIBUTES
-void
-simde_vst1q_bf16_x4(simde_bfloat16_t ptr[HEDLEY_ARRAY_PARAM(32)], simde_bfloat16x8x4_t val) {
-  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
-    vst1q_bf16_x4(ptr, val);
-  #else
-    simde_bfloat16x8_private val_[4];
-    for (size_t i = 0; i < 4; i++) {
-      val_[i] = simde_bfloat16x8_to_private(val.val[i]);
-    }
-    simde_memcpy(ptr, &val_, sizeof(val_));
-  #endif
-}
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
-  #undef vst1q_bf16_x4
-  #define vst1q_bf16_x4(a, b) simde_vst1q_bf16_x4((a), (b))
-#endif
-
-#endif /* defined(SIMDE_ARM_NEON_BFLOAT16) */
 
 #endif /* !defined(SIMDE_BUG_INTEL_857088) */
 
