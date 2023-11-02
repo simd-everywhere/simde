@@ -35,7 +35,7 @@ SIMDE_BEGIN_DECLS_
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float16
-simde_vaddh_f16(simde_float16 a, simde_float16 b) {
+simde_vaddh_f16(simde_float16_t a, simde_float16_t b) {
   #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
     return vaddh_f16(a, b);
   #else

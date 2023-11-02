@@ -7,9 +7,9 @@ static int
 test_simde_vuzp1_f16 (SIMDE_MUNIT_TEST_ARGS) {
 #if 1
   struct {
-    simde_float16 a[4];
-    simde_float16 b[4];
-    simde_float16 r[4];
+    simde_float16_t a[4];
+    simde_float16_t b[4];
+    simde_float16_t r[4];
   } test_vec[] = {
     { { SIMDE_FLOAT16_VALUE(   -49.28), SIMDE_FLOAT16_VALUE(  -109.00), SIMDE_FLOAT16_VALUE(  -626.50), SIMDE_FLOAT16_VALUE(  -567.00) },
       { SIMDE_FLOAT16_VALUE(  -178.88), SIMDE_FLOAT16_VALUE(    10.22), SIMDE_FLOAT16_VALUE(   976.50), SIMDE_FLOAT16_VALUE(   -31.19) },
@@ -481,9 +481,9 @@ static int
 test_simde_vuzp1q_f16 (SIMDE_MUNIT_TEST_ARGS) {
 #if 1
   struct {
-    simde_float16 a[8];
-    simde_float16 b[8];
-    simde_float16 r[8];
+    simde_float16_t a[8];
+    simde_float16_t b[8];
+    simde_float16_t r[8];
   } test_vec[] = {
     { { SIMDE_FLOAT16_VALUE( - 97.687), SIMDE_FLOAT16_VALUE( - 79.004), SIMDE_FLOAT16_VALUE( - 89.890),  SIMDE_FLOAT16_VALUE( 40.738),
         SIMDE_FLOAT16_VALUE( - 65.793), SIMDE_FLOAT16_VALUE( - 23.168), SIMDE_FLOAT16_VALUE( -  5.072),  SIMDE_FLOAT16_VALUE( 43.484) },

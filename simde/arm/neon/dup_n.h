@@ -36,7 +36,7 @@ SIMDE_BEGIN_DECLS_
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float16x4_t
-simde_vdup_n_f16(simde_float16 value) {
+simde_vdup_n_f16(simde_float16_t value) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
     return vdup_n_f16(value);
   #else
@@ -324,7 +324,7 @@ simde_vdup_n_u64(uint64_t value) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float16x8_t
-simde_vdupq_n_f16(simde_float16 value) {
+simde_vdupq_n_f16(simde_float16_t value) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
     return vdupq_n_f16(value);
   #else
