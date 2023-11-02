@@ -22,11 +22,11 @@ static int
 test_simde_vst4_f16 (SIMDE_MUNIT_TEST_ARGS) {
 #if 1
   struct {
-    simde_float16 r0[4];
-    simde_float16 r1[4];
-    simde_float16 r2[4];
-    simde_float16 r3[4];
-    simde_float16 a[16];
+    simde_float16_t r0[4];
+    simde_float16_t r1[4];
+    simde_float16_t r2[4];
+    simde_float16_t r3[4];
+    simde_float16_t a[16];
   } test_vec[] = {
     { { SIMDE_FLOAT16_VALUE( - 47.024),  SIMDE_FLOAT16_VALUE(  6.719),  SIMDE_FLOAT16_VALUE( 41.219),  SIMDE_FLOAT16_VALUE( 13.593) },
       { SIMDE_FLOAT16_VALUE( - 94.191),  SIMDE_FLOAT16_VALUE( 54.699),  SIMDE_FLOAT16_VALUE( 93.339), SIMDE_FLOAT16_VALUE( - 70.910) },
@@ -100,7 +100,7 @@ test_simde_vst4_f16 (SIMDE_MUNIT_TEST_ARGS) {
                                  simde_vld1_f16(test_vec[i].r2),
                                  simde_vld1_f16(test_vec[i].r3), } };
 
-    simde_float16 a_[16];
+    simde_float16_t a_[16];
     simde_vst4_f16(a_, r_);
     simde_assert_equal_i(0, simde_memcmp(a_, test_vec[i].a, sizeof(test_vec[i].a)));
 
@@ -2303,11 +2303,11 @@ static int
 test_simde_vst4q_f16 (SIMDE_MUNIT_TEST_ARGS) {
 #if 1
   struct {
-    simde_float16 r0[8];
-    simde_float16 r1[8];
-    simde_float16 r2[8];
-    simde_float16 r3[8];
-    simde_float16 a[32];
+    simde_float16_t r0[8];
+    simde_float16_t r1[8];
+    simde_float16_t r2[8];
+    simde_float16_t r3[8];
+    simde_float16_t a[32];
   } test_vec[] = {
     { { SIMDE_FLOAT16_VALUE( - 14.743),  SIMDE_FLOAT16_VALUE( 96.869),  SIMDE_FLOAT16_VALUE( 35.732), SIMDE_FLOAT16_VALUE( - 11.204),
         SIMDE_FLOAT16_VALUE( - 36.507), SIMDE_FLOAT16_VALUE( - 87.762), SIMDE_FLOAT16_VALUE( - 30.140),  SIMDE_FLOAT16_VALUE( 40.553) },
@@ -2445,7 +2445,7 @@ test_simde_vst4q_f16 (SIMDE_MUNIT_TEST_ARGS) {
                                  simde_vld1q_f16(test_vec[i].r2),
                                  simde_vld1q_f16(test_vec[i].r3), } };
 
-    simde_float16 a_[32];
+    simde_float16_t a_[32];
     simde_vst4q_f16(a_, r_);
     simde_assert_equal_i(0, simde_memcmp(a_, test_vec[i].a, sizeof(test_vec[i].a)));
 

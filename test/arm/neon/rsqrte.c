@@ -7,8 +7,8 @@
 static int
 test_simde_vrsqrteh_f16 (SIMDE_MUNIT_TEST_ARGS) {
   struct {
-    simde_float16 a;
-    simde_float16 r;
+    simde_float16_t a;
+    simde_float16_t r;
   } test_vec[] = {
     { SIMDE_FLOAT16_VALUE(5.50),
       SIMDE_FLOAT16_VALUE(0.43) },
@@ -137,8 +137,8 @@ test_simde_vrsqrted_f64 (SIMDE_MUNIT_TEST_ARGS) {
 static int
 test_simde_vrsqrte_f16 (SIMDE_MUNIT_TEST_ARGS) {
   struct {
-    simde_float16 a[4];
-    simde_float16 r[4];
+    simde_float16_t a[4];
+    simde_float16_t r[4];
   } test_vec[] = {
     { { SIMDE_FLOAT16_VALUE(0.27), SIMDE_FLOAT16_VALUE(15.80), SIMDE_FLOAT16_VALUE(5.01), SIMDE_FLOAT16_VALUE(5.52) },
       { SIMDE_FLOAT16_VALUE(1.92), SIMDE_FLOAT16_VALUE(0.25), SIMDE_FLOAT16_VALUE(0.45), SIMDE_FLOAT16_VALUE(0.43) } },
@@ -313,8 +313,8 @@ test_simde_vrsqrte_u32 (SIMDE_MUNIT_TEST_ARGS) {
 static int
 test_simde_vrsqrteq_f16 (SIMDE_MUNIT_TEST_ARGS) {
   struct {
-    simde_float16 a[8];
-    simde_float16 r[8];
+    simde_float16_t a[8];
+    simde_float16_t r[8];
   } test_vec[] = {
     { { SIMDE_FLOAT16_VALUE(3.00), SIMDE_FLOAT16_VALUE(13.00), SIMDE_FLOAT16_VALUE(17.80), SIMDE_FLOAT16_VALUE(3.50), SIMDE_FLOAT16_VALUE(13.20), SIMDE_FLOAT16_VALUE(3.80), SIMDE_FLOAT16_VALUE(9.30), SIMDE_FLOAT16_VALUE(12.70) },
       { SIMDE_FLOAT16_VALUE(0.58), SIMDE_FLOAT16_VALUE(0.28), SIMDE_FLOAT16_VALUE(0.24), SIMDE_FLOAT16_VALUE(0.53), SIMDE_FLOAT16_VALUE(0.28), SIMDE_FLOAT16_VALUE(0.51), SIMDE_FLOAT16_VALUE(0.33), SIMDE_FLOAT16_VALUE(0.28) } },

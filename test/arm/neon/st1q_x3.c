@@ -9,8 +9,8 @@ static int
 test_simde_vst1q_f16_x3 (SIMDE_MUNIT_TEST_ARGS) {
 #if 1
   struct {
-    simde_float16 val[3][8];
-    simde_float16 r[24];
+    simde_float16_t val[3][8];
+    simde_float16_t r[24];
   } test_vec[] = {
   { { { SIMDE_FLOAT16_VALUE( - 78.006), SIMDE_FLOAT16_VALUE( - 86.214),  SIMDE_FLOAT16_VALUE( 79.768), SIMDE_FLOAT16_VALUE( - 58.640),
          SIMDE_FLOAT16_VALUE( 95.290), SIMDE_FLOAT16_VALUE( - 58.694), SIMDE_FLOAT16_VALUE( - 66.494),  SIMDE_FLOAT16_VALUE( 14.402)  },
@@ -116,7 +116,7 @@ test_simde_vst1q_f16_x3 (SIMDE_MUNIT_TEST_ARGS) {
         simde_vld1q_f16(test_vec[i].val[1]),
         simde_vld1q_f16(test_vec[i].val[2]),
     }};
-    simde_float16 r_[24];
+    simde_float16_t r_[24];
     simde_vst1q_f16_x3(r_, val);
     simde_assert_equal_i(0, simde_memcmp(r_, test_vec[i].r, sizeof(test_vec[i].r)));
   }
