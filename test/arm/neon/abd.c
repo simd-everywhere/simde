@@ -12,9 +12,9 @@ static int
 test_simde_vabdh_f16 (SIMDE_MUNIT_TEST_ARGS) {
 #if 1
   struct {
-    simde_float16 a;
-    simde_float16 b;
-    simde_float16 r;
+    simde_float16_t a;
+    simde_float16_t b;
+    simde_float16_t r;
   } test_vec[] = {
     #if !defined(SIMDE_FAST_NANS)
     {            SIMDE_NANHF,
@@ -216,9 +216,9 @@ static int
 test_simde_vabd_f16 (SIMDE_MUNIT_TEST_ARGS) {
 #if 1
   struct {
-    simde_float16 a[4];
-    simde_float16 b[4];
-    simde_float16 r[4];
+    simde_float16_t a[4];
+    simde_float16_t b[4];
+    simde_float16_t r[4];
   } test_vec[] = {
     { {  SIMDE_FLOAT16_VALUE(  12.132), SIMDE_FLOAT16_VALUE( -  13.736), SIMDE_FLOAT16_VALUE( -  15.777),  SIMDE_FLOAT16_VALUE(  27.640) },
       { SIMDE_FLOAT16_VALUE( -  15.705),  SIMDE_FLOAT16_VALUE(  17.382), SIMDE_FLOAT16_VALUE( -  21.155), SIMDE_FLOAT16_VALUE( -  29.967) },
@@ -744,9 +744,9 @@ static int
 test_simde_vabdq_f16 (SIMDE_MUNIT_TEST_ARGS) {
 #if 1
   struct {
-    simde_float16 a[8];
-    simde_float16 b[8];
-    simde_float16 r[8];
+    simde_float16_t a[8];
+    simde_float16_t b[8];
+    simde_float16_t r[8];
   } test_vec[] = {
     { { SIMDE_FLOAT16_VALUE( -   8.295),  SIMDE_FLOAT16_VALUE(   4.995),  SIMDE_FLOAT16_VALUE(  22.222),  SIMDE_FLOAT16_VALUE(   0.992),
         SIMDE_FLOAT16_VALUE( -   2.210),  SIMDE_FLOAT16_VALUE(  12.462),  SIMDE_FLOAT16_VALUE(  20.310),  SIMDE_FLOAT16_VALUE(  23.937) },

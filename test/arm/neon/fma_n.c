@@ -6,10 +6,10 @@
 static int
 test_simde_vfma_n_f16 (SIMDE_MUNIT_TEST_ARGS) {
   struct {
-    simde_float16 a[4];
-    simde_float16 b[4];
-    simde_float16 c;
-    simde_float16 r[4];
+    simde_float16_t a[4];
+    simde_float16_t b[4];
+    simde_float16_t c;
+    simde_float16_t r[4];
   } test_vec[] = {
     { { SIMDE_FLOAT16_VALUE(3.1), SIMDE_FLOAT16_VALUE(0.5), SIMDE_FLOAT16_VALUE(-11.4), SIMDE_FLOAT16_VALUE(4.0) },
       { SIMDE_FLOAT16_VALUE(12.9), SIMDE_FLOAT16_VALUE(-2.2), SIMDE_FLOAT16_VALUE(6.4), SIMDE_FLOAT16_VALUE(-0.6) },
@@ -56,7 +56,7 @@ test_simde_vfma_n_f16 (SIMDE_MUNIT_TEST_ARGS) {
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
     simde_float16x4_t a = simde_vld1_f16(test_vec[i].a);
     simde_float16x4_t b = simde_vld1_f16(test_vec[i].b);
-    simde_float16 c = test_vec[i].c;
+    simde_float16_t c = test_vec[i].c;
     simde_float16x4_t r = simde_vfma_n_f16(a, b, c);
 
     simde_test_arm_neon_assert_equal_f16x4(r, simde_vld1_f16(test_vec[i].r), 1);
@@ -68,10 +68,10 @@ test_simde_vfma_n_f16 (SIMDE_MUNIT_TEST_ARGS) {
 static int
 test_simde_vfmaq_n_f16 (SIMDE_MUNIT_TEST_ARGS) {
   struct {
-    simde_float16 a[8];
-    simde_float16 b[8];
-    simde_float16 c;
-    simde_float16 r[8];
+    simde_float16_t a[8];
+    simde_float16_t b[8];
+    simde_float16_t c;
+    simde_float16_t r[8];
   } test_vec[] = {
     { { SIMDE_FLOAT16_VALUE(-3.2), SIMDE_FLOAT16_VALUE(-1.5), SIMDE_FLOAT16_VALUE(-13.5), SIMDE_FLOAT16_VALUE(11.7),
         SIMDE_FLOAT16_VALUE(-0.3), SIMDE_FLOAT16_VALUE(-14.6), SIMDE_FLOAT16_VALUE(-13.6), SIMDE_FLOAT16_VALUE(-2.7) },
@@ -113,7 +113,7 @@ test_simde_vfmaq_n_f16 (SIMDE_MUNIT_TEST_ARGS) {
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
     simde_float16x8_t a = simde_vld1q_f16(test_vec[i].a);
     simde_float16x8_t b = simde_vld1q_f16(test_vec[i].b);
-    simde_float16 c = test_vec[i].c;
+    simde_float16_t c = test_vec[i].c;
     simde_float16x8_t r = simde_vfmaq_n_f16(a, b, c);
 
     simde_test_arm_neon_assert_equal_f16x8(r, simde_vld1q_f16(test_vec[i].r), 1);

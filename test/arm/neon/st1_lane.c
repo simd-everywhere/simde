@@ -9,8 +9,8 @@ SIMDE_DIAGNOSTIC_DISABLE_UNREACHABLE_
 static int
 test_simde_vst1_lane_f16 (SIMDE_MUNIT_TEST_ARGS) {
   struct {
-    simde_float16 a;
-    simde_float16 val[4];
+    simde_float16_t a;
+    simde_float16_t val[4];
     int lane;
   } test_vec[] = {
     {    SIMDE_FLOAT16_VALUE( 85.175),
@@ -41,7 +41,7 @@ test_simde_vst1_lane_f16 (SIMDE_MUNIT_TEST_ARGS) {
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
     simde_float16x4_t val = simde_vld1_f16(test_vec[i].val);
-    simde_float16 a;
+    simde_float16_t a;
     SIMDE_CONSTIFY_4_NO_RESULT_(simde_vst1_lane_f16, HEDLEY_UNREACHABLE(), test_vec[i].lane, &a, val);
 
     simde_assert_equal_f16(a, test_vec[i].a, 1);
@@ -625,8 +625,8 @@ test_simde_vst1_lane_u64 (SIMDE_MUNIT_TEST_ARGS) {
 static int
 test_simde_vst1q_lane_f16 (SIMDE_MUNIT_TEST_ARGS) {
   struct {
-    simde_float16 a;
-    simde_float16 val[8];
+    simde_float16_t a;
+    simde_float16_t val[8];
     int lane;
   } test_vec[] = {
     {   SIMDE_FLOAT16_VALUE( - 64.026),
@@ -666,7 +666,7 @@ test_simde_vst1q_lane_f16 (SIMDE_MUNIT_TEST_ARGS) {
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
     simde_float16x8_t val = simde_vld1q_f16(test_vec[i].val);
-    simde_float16 a;
+    simde_float16_t a;
     SIMDE_CONSTIFY_8_NO_RESULT_(simde_vst1q_lane_f16, HEDLEY_UNREACHABLE(), test_vec[i].lane, &a, val);
     simde_assert_equal_f16(a, test_vec[i].a, 1);
   }
