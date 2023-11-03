@@ -182,7 +182,11 @@ simde_vcnt_p8(simde_poly8x8_t a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_poly8x16_t
 simde_vcntq_p8(simde_poly8x16_t a) {
-  return simde_vreinterpretq_p8_s8(simde_vcntq_s8(simde_vreinterpretq_s8_p8(a)));
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    return vcntq_p8(a);
+  #else
+    return simde_vreinterpretq_p8_s8(simde_vcntq_s8(simde_vreinterpretq_s8_p8(a)));
+  #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vcntq_p8

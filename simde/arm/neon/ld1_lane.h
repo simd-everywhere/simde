@@ -387,8 +387,9 @@ simde_float64x2_t simde_vld1q_lane_f64(simde_float64_t const *ptr, simde_float64
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
-simde_poly8x8_t simde_vld1_lane_p8(simde_poly8_t const *ptr, simde_poly8x8_t src,
-                                   const int lane)
+simde_poly8x8_t
+simde_vld1_lane_p8(simde_poly8_t const *ptr, simde_poly8x8_t src,
+                   const int lane)
     SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 7) {
   simde_poly8x8_private r = simde_poly8x8_to_private(src);
   r.values[lane] = *ptr;
@@ -403,8 +404,9 @@ simde_poly8x8_t simde_vld1_lane_p8(simde_poly8_t const *ptr, simde_poly8x8_t src
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
-simde_poly16x4_t simde_vld1_lane_p16(simde_poly16_t const *ptr, simde_poly16x4_t src,
-                                     const int lane)
+simde_poly16x4_t
+simde_vld1_lane_p16(simde_poly16_t const *ptr, simde_poly16x4_t src,
+                    const int lane)
     SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 3) {
   simde_poly16x4_private r = simde_poly16x4_to_private(src);
   r.values[lane] = *ptr;
@@ -419,8 +421,9 @@ simde_poly16x4_t simde_vld1_lane_p16(simde_poly16_t const *ptr, simde_poly16x4_t
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
-simde_poly64x1_t simde_vld1_lane_p64(simde_poly64_t const *ptr, simde_poly64x1_t src,
-                                     const int lane)
+simde_poly64x1_t
+simde_vld1_lane_p64(simde_poly64_t const *ptr, simde_poly64x1_t src,
+                    const int lane)
     SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 0) {
   simde_poly64x1_private r = simde_poly64x1_to_private(src);
   r.values[lane] = *ptr;
@@ -435,8 +438,9 @@ simde_poly64x1_t simde_vld1_lane_p64(simde_poly64_t const *ptr, simde_poly64x1_t
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
-simde_poly8x16_t simde_vld1q_lane_p8(simde_poly8_t const *ptr, simde_poly8x16_t src,
-                                     const int lane)
+simde_poly8x16_t
+simde_vld1q_lane_p8(simde_poly8_t const *ptr, simde_poly8x16_t src,
+                    const int lane)
     SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 15) {
   simde_poly8x16_private r = simde_poly8x16_to_private(src);
   r.values[lane] = *ptr;
@@ -451,8 +455,9 @@ simde_poly8x16_t simde_vld1q_lane_p8(simde_poly8_t const *ptr, simde_poly8x16_t 
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
-simde_poly16x8_t simde_vld1q_lane_p16(simde_poly16_t const *ptr, simde_poly16x8_t src,
-                                      const int lane)
+simde_poly16x8_t
+simde_vld1q_lane_p16(simde_poly16_t const *ptr, simde_poly16x8_t src,
+                     const int lane)
     SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 7) {
   simde_poly16x8_private r = simde_poly16x8_to_private(src);
   r.values[lane] = *ptr;
@@ -467,8 +472,9 @@ simde_poly16x8_t simde_vld1q_lane_p16(simde_poly16_t const *ptr, simde_poly16x8_
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
-simde_poly64x2_t simde_vld1q_lane_p64(simde_poly64_t const *ptr, simde_poly64x2_t src,
-                                     const int lane)
+simde_poly64x2_t
+simde_vld1q_lane_p64(simde_poly64_t const *ptr, simde_poly64x2_t src,
+                     const int lane)
     SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 1) {
   simde_poly64x2_private r = simde_poly64x2_to_private(src);
   r.values[lane] = *ptr;
