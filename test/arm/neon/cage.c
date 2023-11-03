@@ -199,8 +199,8 @@ static int
 test_simde_vcage_f16 (SIMDE_MUNIT_TEST_ARGS) {
   #if 1
     struct {
-      simde_float16 a[4];
-      simde_float16 b[4];
+      simde_float16_t a[4];
+      simde_float16_t b[4];
       uint16_t r[4];
     } test_vec[] = {
       { { SIMDE_FLOAT16_VALUE(   506.50), SIMDE_FLOAT16_VALUE(   580.50), SIMDE_FLOAT16_VALUE(   209.88), SIMDE_FLOAT16_VALUE(  -273.25) },
@@ -345,8 +345,8 @@ static int
 test_simde_vcageq_f16 (SIMDE_MUNIT_TEST_ARGS) {
   #if 1
     struct {
-      simde_float16 a[8];
-      simde_float16 b[8];
+      simde_float16_t a[8];
+      simde_float16_t b[8];
       uint16_t r[8];
     } test_vec[] = {
       { { SIMDE_FLOAT16_VALUE(   476.50), SIMDE_FLOAT16_VALUE(   975.50), SIMDE_FLOAT16_VALUE(   915.00), SIMDE_FLOAT16_VALUE(  -632.50),

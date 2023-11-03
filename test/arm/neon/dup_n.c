@@ -7,8 +7,8 @@ static int
 test_simde_vdup_n_f16 (SIMDE_MUNIT_TEST_ARGS) {
   #if 1
     struct {
-      simde_float16 a;
-      simde_float16 r[4];
+      simde_float16_t a;
+      simde_float16_t r[4];
     } test_vec[] = {
       { SIMDE_FLOAT16_VALUE(  -930.50),
       { SIMDE_FLOAT16_VALUE(  -930.50), SIMDE_FLOAT16_VALUE(  -930.50), SIMDE_FLOAT16_VALUE(  -930.50), SIMDE_FLOAT16_VALUE(  -930.50) } },
@@ -29,7 +29,7 @@ test_simde_vdup_n_f16 (SIMDE_MUNIT_TEST_ARGS) {
     };
 
     for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
-      simde_float16 a;
+      simde_float16_t a;
       simde_float16x4_t r;
 
       a = test_vec[i].a;
@@ -42,7 +42,7 @@ test_simde_vdup_n_f16 (SIMDE_MUNIT_TEST_ARGS) {
   #else
     fputc('\n', stdout);
     for (int i = 0 ; i < 8 ; i++) {
-      simde_float16 a = simde_test_codegen_random_f16(-1000.0f, 1000.0f);
+      simde_float16_t a = simde_test_codegen_random_f16(-1000.0f, 1000.0f);
       simde_float16x4_t r = simde_vdup_n_f16(a);
 
       simde_test_codegen_write_f16(2, a, SIMDE_TEST_VEC_POS_FIRST);
@@ -396,8 +396,8 @@ static int
 test_simde_vdupq_n_f16 (SIMDE_MUNIT_TEST_ARGS) {
   #if 1
     struct {
-      simde_float16 a;
-      simde_float16 r[8];
+      simde_float16_t a;
+      simde_float16_t r[8];
     } test_vec[] = {
       { SIMDE_FLOAT16_VALUE(   189.12),
       { SIMDE_FLOAT16_VALUE(   189.12), SIMDE_FLOAT16_VALUE(   189.12), SIMDE_FLOAT16_VALUE(   189.12), SIMDE_FLOAT16_VALUE(   189.12),
@@ -426,7 +426,7 @@ test_simde_vdupq_n_f16 (SIMDE_MUNIT_TEST_ARGS) {
     };
 
     for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
-      simde_float16 a;
+      simde_float16_t a;
       simde_float16x8_t r;
 
       a = test_vec[i].a;
@@ -439,7 +439,7 @@ test_simde_vdupq_n_f16 (SIMDE_MUNIT_TEST_ARGS) {
   #else
     fputc('\n', stdout);
     for (int i = 0 ; i < 8 ; i++) {
-      simde_float16 a = simde_test_codegen_random_f16(-1000.0f, 1000.0f);
+      simde_float16_t a = simde_test_codegen_random_f16(-1000.0f, 1000.0f);
       simde_float16x8_t r = simde_vdupq_n_f16(a);
 
       simde_test_codegen_write_f16(2, a, SIMDE_TEST_VEC_POS_FIRST);

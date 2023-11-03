@@ -375,7 +375,7 @@ simde_vceqzd_u64(uint64_t a) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 uint16_t
-simde_vceqzh_f16(simde_float16 a) {
+simde_vceqzh_f16(simde_float16_t a) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
     return vceqzh_f16(a);
   #else

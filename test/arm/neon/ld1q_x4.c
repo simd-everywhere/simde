@@ -9,8 +9,8 @@
 static int
 test_simde_vld1q_f16_x4 (SIMDE_MUNIT_TEST_ARGS) {
   struct {
-    simde_float16 buf[32];
-    simde_float16 expected[4][8];
+    simde_float16_t buf[32];
+    simde_float16_t expected[4][8];
   } test_vec[] = {
    { {  SIMDE_FLOAT16_VALUE(0.77), SIMDE_FLOAT16_VALUE(-4.96), SIMDE_FLOAT16_VALUE(4.32), SIMDE_FLOAT16_VALUE(7.52),
         SIMDE_FLOAT16_VALUE(4.70), SIMDE_FLOAT16_VALUE(1.33), SIMDE_FLOAT16_VALUE(-9.47), SIMDE_FLOAT16_VALUE(7.32),

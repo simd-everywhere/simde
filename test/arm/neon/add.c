@@ -7,9 +7,9 @@ static int
 test_simde_vaddh_f16 (SIMDE_MUNIT_TEST_ARGS) {
 #if 1
   struct {
-    simde_float16 a;
-    simde_float16 b;
-    simde_float16 r;
+    simde_float16_t a;
+    simde_float16_t b;
+    simde_float16_t r;
   } test_vec[] = {
     { SIMDE_FLOAT16_VALUE(   167.25),
       SIMDE_FLOAT16_VALUE(  -952.00),
@@ -38,7 +38,7 @@ test_simde_vaddh_f16 (SIMDE_MUNIT_TEST_ARGS) {
   };
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
-    simde_float16 r = simde_vaddh_f16(test_vec[i].a, test_vec[i].b);
+    simde_float16_t r = simde_vaddh_f16(test_vec[i].a, test_vec[i].b);
 
     simde_assert_equal_f16(r, test_vec[i].r, 1);
   }
@@ -47,9 +47,9 @@ test_simde_vaddh_f16 (SIMDE_MUNIT_TEST_ARGS) {
 #else
   fputc('\n', stdout);
   for (int i = 0 ; i < 8 ; i++) {
-    simde_float16 a = simde_test_codegen_random_f16(-1000.0f, 1000.0f);
-    simde_float16 b = simde_test_codegen_random_f16(-1000.0f, 1000.0f);
-    simde_float16 r = simde_vaddh_f16(a, b);
+    simde_float16_t a = simde_test_codegen_random_f16(-1000.0f, 1000.0f);
+    simde_float16_t b = simde_test_codegen_random_f16(-1000.0f, 1000.0f);
+    simde_float16_t r = simde_vaddh_f16(a, b);
 
     simde_test_codegen_write_f16(2, a, SIMDE_TEST_VEC_POS_FIRST);
     simde_test_codegen_write_f16(2, b, SIMDE_TEST_VEC_POS_MIDDLE);
@@ -175,9 +175,9 @@ static int
 test_simde_vadd_f16 (SIMDE_MUNIT_TEST_ARGS) {
   #if 1
     struct {
-      simde_float16 a[4];
-      simde_float16 b[4];
-      simde_float16 r[4];
+      simde_float16_t a[4];
+      simde_float16_t b[4];
+      simde_float16_t r[4];
     } test_vec[] = {
       { { SIMDE_FLOAT16_VALUE(   -49.28), SIMDE_FLOAT16_VALUE(  -109.00), SIMDE_FLOAT16_VALUE(  -626.50), SIMDE_FLOAT16_VALUE(  -567.00) },
       { SIMDE_FLOAT16_VALUE(  -178.88), SIMDE_FLOAT16_VALUE(    10.22), SIMDE_FLOAT16_VALUE(   976.50), SIMDE_FLOAT16_VALUE(   -31.19) },
@@ -674,9 +674,9 @@ static int
 test_simde_vaddq_f16 (SIMDE_MUNIT_TEST_ARGS) {
   #if 1
     struct {
-      simde_float16 a[8];
-      simde_float16 b[8];
-      simde_float16 r[8];
+      simde_float16_t a[8];
+      simde_float16_t b[8];
+      simde_float16_t r[8];
     } test_vec[] = {
       { { SIMDE_FLOAT16_VALUE(   441.00), SIMDE_FLOAT16_VALUE(   861.50), SIMDE_FLOAT16_VALUE(    98.06), SIMDE_FLOAT16_VALUE(   896.00),
         SIMDE_FLOAT16_VALUE(  -918.50), SIMDE_FLOAT16_VALUE(  -717.00), SIMDE_FLOAT16_VALUE(  -823.00), SIMDE_FLOAT16_VALUE(  -581.00) },
