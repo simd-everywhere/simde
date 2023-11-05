@@ -245,7 +245,7 @@ simde_vld3_dup_u64(uint64_t const * ptr) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float16x8x3_t
-simde_vld3q_dup_f16(simde_float16 const * ptr) {
+simde_vld3q_dup_f16(simde_float16_t const * ptr) {
   #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
     return vld3q_dup_f16(ptr);
   #else

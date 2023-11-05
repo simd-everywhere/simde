@@ -8,7 +8,7 @@ static int
 test_simde_vcvth_n_s16_f16 (SIMDE_MUNIT_TEST_ARGS) {
 #if 1
   struct {
-    simde_float16 a[1];
+    simde_float16_t a[1];
     int16_t r3[1];
     int16_t r6[1];
     int16_t r10[1];
@@ -111,7 +111,7 @@ static int
 test_simde_vcvth_n_s32_f16 (SIMDE_MUNIT_TEST_ARGS) {
 #if 1
   struct {
-    simde_float16 a;
+    simde_float16_t a;
     int32_t r3;
     int32_t r6;
     int32_t r10;
@@ -213,7 +213,7 @@ static int
 test_simde_vcvth_n_s64_f16 (SIMDE_MUNIT_TEST_ARGS) {
 #if 1
   struct {
-    simde_float16 a;
+    simde_float16_t a;
     int64_t r3;
     int64_t r6;
     int64_t r10;
@@ -315,7 +315,7 @@ static int
 test_simde_vcvth_n_u16_f16 (SIMDE_MUNIT_TEST_ARGS) {
 #if 1
   struct {
-    simde_float16 a[1];
+    simde_float16_t a[1];
     uint16_t r3[1];
     uint16_t r6[1];
     uint16_t r10[1];
@@ -376,7 +376,7 @@ static int
 test_simde_vcvth_n_u32_f16 (SIMDE_MUNIT_TEST_ARGS) {
 #if 1
   struct {
-    simde_float16 a;
+    simde_float16_t a;
     uint32_t r3;
     uint32_t r6;
     uint32_t r10;
@@ -466,7 +466,7 @@ static int
 test_simde_vcvth_n_u64_f16 (SIMDE_MUNIT_TEST_ARGS) {
 #if 1
   struct {
-    simde_float16 a;
+    simde_float16_t a;
     uint64_t r3;
     uint64_t r6;
     uint64_t r10;
@@ -1757,7 +1757,7 @@ static int
 test_simde_vcvt_n_s16_f16 (SIMDE_MUNIT_TEST_ARGS) {
 #if 1
   struct {
-    simde_float16 a[4];
+    simde_float16_t a[4];
     int16_t r3[4];
     int16_t r6[4];
     int16_t r10[4];
@@ -1953,7 +1953,7 @@ static int
 test_simde_vcvt_n_u16_f16 (SIMDE_MUNIT_TEST_ARGS) {
 #if 1
   struct {
-    simde_float16 a[4];
+    simde_float16_t a[4];
     uint16_t r3[4];
     uint16_t r6[4];
     uint16_t r10[4];
@@ -2149,7 +2149,7 @@ static int
 test_simde_vcvtq_n_s16_f16 (SIMDE_MUNIT_TEST_ARGS) {
 #if 1
   struct {
-    simde_float16 a[8];
+    simde_float16_t a[8];
     int16_t r3[8];
     int16_t r6[8];
     int16_t r10[8];
@@ -2338,7 +2338,7 @@ static int
 test_simde_vcvtq_n_u16_f16 (SIMDE_MUNIT_TEST_ARGS) {
 #if 1
   struct {
-    simde_float16 a[8];
+    simde_float16_t a[8];
     uint16_t r3[8];
     uint16_t r6[8];
     uint16_t r10[8];

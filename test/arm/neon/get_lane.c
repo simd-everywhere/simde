@@ -9,9 +9,9 @@ SIMDE_DIAGNOSTIC_DISABLE_UNREACHABLE_
 static int
 test_simde_vget_lane_f16 (SIMDE_MUNIT_TEST_ARGS) {
   struct {
-    simde_float16 a[4];
+    simde_float16_t a[4];
     int b;
-    simde_float16 r;
+    simde_float16_t r;
   } test_vec[] = {
   { {SIMDE_FLOAT16_VALUE(-49.25), SIMDE_FLOAT16_VALUE(-109.00), SIMDE_FLOAT16_VALUE(-626.50), SIMDE_FLOAT16_VALUE(-567.00)},
        INT8_C(   0),
@@ -43,7 +43,7 @@ test_simde_vget_lane_f16 (SIMDE_MUNIT_TEST_ARGS) {
 
     simde_float16x4_t a = simde_vld1_f16(test_vec[i].a);
     int b = test_vec[i].b;
-    simde_float16 r;
+    simde_float16_t r;
     SIMDE_CONSTIFY_4_(simde_vget_lane_f16, r, (HEDLEY_UNREACHABLE(), SIMDE_FLOAT16_VALUE(0.0)), b, a);
 
     simde_assert_equal_f16(r, test_vec[i].r, 1);
@@ -480,9 +480,9 @@ test_simde_vget_lane_u64 (SIMDE_MUNIT_TEST_ARGS) {
 static int
 test_simde_vgetq_lane_f16 (SIMDE_MUNIT_TEST_ARGS) {
   struct {
-    simde_float16 a[8];
+    simde_float16_t a[8];
     int b;
-    simde_float16 r;
+    simde_float16_t r;
   } test_vec[] = {
   { { SIMDE_FLOAT16_VALUE(   441.00), SIMDE_FLOAT16_VALUE(   861.50), SIMDE_FLOAT16_VALUE(    98.06), SIMDE_FLOAT16_VALUE(   896.00),
     SIMDE_FLOAT16_VALUE(  -918.50), SIMDE_FLOAT16_VALUE(  -717.00), SIMDE_FLOAT16_VALUE(  -823.00), SIMDE_FLOAT16_VALUE(  -581.00) },
@@ -522,7 +522,7 @@ test_simde_vgetq_lane_f16 (SIMDE_MUNIT_TEST_ARGS) {
 
     simde_float16x8_t a = simde_vld1q_f16(test_vec[i].a);
     int b = test_vec[i].b;
-    simde_float16 r;
+    simde_float16_t r;
     SIMDE_CONSTIFY_8_(simde_vgetq_lane_f16, r, (HEDLEY_UNREACHABLE(), SIMDE_FLOAT16_VALUE(0.0)), b, a);
 
     simde_assert_equal_f16(r, test_vec[i].r, 1);

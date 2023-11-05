@@ -255,8 +255,8 @@ static int
 test_simde_vceq_f16 (SIMDE_MUNIT_TEST_ARGS) {
 #if 1
   struct {
-    simde_float16 a[4];
-    simde_float16 b[4];
+    simde_float16_t a[4];
+    simde_float16_t b[4];
     uint16_t r[4];
   } test_vec[] = {
     { { SIMDE_FLOAT16_VALUE(  -304.25), SIMDE_FLOAT16_VALUE(  -310.25), SIMDE_FLOAT16_VALUE(  -816.50), SIMDE_FLOAT16_VALUE(  -947.50) },
@@ -297,7 +297,7 @@ test_simde_vceq_f16 (SIMDE_MUNIT_TEST_ARGS) {
 #else
   fputc('\n', stdout);
   for (int i = 0 ; i < 8 ; i++) {
-    simde_float16 a_[4], b_[4];
+    simde_float16_t a_[4], b_[4];
     simde_test_codegen_random_vf16(sizeof(a_) / sizeof(a_[0]), a_, -1000.0, 1000.0);
     simde_test_codegen_random_vf16(sizeof(b_) / sizeof(b_[0]), b_, -1000.0, 1000.0);
     for (size_t j = 0 ; j < (sizeof(a_) / sizeof(a_[0])) ; j++) {
@@ -956,8 +956,8 @@ static int
 test_simde_vceqq_f16 (SIMDE_MUNIT_TEST_ARGS) {
 #if 1
   struct {
-    simde_float16 a[8];
-    simde_float16 b[8];
+    simde_float16_t a[8];
+    simde_float16_t b[8];
     uint16_t r[8];
   } test_vec[] = {
     { { SIMDE_FLOAT16_VALUE(  -258.75), SIMDE_FLOAT16_VALUE(   657.50), SIMDE_FLOAT16_VALUE(  -817.50), SIMDE_FLOAT16_VALUE(   764.00),
@@ -1013,7 +1013,7 @@ test_simde_vceqq_f16 (SIMDE_MUNIT_TEST_ARGS) {
 #else
   fputc('\n', stdout);
   for (int i = 0 ; i < 8 ; i++) {
-    simde_float16 a_[8], b_[8];
+    simde_float16_t a_[8], b_[8];
     simde_test_codegen_random_vf16(sizeof(a_) / sizeof(a_[0]), a_, -1000.0, 1000.0);
     simde_test_codegen_random_vf16(sizeof(b_) / sizeof(b_[0]), b_, -1000.0, 1000.0);
     for (size_t j = 0 ; j < (sizeof(a_) / sizeof(a_[0])) ; j++) {
