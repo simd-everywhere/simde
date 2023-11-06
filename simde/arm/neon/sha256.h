@@ -38,19 +38,19 @@ SIMDE_BEGIN_DECLS_
 #define LSR(operand, shift) ((operand) >> (shift))
 #define LSL(operand, shift) ((operand) << (shift))
 
-static uint32_t SHAchoose(uint32_t x, uint32_t y, uint32_t z) {
+static uint32_t simde_SHAchoose(uint32_t x, uint32_t y, uint32_t z) {
   return (((y ^ z) & x) ^ z);
 }
 
-static uint32_t SHAmajority(uint32_t x, uint32_t y, uint32_t z) {
+static uint32_t simde_SHAmajority(uint32_t x, uint32_t y, uint32_t z) {
   return ((x & y) | ((x | y) & z));
 }
 
-static uint32_t SHAhashSIGMA0(uint32_t x) {
+static uint32_t simde_SHAhashSIGMA0(uint32_t x) {
   return ROR32(x, 2) ^ ROR32(x, 13) ^ ROR32(x, 22);
 }
 
-static uint32_t SHAhashSIGMA1(uint32_t x) {
+static uint32_t simde_SHAhashSIGMA1(uint32_t x) {
   return ROR32(x, 6) ^ ROR32(x, 11) ^ ROR32(x, 25);
 }
 
@@ -63,11 +63,11 @@ x_simde_sha256hash(simde_uint32x4_t x, simde_uint32x4_t y, simde_uint32x4_t w, i
     w_ = simde_uint32x4_to_private(w);
 
   for(int i = 0; i < 4; ++i) {
-    chs = SHAchoose(y_.values[0], y_.values[1], y_.values[2]);
-    maj = SHAmajority(x_.values[0], x_.values[1], x_.values[2]);
-    t = y_.values[3] + SHAhashSIGMA1(y_.values[0]) + chs + w_.values[i];
+    chs = simde_SHAchoose(y_.values[0], y_.values[1], y_.values[2]);
+    maj = simde_SHAmajority(x_.values[0], x_.values[1], x_.values[2]);
+    t = y_.values[3] + simde_SHAhashSIGMA1(y_.values[0]) + chs + w_.values[i];
     x_.values[3] = t + x_.values[3];
-    y_.values[3] = t + SHAhashSIGMA0(x_.values[0]) + maj;
+    y_.values[3] = t + simde_SHAhashSIGMA0(x_.values[0]) + maj;
     uint32_t tmp = y_.values[3];
     y_.values[3] = 0x0 | y_.values[2];
     y_.values[2] = 0x0 | y_.values[1];
@@ -181,6 +181,11 @@ simde_vsha256su1q_u32(simde_uint32x4_t tw0_3, simde_uint32x4_t w8_11, simde_uint
   #undef vsha256su1q_u32
   #define vsha256su1q_u32(tw0_3, w8_11, w12_15) simde_vsha256su1q_u32((tw0_3), (w8_11), (w12_15))
 #endif
+
+#undef ROR32
+#undef ROL32
+#undef LSR
+#undef LSL
 
 SIMDE_END_DECLS_
 HEDLEY_DIAGNOSTIC_POP

@@ -38,7 +38,7 @@ SIMDE_BEGIN_DECLS_
 #define LSR(operand, shift) ((operand) >> (shift))
 #define LSL(operand, shift) ((operand) << (shift))
 
-static const uint8_t sbox_sm4[256] = {
+static const uint8_t simde_sbox_sm4[256] = {
   0xd6,0x90,0xe9,0xfe,0xcc,0xe1,0x3d,0xb7,0x16,0xb6,0x14,0xc2,0x28,0xfb,0x2c,0x05,
   0x2b,0x67,0x9a,0x76,0x2a,0xbe,0x04,0xc3,0xaa,0x44,0x13,0x26,0x49,0x86,0x06,0x99,
   0x9c,0x42,0x50,0xf4,0x91,0xef,0x98,0x7a,0x33,0x54,0x0b,0x43,0xed,0xcf,0xac,0x62,
@@ -57,13 +57,13 @@ static const uint8_t sbox_sm4[256] = {
   0x18,0xf0,0x7d,0xec,0x3a,0xdc,0x4d,0x20,0x79,0xee,0x5f,0x3e,0xd7,0xcb,0x39,0x48
 };
 
-static void u32_to_u8x4(uint32_t src, uint8_t* dst) {
+static void simde_u32_to_u8x4(uint32_t src, uint8_t* dst) {
   for(int i = 0; i < 4; ++i) {
     *(dst + i) = HEDLEY_STATIC_CAST(uint8_t, ((src << (i * 8)) >> 24));
   }
 }
 
-static void u32_from_u8x4(uint8_t* src, uint32_t* dst) {
+static void simde_u32_from_u8x4(uint8_t* src, uint32_t* dst) {
   *dst = 0;
   for(int i = 0; i < 4; ++i) {
     *dst = *dst | (HEDLEY_STATIC_CAST(uint32_t, src[i]) << (24 - i * 8));
@@ -86,11 +86,11 @@ simde_vsm4eq_u32(simde_uint32x4_t a, simde_uint32x4_t b) {
 
       intval = a_.values[3] ^ a_.values[2] ^ a_.values[1] ^ roundkey;
 
-      u32_to_u8x4(intval, _intval);
+      simde_u32_to_u8x4(intval, _intval);
       for(int i = 0; i < 4; ++i) {
-        _intval[i] = sbox_sm4[_intval[i]];
+        _intval[i] = simde_sbox_sm4[_intval[i]];
       }
-      u32_from_u8x4(_intval, &intval);
+      simde_u32_from_u8x4(_intval, &intval);
       intval = intval ^ ROL32(intval, 2) ^ ROL32(intval, 10) ^ ROL32(intval, 18) ^ ROL32(intval, 24);
       intval = intval ^ a_.values[0];
 
@@ -123,11 +123,11 @@ simde_vsm4ekeyq_u32(simde_uint32x4_t a, simde_uint32x4_t b) {
 
       intval = a_.values[3] ^ a_.values[2] ^ a_.values[1] ^ constval;
 
-      u32_to_u8x4(intval, _intval);
+      simde_u32_to_u8x4(intval, _intval);
       for(int i = 0; i < 4; ++i) {
-        _intval[i] = sbox_sm4[_intval[i]];
+        _intval[i] = simde_sbox_sm4[_intval[i]];
       }
-      u32_from_u8x4(_intval, &intval);
+      simde_u32_from_u8x4(_intval, &intval);
       intval = intval ^ ROL32(intval, 13) ^ ROL32(intval, 23);
       intval = intval ^ a_.values[0];
 
@@ -143,6 +143,11 @@ simde_vsm4ekeyq_u32(simde_uint32x4_t a, simde_uint32x4_t b) {
   #undef vsm4ekeyq_u32
   #define vsm4ekeyq_u32(a, b) simde_vsm4ekeyq_u32((a), (b))
 #endif
+
+#undef ROR32
+#undef ROL32
+#undef LSR
+#undef LSL
 
 SIMDE_END_DECLS_
 HEDLEY_DIAGNOSTIC_POP

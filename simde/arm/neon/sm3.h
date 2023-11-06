@@ -232,6 +232,11 @@ simde_vsm3partw2q_u32(simde_uint32x4_t a, simde_uint32x4_t b, simde_uint32x4_t c
   #define vsm3partw2q_u32(a, b, c) simde_vsm3partw2q_u32((a), (b), (c))
 #endif
 
+#undef ROR32
+#undef ROL32
+#undef LSR
+#undef LSL
+
 SIMDE_END_DECLS_
 HEDLEY_DIAGNOSTIC_POP
 
