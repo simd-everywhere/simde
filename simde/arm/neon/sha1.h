@@ -194,6 +194,8 @@ simde_vsha1su1q_u32(simde_uint32x4_t tw0_3, simde_uint32x4_t tw12_15) {
   #define vsha1su1q_u32(tw0_3, tw12_15) simde_vsha1su1q_u32((tw0_3), (tw12_15))
 #endif
 
+#undef ROL
+
 SIMDE_END_DECLS_
 HEDLEY_DIAGNOSTIC_POP
 

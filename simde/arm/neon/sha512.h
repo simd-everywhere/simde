@@ -142,6 +142,11 @@ simde_vsha512su1q_u64(simde_uint64x2_t w, simde_uint64x2_t x, simde_uint64x2_t y
   #define vsha512su1q_u64(w, x, y) simde_vsha512su1q_u64((w), (x), (y))
 #endif
 
+#undef ROR64
+#undef ROL64
+#undef LSR
+#undef LSL
+
 SIMDE_END_DECLS_
 HEDLEY_DIAGNOSTIC_POP
 
