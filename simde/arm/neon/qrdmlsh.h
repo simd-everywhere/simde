@@ -37,7 +37,7 @@ SIMDE_BEGIN_DECLS_
 SIMDE_FUNCTION_ATTRIBUTES
 int16_t
 simde_vqrdmlshh_s16(int16_t a, int16_t b, int16_t c) {
-  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(TARGET_SIMD_RDMA)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARCH_ARM_QRDMX)
     #if defined(__clang__) && !SIMDE_DETECT_CLANG_VERSION_CHECK(11,0,0)
       return SIMDE_DISABLE_DIAGNOSTIC_EXPR_(SIMDE_DIAGNOSTIC_DISABLE_VECTOR_CONVERSION_, vqrdmlshh_s16(a, b, c));
     #else
@@ -56,7 +56,7 @@ simde_vqrdmlshh_s16(int16_t a, int16_t b, int16_t c) {
 SIMDE_FUNCTION_ATTRIBUTES
 int32_t
 simde_vqrdmlshs_s32(int32_t a, int32_t b, int32_t c) {
-  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(TARGET_SIMD_RDMA)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARCH_ARM_QRDMX)
     return vqrdmlshs_s32(a, b, c);
   #else
     int64_t round_const = (HEDLEY_STATIC_CAST(int64_t, 1) << 31);
@@ -64,13 +64,13 @@ simde_vqrdmlshs_s32(int32_t a, int32_t b, int32_t c) {
     int64_t sum = round_const + a_;
     int64_t mul = -(HEDLEY_STATIC_CAST(int64_t, b) * HEDLEY_STATIC_CAST(int64_t, c));
     int64_t mul2 = mul << 1;
-    if(mul2 >> 1 != mul) {
-      if(mul > 0) return INT32_MAX;
-      else if(mul < 0) return INT32_MIN;
+    if (mul2 >> 1 != mul) {
+      if (mul > 0) return INT32_MAX;
+      else if (mul < 0) return INT32_MIN;
     }
     int64_t sum2 = sum + mul2;
-    if(sum > 0 && INT64_MAX - sum < mul2) return INT32_MAX;
-    if(sum < 0 && INT64_MIN - sum > mul2) return INT32_MIN;
+    if (sum > 0 && INT64_MAX - sum < mul2) return INT32_MAX;
+    if (sum < 0 && INT64_MIN - sum > mul2) return INT32_MIN;
     return HEDLEY_STATIC_CAST(int32_t, ((sum2 >> 32) & 0xffffffff));
   #endif
 }
@@ -82,7 +82,7 @@ simde_vqrdmlshs_s32(int32_t a, int32_t b, int32_t c) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_int16x4_t
 simde_vqrdmlsh_s16(simde_int16x4_t a, simde_int16x4_t b, simde_int16x4_t c) {
-  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(TARGET_SIMD_RDMA)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARCH_ARM_QRDMX)
     return vqrdmlsh_s16(a, b, c);
   #else
     simde_int16x4_private
@@ -108,7 +108,7 @@ simde_vqrdmlsh_s16(simde_int16x4_t a, simde_int16x4_t b, simde_int16x4_t c) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_int32x2_t
 simde_vqrdmlsh_s32(simde_int32x2_t a, simde_int32x2_t b, simde_int32x2_t c) {
-  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(TARGET_SIMD_RDMA)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARCH_ARM_QRDMX)
     return vqrdmlsh_s32(a, b, c);
   #else
     simde_int32x2_private
@@ -133,7 +133,7 @@ simde_vqrdmlsh_s32(simde_int32x2_t a, simde_int32x2_t b, simde_int32x2_t c) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_int16x8_t
 simde_vqrdmlshq_s16(simde_int16x8_t a, simde_int16x8_t b, simde_int16x8_t c) {
-  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(TARGET_SIMD_RDMA)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARCH_ARM_QRDMX)
     return vqrdmlshq_s16(a, b, c);
   #else
     simde_int16x8_private
@@ -158,7 +158,7 @@ simde_vqrdmlshq_s16(simde_int16x8_t a, simde_int16x8_t b, simde_int16x8_t c) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_int32x4_t
 simde_vqrdmlshq_s32(simde_int32x4_t a, simde_int32x4_t b, simde_int32x4_t c) {
-  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(TARGET_SIMD_RDMA)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARCH_ARM_QRDMX)
     return vqrdmlshq_s32(a, b, c);
   #else
     simde_int32x4_private

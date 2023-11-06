@@ -64,7 +64,7 @@ simde___crc32b(uint32_t a, uint8_t b) {
     uint32_t tail = 0;
     const uint32_t poly = 0x04C11DB7;
     for(int i = 31; i >= 24; --i) {
-      if((head>>i) & 1) {
+      if ((head>>i) & 1) {
         head = simde_crc32_eor_mask(head, poly >> (32-i), (1u << (i)) - 1);
         tail = simde_crc32_eor_mask(tail, poly << i, 0xFFFFFFFF);
       }
@@ -90,7 +90,7 @@ simde___crc32h(uint32_t a, uint16_t b) {
     uint32_t tail = 0;
     const uint32_t poly = 0x04C11DB7;
     for(int i = 31; i >= 16; --i) {
-      if((head>>i) & 1) {
+      if ((head>>i) & 1) {
         head = simde_crc32_eor_mask(head, poly >> (32-i), (1u << (i)) - 1);
         tail = simde_crc32_eor_mask(tail, poly << i, 0xFFFFFFFF);
       }
@@ -116,7 +116,7 @@ simde___crc32w(uint32_t a, uint32_t b) {
     uint32_t tail = 0;
     const uint32_t poly = 0x04C11DB7;
     for(int i = 31; i >= 0; --i) {
-      if((head>>i) & 1) {
+      if ((head>>i) & 1) {
         head = simde_crc32_eor_mask(head, poly >> (32-i), (1u << (i)) - 1);
         tail = simde_crc32_eor_mask(tail, poly << i, 0xFFFFFFFF);
       }
@@ -144,14 +144,14 @@ simde___crc32d(uint32_t a, uint64_t b) {
     uint32_t tail = 0u;
     const uint32_t poly = 0x04C11DB7;
     for(int i = 31; i >= 0; --i) {
-      if((head>>i) & 1) {
+      if ((head>>i) & 1) {
         head = simde_crc32_eor_mask(head, poly >> (32-i), (1u << (i)) - 1);
         mid = simde_crc32_eor_mask(mid, poly << i, 0xFFFFFFFF);
         tail = simde_crc32_eor_mask(tail, 0x0, 0xFFFFFFFF);
       }
     }
     for(int i = 31; i >= 0; --i) {
-      if((mid>>i) & 1) {
+      if ((mid>>i) & 1) {
         mid = simde_crc32_eor_mask(mid, poly >> (32-i), (1u << (i)) - 1);
         tail = simde_crc32_eor_mask(tail, poly << i, 0xFFFFFFFF);
       }
@@ -176,7 +176,7 @@ simde___crc32cb(uint32_t a, uint8_t b) {
     uint32_t tail = 0;
     const uint32_t poly = 0x1EDC6F41;
     for(int i = 31; i >= 24; --i) {
-      if((head>>i) & 1) {
+      if ((head>>i) & 1) {
         head = simde_crc32_eor_mask(head, poly >> (32-i), (1u << (i)) - 1);
         tail = simde_crc32_eor_mask(tail, poly << i, 0xFFFFFFFF);
       }
@@ -202,7 +202,7 @@ simde___crc32ch(uint32_t a, uint16_t b) {
     uint32_t tail = 0;
     const uint32_t poly = 0x1EDC6F41;
     for(int i = 31; i >= 16; --i) {
-      if((head>>i) & 1) {
+      if ((head>>i) & 1) {
         head = simde_crc32_eor_mask(head, poly >> (32-i), (1u << (i)) - 1);
         tail = simde_crc32_eor_mask(tail, poly << i, 0xFFFFFFFF);
       }
@@ -228,7 +228,7 @@ simde___crc32cw(uint32_t a, uint32_t b) {
     uint32_t tail = 0;
     const uint32_t poly = 0x1EDC6F41;
     for(int i = 31; i >= 0; --i) {
-      if((head>>i) & 1) {
+      if ((head>>i) & 1) {
         head = simde_crc32_eor_mask(head, poly >> (32-i), (1u << (i)) - 1);
         tail = simde_crc32_eor_mask(tail, poly << i, 0xFFFFFFFF);
       }
@@ -256,14 +256,14 @@ simde___crc32cd(uint32_t a, uint64_t b) {
     uint32_t tail = 0u;
     const uint32_t poly = 0x1EDC6F41;
     for(int i = 31; i >= 0; --i) {
-      if((head>>i) & 1) {
+      if ((head>>i) & 1) {
         head = simde_crc32_eor_mask(head, poly >> (32-i), (1u << (i)) - 1);
         mid = simde_crc32_eor_mask(mid, poly << i, 0xFFFFFFFF);
         tail = simde_crc32_eor_mask(tail, 0x0, 0xFFFFFFFF);
       }
     }
     for(int i = 31; i >= 0; --i) {
-      if((mid>>i) & 1) {
+      if ((mid>>i) & 1) {
         mid = simde_crc32_eor_mask(mid, poly >> (32-i), (1u << (i)) - 1);
         tail = simde_crc32_eor_mask(tail, poly << i, 0xFFFFFFFF);
       }
