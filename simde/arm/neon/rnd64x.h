@@ -46,11 +46,11 @@ simde_vrnd64x_f32(simde_float32x2_t a) {
 
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      if(simde_math_isnanf(a_.values[i]) || simde_math_isinff(a_.values[i])) {
+      if (simde_math_isnanf(a_.values[i]) || simde_math_isinff(a_.values[i])) {
         r_.values[i] = HEDLEY_STATIC_CAST(float, INT64_MIN);
       } else {
         r_.values[i] = simde_math_rintf(a_.values[i]);
-        if(r_.values[i] > HEDLEY_STATIC_CAST(float, INT64_MAX) || r_.values[i] < HEDLEY_STATIC_CAST(float, INT64_MIN)) {
+        if (r_.values[i] > HEDLEY_STATIC_CAST(float, INT64_MAX) || r_.values[i] < HEDLEY_STATIC_CAST(float, INT64_MIN)) {
           r_.values[i] = HEDLEY_STATIC_CAST(float, INT64_MIN);
         }
       }
@@ -76,11 +76,11 @@ simde_vrnd64x_f64(simde_float64x1_t a) {
 
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      if(simde_math_isnan(a_.values[i]) || simde_math_isinf(a_.values[i])) {
+      if (simde_math_isnan(a_.values[i]) || simde_math_isinf(a_.values[i])) {
         r_.values[i] = HEDLEY_STATIC_CAST(double, INT64_MIN);
       } else {
         r_.values[i] = simde_math_rint(a_.values[i]);
-        if(r_.values[i] > HEDLEY_STATIC_CAST(double, INT64_MAX) || r_.values[i] < HEDLEY_STATIC_CAST(double, INT64_MIN)) {
+        if (r_.values[i] > HEDLEY_STATIC_CAST(double, INT64_MAX) || r_.values[i] < HEDLEY_STATIC_CAST(double, INT64_MIN)) {
           r_.values[i] = HEDLEY_STATIC_CAST(double, INT64_MIN);
         }
       }
@@ -106,11 +106,11 @@ simde_vrnd64xq_f32(simde_float32x4_t a) {
 
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      if(simde_math_isnanf(a_.values[i]) || simde_math_isinff(a_.values[i])) {
+      if (simde_math_isnanf(a_.values[i]) || simde_math_isinff(a_.values[i])) {
         r_.values[i] = HEDLEY_STATIC_CAST(float, INT64_MIN);
       } else {
         r_.values[i] = simde_math_rintf(a_.values[i]);
-        if(r_.values[i] > HEDLEY_STATIC_CAST(float, INT64_MAX) || r_.values[i] < HEDLEY_STATIC_CAST(float, INT64_MIN)) {
+        if (r_.values[i] > HEDLEY_STATIC_CAST(float, INT64_MAX) || r_.values[i] < HEDLEY_STATIC_CAST(float, INT64_MIN)) {
           r_.values[i] = HEDLEY_STATIC_CAST(float, INT64_MIN);
         }
       }
@@ -136,11 +136,11 @@ simde_vrnd64xq_f64(simde_float64x2_t a) {
 
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      if(simde_math_isnan(a_.values[i]) || simde_math_isinf(a_.values[i])) {
+      if (simde_math_isnan(a_.values[i]) || simde_math_isinf(a_.values[i])) {
         r_.values[i] = HEDLEY_STATIC_CAST(double, INT64_MIN);
       } else {
         r_.values[i] = simde_math_rint(a_.values[i]);
-        if(r_.values[i] > HEDLEY_STATIC_CAST(double, INT64_MAX) || r_.values[i] < HEDLEY_STATIC_CAST(double, INT64_MIN)) {
+        if (r_.values[i] > HEDLEY_STATIC_CAST(double, INT64_MAX) || r_.values[i] < HEDLEY_STATIC_CAST(double, INT64_MIN)) {
           r_.values[i] = HEDLEY_STATIC_CAST(double, INT64_MIN);
         }
       }

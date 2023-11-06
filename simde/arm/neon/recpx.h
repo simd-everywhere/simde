@@ -41,7 +41,7 @@ simde_vrecpxh_f16(simde_float16_t a) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
     return vrecpxh_f16(a);
   #else
-    if(simde_isnanhf(a)) {
+    if (simde_isnanhf(a)) {
       return SIMDE_NANHF;
     }
     uint16_t n;
@@ -49,7 +49,7 @@ simde_vrecpxh_f16(simde_float16_t a) {
     uint16_t sign = n & 0x8000;
     uint16_t exp = n & 0x7c00;
     uint16_t result;
-    if(exp == 0) {
+    if (exp == 0) {
       uint16_t max_exp = 0x7b00;
       result = sign|max_exp;
     }
@@ -72,7 +72,7 @@ simde_vrecpxs_f32(simde_float32_t a) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vrecpxs_f32(a);
   #else
-    if(simde_math_isnanf(a)) {
+    if (simde_math_isnanf(a)) {
       return SIMDE_MATH_NANF;
     }
     uint32_t n;
@@ -80,7 +80,7 @@ simde_vrecpxs_f32(simde_float32_t a) {
     uint32_t sign = n & 0x80000000;
     uint32_t exp = n & 0x7f800000;
     uint32_t result;
-    if(exp == 0) {
+    if (exp == 0) {
       uint32_t max_exp = 0x7f000000;
       result = sign|max_exp;
     }
@@ -103,7 +103,7 @@ simde_vrecpxd_f64(simde_float64_t a) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vrecpxd_f64(a);
   #else
-    if(simde_math_isnan(a)) {
+    if (simde_math_isnan(a)) {
       return SIMDE_MATH_NAN;
     }
     uint64_t n;
@@ -111,7 +111,7 @@ simde_vrecpxd_f64(simde_float64_t a) {
     uint64_t sign = n & 0x8000000000000000ull;
     uint64_t exp = n & 0x7ff0000000000000ull;
     uint64_t result;
-    if(exp == 0) {
+    if (exp == 0) {
       uint64_t max_exp = 0x7fe0000000000000ull;
       result = sign|max_exp;
     }
