@@ -228,8 +228,8 @@ simde_vst1q_u64_x4(uint64_t ptr[HEDLEY_ARRAY_PARAM(8)], simde_uint64x2x4_t val) 
 SIMDE_FUNCTION_ATTRIBUTES
 void
 simde_vst1q_p8_x4(simde_poly8_t ptr[HEDLEY_ARRAY_PARAM(64)], simde_poly8x16x4_t val) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && !defined(SIMDE_BUG_GCC_A32V7_MISSFUNC) && \
-      !defined(SIMDE_BUG_CLANG_A32V7_MISSFUNC)
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && !defined(SIMDE_BUG_GCC_95399) && \
+      !defined(SIMDE_BUG_CLANG_QEMU_BUS_ERROR)
     vst1q_p8_x4(ptr, val);
   #else
     simde_poly8x16_private val_[4];
@@ -247,8 +247,8 @@ simde_vst1q_p8_x4(simde_poly8_t ptr[HEDLEY_ARRAY_PARAM(64)], simde_poly8x16x4_t 
 SIMDE_FUNCTION_ATTRIBUTES
 void
 simde_vst1q_p16_x4(simde_poly16_t ptr[HEDLEY_ARRAY_PARAM(32)], simde_poly16x8x4_t val) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && !defined(SIMDE_BUG_GCC_A32V7_MISSFUNC) && \
-      !defined(SIMDE_BUG_CLANG_A32V7_MISSFUNC)
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && !defined(SIMDE_BUG_GCC_95399) && \
+      !defined(SIMDE_BUG_CLANG_QEMU_BUS_ERROR)
     vst1q_p16_x4(ptr, val);
   #else
     simde_poly16x8_private val_[4];
