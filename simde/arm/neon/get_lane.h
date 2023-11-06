@@ -566,7 +566,7 @@ simde_vget_lane_p8(simde_poly8x8_t v, const int lane)
 
   return r;
 }
-#if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && !defined(SIMDE_BUG_CLANG_BAD_VGET_SET_LANE_TYPES)
+#if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && !defined(SIMDE_BUG_CLANG_71362)
   #define simde_vget_lane_p8(v, lane) vget_lane_p8((v), (lane))
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
@@ -585,7 +585,7 @@ simde_vget_lane_p16(simde_poly16x4_t v, const int lane)
 
   return r;
 }
-#if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && !defined(SIMDE_BUG_CLANG_BAD_VGET_SET_LANE_TYPES)
+#if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && !defined(SIMDE_BUG_CLANG_71362)
   #define simde_vget_lane_p16(v, lane) vget_lane_p16((v), (lane))
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
@@ -604,7 +604,7 @@ simde_vget_lane_p64(simde_poly64x1_t v, const int lane)
 
   return r;
 }
-#if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && !defined(SIMDE_BUG_CLANG_BAD_VGET_SET_LANE_TYPES)
+#if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && !defined(SIMDE_BUG_CLANG_71362)
   #define simde_vget_lane_p64(v, lane) vget_lane_p64((v), (lane))
 #endif
 #if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
@@ -623,7 +623,7 @@ simde_vgetq_lane_p8(simde_poly8x16_t v, const int lane)
 
   return r;
 }
-#if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && !defined(SIMDE_BUG_CLANG_BAD_VGET_SET_LANE_TYPES)
+#if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && !defined(SIMDE_BUG_CLANG_71362)
   #define simde_vgetq_lane_p8(v, lane) vgetq_lane_p8((v), (lane))
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
@@ -642,7 +642,7 @@ simde_vgetq_lane_p16(simde_poly16x8_t v, const int lane)
 
   return r;
 }
-#if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && !defined(SIMDE_BUG_CLANG_BAD_VGET_SET_LANE_TYPES)
+#if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && !defined(SIMDE_BUG_CLANG_71362)
   #define simde_vgetq_lane_p16(v, lane) vgetq_lane_p16((v), (lane))
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
@@ -661,7 +661,7 @@ simde_vgetq_lane_p64(simde_poly64x2_t v, const int lane)
 
   return r;
 }
-#if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && !defined(SIMDE_BUG_CLANG_BAD_VGET_SET_LANE_TYPES)
+#if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && !defined(SIMDE_BUG_CLANG_71362)
   #define simde_vgetq_lane_p64(v, lane) vgetq_lane_p64((v), (lane))
 #endif
 #if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)

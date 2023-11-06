@@ -1068,7 +1068,8 @@ HEDLEY_DIAGNOSTIC_POP
 #  elif defined(__clang__)
 #    if defined(SIMDE_ARCH_AARCH64)
 #      define SIMDE_BUG_CLANG_48257
-#      define SIMDE_BUG_CLANG_BAD_VGET_SET_LANE_TYPES
+#      define SIMDE_BUG_CLANG_71362
+#      define SIMDE_BUG_CLANG_71365
 #      if !SIMDE_DETECT_CLANG_VERSION_CHECK(15,0,0)
 #        define SIMDE_BUG_CLANG_45541
 #      endif
