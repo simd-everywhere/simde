@@ -866,7 +866,7 @@ simde_vcopy_lane_p8(simde_poly8x8_t a, const int lane1, simde_poly8x8_t b, const
   r_.values[lane1] = b_.values[lane2];
   return simde_poly8x8_from_private(r_);
 }
-#if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && !defined(SIMDE_BUG_CLANG_BAD_VGET_SET_LANE_TYPES)
+#if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && !defined(SIMDE_BUG_CLANG_71362)
   #define simde_vcopy_lane_p8(a, lane1, b, lane2) vcopy_lane_p8((a), (lane1), (b), (lane2))
 #endif
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
@@ -886,7 +886,7 @@ simde_vcopy_lane_p16(simde_poly16x4_t a, const int lane1, simde_poly16x4_t b, co
   r_.values[lane1] = b_.values[lane2];
   return simde_poly16x4_from_private(r_);
 }
-#if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && !defined(SIMDE_BUG_CLANG_BAD_VGET_SET_LANE_TYPES)
+#if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && !defined(SIMDE_BUG_CLANG_71362)
   #define simde_vcopy_lane_p16(a, lane1, b, lane2) vcopy_lane_p16((a), (lane1), (b), (lane2))
 #endif
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
@@ -906,7 +906,7 @@ simde_vcopy_lane_p64(simde_poly64x1_t a, const int lane1, simde_poly64x1_t b, co
   r_.values[lane1] = b_.values[lane2];
   return simde_poly64x1_from_private(r_);
 }
-#if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && !defined(SIMDE_BUG_CLANG_BAD_VGET_SET_LANE_TYPES)
+#if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && !defined(SIMDE_BUG_CLANG_71362)
   #define simde_vcopy_lane_p64(a, lane1, b, lane2) vcopy_lane_p64((a), (lane1), (b), (lane2))
 #endif
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
@@ -927,7 +927,7 @@ simde_vcopy_laneq_p8(simde_poly8x8_t a, const int lane1, simde_poly8x16_t b, con
   r_.values[lane1] = b_.values[lane2];
   return simde_poly8x8_from_private(r_);
 }
-#if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && !defined(SIMDE_BUG_CLANG_BAD_VGET_SET_LANE_TYPES)
+#if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && !defined(SIMDE_BUG_CLANG_71362)
   #define simde_vcopy_laneq_p8(a, lane1, b, lane2) vcopy_laneq_p8((a), (lane1), (b), (lane2))
 #endif
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
@@ -948,7 +948,7 @@ simde_vcopy_laneq_p16(simde_poly16x4_t a, const int lane1, simde_poly16x8_t b, c
   r_.values[lane1] = b_.values[lane2];
   return simde_poly16x4_from_private(r_);
 }
-#if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && !defined(SIMDE_BUG_CLANG_BAD_VGET_SET_LANE_TYPES)
+#if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && !defined(SIMDE_BUG_CLANG_71362)
   #define simde_vcopy_laneq_p16(a, lane1, b, lane2) vcopy_laneq_p16((a), (lane1), (b), (lane2))
 #endif
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
@@ -969,7 +969,7 @@ simde_vcopy_laneq_p64(simde_poly64x1_t a, const int lane1, simde_poly64x2_t b, c
   r_.values[lane1] = b_.values[lane2];
   return simde_poly64x1_from_private(r_);
 }
-#if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && !defined(SIMDE_BUG_CLANG_BAD_VGET_SET_LANE_TYPES)
+#if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && !defined(SIMDE_BUG_CLANG_71362)
   #define simde_vcopy_laneq_p64(a, lane1, b, lane2) vcopy_laneq_p64((a), (lane1), (b), (lane2))
 #endif
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
@@ -990,7 +990,7 @@ simde_vcopyq_lane_p8(simde_poly8x16_t a, const int lane1, simde_poly8x8_t b, con
   r_.values[lane1] = b_.values[lane2];
   return simde_poly8x16_from_private(r_);
 }
-#if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && !defined(SIMDE_BUG_CLANG_BAD_VGET_SET_LANE_TYPES)
+#if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && !defined(SIMDE_BUG_CLANG_71362)
   #define simde_vcopyq_lane_p8(a, lane1, b, lane2) vcopyq_lane_p8((a), (lane1), (b), (lane2))
 #endif
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
@@ -1011,7 +1011,7 @@ simde_vcopyq_lane_p16(simde_poly16x8_t a, const int lane1, simde_poly16x4_t b, c
   r_.values[lane1] = b_.values[lane2];
   return simde_poly16x8_from_private(r_);
 }
-#if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && !defined(SIMDE_BUG_CLANG_BAD_VGET_SET_LANE_TYPES)
+#if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && !defined(SIMDE_BUG_CLANG_71362)
   #define simde_vcopyq_lane_p16(a, lane1, b, lane2) vcopyq_lane_p16((a), (lane1), (b), (lane2))
 #endif
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
@@ -1032,7 +1032,7 @@ simde_vcopyq_lane_p64(simde_poly64x2_t a, const int lane1, simde_poly64x1_t b, c
   r_.values[lane1] = b_.values[lane2];
   return simde_poly64x2_from_private(r_);
 }
-#if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && !defined(SIMDE_BUG_CLANG_BAD_VGET_SET_LANE_TYPES)
+#if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && !defined(SIMDE_BUG_CLANG_71362)
   #define simde_vcopyq_lane_p64(a, lane1, b, lane2) vcopyq_lane_p64((a), (lane1), (b), (lane2))
 #endif
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
@@ -1052,7 +1052,7 @@ simde_vcopyq_laneq_p8(simde_poly8x16_t a, const int lane1, simde_poly8x16_t b, c
   r_.values[lane1] = b_.values[lane2];
   return simde_poly8x16_from_private(r_);
 }
-#if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && !defined(SIMDE_BUG_CLANG_BAD_VGET_SET_LANE_TYPES)
+#if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && !defined(SIMDE_BUG_CLANG_71362)
   #define simde_vcopyq_laneq_p8(a, lane1, b, lane2) vcopyq_laneq_p8((a), (lane1), (b), (lane2))
 #endif
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
@@ -1072,7 +1072,7 @@ simde_vcopyq_laneq_p16(simde_poly16x8_t a, const int lane1, simde_poly16x8_t b, 
   r_.values[lane1] = b_.values[lane2];
   return simde_poly16x8_from_private(r_);
 }
-#if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && !defined(SIMDE_BUG_CLANG_BAD_VGET_SET_LANE_TYPES)
+#if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && !defined(SIMDE_BUG_CLANG_71362)
   #define simde_vcopyq_laneq_p16(a, lane1, b, lane2) vcopyq_laneq_p16((a), (lane1), (b), (lane2))
 #endif
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
@@ -1092,7 +1092,7 @@ simde_vcopyq_laneq_p64(simde_poly64x2_t a, const int lane1, simde_poly64x2_t b, 
   r_.values[lane1] = b_.values[lane2];
   return simde_poly64x2_from_private(r_);
 }
-#if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && !defined(SIMDE_BUG_CLANG_BAD_VGET_SET_LANE_TYPES)
+#if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && !defined(SIMDE_BUG_CLANG_71362)
   #define simde_vcopyq_laneq_p64(a, lane1, b, lane2) vcopyq_laneq_p64((a), (lane1), (b), (lane2))
 #endif
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
