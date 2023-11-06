@@ -307,7 +307,7 @@ simde_vld1_u64_x3(uint64_t const ptr[HEDLEY_ARRAY_PARAM(3)]) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_poly8x8x3_t
 simde_vld1_p8_x3(simde_poly8_t const ptr[HEDLEY_ARRAY_PARAM(24)]) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && !defined(SIMDE_BUG_GCC_A32V7_MISSFUNC)
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && !defined(SIMDE_BUG_GCC_95399)
     return vld1_p8_x3(ptr);
   #else
     simde_poly8x8_private a_[3];
@@ -328,7 +328,7 @@ simde_vld1_p8_x3(simde_poly8_t const ptr[HEDLEY_ARRAY_PARAM(24)]) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_poly16x4x3_t
 simde_vld1_p16_x3(simde_poly16_t const ptr[HEDLEY_ARRAY_PARAM(12)]) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && !defined(SIMDE_BUG_GCC_A32V7_MISSFUNC)
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && !defined(SIMDE_BUG_GCC_95399)
     return vld1_p16_x3(ptr);
   #else
     simde_poly16x4_private a_[3];
