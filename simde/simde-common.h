@@ -599,7 +599,6 @@ typedef SIMDE_POLY16_TYPE simde_poly16;
 #endif
 typedef SIMDE_POLY64_TYPE simde_poly64;
 
-// Note: Current implementation replaces poly128_t with two poly64_t
 #if defined(SIMDE_POLY128_TYPE)
 #  undef SIMDE_POLY128_TYPE
 #endif
