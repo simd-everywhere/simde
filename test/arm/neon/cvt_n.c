@@ -2953,7 +2953,6 @@ test_simde_vcvt_n_f64_u64 (SIMDE_MUNIT_TEST_ARGS) {
 #endif
 }
 
-/* Eric: Skip this function since it will trigger a compiler error when using i686-linux-gnu-g++-11.
 static int
 test_simde_vcvtq_n_f64_u64 (SIMDE_MUNIT_TEST_ARGS) {
 #if 1
@@ -3023,7 +3022,6 @@ test_simde_vcvtq_n_f64_u64 (SIMDE_MUNIT_TEST_ARGS) {
   return 1;
 #endif
 }
-*/
 
 static int
 test_simde_vcvt_n_f64_s64 (SIMDE_MUNIT_TEST_ARGS) {
@@ -3323,7 +3321,7 @@ SIMDE_TEST_FUNC_LIST_ENTRY(vcvtq_n_f16_u16)
 SIMDE_TEST_FUNC_LIST_ENTRY(vcvtq_n_f32_s32)
 SIMDE_TEST_FUNC_LIST_ENTRY(vcvtq_n_f32_u32)
 SIMDE_TEST_FUNC_LIST_ENTRY(vcvtq_n_f64_s64)
-//SIMDE_TEST_FUNC_LIST_ENTRY(vcvtq_n_f64_u64)
+SIMDE_TEST_FUNC_LIST_ENTRY(vcvtq_n_f64_u64)
 
 SIMDE_TEST_FUNC_LIST_ENTRY(vcvtq_n_s16_f16)
 SIMDE_TEST_FUNC_LIST_ENTRY(vcvtq_n_s32_f32)
