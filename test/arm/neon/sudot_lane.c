@@ -6,6 +6,7 @@
 
 static int
 test_simde_vsudot_lane_s32 (SIMDE_MUNIT_TEST_ARGS) {
+#if 1
   static const struct {
     int32_t r_[2];
     int8_t a[8];
@@ -83,10 +84,31 @@ test_simde_vsudot_lane_s32 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
+#else
+  fputc('\n', stdout);
+  for (int i = 0 ; i < 8 ; i++) {
+    simde_int32x2_t r_ = simde_test_arm_neon_random_i32x2();
+    simde_int8x8_t a = simde_test_arm_neon_random_i8x8();
+    simde_uint8x8_t b = simde_test_arm_neon_random_u8x8();
+    int lane = simde_test_codegen_random_i8() & 1;
+    simde_int32x2_t r;
+
+    SIMDE_CONSTIFY_2_(simde_vsudot_lane_s32, r, (HEDLEY_UNREACHABLE(), simde_vdup_n_s32(INT32_C(0))), lane, r_, a, b);
+
+    simde_test_arm_neon_write_i32x2(2, r_, SIMDE_TEST_VEC_POS_FIRST);
+    simde_test_arm_neon_write_i8x8(2, a, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_arm_neon_write_u8x8(2, b, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_codegen_write_i32(2, lane, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_arm_neon_write_i32x2(2, r, SIMDE_TEST_VEC_POS_LAST);
+  }
+  return 1;
+#endif
 }
 
 static int
 test_simde_vsudot_laneq_s32 (SIMDE_MUNIT_TEST_ARGS) {
+#if 1
   static const struct {
     int32_t r_[2];
     int8_t a[8];
@@ -180,10 +202,31 @@ test_simde_vsudot_laneq_s32 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
+#else
+  fputc('\n', stdout);
+  for (int i = 0 ; i < 8 ; i++) {
+    simde_int32x2_t r_ = simde_test_arm_neon_random_i32x2();
+    simde_int8x8_t a = simde_test_arm_neon_random_i8x8();
+    simde_uint8x16_t b = simde_test_arm_neon_random_u8x16();
+    int lane = simde_test_codegen_random_i8() & 3;
+    simde_int32x2_t r;
+
+    SIMDE_CONSTIFY_4_(simde_vsudot_laneq_s32, r, (HEDLEY_UNREACHABLE(), simde_vdup_n_s32(INT32_C(0))), lane, r_, a, b);
+
+    simde_test_arm_neon_write_i32x2(2, r_, SIMDE_TEST_VEC_POS_FIRST);
+    simde_test_arm_neon_write_i8x8(2, a, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_arm_neon_write_u8x16(2, b, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_codegen_write_i32(2, lane, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_arm_neon_write_i32x2(2, r, SIMDE_TEST_VEC_POS_LAST);
+  }
+  return 1;
+#endif
 }
 
 static int
 test_simde_vsudotq_laneq_s32 (SIMDE_MUNIT_TEST_ARGS) {
+#if 1
   static const struct {
     int32_t r_[4];
     int8_t a[16];
@@ -293,10 +336,31 @@ test_simde_vsudotq_laneq_s32 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
+#else
+  fputc('\n', stdout);
+  for (int i = 0 ; i < 8 ; i++) {
+    simde_int32x4_t r_ = simde_test_arm_neon_random_i32x4();
+    simde_int8x16_t a = simde_test_arm_neon_random_i8x16();
+    simde_uint8x16_t b = simde_test_arm_neon_random_u8x16();
+    int lane = simde_test_codegen_random_i8() & 3;
+    simde_int32x4_t r;
+
+    SIMDE_CONSTIFY_4_(simde_vsudotq_laneq_s32, r, (HEDLEY_UNREACHABLE(), simde_vdupq_n_s32(INT32_C(0))), lane, r_, a, b);
+
+    simde_test_arm_neon_write_i32x4(2, r_, SIMDE_TEST_VEC_POS_FIRST);
+    simde_test_arm_neon_write_i8x16(2, a, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_arm_neon_write_u8x16(2, b, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_codegen_write_i32(2, lane, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_arm_neon_write_i32x4(2, r, SIMDE_TEST_VEC_POS_LAST);
+  }
+  return 1;
+#endif
 }
 
 static int
 test_simde_vsudotq_lane_s32 (SIMDE_MUNIT_TEST_ARGS) {
+#if 1
   static const struct {
     int32_t r_[4];
     int8_t a[16];
@@ -390,15 +454,32 @@ test_simde_vsudotq_lane_s32 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
+#else
+  fputc('\n', stdout);
+  for (int i = 0 ; i < 8 ; i++) {
+    simde_int32x4_t r_ = simde_test_arm_neon_random_i32x4();
+    simde_int8x16_t a = simde_test_arm_neon_random_i8x16();
+    simde_uint8x8_t b = simde_test_arm_neon_random_u8x8();
+    int lane = simde_test_codegen_random_i8() & 1;
+    simde_int32x4_t r;
+
+    SIMDE_CONSTIFY_2_(simde_vsudotq_lane_s32, r, (HEDLEY_UNREACHABLE(), simde_vdupq_n_s32(INT32_C(0))), lane, r_, a, b);
+
+    simde_test_arm_neon_write_i32x4(2, r_, SIMDE_TEST_VEC_POS_FIRST);
+    simde_test_arm_neon_write_i8x16(2, a, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_arm_neon_write_u8x8(2, b, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_codegen_write_i32(2, lane, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_arm_neon_write_i32x4(2, r, SIMDE_TEST_VEC_POS_LAST);
+  }
+  return 1;
+#endif
 }
 
 SIMDE_TEST_FUNC_LIST_BEGIN
 SIMDE_TEST_FUNC_LIST_ENTRY(vsudot_lane_s32)
-
 SIMDE_TEST_FUNC_LIST_ENTRY(vsudot_laneq_s32)
-
 SIMDE_TEST_FUNC_LIST_ENTRY(vsudotq_laneq_s32)
-
 SIMDE_TEST_FUNC_LIST_ENTRY(vsudotq_lane_s32)
 SIMDE_TEST_FUNC_LIST_END
 

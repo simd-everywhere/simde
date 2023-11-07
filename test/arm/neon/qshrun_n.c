@@ -5,6 +5,7 @@
 
 static int
 test_simde_vqshrunh_n_s16 (SIMDE_MUNIT_TEST_ARGS) {
+#if 1
   static const struct {
     int16_t a[1];
     uint8_t r1[1];
@@ -80,6 +81,26 @@ test_simde_vqshrunh_n_s16 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
+#else
+  fputc('\n', stdout);
+  for (int i = 0 ; i < 8 ; i++) {
+    int16_t a = simde_test_codegen_random_i16();
+    uint8_t r1 = simde_vqshrunh_n_s16(a, 1);
+    uint8_t r3 = simde_vqshrunh_n_s16(a, 3);
+    uint8_t r5 = simde_vqshrunh_n_s16(a, 5);
+    uint8_t r6 = simde_vqshrunh_n_s16(a, 6);
+    uint8_t r8 = simde_vqshrunh_n_s16(a, 8);
+
+    simde_test_codegen_write_i16(2, a, SIMDE_TEST_VEC_POS_FIRST);
+    simde_test_codegen_write_u8(2, r1, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_codegen_write_u8(2, r3, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_codegen_write_u8(2, r5, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_codegen_write_u8(2, r6, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_codegen_write_u8(2, r8, SIMDE_TEST_VEC_POS_LAST);
+  }
+  return 1;
+#endif
 }
 
 static int

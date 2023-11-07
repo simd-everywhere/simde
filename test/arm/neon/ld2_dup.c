@@ -1460,6 +1460,7 @@ test_simde_vld2_dup_p64 (SIMDE_MUNIT_TEST_ARGS) {
 
 static int
 test_simde_vld2q_dup_p8 (SIMDE_MUNIT_TEST_ARGS) {
+#if 1
   static const struct {
     simde_poly8_t a[2];
     simde_poly8_t unused[2];
@@ -1525,14 +1526,29 @@ test_simde_vld2q_dup_p8 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+#else
+  fputc('\n', stdout);
+  for (int i = 0 ; i < 8 ; i++) {
+    SIMDE_ALIGN_TO_16 simde_poly8_t a[2];
+    SIMDE_ALIGN_TO_16 simde_poly8x16x2_t r;
+    a[0] = simde_test_codegen_random_p8();
+    a[1] = simde_test_codegen_random_p8();
+    r = simde_vld2q_dup_p8(a);
+
+    simde_test_codegen_write_vp8_full(2, 2, "a", a, SIMDE_TEST_VEC_POS_FIRST);
+    simde_test_arm_neon_write_p8x16x2(2, r, SIMDE_TEST_VEC_POS_LAST);
+  }
+  return 1;
+#endif
 }
 
 static int
 test_simde_vld2q_dup_p16 (SIMDE_MUNIT_TEST_ARGS) {
-  static const struct {
-    simde_poly16_t a[2];
-    simde_poly16_t unused[2];
-    simde_poly16_t r[2][8];
+#if 1
+  struct {
+    SIMDE_ALIGN_TO_16 simde_poly16_t a[2];
+    SIMDE_ALIGN_TO_16 simde_poly16_t unused[2];
+    SIMDE_ALIGN_TO_16 simde_poly16_t r[2][8];
   } test_vec[] = {
      { {  SIMDE_POLY16_C(6058), SIMDE_POLY16_C(6273) },
        {  SIMDE_POLY16_C(6301), SIMDE_POLY16_C(7423)},
@@ -1585,15 +1601,31 @@ test_simde_vld2q_dup_p16 (SIMDE_MUNIT_TEST_ARGS) {
   };
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
-    simde_poly16x8x2_t r = simde_vld2q_dup_p16(test_vec[i].a);
-    simde_poly16x8x2_t expected = {
+    SIMDE_ALIGN_TO_16 simde_poly16_t* a = HEDLEY_STATIC_CAST(simde_poly16_t*, test_vec[i].a);
+    SIMDE_ALIGN_TO_16 simde_poly16x8x2_t r;
+    SIMDE_ALIGN_TO_16 simde_poly16x8x2_t expected = {
         {simde_vld1q_p16(test_vec[i].r[0]), simde_vld1q_p16(test_vec[i].r[1])}};
+    r = simde_vld2q_dup_p16(a);
 
     simde_test_arm_neon_assert_equal_p16x8(r.val[0], expected.val[0]);
     simde_test_arm_neon_assert_equal_p16x8(r.val[1], expected.val[1]);
   }
 
   return 0;
+#else
+  fputc('\n', stdout);
+  for (int i = 0 ; i < 8 ; i++) {
+    SIMDE_ALIGN_TO_16 simde_poly16_t a[2];
+    SIMDE_ALIGN_TO_16 simde_poly16x8x2_t r;
+    a[0] = simde_test_codegen_random_p16();
+    a[1] = simde_test_codegen_random_p16();
+    r = simde_vld2q_dup_p16(a);
+
+    simde_test_codegen_write_vp16_full(2, 2, "a", a, SIMDE_TEST_VEC_POS_FIRST);
+    simde_test_arm_neon_write_p16x8x2(2, r, SIMDE_TEST_VEC_POS_LAST);
+  }
+  return 1;
+#endif
 }
 
 static int
