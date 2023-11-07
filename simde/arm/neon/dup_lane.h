@@ -179,7 +179,7 @@ simde_vdup_laneq_f16(simde_float16x8_t vec, const int lane)
   return simde_vdup_n_f16(simde_float16x8_to_private(vec).values[lane]);
 }
 #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
-#define simde_vdup_laneq_f16(vec, lane) vdup_laneq_f16(vec, lane)
+  #define simde_vdup_laneq_f16(vec, lane) vdup_laneq_f16(vec, lane)
 #endif
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
   #undef vdup_laneq_f16
@@ -193,7 +193,7 @@ simde_vdupq_lane_f16(simde_float16x4_t vec, const int lane)
   return simde_vdupq_n_f16(simde_float16x4_to_private(vec).values[lane]);
 }
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
-#define simde_vdupq_lane_f16(vec, lane) vdupq_lane_f16(vec, lane)
+  #define simde_vdupq_lane_f16(vec, lane) vdupq_lane_f16(vec, lane)
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vdupq_lane_f16
