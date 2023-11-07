@@ -766,7 +766,6 @@ simde_vcvt_n_f64_u64(simde_uint64x1_t a, const int n)
   #define vcvt_n_f64_u64(a, n) simde_vcvt_n_f64_u64((a), (n))
 #endif
 
-/* Eric: Skip this function since it will trigger a compiler error when using i686-linux-gnu-g++-11.
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float64x2_t
 simde_vcvtq_n_f64_u64(simde_uint64x2_t a, const int n)
@@ -788,7 +787,6 @@ simde_vcvtq_n_f64_u64(simde_uint64x2_t a, const int n)
   #undef vcvtq_n_f64_u64
   #define vcvtq_n_f64_u64(a, n) simde_vcvtq_n_f64_u64((a), (n))
 #endif
-*/
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float64x1_t
