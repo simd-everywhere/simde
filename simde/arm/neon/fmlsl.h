@@ -36,22 +36,23 @@ SIMDE_BEGIN_DECLS_
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float32x2_t
 simde_vfmlsl_low_f16(simde_float32x2_t r, simde_float16x4_t a, simde_float16x4_t b) {
-  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16) && \
+      defined(__ARM_FEATURE_FP16_FML)
     return vfmlsl_low_f16(r, a, b);
   #else
     simde_float32x2_private
-      ret,
+      ret_,
       r_ = simde_float32x2_to_private(r);
     simde_float16x4_private
       a_ = simde_float16x4_to_private(a),
       b_ = simde_float16x4_to_private(b);
 
     SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(ret.values) / sizeof(ret.values[0])) ; i++) {
-      ret.values[i] = r_.values[i] -
+    for (size_t i = 0 ; i < (sizeof(ret_.values) / sizeof(ret_.values[0])) ; i++) {
+      ret_.values[i] = r_.values[i] -
         simde_float16_to_float32(a_.values[i]) * simde_float16_to_float32(b_.values[i]);
     }
-    return simde_float32x2_from_private(ret);
+    return simde_float32x2_from_private(ret_);
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
@@ -62,22 +63,23 @@ simde_vfmlsl_low_f16(simde_float32x2_t r, simde_float16x4_t a, simde_float16x4_t
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float32x4_t
 simde_vfmlslq_low_f16(simde_float32x4_t r, simde_float16x8_t a, simde_float16x8_t b) {
-  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16) && \
+      defined(__ARM_FEATURE_FP16_FML)
     return vfmlslq_low_f16(r, a, b);
   #else
     simde_float32x4_private
-      ret,
+      ret_,
       r_ = simde_float32x4_to_private(r);
     simde_float16x8_private
       a_ = simde_float16x8_to_private(a),
       b_ = simde_float16x8_to_private(b);
 
     SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(ret.values) / sizeof(ret.values[0])) ; i++) {
-      ret.values[i] = r_.values[i] -
+    for (size_t i = 0 ; i < (sizeof(ret_.values) / sizeof(ret_.values[0])) ; i++) {
+      ret_.values[i] = r_.values[i] -
         simde_float16_to_float32(a_.values[i]) * simde_float16_to_float32(b_.values[i]);
     }
-    return simde_float32x4_from_private(ret);
+    return simde_float32x4_from_private(ret_);
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
@@ -88,23 +90,24 @@ simde_vfmlslq_low_f16(simde_float32x4_t r, simde_float16x8_t a, simde_float16x8_
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float32x2_t
 simde_vfmlsl_high_f16(simde_float32x2_t r, simde_float16x4_t a, simde_float16x4_t b) {
-  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16) && \
+      defined(__ARM_FEATURE_FP16_FML)
     return vfmlsl_high_f16(r, a, b);
   #else
     simde_float32x2_private
-      ret,
+      ret_,
       r_ = simde_float32x2_to_private(r);
     simde_float16x4_private
       a_ = simde_float16x4_to_private(a),
       b_ = simde_float16x4_to_private(b);
-    size_t high_offset = sizeof(a.values) / sizeof(a.values[0]) / 2;
+    size_t high_offset = sizeof(a_.values) / sizeof(a_.values[0]) / 2;
 
     SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(ret.values) / sizeof(ret.values[0])) ; i++) {
-      ret.values[i] = r_.values[i] -
+    for (size_t i = 0 ; i < (sizeof(ret_.values) / sizeof(ret_.values[0])) ; i++) {
+      ret_.values[i] = r_.values[i] -
         simde_float16_to_float32(a_.values[i+high_offset]) * simde_float16_to_float32(b_.values[i+high_offset]);
     }
-    return simde_float32x2_from_private(ret);
+    return simde_float32x2_from_private(ret_);
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
@@ -115,23 +118,24 @@ simde_vfmlsl_high_f16(simde_float32x2_t r, simde_float16x4_t a, simde_float16x4_
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float32x4_t
 simde_vfmlslq_high_f16(simde_float32x4_t r, simde_float16x8_t a, simde_float16x8_t b) {
-  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16) && \
+      defined(__ARM_FEATURE_FP16_FML)
     return vfmlslq_high_f16(r, a, b);
   #else
     simde_float32x4_private
-      ret,
+      ret_,
       r_ = simde_float32x4_to_private(r);
     simde_float16x8_private
       a_ = simde_float16x8_to_private(a),
       b_ = simde_float16x8_to_private(b);
-    size_t high_offset = sizeof(a.values) / sizeof(a.values[0]) / 2;
+    size_t high_offset = sizeof(a_.values) / sizeof(a_.values[0]) / 2;
 
     SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(ret.values) / sizeof(ret.values[0])) ; i++) {
-      ret.values[i] = r_.values[i] -
+    for (size_t i = 0 ; i < (sizeof(ret_.values) / sizeof(ret_.values[0])) ; i++) {
+      ret_.values[i] = r_.values[i] -
         simde_float16_to_float32(a_.values[i+high_offset]) * simde_float16_to_float32(b_.values[i+high_offset]);
     }
-    return simde_float32x4_from_private(ret);
+    return simde_float32x4_from_private(ret_);
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
@@ -144,20 +148,21 @@ simde_float32x2_t
 simde_vfmlsl_lane_low_f16(simde_float32x2_t r, simde_float16x4_t a, simde_float16x4_t b, const int lane)
    SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 3) {
   simde_float32x2_private
-    ret,
+    ret_,
     r_ = simde_float32x2_to_private(r);
   simde_float16x4_private
     a_ = simde_float16x4_to_private(a),
     b_ = simde_float16x4_to_private(b);
 
   SIMDE_VECTORIZE
-  for (size_t i = 0 ; i < (sizeof(ret.values) / sizeof(ret.values[0])) ; i++) {
-    ret.values[i] = r_.values[i] -
+  for (size_t i = 0 ; i < (sizeof(ret_.values) / sizeof(ret_.values[0])) ; i++) {
+    ret_.values[i] = r_.values[i] -
       simde_float16_to_float32(a_.values[i]) * simde_float16_to_float32(b_.values[lane]);
   }
-  return simde_float32x2_from_private(ret);
+  return simde_float32x2_from_private(ret_);
 }
-#if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
+#if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16) && \
+    defined(__ARM_FEATURE_FP16_FML)
   #define simde_vfmlsl_lane_low_f16(r, a, b, lane) vfmlsl_lane_low_f16((r), (a), (b), (lane));
 #endif
 #if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
@@ -170,7 +175,7 @@ simde_float32x2_t
 simde_vfmlsl_laneq_low_f16(simde_float32x2_t r, simde_float16x4_t a, simde_float16x8_t b, const int lane)
    SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 7) {
   simde_float32x2_private
-    ret,
+    ret_,
     r_ = simde_float32x2_to_private(r);
   simde_float16x4_private
     a_ = simde_float16x4_to_private(a);
@@ -178,13 +183,14 @@ simde_vfmlsl_laneq_low_f16(simde_float32x2_t r, simde_float16x4_t a, simde_float
     b_ = simde_float16x8_to_private(b);
 
   SIMDE_VECTORIZE
-  for (size_t i = 0 ; i < (sizeof(ret.values) / sizeof(ret.values[0])) ; i++) {
-    ret.values[i] = r_.values[i] -
+  for (size_t i = 0 ; i < (sizeof(ret_.values) / sizeof(ret_.values[0])) ; i++) {
+    ret_.values[i] = r_.values[i] -
       simde_float16_to_float32(a_.values[i]) * simde_float16_to_float32(b_.values[lane]);
   }
-  return simde_float32x2_from_private(ret);
+  return simde_float32x2_from_private(ret_);
 }
-#if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
+#if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16) && \
+    defined(__ARM_FEATURE_FP16_FML)
   #define simde_vfmlsl_laneq_low_f16(r, a, b, lane) vfmlsl_laneq_low_f16((r), (a), (b), (lane));
 #endif
 #if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
@@ -197,7 +203,7 @@ simde_float32x4_t
 simde_vfmlslq_lane_low_f16(simde_float32x4_t r, simde_float16x8_t a, simde_float16x4_t b, const int lane)
    SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 3) {
   simde_float32x4_private
-    ret,
+    ret_,
     r_ = simde_float32x4_to_private(r);
   simde_float16x4_private
     b_ = simde_float16x4_to_private(b);
@@ -205,13 +211,14 @@ simde_vfmlslq_lane_low_f16(simde_float32x4_t r, simde_float16x8_t a, simde_float
     a_ = simde_float16x8_to_private(a);
 
   SIMDE_VECTORIZE
-  for (size_t i = 0 ; i < (sizeof(ret.values) / sizeof(ret.values[0])) ; i++) {
-    ret.values[i] = r_.values[i] -
+  for (size_t i = 0 ; i < (sizeof(ret_.values) / sizeof(ret_.values[0])) ; i++) {
+    ret_.values[i] = r_.values[i] -
       simde_float16_to_float32(a_.values[i]) * simde_float16_to_float32(b_.values[lane]);
   }
-  return simde_float32x4_from_private(ret);
+  return simde_float32x4_from_private(ret_);
 }
-#if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
+#if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16) && \
+    defined(__ARM_FEATURE_FP16_FML)
   #define simde_vfmlslq_lane_low_f16(r, a, b, lane) vfmlslq_lane_low_f16((r), (a), (b), (lane));
 #endif
 #if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
@@ -224,20 +231,21 @@ simde_float32x4_t
 simde_vfmlslq_laneq_low_f16(simde_float32x4_t r, simde_float16x8_t a, simde_float16x8_t b, const int lane)
    SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 7) {
   simde_float32x4_private
-    ret,
+    ret_,
     r_ = simde_float32x4_to_private(r);
   simde_float16x8_private
     a_ = simde_float16x8_to_private(a),
     b_ = simde_float16x8_to_private(b);
 
   SIMDE_VECTORIZE
-  for (size_t i = 0 ; i < (sizeof(ret.values) / sizeof(ret.values[0])) ; i++) {
-    ret.values[i] = r_.values[i] -
+  for (size_t i = 0 ; i < (sizeof(ret_.values) / sizeof(ret_.values[0])) ; i++) {
+    ret_.values[i] = r_.values[i] -
       simde_float16_to_float32(a_.values[i]) * simde_float16_to_float32(b_.values[lane]);
   }
-  return simde_float32x4_from_private(ret);
+  return simde_float32x4_from_private(ret_);
 }
-#if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
+#if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16) && \
+    defined(__ARM_FEATURE_FP16_FML)
   #define simde_vfmlslq_laneq_low_f16(r, a, b, lane) vfmlslq_laneq_low_f16((r), (a), (b), (lane));
 #endif
 #if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
@@ -250,7 +258,7 @@ simde_float32x2_t
 simde_vfmlsl_lane_high_f16(simde_float32x2_t r, simde_float16x4_t a, simde_float16x4_t b, const int lane)
    SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 3) {
   simde_float32x2_private
-    ret,
+    ret_,
     r_ = simde_float32x2_to_private(r);
   simde_float16x4_private
     a_ = simde_float16x4_to_private(a),
@@ -258,13 +266,14 @@ simde_vfmlsl_lane_high_f16(simde_float32x2_t r, simde_float16x4_t a, simde_float
   size_t high_offset = sizeof(a_.values) / sizeof(a_.values[0]) / 2;
 
   SIMDE_VECTORIZE
-  for (size_t i = 0 ; i < (sizeof(ret.values) / sizeof(ret.values[0])) ; i++) {
-    ret.values[i] = r_.values[i] -
+  for (size_t i = 0 ; i < (sizeof(ret_.values) / sizeof(ret_.values[0])) ; i++) {
+    ret_.values[i] = r_.values[i] -
       simde_float16_to_float32(a_.values[i+high_offset]) * simde_float16_to_float32(b_.values[lane]);
   }
-  return simde_float32x2_from_private(ret);
+  return simde_float32x2_from_private(ret_);
 }
-#if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
+#if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16) && \
+    defined(__ARM_FEATURE_FP16_FML)
   #define simde_vfmlsl_lane_high_f16(r, a, b, lane) vfmlsl_lane_high_f16((r), (a), (b), (lane));
 #endif
 #if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
@@ -277,7 +286,7 @@ simde_float32x2_t
 simde_vfmlsl_laneq_high_f16(simde_float32x2_t r, simde_float16x4_t a, simde_float16x8_t b, const int lane)
    SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 7) {
   simde_float32x2_private
-    ret,
+    ret_,
     r_ = simde_float32x2_to_private(r);
   simde_float16x4_private
     a_ = simde_float16x4_to_private(a);
@@ -286,13 +295,14 @@ simde_vfmlsl_laneq_high_f16(simde_float32x2_t r, simde_float16x4_t a, simde_floa
   size_t high_offset = sizeof(a_.values) / sizeof(a_.values[0]) / 2;
 
   SIMDE_VECTORIZE
-  for (size_t i = 0 ; i < (sizeof(ret.values) / sizeof(ret.values[0])) ; i++) {
-    ret.values[i] = r_.values[i] -
+  for (size_t i = 0 ; i < (sizeof(ret_.values) / sizeof(ret_.values[0])) ; i++) {
+    ret_.values[i] = r_.values[i] -
       simde_float16_to_float32(a_.values[i+high_offset]) * simde_float16_to_float32(b_.values[lane]);
   }
-  return simde_float32x2_from_private(ret);
+  return simde_float32x2_from_private(ret_);
 }
-#if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
+#if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16) && \
+    defined(__ARM_FEATURE_FP16_FML)
   #define simde_vfmlsl_laneq_high_f16(r, a, b, lane) vfmlsl_laneq_high_f16((r), (a), (b), (lane));
 #endif
 #if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
@@ -305,7 +315,7 @@ simde_float32x4_t
 simde_vfmlslq_lane_high_f16(simde_float32x4_t r, simde_float16x8_t a, simde_float16x4_t b, const int lane)
    SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 3) {
   simde_float32x4_private
-    ret,
+    ret_,
     r_ = simde_float32x4_to_private(r);
   simde_float16x4_private
     b_ = simde_float16x4_to_private(b);
@@ -314,13 +324,14 @@ simde_vfmlslq_lane_high_f16(simde_float32x4_t r, simde_float16x8_t a, simde_floa
   size_t high_offset = sizeof(a_.values) / sizeof(a_.values[0]) / 2;
 
   SIMDE_VECTORIZE
-  for (size_t i = 0 ; i < (sizeof(ret.values) / sizeof(ret.values[0])) ; i++) {
-    ret.values[i] = r_.values[i] -
+  for (size_t i = 0 ; i < (sizeof(ret_.values) / sizeof(ret_.values[0])) ; i++) {
+    ret_.values[i] = r_.values[i] -
       simde_float16_to_float32(a_.values[i+high_offset]) * simde_float16_to_float32(b_.values[lane]);
   }
-  return simde_float32x4_from_private(ret);
+  return simde_float32x4_from_private(ret_);
 }
-#if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
+#if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16) && \
+    defined(__ARM_FEATURE_FP16_FML)
   #define simde_vfmlslq_lane_high_f16(r, a, b, lane) vfmlslq_lane_high_f16((r), (a), (b), (lane));
 #endif
 #if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
@@ -333,7 +344,7 @@ simde_float32x4_t
 simde_vfmlslq_laneq_high_f16(simde_float32x4_t r, simde_float16x8_t a, simde_float16x8_t b, const int lane)
    SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 7) {
   simde_float32x4_private
-    ret,
+    ret_,
     r_ = simde_float32x4_to_private(r);
   simde_float16x8_private
     a_ = simde_float16x8_to_private(a),
@@ -341,13 +352,14 @@ simde_vfmlslq_laneq_high_f16(simde_float32x4_t r, simde_float16x8_t a, simde_flo
   size_t high_offset = sizeof(a_.values) / sizeof(a_.values[0]) / 2;
 
   SIMDE_VECTORIZE
-  for (size_t i = 0 ; i < (sizeof(ret.values) / sizeof(ret.values[0])) ; i++) {
-    ret.values[i] = r_.values[i] -
+  for (size_t i = 0 ; i < (sizeof(ret_.values) / sizeof(ret_.values[0])) ; i++) {
+    ret_.values[i] = r_.values[i] -
       simde_float16_to_float32(a_.values[i+high_offset]) * simde_float16_to_float32(b_.values[lane]);
   }
-  return simde_float32x4_from_private(ret);
+  return simde_float32x4_from_private(ret_);
 }
-#if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
+#if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16) && \
+    defined(__ARM_FEATURE_FP16_FML)
   #define simde_vfmlslq_laneq_high_f16(r, a, b, lane) vfmlslq_laneq_high_f16((r), (a), (b), (lane));
 #endif
 #if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
