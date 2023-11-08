@@ -140,7 +140,7 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde_float16_t
 simde_vmaxnmvq_f16(simde_float16x8_t a) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
-    r = vmaxnmvq_f16(a);
+    return vmaxnmvq_f16(a);
   #else
     simde_float32_t r_ = simde_float16_to_float32(SIMDE_NINFINITYHF);
     simde_float16x8_private a_ = simde_float16x8_to_private(a);

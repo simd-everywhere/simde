@@ -37,7 +37,8 @@ SIMDE_BEGIN_DECLS_
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float16x4_t
 simde_vcmla_rot180_f16(simde_float16x4_t r, simde_float16x4_t a, simde_float16x4_t b) {
-  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16) && \
+      defined(__ARM_FEATURE_COMPLEX)
     return vcmla_rot180_f16(r, a, b);
   #else
     simde_float16x4_private
@@ -68,7 +69,8 @@ simde_vcmla_rot180_f16(simde_float16x4_t r, simde_float16x4_t a, simde_float16x4
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float16x8_t
 simde_vcmlaq_rot180_f16(simde_float16x8_t r, simde_float16x8_t a, simde_float16x8_t b) {
-  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16) && \
+      defined(__ARM_FEATURE_COMPLEX)
     return vcmlaq_rot180_f16(r, a, b);
   #else
     simde_float16x8_private
@@ -102,7 +104,8 @@ simde_float32x2_t
 simde_vcmla_rot180_f32(simde_float32x2_t r, simde_float32x2_t a, simde_float32x2_t b) {
   #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && SIMDE_ARCH_ARM_CHECK(8,3) && \
       (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(9,0,0)) && \
-      (!defined(__clang__) || SIMDE_DETECT_CLANG_VERSION_CHECK(12,0,0))
+      (!defined(__clang__) || SIMDE_DETECT_CLANG_VERSION_CHECK(12,0,0)) && \
+      defined(__ARM_FEATURE_COMPLEX)
     return vcmla_rot180_f32(r, a, b);
   #else
     simde_float32x2_private
@@ -135,7 +138,8 @@ simde_float32x4_t
 simde_vcmlaq_rot180_f32(simde_float32x4_t r, simde_float32x4_t a, simde_float32x4_t b) {
   #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && SIMDE_ARCH_ARM_CHECK(8,3) && \
       (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(9,0,0)) && \
-      (!defined(__clang__) || SIMDE_DETECT_CLANG_VERSION_CHECK(12,0,0))
+      (!defined(__clang__) || SIMDE_DETECT_CLANG_VERSION_CHECK(12,0,0)) && \
+      defined(__ARM_FEATURE_COMPLEX)
     return vcmlaq_rot180_f32(r, a, b);
   #else
     simde_float32x4_private
@@ -172,7 +176,8 @@ simde_float64x2_t
 simde_vcmlaq_rot180_f64(simde_float64x2_t r, simde_float64x2_t a, simde_float64x2_t b) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && SIMDE_ARCH_ARM_CHECK(8,3) && \
       (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(9,0,0)) && \
-      (!defined(__clang__) || SIMDE_DETECT_CLANG_VERSION_CHECK(12,0,0))
+      (!defined(__clang__) || SIMDE_DETECT_CLANG_VERSION_CHECK(12,0,0)) && \
+      defined(__ARM_FEATURE_COMPLEX)
     return vcmlaq_rot180_f64(r, a, b);
   #else
     simde_float64x2_private

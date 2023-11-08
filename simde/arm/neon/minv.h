@@ -39,7 +39,7 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde_float16_t
 simde_vminv_f16(simde_float16x4_t a) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
-    return vminv_f16(v);
+    return vminv_f16(a);
   #else
     simde_float32_t r;
     simde_float16x4_private a_ = simde_float16x4_to_private(a);
@@ -247,7 +247,7 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde_float16_t
 simde_vminvq_f16(simde_float16x8_t a) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
-    return vminvq_f16(v);
+    return vminvq_f16(a);
   #else
     simde_float32_t r;
     simde_float16x8_private a_ = simde_float16x8_to_private(a);
