@@ -1067,9 +1067,9 @@ HEDLEY_DIAGNOSTIC_POP
 #    endif
 #  elif defined(__clang__)
 #    if defined(SIMDE_ARCH_AARCH64)
-#      define SIMDE_BUG_CLANG_48257
-#      define SIMDE_BUG_CLANG_71362
-#      define SIMDE_BUG_CLANG_71365
+#      define SIMDE_BUG_CLANG_48257  // https://github.com/llvm/llvm-project/issues/47601
+#      define SIMDE_BUG_CLANG_71362  // https://github.com/llvm/llvm-project/issues/71362
+#      define SIMDE_BUG_CLANG_71365  // https://github.com/llvm/llvm-project/issues/71365
 #      if !SIMDE_DETECT_CLANG_VERSION_CHECK(15,0,0)
 #        define SIMDE_BUG_CLANG_45541
 #      endif
@@ -1135,9 +1135,9 @@ HEDLEY_DIAGNOSTIC_POP
 #      if HEDLEY_HAS_WARNING("-Wvector-conversion") && SIMDE_DETECT_CLANG_VERSION_NOT(11,0,0)
 #        define SIMDE_BUG_CLANG_44589
 #      endif
-#      define SIMDE_BUG_CLANG_48673
+#      define SIMDE_BUG_CLANG_48673  // https://github.com/llvm/llvm-project/issues/48017
 #    endif
-#    define SIMDE_BUG_CLANG_45959
+#    define SIMDE_BUG_CLANG_45959  // https://github.com/llvm/llvm-project/issues/45304
 #    if defined(SIMDE_ARCH_WASM_SIMD128) && !SIMDE_DETECT_CLANG_VERSION_CHECK(17,0,0)
 #      define SIMDE_BUG_CLANG_60655
 #    endif
