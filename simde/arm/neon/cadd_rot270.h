@@ -33,6 +33,11 @@ HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 SIMDE_BEGIN_DECLS_
 
+#if defined(__clang__) && SIMDE_FLOAT16_API == SIMDE_FLOAT16_API_FP16
+SIMDE_DIAGNOSTIC_DISABLE_DOUBLE_PROMOTION_
+_Pragma("clang diagnostic ignored \"-Wimplicit-float-conversion\"")
+#endif
+
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float16x4_t simde_vcadd_rot270_f16(simde_float16x4_t a, simde_float16x4_t b)
 {
