@@ -513,7 +513,7 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde_poly8x16x2_t
 simde_vld2q_dup_p8(simde_poly8_t const * ptr) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && !defined(SIMDE_BUG_GCC_95399) && \
-      !defined(SIMDE_BUG_CLANG_QEMU_BUS_ERROR)
+      !defined(SIMDE_BUG_CLANG_71763)
     return vld2q_dup_p8(ptr);
   #else
     simde_poly8x16x2_t r;
@@ -533,7 +533,7 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde_poly16x8x2_t
 simde_vld2q_dup_p16(simde_poly16_t const * ptr) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && !defined(SIMDE_BUG_GCC_95399) && \
-      !defined(SIMDE_BUG_CLANG_QEMU_BUS_ERROR)
+      !defined(SIMDE_BUG_CLANG_71763)
     return vld2q_dup_p16(ptr);
   #else
     simde_poly16x8x2_t r;

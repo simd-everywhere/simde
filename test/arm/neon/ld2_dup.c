@@ -1462,9 +1462,9 @@ static int
 test_simde_vld2q_dup_p8 (SIMDE_MUNIT_TEST_ARGS) {
 #if 1
   static const struct {
-    simde_poly8_t a[2];
-    simde_poly8_t unused[2];
-    simde_poly8_t r[2][16];
+    SIMDE_ALIGN_TO_16 simde_poly8_t a[2];
+    SIMDE_ALIGN_TO_16 simde_poly8_t unused[2];
+    SIMDE_ALIGN_TO_16 simde_poly8_t r[2][16];
   } test_vec[] = {
      { {  SIMDE_POLY8_C(96), SIMDE_POLY8_C(23) },
        {  SIMDE_POLY8_C(44), SIMDE_POLY8_C(91)},
@@ -1517,8 +1517,8 @@ test_simde_vld2q_dup_p8 (SIMDE_MUNIT_TEST_ARGS) {
   };
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
-    simde_poly8x16x2_t r = simde_vld2q_dup_p8(test_vec[i].a);
-    simde_poly8x16x2_t expected = {
+    SIMDE_ALIGN_TO_16 simde_poly8x16x2_t r = simde_vld2q_dup_p8(test_vec[i].a);
+    SIMDE_ALIGN_TO_16 simde_poly8x16x2_t expected = {
         {simde_vld1q_p8(test_vec[i].r[0]), simde_vld1q_p8(test_vec[i].r[1])}};
 
     simde_test_arm_neon_assert_equal_p8x16(r.val[0], expected.val[0]);
@@ -1607,6 +1607,7 @@ test_simde_vld2q_dup_p16 (SIMDE_MUNIT_TEST_ARGS) {
         {simde_vld1q_p16(test_vec[i].r[0]), simde_vld1q_p16(test_vec[i].r[1])}};
     r = simde_vld2q_dup_p16(a);
 
+    simde_test_arm_neon_write_p16x8x2(2, r, SIMDE_TEST_VEC_POS_LAST);
     simde_test_arm_neon_assert_equal_p16x8(r.val[0], expected.val[0]);
     simde_test_arm_neon_assert_equal_p16x8(r.val[1], expected.val[1]);
   }

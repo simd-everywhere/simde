@@ -1081,8 +1081,8 @@ static int
 test_simde_vst1_p8_x4 (SIMDE_MUNIT_TEST_ARGS) {
 #if 1
   static const struct {
-    simde_poly8_t val[4][8];
-    simde_poly8_t r[32];
+    SIMDE_ALIGN_TO_16 simde_poly8_t val[4][8];
+    SIMDE_ALIGN_TO_16 simde_poly8_t r[32];
   } test_vec[] = {
   { { {  SIMDE_POLY8_C(   239),  SIMDE_POLY8_C(   168),  SIMDE_POLY8_C(   132),  SIMDE_POLY8_C(   115),
          SIMDE_POLY8_C(   182),  SIMDE_POLY8_C(   107),  SIMDE_POLY8_C(   214),  SIMDE_POLY8_C(   157)  },
@@ -1215,13 +1215,13 @@ test_simde_vst1_p8_x4 (SIMDE_MUNIT_TEST_ARGS) {
   };
 
   for (size_t i = 0; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
-    simde_poly8x8x4_t val = {{
+    SIMDE_ALIGN_TO_16 simde_poly8x8x4_t val = {{
         simde_vld1_p8(test_vec[i].val[0]),
         simde_vld1_p8(test_vec[i].val[1]),
         simde_vld1_p8(test_vec[i].val[2]),
         simde_vld1_p8(test_vec[i].val[3]),
     }};
-    simde_poly8_t r_[32];
+    SIMDE_ALIGN_TO_16 simde_poly8_t r_[32];
     simde_vst1_p8_x4(r_, val);
     simde_assert_equal_i(0, simde_memcmp(r_, test_vec[i].r, sizeof(test_vec[i].r)));
   }
@@ -1245,8 +1245,8 @@ static int
 test_simde_vst1_p16_x4 (SIMDE_MUNIT_TEST_ARGS) {
 #if 1
   static const struct {
-    simde_poly16_t val[4][4];
-    simde_poly16_t r[16];
+    SIMDE_ALIGN_TO_16 simde_poly16_t val[4][4];
+    SIMDE_ALIGN_TO_16 simde_poly16_t r[16];
   } test_vec[] = {
   { { {  SIMDE_POLY16_C( 25729),  SIMDE_POLY16_C( 57056),  SIMDE_POLY16_C(  7758),  SIMDE_POLY16_C( 29592)  },
       {  SIMDE_POLY16_C( 62257),  SIMDE_POLY16_C(  4465),  SIMDE_POLY16_C( 51976),  SIMDE_POLY16_C( 54089)  },
@@ -1315,13 +1315,13 @@ test_simde_vst1_p16_x4 (SIMDE_MUNIT_TEST_ARGS) {
   };
 
   for (size_t i = 0; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
-    simde_poly16x4x4_t val = {{
+    SIMDE_ALIGN_TO_16 simde_poly16x4x4_t val = {{
         simde_vld1_p16(test_vec[i].val[0]),
         simde_vld1_p16(test_vec[i].val[1]),
         simde_vld1_p16(test_vec[i].val[2]),
         simde_vld1_p16(test_vec[i].val[3]),
     }};
-    simde_poly16_t r_[16];
+    SIMDE_ALIGN_TO_16 simde_poly16_t r_[16];
     simde_vst1_p16_x4(r_, val);
     simde_assert_equal_i(0, simde_memcmp(r_, test_vec[i].r, sizeof(test_vec[i].r)));
   }
