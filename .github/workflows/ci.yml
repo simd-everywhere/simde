@@ -341,6 +341,12 @@ jobs:
           arch_gnu: riscv64
           arch_deb: riscv64
           distro: ubuntu-22.04
+        - extra: -O3
+          version: 12
+          cross: riscv64
+          arch_gnu: riscv64
+          arch_deb: riscv64
+          distro: ubuntu-22.04
         - version: 12
           cross: s390x
           arch_gnu: s390x
@@ -376,7 +382,7 @@ jobs:
       run: |
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
     - name: Configure
-      run: meson setup --cross-file=docker/cross-files/${{ matrix.cross }}-gcc-${{ matrix.version }}-ccache.cross build
+      run: meson setup --cross-file=docker/cross-files/${{ matrix.cross }}-gcc-${{ matrix.version }}${{ matrix.extra}}-ccache.cross build
     - name: Build
       run: ninja -C build -v
     - name: Test
