@@ -69,6 +69,11 @@ cache:
 init:
   - pwsh: |
       $Env:APPVEYOR_SAVE_CACHE_ON_ERROR = 'true'
+
+on_failure:
+- appveyor PushArtifact build\meson-logs\meson-log.txt
+- appveyor PushArtifact build\meson-logs\testlog.txt
+
 install:
   - cmd: set PATH=%PYTHON_DIR%;%PYTHON_DIR%\scripts;%PATH%
   - cmd: pip install --upgrade ninja meson
