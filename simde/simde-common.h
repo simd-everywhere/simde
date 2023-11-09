@@ -1069,6 +1069,7 @@ HEDLEY_DIAGNOSTIC_POP
 #      define SIMDE_BUG_CLANG_48257  // https://github.com/llvm/llvm-project/issues/47601
 #      define SIMDE_BUG_CLANG_71362  // https://github.com/llvm/llvm-project/issues/71362
 #      define SIMDE_BUG_CLANG_71365  // https://github.com/llvm/llvm-project/issues/71365
+#      define SIMDE_BUG_CLANG_71751  // https://github.com/llvm/llvm-project/issues/71751
 #      if !SIMDE_DETECT_CLANG_VERSION_CHECK(15,0,0)
 #        define SIMDE_BUG_CLANG_45541
 #      endif
