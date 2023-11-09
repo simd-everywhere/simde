@@ -911,8 +911,8 @@ static int
 test_simde_vst1q_p8_x2 (SIMDE_MUNIT_TEST_ARGS) {
 #if 1
   static const struct {
-    simde_poly8_t val[2][16];
-    simde_poly8_t r[32];
+    SIMDE_ALIGN_TO_16 simde_poly8_t val[2][16];
+    SIMDE_ALIGN_TO_16 simde_poly8_t r[32];
   } test_vec[] = {
   { { {  SIMDE_POLY8_C( 229),  SIMDE_POLY8_C( 251),  SIMDE_POLY8_C( 226),  SIMDE_POLY8_C(  25),
          SIMDE_POLY8_C( 128),  SIMDE_POLY8_C( 234),  SIMDE_POLY8_C( 174),  SIMDE_POLY8_C( 245),
@@ -1045,11 +1045,11 @@ test_simde_vst1q_p8_x2 (SIMDE_MUNIT_TEST_ARGS) {
   };
 
   for (size_t i = 0; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
-    simde_poly8x16x2_t val = {{
+    SIMDE_ALIGN_TO_16 simde_poly8x16x2_t val = {{
         simde_vld1q_p8(test_vec[i].val[0]),
         simde_vld1q_p8(test_vec[i].val[1]),
     }};
-    simde_poly8_t r_[32];
+    SIMDE_ALIGN_TO_16 simde_poly8_t r_[32];
     simde_vst1q_p8_x2(r_, val);
     simde_assert_equal_i(0, simde_memcmp(r_, test_vec[i].r, sizeof(test_vec[i].r)));
   }
@@ -1073,8 +1073,8 @@ static int
 test_simde_vst1q_p16_x2 (SIMDE_MUNIT_TEST_ARGS) {
 #if 1
   static const struct {
-    simde_poly16_t val[2][8];
-    simde_poly16_t r[16];
+    SIMDE_ALIGN_TO_16 simde_poly16_t val[2][8];
+    SIMDE_ALIGN_TO_16 simde_poly16_t r[16];
   } test_vec[] = {
   { { {  SIMDE_POLY16_C( 10266),  SIMDE_POLY16_C(   453),  SIMDE_POLY16_C( 24339),  SIMDE_POLY16_C( 55409),
          SIMDE_POLY16_C( 33804),  SIMDE_POLY16_C( 36793),  SIMDE_POLY16_C( 23404),  SIMDE_POLY16_C( 22760)  },
@@ -1143,11 +1143,11 @@ test_simde_vst1q_p16_x2 (SIMDE_MUNIT_TEST_ARGS) {
   };
 
   for (size_t i = 0; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
-    simde_poly16x8x2_t val = {{
+    SIMDE_ALIGN_TO_16 simde_poly16x8x2_t val = {{
         simde_vld1q_p16(test_vec[i].val[0]),
         simde_vld1q_p16(test_vec[i].val[1]),
     }};
-    simde_poly16_t r_[16];
+    SIMDE_ALIGN_TO_16 simde_poly16_t r_[16];
     simde_vst1q_p16_x2(r_, val);
     simde_assert_equal_i(0, simde_memcmp(r_, test_vec[i].r, sizeof(test_vec[i].r)));
   }

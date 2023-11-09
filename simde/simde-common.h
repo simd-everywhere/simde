@@ -1090,7 +1090,7 @@ HEDLEY_DIAGNOSTIC_POP
 #        define SIMDE_BUG_CLANG_BAD_VGET_SET_LANE_TYPES
 #      endif
 #      if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && !defined(SIMDE_ARM_NEON_A32V8_NATIVE)
-#        define SIMDE_BUG_CLANG_QEMU_BUS_ERROR
+#        define SIMDE_BUG_CLANG_71763  // https://github.com/llvm/llvm-project/issues/71763
 #      endif
 #    endif
 #    if defined(SIMDE_ARCH_POWER) && !SIMDE_DETECT_CLANG_VERSION_CHECK(12,0,0)
