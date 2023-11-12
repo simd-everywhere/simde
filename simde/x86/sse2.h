@@ -4770,6 +4770,24 @@ void
 simde_mm_pause (void) {
   #if defined(SIMDE_X86_SSE2_NATIVE)
     _mm_pause();
+  #elif defined(SIMDE_ARCH_X86)
+    __asm__ __volatile__("pause");
+  #elif defined(SIMDE_ARCH_ARM_NEON)
+    #if defined(_MSC_VER)
+      __isb(_ARM64_BARRIER_SY);
+    #else
+      __asm__ __volatile__("isb\n");
+    #endif
+  #elif defined(SIMDE_ARCH_POWER)
+    __asm__ __volatile__ ("or 27,27,27" ::: "memory");
+  #elif defined(SIMDE_ARCH_WASM)
+    __asm__ __volatile__ ("nop");
+  #elif defined(HEDLEY_GCC_VERSION)
+    #if defined(SIMDE_ARCH_RISCV)
+      __builtin_riscv_pause();
+    #else
+      __asm__ __volatile__ ("nop" ::: "memory");
+    #endif
   #endif
 }
 #if defined(SIMDE_X86_SSE2_ENABLE_NATIVE_ALIASES)
