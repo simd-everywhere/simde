@@ -206,7 +206,8 @@ simde_vst1q_u64_x2(uint64_t ptr[HEDLEY_ARRAY_PARAM(4)], simde_uint64x2x2_t val) 
 SIMDE_FUNCTION_ATTRIBUTES
 void
 simde_vst1q_p8_x2(simde_poly8_t ptr[HEDLEY_ARRAY_PARAM(32)], simde_poly8x16x2_t val) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && !defined(SIMDE_BUG_GCC_95399)
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && \
+      (!defined(HEDLEY_GCC_VERSION) || (HEDLEY_GCC_VERSION_CHECK(8,5,0) && defined(SIMDE_ARM_NEON_A64V8_NATIVE)))
     vst1q_p8_x2(ptr, val);
   #else
     simde_poly8x16_private val_[2];
@@ -224,7 +225,8 @@ simde_vst1q_p8_x2(simde_poly8_t ptr[HEDLEY_ARRAY_PARAM(32)], simde_poly8x16x2_t 
 SIMDE_FUNCTION_ATTRIBUTES
 void
 simde_vst1q_p16_x2(simde_poly16_t ptr[HEDLEY_ARRAY_PARAM(16)], simde_poly16x8x2_t val) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && !defined(SIMDE_BUG_GCC_95399)
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && \
+      (!defined(HEDLEY_GCC_VERSION) || (HEDLEY_GCC_VERSION_CHECK(8,5,0) && defined(SIMDE_ARM_NEON_A64V8_NATIVE)))
     vst1q_p16_x2(ptr, val);
   #else
     simde_poly16x8_private val_[2];
@@ -242,7 +244,8 @@ simde_vst1q_p16_x2(simde_poly16_t ptr[HEDLEY_ARRAY_PARAM(16)], simde_poly16x8x2_
 SIMDE_FUNCTION_ATTRIBUTES
 void
 simde_vst1q_p64_x2(simde_poly64_t ptr[HEDLEY_ARRAY_PARAM(4)], simde_poly64x2x2_t val) {
-  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && \
+      (!defined(HEDLEY_GCC_VERSION) || (HEDLEY_GCC_VERSION_CHECK(8,5,0) && defined(SIMDE_ARM_NEON_A64V8_NATIVE)))
     vst1q_p64_x2(ptr, val);
   #else
     simde_poly64x2_private val_[2];
