@@ -1285,6 +1285,7 @@ test_simde_vld2q_dup_u64 (SIMDE_MUNIT_TEST_ARGS) {
 
 static int
 test_simde_vld2_dup_p8 (SIMDE_MUNIT_TEST_ARGS) {
+#if 1
   static const struct {
     simde_poly8_t a[2];
     simde_poly8_t unused[2];
@@ -1350,10 +1351,28 @@ test_simde_vld2_dup_p8 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+#else
+  for (int i = 0 ; i < 4 ; i++) {
+    simde_poly8_t a[2];
+    simde_poly8_t unused[2];
+    simde_poly8x8x2_t r;
+    simde_test_codegen_random_memory(2, HEDLEY_REINTERPRET_CAST(uint8_t*, a));
+    simde_test_codegen_random_memory(2, HEDLEY_REINTERPRET_CAST(uint8_t*, unused));
+    r = simde_vld2_dup_p8(a);
+    // Random buffer between pointer to load and expected results to check for
+    // loading out of bounds.
+
+    simde_test_codegen_write_vp8(2, 2, a, SIMDE_TEST_VEC_POS_FIRST);
+    simde_test_codegen_write_vp8(2, 2, unused, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_arm_neon_write_p8x8x2(2, r, SIMDE_TEST_VEC_POS_LAST);
+  }
+  return 1;
+#endif
 }
 
 static int
 test_simde_vld2_dup_p16 (SIMDE_MUNIT_TEST_ARGS) {
+#if 1
   static const struct {
     simde_poly16_t a[2];
     simde_poly16_t unused[2];
@@ -1403,47 +1422,53 @@ test_simde_vld2_dup_p16 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+#else
+  for (int i = 0 ; i < 4 ; i++) {
+    simde_poly16_t a[2];
+    simde_poly16_t unused[2];
+    simde_poly16x4x2_t r;
+    simde_test_codegen_random_memory(4, HEDLEY_REINTERPRET_CAST(uint8_t*, a));
+    simde_test_codegen_random_memory(4, HEDLEY_REINTERPRET_CAST(uint8_t*, unused));
+    r = simde_vld2_dup_p16(a);
+    // Random buffer between pointer to load and expected results to check for
+    // loading out of bounds.
+
+    simde_test_codegen_write_vp16(2, 2, a, SIMDE_TEST_VEC_POS_FIRST);
+    simde_test_codegen_write_vp16(2, 2, unused, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_arm_neon_write_p16x4x2(2, r, SIMDE_TEST_VEC_POS_LAST);
+  }
+  return 1;
+#endif
 }
 
 static int
 test_simde_vld2_dup_p64 (SIMDE_MUNIT_TEST_ARGS) {
+#if 1
   static const struct {
     simde_poly64_t a[2];
     simde_poly64_t unused[2];
     simde_poly64_t r[2][1];
   } test_vec[] = {
-     { {  SIMDE_POLY64_C(406306774), SIMDE_POLY64_C(832079054) },
-       {  SIMDE_POLY64_C(942691710), SIMDE_POLY64_C(590244517)},
-     { {  SIMDE_POLY64_C(406306774) },
-       {  SIMDE_POLY64_C(832079054) } } },
-     { {  SIMDE_POLY64_C(209815625), SIMDE_POLY64_C(142491912) },
-       {  SIMDE_POLY64_C(346572474), SIMDE_POLY64_C(762924904)},
-     { {  SIMDE_POLY64_C(209815625) },
-       {  SIMDE_POLY64_C(142491912) } } },
-     { {  SIMDE_POLY64_C(329793009), SIMDE_POLY64_C(224060866) },
-       {  SIMDE_POLY64_C(648830943), SIMDE_POLY64_C(251128938)},
-     { {  SIMDE_POLY64_C(329793009) },
-       {  SIMDE_POLY64_C(224060866) } } },
-     { {  SIMDE_POLY64_C(353732428), SIMDE_POLY64_C(38041495) },
-       {  SIMDE_POLY64_C(142075049), SIMDE_POLY64_C(500056775)},
-     { {  SIMDE_POLY64_C(353732428) },
-       {  SIMDE_POLY64_C(38041495) } } },
-     { {  SIMDE_POLY64_C(396112989), SIMDE_POLY64_C(999174752) },
-       {  SIMDE_POLY64_C(69563384), SIMDE_POLY64_C(343798648)},
-     { {  SIMDE_POLY64_C(396112989) },
-       {  SIMDE_POLY64_C(999174752) } } },
-     { {  SIMDE_POLY64_C(321475295), SIMDE_POLY64_C(362221548) },
-       {  SIMDE_POLY64_C(851265818), SIMDE_POLY64_C(259349005)},
-     { {  SIMDE_POLY64_C(321475295) },
-       {  SIMDE_POLY64_C(362221548) } } },
-     { {  SIMDE_POLY64_C(424982958), SIMDE_POLY64_C(188017536) },
-       {  SIMDE_POLY64_C(162916083), SIMDE_POLY64_C(282151345)},
-     { {  SIMDE_POLY64_C(424982958) },
-       {  SIMDE_POLY64_C(188017536) } } },
-     { {  SIMDE_POLY64_C(49743777), SIMDE_POLY64_C(694072886) },
-       {  SIMDE_POLY64_C(998695309), SIMDE_POLY64_C(891182183)},
-     { {  SIMDE_POLY64_C(49743777) },
-       {  SIMDE_POLY64_C(694072886) } } },
+    { { SIMDE_POLY64_C(12740477471170781294), SIMDE_POLY64_C( 1202653309370274056) },
+      { SIMDE_POLY64_C( 3578144166166679559), SIMDE_POLY64_C( 3824348584412100321) },
+        { { SIMDE_POLY64_C(12740477471170781294) },
+          { SIMDE_POLY64_C( 1202653309370274056) } },
+    },
+    { { SIMDE_POLY64_C( 6891094942518022704), SIMDE_POLY64_C( 5658821612954949799) },
+      { SIMDE_POLY64_C(  708826733701826684), SIMDE_POLY64_C(18227356099470753016) },
+        { { SIMDE_POLY64_C( 6891094942518022704) },
+          { SIMDE_POLY64_C( 5658821612954949799) } },
+    },
+    { { SIMDE_POLY64_C(17968113820134947749), SIMDE_POLY64_C( 9132446833727034920) },
+      { SIMDE_POLY64_C(10390641722217682433), SIMDE_POLY64_C(16986807340681376757) },
+        { { SIMDE_POLY64_C(17968113820134947749) },
+          { SIMDE_POLY64_C( 9132446833727034920) } },
+    },
+    { { SIMDE_POLY64_C( 7190351104749054846), SIMDE_POLY64_C( 3718440788214036761) },
+      { SIMDE_POLY64_C(12397722267937455588), SIMDE_POLY64_C( 2194145411926481985) },
+        { { SIMDE_POLY64_C( 7190351104749054846) },
+          { SIMDE_POLY64_C( 3718440788214036761) } },
+    },
   };
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
@@ -1456,6 +1481,23 @@ test_simde_vld2_dup_p64 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+#else
+  for (int i = 0 ; i < 4 ; i++) {
+    simde_poly64_t a[2];
+    simde_poly64_t unused[2];
+    simde_poly64x1x2_t r;
+    simde_test_codegen_random_memory(16, HEDLEY_REINTERPRET_CAST(uint8_t*, a));
+    simde_test_codegen_random_memory(16, HEDLEY_REINTERPRET_CAST(uint8_t*, unused));
+    r = simde_vld2_dup_p64(a);
+    // Random buffer between pointer to load and expected results to check for
+    // loading out of bounds.
+
+    simde_test_codegen_write_vp64(2, 2, a, SIMDE_TEST_VEC_POS_FIRST);
+    simde_test_codegen_write_vp64(2, 2, unused, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_arm_neon_write_p64x1x2(2, r, SIMDE_TEST_VEC_POS_LAST);
+  }
+  return 1;
+#endif
 }
 
 static int
@@ -1527,15 +1569,18 @@ test_simde_vld2q_dup_p8 (SIMDE_MUNIT_TEST_ARGS) {
 
   return 0;
 #else
-  fputc('\n', stdout);
-  for (int i = 0 ; i < 8 ; i++) {
-    SIMDE_ALIGN_TO_16 simde_poly8_t a[2];
-    SIMDE_ALIGN_TO_16 simde_poly8x16x2_t r;
-    a[0] = simde_test_codegen_random_p8();
-    a[1] = simde_test_codegen_random_p8();
+  for (int i = 0 ; i < 4 ; i++) {
+    simde_poly8_t a[2];
+    simde_poly8_t unused[2];
+    simde_poly8x16x2_t r;
+    simde_test_codegen_random_memory(2, HEDLEY_REINTERPRET_CAST(uint8_t*, a));
+    simde_test_codegen_random_memory(2, HEDLEY_REINTERPRET_CAST(uint8_t*, unused));
     r = simde_vld2q_dup_p8(a);
+    // Random buffer between pointer to load and expected results to check for
+    // loading out of bounds.
 
-    simde_test_codegen_write_vp8_full(2, 2, "a", a, SIMDE_TEST_VEC_POS_FIRST);
+    simde_test_codegen_write_vp8(2, 2, a, SIMDE_TEST_VEC_POS_FIRST);
+    simde_test_codegen_write_vp8(2, 2, unused, SIMDE_TEST_VEC_POS_MIDDLE);
     simde_test_arm_neon_write_p8x16x2(2, r, SIMDE_TEST_VEC_POS_LAST);
   }
   return 1;
@@ -1614,15 +1659,18 @@ test_simde_vld2q_dup_p16 (SIMDE_MUNIT_TEST_ARGS) {
 
   return 0;
 #else
-  fputc('\n', stdout);
-  for (int i = 0 ; i < 8 ; i++) {
-    SIMDE_ALIGN_TO_16 simde_poly16_t a[2];
-    SIMDE_ALIGN_TO_16 simde_poly16x8x2_t r;
-    a[0] = simde_test_codegen_random_p16();
-    a[1] = simde_test_codegen_random_p16();
+  for (int i = 0 ; i < 4 ; i++) {
+    simde_poly16_t a[2];
+    simde_poly16_t unused[2];
+    simde_poly16x8x2_t r;
+    simde_test_codegen_random_memory(4, HEDLEY_REINTERPRET_CAST(uint8_t*, a));
+    simde_test_codegen_random_memory(4, HEDLEY_REINTERPRET_CAST(uint8_t*, unused));
     r = simde_vld2q_dup_p16(a);
+    // Random buffer between pointer to load and expected results to check for
+    // loading out of bounds.
 
-    simde_test_codegen_write_vp16_full(2, 2, "a", a, SIMDE_TEST_VEC_POS_FIRST);
+    simde_test_codegen_write_vp16(2, 2, a, SIMDE_TEST_VEC_POS_FIRST);
+    simde_test_codegen_write_vp16(2, 2, unused, SIMDE_TEST_VEC_POS_MIDDLE);
     simde_test_arm_neon_write_p16x8x2(2, r, SIMDE_TEST_VEC_POS_LAST);
   }
   return 1;
@@ -1631,6 +1679,7 @@ test_simde_vld2q_dup_p16 (SIMDE_MUNIT_TEST_ARGS) {
 
 static int
 test_simde_vld2q_dup_p64 (SIMDE_MUNIT_TEST_ARGS) {
+#if 1
   static const struct {
     simde_poly64_t a[2];
     simde_poly64_t unused[2];
@@ -1680,6 +1729,23 @@ test_simde_vld2q_dup_p64 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+#else
+  for (int i = 0 ; i < 4 ; i++) {
+    simde_poly64_t a[2];
+    simde_poly64_t unused[2];
+    simde_poly64x2x2_t r;
+    simde_test_codegen_random_memory(16, HEDLEY_REINTERPRET_CAST(uint8_t*, a));
+    simde_test_codegen_random_memory(16, HEDLEY_REINTERPRET_CAST(uint8_t*, unused));
+    r = simde_vld2q_dup_p64(a);
+    // Random buffer between pointer to load and expected results to check for
+    // loading out of bounds.
+
+    simde_test_codegen_write_vp64(2, 2, a, SIMDE_TEST_VEC_POS_FIRST);
+    simde_test_codegen_write_vp64(2, 2, unused, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_arm_neon_write_p64x2x2(2, r, SIMDE_TEST_VEC_POS_LAST);
+  }
+  return 1;
+#endif
 }
 
 #endif /* !defined(SIMDE_BUG_INTEL_857088) */
