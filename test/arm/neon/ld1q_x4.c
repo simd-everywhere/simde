@@ -1224,8 +1224,8 @@ static int
 test_simde_vld1q_p8_x4 (SIMDE_MUNIT_TEST_ARGS) {
 #if 1
   static const struct {
-    simde_poly8_t buf[64];
-    simde_poly8_t expected[4][16];
+    SIMDE_ALIGN_TO_16 simde_poly8_t buf[64];
+    SIMDE_ALIGN_TO_16 simde_poly8_t expected[4][16];
   } test_vec[] = {
     { {  SIMDE_POLY8_C(     7),  SIMDE_POLY8_C(   175),  SIMDE_POLY8_C(   237),  SIMDE_POLY8_C(   214),
          SIMDE_POLY8_C(   190),  SIMDE_POLY8_C(   186),  SIMDE_POLY8_C(   113),  SIMDE_POLY8_C(    23),
@@ -1486,8 +1486,8 @@ test_simde_vld1q_p8_x4 (SIMDE_MUNIT_TEST_ARGS) {
   };
 
   for (size_t i = 0; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
-    simde_poly8x16x4_t r = simde_vld1q_p8_x4(test_vec[i].buf);
-    simde_poly8x16x4_t expected = {{
+    SIMDE_ALIGN_TO_16 simde_poly8x16x4_t r = simde_vld1q_p8_x4(test_vec[i].buf);
+    SIMDE_ALIGN_TO_16 simde_poly8x16x4_t expected = {{
         simde_vld1q_p8(test_vec[i].expected[0]),
         simde_vld1q_p8(test_vec[i].expected[1]),
         simde_vld1q_p8(test_vec[i].expected[2]),
@@ -1514,8 +1514,8 @@ static int
 test_simde_vld1q_p16_x4 (SIMDE_MUNIT_TEST_ARGS) {
 #if 1
   static const struct {
-    simde_poly16_t buf[32];
-    simde_poly16_t expected[4][8];
+    SIMDE_ALIGN_TO_16 simde_poly16_t buf[32];
+    SIMDE_ALIGN_TO_16 simde_poly16_t expected[4][8];
   } test_vec[] = {
     { {  SIMDE_POLY16_C(    9211),  SIMDE_POLY16_C(   39452),  SIMDE_POLY16_C(    4935),  SIMDE_POLY16_C(   15539),
          SIMDE_POLY16_C(   48549),  SIMDE_POLY16_C(   42965),  SIMDE_POLY16_C(   61226),  SIMDE_POLY16_C(   34775),
@@ -1648,8 +1648,8 @@ test_simde_vld1q_p16_x4 (SIMDE_MUNIT_TEST_ARGS) {
   };
 
   for (size_t i = 0; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
-    simde_poly16x8x4_t r = simde_vld1q_p16_x4(test_vec[i].buf);
-    simde_poly16x8x4_t expected = {{
+    SIMDE_ALIGN_TO_16 simde_poly16x8x4_t r = simde_vld1q_p16_x4(test_vec[i].buf);
+    SIMDE_ALIGN_TO_16 simde_poly16x8x4_t expected = {{
         simde_vld1q_p16(test_vec[i].expected[0]),
         simde_vld1q_p16(test_vec[i].expected[1]),
         simde_vld1q_p16(test_vec[i].expected[2]),

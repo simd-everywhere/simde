@@ -340,7 +340,7 @@ simde_vld1_p64_x2(simde_poly64_t const ptr[HEDLEY_ARRAY_PARAM(2)]) {
   #if \
       defined(SIMDE_ARM_NEON_A32V8_NATIVE) && \
       (!defined(HEDLEY_GCC_VERSION) || (HEDLEY_GCC_VERSION_CHECK(8,0,0) && defined(SIMDE_ARM_NEON_A64V8_NATIVE))) && \
-      (!defined(__clang__) || (SIMDE_DETECT_CLANG_VERSION_CHECK(7,0,0) && defined(SIMDE_ARM_NEON_A64V8_NATIVE)))
+      (!defined(__clang__) || (SIMDE_DETECT_CLANG_VERSION_CHECK(9,0,0) && defined(SIMDE_ARM_NEON_A64V8_NATIVE)))
     return vld1_p64_x2(ptr);
   #else
     simde_poly64x1_private a_[2];

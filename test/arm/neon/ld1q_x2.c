@@ -818,8 +818,8 @@ static int
 test_simde_vld1q_p8_x2 (SIMDE_MUNIT_TEST_ARGS) {
 #if 1
   static const struct {
-    simde_poly8_t buf[32];
-    simde_poly8_t expected[2][16];
+    SIMDE_ALIGN_TO_16 simde_poly8_t buf[32];
+    SIMDE_ALIGN_TO_16 simde_poly8_t expected[2][16];
   } test_vec[] = {
     { { SIMDE_POLY8_C(  1), SIMDE_POLY8_C(207), SIMDE_POLY8_C( 90), SIMDE_POLY8_C( 91), SIMDE_POLY8_C(  1), SIMDE_POLY8_C(120), SIMDE_POLY8_C(244), SIMDE_POLY8_C( 26),
         SIMDE_POLY8_C( 39), SIMDE_POLY8_C( 61), SIMDE_POLY8_C( 30), SIMDE_POLY8_C(124), SIMDE_POLY8_C(117), SIMDE_POLY8_C(182), SIMDE_POLY8_C(248), SIMDE_POLY8_C(134),
@@ -896,8 +896,8 @@ test_simde_vld1q_p8_x2 (SIMDE_MUNIT_TEST_ARGS) {
   };
 
   for (size_t i = 0; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
-    simde_poly8x16x2_t r = simde_vld1q_p8_x2(test_vec[i].buf);
-    simde_poly8x16x2_t expected = {{
+    SIMDE_ALIGN_TO_16 simde_poly8x16x2_t r = simde_vld1q_p8_x2(test_vec[i].buf);
+    SIMDE_ALIGN_TO_16 simde_poly8x16x2_t expected = {{
         simde_vld1q_p8(test_vec[i].expected[0]),
         simde_vld1q_p8(test_vec[i].expected[1]),
     }};
@@ -922,8 +922,8 @@ static int
 test_simde_vld1q_p16_x2 (SIMDE_MUNIT_TEST_ARGS) {
 #if 1
   static const struct {
-    simde_poly16_t buf[16];
-    simde_poly16_t expected[2][8];
+    SIMDE_ALIGN_TO_16 simde_poly16_t buf[16];
+    SIMDE_ALIGN_TO_16 simde_poly16_t expected[2][8];
   } test_vec[] = {
     { { SIMDE_POLY16_C(  825), SIMDE_POLY16_C(10210), SIMDE_POLY16_C( 3731), SIMDE_POLY16_C( 5598), SIMDE_POLY16_C(24657), SIMDE_POLY16_C(20451), SIMDE_POLY16_C(21382), SIMDE_POLY16_C(34867),
         SIMDE_POLY16_C(63322), SIMDE_POLY16_C(32517), SIMDE_POLY16_C(49700), SIMDE_POLY16_C(46516), SIMDE_POLY16_C(37728), SIMDE_POLY16_C(62645), SIMDE_POLY16_C(14775), SIMDE_POLY16_C(61520) },
@@ -968,8 +968,8 @@ test_simde_vld1q_p16_x2 (SIMDE_MUNIT_TEST_ARGS) {
   };
 
   for (size_t i = 0; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
-    simde_poly16x8x2_t r = simde_vld1q_p16_x2(test_vec[i].buf);
-    simde_poly16x8x2_t expected = {{
+    SIMDE_ALIGN_TO_16 simde_poly16x8x2_t r = simde_vld1q_p16_x2(test_vec[i].buf);
+    SIMDE_ALIGN_TO_16 simde_poly16x8x2_t expected = {{
         simde_vld1q_p16(test_vec[i].expected[0]),
         simde_vld1q_p16(test_vec[i].expected[1]),
     }};
