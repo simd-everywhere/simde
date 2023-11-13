@@ -37,12 +37,7 @@ SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 SIMDE_BEGIN_DECLS_
 
 #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARCH_ARM_QRDMX)
-  #if defined(__clang__) && !SIMDE_DETECT_CLANG_VERSION_CHECK(11,0,0)
-    #define simde_vqrdmlahh_lane_s16(a, b, v, lane) \
-    SIMDE_DISABLE_DIAGNOSTIC_EXPR_(SIMDE_DIAGNOSTIC_DISABLE_VECTOR_CONVERSION_, vqrdmlahh_lane_s16((a), (b), (v), (lane)))
-  #else
-    #define simde_vqrdmlahh_lane_s16(a, b, v, lane) vqrdmlahh_lane_s16((a), (b), (v), (lane))
-  #endif
+  #define simde_vqrdmlahh_lane_s16(a, b, v, lane) vqrdmlahh_lane_s16((a), (b), (v), (lane))
 #else
   #define simde_vqrdmlahh_lane_s16(a, b, v, lane) simde_vqrdmlahh_s16((a), (b), simde_vget_lane_s16((v), (lane)))
 #endif
@@ -52,12 +47,7 @@ SIMDE_BEGIN_DECLS_
 #endif
 
 #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARCH_ARM_QRDMX)
-  #if defined(__clang__) && !SIMDE_DETECT_CLANG_VERSION_CHECK(11,0,0)
-    #define simde_vqrdmlahh_laneq_s16(a, b, v, lane) \
-    SIMDE_DISABLE_DIAGNOSTIC_EXPR_(SIMDE_DIAGNOSTIC_DISABLE_VECTOR_CONVERSION_, vqrdmlahh_laneq_s16((a), (b), (v), (lane)))
-  #else
-    #define simde_vqrdmlahh_laneq_s16(a, b, v, lane) vqrdmlahh_laneq_s16((a), (b), (v), (lane))
-  #endif
+  #define simde_vqrdmlahh_laneq_s16(a, b, v, lane) vqrdmlahh_laneq_s16((a), (b), (v), (lane))
 #else
   #define simde_vqrdmlahh_laneq_s16(a, b, v, lane) simde_vqrdmlahh_s16((a), (b), simde_vgetq_lane_s16((v), (lane)))
 #endif
@@ -77,12 +67,7 @@ SIMDE_BEGIN_DECLS_
 #endif
 
 #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARCH_ARM_QRDMX)
-  #if defined(__clang__) && !SIMDE_DETECT_CLANG_VERSION_CHECK(11,0,0)
-    #define simde_vqrdmlahs_laneq_s32(a, b, v, lane) \
-    SIMDE_DISABLE_DIAGNOSTIC_EXPR_(SIMDE_DIAGNOSTIC_DISABLE_VECTOR_CONVERSION_, vqrdmlahs_laneq_s32((a), (b), (v), (lane)))
-  #else
-    #define simde_vqrdmlahs_laneq_s32(a, b, v, lane) vqrdmlahs_laneq_s32((a), (b), (v), (lane))
-  #endif
+  #define simde_vqrdmlahs_laneq_s32(a, b, v, lane) vqrdmlahs_laneq_s32((a), (b), (v), (lane))
 #else
   #define simde_vqrdmlahs_laneq_s32(a, b, v, lane) simde_vqrdmlahs_s32((a), (b), simde_vgetq_lane_s32((v), (lane)))
 #endif
