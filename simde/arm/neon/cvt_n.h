@@ -766,11 +766,11 @@ simde_vcvt_n_f64_u64(simde_uint64x1_t a, const int n)
   #define vcvt_n_f64_u64(a, n) simde_vcvt_n_f64_u64((a), (n))
 #endif
 
-/* Eric: Skip this function since it will trigger a compiler error when using i686-linux-gnu-g++-11.
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float64x2_t
 simde_vcvtq_n_f64_u64(simde_uint64x2_t a, const int n)
    SIMDE_REQUIRE_CONSTANT_RANGE(n, 1, 64) {
+  SIMDE_DISABLE_EXCESS_PRECISION_IN_X86_FPU_BEGIN
   simde_uint64x2_private a_ = simde_uint64x2_to_private(a);
   simde_float64x2_private r_;
 
@@ -779,6 +779,7 @@ simde_vcvtq_n_f64_u64(simde_uint64x2_t a, const int n)
     r_.values[i] = HEDLEY_STATIC_CAST(simde_float64_t, HEDLEY_STATIC_CAST(simde_float64_t, a_.values[i]) / pow(2, n));
   }
 
+  SIMDE_DISABLE_EXCESS_PRECISION_IN_X86_FPU_END
   return simde_float64x2_from_private(r_);
 }
 #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
@@ -788,7 +789,6 @@ simde_vcvtq_n_f64_u64(simde_uint64x2_t a, const int n)
   #undef vcvtq_n_f64_u64
   #define vcvtq_n_f64_u64(a, n) simde_vcvtq_n_f64_u64((a), (n))
 #endif
-*/
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float64x1_t
