@@ -22,6 +22,7 @@
  *
  * Copyright:
  *   2017-2020 Evan Nemerson <evan@nemerson.com>
+ *   2023      Yi-Yen Chung <eric681@andestech.com> (Copyright owned by Andes Technology)
  */
 
 /* SIMDe targets a very wide range of standards and compilers, and our
@@ -430,6 +431,40 @@
 #else
 #  define SIMDE_LCC_DISABLE_DEPRECATED_WARNINGS
 #  define SIMDE_LCC_REVERT_DEPRECATED_WARNINGS
+#endif
+
+/* Some NEON's native functions produce inconsistent results on x86
+ * machines due to exceeding the precision of double floating-point.
+ * Therefore, I added this macro to disable 80-bit double floating
+ * point on x86. -- Comment by Yi-Yen Chung */
+#if defined(SIMDE_ARCH_X86)
+  #if defined(HEDLEY_GCC_VERSION)
+    #if !defined(__cplusplus)
+      #define SIMDE_DISABLE_EXCESS_PRECISION_IN_X86_FPU_BEGIN \
+        _Pragma("GCC push_options") \
+        _Pragma("GCC optimize \"-ffloat-store\"")
+      #define SIMDE_DISABLE_EXCESS_PRECISION_IN_X86_FPU_END \
+        _Pragma("GCC pop_options")
+    #elif defined(__cplusplus)
+      // Due to bug 48026, ref: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=48026
+      #define SIMDE_DISABLE_EXCESS_PRECISION_IN_X86_FPU_BEGIN \
+        _Pragma("GCC push_options") \
+        _Pragma("GCC target(\"fpmath=sse,387\")")
+      #define SIMDE_DISABLE_EXCESS_PRECISION_IN_X86_FPU_END \
+        _Pragma("GCC pop_options")
+    #endif
+  #elif defined(__clang__)
+    #define SIMDE_DISABLE_EXCESS_PRECISION_IN_X86_FPU_BEGIN \
+      _Pragma("clang optimize off")
+    #define SIMDE_DISABLE_EXCESS_PRECISION_IN_X86_FPU_END \
+      _Pragma("clang optimize on")
+  #else
+    #define SIMDE_DISABLE_EXCESS_PRECISION_IN_X86_FPU_BEGIN
+    #define SIMDE_DISABLE_EXCESS_PRECISION_IN_X86_FPU_END
+  #endif
+#else
+  #define SIMDE_DISABLE_EXCESS_PRECISION_IN_X86_FPU_BEGIN
+  #define SIMDE_DISABLE_EXCESS_PRECISION_IN_X86_FPU_END
 #endif
 
 #define SIMDE_DISABLE_UNWANTED_DIAGNOSTICS \
