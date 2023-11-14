@@ -58,7 +58,9 @@ SIMDE_BEGIN_DECLS_
 #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
   #define simde_vmlaq_laneq_f32(a, b, v, lane) vmlaq_laneq_f32((a), (b), (v), (lane))
 #else
+  SIMDE_DISABLE_EXCESS_PRECISION_IN_X86_FPU_BEGIN
   #define simde_vmlaq_laneq_f32(a, b, v, lane) simde_vmlaq_f32((a), (b), simde_vdupq_laneq_f32((v), (lane)))
+  SIMDE_DISABLE_EXCESS_PRECISION_IN_X86_FPU_END
 #endif
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
   #undef vmlaq_laneq_f32
