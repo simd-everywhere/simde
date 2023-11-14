@@ -43,7 +43,7 @@ SIMDE_BEGIN_DECLS_
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float16x8x2_t
-simde_vld1q_f16_x2(simde_float16 const ptr[HEDLEY_ARRAY_PARAM(16)]) {
+simde_vld1q_f16_x2(simde_float16_t const ptr[HEDLEY_ARRAY_PARAM(16)]) {
   #if \
       defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_ARM_NEON_FP16) && \
       (!defined(HEDLEY_GCC_VERSION) || (HEDLEY_GCC_VERSION_CHECK(8,0,0) && defined(SIMDE_ARM_NEON_A64V8_NATIVE))) && \

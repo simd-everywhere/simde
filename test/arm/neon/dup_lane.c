@@ -10,9 +10,9 @@ SIMDE_DIAGNOSTIC_DISABLE_UNREACHABLE_
 static int
 test_simde_vdup_lane_f16 (SIMDE_MUNIT_TEST_ARGS) {
   struct {
-    simde_float16 vec[4];
+    simde_float16_t vec[4];
     int lane;
-    simde_float16 r[4];
+    simde_float16_t r[4];
   } test_vec[] = {
     { { SIMDE_FLOAT16_VALUE(-7.6), SIMDE_FLOAT16_VALUE(11.4), SIMDE_FLOAT16_VALUE(10.7), SIMDE_FLOAT16_VALUE(-0.1) },
         INT8_C(2),
@@ -62,9 +62,9 @@ test_simde_vdup_lane_f16 (SIMDE_MUNIT_TEST_ARGS) {
 static int
 test_simde_vdupq_lane_f16 (SIMDE_MUNIT_TEST_ARGS) {
   struct {
-    simde_float16 vec[4];
+    simde_float16_t vec[4];
     int lane;
-    simde_float16 r[8];
+    simde_float16_t r[8];
   } test_vec[] = {
     { { SIMDE_FLOAT16_VALUE(-3.4), SIMDE_FLOAT16_VALUE(6.4), SIMDE_FLOAT16_VALUE(-7.4), SIMDE_FLOAT16_VALUE(0.5) },
         INT8_C(0),

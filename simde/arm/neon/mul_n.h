@@ -39,7 +39,7 @@ SIMDE_BEGIN_DECLS_
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float16x4_t
-simde_vmul_n_f16(simde_float16x4_t a, simde_float16 b) {
+simde_vmul_n_f16(simde_float16x4_t a, simde_float16_t b) {
   #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
     return vmul_n_f16(a, b);
   #else
@@ -137,7 +137,7 @@ simde_vmul_n_u32(simde_uint32x2_t a, uint32_t b) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float16x8_t
-simde_vmulq_n_f16(simde_float16x8_t a, simde_float16 b) {
+simde_vmulq_n_f16(simde_float16x8_t a, simde_float16_t b) {
   #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
     return vmulq_n_f16(a, b);
   #else

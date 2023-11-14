@@ -6,8 +6,8 @@
 static int
 test_simde_vget_low_f16 (SIMDE_MUNIT_TEST_ARGS) {
   struct {
-    simde_float16 a[8];
-    simde_float16 r[4];
+    simde_float16_t a[8];
+    simde_float16_t r[4];
   } test_vec[] = {
     { { SIMDE_FLOAT16_VALUE(   441.00), SIMDE_FLOAT16_VALUE(   861.50), SIMDE_FLOAT16_VALUE(    98.06), SIMDE_FLOAT16_VALUE(   896.00),
         SIMDE_FLOAT16_VALUE(  -918.50), SIMDE_FLOAT16_VALUE(  -717.00), SIMDE_FLOAT16_VALUE(  -823.00), SIMDE_FLOAT16_VALUE(  -581.00) },

@@ -45,8 +45,8 @@ test_simde_vrndnh_f16 (SIMDE_MUNIT_TEST_ARGS) {
 static int
 test_simde_vrndn_f16 (SIMDE_MUNIT_TEST_ARGS) {
   struct {
-    simde_float16 a[4];
-    simde_float16 r[4];
+    simde_float16_t a[4];
+    simde_float16_t r[4];
   } test_vec[] = {
     #if !defined(SIMDE_FAST_NANS)
       { {            SIMDE_NANHF,           SIMDE_NANHF,            SIMDE_NANHF,           SIMDE_NANHF },
@@ -191,8 +191,8 @@ test_simde_vrndn_f64 (SIMDE_MUNIT_TEST_ARGS) {
 static int
 test_simde_vrndnq_f16 (SIMDE_MUNIT_TEST_ARGS) {
   struct {
-    simde_float16 a[8];
-    simde_float16 r[8];
+    simde_float16_t a[8];
+    simde_float16_t r[8];
   } test_vec[] = {
     #if !defined(SIMDE_FAST_NANS)
         { {            SIMDE_NANHF,           SIMDE_NANHF,            SIMDE_NANHF,           SIMDE_NANHF,            SIMDE_NANHF,           SIMDE_NANHF,            SIMDE_NANHF,           SIMDE_NANHF },

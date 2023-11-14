@@ -6,9 +6,9 @@
 static int
 test_simde_vpmax_f16 (SIMDE_MUNIT_TEST_ARGS) {
   struct {
-    simde_float16 a[4];
-    simde_float16 b[4];
-    simde_float16 r[4];
+    simde_float16_t a[4];
+    simde_float16_t b[4];
+    simde_float16_t r[4];
   } test_vec[] = {
     { { SIMDE_FLOAT16_VALUE(   441.00), SIMDE_FLOAT16_VALUE(   684.00), SIMDE_FLOAT16_VALUE(   861.50), SIMDE_FLOAT16_VALUE(   563.00) },
       { SIMDE_FLOAT16_VALUE(    98.06), SIMDE_FLOAT16_VALUE(    15.31), SIMDE_FLOAT16_VALUE(   896.00), SIMDE_FLOAT16_VALUE(  -786.50) },

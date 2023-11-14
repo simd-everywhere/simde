@@ -293,7 +293,7 @@
 #endif
 
 #if !defined(SIMDE_X86_SVML_NATIVE) && !defined(SIMDE_X86_SVML_NO_NATIVE) && !defined(SIMDE_NO_NATIVE)
-  #if defined(SIMDE_ARCH_X86) && (defined(__INTEL_COMPILER) || HEDLEY_MSVC_VERSION_CHECK(14, 20, 0))
+  #if defined(SIMDE_ARCH_X86) && (defined(__INTEL_COMPILER) || (HEDLEY_MSVC_VERSION_CHECK(14, 20, 0) && !defined(__clang__)))
     #define SIMDE_X86_SVML_NATIVE
   #endif
 #endif
