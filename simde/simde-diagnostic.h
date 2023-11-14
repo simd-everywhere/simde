@@ -432,6 +432,34 @@
 #  define SIMDE_LCC_REVERT_DEPRECATED_WARNINGS
 #endif
 
+#if defined(SIMDE_ARCH_X86)
+  #if defined(HEDLEY_GCC_VERSION)
+    #if !defined(__cplusplus)
+      #define SIMDE_DISABLE_EXCESS_PRECISION_IN_X86_FPU_BEGIN \
+        _Pragma("GCC push_options") \
+        _Pragma("GCC optimize \"-ffloat-store\"")
+      #define SIMDE_DISABLE_EXCESS_PRECISION_IN_X86_FPU_END \
+        _Pragma("GCC pop_options")
+    #elif defined(__cplusplus)
+      // Due to bug 48026, ref: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=48026
+      #define SIMDE_DISABLE_EXCESS_PRECISION_IN_X86_FPU_BEGIN \
+        __attribute__((optimize("-O0")))
+      #define SIMDE_DISABLE_EXCESS_PRECISION_IN_X86_FPU_END
+    #endif
+  #elif defined(__clang__)
+    #define SIMDE_DISABLE_EXCESS_PRECISION_IN_X86_FPU_BEGIN \
+      _Pragma("clang optimize off")
+    #define SIMDE_DISABLE_EXCESS_PRECISION_IN_X86_FPU_END \
+      _Pragma("clang optimize on")
+  #else
+    #define SIMDE_DISABLE_EXCESS_PRECISION_IN_X86_FPU_BEGIN
+    #define SIMDE_DISABLE_EXCESS_PRECISION_IN_X86_FPU_END
+  #endif
+#else
+  #define SIMDE_DISABLE_EXCESS_PRECISION_IN_X86_FPU_BEGIN
+  #define SIMDE_DISABLE_EXCESS_PRECISION_IN_X86_FPU_END
+#endif
+
 #define SIMDE_DISABLE_UNWANTED_DIAGNOSTICS \
   HEDLEY_DIAGNOSTIC_DISABLE_UNUSED_FUNCTION \
   SIMDE_DISABLE_UNWANTED_DIAGNOSTICS_NATIVE_ALIASES_ \
