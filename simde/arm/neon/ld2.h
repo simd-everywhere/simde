@@ -924,6 +924,10 @@ simde_vld2q_p8(simde_poly8_t const ptr[HEDLEY_ARRAY_PARAM(32)]) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vld2q_p8(ptr);
   #else
+    #if defined(SIMDE_DIAGNOSTIC_DISABLE_UNINITIALIZED_) && HEDLEY_GCC_VERSION_CHECK(12,0,0) && defined(SIMDE_ARCH_RISCV64)
+      HEDLEY_DIAGNOSTIC_PUSH
+      SIMDE_DIAGNOSTIC_DISABLE_UNINITIALIZED_
+    #endif
     simde_poly8x16_private r_[2];
 
     for (size_t i = 0 ; i < (sizeof(r_) / sizeof(r_[0])) ; i++) {
@@ -937,6 +941,9 @@ simde_vld2q_p8(simde_poly8_t const ptr[HEDLEY_ARRAY_PARAM(32)]) {
       simde_poly8x16_from_private(r_[1]),
     } };
 
+    #if defined(SIMDE_DIAGNOSTIC_DISABLE_UNINITIALIZED_) && HEDLEY_GCC_VERSION_CHECK(12,0,0) && defined(SIMDE_ARCH_RISCV64)
+      HEDLEY_DIAGNOSTIC_POP
+    #endif
     return r;
   #endif
 }
@@ -951,6 +958,10 @@ simde_vld2q_p16(simde_poly16_t const ptr[HEDLEY_ARRAY_PARAM(16)]) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vld2q_p16(ptr);
   #else
+    #if defined(SIMDE_DIAGNOSTIC_DISABLE_UNINITIALIZED_) && HEDLEY_GCC_VERSION_CHECK(12,0,0) && defined(SIMDE_ARCH_RISCV64)
+      HEDLEY_DIAGNOSTIC_PUSH
+      SIMDE_DIAGNOSTIC_DISABLE_UNINITIALIZED_
+    #endif
     simde_poly16x8_private r_[2];
 
     for (size_t i = 0 ; i < (sizeof(r_) / sizeof(r_[0])) ; i++) {
@@ -963,6 +974,9 @@ simde_vld2q_p16(simde_poly16_t const ptr[HEDLEY_ARRAY_PARAM(16)]) {
       simde_poly16x8_from_private(r_[0]),
       simde_poly16x8_from_private(r_[1]),
     } };
+    #if defined(SIMDE_DIAGNOSTIC_DISABLE_UNINITIALIZED_) && HEDLEY_GCC_VERSION_CHECK(12,0,0) && defined(SIMDE_ARCH_RISCV64)
+      HEDLEY_DIAGNOSTIC_POP
+    #endif
 
     return r;
   #endif
