@@ -485,7 +485,6 @@ simde_vdotq_lane_s32(simde_int32x4_t r, simde_int8x16_t a, simde_int8x8_t b, con
   #define vdotq_lane_s32(r, a, b, lane) simde_vdotq_lane_s32((r), (a), (b), (lane))
 #endif
 
-/*
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float32x2_t
 simde_vbfdot_lane_f32(simde_float32x2_t r, simde_bfloat16x4_t a, simde_bfloat16x4_t b, const int lane)
@@ -501,10 +500,10 @@ simde_vbfdot_lane_f32(simde_float32x2_t r, simde_bfloat16x4_t a, simde_bfloat16x
       b_ = simde_bfloat16x4_to_private(b);
 
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      bfloat16 elt1_a = a_.values[2 * i + 0];
-      bfloat16 elt1_b = a_.values[2 * lane + 1];
-      bfloat16 elt2_a = b_.values[2 * i + 0];
-      bfloat16 elt2_b = b_.values[2 * lane + 1];
+      simde_float32_t elt1_a = simde_bfloat16_to_float32(a_.values[2 * i + 0]);
+      simde_float32_t elt1_b = simde_bfloat16_to_float32(a_.values[2 * lane + 1]);
+      simde_float32_t elt2_a = simde_bfloat16_to_float32(b_.values[2 * i + 0]);
+      simde_float32_t elt2_b = simde_bfloat16_to_float32(b_.values[2 * lane + 1]);
       r_.values[i] = r_.values[i] + elt1_a * elt2_a + elt1_b * elt2_b;
     }
 
@@ -532,10 +531,10 @@ simde_vbfdotq_lane_f32(simde_float32x4_t r, simde_bfloat16x8_t a, simde_bfloat16
     simde_bfloat16x4_private b_ = simde_bfloat16x4_to_private(b);
 
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      bfloat16 elt1_a = a_.values[2 * i + 0];
-      bfloat16 elt1_b = a_.values[2 * lane + 1];
-      bfloat16 elt2_a = b_.values[2 * i + 0];
-      bfloat16 elt2_b = b_.values[2 * lane + 1];
+      simde_float32_t elt1_a = simde_bfloat16_to_float32(a_.values[2 * i + 0]);
+      simde_float32_t elt1_b = simde_bfloat16_to_float32(a_.values[2 * lane + 1]);
+      simde_float32_t elt2_a = simde_bfloat16_to_float32(b_.values[2 * i + 0]);
+      simde_float32_t elt2_b = simde_bfloat16_to_float32(b_.values[2 * lane + 1]);
       r_.values[i] = r_.values[i] + elt1_a * elt2_a + elt1_b * elt2_b;
     }
 
@@ -563,10 +562,10 @@ simde_vbfdot_laneq_f32(simde_float32x2_t r, simde_bfloat16x4_t a, simde_bfloat16
     simde_bfloat16x8_private b_ = simde_bfloat16x8_to_private(b);
 
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      bfloat16 elt1_a = a_.values[2 * i + 0];
-      bfloat16 elt1_b = a_.values[2 * lane + 1];
-      bfloat16 elt2_a = b_.values[2 * i + 0];
-      bfloat16 elt2_b = b_.values[2 * lane + 1];
+      simde_float32_t elt1_a = simde_bfloat16_to_float32(a_.values[2 * i + 0]);
+      simde_float32_t elt1_b = simde_bfloat16_to_float32(a_.values[2 * lane + 1]);
+      simde_float32_t elt2_a = simde_bfloat16_to_float32(b_.values[2 * i + 0]);
+      simde_float32_t elt2_b = simde_bfloat16_to_float32(b_.values[2 * lane + 1]);
       r_.values[i] = r_.values[i] + elt1_a * elt2_a + elt1_b * elt2_b;
     }
 
@@ -595,10 +594,10 @@ simde_vbfdotq_laneq_f32(simde_float32x4_t r, simde_bfloat16x8_t a, simde_bfloat1
       b_ = simde_bfloat16x8_to_private(b);
 
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      bfloat16 elt1_a = a_.values[2 * i + 0];
-      bfloat16 elt1_b = a_.values[2 * lane + 1];
-      bfloat16 elt2_a = b_.values[2 * i + 0];
-      bfloat16 elt2_b = b_.values[2 * lane + 1];
+      simde_float32_t elt1_a = simde_bfloat16_to_float32(a_.values[2 * i + 0]);
+      simde_float32_t elt1_b = simde_bfloat16_to_float32(a_.values[2 * lane + 1]);
+      simde_float32_t elt2_a = simde_bfloat16_to_float32(b_.values[2 * i + 0]);
+      simde_float32_t elt2_b = simde_bfloat16_to_float32(b_.values[2 * lane + 1]);
       r_.values[i] = r_.values[i] + elt1_a * elt2_a + elt1_b * elt2_b;
     }
 
@@ -611,8 +610,6 @@ simde_vbfdotq_laneq_f32(simde_float32x4_t r, simde_bfloat16x8_t a, simde_bfloat1
   #undef vbfdotq_laneq_f32
   #define vbfdotq_laneq_f32(r, a, b, lane) simde_vbfdotq_laneq_f32((r), (a), (b), (lane))
 #endif
-// TODO: SIMDE_ARM_NEON_BFLOAT16
-*/
 
 SIMDE_END_DECLS_
 HEDLEY_DIAGNOSTIC_POP

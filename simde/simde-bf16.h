@@ -95,10 +95,6 @@ SIMDE_BEGIN_DECLS_
   #error No 16-bit floating point API.
 #endif
 
-/* Reinterpret -- you *generally* shouldn't need these, they're really
- * intended for internal use.  However, on x86 half-precision floats
- * get stuffed into a __m128i/__m256i, so it may be useful. */
-
 /* Conversion -- convert between single-precision and brain half-precision
  * floats. */
 static HEDLEY_ALWAYS_INLINE HEDLEY_CONST
@@ -106,10 +102,17 @@ simde_bfloat16
 simde_bfloat16_from_float32 (simde_float32 value) {
   simde_bfloat16 res;
   char* src = HEDLEY_REINTERPRET_CAST(char*, &value);
+  // rounding to nearest bfloat16
+  // If the 17th bit of value is 1, set the rounding to 1.
+  uint8_t rounding = 0;
 
 #if SIMDE_ENDIAN_ORDER == SIMDE_ENDIAN_LITTLE
+  if (src[1] & UINT8_C(0x80)) rounding = 1;
+  src[2] = HEDLEY_STATIC_CAST(char, (HEDLEY_STATIC_CAST(uint8_t, src[2]) + rounding));
   simde_memcpy(&res, src+2, sizeof(res));
 #else
+  if (src[2] & UINT8_C(0x80)) rounding = 1;
+  src[1] = HEDLEY_STATIC_CAST(char, (HEDLEY_STATIC_CAST(uint8_t, src[1]) + rounding));
   simde_memcpy(&res, src, sizeof(res));
 #endif
 
@@ -119,7 +122,7 @@ simde_bfloat16_from_float32 (simde_float32 value) {
 static HEDLEY_ALWAYS_INLINE HEDLEY_CONST
 simde_float32
 simde_bfloat16_to_float32 (simde_bfloat16 value) {
-  simde_float32 res = 0;
+  simde_float32 res = 0.0;
   char* _res = HEDLEY_REINTERPRET_CAST(char*, &res);
 
 #if SIMDE_ENDIAN_ORDER == SIMDE_ENDIAN_LITTLE

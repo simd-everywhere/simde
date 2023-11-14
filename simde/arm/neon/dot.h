@@ -164,7 +164,6 @@ simde_vdotq_u32(simde_uint32x4_t r, simde_uint8x16_t a, simde_uint8x16_t b) {
   #define vdotq_u32(r, a, b) simde_vdotq_u32((r), (a), (b))
 #endif
 
-/*
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float32x2_t
 simde_vbfdot_f32(simde_float32x2_t r, simde_bfloat16x4_t a, simde_bfloat16x4_t b) {
@@ -205,10 +204,10 @@ simde_vbfdotq_f32(simde_float32x4_t r, simde_bfloat16x8_t a, simde_bfloat16x8_t 
       b_ = simde_bfloat16x8_to_private(b);
 
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      bfloat16 elt1_a = a_.values[2 * i + 0];
-      bfloat16 elt1_b = a_.values[2 * i + 1];
-      bfloat16 elt2_a = b_.values[2 * i + 0];
-      bfloat16 elt2_b = b_.values[2 * i + 1];
+      simde_float32_t elt1_a = simde_bfloat16_to_float32(a_.values[2 * i + 0]);
+      simde_float32_t elt1_b = simde_bfloat16_to_float32(a_.values[2 * i + 1]);
+      simde_float32_t elt2_a = simde_bfloat16_to_float32(b_.values[2 * i + 0]);
+      simde_float32_t elt2_b = simde_bfloat16_to_float32(b_.values[2 * i + 1]);
       r_.values[i] = r_.values[i] + elt1_a * elt2_a + elt1_b * elt2_b;
     }
     return simde_float32x4_from_private(r_);
@@ -218,8 +217,6 @@ simde_vbfdotq_f32(simde_float32x4_t r, simde_bfloat16x8_t a, simde_bfloat16x8_t 
   #undef vbfdotq_f32
   #define vbfdotq_f32(r, a, b) simde_vbfdotq_f32((r), (a), (b))
 #endif
-// TODO: BFLOAT16
-*/
 
 SIMDE_END_DECLS_
 HEDLEY_DIAGNOSTIC_POP
