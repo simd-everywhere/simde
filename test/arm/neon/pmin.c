@@ -4,7 +4,69 @@
 #include "../../../simde/arm/neon/pmin.h"
 
 static int
+test_simde_vpmin_f16 (SIMDE_MUNIT_TEST_ARGS) {
+#if 1
+  struct {
+    simde_float16 a[4];
+    simde_float16 b[4];
+    simde_float16 r[4];
+  } test_vec[] = {
+    { {  SIMDE_FLOAT16_VALUE(    13.169),  SIMDE_FLOAT16_VALUE(    -5.382),  SIMDE_FLOAT16_VALUE(     0.466),  SIMDE_FLOAT16_VALUE(     3.873) },
+      {  SIMDE_FLOAT16_VALUE(     1.064),  SIMDE_FLOAT16_VALUE(    -6.537),  SIMDE_FLOAT16_VALUE(   -12.388),  SIMDE_FLOAT16_VALUE(     9.822) },
+      {  SIMDE_FLOAT16_VALUE(    -5.382),  SIMDE_FLOAT16_VALUE(     0.466),  SIMDE_FLOAT16_VALUE(    -6.537),  SIMDE_FLOAT16_VALUE(   -12.388) } },
+    { {  SIMDE_FLOAT16_VALUE(    13.718),  SIMDE_FLOAT16_VALUE(    -4.697),  SIMDE_FLOAT16_VALUE(    28.491),  SIMDE_FLOAT16_VALUE(   -17.834) },
+      {  SIMDE_FLOAT16_VALUE(   -26.034),  SIMDE_FLOAT16_VALUE(    15.190),  SIMDE_FLOAT16_VALUE(     3.410),  SIMDE_FLOAT16_VALUE(    22.200) },
+      {  SIMDE_FLOAT16_VALUE(    -4.697),  SIMDE_FLOAT16_VALUE(   -17.834),  SIMDE_FLOAT16_VALUE(   -26.034),  SIMDE_FLOAT16_VALUE(     3.410) } },
+    { {  SIMDE_FLOAT16_VALUE(    10.326),  SIMDE_FLOAT16_VALUE(    21.106),  SIMDE_FLOAT16_VALUE(    29.367),  SIMDE_FLOAT16_VALUE(     7.557) },
+      {  SIMDE_FLOAT16_VALUE(   -27.084),  SIMDE_FLOAT16_VALUE(   -12.434),  SIMDE_FLOAT16_VALUE(   -13.678),  SIMDE_FLOAT16_VALUE(    -6.027) },
+      {  SIMDE_FLOAT16_VALUE(    10.326),  SIMDE_FLOAT16_VALUE(     7.557),  SIMDE_FLOAT16_VALUE(   -27.084),  SIMDE_FLOAT16_VALUE(   -13.678) } },
+    { {  SIMDE_FLOAT16_VALUE(   -15.829),  SIMDE_FLOAT16_VALUE(    -2.019),  SIMDE_FLOAT16_VALUE(    24.550),  SIMDE_FLOAT16_VALUE(     0.023) },
+      {  SIMDE_FLOAT16_VALUE(    19.285),  SIMDE_FLOAT16_VALUE(     1.609),  SIMDE_FLOAT16_VALUE(    20.296),  SIMDE_FLOAT16_VALUE(   -27.403) },
+      {  SIMDE_FLOAT16_VALUE(   -15.829),  SIMDE_FLOAT16_VALUE(     0.023),  SIMDE_FLOAT16_VALUE(     1.609),  SIMDE_FLOAT16_VALUE(   -27.403) } },
+    { {  SIMDE_FLOAT16_VALUE(   -16.761),  SIMDE_FLOAT16_VALUE(    17.096),  SIMDE_FLOAT16_VALUE(     7.539),  SIMDE_FLOAT16_VALUE(   -19.542) },
+      {  SIMDE_FLOAT16_VALUE(   -12.561),  SIMDE_FLOAT16_VALUE(    10.747),  SIMDE_FLOAT16_VALUE(    -2.499),  SIMDE_FLOAT16_VALUE(   -25.387) },
+      {  SIMDE_FLOAT16_VALUE(   -16.761),  SIMDE_FLOAT16_VALUE(   -19.542),  SIMDE_FLOAT16_VALUE(   -12.561),  SIMDE_FLOAT16_VALUE(   -25.387) } },
+    { {  SIMDE_FLOAT16_VALUE(    15.620),  SIMDE_FLOAT16_VALUE(    10.699),  SIMDE_FLOAT16_VALUE(    20.140),  SIMDE_FLOAT16_VALUE(   -29.036) },
+      {  SIMDE_FLOAT16_VALUE(   -29.857),  SIMDE_FLOAT16_VALUE(   -14.651),  SIMDE_FLOAT16_VALUE(    -7.932),  SIMDE_FLOAT16_VALUE(    16.315) },
+      {  SIMDE_FLOAT16_VALUE(    10.699),  SIMDE_FLOAT16_VALUE(   -29.036),  SIMDE_FLOAT16_VALUE(   -29.857),  SIMDE_FLOAT16_VALUE(    -7.932) } },
+    { {  SIMDE_FLOAT16_VALUE(   -15.220),  SIMDE_FLOAT16_VALUE(    26.006),  SIMDE_FLOAT16_VALUE(    -8.258),  SIMDE_FLOAT16_VALUE(    -6.292) },
+      {  SIMDE_FLOAT16_VALUE(     9.642),  SIMDE_FLOAT16_VALUE(   -21.581),  SIMDE_FLOAT16_VALUE(    25.778),  SIMDE_FLOAT16_VALUE(   -23.076) },
+      {  SIMDE_FLOAT16_VALUE(   -15.220),  SIMDE_FLOAT16_VALUE(    -8.258),  SIMDE_FLOAT16_VALUE(   -21.581),  SIMDE_FLOAT16_VALUE(   -23.076) } },
+    { {  SIMDE_FLOAT16_VALUE(     4.380),  SIMDE_FLOAT16_VALUE(   -17.359),  SIMDE_FLOAT16_VALUE(    12.558),  SIMDE_FLOAT16_VALUE(     5.577) },
+      {  SIMDE_FLOAT16_VALUE(    -8.179),  SIMDE_FLOAT16_VALUE(   -29.585),  SIMDE_FLOAT16_VALUE(    10.716),  SIMDE_FLOAT16_VALUE(   -28.758) },
+      {  SIMDE_FLOAT16_VALUE(   -17.359),  SIMDE_FLOAT16_VALUE(     5.577),  SIMDE_FLOAT16_VALUE(   -29.585),  SIMDE_FLOAT16_VALUE(   -28.758) } },
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
+    simde_float16x4_t a, b, r;
+
+    a = simde_vld1_f16(test_vec[i].a);
+    b = simde_vld1_f16(test_vec[i].b);
+    r = simde_vpmin_f16(a, b);
+
+    simde_test_arm_neon_assert_equal_f16x4(r, simde_vld1_f16(test_vec[i].r), 1);
+  }
+
+  return 0;
+
+#else
+  fputc('\n', stdout);
+  for (int i = 0 ; i < 8 ; i++) {
+    simde_float16x4_t a = simde_test_arm_neon_random_f16x4(-100.0f, 100.0f);
+    simde_float16x4_t b = simde_test_arm_neon_random_f16x4(-100.0f, 100.0f);
+    simde_float16x4_t r = simde_vpmin_f16(a, b);
+
+    simde_test_arm_neon_write_f16x4(2, a, SIMDE_TEST_VEC_POS_FIRST);
+    simde_test_arm_neon_write_f16x4(2, b, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_arm_neon_write_f16x4(2, r, SIMDE_TEST_VEC_POS_LAST);
+  }
+  return 1;
+#endif
+}
+
+static int
 test_simde_vpmin_f32 (SIMDE_MUNIT_TEST_ARGS) {
+#if 1
   struct {
     simde_float32 a[2];
     simde_float32 b[2];
@@ -47,10 +109,25 @@ test_simde_vpmin_f32 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
+#else
+  fputc('\n', stdout);
+  for (int i = 0 ; i < 8 ; i++) {
+    simde_float32x2_t a = simde_test_arm_neon_random_f32x2(-1000.0f, 1000.0f);
+    simde_float32x2_t b = simde_test_arm_neon_random_f32x2(-1000.0f, 1000.0f);
+    simde_float32x2_t r = simde_vpmin_f32(a, b);
+
+    simde_test_arm_neon_write_f32x2(2, a, SIMDE_TEST_VEC_POS_FIRST);
+    simde_test_arm_neon_write_f32x2(2, b, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_arm_neon_write_f32x2(2, r, SIMDE_TEST_VEC_POS_LAST);
+  }
+  return 1;
+#endif
 }
 
 static int
 test_simde_vpmin_s8 (SIMDE_MUNIT_TEST_ARGS) {
+#if 1
   struct {
     int8_t a[8];
     int8_t b[8];
@@ -91,10 +168,25 @@ test_simde_vpmin_s8 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
+#else
+  fputc('\n', stdout);
+  for (int i = 0 ; i < 8 ; i++) {
+    simde_int8x8_t a = simde_test_arm_neon_random_i8x8();
+    simde_int8x8_t b = simde_test_arm_neon_random_i8x8();
+    simde_int8x8_t r = simde_vpmin_s8(a, b);
+
+    simde_test_arm_neon_write_i8x8(2, a, SIMDE_TEST_VEC_POS_FIRST);
+    simde_test_arm_neon_write_i8x8(2, b, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_arm_neon_write_i8x8(2, r, SIMDE_TEST_VEC_POS_LAST);
+  }
+  return 1;
+#endif
 }
 
 static int
 test_simde_vpmin_s16 (SIMDE_MUNIT_TEST_ARGS) {
+#if 1
   struct {
     int16_t a[4];
     int16_t b[4];
@@ -135,10 +227,25 @@ test_simde_vpmin_s16 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
+#else
+  fputc('\n', stdout);
+  for (int i = 0 ; i < 8 ; i++) {
+    simde_int16x4_t a = simde_test_arm_neon_random_i16x4();
+    simde_int16x4_t b = simde_test_arm_neon_random_i16x4();
+    simde_int16x4_t r = simde_vpmin_s16(a, b);
+
+    simde_test_arm_neon_write_i16x4(2, a, SIMDE_TEST_VEC_POS_FIRST);
+    simde_test_arm_neon_write_i16x4(2, b, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_arm_neon_write_i16x4(2, r, SIMDE_TEST_VEC_POS_LAST);
+  }
+  return 1;
+#endif
 }
 
 static int
 test_simde_vpmin_s32 (SIMDE_MUNIT_TEST_ARGS) {
+#if 1
   struct {
     int32_t a[2];
     int32_t b[2];
@@ -179,10 +286,25 @@ test_simde_vpmin_s32 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
+#else
+  fputc('\n', stdout);
+  for (int i = 0 ; i < 8 ; i++) {
+    simde_int32x2_t a = simde_test_arm_neon_random_i32x2();
+    simde_int32x2_t b = simde_test_arm_neon_random_i32x2();
+    simde_int32x2_t r = simde_vpmin_s32(a, b);
+
+    simde_test_arm_neon_write_i32x2(2, a, SIMDE_TEST_VEC_POS_FIRST);
+    simde_test_arm_neon_write_i32x2(2, b, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_arm_neon_write_i32x2(2, r, SIMDE_TEST_VEC_POS_LAST);
+  }
+  return 1;
+#endif
 }
 
 static int
 test_simde_vpmin_u8 (SIMDE_MUNIT_TEST_ARGS) {
+#if 1
   struct {
     uint8_t a[16];
     uint8_t b[16];
@@ -223,10 +345,25 @@ test_simde_vpmin_u8 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
+#else
+  fputc('\n', stdout);
+  for (int i = 0 ; i < 8 ; i++) {
+    simde_uint8x16_t a = simde_test_arm_neon_random_u8x16();
+    simde_uint8x16_t b = simde_test_arm_neon_random_u8x16();
+    simde_uint8x16_t r = simde_vpmin_u8(a, b);
+
+    simde_test_arm_neon_write_u8x16(2, a, SIMDE_TEST_VEC_POS_FIRST);
+    simde_test_arm_neon_write_u8x16(2, b, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_arm_neon_write_u8x16(2, r, SIMDE_TEST_VEC_POS_LAST);
+  }
+  return 1;
+#endif
 }
 
 static int
 test_simde_vpmin_u16 (SIMDE_MUNIT_TEST_ARGS) {
+#if 1
   struct {
     uint16_t a[4];
     uint16_t b[4];
@@ -266,10 +403,25 @@ test_simde_vpmin_u16 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
+#else
+  fputc('\n', stdout);
+  for (int i = 0 ; i < 8 ; i++) {
+    simde_uint16x4_t a = simde_test_arm_neon_random_u16x4();
+    simde_uint16x4_t b = simde_test_arm_neon_random_u16x4();
+    simde_uint16x4_t r = simde_vpmin_u16(a, b);
+
+    simde_test_arm_neon_write_u16x4(2, a, SIMDE_TEST_VEC_POS_FIRST);
+    simde_test_arm_neon_write_u16x4(2, b, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_arm_neon_write_u16x4(2, r, SIMDE_TEST_VEC_POS_LAST);
+  }
+  return 1;
+#endif
 }
 
 static int
 test_simde_vpmin_u32 (SIMDE_MUNIT_TEST_ARGS) {
+#if 1
   struct {
     uint32_t a[2];
     uint32_t b[2];
@@ -309,10 +461,107 @@ test_simde_vpmin_u32 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
+#else
+  fputc('\n', stdout);
+  for (int i = 0 ; i < 8 ; i++) {
+    simde_uint32x2_t a = simde_test_arm_neon_random_u32x2();
+    simde_uint32x2_t b = simde_test_arm_neon_random_u32x2();
+    simde_uint32x2_t r = simde_vpmin_u32(a, b);
+
+    simde_test_arm_neon_write_u32x2(2, a, SIMDE_TEST_VEC_POS_FIRST);
+    simde_test_arm_neon_write_u32x2(2, b, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_arm_neon_write_u32x2(2, r, SIMDE_TEST_VEC_POS_LAST);
+  }
+  return 1;
+#endif
+}
+
+static int
+test_simde_vpminq_f16 (SIMDE_MUNIT_TEST_ARGS) {
+#if 1
+  struct {
+    simde_float16 a[8];
+    simde_float16 b[8];
+    simde_float16 r[8];
+  } test_vec[] = {
+    { {  SIMDE_FLOAT16_VALUE(   -23.985),  SIMDE_FLOAT16_VALUE(    21.728),  SIMDE_FLOAT16_VALUE(    19.395),  SIMDE_FLOAT16_VALUE(   -12.402),
+         SIMDE_FLOAT16_VALUE(   -10.357),  SIMDE_FLOAT16_VALUE(   -15.900),  SIMDE_FLOAT16_VALUE(    22.373),  SIMDE_FLOAT16_VALUE(    12.074) },
+      {  SIMDE_FLOAT16_VALUE(    25.919),  SIMDE_FLOAT16_VALUE(    -6.119),  SIMDE_FLOAT16_VALUE(    29.408),  SIMDE_FLOAT16_VALUE(    12.779),
+         SIMDE_FLOAT16_VALUE(     5.224),  SIMDE_FLOAT16_VALUE(   -19.106),  SIMDE_FLOAT16_VALUE(   -14.508),  SIMDE_FLOAT16_VALUE(     4.713) },
+      {  SIMDE_FLOAT16_VALUE(   -23.985),  SIMDE_FLOAT16_VALUE(   -12.402),  SIMDE_FLOAT16_VALUE(   -15.900),  SIMDE_FLOAT16_VALUE(    12.074),
+         SIMDE_FLOAT16_VALUE(    -6.119),  SIMDE_FLOAT16_VALUE(    12.779),  SIMDE_FLOAT16_VALUE(   -19.106),  SIMDE_FLOAT16_VALUE(   -14.508) } },
+    { {  SIMDE_FLOAT16_VALUE(    22.222),  SIMDE_FLOAT16_VALUE(    29.360),  SIMDE_FLOAT16_VALUE(     7.575),  SIMDE_FLOAT16_VALUE(    -2.926),
+         SIMDE_FLOAT16_VALUE(   -22.328),  SIMDE_FLOAT16_VALUE(    -4.285),  SIMDE_FLOAT16_VALUE(   -26.063),  SIMDE_FLOAT16_VALUE(    16.711) },
+      {  SIMDE_FLOAT16_VALUE(    10.849),  SIMDE_FLOAT16_VALUE(   -24.017),  SIMDE_FLOAT16_VALUE(    -9.818),  SIMDE_FLOAT16_VALUE(     5.659),
+         SIMDE_FLOAT16_VALUE(     4.838),  SIMDE_FLOAT16_VALUE(    13.243),  SIMDE_FLOAT16_VALUE(   -28.408),  SIMDE_FLOAT16_VALUE(    29.452) },
+      {  SIMDE_FLOAT16_VALUE(    22.222),  SIMDE_FLOAT16_VALUE(    -2.926),  SIMDE_FLOAT16_VALUE(   -22.328),  SIMDE_FLOAT16_VALUE(   -26.063),
+         SIMDE_FLOAT16_VALUE(   -24.017),  SIMDE_FLOAT16_VALUE(    -9.818),  SIMDE_FLOAT16_VALUE(     4.838),  SIMDE_FLOAT16_VALUE(   -28.408) } },
+    { {  SIMDE_FLOAT16_VALUE(    21.158),  SIMDE_FLOAT16_VALUE(    13.185),  SIMDE_FLOAT16_VALUE(     2.797),  SIMDE_FLOAT16_VALUE(   -25.373),
+         SIMDE_FLOAT16_VALUE(   -27.050),  SIMDE_FLOAT16_VALUE(    28.620),  SIMDE_FLOAT16_VALUE(     6.974),  SIMDE_FLOAT16_VALUE(   -27.484) },
+      {  SIMDE_FLOAT16_VALUE(   -10.337),  SIMDE_FLOAT16_VALUE(   -15.368),  SIMDE_FLOAT16_VALUE(    14.068),  SIMDE_FLOAT16_VALUE(     3.896),
+         SIMDE_FLOAT16_VALUE(   -19.481),  SIMDE_FLOAT16_VALUE(   -23.876),  SIMDE_FLOAT16_VALUE(    21.495),  SIMDE_FLOAT16_VALUE(   -16.594) },
+      {  SIMDE_FLOAT16_VALUE(    13.185),  SIMDE_FLOAT16_VALUE(   -25.373),  SIMDE_FLOAT16_VALUE(   -27.050),  SIMDE_FLOAT16_VALUE(   -27.484),
+         SIMDE_FLOAT16_VALUE(   -15.368),  SIMDE_FLOAT16_VALUE(     3.896),  SIMDE_FLOAT16_VALUE(   -23.876),  SIMDE_FLOAT16_VALUE(   -16.594) } },
+    { {  SIMDE_FLOAT16_VALUE(    11.309),  SIMDE_FLOAT16_VALUE(    17.395),  SIMDE_FLOAT16_VALUE(    10.407),  SIMDE_FLOAT16_VALUE(     7.376),
+         SIMDE_FLOAT16_VALUE(     2.511),  SIMDE_FLOAT16_VALUE(    -3.557),  SIMDE_FLOAT16_VALUE(    27.356),  SIMDE_FLOAT16_VALUE(   -14.333) },
+      {  SIMDE_FLOAT16_VALUE(   -16.334),  SIMDE_FLOAT16_VALUE(   -25.126),  SIMDE_FLOAT16_VALUE(    25.621),  SIMDE_FLOAT16_VALUE(   -25.149),
+         SIMDE_FLOAT16_VALUE(    -4.951),  SIMDE_FLOAT16_VALUE(   -20.067),  SIMDE_FLOAT16_VALUE(   -15.839),  SIMDE_FLOAT16_VALUE(    28.179) },
+      {  SIMDE_FLOAT16_VALUE(    11.309),  SIMDE_FLOAT16_VALUE(     7.376),  SIMDE_FLOAT16_VALUE(    -3.557),  SIMDE_FLOAT16_VALUE(   -14.333),
+         SIMDE_FLOAT16_VALUE(   -25.126),  SIMDE_FLOAT16_VALUE(   -25.149),  SIMDE_FLOAT16_VALUE(   -20.067),  SIMDE_FLOAT16_VALUE(   -15.839) } },
+    { {  SIMDE_FLOAT16_VALUE(     1.942),  SIMDE_FLOAT16_VALUE(     3.211),  SIMDE_FLOAT16_VALUE(    26.796),  SIMDE_FLOAT16_VALUE(    -2.509),
+         SIMDE_FLOAT16_VALUE(     4.898),  SIMDE_FLOAT16_VALUE(     5.004),  SIMDE_FLOAT16_VALUE(    20.031),  SIMDE_FLOAT16_VALUE(   -28.658) },
+      {  SIMDE_FLOAT16_VALUE(   -28.570),  SIMDE_FLOAT16_VALUE(    -1.500),  SIMDE_FLOAT16_VALUE(    19.427),  SIMDE_FLOAT16_VALUE(   -14.060),
+         SIMDE_FLOAT16_VALUE(    -6.201),  SIMDE_FLOAT16_VALUE(    28.899),  SIMDE_FLOAT16_VALUE(    11.602),  SIMDE_FLOAT16_VALUE(   -19.559) },
+      {  SIMDE_FLOAT16_VALUE(     1.942),  SIMDE_FLOAT16_VALUE(    -2.509),  SIMDE_FLOAT16_VALUE(     4.898),  SIMDE_FLOAT16_VALUE(   -28.658),
+         SIMDE_FLOAT16_VALUE(   -28.570),  SIMDE_FLOAT16_VALUE(   -14.060),  SIMDE_FLOAT16_VALUE(    -6.201),  SIMDE_FLOAT16_VALUE(   -19.559) } },
+    { {  SIMDE_FLOAT16_VALUE(   -21.599),  SIMDE_FLOAT16_VALUE(   -17.832),  SIMDE_FLOAT16_VALUE(     7.916),  SIMDE_FLOAT16_VALUE(    12.083),
+         SIMDE_FLOAT16_VALUE(    23.794),  SIMDE_FLOAT16_VALUE(   -19.141),  SIMDE_FLOAT16_VALUE(     0.891),  SIMDE_FLOAT16_VALUE(    -8.443) },
+      {  SIMDE_FLOAT16_VALUE(    16.811),  SIMDE_FLOAT16_VALUE(    16.231),  SIMDE_FLOAT16_VALUE(     1.757),  SIMDE_FLOAT16_VALUE(    -7.156),
+         SIMDE_FLOAT16_VALUE(    27.852),  SIMDE_FLOAT16_VALUE(   -10.258),  SIMDE_FLOAT16_VALUE(   -15.540),  SIMDE_FLOAT16_VALUE(    26.888) },
+      {  SIMDE_FLOAT16_VALUE(   -21.599),  SIMDE_FLOAT16_VALUE(     7.916),  SIMDE_FLOAT16_VALUE(   -19.141),  SIMDE_FLOAT16_VALUE(    -8.443),
+         SIMDE_FLOAT16_VALUE(    16.231),  SIMDE_FLOAT16_VALUE(    -7.156),  SIMDE_FLOAT16_VALUE(   -10.258),  SIMDE_FLOAT16_VALUE(   -15.540) } },
+    { {  SIMDE_FLOAT16_VALUE(     5.540),  SIMDE_FLOAT16_VALUE(    -0.559),  SIMDE_FLOAT16_VALUE(   -27.866),  SIMDE_FLOAT16_VALUE(    28.209),
+         SIMDE_FLOAT16_VALUE(    28.118),  SIMDE_FLOAT16_VALUE(    -8.269),  SIMDE_FLOAT16_VALUE(    10.353),  SIMDE_FLOAT16_VALUE(   -12.633) },
+      {  SIMDE_FLOAT16_VALUE(    22.343),  SIMDE_FLOAT16_VALUE(   -15.007),  SIMDE_FLOAT16_VALUE(    15.680),  SIMDE_FLOAT16_VALUE(    13.351),
+         SIMDE_FLOAT16_VALUE(    16.688),  SIMDE_FLOAT16_VALUE(    18.146),  SIMDE_FLOAT16_VALUE(    21.875),  SIMDE_FLOAT16_VALUE(   -28.330) },
+      {  SIMDE_FLOAT16_VALUE(    -0.559),  SIMDE_FLOAT16_VALUE(   -27.866),  SIMDE_FLOAT16_VALUE(    -8.269),  SIMDE_FLOAT16_VALUE(   -12.633),
+         SIMDE_FLOAT16_VALUE(   -15.007),  SIMDE_FLOAT16_VALUE(    13.351),  SIMDE_FLOAT16_VALUE(    16.688),  SIMDE_FLOAT16_VALUE(   -28.330) } },
+    { {  SIMDE_FLOAT16_VALUE(    11.142),  SIMDE_FLOAT16_VALUE(   -24.899),  SIMDE_FLOAT16_VALUE(    16.815),  SIMDE_FLOAT16_VALUE(    -8.303),
+         SIMDE_FLOAT16_VALUE(    23.458),  SIMDE_FLOAT16_VALUE(    -0.210),  SIMDE_FLOAT16_VALUE(    26.797),  SIMDE_FLOAT16_VALUE(    13.831) },
+      {  SIMDE_FLOAT16_VALUE(     3.682),  SIMDE_FLOAT16_VALUE(    17.924),  SIMDE_FLOAT16_VALUE(    28.047),  SIMDE_FLOAT16_VALUE(    21.592),
+         SIMDE_FLOAT16_VALUE(    15.767),  SIMDE_FLOAT16_VALUE(   -23.667),  SIMDE_FLOAT16_VALUE(    -6.954),  SIMDE_FLOAT16_VALUE(   -26.626) },
+      {  SIMDE_FLOAT16_VALUE(   -24.899),  SIMDE_FLOAT16_VALUE(    -8.303),  SIMDE_FLOAT16_VALUE(    -0.210),  SIMDE_FLOAT16_VALUE(    13.831),
+         SIMDE_FLOAT16_VALUE(     3.682),  SIMDE_FLOAT16_VALUE(    21.592),  SIMDE_FLOAT16_VALUE(   -23.667),  SIMDE_FLOAT16_VALUE(   -26.626) } },
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
+    simde_float16x8_t a = simde_vld1q_f16(test_vec[i].a);
+    simde_float16x8_t b = simde_vld1q_f16(test_vec[i].b);
+    simde_float16x8_t r = simde_vpminq_f16(a, b);
+    simde_test_arm_neon_assert_equal_f16x8(r, simde_vld1q_f16(test_vec[i].r), 1);
+  }
+
+  return 0;
+
+#else
+  fputc('\n', stdout);
+  for (int i = 0 ; i < 8 ; i++) {
+    simde_float16x8_t a = simde_test_arm_neon_random_f16x8(-100.0f, 100.0f);
+    simde_float16x8_t b = simde_test_arm_neon_random_f16x8(-100.0f, 100.0f);
+    simde_float16x8_t r = simde_vpminq_f16(a, b);
+
+    simde_test_arm_neon_write_f16x8(2, a, SIMDE_TEST_VEC_POS_FIRST);
+    simde_test_arm_neon_write_f16x8(2, b, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_arm_neon_write_f16x8(2, r, SIMDE_TEST_VEC_POS_LAST);
+  }
+  return 1;
+#endif
 }
 
 static int
 test_simde_vpminq_f32 (SIMDE_MUNIT_TEST_ARGS) {
+#if 1
   struct {
     simde_float32 a[4];
     simde_float32 b[4];
@@ -352,10 +601,25 @@ test_simde_vpminq_f32 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
+#else
+  fputc('\n', stdout);
+  for (int i = 0 ; i < 8 ; i++) {
+    simde_float32x4_t a = simde_test_arm_neon_random_f32x4(-1000.0f, 1000.0f);
+    simde_float32x4_t b = simde_test_arm_neon_random_f32x4(-1000.0f, 1000.0f);
+    simde_float32x4_t r = simde_vpminq_f32(a, b);
+
+    simde_test_arm_neon_write_f32x4(2, a, SIMDE_TEST_VEC_POS_FIRST);
+    simde_test_arm_neon_write_f32x4(2, b, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_arm_neon_write_f32x4(2, r, SIMDE_TEST_VEC_POS_LAST);
+  }
+  return 1;
+#endif
 }
 
 static int
 test_simde_vpminq_f64 (SIMDE_MUNIT_TEST_ARGS) {
+#if 1
   struct {
     simde_float64 a[2];
     simde_float64 b[2];
@@ -396,10 +660,25 @@ test_simde_vpminq_f64 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
+#else
+  fputc('\n', stdout);
+  for (int i = 0 ; i < 8 ; i++) {
+    simde_float64x2_t a = simde_test_arm_neon_random_f64x2(SIMDE_FLOAT64_C(-1000.0), SIMDE_FLOAT64_C(1000.0));
+    simde_float64x2_t b = simde_test_arm_neon_random_f64x2(SIMDE_FLOAT64_C(-1000.0), SIMDE_FLOAT64_C(1000.0));
+    simde_float64x2_t r = simde_vpminq_f64(a, b);
+
+    simde_test_arm_neon_write_f64x2(2, a, SIMDE_TEST_VEC_POS_FIRST);
+    simde_test_arm_neon_write_f64x2(2, b, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_arm_neon_write_f64x2(2, r, SIMDE_TEST_VEC_POS_LAST);
+  }
+  return 1;
+#endif
 }
 
 static int
 test_simde_vpminq_s8 (SIMDE_MUNIT_TEST_ARGS) {
+#if 1
   struct {
     int8_t a[16];
     int8_t b[16];
@@ -464,10 +743,25 @@ test_simde_vpminq_s8 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
+#else
+  fputc('\n', stdout);
+  for (int i = 0 ; i < 8 ; i++) {
+    simde_int8x16_t a = simde_test_arm_neon_random_i8x16();
+    simde_int8x16_t b = simde_test_arm_neon_random_i8x16();
+    simde_int8x16_t r = simde_vpminq_s8(a, b);
+
+    simde_test_arm_neon_write_i8x16(2, a, SIMDE_TEST_VEC_POS_FIRST);
+    simde_test_arm_neon_write_i8x16(2, b, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_arm_neon_write_i8x16(2, r, SIMDE_TEST_VEC_POS_LAST);
+  }
+  return 1;
+#endif
 }
 
 static int
 test_simde_vpminq_s16 (SIMDE_MUNIT_TEST_ARGS) {
+#if 1
   struct {
     int16_t a[8];
     int16_t b[8];
@@ -508,10 +802,25 @@ test_simde_vpminq_s16 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
+#else
+  fputc('\n', stdout);
+  for (int i = 0 ; i < 8 ; i++) {
+    simde_int16x8_t a = simde_test_arm_neon_random_i16x8();
+    simde_int16x8_t b = simde_test_arm_neon_random_i16x8();
+    simde_int16x8_t r = simde_vpminq_s16(a, b);
+
+    simde_test_arm_neon_write_i16x8(2, a, SIMDE_TEST_VEC_POS_FIRST);
+    simde_test_arm_neon_write_i16x8(2, b, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_arm_neon_write_i16x8(2, r, SIMDE_TEST_VEC_POS_LAST);
+  }
+  return 1;
+#endif
 }
 
 static int
 test_simde_vpminq_s32 (SIMDE_MUNIT_TEST_ARGS) {
+#if 1
   struct {
     int32_t a[4];
     int32_t b[4];
@@ -551,10 +860,25 @@ test_simde_vpminq_s32 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
+#else
+  fputc('\n', stdout);
+  for (int i = 0 ; i < 8 ; i++) {
+    simde_int32x4_t a = simde_test_arm_neon_random_i32x4();
+    simde_int32x4_t b = simde_test_arm_neon_random_i32x4();
+    simde_int32x4_t r = simde_vpminq_s32(a, b);
+
+    simde_test_arm_neon_write_i32x4(2, a, SIMDE_TEST_VEC_POS_FIRST);
+    simde_test_arm_neon_write_i32x4(2, b, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_arm_neon_write_i32x4(2, r, SIMDE_TEST_VEC_POS_LAST);
+  }
+  return 1;
+#endif
 }
 
 static int
 test_simde_vpminq_u8 (SIMDE_MUNIT_TEST_ARGS) {
+#if 1
   struct {
     uint8_t a[16];
     uint8_t b[16];
@@ -619,10 +943,25 @@ test_simde_vpminq_u8 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
+#else
+  fputc('\n', stdout);
+  for (int i = 0 ; i < 8 ; i++) {
+    simde_uint8x16_t a = simde_test_arm_neon_random_u8x16();
+    simde_uint8x16_t b = simde_test_arm_neon_random_u8x16();
+    simde_uint8x16_t r = simde_vpminq_u8(a, b);
+
+    simde_test_arm_neon_write_u8x16(2, a, SIMDE_TEST_VEC_POS_FIRST);
+    simde_test_arm_neon_write_u8x16(2, b, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_arm_neon_write_u8x16(2, r, SIMDE_TEST_VEC_POS_LAST);
+  }
+  return 1;
+#endif
 }
 
 static int
 test_simde_vpminq_u16 (SIMDE_MUNIT_TEST_ARGS) {
+#if 1
   struct {
     uint16_t a[8];
     uint16_t b[8];
@@ -662,10 +1001,25 @@ test_simde_vpminq_u16 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
+#else
+  fputc('\n', stdout);
+  for (int i = 0 ; i < 8 ; i++) {
+    simde_uint16x8_t a = simde_test_arm_neon_random_u16x8();
+    simde_uint16x8_t b = simde_test_arm_neon_random_u16x8();
+    simde_uint16x8_t r = simde_vpminq_u16(a, b);
+
+    simde_test_arm_neon_write_u16x8(2, a, SIMDE_TEST_VEC_POS_FIRST);
+    simde_test_arm_neon_write_u16x8(2, b, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_arm_neon_write_u16x8(2, r, SIMDE_TEST_VEC_POS_LAST);
+  }
+  return 1;
+#endif
 }
 
 static int
 test_simde_vpminq_u32 (SIMDE_MUNIT_TEST_ARGS) {
+#if 1
   struct {
     uint32_t a[4];
     uint32_t b[4];
@@ -706,6 +1060,20 @@ test_simde_vpminq_u32 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
+#else
+  fputc('\n', stdout);
+  for (int i = 0 ; i < 8 ; i++) {
+    simde_uint32x4_t a = simde_test_arm_neon_random_u32x4();
+    simde_uint32x4_t b = simde_test_arm_neon_random_u32x4();
+    simde_uint32x4_t r = simde_vpminq_u32(a, b);
+
+    simde_test_arm_neon_write_u32x4(2, a, SIMDE_TEST_VEC_POS_FIRST);
+    simde_test_arm_neon_write_u32x4(2, b, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_arm_neon_write_u32x4(2, r, SIMDE_TEST_VEC_POS_LAST);
+  }
+  return 1;
+#endif
 }
 
 static int
@@ -799,6 +1167,7 @@ test_simde_vpminqd_f64 (SIMDE_MUNIT_TEST_ARGS) {
 }
 
 SIMDE_TEST_FUNC_LIST_BEGIN
+SIMDE_TEST_FUNC_LIST_ENTRY(vpmin_f16)
 SIMDE_TEST_FUNC_LIST_ENTRY(vpmin_f32)
 SIMDE_TEST_FUNC_LIST_ENTRY(vpmin_s8)
 SIMDE_TEST_FUNC_LIST_ENTRY(vpmin_s16)
@@ -807,6 +1176,7 @@ SIMDE_TEST_FUNC_LIST_ENTRY(vpmin_u8)
 SIMDE_TEST_FUNC_LIST_ENTRY(vpmin_u16)
 SIMDE_TEST_FUNC_LIST_ENTRY(vpmin_u32)
 
+SIMDE_TEST_FUNC_LIST_ENTRY(vpminq_f16)
 SIMDE_TEST_FUNC_LIST_ENTRY(vpminq_f32)
 SIMDE_TEST_FUNC_LIST_ENTRY(vpminq_f64)
 SIMDE_TEST_FUNC_LIST_ENTRY(vpminq_s8)

@@ -130,6 +130,9 @@
 #if defined(__ARM_FEATURE_CRYPTO)
 #  define SIMDE_ARCH_ARM_CRYPTO
 #endif
+#if defined(__ARM_FEATURE_QRDMX)
+#  define SIMDE_ARCH_ARM_QRDMX
+#endif
 
 /* Blackfin
    <https://en.wikipedia.org/wiki/Blackfin> */

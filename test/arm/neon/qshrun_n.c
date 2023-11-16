@@ -4,6 +4,106 @@
 #include "../../../simde/arm/neon/qshrun_n.h"
 
 static int
+test_simde_vqshrunh_n_s16 (SIMDE_MUNIT_TEST_ARGS) {
+#if 1
+  static const struct {
+    int16_t a[1];
+    uint8_t r1[1];
+    uint8_t r3[1];
+    uint8_t r5[1];
+    uint8_t r6[1];
+    uint8_t r8[1];
+  } test_vec[] = {
+    { {  INT16_C( 16778) },
+      {    UINT8_MAX },
+      {    UINT8_MAX },
+      {    UINT8_MAX },
+      {    UINT8_MAX },
+      { UINT8_C( 65) } },
+    { { -INT16_C( 24341) },
+      { UINT8_C(  0) },
+      { UINT8_C(  0) },
+      { UINT8_C(  0) },
+      { UINT8_C(  0) },
+      { UINT8_C(  0) } },
+    { { -INT16_C( 18009) },
+      { UINT8_C(  0) },
+      { UINT8_C(  0) },
+      { UINT8_C(  0) },
+      { UINT8_C(  0) },
+      { UINT8_C(  0) } },
+    { { -INT16_C( 10419) },
+      { UINT8_C(  0) },
+      { UINT8_C(  0) },
+      { UINT8_C(  0) },
+      { UINT8_C(  0) },
+      { UINT8_C(  0) } },
+    { {  INT16_C(  6655) },
+      {    UINT8_MAX },
+      {    UINT8_MAX },
+      { UINT8_C(207) },
+      { UINT8_C(103) },
+      { UINT8_C( 25) } },
+    { { -INT16_C(  4864) },
+      { UINT8_C(  0) },
+      { UINT8_C(  0) },
+      { UINT8_C(  0) },
+      { UINT8_C(  0) },
+      { UINT8_C(  0) } },
+    { {  INT16_C( 13284) },
+      {    UINT8_MAX },
+      {    UINT8_MAX },
+      {    UINT8_MAX },
+      { UINT8_C(207) },
+      { UINT8_C( 51) } },
+    { {  INT16_C( 14411) },
+      {    UINT8_MAX },
+      {    UINT8_MAX },
+      {    UINT8_MAX },
+      { UINT8_C(225) },
+      { UINT8_C( 56) } },
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
+    int16_t a = test_vec[i].a[0];
+
+    uint8_t r1 = simde_vqshrunh_n_s16(a, 1);
+    uint8_t r3 = simde_vqshrunh_n_s16(a, 3);
+    uint8_t r5 = simde_vqshrunh_n_s16(a, 5);
+    uint8_t r6 = simde_vqshrunh_n_s16(a, 6);
+    uint8_t r8 = simde_vqshrunh_n_s16(a, 8);
+
+    simde_assert_equal_u8(r1, test_vec[i].r1[0]);
+    simde_assert_equal_u8(r3, test_vec[i].r3[0]);
+    simde_assert_equal_u8(r5, test_vec[i].r5[0]);
+    simde_assert_equal_u8(r6, test_vec[i].r6[0]);
+    simde_assert_equal_u8(r8, test_vec[i].r8[0]);
+  }
+
+  return 0;
+
+#else
+  fputc('\n', stdout);
+  for (int i = 0 ; i < 8 ; i++) {
+    int16_t a = simde_test_codegen_random_i16();
+    uint8_t r1 = simde_vqshrunh_n_s16(a, 1);
+    uint8_t r3 = simde_vqshrunh_n_s16(a, 3);
+    uint8_t r5 = simde_vqshrunh_n_s16(a, 5);
+    uint8_t r6 = simde_vqshrunh_n_s16(a, 6);
+    uint8_t r8 = simde_vqshrunh_n_s16(a, 8);
+
+    simde_test_codegen_write_i16(2, a, SIMDE_TEST_VEC_POS_FIRST);
+    simde_test_codegen_write_u8(2, r1, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_codegen_write_u8(2, r3, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_codegen_write_u8(2, r5, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_codegen_write_u8(2, r6, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_codegen_write_u8(2, r8, SIMDE_TEST_VEC_POS_LAST);
+  }
+  return 1;
+#endif
+}
+
+static int
 test_simde_vqshrun_n_s16 (SIMDE_MUNIT_TEST_ARGS) {
 #if 1
   static const struct {
@@ -496,6 +596,7 @@ test_simde_vqshrund_n_s64 (SIMDE_MUNIT_TEST_ARGS) {
 }
 
 SIMDE_TEST_FUNC_LIST_BEGIN
+SIMDE_TEST_FUNC_LIST_ENTRY(vqshrunh_n_s16)
 SIMDE_TEST_FUNC_LIST_ENTRY(vqshrun_n_s16)
 SIMDE_TEST_FUNC_LIST_ENTRY(vqshrun_n_s32)
 SIMDE_TEST_FUNC_LIST_ENTRY(vqshrun_n_s64)

@@ -690,6 +690,13 @@ jobs:
         rm test/x86/svml.c
         echo "Due to the qemu versions 7.2 through 8.0 causing timeouts in four sets of test cases,"
         echo "the SVML tests have been temporarily disabled."
+    - name: Disable RND*X tests
+      run: |
+        sed -i "/rndx/d" meson.build
+        sed -i "/rnd..x/d" meson.build
+        rm test/arm/neon/rndx.c test/arm/neon/rnd32x.c test/arm/neon/rnd64x.c
+        echo "Due to the qemu versions 7.2 through 8.0 causing timeouts in four sets of test cases,"
+        echo "the RNDX, RND32X, and RND64X tests have been temporarily disabled."
     - name: Configure
       run: meson setup build --cross-file=docker/cross-files/loongarch64-gcc-13-ccache.cross
     - name: Build

@@ -457,6 +457,122 @@ simde_vst2q_lane_f64(simde_float64_t ptr[HEDLEY_ARRAY_PARAM(2)], simde_float64x2
   #define vst2q_lane_f64(a, b, c) simde_vst2q_lane_f64((a), (b), (c))
 #endif
 
+SIMDE_FUNCTION_ATTRIBUTES
+void
+simde_vst2_lane_p8(simde_poly8_t ptr[HEDLEY_ARRAY_PARAM(2)], simde_poly8x8x2_t val, const int lane)
+    SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 7) {
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    SIMDE_CONSTIFY_8_NO_RESULT_(vst2_lane_p8, HEDLEY_UNREACHABLE(), lane, ptr, val);
+  #else
+    simde_poly8x8_private r;
+    for (size_t i = 0 ; i < 2 ; i++) {
+      r = simde_poly8x8_to_private(val.val[i]);
+      ptr[i] = r.values[lane];
+    }
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+  #undef vst2_lane_p8
+  #define vst2_lane_p8(a, b, c) simde_vst2_lane_p8((a), (b), (c))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+void
+simde_vst2_lane_p16(simde_poly16_t ptr[HEDLEY_ARRAY_PARAM(2)], simde_poly16x4x2_t val, const int lane)
+    SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 3) {
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    SIMDE_CONSTIFY_4_NO_RESULT_(vst2_lane_p16, HEDLEY_UNREACHABLE(), lane, ptr, val);
+  #else
+    simde_poly16x4_private r;
+    for (size_t i = 0 ; i < 2 ; i++) {
+      r = simde_poly16x4_to_private(val.val[i]);
+      ptr[i] = r.values[lane];
+    }
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+  #undef vst2_lane_p16
+  #define vst2_lane_p16(a, b, c) simde_vst2_lane_p16((a), (b), (c))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+void
+simde_vst2_lane_p64(simde_poly64_t ptr[HEDLEY_ARRAY_PARAM(2)], simde_poly64x1x2_t val, const int lane)
+    SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 0) {
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+    HEDLEY_STATIC_CAST(void, lane);
+    vst2_lane_p64(ptr, val, 0);
+  #else
+    simde_poly64x1_private r;
+    for (size_t i = 0 ; i < 2 ; i++) {
+      r = simde_poly64x1_to_private(val.val[i]);
+      ptr[i] = r.values[lane];
+    }
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vst2_lane_p64
+  #define vst2_lane_p64(a, b, c) simde_vst2_lane_p64((a), (b), (c))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+void
+simde_vst2q_lane_p8(simde_poly8_t ptr[HEDLEY_ARRAY_PARAM(2)], simde_poly8x16x2_t val, const int lane)
+    SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 16) {
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+    SIMDE_CONSTIFY_16_NO_RESULT_(vst2q_lane_p8, HEDLEY_UNREACHABLE(), lane, ptr, val);
+  #else
+    simde_poly8x16_private r;
+    for (size_t i = 0 ; i < 2 ; i++) {
+      r = simde_poly8x16_to_private(val.val[i]);
+      ptr[i] = r.values[lane];
+    }
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vst2q_lane_p8
+  #define vst2q_lane_p8(a, b, c) simde_vst2q_lane_p8((a), (b), (c))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+void
+simde_vst2q_lane_p16(simde_poly16_t ptr[HEDLEY_ARRAY_PARAM(2)], simde_poly16x8x2_t val, const int lane)
+    SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 7) {
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    SIMDE_CONSTIFY_8_NO_RESULT_(vst2q_lane_p16, HEDLEY_UNREACHABLE(), lane, ptr, val);
+  #else
+    simde_poly16x8_private r;
+    for (size_t i = 0 ; i < 2 ; i++) {
+      r = simde_poly16x8_to_private(val.val[i]);
+      ptr[i] = r.values[lane];
+    }
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+  #undef vst2q_lane_p16
+  #define vst2q_lane_p16(a, b, c) simde_vst2q_lane_p16((a), (b), (c))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+void
+simde_vst2q_lane_p64(simde_poly64_t ptr[HEDLEY_ARRAY_PARAM(2)], simde_poly64x2x2_t val, const int lane)
+    SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 1) {
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+    SIMDE_CONSTIFY_2_NO_RESULT_(vst2q_lane_p64, HEDLEY_UNREACHABLE(), lane, ptr, val);
+  #else
+    simde_poly64x2_private r;
+    for (size_t i = 0 ; i < 2 ; i++) {
+      r = simde_poly64x2_to_private(val.val[i]);
+      ptr[i] = r.values[lane];
+    }
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vst2q_lane_p64
+  #define vst2q_lane_p64(a, b, c) simde_vst2q_lane_p64((a), (b), (c))
+#endif
+
+
 #endif /* !defined(SIMDE_BUG_INTEL_857088) */
 
 SIMDE_END_DECLS_

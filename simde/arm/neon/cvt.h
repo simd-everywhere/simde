@@ -1626,7 +1626,7 @@ simde_vcvtas_u32_f32(simde_float32 a) {
     } else if (HEDLEY_UNLIKELY(simde_math_isnanf(a))) {
       return 0;
     } else {
-      if(a < 0) return 0;
+      if (a < 0) return 0;
       return HEDLEY_STATIC_CAST(uint32_t, simde_math_roundf(a));
     }
   #endif
@@ -2067,6 +2067,7 @@ simde_vcvtx_high_f32_f64(simde_float32x2_t r, simde_float64x2_t a) {
   #undef vcvtx_high_f32_f64
   #define vcvtx_high_f32_f64(r, a) simde_vcvtx_high_f32_f64((r), (a))
 #endif
+
 
 SIMDE_END_DECLS_
 HEDLEY_DIAGNOSTIC_POP

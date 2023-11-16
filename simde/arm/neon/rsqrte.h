@@ -141,11 +141,11 @@ simde_vrsqrte_u32(simde_uint32x2_t a) {
       r_;
 
     for(size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[i])) ; i++) {
-      if(a_.values[i] < 0x3FFFFFFF) {
+      if (a_.values[i] < 0x3FFFFFFF) {
         r_.values[i] = UINT32_MAX;
       } else {
         uint32_t a_temp = (a_.values[i] >> 23) & 511;
-        if(a_temp < 256) {
+        if (a_temp < 256) {
           a_temp = a_temp * 2 + 1;
         } else {
           a_temp = (a_temp >> 1) << 1;
@@ -303,11 +303,11 @@ simde_vrsqrteq_u32(simde_uint32x4_t a) {
       r_;
 
     for(size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[i])) ; i++) {
-      if(a_.values[i] < 0x3FFFFFFF) {
+      if (a_.values[i] < 0x3FFFFFFF) {
         r_.values[i] = UINT32_MAX;
       } else {
         uint32_t a_temp = (a_.values[i] >> 23) & 511;
-        if(a_temp < 256) {
+        if (a_temp < 256) {
           a_temp = a_temp * 2 + 1;
         } else {
           a_temp = (a_temp >> 1) << 1;

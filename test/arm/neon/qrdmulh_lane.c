@@ -1,9 +1,197 @@
-#include "simde/simde-constify.h"
-#include "test/test.h"
 #define SIMDE_TEST_ARM_NEON_INSN qrdmulh_lane
 
+#include "test/test.h"
 #include "test-neon.h"
 #include "../../../simde/arm/neon/qrdmulh_lane.h"
+
+HEDLEY_DIAGNOSTIC_PUSH
+SIMDE_DIAGNOSTIC_DISABLE_UNREACHABLE_
+
+static int
+test_simde_vqrdmulhh_lane_s16 (SIMDE_MUNIT_TEST_ARGS) {
+#if 1
+  static const struct {
+    int16_t a;
+    int16_t v[4];
+    int8_t lane;
+    int16_t r;
+  } test_vec[] = {
+    {   -INT16_C(   28972),
+      {  INT16_C(   16066), -INT16_C(    8138),  INT16_C(    7905), -INT16_C(   18920) },
+         INT8_C(       3),
+         INT16_C(   16728) },
+    {   -INT16_C(   32144),
+      { -INT16_C(   30984),  INT16_C(   16924), -INT16_C(    5697), -INT16_C(    6158) },
+         INT8_C(       2),
+         INT16_C(    5589) },
+    {    INT16_C(   14768),
+      { -INT16_C(   29435), -INT16_C(    3728), -INT16_C(   11373), -INT16_C(   19577) },
+         INT8_C(       2),
+        -INT16_C(    5126) },
+    {   -INT16_C(    5620),
+      {  INT16_C(   15386), -INT16_C(   10808),  INT16_C(   29602), -INT16_C(   29356) },
+         INT8_C(       3),
+         INT16_C(    5035) },
+    {   -INT16_C(   16528),
+      { -INT16_C(   20370), -INT16_C(   20791),  INT16_C(    6083),  INT16_C(   19600) },
+         INT8_C(       2),
+        -INT16_C(    3068) },
+    {   -INT16_C(   32495),
+      {  INT16_C(   10494), -INT16_C(   17148), -INT16_C(   21698), -INT16_C(   21206) },
+         INT8_C(       1),
+         INT16_C(   17005) },
+    {    INT16_C(   27429),
+      { -INT16_C(   25873), -INT16_C(   20259),  INT16_C(    2343),  INT16_C(    6584) },
+         INT8_C(       1),
+        -INT16_C(   16958) },
+    {   -INT16_C(    9787),
+      {  INT16_C(   13278), -INT16_C(    2116),  INT16_C(   21920),  INT16_C(   24551) },
+         INT8_C(       0),
+        -INT16_C(    3966) },
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
+    int16_t a = test_vec[i].a;
+    simde_int16x4_t v = simde_vld1_s16(test_vec[i].v);
+    int8_t lane = test_vec[i].lane;
+    int16_t r;
+    switch(lane) {
+      case 0: r = simde_vqrdmulhh_lane_s16(a, v, 0); break;
+      case 1: r = simde_vqrdmulhh_lane_s16(a, v, 1); break;
+      case 2: r = simde_vqrdmulhh_lane_s16(a, v, 2); break;
+      case 3: r = simde_vqrdmulhh_lane_s16(a, v, 3); break;
+      default: HEDLEY_UNREACHABLE(); r = a; break;
+    }
+
+    simde_assert_equal_i16(r, test_vec[i].r);
+  }
+
+  return 0;
+
+#else
+  fputc('\n', stdout);
+  for (int i = 0 ; i < 8 ; i++) {
+    simde_int16_t a = simde_test_codegen_random_i16();
+    simde_int16x4_t v = simde_test_arm_neon_random_i16x4();
+    simde_int8_t lane = simde_test_codegen_random_i8();
+    int16_t r;
+    switch(lane) {
+      case 0: r = simde_vqrdmulhh_lane_s16(a, v, 0); break;
+      case 1: r = simde_vqrdmulhh_lane_s16(a, v, 1); break;
+      case 2: r = simde_vqrdmulhh_lane_s16(a, v, 2); break;
+      case 3: r = simde_vqrdmulhh_lane_s16(a, v, 3); break;
+      default: HEDLEY_UNREACHABLE(); r = a; break;
+    }
+
+    simde_test_codegen_write_i16(2, a, SIMDE_TEST_VEC_POS_FIRST);
+    simde_test_arm_neon_write_i16x4(2, v, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_codegen_write_i8(2, lane, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_codegen_write_i16(2, r, SIMDE_TEST_VEC_POS_LAST);
+  }
+  return 1;
+#endif
+}
+
+static int
+test_simde_vqrdmulhh_laneq_s16 (SIMDE_MUNIT_TEST_ARGS) {
+#if 1
+  static const struct {
+    int16_t a;
+    int16_t v[8];
+    int8_t lane;
+    int16_t r;
+  } test_vec[] = {
+    {    INT16_C(   22813),
+      { -INT16_C(   15171), -INT16_C(   12230),  INT16_C(   13510), -INT16_C(   29856),
+        -INT16_C(   19232), -INT16_C(   17088), -INT16_C(   29234), -INT16_C(   20709) },
+         INT8_C(       5),
+        -INT16_C(   11897) },
+    {    INT16_C(   16307),
+      { -INT16_C(   29409),  INT16_C(   14993), -INT16_C(   19942), -INT16_C(   10792),
+        -INT16_C(   10219), -INT16_C(   26027),  INT16_C(    1880),  INT16_C(   13799) },
+         INT8_C(       2),
+        -INT16_C(    9924) },
+    {    INT16_C(   23720),
+      {  INT16_C(    4266), -INT16_C(   17286),  INT16_C(    8707), -INT16_C(   16800),
+        -INT16_C(    5744),  INT16_C(    2680), -INT16_C(   21953),  INT16_C(   24553) },
+         INT8_C(       7),
+         INT16_C(   17773) },
+    {    INT16_C(    3430),
+      {  INT16_C(    1131),  INT16_C(   14954), -INT16_C(    8695), -INT16_C(   19109),
+        -INT16_C(   15699), -INT16_C(   10510),  INT16_C(   16756), -INT16_C(   25498) },
+         INT8_C(       0),
+         INT16_C(     118) },
+    {    INT16_C(    7948),
+      {  INT16_C(   24242),  INT16_C(   23143),  INT16_C(    1490), -INT16_C(    8302),
+        -INT16_C(    4772),  INT16_C(   29001),  INT16_C(    7662),  INT16_C(   30697) },
+         INT8_C(       4),
+        -INT16_C(    1157) },
+    {   -INT16_C(   12477),
+      { -INT16_C(   30583),  INT16_C(   14455),  INT16_C(   20368), -INT16_C(     107),
+        -INT16_C(    6754),  INT16_C(   29865), -INT16_C(   24065),  INT16_C(    9801) },
+         INT8_C(       1),
+        -INT16_C(    5504) },
+    {   -INT16_C(   31928),
+      { -INT16_C(    8471), -INT16_C(    1354),  INT16_C(     601), -INT16_C(    1348),
+         INT16_C(   29738),  INT16_C(   20368), -INT16_C(   32212),  INT16_C(    8674) },
+         INT8_C(       2),
+        -INT16_C(     586) },
+    {    INT16_C(   29917),
+      {  INT16_C(   10259), -INT16_C(   13817),  INT16_C(   28483),  INT16_C(   26472),
+         INT16_C(    5848), -INT16_C(   30819),  INT16_C(   19520),  INT16_C(   12720) },
+         INT8_C(       6),
+         INT16_C(   17822) },
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
+    int16_t a = test_vec[i].a;
+    simde_int16x8_t v = simde_vld1q_s16(test_vec[i].v);
+    int8_t lane = test_vec[i].lane;
+    int16_t r;
+    switch(lane) {
+      case 0: r = simde_vqrdmulhh_laneq_s16(a, v, 0); break;
+      case 1: r = simde_vqrdmulhh_laneq_s16(a, v, 1); break;
+      case 2: r = simde_vqrdmulhh_laneq_s16(a, v, 2); break;
+      case 3: r = simde_vqrdmulhh_laneq_s16(a, v, 3); break;
+      case 4: r = simde_vqrdmulhh_laneq_s16(a, v, 4); break;
+      case 5: r = simde_vqrdmulhh_laneq_s16(a, v, 5); break;
+      case 6: r = simde_vqrdmulhh_laneq_s16(a, v, 6); break;
+      case 7: r = simde_vqrdmulhh_laneq_s16(a, v, 7); break;
+      default: HEDLEY_UNREACHABLE(); r = a; break;
+    }
+
+    simde_assert_equal_i16(r, test_vec[i].r);
+  }
+
+  return 0;
+
+#else
+  fputc('\n', stdout);
+  for (int i = 0 ; i < 8 ; i++) {
+    simde_int16_t a = simde_test_codegen_random_i16();
+    simde_int16x8_t v = simde_test_arm_neon_random_i16x8();
+    simde_int8_t lane = simde_test_codegen_random_i8();
+    int16_t r;
+    switch(lane) {
+      case 0: r = simde_vqrdmulhh_laneq_s16(a, v, 0); break;
+      case 1: r = simde_vqrdmulhh_laneq_s16(a, v, 1); break;
+      case 2: r = simde_vqrdmulhh_laneq_s16(a, v, 2); break;
+      case 3: r = simde_vqrdmulhh_laneq_s16(a, v, 3); break;
+      case 4: r = simde_vqrdmulhh_laneq_s16(a, v, 4); break;
+      case 5: r = simde_vqrdmulhh_laneq_s16(a, v, 5); break;
+      case 6: r = simde_vqrdmulhh_laneq_s16(a, v, 6); break;
+      case 7: r = simde_vqrdmulhh_laneq_s16(a, v, 7); break;
+      default: HEDLEY_UNREACHABLE(); r = a; break;
+    }
+
+    simde_test_codegen_write_i16(2, a, SIMDE_TEST_VEC_POS_FIRST);
+    simde_test_arm_neon_write_i16x8(2, v, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_codegen_write_i8(2, lane, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_codegen_write_i16(2, r, SIMDE_TEST_VEC_POS_LAST);
+  }
+  return 1;
+#endif
+}
 
 static int
 test_simde_vqrdmulh_lane_s16 (SIMDE_MUNIT_TEST_ARGS) {
@@ -1024,7 +1212,11 @@ test_simde_vqrdmulhs_laneq_s32 (SIMDE_MUNIT_TEST_ARGS) {
 #endif
 }
 
+HEDLEY_DIAGNOSTIC_POP
+
 SIMDE_TEST_FUNC_LIST_BEGIN
+SIMDE_TEST_FUNC_LIST_ENTRY(vqrdmulhh_lane_s16)
+SIMDE_TEST_FUNC_LIST_ENTRY(vqrdmulhh_laneq_s16)
 SIMDE_TEST_FUNC_LIST_ENTRY(vqrdmulh_lane_s16)
 SIMDE_TEST_FUNC_LIST_ENTRY(vqrdmulh_lane_s32)
 SIMDE_TEST_FUNC_LIST_ENTRY(vqrdmulhq_lane_s16)
