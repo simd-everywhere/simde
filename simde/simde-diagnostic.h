@@ -22,7 +22,6 @@
  *
  * Copyright:
  *   2017-2020 Evan Nemerson <evan@nemerson.com>
- *   2023      Yi-Yen Chung <eric681@andestech.com> (Copyright owned by Andes Technology)
  */
 
 /* SIMDe targets a very wide range of standards and compilers, and our
