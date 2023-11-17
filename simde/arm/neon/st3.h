@@ -937,7 +937,6 @@ simde_vst3q_p64(simde_poly64_t ptr[HEDLEY_ARRAY_PARAM(6)], simde_poly64x2x3_t va
   #define vst3q_p64(a, b) simde_vst3q_p64((a), (b))
 #endif
 
-
 #endif /* !defined(SIMDE_BUG_INTEL_857088) */
 
 SIMDE_END_DECLS_

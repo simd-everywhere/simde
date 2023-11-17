@@ -361,7 +361,6 @@ simde_vld1q_p64_x2(simde_poly64_t const ptr[HEDLEY_ARRAY_PARAM(4)]) {
   #define vld1q_p64_x2(a) simde_vld1q_p64_x2((a))
 #endif
 
-
 #endif /* !defined(SIMDE_BUG_INTEL_857088) */
 
 SIMDE_END_DECLS_

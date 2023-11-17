@@ -614,6 +614,20 @@ typedef SIMDE_POLY64_TYPE simde_poly64;
 #endif
 typedef SIMDE_POLY128_TYPE simde_poly128;
 
+#if defined(SIMDE_BFLOAT16_TYPE)
+#  undef SIMDE_BFLOAT16_TYPE
+#endif
+#if defined(SIMDE_ARM_NEON_BF16)
+  #include <arm_bf16.h>
+#  define SIMDE_BFLOAT16_TYPE bfloat16_t
+#  define SIMDE_BFLOAT16_VALUE(value) (simde_bfloat16_from_float32(value##f))
+#else
+// [TODO] Currently are not implementing C implementations on bf16-related intrinsics.
+#  define SIMDE_BFLOAT16_TYPE uint16_t
+#  define SIMDE_NOT_SUPPORT_BFLOAT16 1
+#endif
+typedef SIMDE_BFLOAT16_TYPE simde_bfloat16;
+
 #if defined(__cplusplus)
   typedef bool simde_bool;
 #elif defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 199901L)
@@ -763,6 +777,28 @@ typedef SIMDE_POLY128_TYPE simde_poly128;
     #endif
   #endif
 #endif
+
+#if defined(SIMDE_ARM_NEON_BF16)
+/* Conversion -- convert between single-precision and brain half-precision
+ * floats. */
+static HEDLEY_ALWAYS_INLINE HEDLEY_CONST
+simde_bfloat16
+simde_bfloat16_from_float32 (simde_float32 value) {
+  simde_bfloat16 res;
+  simde_memcpy(&res, &value, sizeof(res));
+
+  return res;
+}
+
+static HEDLEY_ALWAYS_INLINE HEDLEY_CONST
+simde_float32
+simde_bfloat16_to_float32 (simde_bfloat16 value) {
+  simde_float32 res;
+  simde_memcpy(&res, &value, sizeof(value));
+
+  return res;
+}
+#endif /* defined(SIMDE_ARM_NEON_BF16) */
 
 /*** Functions that quiet a signaling NaN ***/
 
