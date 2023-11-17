@@ -481,6 +481,7 @@ if not meson.is_subproject()
       'simde/simde-aes.h',
       'simde/simde-align.h',
       'simde/simde-arch.h',
+      'simde/simde-bf16.h',
       'simde/simde-common.h',
       'simde/simde-constify.h',
       'simde/simde-detect-clang.h',

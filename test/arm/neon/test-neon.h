@@ -121,10 +121,8 @@ SIMDE_TEST_ARM_NEON_GENERATE_FLOAT_TYPE_EQUAL_FUNC_(float16x4_t, simde_float16_t
 SIMDE_TEST_ARM_NEON_GENERATE_FLOAT_TYPE_EQUAL_FUNC_(float16x8_t, simde_float16_t, simde_float16, 8, q, f16)
 #endif
 
-#if defined(SIMDE_ARM_NEON_BF16)
 SIMDE_TEST_ARM_NEON_GENERATE_FLOAT_TYPE_EQUAL_FUNC_(bfloat16x4_t, simde_bfloat16_t, simde_bfloat16, 4,  , bf16)
 SIMDE_TEST_ARM_NEON_GENERATE_FLOAT_TYPE_EQUAL_FUNC_(bfloat16x8_t, simde_bfloat16_t, simde_bfloat16, 8, q, bf16)
-#endif /* defined(SIMDE_ARM_NEON_BF16) */
 
 
 HEDLEY_DIAGNOSTIC_POP
@@ -263,10 +261,8 @@ SIMDE_TEST_ARM_NEON_GENERATE_X2_VECTOR_FLOAT_TYPE_EQUAL_FUNC_(float16x4x2_t, sim
 SIMDE_TEST_ARM_NEON_GENERATE_X2_VECTOR_FLOAT_TYPE_EQUAL_FUNC_(float16x8x2_t, simde_float16_t, simde_float16, 8, q, f16)
 #endif
 
-#if defined(SIMDE_ARM_NEON_BF16)
 SIMDE_TEST_ARM_NEON_GENERATE_X2_VECTOR_FLOAT_TYPE_EQUAL_FUNC_(bfloat16x4x2_t, simde_bfloat16_t, simde_bfloat16, 4, , bf16)
 SIMDE_TEST_ARM_NEON_GENERATE_X2_VECTOR_FLOAT_TYPE_EQUAL_FUNC_(bfloat16x8x2_t, simde_bfloat16_t, simde_bfloat16, 8, q, bf16)
-#endif /* defined(SIMDE_ARM_NEON_BF16) */
 
 HEDLEY_DIAGNOSTIC_POP
 #endif
@@ -422,10 +418,8 @@ SIMDE_TEST_ARM_NEON_GENERATE_X3_VECTOR_FLOAT_TYPE_EQUAL_FUNC_(float16x4x3_t, sim
 SIMDE_TEST_ARM_NEON_GENERATE_X3_VECTOR_FLOAT_TYPE_EQUAL_FUNC_(float16x8x3_t, simde_float16_t, simde_float16, 8, q, f16)
 #endif
 
-#if defined(SIMDE_ARM_NEON_BF16)
 SIMDE_TEST_ARM_NEON_GENERATE_X3_VECTOR_FLOAT_TYPE_EQUAL_FUNC_(bfloat16x4x3_t, simde_bfloat16_t, simde_bfloat16, 4, , bf16)
 SIMDE_TEST_ARM_NEON_GENERATE_X3_VECTOR_FLOAT_TYPE_EQUAL_FUNC_(bfloat16x8x3_t, simde_bfloat16_t, simde_bfloat16, 8, q, bf16)
-#endif /* defined(SIMDE_ARM_NEON_BF16) */
 
 HEDLEY_DIAGNOSTIC_POP
 #endif
@@ -598,10 +592,8 @@ SIMDE_TEST_ARM_NEON_GENERATE_X4_VECTOR_FLOAT_TYPE_EQUAL_FUNC_(float16x4x4_t, sim
 SIMDE_TEST_ARM_NEON_GENERATE_X4_VECTOR_FLOAT_TYPE_EQUAL_FUNC_(float16x8x4_t, simde_float16_t, simde_float16, 8, q, f16)
 #endif
 
-#if defined(SIMDE_ARM_NEON_BF16)
 SIMDE_TEST_ARM_NEON_GENERATE_X4_VECTOR_FLOAT_TYPE_EQUAL_FUNC_(bfloat16x4x4_t, simde_bfloat16_t, simde_bfloat16, 4, , bf16)
 SIMDE_TEST_ARM_NEON_GENERATE_X4_VECTOR_FLOAT_TYPE_EQUAL_FUNC_(bfloat16x8x4_t, simde_bfloat16_t, simde_bfloat16, 8, q, bf16)
-#endif /* defined(SIMDE_ARM_NEON_BF16) */
 
 HEDLEY_DIAGNOSTIC_POP
 #endif
@@ -726,7 +718,6 @@ HEDLEY_DIAGNOSTIC_POP
 #define simde_test_arm_neon_assert_equal_p16x8x4(a, b) do { if (simde_test_arm_neon_assert_equal_p16x8x4_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 #define simde_test_arm_neon_assert_equal_p64x2x4(a, b) do { if (simde_test_arm_neon_assert_equal_p64x2x4_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 
-#if defined(SIMDE_ARM_NEON_BF16)
 #define simde_test_arm_neon_assert_equal_bf16x4(a, b, precision) do { if (simde_test_arm_neon_assert_equal_bf16x4_(a, b, simde_test_bf16_precision_to_slop(precision), __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 #define simde_test_arm_neon_assert_equal_bf16x8(a, b, precision) do { if (simde_test_arm_neon_assert_equal_bf16x8_(a, b, simde_test_bf16_precision_to_slop(precision), __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 #define simde_test_arm_neon_assert_equal_bf16x4x2(a, b, precision) do { if (simde_test_arm_neon_assert_equal_bf16x4x2_(a, b, simde_test_bf16_precision_to_slop(precision), __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
@@ -735,7 +726,6 @@ HEDLEY_DIAGNOSTIC_POP
 #define simde_test_arm_neon_assert_equal_bf16x8x3(a, b, precision) do { if (simde_test_arm_neon_assert_equal_bf16x8x3_(a, b, simde_test_bf16_precision_to_slop(precision), __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 #define simde_test_arm_neon_assert_equal_bf16x4x4(a, b, precision) do { if (simde_test_arm_neon_assert_equal_bf16x4x4_(a, b, simde_test_bf16_precision_to_slop(precision), __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 #define simde_test_arm_neon_assert_equal_bf16x8x4(a, b, precision) do { if (simde_test_arm_neon_assert_equal_bf16x8x4_(a, b, simde_test_bf16_precision_to_slop(precision), __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
-#endif /* defined(SIMDE_ARM_NEON_BF16) */
 
 /* HEDLEY_DIAGNOSTIC_DISABLE_UNUSED_FUNCTION */
 HEDLEY_DIAGNOSTIC_POP

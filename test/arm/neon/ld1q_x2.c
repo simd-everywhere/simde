@@ -1054,7 +1054,7 @@ test_simde_vld1q_p64_x2 (SIMDE_MUNIT_TEST_ARGS) {
 #endif
 }
 
-#if !defined(SIMDE_NOT_SUPPORT_BFLOAT16)
+
 static int
 test_simde_vld1q_bf16_x2 (SIMDE_MUNIT_TEST_ARGS) {
   struct {
@@ -1114,7 +1114,7 @@ test_simde_vld1q_bf16_x2 (SIMDE_MUNIT_TEST_ARGS) {
 
   return 0;
 }
-#endif /* !defined(SIMDE_NOT_SUPPORT_BFLOAT16) */
+
 
 #endif /* !defined(SIMDE_BUG_INTEL_857088) */
 
@@ -1134,9 +1134,7 @@ SIMDE_TEST_FUNC_LIST_ENTRY(vld1q_u64_x2)
 SIMDE_TEST_FUNC_LIST_ENTRY(vld1q_p8_x2)
 SIMDE_TEST_FUNC_LIST_ENTRY(vld1q_p16_x2)
 SIMDE_TEST_FUNC_LIST_ENTRY(vld1q_p64_x2)
-#if defined(SIMDE_ARM_NEON_BF16)
 SIMDE_TEST_FUNC_LIST_ENTRY(vld1q_bf16_x2)
-#endif
 #endif /* !defined(SIMDE_BUG_INTEL_857088) */
 SIMDE_TEST_FUNC_LIST_END
 
