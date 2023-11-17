@@ -7519,7 +7519,6 @@ simde_vreinterpretq_bf16_p128(simde_poly128_t a) {
   #undef vreinterpretq_bf16_p128
   #define vreinterpretq_bf16_p128(a) simde_vreinterpretq_bf16_p128(a)
 #endif
-// TODO: SIMDE_ARM_NEON_BFLOAT16
 
 #endif /* !defined(SIMDE_TARGET_NOT_SUPPORT_INT128_TYPE) */
 

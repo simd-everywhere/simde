@@ -501,8 +501,8 @@ simde_vbfdot_lane_f32(simde_float32x2_t r, simde_bfloat16x4_t a, simde_bfloat16x
 
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
       simde_float32_t elt1_a = simde_bfloat16_to_float32(a_.values[2 * i + 0]);
-      simde_float32_t elt1_b = simde_bfloat16_to_float32(a_.values[2 * lane + 1]);
-      simde_float32_t elt2_a = simde_bfloat16_to_float32(b_.values[2 * i + 0]);
+      simde_float32_t elt1_b = simde_bfloat16_to_float32(a_.values[2 * i + 1]);
+      simde_float32_t elt2_a = simde_bfloat16_to_float32(b_.values[2 * lane + 0]);
       simde_float32_t elt2_b = simde_bfloat16_to_float32(b_.values[2 * lane + 1]);
       r_.values[i] = r_.values[i] + elt1_a * elt2_a + elt1_b * elt2_b;
     }
@@ -532,8 +532,8 @@ simde_vbfdotq_lane_f32(simde_float32x4_t r, simde_bfloat16x8_t a, simde_bfloat16
 
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
       simde_float32_t elt1_a = simde_bfloat16_to_float32(a_.values[2 * i + 0]);
-      simde_float32_t elt1_b = simde_bfloat16_to_float32(a_.values[2 * lane + 1]);
-      simde_float32_t elt2_a = simde_bfloat16_to_float32(b_.values[2 * i + 0]);
+      simde_float32_t elt1_b = simde_bfloat16_to_float32(a_.values[2 * i + 1]);
+      simde_float32_t elt2_a = simde_bfloat16_to_float32(b_.values[2 * lane + 0]);
       simde_float32_t elt2_b = simde_bfloat16_to_float32(b_.values[2 * lane + 1]);
       r_.values[i] = r_.values[i] + elt1_a * elt2_a + elt1_b * elt2_b;
     }
@@ -563,8 +563,8 @@ simde_vbfdot_laneq_f32(simde_float32x2_t r, simde_bfloat16x4_t a, simde_bfloat16
 
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
       simde_float32_t elt1_a = simde_bfloat16_to_float32(a_.values[2 * i + 0]);
-      simde_float32_t elt1_b = simde_bfloat16_to_float32(a_.values[2 * lane + 1]);
-      simde_float32_t elt2_a = simde_bfloat16_to_float32(b_.values[2 * i + 0]);
+      simde_float32_t elt1_b = simde_bfloat16_to_float32(a_.values[2 * i + 1]);
+      simde_float32_t elt2_a = simde_bfloat16_to_float32(b_.values[2 * lane + 0]);
       simde_float32_t elt2_b = simde_bfloat16_to_float32(b_.values[2 * lane + 1]);
       r_.values[i] = r_.values[i] + elt1_a * elt2_a + elt1_b * elt2_b;
     }
@@ -595,8 +595,8 @@ simde_vbfdotq_laneq_f32(simde_float32x4_t r, simde_bfloat16x8_t a, simde_bfloat1
 
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
       simde_float32_t elt1_a = simde_bfloat16_to_float32(a_.values[2 * i + 0]);
-      simde_float32_t elt1_b = simde_bfloat16_to_float32(a_.values[2 * lane + 1]);
-      simde_float32_t elt2_a = simde_bfloat16_to_float32(b_.values[2 * i + 0]);
+      simde_float32_t elt1_b = simde_bfloat16_to_float32(a_.values[2 * i + 1]);
+      simde_float32_t elt2_a = simde_bfloat16_to_float32(b_.values[2 * lane + 0]);
       simde_float32_t elt2_b = simde_bfloat16_to_float32(b_.values[2 * lane + 1]);
       r_.values[i] = r_.values[i] + elt1_a * elt2_a + elt1_b * elt2_b;
     }
