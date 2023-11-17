@@ -361,11 +361,10 @@ simde_vld1q_p64_x2(simde_poly64_t const ptr[HEDLEY_ARRAY_PARAM(4)]) {
   #define vld1q_p64_x2(a) simde_vld1q_p64_x2((a))
 #endif
 
-#if !defined(SIMDE_NOT_SUPPORT_BFLOAT16)
 SIMDE_FUNCTION_ATTRIBUTES
 simde_bfloat16x8x2_t
 simde_vld1q_bf16_x2(simde_bfloat16 const ptr[HEDLEY_ARRAY_PARAM(16)]) {
-  #if defined(SIMDE_ARM_NEON_BF16) && defined(SIMDE_ARM_NEON_A32V8_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_BF16)
     return vld1q_bf16_x2(ptr);
   #else
     simde_bfloat16x8_private a_[2];
@@ -382,7 +381,6 @@ simde_vld1q_bf16_x2(simde_bfloat16 const ptr[HEDLEY_ARRAY_PARAM(16)]) {
   #define vld1q_bf16_x2(a) simde_vld1q_bf16_x2((a))
 #endif
 
-#endif /* !defined(SIMDE_NOT_SUPPORT_BFLOAT16) */
 
 #endif /* !defined(SIMDE_BUG_INTEL_857088) */
 
