@@ -766,7 +766,6 @@ simde_vcvt_n_f64_u64(simde_uint64x1_t a, const int n)
   #define vcvt_n_f64_u64(a, n) simde_vcvt_n_f64_u64((a), (n))
 #endif
 
-SIMDE_DISABLE_EXCESS_PRECISION_IN_X86_FPU_BEGIN
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float64x2_t
 simde_vcvtq_n_f64_u64(simde_uint64x2_t a, const int n)

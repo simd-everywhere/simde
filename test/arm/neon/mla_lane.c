@@ -1279,7 +1279,6 @@ test_simde_vmlaq_lane_u32 (SIMDE_MUNIT_TEST_ARGS) {
 #endif
 }
 
-SIMDE_DISABLE_EXCESS_PRECISION_IN_X86_FPU_BEGIN
 static int
 test_simde_vmlaq_laneq_f32 (SIMDE_MUNIT_TEST_ARGS) {
   static const struct {
@@ -1349,7 +1348,6 @@ test_simde_vmlaq_laneq_f32 (SIMDE_MUNIT_TEST_ARGS) {
 
   return 0;
 }
-SIMDE_DISABLE_EXCESS_PRECISION_IN_X86_FPU_END
 
 static int
 test_simde_vmlaq_laneq_s16 (SIMDE_MUNIT_TEST_ARGS) {
