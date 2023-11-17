@@ -1279,7 +1279,6 @@ test_simde_vmlaq_lane_u32 (SIMDE_MUNIT_TEST_ARGS) {
 #endif
 }
 
-/* Eric: Skip this function since it will trigger a compiler error when using i686-linux-gnu-g++-11.
 static int
 test_simde_vmlaq_laneq_f32 (SIMDE_MUNIT_TEST_ARGS) {
   static const struct {
@@ -1349,7 +1348,6 @@ test_simde_vmlaq_laneq_f32 (SIMDE_MUNIT_TEST_ARGS) {
 
   return 0;
 }
-*/
 
 static int
 test_simde_vmlaq_laneq_s16 (SIMDE_MUNIT_TEST_ARGS) {
@@ -1722,7 +1720,7 @@ SIMDE_TEST_FUNC_LIST_ENTRY(vmlaq_lane_s32)
 SIMDE_TEST_FUNC_LIST_ENTRY(vmlaq_lane_u16)
 SIMDE_TEST_FUNC_LIST_ENTRY(vmlaq_lane_u32)
 
-//SIMDE_TEST_FUNC_LIST_ENTRY(vmlaq_laneq_f32)
+SIMDE_TEST_FUNC_LIST_ENTRY(vmlaq_laneq_f32)
 SIMDE_TEST_FUNC_LIST_ENTRY(vmlaq_laneq_s16)
 SIMDE_TEST_FUNC_LIST_ENTRY(vmlaq_laneq_s32)
 SIMDE_TEST_FUNC_LIST_ENTRY(vmlaq_laneq_u16)
