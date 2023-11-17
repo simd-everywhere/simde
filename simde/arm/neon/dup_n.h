@@ -807,8 +807,6 @@ simde_vdupq_n_p64(simde_poly64_t value) {
   #define vdupq_n_p64(value) simde_vdupq_n_p64((value))
 #endif
 
-<<<<<<< HEAD
-=======
 SIMDE_FUNCTION_ATTRIBUTES
 simde_bfloat16x4_t
 simde_vdup_n_bf16(simde_bfloat16 value) {
@@ -850,7 +848,6 @@ simde_vdupq_n_bf16(simde_bfloat16 value) {
   #undef vdupq_n_bf16
   #define vdupq_n_bf16(value) simde_vdupq_n_bf16((value))
 #endif
->>>>>>> af741405 ([NEON] Add all ld_*_bf16 intrinsics.)
 
 SIMDE_END_DECLS_
 HEDLEY_DIAGNOSTIC_POP

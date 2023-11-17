@@ -1013,8 +1013,6 @@ simde_vld2q_p64(simde_poly64_t const ptr[HEDLEY_ARRAY_PARAM(4)]) {
   #define vld2q_p64(a) simde_vld2q_p64((a))
 #endif
 
-<<<<<<< HEAD
-=======
 SIMDE_FUNCTION_ATTRIBUTES
 simde_bfloat16x4x2_t
 simde_vld2_bf16(simde_bfloat16_t const ptr[HEDLEY_ARRAY_PARAM(8)]) {
@@ -1068,8 +1066,6 @@ simde_vld2q_bf16(simde_bfloat16_t const ptr[HEDLEY_ARRAY_PARAM(16)]) {
   #undef vld2q_bf16
   #define vld2q_bf16(a) simde_vld2q_bf16((a))
 #endif
-
->>>>>>> af741405 ([NEON] Add all ld_*_bf16 intrinsics.)
 
 #endif /* !defined(SIMDE_BUG_INTEL_857088) */
 

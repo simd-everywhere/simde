@@ -43,24 +43,12 @@ SIMDE_BEGIN_DECLS_
  * functions and macros in this file!
  */
 #define SIMDE_BFLOAT16_API_PORTABLE 1
-/* _Float16, per C standard (TS 18661-3;
- * <http://www.open-std.org/jtc1/sc22/wg14/www/docs/n1945.pdf>). */
-//#define SIMDE_BFLOAT16_API_FLOAT16 2
-/* clang >= 6.0 supports __fp16 as an interchange format on all
- * targets, but only allows you to use them for arguments and return
- * values on targets which have defined an ABI.  We get around the
- * restriction by wrapping the __fp16 in a struct, but we can't do
- * that on Arm since it would break compatibility with the NEON F16
- * functions. */
-//#define SIMDE_BFLOAT16_API_FP16_NO_ABI 3
-/* This is basically __bf16 as specified by Arm, where arugments and
- * return values are raw __fp16 values not structs. */
+
 #define SIMDE_BFLOAT16_API_BF16 4
 
 /* Choosing an implementation.  This is a bit rough, but I don't have
  * any ideas on how to improve it.  If you do, patches are definitely
  * welcome. */
-// [TODO] Add conditions to detect whether the compiler supports the bf16 type.
 #if !defined(SIMDE_BFLOAT16_API)
   #if defined(SIMDE_ARM_NEON_BF16)
     #define SIMDE_BFLOAT16_API SIMDE_BFLOAT16_API_BF16
@@ -69,23 +57,6 @@ SIMDE_BEGIN_DECLS_
   #endif
 #endif
 
-//#if SIMDE_FLOAT16_API == SIMDE_FLOAT16_API_FLOAT16
-//  typedef _Float16 simde_float16;
-//  #define SIMDE_FLOAT16_IS_SCALAR 1
-//  #if !defined(__cplusplus)
-//    #define SIMDE_FLOAT16_C(value) value##f16
-//  #else
-//    #define SIMDE_FLOAT16_C(value) HEDLEY_STATIC_CAST(_Float16, (value))
-//  #endif
-//#elif SIMDE_FLOAT16_API == SIMDE_FLOAT16_API_FP16_NO_ABI
-//  typedef struct { __fp16 value; } simde_float16;
-//  #if defined(SIMDE_STATEMENT_EXPR_) && !defined(SIMDE_TESTS_H)
-//    #define SIMDE_FLOAT16_C(value) (__extension__({ ((simde_float16) { HEDLEY_DIAGNOSTIC_PUSH SIMDE_DIAGNOSTIC_DISABLE_C99_EXTENSIONS_ HEDLEY_STATIC_CAST(__fp16, (value)) }); HEDLEY_DIAGNOSTIC_POP }))
-//  #else
-//    #define SIMDE_FLOAT16_C(value) ((simde_float16) { HEDLEY_STATIC_CAST(__fp16, (value)) })
-//    #define SIMDE_FLOAT16_IS_SCALAR 1
-//  #endif
-// [TODO] Currently are not implementing C implementations on bf16-related intrinsics.
 #if SIMDE_BFLOAT16_API == SIMDE_BFLOAT16_API_BF16
   #include <arm_bf16.h>
   typedef __bf16 simde_bfloat16;
@@ -140,11 +111,7 @@ SIMDE_DEFINE_CONVERSION_FUNCTION_(simde_uint16_as_bfloat16, simde_bfloat16,     
 #define SIMDE_INFINITYBF simde_uint16_as_bfloat16(0x7F80)
 #define SIMDE_NINFINITYBF simde_uint16_as_bfloat16(0xFF80)
 
-#ifdef SIMDE_BFLOAT16_C
-  #define SIMDE_BFLOAT16_VALUE(value) SIMDE_BFLOAT16_C(value)
-#else
-  #define SIMDE_BFLOAT16_VALUE(value) simde_bfloat16_from_float32(SIMDE_FLOAT32_C(value))
-#endif
+#define SIMDE_BFLOAT16_VALUE(value) simde_bfloat16_from_float32(SIMDE_FLOAT32_C(value))
 
 #if !defined(simde_isinfbf) && defined(simde_math_isinff)
   #define simde_isinfbf(a) simde_math_isinff(simde_bfloat16_to_float32(a))
