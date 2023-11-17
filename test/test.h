@@ -163,10 +163,10 @@ simde_test_codegen_f64(size_t buf_len, char buf[HEDLEY_ARRAY_PARAM(buf_len)], si
 static void
 simde_test_codegen_bf16(size_t buf_len, char buf[HEDLEY_ARRAY_PARAM(buf_len)], simde_bfloat16 value) {
   simde_float32 valuef = simde_bfloat16_to_float32(value);
-  if (simde_math_isnan(valuef)) {
-    simde_test_codegen_snprintf_(buf, buf_len, "           SIMDE_MATH_NANF");
-  } else if (simde_math_isinf(valuef)) {
-    simde_test_codegen_snprintf_(buf, buf_len, "%5cSIMDE_MATH_INFINITYF", valuef < 0 ? '-' : ' ');
+  if (simde_isnanbf(value)) {
+    simde_test_codegen_snprintf_(buf, buf_len, "           SIMDE_NANBF");
+  } else if (simde_isinfbf(value)) {
+    simde_test_codegen_snprintf_(buf, buf_len, "%5cSIMDE_INFINITYBF", valuef < 0 ? '-' : ' ');
   } else {
     simde_test_codegen_snprintf_(buf, buf_len, "SIMDE_BFLOAT16_VALUE(%9.2f)", HEDLEY_STATIC_CAST(double, valuef));
   }
@@ -489,6 +489,19 @@ simde_test_codegen_random_vf64_full(
   simde_test_codegen_random_vfX_full_(test_sets, vectors_per_set, elements_per_vector,
       sizeof(simde_float64), values,
       min, max,
+      vec_type);
+}
+
+static void
+simde_test_codegen_random_vbf16_full(
+    size_t test_sets, size_t vectors_per_set, size_t elements_per_vector,
+    simde_bfloat16 values[HEDLEY_ARRAY_PARAM(test_sets * vectors_per_set * elements_per_vector)],
+    simde_bfloat16 min, simde_bfloat16 max,
+    SimdeTestVecFloatType vec_type) {
+  simde_test_codegen_random_vfX_full_(test_sets, vectors_per_set, elements_per_vector,
+      sizeof(simde_bfloat16), values,
+      HEDLEY_STATIC_CAST(simde_float64, simde_bfloat16_to_float32(min)),
+      HEDLEY_STATIC_CAST(simde_float64, simde_bfloat16_to_float32(max)),
       vec_type);
 }
 

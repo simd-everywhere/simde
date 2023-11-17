@@ -262,6 +262,23 @@ simde_vst1_p64_x2(simde_poly64_t ptr[HEDLEY_ARRAY_PARAM(2)], simde_poly64x1x2_t 
   #define vst1_p64_x2(a, b) simde_vst1_p64_x2((a), (b))
 #endif
 
+SIMDE_FUNCTION_ATTRIBUTES
+void
+simde_vst1_bf16_x2(simde_bfloat16_t ptr[HEDLEY_ARRAY_PARAM(8)], simde_bfloat16x4x2_t val) {
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_BF16)
+    vst1_bf16_x2(ptr, val);
+  #else
+    simde_bfloat16x4_private val_[2];
+    for (size_t i = 0; i < 2; i++) {
+      val_[i] = simde_bfloat16x4_to_private(val.val[i]);
+    }
+    simde_memcpy(ptr, &val_, sizeof(val_));
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+  #undef vst1_bf16_x2
+  #define vst1_bf16_x2(a, b) simde_vst1_bf16_x2((a), (b))
+#endif
 
 #endif /* !defined(SIMDE_BUG_INTEL_857088) */
 
