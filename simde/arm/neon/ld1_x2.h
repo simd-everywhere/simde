@@ -357,6 +357,25 @@ simde_vld1_p64_x2(simde_poly64_t const ptr[HEDLEY_ARRAY_PARAM(2)]) {
   #define vld1_p64_x2(a) simde_vld1_p64_x2((a))
 #endif
 
+SIMDE_FUNCTION_ATTRIBUTES
+simde_bfloat16x4x2_t
+simde_vld1_bf16_x2(simde_bfloat16 const ptr[HEDLEY_ARRAY_PARAM(8)]) {
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_BF16)
+    return vld1_bf16_x2(ptr);
+  #else
+    simde_bfloat16x4_private a_[2];
+    for (size_t i = 0; i < 8; i++) {
+      a_[i / 4].values[i % 4] = ptr[i];
+    }
+    simde_bfloat16x4x2_t s_ = { { simde_bfloat16x4_from_private(a_[0]),
+                                 simde_bfloat16x4_from_private(a_[1]) } };
+    return s_;
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+  #undef vld1_bf16_x2
+  #define vld1_bf16_x2(a) simde_vld1_bf16_x2((a))
+#endif
 
 #endif /* !defined(SIMDE_BUG_INTEL_857088) */
 
