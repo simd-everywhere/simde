@@ -1,16 +1,9 @@
 simde_test_arm_neon_sources = []
 # Disable the Intel FPU with 80-bit precision.
-message(build_machine.cpu())
-message(build_machine.cpu_family())
-message(host_machine.cpu())
-message(host_machine.cpu_family())
-message(target_machine.cpu_family())
-message(target_machine.cpu_family())
 disable_fpu_flags = []
 if (host_machine.cpu() == 'prescott') or (host_machine.cpu().endswith('86') and host_machine.cpu().startswith('i'))
   disable_fpu_flags += '-ffloat-store'
 endif
-message('disable_fpu_flags: ', disable_fpu_flags)
 foreach name : simde_neon_families
   if (name != 'ld3') and (name != 'ld4') and (name != 'st1') and (name != 'ld1')
     foreach lang : ['c', 'cpp']
