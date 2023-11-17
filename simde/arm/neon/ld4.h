@@ -399,7 +399,6 @@ simde_vld4q_s64(int64_t const ptr[HEDLEY_ARRAY_PARAM(8)]) {
   #undef vld4q_s64
   #define vld4q_s64(a) simde_vld4q_s64((a))
 #endif
-
 SIMDE_FUNCTION_ATTRIBUTES
 simde_uint8x16x4_t
 simde_vld4q_u8(uint8_t const ptr[HEDLEY_ARRAY_PARAM(64)]) {
@@ -518,6 +517,127 @@ simde_vld4q_u64(uint64_t const ptr[HEDLEY_ARRAY_PARAM(8)]) {
   #undef vld4q_u64
   #define vld4q_u64(a) simde_vld4q_u64((a))
 #endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_poly8x8x4_t
+simde_vld4_p8(simde_poly8_t const ptr[HEDLEY_ARRAY_PARAM(32)]) {
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    return vld4_p8(ptr);
+  #else
+    simde_poly8x8_private a_[4];
+    for (size_t i = 0; i < (sizeof(simde_poly8x8_t) / sizeof(*ptr)) * 4 ; i++) {
+      a_[i % 4].values[i / 4] = ptr[i];
+    }
+    simde_poly8x8x4_t s_ = { { simde_poly8x8_from_private(a_[0]), simde_poly8x8_from_private(a_[1]),
+                               simde_poly8x8_from_private(a_[2]), simde_poly8x8_from_private(a_[3]) } };
+    return s_;
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+  #undef vld4_p8
+  #define vld4_p8(a) simde_vld4_p8((a))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_poly16x4x4_t
+simde_vld4_p16(simde_poly16_t const ptr[HEDLEY_ARRAY_PARAM(16)]) {
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    return vld4_p16(ptr);
+  #else
+    simde_poly16x4_private a_[4];
+    for (size_t i = 0; i < (sizeof(simde_poly16x4_t) / sizeof(*ptr)) * 4 ; i++) {
+      a_[i % 4].values[i / 4] = ptr[i];
+    }
+    simde_poly16x4x4_t s_ = { { simde_poly16x4_from_private(a_[0]), simde_poly16x4_from_private(a_[1]),
+                                simde_poly16x4_from_private(a_[2]), simde_poly16x4_from_private(a_[3]) } };
+    return s_;
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+  #undef vld4_p16
+  #define vld4_p16(a) simde_vld4_p16((a))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_poly64x1x4_t
+simde_vld4_p64(simde_poly64_t const ptr[HEDLEY_ARRAY_PARAM(4)]) {
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
+    return vld4_p64(ptr);
+  #else
+    simde_poly64x1_private a_[4];
+    for (size_t i = 0; i < (sizeof(simde_poly64x1_t) / sizeof(*ptr)) * 4 ; i++) {
+      a_[i % 4].values[i / 4] = ptr[i];
+    }
+    simde_poly64x1x4_t s_ = { { simde_poly64x1_from_private(a_[0]), simde_poly64x1_from_private(a_[1]),
+                                simde_poly64x1_from_private(a_[2]), simde_poly64x1_from_private(a_[3]) } };
+    return s_;
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vld4_p64
+  #define vld4_p64(a) simde_vld4_p64((a))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_poly8x16x4_t
+simde_vld4q_p8(simde_poly8_t const ptr[HEDLEY_ARRAY_PARAM(64)]) {
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    return vld4q_p8(ptr);
+  #else
+    simde_poly8x16_private a_[4];
+    for (size_t i = 0; i < (sizeof(simde_poly8x16_t) / sizeof(*ptr)) * 4 ; i++) {
+      a_[i % 4].values[i / 4] = ptr[i];
+    }
+    simde_poly8x16x4_t s_ = { { simde_poly8x16_from_private(a_[0]), simde_poly8x16_from_private(a_[1]),
+                                simde_poly8x16_from_private(a_[2]), simde_poly8x16_from_private(a_[3]) } };
+    return s_;
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+  #undef vld4q_p8
+  #define vld4q_p8(a) simde_vld4q_p8((a))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_poly16x8x4_t
+simde_vld4q_p16(simde_poly16_t const ptr[HEDLEY_ARRAY_PARAM(32)]) {
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    return vld4q_p16(ptr);
+  #else
+    simde_poly16x8_private a_[4];
+    for (size_t i = 0; i < (sizeof(simde_poly16x8_t) / sizeof(*ptr)) * 4 ; i++) {
+      a_[i % 4].values[i / 4] = ptr[i];
+    }
+    simde_poly16x8x4_t s_ = { { simde_poly16x8_from_private(a_[0]), simde_poly16x8_from_private(a_[1]),
+                                simde_poly16x8_from_private(a_[2]), simde_poly16x8_from_private(a_[3]) } };
+    return s_;
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+  #undef vld4q_p16
+  #define vld4q_p16(a) simde_vld4q_p16((a))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_poly64x2x4_t
+simde_vld4q_p64(simde_poly64_t const ptr[HEDLEY_ARRAY_PARAM(8)]) {
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+    return vld4q_p64(ptr);
+  #else
+    simde_poly64x2_private a_[4];
+    for (size_t i = 0; i < (sizeof(simde_poly64x2_t) / sizeof(*ptr)) * 4 ; i++) {
+      a_[i % 4].values[i / 4] = ptr[i];
+    }
+    simde_poly64x2x4_t s_ = { { simde_poly64x2_from_private(a_[0]), simde_poly64x2_from_private(a_[1]),
+                                simde_poly64x2_from_private(a_[2]), simde_poly64x2_from_private(a_[3]) } };
+    return s_;
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vld4q_p64
+  #define vld4q_p64(a) simde_vld4q_p64((a))
+#endif
+
 
 #endif /* !defined(SIMDE_BUG_INTEL_857088) */
 

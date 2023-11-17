@@ -643,6 +643,68 @@ simde_x_vmulq_u64(simde_uint64x2_t a, simde_uint64x2_t b) {
     );
 }
 
+SIMDE_FUNCTION_ATTRIBUTES
+simde_poly8x8_t
+simde_vmul_p8(simde_poly8x8_t a, simde_poly8x8_t b) {
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    return vmul_p8(a, b);
+  #else
+    simde_uint8x8_private
+      r_,
+      a_ = simde_uint8x8_to_private(simde_vreinterpret_u8_p8(a)),
+      b_ = simde_uint8x8_to_private(simde_vreinterpret_u8_p8(b));
+
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+      uint16_t extend_op2 = HEDLEY_STATIC_CAST(uint16_t, b_.values[i]);
+      uint16_t result = 0;
+      for(uint16_t j = 0; j < 8; ++j) {
+        if (a_.values[i] & (1 << j)) {
+          result = HEDLEY_STATIC_CAST(uint16_t, result ^ (extend_op2 << j));
+        }
+      }
+      r_.values[i] = HEDLEY_STATIC_CAST(uint8_t, (result & (0xFF)));
+    }
+
+    return simde_vreinterpret_p8_u8(simde_uint8x8_from_private(r_));
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+  #undef vmul_p8
+  #define vmul_p8(a, b) simde_vmul_p8((a), (b))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_poly8x16_t
+simde_vmulq_p8(simde_poly8x16_t a, simde_poly8x16_t b) {
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    return vmulq_p8(a, b);
+  #else
+    simde_uint8x16_private
+      r_,
+      a_ = simde_uint8x16_to_private(simde_vreinterpretq_u8_p8(a)),
+      b_ = simde_uint8x16_to_private(simde_vreinterpretq_u8_p8(b));
+
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+      uint16_t extend_op2 = HEDLEY_STATIC_CAST(uint16_t, b_.values[i]);
+      uint16_t result = 0;
+      for(uint16_t j = 0; j < 8; ++j) {
+        if (a_.values[i] & (1 << j)) {
+          result = HEDLEY_STATIC_CAST(uint16_t, result ^ (extend_op2 << j));
+        }
+      }
+      r_.values[i] = HEDLEY_STATIC_CAST(uint8_t, (result & (0xFF)));
+    }
+
+    return simde_vreinterpretq_p8_u8(simde_uint8x16_from_private(r_));
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+  #undef vmulq_p8
+  #define vmulq_p8(a, b) simde_vmulq_p8((a), (b))
+#endif
+
 SIMDE_END_DECLS_
 HEDLEY_DIAGNOSTIC_POP
 

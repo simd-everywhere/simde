@@ -5,6 +5,65 @@
 #include "../../../simde/arm/neon/recps.h"
 
 static int
+test_simde_vrecpsh_f16 (SIMDE_MUNIT_TEST_ARGS) {
+#if 1
+  struct {
+    simde_float16 a;
+    simde_float16 b;
+    simde_float16 r;
+  } test_vec[] = {
+    {    SIMDE_FLOAT16_VALUE( -10.414),
+         SIMDE_FLOAT16_VALUE(  11.655),
+         SIMDE_FLOAT16_VALUE( 123.375) },
+    {    SIMDE_FLOAT16_VALUE(  -2.877),
+         SIMDE_FLOAT16_VALUE(  -4.775),
+         SIMDE_FLOAT16_VALUE( -11.738) },
+    {    SIMDE_FLOAT16_VALUE(  11.091),
+         SIMDE_FLOAT16_VALUE(  14.332),
+         SIMDE_FLOAT16_VALUE(-156.956) },
+    {    SIMDE_FLOAT16_VALUE(  -3.004),
+         SIMDE_FLOAT16_VALUE(  -7.340),
+         SIMDE_FLOAT16_VALUE( -20.049) },
+    {    SIMDE_FLOAT16_VALUE( -12.810),
+         SIMDE_FLOAT16_VALUE(   1.702),
+         SIMDE_FLOAT16_VALUE(  23.803) },
+    {    SIMDE_FLOAT16_VALUE(   2.632),
+         SIMDE_FLOAT16_VALUE(   2.416),
+         SIMDE_FLOAT16_VALUE(  -4.359) },
+    {    SIMDE_FLOAT16_VALUE(  -9.777),
+         SIMDE_FLOAT16_VALUE(  -4.796),
+         SIMDE_FLOAT16_VALUE( -44.890) },
+    {    SIMDE_FLOAT16_VALUE( -12.089),
+         SIMDE_FLOAT16_VALUE(  -5.509),
+         SIMDE_FLOAT16_VALUE( -64.598) },
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
+    simde_float16_t a = test_vec[i].a;
+    simde_float16_t b = test_vec[i].b;
+    simde_float16_t r = simde_vrecpsh_f16(a, b);
+
+    simde_assert_equal_f16(r, test_vec[i].r, 1);
+  }
+
+  return 0;
+
+#else
+  fputc('\n', stdout);
+  for (int i = 0 ; i < 8 ; i++) {
+    simde_float16_t a = simde_test_codegen_random_f16(-100.0f, 100.0f);
+    simde_float16_t b = simde_test_codegen_random_f16(-100.0f, 100.0f);
+    simde_float16_t r = simde_vrecpsh_f16(a, b);
+
+    simde_test_codegen_write_f16(2, a, SIMDE_TEST_VEC_POS_FIRST);
+    simde_test_codegen_write_f16(2, b, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_codegen_write_f16(2, r, SIMDE_TEST_VEC_POS_LAST);
+  }
+  return 1;
+#endif
+}
+
+static int
 test_simde_vrecpss_f32 (SIMDE_MUNIT_TEST_ARGS) {
 #if 1
   static const struct {
@@ -238,6 +297,7 @@ test_simde_vrecps_f32 (SIMDE_MUNIT_TEST_ARGS) {
 
 static int
 test_simde_vrecps_f16 (SIMDE_MUNIT_TEST_ARGS) {
+#if 1
   struct {
     simde_float16_t a[4];
     simde_float16_t b[4];
@@ -284,6 +344,20 @@ test_simde_vrecps_f16 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
+#else
+  fputc('\n', stdout);
+  for (int i = 0 ; i < 8 ; i++) {
+    simde_float16x4_t a = simde_test_arm_neon_random_f16x4(-100.0f, 100.0f);
+    simde_float16x4_t b = simde_test_arm_neon_random_f16x4(-100.0f, 100.0f);
+    simde_float16x4_t r = simde_vrecps_f16(a, b);
+
+    simde_test_arm_neon_write_f16x4(2, a, SIMDE_TEST_VEC_POS_FIRST);
+    simde_test_arm_neon_write_f16x4(2, b, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_arm_neon_write_f16x4(2, r, SIMDE_TEST_VEC_POS_LAST);
+  }
+  return 1;
+#endif
 }
 
 static int
@@ -402,6 +476,7 @@ test_simde_vrecpsq_f32 (SIMDE_MUNIT_TEST_ARGS) {
 
 static int
 test_simde_vrecpsq_f16 (SIMDE_MUNIT_TEST_ARGS) {
+#if 1
   struct {
     simde_float16_t a[8];
     simde_float16_t b[8];
@@ -447,9 +522,24 @@ test_simde_vrecpsq_f16 (SIMDE_MUNIT_TEST_ARGS) {
   }
 
   return 0;
+
+#else
+  fputc('\n', stdout);
+  for (int i = 0 ; i < 8 ; i++) {
+    simde_float16x8_t a = simde_test_arm_neon_random_f16x8(-100.0f, 100.0f);
+    simde_float16x8_t b = simde_test_arm_neon_random_f16x8(-100.0f, 100.0f);
+    simde_float16x8_t r = simde_vrecpsq_f16(a, b);
+
+    simde_test_arm_neon_write_f16x8(2, a, SIMDE_TEST_VEC_POS_FIRST);
+    simde_test_arm_neon_write_f16x8(2, b, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_arm_neon_write_f16x8(2, r, SIMDE_TEST_VEC_POS_LAST);
+  }
+  return 1;
+#endif
 }
 
 SIMDE_TEST_FUNC_LIST_BEGIN
+SIMDE_TEST_FUNC_LIST_ENTRY(vrecpsh_f16)
 SIMDE_TEST_FUNC_LIST_ENTRY(vrecpss_f32)
 SIMDE_TEST_FUNC_LIST_ENTRY(vrecpsd_f64)
 

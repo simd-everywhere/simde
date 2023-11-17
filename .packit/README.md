@@ -1,19 +1,15 @@
 # Packit
 
-This document is to use Packit CI that enables us to test SIMDe on Fedora project's native CPU environments, x86_64, i686, aarch64, ppc64le and s390x as of June 2023. Packit CI can be executed on pull-request and push, and create a RPM package based on the specified RPM spec (recipe) file, then run commands in the `%check` section in the RPM spec file in the environments. We use a minimal RPM spec file only to run tests on the environments.
-
-* The configuration document: https://packit.dev/docs/configuration
-* Report issues (bugs or feature suggestions): https://github.com/packit/packit/issues
-* Pipeline history: https://dashboard.packit.dev/pipelines
+This document is to use [Packit CI][Packit] that enables us to test SIMDe on Fedora project's native CPU environments, x86_64, i686, aarch64, ppc64le and s390x as of June 2023. Packit CI can be executed on pull-request and push, and create a RPM package based on the specified RPM spec (recipe) file, then run commands in the `%check` section in the RPM spec file in the environments. We use a minimal RPM spec file only to run tests on the environments.
 
 ## Motivation and context
 
-We want to keep [Fedora rawhide](https://docs.fedoraproject.org/en-US/releases/rawhide/) cases in the CI. Fedora rawhide is the latest development version of Fedora Linux, not a named release that might go out of support later. Because the gcc and clang new versions are landing on Fedora rawhide earlier than other Linux distributions.
+We want to keep [Fedora rawhide][Fedora rawhide] cases in the CI. Fedora rawhide is the latest development version of Fedora Linux, not a named release that might go out of support later. Because the gcc and clang new versions are landing on Fedora rawhide earlier than other Linux distributions.
 
 ## How to check the CI results
 
-1. Enable Packit CI for your forked simde repository. See the [onboarding guide](https://packit.dev/docs/guide/).
-2. When you push branches to your repository, the CI is triggered. Go to the [Pipelines](https://dashboard.packit.dev/pipelines) page to see your pipeline.
+1. Enable Packit CI for your forked simde repository. See the [onboarding guide][Packit guide]
+2. When you push branches to your repository, the CI is triggered. Go to the [Pipelines][Packit pipelines] page to see your pipeline.
 3. Do browser-search by "simde".
 4. Click a "fedora-\*-\*" button on the Jobs to go to the job detailed page.
 5. You can see 3 links below. You can check the Build Logs first, and the SRPM Logs second if it is necessary.
@@ -28,3 +24,22 @@ We want to keep [Fedora rawhide](https://docs.fedoraproject.org/en-US/releases/r
 * `.packit/ci.sh`
   * You can customize if the CI fails when the tests fail at the "Customized constants" section.
   * You can customize the tests to be executed to save the CI's total running time at the "Customized constants" section.
+
+You can check the [configuration document][Packit configuration] for details.
+
+## Troubleshooting
+
+If you experience issues related to Packit, you can try the following things:
+
+* Check [Packit status page][Packit status].
+* Check [Packit pipeline page][Packit pipelines] to check how your application and other applications are running.
+* Go to [Packit issues page][Packit issues] to open bugs or feature requests.
+* Contact Packet team. You can contact by their communication channels (Element, Matrix, IRC, Email, and Mastodon) written in [Packit top page][Packit] footer area - Contact.
+
+[Packit]: https://packit.dev/
+[Packit configuration]: https://packit.dev/docs/configuration
+[Packit guide]: https://packit.dev/docs/guide/
+[Packit issues]: https://github.com/packit/packit/issues
+[Packit pipelines]: https://dashboard.packit.dev/pipelines
+[Packit status]: https://status.packit.dev/
+[Fedora rawhide]: https://docs.fedoraproject.org/en-US/releases/rawhide/

@@ -352,6 +352,9 @@
     #define SIMDE_ARM_NEON_A32V8_NATIVE
   #endif
 #endif
+#if defined(__ARM_ACLE)
+  #include <arm_acle.h>
+#endif
 #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && !defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define SIMDE_ARM_NEON_A32V7_NATIVE
 #endif

@@ -556,6 +556,120 @@ simde_vgetq_lane_u64(simde_uint64x2_t v, const int lane)
   #define vgetq_lane_u64(v, lane) simde_vgetq_lane_u64((v), (lane))
 #endif
 
+SIMDE_FUNCTION_ATTRIBUTES
+simde_poly8_t
+simde_vget_lane_p8(simde_poly8x8_t v, const int lane)
+    SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 7) {
+  simde_poly8_t r;
+  simde_poly8x8_private v_ = simde_poly8x8_to_private(v);
+  r = v_.values[lane];
+
+  return r;
+}
+#if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && !defined(SIMDE_BUG_CLANG_71362)
+  #define simde_vget_lane_p8(v, lane) vget_lane_p8((v), (lane))
+#endif
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+  #undef vget_lane_p8
+  #define vget_lane_p8(v, lane) simde_vget_lane_p8((v), (lane))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_poly16_t
+simde_vget_lane_p16(simde_poly16x4_t v, const int lane)
+    SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 3) {
+  simde_poly16_t r;
+  simde_poly16x4_private v_ = simde_poly16x4_to_private(v);
+
+  r = v_.values[lane];
+
+  return r;
+}
+#if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && !defined(SIMDE_BUG_CLANG_71362)
+  #define simde_vget_lane_p16(v, lane) vget_lane_p16((v), (lane))
+#endif
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+  #undef vget_lane_p16
+  #define vget_lane_p16(v, lane) simde_vget_lane_p16((v), (lane))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_poly64_t
+simde_vget_lane_p64(simde_poly64x1_t v, const int lane)
+    SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 0) {
+  simde_poly64_t r;
+  simde_poly64x1_private v_ = simde_poly64x1_to_private(v);
+
+  r = v_.values[lane];
+
+  return r;
+}
+#if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && !defined(SIMDE_BUG_CLANG_71362)
+  #define simde_vget_lane_p64(v, lane) vget_lane_p64((v), (lane))
+#endif
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+  #undef vget_lane_p64
+  #define vget_lane_p64(v, lane) simde_vget_lane_p64((v), (lane))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_poly8_t
+simde_vgetq_lane_p8(simde_poly8x16_t v, const int lane)
+    SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 15) {
+  simde_poly8_t r;
+  simde_poly8x16_private v_ = simde_poly8x16_to_private(v);
+
+  r = v_.values[lane];
+
+  return r;
+}
+#if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && !defined(SIMDE_BUG_CLANG_71362)
+  #define simde_vgetq_lane_p8(v, lane) vgetq_lane_p8((v), (lane))
+#endif
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+  #undef vgetq_lane_p8
+  #define vgetq_lane_p8(v, lane) simde_vgetq_lane_p8((v), (lane))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_poly16_t
+simde_vgetq_lane_p16(simde_poly16x8_t v, const int lane)
+    SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 7) {
+  simde_poly16_t r;
+  simde_poly16x8_private v_ = simde_poly16x8_to_private(v);
+
+  r = v_.values[lane];
+
+  return r;
+}
+#if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && !defined(SIMDE_BUG_CLANG_71362)
+  #define simde_vgetq_lane_p16(v, lane) vgetq_lane_p16((v), (lane))
+#endif
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+  #undef vgetq_lane_p16
+  #define vgetq_lane_p16(v, lane) simde_vgetq_lane_p16((v), (lane))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_poly64_t
+simde_vgetq_lane_p64(simde_poly64x2_t v, const int lane)
+    SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 1) {
+  simde_poly64_t r;
+  simde_poly64x2_private v_ = simde_poly64x2_to_private(v);
+
+  r = v_.values[lane];
+
+  return r;
+}
+#if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && !defined(SIMDE_BUG_CLANG_71362)
+  #define simde_vgetq_lane_p64(v, lane) vgetq_lane_p64((v), (lane))
+#endif
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+  #undef vgetq_lane_p64
+  #define vgetq_lane_p64(v, lane) simde_vgetq_lane_p64((v), (lane))
+#endif
+
+
 SIMDE_END_DECLS_
 HEDLEY_DIAGNOSTIC_POP
 

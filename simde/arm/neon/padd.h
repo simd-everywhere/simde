@@ -214,6 +214,20 @@ simde_vpadd_u32(simde_uint32x2_t a, simde_uint32x2_t b) {
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
+simde_float16x8_t
+simde_vpaddq_f16(simde_float16x8_t a, simde_float16x8_t b) {
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
+    return vpaddq_f16(a, b);
+  #else
+    return simde_vaddq_f16(simde_vuzp1q_f16(a, b), simde_vuzp2q_f16(a, b));
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vpaddq_f16
+  #define vpaddq_f16(a, b) simde_vpaddq_f16((a), (b))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
 simde_float32x4_t
 simde_vpaddq_f32(simde_float32x4_t a, simde_float32x4_t b) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)

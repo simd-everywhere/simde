@@ -215,6 +215,64 @@ simde_vst1_u64_x3(uint64_t ptr[HEDLEY_ARRAY_PARAM(3)], simde_uint64x1x3_t val) {
   #define vst1_u64_x3(ptr, val) simde_vst1_u64_x3((ptr), (val))
 #endif
 
+SIMDE_FUNCTION_ATTRIBUTES
+void
+simde_vst1_p8_x3(simde_poly8_t ptr[HEDLEY_ARRAY_PARAM(24)], simde_poly8x8x3_t val) {
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && \
+      (!defined(HEDLEY_GCC_VERSION) || (HEDLEY_GCC_VERSION_CHECK(8,5,0) && defined(SIMDE_ARM_NEON_A64V8_NATIVE)))
+    vst1_p8_x3(ptr, val);
+  #else
+    simde_poly8x8_private val_[3];
+    for (size_t i = 0; i < 3; i++) {
+      val_[i] = simde_poly8x8_to_private(val.val[i]);
+    }
+    simde_memcpy(ptr, &val_, sizeof(val_));
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+  #undef vst1_p8_x3
+  #define vst1_p8_x3(a, b) simde_vst1_p8_x3((a), (b))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+void
+simde_vst1_p16_x3(simde_poly16_t ptr[HEDLEY_ARRAY_PARAM(12)], simde_poly16x4x3_t val) {
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && \
+      (!defined(HEDLEY_GCC_VERSION) || (HEDLEY_GCC_VERSION_CHECK(8,5,0) && defined(SIMDE_ARM_NEON_A64V8_NATIVE)))
+    vst1_p16_x3(ptr, val);
+  #else
+    simde_poly16x4_private val_[3];
+    for (size_t i = 0; i < 3; i++) {
+      val_[i] = simde_poly16x4_to_private(val.val[i]);
+    }
+    simde_memcpy(ptr, &val_, sizeof(val_));
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+  #undef vst1_p16_x3
+  #define vst1_p16_x3(a, b) simde_vst1_p16_x3((a), (b))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+void
+simde_vst1_p64_x3(simde_poly64_t ptr[HEDLEY_ARRAY_PARAM(3)], simde_poly64x1x3_t val) {
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && \
+      (!defined(HEDLEY_GCC_VERSION) || (HEDLEY_GCC_VERSION_CHECK(8,5,0) && defined(SIMDE_ARM_NEON_A64V8_NATIVE)))
+    vst1_p64_x3(ptr, val);
+  #else
+    simde_poly64x1_private val_[3];
+    for (size_t i = 0; i < 3; i++) {
+      val_[i] = simde_poly64x1_to_private(val.val[i]);
+    }
+    simde_memcpy(ptr, &val_, sizeof(val_));
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+  #undef vst1_p64_x3
+  #define vst1_p64_x3(a, b) simde_vst1_p64_x3((a), (b))
+#endif
+
+
 #endif /* !defined(SIMDE_BUG_INTEL_857088) */
 
 SIMDE_END_DECLS_

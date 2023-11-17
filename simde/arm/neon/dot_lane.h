@@ -485,6 +485,7 @@ simde_vdotq_lane_s32(simde_int32x4_t r, simde_int8x16_t a, simde_int8x8_t b, con
   #define vdotq_lane_s32(r, a, b, lane) simde_vdotq_lane_s32((r), (a), (b), (lane))
 #endif
 
+
 SIMDE_END_DECLS_
 HEDLEY_DIAGNOSTIC_POP
 

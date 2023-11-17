@@ -374,6 +374,62 @@ simde_vrev64q_f32(simde_float32x4_t a) {
   #define vrev64q_f32(a) simde_vrev64q_f32(a)
 #endif
 
+SIMDE_FUNCTION_ATTRIBUTES
+simde_poly8x8_t
+simde_vrev64_p8(simde_poly8x8_t a) {
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    return vrev64_p8(a);
+  #else
+    return simde_vreinterpret_p8_s8(simde_vrev64_s8(simde_vreinterpret_s8_p8(a)));
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+  #undef vrev64_p8
+  #define vrev64_p8(a) simde_vrev64_p8(a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_poly16x4_t
+simde_vrev64_p16(simde_poly16x4_t a) {
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    return vrev64_p16(a);
+  #else
+    return simde_vreinterpret_p16_s16(simde_vrev64_s16(simde_vreinterpret_s16_p16(a)));
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+  #undef vrev64_p16
+  #define vrev64_p16(a) simde_vrev64_p16(a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_poly8x16_t
+simde_vrev64q_p8(simde_poly8x16_t a) {
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    return vrev64q_p8(a);
+  #else
+    return simde_vreinterpretq_p8_s8(simde_vrev64q_s8(simde_vreinterpretq_s8_p8(a)));
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+  #undef vrev64q_p8
+  #define vrev64q_p8(a) simde_vrev64q_p8(a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_poly16x8_t
+simde_vrev64q_p16(simde_poly16x8_t a) {
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    return vrev64q_p16(a);
+  #else
+    return simde_vreinterpretq_p16_s16(simde_vrev64q_s16(simde_vreinterpretq_s16_p16(a)));
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+  #undef vrev64q_p16
+  #define vrev64q_p16(a) simde_vrev64q_p16(a)
+#endif
+
 SIMDE_END_DECLS_
 HEDLEY_DIAGNOSTIC_POP
 
