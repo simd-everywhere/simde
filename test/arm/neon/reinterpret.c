@@ -18366,6 +18366,42 @@ test_simde_vreinterpretq_f64_p128 (SIMDE_MUNIT_TEST_ARGS) {
 #endif
 }
 
+static int
+test_simde_vreinterpret_u64_bf16 (SIMDE_MUNIT_TEST_ARGS) {
+#if 1
+  struct {
+    simde_bfloat16 a[4];
+  } test_vec[] = {
+    { { SIMDE_BFLOAT16_VALUE(   -49.28), SIMDE_BFLOAT16_VALUE(  -109.00), SIMDE_BFLOAT16_VALUE(  -626.50), SIMDE_BFLOAT16_VALUE(  -567.00) } },
+    { { SIMDE_BFLOAT16_VALUE(  -178.88), SIMDE_BFLOAT16_VALUE(    10.22), SIMDE_BFLOAT16_VALUE(   976.50), SIMDE_BFLOAT16_VALUE(   -31.19) } },
+    { { SIMDE_BFLOAT16_VALUE(  -228.12), SIMDE_BFLOAT16_VALUE(   -98.75), SIMDE_BFLOAT16_VALUE(   350.00), SIMDE_BFLOAT16_VALUE(  -598.00) } },
+    { { SIMDE_BFLOAT16_VALUE(  -226.00), SIMDE_BFLOAT16_VALUE(  -520.50), SIMDE_BFLOAT16_VALUE(  -252.38), SIMDE_BFLOAT16_VALUE(  -407.50) } },
+    { { SIMDE_BFLOAT16_VALUE(    89.44), SIMDE_BFLOAT16_VALUE(  -200.50), SIMDE_BFLOAT16_VALUE(  -439.75), SIMDE_BFLOAT16_VALUE(  -450.75) } },
+    { { SIMDE_BFLOAT16_VALUE(  -136.50), SIMDE_BFLOAT16_VALUE(  -721.00), SIMDE_BFLOAT16_VALUE(  -692.00), SIMDE_BFLOAT16_VALUE(  -858.00) } },
+    { { SIMDE_BFLOAT16_VALUE(  -833.00), SIMDE_BFLOAT16_VALUE(  -714.00), SIMDE_BFLOAT16_VALUE(   428.50), SIMDE_BFLOAT16_VALUE(   871.50) } },
+    { { SIMDE_BFLOAT16_VALUE(  -157.12), SIMDE_BFLOAT16_VALUE(   972.50), SIMDE_BFLOAT16_VALUE(   298.75), SIMDE_BFLOAT16_VALUE(  -919.50) } },
+    { { SIMDE_BFLOAT16_VALUE(  -990.00), SIMDE_BFLOAT16_VALUE(   258.50), SIMDE_BFLOAT16_VALUE(   727.00), SIMDE_BFLOAT16_VALUE(   -48.00) } },
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
+    simde_bfloat16x4_t a = simde_vld1_bf16(test_vec[i].a);
+    simde_bfloat16x4_private a_ = simde_bfloat16x4_to_private(a);
+    simde_uint64x1_t r = simde_vreinterpret_u64_bf16(a);
+    simde_uint64x1_private r_ = simde_uint64x1_to_private(r);
+    simde_assert_equal_i(0, simde_memcmp(&r_, &a_, sizeof(r_)));
+  }
+
+  return 0;
+
+#else
+  fputc('\n', stdout);
+  for (int i = 0 ; i < 8 ; i++) {
+    simde_bfloat16x4_t a = simde_vreinterpret_u64_bf16(    simde_test_arm_neon_write_bf16x4(2, a, SIMDE_TEST_VEC_POS_FIRST);
+  }
+  return 1;
+#endif
+}
+
 #endif /* !defined(SIMDE_TARGET_NOT_SUPPORT_INT128_TYPE) */
 
 SIMDE_TEST_FUNC_LIST_BEGIN
@@ -18801,6 +18837,8 @@ SIMDE_TEST_FUNC_LIST_ENTRY(vreinterpretq_u64_p64)
   SIMDE_TEST_FUNC_LIST_ENTRY(vreinterpretq_p8_p128)
   SIMDE_TEST_FUNC_LIST_ENTRY(vreinterpretq_p16_p128)
 #endif /* !defined(SIMDE_TARGET_NOT_SUPPORT_INT128_TYPE) */
+
+SIMDE_TEST_FUNC_LIST_ENTRY(vreinterpret_u64_bf16)
 SIMDE_TEST_FUNC_LIST_END
 
 #include "test-neon-footer.h"

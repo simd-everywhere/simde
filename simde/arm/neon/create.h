@@ -26,8 +26,6 @@
  *   2023      Yi-Yen Chung <eric681@andestech.com> (Copyright owned by Andes Technology)
  */
 
-/* Yi-Yen Chung: Added vcreate_f16 */
-
 #if !defined(SIMDE_ARM_NEON_CREATE_H)
 #define SIMDE_ARM_NEON_CREATE_H
 
@@ -235,6 +233,19 @@ simde_vcreate_p64(simde_poly64_t a) {
   #define vcreate_p64(a) simde_vcreate_p64(a)
 #endif
 
+SIMDE_FUNCTION_ATTRIBUTES
+simde_bfloat16x4_t
+simde_vcreate_bf16(uint64_t a) {
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_BF16)
+    return vcreate_bf16(a);
+  #else
+    return simde_vreinterpret_bf16_u64(simde_vdup_n_u64(a));
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+  #undef vcreate_bf16
+  #define vcreate_bf16(a) simde_vcreate_bf16(a)
+#endif
 
 SIMDE_END_DECLS_
 HEDLEY_DIAGNOSTIC_POP
