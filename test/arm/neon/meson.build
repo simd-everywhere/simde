@@ -1,4 +1,10 @@
 simde_test_arm_neon_sources = []
+# Disable the Intel FPU with 80-bit precision.
+message(cc.get_id())
+disable_fpu_flags = []
+if cc.get_id().to_lower().contains('intel')
+  disable_fpu_flags += '-ffloat-store'
+endif
 foreach name : simde_neon_families
   if (name != 'ld3') and (name != 'ld4') and (name != 'st1') and (name != 'ld1')
     foreach lang : ['c', 'cpp']
@@ -15,8 +21,8 @@ foreach name : simde_neon_families
         endif
 
         x = executable(name + '-' + emul +  '-' + lang, source_file,
-            c_args: simde_c_args + simde_c_defs + simde_native_c_flags + extra_flags,
-            cpp_args: simde_c_args + simde_c_defs + simde_native_c_flags + extra_flags,
+            c_args: simde_c_args + simde_c_defs + simde_native_c_flags + extra_flags + disable_fpu_flags,
+            cpp_args: simde_c_args + simde_c_defs + simde_native_c_flags + extra_flags + disable_fpu_flags,
             include_directories: simde_include_dir,
             dependencies: simde_deps)
 
