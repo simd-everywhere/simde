@@ -8,8 +8,8 @@ ld = 'i686-linux-gnu-ld'
 exe_wrapper = ['qemu-i386-static', '-L', '/usr/i686-linux-gnu']
 
 [properties]
-c_args = ['-Wextra', '-Werror', '-O2']
-cpp_args = ['-Wextra', '-Werror', '-O2']
+c_args = ['-Wextra', '-Werror', '-O2', '-ffloat-store']
+cpp_args = ['-Wextra', '-Werror', '-O2', '-ffloat-store']
 needs_exe_wrapper = true
 
 [host_machine]
