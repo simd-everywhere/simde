@@ -1,7 +1,8 @@
 simde_test_arm_neon_sources = []
 # Disable the Intel FPU with 80-bit precision.
+message(cc.get_id())
 disable_fpu_flags = []
-if cc.get_id() == 'intel'
+if cc.get_id().to_lower().contains('intel')
   disable_fpu_flags += '-ffloat-store'
 endif
 foreach name : simde_neon_families
