@@ -30,6 +30,7 @@
 
 #include "../../simde-common.h"
 #include "../../simde-f16.h"
+#include "../../simde-bf16.h"
 
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
@@ -342,11 +343,19 @@ typedef union {
 } simde_poly64x2_private;
 
 typedef union {
-  SIMDE_ARM_NEON_DECLARE_VECTOR(simde_bfloat16, values, 8);
+  #if SIMDE_BFLOAT16_API == SIMDE_BFLOAT16_API_BF16
+    SIMDE_ARM_NEON_DECLARE_VECTOR(simde_bfloat16, values, 8);
+  #else
+    simde_bfloat16 values[4];
+  #endif
 } simde_bfloat16x4_private;
 
 typedef union {
-  SIMDE_ARM_NEON_DECLARE_VECTOR(simde_bfloat16, values, 16);
+  #if SIMDE_BFLOAT16_API == SIMDE_BFLOAT16_API_BF16
+    SIMDE_ARM_NEON_DECLARE_VECTOR(simde_bfloat16, values, 16);
+  #else
+    simde_bfloat16 values[8];
+  #endif
 } simde_bfloat16x8_private;
 
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)

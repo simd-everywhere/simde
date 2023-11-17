@@ -4,6 +4,7 @@
 #include "../simde/hedley.h"
 #include "../simde/simde-common.h"
 #include "../simde/simde-f16.h"
+#include "../simde/simde-bf16.h"
 
 #include <time.h>
 #include <stdlib.h>
@@ -159,8 +160,6 @@ simde_test_codegen_f64(size_t buf_len, char buf[HEDLEY_ARRAY_PARAM(buf_len)], si
   }
 }
 
-#if defined(SIMDE_ARM_NEON_BF16)
-// [TODO] Currently are not implementing C implementations on bf16-related intrinsics.
 static void
 simde_test_codegen_bf16(size_t buf_len, char buf[HEDLEY_ARRAY_PARAM(buf_len)], simde_bfloat16 value) {
   simde_float32 valuef = simde_bfloat16_to_float32(value);
@@ -172,7 +171,6 @@ simde_test_codegen_bf16(size_t buf_len, char buf[HEDLEY_ARRAY_PARAM(buf_len)], s
     simde_test_codegen_snprintf_(buf, buf_len, "SIMDE_BFLOAT16_VALUE(%9.2f)", HEDLEY_STATIC_CAST(double, valuef));
   }
 }
-#endif /* defined(SIMDE_ARM_NEON_BF16) */
 
 static void
 simde_test_codegen_i8(size_t buf_len, char buf[HEDLEY_ARRAY_PARAM(buf_len)], int8_t value) {
@@ -350,8 +348,6 @@ simde_test_codegen_random_f64(simde_float64 min, simde_float64 max) {
   return simde_math_round(v * SIMDE_FLOAT64_C(100.0)) / SIMDE_FLOAT64_C(100.0);
 }
 
-#if defined(SIMDE_ARM_NEON_BF16)
-// [TODO] Currently are not implementing C implementations on bf16-related intrinsics.
 static simde_bfloat16
 simde_test_codegen_random_bf16(simde_bfloat16 min, simde_bfloat16 max) {
   return
@@ -362,7 +358,6 @@ simde_test_codegen_random_bf16(simde_bfloat16 min, simde_bfloat16 max) {
       )
     );
 }
-#endif /* defined(SIMDE_ARM_NEON_BF16) */
 
 typedef enum SimdeTestVecFloatMask {
   SIMDE_TEST_VEC_FLOAT_DEFAULT  = 0,
@@ -518,15 +513,12 @@ simde_test_codegen_random_vf64(size_t elem_count, simde_float64 values[HEDLEY_AR
   }
 }
 
-#if defined(SIMDE_ARM_NEON_BF16)
-// [TODO] Currently are not implementing C implementations on bf16-related intrinsics.
 static void
 simde_test_codegen_random_vbf16(size_t elem_count, simde_bfloat16 values[HEDLEY_ARRAY_PARAM(elem_count)], simde_bfloat16 min, simde_bfloat16 max) {
   for (size_t i = 0 ; i < elem_count ; i++) {
     values[i] = simde_test_codegen_random_bf16(min, max);
   }
 }
-#endif /* defined(SIMDE_ARM_NEON_BF16) */
 
 #define SIMDE_TEST_CODEGEN_GENERATE_RANDOM_INT_FUNC_(T, symbol_identifier) \
   static T simde_test_codegen_random_##symbol_identifier(void) { \
@@ -610,10 +602,7 @@ SIMDE_TEST_CODEGEN_GENERATE_RANDOM_INT_FUNC_(simde_poly64, p64)
 SIMDE_TEST_CODEGEN_GENERATE_WRITE_VECTOR_FUNC_(simde_float16, f16, 4)
 SIMDE_TEST_CODEGEN_GENERATE_WRITE_VECTOR_FUNC_(simde_float32, f32, 4)
 SIMDE_TEST_CODEGEN_GENERATE_WRITE_VECTOR_FUNC_(simde_float64, f64, 4)
-#if defined(SIMDE_ARM_NEON_BF16)
-// [TODO] Currently are not implementing C implementations on bf16-related intrinsics.
 SIMDE_TEST_CODEGEN_GENERATE_WRITE_VECTOR_FUNC_(simde_bfloat16, bf16, 4)
-#endif /* defined(SIMDE_ARM_NEON_BF16) */
 SIMDE_TEST_CODEGEN_GENERATE_WRITE_VECTOR_FUNC_(int8_t, i8, 8)
 SIMDE_TEST_CODEGEN_GENERATE_WRITE_VECTOR_FUNC_(int16_t, i16, 8)
 SIMDE_TEST_CODEGEN_GENERATE_WRITE_VECTOR_FUNC_(int32_t, i32, 8)
@@ -640,10 +629,7 @@ SIMDE_TEST_CODEGEN_GENERATE_WRITE_VECTOR_FUNC_(simde_poly64, p64, 4)
 #define simde_test_codegen_write_1vp8(indent, elem_count, values)  simde_test_codegen_write_vp8_full( (indent), (elem_count), #values, (values), SIMDE_TEST_VEC_POS_SINGLE)
 #define simde_test_codegen_write_1vp16(indent, elem_count, values) simde_test_codegen_write_vp16_full((indent), (elem_count), #values, (values), SIMDE_TEST_VEC_POS_SINGLE)
 #define simde_test_codegen_write_1vp64(indent, elem_count, values) simde_test_codegen_write_vp64_full((indent), (elem_count), #values, (values), SIMDE_TEST_VEC_POS_SINGLE)
-#if defined(SIMDE_ARM_NEON_BF16)
-// [TODO] Currently are not implementing C implementations on bf16-related intrinsics.
 #define simde_test_codegen_write_1vbf16(indent, elem_count, values) simde_test_codegen_write_vbf16_full((indent), (elem_count), #values, (values), SIMDE_TEST_VEC_POS_SINGLE)
-#endif /* defined(SIMDE_ARM_NEON_BF16) */
 
 #define SIMDE_TEST_CODEGEN_WRITE_SCALAR_FUNC_(T, symbol_identifier) \
   static void \
@@ -706,10 +692,7 @@ SIMDE_TEST_CODEGEN_WRITE_SCALAR_FUNC_(simde_float64, f64)
 SIMDE_TEST_CODEGEN_WRITE_SCALAR_FUNC_(simde_poly8,   p8)
 SIMDE_TEST_CODEGEN_WRITE_SCALAR_FUNC_(simde_poly16, p16)
 SIMDE_TEST_CODEGEN_WRITE_SCALAR_FUNC_(simde_poly64, p64)
-#if defined(SIMDE_ARM_NEON_BF16)
-// [TODO] Currently are not implementing C implementations on bf16-related intrinsics.
 SIMDE_TEST_CODEGEN_WRITE_SCALAR_FUNC_(simde_bfloat16, bf16)
-#endif /* defined(SIMDE_ARM_NEON_BF16) */
 
 #define simde_test_codegen_write_1i8(indent, value)  simde_test_codegen_write_i8_full((indent), #value, (value), SIMDE_TEST_VEC_POS_SINGLE)
 #define simde_test_codegen_write_1i16(indent, value) simde_test_codegen_write_i16_full((indent), #value, (value), SIMDE_TEST_VEC_POS_SINGLE)
@@ -725,10 +708,7 @@ SIMDE_TEST_CODEGEN_WRITE_SCALAR_FUNC_(simde_bfloat16, bf16)
 #define simde_test_codegen_write_1p8(indent, value)  simde_test_codegen_write_p8_full((indent), #value, (value), SIMDE_TEST_VEC_POS_SINGLE)
 #define simde_test_codegen_write_1p16(indent, value) simde_test_codegen_write_p16_full((indent), #value, (value), SIMDE_TEST_VEC_POS_SINGLE)
 #define simde_test_codegen_write_1p64(indent, value) simde_test_codegen_write_p64_full((indent), #value, (value), SIMDE_TEST_VEC_POS_SINGLE)
-#if defined(SIMDE_ARM_NEON_BF16)
-// [TODO] Currently are not implementing C implementations on bf16-related intrinsics.
 #define simde_test_codegen_write_1bf16(indent, value) simde_test_codegen_write_bf16_full((indent), #value, (value), SIMDE_TEST_VEC_POS_SINGLE)
-#endif /* defined(SIMDE_ARM_NEON_BF16) */
 
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DIAGNOSTIC_DISABLE_FLOAT_EQUAL_
@@ -784,8 +764,6 @@ simde_test_equal_f64(simde_float64 a, simde_float64 b, simde_float64 slop) {
   }
 }
 
-#if defined(SIMDE_ARM_NEON_BF16)
-// [TODO] Currently are not implementing C implementations on bf16-related intrinsics.
 static int
 simde_test_equal_bf16(simde_bfloat16 a, simde_bfloat16 b, simde_bfloat16 slop) {
   simde_float32
@@ -794,7 +772,6 @@ simde_test_equal_bf16(simde_bfloat16 a, simde_bfloat16 b, simde_bfloat16 slop) {
     slopf = simde_bfloat16_to_float32(slop);
   return simde_test_equal_f32(af, bf, slopf);
 }
-#endif /* defined(SIMDE_ARM_NEON_BF16) */
 
 HEDLEY_DIAGNOSTIC_POP
 
@@ -813,13 +790,10 @@ simde_test_f64_precision_to_slop(int precision) {
   return HEDLEY_UNLIKELY(precision == INT_MAX) ? SIMDE_FLOAT64_C(0.0) : simde_math_pow(SIMDE_FLOAT64_C(10.0), -HEDLEY_STATIC_CAST(double, precision));
 }
 
-#if defined(SIMDE_ARM_NEON_BF16)
-// [TODO] Currently are not implementing C implementations on bf16-related intrinsics.
 static simde_bfloat16
 simde_test_bf16_precision_to_slop(int precision) {
   return HEDLEY_UNLIKELY(precision == INT_MAX) ? SIMDE_BFLOAT16_VALUE(0.0) : simde_bfloat16_from_float32(simde_math_powf(SIMDE_FLOAT32_C(10.0), -HEDLEY_STATIC_CAST(float, precision)));
 }
-#endif /* defined(SIMDE_ARM_NEON_BF16) */
 
 static int
 simde_assert_equal_vf16_(
@@ -911,8 +885,6 @@ simde_assert_equal_f64_(simde_float64 a, simde_float64 b, simde_float64 slop,
 }
 #define simde_assert_equal_f64(a, b, precision) do { if (simde_assert_equal_f64_(a, b, simde_test_f64_precision_to_slop(precision), __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 
-#if defined(SIMDE_ARM_NEON_BF16)
-// [TODO] Currently are not implementing C implementations on bf16-related intrinsics.
 static int
 simde_assert_equal_vbf16_(
     size_t vec_len, simde_bfloat16 const a[HEDLEY_ARRAY_PARAM(vec_len)], simde_bfloat16 const b[HEDLEY_ARRAY_PARAM(vec_len)], simde_bfloat16 slop,
@@ -948,7 +920,6 @@ simde_assert_equal_bf16_(simde_bfloat16 a, simde_bfloat16 b, simde_bfloat16 slop
   return 0;
 }
 #define simde_assert_equal_bf16(a, b, precision) do { if (simde_assert_equal_bf16_(a, b, simde_test_bf16_precision_to_slop(precision), __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
-#endif /* defined(SIMDE_ARM_NEON_BF16) */
 
 static int
 simde_assert_equal_vp8_(
