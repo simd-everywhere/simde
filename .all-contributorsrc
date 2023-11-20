@@ -637,6 +637,16 @@
       "contributions": [
         "platform"
       ]
+    },
+    {
+      "login": "yyctw",
+      "name": "Yi-Yen Chung",
+      "avatar_url": "https://avatars.githubusercontent.com/u/45251297?v=4",
+      "profile": "https://github.com/yyctw",
+      "contributions": [
+        "code",
+        "test"
+      ]
     }
   ],
   "contributorsPerLine": 7
