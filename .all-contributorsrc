@@ -666,6 +666,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "SGSSGene",
+      "name": "Simon Gene Gottlieb",
+      "avatar_url": "https://avatars.githubusercontent.com/u/456045?v=4",
+      "profile": "https://gottliebtfreitag.de",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7

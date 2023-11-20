@@ -1,6 +1,6 @@
 # SIMD Everywhere
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-66-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-67-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 [![Chat](https://badges.gitter.im/gitterHQ/gitter.png)](https://matrix.to/#/#simd-everywhere_community:gitter.im)
 [![codecov](https://codecov.io/gh/simd-everywhere/simde/branch/master/graph/badge.svg?token=jcMBoRk0ui)](https://codecov.io/gh/simd-everywhere/simde)
@@ -482,6 +482,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/yyctw"><img src="https://avatars.githubusercontent.com/u/45251297?v=4" width="100px;" alt=""/><br /><sub><b>Yi-Yen Chung</b></sub></a><br /><a href="https://github.com/nemequ/simde/commits?author=yyctw" title="Code">💻</a> <a href="https://github.com/nemequ/simde/commits?author=yyctw" title="Tests">⚠️</a></td>
     <td align="center"><a href="https://github.com/wewe5215"><img src="https://avatars.githubusercontent.com/u/76145143?v=4" width="100px;" alt=""/><br /><sub><b>Chi-Wei Chu</b></sub></a><br /><a href="https://github.com/nemequ/simde/commits?author=wewe5215" title="Code">💻</a> <a href="https://github.com/nemequ/simde/commits?author=wewe5215" title="Tests">⚠️</a></td>
     <td align="center"><a href="https://github.com/M-HT"><img src="https://avatars.githubusercontent.com/u/12173952?v=4" width="100px;" alt=""/><br /><sub><b>M-HT</b></sub></a><br /><a href="https://github.com/nemequ/simde/commits?author=M-HT" title="Code">💻</a></td>
+    <td align="center"><a href="https://gottliebtfreitag.de"><img src="https://avatars.githubusercontent.com/u/456045?v=4" width="100px;" alt=""/><br /><sub><b>Simon Gene Gottlieb</b></sub></a><br /><a href="https://github.com/nemequ/simde/commits?author=SGSSGene" title="Code">💻</a></td>
   </tr>
 </table>
 
