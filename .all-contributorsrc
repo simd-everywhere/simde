@@ -675,6 +675,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "cbielow",
+      "name": "Chris Bielow",
+      "avatar_url": "https://avatars.githubusercontent.com/u/6008722?v=4",
+      "profile": "http://bsc.fu-berlin.de",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7
