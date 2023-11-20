@@ -1100,6 +1100,83 @@ simde_vcopyq_laneq_p64(simde_poly64x2_t a, const int lane1, simde_poly64x2_t b, 
   #define vcopyq_laneq_p64(a, lane1, b, lane2) simde_vcopyq_laneq_p64((a), (lane1), (b), (lane2))
 #endif
 
+SIMDE_FUNCTION_ATTRIBUTES
+simde_bfloat16x4_t
+simde_vcopy_lane_bf16(simde_bfloat16x4_t a, const int lane1, simde_bfloat16x4_t b, const int lane2)
+    SIMDE_REQUIRE_CONSTANT_RANGE(lane1, 0, 3)
+    SIMDE_REQUIRE_CONSTANT_RANGE(lane2, 0, 3) {
+  simde_bfloat16x4_private
+    b_ = simde_bfloat16x4_to_private(b),
+    r_ = simde_bfloat16x4_to_private(a);
+
+  r_.values[lane1] = b_.values[lane2];
+  return simde_bfloat16x4_from_private(r_);
+}
+#if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARM_NEON_BF16)
+  #define simde_vcopy_lane_bf16(a, lane1, b, lane2) vcopy_lane_bf16((a), (lane1), (b), (lane2))
+#endif
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vcopy_lane_bf16
+  #define vcopy_lane_bf16(a, lane1, b, lane2) simde_vcopy_lane_bf16((a), (lane1), (b), (lane2))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_bfloat16x4_t
+simde_vcopy_laneq_bf16(simde_bfloat16x4_t a, const int lane1, simde_bfloat16x8_t b, const int lane2)
+    SIMDE_REQUIRE_CONSTANT_RANGE(lane1, 0, 3)
+    SIMDE_REQUIRE_CONSTANT_RANGE(lane2, 0, 7) {
+  simde_bfloat16x4_private r_ = simde_bfloat16x4_to_private(a);
+  simde_bfloat16x8_private b_ = simde_bfloat16x8_to_private(b);
+
+  r_.values[lane1] = b_.values[lane2];
+  return simde_bfloat16x4_from_private(r_);
+}
+#if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARM_NEON_BF16)
+  #define simde_vcopy_laneq_bf16(a, lane1, b, lane2) vcopy_laneq_bf16((a), (lane1), (b), (lane2))
+#endif
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vcopy_laneq_bf16
+  #define vcopy_laneq_bf16(a, lane1, b, lane2) simde_vcopy_laneq_bf16((a), (lane1), (b), (lane2))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_bfloat16x8_t
+simde_vcopyq_lane_bf16(simde_bfloat16x8_t a, const int lane1, simde_bfloat16x4_t b, const int lane2)
+    SIMDE_REQUIRE_CONSTANT_RANGE(lane1, 0, 7)
+    SIMDE_REQUIRE_CONSTANT_RANGE(lane2, 0, 3) {
+  simde_bfloat16x4_private b_ = simde_bfloat16x4_to_private(b);
+  simde_bfloat16x8_private r_ = simde_bfloat16x8_to_private(a);
+
+  r_.values[lane1] = b_.values[lane2];
+  return simde_bfloat16x8_from_private(r_);
+}
+#if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARM_NEON_BF16)
+  #define simde_vcopyq_lane_bf16(a, lane1, b, lane2) vcopyq_lane_bf16((a), (lane1), (b), (lane2))
+#endif
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vcopyq_lane_bf16
+  #define vcopyq_lane_bf16(a, lane1, b, lane2) simde_vcopyq_lane_bf16((a), (lane1), (b), (lane2))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_bfloat16x8_t
+simde_vcopyq_laneq_bf16(simde_bfloat16x8_t a, const int lane1, simde_bfloat16x8_t b, const int lane2)
+    SIMDE_REQUIRE_CONSTANT_RANGE(lane1, 0, 7)
+    SIMDE_REQUIRE_CONSTANT_RANGE(lane2, 0, 7) {
+  simde_bfloat16x8_private
+    b_ = simde_bfloat16x8_to_private(b),
+    r_ = simde_bfloat16x8_to_private(a);
+
+  r_.values[lane1] = b_.values[lane2];
+  return simde_bfloat16x8_from_private(r_);
+}
+#if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARM_NEON_BF16)
+  #define simde_vcopyq_laneq_bf16(a, lane1, b, lane2) vcopyq_laneq_bf16((a), (lane1), (b), (lane2))
+#endif
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+  #undef vcopyq_laneq_bf16
+  #define vcopyq_laneq_bf16(a, lane1, b, lane2) simde_vcopyq_laneq_bf16((a), (lane1), (b), (lane2))
+#endif
 
 SIMDE_END_DECLS_
 HEDLEY_DIAGNOSTIC_POP

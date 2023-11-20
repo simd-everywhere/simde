@@ -488,6 +488,36 @@ simde_vld1q_lane_p64(simde_poly64_t const *ptr, simde_poly64x2_t src,
   #define vld1q_lane_p64(ptr, src, lane) simde_vld1q_lane_p64((ptr), (src), (lane))
 #endif
 
+SIMDE_FUNCTION_ATTRIBUTES
+simde_bfloat16x4_t simde_vld1_lane_bf16(simde_bfloat16_t const *ptr, simde_bfloat16x4_t src, const int lane)
+    SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 3) {
+  simde_bfloat16x4_private r = simde_bfloat16x4_to_private(src);
+  r.values[lane] = *ptr;
+  return simde_bfloat16x4_from_private(r);
+}
+#if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_BF16)
+  #define simde_vld1_lane_bf16(ptr, src, lane) vld1_lane_bf16(ptr, src, lane)
+#endif
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+  #undef vld1_lane_bf16
+  #define vld1_lane_bf16(ptr, src, lane) simde_vld1_lane_bf16((ptr), (src), (lane))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_bfloat16x8_t simde_vld1q_lane_bf16(simde_bfloat16_t const *ptr, simde_bfloat16x8_t src,
+                                     const int lane)
+    SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 7) {
+  simde_bfloat16x8_private r = simde_bfloat16x8_to_private(src);
+  r.values[lane] = *ptr;
+  return simde_bfloat16x8_from_private(r);
+}
+#if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_BF16)
+  #define simde_vld1q_lane_bf16(ptr, src, lane) vld1q_lane_bf16(ptr, src, lane)
+#endif
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+  #undef vld1q_lane_bf16
+  #define vld1q_lane_bf16(ptr, src, lane) simde_vld1q_lane_bf16((ptr), (src), (lane))
+#endif
 
 SIMDE_END_DECLS_
 HEDLEY_DIAGNOSTIC_POP

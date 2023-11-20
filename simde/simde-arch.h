@@ -592,6 +592,11 @@
 #  define SIMDE_ARCH_ARM_NEON_FP16
 #endif
 
+/* Availability of 16-bit brain floating-point arithmetic intrinsics */
+#if defined(__ARM_FEATURE_BF16_VECTOR_ARITHMETIC)
+#  define SIMDE_ARCH_ARM_NEON_BF16
+#endif
+
 /* LoongArch
    <https://en.wikipedia.org/wiki/Loongson#LoongArch> */
 #if defined(__loongarch32)
