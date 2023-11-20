@@ -684,6 +684,16 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "XiWeiGu",
+      "name": "gu xiwei",
+      "avatar_url": "https://avatars.githubusercontent.com/u/41367273?v=4",
+      "profile": "https://github.com/XiWeiGu",
+      "contributions": [
+        "platform",
+        "test"
+      ]
     }
   ],
   "contributorsPerLine": 7
