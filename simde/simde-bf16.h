@@ -35,7 +35,7 @@ HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 SIMDE_BEGIN_DECLS_
 
-/* This implementations is referenced by simde-f16.h */
+/* This implementations is based upon simde-f16.h */
 
 /* Portable version which should work on pretty much any compiler.
  * Obviously you can't rely on compiler support for things like
@@ -44,11 +44,8 @@ SIMDE_BEGIN_DECLS_
  */
 #define SIMDE_BFLOAT16_API_PORTABLE 1
 
-#define SIMDE_BFLOAT16_API_BF16 4
+#define SIMDE_BFLOAT16_API_BF16 2
 
-/* Choosing an implementation.  This is a bit rough, but I don't have
- * any ideas on how to improve it.  If you do, patches are definitely
- * welcome. */
 #if !defined(SIMDE_BFLOAT16_API)
   #if defined(SIMDE_ARM_NEON_BF16)
     #define SIMDE_BFLOAT16_API SIMDE_BFLOAT16_API_BF16
@@ -71,38 +68,46 @@ SIMDE_BEGIN_DECLS_
 static HEDLEY_ALWAYS_INLINE HEDLEY_CONST
 simde_bfloat16
 simde_bfloat16_from_float32 (simde_float32 value) {
+#if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_BF16)
+  return vcvth_bf16_f32(value);
+#else
   simde_bfloat16 res;
   char* src = HEDLEY_REINTERPRET_CAST(char*, &value);
   // rounding to nearest bfloat16
   // If the 17th bit of value is 1, set the rounding to 1.
   uint8_t rounding = 0;
 
-#if SIMDE_ENDIAN_ORDER == SIMDE_ENDIAN_LITTLE
-  if (src[1] & UINT8_C(0x80)) rounding = 1;
-  src[2] = HEDLEY_STATIC_CAST(char, (HEDLEY_STATIC_CAST(uint8_t, src[2]) + rounding));
-  simde_memcpy(&res, src+2, sizeof(res));
-#else
-  if (src[2] & UINT8_C(0x80)) rounding = 1;
-  src[1] = HEDLEY_STATIC_CAST(char, (HEDLEY_STATIC_CAST(uint8_t, src[1]) + rounding));
-  simde_memcpy(&res, src, sizeof(res));
-#endif
+  #if SIMDE_ENDIAN_ORDER == SIMDE_ENDIAN_LITTLE
+    if (src[1] & UINT8_C(0x80)) rounding = 1;
+    src[2] = HEDLEY_STATIC_CAST(char, (HEDLEY_STATIC_CAST(uint8_t, src[2]) + rounding));
+    simde_memcpy(&res, src+2, sizeof(res));
+  #else
+    if (src[2] & UINT8_C(0x80)) rounding = 1;
+    src[1] = HEDLEY_STATIC_CAST(char, (HEDLEY_STATIC_CAST(uint8_t, src[1]) + rounding));
+    simde_memcpy(&res, src, sizeof(res));
+  #endif
 
   return res;
+#endif
 }
 
 static HEDLEY_ALWAYS_INLINE HEDLEY_CONST
 simde_float32
 simde_bfloat16_to_float32 (simde_bfloat16 value) {
+#if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_BF16)
+  return vcvtah_f32_bf16(value);
+#else
   simde_float32 res = 0.0;
   char* _res = HEDLEY_REINTERPRET_CAST(char*, &res);
 
-#if SIMDE_ENDIAN_ORDER == SIMDE_ENDIAN_LITTLE
-  simde_memcpy(_res+2, &value, sizeof(value));
-#else
-  simde_memcpy(_res, &value, sizeof(value));
-#endif
+  #if SIMDE_ENDIAN_ORDER == SIMDE_ENDIAN_LITTLE
+    simde_memcpy(_res+2, &value, sizeof(value));
+  #else
+    simde_memcpy(_res, &value, sizeof(value));
+  #endif
 
   return res;
+#endif
 }
 
 SIMDE_DEFINE_CONVERSION_FUNCTION_(simde_uint16_as_bfloat16, simde_bfloat16,      uint16_t)

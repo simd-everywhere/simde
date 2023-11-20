@@ -7468,6 +7468,7 @@ simde_vreinterpretq_p16_bf16(simde_bfloat16x8_t a) {
   #undef vreinterpretq_p16_bf16
   #define vreinterpretq_p16_bf16(a) simde_vreinterpretq_p16_bf16(a)
 #endif
+
 SIMDE_FUNCTION_ATTRIBUTES
 simde_poly64x2_t
 simde_vreinterpretq_p64_bf16(simde_bfloat16x8_t a) {
@@ -7486,6 +7487,7 @@ simde_vreinterpretq_p64_bf16(simde_bfloat16x8_t a) {
 #endif
 
 #if !defined(SIMDE_TARGET_NOT_SUPPORT_INT128_TYPE)
+
 SIMDE_FUNCTION_ATTRIBUTES
 simde_poly128_t
 simde_vreinterpretq_p128_bf16(simde_bfloat16x8_t a) {
