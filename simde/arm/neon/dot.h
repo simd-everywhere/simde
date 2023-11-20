@@ -67,7 +67,7 @@ simde_vdot_s32(simde_int32x2_t r, simde_int8x8_t a, simde_int8x8_t b) {
     return simde_vadd_s32(r, simde_int32x2_from_private(r_));
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && !defined(__ARM_FEATURE_DOTPROD))
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
   #undef vdot_s32
   #define vdot_s32(r, a, b) simde_vdot_s32((r), (a), (b))
 #endif
@@ -97,7 +97,7 @@ simde_vdot_u32(simde_uint32x2_t r, simde_uint8x8_t a, simde_uint8x8_t b) {
     return simde_vadd_u32(r, simde_uint32x2_from_private(r_));
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && !defined(__ARM_FEATURE_DOTPROD))
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
   #undef vdot_u32
   #define vdot_u32(r, a, b) simde_vdot_u32((r), (a), (b))
 #endif
@@ -128,7 +128,7 @@ simde_vdotq_s32(simde_int32x4_t r, simde_int8x16_t a, simde_int8x16_t b) {
     return simde_vaddq_s32(r, simde_int32x4_from_private(r_));
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && !defined(__ARM_FEATURE_DOTPROD))
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
   #undef vdotq_s32
   #define vdotq_s32(r, a, b) simde_vdotq_s32((r), (a), (b))
 #endif
@@ -159,11 +159,64 @@ simde_vdotq_u32(simde_uint32x4_t r, simde_uint8x16_t a, simde_uint8x16_t b) {
     return simde_vaddq_u32(r, simde_uint32x4_from_private(r_));
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && !defined(__ARM_FEATURE_DOTPROD))
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
   #undef vdotq_u32
   #define vdotq_u32(r, a, b) simde_vdotq_u32((r), (a), (b))
 #endif
 
+SIMDE_FUNCTION_ATTRIBUTES
+simde_float32x2_t
+simde_vbfdot_f32(simde_float32x2_t r, simde_bfloat16x4_t a, simde_bfloat16x4_t b) {
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && \
+      defined(SIMDE_ARM_NEON_BF16)
+    return vbfdot_f32(r, a, b);
+  #else
+    simde_float32x2_private r_ = simde_float32x2_to_private(r);
+    simde_bfloat16x4_private
+      a_ = simde_bfloat16x4_to_private(a),
+      b_ = simde_bfloat16x4_to_private(b);
+
+    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+      simde_float32_t elt1_a = simde_bfloat16_to_float32(a_.values[2 * i + 0]);
+      simde_float32_t elt1_b = simde_bfloat16_to_float32(a_.values[2 * i + 1]);
+      simde_float32_t elt2_a = simde_bfloat16_to_float32(b_.values[2 * i + 0]);
+      simde_float32_t elt2_b = simde_bfloat16_to_float32(b_.values[2 * i + 1]);
+      r_.values[i] = r_.values[i] + elt1_a * elt2_a + elt1_b * elt2_b;
+    }
+    return simde_float32x2_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+  #undef vbfdot_f32
+  #define vbfdot_f32(r, a, b) simde_vbfdot_f32((r), (a), (b))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_float32x4_t
+simde_vbfdotq_f32(simde_float32x4_t r, simde_bfloat16x8_t a, simde_bfloat16x8_t b) {
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(__ARM_FEATURE_DOTPROD) && \
+      defined(SIMDE_ARM_NEON_BF16)
+    return vbfdotq_f32(r, a, b);
+  #else
+    simde_float32x4_private r_ = simde_float32x4_to_private(r);
+    simde_bfloat16x8_private
+      a_ = simde_bfloat16x8_to_private(a),
+      b_ = simde_bfloat16x8_to_private(b);
+
+    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+      simde_float32_t elt1_a = simde_bfloat16_to_float32(a_.values[2 * i + 0]);
+      simde_float32_t elt1_b = simde_bfloat16_to_float32(a_.values[2 * i + 1]);
+      simde_float32_t elt2_a = simde_bfloat16_to_float32(b_.values[2 * i + 0]);
+      simde_float32_t elt2_b = simde_bfloat16_to_float32(b_.values[2 * i + 1]);
+      r_.values[i] = r_.values[i] + elt1_a * elt2_a + elt1_b * elt2_b;
+    }
+    return simde_float32x4_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+  #undef vbfdotq_f32
+  #define vbfdotq_f32(r, a, b) simde_vbfdotq_f32((r), (a), (b))
+#endif
 
 SIMDE_END_DECLS_
 HEDLEY_DIAGNOSTIC_POP

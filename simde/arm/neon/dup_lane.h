@@ -1612,6 +1612,86 @@ simde_vduph_laneq_p16(simde_poly16x8_t vec, const int lane)
   #define vduph_laneq_p16(vec, lane) simde_vduph_laneq_p16((vec), (lane))
 #endif
 
+SIMDE_FUNCTION_ATTRIBUTES
+simde_bfloat16_t
+simde_vduph_lane_bf16(simde_bfloat16x4_t vec, const int lane)
+    SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 3) {
+  return simde_bfloat16x4_to_private(vec).values[lane];
+}
+#if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_BF16)
+  #define simde_vduph_lane_bf16(vec, lane) vduph_lane_bf16(vec, lane)
+#endif
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+  #undef vduph_lane_bf16
+  #define vduph_lane_bf16(vec, lane) simde_vduph_lane_bf16((vec), (lane))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_bfloat16_t
+simde_vduph_laneq_bf16(simde_bfloat16x8_t vec, const int lane)
+    SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 7) {
+  return simde_bfloat16x8_to_private(vec).values[lane];
+}
+#if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_BF16)
+  #define simde_vduph_laneq_bf16(vec, lane) vduph_laneq_bf16(vec, lane)
+#endif
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+  #undef vduph_laneq_bf16
+  #define vduph_laneq_bf16(vec, lane) simde_vduph_laneq_bf16((vec), (lane))
+#endif
+
+// simde_vdup_lane_bf16
+#if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_BF16)
+  #define simde_vdup_lane_bf16(vec, lane) vdup_lane_bf16(vec, lane)
+#else
+  #define simde_vdup_lane_bf16(vec, lane) simde_vdup_n_bf16(simde_vduph_lane_bf16(vec, lane))
+#endif
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+  #undef vdup_lane_bf16
+  #define vdup_lane_bf16(vec, lane) simde_vdup_lane_bf16((vec), (lane))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_bfloat16x4_t
+simde_vdup_laneq_bf16(simde_bfloat16x8_t vec, const int lane)
+  SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 7) {
+  return simde_vdup_n_bf16(simde_bfloat16x8_to_private(vec).values[lane]);
+}
+#if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_BF16)
+#define simde_vdup_laneq_bf16(vec, lane) vdup_laneq_bf16(vec, lane)
+#endif
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+  #undef vdup_laneq_bf16
+  #define vdup_laneq_bf16(vec, lane) simde_vdup_laneq_bf16((vec), (lane))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_bfloat16x8_t
+simde_vdupq_lane_bf16(simde_bfloat16x4_t vec, const int lane)
+  SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 3) {
+  return simde_vdupq_n_bf16(simde_bfloat16x4_to_private(vec).values[lane]);
+}
+#if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_BF16)
+#define simde_vdupq_lane_bf16(vec, lane) vdupq_lane_bf16(vec, lane)
+#endif
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+  #undef vdupq_lane_bf16
+  #define vdupq_lane_bf16(vec, lane) simde_vdupq_lane_bf16((vec), (lane))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_bfloat16x8_t
+simde_vdupq_laneq_bf16(simde_bfloat16x8_t vec, const int lane)
+    SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 7) {
+  return simde_vdupq_n_bf16(simde_bfloat16x8_to_private(vec).values[lane]);
+}
+#if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_BF16)
+  #define simde_vdupq_laneq_bf16(vec, lane) vdupq_laneq_bf16(vec, lane)
+#endif
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+  #undef vdupq_laneq_bf16
+  #define vdupq_laneq_bf16(vec, lane) simde_vdupq_laneq_bf16((vec), (lane))
+#endif
 
 SIMDE_END_DECLS_
 HEDLEY_DIAGNOSTIC_POP

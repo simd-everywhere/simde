@@ -514,6 +514,33 @@ simde_vld1q_dup_p64(simde_poly64_t const * ptr) {
   #define vld1q_dup_p64(a) simde_vld1q_dup_p64((a))
 #endif
 
+SIMDE_FUNCTION_ATTRIBUTES
+simde_bfloat16x4_t
+simde_vld1_dup_bf16(simde_bfloat16 const * ptr) {
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_BF16)
+    return vld1_dup_bf16(ptr);
+  #else
+    return simde_vdup_n_bf16(*ptr);
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+  #undef vld1_dup_bf16
+  #define vld1_dup_bf16(a) simde_vld1_dup_bf16((a))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_bfloat16x8_t
+simde_vld1q_dup_bf16(simde_bfloat16 const * ptr) {
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_BF16)
+    return vld1q_dup_bf16(ptr);
+  #else
+    return simde_vdupq_n_bf16(*ptr);
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+  #undef vld1q_dup_bf16
+  #define vld1q_dup_bf16(a) simde_vld1q_dup_bf16((a))
+#endif
 
 SIMDE_END_DECLS_
 HEDLEY_DIAGNOSTIC_POP
