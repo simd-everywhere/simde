@@ -694,6 +694,15 @@
         "platform",
         "test"
       ]
+    },
+    {
+      "login": "Vineg",
+      "name": "George Vinokhodov",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1757455?v=4",
+      "profile": "https://github.com/Vineg",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7
