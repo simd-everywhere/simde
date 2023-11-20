@@ -45,7 +45,10 @@
         "ideas",
         "infra",
         "platform",
-        "test"
+        "test",
+        "maintenance",
+        "projectManagement",
+        "review"
       ]
     },
     {
