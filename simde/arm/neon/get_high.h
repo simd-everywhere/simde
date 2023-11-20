@@ -383,6 +383,27 @@ simde_vget_high_p64(simde_poly64x2_t a) {
   #define vget_high_p64(a) simde_vget_high_p64((a))
 #endif
 
+SIMDE_FUNCTION_ATTRIBUTES
+simde_bfloat16x4_t
+simde_vget_high_bf16(simde_bfloat16x8_t a) {
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_BF16)
+    return vget_high_bf16(a);
+  #else
+    simde_bfloat16x4_private r_;
+    simde_bfloat16x8_private a_ = simde_bfloat16x8_to_private(a);
+
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+      r_.values[i] = a_.values[i + (sizeof(r_.values) / sizeof(r_.values[0]))];
+    }
+
+    return simde_bfloat16x4_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+  #undef vget_high_bf16
+  #define vget_high_bf16(a) simde_vget_high_bf16((a))
+#endif
 
 SIMDE_END_DECLS_
 HEDLEY_DIAGNOSTIC_POP
