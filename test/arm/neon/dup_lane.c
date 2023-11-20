@@ -3194,7 +3194,7 @@ test_simde_vduph_lane_f16 (SIMDE_MUNIT_TEST_ARGS) {
     vec = simde_vld1_f16(test_vec[i].vec);
     SIMDE_CONSTIFY_4_(simde_vduph_lane_f16, r, (HEDLEY_UNREACHABLE(), r), test_vec[i].lane, vec);
 
-    simde_assert_equal_f16(r, test_vec[i].r, INT_MAX);
+    simde_assert_equal_f16(r, test_vec[i].r, 1);
   }
 
   return 0;
