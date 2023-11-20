@@ -65,6 +65,8 @@ If you have any questions, please feel free to use the
 There are currently complete implementations of the following instruction
 set extensions:
 
+* ARM
+  * [NEON](https://en.wikipedia.org/wiki/ARM_architecture_family#Advanced_SIMD_(Neon))
 * x86 / x86_64
   * [MMX](https://en.wikipedia.org/wiki/MMX_(instruction_set))
   * [SSE](https://en.wikipedia.org/wiki/Streaming_SIMD_Extensions)
@@ -308,7 +310,7 @@ We would love to add more, so patches are extremely welcome!
    * [SSE-to-NEON](https://github.com/otim/SSE-to-NEON) — implementing
      SSE with NEON.  Non-free, C++.
    * [AvxToNeon](https://github.com/kunpengcompute/AvxToNeon) — Popular
-      AVX+ intrinsincs implemented in NEON. C, Apache 2.0 license.     
+      AVX+ intrinsincs implemented in NEON. C, Apache 2.0 license.
  * [arm-neon-tests](https://github.com/christophe-lyon/arm-neon-tests)
    contains tests to verify NEON implementations.
 
