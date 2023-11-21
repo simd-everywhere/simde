@@ -1,0 +1,20 @@
+[binaries]
+c = ['ccache', 'clang-16']
+cpp = ['ccache', 'clang++-16']
+ar = 'llvm-ar-16'
+strip = 'llvm-strip-16'
+objcopy = 'llvm-objcopy-16'
+ld = 'llvm-ld-16'
+exe_wrapper = ['qemu-mips64el-static', '-cpu', 'Loongson-3A4000', '-L', '/usr/mips64el-linux-gnuabi64']
+
+[properties]
+c_args = ['--target=mips64el-linux-gnuabi64', '-march=mips64r5', '-mmsa', '-isystem=/usr/mips64el-linux-gnuabi64/include', '-Weverything', '-fno-lax-vector-conversions', '-Werror', '-Wno-unsafe-buffer-usage']
+cpp_args = ['--target=mips64el-linux-gnuabi64', '-march=mips64r5', '-mmsa', '-isystem=/usr/mips64el-linux-gnuabi64/include', '-Weverything', '-fno-lax-vector-conversions', '-Werror', '-Wno-unsafe-buffer-usage']
+c_link_args = ['--target=mips64el-linux-gnuabi64']
+cpp_link_args = ['--target=mips64el-linux-gnuabi64']
+
+[host_machine]
+system = 'linux'
+cpu_family = 'mips64el'
+cpu = 'mips64el'
+endian = 'little'
