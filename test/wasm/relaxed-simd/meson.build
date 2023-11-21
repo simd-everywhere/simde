@@ -1,7 +1,7 @@
 simde_test_wasm_relaxed_simd_tests = [
-  'blend',
-  'fma',
-  'fms',
+  'laneselect',
+  'madd',
+  'nmadd',
   'swizzle',
   'trunc',
 ]

@@ -56,7 +56,7 @@ simde_msa_fmadd_w(simde_v4f32 a, simde_v4f32 b, simde_v4f32 c) {
     #elif defined(SIMDE_X86_SSE_NATIVE)
       r_.m128 = _mm_add_ps(a_.m128, _mm_mul_ps(b_.m128, c_.m128));
     #elif defined(SIMDE_WASM_RELAXED_SIMD_NATIVE)
-      return wasm_f32x4_fma(a_.v128, b_.v128, c_.v128);
+      r_.v128 = wasm_f32x4_relaxed_madd(b_.v128, c_.v128, a_.v128);
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r_.v128 = wasm_f32x4_add(a_.v128, wasm_f32x4_mul(b_.v128, c_.v128));
     #elif defined(SIMDE_VECTOR_SUBSCRIPT)
@@ -97,7 +97,7 @@ simde_msa_fmadd_d(simde_v2f64 a, simde_v2f64 b, simde_v2f64 c) {
     #elif defined(SIMDE_X86_SSE2_NATIVE)
       r_.m128d = _mm_add_pd(a_.m128d, _mm_mul_pd(b_.m128d, c_.m128d));
     #elif defined(SIMDE_WASM_RELAXED_SIMD_NATIVE)
-      r_.v128 = wasm_f64x2_fma(a_.v128, b_.v128, c_.v128);
+      r_.v128 = wasm_f64x2_relaxed_madd(b_.v128, c_.v128, a_.v128);
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r_.v128 = wasm_f64x2_add(a_.v128, wasm_f64x2_mul(b_.v128, c_.v128));
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
