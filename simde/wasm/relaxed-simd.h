@@ -383,6 +383,8 @@ simde_wasm_f32x4_relaxed_madd (simde_v128_t a, simde_v128_t b, simde_v128_t c) {
       r_.neon_f32 = vmlaq_f32(c_.neon_f32, a_.neon_f32, b_.neon_f32);
     #elif defined(SIMDE_X86_FMA_NATIVE)
       r_.sse_m128 = _mm_fmadd_ps(a_.sse_m128, b_.sse_m128, c_.sse_m128);
+    #elif defined(SIMDE_MIPS_MSA_NATIVE)
+      r_.msa_v4f32 = __msa_fmadd_w(c_.msa_v4f32, a_.msa_v4f32, b_.msa_v4f32);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT)
       r_.f32 = (a_.f32 * b_.f32) + c_.f32;
     #else
@@ -419,6 +421,8 @@ simde_wasm_f64x2_relaxed_madd (simde_v128_t a, simde_v128_t b, simde_v128_t c) {
       r_.neon_f64 = vfmaq_f64(c_.neon_f64, a_.neon_f64, b_.neon_f64);
     #elif defined(SIMDE_X86_FMA_NATIVE)
       r_.sse_m128d = _mm_fmadd_pd(a_.sse_m128d, b_.sse_m128d, c_.sse_m128d);
+    #elif defined(SIMDE_MIPS_MSA_NATIVE)
+      r_.msa_v2f64 = __msa_fmadd_d(c_.msa_v2f64, a_.msa_v2f64, b_.msa_v2f64);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT)
       r_.f64 = (a_.f64 * b_.f64) + c_.f64;
     #else
@@ -459,6 +463,8 @@ simde_wasm_f32x4_relaxed_nmadd (simde_v128_t a, simde_v128_t b, simde_v128_t c) 
       r_.neon_f32 = vmlsq_f32(c_.neon_f32, a_.neon_f32, b_.neon_f32);
     #elif defined(SIMDE_X86_FMA_NATIVE)
       r_.sse_m128 = _mm_fnmadd_ps(a_.sse_m128, b_.sse_m128, c_.sse_m128);
+    #elif defined(SIMDE_MIPS_MSA_NATIVE)
+      r_.msa_v4f32 = __msa_fmsub_w(c_.msa_v4f32, a_.msa_v4f32, b_.msa_v4f32);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT)
       r_.f32 = c_.f32 - (a_.f32 * b_.f32);
     #else
@@ -495,6 +501,8 @@ simde_wasm_f64x2_relaxed_nmadd (simde_v128_t a, simde_v128_t b, simde_v128_t c) 
       r_.neon_f64 = vfmsq_f64(a_.neon_f64, b_.neon_f64, c_.neon_f64);
     #elif defined(SIMDE_X86_FMA_NATIVE)
       r_.sse_m128d = _mm_fnmadd_pd(a_.sse_m128d, b_.sse_m128d, c_.sse_m128d);
+    #elif defined(SIMDE_MIPS_MSA_NATIVE)
+      r_.msa_v2f64 = __msa_fmsub_d(c_.msa_v2f64, a_.msa_v2f64, b_.msa_v2f64);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT)
       r_.f64 = c_.f64 - (a_.f64 * b_.f64);
     #else
