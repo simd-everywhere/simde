@@ -151,6 +151,8 @@ jobs:
         variant:
           - "32"
           - "64"
+          - "32-relaxed"
+          - "64-relaxed"
     steps:
     - uses: actions/checkout@v3
       with:
