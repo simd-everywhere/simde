@@ -359,6 +359,12 @@ jobs:
           arch_gnu: powerpc64le
           arch_deb: ppc64el
           distro: ubuntu-22.04
+        - version: 12
+          cross: mips64el
+          arch_gnu: mips64el
+          arch_gnu_abi: abi64
+          arch_deb: mips64el
+          distro: ubuntu-22.04
     runs-on: ${{ matrix.distro }}
     steps:
     - uses: actions/checkout@v3
@@ -426,6 +432,12 @@ jobs:
           cross: ppc64el
           arch_deb: ppc64el
           arch_gnu: powerpc64le
+          distro: ubuntu-22.04
+        - version: 16
+          cross: ppc64el
+          arch_deb: mips64el
+          arch_gnu: mips64el
+          arch_gnu_abi: abi64
           distro: ubuntu-22.04
     runs-on: ${{ matrix.distro }}
     steps:
