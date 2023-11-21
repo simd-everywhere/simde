@@ -21,12 +21,12 @@
  * SOFTWARE.
  */
 
-#define SIMDE_TEST_WASM_RELAXED_SIMD_INSN blend
+#define SIMDE_TEST_WASM_RELAXED_SIMD_INSN laneselect
 #include "../../../simde/wasm/relaxed-simd.h"
 #include "test-relaxed-simd.h"
 
 static int
-test_simde_wasm_i8x16_blend(SIMDE_MUNIT_TEST_ARGS) {
+test_simde_wasm_i8x16_relaxed_laneselect(SIMDE_MUNIT_TEST_ARGS) {
   #if 1
     SIMDE_TEST_STRUCT_MODIFIERS struct {
       int8_t a[sizeof(simde_v128_t) / sizeof(int8_t)];
@@ -104,7 +104,7 @@ test_simde_wasm_i8x16_blend(SIMDE_MUNIT_TEST_ARGS) {
       simde_v128_t a = simde_wasm_v128_load(test_vec[i].a);
       simde_v128_t b = simde_wasm_v128_load(test_vec[i].b);
       simde_v128_t mask = simde_wasm_v128_load(test_vec[i].mask);
-      simde_v128_t r = simde_wasm_i8x16_blend(a, b, mask);
+      simde_v128_t r = simde_wasm_i8x16_relaxed_laneselect(a, b, mask);
       simde_test_wasm_i8x16_assert_equal(r, simde_wasm_v128_load(test_vec[i].r));
     }
     return 0;
@@ -117,7 +117,7 @@ test_simde_wasm_i8x16_blend(SIMDE_MUNIT_TEST_ARGS) {
         mask = simde_wasm_i8x16_shr(simde_test_wasm_i8x16_random(), 7),
         r;
 
-      r = simde_wasm_i8x16_blend(a, b, mask);
+      r = simde_wasm_i8x16_relaxed_laneselect(a, b, mask);
 
       simde_test_wasm_i8x16_write(3, a, SIMDE_TEST_VEC_POS_FIRST);
       simde_test_wasm_i8x16_write(3, b, SIMDE_TEST_VEC_POS_MIDDLE);
@@ -129,7 +129,7 @@ test_simde_wasm_i8x16_blend(SIMDE_MUNIT_TEST_ARGS) {
 }
 
 static int
-test_simde_wasm_i16x8_blend(SIMDE_MUNIT_TEST_ARGS) {
+test_simde_wasm_i16x8_relaxed_laneselect(SIMDE_MUNIT_TEST_ARGS) {
   #if 1
     SIMDE_TEST_STRUCT_MODIFIERS struct {
       int16_t a[sizeof(simde_v128_t) / sizeof(int16_t)];
@@ -175,7 +175,7 @@ test_simde_wasm_i16x8_blend(SIMDE_MUNIT_TEST_ARGS) {
       simde_v128_t a = simde_wasm_v128_load(test_vec[i].a);
       simde_v128_t b = simde_wasm_v128_load(test_vec[i].b);
       simde_v128_t mask = simde_wasm_v128_load(test_vec[i].mask);
-      simde_v128_t r = simde_wasm_i16x8_blend(a, b, mask);
+      simde_v128_t r = simde_wasm_i16x8_relaxed_laneselect(a, b, mask);
       simde_test_wasm_i16x8_assert_equal(r, simde_wasm_v128_load(test_vec[i].r));
     }
     return 0;
@@ -188,7 +188,7 @@ test_simde_wasm_i16x8_blend(SIMDE_MUNIT_TEST_ARGS) {
         mask = simde_wasm_i16x8_shr(simde_test_wasm_i16x8_random(), 15),
         r;
 
-      r = simde_wasm_i16x8_blend(a, b, mask);
+      r = simde_wasm_i16x8_relaxed_laneselect(a, b, mask);
 
       simde_test_wasm_i16x8_write(3, a, SIMDE_TEST_VEC_POS_FIRST);
       simde_test_wasm_i16x8_write(3, b, SIMDE_TEST_VEC_POS_MIDDLE);
@@ -200,7 +200,7 @@ test_simde_wasm_i16x8_blend(SIMDE_MUNIT_TEST_ARGS) {
 }
 
 static int
-test_simde_wasm_i32x4_blend(SIMDE_MUNIT_TEST_ARGS) {
+test_simde_wasm_i32x4_relaxed_laneselect(SIMDE_MUNIT_TEST_ARGS) {
   #if 1
     SIMDE_TEST_STRUCT_MODIFIERS struct {
       int32_t a[sizeof(simde_v128_t) / sizeof(int32_t)];
@@ -246,7 +246,7 @@ test_simde_wasm_i32x4_blend(SIMDE_MUNIT_TEST_ARGS) {
       simde_v128_t a = simde_wasm_v128_load(test_vec[i].a);
       simde_v128_t b = simde_wasm_v128_load(test_vec[i].b);
       simde_v128_t mask = simde_wasm_v128_load(test_vec[i].mask);
-      simde_v128_t r = simde_wasm_i32x4_blend(a, b, mask);
+      simde_v128_t r = simde_wasm_i32x4_relaxed_laneselect(a, b, mask);
       simde_test_wasm_i32x4_assert_equal(r, simde_wasm_v128_load(test_vec[i].r));
     }
     return 0;
@@ -259,7 +259,7 @@ test_simde_wasm_i32x4_blend(SIMDE_MUNIT_TEST_ARGS) {
         mask = simde_wasm_i32x4_shr(simde_test_wasm_i32x4_random(), 31),
         r;
 
-      r = simde_wasm_i32x4_blend(a, b, mask);
+      r = simde_wasm_i32x4_relaxed_laneselect(a, b, mask);
 
       simde_test_wasm_i32x4_write(3, a, SIMDE_TEST_VEC_POS_FIRST);
       simde_test_wasm_i32x4_write(3, b, SIMDE_TEST_VEC_POS_MIDDLE);
@@ -271,7 +271,7 @@ test_simde_wasm_i32x4_blend(SIMDE_MUNIT_TEST_ARGS) {
 }
 
 static int
-test_simde_wasm_i64x2_blend(SIMDE_MUNIT_TEST_ARGS) {
+test_simde_wasm_i64x2_relaxed_laneselect(SIMDE_MUNIT_TEST_ARGS) {
   #if 1
     SIMDE_TEST_STRUCT_MODIFIERS struct {
       int64_t a[sizeof(simde_v128_t) / sizeof(int64_t)];
@@ -317,7 +317,7 @@ test_simde_wasm_i64x2_blend(SIMDE_MUNIT_TEST_ARGS) {
       simde_v128_t a = simde_wasm_v128_load(test_vec[i].a);
       simde_v128_t b = simde_wasm_v128_load(test_vec[i].b);
       simde_v128_t mask = simde_wasm_v128_load(test_vec[i].mask);
-      simde_v128_t r = simde_wasm_i64x2_blend(a, b, mask);
+      simde_v128_t r = simde_wasm_i64x2_relaxed_laneselect(a, b, mask);
       simde_test_wasm_i64x2_assert_equal(r, simde_wasm_v128_load(test_vec[i].r));
     }
     return 0;
@@ -330,7 +330,7 @@ test_simde_wasm_i64x2_blend(SIMDE_MUNIT_TEST_ARGS) {
         mask = simde_wasm_i64x2_shr(simde_test_wasm_i64x2_random(), 63),
         r;
 
-      r = simde_wasm_i64x2_blend(a, b, mask);
+      r = simde_wasm_i64x2_relaxed_laneselect(a, b, mask);
 
       simde_test_wasm_i64x2_write(3, a, SIMDE_TEST_VEC_POS_FIRST);
       simde_test_wasm_i64x2_write(3, b, SIMDE_TEST_VEC_POS_MIDDLE);
@@ -342,10 +342,10 @@ test_simde_wasm_i64x2_blend(SIMDE_MUNIT_TEST_ARGS) {
 }
 
 SIMDE_TEST_FUNC_LIST_BEGIN
-  SIMDE_TEST_FUNC_LIST_ENTRY(wasm_i8x16_blend)
-  SIMDE_TEST_FUNC_LIST_ENTRY(wasm_i16x8_blend)
-  SIMDE_TEST_FUNC_LIST_ENTRY(wasm_i32x4_blend)
-  SIMDE_TEST_FUNC_LIST_ENTRY(wasm_i64x2_blend)
+  SIMDE_TEST_FUNC_LIST_ENTRY(wasm_i8x16_relaxed_laneselect)
+  SIMDE_TEST_FUNC_LIST_ENTRY(wasm_i16x8_relaxed_laneselect)
+  SIMDE_TEST_FUNC_LIST_ENTRY(wasm_i32x4_relaxed_laneselect)
+  SIMDE_TEST_FUNC_LIST_ENTRY(wasm_i64x2_relaxed_laneselect)
 SIMDE_TEST_FUNC_LIST_END
 
 #include "test-relaxed-simd-footer.h"
