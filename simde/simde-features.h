@@ -383,7 +383,13 @@
     #define SIMDE_WASM_SIMD128_NATIVE
   #endif
 #endif
-#if defined(SIMDE_WASM_SIMD128_NATIVE)
+
+#if !defined(SIMDE_WASM_RELAXED_SIMD_NATIVE) && !defined(SIMDE_WASM_RELAXED_SIMD_NO_NATIVE) && !defined(SIMDE_NO_NATIVE)
+  #if defined(SIMDE_ARCH_WASM_RELAXED_SIMD)
+    #define SIMDE_WASM_RELAXED_SIMD_NATIVE
+  #endif
+#endif
+#if defined(SIMDE_WASM_SIMD128_NATIVE) || defined(SIMDE_WASM_RELAXED_SIMD_NATIVE)
   #include <wasm_simd128.h>
 #endif
 
