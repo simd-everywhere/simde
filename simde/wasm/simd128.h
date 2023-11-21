@@ -92,6 +92,17 @@ typedef union {
     #endif
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
     SIMDE_ALIGN_TO_16 v128_t         wasm_v128;
+  #elif defined(SIMDE_MIPS_MSA_NATIVE)
+    SIMDE_ALIGN_TO_16 v16i8          msa_v16i8;
+    SIMDE_ALIGN_TO_16 v8i16          msa_v8i16;
+    SIMDE_ALIGN_TO_16 v4i32          msa_v4i32;
+    SIMDE_ALIGN_TO_16 v2i64          msa_v2i64;
+    SIMDE_ALIGN_TO_16 v16u8          msa_v16u8;
+    SIMDE_ALIGN_TO_16 v8u16          msa_v8u16;
+    SIMDE_ALIGN_TO_16 v4u32          msa_v4u32;
+    SIMDE_ALIGN_TO_16 v2u64          msa_v2u64;
+    SIMDE_ALIGN_TO_16 v4f32          msa_v4f32;
+    SIMDE_ALIGN_TO_16 v2f64          msa_v2f64;
   #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
     SIMDE_ALIGN_TO_16 SIMDE_POWER_ALTIVEC_VECTOR(unsigned char)      altivec_u8;
     SIMDE_ALIGN_TO_16 SIMDE_POWER_ALTIVEC_VECTOR(unsigned short)     altivec_u16;
@@ -111,13 +122,15 @@ typedef union {
 #if defined(SIMDE_WASM_SIMD128_NATIVE)
   typedef v128_t simde_v128_t;
 #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-   typedef int32x4_t simde_v128_t;
+  typedef int32x4_t simde_v128_t;
 #elif defined(SIMDE_X86_SSE2_NATIVE)
-   typedef __m128i simde_v128_t;
+  typedef __m128i simde_v128_t;
 #elif defined(SIMDE_X86_SSE_NATIVE)
-   typedef __m128 simde_v128_t;
+  typedef __m128 simde_v128_t;
 #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
-   typedef SIMDE_POWER_ALTIVEC_VECTOR(signed int) simde_v128_t;
+  typedef SIMDE_POWER_ALTIVEC_VECTOR(signed int) simde_v128_t;
+#elif defined(SIMDE_MIPS_MSA_NATIVE)
+  typedef v4i32 simde_v128_t;
 #elif defined(SIMDE_VECTOR_SUBSCRIPT)
   typedef int32_t simde_v128_t SIMDE_ALIGN_TO_16 SIMDE_VECTOR(16) SIMDE_MAY_ALIAS;
 #else
@@ -184,6 +197,19 @@ SIMDE_WASM_SIMD128_GENERATE_CONVERSION_FUNCTIONS(simde_v128_private, simde_v128_
     SIMDE_WASM_SIMD128_GENERATE_CONVERSION_FUNCTIONS(float64x2_t, simde_v128_t, simde_v128_to_neon_f64, simde_v128_from_neon_f64)
   #endif
 #endif /* defined(SIMDE_ARM_NEON_A32V7_NATIVE) */
+
+#if defined(SIMDE_MIPS_MSA_NATIVE)
+  SIMDE_WASM_SIMD128_GENERATE_CONVERSION_FUNCTIONS(v16i8, simde_v128_t, simde_v128_to_msa_v16i8, simde_v128_from_msa_v16i8)
+  SIMDE_WASM_SIMD128_GENERATE_CONVERSION_FUNCTIONS(v8i16, simde_v128_t, simde_v128_to_msa_v8i16, simde_v128_from_msa_v8i16)
+  SIMDE_WASM_SIMD128_GENERATE_CONVERSION_FUNCTIONS(v4i32, simde_v128_t, simde_v128_to_msa_v4i32, simde_v128_from_msa_v4i32)
+  SIMDE_WASM_SIMD128_GENERATE_CONVERSION_FUNCTIONS(v2i64, simde_v128_t, simde_v128_to_msa_v2i64, simde_v128_from_msa_v2i64)
+  SIMDE_WASM_SIMD128_GENERATE_CONVERSION_FUNCTIONS(v16u8, simde_v128_t, simde_v128_to_msa_v16u8, simde_v128_from_msa_v16u8)
+  SIMDE_WASM_SIMD128_GENERATE_CONVERSION_FUNCTIONS(v8u16, simde_v128_t, simde_v128_to_msa_v8u16, simde_v128_from_msa_v8u16)
+  SIMDE_WASM_SIMD128_GENERATE_CONVERSION_FUNCTIONS(v4u32, simde_v128_t, simde_v128_to_msa_v4u32, simde_v128_from_msa_v4u32)
+  SIMDE_WASM_SIMD128_GENERATE_CONVERSION_FUNCTIONS(v2u64, simde_v128_t, simde_v128_to_msa_v2u64, simde_v128_from_msa_v2u64)
+  SIMDE_WASM_SIMD128_GENERATE_CONVERSION_FUNCTIONS(v4f32, simde_v128_t, simde_v128_to_msa_v4f32, simde_v128_from_msa_v4f32)
+  SIMDE_WASM_SIMD128_GENERATE_CONVERSION_FUNCTIONS(v2f64, simde_v128_t, simde_v128_to_msa_v2f64, simde_v128_from_msa_v2f64)
+#endif
 
 #if defined(SIMDE_POWER_ALTIVEC_P6_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
   SIMDE_WASM_SIMD128_GENERATE_CONVERSION_FUNCTIONS(SIMDE_POWER_ALTIVEC_VECTOR(  signed  char), simde_v128_t, simde_v128_to_altivec_i8 , simde_v128_from_altivec_i8 )
