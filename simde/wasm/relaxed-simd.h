@@ -378,7 +378,7 @@ simde_wasm_f32x4_relaxed_madd (simde_v128_t a, simde_v128_t b, simde_v128_t c) {
     #if defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
       r_.altivec_f32 = vec_madd(a_.altivec_f32, b_.altivec_f32, c_.altivec_f32);
     #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_ARCH_ARM_FMA)
-      r_.neon_f32 = vfmaq_f32(a_.neon_f32, b_.neon_f32, c_.neon_f32);
+      r_.neon_f32 = vfmaq_f32(c_.neon_f32, a_.neon_f32, b_.neon_f32);
     #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       r_.neon_f32 = vmlaq_f32(c_.neon_f32, a_.neon_f32, b_.neon_f32);
     #elif defined(SIMDE_X86_FMA_NATIVE)
@@ -458,7 +458,7 @@ simde_wasm_f32x4_relaxed_nmadd (simde_v128_t a, simde_v128_t b, simde_v128_t c) 
     #if defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
       r_.altivec_f32 = vec_nmsub(a_.altivec_f32, b_.altivec_f32, c_.altivec_f32);
     #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_ARCH_ARM_FMA)
-      r_.neon_f32 = vfmsq_f32(a_.neon_f32, b_.neon_f32, c_.neon_f32);
+      r_.neon_f32 = vfmsq_f32(c_.neon_f32, a_.neon_f32, b_.neon_f32);
     #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       r_.neon_f32 = vmlsq_f32(c_.neon_f32, a_.neon_f32, b_.neon_f32);
     #elif defined(SIMDE_X86_FMA_NATIVE)
@@ -498,7 +498,7 @@ simde_wasm_f64x2_relaxed_nmadd (simde_v128_t a, simde_v128_t b, simde_v128_t c) 
     #if defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
       r_.altivec_f64 = vec_nmsub(a_.altivec_f64, b_.altivec_f64, c_.altivec_f64);
     #elif defined(SIMDE_ARM_NEON_A64V8_NATIVE)
-      r_.neon_f64 = vfmsq_f64(a_.neon_f64, b_.neon_f64, c_.neon_f64);
+      r_.neon_f64 = vfmsq_f64(c_.neon_f64, a_.neon_f64, b_.neon_f64);
     #elif defined(SIMDE_X86_FMA_NATIVE)
       r_.sse_m128d = _mm_fnmadd_pd(a_.sse_m128d, b_.sse_m128d, c_.sse_m128d);
     #elif defined(SIMDE_MIPS_MSA_NATIVE)
@@ -517,6 +517,88 @@ simde_wasm_f64x2_relaxed_nmadd (simde_v128_t a, simde_v128_t b, simde_v128_t c) 
 }
 #if defined(SIMDE_WASM_RELAXED_SIMD_ENABLE_NATIVE_ALIASES)
   #define wasm_f64x2_relaxed_nmadd(a, b, c) simde_wasm_f64x2_relaxed_nmadd((a), (b), (c))
+#endif
+
+/* min/max */
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_v128_t
+simde_wasm_f32x4_relaxed_min (simde_v128_t a, simde_v128_t b) {
+  #if defined(SIMDE_WASM_RELAXED_SIMD_NATIVE)
+    return wasm_f32x4_relaxed_min(a, b);
+  #elif defined(SIMDE_X86_SSE_NATIVE)
+    return simde_v128_from_m128(_mm_min_ps(simde_v128_to_m128(a), simde_v128_to_m128(b)));
+  #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    return simde_v128_from_neon_f32(vminq_f32(simde_v128_to_neon_f32(a), simde_v128_to_neon_f32(b)));
+  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+    return simde_v128_from_altivec_f32(vec_min(simde_v128_to_altivec_f32(a), simde_v128_to_altivec_f32(b)));
+  #elif defined(SIMDE_MIPS_MSA_NATIVE)
+    return simde_v128_from_msa_v4f32(__msa_fmin_w(simde_v128_to_msa_v4f32(a), simde_v128_to_msa_v4f32(b)));
+  #else
+    return simde_wasm_f32x4_min(a, b);
+  #endif
+}
+#if defined(SIMDE_WASM_RELAXED_SIMD_ENABLE_NATIVE_ALIASES)
+  #define wasm_f32x4_relaxed_min(a, b) simde_wasm_f32x4_relaxed_min((a), (b))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_v128_t
+simde_wasm_f32x4_relaxed_max (simde_v128_t a, simde_v128_t b) {
+  #if defined(SIMDE_WASM_RELAXED_SIMD_NATIVE)
+    return wasm_f32x4_relaxed_max(a, b);
+  #elif defined(SIMDE_X86_SSE_NATIVE)
+    return simde_v128_from_m128(_mm_max_ps(simde_v128_to_m128(a), simde_v128_to_m128(b)));
+  #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    return simde_v128_from_neon_f32(vmaxq_f32(simde_v128_to_neon_f32(a), simde_v128_to_neon_f32(b)));
+  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+    return simde_v128_from_altivec_f32(vec_max(simde_v128_to_altivec_f32(a), simde_v128_to_altivec_f32(b)));
+  #elif defined(SIMDE_MIPS_MSA_NATIVE)
+    return simde_v128_from_msa_v4f32(__msa_fmax_w(simde_v128_to_msa_v4f32(a), simde_v128_to_msa_v4f32(b)));
+  #else
+    return simde_wasm_f32x4_max(a, b);
+  #endif
+}
+#if defined(SIMDE_WASM_RELAXED_SIMD_ENABLE_NATIVE_ALIASES)
+  #define wasm_f32x4_relaxed_max(a, b) simde_wasm_f32x4_relaxed_max((a), (b))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_v128_t
+simde_wasm_f64x2_relaxed_min (simde_v128_t a, simde_v128_t b) {
+  #if defined(SIMDE_WASM_RELAXED_SIMD_NATIVE)
+    return wasm_f64x2_relaxed_min(a, b);
+  #elif defined(SIMDE_X86_SSE2_NATIVE)
+    return simde_v128_from_m128d(_mm_min_pd(simde_v128_to_m128d(a), simde_v128_to_m128d(b)));
+  #elif defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+    return simde_v128_from_neon_f64(vminq_f64(simde_v128_to_neon_f64(a), simde_v128_to_neon_f64(b)));
+  #elif defined(SIMDE_MIPS_MSA_NATIVE)
+    return simde_v128_from_msa_v2f64(__msa_fmin_d(simde_v128_to_msa_v2f64(a), simde_v128_to_msa_v2f64(b)));
+  #else
+    return simde_wasm_f64x2_min(a, b);
+  #endif
+}
+#if defined(SIMDE_WASM_RELAXED_SIMD_ENABLE_NATIVE_ALIASES)
+  #define wasm_f64x2_relaxed_min(a, b) simde_wasm_f64x2_relaxed_min((a), (b))
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_v128_t
+simde_wasm_f64x2_relaxed_max (simde_v128_t a, simde_v128_t b) {
+  #if defined(SIMDE_WASM_RELAXED_SIMD_NATIVE)
+    return wasm_f64x2_relaxed_max(a, b);
+  #elif defined(SIMDE_X86_SSE2_NATIVE)
+    return simde_v128_from_m128d(_mm_max_pd(simde_v128_to_m128d(a), simde_v128_to_m128d(b)));
+  #elif defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+    return simde_v128_from_neon_f64(vmaxq_f64(simde_v128_to_neon_f64(a), simde_v128_to_neon_f64(b)));
+  #elif defined(SIMDE_MIPS_MSA_NATIVE)
+    return simde_v128_from_msa_v2f64(__msa_fmax_d(simde_v128_to_msa_v2f64(a), simde_v128_to_msa_v2f64(b)));
+  #else
+    return simde_wasm_f32x4_max(a, b);
+  #endif
+}
+#if defined(SIMDE_WASM_RELAXED_SIMD_ENABLE_NATIVE_ALIASES)
+  #define wasm_f32x4_relaxed_max(a, b) simde_wasm_f64x2_relaxed_max((a), (b))
 #endif
 
 SIMDE_END_DECLS_

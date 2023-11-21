@@ -1038,7 +1038,7 @@ test_simde_vcvt_u32_f32 (SIMDE_MUNIT_TEST_ARGS) {
         { UINT32_MAX } },
       { { -SIMDE_FLOAT32_C(1000.0) },
         { INT32_C(0) } },
-      { { SIMDE_MATH_NAN },
+      { { SIMDE_MATH_NANF },
         { INT32_C(0) } },
     #endif
     { { SIMDE_FLOAT32_C(   308.77), SIMDE_FLOAT32_C(   269.80) },
