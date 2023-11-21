@@ -177,8 +177,22 @@ SIMDE_WASM_SIMD128_GENERATE_CONVERSION_FUNCTIONS(simde_v128_private, simde_v128_
    : (((x) == 0) && ((y) == 0)) ? (simde_math_signbit(x) ? (y) : (x))  \
                                 : ((x) > (y) ? (x) : (y)))
 
-#if defined(SIMDE_X86_SSE2_NATIVE)
+#define SIMDE_WASM_SIMD128_FMINF(x, y)                                  \
+  (simde_math_isnanf(x)          ? SIMDE_MATH_NANF                      \
+   : simde_math_isnanf(y)        ? SIMDE_MATH_NANF                      \
+   : (((x) == 0) && ((y) == 0)) ? (simde_math_signbit(x) ? (x) : (y))  \
+                                : ((x) < (y) ? (x) : (y)))
+
+#define SIMDE_WASM_SIMD128_FMAXF(x, y)                                  \
+  (simde_math_isnanf(x)          ? SIMDE_MATH_NANF                      \
+   : simde_math_isnanf(y)        ? SIMDE_MATH_NANF                      \
+   : (((x) == 0) && ((y) == 0)) ? (simde_math_signbit(x) ? (y) : (x))  \
+                                : ((x) > (y) ? (x) : (y)))
+
+#if defined(SIMDE_X86_SSE_NATIVE)
   SIMDE_WASM_SIMD128_GENERATE_CONVERSION_FUNCTIONS(__m128 , simde_v128_t, simde_v128_to_m128 , simde_v128_from_m128 )
+#endif
+#if defined(SIMDE_X86_SSE2_NATIVE)
   SIMDE_WASM_SIMD128_GENERATE_CONVERSION_FUNCTIONS(__m128i, simde_v128_t, simde_v128_to_m128i, simde_v128_from_m128i)
   SIMDE_WASM_SIMD128_GENERATE_CONVERSION_FUNCTIONS(__m128d, simde_v128_t, simde_v128_to_m128d, simde_v128_from_m128d)
 #endif
@@ -5265,7 +5279,7 @@ simde_wasm_f32x4_min (simde_v128_t a, simde_v128_t b) {
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
-        r_.f32[i] = SIMDE_WASM_SIMD128_FMIN(a_.f32[i], b_.f32[i]);
+        r_.f32[i] = SIMDE_WASM_SIMD128_FMINF(a_.f32[i], b_.f32[i]);
       }
     #endif
 
@@ -5563,7 +5577,7 @@ simde_wasm_f32x4_max (simde_v128_t a, simde_v128_t b) {
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
-        r_.f32[i] = SIMDE_WASM_SIMD128_FMAX(a_.f32[i], b_.f32[i]);
+        r_.f32[i] = SIMDE_WASM_SIMD128_FMAXF(a_.f32[i], b_.f32[i]);
       }
     #endif
 
@@ -6061,7 +6075,7 @@ simde_wasm_f32x4_pmax (simde_v128_t a, simde_v128_t b) {
       b_ = simde_v128_to_private(b),
       r_;
 
-    #if defined(SIMDE_X86_SSE2_NATIVE)
+    #if defined(SIMDE_X86_SSE_NATIVE)
       r_.sse_m128 = _mm_max_ps(b_.sse_m128, a_.sse_m128);
     #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       r_.neon_f32 = vbslq_f32(vcltq_f32(a_.neon_f32, b_.neon_f32), b_.neon_f32, a_.neon_f32);

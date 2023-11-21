@@ -1,6 +1,8 @@
 simde_test_wasm_relaxed_simd_tests = [
   'laneselect',
   'madd',
+  'max',
+  'min',
   'nmadd',
   'swizzle',
   'trunc',
