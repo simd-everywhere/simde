@@ -66,22 +66,22 @@ There are currently complete implementations of the following instruction
 set extensions:
 
 * ARM
-  * [NEON](https://en.wikipedia.org/wiki/ARM_architecture_family#Advanced_SIMD_(Neon))
+  * [NEON](https://en.wikipedia.org/wiki/ARM_architecture_family#Advanced_SIMD_(Neon)) [List](https://developer.arm.com/architectures/instruction-sets/intrinsics/#f:@navigationhierarchiessimdisa=[Neon])
 * x86 / x86_64
-  * [MMX](https://en.wikipedia.org/wiki/MMX_(instruction_set))
-  * [SSE](https://en.wikipedia.org/wiki/Streaming_SIMD_Extensions)
-  * [SSE2](https://en.wikipedia.org/wiki/SSE2)
-  * [SSE3](https://en.wikipedia.org/wiki/SSE3)
-  * [SSSE3](https://en.wikipedia.org/wiki/SSSE3)
-  * [SSE4.1](https://en.wikipedia.org/wiki/SSE4#SSE4.1)
-  * [AVX](https://en.wikipedia.org/wiki/Advanced_Vector_Extensions)
-  * [AVX2](https://en.wikipedia.org/wiki/Advanced_Vector_Extensions#Advanced_Vector_Extensions_2)
-  * [F16C](https://en.wikipedia.org/wiki/F16C)
-  * [FMA](https://en.wikipedia.org/wiki/FMA_instruction_set)
-  * [GFNI](https://en.wikipedia.org/wiki/AVX-512#GFNI)
-  * [CLMUL](https://en.wikipedia.org/wiki/CLMUL_instruction_set)
+  * [MMX](https://en.wikipedia.org/wiki/MMX_(instruction_set)) [List](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#techs=MMX)
+  * [SSE](https://en.wikipedia.org/wiki/Streaming_SIMD_Extensions) [List](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#ssetechs=SSE)
+  * [SSE2](https://en.wikipedia.org/wiki/SSE2) [List](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#ssetechs=SSE2)
+  * [SSE3](https://en.wikipedia.org/wiki/SSE3) [List](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#ssetechs=SSE3)
+  * [SSSE3](https://en.wikipedia.org/wiki/SSSE3) [List](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#ssetechs=SSSE3)
+  * [SSE4.1](https://en.wikipedia.org/wiki/SSE4#SSE4.1) [List](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#ssetechs=SSE4_1)
+  * [AVX](https://en.wikipedia.org/wiki/Advanced_Vector_Extensions) [List](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#avxnewtechs=AVX)
+  * [AVX2](https://en.wikipedia.org/wiki/Advanced_Vector_Extensions#Advanced_Vector_Extensions_2) [List](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#avxnewtechs=AVX2)
+  * [F16C](https://en.wikipedia.org/wiki/F16C) [List](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#avxnewtechs=F16C)
+  * [FMA](https://en.wikipedia.org/wiki/FMA_instruction_set) [List](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#avxnewtechs=FMA)
+  * [GFNI](https://en.wikipedia.org/wiki/AVX-512#GFNI) [List](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#othertechs=GFNI)
+  * [CLMUL](https://en.wikipedia.org/wiki/CLMUL_instruction_set) [List](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#text=clmul&ig_expand=770&othertechs=PCLMULQDQ,VPCLMULQDQ)
   * [XOP](https://en.wikipedia.org/wiki/XOP_instruction_set)
-  * [SVML](https://software.intel.com/content/www/us/en/develop/documentation/cpp-compiler-developer-guide-and-reference/top/compiler-reference/intrinsics/intrinsics-for-intel-advanced-vector-extensions-512-intel-avx-512-instructions/intrinsics-for-arithmetic-operations-1/intrinsics-for-short-vector-math-library-svml-operations.html)
+  * [SVML](https://software.intel.com/content/www/us/en/develop/documentation/cpp-compiler-developer-guide-and-reference/top/compiler-reference/intrinsics/intrinsics-for-intel-advanced-vector-extensions-512-intel-avx-512-instructions/intrinsics-for-arithmetic-operations-1/intrinsics-for-short-vector-math-library-svml-operations.html) [List](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#ig_expand=770&techs=SVML)
 * WebAssembly
   * [SIMD128](https://github.com/WebAssembly/simd)
 
