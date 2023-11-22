@@ -527,7 +527,9 @@ typedef union {
  *
  * As for the ICC check, unlike other compilers, merely using the
  * AVX-512 types causes ICC to generate AVX-512 instructions. */
-#if (defined(_MM_CMPINT_GE) || defined(_MM_CMPINT_NLT)) && (defined(SIMDE_X86_AVX512F_NATIVE) || !defined(HEDLEY_INTEL_VERSION))
+#if (defined(_MM_CMPINT_GE) || defined(_MM_CMPINT_NLT)) && \
+  (defined(SIMDE_X86_AVX512F_NATIVE) || \
+   !(defined(HEDLEY_INTEL_VERSION) || (defined(HEDLEY_MSVC_VERSION) && !defined(__clang__))))
   typedef __m512 simde__m512;
   typedef __m512i simde__m512i;
   typedef __m512d simde__m512d;
@@ -589,6 +591,13 @@ typedef union {
  * issue and we'll try to figure out a work-around. */
 typedef uint32_t simde__mmask32;
 typedef uint64_t simde__mmask64;
+#if !defined(__mmask16) && defined(SIMDE_ENABLE_NATIVE_ALIASES)
+  #if !defined(HEDLEY_INTEL_VERSION)
+    typedef uint16_t __mmask16;
+  #else
+    #define __mmask16 uint16_t;
+  #endif
+#endif
 #if !defined(__mmask32) && defined(SIMDE_ENABLE_NATIVE_ALIASES)
   #if !defined(HEDLEY_INTEL_VERSION)
     typedef uint32_t __mmask32;

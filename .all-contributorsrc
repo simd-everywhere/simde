@@ -45,7 +45,10 @@
         "ideas",
         "infra",
         "platform",
-        "test"
+        "test",
+        "maintenance",
+        "projectManagement",
+        "review"
       ]
     },
     {
@@ -636,6 +639,72 @@
       "profile": "https://github.com/chausner",
       "contributions": [
         "platform"
+      ]
+    },
+    {
+      "login": "yyctw",
+      "name": "Yi-Yen Chung",
+      "avatar_url": "https://avatars.githubusercontent.com/u/45251297?v=4",
+      "profile": "https://github.com/yyctw",
+      "contributions": [
+        "code",
+        "test"
+      ]
+    },
+    {
+      "login": "wewe5215",
+      "name": "Chi-Wei Chu",
+      "avatar_url": "https://avatars.githubusercontent.com/u/76145143?v=4",
+      "profile": "https://github.com/wewe5215",
+      "contributions": [
+        "code",
+        "test"
+      ]
+    },
+    {
+      "login": "M-HT",
+      "name": "M-HT",
+      "avatar_url": "https://avatars.githubusercontent.com/u/12173952?v=4",
+      "profile": "https://github.com/M-HT",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "SGSSGene",
+      "name": "Simon Gene Gottlieb",
+      "avatar_url": "https://avatars.githubusercontent.com/u/456045?v=4",
+      "profile": "https://gottliebtfreitag.de",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "cbielow",
+      "name": "Chris Bielow",
+      "avatar_url": "https://avatars.githubusercontent.com/u/6008722?v=4",
+      "profile": "http://bsc.fu-berlin.de",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "XiWeiGu",
+      "name": "gu xiwei",
+      "avatar_url": "https://avatars.githubusercontent.com/u/41367273?v=4",
+      "profile": "https://github.com/XiWeiGu",
+      "contributions": [
+        "platform",
+        "test"
+      ]
+    },
+    {
+      "login": "Vineg",
+      "name": "George Vinokhodov",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1757455?v=4",
+      "profile": "https://github.com/Vineg",
+      "contributions": [
+        "code"
       ]
     }
   ],

@@ -2139,10 +2139,13 @@ simde__m128i
 simde_mm_stream_load_si128 (const simde__m128i* mem_addr) {
   #if defined(SIMDE_X86_SSE4_1_NATIVE)
     return _mm_stream_load_si128(HEDLEY_CONST_CAST(simde__m128i*, mem_addr));
-  #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-    return vreinterpretq_s64_s32(vld1q_s32(HEDLEY_REINTERPRET_CAST(int32_t const*, mem_addr)));
+  #elif HEDLEY_HAS_BUILTIN(__builtin_nontemporal_load) && ( \
+      defined(SIMDE_ARM_NEON_A32V7_NATIVE) || defined(SIMDE_VECTOR_SUBSCRIPT) || \
+      defined(SIMDE_WASM_SIMD128_NATIVE) || defined(SIMDE_POWER_ALTIVEC_P6_NATIVE) || \
+      defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE))
+    return __builtin_nontemporal_load(mem_addr);
   #else
-    return *mem_addr;
+    return simde_mm_load_si128(mem_addr);
   #endif
 }
 #if defined(SIMDE_X86_SSE4_1_ENABLE_NATIVE_ALIASES)
@@ -2337,14 +2340,19 @@ simde_mm_testz_si128 (simde__m128i a, simde__m128i b) {
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       v128_t m = wasm_v128_and(a_.wasm_v128, b_.wasm_v128);
       return (wasm_i64x2_extract_lane(m, 0) | wasm_i64x2_extract_lane(m, 1)) == 0;
+    #elif defined(SIMDE_HAVE_INT128_)
+      if ((a_.u128[0] & b_.u128[0]) == 0) {
+        return 1;
+      }
+      return 0;
     #else
       for (size_t i = 0 ; i < (sizeof(a_.u64) / sizeof(a_.u64[0])) ; i++) {
-        if ((a_.u64[i] & b_.u64[i]) == 0)
-          return 1;
+        if ((a_.u64[i] & b_.u64[i]) > 0)
+          return 0;
       }
     #endif
 
-    return 0;
+    return 1;
   #endif
 }
 #if defined(SIMDE_X86_SSE4_1_ENABLE_NATIVE_ALIASES)

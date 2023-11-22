@@ -3,7 +3,6 @@ name: CI
 on:
   push:
     branches-ignore:
-      - 'master'
       - 'ci/**'
       - '!ci/gha**'
   pull_request:
@@ -90,25 +89,18 @@ jobs:
       fail-fast: false
       matrix:
         isax:
-        - -mavx512bw -mavx512vl -mavx512cd -mavx512dq -mavx512vbmi -mavx512ifma -mavx512vpopcntdq -mavx512bitalg -mavx512vnni -mvpclmulqdq
-        - -mavx512bw -mavx512vl -DSIMDE_NATURAL_VECTOR_SIZE=256
-        - -mavx512f
-        - -mavx512bw
-        - -mavx512vl
-        - -mavx512vl -mavx512dq
-        - -mavx512cd
-        - -mavx512dq
-        - -msse2
-        - -msse3
-        - -mssse3
-        - -msse4.1
-        - -msse4.2
-        - -mavx
-        - -mfma
-        - -mavx2
+        - -DSIMDE_NATURAL_VECTOR_SIZE=256 -march=x86-64-v3 -mavx512bw -mavx512vl
+        # https://en.wikipedia.org/wiki/X86-64#Microarchitecture_levels
+        - -march=x86-64 -maes -mpclmul  # the x86-64 baseline is CMOV, CX8, FPU, FXSR, MMX, OSFXSR, SCE, SSE, SSE2
+        - -march=x86-64-v2  # CMPXCHG16B, LAHF-SAHF, POPCNT, SSE3, SSE4_1, SSE4_2, SSSE3
+        - -march=x86-64-v3  # AVX, AVX2, BMI1, BMI2, F16C, FMA, LZCNT, MOVBE, OSXSAVE
+        - -march=x86-64-v4  # AVX512F, AVX512BW, AVX512CD, AVX512DQ, AVX512VL a.k.a. skylake+ (including zen4)
         include:
           - target: tgl
-          - isax: -mavx512bw -mavx512vl -mavx512cd -mavx512dq -mavx512vbmi -mavx512ifma -mavx512vpopcntdq -mavx512bitalg -mavx512vnni -mvpclmulqdq -mavx512fp16
+          - isax: -march=x86-64-v4 -mcx16 -mxsave -mpclmul -mfsgsbase -mrdrnd -mhle -mrdseed -maes -mclflushopt -mxsavec -mxsaves -msgx -mpku -msha -mrdpid -mavx512vpopcntdq -mavx512ifma -mavx512vbmi -mavx512vnni -mavx512vbmi2 -mavx512bitalg -mvpclmulqdq -mgfni -mvaes  # icelake
+            target: icl
+          - isax: -march=x86-64-v4 -mcx16 -mxsave -mpclmul -mfsgsbase -mrdrnd -mhle -mrdseed -maes -mclflushopt -mxsavec -mxsaves -msgx -mpku -msha -mrdpid -mavx512vpopcntdq -mavx512ifma -mavx512vbmi -mavx512vnni -mavx512vbmi2 -mavx512bitalg -mvpclmulqdq -mgfni -mvaes -mpconfig -mwbnoinvd -mclwb -mmovdiri -mmovdir64b -menqcmd -mcldemote -mptwrite -mwaitpkg -mserialize -mtsxldtrk -muintr -mavxvnni -mavx512fp16  # sapphire rapids without bf16
+            # See https://github.com/simd-everywhere/simde/issues/1095
             target: spr
     env:
       CFLAGS: -Wall -Wextra -Werror ${{ matrix.isax }}
@@ -137,6 +129,10 @@ jobs:
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
     - name: Configure
       run: meson setup build -Db_coverage=true || (cat build/meson-logs/meson-log.txt ; false)
+    - name: Test run native?
+      run: |
+        test/check-flags.sh query && echo Tests with $CFLAGS will be run natively
+        test/check-flags.sh query || echo Tests with $CFLAGS will be run using SDE
     - name: Build
       run: ninja -C build -v
     - name: Test
@@ -155,6 +151,8 @@ jobs:
         variant:
           - "32"
           - "64"
+          - "32-relaxed"
+          - "64-relaxed"
     steps:
     - uses: actions/checkout@v3
       with:
@@ -191,8 +189,8 @@ jobs:
   native-aliases:
     runs-on: ubuntu-22.04
     env:
-      CFLAGS: -DSIMDE_ENABLE_NATIVE_ALIASES -DSIMDE_NATIVE_ALIASES_TESTING -march=native -Wall -Wextra -Werror
-      CXXFLAGS: -DSIMDE_ENABLE_NATIVE_ALIASES -DSIMDE_NATIVE_ALIASES_TESTING -march=native -Wall -Wextra -Werror
+      CFLAGS: -DSIMDE_ENABLE_NATIVE_ALIASES -DSIMDE_NATIVE_ALIASES_TESTING -Wall -Wextra -Werror
+      CXXFLAGS: -DSIMDE_ENABLE_NATIVE_ALIASES -DSIMDE_NATIVE_ALIASES_TESTING -Wall -Wextra -Werror
     steps:
     - uses: actions/checkout@v3
       with:
@@ -277,6 +275,13 @@ jobs:
           distro: ubuntu-22.04
           arch_flags: -ffast-math
           ccache: 'true'
+        - version: 13
+          distro: ubuntu-22.04
+          arch_flags: -march=native
+        - version: 13
+          distro: ubuntu-22.04
+          arch_flags: -ffast-math
+          ccache: 'true'
     runs-on: ${{ matrix.distro }}
     env:
       CFLAGS: ${{ matrix.arch_flags }} -Wall -Wextra -Werror
@@ -338,6 +343,12 @@ jobs:
           arch_gnu: riscv64
           arch_deb: riscv64
           distro: ubuntu-22.04
+        - extra: -O3
+          version: 12
+          cross: riscv64
+          arch_gnu: riscv64
+          arch_deb: riscv64
+          distro: ubuntu-22.04
         - version: 12
           cross: s390x
           arch_gnu: s390x
@@ -347,6 +358,12 @@ jobs:
           cross: power9
           arch_gnu: powerpc64le
           arch_deb: ppc64el
+          distro: ubuntu-22.04
+        - version: 12
+          cross: mips64el
+          arch_gnu: mips64el
+          arch_gnu_abi: abi64
+          arch_deb: mips64el
           distro: ubuntu-22.04
     runs-on: ${{ matrix.distro }}
     steps:
@@ -373,7 +390,7 @@ jobs:
       run: |
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
     - name: Configure
-      run: meson setup --cross-file=docker/cross-files/${{ matrix.cross }}-gcc-${{ matrix.version }}-ccache.cross build
+      run: meson setup --cross-file=docker/cross-files/${{ matrix.cross }}-gcc-${{ matrix.version }}${{ matrix.extra}}-ccache.cross build
     - name: Build
       run: ninja -C build -v
     - name: Test
@@ -381,45 +398,46 @@ jobs:
 
   clang-qemu:
     strategy:
+      fail-fast: false
       matrix:
         include:
-        - version: 15
+        - version: 16
           cross: armv7
           arch_deb: armhf
           arch_gnu_abi: eabihf
           arch_gnu: arm
           distro: ubuntu-22.04
-        - version: 15
+        - version: 16
           cross: aarch64
           arch_gnu: aarch64
           arch_deb: arm64
           distro: ubuntu-22.04
-        - version: 15
+        - version: 16
           cross: armel
           arch_gnu_abi: eabi
           arch_deb: armel
           arch_gnu: arm
           distro: ubuntu-22.04
-        # - version: 15
-        #   cross: armel
-        #   arch_gnu_abi: eabi
-        #   arch_deb: armel
-        #   arch_gnu: arm
-        #   distro: ubuntu-22.04
-        # - version: 15
-        #   cross: riscv64
-        #   arch_gnu: riscv64
-        #   arch_deb: riscv64
-        #   distro: ubuntu-22.04
-        # - version: 15
+        - version: 16
+          cross: riscv64
+          arch_gnu: riscv64
+          arch_deb: riscv64
+          distro: ubuntu-22.04
+        # - version: 16
         #   cross: s390x
         #   arch_gnu: s390x
         #   arch_deb: s390x
         #   distro: ubuntu-22.04
-        - version: 15
+        - version: 16
           cross: ppc64el
           arch_deb: ppc64el
           arch_gnu: powerpc64le
+          distro: ubuntu-22.04
+        - version: 16
+          cross: ppc64el
+          arch_deb: mips64el
+          arch_gnu: mips64el
+          arch_gnu_abi: abi64
           distro: ubuntu-22.04
     runs-on: ${{ matrix.distro }}
     steps:
@@ -432,6 +450,7 @@ jobs:
     - name: Install APT Dependencies
       run: |
         sudo add-apt-repository ppa:savoury1/virtualisation
+        sudo add-apt-repository ppa:savoury1/display
         sudo apt-get update -y
         sudo apt-get -yq install ninja-build parallel \
           binfmt-support clang-${{ matrix.version }} clang++-${{ matrix.version }} \
@@ -446,7 +465,9 @@ jobs:
       run: |
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
     - name: Configure
-      run: meson setup --cross-file=docker/cross-files/${{ matrix.cross }}-clang-${{ matrix.version }}-ccache.cross build
+      run: |
+        meson setup --cross-file=docker/cross-files/${{ matrix.cross }}-clang-${{ matrix.version }}-ccache.cross build \
+          || (cat build/meson-logs/meson-log.txt ; false)
     - name: Build
       run: ninja -C build -v
     - name: Test
@@ -496,6 +517,13 @@ jobs:
           distro: ubuntu-22.04
           arch_flags: -ffast-math
           ccache: 'true'
+        - version: "16"
+          distro: ubuntu-22.04
+          arch_flags: -march=native -Wno-unsafe-buffer-usage
+        - version: "16"
+          distro: ubuntu-22.04
+          arch_flags: -ffast-math -Wno-unsafe-buffer-usage
+          ccache: 'true'
     runs-on: ${{ matrix.distro }}
     env:
       CFLAGS: ${{ matrix.arch_flags }} -Wall -Weverything -Werror -fno-lax-vector-conversions
@@ -509,6 +537,7 @@ jobs:
     - name: Install APT Dependencies
       run: |
         sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+        sudo add-apt-repository ppa:savoury1/display
         sudo apt-get update
         sudo apt-get -yq install gcovr ninja-build python3-pip clang-${{ matrix.version }}
         sudo python3 -m pip install meson==0.55.0
@@ -570,6 +599,10 @@ jobs:
       uses: hendrikmuhs/ccache-action@v1.2
       with:
         key: ${{ github.job }}-${{ matrix.xcode }}
+    - name: Python install bug workaround # https://github.com/actions/setup-python/issues/577
+      run: |
+          find /usr/local/bin -type l -exec sh -c 'readlink -f "$1" \
+          | grep -q ^/Library/Frameworks/Python.framework/Versions/' _ {} \; -exec rm -v {} \;
     - name: Install Homebrew Dependencies
       run: brew install meson ninja gcovr
     - name: Configure
@@ -641,7 +674,7 @@ jobs:
       - name: Configure and Build
         run: |
           meson --backend=ninja build --cross-file test/arm64cl.txt
-          meson test -C build --print-errorlogs $(meson test -C build --list | grep -v emul)
+          ninja -C build test
 
   linux-gcc-loongarch64:
     runs-on: ubuntu-22.04
@@ -671,6 +704,13 @@ jobs:
         rm test/x86/svml.c
         echo "Due to the qemu versions 7.2 through 8.0 causing timeouts in four sets of test cases,"
         echo "the SVML tests have been temporarily disabled."
+    - name: Disable RND*X tests
+      run: |
+        sed -i "/rndx/d" meson.build
+        sed -i "/rnd..x/d" meson.build
+        rm test/arm/neon/rndx.c test/arm/neon/rnd32x.c test/arm/neon/rnd64x.c
+        echo "Due to the qemu versions 7.2 through 8.0 causing timeouts in four sets of test cases,"
+        echo "the RNDX, RND32X, and RND64X tests have been temporarily disabled."
     - name: Configure
       run: meson setup build --cross-file=docker/cross-files/loongarch64-gcc-13-ccache.cross
     - name: Build

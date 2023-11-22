@@ -30,6 +30,7 @@
 #define SIMDE_X86_AVX_H
 
 #include "sse4.2.h"
+#include "../simde-f16.h"
 
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
@@ -165,6 +166,11 @@ typedef union {
     SIMDE_ALIGN_TO_32 simde_int128  i128 SIMDE_VECTOR(32) SIMDE_MAY_ALIAS;
     SIMDE_ALIGN_TO_32 simde_uint128 u128 SIMDE_VECTOR(32) SIMDE_MAY_ALIAS;
     #endif
+    #if defined(SIMDE_FLOAT16_VECTOR)
+    SIMDE_ALIGN_TO_32 simde_float16  f16 SIMDE_VECTOR(32) SIMDE_MAY_ALIAS;
+    #else
+    SIMDE_ALIGN_TO_32 simde_float16  f16[16];
+    #endif
     SIMDE_ALIGN_TO_32 simde_float32  f32 SIMDE_VECTOR(32) SIMDE_MAY_ALIAS;
     SIMDE_ALIGN_TO_32 simde_float64  f64 SIMDE_VECTOR(32) SIMDE_MAY_ALIAS;
     SIMDE_ALIGN_TO_32 int_fast32_t  i32f SIMDE_VECTOR(32) SIMDE_MAY_ALIAS;
@@ -184,6 +190,7 @@ typedef union {
     SIMDE_ALIGN_TO_32 simde_int128  i128[2];
     SIMDE_ALIGN_TO_32 simde_uint128 u128[2];
     #endif
+    SIMDE_ALIGN_TO_32 simde_float16  f16[16];
     SIMDE_ALIGN_TO_32 simde_float32  f32[8];
     SIMDE_ALIGN_TO_32 simde_float64  f64[4];
   #endif
@@ -5129,8 +5136,8 @@ simde_mm256_shuffle_pd (simde__m256d a, simde__m256d b, const int imm8)
 #elif SIMDE_NATURAL_VECTOR_SIZE_LE(128)
   #define simde_mm256_shuffle_pd(a, b, imm8) \
       simde_mm256_set_m128d( \
-          simde_mm_shuffle_pd(simde_mm256_extractf128_pd(a, 1), simde_mm256_extractf128_pd(b, 1), (imm8 >> 0) & 3), \
-          simde_mm_shuffle_pd(simde_mm256_extractf128_pd(a, 0), simde_mm256_extractf128_pd(b, 0), (imm8 >> 2) & 3))
+          simde_mm_shuffle_pd(simde_mm256_extractf128_pd(a, 1), simde_mm256_extractf128_pd(b, 1), (imm8 >> 2) & 3), \
+          simde_mm_shuffle_pd(simde_mm256_extractf128_pd(a, 0), simde_mm256_extractf128_pd(b, 0), (imm8 >> 0) & 3))
 #elif defined(SIMDE_SHUFFLE_VECTOR_)
   #define simde_mm256_shuffle_pd(a, b, imm8) \
     SIMDE_SHUFFLE_VECTOR_(64, 32, a, b, \
@@ -5338,6 +5345,8 @@ void
 simde_mm256_stream_ps (simde_float32 mem_addr[8], simde__m256 a) {
   #if defined(SIMDE_X86_AVX_NATIVE)
     _mm256_stream_ps(mem_addr, a);
+  #elif HEDLEY_HAS_BUILTIN(__builtin_nontemporal_store) && defined(SIMDE_VECTOR_SUBSCRIPT)
+    __builtin_nontemporal_store(a, SIMDE_ALIGN_CAST(__typeof__(a)*, mem_addr));
   #else
     simde_memcpy(SIMDE_ALIGN_ASSUME_LIKE(mem_addr, simde__m256), &a, sizeof(a));
   #endif
@@ -5352,6 +5361,8 @@ void
 simde_mm256_stream_pd (simde_float64 mem_addr[4], simde__m256d a) {
   #if defined(SIMDE_X86_AVX_NATIVE)
     _mm256_stream_pd(mem_addr, a);
+  #elif HEDLEY_HAS_BUILTIN(__builtin_nontemporal_store) && defined(SIMDE_VECTOR_SUBSCRIPT)
+    __builtin_nontemporal_store(a, SIMDE_ALIGN_CAST(__typeof__(a)*, mem_addr));
   #else
     simde_memcpy(SIMDE_ALIGN_ASSUME_LIKE(mem_addr, simde__m256d), &a, sizeof(a));
   #endif
@@ -5366,8 +5377,10 @@ void
 simde_mm256_stream_si256 (simde__m256i* mem_addr, simde__m256i a) {
   #if defined(SIMDE_X86_AVX_NATIVE)
     _mm256_stream_si256(mem_addr, a);
+  #elif HEDLEY_HAS_BUILTIN(__builtin_nontemporal_store) && defined(SIMDE_VECTOR_SUBSCRIPT)
+    __builtin_nontemporal_store(a, SIMDE_ALIGN_CAST(__typeof__(a)*, mem_addr));
   #else
-  simde_memcpy(SIMDE_ALIGN_ASSUME_LIKE(mem_addr, simde__m256i), &a, sizeof(a));
+    simde_memcpy(SIMDE_ALIGN_ASSUME_LIKE(mem_addr, simde__m256i), &a, sizeof(a));
   #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)

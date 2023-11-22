@@ -196,8 +196,8 @@ simde_mm512_cmpeq_epu16_mask (simde__m512i a, simde__m512i b) {
   #endif
 }
 #if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
-  #undef _mm512_cmpeq_epu31_mask
-  #define _mm512_cmpeq_epu32_mask(a, b) simde_mm512_cmpeq_epu32_mask(a, b)
+  #undef _mm512_cmpeq_epu16_mask
+  #define _mm512_cmpeq_epu16_mask(a, b) simde_mm512_cmpeq_epu16_mask((a), (b))
 #endif
 
 

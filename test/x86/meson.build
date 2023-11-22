@@ -13,7 +13,8 @@ simde_test_x86_tests = [
   'gfni',
   'clmul',
   'svml',
-  'xop'
+  'xop',
+  'aes'
 ]
 
 subdir('avx512')

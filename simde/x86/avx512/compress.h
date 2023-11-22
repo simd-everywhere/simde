@@ -152,7 +152,7 @@ simde_mm256_mask_compressstoreu_ps (void* base_addr, simde__mmask8 k, simde__m25
   #endif
 }
 #if defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES) && defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
-  #undef _mm256_mask_compressstoreu_pd
+  #undef _mm256_mask_compressstoreu_ps
   #define _mm256_mask_compressstoreu_ps(base_addr, k, a) simde_mm256_mask_compressstoreu_ps(base_addr, k, a)
 #endif
 
@@ -508,7 +508,7 @@ simde_mm512_mask_compressstoreu_ps (void* base_addr, simde__mmask16 k, simde__m5
   #endif
 }
 #if defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES) && defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
-  #undef _mm512_mask_compressstoreu_pd
+  #undef _mm512_mask_compressstoreu_ps
   #define _mm512_mask_compressstoreu_ps(base_addr, k, a) simde_mm512_mask_compressstoreu_ps(base_addr, k, a)
 #endif
 

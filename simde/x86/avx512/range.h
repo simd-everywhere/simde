@@ -615,7 +615,7 @@ simde_mm512_range_pd (simde__m512d a, simde__m512d b, int imm8)
 #endif
 #if defined(SIMDE_X86_AVX512DQ_ENABLE_NATIVE_ALIASES)
   #undef _mm_maskz_range_ss
-  #define _mm_maskz_range_ss(k, a, b, imm8) simde_mm_mask_range_ss(k, a, b, imm8)
+  #define _mm_maskz_range_ss(k, a, b, imm8) simde_mm_maskz_range_ss(k, a, b, imm8)
 #endif
 
 #if (SIMDE_NATURAL_VECTOR_SIZE > 0) && defined(SIMDE_FAST_EXCEPTIONS)
@@ -736,7 +736,7 @@ simde_mm512_range_pd (simde__m512d a, simde__m512d b, int imm8)
 #endif
 #if defined(SIMDE_X86_AVX512DQ_ENABLE_NATIVE_ALIASES)
   #undef _mm_maskz_range_sd
-  #define _mm_maskz_range_sd(k, a, b, imm8) simde_mm_mask_range_sd(k, a, b, imm8)
+  #define _mm_maskz_range_sd(k, a, b, imm8) simde_mm_maskz_range_sd(k, a, b, imm8)
 #endif
 
 SIMDE_END_DECLS_

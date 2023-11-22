@@ -31,6 +31,7 @@
 #define SIMDE_X86_SSE_H
 
 #include "mmx.h"
+#include "../simde-f16.h"
 
 #if defined(_WIN32) && !defined(SIMDE_X86_SSE_NATIVE) && defined(_MSC_VER)
   #define NOMINMAX
@@ -59,6 +60,11 @@ typedef union {
     SIMDE_ALIGN_TO_16 simde_int128  i128 SIMDE_VECTOR(16) SIMDE_MAY_ALIAS;
     SIMDE_ALIGN_TO_16 simde_uint128 u128 SIMDE_VECTOR(16) SIMDE_MAY_ALIAS;
     #endif
+    #if defined(SIMDE_FLOAT16_VECTOR)
+    SIMDE_ALIGN_TO_16 simde_float16  f16 SIMDE_VECTOR(16) SIMDE_MAY_ALIAS;
+    #else
+    SIMDE_ALIGN_TO_16 simde_float16  f16[8];
+    #endif
     SIMDE_ALIGN_TO_16 simde_float32  f32 SIMDE_VECTOR(16) SIMDE_MAY_ALIAS;
     SIMDE_ALIGN_TO_16 int_fast32_t  i32f SIMDE_VECTOR(16) SIMDE_MAY_ALIAS;
     SIMDE_ALIGN_TO_16 uint_fast32_t u32f SIMDE_VECTOR(16) SIMDE_MAY_ALIAS;
@@ -75,6 +81,7 @@ typedef union {
     SIMDE_ALIGN_TO_16 simde_int128  i128[1];
     SIMDE_ALIGN_TO_16 simde_uint128 u128[1];
     #endif
+    SIMDE_ALIGN_TO_16 simde_float16  f16[8];
     SIMDE_ALIGN_TO_16 simde_float32  f32[4];
     SIMDE_ALIGN_TO_16 int_fast32_t  i32f[16 / sizeof(int_fast32_t)];
     SIMDE_ALIGN_TO_16 uint_fast32_t u32f[16 / sizeof(uint_fast32_t)];
@@ -255,6 +262,14 @@ enum {
     SIMDE_MM_ROUND_TOWARD_ZERO = 0x6000
   #endif
 };
+#if defined(_MM_ROUND_MASK)
+#  define SIMDE_MM_ROUND_MASK _MM_ROUND_MASK
+#else
+#  define SIMDE_MM_ROUND_MASK (0x6000)
+#endif
+#if defined(SIMDE_X86_SSE_ENABLE_NATIVE_ALIASES)
+  #define _MM_ROUND_MASK SIMDE_MM_ROUND_MASK
+#endif
 
 #if defined(_MM_FROUND_TO_NEAREST_INT)
 #  define SIMDE_MM_FROUND_TO_NEAREST_INT _MM_FROUND_TO_NEAREST_INT
@@ -422,7 +437,7 @@ enum {
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
-unsigned int
+uint32_t
 SIMDE_MM_GET_ROUNDING_MODE(void) {
   #if defined(SIMDE_X86_SSE_NATIVE)
     return _MM_GET_ROUNDING_MODE();
@@ -470,7 +485,7 @@ SIMDE_MM_GET_ROUNDING_MODE(void) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 void
-SIMDE_MM_SET_ROUNDING_MODE(unsigned int a) {
+SIMDE_MM_SET_ROUNDING_MODE(uint32_t a) {
   #if defined(SIMDE_X86_SSE_NATIVE)
     _MM_SET_ROUNDING_MODE(a);
   #elif defined(SIMDE_HAVE_FENV_H)
@@ -524,7 +539,7 @@ SIMDE_MM_GET_FLUSH_ZERO_MODE (void) {
   #endif
 }
 #if defined(SIMDE_X86_SSE_ENABLE_NATIVE_ALIASES)
-  #define _MM_SET_FLUSH_ZERO_MODE(a) SIMDE_MM_SET_FLUSH_ZERO_MODE(a)
+  #define _MM_GET_FLUSH_ZERO_MODE(a) SIMDE_MM_GET_FLUSH_ZERO_MODE(a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -559,7 +574,7 @@ simde_mm_setcsr (uint32_t a) {
   #if defined(SIMDE_X86_SSE_NATIVE)
     _mm_setcsr(a);
   #else
-    SIMDE_MM_SET_ROUNDING_MODE(HEDLEY_STATIC_CAST(unsigned int, a));
+    SIMDE_MM_SET_ROUNDING_MODE(HEDLEY_STATIC_CAST(uint32_t, a & SIMDE_MM_ROUND_MASK));
   #endif
 }
 #if defined(SIMDE_X86_SSE_ENABLE_NATIVE_ALIASES)
@@ -3202,7 +3217,9 @@ simde_mm_movehl_ps (simde__m128 a, simde__m128 b) {
       a_ = simde__m128_to_private(a),
       b_ = simde__m128_to_private(b);
 
-    #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+      r_.neon_u64 = vzip2q_u64(b_.neon_u64, a_.neon_u64);
+    #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       float32x2_t a32 = vget_high_f32(a_.neon_f32);
       float32x2_t b32 = vget_high_f32(b_.neon_f32);
       r_.neon_f32 = vcombine_f32(b32, a32);
@@ -3306,28 +3323,17 @@ simde_mm_movemask_ps (simde__m128 a) {
     int r = 0;
     simde__m128_private a_ = simde__m128_to_private(a);
 
-    #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+      static const int32_t shift[4] = {0, 1, 2, 3};
+      uint32x4_t tmp = vshrq_n_u32(a_.neon_u32, 31);
+      return HEDLEY_STATIC_CAST(int32_t, vaddvq_u32(vshlq_u32(tmp, vld1q_s32(shift))));
+    #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       // Shift out everything but the sign bits with a 32-bit unsigned shift right.
       uint64x2_t high_bits = vreinterpretq_u64_u32(vshrq_n_u32(a_.neon_u32, 31));
       // Merge the two pairs together with a 64-bit unsigned shift right + add.
       uint8x16_t paired = vreinterpretq_u8_u64(vsraq_n_u64(high_bits, high_bits, 31));
       // Extract the result.
       return vgetq_lane_u8(paired, 0) | (vgetq_lane_u8(paired, 8) << 2);
-    #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-      static const uint32_t md[4] = {
-        1 << 0, 1 << 1, 1 << 2, 1 << 3
-      };
-
-      uint32x4_t extended = vreinterpretq_u32_s32(vshrq_n_s32(a_.neon_i32, 31));
-      uint32x4_t masked = vandq_u32(vld1q_u32(md), extended);
-      #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
-        return HEDLEY_STATIC_CAST(int32_t, vaddvq_u32(masked));
-      #else
-        uint64x2_t t64 = vpaddlq_u32(masked);
-        return
-          HEDLEY_STATIC_CAST(int, vgetq_lane_u64(t64, 0)) +
-          HEDLEY_STATIC_CAST(int, vgetq_lane_u64(t64, 1));
-      #endif
     #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE) && defined(SIMDE_BUG_CLANG_50932)
       SIMDE_POWER_ALTIVEC_VECTOR(unsigned char) idx = { 96, 64, 32, 0, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128 };
       SIMDE_POWER_ALTIVEC_VECTOR(unsigned char) res = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned char), vec_bperm(HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned __int128), a_.altivec_u64), idx));
@@ -4748,16 +4754,19 @@ void
 simde_mm_stream_pi (simde__m64* mem_addr, simde__m64 a) {
   #if defined(SIMDE_X86_SSE_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
     _mm_stream_pi(HEDLEY_REINTERPRET_CAST(__m64*, mem_addr), a);
+  #elif HEDLEY_HAS_BUILTIN(__builtin_nontemporal_store) && ( \
+      defined(SIMDE_ARM_NEON_A32V7_NATIVE) || defined(SIMDE_MIPS_LOONGSON_MMI_NATIVE) || \
+      defined(SIMDE_VECTOR_SUBSCRIPT))
+    __builtin_nontemporal_store(a, mem_addr);
+  #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    simde__m64_private a_ = simde__m64_to_private(a);
+    vst1_s64(HEDLEY_REINTERPRET_CAST(int64_t *, mem_addr), a_.neon_i64);
   #else
     simde__m64_private*
       dest = HEDLEY_REINTERPRET_CAST(simde__m64_private*, mem_addr),
       a_ = simde__m64_to_private(a);
 
-    #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-      dest->i64[0] = vget_lane_s64(a_.neon_i64, 0);
-    #else
-      dest->i64[0] = a_.i64[0];
-    #endif
+    dest->i64[0] = a_.i64[0];
   #endif
 }
 #if defined(SIMDE_X86_SSE_ENABLE_NATIVE_ALIASES)
@@ -4769,9 +4778,11 @@ void
 simde_mm_stream_ps (simde_float32 mem_addr[4], simde__m128 a) {
   #if defined(SIMDE_X86_SSE_NATIVE)
     _mm_stream_ps(mem_addr, a);
-  #elif HEDLEY_HAS_BUILTIN(__builtin_nontemporal_store) && defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-    simde__m128_private a_ = simde__m128_to_private(a);
-    __builtin_nontemporal_store(a_.f32, SIMDE_ALIGN_CAST(__typeof__(a_.f32)*, mem_addr));
+  #elif HEDLEY_HAS_BUILTIN(__builtin_nontemporal_store) && ( \
+      defined(SIMDE_ARM_NEON_A32V7_NATIVE) || defined(SIMDE_VECTOR_SUBSCRIPT) || \
+      defined(SIMDE_WASM_SIMD128_NATIVE) || defined(SIMDE_POWER_ALTIVEC_P6_NATIVE) || \
+      defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE) || defined(SIMDE_LOONGARCH_LSX_NATIVE))
+    __builtin_nontemporal_store(a, SIMDE_ALIGN_ASSUME_CAST(__typeof__(a)*, mem_addr));
   #else
     simde_mm_store_ps(mem_addr, a);
   #endif

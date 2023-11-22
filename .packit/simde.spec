@@ -1,3 +1,8 @@
+# Disable the automatically set build flags to the environment variables such
+# as CC, CFLAGS, and etc.
+# See <https://src.fedoraproject.org/rpms/redhat-rpm-config/blob/rawhide/f/macros>.
+%undefine _auto_set_build_flags
+
 Name: simde
 Version: 1
 Release: 1%{?dist}
@@ -60,21 +65,6 @@ export CI_CLANG_RPM_LDFLAGS="%{build_ldflags}"
 export CI_GCC_RPM_CFLAGS="%{build_cflags}"
 export CI_GCC_RPM_CXXFLAGS="%{build_cxxflags}"
 export CI_GCC_RPM_LDFLAGS="%{build_ldflags}"
-
-# Unset unused environment variables to prevent the `meson setup` from reading
-# unintentionally in the in the CI script.
-# See <https://src.fedoraproject.org/rpms/redhat-rpm-config/blob/rawhide/f/macros>
-# - set_build_flags macro to check the set environment variables.
-unset CC
-unset CFLAGS
-unset CXX
-unset CXXFLAGS
-unset LDFLAGS
-# Unset other environment variables not used in the `meson setup` too.
-unset FFLAGS
-unset FCFLAGS
-unset VALAFLAGS
-unset RUSTFLAGS
 
 echo "Running the CI script %{SOURCE1}."
 /bin/time -f '=> [%E]' "%{SOURCE1}"

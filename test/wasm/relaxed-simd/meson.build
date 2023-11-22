@@ -1,7 +1,9 @@
 simde_test_wasm_relaxed_simd_tests = [
-  'blend',
-  'fma',
-  'fms',
+  'laneselect',
+  'madd',
+  'max',
+  'min',
+  'nmadd',
   'swizzle',
   'trunc',
 ]
@@ -28,7 +30,7 @@ foreach name : simde_test_wasm_relaxed_simd_tests
           include_directories: simde_include_dir,
           dependencies: simde_deps)
 
-      test('wasm_relexad_simd/' + name + '/' + emul + '/' + lang, x,
+      test('wasm_relaxed_simd/' + name + '/' + emul + '/' + lang, x,
           protocol: 'tap',
           # Emscripten tests must be run from builddir
           workdir: meson.current_build_dir())

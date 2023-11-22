@@ -5766,6 +5766,67 @@ test_simde_MM_TRANSPOSE4_PS (SIMDE_MUNIT_TEST_ARGS) {
 #endif
 }
 
+static int
+test_simde_MXCSR (SIMDE_MUNIT_TEST_ARGS) {
+  uint32_t original_mxcsr = simde_mm_getcsr();
+  uint32_t mask_rm_fzm = SIMDE_MM_ROUND_MASK | SIMDE_MM_FLUSH_ZERO_MASK;
+  uint32_t masked_mxcsr = original_mxcsr & ~mask_rm_fzm;
+
+  uint32_t rm_nearest_off, fzm_nearest_off, rm_nearest_on, fzm_nearest_on;
+  uint32_t rm_down_off, fzm_down_off, rm_down_on, fzm_down_on;
+  uint32_t rm_up_off, fzm_up_off, rm_up_on, fzm_up_on;
+  uint32_t rm_zero_off, fzm_zero_off, rm_zero_on, fzm_zero_on;
+
+  simde_mm_setcsr(masked_mxcsr | SIMDE_MM_ROUND_NEAREST | SIMDE_MM_FLUSH_ZERO_OFF);
+  rm_nearest_off = SIMDE_MM_GET_ROUNDING_MODE();
+  fzm_nearest_off = SIMDE_MM_GET_FLUSH_ZERO_MODE();
+
+  simde_mm_setcsr(masked_mxcsr | SIMDE_MM_ROUND_NEAREST | SIMDE_MM_FLUSH_ZERO_ON);
+  rm_nearest_on = SIMDE_MM_GET_ROUNDING_MODE();
+  fzm_nearest_on = SIMDE_MM_GET_FLUSH_ZERO_MODE();
+
+  simde_mm_setcsr(masked_mxcsr | SIMDE_MM_ROUND_DOWN | SIMDE_MM_FLUSH_ZERO_OFF);
+  rm_down_off = SIMDE_MM_GET_ROUNDING_MODE();
+  fzm_down_off = SIMDE_MM_GET_FLUSH_ZERO_MODE();
+
+  simde_mm_setcsr(masked_mxcsr | SIMDE_MM_ROUND_DOWN | SIMDE_MM_FLUSH_ZERO_ON);
+  rm_down_on = SIMDE_MM_GET_ROUNDING_MODE();
+  fzm_down_on = SIMDE_MM_GET_FLUSH_ZERO_MODE();
+
+  simde_mm_setcsr(masked_mxcsr | SIMDE_MM_ROUND_UP | SIMDE_MM_FLUSH_ZERO_OFF);
+  rm_up_off = SIMDE_MM_GET_ROUNDING_MODE();
+  fzm_up_off = SIMDE_MM_GET_FLUSH_ZERO_MODE();
+
+  simde_mm_setcsr(masked_mxcsr | SIMDE_MM_ROUND_UP | SIMDE_MM_FLUSH_ZERO_ON);
+  rm_up_on = SIMDE_MM_GET_ROUNDING_MODE();
+  fzm_up_on = SIMDE_MM_GET_FLUSH_ZERO_MODE();
+
+  simde_mm_setcsr(masked_mxcsr | SIMDE_MM_ROUND_TOWARD_ZERO | SIMDE_MM_FLUSH_ZERO_OFF);
+  rm_zero_off = SIMDE_MM_GET_ROUNDING_MODE();
+  fzm_zero_off = SIMDE_MM_GET_FLUSH_ZERO_MODE();
+
+  simde_mm_setcsr(masked_mxcsr | SIMDE_MM_ROUND_TOWARD_ZERO | SIMDE_MM_FLUSH_ZERO_ON);
+  rm_zero_on = SIMDE_MM_GET_ROUNDING_MODE();
+  fzm_zero_on = SIMDE_MM_GET_FLUSH_ZERO_MODE();
+
+  simde_mm_setcsr(original_mxcsr);
+
+  simde_assert_equal_u32(rm_nearest_off, rm_nearest_on);
+  simde_assert_equal_u32(rm_down_off, rm_down_on);
+  simde_assert_equal_u32(rm_up_off, rm_up_on);
+  simde_assert_equal_u32(rm_zero_off, rm_zero_on);
+
+  simde_assert_equal_u32(fzm_nearest_off, fzm_down_off);
+  simde_assert_equal_u32(fzm_nearest_off, fzm_up_off);
+  simde_assert_equal_u32(fzm_nearest_off, fzm_zero_off);
+
+  simde_assert_equal_u32(fzm_nearest_on, fzm_down_on);
+  simde_assert_equal_u32(fzm_nearest_on, fzm_up_on);
+  simde_assert_equal_u32(fzm_nearest_on, fzm_zero_on);
+
+  return 0;
+}
+
 SIMDE_TEST_FUNC_LIST_BEGIN
   SIMDE_TEST_FUNC_LIST_ENTRY(mm_set_ps)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm_set_ps1)
@@ -5915,6 +5976,7 @@ SIMDE_TEST_FUNC_LIST_BEGIN
   SIMDE_TEST_FUNC_LIST_ENTRY(mm_stream_ps)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm_prefetch)
   SIMDE_TEST_FUNC_LIST_ENTRY(MM_TRANSPOSE4_PS)
+  SIMDE_TEST_FUNC_LIST_ENTRY(MXCSR)
 SIMDE_TEST_FUNC_LIST_END
 
 #include <test/x86/test-x86-footer.h>

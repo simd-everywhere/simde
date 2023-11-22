@@ -51,6 +51,11 @@ simde_mm_cvtps_ph(simde__m128 a, const int imm8) {
 
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(__ARM_FEATURE_FP16_VECTOR_ARITHMETIC)
     r_.neon_f16 = vcombine_f16(vcvt_f16_f32(a_.neon_f32), vdup_n_f16(SIMDE_FLOAT16_C(0.0)));
+  #elif defined(SIMDE_FLOAT16_VECTOR)
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(a_.f32) / sizeof(a_.f32[0])) ; i++) {
+      r_.f16[i] = simde_float16_from_float32(a_.f32[i]);
+    }
   #else
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(a_.f32) / sizeof(a_.f32[0])) ; i++) {
@@ -78,6 +83,11 @@ simde_mm_cvtph_ps(simde__m128i a) {
 
     #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(__ARM_FEATURE_FP16_VECTOR_ARITHMETIC)
       r_.neon_f32 = vcvt_f32_f16(vget_low_f16(a_.neon_f16));
+    #elif defined(SIMDE_FLOAT16_VECTOR)
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(a_.f32) / sizeof(a_.f32[0])) ; i++) {
+        r_.f32[i] = simde_float16_to_float32(a_.f16[i]);
+      }
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(a_.f32) / sizeof(a_.f32[0])) ; i++) {
@@ -100,10 +110,18 @@ simde_mm256_cvtps_ph(simde__m256 a, const int imm8) {
 
   HEDLEY_STATIC_CAST(void, imm8);
 
-  SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(a_.f32) / sizeof(a_.f32[0])) ; i++) {
-      r_.u16[i] = simde_float16_as_uint16(simde_float16_from_float32(a_.f32[i]));
-    }
+  #if defined(SIMDE_FLOAT16_VECTOR)
+    SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(a_.f32) / sizeof(a_.f32[0])) ; i++) {
+        r_.f16[i] = simde_float16_from_float32(a_.f32[i]);
+      }
+  #else
+    SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(a_.f32) / sizeof(a_.f32[0])) ; i++) {
+        r_.u16[i] = simde_float16_as_uint16(simde_float16_from_float32(a_.f32[i]));
+      }
+  #endif
+
 
   return simde__m128i_from_private(r_);
 }
@@ -128,10 +146,17 @@ simde_mm256_cvtph_ps(simde__m128i a) {
     simde__m128i_private a_ = simde__m128i_to_private(a);
     simde__m256_private r_;
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
-      r_.f32[i] = simde_float16_to_float32(simde_uint16_as_float16(a_.u16[i]));
-    }
+    #if defined(SIMDE_FLOAT16_VECTOR)
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
+        r_.f32[i] = simde_float16_to_float32(a_.f16[i]);
+      }
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
+        r_.f32[i] = simde_float16_to_float32(simde_uint16_as_float16(a_.u16[i]));
+      }
+    #endif
 
     return simde__m256_from_private(r_);
   #endif

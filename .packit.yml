@@ -19,9 +19,7 @@ jobs:
     # "Motivation and context" for details.
     targets:
       - fedora-rawhide-x86_64
-      # Comment out the i386 (i686) case as it takes much longer time.
-      # TODO: Implement a flexible way to run only specific tests.
-      # - fedora-rawhide-i386
+      - fedora-rawhide-i386
       - fedora-rawhide-aarch64
       - fedora-rawhide-ppc64le
       - fedora-rawhide-s390x

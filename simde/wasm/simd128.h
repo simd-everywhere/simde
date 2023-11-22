@@ -92,6 +92,17 @@ typedef union {
     #endif
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
     SIMDE_ALIGN_TO_16 v128_t         wasm_v128;
+  #elif defined(SIMDE_MIPS_MSA_NATIVE)
+    SIMDE_ALIGN_TO_16 v16i8          msa_v16i8;
+    SIMDE_ALIGN_TO_16 v8i16          msa_v8i16;
+    SIMDE_ALIGN_TO_16 v4i32          msa_v4i32;
+    SIMDE_ALIGN_TO_16 v2i64          msa_v2i64;
+    SIMDE_ALIGN_TO_16 v16u8          msa_v16u8;
+    SIMDE_ALIGN_TO_16 v8u16          msa_v8u16;
+    SIMDE_ALIGN_TO_16 v4u32          msa_v4u32;
+    SIMDE_ALIGN_TO_16 v2u64          msa_v2u64;
+    SIMDE_ALIGN_TO_16 v4f32          msa_v4f32;
+    SIMDE_ALIGN_TO_16 v2f64          msa_v2f64;
   #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
     SIMDE_ALIGN_TO_16 SIMDE_POWER_ALTIVEC_VECTOR(unsigned char)      altivec_u8;
     SIMDE_ALIGN_TO_16 SIMDE_POWER_ALTIVEC_VECTOR(unsigned short)     altivec_u16;
@@ -111,13 +122,15 @@ typedef union {
 #if defined(SIMDE_WASM_SIMD128_NATIVE)
   typedef v128_t simde_v128_t;
 #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
-   typedef int32x4_t simde_v128_t;
+  typedef int32x4_t simde_v128_t;
 #elif defined(SIMDE_X86_SSE2_NATIVE)
-   typedef __m128i simde_v128_t;
+  typedef __m128i simde_v128_t;
 #elif defined(SIMDE_X86_SSE_NATIVE)
-   typedef __m128 simde_v128_t;
+  typedef __m128 simde_v128_t;
 #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
-   typedef SIMDE_POWER_ALTIVEC_VECTOR(signed int) simde_v128_t;
+  typedef SIMDE_POWER_ALTIVEC_VECTOR(signed int) simde_v128_t;
+#elif defined(SIMDE_MIPS_MSA_NATIVE)
+  typedef v4i32 simde_v128_t;
 #elif defined(SIMDE_VECTOR_SUBSCRIPT)
   typedef int32_t simde_v128_t SIMDE_ALIGN_TO_16 SIMDE_VECTOR(16) SIMDE_MAY_ALIAS;
 #else
@@ -164,8 +177,22 @@ SIMDE_WASM_SIMD128_GENERATE_CONVERSION_FUNCTIONS(simde_v128_private, simde_v128_
    : (((x) == 0) && ((y) == 0)) ? (simde_math_signbit(x) ? (y) : (x))  \
                                 : ((x) > (y) ? (x) : (y)))
 
-#if defined(SIMDE_X86_SSE2_NATIVE)
+#define SIMDE_WASM_SIMD128_FMINF(x, y)                                  \
+  (simde_math_isnanf(x)          ? SIMDE_MATH_NANF                      \
+   : simde_math_isnanf(y)        ? SIMDE_MATH_NANF                      \
+   : (((x) == 0) && ((y) == 0)) ? (simde_math_signbit(x) ? (x) : (y))  \
+                                : ((x) < (y) ? (x) : (y)))
+
+#define SIMDE_WASM_SIMD128_FMAXF(x, y)                                  \
+  (simde_math_isnanf(x)          ? SIMDE_MATH_NANF                      \
+   : simde_math_isnanf(y)        ? SIMDE_MATH_NANF                      \
+   : (((x) == 0) && ((y) == 0)) ? (simde_math_signbit(x) ? (y) : (x))  \
+                                : ((x) > (y) ? (x) : (y)))
+
+#if defined(SIMDE_X86_SSE_NATIVE)
   SIMDE_WASM_SIMD128_GENERATE_CONVERSION_FUNCTIONS(__m128 , simde_v128_t, simde_v128_to_m128 , simde_v128_from_m128 )
+#endif
+#if defined(SIMDE_X86_SSE2_NATIVE)
   SIMDE_WASM_SIMD128_GENERATE_CONVERSION_FUNCTIONS(__m128i, simde_v128_t, simde_v128_to_m128i, simde_v128_from_m128i)
   SIMDE_WASM_SIMD128_GENERATE_CONVERSION_FUNCTIONS(__m128d, simde_v128_t, simde_v128_to_m128d, simde_v128_from_m128d)
 #endif
@@ -184,6 +211,19 @@ SIMDE_WASM_SIMD128_GENERATE_CONVERSION_FUNCTIONS(simde_v128_private, simde_v128_
     SIMDE_WASM_SIMD128_GENERATE_CONVERSION_FUNCTIONS(float64x2_t, simde_v128_t, simde_v128_to_neon_f64, simde_v128_from_neon_f64)
   #endif
 #endif /* defined(SIMDE_ARM_NEON_A32V7_NATIVE) */
+
+#if defined(SIMDE_MIPS_MSA_NATIVE)
+  SIMDE_WASM_SIMD128_GENERATE_CONVERSION_FUNCTIONS(v16i8, simde_v128_t, simde_v128_to_msa_v16i8, simde_v128_from_msa_v16i8)
+  SIMDE_WASM_SIMD128_GENERATE_CONVERSION_FUNCTIONS(v8i16, simde_v128_t, simde_v128_to_msa_v8i16, simde_v128_from_msa_v8i16)
+  SIMDE_WASM_SIMD128_GENERATE_CONVERSION_FUNCTIONS(v4i32, simde_v128_t, simde_v128_to_msa_v4i32, simde_v128_from_msa_v4i32)
+  SIMDE_WASM_SIMD128_GENERATE_CONVERSION_FUNCTIONS(v2i64, simde_v128_t, simde_v128_to_msa_v2i64, simde_v128_from_msa_v2i64)
+  SIMDE_WASM_SIMD128_GENERATE_CONVERSION_FUNCTIONS(v16u8, simde_v128_t, simde_v128_to_msa_v16u8, simde_v128_from_msa_v16u8)
+  SIMDE_WASM_SIMD128_GENERATE_CONVERSION_FUNCTIONS(v8u16, simde_v128_t, simde_v128_to_msa_v8u16, simde_v128_from_msa_v8u16)
+  SIMDE_WASM_SIMD128_GENERATE_CONVERSION_FUNCTIONS(v4u32, simde_v128_t, simde_v128_to_msa_v4u32, simde_v128_from_msa_v4u32)
+  SIMDE_WASM_SIMD128_GENERATE_CONVERSION_FUNCTIONS(v2u64, simde_v128_t, simde_v128_to_msa_v2u64, simde_v128_from_msa_v2u64)
+  SIMDE_WASM_SIMD128_GENERATE_CONVERSION_FUNCTIONS(v4f32, simde_v128_t, simde_v128_to_msa_v4f32, simde_v128_from_msa_v4f32)
+  SIMDE_WASM_SIMD128_GENERATE_CONVERSION_FUNCTIONS(v2f64, simde_v128_t, simde_v128_to_msa_v2f64, simde_v128_from_msa_v2f64)
+#endif
 
 #if defined(SIMDE_POWER_ALTIVEC_P6_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
   SIMDE_WASM_SIMD128_GENERATE_CONVERSION_FUNCTIONS(SIMDE_POWER_ALTIVEC_VECTOR(  signed  char), simde_v128_t, simde_v128_to_altivec_i8 , simde_v128_from_altivec_i8 )
@@ -5224,7 +5264,7 @@ simde_wasm_f32x4_min (simde_v128_t a, simde_v128_t b) {
       b_ = simde_v128_to_private(b),
       r_;
 
-    #if defined(SIMDE_X86_SSE_NATIVE)
+    #if defined(SIMDE_X86_SSE_NATIVE) && (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(6,0,0))
         // Inspired by https://github.com/v8/v8/blob/c750b6c85bd1ad1d27f7acc1812165f465515144/src/codegen/shared-ia32-x64/macro-assembler-shared-ia32-x64.cc#L202
         simde_v128_private scratch;
         scratch.sse_m128 = a_.sse_m128;
@@ -5239,7 +5279,7 @@ simde_wasm_f32x4_min (simde_v128_t a, simde_v128_t b) {
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
-        r_.f32[i] = SIMDE_WASM_SIMD128_FMIN(a_.f32[i], b_.f32[i]);
+        r_.f32[i] = SIMDE_WASM_SIMD128_FMINF(a_.f32[i], b_.f32[i]);
       }
     #endif
 
@@ -5261,7 +5301,7 @@ simde_wasm_f64x2_min (simde_v128_t a, simde_v128_t b) {
       b_ = simde_v128_to_private(b),
       r_;
 
-    #if defined(SIMDE_X86_SSE_NATIVE)
+    #if defined(SIMDE_X86_SSE_NATIVE) && (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(6,0,0))
         // Inspired by https://github.com/v8/v8/blob/c750b6c85bd1ad1d27f7acc1812165f465515144/src/codegen/shared-ia32-x64/macro-assembler-shared-ia32-x64.cc#L263
         simde_v128_private scratch;
         scratch.sse_m128d = a_.sse_m128d;
@@ -5521,7 +5561,7 @@ simde_wasm_f32x4_max (simde_v128_t a, simde_v128_t b) {
       b_ = simde_v128_to_private(b),
       r_;
 
-    #if defined(SIMDE_X86_SSE_NATIVE)
+    #if defined(SIMDE_X86_SSE_NATIVE) && (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(6,0,0))
         // Inspired by https://github.com/v8/v8/blob/c750b6c85bd1ad1d27f7acc1812165f465515144/src/codegen/shared-ia32-x64/macro-assembler-shared-ia32-x64.cc#L231
         simde_v128_private scratch;
         scratch.sse_m128 = a_.sse_m128;
@@ -5537,7 +5577,7 @@ simde_wasm_f32x4_max (simde_v128_t a, simde_v128_t b) {
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
-        r_.f32[i] = SIMDE_WASM_SIMD128_FMAX(a_.f32[i], b_.f32[i]);
+        r_.f32[i] = SIMDE_WASM_SIMD128_FMAXF(a_.f32[i], b_.f32[i]);
       }
     #endif
 
@@ -5559,7 +5599,7 @@ simde_wasm_f64x2_max (simde_v128_t a, simde_v128_t b) {
       b_ = simde_v128_to_private(b),
       r_;
 
-    #if defined(SIMDE_X86_SSE_NATIVE)
+    #if defined(SIMDE_X86_SSE_NATIVE) && (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(6,0,0))
         // Inspired by https://github.com/v8/v8/blob/c750b6c85bd1ad1d27f7acc1812165f465515144/src/codegen/shared-ia32-x64/macro-assembler-shared-ia32-x64.cc#L301
         simde_v128_private scratch;
         scratch.sse_m128d = a_.sse_m128d;
@@ -6035,7 +6075,7 @@ simde_wasm_f32x4_pmax (simde_v128_t a, simde_v128_t b) {
       b_ = simde_v128_to_private(b),
       r_;
 
-    #if defined(SIMDE_X86_SSE2_NATIVE)
+    #if defined(SIMDE_X86_SSE_NATIVE)
       r_.sse_m128 = _mm_max_ps(b_.sse_m128, a_.sse_m128);
     #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       r_.neon_f32 = vbslq_f32(vcltq_f32(a_.neon_f32, b_.neon_f32), b_.neon_f32, a_.neon_f32);

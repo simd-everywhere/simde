@@ -124,6 +124,15 @@
 #if defined(__ARM_FEATURE_SVE)
 #  define SIMDE_ARCH_ARM_SVE
 #endif
+#if defined(__ARM_FEATURE_FMA) && __ARM_FEATURE_FMA
+#  define SIMDE_ARCH_ARM_FMA
+#endif
+#if defined(__ARM_FEATURE_CRYPTO)
+#  define SIMDE_ARCH_ARM_CRYPTO
+#endif
+#if defined(__ARM_FEATURE_QRDMX)
+#  define SIMDE_ARCH_ARM_QRDMX
+#endif
 
 /* Blackfin
    <https://en.wikipedia.org/wiki/Blackfin> */
@@ -269,7 +278,7 @@
 #    if !defined(SIMDE_ARCH_X86_SSE4_1)
 #      define SIMDE_ARCH_X86_SSE4_1 1
 #    endif
-#    if !defined(SIMDE_ARCH_X86_SSE4_1)
+#    if !defined(SIMDE_ARCH_X86_SSE4_2)
 #      define SIMDE_ARCH_X86_SSE4_2 1
 #    endif
 #  endif
@@ -338,6 +347,9 @@
 #  endif
 #  if defined(__F16C__) || (defined(HEDLEY_MSVC_VERSION) && HEDLEY_MSVC_VERSION_CHECK(19,30,0) && defined(SIMDE_ARCH_X86_AVX2) )
 #    define SIMDE_ARCH_X86_F16C 1
+#  endif
+#  if defined(__AES__)
+#    define SIMDE_ARCH_X86_AES 1
 #  endif
 #endif
 
@@ -467,6 +479,10 @@
   #define SIMDE_ARCH_POWER_ALTIVEC_CHECK(version) (0)
 #endif
 
+#if defined(__riscv) && __riscv_xlen==64
+#  define SIMDE_ARCH_RISCV64
+#endif
+
 /* SPARC
    <https://en.wikipedia.org/wiki/SPARC> */
 #if defined(__sparc_v9__) || defined(__sparcv9)
@@ -565,6 +581,10 @@
 #  define SIMDE_ARCH_WASM_SIMD128
 #endif
 
+#if defined(SIMDE_ARCH_WASM) && defined(__wasm_relaxed_simd__)
+#  define SIMDE_ARCH_WASM_RELAXED_SIMD
+#endif
+
 /* Xtensa
    <https://en.wikipedia.org/wiki/> */
 #if defined(__xtensa__) || defined(__XTENSA__)
@@ -574,6 +594,11 @@
 /* Availability of 16-bit floating-point arithmetic intrinsics */
 #if defined(__ARM_FEATURE_FP16_VECTOR_ARITHMETIC)
 #  define SIMDE_ARCH_ARM_NEON_FP16
+#endif
+
+/* Availability of 16-bit brain floating-point arithmetic intrinsics */
+#if defined(__ARM_FEATURE_BF16_VECTOR_ARITHMETIC)
+#  define SIMDE_ARCH_ARM_NEON_BF16
 #endif
 
 /* LoongArch

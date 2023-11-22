@@ -4,6 +4,7 @@
 #include "../simde/hedley.h"
 #include "../simde/simde-common.h"
 #include "../simde/simde-f16.h"
+#include "../simde/simde-bf16.h"
 
 #include <time.h>
 #include <stdlib.h>
@@ -160,6 +161,18 @@ simde_test_codegen_f64(size_t buf_len, char buf[HEDLEY_ARRAY_PARAM(buf_len)], si
 }
 
 static void
+simde_test_codegen_bf16(size_t buf_len, char buf[HEDLEY_ARRAY_PARAM(buf_len)], simde_bfloat16 value) {
+  simde_float32 valuef = simde_bfloat16_to_float32(value);
+  if (simde_isnanbf(value)) {
+    simde_test_codegen_snprintf_(buf, buf_len, "           SIMDE_NANBF");
+  } else if (simde_isinfbf(value)) {
+    simde_test_codegen_snprintf_(buf, buf_len, "%5cSIMDE_INFINITYBF", valuef < 0 ? '-' : ' ');
+  } else {
+    simde_test_codegen_snprintf_(buf, buf_len, "SIMDE_BFLOAT16_VALUE(%9.2f)", HEDLEY_STATIC_CAST(double, valuef));
+  }
+}
+
+static void
 simde_test_codegen_i8(size_t buf_len, char buf[HEDLEY_ARRAY_PARAM(buf_len)], int8_t value) {
   if (value == INT8_MIN) {
     simde_test_codegen_snprintf_(buf, buf_len, "     INT8_MIN");
@@ -240,6 +253,36 @@ simde_test_codegen_u64(size_t buf_len, char buf[HEDLEY_ARRAY_PARAM(buf_len)], ui
 }
 
 static void
+simde_test_codegen_p8(size_t buf_len, char buf[HEDLEY_ARRAY_PARAM(buf_len)], simde_poly8 value) {
+  uint8_t value_ = HEDLEY_STATIC_CAST(uint8_t, value);
+  if (value_ == UINT8_MAX) {
+    simde_test_codegen_snprintf_(buf, buf_len, "   SIMDE_POLY8_C(UINT8_MAX)");
+  } else {
+    simde_test_codegen_snprintf_(buf, buf_len, "SIMDE_POLY8_C(%3" PRIu8 ")", value_);
+  }
+}
+
+static void
+simde_test_codegen_p16(size_t buf_len, char buf[HEDLEY_ARRAY_PARAM(buf_len)], simde_poly16 value) {
+  uint16_t value_ = HEDLEY_STATIC_CAST(uint16_t, value);
+  if (value_ == UINT16_MAX) {
+    simde_test_codegen_snprintf_(buf, buf_len, "%15s", "SIMDE_POLY16_C(UINT16_MAX)");
+  } else {
+    simde_test_codegen_snprintf_(buf, buf_len, "SIMDE_POLY16_C(%5" PRIu16 ")", value_);
+  }
+}
+
+static void
+simde_test_codegen_p64(size_t buf_len, char buf[HEDLEY_ARRAY_PARAM(buf_len)], simde_poly64 value) {
+  uint64_t value_ = HEDLEY_STATIC_CAST(uint64_t, value);
+  if (value_ == UINT64_MAX) {
+    simde_test_codegen_snprintf_(buf, buf_len, "%30s", "SIMDE_POLY64_C(UINT64_MAX)");
+  } else {
+    simde_test_codegen_snprintf_(buf, buf_len, "SIMDE_POLY64_C(%20" PRIu64 ")", value_);
+  }
+}
+
+static void
 simde_test_codegen_write_indent(int indent) {
   for (int i = 0 ; i < indent ; i++) {
     fputs("  ", SIMDE_CODEGEN_FP);
@@ -303,6 +346,17 @@ static simde_float64
 simde_test_codegen_random_f64(simde_float64 min, simde_float64 max) {
   simde_float64 v = (HEDLEY_STATIC_CAST(simde_float64, simde_test_codegen_rand()) / (HEDLEY_STATIC_CAST(simde_float64, RAND_MAX) / (max - min))) + min;
   return simde_math_round(v * SIMDE_FLOAT64_C(100.0)) / SIMDE_FLOAT64_C(100.0);
+}
+
+static simde_bfloat16
+simde_test_codegen_random_bf16(simde_bfloat16 min, simde_bfloat16 max) {
+  return
+    simde_bfloat16_from_float32(
+      simde_test_codegen_random_f32(
+        simde_bfloat16_to_float32(min),
+        simde_bfloat16_to_float32(max)
+      )
+    );
 }
 
 typedef enum SimdeTestVecFloatMask {
@@ -439,6 +493,19 @@ simde_test_codegen_random_vf64_full(
 }
 
 static void
+simde_test_codegen_random_vbf16_full(
+    size_t test_sets, size_t vectors_per_set, size_t elements_per_vector,
+    simde_bfloat16 values[HEDLEY_ARRAY_PARAM(test_sets * vectors_per_set * elements_per_vector)],
+    simde_bfloat16 min, simde_bfloat16 max,
+    SimdeTestVecFloatType vec_type) {
+  simde_test_codegen_random_vfX_full_(test_sets, vectors_per_set, elements_per_vector,
+      sizeof(simde_bfloat16), values,
+      HEDLEY_STATIC_CAST(simde_float64, simde_bfloat16_to_float32(min)),
+      HEDLEY_STATIC_CAST(simde_float64, simde_bfloat16_to_float32(max)),
+      vec_type);
+}
+
+static void
 simde_test_codegen_random_vf16(size_t elem_count, simde_float16 values[HEDLEY_ARRAY_PARAM(elem_count)], simde_float16 min, simde_float16 max) {
   for (size_t i = 0 ; i < elem_count ; i++) {
     values[i] = simde_test_codegen_random_f16(min, max);
@@ -459,6 +526,13 @@ simde_test_codegen_random_vf64(size_t elem_count, simde_float64 values[HEDLEY_AR
   }
 }
 
+static void
+simde_test_codegen_random_vbf16(size_t elem_count, simde_bfloat16 values[HEDLEY_ARRAY_PARAM(elem_count)], simde_bfloat16 min, simde_bfloat16 max) {
+  for (size_t i = 0 ; i < elem_count ; i++) {
+    values[i] = simde_test_codegen_random_bf16(min, max);
+  }
+}
+
 #define SIMDE_TEST_CODEGEN_GENERATE_RANDOM_INT_FUNC_(T, symbol_identifier) \
   static T simde_test_codegen_random_##symbol_identifier(void) { \
     T r; \
@@ -474,6 +548,9 @@ SIMDE_TEST_CODEGEN_GENERATE_RANDOM_INT_FUNC_(uint8_t,   u8)
 SIMDE_TEST_CODEGEN_GENERATE_RANDOM_INT_FUNC_(uint16_t, u16)
 SIMDE_TEST_CODEGEN_GENERATE_RANDOM_INT_FUNC_(uint32_t, u32)
 SIMDE_TEST_CODEGEN_GENERATE_RANDOM_INT_FUNC_(uint64_t, u64)
+SIMDE_TEST_CODEGEN_GENERATE_RANDOM_INT_FUNC_(simde_poly8,   p8)
+SIMDE_TEST_CODEGEN_GENERATE_RANDOM_INT_FUNC_(simde_poly16, p16)
+SIMDE_TEST_CODEGEN_GENERATE_RANDOM_INT_FUNC_(simde_poly64, p64)
 
 #define SIMDE_TEST_CODEGEN_GENERATE_WRITE_VECTOR_FUNC_(T, symbol_identifier, elements_per_line) \
   static void \
@@ -538,6 +615,7 @@ SIMDE_TEST_CODEGEN_GENERATE_RANDOM_INT_FUNC_(uint64_t, u64)
 SIMDE_TEST_CODEGEN_GENERATE_WRITE_VECTOR_FUNC_(simde_float16, f16, 4)
 SIMDE_TEST_CODEGEN_GENERATE_WRITE_VECTOR_FUNC_(simde_float32, f32, 4)
 SIMDE_TEST_CODEGEN_GENERATE_WRITE_VECTOR_FUNC_(simde_float64, f64, 4)
+SIMDE_TEST_CODEGEN_GENERATE_WRITE_VECTOR_FUNC_(simde_bfloat16, bf16, 4)
 SIMDE_TEST_CODEGEN_GENERATE_WRITE_VECTOR_FUNC_(int8_t, i8, 8)
 SIMDE_TEST_CODEGEN_GENERATE_WRITE_VECTOR_FUNC_(int16_t, i16, 8)
 SIMDE_TEST_CODEGEN_GENERATE_WRITE_VECTOR_FUNC_(int32_t, i32, 8)
@@ -546,6 +624,9 @@ SIMDE_TEST_CODEGEN_GENERATE_WRITE_VECTOR_FUNC_(uint8_t, u8, 8)
 SIMDE_TEST_CODEGEN_GENERATE_WRITE_VECTOR_FUNC_(uint16_t, u16, 8)
 SIMDE_TEST_CODEGEN_GENERATE_WRITE_VECTOR_FUNC_(uint32_t, u32, 8)
 SIMDE_TEST_CODEGEN_GENERATE_WRITE_VECTOR_FUNC_(uint64_t, u64, 4)
+SIMDE_TEST_CODEGEN_GENERATE_WRITE_VECTOR_FUNC_(simde_poly8, p8, 8)
+SIMDE_TEST_CODEGEN_GENERATE_WRITE_VECTOR_FUNC_(simde_poly16, p16, 8)
+SIMDE_TEST_CODEGEN_GENERATE_WRITE_VECTOR_FUNC_(simde_poly64, p64, 4)
 
 #define simde_test_codegen_write_1vi8(indent, elem_count, values)  simde_test_codegen_write_vi8_full( (indent), (elem_count), #values, (values), SIMDE_TEST_VEC_POS_SINGLE)
 #define simde_test_codegen_write_1vi16(indent, elem_count, values) simde_test_codegen_write_vi16_full((indent), (elem_count), #values, (values), SIMDE_TEST_VEC_POS_SINGLE)
@@ -558,6 +639,10 @@ SIMDE_TEST_CODEGEN_GENERATE_WRITE_VECTOR_FUNC_(uint64_t, u64, 4)
 #define simde_test_codegen_write_1vf16(indent, elem_count, values) simde_test_codegen_write_vf16_full((indent), (elem_count), #values, (values), SIMDE_TEST_VEC_POS_SINGLE)
 #define simde_test_codegen_write_1vf32(indent, elem_count, values) simde_test_codegen_write_vf32_full((indent), (elem_count), #values, (values), SIMDE_TEST_VEC_POS_SINGLE)
 #define simde_test_codegen_write_1vf64(indent, elem_count, values) simde_test_codegen_write_vf64_full((indent), (elem_count), #values, (values), SIMDE_TEST_VEC_POS_SINGLE)
+#define simde_test_codegen_write_1vp8(indent, elem_count, values)  simde_test_codegen_write_vp8_full( (indent), (elem_count), #values, (values), SIMDE_TEST_VEC_POS_SINGLE)
+#define simde_test_codegen_write_1vp16(indent, elem_count, values) simde_test_codegen_write_vp16_full((indent), (elem_count), #values, (values), SIMDE_TEST_VEC_POS_SINGLE)
+#define simde_test_codegen_write_1vp64(indent, elem_count, values) simde_test_codegen_write_vp64_full((indent), (elem_count), #values, (values), SIMDE_TEST_VEC_POS_SINGLE)
+#define simde_test_codegen_write_1vbf16(indent, elem_count, values) simde_test_codegen_write_vbf16_full((indent), (elem_count), #values, (values), SIMDE_TEST_VEC_POS_SINGLE)
 
 #define SIMDE_TEST_CODEGEN_WRITE_SCALAR_FUNC_(T, symbol_identifier) \
   static void \
@@ -617,6 +702,10 @@ SIMDE_TEST_CODEGEN_WRITE_SCALAR_FUNC_(uint64_t, u64)
 SIMDE_TEST_CODEGEN_WRITE_SCALAR_FUNC_(simde_float16, f16)
 SIMDE_TEST_CODEGEN_WRITE_SCALAR_FUNC_(simde_float32, f32)
 SIMDE_TEST_CODEGEN_WRITE_SCALAR_FUNC_(simde_float64, f64)
+SIMDE_TEST_CODEGEN_WRITE_SCALAR_FUNC_(simde_poly8,   p8)
+SIMDE_TEST_CODEGEN_WRITE_SCALAR_FUNC_(simde_poly16, p16)
+SIMDE_TEST_CODEGEN_WRITE_SCALAR_FUNC_(simde_poly64, p64)
+SIMDE_TEST_CODEGEN_WRITE_SCALAR_FUNC_(simde_bfloat16, bf16)
 
 #define simde_test_codegen_write_1i8(indent, value)  simde_test_codegen_write_i8_full((indent), #value, (value), SIMDE_TEST_VEC_POS_SINGLE)
 #define simde_test_codegen_write_1i16(indent, value) simde_test_codegen_write_i16_full((indent), #value, (value), SIMDE_TEST_VEC_POS_SINGLE)
@@ -629,6 +718,10 @@ SIMDE_TEST_CODEGEN_WRITE_SCALAR_FUNC_(simde_float64, f64)
 #define simde_test_codegen_write_1f16(indent, value) simde_test_codegen_write_f16_full((indent), #value, (value), SIMDE_TEST_VEC_POS_SINGLE)
 #define simde_test_codegen_write_1f32(indent, value) simde_test_codegen_write_f32_full((indent), #value, (value), SIMDE_TEST_VEC_POS_SINGLE)
 #define simde_test_codegen_write_1f64(indent, value) simde_test_codegen_write_f64_full((indent), #value, (value), SIMDE_TEST_VEC_POS_SINGLE)
+#define simde_test_codegen_write_1p8(indent, value)  simde_test_codegen_write_p8_full((indent), #value, (value), SIMDE_TEST_VEC_POS_SINGLE)
+#define simde_test_codegen_write_1p16(indent, value) simde_test_codegen_write_p16_full((indent), #value, (value), SIMDE_TEST_VEC_POS_SINGLE)
+#define simde_test_codegen_write_1p64(indent, value) simde_test_codegen_write_p64_full((indent), #value, (value), SIMDE_TEST_VEC_POS_SINGLE)
+#define simde_test_codegen_write_1bf16(indent, value) simde_test_codegen_write_bf16_full((indent), #value, (value), SIMDE_TEST_VEC_POS_SINGLE)
 
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DIAGNOSTIC_DISABLE_FLOAT_EQUAL_
@@ -684,6 +777,15 @@ simde_test_equal_f64(simde_float64 a, simde_float64 b, simde_float64 slop) {
   }
 }
 
+static int
+simde_test_equal_bf16(simde_bfloat16 a, simde_bfloat16 b, simde_bfloat16 slop) {
+  simde_float32
+    af = simde_bfloat16_to_float32(a),
+    bf = simde_bfloat16_to_float32(b),
+    slopf = simde_bfloat16_to_float32(slop);
+  return simde_test_equal_f32(af, bf, slopf);
+}
+
 HEDLEY_DIAGNOSTIC_POP
 
 static simde_float16
@@ -699,6 +801,11 @@ simde_test_f32_precision_to_slop(int precision) {
 static double
 simde_test_f64_precision_to_slop(int precision) {
   return HEDLEY_UNLIKELY(precision == INT_MAX) ? SIMDE_FLOAT64_C(0.0) : simde_math_pow(SIMDE_FLOAT64_C(10.0), -HEDLEY_STATIC_CAST(double, precision));
+}
+
+static simde_bfloat16
+simde_test_bf16_precision_to_slop(int precision) {
+  return HEDLEY_UNLIKELY(precision == INT_MAX) ? SIMDE_BFLOAT16_VALUE(0.0) : simde_bfloat16_from_float32(simde_math_powf(SIMDE_FLOAT32_C(10.0), -HEDLEY_STATIC_CAST(float, precision)));
 }
 
 static int
@@ -791,6 +898,138 @@ simde_assert_equal_f64_(simde_float64 a, simde_float64 b, simde_float64 slop,
 }
 #define simde_assert_equal_f64(a, b, precision) do { if (simde_assert_equal_f64_(a, b, simde_test_f64_precision_to_slop(precision), __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 
+static int
+simde_assert_equal_vbf16_(
+    size_t vec_len, simde_bfloat16 const a[HEDLEY_ARRAY_PARAM(vec_len)], simde_bfloat16 const b[HEDLEY_ARRAY_PARAM(vec_len)], simde_bfloat16 slop,
+    const char* filename, int line, const char* astr, const char* bstr) {
+  simde_float32 slop_ = simde_bfloat16_to_float32(slop);
+  for (size_t i = 0 ; i < vec_len ; i++) {
+    simde_float32 a_ = simde_bfloat16_to_float32(a[i]);
+    simde_float32 b_ = simde_bfloat16_to_float32(b[i]);
+
+    if (HEDLEY_UNLIKELY(!simde_test_equal_f32(a_, b_, slop_))) {
+      simde_test_debug_printf_("%s:%d: assertion failed: %s[%zu] ~= %s[%zu] (%f ~= %f)\n",
+              filename, line, astr, i, bstr, i, HEDLEY_STATIC_CAST(double, a_),
+              HEDLEY_STATIC_CAST(double, b_));
+      SIMDE_TEST_ASSERT_RETURN(1);
+    }
+  }
+  return 0;
+}
+#define simde_assert_equal_vbf16(vec_len, a, b, precision) do { if (simde_assert_equal_vbf16_(vec_len, a, b, simde_test_bf16_precision_to_slop(precision), __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+
+static int
+simde_assert_equal_bf16_(simde_bfloat16 a, simde_bfloat16 b, simde_bfloat16 slop,
+    const char* filename, int line, const char* astr, const char* bstr) {
+  simde_float32 a_ = simde_bfloat16_to_float32(a);
+  simde_float32 b_ = simde_bfloat16_to_float32(b);
+  simde_float32 slop_ = simde_bfloat16_to_float32(slop);
+  if (HEDLEY_UNLIKELY(!simde_test_equal_f32(a_, b_, slop_))) {
+    simde_test_debug_printf_("%s:%d: assertion failed: %s ~= %s (%f ~= %f)\n",
+        filename, line, astr, bstr, HEDLEY_STATIC_CAST(double, a_),
+        HEDLEY_STATIC_CAST(double, b_));
+    SIMDE_TEST_ASSERT_RETURN(1);
+  }
+  return 0;
+}
+#define simde_assert_equal_bf16(a, b, precision) do { if (simde_assert_equal_bf16_(a, b, simde_test_bf16_precision_to_slop(precision), __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+
+static int
+simde_assert_equal_vp8_(
+    size_t vec_len, simde_poly8 const a[HEDLEY_ARRAY_PARAM(vec_len)], simde_poly8 const b[HEDLEY_ARRAY_PARAM(vec_len)],
+    const char* filename, int line, const char* astr, const char* bstr) {
+  for (size_t i = 0 ; i < vec_len ; i++) {
+    uint8_t a_ = HEDLEY_STATIC_CAST(uint8_t, a[i]);
+    uint8_t b_ = HEDLEY_STATIC_CAST(uint8_t, b[i]);
+
+    if (HEDLEY_UNLIKELY(a_ != b_)) {
+      simde_test_debug_printf_("%s:%d: assertion failed: %s[%zu] ~= %s[%zu] (%" PRIu8 " ~= %" PRIu8 ")\n",
+              filename, line, astr, i, bstr, i, a_, b_);
+      SIMDE_TEST_ASSERT_RETURN(1);
+    }
+  }
+  return 0;
+}
+#define simde_assert_equal_vp8(vec_len, a, b) do { if (simde_assert_equal_vp8_(vec_len, a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+
+static int
+simde_assert_equal_p8_(simde_poly8 a, simde_poly8 b,
+    const char* filename, int line, const char* astr, const char* bstr) {
+  uint8_t a_ = HEDLEY_STATIC_CAST(uint8_t, a);
+  uint8_t b_ = HEDLEY_STATIC_CAST(uint8_t, b);
+  if (HEDLEY_UNLIKELY(a_ != b_)) {
+    simde_test_debug_printf_("%s:%d: assertion failed: %s ~= %s (%" PRIu8 " ~= %" PRIu8 ")\n",
+        filename, line, astr, bstr, a_, b_);
+    SIMDE_TEST_ASSERT_RETURN(1);
+  }
+  return 0;
+}
+#define simde_assert_equal_p8(a, b) do { if (simde_assert_equal_p8_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+
+static int
+simde_assert_equal_vp16_(
+    size_t vec_len, simde_poly16 const a[HEDLEY_ARRAY_PARAM(vec_len)], simde_poly16 const b[HEDLEY_ARRAY_PARAM(vec_len)],
+    const char* filename, int line, const char* astr, const char* bstr) {
+  for (size_t i = 0 ; i < vec_len ; i++) {
+    uint16_t a_ = HEDLEY_STATIC_CAST(uint16_t, a[i]);
+    uint16_t b_ = HEDLEY_STATIC_CAST(uint16_t, b[i]);
+
+    if (HEDLEY_UNLIKELY(a_ != b_)) {
+      simde_test_debug_printf_("%s:%d: assertion failed: %s[%zu] ~= %s[%zu] (%" PRIu16 " ~= %" PRIu16 ")\n",
+              filename, line, astr, i, bstr, i, a_, b_);
+      SIMDE_TEST_ASSERT_RETURN(1);
+    }
+  }
+  return 0;
+}
+#define simde_assert_equal_vp16(vec_len, a, b) do { if (simde_assert_equal_vp16_(vec_len, a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+
+static int
+simde_assert_equal_p16_(simde_poly16 a, simde_poly16 b,
+    const char* filename, int line, const char* astr, const char* bstr) {
+  uint16_t a_ = HEDLEY_STATIC_CAST(uint16_t, a);
+  uint16_t b_ = HEDLEY_STATIC_CAST(uint16_t, b);
+  if (HEDLEY_UNLIKELY(a_ != b_)) {
+    simde_test_debug_printf_("%s:%d: assertion failed: %s ~= %s (%" PRIu16 " ~= %" PRIu16 ")\n",
+        filename, line, astr, bstr, a_, b_);
+    SIMDE_TEST_ASSERT_RETURN(1);
+  }
+  return 0;
+}
+#define simde_assert_equal_p16(a, b) do { if (simde_assert_equal_p16_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+
+static int
+simde_assert_equal_vp64_(
+    size_t vec_len, simde_poly64 const a[HEDLEY_ARRAY_PARAM(vec_len)], simde_poly64 const b[HEDLEY_ARRAY_PARAM(vec_len)],
+    const char* filename, int line, const char* astr, const char* bstr) {
+  for (size_t i = 0 ; i < vec_len ; i++) {
+    uint64_t a_ = HEDLEY_STATIC_CAST(uint64_t, a[i]);
+    uint64_t b_ = HEDLEY_STATIC_CAST(uint64_t, b[i]);
+
+    if (HEDLEY_UNLIKELY(a_ != b_)) {
+      simde_test_debug_printf_("%s:%d: assertion failed: %s[%zu] ~= %s[%zu] (%" PRIu64 " ~= %" PRIu64 ")\n",
+              filename, line, astr, i, bstr, i, a_, b_);
+      SIMDE_TEST_ASSERT_RETURN(1);
+    }
+  }
+  return 0;
+}
+#define simde_assert_equal_vp64(vec_len, a, b) do { if (simde_assert_equal_vp64_(vec_len, a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+
+static int
+simde_assert_equal_p64_(simde_poly64 a, simde_poly64 b,
+    const char* filename, int line, const char* astr, const char* bstr) {
+  uint64_t a_ = HEDLEY_STATIC_CAST(uint64_t, a);
+  uint64_t b_ = HEDLEY_STATIC_CAST(uint64_t, b);
+  if (HEDLEY_UNLIKELY(a_ != b_)) {
+    simde_test_debug_printf_("%s:%d: assertion failed: %s ~= %s (%" PRIu64 " ~= %" PRIu64 ")\n",
+        filename, line, astr, bstr, a_, b_);
+    SIMDE_TEST_ASSERT_RETURN(1);
+  }
+  return 0;
+}
+#define simde_assert_equal_p64(a, b) do { if (simde_assert_equal_p64_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+
 #define SIMDE_TEST_GENERATE_ASSERT_EQUAL_FUNC_(T, symbol_identifier, fmt) \
   static int \
   simde_assert_equal_v##symbol_identifier##_( \
@@ -869,6 +1108,9 @@ SIMDE_TEST_GENERATE_ASSERT_EQUAL_FUNC_(uint64_t, u64, PRIu64)
 #define simde_assert_equal_vu16(vec_len, a, b) do { if (simde_assert_equal_vu16_(vec_len, a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 #define simde_assert_equal_vu32(vec_len, a, b) do { if (simde_assert_equal_vu32_(vec_len, a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 #define simde_assert_equal_vu64(vec_len, a, b) do { if (simde_assert_equal_vu64_(vec_len, a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+#define simde_assert_equal_vp8(vec_len, a, b) do { if (simde_assert_equal_vp8_(vec_len, a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+#define simde_assert_equal_vp16(vec_len, a, b) do { if (simde_assert_equal_vp16_(vec_len, a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+#define simde_assert_equal_vp64(vec_len, a, b) do { if (simde_assert_equal_vp64_(vec_len, a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 
 #define simde_assert_equal_i8(a, b) do { if (simde_assert_equal_i8_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 #define simde_assert_equal_i16(a, b) do { if (simde_assert_equal_i16_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
@@ -879,6 +1121,9 @@ SIMDE_TEST_GENERATE_ASSERT_EQUAL_FUNC_(uint64_t, u64, PRIu64)
 #define simde_assert_equal_u32(a, b) do { if (simde_assert_equal_u32_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 #define simde_assert_equal_u64(a, b) do { if (simde_assert_equal_u64_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 #define simde_assert_equal_i(a, b) do { if (simde_assert_equal_i_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+#define simde_assert_equal_p8(a, b) do { if (simde_assert_equal_p8_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+#define simde_assert_equal_p16(a, b) do { if (simde_assert_equal_p16_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+#define simde_assert_equal_p64(a, b) do { if (simde_assert_equal_p64_(a, b, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 
 #define simde_assert_close_vi8(vec_len, a, b, slop) do { if (simde_assert_close_vi8_(vec_len, a, b, slop, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 #define simde_assert_close_vi16(vec_len, a, b, slop) do { if (simde_assert_close_vi16_(vec_len, a, b, slop, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
@@ -888,6 +1133,9 @@ SIMDE_TEST_GENERATE_ASSERT_EQUAL_FUNC_(uint64_t, u64, PRIu64)
 #define simde_assert_close_vu16(vec_len, a, b, slop) do { if (simde_assert_close_vu16_(vec_len, a, b, slop, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 #define simde_assert_close_vu32(vec_len, a, b, slop) do { if (simde_assert_close_vu32_(vec_len, a, b, slop, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 #define simde_assert_close_vu64(vec_len, a, b, slop) do { if (simde_assert_close_vu64_(vec_len, a, b, slop, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+#define simde_assert_close_vp8(vec_len, a, b, slop) do { if (simde_assert_close_vp8_(vec_len, a, b, slop, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+#define simde_assert_close_vp16(vec_len, a, b, slop) do { if (simde_assert_close_vp16_(vec_len, a, b, slop, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+#define simde_assert_close_vp64(vec_len, a, b, slop) do { if (simde_assert_close_vp64_(vec_len, a, b, slop, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 
 #define simde_assert_close_i8(a, b, slop) do { if (simde_assert_close_i8_(a, b, slop, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 #define simde_assert_close_i16(a, b, slop) do { if (simde_assert_close_i16_(a, b, slop, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
@@ -898,6 +1146,9 @@ SIMDE_TEST_GENERATE_ASSERT_EQUAL_FUNC_(uint64_t, u64, PRIu64)
 #define simde_assert_close_u32(a, b, slop) do { if (simde_assert_close_u32_(a, b, slop, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 #define simde_assert_close_u64(a, b, slop) do { if (simde_assert_close_u64_(a, b, slop, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 #define simde_assert_close_i(a, b, slop) do { if (simde_assert_close_i_(a, b, slop, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+#define simde_assert_close_p8(a, b, slop) do { if (simde_assert_close_p8_(a, b, slop, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+#define simde_assert_close_p16(a, b, slop) do { if (simde_assert_close_p16_(a, b, slop, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+#define simde_assert_close_p64(a, b, slop) do { if (simde_assert_close_p64_(a, b, slop, __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 
 /* Since each test is compiled in 4 different versions (C/C++ and
  * native/emul), we need to be able to generate different symbols
