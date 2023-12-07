@@ -32,6 +32,20 @@ jobs:
       apt:
         packages: ninja-build python3-pip gcc g++
 
+  - name: z/Arch WASM_REVERSE_LANE_ORDER
+    if: branch != master OR type == pull_request
+    arch: s390x
+    compiler: gcc
+    env:
+    - CC="gcc"
+    - CXX="g++"
+    - CFLAGS="-march=native -mzvector -Wextra -Werror -DSIMDE_WASM_REVERSE_LANE_ORDER"
+    - CXXFLAGS="-march=native -mzvector -Wextra -Werror -DSIMDE_WASM_REVERSE_LANE_ORDER"
+    - JOBS="$(nproc)"
+    addons:
+      apt:
+        packages: ninja-build python3-pip gcc g++
+
 before_install:
 - cat /proc/cpuinfo
 - cat /proc/meminfo

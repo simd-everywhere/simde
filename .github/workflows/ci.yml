@@ -355,6 +355,12 @@ jobs:
           arch_deb: s390x
           distro: ubuntu-22.04
         - version: 12
+          cross: s390x
+          extra: -wasm_reverse_lane_order
+          arch_gnu: s390x
+          arch_deb: s390x
+          distro: ubuntu-22.04
+        - version: 12
           cross: power9
           arch_gnu: powerpc64le
           arch_deb: ppc64el
