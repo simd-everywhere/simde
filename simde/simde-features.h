@@ -749,4 +749,11 @@
   #include <lsxintrin.h>
 #endif
 
+/* On some platforms it is convenient to reverse lane order for the
+ * implementation of wasm simd128. This is not supported with native wasm
+ * simd128. */
+#if defined(SIMDE_WASM_REVERSE_LANE_ORDER) && defined(SIMDE_WASM_SIMD128_NATIVE)
+  #error "SIMDE_WASM_REVERSE_LANE_ORDER incompatible with SIMDE_WASM_SIMD128_NATIVE"
+#endif
+
 #endif /* !defined(SIMDE_FEATURES_H) */
