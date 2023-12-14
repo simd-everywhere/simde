@@ -345,6 +345,13 @@ jobs:
           arch_gnu: aarch64
           arch_deb: arm64
           distro: ubuntu-22.04
+        - extra: -32bit
+          version: 12
+          cross: armv8
+          arch_gnu: arm
+          arch_gnu_abi: eabihf
+          arch_deb: armhf
+          distro: ubuntu-22.04
         - version: 12
           cross: riscv64
           arch_gnu: riscv64
