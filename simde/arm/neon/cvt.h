@@ -1742,7 +1742,7 @@ simde_vcvta_u64_f64(simde_float64x1_t a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_int32x2_t
 simde_vcvta_s32_f32(simde_float32x2_t a) {
-  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vcvta_s32_f32(a);
   #else
     simde_float32x2_private a_ = simde_float32x2_to_private(a);
@@ -1756,7 +1756,7 @@ simde_vcvta_s32_f32(simde_float32x2_t a) {
     return simde_int32x2_from_private(r_);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
   #undef vcvta_s32_f32
   #define vcvta_s32_f32(a) simde_vcvta_s32_f32(a)
 #endif
@@ -1811,7 +1811,7 @@ simde_vcvtaq_u16_f16(simde_float16x8_t a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_int32x4_t
 simde_vcvtaq_s32_f32(simde_float32x4_t a) {
-  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vcvtaq_s32_f32(a);
   #else
     simde_float32x4_private a_ = simde_float32x4_to_private(a);
@@ -1825,7 +1825,7 @@ simde_vcvtaq_s32_f32(simde_float32x4_t a) {
     return simde_int32x4_from_private(r_);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
   #undef vcvtaq_s32_f32
   #define vcvtaq_s32_f32(a) simde_vcvtaq_s32_f32(a)
 #endif
@@ -1878,7 +1878,7 @@ simde_vcvtaq_u64_f64(simde_float64x2_t a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_uint32x2_t
 simde_vcvta_u32_f32(simde_float32x2_t a) {
-  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vcvta_u32_f32(a);
   #else
     simde_float32x2_private a_ = simde_float32x2_to_private(a);
@@ -1892,7 +1892,7 @@ simde_vcvta_u32_f32(simde_float32x2_t a) {
     return simde_uint32x2_from_private(r_);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
   #undef vcvta_u32_f32
   #define vcvta_u32_f32(a) simde_vcvta_u32_f32(a)
 #endif
@@ -1900,7 +1900,7 @@ simde_vcvta_u32_f32(simde_float32x2_t a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_uint32x4_t
 simde_vcvtaq_u32_f32(simde_float32x4_t a) {
-  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vcvtaq_u32_f32(a);
   #else
     simde_float32x4_private a_ = simde_float32x4_to_private(a);
@@ -1914,7 +1914,7 @@ simde_vcvtaq_u32_f32(simde_float32x4_t a) {
     return simde_uint32x4_from_private(r_);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
   #undef vcvtaq_u32_f32
   #define vcvtaq_u32_f32(a) simde_vcvtaq_u32_f32(a)
 #endif

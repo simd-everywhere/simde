@@ -17778,6 +17778,7 @@ test_simde_vreinterpretq_p128_p8 (SIMDE_MUNIT_TEST_ARGS) {
 #endif
 }
 
+#if !defined(SIMDE_BUG_GCC_113065)
 static int
 test_simde_vreinterpretq_p8_p128 (SIMDE_MUNIT_TEST_ARGS) {
 #if 1
@@ -18367,42 +18368,6 @@ test_simde_vreinterpretq_f64_p128 (SIMDE_MUNIT_TEST_ARGS) {
 }
 
 static int
-test_simde_vreinterpretq_p128_bf16 (SIMDE_MUNIT_TEST_ARGS) {
-#if 1
-  struct {
-    simde_bfloat16_t a[8];
-  } test_vec[] = {
-    { { SIMDE_BFLOAT16_VALUE(    80.00), SIMDE_BFLOAT16_VALUE(   -44.00), SIMDE_BFLOAT16_VALUE(    33.25), SIMDE_BFLOAT16_VALUE(    29.12),
-        SIMDE_BFLOAT16_VALUE(   -20.25), SIMDE_BFLOAT16_VALUE(    11.06), SIMDE_BFLOAT16_VALUE(    69.50), SIMDE_BFLOAT16_VALUE(    69.00) } },
-    { { SIMDE_BFLOAT16_VALUE(   -25.62), SIMDE_BFLOAT16_VALUE(   -94.00), SIMDE_BFLOAT16_VALUE(   -84.50), SIMDE_BFLOAT16_VALUE(   -16.75),
-        SIMDE_BFLOAT16_VALUE(   -35.25), SIMDE_BFLOAT16_VALUE(   -58.75), SIMDE_BFLOAT16_VALUE(    50.50), SIMDE_BFLOAT16_VALUE(   -63.00) } },
-    { { SIMDE_BFLOAT16_VALUE(     6.09), SIMDE_BFLOAT16_VALUE(   -77.50), SIMDE_BFLOAT16_VALUE(   -58.00), SIMDE_BFLOAT16_VALUE(   -40.50),
-        SIMDE_BFLOAT16_VALUE(   -99.50), SIMDE_BFLOAT16_VALUE(    26.50), SIMDE_BFLOAT16_VALUE(   -49.00), SIMDE_BFLOAT16_VALUE(    55.00) } },
-    { { SIMDE_BFLOAT16_VALUE(   -25.00), SIMDE_BFLOAT16_VALUE(   -36.25), SIMDE_BFLOAT16_VALUE(    58.00), SIMDE_BFLOAT16_VALUE(    71.00),
-        SIMDE_BFLOAT16_VALUE(    50.50), SIMDE_BFLOAT16_VALUE(    -0.30), SIMDE_BFLOAT16_VALUE(   -49.75), SIMDE_BFLOAT16_VALUE(    30.50) } },
-  };
-
-  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
-    simde_bfloat16x8_t a = simde_vld1q_bf16(test_vec[i].a);
-    simde_bfloat16x8_private a_ = simde_bfloat16x8_to_private(a);
-    simde_poly128_t r = simde_vreinterpretq_p128_bf16(a);
-
-    simde_assert_equal_i(0, simde_memcmp(&r, &a_, 16));
-  }
-
-  return 0;
-#else
-  fputc('\n', stdout);
-  for (int i = 0 ; i < 4 ; i++) {
-    simde_bfloat16x8_t a = simde_test_arm_neon_random_bf16x8(SIMDE_BFLOAT16_VALUE(-100.0), SIMDE_BFLOAT16_VALUE(100.0));
-    fputs("    { ", SIMDE_CODEGEN_FP);
-    simde_test_arm_neon_write_bf16x8(2, a, SIMDE_TEST_VEC_POS_LAST);
-  }
-  return 1;
-#endif
-}
-
-static int
 test_simde_vreinterpretq_bf16_p128 (SIMDE_MUNIT_TEST_ARGS) {
   struct {
     simde_poly64_t a[2];
@@ -18440,7 +18405,43 @@ test_simde_vreinterpretq_bf16_p128 (SIMDE_MUNIT_TEST_ARGS) {
 
   return 0;
 }
+#endif /* !defined(SIMDE_BUG_GCC_113065) */
 
+static int
+test_simde_vreinterpretq_p128_bf16 (SIMDE_MUNIT_TEST_ARGS) {
+#if 1
+  struct {
+    simde_bfloat16_t a[8];
+  } test_vec[] = {
+    { { SIMDE_BFLOAT16_VALUE(    80.00), SIMDE_BFLOAT16_VALUE(   -44.00), SIMDE_BFLOAT16_VALUE(    33.25), SIMDE_BFLOAT16_VALUE(    29.12),
+        SIMDE_BFLOAT16_VALUE(   -20.25), SIMDE_BFLOAT16_VALUE(    11.06), SIMDE_BFLOAT16_VALUE(    69.50), SIMDE_BFLOAT16_VALUE(    69.00) } },
+    { { SIMDE_BFLOAT16_VALUE(   -25.62), SIMDE_BFLOAT16_VALUE(   -94.00), SIMDE_BFLOAT16_VALUE(   -84.50), SIMDE_BFLOAT16_VALUE(   -16.75),
+        SIMDE_BFLOAT16_VALUE(   -35.25), SIMDE_BFLOAT16_VALUE(   -58.75), SIMDE_BFLOAT16_VALUE(    50.50), SIMDE_BFLOAT16_VALUE(   -63.00) } },
+    { { SIMDE_BFLOAT16_VALUE(     6.09), SIMDE_BFLOAT16_VALUE(   -77.50), SIMDE_BFLOAT16_VALUE(   -58.00), SIMDE_BFLOAT16_VALUE(   -40.50),
+        SIMDE_BFLOAT16_VALUE(   -99.50), SIMDE_BFLOAT16_VALUE(    26.50), SIMDE_BFLOAT16_VALUE(   -49.00), SIMDE_BFLOAT16_VALUE(    55.00) } },
+    { { SIMDE_BFLOAT16_VALUE(   -25.00), SIMDE_BFLOAT16_VALUE(   -36.25), SIMDE_BFLOAT16_VALUE(    58.00), SIMDE_BFLOAT16_VALUE(    71.00),
+        SIMDE_BFLOAT16_VALUE(    50.50), SIMDE_BFLOAT16_VALUE(    -0.30), SIMDE_BFLOAT16_VALUE(   -49.75), SIMDE_BFLOAT16_VALUE(    30.50) } },
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
+    simde_bfloat16x8_t a = simde_vld1q_bf16(test_vec[i].a);
+    simde_bfloat16x8_private a_ = simde_bfloat16x8_to_private(a);
+    simde_poly128_t r = simde_vreinterpretq_p128_bf16(a);
+
+    simde_assert_equal_i(0, simde_memcmp(&r, &a_, 16));
+  }
+
+  return 0;
+#else
+  fputc('\n', stdout);
+  for (int i = 0 ; i < 4 ; i++) {
+    simde_bfloat16x8_t a = simde_test_arm_neon_random_bf16x8(SIMDE_BFLOAT16_VALUE(-100.0), SIMDE_BFLOAT16_VALUE(100.0));
+    fputs("    { ", SIMDE_CODEGEN_FP);
+    simde_test_arm_neon_write_bf16x8(2, a, SIMDE_TEST_VEC_POS_LAST);
+  }
+  return 1;
+#endif
+}
 #endif /* !defined(SIMDE_TARGET_NOT_SUPPORT_INT128_TYPE) */
 
 static int
@@ -20687,19 +20688,21 @@ SIMDE_TEST_FUNC_LIST_ENTRY(vreinterpretq_u64_p64)
   SIMDE_TEST_FUNC_LIST_ENTRY(vreinterpretq_p128_p8)
   SIMDE_TEST_FUNC_LIST_ENTRY(vreinterpretq_p128_p16)
 
-  SIMDE_TEST_FUNC_LIST_ENTRY(vreinterpretq_u8_p128)
-  SIMDE_TEST_FUNC_LIST_ENTRY(vreinterpretq_u16_p128)
-  SIMDE_TEST_FUNC_LIST_ENTRY(vreinterpretq_u32_p128)
-  SIMDE_TEST_FUNC_LIST_ENTRY(vreinterpretq_u64_p128)
-  SIMDE_TEST_FUNC_LIST_ENTRY(vreinterpretq_s8_p128)
-  SIMDE_TEST_FUNC_LIST_ENTRY(vreinterpretq_s16_p128)
-  SIMDE_TEST_FUNC_LIST_ENTRY(vreinterpretq_s32_p128)
-  SIMDE_TEST_FUNC_LIST_ENTRY(vreinterpretq_s64_p128)
-  SIMDE_TEST_FUNC_LIST_ENTRY(vreinterpretq_f16_p128)
-  SIMDE_TEST_FUNC_LIST_ENTRY(vreinterpretq_f64_p128)
-  SIMDE_TEST_FUNC_LIST_ENTRY(vreinterpretq_p8_p128)
-  SIMDE_TEST_FUNC_LIST_ENTRY(vreinterpretq_p16_p128)
-  SIMDE_TEST_FUNC_LIST_ENTRY(vreinterpretq_bf16_p128)
+  #if !defined(SIMDE_BUG_GCC_113065)
+    SIMDE_TEST_FUNC_LIST_ENTRY(vreinterpretq_f16_p128)
+    SIMDE_TEST_FUNC_LIST_ENTRY(vreinterpretq_f64_p128)
+    SIMDE_TEST_FUNC_LIST_ENTRY(vreinterpretq_u8_p128)
+    SIMDE_TEST_FUNC_LIST_ENTRY(vreinterpretq_u16_p128)
+    SIMDE_TEST_FUNC_LIST_ENTRY(vreinterpretq_u32_p128)
+    SIMDE_TEST_FUNC_LIST_ENTRY(vreinterpretq_u64_p128)
+    SIMDE_TEST_FUNC_LIST_ENTRY(vreinterpretq_s8_p128)
+    SIMDE_TEST_FUNC_LIST_ENTRY(vreinterpretq_s16_p128)
+    SIMDE_TEST_FUNC_LIST_ENTRY(vreinterpretq_s32_p128)
+    SIMDE_TEST_FUNC_LIST_ENTRY(vreinterpretq_s64_p128)
+    SIMDE_TEST_FUNC_LIST_ENTRY(vreinterpretq_p8_p128)
+    SIMDE_TEST_FUNC_LIST_ENTRY(vreinterpretq_p16_p128)
+    SIMDE_TEST_FUNC_LIST_ENTRY(vreinterpretq_bf16_p128)
+  #endif
   SIMDE_TEST_FUNC_LIST_ENTRY(vreinterpretq_p128_bf16)
 #endif /* !defined(SIMDE_TARGET_NOT_SUPPORT_INT128_TYPE) */
 

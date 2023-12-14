@@ -6382,7 +6382,7 @@ simde_vreinterpretq_p128_f32(simde_float32x4_t a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_poly128_t
 simde_vreinterpretq_p128_f64(simde_float64x2_t a) {
-  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARCH_ARM_CRYPTO)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARCH_ARM_CRYPTO)
     return vreinterpretq_p128_f64(a);
   #else
     simde_poly128_t r_;
@@ -6586,7 +6586,7 @@ simde_vreinterpretq_f16_p128(simde_poly128_t a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float64x2_t
 simde_vreinterpretq_f64_p128(simde_poly128_t a) {
-  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARCH_ARM_CRYPTO)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARCH_ARM_CRYPTO)
     return vreinterpretq_f64_p128(a);
   #else
     simde_float64x2_private r_;
