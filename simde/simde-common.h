@@ -984,6 +984,9 @@ HEDLEY_DIAGNOSTIC_POP
 #    if !HEDLEY_GCC_VERSION_CHECK(4,6,0)
 #      define SIMDE_BUG_GCC_BAD_MM_EXTRACT_EPI8 /* TODO: find relevant bug or commit */
 #    endif
+#    if !HEDLEY_GCC_VERSION_CHECK(7,4,0) || (HEDLEY_GCC_VERSION_CHECK(8,0,0) && !HEDLEY_GCC_VERSION_CHECK(8,3,0))
+#      define SIMDE_BUG_GCC_87467
+#    endif
 #    if !HEDLEY_GCC_VERSION_CHECK(8,0,0)
 #      define SIMDE_BUG_GCC_REV_247851
 #    endif
