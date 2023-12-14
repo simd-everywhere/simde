@@ -211,7 +211,7 @@ typedef union {
   #if defined(SIMDE_X86_SSE2_NATIVE)
     __m128d m128d;
   #endif
-  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     float64x2_t neon;
   #endif
   #if defined(SIMDE_WASM_SIMD128_NATIVE)

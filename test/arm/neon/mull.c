@@ -438,7 +438,7 @@ test_simde_vmull_p8 (SIMDE_MUNIT_TEST_ARGS) {
 #endif
 }
 
-#if !defined(SIMDE_TARGET_NOT_SUPPORT_INT128_TYPE)
+#if !defined(SIMDE_TARGET_NOT_SUPPORT_INT128_TYPE) && !defined(SIMDE_BUG_GCC_113065)
 static int
 test_simde_vmull_p64 (SIMDE_MUNIT_TEST_ARGS) {
 #if 1
@@ -501,7 +501,7 @@ test_simde_vmull_p64 (SIMDE_MUNIT_TEST_ARGS) {
   return 1;
 #endif
 }
-#endif /* !defined(SIMDE_TARGET_NOT_SUPPORT_INT128_TYPE) */
+#endif /* !defined(SIMDE_TARGET_NOT_SUPPORT_INT128_TYPE) && !defined(SIMDE_BUG_GCC_113065) */
 
 SIMDE_TEST_FUNC_LIST_BEGIN
 SIMDE_TEST_FUNC_LIST_ENTRY(vmull_s8)
@@ -512,9 +512,9 @@ SIMDE_TEST_FUNC_LIST_ENTRY(vmull_u16)
 SIMDE_TEST_FUNC_LIST_ENTRY(vmull_u32)
 
 SIMDE_TEST_FUNC_LIST_ENTRY(vmull_p8)
-#if !defined(SIMDE_TARGET_NOT_SUPPORT_INT128_TYPE)
+#if !defined(SIMDE_TARGET_NOT_SUPPORT_INT128_TYPE) && !defined(SIMDE_BUG_GCC_113065)
   SIMDE_TEST_FUNC_LIST_ENTRY(vmull_p64)
-#endif /* !defined(SIMDE_TARGET_NOT_SUPPORT_INT128_TYPE) */
+#endif /* !defined(SIMDE_TARGET_NOT_SUPPORT_INT128_TYPE) && !defined(SIMDE_BUG_GCC_113065) */
 SIMDE_TEST_FUNC_LIST_END
 
 #include "test-neon-footer.h"
