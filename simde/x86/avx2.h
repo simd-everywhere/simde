@@ -4116,7 +4116,7 @@ simde_mm256_sign_epi16 (simde__m256i a, simde__m256i b) {
 
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.i16) / sizeof(r_.i16[0])) ; i++) {
-      r_.i16[i] = (b_.i16[i] < INT32_C(0)) ? -a_.i16[i] : a_.i16[i];
+      r_.i16[i] = (b_.i16[i] == INT32_C(0)) ? 0 : (b_.i16[i] < INT32_C(0)) ? -a_.i16[i] : a_.i16[i];
     }
 
     return simde__m256i_from_private(r_);
