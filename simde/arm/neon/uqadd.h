@@ -35,7 +35,8 @@ SIMDE_BEGIN_DECLS_
 
 // Workaround on ARM64 windows due to windows SDK bug
 // https://developercommunity.visualstudio.com/t/In-arm64_neonh-vsqaddb_u8-vsqaddh_u16/10271747?sort=newest
-#if (defined _MSC_VER) && (defined SIMDE_ARM_NEON_A64V8_NATIVE)
+#if (defined _MSC_VER) && (defined SIMDE_ARM_NEON_A64V8_NATIVE) && (_MSC_VER < 1938)
+#pragma message ("Due to msvc bug, current version of msvc is supported by workaround. Recommend to update msvc")
 #undef vuqaddh_s16
 #define vuqaddh_s16(src1, src2) neon_suqadds16(__int16ToN16_v(src1), __uint16ToN16_v(src2)).n16_i16[0]
 #undef vuqadds_s32

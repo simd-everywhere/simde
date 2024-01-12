@@ -32,7 +32,8 @@
 
 // Workaround on ARM64 windows due to windows SDK bug
 // https://developercommunity.visualstudio.com/t/In-arm64_neonh-vsqaddb_u8-vsqaddh_u16/10271747?sort=newest
-#if (defined _MSC_VER) && (defined SIMDE_ARM_NEON_A64V8_NATIVE)
+#if (defined _MSC_VER) && (defined SIMDE_ARM_NEON_A64V8_NATIVE) && (_MSC_VER < 1938)
+#pragma message ("Due to msvc bug, current version of msvc is supported by workaround. Recommend to update msvc")
 #undef vsqaddb_u8
 #define vsqaddb_u8(src1, src2) neon_usqadds8(__uint8ToN8_v(src1), __int8ToN8_v(src2)).n8_u8[0]
 #undef vsqaddh_u16
