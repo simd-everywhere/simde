@@ -4092,7 +4092,7 @@ simde_mm256_sign_epi8 (simde__m256i a, simde__m256i b) {
 
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.i8) / sizeof(r_.i8[0])) ; i++) {
-      r_.i8[i] = (b_.i8[i] < INT32_C(0)) ? -a_.i8[i] : a_.i8[i];
+      r_.i8[i] = (b_.i8[i] == INT8_C(0)) ? INT8_C(0) : (b_.i8[i] < INT8_C(0)) ? -a_.i8[i] : a_.i8[i];
     }
 
     return simde__m256i_from_private(r_);
@@ -4116,7 +4116,7 @@ simde_mm256_sign_epi16 (simde__m256i a, simde__m256i b) {
 
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.i16) / sizeof(r_.i16[0])) ; i++) {
-      r_.i16[i] = (b_.i16[i] < INT32_C(0)) ? -a_.i16[i] : a_.i16[i];
+      r_.i16[i] = (b_.i16[i] == INT16_C(0)) ? INT16_C(0) : (b_.i16[i] < INT16_C(0)) ? -a_.i16[i] : a_.i16[i];
     }
 
     return simde__m256i_from_private(r_);
@@ -4140,7 +4140,7 @@ simde_mm256_sign_epi32(simde__m256i a, simde__m256i b) {
 
     SIMDE_VECTORIZE
     for (size_t i = 0; i < (sizeof(r_.i32) / sizeof(r_.i32[0])); i++) {
-      r_.i32[i] = (b_.i32[i] < INT32_C(0)) ? -a_.i32[i] : a_.i32[i];
+      r_.i32[i] = (b_.i32[i] == INT32_C(0)) ? INT32_C(0) : (b_.i32[i] < INT32_C(0)) ? -a_.i32[i] : a_.i32[i];
     }
 
     return simde__m256i_from_private(r_);
