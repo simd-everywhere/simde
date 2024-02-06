@@ -401,39 +401,39 @@ jobs:
       fail-fast: false
       matrix:
         include:
-        - version: 16
+        - version: 17
           cross: armv7
           arch_deb: armhf
           arch_gnu_abi: eabihf
           arch_gnu: arm
           distro: ubuntu-22.04
-        - version: 16
+        - version: 17
           cross: aarch64
           arch_gnu: aarch64
           arch_deb: arm64
           distro: ubuntu-22.04
-        - version: 16
+        - version: 17
           cross: armel
           arch_gnu_abi: eabi
           arch_deb: armel
           arch_gnu: arm
           distro: ubuntu-22.04
-        - version: 16
+        - version: 17
           cross: riscv64
           arch_gnu: riscv64
           arch_deb: riscv64
           distro: ubuntu-22.04
-        # - version: 16
+        # - version: 17
         #   cross: s390x
         #   arch_gnu: s390x
         #   arch_deb: s390x
         #   distro: ubuntu-22.04
-        - version: 16
+        - version: 17
           cross: ppc64el
           arch_deb: ppc64el
           arch_gnu: powerpc64le
           distro: ubuntu-22.04
-        # - version: 16
+        # - version: 17
         #   cross: mips64el  # needs newer Ubuntu (23.04+)
         #   arch_deb: mips64el
         #   arch_gnu: mips64el
@@ -450,6 +450,7 @@ jobs:
     - name: Install APT Dependencies
       run: |
         sudo add-apt-repository ppa:savoury1/virtualisation
+        sudo add-apt-repository ppa:savoury1/build-tools
         sudo add-apt-repository ppa:savoury1/display
         sudo apt-get update -y
         sudo apt-get -yq install ninja-build parallel \
@@ -524,6 +525,13 @@ jobs:
           distro: ubuntu-22.04
           arch_flags: -ffast-math -Wno-unsafe-buffer-usage
           ccache: 'true'
+        - version: "17"
+          distro: ubuntu-22.04
+          arch_flags: -march=native -Wno-unsafe-buffer-usage
+        - version: "17"
+          distro: ubuntu-22.04
+          arch_flags: -ffast-math -Wno-unsafe-buffer-usage
+          ccache: 'true'
     runs-on: ${{ matrix.distro }}
     env:
       CFLAGS: ${{ matrix.arch_flags }} -Wall -Weverything -Werror -fno-lax-vector-conversions
@@ -537,6 +545,7 @@ jobs:
     - name: Install APT Dependencies
       run: |
         sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+        sudo add-apt-repository ppa:savoury1/build-tools
         sudo add-apt-repository ppa:savoury1/display
         sudo apt-get update
         sudo apt-get -yq install gcovr ninja-build python3-pip clang-${{ matrix.version }}
