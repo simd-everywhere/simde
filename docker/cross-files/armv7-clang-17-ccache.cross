@@ -1,0 +1,20 @@
+[binaries]
+c = ['ccache', 'clang-17']
+cpp = ['ccache', 'clang++-17']
+ar = 'llvm-ar-17'
+strip = 'llvm-strip-17'
+objcopy = 'llvm-objcopy-17'
+ld = 'llvm-ld-17'
+exe_wrapper = ['qemu-arm-static', '-L', '/usr/arm-linux-gnueabihf']
+
+[properties]
+c_args = ['--target=arm-linux-gnueabihf', '-march=armv7-a', '-mfpu=neon', '-isystem=/usr/arm-linux-gnueabihf/include', '-Weverything', '-fno-lax-vector-conversions', '-Werror', '-Wno-unsafe-buffer-usage']
+cpp_args = ['--target=arm-linux-gnueabihf', '-march=armv7-a', '-mfpu=neon', '-isystem=/usr/arm-linux-gnueabihf/include', '-Weverything', '-fno-lax-vector-conversions', '-Werror', '-Wno-unsafe-buffer-usage']
+c_link_args = ['--target=arm-linux-gnueabihf']
+cpp_link_args = ['--target=arm-linux-gnueabihf']
+
+[host_machine]
+system = 'linux'
+cpu_family = 'arm'
+cpu = 'armv8-a'
+endian = 'little'

@@ -1,0 +1,20 @@
+[binaries]
+c = ['ccache', 'clang-17']
+cpp = ['ccache', 'clang++-17']
+ar = 'llvm-ar-17'
+strip = 'llvm-strip-17'
+objcopy = 'llvm-objcopy-17'
+ld = 'llvm-ld-17'
+exe_wrapper = ['qemu-ppc64le-static', '-L', '/usr/powerpc64le-linux-gnu/']
+
+[properties]
+c_args = ['--target=powerpc64le-linux-gnu', '-isystem=/usr/powerpc64le-linux-gnu/include', '-Weverything', '-fno-lax-vector-conversions', '-Werror', '-Wno-deprecated-altivec-src-compat', '-Wno-unsafe-buffer-usage']
+cpp_args = ['--target=powerpc64le-linux-gnu', '-isystem=/usr/powerpc64le-linux-gnu/include', '-Weverything', '-fno-lax-vector-conversions', '-Werror', '-Wno-deprecated-altivec-src-compat', '-Wno-unsafe-buffer-usage']
+c_link_args = ['--target=powerpc64le-linux-gnu']
+cpp_link_args = ['--target=powerpc64le-linux-gnu']
+
+[host_machine]
+system = 'linux'
+cpu_family = 'ppc64'
+cpu = 'ppc64el'
+endian = 'little'
