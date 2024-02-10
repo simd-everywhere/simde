@@ -396,7 +396,7 @@ jobs:
     - name: Test
       run: meson test -C build --print-errorlogs --print-errorlogs $(meson test -C build --list | grep -v emul)
 
-  rvv-qemu:
+  clang-qemu-rvv:
     strategy:
       fail-fast: false
       matrix:
