@@ -402,17 +402,17 @@ jobs:
       matrix:
         include:
         - version: 17
-          cross: riscv64+rvv_vlen128_eln64_zvfh
+          cross: riscv64+rvv_vlen128_elen64_zvfh
           arch_gnu: riscv64
           arch_deb: riscv64
           distro: ubuntu-22.04
         - version: 17
-          cross: riscv64+rvv_vlen256_eln64_zvfh
+          cross: riscv64+rvv_vlen256_elen64_zvfh
           arch_gnu: riscv64
           arch_deb: riscv64
           distro: ubuntu-22.04
         - version: 17
-          cross: riscv64+rvv_vlen512_eln64_zvfh
+          cross: riscv64+rvv_vlen512_elen64_zvfh
           arch_gnu: riscv64
           arch_deb: riscv64
           distro: ubuntu-22.04
