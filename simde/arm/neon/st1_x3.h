@@ -24,6 +24,7 @@
  *   2020      Evan Nemerson <evan@nemerson.com>
  *   2021      Décio Luiz Gazzoni Filho <decio@decpp.net>
  *   2023      Yi-Yen Chung <eric681@andestech.com> (Copyright owned by Andes Technology)
+ *   2023      Chi-Wei Chu <wewe5215@gapp.nthu.edu.tw> (Copyright owned by NTHU pllab)
  */
 
 #if !defined(SIMDE_ARM_NEON_ST1_X3_H)
@@ -43,11 +44,20 @@ simde_vst1_f16_x3(simde_float16_t ptr[HEDLEY_ARRAY_PARAM(12)], simde_float16x4x3
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
     vst1_f16_x3(ptr, val);
   #else
-    simde_float16x4_private val_[3];
-    for (size_t i = 0; i < 3; i++) {
-      val_[i] = simde_float16x4_to_private(val.val[i]);
-    }
-    simde_memcpy(ptr, &val_, sizeof(val_));
+    simde_float16x4_private a[3] = { simde_float16x4_to_private(val.val[0]),
+                                      simde_float16x4_to_private(val.val[1]),
+                                      simde_float16x4_to_private(val.val[2]) };
+    #if defined(SIMDE_RISCV_V_NATIVE) && SIMDE_ARCH_RISCV_ZVFH
+      __riscv_vse16_v_f16m1((_Float16 *)ptr , a[0].sv64 , 4);
+      __riscv_vse16_v_f16m1((_Float16 *)ptr+4 , a[1].sv64 , 4);
+      __riscv_vse16_v_f16m1((_Float16 *)ptr+8 , a[2].sv64 , 4);
+    #else
+      simde_float16_t buf[12];
+      for (size_t i = 0; i < 12 ; i++) {
+        buf[i] = a[i / 4].values[i % 4];
+      }
+      simde_memcpy(ptr, buf, sizeof(buf));
+    #endif
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
@@ -226,7 +236,13 @@ simde_vst1_p8_x3(simde_poly8_t ptr[HEDLEY_ARRAY_PARAM(24)], simde_poly8x8x3_t va
     for (size_t i = 0; i < 3; i++) {
       val_[i] = simde_poly8x8_to_private(val.val[i]);
     }
-    simde_memcpy(ptr, &val_, sizeof(val_));
+    #if defined(SIMDE_RISCV_V_NATIVE)
+      __riscv_vse8_v_u8m1(ptr , val_[0].sv64 , 8);
+      __riscv_vse8_v_u8m1(ptr+8 , val_[1].sv64 , 8);
+      __riscv_vse8_v_u8m1(ptr+16 , val_[2].sv64 , 8);
+    #else
+      simde_memcpy(ptr, &val_, sizeof(val_));
+    #endif
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
@@ -245,7 +261,13 @@ simde_vst1_p16_x3(simde_poly16_t ptr[HEDLEY_ARRAY_PARAM(12)], simde_poly16x4x3_t
     for (size_t i = 0; i < 3; i++) {
       val_[i] = simde_poly16x4_to_private(val.val[i]);
     }
-    simde_memcpy(ptr, &val_, sizeof(val_));
+    #if defined(SIMDE_RISCV_V_NATIVE)
+      __riscv_vse16_v_u16m1(ptr , val_[0].sv64 , 4);
+      __riscv_vse16_v_u16m1(ptr+4 , val_[1].sv64 , 4);
+      __riscv_vse16_v_u16m1(ptr+8 , val_[2].sv64 , 4);
+    #else
+      simde_memcpy(ptr, &val_, sizeof(val_));
+    #endif
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
@@ -264,7 +286,13 @@ simde_vst1_p64_x3(simde_poly64_t ptr[HEDLEY_ARRAY_PARAM(3)], simde_poly64x1x3_t 
     for (size_t i = 0; i < 3; i++) {
       val_[i] = simde_poly64x1_to_private(val.val[i]);
     }
-    simde_memcpy(ptr, &val_, sizeof(val_));
+    #if defined(SIMDE_RISCV_V_NATIVE)
+      __riscv_vse64_v_u64m1(ptr , val_[0].sv64 , 1);
+      __riscv_vse64_v_u64m1(ptr+1 , val_[1].sv64 , 1);
+      __riscv_vse64_v_u64m1(ptr+2 , val_[2].sv64 , 1);
+    #else
+      simde_memcpy(ptr, &val_, sizeof(val_));
+    #endif
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
