@@ -23,6 +23,7 @@
  * Copyright:
  *   2020      Evan Nemerson <evan@nemerson.com>
  *   2023      Yi-Yen Chung <eric681@andestech.com> (Copyright owned by Andes Technology)
+ *   2023      Ju-Hung Li <jhlee@pllab.cs.nthu.edu.tw> (Copyright owned by NTHU pllab)
  */
 
 #if !defined(SIMDE_ARM_NEON_TYPES_H)
@@ -48,6 +49,11 @@ typedef union {
   #if defined(SIMDE_X86_MMX_NATIVE)
     __m64 m64;
   #endif
+
+  #if defined(SIMDE_RISCV_V_NATIVE)
+    fixed_vint8m1_t sv64;
+  #endif
+
 } simde_int8x8_private;
 
 typedef union {
@@ -56,6 +62,11 @@ typedef union {
   #if defined(SIMDE_X86_MMX_NATIVE)
     __m64 m64;
   #endif
+
+  #if defined(SIMDE_RISCV_V_NATIVE)
+    fixed_vint16m1_t sv64;
+  #endif
+
 } simde_int16x4_private;
 
 typedef union {
@@ -64,6 +75,11 @@ typedef union {
   #if defined(SIMDE_X86_MMX_NATIVE)
     __m64 m64;
   #endif
+
+  #if defined(SIMDE_RISCV_V_NATIVE)
+    fixed_vint32m1_t sv64;
+  #endif
+
 } simde_int32x2_private;
 
 typedef union {
@@ -72,6 +88,11 @@ typedef union {
   #if defined(SIMDE_X86_MMX_NATIVE)
     __m64 m64;
   #endif
+
+  #if defined(SIMDE_RISCV_V_NATIVE)
+    fixed_vint64m1_t sv64;
+  #endif
+
 } simde_int64x1_private;
 
 typedef union {
@@ -80,6 +101,11 @@ typedef union {
   #if defined(SIMDE_X86_MMX_NATIVE)
     __m64 m64;
   #endif
+
+  #if defined(SIMDE_RISCV_V_NATIVE)
+    fixed_vuint8m1_t sv64;
+  #endif
+
 } simde_uint8x8_private;
 
 typedef union {
@@ -88,6 +114,11 @@ typedef union {
   #if defined(SIMDE_X86_MMX_NATIVE)
     __m64 m64;
   #endif
+
+  #if defined(SIMDE_RISCV_V_NATIVE)
+    fixed_vuint16m1_t sv64;
+  #endif
+
 } simde_uint16x4_private;
 
 typedef union {
@@ -96,6 +127,11 @@ typedef union {
   #if defined(SIMDE_X86_MMX_NATIVE)
     __m64 m64;
   #endif
+
+  #if defined(SIMDE_RISCV_V_NATIVE)
+    fixed_vuint32m1_t sv64;
+  #endif
+
 } simde_uint32x2_private;
 
 typedef union {
@@ -104,6 +140,11 @@ typedef union {
   #if defined(SIMDE_X86_MMX_NATIVE)
     __m64 m64;
   #endif
+
+  #if defined(SIMDE_RISCV_V_NATIVE)
+    fixed_vuint64m1_t sv64;
+  #endif
+
 } simde_uint64x1_private;
 
 typedef union {
@@ -116,6 +157,11 @@ typedef union {
   #if defined(SIMDE_X86_MMX_NATIVE)
     __m64 m64;
   #endif
+
+  #if defined(SIMDE_RISCV_V_NATIVE) && SIMDE_ARCH_RISCV_ZVFH
+    fixed_vfloat16m1_t sv64;
+  #endif
+
 } simde_float16x4_private;
 
 typedef union {
@@ -124,6 +170,11 @@ typedef union {
   #if defined(SIMDE_X86_MMX_NATIVE)
     __m64 m64;
   #endif
+
+  #if defined(SIMDE_RISCV_V_NATIVE)
+    fixed_vfloat32m1_t sv64;
+  #endif
+
 } simde_float32x2_private;
 
 typedef union {
@@ -132,18 +183,32 @@ typedef union {
   #if defined(SIMDE_X86_MMX_NATIVE)
     __m64 m64;
   #endif
+
+  #if defined(SIMDE_RISCV_V_NATIVE)
+    fixed_vfloat64m1_t sv64;
+  #endif
+
 } simde_float64x1_private;
 
 typedef union {
   SIMDE_ARM_NEON_DECLARE_VECTOR(simde_poly8, values, 8);
+  #if defined(SIMDE_RISCV_V_NATIVE)
+    fixed_vuint8m1_t sv64;
+  #endif
 } simde_poly8x8_private;
 
 typedef union {
   SIMDE_ARM_NEON_DECLARE_VECTOR(simde_poly16, values, 8);
+  #if defined(SIMDE_RISCV_V_NATIVE)
+    fixed_vuint16m1_t sv64;
+  #endif
 } simde_poly16x4_private;
 
 typedef union {
   SIMDE_ARM_NEON_DECLARE_VECTOR(simde_poly64, values, 8);
+  #if defined(SIMDE_RISCV_V_NATIVE)
+    fixed_vuint64m1_t sv64;
+  #endif
 } simde_poly64x1_private;
 
 typedef union {
@@ -160,6 +225,11 @@ typedef union {
   #if defined(SIMDE_WASM_SIMD128_NATIVE)
     v128_t v128;
   #endif
+
+  #if defined(SIMDE_RISCV_V_NATIVE)
+    fixed_vint8m1_t sv128;
+  #endif
+
 } simde_int8x16_private;
 
 typedef union {
@@ -176,6 +246,11 @@ typedef union {
   #if defined(SIMDE_WASM_SIMD128_NATIVE)
     v128_t v128;
   #endif
+
+  #if defined(SIMDE_RISCV_V_NATIVE)
+    fixed_vint16m1_t sv128;
+  #endif
+
 } simde_int16x8_private;
 
 typedef union {
@@ -196,6 +271,11 @@ typedef union {
   #if defined(SIMDE_WASM_SIMD128_NATIVE)
     v128_t v128;
   #endif
+
+  #if defined(SIMDE_RISCV_V_NATIVE)
+    fixed_vint32m1_t sv128;
+  #endif
+
 } simde_int32x4_private;
 
 typedef union {
@@ -212,6 +292,11 @@ typedef union {
   #if defined(SIMDE_WASM_SIMD128_NATIVE)
     v128_t v128;
   #endif
+
+  #if defined(SIMDE_RISCV_V_NATIVE)
+    fixed_vint64m1_t sv128;
+  #endif
+
 } simde_int64x2_private;
 
 typedef union {
@@ -228,6 +313,11 @@ typedef union {
   #if defined(SIMDE_WASM_SIMD128_NATIVE)
     v128_t v128;
   #endif
+
+  #if defined(SIMDE_RISCV_V_NATIVE)
+    fixed_vuint8m1_t sv128;
+  #endif
+
 } simde_uint8x16_private;
 
 typedef union {
@@ -244,6 +334,11 @@ typedef union {
   #if defined(SIMDE_WASM_SIMD128_NATIVE)
     v128_t v128;
   #endif
+
+  #if defined(SIMDE_RISCV_V_NATIVE)
+    fixed_vuint16m1_t sv128;
+  #endif
+
 } simde_uint16x8_private;
 
 typedef union {
@@ -260,6 +355,11 @@ typedef union {
   #if defined(SIMDE_WASM_SIMD128_NATIVE)
     v128_t v128;
   #endif
+
+  #if defined(SIMDE_RISCV_V_NATIVE)
+    fixed_vuint32m1_t sv128;
+  #endif
+
 } simde_uint32x4_private;
 
 typedef union {
@@ -276,6 +376,11 @@ typedef union {
   #if defined(SIMDE_WASM_SIMD128_NATIVE)
     v128_t v128;
   #endif
+
+  #if defined(SIMDE_RISCV_V_NATIVE)
+    fixed_vuint64m1_t sv128;
+  #endif
+
 } simde_uint64x2_private;
 
 typedef union {
@@ -296,6 +401,11 @@ typedef union {
   #if defined(SIMDE_WASM_SIMD128_NATIVE)
     v128_t v128;
   #endif
+
+  #if defined(SIMDE_RISCV_V_NATIVE) && SIMDE_ARCH_RISCV_ZVFH
+    fixed_vfloat16m1_t sv128;
+  #endif
+
 } simde_float16x8_private;
 
 typedef union {
@@ -312,6 +422,11 @@ typedef union {
   #if defined(SIMDE_WASM_SIMD128_NATIVE)
     v128_t v128;
   #endif
+
+  #if defined(SIMDE_RISCV_V_NATIVE)
+    fixed_vfloat32m1_t sv128;
+  #endif
+
 } simde_float32x4_private;
 
 typedef union {
@@ -328,18 +443,32 @@ typedef union {
   #if defined(SIMDE_WASM_SIMD128_NATIVE)
     v128_t v128;
   #endif
+
+  #if defined(SIMDE_RISCV_V_NATIVE)
+    fixed_vfloat64m1_t sv128;
+  #endif
+
 } simde_float64x2_private;
 
 typedef union {
   SIMDE_ARM_NEON_DECLARE_VECTOR(simde_poly8, values, 16);
+  #if defined(SIMDE_RISCV_V_NATIVE)
+    fixed_vuint8m1_t sv128;
+  #endif
 } simde_poly8x16_private;
 
 typedef union {
   SIMDE_ARM_NEON_DECLARE_VECTOR(simde_poly16, values, 16);
+  #if defined(SIMDE_RISCV_V_NATIVE)
+    fixed_vuint16m1_t sv128;
+  #endif
 } simde_poly16x8_private;
 
 typedef union {
   SIMDE_ARM_NEON_DECLARE_VECTOR(simde_poly64, values, 16);
+  #if defined(SIMDE_RISCV_V_NATIVE)
+    fixed_vuint64m1_t sv128;
+  #endif
 } simde_poly64x2_private;
 
 typedef union {
@@ -647,6 +776,42 @@ typedef union {
     #define SIMDE_ARM_NEON_NEED_PORTABLE_U64X2
     #define SIMDE_ARM_NEON_NEED_PORTABLE_F64X2
   #endif
+#elif defined(SIMDE_RISCV_V_NATIVE)
+
+  typedef fixed_vint8m1_t    simde_int8x8_t;
+  typedef fixed_vint16m1_t   simde_int16x4_t;
+  typedef fixed_vint32m1_t   simde_int32x2_t;
+  typedef fixed_vint64m1_t   simde_int64x1_t;
+  typedef fixed_vuint8m1_t   simde_uint8x8_t;
+  typedef fixed_vuint16m1_t  simde_uint16x4_t;
+  typedef fixed_vuint32m1_t  simde_uint32x2_t;
+  typedef fixed_vuint64m1_t  simde_uint64x1_t;
+  typedef fixed_vfloat32m1_t simde_float32x2_t;
+  typedef fixed_vfloat64m1_t simde_float64x1_t;
+
+  typedef fixed_vint8m1_t    simde_int8x16_t;
+  typedef fixed_vint16m1_t   simde_int16x8_t;
+  typedef fixed_vint32m1_t   simde_int32x4_t;
+  typedef fixed_vint64m1_t   simde_int64x2_t;
+  typedef fixed_vuint8m1_t   simde_uint8x16_t;
+  typedef fixed_vuint16m1_t  simde_uint16x8_t;
+  typedef fixed_vuint32m1_t  simde_uint32x4_t;
+  typedef fixed_vuint64m1_t  simde_uint64x2_t;
+  typedef fixed_vfloat32m1_t simde_float32x4_t;
+  typedef fixed_vfloat64m1_t simde_float64x2_t;
+
+  #define SIMDE_ARM_NEON_NEED_PORTABLE_F16
+  #define SIMDE_ARM_NEON_NEED_PORTABLE_F32
+  #define SIMDE_ARM_NEON_NEED_PORTABLE_F64
+  #define SIMDE_ARM_NEON_NEED_PORTABLE_POLY_128_BIT
+  #define SIMDE_ARM_NEON_NEED_PORTABLE_POLY_64_BIT
+  #define SIMDE_ARM_NEON_NEED_PORTABLE_POLY
+  #define SIMDE_ARM_NEON_NEED_PORTABLE_F64X1XN
+  #define SIMDE_ARM_NEON_NEED_PORTABLE_F64X2XN
+  #define SIMDE_ARM_NEON_NEED_PORTABLE_POLY_VXN
+  #define SIMDE_ARM_NEON_NEED_PORTABLE_VXN
+  #define SIMDE_ARM_NEON_NEED_PORTABLE_BF16
+
 #elif defined(SIMDE_VECTOR)
   typedef simde_float32 simde_float32_t;
   typedef simde_float64 simde_float64_t;

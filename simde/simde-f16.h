@@ -22,6 +22,7 @@
  *
  * Copyright:
  *   2021      Evan Nemerson <evan@nemerson.com>
+ *   2023      Ju-Hung Li <jhlee@pllab.cs.nthu.edu.tw> (Copyright owned by NTHU pllab)
  */
 
 #include "hedley.h"
@@ -75,7 +76,8 @@ SIMDE_BEGIN_DECLS_
       (defined(SIMDE_ARCH_X86_SSE2) && HEDLEY_GCC_VERSION_CHECK(12,0,0)) || \
       (defined(SIMDE_ARCH_AARCH64) && HEDLEY_GCC_VERSION_CHECK(7,0,0) && !defined(__cplusplus)) || \
       ((defined(SIMDE_ARCH_X86) || defined(SIMDE_ARCH_AMD64)) && SIMDE_DETECT_CLANG_VERSION_CHECK(15,0,0)) || \
-      (!(defined(SIMDE_ARCH_X86) || defined(SIMDE_ARCH_AMD64)) && SIMDE_DETECT_CLANG_VERSION_CHECK(6,0,0)))
+      (!(defined(SIMDE_ARCH_X86) || defined(SIMDE_ARCH_AMD64)) && SIMDE_DETECT_CLANG_VERSION_CHECK(6,0,0))) || \
+      defined(SIMDE_ARCH_RISCV_ZVFH)
     /* We haven't found a better way to detect this.  It seems like defining
     * __STDC_WANT_IEC_60559_TYPES_EXT__, then including float.h, then
     * checking for defined(FLT16_MAX) should work, but both gcc and

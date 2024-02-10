@@ -479,8 +479,40 @@
   #define SIMDE_ARCH_POWER_ALTIVEC_CHECK(version) (0)
 #endif
 
-#if defined(__riscv) && __riscv_xlen==64
-#  define SIMDE_ARCH_RISCV64
+/* RISC-V
+   <https://en.wikipedia.org/wiki/RISC-V> */
+#if defined(__riscv) || defined(__riscv__)
+#  if __riscv_xlen == 64
+#     define SIMDE_ARCH_RISCV64
+#  elif __riscv_xlen == 32
+#     define SIMDE_ARCH_RISCV32
+#  endif
+#endif
+
+/* RISC-V SIMD ISA extensions */
+#if defined(__riscv_zve32x)
+#  define SIMDE_ARCH_RISCV_ZVE32X 1
+#endif
+#if defined(__riscv_zve32f)
+#  define SIMDE_ARCH_RISCV_ZVE32F 1
+#endif
+#if defined(__riscv_zve64x)
+#  define SIMDE_ARCH_RISCV_ZVE64X 1
+#endif
+#if defined(__riscv_zve64f)
+#  define SIMDE_ARCH_RISCV_ZVE64F 1
+#endif
+#if defined(__riscv_zve64d)
+#  define SIMDE_ARCH_RISCV_ZVE64D 1
+#endif
+#if defined(__riscv_v)
+#  define SIMDE_ARCH_RISCV_V 1
+#endif
+#if defined(__riscv_zvfh)
+#  define SIMDE_ARCH_RISCV_ZVFH 1
+#endif
+#if defined(__riscv_zvfhmin)
+#  define SIMDE_ARCH_RISCV_ZVFHMIN 1
 #endif
 
 /* SPARC

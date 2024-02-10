@@ -35,7 +35,7 @@ HEDLEY_DIAGNOSTIC_DISABLE_UNUSED_FUNCTION
     simde_vst1##modifier##_##neon_identifier(a_, a); \
     simde_vst1##modifier##_##neon_identifier(b_, b); \
  \
-    return simde_assert_equal_v##symbol_identifier##_(sizeof(a_) / sizeof(a_[0]), a_, b_, filename, line, astr, bstr); \
+    return simde_assert_equal_v##symbol_identifier##_(element_count, a_, b_, filename, line, astr, bstr); \
   }
 
 #define SIMDE_TEST_ARM_NEON_GENERATE_FLOAT_TYPE_EQUAL_FUNC_(NT, ET, SET, element_count, modifier, symbol_identifier) \
@@ -47,7 +47,7 @@ HEDLEY_DIAGNOSTIC_DISABLE_UNUSED_FUNCTION
     simde_vst1##modifier##_##symbol_identifier(a_, a); \
     simde_vst1##modifier##_##symbol_identifier(b_, b); \
  \
-    return simde_assert_equal_v##symbol_identifier##_(sizeof(a_) / sizeof(ET), HEDLEY_REINTERPRET_CAST(SET*, a_), HEDLEY_REINTERPRET_CAST(SET*, b_), slop, filename, line, astr, bstr); \
+    return simde_assert_equal_v##symbol_identifier##_(element_count, HEDLEY_REINTERPRET_CAST(SET*, a_), HEDLEY_REINTERPRET_CAST(SET*, b_), slop, filename, line, astr, bstr); \
   } \
 
 #define SIMDE_TEST_ARM_NEON_GENERATE_FLOAT_TYPE_FUNCS_(NT, ET, SET, element_count, modifier, symbol_identifier) \
@@ -171,8 +171,8 @@ HEDLEY_DIAGNOSTIC_POP
     simde_vst1##modifier##_##neon_identifier(a1_, a.val[1]); \
     simde_vst1##modifier##_##neon_identifier(b1_, b.val[1]); \
  \
-    return simde_assert_equal_v##symbol_identifier##_(sizeof(a0_) / sizeof(a0_[0]), a0_, b0_, filename, line, astr, bstr) \
-      && simde_assert_equal_v##symbol_identifier##_(sizeof(a1_) / sizeof(a1_[0]), a1_, b1_, filename, line, astr, bstr); \
+    return simde_assert_equal_v##symbol_identifier##_(element_count, a0_, b0_, filename, line, astr, bstr) \
+      && simde_assert_equal_v##symbol_identifier##_(element_count, a1_, b1_, filename, line, astr, bstr); \
   }
 
 #define SIMDE_TEST_ARM_NEON_GENERATE_X2_VECTOR_FLOAT_TYPE_EQUAL_FUNC_(NT, ET, SET, element_count, modifier, symbol_identifier) \
@@ -187,8 +187,8 @@ HEDLEY_DIAGNOSTIC_POP
     simde_vst1##modifier##_##symbol_identifier(a1_, a.val[1]); \
     simde_vst1##modifier##_##symbol_identifier(b1_, b.val[1]); \
  \
-    return simde_assert_equal_v##symbol_identifier##_(sizeof(a0_) / sizeof(ET), HEDLEY_REINTERPRET_CAST(SET*, a0_), HEDLEY_REINTERPRET_CAST(SET*, b0_), slop, filename, line, astr, bstr) && \
-      simde_assert_equal_v##symbol_identifier##_(sizeof(a1_) / sizeof(ET), HEDLEY_REINTERPRET_CAST(SET*, a1_), HEDLEY_REINTERPRET_CAST(SET*, b1_), slop, filename, line, astr, bstr); \
+    return simde_assert_equal_v##symbol_identifier##_(element_count, HEDLEY_REINTERPRET_CAST(SET*, a0_), HEDLEY_REINTERPRET_CAST(SET*, b0_), slop, filename, line, astr, bstr) && \
+      simde_assert_equal_v##symbol_identifier##_(element_count, HEDLEY_REINTERPRET_CAST(SET*, a1_), HEDLEY_REINTERPRET_CAST(SET*, b1_), slop, filename, line, astr, bstr); \
   } \
 
 #define SIMDE_TEST_ARM_NEON_GENERATE_X2_VECTOR_FLOAT_TYPE_FUNCS_(NT, ET, SET, element_count, modifier, symbol_identifier) \
@@ -322,9 +322,9 @@ HEDLEY_DIAGNOSTIC_POP
     simde_vst1##modifier##_##neon_identifier(a2_, a.val[2]); \
     simde_vst1##modifier##_##neon_identifier(b2_, b.val[2]); \
  \
-    return simde_assert_equal_v##symbol_identifier##_(sizeof(a0_) / sizeof(a0_[0]), a0_, b0_, filename, line, astr, bstr) \
-      && simde_assert_equal_v##symbol_identifier##_(sizeof(a1_) / sizeof(a1_[0]), a1_, b1_, filename, line, astr, bstr) \
-      && simde_assert_equal_v##symbol_identifier##_(sizeof(a2_) / sizeof(a2_[0]), a2_, b2_, filename, line, astr, bstr); \
+    return simde_assert_equal_v##symbol_identifier##_(element_count, a0_, b0_, filename, line, astr, bstr) \
+      && simde_assert_equal_v##symbol_identifier##_(element_count, a1_, b1_, filename, line, astr, bstr) \
+      && simde_assert_equal_v##symbol_identifier##_(element_count, a2_, b2_, filename, line, astr, bstr); \
   }
 
 #define SIMDE_TEST_ARM_NEON_GENERATE_X3_VECTOR_FLOAT_TYPE_EQUAL_FUNC_(NT, ET, SET, element_count, modifier, symbol_identifier) \
@@ -342,9 +342,9 @@ HEDLEY_DIAGNOSTIC_POP
     simde_vst1##modifier##_##symbol_identifier(a2_, a.val[2]); \
     simde_vst1##modifier##_##symbol_identifier(b2_, b.val[2]); \
  \
-    return simde_assert_equal_v##symbol_identifier##_(sizeof(a0_) / sizeof(ET), HEDLEY_REINTERPRET_CAST(SET*, a0_), HEDLEY_REINTERPRET_CAST(SET*, b0_), slop, filename, line, astr, bstr) && \
-      simde_assert_equal_v##symbol_identifier##_(sizeof(a1_) / sizeof(ET), HEDLEY_REINTERPRET_CAST(SET*, a1_), HEDLEY_REINTERPRET_CAST(SET*, b1_), slop, filename, line, astr, bstr) && \
-      simde_assert_equal_v##symbol_identifier##_(sizeof(a2_) / sizeof(ET), HEDLEY_REINTERPRET_CAST(SET*, a2_), HEDLEY_REINTERPRET_CAST(SET*, b2_), slop, filename, line, astr, bstr); \
+    return simde_assert_equal_v##symbol_identifier##_(element_count, HEDLEY_REINTERPRET_CAST(SET*, a0_), HEDLEY_REINTERPRET_CAST(SET*, b0_), slop, filename, line, astr, bstr) && \
+      simde_assert_equal_v##symbol_identifier##_(element_count, HEDLEY_REINTERPRET_CAST(SET*, a1_), HEDLEY_REINTERPRET_CAST(SET*, b1_), slop, filename, line, astr, bstr) && \
+      simde_assert_equal_v##symbol_identifier##_(element_count, HEDLEY_REINTERPRET_CAST(SET*, a2_), HEDLEY_REINTERPRET_CAST(SET*, b2_), slop, filename, line, astr, bstr); \
   } \
 
 #define SIMDE_TEST_ARM_NEON_GENERATE_X3_VECTOR_FLOAT_TYPE_FUNCS_(NT, ET, SET, element_count, modifier, symbol_identifier) \
@@ -490,10 +490,10 @@ HEDLEY_DIAGNOSTIC_POP
     simde_vst1##modifier##_##neon_identifier(a3_, a.val[3]); \
     simde_vst1##modifier##_##neon_identifier(b3_, b.val[3]); \
  \
-    return simde_assert_equal_v##symbol_identifier##_(sizeof(a0_) / sizeof(a0_[0]), a0_, b0_, filename, line, astr, bstr) \
-      && simde_assert_equal_v##symbol_identifier##_(sizeof(a1_) / sizeof(a1_[0]), a1_, b1_, filename, line, astr, bstr) \
-      && simde_assert_equal_v##symbol_identifier##_(sizeof(a2_) / sizeof(a2_[0]), a2_, b2_, filename, line, astr, bstr) \
-      && simde_assert_equal_v##symbol_identifier##_(sizeof(a3_) / sizeof(a3_[0]), a3_, b3_, filename, line, astr, bstr); \
+    return simde_assert_equal_v##symbol_identifier##_(element_count, a0_, b0_, filename, line, astr, bstr) \
+      && simde_assert_equal_v##symbol_identifier##_(element_count, a1_, b1_, filename, line, astr, bstr) \
+      && simde_assert_equal_v##symbol_identifier##_(element_count, a2_, b2_, filename, line, astr, bstr) \
+      && simde_assert_equal_v##symbol_identifier##_(element_count, a3_, b3_, filename, line, astr, bstr); \
   }
 
 #define SIMDE_TEST_ARM_NEON_GENERATE_X4_VECTOR_FLOAT_TYPE_EQUAL_FUNC_(NT, ET, SET, element_count, modifier, symbol_identifier) \
@@ -514,10 +514,10 @@ HEDLEY_DIAGNOSTIC_POP
     simde_vst1##modifier##_##symbol_identifier(a3_, a.val[3]); \
     simde_vst1##modifier##_##symbol_identifier(b3_, b.val[3]); \
  \
-    return simde_assert_equal_v##symbol_identifier##_(sizeof(a0_) / sizeof(ET), HEDLEY_REINTERPRET_CAST(SET*, a0_), HEDLEY_REINTERPRET_CAST(SET*, b0_), slop, filename, line, astr, bstr) && \
-      simde_assert_equal_v##symbol_identifier##_(sizeof(a1_) / sizeof(ET), HEDLEY_REINTERPRET_CAST(SET*, a1_), HEDLEY_REINTERPRET_CAST(SET*, b1_), slop, filename, line, astr, bstr) && \
-      simde_assert_equal_v##symbol_identifier##_(sizeof(a2_) / sizeof(ET), HEDLEY_REINTERPRET_CAST(SET*, a2_), HEDLEY_REINTERPRET_CAST(SET*, b2_), slop, filename, line, astr, bstr) && \
-      simde_assert_equal_v##symbol_identifier##_(sizeof(a3_) / sizeof(ET), HEDLEY_REINTERPRET_CAST(SET*, a3_), HEDLEY_REINTERPRET_CAST(SET*, b3_), slop, filename, line, astr, bstr); \
+    return simde_assert_equal_v##symbol_identifier##_(element_count, HEDLEY_REINTERPRET_CAST(SET*, a0_), HEDLEY_REINTERPRET_CAST(SET*, b0_), slop, filename, line, astr, bstr) && \
+      simde_assert_equal_v##symbol_identifier##_(element_count, HEDLEY_REINTERPRET_CAST(SET*, a1_), HEDLEY_REINTERPRET_CAST(SET*, b1_), slop, filename, line, astr, bstr) && \
+      simde_assert_equal_v##symbol_identifier##_(element_count, HEDLEY_REINTERPRET_CAST(SET*, a2_), HEDLEY_REINTERPRET_CAST(SET*, b2_), slop, filename, line, astr, bstr) && \
+      simde_assert_equal_v##symbol_identifier##_(element_count, HEDLEY_REINTERPRET_CAST(SET*, a3_), HEDLEY_REINTERPRET_CAST(SET*, b3_), slop, filename, line, astr, bstr); \
   } \
 
 #define SIMDE_TEST_ARM_NEON_GENERATE_X4_VECTOR_FLOAT_TYPE_FUNCS_(NT, ET, SET, element_count, modifier, symbol_identifier) \
