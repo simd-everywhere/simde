@@ -22,7 +22,7 @@
  *
  * Copyright:
  *   2021      Evan Nemerson <evan@nemerson.com>
- *   2023      Ju-Hung Li <jhlee@pllab.cs.nthu.edu.tw>
+ *   2023      Ju-Hung Li <jhlee@pllab.cs.nthu.edu.tw> (Copyright owned by NTHU pllab)
  */
 
 #include "hedley.h"
