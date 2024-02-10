@@ -441,7 +441,6 @@ jobs:
           binfmt-support libc6-${{ matrix.arch_deb }}-cross \
           libstdc++-12-dev-${{ matrix.arch_deb }}-cross binutils-${{ matrix.arch_gnu }}-linux-gnu
         apt install meson
-    - run: qemu-riscv64 --version
     - name: ccache
       uses: hendrikmuhs/ccache-action@v1.2
       with:
