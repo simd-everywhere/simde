@@ -78,7 +78,7 @@
 #    define SIMDE_DETECT_CLANG_VERSION 90000
 #  elif __has_warning("-Wextra-semi-stmt") || __has_builtin(__builtin_rotateleft32)
 #    define SIMDE_DETECT_CLANG_VERSION 80000
-// For reasons unknown, XCode 10.3 (Apple LLVM version 10.0.1) is apparently
+// For reasons unknown, Xcode 10.3 (Apple LLVM version 10.0.1) is apparently
 // based on Clang 7, but does not support the warning we test.
 // See https://en.wikipedia.org/wiki/Xcode#Toolchain_versions and
 // https://trac.macports.org/wiki/XcodeVersionInfo.
