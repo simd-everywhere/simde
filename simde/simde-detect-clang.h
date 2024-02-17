@@ -66,7 +66,7 @@
 #    define SIMDE_DETECT_CLANG_VERSION 150000
 #  elif __has_warning("-Wbitwise-instead-of-logical")
 #    define SIMDE_DETECT_CLANG_VERSION 140000
-#  elif __has_warning("-Wwaix-compat")
+#  elif __has_warning("-Waix-compat")
 #    define SIMDE_DETECT_CLANG_VERSION 130000
 #  elif __has_warning("-Wformat-insufficient-args")
 #    define SIMDE_DETECT_CLANG_VERSION 120000
