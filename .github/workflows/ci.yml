@@ -547,6 +547,7 @@ jobs:
         sudo add-apt-repository ppa:ubuntu-toolchain-r/test
         sudo add-apt-repository ppa:savoury1/build-tools
         sudo add-apt-repository ppa:savoury1/display
+        sudo add-apt-repository ppa:savoury1/llvm-defaults-16
         sudo apt-get update
         sudo apt-get -yq install gcovr ninja-build python3-pip clang-${{ matrix.version }}
         sudo python3 -m pip install meson==0.55.0
