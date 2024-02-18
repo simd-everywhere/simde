@@ -140,7 +140,7 @@ jobs:
     - name: Coverage Report
       run: ninja -C build -v coverage-xml
     - name: CodeCov.io
-      uses: codecov/codecov-action@v3
+      uses: codecov/codecov-action@v4
       with:
         file: ./build/meson-logs/coverage.xml
 
@@ -213,7 +213,7 @@ jobs:
     - name: Coverage Report
       run: ninja -C build -v coverage-xml
     - name: CodeCov.io
-      uses: codecov/codecov-action@v3
+      uses: codecov/codecov-action@v4
       with:
         file: ./build/meson-logs/coverage.xml
 
@@ -242,7 +242,7 @@ jobs:
     - name: Coverage Report
       run: ninja -C build -v coverage-xml
     - name: CodeCov.io
-      uses: codecov/codecov-action@v3
+      uses: codecov/codecov-action@v4
       with:
         file: ./build/meson-logs/coverage.xml
 
@@ -723,7 +723,7 @@ jobs:
     # - name: Coverage Report
     #   run: ninja -C build -v coverage-xml
     # - name: CodeCov.io
-    #   uses: codecov/codecov-action@v3
+    #   uses: codecov/codecov-action@v4
     #   with:
     #     file: ./build/meson-logs/coverage.xml
 
