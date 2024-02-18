@@ -143,6 +143,8 @@ jobs:
       uses: codecov/codecov-action@v4
       with:
         file: ./build/meson-logs/coverage.xml
+      env:
+        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
   emscripten:
     runs-on: ubuntu-22.04
@@ -216,6 +218,8 @@ jobs:
       uses: codecov/codecov-action@v4
       with:
         file: ./build/meson-logs/coverage.xml
+      env:
+        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
   sleef:
     runs-on: ubuntu-22.04
@@ -245,6 +249,8 @@ jobs:
       uses: codecov/codecov-action@v4
       with:
         file: ./build/meson-logs/coverage.xml
+      env:
+        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
   gcc:
     strategy:
@@ -627,6 +633,8 @@ jobs:
     #   uses: codecov/codecov-action@v4
     #   with:
     #     file: ./build/meson-logs/coverage.xml
+    #   env:
+    #     CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
   icc:
     runs-on: ubuntu-22.04
