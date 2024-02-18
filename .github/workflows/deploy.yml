@@ -20,7 +20,7 @@ jobs:
           git-filter-repo --path-rename '.no-test/':'simde/' && \
           git-filter-repo --subdirectory-filter simde
       - name: GitHub Push
-        uses: ad-m/github-push-action@v0.6.0
+        uses: ad-m/github-push-action@v0.8.0
         with:
           github_token: ${{ secrets.PUSH_TO_NO_TESTS_TOKEN }}
           repository: simd-everywhere/simde-no-tests
