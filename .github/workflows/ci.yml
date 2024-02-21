@@ -168,8 +168,8 @@ jobs:
       run: |
         git clone https://github.com/emscripten-core/emsdk.git /opt/emsdk
         cd /opt/emsdk
-        ./emsdk install 4e7eadf19c76c143e522b535254eb99a9b34fd6d
-        ./emsdk activate 4e7eadf19c76c143e522b535254eb99a9b34fd6d
+        ./emsdk install tot
+        ./emsdk activate tot
         source emsdk_env.sh
     - name: Install v8
       run: |
@@ -532,6 +532,9 @@ jobs:
           distro: ubuntu-22.04
           arch_flags: -ffast-math -Wno-unsafe-buffer-usage
           ccache: 'true'
+        - version: "17"
+          distro: ubuntu-22.04
+          arch_flags: -march=native -Wno-unsafe-buffer-usage -O2
     runs-on: ${{ matrix.distro }}
     env:
       CFLAGS: ${{ matrix.arch_flags }} -Wall -Weverything -Werror -fno-lax-vector-conversions
