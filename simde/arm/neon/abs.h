@@ -437,7 +437,7 @@ simde_vabsq_s32(simde_int32x4_t a) {
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-        r_.values[i] = a_.values[i] < 0 ? -a_.values[i] : a_.values[i];
+        r_.values[i] = a_.values[i] < 0 ? HEDLEY_STATIC_CAST(int32_t, 0 - HEDLEY_STATIC_CAST(uint32_t, a_.values[i])) : a_.values[i];
       }
     #endif
 
@@ -476,7 +476,7 @@ simde_vabsq_s64(simde_int64x2_t a) {
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-        r_.values[i] = a_.values[i] < 0 ? -a_.values[i] : a_.values[i];
+        r_.values[i] = a_.values[i] < 0 ? HEDLEY_STATIC_CAST(int64_t, 0 - HEDLEY_STATIC_CAST(uint64_t, a_.values[i])) : a_.values[i];
       }
     #endif
 
