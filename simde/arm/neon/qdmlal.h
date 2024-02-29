@@ -27,12 +27,9 @@
 #if !defined(SIMDE_ARM_NEON_QDMLAL_H)
 #define SIMDE_ARM_NEON_QDMLAL_H
 
-#include "add.h"
-#include "mul.h"
-#include "mul_n.h"
-#include "movl.h"
-#include "qadd.h"
 #include "types.h"
+#include "qadd.h"
+#include "qdmull.h"
 
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
@@ -44,7 +41,7 @@ simde_vqdmlalh_s16(int32_t a, int16_t b, int16_t c) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vqdmlalh_s16(a, b, c);
   #else
-    return HEDLEY_STATIC_CAST(int32_t, b) * HEDLEY_STATIC_CAST(int32_t, c) * 2 + a;
+    return simde_vqadds_s32(a, simde_vqdmullh_s16(b, c));
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
@@ -58,7 +55,7 @@ simde_vqdmlals_s32(int64_t a, int32_t b, int32_t c) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vqdmlals_s32(a, b, c);
   #else
-    return HEDLEY_STATIC_CAST(int64_t, b) * HEDLEY_STATIC_CAST(int64_t, c) * 2 + a;
+    return simde_vqaddd_s64(a, simde_vqdmulls_s32(b, c));
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
@@ -72,8 +69,7 @@ simde_vqdmlal_s16(simde_int32x4_t a, simde_int16x4_t b, simde_int16x4_t c) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vqdmlal_s16(a, b, c);
   #else
-    simde_int32x4_t temp = simde_vmulq_s32(simde_vmovl_s16(b), simde_vmovl_s16(c));
-    return simde_vqaddq_s32(simde_vqaddq_s32(temp, temp), a);
+    return simde_vqaddq_s32(simde_vqdmull_s16(b, c), a);
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
@@ -87,10 +83,7 @@ simde_vqdmlal_s32(simde_int64x2_t a, simde_int32x2_t b, simde_int32x2_t c) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vqdmlal_s32(a, b, c);
   #else
-    simde_int64x2_t r = simde_x_vmulq_s64(
-          simde_vmovl_s32(b),
-          simde_vmovl_s32(c));
-    return simde_vqaddq_s64(a, simde_vqaddq_s64(r, r));
+    return simde_vqaddq_s64(simde_vqdmull_s32(b, c), a);
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
