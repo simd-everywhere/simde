@@ -57,6 +57,26 @@ platform.  Here are a few to try:
 If you need a flag not listed above, please let us know so we can add
 it to the list.
 
+#### Single test
+
+Compile and run a specific test. Switch `emul` for `native`, and `/c` for `/cpp`
+as needed.
+
+```
+meson test --print-errorlogs arm/neon/qabs/emul/c
+```
+
+Using `meson test` instead of `ninja` and directly executing the test
+is helpful for emscripten and other architectures where are there extra steps needed
+(changing the directory, using `v8` to run`, etc..).
+
+Just compile one specific test with verbose output. Useful for debugging
+compiler errors.
+
+```
+meson compile --verbose test/arm/neon/qabs-emul-c
+```
+
 ### On Windows:
 ```bash
 "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvars64.bat" arm64

@@ -60,13 +60,15 @@
  */
 
 #if defined(__clang__) && !defined(SIMDE_DETECT_CLANG_VERSION)
-#  if __has_attribute(nouwtable)  // no new warnings in 16.0
+#  if __has_attribute(unsafe_buffer_usage)  // no new warnings in 17.0
+#    define SIMDE_DETECT_CLANG_VERSION 170000
+#  elif __has_attribute(nouwtable)  // no new warnings in 16.0
 #    define SIMDE_DETECT_CLANG_VERSION 160000
 #  elif __has_warning("-Warray-parameter")
 #    define SIMDE_DETECT_CLANG_VERSION 150000
 #  elif __has_warning("-Wbitwise-instead-of-logical")
 #    define SIMDE_DETECT_CLANG_VERSION 140000
-#  elif __has_warning("-Wwaix-compat")
+#  elif __has_warning("-Waix-compat")
 #    define SIMDE_DETECT_CLANG_VERSION 130000
 #  elif __has_warning("-Wformat-insufficient-args")
 #    define SIMDE_DETECT_CLANG_VERSION 120000
@@ -78,7 +80,7 @@
 #    define SIMDE_DETECT_CLANG_VERSION 90000
 #  elif __has_warning("-Wextra-semi-stmt") || __has_builtin(__builtin_rotateleft32)
 #    define SIMDE_DETECT_CLANG_VERSION 80000
-// For reasons unknown, XCode 10.3 (Apple LLVM version 10.0.1) is apparently
+// For reasons unknown, Xcode 10.3 (Apple LLVM version 10.0.1) is apparently
 // based on Clang 7, but does not support the warning we test.
 // See https://en.wikipedia.org/wiki/Xcode#Toolchain_versions and
 // https://trac.macports.org/wiki/XcodeVersionInfo.
