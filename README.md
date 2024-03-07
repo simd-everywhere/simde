@@ -1,6 +1,6 @@
 # SIMD Everywhere
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-71-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-72-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 [![Chat](https://badges.gitter.im/gitterHQ/gitter.png)](https://matrix.to/#/#simd-everywhere_community:gitter.im)
 [![codecov](https://codecov.io/gh/simd-everywhere/simde/branch/master/graph/badge.svg?token=jcMBoRk0ui)](https://codecov.io/gh/simd-everywhere/simde)
@@ -489,6 +489,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   </tr>
   <tr>
     <td align="center"><a href="https://github.com/Coeur"><img src="https://avatars.githubusercontent.com/u/839992?v=4" width="100px;" alt=""/><br /><sub><b>Cœur</b></sub></a><br /><a href="https://github.com/nemequ/simde/commits?author=Coeur" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/Proudsalsa"><img src="https://avatars.githubusercontent.com/u/103449548?v=4" width="100px;" alt=""/><br /><sub><b>Florian @Proudsalsa</b></sub></a><br /><a href="https://github.com/nemequ/simde/commits?author=Proudsalsa" title="Code">💻</a></td>
   </tr>
 </table>
 
