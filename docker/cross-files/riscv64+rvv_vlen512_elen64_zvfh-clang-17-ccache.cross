@@ -1,0 +1,37 @@
+[binaries]
+c = 'clang-17'
+cpp = 'clang++-17'
+ar = 'llvm-ar-17'
+strip = 'llvm-strip-17'
+objcopy = 'llvm-objcopy-17'
+ld = 'llvm-ld-17'
+exe_wrapper = ['qemu-riscv64', '-L', '/usr/riscv64-linux-gnu/', '-cpu', 'rv64,v=true,Zfh=true,x-zvfh=true,vlen=512,elen=64,vext_spec=v1.0']
+
+[properties]
+c_args = ['--target=riscv64-linux-gnu',
+  '-isystem=/usr/riscv64-linux-gnu/include',
+  '-march=rv64gcv1_zfh_zvfh',
+  '-menable-experimental-extensions',
+  '-mrvv-vector-bits=512',
+  '-Wextra',
+  '-Werror',
+  '-Wno-unsafe-buffer-usage']
+
+cpp_args = ['--target=riscv64-linux-gnu',
+  '-isystem=/usr/riscv64-linux-gnu/include',
+  '-march=rv64gcv1_zfh_zvfh',
+  '-menable-experimental-extensions',
+  '-mrvv-vector-bits=512',
+  '-Wextra',
+  '-Werror',
+  '-Wno-unsafe-buffer-usage']
+
+c_link_args = ['--target=riscv64-linux-gnu']
+
+cpp_link_args = ['--target=riscv64-linux-gnu']
+
+[host_machine]
+system = 'linux'
+cpu_family = 'riscv64'
+cpu = 'rv64,v=true,Zfh=true,x-zvfh=true,vlen=512,elen=64,vext_spec=v1.0'
+endian = 'little'

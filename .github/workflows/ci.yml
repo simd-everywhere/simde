@@ -396,6 +396,82 @@ jobs:
     - name: Test
       run: meson test -C build --print-errorlogs --print-errorlogs $(meson test -C build --list | grep -v emul)
 
+  clang-qemu-rvv:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+        - version: 17
+          cross: riscv64+rvv_vlen128_elen64
+          arch_gnu: riscv64
+          arch_deb: riscv64
+          distro: ubuntu-22.04
+        - version: 17
+          cross: riscv64+rvv_vlen256_elen64
+          arch_gnu: riscv64
+          arch_deb: riscv64
+          distro: ubuntu-22.04
+        - version: 17
+          cross: riscv64+rvv_vlen512_elen64
+          arch_gnu: riscv64
+          arch_deb: riscv64
+          distro: ubuntu-22.04
+        - version: 17
+          cross: riscv64+rvv_vlen128_elen64_zvfh
+          arch_gnu: riscv64
+          arch_deb: riscv64
+          distro: ubuntu-22.04
+        - version: 17
+          cross: riscv64+rvv_vlen256_elen64_zvfh
+          arch_gnu: riscv64
+          arch_deb: riscv64
+          distro: ubuntu-22.04
+        - version: 17
+          cross: riscv64+rvv_vlen512_elen64_zvfh
+          arch_gnu: riscv64
+          arch_deb: riscv64
+          distro: ubuntu-22.04
+    runs-on: ${{ matrix.distro }}
+    container:
+      image: amd64/ubuntu:23.10
+    steps:
+    - run: apt-get update
+    - name: Install git
+      run: |
+        apt-get install -y git
+    - uses: actions/checkout@v3
+      with:
+        submodules: recursive
+    - name: CPU Information
+      run: cat /proc/cpuinfo
+    - name: Install APT Dependencies
+      run: |
+        apt-get install -y python3 python3-pip git ninja-build pkg-config libglib2.0-dev \
+          lsb-release wget software-properties-common gnupg qemu-user pipx
+        apt-get install -y clang-${{ matrix.version }} lldb-${{ matrix.version }} lld-${{ matrix.version }}
+        #add-apt-repository ppa:savoury1/virtualisation
+        #add-apt-repository ppa:savoury1/display
+        apt-get update -y
+        apt-get -yq install ninja-build parallel \
+          binfmt-support libc6-${{ matrix.arch_deb }}-cross \
+          libstdc++-12-dev-${{ matrix.arch_deb }}-cross binutils-${{ matrix.arch_gnu }}-linux-gnu
+        apt install meson
+    - name: ccache
+      uses: hendrikmuhs/ccache-action@v1.2
+      with:
+        key: ${{ github.job }}-${{ matrix.distro }}-${{ matrix.cross }}
+    - name: add ccache to the build path
+      run: |
+        export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
+    - name: Configure
+      run: |
+        meson setup --cross-file=docker/cross-files/${{ matrix.cross }}-clang-${{ matrix.version }}-ccache.cross build \
+          || (cat build/meson-logs/meson-log.txt ; false)
+    - name: Build
+      run: ninja -C build -v
+    - name: Test
+      run: meson test -C build --print-errorlogs --print-errorlogs $(meson test -C build --list | grep -v emul)
+
   clang-qemu:
     strategy:
       fail-fast: false

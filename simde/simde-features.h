@@ -22,6 +22,7 @@
  *
  * Copyright:
  *   2020      Evan Nemerson <evan@nemerson.com>
+ *   2023      Ju-Hung Li <jhlee@pllab.cs.nthu.edu.tw> (Copyright owned by NTHU pllab)
  */
 
 /* simde-arch.h is used to determine which features are available according
@@ -378,6 +379,15 @@
   #endif
 #endif
 
+#if !defined(SIMDE_RISCV_V_NATIVE) && !defined(SIMDE_RISCV_V_NO_NATIVE) && !defined(SIMDE_NO_NATIVE)
+  #if defined(SIMDE_ARCH_RISCV_V)
+    #define SIMDE_RISCV_V_NATIVE
+  #endif
+#endif
+#if defined(SIMDE_RISCV_V_NATIVE)
+  #include <riscv_vector.h>
+#endif
+
 #if !defined(SIMDE_WASM_SIMD128_NATIVE) && !defined(SIMDE_WASM_SIMD128_NO_NATIVE) && !defined(SIMDE_NO_NATIVE)
   #if defined(SIMDE_ARCH_WASM_SIMD128)
     #define SIMDE_WASM_SIMD128_NATIVE
@@ -549,6 +559,9 @@
     #define SIMDE_NATURAL_FLOAT_VECTOR_SIZE (128)
     #define SIMDE_NATURAL_INT_VECTOR_SIZE (64)
     #define SIMDE_NATURAL_DOUBLE_VECTOR_SIZE (0)
+  #elif defined(SIMDE_RISCV_V_NATIVE) && defined(__riscv_v_fixed_vlen)
+        //FIXME : SIMDE_NATURAL_VECTOR_SIZE == __riscv_v_fixed_vlen
+        #define SIMDE_NATURAL_VECTOR_SIZE (128)
   #endif
 
   #if !defined(SIMDE_NATURAL_VECTOR_SIZE)
@@ -688,6 +701,10 @@
 
   #if !defined(SIMDE_ARM_SVE_NATIVE)
     #define SIMDE_ARM_SVE_ENABLE_NATIVE_ALIASES
+  #endif
+
+  #if !defined(SIMDE_RISCV_V_NATIVE)
+    #define SIMDE_RISCV_V_ENABLE_NATIVE_ALIASES
   #endif
 
   #if !defined(SIMDE_MIPS_MSA_NATIVE)

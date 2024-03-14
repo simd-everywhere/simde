@@ -23,6 +23,7 @@
  * Copyright:
  *   2017-2020 Evan Nemerson <evan@nemerson.com>
  *   2023      Yi-Yen Chung <eric681@andestech.com> (Copyright owned by Andes Technology)
+ *   2023      Ju-Hung Li <jhlee@pllab.cs.nthu.edu.tw> (Copyright owned by NTHU pllab)
  */
 
 #if !defined(SIMDE_COMMON_H)
@@ -1187,6 +1188,34 @@ HEDLEY_DIAGNOSTIC_POP
   #define SIMDE_CAST_VECTOR_SHIFT_COUNT(width, value) HEDLEY_STATIC_CAST(uint##width##_t, (value))
 #else
   #define SIMDE_CAST_VECTOR_SHIFT_COUNT(width, value) HEDLEY_STATIC_CAST(int##width##_t, (value))
+#endif
+
+/* Initial support for RISCV V extensions based on ZVE64D. */
+#if defined(SIMDE_ARCH_RISCV_ZVE64D) && SIMDE_NATURAL_VECTOR_SIZE >= 64
+  #define RVV_FIXED_TYPE_DEF(name, lmul) \
+    typedef vint8##name##_t  fixed_vint8##name##_t __attribute__((riscv_rvv_vector_bits(__riscv_v_fixed_vlen * lmul))); \
+    typedef vint16##name##_t fixed_vint16##name##_t __attribute__((riscv_rvv_vector_bits(__riscv_v_fixed_vlen * lmul))); \
+    typedef vint32##name##_t fixed_vint32##name##_t __attribute__((riscv_rvv_vector_bits(__riscv_v_fixed_vlen * lmul))); \
+    typedef vuint8##name##_t fixed_vuint8##name##_t __attribute__((riscv_rvv_vector_bits(__riscv_v_fixed_vlen * lmul))); \
+    typedef vuint16##name##_t fixed_vuint16##name##_t __attribute__((riscv_rvv_vector_bits(__riscv_v_fixed_vlen * lmul))); \
+    typedef vuint32##name##_t fixed_vuint32##name##_t __attribute__((riscv_rvv_vector_bits(__riscv_v_fixed_vlen * lmul))); \
+    typedef vfloat32##name##_t fixed_vfloat32##name##_t __attribute__((riscv_rvv_vector_bits(__riscv_v_fixed_vlen * lmul)));
+    RVV_FIXED_TYPE_DEF(mf2, 1/2);
+    RVV_FIXED_TYPE_DEF(m1, 1);
+    RVV_FIXED_TYPE_DEF(m2, 2);
+  #define RVV_FIXED_TYPE_DEF_64B(name, lmul) \
+    typedef vint64##name##_t fixed_vint64##name##_t __attribute__((riscv_rvv_vector_bits(__riscv_v_fixed_vlen * lmul))); \
+    typedef vuint64##name##_t fixed_vuint64##name##_t __attribute__((riscv_rvv_vector_bits(__riscv_v_fixed_vlen * lmul))); \
+    typedef vfloat64##name##_t fixed_vfloat64##name##_t __attribute__((riscv_rvv_vector_bits(__riscv_v_fixed_vlen * lmul)));
+    RVV_FIXED_TYPE_DEF_64B(m1, 1);
+    RVV_FIXED_TYPE_DEF_64B(m2, 2);
+  #if defined(SIMDE_ARCH_RISCV_ZVFH)
+    #define RVV_FIXED_TYPE_DEF_16F(name, lmul) \
+      typedef vfloat16##name##_t fixed_vfloat16##name##_t __attribute__((riscv_rvv_vector_bits(__riscv_v_fixed_vlen * lmul)));
+    RVV_FIXED_TYPE_DEF_16F(mf2, 1/2);
+    RVV_FIXED_TYPE_DEF_16F(m1, 1);
+    RVV_FIXED_TYPE_DEF_16F(m2, 2);
+  #endif
 #endif
 
 /* SIMDE_DIAGNOSTIC_DISABLE_USED_BUT_MARKED_UNUSED_ */
