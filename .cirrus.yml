@@ -5,8 +5,8 @@ task:
   name: Sanitizers
   skip: $BRANCH == "master" || ($BRANCH != 'ci/cirrus' && $BRANCH =~ '^ci/.+')
   env:
-    CC: clang
-    CXX: clang++
+    CC: clang-17
+    CXX: clang++-17
     CFLAGS: -Wextra -Werror -march=native
     CXXFLAGS: -Wextra -Werror -march=native
   system_info_script:
@@ -14,7 +14,7 @@ task:
   - cat /proc/meminfo
   install_dependencies_script:
     - apt-get update
-    - apt-get install -y ninja-build ninja-build pipx python3-setuptools python3-wheel gcovr clang
+    - apt-get install -y ninja-build ninja-build pipx python3-setuptools python3-wheel gcovr clang-17
     - pipx install meson==0.55.0
   configure_script:
     - /root/.local/bin/meson setup build -Db_coverage=true -Db_sanitize=address,undefined -Db_lundef=false
