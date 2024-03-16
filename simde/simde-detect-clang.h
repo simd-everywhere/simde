@@ -60,7 +60,11 @@
  */
 
 #if defined(__clang__) && !defined(SIMDE_DETECT_CLANG_VERSION)
-#  if __has_attribute(unsafe_buffer_usage)  // no new warnings in 17.0
+#  if __has_warning("-Wmissing-designated-field-initializers")
+#    define SIMDE_DETECT_CLANG_VERSION 190000
+#  elif __has_warning("-Woverriding-option")
+#    define SIMDE_DETECT_CLANG_VERSION 180000
+#  elif __has_attribute(unsafe_buffer_usage)  // no new warnings in 17.0
 #    define SIMDE_DETECT_CLANG_VERSION 170000
 #  elif __has_attribute(nouwtable)  // no new warnings in 16.0
 #    define SIMDE_DETECT_CLANG_VERSION 160000
