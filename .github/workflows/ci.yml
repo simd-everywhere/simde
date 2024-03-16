@@ -657,25 +657,44 @@ jobs:
         # https://github.com/actions/runner-images/blob/main/images/macos/macos-11-Readme.md#xcode
         # https://github.com/actions/runner-images/blob/main/images/macos/macos-12-Readme.md#xcode
         # https://github.com/actions/runner-images/blob/main/images/macos/macos-13-Readme.md#xcode
+        # https://github.com/actions/runner-images/blob/main/images/macos/macos-14-arm64-Readme.md
         # https://trac.macports.org/wiki/XcodeVersionInfo
         include:
           - xcode: "11.7"
             os: macos-11
           - xcode: "12.4"
             os: macos-11
+            arch_flags: -Wno-poison-system-directories  # due to meson test
           - xcode: "12.5.1"
             os: macos-11
+            arch_flags: -Wno-poison-system-directories  # due to meson test
           - xcode: "13.1"
             os: macos-12
+            arch_flags: -Wno-poison-system-directories  # due to meson test
           - xcode: "13.3.1"
             os: macos-12
+            arch_flags: -Wno-poison-system-directories  # due to meson test
           - xcode: "13.4.1"
             os: macos-12
+            arch_flags: -Wno-poison-system-directories  # due to meson test
           - xcode: "14.2"
             os: macos-13
+            arch_flags: -Wno-poison-system-directories  # due to meson test
+          - xcode: "14.3.1"
+            os: macos-14  # arm64
+            arch_flags: -march=native -Wno-poison-system-directories
+              # "-Wno-poison-system-directories": due to meson test
+              # "-march=native": without, or with -mcpu=apple-m1 then unavailable __ARM_FEATURE_s get enabled
+          - xcode: "15.2"
+            os: macos-14  # arm64
+            arch_flags: -march=native -Wno-poison-system-directories
+              # "-Wno-poison-system-directories": due to meson test
+              # "-march=native": without, or with -mcpu=apple-m1 then unavailable __ARM_FEATURE_s get enabled
     runs-on: ${{ matrix.os }}
     env:
       DEVELOPER_DIR:  /Applications/Xcode_${{ matrix.xcode }}.app
+      CFLAGS: ${{ matrix.arch_flags }} -Wall -Weverything -Werror -Wno-complex-component-init
+      CXXFLAGS: ${{ matrix.arch_flags }} -Wall -Weverything -Werror -Wno-complex-component-init
     steps:
     - uses: actions/checkout@v4
       with:
