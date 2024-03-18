@@ -439,7 +439,7 @@ jobs:
     - name: Install git
       run: |
         apt-get install -y git
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
         submodules: recursive
     - name: CPU Information
