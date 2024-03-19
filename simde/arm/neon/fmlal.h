@@ -37,7 +37,7 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde_float32x2_t
 simde_vfmlal_low_f16(simde_float32x2_t r, simde_float16x4_t a, simde_float16x4_t b) {
   #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16) && \
-      defined(__ARM_FEATURE_FP16_FML)
+      defined(SIMDE_ARCH_ARM_FP16_FML)
     return vfmlal_low_f16(r, a, b);
   #else
     simde_float32x2_private
@@ -64,7 +64,7 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde_float32x4_t
 simde_vfmlalq_low_f16(simde_float32x4_t r, simde_float16x8_t a, simde_float16x8_t b) {
   #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16) && \
-      defined(__ARM_FEATURE_FP16_FML)
+      defined(SIMDE_ARCH_ARM_FP16_FML)
     return vfmlalq_low_f16(r, a, b);
   #else
     simde_float32x4_private
@@ -91,7 +91,7 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde_float32x2_t
 simde_vfmlal_high_f16(simde_float32x2_t r, simde_float16x4_t a, simde_float16x4_t b) {
   #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16) && \
-      defined(__ARM_FEATURE_FP16_FML)
+      defined(SIMDE_ARCH_ARM_FP16_FML)
     return vfmlal_high_f16(r, a, b);
   #else
     simde_float32x2_private
@@ -119,7 +119,7 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde_float32x4_t
 simde_vfmlalq_high_f16(simde_float32x4_t r, simde_float16x8_t a, simde_float16x8_t b) {
   #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16) && \
-      defined(__ARM_FEATURE_FP16_FML)
+      defined(SIMDE_ARCH_ARM_FP16_FML)
     return vfmlalq_high_f16(r, a, b);
   #else
     simde_float32x4_private
@@ -162,7 +162,7 @@ simde_vfmlal_lane_low_f16(simde_float32x2_t r, simde_float16x4_t a, simde_float1
   return simde_float32x2_from_private(ret_);
 }
 #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16) && \
-    defined(__ARM_FEATURE_FP16_FML)
+    defined(SIMDE_ARCH_ARM_FP16_FML)
   #define simde_vfmlal_lane_low_f16(r, a, b, lane) vfmlal_lane_low_f16((r), (a), (b), (lane));
 #endif
 #if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
@@ -190,7 +190,7 @@ simde_vfmlal_laneq_low_f16(simde_float32x2_t r, simde_float16x4_t a, simde_float
   return simde_float32x2_from_private(ret_);
 }
 #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16) && \
-    defined(__ARM_FEATURE_FP16_FML)
+    defined(SIMDE_ARCH_ARM_FP16_FML)
   #define simde_vfmlal_laneq_low_f16(r, a, b, lane) vfmlal_laneq_low_f16((r), (a), (b), (lane));
 #endif
 #if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
@@ -218,7 +218,7 @@ simde_vfmlalq_lane_low_f16(simde_float32x4_t r, simde_float16x8_t a, simde_float
   return simde_float32x4_from_private(ret_);
 }
 #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16) && \
-    defined(__ARM_FEATURE_FP16_FML)
+    defined(SIMDE_ARCH_ARM_FP16_FML)
   #define simde_vfmlalq_lane_low_f16(r, a, b, lane) vfmlalq_lane_low_f16((r), (a), (b), (lane));
 #endif
 #if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
@@ -245,7 +245,7 @@ simde_vfmlalq_laneq_low_f16(simde_float32x4_t r, simde_float16x8_t a, simde_floa
   return simde_float32x4_from_private(ret_);
 }
 #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16) && \
-    defined(__ARM_FEATURE_FP16_FML)
+    defined(SIMDE_ARCH_ARM_FP16_FML)
   #define simde_vfmlalq_laneq_low_f16(r, a, b, lane) vfmlalq_laneq_low_f16((r), (a), (b), (lane));
 #endif
 #if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
@@ -273,7 +273,7 @@ simde_vfmlal_lane_high_f16(simde_float32x2_t r, simde_float16x4_t a, simde_float
   return simde_float32x2_from_private(ret_);
 }
 #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16) && \
-    defined(__ARM_FEATURE_FP16_FML)
+    defined(SIMDE_ARCH_ARM_FP16_FML)
   #define simde_vfmlal_lane_high_f16(r, a, b, lane) vfmlal_lane_high_f16((r), (a), (b), (lane));
 #endif
 #if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
@@ -302,7 +302,7 @@ simde_vfmlal_laneq_high_f16(simde_float32x2_t r, simde_float16x4_t a, simde_floa
   return simde_float32x2_from_private(ret_);
 }
 #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16) && \
-    defined(__ARM_FEATURE_FP16_FML)
+    defined(SIMDE_ARCH_ARM_FP16_FML)
   #define simde_vfmlal_laneq_high_f16(r, a, b, lane) vfmlal_laneq_high_f16((r), (a), (b), (lane));
 #endif
 #if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
@@ -331,7 +331,7 @@ simde_vfmlalq_lane_high_f16(simde_float32x4_t r, simde_float16x8_t a, simde_floa
   return simde_float32x4_from_private(ret_);
 }
 #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16) && \
-    defined(__ARM_FEATURE_FP16_FML)
+    defined(SIMDE_ARCH_ARM_FP16_FML)
   #define simde_vfmlalq_lane_high_f16(r, a, b, lane) vfmlalq_lane_high_f16((r), (a), (b), (lane));
 #endif
 #if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
@@ -359,7 +359,7 @@ simde_vfmlalq_laneq_high_f16(simde_float32x4_t r, simde_float16x8_t a, simde_flo
   return simde_float32x4_from_private(ret_);
 }
 #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16) && \
-    defined(__ARM_FEATURE_FP16_FML)
+    defined(SIMDE_ARCH_ARM_FP16_FML)
   #define simde_vfmlalq_laneq_high_f16(r, a, b, lane) vfmlalq_laneq_high_f16((r), (a), (b), (lane));
 #endif
 #if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)

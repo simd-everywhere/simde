@@ -36,7 +36,7 @@ SIMDE_BEGIN_DECLS_
 SIMDE_FUNCTION_ATTRIBUTES
 simde_uint64x2_t
 simde_vrax1q_u64(simde_uint64x2_t a, simde_uint64x2_t b) {
-  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(__ARM_FEATURE_SHA3)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARCH_ARM_SHA3)
     return vrax1q_u64(a, b);
   #else
     simde_uint64x2_private

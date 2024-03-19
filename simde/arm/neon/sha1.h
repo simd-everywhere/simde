@@ -38,7 +38,7 @@ SIMDE_BEGIN_DECLS_
 SIMDE_FUNCTION_ATTRIBUTES
 uint32_t
 simde_vsha1h_u32(uint32_t a) {
-  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(__ARM_FEATURE_SHA2)
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARCH_ARM_SHA2)
     return vsha1h_u32(a);
   #else
     return ROL(a, 32, 30);
@@ -52,7 +52,7 @@ simde_vsha1h_u32(uint32_t a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_uint32x4_t
 simde_vsha1cq_u32(simde_uint32x4_t hash_abcd, uint32_t hash_e, simde_uint32x4_t wk) {
-  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(__ARM_FEATURE_SHA2)
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARCH_ARM_SHA2)
     return vsha1cq_u32(hash_abcd, hash_e, wk);
   #else
     simde_uint32x4_private
@@ -82,7 +82,7 @@ simde_vsha1cq_u32(simde_uint32x4_t hash_abcd, uint32_t hash_e, simde_uint32x4_t 
 SIMDE_FUNCTION_ATTRIBUTES
 simde_uint32x4_t
 simde_vsha1mq_u32(simde_uint32x4_t hash_abcd, uint32_t hash_e, simde_uint32x4_t wk) {
-  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(__ARM_FEATURE_SHA2)
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARCH_ARM_SHA2)
     return vsha1mq_u32(hash_abcd, hash_e, wk);
   #else
     simde_uint32x4_private
@@ -112,7 +112,7 @@ simde_vsha1mq_u32(simde_uint32x4_t hash_abcd, uint32_t hash_e, simde_uint32x4_t 
 SIMDE_FUNCTION_ATTRIBUTES
 simde_uint32x4_t
 simde_vsha1pq_u32(simde_uint32x4_t hash_abcd, uint32_t hash_e, simde_uint32x4_t wk) {
-  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(__ARM_FEATURE_SHA2)
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARCH_ARM_SHA2)
     return vsha1pq_u32(hash_abcd, hash_e, wk);
   #else
     simde_uint32x4_private
@@ -142,7 +142,7 @@ simde_vsha1pq_u32(simde_uint32x4_t hash_abcd, uint32_t hash_e, simde_uint32x4_t 
 SIMDE_FUNCTION_ATTRIBUTES
 simde_uint32x4_t
 simde_vsha1su0q_u32(simde_uint32x4_t w0_3, simde_uint32x4_t w4_7, simde_uint32x4_t w8_11) {
-  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(__ARM_FEATURE_SHA2)
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARCH_ARM_SHA2)
     return vsha1su0q_u32(w0_3, w4_7, w8_11);
   #else
     simde_uint32x4_private
@@ -169,7 +169,7 @@ simde_vsha1su0q_u32(simde_uint32x4_t w0_3, simde_uint32x4_t w4_7, simde_uint32x4
 SIMDE_FUNCTION_ATTRIBUTES
 simde_uint32x4_t
 simde_vsha1su1q_u32(simde_uint32x4_t tw0_3, simde_uint32x4_t tw12_15) {
-  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(__ARM_FEATURE_SHA2)
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARCH_ARM_SHA2)
     return vsha1su1q_u32(tw0_3, tw12_15);
   #else
     simde_uint32x4_private

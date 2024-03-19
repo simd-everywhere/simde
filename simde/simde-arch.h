@@ -121,16 +121,49 @@
 #    define SIMDE_ARCH_ARM_NEON SIMDE_ARCH_ARM
 #  endif
 #endif
-#if defined(__ARM_FEATURE_SVE)
-#  define SIMDE_ARCH_ARM_SVE
+#if defined(__ARM_FEATURE_AES) && __ARM_FEATURE_AES
+#  define SIMDE_ARCH_ARM_AES
+#endif
+#if defined(__ARM_FEATURE_COMPLEX) && __ARM_FEATURE_COMPLEX
+#  define SIMDE_ARCH_ARM_COMPLEX
+#endif
+#if defined(__ARM_FEATURE_CRYPTO) && __ARM_FEATURE_CRYPTO
+#  define SIMDE_ARCH_ARM_CRYPTO
+#endif
+#if defined(__ARM_FEATURE_DOTPROD) && __ARM_FEATURE_DOTPROD
+#  define SIMDE_ARCH_ARM_DOTPROD
 #endif
 #if defined(__ARM_FEATURE_FMA) && __ARM_FEATURE_FMA
 #  define SIMDE_ARCH_ARM_FMA
 #endif
-#if defined(__ARM_FEATURE_CRYPTO)
-#  define SIMDE_ARCH_ARM_CRYPTO
+#if defined(__ARM_FEATURE_FP16_FML) && __ARM_FEATURE_FP16_FML
+#  define SIMDE_ARCH_ARM_FP16_FML
 #endif
-#if defined(__ARM_FEATURE_QRDMX)
+#if defined(__ARM_FEATURE_FRINT) && __ARM_FEATURE_FRINT
+#  define SIMDE_ARCH_ARM_FRINT
+#endif
+#if defined(__ARM_FEATURE_MATMUL_INT8) && __ARM_FEATURE_MATMUL_INT8
+#  define SIMDE_ARCH_ARM_MATMUL_INT8
+#endif
+#if defined(__ARM_FEATURE_SHA2) && __ARM_FEATURE_SHA2
+#  define SIMDE_ARCH_ARM_SHA2
+#endif
+#if defined(__ARM_FEATURE_SHA3) && __ARM_FEATURE_SHA3
+#  define SIMDE_ARCH_ARM_SHA3
+#endif
+#if defined(__ARM_FEATURE_SHA512) && __ARM_FEATURE_SHA512
+#  define SIMDE_ARCH_ARM_SHA512
+#endif
+#if defined(__ARM_FEATURE_SM3) && __ARM_FEATURE_SM3
+#  define SIMDE_ARCH_ARM_SM3
+#endif
+#if defined(__ARM_FEATURE_SM4) && __ARM_FEATURE_SM4
+#  define SIMDE_ARCH_ARM_SM4
+#endif
+#if defined(__ARM_FEATURE_SVE) && __ARM_FEATURE_SVE
+#  define SIMDE_ARCH_ARM_SVE
+#endif
+#if defined(__ARM_FEATURE_QRDMX) && __ARM_FEATURE_QRDMX
 #  define SIMDE_ARCH_ARM_QRDMX
 #endif
 

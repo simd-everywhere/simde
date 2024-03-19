@@ -38,7 +38,7 @@ SIMDE_BEGIN_DECLS_
 SIMDE_FUNCTION_ATTRIBUTES
 simde_int32x2_t
 simde_vusdot_s32(simde_int32x2_t r, simde_uint8x8_t a, simde_int8x8_t b) {
-  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(__ARM_FEATURE_MATMUL_INT8)
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARCH_ARM_MATMUL_INT8)
     return vusdot_s32(r, a, b);
   #else
     simde_int32x2_private r_;
@@ -64,7 +64,7 @@ simde_vusdot_s32(simde_int32x2_t r, simde_uint8x8_t a, simde_int8x8_t b) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_int32x4_t
 simde_vusdotq_s32(simde_int32x4_t r, simde_uint8x16_t a, simde_int8x16_t b) {
-  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(__ARM_FEATURE_MATMUL_INT8)
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARCH_ARM_MATMUL_INT8)
     return vusdotq_s32(r, a, b);
   #else
     simde_int32x4_private r_;

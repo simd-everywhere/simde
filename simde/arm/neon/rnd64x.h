@@ -37,7 +37,7 @@ SIMDE_BEGIN_DECLS_
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float32x2_t
 simde_vrnd64x_f32(simde_float32x2_t a) {
-  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(__ARM_FEATURE_FRINT)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARCH_ARM_FRINT)
     return vrnd64x_f32(a);
   #else
     simde_float32x2_private
@@ -67,7 +67,7 @@ simde_vrnd64x_f32(simde_float32x2_t a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float64x1_t
 simde_vrnd64x_f64(simde_float64x1_t a) {
-  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(__ARM_FEATURE_FRINT) && (!defined(__clang__) || SIMDE_DETECT_CLANG_VERSION_CHECK(18, 0, 0))
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARCH_ARM_FRINT) && (!defined(__clang__) || SIMDE_DETECT_CLANG_VERSION_CHECK(18, 0, 0))
     return vrnd64x_f64(a);
   #else
     simde_float64x1_private
@@ -97,7 +97,7 @@ simde_vrnd64x_f64(simde_float64x1_t a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float32x4_t
 simde_vrnd64xq_f32(simde_float32x4_t a) {
-  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(__ARM_FEATURE_FRINT)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARCH_ARM_FRINT)
     return vrnd64xq_f32(a);
   #else
     simde_float32x4_private
@@ -127,7 +127,7 @@ simde_vrnd64xq_f32(simde_float32x4_t a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float64x2_t
 simde_vrnd64xq_f64(simde_float64x2_t a) {
-  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(__ARM_FEATURE_FRINT) && (!defined(__clang__) || SIMDE_DETECT_CLANG_VERSION_CHECK(18, 0, 0))
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARCH_ARM_FRINT) && (!defined(__clang__) || SIMDE_DETECT_CLANG_VERSION_CHECK(18, 0, 0))
     return vrnd64xq_f64(a);
   #else
     simde_float64x2_private
