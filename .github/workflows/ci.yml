@@ -662,6 +662,7 @@ jobs:
         include:
           - xcode: "11.7"
             os: macos-11
+            arch_flags: -Wno-complex-component-init
           - xcode: "12.4"
             os: macos-11
             arch_flags: -Wno-poison-system-directories  # due to meson test
@@ -714,7 +715,7 @@ jobs:
     - name: Install Homebrew Dependencies
       run: brew install meson ninja # gcovr
     - name: Configure
-      run: meson setup build # -Db_coverage=true
+      run: meson setup build || (cat build/meson-logs/meson-log.txt ; false) # -Db_coverage=true
     - name: Build
       run: ninja -C build -v
     - name: Test
