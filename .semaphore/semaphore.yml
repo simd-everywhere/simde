@@ -3,7 +3,7 @@ name: Build
 agent:
   machine:
     type: e1-standard-2
-    os_image: ubuntu1804
+    os_image: ubuntu2004
 blocks:
   - name: CI
     skip:
@@ -13,7 +13,7 @@ blocks:
         - name: GCC
           matrix:
             - env_var: GCC_VERSION
-              values: ['8', '7', '6', '5']
+              values: ['8', '7']
           commands:
             - cat /proc/cpuinfo
             - checkout
@@ -35,7 +35,7 @@ blocks:
         - name: clang
           matrix:
             - env_var: CLANG_VERSION
-              values: ['10', '8', '6.0', '4.0', '3.9']
+              values: ['10', '8', '6.0']
           commands:
             - cat /proc/cpuinfo
             - checkout
