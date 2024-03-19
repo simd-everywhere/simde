@@ -46,7 +46,7 @@ SIMDE_BEGIN_DECLS_
 SIMDE_FUNCTION_ATTRIBUTES
 simde_int32x2_t
 simde_vdot_s32(simde_int32x2_t r, simde_int8x8_t a, simde_int8x8_t b) {
-  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(__ARM_FEATURE_DOTPROD)
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARCH_ARM_DOTPROD)
     return vdot_s32(r, a, b);
   #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return simde_vadd_s32(r, simde_vmovn_s64(simde_vpaddlq_s32(simde_vpaddlq_s16(simde_vmull_s8(a, b)))));
@@ -75,7 +75,7 @@ simde_vdot_s32(simde_int32x2_t r, simde_int8x8_t a, simde_int8x8_t b) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_uint32x2_t
 simde_vdot_u32(simde_uint32x2_t r, simde_uint8x8_t a, simde_uint8x8_t b) {
-  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(__ARM_FEATURE_DOTPROD)
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARCH_ARM_DOTPROD)
     return vdot_u32(r, a, b);
   #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return simde_vadd_u32(r, simde_vmovn_u64(simde_vpaddlq_u32(simde_vpaddlq_u16(simde_vmull_u8(a, b)))));
@@ -105,7 +105,7 @@ simde_vdot_u32(simde_uint32x2_t r, simde_uint8x8_t a, simde_uint8x8_t b) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_int32x4_t
 simde_vdotq_s32(simde_int32x4_t r, simde_int8x16_t a, simde_int8x16_t b) {
-  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(__ARM_FEATURE_DOTPROD)
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARCH_ARM_DOTPROD)
     return vdotq_s32(r, a, b);
   #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return simde_vaddq_s32(r,
@@ -136,7 +136,7 @@ simde_vdotq_s32(simde_int32x4_t r, simde_int8x16_t a, simde_int8x16_t b) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_uint32x4_t
 simde_vdotq_u32(simde_uint32x4_t r, simde_uint8x16_t a, simde_uint8x16_t b) {
-  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(__ARM_FEATURE_DOTPROD)
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARCH_ARM_DOTPROD)
     return vdotq_u32(r, a, b);
   #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return simde_vaddq_u32(r,
@@ -194,7 +194,7 @@ simde_vbfdot_f32(simde_float32x2_t r, simde_bfloat16x4_t a, simde_bfloat16x4_t b
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float32x4_t
 simde_vbfdotq_f32(simde_float32x4_t r, simde_bfloat16x8_t a, simde_bfloat16x8_t b) {
-  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(__ARM_FEATURE_DOTPROD) && \
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARCH_ARM_DOTPROD) && \
       defined(SIMDE_ARM_NEON_BF16)
     return vbfdotq_f32(r, a, b);
   #else

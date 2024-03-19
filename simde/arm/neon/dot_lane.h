@@ -45,7 +45,7 @@ simde_int32x2_t
 simde_vdot_lane_s32(simde_int32x2_t r, simde_int8x8_t a, simde_int8x8_t b, const int lane)
     SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 1) {
   simde_int32x2_t result;
-  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(__ARM_FEATURE_DOTPROD)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARCH_ARM_DOTPROD)
     SIMDE_CONSTIFY_2_(vdot_lane_s32, result, (HEDLEY_UNREACHABLE(), result), lane, r, a, b);
   #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     simde_int32x2_t
@@ -96,7 +96,7 @@ simde_uint32x2_t
 simde_vdot_lane_u32(simde_uint32x2_t r, simde_uint8x8_t a, simde_uint8x8_t b, const int lane)
     SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 1) {
   simde_uint32x2_t result;
-  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(__ARM_FEATURE_DOTPROD)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARCH_ARM_DOTPROD)
     SIMDE_CONSTIFY_2_(vdot_lane_u32, result, (HEDLEY_UNREACHABLE(), result), lane, r, a, b);
   #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     simde_uint32x2_t
@@ -147,7 +147,7 @@ simde_int32x2_t
 simde_vdot_laneq_s32(simde_int32x2_t r, simde_int8x8_t a, simde_int8x16_t b, const int lane)
     SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 3) {
   simde_int32x2_t result;
-  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(__ARM_FEATURE_DOTPROD)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARCH_ARM_DOTPROD)
     SIMDE_CONSTIFY_4_(vdot_laneq_s32, result, (HEDLEY_UNREACHABLE(), result), lane, r, a, b);
   #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     simde_int32x2_t b_lane;
@@ -196,7 +196,7 @@ simde_uint32x2_t
 simde_vdot_laneq_u32(simde_uint32x2_t r, simde_uint8x8_t a, simde_uint8x16_t b, const int lane)
     SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 3) {
   simde_uint32x2_t result;
-  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(__ARM_FEATURE_DOTPROD)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARCH_ARM_DOTPROD)
     SIMDE_CONSTIFY_4_(vdot_laneq_u32, result, (HEDLEY_UNREACHABLE(), result), lane, r, a, b);
   #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     simde_uint32x2_t b_lane;
@@ -244,7 +244,7 @@ simde_uint32x4_t
 simde_vdotq_laneq_u32(simde_uint32x4_t r, simde_uint8x16_t a, simde_uint8x16_t b, const int lane)
     SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 3) {
   simde_uint32x4_t result;
-  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(__ARM_FEATURE_DOTPROD)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARCH_ARM_DOTPROD)
     SIMDE_CONSTIFY_4_(vdotq_laneq_u32, result, (HEDLEY_UNREACHABLE(), result), lane, r, a, b);
   #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     simde_uint32x4_t
@@ -306,7 +306,7 @@ simde_int32x4_t
 simde_vdotq_laneq_s32(simde_int32x4_t r, simde_int8x16_t a, simde_int8x16_t b, const int lane)
     SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 3) {
   simde_int32x4_t result;
-  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(__ARM_FEATURE_DOTPROD)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARCH_ARM_DOTPROD)
     SIMDE_CONSTIFY_4_(vdotq_laneq_s32, result, (HEDLEY_UNREACHABLE(), result), lane, r, a, b);
   #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     simde_int32x4_t
@@ -368,7 +368,7 @@ simde_uint32x4_t
 simde_vdotq_lane_u32(simde_uint32x4_t r, simde_uint8x16_t a, simde_uint8x8_t b, const int lane)
     SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 1) {
   simde_uint32x4_t result;
-  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(__ARM_FEATURE_DOTPROD)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARCH_ARM_DOTPROD)
     SIMDE_CONSTIFY_2_(vdotq_lane_u32, result, (HEDLEY_UNREACHABLE(), result), lane, r, a, b);
   #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     simde_uint32x2_t
@@ -429,7 +429,7 @@ simde_int32x4_t
 simde_vdotq_lane_s32(simde_int32x4_t r, simde_int8x16_t a, simde_int8x8_t b, const int lane)
     SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 1) {
   simde_int32x4_t result;
-  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(__ARM_FEATURE_DOTPROD)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARCH_ARM_DOTPROD)
     SIMDE_CONSTIFY_2_(vdotq_lane_s32, result, (HEDLEY_UNREACHABLE(), result), lane, r, a, b);
   #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     simde_int32x2_t
@@ -490,7 +490,7 @@ simde_float32x2_t
 simde_vbfdot_lane_f32(simde_float32x2_t r, simde_bfloat16x4_t a, simde_bfloat16x4_t b, const int lane)
     SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 1) {
   simde_float32x2_t result;
-  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(__ARM_FEATURE_DOTPROD) && \
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARCH_ARM_DOTPROD) && \
       defined(SIMDE_ARM_NEON_BF16)
     SIMDE_CONSTIFY_2_(vbfdot_lane_f32, result, (HEDLEY_UNREACHABLE(), result), lane, r, a, b);
   #else
@@ -522,7 +522,7 @@ simde_float32x4_t
 simde_vbfdotq_lane_f32(simde_float32x4_t r, simde_bfloat16x8_t a, simde_bfloat16x4_t b, const int lane)
     SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 1) {
   simde_float32x4_t result;
-  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(__ARM_FEATURE_DOTPROD) && \
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARCH_ARM_DOTPROD) && \
       defined(SIMDE_ARM_NEON_BF16)
     SIMDE_CONSTIFY_2_(vbfdotq_lane_f32, result, (HEDLEY_UNREACHABLE(), result), lane, r, a, b);
   #else
@@ -553,7 +553,7 @@ simde_float32x2_t
 simde_vbfdot_laneq_f32(simde_float32x2_t r, simde_bfloat16x4_t a, simde_bfloat16x8_t b, const int lane)
     SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 3) {
   simde_float32x2_t result;
-  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(__ARM_FEATURE_DOTPROD) && \
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARCH_ARM_DOTPROD) && \
       defined(SIMDE_ARM_NEON_BF16)
     SIMDE_CONSTIFY_4_(vbfdot_laneq_f32, result, (HEDLEY_UNREACHABLE(), result), lane, r, a, b);
   #else
@@ -584,7 +584,7 @@ simde_float32x4_t
 simde_vbfdotq_laneq_f32(simde_float32x4_t r, simde_bfloat16x8_t a, simde_bfloat16x8_t b, const int lane)
     SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 3) {
   simde_float32x4_t result;
-  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(__ARM_FEATURE_DOTPROD) && \
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARCH_ARM_DOTPROD) && \
       defined(SIMDE_ARM_NEON_BF16)
     SIMDE_CONSTIFY_4_(vbfdotq_laneq_f32, result, (HEDLEY_UNREACHABLE(), result), lane, r, a, b);
   #else

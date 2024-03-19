@@ -42,7 +42,7 @@ static uint8_t simde_xtime(uint8_t x)
 SIMDE_FUNCTION_ATTRIBUTES
 simde_uint8x16_t
 simde_vaeseq_u8(simde_uint8x16_t data, simde_uint8x16_t key) {
-  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(__ARM_FEATURE_AES)
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARCH_ARM_AES)
     return vaeseq_u8(data, key);
   #else
     /* ref: https://github.com/kokke/tiny-AES-c/blob/master/aes.c */
@@ -92,7 +92,7 @@ simde_vaeseq_u8(simde_uint8x16_t data, simde_uint8x16_t key) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_uint8x16_t
 simde_vaesdq_u8(simde_uint8x16_t data, simde_uint8x16_t key) {
-  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(__ARM_FEATURE_AES)
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARCH_ARM_AES)
     return vaesdq_u8(data, key);
   #else
     /* ref: https://github.com/kokke/tiny-AES-c/blob/master/aes.c */
@@ -140,7 +140,7 @@ simde_vaesdq_u8(simde_uint8x16_t data, simde_uint8x16_t key) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_uint8x16_t
 simde_vaesmcq_u8(simde_uint8x16_t data) {
-  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(__ARM_FEATURE_AES)
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARCH_ARM_AES)
     return vaesmcq_u8(data);
   #else
     /* ref: https://github.com/kokke/tiny-AES-c/blob/master/aes.c */
@@ -177,7 +177,7 @@ static uint8_t Multiply(uint8_t x, uint8_t y)
 SIMDE_FUNCTION_ATTRIBUTES
 simde_uint8x16_t
 simde_vaesimcq_u8(simde_uint8x16_t data) {
-  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(__ARM_FEATURE_AES)
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARCH_ARM_AES)
     return vaesimcq_u8(data);
   #else
     simde_uint8x16_private

@@ -41,7 +41,7 @@ SIMDE_BEGIN_DECLS_
 SIMDE_FUNCTION_ATTRIBUTES
 simde_uint64x2_t
 simde_vsha512hq_u64(simde_uint64x2_t w, simde_uint64x2_t x, simde_uint64x2_t y) {
-  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(__ARM_FEATURE_SHA512)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARCH_ARM_SHA512)
     return vsha512hq_u64(w, x, y);
   #else
     simde_uint64x2_private
@@ -70,7 +70,7 @@ simde_vsha512hq_u64(simde_uint64x2_t w, simde_uint64x2_t x, simde_uint64x2_t y) 
 SIMDE_FUNCTION_ATTRIBUTES
 simde_uint64x2_t
 simde_vsha512h2q_u64(simde_uint64x2_t w, simde_uint64x2_t x, simde_uint64x2_t y) {
-  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(__ARM_FEATURE_SHA512)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARCH_ARM_SHA512)
     return vsha512h2q_u64(w, x, y);
   #else
     simde_uint64x2_private
@@ -96,7 +96,7 @@ simde_vsha512h2q_u64(simde_uint64x2_t w, simde_uint64x2_t x, simde_uint64x2_t y)
 SIMDE_FUNCTION_ATTRIBUTES
 simde_uint64x2_t
 simde_vsha512su0q_u64(simde_uint64x2_t w, simde_uint64x2_t x) {
-  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(__ARM_FEATURE_SHA512)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARCH_ARM_SHA512)
     return vsha512su0q_u64(w, x);
   #else
     simde_uint64x2_private
@@ -120,7 +120,7 @@ simde_vsha512su0q_u64(simde_uint64x2_t w, simde_uint64x2_t x) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_uint64x2_t
 simde_vsha512su1q_u64(simde_uint64x2_t w, simde_uint64x2_t x, simde_uint64x2_t y) {
-  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(__ARM_FEATURE_SHA512)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARCH_ARM_SHA512)
     return vsha512su1q_u64(w, x, y);
   #else
     simde_uint64x2_private

@@ -84,7 +84,7 @@ x_simde_sha256hash(simde_uint32x4_t x, simde_uint32x4_t y, simde_uint32x4_t w, i
 SIMDE_FUNCTION_ATTRIBUTES
 simde_uint32x4_t
 simde_vsha256hq_u32(simde_uint32x4_t hash_efgh, simde_uint32x4_t hash_abcd, simde_uint32x4_t wk) {
-  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(__ARM_FEATURE_SHA2)
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARCH_ARM_SHA2)
     return vsha256hq_u32(hash_efgh, hash_abcd, wk);
   #else
     return x_simde_sha256hash(hash_efgh, hash_abcd, wk, 1);
@@ -98,7 +98,7 @@ simde_vsha256hq_u32(simde_uint32x4_t hash_efgh, simde_uint32x4_t hash_abcd, simd
 SIMDE_FUNCTION_ATTRIBUTES
 simde_uint32x4_t
 simde_vsha256h2q_u32(simde_uint32x4_t hash_efgh, simde_uint32x4_t hash_abcd, simde_uint32x4_t wk) {
-  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(__ARM_FEATURE_SHA2)
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARCH_ARM_SHA2)
     return vsha256h2q_u32(hash_efgh, hash_abcd, wk);
   #else
     return x_simde_sha256hash(hash_abcd, hash_efgh, wk, 0);
@@ -112,7 +112,7 @@ simde_vsha256h2q_u32(simde_uint32x4_t hash_efgh, simde_uint32x4_t hash_abcd, sim
 SIMDE_FUNCTION_ATTRIBUTES
 simde_uint32x4_t
 simde_vsha256su0q_u32(simde_uint32x4_t w0_3, simde_uint32x4_t w4_7) {
-  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(__ARM_FEATURE_SHA2)
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARCH_ARM_SHA2)
     return vsha256su0q_u32(w0_3, w4_7);
   #else
     simde_uint32x4_private
@@ -142,7 +142,7 @@ simde_vsha256su0q_u32(simde_uint32x4_t w0_3, simde_uint32x4_t w4_7) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_uint32x4_t
 simde_vsha256su1q_u32(simde_uint32x4_t tw0_3, simde_uint32x4_t w8_11, simde_uint32x4_t w12_15) {
-  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(__ARM_FEATURE_SHA2)
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARCH_ARM_SHA2)
     return vsha256su1q_u32(tw0_3, w8_11, w12_15);
   #else
     simde_uint32x4_private

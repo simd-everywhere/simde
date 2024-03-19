@@ -73,7 +73,7 @@ static void simde_u32_from_u8x4(uint8_t* src, uint32_t* dst) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_uint32x4_t
 simde_vsm4eq_u32(simde_uint32x4_t a, simde_uint32x4_t b) {
-  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(__ARM_FEATURE_SM4)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARCH_ARM_SM4)
     return vsm4eq_u32(a, b);
   #else
     simde_uint32x4_private
@@ -110,7 +110,7 @@ simde_vsm4eq_u32(simde_uint32x4_t a, simde_uint32x4_t b) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_uint32x4_t
 simde_vsm4ekeyq_u32(simde_uint32x4_t a, simde_uint32x4_t b) {
-  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(__ARM_FEATURE_SM4)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARCH_ARM_SM4)
     return vsm4ekeyq_u32(a, b);
   #else
     simde_uint32x4_private
