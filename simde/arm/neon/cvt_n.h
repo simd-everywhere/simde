@@ -34,6 +34,8 @@ HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 SIMDE_BEGIN_DECLS_
 
+/* Disabled until we fix the FCVTZS/FCVTMS/FCVTPS/FCVTNS family intrinsics
+ * https://github.com/simd-everywhere/simde/issues/1099
 SIMDE_FUNCTION_ATTRIBUTES
 int16_t
 simde_vcvth_n_s16_f16(simde_float16_t a, const int n)
@@ -81,6 +83,7 @@ simde_vcvth_n_s64_f16(simde_float16_t a, const int n)
   #undef vcvth_n_s64_f16
   #define vcvth_n_s64_f16(a, n) simde_vcvth_n_s64_f16(a, n)
 #endif
+*/
 
 SIMDE_FUNCTION_ATTRIBUTES
 uint16_t
@@ -98,6 +101,8 @@ simde_vcvth_n_u16_f16(simde_float16_t a, const int n)
   #define vcvth_n_u16_f16(a, n) simde_vcvth_n_u16_f16(a, n)
 #endif
 
+/* Disabled until we fix the FCVTZS/FCVTMS/FCVTPS/FCVTNS family intrinsics
+ * https://github.com/simd-everywhere/simde/issues/1099
 SIMDE_FUNCTION_ATTRIBUTES
 uint32_t
 simde_vcvth_n_u32_f16(simde_float16_t a, const int n)
@@ -129,6 +134,7 @@ simde_vcvth_n_u64_f16(simde_float16_t a, const int n)
   #undef vcvth_n_u64_f16
   #define vcvth_n_u64_f16(a, n) simde_vcvth_n_u64_f16(a, n)
 #endif
+*/
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float16_t
@@ -146,6 +152,8 @@ simde_vcvth_n_f16_s16(int16_t a, const int n)
   #define vcvth_n_f16_s16(a, n) simde_vcvth_n_f16_s16(a, n)
 #endif
 
+/* Disabled until we fix the FCVTZS/FCVTMS/FCVTPS/FCVTNS family intrinsics
+ * https://github.com/simd-everywhere/simde/issues/1099
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float16_t
 simde_vcvth_n_f16_s32(int32_t a, const int n)
@@ -177,6 +185,7 @@ simde_vcvth_n_f16_s64(int64_t a, const int n)
   #undef vcvth_n_f16_s64
   #define vcvth_n_f16_s64(a, n) simde_vcvth_n_f16_s64(a, n)
 #endif
+*/
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float16_t
@@ -194,6 +203,8 @@ simde_vcvth_n_f16_u16(uint16_t a, const int n)
   #define vcvth_n_f16_u16(a, n) simde_vcvth_n_f16_u16(a, n)
 #endif
 
+/* Disabled until we fix the FCVTZS/FCVTMS/FCVTPS/FCVTNS family intrinsics
+ * https://github.com/simd-everywhere/simde/issues/1099
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float16_t
 simde_vcvth_n_f16_u32(uint32_t a, const int n)
@@ -225,6 +236,7 @@ simde_vcvth_n_f16_u64(uint64_t a, const int n)
   #undef vcvth_n_f16_u64
   #define vcvth_n_f16_u64(a, n) simde_vcvth_n_f16_u64(a, n)
 #endif
+*/
 
 SIMDE_FUNCTION_ATTRIBUTES
 int32_t
@@ -340,6 +352,8 @@ simde_vcvtd_n_f64_u64(uint64_t a, const int n)
   #define vcvtd_n_f64_u64(a, n) simde_vcvtd_n_f64_u64(a, n)
 #endif
 
+/* Disabled until we fix the FCVTZS/FCVTMS/FCVTPS/FCVTNS family intrinsics
+ * https://github.com/simd-everywhere/simde/issues/1099
 SIMDE_FUNCTION_ATTRIBUTES
 simde_int16x4_t
 simde_vcvt_n_s16_f16(simde_float16x4_t a, const int n)
@@ -363,6 +377,7 @@ simde_vcvt_n_s16_f16(simde_float16x4_t a, const int n)
   #undef vcvt_n_s16_f16
   #define vcvt_n_s16_f16(a, n) simde_vcvt_n_s16_f16((a), (n))
 #endif
+*/
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde_int32x2_t
@@ -476,6 +491,8 @@ simde_vcvt_n_u64_f64(simde_float64x1_t a, const int n)
   #define vcvt_n_u64_f64(a, n) simde_vcvt_n_u64_f64((a), (n))
 #endif
 
+/* Disabled until we fix the FCVTZS/FCVTMS/FCVTPS/FCVTNS family intrinsics
+ * https://github.com/simd-everywhere/simde/issues/1099
 SIMDE_FUNCTION_ATTRIBUTES
 simde_int16x8_t
 simde_vcvtq_n_s16_f16(simde_float16x8_t a, const int n)
@@ -499,6 +516,7 @@ simde_vcvtq_n_s16_f16(simde_float16x8_t a, const int n)
   #undef vcvtq_n_s16_f16
   #define vcvtq_n_s16_f16(a, n) simde_vcvtq_n_s16_f16((a), (n))
 #endif
+*/
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde_int32x4_t
