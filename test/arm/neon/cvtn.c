@@ -175,6 +175,8 @@ test_simde_vcvtnh_s32_f16 (SIMDE_MUNIT_TEST_ARGS) {
   return 0;
 }
 
+/* Disabled until we fix the FCVTZS/FCVTMS/FCVTPS/FCVTNS family intrinsics
+ * https://github.com/simd-everywhere/simde/issues/1099
 static int
 test_simde_vcvtnh_s16_f16 (SIMDE_MUNIT_TEST_ARGS) {
   struct {
@@ -215,6 +217,7 @@ test_simde_vcvtnh_s16_f16 (SIMDE_MUNIT_TEST_ARGS) {
 
   return 0;
 }
+*/
 
 static int
 test_simde_vcvtns_s32_f32 (SIMDE_MUNIT_TEST_ARGS) {
@@ -628,6 +631,8 @@ test_simde_vcvtnq_u64_f64 (SIMDE_MUNIT_TEST_ARGS) {
 #endif
 }
 
+/* Disabled until we fix the FCVTZS/FCVTMS/FCVTPS/FCVTNS family intrinsics
+ * https://github.com/simd-everywhere/simde/issues/1099
 static int
 test_simde_vcvtnq_s16_f16 (SIMDE_MUNIT_TEST_ARGS) {
   struct {
@@ -691,6 +696,7 @@ test_simde_vcvtn_s16_f16 (SIMDE_MUNIT_TEST_ARGS) {
 
   return 0;
 }
+*/
 
 static int
 test_simde_vcvtnq_u16_f16 (SIMDE_MUNIT_TEST_ARGS) {
@@ -910,21 +916,21 @@ SIMDE_TEST_FUNC_LIST_ENTRY(vcvtnd_s64_f64)
 SIMDE_TEST_FUNC_LIST_ENTRY(vcvtns_u32_f32)
 SIMDE_TEST_FUNC_LIST_ENTRY(vcvtnd_u64_f64)
 
-SIMDE_TEST_FUNC_LIST_ENTRY(vcvtnh_s16_f16)
+//SIMDE_TEST_FUNC_LIST_ENTRY(vcvtnh_s16_f16)
 SIMDE_TEST_FUNC_LIST_ENTRY(vcvtnh_s32_f16)
 SIMDE_TEST_FUNC_LIST_ENTRY(vcvtnh_s64_f16)
 SIMDE_TEST_FUNC_LIST_ENTRY(vcvtnh_u16_f16)
 SIMDE_TEST_FUNC_LIST_ENTRY(vcvtnh_u32_f16)
 SIMDE_TEST_FUNC_LIST_ENTRY(vcvtnh_u64_f16)
 
-SIMDE_TEST_FUNC_LIST_ENTRY(vcvtn_s16_f16)
+//SIMDE_TEST_FUNC_LIST_ENTRY(vcvtn_s16_f16)
 SIMDE_TEST_FUNC_LIST_ENTRY(vcvtn_u16_f16)
 SIMDE_TEST_FUNC_LIST_ENTRY(vcvtn_u32_f32)
 SIMDE_TEST_FUNC_LIST_ENTRY(vcvtn_s32_f32)
 SIMDE_TEST_FUNC_LIST_ENTRY(vcvtn_s64_f64)
 SIMDE_TEST_FUNC_LIST_ENTRY(vcvtn_u64_f64)
 
-SIMDE_TEST_FUNC_LIST_ENTRY(vcvtnq_s16_f16)
+//SIMDE_TEST_FUNC_LIST_ENTRY(vcvtnq_s16_f16)
 SIMDE_TEST_FUNC_LIST_ENTRY(vcvtnq_s32_f32)
 SIMDE_TEST_FUNC_LIST_ENTRY(vcvtnq_s64_f64)
 SIMDE_TEST_FUNC_LIST_ENTRY(vcvtnq_u16_f16)
