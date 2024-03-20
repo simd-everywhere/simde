@@ -5,6 +5,7 @@ on:
     branches-ignore:
       - 'ci/**'
       - '!ci/gha**'
+      - 'dependabot/**'
   pull_request:
     branches:
       - 'master'
