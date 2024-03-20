@@ -145,7 +145,7 @@
 #if defined(__ARM_FEATURE_MATMUL_INT8) && __ARM_FEATURE_MATMUL_INT8
 #  define SIMDE_ARCH_ARM_MATMUL_INT8
 #endif
-#if defined(__ARM_FEATURE_SHA2) && __ARM_FEATURE_SHA2
+#if defined(__ARM_FEATURE_SHA2) && __ARM_FEATURE_SHA2 && !defined(__APPLE_CC__)
 #  define SIMDE_ARCH_ARM_SHA2
 #endif
 #if defined(__ARM_FEATURE_SHA3) && __ARM_FEATURE_SHA3
