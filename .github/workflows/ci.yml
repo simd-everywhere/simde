@@ -140,9 +140,11 @@ jobs:
     - name: Coverage Report
       run: ninja -C build -v coverage-xml
     - name: CodeCov.io
-      uses: codecov/codecov-action@v3
+      uses: codecov/codecov-action@v4
       with:
         file: ./build/meson-logs/coverage.xml
+      env:
+        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
   emscripten:
     runs-on: ubuntu-22.04
@@ -213,9 +215,11 @@ jobs:
     - name: Coverage Report
       run: ninja -C build -v coverage-xml
     - name: CodeCov.io
-      uses: codecov/codecov-action@v3
+      uses: codecov/codecov-action@v4
       with:
         file: ./build/meson-logs/coverage.xml
+      env:
+        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
   sleef:
     runs-on: ubuntu-22.04
@@ -242,9 +246,11 @@ jobs:
     - name: Coverage Report
       run: ninja -C build -v coverage-xml
     - name: CodeCov.io
-      uses: codecov/codecov-action@v3
+      uses: codecov/codecov-action@v4
       with:
         file: ./build/meson-logs/coverage.xml
+      env:
+        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
   gcc:
     strategy:
@@ -723,9 +729,11 @@ jobs:
     # - name: Coverage Report
     #   run: ninja -C build -v coverage-xml
     # - name: CodeCov.io
-    #   uses: codecov/codecov-action@v3
+    #   uses: codecov/codecov-action@v4
     #   with:
     #     file: ./build/meson-logs/coverage.xml
+    #   env:
+    #     CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
   icc:
     runs-on: ubuntu-22.04
