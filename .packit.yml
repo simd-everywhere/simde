@@ -26,6 +26,6 @@ jobs:
   - <<: *copr
     # Run on push to any branch.
     trigger: commit
-    # Run except the "master*" branches.
+    # Run except the "master*" and "dependabot*" branches.
     # https://github.com/packit/packit/issues/1986
-    branch: '(?!master)'
+    branch: '(?!master)(?!dependabot)'
