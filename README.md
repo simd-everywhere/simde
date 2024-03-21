@@ -73,7 +73,7 @@ set extensions:
   * [SSE2](https://en.wikipedia.org/wiki/SSE2) [List](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#ssetechs=SSE2)
   * [SSE3](https://en.wikipedia.org/wiki/SSE3) [List](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#ssetechs=SSE3)
   * [SSSE3](https://en.wikipedia.org/wiki/SSSE3) [List](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#ssetechs=SSSE3)
-  * [SSE4.1](https://en.wikipedia.org/wiki/SSE4#SSE4.1) [List](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#ssetechs=SSE4_1)
+  * [SSE4.1](https://en.wikipedia.org/wiki/SSE4#SSE4.1) [List](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#ssetechs=SSE4_1) including [CRC32](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#ig_expand=7131&othertechs=CRC32)
   * [AVX](https://en.wikipedia.org/wiki/Advanced_Vector_Extensions) [List](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#avxnewtechs=AVX)
   * [AVX2](https://en.wikipedia.org/wiki/Advanced_Vector_Extensions#Advanced_Vector_Extensions_2) [List](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#avxnewtechs=AVX2)
   * [F16C](https://en.wikipedia.org/wiki/F16C) [List](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#avxnewtechs=F16C)
@@ -82,10 +82,15 @@ set extensions:
   * [CLMUL](https://en.wikipedia.org/wiki/CLMUL_instruction_set) [List](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#text=clmul&ig_expand=770&othertechs=PCLMULQDQ,VPCLMULQDQ)
   * [XOP](https://en.wikipedia.org/wiki/XOP_instruction_set)
   * [SVML](https://software.intel.com/content/www/us/en/develop/documentation/cpp-compiler-developer-guide-and-reference/top/compiler-reference/intrinsics/intrinsics-for-intel-advanced-vector-extensions-512-intel-avx-512-instructions/intrinsics-for-arithmetic-operations-1/intrinsics-for-short-vector-math-library-svml-operations.html) [List](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#ig_expand=770&techs=SVML)
+  * [AVX512VPOPCNTDQ](https://en.wikipedia.org/wiki/AVX-512#VPOPCNTDQ_and_BITALG) [List](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#ig_expand=7131&avx512techs=AVX512VPOPCNTDQ)
+  * [AVX512_BITALG](https://en.wikipedia.org/wiki/AVX-512#VPOPCNTDQ_and_BITALG) [List](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#ig_expand=7131&avx512techs=AVX512_BITALG)
+  * [AVX512_VBMI](https://en.wikipedia.org/wiki/AVX-512#Permute) [List](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#ig_expand=7131&avx512techs=AVX512_VBMI)
+  * [AVX512_VNNI](https://en.wikipedia.org/wiki/AVX-512#VNNI) [List](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#ig_expand=7131&avx512techs=AVX512_VNNI)
+  * [AVX512_VP2INTERSECT](https://en.wikipedia.org/wiki/AVX-512#VP2INTERSECT) [List](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#ig_expand=7131&avx512techs=AVX512_VP2INTERSECT)
 * WebAssembly
   * [SIMD128](https://github.com/WebAssembly/simd)
 
-As well as partial support for many others, including NEON and SVE in
+As well as partial support for many others, including AES-ni, SSE4.2, SVE, in
 addition to several AVX-512 extensions.  See the
 [instruction-set-support](https://github.com/simd-everywhere/simde/issues?q=is%3Aissue+is%3Aopen+label%3Ainstruction-set-support+sort%3Aupdated-desc)
 label in the issue tracker for details on progress.  If you'd like to
