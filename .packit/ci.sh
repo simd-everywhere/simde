@@ -116,7 +116,6 @@ MATRIX_DEFAULT_CLANG_O2="exclude"
 MATRIX_DEFAULT_CLANG_RPM="exclude"
 # Set the CPU specific behavior for each test optionally.
 # This configuration is prioritized than the default behavior.
-MATRIX_i686_GCC_DEFAULT="pend"
 
 # End of configuration
 
