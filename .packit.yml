@@ -19,7 +19,6 @@ jobs:
     # "Motivation and context" for details.
     targets:
       - fedora-rawhide-x86_64
-      - fedora-rawhide-i386
       - fedora-rawhide-aarch64
       - fedora-rawhide-ppc64le
       - fedora-rawhide-s390x
