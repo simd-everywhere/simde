@@ -147,6 +147,51 @@ jobs:
       env:
         CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
+  x86-xop:
+    runs-on: ubuntu-22.04
+    strategy:
+      fail-fast: false
+    env:
+      CFLAGS: -Wall -Wextra -Werror -march=bdver2
+      CXXFLAGS: -Wall -Wextra -Werror -march=bdver2
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+    - name: CPU Information
+      run: cat /proc/cpuinfo
+    - name: ccache
+      uses: hendrikmuhs/ccache-action@v1.2
+      with:
+        key: ${{ github.job }}-
+    - name: Install APT Dependencies
+      run: |
+        #sudo add-apt-repository ppa:aschultz/backports
+        sudo apt-get update
+        sudo apt-get install -y ninja-build ninja-build python3-pip parallel gcovr g++-12 gcc-12 qemu-user-static
+        sudo apt-get purge -y gcc g++
+        sudo ln -s /usr/bin/gcc-12 /usr/bin/gcc
+        sudo ln -s /usr/bin/g++-12 /usr/bin/g++
+        sudo python3 -m pip install meson==0.55.0
+    - name: add ccache to the build path
+      run: |
+        export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
+    - name: Configure
+      run: meson setup build -Db_coverage=true || (cat build/meson-logs/meson-log.txt ; false)
+    - name: Build
+      run: ninja -C build -v
+    # can't test until we find a combination of `gcc -march=` and `qemu -cpu` that both enable XOP and allows qemu to test it
+    # - name: Test
+    #   run: meson test -C build --print-errorlogs --wrapper "qemu-amd64-static -cpu Opteron_G5-v1"
+    # - name: Coverage Report
+    #   run: ninja -C build -v coverage-xml
+    # - name: CodeCov.io
+    #   uses: codecov/codecov-action@v4
+    #   with:
+    #     file: ./build/meson-logs/coverage.xml
+    #   env:
+    #     CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
   emscripten:
     runs-on: ubuntu-22.04
     strategy:
