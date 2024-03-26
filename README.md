@@ -88,11 +88,11 @@ set extensions:
   * [AVX512_VBMI](https://en.wikipedia.org/wiki/AVX-512#Permute) [List](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#ig_expand=7131&avx512techs=AVX512_VBMI)
   * [AVX512_VNNI](https://en.wikipedia.org/wiki/AVX-512#VNNI) [List](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#ig_expand=7131&avx512techs=AVX512_VNNI)
   * [AVX512_VP2INTERSECT](https://en.wikipedia.org/wiki/AVX-512#VP2INTERSECT) [List](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#ig_expand=7131&avx512techs=AVX512_VP2INTERSECT)
-  * [VPCLMULQDQ](https://en.wikipedia.org/wiki/CLMUL_instruction_set) [List](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#othertechs=VPCLMULQDQ)
+  * [VPCLMULQDQ](https://en.wikipedia.org/wiki/AVX-512#VPCLMULQDQ) [List](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#othertechs=VPCLMULQDQ)
 * WebAssembly
   * [SIMD128](https://github.com/WebAssembly/simd)
 
-As well as partial support for many others, including AES-ni, SSE4.2, SVE, in
+As well as partial support for many others, including AES-ni, SSE4.2, SVE, [MSA](https://en.wikipedia.org/wiki/MIPS_architecture#Application-specific_extensions) in
 addition to several AVX-512 extensions.  See the
 [instruction-set-support](https://github.com/simd-everywhere/simde/issues?q=is%3Aissue+is%3Aopen+label%3Ainstruction-set-support+sort%3Aupdated-desc)
 label in the issue tracker for details on progress.  If you'd like to
