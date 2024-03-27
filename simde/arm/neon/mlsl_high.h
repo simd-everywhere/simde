@@ -27,8 +27,8 @@
 #if !defined(SIMDE_ARM_NEON_MLSL_HIGH_H)
 #define SIMDE_ARM_NEON_MLSL_HIGH_H
 
-#include "mull_high.h"
-#include "sub.h"
+#include "get_high.h"
+#include "mlsl.h"
 
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
@@ -40,7 +40,7 @@ simde_vmlsl_high_s8(simde_int16x8_t a, simde_int8x16_t b, simde_int8x16_t c) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vmlsl_high_s8(a, b, c);
   #else
-    return simde_vsubq_s16(a, simde_vmull_high_s8(b, c));
+    return simde_vmlsl_s8(a, simde_vget_high_s8(b), simde_vget_high_s8(c));
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
@@ -54,7 +54,7 @@ simde_vmlsl_high_s16(simde_int32x4_t a, simde_int16x8_t b, simde_int16x8_t c) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vmlsl_high_s16(a, b, c);
   #else
-    return simde_vsubq_s32(a, simde_vmull_high_s16(b, c));
+    return simde_vmlsl_s16(a, simde_vget_high_s16(b), simde_vget_high_s16(c));
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
@@ -68,7 +68,7 @@ simde_vmlsl_high_s32(simde_int64x2_t a, simde_int32x4_t b, simde_int32x4_t c) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vmlsl_high_s32(a, b, c);
   #else
-    return simde_vsubq_s64(a, simde_vmull_high_s32(b, c));
+    return simde_vmlsl_s32(a, simde_vget_high_s32(b), simde_vget_high_s32(c));
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
@@ -82,7 +82,7 @@ simde_vmlsl_high_u8(simde_uint16x8_t a, simde_uint8x16_t b, simde_uint8x16_t c) 
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vmlsl_high_u8(a, b, c);
   #else
-    return simde_vsubq_u16(a, simde_vmull_high_u8(b, c));
+    return simde_vmlsl_u8(a, simde_vget_high_u8(b), simde_vget_high_u8(c));
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
@@ -96,7 +96,7 @@ simde_vmlsl_high_u16(simde_uint32x4_t a, simde_uint16x8_t b, simde_uint16x8_t c)
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vmlsl_high_u16(a, b, c);
   #else
-    return simde_vsubq_u32(a, simde_vmull_high_u16(b, c));
+    return simde_vmlsl_u16(a, simde_vget_high_u16(b), simde_vget_high_u16(c));
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
@@ -110,7 +110,7 @@ simde_vmlsl_high_u32(simde_uint64x2_t a, simde_uint32x4_t b, simde_uint32x4_t c)
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vmlsl_high_u32(a, b, c);
   #else
-    return simde_vsubq_u64(a, simde_vmull_high_u32(b, c));
+    return simde_vmlsl_u32(a, simde_vget_high_u32(b), simde_vget_high_u32(c));
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)

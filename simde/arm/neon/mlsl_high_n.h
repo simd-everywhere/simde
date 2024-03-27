@@ -27,9 +27,8 @@
 #if !defined(SIMDE_ARM_NEON_MLSL_HIGH_N_H)
 #define SIMDE_ARM_NEON_MLSL_HIGH_N_H
 
-#include "movl_high.h"
-#include "dup_n.h"
-#include "mls.h"
+#include "get_high.h"
+#include "mlsl_n.h"
 #include "types.h"
 
 HEDLEY_DIAGNOSTIC_PUSH
@@ -42,7 +41,7 @@ simde_vmlsl_high_n_s16(simde_int32x4_t a, simde_int16x8_t b, int16_t c) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vmlsl_high_n_s16(a, b, c);
   #else
-    return simde_vmlsq_s32(a, simde_vmovl_high_s16(b), simde_vdupq_n_s32(c));
+    return simde_vmlsl_n_s16(a, simde_vget_high_s16(b), c);
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
@@ -56,22 +55,7 @@ simde_vmlsl_high_n_s32(simde_int64x2_t a, simde_int32x4_t b, int32_t c) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vmlsl_high_n_s32(a, b, c);
   #else
-    simde_int64x2_private
-      r_,
-      a_ = simde_int64x2_to_private(a),
-      b_ = simde_int64x2_to_private(simde_vmovl_high_s32(b)),
-      c_ = simde_int64x2_to_private(simde_vdupq_n_s64(c));
-
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-      r_.values = a_.values - (b_.values * c_.values);
-    #else
-      SIMDE_VECTORIZE
-      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-        r_.values[i] = a_.values[i] - (b_.values[i] * c_.values[i]);
-      }
-    #endif
-
-    return simde_int64x2_from_private(r_);
+    return simde_vmlsl_n_s32(a, simde_vget_high_s32(b), c);
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
@@ -85,7 +69,7 @@ simde_vmlsl_high_n_u16(simde_uint32x4_t a, simde_uint16x8_t b, uint16_t c) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vmlsl_high_n_u16(a, b, c);
   #else
-    return simde_vmlsq_u32(a, simde_vmovl_high_u16(b), simde_vdupq_n_u32(c));
+    return simde_vmlsl_n_u16(a, simde_vget_high_u16(b), c);
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
@@ -99,22 +83,7 @@ simde_vmlsl_high_n_u32(simde_uint64x2_t a, simde_uint32x4_t b, uint32_t c) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vmlsl_high_n_u32(a, b, c);
   #else
-    simde_uint64x2_private
-      r_,
-      a_ = simde_uint64x2_to_private(a),
-      b_ = simde_uint64x2_to_private(simde_vmovl_high_u32(b)),
-      c_ = simde_uint64x2_to_private(simde_vdupq_n_u64(c));
-
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-      r_.values = a_.values - (b_.values * c_.values);
-    #else
-      SIMDE_VECTORIZE
-      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-        r_.values[i] = a_.values[i] - (b_.values[i] * c_.values[i]);
-      }
-    #endif
-
-    return simde_uint64x2_from_private(r_);
+    return simde_vmlsl_n_u32(a, simde_vget_high_u32(b), c);
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
