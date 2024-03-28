@@ -80,7 +80,6 @@ set extensions:
   * [F16C](https://en.wikipedia.org/wiki/F16C) [List](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#avxnewtechs=F16C)
   * [FMA](https://en.wikipedia.org/wiki/FMA_instruction_set) [List](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#avxnewtechs=FMA)
   * [GFNI](https://en.wikipedia.org/wiki/AVX-512#GFNI) [List](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#othertechs=GFNI)
-  * [CLMUL](https://en.wikipedia.org/wiki/CLMUL_instruction_set) [List](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#text=clmul&ig_expand=770&othertechs=PCLMULQDQ,VPCLMULQDQ)
   * [XOP](https://en.wikipedia.org/wiki/XOP_instruction_set)
   * [SVML](https://software.intel.com/content/www/us/en/develop/documentation/cpp-compiler-developer-guide-and-reference/top/compiler-reference/intrinsics/intrinsics-for-intel-advanced-vector-extensions-512-intel-avx-512-instructions/intrinsics-for-arithmetic-operations-1/intrinsics-for-short-vector-math-library-svml-operations.html) [List](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#ig_expand=770&techs=SVML)
   * [AVX512VPOPCNTDQ](https://en.wikipedia.org/wiki/AVX-512#VPOPCNTDQ_and_BITALG) [List](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#ig_expand=7131&avx512techs=AVX512VPOPCNTDQ)
@@ -92,7 +91,7 @@ set extensions:
 * WebAssembly
   * [SIMD128](https://github.com/WebAssembly/simd)
 
-As well as partial support for many others, including AES-ni, SSE4.2, SVE, [MSA](https://en.wikipedia.org/wiki/MIPS_architecture#Application-specific_extensions) in
+As well as partial support for many others, including AES-ni, [CLMUL](https://en.wikipedia.org/wiki/CLMUL_instruction_set), SSE4.2, SVE, [MSA](https://en.wikipedia.org/wiki/MIPS_architecture#Application-specific_extensions) in
 addition to several AVX-512 extensions.  See the
 [instruction-set-support](https://github.com/simd-everywhere/simde/issues?q=is%3Aissue+is%3Aopen+label%3Ainstruction-set-support+sort%3Aupdated-desc)
 label in the issue tracker for details on progress.  If you'd like to
@@ -281,8 +280,12 @@ The following architectures are tested in CI for every commit:
  * AArch64
  * ARMv8
  * ARMv7
+ * ARMel
  * PPC64
- * MIPS Loongson
+ * z/Architecture
+ * MIPS Loongson 64
+ * RISC-V 64
+ * emscripten
 
 We would love to add more, so patches are extremely welcome!
 
