@@ -54,7 +54,7 @@ test_simde_mm_cvtps_ph (SIMDE_MUNIT_TEST_ARGS) {
       {  INT16_C( 25352),  INT16_C( 24774), -INT16_C(  8787),  INT16_C( 25507),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0) } },
 
     #if 0
-    // simde_mm_cvtps_ph doesn't handle the rounding paramter at all
+    // simde_mm_cvtps_ph doesn't handle the rounding parameter at all
     { { SIMDE_FLOAT32_C(  9204.05), SIMDE_FLOAT32_C( 86132.80), SIMDE_FLOAT32_C( 37121.74), SIMDE_FLOAT32_C( 68581.13) },
       {  INT16_C( 28799),  INT16_C( 31744),  INT16_C( 30856),  INT16_C( 31744),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0) },
       {  INT16_C( 28798),  INT16_C( 31743),  INT16_C( 30856),  INT16_C( 31743),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0) },

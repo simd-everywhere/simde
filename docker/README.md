@@ -15,7 +15,7 @@ Once the container is ready it will drop you into a bash shell in
 `/opt/simde`; this is the build directory.
 
 This will bind the parent directory (the root of the SIMDe checkout)
-to `/usr/local/src/simde`; any changes to either will propogate to the
+to `/usr/local/src/simde`; any changes to either will propagate to the
 other, meaning you can continue using your normal development
 environment and just re-run ninja in the container to (re)build SIMDe.
 
