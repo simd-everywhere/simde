@@ -11,7 +11,7 @@ License: MIT
 URL: https://github.com/simd-everywhere/simde
 # This value is magically replaced with the archive tar.gz file created by
 # `git archive` in the process of the CI.
-# Set the exsiting file `README.md` in case of creating SRPM from this RPM spec
+# Set the existing file `README.md` in case of creating SRPM from this RPM spec
 # file on local for testing purpose.
 Source0: README.md
 # A path to the CI script.

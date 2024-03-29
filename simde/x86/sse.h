@@ -804,7 +804,7 @@ simde_mm_move_ss (simde__m128 a, simde__m128 b) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128
 simde_x_mm_broadcastlow_ps(simde__m128 a) {
-  /* This function broadcasts the first element in the inpu vector to
+  /* This function broadcasts the first element in the input vector to
    * all lanes.  It is used to avoid generating spurious exceptions in
    * *_ss functions since there may be garbage in the upper lanes. */
 

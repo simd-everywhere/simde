@@ -58,7 +58,7 @@ SIMDE_BEGIN_DECLS_
  * that on Arm since it would break compatibility with the NEON F16
  * functions. */
 #define SIMDE_FLOAT16_API_FP16_NO_ABI 3
-/* This is basically __fp16 as specified by Arm, where arugments and
+/* This is basically __fp16 as specified by Arm, where arguments and
  * return values are raw __fp16 values not structs. */
 #define SIMDE_FLOAT16_API_FP16 4
 
