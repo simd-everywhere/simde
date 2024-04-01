@@ -4771,7 +4771,11 @@ simde_mm_pause (void) {
   #if defined(SIMDE_X86_SSE2_NATIVE)
     _mm_pause();
   #elif defined(SIMDE_ARCH_X86)
-    __asm__ __volatile__("pause");
+    #if defined(_MSC_VER)
+      __asm pause;
+    #else
+      __asm__ __volatile__("pause");
+    #endif
   #elif defined(SIMDE_ARCH_ARM_NEON)
     #if defined(_MSC_VER)
       __isb(_ARM64_BARRIER_SY);
