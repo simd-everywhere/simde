@@ -5,6 +5,14 @@ environment:
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
       VCVARSALL: C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvars32.bat
       PYTHON_DIR: C:\Python311-x64
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+      VCVARSALL: C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvars32.bat
+      PYTHON_DIR: C:\Python311-x64
+      FLAGS: /arch:SSE
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+      VCVARSALL: C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvars32.bat
+      PYTHON_DIR: C:\Python311-x64
+      FLAGS: /arch:SSE2
 branches:
   except:
     - /^ci/(?!appveyor)(/.+)?/
@@ -32,11 +40,6 @@ install:
 before_build:
   - ps: |
       git submodule -q update --init --recursive
-      if ($ENV:FLAGS -notlike "*ARCH*") {
-        echo "tests will be run"
-      } else {
-        echo "FLAGS is $ENV:FLAGS"
-      }
 
 build_script:
   - cmd: |
@@ -52,11 +55,7 @@ build_script:
 test_script:
   # "meson test -C build" fails due to excessively long command line
   - ps: |
-      if ($ENV:FLAGS -notlike "*ARCH*") {
-        ninja -C build test
-      } else {
-        echo "skipping test"
-      }
+      ninja -C build test
 
 ## This seems to work; data shows up on CodeCov, but it emits an error
 ## which makes AppVeyor thing the whole build failed.  Example:
