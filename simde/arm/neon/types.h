@@ -432,7 +432,7 @@ typedef union {
 typedef union {
   SIMDE_ARM_NEON_DECLARE_VECTOR(simde_float64, values, 16);
 
-  #if defined(SIMDE_X86_SSE2_NATIVE)
+  #if defined(SIMDE_X86_SSE2_NATIVE) || defined(SIMDE_X86_SVML_NATIVE)
     __m128d m128d;
   #endif
 
@@ -697,7 +697,7 @@ typedef union {
     #define SIMDE_ARM_NEON_NEED_PORTABLE_F32X4
   #endif
 
-  #if defined(SIMDE_X86_SSE2_NATIVE)
+  #if defined(SIMDE_X86_SSE2_NATIVE) || defined(SIMDE_X86_SVML_NATIVE)
     typedef  __m128i  simde_int8x16_t;
     typedef  __m128i  simde_int16x8_t;
     typedef  __m128i  simde_int32x4_t;
@@ -1438,7 +1438,7 @@ typedef union {
   SIMDE_DEFINE_CONVERSION_FUNCTION_(simde_float32x4_to_m128,              __m128, simde_float32x4_t)
   SIMDE_DEFINE_CONVERSION_FUNCTION_(simde_float32x4_from_m128, simde_float32x4_t,            __m128)
 #endif
-#if defined(SIMDE_X86_SSE2_NATIVE)
+#if defined(SIMDE_X86_SSE2_NATIVE) || defined(SIMDE_X86_SVML_NATIVE)
   SIMDE_DEFINE_CONVERSION_FUNCTION_(simde_int8x16_to_m128i,               __m128i,   simde_int8x16_t)
   SIMDE_DEFINE_CONVERSION_FUNCTION_(simde_int16x8_to_m128i,               __m128i,   simde_int16x8_t)
   SIMDE_DEFINE_CONVERSION_FUNCTION_(simde_int32x4_to_m128i,               __m128i,   simde_int32x4_t)
