@@ -22,8 +22,8 @@
  */
 
 #define SIMDE_TESTS_CURRENT_ISAX sse
-#include <simde/x86/sse2.h>
 #include <test/x86/test-sse2.h>
+// for simde_test_x86_assert_equal_u32x4, simde_mm_castps_si128 and others
 
 #if defined(HEDLEY_MSVC_VERSION)
 #  pragma warning(disable:4223)

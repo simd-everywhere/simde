@@ -29,6 +29,10 @@ SIMDE_DIAGNOSTIC_DISABLE_BUGGY_CASTS_
 SIMDE_DIAGNOSTIC_DISABLE_RESERVED_ID_
 SIMDE_DIAGNOSTIC_DISABLE_C99_EXTENSIONS_
 SIMDE_DIAGNOSTIC_DISABLE_USED_BUT_MARKED_UNUSED_
+SIMDE_DIAGNOSTIC_DISABLE_NO_EMMS_INSTRUCTION_
+#if defined(HEDLEY_MSVC_VERSION)
+  __pragma(warning(disable:4730))  // mixing _m64 and floating point expressions may result in incorrect code
+#endif
 
 #if defined(HEDLEY_GCC_VERSION) && !(HEDLEY_GCC_VERSION_CHECK(6,0,0))
 HEDLEY_DIAGNOSTIC_DISABLE_UNUSED_FUNCTION
@@ -41,7 +45,6 @@ SIMDE_DIAGNOSTIC_DISABLE_CAST_FUNCTION_TYPE_
 SIMDE_DIAGNOSTIC_DISABLE_NON_CONSTANT_AGGREGATE_INITIALIZER_
 SIMDE_DIAGNOSTIC_DISABLE_C99_EXTENSIONS_
 SIMDE_DIAGNOSTIC_DISABLE_DECLARATION_AFTER_STATEMENT_
-SIMDE_DIAGNOSTIC_DISABLE_NO_EMMS_INSTRUCTION_
 SIMDE_DIAGNOSTIC_DISABLE_ANNEX_K_
 
 #if \
@@ -818,7 +821,7 @@ simde_assert_equal_vf16_(
     simde_float32 b_ = simde_float16_to_float32(b[i]);
 
     if (HEDLEY_UNLIKELY(!simde_test_equal_f32(a_, b_, slop_))) {
-      simde_test_debug_printf_("%s:%d: assertion failed: %s[%zu] ~= %s[%zu] (%f ~= %f)\n",
+      simde_test_debug_printf_("%s:%d: assertion failed: %s[%zu] ~= %s[%zu] (%a ~= %a)\n",
               filename, line, astr, i, bstr, i, HEDLEY_STATIC_CAST(double, a_),
               HEDLEY_STATIC_CAST(double, b_));
       SIMDE_TEST_ASSERT_RETURN(1);
@@ -835,7 +838,7 @@ simde_assert_equal_f16_(simde_float16 a, simde_float16 b, simde_float16 slop,
   simde_float32 b_ = simde_float16_to_float32(b);
   simde_float32 slop_ = simde_float16_to_float32(slop);
   if (HEDLEY_UNLIKELY(!simde_test_equal_f32(a_, b_, slop_))) {
-    simde_test_debug_printf_("%s:%d: assertion failed: %s ~= %s (%f ~= %f)\n",
+    simde_test_debug_printf_("%s:%d: assertion failed: %s ~= %s (%a ~= %a)\n",
         filename, line, astr, bstr, HEDLEY_STATIC_CAST(double, a_),
         HEDLEY_STATIC_CAST(double, b_));
     SIMDE_TEST_ASSERT_RETURN(1);
@@ -850,7 +853,7 @@ simde_assert_equal_vf32_(
     const char* filename, int line, const char* astr, const char* bstr) {
   for (size_t i = 0 ; i < vec_len ; i++) {
     if (HEDLEY_UNLIKELY(!simde_test_equal_f32(a[i], b[i], slop))) {
-      simde_test_debug_printf_("%s:%d: assertion failed: %s[%zu] ~= %s[%zu] (%f ~= %f)\n",
+      simde_test_debug_printf_("%s:%d: assertion failed: %s[%zu] ~= %s[%zu] (%a ~= %a)\n",
               filename, line, astr, i, bstr, i, HEDLEY_STATIC_CAST(double, a[i]), HEDLEY_STATIC_CAST(double, b[i]));
       SIMDE_TEST_ASSERT_RETURN(1);
     }
@@ -863,7 +866,7 @@ static int
 simde_assert_equal_f32_(simde_float32 a, simde_float32 b, simde_float32 slop,
     const char* filename, int line, const char* astr, const char* bstr) {
   if (HEDLEY_UNLIKELY(!simde_test_equal_f32(a, b, slop))) {
-    simde_test_debug_printf_("%s:%d: assertion failed: %s ~= %s (%f ~= %f)\n",
+    simde_test_debug_printf_("%s:%d: assertion failed: %s ~= %s (%a ~= %a)\n",
         filename, line, astr, bstr, HEDLEY_STATIC_CAST(double, a), HEDLEY_STATIC_CAST(double, b));
     SIMDE_TEST_ASSERT_RETURN(1);
   }
@@ -877,7 +880,7 @@ simde_assert_equal_vf64_(
     const char* filename, int line, const char* astr, const char* bstr) {
   for (size_t i = 0 ; i < vec_len ; i++) {
     if (HEDLEY_UNLIKELY(!simde_test_equal_f64(a[i], b[i], slop))) {
-      simde_test_debug_printf_("%s:%d: assertion failed: %s[%zu] ~= %s[%zu] (%f ~= %f)\n",
+      simde_test_debug_printf_("%s:%d: assertion failed: %s[%zu] ~= %s[%zu] (%a ~= %a)\n",
               filename, line, astr, i, bstr, i, HEDLEY_STATIC_CAST(double, a[i]), HEDLEY_STATIC_CAST(double, b[i]));
       SIMDE_TEST_ASSERT_RETURN(1);
     }
@@ -890,7 +893,7 @@ static int
 simde_assert_equal_f64_(simde_float64 a, simde_float64 b, simde_float64 slop,
     const char* filename, int line, const char* astr, const char* bstr) {
   if (HEDLEY_UNLIKELY(!simde_test_equal_f64(a, b, slop))) {
-    simde_test_debug_printf_("%s:%d: assertion failed: %s ~= %s (%f ~= %f)\n",
+    simde_test_debug_printf_("%s:%d: assertion failed: %s ~= %s (%a ~= %a\n",
         filename, line, astr, bstr, a, b);
     SIMDE_TEST_ASSERT_RETURN(1);
   }
@@ -908,7 +911,7 @@ simde_assert_equal_vbf16_(
     simde_float32 b_ = simde_bfloat16_to_float32(b[i]);
 
     if (HEDLEY_UNLIKELY(!simde_test_equal_f32(a_, b_, slop_))) {
-      simde_test_debug_printf_("%s:%d: assertion failed: %s[%zu] ~= %s[%zu] (%f ~= %f)\n",
+      simde_test_debug_printf_("%s:%d: assertion failed: %s[%zu] ~= %s[%zu] (%a ~= %a)\n",
               filename, line, astr, i, bstr, i, HEDLEY_STATIC_CAST(double, a_),
               HEDLEY_STATIC_CAST(double, b_));
       SIMDE_TEST_ASSERT_RETURN(1);
@@ -925,7 +928,7 @@ simde_assert_equal_bf16_(simde_bfloat16 a, simde_bfloat16 b, simde_bfloat16 slop
   simde_float32 b_ = simde_bfloat16_to_float32(b);
   simde_float32 slop_ = simde_bfloat16_to_float32(slop);
   if (HEDLEY_UNLIKELY(!simde_test_equal_f32(a_, b_, slop_))) {
-    simde_test_debug_printf_("%s:%d: assertion failed: %s ~= %s (%f ~= %f)\n",
+    simde_test_debug_printf_("%s:%d: assertion failed: %s ~= %s (%a ~= %a)\n",
         filename, line, astr, bstr, HEDLEY_STATIC_CAST(double, a_),
         HEDLEY_STATIC_CAST(double, b_));
     SIMDE_TEST_ASSERT_RETURN(1);

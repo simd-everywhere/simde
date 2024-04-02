@@ -390,7 +390,7 @@ typedef union {
     simde_float16 values[8];
   #endif
 
-  #if defined(SIMDE_X86_SSE2_NATIVE)
+  #if defined(SIMDE_X86_SSE_NATIVE)
     __m128 m128;
   #endif
 
@@ -411,7 +411,7 @@ typedef union {
 typedef union {
   SIMDE_ARM_NEON_DECLARE_VECTOR(simde_float32, values, 16);
 
-  #if defined(SIMDE_X86_SSE2_NATIVE)
+  #if defined(SIMDE_X86_SSE_NATIVE)
     __m128 m128;
   #endif
 

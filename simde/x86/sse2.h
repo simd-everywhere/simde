@@ -174,7 +174,7 @@ typedef union {
     SIMDE_ALIGN_TO_16 simde__m64_private m64_private[2];
     SIMDE_ALIGN_TO_16 simde__m64         m64[2];
 
-  #if defined(SIMDE_X86_SSE2_NATIVE)
+  #if defined(SIMDE_X86_SSE2_NATIVE) || defined(SIMDE_X86_SVML_NATIVE)
     SIMDE_ALIGN_TO_16 __m128d        n;
   #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     SIMDE_ALIGN_TO_16 int8x16_t      neon_i8;
@@ -226,7 +226,7 @@ typedef union {
   #endif
 } simde__m128d_private;
 
-#if defined(SIMDE_X86_SSE2_NATIVE)
+#if defined(SIMDE_X86_SSE2_NATIVE) || defined(SIMDE_X86_SVML_NATIVE)
   typedef __m128i simde__m128i;
   typedef __m128d simde__m128d;
 #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
@@ -256,7 +256,7 @@ typedef union {
   typedef simde__m128d_private simde__m128d;
 #endif
 
-#if defined(SIMDE_X86_SSE2_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_SSE2_ENABLE_NATIVE_ALIASES) || defined(SIMDE_X86_SVML_ENABLE_NATIVE_ALIASES)
   typedef simde__m128i __m128i;
   typedef simde__m128d __m128d;
 #endif
@@ -4771,7 +4771,11 @@ simde_mm_pause (void) {
   #if defined(SIMDE_X86_SSE2_NATIVE)
     _mm_pause();
   #elif defined(SIMDE_ARCH_X86)
-    __asm__ __volatile__("pause");
+    #if defined(_MSC_VER)
+      __asm pause;
+    #else
+      __asm__ __volatile__("pause");
+    #endif
   #elif defined(SIMDE_ARCH_ARM_NEON)
     #if defined(_MSC_VER)
       __isb(_ARM64_BARRIER_SY);
