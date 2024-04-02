@@ -22,7 +22,6 @@
  */
 
 #define SIMDE_TESTS_CURRENT_ISAX sse2
-#include <simde/x86/sse2.h>
 #include <test/x86/test-sse2.h>
 
 #if defined(HEDLEY_MSVC_VERSION)
