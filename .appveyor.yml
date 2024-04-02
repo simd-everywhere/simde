@@ -5,14 +5,14 @@ environment:
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
       VCVARSALL: C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvars32.bat
       PYTHON_DIR: C:\Python311-x64
-    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
-      VCVARSALL: C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvars32.bat
-      PYTHON_DIR: C:\Python311-x64
       FLAGS: /arch:SSE
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
       VCVARSALL: C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvars32.bat
       PYTHON_DIR: C:\Python311-x64
       FLAGS: /arch:SSE2
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+      VCVARSALL: C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvars32.bat
+      PYTHON_DIR: C:\Python311-x64
 branches:
   except:
     - /^ci/(?!appveyor)(/.+)?/
