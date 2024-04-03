@@ -190,7 +190,7 @@ typedef union {
     v4f32 msa;
   #endif
 
-  #if defined(SIMDE_X86_SSE2_NATIVE)
+  #if defined(SIMDE_X86_SSE_NATIVE)
     __m128 m128;
   #endif
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
@@ -296,6 +296,9 @@ typedef union {
    * In C++ we could overload casts, but in C our options are more
    * limited and I think we would need to rely on conversion functions
    * as an extension. */
+  #if defined(SIMDE_X86_SSE_NATIVE)
+    typedef __m128  simde_v4f32;
+  #endif
   #if defined(SIMDE_X86_SSE2_NATIVE)
     typedef __m128i simde_v16i8;
     typedef __m128i simde_v8i16;
@@ -305,7 +308,6 @@ typedef union {
     typedef __m128i simde_v8u16;
     typedef __m128i simde_v4u32;
     typedef __m128i simde_v2u64;
-    typedef __m128  simde_v4f32;
     typedef __m128d simde_v2f64;
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
     typedef v128_t simde_v16i8;
