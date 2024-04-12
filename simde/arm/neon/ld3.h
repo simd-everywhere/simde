@@ -268,7 +268,7 @@ simde_vld3_s64(int64_t const *ptr) {
     return r;
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vld3_s64
   #define vld3_s64(a) simde_vld3_s64((a))
 #endif
@@ -400,7 +400,7 @@ simde_vld3_u64(uint64_t const *ptr) {
     return r;
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vld3_u64
   #define vld3_u64(a) simde_vld3_u64((a))
 #endif

@@ -232,7 +232,7 @@ simde_vld4_s64(int64_t const ptr[HEDLEY_ARRAY_PARAM(4)]) {
     return s_;
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vld4_s64
   #define vld4_s64(a) simde_vld4_s64((a))
 #endif
@@ -344,7 +344,7 @@ simde_vld4_u64(uint64_t const ptr[HEDLEY_ARRAY_PARAM(4)]) {
     return s_;
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vld4_u64
   #define vld4_u64(a) simde_vld4_u64((a))
 #endif

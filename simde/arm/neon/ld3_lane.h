@@ -285,10 +285,10 @@ simde_int16x8x3_t simde_vld3q_lane_s16(int16_t const ptr[HEDLEY_ARRAY_PARAM(3)],
   }
   return r;
 }
-#if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+#if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vld3q_lane_s16(ptr, src, lane) vld3q_lane_s16(ptr, src, lane)
 #endif
-#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vld3q_lane_s16
   #define vld3q_lane_s16(ptr, src, lane) simde_vld3q_lane_s16((ptr), (src), (lane))
 #endif
@@ -365,10 +365,10 @@ simde_uint16x8x3_t simde_vld3q_lane_u16(uint16_t const ptr[HEDLEY_ARRAY_PARAM(3)
   }
   return r;
 }
-#if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+#if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vld3q_lane_u16(ptr, src, lane) vld3q_lane_u16(ptr, src, lane)
 #endif
-#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vld3q_lane_u16
   #define vld3q_lane_u16(ptr, src, lane) simde_vld3q_lane_u16((ptr), (src), (lane))
 #endif
@@ -564,10 +564,10 @@ simde_poly16x8x3_t simde_vld3q_lane_p16(simde_poly16_t const ptr[HEDLEY_ARRAY_PA
   }
   return r;
 }
-#if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+#if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vld3q_lane_p16(ptr, src, lane) vld3q_lane_p16(ptr, src, lane)
 #endif
-#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vld3q_lane_p16
   #define vld3q_lane_p16(ptr, src, lane) simde_vld3q_lane_p16((ptr), (src), (lane))
 #endif
