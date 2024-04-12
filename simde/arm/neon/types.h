@@ -1291,6 +1291,8 @@ typedef union {
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   typedef   simde_float32_t     float32_t;
+  typedef     simde_poly8_t       poly8_t;
+  typedef    simde_poly16_t      poly16_t;
 
   typedef    simde_int8x8_t      int8x8_t;
   typedef   simde_int16x4_t     int16x4_t;
