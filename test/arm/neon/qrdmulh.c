@@ -35,6 +35,9 @@ test_simde_vqrdmulh_s16 (SIMDE_MUNIT_TEST_ARGS) {
     { {  INT16_C( 31066),  INT16_C( 19881),  INT16_C( 14863),  INT16_C( 16264) },
       {  INT16_C( 17499),  INT16_C( 19391), -INT16_C( 23792), -INT16_C( 25706) },
       {  INT16_C( 16590),  INT16_C( 11765), -INT16_C( 10792), -INT16_C( 12759) } },
+    { {        INT16_MIN,        INT16_MIN,       INT16_MIN,         INT16_MIN },
+      {        INT16_MIN,        INT16_MIN,       INT16_MIN,         INT16_MIN },
+      {        INT16_MAX,        INT16_MAX,       INT16_MAX,         INT16_MAX } },
 
   };
 
@@ -94,6 +97,9 @@ test_simde_vqrdmulh_s32 (SIMDE_MUNIT_TEST_ARGS) {
     { { -INT32_C(  1216301242),  INT32_C(   231209245) },
       {  INT32_C(  1833478310), -INT32_C(   429409792) },
       { -INT32_C(  1038453516), -INT32_C(    46232489) } },
+    { {              INT32_MIN,              INT32_MIN },
+      {              INT32_MIN,              INT32_MIN },
+      {              INT32_MAX,              INT32_MAX } },
 
   };
 
@@ -153,6 +159,11 @@ test_simde_vqrdmulhq_s16 (SIMDE_MUNIT_TEST_ARGS) {
     { {  INT16_C( 28579),  INT16_C( 26571),  INT16_C( 23618),  INT16_C(  3470),  INT16_C( 10594),  INT16_C( 31318), -INT16_C( 24794),  INT16_C(  1860) },
       { -INT16_C( 22526), -INT16_C( 12632),  INT16_C( 21464),  INT16_C(  8577),  INT16_C( 28627),  INT16_C( 27596), -INT16_C( 26895), -INT16_C( 27290) },
       { -INT16_C( 19646), -INT16_C( 10243),  INT16_C( 15470),  INT16_C(   908),  INT16_C(  9255),  INT16_C( 26375),  INT16_C( 20350), -INT16_C(  1549) } },
+#if !defined(SIMDE_X86_SSE_NATIVE) && !defined(SIMDE_X86_MMX_NATIVE)
+    { {        INT16_MIN,        INT16_MIN,        INT16_MIN,        INT16_MIN,        INT16_MIN,        INT16_MIN,        INT16_MIN,        INT16_MIN },
+      {        INT16_MIN,        INT16_MIN,        INT16_MIN,        INT16_MIN,        INT16_MIN,        INT16_MIN,        INT16_MIN,        INT16_MIN },
+      {        INT16_MAX,        INT16_MAX,        INT16_MAX,        INT16_MAX,        INT16_MAX,        INT16_MAX,        INT16_MAX,        INT16_MAX } },
+#endif
 
   };
 
@@ -212,6 +223,9 @@ test_simde_vqrdmulhq_s32 (SIMDE_MUNIT_TEST_ARGS) {
     { { -INT32_C(   613662219), -INT32_C(  1259034176),  INT32_C(  1695972338), -INT32_C(    22565202) },
       {  INT32_C(  1459986413),  INT32_C(   865007473), -INT32_C(   921225670), -INT32_C(   335884554) },
       { -INT32_C(   417203876), -INT32_C(   507139587), -INT32_C(   727536740),  INT32_C(     3529388) } },
+    { {              INT32_MIN,              INT32_MIN,              INT32_MIN,              INT32_MIN },
+      {              INT32_MIN,              INT32_MIN,              INT32_MIN,              INT32_MIN },
+      {              INT32_MAX,              INT32_MAX,              INT32_MAX,              INT32_MAX } },
 
   };
 
