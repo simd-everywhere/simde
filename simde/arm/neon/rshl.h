@@ -84,7 +84,9 @@ simde_vrshld_s64(int64_t a, int64_t b) {
         ? 0
         : (b >= 0)
           ? (a << b)
-          : ((a + (INT64_C(1) << (-b - 1))) >> -b);
+          : (a <= 0
+            ? ((a + (INT64_C(1) << (-b - 1))) >> -b)
+            : HEDLEY_STATIC_CAST(int64_t, ((uint64_t)(a + (INT64_C(1) << (-b - 1))) >> -b)));
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
@@ -148,7 +150,8 @@ simde_vrshl_s8 (const simde_int8x8_t a, const simde_int8x8_t b) {
         r_.values[i] = HEDLEY_STATIC_CAST(int8_t,
                                           (simde_math_abs(b_.values[i]) >= 8) ? 0 :
                                           (b_.values[i] >= 0) ? (a_.values[i] << b_.values[i]) :
-                                          ((a_.values[i] + (1 << (-b_.values[i] - 1))) >> -b_.values[i]));
+                                          ((a_.values[i] <= 0) ? ((a_.values[i] + (1 << (-b_.values[i] - 1))) >> -b_.values[i]) :
+                                          (((uint8_t)(a_.values[i] + (1 << (-b_.values[i] - 1))) >> -b_.values[i]) & (0x7FL))));
       }
     #endif
 
@@ -189,7 +192,8 @@ simde_vrshl_s16 (const simde_int16x4_t a, const simde_int16x4_t b) {
         r_.values[i] = HEDLEY_STATIC_CAST(int16_t,
                                           (simde_math_abs(b_.values[i]) >= 16) ? 0 :
                                           (b_.values[i] >= 0) ? (a_.values[i] << b_.values[i]) :
-                                          ((a_.values[i] + (1 << (-b_.values[i] - 1))) >> -b_.values[i]));
+                                          ((a_.values[i] <= 0) ? ((a_.values[i] + (1 << (-b_.values[i] - 1))) >> -b_.values[i]) :
+                                          (((uint16_t)(a_.values[i] + (1 << (-b_.values[i] - 1))) >> -b_.values[i]) & (0x7FFFL))));
       }
     #endif
 
@@ -230,7 +234,8 @@ simde_vrshl_s32 (const simde_int32x2_t a, const simde_int32x2_t b) {
         r_.values[i] = HEDLEY_STATIC_CAST(int32_t,
                                           (simde_math_abs(b_.values[i]) >= 32) ? 0 :
                                           (b_.values[i] >= 0) ? (a_.values[i] << b_.values[i]) :
-                                          ((a_.values[i] + (1 << (-b_.values[i] - 1))) >> -b_.values[i]));
+                                          ((a_.values[i] <= 0) ? ((a_.values[i] + (1 << (-b_.values[i] - 1))) >> -b_.values[i]) :
+                                          (((uint32_t)(a_.values[i] + (1 << (-b_.values[i] - 1))) >> -b_.values[i]) & (0x7FFFFFFFL))));
       }
     #endif
 
@@ -513,7 +518,8 @@ simde_vrshlq_s8 (const simde_int8x16_t a, const simde_int8x16_t b) {
         r_.values[i] = HEDLEY_STATIC_CAST(int8_t,
                                           (simde_math_abs(b_.values[i]) >= 8) ? 0 :
                                           (b_.values[i] >= 0) ? (a_.values[i] << b_.values[i]) :
-                                          ((a_.values[i] + (1 << (-b_.values[i] - 1))) >> -b_.values[i]));
+                                          ((a_.values[i] <= 0) ? ((a_.values[i] + (1 << (-b_.values[i] - 1))) >> -b_.values[i]) :
+                                          (((uint8_t)(a_.values[i] + (1 << (-b_.values[i] - 1))) >> -b_.values[i]) & (0x7FL))));
       }
     #endif
 
@@ -580,7 +586,8 @@ simde_vrshlq_s16 (const simde_int16x8_t a, const simde_int16x8_t b) {
         r_.values[i] = HEDLEY_STATIC_CAST(int16_t,
                                           (simde_math_abs(b_.values[i]) >= 16) ? 0 :
                                           (b_.values[i] >= 0) ? (a_.values[i] << b_.values[i]) :
-                                          ((a_.values[i] + (1 << (-b_.values[i] - 1))) >> -b_.values[i]));
+                                          ((a_.values[i] <= 0) ? ((a_.values[i] + (1 << (-b_.values[i] - 1))) >> -b_.values[i]) :
+                                          (((uint16_t)(a_.values[i] + (1 << (-b_.values[i] - 1))) >> -b_.values[i]) & (0x7FFFL))));
       }
     #endif
 
@@ -634,8 +641,9 @@ simde_vrshlq_s32 (const simde_int32x4_t a, const simde_int32x4_t b) {
         b_.values[i] = HEDLEY_STATIC_CAST(int8_t, b_.values[i]);
         r_.values[i] = HEDLEY_STATIC_CAST(int32_t,
                                           (simde_math_abs(b_.values[i]) >= 32) ? 0 :
-                                          (b_.values[i] >=  0) ? (a_.values[i] << b_.values[i]) :
-                                          ((a_.values[i] + (1 << (-b_.values[i] - 1))) >> -b_.values[i]));
+                                          (b_.values[i] >= 0) ? (a_.values[i] << b_.values[i]) :
+                                          ((a_.values[i] <= 0) ? ((a_.values[i] + (1 << (-b_.values[i] - 1))) >> -b_.values[i]) :
+                                          (((uint32_t)(a_.values[i] + (1 << (-b_.values[i] - 1))) >> -b_.values[i]) & (0x7FFFFFFFL))));
       }
     #endif
 
