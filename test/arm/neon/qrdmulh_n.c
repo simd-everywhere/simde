@@ -35,6 +35,9 @@ test_simde_vqrdmulh_n_s16 (SIMDE_MUNIT_TEST_ARGS) {
     { { -INT16_C( 14394),  INT16_C( 28773),  INT16_C( 30122), -INT16_C(   574) },
       -INT16_C( 10708),
       {  INT16_C(  4704), -INT16_C(  9403), -INT16_C(  9843),  INT16_C(   188) } },
+    { {        INT16_MIN,        INT16_MIN,        INT16_MIN,        INT16_MIN },
+             INT16_MIN,
+      {        INT16_MAX,        INT16_MAX,        INT16_MAX,        INT16_MAX } },
 
   };
 
@@ -94,6 +97,9 @@ test_simde_vqrdmulh_n_s32 (SIMDE_MUNIT_TEST_ARGS) {
     { { -INT32_C(  1238271146),  INT32_C(  1164109663) },
        INT32_C(   737217376),
       { -INT32_C(   425090550),  INT32_C(   399631388) } },
+    { {              INT32_MIN,              INT32_MIN },
+                   INT32_MIN,
+      {              INT32_MAX,              INT32_MAX } },
 
   };
 
@@ -153,6 +159,9 @@ test_simde_vqrdmulhq_n_s16 (SIMDE_MUNIT_TEST_ARGS) {
     { {  INT16_C( 15761),  INT16_C( 23849),  INT16_C(  9736),  INT16_C( 26802),  INT16_C( 27881), -INT16_C(  7053), -INT16_C( 14710), -INT16_C( 23581) },
        INT16_C( 25688),
       {  INT16_C( 12356),  INT16_C( 18696),  INT16_C(  7632),  INT16_C( 21011),  INT16_C( 21857), -INT16_C(  5529), -INT16_C( 11532), -INT16_C( 18486) } },
+    { {        INT16_MIN,        INT16_MIN,        INT16_MIN,        INT16_MIN,        INT16_MIN,        INT16_MIN,        INT16_MIN,        INT16_MIN },
+             INT16_MIN,
+      {        INT16_MAX,        INT16_MAX,        INT16_MAX,        INT16_MAX,        INT16_MAX,        INT16_MAX,        INT16_MAX,        INT16_MAX } },
 
   };
 
@@ -212,6 +221,9 @@ test_simde_vqrdmulhq_n_s32 (SIMDE_MUNIT_TEST_ARGS) {
     { { -INT32_C(   219487289),  INT32_C(  1420994589),  INT32_C(   889110344), -INT32_C(  2103115347) },
        INT32_C(  1735639961),
       { -INT32_C(   177394091),  INT32_C(  1148476728),  INT32_C(   718597063), -INT32_C(  1699780598) } },
+    { {              INT32_MIN,              INT32_MIN,              INT32_MIN,              INT32_MIN },
+                   INT32_MIN,
+      {              INT32_MAX,              INT32_MAX,              INT32_MAX,              INT32_MAX } },
 
   };
 

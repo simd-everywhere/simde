@@ -42,6 +42,9 @@ simde_int16x4_t
 simde_vqrdmulh_n_s16(simde_int16x4_t a, int16_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vqrdmulh_n_s16(a, b);
+  #elif defined(SIMDE_RISCV_V_NATIVE)
+    vint32m2_t r_ = __riscv_vwmul_vx_i32m2(a, b, 4);
+    return __riscv_vnclip_wx_i16m1(__riscv_vsadd_vv_i32m2(r_, r_, 4), 16, 0, 4);
   #else
     simde_int16x4_private
       r_,
@@ -66,6 +69,9 @@ simde_int32x2_t
 simde_vqrdmulh_n_s32(simde_int32x2_t a, int32_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vqrdmulh_n_s32(a, b);
+  #elif defined(SIMDE_RISCV_V_NATIVE)
+    vint64m2_t r_ = __riscv_vwmul_vx_i64m2(a, b, 2);
+    return __riscv_vnclip_wx_i32m1(__riscv_vsadd_vv_i64m2(r_, r_, 2), 32, 0, 2);
   #else
     simde_int32x2_private
       r_,
@@ -89,6 +95,9 @@ simde_int16x8_t
 simde_vqrdmulhq_n_s16(simde_int16x8_t a, int16_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vqrdmulhq_n_s16(a, b);
+  #elif defined(SIMDE_RISCV_V_NATIVE)
+    vint32m2_t r_ = __riscv_vwmul_vx_i32m2(a, b, 8);
+    return __riscv_vnclip_wx_i16m1(__riscv_vsadd_vv_i32m2(r_, r_, 8), 16, 0, 8);
   #else
     simde_int16x8_private
       r_,
@@ -112,6 +121,9 @@ simde_int32x4_t
 simde_vqrdmulhq_n_s32(simde_int32x4_t a, int32_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vqrdmulhq_n_s32(a, b);
+  #elif defined(SIMDE_RISCV_V_NATIVE)
+    vint64m2_t r_ = __riscv_vwmul_vx_i64m2(a, b, 4);
+    return __riscv_vnclip_wx_i32m1(__riscv_vsadd_vv_i64m2(r_, r_, 4), 32, 0, 4);
   #else
     simde_int32x4_private
       r_,
