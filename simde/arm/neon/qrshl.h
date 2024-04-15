@@ -44,7 +44,9 @@ simde_vqrshlb_s8(int8_t a, int8_t b) {
     if (b < -8) {
       r = 0;
     } else if (b < 0) {
-      r = HEDLEY_STATIC_CAST(int8_t, ((a + (1 << (-b - 1))) >> -b));
+      r = HEDLEY_STATIC_CAST(int8_t, a <= 0
+            ? ((a + (1 << (-b - 1))) >> -b)
+            : HEDLEY_STATIC_CAST(int8_t, (((uint8_t)(a + (1 << (-b - 1))) >> -b) & 0x7FL)));
     } else if (b == 0) {
       r = a;
     } else if (b < 7) {
@@ -79,7 +81,9 @@ simde_vqrshlh_s16(int16_t a, int16_t b) {
     if (b8 <= -16) {
       r = 0;
     } else if (b8 < 0) {
-      r = HEDLEY_STATIC_CAST(int16_t, ((a + (1 << (-b8 - 1))) >> -b8));
+      r = HEDLEY_STATIC_CAST(int16_t, a <= 0
+            ? ((a + (1 << (-b8 - 1))) >> -b8)
+            : HEDLEY_STATIC_CAST(int16_t, (((uint16_t)(a + (1 << (-b8 - 1))) >> -b8) & 0x7FFFL)));
     } else if (b8 == 0) {
       r = a;
     } else if (b8 < 15) {
@@ -114,7 +118,9 @@ simde_vqrshls_s32(int32_t a, int32_t b) {
     if (b8 <= -32) {
       r = 0;
     } else if (b8 < 0) {
-      r = ((a + (1 << (-b8 - 1))) >> -b8);
+      r = a <= 0
+            ? ((a + (1 << (-b8 - 1))) >> -b8)
+            : HEDLEY_STATIC_CAST(int32_t, (((uint32_t)(a + (1 << (-b8 - 1))) >> -b8) & 0x7FFFFFFFL));
     } else if (b8 == 0) {
       r = a;
     } else if (b8 < 31) {
@@ -149,7 +155,9 @@ simde_vqrshld_s64(int64_t a, int64_t b) {
     if (b8 <= -64) {
       r = 0;
     } else if (b8 < 0) {
-      r = ((a + (INT64_C(1) << (-b8 - 1))) >> -b8);
+      r = a <= 0
+            ? ((a + (INT64_C(1) << (-b8 - 1))) >> -b8)
+            : HEDLEY_STATIC_CAST(int64_t, (((uint64_t)(a + (INT64_C(1) << (-b8 - 1))) >> -b8) & 0x7FFFFFFFFFFFFFFFL));
     } else if (b8 == 0) {
       r = a;
     } else if (b8 < 63) {
