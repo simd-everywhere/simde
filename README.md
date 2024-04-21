@@ -321,6 +321,8 @@ We would love to add more, so patches are extremely welcome!
      SSE with NEON.  Non-free, C++.
    * [AvxToNeon](https://github.com/kunpengcompute/AvxToNeon) — Popular
       AVX+ intrinsincs implemented in NEON. C, Apache 2.0 license.
+   * [neon2rvv](https://github.com/howjmay/neon2rvv) - A C/C++ header file that converts Arm/Aarch64 NEON intrinsics to RISC-V Vector (RVV) Extension, MIT license
+   * [sse2rvv](https://github.com/pattonkan/sse2rvv) - A C/C++ header file that converts Intel SSE intrinsics to RISCV-V Extension intrinsics, MIT license.
  * [arm-neon-tests](https://github.com/christophe-lyon/arm-neon-tests)
    contains tests to verify NEON implementations.
 
