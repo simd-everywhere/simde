@@ -149,6 +149,15 @@ simde_vabd_s8(simde_int8x8_t a, simde_int8x8_t b) {
       );
 
     return simde_int8x8_from_private(r_);
+  #elif defined(SIMDE_RISCV_V_NATIVE)
+    simde_int8x8_private r_, max_, min_;
+    simde_int8x8_private a_ = simde_int8x8_to_private(a);
+    simde_int8x8_private b_ = simde_int8x8_to_private(b);
+
+    max_.sv64 = __riscv_vmax_vv_i8m1(a_.sv64, b_.sv64, 8);
+    min_.sv64 = __riscv_vmin_vv_i8m1(a_.sv64, b_.sv64, 8);
+    r_.sv64 = __riscv_vsub_vv_i8m1(max_.sv64, min_.sv64, 8);
+    return simde_int8x8_from_private(r_);
   #else
     return simde_vmovn_s16(simde_vabsq_s16(simde_vsubl_s8(a, b)));
   #endif
@@ -172,6 +181,15 @@ simde_vabd_s16(simde_int16x4_t a, simde_int16x4_t b) {
     r_.m64 = _mm_sub_pi16(_mm_max_pi16(a_.m64, b_.m64), _mm_min_pi16(a_.m64, b_.m64));
 
     return simde_int16x4_from_private(r_);
+  #elif defined(SIMDE_RISCV_V_NATIVE)
+    simde_int16x4_private r_, max_, min_;
+    simde_int16x4_private a_ = simde_int16x4_to_private(a);
+    simde_int16x4_private b_ = simde_int16x4_to_private(b);
+
+    max_.sv64 = __riscv_vmax_vv_i16m1(a_.sv64, b_.sv64, 4);
+    min_.sv64 = __riscv_vmin_vv_i16m1(a_.sv64, b_.sv64, 4);
+    r_.sv64 = __riscv_vsub_vv_i16m1(max_.sv64, min_.sv64, 4);
+    return simde_int16x4_from_private(r_);
   #else
     return simde_vmovn_s32(simde_vabsq_s32(simde_vsubl_s16(a, b)));
   #endif
@@ -186,6 +204,15 @@ simde_int32x2_t
 simde_vabd_s32(simde_int32x2_t a, simde_int32x2_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vabd_s32(a, b);
+  #elif defined(SIMDE_RISCV_V_NATIVE)
+    simde_int32x2_private r_, max_, min_;
+    simde_int32x2_private a_ = simde_int32x2_to_private(a);
+    simde_int32x2_private b_ = simde_int32x2_to_private(b);
+
+    max_.sv64 = __riscv_vmax_vv_i32m1(a_.sv64, b_.sv64, 2);
+    min_.sv64 = __riscv_vmin_vv_i32m1(a_.sv64, b_.sv64, 2);
+    r_.sv64 = __riscv_vsub_vv_i32m1(max_.sv64, min_.sv64, 2);
+    return simde_int32x2_from_private(r_);
   #else
     return simde_vmovn_s64(simde_vabsq_s64(simde_vsubl_s32(a, b)));
   #endif
@@ -200,6 +227,15 @@ simde_uint8x8_t
 simde_vabd_u8(simde_uint8x8_t a, simde_uint8x8_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vabd_u8(a, b);
+  #elif defined(SIMDE_RISCV_V_NATIVE)
+    simde_uint8x8_private r_, max_, min_;
+    simde_uint8x8_private a_ = simde_uint8x8_to_private(a);
+    simde_uint8x8_private b_ = simde_uint8x8_to_private(b);
+
+    max_.sv64 = __riscv_vmaxu_vv_u8m1(a_.sv64, b_.sv64, 8);
+    min_.sv64 = __riscv_vminu_vv_u8m1(a_.sv64, b_.sv64, 8);
+    r_.sv64 = __riscv_vsub_vv_u8m1(max_.sv64, min_.sv64, 8);
+    return simde_uint8x8_from_private(r_);
   #else
     return simde_vmovn_u16(
       simde_vreinterpretq_u16_s16(
@@ -219,6 +255,15 @@ simde_uint16x4_t
 simde_vabd_u16(simde_uint16x4_t a, simde_uint16x4_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vabd_u16(a, b);
+  #elif defined(SIMDE_RISCV_V_NATIVE)
+    simde_uint16x4_private r_, max_, min_;
+    simde_uint16x4_private a_ = simde_uint16x4_to_private(a);
+    simde_uint16x4_private b_ = simde_uint16x4_to_private(b);
+
+    max_.sv64 = __riscv_vmaxu_vv_u16m1(a_.sv64, b_.sv64, 4);
+    min_.sv64 = __riscv_vminu_vv_u16m1(a_.sv64, b_.sv64, 4);
+    r_.sv64 = __riscv_vsub_vv_u16m1(max_.sv64, min_.sv64, 4);
+    return simde_uint16x4_from_private(r_);
   #else
     return simde_vmovn_u32(
       simde_vreinterpretq_u32_s32(
@@ -238,6 +283,15 @@ simde_uint32x2_t
 simde_vabd_u32(simde_uint32x2_t a, simde_uint32x2_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vabd_u32(a, b);
+  #elif defined(SIMDE_RISCV_V_NATIVE)
+    simde_uint32x2_private r_, max_, min_;
+    simde_uint32x2_private a_ = simde_uint32x2_to_private(a);
+    simde_uint32x2_private b_ = simde_uint32x2_to_private(b);
+
+    max_.sv64 = __riscv_vmaxu_vv_u32m1(a_.sv64, b_.sv64, 2);
+    min_.sv64 = __riscv_vminu_vv_u32m1(a_.sv64, b_.sv64, 2);
+    r_.sv64 = __riscv_vsub_vv_u32m1(max_.sv64, min_.sv64, 2);
+    return simde_uint32x2_from_private(r_);
   #else
     return simde_vmovn_u64(
       simde_vreinterpretq_u64_s64(
@@ -323,6 +377,12 @@ simde_vabdq_s8(simde_int8x16_t a, simde_int8x16_t b) {
         );
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r_.v128 = wasm_i8x16_sub(wasm_i8x16_max(a_.v128, b_.v128), wasm_i8x16_min(a_.v128, b_.v128));
+    #elif defined(SIMDE_RISCV_V_NATIVE)
+      simde_int8x16_private max_, min_;
+
+      max_.sv128 = __riscv_vmax_vv_i8m1(a_.sv128, b_.sv128, 16);
+      min_.sv128 = __riscv_vmin_vv_i8m1(a_.sv128, b_.sv128, 16);
+      r_.sv128 = __riscv_vsub_vv_i8m1(max_.sv128, min_.sv128, 16);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -359,6 +419,12 @@ simde_vabdq_s16(simde_int16x8_t a, simde_int16x8_t b) {
       r_.m128i = _mm_sub_epi16(_mm_max_epi16(a_.m128i, b_.m128i), _mm_min_epi16(a_.m128i, b_.m128i));
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r_.v128 = wasm_i16x8_sub(wasm_i16x8_max(a_.v128, b_.v128), wasm_i16x8_min(a_.v128, b_.v128));
+    #elif defined(SIMDE_RISCV_V_NATIVE)
+      simde_int16x8_private max_, min_;
+
+      max_.sv128 = __riscv_vmax_vv_i16m1(a_.sv128, b_.sv128, 8);
+      min_.sv128 = __riscv_vmin_vv_i16m1(a_.sv128, b_.sv128, 8);
+      r_.sv128 = __riscv_vsub_vv_i16m1(max_.sv128, min_.sv128, 8);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -406,6 +472,12 @@ simde_vabdq_s32(simde_int32x4_t a, simde_int32x4_t b) {
           ),
           m
         );
+    #elif defined(SIMDE_RISCV_V_NATIVE)
+      simde_int32x4_private max_, min_;
+
+      max_.sv128 = __riscv_vmax_vv_i32m1(a_.sv128, b_.sv128, 4);
+      min_.sv128 = __riscv_vmin_vv_i32m1(a_.sv128, b_.sv128, 4);
+      r_.sv128 = __riscv_vsub_vv_i32m1(max_.sv128, min_.sv128, 4);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -443,6 +515,12 @@ simde_vabdq_u8(simde_uint8x16_t a, simde_uint8x16_t b) {
       r_.m128i = _mm_sub_epi8(_mm_max_epu8(a_.m128i, b_.m128i), _mm_min_epu8(a_.m128i, b_.m128i));
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r_.v128 = wasm_i8x16_sub(wasm_u8x16_max(a_.v128, b_.v128), wasm_u8x16_min(a_.v128, b_.v128));
+    #elif defined(SIMDE_RISCV_V_NATIVE)
+      simde_uint8x16_private max_, min_;
+
+      max_.sv128 = __riscv_vmaxu_vv_u8m1(a_.sv128, b_.sv128, 16);
+      min_.sv128 = __riscv_vminu_vv_u8m1(a_.sv128, b_.sv128, 16);
+      r_.sv128 = __riscv_vsub_vv_u8m1(max_.sv128, min_.sv128, 16);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -480,6 +558,12 @@ simde_vabdq_u16(simde_uint16x8_t a, simde_uint16x8_t b) {
       r_.m128i = _mm_sub_epi16(_mm_max_epu16(a_.m128i, b_.m128i), _mm_min_epu16(a_.m128i, b_.m128i));
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r_.v128 = wasm_i16x8_sub(wasm_u16x8_max(a_.v128, b_.v128), wasm_u16x8_min(a_.v128, b_.v128));
+    #elif defined(SIMDE_RISCV_V_NATIVE)
+      simde_uint16x8_private max_, min_;
+
+      max_.sv128 = __riscv_vmaxu_vv_u16m1(a_.sv128, b_.sv128, 8);
+      min_.sv128 = __riscv_vminu_vv_u16m1(a_.sv128, b_.sv128, 8);
+      r_.sv128 = __riscv_vsub_vv_u16m1(max_.sv128, min_.sv128, 8);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -517,6 +601,12 @@ simde_vabdq_u32(simde_uint32x4_t a, simde_uint32x4_t b) {
       r_.m128i = _mm_sub_epi32(_mm_max_epu32(a_.m128i, b_.m128i), _mm_min_epu32(a_.m128i, b_.m128i));
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r_.v128 = wasm_i32x4_sub(wasm_u32x4_max(a_.v128, b_.v128), wasm_u32x4_min(a_.v128, b_.v128));
+    #elif defined(SIMDE_RISCV_V_NATIVE)
+      simde_uint32x4_private max_, min_;
+
+      max_.sv128 = __riscv_vmaxu_vv_u32m1(a_.sv128, b_.sv128, 4);
+      min_.sv128 = __riscv_vminu_vv_u32m1(a_.sv128, b_.sv128, 4);
+      r_.sv128 = __riscv_vsub_vv_u32m1(max_.sv128, min_.sv128, 4);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
