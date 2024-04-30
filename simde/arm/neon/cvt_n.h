@@ -34,57 +34,6 @@ HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 SIMDE_BEGIN_DECLS_
 
-/* Disabled until we fix the FCVTZS/FCVTMS/FCVTPS/FCVTNS family intrinsics
- * https://github.com/simd-everywhere/simde/issues/1099
-SIMDE_FUNCTION_ATTRIBUTES
-int16_t
-simde_vcvth_n_s16_f16(simde_float16_t a, const int n)
-    SIMDE_REQUIRE_CONSTANT_RANGE(n, 1, 16) {
-  return simde_vcvth_s16_f16(
-      simde_float16_from_float32(
-      simde_float16_to_float32(a) * HEDLEY_STATIC_CAST(simde_float32_t, pow(2, n))));
-}
-#if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
-  #define simde_vcvth_n_s16_f16(a, n) vcvth_n_s16_f16(a, n)
-#endif
-#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
-  #undef vcvth_n_s16_f16
-  #define vcvth_n_s16_f16(a, n) simde_vcvth_n_s16_f16(a, n)
-#endif
-
-SIMDE_FUNCTION_ATTRIBUTES
-int32_t
-simde_vcvth_n_s32_f16(simde_float16_t a, const int n)
-    SIMDE_REQUIRE_CONSTANT_RANGE(n, 1, 16) {
-  return simde_vcvth_s32_f16(
-      simde_float16_from_float32(
-      simde_float16_to_float32(a) * HEDLEY_STATIC_CAST(simde_float32_t, pow(2, n))));
-}
-#if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
-  #define simde_vcvth_n_s32_f16(a, n) vcvth_n_s32_f16(a, n)
-#endif
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
-  #undef vcvth_n_s32_f16
-  #define vcvth_n_s32_f16(a, n) simde_vcvth_n_s32_f16(a, n)
-#endif
-
-SIMDE_FUNCTION_ATTRIBUTES
-int64_t
-simde_vcvth_n_s64_f16(simde_float16_t a, const int n)
-    SIMDE_REQUIRE_CONSTANT_RANGE(n, 1, 16) {
-  return simde_vcvth_s64_f16(
-      simde_float16_from_float32(
-      simde_float16_to_float32(a) * HEDLEY_STATIC_CAST(simde_float32_t, pow(2, n))));
-}
-#if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
-  #define simde_vcvth_n_s64_f16(a, n) vcvth_n_s64_f16(a, n)
-#endif
-#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
-  #undef vcvth_n_s64_f16
-  #define vcvth_n_s64_f16(a, n) simde_vcvth_n_s64_f16(a, n)
-#endif
-*/
-
 SIMDE_FUNCTION_ATTRIBUTES
 uint16_t
 simde_vcvth_n_u16_f16(simde_float16_t a, const int n)
@@ -100,41 +49,6 @@ simde_vcvth_n_u16_f16(simde_float16_t a, const int n)
   #undef vcvth_n_u16_f16
   #define vcvth_n_u16_f16(a, n) simde_vcvth_n_u16_f16(a, n)
 #endif
-
-/* Disabled until we fix the FCVTZS/FCVTMS/FCVTPS/FCVTNS family intrinsics
- * https://github.com/simd-everywhere/simde/issues/1099
-SIMDE_FUNCTION_ATTRIBUTES
-uint32_t
-simde_vcvth_n_u32_f16(simde_float16_t a, const int n)
-    SIMDE_REQUIRE_CONSTANT_RANGE(n, 1, 16) {
-  return simde_vcvth_u32_f16(
-      simde_float16_from_float32(
-      simde_float16_to_float32(a) * HEDLEY_STATIC_CAST(simde_float32_t, pow(2, n))));
-}
-#if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
-  #define simde_vcvth_n_u32_f16(a, n) vcvth_n_u32_f16(a, n)
-#endif
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
-  #undef vcvth_n_u32_f16
-  #define vcvth_n_u32_f16(a, n) simde_vcvth_n_u32_f16(a, n)
-#endif
-
-SIMDE_FUNCTION_ATTRIBUTES
-uint64_t
-simde_vcvth_n_u64_f16(simde_float16_t a, const int n)
-    SIMDE_REQUIRE_CONSTANT_RANGE(n, 1, 16) {
-  return simde_vcvth_u64_f16(
-      simde_float16_from_float32(
-      simde_float16_to_float32(a) * HEDLEY_STATIC_CAST(simde_float32_t, pow(2, n))));
-}
-#if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
-  #define simde_vcvth_n_u64_f16(a, n) vcvth_n_u64_f16(a, n)
-#endif
-#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
-  #undef vcvth_n_u64_f16
-  #define vcvth_n_u64_f16(a, n) simde_vcvth_n_u64_f16(a, n)
-#endif
-*/
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float16_t
@@ -152,41 +66,6 @@ simde_vcvth_n_f16_s16(int16_t a, const int n)
   #define vcvth_n_f16_s16(a, n) simde_vcvth_n_f16_s16(a, n)
 #endif
 
-/* Disabled until we fix the FCVTZS/FCVTMS/FCVTPS/FCVTNS family intrinsics
- * https://github.com/simd-everywhere/simde/issues/1099
-SIMDE_FUNCTION_ATTRIBUTES
-simde_float16_t
-simde_vcvth_n_f16_s32(int32_t a, const int n)
-   SIMDE_REQUIRE_CONSTANT_RANGE(n, 1, 16) {
-  return simde_float16_from_float32(
-      HEDLEY_STATIC_CAST(simde_float32_t,
-      HEDLEY_STATIC_CAST(simde_float64_t, a) / pow(2, n)));
-}
-#if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
-  #define simde_vcvth_n_f16_s32(a, n) vcvth_n_f16_s32(a, n)
-#endif
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
-  #undef vcvth_n_f16_s32
-  #define vcvth_n_f16_s32(a, n) simde_vcvth_n_f16_s32(a, n)
-#endif
-
-SIMDE_FUNCTION_ATTRIBUTES
-simde_float16_t
-simde_vcvth_n_f16_s64(int64_t a, const int n)
-   SIMDE_REQUIRE_CONSTANT_RANGE(n, 1, 16) {
-  return simde_float16_from_float32(
-      HEDLEY_STATIC_CAST(simde_float32_t,
-      HEDLEY_STATIC_CAST(simde_float64_t, a) / pow(2, n)));
-}
-#if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
-  #define simde_vcvth_n_f16_s64(a, n) vcvth_n_f16_s64(a, n)
-#endif
-#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
-  #undef vcvth_n_f16_s64
-  #define vcvth_n_f16_s64(a, n) simde_vcvth_n_f16_s64(a, n)
-#endif
-*/
-
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float16_t
 simde_vcvth_n_f16_u16(uint16_t a, const int n)
@@ -202,41 +81,6 @@ simde_vcvth_n_f16_u16(uint16_t a, const int n)
   #undef vcvth_n_f16_u16
   #define vcvth_n_f16_u16(a, n) simde_vcvth_n_f16_u16(a, n)
 #endif
-
-/* Disabled until we fix the FCVTZS/FCVTMS/FCVTPS/FCVTNS family intrinsics
- * https://github.com/simd-everywhere/simde/issues/1099
-SIMDE_FUNCTION_ATTRIBUTES
-simde_float16_t
-simde_vcvth_n_f16_u32(uint32_t a, const int n)
-   SIMDE_REQUIRE_CONSTANT_RANGE(n, 1, 16) {
-  return simde_float16_from_float32(
-      HEDLEY_STATIC_CAST(simde_float32_t,
-      HEDLEY_STATIC_CAST(simde_float64_t, a) / pow(2, n)));
-}
-#if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
-  #define simde_vcvth_n_f16_u32(a, n) vcvth_n_f16_u32(a, n)
-#endif
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
-  #undef vcvth_n_f16_u32
-  #define vcvth_n_f16_u32(a, n) simde_vcvth_n_f16_u32(a, n)
-#endif
-
-SIMDE_FUNCTION_ATTRIBUTES
-simde_float16_t
-simde_vcvth_n_f16_u64(uint64_t a, const int n)
-   SIMDE_REQUIRE_CONSTANT_RANGE(n, 1, 16) {
-  return simde_float16_from_float32(
-      HEDLEY_STATIC_CAST(simde_float32_t,
-      HEDLEY_STATIC_CAST(simde_float64_t, a) / pow(2, n)));
-}
-#if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
-  #define simde_vcvth_n_f16_u64(a, n) vcvth_n_f16_u64(a, n)
-#endif
-#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
-  #undef vcvth_n_f16_u64
-  #define vcvth_n_f16_u64(a, n) simde_vcvth_n_f16_u64(a, n)
-#endif
-*/
 
 SIMDE_FUNCTION_ATTRIBUTES
 int32_t
@@ -352,33 +196,6 @@ simde_vcvtd_n_f64_u64(uint64_t a, const int n)
   #define vcvtd_n_f64_u64(a, n) simde_vcvtd_n_f64_u64(a, n)
 #endif
 
-/* Disabled until we fix the FCVTZS/FCVTMS/FCVTPS/FCVTNS family intrinsics
- * https://github.com/simd-everywhere/simde/issues/1099
-SIMDE_FUNCTION_ATTRIBUTES
-simde_int16x4_t
-simde_vcvt_n_s16_f16(simde_float16x4_t a, const int n)
-    SIMDE_REQUIRE_CONSTANT_RANGE(n, 1, 16) {
-  simde_float16x4_private a_ = simde_float16x4_to_private(a);
-  simde_int16x4_private r_;
-
-  SIMDE_VECTORIZE
-  for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-    r_.values[i] = simde_vcvth_s16_f16(simde_float16_from_float32(
-          simde_float16_to_float32(a_.values[i]) *
-          HEDLEY_STATIC_CAST(simde_float32_t, pow(2, n))));
-  }
-
-  return simde_int16x4_from_private(r_);
-}
-#if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
-  #define simde_vcvt_n_s16_f16(a, n) vcvt_n_s16_f16((a), (n))
-#endif
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
-  #undef vcvt_n_s16_f16
-  #define vcvt_n_s16_f16(a, n) simde_vcvt_n_s16_f16((a), (n))
-#endif
-*/
-
 SIMDE_FUNCTION_ATTRIBUTES
 simde_int32x2_t
 simde_vcvt_n_s32_f32(simde_float32x2_t a, const int n)
@@ -490,33 +307,6 @@ simde_vcvt_n_u64_f64(simde_float64x1_t a, const int n)
   #undef vcvt_n_u64_f64
   #define vcvt_n_u64_f64(a, n) simde_vcvt_n_u64_f64((a), (n))
 #endif
-
-/* Disabled until we fix the FCVTZS/FCVTMS/FCVTPS/FCVTNS family intrinsics
- * https://github.com/simd-everywhere/simde/issues/1099
-SIMDE_FUNCTION_ATTRIBUTES
-simde_int16x8_t
-simde_vcvtq_n_s16_f16(simde_float16x8_t a, const int n)
-   SIMDE_REQUIRE_CONSTANT_RANGE(n, 1, 16) {
-  simde_float16x8_private a_ = simde_float16x8_to_private(a);
-  simde_int16x8_private r_;
-
-  SIMDE_VECTORIZE
-  for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-    r_.values[i] = simde_vcvth_s16_f16(simde_float16_from_float32(
-          simde_float16_to_float32(a_.values[i]) *
-          HEDLEY_STATIC_CAST(simde_float32_t, pow(2, n))));
-  }
-
-  return simde_int16x8_from_private(r_);
-}
-#if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
-  #define simde_vcvtq_n_s16_f16(a, n) vcvtq_n_s16_f16((a), (n))
-#endif
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
-  #undef vcvtq_n_s16_f16
-  #define vcvtq_n_s16_f16(a, n) simde_vcvtq_n_s16_f16((a), (n))
-#endif
-*/
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde_int32x4_t
