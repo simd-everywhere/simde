@@ -743,6 +743,16 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "eric900115",
+      "name": "Eric Su",
+      "avatar_url": "https://avatars.githubusercontent.com/u/77781328?v=4",
+      "profile": "https://github.com/eric900115",
+      "contributions": [
+        "code",
+        "platform"
+      ]
     }
   ],
   "contributorsPerLine": 7
