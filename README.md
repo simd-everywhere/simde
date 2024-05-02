@@ -1,6 +1,6 @@
 # SIMD Everywhere
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-75-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-76-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 [![Chat](https://badges.gitter.im/gitterHQ/gitter.png)](https://matrix.to/#/#simd-everywhere_community:gitter.im)
 [![codecov](https://codecov.io/gh/simd-everywhere/simde/branch/master/graph/badge.svg?token=jcMBoRk0ui)](https://codecov.io/gh/simd-everywhere/simde)
@@ -505,6 +505,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/thomas-schlichter"><img src="https://avatars.githubusercontent.com/u/106664923?v=4" width="100px;" alt=""/><br /><sub><b>Thomas Schlichter</b></sub></a><br /><a href="https://github.com/nemequ/simde/issues?q=author%3Athomas-schlichter" title="Bug reports">🐛</a> <a href="https://github.com/nemequ/simde/commits?author=thomas-schlichter" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/AymenQ"><img src="https://avatars.githubusercontent.com/u/3706283?v=4" width="100px;" alt=""/><br /><sub><b>Aymen Qader</b></sub></a><br /><a href="https://github.com/nemequ/simde/commits?author=AymenQ" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/eric900115"><img src="https://avatars.githubusercontent.com/u/77781328?v=4" width="100px;" alt=""/><br /><sub><b>Eric Su</b></sub></a><br /><a href="https://github.com/nemequ/simde/commits?author=eric900115" title="Code">💻</a> <a href="#platform-eric900115" title="Packaging/porting to new platform">📦</a></td>
+    <td align="center"><a href="https://github.com/Torinde"><img src="https://avatars.githubusercontent.com/u/97228894?v=4" width="100px;" alt=""/><br /><sub><b>Torinde</b></sub></a><br /><a href="https://github.com/nemequ/simde/issues?q=author%3ATorinde" title="Bug reports">🐛</a> <a href="https://github.com/nemequ/simde/commits?author=Torinde" title="Documentation">📖</a> <a href="#ideas-Torinde" title="Ideas, Planning, & Feedback">🤔</a></td>
   </tr>
 </table>
 

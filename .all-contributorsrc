@@ -753,6 +753,17 @@
         "code",
         "platform"
       ]
+    },
+    {
+      "login": "Torinde",
+      "name": "Torinde",
+      "avatar_url": "https://avatars.githubusercontent.com/u/97228894?v=4",
+      "profile": "https://github.com/Torinde",
+      "contributions": [
+        "bug",
+        "doc",
+        "ideas"
+      ]
     }
   ],
   "contributorsPerLine": 7
