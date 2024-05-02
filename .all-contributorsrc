@@ -764,6 +764,16 @@
         "doc",
         "ideas"
       ]
+    },
+    {
+      "login": "howjmay",
+      "name": "Yang Hau",
+      "avatar_url": "https://avatars.githubusercontent.com/u/13924801?v=4",
+      "profile": "https://www.linkedin.com/in/yanghauyuan/",
+      "contributions": [
+        "code",
+        "ideas"
+      ]
     }
   ],
   "contributorsPerLine": 7
