@@ -39,7 +39,7 @@ SIMDE_BEGIN_DECLS_
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float16_t
 simde_vmaxnmh_f16(simde_float16_t a, simde_float16_t b) {
-  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && (__ARM_NEON_FP >= 6) && defined(SIMDE_ARM_NEON_FP16)
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(__ARM_NEON_FP) && (__ARM_NEON_FP >= 6) && defined(SIMDE_ARM_NEON_FP16)
     return vmaxnmh_f16(a, b);
   #else
     #if defined(simde_math_fmaxf)
@@ -69,7 +69,7 @@ simde_vmaxnmh_f16(simde_float16_t a, simde_float16_t b) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float16x4_t
 simde_vmaxnm_f16(simde_float16x4_t a, simde_float16x4_t b) {
-  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && (__ARM_NEON_FP >= 6) && defined(SIMDE_ARM_NEON_FP16)
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(__ARM_NEON_FP) && (__ARM_NEON_FP >= 6) && defined(SIMDE_ARM_NEON_FP16)
     return vmaxnm_f16(a, b);
   #else
     simde_float16x4_private
@@ -93,7 +93,7 @@ simde_vmaxnm_f16(simde_float16x4_t a, simde_float16x4_t b) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float16x8_t
 simde_vmaxnmq_f16(simde_float16x8_t a, simde_float16x8_t b) {
-  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && (__ARM_NEON_FP >= 6) && defined(SIMDE_ARM_NEON_FP16)
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(__ARM_NEON_FP) && (__ARM_NEON_FP >= 6) && defined(SIMDE_ARM_NEON_FP16)
     return vmaxnmq_f16(a, b);
   #else
     simde_float16x8_private
@@ -117,7 +117,7 @@ simde_vmaxnmq_f16(simde_float16x8_t a, simde_float16x8_t b) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float32x2_t
 simde_vmaxnm_f32(simde_float32x2_t a, simde_float32x2_t b) {
-  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && (__ARM_NEON_FP >= 6)
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(__ARM_NEON_FP) && (__ARM_NEON_FP >= 6)
     return vmaxnm_f32(a, b);
   #else
     simde_float32x2_private
@@ -189,7 +189,7 @@ simde_vmaxnm_f64(simde_float64x1_t a, simde_float64x1_t b) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float32x4_t
 simde_vmaxnmq_f32(simde_float32x4_t a, simde_float32x4_t b) {
-  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && (__ARM_NEON_FP >= 6)
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(__ARM_NEON_FP) && (__ARM_NEON_FP >= 6)
     return vmaxnmq_f32(a, b);
   #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
     return vec_max(a, b);
