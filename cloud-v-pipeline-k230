@@ -1,0 +1,25 @@
+node("J-K230-1") {
+    stage('Clone') {
+        checkout scm
+    }
+    stage('Run system_info') {
+        sh '''#!/bin/bash
+            cat /proc/cpuinfo
+        '''
+    }
+    stage('Run configure') {
+        sh '''#!/bin/bash
+            meson setup build -Db_lundef=false
+        '''
+    }
+    stage('Run build') {
+        sh '''#!/bin/bash
+            ninja -C build -v
+        '''
+    }
+    stage('Run test') {
+        sh'''#!/bin/bash
+            ninja -C build -v test
+        '''
+    }
+}
