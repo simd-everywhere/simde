@@ -9,7 +9,7 @@ node("J-K230-1") {
     }
     stage('Run meson clean'){
         sh '''#!/bin/bash
-            meson setup --wipe
+            meson setup build --wipe
         '''
     }
     stage('Run configure') {
