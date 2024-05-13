@@ -7,6 +7,11 @@ node("J-K230-1") {
             cat /proc/cpuinfo
         '''
     }
+    stage('Run meson clean'){
+        sh '''#!/bin/bash
+            meson setup --wipe
+        '''
+    }
     stage('Run configure') {
         sh '''#!/bin/bash
             meson setup build -Db_lundef=false
