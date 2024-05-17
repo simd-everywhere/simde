@@ -144,6 +144,8 @@ simde_vqadd_s8(simde_int8x8_t a, simde_int8x8_t b) {
 
       uint8_t m SIMDE_VECTOR(8) = HEDLEY_REINTERPRET_CAST(__typeof__(m), HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), (au ^ bu) | ~(bu ^ ru)) < 0);
       r_.values = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), (au & ~m) | (ru & m));
+    #elif defined(SIMDE_RISCV_V_NATIVE)
+      r_.sv64 = __riscv_vsadd_vv_i8m1(a_.sv64, b_.sv64, 8);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -181,6 +183,8 @@ simde_vqadd_s16(simde_int16x4_t a, simde_int16x4_t b) {
 
       uint16_t m SIMDE_VECTOR(8) = HEDLEY_REINTERPRET_CAST(__typeof__(m), HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), (au ^ bu) | ~(bu ^ ru)) < 0);
       r_.values = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), (au & ~m) | (ru & m));
+    #elif defined(SIMDE_RISCV_V_NATIVE)
+      r_.sv64 = __riscv_vsadd_vv_i16m1(a_.sv64, b_.sv64, 4);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -216,6 +220,8 @@ simde_vqadd_s32(simde_int32x2_t a, simde_int32x2_t b) {
 
       uint32_t m SIMDE_VECTOR(8) = HEDLEY_REINTERPRET_CAST(__typeof__(m), HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), (au ^ bu) | ~(bu ^ ru)) < 0);
       r_.values = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), (au & ~m) | (ru & m));
+    #elif defined(SIMDE_RISCV_V_NATIVE)
+      r_.sv64 = __riscv_vsadd_vv_i32m1(a_.sv64, b_.sv64, 2);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -251,6 +257,8 @@ simde_vqadd_s64(simde_int64x1_t a, simde_int64x1_t b) {
 
       uint64_t m SIMDE_VECTOR(8) = HEDLEY_REINTERPRET_CAST(__typeof__(m), HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), (au ^ bu) | ~(bu ^ ru)) < 0);
       r_.values = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), (au & ~m) | (ru & m));
+    #elif defined(SIMDE_RISCV_V_NATIVE)
+      r_.sv64 = __riscv_vsadd_vv_i64m1(a_.sv64, b_.sv64, 1);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -282,6 +290,8 @@ simde_vqadd_u8(simde_uint8x8_t a, simde_uint8x8_t b) {
     #elif defined(SIMDE_VECTOR_SUBSCRIPT) && !defined(SIMDE_BUG_GCC_100762)
       r_.values = a_.values + b_.values;
       r_.values |= HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), r_.values < a_.values);
+    #elif defined(SIMDE_RISCV_V_NATIVE)
+      r_.sv64 = __riscv_vsaddu_vv_u8m1(a_.sv64, b_.sv64, 8);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -313,6 +323,8 @@ simde_vqadd_u16(simde_uint16x4_t a, simde_uint16x4_t b) {
     #elif defined(SIMDE_VECTOR_SUBSCRIPT) && !defined(SIMDE_BUG_GCC_100762)
       r_.values = a_.values + b_.values;
       r_.values |= HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), r_.values < a_.values);
+    #elif defined(SIMDE_RISCV_V_NATIVE)
+      r_.sv64 = __riscv_vsaddu_vv_u16m1(a_.sv64, b_.sv64, 4);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -342,6 +354,8 @@ simde_vqadd_u32(simde_uint32x2_t a, simde_uint32x2_t b) {
     #if defined(SIMDE_VECTOR_SUBSCRIPT) && !defined(SIMDE_BUG_GCC_100762)
       r_.values = a_.values + b_.values;
       r_.values |= HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), r_.values < a_.values);
+    #elif defined(SIMDE_RISCV_V_NATIVE)
+      r_.sv64 = __riscv_vsaddu_vv_u32m1(a_.sv64, b_.sv64, 2);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -371,6 +385,8 @@ simde_vqadd_u64(simde_uint64x1_t a, simde_uint64x1_t b) {
     #if defined(SIMDE_VECTOR_SUBSCRIPT)
       r_.values = a_.values + b_.values;
       r_.values |= HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), r_.values < a_.values);
+    #elif defined(SIMDE_RISCV_V_NATIVE)
+      r_.sv64 = __riscv_vsaddu_vv_u64m1(a_.sv64, b_.sv64, 1);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -412,6 +428,8 @@ simde_vqaddq_s8(simde_int8x16_t a, simde_int8x16_t b) {
 
       uint8_t m SIMDE_VECTOR(16) = HEDLEY_REINTERPRET_CAST(__typeof__(m), HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), (au ^ bu) | ~(bu ^ ru)) < 0);
       r_.values = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), (au & ~m) | (ru & m));
+    #elif defined(SIMDE_RISCV_V_NATIVE)
+      r_.sv128 = __riscv_vsadd_vv_i8m1(a_.sv128, b_.sv128, 16);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -453,6 +471,8 @@ simde_vqaddq_s16(simde_int16x8_t a, simde_int16x8_t b) {
 
       uint16_t m SIMDE_VECTOR(16) = HEDLEY_REINTERPRET_CAST(__typeof__(m), HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), (au ^ bu) | ~(bu ^ ru)) < 0);
       r_.values = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), (au & ~m) | (ru & m));
+    #elif defined(SIMDE_RISCV_V_NATIVE)
+      r_.sv128 = __riscv_vsadd_vv_i16m1(a_.sv128, b_.sv128, 8);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -530,6 +550,8 @@ simde_vqaddq_s32(simde_int32x4_t a, simde_int32x4_t b) {
 
       uint32_t m SIMDE_VECTOR(16) = HEDLEY_REINTERPRET_CAST(__typeof__(m), HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), (au ^ bu) | ~(bu ^ ru)) < 0);
       r_.values = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), (au & ~m) | (ru & m));
+    #elif defined(SIMDE_RISCV_V_NATIVE)
+      r_.sv128 = __riscv_vsadd_vv_i32m1(a_.sv128, b_.sv128, 4);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -596,6 +618,8 @@ simde_vqaddq_s64(simde_int64x2_t a, simde_int64x2_t b) {
 
       uint64_t m SIMDE_VECTOR(16) = HEDLEY_REINTERPRET_CAST(__typeof__(m), HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), (au ^ bu) | ~(bu ^ ru)) < 0);
       r_.values = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), (au & ~m) | (ru & m));
+    #elif defined(SIMDE_RISCV_V_NATIVE)
+      r_.sv128 = __riscv_vsadd_vv_i64m1(a_.sv128, b_.sv128, 2);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -631,6 +655,8 @@ simde_vqaddq_u8(simde_uint8x16_t a, simde_uint8x16_t b) {
     #elif defined(SIMDE_VECTOR_SUBSCRIPT)
       r_.values = a_.values + b_.values;
       r_.values |= HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), r_.values < a_.values);
+    #elif defined(SIMDE_RISCV_V_NATIVE)
+      r_.sv128 = __riscv_vsaddu_vv_u8m1(a_.sv128, b_.sv128, 16);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -666,6 +692,8 @@ simde_vqaddq_u16(simde_uint16x8_t a, simde_uint16x8_t b) {
     #elif defined(SIMDE_VECTOR_SUBSCRIPT)
       r_.values = a_.values + b_.values;
       r_.values |= HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), r_.values < a_.values);
+    #elif defined(SIMDE_RISCV_V_NATIVE)
+      r_.sv128 = __riscv_vsaddu_vv_u16m1(a_.sv128, b_.sv128, 8);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -716,6 +744,8 @@ simde_vqaddq_u32(simde_uint32x4_t a, simde_uint32x4_t b) {
     #elif defined(SIMDE_VECTOR_SUBSCRIPT)
       r_.values = a_.values + b_.values;
       r_.values |= HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), r_.values < a_.values);
+    #elif defined(SIMDE_RISCV_V_NATIVE)
+      r_.sv128 = __riscv_vsaddu_vv_u32m1(a_.sv128, b_.sv128, 4);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -745,6 +775,8 @@ simde_vqaddq_u64(simde_uint64x2_t a, simde_uint64x2_t b) {
     #if defined(SIMDE_VECTOR_SUBSCRIPT)
       r_.values = a_.values + b_.values;
       r_.values |= HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), r_.values < a_.values);
+    #elif defined(SIMDE_RISCV_V_NATIVE)
+      r_.sv128 = __riscv_vsaddu_vv_u64m1(a_.sv128, b_.sv128, 2);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
