@@ -4,7 +4,7 @@ node('J-TESTVM-1') {
     }
     stage('Clone') {
         sh '''#!/bin/bash -v
-            git clone https://github.com/alitariq4589/simde-cloud-v.git .
+            git clone -b rvv1.0-integration https://github.com/alitariq4589/simde-cloud-v.git .
         '''
     }
     stage('Run system_info') {
