@@ -1,6 +1,6 @@
 node('J-TESTVM-1') {
     stage('Clone') {
-        sh '''#!/bin/bash -l
+        sh '''#!/bin/bash -v
             git clone https://github.com/alitariq4589/simde-cloud-v.git .
         '''
     }
