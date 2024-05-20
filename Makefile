@@ -34,6 +34,7 @@ run:
 	echo "Total executables run: $$count" | tee -a $(LOG_FILE); \
 	echo "Total passed: $$pass_count" | tee -a $(LOG_FILE); \
 	echo "Total failed: $$fail_count" | tee -a $(LOG_FILE)
+	echo "Complete log is saved in test.mak.log"
 
 # Clean target (example, not strictly necessary for this task)
 clean:
