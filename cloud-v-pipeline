@@ -28,6 +28,9 @@ node('J-TESTVM-1') {
     }
 }
 node('J-K230-1') {
+    stage('Clean Workspace'){
+        cleanWs()
+    }
     stage('Get Cross-compiled binaries') {
         unstash 'testvm_pwd.sh'
         withCredentials([sshUserPrivateKey(credentialsId: 'TESTVM_SSH_CREDENTIALS', keyFileVariable: 'SSH_KEY')]) {
