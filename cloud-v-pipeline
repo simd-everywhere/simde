@@ -1,0 +1,45 @@
+node('J-TESTVM-1') {
+    stage('Clone') {
+        checkout scm
+    }
+    stage('Run system_info') {
+        sh '''#!/bin/bash
+            cat /proc/cpuinfo
+        '''
+    }
+    stage('Run meson clean') {
+        sh '''#!/bin/bash -l
+            module load riscv64-gnu-glibc/12042024
+            meson setup --cross-file riscv64-cross.txt build --wipe
+        '''
+    }
+    stage('Run configure') {
+        sh '''#!/bin/bash -l
+            module load riscv64-gnu-glibc/12042024
+            meson setup build --cross-file=riscv64-cross.txt -Db_lundef=false
+        '''
+    }
+    stage('Run cross compile') {
+        sh '''#!/bin/bash -l
+            module load riscv64-gnu-glibc/12042024
+            meson compile -C build -v
+            echo "source $(pwd)" > testvm_pwd.sh
+        '''
+        stash includes: 'testvm_pwd.sh', name: 'testvm_pwd.sh'
+    }
+}
+node('J-K230-1') {
+    stage('Get Cross-compiled binaries') {
+        unstash
+        withCredentials([sshUserPrivateKey(credentialsId: 'TESTVM_SSH_CREDENTIALS', keyFileVariable: 'SSH_KEY')]) {
+                    sh '''#!/bin/bash
+                        ssh -i $SSH_KEY jenkins_user@machine.cloud-v.co -p 30013 "cd $SIMDE_PATH && tar cvf - ." | tar xvf - -C ./
+                    '''
+        }
+    }
+    stage('Run test') {
+        sh'''#!/bin/bash
+            make
+        '''
+    }
+}
