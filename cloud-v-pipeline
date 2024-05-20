@@ -12,12 +12,6 @@ node('J-TESTVM-1') {
             cat /proc/cpuinfo
         '''
     }
-    stage('Run meson clean') {
-        sh '''#!/bin/bash -l
-            module load riscv64-gnu-glibc/12042024
-            meson setup --cross-file riscv64-cross.txt build --wipe
-        '''
-    }
     stage('Run configure') {
         sh '''#!/bin/bash -l
             module load riscv64-gnu-glibc/12042024
