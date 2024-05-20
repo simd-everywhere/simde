@@ -1,4 +1,7 @@
 node('J-TESTVM-1') {
+    stage('Clean Workspace'){
+        cleanWs()
+    }
     stage('Clone') {
         sh '''#!/bin/bash -v
             git clone https://github.com/alitariq4589/simde-cloud-v.git .
