@@ -71,11 +71,12 @@ SIMDE_BEGIN_DECLS_
   #elif !defined(__EMSCRIPTEN__) && !(defined(__clang__) && defined(SIMDE_ARCH_POWER)) && \
     !(defined(HEDLEY_MSVC_VERSION) && defined(__clang__)) && \
     !(defined(SIMDE_ARCH_MIPS) && defined(__clang__)) && \
+    !(defined(SIMDE_ARCH_ZARCH) && defined(__clang__)) && \
     !(defined(__clang__) && defined(SIMDE_ARCH_RISCV64)) && ( \
       defined(SIMDE_X86_AVX512FP16_NATIVE) || \
       (defined(SIMDE_ARCH_X86_SSE2) && HEDLEY_GCC_VERSION_CHECK(12,0,0)) || \
       (defined(SIMDE_ARCH_AARCH64) && HEDLEY_GCC_VERSION_CHECK(7,0,0) && !defined(__cplusplus)) || \
-      ((defined(SIMDE_ARCH_X86) || defined(SIMDE_ARCH_AMD64)) && SIMDE_DETECT_CLANG_VERSION_CHECK(15,0,0)) || \
+      ((defined(SIMDE_ARCH_X86_SSE2) || defined(SIMDE_ARCH_AMD64)) && SIMDE_DETECT_CLANG_VERSION_CHECK(15,0,0)) || \
       (!(defined(SIMDE_ARCH_X86) || defined(SIMDE_ARCH_AMD64)) && SIMDE_DETECT_CLANG_VERSION_CHECK(6,0,0))) || \
       defined(SIMDE_ARCH_RISCV_ZVFH)
     /* We haven't found a better way to detect this.  It seems like defining
