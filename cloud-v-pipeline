@@ -3,7 +3,9 @@ node('J-TESTVM-1') {
         cleanWs()
     }
     stage('Clone') {
-        checkout scm
+        sh '''#!/bin/bash -v
+            git clone -b testing_march https://github.com/alitariq4589/simde-cloud-v.git .
+        '''
     }
     stage('Run system_info') {
         sh '''#!/bin/bash
@@ -18,8 +20,13 @@ node('J-TESTVM-1') {
     }
     stage('Run cross compile') {
         sh '''#!/bin/bash -l
+            set -e
             module load riscv64-gnu-glibc/12042024
             meson compile -C build -v
+            if [ $? -ne 0 ]; then
+                echo "Meson compile failed"
+                exit 1
+            fi
             echo "export SIMDE_PATH=$(pwd)" > testvm_pwd.sh
         '''
         stash includes: 'testvm_pwd.sh', name: 'testvm_pwd.sh'
