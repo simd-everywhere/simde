@@ -1,11 +1,10 @@
+// All CI build results of this pipeline are available at: https://dash.cloud-v.co/blue/organizations/jenkins/simde/activity
 node('J-TESTVM-1') {
     stage('Clean Workspace') {
         cleanWs()
     }
     stage('Clone') {
-        sh '''#!/bin/bash -v
-            git clone -b testing_march https://github.com/alitariq4589/simde-cloud-v.git .
-        '''
+        checkout scm
     }
     stage('Run system_info') {
         sh '''#!/bin/bash
@@ -15,7 +14,7 @@ node('J-TESTVM-1') {
     stage('Run configure') {
         sh '''#!/bin/bash -l
             module load riscv64-gnu-glibc/12042024
-            meson setup build --cross-file=riscv64-cross.txt -Db_lundef=false
+            meson setup build --cross-file=./docker/cross-files/riscv64-gcc-13-unknown.cross -Db_lundef=false
         '''
     }
     stage('Run cross compile') {
@@ -48,6 +47,7 @@ node('J-K230-1') {
     }
     stage('Run test') {
         sh'''#!/bin/bash
+            cd .cloud-v
             make
         '''
     }

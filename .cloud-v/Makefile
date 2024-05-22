@@ -1,7 +1,7 @@
 # Makefile
 
 # Define the directory to search for executables
-DIR := build/test
+DIR := ../build/test
 
 # Define a shell command to find all executable files, excluding C/C++ files and directories
 EXEC_FILES := $(shell find $(DIR) -type f -executable ! -name '*.c' ! -name '*.cpp' ! -name '*.h')
