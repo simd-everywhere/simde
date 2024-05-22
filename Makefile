@@ -14,10 +14,10 @@ all: run
 
 # Target to run all executable files and log the output
 run:
-	@echo "Running executables in $(DIR)..." > $(LOG_FILE)
-	@count=0; \
-	@pass_count=0; \
-	@fail_count=0; \
+	@echo "Running executables in $(DIR)..." > $(LOG_FILE)aaaa
+	count=0; \
+	pass_count=0; \
+	fail_count=0; \
 	for file in $(EXEC_FILES); do \
 		echo "Executing $$file" | tee -a $(LOG_FILE); \
 		$$file >> $(LOG_FILE) 2>&1; \
