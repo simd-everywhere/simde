@@ -300,12 +300,20 @@ simde_mm_crc32_u8(uint32_t prevcrc, uint8_t v) {
     #else
       uint32_t crc = prevcrc;
       crc ^= v;
-      for(int bit = 0 ; bit < 8 ; bit++) {
-        if (crc & 1)
-          crc = (crc >> 1) ^ UINT32_C(0x82f63b78);
-        else
-          crc = (crc >> 1);
-      }
+      // Adapted from: https://create.stephan-brumme.com/crc32/
+      // Apply half-byte comparision algorithm for the best ratio between
+      // performance and lookup table.
+
+      // The lookup table just needs to store every 16th entry
+      // of the standard look-up table.
+      static const uint32_t crc32_half_byte_tbl[] = {
+        0x00000000, 0x105ec76f, 0x20bd8ede, 0x30e349b1, 0x417b1dbc, 0x5125dad3,
+        0x61c69362, 0x7198540d, 0x82f63b78, 0x92a8fc17, 0xa24bb5a6, 0xb21572c9,
+        0xc38d26c4, 0xd3d3e1ab, 0xe330a81a, 0xf36e6f75,
+      };
+
+      crc = (crc >> 4) ^ crc32_half_byte_tbl[crc & 0x0f];
+      crc = (crc >> 4) ^ crc32_half_byte_tbl[crc & 0x0f];
       return crc;
     #endif
   #endif
