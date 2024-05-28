@@ -14,6 +14,7 @@ node('J-TESTVM-1') {
     stage('Run configure') {
         sh '''#!/bin/bash -l
             module load riscv64-gnu-glibc/12042024
+            riscv64-unknown-linux-gnu-gcc --version
             meson setup build --cross-file=./docker/cross-files/riscv64-gcc-13-unknown.cross -Db_lundef=false
         '''
     }
@@ -21,7 +22,6 @@ node('J-TESTVM-1') {
         sh '''#!/bin/bash -l
             set -e
             module load riscv64-gnu-glibc/12042024
-            riscv64-unknown-linux-gnu-gcc --version
             meson compile -C build -v
             if [ $? -ne 0 ]; then
                 echo "Meson compile failed"
