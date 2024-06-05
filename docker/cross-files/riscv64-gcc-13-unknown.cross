@@ -1,5 +1,5 @@
 [binaries]
-c = ['riscv64-unknown-linux-gnu-gcc', '-march=rv64gcv']
+c = ['riscv64-unknown-linux-gnu-gcc', '-march=rv64gcv_zvl256b', '-mrvv-vector-bits=zvl', '-mabi=lp64d', '-Ofast']
 cpp = ['riscv64-unknown-linux-gnu-g++', '-march=rv64gcv']
 ar = 'riscv64-unknown-linux-gnu-ar'
 strip = 'riscv64-unknown-linux-gnu-strip'
