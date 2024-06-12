@@ -114,14 +114,13 @@ simde_vminnmvq_f16(simde_float16x8_t a) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
     return vminnmvq_f16(a);
   #else
-    simde_float32_t r_ = simde_float16_to_float32(SIMDE_INFINITYHF);
     simde_float16x8_private a_ = simde_float16x8_to_private(a);
 
     #if defined(SIMDE_RISCV_V_NATIVE) && defined(SIMDE_ARCH_RISCV_ZVFH)
       return __riscv_vfmv_f_s_f16m1_f16(__riscv_vfredmin_vs_f16m1_f16m1(a_.sv128, \
         __riscv_vfmv_v_f_f16m1(SIMDE_INFINITYHF, 8), 8));
     #else
-      r_ = simde_float16_to_float32(SIMDE_INFINITYHF);
+      simde_float32_t r_ = simde_float16_to_float32(SIMDE_INFINITYHF);
       #if defined(SIMDE_FAST_NANS)
         SIMDE_VECTORIZE_REDUCTION(min:r_)
       #else
