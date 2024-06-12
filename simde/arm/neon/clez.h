@@ -105,7 +105,7 @@ simde_vclezq_f16(simde_float16x8_t a) {
     simde_float16x8_private a_ = simde_float16x8_to_private(a);
     simde_uint16x8_private r_;
 
-    #if defined(SIMDE_RISCV_V_NATIVE)
+    #if defined(SIMDE_RISCV_V_NATIVE) && defined(SIMDE_ARCH_RISCV_ZVFH)
       vbool16_t result = __riscv_vmfle_vf_f16m1_b16(a_.sv128, 0, 8);
       r_.sv128 = __riscv_vmv_v_x_u16m1(0, 8);
       r_.sv128 = __riscv_vmerge_vxm_u16m1(r_.sv128, -1, result, 8);
@@ -325,7 +325,7 @@ simde_vclez_f16(simde_float16x4_t a) {
     simde_float16x4_private a_ = simde_float16x4_to_private(a);
     simde_uint16x4_private r_;
 
-    #if defined(SIMDE_RISCV_V_NATIVE)
+    #if defined(SIMDE_RISCV_V_NATIVE) && defined(SIMDE_ARCH_RISCV_ZVFH)
       vbool16_t result = __riscv_vmfle_vf_f16m1_b16(a_.sv64, 0, 4);
       r_.sv64 = __riscv_vmv_v_x_u16m1(0, 4);
       r_.sv64 = __riscv_vmerge_vxm_u16m1(r_.sv64, -1, result, 4);
