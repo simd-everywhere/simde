@@ -61,7 +61,7 @@ simde_vsqrt_f16(simde_float16x4_t a) {
       r_,
       a_ = simde_float16x4_to_private(a);
 
-    #if defined(SIMDE_RISCV_V_NATIVE)
+    #if defined(SIMDE_RISCV_V_NATIVE) && SIMDE_ARCH_RISCV_ZVFH
         r_.sv64 = __riscv_vfsqrt_v_f16m1(a_.sv64, 4);
     #else
       SIMDE_VECTORIZE
@@ -144,7 +144,7 @@ simde_vsqrtq_f16(simde_float16x8_t a) {
     simde_float16x8_private
       r_,
       a_ = simde_float16x8_to_private(a);
-    #if defined(SIMDE_RISCV_V_NATIVE)
+    #if defined(SIMDE_RISCV_V_NATIVE) && SIMDE_ARCH_RISCV_ZVFH
         r_.sv128 = __riscv_vfsqrt_v_f16m1(a_.sv128, 8);
     #else
       SIMDE_VECTORIZE
