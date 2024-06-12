@@ -23,6 +23,7 @@
  * Copyright:
  *   2020      Evan Nemerson <evan@nemerson.com>
  *   2020      Christopher Moore <moore@free.fr>
+ *   2023      Ju-Hung Li <jhlee@pllab.cs.nthu.edu.tw> (Copyright owned by NTHU pllab)
  */
 
 #if !defined(SIMDE_ARM_NEON_CGE_H)
@@ -59,10 +60,16 @@ simde_vcgeq_f16(simde_float16x8_t a, simde_float16x8_t b) {
       b_ = simde_float16x8_to_private(b);
     simde_uint16x8_private r_;
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = simde_vcgeh_f16(a_.values[i], b_.values[i]);
-    }
+    #if defined(SIMDE_RISCV_V_NATIVE) && defined(SIMDE_ARCH_RISCV_ZVFH)
+      vbool16_t result = __riscv_vmfge_vv_f16m1_b16(a_.sv128, b_.sv128, 8);
+      r_.sv128 = __riscv_vmv_v_x_u16m1(0, 8);
+      r_.sv128 = __riscv_vmerge_vxm_u16m1(r_.sv128, -1, result, 8);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+        r_.values[i] = simde_vcgeh_f16(a_.values[i], b_.values[i]);
+      }
+    #endif
 
     return simde_uint16x8_from_private(r_);
   #endif
@@ -85,10 +92,15 @@ simde_vcgeq_f32(simde_float32x4_t a, simde_float32x4_t b) {
       b_ = simde_float32x4_to_private(b);
     simde_uint32x4_private r_;
 
+
     #if defined(SIMDE_X86_SSE2_NATIVE)
       r_.m128i = _mm_castps_si128(_mm_cmpge_ps(a_.m128, b_.m128));
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r_.v128 = wasm_f32x4_ge(a_.v128, b_.v128);
+    #elif defined(SIMDE_RISCV_V_NATIVE)
+      vbool32_t result = __riscv_vmfge_vv_f32m1_b32(a_.sv128, b_.sv128, 4);
+      r_.sv128 = __riscv_vmv_v_x_u32m1(0, 4);
+      r_.sv128 = __riscv_vmerge_vxm_u32m1(r_.sv128, -1, result, 4);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       r_.values = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), a_.values >= b_.values);
     #else
@@ -123,6 +135,10 @@ simde_vcgeq_f64(simde_float64x2_t a, simde_float64x2_t b) {
       r_.m128i = _mm_castpd_si128(_mm_cmpge_pd(a_.m128d, b_.m128d));
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r_.v128 = wasm_f64x2_ge(a_.v128, b_.v128);
+    #elif defined(SIMDE_RISCV_V_NATIVE)
+      vbool64_t result = __riscv_vmfge_vv_f64m1_b64(a_.sv128, b_.sv128, 2);
+      r_.sv128 = __riscv_vmv_v_x_u64m1(0, 2);
+      r_.sv128 = __riscv_vmerge_vxm_u64m1(r_.sv128, -1, result, 2);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       r_.values = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), a_.values >= b_.values);
     #else
@@ -157,6 +173,10 @@ simde_vcgeq_s8(simde_int8x16_t a, simde_int8x16_t b) {
       r_.m128i = _mm_or_si128(_mm_cmpgt_epi8(a_.m128i, b_.m128i), _mm_cmpeq_epi8(a_.m128i, b_.m128i));
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r_.v128 = wasm_i8x16_ge(a_.v128, b_.v128);
+    #elif defined(SIMDE_RISCV_V_NATIVE)
+      vbool8_t result = __riscv_vmsge_vv_i8m1_b8(a_.sv128, b_.sv128, 16);
+      r_.sv128 = __riscv_vmv_v_x_u8m1(0, 16);
+      r_.sv128 = __riscv_vmerge_vxm_u8m1(r_.sv128, -1, result, 16);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       r_.values = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), a_.values >= b_.values);
     #else
@@ -191,6 +211,10 @@ simde_vcgeq_s16(simde_int16x8_t a, simde_int16x8_t b) {
       r_.m128i = _mm_or_si128(_mm_cmpgt_epi16(a_.m128i, b_.m128i), _mm_cmpeq_epi16(a_.m128i, b_.m128i));
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r_.v128 = wasm_i16x8_ge(a_.v128, b_.v128);
+    #elif defined(SIMDE_RISCV_V_NATIVE)
+      vbool16_t result = __riscv_vmsge_vv_i16m1_b16(a_.sv128, b_.sv128, 8);
+      r_.sv128 = __riscv_vmv_v_x_u16m1(0, 8);
+      r_.sv128 = __riscv_vmerge_vxm_u16m1(r_.sv128, -1, result, 8);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       r_.values = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), a_.values >= b_.values);
     #else
@@ -225,6 +249,10 @@ simde_vcgeq_s32(simde_int32x4_t a, simde_int32x4_t b) {
       r_.m128i = _mm_or_si128(_mm_cmpgt_epi32(a_.m128i, b_.m128i), _mm_cmpeq_epi32(a_.m128i, b_.m128i));
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r_.v128 = wasm_i32x4_ge(a_.v128, b_.v128);
+    #elif defined(SIMDE_RISCV_V_NATIVE)
+      vbool32_t result = __riscv_vmsge_vv_i32m1_b32(a_.sv128, b_.sv128, 4);
+      r_.sv128 = __riscv_vmv_v_x_u32m1(0, 4);
+      r_.sv128 = __riscv_vmerge_vxm_u32m1(r_.sv128, -1, result, 4);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       r_.values = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), a_.values >= b_.values);
     #else
@@ -259,6 +287,10 @@ simde_vcgeq_s64(simde_int64x2_t a, simde_int64x2_t b) {
 
     #if defined(SIMDE_X86_SSE4_2_NATIVE)
       r_.m128i = _mm_or_si128(_mm_cmpgt_epi64(a_.m128i, b_.m128i), _mm_cmpeq_epi64(a_.m128i, b_.m128i));
+    #elif defined(SIMDE_RISCV_V_NATIVE)
+      vbool64_t result = __riscv_vmsge_vv_i64m1_b64(a_.sv128, b_.sv128, 2);
+      r_.sv128 = __riscv_vmv_v_x_u64m1(0, 2);
+      r_.sv128 = __riscv_vmerge_vxm_u64m1(r_.sv128, -1, result, 2);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       r_.values = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), a_.values >= b_.values);
     #else
@@ -297,6 +329,10 @@ simde_vcgeq_u8(simde_uint8x16_t a, simde_uint8x16_t b) {
         );
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r_.v128 = wasm_u8x16_ge(a_.v128, b_.v128);
+    #elif defined(SIMDE_RISCV_V_NATIVE)
+      vbool8_t result = __riscv_vmsgeu_vv_u8m1_b8(a_.sv128, b_.sv128, 16);
+      r_.sv128 = __riscv_vmv_v_x_u8m1(0, 16);
+      r_.sv128 = __riscv_vmerge_vxm_u8m1(r_.sv128, -1, result, 16);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       r_.values = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), a_.values >= b_.values);
     #else
@@ -338,6 +374,10 @@ simde_vcgeq_u16(simde_uint16x8_t a, simde_uint16x8_t b) {
       r_.m128i = _mm_or_si128(_mm_cmpgt_epi16(_mm_xor_si128(a_.m128i, sign_bits), _mm_xor_si128(b_.m128i, sign_bits)), _mm_cmpeq_epi16(a_.m128i, b_.m128i));
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r_.v128 = wasm_u16x8_ge(a_.v128, b_.v128);
+    #elif defined(SIMDE_RISCV_V_NATIVE)
+      vbool16_t result = __riscv_vmsgeu_vv_u16m1_b16(a_.sv128, b_.sv128, 8);
+      r_.sv128 = __riscv_vmv_v_x_u16m1(0, 8);
+      r_.sv128 = __riscv_vmerge_vxm_u16m1(r_.sv128, -1, result, 8);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       r_.values = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), a_.values >= b_.values);
     #else
@@ -379,6 +419,10 @@ simde_vcgeq_u32(simde_uint32x4_t a, simde_uint32x4_t b) {
       r_.m128i = _mm_or_si128(_mm_cmpgt_epi32(_mm_xor_si128(a_.m128i, sign_bits), _mm_xor_si128(b_.m128i, sign_bits)), _mm_cmpeq_epi32(a_.m128i, b_.m128i));
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r_.v128 = wasm_u32x4_ge(a_.v128, b_.v128);
+    #elif defined(SIMDE_RISCV_V_NATIVE)
+      vbool32_t result = __riscv_vmsgeu_vv_u32m1_b32(a_.sv128, b_.sv128, 4);
+      r_.sv128 = __riscv_vmv_v_x_u32m1(0, 4);
+      r_.sv128 = __riscv_vmerge_vxm_u32m1(r_.sv128, -1, result, 4);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       r_.values = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), a_.values >= b_.values);
     #else
@@ -418,6 +462,10 @@ simde_vcgeq_u64(simde_uint64x2_t a, simde_uint64x2_t b) {
     #elif defined(SIMDE_X86_SSE4_2_NATIVE)
       __m128i sign_bits = _mm_set1_epi64x(INT64_MIN);
       r_.m128i = _mm_or_si128(_mm_cmpgt_epi64(_mm_xor_si128(a_.m128i, sign_bits), _mm_xor_si128(b_.m128i, sign_bits)), _mm_cmpeq_epi64(a_.m128i, b_.m128i));
+    #elif defined(SIMDE_RISCV_V_NATIVE)
+      vbool64_t result = __riscv_vmsgeu_vv_u64m1_b64(a_.sv128, b_.sv128, 2);
+      r_.sv128 = __riscv_vmv_v_x_u64m1(0, 2);
+      r_.sv128 = __riscv_vmerge_vxm_u64m1(r_.sv128, -1, result, 2);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       r_.values = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), a_.values >= b_.values);
     #else
@@ -446,10 +494,16 @@ simde_vcge_f16(simde_float16x4_t a, simde_float16x4_t b) {
       b_ = simde_float16x4_to_private(b);
     simde_uint16x4_private r_;
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = simde_vcgeh_f16(a_.values[i], b_.values[i]);
-    }
+    #if defined(SIMDE_RISCV_V_NATIVE) && defined(SIMDE_ARCH_RISCV_ZVFH)
+      vbool16_t result = __riscv_vmfge_vv_f16m1_b16(a_.sv64, b_.sv64, 4);
+      r_.sv64 = __riscv_vmv_v_x_u16m1(0, 4);
+      r_.sv64 = __riscv_vmerge_vxm_u16m1(r_.sv64, 0xffff, result, 4);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+        r_.values[i] = simde_vcgeh_f16(a_.values[i], b_.values[i]);
+      }
+    #endif
 
     return simde_uint16x4_from_private(r_);
   #endif
@@ -470,7 +524,11 @@ simde_vcge_f32(simde_float32x2_t a, simde_float32x2_t b) {
       b_ = simde_float32x2_to_private(b);
     simde_uint32x2_private r_;
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && !defined(SIMDE_BUG_GCC_100762)
+    #if defined(SIMDE_RISCV_V_NATIVE)
+      vbool32_t result = __riscv_vmfge_vv_f32m1_b32(a_.sv64, b_.sv64, 2);
+      r_.sv64 = __riscv_vmv_v_x_u32m1(0, 2);
+      r_.sv64 = __riscv_vmerge_vxm_u32m1(r_.sv64, -1, result, 2);
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && !defined(SIMDE_BUG_GCC_100762)
       r_.values = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), a_.values >= b_.values);
     #else
       SIMDE_VECTORIZE
@@ -498,7 +556,11 @@ simde_vcge_f64(simde_float64x1_t a, simde_float64x1_t b) {
       b_ = simde_float64x1_to_private(b);
     simde_uint64x1_private r_;
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && !defined(SIMDE_BUG_GCC_100762)
+    #if defined(SIMDE_RISCV_V_NATIVE)
+      vbool64_t result = __riscv_vmfge_vv_f64m1_b64(a_.sv64, b_.sv64, 1);
+      r_.sv64 = __riscv_vmv_v_x_u64m1(0, 1);
+      r_.sv64 = __riscv_vmerge_vxm_u64m1(r_.sv64, -1, result, 1);
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && !defined(SIMDE_BUG_GCC_100762)
       r_.values = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), a_.values >= b_.values);
     #else
       SIMDE_VECTORIZE
@@ -528,6 +590,10 @@ simde_vcge_s8(simde_int8x8_t a, simde_int8x8_t b) {
 
     #if defined(SIMDE_X86_MMX_NATIVE)
       r_.m64 = _mm_or_si64(_mm_cmpgt_pi8(a_.m64, b_.m64), _mm_cmpeq_pi8(a_.m64, b_.m64));
+    #elif defined(SIMDE_RISCV_V_NATIVE)
+      vbool8_t result = __riscv_vmsge_vv_i8m1_b8(a_.sv64, b_.sv64, 8);
+      r_.sv64 = __riscv_vmv_v_x_u8m1(0, 8);
+      r_.sv64 = __riscv_vmerge_vxm_u8m1(r_.sv64, -1, result, 8);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && !defined(SIMDE_BUG_GCC_100762)
       r_.values = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), a_.values >= b_.values);
     #else
@@ -560,6 +626,10 @@ simde_vcge_s16(simde_int16x4_t a, simde_int16x4_t b) {
       r_.m64 = _mm_or_si64(_mm_cmpgt_pi16(a_.m64, b_.m64), _mm_cmpeq_pi16(a_.m64, b_.m64));
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && !defined(SIMDE_BUG_GCC_100762)
       r_.values = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), a_.values >= b_.values);
+    #elif defined(SIMDE_RISCV_V_NATIVE)
+      vbool16_t result = __riscv_vmsge_vv_i16m1_b16(a_.sv64, b_.sv64, 4);
+      r_.sv64 = __riscv_vmv_v_x_i16m1(0, 4);
+      r_.sv64 = __riscv_vmerge_vxm_i16m1(r_.sv64, -1, result, 4);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -590,6 +660,10 @@ simde_vcge_s32(simde_int32x2_t a, simde_int32x2_t b) {
       r_.m64 = _mm_or_si64(_mm_cmpgt_pi32(a_.m64, b_.m64), _mm_cmpeq_pi32(a_.m64, b_.m64));
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && !defined(SIMDE_BUG_GCC_100762)
       r_.values = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), a_.values >= b_.values);
+    #elif defined(SIMDE_RISCV_V_NATIVE)
+      vbool32_t result = __riscv_vmsge_vv_i32m1_b32(a_.sv64, b_.sv64, 2);
+      r_.sv64 = __riscv_vmv_v_x_i32m1(0, 2);
+      r_.sv64 = __riscv_vmerge_vxm_i32m1(r_.sv64, -1, result, 2);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -616,7 +690,11 @@ simde_vcge_s64(simde_int64x1_t a, simde_int64x1_t b) {
       b_ = simde_int64x1_to_private(b);
     simde_uint64x1_private r_;
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+    #if defined(SIMDE_RISCV_V_NATIVE)
+      vbool64_t result = __riscv_vmsge_vv_i64m1_b64(a_.sv64, b_.sv64, 1);
+      r_.sv64 = __riscv_vmv_v_x_u64m1(0, 1);
+      r_.sv64 = __riscv_vmerge_vxm_u64m1(r_.sv64, -1, result, 1);
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       r_.values = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), a_.values >= b_.values);
     #else
       SIMDE_VECTORIZE
@@ -647,6 +725,10 @@ simde_vcge_u8(simde_uint8x8_t a, simde_uint8x8_t b) {
     #if defined(SIMDE_X86_MMX_NATIVE)
       __m64 sign_bits = _mm_set1_pi8(INT8_MIN);
       r_.m64 = _mm_or_si64(_mm_cmpgt_pi8(_mm_xor_si64(a_.m64, sign_bits), _mm_xor_si64(b_.m64, sign_bits)), _mm_cmpeq_pi8(a_.m64, b_.m64));
+    #elif defined(SIMDE_RISCV_V_NATIVE)
+      vbool8_t result = __riscv_vmsgeu_vv_u8m1_b8(a_.sv64, b_.sv64, 8);
+      r_.sv64 = __riscv_vmv_v_x_u8m1(0, 8);
+      r_.sv64 = __riscv_vmerge_vxm_u8m1(r_.sv64, -1, result, 8);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && !defined(SIMDE_BUG_GCC_100762)
       r_.values = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), a_.values >= b_.values);
     #else
@@ -678,6 +760,10 @@ simde_vcge_u16(simde_uint16x4_t a, simde_uint16x4_t b) {
     #if defined(SIMDE_X86_MMX_NATIVE)
       __m64 sign_bits = _mm_set1_pi16(INT16_MIN);
       r_.m64 = _mm_or_si64(_mm_cmpgt_pi16(_mm_xor_si64(a_.m64, sign_bits), _mm_xor_si64(b_.m64, sign_bits)), _mm_cmpeq_pi16(a_.m64, b_.m64));
+    #elif defined(SIMDE_RISCV_V_NATIVE)
+      vbool16_t result = __riscv_vmsgeu_vv_u16m1_b16(a_.sv64, b_.sv64, 4);
+      r_.sv64 = __riscv_vmv_v_x_u16m1(0, 4);
+      r_.sv64 = __riscv_vmerge_vxm_u16m1(r_.sv64, -1, result, 4);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && !defined(SIMDE_BUG_GCC_100762)
       r_.values = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), a_.values >= b_.values);
     #else
@@ -709,6 +795,10 @@ simde_vcge_u32(simde_uint32x2_t a, simde_uint32x2_t b) {
     #if defined(SIMDE_X86_MMX_NATIVE)
       __m64 sign_bits = _mm_set1_pi32(INT32_MIN);
       r_.m64 = _mm_or_si64(_mm_cmpgt_pi32(_mm_xor_si64(a_.m64, sign_bits), _mm_xor_si64(b_.m64, sign_bits)), _mm_cmpeq_pi32(a_.m64, b_.m64));
+    #elif defined(SIMDE_RISCV_V_NATIVE)
+      vbool32_t result = __riscv_vmsgeu_vv_u32m1_b32(a_.sv64, b_.sv64, 2);
+      r_.sv64 = __riscv_vmv_v_x_u32m1(0, 2);
+      r_.sv64 = __riscv_vmerge_vxm_u32m1(r_.sv64, -1, result, 2);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && !defined(SIMDE_BUG_GCC_100762)
       r_.values = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), a_.values >= b_.values);
     #else
@@ -737,7 +827,11 @@ simde_vcge_u64(simde_uint64x1_t a, simde_uint64x1_t b) {
       a_ = simde_uint64x1_to_private(a),
       b_ = simde_uint64x1_to_private(b);
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+    #if defined(SIMDE_RISCV_V_NATIVE)
+      vbool64_t result = __riscv_vmsgeu_vv_u64m1_b64(a_.sv64, b_.sv64, 1);
+      r_.sv64 = __riscv_vmv_v_x_u64m1(0, 1);
+      r_.sv64 = __riscv_vmerge_vxm_u64m1(r_.sv64, -1, result, 1);
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       r_.values = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), a_.values >= b_.values);
     #else
       SIMDE_VECTORIZE
