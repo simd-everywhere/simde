@@ -23,6 +23,7 @@
  * Copyright:
  *   2020      Evan Nemerson <evan@nemerson.com>
  *   2020      Sean Maher <seanptmaher@gmail.com> (Copyright owned by Google, LLC)
+ *   2023      Chi-Wei Chu <wewe5215@gapp.nthu.edu.tw> (Copyright owned by NTHU pllab)
  */
 
 #if !defined(SIMDE_ARM_NEON_DOT_LANE_H)
@@ -69,18 +70,31 @@ simde_vdot_lane_s32(simde_int32x2_t r, simde_int8x8_t a, simde_int8x8_t b, const
     simde_int8x8_private
       a_ = simde_int8x8_to_private(a),
       b_ = simde_int8x8_to_private(b);
-
-    for (int i = 0 ; i < 2 ; i++) {
-      int32_t acc = 0;
-      SIMDE_VECTORIZE_REDUCTION(+:acc)
-      for (int j = 0 ; j < 4 ; j++) {
-        const int idx_b = j + (lane << 2);
-        const int idx_a = j + (i << 2);
-        acc += HEDLEY_STATIC_CAST(int32_t, a_.values[idx_a]) * HEDLEY_STATIC_CAST(int32_t, b_.values[idx_b]);
+    #if  defined(SIMDE_RISCV_V_NATIVE)
+        simde_int32x2_private r_tmp = simde_int32x2_to_private(r);
+        vint8mf4_t vb_low = __riscv_vlmul_trunc_v_i8m1_i8mf4(__riscv_vslidedown_vx_i8m1(b_.sv64, lane*4, 4));
+        vint16mf2_t vd_high = __riscv_vwmul_vv_i16mf2(__riscv_vlmul_trunc_v_i8m1_i8mf4 \
+          (__riscv_vslidedown_vx_i8m1(a_.sv64, 4, 4)), vb_low, 4);
+        vint32m1_t vd = __riscv_vmv_v_x_i32m1(0, 4);
+        vint32m1_t rst0 = __riscv_vredsum_vs_i32m1_i32m1(__riscv_vwcvt_x_x_v_i32m1(__riscv_vwmul_vv_i16mf2( \
+          __riscv_vlmul_trunc_v_i8m1_i8mf4(__riscv_vslidedown_vx_i8m1(a_.sv64, 0, 4)), vb_low, 4), 4), vd, 4);
+        vint32m1_t rst1 = __riscv_vredsum_vs_i32m1_i32m1(__riscv_vwcvt_x_x_v_i32m1 (vd_high, 4), vd, 4);
+        r_.sv64 = __riscv_vslideup_vx_i32m1(
+          __riscv_vadd_vx_i32m1(rst0, r_tmp.values[0], 2),
+          __riscv_vadd_vx_i32m1(rst1, r_tmp.values[1], 2),
+          1, 2);
+    #else
+      for (int i = 0 ; i < 2 ; i++) {
+        int32_t acc = 0;
+        SIMDE_VECTORIZE_REDUCTION(+:acc)
+        for (int j = 0 ; j < 4 ; j++) {
+          const int idx_b = j + (lane << 2);
+          const int idx_a = j + (i << 2);
+          acc += HEDLEY_STATIC_CAST(int32_t, a_.values[idx_a]) * HEDLEY_STATIC_CAST(int32_t, b_.values[idx_b]);
+        }
+        r_.values[i] += acc;
       }
-      r_.values[i] += acc;
-    }
-
+    #endif
     result = simde_int32x2_from_private(r_);
   #endif
 
@@ -120,18 +134,31 @@ simde_vdot_lane_u32(simde_uint32x2_t r, simde_uint8x8_t a, simde_uint8x8_t b, co
     simde_uint8x8_private
       a_ = simde_uint8x8_to_private(a),
       b_ = simde_uint8x8_to_private(b);
-
-    for (int i = 0 ; i < 2 ; i++) {
-      uint32_t acc = 0;
-      SIMDE_VECTORIZE_REDUCTION(+:acc)
-      for (int j = 0 ; j < 4 ; j++) {
-        const int idx_b = j + (lane << 2);
-        const int idx_a = j + (i << 2);
-        acc += HEDLEY_STATIC_CAST(uint32_t, a_.values[idx_a]) * HEDLEY_STATIC_CAST(uint32_t, b_.values[idx_b]);
+    #if  defined(SIMDE_RISCV_V_NATIVE)
+        simde_uint32x2_private r_tmp = simde_uint32x2_to_private(r);
+        vuint8mf4_t vb_low = __riscv_vlmul_trunc_v_u8m1_u8mf4 (
+          __riscv_vslidedown_vx_u8m1(b_.sv64, lane*4, 4));
+        vuint32m1_t vd = __riscv_vmv_v_x_u32m1(0, 4);
+        vuint32m1_t rst0 = __riscv_vredsum_vs_u32m1_u32m1(__riscv_vwcvtu_x_x_v_u32m1 (__riscv_vwmulu_vv_u16mf2 \
+        (__riscv_vlmul_trunc_v_u8m1_u8mf4(__riscv_vslidedown_vx_u8m1(a_.sv64, 0, 4)), vb_low, 4), 4), vd, 4);
+        vuint32m1_t rst1 = __riscv_vredsum_vs_u32m1_u32m1(__riscv_vwcvtu_x_x_v_u32m1 (__riscv_vwmulu_vv_u16mf2 \
+        (__riscv_vlmul_trunc_v_u8m1_u8mf4(__riscv_vslidedown_vx_u8m1(a_.sv64, 4, 4)), vb_low, 4), 4), vd, 4);
+        r_.sv64 = __riscv_vslideup_vx_u32m1(
+          __riscv_vadd_vx_u32m1(rst0, r_tmp.values[0], 2),
+          __riscv_vadd_vx_u32m1(rst1, r_tmp.values[1], 2),
+          1, 2);
+    #else
+      for (int i = 0 ; i < 2 ; i++) {
+        uint32_t acc = 0;
+        SIMDE_VECTORIZE_REDUCTION(+:acc)
+        for (int j = 0 ; j < 4 ; j++) {
+          const int idx_b = j + (lane << 2);
+          const int idx_a = j + (i << 2);
+          acc += HEDLEY_STATIC_CAST(uint32_t, a_.values[idx_a]) * HEDLEY_STATIC_CAST(uint32_t, b_.values[idx_b]);
+        }
+        r_.values[i] += acc;
       }
-      r_.values[i] += acc;
-    }
-
+    #endif
     result = simde_uint32x2_from_private(r_);
   #endif
 
@@ -169,18 +196,31 @@ simde_vdot_laneq_s32(simde_int32x2_t r, simde_int8x8_t a, simde_int8x16_t b, con
     simde_int32x2_private r_ = simde_int32x2_to_private(r);
     simde_int8x8_private a_ = simde_int8x8_to_private(a);
     simde_int8x16_private b_ = simde_int8x16_to_private(b);
-
-    for (int i = 0 ; i < 2 ; i++) {
-      int32_t acc = 0;
-      SIMDE_VECTORIZE_REDUCTION(+:acc)
-      for (int j = 0 ; j < 4 ; j++) {
-        const int idx_b = j + (lane << 2);
-        const int idx_a = j + (i << 2);
-        acc += HEDLEY_STATIC_CAST(int32_t, a_.values[idx_a]) * HEDLEY_STATIC_CAST(int32_t, b_.values[idx_b]);
+    #if  defined(SIMDE_RISCV_V_NATIVE)
+        simde_int32x2_private r_tmp = simde_int32x2_to_private(r);
+        vint8mf4_t vb_low = __riscv_vlmul_trunc_v_i8m1_i8mf4(
+          __riscv_vslidedown_vx_i8m1(b_.sv128, lane*4, 4));
+        vint32m1_t vd = __riscv_vmv_v_x_i32m1(0, 4);
+        vint32m1_t rst0 = __riscv_vredsum_vs_i32m1_i32m1(__riscv_vwcvt_x_x_v_i32m1 (__riscv_vwmul_vv_i16mf2 ( \
+        __riscv_vlmul_trunc_v_i8m1_i8mf4(__riscv_vslidedown_vx_i8m1(a_.sv64, 0, 4)), vb_low, 4), 4), vd, 4);
+        vint32m1_t rst1 = __riscv_vredsum_vs_i32m1_i32m1(__riscv_vwcvt_x_x_v_i32m1 (__riscv_vwmul_vv_i16mf2 ( \
+        __riscv_vlmul_trunc_v_i8m1_i8mf4(__riscv_vslidedown_vx_i8m1(a_.sv64, 4, 4)), vb_low, 4), 4), vd, 4);
+        r_.sv64 = __riscv_vslideup_vx_i32m1(
+          __riscv_vadd_vx_i32m1(rst0, r_tmp.values[0], 2),
+          __riscv_vadd_vx_i32m1(rst1, r_tmp.values[1], 2),
+          1, 2);
+    #else
+      for (int i = 0 ; i < 2 ; i++) {
+        int32_t acc = 0;
+        SIMDE_VECTORIZE_REDUCTION(+:acc)
+        for (int j = 0 ; j < 4 ; j++) {
+          const int idx_b = j + (lane << 2);
+          const int idx_a = j + (i << 2);
+          acc += HEDLEY_STATIC_CAST(int32_t, a_.values[idx_a]) * HEDLEY_STATIC_CAST(int32_t, b_.values[idx_b]);
+        }
+        r_.values[i] += acc;
       }
-      r_.values[i] += acc;
-    }
-
+    #endif
     result = simde_int32x2_from_private(r_);
   #endif
 
@@ -218,18 +258,31 @@ simde_vdot_laneq_u32(simde_uint32x2_t r, simde_uint8x8_t a, simde_uint8x16_t b, 
     simde_uint32x2_private r_ = simde_uint32x2_to_private(r);
     simde_uint8x8_private a_ = simde_uint8x8_to_private(a);
     simde_uint8x16_private b_ = simde_uint8x16_to_private(b);
-
-    for (int i = 0 ; i < 2 ; i++) {
-      uint32_t acc = 0;
-      SIMDE_VECTORIZE_REDUCTION(+:acc)
-      for (int j = 0 ; j < 4 ; j++) {
-        const int idx_b = j + (lane << 2);
-        const int idx_a = j + (i << 2);
-        acc += HEDLEY_STATIC_CAST(uint32_t, a_.values[idx_a]) * HEDLEY_STATIC_CAST(uint32_t, b_.values[idx_b]);
+    #if  defined(SIMDE_RISCV_V_NATIVE)
+        simde_uint32x2_private r_tmp = simde_uint32x2_to_private(r);
+        vuint8mf4_t vb_low = __riscv_vlmul_trunc_v_u8m1_u8mf4 (
+          __riscv_vslidedown_vx_u8m1(b_.sv128, lane*4, 4));
+        vuint32m1_t vd = __riscv_vmv_v_x_u32m1(0, 4);
+        vuint32m1_t rst0 = __riscv_vredsum_vs_u32m1_u32m1(__riscv_vwcvtu_x_x_v_u32m1 (__riscv_vwmulu_vv_u16mf2 \
+          (__riscv_vlmul_trunc_v_u8m1_u8mf4 (__riscv_vslidedown_vx_u8m1(a_.sv64, 0, 4)), vb_low, 4), 4), vd, 4);
+        vuint32m1_t rst1 = __riscv_vredsum_vs_u32m1_u32m1(__riscv_vwcvtu_x_x_v_u32m1 (__riscv_vwmulu_vv_u16mf2 \
+          (__riscv_vlmul_trunc_v_u8m1_u8mf4 (__riscv_vslidedown_vx_u8m1(a_.sv64, 4, 4)), vb_low, 4), 4), vd, 4);
+        r_.sv64 = __riscv_vslideup_vx_u32m1(
+          __riscv_vadd_vx_u32m1(rst0, r_tmp.values[0], 2),
+          __riscv_vadd_vx_u32m1(rst1, r_tmp.values[1], 2),
+          1, 2);
+    #else
+      for (int i = 0 ; i < 2 ; i++) {
+        uint32_t acc = 0;
+        SIMDE_VECTORIZE_REDUCTION(+:acc)
+        for (int j = 0 ; j < 4 ; j++) {
+          const int idx_b = j + (lane << 2);
+          const int idx_a = j + (i << 2);
+          acc += HEDLEY_STATIC_CAST(uint32_t, a_.values[idx_a]) * HEDLEY_STATIC_CAST(uint32_t, b_.values[idx_b]);
+        }
+        r_.values[i] += acc;
       }
-      r_.values[i] += acc;
-    }
-
+    #endif
     result = simde_uint32x2_from_private(r_);
   #endif
   return result;
@@ -280,18 +333,34 @@ simde_vdotq_laneq_u32(simde_uint32x4_t r, simde_uint8x16_t a, simde_uint8x16_t b
     simde_uint8x16_private
       a_ = simde_uint8x16_to_private(a),
       b_ = simde_uint8x16_to_private(b);
-
-    for(int i = 0 ; i < 4 ; i++) {
-      uint32_t acc = 0;
-      SIMDE_VECTORIZE_REDUCTION(+:acc)
-      for(int j = 0 ; j < 4 ; j++) {
-        const int idx_b = j + (lane << 2);
-        const int idx_a = j + (i << 2);
-        acc += HEDLEY_STATIC_CAST(uint32_t, a_.values[idx_a]) * HEDLEY_STATIC_CAST(uint32_t, b_.values[idx_b]);
+    #if  defined(SIMDE_RISCV_V_NATIVE)
+        simde_uint32x4_private r_tmp = simde_uint32x4_to_private(r);
+        vuint8mf4_t vb_low = __riscv_vlmul_trunc_v_u8m1_u8mf4(
+          __riscv_vslidedown_vx_u8m1(b_.sv128, lane*4, 4));
+        vuint32m1_t vd = __riscv_vmv_v_x_u32m1(0, 4);
+        vuint32m1_t rst0 = __riscv_vredsum_vs_u32m1_u32m1(__riscv_vwcvtu_x_x_v_u32m1(__riscv_vwmulu_vv_u16mf2 \
+          (__riscv_vlmul_trunc_v_u8m1_u8mf4(__riscv_vslidedown_vx_u8m1(a_.sv128, 0, 4)), vb_low, 4), 4), vd, 4);
+        vuint32m1_t rst1 = __riscv_vredsum_vs_u32m1_u32m1(__riscv_vwcvtu_x_x_v_u32m1 (__riscv_vwmulu_vv_u16mf2 \
+          (__riscv_vlmul_trunc_v_u8m1_u8mf4(__riscv_vslidedown_vx_u8m1(a_.sv128, 4, 4)), vb_low, 4), 4), vd, 4);
+        vuint32m1_t rst2 = __riscv_vredsum_vs_u32m1_u32m1(__riscv_vwcvtu_x_x_v_u32m1 (__riscv_vwmulu_vv_u16mf2 \
+          (__riscv_vlmul_trunc_v_u8m1_u8mf4(__riscv_vslidedown_vx_u8m1(a_.sv128, 8, 4)), vb_low, 4), 4), vd, 4);
+        vuint32m1_t rst3 = __riscv_vredsum_vs_u32m1_u32m1(__riscv_vwcvtu_x_x_v_u32m1 (__riscv_vwmulu_vv_u16mf2 \
+          (__riscv_vlmul_trunc_v_u8m1_u8mf4(__riscv_vslidedown_vx_u8m1(a_.sv128, 12, 4)), vb_low, 4), 4), vd, 4);
+        vuint32m1_t r0 = __riscv_vslideup_vx_u32m1(__riscv_vadd_vx_u32m1(rst0, r_tmp.values[0], 2), __riscv_vadd_vx_u32m1(rst1, r_tmp.values[1], 2), 1, 2);
+        vuint32m1_t r1 = __riscv_vslideup_vx_u32m1(r0, __riscv_vadd_vx_u32m1(rst2, r_tmp.values[2], 2), 2, 3);
+        r_.sv128 = __riscv_vslideup_vx_u32m1(r1, __riscv_vadd_vx_u32m1(rst3, r_tmp.values[3], 2), 3, 4);
+    #else
+      for(int i = 0 ; i < 4 ; i++) {
+        uint32_t acc = 0;
+        SIMDE_VECTORIZE_REDUCTION(+:acc)
+        for(int j = 0 ; j < 4 ; j++) {
+          const int idx_b = j + (lane << 2);
+          const int idx_a = j + (i << 2);
+          acc += HEDLEY_STATIC_CAST(uint32_t, a_.values[idx_a]) * HEDLEY_STATIC_CAST(uint32_t, b_.values[idx_b]);
+        }
+        r_.values[i] += acc;
       }
-      r_.values[i] += acc;
-    }
-
+    #endif
     result = simde_uint32x4_from_private(r_);
   #endif
   return result;
@@ -342,18 +411,38 @@ simde_vdotq_laneq_s32(simde_int32x4_t r, simde_int8x16_t a, simde_int8x16_t b, c
     simde_int8x16_private
       a_ = simde_int8x16_to_private(a),
       b_ = simde_int8x16_to_private(b);
-
-    for(int i = 0 ; i < 4 ; i++) {
-      int32_t acc = 0;
-      SIMDE_VECTORIZE_REDUCTION(+:acc)
-      for(int j = 0 ; j < 4 ; j++) {
-        const int idx_b = j + (lane << 2);
-        const int idx_a = j + (i << 2);
-        acc += HEDLEY_STATIC_CAST(int32_t, a_.values[idx_a]) * HEDLEY_STATIC_CAST(int32_t, b_.values[idx_b]);
+    #if defined(SIMDE_RISCV_V_NATIVE)
+        simde_int32x4_private r_tmp = simde_int32x4_to_private(r);
+        vint8mf4_t vb_low = __riscv_vlmul_trunc_v_i8m1_i8mf4(
+          __riscv_vslidedown_vx_i8m1(b_.sv128, lane*4, 4));
+        vint32m1_t vd = __riscv_vmv_v_x_i32m1(0, 4);
+        vint32m1_t rst0 = __riscv_vredsum_vs_i32m1_i32m1(__riscv_vwcvt_x_x_v_i32m1 \
+          (__riscv_vwmul_vv_i16mf2 (__riscv_vlmul_trunc_v_i8m1_i8mf4(__riscv_vslidedown_vx_i8m1(a_.sv128, 0, 4)), \
+            vb_low, 4), 4), vd, 4);
+        vint32m1_t rst1 = __riscv_vredsum_vs_i32m1_i32m1(__riscv_vwcvt_x_x_v_i32m1 \
+          (__riscv_vwmul_vv_i16mf2 (__riscv_vlmul_trunc_v_i8m1_i8mf4(__riscv_vslidedown_vx_i8m1(a_.sv128, 4, 4)), \
+            vb_low, 4), 4), vd, 4);
+        vint32m1_t rst2 = __riscv_vredsum_vs_i32m1_i32m1(__riscv_vwcvt_x_x_v_i32m1 \
+          (__riscv_vwmul_vv_i16mf2 (__riscv_vlmul_trunc_v_i8m1_i8mf4(__riscv_vslidedown_vx_i8m1(a_.sv128, 8, 4)), \
+            vb_low, 4), 4), vd, 4);
+        vint32m1_t rst3 = __riscv_vredsum_vs_i32m1_i32m1(__riscv_vwcvt_x_x_v_i32m1 \
+          (__riscv_vwmul_vv_i16mf2 (__riscv_vlmul_trunc_v_i8m1_i8mf4(__riscv_vslidedown_vx_i8m1(a_.sv128, 12, 4)), \
+            vb_low, 4), 4), vd, 4);
+        vint32m1_t r0 = __riscv_vslideup_vx_i32m1(__riscv_vadd_vx_i32m1(rst0, r_tmp.values[0], 2), __riscv_vadd_vx_i32m1(rst1, r_tmp.values[1], 2), 1, 2);
+        vint32m1_t r1 = __riscv_vslideup_vx_i32m1(r0, __riscv_vadd_vx_i32m1(rst2, r_tmp.values[2], 2), 2, 3);
+        r_.sv128 = __riscv_vslideup_vx_i32m1(r1, __riscv_vadd_vx_i32m1(rst3, r_tmp.values[3], 2), 3, 4);
+    #else
+      for(int i = 0 ; i < 4 ; i++) {
+        int32_t acc = 0;
+        SIMDE_VECTORIZE_REDUCTION(+:acc)
+        for(int j = 0 ; j < 4 ; j++) {
+          const int idx_b = j + (lane << 2);
+          const int idx_a = j + (i << 2);
+          acc += HEDLEY_STATIC_CAST(int32_t, a_.values[idx_a]) * HEDLEY_STATIC_CAST(int32_t, b_.values[idx_b]);
+        }
+        r_.values[i] += acc;
       }
-      r_.values[i] += acc;
-    }
-
+    #endif
     result = simde_int32x4_from_private(r_);
   #endif
   return result;
@@ -403,18 +492,33 @@ simde_vdotq_lane_u32(simde_uint32x4_t r, simde_uint8x16_t a, simde_uint8x8_t b, 
     simde_uint32x4_private r_ = simde_uint32x4_to_private(r);
     simde_uint8x16_private a_ = simde_uint8x16_to_private(a);
     simde_uint8x8_private b_ = simde_uint8x8_to_private(b);
-
-    for(int i = 0 ; i < 4 ; i++) {
-      uint32_t acc = 0;
-      SIMDE_VECTORIZE_REDUCTION(+:acc)
-      for(int j = 0 ; j < 4 ; j++) {
-        const int idx_b = j + (lane << 2);
-        const int idx_a = j + (i << 2);
-        acc += HEDLEY_STATIC_CAST(uint32_t, a_.values[idx_a]) * HEDLEY_STATIC_CAST(uint32_t, b_.values[idx_b]);
+    #if defined(SIMDE_RISCV_V_NATIVE)
+        simde_uint32x4_private r_tmp = simde_uint32x4_to_private(r);
+        vuint8mf4_t vb_low = __riscv_vlmul_trunc_v_u8m1_u8mf4(__riscv_vslidedown_vx_u8m1(b_.sv64, lane*4, 4));
+        vuint32m1_t vd = __riscv_vmv_v_x_u32m1(0, 4);
+        vuint32m1_t rst0 = __riscv_vredsum_vs_u32m1_u32m1(__riscv_vwcvtu_x_x_v_u32m1(__riscv_vwmulu_vv_u16mf2 \
+          (__riscv_vlmul_trunc_v_u8m1_u8mf4(__riscv_vslidedown_vx_u8m1(a_.sv128, 0, 4)), vb_low, 4), 4), vd, 4);
+        vuint32m1_t rst1 = __riscv_vredsum_vs_u32m1_u32m1(__riscv_vwcvtu_x_x_v_u32m1(__riscv_vwmulu_vv_u16mf2 \
+          (__riscv_vlmul_trunc_v_u8m1_u8mf4(__riscv_vslidedown_vx_u8m1(a_.sv128, 4, 4)), vb_low, 4), 4), vd, 4);
+        vuint32m1_t rst2 = __riscv_vredsum_vs_u32m1_u32m1(__riscv_vwcvtu_x_x_v_u32m1(__riscv_vwmulu_vv_u16mf2 \
+          (__riscv_vlmul_trunc_v_u8m1_u8mf4(__riscv_vslidedown_vx_u8m1(a_.sv128, 8, 4)), vb_low, 4), 4), vd, 4);
+        vuint32m1_t rst3 = __riscv_vredsum_vs_u32m1_u32m1(__riscv_vwcvtu_x_x_v_u32m1(__riscv_vwmulu_vv_u16mf2 \
+          (__riscv_vlmul_trunc_v_u8m1_u8mf4(__riscv_vslidedown_vx_u8m1(a_.sv128, 12, 4)), vb_low, 4), 4), vd, 4);
+        vuint32m1_t r0 = __riscv_vslideup_vx_u32m1(__riscv_vadd_vx_u32m1(rst0, r_tmp.values[0], 2), __riscv_vadd_vx_u32m1(rst1, r_tmp.values[1], 2), 1, 2);
+        vuint32m1_t r1 = __riscv_vslideup_vx_u32m1(r0, __riscv_vadd_vx_u32m1(rst2, r_tmp.values[2], 2), 2, 3);
+        r_.sv128 = __riscv_vslideup_vx_u32m1(r1, __riscv_vadd_vx_u32m1(rst3, r_tmp.values[3], 2), 3, 4);
+    #else
+      for(int i = 0 ; i < 4 ; i++) {
+        uint32_t acc = 0;
+        SIMDE_VECTORIZE_REDUCTION(+:acc)
+        for(int j = 0 ; j < 4 ; j++) {
+          const int idx_b = j + (lane << 2);
+          const int idx_a = j + (i << 2);
+          acc += HEDLEY_STATIC_CAST(uint32_t, a_.values[idx_a]) * HEDLEY_STATIC_CAST(uint32_t, b_.values[idx_b]);
+        }
+        r_.values[i] += acc;
       }
-      r_.values[i] += acc;
-    }
-
+    #endif
     result = simde_uint32x4_from_private(r_);
   #endif
   return result;
@@ -464,18 +568,34 @@ simde_vdotq_lane_s32(simde_int32x4_t r, simde_int8x16_t a, simde_int8x8_t b, con
     simde_int32x4_private r_ = simde_int32x4_to_private(r);
     simde_int8x16_private a_ = simde_int8x16_to_private(a);
     simde_int8x8_private b_ = simde_int8x8_to_private(b);
-
-    for(int i = 0 ; i < 4 ; i++) {
-      int32_t acc = 0;
-      SIMDE_VECTORIZE_REDUCTION(+:acc)
-      for(int j = 0 ; j < 4 ; j++) {
-        const int idx_b = j + (lane << 2);
-        const int idx_a = j + (i << 2);
-        acc += HEDLEY_STATIC_CAST(int32_t, a_.values[idx_a]) * HEDLEY_STATIC_CAST(int32_t, b_.values[idx_b]);
+    #if  defined(SIMDE_RISCV_V_NATIVE)
+        simde_int32x4_private r_tmp = simde_int32x4_to_private(r);
+        vint8mf4_t vb_low = __riscv_vlmul_trunc_v_i8m1_i8mf4(
+          __riscv_vslidedown_vx_i8m1(b_.sv64, lane*4, 4));
+        vint32m1_t vd = __riscv_vmv_v_x_i32m1(0, 4);
+        vint32m1_t rst0 = __riscv_vredsum_vs_i32m1_i32m1(__riscv_vwcvt_x_x_v_i32m1(__riscv_vwmul_vv_i16mf2 \
+          (__riscv_vlmul_trunc_v_i8m1_i8mf4(__riscv_vslidedown_vx_i8m1(a_.sv128, 0, 4)), vb_low, 4), 4), vd, 4);
+        vint32m1_t rst1 = __riscv_vredsum_vs_i32m1_i32m1(__riscv_vwcvt_x_x_v_i32m1(__riscv_vwmul_vv_i16mf2 \
+          (__riscv_vlmul_trunc_v_i8m1_i8mf4(__riscv_vslidedown_vx_i8m1(a_.sv128, 4, 4)), vb_low, 4), 4), vd, 4);
+        vint32m1_t rst2 = __riscv_vredsum_vs_i32m1_i32m1(__riscv_vwcvt_x_x_v_i32m1(__riscv_vwmul_vv_i16mf2 \
+          (__riscv_vlmul_trunc_v_i8m1_i8mf4(__riscv_vslidedown_vx_i8m1(a_.sv128, 8, 4)), vb_low, 4), 4), vd, 4);
+        vint32m1_t rst3 = __riscv_vredsum_vs_i32m1_i32m1(__riscv_vwcvt_x_x_v_i32m1(__riscv_vwmul_vv_i16mf2 \
+          (__riscv_vlmul_trunc_v_i8m1_i8mf4(__riscv_vslidedown_vx_i8m1(a_.sv128, 12, 4)), vb_low, 4), 4), vd, 4);
+        vint32m1_t r0 = __riscv_vslideup_vx_i32m1(__riscv_vadd_vx_i32m1(rst0, r_tmp.values[0], 2), __riscv_vadd_vx_i32m1(rst1, r_tmp.values[1], 2), 1, 2);
+        vint32m1_t r1 = __riscv_vslideup_vx_i32m1(r0, __riscv_vadd_vx_i32m1(rst2, r_tmp.values[2], 2), 2, 3);
+        r_.sv128 = __riscv_vslideup_vx_i32m1(r1, __riscv_vadd_vx_i32m1(rst3, r_tmp.values[3], 2), 3, 4);
+    #else
+      for(int i = 0 ; i < 4 ; i++) {
+        int32_t acc = 0;
+        SIMDE_VECTORIZE_REDUCTION(+:acc)
+        for(int j = 0 ; j < 4 ; j++) {
+          const int idx_b = j + (lane << 2);
+          const int idx_a = j + (i << 2);
+          acc += HEDLEY_STATIC_CAST(int32_t, a_.values[idx_a]) * HEDLEY_STATIC_CAST(int32_t, b_.values[idx_b]);
+        }
+        r_.values[i] += acc;
       }
-      r_.values[i] += acc;
-    }
-
+    #endif
     result = simde_int32x4_from_private(r_);
   #endif
   return result;
