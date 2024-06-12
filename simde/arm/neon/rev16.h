@@ -24,6 +24,7 @@
  *   2020      Evan Nemerson <evan@nemerson.com>
  *   2020      Christopher Moore <moore@free.fr>
  *   2023      Yi-Yen Chung <eric681@andestech.com> (Copyright owned by Andes Technology)
+ *   2023      Ju-Hung Li <jhlee@pllab.cs.nthu.edu.tw> (Copyright owned by NTHU pllab)
  */
 
 #if !defined(SIMDE_ARM_NEON_REV16_H)
@@ -48,6 +49,9 @@ simde_vrev16_s8(simde_int8x8_t a) {
 
     #if defined(SIMDE_X86_SSSE3_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
       r_.m64 = _mm_shuffle_pi8(a_.m64, _mm_set_pi8(6, 7, 4, 5, 2, 3, 0, 1));
+    #elif defined(SIMDE_RISCV_V_NATIVE)
+      uint8_t shuffle_idx[] = {1, 0, 3, 2, 5, 4, 7, 6};
+      r_.sv64 = __riscv_vrgather_vv_i8m1(a_.sv64, __riscv_vle8_v_u8m1(shuffle_idx, 8), 8);
     #elif defined(SIMDE_SHUFFLE_VECTOR_) && !defined(SIMDE_BUG_GCC_100762)
       r_.values = SIMDE_SHUFFLE_VECTOR_(8, 8, a_.values, a_.values, 1, 0, 3, 2, 5, 4, 7, 6);
     #else
@@ -99,6 +103,9 @@ simde_vrev16q_s8(simde_int8x16_t a) {
       r_.m128i = _mm_shuffle_epi8(a_.m128i, _mm_set_epi8(14, 15, 12, 13, 10, 11, 8, 9, 6, 7, 4, 5, 2, 3, 0, 1));
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r_.v128 = wasm_i8x16_shuffle(a_.v128, a_.v128, 1, 0, 3, 2, 5, 4, 7, 6, 9, 8, 11, 10, 13, 12, 15, 14);
+    #elif defined(SIMDE_RISCV_V_NATIVE)
+      uint8_t shuffle_idx[] = {1, 0, 3, 2, 5, 4, 7, 6, 9, 8, 11, 10, 13, 12, 15, 14};
+      r_.sv128 = __riscv_vrgather_vv_i8m1(a_.sv128, __riscv_vle8_v_u8m1(shuffle_idx, 16), 16);
     #elif defined(SIMDE_SHUFFLE_VECTOR_)
       r_.values = SIMDE_SHUFFLE_VECTOR_(8, 16, a_.values, a_.values, 1, 0, 3, 2, 5, 4, 7, 6, 9, 8, 11, 10, 13, 12, 15, 14);
     #else

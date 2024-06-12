@@ -22,6 +22,7 @@
  *
  * Copyright:
  *   2021      Décio Luiz Gazzoni Filho <decio@decpp.net>
+ *   2023      Ju-Hung Li <jhlee@pllab.cs.nthu.edu.tw> (Copyright owned by NTHU pllab)
  */
 
 #if !defined(SIMDE_ARM_NEON_MLAL_HIGH_N_H)
@@ -41,6 +42,13 @@ simde_int32x4_t
 simde_vmlal_high_n_s16(simde_int32x4_t a, simde_int16x8_t b, int16_t c) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vmlal_high_n_s16(a, b, c);
+  #elif defined(SIMDE_RISCV_V_NATIVE)
+    simde_int32x4_private r_;
+    simde_int32x4_private a_ = simde_int32x4_to_private(a);
+    simde_int16x8_private b_ = simde_int16x8_to_private(b);
+    b_.sv128 = __riscv_vslidedown_vx_i16m1(b_.sv128 , 4 , 8);
+    r_.sv128 = __riscv_vwmacc_vx_i32m1(a_.sv128 , c , __riscv_vlmul_trunc_v_i16m1_i16mf2 (b_.sv128) , 4);
+    return simde_int32x4_from_private(r_);
   #else
     return simde_vmlaq_s32(a, simde_vmovl_high_s16(b), simde_vdupq_n_s32(c));
   #endif
@@ -55,6 +63,13 @@ simde_int64x2_t
 simde_vmlal_high_n_s32(simde_int64x2_t a, simde_int32x4_t b, int32_t c) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vmlal_high_n_s32(a, b, c);
+  #elif defined(SIMDE_RISCV_V_NATIVE)
+    simde_int64x2_private r_;
+    simde_int64x2_private a_ = simde_int64x2_to_private(a);
+    simde_int32x4_private b_ = simde_int32x4_to_private(b);
+    b_.sv128 = __riscv_vslidedown_vx_i32m1(b_.sv128 , 2, 4);
+    r_.sv128 = __riscv_vwmacc_vx_i64m1(a_.sv128 , c , __riscv_vlmul_trunc_v_i32m1_i32mf2 (b_.sv128)  , 2);
+    return simde_int64x2_from_private(r_);
   #else
     simde_int64x2_private
       r_,
@@ -84,6 +99,13 @@ simde_uint32x4_t
 simde_vmlal_high_n_u16(simde_uint32x4_t a, simde_uint16x8_t b, uint16_t c) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vmlal_high_n_u16(a, b, c);
+  #elif defined(SIMDE_RISCV_V_NATIVE)
+    simde_uint32x4_private r_;
+    simde_uint32x4_private a_ = simde_uint32x4_to_private(a);
+    simde_uint16x8_private b_ = simde_uint16x8_to_private(b);
+    b_.sv128 = __riscv_vslidedown_vx_u16m1(b_.sv128 , 4 , 8);
+    r_.sv128 = __riscv_vwmaccu_vx_u32m1(a_.sv128 , c , __riscv_vlmul_trunc_v_u16m1_u16mf2 (b_.sv128) , 4);
+    return simde_uint32x4_from_private(r_);
   #else
     return simde_vmlaq_u32(a, simde_vmovl_high_u16(b), simde_vdupq_n_u32(c));
   #endif
@@ -98,6 +120,13 @@ simde_uint64x2_t
 simde_vmlal_high_n_u32(simde_uint64x2_t a, simde_uint32x4_t b, uint32_t c) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vmlal_high_n_u32(a, b, c);
+  #elif defined(SIMDE_RISCV_V_NATIVE)
+    simde_uint64x2_private r_;
+    simde_uint64x2_private a_ = simde_uint64x2_to_private(a);
+    simde_uint32x4_private b_ = simde_uint32x4_to_private(b);
+    b_.sv128 = __riscv_vslidedown_vx_u32m1(b_.sv128 , 2, 4);
+    r_.sv128 = __riscv_vwmaccu_vx_u64m1(a_.sv128 , c , __riscv_vlmul_trunc_v_u32m1_u32mf2 (b_.sv128) , 2);
+    return simde_uint64x2_from_private(r_);
   #else
     simde_uint64x2_private
       r_,
