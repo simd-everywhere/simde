@@ -44,7 +44,9 @@ simde_vcvt_f16_f32(simde_float32x4_t a) {
     simde_float32x4_private a_ = simde_float32x4_to_private(a);
     simde_float16x4_private r_;
 
-    #if defined(SIMDE_CONVERT_VECTOR_) && defined(SIMDE_FLOAT16_VECTOR)
+    #if defined(SIMDE_RISCV_V_NATIVE) && SIMDE_ARCH_RISCV_ZVFH
+      r_.sv64 = __riscv_vfncvt_f_f_w_f16m1(__riscv_vlmul_ext_v_f32m1_f32m2(a_.sv128), 4);
+    #elif defined(SIMDE_CONVERT_VECTOR_) && defined(SIMDE_FLOAT16_VECTOR)
       SIMDE_CONVERT_VECTOR_(r_.values, a_.values);
     #else
       SIMDE_VECTORIZE
@@ -70,7 +72,9 @@ simde_vcvt_f32_f16(simde_float16x4_t a) {
     simde_float16x4_private a_ = simde_float16x4_to_private(a);
     simde_float32x4_private r_;
 
-    #if defined(SIMDE_CONVERT_VECTOR_) && defined(SIMDE_FLOAT16_VECTOR)
+    #if defined(SIMDE_RISCV_V_NATIVE) && SIMDE_ARCH_RISCV_ZVFH
+      r_.sv128 = __riscv_vlmul_trunc_v_f32m2_f32m1(__riscv_vfwcvt_f_f_v_f32m2(a_.sv64, 4));
+    #elif defined(SIMDE_CONVERT_VECTOR_) && defined(SIMDE_FLOAT16_VECTOR)
       SIMDE_CONVERT_VECTOR_(r_.values, a_.values);
     #else
       SIMDE_VECTORIZE
@@ -96,8 +100,10 @@ simde_vcvt_f32_f64(simde_float64x2_t a) {
     simde_float64x2_private a_ = simde_float64x2_to_private(a);
     simde_float32x2_private r_;
 
-    #if defined(SIMDE_CONVERT_VECTOR_)
+    #if defined(SIMDE_CONVERT_VECTOR_) && !defined(SIMDE_RISCV_V_NATIVE)
       SIMDE_CONVERT_VECTOR_(r_.values, a_.values);
+    #elif defined(SIMDE_RISCV_V_NATIVE)
+      r_.sv64 = __riscv_vfncvt_f_f_w_f32m1(__riscv_vlmul_ext_v_f64m1_f64m2(a_.sv128), 2);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -122,8 +128,10 @@ simde_vcvt_f64_f32(simde_float32x2_t a) {
     simde_float32x2_private a_ = simde_float32x2_to_private(a);
     simde_float64x2_private r_;
 
-    #if defined(SIMDE_CONVERT_VECTOR_)
+    #if defined(SIMDE_CONVERT_VECTOR_) && !defined(SIMDE_RISCV_V_NATIVE)
       SIMDE_CONVERT_VECTOR_(r_.values, a_.values);
+    #elif defined(SIMDE_RISCV_V_NATIVE)
+      r_.sv128 = __riscv_vlmul_trunc_v_f64m2_f64m1(__riscv_vfwcvt_f_f_v_f64m2(a_.sv64, 2));
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -527,7 +535,17 @@ simde_vcvt_s32_f32(simde_float32x2_t a) {
     simde_float32x2_private a_ = simde_float32x2_to_private(a);
     simde_int32x2_private r_;
 
-    #if defined(SIMDE_CONVERT_VECTOR_) && defined(SIMDE_FAST_CONVERSION_RANGE)
+    #if defined(SIMDE_RISCV_V_NATIVE)
+      #if defined(SIMDE_FAST_CONVERSION_RANGE)
+        r_.sv64 = __riscv_vfcvt_rtz_x_f_v_i32m1(a_.sv64, 2);
+      #else
+        r_.sv64 = __riscv_vmerge_vxm_i32m1(
+          __riscv_vfcvt_rtz_x_f_v_i32m1(a_.sv64, 2),
+          0,
+          __riscv_vmseq_vx_u32m1_b32(__riscv_vfclass_v_u32m1(a_.sv64 , 2) , 512 , 2),
+          2);
+      #endif
+    #elif defined(SIMDE_CONVERT_VECTOR_) && defined(SIMDE_FAST_CONVERSION_RANGE)
       SIMDE_CONVERT_VECTOR_(r_.values, a_.values);
     #else
       SIMDE_VECTORIZE
@@ -553,7 +571,9 @@ simde_vcvt_u16_f16(simde_float16x4_t a) {
     simde_float16x4_private a_ = simde_float16x4_to_private(a);
     simde_uint16x4_private r_;
 
-    #if defined(SIMDE_CONVERT_VECTOR_) && defined(SIMDE_FAST_CONVERSION_RANGE) && defined(SIMDE_FLOAT16_VECTOR)
+    #if defined(SIMDE_RISCV_V_NATIVE) && SIMDE_ARCH_RISCV_ZVFH
+      r_.sv64 = __riscv_vfcvt_rtz_xu_f_v_u16m1(a_.sv64, 4);
+    #elif defined(SIMDE_CONVERT_VECTOR_) && defined(SIMDE_FAST_CONVERSION_RANGE) && defined(SIMDE_FLOAT16_VECTOR)
       SIMDE_CONVERT_VECTOR_(r_.values, a_.values);
     #else
       SIMDE_VECTORIZE
@@ -579,7 +599,17 @@ simde_vcvt_u32_f32(simde_float32x2_t a) {
     simde_float32x2_private a_ = simde_float32x2_to_private(a);
     simde_uint32x2_private r_;
 
-    #if defined(SIMDE_CONVERT_VECTOR_) && defined(SIMDE_FAST_CONVERSION_RANGE)
+    #if defined(SIMDE_RISCV_V_NATIVE)
+      #if defined(SIMDE_FAST_CONVERSION_RANGE)
+        r_.sv64 = __riscv_vfcvt_rtz_xu_f_v_u32m1(a_.sv64, 2);
+      #else
+        r_.sv64 = __riscv_vmerge_vxm_u32m1(
+          __riscv_vfcvt_rtz_xu_f_v_u32m1(a_.sv64, 2),
+          0,
+          __riscv_vmseq_vx_u32m1_b32(__riscv_vfclass_v_u32m1(a_.sv64 , 2) , 512 , 2),
+          2);
+      #endif
+    #elif defined(SIMDE_CONVERT_VECTOR_) && defined(SIMDE_FAST_CONVERSION_RANGE)
       SIMDE_CONVERT_VECTOR_(r_.values, a_.values);
     #else
       SIMDE_VECTORIZE
@@ -605,7 +635,17 @@ simde_vcvt_s64_f64(simde_float64x1_t a) {
     simde_float64x1_private a_ = simde_float64x1_to_private(a);
     simde_int64x1_private r_;
 
-    #if defined(SIMDE_CONVERT_VECTOR_) && defined(SIMDE_FAST_CONVERSION_RANGE)
+    #if defined(SIMDE_RISCV_V_NATIVE)
+      #if defined(SIMDE_FAST_CONVERSION_RANGE)
+        r_.sv64 = __riscv_vfcvt_rtz_x_f_v_i64m1(a_.sv64, 1);
+      #else
+        r_.sv64 = __riscv_vmerge_vxm_i64m1(
+          __riscv_vfcvt_rtz_x_f_v_i64m1(a_.sv64, 1),
+          0,
+          __riscv_vmseq_vx_u64m1_b64(__riscv_vfclass_v_u64m1(a_.sv64 , 1) , 512 , 1),
+          1);
+      #endif
+    #elif defined(SIMDE_CONVERT_VECTOR_) && defined(SIMDE_FAST_CONVERSION_RANGE)
       SIMDE_CONVERT_VECTOR_(r_.values, a_.values);
     #else
       SIMDE_VECTORIZE
@@ -631,7 +671,17 @@ simde_vcvt_u64_f64(simde_float64x1_t a) {
     simde_float64x1_private a_ = simde_float64x1_to_private(a);
     simde_uint64x1_private r_;
 
-    #if defined(SIMDE_CONVERT_VECTOR_) && defined(SIMDE_FAST_CONVERSION_RANGE)
+    #if defined(SIMDE_RISCV_V_NATIVE)
+      #if defined(SIMDE_FAST_CONVERSION_RANGE)
+        r_.sv64 = __riscv_vfcvt_rtz_xu_f_v_u64m1(a_.sv64, 1);
+      #else
+        r_.sv64 = __riscv_vmerge_vxm_u64m1(
+          __riscv_vfcvt_rtz_xu_f_v_u64m1(a_.sv64, 1),
+          0,
+          __riscv_vmseq_vx_u64m1_b64(__riscv_vfclass_v_u64m1(a_.sv64 , 1) , 512 , 1),
+          1);
+      #endif
+    #elif defined(SIMDE_CONVERT_VECTOR_) && defined(SIMDE_FAST_CONVERSION_RANGE)
       SIMDE_CONVERT_VECTOR_(r_.values, a_.values);
       r_.values &= HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), (a_.values >= SIMDE_FLOAT64_C(0.0)));
     #else
@@ -696,6 +746,16 @@ simde_vcvtq_s32_f32(simde_float32x4_t a) {
       #if !defined(SIMDE_FAST_NANS)
         r_.m128i = _mm_and_si128(r_.m128i, _mm_castps_si128(_mm_cmpord_ps(a_.m128, a_.m128)));
       #endif
+    #elif defined(SIMDE_RISCV_V_NATIVE)
+      #if defined(SIMDE_FAST_CONVERSION_RANGE)
+        r_.sv128 = __riscv_vfcvt_rtz_x_f_v_i32m1(a_.sv128, 4);
+      #else
+        r_.sv128 = __riscv_vmerge_vxm_i32m1(
+          __riscv_vfcvt_rtz_x_f_v_i32m1(a_.sv128, 4),
+          0,
+          __riscv_vmseq_vx_u32m1_b32(__riscv_vfclass_v_u32m1(a_.sv128 , 4) , 512 , 4),
+          4);
+      #endif
     #elif defined(SIMDE_CONVERT_VECTOR_) && defined(SIMDE_FAST_CONVERSION_RANGE) && !defined(SIMDE_FAST_NANS)
       SIMDE_CONVERT_VECTOR_(r_.values, a_.values);
     #elif defined(SIMDE_CONVERT_VECTOR_) && defined(SIMDE_IEEE754_STORAGE)
@@ -736,7 +796,9 @@ simde_vcvtq_u16_f16(simde_float16x8_t a) {
     simde_float16x8_private a_ = simde_float16x8_to_private(a);
     simde_uint16x8_private r_;
 
-    #if defined(SIMDE_CONVERT_VECTOR_) && defined(SIMDE_FAST_CONVERSION_RANGE) && defined(SIMDE_FLOAT16_VECTOR)
+    #if defined(SIMDE_RISCV_V_NATIVE) && SIMDE_ARCH_RISCV_ZVFH
+      r_.sv128 = __riscv_vfcvt_rtz_xu_f_v_u16m1(a_.sv128, 8);
+    #elif defined(SIMDE_CONVERT_VECTOR_) && defined(SIMDE_FAST_CONVERSION_RANGE) && defined(SIMDE_FLOAT16_VECTOR)
       SIMDE_CONVERT_VECTOR_(r_.values, a_.values);
     #else
       SIMDE_VECTORIZE
@@ -792,6 +854,16 @@ simde_vcvtq_u32_f32(simde_float32x4_t a) {
 
       #if !defined(SIMDE_FAST_NANS)
         r_.m128i = _mm_and_si128(r_.m128i, _mm_castps_si128(_mm_cmpord_ps(a_.m128, a_.m128)));
+      #endif
+    #elif defined(SIMDE_RISCV_V_NATIVE)
+      #if defined(SIMDE_FAST_CONVERSION_RANGE)
+        r_.sv128 = __riscv_vfcvt_rtz_xu_f_v_u32m1(a_.sv128, 4);
+      #else
+        r_.sv128 = __riscv_vmerge_vxm_u32m1(
+          __riscv_vfcvt_rtz_xu_f_v_u32m1(a_.sv128, 4),
+          0,
+          __riscv_vmseq_vx_u32m1_b32(__riscv_vfclass_v_u32m1(a_.sv128 , 4) , 512 , 4),
+          4);
       #endif
     #elif defined(SIMDE_CONVERT_VECTOR_) && defined(SIMDE_FAST_CONVERSION_RANGE)
       SIMDE_CONVERT_VECTOR_(r_.values, a_.values);
@@ -873,6 +945,16 @@ simde_vcvtq_s64_f64(simde_float64x2_t a) {
       #if !defined(SIMDE_FAST_NANS)
         r_.m128i = _mm_and_si128(r_.m128i, _mm_castpd_si128(_mm_cmpord_pd(a_.m128d, a_.m128d)));
       #endif
+    #elif defined(SIMDE_RISCV_V_NATIVE)
+      #if defined(SIMDE_FAST_CONVERSION_RANGE)
+        r_.sv128 = __riscv_vfcvt_rtz_x_f_v_i64m1(a_.sv128, 2);
+      #else
+        r_.sv128 = __riscv_vmerge_vxm_i64m1(
+          __riscv_vfcvt_rtz_x_f_v_i64m1(a_.sv128, 2),
+          0,
+          __riscv_vmseq_vx_u64m1_b64(__riscv_vfclass_v_u64m1(a_.sv128 , 2) , 512 , 2),
+          2);
+      #endif
     #elif defined(SIMDE_CONVERT_VECTOR_) && defined(SIMDE_FAST_CONVERSION_RANGE)
       SIMDE_CONVERT_VECTOR_(r_.values, a_.values);
     #elif defined(SIMDE_CONVERT_VECTOR_) && defined(SIMDE_IEEE754_STORAGE)
@@ -952,6 +1034,16 @@ simde_vcvtq_u64_f64(simde_float64x2_t a) {
       #if !defined(SIMDE_FAST_NANS)
         r_.m128i = _mm_and_si128(r_.m128i, _mm_castpd_si128(_mm_cmpord_pd(a_.m128d, a_.m128d)));
       #endif
+    #elif defined(SIMDE_RISCV_V_NATIVE)
+      #if defined(SIMDE_FAST_CONVERSION_RANGE)
+        r_.sv128 = __riscv_vfcvt_rtz_xu_f_v_u64m1(a_.sv128, 2);
+      #else
+        r_.sv128 = __riscv_vmerge_vxm_u64m1(
+          __riscv_vfcvt_rtz_xu_f_v_u64m1(a_.sv128, 2),
+          0,
+          __riscv_vmseq_vx_u64m1_b64(__riscv_vfclass_v_u64m1(a_.sv128 , 2) , 512 , 2),
+          2);
+      #endif
     #elif defined(SIMDE_CONVERT_VECTOR_) && defined(SIMDE_IEEE754_STORAGE)
       SIMDE_CONVERT_VECTOR_(r_.values, a_.values);
 
@@ -986,7 +1078,9 @@ simde_vcvt_f16_s16(simde_int16x4_t a) {
     simde_int16x4_private a_ = simde_int16x4_to_private(a);
     simde_float16x4_private r_;
 
-    #if defined(SIMDE_CONVERT_VECTOR_) && defined(SIMDE_FLOAT16_VECTOR)
+    #if defined(SIMDE_RISCV_V_NATIVE) && SIMDE_ARCH_RISCV_ZVFH
+      r_.sv64 = __riscv_vfcvt_f_x_v_f16m1(a_.sv64, 4);
+    #elif defined(SIMDE_CONVERT_VECTOR_) && defined(SIMDE_FLOAT16_VECTOR)
       SIMDE_CONVERT_VECTOR_(r_.values, a_.values);
     #else
       SIMDE_VECTORIZE
@@ -1016,8 +1110,10 @@ simde_vcvt_f32_s32(simde_int32x2_t a) {
     simde_int32x2_private a_ = simde_int32x2_to_private(a);
     simde_float32x2_private r_;
 
-    #if defined(SIMDE_CONVERT_VECTOR_)
+    #if defined(SIMDE_CONVERT_VECTOR_) && !defined(SIMDE_RISCV_V_NATIVE)
       SIMDE_CONVERT_VECTOR_(r_.values, a_.values);
+    #elif defined(SIMDE_RISCV_V_NATIVE)
+      r_.sv64 = __riscv_vfcvt_f_x_v_f32m1(a_.sv64, 2);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -1042,14 +1138,18 @@ simde_vcvt_f16_u16(simde_uint16x4_t a) {
     simde_uint16x4_private a_ = simde_uint16x4_to_private(a);
     simde_float16x4_private r_;
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      #if SIMDE_FLOAT16_API != SIMDE_FLOAT16_API_PORTABLE && SIMDE_FLOAT16_API != SIMDE_FLOAT16_API_FP16_NO_ABI
-        r_.values[i] = HEDLEY_STATIC_CAST(simde_float16_t, a_.values[i]);
-      #else
-        r_.values[i] = simde_float16_from_float32(HEDLEY_STATIC_CAST(simde_float32_t, a_.values[i]));
-      #endif
-    }
+    #if defined(SIMDE_RISCV_V_NATIVE) && SIMDE_ARCH_RISCV_ZVFH
+      r_.sv64 = __riscv_vfcvt_f_xu_v_f16m1(a_.sv64, 4);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+        #if SIMDE_FLOAT16_API != SIMDE_FLOAT16_API_PORTABLE && SIMDE_FLOAT16_API != SIMDE_FLOAT16_API_FP16_NO_ABI
+          r_.values[i] = HEDLEY_STATIC_CAST(simde_float16_t, a_.values[i]);
+        #else
+          r_.values[i] = simde_float16_from_float32(HEDLEY_STATIC_CAST(simde_float32_t, a_.values[i]));
+        #endif
+      }
+    #endif
 
     return simde_float16x4_from_private(r_);
   #endif
@@ -1068,8 +1168,10 @@ simde_vcvt_f32_u32(simde_uint32x2_t a) {
     simde_uint32x2_private a_ = simde_uint32x2_to_private(a);
     simde_float32x2_private r_;
 
-    #if defined(SIMDE_CONVERT_VECTOR_)
+    #if defined(SIMDE_CONVERT_VECTOR_) && !defined(SIMDE_RISCV_V_NATIVE)
       SIMDE_CONVERT_VECTOR_(r_.values, a_.values);
+    #elif defined(SIMDE_RISCV_V_NATIVE)
+      r_.sv64 = __riscv_vfcvt_f_xu_v_f32m1(a_.sv64, 2);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -1094,8 +1196,10 @@ simde_vcvt_f64_s64(simde_int64x1_t a) {
     simde_int64x1_private a_ = simde_int64x1_to_private(a);
     simde_float64x1_private r_;
 
-    #if defined(SIMDE_CONVERT_VECTOR_)
+    #if defined(SIMDE_CONVERT_VECTOR_) && !defined(SIMDE_RISCV_V_NATIVE)
       SIMDE_CONVERT_VECTOR_(r_.values, a_.values);
+    #elif defined(SIMDE_RISCV_V_NATIVE)
+      r_.sv64 = __riscv_vfcvt_f_x_v_f64m1(a_.sv64, 1);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -1120,8 +1224,10 @@ simde_vcvt_f64_u64(simde_uint64x1_t a) {
     simde_uint64x1_private a_ = simde_uint64x1_to_private(a);
     simde_float64x1_private r_;
 
-    #if defined(SIMDE_CONVERT_VECTOR_)
+    #if defined(SIMDE_CONVERT_VECTOR_) && !defined(SIMDE_RISCV_V_NATIVE)
       SIMDE_CONVERT_VECTOR_(r_.values, a_.values);
+    #elif defined(SIMDE_RISCV_V_NATIVE)
+      r_.sv64 = __riscv_vfcvt_f_xu_v_f64m1(a_.sv64, 1);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -1146,7 +1252,9 @@ simde_vcvtq_f16_s16(simde_int16x8_t a) {
     simde_int16x8_private a_ = simde_int16x8_to_private(a);
     simde_float16x8_private r_;
 
-    #if defined(SIMDE_CONVERT_VECTOR_) && defined(SIMDE_FLOAT16_VECTOR)
+    #if defined(SIMDE_RISCV_V_NATIVE) && SIMDE_ARCH_RISCV_ZVFH
+      r_.sv128 = __riscv_vfcvt_f_x_v_f16m1(a_.sv128, 8);
+    #elif defined(SIMDE_CONVERT_VECTOR_) && defined(SIMDE_FLOAT16_VECTOR)
       SIMDE_CONVERT_VECTOR_(r_.values, a_.values);
     #else
       SIMDE_VECTORIZE
@@ -1176,8 +1284,10 @@ simde_vcvtq_f32_s32(simde_int32x4_t a) {
     simde_int32x4_private a_ = simde_int32x4_to_private(a);
     simde_float32x4_private r_;
 
-    #if defined(SIMDE_CONVERT_VECTOR_)
+    #if defined(SIMDE_CONVERT_VECTOR_) && !defined(SIMDE_RISCV_V_NATIVE)
       SIMDE_CONVERT_VECTOR_(r_.values, a_.values);
+    #elif defined(SIMDE_RISCV_V_NATIVE)
+      r_.sv128 = __riscv_vfcvt_f_x_v_f32m1(a_.sv128, 4);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -1202,7 +1312,9 @@ simde_vcvtq_f16_u16(simde_uint16x8_t a) {
     simde_uint16x8_private a_ = simde_uint16x8_to_private(a);
     simde_float16x8_private r_;
 
-    #if defined(SIMDE_CONVERT_VECTOR_) && defined(SIMDE_FLOAT16_VECTOR)
+    #if defined(SIMDE_RISCV_V_NATIVE) && SIMDE_ARCH_RISCV_ZVFH
+      r_.sv128 = __riscv_vfcvt_f_xu_v_f16m1(a_.sv128, 8);
+    #elif defined(SIMDE_CONVERT_VECTOR_) && defined(SIMDE_FLOAT16_VECTOR)
       SIMDE_CONVERT_VECTOR_(r_.values, a_.values);
     #else
       SIMDE_VECTORIZE
@@ -1232,8 +1344,10 @@ simde_vcvtq_f32_u32(simde_uint32x4_t a) {
     simde_uint32x4_private a_ = simde_uint32x4_to_private(a);
     simde_float32x4_private r_;
 
-    #if defined(SIMDE_CONVERT_VECTOR_)
+    #if defined(SIMDE_CONVERT_VECTOR_) && !defined(SIMDE_RISCV_V_NATIVE)
       SIMDE_CONVERT_VECTOR_(r_.values, a_.values);
+    #elif defined(SIMDE_RISCV_V_NATIVE)
+      r_.sv128 = __riscv_vfcvt_f_xu_v_f32m1(a_.sv128, 4);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -1262,8 +1376,10 @@ simde_vcvtq_f64_s64(simde_int64x2_t a) {
 
     #if defined(SIMDE_X86_AVX512VL_NATIVE) && defined(SIMDE_X86_AVX512DQ_NATIVE)
       r_.m128d = _mm_cvtepi64_pd(a_.m128i);
-    #elif defined(SIMDE_CONVERT_VECTOR_)
+    #elif defined(SIMDE_CONVERT_VECTOR_) && !defined(SIMDE_RISCV_V_NATIVE)
       SIMDE_CONVERT_VECTOR_(r_.values, a_.values);
+    #elif defined(SIMDE_RISCV_V_NATIVE)
+      r_.sv128 = __riscv_vfcvt_f_x_v_f64m1(a_.sv128, 2);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -1288,8 +1404,10 @@ simde_vcvtq_f64_u64(simde_uint64x2_t a) {
     simde_uint64x2_private a_ = simde_uint64x2_to_private(a);
     simde_float64x2_private r_;
 
-    #if defined(SIMDE_CONVERT_VECTOR_)
+    #if defined(SIMDE_CONVERT_VECTOR_) && !defined(SIMDE_RISCV_V_NATIVE)
       SIMDE_CONVERT_VECTOR_(r_.values, a_.values);
+    #elif defined(SIMDE_RISCV_V_NATIVE)
+      r_.sv128 = __riscv_vfcvt_f_xu_v_f64m1(a_.sv128, 2);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {

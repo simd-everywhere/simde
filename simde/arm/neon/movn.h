@@ -22,6 +22,7 @@
  *
  * Copyright:
  *   2020      Evan Nemerson <evan@nemerson.com>
+ *   2023      Chi-Wei Chu <wewe5215@gapp.nthu.edu.tw> (Copyright owned by NTHU pllab)
  */
 
 #if !defined(SIMDE_ARM_NEON_MOVN_H)
@@ -42,7 +43,9 @@ simde_vmovn_s16(simde_int16x8_t a) {
     simde_int8x8_private r_;
     simde_int16x8_private a_ = simde_int16x8_to_private(a);
 
-    #if defined(SIMDE_CONVERT_VECTOR_)
+    #if defined(SIMDE_RISCV_V_NATIVE)
+      r_.sv64 = __riscv_vlmul_ext_v_i8mf2_i8m1(__riscv_vncvt_x_x_w_i8mf2(a_.sv128, 8));
+    #elif defined(SIMDE_CONVERT_VECTOR_)
       SIMDE_CONVERT_VECTOR_(r_.values, a_.values);
     #else
       SIMDE_VECTORIZE
@@ -68,7 +71,9 @@ simde_vmovn_s32(simde_int32x4_t a) {
     simde_int16x4_private r_;
     simde_int32x4_private a_ = simde_int32x4_to_private(a);
 
-    #if defined(SIMDE_CONVERT_VECTOR_)
+    #if defined(SIMDE_RISCV_V_NATIVE)
+      r_.sv64 = __riscv_vlmul_ext_v_i16mf2_i16m1(__riscv_vncvt_x_x_w_i16mf2(a_.sv128, 4));
+    #elif defined(SIMDE_CONVERT_VECTOR_)
       SIMDE_CONVERT_VECTOR_(r_.values, a_.values);
     #else
       SIMDE_VECTORIZE
@@ -94,7 +99,9 @@ simde_vmovn_s64(simde_int64x2_t a) {
     simde_int32x2_private r_;
     simde_int64x2_private a_ = simde_int64x2_to_private(a);
 
-    #if defined(SIMDE_CONVERT_VECTOR_)
+    #if defined(SIMDE_RISCV_V_NATIVE)
+      r_.sv64 = __riscv_vlmul_ext_v_i32mf2_i32m1(__riscv_vncvt_x_x_w_i32mf2(a_.sv128, 2));
+    #elif defined(SIMDE_CONVERT_VECTOR_)
       SIMDE_CONVERT_VECTOR_(r_.values, a_.values);
     #else
       SIMDE_VECTORIZE
@@ -120,7 +127,9 @@ simde_vmovn_u16(simde_uint16x8_t a) {
     simde_uint8x8_private r_;
     simde_uint16x8_private a_ = simde_uint16x8_to_private(a);
 
-    #if defined(SIMDE_CONVERT_VECTOR_)
+    #if defined(SIMDE_RISCV_V_NATIVE)
+      r_.sv64 = __riscv_vlmul_ext_v_u8mf2_u8m1(__riscv_vncvt_x_x_w_u8mf2(a_.sv128, 8));
+    #elif defined(SIMDE_CONVERT_VECTOR_)
       SIMDE_CONVERT_VECTOR_(r_.values, a_.values);
     #else
       SIMDE_VECTORIZE
@@ -146,7 +155,9 @@ simde_vmovn_u32(simde_uint32x4_t a) {
     simde_uint16x4_private r_;
     simde_uint32x4_private a_ = simde_uint32x4_to_private(a);
 
-    #if defined(SIMDE_CONVERT_VECTOR_)
+    #if defined(SIMDE_RISCV_V_NATIVE)
+      r_.sv64 = __riscv_vlmul_ext_v_u16mf2_u16m1(__riscv_vncvt_x_x_w_u16mf2(a_.sv128, 4));
+    #elif defined(SIMDE_CONVERT_VECTOR_)
       SIMDE_CONVERT_VECTOR_(r_.values, a_.values);
     #else
       SIMDE_VECTORIZE
@@ -172,7 +183,9 @@ simde_vmovn_u64(simde_uint64x2_t a) {
     simde_uint32x2_private r_;
     simde_uint64x2_private a_ = simde_uint64x2_to_private(a);
 
-    #if defined(SIMDE_CONVERT_VECTOR_)
+    #if defined(SIMDE_RISCV_V_NATIVE)
+      r_.sv64 = __riscv_vlmul_ext_v_u32mf2_u32m1(__riscv_vncvt_x_x_w_u32mf2(a_.sv128, 2));
+    #elif defined(SIMDE_CONVERT_VECTOR_)
       SIMDE_CONVERT_VECTOR_(r_.values, a_.values);
     #else
       SIMDE_VECTORIZE
