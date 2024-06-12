@@ -134,6 +134,8 @@ simde_vqsub_s8(simde_int8x8_t a, simde_int8x8_t b) {
 
     #if defined(SIMDE_X86_MMX_NATIVE)
       r_.m64 = _mm_subs_pi8(a_.m64, b_.m64);
+    #elif defined(SIMDE_RISCV_V_NATIVE)
+      r_.sv64 = __riscv_vssub_vv_i8m1(a_.sv64, b_.sv64, 8);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
       const __typeof__(r_.values) diff_sat = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), (b_.values > a_.values) ^ INT8_MAX);
       const __typeof__(r_.values) diff = a_.values - b_.values;
@@ -168,6 +170,8 @@ simde_vqsub_s16(simde_int16x4_t a, simde_int16x4_t b) {
 
     #if defined(SIMDE_X86_MMX_NATIVE)
       r_.m64 = _mm_subs_pi16(a_.m64, b_.m64);
+    #elif defined(SIMDE_RISCV_V_NATIVE)
+      r_.sv64 = __riscv_vssub_vv_i16m1(a_.sv64, b_.sv64, 4);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
       const __typeof__(r_.values) diff_sat = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), (b_.values > a_.values) ^ INT16_MAX);
       const __typeof__(r_.values) diff = a_.values - b_.values;
@@ -200,7 +204,9 @@ simde_vqsub_s32(simde_int32x2_t a, simde_int32x2_t b) {
       a_ = simde_int32x2_to_private(a),
       b_ = simde_int32x2_to_private(b);
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+    #if defined(SIMDE_RISCV_V_NATIVE)
+      r_.sv64 = __riscv_vssub_vv_i32m1(a_.sv64, b_.sv64, 2);
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
       const __typeof__(r_.values) diff_sat = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), (b_.values > a_.values) ^ INT32_MAX);
       const __typeof__(r_.values) diff = a_.values - b_.values;
       const __typeof__(r_.values) saturate = diff_sat ^ diff;
@@ -232,7 +238,9 @@ simde_vqsub_s64(simde_int64x1_t a, simde_int64x1_t b) {
       a_ = simde_int64x1_to_private(a),
       b_ = simde_int64x1_to_private(b);
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+    #if defined(SIMDE_RISCV_V_NATIVE)
+      r_.sv64 = __riscv_vssub_vv_i64m1(a_.sv64, b_.sv64, 1);
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
       const __typeof__(r_.values) diff_sat = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), (b_.values > a_.values) ^ INT64_MAX);
       const __typeof__(r_.values) diff = a_.values - b_.values;
       const __typeof__(r_.values) saturate = diff_sat ^ diff;
@@ -266,6 +274,8 @@ simde_vqsub_u8(simde_uint8x8_t a, simde_uint8x8_t b) {
 
     #if defined(SIMDE_X86_MMX_NATIVE)
       r_.m64 = _mm_subs_pu8(a_.m64, b_.m64);
+    #elif defined(SIMDE_RISCV_V_NATIVE)
+      r_.sv64 = __riscv_vssubu_vv_u8m1(a_.sv64, b_.sv64, 8);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
       r_.values  = a_.values - b_.values;
       r_.values &= HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), (r_.values <= a_.values));
@@ -297,6 +307,8 @@ simde_vqsub_u16(simde_uint16x4_t a, simde_uint16x4_t b) {
 
     #if defined(SIMDE_X86_MMX_NATIVE)
       r_.m64 = _mm_subs_pu16(a_.m64, b_.m64);
+    #elif defined(SIMDE_RISCV_V_NATIVE)
+      r_.sv64 = __riscv_vssubu_vv_u16m1(a_.sv64, b_.sv64, 4);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
       r_.values  = a_.values - b_.values;
       r_.values &= HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), (r_.values <= a_.values));
@@ -326,7 +338,9 @@ simde_vqsub_u32(simde_uint32x2_t a, simde_uint32x2_t b) {
       a_ = simde_uint32x2_to_private(a),
       b_ = simde_uint32x2_to_private(b);
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+    #if defined(SIMDE_RISCV_V_NATIVE)
+      r_.sv64 = __riscv_vssubu_vv_u32m1(a_.sv64, b_.sv64, 2);
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
       r_.values  = a_.values - b_.values;
       r_.values &= HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), (r_.values <= a_.values));
     #else
@@ -355,7 +369,9 @@ simde_vqsub_u64(simde_uint64x1_t a, simde_uint64x1_t b) {
       a_ = simde_uint64x1_to_private(a),
       b_ = simde_uint64x1_to_private(b);
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+    #if defined(SIMDE_RISCV_V_NATIVE)
+      r_.sv64 = __riscv_vssubu_vv_u64m1(a_.sv64, b_.sv64, 1);
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
       r_.values  = a_.values - b_.values;
       r_.values &= HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), (r_.values <= a_.values));
     #else
@@ -390,6 +406,8 @@ simde_vqsubq_s8(simde_int8x16_t a, simde_int8x16_t b) {
       r_.v128 = wasm_i8x16_sub_sat(a_.v128, b_.v128);
     #elif defined(SIMDE_X86_SSE2_NATIVE)
       r_.m128i = _mm_subs_epi8(a_.m128i, b_.m128i);
+    #elif defined(SIMDE_RISCV_V_NATIVE)
+      r_.sv128 = __riscv_vssub_vv_i8m1(a_.sv128 , b_.sv128 , 16);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
       const __typeof__(r_.values) diff_sat = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), (b_.values > a_.values) ^ INT8_MAX);
       const __typeof__(r_.values) diff = a_.values - b_.values;
@@ -428,6 +446,8 @@ simde_vqsubq_s16(simde_int16x8_t a, simde_int16x8_t b) {
       r_.v128 = wasm_i16x8_sub_sat(a_.v128, b_.v128);
     #elif defined(SIMDE_X86_SSE2_NATIVE)
       r_.m128i = _mm_subs_epi16(a_.m128i, b_.m128i);
+    #elif defined(SIMDE_RISCV_V_NATIVE)
+      r_.sv128 = __riscv_vssub_vv_i16m1(a_.sv128 , b_.sv128 , 8);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
       const __typeof__(r_.values) diff_sat = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), (b_.values > a_.values) ^ INT16_MAX);
       const __typeof__(r_.values) diff = a_.values - b_.values;
@@ -479,6 +499,8 @@ simde_vqsubq_s32(simde_int32x4_t a, simde_int32x4_t b) {
       #else
         r_.m128i = _mm_xor_si128(diff, _mm_and_si128(t, _mm_srai_epi32(t, 31)));
       #endif
+    #elif defined(SIMDE_RISCV_V_NATIVE)
+      r_.sv128 = __riscv_vssub_vv_i32m1(a_.sv128 , b_.sv128 , 4);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
       const __typeof__(r_.values) diff_sat = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), (b_.values > a_.values) ^ INT32_MAX);
       const __typeof__(r_.values) diff = a_.values - b_.values;
@@ -511,7 +533,9 @@ simde_vqsubq_s64(simde_int64x2_t a, simde_int64x2_t b) {
       a_ = simde_int64x2_to_private(a),
       b_ = simde_int64x2_to_private(b);
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+    #if defined(SIMDE_RISCV_V_NATIVE)
+      r_.sv128 = __riscv_vssub_vv_i64m1(a_.sv128 , b_.sv128 , 2);
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
       const __typeof__(r_.values) diff_sat = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), (b_.values > a_.values) ^ INT64_MAX);
       const __typeof__(r_.values) diff = a_.values - b_.values;
       const __typeof__(r_.values) saturate = diff_sat ^ diff;
@@ -549,6 +573,8 @@ simde_vqsubq_u8(simde_uint8x16_t a, simde_uint8x16_t b) {
       r_.v128 = wasm_u8x16_sub_sat(a_.v128, b_.v128);
     #elif defined(SIMDE_X86_SSE2_NATIVE)
       r_.m128i = _mm_subs_epu8(a_.m128i, b_.m128i);
+    #elif defined(SIMDE_RISCV_V_NATIVE)
+      r_.sv128 = __riscv_vssubu_vv_u8m1(a_.sv128 , b_.sv128 , 16);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
       r_.values  = a_.values - b_.values;
       r_.values &= HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), r_.values <= a_.values);
@@ -584,6 +610,8 @@ simde_vqsubq_u16(simde_uint16x8_t a, simde_uint16x8_t b) {
       r_.v128 = wasm_u16x8_sub_sat(a_.v128, b_.v128);
     #elif defined(SIMDE_X86_SSE2_NATIVE)
       r_.m128i = _mm_subs_epu16(a_.m128i, b_.m128i);
+    #elif defined(SIMDE_RISCV_V_NATIVE)
+      r_.sv128 = __riscv_vssubu_vv_u16m1(a_.sv128 , b_.sv128 , 8);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
       r_.values  = a_.values - b_.values;
       r_.values &= HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), r_.values <= a_.values);
@@ -629,6 +657,8 @@ simde_vqsubq_u32(simde_uint32x4_t a, simde_uint32x4_t b) {
             _mm_set1_epi32(~INT32_C(0))
           )
         );
+    #elif defined(SIMDE_RISCV_V_NATIVE)
+      r_.sv128 = __riscv_vssubu_vv_u32m1(a_.sv128 , b_.sv128 , 4);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
       r_.values  = a_.values - b_.values;
       r_.values &= HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), (r_.values <= a_.values));
@@ -661,7 +691,9 @@ simde_vqsubq_u64(simde_uint64x2_t a, simde_uint64x2_t b) {
       a_ = simde_uint64x2_to_private(a),
       b_ = simde_uint64x2_to_private(b);
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+    #if defined(SIMDE_RISCV_V_NATIVE)
+      r_.sv128 = __riscv_vssubu_vv_u64m1(a_.sv128 , b_.sv128 , 2);
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
       r_.values  = a_.values - b_.values;
       r_.values &= HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), (r_.values <= a_.values));
     #else

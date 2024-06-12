@@ -43,11 +43,17 @@ simde_vaddv_f32(simde_float32x2_t a) {
   #else
     simde_float32x2_private a_ = simde_float32x2_to_private(a);
 
-    r = 0;
-    SIMDE_VECTORIZE_REDUCTION(+:r)
-    for (size_t i = 0 ; i < (sizeof(a_.values) / sizeof(a_.values[0])) ; i++) {
-      r += a_.values[i];
-    }
+    #if defined(SIMDE_RISCV_V_NATIVE)
+      vfloat32m1_t zero = __riscv_vfmv_v_f_f32m1(0 , 1);
+      vfloat32m1_t sum = __riscv_vfredosum_vs_f32m1_f32m1(a_.sv64 , zero , 2);
+      r = __riscv_vfmv_f_s_f32m1_f32 (sum);
+    #else
+      r = 0;
+      SIMDE_VECTORIZE_REDUCTION(+:r)
+      for (size_t i = 0 ; i < (sizeof(a_.values) / sizeof(a_.values[0])) ; i++) {
+        r += a_.values[i];
+      }
+    #endif
   #endif
 
   return r;
@@ -67,11 +73,17 @@ simde_vaddv_s8(simde_int8x8_t a) {
   #else
     simde_int8x8_private a_ = simde_int8x8_to_private(a);
 
-    r = 0;
-    SIMDE_VECTORIZE_REDUCTION(+:r)
-    for (size_t i = 0 ; i < (sizeof(a_.values) / sizeof(a_.values[0])) ; i++) {
-      r += a_.values[i];
-    }
+    #if defined(SIMDE_RISCV_V_NATIVE)
+      vint8m1_t zero = __riscv_vmv_v_x_i8m1(0 , 1);
+      vint8m1_t sum = __riscv_vredsum_vs_i8m1_i8m1(a_.sv64 , zero , 8);
+      r = __riscv_vmv_x_s_i8m1_i8 (sum);
+    #else
+      r = 0;
+      SIMDE_VECTORIZE_REDUCTION(+:r)
+      for (size_t i = 0 ; i < (sizeof(a_.values) / sizeof(a_.values[0])) ; i++) {
+        r += a_.values[i];
+      }
+    #endif
   #endif
 
   return r;
@@ -91,11 +103,17 @@ simde_vaddv_s16(simde_int16x4_t a) {
   #else
     simde_int16x4_private a_ = simde_int16x4_to_private(a);
 
-    r = 0;
-    SIMDE_VECTORIZE_REDUCTION(+:r)
-    for (size_t i = 0 ; i < (sizeof(a_.values) / sizeof(a_.values[0])) ; i++) {
-      r += a_.values[i];
-    }
+    #if defined(SIMDE_RISCV_V_NATIVE)
+      vint16m1_t zero = __riscv_vmv_v_x_i16m1(0 , 1);
+      vint16m1_t sum = __riscv_vredsum_vs_i16m1_i16m1(a_.sv64 , zero , 4);
+      r = __riscv_vmv_x_s_i16m1_i16 (sum);
+    #else
+      r = 0;
+      SIMDE_VECTORIZE_REDUCTION(+:r)
+      for (size_t i = 0 ; i < (sizeof(a_.values) / sizeof(a_.values[0])) ; i++) {
+        r += a_.values[i];
+      }
+    #endif
   #endif
 
   return r;
@@ -115,11 +133,17 @@ simde_vaddv_s32(simde_int32x2_t a) {
   #else
     simde_int32x2_private a_ = simde_int32x2_to_private(a);
 
-    r = 0;
-    SIMDE_VECTORIZE_REDUCTION(+:r)
-    for (size_t i = 0 ; i < (sizeof(a_.values) / sizeof(a_.values[0])) ; i++) {
-      r += a_.values[i];
-    }
+    #if defined(SIMDE_RISCV_V_NATIVE)
+      vint32m1_t zero = __riscv_vmv_v_x_i32m1(0 , 1);
+      vint32m1_t sum = __riscv_vredsum_vs_i32m1_i32m1(a_.sv64 , zero , 2);
+      r = __riscv_vmv_x_s_i32m1_i32 (sum);
+    #else
+      r = 0;
+      SIMDE_VECTORIZE_REDUCTION(+:r)
+      for (size_t i = 0 ; i < (sizeof(a_.values) / sizeof(a_.values[0])) ; i++) {
+        r += a_.values[i];
+      }
+    #endif
   #endif
 
   return r;
@@ -139,11 +163,17 @@ simde_vaddv_u8(simde_uint8x8_t a) {
   #else
     simde_uint8x8_private a_ = simde_uint8x8_to_private(a);
 
-    r = 0;
-    SIMDE_VECTORIZE_REDUCTION(+:r)
-    for (size_t i = 0 ; i < (sizeof(a_.values) / sizeof(a_.values[0])) ; i++) {
-      r += a_.values[i];
-    }
+    #if defined(SIMDE_RISCV_V_NATIVE)
+      vuint8m1_t zero = __riscv_vmv_v_x_u8m1(0 , 1);
+      vuint8m1_t sum = __riscv_vredsum_vs_u8m1_u8m1(a_.sv64 , zero , 8);
+      r = __riscv_vmv_x_s_u8m1_u8 (sum);
+    #else
+      r = 0;
+      SIMDE_VECTORIZE_REDUCTION(+:r)
+      for (size_t i = 0 ; i < (sizeof(a_.values) / sizeof(a_.values[0])) ; i++) {
+        r += a_.values[i];
+      }
+    #endif
   #endif
 
   return r;
@@ -163,11 +193,17 @@ simde_vaddv_u16(simde_uint16x4_t a) {
   #else
     simde_uint16x4_private a_ = simde_uint16x4_to_private(a);
 
-    r = 0;
-    SIMDE_VECTORIZE_REDUCTION(+:r)
-    for (size_t i = 0 ; i < (sizeof(a_.values) / sizeof(a_.values[0])) ; i++) {
-      r += a_.values[i];
-    }
+    #if defined(SIMDE_RISCV_V_NATIVE)
+      vuint16m1_t zero = __riscv_vmv_v_x_u16m1(0 , 1);
+      vuint16m1_t sum = __riscv_vredsum_vs_u16m1_u16m1(a_.sv64 , zero , 4);
+      r = __riscv_vmv_x_s_u16m1_u16(sum);
+    #else
+      r = 0;
+      SIMDE_VECTORIZE_REDUCTION(+:r)
+      for (size_t i = 0 ; i < (sizeof(a_.values) / sizeof(a_.values[0])) ; i++) {
+        r += a_.values[i];
+      }
+    #endif
   #endif
 
   return r;
@@ -187,11 +223,17 @@ simde_vaddv_u32(simde_uint32x2_t a) {
   #else
     simde_uint32x2_private a_ = simde_uint32x2_to_private(a);
 
-    r = 0;
-    SIMDE_VECTORIZE_REDUCTION(+:r)
-    for (size_t i = 0 ; i < (sizeof(a_.values) / sizeof(a_.values[0])) ; i++) {
-      r += a_.values[i];
-    }
+    #if defined(SIMDE_RISCV_V_NATIVE)
+      vuint32m1_t zero = __riscv_vmv_v_x_u32m1(0 , 1);
+      vuint32m1_t sum = __riscv_vredsum_vs_u32m1_u32m1(a_.sv64 , zero , 2);
+      r = __riscv_vmv_x_s_u32m1_u32 (sum);
+    #else
+      r = 0;
+      SIMDE_VECTORIZE_REDUCTION(+:r)
+      for (size_t i = 0 ; i < (sizeof(a_.values) / sizeof(a_.values[0])) ; i++) {
+        r += a_.values[i];
+      }
+    #endif
   #endif
 
   return r;
@@ -211,11 +253,17 @@ simde_vaddvq_f32(simde_float32x4_t a) {
   #else
     simde_float32x4_private a_ = simde_float32x4_to_private(a);
 
-    r = 0;
-    SIMDE_VECTORIZE_REDUCTION(+:r)
-    for (size_t i = 0 ; i < (sizeof(a_.values) / sizeof(a_.values[0])) ; i++) {
-      r += a_.values[i];
-    }
+    #if defined(SIMDE_RISCV_V_NATIVE)
+      vfloat32m1_t zero = __riscv_vfmv_v_f_f32m1(0 , 1);
+      vfloat32m1_t sum = __riscv_vfredosum_vs_f32m1_f32m1(a_.sv128 , zero , 4);
+      r = __riscv_vfmv_f_s_f32m1_f32 (sum);
+    #else
+      r = 0;
+      SIMDE_VECTORIZE_REDUCTION(+:r)
+      for (size_t i = 0 ; i < (sizeof(a_.values) / sizeof(a_.values[0])) ; i++) {
+        r += a_.values[i];
+      }
+    #endif
   #endif
 
   return r;
@@ -235,11 +283,17 @@ simde_vaddvq_f64(simde_float64x2_t a) {
   #else
     simde_float64x2_private a_ = simde_float64x2_to_private(a);
 
-    r = 0;
-    SIMDE_VECTORIZE_REDUCTION(+:r)
-    for (size_t i = 0 ; i < (sizeof(a_.values) / sizeof(a_.values[0])) ; i++) {
-      r += a_.values[i];
-    }
+    #if defined(SIMDE_RISCV_V_NATIVE)
+      vfloat64m1_t zero = __riscv_vfmv_v_f_f64m1(0 , 1);
+      vfloat64m1_t sum = __riscv_vfredosum_vs_f64m1_f64m1(a_.sv128 , zero , 2);
+      r = __riscv_vfmv_f_s_f64m1_f64 (sum);
+    #else
+      r = 0;
+      SIMDE_VECTORIZE_REDUCTION(+:r)
+      for (size_t i = 0 ; i < (sizeof(a_.values) / sizeof(a_.values[0])) ; i++) {
+        r += a_.values[i];
+      }
+    #endif
   #endif
 
   return r;
@@ -259,11 +313,17 @@ simde_vaddvq_s8(simde_int8x16_t a) {
   #else
     simde_int8x16_private a_ = simde_int8x16_to_private(a);
 
-    r = 0;
-    SIMDE_VECTORIZE_REDUCTION(+:r)
-    for (size_t i = 0 ; i < (sizeof(a_.values) / sizeof(a_.values[0])) ; i++) {
-      r += a_.values[i];
-    }
+    #if defined(SIMDE_RISCV_V_NATIVE)
+      vint8m1_t zero = __riscv_vmv_v_x_i8m1(0 , 1);
+      vint8m1_t sum = __riscv_vredsum_vs_i8m1_i8m1(a_.sv128 , zero , 16);
+      r = __riscv_vmv_x_s_i8m1_i8 (sum);
+    #else
+      r = 0;
+      SIMDE_VECTORIZE_REDUCTION(+:r)
+      for (size_t i = 0 ; i < (sizeof(a_.values) / sizeof(a_.values[0])) ; i++) {
+        r += a_.values[i];
+      }
+    #endif
   #endif
 
   return r;
@@ -283,11 +343,17 @@ simde_vaddvq_s16(simde_int16x8_t a) {
   #else
     simde_int16x8_private a_ = simde_int16x8_to_private(a);
 
-    r = 0;
-    SIMDE_VECTORIZE_REDUCTION(+:r)
-    for (size_t i = 0 ; i < (sizeof(a_.values) / sizeof(a_.values[0])) ; i++) {
-      r += a_.values[i];
-    }
+    #if defined(SIMDE_RISCV_V_NATIVE)
+      vint16m1_t zero = __riscv_vmv_v_x_i16m1(0 , 1);
+      vint16m1_t sum = __riscv_vredsum_vs_i16m1_i16m1(a_.sv128 , zero , 8);
+      r = __riscv_vmv_x_s_i16m1_i16 (sum);
+    #else
+      r = 0;
+      SIMDE_VECTORIZE_REDUCTION(+:r)
+      for (size_t i = 0 ; i < (sizeof(a_.values) / sizeof(a_.values[0])) ; i++) {
+        r += a_.values[i];
+      }
+    #endif
   #endif
 
   return r;
@@ -307,11 +373,17 @@ simde_vaddvq_s32(simde_int32x4_t a) {
   #else
     simde_int32x4_private a_ = simde_int32x4_to_private(a);
 
-    r = 0;
-    SIMDE_VECTORIZE_REDUCTION(+:r)
-    for (size_t i = 0 ; i < (sizeof(a_.values) / sizeof(a_.values[0])) ; i++) {
-      r += a_.values[i];
-    }
+    #if defined(SIMDE_RISCV_V_NATIVE)
+      vint32m1_t zero = __riscv_vmv_v_x_i32m1(0 , 1);
+      vint32m1_t sum = __riscv_vredsum_vs_i32m1_i32m1(a_.sv128 , zero , 4);
+      r = __riscv_vmv_x_s_i32m1_i32 (sum);
+    #else
+      r = 0;
+      SIMDE_VECTORIZE_REDUCTION(+:r)
+      for (size_t i = 0 ; i < (sizeof(a_.values) / sizeof(a_.values[0])) ; i++) {
+        r += a_.values[i];
+      }
+    #endif
   #endif
 
   return r;
@@ -331,11 +403,17 @@ simde_vaddvq_s64(simde_int64x2_t a) {
   #else
     simde_int64x2_private a_ = simde_int64x2_to_private(a);
 
-    r = 0;
-    SIMDE_VECTORIZE_REDUCTION(+:r)
-    for (size_t i = 0 ; i < (sizeof(a_.values) / sizeof(a_.values[0])) ; i++) {
-      r += a_.values[i];
-    }
+    #if defined(SIMDE_RISCV_V_NATIVE)
+      vint64m1_t zero = __riscv_vmv_v_x_i64m1(0 , 1);
+      vint64m1_t sum = __riscv_vredsum_vs_i64m1_i64m1(a_.sv128 , zero , 2);
+      r = __riscv_vmv_x_s_i64m1_i64 (sum);
+    #else
+      r = 0;
+      SIMDE_VECTORIZE_REDUCTION(+:r)
+      for (size_t i = 0 ; i < (sizeof(a_.values) / sizeof(a_.values[0])) ; i++) {
+        r += a_.values[i];
+      }
+    #endif
   #endif
 
   return r;
@@ -360,11 +438,17 @@ simde_vaddvq_u8(simde_uint8x16_t a) {
   #else
     simde_uint8x16_private a_ = simde_uint8x16_to_private(a);
 
-    r = 0;
-    SIMDE_VECTORIZE_REDUCTION(+:r)
-    for (size_t i = 0 ; i < (sizeof(a_.values) / sizeof(a_.values[0])) ; i++) {
-      r += a_.values[i];
-    }
+    #if defined(SIMDE_RISCV_V_NATIVE)
+      vuint8m1_t zero = __riscv_vmv_v_x_u8m1(0 , 1);
+      vuint8m1_t sum = __riscv_vredsum_vs_u8m1_u8m1(a_.sv128 , zero , 16);
+      r = __riscv_vmv_x_s_u8m1_u8 (sum);
+    #else
+      r = 0;
+      SIMDE_VECTORIZE_REDUCTION(+:r)
+      for (size_t i = 0 ; i < (sizeof(a_.values) / sizeof(a_.values[0])) ; i++) {
+        r += a_.values[i];
+      }
+    #endif
   #endif
 
   return r;
@@ -384,11 +468,17 @@ simde_vaddvq_u16(simde_uint16x8_t a) {
   #else
     simde_uint16x8_private a_ = simde_uint16x8_to_private(a);
 
-    r = 0;
-    SIMDE_VECTORIZE_REDUCTION(+:r)
-    for (size_t i = 0 ; i < (sizeof(a_.values) / sizeof(a_.values[0])) ; i++) {
-      r += a_.values[i];
-    }
+    #if defined(SIMDE_RISCV_V_NATIVE)
+      vuint16m1_t zero = __riscv_vmv_v_x_u16m1(0 , 1);
+      vuint16m1_t sum = __riscv_vredsum_vs_u16m1_u16m1(a_.sv128 , zero , 8);
+      r = __riscv_vmv_x_s_u16m1_u16(sum);
+    #else
+      r = 0;
+      SIMDE_VECTORIZE_REDUCTION(+:r)
+      for (size_t i = 0 ; i < (sizeof(a_.values) / sizeof(a_.values[0])) ; i++) {
+        r += a_.values[i];
+      }
+    #endif
   #endif
 
   return r;
@@ -408,11 +498,17 @@ simde_vaddvq_u32(simde_uint32x4_t a) {
   #else
     simde_uint32x4_private a_ = simde_uint32x4_to_private(a);
 
-    r = 0;
-    SIMDE_VECTORIZE_REDUCTION(+:r)
-    for (size_t i = 0 ; i < (sizeof(a_.values) / sizeof(a_.values[0])) ; i++) {
-      r += a_.values[i];
-    }
+    #if defined(SIMDE_RISCV_V_NATIVE)
+      vuint32m1_t zero = __riscv_vmv_v_x_u32m1(0 , 1);
+      vuint32m1_t sum = __riscv_vredsum_vs_u32m1_u32m1(a_.sv128 , zero , 4);
+      r = __riscv_vmv_x_s_u32m1_u32 (sum);
+    #else
+      r = 0;
+      SIMDE_VECTORIZE_REDUCTION(+:r)
+      for (size_t i = 0 ; i < (sizeof(a_.values) / sizeof(a_.values[0])) ; i++) {
+        r += a_.values[i];
+      }
+    #endif
   #endif
 
   return r;
@@ -432,11 +528,17 @@ simde_vaddvq_u64(simde_uint64x2_t a) {
   #else
     simde_uint64x2_private a_ = simde_uint64x2_to_private(a);
 
-    r = 0;
-    SIMDE_VECTORIZE_REDUCTION(+:r)
-    for (size_t i = 0 ; i < (sizeof(a_.values) / sizeof(a_.values[0])) ; i++) {
-      r += a_.values[i];
-    }
+    #if defined(SIMDE_RISCV_V_NATIVE)
+      vuint64m1_t zero = __riscv_vmv_v_x_u64m1(0 , 1);
+      vuint64m1_t sum = __riscv_vredsum_vs_u64m1_u64m1(a_.sv128 , zero , 2);
+      r = __riscv_vmv_x_s_u64m1_u64 (sum);
+    #else
+      r = 0;
+      SIMDE_VECTORIZE_REDUCTION(+:r)
+      for (size_t i = 0 ; i < (sizeof(a_.values) / sizeof(a_.values[0])) ; i++) {
+        r += a_.values[i];
+      }
+    #endif
   #endif
 
   return r;

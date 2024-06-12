@@ -48,7 +48,9 @@ simde_vmla_n_f32(simde_float32x2_t a, simde_float32x2_t b, simde_float32 c) {
       a_ = simde_float32x2_to_private(a),
       b_ = simde_float32x2_to_private(b);
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && !defined(SIMDE_BUG_GCC_53784)
+    #if defined(SIMDE_RISCV_V_NATIVE)
+      r_.sv64 = __riscv_vfmacc_vf_f32m1(a_.sv64 , c , b_.sv64 , 2);
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && !defined(SIMDE_BUG_GCC_53784)
       r_.values = (b_.values * c) + a_.values;
     #else
       SIMDE_VECTORIZE
@@ -76,7 +78,9 @@ simde_vmla_n_s16(simde_int16x4_t a, simde_int16x4_t b, int16_t c) {
       a_ = simde_int16x4_to_private(a),
       b_ = simde_int16x4_to_private(b);
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && !defined(SIMDE_BUG_GCC_53784) && !defined(SIMDE_BUG_GCC_100762)
+    #if defined(SIMDE_RISCV_V_NATIVE)
+      r_.sv64 = __riscv_vmacc_vx_i16m1(a_.sv64 , c , b_.sv64  , 4);
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && !defined(SIMDE_BUG_GCC_53784) && !defined(SIMDE_BUG_GCC_100762)
       r_.values = (b_.values * c) + a_.values;
     #else
       SIMDE_VECTORIZE
@@ -104,7 +108,9 @@ simde_vmla_n_s32(simde_int32x2_t a, simde_int32x2_t b, int32_t c) {
       a_ = simde_int32x2_to_private(a),
       b_ = simde_int32x2_to_private(b);
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && !defined(SIMDE_BUG_GCC_100762)
+    #if defined(SIMDE_RISCV_V_NATIVE)
+      r_.sv64 = __riscv_vmacc_vx_i32m1(a_.sv64 , c , b_.sv64 , 2);
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && !defined(SIMDE_BUG_GCC_100762)
       r_.values = (b_.values * c) + a_.values;
     #else
       SIMDE_VECTORIZE
@@ -132,7 +138,9 @@ simde_vmla_n_u16(simde_uint16x4_t a, simde_uint16x4_t b, uint16_t c) {
       a_ = simde_uint16x4_to_private(a),
       b_ = simde_uint16x4_to_private(b);
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && !defined(SIMDE_BUG_GCC_100762)
+    #if defined(SIMDE_RISCV_V_NATIVE)
+      r_.sv64 = __riscv_vmacc_vx_u16m1(a_.sv64 , c , b_.sv64 , 4);
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && !defined(SIMDE_BUG_GCC_100762)
       r_.values = (b_.values * c) + a_.values;
     #else
       SIMDE_VECTORIZE
@@ -160,7 +168,9 @@ simde_vmla_n_u32(simde_uint32x2_t a, simde_uint32x2_t b, uint32_t c) {
       a_ = simde_uint32x2_to_private(a),
       b_ = simde_uint32x2_to_private(b);
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && !defined(SIMDE_BUG_GCC_100762)
+    #if defined(SIMDE_RISCV_V_NATIVE)
+      r_.sv64 = __riscv_vmacc_vx_u32m1(a_.sv64 , c , b_.sv64 , 2);
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && !defined(SIMDE_BUG_GCC_100762)
       r_.values = (b_.values * c) + a_.values;
     #else
       SIMDE_VECTORIZE
@@ -182,7 +192,7 @@ simde_float32x4_t
 simde_vmlaq_n_f32(simde_float32x4_t a, simde_float32x4_t b, simde_float32 c) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vmlaq_n_f32(a, b, c);
-  #elif SIMDE_NATURAL_VECTOR_SIZE_LE(128)
+  #elif SIMDE_NATURAL_VECTOR_SIZE_LE(128) && !defined(SIMDE_RISCV_V_NATIVE)
     return simde_vaddq_f32(simde_vmulq_n_f32(b, c), a);
   #else
     simde_float32x4_private
@@ -190,7 +200,9 @@ simde_vmlaq_n_f32(simde_float32x4_t a, simde_float32x4_t b, simde_float32 c) {
       a_ = simde_float32x4_to_private(a),
       b_ = simde_float32x4_to_private(b);
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && !defined(SIMDE_BUG_GCC_53784)
+    #if defined(SIMDE_RISCV_V_NATIVE)
+      r_.sv128 = __riscv_vfmacc_vf_f32m1(a_.sv128 , c , b_.sv128 , 4);
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && !defined(SIMDE_BUG_GCC_53784)
       r_.values = (b_.values * c) + a_.values;
     #else
       SIMDE_VECTORIZE
@@ -212,7 +224,7 @@ simde_int16x8_t
 simde_vmlaq_n_s16(simde_int16x8_t a, simde_int16x8_t b, int16_t c) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vmlaq_n_s16(a, b, c);
-  #elif SIMDE_NATURAL_VECTOR_SIZE_LE(128)
+  #elif SIMDE_NATURAL_VECTOR_SIZE_LE(128) && !defined(SIMDE_RISCV_V_NATIVE)
     return simde_vaddq_s16(simde_vmulq_n_s16(b, c), a);
   #else
     simde_int16x8_private
@@ -220,7 +232,9 @@ simde_vmlaq_n_s16(simde_int16x8_t a, simde_int16x8_t b, int16_t c) {
       a_ = simde_int16x8_to_private(a),
       b_ = simde_int16x8_to_private(b);
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && !defined(SIMDE_BUG_GCC_53784)
+    #if defined(SIMDE_RISCV_V_NATIVE)
+      r_.sv128 = __riscv_vmacc_vx_i16m1(a_.sv128 , c , b_.sv128  , 8);
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && !defined(SIMDE_BUG_GCC_53784)
       r_.values = (b_.values * c) + a_.values;
     #else
       SIMDE_VECTORIZE
@@ -242,7 +256,7 @@ simde_int32x4_t
 simde_vmlaq_n_s32(simde_int32x4_t a, simde_int32x4_t b, int32_t c) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vmlaq_n_s32(a, b, c);
-  #elif SIMDE_NATURAL_VECTOR_SIZE_LE(128)
+  #elif SIMDE_NATURAL_VECTOR_SIZE_LE(128) && !defined(SIMDE_RISCV_V_NATIVE)
     return simde_vaddq_s32(simde_vmulq_n_s32(b, c), a);
   #else
     simde_int32x4_private
@@ -250,7 +264,9 @@ simde_vmlaq_n_s32(simde_int32x4_t a, simde_int32x4_t b, int32_t c) {
       a_ = simde_int32x4_to_private(a),
       b_ = simde_int32x4_to_private(b);
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+    #if defined(SIMDE_RISCV_V_NATIVE)
+      r_.sv128 = __riscv_vmacc_vx_i32m1(a_.sv128 , c , b_.sv128 , 4);
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
       r_.values = (b_.values * c) + a_.values;
     #else
       SIMDE_VECTORIZE
@@ -272,7 +288,7 @@ simde_uint16x8_t
 simde_vmlaq_n_u16(simde_uint16x8_t a, simde_uint16x8_t b, uint16_t c) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vmlaq_n_u16(a, b, c);
-  #elif SIMDE_NATURAL_VECTOR_SIZE_LE(128)
+  #elif SIMDE_NATURAL_VECTOR_SIZE_LE(128) && !defined(SIMDE_RISCV_V_NATIVE)
     return simde_vaddq_u16(simde_vmulq_n_u16(b, c), a);
   #else
     simde_uint16x8_private
@@ -280,7 +296,9 @@ simde_vmlaq_n_u16(simde_uint16x8_t a, simde_uint16x8_t b, uint16_t c) {
       a_ = simde_uint16x8_to_private(a),
       b_ = simde_uint16x8_to_private(b);
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+    #if defined(SIMDE_RISCV_V_NATIVE)
+      r_.sv128 = __riscv_vmacc_vx_u16m1(a_.sv128 , c , b_.sv128 , 8);
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
       r_.values = (b_.values * c) + a_.values;
     #else
       SIMDE_VECTORIZE
@@ -310,7 +328,9 @@ simde_vmlaq_n_u32(simde_uint32x4_t a, simde_uint32x4_t b, uint32_t c) {
       a_ = simde_uint32x4_to_private(a),
       b_ = simde_uint32x4_to_private(b);
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+    #if defined(SIMDE_RISCV_V_NATIVE)
+      r_.sv128 = __riscv_vmacc_vx_u32m1(a_.sv128 , c , b_.sv128 , 4);
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
       r_.values = (b_.values * c) + a_.values;
     #else
       SIMDE_VECTORIZE
