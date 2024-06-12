@@ -138,7 +138,7 @@ simde_vmaxnmv_f16(simde_float16x4_t a) {
       return __riscv_vfmv_f_s_f16m1_f16(__riscv_vfredmax_vs_f16m1_f16m1(a_.sv64, \
         __riscv_vfmv_v_f_f16m1(SIMDE_NINFINITYHF, 4), 4));
     #else
-      simde_float32_t r_ = simde_float16_to_float32(SIMDE_NINFINITYHF);
+      r_ = simde_float16_to_float32(SIMDE_NINFINITYHF);
       #if defined(SIMDE_FAST_NANS)
         SIMDE_VECTORIZE_REDUCTION(max:r_)
       #else
@@ -174,7 +174,7 @@ simde_vmaxnmvq_f16(simde_float16x8_t a) {
       return __riscv_vfmv_f_s_f16m1_f16(__riscv_vfredmax_vs_f16m1_f16m1(a_.sv128, \
         __riscv_vfmv_v_f_f16m1(SIMDE_NINFINITYHF, 8), 8));
     #else
-      simde_float32_t r_ = simde_float16_to_float32(SIMDE_NINFINITYHF);
+      r_ = simde_float16_to_float32(SIMDE_NINFINITYHF);
       #if defined(SIMDE_FAST_NANS)
         SIMDE_VECTORIZE_REDUCTION(max:r_)
       #else
