@@ -24,6 +24,7 @@
  *   2020      Evan Nemerson <evan@nemerson.com>
  *   2021      Zhi An Ng <zhin@google.com> (Copyright owned by Google, LLC)
  *   2023      Yi-Yen Chung <eric681@andestech.com> (Copyright owned by Andes Technology)
+ *   2023      Ju-Hung Li <jhlee@pllab.cs.nthu.edu.tw> (Copyright owned by NTHU pllab)
  */
 
 #if !defined(SIMDE_ARM_NEON_RECPE_H)
@@ -90,10 +91,14 @@ simde_vrecpe_f16(simde_float16x4_t a) {
       r_,
       a_ = simde_float16x4_to_private(a);
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = simde_vrecpeh_f16(a_.values[i]);
-    }
+    #if defined(SIMDE_RISCV_V_NATIVE) && defined(SIMDE_ARCH_RISCV_ZVFH)
+      r_.sv64 = __riscv_vfrec7_v_f16m1(a_.sv64 , 4);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+        r_.values[i] = simde_vrecpeh_f16(a_.values[i]);
+      }
+    #endif
 
     return simde_float16x4_from_private(r_);
   #endif
@@ -113,7 +118,9 @@ simde_vrecpe_f32(simde_float32x2_t a) {
       r_,
       a_ = simde_float32x2_to_private(a);
 
-    #if defined(SIMDE_IEEE754_STORAGE)
+    #if defined(SIMDE_RISCV_V_NATIVE)
+      r_.sv64 = __riscv_vfrec7_v_f32m1(a_.sv64 , 2);
+    #elif defined(SIMDE_IEEE754_STORAGE)
       /* https://stackoverflow.com/questions/12227126/division-as-multiply-and-lut-fast-float-division-reciprocal/12228234#12228234 */
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -152,7 +159,9 @@ simde_vrecpe_f64(simde_float64x1_t a) {
       r_,
       a_ = simde_float64x1_to_private(a);
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+    #if defined(SIMDE_RISCV_V_NATIVE)
+      r_.sv64 = __riscv_vfrec7_v_f64m1(a_.sv64 , 1);
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
       r_.values = 1.0 / a_.values;
     #else
       SIMDE_VECTORIZE
@@ -179,7 +188,9 @@ simde_vrecpeq_f64(simde_float64x2_t a) {
       r_,
       a_ = simde_float64x2_to_private(a);
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+    #if defined(SIMDE_RISCV_V_NATIVE)
+      r_.sv128 = __riscv_vfrec7_v_f64m1(a_.sv128 , 2);
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
       r_.values = 1.0 / a_.values;
     #else
       SIMDE_VECTORIZE
@@ -208,8 +219,11 @@ simde_vrecpeq_f32(simde_float32x4_t a) {
       r_,
       a_ = simde_float32x4_to_private(a);
 
+
     #if defined(SIMDE_X86_SSE_NATIVE)
       r_.m128 = _mm_rcp_ps(a_.m128);
+    #elif defined(SIMDE_RISCV_V_NATIVE)
+      r_.sv128 = __riscv_vfrec7_v_f32m1(a_.sv128 , 4);
     #elif defined(SIMDE_IEEE754_STORAGE)
       /* https://stackoverflow.com/questions/12227126/division-as-multiply-and-lut-fast-float-division-reciprocal/12228234#12228234 */
       SIMDE_VECTORIZE
@@ -249,10 +263,14 @@ simde_vrecpeq_f16(simde_float16x8_t a) {
       r_,
       a_ = simde_float16x8_to_private(a);
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = simde_vrecpeh_f16(a_.values[i]);
-    }
+    #if defined(SIMDE_RISCV_V_NATIVE) && defined(SIMDE_ARCH_RISCV_ZVFH)
+      r_.sv128 = __riscv_vfrec7_v_f16m1(a_.sv128 , 8);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+        r_.values[i] = simde_vrecpeh_f16(a_.values[i]);
+      }
+    #endif
 
     return simde_float16x8_from_private(r_);
   #endif
