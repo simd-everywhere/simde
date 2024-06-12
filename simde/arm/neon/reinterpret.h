@@ -24,7 +24,6 @@
  *   2020      Evan Nemerson <evan@nemerson.com>
  *   2020      Sean Maher <seanptmaher@gmail.com> (Copyright owned by Google, LLC)
  *   2023      Yi-Yen Chung <eric681@andestech.com> (Copyright owned by Andes Technology)
- *   2023      Ju-Hung Li <jhlee@pllab.cs.nthu.edu.tw> (Copyright owned by NTHU pllab)
  */
 
 
@@ -45,11 +44,7 @@ simde_vreinterpret_s8_s16(simde_int16x4_t a) {
   #else
     simde_int8x8_private r_;
     simde_int16x4_private a_ = simde_int16x4_to_private(a);
-    #if defined(SIMDE_RISCV_V_NATIVE)
-      r_.sv64 = __riscv_vreinterpret_v_i16m1_i8m1(a_.sv64);
-    #else
-      simde_memcpy(&r_, &a_, sizeof(r_));
-    #endif
+    simde_memcpy(&r_, &a_, sizeof(r_));
     return simde_int8x8_from_private(r_);
   #endif
 }
@@ -66,11 +61,7 @@ simde_vreinterpret_s8_s32(simde_int32x2_t a) {
   #else
     simde_int8x8_private r_;
     simde_int32x2_private a_ = simde_int32x2_to_private(a);
-    #if defined(SIMDE_RISCV_V_NATIVE)
-      r_.sv64 = __riscv_vreinterpret_v_i32m1_i8m1(a_.sv64);
-    #else
-      simde_memcpy(&r_, &a_, sizeof(r_));
-    #endif
+    simde_memcpy(&r_, &a_, sizeof(r_));
     return simde_int8x8_from_private(r_);
   #endif
 }
@@ -87,13 +78,7 @@ simde_vreinterpret_s8_s64(simde_int64x1_t a) {
   #else
     simde_int8x8_private r_;
     simde_int64x1_private a_ = simde_int64x1_to_private(a);
-
-    #if defined(SIMDE_RISCV_V_NATIVE)
-      r_.sv64 = __riscv_vreinterpret_v_i64m1_i8m1(a_.sv64);
-    #else
-      simde_memcpy(&r_, &a_, sizeof(r_));
-    #endif
-
+    simde_memcpy(&r_, &a_, sizeof(r_));
     return simde_int8x8_from_private(r_);
   #endif
 }
@@ -110,11 +95,7 @@ simde_vreinterpret_s8_u8(simde_uint8x8_t a) {
   #else
     simde_int8x8_private r_;
     simde_uint8x8_private a_ = simde_uint8x8_to_private(a);
-    #if defined(SIMDE_RISCV_V_NATIVE)
-      r_.sv64 = __riscv_vreinterpret_v_u8m1_i8m1(a_.sv64);
-    #else
-      simde_memcpy(&r_, &a_, sizeof(r_));
-    #endif
+    simde_memcpy(&r_, &a_, sizeof(r_));
     return simde_int8x8_from_private(r_);
   #endif
 }
@@ -216,11 +197,7 @@ simde_vreinterpretq_s8_s16(simde_int16x8_t a) {
   #else
     simde_int8x16_private r_;
     simde_int16x8_private a_ = simde_int16x8_to_private(a);
-    #if defined(SIMDE_RISCV_V_NATIVE)
-      r_.sv128 = __riscv_vreinterpret_v_i16m1_i8m1(a_.sv128);
-    #else
-      simde_memcpy(&r_, &a_, sizeof(r_));
-    #endif
+    simde_memcpy(&r_, &a_, sizeof(r_));
     return simde_int8x16_from_private(r_);
   #endif
 }
@@ -237,11 +214,7 @@ simde_vreinterpretq_s8_s32(simde_int32x4_t a) {
   #else
     simde_int8x16_private r_;
     simde_int32x4_private a_ = simde_int32x4_to_private(a);
-    #if defined(SIMDE_RISCV_V_NATIVE)
-      r_.sv128 = __riscv_vreinterpret_v_i32m1_i8m1(a_.sv128);
-    #else
-      simde_memcpy(&r_, &a_, sizeof(r_));
-    #endif
+    simde_memcpy(&r_, &a_, sizeof(r_));
     return simde_int8x16_from_private(r_);
   #endif
 }
@@ -258,13 +231,7 @@ simde_vreinterpretq_s8_s64(simde_int64x2_t a) {
   #else
     simde_int8x16_private r_;
     simde_int64x2_private a_ = simde_int64x2_to_private(a);
-
-    #if defined(SIMDE_RISCV_V_NATIVE) && (SIMDE_NATURAL_VECTOR_SIZE == 128)
-      r_.sv128 = __riscv_vreinterpret_v_i64m1_i8m1(a_.sv128);
-    #else
-      simde_memcpy(&r_, &a_, sizeof(r_));
-    #endif
-
+    simde_memcpy(&r_, &a_, sizeof(r_));
     return simde_int8x16_from_private(r_);
   #endif
 }
@@ -281,11 +248,7 @@ simde_vreinterpretq_s8_u8(simde_uint8x16_t a) {
   #else
     simde_int8x16_private r_;
     simde_uint8x16_private a_ = simde_uint8x16_to_private(a);
-    #if defined(SIMDE_RISCV_V_NATIVE)
-      r_.sv128 = __riscv_vreinterpret_v_u8m1_i8m1(a_.sv128);
-    #else
-      simde_memcpy(&r_, &a_, sizeof(r_));
-    #endif
+    simde_memcpy(&r_, &a_, sizeof(r_));
     return simde_int8x16_from_private(r_);
   #endif
 }
@@ -387,11 +350,7 @@ simde_vreinterpret_s16_s8(simde_int8x8_t a) {
   #else
     simde_int16x4_private r_;
     simde_int8x8_private a_ = simde_int8x8_to_private(a);
-    #if defined(SIMDE_RISCV_V_NATIVE)
-      r_.sv64 = __riscv_vreinterpret_v_i8m1_i16m1(a_.sv64);
-    #else
-      simde_memcpy(&r_, &a_, sizeof(r_));
-    #endif
+    simde_memcpy(&r_, &a_, sizeof(r_));
     return simde_int16x4_from_private(r_);
   #endif
 }
@@ -408,11 +367,7 @@ simde_vreinterpret_s16_s32(simde_int32x2_t a) {
   #else
     simde_int16x4_private r_;
     simde_int32x2_private a_ = simde_int32x2_to_private(a);
-    #if defined(SIMDE_RISCV_V_NATIVE)
-      r_.sv64 = __riscv_vreinterpret_v_i32m1_i16m1(a_.sv64);
-    #else
-      simde_memcpy(&r_, &a_, sizeof(r_));
-    #endif
+    simde_memcpy(&r_, &a_, sizeof(r_));
     return simde_int16x4_from_private(r_);
   #endif
 }
@@ -429,11 +384,7 @@ simde_vreinterpret_s16_s64(simde_int64x1_t a) {
   #else
     simde_int16x4_private r_;
     simde_int64x1_private a_ = simde_int64x1_to_private(a);
-    #if defined(SIMDE_RISCV_V_NATIVE)
-      r_.sv64 = __riscv_vreinterpret_v_i64m1_i16m1(a_.sv64);
-    #else
-      simde_memcpy(&r_, &a_, sizeof(r_));
-    #endif
+    simde_memcpy(&r_, &a_, sizeof(r_));
     return simde_int16x4_from_private(r_);
   #endif
 }
@@ -467,11 +418,7 @@ simde_vreinterpret_s16_u16(simde_uint16x4_t a) {
   #else
     simde_int16x4_private r_;
     simde_uint16x4_private a_ = simde_uint16x4_to_private(a);
-    #if defined(SIMDE_RISCV_V_NATIVE)
-      r_.sv64 = __riscv_vreinterpret_v_u16m1_i16m1(a_.sv64);
-    #else
-      simde_memcpy(&r_, &a_, sizeof(r_));
-    #endif
+    simde_memcpy(&r_, &a_, sizeof(r_));
     return simde_int16x4_from_private(r_);
   #endif
 }
@@ -556,11 +503,7 @@ simde_vreinterpretq_s16_s8(simde_int8x16_t a) {
   #else
     simde_int16x8_private r_;
     simde_int8x16_private a_ = simde_int8x16_to_private(a);
-    #if defined(SIMDE_RISCV_V_NATIVE)
-      r_.sv128 = __riscv_vreinterpret_v_i8m1_i16m1(a_.sv128);
-    #else
-      simde_memcpy(&r_, &a_, sizeof(r_));
-    #endif
+    simde_memcpy(&r_, &a_, sizeof(r_));
     return simde_int16x8_from_private(r_);
   #endif
 }
@@ -577,11 +520,7 @@ simde_vreinterpretq_s16_s32(simde_int32x4_t a) {
   #else
     simde_int16x8_private r_;
     simde_int32x4_private a_ = simde_int32x4_to_private(a);
-    #if defined(SIMDE_RISCV_V_NATIVE)
-      r_.sv128 = __riscv_vreinterpret_v_i32m1_i16m1(a_.sv128);
-    #else
-      simde_memcpy(&r_, &a_, sizeof(r_));
-    #endif
+    simde_memcpy(&r_, &a_, sizeof(r_));
     return simde_int16x8_from_private(r_);
   #endif
 }
@@ -598,11 +537,7 @@ simde_vreinterpretq_s16_s64(simde_int64x2_t a) {
   #else
     simde_int16x8_private r_;
     simde_int64x2_private a_ = simde_int64x2_to_private(a);
-    #if defined(SIMDE_RISCV_V_NATIVE)
-      r_.sv128 = __riscv_vreinterpret_v_i64m1_i16m1(a_.sv128);
-    #else
-      simde_memcpy(&r_, &a_, sizeof(r_));
-    #endif
+    simde_memcpy(&r_, &a_, sizeof(r_));
     return simde_int16x8_from_private(r_);
   #endif
 }
@@ -636,11 +571,7 @@ simde_vreinterpretq_s16_u16(simde_uint16x8_t a) {
   #else
     simde_int16x8_private r_;
     simde_uint16x8_private a_ = simde_uint16x8_to_private(a);
-    #if defined(SIMDE_RISCV_V_NATIVE)
-      r_.sv128 = __riscv_vreinterpret_v_u16m1_i16m1(a_.sv128);
-    #else
-      simde_memcpy(&r_, &a_, sizeof(r_));
-    #endif
+    simde_memcpy(&r_, &a_, sizeof(r_));
     return simde_int16x8_from_private(r_);
   #endif
 }
@@ -725,11 +656,7 @@ simde_vreinterpret_s32_s8(simde_int8x8_t a) {
   #else
     simde_int32x2_private r_;
     simde_int8x8_private a_ = simde_int8x8_to_private(a);
-    #if defined(SIMDE_RISCV_V_NATIVE)
-      r_.sv64 = __riscv_vreinterpret_v_i8m1_i32m1(a_.sv64);
-    #else
-      simde_memcpy(&r_, &a_, sizeof(r_));
-    #endif
+    simde_memcpy(&r_, &a_, sizeof(r_));
     return simde_int32x2_from_private(r_);
   #endif
 }
@@ -746,11 +673,7 @@ simde_vreinterpret_s32_s16(simde_int16x4_t a) {
   #else
     simde_int32x2_private r_;
     simde_int16x4_private a_ = simde_int16x4_to_private(a);
-    #if defined(SIMDE_RISCV_V_NATIVE)
-      r_.sv64 = __riscv_vreinterpret_v_i16m1_i32m1(a_.sv64);
-    #else
-      simde_memcpy(&r_, &a_, sizeof(r_));
-    #endif
+    simde_memcpy(&r_, &a_, sizeof(r_));
     return simde_int32x2_from_private(r_);
   #endif
 }
@@ -767,11 +690,7 @@ simde_vreinterpret_s32_s64(simde_int64x1_t a) {
   #else
     simde_int32x2_private r_;
     simde_int64x1_private a_ = simde_int64x1_to_private(a);
-    #if defined(SIMDE_RISCV_V_NATIVE)
-      r_.sv64 = __riscv_vreinterpret_v_i64m1_i32m1(a_.sv64);
-    #else
-      simde_memcpy(&r_, &a_, sizeof(r_));
-    #endif
+    simde_memcpy(&r_, &a_, sizeof(r_));
     return simde_int32x2_from_private(r_);
   #endif
 }
@@ -822,11 +741,7 @@ simde_vreinterpret_s32_u32(simde_uint32x2_t a) {
   #else
     simde_int32x2_private r_;
     simde_uint32x2_private a_ = simde_uint32x2_to_private(a);
-    #if defined(SIMDE_RISCV_V_NATIVE)
-      r_.sv64 = __riscv_vreinterpret_v_u32m1_i32m1(a_.sv64);
-    #else
-      simde_memcpy(&r_, &a_, sizeof(r_));
-    #endif
+    simde_memcpy(&r_, &a_, sizeof(r_));
     return simde_int32x2_from_private(r_);
   #endif
 }
@@ -860,11 +775,7 @@ simde_vreinterpret_s32_f32(simde_float32x2_t a) {
   #else
     simde_int32x2_private r_;
     simde_float32x2_private a_ = simde_float32x2_to_private(a);
-    #if defined(SIMDE_RISCV_V_NATIVE)
-      r_.sv64 = __riscv_vreinterpret_v_f32m1_i32m1(a_.sv64);
-    #else
-      simde_memcpy(&r_, &a_, sizeof(r_));
-    #endif
+    simde_memcpy(&r_, &a_, sizeof(r_));
     return simde_int32x2_from_private(r_);
   #endif
 }
@@ -898,11 +809,7 @@ simde_vreinterpretq_s32_s8(simde_int8x16_t a) {
   #else
     simde_int32x4_private r_;
     simde_int8x16_private a_ = simde_int8x16_to_private(a);
-    #if defined(SIMDE_RISCV_V_NATIVE)
-      r_.sv128 = __riscv_vreinterpret_v_i8m1_i32m1(a_.sv128);
-    #else
-      simde_memcpy(&r_, &a_, sizeof(r_));
-    #endif
+    simde_memcpy(&r_, &a_, sizeof(r_));
     return simde_int32x4_from_private(r_);
   #endif
 }
@@ -919,11 +826,7 @@ simde_vreinterpretq_s32_s16(simde_int16x8_t a) {
   #else
     simde_int32x4_private r_;
     simde_int16x8_private a_ = simde_int16x8_to_private(a);
-    #if defined(SIMDE_RISCV_V_NATIVE)
-      r_.sv128 = __riscv_vreinterpret_v_i16m1_i32m1(a_.sv128);
-    #else
-      simde_memcpy(&r_, &a_, sizeof(r_));
-    #endif
+    simde_memcpy(&r_, &a_, sizeof(r_));
     return simde_int32x4_from_private(r_);
   #endif
 }
@@ -940,11 +843,7 @@ simde_vreinterpretq_s32_s64(simde_int64x2_t a) {
   #else
     simde_int32x4_private r_;
     simde_int64x2_private a_ = simde_int64x2_to_private(a);
-    #if defined(SIMDE_RISCV_V_NATIVE)
-      r_.sv128 = __riscv_vreinterpret_v_i64m1_i32m1(a_.sv128);
-    #else
-      simde_memcpy(&r_, &a_, sizeof(r_));
-    #endif
+    simde_memcpy(&r_, &a_, sizeof(r_));
     return simde_int32x4_from_private(r_);
   #endif
 }
@@ -995,11 +894,7 @@ simde_vreinterpretq_s32_u32(simde_uint32x4_t a) {
   #else
     simde_int32x4_private r_;
     simde_uint32x4_private a_ = simde_uint32x4_to_private(a);
-    #if defined(SIMDE_RISCV_V_NATIVE)
-      r_.sv128 = __riscv_vreinterpret_v_u32m1_i32m1(a_.sv128);
-    #else
-      simde_memcpy(&r_, &a_, sizeof(r_));
-    #endif
+    simde_memcpy(&r_, &a_, sizeof(r_));
     return simde_int32x4_from_private(r_);
   #endif
 }
@@ -1033,11 +928,7 @@ simde_vreinterpretq_s32_f32(simde_float32x4_t a) {
   #else
     simde_int32x4_private r_;
     simde_float32x4_private a_ = simde_float32x4_to_private(a);
-    #if defined(SIMDE_RISCV_V_NATIVE)
-      r_.sv128 = __riscv_vreinterpret_v_f32m1_i32m1(a_.sv128);
-    #else
-      simde_memcpy(&r_, &a_, sizeof(r_));
-    #endif
+    simde_memcpy(&r_, &a_, sizeof(r_));
     return simde_int32x4_from_private(r_);
   #endif
 }
@@ -1071,11 +962,7 @@ simde_vreinterpret_s64_s8(simde_int8x8_t a) {
   #else
     simde_int64x1_private r_;
     simde_int8x8_private a_ = simde_int8x8_to_private(a);
-    #if defined(SIMDE_RISCV_V_NATIVE)
-      r_.sv64 = __riscv_vreinterpret_v_i8m1_i64m1(a_.sv64);
-    #else
-      simde_memcpy(&r_, &a_, sizeof(r_));
-    #endif
+    simde_memcpy(&r_, &a_, sizeof(r_));
     return simde_int64x1_from_private(r_);
   #endif
 }
@@ -1092,11 +979,7 @@ simde_vreinterpret_s64_s16(simde_int16x4_t a) {
   #else
     simde_int64x1_private r_;
     simde_int16x4_private a_ = simde_int16x4_to_private(a);
-    #if defined(SIMDE_RISCV_V_NATIVE)
-      r_.sv64 = __riscv_vreinterpret_v_i16m1_i64m1(a_.sv64);
-    #else
-      simde_memcpy(&r_, &a_, sizeof(r_));
-    #endif
+    simde_memcpy(&r_, &a_, sizeof(r_));
     return simde_int64x1_from_private(r_);
   #endif
 }
@@ -1113,11 +996,7 @@ simde_vreinterpret_s64_s32(simde_int32x2_t a) {
   #else
     simde_int64x1_private r_;
     simde_int32x2_private a_ = simde_int32x2_to_private(a);
-    #if defined(SIMDE_RISCV_V_NATIVE)
-      r_.sv64 = __riscv_vreinterpret_v_i32m1_i64m1(a_.sv64);
-    #else
-      simde_memcpy(&r_, &a_, sizeof(r_));
-    #endif
+    simde_memcpy(&r_, &a_, sizeof(r_));
     return simde_int64x1_from_private(r_);
   #endif
 }
@@ -1185,11 +1064,7 @@ simde_vreinterpret_s64_u64(simde_uint64x1_t a) {
   #else
     simde_int64x1_private r_;
     simde_uint64x1_private a_ = simde_uint64x1_to_private(a);
-    #if defined(SIMDE_RISCV_V_NATIVE)
-      r_.sv64 = __riscv_vreinterpret_v_u64m1_i64m1(a_.sv64);
-    #else
-      simde_memcpy(&r_, &a_, sizeof(r_));
-    #endif
+    simde_memcpy(&r_, &a_, sizeof(r_));
     return simde_int64x1_from_private(r_);
   #endif
 }
@@ -1240,11 +1115,7 @@ simde_vreinterpretq_s64_s8(simde_int8x16_t a) {
   #else
     simde_int64x2_private r_;
     simde_int8x16_private a_ = simde_int8x16_to_private(a);
-    #if defined(SIMDE_RISCV_V_NATIVE)
-      r_.sv128 = __riscv_vreinterpret_v_i8m1_i64m1(a_.sv128);
-    #else
-      simde_memcpy(&r_, &a_, sizeof(r_));
-    #endif
+    simde_memcpy(&r_, &a_, sizeof(r_));
     return simde_int64x2_from_private(r_);
   #endif
 }
@@ -1261,11 +1132,7 @@ simde_vreinterpretq_s64_s16(simde_int16x8_t a) {
   #else
     simde_int64x2_private r_;
     simde_int16x8_private a_ = simde_int16x8_to_private(a);
-    #if defined(SIMDE_RISCV_V_NATIVE)
-      r_.sv128 = __riscv_vreinterpret_v_i16m1_i64m1(a_.sv128);
-    #else
-      simde_memcpy(&r_, &a_, sizeof(r_));
-    #endif
+    simde_memcpy(&r_, &a_, sizeof(r_));
     return simde_int64x2_from_private(r_);
   #endif
 }
@@ -1282,11 +1149,7 @@ simde_vreinterpretq_s64_s32(simde_int32x4_t a) {
   #else
     simde_int64x2_private r_;
     simde_int32x4_private a_ = simde_int32x4_to_private(a);
-    #if defined(SIMDE_RISCV_V_NATIVE)
-      r_.sv128 = __riscv_vreinterpret_v_i32m1_i64m1(a_.sv128);
-    #else
-      simde_memcpy(&r_, &a_, sizeof(r_));
-    #endif
+    simde_memcpy(&r_, &a_, sizeof(r_));
     return simde_int64x2_from_private(r_);
   #endif
 }
@@ -1354,11 +1217,7 @@ simde_vreinterpretq_s64_u64(simde_uint64x2_t a) {
   #else
     simde_int64x2_private r_;
     simde_uint64x2_private a_ = simde_uint64x2_to_private(a);
-    #if defined(SIMDE_RISCV_V_NATIVE)
-      r_.sv128 = __riscv_vreinterpret_v_u64m1_i64m1(a_.sv128);
-    #else
-      simde_memcpy(&r_, &a_, sizeof(r_));
-    #endif
+    simde_memcpy(&r_, &a_, sizeof(r_));
     return simde_int64x2_from_private(r_);
   #endif
 }
@@ -1409,11 +1268,7 @@ simde_vreinterpret_u8_s8(simde_int8x8_t a) {
   #else
     simde_uint8x8_private r_;
     simde_int8x8_private a_ = simde_int8x8_to_private(a);
-    #if defined(SIMDE_RISCV_V_NATIVE)
-      r_.sv64 = __riscv_vreinterpret_v_i8m1_u8m1(a_.sv64);
-    #else
-      simde_memcpy(&r_, &a_, sizeof(r_));
-    #endif
+    simde_memcpy(&r_, &a_, sizeof(r_));
     return simde_uint8x8_from_private(r_);
   #endif
 }
@@ -1481,11 +1336,7 @@ simde_vreinterpret_u8_u16(simde_uint16x4_t a) {
   #else
     simde_uint8x8_private r_;
     simde_uint16x4_private a_ = simde_uint16x4_to_private(a);
-    #if defined(SIMDE_RISCV_V_NATIVE)
-      r_.sv64 = __riscv_vreinterpret_v_u16m1_u8m1(a_.sv64);
-    #else
-      simde_memcpy(&r_, &a_, sizeof(r_));
-    #endif
+    simde_memcpy(&r_, &a_, sizeof(r_));
     return simde_uint8x8_from_private(r_);
   #endif
 }
@@ -1502,11 +1353,7 @@ simde_vreinterpret_u8_u32(simde_uint32x2_t a) {
   #else
     simde_uint8x8_private r_;
     simde_uint32x2_private a_ = simde_uint32x2_to_private(a);
-    #if defined(SIMDE_RISCV_V_NATIVE)
-      r_.sv64 = __riscv_vreinterpret_v_u32m1_u8m1(a_.sv64);
-    #else
-      simde_memcpy(&r_, &a_, sizeof(r_));
-    #endif
+    simde_memcpy(&r_, &a_, sizeof(r_));
     return simde_uint8x8_from_private(r_);
   #endif
 }
@@ -1523,11 +1370,7 @@ simde_vreinterpret_u8_u64(simde_uint64x1_t a) {
   #else
     simde_uint8x8_private r_;
     simde_uint64x1_private a_ = simde_uint64x1_to_private(a);
-    #if defined(SIMDE_RISCV_V_NATIVE)
-      r_.sv64 = __riscv_vreinterpret_v_u64m1_u8m1(a_.sv64);
-    #else
-      simde_memcpy(&r_, &a_, sizeof(r_));
-    #endif
+    simde_memcpy(&r_, &a_, sizeof(r_));
     return simde_uint8x8_from_private(r_);
   #endif
 }
@@ -1578,11 +1421,7 @@ simde_vreinterpretq_u8_s8(simde_int8x16_t a) {
   #else
     simde_uint8x16_private r_;
     simde_int8x16_private a_ = simde_int8x16_to_private(a);
-    #if defined(SIMDE_RISCV_V_NATIVE)
-      r_.sv128 = __riscv_vreinterpret_v_i8m1_u8m1(a_.sv128);
-    #else
-      simde_memcpy(&r_, &a_, sizeof(r_));
-    #endif
+    simde_memcpy(&r_, &a_, sizeof(r_));
     return simde_uint8x16_from_private(r_);
   #endif
 }
@@ -1650,11 +1489,7 @@ simde_vreinterpretq_u8_u16(simde_uint16x8_t a) {
   #else
     simde_uint8x16_private r_;
     simde_uint16x8_private a_ = simde_uint16x8_to_private(a);
-    #if defined(SIMDE_RISCV_V_NATIVE)
-      r_.sv128 = __riscv_vreinterpret_v_u16m1_u8m1(a_.sv128);
-    #else
-      simde_memcpy(&r_, &a_, sizeof(r_));
-    #endif
+    simde_memcpy(&r_, &a_, sizeof(r_));
     return simde_uint8x16_from_private(r_);
   #endif
 }
@@ -1671,11 +1506,7 @@ simde_vreinterpretq_u8_u32(simde_uint32x4_t a) {
   #else
     simde_uint8x16_private r_;
     simde_uint32x4_private a_ = simde_uint32x4_to_private(a);
-    #if defined(SIMDE_RISCV_V_NATIVE)
-      r_.sv128 = __riscv_vreinterpret_v_u32m1_u8m1(a_.sv128);
-    #else
-      simde_memcpy(&r_, &a_, sizeof(r_));
-    #endif
+    simde_memcpy(&r_, &a_, sizeof(r_));
     return simde_uint8x16_from_private(r_);
   #endif
 }
@@ -1692,11 +1523,7 @@ simde_vreinterpretq_u8_u64(simde_uint64x2_t a) {
   #else
     simde_uint8x16_private r_;
     simde_uint64x2_private a_ = simde_uint64x2_to_private(a);
-    #if defined(SIMDE_RISCV_V_NATIVE)
-      r_.sv128 = __riscv_vreinterpret_v_u64m1_u8m1(a_.sv128);
-    #else
-      simde_memcpy(&r_, &a_, sizeof(r_));
-    #endif
+    simde_memcpy(&r_, &a_, sizeof(r_));
     return simde_uint8x16_from_private(r_);
   #endif
 }
@@ -1764,11 +1591,7 @@ simde_vreinterpret_u16_s16(simde_int16x4_t a) {
   #else
     simde_uint16x4_private r_;
     simde_int16x4_private a_ = simde_int16x4_to_private(a);
-    #if defined(SIMDE_RISCV_V_NATIVE)
-      r_.sv64 = __riscv_vreinterpret_v_i16m1_u16m1(a_.sv64);
-    #else
-      simde_memcpy(&r_, &a_, sizeof(r_));
-    #endif
+    simde_memcpy(&r_, &a_, sizeof(r_));
     return simde_uint16x4_from_private(r_);
   #endif
 }
@@ -1819,11 +1642,7 @@ simde_vreinterpret_u16_u8(simde_uint8x8_t a) {
   #else
     simde_uint16x4_private r_;
     simde_uint8x8_private a_ = simde_uint8x8_to_private(a);
-    #if defined(SIMDE_RISCV_V_NATIVE)
-      r_.sv64 = __riscv_vreinterpret_v_u8m1_u16m1(a_.sv64);
-    #else
-      simde_memcpy(&r_, &a_, sizeof(r_));
-    #endif
+    simde_memcpy(&r_, &a_, sizeof(r_));
     return simde_uint16x4_from_private(r_);
   #endif
 }
@@ -1840,11 +1659,7 @@ simde_vreinterpret_u16_u32(simde_uint32x2_t a) {
   #else
     simde_uint16x4_private r_;
     simde_uint32x2_private a_ = simde_uint32x2_to_private(a);
-    #if defined(SIMDE_RISCV_V_NATIVE)
-      r_.sv64 = __riscv_vreinterpret_v_u32m1_u16m1(a_.sv64);
-    #else
-      simde_memcpy(&r_, &a_, sizeof(r_));
-    #endif
+    simde_memcpy(&r_, &a_, sizeof(r_));
     return simde_uint16x4_from_private(r_);
   #endif
 }
@@ -1861,11 +1676,7 @@ simde_vreinterpret_u16_u64(simde_uint64x1_t a) {
   #else
     simde_uint16x4_private r_;
     simde_uint64x1_private a_ = simde_uint64x1_to_private(a);
-    #if defined(SIMDE_RISCV_V_NATIVE)
-      r_.sv64 = __riscv_vreinterpret_v_u64m1_u16m1(a_.sv64);
-    #else
-      simde_memcpy(&r_, &a_, sizeof(r_));
-    #endif
+    simde_memcpy(&r_, &a_, sizeof(r_));
     return simde_uint16x4_from_private(r_);
   #endif
 }
@@ -1882,11 +1693,7 @@ simde_vreinterpret_u16_f16(simde_float16x4_t a) {
   #else
     simde_uint16x4_private r_;
     simde_float16x4_private a_ = simde_float16x4_to_private(a);
-    #if defined(SIMDE_RISCV_V_NATIVE) && defined(SIMDE_ARCH_RISCV_ZVFH)
-      r_.sv64 = __riscv_vreinterpret_v_f16m1_u16m1(a_.sv64);
-    #else
-      simde_memcpy(&r_, &a_, sizeof(r_));
-    #endif
+    simde_memcpy(&r_, &a_, sizeof(r_));
     return simde_uint16x4_from_private(r_);
   #endif
 }
@@ -1954,11 +1761,7 @@ simde_vreinterpretq_u16_s16(simde_int16x8_t a) {
   #else
     simde_uint16x8_private r_;
     simde_int16x8_private a_ = simde_int16x8_to_private(a);
-    #if defined(SIMDE_RISCV_V_NATIVE)
-      r_.sv128 = __riscv_vreinterpret_v_i16m1_u16m1(a_.sv128);
-    #else
-      simde_memcpy(&r_, &a_, sizeof(r_));
-    #endif
+    simde_memcpy(&r_, &a_, sizeof(r_));
     return simde_uint16x8_from_private(r_);
   #endif
 }
@@ -2009,11 +1812,7 @@ simde_vreinterpretq_u16_u8(simde_uint8x16_t a) {
   #else
     simde_uint16x8_private r_;
     simde_uint8x16_private a_ = simde_uint8x16_to_private(a);
-    #if defined(SIMDE_RISCV_V_NATIVE)
-      r_.sv128 = __riscv_vreinterpret_v_u8m1_u16m1(a_.sv128);
-    #else
-      simde_memcpy(&r_, &a_, sizeof(r_));
-    #endif
+    simde_memcpy(&r_, &a_, sizeof(r_));
     return simde_uint16x8_from_private(r_);
   #endif
 }
@@ -2030,11 +1829,7 @@ simde_vreinterpretq_u16_u32(simde_uint32x4_t a) {
   #else
     simde_uint16x8_private r_;
     simde_uint32x4_private a_ = simde_uint32x4_to_private(a);
-    #if defined(SIMDE_RISCV_V_NATIVE)
-      r_.sv128 = __riscv_vreinterpret_v_u32m1_u16m1(a_.sv128);
-    #else
-      simde_memcpy(&r_, &a_, sizeof(r_));
-    #endif
+    simde_memcpy(&r_, &a_, sizeof(r_));
     return simde_uint16x8_from_private(r_);
   #endif
 }
@@ -2051,11 +1846,7 @@ simde_vreinterpretq_u16_u64(simde_uint64x2_t a) {
   #else
     simde_uint16x8_private r_;
     simde_uint64x2_private a_ = simde_uint64x2_to_private(a);
-    #if defined(SIMDE_RISCV_V_NATIVE)
-      r_.sv128 = __riscv_vreinterpret_v_u64m1_u16m1(a_.sv128);
-    #else
-      simde_memcpy(&r_, &a_, sizeof(r_));
-    #endif
+    simde_memcpy(&r_, &a_, sizeof(r_));
     return simde_uint16x8_from_private(r_);
   #endif
 }
@@ -2140,11 +1931,7 @@ simde_vreinterpret_u32_s32(simde_int32x2_t a) {
   #else
     simde_uint32x2_private r_;
     simde_int32x2_private a_ = simde_int32x2_to_private(a);
-    #if defined(SIMDE_RISCV_V_NATIVE)
-      r_.sv64 = __riscv_vreinterpret_v_i32m1_u32m1(a_.sv64);
-    #else
-      simde_memcpy(&r_, &a_, sizeof(r_));
-    #endif
+    simde_memcpy(&r_, &a_, sizeof(r_));
     return simde_uint32x2_from_private(r_);
   #endif
 }
@@ -2178,11 +1965,7 @@ simde_vreinterpret_u32_u8(simde_uint8x8_t a) {
   #else
     simde_uint32x2_private r_;
     simde_uint8x8_private a_ = simde_uint8x8_to_private(a);
-    #if defined(SIMDE_RISCV_V_NATIVE)
-      r_.sv64 = __riscv_vreinterpret_v_u8m1_u32m1(a_.sv64);
-    #else
-      simde_memcpy(&r_, &a_, sizeof(r_));
-    #endif
+    simde_memcpy(&r_, &a_, sizeof(r_));
     return simde_uint32x2_from_private(r_);
   #endif
 }
@@ -2199,11 +1982,7 @@ simde_vreinterpret_u32_u16(simde_uint16x4_t a) {
   #else
     simde_uint32x2_private r_;
     simde_uint16x4_private a_ = simde_uint16x4_to_private(a);
-    #if defined(SIMDE_RISCV_V_NATIVE)
-      r_.sv64 = __riscv_vreinterpret_v_u16m1_u32m1(a_.sv64);
-    #else
-      simde_memcpy(&r_, &a_, sizeof(r_));
-    #endif
+    simde_memcpy(&r_, &a_, sizeof(r_));
     return simde_uint32x2_from_private(r_);
   #endif
 }
@@ -2220,11 +1999,7 @@ simde_vreinterpret_u32_u64(simde_uint64x1_t a) {
   #else
     simde_uint32x2_private r_;
     simde_uint64x1_private a_ = simde_uint64x1_to_private(a);
-    #if defined(SIMDE_RISCV_V_NATIVE)
-      r_.sv64 = __riscv_vreinterpret_v_u64m1_u32m1(a_.sv64);
-    #else
-      simde_memcpy(&r_, &a_, sizeof(r_));
-    #endif
+    simde_memcpy(&r_, &a_, sizeof(r_));
     return simde_uint32x2_from_private(r_);
   #endif
 }
@@ -2241,11 +2016,7 @@ simde_vreinterpret_u32_f32(simde_float32x2_t a) {
   #else
     simde_uint32x2_private r_;
     simde_float32x2_private a_ = simde_float32x2_to_private(a);
-    #if defined(SIMDE_RISCV_V_NATIVE)
-      r_.sv64 = __riscv_vreinterpret_v_f32m1_u32m1(a_.sv64);
-    #else
-      simde_memcpy(&r_, &a_, sizeof(r_));
-    #endif
+    simde_memcpy(&r_, &a_, sizeof(r_));
     return simde_uint32x2_from_private(r_);
   #endif
 }
@@ -2313,11 +2084,7 @@ simde_vreinterpretq_u32_s32(simde_int32x4_t a) {
   #else
     simde_uint32x4_private r_;
     simde_int32x4_private a_ = simde_int32x4_to_private(a);
-    #if defined(SIMDE_RISCV_V_NATIVE)
-      r_.sv128 = __riscv_vreinterpret_v_i32m1_u32m1(a_.sv128);
-    #else
-      simde_memcpy(&r_, &a_, sizeof(r_));
-    #endif
+    simde_memcpy(&r_, &a_, sizeof(r_));
     return simde_uint32x4_from_private(r_);
   #endif
 }
@@ -2351,11 +2118,7 @@ simde_vreinterpretq_u32_u8(simde_uint8x16_t a) {
   #else
     simde_uint32x4_private r_;
     simde_uint8x16_private a_ = simde_uint8x16_to_private(a);
-    #if defined(SIMDE_RISCV_V_NATIVE)
-      r_.sv128 = __riscv_vreinterpret_v_u8m1_u32m1(a_.sv128);
-    #else
-      simde_memcpy(&r_, &a_, sizeof(r_));
-    #endif
+    simde_memcpy(&r_, &a_, sizeof(r_));
     return simde_uint32x4_from_private(r_);
   #endif
 }
@@ -2372,11 +2135,7 @@ simde_vreinterpretq_u32_u16(simde_uint16x8_t a) {
   #else
     simde_uint32x4_private r_;
     simde_uint16x8_private a_ = simde_uint16x8_to_private(a);
-    #if defined(SIMDE_RISCV_V_NATIVE)
-      r_.sv128 = __riscv_vreinterpret_v_u16m1_u32m1(a_.sv128);
-    #else
-      simde_memcpy(&r_, &a_, sizeof(r_));
-    #endif
+    simde_memcpy(&r_, &a_, sizeof(r_));
     return simde_uint32x4_from_private(r_);
   #endif
 }
@@ -2393,11 +2152,7 @@ simde_vreinterpretq_u32_u64(simde_uint64x2_t a) {
   #else
     simde_uint32x4_private r_;
     simde_uint64x2_private a_ = simde_uint64x2_to_private(a);
-    #if defined(SIMDE_RISCV_V_NATIVE)
-      r_.sv128 = __riscv_vreinterpret_v_u64m1_u32m1(a_.sv128);
-    #else
-      simde_memcpy(&r_, &a_, sizeof(r_));
-    #endif
+    simde_memcpy(&r_, &a_, sizeof(r_));
     return simde_uint32x4_from_private(r_);
   #endif
 }
@@ -2414,11 +2169,7 @@ simde_vreinterpretq_u16_f16(simde_float16x8_t a) {
   #else
     simde_uint16x8_private r_;
     simde_float16x8_private a_ = simde_float16x8_to_private(a);
-    #if defined(SIMDE_RISCV_V_NATIVE) && defined(SIMDE_ARCH_RISCV_ZVFH)
-      r_.sv128 = __riscv_vreinterpret_v_f16m1_u16m1(a_.sv128);
-    #else
-      simde_memcpy(&r_, &a_, sizeof(r_));
-    #endif
+    simde_memcpy(&r_, &a_, sizeof(r_));
     return simde_uint16x8_from_private(r_);
   #endif
 }
@@ -2435,11 +2186,7 @@ simde_vreinterpretq_u32_f32(simde_float32x4_t a) {
   #else
     simde_uint32x4_private r_;
     simde_float32x4_private a_ = simde_float32x4_to_private(a);
-    #if defined(SIMDE_RISCV_V_NATIVE)
-      r_.sv128 = __riscv_vreinterpret_v_f32m1_u32m1(a_.sv128);
-    #else
-      simde_memcpy(&r_, &a_, sizeof(r_));
-    #endif
+    simde_memcpy(&r_, &a_, sizeof(r_));
     return simde_uint32x4_from_private(r_);
   #endif
 }
@@ -2524,11 +2271,7 @@ simde_vreinterpret_u64_s64(simde_int64x1_t a) {
   #else
     simde_uint64x1_private r_;
     simde_int64x1_private a_ = simde_int64x1_to_private(a);
-    #if defined(SIMDE_RISCV_V_NATIVE)
-      r_.sv64 = __riscv_vreinterpret_v_i64m1_u64m1(a_.sv64);
-    #else
-      simde_memcpy(&r_, &a_, sizeof(r_));
-    #endif
+    simde_memcpy(&r_, &a_, sizeof(r_));
     return simde_uint64x1_from_private(r_);
   #endif
 }
@@ -2545,11 +2288,7 @@ simde_vreinterpret_u64_u8(simde_uint8x8_t a) {
   #else
     simde_uint64x1_private r_;
     simde_uint8x8_private a_ = simde_uint8x8_to_private(a);
-    #if defined(SIMDE_RISCV_V_NATIVE)
-      r_.sv64 = __riscv_vreinterpret_v_u8m1_u64m1(a_.sv64);
-    #else
-      simde_memcpy(&r_, &a_, sizeof(r_));
-    #endif
+    simde_memcpy(&r_, &a_, sizeof(r_));
     return simde_uint64x1_from_private(r_);
   #endif
 }
@@ -2566,11 +2305,7 @@ simde_vreinterpret_u64_u16(simde_uint16x4_t a) {
   #else
     simde_uint64x1_private r_;
     simde_uint16x4_private a_ = simde_uint16x4_to_private(a);
-    #if defined(SIMDE_RISCV_V_NATIVE)
-      r_.sv64 = __riscv_vreinterpret_v_u16m1_u64m1(a_.sv64);
-    #else
-      simde_memcpy(&r_, &a_, sizeof(r_));
-    #endif
+    simde_memcpy(&r_, &a_, sizeof(r_));
     return simde_uint64x1_from_private(r_);
   #endif
 }
@@ -2587,11 +2322,7 @@ simde_vreinterpret_u64_u32(simde_uint32x2_t a) {
   #else
     simde_uint64x1_private r_;
     simde_uint32x2_private a_ = simde_uint32x2_to_private(a);
-    #if defined(SIMDE_RISCV_V_NATIVE)
-      r_.sv64 = __riscv_vreinterpret_v_u32m1_u64m1(a_.sv64);
-    #else
-      simde_memcpy(&r_, &a_, sizeof(r_));
-    #endif
+    simde_memcpy(&r_, &a_, sizeof(r_));
     return simde_uint64x1_from_private(r_);
   #endif
 }
@@ -2710,11 +2441,7 @@ simde_vreinterpretq_u64_s64(simde_int64x2_t a) {
   #else
     simde_uint64x2_private r_;
     simde_int64x2_private a_ = simde_int64x2_to_private(a);
-    #if defined(SIMDE_RISCV_V_NATIVE)
-      r_.sv128 = __riscv_vreinterpret_v_i64m1_u64m1(a_.sv128);
-    #else
-      simde_memcpy(&r_, &a_, sizeof(r_));
-    #endif
+    simde_memcpy(&r_, &a_, sizeof(r_));
     return simde_uint64x2_from_private(r_);
   #endif
 }
@@ -2731,11 +2458,7 @@ simde_vreinterpretq_u64_u8(simde_uint8x16_t a) {
   #else
     simde_uint64x2_private r_;
     simde_uint8x16_private a_ = simde_uint8x16_to_private(a);
-    #if defined(SIMDE_RISCV_V_NATIVE)
-      r_.sv128 = __riscv_vreinterpret_v_u8m1_u64m1(a_.sv128);
-    #else
-      simde_memcpy(&r_, &a_, sizeof(r_));
-    #endif
+    simde_memcpy(&r_, &a_, sizeof(r_));
     return simde_uint64x2_from_private(r_);
   #endif
 }
@@ -2752,11 +2475,7 @@ simde_vreinterpretq_u64_u16(simde_uint16x8_t a) {
   #else
     simde_uint64x2_private r_;
     simde_uint16x8_private a_ = simde_uint16x8_to_private(a);
-    #if defined(SIMDE_RISCV_V_NATIVE)
-      r_.sv128 = __riscv_vreinterpret_v_u16m1_u64m1(a_.sv128);
-    #else
-      simde_memcpy(&r_, &a_, sizeof(r_));
-    #endif
+    simde_memcpy(&r_, &a_, sizeof(r_));
     return simde_uint64x2_from_private(r_);
   #endif
 }
@@ -2773,11 +2492,7 @@ simde_vreinterpretq_u64_u32(simde_uint32x4_t a) {
   #else
     simde_uint64x2_private r_;
     simde_uint32x4_private a_ = simde_uint32x4_to_private(a);
-    #if defined(SIMDE_RISCV_V_NATIVE)
-      r_.sv128 = __riscv_vreinterpret_v_u32m1_u64m1(a_.sv128);
-    #else
-      simde_memcpy(&r_, &a_, sizeof(r_));
-    #endif
+    simde_memcpy(&r_, &a_, sizeof(r_));
     return simde_uint64x2_from_private(r_);
   #endif
 }
@@ -2862,11 +2577,7 @@ simde_vreinterpret_f32_s32(simde_int32x2_t a) {
   #else
     simde_float32x2_private r_;
     simde_int32x2_private a_ = simde_int32x2_to_private(a);
-    #if defined(SIMDE_RISCV_V_NATIVE)
-      r_.sv64 = __riscv_vreinterpret_v_i32m1_f32m1(a_.sv64);
-    #else
-      simde_memcpy(&r_, &a_, sizeof(r_));
-    #endif
+    simde_memcpy(&r_, &a_, sizeof(r_));
     return simde_float32x2_from_private(r_);
   #endif
 }
@@ -2934,11 +2645,7 @@ simde_vreinterpret_f16_u16(simde_uint16x4_t a) {
   #else
     simde_float16x4_private r_;
     simde_uint16x4_private a_ = simde_uint16x4_to_private(a);
-    #if defined(SIMDE_RISCV_V_NATIVE) && defined(SIMDE_ARCH_RISCV_ZVFH)
-      r_.sv64 = __riscv_vreinterpret_v_u16m1_f16m1(a_.sv64);
-    #else
-      simde_memcpy(&r_, &a_, sizeof(r_));
-    #endif
+    simde_memcpy(&r_, &a_, sizeof(r_));
     return simde_float16x4_from_private(r_);
   #endif
 }
@@ -2955,11 +2662,7 @@ simde_vreinterpret_f32_u32(simde_uint32x2_t a) {
   #else
     simde_float32x2_private r_;
     simde_uint32x2_private a_ = simde_uint32x2_to_private(a);
-    #if defined(SIMDE_RISCV_V_NATIVE)
-      r_.sv64 = __riscv_vreinterpret_v_u32m1_f32m1(a_.sv64);
-    #else
-      simde_memcpy(&r_, &a_, sizeof(r_));
-    #endif
+    simde_memcpy(&r_, &a_, sizeof(r_));
     return simde_float32x2_from_private(r_);
   #endif
 }
@@ -3045,11 +2748,7 @@ simde_vreinterpretq_f32_s32(simde_int32x4_t a) {
   #else
     simde_float32x4_private r_;
     simde_int32x4_private a_ = simde_int32x4_to_private(a);
-    #if defined(SIMDE_RISCV_V_NATIVE)
-      r_.sv128 = __riscv_vreinterpret_v_i32m1_f32m1(a_.sv128);
-    #else
-      simde_memcpy(&r_, &a_, sizeof(r_));
-    #endif
+    simde_memcpy(&r_, &a_, sizeof(r_));
     return simde_float32x4_from_private(r_);
   #endif
 }
@@ -3117,11 +2816,7 @@ simde_vreinterpretq_f16_u16(simde_uint16x8_t a) {
   #else
     simde_float16x8_private r_;
     simde_uint16x8_private a_ = simde_uint16x8_to_private(a);
-    #if defined(SIMDE_RISCV_V_NATIVE) && defined(SIMDE_ARCH_RISCV_ZVFH)
-      r_.sv128 = __riscv_vreinterpret_v_u16m1_f16m1(a_.sv128);
-    #else
-      simde_memcpy(&r_, &a_, sizeof(r_));
-    #endif
+    simde_memcpy(&r_, &a_, sizeof(r_));
     return simde_float16x8_from_private(r_);
   #endif
 }
@@ -3138,11 +2833,7 @@ simde_vreinterpretq_f32_u32(simde_uint32x4_t a) {
   #else
     simde_float32x4_private r_;
     simde_uint32x4_private a_ = simde_uint32x4_to_private(a);
-    #if defined(SIMDE_RISCV_V_NATIVE)
-      r_.sv128 = __riscv_vreinterpret_v_u32m1_f32m1(a_.sv128);
-    #else
-      simde_memcpy(&r_, &a_, sizeof(r_));
-    #endif
+    simde_memcpy(&r_, &a_, sizeof(r_));
     return simde_float32x4_from_private(r_);
   #endif
 }
@@ -3244,11 +2935,7 @@ simde_vreinterpret_f64_s64(simde_int64x1_t a) {
   #else
     simde_float64x1_private r_;
     simde_int64x1_private a_ = simde_int64x1_to_private(a);
-    #if defined(SIMDE_RISCV_V_NATIVE)
-      r_.sv64 = __riscv_vreinterpret_v_i64m1_f64m1(a_.sv64);
-    #else
-      simde_memcpy(&r_, &a_, sizeof(r_));
-    #endif
+    simde_memcpy(&r_, &a_, sizeof(r_));
     return simde_float64x1_from_private(r_);
   #endif
 }
@@ -3316,11 +3003,7 @@ simde_vreinterpret_f64_u64(simde_uint64x1_t a) {
   #else
     simde_float64x1_private r_;
     simde_uint64x1_private a_ = simde_uint64x1_to_private(a);
-    #if defined(SIMDE_RISCV_V_NATIVE)
-      r_.sv64 = __riscv_vreinterpret_v_u64m1_f64m1(a_.sv64);
-    #else
-      simde_memcpy(&r_, &a_, sizeof(r_));
-    #endif
+    simde_memcpy(&r_, &a_, sizeof(r_));
     return simde_float64x1_from_private(r_);
   #endif
 }
@@ -3405,11 +3088,7 @@ simde_vreinterpretq_f64_s64(simde_int64x2_t a) {
   #else
     simde_float64x2_private r_;
     simde_int64x2_private a_ = simde_int64x2_to_private(a);
-    #if defined(SIMDE_RISCV_V_NATIVE)
-      r_.sv128 = __riscv_vreinterpret_v_i64m1_f64m1(a_.sv128);
-    #else
-      simde_memcpy(&r_, &a_, sizeof(r_));
-    #endif
+    simde_memcpy(&r_, &a_, sizeof(r_));
     return simde_float64x2_from_private(r_);
   #endif
 }
@@ -3477,11 +3156,7 @@ simde_vreinterpretq_f64_u64(simde_uint64x2_t a) {
   #else
     simde_float64x2_private r_;
     simde_uint64x2_private a_ = simde_uint64x2_to_private(a);
-    #if defined(SIMDE_RISCV_V_NATIVE)
-      r_.sv128 = __riscv_vreinterpret_v_u64m1_f64m1(a_.sv128);
-    #else
-      simde_memcpy(&r_, &a_, sizeof(r_));
-    #endif
+    simde_memcpy(&r_, &a_, sizeof(r_));
     return simde_float64x2_from_private(r_);
   #endif
 }
@@ -3532,11 +3207,7 @@ simde_vreinterpret_f16_s16(simde_int16x4_t a) {
   #else
     simde_float16x4_private r_;
     simde_int16x4_private a_ = simde_int16x4_to_private(a);
-    #if defined(SIMDE_RISCV_V_NATIVE) && defined(SIMDE_ARCH_RISCV_ZVFH)
-      r_.sv64 = __riscv_vreinterpret_v_i16m1_f16m1(a_.sv64);
-    #else
-      simde_memcpy(&r_, &a_, sizeof(r_));
-    #endif
+    simde_memcpy(&r_, &a_, sizeof(r_));
     return simde_float16x4_from_private(r_);
   #endif
 }
@@ -3672,11 +3343,7 @@ simde_vreinterpretq_f16_s16(simde_int16x8_t a) {
   #else
     simde_float16x8_private r_;
     simde_int16x8_private a_ = simde_int16x8_to_private(a);
-    #if defined(SIMDE_RISCV_V_NATIVE) && defined(SIMDE_ARCH_RISCV_ZVFH)
-      r_.sv128 = __riscv_vreinterpret_v_i16m1_f16m1(a_.sv128);
-    #else
-      simde_memcpy(&r_, &a_, sizeof(r_));
-    #endif
+    simde_memcpy(&r_, &a_, sizeof(r_));
     return simde_float16x8_from_private(r_);
   #endif
 }
@@ -3965,11 +3632,7 @@ simde_vreinterpret_s16_f16(simde_float16x4_t a) {
   #else
     simde_int16x4_private r_;
     simde_float16x4_private a_ = simde_float16x4_to_private(a);
-    #if defined(SIMDE_RISCV_V_NATIVE)
-      r_.sv64 = __riscv_vreinterpret_v_f16m1_i16m1(a_.sv64);
-    #else
-      simde_memcpy(&r_, &a_, sizeof(r_));
-    #endif
+    simde_memcpy(&r_, &a_, sizeof(r_));
     return simde_int16x4_from_private(r_);
   #endif
 }
@@ -3986,11 +3649,7 @@ simde_vreinterpretq_s16_f16(simde_float16x8_t a) {
   #else
     simde_int16x8_private r_;
     simde_float16x8_private a_ = simde_float16x8_to_private(a);
-    #if defined(SIMDE_RISCV_V_NATIVE)
-      r_.sv128 = __riscv_vreinterpret_v_f16m1_i16m1(a_.sv128);
-    #else
-      simde_memcpy(&r_, &a_, sizeof(r_));
-    #endif
+    simde_memcpy(&r_, &a_, sizeof(r_));
     return simde_int16x8_from_private(r_);
   #endif
 }
