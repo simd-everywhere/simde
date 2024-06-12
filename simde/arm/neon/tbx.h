@@ -24,6 +24,7 @@
  *   2020      Evan Nemerson <evan@nemerson.com>
  *   2020      Christopher Moore <moore@free.fr>
  *   2023      Yi-Yen Chung <eric681@andestech.com> (Copyright owned by Andes Technology)
+ *   2023      Ju-Hung Li <jhlee@pllab.cs.nthu.edu.tw> (Copyright owned by NTHU pllab)
  */
 
 #if !defined(SIMDE_ARM_NEON_TBX_H)
@@ -56,6 +57,10 @@ simde_vtbx1_u8(simde_uint8x8_t a, simde_uint8x8_t b, simde_uint8x8_t c) {
       __m128i r128 = _mm_shuffle_epi8(b128, c128);
       r128 =  _mm_blendv_epi8(r128, a128, c128);
       r_.m64 = _mm_movepi64_pi64(r128);
+    #elif defined(SIMDE_RISCV_V_NATIVE)
+      vbool8_t mask = __riscv_vmsgeu_vx_u8m1_b8 (c_.sv64, 8, 16);
+      r_.sv64 = __riscv_vrgather_vv_u8m1(b_.sv64 , c_.sv64 , 8);
+      r_.sv64 = __riscv_vmerge_vvm_u8m1(r_.sv64, a_.sv64, mask, 8);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -107,6 +112,11 @@ simde_vtbx2_u8(simde_uint8x8_t a, simde_uint8x8x2_t b, simde_uint8x8_t c) {
       __m128i r128 = _mm_shuffle_epi8(b128, c128);
       r128 =  _mm_blendv_epi8(r128, a128, c128);
       r_.m64 = _mm_movepi64_pi64(r128);
+    #elif defined(SIMDE_RISCV_V_NATIVE)
+      vuint8m1_t t_combine = __riscv_vslideup_vx_u8m1(b_[0].sv64 , b_[1].sv64 , 8 , 16);
+      vbool8_t mask = __riscv_vmsgeu_vx_u8m1_b8 (c_.sv64 , 16 , 8);
+      vuint8m1_t r_tmp = __riscv_vrgather_vv_u8m1(t_combine , c_.sv64 , 8);
+      r_.sv64 = __riscv_vmerge_vvm_u8m1(r_tmp, a_.sv64, mask, 8);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -161,6 +171,17 @@ simde_vtbx3_u8(simde_uint8x8_t a, simde_uint8x8x3_t b, simde_uint8x8_t c) {
       __m128i r128 = _mm_blendv_epi8(r128_01, r128_2, _mm_slli_epi32(c128, 3));
       r128 =  _mm_blendv_epi8(r128, a128, c128);
       r_.m64 = _mm_movepi64_pi64(r128);
+    #elif defined(SIMDE_RISCV_V_NATIVE)
+      vuint8m2_t t1 = __riscv_vlmul_ext_v_u8m1_u8m2 (b_[0].sv64);
+      vuint8m2_t t2 = __riscv_vlmul_ext_v_u8m1_u8m2 (b_[1].sv64);
+      vuint8m2_t t3 = __riscv_vlmul_ext_v_u8m1_u8m2 (b_[2].sv64);
+      vuint8m2_t am2 = __riscv_vlmul_ext_v_u8m1_u8m2 (a_.sv64);
+      vuint8m2_t t_combine = __riscv_vslideup_vx_u8m2(t2 , t3 , 8 , 24);
+      t_combine = __riscv_vslideup_vx_u8m2(t1 , t_combine , 8 , 24);
+      vuint8m2_t idxm2 = __riscv_vlmul_ext_v_u8m1_u8m2(c_.sv64);
+      vbool4_t mask = __riscv_vmsgeu_vx_u8m2_b4 (idxm2, 24, 8);
+      vuint8m2_t r_tmp = __riscv_vrgather_vv_u8m2(t_combine , idxm2 , 8);
+      r_.sv64 = __riscv_vlmul_trunc_v_u8m2_u8m1(__riscv_vmerge_vvm_u8m2(r_tmp, am2, mask, 8));
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -215,6 +236,19 @@ simde_vtbx4_u8(simde_uint8x8_t a, simde_uint8x8x4_t b, simde_uint8x8_t c) {
       __m128i r128 = _mm_blendv_epi8(r128_01, r128_23,  _mm_slli_epi32(c128, 3));
       r128 =  _mm_blendv_epi8(r128, a128, c128);
       r_.m64 = _mm_movepi64_pi64(r128);
+    #elif defined(SIMDE_RISCV_V_NATIVE)
+      vuint8m2_t t1 = __riscv_vlmul_ext_v_u8m1_u8m2 (b_[0].sv64);
+      vuint8m2_t t2 = __riscv_vlmul_ext_v_u8m1_u8m2 (b_[1].sv64);
+      vuint8m2_t t3 = __riscv_vlmul_ext_v_u8m1_u8m2 (b_[2].sv64);
+      vuint8m2_t t4 = __riscv_vlmul_ext_v_u8m1_u8m2 (b_[3].sv64);
+      vuint8m2_t am2 = __riscv_vlmul_ext_v_u8m1_u8m2 (a_.sv64);
+      vuint8m2_t t_combine = __riscv_vslideup_vx_u8m2(t3 , t4 , 8 , 32);
+      t_combine = __riscv_vslideup_vx_u8m2(t2 , t_combine , 8 , 32);
+      t_combine = __riscv_vslideup_vx_u8m2(t1 , t_combine , 8 , 32);
+      vuint8m2_t idxm2 = __riscv_vlmul_ext_v_u8m1_u8m2(c_.sv64);
+      vbool4_t mask = __riscv_vmsgeu_vx_u8m2_b4 (idxm2, 32, 8);
+      vuint8m2_t r_tmp = __riscv_vrgather_vv_u8m2(t_combine , idxm2 , 8);
+      r_.sv64 = __riscv_vlmul_trunc_v_u8m2_u8m1(__riscv_vmerge_vvm_u8m2(r_tmp, am2, mask, 8));
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {

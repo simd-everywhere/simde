@@ -23,6 +23,7 @@
  * Copyright:
  *   2020      Evan Nemerson <evan@nemerson.com>
  *   2023      Yi-Yen Chung <eric681@andestech.com> (Copyright owned by Andes Technology)
+ *   2023      Ju-Hung Li <jhlee@pllab.cs.nthu.edu.tw> (Copyright owned by NTHU pllab)
  */
 
 #if !defined(SIMDE_ARM_NEON_CNT_H)
@@ -55,10 +56,24 @@ simde_vcnt_s8(simde_int8x8_t a) {
       r_,
       a_ = simde_int8x8_to_private(a);
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = HEDLEY_STATIC_CAST(int8_t, simde_x_arm_neon_cntb(HEDLEY_STATIC_CAST(uint8_t, a_.values[i])));
-    }
+    #if defined(SIMDE_RISCV_V_NATIVE)
+      vuint8m1_t p = __riscv_vreinterpret_v_i8m1_u8m1(a_.sv64);
+      vuint8m1_t tmp = __riscv_vand_vv_u8m1(__riscv_vsrl_vx_u8m1(p , 1 , 8) , __riscv_vmv_v_x_u8m1(0x55 , 8) , 8);
+      p = __riscv_vsub_vv_u8m1(p , tmp , 8);
+      tmp = p;
+      p = __riscv_vand_vv_u8m1(p , __riscv_vmv_v_x_u8m1(0x33 , 8) , 8);
+      tmp = __riscv_vand_vv_u8m1(__riscv_vsrl_vx_u8m1(tmp , 2 , 8) , __riscv_vmv_v_x_u8m1(0x33 , 8) , 8);
+      p = __riscv_vadd_vv_u8m1(p , tmp , 8);
+      tmp = __riscv_vsrl_vx_u8m1(p, 4 , 8);
+      p = __riscv_vadd_vv_u8m1(p , tmp , 8);
+      p = __riscv_vand_vv_u8m1(p , __riscv_vmv_v_x_u8m1(0xf , 8) , 8);
+      r_.sv64 = __riscv_vreinterpret_v_u8m1_i8m1(p);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+        r_.values[i] = HEDLEY_STATIC_CAST(int8_t, simde_x_arm_neon_cntb(HEDLEY_STATIC_CAST(uint8_t, a_.values[i])));
+      }
+    #endif
 
     return simde_int8x8_from_private(r_);
   #endif
@@ -140,6 +155,16 @@ simde_vcntq_s8(simde_int8x16_t a) {
       tmp = _mm_srli_epi16(a_.m128i, 4);
       a_.m128i = _mm_add_epi8(a_.m128i, tmp);
       r_.m128i = _mm_and_si128(a_.m128i, _mm_set1_epi8(0x0f));
+    #elif defined(SIMDE_RISCV_V_NATIVE)
+      vint8m1_t tmp = __riscv_vand_vv_i8m1(__riscv_vsra_vx_i8m1(a_.sv128 , 1 , 16) , __riscv_vmv_v_x_i8m1(0x55 , 16) , 16);
+      a_.sv128 = __riscv_vsub_vv_i8m1(a_.sv128 , tmp , 16);
+      tmp = a_.sv128;
+      a_.sv128 = __riscv_vand_vv_i8m1(a_.sv128 , __riscv_vmv_v_x_i8m1(0x33 , 16) , 16);
+      tmp = __riscv_vand_vv_i8m1(__riscv_vsra_vx_i8m1(tmp , 2 , 16) , __riscv_vmv_v_x_i8m1(0x33 , 16) , 16);
+      a_.sv128 = __riscv_vadd_vv_i8m1(a_.sv128 , tmp , 16);
+      tmp = __riscv_vsra_vx_i8m1(a_.sv128, 4 , 16);
+      a_.sv128 = __riscv_vadd_vv_i8m1(a_.sv128 , tmp , 16);
+      r_.sv128 = __riscv_vand_vv_i8m1(a_.sv128 , __riscv_vmv_v_x_i8m1(0xf , 16) , 16);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
