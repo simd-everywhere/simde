@@ -22,6 +22,7 @@
 *
 * Copyright:
 *   2023      Yi-Yen Chung <eric681@andestech.com> (Copyright owned by Andes Technology)
+*   2023      Ju-Hung Li <jhlee@pllab.cs.nthu.edu.tw> (Copyright owned by NTHU pllab)
 */
 
 #if !defined(SIMDE_ARM_NEON_FMS_N_H)

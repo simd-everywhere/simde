@@ -22,6 +22,7 @@
  *
  * Copyright:
  *   2021      Décio Luiz Gazzoni Filho <decio@decpp.net>
+ *   2023      Ju-Hung Li <jhlee@pllab.cs.nthu.edu.tw> (Copyright owned by NTHU pllab)
  */
 
 #if !defined(SIMDE_ARM_NEON_MLSL_HIGH_N_H)
