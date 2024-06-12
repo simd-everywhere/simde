@@ -24,6 +24,7 @@
  *   2020      Evan Nemerson <evan@nemerson.com>
  *   2020      Christopher Moore <moore@free.fr>
  *   2023      Yi-Yen Chung <eric681@andestech.com> (Copyright owned by Andes Technology)
+ *   2023      Ju-Hung Li <jhlee@pllab.cs.nthu.edu.tw> (Copyright owned by NTHU pllab)
  */
 
 /* The GFNI implementation is based on Wojciech Muła's work at
@@ -62,6 +63,13 @@ simde_vrbit_u8(simde_uint8x8_t a) {
       a_.m64 = _mm_or_si64(_mm_andnot_si64(mask, _mm_slli_pi16(a_.m64, 2)), _mm_and_si64(mask, _mm_srli_pi16(a_.m64, 2)));
       mask = _mm_set1_pi8(0x0F);
       r_.m64 = _mm_or_si64(_mm_andnot_si64(mask, _mm_slli_pi16(a_.m64, 4)), _mm_and_si64(mask, _mm_srli_pi16(a_.m64, 4)));
+    #elif defined(SIMDE_RISCV_V_NATIVE)
+      vuint8m1_t mask;
+      mask = __riscv_vmv_v_x_u8m1(0x55 , 8);
+      a_.sv64 = __riscv_vor_vv_u8m1(__riscv_vand_vv_u8m1(mask , __riscv_vsrl_vx_u8m1(a_.sv64 , 1 , 8) , 8)  , __riscv_vsll_vx_u8m1(__riscv_vand_vv_u8m1(mask , a_.sv64 , 8) , 1 , 8) , 8);
+      mask = __riscv_vmv_v_x_u8m1(0x33 , 8);
+      a_.sv64 = __riscv_vor_vv_u8m1(__riscv_vand_vv_u8m1(mask , __riscv_vsrl_vx_u8m1(a_.sv64 , 2 , 8) , 8)  , __riscv_vsll_vx_u8m1(__riscv_vand_vv_u8m1(mask , a_.sv64 , 8) , 2 , 8) , 8);
+      r_.sv64 = __riscv_vor_vv_u8m1(__riscv_vsrl_vx_u8m1(a_.sv64 , 4 , 8) , __riscv_vsll_vx_u8m1(a_.sv64 , 4 , 8) , 8);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -127,6 +135,13 @@ simde_vrbitq_u8(simde_uint8x16_t a) {
       a_.v128 = wasm_v128_bitselect(wasm_u8x16_shr(a_.v128, 1), wasm_i8x16_shl(a_.v128, 1), wasm_i8x16_splat(0x55));
       a_.v128 = wasm_v128_bitselect(wasm_u8x16_shr(a_.v128, 2), wasm_i8x16_shl(a_.v128, 2), wasm_i8x16_splat(0x33));
       r_.v128 = wasm_v128_or(wasm_u8x16_shr(a_.v128, 4), wasm_i8x16_shl(a_.v128, 4));
+    #elif defined(SIMDE_RISCV_V_NATIVE)
+      vuint8m1_t mask;
+      mask = __riscv_vmv_v_x_u8m1(0x55 , 16);
+      a_.sv128 = __riscv_vor_vv_u8m1(__riscv_vand_vv_u8m1(mask , __riscv_vsrl_vx_u8m1(a_.sv128 , 1 , 16) , 16)  , __riscv_vsll_vx_u8m1(__riscv_vand_vv_u8m1(mask , a_.sv128 , 16) , 1 , 16) , 16);
+      mask = __riscv_vmv_v_x_u8m1(0x33 , 16);
+      a_.sv128 = __riscv_vor_vv_u8m1(__riscv_vand_vv_u8m1(mask , __riscv_vsrl_vx_u8m1(a_.sv128 , 2 , 16) , 16)  , __riscv_vsll_vx_u8m1(__riscv_vand_vv_u8m1(mask , a_.sv128 , 16) , 2 , 16) , 16);
+      r_.sv128 = __riscv_vor_vv_u8m1(__riscv_vsrl_vx_u8m1(a_.sv128 , 4 , 16) , __riscv_vsll_vx_u8m1(a_.sv128 , 4 , 16) , 16);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
