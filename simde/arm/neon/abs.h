@@ -23,6 +23,7 @@
  * Copyright:
  *   2020      Evan Nemerson <evan@nemerson.com>
  *   2023      Yi-Yen Chung <eric681@andestech.com> (Copyright owned by Andes Technology)
+ *   2023      Ju-Hung Li <jhlee@pllab.cs.nthu.edu.tw> (Copyright owned by NTHU pllab)
  */
 
 #if !defined(SIMDE_ARM_NEON_ABS_H)
@@ -74,10 +75,14 @@ simde_vabs_f16(simde_float16x4_t a) {
       r_,
       a_ = simde_float16x4_to_private(a);
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = simde_vabsh_f16(a_.values[i]);
-    }
+    #if defined(SIMDE_RISCV_V_NATIVE) && defined(SIMDE_ARCH_RISCV_ZVFH)
+      r_.sv64 = __riscv_vfabs_v_f16m1(a_.sv64 , 4);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+        r_.values[i] = simde_vabsh_f16(a_.values[i]);
+      }
+    #endif
 
     return simde_float16x4_from_private(r_);
   #endif
@@ -97,10 +102,14 @@ simde_vabs_f32(simde_float32x2_t a) {
       r_,
       a_ = simde_float32x2_to_private(a);
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = a_.values[i] < 0 ? -a_.values[i] : a_.values[i];
-    }
+    #if defined(SIMDE_RISCV_V_NATIVE)
+      r_.sv64 = __riscv_vfabs_v_f32m1(a_.sv64 , 2);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+        r_.values[i] = a_.values[i] < 0 ? -a_.values[i] : a_.values[i];
+      }
+    #endif
 
     return simde_float32x2_from_private(r_);
   #endif
@@ -120,10 +129,14 @@ simde_vabs_f64(simde_float64x1_t a) {
       r_,
       a_ = simde_float64x1_to_private(a);
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = a_.values[i] < 0 ? -a_.values[i] : a_.values[i];
-    }
+    #if defined(SIMDE_RISCV_V_NATIVE)
+      r_.sv64 = __riscv_vfabs_v_f64m1(a_.sv64 , 1);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+        r_.values[i] = a_.values[i] < 0 ? -a_.values[i] : a_.values[i];
+      }
+    #endif
 
     return simde_float64x1_from_private(r_);
   #endif
@@ -145,6 +158,8 @@ simde_vabs_s8(simde_int8x8_t a) {
 
     #if defined(SIMDE_X86_SSSE3_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
       r_.m64 = _mm_abs_pi8(a_.m64);
+    #elif defined(SIMDE_RISCV_V_NATIVE)
+      r_.sv64 = __riscv_vmax_vv_i8m1(a_.sv64 , __riscv_vneg_v_i8m1(a_.sv64 , 8) , 8);
     #elif (SIMDE_NATURAL_VECTOR_SIZE > 0) && defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && !defined(SIMDE_BUG_GCC_100762)
       __typeof__(r_.values) m = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), a_.values < INT8_C(0));
       r_.values = (-a_.values & m) | (a_.values & ~m);
@@ -175,6 +190,8 @@ simde_vabs_s16(simde_int16x4_t a) {
 
     #if defined(SIMDE_X86_SSSE3_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
       r_.m64 = _mm_abs_pi16(a_.m64);
+    #elif defined(SIMDE_RISCV_V_NATIVE)
+      r_.sv64 = __riscv_vmax_vv_i16m1(a_.sv64 , __riscv_vneg_v_i16m1(a_.sv64 , 4) , 4);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && !defined(SIMDE_BUG_GCC_100761)
       __typeof__(r_.values) m = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), a_.values < INT16_C(0));
       r_.values = (-a_.values & m) | (a_.values & ~m);
@@ -205,6 +222,8 @@ simde_vabs_s32(simde_int32x2_t a) {
 
     #if defined(SIMDE_X86_SSSE3_NATIVE) && defined(SIMDE_X86_MMX_NATIVE)
       r_.m64 = _mm_abs_pi32(a_.m64);
+    #elif defined(SIMDE_RISCV_V_NATIVE)
+      r_.sv64 = __riscv_vmax_vv_i32m1(a_.sv64 , __riscv_vneg_v_i32m1(a_.sv64 , 2) , 2);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && !defined(SIMDE_BUG_GCC_100761)
       __typeof__(r_.values) m = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), a_.values < INT32_C(0));
       r_.values = (-a_.values & m) | (a_.values & ~m);
@@ -233,7 +252,9 @@ simde_vabs_s64(simde_int64x1_t a) {
       r_,
       a_ = simde_int64x1_to_private(a);
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+    #if defined(SIMDE_RISCV_V_NATIVE)
+      r_.sv64 = __riscv_vmax_vv_i64m1(a_.sv64 , __riscv_vneg_v_i64m1(a_.sv64 , 1) , 1);
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
       __typeof__(r_.values) m = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), a_.values < INT64_C(0));
       r_.values = (-a_.values & m) | (a_.values & ~m);
     #else
@@ -261,10 +282,14 @@ simde_vabsq_f16(simde_float16x8_t a) {
       r_,
       a_ = simde_float16x8_to_private(a);
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = simde_vabsh_f16(a_.values[i]);
-    }
+    #if defined(SIMDE_RISCV_V_NATIVE) && defined(SIMDE_ARCH_RISCV_ZVFH)
+      r_.sv128 = __riscv_vfabs_v_f16m1(a_.sv128 , 8);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+        r_.values[i] = simde_vabsh_f16(a_.values[i]);
+      }
+    #endif
 
     return simde_float16x8_from_private(r_);
   #endif
@@ -288,6 +313,8 @@ simde_vabsq_f32(simde_float32x4_t a) {
 
     #if defined(SIMDE_WASM_SIMD128_NATIVE)
       r_.v128 = wasm_f32x4_abs(a_.v128);
+    #elif defined(SIMDE_RISCV_V_NATIVE)
+      r_.sv128 = __riscv_vfabs_v_f32m1(a_.sv128 , 4);
     #elif defined(SIMDE_X86_SSE_NATIVE)
       simde_float32 mask_;
       uint32_t u32_ = UINT32_C(0x7FFFFFFF);
@@ -325,6 +352,8 @@ simde_vabsq_f64(simde_float64x2_t a) {
       uint64_t u64_ = UINT64_C(0x7FFFFFFFFFFFFFFF);
       simde_memcpy(&mask_, &u64_, sizeof(u64_));
       r_.m128d = _mm_and_pd(_mm_set1_pd(mask_), a_.m128d);
+    #elif defined(SIMDE_RISCV_V_NATIVE)
+      r_.sv128 = __riscv_vfabs_v_f64m1(a_.sv128 , 2);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -358,6 +387,8 @@ simde_vabsq_s8(simde_int8x16_t a) {
       r_.m128i = _mm_min_epu8(a_.m128i, _mm_sub_epi8(_mm_setzero_si128(), a_.m128i));
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r_.v128 = wasm_i8x16_abs(a_.v128);
+    #elif defined(SIMDE_RISCV_V_NATIVE)
+      r_.sv128 = __riscv_vmax_vv_i8m1(a_.sv128 , __riscv_vneg_v_i8m1(a_.sv128 , 16) , 16);
     #elif (SIMDE_NATURAL_VECTOR_SIZE > 0) && defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
         __typeof__(r_.values) m = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), a_.values < INT8_C(0));
         r_.values = (-a_.values & m) | (a_.values & ~m);
@@ -394,6 +425,8 @@ simde_vabsq_s16(simde_int16x8_t a) {
       r_.m128i = _mm_max_epi16(a_.m128i, _mm_sub_epi16(_mm_setzero_si128(), a_.m128i));
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r_.v128 = wasm_i16x8_abs(a_.v128);
+    #elif defined(SIMDE_RISCV_V_NATIVE)
+      r_.sv128 = __riscv_vmax_vv_i16m1(a_.sv128 , __riscv_vneg_v_i16m1(a_.sv128 , 8) , 8);
     #elif (SIMDE_NATURAL_VECTOR_SIZE > 0) && defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
       __typeof__(r_.values) m = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), a_.values < INT16_C(0));
       r_.values = (-a_.values & m) | (a_.values & ~m);
@@ -431,6 +464,8 @@ simde_vabsq_s32(simde_int32x4_t a) {
       r_.m128i = _mm_sub_epi32(_mm_xor_si128(a_.m128i, m), m);
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r_.v128 = wasm_i32x4_abs(a_.v128);
+    #elif defined(SIMDE_RISCV_V_NATIVE)
+      r_.sv128 = __riscv_vmax_vv_i32m1(a_.sv128 , __riscv_vneg_v_i32m1(a_.sv128 , 4) , 4);
     #elif (SIMDE_NATURAL_VECTOR_SIZE > 0) && defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
       __typeof__(r_.values) m = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), a_.values < INT32_C(0));
       r_.values = (-a_.values & m) | (a_.values & ~m);
@@ -452,6 +487,7 @@ simde_vabsq_s32(simde_int32x4_t a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_int64x2_t
 simde_vabsq_s64(simde_int64x2_t a) {
+
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vabsq_s64(a);
   #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
@@ -470,6 +506,8 @@ simde_vabsq_s64(simde_int64x2_t a) {
       r_.m128i = _mm_sub_epi64(_mm_xor_si128(a_.m128i, m), m);
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r_.v128 = wasm_i64x2_abs(a_.v128);
+    #elif defined(SIMDE_RISCV_V_NATIVE)
+      r_.sv128 = __riscv_vmax_vv_i64m1(a_.sv128 , __riscv_vneg_v_i64m1(a_.sv128 , 2) , 2);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
       __typeof__(r_.values) m = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), a_.values < INT64_C(0));
       r_.values = (-a_.values & m) | (a_.values & ~m);

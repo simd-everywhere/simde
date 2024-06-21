@@ -22,6 +22,7 @@
  *
  * Copyright:
  *   2020      Evan Nemerson <evan@nemerson.com>
+ *   2023      Ju-Hung Li <jhlee@pllab.cs.nthu.edu.tw> (Copyright owned by NTHU pllab)
  */
 
 /* TODO: the 128-bit versions only require AVX-512 because of the final
@@ -46,6 +47,14 @@ simde_int8x8_t
 simde_vhsub_s8(simde_int8x8_t a, simde_int8x8_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vhsub_s8(a, b);
+  #elif defined(SIMDE_RISCV_V_NATIVE)
+    simde_int8x8_private
+      r_,
+      a_ = simde_int8x8_to_private(a),
+      b_ = simde_int8x8_to_private(b);
+
+    r_.sv64 = __riscv_vasub_vv_i8m1(a_.sv64, b_.sv64, 2, 8);
+    return simde_int8x8_from_private(r_);
   #else
     return simde_vmovn_s16(simde_vshrq_n_s16(simde_vsubl_s8(a, b), 1));
   #endif
@@ -60,6 +69,14 @@ simde_int16x4_t
 simde_vhsub_s16(simde_int16x4_t a, simde_int16x4_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vhsub_s16(a, b);
+  #elif defined(SIMDE_RISCV_V_NATIVE)
+    simde_int16x4_private
+      r_,
+      a_ = simde_int16x4_to_private(a),
+      b_ = simde_int16x4_to_private(b);
+
+    r_.sv64 = __riscv_vasub_vv_i16m1(a_.sv64, b_.sv64, 2, 4);
+    return simde_int16x4_from_private(r_);
   #else
     return simde_vmovn_s32(simde_vshrq_n_s32(simde_vsubl_s16(a, b), 1));
   #endif
@@ -74,6 +91,14 @@ simde_int32x2_t
 simde_vhsub_s32(simde_int32x2_t a, simde_int32x2_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vhsub_s32(a, b);
+  #elif defined(SIMDE_RISCV_V_NATIVE)
+    simde_int32x2_private
+      r_,
+      a_ = simde_int32x2_to_private(a),
+      b_ = simde_int32x2_to_private(b);
+
+    r_.sv64 = __riscv_vasub_vv_i32m1(a_.sv64, b_.sv64, 2, 2);
+    return simde_int32x2_from_private(r_);
   #else
     return simde_vmovn_s64(simde_vshrq_n_s64(simde_vsubl_s32(a, b), 1));
   #endif
@@ -88,6 +113,14 @@ simde_uint8x8_t
 simde_vhsub_u8(simde_uint8x8_t a, simde_uint8x8_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vhsub_u8(a, b);
+  #elif defined(SIMDE_RISCV_V_NATIVE)
+    simde_uint8x8_private
+      r_,
+      a_ = simde_uint8x8_to_private(a),
+      b_ = simde_uint8x8_to_private(b);
+
+    r_.sv64 = __riscv_vasubu_vv_u8m1(a_.sv64, b_.sv64, 2, 8);
+    return simde_uint8x8_from_private(r_);
   #else
     return simde_vmovn_u16(simde_vshrq_n_u16(simde_vsubl_u8(a, b), 1));
   #endif
@@ -102,6 +135,14 @@ simde_uint16x4_t
 simde_vhsub_u16(simde_uint16x4_t a, simde_uint16x4_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vhsub_u16(a, b);
+  #elif defined(SIMDE_RISCV_V_NATIVE)
+    simde_uint16x4_private
+      r_,
+      a_ = simde_uint16x4_to_private(a),
+      b_ = simde_uint16x4_to_private(b);
+
+    r_.sv64 = __riscv_vasubu_vv_u16m1(a_.sv64, b_.sv64, 2, 4);
+    return simde_uint16x4_from_private(r_);
   #else
     return simde_vmovn_u32(simde_vshrq_n_u32(simde_vsubl_u16(a, b), 1));
   #endif
@@ -116,6 +157,14 @@ simde_uint32x2_t
 simde_vhsub_u32(simde_uint32x2_t a, simde_uint32x2_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vhsub_u32(a, b);
+  #elif defined(SIMDE_RISCV_V_NATIVE)
+    simde_uint32x2_private
+      r_,
+      a_ = simde_uint32x2_to_private(a),
+      b_ = simde_uint32x2_to_private(b);
+
+    r_.sv64 = __riscv_vasubu_vv_u32m1(a_.sv64, b_.sv64, 2, 2);
+    return simde_uint32x2_from_private(r_);
   #else
     return simde_vmovn_u64(simde_vshrq_n_u64(simde_vsubl_u32(a, b), 1));
   #endif
@@ -138,6 +187,8 @@ simde_vhsubq_s8(simde_int8x16_t a, simde_int8x16_t b) {
 
     #if defined(SIMDE_X86_AVX512VL_NATIVE) && defined(SIMDE_X86_AVX512BW_NATIVE)
       r_.m128i = _mm256_cvtepi16_epi8(_mm256_srai_epi16(_mm256_sub_epi16(_mm256_cvtepi8_epi16(a_.m128i), _mm256_cvtepi8_epi16(b_.m128i)), 1));
+    #elif defined(SIMDE_RISCV_V_NATIVE)
+      r_.sv128 = __riscv_vasub_vv_i8m1(a_.sv128, b_.sv128, 2, 16);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -166,6 +217,8 @@ simde_vhsubq_s16(simde_int16x8_t a, simde_int16x8_t b) {
 
     #if defined(SIMDE_X86_AVX512VL_NATIVE)
       r_.m128i = _mm256_cvtepi32_epi16(_mm256_srai_epi32(_mm256_sub_epi32(_mm256_cvtepi16_epi32(a_.m128i), _mm256_cvtepi16_epi32(b_.m128i)), 1));
+    #elif defined(SIMDE_RISCV_V_NATIVE)
+      r_.sv128 = __riscv_vasub_vv_i16m1(a_.sv128, b_.sv128, 2, 8);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -194,6 +247,8 @@ simde_vhsubq_s32(simde_int32x4_t a, simde_int32x4_t b) {
 
     #if defined(SIMDE_X86_AVX512VL_NATIVE)
       r_.m128i = _mm256_cvtepi64_epi32(_mm256_srai_epi64(_mm256_sub_epi64(_mm256_cvtepi32_epi64(a_.m128i), _mm256_cvtepi32_epi64(b_.m128i)), 1));
+    #elif defined(SIMDE_RISCV_V_NATIVE)
+      r_.sv128 = __riscv_vasub_vv_i32m1(a_.sv128, b_.sv128, 2, 4);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -222,6 +277,8 @@ simde_vhsubq_u8(simde_uint8x16_t a, simde_uint8x16_t b) {
 
     #if defined(SIMDE_X86_AVX512VL_NATIVE) && defined(SIMDE_X86_AVX512BW_NATIVE)
       r_.m128i = _mm256_cvtepi16_epi8(_mm256_srli_epi16(_mm256_sub_epi16(_mm256_cvtepu8_epi16(a_.m128i), _mm256_cvtepu8_epi16(b_.m128i)), 1));
+    #elif defined(SIMDE_RISCV_V_NATIVE)
+      r_.sv128 = __riscv_vasubu_vv_u8m1(a_.sv128, b_.sv128, 2, 16);
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       v128_t lo =
           wasm_u16x8_shr(wasm_i16x8_sub(wasm_u16x8_extend_low_u8x16(a_.v128),
@@ -261,6 +318,8 @@ simde_vhsubq_u16(simde_uint16x8_t a, simde_uint16x8_t b) {
 
     #if defined(SIMDE_X86_AVX512VL_NATIVE)
       r_.m128i = _mm256_cvtepi32_epi16(_mm256_srli_epi32(_mm256_sub_epi32(_mm256_cvtepu16_epi32(a_.m128i), _mm256_cvtepu16_epi32(b_.m128i)), 1));
+    #elif defined(SIMDE_RISCV_V_NATIVE)
+      r_.sv128 = __riscv_vasubu_vv_u16m1(a_.sv128, b_.sv128, 2, 8);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -289,6 +348,8 @@ simde_vhsubq_u32(simde_uint32x4_t a, simde_uint32x4_t b) {
 
     #if defined(SIMDE_X86_AVX512VL_NATIVE)
       r_.m128i = _mm256_cvtepi64_epi32(_mm256_srli_epi64(_mm256_sub_epi64(_mm256_cvtepu32_epi64(a_.m128i), _mm256_cvtepu32_epi64(b_.m128i)), 1));
+    #elif defined(SIMDE_RISCV_V_NATIVE)
+      r_.sv128 = __riscv_vasubu_vv_u32m1(a_.sv128, b_.sv128, 2, 4);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
