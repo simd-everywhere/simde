@@ -22,6 +22,7 @@
  *
  * Copyright:
  *   2023      Yi-Yen Chung <eric681@andestech.com> (Copyright owned by Andes Technology)
+ *   2023      Chi-Wei Chu <wewe5215@gapp.nthu.edu.tw> (Copyright owned by NTHU pllab)
  */
 
 #if !defined(SIMDE_ARM_NEON_MAXNMV_H)
@@ -45,10 +46,15 @@ simde_vmaxnmv_f32(simde_float32x2_t a) {
     simde_float32x2_private a_ = simde_float32x2_to_private(a);
 
     r = -SIMDE_MATH_INFINITYF;
-    SIMDE_VECTORIZE_REDUCTION(max:r)
-    for (size_t i = 0 ; i < (sizeof(a_.values) / sizeof(a_.values[0])) ; i++) {
-      r = a_.values[i] > r ? a_.values[i] : r;
-    }
+    #if defined(SIMDE_RISCV_V_NATIVE)
+      r = __riscv_vfmv_f_s_f32m1_f32(__riscv_vfredmax_vs_f32m1_f32m1(a_.sv64, \
+        __riscv_vfmv_v_f_f32m1(r, 2), 2));
+    #else
+      SIMDE_VECTORIZE_REDUCTION(max:r)
+      for (size_t i = 0 ; i < (sizeof(a_.values) / sizeof(a_.values[0])) ; i++) {
+        r = a_.values[i] > r ? a_.values[i] : r;
+      }
+    #endif
   #endif
 
   return r;
@@ -69,10 +75,18 @@ simde_vmaxnmvq_f32(simde_float32x4_t a) {
     simde_float32x4_private a_ = simde_float32x4_to_private(a);
 
     r = -SIMDE_MATH_INFINITYF;
-    SIMDE_VECTORIZE_REDUCTION(max:r)
-    for (size_t i = 0 ; i < (sizeof(a_.values) / sizeof(a_.values[0])) ; i++) {
-      r = a_.values[i] > r ? a_.values[i] : r;
-    }
+    #if defined(SIMDE_RISCV_V_NATIVE)
+      r = __riscv_vfmv_f_s_f32m1_f32(__riscv_vfredmax_vs_f32m1_f32m1(a_.sv128, \
+        __riscv_vfmv_v_f_f32m1(r, 4), 4));
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && HEDLEY_HAS_BUILTIN(__builtin_reduce_max)
+      simde_float32_t rst = __builtin_reduce_max(a_.values);
+      r = (rst > r) ? rst : r;
+    #else
+      SIMDE_VECTORIZE_REDUCTION(max:r)
+      for (size_t i = 0 ; i < (sizeof(a_.values) / sizeof(a_.values[0])) ; i++) {
+        r = a_.values[i] > r ? a_.values[i] : r;
+      }
+    #endif
   #endif
 
   return r;
@@ -93,10 +107,15 @@ simde_vmaxnmvq_f64(simde_float64x2_t a) {
     simde_float64x2_private a_ = simde_float64x2_to_private(a);
 
     r = -SIMDE_MATH_INFINITY;
-    SIMDE_VECTORIZE_REDUCTION(max:r)
-    for (size_t i = 0 ; i < (sizeof(a_.values) / sizeof(a_.values[0])) ; i++) {
-      r = a_.values[i] > r ? a_.values[i] : r;
-    }
+    #if defined(SIMDE_RISCV_V_NATIVE)
+      r = __riscv_vfmv_f_s_f64m1_f64(__riscv_vfredmax_vs_f64m1_f64m1(a_.sv128, \
+        __riscv_vfmv_v_f_f64m1(r, 2), 2));
+    #else
+      SIMDE_VECTORIZE_REDUCTION(max:r)
+      for (size_t i = 0 ; i < (sizeof(a_.values) / sizeof(a_.values[0])) ; i++) {
+        r = a_.values[i] > r ? a_.values[i] : r;
+      }
+    #endif
   #endif
 
   return r;
@@ -112,23 +131,28 @@ simde_vmaxnmv_f16(simde_float16x4_t a) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
     return vmaxnmv_f16(a);
   #else
-    simde_float32_t r_ = simde_float16_to_float32(SIMDE_NINFINITYHF);
     simde_float16x4_private a_ = simde_float16x4_to_private(a);
 
-    #if defined(SIMDE_FAST_NANS)
-      SIMDE_VECTORIZE_REDUCTION(max:r_)
+    #if defined(SIMDE_RISCV_V_NATIVE) && defined(SIMDE_ARCH_RISCV_ZVFH)
+      return __riscv_vfmv_f_s_f16m1_f16(__riscv_vfredmax_vs_f16m1_f16m1(a_.sv64, \
+        __riscv_vfmv_v_f_f16m1(SIMDE_NINFINITYHF, 4), 4));
     #else
-      SIMDE_VECTORIZE
-    #endif
-    for (size_t i = 0 ; i < (sizeof(a_.values) / sizeof(a_.values[0])) ; i++) {
-      simde_float32_t tmp_a = simde_float16_to_float32(a_.values[i]);
+      simde_float32_t r_ = simde_float16_to_float32(SIMDE_NINFINITYHF);
       #if defined(SIMDE_FAST_NANS)
-        r_ = tmp_a > r_ ? tmp_a : r_;
+        SIMDE_VECTORIZE_REDUCTION(max:r_)
       #else
-        r_ = (tmp_a > r_) ? tmp_a : ((tmp_a <= r_) ? r_ : ((tmp_a == tmp_a) ? r_ : tmp_a));
+        SIMDE_VECTORIZE
       #endif
-    }
-    return simde_float16_from_float32(r_);
+      for (size_t i = 0 ; i < (sizeof(a_.values) / sizeof(a_.values[0])) ; i++) {
+        simde_float32_t tmp_a = simde_float16_to_float32(a_.values[i]);
+        #if defined(SIMDE_FAST_NANS)
+          r_ = tmp_a > r_ ? tmp_a : r_;
+        #else
+          r_ = (tmp_a > r_) ? tmp_a : ((tmp_a <= r_) ? r_ : ((tmp_a == tmp_a) ? r_ : tmp_a));
+        #endif
+      }
+      return simde_float16_from_float32(r_);
+    #endif
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
@@ -142,23 +166,28 @@ simde_vmaxnmvq_f16(simde_float16x8_t a) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
     return vmaxnmvq_f16(a);
   #else
-    simde_float32_t r_ = simde_float16_to_float32(SIMDE_NINFINITYHF);
     simde_float16x8_private a_ = simde_float16x8_to_private(a);
 
-    #if defined(SIMDE_FAST_NANS)
-      SIMDE_VECTORIZE_REDUCTION(max:r_)
+    #if defined(SIMDE_RISCV_V_NATIVE) && defined(SIMDE_ARCH_RISCV_ZVFH)
+      return __riscv_vfmv_f_s_f16m1_f16(__riscv_vfredmax_vs_f16m1_f16m1(a_.sv128, \
+        __riscv_vfmv_v_f_f16m1(SIMDE_NINFINITYHF, 8), 8));
     #else
-      SIMDE_VECTORIZE
-    #endif
-    for (size_t i = 0 ; i < (sizeof(a_.values) / sizeof(a_.values[0])) ; i++) {
-      simde_float32_t tmp_a = simde_float16_to_float32(a_.values[i]);
+      simde_float32_t r_ = simde_float16_to_float32(SIMDE_NINFINITYHF);
       #if defined(SIMDE_FAST_NANS)
-        r_ = tmp_a > r_ ? tmp_a : r_;
+        SIMDE_VECTORIZE_REDUCTION(max:r_)
       #else
-        r_ = (tmp_a > r_) ? tmp_a : ((tmp_a <= r_) ? r_ : ((tmp_a == tmp_a) ? r_ : tmp_a));
+        SIMDE_VECTORIZE
       #endif
-    }
-    return simde_float16_from_float32(r_);
+      for (size_t i = 0 ; i < (sizeof(a_.values) / sizeof(a_.values[0])) ; i++) {
+        simde_float32_t tmp_a = simde_float16_to_float32(a_.values[i]);
+        #if defined(SIMDE_FAST_NANS)
+          r_ = tmp_a > r_ ? tmp_a : r_;
+        #else
+          r_ = (tmp_a > r_) ? tmp_a : ((tmp_a <= r_) ? r_ : ((tmp_a == tmp_a) ? r_ : tmp_a));
+        #endif
+      }
+      return simde_float16_from_float32(r_);
+    #endif
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)

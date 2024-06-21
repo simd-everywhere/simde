@@ -24,6 +24,7 @@
  *   2020      Evan Nemerson <evan@nemerson.com>
  *   2020      Sean Maher <seanptmaher@gmail.com> (Copyright owned by Google, LLC)
  *   2023      Yi-Yen Chung <eric681@andestech.com> (Copyright owned by Andes Technology)
+ *   2023      Chi-Wei Chu <wewe5215@gapp.nthu.edu.tw> (Copyright owned by NTHU pllab)
  */
 
 /* Implementation notes (seanptmaher):
@@ -97,11 +98,17 @@ simde_vqdmull_s16(simde_int16x4_t a, simde_int16x4_t b) {
     simde_int16x4_private
       a_ = simde_int16x4_to_private(a),
       b_ = simde_int16x4_to_private(b);
-
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = simde_vqdmullh_s16(a_.values[i], b_.values[i]);
-    }
+    #if defined(SIMDE_RISCV_V_NATIVE)
+      vint32m2_t mul = __riscv_vwmul_vv_i32m2(a_.sv64, b_.sv64, 4);
+      r_.sv128 = __riscv_vlmul_trunc_v_i32m2_i32m1(__riscv_vmerge_vxm_i32m2(__riscv_vmerge_vxm_i32m2(
+            __riscv_vsll_vx_i32m2(mul, 1, 4), INT32_MAX,  __riscv_vmsgt_vx_i32m2_b16(mul, INT32_C(0x3FFFFFFF), 4), 4),
+            INT32_MIN, __riscv_vmslt_vx_i32m2_b16(mul, -INT32_C(0x40000000), 4), 4));
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+        r_.values[i] = simde_vqdmullh_s16(a_.values[i], b_.values[i]);
+      }
+    #endif
 
     return simde_int32x4_from_private(r_);
   #endif
@@ -137,10 +144,17 @@ simde_vqdmull_s32(simde_int32x2_t a, simde_int32x2_t b) {
       a_ = simde_int32x2_to_private(a),
       b_ = simde_int32x2_to_private(b);
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = simde_vqdmulls_s32(a_.values[i], b_.values[i]);
-    }
+    #if defined(SIMDE_RISCV_V_NATIVE)
+      vint64m2_t mul = __riscv_vwmul_vv_i64m2(a_.sv64, b_.sv64, 2);
+      r_.sv128 = __riscv_vlmul_trunc_v_i64m2_i64m1(__riscv_vmerge_vxm_i64m2(__riscv_vmerge_vxm_i64m2(
+            __riscv_vsll_vx_i64m2(mul, 1, 2), INT64_MAX,  __riscv_vmsgt_vx_i64m2_b32(mul, INT64_C(0x3FFFFFFFFFFFFFFF), 2), 2),
+            INT64_MIN, __riscv_vmslt_vx_i64m2_b32(mul, -INT64_C(0x4000000000000000), 2), 2));
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+        r_.values[i] = simde_vqdmulls_s32(a_.values[i], b_.values[i]);
+      }
+    #endif
 
     return simde_int64x2_from_private(r_);
   #endif
