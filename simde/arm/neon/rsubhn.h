@@ -22,6 +22,7 @@
  *
  * Copyright:
  *   2023      Yi-Yen Chung <eric681@andestech.com> (Copyright owned by Andes Technology)
+ *   2023      Chi-Wei Chu <wewe5215@gapp.nthu.edu.tw> (Copyright owned by NTHU pllab)
  */
 
 #if !defined(SIMDE_ARM_NEON_RSUBHN_H)
@@ -48,10 +49,14 @@ simde_vrsubhn_s16(simde_int16x8_t a, simde_int16x8_t b) {
       a_ = simde_int16x8_to_private(a),
       b_ = simde_int16x8_to_private(b);
     int16_t round_cast = 1 << 7;
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = HEDLEY_STATIC_CAST(int16_t, a_.values[i] - b_.values[i] + round_cast);
-    }
+    #if defined(SIMDE_RISCV_V_NATIVE)
+        r_.sv128 = __riscv_vadd_vx_i16m1(__riscv_vsub_vv_i16m1(a_.sv128, b_.sv128, 8), round_cast, 8);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+        r_.values[i] = HEDLEY_STATIC_CAST(int16_t, a_.values[i] - b_.values[i] + round_cast);
+      }
+    #endif
     return simde_vmovn_s16(simde_vshrq_n_s16(simde_int16x8_from_private(r_), 8));
   #endif
 }
@@ -71,10 +76,14 @@ simde_vrsubhn_s32(simde_int32x4_t a, simde_int32x4_t b) {
       a_ = simde_int32x4_to_private(a),
       b_ = simde_int32x4_to_private(b);
     int round_cast = 1 << 15;
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = a_.values[i] - b_.values[i] + round_cast;
-    }
+    #if defined(SIMDE_RISCV_V_NATIVE)
+        r_.sv128 = __riscv_vadd_vx_i32m1(__riscv_vsub_vv_i32m1(a_.sv128, b_.sv128, 4), round_cast, 4);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+        r_.values[i] = a_.values[i] - b_.values[i] + round_cast;
+      }
+    #endif
     return simde_vmovn_s32(simde_vshrq_n_s32(simde_int32x4_from_private(r_), 16));
   #endif
 }
@@ -93,12 +102,17 @@ simde_vrsubhn_s64(simde_int64x2_t a, simde_int64x2_t b) {
       r_,
       a_ = simde_int64x2_to_private(a),
       b_ = simde_int64x2_to_private(b);
-    int64_t round_cast = 1ll << 31;
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = ((a_.values[i] - b_.values[i] + round_cast) >> 32);
-    }
-    return simde_vmovn_s64(simde_int64x2_from_private(r_));
+    #if defined(SIMDE_RISCV_V_NATIVE)
+        r_.sv128 = __riscv_vadd_vx_i64m1(__riscv_vsub_vv_i64m1(a_.sv128, b_.sv128, 2), 0x80000000, 2);
+        return simde_vmovn_s64(simde_vshrq_n_s64(simde_int64x2_from_private(r_), 32));
+    #else
+      int64_t round_cast = 1ll << 31;
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+        r_.values[i] = ((a_.values[i] - b_.values[i] + round_cast) >> 32);
+      }
+      return simde_vmovn_s64(simde_int64x2_from_private(r_));
+    #endif
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
@@ -117,10 +131,14 @@ simde_vrsubhn_u16(simde_uint16x8_t a, simde_uint16x8_t b) {
       a_ = simde_uint16x8_to_private(a),
       b_ = simde_uint16x8_to_private(b);
     uint16_t round_cast = 1 << 7;
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = HEDLEY_STATIC_CAST(uint16_t, a_.values[i] - b_.values[i] + round_cast);
-    }
+    #if defined(SIMDE_RISCV_V_NATIVE)
+        r_.sv128 = __riscv_vadd_vx_u16m1(__riscv_vsub_vv_u16m1(a_.sv128, b_.sv128, 8), round_cast, 8);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+        r_.values[i] = HEDLEY_STATIC_CAST(uint16_t, a_.values[i] - b_.values[i] + round_cast);
+      }
+    #endif
     return simde_vmovn_u16(simde_vshrq_n_u16(simde_uint16x8_from_private(r_), 8));
   #endif
 }
@@ -140,10 +158,14 @@ simde_vrsubhn_u32(simde_uint32x4_t a, simde_uint32x4_t b) {
       a_ = simde_uint32x4_to_private(a),
       b_ = simde_uint32x4_to_private(b);
     uint32_t round_cast = 1 << 15;
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = a_.values[i] - b_.values[i] + round_cast;
-    }
+    #if defined(SIMDE_RISCV_V_NATIVE)
+        r_.sv128 = __riscv_vadd_vx_u32m1(__riscv_vsub_vv_u32m1(a_.sv128, b_.sv128, 4), round_cast, 4);
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+        r_.values[i] = a_.values[i] - b_.values[i] + round_cast;
+      }
+    #endif
     return simde_vmovn_u32(simde_vshrq_n_u32(simde_uint32x4_from_private(r_), 16));
   #endif
 }
@@ -162,12 +184,17 @@ simde_vrsubhn_u64(simde_uint64x2_t a, simde_uint64x2_t b) {
       r_,
       a_ = simde_uint64x2_to_private(a),
       b_ = simde_uint64x2_to_private(b);
-    uint64_t round_cast = 1ull << 31;
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = ((a_.values[i] - b_.values[i] + round_cast) >> 32);
-    }
-    return simde_vmovn_u64(simde_uint64x2_from_private(r_));
+    #if defined(SIMDE_RISCV_V_NATIVE)
+        r_.sv128 = __riscv_vadd_vx_u64m1(__riscv_vsub_vv_u64m1(a_.sv128, b_.sv128, 2), 0x80000000, 2);
+        return simde_vmovn_u64(simde_vshrq_n_u64(simde_uint64x2_from_private(r_), 32));
+    #else
+      uint64_t round_cast = 1ull << 31;
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+        r_.values[i] = ((a_.values[i] - b_.values[i] + round_cast) >> 32);
+      }
+      return simde_vmovn_u64(simde_uint64x2_from_private(r_));
+    #endif
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)

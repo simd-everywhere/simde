@@ -23,6 +23,7 @@
  * Copyright:
  *   2020      Evan Nemerson <evan@nemerson.com>
  *   2020      Sean Maher <seanptmaher@gmail.com> (Copyright owned by Google, LLC)
+ *   2023      Chi-Wei Chu <wewe5215@gapp.nthu.edu.tw> (Copyright owned by NTHU pllab)
  */
 
 #if !defined(SIMDE_ARM_NEON_ADDW_H)
@@ -41,14 +42,17 @@ simde_int16x8_t
 simde_vaddw_s8(simde_int16x8_t a, simde_int8x8_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vaddw_s8(a, b);
-  #elif SIMDE_NATURAL_VECTOR_SIZE_GE(128)
+  #elif SIMDE_NATURAL_VECTOR_SIZE_GE(128) && !defined(SIMDE_RISCV_V_NATIVE)
     return simde_vaddq_s16(a, simde_vmovl_s8(b));
   #else
     simde_int16x8_private r_;
     simde_int16x8_private a_ = simde_int16x8_to_private(a);
     simde_int8x8_private b_ = simde_int8x8_to_private(b);
 
-    #if (SIMDE_NATURAL_VECTOR_SIZE > 0) && defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && defined(SIMDE_CONVERT_VECTOR_)
+    #if defined(SIMDE_RISCV_V_NATIVE)
+      vint8mf2_t vb = __riscv_vlmul_trunc_v_i8m1_i8mf2 (b_.sv64);
+      r_.sv128 =  __riscv_vwadd_wv_i16m1(a_.sv128, vb, 8);
+    #elif (SIMDE_NATURAL_VECTOR_SIZE > 0) && defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && defined(SIMDE_CONVERT_VECTOR_)
       SIMDE_CONVERT_VECTOR_(r_.values, b_.values);
       r_.values += a_.values;
     #else
@@ -71,14 +75,17 @@ simde_int32x4_t
 simde_vaddw_s16(simde_int32x4_t a, simde_int16x4_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vaddw_s16(a, b);
-  #elif SIMDE_NATURAL_VECTOR_SIZE_GE(128)
+  #elif SIMDE_NATURAL_VECTOR_SIZE_GE(128) && !defined(SIMDE_RISCV_V_NATIVE)
     return simde_vaddq_s32(a, simde_vmovl_s16(b));
   #else
     simde_int32x4_private r_;
     simde_int32x4_private a_ = simde_int32x4_to_private(a);
     simde_int16x4_private b_ = simde_int16x4_to_private(b);
 
-    #if (SIMDE_NATURAL_VECTOR_SIZE > 0) && defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && defined(SIMDE_CONVERT_VECTOR_)
+    #if defined(SIMDE_RISCV_V_NATIVE)
+      vint16mf2_t vb = __riscv_vlmul_trunc_v_i16m1_i16mf2 (b_.sv64);
+      r_.sv128 =  __riscv_vwadd_wv_i32m1(a_.sv128, vb, 4);
+    #elif (SIMDE_NATURAL_VECTOR_SIZE > 0) && defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && defined(SIMDE_CONVERT_VECTOR_)
       SIMDE_CONVERT_VECTOR_(r_.values, b_.values);
       r_.values += a_.values;
     #else
@@ -101,14 +108,17 @@ simde_int64x2_t
 simde_vaddw_s32(simde_int64x2_t a, simde_int32x2_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vaddw_s32(a, b);
-  #elif SIMDE_NATURAL_VECTOR_SIZE_GE(128)
+  #elif SIMDE_NATURAL_VECTOR_SIZE_GE(128) && !defined(SIMDE_RISCV_V_NATIVE)
     return simde_vaddq_s64(a, simde_vmovl_s32(b));
   #else
     simde_int64x2_private r_;
     simde_int64x2_private a_ = simde_int64x2_to_private(a);
     simde_int32x2_private b_ = simde_int32x2_to_private(b);
 
-    #if (SIMDE_NATURAL_VECTOR_SIZE > 0) && defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && defined(SIMDE_CONVERT_VECTOR_)
+    #if defined(SIMDE_RISCV_V_NATIVE)
+      vint32mf2_t vb = __riscv_vlmul_trunc_v_i32m1_i32mf2 (b_.sv64);
+      r_.sv128 =  __riscv_vwadd_wv_i64m1(a_.sv128, vb, 2);
+    #elif (SIMDE_NATURAL_VECTOR_SIZE > 0) && defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && defined(SIMDE_CONVERT_VECTOR_)
       SIMDE_CONVERT_VECTOR_(r_.values, b_.values);
       r_.values += a_.values;
     #else
@@ -131,14 +141,17 @@ simde_uint16x8_t
 simde_vaddw_u8(simde_uint16x8_t a, simde_uint8x8_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vaddw_u8(a, b);
-  #elif SIMDE_NATURAL_VECTOR_SIZE_GE(128)
+  #elif SIMDE_NATURAL_VECTOR_SIZE_GE(128) && !defined(SIMDE_RISCV_V_NATIVE)
     return simde_vaddq_u16(a, simde_vmovl_u8(b));
   #else
     simde_uint16x8_private r_;
     simde_uint16x8_private a_ = simde_uint16x8_to_private(a);
     simde_uint8x8_private b_ = simde_uint8x8_to_private(b);
 
-    #if (SIMDE_NATURAL_VECTOR_SIZE > 0) && defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && defined(SIMDE_CONVERT_VECTOR_)
+    #if defined(SIMDE_RISCV_V_NATIVE)
+      vuint8mf2_t vb = __riscv_vlmul_trunc_v_u8m1_u8mf2 (b_.sv64);
+      r_.sv128 =  __riscv_vwaddu_wv_u16m1(a_.sv128, vb, 8);
+    #elif (SIMDE_NATURAL_VECTOR_SIZE > 0) && defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && defined(SIMDE_CONVERT_VECTOR_)
       SIMDE_CONVERT_VECTOR_(r_.values, b_.values);
       r_.values += a_.values;
     #else
@@ -161,14 +174,17 @@ simde_uint32x4_t
 simde_vaddw_u16(simde_uint32x4_t a, simde_uint16x4_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vaddw_u16(a, b);
-  #elif SIMDE_NATURAL_VECTOR_SIZE_GE(128)
+  #elif SIMDE_NATURAL_VECTOR_SIZE_GE(128) && !defined(SIMDE_RISCV_V_NATIVE)
     return simde_vaddq_u32(a, simde_vmovl_u16(b));
   #else
     simde_uint32x4_private r_;
     simde_uint32x4_private a_ = simde_uint32x4_to_private(a);
     simde_uint16x4_private b_ = simde_uint16x4_to_private(b);
 
-    #if (SIMDE_NATURAL_VECTOR_SIZE > 0) && defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && defined(SIMDE_CONVERT_VECTOR_)
+    #if defined(SIMDE_RISCV_V_NATIVE)
+      vuint16mf2_t vb = __riscv_vlmul_trunc_v_u16m1_u16mf2 (b_.sv64);
+      r_.sv128 =  __riscv_vwaddu_wv_u32m1(a_.sv128, vb, 4);
+    #elif (SIMDE_NATURAL_VECTOR_SIZE > 0) && defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && defined(SIMDE_CONVERT_VECTOR_)
       SIMDE_CONVERT_VECTOR_(r_.values, b_.values);
       r_.values += a_.values;
     #else
@@ -191,14 +207,17 @@ simde_uint64x2_t
 simde_vaddw_u32(simde_uint64x2_t a, simde_uint32x2_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vaddw_u32(a, b);
-  #elif SIMDE_NATURAL_VECTOR_SIZE_GE(128)
+  #elif SIMDE_NATURAL_VECTOR_SIZE_GE(128) && !defined(SIMDE_RISCV_V_NATIVE)
     return simde_vaddq_u64(a, simde_vmovl_u32(b));
   #else
     simde_uint64x2_private r_;
     simde_uint64x2_private a_ = simde_uint64x2_to_private(a);
     simde_uint32x2_private b_ = simde_uint32x2_to_private(b);
 
-    #if (SIMDE_NATURAL_VECTOR_SIZE > 0) && defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && defined(SIMDE_CONVERT_VECTOR_)
+    #if defined(SIMDE_RISCV_V_NATIVE)
+      vuint32mf2_t vb = __riscv_vlmul_trunc_v_u32m1_u32mf2 (b_.sv64);
+      r_.sv128 =  __riscv_vwaddu_wv_u64m1(a_.sv128, vb, 2);
+    #elif (SIMDE_NATURAL_VECTOR_SIZE > 0) && defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && defined(SIMDE_CONVERT_VECTOR_)
       SIMDE_CONVERT_VECTOR_(r_.values, b_.values);
       r_.values += a_.values;
     #else
