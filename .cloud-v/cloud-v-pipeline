@@ -42,7 +42,7 @@ node('J-K230-1') {
                     sh '''#!/bin/bash -v
                         source testvm_pwd.sh
                         echo "$SIMDE_PATH"
-                        ssh -i $SSH_KEY jenkins_user@machine.cloud-v.co -p 30013 "cd $SIMDE_PATH && tar cvf - ./*" | tar xvf - -C ./
+                        ssh -i $SSH_KEY jenkins_user@machine.cloud-v.co -p 30013 "cd $SIMDE_PATH && tar cvf - ." | tar xvf - -C ./
                     '''
         }
     }
