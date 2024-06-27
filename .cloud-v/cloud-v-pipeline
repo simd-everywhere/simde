@@ -52,4 +52,7 @@ node('J-K230-1') {
             make
         '''
     }
+    stage('Archive Artifacts'){
+        archiveArtifacts artifacts: '.cloud-v/test.mak.log', fingerprint: true
+    }
 }
