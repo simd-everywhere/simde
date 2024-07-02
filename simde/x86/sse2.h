@@ -674,8 +674,6 @@ simde_mm_add_pd (simde__m128d a, simde__m128d b) {
 
     #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
       r_.neon_f64 = vaddq_f64(a_.neon_f64, b_.neon_f64);
-    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-      r_.wasm_v128 = wasm_f64x2_add(a_.wasm_v128, b_.wasm_v128);
     #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
       r_.altivec_f64 = vec_add(a_.altivec_f64, b_.altivec_f64);
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
