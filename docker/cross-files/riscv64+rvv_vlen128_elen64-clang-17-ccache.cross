@@ -1,6 +1,6 @@
 [binaries]
-c = 'clang-17'
-cpp = 'clang++-17'
+c = ['ccache', 'clang-17']
+cpp = ['ccache', 'clang++-17']
 ar = 'llvm-ar-17'
 strip = 'llvm-strip-17'
 objcopy = 'llvm-objcopy-17'
