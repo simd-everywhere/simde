@@ -1,6 +1,6 @@
 [binaries]
-c = ['ccache', 'arm-linux-gnueabihf-gcc-12']
-cpp = ['ccache', 'arm-linux-gnueabihf-g++-12']
+c = ['ccache', 'arm-linux-gnueabihf-gcc-13']
+cpp = ['ccache', 'arm-linux-gnueabihf-g++-13']
 ar = 'arm-linux-gnueabihf-ar'
 strip = 'arm-linux-gnueabihf-strip'
 objcopy = 'arm-linux-gnueabihf-objcopy'
