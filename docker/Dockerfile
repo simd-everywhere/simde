@@ -39,7 +39,7 @@ RUN \
 
 # Meson on stable is too old, and we want to make sure we keep 0.55
 # working for a while.
-RUN pipx install meson==0.55.0
+RUN pipx install meson==0.55.1
 
 # GCC cross-compilers
 RUN \
