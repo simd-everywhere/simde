@@ -90,7 +90,7 @@ cat /proc/meminfo
 PATH="${PATH}:${HOME}/.local/bin"
 
 # Install additional packages.
-pip3 install meson==0.55.0
+pip3 install meson==0.55.1
 
 # Run test.
 

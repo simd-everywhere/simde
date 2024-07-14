@@ -22,7 +22,7 @@ jobs:
     displayName: System Information
   - script: sudo add-apt-repository 'ppa:ubuntu-toolchain-r/test' && sudo apt-get update && sudo apt-get install -y ninja-build ninja-build python3-pip python3-setuptools python3-wheel clang-14 clang-tools-14
     displayName: Install APT Dependencies
-  - script: pip3 install -v meson==0.55.0
+  - script: pip3 install -v meson==0.55.1
     displayName: Install pip Dependencies
   - script: scan-build-14 /home/vsts/.local/bin/meson setup build -Db_sanitize=address,undefined
     displayName: Configure
@@ -47,7 +47,7 @@ jobs:
     displayName: System Information
   - script: sudo add-apt-repository 'ppa:ubuntu-toolchain-r/test' && sudo apt-get update && sudo apt-get install -y ninja-build ninja-build python3-pip python3-setuptools python3-wheel gcc-10 g++-10
     displayName: Install APT Dependencies
-  - script: pip3 install meson==0.55.0
+  - script: pip3 install meson==0.55.1
     displayName: Install pip Dependencies
   - script: /home/vsts/.local/bin/meson setup build -Db_sanitize=address,undefined
     displayName: Configure
@@ -72,7 +72,7 @@ jobs:
 #     displayName: System Information
 #   - script: sudo dpkg --add-architecture mips64el && sudo apt-get update && sudo apt-get install -y ninja-build ninja-build python3-pip python3-setuptools python3-wheel libc6:mips64el gcc-10-mips64el-linux-gnuabi64 g++-10-mips64el-linux-gnuabi64 qemu-user-static
 #     displayName: Install APT Dependencies
-#   - script: pip3 install meson=0.55.0
+#   - script: pip3 install meson==0.55.1
 #     displayName: Install pip Dependencies
 #   - script: /home/vsts/.local/bin/meson setup build --cross-file=docker/cross-files/loongson-gcc-10.cross
 #     displayName: Configure
