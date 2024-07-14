@@ -952,16 +952,36 @@ simde_math_fpclass(double v, const int imm8) {
   #endif
 #endif
 
+#if !defined(simde_math_pow)
+  #if SIMDE_MATH_BUILTIN_LIBM(pow)
+    #define simde_math_pow(y, x) __builtin_pow(y, x)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_pow(y, x) std::pow(y, x)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_pow(y, x) pow(y, x)
+  #endif
+#endif
+
+#if !defined(simde_math_powf)
+  #if SIMDE_MATH_BUILTIN_LIBM(powf)
+    #define simde_math_powf(y, x) __builtin_powf(y, x)
+  #elif defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_powf(y, x) std::pow(y, x)
+  #elif defined(SIMDE_MATH_HAVE_MATH_H)
+    #define simde_math_powf(y, x) powf(y, x)
+  #endif
+#endif
+
 #if HEDLEY_HAS_BUILTIN(__builtin_exp10) ||  HEDLEY_GCC_VERSION_CHECK(3,4,0)
   #  define simde_math_exp10(v) __builtin_exp10(v)
 #else
-#  define simde_math_exp10(v) pow(10.0, (v))
+#  define simde_math_exp10(v) simde_math_pow(10.0, (v))
 #endif
 
 #if HEDLEY_HAS_BUILTIN(__builtin_exp10f) ||  HEDLEY_GCC_VERSION_CHECK(3,4,0)
   #  define simde_math_exp10f(v) __builtin_exp10f(v)
 #else
-#  define simde_math_exp10f(v) powf(10.0f, (v))
+#  define simde_math_exp10f(v) simde_math_powf(10.0f, (v))
 #endif
 
 #if !defined(simde_math_fabs)
@@ -1201,26 +1221,6 @@ simde_math_fpclass(double v, const int imm8) {
     #define simde_math_nearbyintf(v) std::nearbyint(v)
   #elif defined(SIMDE_MATH_HAVE_MATH_H)
     #define simde_math_nearbyintf(v) nearbyintf(v)
-  #endif
-#endif
-
-#if !defined(simde_math_pow)
-  #if SIMDE_MATH_BUILTIN_LIBM(pow)
-    #define simde_math_pow(y, x) __builtin_pow(y, x)
-  #elif defined(SIMDE_MATH_HAVE_CMATH)
-    #define simde_math_pow(y, x) std::pow(y, x)
-  #elif defined(SIMDE_MATH_HAVE_MATH_H)
-    #define simde_math_pow(y, x) pow(y, x)
-  #endif
-#endif
-
-#if !defined(simde_math_powf)
-  #if SIMDE_MATH_BUILTIN_LIBM(powf)
-    #define simde_math_powf(y, x) __builtin_powf(y, x)
-  #elif defined(SIMDE_MATH_HAVE_CMATH)
-    #define simde_math_powf(y, x) std::pow(y, x)
-  #elif defined(SIMDE_MATH_HAVE_MATH_H)
-    #define simde_math_powf(y, x) powf(y, x)
   #endif
 #endif
 
