@@ -124,6 +124,7 @@ jobs:
         sudo apt-get purge -y gcc g++
         sudo ln -s /usr/bin/gcc-12 /usr/bin/gcc
         sudo ln -s /usr/bin/g++-12 /usr/bin/g++
+        sudo ln -s /usr/bin/gcov-12 /usr/bin/gcov
         sudo python3 -m pip install meson==0.55.1
     - name: add ccache to the build path
       run: |
@@ -172,6 +173,7 @@ jobs:
         sudo apt-get purge -y gcc g++
         sudo ln -s /usr/bin/gcc-12 /usr/bin/gcc
         sudo ln -s /usr/bin/g++-12 /usr/bin/g++
+        sudo ln -s /usr/bin/gcov-12 /usr/bin/gcov
         sudo python3 -m pip install meson==0.55.1
     - name: add ccache to the build path
       run: |
@@ -361,6 +363,7 @@ jobs:
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
         sudo ln -s /usr/bin/gcc-${{ matrix.version }} /usr/bin/gcc
         sudo ln -s /usr/bin/g++-${{ matrix.version }} /usr/bin/g++
+        sudo ln -s /usr/bin/gcov-${{ matrix.version }} /usr/bin/gcov
     - name: Configure
       run: meson setup build
     - name: Build
