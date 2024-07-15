@@ -15,7 +15,7 @@ task:
   install_dependencies_script:
     - apt-get update
     - apt-get install -y ninja-build ninja-build pipx python3-setuptools python3-wheel gcovr clang-17
-    - pipx install meson==0.55.0
+    - pipx install meson==0.55.1
   configure_script:
     - /root/.local/bin/meson setup build -Db_coverage=true -Db_sanitize=address,undefined -Db_lundef=false
   build_script:

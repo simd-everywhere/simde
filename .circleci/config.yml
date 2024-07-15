@@ -16,7 +16,7 @@ jobs:
       - run: apt-get update && apt-get install -y git ssh ninja-build pipx python3-setuptools python3-wheel gcovr gcc g++
       - checkout
       - run: cat /proc/cpuinfo /proc/meminfo
-      - run: pipx install meson==0.55.0
+      - run: pipx install meson==0.55.1
       - run: /root/.local/bin/meson setup build -Db_coverage=true
       - run: ninja -C build -v -j 5
       - run: ninja -C build -v test
@@ -35,7 +35,7 @@ jobs:
       - run: apt-get update && apt-get install -y git ssh ninja-build pipx python3-setuptools python3-wheel gcovr clang
       - checkout
       - run: cat /proc/cpuinfo /proc/meminfo
-      - run: pipx install meson==0.55.0
+      - run: pipx install meson==0.55.1
       - run: CFLAGS="-Wno-unsafe-buffer-usage" CXXFLAGS="-Wno-unsafe-buffer-usage" CC=clang CXX=clang++ /root/.local/bin/meson setup build -Db_coverage=true
       - run: ninja -C build -v -j 5
       - run: ninja -C build -v test
@@ -60,7 +60,7 @@ jobs:
             ccache --set-config=compression=true
             ccache -p
             ccache -z
-      - run: pipx install meson==0.55.0
+      - run: pipx install meson==0.55.1
       - run: /root/.local/bin/meson setup build -Db_coverage=true --cross-file=docker/cross-files/loongson-gcc-ccache.cross
       - restore_cache:
           keys:
@@ -87,7 +87,7 @@ jobs:
           name: System Information
           command: cat /proc/cpuinfo /proc/meminfo
       - run: dpkg --add-architecture i386
-      - run: pipx install meson==0.55.0
+      - run: pipx install meson==0.55.1
       - run: /root/.local/bin/meson setup build -Db_coverage=true --cross-file docker/cross-files/i686-gcc-qemu.cross
       - restore_cache:
           keys:
@@ -120,7 +120,7 @@ jobs:
           name: System Information
           command: cat /proc/cpuinfo /proc/meminfo
       - run: dpkg --add-architecture i386
-      - run: pipx install meson==0.55.0
+      - run: pipx install meson==0.55.1
       - run: /root/.local/bin/meson setup build -Db_coverage=true --cross-file docker/cross-files/i686-gcc-11-qemu.cross
       - restore_cache:
           keys:
