@@ -60,6 +60,12 @@ test_simde_vqdmlsl_high_lane_s16 (SIMDE_MUNIT_TEST_ARGS) {
        {  -INT16_C(       870), -INT16_C(      4925), -INT16_C(      9268), -INT16_C(      2864)},
            INT8_C(         0),
        {  -INT32_C( 425242208), -INT32_C(  88008484), -INT32_C( 775807954),  INT32_C( 553410068) } },
+     { {   INT32_C( INT32_MAX),  INT32_C( INT32_MIN),  INT32_C(         0),  INT32_C(         0) },
+       {  -INT16_C(         1),  INT16_C(         1),  INT16_C(         0),  INT16_C(         0),
+           INT16_C(         1), -INT16_C(         1),  INT16_C( INT16_MIN),  INT16_C(         0) },
+       {   INT16_C( INT16_MIN),  INT16_C(         0),  INT16_C(         0),  INT16_C(         0) },
+           INT8_C(         0),
+       {   INT32_C( INT32_MAX),  INT32_C( INT32_MIN),  INT32_C(INT32_MIN+1),  INT32_C(         0) } },
   };
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
@@ -140,6 +146,13 @@ test_simde_vqdmlsl_high_laneq_s16 (SIMDE_MUNIT_TEST_ARGS) {
           -INT16_C(       662), -INT16_C(      7109), -INT16_C(      7322),  INT16_C(      4903)},
            INT8_C(         5),
        {   INT32_C( 439323270), -INT32_C( 810687717), -INT32_C( 901199062), -INT32_C(  16659039) } },
+     { {   INT32_C( INT32_MAX),  INT32_C( INT32_MIN), -INT32_C(         0),  INT32_C(         0) },
+       {  -INT16_C(         1),  INT16_C(         1),  INT16_C(         0),  INT16_C(         0),
+          -INT16_C(         1),  INT16_C(         1),  INT16_C(         0),  INT16_C(         0) },
+       {   INT16_C(         1),  INT16_C(         0),  INT16_C(         0),  INT16_C(         0),
+           INT16_C(         0),  INT16_C(         0),  INT16_C(         0),  INT16_C(         0) },
+           INT8_C(         0),
+       {   INT32_C( INT32_MAX),  INT32_C( INT32_MIN),  INT32_C(         0),  INT32_C(         0) } },
   };
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
@@ -204,6 +217,16 @@ test_simde_vqdmlsl_high_laneq_s32 (SIMDE_MUNIT_TEST_ARGS) {
        {  -INT32_C(        515031),  INT32_C(        410037), -INT32_C(        630721), -INT32_C(        183181)},
            INT8_C(             2),
        {   INT64_C(  487266790129), -INT64_C( 1206376454806) } },
+     { {                INT64_MAX,               INT64_MIN },
+       {   INT32_C(            1),  INT32_C(            1), -INT32_C(            1),  INT32_C(            1) },
+       {   INT32_C(            1), -INT32_C(        49136) },
+           INT8_C(             0),
+       {                INT64_MAX,               INT64_MIN } },
+     { {   INT64_C(            0),  INT64_C(            0) },
+       {   INT32_C(    INT32_MIN), -INT32_C(            0), INT32_C(    INT32_MIN), -INT32_C(            0) },
+       {   INT32_C(    INT32_MIN), -INT32_C(            0) },
+           INT8_C(            0),
+       {   INT64_C(INT64_MIN + 1),  INT64_C(            0) } },
   };
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
@@ -268,6 +291,16 @@ test_simde_vqdmlsl_high_lane_s32 (SIMDE_MUNIT_TEST_ARGS) {
        {   INT32_C(        310134),  INT32_C(        105922)},
            INT8_C(             1),
        {   INT64_C(  388382728614), -INT64_C(  623852161652) } },
+     { {                INT64_MAX,               INT64_MIN },
+       {   INT32_C(            0),  INT32_C(            0), -INT32_C(            1),  INT32_C(            1) },
+       {   INT32_C(            1),  INT32_C(        49136) },
+           INT8_C(             0),
+       {                INT64_MAX,               INT64_MIN } },
+     { {   INT64_C(            0),  INT64_C(            0) },
+       {   INT32_C(            0), -INT32_C(            0), INT32_C(    INT32_MIN), -INT32_C(            0) },
+       {   INT32_C(    INT32_MIN), -INT32_C(            0) },
+           INT8_C(            0),
+       {   INT64_C(INT64_MIN + 1),  INT64_C(            0) } },
   };
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
