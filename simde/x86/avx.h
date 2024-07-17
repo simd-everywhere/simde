@@ -3784,6 +3784,12 @@ simde__m256d
 simde_mm256_loadu_pd (const double a[HEDLEY_ARRAY_PARAM(4)]) {
   #if defined(SIMDE_X86_AVX_NATIVE)
     return _mm256_loadu_pd(a);
+  #elif SIMDE_NATURAL_VECTOR_SIZE_LE(128)
+    simde__m256d_private r_;
+    for (size_t i = 0 ; i < (sizeof(r_.m128d) / sizeof(r_.m128d[0])) ; i++) {
+      r_.m128d[i] = simde_mm_loadu_pd(a + 2*i);
+    }
+    return simde__m256d_from_private(r_);
   #else
     simde__m256d r;
     simde_memcpy(&r, a, sizeof(r));
@@ -5272,6 +5278,11 @@ void
 simde_mm256_storeu_pd (simde_float64 mem_addr[4], simde__m256d a) {
   #if defined(SIMDE_X86_AVX_NATIVE)
     _mm256_storeu_pd(mem_addr, a);
+  #elif SIMDE_NATURAL_VECTOR_SIZE_LE(128)
+    simde__m256d_private a_ = simde__m256d_to_private(a);
+    for (size_t i = 0 ; i < (sizeof(a_.m128d) / sizeof(a_.m128d[0])) ; i++) {
+      simde_mm_storeu_pd(mem_addr + 2*i, a_.m128d[i]);
+    }
   #else
     simde_memcpy(mem_addr, &a, sizeof(a));
   #endif
