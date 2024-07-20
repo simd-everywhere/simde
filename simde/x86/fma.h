@@ -464,11 +464,16 @@ simde_mm256_fnmadd_pd (simde__m256d a, simde__m256d b, simde__m256d c) {
       b_ = simde__m256d_to_private(b),
       c_ = simde__m256d_to_private(c);
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
-      r_.f64[i] = -(a_.f64[i] * b_.f64[i]) + c_.f64[i];
-    }
-
+    #if SIMDE_NATURAL_VECTOR_SIZE_LE(128)
+      for (size_t i = 0 ; i < (sizeof(r_.m128d) / sizeof(r_.m128d[0])) ; i++) {
+        r_.m128d[i] = simde_mm_fnmadd_pd(a_.m128d[i], b_.m128d[i], c_.m128d[i]);
+      }
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
+        r_.f64[i] = -(a_.f64[i] * b_.f64[i]) + c_.f64[i];
+      }
+    #endif
     return simde__m256d_from_private(r_);
   #endif
 }
