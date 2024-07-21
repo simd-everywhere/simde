@@ -59,14 +59,16 @@
     }
     SIMDE_ARM64INTR_BARRIER_TYPE;
 
-    static HEDLEY_ALWAYS_INLINE void simde_MemoryBarrier(void) {
+    static HEDLEY_ALWAYS_INLINE
+    void simde_MemoryBarrier(void) {
         __dmb(SIMDE_ARM64_BARRIER_SY);
     }
   #elif defined(__x86_64__)
     #pragma intrinsic(__faststorefence)
     void __faststorefence(void);
 
-    static HEDLEY_ALWAYS_INLINE void simde_MemoryBarrier(void) {
+    static HEDLEY_ALWAYS_INLINE
+    void simde_MemoryBarrier(void) {
         __faststorefence();
     }
   #elif defined(__arm__)
@@ -85,18 +87,24 @@
     }
     SIMDE_ARMINTR_BARRIER_TYPE;
 
-    static HEDLEY_ALWAYS_INLINE void simde_MemoryBarrier(void) {
+    static HEDLEY_ALWAYS_INLINE
+    void simde_MemoryBarrier(void) {
         __dmb(SIMDE_ARM_BARRIER_SY);
     }
-  #elif defined(__i386__) || defined(_X86_) // the __i386__ check is used in wine, while the _X86_ is used in the original winnt.h - both fallback to the same workaround using _InterlockedOr
+  #elif defined(__i386__) || defined(_X86_)   // the __i386__ check is used in wine, while the _X86_ is used in the original winnt.h - both fallback to the same workaround using _InterlockedOr
     // Wine makes the mistake to let this preprocessor branch be the first one, and simde/sse2.h complains about it...
-    #pragma intrinsic(_InterlockedOr)
-    long _InterlockedOr(long volatile*, long);
-
-    static HEDLEY_ALWAYS_INLINE void simde_MemoryBarrier(void) {
-        long dummy;
-        InterlockedOr(&dummy, 0);
+    static HEDLEY_ALWAYS_INLINE
+    long simde_InterlockedOr(long volatile* dest, long val) {
+      return __sync_fetch_and_or(dest, val);
     }
+
+    static HEDLEY_ALWAYS_INLINE
+    void simde_MemoryBarrier(void) {
+        long dummy;
+        simde_InterlockedOr(&dummy, 0);
+    }
+  #else
+    #error "should simde_MemoryBarrier be defined as no-op in this case?"
   #endif
 #endif
 
