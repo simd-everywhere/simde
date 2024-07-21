@@ -39,9 +39,12 @@
 
 // MemoryBarrier() function has been extracted from the original windows headers
 #ifdef _MSC_VER
-  #if defined(__aarch64__) || defined(_M_ARM64)
+  #if defined(SIMDE_ARCH_AARCH64)
+    #include <intrin.h>
+
     #define simde_MemoryBarrier __faststorefence
-  #elif defined(SIMDE_ARCH_ARM_NEON)
+
+  /*#elif defined(SIMDE_ARCH_ARM_NEON)
     #include <intrin.h>
 
     typedef enum simde_tag_ARM64INTR_BARRIER_TYPE
@@ -65,7 +68,7 @@
     void simde_MemoryBarrier(void) {
         __dmb(SIMDE_ARM64_BARRIER_SY);
     }
-  /*#elif defined(__x86_64__)
+  #elif defined(__x86_64__)
     #pragma intrinsic(__faststorefence)
     void __faststorefence(void);
 
@@ -73,7 +76,7 @@
     void simde_MemoryBarrier(void) {
         __faststorefence();
     }*/
-  #elif defined(__arm__)
+  #elif defined(SIMDE_ARCH_ARM)
     #include <intrin.h>
 
     typedef enum simde_tag_ARMINTR_BARRIER_TYPE
