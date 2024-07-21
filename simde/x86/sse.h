@@ -39,15 +39,7 @@
 
 // MemoryBarrier() function has been extracted from the original windows headers
 #ifdef _MSC_VER
-  #ifdef __i386__
-    #pragma intrinsic(_InterlockedOr)
-    long _InterlockedOr(long volatile*, long);
-
-    static HEDLEY_ALWAYS_INLINE void simde_MemoryBarrier(void) {
-        long dummy;
-        InterlockedOr(&dummy, 0);
-    }
-  #elif defined(SIMDE_ARCH_ARM_NEON)
+  #if defined(SIMDE_ARCH_ARM_NEON)
     #include <intrin.h>
 
     typedef enum simde_tag_ARM64INTR_BARRIER_TYPE
@@ -95,6 +87,15 @@
 
     static HEDLEY_ALWAYS_INLINE void simde_MemoryBarrier(void) {
         __dmb(SIMDE_ARM_BARRIER_SY);
+    }
+  #elif defined(__i386__) || defined(_X86_) // the __i386__ check is used in wine, while the _X86_ is used in the original winnt.h - both fallback to the same workaround using _InterlockedOr
+    // Wine makes the mistake to let this preprocessor branch be the first one, and simde/sse2.h complains about it...
+    #pragma intrinsic(_InterlockedOr)
+    long _InterlockedOr(long volatile*, long);
+
+    static HEDLEY_ALWAYS_INLINE void simde_MemoryBarrier(void) {
+        long dummy;
+        InterlockedOr(&dummy, 0);
     }
   #endif
 #endif
