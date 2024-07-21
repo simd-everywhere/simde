@@ -53,7 +53,7 @@
     }
   #elif defined(__aarch64__) || defined(__arm64ec__)
     static HEDLEY_ALWAYS_INLINE void simde_MemoryBarrier(void) {
-        __dmb(_ARM64_BARRIER_SY);
+        __dmb(0xF/* _ARM64_BARRIER_SY defined in <arm64intr.h> */);
     }
   #elif defined(__x86_64__)
     #pragma intrinsic(__faststorefence)
@@ -64,7 +64,7 @@
     }
   #elif defined(__arm__)
     static HEDLEY_ALWAYS_INLINE void simde_MemoryBarrier(void) {
-        __dmb(_ARM_BARRIER_SY);
+        __dmb(0xF /* _ARM_BARRIER_SY defined in <armintr.h> */);
     }
   #endif
 #endif
