@@ -67,10 +67,6 @@
         __dmb(_ARM_BARRIER_SY);
     }
   #endif
-#elif defined(__GNUC__)
-  static HEDLEY_ALWAYS_INLINE void simde_MemoryBarrier(void) {
-    __sync_synchronize();
-  }
 #endif
 
 HEDLEY_DIAGNOSTIC_PUSH
