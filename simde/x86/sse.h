@@ -39,10 +39,6 @@
 
 // MemoryBarrier() function has been extracted from the original windows headers
 #ifdef _MSC_VER
-  #if defined(__arm__) || defined(__aarch64__) || defined(__arm64ec__)
-    #include <intrin.h>
-  #endif
-
   #ifdef __i386__
     #pragma intrinsic(_InterlockedOr)
     long _InterlockedOr(long volatile*, long);
@@ -51,7 +47,9 @@
         long dummy;
         InterlockedOr(&dummy, 0);
     }
-  #elif defined(__aarch64__) || defined(__arm64ec__)
+  #elif defined(SIMDE_ARCH_ARM_NEON)
+    #include <intrin.h>
+
     typedef enum simde_tag_ARM64INTR_BARRIER_TYPE
     {
         SIMDE_ARM64_BARRIER_SY    = 0xF,
@@ -80,6 +78,8 @@
         __faststorefence();
     }
   #elif defined(__arm__)
+    #include <intrin.h>
+
     typedef enum simde_tag_ARMINTR_BARRIER_TYPE
     {
         SIMDE_ARM_BARRIER_SY    = 0xF,
