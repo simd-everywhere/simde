@@ -33,13 +33,58 @@
 #include "mmx.h"
 #include "../simde-f16.h"
 
-#if defined(_WIN32) && !defined(SIMDE_X86_SSE_NATIVE) && defined(_MSC_VER)
-  #define NOMINMAX
-  #include <windows.h>
-#endif
-
 #if defined(__ARM_ACLE)
   #include <arm_acle.h>
+#endif
+
+#ifdef _MSC_VER
+  #if defined(SIMDE_ARCH_AARCH64)
+    #include <intrin.h>
+
+    typedef enum simde_tag_ARM64INTR_BARRIER_TYPE
+    {
+      SIMDE_ARM64_BARRIER_SY    = 0xF,
+    }
+    SIMDE_ARM64INTR_BARRIER_TYPE;
+
+    HEDLEY_ALWAYS_INLINE
+    void simde_MemoryBarrier(void) {
+      __dmb(SIMDE_ARM64_BARRIER_SY);
+    }
+  #elif defined(SIMDE_ARCH_ARM)
+    #include <intrin.h>
+
+    typedef enum simde_tag_ARMINTR_BARRIER_TYPE
+    {
+      SIMDE_ARM_BARRIER_SY    = 0xF,
+    }
+    SIMDE_ARMINTR_BARRIER_TYPE;
+
+    HEDLEY_ALWAYS_INLINE
+    void simde_MemoryBarrier(void) {
+      __dmb(SIMDE_ARM_BARRIER_SY);
+    }
+  #elif defined(SIMDE_ARCH_X86) || defined(SIMDE_ARCH_AMD64) || defined(SIMDE_ARCH_E2K)
+    #if !defined(SIMDE_X86_SSE_NO_NATIVE)
+      #include <intrin.h>
+    #endif
+
+    HEDLEY_ALWAYS_INLINE
+    void simde_MemoryBarrier(void) {
+      #if defined(SIMDE_X86_SSE_NO_NATIVE)
+         ((void)0); // intentionally no-op
+      #elif defined(SIMDE_ARCH_AMD64)
+        __faststorefence();
+      #elif defined(SIMDE_ARCH_IA64)
+        __mf();
+      #else
+        long Barrier;
+        __asm { xchg Barrier, eax }
+      #endif
+    }
+  #else
+    #error "Missing implementation"
+  #endif
 #endif
 
 HEDLEY_DIAGNOSTIC_PUSH
@@ -4007,7 +4052,7 @@ simde_mm_sfence (void) {
       atomic_thread_fence(memory_order_seq_cst);
     #endif
   #elif defined(_MSC_VER)
-    MemoryBarrier();
+    simde_MemoryBarrier();
   #elif HEDLEY_HAS_EXTENSION(c_atomic)
     __c11_atomic_thread_fence(__ATOMIC_SEQ_CST);
   #elif defined(__GNUC__) && ((__GNUC__ > 4) || (__GNUC__ == 4 && __GNUC_MINOR__ >= 1))
