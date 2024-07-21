@@ -33,13 +33,40 @@
 #include "mmx.h"
 #include "../simde-f16.h"
 
-#if defined(_WIN32) && !defined(SIMDE_X86_SSE_NATIVE) && defined(_MSC_VER)
-  #define NOMINMAX
-  #include <windows.h>
-#endif
-
 #if defined(__ARM_ACLE)
   #include <arm_acle.h>
+#endif
+
+// MemoryBarrier() function has been extracted from the original windows headers
+#ifdef _MSC_VER
+  #if defined(__arm__) || defined(__aarch64__) || defined(__arm64ec__)
+    #include <intrin.h>
+  #endif
+
+  #pragma intrinsic(_InterlockedOr)
+  long _InterlockedOr(long volatile*, long);
+
+  #ifdef __i386__
+    static HEDLEY_ALWAYS_INLINE void simde_MemoryBarrier(void) {
+        long dummy;
+        InterlockedOr(&dummy, 0);
+    }
+  #elif defined(__aarch64__) || defined(__arm64ec__)
+    static HEDLEY_ALWAYS_INLINE void simde_MemoryBarrier(void) {
+        __dmb(0xF/* _ARM64_BARRIER_SY defined in <arm64intr.h> */);
+    }
+  #elif defined(__x86_64__)
+    #pragma intrinsic(__faststorefence)
+    void __faststorefence(void);
+
+    static HEDLEY_ALWAYS_INLINE void simde_MemoryBarrier(void) {
+        __faststorefence();
+    }
+  #elif defined(__arm__)
+    static HEDLEY_ALWAYS_INLINE void simde_MemoryBarrier(void) {
+        __dmb(0xF /* _ARM_BARRIER_SY defined in <armintr.h> */);
+    }
+  #endif
 #endif
 
 HEDLEY_DIAGNOSTIC_PUSH
@@ -4007,7 +4034,7 @@ simde_mm_sfence (void) {
       atomic_thread_fence(memory_order_seq_cst);
     #endif
   #elif defined(_MSC_VER)
-    MemoryBarrier();
+    simde_MemoryBarrier();
   #elif HEDLEY_HAS_EXTENSION(c_atomic)
     __c11_atomic_thread_fence(__ATOMIC_SEQ_CST);
   #elif defined(__GNUC__) && ((__GNUC__ > 4) || (__GNUC__ == 4 && __GNUC_MINOR__ >= 1))
