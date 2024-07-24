@@ -39,11 +39,6 @@
 
 // MemoryBarrier() function has been extracted from the original windows headers
 #ifdef _MSC_VER
-  /*#if defined(SIMDE_ARCH_AARCH64)
-    #include <intrin.h>
-
-    #define simde_MemoryBarrier __faststorefence
-    */
   #if defined(SIMDE_ARCH_AARCH64)
     #include <intrin.h>
 
@@ -68,14 +63,6 @@
     void simde_MemoryBarrier(void) {
         __dmb(SIMDE_ARM64_BARRIER_SY);
     }
-  /*#elif defined(__x86_64__)
-    #pragma intrinsic(__faststorefence)
-    void __faststorefence(void);
-
-    static HEDLEY_ALWAYS_INLINE
-    void simde_MemoryBarrier(void) {
-        __faststorefence();
-    }*/
   #elif defined(SIMDE_ARCH_ARM)
     #include <intrin.h>
 
@@ -95,6 +82,15 @@
     HEDLEY_ALWAYS_INLINE
     void simde_MemoryBarrier(void) {
         __dmb(SIMDE_ARM_BARRIER_SY);
+    }
+  #elif defined(__x86_64__)
+    //#pragma intrinsic(__faststorefence)
+    //void __faststorefence(void);
+    #include <intrin.h>
+
+    HEDLEY_ALWAYS_INLINE
+    void simde_MemoryBarrier(void) {
+        __faststorefence();
     }
   #elif defined(_M_X86)
     HEDLEY_ALWAYS_INLINE
