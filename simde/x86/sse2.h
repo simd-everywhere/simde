@@ -4776,7 +4776,7 @@ simde_mm_pause (void) {
     #endif
   #elif defined(SIMDE_ARCH_ARM_NEON)
     #if defined(_MSC_VER)
-      __isb(_ARM64_BARRIER_SY);
+      __isb(SIMDE_ARM64_BARRIER_SY);
     #else
       __asm__ __volatile__("isb\n");
     #endif
