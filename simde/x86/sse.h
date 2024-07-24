@@ -33,13 +33,88 @@
 #include "mmx.h"
 #include "../simde-f16.h"
 
-#if defined(_WIN32) && !defined(SIMDE_X86_SSE_NATIVE) && defined(_MSC_VER)
-  #define NOMINMAX
-  #include <windows.h>
-#endif
-
 #if defined(__ARM_ACLE)
   #include <arm_acle.h>
+#endif
+
+// MemoryBarrier() function has been extracted from the original windows headers
+#ifdef _MSC_VER
+  /*#if defined(SIMDE_ARCH_AARCH64)
+    #include <intrin.h>
+
+    #define simde_MemoryBarrier __faststorefence
+    */
+  #if defined(SIMDE_ARCH_AARCH64)
+    #include <intrin.h>
+
+    typedef enum simde_tag_ARM64INTR_BARRIER_TYPE
+    {
+        SIMDE_ARM64_BARRIER_SY    = 0xF,
+        SIMDE_ARM64_BARRIER_ST    = 0xE,
+        SIMDE_ARM64_BARRIER_LD    = 0xD,
+        SIMDE_ARM64_BARRIER_ISH   = 0xB,
+        SIMDE_ARM64_BARRIER_ISHST = 0xA,
+        SIMDE_ARM64_BARRIER_ISHLD = 0x9,
+        SIMDE_ARM64_BARRIER_NSH   = 0x7,
+        SIMDE_ARM64_BARRIER_NSHST = 0x6,
+        SIMDE_ARM64_BARRIER_NSHLD = 0x5,
+        SIMDE_ARM64_BARRIER_OSH   = 0x3,
+        SIMDE_ARM64_BARRIER_OSHST = 0x2,
+        SIMDE_ARM64_BARRIER_OSHLD = 0x1
+    }
+    SIMDE_ARM64INTR_BARRIER_TYPE;
+
+    HEDLEY_ALWAYS_INLINE
+    void simde_MemoryBarrier(void) {
+        __dmb(SIMDE_ARM64_BARRIER_SY);
+    }
+  /*#elif defined(__x86_64__)
+    #pragma intrinsic(__faststorefence)
+    void __faststorefence(void);
+
+    static HEDLEY_ALWAYS_INLINE
+    void simde_MemoryBarrier(void) {
+        __faststorefence();
+    }*/
+  #elif defined(SIMDE_ARCH_ARM)
+    #include <intrin.h>
+
+    typedef enum simde_tag_ARMINTR_BARRIER_TYPE
+    {
+        SIMDE_ARM_BARRIER_SY    = 0xF,
+        SIMDE_ARM_BARRIER_ST    = 0xE,
+        SIMDE_ARM_BARRIER_ISH   = 0xB,
+        SIMDE_ARM_BARRIER_ISHST = 0xA,
+        SIMDE_ARM_BARRIER_NSH   = 0x7,
+        SIMDE_ARM_BARRIER_NSHST = 0x6,
+        SIMDE_ARM_BARRIER_OSH   = 0x3,
+        SIMDE_ARM_BARRIER_OSHST = 0x2
+    }
+    SIMDE_ARMINTR_BARRIER_TYPE;
+
+    HEDLEY_ALWAYS_INLINE
+    void simde_MemoryBarrier(void) {
+        __dmb(SIMDE_ARM_BARRIER_SY);
+    }
+  #elif defined(_M_X86)
+    HEDLEY_ALWAYS_INLINE
+    long simde_InterlockedOr(long volatile* dest, long val) {
+      return __sync_fetch_and_or(dest, val);
+    }
+
+    HEDLEY_ALWAYS_INLINE
+    void simde_MemoryBarrier(void) {
+        long dummy;
+        simde_InterlockedOr(&dummy, 0);
+    }
+  #elif defined(SIMDE_X86_SSE_NO_NATIVE)
+    HEDLEY_ALWAYS_INLINE
+    void simde_MemoryBarrier(void) {
+      ((void)0); // intentionally no-op
+    }
+  #else
+    #error "Missing implementation"
+  #endif
 #endif
 
 HEDLEY_DIAGNOSTIC_PUSH
@@ -4007,7 +4082,7 @@ simde_mm_sfence (void) {
       atomic_thread_fence(memory_order_seq_cst);
     #endif
   #elif defined(_MSC_VER)
-    MemoryBarrier();
+    simde_MemoryBarrier();
   #elif HEDLEY_HAS_EXTENSION(c_atomic)
     __c11_atomic_thread_fence(__ATOMIC_SEQ_CST);
   #elif defined(__GNUC__) && ((__GNUC__ > 4) || (__GNUC__ == 4 && __GNUC_MINOR__ >= 1))
