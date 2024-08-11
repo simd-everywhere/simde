@@ -83,14 +83,17 @@
     void simde_MemoryBarrier(void) {
         __dmb(SIMDE_ARM_BARRIER_SY);
     }
-  #elif defined(SIMDE_ARCH_X86)
-    //#pragma intrinsic(__faststorefence)
-    //void __faststorefence(void);
+  #elif defined(SIMDE_ARCH_X86) || defined(SIMDE_ARCH_AMD64) || defined(SIMDE_ARCH_E2K)
+    // X86/X86_64
     #include <intrin.h>
 
     HEDLEY_ALWAYS_INLINE
     void simde_MemoryBarrier(void) {
+        #if defined(SIMDE_X86_SSE_NO_NATIVE)
+            ((void)0); // intentionally no-op
+        #else
         __faststorefence();
+       #endif
     }
   /*#elif defined(_M_X86)
     HEDLEY_ALWAYS_INLINE
@@ -103,11 +106,6 @@
         long dummy;
         simde_InterlockedOr(&dummy, 0);
     }*/
-  #elif defined(SIMDE_X86_SSE_NO_NATIVE)
-    HEDLEY_ALWAYS_INLINE
-    void simde_MemoryBarrier(void) {
-      ((void)0); // intentionally no-op
-    }
   #else
     #error "Missing implementation"
   #endif
