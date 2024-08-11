@@ -83,7 +83,7 @@
     void simde_MemoryBarrier(void) {
         __dmb(SIMDE_ARM_BARRIER_SY);
     }
-  #elif defined(__x86_64__)
+  #elif defined(SIMDE_ARCH_X86)
     //#pragma intrinsic(__faststorefence)
     //void __faststorefence(void);
     #include <intrin.h>
@@ -92,7 +92,7 @@
     void simde_MemoryBarrier(void) {
         __faststorefence();
     }
-  #elif defined(_M_X86)
+  /*#elif defined(_M_X86)
     HEDLEY_ALWAYS_INLINE
     long simde_InterlockedOr(long volatile* dest, long val) {
       return __sync_fetch_and_or(dest, val);
@@ -102,7 +102,7 @@
     void simde_MemoryBarrier(void) {
         long dummy;
         simde_InterlockedOr(&dummy, 0);
-    }
+    }*/
   #elif defined(SIMDE_X86_SSE_NO_NATIVE)
     HEDLEY_ALWAYS_INLINE
     void simde_MemoryBarrier(void) {
