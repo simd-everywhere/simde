@@ -97,11 +97,8 @@
       #elif defined(SIMDE_ARCH_IA64)
         __mf();
       #else
-        HEDLEY_ALWAYS_INLINE
-        void MemoryBarrier(void) {
-          long Barrier;
-          __asm { xchg Barrier, eax }
-        }
+        long Barrier;
+        __asm { xchg Barrier, eax }
       #endif
     }
   #else
