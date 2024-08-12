@@ -92,8 +92,16 @@
     void simde_MemoryBarrier(void) {
       #if defined(SIMDE_X86_SSE_NO_NATIVE)
          ((void)0); // intentionally no-op
-      #else
+      #elif defined(SIMDE_ARCH_AMD64)
         __faststorefence();
+      #elif defined(SIMDE_ARCH_IA64)
+        __mf();
+      #else
+        HEDLEY_ALWAYS_INLINE
+        void MemoryBarrier(void) {
+          long Barrier;
+          __asm { xchg Barrier, eax }
+        }
       #endif
     }
   #else
