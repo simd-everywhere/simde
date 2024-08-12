@@ -40,72 +40,54 @@
 // MemoryBarrier() function has been extracted from the original windows headers
 #ifdef _MSC_VER
   #if defined(SIMDE_ARCH_AARCH64)
-    #include <intrin.h>
-
     typedef enum simde_tag_ARM64INTR_BARRIER_TYPE
     {
-        SIMDE_ARM64_BARRIER_SY    = 0xF,
-        SIMDE_ARM64_BARRIER_ST    = 0xE,
-        SIMDE_ARM64_BARRIER_LD    = 0xD,
-        SIMDE_ARM64_BARRIER_ISH   = 0xB,
-        SIMDE_ARM64_BARRIER_ISHST = 0xA,
-        SIMDE_ARM64_BARRIER_ISHLD = 0x9,
-        SIMDE_ARM64_BARRIER_NSH   = 0x7,
-        SIMDE_ARM64_BARRIER_NSHST = 0x6,
-        SIMDE_ARM64_BARRIER_NSHLD = 0x5,
-        SIMDE_ARM64_BARRIER_OSH   = 0x3,
-        SIMDE_ARM64_BARRIER_OSHST = 0x2,
-        SIMDE_ARM64_BARRIER_OSHLD = 0x1
+      SIMDE_ARM64_BARRIER_SY    = 0xF,
+      SIMDE_ARM64_BARRIER_ST    = 0xE,
+      SIMDE_ARM64_BARRIER_LD    = 0xD,
+      SIMDE_ARM64_BARRIER_ISH   = 0xB,
+      SIMDE_ARM64_BARRIER_ISHST = 0xA,
+      SIMDE_ARM64_BARRIER_ISHLD = 0x9,
+      SIMDE_ARM64_BARRIER_NSH   = 0x7,
+      SIMDE_ARM64_BARRIER_NSHST = 0x6,
+      SIMDE_ARM64_BARRIER_NSHLD = 0x5,
+      SIMDE_ARM64_BARRIER_OSH   = 0x3,
+      SIMDE_ARM64_BARRIER_OSHST = 0x2,
+      SIMDE_ARM64_BARRIER_OSHLD = 0x1
     }
     SIMDE_ARM64INTR_BARRIER_TYPE;
 
     HEDLEY_ALWAYS_INLINE
     void simde_MemoryBarrier(void) {
-        __dmb(SIMDE_ARM64_BARRIER_SY);
+      __dmb(SIMDE_ARM64_BARRIER_SY);
     }
   #elif defined(SIMDE_ARCH_ARM)
-    #include <intrin.h>
-
     typedef enum simde_tag_ARMINTR_BARRIER_TYPE
     {
-        SIMDE_ARM_BARRIER_SY    = 0xF,
-        SIMDE_ARM_BARRIER_ST    = 0xE,
-        SIMDE_ARM_BARRIER_ISH   = 0xB,
-        SIMDE_ARM_BARRIER_ISHST = 0xA,
-        SIMDE_ARM_BARRIER_NSH   = 0x7,
-        SIMDE_ARM_BARRIER_NSHST = 0x6,
-        SIMDE_ARM_BARRIER_OSH   = 0x3,
-        SIMDE_ARM_BARRIER_OSHST = 0x2
+      SIMDE_ARM_BARRIER_SY    = 0xF,
+      SIMDE_ARM_BARRIER_ST    = 0xE,
+      SIMDE_ARM_BARRIER_ISH   = 0xB,
+      SIMDE_ARM_BARRIER_ISHST = 0xA,
+      SIMDE_ARM_BARRIER_NSH   = 0x7,
+      SIMDE_ARM_BARRIER_NSHST = 0x6,
+      SIMDE_ARM_BARRIER_OSH   = 0x3,
+      SIMDE_ARM_BARRIER_OSHST = 0x2
     }
     SIMDE_ARMINTR_BARRIER_TYPE;
 
     HEDLEY_ALWAYS_INLINE
     void simde_MemoryBarrier(void) {
-        __dmb(SIMDE_ARM_BARRIER_SY);
+      __dmb(SIMDE_ARM_BARRIER_SY);
     }
   #elif defined(SIMDE_ARCH_X86) || defined(SIMDE_ARCH_AMD64) || defined(SIMDE_ARCH_E2K)
-    // X86/X86_64
-    #include <intrin.h>
-
     HEDLEY_ALWAYS_INLINE
     void simde_MemoryBarrier(void) {
-        #if defined(SIMDE_X86_SSE_NO_NATIVE)
-            ((void)0); // intentionally no-op
-        #else
+      #if defined(SIMDE_X86_SSE_NO_NATIVE)
+         ((void)0); // intentionally no-op
+      #else
         __faststorefence();
-       #endif
+      #endif
     }
-  /*#elif defined(_M_X86)
-    HEDLEY_ALWAYS_INLINE
-    long simde_InterlockedOr(long volatile* dest, long val) {
-      return __sync_fetch_and_or(dest, val);
-    }
-
-    HEDLEY_ALWAYS_INLINE
-    void simde_MemoryBarrier(void) {
-        long dummy;
-        simde_InterlockedOr(&dummy, 0);
-    }*/
   #else
     #error "Missing implementation"
   #endif
