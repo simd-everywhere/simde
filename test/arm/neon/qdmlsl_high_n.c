@@ -115,7 +115,7 @@ test_simde_vqdmlsl_high_n_s32 (SIMDE_MUNIT_TEST_ARGS) {
            INT32_C(             1),
        {                 INT64_MAX,                INT64_MIN } },
      { {   INT64_C(             0),  INT64_C(             0) },
-       {   INT32_C(     INT32_MIN),  INT32_C(         97715), -INT32_C(    INT32_MIN),  INT32_C(             0) },
+       {   INT32_C(     INT32_MIN),  INT32_C(         97715),  INT32_C(    INT32_MIN),  INT32_C(             0) },
            INT32_C(     INT32_MIN),
        {             INT64_MIN + 1,  INT64_C(             0) } },
   };
