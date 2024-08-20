@@ -4812,6 +4812,14 @@ simde_mm_sad_epu8 (simde__m128i a, simde__m128i b) {
       r_.neon_u64 = vcombine_u64(
         vpaddl_u32(vpaddl_u16(vget_low_u16(t))),
         vpaddl_u32(vpaddl_u16(vget_high_u16(t))));
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+      v128_t tmp = wasm_v128_or(wasm_u8x16_sub_sat(a_.wasm_v128, b_.wasm_v128),
+                                wasm_u8x16_sub_sat(b_.wasm_v128, a_.wasm_v128));
+      tmp = wasm_i16x8_add(wasm_u16x8_shr(tmp, 8),
+                           wasm_v128_and(tmp, wasm_i16x8_splat(0x00FF)));
+      tmp = wasm_i16x8_add(tmp, wasm_i32x4_shl(tmp, 16));
+      tmp = wasm_i16x8_add(tmp, wasm_i64x2_shl(tmp, 32));
+      r_.wasm_v128 = wasm_u64x2_shr(tmp, 48);
     #else
       for (size_t i = 0 ; i < (sizeof(r_.i64) / sizeof(r_.i64[0])) ; i++) {
         uint16_t tmp = 0;
