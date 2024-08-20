@@ -47,7 +47,6 @@ simde_vminnmv_f16(simde_float16x4_t a) {
         __riscv_vfmv_v_f_f16m1(SIMDE_INFINITYHF, 4), 4));
     #else
       simde_float32_t r_ = simde_float16_to_float32(SIMDE_INFINITYHF);
-      a_ = simde_float16x4_to_private(a);
 
       #if defined(SIMDE_FAST_NANS)
         SIMDE_VECTORIZE_REDUCTION(min:r_)
