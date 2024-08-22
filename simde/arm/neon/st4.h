@@ -30,7 +30,7 @@
 #if !defined(SIMDE_ARM_NEON_ST4_H)
 #define SIMDE_ARM_NEON_ST4_H
 
-#include "types.h"
+#include "combine.h"
 
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
@@ -246,6 +246,27 @@ void
 simde_vst4_u8(uint8_t *ptr, simde_uint8x8x4_t val) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     vst4_u8(ptr, val);
+  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+    simde_uint16x8_private r0_, r1_;
+    simde_uint8x16_private ab_ = simde_uint8x16_to_private(simde_vcombine_u8(val.val[0], val.val[1]));
+    simde_uint8x16_private cd_ = simde_uint8x16_to_private(simde_vcombine_u8(val.val[2], val.val[3]));
+
+    // Perform the interleaving
+    r0_.v128 = wasm_i8x16_shuffle(ab_.v128, cd_.v128,
+      0,  8, 16, 24,
+      1,  9, 17, 25,
+      2, 10, 18, 26,
+      3, 11, 19, 27
+    );
+    r1_.v128 = wasm_i8x16_shuffle(ab_.v128, cd_.v128,
+      4, 12, 20, 28,
+      5, 13, 21, 29,
+      6, 14, 22, 30,
+      7, 15, 23, 31
+    );
+
+    wasm_v128_store(ptr, r0_.v128);
+    wasm_v128_store(ptr + sizeof(r0_), r1_.v128);
   #else
     simde_uint8x8_private a_[4] = { simde_uint8x8_to_private(val.val[0]), simde_uint8x8_to_private(val.val[1]),
                                     simde_uint8x8_to_private(val.val[2]), simde_uint8x8_to_private(val.val[3]) };
