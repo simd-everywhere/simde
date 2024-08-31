@@ -58,6 +58,10 @@ if cxx.get_id() == 'intel'
   simde_native_cxx_flags += '-DSIMDE_FAST_MATH'
 endif
 
+if target_machine.cpu_family() == 'aarch64' and cc.get_id() == 'clang'
+  simde_native_c_flags += '-mcrc'
+endif
+
 if not c_openmp_simd
   simde_deps += dependency('openmp', required: false)
 endif
