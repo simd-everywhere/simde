@@ -30,7 +30,7 @@
 #if !defined(SIMDE_ARM_NEON_ST2_H)
 #define SIMDE_ARM_NEON_ST2_H
 
-#include "types.h"
+#include "combine.h"
 #include "zip.h"
 
 HEDLEY_DIAGNOSTIC_PUSH
@@ -233,6 +233,22 @@ void
 simde_vst2_u8(uint8_t *ptr, simde_uint8x8x2_t val) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     vst2_u8(ptr, val);
+  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+    simde_uint8x16_private r0_;
+    simde_uint8x16_private ab_ = simde_uint8x16_to_private(simde_vcombine_u8(val.val[0], val.val[1]));
+
+    r0_.v128 = wasm_i8x16_shuffle(ab_.v128, ab_.v128,
+      0,  8,
+      1,  9,
+      2, 10,
+      3, 11,
+      4, 12,
+      5, 13,
+      6, 14,
+      7, 15
+    );
+
+    wasm_v128_store(ptr, r0_.v128);
   #else
     simde_uint8x8_private a_[2] = {simde_uint8x8_to_private(val.val[0]),
                                    simde_uint8x8_to_private(val.val[1])};
