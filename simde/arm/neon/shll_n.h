@@ -54,6 +54,9 @@ simde_vshll_n_s8 (const simde_int8x8_t a, const int n)
     vint16m2_t va_wide = __riscv_vwcvt_x_x_v_i16m2 (a_.sv64, 8);
     vint16m2_t rst = __riscv_vsll_vx_i16m2 (va_wide, n, 8);
     r_.sv128 =  __riscv_vlmul_trunc_v_i16m2_i16m1 (rst);
+  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+    v128_t tmp = wasm_i16x8_load8x8(&a_.values);
+    r_.v128 = wasm_i16x8_shl(tmp, HEDLEY_STATIC_CAST(uint32_t, n));
   #else
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -80,6 +83,9 @@ simde_vshll_n_s16 (const simde_int16x4_t a, const int n)
     vint32m2_t va_wide = __riscv_vwcvt_x_x_v_i32m2 (a_.sv64, 4);
     vint32m2_t rst = __riscv_vsll_vx_i32m2 (va_wide, n, 4);
     r_.sv128 =  __riscv_vlmul_trunc_v_i32m2_i32m1 (rst);
+  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+    v128_t tmp = wasm_i32x4_load16x4(&a_.values);
+    r_.v128 = wasm_i32x4_shl(tmp, HEDLEY_STATIC_CAST(uint32_t, n));
   #else
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -106,6 +112,9 @@ simde_vshll_n_s32 (const simde_int32x2_t a, const int n)
     vint64m2_t va_wide = __riscv_vwcvt_x_x_v_i64m2 (a_.sv64, 2);
     vint64m2_t rst = __riscv_vsll_vx_i64m2 (va_wide, n, 2);
     r_.sv128 =  __riscv_vlmul_trunc_v_i64m2_i64m1 (rst);
+  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+    v128_t tmp = wasm_i64x2_load32x2(&a_.values);
+    r_.v128 = wasm_i64x2_shl(tmp, HEDLEY_STATIC_CAST(uint32_t, n));
   #else
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -132,6 +141,9 @@ simde_vshll_n_u8 (const simde_uint8x8_t a, const int n)
     vuint16m2_t va_wide = __riscv_vwcvtu_x_x_v_u16m2 (a_.sv64, 8);
     vuint16m2_t rst = __riscv_vsll_vx_u16m2 (va_wide, n, 8);
     r_.sv128 =  __riscv_vlmul_trunc_v_u16m2_u16m1 (rst);
+  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+    v128_t tmp = wasm_u16x8_load8x8(&a_.values);
+    r_.v128 = wasm_i16x8_shl(tmp, HEDLEY_STATIC_CAST(uint32_t, n));
   #else
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -158,6 +170,9 @@ simde_vshll_n_u16 (const simde_uint16x4_t a, const int n)
     vuint32m2_t va_wide = __riscv_vwcvtu_x_x_v_u32m2 (a_.sv64, 4);
     vuint32m2_t rst = __riscv_vsll_vx_u32m2 (va_wide, n, 4);
     r_.sv128 =  __riscv_vlmul_trunc_v_u32m2_u32m1 (rst);
+  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+    v128_t tmp = wasm_u32x4_load16x4(&a_.values);
+    r_.v128 = wasm_i32x4_shl(tmp, HEDLEY_STATIC_CAST(uint32_t, n));
   #else
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -184,6 +199,9 @@ simde_vshll_n_u32 (const simde_uint32x2_t a, const int n)
     vuint64m2_t va_wide = __riscv_vwcvtu_x_x_v_u64m2 (a_.sv64, 2);
     vuint64m2_t rst = __riscv_vsll_vx_u64m2 (va_wide, n, 2);
     r_.sv128 =  __riscv_vlmul_trunc_v_u64m2_u64m1 (rst);
+  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+    v128_t tmp = wasm_u64x2_load32x2(&a_.values);
+    r_.v128 = wasm_i64x2_shl(tmp, HEDLEY_STATIC_CAST(uint32_t, n));
   #else
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
