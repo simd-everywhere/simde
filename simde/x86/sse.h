@@ -674,7 +674,7 @@ simde_x_mm_round_ps (simde__m128 a, int rounding, int lax_rounding)
       #elif defined(SIMDE_ARM_NEON_A32V8_NATIVE)
         r_.neon_f32 = vrndnq_f32(a_.neon_f32);
       #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
-        r_.lsx_i64 = __lsx_vfrintrne_s(a_.lsx_f32);
+        r_.lsx_f32 = __lsx_vfrintrne_s(a_.lsx_f32);
       #elif defined(SIMDE_WASM_SIMD128_NATIVE)
         r_.wasm_v128 = wasm_f32x4_nearest(a_.wasm_v128);
       #elif defined(simde_math_roundevenf)
@@ -693,7 +693,7 @@ simde_x_mm_round_ps (simde__m128 a, int rounding, int lax_rounding)
       #elif defined(SIMDE_ARM_NEON_A32V8_NATIVE)
         r_.neon_f32 = vrndmq_f32(a_.neon_f32);
       #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
-        r_.lsx_i64 = __lsx_vfrintrm_s(a_.lsx_f32);
+        r_.lsx_f32 = __lsx_vfrintrm_s(a_.lsx_f32);
       #elif defined(SIMDE_WASM_SIMD128_NATIVE)
         r_.wasm_v128 = wasm_f32x4_floor(a_.wasm_v128);
       #elif defined(simde_math_floorf)
@@ -712,7 +712,7 @@ simde_x_mm_round_ps (simde__m128 a, int rounding, int lax_rounding)
       #elif defined(SIMDE_ARM_NEON_A32V8_NATIVE)
         r_.neon_f32 = vrndpq_f32(a_.neon_f32);
       #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
-        r_.lsx_i64 = __lsx_vfrintrp_s(a_.lsx_f32);
+        r_.lsx_f32 = __lsx_vfrintrp_s(a_.lsx_f32);
       #elif defined(SIMDE_WASM_SIMD128_NATIVE)
         r_.wasm_v128 = wasm_f32x4_ceil(a_.wasm_v128);
       #elif defined(simde_math_ceilf)
@@ -731,7 +731,7 @@ simde_x_mm_round_ps (simde__m128 a, int rounding, int lax_rounding)
       #elif defined(SIMDE_ARM_NEON_A32V8_NATIVE)
         r_.neon_f32 = vrndq_f32(a_.neon_f32);
       #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
-        r_.lsx_i64 = __lsx_vfrintrz_s(a_.lsx_f32);
+        r_.lsx_f32 = __lsx_vfrintrz_s(a_.lsx_f32);
       #elif defined(SIMDE_WASM_SIMD128_NATIVE)
         r_.wasm_v128 = wasm_f32x4_trunc(a_.wasm_v128);
       #elif defined(simde_math_truncf)
@@ -1290,7 +1290,7 @@ simde_mm_cmpeq_ps (simde__m128 a, simde__m128 b) {
     #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_14_NATIVE)
       r_.altivec_f32 = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(float), vec_cmpeq(a_.altivec_f32, b_.altivec_f32));
     #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
-      r_.lsx_i64 = __lsx_vfcmp_ceq_s(a_.lsx_f32, b_.lsx_f32);
+      r_.lsx_f32 = __lsx_vfcmp_ceq_s(a_.lsx_f32, b_.lsx_f32);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       r_.i32 = HEDLEY_REINTERPRET_CAST(__typeof__(r_.i32), a_.f32 == b_.f32);
     #else
@@ -1353,7 +1353,7 @@ simde_mm_cmpge_ps (simde__m128 a, simde__m128 b) {
     #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
       r_.altivec_f32 = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(float), vec_cmpge(a_.altivec_f32, b_.altivec_f32));
     #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
-      r_.lsx_i64 = __lsx_vfcmp_cle_s(b_.lsx_f32, a_.lsx_f32);
+      r_.lsx_f32 = __lsx_vfcmp_cle_s(b_.lsx_f32, a_.lsx_f32);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       r_.i32 = HEDLEY_REINTERPRET_CAST(__typeof__(r_.i32), (a_.f32 >= b_.f32));
     #else
@@ -1416,7 +1416,7 @@ simde_mm_cmpgt_ps (simde__m128 a, simde__m128 b) {
     #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
       r_.altivec_f32 = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(float), vec_cmpgt(a_.altivec_f32, b_.altivec_f32));
     #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
-      r_.lsx_i64 = __lsx_vfcmp_clt_s(b_.lsx_f32, a_.lsx_f32);
+      r_.lsx_f32 = __lsx_vfcmp_clt_s(b_.lsx_f32, a_.lsx_f32);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       r_.i32 = HEDLEY_REINTERPRET_CAST(__typeof__(r_.i32), (a_.f32 > b_.f32));
     #else
@@ -1479,7 +1479,7 @@ simde_mm_cmple_ps (simde__m128 a, simde__m128 b) {
     #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
       r_.altivec_f32 = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(float), vec_cmple(a_.altivec_f32, b_.altivec_f32));
     #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
-      r_.lsx_i64 = __lsx_vfcmp_cle_s(a_.lsx_f32, b_.lsx_f32);
+      r_.lsx_f32 = __lsx_vfcmp_cle_s(a_.lsx_f32, b_.lsx_f32);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       r_.i32 = HEDLEY_REINTERPRET_CAST(__typeof__(r_.i32), (a_.f32 <= b_.f32));
     #else
@@ -1542,7 +1542,7 @@ simde_mm_cmplt_ps (simde__m128 a, simde__m128 b) {
     #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
       r_.altivec_f32 = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(float), vec_cmplt(a_.altivec_f32, b_.altivec_f32));
     #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
-      r_.lsx_i64 = __lsx_vfcmp_clt_s(a_.lsx_f32, b_.lsx_f32);
+      r_.lsx_f32 = __lsx_vfcmp_clt_s(a_.lsx_f32, b_.lsx_f32);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       r_.i32 = HEDLEY_REINTERPRET_CAST(__typeof__(r_.i32), (a_.f32 < b_.f32));
     #else
@@ -1606,7 +1606,7 @@ simde_mm_cmpneq_ps (simde__m128 a, simde__m128 b) {
       r_.altivec_f32 = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(float), vec_cmpeq(a_.altivec_f32, b_.altivec_f32));
       r_.altivec_f32 = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(float), vec_nor(r_.altivec_f32, r_.altivec_f32));
     #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
-      r_.lsx_i64 = __lsx_vfcmp_cune_s(a_.lsx_f32, b_.lsx_f32);
+      r_.lsx_f32 = __lsx_vfcmp_cune_s(a_.lsx_f32, b_.lsx_f32);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       r_.i32 = HEDLEY_REINTERPRET_CAST(__typeof__(r_.i32), (a_.f32 != b_.f32));
     #else
@@ -1749,7 +1749,7 @@ simde_mm_cmpord_ps (simde__m128 a, simde__m128 b) {
       r_.altivec_f32 = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(float),
           vec_and(vec_cmpeq(a_.altivec_f32, a_.altivec_f32), vec_cmpeq(b_.altivec_f32, b_.altivec_f32)));
     #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
-      r_.lsx_i64 = __lsx_vfcmp_cun_s(a_.lsx_f32, b_.lsx_f32);
+      r_.lsx_f32 = __lsx_vfcmp_cun_s(a_.lsx_f32, b_.lsx_f32);
       r_.lsx_i64 = __lsx_vnor_v(r_.lsx_i64, r_.lsx_i64);
     #elif defined(simde_math_isnanf)
       SIMDE_VECTORIZE
@@ -1794,7 +1794,7 @@ simde_mm_cmpunord_ps (simde__m128 a, simde__m128 b) {
           vec_and(vec_cmpeq(a_.altivec_f32, a_.altivec_f32), vec_cmpeq(b_.altivec_f32, b_.altivec_f32)));
       r_.altivec_f32 = vec_nor(r_.altivec_f32, r_.altivec_f32);
     #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
-      r_.lsx_i64 = __lsx_vfcmp_cun_s(a_.lsx_f32, b_.lsx_f32);
+      r_.lsx_f32 = __lsx_vfcmp_cun_s(a_.lsx_f32, b_.lsx_f32);
     #elif defined(simde_math_isnanf)
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
