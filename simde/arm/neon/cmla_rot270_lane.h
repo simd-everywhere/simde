@@ -62,8 +62,8 @@ simde_float16x4_t simde_vcmla_rot270_lane_f16(simde_float16x4_t r, simde_float16
                                 simde_vcvt_f32_f16(simde_vdup_n_f16(simde_float16x4_to_private(b).values[lane])));
     #if defined(SIMDE_SHUFFLE_VECTOR_) && !defined(SIMDE_BUG_GCC_100760) &&                                                     \
         ((SIMDE_FLOAT16_API == SIMDE_FLOAT16_API_FP16) || (SIMDE_FLOAT16_API == SIMDE_FLOAT16_API_FLOAT16))
-      a_.values = SIMDE_SHUFFLE_VECTOR_(16, 4, a_.values, a_.values, 1, 1, 3, 3);
-      b_.values = SIMDE_SHUFFLE_VECTOR_(16, 4, -b_.values, b_.values, 5, 0, 7, 2);
+      a_.values = SIMDE_SHUFFLE_VECTOR_(32, 16, a_.values, a_.values, 1, 1, 3, 3);
+      b_.values = SIMDE_SHUFFLE_VECTOR_(32, 16, -b_.values, b_.values, 5, 0, 7, 2);
       r_.values += b_.values * a_.values;
     #else
       SIMDE_VECTORIZE
@@ -151,9 +151,9 @@ simde_float16x8_t simde_vcmlaq_rot270_lane_f16(simde_float16x8_t r, simde_float1
                                 simde_vcvt_f32_f16(simde_vdup_n_f16(simde_float16x4_to_private(b).values[lane])));
     #if defined(SIMDE_SHUFFLE_VECTOR_) && !defined(SIMDE_BUG_GCC_100760) &&                                                     \
         ((SIMDE_FLOAT16_API == SIMDE_FLOAT16_API_FP16) || (SIMDE_FLOAT16_API == SIMDE_FLOAT16_API_FLOAT16))
-      a_low.values = SIMDE_SHUFFLE_VECTOR_(16, 4, a_low.values, a_low.values, 1, 1, 3, 3);
-      a_high.values = SIMDE_SHUFFLE_VECTOR_(16, 4, a_high.values, a_high.values, 1, 1, 3, 3);
-      b_.values = SIMDE_SHUFFLE_VECTOR_(16, 4, -b_.values, b_.values, 5, 0, 7, 2);
+      a_low.values = SIMDE_SHUFFLE_VECTOR_(32, 16, a_low.values, a_low.values, 1, 1, 3, 3);
+      a_high.values = SIMDE_SHUFFLE_VECTOR_(32, 16, a_high.values, a_high.values, 1, 1, 3, 3);
+      b_.values = SIMDE_SHUFFLE_VECTOR_(32, 16, -b_.values, b_.values, 5, 0, 7, 2);
       r_low.values += b_.values * a_low.values;
       r_high.values += b_.values * a_high.values;
     #else
@@ -243,8 +243,8 @@ simde_float16x4_t simde_vcmla_rot270_laneq_f16(simde_float16x4_t r, simde_float1
                                 simde_vcvt_f32_f16(simde_vdup_n_f16(simde_float16x8_to_private(b).values[lane])));
     #if defined(SIMDE_SHUFFLE_VECTOR_) && !defined(SIMDE_BUG_GCC_100760) &&                                                     \
         ((SIMDE_FLOAT16_API == SIMDE_FLOAT16_API_FP16) || (SIMDE_FLOAT16_API == SIMDE_FLOAT16_API_FLOAT16))
-      a_.values = SIMDE_SHUFFLE_VECTOR_(16, 4, a_.values, a_.values, 1, 1, 3, 3);
-      b_.values = SIMDE_SHUFFLE_VECTOR_(16, 4, -b_.values, b_.values, 5, 0, 7, 2);
+      a_.values = SIMDE_SHUFFLE_VECTOR_(32, 16, a_.values, a_.values, 1, 1, 3, 3);
+      b_.values = SIMDE_SHUFFLE_VECTOR_(32, 16, -b_.values, b_.values, 5, 0, 7, 2);
       r_.values += b_.values * a_.values;
     #else
       SIMDE_VECTORIZE
@@ -332,9 +332,9 @@ simde_float16x8_t simde_vcmlaq_rot270_laneq_f16(simde_float16x8_t r, simde_float
                                 simde_vcvt_f32_f16(simde_vdup_n_f16(simde_float16x8_to_private(b).values[lane])));
     #if defined(SIMDE_SHUFFLE_VECTOR_) && !defined(SIMDE_BUG_GCC_100760) &&                                                     \
         ((SIMDE_FLOAT16_API == SIMDE_FLOAT16_API_FP16) || (SIMDE_FLOAT16_API == SIMDE_FLOAT16_API_FLOAT16))
-      a_high.values = SIMDE_SHUFFLE_VECTOR_(16, 4, a_high.values, a_high.values, 1, 1, 3, 3);
-      a_low.values = SIMDE_SHUFFLE_VECTOR_(16, 4, a_low.values, a_low.values, 1, 1, 3, 3);
-      b_.values = SIMDE_SHUFFLE_VECTOR_(16, 4, -b_.values, b_.values, 5, 0, 7, 2);
+      a_high.values = SIMDE_SHUFFLE_VECTOR_(32, 16, a_high.values, a_high.values, 1, 1, 3, 3);
+      a_low.values = SIMDE_SHUFFLE_VECTOR_(32, 16, a_low.values, a_low.values, 1, 1, 3, 3);
+      b_.values = SIMDE_SHUFFLE_VECTOR_(32, 16, -b_.values, b_.values, 5, 0, 7, 2);
       r_high.values += b_.values * a_high.values;
       r_low.values += b_.values * a_low.values;
     #else
