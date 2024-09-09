@@ -349,6 +349,11 @@ jobs:
       fail-fast: false
       matrix:
         include:
+        - version: 11
+          cross: aarch64
+          arch_gnu: aarch64
+          arch_deb: arm64
+          distro: ubuntu-22.04
         - version: 13
           cross: armel
           arch_gnu_abi: eabi
