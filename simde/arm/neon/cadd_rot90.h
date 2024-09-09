@@ -54,7 +54,7 @@ simde_float16x4_t simde_vcadd_rot90_f16(simde_float16x4_t a, simde_float16x4_t b
       r_.sv64 = __riscv_vfadd_vv_f16m1(op1, a_.sv64, 4);
     #elif defined(SIMDE_SHUFFLE_VECTOR_) &&                                                                                       \
         ((SIMDE_FLOAT16_API == SIMDE_FLOAT16_API_FP16) || (SIMDE_FLOAT16_API == SIMDE_FLOAT16_API_FLOAT16))
-      b_.values = SIMDE_SHUFFLE_VECTOR_(16, 4, -b_.values, b_.values, 1, 4, 3, 6);
+      b_.values = SIMDE_SHUFFLE_VECTOR_(16, 8, -b_.values, b_.values, 1, 4, 3, 6);
       r_.values = b_.values + a_.values;
     #else
       SIMDE_VECTORIZE
@@ -90,7 +90,7 @@ simde_float16x8_t simde_vcaddq_rot90_f16(simde_float16x8_t a, simde_float16x8_t 
       r_.sv128 = __riscv_vfadd_vv_f16m1(op1, a_.sv128, 8);
     #elif defined(SIMDE_SHUFFLE_VECTOR_) &&                                                                                       \
         ((SIMDE_FLOAT16_API == SIMDE_FLOAT16_API_FP16) || (SIMDE_FLOAT16_API == SIMDE_FLOAT16_API_FLOAT16))
-      b_.values = SIMDE_SHUFFLE_VECTOR_(16, 8, -b_.values, b_.values, 1, 8, 3, 10, 5, 12, 7, 14);
+      b_.values = SIMDE_SHUFFLE_VECTOR_(16, 16, -b_.values, b_.values, 1, 8, 3, 10, 5, 12, 7, 14);
       r_.values = b_.values + a_.values;
     #else
       SIMDE_VECTORIZE
