@@ -175,7 +175,7 @@ SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
   #endif
 #endif
 
-#if !defined(SIMDE_NANF)
+#if !defined(SIMDE_MATH_NANF)
   #if \
       HEDLEY_HAS_BUILTIN(__builtin_nanf) || \
       HEDLEY_GCC_VERSION_CHECK(3,3,0) || \
