@@ -881,40 +881,23 @@ jobs:
 
   linux-gcc-loongarch64:
     runs-on: ubuntu-24.04
+    container: amd64/ubuntu:24.10
     steps:
     - uses: actions/checkout@v4
     - name: CPU Information
       run: cat /proc/cpuinfo
     - name: Install APT Dependencies
       run: |
-        sudo apt-get install -y ninja-build ninja-build meson qemu-user-static
-    - name: Download and install loongarch64-toolchain
-      run: |
-        wget https://github.com/loongson/build-tools/releases/download/2022.09.06/loongarch64-clfs-7.3-cross-tools-gcc-glibc.tar.xz
-        tar -xf loongarch64-clfs-7.3-cross-tools-gcc-glibc.tar.xz -C /opt
+        apt-get update && apt-get install -y --no-install-recommends \
+          ninja-build ninja-build meson qemu-user-static binfmt-support \
+          libc6-loong64-cross libstdc++-14-dev-loong64-cross \
+          gcc-14-loongarch64-linux-gnu g++-14-loongarch64-linux-gnu
     - name: ccache
       uses: hendrikmuhs/ccache-action@v1.2
       with:
-        key: ${{ github.job }}-loongarch64-gcc-13
-    - name: set env
-      run: |
-        echo "LD_LIBRARY_PATH=/opt/cross-tools/target/usr/lib64:/opt/cross-tools/loongarch64-unknown-linux-gnu/lib64:$LD_LIBRARY_PATH" >> $GITHUB_ENV
-        echo "PATH=$GITHUB_WORKSPACE:/opt/cross-tools/bin:$PATH" >> $GITHUB_ENV
-    - name: Disable SVML tests
-      run: |
-        sed -i "/svml/d" test/x86/meson.build
-        rm test/x86/svml.c
-        echo "Due to the qemu versions 7.2 through 8.0 causing timeouts in four sets of test cases,"
-        echo "the SVML tests have been temporarily disabled."
-    - name: Disable RND*X tests
-      run: |
-        sed -i "/rndx/d" meson.build
-        sed -i "/rnd..x/d" meson.build
-        rm test/arm/neon/rndx.c test/arm/neon/rnd32x.c test/arm/neon/rnd64x.c
-        echo "Due to the qemu versions 7.2 through 8.0 causing timeouts in four sets of test cases,"
-        echo "the RNDX, RND32X, and RND64X tests have been temporarily disabled."
+        key: ${{ github.job }}-gcc-14
     - name: Configure
-      run: meson setup build --cross-file=docker/cross-files/loongarch64-gcc-13-ccache.cross
+      run: meson setup build --cross-file=docker/cross-files/loongarch64-gcc-14-ccache.cross || (cat build/meson-logs/meson-log.txt ; false)
     - name: Build
       run: meson compile -C build -v
     - name: Test
