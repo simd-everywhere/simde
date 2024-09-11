@@ -1,27 +1,27 @@
 [binaries]
-c = ['ccache', 'clang-17']
-cpp = ['ccache', 'clang++-17']
-ar = 'llvm-ar-17'
-strip = 'llvm-strip-17'
-objcopy = 'llvm-objcopy-17'
-ld = 'llvm-ld-17'
-exe_wrapper = ['qemu-riscv64', '-L', '/usr/riscv64-linux-gnu/', '-cpu', 'rv64,v=true,Zfh=true,x-zvfh=true,vlen=256,elen=64,vext_spec=v1.0']
+c = ['ccache', 'clang-18']
+cpp = ['ccache', 'clang++-18']
+ar = 'llvm-ar-18'
+strip = 'llvm-strip-18'
+objcopy = 'llvm-objcopy-18'
+ld = 'llvm-ld-18'
+exe_wrapper = ['qemu-riscv64', '-L', '/usr/riscv64-linux-gnu/', '-cpu', 'rv64,v=true,vlen=128,elen=64,vext_spec=v1.0']
 
 [properties]
 c_args = ['--target=riscv64-linux-gnu',
   '-isystem=/usr/riscv64-linux-gnu/include',
-  '-march=rv64gcv1_zfh_zvfh',
+  '-march=rv64gcv1',
   '-menable-experimental-extensions',
-  '-mrvv-vector-bits=256',
+  '-mrvv-vector-bits=128',
   '-Wextra',
   '-Werror',
   '-Wno-unsafe-buffer-usage']
 
 cpp_args = ['--target=riscv64-linux-gnu',
   '-isystem=/usr/riscv64-linux-gnu/include',
-  '-march=rv64gcv1_zfh_zvfh',
+  '-march=rv64gcv1',
   '-menable-experimental-extensions',
-  '-mrvv-vector-bits=256',
+  '-mrvv-vector-bits=128',
   '-Wextra',
   '-Werror',
   '-Wno-unsafe-buffer-usage']
@@ -33,5 +33,5 @@ cpp_link_args = ['--target=riscv64-linux-gnu']
 [host_machine]
 system = 'linux'
 cpu_family = 'riscv64'
-cpu = 'rv64,v=true,Zfh=true,x-zvfh=true,vlen=256,elen=64,vext_spec=v1.0'
+cpu = 'rv64,v=true,vlen=128,elen=64,vext_spec=v1.0'
 endian = 'little'

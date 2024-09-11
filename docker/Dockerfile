@@ -54,7 +54,7 @@ RUN \
     PACKAGES_TO_INSTALL="${PACKAGES_TO_INSTALL} $(apt-file search -x "/usr/bin/$(/tmp/simde-bin/arch2gcc.sh ${ARCH})-(ar|g(cc|\+\+)-[0-9\.]+)" | awk -F: '{ print $1}')"; \
   done; \
   echo ${PACKAGES_TO_INSTALL} ; \
-  apt-get install -yq ${PACKAGES_TO_INSTALL}
+  apt-get install -yq $(echo ${PACKAGES_TO_INSTALL} | tr ' ' '\n' | grep -v -- -9- | tr '\n' ' ')
 
 ENV PATH="/usr/lib/ccache:$PATH:/root/.local/bin:/root/.jsvu/bin"
 
