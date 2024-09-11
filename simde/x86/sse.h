@@ -674,7 +674,7 @@ simde_x_mm_round_ps (simde__m128 a, int rounding, int lax_rounding)
       #elif defined(SIMDE_ARM_NEON_A32V8_NATIVE)
         r_.neon_f32 = vrndnq_f32(a_.neon_f32);
       #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
-        r_.lsx_i64 = __lsx_vfrintrne_s(a_.lsx_f32);
+        r_.lsx_f32 = __lsx_vfrintrne_s(a_.lsx_f32);
       #elif defined(SIMDE_WASM_SIMD128_NATIVE)
         r_.wasm_v128 = wasm_f32x4_nearest(a_.wasm_v128);
       #elif defined(simde_math_roundevenf)
@@ -693,7 +693,7 @@ simde_x_mm_round_ps (simde__m128 a, int rounding, int lax_rounding)
       #elif defined(SIMDE_ARM_NEON_A32V8_NATIVE)
         r_.neon_f32 = vrndmq_f32(a_.neon_f32);
       #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
-        r_.lsx_i64 = __lsx_vfrintrm_s(a_.lsx_f32);
+        r_.lsx_f32 = __lsx_vfrintrm_s(a_.lsx_f32);
       #elif defined(SIMDE_WASM_SIMD128_NATIVE)
         r_.wasm_v128 = wasm_f32x4_floor(a_.wasm_v128);
       #elif defined(simde_math_floorf)
@@ -712,7 +712,7 @@ simde_x_mm_round_ps (simde__m128 a, int rounding, int lax_rounding)
       #elif defined(SIMDE_ARM_NEON_A32V8_NATIVE)
         r_.neon_f32 = vrndpq_f32(a_.neon_f32);
       #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
-        r_.lsx_i64 = __lsx_vfrintrp_s(a_.lsx_f32);
+        r_.lsx_f32 = __lsx_vfrintrp_s(a_.lsx_f32);
       #elif defined(SIMDE_WASM_SIMD128_NATIVE)
         r_.wasm_v128 = wasm_f32x4_ceil(a_.wasm_v128);
       #elif defined(simde_math_ceilf)
@@ -731,7 +731,7 @@ simde_x_mm_round_ps (simde__m128 a, int rounding, int lax_rounding)
       #elif defined(SIMDE_ARM_NEON_A32V8_NATIVE)
         r_.neon_f32 = vrndq_f32(a_.neon_f32);
       #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
-        r_.lsx_i64 = __lsx_vfrintrz_s(a_.lsx_f32);
+        r_.lsx_f32 = __lsx_vfrintrz_s(a_.lsx_f32);
       #elif defined(SIMDE_WASM_SIMD128_NATIVE)
         r_.wasm_v128 = wasm_f32x4_trunc(a_.wasm_v128);
       #elif defined(simde_math_truncf)
