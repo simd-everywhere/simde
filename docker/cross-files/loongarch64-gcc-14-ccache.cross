@@ -1,11 +1,11 @@
 [binaries]
-c = ['ccache', 'loongarch64-unknown-linux-gnu-gcc']
-cpp = ['ccache', 'loongarch64-unknown-linux-gnu-g++']
-ar = 'loongarch64-unknown-linux-gnu-ar'
-strip = 'loongarch64-unknown-linux-gnu-strip'
-objcopy = 'loongarch64-unknown-linux-gnu-objcopy'
-ld = 'loongarch64-unknown-linux-gnu-ld'
-exe_wrapper = ['qemu-loongarch64-static', '-L', '/opt/cross-tools/target/usr', '-cpu', 'la464']
+c = ['ccache', 'loongarch64-linux-gnu-gcc-14']
+cpp = ['ccache', 'loongarch64-linux-gnu-g++-14']
+ar = 'loongarch64-linux-gnu-gcc-ar-14'
+strip = 'loongarch64-linux-gnu-strip'
+objcopy = 'loongarch64-linux-gnu-objcopy'
+ld = 'loongarch64-linux-gnu-ld'
+exe_wrapper = ['qemu-loongarch64-static', '-L', '/usr/loongarch64-linux-gnu/', '-cpu', 'la464']
 
 [properties]
 c_args = ['-march=loongarch64', '-Wextra', '-Werror', '-mlsx']
