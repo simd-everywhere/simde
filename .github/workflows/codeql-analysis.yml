@@ -32,6 +32,7 @@ jobs:
       uses: github/codeql-action/init@v3
       with:
          languages: ${{ matrix.language }}
+         trap-caching: false
 
     - run: |
        sudo add-apt-repository 'ppa:ubuntu-toolchain-r/test' && sudo apt-get update && sudo apt-get install -y ninja-build ninja-build python3-pip python3-setuptools python3-wheel gcc-10 g++-10
