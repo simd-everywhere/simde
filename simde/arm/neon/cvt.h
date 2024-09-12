@@ -1369,7 +1369,7 @@ simde_vcvtq_f64_s64(simde_int64x2_t a) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vcvtq_f64_s64(a);
   #elif defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
-    return vec_ctd(a, 0);
+    return vec_double(a);
   #else
     simde_int64x2_private a_ = simde_int64x2_to_private(a);
     simde_float64x2_private r_;
