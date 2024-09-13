@@ -367,6 +367,12 @@ jobs:
           arch_deb: armhf
           distro: ubuntu-24.04
         - version: 14
+          extra: -no-extras
+          cross: aarch64
+          arch_gnu: aarch64
+          arch_deb: arm64
+          distro: ubuntu-24.04
+        - version: 14
           cross: aarch64
           arch_gnu: aarch64
           arch_deb: arm64
@@ -425,7 +431,7 @@ jobs:
     - name: ccache
       uses: hendrikmuhs/ccache-action@v1.2
       with:
-        key: ${{ github.job }}-${{ matrix.version}}-${{ matrix.distro }}-${{ matrix.cross }}
+        key: ${{ github.job }}-${{ matrix.version}}${{ matrix.extra }}-${{ matrix.distro }}-${{ matrix.cross }}
     - name: add ccache to the build path
       run: |
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
@@ -571,6 +577,12 @@ jobs:
           arch_deb: arm64
           distro: ubuntu-24.04
         - version: 18
+          extra: -no-extras
+          cross: aarch64
+          arch_gnu: aarch64
+          arch_deb: arm64
+          distro: ubuntu-24.04
+        - version: 18
           cross: armel
           arch_gnu_abi: eabi
           arch_deb: armel
@@ -616,13 +628,13 @@ jobs:
     - name: ccache
       uses: hendrikmuhs/ccache-action@v1.2
       with:
-        key: ${{ github.job }}-${{ matrix.distro }}-${{ matrix.cross }}
+        key: ${{ github.job }}-${{ matrix.version }}${{ matrix.extra }}-${{ matrix.cross }}
     - name: add ccache to the build path
       run: |
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
     - name: Configure
       run: |
-        meson setup --cross-file=docker/cross-files/${{ matrix.cross }}-clang-${{ matrix.version }}-ccache.cross build \
+        meson setup --cross-file=docker/cross-files/${{ matrix.cross }}-clang-${{ matrix.version }}${{ matrix.extra }}-ccache.cross build \
           || (cat build/meson-logs/meson-log.txt ; false)
     - name: Build
       run: ninja -C build -v
