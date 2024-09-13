@@ -130,6 +130,9 @@
 #if defined(__ARM_FEATURE_CRYPTO) && __ARM_FEATURE_CRYPTO
 #  define SIMDE_ARCH_ARM_CRYPTO
 #endif
+#if defined(__ARM_FEATURE_CRC32) && __ARM_FEATURE_CRC32
+#  define SIMDE_ARCH_ARM_CRC32
+#endif
 #if defined(__ARM_FEATURE_DOTPROD) && __ARM_FEATURE_DOTPROD
 #  define SIMDE_ARCH_ARM_DOTPROD
 #endif
