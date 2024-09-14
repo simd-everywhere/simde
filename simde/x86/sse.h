@@ -664,7 +664,7 @@ simde_x_mm_round_ps (simde__m128 a, int rounding, int lax_rounding)
           r_.f32[i] = simde_math_nearbyintf(a_.f32[i]);
         }
       #else
-        HEDLEY_UNREACHABLE_RETURN(simde_mm_undefined_pd());
+        HEDLEY_UNREACHABLE_RETURN(simde_mm_undefined_ps());
       #endif
       break;
 
@@ -683,7 +683,7 @@ simde_x_mm_round_ps (simde__m128 a, int rounding, int lax_rounding)
           r_.f32[i] = simde_math_roundevenf(a_.f32[i]);
         }
       #else
-        HEDLEY_UNREACHABLE_RETURN(simde_mm_undefined_pd());
+        HEDLEY_UNREACHABLE_RETURN(simde_mm_undefined_ps());
       #endif
       break;
 
@@ -702,7 +702,7 @@ simde_x_mm_round_ps (simde__m128 a, int rounding, int lax_rounding)
           r_.f32[i] = simde_math_floorf(a_.f32[i]);
         }
       #else
-        HEDLEY_UNREACHABLE_RETURN(simde_mm_undefined_pd());
+        HEDLEY_UNREACHABLE_RETURN(simde_mm_undefined_ps());
       #endif
       break;
 
@@ -721,7 +721,7 @@ simde_x_mm_round_ps (simde__m128 a, int rounding, int lax_rounding)
           r_.f32[i] = simde_math_ceilf(a_.f32[i]);
         }
       #else
-        HEDLEY_UNREACHABLE_RETURN(simde_mm_undefined_pd());
+        HEDLEY_UNREACHABLE_RETURN(simde_mm_undefined_ps());
       #endif
       break;
 
@@ -740,12 +740,12 @@ simde_x_mm_round_ps (simde__m128 a, int rounding, int lax_rounding)
           r_.f32[i] = simde_math_truncf(a_.f32[i]);
         }
       #else
-        HEDLEY_UNREACHABLE_RETURN(simde_mm_undefined_pd());
+        HEDLEY_UNREACHABLE_RETURN(simde_mm_undefined_ps());
       #endif
       break;
 
     default:
-      HEDLEY_UNREACHABLE_RETURN(simde_mm_undefined_pd());
+      HEDLEY_UNREACHABLE_RETURN(simde_mm_undefined_ps());
   }
 
   return simde__m128_from_private(r_);
