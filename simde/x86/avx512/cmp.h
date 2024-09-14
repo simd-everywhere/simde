@@ -248,7 +248,15 @@ simde_mm512_cmp_ps_mask (simde__m512 a, simde__m512 b, const int imm8)
     r_,
     a_ = simde__m512_to_private(a),
     b_ = simde__m512_to_private(b);
-
+  #if !defined(SIMDE_STATEMENT_EXPR_) && SIMDE_NATURAL_VECTOR_SIZE_LE(128)
+    for (size_t i = 0 ; i < (sizeof(r_.m128) / sizeof(r_.m128[0])) ; i++) {
+      SIMDE_CONSTIFY_32_(simde_mm_cmp_ps, r_.m128[i], (HEDLEY_UNREACHABLE(), simde_mm_undefined_ps()), imm8, a_.m128[i], b_.m128[i]);
+    }
+  #elif !defined(SIMDE_STATEMENT_EXPR_) && SIMDE_NATURAL_VECTOR_SIZE_LE(256)
+    for (size_t i = 0 ; i < (sizeof(r_.m256) / sizeof(r_.m256[0])) ; i++) {
+      SIMDE_CONSTIFY_32_(simde_mm256_cmp_ps, r_.m256[i], (HEDLEY_UNREACHABLE(), simde_mm256_undefined_ps()), imm8, a_.m256[i], b_.m256[i]);
+    }
+  #else
   switch (imm8) {
     case SIMDE_CMP_EQ_OQ:
     case SIMDE_CMP_EQ_OS:
@@ -431,7 +439,7 @@ simde_mm512_cmp_ps_mask (simde__m512 a, simde__m512 b, const int imm8)
     default:
       HEDLEY_UNREACHABLE();
   }
-
+  #endif
   return simde_mm512_movepi32_mask(simde_mm512_castps_si512(simde__m512_from_private(r_)));
 }
 #if defined(SIMDE_X86_AVX512F_NATIVE)
@@ -496,7 +504,15 @@ simde_mm512_cmp_pd_mask (simde__m512d a, simde__m512d b, const int imm8)
     r_,
     a_ = simde__m512d_to_private(a),
     b_ = simde__m512d_to_private(b);
-
+  #if !defined(SIMDE_STATEMENT_EXPR_) && SIMDE_NATURAL_VECTOR_SIZE_LE(128)
+    for (size_t i = 0 ; i < (sizeof(r_.m128d) / sizeof(r_.m128d[0])) ; i++) {
+      SIMDE_CONSTIFY_32_(simde_mm_cmp_pd, r_.m128d[i], (HEDLEY_UNREACHABLE(), simde_mm_undefined_pd()), imm8, a_.m128d[i], b_.m128d[i]);
+    }
+  #elif !defined(SIMDE_STATEMENT_EXPR_) && SIMDE_NATURAL_VECTOR_SIZE_LE(256)
+    for (size_t i = 0 ; i < (sizeof(r_.m256) / sizeof(r_.m256[0])) ; i++) {
+      SIMDE_CONSTIFY_32_(simde_mm256_cmp_pd, r_.m256d[i], (HEDLEY_UNREACHABLE(), simde_mm256_undefined_pd()), imm8, a_.m256d[i], b_.m256d[i]);
+    }
+  #else
   switch (imm8) {
     case SIMDE_CMP_EQ_OQ:
     case SIMDE_CMP_EQ_OS:
@@ -679,7 +695,7 @@ simde_mm512_cmp_pd_mask (simde__m512d a, simde__m512d b, const int imm8)
     default:
       HEDLEY_UNREACHABLE();
   }
-
+  #endif
   return simde_mm512_movepi64_mask(simde_mm512_castpd_si512(simde__m512d_from_private(r_)));
 }
 #if defined(SIMDE_X86_AVX512F_NATIVE)
