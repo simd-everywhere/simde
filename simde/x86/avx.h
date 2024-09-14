@@ -2083,7 +2083,11 @@ simde_mm256_round_ps (simde__m256 a, const int rounding) {
   simde__m256_private
     r_,
     a_ = simde__m256_to_private(a);
-
+  #if SIMDE_NATURAL_VECTOR_SIZE_LE(128) && !defined(SIMDE_STATEMENT_EXPR_)
+    for (size_t i = 0 ; i < (sizeof(r_.m128) / sizeof(r_.m128[0])) ; i++) {
+      SIMDE_CONSTIFY_16_(simde_mm_round_ps, r_.m128[i], (HEDLEY_UNREACHABLE(), simde_mm_undefined_ps()), rounding, a_.m128[i]);
+    }
+  #else
   switch (rounding & ~SIMDE_MM_FROUND_NO_EXC) {
     #if defined(simde_math_nearbyintf)
       case SIMDE_MM_FROUND_CUR_DIRECTION:
@@ -2128,7 +2132,7 @@ simde_mm256_round_ps (simde__m256 a, const int rounding) {
     default:
       HEDLEY_UNREACHABLE_RETURN(simde_mm256_undefined_ps());
   }
-
+  #endif
   return simde__m256_from_private(r_);
 }
 #if defined(SIMDE_X86_AVX_NATIVE)
@@ -2157,6 +2161,11 @@ simde_mm256_round_pd (simde__m256d a, const int rounding) {
   simde__m256d_private
     r_,
     a_ = simde__m256d_to_private(a);
+  #if SIMDE_NATURAL_VECTOR_SIZE_LE(128) && !defined(SIMDE_STATEMENT_EXPR_)
+    for (size_t i = 0 ; i < (sizeof(r_.m128d) / sizeof(r_.m128d[0])) ; i++) {
+      SIMDE_CONSTIFY_16_(simde_mm_round_pd, r_.m128d[i], (HEDLEY_UNREACHABLE(), simde_mm_undefined_pd()), rounding, a_.m128d[i]);
+    }
+  #else
 
   switch (rounding & ~SIMDE_MM_FROUND_NO_EXC) {
     #if defined(simde_math_nearbyint)
@@ -2202,7 +2211,7 @@ simde_mm256_round_pd (simde__m256d a, const int rounding) {
     default:
       HEDLEY_UNREACHABLE_RETURN(simde_mm256_undefined_pd());
   }
-
+  #endif
   return simde__m256d_from_private(r_);
 }
 #if defined(SIMDE_X86_AVX_NATIVE)
@@ -2894,6 +2903,11 @@ simde_mm256_cmp_ps
     a_ = simde__m256_to_private(a),
     b_ = simde__m256_to_private(b);
 
+  #if defined(SIMDE_STATEMENT_EXPR_) && SIMDE_NATURAL_VECTOR_SIZE_LE(128)
+    for (size_t i = 0 ; i < (sizeof(r_.m128) / sizeof(r_.m128[0])) ; i++) {
+      SIMDE_CONSTIFY_32_(simde_mm_cmp_ps, r_.m128[i], (HEDLEY_UNREACHABLE(), simde_mm_undefined_ps()), imm8, a_.m128[i], b_.m128[i]);
+    }
+  #else
   switch (imm8) {
     case SIMDE_CMP_EQ_OQ:
     case SIMDE_CMP_EQ_OS:
@@ -3076,7 +3090,7 @@ simde_mm256_cmp_ps
     default:
       HEDLEY_UNREACHABLE();
   }
-
+  #endif
   return simde__m256_from_private(r_);
 }
 #if defined(__clang__) && defined(__AVX512DQ__)
@@ -3098,7 +3112,7 @@ simde_mm256_cmp_ps
     simde_mm256_cmp_ps_r; \
   }))
 #elif defined(SIMDE_X86_AVX_NATIVE)
-  #define simde_mm256_cmp_ps(a, b, imm8) _mm256_cmp_ps(a, b, imm8)
+  #define simde_mm256_cmp_ps(a, b, imm8) _mm256_cmp_ps((a), (b), (imm8))
 #elif defined(SIMDE_STATEMENT_EXPR_) && SIMDE_NATURAL_VECTOR_SIZE_LE(128)
   #define simde_mm256_cmp_ps(a, b, imm8) SIMDE_STATEMENT_EXPR_(({ \
     simde__m256_private \
