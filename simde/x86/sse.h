@@ -664,7 +664,7 @@ simde_x_mm_round_ps (simde__m128 a, int rounding, int lax_rounding)
           r_.f32[i] = simde_math_nearbyintf(a_.f32[i]);
         }
       #else
-        HEDLEY_UNREACHABLE_RETURN(simde_mm_undefined_pd());
+        HEDLEY_UNREACHABLE_RETURN(simde_mm_undefined_ps());
       #endif
       break;
 
@@ -683,7 +683,7 @@ simde_x_mm_round_ps (simde__m128 a, int rounding, int lax_rounding)
           r_.f32[i] = simde_math_roundevenf(a_.f32[i]);
         }
       #else
-        HEDLEY_UNREACHABLE_RETURN(simde_mm_undefined_pd());
+        HEDLEY_UNREACHABLE_RETURN(simde_mm_undefined_ps());
       #endif
       break;
 
@@ -702,7 +702,7 @@ simde_x_mm_round_ps (simde__m128 a, int rounding, int lax_rounding)
           r_.f32[i] = simde_math_floorf(a_.f32[i]);
         }
       #else
-        HEDLEY_UNREACHABLE_RETURN(simde_mm_undefined_pd());
+        HEDLEY_UNREACHABLE_RETURN(simde_mm_undefined_ps());
       #endif
       break;
 
@@ -721,7 +721,7 @@ simde_x_mm_round_ps (simde__m128 a, int rounding, int lax_rounding)
           r_.f32[i] = simde_math_ceilf(a_.f32[i]);
         }
       #else
-        HEDLEY_UNREACHABLE_RETURN(simde_mm_undefined_pd());
+        HEDLEY_UNREACHABLE_RETURN(simde_mm_undefined_ps());
       #endif
       break;
 
@@ -740,12 +740,12 @@ simde_x_mm_round_ps (simde__m128 a, int rounding, int lax_rounding)
           r_.f32[i] = simde_math_truncf(a_.f32[i]);
         }
       #else
-        HEDLEY_UNREACHABLE_RETURN(simde_mm_undefined_pd());
+        HEDLEY_UNREACHABLE_RETURN(simde_mm_undefined_ps());
       #endif
       break;
 
     default:
-      HEDLEY_UNREACHABLE_RETURN(simde_mm_undefined_pd());
+      HEDLEY_UNREACHABLE_RETURN(simde_mm_undefined_ps());
   }
 
   return simde__m128_from_private(r_);
@@ -4122,11 +4122,22 @@ simde_mm_shuffle_ps (simde__m128 a, simde__m128 b, const int imm8)
     r_,
     a_ = simde__m128_to_private(a),
     b_ = simde__m128_to_private(b);
-
-  r_.f32[0] = a_.f32[(imm8 >> 0) & 3];
-  r_.f32[1] = a_.f32[(imm8 >> 2) & 3];
-  r_.f32[2] = b_.f32[(imm8 >> 4) & 3];
-  r_.f32[3] = b_.f32[(imm8 >> 6) & 3];
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && !defined(SIMDE_STATEMENT_EXPR_)
+    simde_float32_t temp1, temp2;
+    SIMDE_CONSTIFY_4(vgetq_lane_f32, temp1, (HEDLEY_UNREACHABLE(), 0.0f), (imm8) & (0x3), a_);
+    r_ = vmovq_n_f32(temp1);
+    SIMDE_CONSTIFY_4(vgetq_lane_f32, temp1, (HEDLEY_UNREACHABLE(), 0.0f), (((imm8) >> 2) & 0x3), a_);
+    r_ = vsetq_lane_f32(temp1, r_, 1);
+    SIMDE_CONSTIFY_4(vgetq_lane_f32, temp1, (HEDLEY_UNREACHABLE(), 0.0f), (((imm8) >> 4) & 0x3), b_);
+    r_ = vsetq_lane_f32(temp1, r_, 2);
+    SIMDE_CONSTIFY_4(vgetq_lane_f32, temp2, (HEDLEY_UNREACHABLE(), 0.0f), (((imm8) >> 6) & 0x3), b_);
+    r_ = vsetq_lane_f32(temp1, r_, 3);
+  #else
+    r_.f32[0] = a_.f32[(imm8 >> 0) & 3];
+    r_.f32[1] = a_.f32[(imm8 >> 2) & 3];
+    r_.f32[2] = b_.f32[(imm8 >> 4) & 3];
+    r_.f32[3] = b_.f32[(imm8 >> 6) & 3];
+  #endif
 
   return simde__m128_from_private(r_);
 }
