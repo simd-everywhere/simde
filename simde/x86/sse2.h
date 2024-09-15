@@ -5504,10 +5504,21 @@ simde_mm_shuffle_epi32 (simde__m128i a, const int imm8)
   simde__m128i_private
     r_,
     a_ = simde__m128i_to_private(a);
-
-  for (size_t i = 0 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {
-    r_.i32[i] = a_.i32[(imm8 >> (i * 2)) & 3];
-  }
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && !defined(SIMDE_STATEMENT_EXPR_)
+    int32_t temp;
+    SIMDE_CONSTIFY_4(vgetq_lane_s32, temp, (HEDLEY_UNREACHABLE(), 0), (imm8) & (0x3), a_);
+    r_.neon_i32 = vmovq_n_s32(temp);
+    SIMDE_CONSTIFY_4(vgetq_lane_s32, temp, (HEDLEY_UNREACHABLE(), 0), (((imm8) >> 2) & 0x3), a_);
+    r_.neon_i32 = vsetq_lane_s32(temp, r_, 1);
+    SIMDE_CONSTIFY_4(vgetq_lane_s32, temp, (HEDLEY_UNREACHABLE(), 0), (((imm8) >> 4) & 0x3), a_);
+    r_.neon_i32 = vsetq_lane_s32(temp, r_, 2);
+    SIMDE_CONSTIFY_4(vgetq_lane_s32, temp, (HEDLEY_UNREACHABLE(), 0), (((imm8) >> 6) & 0x3), a_);
+    r_.neon_i32 = vsetq_lane_s32(temp, r_, 3);
+  #else
+    for (size_t i = 0 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {
+      r_.i32[i] = a_.i32[(imm8 >> (i * 2)) & 3];
+    }
+  #endif
 
   return simde__m128i_from_private(r_);
 }
@@ -5587,15 +5598,26 @@ simde_mm_shufflehi_epi16 (simde__m128i a, const int imm8)
   simde__m128i_private
     r_,
     a_ = simde__m128i_to_private(a);
-
-  SIMDE_VECTORIZE
-  for (size_t i = 0 ; i < ((sizeof(a_.i16) / sizeof(a_.i16[0])) / 2) ; i++) {
-    r_.i16[i] = a_.i16[i];
-  }
-  for (size_t i = ((sizeof(a_.i16) / sizeof(a_.i16[0])) / 2) ; i < (sizeof(r_.i16) / sizeof(r_.i16[0])) ; i++) {
-    r_.i16[i] = a_.i16[((imm8 >> ((i - 4) * 2)) & 3) + 4];
-  }
-
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && !defined(SIMDE_STATEMENT_EXPR_)
+    r_ = a_;
+    int16_t temp;
+    SIMDE_CONSTIFY_8(vgetq_lane_s16, temp1, (HEDLEY_UNREACHABLE(), 0), ((imm8) & 0x3) + 4, a_);
+    r_.neon_i16 = vsetq_lane_s16(temp, r_, 4);
+    SIMDE_CONSTIFY_8(vgetq_lane_s16, temp1, (HEDLEY_UNREACHABLE(), 0), (((imm8) >> 2) & 0x3) + 4, a_);
+    r_.neon_i16 = vsetq_lane_s16(temp, r_, 5);
+    SIMDE_CONSTIFY_8(vgetq_lane_s16, temp1, (HEDLEY_UNREACHABLE(), 0), (((imm8) >> 4) & 0x3) + 4, a_);
+    r_.neon_i16 = vsetq_lane_s16(temp, r_, 6);
+    SIMDE_CONSTIFY_8(vgetq_lane_s16, temp1, (HEDLEY_UNREACHABLE(), 0), (((imm8) >> 6) & 0x3) + 4, a_);
+    r_.neon_i16 = vsetq_lane_s16(temp, r_, 7);
+  #else
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < ((sizeof(a_.i16) / sizeof(a_.i16[0])) / 2) ; i++) {
+      r_.i16[i] = a_.i16[i];
+    }
+    for (size_t i = ((sizeof(a_.i16) / sizeof(a_.i16[0])) / 2) ; i < (sizeof(r_.i16) / sizeof(r_.i16[0])) ; i++) {
+      r_.i16[i] = a_.i16[((imm8 >> ((i - 4) * 2)) & 3) + 4];
+    }
+  #endif
   return simde__m128i_from_private(r_);
 }
 #if defined(SIMDE_X86_SSE2_NATIVE)
@@ -5647,14 +5669,26 @@ simde_mm_shufflelo_epi16 (simde__m128i a, const int imm8)
   simde__m128i_private
     r_,
     a_ = simde__m128i_to_private(a);
-
-  for (size_t i = 0 ; i < ((sizeof(r_.i16) / sizeof(r_.i16[0])) / 2) ; i++) {
-    r_.i16[i] = a_.i16[((imm8 >> (i * 2)) & 3)];
-  }
-  SIMDE_VECTORIZE
-  for (size_t i = ((sizeof(a_.i16) / sizeof(a_.i16[0])) / 2) ; i < (sizeof(r_.i16) / sizeof(r_.i16[0])) ; i++) {
-    r_.i16[i] = a_.i16[i];
-  }
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && !defined(SIMDE_STATEMENT_EXPR_)
+    r_ = a_;
+    int16_t temp;
+    SIMDE_CONSTIFY_8(vgetq_lane_s16, temp1, (HEDLEY_UNREACHABLE(), 0), ((imm8) & 0x3), a_);
+    r_.neon_i16 = vsetq_lane_s16(temp, r_, 0);
+    SIMDE_CONSTIFY_8(vgetq_lane_s16, temp1, (HEDLEY_UNREACHABLE(), 0), (((imm8) >> 2) & 0x3), a_);
+    r_.neon_i16 = vsetq_lane_s16(temp, r_, 1);
+    SIMDE_CONSTIFY_8(vgetq_lane_s16, temp1, (HEDLEY_UNREACHABLE(), 0), (((imm8) >> 4) & 0x3), a_);
+    r_.neon_i16 = vsetq_lane_s16(temp, r_, 2);
+    SIMDE_CONSTIFY_8(vgetq_lane_s16, temp1, (HEDLEY_UNREACHABLE(), 0), (((imm8) >> 6) & 0x3), a_);
+    r_.neon_i16 = vsetq_lane_s16(temp, r_, 3);
+  #else
+    for (size_t i = 0 ; i < ((sizeof(r_.i16) / sizeof(r_.i16[0])) / 2) ; i++) {
+      r_.i16[i] = a_.i16[((imm8 >> (i * 2)) & 3)];
+    }
+    SIMDE_VECTORIZE
+    for (size_t i = ((sizeof(a_.i16) / sizeof(a_.i16[0])) / 2) ; i < (sizeof(r_.i16) / sizeof(r_.i16[0])) ; i++) {
+      r_.i16[i] = a_.i16[i];
+    }
+  #endif
 
   return simde__m128i_from_private(r_);
 }
