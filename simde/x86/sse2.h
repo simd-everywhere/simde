@@ -3548,12 +3548,11 @@ simde_mm_loadl_epi64 (simde__m128i const* mem_addr) {
   #else
     simde__m128i_private r_;
 
-    int64_t value;
-    simde_memcpy(&value, mem_addr, sizeof(value));
-
     #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       r_.neon_i64 = vcombine_s64(vld1_s64(HEDLEY_REINTERPRET_CAST(int64_t const *, mem_addr)), vdup_n_s64(0));
     #else
+      int64_t value;
+      simde_memcpy(&value, mem_addr, sizeof(value));
       r_.i64[0] = value;
       r_.i64[1] = 0;
     #endif
