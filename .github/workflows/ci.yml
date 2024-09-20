@@ -609,6 +609,11 @@ jobs:
         #   arch_gnu: mips64el
         #   arch_gnu_abi: abi64
         #   distro: ubuntu-24.04
+        - version: 18
+          cross: loongarch64
+          arch_deb: loong64
+          arch_gnu: loongarch64
+          distro: ubuntu-24.04
     runs-on: ${{ matrix.distro }}
     steps:
     - uses: actions/checkout@v4
@@ -620,9 +625,10 @@ jobs:
     - name: Install APT Dependencies
       run: |
         sudo apt-get update -y
+        sudo add-apt-repository ppa:ubuntu-toolchain-r/ppa && \
         sudo apt-get -yq install ninja-build parallel \
           binfmt-support clang-${{ matrix.version }} clang++-${{ matrix.version }} \
-          qemu-user-static pipx libc6-${{ matrix.arch_deb }}-cross libstdc++-12-dev-${{ matrix.arch_deb }}-cross \
+          qemu-user-static pipx libc6-${{ matrix.arch_deb }}-cross libstdc++-14-dev-${{ matrix.arch_deb }}-cross \
           binutils-${{ matrix.arch_gnu }}-linux-gnu${{ matrix.arch_gnu_abi }}
         pipx install meson==0.55.1
     - name: ccache
