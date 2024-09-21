@@ -120,7 +120,7 @@ jobs:
         key: ${{ github.job }}-${{ matrix.isax }}
     - name: Install APT Dependencies
       run: |
-        sudo apt-get install -y ninja-build ninja-build pipx parallel
+        sudo apt-get install -y ninja-build ninja-build pipx
         # sudo apt-get purge -y gcc g++
         # sudo ln -s /usr/bin/gcc-13 /usr/bin/gcc
         # sudo ln -s /usr/bin/g++-13 /usr/bin/g++
@@ -160,7 +160,7 @@ jobs:
       run: |
         #sudo add-apt-repository ppa:aschultz/backports
         sudo apt-get update
-        sudo apt-get install -y ninja-build ninja-build pipx parallel g++-12 gcc-12 qemu-user-static
+        sudo apt-get install -y ninja-build ninja-build pipx g++-12 gcc-12 qemu-user-static
         # sudo apt-get purge -y gcc g++
         # sudo ln -s /usr/bin/gcc-12 /usr/bin/gcc
         # sudo ln -s /usr/bin/g++-12 /usr/bin/g++
@@ -194,7 +194,7 @@ jobs:
     - name: Install APT Dependencies
       run: |
         sudo apt-get update && \
-        sudo apt-get install -y ninja-build ninja-build pipx parallel &&\
+        sudo apt-get install -y ninja-build ninja-build pipx &&\
         pipx install meson==0.55.1
     - name: Install emscripten
       run: |
@@ -232,7 +232,7 @@ jobs:
     - name: Install APT Dependencies
       run: |
         sudo apt-get update && \
-        sudo apt-get -yq install libxml2-utils ninja-build parallel pipx && \
+        sudo apt-get -yq install libxml2-utils ninja-build pipx && \
         pipx install meson==0.55.1
     - name: Convert
       run: ./test/native-aliases.sh
@@ -257,7 +257,7 @@ jobs:
       run: cat /proc/cpuinfo
     - name: Install APT Dependencies
       run: |
-        sudo apt-get install -y ninja-build ninja-build parallel libsleef-dev pipx
+        sudo apt-get install -y ninja-build ninja-build libsleef-dev pipx
         pipx install meson==0.55.1
     - name: Configure
       run: meson setup build -Dsleef=enabled
@@ -323,7 +323,7 @@ jobs:
       run: |
         sudo add-apt-repository ppa:ubuntu-toolchain-r/test
         sudo apt-get update
-        sudo apt-get -yq install gcovr pipx ninja-build parallel gcc-${{ matrix.version }} g++-${{ matrix.version }}
+        sudo apt-get -yq install gcovr pipx ninja-build gcc-${{ matrix.version }} g++-${{ matrix.version }}
         sudo apt-get -y purge g++ gcc
         pipx install meson==0.55.1
     - name: ccache
@@ -423,7 +423,7 @@ jobs:
       run: |
         sudo apt-get update -y
         sudo add-apt-repository ppa:ubuntu-toolchain-r/ppa
-        sudo apt-get -yq install ninja-build parallel \
+        sudo apt-get -yq install ninja-build \
           gcc-${{ matrix.version }}-${{ matrix.arch_gnu }}-linux-gnu${{ matrix.arch_gnu_abi }} \
           g++-${{ matrix.version }}-${{ matrix.arch_gnu }}-linux-gnu${{ matrix.arch_gnu_abi }} binfmt-support \
           qemu-user-static pipx libc6-${{ matrix.arch_deb }}-cross libstdc++-${{ matrix.version }}-dev-${{ matrix.arch_deb }}-cross
@@ -477,16 +477,14 @@ jobs:
       run: cat /proc/cpuinfo
     - name: Install APT Dependencies
       run: |
-        apt-get install -y python3 python3-pip git ninja-build pkg-config libglib2.0-dev \
-          lsb-release wget software-properties-common gnupg qemu-user pipx
-        apt-get install -y clang-${{ matrix.version }} lldb-${{ matrix.version }} lld-${{ matrix.version }}
         #add-apt-repository ppa:savoury1/virtualisation
         #add-apt-repository ppa:savoury1/display
         apt-get update -y
-        apt-get -yq install ninja-build parallel \
-          binfmt-support libc6-${{ matrix.arch_deb }}-cross \
-          libstdc++-12-dev-${{ matrix.arch_deb }}-cross binutils-${{ matrix.arch_gnu }}-linux-gnu
-        apt install meson
+        apt-get install -y ninja-build pkg-config \
+          qemu-user-static clang-${{ matrix.version }} ninja-build binfmt-support \
+          libc6-${{ matrix.arch_deb }}-cross meson \
+          libstdc++-12-dev-${{ matrix.arch_deb }}-cross \
+          binutils-${{ matrix.arch_gnu }}-linux-gnu
     - name: ccache
       uses: hendrikmuhs/ccache-action@v1.2
       with:
@@ -536,14 +534,12 @@ jobs:
       run: cat /proc/cpuinfo
     - name: Install APT Dependencies
       run: |
-        sudo apt-get install -y python3 git ninja-build pkg-config libglib2.0-dev \
-          lsb-release wget software-properties-common gnupg qemu-user pipx
-        sudo apt-get install -y clang-${{ matrix.version }} lldb-${{ matrix.version }} lld-${{ matrix.version }}
-        sudo apt-get update -y
-        sudo apt-get -yq install ninja-build parallel \
-          binfmt-support libc6-${{ matrix.arch_deb }}-cross \
-          libstdc++-12-dev-${{ matrix.arch_deb }}-cross binutils-${{ matrix.arch_gnu }}-linux-gnu
-        sudo apt install meson
+        apt-get update -y
+        apt-get install -y ninja-build pkg-config \
+          qemu-user-static clang-${{ matrix.version }} ninja-build binfmt-support \
+          libc6-${{ matrix.arch_deb }}-cross meson \
+          libstdc++-12-dev-${{ matrix.arch_deb }}-cross \
+          binutils-${{ matrix.arch_gnu }}-linux-gnu
     - name: ccache
       uses: hendrikmuhs/ccache-action@v1.2
       with:
@@ -626,8 +622,8 @@ jobs:
       run: |
         sudo apt-get update -y
         sudo add-apt-repository ppa:ubuntu-toolchain-r/ppa && \
-        sudo apt-get -yq install ninja-build parallel \
-          binfmt-support clang-${{ matrix.version }} clang++-${{ matrix.version }} \
+        sudo apt-get -yq install ninja-build \
+          binfmt-support clang-${{ matrix.version }} \
           qemu-user-static pipx libc6-${{ matrix.arch_deb }}-cross libstdc++-14-dev-${{ matrix.arch_deb }}-cross \
           binutils-${{ matrix.arch_gnu }}-linux-gnu${{ matrix.arch_gnu_abi }}
         pipx install meson==0.55.1
@@ -911,10 +907,10 @@ jobs:
       run: cat /proc/cpuinfo
     - name: Install APT Dependencies
       run: |
-        sudo apt-get update && \
         sudo add-apt-repository ppa:ubuntu-toolchain-r/ppa && \
+        sudo apt-get update && \
         sudo apt-get install -y --no-install-recommends \
-          ninja-build ninja-build meson qemu-user-static binfmt-support \
+          ninja-build meson qemu-user-static binfmt-support \
           libc6-loong64-cross libstdc++-14-dev-loong64-cross \
           gcc-14-loongarch64-linux-gnu g++-14-loongarch64-linux-gnu
     - name: ccache
