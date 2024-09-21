@@ -5,7 +5,7 @@ ar = 'llvm-ar-18'
 strip = 'llvm-strip-18'
 objcopy = 'llvm-objcopy-18'
 ld = 'llvm-ld-18'
-exe_wrapper = ['qemu-riscv64', '-L', '/usr/riscv64-linux-gnu/', '-cpu', 'rv64,v=true,vlen=256,elen=64,vext_spec=v1.0']
+exe_wrapper = ['qemu-riscv64-static', '-L', '/usr/riscv64-linux-gnu/', '-cpu', 'rv64,v=true,vlen=256,elen=64,vext_spec=v1.0']
 
 [properties]
 c_args = ['--target=riscv64-linux-gnu',
