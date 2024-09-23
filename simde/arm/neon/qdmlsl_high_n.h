@@ -29,10 +29,8 @@
 
 #include "movl_high.h"
 #include "dup_n.h"
-#include "sub.h"
-#include "mul.h"
-#include "mul_n.h"
 #include "types.h"
+#include "qdmlsl_high.h"
 
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
@@ -44,11 +42,7 @@ simde_vqdmlsl_high_n_s16(simde_int32x4_t a, simde_int16x8_t b, int16_t c) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vqdmlsl_high_n_s16(a, b, c);
   #else
-    return simde_vsubq_s32(a,
-        simde_vmulq_n_s32(
-        simde_vmulq_s32(
-        simde_vmovl_high_s16(b),
-        simde_vmovl_high_s16(simde_vdupq_n_s16(c))), 2));
+    return simde_vqdmlsl_high_s16(a, b, simde_vdupq_n_s16(c));
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
@@ -62,17 +56,7 @@ simde_vqdmlsl_high_n_s32(simde_int64x2_t a, simde_int32x4_t b, int32_t c) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vqdmlsl_high_n_s32(a, b, c);
   #else
-    simde_int64x2_private r_ = simde_int64x2_to_private(
-          simde_x_vmulq_s64(
-          simde_vmovl_high_s32(b),
-          simde_vmovl_high_s32(simde_vdupq_n_s32(c))));
-
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = r_.values[i] * HEDLEY_STATIC_CAST(int64_t, 2);
-    }
-
-    return simde_vsubq_s64(a, simde_int64x2_from_private(r_));
+    return simde_vqdmlsl_high_s32(a, b, simde_vdupq_n_s32(c));
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
