@@ -1746,7 +1746,7 @@ simde_math_fpclass(double v, const int imm8) {
          1.382719649631f,
          0.690969348887f,
         -1.128081391617f,
-         0.680544246825f
+         0.680544246825f,
         -0.164441567910f
       };
       static const float q[3] = {
