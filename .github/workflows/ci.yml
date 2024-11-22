@@ -449,25 +449,19 @@ jobs:
           cross: riscv64+rvv_vlen128_elen64
           arch_gnu: riscv64
           arch_deb: riscv64
-          distro: ubuntu-22.04
+          distro: ubuntu-24.04
         - version: 17  # not yet passing with clang 18.1.3
           cross: riscv64+rvv_vlen256_elen64
           arch_gnu: riscv64
           arch_deb: riscv64
-          distro: ubuntu-22.04
+          distro: ubuntu-24.04
         - version: 17  # not yet passing with clang 18.1.3
           cross: riscv64+rvv_vlen512_elen64
           arch_gnu: riscv64
           arch_deb: riscv64
-          distro: ubuntu-22.04
+          distro: ubuntu-24.04
     runs-on: ${{ matrix.distro }}
-    container:
-      image: amd64/ubuntu:23.10
     steps:
-    - run: apt-get update
-    - name: Install git
-      run: |
-        apt-get install -y --no-install-recommends git ca-certificates
     - uses: actions/checkout@v4
       with:
         submodules: recursive
@@ -477,8 +471,8 @@ jobs:
       run: |
         #add-apt-repository ppa:savoury1/virtualisation
         #add-apt-repository ppa:savoury1/display
-        apt-get update -y
-        apt-get install -y --no-install-recommends ninja-build pkg-config \
+        sudo apt-get update -y
+        sudo apt-get install -y --no-install-recommends ninja-build pkg-config \
           qemu-user-static clang-${{ matrix.version }} ninja-build binfmt-support \
           libc6-${{ matrix.arch_deb }}-cross meson llvm-${{ matrix.version }} \
           libstdc++-12-dev-${{ matrix.arch_deb }}-cross \
