@@ -750,6 +750,7 @@ jobs:
         # https://github.com/actions/runner-images/blob/main/images/macos/macos-12-Readme.md#xcode
         # https://github.com/actions/runner-images/blob/main/images/macos/macos-13-Readme.md#xcode
         # https://github.com/actions/runner-images/blob/main/images/macos/macos-14-arm64-Readme.md#xcode
+        # https://github.com/actions/runner-images/blob/main/images/macos/macos-15-arm64-Readme.md#xcode
         # https://trac.macports.org/wiki/XcodeVersionInfo
         include:
           - xcode: "13.1"
@@ -773,11 +774,6 @@ jobs:
           - xcode: "15.2"
             os: macos-13
             arch_flags: -Wno-poison-system-directories  # due to meson test
-          - xcode: "14.3.1"
-            os: macos-14  # arm64
-            arch_flags: -march=native -Wno-poison-system-directories
-              # "-Wno-poison-system-directories": due to meson test
-              # "-march=native": without, or with -mcpu=apple-m1 then unavailable __ARM_FEATURE_s get enabled
           - xcode: "15.2"
             os: macos-14  # arm64
             arch_flags: -march=native -Wno-poison-system-directories
@@ -794,7 +790,7 @@ jobs:
               # "-Wno-poison-system-directories": due to meson test
               # "-march=native": without, or with -mcpu=apple-m1 then unavailable __ARM_FEATURE_s get enabled
           - xcode: "16.0"
-            os: macos-14  # arm64
+            os: macos-15  # arm64
             arch_flags: -march=native -Wno-poison-system-directories
               # "-Wno-poison-system-directories": due to meson test
               # "-march=native": without, or with -mcpu=apple-m1 then unavailable __ARM_FEATURE_s get enabled
