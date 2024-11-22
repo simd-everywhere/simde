@@ -109,7 +109,7 @@ jobs:
   i686-gcc11-O2:
     resource_class: large
     docker:
-      - image: debian:testing-slim
+      - image: debian:stable-slim
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
