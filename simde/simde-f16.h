@@ -90,7 +90,7 @@ SIMDE_BEGIN_DECLS_
   #elif defined(__FLT16_MIN__) && \
       (defined(__clang__) && \
       (!defined(SIMDE_ARCH_AARCH64) || SIMDE_DETECT_CLANG_VERSION_CHECK(7,0,0)) \
-      && !defined(SIMDE_ARCH_RISCV64))
+      && !defined(SIMDE_ARCH_RISCV64) && !defined(SIMDE_ARCH_LOONGARCH))
     #define SIMDE_FLOAT16_API SIMDE_FLOAT16_API_FP16_NO_ABI
   #else
     #define SIMDE_FLOAT16_API SIMDE_FLOAT16_API_PORTABLE
