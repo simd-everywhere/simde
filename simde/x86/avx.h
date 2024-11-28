@@ -2686,7 +2686,7 @@ simde_mm256_cmp_pd
       #else
         SIMDE_VECTORIZE
         for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
-          r_.i64[i] = (a_.f64[i] == b_.f64[i]) ? ~INT32_C(0) : INT32_C(0);
+          r_.i64[i] = (a_.f64[i] == b_.f64[i]) ? ~INT64_C(0) : INT64_C(0);
         }
       #endif
       break;
@@ -2698,7 +2698,7 @@ simde_mm256_cmp_pd
       #else
         SIMDE_VECTORIZE
         for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
-          r_.i64[i] = (a_.f64[i] < b_.f64[i]) ? ~INT32_C(0) : INT32_C(0);
+          r_.i64[i] = (a_.f64[i] < b_.f64[i]) ? ~INT64_C(0) : INT64_C(0);
         }
       #endif
       break;
@@ -2710,7 +2710,7 @@ simde_mm256_cmp_pd
       #else
         SIMDE_VECTORIZE
         for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
-          r_.i64[i] = (a_.f64[i] <= b_.f64[i]) ? ~INT32_C(0) : INT32_C(0);
+          r_.i64[i] = (a_.f64[i] <= b_.f64[i]) ? ~INT64_C(0) : INT64_C(0);
         }
       #endif
       break;
@@ -2722,7 +2722,7 @@ simde_mm256_cmp_pd
       #else
         SIMDE_VECTORIZE
         for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
-          r_.i64[i] = ((a_.f64[i] != a_.f64[i]) || (b_.f64[i] != b_.f64[i])) ? ~INT32_C(0) : INT32_C(0);
+          r_.i64[i] = ((a_.f64[i] != a_.f64[i]) || (b_.f64[i] != b_.f64[i])) ? ~INT64_C(0) : INT64_C(0);
         }
       #endif
       break;
@@ -2734,7 +2734,7 @@ simde_mm256_cmp_pd
       #else
         SIMDE_VECTORIZE
         for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
-          r_.i64[i] = (a_.f64[i] != b_.f64[i]) ? ~INT32_C(0) : INT32_C(0);
+          r_.i64[i] = (a_.f64[i] != b_.f64[i]) ? ~INT64_C(0) : INT64_C(0);
         }
       #endif
       break;
@@ -2746,7 +2746,7 @@ simde_mm256_cmp_pd
       #else
         SIMDE_VECTORIZE
         for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
-          r_.i64[i] = ((a_.f64[i] == a_.f64[i]) & (b_.f64[i] == b_.f64[i]) & (a_.f64[i] != b_.f64[i])) ? ~INT32_C(0) : INT32_C(0);
+          r_.i64[i] = ((a_.f64[i] == a_.f64[i]) & (b_.f64[i] == b_.f64[i]) & (a_.f64[i] != b_.f64[i])) ? ~INT64_C(0) : INT64_C(0);
         }
       #endif
       break;
@@ -2758,7 +2758,7 @@ simde_mm256_cmp_pd
       #else
         SIMDE_VECTORIZE
         for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
-          r_.i64[i] = !(a_.f64[i] < b_.f64[i]) ? ~INT32_C(0) : INT32_C(0);
+          r_.i64[i] = !(a_.f64[i] < b_.f64[i]) ? ~INT64_C(0) : INT64_C(0);
         }
       #endif
       break;
@@ -2770,7 +2770,7 @@ simde_mm256_cmp_pd
       #else
         SIMDE_VECTORIZE
         for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
-          r_.i64[i] = !(a_.f64[i] <= b_.f64[i]) ? ~INT32_C(0) : INT32_C(0);
+          r_.i64[i] = !(a_.f64[i] <= b_.f64[i]) ? ~INT64_C(0) : INT64_C(0);
         }
       #endif
       break;
@@ -2782,7 +2782,7 @@ simde_mm256_cmp_pd
       #else
         SIMDE_VECTORIZE
         for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
-          r_.i64[i] = ((a_.f64[i] == a_.f64[i]) & (b_.f64[i] == b_.f64[i])) ? ~INT32_C(0) : INT32_C(0);
+          r_.i64[i] = ((a_.f64[i] == a_.f64[i]) & (b_.f64[i] == b_.f64[i])) ? ~INT64_C(0) : INT64_C(0);
         }
       #endif
       break;
@@ -2794,7 +2794,7 @@ simde_mm256_cmp_pd
       #else
         SIMDE_VECTORIZE
         for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
-          r_.i64[i] = ((a_.f64[i] != a_.f64[i]) | (b_.f64[i] != b_.f64[i]) | (a_.f64[i] == b_.f64[i])) ? ~INT32_C(0) : INT32_C(0);
+          r_.i64[i] = ((a_.f64[i] != a_.f64[i]) | (b_.f64[i] != b_.f64[i]) | (a_.f64[i] == b_.f64[i])) ? ~INT64_C(0) : INT64_C(0);
         }
       #endif
       break;
@@ -2806,7 +2806,7 @@ simde_mm256_cmp_pd
       #else
         SIMDE_VECTORIZE
         for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
-          r_.i64[i] = !(a_.f64[i] >= b_.f64[i]) ? ~INT32_C(0) : INT32_C(0);
+          r_.i64[i] = !(a_.f64[i] >= b_.f64[i]) ? ~INT64_C(0) : INT64_C(0);
         }
       #endif
       break;
@@ -2818,7 +2818,7 @@ simde_mm256_cmp_pd
       #else
         SIMDE_VECTORIZE
         for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
-          r_.i64[i] = !(a_.f64[i] > b_.f64[i]) ? ~INT32_C(0) : INT32_C(0);
+          r_.i64[i] = !(a_.f64[i] > b_.f64[i]) ? ~INT64_C(0) : INT64_C(0);
         }
       #endif
       break;
@@ -2835,7 +2835,7 @@ simde_mm256_cmp_pd
       #else
         SIMDE_VECTORIZE
         for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
-          r_.i64[i] = (a_.f64[i] >= b_.f64[i]) ? ~INT32_C(0) : INT32_C(0);
+          r_.i64[i] = (a_.f64[i] >= b_.f64[i]) ? ~INT64_C(0) : INT64_C(0);
         }
       #endif
       break;
@@ -2847,7 +2847,7 @@ simde_mm256_cmp_pd
       #else
         SIMDE_VECTORIZE
         for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
-          r_.i64[i] = (a_.f64[i] > b_.f64[i]) ? ~INT32_C(0) : INT32_C(0);
+          r_.i64[i] = (a_.f64[i] > b_.f64[i]) ? ~INT64_C(0) : INT64_C(0);
         }
       #endif
       break;
