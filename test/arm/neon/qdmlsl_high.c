@@ -59,6 +59,12 @@ test_simde_vqdmlsl_high_s16 (SIMDE_MUNIT_TEST_ARGS) {
        {  -INT16_C(      4202), -INT16_C(      2749),  INT16_C(      5485),  INT16_C(      6722),
            INT16_C(      2934),  INT16_C(      6380),  INT16_C(      6638), -INT16_C(      8437)},
        {  -INT32_C( 345375914), -INT32_C( 205639033), -INT32_C( 781620092), -INT32_C(  47771143) } },
+     { {   INT32_C( INT32_MAX),  INT32_C( INT32_MIN),  INT32_C(         0),  INT32_C(         0) },
+       {  -INT16_C(      9903), -INT16_C(      7336),  INT16_C(      1785),  INT16_C(         0),
+          -INT16_C(         1),  INT16_C(         1),  INT16_C( INT16_MIN), -INT16_C(         0) },
+       {  -INT16_C(      9269), -INT16_C(      5310),  INT16_C(      5746),  INT16_C(         0),
+           INT16_C(         1),  INT16_C(         1),  INT16_C( INT16_MIN), -INT16_C(         0) },
+       {   INT32_C( INT32_MAX),  INT32_C( INT32_MIN),  INT32_C(INT32_MIN+1),  INT32_C(         0) } },
   };
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
@@ -113,6 +119,14 @@ test_simde_vqdmlsl_high_s32 (SIMDE_MUNIT_TEST_ARGS) {
        {  -INT32_C(          3312),  INT32_C(        750732),  INT32_C(        965480), -INT32_C(        996117) },
        {   INT32_C(        256052),  INT32_C(        522416),  INT32_C(        150123), -INT32_C(        381846)},
        {  -INT64_C( 1027616199478), -INT64_C(  502934722274) } },
+     { {                 INT64_MAX,                INT64_MIN },
+       {  -INT32_C(        759050), -INT32_C(        437291), -INT32_C(             1),  INT32_C(             1) },
+       {  -INT32_C(        262650),  INT32_C(        912777),  INT32_C(             1),  INT32_C(             1) },
+       {                 INT64_MAX,                INT64_MIN } },
+     { {   INT64_C(             0),  INT64_C(             0) },
+       {   INT32_C(             0),  INT32_C(             0),  INT32_C(     INT32_MIN),  INT32_C(             0) },
+       {   INT32_C(             0),  INT32_C(             0),  INT32_C(     INT32_MIN),  INT32_C(             0) },
+       {   INT64_C( INT64_MIN + 1),  INT64_C(             0) } },
   };
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
