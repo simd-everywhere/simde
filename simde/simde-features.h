@@ -553,7 +553,8 @@
       defined(SIMDE_WASM_SIMD128_NATIVE) || \
       defined(SIMDE_POWER_ALTIVEC_P5_NATIVE) || \
       defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE) || \
-      defined(SIMDE_MIPS_MSA_NATIVE)
+      defined(SIMDE_MIPS_MSA_NATIVE) || \
+      defined(SIMDE_LOONGARCH_LSX_NATIVE)
     #define SIMDE_NATURAL_VECTOR_SIZE (128)
   #elif defined(SIMDE_X86_SSE_NATIVE)
     #define SIMDE_NATURAL_FLOAT_VECTOR_SIZE (128)
