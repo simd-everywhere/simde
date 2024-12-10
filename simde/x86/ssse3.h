@@ -51,6 +51,8 @@ simde_mm_abs_epi8 (simde__m128i a) {
       r_.altivec_i8 = vec_abs(a_.altivec_i8);
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r_.wasm_v128 = wasm_i8x16_abs(a_.wasm_v128);
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      r_.lsx_i64 = __lsx_vabsd_b(a_.lsx_i64, __lsx_vreplgr2vr_b(0));
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.i8) / sizeof(r_.i8[0])) ; i++) {
@@ -83,6 +85,8 @@ simde_mm_abs_epi16 (simde__m128i a) {
       r_.altivec_i16 = vec_abs(a_.altivec_i16);
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r_.wasm_v128 = wasm_i16x8_abs(a_.wasm_v128);
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      r_.lsx_i64 = __lsx_vabsd_h(a_.lsx_i64, __lsx_vreplgr2vr_h(0));
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.i16) / sizeof(r_.i16[0])) ; i++) {
@@ -116,6 +120,8 @@ simde_mm_abs_epi32 (simde__m128i a) {
       r_.altivec_i32 = vec_abs(a_.altivec_i32);
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r_.wasm_v128 = wasm_i32x4_abs(a_.wasm_v128);
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      r_.lsx_i64 = __lsx_vabsd_w(a_.lsx_i64, __lsx_vreplgr2vr_w(0));
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {
@@ -251,6 +257,24 @@ simde_mm_alignr_epi8 (simde__m128i a, simde__m128i b, int count)
           ((count) > 15) \
             ? (simde__m128i_from_neon_i8(vextq_s8(simde__m128i_to_neon_i8(a), vdupq_n_s8(0), (count) & 15))) \
             : (simde__m128i_from_neon_i8(vextq_s8(simde__m128i_to_neon_i8(b), simde__m128i_to_neon_i8(a), ((count) & 15))))))
+#elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+  #define simde_mm_alignr_epi8(a, b, count) \
+  ({ \
+    __m128i res_; \
+    if (count > 31) { \
+      res_ = __lsx_vreplgr2vr_b(0); \
+    }  \
+    else if (count > 15) { \
+      res_ = __lsx_vbsrl_v(a, ((count)&15)); \
+    } \
+    else if (count == 0) { \
+      res_ = b; \
+    } \
+    else { \
+      res_ = __lsx_vor_v(__lsx_vbsll_v(a, (16-((count)&15))), __lsx_vbsrl_v(b, ((count)&15))); \
+    } \
+    (simde__m128i)res_; \
+  })
 #endif
 #if defined(SIMDE_X86_SSSE3_ENABLE_NATIVE_ALIASES)
   #define _mm_alignr_epi8(a, b, count) simde_mm_alignr_epi8(a, b, count)
@@ -337,6 +361,10 @@ simde_mm_shuffle_epi8 (simde__m128i a, simde__m128i b) {
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r_.wasm_v128 = wasm_i8x16_swizzle(
         a_.wasm_v128, wasm_v128_and(b_.wasm_v128, wasm_i8x16_splat(0x8F)));
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      __m128i b1_ = __lsx_vslti_b(b_.lsx_i64, 0);
+      r_.lsx_i64 = __lsx_vshuf_b(a_.lsx_i64, a_.lsx_i64, __lsx_vandi_b(b_.lsx_i64, 15));
+      r_.lsx_i64 = __lsx_vand_v(r_.lsx_i64, __lsx_vnor_v(b1_, b1_));
     #else
       for (size_t i = 0 ; i < (sizeof(r_.i8) / sizeof(r_.i8[0])) ; i++) {
         r_.i8[i] = a_.i8[b_.i8[i] & 15] & (~(b_.i8[i]) >> 7);
@@ -689,6 +717,10 @@ simde_mm_maddubs_epi16 (simde__m128i a, simde__m128i b) {
 
       /* saturated add */
       r_.neon_i16 = vqaddq_s16(prod1, prod2);
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      __m128i temp_ev = __lsx_vmulwev_h_bu_b(a_.lsx_i64, b_.lsx_i64);
+      __m128i temp_od = __lsx_vmulwod_h_bu_b(a_.lsx_i64, b_.lsx_i64);
+      r_.lsx_i64 = __lsx_vsadd_h(temp_ev, temp_od);
     #else
       for (size_t i = 0 ; i < (sizeof(r_.i16) / sizeof(r_.i16[0])) ; i++) {
         const int idx = HEDLEY_STATIC_CAST(int, i) << 1;
@@ -775,6 +807,12 @@ simde_mm_mulhrs_epi16 (simde__m128i a, simde__m128i b) {
         __lo = wasm_i32x4_add(__lo, __lo);
         __hi = wasm_i32x4_add(__hi, __hi);
         r_.wasm_v128 = wasm_i16x8_shuffle(__lo, __hi, 1, 3, 5, 7, 9, 11, 13, 15);
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      __m128i temp_ev = __lsx_vmulwev_w_h(a_.lsx_i64, b_.lsx_i64);
+      __m128i temp_od = __lsx_vmulwod_w_h(a_.lsx_i64, b_.lsx_i64);
+      __m128i temp1 = __lsx_vilvl_w(temp_od, temp_ev);
+      __m128i temp2 = __lsx_vilvh_w(temp_od, temp_ev);
+      r_.lsx_i64 = __lsx_vssrarni_h_w(temp2, temp1, 15);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.i16) / sizeof(r_.i16[0])) ; i++) {
@@ -850,6 +888,8 @@ simde_mm_sign_epi8 (simde__m128i a, simde__m128i b) {
       simde__m128i mask = wasm_i8x16_shr(b_.wasm_v128, 7);
       simde__m128i zeromask = simde_mm_cmpeq_epi8(b_.wasm_v128, simde_mm_setzero_si128());
       r_.wasm_v128 = simde_mm_andnot_si128(zeromask, simde_mm_xor_si128(simde_mm_add_epi8(a_.wasm_v128, mask), mask));
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      r_.lsx_i64 = __lsx_vsigncov_b(b_.lsx_i64, a_.lsx_i64);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.i8) / sizeof(r_.i8[0])) ; i++) {
@@ -890,6 +930,8 @@ simde_mm_sign_epi16 (simde__m128i a, simde__m128i b) {
       simde__m128i mask = simde_mm_srai_epi16(b_.wasm_v128, 15);
       simde__m128i zeromask = simde_mm_cmpeq_epi16(b_.wasm_v128, simde_mm_setzero_si128());
       r_.wasm_v128 = simde_mm_andnot_si128(zeromask, simde_mm_xor_si128(simde_mm_add_epi16(a_.wasm_v128, mask), mask));
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      r_.lsx_i64 = __lsx_vsigncov_h(b_.lsx_i64, a_.lsx_i64);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.i16) / sizeof(r_.i16[0])) ; i++) {
@@ -930,6 +972,8 @@ simde_mm_sign_epi32 (simde__m128i a, simde__m128i b) {
       simde__m128i mask = simde_mm_srai_epi32(b_.wasm_v128, 31);
       simde__m128i zeromask = simde_mm_cmpeq_epi32(b_.wasm_v128, simde_mm_setzero_si128());
       r_.wasm_v128 = simde_mm_andnot_si128(zeromask, simde_mm_xor_si128(simde_mm_add_epi32(a_.wasm_v128, mask), mask));
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      r_.lsx_i64 = __lsx_vsigncov_w(b_.lsx_i64, a_.lsx_i64);
     #else
       for (size_t i = 0 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {
         r_.i32[i] = (b_.i32[i] < 0) ? (- a_.i32[i]) : ((b_.i32[i] != 0) ? (a_.i32[i]) : INT32_C(0));
