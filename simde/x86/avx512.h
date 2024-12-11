@@ -69,6 +69,7 @@
 #include "avx512/fixupimm_round.h"
 #include "avx512/flushsubnormal.h"
 #include "avx512/fmadd.h"
+#include "avx512/fmaddsub.h"
 #include "avx512/fmsub.h"
 #include "avx512/fnmadd.h"
 #include "avx512/fnmsub.h"
