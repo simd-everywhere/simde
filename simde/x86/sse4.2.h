@@ -175,6 +175,8 @@ simde_mm_cmpgt_epi64 (simde__m128i a, simde__m128i b) {
       r_.altivec_u64 = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned long long), vec_cmpgt(a_.altivec_i64, b_.altivec_i64));
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r_.wasm_v128 = wasm_i64x2_gt(a_.wasm_v128, b_.wasm_v128);
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      r_.lsx_i64 = __lsx_vslt_d(b_.lsx_i64, a_.lsx_i64);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       r_.i64 = HEDLEY_REINTERPRET_CAST(__typeof__(r_.i64), a_.i64 > b_.i64);
     #else
@@ -298,6 +300,8 @@ simde_mm_crc32_u8(uint32_t prevcrc, uint8_t v) {
   #else
     #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARCH_ARM_CRC32)
       return __crc32cb(prevcrc, v);
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      return __builtin_loongarch_crcc_w_b_w(v, prevcrc);
     #else
       uint32_t crc = prevcrc;
       crc ^= v;
@@ -331,6 +335,8 @@ simde_mm_crc32_u16(uint32_t prevcrc, uint16_t v) {
   #else
     #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARCH_ARM_CRC32)
       return __crc32ch(prevcrc, v);
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      return __builtin_loongarch_crcc_w_h_w(v, prevcrc);
     #else
       uint32_t crc = prevcrc;
       crc = simde_mm_crc32_u8(crc, v & 0xff);
@@ -351,6 +357,8 @@ simde_mm_crc32_u32(uint32_t prevcrc, uint32_t v) {
   #else
     #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARCH_ARM_CRC32)
       return __crc32cw(prevcrc, v);
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      return __builtin_loongarch_crcc_w_w_w(v, prevcrc);
     #else
       uint32_t crc = prevcrc;
       crc = simde_mm_crc32_u16(crc, v & 0xffff);
