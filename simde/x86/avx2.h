@@ -4564,6 +4564,10 @@ simde_mm256_slli_epi16 (simde__m256i a, const int imm8)
      the expected range, hence the discrepancy between what we allow and what
      Intel specifies.  Some compilers will return 0, others seem to just mask
      off everything outside of the range. */
+  #if defined(SIMDE_LOONGARCH_LASX_NATIVE)
+    return __lasx_xvsll_h(a, __lasx_xvreplgr2vr_h(imm8));
+  #endif
+
   simde__m256i_private
     r_,
     a_ = simde__m256i_to_private(a);
@@ -4586,8 +4590,6 @@ simde_mm256_slli_epi16 (simde__m256i a, const int imm8)
 }
 #if defined(SIMDE_X86_AVX2_NATIVE)
 #  define simde_mm256_slli_epi16(a, imm8) _mm256_slli_epi16(a, imm8)
-#elif defined(SIMDE_LOONGARCH_LASX_NATIVE)
-#  define simde_mm256_slli_epi16(a, imm8) (imm8 > 15 ? __lasx_xvreplgr2vr_h(0) : __lasx_xvslli_h(a, imm8 & 15))
 #elif SIMDE_NATURAL_INT_VECTOR_SIZE_LE(128)
 #  define simde_mm256_slli_epi16(a, imm8) \
      simde_mm256_set_m128i( \
@@ -4603,6 +4605,10 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde__m256i
 simde_mm256_slli_epi32 (simde__m256i a, const int imm8)
     SIMDE_REQUIRE_RANGE(imm8, 0, 255) {
+  #if defined(SIMDE_LOONGARCH_LASX_NATIVE)
+    return __lasx_xvsll_w(a, __lasx_xvreplgr2vr_w(imm8));
+  #endif
+
   simde__m256i_private
     r_,
     a_ = simde__m256i_to_private(a);
@@ -4625,8 +4631,6 @@ simde_mm256_slli_epi32 (simde__m256i a, const int imm8)
 }
 #if defined(SIMDE_X86_AVX2_NATIVE)
 #  define simde_mm256_slli_epi32(a, imm8) _mm256_slli_epi32(a, imm8)
-#elif defined(SIMDE_LOONGARCH_LASX_NATIVE)
-#  define simde_mm256_slli_epi32(a, imm8) (imm8 > 31 ? __lasx_xvreplgr2vr_w(0) : __lasx_xvslli_w(a, imm8 & 31))
 #elif SIMDE_NATURAL_INT_VECTOR_SIZE_LE(128)
 #  define simde_mm256_slli_epi32(a, imm8) \
      simde_mm256_set_m128i( \
@@ -4642,6 +4646,10 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde__m256i
 simde_mm256_slli_epi64 (simde__m256i a, const int imm8)
     SIMDE_REQUIRE_RANGE(imm8, 0, 255) {
+#if defined(SIMDE_LOONGARCH_LASX_NATIVE)
+  return __lasx_xvsll_d(a, __lasx_xvreplgr2vr_d(imm8));
+#endif
+
   simde__m256i_private
     r_,
     a_ = simde__m256i_to_private(a);
@@ -4659,8 +4667,6 @@ simde_mm256_slli_epi64 (simde__m256i a, const int imm8)
 }
 #if defined(SIMDE_X86_AVX2_NATIVE)
 #  define simde_mm256_slli_epi64(a, imm8) _mm256_slli_epi64(a, imm8)
-#elif defined(SIMDE_LOONGARCH_LASX_NATIVE)
-#  define simde_mm256_slli_epi64(a, imm8) (imm8 > 63 ? __lasx_xvreplgr2vr_d(0) : __lasx_xvslli_d(a, imm8))
 #elif SIMDE_NATURAL_INT_VECTOR_SIZE_LE(128)
 #  define simde_mm256_slli_epi64(a, imm8) \
      simde_mm256_set_m128i( \
@@ -4927,6 +4933,10 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde__m256i
 simde_mm256_srai_epi16 (simde__m256i a, const int imm8)
     SIMDE_REQUIRE_RANGE(imm8, 0, 255) {
+  #if defined(SIMDE_LOONGARCH_LASX_NATIVE)
+    return __lasx_xvsra_h(a, __lasx_xvreplgr2vr_h((imm8 > 15 ? 15 : imm8)));
+  #endif
+
   simde__m256i_private
     r_,
     a_ = simde__m256i_to_private(a);
@@ -4947,8 +4957,6 @@ simde_mm256_srai_epi16 (simde__m256i a, const int imm8)
 }
 #if defined(SIMDE_X86_AVX2_NATIVE)
 #  define simde_mm256_srai_epi16(a, imm8) _mm256_srai_epi16(a, imm8)
-#elif defined(SIMDE_LOONGARCH_LASX_NATIVE)
-#  define simde_mm256_srai_epi16(a, imm8) __lasx_xvsrai_h(a, (imm8 > 15 ? 15 : imm8))
 #elif SIMDE_NATURAL_INT_VECTOR_SIZE_LE(128)
 #  define simde_mm256_srai_epi16(a, imm8) \
      simde_mm256_set_m128i( \
@@ -4964,6 +4972,10 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde__m256i
 simde_mm256_srai_epi32 (simde__m256i a, const int imm8)
     SIMDE_REQUIRE_RANGE(imm8, 0, 255) {
+  #if defined(SIMDE_LOONGARCH_LASX_NATIVE)
+    return __lasx_xvsra_w(a, __lasx_xvreplgr2vr_w((imm8 > 31 ? 31 : imm8)));
+  #endif
+
   simde__m256i_private
     r_,
     a_ = simde__m256i_to_private(a);
@@ -4984,8 +4996,6 @@ simde_mm256_srai_epi32 (simde__m256i a, const int imm8)
 }
 #if defined(SIMDE_X86_AVX2_NATIVE)
 #  define simde_mm256_srai_epi32(a, imm8) _mm256_srai_epi32(a, imm8)
-#elif defined(SIMDE_LOONGARCH_LASX_NATIVE)
-#  define simde_mm256_srai_epi32(a, imm8) __lasx_xvsrai_w(a, (imm8 > 31 ? 31 : imm8))
 #elif SIMDE_NATURAL_INT_VECTOR_SIZE_LE(128)
 #  define simde_mm256_srai_epi32(a, imm8) \
      simde_mm256_set_m128i( \
@@ -5183,12 +5193,16 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde__m256i
 simde_mm256_srli_epi16 (simde__m256i a, const int imm8)
     SIMDE_REQUIRE_RANGE(imm8, 0, 255) {
+  if (imm8 > 15)
+    return simde_mm256_setzero_si256();
+
+  #if defined(SIMDE_LOONGARCH_LASX_NATIVE)
+    return __lasx_xvsrl_h(a, __lasx_xvreplgr2vr_h(imm8));
+  #endif
+
   simde__m256i_private
     r_,
     a_ = simde__m256i_to_private(a);
-
-  if (imm8 > 15)
-    return simde_mm256_setzero_si256();
 
   #if defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
     SIMDE_POWER_ALTIVEC_VECTOR(unsigned short) sv = vec_splats(HEDLEY_STATIC_CAST(unsigned short, imm8));
@@ -5214,8 +5228,6 @@ simde_mm256_srli_epi16 (simde__m256i a, const int imm8)
 }
 #if defined(SIMDE_X86_AVX2_NATIVE)
 #  define simde_mm256_srli_epi16(a, imm8) _mm256_srli_epi16(a, imm8)
-#elif defined(SIMDE_LOONGARCH_LASX_NATIVE)
-#  define simde_mm256_srli_epi16(a, imm8) (imm8 > 15 ? __lasx_xvreplgr2vr_h(0) : __lasx_xvsrli_h(a, imm8 & 15))
 #elif SIMDE_NATURAL_INT_VECTOR_SIZE_LE(128)
 #  define simde_mm256_srli_epi16(a, imm8) \
      simde_mm256_set_m128i( \
@@ -5231,6 +5243,10 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde__m256i
 simde_mm256_srli_epi32 (simde__m256i a, const int imm8)
     SIMDE_REQUIRE_RANGE(imm8, 0, 255) {
+  #if defined(SIMDE_LOONGARCH_LASX_NATIVE)
+    return __lasx_xvsrl_w(a, __lasx_xvreplgr2vr_w(imm8));
+  #endif
+
   simde__m256i_private
     r_,
     a_ = simde__m256i_to_private(a);
@@ -5253,8 +5269,6 @@ simde_mm256_srli_epi32 (simde__m256i a, const int imm8)
 }
 #if defined(SIMDE_X86_AVX2_NATIVE)
 #  define simde_mm256_srli_epi32(a, imm8) _mm256_srli_epi32(a, imm8)
-#elif defined(SIMDE_LOONGARCH_LASX_NATIVE)
-#  define simde_mm256_srli_epi32(a, imm8) __lasx_xvsrli_w(a, imm8)
 #elif SIMDE_NATURAL_INT_VECTOR_SIZE_LE(128)
 #  define simde_mm256_srli_epi32(a, imm8) \
      simde_mm256_set_m128i( \
@@ -5270,6 +5284,10 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde__m256i
 simde_mm256_srli_epi64 (simde__m256i a, const int imm8)
     SIMDE_REQUIRE_RANGE(imm8, 0, 255) {
+#if defined(SIMDE_LOONGARCH_LASX_NATIVE)
+  return __lasx_xvsrl_d(a, __lasx_xvreplgr2vr_d(imm8));
+#endif
+
   simde__m256i_private
     r_,
     a_ = simde__m256i_to_private(a);
@@ -5287,8 +5305,6 @@ simde_mm256_srli_epi64 (simde__m256i a, const int imm8)
 }
 #if defined(SIMDE_X86_AVX2_NATIVE)
 #  define simde_mm256_srli_epi64(a, imm8) _mm256_srli_epi64(a, imm8)
-#elif defined(SIMDE_LOONGARCH_LASX_NATIVE)
-#  define simde_mm256_srli_epi64(a, imm8) __lasx_xvsrli_d(a, imm8)
 #elif SIMDE_NATURAL_INT_VECTOR_SIZE_LE(128)
 #  define simde_mm256_srli_epi64(a, imm8) \
      simde_mm256_set_m128i( \
