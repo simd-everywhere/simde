@@ -1697,22 +1697,16 @@ simde__m256
 simde_mm256_addsub_ps (simde__m256 a, simde__m256 b) {
   #if defined(SIMDE_X86_AVX_NATIVE)
     return _mm256_addsub_ps(a, b);
+  #elif defined(SIMDE_LOONGARCH_LASX_NATIVE)
+    __m256 add_ = __lasx_xvfadd_s(a, b), sub_ = __lasx_xvfsub_s(a, b);
+    return (simde__m256)__lasx_xvextrins_w(__lasx_xvextrins_w(sub_, add_, 0x11), add_, 0x33);
   #else
     simde__m256_private
       r_,
       a_ = simde__m256_to_private(a),
       b_ = simde__m256_to_private(b);
 
-    #if defined(SIMDE_LOONGARCH_LASX_NATIVE)
-      simde__m256_private aev_, aod_, bev_, bod_;
-      aev_.i256 = __lasx_xvpickev_w(a_.i256, a_.i256);
-      aod_.i256 = __lasx_xvpickod_w(a_.i256, a_.i256);
-      bev_.i256 = __lasx_xvpickev_w(b_.i256, b_.i256);
-      bod_.i256 = __lasx_xvpickod_w(b_.i256, b_.i256);
-      aev_.f256 = __lasx_xvfsub_s(aev_.f256, bev_.f256);
-      aod_.f256 = __lasx_xvfadd_s(aod_.f256, bod_.f256);
-      r_.i256   = __lasx_xvilvl_w(aod_.i256, aev_.i256);
-    #elif SIMDE_NATURAL_VECTOR_SIZE_LE(128)
+    #if SIMDE_NATURAL_VECTOR_SIZE_LE(128)
       r_.m128[0] = simde_mm_addsub_ps(a_.m128[0], b_.m128[0]);
       r_.m128[1] = simde_mm_addsub_ps(a_.m128[1], b_.m128[1]);
     #else
@@ -1736,22 +1730,16 @@ simde__m256d
 simde_mm256_addsub_pd (simde__m256d a, simde__m256d b) {
   #if defined(SIMDE_X86_AVX_NATIVE)
     return _mm256_addsub_pd(a, b);
+  #elif defined(SIMDE_LOONGARCH_LASX_NATIVE)
+    __m256d add_ = __lasx_xvfadd_d(a, b), sub_ = __lasx_xvfsub_d(a, b);
+    return (simde__m256d)__lasx_xvextrins_d(__lasx_xvextrins_d(sub_, add_, 0x11), add_, 0x33);
   #else
     simde__m256d_private
       r_,
       a_ = simde__m256d_to_private(a),
       b_ = simde__m256d_to_private(b);
 
-    #if defined(SIMDE_LOONGARCH_LASX_NATIVE)
-      simde__m256d_private aev_, aod_, bev_, bod_;
-      aev_.i256 = __lasx_xvpickev_d(a_.i256, a_.i256);
-      aod_.i256 = __lasx_xvpickod_d(a_.i256, a_.i256);
-      bev_.i256 = __lasx_xvpickev_d(b_.i256, b_.i256);
-      bod_.i256 = __lasx_xvpickod_d(b_.i256, b_.i256);
-      aev_.d256 = __lasx_xvfsub_d(aev_.d256, bev_.d256);
-      aod_.d256 = __lasx_xvfadd_d(aod_.d256, bod_.d256);
-      r_.i256   = __lasx_xvilvl_d(aod_.i256, aev_.i256);
-    #elif SIMDE_NATURAL_VECTOR_SIZE_LE(128)
+    #if SIMDE_NATURAL_VECTOR_SIZE_LE(128)
       r_.m128d[0] = simde_mm_addsub_pd(a_.m128d[0], b_.m128d[0]);
       r_.m128d[1] = simde_mm_addsub_pd(a_.m128d[1], b_.m128d[1]);
     #else

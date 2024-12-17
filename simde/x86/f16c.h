@@ -51,6 +51,8 @@ simde_mm_cvtps_ph(simde__m128 a, const int imm8) {
 
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(__ARM_FEATURE_FP16_VECTOR_ARITHMETIC)
     r_.neon_f16 = vcombine_f16(vcvt_f16_f32(a_.neon_f32), vdup_n_f16(SIMDE_FLOAT16_C(0.0)));
+  #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+    r_.lsx_i64 = __lsx_vfcvt_h_s((v4f32)__lsx_vreplgr2vr_w(0), a_.lsx_f32);
   #elif defined(SIMDE_FLOAT16_VECTOR)
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(a_.f32) / sizeof(a_.f32[0])) ; i++) {
@@ -81,7 +83,9 @@ simde_mm_cvtph_ps(simde__m128i a) {
     simde__m128i_private a_ = simde__m128i_to_private(a);
     simde__m128_private r_;
 
-    #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(__ARM_FEATURE_FP16_VECTOR_ARITHMETIC)
+    #if defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      r_.lsx_f32 = __lsx_vfcvtl_s_h(a_.lsx_i64);
+    #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(__ARM_FEATURE_FP16_VECTOR_ARITHMETIC)
       r_.neon_f32 = vcvt_f32_f16(vget_low_f16(a_.neon_f16));
     #elif defined(SIMDE_FLOAT16_VECTOR)
       SIMDE_VECTORIZE
@@ -110,7 +114,11 @@ simde_mm256_cvtps_ph(simde__m256 a, const int imm8) {
 
   HEDLEY_STATIC_CAST(void, imm8);
 
-  #if defined(SIMDE_FLOAT16_VECTOR)
+  #if defined(SIMDE_LOONGARCH_LASX_NATIVE)
+    a_.i256 = __lasx_xvfcvt_h_s(a_.f256, a_.f256);
+    a_.i256 = __lasx_xvpermi_d(a_.i256, 0xd8);
+    r_.lsx_i64 = simde_mm256_extractf128_si256(a_.i256, 0);
+  #elif defined(SIMDE_FLOAT16_VECTOR)
     SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(a_.f32) / sizeof(a_.f32[0])) ; i++) {
         r_.f16[i] = simde_float16_from_float32(a_.f32[i]);
@@ -146,7 +154,11 @@ simde_mm256_cvtph_ps(simde__m128i a) {
     simde__m128i_private a_ = simde__m128i_to_private(a);
     simde__m256_private r_;
 
-    #if defined(SIMDE_FLOAT16_VECTOR)
+    #if defined(SIMDE_LOONGARCH_LASX_NATIVE)
+      r_.i256 = simde_mm256_castsi128_si256(a_.lsx_i64);
+      r_.i256 = __lasx_xvpermi_d(r_.i256, 0xd8);
+      r_.f256 = __lasx_xvfcvtl_s_h(r_.i256);
+    #elif defined(SIMDE_FLOAT16_VECTOR)
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
         r_.f32[i] = simde_float16_to_float32(a_.f16[i]);
