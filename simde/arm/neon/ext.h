@@ -1075,7 +1075,7 @@ simde_vext_p64(simde_poly64x1_t a, simde_poly64x1_t b, const int n)
     const size_t n_ = HEDLEY_STATIC_CAST(size_t, n);
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
       size_t src = i + n_;
-      r_.values[i] = (src < (sizeof(r_.values) / sizeof(r_.values[0]))) ? a_.values[src] : b_.values[src & 0];
+      r_.values[i] = (src >= (sizeof(r_.values) / sizeof(r_.values[0]))) ? b_.values[src & 0] : a_.values[src];
     }
     return simde_poly64x1_from_private(r_);
   #endif
