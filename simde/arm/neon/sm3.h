@@ -31,16 +31,12 @@
 
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
-#if HEDLEY_GCC_VERSION_CHECK(14,0,0)
-  SIMDE_DIAGNOSTIC_DISABLE_MAYBE_UNINITIAZILED_
-#endif
-
 SIMDE_BEGIN_DECLS_
 
-#define ROR32(operand, shift) (((operand) >> (shift)) | ((operand) << (32-shift)))
-#define ROL32(operand, shift) (((operand) >> (32-shift)) | ((operand) << (shift)))
-#define LSR(operand, shift) ((operand) >> (shift))
-#define LSL(operand, shift) ((operand) << (shift))
+#define SIMDE_ROR32(operand, shift) (((operand) >> (shift)) | ((operand) << (32-shift)))
+#define SIMDE_ROL32(operand, shift) (((operand) >> (32-shift)) | ((operand) << (shift)))
+#define SIMDE_LSR(operand, shift) ((operand) >> (shift))
+#define SIMDE_LSL(operand, shift) ((operand) << (shift))
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde_uint32x4_t
@@ -53,7 +49,7 @@ simde_vsm3ss1q_u32(simde_uint32x4_t n, simde_uint32x4_t m, simde_uint32x4_t a) {
       n_ = simde_uint32x4_to_private(n),
       m_ = simde_uint32x4_to_private(m),
       a_ = simde_uint32x4_to_private(a);
-    r_.values[3] = ROL32((ROL32(n_.values[3], 12) + m_.values[3] + a_.values[3]), 7);
+    r_.values[3] = SIMDE_ROL32((SIMDE_ROL32(n_.values[3], 12) + m_.values[3] + a_.values[3]), 7);
     r_.values[2] = 0;
     r_.values[1] = 0;
     r_.values[0] = 0;
@@ -78,11 +74,11 @@ simde_vsm3tt1aq_u32(simde_uint32x4_t a, simde_uint32x4_t b, simde_uint32x4_t c, 
     uint32_t WjPrime, TT1, SS2;
 
     WjPrime = c_.values[imm2];
-    SS2 = b_.values[3] ^ ROL32(a_.values[3], 12);
+    SS2 = b_.values[3] ^ SIMDE_ROL32(a_.values[3], 12);
     TT1 = a_.values[1] ^ (a_.values[3] ^ a_.values[2]);
     TT1 = (TT1 + a_.values[0] + SS2 + WjPrime);
     r_.values[0] = a_.values[1];
-    r_.values[1] = ROL32(a_.values[2], 9);
+    r_.values[1] = SIMDE_ROL32(a_.values[2], 9);
     r_.values[2] = a_.values[3];
     r_.values[3] = TT1;
     return simde_uint32x4_from_private(r_);
@@ -108,11 +104,11 @@ simde_vsm3tt1bq_u32(simde_uint32x4_t a, simde_uint32x4_t b, simde_uint32x4_t c, 
     uint32_t WjPrime, TT1, SS2;
 
     WjPrime = c_.values[imm2];
-    SS2 = b_.values[3] ^ ROL32(a_.values[3], 12);
+    SS2 = b_.values[3] ^ SIMDE_ROL32(a_.values[3], 12);
     TT1 = (a_.values[3] & a_.values[1]) | (a_.values[3] & a_.values[2]) | (a_.values[1] & a_.values[2]);
     TT1 = (TT1 + a_.values[0] + SS2 + WjPrime);
     r_.values[0] = a_.values[1];
-    r_.values[1] = ROL32(a_.values[2], 9);
+    r_.values[1] = SIMDE_ROL32(a_.values[2], 9);
     r_.values[2] = a_.values[3];
     r_.values[3] = TT1;
     return simde_uint32x4_from_private(r_);
@@ -141,9 +137,9 @@ simde_vsm3tt2aq_u32(simde_uint32x4_t a, simde_uint32x4_t b, simde_uint32x4_t c, 
     TT2 = a_.values[1] ^ (a_.values[3] ^ a_.values[2]);
     TT2 = (TT2 + a_.values[0] + b_.values[3] + Wj);
     r_.values[0] = a_.values[1];
-    r_.values[1] = ROL32(a_.values[2], 19);
+    r_.values[1] = SIMDE_ROL32(a_.values[2], 19);
     r_.values[2] = a_.values[3];
-    r_.values[3] = TT2 ^ ROL32(TT2, 9) ^ ROL32(TT2, 17);
+    r_.values[3] = TT2 ^ SIMDE_ROL32(TT2, 9) ^ SIMDE_ROL32(TT2, 17);
     return simde_uint32x4_from_private(r_);
 }
 #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARCH_ARM_SM3)
@@ -170,9 +166,9 @@ simde_vsm3tt2bq_u32(simde_uint32x4_t a, simde_uint32x4_t b, simde_uint32x4_t c, 
     TT2 = (a_.values[3] & a_.values[2]) | (~(a_.values[3]) & a_.values[1]);
     TT2 = (TT2 + a_.values[0] + b_.values[3] + Wj);
     r_.values[0] = a_.values[1];
-    r_.values[1] = ROL32(a_.values[2], 19);
+    r_.values[1] = SIMDE_ROL32(a_.values[2], 19);
     r_.values[2] = a_.values[3];
-    r_.values[3] = TT2 ^ ROL32(TT2, 9) ^ ROL32(TT2, 17);
+    r_.values[3] = TT2 ^ SIMDE_ROL32(TT2, 9) ^ SIMDE_ROL32(TT2, 17);
     return simde_uint32x4_from_private(r_);
 }
 #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARCH_ARM_SM3)
@@ -194,14 +190,14 @@ simde_vsm3partw1q_u32(simde_uint32x4_t a, simde_uint32x4_t b, simde_uint32x4_t c
       a_ = simde_uint32x4_to_private(a),
       b_ = simde_uint32x4_to_private(b),
       c_ = simde_uint32x4_to_private(c);
-    r_.values[2] = (a_.values[2] ^ b_.values[2]) ^ (ROL32(c_.values[3], 15));
-    r_.values[1] = (a_.values[1] ^ b_.values[1]) ^ (ROL32(c_.values[2], 15));
-    r_.values[0] = (a_.values[0] ^ b_.values[0]) ^ (ROL32(c_.values[1], 15));
+    r_.values[2] = (a_.values[2] ^ b_.values[2]) ^ (SIMDE_ROL32(c_.values[3], 15));
+    r_.values[1] = (a_.values[1] ^ b_.values[1]) ^ (SIMDE_ROL32(c_.values[2], 15));
+    r_.values[0] = (a_.values[0] ^ b_.values[0]) ^ (SIMDE_ROL32(c_.values[1], 15));
     for(int i = 0; i < 4; ++i) {
       if (i == 3) {
-        r_.values[3] = (a_.values[3] ^ b_.values[3]) ^ (ROL32(r_.values[0], 15));
+        r_.values[3] = (a_.values[3] ^ b_.values[3]) ^ (SIMDE_ROL32(r_.values[0], 15));
       }
-      r_.values[i] = r_.values[i] ^ ROL32(r_.values[i], 15) ^ ROL32(r_.values[i], 23);
+      r_.values[i] = r_.values[i] ^ SIMDE_ROL32(r_.values[i], 15) ^ SIMDE_ROL32(r_.values[i], 23);
     }
     return simde_uint32x4_from_private(r_);
   #endif
@@ -224,16 +220,16 @@ simde_vsm3partw2q_u32(simde_uint32x4_t a, simde_uint32x4_t b, simde_uint32x4_t c
       b_ = simde_uint32x4_to_private(b),
       c_ = simde_uint32x4_to_private(c);
     uint32_t tmp2;
-    tmp_.values[3] = b_.values[3] ^ (ROL32(c_.values[3], 7));
-    tmp_.values[2] = b_.values[2] ^ (ROL32(c_.values[2], 7));
-    tmp_.values[1] = b_.values[1] ^ (ROL32(c_.values[1], 7));
-    tmp_.values[0] = b_.values[0] ^ (ROL32(c_.values[0], 7));
+    tmp_.values[3] = b_.values[3] ^ (SIMDE_ROL32(c_.values[3], 7));
+    tmp_.values[2] = b_.values[2] ^ (SIMDE_ROL32(c_.values[2], 7));
+    tmp_.values[1] = b_.values[1] ^ (SIMDE_ROL32(c_.values[1], 7));
+    tmp_.values[0] = b_.values[0] ^ (SIMDE_ROL32(c_.values[0], 7));
     r_.values[3] = a_.values[3] ^ tmp_.values[3];
     r_.values[2] = a_.values[2] ^ tmp_.values[2];
     r_.values[1] = a_.values[1] ^ tmp_.values[1];
     r_.values[0] = a_.values[0] ^ tmp_.values[0];
-    tmp2 = ROL32(tmp_.values[0], 15);
-    tmp2 = tmp2 ^ ROL32(tmp2, 15) ^ ROL32(tmp2, 23);
+    tmp2 = SIMDE_ROL32(tmp_.values[0], 15);
+    tmp2 = tmp2 ^ SIMDE_ROL32(tmp2, 15) ^ SIMDE_ROL32(tmp2, 23);
     r_.values[3] = r_.values[3] ^ tmp2;
 
     return simde_uint32x4_from_private(r_);
@@ -244,10 +240,10 @@ simde_vsm3partw2q_u32(simde_uint32x4_t a, simde_uint32x4_t b, simde_uint32x4_t c
   #define vsm3partw2q_u32(a, b, c) simde_vsm3partw2q_u32((a), (b), (c))
 #endif
 
-#undef ROR32
-#undef ROL32
-#undef LSR
-#undef LSL
+#undef SIMDE_ROR32
+#undef SIMDE_ROL32
+#undef SIMDE_LSR
+#undef SIMDE_LSL
 
 SIMDE_END_DECLS_
 HEDLEY_DIAGNOSTIC_POP
