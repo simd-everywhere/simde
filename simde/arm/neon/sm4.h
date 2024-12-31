@@ -33,10 +33,10 @@ HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 SIMDE_BEGIN_DECLS_
 
-#define ROR32(operand, shift) (((operand) >> (shift)) | ((operand) << (32-shift)))
-#define ROL32(operand, shift) (((operand) >> (32-shift)) | ((operand) << (shift)))
-#define LSR(operand, shift) ((operand) >> (shift))
-#define LSL(operand, shift) ((operand) << (shift))
+#define SIMDE_ROR32(operand, shift) (((operand) >> (shift)) | ((operand) << (32-shift)))
+#define SIMDE_ROL32(operand, shift) (((operand) >> (32-shift)) | ((operand) << (shift)))
+#define SIMDE_LSR(operand, shift) ((operand) >> (shift))
+#define SIMDE_LSL(operand, shift) ((operand) << (shift))
 
 static const uint8_t simde_sbox_sm4[256] = {
   0xd6,0x90,0xe9,0xfe,0xcc,0xe1,0x3d,0xb7,0x16,0xb6,0x14,0xc2,0x28,0xfb,0x2c,0x05,
@@ -91,7 +91,7 @@ simde_vsm4eq_u32(simde_uint32x4_t a, simde_uint32x4_t b) {
         _intval[i] = simde_sbox_sm4[_intval[i]];
       }
       simde_u32_from_u8x4(_intval, &intval);
-      intval = intval ^ ROL32(intval, 2) ^ ROL32(intval, 10) ^ ROL32(intval, 18) ^ ROL32(intval, 24);
+      intval = intval ^ SIMDE_ROL32(intval, 2) ^ SIMDE_ROL32(intval, 10) ^ SIMDE_ROL32(intval, 18) ^ SIMDE_ROL32(intval, 24);
       intval = intval ^ a_.values[0];
 
       a_.values[0] = a_.values[1];
@@ -128,7 +128,7 @@ simde_vsm4ekeyq_u32(simde_uint32x4_t a, simde_uint32x4_t b) {
         _intval[i] = simde_sbox_sm4[_intval[i]];
       }
       simde_u32_from_u8x4(_intval, &intval);
-      intval = intval ^ ROL32(intval, 13) ^ ROL32(intval, 23);
+      intval = intval ^ SIMDE_ROL32(intval, 13) ^ SIMDE_ROL32(intval, 23);
       intval = intval ^ a_.values[0];
 
       a_.values[0] = a_.values[1];
@@ -144,10 +144,10 @@ simde_vsm4ekeyq_u32(simde_uint32x4_t a, simde_uint32x4_t b) {
   #define vsm4ekeyq_u32(a, b) simde_vsm4ekeyq_u32((a), (b))
 #endif
 
-#undef ROR32
-#undef ROL32
-#undef LSR
-#undef LSL
+#undef SIMDE_ROR32
+#undef SIMDE_ROL32
+#undef SIMDE_LSR
+#undef SIMDE_LSL
 
 SIMDE_END_DECLS_
 HEDLEY_DIAGNOSTIC_POP
