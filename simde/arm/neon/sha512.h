@@ -33,10 +33,10 @@ HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 SIMDE_BEGIN_DECLS_
 
-#define ROR64(operand, shift) (((operand) >> (shift)) | ((operand) << (64-shift)))
-#define ROL64(operand, shift) (((operand) >> (64-shift)) | ((operand) << (shift)))
-#define LSR(operand, shift) ((operand) >> (shift))
-#define LSL(operand, shift) ((operand) << (shift))
+#define SIMDE_ROR64(operand, shift) (((operand) >> (shift)) | ((operand) << (64-shift)))
+#define SIMDE_ROL64(operand, shift) (((operand) >> (64-shift)) | ((operand) << (shift)))
+#define SIMDE_LSR(operand, shift) ((operand) >> (shift))
+#define SIMDE_LSL(operand, shift) ((operand) << (shift))
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde_uint64x2_t
@@ -51,11 +51,11 @@ simde_vsha512hq_u64(simde_uint64x2_t w, simde_uint64x2_t x, simde_uint64x2_t y) 
       y_ = simde_uint64x2_to_private(y);
     uint64_t Msigma1;
     uint64_t tmp;
-    Msigma1 = ROR64(y_.values[1], 14) ^ ROR64(y_.values[1], 18) ^ ROR64(y_.values[1], 41);
+    Msigma1 = SIMDE_ROR64(y_.values[1], 14) ^ SIMDE_ROR64(y_.values[1], 18) ^ SIMDE_ROR64(y_.values[1], 41);
     r_.values[1] = (y_.values[1] & x_.values[0]) ^ (~(y_.values[1]) & x_.values[1]);
     r_.values[1] = (r_.values[1] + Msigma1 + w_.values[1]);
     tmp = r_.values[1] + y_.values[0];
-    Msigma1 = ROR64(tmp, 14) ^ ROR64(tmp, 18) ^ ROR64(tmp, 41);
+    Msigma1 = SIMDE_ROR64(tmp, 14) ^ SIMDE_ROR64(tmp, 18) ^ SIMDE_ROR64(tmp, 41);
     r_.values[0] = (tmp & y_.values[1]) ^ (~(tmp) & x_.values[0]);
     r_.values[0] = (r_.values[0] + Msigma1 + w_.values[0]);
     return simde_uint64x2_from_private(r_);
@@ -79,10 +79,10 @@ simde_vsha512h2q_u64(simde_uint64x2_t w, simde_uint64x2_t x, simde_uint64x2_t y)
       x_ = simde_uint64x2_to_private(x),
       y_ = simde_uint64x2_to_private(y);
     uint64_t Msigma0;
-    Msigma0 = ROR64(y_.values[0], 28) ^ ROR64(y_.values[0], 34) ^ ROR64(y_.values[0], 39);
+    Msigma0 = SIMDE_ROR64(y_.values[0], 28) ^ SIMDE_ROR64(y_.values[0], 34) ^ SIMDE_ROR64(y_.values[0], 39);
     r_.values[1] = (y_.values[1] & x_.values[0]) ^ (y_.values[0] & x_.values[0]) ^ (y_.values[1] & y_.values[0]);
     r_.values[1] = (r_.values[1] + Msigma0 + w_.values[1]);
-    Msigma0 = ROR64(r_.values[1], 28) ^ ROR64(r_.values[1], 34) ^ ROR64(r_.values[1], 39);
+    Msigma0 = SIMDE_ROR64(r_.values[1], 28) ^ SIMDE_ROR64(r_.values[1], 34) ^ SIMDE_ROR64(r_.values[1], 39);
     r_.values[0] = (r_.values[1] & y_.values[0]) ^ (r_.values[1] & y_.values[1]) ^ (y_.values[1] & y_.values[0]);
     r_.values[0] = (r_.values[0] + Msigma0 + w_.values[0]);
     return simde_uint64x2_from_private(r_);
@@ -104,9 +104,9 @@ simde_vsha512su0q_u64(simde_uint64x2_t w, simde_uint64x2_t x) {
       w_ = simde_uint64x2_to_private(w),
       x_ = simde_uint64x2_to_private(x);
     uint64_t sig0;
-    sig0 = ROR64(w_.values[1], 1) ^ ROR64(w_.values[1], 8) ^ (w_.values[1] >> 7);
+    sig0 = SIMDE_ROR64(w_.values[1], 1) ^ SIMDE_ROR64(w_.values[1], 8) ^ (w_.values[1] >> 7);
     r_.values[0] = w_.values[0] + sig0;
-    sig0 = ROR64(x_.values[0], 1) ^ ROR64(x_.values[0], 8) ^ (x_.values[0] >> 7);
+    sig0 = SIMDE_ROR64(x_.values[0], 1) ^ SIMDE_ROR64(x_.values[0], 8) ^ (x_.values[0] >> 7);
     r_.values[1] = w_.values[1] + sig0;
     return simde_uint64x2_from_private(r_);
 
@@ -129,9 +129,9 @@ simde_vsha512su1q_u64(simde_uint64x2_t w, simde_uint64x2_t x, simde_uint64x2_t y
       x_ = simde_uint64x2_to_private(x),
       y_ = simde_uint64x2_to_private(y);
     uint64_t sig1;
-    sig1 = ROR64(x_.values[1], 19) ^ ROR64(x_.values[1], 61) ^ (x_.values[1] >> 6);
+    sig1 = SIMDE_ROR64(x_.values[1], 19) ^ SIMDE_ROR64(x_.values[1], 61) ^ (x_.values[1] >> 6);
     r_.values[1] = w_.values[1] + sig1 + y_.values[1];
-    sig1 = ROR64(x_.values[0], 19) ^ ROR64(x_.values[0], 61) ^ (x_.values[0] >> 6);
+    sig1 = SIMDE_ROR64(x_.values[0], 19) ^ SIMDE_ROR64(x_.values[0], 61) ^ (x_.values[0] >> 6);
     r_.values[0] = w_.values[0] + sig1 + y_.values[0];
     return simde_uint64x2_from_private(r_);
 
@@ -142,10 +142,10 @@ simde_vsha512su1q_u64(simde_uint64x2_t w, simde_uint64x2_t x, simde_uint64x2_t y
   #define vsha512su1q_u64(w, x, y) simde_vsha512su1q_u64((w), (x), (y))
 #endif
 
-#undef ROR64
-#undef ROL64
-#undef LSR
-#undef LSL
+#undef SIMDE_ROR64
+#undef SIMDE_ROL64
+#undef SIMDE_LSR
+#undef SIMDE_LSL
 
 SIMDE_END_DECLS_
 HEDLEY_DIAGNOSTIC_POP
