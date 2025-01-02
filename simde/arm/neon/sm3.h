@@ -45,7 +45,7 @@ simde_vsm3ss1q_u32(simde_uint32x4_t n, simde_uint32x4_t m, simde_uint32x4_t a) {
     return vsm3ss1q_u32(n, m, a);
   #else
     simde_uint32x4_private
-      r_,
+      r_ = {0},
       n_ = simde_uint32x4_to_private(n),
       m_ = simde_uint32x4_to_private(m),
       a_ = simde_uint32x4_to_private(a);
@@ -67,7 +67,7 @@ simde_vsm3tt1aq_u32(simde_uint32x4_t a, simde_uint32x4_t b, simde_uint32x4_t c, 
   SIMDE_REQUIRE_CONSTANT_RANGE(imm2, 0, 3)
 {
     simde_uint32x4_private
-      r_,
+      r_ = {0},
       a_ = simde_uint32x4_to_private(a),
       b_ = simde_uint32x4_to_private(b),
       c_ = simde_uint32x4_to_private(c);
@@ -97,7 +97,7 @@ simde_vsm3tt1bq_u32(simde_uint32x4_t a, simde_uint32x4_t b, simde_uint32x4_t c, 
   SIMDE_REQUIRE_CONSTANT_RANGE(imm2, 0, 3)
 {
     simde_uint32x4_private
-      r_,
+      r_ = {0},
       a_ = simde_uint32x4_to_private(a),
       b_ = simde_uint32x4_to_private(b),
       c_ = simde_uint32x4_to_private(c);
@@ -127,7 +127,7 @@ simde_vsm3tt2aq_u32(simde_uint32x4_t a, simde_uint32x4_t b, simde_uint32x4_t c, 
   SIMDE_REQUIRE_CONSTANT_RANGE(imm2, 0, 3)
 {
     simde_uint32x4_private
-      r_,
+      r_ = {0},
       a_ = simde_uint32x4_to_private(a),
       b_ = simde_uint32x4_to_private(b),
       c_ = simde_uint32x4_to_private(c);
@@ -156,7 +156,7 @@ simde_vsm3tt2bq_u32(simde_uint32x4_t a, simde_uint32x4_t b, simde_uint32x4_t c, 
   SIMDE_REQUIRE_CONSTANT_RANGE(imm2, 0, 3)
 {
     simde_uint32x4_private
-      r_,
+      r_ = {0},
       a_ = simde_uint32x4_to_private(a),
       b_ = simde_uint32x4_to_private(b),
       c_ = simde_uint32x4_to_private(c);
@@ -186,7 +186,7 @@ simde_vsm3partw1q_u32(simde_uint32x4_t a, simde_uint32x4_t b, simde_uint32x4_t c
     return vsm3partw1q_u32(a, b, c);
   #else
     simde_uint32x4_private
-      r_,
+      r_ = {0},
       a_ = simde_uint32x4_to_private(a),
       b_ = simde_uint32x4_to_private(b),
       c_ = simde_uint32x4_to_private(c);
@@ -214,7 +214,7 @@ simde_vsm3partw2q_u32(simde_uint32x4_t a, simde_uint32x4_t b, simde_uint32x4_t c
     return vsm3partw2q_u32(a, b, c);
   #else
     simde_uint32x4_private
-      r_,
+      r_ = {0},
       tmp_,
       a_ = simde_uint32x4_to_private(a),
       b_ = simde_uint32x4_to_private(b),
