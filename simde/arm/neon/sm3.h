@@ -61,6 +61,11 @@ simde_vsm3ss1q_u32(simde_uint32x4_t n, simde_uint32x4_t m, simde_uint32x4_t a) {
   #define vsm3ss1q_u32(n, m, a) simde_vsm3ss1q_u32((n), (m), (a))
 #endif
 
+#if defined(SIMDE_ARCH_RISCV64) && HEDLEY_GCC_VERSION_CHECK(14,0,0)
+HEDLEY_DIAGNOSTIC_PUSH
+SIMDE_DIAGNOSTIC_DISABLE_MAYBE_UNINITIAZILED_
+#endif
+
 SIMDE_FUNCTION_ATTRIBUTES
 simde_uint32x4_t
 simde_vsm3tt1aq_u32(simde_uint32x4_t a, simde_uint32x4_t b, simde_uint32x4_t c, const int imm2)
@@ -177,6 +182,10 @@ simde_vsm3tt2bq_u32(simde_uint32x4_t a, simde_uint32x4_t b, simde_uint32x4_t c, 
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
   #undef vsm3tt2bq_u32
   #define vsm3tt2bq_u32(a, b, c, imm2) simde_vsm3tt2bq_u32((a), (b), (c), (imm2))
+#endif
+
+#if defined(SIMDE_ARCH_RISCV64) && HEDLEY_GCC_VERSION_CHECK(14,0,0)
+HEDLEY_DIAGNOSTIC_POP
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
