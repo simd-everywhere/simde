@@ -1,5 +1,9 @@
 #define SIMDE_TEST_ARM_NEON_INSN sm3
 
+#ifdef __riscv 
+#define SIMDE_DIAGNOSTIC_DISABLE_UNINITIALIZED_
+#endif
+
 #include "test-neon.h"
 #include "../../../simde/arm/neon/sm3.h"
 #include "../../../simde/arm/neon/dup_n.h"
