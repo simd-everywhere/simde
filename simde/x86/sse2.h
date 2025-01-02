@@ -5150,7 +5150,7 @@ simde_mm_pause (void) {
   #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
       __asm__ __volatile ("dbar 0");
   #elif defined(HEDLEY_GCC_VERSION)
-    #if defined(SIMDE_ARCH_RISCV)
+    #if defined(SIMDE_ARCH_RISCV32) || defined(SIMDE_ARCH_RISCV64)
       __builtin_riscv_pause();
     #else
       __asm__ __volatile__ ("nop" ::: "memory");
