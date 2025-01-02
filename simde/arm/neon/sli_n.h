@@ -54,7 +54,7 @@ SIMDE_BEGIN_DECLS_
   #define simde_vslid_n_u64(a, b, n) vslid_n_u64(a, b, n)
 #else
 #define simde_vslid_n_u64(a, b, n) \
-    (((a & (UINT64_C(0xffffffffffffffff) >> (64 - n))) | simde_vshld_n_u64((b), (n))))
+    (((a & (UINT64_C(0x7fffffffffffffff) >> (63 - n))) | simde_vshld_n_u64((b), (n))))
 #endif
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
   #undef vslid_n_u64
@@ -103,7 +103,7 @@ SIMDE_BEGIN_DECLS_
 #else
   #define simde_vsli_n_u16(a, b, n) \
     simde_vorr_u16( \
-        simde_vand_u16((a), simde_vdup_n_u16((UINT16_C(0xffff) >> (16 - n)))), \
+        simde_vand_u16((a), simde_vdup_n_u16((UINT16_C(0x7fff) >> (15 - n)))), \
         simde_vshl_n_u16((b), (n)))
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
@@ -129,7 +129,7 @@ SIMDE_BEGIN_DECLS_
   #define simde_vsli_n_u32(a, b, n) \
     simde_vorr_u32( \
         simde_vand_u32((a), \
-                      simde_vdup_n_u32((UINT32_C(0xffffffff) >> (32 - n)))), \
+                      simde_vdup_n_u32((UINT32_C(0x7fffffff) >> (31 - n)))), \
         simde_vshl_n_u32((b), (n)))
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
@@ -155,7 +155,7 @@ SIMDE_BEGIN_DECLS_
 #define simde_vsli_n_u64(a, b, n) \
     simde_vorr_u64( \
         simde_vand_u64((a), simde_vdup_n_u64( \
-                                (UINT64_C(0xffffffffffffffff) >> (64 - n)))), \
+                                (UINT64_C(0x7fffffffffffffff) >> (63 - n)))), \
         simde_vshl_n_u64((b), (n)))
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
@@ -180,7 +180,7 @@ SIMDE_BEGIN_DECLS_
 #else
   #define simde_vsliq_n_u8(a, b, n) \
     simde_vorrq_u8( \
-        simde_vandq_u8((a), simde_vdupq_n_u8((UINT8_C(0xff) >> (8 - n)))), \
+        simde_vandq_u8((a), simde_vdupq_n_u8((UINT8_C(0x7f) >> (7 - n)))), \
         simde_vshlq_n_u8((b), (n)))
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
@@ -205,7 +205,7 @@ SIMDE_BEGIN_DECLS_
 #else
   #define simde_vsliq_n_u16(a, b, n) \
     simde_vorrq_u16( \
-        simde_vandq_u16((a), simde_vdupq_n_u16((UINT16_C(0xffff) >> (16 - n)))), \
+        simde_vandq_u16((a), simde_vdupq_n_u16((UINT16_C(0x7fff) >> (15 - n)))), \
         simde_vshlq_n_u16((b), (n)))
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
@@ -231,7 +231,7 @@ SIMDE_BEGIN_DECLS_
   #define simde_vsliq_n_u32(a, b, n) \
     simde_vorrq_u32( \
         simde_vandq_u32((a), \
-                      simde_vdupq_n_u32((UINT32_C(0xffffffff) >> (32 - n)))), \
+                      simde_vdupq_n_u32((UINT32_C(0x7fffffff) >> (31 - n)))), \
         simde_vshlq_n_u32((b), (n)))
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
@@ -257,7 +257,7 @@ SIMDE_BEGIN_DECLS_
 #define simde_vsliq_n_u64(a, b, n) \
     simde_vorrq_u64( \
         simde_vandq_u64((a), simde_vdupq_n_u64( \
-                                (UINT64_C(0xffffffffffffffff) >> (64 - n)))), \
+                                (UINT64_C(0x7fffffffffffffff) >> (63 - n)))), \
         simde_vshlq_n_u64((b), (n)))
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
