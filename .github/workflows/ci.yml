@@ -243,6 +243,37 @@ jobs:
     - name: Test
       run: ninja -C build -v test
 
+  arm64-native-aliases:
+    runs-on: macos-15
+    env:
+      CFLAGS: -DSIMDE_ENABLE_NATIVE_ALIASES -DSIMDE_NATIVE_ALIASES_TESTING -Wall -Wextra -Werror -Wno-complex-component-init -Wno-poison-system-directories
+      CXXFLAGS: -DSIMDE_ENABLE_NATIVE_ALIASES -DSIMDE_NATIVE_ALIASES_TESTING -Wall -Wextra -Werror -Wno-complex-component-init -Wno-poison-system-directories
+      DEVELOPER_DIR:  /Applications/Xcode_16.0.app
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+    - name: Compiler version
+      run: cc --version
+    - name: ccache
+      uses: hendrikmuhs/ccache-action@v1.2
+      with:
+        key: ${{ github.job }}
+    - name: Python install bug workaround # https://github.com/actions/setup-python/issues/577
+      run: |
+          find /usr/local/bin -type l -exec sh -c 'readlink -f "$1" \
+          | grep -q ^/Library/Frameworks/Python.framework/Versions/' _ {} \; -exec rm -v {} \;
+    - name: Install Homebrew Dependencies
+      run: brew install meson ninja
+    - name: Convert
+      run: ./test/native-aliases.sh
+    - name: Configure
+      run: meson setup build
+    - name: Build
+      run: ninja -C build -v
+    - name: Test
+      run: ninja -C build -v test
+
   sleef:
     runs-on: ubuntu-24.04
     env:
