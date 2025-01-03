@@ -53,7 +53,7 @@ simde_vqdmulhs_s32(int32_t a, int32_t b) {
 }
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
   #undef vqdmulhs_s32
-  #define vqdmulhs_s32(a) simde_vqdmulhs_s32((a))
+  #define vqdmulhs_s32(a, b) simde_vqdmulhs_s32((a), (b))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
