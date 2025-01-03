@@ -122,9 +122,94 @@ test_simde_vqdmull_s32 (SIMDE_MUNIT_TEST_ARGS) {
 }
 
 
+static int
+test_simde_vqdmulls_s32 (SIMDE_MUNIT_TEST_ARGS) {
+#if 1
+  static const struct {
+    int32_t a;
+    int32_t b;
+    int64_t r;
+  } test_vec[] = {
+    {              INT32_MAX,
+                   INT32_MAX,
+       INT64_C( 9223372028264841218) },
+    {              INT32_MAX,
+       INT32_C(           0),
+       INT64_C(                   0) },
+    {              INT32_MAX,
+                   INT32_MIN,
+      -INT64_C( 9223372032559808512) },
+    {              INT32_MAX,
+      -INT32_C(  2147483647),
+      -INT64_C( 9223372028264841218) },
+    {  INT32_C(           0),
+                   INT32_MAX,
+       INT64_C(                   0) },
+    {  INT32_C(           0),
+       INT32_C(           0),
+       INT64_C(                   0) },
+    {  INT32_C(           0),
+                   INT32_MIN,
+       INT64_C(                   0) },
+    {  INT32_C(           0),
+      -INT32_C(  2147483647),
+       INT64_C(                   0) },
+    {              INT32_MIN,
+                   INT32_MAX,
+      -INT64_C( 9223372032559808512) },
+    {              INT32_MIN,
+       INT32_C(           0),
+       INT64_C(                   0) },
+    {              INT32_MIN,
+                   INT32_MIN,
+                           INT64_MAX },
+    {              INT32_MIN,
+      -INT32_C(  2147483647),
+       INT64_C( 9223372032559808512) },
+    { -INT32_C(  2147483647),
+                   INT32_MAX,
+      -INT64_C( 9223372028264841218) },
+    { -INT32_C(  2147483647),
+       INT32_C(           0),
+       INT64_C(                   0) },
+    { -INT32_C(  2147483647),
+                   INT32_MIN,
+       INT64_C( 9223372032559808512) },
+    { -INT32_C(  2147483647),
+      -INT32_C(  2147483647),
+       INT64_C( 9223372028264841218) },
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
+    int64_t r = simde_vqdmulls_s32(test_vec[i].a, test_vec[i].b);
+
+    simde_assert_equal_i64(r, test_vec[i].r);
+  }
+
+  return 0;
+#else
+  int32_t vals[4] = {0x7fffffff, 0, 0x80000000, 0x80000001};
+
+  fputc('\n', stdout);
+  for (int i = 0; i < 4; i++)
+  {
+    for (int j = 0; j < 4; j++)
+    {
+      int64_t r = simde_vqdmulls_s32(vals[i], vals[j]);
+
+      simde_test_codegen_write_i32(2, vals[i], SIMDE_TEST_VEC_POS_FIRST);
+      simde_test_codegen_write_i32(2, vals[j], SIMDE_TEST_VEC_POS_MIDDLE);
+      simde_test_codegen_write_i64(2, r, SIMDE_TEST_VEC_POS_LAST);
+    }
+  }
+  return 1;
+#endif
+}
+
 SIMDE_TEST_FUNC_LIST_BEGIN
 SIMDE_TEST_FUNC_LIST_ENTRY(vqdmull_s16)
 SIMDE_TEST_FUNC_LIST_ENTRY(vqdmull_s32)
+SIMDE_TEST_FUNC_LIST_ENTRY(vqdmulls_s32)
 SIMDE_TEST_FUNC_LIST_END
 
 #include "test-neon-footer.h"
