@@ -65,7 +65,7 @@ simde_vqdmulls_s32(int32_t a, int32_t b) {
     return vqdmulls_s32(a, b);
   #else
     int64_t mul = (HEDLEY_STATIC_CAST(int64_t, a) * HEDLEY_STATIC_CAST(int64_t, b));
-    return ((a > 0 ? a : -a) & (HEDLEY_STATIC_CAST(int64_t, 1) << 62)) ? ((mul < 0) ? INT64_MIN : INT64_MAX) : mul << 1;
+    return (simde_math_llabs(mul) & (HEDLEY_STATIC_CAST(int64_t, 1) << 62)) ? ((mul < 0) ? INT64_MIN : INT64_MAX) : mul << 1;
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
