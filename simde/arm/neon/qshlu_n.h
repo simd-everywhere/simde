@@ -94,8 +94,8 @@ SIMDE_FUNCTION_ATTRIBUTES
 uint64_t
 simde_vqshlud_n_s64(int64_t a, const int n)
     SIMDE_REQUIRE_CONSTANT_RANGE(n, 0, 63) {
-  uint32_t r = HEDLEY_STATIC_CAST(uint32_t, a << n);
-  r |= (((r >> n) != HEDLEY_STATIC_CAST(uint32_t, a)) ? UINT32_MAX : 0);
+  uint64_t r = HEDLEY_STATIC_CAST(uint64_t, a << n);
+  r |= (((r >> n) != HEDLEY_STATIC_CAST(uint64_t, a)) ? UINT64_MAX : 0);
   return (a < 0) ? 0 : r;
 }
 #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
