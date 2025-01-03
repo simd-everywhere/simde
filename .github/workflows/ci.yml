@@ -62,9 +62,9 @@ jobs:
           find /usr/local/bin -type l -exec sh -c 'readlink -f "$1" \
           | grep -q ^/Library/Frameworks/Python.framework/Versions/' _ {} \; -exec rm -v {} \;
     - name: Install Homebrew Dependencies
-      run: brew install meson ninja
+      run: brew install meson ninja grep gnu-sed
     - name: Convert
-      run: ./test/native-aliases.sh
+      run: PATH="$HOMEBREW_PREFIX/opt/grep/libexec/gnubin:$HOMEBREW_PREFIX/opt/gnu-sed/libexec/gnubin:$PATH" bash -ex ./test/native-aliases.sh
     - name: Configure
       run: meson setup build
     - name: Build
