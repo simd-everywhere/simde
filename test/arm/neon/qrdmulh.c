@@ -159,12 +159,9 @@ test_simde_vqrdmulhq_s16 (SIMDE_MUNIT_TEST_ARGS) {
     { {  INT16_C( 28579),  INT16_C( 26571),  INT16_C( 23618),  INT16_C(  3470),  INT16_C( 10594),  INT16_C( 31318), -INT16_C( 24794),  INT16_C(  1860) },
       { -INT16_C( 22526), -INT16_C( 12632),  INT16_C( 21464),  INT16_C(  8577),  INT16_C( 28627),  INT16_C( 27596), -INT16_C( 26895), -INT16_C( 27290) },
       { -INT16_C( 19646), -INT16_C( 10243),  INT16_C( 15470),  INT16_C(   908),  INT16_C(  9255),  INT16_C( 26375),  INT16_C( 20350), -INT16_C(  1549) } },
-#if !defined(SIMDE_X86_SSE_NATIVE) && !defined(SIMDE_X86_MMX_NATIVE)
     { {        INT16_MIN,        INT16_MIN,        INT16_MIN,        INT16_MIN,        INT16_MIN,        INT16_MIN,        INT16_MIN,        INT16_MIN },
       {        INT16_MIN,        INT16_MIN,        INT16_MIN,        INT16_MIN,        INT16_MIN,        INT16_MIN,        INT16_MIN,        INT16_MIN },
       {        INT16_MAX,        INT16_MAX,        INT16_MAX,        INT16_MAX,        INT16_MAX,        INT16_MAX,        INT16_MAX,        INT16_MAX } },
-#endif
-
   };
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
