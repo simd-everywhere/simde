@@ -10,12 +10,12 @@ jobs:
       CC: gcc
       CXX: g++
     steps:
-      - run: apt-get update && apt-get install -y git ssh ninja-build pipx python3-setuptools python3-wheel gcovr gcc g++
+      - run: sudo apt-get update && sudo apt-get install -y git ninja-build pipx gcc g++ libxml2-utils
       - checkout
       - run: cat /proc/cpuinfo /proc/meminfo
       - run: pipx install meson==0.55.1
       - run: ./test/native-aliases.sh
-      - run: /root/.local/bin/meson setup build -Db_coverage=true
+      - run: ${HOME}/.local/bin/meson setup build -Db_coverage=true
       - run: ninja -C build -v -j 5
       - run: ninja -C build -v test
 
