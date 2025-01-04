@@ -1,5 +1,6 @@
 #define SIMDE_TEST_ARM_NEON_INSN abd
 
+#include "../../../simde/arm/neon/ld1.h"
 #include "test-neon.h"
 #include "../../../simde/arm/neon/abd.h"
 
