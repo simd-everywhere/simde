@@ -45,7 +45,7 @@ simde_vld1_dup_f16(simde_float16_t const * ptr) {
     return simde_vdup_n_f16(*ptr);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && !defined(SIMDE_ARM_NEON_FP16))
   #undef vld1_dup_f16
   #define vld1_dup_f16(a) simde_vld1_dup_f16((a))
 #endif
@@ -201,7 +201,7 @@ simde_vld1q_dup_f16(simde_float16_t const * ptr) {
     return simde_vdupq_n_f16(*ptr);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && !defined(SIMDE_ARM_NEON_FP16))
   #undef vld1q_dup_f16
   #define vld1q_dup_f16(a) simde_vld1q_dup_f16((a))
 #endif

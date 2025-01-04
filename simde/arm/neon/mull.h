@@ -280,7 +280,7 @@ simde_vmull_p64(simde_poly64_t a, simde_poly64_t b) {
     return result;
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && !defined(SIMDE_ARCH_ARM_CRYPTO))
   #undef vmull_p64
   #define vmull_p64(a, b) simde_vmull_p64((a), (b))
 #endif

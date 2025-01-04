@@ -156,7 +156,8 @@ simde_vduph_lane_f16(simde_float16x4_t vec, const int lane)
 #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
   #define simde_vduph_lane_f16(vec, lane) vduph_lane_f16(vec, lane)
 #endif
-#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+  !(defined(SIMDE_ARM_NEON_FP16)))
   #undef vduph_lane_f16
   #define vduph_lane_f16(vec, lane) simde_vduph_lane_f16((vec), (lane))
 #endif
@@ -167,7 +168,8 @@ simde_vduph_lane_f16(simde_float16x4_t vec, const int lane)
 #else
   #define simde_vdup_lane_f16(vec, lane) simde_vdup_n_f16(simde_vduph_lane_f16(vec, lane))
 #endif
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+  !(defined(SIMDE_ARM_NEON_FP16)))
   #undef vdup_lane_f16
   #define vdup_lane_f16(vec, lane) simde_vdup_lane_f16((vec), (lane))
 #endif
@@ -181,7 +183,8 @@ simde_vdup_laneq_f16(simde_float16x8_t vec, const int lane)
 #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
   #define simde_vdup_laneq_f16(vec, lane) vdup_laneq_f16(vec, lane)
 #endif
-#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+  !(defined(SIMDE_ARM_NEON_FP16)))
   #undef vdup_laneq_f16
   #define vdup_laneq_f16(vec, lane) simde_vdup_laneq_f16((vec), (lane))
 #endif
@@ -195,7 +198,8 @@ simde_vdupq_lane_f16(simde_float16x4_t vec, const int lane)
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
   #define simde_vdupq_lane_f16(vec, lane) vdupq_lane_f16(vec, lane)
 #endif
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+  !(defined(SIMDE_ARM_NEON_FP16)))
   #undef vdupq_lane_f16
   #define vdupq_lane_f16(vec, lane) simde_vdupq_lane_f16((vec), (lane))
 #endif
@@ -987,7 +991,8 @@ simde_vdupq_laneq_f16(simde_float16x8_t vec, const int lane)
 #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
   #define simde_vdupq_laneq_f16(vec, lane) vdupq_laneq_f16(vec, lane)
 #endif
-#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+  !(defined(SIMDE_ARM_NEON_FP16)))
   #undef vdupq_laneq_f16
   #define vdupq_laneq_f16(vec, lane) simde_vdupq_laneq_f16((vec), (lane))
 #endif
@@ -1383,7 +1388,8 @@ simde_vduph_laneq_f16(simde_float16x8_t vec, const int lane)
 #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
   #define simde_vduph_laneq_f16(vec, lane) vduph_laneq_f16(vec, lane)
 #endif
-#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+  !(defined(SIMDE_ARM_NEON_FP16)))
   #undef vduph_laneq_f16
   #define vduph_laneq_f16(vec, lane) simde_vduph_laneq_f16((vec), (lane))
 #endif
@@ -1565,7 +1571,8 @@ simde_vdupb_lane_p8(simde_poly8x8_t vec, const int lane)
 #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && !defined(SIMDE_BUG_CLANG_71362)
   #define simde_vdupb_lane_p8(vec, lane) vdupb_lane_p8((vec), (lane))
 #endif
-#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+  defined(SIMDE_BUG_CLANG_71362))
   #undef vdupb_lane_p8
   #define vdupb_lane_p8(vec, lane) simde_vdupb_lane_p8((vec), (lane))
 #endif
@@ -1579,7 +1586,8 @@ simde_vdupb_laneq_p8(simde_poly8x16_t vec, const int lane)
 #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && !defined(SIMDE_BUG_CLANG_71362)
   #define simde_vdupb_laneq_p8(vec, lane) vdupb_laneq_p8((vec), (lane))
 #endif
-#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+  defined(SIMDE_BUG_CLANG_71362))
   #undef vdupb_laneq_p8
   #define vdupb_laneq_p8(vec, lane) simde_vdupb_laneq_p8((vec), (lane))
 #endif
@@ -1593,7 +1601,8 @@ simde_vduph_lane_p16(simde_poly16x4_t vec, const int lane)
 #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && !defined(SIMDE_BUG_CLANG_71362)
   #define simde_vduph_lane_p16(vec, lane) vduph_lane_p16((vec), (lane))
 #endif
-#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+  defined(SIMDE_BUG_CLANG_71362))
   #undef vduph_lane_p16
   #define vduph_lane_p16(vec, lane) simde_vduph_lane_p16((vec), (lane))
 #endif
@@ -1607,7 +1616,8 @@ simde_vduph_laneq_p16(simde_poly16x8_t vec, const int lane)
 #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && !defined(SIMDE_BUG_CLANG_71362)
   #define simde_vduph_laneq_p16(vec, lane) vduph_laneq_p16((vec), (lane))
 #endif
-#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+  defined(SIMDE_BUG_CLANG_71362))
   #undef vduph_laneq_p16
   #define vduph_laneq_p16(vec, lane) simde_vduph_laneq_p16((vec), (lane))
 #endif
@@ -1621,7 +1631,8 @@ simde_vduph_lane_bf16(simde_bfloat16x4_t vec, const int lane)
 #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_BF16)
   #define simde_vduph_lane_bf16(vec, lane) vduph_lane_bf16(vec, lane)
 #endif
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+  !(defined(SIMDE_ARM_NEON_BF16)))
   #undef vduph_lane_bf16
   #define vduph_lane_bf16(vec, lane) simde_vduph_lane_bf16((vec), (lane))
 #endif
@@ -1635,7 +1646,8 @@ simde_vduph_laneq_bf16(simde_bfloat16x8_t vec, const int lane)
 #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_BF16)
   #define simde_vduph_laneq_bf16(vec, lane) vduph_laneq_bf16(vec, lane)
 #endif
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+  !(defined(SIMDE_ARM_NEON_BF16)))
   #undef vduph_laneq_bf16
   #define vduph_laneq_bf16(vec, lane) simde_vduph_laneq_bf16((vec), (lane))
 #endif
@@ -1646,7 +1658,8 @@ simde_vduph_laneq_bf16(simde_bfloat16x8_t vec, const int lane)
 #else
   #define simde_vdup_lane_bf16(vec, lane) simde_vdup_n_bf16(simde_vduph_lane_bf16(vec, lane))
 #endif
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+  !(defined(SIMDE_ARM_NEON_BF16)))
   #undef vdup_lane_bf16
   #define vdup_lane_bf16(vec, lane) simde_vdup_lane_bf16((vec), (lane))
 #endif
@@ -1660,7 +1673,8 @@ simde_vdup_laneq_bf16(simde_bfloat16x8_t vec, const int lane)
 #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_BF16)
 #define simde_vdup_laneq_bf16(vec, lane) vdup_laneq_bf16(vec, lane)
 #endif
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+  !(defined(SIMDE_ARM_NEON_BF16)))
   #undef vdup_laneq_bf16
   #define vdup_laneq_bf16(vec, lane) simde_vdup_laneq_bf16((vec), (lane))
 #endif
@@ -1674,7 +1688,8 @@ simde_vdupq_lane_bf16(simde_bfloat16x4_t vec, const int lane)
 #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_BF16)
 #define simde_vdupq_lane_bf16(vec, lane) vdupq_lane_bf16(vec, lane)
 #endif
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+  !(defined(SIMDE_ARM_NEON_BF16)))
   #undef vdupq_lane_bf16
   #define vdupq_lane_bf16(vec, lane) simde_vdupq_lane_bf16((vec), (lane))
 #endif
@@ -1688,7 +1703,8 @@ simde_vdupq_laneq_bf16(simde_bfloat16x8_t vec, const int lane)
 #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_BF16)
   #define simde_vdupq_laneq_bf16(vec, lane) vdupq_laneq_bf16(vec, lane)
 #endif
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+  !(defined(SIMDE_ARM_NEON_BF16)))
   #undef vdupq_laneq_bf16
   #define vdupq_laneq_bf16(vec, lane) simde_vdupq_laneq_bf16((vec), (lane))
 #endif

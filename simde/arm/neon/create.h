@@ -158,7 +158,8 @@ simde_vcreate_f16(uint64_t a) {
     return simde_vreinterpret_f16_u64(simde_vdup_n_u64(a));
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !(defined(SIMDE_ARM_NEON_FP16)))
   #undef vcreate_f16
   #define vcreate_f16(a) simde_vcreate_f16(a)
 #endif
@@ -242,7 +243,8 @@ simde_vcreate_bf16(uint64_t a) {
     return simde_vreinterpret_bf16_u64(simde_vdup_n_u64(a));
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !(defined(SIMDE_ARM_NEON_BF16)))
   #undef vcreate_bf16
   #define vcreate_bf16(a) simde_vcreate_bf16(a)
 #endif
