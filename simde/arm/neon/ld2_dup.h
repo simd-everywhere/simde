@@ -48,7 +48,8 @@ simde_vld2_dup_f16(simde_float16_t const ptr[HEDLEY_ARRAY_PARAM(2)]) {
     return r;
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+  !(defined(SIMDE_ARM_NEON_FP16)))
   #undef vld2_dup_f16
   #define vld2_dup_f16(a) simde_vld2_dup_f16((a))
 #endif
@@ -257,7 +258,8 @@ simde_vld2q_dup_f16(simde_float16_t const * ptr) {
     return r;
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+  !(defined(SIMDE_ARM_NEON_FP16)))
   #undef vld2q_dup_f16
   #define vld2q_dup_f16(a) simde_vld2q_dup_f16((a))
 #endif
@@ -524,7 +526,9 @@ simde_vld2q_dup_p8(simde_poly8_t const * ptr) {
     return r;
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+  !(!defined(SIMDE_BUG_GCC_95399) && \
+      !defined(SIMDE_BUG_CLANG_71763)))
   #undef vld2q_dup_p8
   #define vld2q_dup_p8(a) simde_vld2q_dup_p8((a))
 #endif
@@ -544,7 +548,9 @@ simde_vld2q_dup_p16(simde_poly16_t const * ptr) {
     return r;
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+  !(!defined(SIMDE_BUG_GCC_95399) && \
+      !defined(SIMDE_BUG_CLANG_71763)))
   #undef vld2q_dup_p16
   #define vld2q_dup_p16(a) simde_vld2q_dup_p16((a))
 #endif
@@ -582,7 +588,8 @@ simde_vld2_dup_bf16(simde_bfloat16_t const ptr[HEDLEY_ARRAY_PARAM(2)]) {
     return r;
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+  !(defined(SIMDE_ARM_NEON_BF16)))
   #undef vld2_dup_bf16
   #define vld2_dup_bf16(a) simde_vld2_dup_bf16((a))
 #endif
@@ -601,7 +608,8 @@ simde_vld2q_dup_bf16(simde_bfloat16 const * ptr) {
     return r;
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+  !(defined(SIMDE_ARM_NEON_BF16)))
   #undef vld2q_dup_bf16
   #define vld2q_dup_bf16(a) simde_vld2q_dup_bf16((a))
 #endif

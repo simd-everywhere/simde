@@ -78,7 +78,8 @@ simde___crc32b(uint32_t a, uint8_t b) {
     return HEDLEY_STATIC_CAST(uint32_t, simde_crc32_reverseBits(result, 32));
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !(defined(SIMDE_ARCH_ARM_CRC32)))
   #undef __crc32b
   #define __crc32b(a, b) simde___crc32b((a), (b))
 #endif
@@ -104,7 +105,8 @@ simde___crc32h(uint32_t a, uint16_t b) {
     return HEDLEY_STATIC_CAST(uint32_t, simde_crc32_reverseBits(result, 32));
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !(defined(SIMDE_ARCH_ARM_CRC32)))
   #undef __crc32h
   #define __crc32h(a, b) simde___crc32h((a), (b))
 #endif
@@ -129,7 +131,8 @@ simde___crc32w(uint32_t a, uint32_t b) {
     return HEDLEY_STATIC_CAST(uint32_t, simde_crc32_reverseBits(tail, 32));
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !(defined(SIMDE_ARCH_ARM_CRC32)))
   #undef __crc32w
   #define __crc32w(a, b) simde___crc32w((a), (b))
 #endif
@@ -164,7 +167,8 @@ simde___crc32d(uint32_t a, uint64_t b) {
     return HEDLEY_STATIC_CAST(uint32_t, simde_crc32_reverseBits(tail, 32));
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !(defined(SIMDE_ARCH_ARM_CRC32)))
   #undef __crc32d
   #define __crc32d(a, b) simde___crc32d((a), (b))
 #endif
@@ -190,7 +194,8 @@ simde___crc32cb(uint32_t a, uint8_t b) {
     return HEDLEY_STATIC_CAST(uint32_t, simde_crc32_reverseBits(result, 32));
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !(defined(SIMDE_ARCH_ARM_CRC32)))
   #undef __crc32cb
   #define __crc32cb(a, b) simde___crc32cb((a), (b))
 #endif
@@ -216,7 +221,8 @@ simde___crc32ch(uint32_t a, uint16_t b) {
     return HEDLEY_STATIC_CAST(uint32_t, simde_crc32_reverseBits(result, 32));
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !(defined(SIMDE_ARCH_ARM_CRC32)))
   #undef __crc32ch
   #define __crc32ch(a, b) simde___crc32ch((a), (b))
 #endif
@@ -241,7 +247,8 @@ simde___crc32cw(uint32_t a, uint32_t b) {
     return HEDLEY_STATIC_CAST(uint32_t, simde_crc32_reverseBits(tail, 32));
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !(defined(SIMDE_ARCH_ARM_CRC32)))
   #undef __crc32cw
   #define __crc32cw(a, b) simde___crc32cw((a), (b))
 #endif
@@ -276,7 +283,8 @@ simde___crc32cd(uint32_t a, uint64_t b) {
     return HEDLEY_STATIC_CAST(uint32_t, simde_crc32_reverseBits(tail, 32));
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !(defined(SIMDE_ARCH_ARM_CRC32)))
   #undef __crc32cd
   #define __crc32cd(a, b) simde___crc32cd((a), (b))
 #endif

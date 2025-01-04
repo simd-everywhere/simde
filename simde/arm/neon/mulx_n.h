@@ -44,7 +44,7 @@ simde_vmulx_n_f16(simde_float16x4_t a, simde_float16 b) {
     return simde_vmul_f16(a, simde_vdup_n_f16(b));
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && !defined(SIMDE_ARM_NEON_FP16))
   #undef vmulx_n_f16
   #define vmulx_n_f16(a, b) simde_vmulx_n_f16((a), (b))
 #endif
@@ -58,7 +58,7 @@ simde_vmulxq_n_f16(simde_float16x8_t a, simde_float16 b) {
     return simde_vmulq_f16(a, simde_vdupq_n_f16(b));
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && !defined(SIMDE_ARM_NEON_FP16))
   #undef vmulxq_n_f16
   #define vmulxq_n_f16(a, b) simde_vmulxq_n_f16((a), (b))
 #endif

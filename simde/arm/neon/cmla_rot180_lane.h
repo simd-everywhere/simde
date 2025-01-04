@@ -76,14 +76,17 @@ simde_float16x4_t simde_vcmla_rot180_lane_f16(simde_float16x4_t r, simde_float16
     return simde_vcvt_f16_f32(simde_float32x4_from_private(r_));
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
-  #undef vcmla_rot180_lane_f16
-  #define vcmla_rot180_lane_f16(r, a, b, lane) simde_vcmla_rot180_lane_f16(r, a, b, lane)
-#endif
 #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && SIMDE_ARCH_ARM_CHECK(8, 3) &&                                                   \
     (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(9, 0, 0)) &&                                                  \
     (!defined(__clang__) || SIMDE_DETECT_CLANG_VERSION_CHECK(12, 0, 0))
   #define simde_vcmla_rot180_lane_f16(r, a, b, lane) vcmla_rot180_lane_f16(r, a, b, lane)
+#endif
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !(SIMDE_ARCH_ARM_CHECK(8,3) && \
+      (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(9,0,0)) && \
+      (!defined(__clang__) || SIMDE_DETECT_CLANG_VERSION_CHECK(12,0,0))))
+  #undef vcmla_rot180_lane_f16
+  #define vcmla_rot180_lane_f16(r, a, b, lane) simde_vcmla_rot180_lane_f16(r, a, b, lane)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -114,14 +117,17 @@ simde_float32x2_t simde_vcmla_rot180_lane_f32(simde_float32x2_t r, simde_float32
   #endif
   return simde_float32x2_from_private(r_);
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
-  #undef vcmla_rot180_lane_f32
-  #define vcmla_rot180_lane_f32(r, a, b, lane) simde_vcmla_rot180_lane_f32(r, a, b, lane)
-#endif
 #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && SIMDE_ARCH_ARM_CHECK(8, 3) &&                                                   \
     (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(9, 0, 0)) &&                                                  \
     (!defined(__clang__) || SIMDE_DETECT_CLANG_VERSION_CHECK(12, 0, 0))
   #define simde_vcmla_rot180_lane_f32(r, a, b, lane) vcmla_rot180_lane_f32(r, a, b, lane)
+#endif
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !(SIMDE_ARCH_ARM_CHECK(8,3) && \
+      (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(9,0,0)) && \
+      (!defined(__clang__) || SIMDE_DETECT_CLANG_VERSION_CHECK(12,0,0))))
+  #undef vcmla_rot180_lane_f32
+  #define vcmla_rot180_lane_f32(r, a, b, lane) simde_vcmla_rot180_lane_f32(r, a, b, lane)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -170,14 +176,17 @@ simde_float16x8_t simde_vcmlaq_rot180_lane_f16(simde_float16x8_t r, simde_float1
                               simde_vcvt_f16_f32(simde_float32x4_from_private(r_high)));
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
-  #undef vcmlaq_rot180_lane_f16
-  #define vcmlaq_rot180_lane_f16(r, a, b, lane) simde_vcmlaq_rot180_lane_f16(r, a, b, lane)
-#endif
 #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && SIMDE_ARCH_ARM_CHECK(8, 3) &&                                                   \
     (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(9, 0, 0)) &&                                                  \
     (!defined(__clang__) || SIMDE_DETECT_CLANG_VERSION_CHECK(12, 0, 0))
   #define simde_vcmlaq_rot180_lane_f16(r, a, b, lane) vcmlaq_rot180_lane_f16(r, a, b, lane)
+#endif
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !(SIMDE_ARCH_ARM_CHECK(8,3) && \
+      (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(9,0,0)) && \
+      (!defined(__clang__) || SIMDE_DETECT_CLANG_VERSION_CHECK(12,0,0))))
+  #undef vcmlaq_rot180_lane_f16
+  #define vcmlaq_rot180_lane_f16(r, a, b, lane) simde_vcmlaq_rot180_lane_f16(r, a, b, lane)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -210,14 +219,17 @@ simde_float32x4_t simde_vcmlaq_rot180_lane_f32(simde_float32x4_t r, simde_float3
   #endif
   return simde_float32x4_from_private(r_);
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
-  #undef vcmlaq_rot180_lane_f32
-  #define vcmlaq_rot180_lane_f32(r, a, b, lane) simde_vcmlaq_rot180_lane_f32(r, a, b, lane)
-#endif
 #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && SIMDE_ARCH_ARM_CHECK(8, 3) &&                                                   \
     (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(9, 0, 0)) &&                                                  \
     (!defined(__clang__) || SIMDE_DETECT_CLANG_VERSION_CHECK(12, 0, 0))
   #define simde_vcmlaq_rot180_lane_f32(r, a, b, lane) vcmlaq_rot180_lane_f32(r, a, b, lane)
+#endif
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !(SIMDE_ARCH_ARM_CHECK(8,3) && \
+      (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(9,0,0)) && \
+      (!defined(__clang__) || SIMDE_DETECT_CLANG_VERSION_CHECK(12,0,0))))
+  #undef vcmlaq_rot180_lane_f32
+  #define vcmlaq_rot180_lane_f32(r, a, b, lane) simde_vcmlaq_rot180_lane_f32(r, a, b, lane)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -257,14 +269,17 @@ simde_float16x4_t simde_vcmla_rot180_laneq_f16(simde_float16x4_t r, simde_float1
     return simde_vcvt_f16_f32(simde_float32x4_from_private(r_));
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
-  #undef vcmla_rot180_laneq_f16
-  #define vcmla_rot180_laneq_f16(r, a, b, lane) simde_vcmla_rot180_laneq_f16(r, a, b, lane)
-#endif
 #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && SIMDE_ARCH_ARM_CHECK(8, 3) &&                                                   \
     (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(9, 0, 0)) &&                                                  \
     (!defined(__clang__) || SIMDE_DETECT_CLANG_VERSION_CHECK(12, 0, 0))
   #define simde_vcmla_rot180_laneq_f16(r, a, b, lane) vcmla_rot180_laneq_f16(r, a, b, lane)
+#endif
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !(SIMDE_ARCH_ARM_CHECK(8,3) && \
+      (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(9,0,0)) && \
+      (!defined(__clang__) || SIMDE_DETECT_CLANG_VERSION_CHECK(12,0,0))))
+  #undef vcmla_rot180_laneq_f16
+  #define vcmla_rot180_laneq_f16(r, a, b, lane) simde_vcmla_rot180_laneq_f16(r, a, b, lane)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -295,14 +310,17 @@ simde_float32x2_t simde_vcmla_rot180_laneq_f32(simde_float32x2_t r, simde_float3
   #endif
   return simde_float32x2_from_private(r_);
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
-  #undef vcmla_rot180_laneq_f32
-  #define vcmla_rot180_laneq_f32(r, a, b, lane) simde_vcmla_rot180_laneq_f32(r, a, b, lane)
-#endif
-#if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && SIMDE_ARCH_ARM_CHECK(8, 3) &&                                                   \
-    (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(9, 0, 0)) &&                                                  \
+#if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && SIMDE_ARCH_ARM_CHECK(8, 3) && \
+    (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(9, 0, 0)) && \
     (!defined(__clang__) || SIMDE_DETECT_CLANG_VERSION_CHECK(12, 0, 0))
   #define simde_vcmla_rot180_laneq_f32(r, a, b, lane) vcmla_rot180_laneq_f32(r, a, b, lane)
+#endif
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !(SIMDE_ARCH_ARM_CHECK(8,3) && \
+      (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(9,0,0)) && \
+      (!defined(__clang__) || SIMDE_DETECT_CLANG_VERSION_CHECK(12,0,0))))
+  #undef vcmla_rot180_laneq_f32
+  #define vcmla_rot180_laneq_f32(r, a, b, lane) simde_vcmla_rot180_laneq_f32(r, a, b, lane)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -351,14 +369,17 @@ simde_float16x8_t simde_vcmlaq_rot180_laneq_f16(simde_float16x8_t r, simde_float
                               simde_vcvt_f16_f32(simde_float32x4_from_private(r_high)));
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
-  #undef vcmlaq_rot180_laneq_f16
-  #define vcmlaq_rot180_laneq_f16(r, a, b, lane) simde_vcmlaq_rot180_laneq_f16(r, a, b, lane)
-#endif
-#if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && SIMDE_ARCH_ARM_CHECK(8, 3) &&                                                   \
-    (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(9, 0, 0)) &&                                                  \
+#if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && SIMDE_ARCH_ARM_CHECK(8, 3) && \
+    (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(9, 0, 0)) && \
     (!defined(__clang__) || SIMDE_DETECT_CLANG_VERSION_CHECK(12, 0, 0))
   #define simde_vcmlaq_rot180_laneq_f16(r, a, b, lane) vcmlaq_rot180_laneq_f16(r, a, b, lane)
+#endif
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !(SIMDE_ARCH_ARM_CHECK(8,3) && \
+      (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(9,0,0)) && \
+      (!defined(__clang__) || SIMDE_DETECT_CLANG_VERSION_CHECK(12,0,0))))
+  #undef vcmlaq_rot180_laneq_f16
+  #define vcmlaq_rot180_laneq_f16(r, a, b, lane) simde_vcmlaq_rot180_laneq_f16(r, a, b, lane)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -391,15 +412,19 @@ simde_float32x4_t simde_vcmlaq_rot180_laneq_f32(simde_float32x4_t r, simde_float
   #endif
   return simde_float32x4_from_private(r_);
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
-  #undef vcmlaq_rot180_laneq_f32
-  #define vcmlaq_rot180_laneq_f32(r, a, b, lane) simde_vcmlaq_rot180_laneq_f32(r, a, b, lane)
-#endif
-#if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && SIMDE_ARCH_ARM_CHECK(8, 3) &&                                                   \
-    (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(9, 0, 0)) &&                                                  \
+#if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && SIMDE_ARCH_ARM_CHECK(8, 3) && \
+    (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(9, 0, 0)) && \
     (!defined(__clang__) || SIMDE_DETECT_CLANG_VERSION_CHECK(12, 0, 0))
   #define simde_vcmlaq_rot180_laneq_f32(r, a, b, lane) vcmlaq_rot180_laneq_f32(r, a, b, lane)
 #endif
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !(SIMDE_ARCH_ARM_CHECK(8,3) && \
+      (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(9,0,0)) && \
+      (!defined(__clang__) || SIMDE_DETECT_CLANG_VERSION_CHECK(12,0,0))))
+  #undef vcmlaq_rot180_laneq_f32
+  #define vcmlaq_rot180_laneq_f32(r, a, b, lane) simde_vcmlaq_rot180_laneq_f32(r, a, b, lane)
+#endif
+
 SIMDE_END_DECLS_
 HEDLEY_DIAGNOSTIC_POP
 

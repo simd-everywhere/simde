@@ -54,7 +54,8 @@ simde_vmaxh_f16(simde_float16_t a, simde_float16_t b) {
     return simde_float16_from_float32(r_);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+  !(defined(SIMDE_ARM_NEON_FP16)))
   #undef vmaxh_f16
   #define vmaxh_f16(a, b) simde_vmaxh_f16((a), (b))
 #endif
@@ -78,7 +79,8 @@ simde_vmax_f16(simde_float16x4_t a, simde_float16x4_t b) {
     return simde_float16x4_from_private(r_);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+  !(defined(SIMDE_ARM_NEON_FP16)))
   #undef vmax_f16
   #define vmax_f16(a, b) simde_vmax_f16((a), (b))
 #endif
@@ -359,7 +361,8 @@ simde_vmaxq_f16(simde_float16x8_t a, simde_float16x8_t b) {
     return simde_float16x8_from_private(r_);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+  !(defined(SIMDE_ARM_NEON_FP16)))
   #undef vmaxq_f16
   #define vmaxq_f16(a, b) simde_vmaxq_f16((a), (b))
 #endif

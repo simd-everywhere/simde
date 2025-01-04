@@ -70,7 +70,8 @@ simde_vld3_f16(simde_float16_t const *ptr) {
     return r;
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+  !(defined(SIMDE_ARM_NEON_FP16)))
   #undef vld3_f16
   #define vld3_f16(a) simde_vld3_f16((a))
 #endif
@@ -433,7 +434,8 @@ simde_vld3q_f16(simde_float16_t const *ptr) {
     return r;
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+  !(defined(SIMDE_ARM_NEON_FP16)))
   #undef vld3q_f16
   #define vld3q_f16(a) simde_vld3q_f16((a))
 #endif
@@ -1072,7 +1074,8 @@ simde_vld3_bf16(simde_bfloat16 const *ptr) {
     return r;
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+  !(defined(SIMDE_ARM_NEON_BF16)))
   #undef vld3_bf16
   #define vld3_bf16(a) simde_vld3_bf16((a))
 #endif
@@ -1100,7 +1103,8 @@ simde_vld3q_bf16(simde_bfloat16 const *ptr) {
     return r;
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+  !(defined(SIMDE_ARM_NEON_BF16)))
   #undef vld3q_bf16
   #define vld3q_bf16(a) simde_vld3q_bf16((a))
 #endif

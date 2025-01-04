@@ -62,7 +62,8 @@ simde_vminv_f16(simde_float16x4_t a) {
     return simde_float16_from_float32(r);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+  !(defined(SIMDE_ARM_NEON_FP16)))
   #undef vminv_f16
   #define vminv_f16(v) simde_vminv_f16(v)
 #endif
@@ -270,7 +271,8 @@ simde_vminvq_f16(simde_float16x8_t a) {
     return simde_float16_from_float32(r);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+  !(defined(SIMDE_ARM_NEON_FP16)))
   #undef vminvq_f16
   #define vminvq_f16(v) simde_vminvq_f16(v)
 #endif
