@@ -1,5 +1,24 @@
 version: 2.1
 jobs:
+  native-aliases-arm64:
+    resource_class: arm.medium
+    machine:
+      image: ubuntu-2404:current
+    environment:
+      CFLAGS: -Wextra -Werror -march=native -DSIMDE_ENABLE_NATIVE_ALIASES -DSIMDE_NATIVE_ALIASES_TESTING
+      CXXFLAGS: -Wextra -Werror -march=native -DSIMDE_ENABLE_NATIVE_ALIASES -DSIMDE_NATIVE_ALIASES_TESTING
+      CC: gcc
+      CXX: g++
+    steps:
+      - run: apt-get update && apt-get install -y git ssh ninja-build pipx python3-setuptools python3-wheel gcovr gcc g++
+      - checkout
+      - run: cat /proc/cpuinfo /proc/meminfo
+      - run: pipx install meson==0.55.1
+      - run: ./test/native-aliases.sh
+      - run: /root/.local/bin/meson setup build -Db_coverage=true
+      - run: ninja -C build -v -j 5
+      - run: ninja -C build -v test
+
   gcc:
     resource_class: large
     docker:
@@ -144,6 +163,12 @@ workflows:
   version: 2
   test:
     jobs:
+      - native-aliases-arm64:
+          filters:
+            branches:
+              ignore:
+              - master
+              - /^ci/(?!circleci).*$/
       - gcc:
           filters:
             branches:
