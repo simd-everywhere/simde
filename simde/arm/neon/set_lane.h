@@ -48,7 +48,8 @@ simde_vset_lane_f16(simde_float16_t a, simde_float16x4_t v, const int lane)
   #endif
   return r;
 }
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+  !(defined(SIMDE_ARM_NEON_FP16)))
   #undef vset_lane_f16
   #define vset_lane_f16(a, b, c) simde_vset_lane_f16((a), (b), (c))
 #endif
@@ -260,7 +261,8 @@ simde_vsetq_lane_f16(simde_float16_t a, simde_float16x8_t v, const int lane)
   #endif
   return r;
 }
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+  !(defined(SIMDE_ARM_NEON_FP16)))
   #undef vsetq_lane_f16
   #define vsetq_lane_f16(a, b, c) simde_vsetq_lane_f16((a), (b), (c))
 #endif
@@ -468,7 +470,8 @@ simde_vset_lane_p8(simde_poly8_t a, simde_poly8x8_t v, const int lane)
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && !defined(SIMDE_BUG_CLANG_71362)
   #define simde_vset_lane_p8(a, b, c) vset_lane_p8((a), (b), (c))
 #endif
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+  defined(SIMDE_BUG_CLANG_71362))
   #undef vset_lane_p8
   #define vset_lane_p8(a, b, c) simde_vset_lane_p8((a), (b), (c))
 #endif
@@ -486,7 +489,8 @@ simde_vset_lane_p16(simde_poly16_t a, simde_poly16x4_t v, const int lane)
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && !defined(SIMDE_BUG_CLANG_71362)
   #define simde_vset_lane_p16(a, b, c) vset_lane_p16((a), (b), (c))
 #endif
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+  defined(SIMDE_BUG_CLANG_71362))
   #undef vset_lane_p16
   #define vset_lane_p16(a, b, c) simde_vset_lane_p16((a), (b), (c))
 #endif
@@ -504,7 +508,8 @@ simde_vset_lane_p64(simde_poly64_t a, simde_poly64x1_t v, const int lane)
 #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && !defined(SIMDE_BUG_CLANG_71362)
   #define simde_vset_lane_p64(a, b, c) vset_lane_p64((a), (b), (c))
 #endif
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+  defined(SIMDE_BUG_CLANG_71362))
   #undef vset_lane_p64
   #define vset_lane_p64(a, b, c) simde_vset_lane_p64((a), (b), (c))
 #endif
@@ -522,7 +527,8 @@ simde_vsetq_lane_p8(simde_poly8_t a, simde_poly8x16_t v, const int lane)
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && !defined(SIMDE_BUG_CLANG_71362)
   #define simde_vsetq_lane_p8(a, b, c) vsetq_lane_p8((a), (b), (c))
 #endif
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+  defined(SIMDE_BUG_CLANG_71362))
   #undef vsetq_lane_p8
   #define vsetq_lane_p8(a, b, c) simde_vsetq_lane_p8((a), (b), (c))
 #endif
@@ -540,7 +546,8 @@ simde_vsetq_lane_p16(simde_poly16_t a, simde_poly16x8_t v, const int lane)
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && !defined(SIMDE_BUG_CLANG_71362)
   #define simde_vsetq_lane_p16(a, b, c) vsetq_lane_p16((a), (b), (c))
 #endif
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+  defined(SIMDE_BUG_CLANG_71362))
   #undef vsetq_lane_p16
   #define vsetq_lane_p16(a, b, c) simde_vsetq_lane_p16((a), (b), (c))
 #endif
@@ -558,7 +565,8 @@ simde_vsetq_lane_p64(simde_poly64_t a, simde_poly64x2_t v, const int lane)
 #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && !defined(SIMDE_BUG_CLANG_71362)
   #define simde_vsetq_lane_p64(a, b, c) vsetq_lane_p64((a), (b), (c))
 #endif
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+  defined(SIMDE_BUG_CLANG_71362))
   #undef vsetq_lane_p64
   #define vsetq_lane_p64(a, b, c) simde_vsetq_lane_p64((a), (b), (c))
 #endif
@@ -577,7 +585,8 @@ simde_vset_lane_bf16(simde_bfloat16_t a, simde_bfloat16x4_t v, const int lane)
   #endif
   return r;
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !defined(SIMDE_ARM_NEON_BF16))
   #undef vset_lane_bf16
   #define vset_lane_bf16(a, b, c) simde_vset_lane_bf16((a), (b), (c))
 #endif
@@ -596,7 +605,8 @@ simde_vsetq_lane_bf16(simde_bfloat16_t a, simde_bfloat16x8_t v, const int lane)
   #endif
   return r;
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !defined(SIMDE_ARM_NEON_BF16))
   #undef vsetq_lane_bf16
   #define vsetq_lane_bf16(a, b, c) simde_vsetq_lane_bf16((a), (b), (c))
 #endif

@@ -62,7 +62,8 @@ simde_vsha512hq_u64(simde_uint64x2_t w, simde_uint64x2_t x, simde_uint64x2_t y) 
 
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !defined(SIMDE_ARCH_ARM_SHA512))
   #undef vsha512hq_u64
   #define vsha512hq_u64(w, x, y) simde_vsha512hq_u64((w), (x), (y))
 #endif
@@ -88,7 +89,8 @@ simde_vsha512h2q_u64(simde_uint64x2_t w, simde_uint64x2_t x, simde_uint64x2_t y)
     return simde_uint64x2_from_private(r_);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !defined(SIMDE_ARCH_ARM_SHA512))
   #undef vsha512h2q_u64
   #define vsha512h2q_u64(w, x, y) simde_vsha512h2q_u64((w), (x), (y))
 #endif
@@ -112,7 +114,8 @@ simde_vsha512su0q_u64(simde_uint64x2_t w, simde_uint64x2_t x) {
 
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !defined(SIMDE_ARCH_ARM_SHA512))
   #undef vsha512su0q_u64
   #define vsha512su0q_u64(w, x) simde_vsha512su0q_u64((w), (x))
 #endif
@@ -137,7 +140,8 @@ simde_vsha512su1q_u64(simde_uint64x2_t w, simde_uint64x2_t x, simde_uint64x2_t y
 
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !defined(SIMDE_ARCH_ARM_SHA512))
   #undef vsha512su1q_u64
   #define vsha512su1q_u64(w, x, y) simde_vsha512su1q_u64((w), (x), (y))
 #endif

@@ -28,6 +28,7 @@
 
 #if !defined(SIMDE_ARM_NEON_ST1_LANE_H)
 #define SIMDE_ARM_NEON_ST1_LANE_H
+
 #include "types.h"
 
 HEDLEY_DIAGNOSTIC_PUSH
@@ -45,7 +46,8 @@ simde_vst1_lane_f16(simde_float16_t *ptr, simde_float16x4_t val, const int lane)
     *ptr = val_.values[lane];
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !defined(SIMDE_ARM_NEON_FP16))
   #undef vst1_lane_f16
   #define vst1_lane_f16(a, b, c) simde_vst1_lane_f16((a), (b), (c))
 #endif
@@ -224,7 +226,8 @@ simde_vst1q_lane_f16(simde_float16_t *ptr, simde_float16x8_t val, const int lane
     *ptr = val_.values[lane];
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !defined(SIMDE_ARM_NEON_FP16))
   #undef vst1q_lane_f16
   #define vst1q_lane_f16(a, b, c) simde_vst1q_lane_f16((a), (b), (c))
 #endif
@@ -497,7 +500,8 @@ simde_vst1_lane_bf16(simde_bfloat16_t *ptr, simde_bfloat16x4_t val, const int la
     *ptr = val_.values[lane];
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !defined(SIMDE_ARM_NEON_BF16))
   #undef vst1_lane_bf16
   #define vst1_lane_bf16(a, b, c) simde_vst1_lane_bf16((a), (b), (c))
 #endif
@@ -513,7 +517,8 @@ simde_vst1q_lane_bf16(simde_bfloat16_t *ptr, simde_bfloat16x8_t val, const int l
     *ptr = val_.values[lane];
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !defined(SIMDE_ARM_NEON_BF16))
   #undef vst1q_lane_bf16
   #define vst1q_lane_bf16(a, b, c) simde_vst1q_lane_bf16((a), (b), (c))
 #endif

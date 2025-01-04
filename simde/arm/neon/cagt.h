@@ -48,7 +48,8 @@ simde_vcagth_f16(simde_float16_t a, simde_float16_t b) {
     return (simde_math_fabsf(af) > simde_math_fabsf(bf)) ? UINT16_MAX : UINT16_C(0);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !(defined(SIMDE_ARM_NEON_FP16)))
   #undef vcagth_f16
   #define vcagth_f16(a, b) simde_vcagth_f16((a), (b))
 #endif
@@ -99,7 +100,8 @@ simde_vcagt_f16(simde_float16x4_t a, simde_float16x4_t b) {
     return simde_uint16x4_from_private(r_);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !(defined(SIMDE_ARM_NEON_FP16)))
   #undef vcagt_f16
   #define vcagt_f16(a, b) simde_vcagt_f16((a), (b))
 #endif
@@ -150,7 +152,8 @@ simde_vcagtq_f16(simde_float16x8_t a, simde_float16x8_t b) {
     return simde_uint16x8_from_private(r_);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !(defined(SIMDE_ARM_NEON_FP16)))
   #undef vcagtq_f16
   #define vcagtq_f16(a, b) simde_vcagtq_f16((a), (b))
 #endif

@@ -44,7 +44,8 @@ simde_vdivh_f16(simde_float16_t a, simde_float16_t b) {
     return simde_float16_from_float32(simde_float16_to_float32(a) / simde_float16_to_float32(b));
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !(defined(SIMDE_ARM_NEON_FP16)))
   #undef vdivh_f16
   #define vdivh_f16(a, b) simde_vdivh_f16((a), (b))
 #endif
@@ -68,7 +69,8 @@ simde_vdiv_f16(simde_float16x4_t a, simde_float16x4_t b) {
     return simde_float16x4_from_private(r_);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !(defined(SIMDE_ARM_NEON_FP16)))
   #undef vdiv_f16
   #define vdiv_f16(a, b) simde_vdiv_f16((a), (b))
 #endif
@@ -92,7 +94,8 @@ simde_vdivq_f16(simde_float16x8_t a, simde_float16x8_t b) {
     return simde_float16x8_from_private(r_);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !(defined(SIMDE_ARM_NEON_FP16)))
   #undef vdivq_f16
   #define vdivq_f16(a, b) simde_vdivq_f16((a), (b))
 #endif
@@ -196,4 +199,4 @@ simde_vdivq_f64(simde_float64x2_t a, simde_float64x2_t b) {
 SIMDE_END_DECLS_
 HEDLEY_DIAGNOSTIC_POP
 
-#endif /* !defined(SIMDE_ARM_NEON_MUL_H) */
+#endif /* !defined(SIMDE_ARM_NEON_DIV_H) */

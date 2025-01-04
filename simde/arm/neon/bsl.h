@@ -62,7 +62,8 @@ simde_vbsl_f16(simde_uint16x4_t a, simde_float16x4_t b, simde_float16x4_t c) {
     return simde_vreinterpret_f16_u16(simde_uint16x4_from_private(r_));
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !(defined(SIMDE_ARM_NEON_FP16)))
   #undef vbsl_f16
   #define vbsl_f16(a, b, c) simde_vbsl_f16((a), (b), (c))
 #endif
@@ -381,7 +382,8 @@ simde_vbslq_f16(simde_uint16x8_t a, simde_float16x8_t b, simde_float16x8_t c) {
     return simde_vreinterpretq_f16_u16(simde_uint16x8_from_private(r_));
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !(defined(SIMDE_ARM_NEON_FP16)))
   #undef vbslq_f16
   #define vbslq_f16(a, b, c) simde_vbslq_f16((a), (b), (c))
 #endif

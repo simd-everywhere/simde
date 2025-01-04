@@ -44,7 +44,8 @@ simde_vabsd_s64(int64_t a) {
     return a < 0 ? -a : a;
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !(!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(9,1,0)))
   #undef vabsd_s64
   #define vabsd_s64(a) simde_vabsd_s64(a)
 #endif
@@ -60,7 +61,8 @@ simde_vabsh_f16(simde_float16_t a) {
     return (a_ >= 0.0f) ? simde_float16_from_float32(a_) : simde_float16_from_float32(-a_);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !(defined(SIMDE_ARM_NEON_FP16)))
   #undef vabsh_f16
   #define vabsh_f16(a) simde_vabsh_f16(a)
 #endif
@@ -87,7 +89,8 @@ simde_vabs_f16(simde_float16x4_t a) {
     return simde_float16x4_from_private(r_);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !(defined(SIMDE_ARM_NEON_FP16)))
   #undef vabs_f16
   #define vabs_f16(a) simde_vabs_f16(a)
 #endif
@@ -294,7 +297,8 @@ simde_vabsq_f16(simde_float16x8_t a) {
     return simde_float16x8_from_private(r_);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !(defined(SIMDE_ARM_NEON_FP16)))
   #undef vabsq_f16
   #define vabsq_f16(a) simde_vabsq_f16(a)
 #endif
