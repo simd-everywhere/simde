@@ -30,6 +30,7 @@
 #if !defined(SIMDE_ARM_NEON_ST2_H)
 #define SIMDE_ARM_NEON_ST2_H
 
+#include "st1.h"
 #include "combine.h"
 #include "zip.h"
 
@@ -61,7 +62,8 @@ simde_vst2_f16(simde_float16_t *ptr, simde_float16x4x2_t val) {
     #endif
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !defined(SIMDE_ARM_NEON_FP16))
   #undef vst2_f16
   #define vst2_f16(a, b) simde_vst2_f16((a), (b))
 #endif
@@ -370,7 +372,8 @@ simde_vst2q_f16(simde_float16_t *ptr, simde_float16x8x2_t val) {
     simde_vst1q_f16(ptr+8, r.val[1]);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !defined(SIMDE_ARM_NEON_FP16))
   #undef vst2q_f16
   #define vst2q_f16(a, b) simde_vst2q_f16((a), (b))
 #endif
@@ -794,7 +797,8 @@ simde_vst2_bf16(simde_bfloat16_t *ptr, simde_bfloat16x4x2_t val) {
     simde_memcpy(ptr, buf, sizeof(buf));
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !defined(SIMDE_ARM_NEON_BF16))
   #undef vst2_bf16
   #define vst2_bf16(a, b) simde_vst2_bf16((a), (b))
 #endif
@@ -814,7 +818,8 @@ simde_vst2q_bf16(simde_bfloat16_t *ptr, simde_bfloat16x8x2_t val) {
     simde_memcpy(ptr, buf, sizeof(buf));
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !defined(SIMDE_ARM_NEON_BF16))
   #undef vst2q_bf16
   #define vst2q_bf16(a, b) simde_vst2q_bf16((a), (b))
 #endif

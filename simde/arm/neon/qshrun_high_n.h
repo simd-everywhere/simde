@@ -54,7 +54,7 @@ simde_vqshrun_high_n_s16(simde_uint8x8_t r, simde_int16x8_t a, const int n)
 #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && !defined(SIMDE_BUG_CLANG_71365)
   #define simde_vqshrun_high_n_s16(r, a, n) vqshrun_high_n_s16((r), (a), (n))
 #endif
-#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && defined(SIMDE_BUG_CLANG_71365))
   #undef vqshrun_high_n_s16
   #define vqshrun_high_n_s16(r, a, n) simde_vqshrun_high_n_s16((r), (a), (n))
 #endif
@@ -78,7 +78,7 @@ simde_vqshrun_high_n_s32(simde_uint16x4_t r, simde_int32x4_t a, const int n)
 #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && !defined(SIMDE_BUG_CLANG_71365)
   #define simde_vqshrun_high_n_s32(r, a, n) vqshrun_high_n_s32((r), (a), (n))
 #endif
-#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && defined(SIMDE_BUG_CLANG_71365))
   #undef vqshrun_high_n_s32
   #define vqshrun_high_n_s32(r, a, n) simde_vqshrun_high_n_s32((r), (a), (n))
 #endif
@@ -102,7 +102,7 @@ simde_vqshrun_high_n_s64(simde_uint32x2_t r, simde_int64x2_t a, const int n)
 #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && !defined(SIMDE_BUG_CLANG_71365)
   #define simde_vqshrun_high_n_s64(r, a, n) vqshrun_high_n_s64((r), (a), (n))
 #endif
-#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && defined(SIMDE_BUG_CLANG_71365))
   #undef vqshrun_high_n_s64
   #define vqshrun_high_n_s64(r, a, n) simde_vqshrun_high_n_s64((r), (a), (n))
 #endif

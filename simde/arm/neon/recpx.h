@@ -61,7 +61,7 @@ simde_vrecpxh_f16(simde_float16_t a) {
     return a;
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && !defined(SIMDE_ARM_NEON_FP16))
   #undef vrecpxh_f16
   #define vrecpxh_f16(a) simde_vrecpxh_f16((a))
 #endif

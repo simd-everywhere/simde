@@ -75,7 +75,7 @@ simde_vpmaxnm_f16(simde_float16x4_t a, simde_float16x4_t b) {
     return simde_vmax_f16(simde_vuzp1_f16(a, b), simde_vuzp2_f16(a, b));
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && !(defined(SIMDE_ARM_NEON_FP16)))
   #undef vpmaxnm_f16
   #define vpmaxnm_f16(a, b) simde_vpmaxnm_f16((a), (b))
 #endif
@@ -103,7 +103,7 @@ simde_vpmaxnmq_f16(simde_float16x8_t a, simde_float16x8_t b) {
     return simde_vmaxq_f16(simde_vuzp1q_f16(a, b), simde_vuzp2q_f16(a, b));
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && !(defined(SIMDE_ARM_NEON_FP16)))
   #undef vpmaxnmq_f16
   #define vpmaxnmq_f16(a, b) simde_vpmaxnmq_f16((a), (b))
 #endif

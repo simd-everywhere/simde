@@ -59,7 +59,8 @@ simde_vcombine_f16(simde_float16x4_t low, simde_float16x4_t high) {
     return simde_float16x8_from_private(r_);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !(defined(SIMDE_ARM_NEON_FP16)))
   #undef vcombine_f16
   #define vcombine_f16(low, high) simde_vcombine_f16((low), (high))
 #endif
@@ -486,7 +487,8 @@ simde_vcombine_bf16(simde_bfloat16x4_t low, simde_bfloat16x4_t high) {
     return simde_bfloat16x8_from_private(r_);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !(defined(SIMDE_ARM_NEON_FP16)))
   #undef vcombine_bf16
   #define vcombine_bf16(low, high) simde_vcombine_bf16((low), (high))
 #endif

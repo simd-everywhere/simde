@@ -204,7 +204,8 @@ simde_vst2_lane_f16(simde_float16_t ptr[HEDLEY_ARRAY_PARAM(2)], simde_float16x4x
     }
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !defined(SIMDE_ARM_NEON_FP16))
   #undef vst2_lane_f16
   #define vst2_lane_f16(a, b, c) simde_vst2_lane_f16((a), (b), (c))
 #endif
@@ -414,7 +415,8 @@ simde_vst2q_lane_f16(simde_float16_t ptr[HEDLEY_ARRAY_PARAM(2)], simde_float16x8
     }
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !defined(SIMDE_ARM_NEON_FP16))
   #undef vst2q_lane_f16
   #define vst2q_lane_f16(a, b, c) simde_vst2q_lane_f16((a), (b), (c))
 #endif
@@ -586,7 +588,8 @@ simde_vst2_lane_bf16(simde_bfloat16_t ptr[HEDLEY_ARRAY_PARAM(2)], simde_bfloat16
     }
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !defined(SIMDE_ARM_NEON_BF16))
   #undef vst2_lane_bf16
   #define vst2_lane_bf16(a, b, c) simde_vst2_lane_bf16((a), (b), (c))
 #endif
@@ -605,7 +608,8 @@ simde_vst2q_lane_bf16(simde_bfloat16_t ptr[HEDLEY_ARRAY_PARAM(2)], simde_bfloat1
     }
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !defined(SIMDE_ARM_NEON_BF16))
   #undef vst2q_lane_bf16
   #define vst2q_lane_bf16(a, b, c) simde_vst2q_lane_bf16((a), (b), (c))
 #endif
