@@ -106,7 +106,7 @@ simde_vpadd_f16(simde_float16x4_t a, simde_float16x4_t b) {
     return simde_vadd_f16(simde_vuzp1_f16(a, b), simde_vuzp2_f16(a, b));
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && !(!SIMDE_DETECT_CLANG_VERSION_NOT(9,0,0) && defined(SIMDE_ARM_NEON_FP16)))
   #undef vpadd_f16
   #define vpadd_f16(a, b) simde_vpadd_f16((a), (b))
 #endif
@@ -120,7 +120,7 @@ simde_vpadd_f32(simde_float32x2_t a, simde_float32x2_t b) {
     return simde_vadd_f32(simde_vuzp1_f32(a, b), simde_vuzp2_f32(a, b));
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && !(!SIMDE_DETECT_CLANG_VERSION_NOT(9,0,0)))
   #undef vpadd_f32
   #define vpadd_f32(a, b) simde_vpadd_f32((a), (b))
 #endif
@@ -222,7 +222,7 @@ simde_vpaddq_f16(simde_float16x8_t a, simde_float16x8_t b) {
     return simde_vaddq_f16(simde_vuzp1q_f16(a, b), simde_vuzp2q_f16(a, b));
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && !(defined(SIMDE_ARM_NEON_FP16)))
   #undef vpaddq_f16
   #define vpaddq_f16(a, b) simde_vpaddq_f16((a), (b))
 #endif

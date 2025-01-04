@@ -90,7 +90,8 @@ simde_vsha256hq_u32(simde_uint32x4_t hash_efgh, simde_uint32x4_t hash_abcd, simd
     return x_simde_sha256hash(hash_efgh, hash_abcd, wk, 1);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !defined(SIMDE_ARCH_ARM_SHA2))
   #undef vsha256hq_u32
   #define vsha256hq_u32(hash_efgh, hash_abcd, wk) simde_vsha256hq_u32((hash_efgh), (hash_abcd), (wk))
 #endif
@@ -104,7 +105,8 @@ simde_vsha256h2q_u32(simde_uint32x4_t hash_efgh, simde_uint32x4_t hash_abcd, sim
     return x_simde_sha256hash(hash_abcd, hash_efgh, wk, 0);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !defined(SIMDE_ARCH_ARM_SHA2))
   #undef vsha256h2q_u32
   #define vsha256h2q_u32(hash_efgh, hash_abcd, wk) simde_vsha256h2q_u32((hash_efgh), (hash_abcd), (wk))
 #endif
@@ -134,7 +136,8 @@ simde_vsha256su0q_u32(simde_uint32x4_t w0_3, simde_uint32x4_t w4_7) {
 
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !defined(SIMDE_ARCH_ARM_SHA2))
   #undef vsha256su0q_u32
   #define vsha256su0q_u32(w0_3, w4_7) simde_vsha256su0q_u32((w0_3), (w4_7))
 #endif
@@ -177,7 +180,8 @@ simde_vsha256su1q_u32(simde_uint32x4_t tw0_3, simde_uint32x4_t w8_11, simde_uint
 
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !defined(SIMDE_ARCH_ARM_SHA2))
   #undef vsha256su1q_u32
   #define vsha256su1q_u32(tw0_3, w8_11, w12_15) simde_vsha256su1q_u32((tw0_3), (w8_11), (w12_15))
 #endif

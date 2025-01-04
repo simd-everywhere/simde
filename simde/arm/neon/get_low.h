@@ -57,7 +57,8 @@ simde_vget_low_f16(simde_float16x8_t a) {
     return simde_float16x4_from_private(r_);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+  !(defined(SIMDE_ARM_NEON_FP16)))
   #undef vget_low_f16
   #define vget_low_f16(a) simde_vget_low_f16((a))
 #endif
@@ -457,7 +458,8 @@ simde_vget_low_bf16(simde_bfloat16x8_t a) {
     return simde_bfloat16x4_from_private(r_);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+  !(defined(SIMDE_ARM_NEON_BF16)))
   #undef vget_low_bf16
   #define vget_low_bf16(a) simde_vget_low_bf16((a))
 #endif

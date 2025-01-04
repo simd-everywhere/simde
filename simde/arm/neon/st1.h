@@ -49,7 +49,8 @@ simde_vst1_f16(simde_float16_t ptr[HEDLEY_ARRAY_PARAM(4)], simde_float16x4_t val
     #endif
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !defined(SIMDE_ARM_NEON_FP16))
   #undef vst1_f16
   #define vst1_f16(a, b) simde_vst1_f16((a), (b))
 #endif
@@ -261,7 +262,8 @@ simde_vst1q_f16(simde_float16_t ptr[HEDLEY_ARRAY_PARAM(8)], simde_float16x8_t va
     #endif
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !defined(SIMDE_ARM_NEON_FP16))
   #undef vst1q_f16
   #define vst1q_f16(a, b) simde_vst1q_f16((a), (b))
 #endif
@@ -610,7 +612,8 @@ simde_vstrq_p128(simde_poly128_t ptr[HEDLEY_ARRAY_PARAM(1)], simde_poly128_t val
     simde_memcpy(ptr, &val, sizeof(val));
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !defined(SIMDE_ARCH_ARM_CRYPTO))
   #undef vstrq_p128
   #define vstrq_p128(a, b) simde_vstrq_p128((a), (b))
 #endif
@@ -626,7 +629,8 @@ simde_vst1_bf16(simde_bfloat16_t ptr[HEDLEY_ARRAY_PARAM(4)], simde_bfloat16x4_t 
     simde_memcpy(ptr, &val_, sizeof(val_));
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !defined(SIMDE_ARM_NEON_BF16))
   #undef vst1_bf16
   #define vst1_bf16(a, b) simde_vst1_bf16((a), (b))
 #endif
@@ -641,7 +645,8 @@ simde_vst1q_bf16(simde_bfloat16_t ptr[HEDLEY_ARRAY_PARAM(8)], simde_bfloat16x8_t
     simde_memcpy(ptr, &val_, sizeof(val_));
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !defined(SIMDE_ARM_NEON_BF16))
   #undef vst1q_bf16
   #define vst1q_bf16(a, b) simde_vst1q_bf16((a), (b))
 #endif

@@ -204,7 +204,8 @@ simde_vst3_lane_f16(simde_float16_t ptr[HEDLEY_ARRAY_PARAM(3)], simde_float16x4x
     }
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !defined(SIMDE_ARM_NEON_FP16))
   #undef vst3_lane_f16
   #define vst3_lane_f16(a, b, c) simde_vst3_lane_f16((a), (b), (c))
 #endif
@@ -414,7 +415,8 @@ simde_vst3q_lane_f16(simde_float16_t ptr[HEDLEY_ARRAY_PARAM(3)], simde_float16x8
     }
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !defined(SIMDE_ARM_NEON_FP16))
   #undef vst3q_lane_f16
   #define vst3q_lane_f16(a, b, c) simde_vst3q_lane_f16((a), (b), (c))
 #endif
@@ -440,7 +442,7 @@ simde_vst3q_lane_f32(simde_float32_t ptr[HEDLEY_ARRAY_PARAM(3)], simde_float32x4
 
 SIMDE_FUNCTION_ATTRIBUTES
 void
-simde_vst3q_lane_f64(simde_float64_t ptr[HEDLEY_ARRAY_PARAM(3)], simde_float64x2x3_t val, const int lane){
+simde_vst3q_lane_f64(simde_float64_t ptr[HEDLEY_ARRAY_PARAM(3)], simde_float64x2x3_t val, const int lane) {
     //SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 1) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     SIMDE_CONSTIFY_2_NO_RESULT_(vst3q_lane_f64, HEDLEY_UNREACHABLE(), lane, ptr, val);
@@ -586,7 +588,8 @@ simde_vst3_lane_bf16(simde_bfloat16_t ptr[HEDLEY_ARRAY_PARAM(3)], simde_bfloat16
     }
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !defined(SIMDE_ARM_NEON_BF16))
   #undef vst3_lane_bf16
   #define vst3_lane_bf16(a, b, c) simde_vst3_lane_bf16((a), (b), (c))
 #endif
@@ -605,7 +608,8 @@ simde_vst3q_lane_bf16(simde_bfloat16_t ptr[HEDLEY_ARRAY_PARAM(3)], simde_bfloat1
     }
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !defined(SIMDE_ARM_NEON_BF16))
   #undef vst3q_lane_bf16
   #define vst3q_lane_bf16(a, b, c) simde_vst3q_lane_bf16((a), (b), (c))
 #endif

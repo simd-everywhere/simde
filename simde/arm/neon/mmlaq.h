@@ -58,7 +58,8 @@ simde_vmmlaq_s32(simde_int32x4_t r, simde_int8x16_t a, simde_int8x16_t b) {
     return simde_int32x4_from_private(ret);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+  !(defined(SIMDE_ARCH_ARM_MATMUL_INT8)))
   #undef vmmlaq_s32
   #define vmmlaq_s32(r, a, b) simde_vmmlaq_s32((r), (a), (b))
 #endif
@@ -85,7 +86,8 @@ simde_vmmlaq_u32(simde_uint32x4_t r, simde_uint8x16_t a, simde_uint8x16_t b) {
     return simde_uint32x4_from_private(ret);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+  !(defined(SIMDE_ARCH_ARM_MATMUL_INT8)))
   #undef vmmlaq_u32
   #define vmmlaq_u32(r, a, b) simde_vmmlaq_u32((r), (a), (b))
 #endif
@@ -113,7 +115,8 @@ simde_vusmmlaq_s32(simde_int32x4_t r, simde_uint8x16_t a, simde_int8x16_t b) {
     return simde_int32x4_from_private(ret);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+  !(defined(SIMDE_ARCH_ARM_MATMUL_INT8)))
   #undef vusmmlaq_s32
   #define vusmmlaq_s32(r, a, b) simde_vusmmlaq_s32((r), (a), (b))
 #endif
@@ -142,7 +145,9 @@ simde_vbfmmlaq_f32(simde_float32x4_t r, simde_bfloat16x8_t a, simde_bfloat16x8_t
     return simde_float32x4_from_private(ret);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+  !(defined(SIMDE_ARCH_ARM_MATMUL_INT8) && \
+      defined(SIMDE_ARM_NEON_BF16)))
   #undef vbfmmlaq_f32
   #define vbfmmlaq_f32(r, a, b) simde_vbfmmlaq_f32((r), (a), (b))
 #endif
