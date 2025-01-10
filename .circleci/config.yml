@@ -36,6 +36,7 @@ jobs:
       - save_cache:
           key: 'ccache-{{ .Environment.CIRCLE_JOB }}-{{ .Branch }}-{{ epoch }}'
           paths: [ "/root/.cache/ccache" ]
+          when: always
       - run: ninja -C build -v test
 
   clang:
@@ -72,6 +73,7 @@ jobs:
       - save_cache:
           key: 'ccache-{{ .Environment.CIRCLE_JOB }}-{{ .Branch }}-{{ epoch }}'
           paths: [ "/root/.cache/ccache" ]
+          when: always
       - run: ninja -C build -v test
 
   loongson:
@@ -108,6 +110,7 @@ jobs:
       - save_cache:
           key: 'ccache-{{ .Environment.CIRCLE_JOB }}-{{ .Branch }}-{{ epoch }}'
           paths: [ "/root/.cache/ccache" ]
+          when: always
       # - run: ninja -C build -v -j 3 test
 
   i686:
@@ -144,6 +147,7 @@ jobs:
       - save_cache:
           key: 'ccache-{{ .Environment.CIRCLE_JOB }}-{{ .Branch }}-{{ epoch }}'
           paths: [ "/root/.cache/ccache" ]
+          when: always
       - run: /root/.local/bin/meson test -C build --num-processes 5 --print-errorlogs
 
   i686-gcc11-O2:
@@ -180,6 +184,7 @@ jobs:
       - save_cache:
           key: 'ccache-{{ .Environment.CIRCLE_JOB }}-{{ .Branch }}-{{ epoch }}'
           paths: [ "/root/.cache/ccache" ]
+          when: always
       - run: /root/.local/bin/meson test -C build --num-processes 5 --print-errorlogs
 
 
