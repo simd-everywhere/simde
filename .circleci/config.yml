@@ -13,12 +13,29 @@ jobs:
       CC: gcc
       CXX: g++
     steps:
-      - run: apt-get update && apt-get install -y git ssh ninja-build pipx python3-setuptools python3-wheel gcovr gcc g++
+      - run: apt-get update && apt-get install -y git ssh ninja-build pipx python3-setuptools python3-wheel gcovr gcc g++ ccache
       - checkout
+      - restore_cache:
+         keys:
+            - ccache-{{ .Environment.CIRCLE_JOB }}-{{ .Branch }}
+            - ccache-{{ .Environment.CIRCLE_JOB }}-master
+            - ccache-{{ .Environment.CIRCLE_JOB }}
       - run: cat /proc/cpuinfo /proc/meminfo
+      - run:
+          command: |
+            ccache --set-config=max_size='500M'
+            ccache --set-config=compression=true
+            ccache -p
+            ccache -z
       - run: pipx install meson==0.55.1
-      - run: /root/.local/bin/meson setup build -Db_coverage=true
-      - run: ninja -C build -v -j 5
+      - run: |
+          export PATH=/usr/lib/ccache:${PATH}
+          CC="ccache gcc" CXX="ccache g++" /root/.local/bin/meson setup build
+          ninja -C build -v -j 5
+      - run: /usr/bin/ccache -s
+      - save_cache:
+          key: 'ccache-{{ .Environment.CIRCLE_JOB }}-{{ .Branch }}-{{ epoch }}'
+          paths: [ "/root/.cache/ccache" ]
       - run: ninja -C build -v test
 
   clang:
@@ -32,12 +49,29 @@ jobs:
       CFLAGS: -Weverything -Werror -march=native
       CXXFLAGS: -Weverything -Werror -march=native
     steps:
-      - run: apt-get update && apt-get install -y git ssh ninja-build pipx python3-setuptools python3-wheel gcovr clang
+      - run: apt-get update && apt-get install -y git ssh ninja-build pipx python3-setuptools python3-wheel gcovr clang ccache
       - checkout
+      - restore_cache:
+         keys:
+            - ccache-{{ .Environment.CIRCLE_JOB }}-{{ .Branch }}
+            - ccache-{{ .Environment.CIRCLE_JOB }}-master
+            - ccache-{{ .Environment.CIRCLE_JOB }}
       - run: cat /proc/cpuinfo /proc/meminfo
+      - run:
+          command: |
+            ccache --set-config=max_size='500M'
+            ccache --set-config=compression=true
+            ccache -p
+            ccache -z
       - run: pipx install meson==0.55.1
-      - run: CFLAGS="-Wno-unsafe-buffer-usage" CXXFLAGS="-Wno-unsafe-buffer-usage" CC=clang CXX=clang++ /root/.local/bin/meson setup build -Db_coverage=true
-      - run: ninja -C build -v -j 5
+      - run: |
+          export PATH=/usr/lib/ccache:${PATH}
+          CFLAGS="-Wno-unsafe-buffer-usage" CXXFLAGS="-Wno-unsafe-buffer-usage" CC="ccache clang" CXX="ccache clang++" /root/.local/bin/meson setup build
+          ninja -C build -v -j 5
+      - run: /usr/bin/ccache -s
+      - save_cache:
+          key: 'ccache-{{ .Environment.CIRCLE_JOB }}-{{ .Branch }}-{{ epoch }}'
+          paths: [ "/root/.cache/ccache" ]
       - run: ninja -C build -v test
 
   loongson:
@@ -53,6 +87,11 @@ jobs:
     steps:
       - run: apt-get update && apt-get install -y git ssh ninja-build pipx python3-setuptools python3-wheel gcovr gcc-mips64el-linux-gnuabi64 g++-mips64el-linux-gnuabi64 qemu-user-static libc6-mips64el-cross ccache build-essential
       - checkout
+      - restore_cache:
+         keys:
+            - ccache-{{ .Environment.CIRCLE_JOB }}-{{ .Branch }}
+            - ccache-{{ .Environment.CIRCLE_JOB }}-master
+            - ccache-{{ .Environment.CIRCLE_JOB }}
       - run: cat /proc/cpuinfo /proc/meminfo
       - run:
           command: |
@@ -61,15 +100,13 @@ jobs:
             ccache -p
             ccache -z
       - run: pipx install meson==0.55.1
-      - run: /root/.local/bin/meson setup build -Db_coverage=true --cross-file=docker/cross-files/loongson-gcc-ccache.cross
-      - restore_cache:
-          keys:
-            - v1-loongson-ccache-{{ .Branch }}-
-            - v1-loongson-ccache-
-      - run: ninja -C build -v -j 5
+      - run: |
+          export PATH=/usr/lib/ccache:${PATH}
+          /root/.local/bin/meson setup build --cross-file=docker/cross-files/loongson-gcc-ccache.cross
+          ninja -C build -v -j 5
       - run: /usr/bin/ccache -s
       - save_cache:
-          key: v1-loongson-ccache-{{ .Branch }}-{{ .Revision }}
+          key: 'ccache-{{ .Environment.CIRCLE_JOB }}-{{ .Branch }}-{{ epoch }}'
           paths: [ "/root/.cache/ccache" ]
       # - run: ninja -C build -v -j 3 test
 
@@ -83,26 +120,29 @@ jobs:
     steps:
       - run: apt-get update && apt-get install -y git ssh ninja-build pipx python3-setuptools python3-wheel gcovr {gcc,g++}-i686-linux-gnu libc6-i386-cross qemu-user-static ccache
       - checkout
+      - restore_cache:
+         keys:
+            - ccache-{{ .Environment.CIRCLE_JOB }}-{{ .Branch }}
+            - ccache-{{ .Environment.CIRCLE_JOB }}-master
+            - ccache-{{ .Environment.CIRCLE_JOB }}
       - run:
           name: System Information
           command: cat /proc/cpuinfo /proc/meminfo
       - run: dpkg --add-architecture i386
       - run: pipx install meson==0.55.1
-      - run: /root/.local/bin/meson setup build -Db_coverage=true --cross-file docker/cross-files/i686-gcc-qemu.cross
-      - restore_cache:
-          keys:
-            - v1-i686-ccache-{{ .Branch }}-
-            - v1-i686-ccache-
       - run:
           command: |
             ccache --set-config=max_size='500M'
             ccache --set-config=compression=true
             ccache -p
             ccache -z
-      - run: /root/.local/bin/meson compile -C build --verbose -j 5
+      - run: |
+          export PATH=/usr/lib/ccache:${PATH}
+          /root/.local/bin/meson setup build --cross-file docker/cross-files/i686-gcc-qemu-ccache.cross
+          /root/.local/bin/meson compile -C build --verbose -j 5
       - run: /usr/bin/ccache -s
       - save_cache:
-          key: v1-i686-ccache-{{ .Branch }}-{{ .Revision }}
+          key: 'ccache-{{ .Environment.CIRCLE_JOB }}-{{ .Branch }}-{{ epoch }}'
           paths: [ "/root/.cache/ccache" ]
       - run: /root/.local/bin/meson test -C build --num-processes 5 --print-errorlogs
 
@@ -116,26 +156,29 @@ jobs:
     steps:
       - run: apt-get update && apt-get install -y git ssh ninja-build pipx python3-setuptools python3-wheel gcovr {gcc,g++}-11-i686-linux-gnu libc6-i386-cross qemu-user-static ccache build-essential
       - checkout
+      - restore_cache:
+         keys:
+            - ccache-{{ .Environment.CIRCLE_JOB }}-{{ .Branch }}
+            - ccache-{{ .Environment.CIRCLE_JOB }}-master
+            - ccache-{{ .Environment.CIRCLE_JOB }}
       - run:
           name: System Information
           command: cat /proc/cpuinfo /proc/meminfo
       - run: dpkg --add-architecture i386
       - run: pipx install meson==0.55.1
-      - run: /root/.local/bin/meson setup build -Db_coverage=true --cross-file docker/cross-files/i686-gcc-11-qemu.cross
-      - restore_cache:
-          keys:
-            - v1-i686-gcc11-O2-ccache-{{ .Branch }}-
-            - v1-i686-gcc11-O2-ccache-
       - run:
           command: |
             ccache --set-config=max_size='500M'
             ccache --set-config=compression=true
             ccache -p
             ccache -z
-      - run: /root/.local/bin/meson compile -C build --verbose -j 5
+      - run: |
+          export PATH=/usr/lib/ccache:${PATH}
+          /root/.local/bin/meson setup build --cross-file docker/cross-files/i686-gcc-11-qemu-ccache.cross
+          /root/.local/bin/meson compile -C build --verbose -j 5
       - run: /usr/bin/ccache -s
       - save_cache:
-          key: v1-i686-gcc11-O2-ccache-{{ .Branch }}-{{ .Revision }}
+          key: 'ccache-{{ .Environment.CIRCLE_JOB }}-{{ .Branch }}-{{ epoch }}'
           paths: [ "/root/.cache/ccache" ]
       - run: /root/.local/bin/meson test -C build --num-processes 5 --print-errorlogs
 
