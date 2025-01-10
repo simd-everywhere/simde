@@ -196,29 +196,24 @@ workflows:
           filters:
             branches:
               ignore:
-              - master
               - /^ci/(?!circleci).*$/
       - clang:
           filters:
             branches:
               ignore:
-              - master
               - /^ci/(?!circleci).*$/
       - loongson:
           filters:
             branches:
               ignore:
-              - master
               - /^ci/(?!circleci).*$/
       # - i686:
       #     filters:
       #       branches:
       #         ignore:
-      #         - master
       #         - /^ci/(?!circleci).*$/
       - i686-gcc11-O2:
           filters:
             branches:
               ignore:
-              - master
               - /^ci/(?!circleci).*$/
