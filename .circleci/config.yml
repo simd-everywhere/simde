@@ -34,6 +34,7 @@ jobs:
       - save_cache:
           key: 'ccache-{{ .Environment.CIRCLE_JOB }}-{{ .Branch }}-{{ epoch }}'
           paths: [ "/home/circleci/.cache/ccache" ]
+          when: always
       - run: ninja -C build -v test
 
   gcc:
