@@ -56,7 +56,8 @@ simde_vcvtph_s64_f16(simde_float16_t a) {
     }
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !(defined(SIMDE_ARM_NEON_FP16)))
   #undef vcvtph_s64_f16
   #define vcvtph_s64_f16(a) simde_vcvtph_s64_f16(a)
 #endif
@@ -83,7 +84,8 @@ simde_vcvtph_s32_f16(simde_float16_t a) {
     }
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !(defined(SIMDE_ARM_NEON_FP16)))
   #undef vcvtph_s32_f16
   #define vcvtph_s32_f16(a) simde_vcvtph_s32_f16(a)
 #endif
@@ -110,7 +112,8 @@ simde_vcvtph_u64_f16(simde_float16_t a) {
     }
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !(defined(SIMDE_ARM_NEON_FP16)))
   #undef vcvtph_u64_f16
   #define vcvtph_u64_f16(a) simde_vcvtph_u64_f16(a)
 #endif
@@ -137,7 +140,8 @@ simde_vcvtph_u32_f16(simde_float16_t a) {
     }
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !(defined(SIMDE_ARM_NEON_FP16)))
   #undef vcvtph_u32_f16
   #define vcvtph_u32_f16(a) simde_vcvtph_u32_f16(a)
 #endif
@@ -164,7 +168,8 @@ simde_vcvtph_u16_f16(simde_float16_t a) {
     }
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !(defined(SIMDE_ARM_NEON_FP16)))
   #undef vcvtph_u16_f16
   #define vcvtph_u16_f16(a) simde_vcvtph_u16_f16(a)
 #endif
@@ -234,7 +239,8 @@ simde_vcvtpq_u16_f16(simde_float16x8_t a) {
     return simde_uint16x8_from_private(r_);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !(defined(SIMDE_ARM_NEON_FP16)))
   #undef vcvtpq_u16_f16
   #define vcvtpq_u16_f16(a) simde_vcvtpq_u16_f16(a)
 #endif
@@ -268,7 +274,8 @@ simde_vcvtpq_u32_f32(simde_float32x4_t a) {
     return simde_uint32x4_from_private(r_);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    defined(SIMDE_BUG_CLANG_46844))
   #undef vcvtpq_u32_f32
   #define vcvtpq_u32_f32(a) simde_vcvtpq_u32_f32(a)
 #endif
@@ -324,7 +331,8 @@ simde_vcvtp_u16_f16(simde_float16x4_t a) {
     return simde_uint16x4_from_private(r_);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !(defined(SIMDE_ARM_NEON_FP16)))
   #undef vcvtp_u16_f16
   #define vcvtp_u16_f16(a) simde_vcvtp_u16_f16(a)
 #endif

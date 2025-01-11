@@ -15,13 +15,36 @@
 DIRNAME="$(realpath "$(dirname "${0}")")"
 cd "${DIRNAME}"
 
+# num_cpus() is from https://sources.debian.org/src/util-linux/2.40.2-13/tests/run.sh/?hl=39#L39
+function num_cpus()
+{
+	local num
+
+	# coreutils
+	if num=$(nproc 2>/dev/null); then
+		:
+	# BSD, OSX
+	elif num=$(sysctl -n hw.ncpu 2>/dev/null); then
+		:
+	else
+		num=$(grep -c "^processor" /proc/cpuinfo 2>/dev/null)
+	fi
+
+	# translate garbage output to "1"
+	if test "$num" -gt "0" 2>/dev/null ;then
+		echo "$num"
+	else
+		echo 1
+	fi
+}
+
 # x86
 
 ./download-iig.sh "${DIRNAME}/iig.xml"
 PATTERN="$(xmllint --xpath '//intrinsic/@name' "${DIRNAME}/iig.xml" | grep -Po '(?<=")[^"]+' | grep -Pv '^(_mm256_cvtsi256_si32|_mm512_loadu_epi.+)$' | xargs printf '%s|' | rev | cut -c 2- | rev)"
 echo "s/([^_])simde(${PATTERN})/\1\2/g" > pattern
-ls x86/*.c | xargs -n1 -P$(nproc) sed -i -E -f pattern
-ls x86/avx512/*.c | xargs -n1 -P$(nproc) sed -i -E -f pattern
+ls x86/*.c | xargs -n1 -P$(num_cpus) sed -i -E -f pattern
+ls x86/avx512/*.c | xargs -n1 -P$(num_cpus) sed -i -E -f pattern
 
 # MSA
 
@@ -29,7 +52,7 @@ perl -p -i -e 's/([^a-zA-Z0-9_])simde_msa_/$1__msa_/g' mips/msa/*.{c,h}
 
 # NEON
 
-perl -p -i -e 's/([^a-zA-Z0-9_])simde_v/$1v/g' arm/neon/*.{c,h}
+perl -p -i -e 's/([^a-zA-Z0-9_])simde_v/$1v/g' $(ls arm/neon/*.{c,h} | grep -v test-neon.h)
 
 # SVE
 

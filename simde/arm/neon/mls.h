@@ -262,7 +262,7 @@ simde_vmlsq_f64(simde_float64x2_t a, simde_float64x2_t b, simde_float64x2_t c) {
     return simde_vsubq_f64(a, simde_vmulq_f64(b, c));
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
   #undef vmlsq_f64
   #define vmlsq_f64(a, b, c) simde_vmlsq_f64((a), (b), (c))
 #endif

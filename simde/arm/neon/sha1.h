@@ -44,7 +44,8 @@ simde_vsha1h_u32(uint32_t a) {
     return ROL(a, 32, 30);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !defined(SIMDE_ARCH_ARM_SHA2))
   #undef vsha1h_u32
   #define vsha1h_u32(a) simde_vsha1h_u32((a))
 #endif
@@ -74,7 +75,8 @@ simde_vsha1cq_u32(simde_uint32x4_t hash_abcd, uint32_t hash_e, simde_uint32x4_t 
     return simde_uint32x4_from_private(x_);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !defined(SIMDE_ARCH_ARM_SHA2))
   #undef vsha1cq_u32
   #define vsha1cq_u32(hash_abcd, hash_e, wk) simde_vsha1cq_u32((hash_abcd), (hash_e), (wk))
 #endif
@@ -104,7 +106,8 @@ simde_vsha1mq_u32(simde_uint32x4_t hash_abcd, uint32_t hash_e, simde_uint32x4_t 
     return simde_uint32x4_from_private(x_);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !defined(SIMDE_ARCH_ARM_SHA2))
   #undef vsha1mq_u32
   #define vsha1mq_u32(hash_abcd, hash_e, wk) simde_vsha1mq_u32((hash_abcd), (hash_e), (wk))
 #endif
@@ -134,7 +137,8 @@ simde_vsha1pq_u32(simde_uint32x4_t hash_abcd, uint32_t hash_e, simde_uint32x4_t 
     return simde_uint32x4_from_private(x_);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !defined(SIMDE_ARCH_ARM_SHA2))
   #undef vsha1pq_u32
   #define vsha1pq_u32(hash_abcd, hash_e, wk) simde_vsha1pq_u32((hash_abcd), (hash_e), (wk))
 #endif
@@ -161,7 +165,8 @@ simde_vsha1su0q_u32(simde_uint32x4_t w0_3, simde_uint32x4_t w4_7, simde_uint32x4
     return simde_uint32x4_from_private(r_);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !defined(SIMDE_ARCH_ARM_SHA2))
   #undef vsha1su0q_u32
   #define vsha1su0q_u32(w0_3, w4_7, w8_11) simde_vsha1su0q_u32((w0_3), (w4_7), (w8_11))
 #endif
@@ -189,7 +194,8 @@ simde_vsha1su1q_u32(simde_uint32x4_t tw0_3, simde_uint32x4_t tw12_15) {
     return simde_uint32x4_from_private(r_);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !defined(SIMDE_ARCH_ARM_SHA2))
   #undef vsha1su1q_u32
   #define vsha1su1q_u32(tw0_3, tw12_15) simde_vsha1su1q_u32((tw0_3), (tw12_15))
 #endif

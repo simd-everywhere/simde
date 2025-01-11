@@ -166,7 +166,7 @@ simde_vmull_high_p64(simde_poly64x2_t a, simde_poly64x2_t b) {
     return simde_vmull_p64(a_.values[1], b_.values[1]);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && !defined(SIMDE_ARCH_ARM_CRYPTO))
   #undef vmull_high_p64
   #define vmull_high_p64(a, b) simde_vmull_high_p64((a), (b))
 #endif
