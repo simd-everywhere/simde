@@ -44,7 +44,7 @@ simde_vmulxh_lane_f16(simde_float16_t a, simde_float16x4_t b, const int lane)
 #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
   #define simde_vmulxh_lane_f16(a, b, lane) vmulxh_lane_f16((a), (b), (lane))
 #endif
-#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && !defined(SIMDE_ARM_NEON_FP16))
   #undef vmulxh_lane_f16
   #define vmulxh_lane_f16(a, b, lane) simde_vmulxh_lane_f16(a, b, lane)
 #endif
@@ -58,7 +58,7 @@ simde_vmulxs_lane_f32(simde_float32_t a, simde_float32x2_t b, const int lane)
 #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
   #define simde_vmulxs_lane_f32(a, b, lane) vmulxs_lane_f32((a), (b), (lane))
 #endif
-#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && !defined(SIMDE_ARM_NEON_FP16))
   #undef vmulxs_lane_f32
   #define vmulxs_lane_f32(a, b, lane) simde_vmulxs_lane_f32(a, b, lane)
 #endif
@@ -72,7 +72,7 @@ simde_vmulxd_lane_f64(simde_float64_t a, simde_float64x1_t b, const int lane)
 #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
   #define simde_vmulxd_lane_f64(a, b, lane) vmulxd_lane_f64((a), (b), (lane))
 #endif
-#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && !defined(SIMDE_ARM_NEON_FP16))
   #undef vmulxd_lane_f64
   #define vmulxd_lane_f64(a, b, lane) simde_vmulxd_lane_f64(a, b, lane)
 #endif
@@ -88,7 +88,7 @@ simde_vmulxh_laneq_f16(simde_float16_t a, simde_float16x8_t b, const int lane)
 #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
   #define simde_vmulxh_laneq_f16(a, b, lane) vmulxh_laneq_f16((a), (b), (lane))
 #endif
-#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && !defined(SIMDE_ARM_NEON_FP16))
   #undef vmulxh_laneq_f16
   #define vmulxh_laneq_f16(a, b, lane) simde_vmulxh_laneq_f16(a, b, lane)
 #endif
@@ -142,7 +142,7 @@ simde_vmulx_lane_f16(simde_float16x4_t a, simde_float16x4_t b, const int lane)
 #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
   #define simde_vmulx_lane_f16(a, b, lane) vmulx_lane_f16((a), (b), (lane))
 #endif
-#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && !defined(SIMDE_ARM_NEON_FP16))
   #undef vmulx_lane_f16
   #define vmulx_lane_f16(a, b, lane) simde_vmulx_lane_f16((a), (b), (lane))
 #endif
@@ -224,7 +224,7 @@ simde_vmulxq_lane_f16(simde_float16x8_t a, simde_float16x4_t b, const int lane)
 #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
   #define simde_vmulxq_lane_f16(a, b, lane) vmulxq_lane_f16((a), (b), (lane))
 #endif
-#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && !defined(SIMDE_ARM_NEON_FP16))
   #undef vmulxq_lane_f16
   #define vmulxq_lane_f16(a, b, lane) simde_vmulxq_lane_f16((a), (b), (lane))
 #endif
@@ -306,7 +306,7 @@ simde_vmulxq_laneq_f16(simde_float16x8_t a, simde_float16x8_t b, const int lane)
 #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
   #define simde_vmulxq_laneq_f16(a, b, lane) vmulxq_laneq_f16((a), (b), (lane))
 #endif
-#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && !defined(SIMDE_ARM_NEON_FP16))
   #undef vmulxq_laneq_f16
   #define vmulxq_laneq_f16(a, b, lane) simde_vmulxq_laneq_f16((a), (b), (lane))
 #endif
@@ -388,7 +388,7 @@ simde_vmulx_laneq_f16(simde_float16x4_t a, simde_float16x8_t b, const int lane)
 #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
   #define simde_vmulx_laneq_f16(a, b, lane) vmulx_laneq_f16((a), (b), (lane))
 #endif
-#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && !defined(SIMDE_ARM_NEON_FP16))
   #undef vmulx_laneq_f16
   #define vmulx_laneq_f16(a, b, lane) simde_vmulx_laneq_f16((a), (b), (lane))
 #endif

@@ -29,6 +29,7 @@
 #define SIMDE_ARM_NEON_ST1Q_X3_H
 
 #include "types.h"
+#include "st1.h"
 
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
@@ -58,7 +59,8 @@ simde_vst1q_f16_x3(simde_float16_t ptr[HEDLEY_ARRAY_PARAM(24)], simde_float16x8x
     #endif
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !defined(SIMDE_ARM_NEON_FP16))
   #undef vst1q_f16_x3
   #define vst1q_f16_x3(a, b) simde_vst1q_f16_x3((a), (b))
 #endif
@@ -74,7 +76,8 @@ simde_vst1q_f32_x3(simde_float32 ptr[HEDLEY_ARRAY_PARAM(12)], simde_float32x4x3_
     simde_vst1q_f32(ptr+8, val.val[2]);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    defined(SIMDE_BUG_GCC_REV_260989))
   #undef vst1q_f32_x3
   #define vst1q_f32_x3(ptr, val) simde_vst1q_f32_x3((ptr), (val))
 #endif
@@ -106,7 +109,8 @@ simde_vst1q_s8_x3(int8_t ptr[HEDLEY_ARRAY_PARAM(48)], simde_int8x16x3_t val) {
     simde_vst1q_s8(ptr+32, val.val[2]);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    defined(SIMDE_BUG_GCC_REV_260989))
   #undef vst1q_s8_x3
   #define vst1q_s8_x3(ptr, val) simde_vst1q_s8_x3((ptr), (val))
 #endif
@@ -122,7 +126,8 @@ simde_vst1q_s16_x3(int16_t ptr[HEDLEY_ARRAY_PARAM(24)], simde_int16x8x3_t val) {
     simde_vst1q_s16(ptr+16, val.val[2]);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    defined(SIMDE_BUG_GCC_REV_260989))
   #undef vst1q_s16_x3
   #define vst1q_s16_x3(ptr, val) simde_vst1q_s16_x3((ptr), (val))
 #endif
@@ -138,7 +143,8 @@ simde_vst1q_s32_x3(int32_t ptr[HEDLEY_ARRAY_PARAM(12)], simde_int32x4x3_t val) {
     simde_vst1q_s32(ptr+8, val.val[2]);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    defined(SIMDE_BUG_GCC_REV_260989))
   #undef vst1q_s32_x3
   #define vst1q_s32_x3(ptr, val) simde_vst1q_s32_x3((ptr), (val))
 #endif
@@ -154,7 +160,8 @@ simde_vst1q_s64_x3(int64_t ptr[HEDLEY_ARRAY_PARAM(6)], simde_int64x2x3_t val) {
     simde_vst1q_s64(ptr+4, val.val[2]);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    defined(SIMDE_BUG_GCC_REV_260989))
   #undef vst1q_s64_x3
   #define vst1q_s64_x3(ptr, val) simde_vst1q_s64_x3((ptr), (val))
 #endif
@@ -170,7 +177,8 @@ simde_vst1q_u8_x3(uint8_t ptr[HEDLEY_ARRAY_PARAM(48)], simde_uint8x16x3_t val) {
     simde_vst1q_u8(ptr+32, val.val[2]);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    defined(SIMDE_BUG_GCC_REV_260989))
   #undef vst1q_u8_x3
   #define vst1q_u8_x3(ptr, val) simde_vst1q_u8_x3((ptr), (val))
 #endif
@@ -186,7 +194,8 @@ simde_vst1q_u16_x3(uint16_t ptr[HEDLEY_ARRAY_PARAM(24)], simde_uint16x8x3_t val)
     simde_vst1q_u16(ptr+16, val.val[2]);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    defined(SIMDE_BUG_GCC_REV_260989))
   #undef vst1q_u16_x3
   #define vst1q_u16_x3(ptr, val) simde_vst1q_u16_x3((ptr), (val))
 #endif
@@ -202,7 +211,8 @@ simde_vst1q_u32_x3(uint32_t ptr[HEDLEY_ARRAY_PARAM(12)], simde_uint32x4x3_t val)
     simde_vst1q_u32(ptr+8, val.val[2]);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    defined(SIMDE_BUG_GCC_REV_260989))
   #undef vst1q_u32_x3
   #define vst1q_u32_x3(ptr, val) simde_vst1q_u32_x3((ptr), (val))
 #endif
@@ -218,7 +228,8 @@ simde_vst1q_u64_x3(uint64_t ptr[HEDLEY_ARRAY_PARAM(6)], simde_uint64x2x3_t val) 
     simde_vst1q_u64(ptr+4, val.val[2]);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    defined(SIMDE_BUG_GCC_REV_260989))
   #undef vst1q_u64_x3
   #define vst1q_u64_x3(ptr, val) simde_vst1q_u64_x3((ptr), (val))
 #endif
@@ -243,7 +254,8 @@ simde_vst1q_p8_x3(simde_poly8_t ptr[HEDLEY_ARRAY_PARAM(48)], simde_poly8x16x3_t 
     #endif
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !(!defined(HEDLEY_GCC_VERSION) || (HEDLEY_GCC_VERSION_CHECK(8,5,0) && defined(SIMDE_ARM_NEON_A64V8_NATIVE))))
   #undef vst1q_p8_x3
   #define vst1q_p8_x3(a, b) simde_vst1q_p8_x3((a), (b))
 #endif
@@ -268,7 +280,8 @@ simde_vst1q_p16_x3(simde_poly16_t ptr[HEDLEY_ARRAY_PARAM(24)], simde_poly16x8x3_
     #endif
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !(!defined(HEDLEY_GCC_VERSION) || (HEDLEY_GCC_VERSION_CHECK(8,5,0) && defined(SIMDE_ARM_NEON_A64V8_NATIVE))))
   #undef vst1q_p16_x3
   #define vst1q_p16_x3(a, b) simde_vst1q_p16_x3((a), (b))
 #endif
@@ -293,7 +306,8 @@ simde_vst1q_p64_x3(simde_poly64_t ptr[HEDLEY_ARRAY_PARAM(6)], simde_poly64x2x3_t
     #endif
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !(!defined(HEDLEY_GCC_VERSION) || (HEDLEY_GCC_VERSION_CHECK(8,5,0) && defined(SIMDE_ARM_NEON_A64V8_NATIVE))))
   #undef vst1q_p64_x3
   #define vst1q_p64_x3(a, b) simde_vst1q_p64_x3((a), (b))
 #endif
@@ -311,7 +325,8 @@ simde_vst1q_bf16_x3(simde_bfloat16_t ptr[HEDLEY_ARRAY_PARAM(24)], simde_bfloat16
     simde_memcpy(ptr, &val_, sizeof(val_));
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !defined(SIMDE_ARM_NEON_BF16))
   #undef vst1q_bf16_x3
   #define vst1q_bf16_x3(a, b) simde_vst1q_bf16_x3((a), (b))
 #endif

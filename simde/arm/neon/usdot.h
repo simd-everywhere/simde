@@ -56,7 +56,8 @@ simde_vusdot_s32(simde_int32x2_t r, simde_uint8x8_t a, simde_int8x8_t b) {
     return simde_vadd_s32(r, simde_int32x2_from_private(r_));
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !defined(SIMDE_ARCH_ARM_MATMUL_INT8))
   #undef vusdot_s32
   #define vusdot_s32(r, a, b) simde_vusdot_s32((r), (a), (b))
 #endif
@@ -82,7 +83,8 @@ simde_vusdotq_s32(simde_int32x4_t r, simde_uint8x16_t a, simde_int8x16_t b) {
     return simde_vaddq_s32(r, simde_int32x4_from_private(r_));
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !defined(SIMDE_ARCH_ARM_MATMUL_INT8))
   #undef vusdotq_s32
   #define vusdotq_s32(r, a, b) simde_vusdotq_s32((r), (a), (b))
 #endif

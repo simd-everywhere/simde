@@ -59,7 +59,7 @@ simde_vrnd64z_f32(simde_float32x2_t a) {
     return simde_float32x2_from_private(r_);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && !defined(SIMDE_ARCH_ARM_FRINT))
   #undef vrnd64z_f32
   #define vrnd64z_f32(a) simde_vrnd64z_f32(a)
 #endif
@@ -89,7 +89,7 @@ simde_vrnd64z_f64(simde_float64x1_t a) {
     return simde_float64x1_from_private(r_);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && !defined(SIMDE_ARCH_ARM_FRINT))
   #undef vrnd64z_f64
   #define vrnd64z_f64(a) simde_vrnd64z_f64(a)
 #endif
@@ -119,7 +119,7 @@ simde_vrnd64zq_f32(simde_float32x4_t a) {
     return simde_float32x4_from_private(r_);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && !defined(SIMDE_ARCH_ARM_FRINT))
   #undef vrnd64zq_f32
   #define vrnd64zq_f32(a) simde_vrnd64zq_f32(a)
 #endif
@@ -149,7 +149,7 @@ simde_vrnd64zq_f64(simde_float64x2_t a) {
     return simde_float64x2_from_private(r_);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && !defined(SIMDE_ARCH_ARM_FRINT))
   #undef vrnd64zq_f64
   #define vrnd64zq_f64(a) simde_vrnd64zq_f64(a)
 #endif

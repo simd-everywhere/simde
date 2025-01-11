@@ -46,7 +46,8 @@ simde_vaddh_f16(simde_float16_t a, simde_float16_t b) {
     return simde_float16_from_float32(af + bf);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !(defined(SIMDE_ARM_NEON_FP16)))
   #undef vaddh_f16
   #define vaddh_f16(a, b) simde_vaddh_f16((a), (b))
 #endif
@@ -102,7 +103,8 @@ simde_vadd_f16(simde_float16x4_t a, simde_float16x4_t b) {
     return simde_float16x4_from_private(r_);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !(defined(SIMDE_ARM_NEON_FP16)))
   #undef vadd_f16
   #define vadd_f16(a, b) simde_vadd_f16((a), (b))
 #endif
@@ -437,7 +439,8 @@ simde_vaddq_f16(simde_float16x8_t a, simde_float16x8_t b) {
     return simde_float16x8_from_private(r_);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !(defined(SIMDE_ARM_NEON_FP16)))
   #undef vaddq_f16
   #define vaddq_f16(a, b) simde_vaddq_f16((a), (b))
 #endif
@@ -809,7 +812,8 @@ simde_vadd_p8(simde_poly8x8_t a, simde_poly8x8_t b) {
     return simde_poly8x8_from_private(r_);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    defined(_GCC_ARM_NEON_H))
   #undef vadd_p8
   #define vadd_p8(a, b) simde_vadd_p8((a), (b))
 #endif
@@ -833,7 +837,8 @@ simde_vadd_p16(simde_poly16x4_t a, simde_poly16x4_t b) {
     return simde_poly16x4_from_private(r_);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    defined(_GCC_ARM_NEON_H))
   #undef vadd_p16
   #define vadd_p16(a, b) simde_vadd_p16((a), (b))
 #endif
@@ -858,7 +863,9 @@ simde_vadd_p64(simde_poly64x1_t a, simde_poly64x1_t b) {
     return simde_poly64x1_from_private(r_);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !(defined(SIMDE_ARM_NEON_CRYPTO) && \
+      !defined(_GCC_ARM_NEON_H)))
   #undef vadd_p64
   #define vadd_p64(a, b) simde_vadd_p64((a), (b))
 #endif
@@ -882,7 +889,8 @@ simde_vaddq_p8(simde_poly8x16_t a, simde_poly8x16_t b) {
     return simde_poly8x16_from_private(r_);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    defined(_GCC_ARM_NEON_H))
   #undef vaddq_p8
   #define vaddq_p8(a, b) simde_vaddq_p8((a), (b))
 #endif
@@ -906,7 +914,8 @@ simde_vaddq_p16(simde_poly16x8_t a, simde_poly16x8_t b) {
     return simde_poly16x8_from_private(r_);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    defined(_GCC_ARM_NEON_H))
   #undef vaddq_p16
   #define vaddq_p16(a, b) simde_vaddq_p16((a), (b))
 #endif
@@ -931,7 +940,9 @@ simde_vaddq_p64(simde_poly64x2_t a, simde_poly64x2_t b) {
     return simde_poly64x2_from_private(r_);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !(defined(SIMDE_ARM_NEON_CRYPTO) && \
+      !defined(_GCC_ARM_NEON_H)))
   #undef vaddq_p64
   #define vaddq_p64(a, b) simde_vaddq_p64((a), (b))
 #endif
@@ -950,7 +961,9 @@ simde_vaddq_p128(simde_poly128_t a, simde_poly128_t b) {
     return b ^ ((0 ^ a) & mask);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !(defined(SIMDE_ARM_NEON_CRYPTO) && \
+      !defined(_GCC_ARM_NEON_H)))
   #undef vaddq_p128
   #define vaddq_p128(a, b) simde_vaddq_p128((a), (b))
 #endif

@@ -61,7 +61,8 @@ simde_vminnmh_f16(simde_float16_t a, simde_float16_t b) {
     #endif
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+  !(defined(__ARM_NEON_FP) && (__ARM_NEON_FP >= 6) && defined(SIMDE_ARM_NEON_FP16)))
   #undef vminnmh_f16
   #define vminnmh_f16(a, b) simde_vminnmh_f16((a), (b))
 #endif
@@ -85,7 +86,8 @@ simde_vminnm_f16(simde_float16x4_t a, simde_float16x4_t b) {
     return simde_float16x4_from_private(r_);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+  !(defined(__ARM_NEON_FP) && (__ARM_NEON_FP >= 6) && defined(SIMDE_ARM_NEON_FP16)))
   #undef vminnm_f16
   #define vminnm_f16(a, b) simde_vminnm_f16((a), (b))
 #endif
@@ -121,7 +123,8 @@ simde_vminnm_f32(simde_float32x2_t a, simde_float32x2_t b) {
     return simde_float32x2_from_private(r_);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+  !(defined(__ARM_NEON_FP) && (__ARM_NEON_FP >= 6)))
   #undef vminnm_f32
   #define vminnm_f32(a, b) simde_vminnm_f32((a), (b))
 #endif
@@ -181,7 +184,8 @@ simde_vminnmq_f16(simde_float16x8_t a, simde_float16x8_t b) {
     return simde_float16x8_from_private(r_);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+  !(defined(__ARM_NEON_FP) && (__ARM_NEON_FP >= 6) && defined(SIMDE_ARM_NEON_FP16)))
   #undef vminnmq_f16
   #define vminnmq_f16(a, b) simde_vminnmq_f16((a), (b))
 #endif
@@ -234,7 +238,8 @@ simde_vminnmq_f32(simde_float32x4_t a, simde_float32x4_t b) {
     return simde_float32x4_from_private(r_);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+  !(defined(__ARM_NEON_FP) && (__ARM_NEON_FP >= 6)))
   #undef vminnmq_f32
   #define vminnmq_f32(a, b) simde_vminnmq_f32((a), (b))
 #endif
