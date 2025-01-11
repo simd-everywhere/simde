@@ -47,7 +47,8 @@ simde_vuzp_f16(simde_float16x4_t a, simde_float16x4_t b) {
     return r;
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !defined(SIMDE_ARM_NEON_FP16))
   #undef vuzp_f16
   #define vuzp_f16(a, b) simde_vuzp_f16((a), (b))
 #endif
@@ -167,7 +168,8 @@ simde_vuzpq_f16(simde_float16x8_t a, simde_float16x8_t b) {
     return r;
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !defined(SIMDE_ARM_NEON_FP16))
   #undef vuzpq_f16
   #define vuzpq_f16(a, b) simde_vuzpq_f16((a), (b))
 #endif

@@ -35,6 +35,10 @@ SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 #if !(defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARCH_ARM_AES) && \
       defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_ARCH_ARM_CRYPTO))
 
+#if HEDLEY_GCC_VERSION_CHECK(13,2,0)
+_Pragma("GCC diagnostic ignored \"-Wunused-variable\"")
+#endif
+
 /*
  * Number of columns (32-bit words) comprising the State. For this
  * standard, Nb = 4.

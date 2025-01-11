@@ -41,7 +41,7 @@ SIMDE_BEGIN_DECLS_
 #else
   #define simde_vqrdmlahh_lane_s16(a, b, v, lane) simde_vqrdmlahh_s16((a), (b), simde_vget_lane_s16((v), (lane)))
 #endif
-#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && !(defined(SIMDE_ARCH_ARM_QRDMX)))
   #undef vqrdmlahh_lane_s16
   #define vqrdmlahh_lane_s16(a, b, v, lane) simde_vqrdmlahh_lane_s16((a), (b), (v), (lane))
 #endif
@@ -51,7 +51,7 @@ SIMDE_BEGIN_DECLS_
 #else
   #define simde_vqrdmlahh_laneq_s16(a, b, v, lane) simde_vqrdmlahh_s16((a), (b), simde_vgetq_lane_s16((v), (lane)))
 #endif
-#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && !(defined(SIMDE_ARCH_ARM_QRDMX)))
   #undef vqrdmlahh_laneq_s16
   #define vqrdmlahh_laneq_s16(a, b, v, lane) simde_vqrdmlahh_laneq_s16((a), (b), (v), (lane))
 #endif
@@ -61,7 +61,7 @@ SIMDE_BEGIN_DECLS_
 #else
   #define simde_vqrdmlahs_lane_s32(a, b, v, lane) simde_vqrdmlahs_s32((a), (b), simde_vget_lane_s32((v), (lane)))
 #endif
-#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && !(defined(SIMDE_ARCH_ARM_QRDMX)))
   #undef vqrdmlahs_lane_s32
   #define vqrdmlahs_lane_s32(a, b, v, lane) simde_vqrdmlahs_lane_s32((a), (b), (v), (lane))
 #endif
@@ -71,7 +71,7 @@ SIMDE_BEGIN_DECLS_
 #else
   #define simde_vqrdmlahs_laneq_s32(a, b, v, lane) simde_vqrdmlahs_s32((a), (b), simde_vgetq_lane_s32((v), (lane)))
 #endif
-#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && !(defined(SIMDE_ARCH_ARM_QRDMX)))
   #undef vqrdmlahs_laneq_s32
   #define vqrdmlahs_laneq_s32(a, b, v, lane) simde_vqrdmlahs_laneq_s32((a), (b), (v), (lane))
 #endif
@@ -81,7 +81,7 @@ SIMDE_BEGIN_DECLS_
 #else
   #define simde_vqrdmlah_lane_s16(a, b, v, lane) simde_vqrdmlah_s16((a), (b), simde_vdup_lane_s16((v), (lane)))
 #endif
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && !(defined(SIMDE_ARCH_ARM_QRDMX)))
   #undef vqrdmlah_lane_s16
   #define vqrdmlah_lane_s16(a, b, v, lane) simde_vqrdmlah_lane_s16((a), (b), (v), (lane))
 #endif
@@ -91,7 +91,7 @@ SIMDE_BEGIN_DECLS_
 #else
   #define simde_vqrdmlah_lane_s32(a, b, v, lane) simde_vqrdmlah_s32((a), (b), simde_vdup_lane_s32((v), (lane)))
 #endif
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && !(defined(SIMDE_ARCH_ARM_QRDMX)))
   #undef vqrdmlah_lane_s32
   #define vqrdmlah_lane_s32(a, b, v, lane) simde_vqrdmlah_lane_s32((a), (b), (v), (lane))
 #endif
@@ -101,7 +101,7 @@ SIMDE_BEGIN_DECLS_
 #else
   #define simde_vqrdmlahq_lane_s16(a, b, v, lane) simde_vqrdmlahq_s16((a), (b), simde_vdupq_lane_s16((v), (lane)))
 #endif
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && !(defined(SIMDE_ARCH_ARM_QRDMX)))
   #undef vqrdmlahq_lane_s16
   #define vqrdmlahq_lane_s16(a, b, v, lane) simde_vqrdmlahq_lane_s16((a), (b), (v), (lane))
 #endif
@@ -111,7 +111,7 @@ SIMDE_BEGIN_DECLS_
 #else
   #define simde_vqrdmlahq_lane_s32(a, b, v, lane) simde_vqrdmlahq_s32((a), (b), simde_vdupq_lane_s32((v), (lane)))
 #endif
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && !(defined(SIMDE_ARCH_ARM_QRDMX)))
   #undef vqrdmlahq_lane_s32
   #define vqrdmlahq_lane_s32(a, b, v, lane) simde_vqrdmlahq_lane_s32((a), (b), (v), (lane))
 #endif
@@ -121,7 +121,7 @@ SIMDE_BEGIN_DECLS_
 #else
   #define simde_vqrdmlah_laneq_s16(a, b, v, lane) simde_vqrdmlah_s16((a), (b), simde_vdup_laneq_s16((v), (lane)))
 #endif
-#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && !(defined(SIMDE_ARCH_ARM_QRDMX)))
   #undef vqrdmlah_laneq_s16
   #define vqrdmlah_laneq_s16(a, b, v, lane) simde_vqrdmlah_laneq_s16((a), (b), (v), (lane))
 #endif
@@ -131,7 +131,7 @@ SIMDE_BEGIN_DECLS_
 #else
   #define simde_vqrdmlah_laneq_s32(a, b, v, lane) simde_vqrdmlah_s32((a), (b), simde_vdup_laneq_s32((v), (lane)))
 #endif
-#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && !(defined(SIMDE_ARCH_ARM_QRDMX)))
   #undef vqrdmlah_laneq_s32
   #define vqrdmlah_laneq_s32(a, b, v, lane) simde_vqrdmlah_laneq_s32((a), (b), (v), (lane))
 #endif
@@ -141,7 +141,7 @@ SIMDE_BEGIN_DECLS_
 #else
   #define simde_vqrdmlahq_laneq_s16(a, b, v, lane) simde_vqrdmlahq_s16((a), (b), simde_vdupq_laneq_s16((v), (lane)))
 #endif
-#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && !(defined(SIMDE_ARCH_ARM_QRDMX)))
   #undef vqrdmlahq_laneq_s16
   #define vqrdmlahq_laneq_s16(a, b, v, lane) simde_vqrdmlahq_laneq_s16((a), (b), (v), (lane))
 #endif
@@ -151,7 +151,7 @@ SIMDE_BEGIN_DECLS_
 #else
   #define simde_vqrdmlahq_laneq_s32(a, b, v, lane) simde_vqrdmlahq_s32((a), (b), simde_vdupq_laneq_s32((v), (lane)))
 #endif
-#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && !(defined(SIMDE_ARCH_ARM_QRDMX)))
   #undef vqrdmlahq_laneq_s32
   #define vqrdmlahq_laneq_s32(a, b, v, lane) simde_vqrdmlahq_laneq_s32((a), (b), (v), (lane))
 #endif

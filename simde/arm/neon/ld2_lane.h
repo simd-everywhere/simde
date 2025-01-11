@@ -208,7 +208,8 @@ simde_float16x4x2_t simde_vld2_lane_f16(simde_float16_t const ptr[HEDLEY_ARRAY_P
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
   #define simde_vld2_lane_f16(ptr, src, lane) vld2_lane_f16(ptr, src, lane)
 #endif
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+  !(defined(SIMDE_ARM_NEON_FP16)))
   #undef vld2_lane_f16
   #define vld2_lane_f16(ptr, src, lane) simde_vld2_lane_f16((ptr), (src), (lane))
 #endif
@@ -427,7 +428,8 @@ simde_float16x8x2_t simde_vld2q_lane_f16(simde_float16_t const ptr[HEDLEY_ARRAY_
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
   #define simde_vld2q_lane_f16(ptr, src, lane) vld2q_lane_f16(ptr, src, lane)
 #endif
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+  !(defined(SIMDE_ARM_NEON_FP16)))
   #undef vld2q_lane_f16
   #define vld2q_lane_f16(ptr, src, lane) simde_vld2q_lane_f16((ptr), (src), (lane))
 #endif
@@ -607,7 +609,8 @@ simde_bfloat16x4x2_t simde_vld2_lane_bf16(simde_bfloat16_t const ptr[HEDLEY_ARRA
 #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_BF16)
   #define simde_vld2_lane_bf16(ptr, src, lane) vld2_lane_bf16(ptr, src, lane)
 #endif
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+  !(defined(SIMDE_ARM_NEON_BF16)))
   #undef vld2_lane_bf16
   #define vld2_lane_bf16(ptr, src, lane) simde_vld2_lane_bf16((ptr), (src), (lane))
 #endif
@@ -627,7 +630,8 @@ simde_bfloat16x8x2_t simde_vld2q_lane_bf16(simde_bfloat16_t const ptr[HEDLEY_ARR
 #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_BF16)
   #define simde_vld2q_lane_bf16(ptr, src, lane) vld2q_lane_bf16(ptr, src, lane)
 #endif
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+  !(defined(SIMDE_ARM_NEON_BF16)))
   #undef vld2q_lane_bf16
   #define vld2q_lane_bf16(ptr, src, lane) simde_vld2q_lane_bf16((ptr), (src), (lane))
 #endif

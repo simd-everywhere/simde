@@ -57,10 +57,11 @@ simde_vusdot_lane_s32(simde_int32x2_t r, simde_uint8x8_t a, simde_int8x8_t b, co
 
   return result;
 }
-#if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(__ARM_FEATURE_MATMUL_INT8)
+#if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARCH_ARM_MATMUL_INT8)
   #define simde_vusdot_lane_s32(r, a, b, lane) vusdot_lane_s32((r), (a), (b), (lane))
 #endif
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !defined(SIMDE_ARCH_ARM_MATMUL_INT8))
   #undef vusdot_lane_s32
   #define vusdot_lane_s32(r, a, b, lane) simde_vusdot_lane_s32((r), (a), (b), (lane))
 #endif
@@ -89,10 +90,11 @@ simde_vusdot_laneq_s32(simde_int32x2_t r, simde_uint8x8_t a, simde_int8x16_t b, 
 
   return result;
 }
-#if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(__ARM_FEATURE_MATMUL_INT8)
+#if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARCH_ARM_MATMUL_INT8)
   #define simde_vusdot_laneq_s32(r, a, b, lane) vusdot_laneq_s32((r), (a), (b), (lane))
 #endif
-#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !defined(SIMDE_ARCH_ARM_MATMUL_INT8))
   #undef vusdot_laneq_s32
   #define vusdot_laneq_s32(r, a, b, lane) simde_vusdot_laneq_s32((r), (a), (b), (lane))
 #endif
@@ -120,10 +122,11 @@ simde_vusdotq_laneq_s32(simde_int32x4_t r, simde_uint8x16_t a, simde_int8x16_t b
   result = simde_int32x4_from_private(r_);
   return result;
 }
-#if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(__ARM_FEATURE_MATMUL_INT8)
+#if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARCH_ARM_MATMUL_INT8)
   #define simde_vusdotq_laneq_s32(r, a, b, lane) vusdotq_laneq_s32((r), (a), (b), (lane))
 #endif
-#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !defined(SIMDE_ARCH_ARM_MATMUL_INT8))
   #undef vusdotq_laneq_s32
   #define vusdotq_laneq_s32(r, a, b, lane) simde_vusdotq_laneq_s32((r), (a), (b), (lane))
 #endif
@@ -151,10 +154,11 @@ simde_vusdotq_lane_s32(simde_int32x4_t r, simde_uint8x16_t a, simde_int8x8_t b, 
   result = simde_int32x4_from_private(r_);
   return result;
 }
-#if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(__ARM_FEATURE_MATMUL_INT8)
+#if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARCH_ARM_MATMUL_INT8)
   #define simde_vusdotq_lane_s32(r, a, b, lane) vusdotq_lane_s32((r), (a), (b), (lane))
 #endif
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !defined(SIMDE_ARCH_ARM_MATMUL_INT8))
   #undef vusdotq_lane_s32
   #define vusdotq_lane_s32(r, a, b, lane) simde_vusdotq_lane_s32((r), (a), (b), (lane))
 #endif

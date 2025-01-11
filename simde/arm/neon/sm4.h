@@ -102,7 +102,8 @@ simde_vsm4eq_u32(simde_uint32x4_t a, simde_uint32x4_t b) {
     return simde_uint32x4_from_private(a_);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !defined(SIMDE_ARCH_ARM_SM4))
   #undef vsm4eq_u32
   #define vsm4eq_u32(a, b) simde_vsm4eq_u32((a), (b))
 #endif
@@ -139,7 +140,8 @@ simde_vsm4ekeyq_u32(simde_uint32x4_t a, simde_uint32x4_t b) {
     return simde_uint32x4_from_private(a_);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !defined(SIMDE_ARCH_ARM_SM4))
   #undef vsm4ekeyq_u32
   #define vsm4ekeyq_u32(a, b) simde_vsm4ekeyq_u32((a), (b))
 #endif

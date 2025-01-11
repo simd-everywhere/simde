@@ -84,7 +84,8 @@ simde_vaeseq_u8(simde_uint8x16_t data, simde_uint8x16_t key) {
     return simde_uint8x16_from_private(r_);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !(defined(SIMDE_ARCH_ARM_AES)))
   #undef vaeseq_u8
   #define vaeseq_u8(data, key) simde_vaeseq_u8((data), (key))
 #endif
@@ -132,7 +133,8 @@ simde_vaesdq_u8(simde_uint8x16_t data, simde_uint8x16_t key) {
     return simde_uint8x16_from_private(r_);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !(defined(SIMDE_ARCH_ARM_AES)))
   #undef vaesdq_u8
   #define vaesdq_u8(data, key) simde_vaesdq_u8((data), (key))
 #endif
@@ -160,7 +162,8 @@ simde_vaesmcq_u8(simde_uint8x16_t data) {
     return simde_uint8x16_from_private(a_);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !(defined(SIMDE_ARCH_ARM_AES)))
   #undef vaesmcq_u8
   #define vaesmcq_u8(data) simde_vaesmcq_u8((data))
 #endif
@@ -207,7 +210,8 @@ simde_vaesimcq_u8(simde_uint8x16_t data) {
     return simde_uint8x16_from_private(r_);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    !(defined(SIMDE_ARCH_ARM_AES)))
   #undef vaesimcq_u8
   #define vaesimcq_u8(data) simde_vaesimcq_u8((data))
 #endif

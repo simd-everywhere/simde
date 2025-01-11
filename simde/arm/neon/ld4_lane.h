@@ -285,7 +285,8 @@ simde_vld4_lane_f16(simde_float16_t const ptr[HEDLEY_ARRAY_PARAM(4)], simde_floa
     #define simde_vld4_lane_f16(ptr, src, lane) vld4_lane_f16(ptr, src, lane)
   #endif
 #endif
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+  !(defined(SIMDE_ARM_NEON_FP16)))
   #undef vld4_lane_f16
   #define vld4_lane_f16(ptr, src, lane) simde_vld4_lane_f16((ptr), (src), (lane))
 #endif
@@ -582,7 +583,8 @@ simde_vld4q_lane_f16(simde_float16_t const ptr[HEDLEY_ARRAY_PARAM(4)], simde_flo
     #define simde_vld4q_lane_f16(ptr, src, lane) vld4q_lane_f16(ptr, src, lane)
   #endif
 #endif
-#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+  !(defined(SIMDE_ARM_NEON_FP16)))
   #undef vld4q_lane_f16
   #define vld4q_lane_f16(ptr, src, lane) simde_vld4q_lane_f16((ptr), (src), (lane))
 #endif
@@ -790,7 +792,8 @@ simde_vld4_lane_bf16(simde_bfloat16_t const ptr[HEDLEY_ARRAY_PARAM(4)], simde_bf
 #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_BF16)
   #define simde_vld4_lane_bf16(ptr, src, lane) vld4_lane_bf16(ptr, src, lane)
 #endif
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+  !(defined(SIMDE_ARM_NEON_BF16)))
   #undef vld4_lane_bf16
   #define vld4_lane_bf16(ptr, src, lane) simde_vld4_lane_bf16((ptr), (src), (lane))
 #endif
@@ -812,7 +815,8 @@ simde_vld4q_lane_bf16(simde_bfloat16_t const ptr[HEDLEY_ARRAY_PARAM(4)], simde_b
 #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARM_NEON_BF16)
   #define simde_vld4q_lane_bf16(ptr, src, lane) vld4q_lane_bf16(ptr, src, lane)
 #endif
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+  !(defined(SIMDE_ARM_NEON_BF16)))
   #undef vld4q_lane_bf16
   #define vld4q_lane_bf16(ptr, src, lane) simde_vld4q_lane_bf16((ptr), (src), (lane))
 #endif

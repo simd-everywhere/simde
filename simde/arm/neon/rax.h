@@ -53,7 +53,7 @@ simde_vrax1q_u64(simde_uint64x2_t a, simde_uint64x2_t b) {
     return simde_uint64x2_from_private(r_);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && !defined(SIMDE_ARCH_ARM_SHA3))
   #undef vrax1q_u64
   #define vrax1q_u64(a, b) simde_vrax1q_u64((a), (b))
 #endif
