@@ -5,8 +5,8 @@ jobs:
     machine:
       image: ubuntu-2404:current
     environment:
-      CFLAGS: -Wextra -Werror -march=armv8.2-a+simd+crypto+crc+bf16 -DSIMDE_ENABLE_NATIVE_ALIASES -DSIMDE_NATIVE_ALIASES_TESTING
-      CXXFLAGS: -Wextra -Werror -march=armv8.2-a+simd+crypto+crc+bf16 -DSIMDE_ENABLE_NATIVE_ALIASES -DSIMDE_NATIVE_ALIASES_TESTING
+      CFLAGS: -Wextra -Werror -march=native -DSIMDE_ENABLE_NATIVE_ALIASES -DSIMDE_NATIVE_ALIASES_TESTING
+      CXXFLAGS: -Wextra -Werror -march=native -DSIMDE_ENABLE_NATIVE_ALIASES -DSIMDE_NATIVE_ALIASES_TESTING
       CC: gcc
       CXX: g++
     steps:
