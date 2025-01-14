@@ -1119,7 +1119,7 @@ simde_mm256_bsrli_epi128 (simde__m256i a, const int imm8)
     SIMDE_DETECT_CLANG_VERSION_CHECK(3,7,0)
   #define simde_mm256_bsrli_epi128(a, imm8) _mm256_bsrli_epi128(a, imm8)
 #elif defined(SIMDE_LOONGARCH_LASX_NATIVE)
-  #define simde_mm256_bslli_epi128(a, imm8) (imm8 > 15 ? __lasx_xvreplgr2vr_d(0) : __lasx_xvbsll_v(a, imm8))
+  #define simde_mm256_bsrli_epi128(a, imm8) (imm8 > 15 ? __lasx_xvreplgr2vr_d(0) : __lasx_xvbsrl_v(a, imm8))
 #endif
 #if defined(SIMDE_X86_AVX2_ENABLE_NATIVE_ALIASES)
   #undef _mm256_bsrli_epi128
@@ -4573,6 +4573,8 @@ simde_mm256_slli_epi16 (simde__m256i a, const int imm8)
     for (size_t i = 0 ; i < (sizeof(a_.altivec_i16) / sizeof(a_.altivec_i16[0])) ; i++) {
       r_.altivec_i16[i] = vec_sl(a_.altivec_i16[i], sv);
     }
+  #elif defined(SIMDE_LOONGARCH_LASX_NATIVE)
+      r_.i256 = imm8 > 15 ? __lasx_xvreplgr2vr_h(0) : __lasx_xvsll_h(a_.i256, __lasx_xvreplgr2vr_h(imm8));
   #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
     r_.i16 = a_.i16 << HEDLEY_STATIC_CAST(int16_t, imm8);
   #else
@@ -4586,8 +4588,6 @@ simde_mm256_slli_epi16 (simde__m256i a, const int imm8)
 }
 #if defined(SIMDE_X86_AVX2_NATIVE)
 #  define simde_mm256_slli_epi16(a, imm8) _mm256_slli_epi16(a, imm8)
-#elif defined(SIMDE_LOONGARCH_LASX_NATIVE)
-#  define simde_mm256_slli_epi16(a, imm8) (imm8 > 15 ? __lasx_xvreplgr2vr_h(0) : __lasx_xvslli_h(a, imm8 & 15))
 #elif SIMDE_NATURAL_INT_VECTOR_SIZE_LE(128)
 #  define simde_mm256_slli_epi16(a, imm8) \
      simde_mm256_set_m128i( \
@@ -4612,6 +4612,8 @@ simde_mm256_slli_epi32 (simde__m256i a, const int imm8)
     for (size_t i = 0 ; i < (sizeof(a_.altivec_i32) / sizeof(a_.altivec_i32[0])) ; i++) {
       r_.altivec_i32[i] = vec_sl(a_.altivec_i32[i], sv);
     }
+  #elif defined(SIMDE_LOONGARCH_LASX_NATIVE)
+      r_.i256 = imm8 > 31 ? __lasx_xvreplgr2vr_w(0) : __lasx_xvsll_w(a_.i256, __lasx_xvreplgr2vr_w(imm8));
   #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
     r_.i32 = a_.i32 << HEDLEY_STATIC_CAST(int32_t, imm8);
   #else
@@ -4625,8 +4627,6 @@ simde_mm256_slli_epi32 (simde__m256i a, const int imm8)
 }
 #if defined(SIMDE_X86_AVX2_NATIVE)
 #  define simde_mm256_slli_epi32(a, imm8) _mm256_slli_epi32(a, imm8)
-#elif defined(SIMDE_LOONGARCH_LASX_NATIVE)
-#  define simde_mm256_slli_epi32(a, imm8) (imm8 > 31 ? __lasx_xvreplgr2vr_w(0) : __lasx_xvslli_w(a, imm8 & 31))
 #elif SIMDE_NATURAL_INT_VECTOR_SIZE_LE(128)
 #  define simde_mm256_slli_epi32(a, imm8) \
      simde_mm256_set_m128i( \
@@ -4646,7 +4646,9 @@ simde_mm256_slli_epi64 (simde__m256i a, const int imm8)
     r_,
     a_ = simde__m256i_to_private(a);
 
-#if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+#if defined(SIMDE_LOONGARCH_LASX_NATIVE)
+  r_.i256 = imm8 > 63 ? __lasx_xvreplgr2vr_d(0) : __lasx_xvsll_d(a_.i256, __lasx_xvreplgr2vr_d(imm8));
+#elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
   r_.i64 = a_.i64 << HEDLEY_STATIC_CAST(int64_t, imm8);
 #else
   SIMDE_VECTORIZE
@@ -4659,8 +4661,6 @@ simde_mm256_slli_epi64 (simde__m256i a, const int imm8)
 }
 #if defined(SIMDE_X86_AVX2_NATIVE)
 #  define simde_mm256_slli_epi64(a, imm8) _mm256_slli_epi64(a, imm8)
-#elif defined(SIMDE_LOONGARCH_LASX_NATIVE)
-#  define simde_mm256_slli_epi64(a, imm8) (imm8 > 63 ? __lasx_xvreplgr2vr_d(0) : __lasx_xvslli_d(a, imm8))
 #elif SIMDE_NATURAL_INT_VECTOR_SIZE_LE(128)
 #  define simde_mm256_slli_epi64(a, imm8) \
      simde_mm256_set_m128i( \
@@ -4934,7 +4934,9 @@ simde_mm256_srai_epi16 (simde__m256i a, const int imm8)
 
   if (shift > 15) shift = 15;
 
-  #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+  #if defined(SIMDE_LOONGARCH_LASX_NATIVE)
+    r_.i256 = __lasx_xvsra_h(a_.i256, __lasx_xvreplgr2vr_h(shift));
+  #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
     r_.i16 = a_.i16 >> HEDLEY_STATIC_CAST(int16_t, shift);
   #else
     SIMDE_VECTORIZE
@@ -4947,8 +4949,6 @@ simde_mm256_srai_epi16 (simde__m256i a, const int imm8)
 }
 #if defined(SIMDE_X86_AVX2_NATIVE)
 #  define simde_mm256_srai_epi16(a, imm8) _mm256_srai_epi16(a, imm8)
-#elif defined(SIMDE_LOONGARCH_LASX_NATIVE)
-#  define simde_mm256_srai_epi16(a, imm8) __lasx_xvsrai_h(a, (imm8 > 15 ? 15 : imm8))
 #elif SIMDE_NATURAL_INT_VECTOR_SIZE_LE(128)
 #  define simde_mm256_srai_epi16(a, imm8) \
      simde_mm256_set_m128i( \
@@ -4971,7 +4971,9 @@ simde_mm256_srai_epi32 (simde__m256i a, const int imm8)
 
   if (shift > 31) shift = 31;
 
-  #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+  #if defined(SIMDE_LOONGARCH_LASX_NATIVE)
+    r_.i256 = __lasx_xvsra_w(a_.i256, __lasx_xvreplgr2vr_w(shift));
+  #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
     r_.i32 = a_.i32 >> HEDLEY_STATIC_CAST(int16_t, shift);
   #else
     SIMDE_VECTORIZE
@@ -4984,8 +4986,6 @@ simde_mm256_srai_epi32 (simde__m256i a, const int imm8)
 }
 #if defined(SIMDE_X86_AVX2_NATIVE)
 #  define simde_mm256_srai_epi32(a, imm8) _mm256_srai_epi32(a, imm8)
-#elif defined(SIMDE_LOONGARCH_LASX_NATIVE)
-#  define simde_mm256_srai_epi32(a, imm8) __lasx_xvsrai_w(a, (imm8 > 31 ? 31 : imm8))
 #elif SIMDE_NATURAL_INT_VECTOR_SIZE_LE(128)
 #  define simde_mm256_srai_epi32(a, imm8) \
      simde_mm256_set_m128i( \
@@ -5195,6 +5195,8 @@ simde_mm256_srli_epi16 (simde__m256i a, const int imm8)
     for (size_t i = 0 ; i < (sizeof(a_.altivec_u16) / sizeof(a_.altivec_u16[0])) ; i++) {
       r_.altivec_u16[i] = vec_sr(a_.altivec_u16[i], sv);
     }
+  #elif defined(SIMDE_LOONGARCH_LASX_NATIVE)
+    r_.i256 = __lasx_xvsrl_h(a_.i256, __lasx_xvreplgr2vr_h(imm8));
   #else
     if (HEDLEY_STATIC_CAST(unsigned int, imm8) > 15) {
       simde_memset(&r_, 0, sizeof(r_));
@@ -5214,8 +5216,6 @@ simde_mm256_srli_epi16 (simde__m256i a, const int imm8)
 }
 #if defined(SIMDE_X86_AVX2_NATIVE)
 #  define simde_mm256_srli_epi16(a, imm8) _mm256_srli_epi16(a, imm8)
-#elif defined(SIMDE_LOONGARCH_LASX_NATIVE)
-#  define simde_mm256_srli_epi16(a, imm8) (imm8 > 15 ? __lasx_xvreplgr2vr_h(0) : __lasx_xvsrli_h(a, imm8 & 15))
 #elif SIMDE_NATURAL_INT_VECTOR_SIZE_LE(128)
 #  define simde_mm256_srli_epi16(a, imm8) \
      simde_mm256_set_m128i( \
@@ -5240,6 +5240,8 @@ simde_mm256_srli_epi32 (simde__m256i a, const int imm8)
     for (size_t i = 0 ; i < (sizeof(a_.altivec_u32) / sizeof(a_.altivec_u32[0])) ; i++) {
       r_.altivec_u32[i] = vec_sr(a_.altivec_u32[i], sv);
     }
+  #elif defined(SIMDE_LOONGARCH_LASX_NATIVE)
+    r_.i256 = imm8 > 31 ? __lasx_xvreplgr2vr_w(0) : __lasx_xvsrl_w(a_.i256, __lasx_xvreplgr2vr_w(imm8));
   #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
     r_.u32 = a_.u32 >> SIMDE_CAST_VECTOR_SHIFT_COUNT(16, imm8);
   #else
@@ -5253,8 +5255,6 @@ simde_mm256_srli_epi32 (simde__m256i a, const int imm8)
 }
 #if defined(SIMDE_X86_AVX2_NATIVE)
 #  define simde_mm256_srli_epi32(a, imm8) _mm256_srli_epi32(a, imm8)
-#elif defined(SIMDE_LOONGARCH_LASX_NATIVE)
-#  define simde_mm256_srli_epi32(a, imm8) __lasx_xvsrli_w(a, imm8)
 #elif SIMDE_NATURAL_INT_VECTOR_SIZE_LE(128)
 #  define simde_mm256_srli_epi32(a, imm8) \
      simde_mm256_set_m128i( \
@@ -5274,7 +5274,9 @@ simde_mm256_srli_epi64 (simde__m256i a, const int imm8)
     r_,
     a_ = simde__m256i_to_private(a);
 
-#if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+#if defined(SIMDE_LOONGARCH_LASX_NATIVE)
+  r_.i256 = imm8 > 63 ? __lasx_xvreplgr2vr_d(0) : __lasx_xvsrl_d(a_.i256, __lasx_xvreplgr2vr_d(imm8));
+#elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
   r_.u64 = a_.u64 >> SIMDE_CAST_VECTOR_SHIFT_COUNT(32, imm8);
 #else
   SIMDE_VECTORIZE
@@ -5287,8 +5289,6 @@ simde_mm256_srli_epi64 (simde__m256i a, const int imm8)
 }
 #if defined(SIMDE_X86_AVX2_NATIVE)
 #  define simde_mm256_srli_epi64(a, imm8) _mm256_srli_epi64(a, imm8)
-#elif defined(SIMDE_LOONGARCH_LASX_NATIVE)
-#  define simde_mm256_srli_epi64(a, imm8) __lasx_xvsrli_d(a, imm8)
 #elif SIMDE_NATURAL_INT_VECTOR_SIZE_LE(128)
 #  define simde_mm256_srli_epi64(a, imm8) \
      simde_mm256_set_m128i( \
