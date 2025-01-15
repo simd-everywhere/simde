@@ -46,6 +46,63 @@ test_simde_vqdmulhh_s16 (SIMDE_MUNIT_TEST_ARGS) {
 }
 
 static int
+test_simde_vqdmulhs_s32 (SIMDE_MUNIT_TEST_ARGS) {
+#if 1
+  static const struct {
+    int32_t a;
+    int32_t b;
+    int32_t r;
+  } test_vec[] = {
+    {  INT32_C(   682197004),
+      -INT32_C(   192918308),
+      -INT32_C(    61284887) },
+    { -INT32_C(  1420402953),
+      -INT32_C(   594640242),
+       INT32_C(   393310913) },
+    {  INT32_C(   646498045),
+      -INT32_C(  1232769067),
+      -INT32_C(   371124033) },
+    { -INT32_C(  1825799512),
+       INT32_C(  1313012033),
+      -INT32_C(  1116328281) },
+    {  INT32_C(  1433857145),
+       INT32_C(   810219064),
+       INT32_C(   540976596) },
+    { -INT32_C(   488923052),
+       INT32_C(   532572450),
+      -INT32_C(   121252122) },
+    {  INT32_C(    71714351),
+       INT32_C(  1589365686),
+       INT32_C(    53076226) },
+    { -INT32_C(  1879972019),
+       INT32_C(  1524446433),
+      -INT32_C(  1334546432) },
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
+    int32_t r = simde_vqdmulhs_s32(test_vec[i].a, test_vec[i].b);
+
+    simde_assert_equal_i32(r, test_vec[i].r);
+  }
+
+  return 0;
+#else
+  fputc('\n', stdout);
+  for (int i = 0 ; i < 8 ; i++) {
+    int32_t a = simde_test_codegen_random_i32();
+    int32_t b = simde_test_codegen_random_i32();
+    int32_t r = simde_vqdmulhs_s32(a, b);
+
+    simde_test_codegen_write_i32(2, a, SIMDE_TEST_VEC_POS_FIRST);
+    simde_test_codegen_write_i32(2, b, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_codegen_write_i32(2, r, SIMDE_TEST_VEC_POS_LAST);
+  }
+  return 1;
+#endif
+}
+
+
+static int
 test_simde_vqdmulh_s16 (SIMDE_MUNIT_TEST_ARGS) {
 #if 1
   static const struct {
@@ -282,6 +339,7 @@ test_simde_vqdmulhq_s32 (SIMDE_MUNIT_TEST_ARGS) {
 
 SIMDE_TEST_FUNC_LIST_BEGIN
 SIMDE_TEST_FUNC_LIST_ENTRY(vqdmulhh_s16)
+SIMDE_TEST_FUNC_LIST_ENTRY(vqdmulhs_s32)
 SIMDE_TEST_FUNC_LIST_ENTRY(vqdmulh_s16)
 SIMDE_TEST_FUNC_LIST_ENTRY(vqdmulh_s32)
 
