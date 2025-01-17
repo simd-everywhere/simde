@@ -322,6 +322,7 @@ simde_avx512_families = [
   'abs',
   'add',
   'adds',
+  'align',
   'and',
   'andnot',
   'avg',
