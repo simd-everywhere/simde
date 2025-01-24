@@ -3418,6 +3418,10 @@ test_simde_mm_cvtps_epi32(SIMDE_MUNIT_TEST_ARGS) {
       { -INT32_C(           2),  INT32_C(           2), -INT32_C(           2),  INT32_C(         2) } },
     { { SIMDE_FLOAT32_C(    -3.50), SIMDE_FLOAT32_C(     3.50), SIMDE_FLOAT32_C(    -4.50), SIMDE_FLOAT32_C(     4.50) },
       { -INT32_C(           4),  INT32_C(           4), -INT32_C(           4),  INT32_C(         4) } },
+    { { SIMDE_FLOAT32_C(-2147483650.0), SIMDE_FLOAT32_C(-2147483650.0), SIMDE_FLOAT32_C(-2147483650.0), SIMDE_FLOAT32_C(-2147483650.0) },
+      {  INT32_MIN            ,  INT32_MIN            ,  INT32_MIN           ,  INT32_MIN              } },
+    { { SIMDE_FLOAT32_C( 2147483649.0), SIMDE_FLOAT32_C( 2147483649.0), SIMDE_FLOAT32_C( 2147483649.0), SIMDE_FLOAT32_C( 2147483649.0) },
+      {  INT32_MIN            ,  INT32_MIN            ,  INT32_MIN           ,  INT32_MIN              } },
     #endif
     { { SIMDE_FLOAT32_C(   -95.52), SIMDE_FLOAT32_C(   603.57), SIMDE_FLOAT32_C(  -810.91), SIMDE_FLOAT32_C(   527.98) },
       { -INT32_C(          96),  INT32_C(         604), -INT32_C(         811),  INT32_C(         528) } },
@@ -3434,11 +3438,7 @@ test_simde_mm_cvtps_epi32(SIMDE_MUNIT_TEST_ARGS) {
     { { SIMDE_FLOAT32_C(   660.47), SIMDE_FLOAT32_C(  -124.04), SIMDE_FLOAT32_C(   493.83), SIMDE_FLOAT32_C(   250.16) },
       {  INT32_C(         660), -INT32_C(         124),  INT32_C(         494),  INT32_C(         250) } },
     { { SIMDE_FLOAT32_C(  -314.21), SIMDE_FLOAT32_C(   -16.38), SIMDE_FLOAT32_C(   852.78), SIMDE_FLOAT32_C(   590.27) },
-      { -INT32_C(         314), -INT32_C(          16),  INT32_C(         853),  INT32_C(         590) } },
-    { { SIMDE_FLOAT32_C(-2147483650.0), SIMDE_FLOAT32_C(-2147483650.0), SIMDE_FLOAT32_C(-2147483650.0), SIMDE_FLOAT32_C(-2147483650.0) },
-      {  INT32_MIN            ,  INT32_MIN            ,  INT32_MIN           ,  INT32_MIN              } },
-    { { SIMDE_FLOAT32_C( 2147483649.0), SIMDE_FLOAT32_C( 2147483649.0), SIMDE_FLOAT32_C( 2147483649.0), SIMDE_FLOAT32_C( 2147483649.0) },
-      {  INT32_MIN            ,  INT32_MIN            ,  INT32_MIN           ,  INT32_MIN              } }
+      { -INT32_C(         314), -INT32_C(          16),  INT32_C(         853),  INT32_C(         590) } }
   };
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
