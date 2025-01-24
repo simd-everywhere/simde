@@ -288,6 +288,9 @@ jobs:
           distro: ubuntu-24.04
           arch_flags: -ffast-math
           ccache: 'true'
+        - version: 11
+          distro:  ubuntu-24.04-arm
+          arch_flags: -march=native
         - version: 12
           distro: ubuntu-24.04
           arch_flags: -march=native
@@ -295,6 +298,9 @@ jobs:
           distro: ubuntu-24.04
           arch_flags: -ffast-math
           ccache: 'true'
+        - version: 12
+          distro: ubuntu-24.04-arm
+          arch_flags: -march=native
         - version: 13
           distro: ubuntu-24.04
           arch_flags: -march=native
@@ -302,6 +308,9 @@ jobs:
           distro: ubuntu-24.04
           arch_flags: -ffast-math
           ccache: 'true'
+        - version: 13
+          distro: ubuntu-24.04-arm
+          arch_flags: -march=native
         - version: 14
           distro: ubuntu-24.04
           arch_flags: -march=native
@@ -309,6 +318,9 @@ jobs:
           distro: ubuntu-24.04
           arch_flags: -ffast-math
           ccache: 'true'
+        - version: 14
+          distro: ubuntu-24.04-arm
+          arch_flags: -march=native
     runs-on: ${{ matrix.distro }}
     env:
       CFLAGS: ${{ matrix.arch_flags }} -Wall -Wextra -Werror
@@ -732,6 +744,16 @@ jobs:
           ccache: 'true'
         - version: "18"
           distro: ubuntu-24.04
+          arch_flags: -march=native -Wno-unsafe-buffer-usage -Wno-switch-default -O2
+        - version: "18"
+          distro: ubuntu-24.04-arm
+          arch_flags: -march=native -Wno-unsafe-buffer-usage -Wno-switch-default
+        - version: "18"
+          distro: ubuntu-24.04-arm
+          arch_flags: -ffast-math -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-nan-infinity-disabled
+          ccache: 'true'
+        - version: "18"
+          distro: ubuntu-24.04-arm
           arch_flags: -march=native -Wno-unsafe-buffer-usage -Wno-switch-default -O2
     runs-on: ${{ matrix.distro }}
     env:
