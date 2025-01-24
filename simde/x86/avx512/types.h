@@ -595,14 +595,14 @@ typedef uint64_t simde__mmask64;
   #if !defined(HEDLEY_INTEL_VERSION)
     typedef uint16_t __mmask16;
   #else
-    #define __mmask16 uint16_t;
+    #define __mmask16 uint16_t
   #endif
 #endif
 #if !defined(__mmask32) && defined(SIMDE_ENABLE_NATIVE_ALIASES)
   #if !defined(HEDLEY_INTEL_VERSION)
     typedef uint32_t __mmask32;
   #else
-    #define __mmask32 uint32_t;
+    #define __mmask32 uint32_t
   #endif
 #endif
 #if !defined(__mmask64) && defined(SIMDE_ENABLE_NATIVE_ALIASES)
@@ -613,7 +613,7 @@ typedef uint64_t simde__mmask64;
       typedef uint64_t __mmask64;
     #endif
   #else
-    #define __mmask64 uint64_t;
+    #define __mmask64 uint64_t
   #endif
 #endif
 

@@ -305,7 +305,7 @@ simde_float32x4_t simde_vcmlaq_lane_f32(simde_float32x4_t r, simde_float32x4_t a
 #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && SIMDE_ARCH_ARM_CHECK(8, 3) &&                                                   \
     (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(9, 0, 0)) &&                                                  \
     (!defined(__clang__) || SIMDE_DETECT_CLANG_VERSION_CHECK(12, 0, 0))
-  #define simde_vcmlaq_lane_f32(r, a, b, lane) vcmlaq_lane_f32(r, a, b, 0);
+  #define simde_vcmlaq_lane_f32(r, a, b, lane) vcmlaq_lane_f32(r, a, b, 0)
 #endif
 #if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
     !(SIMDE_ARCH_ARM_CHECK(8,3) && \
