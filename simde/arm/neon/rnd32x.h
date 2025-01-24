@@ -37,7 +37,7 @@ SIMDE_BEGIN_DECLS_
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float32x2_t
 simde_vrnd32x_f32(simde_float32x2_t a) {
-  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARCH_ARM_FRINT)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARCH_ARM_FRINT) && SIMDE_ARCH_ARM_CHECK(8, 5)
     return vrnd32x_f32(a);
   #else
     simde_float32x2_private
@@ -59,7 +59,7 @@ simde_vrnd32x_f32(simde_float32x2_t a) {
     return simde_float32x2_from_private(r_);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && !defined(SIMDE_ARCH_ARM_FRINT))
+#if (defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES) && defined(SIMDE_ARCH_ARM_FRINT) && SIMDE_ARCH_ARM_CHECK(8, 5)) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && !(defined(SIMDE_ARCH_ARM_FRINT) && SIMDE_ARCH_ARM_CHECK(8, 5)))
   #undef vrnd32x_f32
   #define vrnd32x_f32(a) simde_vrnd32x_f32(a)
 #endif
@@ -67,7 +67,7 @@ simde_vrnd32x_f32(simde_float32x2_t a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float64x1_t
 simde_vrnd32x_f64(simde_float64x1_t a) {
-  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARCH_ARM_FRINT) && (!defined(__clang__) || SIMDE_DETECT_CLANG_VERSION_CHECK(18, 0, 0))
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARCH_ARM_FRINT) && SIMDE_ARCH_ARM_CHECK(8, 5) && (!defined(__clang__) || SIMDE_DETECT_CLANG_VERSION_CHECK(18, 0, 0))
     return vrnd32x_f64(a);
   #else
     simde_float64x1_private
@@ -89,7 +89,7 @@ simde_vrnd32x_f64(simde_float64x1_t a) {
     return simde_float64x1_from_private(r_);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && !defined(SIMDE_ARCH_ARM_FRINT))
+#if (defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES) && defined(SIMDE_ARCH_ARM_FRINT) && SIMDE_ARCH_ARM_CHECK(8, 5) && (!defined(__clang__) || SIMDE_DETECT_CLANG_VERSION_CHECK(18, 0, 0))) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && !(defined(SIMDE_ARCH_ARM_FRINT) && SIMDE_ARCH_ARM_CHECK(8, 5) && (!defined(__clang__) || SIMDE_DETECT_CLANG_VERSION_CHECK(18, 0, 0))))
   #undef vrnd32x_f64
   #define vrnd32x_f64(a) simde_vrnd32x_f64(a)
 #endif
@@ -97,7 +97,7 @@ simde_vrnd32x_f64(simde_float64x1_t a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float32x4_t
 simde_vrnd32xq_f32(simde_float32x4_t a) {
-  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARCH_ARM_FRINT)
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARCH_ARM_FRINT) && SIMDE_ARCH_ARM_CHECK(8, 5)
     return vrnd32xq_f32(a);
   #else
     simde_float32x4_private
@@ -119,7 +119,7 @@ simde_vrnd32xq_f32(simde_float32x4_t a) {
     return simde_float32x4_from_private(r_);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && !defined(SIMDE_ARCH_ARM_FRINT))
+#if (defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES) && defined(SIMDE_ARCH_ARM_FRINT) && SIMDE_ARCH_ARM_CHECK(8, 5)) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && !(defined(SIMDE_ARCH_ARM_FRINT) && SIMDE_ARCH_ARM_CHECK(8, 5)))
   #undef vrnd32xq_f32
   #define vrnd32xq_f32(a) simde_vrnd32xq_f32(a)
 #endif
@@ -127,7 +127,7 @@ simde_vrnd32xq_f32(simde_float32x4_t a) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float64x2_t
 simde_vrnd32xq_f64(simde_float64x2_t a) {
-  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARCH_ARM_FRINT) && (!defined(__clang__) || SIMDE_DETECT_CLANG_VERSION_CHECK(18, 0, 0))
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARCH_ARM_FRINT) && SIMDE_ARCH_ARM_CHECK(8, 5) && (!defined(__clang__) || SIMDE_DETECT_CLANG_VERSION_CHECK(18, 0, 0))
     return vrnd32xq_f64(a);
   #else
     simde_float64x2_private
@@ -149,7 +149,7 @@ simde_vrnd32xq_f64(simde_float64x2_t a) {
     return simde_float64x2_from_private(r_);
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && !defined(SIMDE_ARCH_ARM_FRINT))
+#if (defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES) && defined(SIMDE_ARCH_ARM_FRINT) && SIMDE_ARCH_ARM_CHECK(8, 5) && (!defined(__clang__) || SIMDE_DETECT_CLANG_VERSION_CHECK(18, 0, 0))) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && !(defined(SIMDE_ARCH_ARM_FRINT) && SIMDE_ARCH_ARM_CHECK(8, 5) && (!defined(__clang__) || SIMDE_DETECT_CLANG_VERSION_CHECK(18, 0, 0))))
   #undef vrnd32xq_f64
   #define vrnd32xq_f64(a) simde_vrnd32xq_f64(a)
 #endif
