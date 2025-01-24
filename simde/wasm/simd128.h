@@ -6039,7 +6039,7 @@ simde_wasm_f64x2_pmin (simde_v128_t a, simde_v128_t b) {
     #if defined(SIMDE_X86_SSE2_NATIVE)
       r_.sse_m128d = _mm_min_pd(b_.sse_m128d, a_.sse_m128d);
     #elif defined(SIMDE_FAST_NANS) && defined(SIMDE_ARM_NEON_A64V8_NATIVE)
-      r_.neon_f32 = vminq_f64(a_.neon_f64, b_.neon_f64);
+      r_.neon_f64 = vminq_f64(a_.neon_f64, b_.neon_f64);
     #elif defined(SIMDE_FAST_NANS) && defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
       r_.altivec_f64 = vec_min(a_.altivec_f64, b_.altivec_f64);
     #elif defined(SIMDE_ARM_NEON_A64V8_NATIVE)
