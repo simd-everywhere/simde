@@ -40,7 +40,7 @@ simde_msa_st_b(simde_v16i8 a, void * rs, const int s10)
   simde_memcpy(&(HEDLEY_REINTERPRET_CAST(int8_t*, rs)[s10]), &a, sizeof(a));
 }
 #if defined(SIMDE_MIPS_MSA_NATIVE)
-  #define simde_msa_st_b(a, rs, s10) __msa_st_b((a), (rs), (s10));
+  #define simde_msa_st_b(a, rs, s10) __msa_st_b((a), (rs), (s10))
 #endif
 #if defined(SIMDE_MIPS_MSA_ENABLE_NATIVE_ALIASES)
   #undef __msa_st_b
@@ -55,7 +55,7 @@ simde_msa_st_h(simde_v8i16 a, void * rs, const int s10)
   simde_memcpy(&(HEDLEY_REINTERPRET_CAST(int8_t*, rs)[s10]), &a, sizeof(a));
 }
 #if defined(SIMDE_MIPS_MSA_NATIVE)
-  #define simde_msa_st_h(a, rs, s10) __msa_st_h((a), (rs), (s10));
+  #define simde_msa_st_h(a, rs, s10) __msa_st_h((a), (rs), (s10))
 #endif
 #if defined(SIMDE_MIPS_MSA_ENABLE_NATIVE_ALIASES)
   #undef __msa_st_h
@@ -70,7 +70,7 @@ simde_msa_st_w(simde_v4i32 a, void * rs, const int s10)
   simde_memcpy(&(HEDLEY_REINTERPRET_CAST(int8_t*, rs)[s10]), &a, sizeof(a));
 }
 #if defined(SIMDE_MIPS_MSA_NATIVE)
-  #define simde_msa_st_w(a, rs, s10) __msa_st_w((a), (rs), (s10));
+  #define simde_msa_st_w(a, rs, s10) __msa_st_w((a), (rs), (s10))
 #endif
 #if defined(SIMDE_MIPS_MSA_ENABLE_NATIVE_ALIASES)
   #undef __msa_st_w
@@ -85,7 +85,7 @@ simde_msa_st_d(simde_v2i64 a, void * rs, const int s10)
   simde_memcpy(&(HEDLEY_REINTERPRET_CAST(int8_t*, rs)[s10]), &a, sizeof(a));
 }
 #if defined(SIMDE_MIPS_MSA_NATIVE)
-  #define simde_msa_st_d(a, rs, s10) __msa_st_d((a), (rs), (s10));
+  #define simde_msa_st_d(a, rs, s10) __msa_st_d((a), (rs), (s10))
 #endif
 #if defined(SIMDE_MIPS_MSA_ENABLE_NATIVE_ALIASES)
   #undef __msa_st_d
