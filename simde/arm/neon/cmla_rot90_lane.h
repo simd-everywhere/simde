@@ -316,7 +316,7 @@ simde_float16x8_t simde_vcmlaq_rot90_laneq_f16(simde_float16x8_t r, simde_float1
   #if defined(SIMDE_RISCV_V_NATIVE) && SIMDE_ARCH_RISCV_ZVFH && (SIMDE_NATURAL_VECTOR_SIZE > 128)
       simde_float16x8_private r_ = simde_float16x8_to_private(r),
                               a_ = simde_float16x8_to_private(a),
-                              b_ = simde_float16x4_to_private(
+                              b_ = simde_float16x8_to_private(
                                 simde_vreinterpretq_f16_u32(simde_vdupq_n_u32(simde_uint32x4_to_private(simde_vreinterpretq_u32_f16(b)).values[lane])));
       uint16_t idx1[8] = {1, 1, 3, 3, 5, 5, 7, 7};
       uint16_t idx2[8] = {1, 8, 3, 10, 5, 12, 7, 14};
