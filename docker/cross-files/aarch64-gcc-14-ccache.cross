@@ -8,8 +8,8 @@ ld = 'aarch64-linux-gnu-ld'
 exe_wrapper = ['qemu-aarch64-static', '-L', '/usr/aarch64-linux-gnu']
 
 [properties]
-c_args = ['-march=armv8.2-a+simd+crypto+crc+bf16', '-Wextra', '-Werror']
-cpp_args = ['-march=armv8.2-a+simd+crypto+crc+bf16', '-Wextra', '-Werror']
+c_args = ['-march=armv9.3-a+crypto+sha3+sm4', '-Wextra', '-Werror']
+cpp_args = ['-march=armv9.3-a+crypto+sha3+sm4', '-Wextra', '-Werror']
 
 [host_machine]
 system = 'linux'
