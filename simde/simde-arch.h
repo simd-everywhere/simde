@@ -79,7 +79,19 @@
 
 /* ARM
    <https://en.wikipedia.org/wiki/ARM_architecture> */
-#if defined(__ARM_ARCH)
+#if defined(__ARM_ARCH_8_8__)
+#  define SIMDE_ARCH_ARM 808
+#elif defined(__ARM_ARCH_8_7__)
+#  define SIMDE_ARCH_ARM 807
+#elif defined(__ARM_ARCH_8_6__)
+#  define SIMDE_ARCH_ARM 806
+#elif defined(__ARM_ARCH_8_5__)
+#  define SIMDE_ARCH_ARM 805
+#elif defined(__ARM_ARCH_8_4__)
+#  define SIMDE_ARCH_ARM 804
+#elif defined(__ARM_ARCH_8_3__)
+#  define SIMDE_ARCH_ARM 803
+#elif defined(__ARM_ARCH)
 #  if __ARM_ARCH > 100
 #    define SIMDE_ARCH_ARM (__ARM_ARCH)
 #  else
