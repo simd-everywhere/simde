@@ -73,8 +73,8 @@ SIMDE_BEGIN_DECLS_
   #define simde_vshrn_high_n_u16(r, a, n) vshrn_high_n_u16((r), (a), (n))
 #else
   #define simde_vshrn_high_n_u16(r, a, n) \
-    simde_vreinterpretq_u8_s8(     \
-      simde_vcombine_s8(simde_vreinterpret_s8_u8(r),     \
+    simde_vreinterpretq_u8_s8( \
+      simde_vcombine_s8(simde_vreinterpret_s8_u8(r), \
         simde_vshrn_n_s16(simde_vreinterpretq_s16_u16(a), (n))))
 #endif
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
@@ -87,7 +87,7 @@ SIMDE_BEGIN_DECLS_
 #else
   #define simde_vshrn_high_n_u32(r, a, n) \
     simde_vreinterpretq_u16_s16( \
-      simde_vcombine_s16(simde_vreinterpret_s16_u16(r),     \
+      simde_vcombine_s16(simde_vreinterpret_s16_u16(r), \
         simde_vshrn_n_s32(simde_vreinterpretq_s32_u32(a), (n))))
 #endif
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
@@ -100,7 +100,7 @@ SIMDE_BEGIN_DECLS_
 #else
   #define simde_vshrn_high_n_u64(r, a, n) \
     simde_vreinterpretq_u32_s32( \
-      simde_vcombine_s32(simde_vreinterpret_s32_u32(r),     \
+      simde_vcombine_s32(simde_vreinterpret_s32_u32(r), \
         simde_vshrn_n_s64(simde_vreinterpretq_s64_u64(a), (n))))
 #endif
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
