@@ -126,7 +126,7 @@ simde_vshrn_n_s64 (const simde_int64x2_t a, const int n)
   #define simde_vshrn_n_u16(a, n) vshrn_n_u16((a), (n))
 #else
   #define simde_vshrn_n_u16(a, n) \
-    simde_vreinterpret_u8_s8(     \
+    simde_vreinterpret_u8_s8( \
         simde_vshrn_n_s16(simde_vreinterpretq_s16_u16(a), (n)))
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
