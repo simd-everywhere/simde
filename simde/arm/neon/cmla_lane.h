@@ -55,12 +55,12 @@ simde_float16x4_t simde_vcmla_lane_f16(simde_float16x4_t r, simde_float16x4_t a,
       r_.sv64 = __riscv_vfmacc_vv_f16m1(r_.sv64, b_.sv64, op1, 4);
       return simde_float16x4_from_private(r_);
   #else
-    simde_float32x4_private r_ = simde_float32x4_to_private(simde_vcvt_f32_f16(r)),
+    #if defined(SIMDE_SHUFFLE_VECTOR_) &&                                                                                       \
+        ((SIMDE_FLOAT16_API == SIMDE_FLOAT16_API_FP16) || (SIMDE_FLOAT16_API == SIMDE_FLOAT16_API_FLOAT16))
+      simde_float32x4_private r_ = simde_float32x4_to_private(simde_vcvt_f32_f16(r)),
                           a_ = simde_float32x4_to_private(simde_vcvt_f32_f16(a)),
                           b_ = simde_float32x4_to_private(simde_vcvt_f32_f16(
                                 simde_vreinterpret_f16_u32(simde_vdup_n_u32(simde_uint32x2_to_private(simde_vreinterpret_u32_f16(b)).values[lane]))));
-    #if defined(SIMDE_SHUFFLE_VECTOR_) &&                                                                                       \
-        ((SIMDE_FLOAT16_API == SIMDE_FLOAT16_API_FP16) || (SIMDE_FLOAT16_API == SIMDE_FLOAT16_API_FLOAT16))
       a_.values = SIMDE_SHUFFLE_VECTOR_(32, 16, a_.values, a_.values, 0, 0, 2, 2);
       r_.values += b_.values * a_.values;
       return simde_vcvt_f16_f32(simde_float32x4_from_private(r_));
@@ -99,9 +99,9 @@ simde_float32x2_t simde_vcmla_lane_f32(simde_float32x2_t r, simde_float32x2_t a,
       return simde_float32x2_from_private(r_);
   #else
     simde_float32x2_t b_tmp = simde_vreinterpret_f32_u64(simde_vdup_n_u64(simde_uint64x1_to_private(simde_vreinterpret_u64_f32(b)).values[lane]));
-    simde_float32x2_private r_ = simde_float32x2_to_private(r), a_ = simde_float32x2_to_private(a),
-                            b_ = simde_float32x2_to_private(b_tmp);
     #if defined(SIMDE_SHUFFLE_VECTOR_)
+      simde_float32x2_private r_ = simde_float32x2_to_private(r), a_ = simde_float32x2_to_private(a),
+                            b_ = simde_float32x2_to_private(b_tmp);
       a_.values = SIMDE_SHUFFLE_VECTOR_(32, 8, a_.values, a_.values, 0, 0);
       r_.values += b_.values * a_.values;
       return simde_float32x2_from_private(r_);
@@ -140,12 +140,12 @@ simde_float16x4_t simde_vcmla_laneq_f16(simde_float16x4_t r, simde_float16x4_t a
       r_.sv64 = __riscv_vfmacc_vv_f16m1(r_.sv64, b_.sv64, op1, 4);
       return simde_float16x4_from_private(r_);
   #else
-    simde_float32x4_private r_ = simde_float32x4_to_private(simde_vcvt_f32_f16(r)),
+    #if defined(SIMDE_SHUFFLE_VECTOR_) &&                                                                                       \
+        ((SIMDE_FLOAT16_API == SIMDE_FLOAT16_API_FP16) || (SIMDE_FLOAT16_API == SIMDE_FLOAT16_API_FLOAT16))
+      simde_float32x4_private r_ = simde_float32x4_to_private(simde_vcvt_f32_f16(r)),
                           a_ = simde_float32x4_to_private(simde_vcvt_f32_f16(a)),
                           b_ = simde_float32x4_to_private(simde_vcvt_f32_f16(
                                 simde_vreinterpret_f16_u32(simde_vdup_n_u32(simde_uint32x4_to_private(simde_vreinterpretq_u32_f16(b)).values[lane]))));
-    #if defined(SIMDE_SHUFFLE_VECTOR_) &&                                                                                       \
-        ((SIMDE_FLOAT16_API == SIMDE_FLOAT16_API_FP16) || (SIMDE_FLOAT16_API == SIMDE_FLOAT16_API_FLOAT16))
       a_.values = SIMDE_SHUFFLE_VECTOR_(32, 16, a_.values, a_.values, 0, 0, 2, 2);
       r_.values += b_.values * a_.values;
       return simde_vcvt_f16_f32(simde_float32x4_from_private(r_));
@@ -181,10 +181,10 @@ simde_float32x2_t simde_vcmla_laneq_f32(simde_float32x2_t r, simde_float32x2_t a
       r_.sv64 = __riscv_vfmacc_vv_f32m1(r_.sv64, b_.sv64, op1, 2);
       return simde_float32x2_from_private(r_);
   #else
-    simde_float32x2_t b_tmp = simde_vreinterpret_f32_u64(simde_vdup_n_u64(simde_uint64x2_to_private(simde_vreinterpretq_u64_f32(b)).values[lane]));
-    simde_float32x2_private r_ = simde_float32x2_to_private(r), a_ = simde_float32x2_to_private(a),
-                          b_ = simde_float32x2_to_private(b_tmp);
     #if defined(SIMDE_SHUFFLE_VECTOR_)
+      simde_float32x2_t b_tmp = simde_vreinterpret_f32_u64(simde_vdup_n_u64(simde_uint64x2_to_private(simde_vreinterpretq_u64_f32(b)).values[lane]));
+      simde_float32x2_private r_ = simde_float32x2_to_private(r), a_ = simde_float32x2_to_private(a),
+                            b_ = simde_float32x2_to_private(b_tmp);
       a_.values = SIMDE_SHUFFLE_VECTOR_(32, 8, a_.values, a_.values, 0, 0);
       r_.values += b_.values * a_.values;
       return simde_float32x2_from_private(r_);
@@ -222,14 +222,14 @@ simde_float16x8_t simde_vcmlaq_lane_f16(simde_float16x8_t r, simde_float16x8_t a
       r_.sv128 = __riscv_vfmacc_vv_f16m1(r_.sv128, b_.sv128, op1, 8);
       return simde_float16x8_from_private(r_);
   #else
-    simde_float32x4_private r_low = simde_float32x4_to_private(simde_vcvt_f32_f16(simde_vget_low_f16(r))),
+    #if defined(SIMDE_SHUFFLE_VECTOR_) &&                                                                                       \
+        ((SIMDE_FLOAT16_API == SIMDE_FLOAT16_API_FP16) || (SIMDE_FLOAT16_API == SIMDE_FLOAT16_API_FLOAT16))
+      simde_float32x4_private r_low = simde_float32x4_to_private(simde_vcvt_f32_f16(simde_vget_low_f16(r))),
                             a_low = simde_float32x4_to_private(simde_vcvt_f32_f16(simde_vget_low_f16(a))),
                             r_high = simde_float32x4_to_private(simde_vcvt_f32_f16(simde_vget_high_f16(r))),
                             a_high = simde_float32x4_to_private(simde_vcvt_f32_f16(simde_vget_high_f16(a))),
                             b_ = simde_float32x4_to_private(simde_vcvt_f32_f16(
                                 simde_vreinterpret_f16_u32(simde_vdup_n_u32(simde_uint32x2_to_private(simde_vreinterpret_u32_f16(b)).values[lane]))));
-    #if defined(SIMDE_SHUFFLE_VECTOR_) &&                                                                                       \
-        ((SIMDE_FLOAT16_API == SIMDE_FLOAT16_API_FP16) || (SIMDE_FLOAT16_API == SIMDE_FLOAT16_API_FLOAT16))
       a_low.values = SIMDE_SHUFFLE_VECTOR_(32, 16, a_low.values, a_low.values, 0, 0, 2, 2);
       a_high.values = SIMDE_SHUFFLE_VECTOR_(32, 16, a_high.values, a_high.values, 0, 0, 2, 2);
       r_low.values += b_.values * a_low.values;
@@ -272,9 +272,9 @@ simde_float32x4_t simde_vcmlaq_lane_f32(simde_float32x4_t r, simde_float32x4_t a
       return simde_float32x4_from_private(r_);
   #else
     simde_float32x4_t b_tmp_ = simde_vreinterpretq_f32_u64(simde_vdupq_n_u64(simde_uint64x1_to_private(simde_vreinterpret_u64_f32(b)).values[lane]));
-    simde_float32x4_private r_ = simde_float32x4_to_private(r), a_ = simde_float32x4_to_private(a),
-                            b_ = simde_float32x4_to_private(b_tmp_);
     #if defined(SIMDE_SHUFFLE_VECTOR_)
+      simde_float32x4_private r_ = simde_float32x4_to_private(r), a_ = simde_float32x4_to_private(a),
+                              b_ = simde_float32x4_to_private(b_tmp_);
       a_.values = SIMDE_SHUFFLE_VECTOR_(32, 16, a_.values, a_.values, 0, 0, 2, 2);
       r_.values += b_.values * a_.values;
       return simde_float32x4_from_private(r_);
@@ -314,14 +314,14 @@ simde_float16x8_t simde_vcmlaq_laneq_f16(simde_float16x8_t r, simde_float16x8_t 
       r_.sv128 = __riscv_vfmacc_vv_f16m1(r_.sv128, b_.sv128, op1, 8);
       return simde_float16x8_from_private(r_);
   #else
-    simde_float32x4_private r_low = simde_float32x4_to_private(simde_vcvt_f32_f16(simde_vget_low_f16(r))),
-                            a_low = simde_float32x4_to_private(simde_vcvt_f32_f16(simde_vget_low_f16(a))),
-                            r_high = simde_float32x4_to_private(simde_vcvt_f32_f16(simde_vget_high_f16(r))),
-                            a_high = simde_float32x4_to_private(simde_vcvt_f32_f16(simde_vget_high_f16(a))),
-                            b_ = simde_float32x4_to_private(simde_vcvt_f32_f16(
-                                simde_vreinterpret_f16_u32(simde_vdup_n_u32(simde_uint32x4_to_private(simde_vreinterpretq_u32_f16(b)).values[lane]))));
     #if defined(SIMDE_SHUFFLE_VECTOR_) &&                                                                                       \
         ((SIMDE_FLOAT16_API == SIMDE_FLOAT16_API_FP16) || (SIMDE_FLOAT16_API == SIMDE_FLOAT16_API_FLOAT16))
+      simde_float32x4_private r_low = simde_float32x4_to_private(simde_vcvt_f32_f16(simde_vget_low_f16(r))),
+                              a_low = simde_float32x4_to_private(simde_vcvt_f32_f16(simde_vget_low_f16(a))),
+                              r_high = simde_float32x4_to_private(simde_vcvt_f32_f16(simde_vget_high_f16(r))),
+                              a_high = simde_float32x4_to_private(simde_vcvt_f32_f16(simde_vget_high_f16(a))),
+                              b_ = simde_float32x4_to_private(simde_vcvt_f32_f16(
+                                  simde_vreinterpret_f16_u32(simde_vdup_n_u32(simde_uint32x4_to_private(simde_vreinterpretq_u32_f16(b)).values[lane]))));
       a_low.values = SIMDE_SHUFFLE_VECTOR_(32, 16, a_low.values, a_low.values, 0, 0, 2, 2);
       r_low.values += b_.values * a_low.values;
       a_high.values = SIMDE_SHUFFLE_VECTOR_(32, 16, a_high.values, a_high.values, 0, 0, 2, 2);
@@ -362,10 +362,9 @@ simde_float32x4_t simde_vcmlaq_laneq_f32(simde_float32x4_t r, simde_float32x4_t 
       return simde_float32x4_from_private(r_);
   #else
     simde_float32x4_t b_tmp_ = simde_vreinterpretq_f32_u64(simde_vdupq_n_u64(simde_uint64x2_to_private(simde_vreinterpretq_u64_f32(b)).values[lane]));
-    simde_float32x4_private r_ = simde_float32x4_to_private(r), a_ = simde_float32x4_to_private(a),
-                            b_ = simde_float32x4_to_private(b_tmp_);
-
     #if defined(SIMDE_SHUFFLE_VECTOR_)
+      simde_float32x4_private r_ = simde_float32x4_to_private(r), a_ = simde_float32x4_to_private(a),
+                              b_ = simde_float32x4_to_private(b_tmp_);
       a_.values = SIMDE_SHUFFLE_VECTOR_(32, 16, a_.values, a_.values, 0, 0, 2, 2);
       r_.values += b_.values * a_.values;
       return simde_float32x4_from_private(r_);
