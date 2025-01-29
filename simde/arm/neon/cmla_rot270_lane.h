@@ -347,11 +347,11 @@ simde_float16x8_t simde_vcmlaq_rot270_laneq_f16(simde_float16x8_t r, simde_float
       b_.values = SIMDE_SHUFFLE_VECTOR_(32, 16, -b_.values, b_.values, 5, 0, 7, 2);
       r_high.values += b_.values * a_high.values;
       r_low.values += b_.values * a_low.values;
+      return simde_vcombine_f16(simde_vcvt_f16_f32(simde_float32x4_from_private(r_low)),
+                              simde_vcvt_f16_f32(simde_float32x4_from_private(r_high)));
     #else
       return simde_vcmlaq_rot270_f16(r, a, simde_vreinterpretq_f16_u32(simde_vdupq_n_u32(simde_uint32x4_to_private(simde_vreinterpretq_u32_f16(b)).values[lane])));
     #endif
-    return simde_vcombine_f16(simde_vcvt_f16_f32(simde_float32x4_from_private(r_low)),
-                              simde_vcvt_f16_f32(simde_float32x4_from_private(r_high)));
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && SIMDE_ARCH_ARM_CHECK(8, 3) &&                                                   \
@@ -384,16 +384,17 @@ simde_float32x4_t simde_vcmlaq_rot270_laneq_f32(simde_float32x4_t r, simde_float
     vfloat32m1_t op2 = __riscv_vlmul_trunc_v_f32m2_f32m1(__riscv_vrgather_vv_f32m2(__riscv_vslideup_vx_f32m2( \
       __riscv_vfneg_v_f32m2(b_tmp, 4), b_tmp, 4, 8), __riscv_vle32_v_u32m2(idx2, 4), 4));
     r_.sv128 = __riscv_vfmacc_vv_f32m1(r_.sv128, op1, op2, 4);
+    return simde_float32x4_from_private(r_);
   #elif defined(SIMDE_SHUFFLE_VECTOR_) && !defined(SIMDE_BUG_GCC_100760)
     simde_float32x4_private r_ = simde_float32x4_to_private(r), a_ = simde_float32x4_to_private(a),
                           b_ = simde_float32x4_to_private(b_tmp_);
     a_.values = SIMDE_SHUFFLE_VECTOR_(32, 16, a_.values, a_.values, 1, 1, 3, 3);
     b_.values = SIMDE_SHUFFLE_VECTOR_(32, 16, -b_.values, b_.values, 5, 0, 7, 2);
     r_.values += b_.values * a_.values;
+    return simde_float32x4_from_private(r_);
   #else
     return simde_vcmlaq_rot270_f32(r, a, b_tmp_);
   #endif
-  return simde_float32x4_from_private(r_);
 }
 #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && SIMDE_ARCH_ARM_CHECK(8, 3) &&                                                   \
     (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(9, 0, 0)) &&                                                  \
