@@ -189,10 +189,9 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde_float32x4_t simde_vcmlaq_rot180_lane_f32(simde_float32x4_t r, simde_float32x4_t a, simde_float32x2_t b, const int lane)
     SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 0)
 {
-  simde_float32x4_t b_tmp_ = simde_vreinterpretq_f32_u64(simde_vdupq_n_u64(simde_uint64x1_to_private(simde_vreinterpret_u64_f32(b)).values[lane]));
   #if defined(SIMDE_RISCV_V_NATIVE)
       simde_float32x4_private r_ = simde_float32x4_to_private(r), a_ = simde_float32x4_to_private(a),
-                          b_ = simde_float32x4_to_private(b_tmp_);
+                          b_ = simde_float32x4_to_private(simde_vreinterpretq_f32_u64(simde_vdupq_n_u64(simde_uint64x1_to_private(simde_vreinterpret_u64_f32(b)).values[lane])));
       uint32_t idx1[4] = {0, 0, 2, 2};
       uint32_t idx2[4] = {0, 1, 2, 3};
       vfloat32m2_t a_tmp = __riscv_vlmul_ext_v_f32m1_f32m2 (a_.sv128);
@@ -205,13 +204,13 @@ simde_float32x4_t simde_vcmlaq_rot180_lane_f32(simde_float32x4_t r, simde_float3
       return simde_float32x4_from_private(r_);
   #elif defined(SIMDE_SHUFFLE_VECTOR_) && !defined(SIMDE_BUG_GCC_100760)
     simde_float32x4_private r_ = simde_float32x4_to_private(r), a_ = simde_float32x4_to_private(a),
-                          b_ = simde_float32x4_to_private(b_tmp_);
+                          b_ = simde_float32x4_to_private(simde_vreinterpretq_f32_u64(simde_vdupq_n_u64(simde_uint64x1_to_private(simde_vreinterpret_u64_f32(b)).values[lane])));
     a_.values = SIMDE_SHUFFLE_VECTOR_(32, 16, a_.values, a_.values, 0, 0, 2, 2);
     b_.values = SIMDE_SHUFFLE_VECTOR_(32, 16, -b_.values, b_.values, 0, 1, 2, 3);
     r_.values += b_.values * a_.values;
     return simde_float32x4_from_private(r_);
   #else
-    return simde_vcmla_rot180_f32(r, a, b_tmp_);
+    return simde_vcmlaq_rot180_f32(r, a, simde_vreinterpretq_f32_u64(simde_vdupq_n_u64(simde_uint64x1_to_private(simde_vreinterpret_u64_f32(b)).values[lane])));
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && SIMDE_ARCH_ARM_CHECK(8, 3) &&                                                   \
@@ -372,10 +371,9 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde_float32x4_t simde_vcmlaq_rot180_laneq_f32(simde_float32x4_t r, simde_float32x4_t a, simde_float32x4_t b,
                                                 const int lane) SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 1)
 {
-  simde_float32x4_t b_tmp_ = simde_vreinterpretq_f32_u64(simde_vdupq_n_u64(simde_uint64x2_to_private(simde_vreinterpretq_u64_f32(b)).values[lane]));
   #if defined(SIMDE_RISCV_V_NATIVE)
       simde_float32x4_private r_ = simde_float32x4_to_private(r), a_ = simde_float32x4_to_private(a),
-                          b_ = simde_float32x4_to_private(b_tmp_);
+                          b_ = simde_float32x4_to_private(simde_vreinterpretq_f32_u64(simde_vdupq_n_u64(simde_uint64x2_to_private(simde_vreinterpretq_u64_f32(b)).values[lane])));
       uint32_t idx1[4] = {0, 0, 2, 2};
       uint32_t idx2[4] = {0, 1, 2, 3};
       vfloat32m2_t a_tmp = __riscv_vlmul_ext_v_f32m1_f32m2 (a_.sv128);
@@ -388,13 +386,13 @@ simde_float32x4_t simde_vcmlaq_rot180_laneq_f32(simde_float32x4_t r, simde_float
       return simde_float32x4_from_private(r_);
   #elif defined(SIMDE_SHUFFLE_VECTOR_) && !defined(SIMDE_BUG_GCC_100760)
     simde_float32x4_private r_ = simde_float32x4_to_private(r), a_ = simde_float32x4_to_private(a),
-                          b_ = simde_float32x4_to_private(b_tmp_);
+                          b_ = simde_float32x4_to_private(simde_vreinterpretq_f32_u64(simde_vdupq_n_u64(simde_uint64x2_to_private(simde_vreinterpretq_u64_f32(b)).values[lane])));
     a_.values = SIMDE_SHUFFLE_VECTOR_(32, 16, a_.values, a_.values, 0, 0, 2, 2);
     b_.values = SIMDE_SHUFFLE_VECTOR_(32, 16, -b_.values, b_.values, 0, 1, 2, 3);
     r_.values += b_.values * a_.values;
     return simde_float32x4_from_private(r_);
   #else
-    return simde_vcmlaq_rot180_f32(r, a, b_tmp_);
+    return simde_vcmlaq_rot180_f32(r, a, simde_vreinterpretq_f32_u64(simde_vdupq_n_u64(simde_uint64x2_to_private(simde_vreinterpretq_u64_f32(b)).values[lane])));
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && SIMDE_ARCH_ARM_CHECK(8, 3) &&                                                   \

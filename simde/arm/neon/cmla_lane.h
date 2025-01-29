@@ -271,15 +271,15 @@ simde_float32x4_t simde_vcmlaq_lane_f32(simde_float32x4_t r, simde_float32x4_t a
       r_.sv128 = __riscv_vfmacc_vv_f32m1(r_.sv128, b_.sv128, op1, 4);
       return simde_float32x4_from_private(r_);
   #else
-    simde_float32x4_t b_tmp_ = simde_vreinterpretq_f32_u64(simde_vdupq_n_u64(simde_uint64x1_to_private(simde_vreinterpret_u64_f32(b)).values[lane]));
+    simde_float32x4_t b_tmp = simde_vreinterpretq_f32_u64(simde_vdupq_n_u64(simde_uint64x1_to_private(simde_vreinterpret_u64_f32(b)).values[lane]));
     #if defined(SIMDE_SHUFFLE_VECTOR_)
       simde_float32x4_private r_ = simde_float32x4_to_private(r), a_ = simde_float32x4_to_private(a),
-                              b_ = simde_float32x4_to_private(b_tmp_);
+                              b_ = simde_float32x4_to_private(b_tmp);
       a_.values = SIMDE_SHUFFLE_VECTOR_(32, 16, a_.values, a_.values, 0, 0, 2, 2);
       r_.values += b_.values * a_.values;
       return simde_float32x4_from_private(r_);
     #else
-      return simde_vcmla_f32(r, a, b_tmp_);
+      return simde_vcmlaq_f32(r, a, b_tmp);
     #endif
   #endif
 }
@@ -361,15 +361,15 @@ simde_float32x4_t simde_vcmlaq_laneq_f32(simde_float32x4_t r, simde_float32x4_t 
       r_.sv128 = __riscv_vfmacc_vv_f32m1(r_.sv128, b_.sv128, op1, 4);
       return simde_float32x4_from_private(r_);
   #else
-    simde_float32x4_t b_tmp_ = simde_vreinterpretq_f32_u64(simde_vdupq_n_u64(simde_uint64x2_to_private(simde_vreinterpretq_u64_f32(b)).values[lane]));
+    simde_float32x4_t b_tmp = simde_vreinterpretq_f32_u64(simde_vdupq_n_u64(simde_uint64x2_to_private(simde_vreinterpretq_u64_f32(b)).values[lane]));
     #if defined(SIMDE_SHUFFLE_VECTOR_)
       simde_float32x4_private r_ = simde_float32x4_to_private(r), a_ = simde_float32x4_to_private(a),
-                              b_ = simde_float32x4_to_private(b_tmp_);
+                              b_ = simde_float32x4_to_private(b_tmp);
       a_.values = SIMDE_SHUFFLE_VECTOR_(32, 16, a_.values, a_.values, 0, 0, 2, 2);
       r_.values += b_.values * a_.values;
       return simde_float32x4_from_private(r_);
     #else
-      return simde_vcmlaq_f32(r, a, b_tmp_);
+      return simde_vcmlaq_f32(r, a, b_tmp);
     #endif
   #endif
 }
