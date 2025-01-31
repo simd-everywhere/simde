@@ -115,9 +115,11 @@ jobs:
       run: cat /proc/cpuinfo
     - run: sudo apt-get update
     - name: ccache
-      uses: hendrikmuhs/ccache-action@v1.2
+      uses: hendrikmuhs/ccache-action@v1.2.16
       with:
         key: ${{ github.job }}-${{ matrix.isax }}
+        evict-old-files: job
+        verbose: 2
     - name: Install APT Dependencies
       run: |
         sudo apt-get install -y --no-install-recommends ninja-build ninja-build pipx
@@ -152,14 +154,16 @@ jobs:
         submodules: recursive
     - name: CPU Information
       run: cat /proc/cpuinfo
+    - run: sudo apt-get update
     - name: ccache
-      uses: hendrikmuhs/ccache-action@v1.2
+      uses: hendrikmuhs/ccache-action@v1.2.16
       with:
         key: ${{ github.job }}-
+        evict-old-files: job
+        verbose: 2
     - name: Install APT Dependencies
       run: |
         #sudo add-apt-repository ppa:aschultz/backports
-        sudo apt-get update
         sudo apt-get install -y --no-install-recommends ninja-build ninja-build pipx g++-12 gcc-12 qemu-user-static
         # sudo apt-get purge -y gcc g++
         # sudo ln -s /usr/bin/gcc-12 /usr/bin/gcc
@@ -189,11 +193,15 @@ jobs:
     - uses: actions/checkout@v4
       with:
         submodules: recursive
-    - name: CPU Information
-      run: cat /proc/cpuinfo
+    - run: sudo apt-get update
+    - name: ccache
+      uses: hendrikmuhs/ccache-action@v1.2.16
+      with:
+        key: ${{ github.job }}
+        evict-old-files: job
+        verbose: 2
     - name: Install APT Dependencies
       run: |
-        sudo apt-get update && \
         sudo apt-get install -y --no-install-recommends ninja-build ninja-build pipx &&\
         pipx install meson==0.55.1
     - name: Install emscripten
@@ -227,11 +235,18 @@ jobs:
     - uses: actions/checkout@v4
       with:
         submodules: recursive
-    - name: CPU Information
+    - id: cpu
+      name: CPU Information
       run: cat /proc/cpuinfo
+    - run: sudo apt-get update
+    - name: ccache
+      uses: hendrikmuhs/ccache-action@v1.2.16
+      with:
+        key: ${{ github.job }}
+        evict-old-files: job
+        verbose: 2
     - name: Install APT Dependencies
       run: |
-        sudo apt-get update && \
         sudo apt-get -y --no-install-recommends install libxml2-utils ninja-build pipx && \
         pipx install meson==0.55.1
     - name: Convert
@@ -252,9 +267,17 @@ jobs:
     - uses: actions/checkout@v4
       with:
         submodules: recursive
+    - id: cpu
+      name: CPU Information
+      run: |
+        echo "model_name=$(grep -m1 'model name' < /proc/cpuinfo | awk '-F: ' '{ print $2}' | tr '-' '_')" >> "$GITHUB_OUTPUT"
     - run: sudo apt-get update
-    - name: CPU Information
-      run: cat /proc/cpuinfo
+    - name: ccache
+      uses: hendrikmuhs/ccache-action@v1.2.16
+      with:
+        key: ${{ github.job }}-${{ steps.cpu.outputs.model_name }}
+        evict-old-files: job
+        verbose: 2
     - name: Install APT Dependencies
       run: |
         sudo apt-get install -y --no-install-recommends ninja-build ninja-build libsleef-dev pipx
@@ -273,64 +296,58 @@ jobs:
         include:
         - version: 9
           distro: ubuntu-24.04
-          arch_flags: -march=native
         - version: 10
           distro: ubuntu-24.04
-          arch_flags: -march=native
         - version: 10
           distro: ubuntu-24.04
           arch_flags: -ffast-math
-          ccache: 'true'
         - version: 11
           distro: ubuntu-24.04
-          arch_flags: -march=native
         - version: 11
           distro: ubuntu-24.04
           arch_flags: -ffast-math
-          ccache: 'true'
         - version: 11
           distro:  ubuntu-24.04-arm
-          arch_flags: -march=native
         - version: 12
           distro: ubuntu-24.04
-          arch_flags: -march=native
         - version: 12
           distro: ubuntu-24.04
           arch_flags: -ffast-math
-          ccache: 'true'
         - version: 12
           distro: ubuntu-24.04-arm
-          arch_flags: -march=native
         - version: 13
           distro: ubuntu-24.04
-          arch_flags: -march=native
         - version: 13
           distro: ubuntu-24.04
           arch_flags: -ffast-math
-          ccache: 'true'
         - version: 13
           distro: ubuntu-24.04-arm
-          arch_flags: -march=native
         - version: 14
           distro: ubuntu-24.04
-          arch_flags: -march=native
         - version: 14
           distro: ubuntu-24.04
           arch_flags: -ffast-math
-          ccache: 'true'
         - version: 14
           distro: ubuntu-24.04-arm
-          arch_flags: -march=native
     runs-on: ${{ matrix.distro }}
     env:
-      CFLAGS: ${{ matrix.arch_flags }} -Wall -Wextra -Werror
-      CXXFLAGS: ${{ matrix.arch_flags }} -Wall -Wextra -Werror
+      CFLAGS: ${{ matrix.arch_flags }} -march=native -Wall -Wextra -Werror
+      CXXFLAGS: ${{ matrix.arch_flags }} -march=native -Wall -Wextra -Werror
     steps:
     - uses: actions/checkout@v4
       with:
         submodules: recursive
-    - name: CPU Information
-      run: cat /proc/cpuinfo
+    - id: cpu
+      name: CPU Information
+      run: |
+        echo "model_name=$(grep -m1 'model name' < /proc/cpuinfo | awk '-F: ' '{ print $2}' | tr '-' '_')" >> "$GITHUB_OUTPUT"
+    - run: sudo apt-get update
+    - name: ccache
+      uses: hendrikmuhs/ccache-action@v1.2.16
+      with:
+        key: ${{ github.job }}-${{ matrix.version }}-${{ matrix.distro }}-${{ matrix.arch_flags }}-${{ steps.cpu.outputs.model_name }}
+        evict-old-files: job
+        verbose: 2
     - name: Install APT Dependencies
       run: |
         sudo add-apt-repository ppa:ubuntu-toolchain-r/test
@@ -339,11 +356,6 @@ jobs:
         sudo apt-get -y install --no-install-recommends gcovr pipx ninja-build gcc-${{ matrix.version }} g++-${{ matrix.version }}
         sudo apt-get -y purge g++ gcc
         pipx install meson==0.55.1
-    - name: ccache
-      uses: hendrikmuhs/ccache-action@v1.2
-      if: ${{ matrix.ccache == 'true' }}
-      with:
-        key: ${{ github.job }}-${{ matrix.version }}-${{ matrix.distro }}-${{ matrix.arch_flags }}
     - name: add ccache to the build path
       run: |
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
@@ -440,9 +452,11 @@ jobs:
           qemu-user-static pipx libc6-${{ matrix.arch_deb }}-cross libstdc++-${{ matrix.version }}-dev-${{ matrix.arch_deb }}-cross
         pipx install meson==0.55.1
     - name: ccache
-      uses: hendrikmuhs/ccache-action@v1.2
+      uses: hendrikmuhs/ccache-action@v1.2.16
       with:
         key: ${{ github.job }}-${{ matrix.version}}${{ matrix.extra }}-${{ matrix.distro }}-${{ matrix.cross }}
+        evict-old-files: job
+        verbose: 2
     - name: add ccache to the build path
       run: |
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
@@ -491,9 +505,11 @@ jobs:
           libstdc++-12-dev-${{ matrix.arch_deb }}-cross \
           binutils-${{ matrix.arch_gnu }}-linux-gnu
     - name: ccache
-      uses: hendrikmuhs/ccache-action@v1.2
+      uses: hendrikmuhs/ccache-action@v1.2.16
       with:
         key: ${{ github.job }}-${{ matrix.distro }}-${{ matrix.cross }}
+        evict-old-files: job
+        verbose: 2
     - name: add ccache to the build path
       run: |
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
@@ -541,9 +557,11 @@ jobs:
           libstdc++-12-dev-${{ matrix.arch_deb }}-cross \
           binutils-${{ matrix.arch_gnu }}-linux-gnu
     - name: ccache
-      uses: hendrikmuhs/ccache-action@v1.2
+      uses: hendrikmuhs/ccache-action@v1.2.16
       with:
         key: ${{ github.job }}-${{ matrix.distro }}-${{ matrix.cross }}
+        evict-old-files: job
+        verbose: 2
     - name: add ccache to the build path
       run: |
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
@@ -627,9 +645,11 @@ jobs:
           binutils-${{ matrix.arch_gnu }}-linux-gnu${{ matrix.arch_gnu_abi }}
         pipx install meson==0.55.1
     - name: ccache
-      uses: hendrikmuhs/ccache-action@v1.2
+      uses: hendrikmuhs/ccache-action@v1.2.16
       with:
         key: ${{ github.job }}-${{ matrix.version }}${{ matrix.extra }}-${{ matrix.cross }}
+        evict-old-files: job
+        verbose: 2
     - name: add ccache to the build path
       run: |
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
@@ -649,122 +669,111 @@ jobs:
         include:
         - version: "7"
           distro: ubuntu-20.04
-          arch_flags: -march=native
         # clang-8 is tested on Semaphore-CI https://nemequ.semaphoreci.com/projects/simde
         - version: "9"
           distro: ubuntu-20.04
-          arch_flags: -march=native
         # clang-10 is tested on Semaphore-CI https://nemequ.semaphoreci.com/projects/simde
         - version: "11"
           distro: ubuntu-22.04
-          arch_flags: -march=native
         - version: "12"
           distro: ubuntu-22.04
-          arch_flags: -march=native
         - version: "12"
           distro: ubuntu-22.04
           arch_flags: -ffast-math
-          ccache: 'true'
         - version: "13"
           distro: ubuntu-22.04
-          arch_flags: -march=native
         - version: "13"
           distro: ubuntu-22.04
           arch_flags: -ffast-math
-          ccache: 'true'
         - version: "14"
           distro: ubuntu-24.04
-          arch_flags: -march=native
         - version: "14"
           distro: ubuntu-24.04
           arch_flags: -ffast-math
-          ccache: 'true'
         - version: "14"
           distro: ubuntu-24.04-arm
           arch_flags: -march=armv8-a+fp+aes+sha2+sha3+sm4+sve+flagm+ssbs+sb+sve2+i8mm+bf16
           # grep Features < /proc/cpuinfo | head -n 1 | awk '-F: ' '{print $2}' | sed 's/asimd //;s/evtstrm //;s/pmull //;s/sha1 //;s/crc32 //;s/atomics //;s/fphp //;s/asimd.. //g;s/cpuid //;s/asimd... //g;s/jscvt //;s/fcma //;s/lrcpc //;s/dcpop //;s/sm3 //;s/sha512 //;s/uscat //;s/ilrcpc //;s/pac. //g;s/dcpodp //;s/sveaes //;s/svebitperm //;s/svesha3 //;s/svesm4 //;s/flagm2 //;s/frint //;s/svei8mm //;s/svebf16 //' | tr ' ' '+'
         - version: "14"
           distro: ubuntu-24.04-arm
-          arch_flags: -ffast-math
-          ccache: 'true'
+          arch_flags: -ffast-math -march=armv8-a+fp+aes+sha2+sha3+sm4+sve+flagm+ssbs+sb+sve2+i8mm+bf16
         - version: "15"
           distro: ubuntu-24.04
-          arch_flags: -march=native
         - version: "15"
           distro: ubuntu-24.04
           arch_flags: -ffast-math
-          ccache: 'true'
         - version: "15"
           distro: ubuntu-24.04-arm
-          arch_flags: -march=native
         - version: "15"
           distro: ubuntu-24.04-arm
           arch_flags: -ffast-math
-          ccache: 'true'
         - version: "16"
           distro: ubuntu-24.04
-          arch_flags: -march=native -Wno-unsafe-buffer-usage
+          arch_flags: -Wno-unsafe-buffer-usage
         - version: "16"
           distro: ubuntu-24.04
           arch_flags: -ffast-math -Wno-unsafe-buffer-usage
-          ccache: 'true'
         - version: "16"
           distro: ubuntu-24.04-arm
-          arch_flags: -march=native -Wno-unsafe-buffer-usage
+          arch_flags: -Wno-unsafe-buffer-usage
         - version: "16"
           distro: ubuntu-24.04-arm
           arch_flags: -ffast-math -Wno-unsafe-buffer-usage
-          ccache: 'true'
         - version: "17"
           distro: ubuntu-24.04
-          arch_flags: -march=native -Wno-unsafe-buffer-usage
+          arch_flags: -Wno-unsafe-buffer-usage
         - version: "17"
           distro: ubuntu-24.04
           arch_flags: -ffast-math -Wno-unsafe-buffer-usage
-          ccache: 'true'
         - version: "17"
           distro: ubuntu-24.04
-          arch_flags: -march=native -Wno-unsafe-buffer-usage -O2
+          arch_flags: -Wno-unsafe-buffer-usage -O2
         - version: "17"
           distro: ubuntu-24.04-arm
-          arch_flags: -march=native -Wno-unsafe-buffer-usage
+          arch_flags: -Wno-unsafe-buffer-usage
         - version: "17"
           distro: ubuntu-24.04-arm
           arch_flags: -ffast-math -Wno-unsafe-buffer-usage
-          ccache: 'true'
         - version: "17"
           distro: ubuntu-24.04-arm
-          arch_flags: -march=native -Wno-unsafe-buffer-usage -O2
+          arch_flags: -Wno-unsafe-buffer-usage -O2
         - version: "18"
           distro: ubuntu-24.04
-          arch_flags: -march=native -Wno-unsafe-buffer-usage -Wno-switch-default
+          arch_flags: -Wno-unsafe-buffer-usage -Wno-switch-default
         - version: "18"
           distro: ubuntu-24.04
           arch_flags: -ffast-math -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-nan-infinity-disabled
-          ccache: 'true'
         - version: "18"
           distro: ubuntu-24.04
-          arch_flags: -march=native -Wno-unsafe-buffer-usage -Wno-switch-default -O2
+          arch_flags: -Wno-unsafe-buffer-usage -Wno-switch-default -O2
         - version: "18"
           distro: ubuntu-24.04-arm
-          arch_flags: -march=native -Wno-unsafe-buffer-usage -Wno-switch-default
+          arch_flags: -Wno-unsafe-buffer-usage -Wno-switch-default
         - version: "18"
           distro: ubuntu-24.04-arm
           arch_flags: -ffast-math -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-nan-infinity-disabled
-          ccache: 'true'
         - version: "18"
           distro: ubuntu-24.04-arm
-          arch_flags: -march=native -Wno-unsafe-buffer-usage -Wno-switch-default -O2
+          arch_flags: -Wno-unsafe-buffer-usage -Wno-switch-default -O2
     runs-on: ${{ matrix.distro }}
     env:
-      CFLAGS: ${{ matrix.arch_flags }} -Wall -Weverything -Werror -fno-lax-vector-conversions
-      CXXFLAGS: ${{ matrix.arch_flags }} -Wall -Weverything -Werror -fno-lax-vector-conversions
+      CFLAGS: -march=native ${{ matrix.arch_flags }} -Wall -Weverything -Werror -fno-lax-vector-conversions
+      CXXFLAGS: -march=native ${{ matrix.arch_flags }} -Wall -Weverything -Werror -fno-lax-vector-conversions
     steps:
     - uses: actions/checkout@v4
       with:
         submodules: recursive
-    - name: CPU Information
-      run: cat /proc/cpuinfo
+    - id: cpu
+      name: CPU Information
+      run: |
+        echo "model_name=$(grep -m1 'model name' < /proc/cpuinfo | awk '-F: ' '{ print $2}' | tr '-' '_')" >> "$GITHUB_OUTPUT"
+    - run: sudo apt-get update
+    - name: ccache
+      uses: hendrikmuhs/ccache-action@v1.2.16
+      with:
+        key: ${{ github.job }}-${{ matrix.version }}-${{ matrix.distro }}-${{ matrix.arch_flags }}-${{ steps.cpu.outputs.model_name }}
+        evict-old-files: job
+        verbose: 2
     - name: Install PPAs
       if: ${{ matrix.distro == 'ubuntu-22.04' }}
       run: |
@@ -782,13 +791,7 @@ jobs:
         sudo rm /usr/bin/gcc /usr/bin/g++ /usr/bin/cc /usr/bin/c++
         sudo ln -s $(command -v clang-${{ matrix.version }}) /usr/bin/cc
         sudo ln -s $(command -v clang-${{ matrix.version }}) /usr/bin/c++
-    - name: ccache
-      uses: hendrikmuhs/ccache-action@v1.2
-      if: ${{ matrix.ccache == 'true' }}
-      with:
-        key: ${{ github.job }}-${{ matrix.version }}-${{ matrix.distro }}-${{ matrix.arch_flags }}
     - name: add ccache to the build path
-      if: ${{ matrix.ccache == 'true' }}
       run: |
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
     - name: Configure
@@ -857,9 +860,11 @@ jobs:
     - name: Compiler version
       run: cc --version
     - name: ccache
-      uses: hendrikmuhs/ccache-action@v1.2
+      uses: hendrikmuhs/ccache-action@v1.2.16
       with:
-        key: ${{ github.job }}-${{ matrix.xcode }}
+        key: ${{ github.job }}-${{ matrix.os }}-${{ matrix.xcode }}
+        evict-old-files: job
+        verbose: 2
     - name: Python install bug workaround # https://github.com/actions/setup-python/issues/577
       run: |
           find /usr/local/bin -type l -exec sh -c 'readlink -f "$1" \
@@ -922,9 +927,11 @@ jobs:
           libc6-loong64-cross libstdc++-14-dev-loong64-cross \
           gcc-14-loongarch64-linux-gnu g++-14-loongarch64-linux-gnu
     - name: ccache
-      uses: hendrikmuhs/ccache-action@v1.2
+      uses: hendrikmuhs/ccache-action@v1.2.16
       with:
         key: ${{ github.job }}-gcc-14
+        evict-old-files: job
+        verbose: 2
     - name: Configure
       run: meson setup build --cross-file=docker/cross-files/loongarch64-gcc-14-ccache.cross || (cat build/meson-logs/meson-log.txt ; false)
     - name: Build
