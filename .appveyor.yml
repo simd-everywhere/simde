@@ -100,7 +100,7 @@ build_script:
       set CXXFLAGS=/WX /Z7 %FLAGS%
       meson --backend=ninja build
       meson compile -C build --verbose
-      ccache.exe --show-stats
+      ccache.exe --show-stats --verbose --verbose
 test_script:
   # "meson test -C build" fails due to excessively long command line
   - ps: |

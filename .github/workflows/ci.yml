@@ -118,6 +118,7 @@ jobs:
       uses: hendrikmuhs/ccache-action@v1.2
       with:
         key: ${{ github.job }}-${{ matrix.isax }}
+        verbose: 2
     - name: Install APT Dependencies
       run: |
         sudo apt-get install -y --no-install-recommends ninja-build ninja-build pipx
@@ -156,6 +157,7 @@ jobs:
       uses: hendrikmuhs/ccache-action@v1.2
       with:
         key: ${{ github.job }}-
+        verbose: 2
     - name: Install APT Dependencies
       run: |
         #sudo add-apt-repository ppa:aschultz/backports
@@ -344,6 +346,7 @@ jobs:
       if: ${{ matrix.ccache == 'true' }}
       with:
         key: ${{ github.job }}-${{ matrix.version }}-${{ matrix.distro }}-${{ matrix.arch_flags }}
+        verbose: 2
     - name: add ccache to the build path
       run: |
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
@@ -443,6 +446,7 @@ jobs:
       uses: hendrikmuhs/ccache-action@v1.2
       with:
         key: ${{ github.job }}-${{ matrix.version}}${{ matrix.extra }}-${{ matrix.distro }}-${{ matrix.cross }}
+        verbose: 2
     - name: add ccache to the build path
       run: |
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
@@ -494,6 +498,7 @@ jobs:
       uses: hendrikmuhs/ccache-action@v1.2
       with:
         key: ${{ github.job }}-${{ matrix.distro }}-${{ matrix.cross }}
+        verbose: 2
     - name: add ccache to the build path
       run: |
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
@@ -544,6 +549,7 @@ jobs:
       uses: hendrikmuhs/ccache-action@v1.2
       with:
         key: ${{ github.job }}-${{ matrix.distro }}-${{ matrix.cross }}
+        verbose: 2
     - name: add ccache to the build path
       run: |
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
@@ -630,6 +636,7 @@ jobs:
       uses: hendrikmuhs/ccache-action@v1.2
       with:
         key: ${{ github.job }}-${{ matrix.version }}${{ matrix.extra }}-${{ matrix.cross }}
+        verbose: 2
     - name: add ccache to the build path
       run: |
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
@@ -787,6 +794,7 @@ jobs:
       if: ${{ matrix.ccache == 'true' }}
       with:
         key: ${{ github.job }}-${{ matrix.version }}-${{ matrix.distro }}-${{ matrix.arch_flags }}
+        verbose: 2
     - name: add ccache to the build path
       if: ${{ matrix.ccache == 'true' }}
       run: |
@@ -860,6 +868,7 @@ jobs:
       uses: hendrikmuhs/ccache-action@v1.2
       with:
         key: ${{ github.job }}-${{ matrix.xcode }}
+        verbose: 2
     - name: Python install bug workaround # https://github.com/actions/setup-python/issues/577
       run: |
           find /usr/local/bin -type l -exec sh -c 'readlink -f "$1" \
@@ -925,6 +934,7 @@ jobs:
       uses: hendrikmuhs/ccache-action@v1.2
       with:
         key: ${{ github.job }}-gcc-14
+        verbose: 2
     - name: Configure
       run: meson setup build --cross-file=docker/cross-files/loongarch64-gcc-14-ccache.cross || (cat build/meson-logs/meson-log.txt ; false)
     - name: Build

@@ -30,7 +30,7 @@ jobs:
           export PATH=/usr/lib/ccache:${PATH}
           CC="ccache gcc-14" CXX="ccache g++-14" ${HOME}/.local/bin/meson setup build -Db_coverage=true
           ninja -C build -v -j $(nproc)
-      - run: /usr/bin/ccache -s
+      - run: /usr/bin/ccache --show-stats --verbose --verbose
       - save_cache:
           key: 'ccache-{{ .Environment.CIRCLE_JOB }}-{{ .Branch }}-{{ epoch }}'
           paths: [ "/home/circleci/.cache/ccache" ]
@@ -69,7 +69,7 @@ jobs:
           export PATH=/usr/lib/ccache:${PATH}
           CC="ccache gcc" CXX="ccache g++" /root/.local/bin/meson setup build
           ninja -C build -v -j 5
-      - run: /usr/bin/ccache -s
+      - run: /usr/bin/ccache --show-stats --verbose --verbose
       - save_cache:
           key: 'ccache-{{ .Environment.CIRCLE_JOB }}-{{ .Branch }}-{{ epoch }}'
           paths: [ "/root/.cache/ccache" ]
@@ -106,7 +106,7 @@ jobs:
           export PATH=/usr/lib/ccache:${PATH}
           CFLAGS="-Wno-unsafe-buffer-usage" CXXFLAGS="-Wno-unsafe-buffer-usage" CC="ccache clang" CXX="ccache clang++" /root/.local/bin/meson setup build
           ninja -C build -v -j 5
-      - run: /usr/bin/ccache -s
+      - run: /usr/bin/ccache --show-stats --verbose --verbose
       - save_cache:
           key: 'ccache-{{ .Environment.CIRCLE_JOB }}-{{ .Branch }}-{{ epoch }}'
           paths: [ "/root/.cache/ccache" ]
@@ -143,7 +143,7 @@ jobs:
           export PATH=/usr/lib/ccache:${PATH}
           /root/.local/bin/meson setup build --cross-file=docker/cross-files/loongson-gcc-ccache.cross
           ninja -C build -v -j 5
-      - run: /usr/bin/ccache -s
+      - run: /usr/bin/ccache --show-stats --verbose --verbose
       - save_cache:
           key: 'ccache-{{ .Environment.CIRCLE_JOB }}-{{ .Branch }}-{{ epoch }}'
           paths: [ "/root/.cache/ccache" ]
@@ -180,7 +180,7 @@ jobs:
           export PATH=/usr/lib/ccache:${PATH}
           /root/.local/bin/meson setup build --cross-file docker/cross-files/i686-gcc-qemu-ccache.cross
           /root/.local/bin/meson compile -C build --verbose -j 5
-      - run: /usr/bin/ccache -s
+      - run: /usr/bin/ccache --show-stats --verbose --verbose
       - save_cache:
           key: 'ccache-{{ .Environment.CIRCLE_JOB }}-{{ .Branch }}-{{ epoch }}'
           paths: [ "/root/.cache/ccache" ]
@@ -217,7 +217,7 @@ jobs:
           export PATH=/usr/lib/ccache:${PATH}
           /root/.local/bin/meson setup build --cross-file docker/cross-files/i686-gcc-11-qemu-ccache.cross
           /root/.local/bin/meson compile -C build --verbose -j 5
-      - run: /usr/bin/ccache -s
+      - run: /usr/bin/ccache --show-stats --verbose --verbose
       - save_cache:
           key: 'ccache-{{ .Environment.CIRCLE_JOB }}-{{ .Branch }}-{{ epoch }}'
           paths: [ "/root/.cache/ccache" ]
