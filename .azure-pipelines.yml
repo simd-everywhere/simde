@@ -1,5 +1,5 @@
 pool:
-  vmImage: 'ubuntu-22.04'
+  vmImage: 'ubuntu-24.04'
 
 trigger:
   branches:
@@ -9,24 +9,27 @@ trigger:
     # include:
     # - ci/azure*
 
+variables:
+  CCACHE_DIR: $(Pipeline.Workspace)/ccache
+
 jobs:
 - job: clang_analysis
   timeoutInMinutes: 120
   variables:
-    CC: clang-14
-    CXX: clang++-14
+    CC: clang-18
+    CXX: clang++-18
     CFLAGS: -Wextra -Werror
     CXXFLAGS: -Wextra -Werror
   steps:
   - script: uname -a && cat /proc/cpuinfo /proc/meminfo
     displayName: System Information
-  - script: sudo add-apt-repository 'ppa:ubuntu-toolchain-r/test' && sudo apt-get update && sudo apt-get install -y ninja-build ninja-build python3-pip python3-setuptools python3-wheel clang-14 clang-tools-14
+  - script: sudo add-apt-repository 'ppa:ubuntu-toolchain-r/test' && sudo apt-get update && sudo apt-get install -y ninja-build ninja-build python3-pip python3-setuptools python3-wheel clang-18 clang-tools-18
     displayName: Install APT Dependencies
   - script: pip3 install -v meson==0.55.1
     displayName: Install pip Dependencies
-  - script: scan-build-14 /home/vsts/.local/bin/meson setup build -Db_sanitize=address,undefined
+  - script: scan-build-18 /home/vsts/.local/bin/meson setup build -Db_sanitize=address,undefined
     displayName: Configure
-  - script: scan-build-14 ninja -C build -v
+  - script: scan-build-18 ninja -C build -v
     displayName: Build
   - script: ninja -C build -v test
     displayName: Test
@@ -36,24 +39,34 @@ jobs:
       testResultsFiles: 'build/meson-logs/testlog.junit.xml'
 
 - job: gcc_analysis
-  timeoutInMinutes: 120
+  timeoutInMinutes: 240
   variables:
-    CC: gcc-10
-    CXX: g++-10
+    CC: gcc-14
+    CXX: g++-14
     CFLAGS: -fanalyzer -Wextra -Werror
     CXXFLAGS: -fanalyzer -Wextra -Werror
   steps:
-  - script: uname -a && cat /proc/cpuinfo /proc/meminfo
+  - bash: uname -a && cat /proc/cpuinfo /proc/meminfo
     displayName: System Information
-  - script: sudo add-apt-repository 'ppa:ubuntu-toolchain-r/test' && sudo apt-get update && sudo apt-get install -y ninja-build ninja-build python3-pip python3-setuptools python3-wheel gcc-10 g++-10
+  - bash: sudo add-apt-repository 'ppa:ubuntu-toolchain-r/ppa' && sudo apt-get update && sudo apt-get install -y ninja-build ninja-build python3-pip python3-setuptools python3-wheel gcc-14 g++-14 ccache
     displayName: Install APT Dependencies
-  - script: pip3 install meson==0.55.1
+  - bash: |
+      echo "##vso[task.prependpath]/usr/lib/ccache"
+    displayName: Update PATH to use cache linked versions of gcc, cc, etc
+  - task: Cache@2
+    displayName: Ccache caching
+    inputs:
+      key: 'ccache | "$(Agent.OS)" | $(Build.SourceVersion)'
+      path: $(CCACHE_DIR)
+      restoreKeys: |
+        ccache | "$(Agent.OS)"
+  - bash: pip3 install meson==0.55.1
     displayName: Install pip Dependencies
-  - script: /home/vsts/.local/bin/meson setup build -Db_sanitize=address,undefined
+  - bash: /home/vsts/.local/bin/meson setup build -Db_sanitize=address,undefined
     displayName: Configure
-  - script: ninja -C build -v
+  - bash: ninja -C build -v
     displayName: Build
-  - script: ninja -C build -v test
+  - bash: ninja -C build -v test
     displayName: Test
   - task: PublishTestResults@2
     inputs:
