@@ -3793,6 +3793,11 @@ simde_mm_load_si128 (simde__m128i const* mem_addr) {
   #define _mm_load_si128(mem_addr) simde_mm_load_si128(mem_addr)
 #endif
 
+#if defined(SIMDE_DIAGNOSTIC_DISABLE_UNINITIALIZED_)
+HEDLEY_DIAGNOSTIC_PUSH
+SIMDE_DIAGNOSTIC_DISABLE_UNINITIALIZED_
+#endif
+
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128d
 simde_mm_loadh_pd (simde__m128d a, simde_float64 const* mem_addr) {
@@ -3822,6 +3827,10 @@ simde_mm_loadh_pd (simde__m128d a, simde_float64 const* mem_addr) {
 }
 #if defined(SIMDE_X86_SSE2_ENABLE_NATIVE_ALIASES)
   #define _mm_loadh_pd(a, mem_addr) simde_mm_loadh_pd(a, mem_addr)
+#endif
+
+#if defined(SIMDE_DIAGNOSTIC_DISABLE_UNINITIALIZED_)
+HEDLEY_DIAGNOSTIC_POP
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES

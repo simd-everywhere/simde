@@ -479,6 +479,11 @@ simde_mm_movedup_pd (simde__m128d a) {
 #  define _mm_movedup_pd(a) simde_mm_movedup_pd(a)
 #endif
 
+#if defined(SIMDE_DIAGNOSTIC_DISABLE_UNINITIALIZED_)
+HEDLEY_DIAGNOSTIC_PUSH
+SIMDE_DIAGNOSTIC_DISABLE_UNINITIALIZED_
+#endif
+
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128
 simde_mm_movehdup_ps (simde__m128 a) {
@@ -541,6 +546,10 @@ simde_mm_moveldup_ps (simde__m128 a) {
 }
 #if defined(SIMDE_X86_SSE3_ENABLE_NATIVE_ALIASES)
 #  define _mm_moveldup_ps(a) simde_mm_moveldup_ps(a)
+#endif
+
+#if defined(SIMDE_DIAGNOSTIC_DISABLE_UNINITIALIZED_)
+HEDLEY_DIAGNOSTIC_POP
 #endif
 
 SIMDE_END_DECLS_
