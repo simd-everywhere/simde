@@ -14945,6 +14945,11 @@ test_simde_mm256_sub_pd(SIMDE_MUNIT_TEST_ARGS) {
   return 0;
 }
 
+#if defined(SIMDE_DIAGNOSTIC_DISABLE_UNINITIALIZED_)
+  HEDLEY_DIAGNOSTIC_PUSH
+  SIMDE_DIAGNOSTIC_DISABLE_UNINITIALIZED_
+#endif
+
 static int
 test_simde_mm256_undefined_ps(SIMDE_MUNIT_TEST_ARGS) {
   simde__m256 r;
@@ -14982,6 +14987,10 @@ test_simde_mm256_undefined_si256(SIMDE_MUNIT_TEST_ARGS) {
   simde_assert_m256i_equal(simde_mm256_castpd_si256(r), simde_mm256_castpd_si256(e));
   return 0;
 }
+
+#if defined(SIMDE_DIAGNOSTIC_DISABLE_UNINITIALIZED_)
+  HEDLEY_DIAGNOSTIC_POP
+#endif
 
 static int
 test_simde_mm256_unpackhi_ps(SIMDE_MUNIT_TEST_ARGS) {
