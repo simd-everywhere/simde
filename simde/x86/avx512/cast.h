@@ -351,6 +351,22 @@ simde_mm512_castsi512_si256 (simde__m512i a) {
   #define _mm512_castsi512_si256(a) simde_mm512_castsi512_si256(a)
 #endif
 
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512bh
+simde_x_mm512_castpbh_epu16 (simde__m512i a) {
+  simde__m512bh r;
+  simde_memcpy(&r, &a, sizeof(r));
+  return r;
+}
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512i
+simde_x_mm512_castepu16_pbh (simde__m512bh a) {
+  simde__m512i r;
+  simde_memcpy(&r, &a, sizeof(r));
+  return r;
+}
+
 SIMDE_END_DECLS_
 HEDLEY_DIAGNOSTIC_POP
 
