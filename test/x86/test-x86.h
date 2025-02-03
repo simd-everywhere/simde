@@ -119,6 +119,53 @@ HEDLEY_DIAGNOSTIC_DISABLE_UNUSED_FUNCTION
     return simde_assert_close_vu##EL##_(sizeof(a_) / sizeof(a_[0]), a_, b_, slop, filename, line, astr, bstr); \
   }
 
+#define SIMDE_TEST_X86_GENERATE_BFLOAT_TYPE_FUNCS_(NT, EL, EC, SF) \
+  static simde##NT \
+  simde_test_x86_random_bf##EL##x##EC(simde_bfloat##EL min, simde_bfloat##EL max) { \
+    simde_bfloat##EL values[sizeof(simde##NT) / sizeof(simde_bfloat##EL)]; \
+    simde_test_codegen_random_vbf##EL(sizeof(values) / sizeof(values[0]), values, min, max); \
+    simde##NT r; \
+    simde_memcpy(&r, values, sizeof(r)); \
+    return r; \
+  } \
+ \
+  static void \
+  simde_test_x86_write_bf##EL##x##EC(int indent, simde##NT value, SimdeTestVecPos pos) { \
+    simde_bfloat##EL values[sizeof(value) / sizeof(simde_bfloat##EL)]; \
+    SF(values, value); \
+    simde_test_codegen_write_vbf##EL(indent, sizeof(values) / sizeof(values[0]), values, pos); \
+  } \
+ \
+  static int \
+  simde_test_x86_assert_equal_bf##EL##x##EC##_(simde##NT a, simde##NT b, simde_bfloat##EL slop, \
+      const char* filename, int line, const char* astr, const char* bstr) { \
+    simde_bfloat##EL \
+      a_[sizeof(a) / sizeof(simde_bfloat##EL)], \
+      b_[sizeof(a) / sizeof(simde_bfloat##EL)]; \
+ \
+    SF(a_, a); \
+    SF(b_, b); \
+ \
+    return simde_assert_equal_vbf##EL##_(sizeof(a_) / sizeof(a_[0]), a_, b_, slop, filename, line, astr, bstr); \
+  } \
+\
+  static void \
+  simde_test_x86_random_bf##EL##x##EC##_full( \
+      size_t test_sets, size_t vectors_per_set, \
+      simde_bfloat##EL values[HEDLEY_ARRAY_PARAM(test_sets * vectors_per_set * (sizeof(simde##NT) / sizeof(simde_bfloat##EL)))], \
+      simde_bfloat##EL min, simde_bfloat##EL max, SimdeTestVecFloatType type) { \
+    simde_test_codegen_random_vbf##EL##_full(test_sets, vectors_per_set, sizeof(simde##NT) / sizeof(simde_bfloat##EL), values, min, max, type); \
+  } \
+  \
+  static simde##NT \
+  simde_test_x86_random_extract_bf##EL##x##EC(size_t set_num, size_t vectors_per_set, size_t vector_num, simde_bfloat##EL* values) { \
+    const size_t elem_cnt = sizeof(simde##NT) / sizeof(simde_bfloat##EL); \
+    const size_t set_cnt = elem_cnt * vectors_per_set; \
+    simde##NT r; \
+    simde_memcpy(&r, &(values[(set_num * set_cnt) + (vector_num * elem_cnt)]), sizeof(r)); \
+    return r; \
+  }
+
 /* For compatibility only.  Note that the operator is assumed to be == */
 #define simde_assert_m64_i8(a, op, b) simde_test_x86_assert_equal_i8x8(a, b)
 #define simde_assert_m64_i16(a, op, b) simde_test_x86_assert_equal_i16x4(a, b)
