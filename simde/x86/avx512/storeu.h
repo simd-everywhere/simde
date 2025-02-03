@@ -111,6 +111,12 @@ simde_mm512_storeu_ph (void * mem_addr, simde__m512h a) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 void
+simde_x_mm512_storeu_bh (void * mem_addr, simde__m512bh a) {
+  simde_memcpy(mem_addr, &a, sizeof(a));
+}
+
+SIMDE_FUNCTION_ATTRIBUTES
+void
 simde_mm512_storeu_si512 (void * mem_addr, simde__m512i a) {
   #if defined(SIMDE_X86_AVX512F_NATIVE)
     _mm512_storeu_si512(HEDLEY_REINTERPRET_CAST(void*, mem_addr), a);
