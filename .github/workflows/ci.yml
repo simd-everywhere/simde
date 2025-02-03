@@ -122,10 +122,10 @@ jobs:
         verbose: 2
     - name: Install APT Dependencies
       run: |
-        sudo apt-get install -y --no-install-recommends ninja-build ninja-build pipx
-        # sudo apt-get purge -y gcc g++
-        # sudo ln -s /usr/bin/gcc-13 /usr/bin/gcc
-        # sudo ln -s /usr/bin/g++-13 /usr/bin/g++
+        sudo apt-get install -y --no-install-recommends ninja-build ninja-build pipx gcc-14 g++-14
+        sudo apt-get purge -y gcc g++
+        sudo ln -s /usr/bin/gcc-14 /usr/bin/gcc
+        sudo ln -s /usr/bin/g++-14 /usr/bin/g++
         pipx install meson==0.55.1
     - name: add ccache to the build path
       run: |
