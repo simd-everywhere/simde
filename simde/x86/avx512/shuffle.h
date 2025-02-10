@@ -97,7 +97,7 @@ simde_mm512_maskz_shuffle_epi8 (simde__mmask64 k, simde__m512i a, simde__m512i b
 #endif
 
 #if defined(SIMDE_X86_AVX512F_NATIVE)
-#  define simde_mm512_shuffle_epi32(a, imm8) _mm512_shuffle_epi32((a), (imm8))
+#  define simde_mm512_shuffle_epi32(a, imm8) _mm512_shuffle_epi32((a), HEDLEY_STATIC_CAST(_MM_PERM_ENUM, (imm8)))
 #elif defined(SIMDE_STATEMENT_EXPR_)
 #  define simde_mm512_shuffle_epi32(a, imm8) SIMDE_STATEMENT_EXPR_(({ \
      simde__m512i_private simde_mm512_shuffle_epi32_r_, \
