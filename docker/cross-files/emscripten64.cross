@@ -8,7 +8,7 @@ cpp = ['ccache', '/opt/emsdk/upstream/emscripten/em++']
 ar = '/opt/emsdk/upstream/emscripten/emar'
 strip = '/opt/emsdk/upstream/bin/llvm-strip'
 objcopy = '/opt/emsdk/upstream/bin/llvm-objcopy'
-exe_wrapper = ['v8', '--experimental-wasm-memory64']
+exe_wrapper = ['v8']
 
 [properties]
 skip_sanity_check = true
