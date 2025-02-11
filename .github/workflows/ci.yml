@@ -667,11 +667,6 @@ jobs:
       fail-fast: false
       matrix:
         include:
-        - version: "7"
-          distro: ubuntu-20.04
-        # clang-8 is tested on Semaphore-CI https://nemequ.semaphoreci.com/projects/simde
-        - version: "9"
-          distro: ubuntu-20.04
         # clang-10 is tested on Semaphore-CI https://nemequ.semaphoreci.com/projects/simde
         - version: "11"
           distro: ubuntu-22.04
