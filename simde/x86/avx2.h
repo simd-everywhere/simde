@@ -4574,7 +4574,7 @@ simde_mm256_slli_epi16 (simde__m256i a, const int imm8)
       r_.altivec_i16[i] = vec_sl(a_.altivec_i16[i], sv);
     }
   #elif defined(SIMDE_LOONGARCH_LASX_NATIVE)
-      r_.i256 = imm8 > 15 ? __lasx_xvreplgr2vr_h(0) : __lasx_xvsll_h(a_.i256, __lasx_xvreplgr2vr_h(imm8));
+      r_.i256 = (simde__m256i)((v16i16)a_.i256 << imm8);
   #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
     r_.i16 = a_.i16 << HEDLEY_STATIC_CAST(int16_t, imm8);
   #else
@@ -4613,7 +4613,7 @@ simde_mm256_slli_epi32 (simde__m256i a, const int imm8)
       r_.altivec_i32[i] = vec_sl(a_.altivec_i32[i], sv);
     }
   #elif defined(SIMDE_LOONGARCH_LASX_NATIVE)
-      r_.i256 = imm8 > 31 ? __lasx_xvreplgr2vr_w(0) : __lasx_xvsll_w(a_.i256, __lasx_xvreplgr2vr_w(imm8));
+      r_.i256 = (simde__m256i)((v8i32)a_.i256 << imm8);
   #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
     r_.i32 = a_.i32 << HEDLEY_STATIC_CAST(int32_t, imm8);
   #else
@@ -4647,7 +4647,7 @@ simde_mm256_slli_epi64 (simde__m256i a, const int imm8)
     a_ = simde__m256i_to_private(a);
 
 #if defined(SIMDE_LOONGARCH_LASX_NATIVE)
-  r_.i256 = imm8 > 63 ? __lasx_xvreplgr2vr_d(0) : __lasx_xvsll_d(a_.i256, __lasx_xvreplgr2vr_d(imm8));
+  r_.i256 = (simde__m256i)((v4i64)a_.i256 << imm8);
 #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
   r_.i64 = a_.i64 << HEDLEY_STATIC_CAST(int64_t, imm8);
 #else
@@ -4935,7 +4935,7 @@ simde_mm256_srai_epi16 (simde__m256i a, const int imm8)
   if (shift > 15) shift = 15;
 
   #if defined(SIMDE_LOONGARCH_LASX_NATIVE)
-    r_.i256 = __lasx_xvsra_h(a_.i256, __lasx_xvreplgr2vr_h(shift));
+    r_.i256 = (simde__m256i)((v16i16)a_.i256 >> shift);
   #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
     r_.i16 = a_.i16 >> HEDLEY_STATIC_CAST(int16_t, shift);
   #else
@@ -4972,7 +4972,7 @@ simde_mm256_srai_epi32 (simde__m256i a, const int imm8)
   if (shift > 31) shift = 31;
 
   #if defined(SIMDE_LOONGARCH_LASX_NATIVE)
-    r_.i256 = __lasx_xvsra_w(a_.i256, __lasx_xvreplgr2vr_w(shift));
+    r_.i256 = (simde__m256i)((v8i32)a_.i256 >> shift);
   #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
     r_.i32 = a_.i32 >> HEDLEY_STATIC_CAST(int16_t, shift);
   #else
@@ -5196,7 +5196,7 @@ simde_mm256_srli_epi16 (simde__m256i a, const int imm8)
       r_.altivec_u16[i] = vec_sr(a_.altivec_u16[i], sv);
     }
   #elif defined(SIMDE_LOONGARCH_LASX_NATIVE)
-    r_.i256 = __lasx_xvsrl_h(a_.i256, __lasx_xvreplgr2vr_h(imm8));
+    r_.i256 = (simde__m256i)((v16u16)a_.i256 >> imm8);
   #else
     if (HEDLEY_STATIC_CAST(unsigned int, imm8) > 15) {
       simde_memset(&r_, 0, sizeof(r_));
@@ -5241,7 +5241,7 @@ simde_mm256_srli_epi32 (simde__m256i a, const int imm8)
       r_.altivec_u32[i] = vec_sr(a_.altivec_u32[i], sv);
     }
   #elif defined(SIMDE_LOONGARCH_LASX_NATIVE)
-    r_.i256 = imm8 > 31 ? __lasx_xvreplgr2vr_w(0) : __lasx_xvsrl_w(a_.i256, __lasx_xvreplgr2vr_w(imm8));
+    r_.i256 = (simde__m256i)((v8u32)a_.i256 >> imm8);
   #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
     r_.u32 = a_.u32 >> SIMDE_CAST_VECTOR_SHIFT_COUNT(16, imm8);
   #else
@@ -5275,7 +5275,7 @@ simde_mm256_srli_epi64 (simde__m256i a, const int imm8)
     a_ = simde__m256i_to_private(a);
 
 #if defined(SIMDE_LOONGARCH_LASX_NATIVE)
-  r_.i256 = imm8 > 63 ? __lasx_xvreplgr2vr_d(0) : __lasx_xvsrl_d(a_.i256, __lasx_xvreplgr2vr_d(imm8));
+  r_.i256 = (simde__m256i)((v4u64)a_.i256 >> imm8);
 #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
   r_.u64 = a_.u64 >> SIMDE_CAST_VECTOR_SHIFT_COUNT(32, imm8);
 #else
