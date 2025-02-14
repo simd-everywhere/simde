@@ -2764,8 +2764,7 @@ simde_mm_cmp_sd (simde__m128d a, simde__m128d b, const int imm8)
     case SIMDE_CMP_GT_OQ:
     case SIMDE_CMP_GT_OS:
       #if defined(SIMDE_LOONGARCH_LASX_NATIVE)
-        t_ = __lsx_vfcmp_cle_d(a_.lsx_f64, b_.lsx_f64);
-        a_.lsx_i64 = __lsx_vextrins_d(a_.lsx_i64, __lsx_vnor_v(t_, t_), 0x00);
+        a_.lsx_i64 = __lsx_vextrins_d(a_.lsx_i64, __lsx_vfcmp_clt_d(b_.lsx_f64, a_.lsx_f64), 0x00);
       #else
         a_.i64[0] = (a_.f64[0] > b_.f64[0]) ? ~INT64_C(0) : INT64_C(0);
       #endif
@@ -2934,8 +2933,7 @@ simde_mm_cmp_ss (simde__m128 a, simde__m128 b, const int imm8)
     case SIMDE_CMP_GT_OQ:
     case SIMDE_CMP_GT_OS:
       #if defined(SIMDE_LOONGARCH_LASX_NATIVE)
-        t_ = __lsx_vfcmp_cle_s(a_.lsx_f32, b_.lsx_f32);
-        a_.lsx_i64 = __lsx_vextrins_w(a_.lsx_i64, __lsx_vnor_v(t_, t_), 0x00);
+        a_.lsx_i64 = __lsx_vextrins_w(a_.lsx_i64, __lsx_vfcmp_clt_s(b_.lsx_f32, a_.lsx_f32), 0x00);
       #else
         a_.i32[0] = (a_.f32[0] > b_.f32[0]) ? ~INT32_C(0) : INT32_C(0);
       #endif
@@ -3175,8 +3173,7 @@ simde_mm256_cmp_pd
     case SIMDE_CMP_GT_OQ:
     case SIMDE_CMP_GT_OS:
       #if defined(SIMDE_LOONGARCH_LASX_NATIVE)
-        t_ = __lasx_xvfcmp_cle_d(a_.d256, b_.d256);
-        r_.i256 = __lasx_xvnor_v(t_, t_);
+        r_.i256 = __lasx_xvfcmp_clt_d(b_.d256, a_.d256);
       #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
         r_.i64 = HEDLEY_REINTERPRET_CAST(__typeof__(r_.i64), (a_.f64 > b_.f64));
       #else
