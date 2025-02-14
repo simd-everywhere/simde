@@ -6458,7 +6458,7 @@ simde_mm_srai_epi16 (simde__m128i a, const int imm8)
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
     r_.wasm_v128 = wasm_i16x8_shr(a_.wasm_v128, HEDLEY_STATIC_CAST(uint32_t, cnt));
   #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
-    r_.lsx_i64 = __lsx_vsra_h(a_.lsx_i64, __lsx_vreplgr2vr_h(cnt));
+    r_.lsx_i64 = (simde__m128i)((v8i16)a_.lsx_i64 >> cnt);
   #else
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_) / sizeof(r_.i16[0])) ; i++) {
@@ -6491,7 +6491,7 @@ simde_mm_srai_epi32 (simde__m128i a, const int imm8)
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
     r_.wasm_v128 = wasm_i32x4_shr(a_.wasm_v128, HEDLEY_STATIC_CAST(uint32_t, cnt));
   #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
-    r_.lsx_i64 = __lsx_vsra_w(a_.lsx_i64, __lsx_vreplgr2vr_w(cnt));
+    r_.lsx_i64 = (simde__m128i)((v4i32)a_.lsx_i64 >> cnt);
   #else
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_) / sizeof(r_.i32[0])) ; i++) {
@@ -6587,7 +6587,7 @@ simde_mm_slli_epi16 (simde__m128i a, const int imm8)
     a_ = simde__m128i_to_private(a);
 
   #if defined(SIMDE_LOONGARCH_LSX_NATIVE)
-    r_.lsx_i64 = __lsx_vsll_h(a_.lsx_i64, __lsx_vreplgr2vr_h(imm8));
+    r_.lsx_i64 = (simde__m128i)((v8i16)a_.lsx_i64 << imm8);
   #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
     r_.i16 = a_.i16 << SIMDE_CAST_VECTOR_SHIFT_COUNT(8, imm8 & 0xff);
   #else
@@ -6633,7 +6633,7 @@ simde_mm_slli_epi32 (simde__m128i a, const int imm8)
     a_ = simde__m128i_to_private(a);
 
   #if defined(SIMDE_LOONGARCH_LSX_NATIVE)
-    r_.lsx_i64 = __lsx_vsll_w(a_.lsx_i64, __lsx_vreplgr2vr_w(imm8));
+    r_.lsx_i64 = (simde__m128i)((v4i32)a_.lsx_i64 << imm8);
   #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
     r_.i32 = a_.i32 << imm8;
   #else
@@ -6690,7 +6690,7 @@ simde_mm_slli_epi64 (simde__m128i a, const int imm8)
     a_ = simde__m128i_to_private(a);
 
   #if defined(SIMDE_LOONGARCH_LSX_NATIVE)
-    r_.lsx_i64 = __lsx_vsll_d(a_.lsx_i64, __lsx_vreplgr2vr_d(imm8));
+    r_.lsx_i64 = (simde__m128i)((v2i64)a_.lsx_i64 << imm8);
   #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
     r_.i64 = a_.i64 << imm8;
   #else
@@ -6732,7 +6732,7 @@ simde_mm_srli_epi16 (simde__m128i a, const int imm8)
     a_ = simde__m128i_to_private(a);
 
   #if defined(SIMDE_LOONGARCH_LSX_NATIVE)
-   r_.lsx_i64 = __lsx_vsrl_h(a_.lsx_i64, __lsx_vreplgr2vr_h(imm8));
+   r_.lsx_i64 = (simde__m128i)((v8u16)a_.lsx_i64 >> imm8);
   #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
     r_.u16 = a_.u16 >> SIMDE_CAST_VECTOR_SHIFT_COUNT(8, imm8);
   #else
@@ -6777,7 +6777,7 @@ simde_mm_srli_epi32 (simde__m128i a, const int imm8)
     a_ = simde__m128i_to_private(a);
 
   #if defined(SIMDE_LOONGARCH_LSX_NATIVE)
-   r_.lsx_i64 = __lsx_vsrl_w(a_.lsx_i64, __lsx_vreplgr2vr_w(imm8));
+    r_.lsx_i64 = (simde__m128i)((v4u32)a_.lsx_i64 >> imm8);
   #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
     r_.u32 = a_.u32 >> SIMDE_CAST_VECTOR_SHIFT_COUNT(8, imm8 & 0xff);
   #else
@@ -6836,7 +6836,7 @@ simde_mm_srli_epi64 (simde__m128i a, const int imm8)
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     r_.neon_u64 = vshlq_u64(a_.neon_u64, vdupq_n_s64(-imm8));
   #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
-   r_.lsx_i64 = __lsx_vsrl_d(a_.lsx_i64, __lsx_vreplgr2vr_d(imm8));
+    r_.lsx_i64 = (simde__m128i)((v2u64)a_.lsx_i64 >> imm8);
   #else
     #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && !defined(SIMDE_BUG_GCC_94488)
       r_.u64 = a_.u64 >> SIMDE_CAST_VECTOR_SHIFT_COUNT(8, imm8);
