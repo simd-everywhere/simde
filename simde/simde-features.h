@@ -380,7 +380,7 @@
 #endif
 
 #if !defined(SIMDE_RISCV_V_NATIVE) && !defined(SIMDE_RISCV_V_NO_NATIVE) && !defined(SIMDE_NO_NATIVE)
-  #if defined(SIMDE_ARCH_RISCV_V)
+  #if defined(SIMDE_ARCH_RISCV_V) && defined(__riscv_v_fixed_vlen)
     #define SIMDE_RISCV_V_NATIVE
   #endif
 #endif
