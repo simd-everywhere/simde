@@ -270,6 +270,7 @@ jobs:
     - id: cpu
       name: CPU Information
       run: |
+        cat /proc/cpuinfo
         echo "model_name=$(grep -m1 'model name' < /proc/cpuinfo | awk '-F: ' '{ print $2}' | tr '-' '_')" >> "$GITHUB_OUTPUT"
     - run: sudo apt-get update
     - name: ccache
@@ -340,7 +341,8 @@ jobs:
     - id: cpu
       name: CPU Information
       run: |
-        echo "model_name=$(grep -m1 'model name' < /proc/cpuinfo | awk '-F: ' '{ print $2}' | tr '-' '_')" >> "$GITHUB_OUTPUT"
+        cat /proc/cpuinfo
+        echo "model_name=$(grep -m1 'model name' < /proc/cpuinfo || grep -m1 Features < /proc/cpuinfo | awk '-F: ' '{ print $2}' | tr '-' '_')" >> "$GITHUB_OUTPUT"
     - run: sudo apt-get update
     - name: ccache
       uses: hendrikmuhs/ccache-action@v1.2.17
@@ -687,11 +689,11 @@ jobs:
           arch_flags: -ffast-math
         - version: "14"
           distro: ubuntu-24.04-arm
-          arch_flags: -march=armv8-a+fp+aes+sha2+sha3+sm4+sve+flagm+ssbs+sb+sve2+i8mm+bf16
+          arch_flags: -march=armv8-a+fp+aes+sha2
           # grep Features < /proc/cpuinfo | head -n 1 | awk '-F: ' '{print $2}' | sed 's/asimd //;s/evtstrm //;s/pmull //;s/sha1 //;s/crc32 //;s/atomics //;s/fphp //;s/asimd.. //g;s/cpuid //;s/asimd... //g;s/jscvt //;s/fcma //;s/lrcpc //;s/dcpop //;s/sm3 //;s/sha512 //;s/uscat //;s/ilrcpc //;s/pac. //g;s/dcpodp //;s/sveaes //;s/svebitperm //;s/svesha3 //;s/svesm4 //;s/flagm2 //;s/frint //;s/svei8mm //;s/svebf16 //' | tr ' ' '+'
         - version: "14"
           distro: ubuntu-24.04-arm
-          arch_flags: -ffast-math -march=armv8-a+fp+aes+sha2+sha3+sm4+sve+flagm+ssbs+sb+sve2+i8mm+bf16
+          arch_flags: -ffast-math -march=armv8-a+fp+aes+sha2
         - version: "15"
           distro: ubuntu-24.04
         - version: "15"
@@ -761,7 +763,8 @@ jobs:
     - id: cpu
       name: CPU Information
       run: |
-        echo "model_name=$(grep -m1 'model name' < /proc/cpuinfo | awk '-F: ' '{ print $2}' | tr '-' '_')" >> "$GITHUB_OUTPUT"
+        cat /proc/cpuinfo
+        echo "model_name=$(grep -m1 'model name' < /proc/cpuinfo || grep -m1 Features < /proc/cpuinfo | awk '-F: ' '{ print $2}' | tr '-' '_')" >> "$GITHUB_OUTPUT"
     - run: sudo apt-get update
     - name: ccache
       uses: hendrikmuhs/ccache-action@v1.2.17
