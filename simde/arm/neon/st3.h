@@ -48,7 +48,8 @@ simde_vst3_f16(simde_float16_t ptr[HEDLEY_ARRAY_PARAM(12)], simde_float16x4x3_t 
     simde_float16x4_private a[3] = { simde_float16x4_to_private(val.val[0]),
                                       simde_float16x4_to_private(val.val[1]),
                                       simde_float16x4_to_private(val.val[2]) };
-    #if defined(SIMDE_RISCV_V_NATIVE) && SIMDE_ARCH_RISCV_ZVFH && (SIMDE_NATURAL_VECTOR_SIZE >= 128)
+    #if defined(SIMDE_RISCV_V_NATIVE) && defined(SIMDE_ARCH_RISCV_ZVLSSEG) \
+      && SIMDE_ARCH_RISCV_ZVFH && (SIMDE_NATURAL_VECTOR_SIZE >= 128)
       vfloat16m1x3_t dest = __riscv_vlseg3e16_v_f16m1x3((_Float16 *)ptr, 4);
       dest = __riscv_vset_v_f16m1_f16m1x3 (dest, 0, a[0].sv64);
       dest = __riscv_vset_v_f16m1_f16m1x3 (dest, 1, a[1].sv64);
@@ -78,7 +79,7 @@ simde_vst3_f32(simde_float32_t ptr[HEDLEY_ARRAY_PARAM(6)], simde_float32x2x3_t v
     simde_float32x2_private a[3] = { simde_float32x2_to_private(val.val[0]),
                                       simde_float32x2_to_private(val.val[1]),
                                       simde_float32x2_to_private(val.val[2]) };
-    #if defined(SIMDE_RISCV_V_NATIVE)
+    #if defined(SIMDE_RISCV_V_NATIVE) && defined(SIMDE_ARCH_RISCV_ZVLSSEG)
       vfloat32m1x3_t dest = __riscv_vlseg3e32_v_f32m1x3(ptr, 2);
       dest = __riscv_vset_v_f32m1_f32m1x3 (dest, 0, a[0].sv64);
       dest = __riscv_vset_v_f32m1_f32m1x3 (dest, 1, a[1].sv64);
@@ -114,7 +115,7 @@ simde_vst3_f64(simde_float64_t ptr[HEDLEY_ARRAY_PARAM(3)], simde_float64x1x3_t v
     simde_float64x1_private a_[3] = { simde_float64x1_to_private(val.val[0]),
                                       simde_float64x1_to_private(val.val[1]),
                                       simde_float64x1_to_private(val.val[2]) };
-    #if defined(SIMDE_RISCV_V_NATIVE)
+    #if defined(SIMDE_RISCV_V_NATIVE) && defined(SIMDE_ARCH_RISCV_ZVLSSEG)
       vfloat64m1x3_t dest = __riscv_vlseg3e64_v_f64m1x3(ptr, 1);
       dest = __riscv_vset_v_f64m1_f64m1x3 (dest, 0, a_[0].sv64);
       dest = __riscv_vset_v_f64m1_f64m1x3 (dest, 1, a_[1].sv64);
@@ -141,7 +142,7 @@ simde_vst3_s8(int8_t ptr[HEDLEY_ARRAY_PARAM(24)], simde_int8x8x3_t val) {
     simde_int8x8_private a_[3] = { simde_int8x8_to_private(val.val[0]),
                                    simde_int8x8_to_private(val.val[1]),
                                    simde_int8x8_to_private(val.val[2]) };
-    #if defined(SIMDE_RISCV_V_NATIVE)
+    #if defined(SIMDE_RISCV_V_NATIVE) && defined(SIMDE_ARCH_RISCV_ZVLSSEG)
       vint8m1x3_t dest = __riscv_vlseg3e8_v_i8m1x3(ptr, 8);
       dest = __riscv_vset_v_i8m1_i8m1x3 (dest, 0, a_[0].sv64);
       dest = __riscv_vset_v_i8m1_i8m1x3 (dest, 1, a_[1].sv64);
@@ -188,7 +189,7 @@ simde_vst3_s16(int16_t ptr[HEDLEY_ARRAY_PARAM(12)], simde_int16x4x3_t val) {
     simde_int16x4_private a_[3] = { simde_int16x4_to_private(val.val[0]),
                                     simde_int16x4_to_private(val.val[1]),
                                     simde_int16x4_to_private(val.val[2]) };
-    #if defined(SIMDE_RISCV_V_NATIVE)
+    #if defined(SIMDE_RISCV_V_NATIVE) && defined(SIMDE_ARCH_RISCV_ZVLSSEG)
       vint16m1x3_t dest = __riscv_vlseg3e16_v_i16m1x3(ptr, 4);
       dest = __riscv_vset_v_i16m1_i16m1x3 (dest, 0, a_[0].sv64);
       dest = __riscv_vset_v_i16m1_i16m1x3 (dest, 1, a_[1].sv64);
@@ -235,7 +236,7 @@ simde_vst3_s32(int32_t ptr[HEDLEY_ARRAY_PARAM(6)], simde_int32x2x3_t val) {
     simde_int32x2_private a[3] = { simde_int32x2_to_private(val.val[0]),
                                     simde_int32x2_to_private(val.val[1]),
                                     simde_int32x2_to_private(val.val[2]) };
-    #if defined(SIMDE_RISCV_V_NATIVE)
+    #if defined(SIMDE_RISCV_V_NATIVE) && defined(SIMDE_ARCH_RISCV_ZVLSSEG)
       vint32m1x3_t dest = __riscv_vlseg3e32_v_i32m1x3(ptr, 2);
       dest = __riscv_vset_v_i32m1_i32m1x3 (dest, 0, a[0].sv64);
       dest = __riscv_vset_v_i32m1_i32m1x3 (dest, 1, a[1].sv64);
@@ -271,7 +272,7 @@ simde_vst3_s64(int64_t ptr[HEDLEY_ARRAY_PARAM(3)], simde_int64x1x3_t val) {
     simde_int64x1_private a_[3] = { simde_int64x1_to_private(val.val[0]),
                                     simde_int64x1_to_private(val.val[1]),
                                     simde_int64x1_to_private(val.val[2]) };
-    #if defined(SIMDE_RISCV_V_NATIVE)
+    #if defined(SIMDE_RISCV_V_NATIVE) && defined(SIMDE_ARCH_RISCV_ZVLSSEG)
       vint64m1x3_t dest = __riscv_vlseg3e64_v_i64m1x3(ptr, 1);
       dest = __riscv_vset_v_i64m1_i64m1x3 (dest, 0, a_[0].sv64);
       dest = __riscv_vset_v_i64m1_i64m1x3 (dest, 1, a_[1].sv64);
@@ -298,7 +299,7 @@ simde_vst3_u8(uint8_t ptr[HEDLEY_ARRAY_PARAM(24)], simde_uint8x8x3_t val) {
     simde_uint8x8_private a_[3] = { simde_uint8x8_to_private(val.val[0]),
                                     simde_uint8x8_to_private(val.val[1]),
                                     simde_uint8x8_to_private(val.val[2]) };
-    #if defined(SIMDE_RISCV_V_NATIVE)
+    #if defined(SIMDE_RISCV_V_NATIVE) && defined(SIMDE_ARCH_RISCV_ZVLSSEG)
       vuint8m1x3_t dest = __riscv_vlseg3e8_v_u8m1x3(ptr, 8);
       dest = __riscv_vset_v_u8m1_u8m1x3 (dest, 0, a_[0].sv64);
       dest = __riscv_vset_v_u8m1_u8m1x3 (dest, 1, a_[1].sv64);
@@ -345,7 +346,7 @@ simde_vst3_u16(uint16_t ptr[HEDLEY_ARRAY_PARAM(12)], simde_uint16x4x3_t val) {
     simde_uint16x4_private a_[3] = { simde_uint16x4_to_private(val.val[0]),
                                      simde_uint16x4_to_private(val.val[1]),
                                      simde_uint16x4_to_private(val.val[2]) };
-    #if defined(SIMDE_RISCV_V_NATIVE)
+    #if defined(SIMDE_RISCV_V_NATIVE) && defined(SIMDE_ARCH_RISCV_ZVLSSEG)
       vuint16m1x3_t dest = __riscv_vlseg3e16_v_u16m1x3(ptr, 4);
       dest = __riscv_vset_v_u16m1_u16m1x3 (dest, 0, a_[0].sv64);
       dest = __riscv_vset_v_u16m1_u16m1x3 (dest, 1, a_[1].sv64);
@@ -392,7 +393,7 @@ simde_vst3_u32(uint32_t ptr[HEDLEY_ARRAY_PARAM(6)], simde_uint32x2x3_t val) {
     simde_uint32x2_private a[3] = { simde_uint32x2_to_private(val.val[0]),
                                      simde_uint32x2_to_private(val.val[1]),
                                      simde_uint32x2_to_private(val.val[2]) };
-    #if defined(SIMDE_RISCV_V_NATIVE)
+    #if defined(SIMDE_RISCV_V_NATIVE) && defined(SIMDE_ARCH_RISCV_ZVLSSEG)
       vuint32m1x3_t dest = __riscv_vlseg3e32_v_u32m1x3(ptr, 2);
       dest = __riscv_vset_v_u32m1_u32m1x3 (dest, 0, a[0].sv64);
       dest = __riscv_vset_v_u32m1_u32m1x3 (dest, 1, a[1].sv64);
@@ -428,7 +429,7 @@ simde_vst3_u64(uint64_t ptr[HEDLEY_ARRAY_PARAM(3)], simde_uint64x1x3_t val) {
     simde_uint64x1_private a_[3] = { simde_uint64x1_to_private(val.val[0]),
                                      simde_uint64x1_to_private(val.val[1]),
                                      simde_uint64x1_to_private(val.val[2]) };
-    #if defined(SIMDE_RISCV_V_NATIVE)
+    #if defined(SIMDE_RISCV_V_NATIVE) && defined(SIMDE_ARCH_RISCV_ZVLSSEG)
       vuint64m1x3_t dest = __riscv_vlseg3e64_v_u64m1x3(ptr, 1);
       dest = __riscv_vset_v_u64m1_u64m1x3 (dest, 0, a_[0].sv64);
       dest = __riscv_vset_v_u64m1_u64m1x3 (dest, 1, a_[1].sv64);
@@ -455,7 +456,8 @@ simde_vst3q_f16(simde_float16_t ptr[HEDLEY_ARRAY_PARAM(24)], simde_float16x8x3_t
     simde_float16x8_private a_[3] = { simde_float16x8_to_private(val.val[0]),
                                       simde_float16x8_to_private(val.val[1]),
                                       simde_float16x8_to_private(val.val[2]) };
-    #if defined(SIMDE_RISCV_V_NATIVE) && SIMDE_ARCH_RISCV_ZVFH && (SIMDE_NATURAL_VECTOR_SIZE >= 128)
+    #if defined(SIMDE_RISCV_V_NATIVE) && defined(SIMDE_ARCH_RISCV_ZVLSSEG) \
+      && SIMDE_ARCH_RISCV_ZVFH && (SIMDE_NATURAL_VECTOR_SIZE >= 128)
       vfloat16m1x3_t dest = __riscv_vlseg3e16_v_f16m1x3((_Float16 *)ptr, 8);
       dest = __riscv_vset_v_f16m1_f16m1x3 (dest, 0, a_[0].sv128);
       dest = __riscv_vset_v_f16m1_f16m1x3 (dest, 1, a_[1].sv128);
@@ -485,7 +487,7 @@ simde_vst3q_f32(simde_float32_t ptr[HEDLEY_ARRAY_PARAM(12)], simde_float32x4x3_t
     simde_float32x4_private a_[3] = { simde_float32x4_to_private(val.val[0]),
                                       simde_float32x4_to_private(val.val[1]),
                                       simde_float32x4_to_private(val.val[2]) };
-    #if defined(SIMDE_RISCV_V_NATIVE)
+    #if defined(SIMDE_RISCV_V_NATIVE) && defined(SIMDE_ARCH_RISCV_ZVLSSEG)
       vfloat32m1x3_t dest = __riscv_vlseg3e32_v_f32m1x3(ptr, 4);
       dest = __riscv_vset_v_f32m1_f32m1x3 (dest, 0, a_[0].sv128);
       dest = __riscv_vset_v_f32m1_f32m1x3 (dest, 1, a_[1].sv128);
@@ -532,7 +534,7 @@ simde_vst3q_f64(simde_float64_t ptr[HEDLEY_ARRAY_PARAM(6)], simde_float64x2x3_t 
     simde_float64x2_private a[3] = { simde_float64x2_to_private(val.val[0]),
                                       simde_float64x2_to_private(val.val[1]),
                                       simde_float64x2_to_private(val.val[2]) };
-    #if defined(SIMDE_RISCV_V_NATIVE)
+    #if defined(SIMDE_RISCV_V_NATIVE) && defined(SIMDE_ARCH_RISCV_ZVLSSEG)
       vfloat64m1x3_t dest = __riscv_vlseg3e64_v_f64m1x3(ptr, 2);
       dest = __riscv_vset_v_f64m1_f64m1x3 (dest, 0, a[0].sv128);
       dest = __riscv_vset_v_f64m1_f64m1x3 (dest, 1, a[1].sv128);
@@ -568,7 +570,7 @@ simde_vst3q_s8(int8_t ptr[HEDLEY_ARRAY_PARAM(48)], simde_int8x16x3_t val) {
     simde_int8x16_private a_[3] = { simde_int8x16_to_private(val.val[0]),
                                     simde_int8x16_to_private(val.val[1]),
                                     simde_int8x16_to_private(val.val[2]) };
-    #if defined(SIMDE_RISCV_V_NATIVE)
+    #if defined(SIMDE_RISCV_V_NATIVE) && defined(SIMDE_ARCH_RISCV_ZVLSSEG)
       vint8m1x3_t dest = __riscv_vlseg3e8_v_i8m1x3(ptr, 16);
       dest = __riscv_vset_v_i8m1_i8m1x3 (dest, 0, a_[0].sv128);
       dest = __riscv_vset_v_i8m1_i8m1x3 (dest, 1, a_[1].sv128);
@@ -620,7 +622,7 @@ simde_vst3q_s16(int16_t ptr[HEDLEY_ARRAY_PARAM(24)], simde_int16x8x3_t val) {
     simde_int16x8_private a_[3] = { simde_int16x8_to_private(val.val[0]),
                                     simde_int16x8_to_private(val.val[1]),
                                     simde_int16x8_to_private(val.val[2]) };
-    #if defined(SIMDE_RISCV_V_NATIVE)
+    #if defined(SIMDE_RISCV_V_NATIVE) && defined(SIMDE_ARCH_RISCV_ZVLSSEG)
       vint16m1x3_t dest = __riscv_vlseg3e16_v_i16m1x3(ptr, 8);
       dest = __riscv_vset_v_i16m1_i16m1x3 (dest, 0, a_[0].sv128);
       dest = __riscv_vset_v_i16m1_i16m1x3 (dest, 1, a_[1].sv128);
@@ -667,7 +669,7 @@ simde_vst3q_s32(int32_t ptr[HEDLEY_ARRAY_PARAM(12)], simde_int32x4x3_t val) {
     simde_int32x4_private a_[3] = { simde_int32x4_to_private(val.val[0]),
                                     simde_int32x4_to_private(val.val[1]),
                                     simde_int32x4_to_private(val.val[2]) };
-    #if defined(SIMDE_RISCV_V_NATIVE)
+    #if defined(SIMDE_RISCV_V_NATIVE) && defined(SIMDE_ARCH_RISCV_ZVLSSEG)
       vint32m1x3_t dest = __riscv_vlseg3e32_v_i32m1x3(ptr, 4);
       dest = __riscv_vset_v_i32m1_i32m1x3 (dest, 0, a_[0].sv128);
       dest = __riscv_vset_v_i32m1_i32m1x3 (dest, 1, a_[1].sv128);
@@ -714,7 +716,7 @@ simde_vst3q_s64(int64_t ptr[HEDLEY_ARRAY_PARAM(6)], simde_int64x2x3_t val) {
     simde_int64x2_private a[3] = { simde_int64x2_to_private(val.val[0]),
                                     simde_int64x2_to_private(val.val[1]),
                                     simde_int64x2_to_private(val.val[2]) };
-    #if defined(SIMDE_RISCV_V_NATIVE)
+    #if defined(SIMDE_RISCV_V_NATIVE) && defined(SIMDE_ARCH_RISCV_ZVLSSEG)
       vint64m1x3_t dest = __riscv_vlseg3e64_v_i64m1x3(ptr, 2);
       dest = __riscv_vset_v_i64m1_i64m1x3 (dest, 0, a[0].sv128);
       dest = __riscv_vset_v_i64m1_i64m1x3 (dest, 1, a[1].sv128);
@@ -782,7 +784,7 @@ simde_vst3q_u8(uint8_t ptr[HEDLEY_ARRAY_PARAM(48)], simde_uint8x16x3_t val) {
       v128_t m2 = wasm_i8x16_shuffle(r2, r1, 0, 1, 18, 3, 4, 21, 6, 7, 24, 9, 10,
                                      27, 12, 13, 30, 15);
       wasm_v128_store(ptr + 32, m2);
-    #elif defined(SIMDE_RISCV_V_NATIVE)
+    #elif defined(SIMDE_RISCV_V_NATIVE) && defined(SIMDE_ARCH_RISCV_ZVLSSEG)
       vuint8m1x3_t dest = __riscv_vlseg3e8_v_u8m1x3(ptr, 16);
       dest = __riscv_vset_v_u8m1_u8m1x3 (dest, 0, a_[0].sv128);
       dest = __riscv_vset_v_u8m1_u8m1x3 (dest, 1, a_[1].sv128);
@@ -835,7 +837,7 @@ simde_vst3q_u16(uint16_t ptr[HEDLEY_ARRAY_PARAM(24)], simde_uint16x8x3_t val) {
                                      simde_uint16x8_to_private(val.val[1]),
                                      simde_uint16x8_to_private(val.val[2]) };
 
-    #if defined(SIMDE_RISCV_V_NATIVE)
+    #if defined(SIMDE_RISCV_V_NATIVE) && defined(SIMDE_ARCH_RISCV_ZVLSSEG)
       vuint16m1x3_t dest = __riscv_vlseg3e16_v_u16m1x3(ptr, 8);
       dest = __riscv_vset_v_u16m1_u16m1x3 (dest, 0, a_[0].sv128);
       dest = __riscv_vset_v_u16m1_u16m1x3 (dest, 1, a_[1].sv128);
@@ -883,7 +885,7 @@ simde_vst3q_u32(uint32_t ptr[HEDLEY_ARRAY_PARAM(12)], simde_uint32x4x3_t val) {
                                      simde_uint32x4_to_private(val.val[1]),
                                      simde_uint32x4_to_private(val.val[2]) };
 
-    #if defined(SIMDE_RISCV_V_NATIVE)
+    #if defined(SIMDE_RISCV_V_NATIVE) && defined(SIMDE_ARCH_RISCV_ZVLSSEG)
       vuint32m1x3_t dest = __riscv_vlseg3e32_v_u32m1x3(ptr, 4);
       dest = __riscv_vset_v_u32m1_u32m1x3 (dest, 0, a_[0].sv128);
       dest = __riscv_vset_v_u32m1_u32m1x3 (dest, 1, a_[1].sv128);
@@ -930,7 +932,7 @@ simde_vst3q_u64(uint64_t ptr[HEDLEY_ARRAY_PARAM(6)], simde_uint64x2x3_t val) {
     simde_uint64x2_private a[3] = { simde_uint64x2_to_private(val.val[0]),
                                      simde_uint64x2_to_private(val.val[1]),
                                      simde_uint64x2_to_private(val.val[2]) };
-    #if defined(SIMDE_RISCV_V_NATIVE)
+    #if defined(SIMDE_RISCV_V_NATIVE) && defined(SIMDE_ARCH_RISCV_ZVLSSEG)
       vuint64m1x3_t dest = __riscv_vlseg3e64_v_u64m1x3(ptr, 2);
       dest = __riscv_vset_v_u64m1_u64m1x3 (dest, 0, a[0].sv128);
       dest = __riscv_vset_v_u64m1_u64m1x3 (dest, 1, a[1].sv128);
@@ -966,7 +968,7 @@ simde_vst3_p8(simde_poly8_t ptr[HEDLEY_ARRAY_PARAM(24)], simde_poly8x8x3_t val) 
     simde_poly8x8_private a_[3] = { simde_poly8x8_to_private(val.val[0]),
                                     simde_poly8x8_to_private(val.val[1]),
                                     simde_poly8x8_to_private(val.val[2]) };
-    #if defined(SIMDE_RISCV_V_NATIVE)
+    #if defined(SIMDE_RISCV_V_NATIVE) && defined(SIMDE_ARCH_RISCV_ZVLSSEG)
       vuint8m1x3_t dest = __riscv_vlseg3e8_v_u8m1x3(ptr, 8);
       dest = __riscv_vset_v_u8m1_u8m1x3 (dest, 0, a_[0].sv64);
       dest = __riscv_vset_v_u8m1_u8m1x3 (dest, 1, a_[1].sv64);
@@ -995,7 +997,7 @@ simde_vst3_p16(simde_poly16_t ptr[HEDLEY_ARRAY_PARAM(12)], simde_poly16x4x3_t va
     simde_poly16x4_private a_[3] = { simde_poly16x4_to_private(val.val[0]),
                                      simde_poly16x4_to_private(val.val[1]),
                                      simde_poly16x4_to_private(val.val[2]) };
-    #if defined(SIMDE_RISCV_V_NATIVE)
+    #if defined(SIMDE_RISCV_V_NATIVE) && defined(SIMDE_ARCH_RISCV_ZVLSSEG)
       vuint16m1x3_t dest = __riscv_vlseg3e16_v_u16m1x3(ptr, 4);
       dest = __riscv_vset_v_u16m1_u16m1x3 (dest, 0, a_[0].sv64);
       dest = __riscv_vset_v_u16m1_u16m1x3 (dest, 1, a_[1].sv64);
@@ -1024,7 +1026,7 @@ simde_vst3_p64(simde_poly64_t ptr[HEDLEY_ARRAY_PARAM(3)], simde_poly64x1x3_t val
     simde_poly64x1_private a_[3] = { simde_poly64x1_to_private(val.val[0]),
                                      simde_poly64x1_to_private(val.val[1]),
                                      simde_poly64x1_to_private(val.val[2]) };
-    #if defined(SIMDE_RISCV_V_NATIVE)
+    #if defined(SIMDE_RISCV_V_NATIVE) && defined(SIMDE_ARCH_RISCV_ZVLSSEG)
       vuint64m1x3_t dest = __riscv_vlseg3e64_v_u64m1x3(ptr, 1);
       dest = __riscv_vset_v_u64m1_u64m1x3 (dest, 0, a_[0].sv64);
       dest = __riscv_vset_v_u64m1_u64m1x3 (dest, 1, a_[1].sv64);
@@ -1051,7 +1053,7 @@ simde_vst3q_p8(simde_poly8_t ptr[HEDLEY_ARRAY_PARAM(48)], simde_poly8x16x3_t val
     simde_poly8x16_private a_[3] = {simde_poly8x16_to_private(val.val[0]),
                                     simde_poly8x16_to_private(val.val[1]),
                                     simde_poly8x16_to_private(val.val[2])};
-    #if defined(SIMDE_RISCV_V_NATIVE)
+    #if defined(SIMDE_RISCV_V_NATIVE) && defined(SIMDE_ARCH_RISCV_ZVLSSEG)
       vuint8m1x3_t dest = __riscv_vlseg3e8_v_u8m1x3(ptr, 16);
       dest = __riscv_vset_v_u8m1_u8m1x3 (dest, 0, a_[0].sv128);
       dest = __riscv_vset_v_u8m1_u8m1x3 (dest, 1, a_[1].sv128);
@@ -1081,7 +1083,7 @@ simde_vst3q_p16(simde_poly16_t ptr[HEDLEY_ARRAY_PARAM(24)], simde_poly16x8x3_t v
                                      simde_poly16x8_to_private(val.val[1]),
                                      simde_poly16x8_to_private(val.val[2]) };
 
-    #if defined(SIMDE_RISCV_V_NATIVE)
+    #if defined(SIMDE_RISCV_V_NATIVE) && defined(SIMDE_ARCH_RISCV_ZVLSSEG)
       vuint16m1x3_t dest = __riscv_vlseg3e16_v_u16m1x3(ptr, 8);
       dest = __riscv_vset_v_u16m1_u16m1x3 (dest, 0, a_[0].sv128);
       dest = __riscv_vset_v_u16m1_u16m1x3 (dest, 1, a_[1].sv128);
@@ -1110,7 +1112,7 @@ simde_vst3q_p64(simde_poly64_t ptr[HEDLEY_ARRAY_PARAM(6)], simde_poly64x2x3_t va
     simde_poly64x2_private a_[3] = { simde_poly64x2_to_private(val.val[0]),
                                      simde_poly64x2_to_private(val.val[1]),
                                      simde_poly64x2_to_private(val.val[2]) };
-    #if defined(SIMDE_RISCV_V_NATIVE)
+    #if defined(SIMDE_RISCV_V_NATIVE) && defined(SIMDE_ARCH_RISCV_ZVLSSEG)
       vuint64m1x3_t dest = __riscv_vlseg3e64_v_u64m1x3(ptr, 2);
       dest = __riscv_vset_v_u64m1_u64m1x3 (dest, 0, a_[0].sv128);
       dest = __riscv_vset_v_u64m1_u64m1x3 (dest, 1, a_[1].sv128);
