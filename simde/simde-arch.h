@@ -550,6 +550,9 @@
 #if defined(__riscv_zvfhmin)
 #  define SIMDE_ARCH_RISCV_ZVFHMIN 1
 #endif
+#if defined(__riscv_zvlsseg) || defined(__riscv_v)
+#  define SIMDE_ARCH_RISCV_ZVLSSEG 1
+#endif
 
 /* SPARC
    <https://en.wikipedia.org/wiki/SPARC> */
