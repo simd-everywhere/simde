@@ -1344,7 +1344,7 @@ simde_mm_bslli_si128 (simde__m128i a, const int imm8)
   #define simde_mm_bslli_si128(a, imm8) _mm_slli_si128(a, imm8)
 #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
   #define simde_mm_bslli_si128(a, imm8) \
-  (((imm8)<=0) ? (a) : (((imm8)>15) ? simde_mm_setzero_si128() : simde__m128i_from_lsx_i8((v16i8)__lsx_vbsll_v(simde__m128i_to_private(a).lsx_i64, (imm8)))))
+  (((imm8)<=0) ? (simde__m128i)(a) : (((imm8)>15) ? simde_mm_setzero_si128() : simde__m128i_from_lsx_i8((v16i8)__lsx_vbsll_v(simde__m128i_to_private(a).lsx_i64, (imm8)))))
 #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE) && !defined(__clang__)
   #define simde_mm_bslli_si128(a, imm8) \
   simde__m128i_from_neon_i8(((imm8) <= 0) ? simde__m128i_to_neon_i8(a) : (((imm8) > 15) ? (vdupq_n_s8(0)) : (vextq_s8(vdupq_n_s8(0), simde__m128i_to_neon_i8(a), 16 - (imm8)))))
@@ -1442,7 +1442,7 @@ simde_mm_bsrli_si128 (simde__m128i a, const int imm8)
   #define simde_mm_bsrli_si128(a, imm8) _mm_srli_si128(a, imm8)
 #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
   #define simde_mm_bsrli_si128(a, imm8) \
-  (((imm8)<=0) ? (a) : (((imm8)>15) ? simde_mm_setzero_si128() : simde__m128i_from_lsx_i8((v16i8)__lsx_vbsrl_v(simde__m128i_to_private(a).lsx_i64, (imm8)))))
+  (((imm8)<=0) ? (simde__m128i)(a) : (((imm8)>15) ? simde_mm_setzero_si128() : simde__m128i_from_lsx_i8((v16i8)__lsx_vbsrl_v(simde__m128i_to_private(a).lsx_i64, (imm8)))))
 #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE) && !defined(__clang__)
   #define simde_mm_bsrli_si128(a, imm8) \
   simde__m128i_from_neon_i8(((imm8 < 0) || (imm8 > 15)) ? vdupq_n_s8(0) : (vextq_s8(simde__m128i_to_private(a).neon_i8, vdupq_n_s8(0), ((imm8 & 15) != 0) ? imm8 : (imm8 & 15))))
