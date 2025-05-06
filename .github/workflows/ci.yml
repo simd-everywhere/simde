@@ -841,7 +841,7 @@ jobs:
               # "-march=native": without, or with -mcpu=apple-m1 then unavailable __ARM_FEATURE_s get enabled
           - xcode: "16.0"
             os: macos-15  # arm64
-            arch_flags: -march=native -Wno-poison-system-directories
+            arch_flags: -march=native -Wno-poison-system-directories -U_LIBCPP_ENABLE_ASSERTIONS
               # "-Wno-poison-system-directories": due to meson test
               # "-march=native": without, or with -mcpu=apple-m1 then unavailable __ARM_FEATURE_s get enabled
     runs-on: ${{ matrix.os }}
