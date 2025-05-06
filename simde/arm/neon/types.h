@@ -1287,7 +1287,13 @@ typedef union {
 #endif
 
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES) || defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
-  typedef   simde_float16_t     float16_t;
+  typedef   simde_float16_t          float16_t;
+  typedef   simde_float16x4x2_t  float16x4x2_t;
+  typedef   simde_float16x4x3_t  float16x4x3_t;
+  typedef   simde_float16x4x4_t  float16x4x4_t;
+  typedef   simde_float16x8x2_t  float16x8x2_t;
+  typedef   simde_float16x8x3_t  float16x8x3_t;
+  typedef   simde_float16x8x4_t  float16x8x4_t;
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   typedef   simde_float32_t     float32_t;
