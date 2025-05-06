@@ -115,7 +115,7 @@ jobs:
       run: cat /proc/cpuinfo
     - run: sudo apt-get update
     - name: ccache
-      uses: hendrikmuhs/ccache-action@v1.2.17
+      uses: hendrikmuhs/ccache-action@v1.2.18
       with:
         key: ${{ github.job }}-${{ matrix.isax }}
         evict-old-files: job
@@ -156,7 +156,7 @@ jobs:
       run: cat /proc/cpuinfo
     - run: sudo apt-get update
     - name: ccache
-      uses: hendrikmuhs/ccache-action@v1.2.17
+      uses: hendrikmuhs/ccache-action@v1.2.18
       with:
         key: ${{ github.job }}-
         evict-old-files: job
@@ -195,7 +195,7 @@ jobs:
         submodules: recursive
     - run: sudo apt-get update
     - name: ccache
-      uses: hendrikmuhs/ccache-action@v1.2.17
+      uses: hendrikmuhs/ccache-action@v1.2.18
       with:
         key: ${{ github.job }}
         evict-old-files: job
@@ -240,7 +240,7 @@ jobs:
       run: cat /proc/cpuinfo
     - run: sudo apt-get update
     - name: ccache
-      uses: hendrikmuhs/ccache-action@v1.2.17
+      uses: hendrikmuhs/ccache-action@v1.2.18
       with:
         key: ${{ github.job }}
         evict-old-files: job
@@ -274,7 +274,7 @@ jobs:
         echo "model_name=$(grep -m1 'model name' < /proc/cpuinfo | awk '-F: ' '{ print $2}' | tr '-' '_')" >> "$GITHUB_OUTPUT"
     - run: sudo apt-get update
     - name: ccache
-      uses: hendrikmuhs/ccache-action@v1.2.17
+      uses: hendrikmuhs/ccache-action@v1.2.18
       with:
         key: ${{ github.job }}-${{ steps.cpu.outputs.model_name }}
         evict-old-files: job
@@ -345,7 +345,7 @@ jobs:
         echo "model_name=$(grep -m1 'model name' < /proc/cpuinfo || grep -m1 Features < /proc/cpuinfo | awk '-F: ' '{ print $2}' | tr '-' '_')" >> "$GITHUB_OUTPUT"
     - run: sudo apt-get update
     - name: ccache
-      uses: hendrikmuhs/ccache-action@v1.2.17
+      uses: hendrikmuhs/ccache-action@v1.2.18
       with:
         key: ${{ github.job }}-${{ matrix.version }}-${{ matrix.distro }}-${{ matrix.arch_flags }}-${{ steps.cpu.outputs.model_name }}
         evict-old-files: job
@@ -454,7 +454,7 @@ jobs:
           qemu-user-static pipx libc6-${{ matrix.arch_deb }}-cross libstdc++-${{ matrix.version }}-dev-${{ matrix.arch_deb }}-cross
         pipx install meson==0.55.1
     - name: ccache
-      uses: hendrikmuhs/ccache-action@v1.2.17
+      uses: hendrikmuhs/ccache-action@v1.2.18
       with:
         key: ${{ github.job }}-${{ matrix.version}}${{ matrix.extra }}-${{ matrix.distro }}-${{ matrix.cross }}
         evict-old-files: job
@@ -507,7 +507,7 @@ jobs:
           libstdc++-12-dev-${{ matrix.arch_deb }}-cross \
           binutils-${{ matrix.arch_gnu }}-linux-gnu
     - name: ccache
-      uses: hendrikmuhs/ccache-action@v1.2.17
+      uses: hendrikmuhs/ccache-action@v1.2.18
       with:
         key: ${{ github.job }}-${{ matrix.distro }}-${{ matrix.cross }}
         evict-old-files: job
@@ -559,7 +559,7 @@ jobs:
           libstdc++-12-dev-${{ matrix.arch_deb }}-cross \
           binutils-${{ matrix.arch_gnu }}-linux-gnu
     - name: ccache
-      uses: hendrikmuhs/ccache-action@v1.2.17
+      uses: hendrikmuhs/ccache-action@v1.2.18
       with:
         key: ${{ github.job }}-${{ matrix.distro }}-${{ matrix.cross }}
         evict-old-files: job
@@ -647,7 +647,7 @@ jobs:
           binutils-${{ matrix.arch_gnu }}-linux-gnu${{ matrix.arch_gnu_abi }}
         pipx install meson==0.55.1
     - name: ccache
-      uses: hendrikmuhs/ccache-action@v1.2.17
+      uses: hendrikmuhs/ccache-action@v1.2.18
       with:
         key: ${{ github.job }}-${{ matrix.version }}${{ matrix.extra }}-${{ matrix.cross }}
         evict-old-files: job
@@ -767,7 +767,7 @@ jobs:
         echo "model_name=$(grep -m1 'model name' < /proc/cpuinfo || grep -m1 Features < /proc/cpuinfo | awk '-F: ' '{ print $2}' | tr '-' '_')" >> "$GITHUB_OUTPUT"
     - run: sudo apt-get update
     - name: ccache
-      uses: hendrikmuhs/ccache-action@v1.2.17
+      uses: hendrikmuhs/ccache-action@v1.2.18
       with:
         key: ${{ github.job }}-${{ matrix.version }}-${{ matrix.distro }}-${{ matrix.arch_flags }}-${{ steps.cpu.outputs.model_name }}
         evict-old-files: job
@@ -841,7 +841,7 @@ jobs:
               # "-march=native": without, or with -mcpu=apple-m1 then unavailable __ARM_FEATURE_s get enabled
           - xcode: "16.0"
             os: macos-15  # arm64
-            arch_flags: -march=native -Wno-poison-system-directories
+            arch_flags: -march=native -Wno-poison-system-directories -U_LIBCPP_ENABLE_ASSERTIONS
               # "-Wno-poison-system-directories": due to meson test
               # "-march=native": without, or with -mcpu=apple-m1 then unavailable __ARM_FEATURE_s get enabled
     runs-on: ${{ matrix.os }}
@@ -858,7 +858,7 @@ jobs:
     - name: Compiler version
       run: cc --version
     - name: ccache
-      uses: hendrikmuhs/ccache-action@v1.2.17
+      uses: hendrikmuhs/ccache-action@v1.2.18
       with:
         key: ${{ github.job }}-${{ matrix.os }}-${{ matrix.xcode }}
         evict-old-files: job
@@ -925,7 +925,7 @@ jobs:
           libc6-loong64-cross libstdc++-14-dev-loong64-cross \
           gcc-14-loongarch64-linux-gnu g++-14-loongarch64-linux-gnu
     - name: ccache
-      uses: hendrikmuhs/ccache-action@v1.2.17
+      uses: hendrikmuhs/ccache-action@v1.2.18
       with:
         key: ${{ github.job }}-gcc-14
         evict-old-files: job
