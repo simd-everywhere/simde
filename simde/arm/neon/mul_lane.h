@@ -386,7 +386,7 @@ simde_vmul_laneq_s32(simde_int32x2_t a, simde_int32x4_t b, const int lane)
   #else
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = a_.values[i] * b_.values[lane];
+      r_.values[i] = HEDLEY_STATIC_CAST(int32_t, (HEDLEY_STATIC_CAST(uint32_t, a_.values[i]) * HEDLEY_STATIC_CAST(uint32_t, b_.values[lane])));
     }
   #endif
 
@@ -772,7 +772,7 @@ simde_vmulq_laneq_s32(simde_int32x4_t a, simde_int32x4_t b, const int lane)
   #else
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = a_.values[i] * b_.values[lane];
+      r_.values[i] = HEDLEY_STATIC_CAST(int32_t, (HEDLEY_STATIC_CAST(uint32_t, a_.values[i]) * HEDLEY_STATIC_CAST(uint32_t, b_.values[lane])));
     }
   #endif
 
