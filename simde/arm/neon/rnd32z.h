@@ -37,7 +37,7 @@ SIMDE_BEGIN_DECLS_
 SIMDE_FUNCTION_ATTRIBUTES
 simde_float32x2_t
 simde_vrnd32z_f32(simde_float32x2_t a) {
-  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARCH_ARM_FRINT) && (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(13,0,0))
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARCH_ARM_FRINT) && !defined(HEDLEY_GCC_VERSION)
     return vrnd32z_f32(a);
   #else
     simde_float32x2_private
@@ -59,7 +59,7 @@ simde_vrnd32z_f32(simde_float32x2_t a) {
     return simde_float32x2_from_private(r_);
   #endif
 }
-#if (defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES) && defined(SIMDE_ARCH_ARM_FRINT) && (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(13,0,0))) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && !(defined(SIMDE_ARCH_ARM_FRINT) && (!defined(HEDLEY_GCC_VERSION) || HEDLEY_GCC_VERSION_CHECK(13,0,0))))
+#if (defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES) && defined(SIMDE_ARCH_ARM_FRINT) && !defined(HEDLEY_GCC_VERSION)) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && !(defined(SIMDE_ARCH_ARM_FRINT) && !defined(HEDLEY_GCC_VERSION)))
   #undef vrnd32z_f32
   #define vrnd32z_f32(a) simde_vrnd32z_f32(a)
 #endif
