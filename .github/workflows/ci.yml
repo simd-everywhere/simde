@@ -330,6 +330,8 @@ jobs:
           arch_flags: -ffast-math
         - version: 14
           distro: ubuntu-24.04-arm
+        - version: 15
+          distro: ubuntu-24.04
     runs-on: ${{ matrix.distro }}
     env:
       CFLAGS: ${{ matrix.arch_flags }} -march=native -Wall -Wextra -Werror
@@ -354,6 +356,7 @@ jobs:
       run: |
         sudo add-apt-repository ppa:ubuntu-toolchain-r/test
         sudo add-apt-repository ppa:ubuntu-toolchain-r/ppa
+        sudo add-apt-repository ppa:cppiber/build-depends
         sudo apt-get update
         sudo apt-get -y install --no-install-recommends gcovr pipx ninja-build gcc-${{ matrix.version }} g++-${{ matrix.version }}
         sudo apt-get -y purge g++ gcc
