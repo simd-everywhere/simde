@@ -1046,7 +1046,9 @@ HEDLEY_DIAGNOSTIC_POP
 #    endif
 #    if defined(SIMDE_ARCH_POWER)
 #      define SIMDE_BUG_GCC_95227
-#      define SIMDE_BUG_GCC_95782
+#      if !HEDLEY_GCC_VERSION_CHECK(13,0,0)
+#        define SIMDE_BUG_GCC_95782
+#      endif
 #      if !HEDLEY_GCC_VERSION_CHECK(12,0,0)
 #        define SIMDE_BUG_VEC_CPSGN_REVERSED_ARGS
 #      endif
