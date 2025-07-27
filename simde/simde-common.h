@@ -1087,7 +1087,9 @@ HEDLEY_DIAGNOSTIC_POP
 #      define SIMDE_BUG_CLANG_48257  // https://github.com/llvm/llvm-project/issues/47601
 #      define SIMDE_BUG_CLANG_71362  // https://github.com/llvm/llvm-project/issues/71362
 #      define SIMDE_BUG_CLANG_71365  // https://github.com/llvm/llvm-project/issues/71365
-#      define SIMDE_BUG_CLANG_71751  // https://github.com/llvm/llvm-project/issues/71751
+#      if !SIMDE_DETECT_CLANG_VERSION_CHECK(19,0,0)
+#        define SIMDE_BUG_CLANG_71751
+#      endif
 #      if !SIMDE_DETECT_CLANG_VERSION_CHECK(15,0,0)
 #        define SIMDE_BUG_CLANG_45541
 #      endif
@@ -1107,8 +1109,8 @@ HEDLEY_DIAGNOSTIC_POP
 #      if !SIMDE_DETECT_CLANG_VERSION_CHECK(11,0,0)
 #        define SIMDE_BUG_CLANG_BAD_VGET_SET_LANE_TYPES
 #      endif
-#      if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && !defined(SIMDE_ARM_NEON_A32V8_NATIVE)
-#        define SIMDE_BUG_CLANG_71763  // https://github.com/llvm/llvm-project/issues/71763
+#      if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && !defined(SIMDE_ARM_NEON_A32V8_NATIVE) && !SIMDE_DETECT_CLANG_VERSION_CHECK(19,0,0)
+#        define SIMDE_BUG_CLANG_71763
 #      endif
 #    endif
 #    if defined(SIMDE_ARCH_POWER) && !SIMDE_DETECT_CLANG_VERSION_CHECK(12,0,0)

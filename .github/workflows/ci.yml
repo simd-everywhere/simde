@@ -755,6 +755,42 @@ jobs:
         - version: "18"
           distro: ubuntu-24.04-arm
           arch_flags: -Wno-unsafe-buffer-usage -Wno-switch-default -O2
+        - version: "19"
+          distro: ubuntu-24.04
+          arch_flags: -Wno-unsafe-buffer-usage -Wno-switch-default
+        - version: "19"
+          distro: ubuntu-24.04
+          arch_flags: -ffast-math -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-nan-infinity-disabled
+        - version: "19"
+          distro: ubuntu-24.04
+          arch_flags: -Wno-unsafe-buffer-usage -Wno-switch-default -O2
+        - version: "19"
+          distro: ubuntu-24.04-arm
+          arch_flags: -Wno-unsafe-buffer-usage -Wno-switch-default
+        - version: "19"
+          distro: ubuntu-24.04-arm
+          arch_flags: -ffast-math -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-nan-infinity-disabled
+        - version: "19"
+          distro: ubuntu-24.04-arm
+          arch_flags: -Wno-unsafe-buffer-usage -Wno-switch-default -O2
+        - version: "20"
+          distro: ubuntu-24.04
+          arch_flags: -Wno-unsafe-buffer-usage -Wno-switch-default
+        - version: "20"
+          distro: ubuntu-24.04
+          arch_flags: -ffast-math -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-nan-infinity-disabled
+        - version: "20"
+          distro: ubuntu-24.04
+          arch_flags: -Wno-unsafe-buffer-usage -Wno-switch-default -O2
+        - version: "20"
+          distro: ubuntu-24.04-arm
+          arch_flags: -Wno-unsafe-buffer-usage -Wno-switch-default
+        - version: "20"
+          distro: ubuntu-24.04-arm
+          arch_flags: -ffast-math -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-nan-infinity-disabled
+        - version: "20"
+          distro: ubuntu-24.04-arm
+          arch_flags: -Wno-unsafe-buffer-usage -Wno-switch-default -O2
     runs-on: ${{ matrix.distro }}
     env:
       CFLAGS: -march=native ${{ matrix.arch_flags }} -Wall -Weverything -Werror -fno-lax-vector-conversions
@@ -784,6 +820,7 @@ jobs:
         sudo add-apt-repository ppa:savoury1/llvm-defaults-16
     - name: Install APT Dependencies
       run: |
+        sudo add-apt-repository ppa:canonical-x/x-staging
         sudo add-apt-repository ppa:ubuntu-toolchain-r/ppa
         sudo apt-get update
         sudo apt-get -y --no-install-recommends install gcovr ninja-build pipx \
