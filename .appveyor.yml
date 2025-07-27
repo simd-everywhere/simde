@@ -2,9 +2,9 @@ environment:
   MESON_EXE_WRAPPER: "['C:\\Program Files\\OpenCppCoverage\\OpenCppCoverage.exe', '--export_type=cobertura', '--']"
   CCACHE_MAXSIZE: '500Mi'
   matrix:
-    # - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
-    #   VCVARSALL: C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvarsall.bat
-    #   PYTHON_DIR: C:\Python311-x64
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+      VCVARSALL: C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvarsall.bat
+      PYTHON_DIR: C:\Python311-x64
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
       VCVARSALL: C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvarsall.bat
       PYTHON_DIR: C:\Python311-x64
@@ -14,10 +14,10 @@ environment:
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
       VCVARSALL: C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat
       PYTHON_DIR: C:\Python38-x64
-    # - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
-    #   VCVARSALL: C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvarsall.bat
-    #   PYTHON_DIR: C:\Python311-x64
-    #   FLAGS: /arch:AVX
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+      VCVARSALL: C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvarsall.bat
+      PYTHON_DIR: C:\Python311-x64
+      FLAGS: /arch:AVX
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
       VCVARSALL: C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvarsall.bat
       PYTHON_DIR: C:\Python311-x64
@@ -30,10 +30,10 @@ environment:
       VCVARSALL: C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat
       PYTHON_DIR: C:\Python38-x64
       FLAGS: /arch:AVX
-    # - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
-    #   VCVARSALL: C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvarsall.bat
-    #   PYTHON_DIR: C:\Python311-x64
-    #   FLAGS: /arch:AVX2
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+      VCVARSALL: C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvarsall.bat
+      PYTHON_DIR: C:\Python311-x64
+      FLAGS: /arch:AVX2
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
       VCVARSALL: C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvarsall.bat
       PYTHON_DIR: C:\Python311-x64
@@ -46,10 +46,10 @@ environment:
       VCVARSALL: C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat
       PYTHON_DIR: C:\Python38-x64
       FLAGS: /arch:AVX2
-    # - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
-    #   VCVARSALL: C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvarsall.bat
-    #   PYTHON_DIR: C:\Python311-x64
-    #   FLAGS: /arch:AVX512
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+      VCVARSALL: C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvarsall.bat
+      PYTHON_DIR: C:\Python311-x64
+      FLAGS: /arch:AVX512
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
       VCVARSALL: C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvarsall.bat
       PYTHON_DIR: C:\Python311-x64
