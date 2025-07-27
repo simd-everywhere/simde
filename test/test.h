@@ -30,6 +30,8 @@ SIMDE_DIAGNOSTIC_DISABLE_RESERVED_ID_
 SIMDE_DIAGNOSTIC_DISABLE_C99_EXTENSIONS_
 SIMDE_DIAGNOSTIC_DISABLE_USED_BUT_MARKED_UNUSED_
 SIMDE_DIAGNOSTIC_DISABLE_NO_EMMS_INSTRUCTION_
+SIMDE_DIAGNOSTIC_DISABLE_PEDANTIC_ // due to use of fp16 suffixes
+
 #if defined(HEDLEY_MSVC_VERSION)
   __pragma(warning(disable:4730))  // mixing _m64 and floating point expressions may result in incorrect code
 #endif
