@@ -98,7 +98,10 @@ SIMDE_BEGIN_DECLS_
 #endif
 
 #if SIMDE_FLOAT16_API == SIMDE_FLOAT16_API_FLOAT16
+  HEDLEY_DIAGNOSTIC_PUSH
+  SIMDE_DIAGNOSTIC_DISABLE_PEDANTIC_ // due to the _Float16 below
   typedef _Float16 simde_float16;
+  HEDLEY_DIAGNOSTIC_POP
   #define SIMDE_FLOAT16_IS_SCALAR 1
   #if !defined(__cplusplus)
     #define SIMDE_FLOAT16_C(value) value##f16
