@@ -603,6 +603,8 @@ typedef SIMDE_POLY64_TYPE simde_poly64;
 #if defined(SIMDE_POLY128_TYPE)
 #  undef SIMDE_POLY128_TYPE
 #endif
+HEDLEY_DIAGNOSTIC_PUSH
+SIMDE_DIAGNOSTIC_DISABLE_PEDANTIC_ // due to the __int128 below
 #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARCH_ARM_CRYPTO)
 #  define SIMDE_POLY128_TYPE poly128_t
 #  define SIMDE_POLY128_C(value) value
@@ -613,7 +615,9 @@ typedef SIMDE_POLY64_TYPE simde_poly64;
 #  define SIMDE_POLY128_TYPE uint64_t
 #  define SIMDE_TARGET_NOT_SUPPORT_INT128_TYPE 1
 #endif
+
 typedef SIMDE_POLY128_TYPE simde_poly128;
+HEDLEY_DIAGNOSTIC_POP
 
 #if defined(__cplusplus)
   typedef bool simde_bool;
