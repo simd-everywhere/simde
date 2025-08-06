@@ -974,10 +974,10 @@ simde_mm_and_ps (simde__m128 a, simde__m128 b) {
       r_.wasm_v128 = wasm_v128_and(a_.wasm_v128, b_.wasm_v128);
     #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
       r_.lsx_i64 = __lsx_vand_v(a_.lsx_i64, b_.lsx_i64);
-    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-      r_.i32 = a_.i32 & b_.i32;
     #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
       r_.altivec_f32 = vec_and(a_.altivec_f32, b_.altivec_f32);
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+      r_.i32 = a_.i32 & b_.i32;
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {
@@ -3504,12 +3504,12 @@ simde_mm_mul_ps (simde__m128 a, simde__m128 b) {
       r_.neon_f32 = vmulq_f32(a_.neon_f32, b_.neon_f32);
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r_.wasm_v128 = wasm_f32x4_mul(a_.wasm_v128, b_.wasm_v128);
-    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
-      r_.f32 = a_.f32 * b_.f32;
     #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
       r_.altivec_f32 = vec_mul(a_.altivec_f32, b_.altivec_f32);
     #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
       r_.lsx_f32 = __lsx_vfmul_s(a_.lsx_f32, b_.lsx_f32);
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+      r_.f32 = a_.f32 * b_.f32;
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
