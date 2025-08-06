@@ -111,7 +111,7 @@ simde_vand_s32(simde_int32x2_t a, simde_int32x2_t b) {
 
     #if defined(SIMDE_X86_MMX_NATIVE)
       r_.m64 = _mm_and_si64(a_.m64, b_.m64);
-      #elif defined(SIMDE_RISCV_V_NATIVE)
+    #elif defined(SIMDE_RISCV_V_NATIVE)
       r_.sv64 = __riscv_vand_vv_i32m1(a_.sv64, b_.sv64, 2);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       r_.values = a_.values & b_.values;
