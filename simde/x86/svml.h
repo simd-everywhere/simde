@@ -2683,9 +2683,7 @@ simde_mm_div_epi8 (simde__m128i a, simde__m128i b) {
       a_ = simde__m128i_to_private(a),
       b_ = simde__m128i_to_private(b);
 
-    #if defined(SIMDE_WASM_SIMD128_NATIVE)
-      r_.wasm_v128 = wasm_i8x4_div(a_.wasm_v128, b_.wasm_v128);
-    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       r_.i8 = a_.i8 / b_.i8;
     #else
       SIMDE_VECTORIZE
@@ -2713,9 +2711,7 @@ simde_mm_div_epi16 (simde__m128i a, simde__m128i b) {
       a_ = simde__m128i_to_private(a),
       b_ = simde__m128i_to_private(b);
 
-    #if defined(SIMDE_WASM_SIMD128_NATIVE)
-      r_.wasm_v128 = wasm_i16x4_div(a_.wasm_v128, b_.wasm_v128);
-    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       r_.i16 = a_.i16 / b_.i16;
     #else
       SIMDE_VECTORIZE
@@ -2743,9 +2739,7 @@ simde_mm_div_epi32 (simde__m128i a, simde__m128i b) {
       a_ = simde__m128i_to_private(a),
       b_ = simde__m128i_to_private(b);
 
-    #if defined(SIMDE_WASM_SIMD128_NATIVE)
-      r_.wasm_v128 = wasm_i32x4_div(a_.wasm_v128, b_.wasm_v128);
-    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       r_.i32 = a_.i32 / b_.i32;
     #else
       SIMDE_VECTORIZE
@@ -2776,9 +2770,7 @@ simde_mm_div_epi64 (simde__m128i a, simde__m128i b) {
       a_ = simde__m128i_to_private(a),
       b_ = simde__m128i_to_private(b);
 
-    #if defined(SIMDE_WASM_SIMD128_NATIVE)
-      r_.wasm_v128 = wasm_i64x4_div(a_.wasm_v128, b_.wasm_v128);
-    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       r_.i64 = a_.i64 / b_.i64;
     #else
       SIMDE_VECTORIZE
@@ -2806,9 +2798,7 @@ simde_mm_div_epu8 (simde__m128i a, simde__m128i b) {
       a_ = simde__m128i_to_private(a),
       b_ = simde__m128i_to_private(b);
 
-    #if defined(SIMDE_WASM_SIMD128_NATIVE)
-      r_.wasm_v128 = wasm_u8x16_div(a_.wasm_v128, b_.wasm_v128);
-    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       r_.u8 = a_.u8 / b_.u8;
     #else
       SIMDE_VECTORIZE
@@ -2836,9 +2826,7 @@ simde_mm_div_epu16 (simde__m128i a, simde__m128i b) {
       a_ = simde__m128i_to_private(a),
       b_ = simde__m128i_to_private(b);
 
-    #if defined(SIMDE_WASM_SIMD128_NATIVE)
-      r_.wasm_v128 = wasm_u16x16_div(a_.wasm_v128, b_.wasm_v128);
-    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       r_.u16 = a_.u16 / b_.u16;
     #else
       SIMDE_VECTORIZE
@@ -2866,9 +2854,7 @@ simde_mm_div_epu32 (simde__m128i a, simde__m128i b) {
       a_ = simde__m128i_to_private(a),
       b_ = simde__m128i_to_private(b);
 
-    #if defined(SIMDE_WASM_SIMD128_NATIVE)
-      r_.wasm_v128 = wasm_u32x16_div(a_.wasm_v128, b_.wasm_v128);
-    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       r_.u32 = a_.u32 / b_.u32;
     #else
       SIMDE_VECTORIZE
@@ -2899,9 +2885,7 @@ simde_mm_div_epu64 (simde__m128i a, simde__m128i b) {
       a_ = simde__m128i_to_private(a),
       b_ = simde__m128i_to_private(b);
 
-    #if defined(SIMDE_WASM_SIMD128_NATIVE)
-      r_.wasm_v128 = wasm_u64x16_div(a_.wasm_v128, b_.wasm_v128);
-    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+    #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       r_.u64 = a_.u64 / b_.u64;
     #else
       SIMDE_VECTORIZE
