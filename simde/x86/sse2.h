@@ -574,7 +574,7 @@ simde_x_mm_select_pd(simde__m128d a, simde__m128d b, simde__m128d mask) {
     #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       r_.neon_i64 = vbslq_s64(mask_.neon_u64, b_.neon_i64, a_.neon_i64);
     #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
-      r_.lsx_i64 = __lsx_vbitsel_v(a_.lsx_i64, b_.lsx_i64, mask_.lsx_u64);
+      r_.lsx_i64 = __lsx_vbitsel_v(a_.lsx_i64, b_.lsx_i64, (__m128i)mask_.lsx_u64);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       r_.i64 = a_.i64 ^ ((a_.i64 ^ b_.i64) & mask_.i64);
     #else
