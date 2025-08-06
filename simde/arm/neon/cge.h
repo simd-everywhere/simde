@@ -661,10 +661,6 @@ simde_vcge_s32(simde_int32x2_t a, simde_int32x2_t b) {
 
     #if defined(SIMDE_X86_MMX_NATIVE)
       r_.m64 = _mm_or_si64(_mm_cmpgt_pi32(a_.m64, b_.m64), _mm_cmpeq_pi32(a_.m64, b_.m64));
-    #elif defined(SIMDE_RISCV_V_NATIVE)
-      vbool32_t result = __riscv_vmsge_vv_i32m1_b32(a_.sv64, b_.sv64, 2);
-      r_.sv64 = __riscv_vmv_v_x_i32m1(0, 2);
-      r_.sv64 = __riscv_vmerge_vxm_i32m1(r_.sv64, -1, result, 2);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && !defined(SIMDE_BUG_GCC_100762)
       r_.values = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), a_.values >= b_.values);
     #else
