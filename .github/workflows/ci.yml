@@ -26,7 +26,7 @@ jobs:
         sudo apt-get install -y --no-install-recommends ninja-build ninja-build pipx
         pipx install meson==0.55.1
     - run: |
-        meson setup build --prefix $PWD/install -Dtests=false
+        meson setup build --prefix "$PWD/install" -Dtests=false
         meson install -C build --quiet
         diff <(find simde/ -type f -name "*.h")  <(cd install/include/; find simde -type f -name "*.h" )
 
@@ -65,16 +65,34 @@ jobs:
       run: for f in simde/mips/msa/*.h; do grep -q "include \"msa/$(basename "$f")\"" simde/mips/msa.h || (echo "Missing $f" && exit 1); done
     # Make sure we can find the expected header guards.  It's easy to miss this when doing C&P
     - name: Header guards
-      run: for file in $(find simde/*/ -name '*.h'); do grep -q "$(echo "$file" | tr '[:lower:]' '[:upper:]' | tr '[:punct:]' '_')" "$file" || (echo "Missing or incorrect header guard in $file" && exit 1); done
+      run: |
+        while IFS= read -r -d '' file
+        do
+          grep -q "$(echo "$file" | tr '[:lower:]' '[:upper:]' | tr '[:punct:]' '_')" "$file" || (echo "Missing or incorrect header guard in $file" && exit 1)
+        done < <(find simde/*/ -name '*.h' -print0)
     # There should be an empty line at the end of every file
     - name: Newline at EOF
-      run: for file in $(find simde -name '*.h'); do if [ -n "$(tail -c 1 "$file")" ]; then echo "No newline at end of $file" && exit 1; fi; done
+      run: |
+        while IFS= read -r -d '' file
+        do
+          if [ -n "$(tail -c 1 "$file")" ]
+          then echo "No newline at end of $file" && exit 1
+          fi
+        done < <(find simde -name '*.h' -print0)
     # Don't #ifndef ; use !defined(...) instead.  ifndef leads to annoying inconsistencies
     - name: ifndef
-      run: for file in $(find simde -name '*.h'); do grep -qP '^ *# *ifndef ' "${file}" && exit 1 || exit 0; done
+      run: |
+        while IFS= read -r -d '' file
+        do
+          grep -qP '^ *# *ifndef ' "${file}" && exit 1 || exit 0
+        done < <(find simde -name '*.h' -print0)
     # List of headers we want Meson to install
     - name: Meson install headers
-      run: for file in $(find simde -name '*.h'); do grep -qF "$(basename "${file}" .h)" meson.build || (echo "${file} missing from top-level meson.build" && exit 1); done
+      run: |
+        while IFS= read -r -d '' file
+        do
+          grep -qF "$(basename "${file}" .h)" meson.build || (echo "${file} missing from top-level meson.build" && exit 1)
+        done < <(find simde -name '*.h' -print0)
     # Make sure we don't accidentally use `vector ...` instead of SIMDE_POWER_ALTIVEC_VECTOR(...)
     - name: AltiVec raw vector keyword
       run: find simde/ \( -name '*.c' -o -name '*.h' \) -exec grep -nP 'vector( +)((bool|signed|unsigned) +)?(double|float|long long|long|int|short|char)' {} + && exit 1 || exit 0
@@ -134,12 +152,14 @@ jobs:
       run: meson setup build || (cat build/meson-logs/meson-log.txt ; false)
     - name: Test run native?
       run: |
-        test/check-flags.sh query && echo Tests with $CFLAGS will be run natively
-        test/check-flags.sh query || echo Tests with $CFLAGS will be run using SDE
+        test/check-flags.sh query && echo Tests with "$CFLAGS" will be run natively
+        test/check-flags.sh query || echo Tests with "$CFLAGS" will be run using SDE
     - name: Build
       run: ninja -C build -v
     - name: Test
-      run: meson test -C build --print-errorlogs --wrapper "${GITHUB_WORKSPACE}/test/check-flags.sh sde" $(meson test -C build --list | grep -v emul)
+      run: |
+        # shellcheck disable=SC2046
+        meson test -C build --print-errorlogs --wrapper "${GITHUB_WORKSPACE}/test/check-flags.sh sde" $(meson test -C build --list | grep -v emul)
 
   x86-xop:
     runs-on: ubuntu-22.04
@@ -288,7 +308,9 @@ jobs:
     - name: Build
       run: ninja -C build -v
     - name: Test
-      run: meson test -C build --print-errorlogs $(meson test -C build --list | grep -v emul)
+      run: |
+        # shellcheck disable=SC2046
+        meson test -C build --print-errorlogs $(meson test -C build --list | grep -v emul)
 
   gcc:
     strategy:
@@ -372,7 +394,9 @@ jobs:
     - name: Build
       run: meson compile -C build --verbose
     - name: Test
-      run: meson test -C build --print-errorlogs $(meson test -C build --list | grep -v emul)
+      run: |
+        # shellcheck disable=SC2046
+        meson test -C build --print-errorlogs $(meson test -C build --list | grep -v emul)
 
   gcc-qemu:
     strategy:
@@ -475,7 +499,9 @@ jobs:
     - name: Build
       run: ninja -C build -v
     - name: Test
-      run: meson test -C build --print-errorlogs --print-errorlogs $(meson test -C build --list | grep -v emul)
+      run: |
+        # shellcheck disable=SC2046
+        meson test -C build --print-errorlogs --print-errorlogs $(meson test -C build --list | grep -v emul)
 
   clang17-qemu-rvv:
     strategy:
@@ -530,7 +556,9 @@ jobs:
     - name: Build
       run: ninja -C build -v
     - name: Test
-      run: meson test -C build --print-errorlogs --print-errorlogs $(meson test -C build --list | grep -v emul)
+      run: |
+        # shellcheck disable=SC2046
+        meson test -C build --print-errorlogs --print-errorlogs $(meson test -C build --list | grep -v emul)
 
   clang18-qemu-rvv:
     strategy:
@@ -582,7 +610,9 @@ jobs:
     - name: Build
       run: ninja -C build -v
     - name: Test
-      run: meson test -C build --print-errorlogs --print-errorlogs $(meson test -C build --list | grep -v emul)
+      run: |
+        # shellcheck disable=SC2046
+        meson test -C build --print-errorlogs --print-errorlogs $(meson test -C build --list | grep -v emul)
 
   clang-qemu:
     strategy:
@@ -670,7 +700,9 @@ jobs:
     - name: Build
       run: ninja -C build -v
     - name: Test
-      run: meson test -C build --print-errorlogs --print-errorlogs $(meson test -C build --list | grep -v emul)
+      run: |
+        # shellcheck disable=SC2046
+        meson test -C build --print-errorlogs --print-errorlogs $(meson test -C build --list | grep -v emul)
 
   clang:
     strategy:
@@ -832,8 +864,8 @@ jobs:
           clang-${{ matrix.version }}
         pipx install meson==0.55.1
         sudo rm /usr/bin/gcc /usr/bin/g++ /usr/bin/cc /usr/bin/c++
-        sudo ln -s $(command -v clang-${{ matrix.version }}) /usr/bin/cc
-        sudo ln -s $(command -v clang-${{ matrix.version }}) /usr/bin/c++
+        sudo ln -s "$(command -v clang-${{ matrix.version }})" /usr/bin/cc
+        sudo ln -s "$(command -v clang-${{ matrix.version }})" /usr/bin/c++
     - name: add ccache to the build path
       run: |
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
@@ -842,7 +874,9 @@ jobs:
     - name: Build
       run: meson compile -C build --verbose
     - name: Test
-      run: meson test -C build --print-errorlogs $(meson test -C build --list | grep -v emul)
+      run: |
+        # shellcheck disable=SC2046
+        meson test -C build --print-errorlogs $(meson test -C build --list | grep -v emul)
 
   macos:
     strategy:
@@ -919,7 +953,9 @@ jobs:
     - name: Build
       run: ninja -C build -v
     - name: Test
-      run: meson test -C build --print-errorlogs $(meson test -C build --list | grep -v emul)
+      run: |
+        # shellcheck disable=SC2046
+        meson test -C build --print-errorlogs $(meson test -C build --list | grep -v emul)
 
   icc:
     runs-on: ubuntu-24.04
@@ -945,6 +981,7 @@ jobs:
         sudo apt-get install -y --no-install-recommends intel-oneapi-compiler-dpcpp-cpp
         mkdir -p ~/.local/bin/ || true
         for exe in icx icpx; do
+          # shellcheck disable=SC2016
           printf '#!/bin/bash\nARGS="$@"\nsource /opt/intel/oneapi/compiler/latest/env/vars.sh >/dev/null\n%s ${ARGS}\n' "${exe}" > ~/.local/bin/"${exe}"
           chmod 0755 ~/.local/bin/"${exe}";
         done
@@ -953,4 +990,6 @@ jobs:
     - name: Build
       run: ninja -C build -v
     - name: Test
-      run: meson test -C build --print-errorlogs $(meson test -C build --list | grep -v emul)
+      run: |
+        # shellcheck disable=SC2046
+        meson test -C build --print-errorlogs $(meson test -C build --list | grep -v emul)
