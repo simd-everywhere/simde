@@ -435,6 +435,11 @@ jobs:
           arch_gnu: powerpc64le
           arch_deb: ppc64el
           distro: ubuntu-24.04
+        - version: 14
+          cross: loongarch64
+          arch_gnu: loongarch64
+          arch_deb: loong64
+          distro: ubuntu-24.04
         # - version: 14
         #   cross: mips64el
         #   arch_gnu: mips64el
@@ -949,30 +954,3 @@ jobs:
       run: ninja -C build -v
     - name: Test
       run: meson test -C build --print-errorlogs $(meson test -C build --list | grep -v emul)
-
-  linux-gcc-loongarch64:
-    runs-on: ubuntu-24.04
-    steps:
-    - uses: actions/checkout@v4
-    - name: CPU Information
-      run: cat /proc/cpuinfo
-    - name: Install APT Dependencies
-      run: |
-        sudo add-apt-repository ppa:ubuntu-toolchain-r/ppa && \
-        sudo apt-get update && \
-        sudo apt-get install -y --no-install-recommends \
-          ninja-build meson qemu-user-static binfmt-support \
-          libc6-loong64-cross libstdc++-14-dev-loong64-cross \
-          gcc-14-loongarch64-linux-gnu g++-14-loongarch64-linux-gnu
-    - name: ccache
-      uses: hendrikmuhs/ccache-action@v1.2
-      with:
-        key: ${{ github.job }}-gcc-14
-        evict-old-files: job
-        verbose: 2
-    - name: Configure
-      run: meson setup build --cross-file=docker/cross-files/loongarch64-gcc-14-ccache.cross || (cat build/meson-logs/meson-log.txt ; false)
-    - name: Build
-      run: meson compile -C build -v
-    - name: Test
-      run: meson test -C build --print-errorlogs
