@@ -3590,8 +3590,6 @@ simde_mm_div_pd (simde__m128d a, simde__m128d b) {
       r_.neon_f64 = vdivq_f64(a_.neon_f64, b_.neon_f64);
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r_.wasm_v128 =  wasm_f64x2_div(a_.wasm_v128, b_.wasm_v128);
-    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
-      r_.lsx_f64 = __lsx_vfdiv_d(b_.lsx_f64, a_.lsx_f64);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       r_.f64 = a_.f64 / b_.f64;
     #else
