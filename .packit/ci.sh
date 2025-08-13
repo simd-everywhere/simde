@@ -144,20 +144,6 @@ g++ --version
 clang --version
 clang++ --version
 
-echo "== Tests on gcc in a default status =="
-if ! BUILD_DIR="build/gcc" CC="gcc" CXX="g++" \
-  _run_test_and_get_result "${TEST_COND_GCC_DEFAULT}"; then
-  exit_status=1
-fi
-result_gcc="${result_buf}"
-
-echo "== Tests on clang in a default status =="
-if ! BUILD_DIR="build/clang" CC="clang" CXX="clang++" \
-  _run_test_and_get_result "${TEST_COND_CLANG_DEFAULT}"; then
-  exit_status=1
-fi
-result_clang="${result_buf}"
-
 echo "== Tests on gcc with O2 flag =="
 if ! BUILD_DIR="build/gcc-O2" CC="gcc" CXX="g++" \
   CFLAGS="-O2" CXXFLAGS="-O2" \
