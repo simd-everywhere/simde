@@ -187,7 +187,7 @@ jobs:
           when: always
       - run: /root/.local/bin/meson test -C build --num-processes 5 --print-errorlogs
 
-  i686-gcc11-O2:
+  i686-gcc12-O2:
     resource_class: large
     docker:
       - image: debian:stable-slim
@@ -195,7 +195,7 @@ jobs:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
     steps:
-      - run: apt-get update && apt-get install -y git ssh ninja-build pipx python3-setuptools python3-wheel gcovr {gcc,g++}-11-i686-linux-gnu libc6-i386-cross qemu-user-static ccache build-essential
+      - run: apt-get update && apt-get install -y git ssh ninja-build pipx python3-setuptools python3-wheel gcovr {gcc,g++}-12-i686-linux-gnu libc6-i386-cross qemu-user-static ccache build-essential
       - checkout
       - restore_cache:
          keys:
@@ -215,7 +215,7 @@ jobs:
             ccache -z
       - run: |
           export PATH=/usr/lib/ccache:${PATH}
-          /root/.local/bin/meson setup build --cross-file docker/cross-files/i686-gcc-11-qemu-ccache.cross
+          /root/.local/bin/meson setup build --cross-file docker/cross-files/i686-gcc-12-qemu-ccache.cross
           /root/.local/bin/meson compile -C build --verbose -j 5
       - run: /usr/bin/ccache -s
       - save_cache:
@@ -254,7 +254,7 @@ workflows:
       #       branches:
       #         ignore:
       #         - /^ci/(?!circleci).*$/
-      - i686-gcc11-O2:
+      - i686-gcc12-O2:
           filters:
             branches:
               ignore:
