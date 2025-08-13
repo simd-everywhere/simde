@@ -18,7 +18,7 @@ jobs:
   checkinstall:
     runs-on: ubuntu-22.04
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
       with:
         fetch-depth: 2
     - name: Install APT Dependencies
@@ -33,7 +33,7 @@ jobs:
   formatting:
     runs-on: ubuntu-24.04
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
       with:
         fetch-depth: 2
     - name: Install pcre2grep
@@ -126,7 +126,7 @@ jobs:
       CXXFLAGS: -Wall -Wextra -Werror ${{ matrix.isax }}
       INTEL_TARGET: ${{ matrix.target }}
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
       with:
         submodules: recursive
     - name: CPU Information
@@ -169,7 +169,7 @@ jobs:
       CFLAGS: -Wall -Wextra -Werror -march=bdver2
       CXXFLAGS: -Wall -Wextra -Werror -march=bdver2
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
       with:
         submodules: recursive
     - name: CPU Information
@@ -210,7 +210,7 @@ jobs:
           - "32-relaxed"
           - "64-relaxed"
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
       with:
         submodules: recursive
     - run: sudo apt-get update
@@ -252,7 +252,7 @@ jobs:
       CFLAGS: -DSIMDE_ENABLE_NATIVE_ALIASES -DSIMDE_NATIVE_ALIASES_TESTING -Wall -Wextra -Werror -pedantic
       CXXFLAGS: -DSIMDE_ENABLE_NATIVE_ALIASES -DSIMDE_NATIVE_ALIASES_TESTING -Wall -Wextra -Werror -pedantic
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
       with:
         submodules: recursive
     - id: cpu
@@ -284,7 +284,7 @@ jobs:
       CFLAGS: -march=native -Wall -Wextra -Werror
       CXXFLAGS: -march=native -Wall -Wextra -Werror
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
       with:
         submodules: recursive
     - id: cpu
@@ -359,7 +359,7 @@ jobs:
       CFLAGS: ${{ matrix.arch_flags }} -march=native -Wall -Wextra -Werror
       CXXFLAGS: ${{ matrix.arch_flags }} -march=native -Wall -Wextra -Werror
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
       with:
         submodules: recursive
     - id: cpu
@@ -472,7 +472,7 @@ jobs:
         #   distro: ubuntu-24.04
     runs-on: ${{ matrix.distro }}
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
       with:
         submodules: recursive
     - name: CPU Information
@@ -525,7 +525,7 @@ jobs:
           distro: ubuntu-24.04
     runs-on: ${{ matrix.distro }}
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
       with:
         submodules: recursive
     - name: CPU Information
@@ -582,7 +582,7 @@ jobs:
           distro: ubuntu-24.04
     runs-on: ${{ matrix.distro }}
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
       with:
         submodules: recursive
     - name: CPU Information
@@ -670,7 +670,7 @@ jobs:
           distro: ubuntu-24.04
     runs-on: ${{ matrix.distro }}
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
       with:
         submodules: recursive
     - name: CPU Information
@@ -833,7 +833,7 @@ jobs:
       CFLAGS: -march=native ${{ matrix.arch_flags }} -Wall -Weverything -Werror -fno-lax-vector-conversions
       CXXFLAGS: -march=native ${{ matrix.arch_flags }} -Wall -Weverything -Werror -fno-lax-vector-conversions
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
       with:
         submodules: recursive
     - id: cpu
@@ -929,7 +929,7 @@ jobs:
       CFLAGS: ${{ matrix.arch_flags }} -Wall -Weverything -Werror -Wno-complex-component-init
       CXXFLAGS: ${{ matrix.arch_flags }} -Wall -Weverything -Werror -Wno-complex-component-init
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
       with:
         submodules: recursive
     # - name: System Information
@@ -965,7 +965,7 @@ jobs:
       CFLAGS: -Wall -Werror -march=native -fp-model precise
       CXXFLAGS: -Wall -Werror -march=native -fp-model precise
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
     - name: CPU Information
       run: cat /proc/cpuinfo
     - name: Install APT Dependencies
