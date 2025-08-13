@@ -434,6 +434,10 @@ simde_vld1_p64_x2(simde_poly64_t const ptr[HEDLEY_ARRAY_PARAM(2)]) {
       (!defined(__clang__) || (SIMDE_DETECT_CLANG_VERSION_CHECK(9,0,0) && defined(SIMDE_ARM_NEON_A64V8_NATIVE)))
     return vld1_p64_x2(ptr);
   #else
+    #if defined(SIMDE_DIAGNOSTIC_DISABLE_UNINITIALIZED_) && HEDLEY_GCC_VERSION_CHECK(12,0,0)
+      HEDLEY_DIAGNOSTIC_PUSH
+      SIMDE_DIAGNOSTIC_DISABLE_UNINITIALIZED_
+    #endif
     simde_poly64x1_private a_[2];
     #if defined(SIMDE_RISCV_V_NATIVE)
       a_[0].sv64 = __riscv_vle64_v_u64m1(ptr , 1);
@@ -442,6 +446,9 @@ simde_vld1_p64_x2(simde_poly64_t const ptr[HEDLEY_ARRAY_PARAM(2)]) {
       for (size_t i = 0; i < 2; i++) {
         a_[i].values[0] = ptr[i];
       }
+    #endif
+    #if defined(SIMDE_DIAGNOSTIC_DISABLE_UNINITIALIZED_) && HEDLEY_GCC_VERSION_CHECK(12,0,0)
+      HEDLEY_DIAGNOSTIC_POP
     #endif
     simde_poly64x1x2_t s_ = { { simde_poly64x1_from_private(a_[0]),
                                 simde_poly64x1_from_private(a_[1]) } };
