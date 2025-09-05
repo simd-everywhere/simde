@@ -7292,55 +7292,47 @@ test_simde_mm_sra_epi16(SIMDE_MUNIT_TEST_ARGS) {
     simde__m128i a;
     simde__m128i count;
     simde__m128i r;
-  } test_vec[8] = {
+  } test_vec[] = {
     { simde_mm_set_epi16(INT16_C( 28258), INT16_C(  1159), INT16_C( 20634), INT16_C(-30158),
                          INT16_C( 10049), INT16_C(-31721), INT16_C(-26691), INT16_C(-28181)),
-      simde_mm_set_epi16(INT16_C(    11), INT16_C(     6), INT16_C(    10), INT16_C(     8),
-                         INT16_C(    15), INT16_C(     3), INT16_C(     8), INT16_C(     1)),
+      simde_mm_set_epi64x(INT64_C(1), INT64_C(0)),
+      simde_mm_set_epi16(INT16_C( 28258), INT16_C(  1159), INT16_C( 20634), INT16_C(-30158),
+                         INT16_C( 10049), INT16_C(-31721), INT16_C(-26691), INT16_C(-28181)) },
+    { simde_mm_set_epi16(INT16_C( 28258), INT16_C(  1159), INT16_C( 20634), INT16_C(-30158),
+                         INT16_C( 10049), INT16_C(-31721), INT16_C(-26691), INT16_C(-28181)),
+      simde_mm_set_epi64x(INT64_C(1), INT64_C(1)),
+      simde_mm_set_epi16(INT16_C( 14129), INT16_C(   579), INT16_C( 10317), INT16_C(-15079),
+                         INT16_C(  5024), INT16_C(-15861), INT16_C(-13346), INT16_C(-14091)) },
+    { simde_mm_set_epi16(INT16_C( 28258), INT16_C(  1159), INT16_C( 20634), INT16_C(-30158),
+                         INT16_C( 10049), INT16_C(-31721), INT16_C(-26691), INT16_C(-28181)),
+      simde_mm_set_epi64x(INT64_C(1), INT64_C(14)),
+      simde_mm_set_epi16(INT16_C(     1), INT16_C(     0), INT16_C(     1), INT16_C(    -2),
+                         INT16_C(     0), INT16_C(    -2), INT16_C(    -2), INT16_C(    -2)) },
+    { simde_mm_set_epi16(INT16_C( 28258), INT16_C(  1159), INT16_C( 20634), INT16_C(-30158),
+                         INT16_C( 10049), INT16_C(-31721), INT16_C(-26691), INT16_C(-28181)),
+      simde_mm_set_epi64x(INT64_C(1), INT64_C(15)),
       simde_mm_set_epi16(INT16_C(     0), INT16_C(     0), INT16_C(     0), INT16_C(    -1),
                          INT16_C(     0), INT16_C(    -1), INT16_C(    -1), INT16_C(    -1)) },
-    { simde_mm_set_epi16(INT16_C(-25682), INT16_C(  7964), INT16_C(  1259), INT16_C( 18017),
-                         INT16_C( 10765), INT16_C(-10649), INT16_C( -9400), INT16_C( 12110)),
-      simde_mm_set_epi16(INT16_C(     3), INT16_C(     8), INT16_C(     3), INT16_C(     2),
-                         INT16_C(    10), INT16_C(     5), INT16_C(     2), INT16_C(     2)),
-      simde_mm_set_epi16(INT16_C(    -1), INT16_C(     0), INT16_C(     0), INT16_C(     0),
-                         INT16_C(     0), INT16_C(    -1), INT16_C(    -1), INT16_C(     0)) },
-    { simde_mm_set_epi16(INT16_C(-24685), INT16_C( 14370), INT16_C( 13079), INT16_C( -6409),
-                         INT16_C(-18776), INT16_C( 20941), INT16_C( 22692), INT16_C(   312)),
-      simde_mm_set_epi16(INT16_C(    13), INT16_C(    13), INT16_C(     0), INT16_C(     7),
-                         INT16_C(     4), INT16_C(    10), INT16_C(    15), INT16_C(    11)),
-      simde_mm_set_epi16(INT16_C(    -1), INT16_C(     0), INT16_C(     0), INT16_C(    -1),
-                         INT16_C(    -1), INT16_C(     0), INT16_C(     0), INT16_C(     0)) },
-    { simde_mm_set_epi16(INT16_C( 13442), INT16_C(-32489), INT16_C(-21378), INT16_C( 10156),
-                         INT16_C( 15393), INT16_C( 20131), INT16_C( 15138), INT16_C(-12589)),
-      simde_mm_set_epi16(INT16_C(     1), INT16_C(     3), INT16_C(     1), INT16_C(     8),
-                         INT16_C(    12), INT16_C(     3), INT16_C(     4), INT16_C(     2)),
-      simde_mm_set_epi16(INT16_C(     0), INT16_C(    -1), INT16_C(    -1), INT16_C(     0),
-                         INT16_C(     0), INT16_C(     0), INT16_C(     0), INT16_C(    -1)) },
-    { simde_mm_set_epi16(INT16_C( -9561), INT16_C( 25554), INT16_C( -5305), INT16_C( -7173),
-                         INT16_C(-10064), INT16_C( 31075), INT16_C( 30218), INT16_C(-18929)),
-      simde_mm_set_epi16(INT16_C(     5), INT16_C(    10), INT16_C(     8), INT16_C(     1),
-                         INT16_C(    12), INT16_C(     3), INT16_C(    10), INT16_C(    10)),
-      simde_mm_set_epi16(INT16_C(    -1), INT16_C(     0), INT16_C(    -1), INT16_C(    -1),
-                         INT16_C(    -1), INT16_C(     0), INT16_C(     0), INT16_C(    -1)) },
-    { simde_mm_set_epi16(INT16_C( 14091), INT16_C( 24202), INT16_C( -8543), INT16_C( -7482),
-                         INT16_C(-26143), INT16_C( 20277), INT16_C(-27984), INT16_C(-32658)),
-      simde_mm_set_epi16(INT16_C(     5), INT16_C(     7), INT16_C(     6), INT16_C(     6),
-                         INT16_C(    10), INT16_C(     3), INT16_C(     7), INT16_C(    11)),
-      simde_mm_set_epi16(INT16_C(     0), INT16_C(     0), INT16_C(    -1), INT16_C(    -1),
-                         INT16_C(    -1), INT16_C(     0), INT16_C(    -1), INT16_C(    -1)) },
-    { simde_mm_set_epi16(INT16_C(-19726), INT16_C( 12311), INT16_C( 16279), INT16_C( -6277),
-                         INT16_C( 19874), INT16_C(-27089), INT16_C( 14524), INT16_C(-14305)),
-      simde_mm_set_epi16(INT16_C(     7), INT16_C(     7), INT16_C(     3), INT16_C(     1),
-                         INT16_C(    12), INT16_C(     1), INT16_C(    10), INT16_C(     9)),
-      simde_mm_set_epi16(INT16_C(    -1), INT16_C(     0), INT16_C(     0), INT16_C(    -1),
-                         INT16_C(     0), INT16_C(    -1), INT16_C(     0), INT16_C(    -1)) },
-    { simde_mm_set_epi16(INT16_C( 19801), INT16_C(-12786), INT16_C( 31632), INT16_C( 19030),
-                         INT16_C(-19420), INT16_C(-12406), INT16_C( 12426), INT16_C( 27612)),
-      simde_mm_set_epi16(INT16_C(     2), INT16_C(     0), INT16_C(    10), INT16_C(     3),
-                         INT16_C(     9), INT16_C(     0), INT16_C(     1), INT16_C(     8)),
-      simde_mm_set_epi16(INT16_C(     0), INT16_C(    -1), INT16_C(     0), INT16_C(     0),
-                         INT16_C(    -1), INT16_C(    -1), INT16_C(     0), INT16_C(     0)) }
+    { simde_mm_set_epi16(INT16_C( 28258), INT16_C(  1159), INT16_C( 20634), INT16_C(-30158),
+                         INT16_C( 10049), INT16_C(-31721), INT16_C(-26691), INT16_C(-28181)),
+      simde_mm_set_epi64x(INT64_C(1), INT64_C(16)),
+      simde_mm_set_epi16(INT16_C(     0), INT16_C(     0), INT16_C(     0), INT16_C(    -1),
+                         INT16_C(     0), INT16_C(    -1), INT16_C(    -1), INT16_C(    -1)) },
+    { simde_mm_set_epi16(INT16_C( 28258), INT16_C(  1159), INT16_C( 20634), INT16_C(-30158),
+                         INT16_C( 10049), INT16_C(-31721), INT16_C(-26691), INT16_C(-28181)),
+      simde_mm_set_epi64x(INT64_C(1), INT64_C(0x7000000000000001)),
+      simde_mm_set_epi16(INT16_C(     0), INT16_C(     0), INT16_C(     0), INT16_C(    -1),
+                         INT16_C(     0), INT16_C(    -1), INT16_C(    -1), INT16_C(    -1)) },
+    { simde_mm_set_epi16(INT16_C( 28258), INT16_C(  1159), INT16_C( 20634), INT16_C(-30158),
+                         INT16_C( 10049), INT16_C(-31721), INT16_C(-26691), INT16_C(-28181)),
+      simde_mm_set_epi64x(INT64_C(1), -INT64_C(1)),
+      simde_mm_set_epi16(INT16_C(     0), INT16_C(     0), INT16_C(     0), INT16_C(    -1),
+                         INT16_C(     0), INT16_C(    -1), INT16_C(    -1), INT16_C(    -1)) },
+    { simde_mm_set_epi16(INT16_C( 28258), INT16_C(  1159), INT16_C( 20634), INT16_C(-30158),
+                         INT16_C( 10049), INT16_C(-31721), INT16_C(-26691), INT16_C(-28181)),
+      simde_mm_set_epi64x(INT64_C(1), -INT64_C(4294967296)),
+      simde_mm_set_epi16(INT16_C(     0), INT16_C(     0), INT16_C(     0), INT16_C(    -1),
+                         INT16_C(     0), INT16_C(    -1), INT16_C(    -1), INT16_C(    -1)) }
   };
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
@@ -7429,7 +7421,7 @@ test_simde_mm_sll_epi32(SIMDE_MUNIT_TEST_ARGS) {
     simde__m128i a;
     simde__m128i count;
     simde__m128i r;
-  } test_vec[50] = {
+  } test_vec[] = {
     { simde_mm_set_epi32(INT32_C( 1847585989), INT32_C( -535718080), INT32_C(-1279093253), INT32_C(  656800013)),
       simde_x_mm_set_epu64x(UINT64_C( 2450913859380011969), UINT64_C(18446744073709551615)),
       simde_mm_set_epi32(INT32_C(          0), INT32_C(          0), INT32_C(          0), INT32_C(          0)) },
@@ -7476,7 +7468,7 @@ test_simde_mm_sll_epi64(SIMDE_MUNIT_TEST_ARGS) {
     simde__m128i a;
     simde__m128i count;
     simde__m128i r;
-  } test_vec[8] = {
+  } test_vec[] = {
     { simde_mm_set_epi64x(INT64_C( 8055788268748421105), INT64_C(-9066834056558614160)),
       simde_mm_set_epi64x(INT64_C(-5262793264663215472), INT64_C(16)),
       simde_mm_set_epi64x(INT64_C(-1675408870841712640), INT64_C( 2483371706739064832)) },
@@ -7500,7 +7492,19 @@ test_simde_mm_sll_epi64(SIMDE_MUNIT_TEST_ARGS) {
       simde_mm_set_epi64x(INT64_C(-3949045366557351936), INT64_C( 1867797720205082624)) },
     { simde_mm_set_epi64x(INT64_C( 7626804351806608498), INT64_C(-4244380112569402483)),
       simde_mm_set_epi64x(INT64_C( 1577848631857250403), INT64_C( 4)),
-      simde_mm_set_epi64x(INT64_C(-7098338887061125344), INT64_C( 5876894493727766736)) }
+      simde_mm_set_epi64x(INT64_C(-7098338887061125344), INT64_C( 5876894493727766736)) },
+    { simde_mm_set_epi64x(INT64_C(1), -INT64_C(1)),
+      simde_mm_set_epi64x(INT64_C(1),  INT64_C(63)),
+      simde_x_mm_set_epu64x(UINT64_C(0x8000000000000000), UINT64_C(0x8000000000000000)) },
+    { simde_mm_set_epi64x(INT64_C(1), -INT64_C(1)),
+      simde_mm_set_epi64x(INT64_C(1),  INT64_C(64)),
+      simde_mm_set_epi64x(INT64_C(0), INT64_C(0)) },
+    { simde_mm_set_epi64x(INT64_C(1), -INT64_C(1)),
+      simde_mm_set_epi64x(INT64_C(1), -INT64_C(1)),
+      simde_mm_set_epi64x(INT64_C(0), INT64_C(0)) },
+    { simde_mm_set_epi64x(INT64_C(1), -INT64_C(1)),
+      simde_mm_set_epi64x(INT64_C(1), -INT64_C(4294967296)),
+      simde_mm_set_epi64x(INT64_C(0), INT64_C(0)) },
   };
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
@@ -7625,6 +7629,12 @@ test_simde_mm_srl_epi16(SIMDE_MUNIT_TEST_ARGS) {
     { {  INT16_C( 24935),  INT16_C( 18737), -INT16_C( 10633), -INT16_C(  8974), -INT16_C(  5314), -INT16_C( 12494), -INT16_C( 17784), -INT16_C( 22407) },
       {  INT64_C(                   0),  INT64_C( 1961339956501794562) },
       {  INT16_C( 24935),  INT16_C( 18737), -INT16_C( 10633), -INT16_C(  8974), -INT16_C(  5314), -INT16_C( 12494), -INT16_C( 17784), -INT16_C( 22407) } },
+    { {  INT16_C( 26890),  INT16_C(  4182), -INT16_C( 10444), -INT16_C(  1352),  INT16_C(  8996), -INT16_C(  4224), -INT16_C( 21079),  INT16_C( 23379) },
+      { -INT64_C(              4294967296), -INT64_C(   50319374597543616) },
+      {  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0) } },
+    { {  INT16_C( 26890),  INT16_C(  4182), -INT16_C( 10444), -INT16_C(  1352),  INT16_C(  8996), -INT16_C(  4224), -INT16_C( 21079),  INT16_C( 23379) },
+      {  INT64_C(      0x7000000000000001), -INT64_C(   50319374597543616) },
+      {  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0) } }
   };
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
@@ -7706,6 +7716,12 @@ test_simde_mm_srl_epi32(SIMDE_MUNIT_TEST_ARGS) {
     { {  INT32_C(  1787760414),  INT32_C(   512071953), -INT32_C(  2018571807),  INT32_C(   457669921) },
       {  INT64_C(                   8), -INT64_C( 6845295782844029232) },
       {  INT32_C(     6983439),  INT32_C(     2000281),  INT32_C(     8892169),  INT32_C(     1787773) } },
+    { {  INT32_C(   891744802),  INT32_C(   938698539), -INT32_C(  1934564280), -INT32_C(  1955557892) },
+      { -INT64_C(          4294967296),  INT64_C(                   0) },
+      {  INT32_C(           0),  INT32_C(           0),  INT32_C(           0),  INT32_C(           0) } },
+    { {  INT32_C(   891744802),  INT32_C(   938698539), -INT32_C(  1934564280), -INT32_C(  1955557892) },
+      {  INT64_C(  0x7000000000000001),  INT64_C(                   0) },
+      {  INT32_C(           0),  INT32_C(           0),  INT32_C(           0),  INT32_C(           0) } }
   };
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
@@ -7787,6 +7803,12 @@ test_simde_mm_srl_epi64(SIMDE_MUNIT_TEST_ARGS) {
     { { -INT64_C( 6859334396662058573), -INT64_C( 2186259998015754521) },
       {  INT64_C(                  27), -INT64_C( 5380766026485068035) },
       {  INT64_C(         86332929708),  INT64_C(        121150047150) } },
+    { { -INT64_C( 4398908016901484931),  INT64_C(  130918950283414440) },
+      { -INT64_C(          4294967296),  INT64_C( 5851345819886162401) },
+      {  INT64_C(                   0),  INT64_C(                   0) } },
+    { { -INT64_C( 4398908016901484931),  INT64_C(  130918950283414440) },
+      {  INT64_C(  0x7000000000000001),  INT64_C( 5851345819886162401) },
+      {  INT64_C(                   0),  INT64_C(                   0) } }
   };
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
@@ -7860,7 +7882,16 @@ test_simde_mm_sra_epi32(SIMDE_MUNIT_TEST_ARGS) {
       simde_mm_set_epi32(       4003,       -1276,       -2720,        2757) },
     { simde_mm_set_epi32( -572539662,  1511976084, -2125946535, -1043884202),
       simde_mm_set_epi64x(0,  4),
-      simde_mm_set_epi32(  -35783729,    94498505,  -132871659,   -65242763) }
+      simde_mm_set_epi32(  -35783729,    94498505,  -132871659,   -65242763) },
+    { simde_mm_set_epi32( -159892315, -1509631224, -1642880399,  1227124763),
+      simde_mm_set_epi64x(0, 32),
+      simde_mm_set_epi32(         -1,          -1,          -1,           0) },
+    { simde_mm_set_epi32( -159892315, -1509631224, -1642880399,  1227124763),
+      simde_mm_set_epi64x(0, -INT64_C(4294967296)),
+      simde_mm_set_epi32(         -1,          -1,          -1,           0) },
+    { simde_mm_set_epi32( -159892315, -1509631224, -1642880399,  1227124763),
+      simde_mm_set_epi64x(0, INT64_C(0x7000000000000001)),
+      simde_mm_set_epi32(         -1,          -1,          -1,           0) }
   };
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
