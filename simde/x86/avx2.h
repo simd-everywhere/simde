@@ -31,6 +31,7 @@
 #define SIMDE_X86_AVX2_H
 
 #include "avx.h"
+#include "sse4.1.h"
 
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
@@ -1159,6 +1160,27 @@ simde_mm256_cmpeq_epi8 (simde__m256i a, simde__m256i b) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m256i
+simde_x_mm256_cmpeq_epu8 (simde__m256i a, simde__m256i b) {
+  simde__m256i_private
+    r_,
+    a_ = simde__m256i_to_private(a),
+    b_ = simde__m256i_to_private(b);
+
+  #if SIMDE_NATURAL_INT_VECTOR_SIZE_LE(128)
+    r_.m128i[0] = simde_x_mm_cmpeq_epu8(a_.m128i[0], b_.m128i[0]);
+    r_.m128i[1] = simde_x_mm_cmpeq_epu8(a_.m128i[1], b_.m128i[1]);
+  #else
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.u8) / sizeof(r_.u8[0])) ; i++) {
+      r_.u8[i] = (a_.u8[i] == b_.u8[i]) ? ~UINT8_C(0) : UINT8_C(0);
+    }
+  #endif
+
+  return simde__m256i_from_private(r_);
+}
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256i
 simde_mm256_cmpeq_epi16 (simde__m256i a, simde__m256i b) {
   #if defined(SIMDE_X86_AVX2_NATIVE)
     return _mm256_cmpeq_epi16(a, b);
@@ -1187,6 +1209,27 @@ simde_mm256_cmpeq_epi16 (simde__m256i a, simde__m256i b) {
   #undef _mm256_cmpeq_epi16
   #define _mm256_cmpeq_epi16(a, b) simde_mm256_cmpeq_epi16(a, b)
 #endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256i
+simde_x_mm256_cmpeq_epu16 (simde__m256i a, simde__m256i b) {
+  simde__m256i_private
+    r_,
+    a_ = simde__m256i_to_private(a),
+    b_ = simde__m256i_to_private(b);
+
+  #if SIMDE_NATURAL_INT_VECTOR_SIZE_LE(128)
+    r_.m128i[0] = simde_x_mm_cmpeq_epu16(a_.m128i[0], b_.m128i[0]);
+    r_.m128i[1] = simde_x_mm_cmpeq_epu16(a_.m128i[1], b_.m128i[1]);
+  #else
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.u16) / sizeof(r_.u16[0])) ; i++) {
+      r_.u16[i] = (a_.u16[i] == b_.u16[i]) ? ~UINT16_C(0) : UINT16_C(0);
+    }
+  #endif
+
+  return simde__m256i_from_private(r_);
+}
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m256i
@@ -1221,6 +1264,27 @@ simde_mm256_cmpeq_epi32 (simde__m256i a, simde__m256i b) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m256i
+simde_x_mm256_cmpeq_epu32 (simde__m256i a, simde__m256i b) {
+  simde__m256i_private
+    r_,
+    a_ = simde__m256i_to_private(a),
+    b_ = simde__m256i_to_private(b);
+
+  #if SIMDE_NATURAL_INT_VECTOR_SIZE_LE(128)
+    r_.m128i[0] = simde_x_mm_cmpeq_epu32(a_.m128i[0], b_.m128i[0]);
+    r_.m128i[1] = simde_x_mm_cmpeq_epu32(a_.m128i[1], b_.m128i[1]);
+  #else
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.u32) / sizeof(r_.u32[0])) ; i++) {
+      r_.u32[i] = (a_.u32[i] == b_.u32[i]) ? ~UINT32_C(0) : UINT32_C(0);
+    }
+  #endif
+
+  return simde__m256i_from_private(r_);
+}
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256i
 simde_mm256_cmpeq_epi64 (simde__m256i a, simde__m256i b) {
   #if defined(SIMDE_X86_AVX2_NATIVE)
     return _mm256_cmpeq_epi64(a, b);
@@ -1249,6 +1313,27 @@ simde_mm256_cmpeq_epi64 (simde__m256i a, simde__m256i b) {
   #undef _mm256_cmpeq_epi64
   #define _mm256_cmpeq_epi64(a, b) simde_mm256_cmpeq_epi64(a, b)
 #endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256i
+simde_x_mm256_cmpeq_epu64 (simde__m256i a, simde__m256i b) {
+  simde__m256i_private
+    r_,
+    a_ = simde__m256i_to_private(a),
+    b_ = simde__m256i_to_private(b);
+
+  #if SIMDE_NATURAL_INT_VECTOR_SIZE_LE(128)
+    r_.m128i[0] = simde_x_mm_cmpeq_epu64(a_.m128i[0], b_.m128i[0]);
+    r_.m128i[1] = simde_x_mm_cmpeq_epu64(a_.m128i[1], b_.m128i[1]);
+  #else
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.u64) / sizeof(r_.u64[0])) ; i++) {
+      r_.u64[i] = (a_.u64[i] == b_.u64[i]) ? ~UINT64_C(0) : UINT64_C(0);
+    }
+  #endif
+
+  return simde__m256i_from_private(r_);
+}
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m256i
