@@ -136,6 +136,10 @@ simde_mm512_loadu_si512 (void const * mem_addr) {
   #define _mm512_loadu_epi32(a) simde_mm512_loadu_epi32(a)
   #define _mm512_loadu_epi64(a) simde_mm512_loadu_epi64(a)
 #endif
+#define simde_x_mm512_loadu_epu8(mem_addr) simde_mm512_loadu_si512(mem_addr)
+#define simde_x_mm512_loadu_epu16(mem_addr) simde_mm512_loadu_si512(mem_addr)
+#define simde_x_mm512_loadu_epu32(mem_addr) simde_mm512_loadu_si512(mem_addr)
+#define simde_x_mm512_loadu_epu64(mem_addr) simde_mm512_loadu_si512(mem_addr)
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m256i

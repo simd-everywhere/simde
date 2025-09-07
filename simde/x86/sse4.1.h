@@ -661,6 +661,26 @@ simde_mm_cmpeq_epi64 (simde__m128i a, simde__m128i b) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128i
+simde_x_mm_cmpeq_epu64 (simde__m128i a, simde__m128i b) {
+  simde__m128i_private
+    r_,
+    a_ = simde__m128i_to_private(a),
+    b_ = simde__m128i_to_private(b);
+
+  #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+    r_.u64 = HEDLEY_REINTERPRET_CAST(__typeof__(r_.u64), a_.u64 == b_.u64);
+  #else
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.u64) / sizeof(r_.u64[0])) ; i++) {
+      r_.u64[i] = (a_.u64[i] == b_.u64[i]) ? ~UINT64_C(0) : UINT64_C(0);
+    }
+  #endif
+
+  return simde__m128i_from_private(r_);
+}
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m128i
 simde_mm_cvtepi8_epi16 (simde__m128i a) {
   #if defined(SIMDE_X86_SSE4_1_NATIVE)
     return _mm_cvtepi8_epi16(a);
