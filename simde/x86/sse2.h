@@ -1869,6 +1869,26 @@ simde_mm_cmpeq_epi8 (simde__m128i a, simde__m128i b) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128i
+simde_x_mm_cmpeq_epu8 (simde__m128i a, simde__m128i b) {
+  simde__m128i_private
+    r_,
+    a_ = simde__m128i_to_private(a),
+    b_ = simde__m128i_to_private(b);
+
+  #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+    r_.u8 = HEDLEY_REINTERPRET_CAST(__typeof__(r_.u8), (a_.u8 == b_.u8));
+  #else
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.u8) / sizeof(r_.u8[0])) ; i++) {
+      r_.u8[i] = (a_.u8[i] == b_.u8[i]) ? ~UINT8_C(0) : UINT8_C(0);
+    }
+  #endif
+
+  return simde__m128i_from_private(r_);
+}
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m128i
 simde_mm_cmpeq_epi16 (simde__m128i a, simde__m128i b) {
   #if defined(SIMDE_X86_SSE2_NATIVE)
     return _mm_cmpeq_epi16(a, b);
@@ -1904,6 +1924,26 @@ simde_mm_cmpeq_epi16 (simde__m128i a, simde__m128i b) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128i
+simde_x_mm_cmpeq_epu16 (simde__m128i a, simde__m128i b) {
+  simde__m128i_private
+    r_,
+    a_ = simde__m128i_to_private(a),
+    b_ = simde__m128i_to_private(b);
+
+  #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+    r_.u16 = HEDLEY_REINTERPRET_CAST(__typeof__(r_.u16), (a_.u16 == b_.u16));
+  #else
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.u16) / sizeof(r_.u16[0])) ; i++) {
+      r_.u16[i] = (a_.u16[i] == b_.u16[i]) ? ~UINT16_C(0) : UINT16_C(0);
+    }
+  #endif
+
+  return simde__m128i_from_private(r_);
+}
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m128i
 simde_mm_cmpeq_epi32 (simde__m128i a, simde__m128i b) {
   #if defined(SIMDE_X86_SSE2_NATIVE)
     return _mm_cmpeq_epi32(a, b);
@@ -1936,6 +1976,26 @@ simde_mm_cmpeq_epi32 (simde__m128i a, simde__m128i b) {
 #if defined(SIMDE_X86_SSE2_ENABLE_NATIVE_ALIASES)
   #define _mm_cmpeq_epi32(a, b) simde_mm_cmpeq_epi32(a, b)
 #endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m128i
+simde_x_mm_cmpeq_epu32 (simde__m128i a, simde__m128i b) {
+  simde__m128i_private
+    r_,
+    a_ = simde__m128i_to_private(a),
+    b_ = simde__m128i_to_private(b);
+
+  #if defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+    r_.u32 = HEDLEY_REINTERPRET_CAST(__typeof__(r_.u32), a_.u32 == b_.u32);
+  #else
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.u32) / sizeof(r_.u32[0])) ; i++) {
+      r_.u32[i] = (a_.u32[i] == b_.u32[i]) ? ~UINT32_C(0) : UINT32_C(0);
+    }
+  #endif
+
+  return simde__m128i_from_private(r_);
+}
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128d
@@ -3971,6 +4031,16 @@ simde_mm_loadu_epi8(void const * mem_addr) {
   #define _mm_loadu_epi8(a) simde_mm_loadu_epi8(a)
 #endif
 
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m128i
+simde_x_mm_loadu_epu8(void const * mem_addr) {
+  simde__m128i_private r_;
+
+  simde_memcpy(&r_, mem_addr, sizeof(r_));
+
+  return simde__m128i_from_private(r_);
+}
+
 #if defined(SIMDE_X86_AVX512VL_NATIVE) && defined(SIMDE_X86_AVX512BW_NATIVE) \
     && !defined(SIMDE_BUG_GCC_95483) && !defined(SIMDE_BUG_CLANG_REV_344862) \
     && (!defined(HEDLEY_MSVC_VERSION) || HEDLEY_MSVC_VERSION_CHECK(19,20,0))
@@ -4002,6 +4072,14 @@ simde_mm_loadu_epi16(void const * mem_addr) {
   #define _mm_loadu_epi16(a) simde_mm_loadu_epi16(a)
 #endif
 
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m128i
+simde_x_mm_loadu_epu16(void const * mem_addr) {
+  simde__m128i_private r_;
+  simde_memcpy(&r_, mem_addr, sizeof(r_));
+  return simde__m128i_from_private(r_);
+}
+
 #if defined(SIMDE_X86_AVX512VL_NATIVE) && !defined(SIMDE_BUG_GCC_95483) \
     && !defined(SIMDE_BUG_CLANG_REV_344862) && (!defined(HEDLEY_MSVC_VERSION) || HEDLEY_MSVC_VERSION_CHECK(19,20,0))
   #define simde_mm_loadu_epi32(mem_addr) _mm_loadu_epi32(mem_addr)
@@ -4031,6 +4109,14 @@ simde_mm_loadu_epi32(void const * mem_addr) {
   #undef _mm_loadu_epi32
   #define _mm_loadu_epi32(a) simde_mm_loadu_epi32(a)
 #endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m128i
+simde_x_mm_loadu_epu32(void const * mem_addr) {
+  simde__m128i_private r_;
+  simde_memcpy(&r_, mem_addr, sizeof(r_));
+  return simde__m128i_from_private(r_);
+}
 
 #if defined(SIMDE_X86_AVX512VL_NATIVE) && !defined(SIMDE_BUG_GCC_95483) \
     && !defined(SIMDE_BUG_CLANG_REV_344862) \
@@ -4062,6 +4148,14 @@ simde_mm_loadu_epi64(void const * mem_addr) {
   #undef _mm_loadu_epi64
   #define _mm_loadu_epi64(a) simde_mm_loadu_epi64(a)
 #endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m128i
+simde_x_mm_loadu_epu64(void const * mem_addr) {
+  simde__m128i_private r_;
+  simde_memcpy(&r_, mem_addr, sizeof(r_));
+  return simde__m128i_from_private(r_);
+}
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128i
