@@ -680,17 +680,17 @@ HEDLEY_DIAGNOSTIC_POP
 #endif
 
 /* Try to deal with environments without a standard library. */
-#if !defined(simde_memcpy)
+#if !defined(simde_memcpy) && !defined(SIMDE_NO_STDLIB)
   #if HEDLEY_HAS_BUILTIN(__builtin_memcpy)
     #define simde_memcpy(dest, src, n) __builtin_memcpy(dest, src, n)
   #endif
 #endif
-#if !defined(simde_memset)
+#if !defined(simde_memset) && !defined(SIMDE_NO_STDLIB)
   #if HEDLEY_HAS_BUILTIN(__builtin_memset)
     #define simde_memset(s, c, n) __builtin_memset(s, c, n)
   #endif
 #endif
-#if !defined(simde_memcmp)
+#if !defined(simde_memcmp) && !defined(SIMDE_NO_STDLIB)
   #if HEDLEY_HAS_BUILTIN(__builtin_memcmp)
     #define simde_memcmp(s1, s2, n) __builtin_memcmp(s1, s2, n)
   #endif
@@ -707,7 +707,7 @@ HEDLEY_DIAGNOSTIC_POP
     #endif
   #endif
 
-  #if !defined(SIMDE_NO_STRING_H)
+  #if !defined(SIMDE_NO_STRING_H) && !defined(SIMDE_NO_STDLIB)
     #include <string.h>
     #if !defined(simde_memcpy)
       #define simde_memcpy(dest, src, n) memcpy(dest, src, n)
@@ -730,7 +730,7 @@ HEDLEY_DIAGNOSTIC_POP
       void
       simde_memcpy_(void* dest, const void* src, size_t len) {
         char* dest_ = HEDLEY_STATIC_CAST(char*, dest);
-        char* src_ = HEDLEY_STATIC_CAST(const char*, src);
+        const char* src_ = HEDLEY_STATIC_CAST(const char*, src);
         for (size_t i = 0 ; i < len ; i++) {
           dest_[i] = src_[i];
         }
@@ -745,19 +745,19 @@ HEDLEY_DIAGNOSTIC_POP
         char* s_ = HEDLEY_STATIC_CAST(char*, s);
         char c_ = HEDLEY_STATIC_CAST(char, c);
         for (size_t i = 0 ; i < len ; i++) {
-          s_[i] = c_[i];
+          s_[i] = c_;
         }
       }
       #define simde_memset(s, c, n) simde_memset_(s, c, n)
     #endif
 
     #if !defined(simde_memcmp)
-      SIMDE_FUCTION_ATTRIBUTES
+      SIMDE_FUNCTION_ATTRIBUTES
       int
       simde_memcmp_(const void *s1, const void *s2, size_t n) {
-        unsigned char* s1_ = HEDLEY_STATIC_CAST(unsigned char*, s1);
-        unsigned char* s2_ = HEDLEY_STATIC_CAST(unsigned char*, s2);
-        for (size_t i = 0 ; i < len ; i++) {
+        const unsigned char* s1_ = HEDLEY_STATIC_CAST(const unsigned char*, s1);
+        const unsigned char* s2_ = HEDLEY_STATIC_CAST(const unsigned char*, s2);
+        for (size_t i = 0 ; i < n ; i++) {
           if (s1_[i] != s2_[i]) {
             return (int) (s1_[i] - s2_[i]);
           }
