@@ -64,6 +64,7 @@
 #include "avx512/dpwssd.h"
 #include "avx512/dpwssds.h"
 #include "avx512/expand.h"
+#include "avx512/expandloadu.h"
 #include "avx512/extract.h"
 #include "avx512/fixupimm.h"
 #include "avx512/fixupimm_round.h"
