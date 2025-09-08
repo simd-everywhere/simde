@@ -647,7 +647,7 @@ simde_mm_cmpeq_epi64 (simde__m128i a, simde__m128i b) {
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.u64) / sizeof(r_.u64[0])) ; i++) {
-        r_.u64[i] = (a_.u64[i] == b_.u64[i]) ? ~UINT64_C(0) : UINT64_C(0);
+        r_.u64[i] = (a_.u64[i] == b_.u64[i]) ? UINT64_MAX : UINT64_C(0);
       }
     #endif
 
@@ -672,7 +672,7 @@ simde_x_mm_cmpeq_epu64 (simde__m128i a, simde__m128i b) {
   #else
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.u64) / sizeof(r_.u64[0])) ; i++) {
-      r_.u64[i] = (a_.u64[i] == b_.u64[i]) ? ~UINT64_C(0) : UINT64_C(0);
+      r_.u64[i] = (a_.u64[i] == b_.u64[i]) ? UINT64_MAX : UINT64_C(0);
     }
   #endif
 

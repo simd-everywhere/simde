@@ -1172,7 +1172,7 @@ simde_x_mm256_cmpeq_epu8 (simde__m256i a, simde__m256i b) {
   #else
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.u8) / sizeof(r_.u8[0])) ; i++) {
-      r_.u8[i] = (a_.u8[i] == b_.u8[i]) ? ~UINT8_C(0) : UINT8_C(0);
+      r_.u8[i] = (a_.u8[i] == b_.u8[i]) ? UINT8_MAX : UINT8_C(0);
     }
   #endif
 
@@ -1224,7 +1224,7 @@ simde_x_mm256_cmpeq_epu16 (simde__m256i a, simde__m256i b) {
   #else
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.u16) / sizeof(r_.u16[0])) ; i++) {
-      r_.u16[i] = (a_.u16[i] == b_.u16[i]) ? ~UINT16_C(0) : UINT16_C(0);
+      r_.u16[i] = (a_.u16[i] == b_.u16[i]) ? UINT16_MAX : UINT16_C(0);
     }
   #endif
 
@@ -1276,7 +1276,7 @@ simde_x_mm256_cmpeq_epu32 (simde__m256i a, simde__m256i b) {
   #else
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.u32) / sizeof(r_.u32[0])) ; i++) {
-      r_.u32[i] = (a_.u32[i] == b_.u32[i]) ? ~UINT32_C(0) : UINT32_C(0);
+      r_.u32[i] = (a_.u32[i] == b_.u32[i]) ? UINT32_MAX : UINT32_C(0);
     }
   #endif
 
@@ -1328,7 +1328,7 @@ simde_x_mm256_cmpeq_epu64 (simde__m256i a, simde__m256i b) {
   #else
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.u64) / sizeof(r_.u64[0])) ; i++) {
-      r_.u64[i] = (a_.u64[i] == b_.u64[i]) ? ~UINT64_C(0) : UINT64_C(0);
+      r_.u64[i] = (a_.u64[i] == b_.u64[i]) ? UINT64_MAX : UINT64_C(0);
     }
   #endif
 
