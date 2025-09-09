@@ -6,6 +6,10 @@
 #include "../simde/simde-f16.h"
 #include "../simde/simde-bf16.h"
 
+#ifndef __STDC_FORMAT_MACROS
+#define __STDC_FORMAT_MACROS
+#endif
+
 #include <time.h>
 #include <stdlib.h>
 #include <math.h>
