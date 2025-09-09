@@ -6,6 +6,12 @@
 #include "../simde/simde-f16.h"
 #include "../simde/simde-bf16.h"
 
+#if (!defined(__clang__) || SIMDE_DETECT_CLANG_VERSION_CHECK(13, 0, 0))
+  #ifndef __STDC_FORMAT_MACROS
+    #define __STDC_FORMAT_MACROS
+  #endif
+#endif
+
 #include <time.h>
 #include <stdlib.h>
 #include <math.h>
