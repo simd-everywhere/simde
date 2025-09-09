@@ -149,6 +149,16 @@ simde_mm512_srli_epi16(simde__m512i a, const unsigned int imm8)
 #endif
 
 #if defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
+  #define simde_mm_maskz_srli_epi32(k, a, imm8) _mm_maskz_srli_epi32(k, a, imm8)
+#else
+  #define simde_mm_maskz_srli_epi32(k, a, imm8) simde_mm_maskz_mov_epi32(k, simde_mm_srli_epi32(a, HEDLEY_STATIC_CAST(int, imm8)))
+#endif
+#if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES) && defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES)
+  #undef _mm_maskz_srli_epi32
+  #define _mm_maskz_srli_epi32(k, a, imm8) simde_mm_maskz_srli_epi32(k, a, imm8)
+#endif
+
+#if defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
   #define simde_mm256_mask_srli_epi32(src, k, a, imm8) _mm256_mask_srli_epi32(src, k, a, imm8)
 #else
   #define simde_mm256_mask_srli_epi32(src, k, a, imm8) simde_mm256_mask_mov_epi32(src, k, simde_mm256_srli_epi32(a, imm8))
@@ -156,6 +166,16 @@ simde_mm512_srli_epi16(simde__m512i a, const unsigned int imm8)
 #if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES) && defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES)
   #undef _mm256_mask_srli_epi32
   #define _mm256_mask_srli_epi32(src, k, a, imm8) simde_mm256_mask_srli_epi32(src, k, a, imm8)
+#endif
+
+#if defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
+  #define simde_mm256_maskz_srli_epi32(k, a, imm8) _mm256_maskz_srli_epi32(k, a, imm8)
+#else
+  #define simde_mm256_maskz_srli_epi32(k, a, imm8) simde_mm256_maskz_mov_epi32(k, simde_mm256_srli_epi32(a, HEDLEY_STATIC_CAST(int, imm8)))
+#endif
+#if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES) && defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_maskz_srli_epi32
+  #define _mm256_maskz_srli_epi32(k, a, imm8) simde_mm256_maskz_srli_epi32(k, a, imm8)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -213,6 +233,16 @@ simde_mm512_srli_epi32(simde__m512i a, unsigned int imm8) {
 #if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
   #undef _mm512_mask_srli_epi32
   #define _mm512_mask_srli_epi32(src, k, a, imm8) simde_mm512_mask_srli_epi32(src, k, a, imm8)
+#endif
+
+#if defined(SIMDE_X86_AVX512F_NATIVE)
+  #define simde_mm512_maskz_srli_epi32(k, a, imm8) _mm512_maskz_srli_epi32(k, a, imm8)
+#else
+  #define simde_mm512_maskz_srli_epi32(k, a, imm8) simde_mm512_maskz_mov_epi32(k, simde_mm512_srli_epi32(a, imm8))
+#endif
+#if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_maskz_srli_epi32
+  #define _mm512_maskz_srli_epi32(k, a, imm8) simde_mm512_maskz_srli_epi32(k, a, imm8)
 #endif
 
 #if defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
