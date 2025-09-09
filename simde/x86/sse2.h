@@ -5245,7 +5245,11 @@ simde_mm_pause (void) {
       __asm__ __volatile__("isb\n");
     #endif
   #elif defined(SIMDE_ARCH_POWER)
-    __asm__ __volatile__ ("or 27,27,27" ::: "memory");
+    #if defined(__APPLE__)
+      __asm__ __volatile__ ("or r27,r27,r27" ::: "memory");
+    #else
+      __asm__ __volatile__ ("or 27,27,27" ::: "memory");
+    #endif
   #elif defined(SIMDE_ARCH_WASM)
     __asm__ __volatile__ ("nop");
   #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
