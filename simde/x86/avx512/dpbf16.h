@@ -250,7 +250,7 @@ simde_mm512_dpbf16_ps (simde__m512 src, simde__m512bh a, simde__m512bh b) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m512
 simde_mm512_mask_dpbf16_ps (simde__m512 src, simde__mmask16 k, simde__m512bh a, simde__m512bh b) {
-  #if defined(SIMDE_X86_AVX512BF16_NATIVE)
+  #if defined(SIMDE_X86_AVX512BF16_NATIVE) && !(defined(__cplusplus) && defined(HEDLEY_GCC_VERSION))
     return _mm512_mask_dpbf16_ps(src, k, a, b);
   #else
     return simde_mm512_mask_mov_ps(src, k, simde_mm512_dpbf16_ps(src, a, b));
@@ -264,7 +264,7 @@ simde_mm512_mask_dpbf16_ps (simde__m512 src, simde__mmask16 k, simde__m512bh a, 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m512
 simde_mm512_maskz_dpbf16_ps (simde__mmask16 k, simde__m512 src, simde__m512bh a, simde__m512bh b) {
-  #if defined(SIMDE_X86_AVX512BF16_NATIVE)
+  #if defined(SIMDE_X86_AVX512BF16_NATIVE) && !(defined(__cplusplus) && defined(HEDLEY_GCC_VERSION))
     return _mm512_maskz_dpbf16_ps(k, src, a, b);
   #else
     return simde_mm512_maskz_mov_ps(k, simde_mm512_dpbf16_ps(src, a, b));
