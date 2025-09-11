@@ -71,8 +71,8 @@ SIMDE_BEGIN_DECLS_
   #elif !defined(__EMSCRIPTEN__) && !(defined(__clang__) && defined(SIMDE_ARCH_POWER)) && \
     !(defined(HEDLEY_MSVC_VERSION) && defined(__clang__)) && \
     !(defined(SIMDE_ARCH_MIPS) && defined(__clang__)) && \
-    !(defined(SIMDE_ARCH_ZARCH) && defined(__clang__)) && \
-    !(defined(SIMDE_ARCH_LOONGARCH) && defined(__clang__)) && \
+    !(defined(SIMDE_ARCH_ZARCH) && defined(__clang__) && !SIMDE_DETECT_CLANG_VERSION_CHECK(21,0,0)) && \
+    !(defined(SIMDE_ARCH_LOONGARCH) && defined(__clang__) && !SIMDE_DETECT_CLANG_VERSION_CHECK(21,0,0)) && \
     !(defined(__clang__) && defined(SIMDE_ARCH_RISCV64)) && ( \
       defined(SIMDE_X86_AVX512FP16_NATIVE) || \
       (defined(SIMDE_ARCH_X86_SSE2) && HEDLEY_GCC_VERSION_CHECK(12,0,0)) || \
