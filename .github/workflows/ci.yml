@@ -131,7 +131,7 @@ jobs:
         submodules: recursive
     - name: CPU Information
       run: cat /proc/cpuinfo
-    - run: sudo apt-get update
+    - run: sudo add-apt-repository ppa:stephanosio/ccache && sudo apt-get update
     - name: ccache
       uses: hendrikmuhs/ccache-action@v1.2
       with:
@@ -174,7 +174,7 @@ jobs:
         submodules: recursive
     - name: CPU Information
       run: cat /proc/cpuinfo
-    - run: sudo apt-get update
+    - run: sudo add-apt-repository ppa:stephanosio/ccache && sudo apt-get update
     - name: ccache
       uses: hendrikmuhs/ccache-action@v1.2
       with:
@@ -213,7 +213,7 @@ jobs:
     - uses: actions/checkout@v5
       with:
         submodules: recursive
-    - run: sudo apt-get update
+    - run: sudo add-apt-repository ppa:stephanosio/ccache && sudo apt-get update
     - name: ccache
       uses: hendrikmuhs/ccache-action@v1.2
       with:
@@ -258,7 +258,7 @@ jobs:
     - id: cpu
       name: CPU Information
       run: cat /proc/cpuinfo
-    - run: sudo apt-get update
+    - run: sudo add-apt-repository ppa:stephanosio/ccache && sudo apt-get update
     - name: ccache
       uses: hendrikmuhs/ccache-action@v1.2
       with:
@@ -292,7 +292,7 @@ jobs:
       run: |
         cat /proc/cpuinfo
         echo "model_name=$(grep -m1 'model name' < /proc/cpuinfo | awk '-F: ' '{ print $2}' | tr '-' '_')" >> "$GITHUB_OUTPUT"
-    - run: sudo apt-get update
+    - run: sudo add-apt-repository ppa:stephanosio/ccache && sudo apt-get update
     - name: ccache
       uses: hendrikmuhs/ccache-action@v1.2
       with:
@@ -367,7 +367,7 @@ jobs:
       run: |
         cat /proc/cpuinfo
         echo "model_name=$(grep -m1 'model name' < /proc/cpuinfo || grep -m1 Features < /proc/cpuinfo | awk '-F: ' '{ print $2}' | tr '-' '_')" >> "$GITHUB_OUTPUT"
-    - run: sudo apt-get update
+    - run: sudo add-apt-repository ppa:stephanosio/ccache && sudo apt-get update
     - name: ccache
       uses: hendrikmuhs/ccache-action@v1.2
       with:
@@ -479,8 +479,9 @@ jobs:
       run: cat /proc/cpuinfo
     - name: Install APT Dependencies
       run: |
+        sudo add-apt-repository ppa:stephanosio/ccache
         sudo add-apt-repository ppa:ubuntu-toolchain-r/ppa
-        sudo apt-get update && sudo apt-get -y --no-install-recommends install ninja-build \
+        sudo apt-get update && sudo apt-get -y --no-install-recommends install ccache ninja-build \
           gcc-${{ matrix.version }}-${{ matrix.arch_gnu }}-linux-gnu${{ matrix.arch_gnu_abi }} \
           g++-${{ matrix.version }}-${{ matrix.arch_gnu }}-linux-gnu${{ matrix.arch_gnu_abi }} binfmt-support \
           qemu-user-static pipx libc6-${{ matrix.arch_deb }}-cross libstdc++-${{ matrix.version }}-dev-${{ matrix.arch_deb }}-cross
@@ -534,8 +535,9 @@ jobs:
       run: |
         #add-apt-repository ppa:savoury1/virtualisation
         #add-apt-repository ppa:savoury1/display
+        sudo add-apt-repository ppa:stephanosio/ccache
         sudo apt-get update -y
-        sudo apt-get install -y --no-install-recommends ninja-build pkg-config \
+        sudo apt-get install -y --no-install-recommends ccache ninja-build pkg-config \
           qemu-user-static clang-${{ matrix.version }} ninja-build binfmt-support \
           libc6-${{ matrix.arch_deb }}-cross meson llvm-${{ matrix.version }} \
           libstdc++-12-dev-${{ matrix.arch_deb }}-cross \
@@ -589,11 +591,12 @@ jobs:
       run: cat /proc/cpuinfo
     - name: Install APT Dependencies
       run: |
+        sudo add-apt-repository ppa:stephanosio/ccache
         sudo apt-get update && sudo apt-get install -y --no-install-recommends \
           ninja-build pkg-config qemu-user-static clang-${{ matrix.version }} \
           ninja-build binfmt-support libc6-${{ matrix.arch_deb }}-cross meson \
           libstdc++-12-dev-${{ matrix.arch_deb }}-cross \
-          binutils-${{ matrix.arch_gnu }}-linux-gnu
+          binutils-${{ matrix.arch_gnu }}-linux-gnu ccache
     - name: ccache
       uses: hendrikmuhs/ccache-action@v1.2
       with:
@@ -677,8 +680,9 @@ jobs:
       run: cat /proc/cpuinfo
     - name: Install APT Dependencies
       run: |
+        sudo add-apt-repository ppa:stephanosio/ccache && \
         sudo apt-get update -y && \
-        sudo apt-get -y --no-install-recommends install ninja-build \
+        sudo apt-get -y --no-install-recommends install ccache ninja-build \
           binfmt-support clang-${{ matrix.version }} llvm-${{ matrix.version }} lld-${{ matrix.version }} \
           qemu-user-static pipx libc6-${{ matrix.arch_deb }}-cross libstdc++-14-dev-${{ matrix.arch_deb }}-cross \
           binutils-${{ matrix.arch_gnu }}-linux-gnu${{ matrix.arch_gnu_abi }}
