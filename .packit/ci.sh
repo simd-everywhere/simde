@@ -110,10 +110,10 @@ IGNORE_EXIT_STATUS=
 # Set the default behavior for each test.
 MATRIX_DEFAULT_GCC_DEFAULT="exclude"
 MATRIX_DEFAULT_GCC_O2="include"
-MATRIX_DEFAULT_GCC_RPM="exclude"
+MATRIX_DEFAULT_GCC_RPM="include"
 MATRIX_DEFAULT_CLANG_DEFAULT="exclude"
 MATRIX_DEFAULT_CLANG_O2="include"
-MATRIX_DEFAULT_CLANG_RPM="exclude"
+MATRIX_DEFAULT_CLANG_RPM="include"
 # Set the CPU specific behavior for each test optionally.
 # This configuration is prioritized than the default behavior.
 
