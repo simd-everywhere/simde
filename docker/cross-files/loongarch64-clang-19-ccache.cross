@@ -1,0 +1,21 @@
+[binaries]
+c = ['ccache', 'clang-19']
+cpp = ['ccache', 'clang++-19']
+ar = 'llvm-ar-19'
+strip = 'llvm-strip-19'
+objcopy = 'llvm-objcopy-19'
+c_ld = 'lld'
+cpp_ld = 'lld'
+exe_wrapper = ['qemu-loongarch64-static', '-L', '/usr/loongarch64-linux-gnu/', '-cpu', 'la464']
+
+[properties]
+c_args = ['--target=loongarch64-linux-gnu', '-march=la464', '-isystem=/usr/loongarch64-linux-gnu/include', '-Wextra', '-Werror', '-mlsx', '-mlasx']
+cpp_args = ['--target=loongarch64-linux-gnu', '-march=la464', '-isystem=/usr/loongarch64-linux-gnu/include', '-Wextra', '-Werror', '-mlsx', '-mlasx']
+c_link_args = ['--target=loongarch64-linux-gnu']
+cpp_link_args = ['--target=loongarch64-linux-gnu']
+
+[host_machine]
+system = 'linux'
+cpu_family = 'loongarch64'
+cpu = 'la464'
+endian = 'little'
