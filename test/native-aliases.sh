@@ -42,6 +42,7 @@ function num_cpus()
 
 ./download-iig.sh "${DIRNAME}/iig.xml"
 PATTERN="$(xmllint --xpath '//intrinsic/@name' "${DIRNAME}/iig.xml" | grep -Po '(?<=")[^"]+' | grep -Pv '^(_mm256_cvtsi256_si32|_mm512_loadu_epi.+)$' | xargs printf '%s|' | rev | cut -c 2- | rev)"
+PATTERN="${PATTERN}|__m64|__m128|__m128i|__m128d|__m128bh|__m128h|__m256|__m256i|__m256d|__m256bh|__m256h|__m512|__m512i|__m512d|__m512bh|__m512h|__mmask8|__mmask16|__mmask32|__mmask64"
 echo "s/([^_])simde(${PATTERN})/\1\2/g" > pattern
 ls x86/*.c | xargs -n1 -P$(num_cpus) sed -i -E -f pattern
 ls x86/avx512/*.c | xargs -n1 -P$(num_cpus) sed -i -E -f pattern
