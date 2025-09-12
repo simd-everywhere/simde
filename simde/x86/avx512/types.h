@@ -577,6 +577,10 @@ typedef union {
   #endif
 #endif
 
+#if !defined(__mmask8) && defined(SIMDE_ENABLE_NATIVE_ALIASES)
+typedef uint8_t __mmask8;
+#endif
+
 /* These are really part of AVX-512VL / AVX-512BW (in GCC __mmask32 is
  * in avx512vlintrin.h and __mmask64 is in avx512bwintrin.h, in clang
  * both are in avx512bwintrin.h), not AVX-512F.  However, we don't have
