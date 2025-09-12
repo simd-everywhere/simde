@@ -1,0 +1,21 @@
+[binaries]
+c = ['ccache', 'clang-19']
+cpp = ['ccache', 'clang++-19']
+ar = 'llvm-ar-19'
+strip = 'llvm-strip-19'
+objcopy = 'llvm-objcopy-19'
+c_ld = 'lld'
+cpp_ld = 'lld'
+exe_wrapper = ['qemu-arm-static', '-L', '/usr/arm-linux-gnueabi']
+
+[built-in options]
+c_args = ['--target=arm-linux-gnueabi', '-isystem=/usr/arm-linux-gnueabi/include', '-Weverything', '-fno-lax-vector-conversions', '-Werror', '-Wno-unsafe-buffer-usage', '-Wno-switch-default']
+cpp_args = ['--target=arm-linux-gnueabi', '-isystem=/usr/arm-linux-gnueabi/include', '-Weverything', '-fno-lax-vector-conversions', '-Werror', '-Wno-unsafe-buffer-usage', '-Wno-switch-default']
+c_link_args = ['--target=arm-linux-gnueabi']
+cpp_link_args = ['--target=arm-linux-gnueabi']
+
+[host_machine]
+system = 'linux'
+cpu_family = 'arm'
+cpu = 'generic'
+endian = 'little'
