@@ -90,7 +90,7 @@ cat /proc/meminfo
 PATH="${PATH}:${HOME}/.local/bin"
 
 # Install additional packages.
-pip3 install meson==0.55.1
+pip3 install -U meson
 
 # Run test.
 
@@ -153,6 +153,7 @@ result_gcc="${result_buf}"
 
 echo "== Tests on clang in a default status =="
 if ! BUILD_DIR="build/clang" CC="clang" CXX="clang++" \
+  CFLAGS="--rtlib=compiler-rt" CXXFLAGS="--rtlib=compiler-rt" \
   _run_test_and_get_result "${TEST_COND_CLANG_DEFAULT}"; then
   exit_status=1
 fi
@@ -168,7 +169,7 @@ result_gcc_O2="${result_buf}"
 
 echo "== Tests on clang with O2 flag =="
 if ! BUILD_DIR="build/clang-O2" CC="clang" CXX="clang++" \
-  CFLAGS="-O2" CXXFLAGS="-O2" \
+  CFLAGS="--rtlib=compiler-rt -O2" CXXFLAGS="--rtlib=compiler-rt -O2" \
   _run_test_and_get_result "${TEST_COND_CLANG_O2}"; then
   exit_status=1
 fi
