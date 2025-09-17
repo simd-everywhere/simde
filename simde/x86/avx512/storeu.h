@@ -54,6 +54,21 @@ SIMDE_BEGIN_DECLS_
 
 SIMDE_FUNCTION_ATTRIBUTES
 void
+simde_mm256_mask_storeu_epi8 (void * mem_addr, simde__mmask32 k, simde__m256i a) {
+  #if defined(SIMDE_X86_AVX512BW_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
+    _mm256_mask_storeu_epi8(HEDLEY_REINTERPRET_CAST(void*, mem_addr), k, a);
+  #else
+    const simde__m256i zero = simde_mm256_setzero_si256();
+    simde_mm256_storeu_epi8(mem_addr, simde_mm256_mask_mov_epi8(zero, k, a));
+  #endif
+}
+#if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES) && defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_mask_storeu_epi8
+  #define _mm256_mask_storeu_epi8(mem_addr, k, a) simde_mm256_mask_storeu_epi8(mem_addr, k, a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+void
 simde_mm256_mask_storeu_epi16 (void * mem_addr, simde__mmask16 k, simde__m256i a) {
   #if defined(SIMDE_X86_AVX512BW_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
     _mm256_mask_storeu_epi16(HEDLEY_REINTERPRET_CAST(void*, mem_addr), k, a);
@@ -65,6 +80,36 @@ simde_mm256_mask_storeu_epi16 (void * mem_addr, simde__mmask16 k, simde__m256i a
 #if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES) && defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES)
   #undef _mm256_mask_storeu_epi16
   #define _mm256_mask_storeu_epi16(mem_addr, k, a) simde_mm256_mask_storeu_epi16(mem_addr, k, a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+void
+simde_mm256_mask_storeu_epi32 (void * mem_addr, simde__mmask8 k, simde__m256i a) {
+  #if defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
+    _mm256_mask_storeu_epi32(HEDLEY_REINTERPRET_CAST(void*, mem_addr), k, a);
+  #else
+    const simde__m256i zero = simde_mm256_setzero_si256();
+    simde_mm256_storeu_epi32(mem_addr, simde_mm256_mask_mov_epi32(zero, k, a));
+  #endif
+}
+#if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES) && defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_mask_storeu_epi32
+  #define _mm256_mask_storeu_epi32(mem_addr, k, a) simde_mm256_mask_storeu_epi32(mem_addr, k, a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+void
+simde_mm256_mask_storeu_epi64 (void * mem_addr, simde__mmask8 k, simde__m256i a) {
+  #if defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
+    _mm256_mask_storeu_epi64(HEDLEY_REINTERPRET_CAST(void*, mem_addr), k, a);
+  #else
+    const simde__m256i zero = simde_mm256_setzero_si256();
+    simde_mm256_storeu_epi64(mem_addr, simde_mm256_mask_mov_epi64(zero, k, a));
+  #endif
+}
+#if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES) && defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_mask_storeu_epi64
+  #define _mm256_mask_storeu_epi64(mem_addr, k, a) simde_mm256_mask_storeu_epi64(mem_addr, k, a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
