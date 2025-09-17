@@ -906,7 +906,7 @@ test_simde_mm_cmpeq_epi16_mask (SIMDE_MUNIT_TEST_ARGS) {
       UINT8_C(226) },
   };
 
-  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
     simde__m128i a = simde_mm_loadu_epi16(test_vec[i].a);
     simde__m128i b = simde_mm_loadu_epi16(test_vec[i].b);
     simde__mmask8 r = simde_mm_cmpeq_epi16_mask(a, b);
@@ -972,7 +972,7 @@ test_simde_mm_mask_cmpeq_epi16_mask (SIMDE_MUNIT_TEST_ARGS) {
       UINT8_C( 89) },
   };
 
-  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
     simde__m128i a = simde_mm_loadu_epi16(test_vec[i].a);
     simde__m128i b = simde_mm_loadu_epi16(test_vec[i].b);
     simde__mmask8 r = simde_mm_mask_cmpeq_epi16_mask(test_vec[i].k1, a, b);
@@ -1408,7 +1408,7 @@ test_simde_mm_cmpeq_epi32_mask (SIMDE_MUNIT_TEST_ARGS) {
       UINT8_C( 15) },
   };
 
-  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
     simde__m128i a = simde_mm_loadu_epi32(test_vec[i].a);
     simde__m128i b = simde_mm_loadu_epi32(test_vec[i].b);
     simde__mmask8 r = simde_mm_cmpeq_epi32_mask(a, b);
@@ -1474,7 +1474,7 @@ test_simde_mm_mask_cmpeq_epi32_mask (SIMDE_MUNIT_TEST_ARGS) {
       UINT8_C(  4) },
   };
 
-  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
     simde__m128i a = simde_mm_loadu_epi32(test_vec[i].a);
     simde__m128i b = simde_mm_loadu_epi32(test_vec[i].b);
     simde__mmask8 r = simde_mm_mask_cmpeq_epi32_mask(test_vec[i].k1, a, b);
@@ -4613,7 +4613,8 @@ test_simde_mm512_mask_cmpeq_pd_mask (SIMDE_MUNIT_TEST_ARGS) {
         SIMDE_FLOAT64_C(   -66.29), SIMDE_FLOAT64_C(    21.39), SIMDE_FLOAT64_C(   597.43), SIMDE_FLOAT64_C(   398.96) },
       { SIMDE_FLOAT64_C(  -431.38), SIMDE_FLOAT64_C(   570.49), SIMDE_FLOAT64_C(  -594.78), SIMDE_FLOAT64_C(   882.89),
         SIMDE_FLOAT64_C(   -66.29), SIMDE_FLOAT64_C(  -377.58), SIMDE_FLOAT64_C(  -438.93), SIMDE_FLOAT64_C(    86.57) },
-      UINT8_C( 16) },  };
+      UINT8_C( 16) },
+  };
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
     simde__m512d a = simde_mm512_loadu_pd(test_vec[i].a);
