@@ -228,8 +228,8 @@ jobs:
       run: |
         git clone https://github.com/emscripten-core/emsdk.git /opt/emsdk
         cd /opt/emsdk
-        ./emsdk install b76bd83583cc5fd07b3a3d5b4857874c1d81a002
-        ./emsdk activate b76bd83583cc5fd07b3a3d5b4857874c1d81a002
+        ./emsdk install tot
+        ./emsdk activate tot
         source emsdk_env.sh
     - name: Install v8
       run: |
