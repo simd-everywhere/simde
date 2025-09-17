@@ -392,7 +392,9 @@ simde_mm256_castps_pd (simde__m256 a) {
   #elif defined(SIMDE_LOONGARCH_LASX_NATIVE)
     return (simde__m256d)a;
   #else
-    return *HEDLEY_REINTERPRET_CAST(simde__m256d*, &a);
+    simde__m256d r;
+    simde_memcpy(&r, &a, sizeof(r));
+    return r;
   #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
@@ -408,7 +410,9 @@ simde_mm256_castps_si256 (simde__m256 a) {
   #elif defined(SIMDE_LOONGARCH_LASX_NATIVE)
     return (simde__m256i)a;
   #else
-    return *HEDLEY_REINTERPRET_CAST(simde__m256i*, &a);
+    simde__m256i r;
+    simde_memcpy(&r, &a, sizeof(r));
+    return r;
   #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
@@ -424,7 +428,9 @@ simde_mm256_castsi256_pd (simde__m256i a) {
   #elif defined(SIMDE_LOONGARCH_LASX_NATIVE)
     return (simde__m256d)a;
   #else
-    return *HEDLEY_REINTERPRET_CAST(simde__m256d*, &a);
+    simde__m256d r;
+    simde_memcpy(&r, &a, sizeof(r));
+    return r;
   #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
@@ -440,7 +446,9 @@ simde_mm256_castsi256_ps (simde__m256i a) {
   #elif defined(SIMDE_LOONGARCH_LASX_NATIVE)
     return (simde__m256)a;
   #else
-    return *HEDLEY_REINTERPRET_CAST(simde__m256*, &a);
+    simde__m256 r;
+    simde_memcpy(&r, &a, sizeof(r));
+    return r;
   #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
@@ -456,7 +464,9 @@ simde_mm256_castpd_ps (simde__m256d a) {
   #elif defined(SIMDE_LOONGARCH_LASX_NATIVE)
     return (simde__m256)a;
   #else
-    return *HEDLEY_REINTERPRET_CAST(simde__m256*, &a);
+    simde__m256 r;
+    simde_memcpy(&r, &a, sizeof(r));
+    return r;
   #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
@@ -472,7 +482,9 @@ simde_mm256_castpd_si256 (simde__m256d a) {
   #elif defined(SIMDE_LOONGARCH_LASX_NATIVE)
     return (simde__m256i)a;
   #else
-    return *HEDLEY_REINTERPRET_CAST(simde__m256i*, &a);
+    simde__m256i r;
+    simde_memcpy(&r, &a, sizeof(r));
+    return r;
   #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
