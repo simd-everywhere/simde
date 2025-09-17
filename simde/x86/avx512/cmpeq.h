@@ -40,7 +40,7 @@ SIMDE_BEGIN_DECLS_
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__mmask16
-simde_mm_cmpeq_epi8_mask (simde__m128i a, simde__m128i b) {
+simde_mm_cmpeq_epi8_mask(simde__m128i a, simde__m128i b) {
   #if defined(SIMDE_X86_AVX512BW_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
     return _mm_cmpeq_epi8_mask(a, b);
   #else
@@ -87,7 +87,7 @@ simde_mm_mask_cmpeq_epi8_mask(simde__mmask16 k1, simde__m128i a, simde__m128i b)
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__mmask32
-simde_mm256_cmpeq_epi8_mask (simde__m256i a, simde__m256i b) {
+simde_mm256_cmpeq_epi8_mask(simde__m256i a, simde__m256i b) {
   #if defined(SIMDE_X86_AVX512BW_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
     return _mm256_cmpeq_epi8_mask(a, b);
   #elif SIMDE_NATURAL_VECTOR_SIZE_LE(256)
@@ -136,7 +136,7 @@ simde_mm256_mask_cmpeq_epi8_mask(simde__mmask32 k1, simde__m256i a, simde__m256i
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__mmask64
-simde_mm512_cmpeq_epi8_mask (simde__m512i a, simde__m512i b) {
+simde_mm512_cmpeq_epi8_mask(simde__m512i a, simde__m512i b) {
   #if defined(SIMDE_X86_AVX512BW_NATIVE)
     return _mm512_cmpeq_epi8_mask(a, b);
   #else
@@ -191,7 +191,7 @@ simde_mm512_mask_cmpeq_epi8_mask(simde__mmask64 k1, simde__m512i a, simde__m512i
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__mmask8
-simde_mm_cmpeq_epi16_mask (simde__m128i a, simde__m128i b) {
+simde_mm_cmpeq_epi16_mask(simde__m128i a, simde__m128i b) {
   #if defined(SIMDE_X86_AVX512BW_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
     return _mm_cmpeq_epi16_mask(a, b);
   #else
@@ -238,7 +238,7 @@ simde_mm_mask_cmpeq_epi16_mask(simde__mmask8 k1, simde__m128i a, simde__m128i b)
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__mmask16
-simde_mm256_cmpeq_epi16_mask (simde__m256i a, simde__m256i b) {
+simde_mm256_cmpeq_epi16_mask(simde__m256i a, simde__m256i b) {
   #if defined(SIMDE_X86_AVX512BW_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
     return _mm256_cmpeq_epi16_mask(a, b);
   #elif SIMDE_NATURAL_VECTOR_SIZE_LE(256)
@@ -287,7 +287,7 @@ simde_mm256_mask_cmpeq_epi16_mask(simde__mmask16 k1, simde__m256i a, simde__m256
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__mmask32
-simde_mm512_cmpeq_epi16_mask (simde__m512i a, simde__m512i b) {
+simde_mm512_cmpeq_epi16_mask(simde__m512i a, simde__m512i b) {
   #if defined(SIMDE_X86_AVX512BW_NATIVE)
     return _mm512_cmpeq_epi16_mask(a, b);
   #else
@@ -342,7 +342,7 @@ simde_mm512_mask_cmpeq_epi16_mask(simde__mmask32 k1, simde__m512i a, simde__m512
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__mmask8
-simde_mm_cmpeq_epi32_mask (simde__m128i a, simde__m128i b) {
+simde_mm_cmpeq_epi32_mask(simde__m128i a, simde__m128i b) {
   #if defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
     return _mm_cmpeq_epi32_mask(a, b);
   #else
@@ -389,7 +389,7 @@ simde_mm_mask_cmpeq_epi32_mask(simde__mmask8 k1, simde__m128i a, simde__m128i b)
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__mmask8
-simde_mm256_cmpeq_epi32_mask (simde__m256i a, simde__m256i b) {
+simde_mm256_cmpeq_epi32_mask(simde__m256i a, simde__m256i b) {
   #if defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
     return _mm256_cmpeq_epi32_mask(a, b);
   #else
@@ -404,7 +404,7 @@ simde_mm256_cmpeq_epi32_mask (simde__m256i a, simde__m256i b) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__mmask8
-simde_mm256_mask_cmpeq_epi32_mask (simde__mmask8 k1, simde__m256i a, simde__m256i b) {
+simde_mm256_mask_cmpeq_epi32_mask(simde__mmask8 k1, simde__m256i a, simde__m256i b) {
   #if defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
     return _mm256_mask_cmpeq_epi32_mask(k1, a, b);
   #else
@@ -418,7 +418,7 @@ simde_mm256_mask_cmpeq_epi32_mask (simde__mmask8 k1, simde__m256i a, simde__m256
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__mmask16
-simde_mm512_cmpeq_epi32_mask (simde__m512i a, simde__m512i b) {
+simde_mm512_cmpeq_epi32_mask(simde__m512i a, simde__m512i b) {
   #if defined(SIMDE_X86_AVX512F_NATIVE)
     return _mm512_cmpeq_epi32_mask(a, b);
   #else
@@ -441,7 +441,7 @@ simde_mm512_cmpeq_epi32_mask (simde__m512i a, simde__m512i b) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__mmask16
-simde_mm512_mask_cmpeq_epi32_mask (simde__mmask16 k1, simde__m512i a, simde__m512i b) {
+simde_mm512_mask_cmpeq_epi32_mask(simde__mmask16 k1, simde__m512i a, simde__m512i b) {
   #if defined(SIMDE_X86_AVX512F_NATIVE)
     return _mm512_mask_cmpeq_epi32_mask(k1, a, b);
   #else
@@ -455,7 +455,7 @@ simde_mm512_mask_cmpeq_epi32_mask (simde__mmask16 k1, simde__m512i a, simde__m51
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__mmask8
-simde_mm_cmpeq_epi64_mask (simde__m128i a, simde__m128i b) {
+simde_mm_cmpeq_epi64_mask(simde__m128i a, simde__m128i b) {
   #if defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
     return _mm_cmpeq_epi64_mask(a, b);
   #else
@@ -502,7 +502,7 @@ simde_mm_mask_cmpeq_epi64_mask(simde__mmask8 k1, simde__m128i a, simde__m128i b)
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__mmask8
-simde_mm256_cmpeq_epi64_mask (simde__m256i a, simde__m256i b) {
+simde_mm256_cmpeq_epi64_mask(simde__m256i a, simde__m256i b) {
   #if defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
     return _mm256_cmpeq_epi64_mask(a, b);
   #else
@@ -517,7 +517,7 @@ simde_mm256_cmpeq_epi64_mask (simde__m256i a, simde__m256i b) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__mmask8
-simde_mm256_mask_cmpeq_epi64_mask (simde__mmask8 k1, simde__m256i a, simde__m256i b) {
+simde_mm256_mask_cmpeq_epi64_mask(simde__mmask8 k1, simde__m256i a, simde__m256i b) {
   #if defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
     return _mm256_mask_cmpeq_epi64_mask(k1, a, b);
   #else
@@ -531,7 +531,7 @@ simde_mm256_mask_cmpeq_epi64_mask (simde__mmask8 k1, simde__m256i a, simde__m256
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__mmask8
-simde_mm512_cmpeq_epi64_mask (simde__m512i a, simde__m512i b) {
+simde_mm512_cmpeq_epi64_mask(simde__m512i a, simde__m512i b) {
   #if defined(SIMDE_X86_AVX512F_NATIVE)
     return _mm512_cmpeq_epi64_mask(a, b);
   #else
@@ -554,7 +554,7 @@ simde_mm512_cmpeq_epi64_mask (simde__m512i a, simde__m512i b) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__mmask8
-simde_mm512_mask_cmpeq_epi64_mask (simde__mmask8 k1, simde__m512i a, simde__m512i b) {
+simde_mm512_mask_cmpeq_epi64_mask(simde__mmask8 k1, simde__m512i a, simde__m512i b) {
   #if defined(SIMDE_X86_AVX512F_NATIVE)
     return _mm512_mask_cmpeq_epi64_mask(k1, a, b);
   #else
@@ -568,7 +568,7 @@ simde_mm512_mask_cmpeq_epi64_mask (simde__mmask8 k1, simde__m512i a, simde__m512
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__mmask16
-simde_mm_cmpeq_epu8_mask (simde__m128i a, simde__m128i b) {
+simde_mm_cmpeq_epu8_mask(simde__m128i a, simde__m128i b) {
   #if defined(SIMDE_X86_AVX512BW_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
     return _mm_cmpeq_epu8_mask(a, b);
   #else
@@ -615,7 +615,7 @@ simde_mm_mask_cmpeq_epu8_mask(simde__mmask16 k1, simde__m128i a, simde__m128i b)
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__mmask32
-simde_mm256_cmpeq_epu8_mask (simde__m256i a, simde__m256i b) {
+simde_mm256_cmpeq_epu8_mask(simde__m256i a, simde__m256i b) {
   #if defined(SIMDE_X86_AVX512BW_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
     return _mm256_cmpeq_epu8_mask(a, b);
   #elif SIMDE_NATURAL_VECTOR_SIZE_LE(256)
@@ -650,7 +650,7 @@ simde_mm256_cmpeq_epu8_mask (simde__m256i a, simde__m256i b) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__mmask32
-simde_mm256_mask_cmpeq_epu8_mask(simde__mmask64 k1, simde__m256i a, simde__m256i b) {
+simde_mm256_mask_cmpeq_epu8_mask(simde__mmask32 k1, simde__m256i a, simde__m256i b) {
   #if defined(SIMDE_X86_AVX512BW_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
     return _mm256_mask_cmpeq_epu8_mask(k1, a, b);
   #else
@@ -664,7 +664,7 @@ simde_mm256_mask_cmpeq_epu8_mask(simde__mmask64 k1, simde__m256i a, simde__m256i
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__mmask64
-simde_mm512_cmpeq_epu8_mask (simde__m512i a, simde__m512i b) {
+simde_mm512_cmpeq_epu8_mask(simde__m512i a, simde__m512i b) {
   #if defined(SIMDE_X86_AVX512BW_NATIVE)
     return _mm512_cmpeq_epu8_mask(a, b);
   #else
@@ -719,7 +719,7 @@ simde_mm512_mask_cmpeq_epu8_mask(simde__mmask64 k1, simde__m512i a, simde__m512i
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__mmask8
-simde_mm_cmpeq_epu16_mask (simde__m128i a, simde__m128i b) {
+simde_mm_cmpeq_epu16_mask(simde__m128i a, simde__m128i b) {
   #if defined(SIMDE_X86_AVX512BW_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
     return _mm_cmpeq_epu16_mask(a, b);
   #else
@@ -752,7 +752,7 @@ simde_mm_cmpeq_epu16_mask (simde__m128i a, simde__m128i b) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__mmask8
-simde_mm_mask_cmpeq_epu16_mask(simde__mmask16 k1, simde__m128i a, simde__m128i b) {
+simde_mm_mask_cmpeq_epu16_mask(simde__mmask8 k1, simde__m128i a, simde__m128i b) {
   #if defined(SIMDE_X86_AVX512BW_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
     return _mm_mask_cmpeq_epu16_mask(k1, a, b);
   #else
@@ -766,7 +766,7 @@ simde_mm_mask_cmpeq_epu16_mask(simde__mmask16 k1, simde__m128i a, simde__m128i b
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__mmask16
-simde_mm256_cmpeq_epu16_mask (simde__m256i a, simde__m256i b) {
+simde_mm256_cmpeq_epu16_mask(simde__m256i a, simde__m256i b) {
   #if defined(SIMDE_X86_AVX512BW_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
     return _mm256_cmpeq_epu16_mask(a, b);
   #elif SIMDE_NATURAL_VECTOR_SIZE_LE(256)
@@ -815,7 +815,7 @@ simde_mm256_mask_cmpeq_epu16_mask(simde__mmask16 k1, simde__m256i a, simde__m256
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__mmask32
-simde_mm512_cmpeq_epu16_mask (simde__m512i a, simde__m512i b) {
+simde_mm512_cmpeq_epu16_mask(simde__m512i a, simde__m512i b) {
   #if defined(SIMDE_X86_AVX512BW_NATIVE)
     return _mm512_cmpeq_epu16_mask(a, b);
   #else
@@ -862,7 +862,7 @@ simde_mm512_mask_cmpeq_epu16_mask(simde__mmask32 k1, simde__m512i a, simde__m512
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__mmask8
-simde_mm_cmpeq_epu32_mask (simde__m128i a, simde__m128i b) {
+simde_mm_cmpeq_epu32_mask(simde__m128i a, simde__m128i b) {
   #if defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
     return _mm_cmpeq_epu32_mask(a, b);
   #else
@@ -895,7 +895,7 @@ simde_mm_cmpeq_epu32_mask (simde__m128i a, simde__m128i b) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__mmask8
-simde_mm_mask_cmpeq_epu32_mask(simde__mmask16 k1, simde__m128i a, simde__m128i b) {
+simde_mm_mask_cmpeq_epu32_mask(simde__mmask8 k1, simde__m128i a, simde__m128i b) {
   #if defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
     return _mm_mask_cmpeq_epu32_mask(k1, a, b);
   #else
@@ -909,7 +909,7 @@ simde_mm_mask_cmpeq_epu32_mask(simde__mmask16 k1, simde__m128i a, simde__m128i b
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__mmask8
-simde_mm256_cmpeq_epu32_mask (simde__m256i a, simde__m256i b) {
+simde_mm256_cmpeq_epu32_mask(simde__m256i a, simde__m256i b) {
   #if defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
     return _mm256_cmpeq_epu32_mask(a, b);
   #elif SIMDE_NATURAL_VECTOR_SIZE_LE(256)
@@ -958,7 +958,7 @@ simde_mm256_mask_cmpeq_epu32_mask(simde__mmask8 k1, simde__m256i a, simde__m256i
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__mmask16
-simde_mm512_cmpeq_epu32_mask (simde__m512i a, simde__m512i b) {
+simde_mm512_cmpeq_epu32_mask(simde__m512i a, simde__m512i b) {
   #if defined(SIMDE_X86_AVX512F_NATIVE)
     return _mm512_cmpeq_epu32_mask(a, b);
   #else
@@ -1005,7 +1005,7 @@ simde_mm512_mask_cmpeq_epu32_mask(simde__mmask32 k1, simde__m512i a, simde__m512
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__mmask8
-simde_mm_cmpeq_epu64_mask (simde__m128i a, simde__m128i b) {
+simde_mm_cmpeq_epu64_mask(simde__m128i a, simde__m128i b) {
   #if defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
     return _mm_cmpeq_epu64_mask(a, b);
   #else
@@ -1038,7 +1038,7 @@ simde_mm_cmpeq_epu64_mask (simde__m128i a, simde__m128i b) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__mmask8
-simde_mm_mask_cmpeq_epu64_mask(simde__mmask16 k1, simde__m128i a, simde__m128i b) {
+simde_mm_mask_cmpeq_epu64_mask(simde__mmask8 k1, simde__m128i a, simde__m128i b) {
   #if defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
     return _mm_mask_cmpeq_epu64_mask(k1, a, b);
   #else
@@ -1101,7 +1101,7 @@ simde_mm256_mask_cmpeq_epu64_mask(simde__mmask8 k1, simde__m256i a, simde__m256i
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__mmask8
-simde_mm512_cmpeq_epu64_mask (simde__m512i a, simde__m512i b) {
+simde_mm512_cmpeq_epu64_mask(simde__m512i a, simde__m512i b) {
   #if defined(SIMDE_X86_AVX512F_NATIVE)
     return _mm512_cmpeq_epu64_mask(a, b);
   #else
@@ -1134,7 +1134,7 @@ simde_mm512_cmpeq_epu64_mask (simde__m512i a, simde__m512i b) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__mmask8
-simde_mm512_mask_cmpeq_epu64_mask(simde__mmask32 k1, simde__m512i a, simde__m512i b) {
+simde_mm512_mask_cmpeq_epu64_mask(simde__mmask8 k1, simde__m512i a, simde__m512i b) {
   #if defined(SIMDE_X86_AVX512F_NATIVE)
     return _mm512_mask_cmpeq_epu64_mask(k1, a, b);
   #else
