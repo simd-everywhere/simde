@@ -394,6 +394,10 @@ typedef union {
     __m128 m128;
   #endif
 
+  #if defined(SIMDE_X86_AVX512FP16_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
+    __m128h m128h;
+  #endif
+
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     int32x4_t neon;
   #endif
@@ -1465,6 +1469,10 @@ typedef union {
   SIMDE_DEFINE_CONVERSION_FUNCTION_(simde_uint32x4_from_m128i,   simde_uint32x4_t,           __m128i)
   SIMDE_DEFINE_CONVERSION_FUNCTION_(simde_uint64x2_from_m128i,   simde_uint64x2_t,           __m128i)
   SIMDE_DEFINE_CONVERSION_FUNCTION_(simde_float64x2_from_m128d, simde_float64x2_t,           __m128d)
+#endif
+#if defined(SIMDE_X86_AVX512FP16_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
+  SIMDE_DEFINE_CONVERSION_FUNCTION_(simde_float16x8_to_m128h,             __m128h, simde_float16x8_t)
+  SIMDE_DEFINE_CONVERSION_FUNCTION_(simde_float16x8_from_m128h, simde_float16x8_t,           __m128h)
 #endif
 
 #if defined(SIMDE_WASM_SIMD128_NATIVE)
