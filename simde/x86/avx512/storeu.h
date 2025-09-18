@@ -30,6 +30,7 @@
 #include "types.h"
 #include "mov.h"
 #include "setzero.h"
+#include "loadu.h"
 
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
@@ -58,8 +59,8 @@ simde_mm256_mask_storeu_epi8 (void * mem_addr, simde__mmask32 k, simde__m256i a)
   #if defined(SIMDE_X86_AVX512BW_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
     _mm256_mask_storeu_epi8(HEDLEY_REINTERPRET_CAST(void*, mem_addr), k, a);
   #else
-    const simde__m256i zero = simde_mm256_setzero_si256();
-    simde_mm256_storeu_epi8(mem_addr, simde_mm256_mask_mov_epi8(zero, k, a));
+    const simde__m256i src = simde_mm256_loadu_epi8(mem_addr);
+    simde_mm256_storeu_epi8(mem_addr, simde_mm256_mask_mov_epi8(src, k, a));
   #endif
 }
 #if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES) && defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES)
@@ -73,8 +74,8 @@ simde_mm256_mask_storeu_epi16 (void * mem_addr, simde__mmask16 k, simde__m256i a
   #if defined(SIMDE_X86_AVX512BW_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
     _mm256_mask_storeu_epi16(HEDLEY_REINTERPRET_CAST(void*, mem_addr), k, a);
   #else
-    const simde__m256i zero = simde_mm256_setzero_si256();
-    simde_mm256_storeu_epi16(mem_addr, simde_mm256_mask_mov_epi16(zero, k, a));
+    const simde__m256i src = simde_mm256_loadu_epi16(mem_addr);
+    simde_mm256_storeu_epi16(mem_addr, simde_mm256_mask_mov_epi16(src, k, a));
   #endif
 }
 #if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES) && defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES)
@@ -88,8 +89,8 @@ simde_mm256_mask_storeu_epi32 (void * mem_addr, simde__mmask8 k, simde__m256i a)
   #if defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
     _mm256_mask_storeu_epi32(HEDLEY_REINTERPRET_CAST(void*, mem_addr), k, a);
   #else
-    const simde__m256i zero = simde_mm256_setzero_si256();
-    simde_mm256_storeu_epi32(mem_addr, simde_mm256_mask_mov_epi32(zero, k, a));
+    const simde__m256i src = simde_mm256_loadu_epi32(mem_addr);
+    simde_mm256_storeu_epi32(mem_addr, simde_mm256_mask_mov_epi32(src, k, a));
   #endif
 }
 #if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES) && defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES)
@@ -103,8 +104,8 @@ simde_mm256_mask_storeu_epi64 (void * mem_addr, simde__mmask8 k, simde__m256i a)
   #if defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
     _mm256_mask_storeu_epi64(HEDLEY_REINTERPRET_CAST(void*, mem_addr), k, a);
   #else
-    const simde__m256i zero = simde_mm256_setzero_si256();
-    simde_mm256_storeu_epi64(mem_addr, simde_mm256_mask_mov_epi64(zero, k, a));
+    const simde__m256i src = simde_mm256_loadu_epi64(mem_addr);
+    simde_mm256_storeu_epi64(mem_addr, simde_mm256_mask_mov_epi64(src, k, a));
   #endif
 }
 #if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES) && defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES)
@@ -188,8 +189,8 @@ simde_mm512_mask_storeu_epi16 (void * mem_addr, simde__mmask32 k, simde__m512i a
   #if defined(SIMDE_X86_AVX512BW_NATIVE)
     _mm512_mask_storeu_epi16(HEDLEY_REINTERPRET_CAST(void*, mem_addr), k, a);
   #else
-    const simde__m512i zero = simde_mm512_setzero_si512();
-    simde_mm512_storeu_epi16(mem_addr, simde_mm512_mask_mov_epi16(zero, k, a));
+    const simde__m512i src = simde_mm512_loadu_epi16(mem_addr);
+    simde_mm512_storeu_epi16(mem_addr, simde_mm512_mask_mov_epi16(src, k, a));
   #endif
 }
 #if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES)
@@ -203,8 +204,8 @@ simde_mm512_mask_storeu_epi32 (void * mem_addr, simde__mmask16 k, simde__m512i a
   #if defined(SIMDE_X86_AVX512F_NATIVE)
     _mm512_mask_storeu_epi32(HEDLEY_REINTERPRET_CAST(void*, mem_addr), k, a);
   #else
-    const simde__m512i zero = simde_mm512_setzero_si512();
-    simde_mm512_storeu_epi32(mem_addr, simde_mm512_mask_mov_epi32(zero, k, a));
+    const simde__m512i src = simde_mm512_loadu_epi32(mem_addr);
+    simde_mm512_storeu_epi32(mem_addr, simde_mm512_mask_mov_epi32(src, k, a));
   #endif
 }
 #if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
@@ -218,8 +219,8 @@ simde_mm512_mask_storeu_epi64 (void * mem_addr, simde__mmask8 k, simde__m512i a)
   #if defined(SIMDE_X86_AVX512F_NATIVE)
     _mm512_mask_storeu_epi64(HEDLEY_REINTERPRET_CAST(void*, mem_addr), k, a);
   #else
-    const simde__m512i zero = simde_mm512_setzero_si512();
-    simde_mm512_storeu_epi64(mem_addr, simde_mm512_mask_mov_epi64(zero, k, a));
+    const simde__m512i src = simde_mm512_loadu_epi64(mem_addr);
+    simde_mm512_storeu_epi64(mem_addr, simde_mm512_mask_mov_epi64(src, k, a));
   #endif
 }
 #if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
@@ -233,8 +234,8 @@ simde_mm512_mask_storeu_ps (void * mem_addr, simde__mmask16 k, simde__m512 a) {
   #if defined(SIMDE_X86_AVX512F_NATIVE)
     _mm512_mask_storeu_ps(HEDLEY_REINTERPRET_CAST(void*, mem_addr), k, a);
   #else
-    const simde__m512 zero = simde_mm512_setzero_ps();
-    simde_mm512_storeu_ps(mem_addr, simde_mm512_mask_mov_ps(zero, k, a));
+    const simde__m512 src = simde_mm512_loadu_ps(mem_addr);
+    simde_mm512_storeu_ps(mem_addr, simde_mm512_mask_mov_ps(src, k, a));
   #endif
 }
 #if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
@@ -248,8 +249,8 @@ simde_mm512_mask_storeu_pd (void * mem_addr, simde__mmask8 k, simde__m512d a) {
   #if defined(SIMDE_X86_AVX512F_NATIVE)
     _mm512_mask_storeu_pd(HEDLEY_REINTERPRET_CAST(void*, mem_addr), k, a);
   #else
-    const simde__m512d zero = simde_mm512_setzero_pd();
-    simde_mm512_storeu_pd(mem_addr, simde_mm512_mask_mov_pd(zero, k, a));
+    const simde__m512d src = simde_mm512_loadu_pd(mem_addr);
+    simde_mm512_storeu_pd(mem_addr, simde_mm512_mask_mov_pd(src, k, a));
   #endif
 }
 #if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
