@@ -1,4 +1,4 @@
-/* MIT License
+/* SPDX-License-Identifier: MIT
  *
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
@@ -34,6 +34,10 @@
  */
 
 #include "sse2.h"
+
+HEDLEY_DIAGNOSTIC_PUSH
+SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
+SIMDE_BEGIN_DECLS_
 
 /*
  * Multiplication in GF(2^8)
@@ -413,5 +417,9 @@ simde__m128i simde_mm_aesimc_si128(simde__m128i a) {
 #endif
 
 #undef simde_x_aes_Nb
+
+SIMDE_END_DECLS_
+
+HEDLEY_DIAGNOSTIC_POP
 
 #endif /* !defined(SIMDE_X86_AES_H) */
