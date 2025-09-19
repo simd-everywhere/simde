@@ -115,6 +115,20 @@ simde_mm_mask_storeu_epi64 (void * mem_addr, simde__mmask8 k, simde__m128i a) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 void
+simde_mm_storeu_ph (void * mem_addr, simde__m128h a) {
+  #if defined(SIMDE_X86_AVX512FP16_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
+    _mm_storeu_ph(mem_addr, a);
+  #else
+    simde_memcpy(mem_addr, &a, sizeof(a));
+  #endif
+}
+#if defined(SIMDE_X86_AVX512FP16_ENABLE_NATIVE_ALIASES) && defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES)
+  #undef _mm_storeu_ph
+  #define _mm_storeu_ph(mem_addr, a) simde_mm_storeu_ph(mem_addr, a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+void
 simde_mm_mask_storeu_ps(void * mem_addr, simde__mmask8 k, simde__m128 a) {
   #if defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
     _mm_mask_storeu_ps(HEDLEY_REINTERPRET_CAST(void*, mem_addr), k, a);
@@ -158,6 +172,20 @@ simde_mm_mask_storeu_pd(void * mem_addr, simde__mmask8 k, simde__m128d a) {
   #undef _mm256_storeu_epi64
   #define _mm256_storeu_epi32(mem_addr, a) simde_mm256_storeu_si256(mem_addr, a)
   #define _mm256_storeu_epi64(mem_addr, a) simde_mm256_storeu_si256(mem_addr, a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+void
+simde_mm256_storeu_ph (void * mem_addr, simde__m256h a) {
+  #if defined(SIMDE_X86_AVX512FP16_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
+    _mm256_storeu_ph(mem_addr, a);
+  #else
+    simde_memcpy(mem_addr, &a, sizeof(a));
+  #endif
+}
+#if defined(SIMDE_X86_AVX512FP16_ENABLE_NATIVE_ALIASES) && defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_storeu_ph
+  #define _mm256_storeu_ph(mem_addr, a) simde_mm256_storeu_ph(mem_addr, a)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
