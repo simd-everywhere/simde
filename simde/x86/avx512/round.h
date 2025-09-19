@@ -2,6 +2,7 @@
 #define SIMDE_X86_AVX512_ROUND_H
 
 #include "types.h"
+#include "setzero.h"
 
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS

@@ -32,6 +32,7 @@
 
 #include "types.h"
 #include "mov.h"
+#include "setzero.h"
 #include "../../simde-f16.h"
 
 HEDLEY_DIAGNOSTIC_PUSH
