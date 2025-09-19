@@ -29,7 +29,6 @@
 
 #include "types.h"
 #include "mov.h"
-#include "setzero.h"
 #include "loadu.h"
 
 HEDLEY_DIAGNOSTIC_PUSH
