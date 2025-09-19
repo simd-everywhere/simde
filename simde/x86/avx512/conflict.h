@@ -2,10 +2,10 @@
 #define SIMDE_X86_AVX512_CONFLICT_H
 
 #include "types.h"
-#include "mov_mask.h"
 #include "mov.h"
 #include "cmpeq.h"
 #include "set1.h"
+#include "setzero.h"
 
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
