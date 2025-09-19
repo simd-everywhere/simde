@@ -7,6 +7,7 @@
 #include "mul.h"
 #include "round.h"
 #include "cmpeq.h"
+#include "setzero.h"
 
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS

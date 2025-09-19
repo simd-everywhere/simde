@@ -122,6 +122,71 @@ simde_test_debug_printf_(const char* format, ...) {
   #define SIMDE_TEST_STRUCT_MODIFIERS static const
 #endif
 
+HEDLEY_DIAGNOSTIC_PUSH
+SIMDE_DIAGNOSTIC_DISABLE_FLOAT_EQUAL_
+
+static int
+simde_test_equal_f32(simde_float32 a, simde_float32 b, simde_float32 slop) {
+  if (simde_math_isnan(a)) {
+    return simde_math_isnan(b);
+  } else if (simde_math_isinf(a)) {
+    return !((a < b) || (a > b));
+  } else if (slop == SIMDE_FLOAT32_C(0.0)) {
+    return !simde_memcmp(&a, &b, sizeof(simde_float32));
+  } else {
+    simde_float32 lo = a - slop;
+    if (HEDLEY_UNLIKELY(lo == a))
+      lo = simde_math_nextafterf(a, -SIMDE_MATH_INFINITYF);
+
+    simde_float32 hi = a + slop;
+    if (HEDLEY_UNLIKELY(hi == a))
+      hi = simde_math_nextafterf(a, SIMDE_MATH_INFINITYF);
+
+    return ((b >= lo) && (b <= hi));
+  }
+}
+
+static int
+simde_test_equal_f16(simde_float16 a, simde_float16 b, simde_float16 slop) {
+  simde_float32
+    af = simde_float16_to_float32(a),
+    bf = simde_float16_to_float32(b),
+    slopf = simde_float16_to_float32(slop);
+  return simde_test_equal_f32(af, bf, slopf);
+}
+
+static int
+simde_test_equal_f64(simde_float64 a, simde_float64 b, simde_float64 slop) {
+  if (simde_math_isnan(a)) {
+    return simde_math_isnan(b);
+  } else if (simde_math_isinf(a)) {
+    return !((a < b) || (a > b));
+  } else if (slop == SIMDE_FLOAT64_C(0.0)) {
+    return !simde_memcmp(&a, &b, sizeof(simde_float64));
+  } else {
+    simde_float64 lo = a - slop;
+    if (HEDLEY_UNLIKELY(lo == a))
+      lo = simde_math_nextafter(a, -SIMDE_MATH_INFINITY);
+
+    simde_float64 hi = a + slop;
+    if (HEDLEY_UNLIKELY(hi == a))
+      hi = simde_math_nextafter(a, SIMDE_MATH_INFINITY);
+
+    return ((b >= lo) && (b <= hi));
+  }
+}
+
+static int
+simde_test_equal_bf16(simde_bfloat16 a, simde_bfloat16 b, simde_bfloat16 slop) {
+  simde_float32
+    af = simde_bfloat16_to_float32(a),
+    bf = simde_bfloat16_to_float32(b),
+    slopf = simde_bfloat16_to_float32(slop);
+  return simde_test_equal_f32(af, bf, slopf);
+}
+
+HEDLEY_DIAGNOSTIC_POP
+
 HEDLEY_PRINTF_FORMAT(3, 4)
 static void
 simde_test_codegen_snprintf_(char* str, size_t size, const char* format, ...) {
@@ -153,6 +218,8 @@ static void
 simde_test_codegen_f32(size_t buf_len, char buf[HEDLEY_ARRAY_PARAM(buf_len)], simde_float32 value) {
   if (simde_math_isnan(value)) {
     simde_test_codegen_snprintf_(buf, buf_len, "           SIMDE_MATH_NANF");
+  } else if (simde_test_equal_f32(value, SIMDE_MATH_FLT_MAX, simde_math_powf(SIMDE_FLOAT32_C(10.0), SIMDE_FLOAT32_C(-1.0)))) {
+    simde_test_codegen_snprintf_(buf, buf_len, "        SIMDE_MATH_FLT_MAX");
   } else if (simde_math_isinf(value)) {
     simde_test_codegen_snprintf_(buf, buf_len, "%5cSIMDE_MATH_INFINITYF", value < 0 ? '-' : ' ');
   } else {
@@ -164,6 +231,8 @@ static void
 simde_test_codegen_f64(size_t buf_len, char buf[HEDLEY_ARRAY_PARAM(buf_len)], simde_float64 value) {
   if (simde_math_isnan(value)) {
     simde_test_codegen_snprintf_(buf, buf_len, "            SIMDE_MATH_NAN");
+  } else if (simde_test_equal_f64(value, SIMDE_MATH_DBL_MAX, simde_math_powf(SIMDE_FLOAT64_C(10.0), SIMDE_FLOAT64_C(-1.0)))) {
+    simde_test_codegen_snprintf_(buf, buf_len, "        SIMDE_MATH_DBL_MAX");
   } else if (simde_math_isinf(value)) {
     simde_test_codegen_snprintf_(buf, buf_len, "%7cSIMDE_MATH_INFINITY", value < 0 ? '-' : ' ');
   } else {
@@ -733,71 +802,6 @@ SIMDE_TEST_CODEGEN_WRITE_SCALAR_FUNC_(simde_bfloat16, bf16)
 #define simde_test_codegen_write_1p16(indent, value) simde_test_codegen_write_p16_full((indent), #value, (value), SIMDE_TEST_VEC_POS_SINGLE)
 #define simde_test_codegen_write_1p64(indent, value) simde_test_codegen_write_p64_full((indent), #value, (value), SIMDE_TEST_VEC_POS_SINGLE)
 #define simde_test_codegen_write_1bf16(indent, value) simde_test_codegen_write_bf16_full((indent), #value, (value), SIMDE_TEST_VEC_POS_SINGLE)
-
-HEDLEY_DIAGNOSTIC_PUSH
-SIMDE_DIAGNOSTIC_DISABLE_FLOAT_EQUAL_
-
-static int
-simde_test_equal_f32(simde_float32 a, simde_float32 b, simde_float32 slop) {
-  if (simde_math_isnan(a)) {
-    return simde_math_isnan(b);
-  } else if (simde_math_isinf(a)) {
-    return !((a < b) || (a > b));
-  } else if (slop == SIMDE_FLOAT32_C(0.0)) {
-    return !simde_memcmp(&a, &b, sizeof(simde_float32));
-  } else {
-    simde_float32 lo = a - slop;
-    if (HEDLEY_UNLIKELY(lo == a))
-      lo = simde_math_nextafterf(a, -SIMDE_MATH_INFINITYF);
-
-    simde_float32 hi = a + slop;
-    if (HEDLEY_UNLIKELY(hi == a))
-      hi = simde_math_nextafterf(a, SIMDE_MATH_INFINITYF);
-
-    return ((b >= lo) && (b <= hi));
-  }
-}
-
-static int
-simde_test_equal_f16(simde_float16 a, simde_float16 b, simde_float16 slop) {
-  simde_float32
-    af = simde_float16_to_float32(a),
-    bf = simde_float16_to_float32(b),
-    slopf = simde_float16_to_float32(slop);
-  return simde_test_equal_f32(af, bf, slopf);
-}
-
-static int
-simde_test_equal_f64(simde_float64 a, simde_float64 b, simde_float64 slop) {
-  if (simde_math_isnan(a)) {
-    return simde_math_isnan(b);
-  } else if (simde_math_isinf(a)) {
-    return !((a < b) || (a > b));
-  } else if (slop == SIMDE_FLOAT64_C(0.0)) {
-    return !simde_memcmp(&a, &b, sizeof(simde_float64));
-  } else {
-    simde_float64 lo = a - slop;
-    if (HEDLEY_UNLIKELY(lo == a))
-      lo = simde_math_nextafter(a, -SIMDE_MATH_INFINITY);
-
-    simde_float64 hi = a + slop;
-    if (HEDLEY_UNLIKELY(hi == a))
-      hi = simde_math_nextafter(a, SIMDE_MATH_INFINITY);
-
-    return ((b >= lo) && (b <= hi));
-  }
-}
-
-static int
-simde_test_equal_bf16(simde_bfloat16 a, simde_bfloat16 b, simde_bfloat16 slop) {
-  simde_float32
-    af = simde_bfloat16_to_float32(a),
-    bf = simde_bfloat16_to_float32(b),
-    slopf = simde_bfloat16_to_float32(slop);
-  return simde_test_equal_f32(af, bf, slopf);
-}
-
-HEDLEY_DIAGNOSTIC_POP
 
 static simde_float16
 simde_test_f16_precision_to_slop(int precision) {
