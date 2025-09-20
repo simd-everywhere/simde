@@ -24,6 +24,7 @@
  *   2020      Evan Nemerson <evan@nemerson.com>
  *   2020      Hidayat Khan <huk2209@gmail.com>
  *   2020      Christopher Moore <moore@free.fr>
+ *   2025      Michael R. Crusoe <crusoe@debian.org>
  */
 
 #if !defined(SIMDE_X86_AVX512_BROADCAST_H)
@@ -638,6 +639,132 @@ simde_mm512_maskz_broadcastd_epi32(simde__mmask16 k, simde__m128i a) {
 #if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
   #undef _mm512_maskz_broadcastd_epi32
   #define _mm512_maskz_broadcastd_epi32(k, a) simde_mm512_maskz_broadcastd_epi32(k, a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m128i
+simde_mm_broadcastmb_epi64 (simde__mmask8 k) {
+  #if defined(SIMDE_X86_AVX512CD_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
+    return _mm_broadcastmb_epi64(k);
+  #else
+    simde__m128i_private r_;
+
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.i64) / sizeof(r_.i64[0])) ; i++) {
+      r_.i64[i] = k;
+    }
+
+    return simde__m128i_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_X86_AVX512CD_ENABLE_NATIVE_ALIASES) && defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES)
+  #undef _mm_broadcastmb_epi64
+  #define _mm_broadcastmb_epi64(k) simde_mm_broadcastmb_epi64(k)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256i
+simde_mm256_broadcastmb_epi64 (simde__mmask8 k) {
+  #if defined(SIMDE_X86_AVX512CD_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
+    return _mm256_broadcastmb_epi64(k);
+  #else
+    simde__m256i_private r_;
+
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.i64) / sizeof(r_.i64[0])) ; i++) {
+      r_.i64[i] = k;
+    }
+
+    return simde__m256i_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_X86_AVX512CD_ENABLE_NATIVE_ALIASES) && defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_broadcastmb_epi64
+  #define _mm256_broadcastmb_epi64(k) simde_mm256_broadcastmb_epi64(k)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512i
+simde_mm512_broadcastmb_epi64 (simde__mmask8 k) {
+  #if defined(SIMDE_X86_AVX512CD_NATIVE)
+    return _mm512_broadcastmb_epi64(k);
+  #else
+    simde__m512i_private r_;
+
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.i64) / sizeof(r_.i64[0])) ; i++) {
+      r_.i64[i] = k;
+    }
+
+    return simde__m512i_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_X86_AVX512CD_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_broadcastmb_epi64
+  #define _mm512_broadcastmb_epi64(k) simde_mm512_broadcastmb_epi64(k)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m128i
+simde_mm_broadcastmw_epi32 (simde__mmask16 k) {
+  #if defined(SIMDE_X86_AVX512CD_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
+    return _mm_broadcastmw_epi32(k);
+  #else
+    simde__m128i_private r_;
+
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {
+      r_.i32[i] = k;
+    }
+
+    return simde__m128i_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_X86_AVX512CD_ENABLE_NATIVE_ALIASES) && defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES)
+  #undef _mm_broadcastmw_epi32
+  #define _mm_broadcastmw_epi32(k) simde_mm_broadcastmw_epi32(k)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256i
+simde_mm256_broadcastmw_epi32 (simde__mmask16 k) {
+  #if defined(SIMDE_X86_AVX512CD_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
+    return _mm256_broadcastmw_epi32(k);
+  #else
+    simde__m256i_private r_;
+
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {
+      r_.i32[i] = k;
+    }
+
+    return simde__m256i_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_X86_AVX512CD_ENABLE_NATIVE_ALIASES) && defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_broadcastmw_epi32
+  #define _mm256_broadcastmw_epi32(k) simde_mm256_broadcastmw_epi32(k)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m512i
+simde_mm512_broadcastmw_epi32 (simde__mmask16 k) {
+  #if defined(SIMDE_X86_AVX512CD_NATIVE)
+    return _mm512_broadcastmw_epi32(k);
+  #else
+    simde__m512i_private r_;
+
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {
+      r_.i32[i] = k;
+    }
+
+    return simde__m512i_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_X86_AVX512CD_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_broadcastmw_epi32
+  #define _mm512_broadcastmw_epi32(k) simde_mm512_broadcastmw_epi32(k)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
