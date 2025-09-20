@@ -232,6 +232,8 @@ static void
 simde_test_codegen_f64(size_t buf_len, char buf[HEDLEY_ARRAY_PARAM(buf_len)], simde_float64 value) {
   if (simde_math_isnan(value)) {
     simde_test_codegen_snprintf_(buf, buf_len, "            SIMDE_MATH_NAN");
+  } else if (simde_test_equal_f64(value, SIMDE_MATH_DBL_MAX, simde_math_pow(SIMDE_FLOAT64_C(10.0), SIMDE_FLOAT64_C(-1.0)))) {
+    simde_test_codegen_snprintf_(buf, buf_len, "        SIMDE_MATH_DBL_MAX");
   } else if (simde_math_isinf(value)) {
     simde_test_codegen_snprintf_(buf, buf_len, "%7cSIMDE_MATH_INFINITY", value < 0 ? '-' : ' ');
   } else {
