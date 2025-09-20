@@ -24,6 +24,7 @@
  *   2020      Evan Nemerson <evan@nemerson.com>
  *   2020      Hidayat Khan <huk2209@gmail.com>
  *   2020      Christopher Moore <moore@free.fr>
+ *   2025      Michael R. Crusoe <crusoe@debian.org>
  */
 
 #define SIMDE_TEST_X86_AVX512_INSN broadcast
@@ -2249,6 +2250,285 @@ test_simde_mm512_maskz_broadcastd_epi32(SIMDE_MUNIT_TEST_ARGS) {
 }
 
 static int
+test_simde_mm_broadcastmb_epi64(SIMDE_MUNIT_TEST_ARGS) {
+#if 1
+  const struct {
+    const simde__mmask8 k;
+    const int64_t r[2];
+  } test_vec[] = {
+    { UINT8_C( 93),
+      {  INT64_C(                  93),  INT64_C(                  93) } },
+    { UINT8_C(  2),
+      {  INT64_C(                   2),  INT64_C(                   2) } },
+    { UINT8_C(247),
+      {  INT64_C(                 247),  INT64_C(                 247) } },
+    { UINT8_C(133),
+      {  INT64_C(                 133),  INT64_C(                 133) } },
+    { UINT8_C(235),
+      {  INT64_C(                 235),  INT64_C(                 235) } },
+    { UINT8_C( 81),
+      {  INT64_C(                  81),  INT64_C(                  81) } },
+    { UINT8_C(127),
+      {  INT64_C(                 127),  INT64_C(                 127) } },
+    { UINT8_C(189),
+      {  INT64_C(                 189),  INT64_C(                 189) } },
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    simde__m128i r = simde_mm_broadcastmb_epi64(test_vec[i].k);
+    simde_test_x86_assert_equal_i64x2(r, simde_mm_loadu_epi64(test_vec[i].r));
+  }
+
+  return 0;
+#else
+  fputc('\n', stdout);
+  for (int i = 0 ; i < 8 ; i++) {
+    simde__mmask8 k = simde_test_x86_random_mmask8();
+    simde__m128i r = simde_mm_broadcastmb_epi64(k);
+
+    simde_test_x86_write_mmask8(2, k, SIMDE_TEST_VEC_POS_FIRST);
+    simde_test_x86_write_i64x2(2, r, SIMDE_TEST_VEC_POS_LAST);
+  }
+  return 1;
+#endif
+}
+
+static int
+test_simde_mm256_broadcastmb_epi64(SIMDE_MUNIT_TEST_ARGS) {
+#if 1
+  const struct {
+    const simde__mmask8 k;
+    const int64_t r[4];
+  } test_vec[] = {
+    { UINT8_C( 71),
+      {  INT64_C(                  71),  INT64_C(                  71),  INT64_C(                  71),  INT64_C(                  71) } },
+    { UINT8_C(  9),
+      {  INT64_C(                   9),  INT64_C(                   9),  INT64_C(                   9),  INT64_C(                   9) } },
+    { UINT8_C(168),
+      {  INT64_C(                 168),  INT64_C(                 168),  INT64_C(                 168),  INT64_C(                 168) } },
+    { UINT8_C(106),
+      {  INT64_C(                 106),  INT64_C(                 106),  INT64_C(                 106),  INT64_C(                 106) } },
+    { UINT8_C(218),
+      {  INT64_C(                 218),  INT64_C(                 218),  INT64_C(                 218),  INT64_C(                 218) } },
+    { UINT8_C(100),
+      {  INT64_C(                 100),  INT64_C(                 100),  INT64_C(                 100),  INT64_C(                 100) } },
+    { UINT8_C( 89),
+      {  INT64_C(                  89),  INT64_C(                  89),  INT64_C(                  89),  INT64_C(                  89) } },
+    { UINT8_C(253),
+      {  INT64_C(                 253),  INT64_C(                 253),  INT64_C(                 253),  INT64_C(                 253) } },
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    simde__m256i r = simde_mm256_broadcastmb_epi64(test_vec[i].k);
+    simde_test_x86_assert_equal_i64x4(r, simde_mm256_loadu_epi64(test_vec[i].r));
+  }
+
+  return 0;
+#else
+  fputc('\n', stdout);
+  for (int i = 0 ; i < 8 ; i++) {
+    simde__mmask8 k = simde_test_x86_random_mmask8();
+    simde__m256i r = simde_mm256_broadcastmb_epi64(k);
+
+    simde_test_x86_write_mmask8(2, k, SIMDE_TEST_VEC_POS_FIRST);
+    simde_test_x86_write_i64x4(2, r, SIMDE_TEST_VEC_POS_LAST);
+  }
+  return 1;
+#endif
+}
+
+static int
+test_simde_mm512_broadcastmb_epi64(SIMDE_MUNIT_TEST_ARGS) {
+#if 1
+  const struct {
+    const simde__mmask8 k;
+    const int64_t r[8];
+  } test_vec[] = {
+    { UINT8_C(136),
+      {  INT64_C(                 136),  INT64_C(                 136),  INT64_C(                 136),  INT64_C(                 136),
+         INT64_C(                 136),  INT64_C(                 136),  INT64_C(                 136),  INT64_C(                 136) } },
+    { UINT8_C(116),
+      {  INT64_C(                 116),  INT64_C(                 116),  INT64_C(                 116),  INT64_C(                 116),
+         INT64_C(                 116),  INT64_C(                 116),  INT64_C(                 116),  INT64_C(                 116) } },
+    { UINT8_C( 35),
+      {  INT64_C(                  35),  INT64_C(                  35),  INT64_C(                  35),  INT64_C(                  35),
+         INT64_C(                  35),  INT64_C(                  35),  INT64_C(                  35),  INT64_C(                  35) } },
+    { UINT8_C(149),
+      {  INT64_C(                 149),  INT64_C(                 149),  INT64_C(                 149),  INT64_C(                 149),
+         INT64_C(                 149),  INT64_C(                 149),  INT64_C(                 149),  INT64_C(                 149) } },
+    { UINT8_C(140),
+      {  INT64_C(                 140),  INT64_C(                 140),  INT64_C(                 140),  INT64_C(                 140),
+         INT64_C(                 140),  INT64_C(                 140),  INT64_C(                 140),  INT64_C(                 140) } },
+    { UINT8_C( 55),
+      {  INT64_C(                  55),  INT64_C(                  55),  INT64_C(                  55),  INT64_C(                  55),
+         INT64_C(                  55),  INT64_C(                  55),  INT64_C(                  55),  INT64_C(                  55) } },
+    { UINT8_C(158),
+      {  INT64_C(                 158),  INT64_C(                 158),  INT64_C(                 158),  INT64_C(                 158),
+         INT64_C(                 158),  INT64_C(                 158),  INT64_C(                 158),  INT64_C(                 158) } },
+    { UINT8_C(109),
+      {  INT64_C(                 109),  INT64_C(                 109),  INT64_C(                 109),  INT64_C(                 109),
+         INT64_C(                 109),  INT64_C(                 109),  INT64_C(                 109),  INT64_C(                 109) } },
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    simde__m512i r = simde_mm512_broadcastmb_epi64(test_vec[i].k);
+    simde_test_x86_assert_equal_i64x8(r, simde_mm512_loadu_epi64(test_vec[i].r));
+  }
+
+  return 0;
+#else
+  fputc('\n', stdout);
+  for (int i = 0 ; i < 8 ; i++) {
+    simde__mmask8 k = simde_test_x86_random_mmask8();
+    simde__m512i r = simde_mm512_broadcastmb_epi64(k);
+
+    simde_test_x86_write_mmask8(2, k, SIMDE_TEST_VEC_POS_FIRST);
+    simde_test_x86_write_i64x8(2, r, SIMDE_TEST_VEC_POS_LAST);
+  }
+  return 1;
+#endif
+}
+
+static int
+test_simde_mm_broadcastmw_epi32(SIMDE_MUNIT_TEST_ARGS) {
+#if 1
+  const struct {
+    const simde__mmask16 k;
+    const int32_t r[4];
+  } test_vec[] = {
+    { UINT16_C(21547),
+      {  INT32_C(       21547),  INT32_C(       21547),  INT32_C(       21547),  INT32_C(       21547) } },
+    { UINT16_C( 5706),
+      {  INT32_C(        5706),  INT32_C(        5706),  INT32_C(        5706),  INT32_C(        5706) } },
+    { UINT16_C(41738),
+      {  INT32_C(       41738),  INT32_C(       41738),  INT32_C(       41738),  INT32_C(       41738) } },
+    { UINT16_C(16663),
+      {  INT32_C(       16663),  INT32_C(       16663),  INT32_C(       16663),  INT32_C(       16663) } },
+    { UINT16_C(10117),
+      {  INT32_C(       10117),  INT32_C(       10117),  INT32_C(       10117),  INT32_C(       10117) } },
+    { UINT16_C(27688),
+      {  INT32_C(       27688),  INT32_C(       27688),  INT32_C(       27688),  INT32_C(       27688) } },
+    { UINT16_C( 9820),
+      {  INT32_C(        9820),  INT32_C(        9820),  INT32_C(        9820),  INT32_C(        9820) } },
+    { UINT16_C(62606),
+      {  INT32_C(       62606),  INT32_C(       62606),  INT32_C(       62606),  INT32_C(       62606) } },
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    simde__m128i r = simde_mm_broadcastmw_epi32(test_vec[i].k);
+    simde_test_x86_assert_equal_i32x4(r, simde_mm_loadu_epi64(test_vec[i].r));
+  }
+
+  return 0;
+#else
+  fputc('\n', stdout);
+  for (int i = 0 ; i < 8 ; i++) {
+    simde__mmask16 k = simde_test_x86_random_mmask16();
+    simde__m128i r = simde_mm_broadcastmw_epi32(k);
+
+    simde_test_x86_write_mmask16(2, k, SIMDE_TEST_VEC_POS_FIRST);
+    simde_test_x86_write_i32x4(2, r, SIMDE_TEST_VEC_POS_LAST);
+  }
+  return 1;
+#endif
+}
+
+static int
+test_simde_mm256_broadcastmw_epi32(SIMDE_MUNIT_TEST_ARGS) {
+#if 1
+  const struct {
+    const simde__mmask16 k;
+    const int32_t r[8];
+  } test_vec[] = {
+    { UINT16_C(40961),
+      {  INT32_C(       40961),  INT32_C(       40961),  INT32_C(       40961),  INT32_C(       40961),  INT32_C(       40961),  INT32_C(       40961),  INT32_C(       40961),  INT32_C(       40961) } },
+    { UINT16_C(56177),
+      {  INT32_C(       56177),  INT32_C(       56177),  INT32_C(       56177),  INT32_C(       56177),  INT32_C(       56177),  INT32_C(       56177),  INT32_C(       56177),  INT32_C(       56177) } },
+    { UINT16_C(37460),
+      {  INT32_C(       37460),  INT32_C(       37460),  INT32_C(       37460),  INT32_C(       37460),  INT32_C(       37460),  INT32_C(       37460),  INT32_C(       37460),  INT32_C(       37460) } },
+    { UINT16_C(21678),
+      {  INT32_C(       21678),  INT32_C(       21678),  INT32_C(       21678),  INT32_C(       21678),  INT32_C(       21678),  INT32_C(       21678),  INT32_C(       21678),  INT32_C(       21678) } },
+    { UINT16_C(44832),
+      {  INT32_C(       44832),  INT32_C(       44832),  INT32_C(       44832),  INT32_C(       44832),  INT32_C(       44832),  INT32_C(       44832),  INT32_C(       44832),  INT32_C(       44832) } },
+    { UINT16_C(24248),
+      {  INT32_C(       24248),  INT32_C(       24248),  INT32_C(       24248),  INT32_C(       24248),  INT32_C(       24248),  INT32_C(       24248),  INT32_C(       24248),  INT32_C(       24248) } },
+    { UINT16_C(46035),
+      {  INT32_C(       46035),  INT32_C(       46035),  INT32_C(       46035),  INT32_C(       46035),  INT32_C(       46035),  INT32_C(       46035),  INT32_C(       46035),  INT32_C(       46035) } },
+    { UINT16_C(65101),
+      {  INT32_C(       65101),  INT32_C(       65101),  INT32_C(       65101),  INT32_C(       65101),  INT32_C(       65101),  INT32_C(       65101),  INT32_C(       65101),  INT32_C(       65101) } },
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    simde__m256i r = simde_mm256_broadcastmw_epi32(test_vec[i].k);
+    simde_test_x86_assert_equal_i32x8(r, simde_mm256_loadu_epi32(test_vec[i].r));
+  }
+
+  return 0;
+#else
+  fputc('\n', stdout);
+  for (int i = 0 ; i < 8 ; i++) {
+    simde__mmask16 k = simde_test_x86_random_mmask16();
+    simde__m256i r = simde_mm256_broadcastmw_epi32(k);
+
+    simde_test_x86_write_mmask16(2, k, SIMDE_TEST_VEC_POS_FIRST);
+    simde_test_x86_write_i32x8(2, r, SIMDE_TEST_VEC_POS_LAST);
+  }
+  return 1;
+#endif
+}
+
+static int
+test_simde_mm512_broadcastmw_epi32(SIMDE_MUNIT_TEST_ARGS) {
+#if 1
+  const struct {
+    const simde__mmask16 k;
+    const int32_t r[16];
+  } test_vec[] = {
+    { UINT16_C(38664),
+      {  INT32_C(       38664),  INT32_C(       38664),  INT32_C(       38664),  INT32_C(       38664),  INT32_C(       38664),  INT32_C(       38664),  INT32_C(       38664),  INT32_C(       38664),
+         INT32_C(       38664),  INT32_C(       38664),  INT32_C(       38664),  INT32_C(       38664),  INT32_C(       38664),  INT32_C(       38664),  INT32_C(       38664),  INT32_C(       38664) } },
+    { UINT16_C( 4628),
+      {  INT32_C(        4628),  INT32_C(        4628),  INT32_C(        4628),  INT32_C(        4628),  INT32_C(        4628),  INT32_C(        4628),  INT32_C(        4628),  INT32_C(        4628),
+         INT32_C(        4628),  INT32_C(        4628),  INT32_C(        4628),  INT32_C(        4628),  INT32_C(        4628),  INT32_C(        4628),  INT32_C(        4628),  INT32_C(        4628) } },
+    { UINT16_C(11322),
+      {  INT32_C(       11322),  INT32_C(       11322),  INT32_C(       11322),  INT32_C(       11322),  INT32_C(       11322),  INT32_C(       11322),  INT32_C(       11322),  INT32_C(       11322),
+         INT32_C(       11322),  INT32_C(       11322),  INT32_C(       11322),  INT32_C(       11322),  INT32_C(       11322),  INT32_C(       11322),  INT32_C(       11322),  INT32_C(       11322) } },
+    { UINT16_C(48979),
+      {  INT32_C(       48979),  INT32_C(       48979),  INT32_C(       48979),  INT32_C(       48979),  INT32_C(       48979),  INT32_C(       48979),  INT32_C(       48979),  INT32_C(       48979),
+         INT32_C(       48979),  INT32_C(       48979),  INT32_C(       48979),  INT32_C(       48979),  INT32_C(       48979),  INT32_C(       48979),  INT32_C(       48979),  INT32_C(       48979) } },
+    { UINT16_C(31571),
+      {  INT32_C(       31571),  INT32_C(       31571),  INT32_C(       31571),  INT32_C(       31571),  INT32_C(       31571),  INT32_C(       31571),  INT32_C(       31571),  INT32_C(       31571),
+         INT32_C(       31571),  INT32_C(       31571),  INT32_C(       31571),  INT32_C(       31571),  INT32_C(       31571),  INT32_C(       31571),  INT32_C(       31571),  INT32_C(       31571) } },
+    { UINT16_C(45100),
+      {  INT32_C(       45100),  INT32_C(       45100),  INT32_C(       45100),  INT32_C(       45100),  INT32_C(       45100),  INT32_C(       45100),  INT32_C(       45100),  INT32_C(       45100),
+         INT32_C(       45100),  INT32_C(       45100),  INT32_C(       45100),  INT32_C(       45100),  INT32_C(       45100),  INT32_C(       45100),  INT32_C(       45100),  INT32_C(       45100) } },
+    { UINT16_C(47778),
+      {  INT32_C(       47778),  INT32_C(       47778),  INT32_C(       47778),  INT32_C(       47778),  INT32_C(       47778),  INT32_C(       47778),  INT32_C(       47778),  INT32_C(       47778),
+         INT32_C(       47778),  INT32_C(       47778),  INT32_C(       47778),  INT32_C(       47778),  INT32_C(       47778),  INT32_C(       47778),  INT32_C(       47778),  INT32_C(       47778) } },
+    { UINT16_C(41892),
+      {  INT32_C(       41892),  INT32_C(       41892),  INT32_C(       41892),  INT32_C(       41892),  INT32_C(       41892),  INT32_C(       41892),  INT32_C(       41892),  INT32_C(       41892),
+         INT32_C(       41892),  INT32_C(       41892),  INT32_C(       41892),  INT32_C(       41892),  INT32_C(       41892),  INT32_C(       41892),  INT32_C(       41892),  INT32_C(       41892) } },  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    simde__m512i r = simde_mm512_broadcastmw_epi32(test_vec[i].k);
+    simde_test_x86_assert_equal_i32x16(r, simde_mm512_loadu_epi64(test_vec[i].r));
+  }
+
+  return 0;
+#else
+  fputc('\n', stdout);
+  for (int i = 0 ; i < 8 ; i++) {
+    simde__mmask16 k = simde_test_x86_random_mmask16();
+    simde__m512i r = simde_mm512_broadcastmw_epi32(k);
+
+    simde_test_x86_write_mmask16(2, k, SIMDE_TEST_VEC_POS_FIRST);
+    simde_test_x86_write_i32x16(2, r, SIMDE_TEST_VEC_POS_LAST);
+  }
+  return 1;
+#endif
+}
+
+static int
 test_simde_mm512_broadcastq_epi64(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m128i a;
@@ -3678,45 +3958,65 @@ test_simde_mm512_broadcastw_epi16(SIMDE_MUNIT_TEST_ARGS) {
 
 SIMDE_TEST_FUNC_LIST_BEGIN
 
+
   SIMDE_TEST_FUNC_LIST_ENTRY(mm256_broadcast_f32x2)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm256_mask_broadcast_f32x2)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm256_maskz_broadcast_f32x2)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm512_broadcast_f32x2)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_broadcast_f32x2)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm512_maskz_broadcast_f32x2)
+
   SIMDE_TEST_FUNC_LIST_ENTRY(mm512_broadcast_f32x8)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_broadcast_f32x8)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm512_maskz_broadcast_f32x8)
+
   SIMDE_TEST_FUNC_LIST_ENTRY(mm512_broadcast_f64x2)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_broadcast_f64x2)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm512_maskz_broadcast_f64x2)
+
   SIMDE_TEST_FUNC_LIST_ENTRY(mm256_broadcast_f32x4)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm256_mask_broadcast_f32x4)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm256_maskz_broadcast_f32x4)
+
   SIMDE_TEST_FUNC_LIST_ENTRY(mm256_broadcast_f64x2)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm256_mask_broadcast_f64x2)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm256_maskz_broadcast_f64x2)
+
   SIMDE_TEST_FUNC_LIST_ENTRY(mm512_broadcast_f32x4)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_broadcast_f32x4)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm512_maskz_broadcast_f32x4)
+
   SIMDE_TEST_FUNC_LIST_ENTRY(mm512_broadcast_f64x4)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_broadcast_f64x4)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm512_maskz_broadcast_f64x4)
+
   SIMDE_TEST_FUNC_LIST_ENTRY(mm512_broadcast_i32x4)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_broadcast_i32x4)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm512_maskz_broadcast_i32x4)
+
   SIMDE_TEST_FUNC_LIST_ENTRY(mm512_broadcast_i64x4)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_broadcast_i64x4)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm512_maskz_broadcast_i64x4)
+
   SIMDE_TEST_FUNC_LIST_ENTRY(mm512_broadcastd_epi32)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_broadcastd_epi32)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm512_maskz_broadcastd_epi32)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm512_broadcastq_epi64)
+
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm_broadcastmb_epi64)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_broadcastmb_epi64)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_broadcastmb_epi64)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm_broadcastmw_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_broadcastmw_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_broadcastmw_epi32)
+
   SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_broadcastq_epi64)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm512_maskz_broadcastq_epi64)
+
   SIMDE_TEST_FUNC_LIST_ENTRY(mm512_broadcastss_ps)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_broadcastss_ps)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm512_maskz_broadcastss_ps)
+
   SIMDE_TEST_FUNC_LIST_ENTRY(mm512_broadcastsd_pd)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_broadcastsd_pd)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm512_maskz_broadcastsd_pd)
@@ -3724,6 +4024,7 @@ SIMDE_TEST_FUNC_LIST_BEGIN
   SIMDE_TEST_FUNC_LIST_ENTRY(mm512_broadcastb_epi8)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_broadcastb_epi8)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm512_maskz_broadcastb_epi8)
+
   SIMDE_TEST_FUNC_LIST_ENTRY(mm512_broadcastw_epi16)
 SIMDE_TEST_FUNC_LIST_END
 
