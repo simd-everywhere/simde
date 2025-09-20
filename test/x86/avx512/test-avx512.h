@@ -9,6 +9,8 @@
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 
+SIMDE_TEST_X86_GENERATE_FLOAT_TYPE_FUNCS_(__m128h, 16, 8, simde_mm_storeu_ph)
+SIMDE_TEST_X86_GENERATE_FLOAT_TYPE_FUNCS_(__m256h, 16, 16, simde_mm256_storeu_ph)
 SIMDE_TEST_X86_GENERATE_FLOAT_TYPE_FUNCS_(__m512, 32, 16, simde_mm512_storeu_ps)
 SIMDE_TEST_X86_GENERATE_FLOAT_TYPE_FUNCS_(__m512d, 64, 8, simde_mm512_storeu_pd)
 SIMDE_TEST_X86_GENERATE_FLOAT_TYPE_FUNCS_(__m512h, 16, 32, simde_mm512_storeu_ph)
@@ -37,6 +39,8 @@ SIMDE_TEST_X86_GENERATE_MASK_FUNCS_(16)
 SIMDE_TEST_X86_GENERATE_MASK_FUNCS_(32)
 SIMDE_TEST_X86_GENERATE_MASK_FUNCS_(64)
 
+#define simde_test_x86_assert_equal_f16x8(a, b, precision) do { if (simde_test_x86_assert_equal_f16x8_(a, b, simde_test_f16_precision_to_slop(precision), __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
+#define simde_test_x86_assert_equal_f16x16(a, b, precision) do { if (simde_test_x86_assert_equal_f16x16_(a, b, simde_test_f16_precision_to_slop(precision), __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 #define simde_test_x86_assert_equal_f16x32(a, b, precision) do { if (simde_test_x86_assert_equal_f16x32_(a, b, simde_test_f16_precision_to_slop(precision), __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 #define simde_test_x86_assert_equal_f32x16(a, b, precision) do { if (simde_test_x86_assert_equal_f32x16_(a, b, simde_test_f32_precision_to_slop(precision), __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)
 #define simde_test_x86_assert_equal_f64x8(a, b, precision) do { if (simde_test_x86_assert_equal_f64x8_(a, b, simde_test_f64_precision_to_slop(precision), __FILE__, __LINE__, #a, #b)) { return 1; } } while (0)

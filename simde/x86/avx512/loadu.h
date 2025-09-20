@@ -22,6 +22,7 @@
  *
  * Copyright:
  *   2020      Evan Nemerson <evan@nemerson.com>
+ *   2025      Michael R. Crusoe <crusoe@debian.org>
  */
 
 #if !defined(SIMDE_X86_AVX512_LOADU_H)
@@ -36,6 +37,38 @@
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 SIMDE_BEGIN_DECLS_
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m128h
+simde_mm_loadu_ph (void const * mem_addr) {
+  #if defined(SIMDE_X86_AVX512FP16_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
+    return _mm_loadu_ph(mem_addr);
+  #else
+    simde__m128h r;
+    simde_memcpy(&r, mem_addr, sizeof(r));
+    return r;
+  #endif
+}
+#if defined(SIMDE_X86_AVX512FP16_ENABLE_NATIVE_ALIASES) && defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES)
+  #undef _mm_loadu_ph
+  #define _mm_loadu_ph(a) simde_mm_loadu_ph(a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256h
+simde_mm256_loadu_ph (void const * mem_addr) {
+  #if defined(SIMDE_X86_AVX512FP16_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
+    return _mm256_loadu_ph(mem_addr);
+  #else
+    simde__m256h r;
+    simde_memcpy(&r, mem_addr, sizeof(r));
+    return r;
+  #endif
+}
+#if defined(SIMDE_X86_AVX512FP16_ENABLE_NATIVE_ALIASES) && defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_loadu_ph
+  #define _mm256_loadu_ph(a) simde_mm256_loadu_ph(a)
+#endif
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m512
