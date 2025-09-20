@@ -309,7 +309,7 @@ SIMDE_BEGIN_DECLS_
       __m128i m128i[(SIMDE_ARM_SVE_VECTOR_SIZE / 8) / sizeof(__m128i)];
     #endif
 
-    #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(__ARM_FEATURE_FP16_VECTOR_ARITHMETIC)
+    #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_ARCH_ARM_NEON_FP16)
       float16x8_t neon;
     #endif
 

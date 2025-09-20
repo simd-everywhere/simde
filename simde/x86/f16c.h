@@ -25,7 +25,6 @@
  */
 
 #include "../simde-common.h"
-#include "../simde-math.h"
 #include "../simde-f16.h"
 
 #if !defined(SIMDE_X86_F16C_H)
@@ -49,7 +48,7 @@ simde_mm_cvtps_ph(simde__m128 a, const int imm8) {
 
   HEDLEY_STATIC_CAST(void, imm8);
 
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(__ARM_FEATURE_FP16_VECTOR_ARITHMETIC)
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_ARCH_ARM_NEON_FP16)
     r_.neon_f16 = vcombine_f16(vcvt_f16_f32(a_.neon_f32), vdup_n_f16(SIMDE_FLOAT16_C(0.0)));
   #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
     r_.lsx_i64 = __lsx_vfcvt_h_s((v4f32)__lsx_vreplgr2vr_w(0), a_.lsx_f32);
@@ -85,7 +84,7 @@ simde_mm_cvtph_ps(simde__m128i a) {
 
     #if defined(SIMDE_LOONGARCH_LSX_NATIVE)
       r_.lsx_f32 = __lsx_vfcvtl_s_h(a_.lsx_i64);
-    #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(__ARM_FEATURE_FP16_VECTOR_ARITHMETIC)
+    #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_ARCH_ARM_NEON_FP16)
       r_.neon_f32 = vcvt_f32_f16(vget_low_f16(a_.neon_f16));
     #elif defined(SIMDE_FLOAT16_VECTOR)
       SIMDE_VECTORIZE
