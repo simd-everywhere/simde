@@ -4315,6 +4315,7 @@ simde__m256i
 simde_mm256_permute4x64_epi64 (simde__m256i a, const int imm8)
     SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 255) {
   simde__m256i_private a_ = simde__m256i_to_private(a);
+#if __cplusplus == 202002L
   simde__m256i_private r_ = {
     .i64 = {
       (imm8 & 0x02) ? a_.i64[((imm8       ) & 1)+2] : a_.i64[(imm8       ) & 1],
@@ -4323,7 +4324,13 @@ simde_mm256_permute4x64_epi64 (simde__m256i a, const int imm8)
       (imm8 & 0x80) ? a_.i64[((imm8 >> 6  ) & 1)+2] : a_.i64[(imm8 >> 6  ) & 1],
     }
   };
-
+#else
+  simde__m256i_private r_;
+  r_.i64[0] = (imm8 & 0x02) ? a_.i64[((imm8       ) & 1)+2] : a_.i64[(imm8       ) & 1];
+  r_.i64[1] = (imm8 & 0x08) ? a_.i64[((imm8 >> 2  ) & 1)+2] : a_.i64[(imm8 >> 2  ) & 1];
+  r_.i64[2] = (imm8 & 0x20) ? a_.i64[((imm8 >> 4  ) & 1)+2] : a_.i64[(imm8 >> 4  ) & 1];
+  r_.i64[3] = (imm8 & 0x80) ? a_.i64[((imm8 >> 6  ) & 1)+2] : a_.i64[(imm8 >> 6  ) & 1];
+#endif
   return simde__m256i_from_private(r_);
 }
 #if defined(SIMDE_X86_AVX2_NATIVE)
