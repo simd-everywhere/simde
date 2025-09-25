@@ -4315,7 +4315,7 @@ simde__m256i
 simde_mm256_permute4x64_epi64 (simde__m256i a, const int imm8)
     SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 255) {
   simde__m256i_private a_ = simde__m256i_to_private(a);
-#if __cplusplus == 202002L
+#if defined(__cplusplus) && __cplusplus >= 202002L
   simde__m256i_private r_ = {
     .i64 = {
       (imm8 & 0x02) ? a_.i64[((imm8       ) & 1)+2] : a_.i64[(imm8       ) & 1],
