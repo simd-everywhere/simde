@@ -40,11 +40,15 @@ test_simde_mm256_fpclass_ps_mask (SIMDE_MUNIT_TEST_ARGS) {
       -SIMDE_MATH_INFINITYF  , denormalf,
       -SIMDE_FLOAT32_C(42.23), sNaNf);
   simde_assert_equal_mmask8(simde_mm256_fpclass_ps_mask(a, 0x01), 128);
-  simde_assert_equal_mmask8(simde_mm256_fpclass_ps_mask(a, 0x02), 64);
+  #if !defined(SIMDE_FAST_NANS)
+    simde_assert_equal_mmask8(simde_mm256_fpclass_ps_mask(a, 0x02), 64);
+  #endif
   simde_assert_equal_mmask8(simde_mm256_fpclass_ps_mask(a, 0x04), 32);
   simde_assert_equal_mmask8(simde_mm256_fpclass_ps_mask(a, 0x08), 16);
   simde_assert_equal_mmask8(simde_mm256_fpclass_ps_mask(a, 0x10), 8);
-  simde_assert_equal_mmask8(simde_mm256_fpclass_ps_mask(a, 0x20), 4);
+  #if !defined(SIMDE_FAST_NANS)
+    simde_assert_equal_mmask8(simde_mm256_fpclass_ps_mask(a, 0x20), 4);
+  #endif
   simde_assert_equal_mmask8(simde_mm256_fpclass_ps_mask(a, 0x40), 2);
   simde_assert_equal_mmask8(simde_mm256_fpclass_ps_mask(a, 0x80), 1);
 
@@ -172,11 +176,15 @@ test_simde_mm512_fpclass_pd_mask (SIMDE_MUNIT_TEST_ARGS) {
       -SIMDE_MATH_INFINITY   , denormalf,
       -SIMDE_FLOAT64_C(42.23), sNaNf);
   simde_assert_equal_mmask8(simde_mm512_fpclass_pd_mask(a, 0x01), 128);
-  simde_assert_equal_mmask8(simde_mm512_fpclass_pd_mask(a, 0x02), 64);
+  #if !defined(SIMDE_FAST_NANS)
+    simde_assert_equal_mmask8(simde_mm512_fpclass_pd_mask(a, 0x02), 64);
+  #endif
   simde_assert_equal_mmask8(simde_mm512_fpclass_pd_mask(a, 0x04), 32);
   simde_assert_equal_mmask8(simde_mm512_fpclass_pd_mask(a, 0x08), 16);
   simde_assert_equal_mmask8(simde_mm512_fpclass_pd_mask(a, 0x10), 8);
-  simde_assert_equal_mmask8(simde_mm512_fpclass_pd_mask(a, 0x20), 4);
+  #if !defined(SIMDE_FAST_NANS)
+    simde_assert_equal_mmask8(simde_mm512_fpclass_pd_mask(a, 0x20), 4);
+  #endif
   simde_assert_equal_mmask8(simde_mm512_fpclass_pd_mask(a, 0x40), 2);
   simde_assert_equal_mmask8(simde_mm512_fpclass_pd_mask(a, 0x80), 1);
 
