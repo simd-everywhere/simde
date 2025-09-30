@@ -2179,10 +2179,14 @@ simde_mm256_castps128_ps256 (simde__m128 a) {
   #else
     simde__m256_private r_;
     simde__m128_private a_ = simde__m128_to_private(a);
-
+    #if defined(__CLANG) || defined(__GNUC__)
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
+    #endif
     r_.m128_private[0] = a_;
 
     return simde__m256_from_private(r_);
+    HEDLEY_DIAGNOSTIC_POP
   #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
