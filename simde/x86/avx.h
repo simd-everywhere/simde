@@ -2179,10 +2179,12 @@ simde_mm256_castps128_ps256 (simde__m128 a) {
   #else
     simde__m256_private r_;
     simde__m128_private a_ = simde__m128_to_private(a);
-
+    HEDLEY_DIAGNOSTIC_PUSH
+    SIMDE_DIAGNOSTIC_DISABLE_MAYBE_UNINITIAZILED_
     r_.m128_private[0] = a_;
 
     return simde__m256_from_private(r_);
+    HEDLEY_DIAGNOSTIC_POP
   #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
