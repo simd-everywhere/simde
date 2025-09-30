@@ -2186,9 +2186,7 @@ simde_mm256_castps128_ps256 (simde__m128 a) {
     r_.m128_private[0] = a_;
 
     return simde__m256_from_private(r_);
-    #if defined(__CLANG) || defined(__GNUC__)
-    #pragma GCC diagnostic pop
-    #endif
+    HEDLEY_DIAGNOSTIC_POP
   #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
