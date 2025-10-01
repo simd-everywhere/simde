@@ -4,12 +4,13 @@ cpp = ['ccache', 'clang++-19']
 ar = 'llvm-ar-19'
 strip = 'llvm-strip-19'
 objcopy = 'llvm-objcopy-19'
-ld = 'llvm-ld-19'
+c_ld = 'lld'
+cpp_ld = 'lld'
 exe_wrapper = ['qemu-aarch64-static', '-L', '/usr/aarch64-linux-gnu']
 
-[properties]
-c_args = ['--target=aarch64-linux-gnu', '-march=armv9.5-a+crypto+sha3+sm4', '-Wextra', '-isystem=/usr/aarch64-linux-gnu/include', '-Weverything', '-fno-lax-vector-conversions', '-Werror', '-Wno-unsafe-buffer-usage', '-Wno-switch-default']
-cpp_args = ['--target=aarch64-linux-gnu', '-march=armv9.5-a+crypto+sha3+sm4', '-Wextra', '-isystem=/usr/aarch64-linux-gnu/include', '-Weverything', '-fno-lax-vector-conversions', '-Werror', '-Wno-unsafe-buffer-usage', '-Wno-switch-default']
+[built-in options]
+c_args = ['--target=aarch64-linux-gnu', '-march=armv9.3-a+crypto+sha3+sm4', '-Wextra', '-isystem=/usr/aarch64-linux-gnu/include', '-Weverything', '-fno-lax-vector-conversions', '-Werror', '-Wno-unsafe-buffer-usage', '-Wno-switch-default']
+cpp_args = ['--target=aarch64-linux-gnu', '-march=armv9.3-a+crypto+sha3+sm4', '-Wextra', '-isystem=/usr/aarch64-linux-gnu/include', '-Weverything', '-fno-lax-vector-conversions', '-Werror', '-Wno-unsafe-buffer-usage', '-Wno-switch-default']
 c_link_args   = ['--target=aarch64-linux-gnu']
 cpp_link_args = ['--target=aarch64-linux-gnu']
 

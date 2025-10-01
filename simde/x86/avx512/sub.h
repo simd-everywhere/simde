@@ -24,6 +24,7 @@
  *   2020      Evan Nemerson <evan@nemerson.com>
  *   2020      Himanshi Mathur <himanshi18037@iiitd.ac.in>
  *   2020      Hidayat Khan <huk2209@gmail.com>
+ *   2025      Mickey Zhu <mickey_zhu@realsil.com.cn>
  */
 
 #if !defined(SIMDE_X86_AVX512_SUB_H)
@@ -36,6 +37,36 @@
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 SIMDE_BEGIN_DECLS_
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m128i
+simde_mm_mask_sub_epi16(simde__m128i src, simde__mmask8 k, simde__m128i a, simde__m128i b) {
+  #if defined(SIMDE_X86_AVX512BW_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
+    return _mm_mask_sub_epi16(src, k, a, b);
+  #else
+    simde__m128i r = simde_mm_sub_epi16(a, b);
+    return simde_mm_mask_mov_epi16(src, k, r);
+  #endif
+}
+#if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES) && defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES)
+  #undef _mm_mask_sub_epi16
+  #define _mm_mask_sub_epi16(src, k, a, b) simde_mm_mask_sub_epi16(src, k, a, b)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m128i
+simde_mm_maskz_sub_epi16(simde__mmask8 k, simde__m128i a, simde__m128i b) {
+  #if defined(SIMDE_X86_AVX512BW_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
+    return _mm_maskz_sub_epi16(k, a, b);
+  #else
+    simde__m128i r = simde_mm_sub_epi16(a, b);
+    return simde_mm_maskz_mov_epi16(k, r);
+  #endif
+}
+#if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES) && defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES)
+  #undef _mm_maskz_sub_epi16
+  #define _mm_maskz_sub_epi16(k, a, b) simde_mm_maskz_sub_epi16(k, a, b)
+#endif
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m512i

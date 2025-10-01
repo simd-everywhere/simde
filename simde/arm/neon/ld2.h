@@ -1131,6 +1131,10 @@ simde_vld2_p64(simde_poly64_t const ptr[HEDLEY_ARRAY_PARAM(2)]) {
   #if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
     return vld2_p64(ptr);
   #else
+    #if defined(SIMDE_DIAGNOSTIC_DISABLE_UNINITIALIZED_) && HEDLEY_GCC_VERSION_CHECK(12,0,0)
+      HEDLEY_DIAGNOSTIC_PUSH
+      SIMDE_DIAGNOSTIC_DISABLE_UNINITIALIZED_
+    #endif
     simde_poly64x1_private r_[2];
 
     #if defined(SIMDE_RISCV_V_NATIVE) && defined(SIMDE_ARCH_RISCV_ZVLSSEG)
@@ -1143,6 +1147,9 @@ simde_vld2_p64(simde_poly64_t const ptr[HEDLEY_ARRAY_PARAM(2)]) {
           r_[i].values[j] = ptr[i + (j * (sizeof(r_) / sizeof(r_[0])))];
         }
       }
+    #endif
+    #if defined(SIMDE_DIAGNOSTIC_DISABLE_UNINITIALIZED_) && HEDLEY_GCC_VERSION_CHECK(12,0,0)
+      HEDLEY_DIAGNOSTIC_POP
     #endif
 
     simde_poly64x1x2_t r = { {

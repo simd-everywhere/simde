@@ -603,6 +603,8 @@ typedef SIMDE_POLY64_TYPE simde_poly64;
 #if defined(SIMDE_POLY128_TYPE)
 #  undef SIMDE_POLY128_TYPE
 #endif
+HEDLEY_DIAGNOSTIC_PUSH
+SIMDE_DIAGNOSTIC_DISABLE_PEDANTIC_ // due to the __int128 below
 #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARCH_ARM_CRYPTO)
 #  define SIMDE_POLY128_TYPE poly128_t
 #  define SIMDE_POLY128_C(value) value
@@ -613,7 +615,9 @@ typedef SIMDE_POLY64_TYPE simde_poly64;
 #  define SIMDE_POLY128_TYPE uint64_t
 #  define SIMDE_TARGET_NOT_SUPPORT_INT128_TYPE 1
 #endif
+
 typedef SIMDE_POLY128_TYPE simde_poly128;
+HEDLEY_DIAGNOSTIC_POP
 
 #if defined(__cplusplus)
   typedef bool simde_bool;
@@ -676,17 +680,17 @@ typedef SIMDE_POLY128_TYPE simde_poly128;
 #endif
 
 /* Try to deal with environments without a standard library. */
-#if !defined(simde_memcpy)
+#if !defined(simde_memcpy) && !defined(SIMDE_NO_STDLIB)
   #if HEDLEY_HAS_BUILTIN(__builtin_memcpy)
     #define simde_memcpy(dest, src, n) __builtin_memcpy(dest, src, n)
   #endif
 #endif
-#if !defined(simde_memset)
+#if !defined(simde_memset) && !defined(SIMDE_NO_STDLIB)
   #if HEDLEY_HAS_BUILTIN(__builtin_memset)
     #define simde_memset(s, c, n) __builtin_memset(s, c, n)
   #endif
 #endif
-#if !defined(simde_memcmp)
+#if !defined(simde_memcmp) && !defined(SIMDE_NO_STDLIB)
   #if HEDLEY_HAS_BUILTIN(__builtin_memcmp)
     #define simde_memcmp(s1, s2, n) __builtin_memcmp(s1, s2, n)
   #endif
@@ -703,7 +707,7 @@ typedef SIMDE_POLY128_TYPE simde_poly128;
     #endif
   #endif
 
-  #if !defined(SIMDE_NO_STRING_H)
+  #if !defined(SIMDE_NO_STRING_H) && !defined(SIMDE_NO_STDLIB)
     #include <string.h>
     #if !defined(simde_memcpy)
       #define simde_memcpy(dest, src, n) memcpy(dest, src, n)
@@ -726,7 +730,7 @@ typedef SIMDE_POLY128_TYPE simde_poly128;
       void
       simde_memcpy_(void* dest, const void* src, size_t len) {
         char* dest_ = HEDLEY_STATIC_CAST(char*, dest);
-        char* src_ = HEDLEY_STATIC_CAST(const char*, src);
+        const char* src_ = HEDLEY_STATIC_CAST(const char*, src);
         for (size_t i = 0 ; i < len ; i++) {
           dest_[i] = src_[i];
         }
@@ -741,19 +745,19 @@ typedef SIMDE_POLY128_TYPE simde_poly128;
         char* s_ = HEDLEY_STATIC_CAST(char*, s);
         char c_ = HEDLEY_STATIC_CAST(char, c);
         for (size_t i = 0 ; i < len ; i++) {
-          s_[i] = c_[i];
+          s_[i] = c_;
         }
       }
       #define simde_memset(s, c, n) simde_memset_(s, c, n)
     #endif
 
     #if !defined(simde_memcmp)
-      SIMDE_FUCTION_ATTRIBUTES
+      SIMDE_FUNCTION_ATTRIBUTES
       int
       simde_memcmp_(const void *s1, const void *s2, size_t n) {
-        unsigned char* s1_ = HEDLEY_STATIC_CAST(unsigned char*, s1);
-        unsigned char* s2_ = HEDLEY_STATIC_CAST(unsigned char*, s2);
-        for (size_t i = 0 ; i < len ; i++) {
+        const unsigned char* s1_ = HEDLEY_STATIC_CAST(const unsigned char*, s1);
+        const unsigned char* s2_ = HEDLEY_STATIC_CAST(const unsigned char*, s2);
+        for (size_t i = 0 ; i < n ; i++) {
           if (s1_[i] != s2_[i]) {
             return (int) (s1_[i] - s2_[i]);
           }
@@ -1017,7 +1021,7 @@ HEDLEY_DIAGNOSTIC_POP
 #      if !HEDLEY_GCC_VERSION_CHECK(11,2,0)
 #        define SIMDE_BUG_GCC_95483
 #      endif
-#      if defined(__OPTIMIZE__)
+#      if defined(__OPTIMIZE__) && !HEDLEY_GCC_VERSION_CHECK(15,0,0)
 #        define SIMDE_BUG_GCC_100927
 #      endif
 #      if !(HEDLEY_GCC_VERSION_CHECK(10,3,0))
@@ -1046,7 +1050,9 @@ HEDLEY_DIAGNOSTIC_POP
 #    endif
 #    if defined(SIMDE_ARCH_POWER)
 #      define SIMDE_BUG_GCC_95227
-#      define SIMDE_BUG_GCC_95782
+#      if !HEDLEY_GCC_VERSION_CHECK(13,0,0)
+#        define SIMDE_BUG_GCC_95782
+#      endif
 #      if !HEDLEY_GCC_VERSION_CHECK(12,0,0)
 #        define SIMDE_BUG_VEC_CPSGN_REVERSED_ARGS
 #      endif
@@ -1081,7 +1087,9 @@ HEDLEY_DIAGNOSTIC_POP
 #      define SIMDE_BUG_CLANG_48257  // https://github.com/llvm/llvm-project/issues/47601
 #      define SIMDE_BUG_CLANG_71362  // https://github.com/llvm/llvm-project/issues/71362
 #      define SIMDE_BUG_CLANG_71365  // https://github.com/llvm/llvm-project/issues/71365
-#      define SIMDE_BUG_CLANG_71751  // https://github.com/llvm/llvm-project/issues/71751
+#      if !SIMDE_DETECT_CLANG_VERSION_CHECK(19,0,0)
+#        define SIMDE_BUG_CLANG_71751
+#      endif
 #      if !SIMDE_DETECT_CLANG_VERSION_CHECK(15,0,0)
 #        define SIMDE_BUG_CLANG_45541
 #      endif
@@ -1101,8 +1109,8 @@ HEDLEY_DIAGNOSTIC_POP
 #      if !SIMDE_DETECT_CLANG_VERSION_CHECK(11,0,0)
 #        define SIMDE_BUG_CLANG_BAD_VGET_SET_LANE_TYPES
 #      endif
-#      if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && !defined(SIMDE_ARM_NEON_A32V8_NATIVE)
-#        define SIMDE_BUG_CLANG_71763  // https://github.com/llvm/llvm-project/issues/71763
+#      if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && !defined(SIMDE_ARM_NEON_A32V8_NATIVE) && !SIMDE_DETECT_CLANG_VERSION_CHECK(19,0,0)
+#        define SIMDE_BUG_CLANG_71763
 #      endif
 #    endif
 #    if defined(SIMDE_ARCH_POWER) && !SIMDE_DETECT_CLANG_VERSION_CHECK(12,0,0)

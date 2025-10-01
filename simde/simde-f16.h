@@ -68,7 +68,8 @@ SIMDE_BEGIN_DECLS_
 #if !defined(SIMDE_FLOAT16_API)
   #if defined(__ARM_FP16_FORMAT_IEEE) && (defined(SIMDE_ARM_NEON_FP16) || defined(__ARM_FP16_ARGS))
     #define SIMDE_FLOAT16_API SIMDE_FLOAT16_API_FP16
-  #elif !defined(__EMSCRIPTEN__) && !(defined(__clang__) && defined(SIMDE_ARCH_POWER)) && \
+  #elif !((defined(__EMSCRIPTEN__) || defined(__wasi__)) && !defined(__wasm_fp16__)) && \
+    !(defined(__clang__) && defined(SIMDE_ARCH_POWER)) && \
     !(defined(HEDLEY_MSVC_VERSION) && defined(__clang__)) && \
     !(defined(SIMDE_ARCH_MIPS) && defined(__clang__)) && \
     !(defined(SIMDE_ARCH_ZARCH) && defined(__clang__)) && \
@@ -98,7 +99,10 @@ SIMDE_BEGIN_DECLS_
 #endif
 
 #if SIMDE_FLOAT16_API == SIMDE_FLOAT16_API_FLOAT16
+  HEDLEY_DIAGNOSTIC_PUSH
+  SIMDE_DIAGNOSTIC_DISABLE_PEDANTIC_ // due to the _Float16 below
   typedef _Float16 simde_float16;
+  HEDLEY_DIAGNOSTIC_POP
   #define SIMDE_FLOAT16_IS_SCALAR 1
   #if !defined(__cplusplus)
     #define SIMDE_FLOAT16_C(value) value##f16

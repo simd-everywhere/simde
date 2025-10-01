@@ -267,6 +267,8 @@ simde_vld1q_f16(simde_float16_t const ptr[HEDLEY_ARRAY_PARAM(8)]) {
       r_.v128 = wasm_v128_load(ptr);
     #elif defined(SIMDE_RISCV_V_NATIVE) && defined(SIMDE_ARCH_RISCV_ZVFH)
       r_.sv128 = __riscv_vle16_v_f16m1((_Float16 *)ptr , 8);
+    #elif defined(SIMDE_X86_AVX512FP16_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
+      r_.m128h = _mm_loadu_ph(SIMDE_ALIGN_CAST(__m128h const *, ptr));
     #else
       simde_memcpy(&r_, ptr, sizeof(r_));
     #endif
@@ -289,6 +291,8 @@ simde_vld1q_f32(simde_float32 const ptr[HEDLEY_ARRAY_PARAM(4)]) {
       r_.v128 = wasm_v128_load(ptr);
     #elif defined(SIMDE_RISCV_V_NATIVE)
       r_.sv128 = __riscv_vle32_v_f32m1(ptr , 4);
+    #elif defined(SIMDE_X86_SSE_NATIVE)
+      r_.m128 = _mm_loadu_ps(ptr);
     #else
       simde_memcpy(&r_, ptr, sizeof(r_));
     #endif
@@ -311,6 +315,8 @@ simde_vld1q_f64(simde_float64 const ptr[HEDLEY_ARRAY_PARAM(2)]) {
       r_.v128 = wasm_v128_load(ptr);
     #elif defined(SIMDE_RISCV_V_NATIVE)
       r_.sv128 = __riscv_vle64_v_f64m1(ptr , 2);
+    #elif defined(SIMDE_X86_SSE2_NATIVE)
+      r_.m128d = _mm_loadu_pd(ptr);
     #else
       simde_memcpy(&r_, ptr, sizeof(r_));
     #endif
@@ -333,6 +339,10 @@ simde_vld1q_s8(int8_t const ptr[HEDLEY_ARRAY_PARAM(16)]) {
       r_.v128 = wasm_v128_load(ptr);
     #elif defined(SIMDE_RISCV_V_NATIVE)
       r_.sv128 = __riscv_vle8_v_i8m1(ptr , 16);
+    #elif defined(SIMDE_X86_SSE3_NATIVE)
+      r_.m128i = _mm_lddqu_si128(SIMDE_ALIGN_CAST(__m128i const *, ptr));
+    #elif defined(SIMDE_X86_SSE2_NATIVE)
+      r_.m128i = _mm_loadu_si128(SIMDE_ALIGN_CAST(__m128i const *, ptr));
     #else
       simde_memcpy(&r_, ptr, sizeof(r_));
     #endif
@@ -355,6 +365,10 @@ simde_vld1q_s16(int16_t const ptr[HEDLEY_ARRAY_PARAM(8)]) {
       r_.v128 = wasm_v128_load(ptr);
     #elif defined(SIMDE_RISCV_V_NATIVE)
       r_.sv128 = __riscv_vle16_v_i16m1(ptr , 8);
+    #elif defined(SIMDE_X86_SSE3_NATIVE)
+      r_.m128i = _mm_lddqu_si128(SIMDE_ALIGN_CAST(__m128i const *, ptr));
+    #elif defined(SIMDE_X86_SSE2_NATIVE)
+      r_.m128i = _mm_loadu_si128(SIMDE_ALIGN_CAST(__m128i const *, ptr));
     #else
       simde_memcpy(&r_, ptr, sizeof(r_));
     #endif
@@ -377,6 +391,10 @@ simde_vld1q_s32(int32_t const ptr[HEDLEY_ARRAY_PARAM(4)]) {
       r_.v128 = wasm_v128_load(ptr);
     #elif defined(SIMDE_RISCV_V_NATIVE)
       r_.sv128 = __riscv_vle32_v_i32m1(ptr , 4);
+    #elif defined(SIMDE_X86_SSE3_NATIVE)
+      r_.m128i = _mm_lddqu_si128(SIMDE_ALIGN_CAST(__m128i const *, ptr));
+    #elif defined(SIMDE_X86_SSE2_NATIVE)
+      r_.m128i = _mm_loadu_si128(SIMDE_ALIGN_CAST(__m128i const *, ptr));
     #else
       simde_memcpy(&r_, ptr, sizeof(r_));
     #endif
@@ -399,6 +417,10 @@ simde_vld1q_s64(int64_t const ptr[HEDLEY_ARRAY_PARAM(2)]) {
       r_.v128 = wasm_v128_load(ptr);
     #elif defined(SIMDE_RISCV_V_NATIVE)
       r_.sv128 = __riscv_vle64_v_i64m1(ptr , 2);
+    #elif defined(SIMDE_X86_SSE3_NATIVE)
+      r_.m128i = _mm_lddqu_si128(SIMDE_ALIGN_CAST(__m128i const *, ptr));
+    #elif defined(SIMDE_X86_SSE2_NATIVE)
+      r_.m128i = _mm_loadu_si128(SIMDE_ALIGN_CAST(__m128i const *, ptr));
     #else
       simde_memcpy(&r_, ptr, sizeof(r_));
     #endif
@@ -421,6 +443,10 @@ simde_vld1q_u8(uint8_t const ptr[HEDLEY_ARRAY_PARAM(16)]) {
       r_.v128 = wasm_v128_load(ptr);
     #elif defined(SIMDE_RISCV_V_NATIVE)
       r_.sv128 = __riscv_vle8_v_u8m1(ptr , 16);
+    #elif defined(SIMDE_X86_SSE3_NATIVE)
+      r_.m128i = _mm_lddqu_si128(SIMDE_ALIGN_CAST(__m128i const *, ptr));
+    #elif defined(SIMDE_X86_SSE2_NATIVE)
+      r_.m128i = _mm_loadu_si128(SIMDE_ALIGN_CAST(__m128i const *, ptr));
     #else
       simde_memcpy(&r_, ptr, sizeof(r_));
     #endif
@@ -443,6 +469,10 @@ simde_vld1q_u16(uint16_t const ptr[HEDLEY_ARRAY_PARAM(8)]) {
       r_.v128 = wasm_v128_load(ptr);
     #elif defined(SIMDE_RISCV_V_NATIVE)
       r_.sv128 = __riscv_vle16_v_u16m1(ptr , 8);
+    #elif defined(SIMDE_X86_SSE3_NATIVE)
+      r_.m128i = _mm_lddqu_si128(SIMDE_ALIGN_CAST(__m128i const *, ptr));
+    #elif defined(SIMDE_X86_SSE2_NATIVE)
+      r_.m128i = _mm_loadu_si128(SIMDE_ALIGN_CAST(__m128i const *, ptr));
     #else
       simde_memcpy(&r_, ptr, sizeof(r_));
     #endif
@@ -465,6 +495,10 @@ simde_vld1q_u32(uint32_t const ptr[HEDLEY_ARRAY_PARAM(4)]) {
       r_.v128 = wasm_v128_load(ptr);
     #elif defined(SIMDE_RISCV_V_NATIVE)
       r_.sv128 = __riscv_vle32_v_u32m1(ptr , 4);
+    #elif defined(SIMDE_X86_SSE3_NATIVE)
+      r_.m128i = _mm_lddqu_si128(SIMDE_ALIGN_CAST(__m128i const *, ptr));
+    #elif defined(SIMDE_X86_SSE2_NATIVE)
+      r_.m128i = _mm_loadu_si128(SIMDE_ALIGN_CAST(__m128i const *, ptr));
     #else
       simde_memcpy(&r_, ptr, sizeof(r_));
     #endif
@@ -487,6 +521,10 @@ simde_vld1q_u64(uint64_t const ptr[HEDLEY_ARRAY_PARAM(2)]) {
       r_.v128 = wasm_v128_load(ptr);
     #elif defined(SIMDE_RISCV_V_NATIVE)
       r_.sv128 = __riscv_vle64_v_u64m1(ptr , 2);
+    #elif defined(SIMDE_X86_SSE3_NATIVE)
+      r_.m128i = _mm_lddqu_si128(SIMDE_ALIGN_CAST(__m128i const *, ptr));
+    #elif defined(SIMDE_X86_SSE2_NATIVE)
+      r_.m128i = _mm_loadu_si128(SIMDE_ALIGN_CAST(__m128i const *, ptr));
     #else
       simde_memcpy(&r_, ptr, sizeof(r_));
     #endif

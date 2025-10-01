@@ -30,6 +30,7 @@
 
 #include "types.h"
 #include "mov.h"
+#include "setzero.h"
 
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS

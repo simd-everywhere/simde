@@ -1,0 +1,21 @@
+[binaries]
+c = ['ccache', 'clang-20']
+cpp = ['ccache', 'clang++-20']
+ar = 'llvm-ar-20'
+strip = 'llvm-strip-20'
+objcopy = 'llvm-objcopy-20'
+c_ld = 'lld'
+cpp_ld = 'lld'
+exe_wrapper = ['qemu-riscv64-static', '-L', '/usr/riscv64-linux-gnu/']
+
+[built-in options]
+c_args   = ['--target=riscv64-linux-gnu', '-isystem=/usr/riscv64-linux-gnu/include', '-Wextra', '-Werror', '-Wno-unsafe-buffer-usage']
+cpp_args = ['--target=riscv64-linux-gnu', '-isystem=/usr/riscv64-linux-gnu/include', '-Wextra', '-Werror', '-Wno-unsafe-buffer-usage']
+c_link_args = ['--target=riscv64-linux-gnu']
+cpp_link_args = ['--target=riscv64-linux-gnu']
+
+[host_machine]
+system = 'linux'
+cpu_family = 'riscv64'
+cpu = 'riscv64'
+endian = 'little'

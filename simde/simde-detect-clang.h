@@ -60,7 +60,9 @@
  */
 
 #if defined(__clang__) && !defined(SIMDE_DETECT_CLANG_VERSION)
-#  if __has_warning("-Wmissing-designated-field-initializers")
+#  if __has_warning("-Warray-compare-cxx26")
+#    define SIMDE_DETECT_CLANG_VERSION 200000
+#  elif __has_warning("-Wmissing-designated-field-initializers")
 #    define SIMDE_DETECT_CLANG_VERSION 190000
 #  elif __has_warning("-Woverriding-option")
 #    define SIMDE_DETECT_CLANG_VERSION 180000

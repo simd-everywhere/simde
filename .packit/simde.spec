@@ -20,6 +20,7 @@ Source1: ci.sh
 # List up the needed RPM package names to test here.
 # clang, clang++
 BuildRequires: clang
+BuildRequires: compiler-rt
 BuildRequires: gcc
 # g++
 BuildRequires: gcc-c++

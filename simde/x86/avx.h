@@ -392,7 +392,9 @@ simde_mm256_castps_pd (simde__m256 a) {
   #elif defined(SIMDE_LOONGARCH_LASX_NATIVE)
     return (simde__m256d)a;
   #else
-    return *HEDLEY_REINTERPRET_CAST(simde__m256d*, &a);
+    simde__m256d r;
+    simde_memcpy(&r, &a, sizeof(r));
+    return r;
   #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
@@ -408,7 +410,9 @@ simde_mm256_castps_si256 (simde__m256 a) {
   #elif defined(SIMDE_LOONGARCH_LASX_NATIVE)
     return (simde__m256i)a;
   #else
-    return *HEDLEY_REINTERPRET_CAST(simde__m256i*, &a);
+    simde__m256i r;
+    simde_memcpy(&r, &a, sizeof(r));
+    return r;
   #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
@@ -424,7 +428,9 @@ simde_mm256_castsi256_pd (simde__m256i a) {
   #elif defined(SIMDE_LOONGARCH_LASX_NATIVE)
     return (simde__m256d)a;
   #else
-    return *HEDLEY_REINTERPRET_CAST(simde__m256d*, &a);
+    simde__m256d r;
+    simde_memcpy(&r, &a, sizeof(r));
+    return r;
   #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
@@ -440,7 +446,9 @@ simde_mm256_castsi256_ps (simde__m256i a) {
   #elif defined(SIMDE_LOONGARCH_LASX_NATIVE)
     return (simde__m256)a;
   #else
-    return *HEDLEY_REINTERPRET_CAST(simde__m256*, &a);
+    simde__m256 r;
+    simde_memcpy(&r, &a, sizeof(r));
+    return r;
   #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
@@ -456,7 +464,9 @@ simde_mm256_castpd_ps (simde__m256d a) {
   #elif defined(SIMDE_LOONGARCH_LASX_NATIVE)
     return (simde__m256)a;
   #else
-    return *HEDLEY_REINTERPRET_CAST(simde__m256*, &a);
+    simde__m256 r;
+    simde_memcpy(&r, &a, sizeof(r));
+    return r;
   #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
@@ -472,7 +482,9 @@ simde_mm256_castpd_si256 (simde__m256d a) {
   #elif defined(SIMDE_LOONGARCH_LASX_NATIVE)
     return (simde__m256i)a;
   #else
-    return *HEDLEY_REINTERPRET_CAST(simde__m256i*, &a);
+    simde__m256i r;
+    simde_memcpy(&r, &a, sizeof(r));
+    return r;
   #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
@@ -2167,10 +2179,12 @@ simde_mm256_castps128_ps256 (simde__m128 a) {
   #else
     simde__m256_private r_;
     simde__m128_private a_ = simde__m128_to_private(a);
-
+    HEDLEY_DIAGNOSTIC_PUSH
+    SIMDE_DIAGNOSTIC_DISABLE_MAYBE_UNINITIAZILED_
     r_.m128_private[0] = a_;
 
     return simde__m256_from_private(r_);
+    HEDLEY_DIAGNOSTIC_POP
   #endif
 }
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
@@ -4281,6 +4295,14 @@ simde_mm256_loadu_epi8(void const * mem_addr) {
   #define _mm256_loadu_epi8(a) simde_mm256_loadu_epi8(a)
 #endif
 
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256i
+simde_x_mm256_loadu_epu8(void const * mem_addr) {
+  simde__m256i r;
+  simde_memcpy(&r, mem_addr, sizeof(r));
+  return r;
+}
+
 #if defined(SIMDE_X86_AVX512VL_NATIVE) && defined(SIMDE_X86_AVX512BW_NATIVE) \
     && !defined(SIMDE_BUG_GCC_95483) && !defined(SIMDE_BUG_CLANG_REV_344862) \
     && (!defined(HEDLEY_MSVC_VERSION) || HEDLEY_MSVC_VERSION_CHECK(19,20,0))
@@ -4305,6 +4327,14 @@ simde_mm256_loadu_epi16(void const * mem_addr) {
   #undef _mm256_loadu_epi16
   #define _mm256_loadu_epi16(a) simde_mm256_loadu_epi16(a)
 #endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256i
+simde_x_mm256_loadu_epu16(void const * mem_addr) {
+  simde__m256i r;
+  simde_memcpy(&r, mem_addr, sizeof(r));
+  return r;
+}
 
 #if defined(SIMDE_X86_AVX512VL_NATIVE) && !defined(SIMDE_BUG_GCC_95483) \
     && !defined(SIMDE_BUG_CLANG_REV_344862) \
@@ -4331,6 +4361,14 @@ simde_mm256_loadu_epi32(void const * mem_addr) {
   #define _mm256_loadu_epi32(a) simde_mm256_loadu_epi32(a)
 #endif
 
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256i
+simde_x_mm256_loadu_epu32(void const * mem_addr) {
+  simde__m256i r;
+  simde_memcpy(&r, mem_addr, sizeof(r));
+  return r;
+}
+
 #if defined(SIMDE_X86_AVX512VL_NATIVE) && !defined(SIMDE_BUG_GCC_95483) \
     && !defined(SIMDE_BUG_CLANG_REV_344862) \
     && (!defined(HEDLEY_MSVC_VERSION) || HEDLEY_MSVC_VERSION_CHECK(19,20,0))
@@ -4355,6 +4393,14 @@ simde_mm256_loadu_epi64(void const * mem_addr) {
   #undef _mm256_loadu_epi64
   #define _mm256_loadu_epi64(a) simde_mm256_loadu_epi64(a)
 #endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256i
+simde_x_mm256_loadu_epu64(void const * mem_addr) {
+  simde__m256i r;
+  simde_memcpy(&r, mem_addr, sizeof(r));
+  return r;
+}
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m256i
@@ -5396,7 +5442,7 @@ simde_mm256_permute2f128_si256 (simde__m256i a, simde__m256i b, const int imm8)
   return simde__m256i_from_private(r_);
 }
 #if defined(SIMDE_X86_AVX_NATIVE)
-#  define simde_mm256_permute2f128_si128(a, b, imm8) _mm256_permute2f128_si128(a, b, imm8)
+#  define simde_mm256_permute2f128_si256(a, b, imm8) _mm256_permute2f128_si256(a, b, imm8)
 #endif
 #if defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
   #undef _mm256_permute2f128_si256

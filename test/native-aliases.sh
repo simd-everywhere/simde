@@ -42,6 +42,7 @@ function num_cpus()
 
 ./download-iig.sh "${DIRNAME}/iig.xml"
 PATTERN="$(xmllint --xpath '//intrinsic/@name' "${DIRNAME}/iig.xml" | grep -Po '(?<=")[^"]+' | grep -Pv '^(_mm256_cvtsi256_si32|_mm512_loadu_epi.+)$' | xargs printf '%s|' | rev | cut -c 2- | rev)"
+PATTERN="${PATTERN}|__m64[ ,]|__m128[ ,]|__m128i[ ,]|__m128d[ ,]|__m128bh[ ,]|__m128h[ ,]|__m256[ ,]|__m256i[ ,]|__m256d[ ,]|__m256bh[ ,]|__m256h[ ,]|__m512[ ,]|__m512i[ ,]|__m512d[ ,]|__m512bh[ ,]|__m512h[ ,]|__mmask8[ ,]|__mmask16[ ,]|__mmask32[ ,]|__mmask64[ ,]"
 echo "s/([^_])simde(${PATTERN})/\1\2/g" > pattern
 ls x86/*.c | xargs -n1 -P$(num_cpus) sed -i -E -f pattern
 ls x86/avx512/*.c | xargs -n1 -P$(num_cpus) sed -i -E -f pattern
@@ -53,6 +54,17 @@ perl -p -i -e 's/([^a-zA-Z0-9_])simde_msa_/$1__msa_/g' mips/msa/*.{c,h}
 # NEON
 
 perl -p -i -e 's/([^a-zA-Z0-9_])simde_v/$1v/g' $(ls arm/neon/*.{c,h} | grep -v test-neon.h)
+perl -p -i -e 's/([^a-zA-Z0-9_])simde_int8x/$1int8x/g' $(ls arm/neon/*.{c,h} | grep -v test-neon.h | grep -v reinterpret)
+perl -p -i -e 's/([^a-zA-Z0-9_])simde_int16x/$1int16x/g' $(ls arm/neon/*.{c,h} | grep -v test-neon.h | grep -v reinterpret)
+perl -p -i -e 's/([^a-zA-Z0-9_])simde_int32x/$1int32x/g' $(ls arm/neon/*.{c,h} | grep -v test-neon.h | grep -v reinterpret)
+perl -p -i -e 's/([^a-zA-Z0-9_])simde_int64x/$1int64x/g' $(ls arm/neon/*.{c,h} | grep -v test-neon.h | grep -v reinterpret)
+perl -p -i -e 's/([^a-zA-Z0-9_])simde_uint8x/$1uint8x/g' $(ls arm/neon/*.{c,h} | grep -v test-neon.h | grep -v reinterpret)
+perl -p -i -e 's/([^a-zA-Z0-9_])simde_uint16x/$1uint16x/g' $(ls arm/neon/*.{c,h} | grep -v test-neon.h | grep -v reinterpret)
+perl -p -i -e 's/([^a-zA-Z0-9_])simde_uint32x/$1uint32x/g' $(ls arm/neon/*.{c,h} | grep -v test-neon.h | grep -v reinterpret)
+perl -p -i -e 's/([^a-zA-Z0-9_])simde_uint64x/$1uint64x/g' $(ls arm/neon/*.{c,h} | grep -v test-neon.h | grep -v reinterpret)
+perl -p -i -e 's/([^a-zA-Z0-9_])simde_float16x/$1float16x/g' $(ls arm/neon/*.{c,h} | grep -v test-neon.h | grep -v reinterpret)
+perl -p -i -e 's/([^a-zA-Z0-9_])simde_float32x/$1float32x/g' $(ls arm/neon/*.{c,h} | grep -v test-neon.h | grep -v reinterpret)
+perl -p -i -e 's/([^a-zA-Z0-9_])simde_float64x/$1float64x/g' $(ls arm/neon/*.{c,h} | grep -v test-neon.h | grep -v reinterpret)
 
 # SVE
 
