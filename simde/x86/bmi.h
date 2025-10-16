@@ -113,7 +113,7 @@ uint64_t
 simde_pdep_u64(uint64_t a, uint64_t mask)
 {
 #if defined(SIMDE_ARCH_ARM_SVE2_BITPERM)
-  svuint64_t vw = svdup_u64(a);
+  svuint64_t va = svdup_u64(a);
   svuint64_t r = svbdep_n_u64(va, mask);
   return svlastb_u64(svptrue_b64(), r);
 #else
