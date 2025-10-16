@@ -21,6 +21,7 @@
  * SOFTWARE.
  *
  * Copyright:
+ *   2025  Thomas Magnusson <herr.thomas.magnusson@gmail.com>
  */
 
 #if !defined(SIMDE_X86_BMI_H)
