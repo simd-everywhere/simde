@@ -900,16 +900,20 @@ jobs:
             arch_flags: -march=native -Wno-poison-system-directories
               # "-Wno-poison-system-directories": due to meson test
               # "-march=native": without, or with -mcpu=apple-m1 then unavailable __ARM_FEATURE_s get enabled
-          - xcode: "15.4"
+          - xcode: "15.4"  # clang 15?
             os: macos-14  # arm64
             arch_flags: -march=native -Wno-poison-system-directories
               # "-Wno-poison-system-directories": due to meson test
               # "-march=native": without, or with -mcpu=apple-m1 then unavailable __ARM_FEATURE_s get enabled
-          - xcode: "16.0"
+          - xcode: "16.0"  # clang 16?
             os: macos-15  # arm64
-            arch_flags: -march=native -Wno-poison-system-directories -U_LIBCPP_ENABLE_ASSERTIONS
+            arch_flags: -march=native -Wno-poison-system-directories
               # "-Wno-poison-system-directories": due to meson test
               # "-march=native": without, or with -mcpu=apple-m1 then unavailable __ARM_FEATURE_s get enabled
+          - xcode: "26.2"  # clang 17?
+            os: macos-26  # arm64
+            arch_flags: -Wno-poison-system-directories -Wno-switch-default
+              # "-Wno-poison-system-directories": due to meson test
     runs-on: ${{ matrix.os }}
     env:
       DEVELOPER_DIR:  /Applications/Xcode_${{ matrix.xcode }}.app
