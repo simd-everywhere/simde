@@ -299,6 +299,18 @@
   #endif
 #endif
 
+#if !defined(SIMDE_X86_BMI1_NATIVE) && !defined(SIMDE_X86_BMI1_NO_NATIVE) && !defined(SIMDE_NO_NATIVE)
+  #if defined(SIMDE_ARCH_X86_BMI1)
+    #define SIMDE_X86_BMI1_NATIVE
+  #endif
+#endif
+
+#if !defined(SIMDE_X86_BMI2_NATIVE) && !defined(SIMDE_X86_BMI2_NO_NATIVE) && !defined(SIMDE_NO_NATIVE)
+  #if defined(SIMDE_ARCH_X86_BMI2)
+    #define SIMDE_X86_BMI2_NATIVE
+  #endif
+#endif
+
 #if defined(HEDLEY_MSVC_VERSION)
   #pragma warning(push)
   #pragma warning(disable:4799)
@@ -375,6 +387,13 @@
 #if !defined(SIMDE_ARM_SVE_NATIVE) && !defined(SIMDE_ARM_SVE_NO_NATIVE) && !defined(SIMDE_NO_NATIVE)
   #if defined(SIMDE_ARCH_ARM_SVE)
     #define SIMDE_ARM_SVE_NATIVE
+    #include <arm_sve.h>
+  #endif
+#endif
+
+#if !defined(SIMDE_ARM_SVE2_NATIVE) && !defined(SIMDE_ARM_SVE2_NO_NATIVE) && !defined(SIMDE_NO_NATIVE)
+  #if defined(SIMDE_ARCH_ARM_SVE2)
+    #define SIMDE_ARM_SVE2_NATIVE
     #include <arm_sve.h>
   #endif
 #endif
@@ -679,6 +698,12 @@
   #endif
   #if !defined(SIMDE_X86_VPCLMULQDQ_NATIVE)
     #define SIMDE_X86_VPCLMULQDQ_ENABLE_NATIVE_ALIASES
+  #endif
+  #if !defined(SIMDE_X86_BMI1_NATIVE)
+    #define SIMDE_X86_BMI1_ENABLE_NATIVE_ALIASES
+  #endif
+  #if !defined(SIMDE_X86_BMI2_NATIVE)
+    #define SIMDE_X86_BMI2_ENABLE_NATIVE_ALIASES
   #endif
   #if !defined(SIMDE_X86_F16C_NATIVE)
     #define SIMDE_X86_F16C_ENABLE_NATIVE_ALIASES

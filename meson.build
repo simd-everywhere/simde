@@ -501,6 +501,7 @@ if not meson.is_subproject()
       'simde/x86/avx512.h',
       'simde/x86/avx2.h',
       'simde/x86/avx.h',
+      'simde/x86/bmi.h',
       'simde/x86/clmul.h',
       'simde/x86/fma.h',
       'simde/x86/f16c.h',
