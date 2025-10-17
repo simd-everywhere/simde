@@ -14,6 +14,7 @@ simde_test_x86_tests = [
   'clmul',
   'svml',
   'xop',
+  'bmi',
   'aes'
 ]
 
