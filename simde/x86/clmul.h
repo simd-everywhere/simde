@@ -203,13 +203,13 @@ simde_mm_clmulepi64_si128 (simde__m128i a, simde__m128i b, const int imm8)
   #else
     #define simde_mm_clmulepi64_si128(a, b, imm8) _mm_clmulepi64_si128(a, b, imm8)
   #endif
-#elif defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARCH_ARM_AES) && !defined(__clang__)
+#elif defined(SIMDE_ARM_NEON_A64V8_NATIVE)
   #define simde_mm_clmulepi64_si128(a, b, imm8) \
     simde__m128i_from_neon_u64( \
       vreinterpretq_u64_p128( \
         vmull_p64( \
-          vgetq_lane_p64(vreinterpretq_p64_u64(simde__m128i_to_neon_u64(a)), (imm8     ) & 1), \
-          vgetq_lane_p64(vreinterpretq_p64_u64(simde__m128i_to_neon_u64(b)), (imm8 >> 4) & 1) \
+          vgetq_lane_p64(HEDLEY_STATIC_CAST(poly64x2_t, vreinterpretq_p64_u64(simde__m128i_to_neon_u64(a))), (imm8     ) & 1), \
+          vgetq_lane_p64(HEDLEY_STATIC_CAST(poly64x2_t, vreinterpretq_p64_u64(simde__m128i_to_neon_u64(b))), (imm8 >> 4) & 1) \
         ) \
       ) \
     )
