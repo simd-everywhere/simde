@@ -31,7 +31,7 @@ SIMDE_FUNCTION_ATTRIBUTES
 uint32_t
 simde_pext_u32(uint32_t a, uint32_t mask)
 {
-#if defined(SIMDE_ARCH_ARM_SVE2_BITPERM)
+#if defined(SIMDE_ARCH_ARM_SVE2_BITPERM) && defined(SIMDE_ARM_SVE2_NATIVE)
   svuint32_t va = svdup_u32(a);
   svuint32_t r = svbext_n_u32(va, mask);
   return svlastb_u32(svptrue_b32(), r);
