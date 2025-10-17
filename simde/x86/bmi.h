@@ -142,8 +142,8 @@ uint32_t
 simde_bextr_u32(uint32_t a, unsigned int start, unsigned int len) {
   if (len == 0 || start >= 32) return 0;
   if (len > 32 - start) len = 32 - start;
-  uint32_t mask = 0xffffffffu >> (32 - len);
-  return (a >> start) & mask;
+  const uint32_t mask = 0xffffffffu;
+  return (a >> start) & (mask >> (32 - len));
 }
 #if defined(SIMDE_X86_BMI1_NATIVE)
 #define simde_bextr_u32(a, start, len) _bextr_u32(a, start, len)
@@ -158,8 +158,8 @@ uint64_t
 simde_bextr_u64(uint64_t a, unsigned int start, unsigned int len) {
   if (len == 0 || start >= 64) return 0;
   if (len > 64 - start) len = 64 - start;
-  uint64_t mask = 0xffffffffffffffffull >> (64 - len);
-  return (a >> start) & mask;
+  const uint64_t mask = 0xffffffffffffffffull;
+  return (a >> start) & (mask  >> (64 - len));
 }
 #if defined(SIMDE_X86_BMI1_NATIVE)
 #define simde_bextr_u64(a, start, len) _bextr_u64(a, start, len)
