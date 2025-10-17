@@ -58,7 +58,7 @@ SIMDE_FUNCTION_ATTRIBUTES
 uint64_t
 simde_pext_u64(uint64_t a, uint64_t mask)
 {
-#if defined(SIMDE_ARCH_ARM_SVE2_BITPERM)
+#if defined(SIMDE_ARCH_ARM_SVE2_BITPERM) && defined(SIMDE_ARM_SVE2_NATIVE)
   svuint64_t va = svdup_u64(a);
   svuint64_t r = svbext_n_u64(va, mask);
   return svlastb_u64(svptrue_b64(), r);
@@ -85,7 +85,7 @@ SIMDE_FUNCTION_ATTRIBUTES
 uint32_t
 simde_pdep_u32(uint32_t a, uint32_t mask)
 {
-#if defined(SIMDE_ARCH_ARM_SVE2_BITPERM)
+#if defined(SIMDE_ARCH_ARM_SVE2_BITPERM) && defined(SIMDE_ARM_SVE2_NATIVE)
   svuint32_t va = svdup_u32(a);
   svuint32_t r = svbdep_n_u32(va, mask);
   return svlastb_u32(svptrue_b32(), r);
@@ -113,7 +113,7 @@ SIMDE_FUNCTION_ATTRIBUTES
 uint64_t
 simde_pdep_u64(uint64_t a, uint64_t mask)
 {
-#if defined(SIMDE_ARCH_ARM_SVE2_BITPERM)
+#if defined(SIMDE_ARCH_ARM_SVE2_BITPERM) && defined(SIMDE_ARM_SVE2_NATIVE)
   svuint64_t va = svdup_u64(a);
   svuint64_t r = svbdep_n_u64(va, mask);
   return svlastb_u64(svptrue_b64(), r);

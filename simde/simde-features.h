@@ -391,6 +391,13 @@
   #endif
 #endif
 
+#if !defined(SIMDE_ARM_SVE2_NATIVE) && !defined(SIMDE_ARM_SVE2_NO_NATIVE) && !defined(SIMDE_NO_NATIVE)
+  #if defined(SIMDE_ARCH_ARM_SVE2)
+    #define SIMDE_ARM_SVE2_NATIVE
+    #include <arm_sve.h>
+  #endif
+#endif
+
 #if !defined(SIMDE_RISCV_V_NATIVE) && !defined(SIMDE_RISCV_V_NO_NATIVE) && !defined(SIMDE_NO_NATIVE)
   #if defined(SIMDE_ARCH_RISCV_V) && defined(__riscv_v_fixed_vlen)
     #define SIMDE_RISCV_V_NATIVE
