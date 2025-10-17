@@ -140,9 +140,9 @@ simde_pdep_u64(uint64_t a, uint64_t mask)
 SIMDE_FUNCTION_ATTRIBUTES
 uint32_t
 simde_bextr_u32(uint32_t a, unsigned int start, unsigned int len) {
+  const uint32_t mask = 0xffffffffu;
   if (len == 0 || start >= 32) return 0;
   if (len > 32 - start) len = 32 - start;
-  const uint32_t mask = 0xffffffffu;
   return (a >> start) & (mask >> (32 - len));
 }
 #if defined(SIMDE_X86_BMI1_NATIVE)
@@ -156,9 +156,9 @@ simde_bextr_u32(uint32_t a, unsigned int start, unsigned int len) {
 SIMDE_FUNCTION_ATTRIBUTES
 uint64_t
 simde_bextr_u64(uint64_t a, unsigned int start, unsigned int len) {
+  const uint64_t mask = 0xffffffffffffffffull;
   if (len == 0 || start >= 64) return 0;
   if (len > 64 - start) len = 64 - start;
-  const uint64_t mask = 0xffffffffffffffffull;
   return (a >> start) & (mask  >> (64 - len));
 }
 #if defined(SIMDE_X86_BMI1_NATIVE)
