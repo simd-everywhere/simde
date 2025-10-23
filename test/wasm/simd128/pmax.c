@@ -33,7 +33,7 @@ test_simde_wasm_f32x4_pmax(SIMDE_MUNIT_TEST_ARGS) {
       simde_float32 b[sizeof(simde_v128_t) / sizeof(simde_float32)];
       simde_float32 r[sizeof(simde_v128_t) / sizeof(simde_float32)];
     } test_vec[] = {
-      #if !defined(SIMDE_FAST_MATH)
+      #if !defined(SIMDE_FAST_MATH) && !defined(SIMDE_ARCH_WASM_RELAXED_SIMD)
       { {            SIMDE_MATH_NANF, SIMDE_FLOAT32_C(  -885.39),            SIMDE_MATH_NANF, SIMDE_FLOAT32_C(   707.75) },
         { SIMDE_FLOAT32_C(   501.91),            SIMDE_MATH_NANF,            SIMDE_MATH_NANF, SIMDE_FLOAT32_C(   707.75) },
         {            SIMDE_MATH_NANF, SIMDE_FLOAT32_C(  -885.39),            SIMDE_MATH_NANF, SIMDE_FLOAT32_C(   707.75) } },
@@ -96,7 +96,7 @@ test_simde_wasm_f64x2_pmax(SIMDE_MUNIT_TEST_ARGS) {
       simde_float64 b[sizeof(simde_v128_t) / sizeof(simde_float64)];
       simde_float64 r[sizeof(simde_v128_t) / sizeof(simde_float64)];
     } test_vec[] = {
-      #if !defined(SIMDE_FAST_MATH)
+      #if !defined(SIMDE_FAST_MATH) && !defined(SIMDE_ARCH_WASM_RELAXED_SIMD)
       { {             SIMDE_MATH_NAN, SIMDE_FLOAT64_C(   532.24) },
         { SIMDE_FLOAT64_C(  -760.30),             SIMDE_MATH_NAN },
         {             SIMDE_MATH_NAN, SIMDE_FLOAT64_C(   532.24) } },
