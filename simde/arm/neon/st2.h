@@ -48,8 +48,7 @@ simde_vst2_f16(simde_float16_t *ptr, simde_float16x4x2_t val) {
   #else
     simde_float16x4_private a_[2] = {simde_float16x4_to_private(val.val[0]),
                                      simde_float16x4_to_private(val.val[1])};
-    #if defined(SIMDE_RISCV_V_NATIVE) && defined(SIMDE_ARCH_RISCV_ZVLSSEG) \
-      && SIMDE_ARCH_RISCV_ZVFH && (SIMDE_NATURAL_VECTOR_SIZE >= 128)
+    #if defined(SIMDE_RISCV_V_NATIVE) && SIMDE_ARCH_RISCV_ZVFH && (SIMDE_NATURAL_VECTOR_SIZE >= 128)
       vfloat16m1x2_t dest = __riscv_vlseg2e16_v_f16m1x2((_Float16 *)ptr, 4);
       dest = __riscv_vset_v_f16m1_f16m1x2 (dest, 0, a_[0].sv64);
       dest = __riscv_vset_v_f16m1_f16m1x2 (dest, 1, a_[1].sv64);
@@ -77,7 +76,7 @@ simde_vst2_f32(simde_float32_t *ptr, simde_float32x2x2_t val) {
   #else
     simde_float32x2_private a_[2] = {simde_float32x2_to_private(val.val[0]),
                                      simde_float32x2_to_private(val.val[1])};
-    #if defined(SIMDE_RISCV_V_NATIVE) && defined(SIMDE_ARCH_RISCV_ZVLSSEG)
+    #if defined(SIMDE_RISCV_V_NATIVE)
       vfloat32m1x2_t dest = __riscv_vlseg2e32_v_f32m1x2(ptr, 2);
       dest = __riscv_vset_v_f32m1_f32m1x2 (dest, 0, a_[0].sv64);
       dest = __riscv_vset_v_f32m1_f32m1x2 (dest, 1, a_[1].sv64);
@@ -104,7 +103,7 @@ simde_vst2_f64(simde_float64_t *ptr, simde_float64x1x2_t val) {
   #else
     simde_float64x1_private a_[2] = {simde_float64x1_to_private(val.val[0]),
                                      simde_float64x1_to_private(val.val[1])};
-    #if defined(SIMDE_RISCV_V_NATIVE) && defined(SIMDE_ARCH_RISCV_ZVLSSEG)
+    #if defined(SIMDE_RISCV_V_NATIVE)
       vfloat64m1x2_t dest = __riscv_vlseg2e64_v_f64m1x2(ptr, 1);
       dest = __riscv_vset_v_f64m1_f64m1x2 (dest, 0, a_[0].sv64);
       dest = __riscv_vset_v_f64m1_f64m1x2 (dest, 1, a_[1].sv64);
@@ -131,7 +130,7 @@ simde_vst2_s8(int8_t *ptr, simde_int8x8x2_t val) {
   #else
     simde_int8x8_private a_[2] = {simde_int8x8_to_private(val.val[0]),
                                   simde_int8x8_to_private(val.val[1])};
-    #if defined(SIMDE_RISCV_V_NATIVE) && defined(SIMDE_ARCH_RISCV_ZVLSSEG)
+    #if defined(SIMDE_RISCV_V_NATIVE)
       vint8m1x2_t dest = __riscv_vlseg2e8_v_i8m1x2(ptr, 8);
       dest = __riscv_vset_v_i8m1_i8m1x2 (dest, 0, a_[0].sv64);
       dest = __riscv_vset_v_i8m1_i8m1x2 (dest, 1, a_[1].sv64);
@@ -158,7 +157,7 @@ simde_vst2_s16(int16_t *ptr, simde_int16x4x2_t val) {
   #else
     simde_int16x4_private a_[2] = {simde_int16x4_to_private(val.val[0]),
                                    simde_int16x4_to_private(val.val[1])};
-    #if defined(SIMDE_RISCV_V_NATIVE) && defined(SIMDE_ARCH_RISCV_ZVLSSEG)
+    #if defined(SIMDE_RISCV_V_NATIVE)
       vint16m1x2_t dest = __riscv_vlseg2e16_v_i16m1x2(ptr, 4);
       dest = __riscv_vset_v_i16m1_i16m1x2 (dest, 0, a_[0].sv64);
       dest = __riscv_vset_v_i16m1_i16m1x2 (dest, 1, a_[1].sv64);
@@ -185,7 +184,7 @@ simde_vst2_s32(int32_t *ptr, simde_int32x2x2_t val) {
   #else
     simde_int32x2_private a_[2] = {simde_int32x2_to_private(val.val[0]),
                                    simde_int32x2_to_private(val.val[1])};
-    #if defined(SIMDE_RISCV_V_NATIVE) && defined(SIMDE_ARCH_RISCV_ZVLSSEG)
+    #if defined(SIMDE_RISCV_V_NATIVE)
       vint32m1x2_t dest = __riscv_vlseg2e32_v_i32m1x2(ptr, 2);
       dest = __riscv_vset_v_i32m1_i32m1x2 (dest, 0, a_[0].sv64);
       dest = __riscv_vset_v_i32m1_i32m1x2 (dest, 1, a_[1].sv64);
@@ -212,7 +211,7 @@ simde_vst2_s64(int64_t *ptr, simde_int64x1x2_t val) {
   #else
     simde_int64x1_private a_[2] = {simde_int64x1_to_private(val.val[0]),
                                    simde_int64x1_to_private(val.val[1])};
-    #if defined(SIMDE_RISCV_V_NATIVE) && defined(SIMDE_ARCH_RISCV_ZVLSSEG)
+    #if defined(SIMDE_RISCV_V_NATIVE)
       vint64m1x2_t dest = __riscv_vlseg2e64_v_i64m1x2(ptr, 1);
       dest = __riscv_vset_v_i64m1_i64m1x2 (dest, 0, a_[0].sv64);
       dest = __riscv_vset_v_i64m1_i64m1x2 (dest, 1, a_[1].sv64);
@@ -255,7 +254,7 @@ simde_vst2_u8(uint8_t *ptr, simde_uint8x8x2_t val) {
   #else
     simde_uint8x8_private a_[2] = {simde_uint8x8_to_private(val.val[0]),
                                    simde_uint8x8_to_private(val.val[1])};
-    #if defined(SIMDE_RISCV_V_NATIVE) && defined(SIMDE_ARCH_RISCV_ZVLSSEG)
+    #if defined(SIMDE_RISCV_V_NATIVE)
       vuint8m1x2_t dest = __riscv_vlseg2e8_v_u8m1x2(ptr, 8);
       dest = __riscv_vset_v_u8m1_u8m1x2 (dest, 0, a_[0].sv64);
       dest = __riscv_vset_v_u8m1_u8m1x2 (dest, 1, a_[1].sv64);
@@ -282,7 +281,7 @@ simde_vst2_u16(uint16_t *ptr, simde_uint16x4x2_t val) {
   #else
     simde_uint16x4_private a_[2] = {simde_uint16x4_to_private(val.val[0]),
                                     simde_uint16x4_to_private(val.val[1])};
-    #if defined(SIMDE_RISCV_V_NATIVE) && defined(SIMDE_ARCH_RISCV_ZVLSSEG)
+    #if defined(SIMDE_RISCV_V_NATIVE)
       vuint16m1x2_t dest = __riscv_vlseg2e16_v_u16m1x2(ptr, 4);
       dest = __riscv_vset_v_u16m1_u16m1x2 (dest, 0, a_[0].sv64);
       dest = __riscv_vset_v_u16m1_u16m1x2 (dest, 1, a_[1].sv64);
@@ -309,7 +308,7 @@ simde_vst2_u32(uint32_t *ptr, simde_uint32x2x2_t val) {
   #else
     simde_uint32x2_private a_[2] = {simde_uint32x2_to_private(val.val[0]),
                                     simde_uint32x2_to_private(val.val[1])};
-    #if defined(SIMDE_RISCV_V_NATIVE) && defined(SIMDE_ARCH_RISCV_ZVLSSEG)
+    #if defined(SIMDE_RISCV_V_NATIVE)
       vuint32m1x2_t dest = __riscv_vlseg2e32_v_u32m1x2(ptr, 2);
       dest = __riscv_vset_v_u32m1_u32m1x2 (dest, 0, a_[0].sv64);
       dest = __riscv_vset_v_u32m1_u32m1x2 (dest, 1, a_[1].sv64);
@@ -336,7 +335,7 @@ simde_vst2_u64(uint64_t *ptr, simde_uint64x1x2_t val) {
   #else
     simde_uint64x1_private a_[2] = {simde_uint64x1_to_private(val.val[0]),
                                    simde_uint64x1_to_private(val.val[1])};
-    #if defined(SIMDE_RISCV_V_NATIVE) && defined(SIMDE_ARCH_RISCV_ZVLSSEG)
+    #if defined(SIMDE_RISCV_V_NATIVE)
       vuint64m1x2_t dest = __riscv_vlseg2e64_v_u64m1x2(ptr, 1);
       dest = __riscv_vset_v_u64m1_u64m1x2 (dest, 0, a_[0].sv64);
       dest = __riscv_vset_v_u64m1_u64m1x2 (dest, 1, a_[1].sv64);
@@ -360,8 +359,7 @@ void
 simde_vst2q_f16(simde_float16_t *ptr, simde_float16x8x2_t val) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_ARM_NEON_FP16)
     vst2q_f16(ptr, val);
-  #elif defined(SIMDE_RISCV_V_NATIVE) && defined(SIMDE_ARCH_RISCV_ZVLSSEG) \
-    && SIMDE_ARCH_RISCV_ZVFH && (SIMDE_NATURAL_VECTOR_SIZE >= 128)
+  #elif defined(SIMDE_RISCV_V_NATIVE) && SIMDE_ARCH_RISCV_ZVFH && (SIMDE_NATURAL_VECTOR_SIZE >= 128)
     simde_float16x8_private a_[2] = {simde_float16x8_to_private(val.val[0]),
                                      simde_float16x8_to_private(val.val[1])};
     vfloat16m1x2_t dest = __riscv_vlseg2e16_v_f16m1x2((_Float16 *)ptr, 8);
@@ -385,7 +383,7 @@ void
 simde_vst2q_f32(simde_float32_t *ptr, simde_float32x4x2_t val) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     vst2q_f32(ptr, val);
-  #elif defined(SIMDE_RISCV_V_NATIVE) && defined(SIMDE_ARCH_RISCV_ZVLSSEG)
+  #elif defined(SIMDE_RISCV_V_NATIVE)
     simde_float32x4_private a_[2] = {simde_float32x4_to_private(val.val[0]),
                                      simde_float32x4_to_private(val.val[1])};
     vfloat32m1x2_t dest = __riscv_vlseg2e32_v_f32m1x2(ptr, 4);
@@ -411,7 +409,7 @@ simde_vst2q_f64(simde_float64_t *ptr, simde_float64x2x2_t val) {
   #else
     simde_float64x2_private a_[2] = {simde_float64x2_to_private(val.val[0]),
                                    simde_float64x2_to_private(val.val[1])};
-    #if defined(SIMDE_RISCV_V_NATIVE) && defined(SIMDE_ARCH_RISCV_ZVLSSEG)
+    #if defined(SIMDE_RISCV_V_NATIVE)
       vfloat64m1x2_t dest = __riscv_vlseg2e64_v_f64m1x2(ptr, 2);
       dest = __riscv_vset_v_f64m1_f64m1x2 (dest, 0, a_[0].sv128);
       dest = __riscv_vset_v_f64m1_f64m1x2 (dest, 1, a_[1].sv128);
@@ -435,7 +433,7 @@ void
 simde_vst2q_s8(int8_t *ptr, simde_int8x16x2_t val) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     vst2q_s8(ptr, val);
-  #elif defined(SIMDE_RISCV_V_NATIVE) && defined(SIMDE_ARCH_RISCV_ZVLSSEG)
+  #elif defined(SIMDE_RISCV_V_NATIVE)
     simde_int8x16_private a_[2] = {simde_int8x16_to_private(val.val[0]),
                                   simde_int8x16_to_private(val.val[1])};
     vint8m1x2_t dest = __riscv_vlseg2e8_v_i8m1x2(ptr, 16);
@@ -458,7 +456,7 @@ void
 simde_vst2q_s16(int16_t *ptr, simde_int16x8x2_t val) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     vst2q_s16(ptr, val);
-  #elif defined(SIMDE_RISCV_V_NATIVE) && defined(SIMDE_ARCH_RISCV_ZVLSSEG)
+  #elif defined(SIMDE_RISCV_V_NATIVE)
     simde_int16x8_private a_[2] = {simde_int16x8_to_private(val.val[0]),
                                    simde_int16x8_to_private(val.val[1])};
     vint16m1x2_t dest = __riscv_vlseg2e16_v_i16m1x2(ptr, 8);
@@ -481,7 +479,7 @@ void
 simde_vst2q_s32(int32_t *ptr, simde_int32x4x2_t val) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     vst2q_s32(ptr, val);
-  #elif defined(SIMDE_RISCV_V_NATIVE) && defined(SIMDE_ARCH_RISCV_ZVLSSEG)
+  #elif defined(SIMDE_RISCV_V_NATIVE)
     simde_int32x4_private a_[2] = {simde_int32x4_to_private(val.val[0]),
                                     simde_int32x4_to_private(val.val[1])};
     vint32m1x2_t dest = __riscv_vlseg2e32_v_i32m1x2(ptr, 4);
@@ -504,7 +502,7 @@ void
 simde_vst2q_s64(int64_t *ptr, simde_int64x2x2_t val) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     vst2q_s64(ptr, val);
-  #elif defined(SIMDE_RISCV_V_NATIVE) && defined(SIMDE_ARCH_RISCV_ZVLSSEG)
+  #elif defined(SIMDE_RISCV_V_NATIVE)
     simde_int64x2_private a_[2] = {simde_int64x2_to_private(val.val[0]),
                                    simde_int64x2_to_private(val.val[1])};
     vint64m1x2_t dest = __riscv_vlseg2e64_v_i64m1x2(ptr, 2);
@@ -531,7 +529,7 @@ void
 simde_vst2q_u8(uint8_t *ptr, simde_uint8x16x2_t val) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     vst2q_u8(ptr, val);
-  #elif defined(SIMDE_RISCV_V_NATIVE) && defined(SIMDE_ARCH_RISCV_ZVLSSEG)
+  #elif defined(SIMDE_RISCV_V_NATIVE)
     simde_uint8x16_private a_[2] = {simde_uint8x16_to_private(val.val[0]),
                                    simde_uint8x16_to_private(val.val[1])};
     vuint8m1x2_t dest = __riscv_vlseg2e8_v_u8m1x2(ptr, 16);
@@ -554,7 +552,7 @@ void
 simde_vst2q_u16(uint16_t *ptr, simde_uint16x8x2_t val) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     vst2q_u16(ptr, val);
-  #elif defined(SIMDE_RISCV_V_NATIVE) && defined(SIMDE_ARCH_RISCV_ZVLSSEG)
+  #elif defined(SIMDE_RISCV_V_NATIVE)
     simde_uint16x8_private a_[2] = {simde_uint16x8_to_private(val.val[0]),
                                     simde_uint16x8_to_private(val.val[1])};
     vuint16m1x2_t dest = __riscv_vlseg2e16_v_u16m1x2(ptr, 8);
@@ -577,7 +575,7 @@ void
 simde_vst2q_u32(uint32_t *ptr, simde_uint32x4x2_t val) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     vst2q_u32(ptr, val);
-  #elif defined(SIMDE_RISCV_V_NATIVE) && defined(SIMDE_ARCH_RISCV_ZVLSSEG)
+  #elif defined(SIMDE_RISCV_V_NATIVE)
     simde_uint32x4_private a_[2] = {simde_uint32x4_to_private(val.val[0]),
                                     simde_uint32x4_to_private(val.val[1])};
     vuint32m1x2_t dest = __riscv_vlseg2e32_v_u32m1x2(ptr, 4);
@@ -603,7 +601,7 @@ simde_vst2q_u64(uint64_t *ptr, simde_uint64x2x2_t val) {
   #else
     simde_uint64x2_private a_[2] = {simde_uint64x2_to_private(val.val[0]),
                                    simde_uint64x2_to_private(val.val[1])};
-    #if defined(SIMDE_RISCV_V_NATIVE) && defined(SIMDE_ARCH_RISCV_ZVLSSEG)
+    #if defined(SIMDE_RISCV_V_NATIVE)
       vuint64m1x2_t dest = __riscv_vlseg2e64_v_u64m1x2(ptr, 2);
       dest = __riscv_vset_v_u64m1_u64m1x2 (dest, 0, a_[0].sv128);
       dest = __riscv_vset_v_u64m1_u64m1x2 (dest, 1, a_[1].sv128);
@@ -630,7 +628,7 @@ simde_vst2_p8(simde_poly8_t *ptr, simde_poly8x8x2_t val) {
   #else
     simde_poly8x8_private a_[2] = {simde_poly8x8_to_private(val.val[0]),
                                    simde_poly8x8_to_private(val.val[1])};
-    #if defined(SIMDE_RISCV_V_NATIVE) && defined(SIMDE_ARCH_RISCV_ZVLSSEG)
+    #if defined(SIMDE_RISCV_V_NATIVE)
       vuint8m1x2_t dest = __riscv_vlseg2e8_v_u8m1x2(ptr, 8);
       dest = __riscv_vset_v_u8m1_u8m1x2 (dest, 0, a_[0].sv64);
       dest = __riscv_vset_v_u8m1_u8m1x2 (dest, 1, a_[1].sv64);
@@ -657,7 +655,7 @@ simde_vst2_p16(simde_poly16_t *ptr, simde_poly16x4x2_t val) {
   #else
     simde_poly16x4_private a_[2] = {simde_poly16x4_to_private(val.val[0]),
                                     simde_poly16x4_to_private(val.val[1])};
-    #if defined(SIMDE_RISCV_V_NATIVE) && defined(SIMDE_ARCH_RISCV_ZVLSSEG)
+    #if defined(SIMDE_RISCV_V_NATIVE)
       vuint16m1x2_t dest = __riscv_vlseg2e16_v_u16m1x2(ptr, 4);
       dest = __riscv_vset_v_u16m1_u16m1x2 (dest, 0, a_[0].sv64);
       dest = __riscv_vset_v_u16m1_u16m1x2 (dest, 1, a_[1].sv64);
@@ -684,7 +682,7 @@ simde_vst2_p64(simde_poly64_t *ptr, simde_poly64x1x2_t val) {
   #else
     simde_poly64x1_private a_[2] = {simde_poly64x1_to_private(val.val[0]),
                                    simde_poly64x1_to_private(val.val[1])};
-    #if defined(SIMDE_RISCV_V_NATIVE) && defined(SIMDE_ARCH_RISCV_ZVLSSEG)
+    #if defined(SIMDE_RISCV_V_NATIVE)
       vuint64m1x2_t dest = __riscv_vlseg2e64_v_u64m1x2(ptr, 1);
       dest = __riscv_vset_v_u64m1_u64m1x2 (dest, 0, a_[0].sv64);
       dest = __riscv_vset_v_u64m1_u64m1x2 (dest, 1, a_[1].sv64);
@@ -711,7 +709,7 @@ simde_vst2q_p8(simde_poly8_t *ptr, simde_poly8x16x2_t val) {
   #else
     simde_poly8x16_private a_[2] = {simde_poly8x16_to_private(val.val[0]),
                                    simde_poly8x16_to_private(val.val[1])};
-    #if defined(SIMDE_RISCV_V_NATIVE) && defined(SIMDE_ARCH_RISCV_ZVLSSEG)
+    #if defined(SIMDE_RISCV_V_NATIVE)
       vuint8m1x2_t dest = __riscv_vlseg2e8_v_u8m1x2(ptr, 16);
       dest = __riscv_vset_v_u8m1_u8m1x2 (dest, 0, a_[0].sv128);
       dest = __riscv_vset_v_u8m1_u8m1x2 (dest, 1, a_[1].sv128);
@@ -738,7 +736,7 @@ simde_vst2q_p16(simde_poly16_t *ptr, simde_poly16x8x2_t val) {
   #else
     simde_poly16x8_private a_[2] = {simde_poly16x8_to_private(val.val[0]),
                                    simde_poly16x8_to_private(val.val[1])};
-    #if defined(SIMDE_RISCV_V_NATIVE) && defined(SIMDE_ARCH_RISCV_ZVLSSEG)
+    #if defined(SIMDE_RISCV_V_NATIVE)
       vuint16m1x2_t dest = __riscv_vlseg2e16_v_u16m1x2(ptr, 8);
       dest = __riscv_vset_v_u16m1_u16m1x2 (dest, 0, a_[0].sv128);
       dest = __riscv_vset_v_u16m1_u16m1x2 (dest, 1, a_[1].sv128);
@@ -765,7 +763,7 @@ simde_vst2q_p64(simde_poly64_t *ptr, simde_poly64x2x2_t val) {
   #else
     simde_poly64x2_private a_[2] = {simde_poly64x2_to_private(val.val[0]),
                                    simde_poly64x2_to_private(val.val[1])};
-    #if defined(SIMDE_RISCV_V_NATIVE) && defined(SIMDE_ARCH_RISCV_ZVLSSEG)
+    #if defined(SIMDE_RISCV_V_NATIVE)
       vuint64m1x2_t dest = __riscv_vlseg2e64_v_u64m1x2(ptr, 2);
       dest = __riscv_vset_v_u64m1_u64m1x2 (dest, 0, a_[0].sv128);
       dest = __riscv_vset_v_u64m1_u64m1x2 (dest, 1, a_[1].sv128);
