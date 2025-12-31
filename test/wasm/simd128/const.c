@@ -21,7 +21,7 @@
  * SOFTWARE.
  */
 
-#define SIMDE_TEST_WASM_SIMD128_INSN make_const
+#define SIMDE_TEST_WASM_SIMD128_INSN const
 #include "../../../simde/wasm/simd128.h"
 #include "test-simd128.h"
 

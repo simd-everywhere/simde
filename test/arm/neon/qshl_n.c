@@ -1,4 +1,4 @@
-#define SIMDE_TEST_ARM_NEON_INSN qshl
+#define SIMDE_TEST_ARM_NEON_INSN qshl_n
 
 #include "test-neon.h"
 #include "../../../simde/arm/neon/qshl_n.h"
