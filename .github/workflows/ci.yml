@@ -886,26 +886,10 @@ jobs:
       fail-fast: false
       matrix:
         # https://www.jessesquires.com/blog/2020/01/06/selecting-an-xcode-version-on-github-ci/
-        # https://github.com/actions/runner-images/blob/main/images/macos/macos-13-Readme.md#xcode
         # https://github.com/actions/runner-images/blob/main/images/macos/macos-14-arm64-Readme.md#xcode
         # https://github.com/actions/runner-images/blob/main/images/macos/macos-15-arm64-Readme.md#xcode
         # https://trac.macports.org/wiki/XcodeVersionInfo
         include:
-          - xcode: "14.2"
-            os: macos-13
-            arch_flags: -Wno-poison-system-directories  # due to meson test
-          - xcode: "14.3.1"
-            os: macos-13
-            arch_flags: -Wno-poison-system-directories  # due to meson test
-          - xcode: "15.0.1"
-            os: macos-13
-            arch_flags: -Wno-poison-system-directories  # due to meson test
-          - xcode: "15.1"
-            os: macos-13
-            arch_flags: -Wno-poison-system-directories  # due to meson test
-          - xcode: "15.2"
-            os: macos-13
-            arch_flags: -Wno-poison-system-directories  # due to meson test
           - xcode: "15.2"
             os: macos-14  # arm64
             arch_flags: -march=native -Wno-poison-system-directories
