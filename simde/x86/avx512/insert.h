@@ -62,6 +62,24 @@ simde_mm256_insertf64x2 (simde__m256d a, simde__m128d b, int imm8)
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
+simde__m256i
+simde_mm256_inserti32x4 (simde__m256i a, simde__m128i b, int imm8)
+    SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 1) {
+  simde__m256i_private a_ = simde__m256i_to_private(a);
+
+  a_.m128i[imm8 & 1] = b;
+
+  return simde__m256i_from_private(a_);
+}
+#if defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
+  #define simde_mm256_inserti32x4(a, b, imm8) _mm256_inserti32x4(a, b, imm8)
+#endif
+#if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES) && defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_inserti32x4
+  #define _mm256_inserti32x4(a, b, imm8) simde_mm256_inserti32x4(a, b, imm8)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
 simde__m512
 simde_mm512_insertf32x4 (simde__m512 a, simde__m128 b, int imm8)
     SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 3) {
