@@ -33,6 +33,77 @@
 #include <simde/x86/avx512/insert.h>
 
 static int
+test_simde_mm256_insertf64x2 (SIMDE_MUNIT_TEST_ARGS) {
+#if 1
+  static const struct {
+    const double a[4];
+    const double b[2];
+    const int imm8;
+    const double r[4];
+  } test_vec[] = {
+    { { SIMDE_FLOAT64_C(    92.73), SIMDE_FLOAT64_C(   740.04), SIMDE_FLOAT64_C(   533.23), SIMDE_FLOAT64_C(   294.13) },
+      { SIMDE_FLOAT64_C(  -708.99), SIMDE_FLOAT64_C(    -0.12) },
+       INT32_C(           1),
+      { SIMDE_FLOAT64_C(    92.73), SIMDE_FLOAT64_C(   740.04), SIMDE_FLOAT64_C(  -708.99), SIMDE_FLOAT64_C(    -0.12) } },
+    { { SIMDE_FLOAT64_C(  -835.54), SIMDE_FLOAT64_C(   749.37), SIMDE_FLOAT64_C(  -462.73), SIMDE_FLOAT64_C(  -191.02) },
+      { SIMDE_FLOAT64_C(   863.00), SIMDE_FLOAT64_C(  -607.22) },
+       INT32_C(           1),
+      { SIMDE_FLOAT64_C(  -835.54), SIMDE_FLOAT64_C(   749.37), SIMDE_FLOAT64_C(   863.00), SIMDE_FLOAT64_C(  -607.22) } },
+    { { SIMDE_FLOAT64_C(  -432.89), SIMDE_FLOAT64_C(  -302.10), SIMDE_FLOAT64_C(   846.45), SIMDE_FLOAT64_C(  -294.89) },
+      { SIMDE_FLOAT64_C(  -379.45), SIMDE_FLOAT64_C(  -299.98) },
+       INT32_C(           0),
+      { SIMDE_FLOAT64_C(  -379.45), SIMDE_FLOAT64_C(  -299.98), SIMDE_FLOAT64_C(   846.45), SIMDE_FLOAT64_C(  -294.89) } },
+    { { SIMDE_FLOAT64_C(   694.63), SIMDE_FLOAT64_C(   401.75), SIMDE_FLOAT64_C(   466.59), SIMDE_FLOAT64_C(  -902.68) },
+      { SIMDE_FLOAT64_C(  -466.37), SIMDE_FLOAT64_C(   152.24) },
+       INT32_C(           0),
+      { SIMDE_FLOAT64_C(  -466.37), SIMDE_FLOAT64_C(   152.24), SIMDE_FLOAT64_C(   466.59), SIMDE_FLOAT64_C(  -902.68) } },
+    { { SIMDE_FLOAT64_C(    47.03), SIMDE_FLOAT64_C(  -746.00), SIMDE_FLOAT64_C(   468.62), SIMDE_FLOAT64_C(  -860.24) },
+      { SIMDE_FLOAT64_C(   994.04), SIMDE_FLOAT64_C(     1.85) },
+       INT32_C(           1),
+      { SIMDE_FLOAT64_C(    47.03), SIMDE_FLOAT64_C(  -746.00), SIMDE_FLOAT64_C(   994.04), SIMDE_FLOAT64_C(     1.85) } },
+    { { SIMDE_FLOAT64_C(  -714.94), SIMDE_FLOAT64_C(  -998.26), SIMDE_FLOAT64_C(  -610.33), SIMDE_FLOAT64_C(  -550.48) },
+      { SIMDE_FLOAT64_C(   751.11), SIMDE_FLOAT64_C(   -73.06) },
+       INT32_C(           0),
+      { SIMDE_FLOAT64_C(   751.11), SIMDE_FLOAT64_C(   -73.06), SIMDE_FLOAT64_C(  -610.33), SIMDE_FLOAT64_C(  -550.48) } },
+    { { SIMDE_FLOAT64_C(   614.11), SIMDE_FLOAT64_C(   319.71), SIMDE_FLOAT64_C(   712.82), SIMDE_FLOAT64_C(  -818.79) },
+      { SIMDE_FLOAT64_C(  -982.39), SIMDE_FLOAT64_C(   559.27) },
+       INT32_C(           1),
+      { SIMDE_FLOAT64_C(   614.11), SIMDE_FLOAT64_C(   319.71), SIMDE_FLOAT64_C(  -982.39), SIMDE_FLOAT64_C(   559.27) } },
+    { { SIMDE_FLOAT64_C(  -361.84), SIMDE_FLOAT64_C(  -740.71), SIMDE_FLOAT64_C(  -339.70), SIMDE_FLOAT64_C(  -667.21) },
+      { SIMDE_FLOAT64_C(   661.04), SIMDE_FLOAT64_C(  -873.11) },
+       INT32_C(           1),
+      { SIMDE_FLOAT64_C(  -361.84), SIMDE_FLOAT64_C(  -740.71), SIMDE_FLOAT64_C(   661.04), SIMDE_FLOAT64_C(  -873.11) } },
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
+    simde__m256d a = simde_mm256_loadu_pd(test_vec[i].a);
+    simde__m128d b = simde_mm_loadu_pd(test_vec[i].b);
+    switch(test_vec[i].imm8) {
+      case 0: simde_test_x86_assert_equal_f64x4(simde_mm256_insertf64x2(a, b, 0), simde_mm256_loadu_pd(test_vec[i].r), 1); break;
+      case 1: simde_test_x86_assert_equal_f64x4(simde_mm256_insertf64x2(a, b, 1), simde_mm256_loadu_pd(test_vec[i].r), 1); break;
+    }
+  }
+
+  return 0;
+#else
+  fputc('\n', stdout);
+  for (int i = 0 ; i < 8 ; i++) {
+    simde__m256d a = simde_test_x86_random_f64x4(SIMDE_FLOAT64_C(-1000.0), SIMDE_FLOAT64_C(1000.0));
+    simde__m128d b = simde_test_x86_random_f64x2(SIMDE_FLOAT64_C(-1000.0), SIMDE_FLOAT64_C(1000.0));
+    int imm8 = simde_test_codegen_rand() & 1;
+    simde__m256d r;
+    SIMDE_CONSTIFY_2_(simde_mm256_insertf64x2, r, (HEDLEY_UNREACHABLE(), simde_mm256_setzero_pd ()), imm8, a, b);
+
+    simde_test_x86_write_f64x4(2, a, SIMDE_TEST_VEC_POS_FIRST);
+    simde_test_x86_write_f64x2(2, b, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_codegen_write_i32(2, imm8, SIMDE_TEST_VEC_POS_MIDDLE);
+    simde_test_x86_write_f64x4(2, r, SIMDE_TEST_VEC_POS_LAST);
+  }
+  return 1;
+#endif
+}
+
+static int
 test_simde_mm512_insertf32x4 (SIMDE_MUNIT_TEST_ARGS) {
 #if 1
   static const struct {
@@ -2698,6 +2769,8 @@ test_simde_mm512_maskz_inserti64x2 (SIMDE_MUNIT_TEST_ARGS) {
 }
 
 SIMDE_TEST_FUNC_LIST_BEGIN
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_insertf64x2)
+
   SIMDE_TEST_FUNC_LIST_ENTRY(mm512_insertf32x4)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm512_mask_insertf32x4)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm512_maskz_insertf32x4)
