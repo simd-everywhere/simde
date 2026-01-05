@@ -37,6 +37,49 @@ SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 SIMDE_BEGIN_DECLS_
 
 SIMDE_FUNCTION_ATTRIBUTES
+simde__m256d
+simde_mm256_insertf64x2 (simde__m256d a, simde__m128d b, int imm8)
+    SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 1) {
+  #if defined(SIMDE_X86_AVX512DQ_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
+    simde__m256d r;
+    switch(imm8) {
+      case 0: r = _mm256_insertf64x2(a, b, 0); break;
+      case 1: r = _mm256_insertf64x2(a, b, 1); break;
+      default: HEDLEY_UNREACHABLE(); r = simde_mm256_setzero_pd(); break;
+    }
+    return r;
+  #else
+    simde__m256d_private a_ = simde__m256d_to_private(a);
+
+    a_.m128d[imm8 & 1] = b;
+
+    return simde__m256d_from_private(a_);
+  #endif
+}
+#if defined(SIMDE_X86_AVX512DQ_ENABLE_NATIVE_ALIASES) && defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_insertf64x2
+  #define _mm256_insertf64x2(a, b, imm8) simde_mm256_insertf64x2(a, b, imm8)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256i
+simde_mm256_inserti32x4 (simde__m256i a, simde__m128i b, int imm8)
+    SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 1) {
+  simde__m256i_private a_ = simde__m256i_to_private(a);
+
+  a_.m128i[imm8 & 1] = b;
+
+  return simde__m256i_from_private(a_);
+}
+#if defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
+  #define simde_mm256_inserti32x4(a, b, imm8) _mm256_inserti32x4(a, b, imm8)
+#endif
+#if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES) && defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES)
+  #undef _mm256_inserti32x4
+  #define _mm256_inserti32x4(a, b, imm8) simde_mm256_inserti32x4(a, b, imm8)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
 simde__m512
 simde_mm512_insertf32x4 (simde__m512 a, simde__m128 b, int imm8)
     SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 3) {
