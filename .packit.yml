@@ -18,7 +18,6 @@ jobs:
     # Note that we keep the Fedora rawhide. See the `.packit/README.md` -
     # "Motivation and context" for details.
     targets:
-      - fedora-rawhide-i386
       - fedora-rawhide-x86_64
       - fedora-rawhide-aarch64
       - fedora-rawhide-ppc64le
