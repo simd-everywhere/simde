@@ -3119,6 +3119,15 @@ simde_mm_max_ps (simde__m128 a, simde__m128 b) {
       r_.altivec_f32 = vec_sel(b_.altivec_f32, a_.altivec_f32, vec_cmpgt(a_.altivec_f32, b_.altivec_f32));
     #elif defined(SIMDE_LOONGARCH_LSX_NATIVE) && defined(SIMDE_FAST_NANS)
       r_.lsx_f32 = __lsx_vfmax_s(a_.lsx_f32, b_.lsx_f32);
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+      uint32_t SIMDE_VECTOR(16) m = HEDLEY_REINTERPRET_CAST(__typeof__(m), a_.f32 > b_.f32);
+      r_.f32 =
+        HEDLEY_REINTERPRET_CAST(
+          __typeof__(r_.f32),
+          ( (HEDLEY_REINTERPRET_CAST(__typeof__(m), a_.f32) &  m) |
+            (HEDLEY_REINTERPRET_CAST(__typeof__(m), b_.f32) & ~m)
+          )
+        );
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
@@ -3250,6 +3259,15 @@ simde_mm_min_ps (simde__m128 a, simde__m128 b) {
       r_.altivec_f32 = vec_sel(b_.altivec_f32, a_.altivec_f32, vec_cmplt(a_.altivec_f32, b_.altivec_f32));
     #elif defined(SIMDE_LOONGARCH_LSX_NATIVE) && defined(SIMDE_FAST_NANS)
       r_.lsx_f32 = __lsx_vfmin_s(a_.lsx_f32, b_.lsx_f32);
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+      uint32_t SIMDE_VECTOR(16) m = HEDLEY_REINTERPRET_CAST(__typeof__(m), a_.f32 < b_.f32);
+      r_.f32 =
+        HEDLEY_REINTERPRET_CAST(
+          __typeof__(r_.f32),
+          ( (HEDLEY_REINTERPRET_CAST(__typeof__(m), a_.f32) &  m) |
+            (HEDLEY_REINTERPRET_CAST(__typeof__(m), b_.f32) & ~m)
+          )
+        );
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {

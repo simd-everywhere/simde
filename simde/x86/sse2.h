@@ -4768,6 +4768,15 @@ simde_mm_min_pd (simde__m128d a, simde__m128d b) {
       r_.altivec_f64 = vec_sel(b_.altivec_f64, a_.altivec_f64, vec_cmplt(a_.altivec_f64, b_.altivec_f64));
     #elif defined(SIMDE_LOONGARCH_LSX_NATIVE) && defined(SIMDE_FAST_NANS)
       r_.lsx_f64 = __lsx_vfmin_d(a_.lsx_f64, b_.lsx_f64);
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+      uint64_t SIMDE_VECTOR(16) m = HEDLEY_REINTERPRET_CAST(__typeof__(m), a_.f64 < b_.f64);
+      r_.f64 =
+        HEDLEY_REINTERPRET_CAST(
+          __typeof__(r_.f64),
+          ( (HEDLEY_REINTERPRET_CAST(__typeof__(m), a_.f64) &  m) |
+            (HEDLEY_REINTERPRET_CAST(__typeof__(m), b_.f64) & ~m)
+          )
+        );
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
@@ -4905,6 +4914,15 @@ simde_mm_max_pd (simde__m128d a, simde__m128d b) {
       r_.altivec_f64 = vec_sel(b_.altivec_f64, a_.altivec_f64, vec_cmpgt(a_.altivec_f64, b_.altivec_f64));
     #elif defined(SIMDE_LOONGARCH_LSX_NATIVE) && defined(SIMDE_FAST_NANS)
       r_.lsx_f64 = __lsx_vfmax_d(a_.lsx_f64, b_.lsx_f64);
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
+      uint64_t SIMDE_VECTOR(16) m = HEDLEY_REINTERPRET_CAST(__typeof__(m), a_.f64 > b_.f64);
+      r_.f64 =
+        HEDLEY_REINTERPRET_CAST(
+          __typeof__(r_.f64),
+          ( (HEDLEY_REINTERPRET_CAST(__typeof__(m), a_.f64) &  m) |
+            (HEDLEY_REINTERPRET_CAST(__typeof__(m), b_.f64) & ~m)
+          )
+        );
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
