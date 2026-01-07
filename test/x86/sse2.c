@@ -3270,6 +3270,20 @@ test_simde_mm_cvtpd_epi32 (SIMDE_MUNIT_TEST_ARGS) {
     { { HEDLEY_STATIC_CAST(simde_float64, HEDLEY_STATIC_CAST(int64_t, INT32_MIN) - 1), HEDLEY_STATIC_CAST(int64_t, INT32_MIN) + 100 },
       {              INT32_MIN, -INT32_C(  2147483548),  INT32_C(           0),  INT32_C(           0) } },
     #endif
+    #if !defined(SIMDE_FAST_ROUND_TIES)
+    { { SIMDE_FLOAT64_C(-1.50), SIMDE_FLOAT64_C(1.50) },
+      { -INT32_C(           2),  INT32_C(          2) } },
+    { { SIMDE_FLOAT64_C(-2.50), SIMDE_FLOAT64_C(2.50) },
+      { -INT32_C(           2),  INT32_C(          2) } },
+    { { SIMDE_FLOAT64_C(-3.50), SIMDE_FLOAT64_C(3.50) },
+      { -INT32_C(           4),  INT32_C(          4) } },
+    { { SIMDE_FLOAT64_C(-4.50), SIMDE_FLOAT64_C(4.50) },
+      { -INT32_C(           4),  INT32_C(          4) } },
+    { { SIMDE_FLOAT64_C(-2147483650.0), SIMDE_FLOAT64_C(-2147483650.0) },
+      { INT32_MIN, INT32_MIN } },
+    { { SIMDE_FLOAT64_C( 2147483649.0), SIMDE_FLOAT64_C( 2147483649.0) },
+      { INT32_MIN, INT32_MIN } },
+    #endif
     { { SIMDE_FLOAT64_C(  -220.31), SIMDE_FLOAT64_C(   685.08) },
       { -INT32_C(         220),  INT32_C(         685),  INT32_C(           0),  INT32_C(           0) } },
     { { SIMDE_FLOAT64_C(  -164.88), SIMDE_FLOAT64_C(   725.51) },
@@ -3308,6 +3322,20 @@ test_simde_mm_cvtpd_pi32 (SIMDE_MUNIT_TEST_ARGS) {
       {              INT32_MIN,  INT32_C(  2147483547) } },
     { { HEDLEY_STATIC_CAST(simde_float64, HEDLEY_STATIC_CAST(int64_t, INT32_MIN) - 1), HEDLEY_STATIC_CAST(int64_t, INT32_MIN) + 100 },
       {              INT32_MIN, -INT32_C(  2147483548) } },
+    #endif
+    #if !defined(SIMDE_FAST_ROUND_TIES)
+    { { SIMDE_FLOAT64_C(-1.50), SIMDE_FLOAT64_C(1.50) },
+      { -INT32_C(           2),  INT32_C(          2) } },
+    { { SIMDE_FLOAT64_C(-2.50), SIMDE_FLOAT64_C(2.50) },
+      { -INT32_C(           2),  INT32_C(          2) } },
+    { { SIMDE_FLOAT64_C(-3.50), SIMDE_FLOAT64_C(3.50) },
+      { -INT32_C(           4),  INT32_C(          4) } },
+    { { SIMDE_FLOAT64_C(-4.50), SIMDE_FLOAT64_C(4.50) },
+      { -INT32_C(           4),  INT32_C(          4) } },
+    { { SIMDE_FLOAT64_C(-2147483650.0), SIMDE_FLOAT64_C(-2147483650.0) },
+      { INT32_MIN, INT32_MIN } },
+    { { SIMDE_FLOAT64_C( 2147483649.0), SIMDE_FLOAT64_C( 2147483649.0) },
+      { INT32_MIN, INT32_MIN } },
     #endif
     { { SIMDE_FLOAT64_C(  -220.31), SIMDE_FLOAT64_C(   685.08) },
       { -INT32_C(         220),  INT32_C(         685) } },
@@ -4981,7 +5009,15 @@ test_simde_mm_min_pd(SIMDE_MUNIT_TEST_ARGS) {
     simde__m128d a;
     simde__m128d b;
     simde__m128d r;
-  } test_vec[10] = {
+  } test_vec[] = {
+    #if !defined(SIMDE_FAST_NANS) && !defined(SIMDE_ARCH_WASM_RELAXED_SIMD)
+    { simde_mm_set_pd(SIMDE_FLOAT64_C(SIMDE_MATH_NAN), SIMDE_FLOAT64_C(            -480.90)),
+      simde_mm_set_pd(SIMDE_FLOAT64_C(        319.11), SIMDE_FLOAT64_C(     SIMDE_MATH_NAN)),
+      simde_mm_set_pd(SIMDE_FLOAT64_C(        319.11), SIMDE_FLOAT64_C(     SIMDE_MATH_NAN)) },
+    { simde_mm_set_pd(SIMDE_FLOAT64_C(SIMDE_MATH_NAN), SIMDE_FLOAT64_C(     SIMDE_MATH_NAN)),
+      simde_mm_set_pd(SIMDE_FLOAT64_C(SIMDE_MATH_NAN), SIMDE_FLOAT64_C(SIMDE_MATH_INFINITY)),
+      simde_mm_set_pd(SIMDE_FLOAT64_C(SIMDE_MATH_NAN), SIMDE_FLOAT64_C(SIMDE_MATH_INFINITY)) },
+    #endif
     { simde_mm_set_pd(SIMDE_FLOAT64_C( -927.67), SIMDE_FLOAT64_C( -514.32)),
       simde_mm_set_pd(SIMDE_FLOAT64_C(  342.71), SIMDE_FLOAT64_C(  927.58)),
       simde_mm_set_pd(SIMDE_FLOAT64_C( -927.67), SIMDE_FLOAT64_C( -514.32)) },
@@ -5199,7 +5235,15 @@ test_simde_mm_max_pd(SIMDE_MUNIT_TEST_ARGS) {
     simde__m128d a;
     simde__m128d b;
     simde__m128d r;
-  } test_vec[8] = {
+  } test_vec[] = {
+    #if !defined(SIMDE_FAST_NANS) && !defined(SIMDE_ARCH_WASM_RELAXED_SIMD)
+    { simde_mm_set_pd(SIMDE_FLOAT64_C(SIMDE_MATH_NAN), SIMDE_FLOAT64_C(     -480.90)),
+      simde_mm_set_pd(SIMDE_FLOAT64_C(        319.11), SIMDE_FLOAT64_C(     SIMDE_MATH_NAN)),
+      simde_mm_set_pd(SIMDE_FLOAT64_C(        319.11), SIMDE_FLOAT64_C(     SIMDE_MATH_NAN)) },
+    { simde_mm_set_pd(SIMDE_FLOAT64_C(SIMDE_MATH_NAN), SIMDE_FLOAT64_C(     SIMDE_MATH_NAN)),
+      simde_mm_set_pd(SIMDE_FLOAT64_C(SIMDE_MATH_NAN), SIMDE_FLOAT64_C(SIMDE_MATH_INFINITY)),
+      simde_mm_set_pd(SIMDE_FLOAT64_C(SIMDE_MATH_NAN), SIMDE_FLOAT64_C(SIMDE_MATH_INFINITY)) },
+    #endif
     { simde_mm_set_pd(SIMDE_FLOAT64_C( -303.58), SIMDE_FLOAT64_C( -480.90)),
       simde_mm_set_pd(SIMDE_FLOAT64_C(  319.11), SIMDE_FLOAT64_C(  666.53)),
       simde_mm_set_pd(SIMDE_FLOAT64_C(  319.11), SIMDE_FLOAT64_C(  666.53)) },

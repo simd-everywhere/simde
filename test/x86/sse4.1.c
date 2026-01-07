@@ -2860,6 +2860,54 @@ test_simde_mm_packus_epi32(SIMDE_MUNIT_TEST_ARGS) {
 }
 
 static int
+test_simde_mm_round_pd_nearest (SIMDE_MUNIT_TEST_ARGS) {
+#if 1
+  static const struct {
+    const simde_float64 a[2];
+    const simde_float64 r[2];
+  } test_vec[] = {
+    { { SIMDE_FLOAT64_C(  -569.50), SIMDE_FLOAT64_C(  -418.50) },
+      { SIMDE_FLOAT64_C(  -570.00), SIMDE_FLOAT64_C(  -418.00) } },
+    { { SIMDE_FLOAT64_C(  -678.00), SIMDE_FLOAT64_C(  -253.50) },
+      { SIMDE_FLOAT64_C(  -678.00), SIMDE_FLOAT64_C(  -254.00) } },
+    { { SIMDE_FLOAT64_C(   654.23), SIMDE_FLOAT64_C(   246.50) },
+      { SIMDE_FLOAT64_C(   654.00), SIMDE_FLOAT64_C(   246.00) } },
+    { { SIMDE_FLOAT64_C(   505.25), SIMDE_FLOAT64_C(   625.50) },
+      { SIMDE_FLOAT64_C(   505.00), SIMDE_FLOAT64_C(   626.00) } },
+    { { SIMDE_FLOAT64_C(  -983.50), SIMDE_FLOAT64_C(   733.52) },
+      { SIMDE_FLOAT64_C(  -984.00), SIMDE_FLOAT64_C(   734.00) } },
+    { { SIMDE_FLOAT64_C(   669.50), SIMDE_FLOAT64_C(   205.50) },
+      { SIMDE_FLOAT64_C(   670.00), SIMDE_FLOAT64_C(   206.00) } },
+    { { SIMDE_FLOAT64_C(   634.50), SIMDE_FLOAT64_C(   152.54) },
+      { SIMDE_FLOAT64_C(   634.00), SIMDE_FLOAT64_C(   153.00) } },
+    { { SIMDE_FLOAT64_C(  -142.50), SIMDE_FLOAT64_C(   450.50) },
+      { SIMDE_FLOAT64_C(  -142.00), SIMDE_FLOAT64_C(   450.00) } },
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
+    simde__m128d a = simde_mm_loadu_pd(test_vec[i].a);
+    simde__m128d r = simde_mm_round_pd(a, SIMDE_MM_FROUND_TO_NEAREST_INT);
+    simde_test_x86_assert_equal_f64x2(r, simde_mm_loadu_pd(test_vec[i].r), 1);
+  }
+
+  return 0;
+#else
+  fputc('\n', stdout);
+  simde_float64 values[8 * 2 * sizeof(simde__m128d)];
+  simde_test_x86_random_f64x2_full(8, 2, values, -1000.0f, 1000.0f, SIMDE_TEST_VEC_FLOAT_ROUND);
+
+  for (size_t i = 0 ; i < 8 ; i++) {
+    simde__m128d a = simde_test_x86_random_extract_f64x2(i, 1, 0, values);
+    simde__m128d r = simde_mm_round_pd(a, SIMDE_MM_FROUND_TO_NEAREST_INT);
+
+    simde_test_x86_write_f64x2(2, a, SIMDE_TEST_VEC_POS_FIRST);
+    simde_test_x86_write_f64x2(2, r, SIMDE_TEST_VEC_POS_LAST);
+  }
+  return 1;
+#endif
+}
+
+static int
 test_simde_mm_round_pd(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m128d a;
@@ -3665,6 +3713,8 @@ SIMDE_TEST_FUNC_LIST_BEGIN
   SIMDE_TEST_FUNC_LIST_ENTRY(mm_round_ps)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm_round_sd)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm_round_ss)
+
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm_round_pd_nearest)
 
   SIMDE_TEST_FUNC_LIST_ENTRY(mm_round_ps_nearest)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm_round_ps_ninf)
