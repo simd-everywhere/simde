@@ -470,7 +470,7 @@ simde_x_mm_round_pd (simde__m128d a, int rounding, int lax_rounding)
 
     case SIMDE_MM_FROUND_TO_NEAREST_INT:
       #if defined(SIMDE_POWER_ALTIVEC_P7_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
-        r_.altivec_f64 = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(double), vec_round(a_.altivec_f64));
+        r_.altivec_f64 = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(double), vec_rint(a_.altivec_f64));
       #elif defined(SIMDE_ARM_NEON_A64V8_NATIVE)
         r_.neon_f64 = vrndnq_f64(a_.neon_f64);
       #elif defined(SIMDE_WASM_SIMD128_NATIVE)
