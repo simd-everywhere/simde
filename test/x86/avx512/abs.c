@@ -873,6 +873,47 @@ test_simde_mm256_mask_abs_epi32(SIMDE_MUNIT_TEST_ARGS) {
 }
 
 static int
+test_simde_mm256_maskz_abs_epi32(SIMDE_MUNIT_TEST_ARGS) {
+  const struct {
+    simde__mmask8 k;
+    int32_t a[8];
+    int32_t r[8];
+  } test_vec[8] = {
+    { UINT8_C( 60),
+      {  INT32_C(  1683193367),  INT32_C(   282166317), -INT32_C(    44287112),  INT32_C(  1061028067),  INT32_C(  1736089522),  INT32_C(   771028142), -INT32_C(  1371025994), -INT32_C(  1142182237) },
+      {  INT32_C(           0),  INT32_C(           0),  INT32_C(    44287112),  INT32_C(  1061028067),  INT32_C(  1736089522),  INT32_C(   771028142),  INT32_C(           0),  INT32_C(           0) } },
+    { UINT8_C( 44),
+      { -INT32_C(  1034346690),  INT32_C(   742025969), -INT32_C(   972015674),  INT32_C(   343428981), -INT32_C(  1111302199), -INT32_C(  1586237228), -INT32_C(   448519625),  INT32_C(  1259536141) },
+      {  INT32_C(           0),  INT32_C(           0),  INT32_C(   972015674),  INT32_C(   343428981),  INT32_C(           0),  INT32_C(  1586237228),  INT32_C(           0),  INT32_C(           0) } },
+    { UINT8_C( 31),
+      { -INT32_C(   720368277),  INT32_C(  2124102727), -INT32_C(  1661771444), -INT32_C(  1184561191), -INT32_C(  1165155382), -INT32_C(  1192153450),  INT32_C(  1925568370),  INT32_C(  1418793193) },
+      {  INT32_C(   720368277),  INT32_C(  2124102727),  INT32_C(  1661771444),  INT32_C(  1184561191),  INT32_C(  1165155382),  INT32_C(           0),  INT32_C(           0),  INT32_C(           0) } },
+    { UINT8_C( 29),
+      { -INT32_C(   580638047),  INT32_C(   657121989), -INT32_C(   587151659),  INT32_C(  1319614763),  INT32_C(  1961189702),  INT32_C(   703044946),  INT32_C(  1930582371), -INT32_C(  1953404950) },
+      {  INT32_C(   580638047),  INT32_C(           0),  INT32_C(   587151659),  INT32_C(  1319614763),  INT32_C(  1961189702),  INT32_C(           0),  INT32_C(           0),  INT32_C(           0) } },
+    { UINT8_C(145),
+      { -INT32_C(   665425675),  INT32_C(  1487764882),  INT32_C(   931433086), -INT32_C(  1837182415),  INT32_C(  1441133239),  INT32_C(   850923225), -INT32_C(  2011419871), -INT32_C(  1306941508) },
+      {  INT32_C(   665425675),  INT32_C(           0),  INT32_C(           0),  INT32_C(           0),  INT32_C(  1441133239),  INT32_C(           0),  INT32_C(           0),  INT32_C(  1306941508) } },
+    { UINT8_C( 16),
+      { -INT32_C(   308114833), -INT32_C(  1033110729),  INT32_C(  1374921343),  INT32_C(   319391264),  INT32_C(  2045533803),  INT32_C(  1100619542), -INT32_C(   469884357), -INT32_C(  1410092997) },
+      {  INT32_C(           0),  INT32_C(           0),  INT32_C(           0),  INT32_C(           0),  INT32_C(  2045533803),  INT32_C(           0),  INT32_C(           0),  INT32_C(           0) } },
+    { UINT8_C( 58),
+      { -INT32_C(  1871603563), -INT32_C(  1525730557), -INT32_C(  1379507929), -INT32_C(   937895574), -INT32_C(   455175739),  INT32_C(  1310727980), -INT32_C(   846593251), -INT32_C(  1962461706) },
+      {  INT32_C(           0),  INT32_C(  1525730557),  INT32_C(           0),  INT32_C(   937895574),  INT32_C(   455175739),  INT32_C(  1310727980),  INT32_C(           0),  INT32_C(           0) } },
+    { UINT8_C(205),
+      { -INT32_C(  1395647367), -INT32_C(  1932298965),  INT32_C(   351699003),  INT32_C(   718978712), -INT32_C(  1135165796), -INT32_C(   505830178),  INT32_C(  1675077422),  INT32_C(   657482670) },
+      {  INT32_C(  1395647367),  INT32_C(           0),  INT32_C(   351699003),  INT32_C(   718978712),  INT32_C(           0),  INT32_C(           0),  INT32_C(  1675077422),  INT32_C(   657482670) } },
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    simde__m256i r = simde_mm256_maskz_abs_epi32(test_vec[i].k, simde_mm256_loadu_epi32(test_vec[i].a));
+    simde_test_x86_assert_equal_i32x8(r, simde_mm256_loadu_epi32(test_vec[i].r));
+  }
+
+  return 0;
+}
+
+static int
 test_simde_mm256_abs_epi64(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
@@ -3373,6 +3414,7 @@ SIMDE_TEST_FUNC_LIST_BEGIN
   SIMDE_TEST_FUNC_LIST_ENTRY(mm256_mask_abs_epi16)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm256_maskz_abs_epi16)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm256_mask_abs_epi32)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm256_maskz_abs_epi32)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm256_abs_epi64)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm256_mask_abs_epi64)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm256_maskz_abs_epi64)
