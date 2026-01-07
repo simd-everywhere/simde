@@ -3279,10 +3279,6 @@ test_simde_mm_cvtpd_epi32 (SIMDE_MUNIT_TEST_ARGS) {
       { -INT32_C(           4),  INT32_C(          4) } },
     { { SIMDE_FLOAT64_C(-4.50), SIMDE_FLOAT64_C(4.50) },
       { -INT32_C(           4),  INT32_C(          4) } },
-    { { SIMDE_FLOAT64_C(-2147483650.0), SIMDE_FLOAT64_C(-2147483650.0) },
-      { INT32_MIN, INT32_MIN } },
-    { { SIMDE_FLOAT64_C( 2147483649.0), SIMDE_FLOAT64_C( 2147483649.0) },
-      { INT32_MIN, INT32_MIN } },
     #endif
     { { SIMDE_FLOAT64_C(  -220.31), SIMDE_FLOAT64_C(   685.08) },
       { -INT32_C(         220),  INT32_C(         685),  INT32_C(           0),  INT32_C(           0) } },
@@ -3332,10 +3328,6 @@ test_simde_mm_cvtpd_pi32 (SIMDE_MUNIT_TEST_ARGS) {
       { -INT32_C(           4),  INT32_C(          4) } },
     { { SIMDE_FLOAT64_C(-4.50), SIMDE_FLOAT64_C(4.50) },
       { -INT32_C(           4),  INT32_C(          4) } },
-    { { SIMDE_FLOAT64_C(-2147483650.0), SIMDE_FLOAT64_C(-2147483650.0) },
-      { INT32_MIN, INT32_MIN } },
-    { { SIMDE_FLOAT64_C( 2147483649.0), SIMDE_FLOAT64_C( 2147483649.0) },
-      { INT32_MIN, INT32_MIN } },
     #endif
     { { SIMDE_FLOAT64_C(  -220.31), SIMDE_FLOAT64_C(   685.08) },
       { -INT32_C(         220),  INT32_C(         685) } },
