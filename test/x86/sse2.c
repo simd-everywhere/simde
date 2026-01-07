@@ -4981,7 +4981,15 @@ test_simde_mm_min_pd(SIMDE_MUNIT_TEST_ARGS) {
     simde__m128d a;
     simde__m128d b;
     simde__m128d r;
-  } test_vec[10] = {
+  } test_vec[] = {
+    #if !defined(SIMDE_FAST_NANS) && !defined(SIMDE_ARCH_WASM_RELAXED_SIMD)
+    { simde_mm_set_pd(SIMDE_FLOAT64_C(SIMDE_MATH_NAN), SIMDE_FLOAT64_C(            -480.90)),
+      simde_mm_set_pd(SIMDE_FLOAT64_C(        319.11), SIMDE_FLOAT64_C(     SIMDE_MATH_NAN)),
+      simde_mm_set_pd(SIMDE_FLOAT64_C(        319.11), SIMDE_FLOAT64_C(     SIMDE_MATH_NAN)) },
+    { simde_mm_set_pd(SIMDE_FLOAT64_C(SIMDE_MATH_NAN), SIMDE_FLOAT64_C(     SIMDE_MATH_NAN)),
+      simde_mm_set_pd(SIMDE_FLOAT64_C(SIMDE_MATH_NAN), SIMDE_FLOAT64_C(SIMDE_MATH_INFINITY)),
+      simde_mm_set_pd(SIMDE_FLOAT64_C(SIMDE_MATH_NAN), SIMDE_FLOAT64_C(SIMDE_MATH_INFINITY)) },
+    #endif
     { simde_mm_set_pd(SIMDE_FLOAT64_C( -927.67), SIMDE_FLOAT64_C( -514.32)),
       simde_mm_set_pd(SIMDE_FLOAT64_C(  342.71), SIMDE_FLOAT64_C(  927.58)),
       simde_mm_set_pd(SIMDE_FLOAT64_C( -927.67), SIMDE_FLOAT64_C( -514.32)) },
@@ -5199,7 +5207,15 @@ test_simde_mm_max_pd(SIMDE_MUNIT_TEST_ARGS) {
     simde__m128d a;
     simde__m128d b;
     simde__m128d r;
-  } test_vec[8] = {
+  } test_vec[] = {
+    #if !defined(SIMDE_FAST_NANS) && !defined(SIMDE_ARCH_WASM_RELAXED_SIMD)
+    { simde_mm_set_pd(SIMDE_FLOAT64_C(SIMDE_MATH_NAN), SIMDE_FLOAT64_C(     -480.90)),
+      simde_mm_set_pd(SIMDE_FLOAT64_C(        319.11), SIMDE_FLOAT64_C(     SIMDE_MATH_NAN)),
+      simde_mm_set_pd(SIMDE_FLOAT64_C(        319.11), SIMDE_FLOAT64_C(     SIMDE_MATH_NAN)) },
+    { simde_mm_set_pd(SIMDE_FLOAT64_C(SIMDE_MATH_NAN), SIMDE_FLOAT64_C(     SIMDE_MATH_NAN)),
+      simde_mm_set_pd(SIMDE_FLOAT64_C(SIMDE_MATH_NAN), SIMDE_FLOAT64_C(SIMDE_MATH_INFINITY)),
+      simde_mm_set_pd(SIMDE_FLOAT64_C(SIMDE_MATH_NAN), SIMDE_FLOAT64_C(SIMDE_MATH_INFINITY)) },
+    #endif
     { simde_mm_set_pd(SIMDE_FLOAT64_C( -303.58), SIMDE_FLOAT64_C( -480.90)),
       simde_mm_set_pd(SIMDE_FLOAT64_C(  319.11), SIMDE_FLOAT64_C(  666.53)),
       simde_mm_set_pd(SIMDE_FLOAT64_C(  319.11), SIMDE_FLOAT64_C(  666.53)) },
