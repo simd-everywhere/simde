@@ -4759,15 +4759,19 @@ simde_mm_min_pd (simde__m128d a, simde__m128d b) {
       a_ = simde__m128d_to_private(a),
       b_ = simde__m128d_to_private(b);
 
-    #if defined(SIMDE_POWER_ALTIVEC_P7_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
-      r_.altivec_f64 = vec_min(a_.altivec_f64, b_.altivec_f64);
-    #elif defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_FAST_NANS)
+    #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_FAST_NANS)
       r_.neon_f64 = vminq_f64(a_.neon_f64, b_.neon_f64);
     #elif defined(SIMDE_ARM_NEON_A64V8_NATIVE)
       r_.neon_f64 = vbslq_f64(vcltq_f64(a_.neon_f64, b_.neon_f64), a_.neon_f64, b_.neon_f64);
-    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE) && defined(SIMDE_FAST_NANS)
       r_.wasm_v128 = wasm_f64x2_min(a_.wasm_v128, b_.wasm_v128);
-    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+      r_.wasm_v128 = wasm_v128_bitselect(a_.wasm_v128, b_.wasm_v128, wasm_f64x2_lt(a_.wasm_v128, b_.wasm_v128));
+    #elif (defined(SIMDE_POWER_ALTIVEC_P7_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)) && defined(SIMDE_FAST_NANS)
+      r_.altivec_f64 = vec_min(a_.altivec_f64, b_.altivec_f64);
+    #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
+      r_.altivec_f64 = vec_sel(b_.altivec_f64, a_.altivec_f64, vec_cmplt(a_.altivec_f64, b_.altivec_f64));
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE) && defined(SIMDE_FAST_NANS)
       r_.lsx_f64 = __lsx_vfmin_d(a_.lsx_f64, b_.lsx_f64);
     #else
       SIMDE_VECTORIZE
@@ -4892,15 +4896,19 @@ simde_mm_max_pd (simde__m128d a, simde__m128d b) {
       a_ = simde__m128d_to_private(a),
       b_ = simde__m128d_to_private(b);
 
-    #if defined(SIMDE_POWER_ALTIVEC_P7_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
-      r_.altivec_f64 = vec_max(a_.altivec_f64, b_.altivec_f64);
-    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-      r_.wasm_v128 = wasm_f64x2_max(a_.wasm_v128, b_.wasm_v128);
-    #elif defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_FAST_NANS)
+    #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_FAST_NANS)
       r_.neon_f64 = vmaxq_f64(a_.neon_f64, b_.neon_f64);
     #elif defined(SIMDE_ARM_NEON_A64V8_NATIVE)
       r_.neon_f64 = vbslq_f64(vcgtq_f64(a_.neon_f64, b_.neon_f64), a_.neon_f64, b_.neon_f64);
-    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE) && defined(SIMDE_FAST_NANS)
+      r_.wasm_v128 = wasm_f64x2_max(a_.wasm_v128, b_.wasm_v128);
+    #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+      r_.wasm_v128 = wasm_v128_bitselect(a_.wasm_v128, b_.wasm_v128, wasm_f64x2_gt(a_.wasm_v128, b_.wasm_v128));
+    #elif (defined(SIMDE_POWER_ALTIVEC_P7_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)) && defined(SIMDE_FAST_NANS)
+      r_.altivec_f64 = vec_max(a_.altivec_f64, b_.altivec_f64);
+    #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE)
+      r_.altivec_f64 = vec_sel(b_.altivec_f64, a_.altivec_f64, vec_cmpgt(a_.altivec_f64, b_.altivec_f64));
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE) && defined(SIMDE_FAST_NANS)
       r_.lsx_f64 = __lsx_vfmax_d(a_.lsx_f64, b_.lsx_f64);
     #else
       SIMDE_VECTORIZE
