@@ -103,10 +103,11 @@ SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
    * macro libc++ uses. */
   #if defined(isnan) || (defined(_LIBCPP_MATH_H) && !defined(_LIBCPP_CMATH))
     #define SIMDE_MATH_HAVE_MATH_H
-  #elif defined(__cplusplus)
+  #elif defined(__cplusplus) && !defined(HEDLEY_MSVC_VERSION)
     #define SIMDE_MATH_HAVE_CMATH
   #endif
-#elif defined(__has_include)
+#endif
+#if defined(__has_include) && !(defined(SIMDE_MATH_HAVE_MATH_H) || defined(SIMDE_MATH_HAVE_CMATH))
   #if defined(__cplusplus) && (__cplusplus >= 201103L) && __has_include(<cmath>)
     #define SIMDE_MATH_HAVE_CMATH
     #include <cmath>
