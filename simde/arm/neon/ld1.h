@@ -660,7 +660,7 @@ simde_vld1q_p64(simde_poly64_t const ptr[HEDLEY_ARRAY_PARAM(2)]) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_poly128_t
 simde_vldrq_p128(simde_poly128_t const ptr[HEDLEY_ARRAY_PARAM(1)]) {
-  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARCH_ARM_CRYPTO)
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
     return vldrq_p128(ptr);
   #else
     simde_poly128_t r_;
@@ -668,7 +668,7 @@ simde_vldrq_p128(simde_poly128_t const ptr[HEDLEY_ARRAY_PARAM(1)]) {
     return r_;
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && !defined(SIMDE_ARCH_ARM_CRYPTO))
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
   #undef vldrq_p128
   #define vldrq_p128(a) simde_vldrq_p128((a))
 #endif
