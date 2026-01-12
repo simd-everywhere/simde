@@ -606,14 +606,13 @@ simde_vst1q_p64(simde_poly64_t ptr[HEDLEY_ARRAY_PARAM(2)], simde_poly64x2_t val)
 SIMDE_FUNCTION_ATTRIBUTES
 void
 simde_vstrq_p128(simde_poly128_t ptr[HEDLEY_ARRAY_PARAM(1)], simde_poly128_t val) {
-  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE) && defined(SIMDE_ARCH_ARM_CRYPTO)
+  #if defined(SIMDE_ARM_NEON_A32V8_NATIVE)
     vstrq_p128(ptr, val);
   #else
     simde_memcpy(ptr, &val, sizeof(val));
   #endif
 }
-#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
-    !defined(SIMDE_ARCH_ARM_CRYPTO))
+#if defined(SIMDE_ARM_NEON_A32V8_ENABLE_NATIVE_ALIASES)
   #undef vstrq_p128
   #define vstrq_p128(a, b) simde_vstrq_p128((a), (b))
 #endif
