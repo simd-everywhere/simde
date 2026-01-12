@@ -83,7 +83,7 @@ test_simde_x_clmul_u64 (SIMDE_MUNIT_TEST_ARGS) {
 }
 
 static int
-test_simde_mm_clmulepi64_epi128 (SIMDE_MUNIT_TEST_ARGS) {
+test_simde_mm_clmulepi64_si128 (SIMDE_MUNIT_TEST_ARGS) {
 #if 1
   static const struct {
     const int64_t a[2];
@@ -379,7 +379,7 @@ test_simde_mm512_clmulepi64_epi128 (SIMDE_MUNIT_TEST_ARGS) {
 SIMDE_TEST_FUNC_LIST_BEGIN
   SIMDE_TEST_FUNC_LIST_ENTRY(x_clmul_u64)
 
-  SIMDE_TEST_FUNC_LIST_ENTRY(mm_clmulepi64_epi128)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm_clmulepi64_si128)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm256_clmulepi64_epi128)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm512_clmulepi64_epi128)
 SIMDE_TEST_FUNC_LIST_END
