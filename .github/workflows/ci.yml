@@ -136,7 +136,7 @@ jobs:
       uses: hendrikmuhs/ccache-action@v1.2
       with:
         key: ${{ github.job }}-${{ matrix.isax }}
-        evict-old-files: job
+        evict-old-files: 1d
         verbose: 2
     - name: Install APT Dependencies
       run: |
@@ -178,8 +178,8 @@ jobs:
     - name: ccache
       uses: hendrikmuhs/ccache-action@v1.2
       with:
-        key: ${{ github.job }}-
-        evict-old-files: job
+        key: ${{ github.job }}
+        evict-old-files: 1d
         verbose: 2
     - name: Install APT Dependencies
       run: |
@@ -218,7 +218,7 @@ jobs:
       uses: hendrikmuhs/ccache-action@v1.2
       with:
         key: ${{ github.job }}
-        evict-old-files: job
+        evict-old-files: 1d
         verbose: 2
     - name: Install APT Dependencies
       run: |
@@ -259,16 +259,16 @@ jobs:
       name: CPU Information
       run: cat /proc/cpuinfo
     - run: sudo add-apt-repository ppa:stephanosio/ccache && sudo apt-get update
+    - name: Install APT Dependencies
+      run: |
+        sudo apt-get -y --no-install-recommends install libxml2-utils ninja-build pipx ccache && \
+        pipx install meson==0.55.1
     - name: ccache
       uses: hendrikmuhs/ccache-action@v1.2
       with:
         key: ${{ github.job }}
-        evict-old-files: job
+        evict-old-files: 1d
         verbose: 2
-    - name: Install APT Dependencies
-      run: |
-        sudo apt-get -y --no-install-recommends install libxml2-utils ninja-build pipx && \
-        pipx install meson==0.55.1
     - name: Convert
       run: ./test/native-aliases.sh
     - name: Configure
@@ -297,7 +297,7 @@ jobs:
       uses: hendrikmuhs/ccache-action@v1.2
       with:
         key: ${{ github.job }}-${{ steps.cpu.outputs.model_name }}
-        evict-old-files: job
+        evict-old-files: 1d
         verbose: 2
     - name: Install APT Dependencies
       run: |
@@ -372,7 +372,7 @@ jobs:
       uses: hendrikmuhs/ccache-action@v1.2
       with:
         key: ${{ github.job }}-${{ matrix.version }}-${{ matrix.distro }}-${{ matrix.arch_flags }}-${{ steps.cpu.outputs.model_name }}
-        evict-old-files: job
+        evict-old-files: 1d
         verbose: 2
     - name: Install APT Dependencies
       run: |
@@ -490,7 +490,7 @@ jobs:
       uses: hendrikmuhs/ccache-action@v1.2
       with:
         key: ${{ github.job }}-${{ matrix.version}}${{ matrix.extra }}-${{ matrix.distro }}-${{ matrix.cross }}
-        evict-old-files: job
+        evict-old-files: 1d
         verbose: 2
     - name: add ccache to the build path
       run: |
@@ -546,7 +546,7 @@ jobs:
       uses: hendrikmuhs/ccache-action@v1.2
       with:
         key: ${{ github.job }}-${{ matrix.distro }}-${{ matrix.cross }}
-        evict-old-files: job
+        evict-old-files: 1d
         verbose: 2
     - name: add ccache to the build path
       run: |
@@ -601,7 +601,7 @@ jobs:
       uses: hendrikmuhs/ccache-action@v1.2
       with:
         key: ${{ github.job }}-${{ matrix.distro }}-${{ matrix.cross }}
-        evict-old-files: job
+        evict-old-files: 1d
         verbose: 2
     - name: add ccache to the build path
       run: |
@@ -691,7 +691,7 @@ jobs:
       uses: hendrikmuhs/ccache-action@v1.2
       with:
         key: ${{ github.job }}-${{ matrix.version }}${{ matrix.extra }}-${{ matrix.cross }}
-        evict-old-files: job
+        evict-old-files: 1d
         verbose: 2
     - name: add ccache to the build path
       run: |
@@ -849,7 +849,7 @@ jobs:
       uses: hendrikmuhs/ccache-action@v1.2
       with:
         key: ${{ github.job }}-${{ matrix.version }}-${{ matrix.distro }}-${{ matrix.arch_flags }}-${{ steps.cpu.outputs.model_name }}
-        evict-old-files: job
+        evict-old-files: 1d
         verbose: 2
     - name: Install PPAs
       if: ${{ matrix.distro == 'ubuntu-22.04' }}
@@ -927,7 +927,7 @@ jobs:
       uses: hendrikmuhs/ccache-action@v1.2
       with:
         key: ${{ github.job }}-${{ matrix.os }}-${{ matrix.xcode }}
-        evict-old-files: job
+        evict-old-files: 1d
         verbose: 2
     - name: Python install bug workaround # https://github.com/actions/setup-python/issues/577
       run: |
