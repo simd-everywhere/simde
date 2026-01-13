@@ -13,7 +13,7 @@ jobs:
       - name: Cleanup
         run: |
           echo "Fetching list of cache keys"
-          readarray cacheKeysForPR < <(gh cache list --ref "${BRANCH}" --json id --jq '.[].id')
+          readarray -t cacheKeysForPR < <(gh cache list --ref "${BRANCH}" --json id --jq '.[].id')
 
           ## Setting this to not fail the workflow while deleting cache keys.
           set +e
