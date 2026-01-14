@@ -1027,12 +1027,19 @@ HEDLEY_DIAGNOSTIC_POP
 #      if !(HEDLEY_GCC_VERSION_CHECK(10,3,0))
 #        define SIMDE_BUG_GCC_98521
 #      endif
-#    endif
-#    if !HEDLEY_GCC_VERSION_CHECK(9,4,0) && defined(SIMDE_ARCH_AARCH64)
-#      define SIMDE_BUG_GCC_94488
-#    endif
-#    if !HEDLEY_GCC_VERSION_CHECK(9,1,0) && defined(SIMDE_ARCH_AARCH64)
-#      define SIMDE_BUG_GCC_REV_264019
+#    elif defined(SIMDE_ARCH_AARCH64)
+#      if !HEDLEY_GCC_VERSION_CHECK(9,4,0)
+#        define SIMDE_BUG_GCC_94488
+#      endif
+#      if !HEDLEY_GCC_VERSION_CHECK(9,1,0)
+#        define SIMDE_BUG_GCC_REV_264019
+#      endif
+#      if HEDLEY_GCC_VERSION_CHECK(15,0,0)
+#        define SIMDE_BUG_GCC_123584
+#      endif
+#      if !HEDLEY_GCC_VERSION_CHECK(10,2,0) && !defined(__OPTIMIZE__)
+#        define SIMDE_BUG_GCC_96174
+#      endif
 #    endif
 #    if (!HEDLEY_GCC_VERSION_CHECK(9,0,0) && !defined(SIMDE_ARCH_AARCH64)) || (!defined(SIMDE_ARCH_AARCH64) && defined(SIMDE_ARCH_ARM))
 #      define SIMDE_BUG_GCC_REV_260989
@@ -1055,11 +1062,6 @@ HEDLEY_DIAGNOSTIC_POP
 #      endif
 #      if !HEDLEY_GCC_VERSION_CHECK(12,0,0)
 #        define SIMDE_BUG_VEC_CPSGN_REVERSED_ARGS
-#      endif
-#    endif
-#    if defined(SIMDE_ARCH_X86) || defined(SIMDE_ARCH_AMD64)
-#      if !HEDLEY_GCC_VERSION_CHECK(10,2,0) && !defined(__OPTIMIZE__)
-#        define SIMDE_BUG_GCC_96174
 #      endif
 #    endif
 #    if defined(SIMDE_ARCH_ZARCH)
