@@ -1,0 +1,20 @@
+[binaries]
+c = ['ccache', 'loongarch64-linux-gnu-gcc-15']
+cpp = ['ccache', 'loongarch64-linux-gnu-g++-15']
+ar = 'loongarch64-linux-gnu-gcc-ar-15'
+strip = 'loongarch64-linux-gnu-strip'
+objcopy = 'loongarch64-linux-gnu-objcopy'
+ld = 'loongarch64-linux-gnu-ld'
+exe_wrapper = ['qemu-loongarch64-static', '-L', '/usr/loongarch64-linux-gnu/', '-cpu', 'la464']
+
+[properties]
+c_args = ['-march=loongarch64', '-Wextra', '-Werror', '-mlsx', '-mlasx']
+cpp_args = ['-march=loongarch64', '-Wextra', '-Werror', '-mlsx', '-mlasx']
+#c_args = ['-march=la464', '-Wextra', '-Werror']
+#cpp_args = ['-march=la464', '-Wextra', '-Werror']
+
+[host_machine]
+system = 'linux'
+cpu_family = 'loongarch64'
+cpu = 'loongarch64'
+endian = 'little'
