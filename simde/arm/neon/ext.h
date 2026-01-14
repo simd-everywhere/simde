@@ -1010,6 +1010,9 @@ simde_vextq_u64(simde_uint64x2_t a, simde_uint64x2_t b, const int n)
   #define vextq_u64(a, b, n) simde_vextq_u64((a), (b), (n))
 #endif
 
+HEDLEY_DIAGNOSTIC_PUSH
+SIMDE_DIAGNOSTIC_DISABLE_MAYBE_UNINITIAZILED_
+
 SIMDE_FUNCTION_ATTRIBUTES
 simde_poly8x8_t
 simde_vext_p8(simde_poly8x8_t a, simde_poly8x8_t b, const int n)
@@ -1061,6 +1064,8 @@ simde_vext_p16(simde_poly16x4_t a, simde_poly16x4_t b, const int n)
   #undef vext_p16
   #define vext_p16(a, b, n) simde_vext_p16((a), (b), (n))
 #endif
+
+HEDLEY_DIAGNOSTIC_POP
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde_poly64x1_t
