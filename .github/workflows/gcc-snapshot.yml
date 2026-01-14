@@ -1,0 +1,292 @@
+name: GCC-16
+
+on:
+  push:
+    branches:
+      - 'master'
+  workflow_dispatch: {}
+
+concurrency:
+  group: gcc-snapshot-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  x86:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        isax:
+        - -DSIMDE_NATURAL_VECTOR_SIZE=256 -march=x86-64-v3 -mavx512bw -mavx512vl
+        # https://en.wikipedia.org/wiki/X86-64#Microarchitecture_levels
+        - -march=x86-64 -maes -mpclmul  # the x86-64 baseline is CMOV, CX8, FPU, FXSR, MMX, OSFXSR, SCE, SSE, SSE2
+        - -march=x86-64-v2  # CMPXCHG16B, LAHF-SAHF, POPCNT, SSE3, SSE4_1, SSE4_2, SSSE3
+        - -march=x86-64-v3  # AVX, AVX2, BMI1, BMI2, F16C, FMA, LZCNT, MOVBE, OSXSAVE
+        - -march=x86-64-v4  # AVX512F, AVX512BW, AVX512CD, AVX512DQ, AVX512VL a.k.a. skylake+ (including zen4)
+        include:
+          - target: tgl
+          - isax: -march=x86-64-v4 -mcx16 -mxsave -mpclmul -mfsgsbase -mrdrnd -mhle -mrdseed -maes -mclflushopt -mxsavec -mxsaves -msgx -mpku -msha -mrdpid -mavx512vpopcntdq -mavx512ifma -mavx512vbmi -mavx512vnni -mavx512vbmi2 -mavx512bitalg -mvpclmulqdq -mgfni -mvaes  # icelake
+            target: icl
+          - isax: -march=x86-64-v4 -mcx16 -mxsave -mpclmul -mfsgsbase -mrdrnd -mhle -mrdseed -maes -mclflushopt -mxsavec -mxsaves -msgx -mpku -msha -mrdpid -mavx512vpopcntdq -mavx512ifma -mavx512vbmi -mavx512vnni -mavx512vbmi2 -mavx512bitalg -mvpclmulqdq -mgfni -mvaes -mpconfig -mwbnoinvd -mclwb -mmovdiri -mmovdir64b -menqcmd -mcldemote -mptwrite -mwaitpkg -mserialize -mtsxldtrk -muintr -mavxvnni -mavx512fp16  # sapphire rapids without bf16
+            # See https://github.com/simd-everywhere/simde/issues/1095
+            target: spr
+    env:
+      CFLAGS: -Wall -Wextra -Werror ${{ matrix.isax }}
+      CXXFLAGS: -Wall -Wextra -Werror ${{ matrix.isax }}
+      INTEL_TARGET: ${{ matrix.target }}
+    steps:
+    - uses: actions/checkout@v6
+      with:
+        submodules: recursive
+    - name: CPU Information
+      run: cat /proc/cpuinfo
+    - name: Install APT Dependencies
+      run: |
+        sudo add-apt-repository ppa:misterc/gcc-snapshot-latest-lts
+        # sudo add-apt-repository ppa:stephanosio/ccache
+        sudo apt-get install -y --no-install-recommends ninja-build pipx \
+          gcc-16 g++-16 # ccache
+        sudo apt-get purge -y gcc g++
+        sudo ln -s /usr/bin/gcc-16 /usr/bin/gcc
+        sudo ln -s /usr/bin/g++-16 /usr/bin/g++
+        pipx install meson==0.55.1
+    # - name: ccache
+    #   uses: hendrikmuhs/ccache-action@v1.2
+    #   with:
+    #     key: gcc-16-${{ github.job }}-${{ matrix.isax }}
+    #     verbose: 2
+    # - name: add ccache to the build path
+    #   run: |
+    #     export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
+    - name: Configure
+      run: meson setup build || (cat build/meson-logs/meson-log.txt ; false)
+    - name: Test run native?
+      run: |
+        test/check-flags.sh query && echo Tests with "$CFLAGS" will be run natively
+        test/check-flags.sh query || echo Tests with "$CFLAGS" will be run using SDE
+    - name: Build
+      run: ninja -C build -v
+    - name: Test
+      run: |
+        # shellcheck disable=SC2046
+        meson test -C build --print-errorlogs --wrapper "${GITHUB_WORKSPACE}/test/check-flags.sh sde"  # $(meson test -C build --list | grep -v emul)
+
+  x86-xop:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+    env:
+      CFLAGS: -Wall -Wextra -Werror -march=bdver2
+      CXXFLAGS: -Wall -Wextra -Werror -march=bdver2
+    steps:
+    - uses: actions/checkout@v6
+      with:
+        submodules: recursive
+    - name: CPU Information
+      run: cat /proc/cpuinfo
+    - name: Install APT Dependencies
+      run: |
+        sudo add-apt-repository ppa:misterc/gcc-snapshot-latest-lts
+        # sudo add-apt-repository ppa:stephanosio/ccache
+        sudo apt-get install -y --no-install-recommends ninja-build pipx \
+          g++-16 gcc-16 qemu-user-static  # ccache
+        sudo apt-get purge -y gcc g++
+        sudo ln -s /usr/bin/gcc-16 /usr/bin/gcc
+        sudo ln -s /usr/bin/g++-16 /usr/bin/g++
+        pipx install meson==0.55.1
+    # - name: ccache
+    #   uses: hendrikmuhs/ccache-action@v1.2
+    #   with:
+    #     key: gcc-16-${{ github.job }}
+    #     verbose: 2
+    # - name: add ccache to the build path
+    #   run: |
+    #     export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
+    - name: Configure
+      run: meson setup build || (cat build/meson-logs/meson-log.txt ; false)
+    - name: Build
+      run: ninja -C build -v
+    # can't test until we find a combination of `gcc -march=` and `qemu -cpu` that both enable XOP and allows qemu to test it
+    # - name: Test
+    #   run: meson test -C build --print-errorlogs --wrapper "qemu-amd64-static -cpu Opteron_G5-v1"
+
+  sleef:
+    runs-on: ubuntu-24.04
+    env:
+      CFLAGS: -march=native -Wall -Wextra -Werror
+      CXXFLAGS: -march=native -Wall -Wextra -Werror
+    steps:
+    - uses: actions/checkout@v6
+      with:
+        submodules: recursive
+    - id: cpu
+      name: CPU Information
+      run: |
+        cat /proc/cpuinfo
+    - name: Install APT Dependencies
+      run: |
+        sudo add-apt-repository ppa:misterc/gcc-snapshot-latest-lts
+        # sudo add-apt-repository ppa:stephanosio/ccache
+        sudo apt-get install -y --no-install-recommends ninja-build pipx \
+          libsleef-dev gcc-16 g++-16  # ccache
+        sudo apt-get purge -y gcc g++
+        sudo ln -s /usr/bin/gcc-16 /usr/bin/gcc
+        sudo ln -s /usr/bin/g++-16 /usr/bin/g++
+        pipx install meson==0.55.1
+    # - name: ccache
+    #   uses: hendrikmuhs/ccache-action@v1.2
+    #   with:
+    #     key: gcc-16-${{ github.job }}
+    #     verbose: 2
+    # - name: add ccache to the build path
+    #   run: |
+    #     export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
+    - name: Configure
+      run: meson setup build -Dsleef=enabled || (cat build/meson-logs/meson-log.txt ; false)
+    - name: Build
+      run: ninja -C build -v
+    - name: Test
+      run: |
+        # shellcheck disable=SC2046
+        meson test -C build --print-errorlogs  # $(meson test -C build --list | grep -v emul)
+
+  gcc:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+        - version: 16
+          distro: ubuntu-24.04
+          arch_flags: -ffast-math
+        - version: 16
+          distro: ubuntu-24.04
+        - version: 16
+          distro: ubuntu-24.04-arm
+    runs-on: ${{ matrix.distro }}
+    env:
+      CFLAGS: ${{ matrix.arch_flags }} -march=native -Wall -Wextra -Werror
+      CXXFLAGS: ${{ matrix.arch_flags }} -march=native -Wall -Wextra -Werror
+    steps:
+    - uses: actions/checkout@v6
+      with:
+        submodules: recursive
+    - id: cpu
+      name: CPU Information
+      run: |
+        cat /proc/cpuinfo
+    - name: Install APT Dependencies
+      run: |
+        sudo add-apt-repository ppa:stephanosio/ccache
+        # sudo add-apt-repository ppa:misterc/gcc-snapshot-latest-lts
+        sudo apt-get -y install --no-install-recommends pipx ninja-build \
+          gcc-${{ matrix.version }} g++-${{ matrix.version }}  # ccache
+        sudo apt-get -y purge g++ gcc
+        sudo ln -s /usr/bin/gcc-${{ matrix.version }} /usr/bin/gcc
+        sudo ln -s /usr/bin/g++-${{ matrix.version }} /usr/bin/g++
+        pipx install meson==0.55.1
+    # - name: ccache
+    #   uses: hendrikmuhs/ccache-action@v1.2
+    #   with:
+    #     key: ${{ github.job }}-${{ matrix.version }}-${{ matrix.distro }}-${{ matrix.arch_flags }}
+    #     verbose: 2
+    # - name: add ccache to the build path
+    #   run: |
+    #     export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
+    - name: Configure
+      run: meson setup build || (cat build/meson-logs/meson-log.txt ; false)
+    - name: Build
+      run: meson compile -C build --verbose
+    - name: Test
+      run: |
+        # shellcheck disable=SC2046
+        meson test -C build --print-errorlogs  # $(meson test -C build --list | grep -v emul)
+
+  gcc-qemu:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+        - version: 16
+          cross: armel
+          arch_gnu_abi: eabi
+          arch_deb: armel
+          arch_gnu: arm
+          distro: ubuntu-24.04
+        - version: 16
+          cross: armv7
+          arch_gnu: arm
+          arch_gnu_abi: eabihf
+          arch_deb: armhf
+          distro: ubuntu-24.04
+        - version: 16
+          extra: -no-extras
+          cross: aarch64
+          arch_gnu: aarch64
+          arch_deb: arm64
+          distro: ubuntu-24.04
+        - version: 16
+          cross: aarch64
+          arch_gnu: aarch64
+          arch_deb: arm64
+          distro: ubuntu-24.04
+        - extra: -32bit
+          version: 16
+          cross: armv8
+          arch_gnu: arm
+          arch_gnu_abi: eabihf
+          arch_deb: armhf
+          distro: ubuntu-24.04
+        - version: 16
+          cross: riscv64
+          arch_gnu: riscv64
+          arch_deb: riscv64
+          distro: ubuntu-24.04
+        - extra: -O3
+          version: 16
+          cross: riscv64
+          arch_gnu: riscv64
+          arch_deb: riscv64
+          distro: ubuntu-24.04
+        - version: 16
+          cross: s390x
+          arch_gnu: s390x
+          arch_deb: s390x
+          distro: ubuntu-24.04
+        # - version: 16
+        #   cross: power9
+        #   arch_gnu: powerpc64le
+        #   arch_deb: ppc64el
+        #   distro: ubuntu-24.04
+        - version: 16
+          cross: loongarch64
+          arch_gnu: loongarch64
+          arch_deb: loong64
+          distro: ubuntu-24.04
+    runs-on: ${{ matrix.distro }}
+    steps:
+    - uses: actions/checkout@v6
+      with:
+        submodules: recursive
+    - name: CPU Information
+      run: cat /proc/cpuinfo
+    - name: Install APT Dependencies
+      run: |
+        sudo add-apt-repository ppa:misterc/gcc-snapshot-latest-lts
+        sudo apt-get -y --no-install-recommends install ccache ninja-build \
+          gcc-${{ matrix.version }}-${{ matrix.arch_gnu }}-linux-gnu${{ matrix.arch_gnu_abi }} \
+          g++-${{ matrix.version }}-${{ matrix.arch_gnu }}-linux-gnu${{ matrix.arch_gnu_abi }} binfmt-support \
+          qemu-user-static pipx libc6-${{ matrix.arch_deb }}-cross libstdc++-${{ matrix.version }}-dev-${{ matrix.arch_deb }}-cross
+        pipx install meson==0.55.1
+    # - name: ccache
+    #   uses: hendrikmuhs/ccache-action@v1.2
+    #   with:
+    #     key: ${{ github.job }}-${{ matrix.version}}${{ matrix.extra }}-${{ matrix.distro }}-${{ matrix.cross }}
+    #     verbose: 2
+    - name: Configure
+      run: meson setup --cross-file=docker/cross-files/${{ matrix.cross }}-gcc-${{ matrix.version }}${{ matrix.extra}}-ccache.cross build || (cat build/meson-logs/meson-log.txt ; false)
+    - name: Build
+      run: ninja -C build -v
+    - name: Test
+      run: |
+        # shellcheck disable=SC2046
+        meson test -C build --print-errorlogs --print-errorlogs
