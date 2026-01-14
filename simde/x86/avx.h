@@ -1042,15 +1042,15 @@ simde_mm256_set_ps (simde_float32 e7, simde_float32 e6, simde_float32 e5, simde_
                     simde_float32 e3, simde_float32 e2, simde_float32 e1, simde_float32 e0) {
   #if defined(SIMDE_X86_AVX_NATIVE)
     return _mm256_set_ps(e7, e6, e5, e4, e3, e2, e1, e0);
+  #elif defined(SIMDE_ARCH_LOONGARCH)
+    simde__m256 tmp_ = { e0, e1, e2, e3, e4, e5, e6, e7 };
+    return tmp_;
   #else
     simde__m256_private r_;
 
     #if SIMDE_NATURAL_VECTOR_SIZE_LE(128)
       r_.m128[0] = simde_mm_set_ps(e3, e2, e1, e0);
       r_.m128[1] = simde_mm_set_ps(e7, e6, e5, e4);
-    #elif defined(SIMDE_LOONGARCH_LASX_NATIVE)
-      SIMDE_ALIGN_LIKE_32(__m256) simde_float32 data[8] = { e0, e1, e2, e3, e4, e5, e6, e7 };
-      r_.i256 = __lasx_xvld(data, 0);
     #else
       r_.f32[0] = e0;
       r_.f32[1] = e1;
@@ -1076,6 +1076,9 @@ simde__m256d
 simde_mm256_set_pd (simde_float64 e3, simde_float64 e2, simde_float64 e1, simde_float64 e0) {
   #if defined(SIMDE_X86_AVX_NATIVE)
     return _mm256_set_pd(e3, e2, e1, e0);
+  #elif defined(SIMDE_ARCH_LOONGARCH)
+    simde__m256d tmp_ = { e0, e1, e2, e3 };
+    return tmp_;
   #else
     simde__m256d_private r_;
 
