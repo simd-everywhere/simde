@@ -3733,7 +3733,7 @@ simde_mm_cvttpd_epi32 (simde__m128d a) {
 
     #if defined(SIMDE_LOONGARCH_LSX_NATIVE) && defined(SIMDE_FAST_NANS)
       const v2f64 zero_f64 = {-0.0f, -0.0f};
-      r_.lsx_i64 = __lsx_vftintrz_w_d(zero_i64, simde__m128d_to_private(a).lsx_f64);
+      r_.lsx_i64 = __lsx_vftintrz_w_d(zero_f64, simde__m128d_to_private(a).lsx_f64);
     #else
     r_.m64[0] = simde_mm_cvttpd_pi32(a);
     r_.m64[1] = simde_mm_setzero_si64();
