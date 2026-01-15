@@ -495,6 +495,12 @@ jobs:
           arch_gnu: loongarch64
           arch_deb: loong64
           distro: ubuntu-24.04
+        - extra: -fastmath
+          version: 14
+          cross: loongarch64
+          arch_gnu: loongarch64
+          arch_deb: loong64
+          distro: ubuntu-24.04
         # - version: 14
         #   cross: mips64el
         #   arch_gnu: mips64el
