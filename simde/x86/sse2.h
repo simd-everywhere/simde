@@ -3733,7 +3733,7 @@ simde_mm_cvttpd_epi32 (simde__m128d a) {
 
     #if defined(SIMDE_LOONGARCH_LSX_NATIVE) && defined(SIMDE_FAST_NANS)
       const v2f64 zero_f64 = {-0.0f, -0.0f};
-      r_.lsx_i64 = __lsx_vftintrz_w_d(zero_i64, simde__m128d_to_private(a).lsx_f64);
+      r_.lsx_i64 = __lsx_vftintrz_w_d(zero_f64, simde__m128d_to_private(a).lsx_f64);
     #else
     r_.m64[0] = simde_mm_cvttpd_pi32(a);
     r_.m64[1] = simde_mm_setzero_si64();
@@ -3793,7 +3793,7 @@ simde_mm_cvttps_epi32 (simde__m128 a) {
         r_.wasm_v128 = wasm_v128_bitselect(r_.wasm_v128, wasm_i32x4_splat(INT32_MIN), valid_input);
       #endif
     #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
-      __m128i temp = __lsx_vftintrz_w_s(a_.lsx_f32);
+      r_.lsx_i64 = __lsx_vftintrz_w_s(a_.lsx_f32);
       #if !defined(SIMDE_FAST_CONVERSION_RANGE) || !defined(SIMDE_FAST_NANS)
         #if !defined(SIMDE_FAST_CONVERSION_RANGE) && !defined(SIMDE_FAST_NANS)
           simde_float32 f1 = 2147483648.0f;
@@ -3809,7 +3809,7 @@ simde_mm_cvttps_epi32 (simde__m128 a) {
           __m128i valid_input = __lsx_vfcmp_ceq_s(a_.lsx_f32, a_.lsx_f32);
         #endif
 
-        r_.lsx_i64 = __lsx_vbitsel_v(__lsx_vreplgr2vr_w(INT32_MIN), temp, valid_input);
+        r_.lsx_i64 = __lsx_vbitsel_v(__lsx_vreplgr2vr_w(INT32_MIN), r_.lsx_i64, valid_input);
       #endif
     #elif defined(SIMDE_CONVERT_VECTOR_) && !defined(SIMDE_ARCH_POWER)
       SIMDE_CONVERT_VECTOR_(r_.i32, a_.f32);
