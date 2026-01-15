@@ -135,8 +135,8 @@ jobs:
       run: |
         sudo add-apt-repository ppa:daawesomep/toolchain-backports-noble
         sudo add-apt-repository ppa:stephanosio/ccache
-        sudo apt-get install -y --no-install-recommends ninja-build ninja-build \
-          pipx gcc-15 g++-15 ccache
+        sudo apt-get install -y --no-install-recommends ninja-build pipx \
+          gcc-15 g++-15 ccache
         sudo apt-get satisfy -y 'binutils (>= 2.45)'
         sudo apt-get purge -y gcc g++
         sudo ln -s /usr/bin/gcc-15 /usr/bin/gcc
@@ -180,8 +180,8 @@ jobs:
       run: |
         sudo add-apt-repository ppa:daawesomep/toolchain-backports-noble
         sudo add-apt-repository ppa:stephanosio/ccache
-        sudo apt-get install -y --no-install-recommends ninja-build ninja-build \
-          pipx g++-15 gcc-15 qemu-user-static ccache
+        sudo apt-get install -y --no-install-recommends ninja-build pipx \
+          g++-15 gcc-15 qemu-user-static ccache
         sudo apt-get satisfy -y 'binutils (>= 2.45)'
         sudo apt-get purge -y gcc g++
         sudo ln -s /usr/bin/gcc-15 /usr/bin/gcc
@@ -562,7 +562,7 @@ jobs:
         #add-apt-repository ppa:savoury1/display
         sudo add-apt-repository ppa:stephanosio/ccache
         sudo apt-get install -y --no-install-recommends ccache ninja-build pkg-config \
-          qemu-user-static clang-${{ matrix.version }} ninja-build binfmt-support \
+          qemu-user-static clang-${{ matrix.version }} binfmt-support \
           libc6-${{ matrix.arch_deb }}-cross meson llvm-${{ matrix.version }} \
           libstdc++-12-dev-${{ matrix.arch_deb }}-cross \
           binutils-${{ matrix.arch_gnu }}-linux-gnu
@@ -617,7 +617,7 @@ jobs:
         sudo add-apt-repository ppa:stephanosio/ccache
         sudo apt-get install -y --no-install-recommends \
           ninja-build pkg-config qemu-user-static clang-${{ matrix.version }} \
-          ninja-build binfmt-support libc6-${{ matrix.arch_deb }}-cross meson \
+          binfmt-support libc6-${{ matrix.arch_deb }}-cross meson \
           libstdc++-12-dev-${{ matrix.arch_deb }}-cross \
           binutils-${{ matrix.arch_gnu }}-linux-gnu ccache
     - name: ccache
