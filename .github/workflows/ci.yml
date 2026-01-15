@@ -136,7 +136,7 @@ jobs:
         sudo add-apt-repository ppa:daawesomep/toolchain-backports-noble
         sudo add-apt-repository ppa:stephanosio/ccache && sudo apt-get update
         sudo apt-get install -y --no-install-recommends ninja-build ninja-build \
-          pipx gcc-15 g++-15
+          pipx gcc-15 g++-15 ccache
         sudo apt-get satisfy -y 'binutils (>= 2.45)'
         sudo apt-get purge -y gcc g++
         sudo ln -s /usr/bin/gcc-15 /usr/bin/gcc
@@ -181,7 +181,7 @@ jobs:
         sudo add-apt-repository ppa:daawesomep/toolchain-backports-noble
         sudo add-apt-repository ppa:stephanosio/ccache && sudo apt-get update
         sudo apt-get install -y --no-install-recommends ninja-build ninja-build \
-          pipx g++-15 gcc-15 qemu-user-static
+          pipx g++-15 gcc-15 qemu-user-static ccache
         sudo apt-get satisfy -y 'binutils (>= 2.45)'
         sudo apt-get purge -y gcc g++
         sudo ln -s /usr/bin/gcc-15 /usr/bin/gcc
@@ -216,16 +216,16 @@ jobs:
     - uses: actions/checkout@v6
       with:
         submodules: recursive
-    - run: sudo add-apt-repository ppa:stephanosio/ccache && sudo apt-get update
+    - name: Install APT Dependencies
+      run: |
+        sudo add-apt-repository ppa:stephanosio/ccache && sudo apt-get update
+        sudo apt-get install -y --no-install-recommends ninja-build pipx ccache
+        pipx install meson==0.55.1
     - name: ccache
       uses: hendrikmuhs/ccache-action@v1.2
       with:
         key: ${{ github.job }}
         verbose: 2
-    - name: Install APT Dependencies
-      run: |
-        sudo apt-get install -y --no-install-recommends ninja-build ninja-build pipx &&\
-        pipx install meson==0.55.1
     - name: Install emscripten
       run: |
         git clone https://github.com/emscripten-core/emsdk.git /opt/emsdk
@@ -276,6 +276,9 @@ jobs:
       with:
         key: ${{ github.job }}
         verbose: 2
+    - name: add ccache to the build path
+      run: |
+        export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
     - name: Convert
       run: ./test/native-aliases.sh
     - name: Configure
@@ -298,7 +301,6 @@ jobs:
       name: CPU Information
       run: |
         cat /proc/cpuinfo
-        echo "model_name=$(grep -m1 'model name' < /proc/cpuinfo | awk '-F: ' '{ print $2}' | tr '-' '_')" >> "$GITHUB_OUTPUT"
     - name: Install APT Dependencies
       run: |
         sudo add-apt-repository ppa:daawesomep/toolchain-backports-noble
@@ -313,8 +315,11 @@ jobs:
     - name: ccache
       uses: hendrikmuhs/ccache-action@v1.2
       with:
-        key: ${{ github.job }}-${{ steps.cpu.outputs.model_name }}
+        key: ${{ github.job }}
         verbose: 2
+    - name: add ccache to the build path
+      run: |
+        export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
     - name: Configure
       run: meson setup build -Dsleef=enabled
     - name: Build
@@ -383,7 +388,6 @@ jobs:
       name: CPU Information
       run: |
         cat /proc/cpuinfo
-        echo "model_name=$(grep -m1 'model name' < /proc/cpuinfo || grep -m1 Features < /proc/cpuinfo | awk '-F: ' '{ print $2}' | tr '-' '_')" >> "$GITHUB_OUTPUT"
     - name: Install APT Dependencies
       run: |
         sudo add-apt-repository ppa:stephanosio/ccache
@@ -401,7 +405,7 @@ jobs:
     - name: ccache
       uses: hendrikmuhs/ccache-action@v1.2
       with:
-        key: ${{ github.job }}-${{ matrix.version }}-${{ matrix.distro }}-${{ matrix.arch_flags }}-${{ steps.cpu.outputs.model_name }}
+        key: ${{ github.job }}-${{ matrix.version }}-${{ matrix.distro }}-${{ matrix.arch_flags }}
         verbose: 2
     - name: add ccache to the build path
       run: |
@@ -862,13 +866,7 @@ jobs:
       name: CPU Information
       run: |
         cat /proc/cpuinfo
-        echo "model_name=$(grep -m1 'model name' < /proc/cpuinfo || grep -m1 Features < /proc/cpuinfo | awk '-F: ' '{ print $2}' | tr '-' '_')" >> "$GITHUB_OUTPUT"
     - run: sudo apt-get update
-    - name: ccache
-      uses: hendrikmuhs/ccache-action@v1.2
-      with:
-        key: ${{ github.job }}-${{ matrix.version }}-${{ matrix.distro }}-${{ matrix.arch_flags }}-${{ steps.cpu.outputs.model_name }}
-        verbose: 2
     - name: Install PPAs
       if: ${{ matrix.distro == 'ubuntu-22.04' }}
       run: |
@@ -878,15 +876,21 @@ jobs:
         sudo add-apt-repository ppa:savoury1/llvm-defaults-16
     - name: Install APT Dependencies
       run: |
+        sudo add-apt-repository ppa:stephanosio/ccache
         sudo add-apt-repository ppa:canonical-x/x-staging
         sudo add-apt-repository ppa:ubuntu-toolchain-r/ppa
         sudo apt-get update
         sudo apt-get -y --no-install-recommends install gcovr ninja-build pipx \
-          clang-${{ matrix.version }}
+          clang-${{ matrix.version }} ccache
         pipx install meson==0.55.1
         sudo rm /usr/bin/gcc /usr/bin/g++ /usr/bin/cc /usr/bin/c++
         sudo ln -s "$(command -v clang-${{ matrix.version }})" /usr/bin/cc
         sudo ln -s "$(command -v clang-${{ matrix.version }})" /usr/bin/c++
+    - name: ccache
+      uses: hendrikmuhs/ccache-action@v1.2
+      with:
+        key: ${{ github.job }}-${{ matrix.version }}-${{ matrix.distro }}-${{ matrix.arch_flags }}
+        verbose: 2
     - name: add ccache to the build path
       run: |
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
