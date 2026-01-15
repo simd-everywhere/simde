@@ -19,7 +19,7 @@ jobs:
       matrix:
         # Override automatic language detection by changing the below list
         # Supported options are ['csharp', 'cpp', 'go', 'java', 'javascript', 'python']
-        language: ['cpp']
+        language: ['c-cpp']
         # Learn more...
         # https://docs.github.com/en/github/finding-security-vulnerabilities-and-errors-in-your-code/configuring-code-scanning#overriding-automatic-language-detection
 
@@ -35,11 +35,9 @@ jobs:
          trap-caching: false
 
     - run: |
-       sudo add-apt-repository 'ppa:ubuntu-toolchain-r/test' && sudo apt-get update && sudo apt-get install -y ninja-build ninja-build python3-pip python3-setuptools python3-wheel gcc-10 g++-10
+       sudo apt-get install -y ninja-build pipx gcc g++
        pip3 install meson==0.55.1
        "$HOME/.local/bin/meson" setup build
-       ninja -C build -v
-       ninja -C build -v test
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v4
