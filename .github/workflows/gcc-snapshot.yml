@@ -176,8 +176,8 @@ jobs:
         cat /proc/cpuinfo
     - name: Install APT Dependencies
       run: |
-        sudo add-apt-repository ppa:stephanosio/ccache
-        # sudo add-apt-repository ppa:misterc/gcc-snapshot-latest-lts
+        sudo add-apt-repository ppa:misterc/gcc-snapshot-latest-lts
+        # sudo add-apt-repository ppa:stephanosio/ccache
         sudo apt-get -y install --no-install-recommends pipx ninja-build \
           gcc-${{ matrix.version }} g++-${{ matrix.version }}  # ccache
         sudo apt-get -y purge g++ gcc
