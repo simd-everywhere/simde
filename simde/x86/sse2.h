@@ -3313,7 +3313,7 @@ simde_mm_cvtps_epi32 (simde__m128 a) {
       r_.wasm_v128 = wasm_i32x4_trunc_sat_f32x4(a_.wasm_v128);
     #elif defined(SIMDE_LOONGARCH_LSX_NATIVE) && defined(SIMDE_FAST_CONVERSION_RANGE) && defined(SIMDE_FAST_ROUND_TIES)
       a_ = simde__m128_to_private(a);
-      r_.lsx_i32 = __lsx_vftintrne_w_s(a_.lsx_f32);
+      r_.lsx_i32 = HEDLEY_REINTERPRET_CAST(v4i32, __lsx_vftintrne_w_s(a_.lsx_f32));
     #else
       a_ = simde__m128_to_private(simde_x_mm_round_ps(a, SIMDE_MM_FROUND_TO_NEAREST_INT, 1));
       SIMDE_VECTORIZE
