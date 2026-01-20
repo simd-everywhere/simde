@@ -1825,7 +1825,8 @@ simde_mm_cmpunord_ps (simde__m128 a, simde__m128 b) {
           vec_and(vec_cmpeq(a_.altivec_f32, a_.altivec_f32), vec_cmpeq(b_.altivec_f32, b_.altivec_f32)));
       r_.altivec_f32 = vec_nor(r_.altivec_f32, r_.altivec_f32);
     #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
-      r_.lsx_i64 = __lsx_vfcmp_cun_s(a_.lsx_f32, b_.lsx_f32);
+      r_.lsx_i32 = HEDLEY_REINTERPRET_CAST(v4i32, __lsx_vfcmp_cun_s(a_.lsx_f32, b_.lsx_f32));
+      // TODO: change when https://gcc.gnu.org/bugzilla/show_bug.cgi?id=123759 is resolved
     #elif defined(simde_math_isnanf)
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
