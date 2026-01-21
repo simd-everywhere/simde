@@ -1,0 +1,39 @@
+name: CMake
+
+on:
+  push:
+    branches-ignore:
+      - 'ci/**'
+      - '!ci/gha**'
+      - 'dependabot/**'
+  pull_request:
+    branches:
+      - 'master'
+
+concurrency:
+  group: cmake-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test-install:
+    name: CMake - ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-latest, ubuntu-latest, ubuntu-24.04-arm, windows-latest, windows-11-arm]
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: ilammy/msvc-dev-cmd@v1
+
+      - name: Configure SIMDe
+        run: cmake -G Ninja -S . -B build
+
+      - name: Build SIMDe
+        run: cmake --build build
+
+      - name: Test SIMDe Package
+        run: ctest --test-dir build --output-on-failure --verbose
+
