@@ -508,7 +508,7 @@ jobs:
         submodules: recursive
     - name: CPU Information
       run: cat /proc/cpuinfo
-    - if: ${{ matrix.distro == 'ubuntu-24.04' }}
+    - if: ${{ matrix.distro == 'ubuntu-24.04' && ( matrix.version == '15' )}}
       run:
         sudo add-apt-repository ppa:daawesomep/toolchain-backports-noble
     - name: Install APT Dependencies
