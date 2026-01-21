@@ -126,6 +126,10 @@ simde_test_debug_printf_(const char* format, ...) {
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DIAGNOSTIC_DISABLE_FLOAT_EQUAL_
 
+#if defined(SIMDE_FAST_MATH) && defined(HEDLEY_GCC_VERSION) && HEDLEY_GCC_VERSION_CHECK(4,4,0)
+__attribute__((optimize("-fno-finite-math-only")))
+__attribute__((noinline))
+#endif
 static int
 simde_test_equal_f32(simde_float32 a, simde_float32 b, simde_float32 slop) {
   if (simde_math_isnan(a)) {
@@ -156,6 +160,10 @@ simde_test_equal_f16(simde_float16 a, simde_float16 b, simde_float16 slop) {
   return simde_test_equal_f32(af, bf, slopf);
 }
 
+#if defined(SIMDE_FAST_MATH) && defined(HEDLEY_GCC_VERSION) && HEDLEY_GCC_VERSION_CHECK(4,4,0)
+__attribute__((optimize("-fno-finite-math-only")))
+__attribute__((noinline))
+#endif
 static int
 simde_test_equal_f64(simde_float64 a, simde_float64 b, simde_float64 slop) {
   if (simde_math_isnan(a)) {
