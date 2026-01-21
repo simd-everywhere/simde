@@ -533,7 +533,7 @@ jobs:
     - name: Test
       run: |
         # shellcheck disable=SC2046
-        meson test -C build --print-errorlogs --print-errorlogs $(meson test -C build --list | grep -v emul)
+        meson test -C build --print-errorlogs --print-errorlogs  # $(meson test -C build --list | grep -v emul)
 
   clang17-qemu-rvv:
     strategy:
@@ -734,7 +734,7 @@ jobs:
     - name: Test
       run: |
         # shellcheck disable=SC2046
-        meson test -C build --print-errorlogs --print-errorlogs $(meson test -C build --list | grep -v emul)
+        meson test -C build --print-errorlogs --print-errorlogs  # $(meson test -C build --list | grep -v emul)
 
   clang:
     strategy:
