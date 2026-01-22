@@ -53,9 +53,10 @@ simde_vext_f16(simde_float16x4_t a, simde_float16x4_t b, const int n)
       r_.sv64 = __riscv_vslideup_vx_f16m1(a_.sv64, b_.sv64, 4-n, 4);
     #else
       const size_t n_ = HEDLEY_STATIC_CAST(size_t, n);
-      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+      const size_t len = sizeof(r_.values) / sizeof(r_.values[0]);
+      for (size_t i = 0 ; i < len ; i++) {
         size_t src = i + n_;
-        r_.values[i] = (src < (sizeof(r_.values) / sizeof(r_.values[0]))) ? a_.values[src] : b_.values[src & 3];
+        r_.values[i] = (src < len) ? a_.values[src] : b_.values[src & 3];
       }
     #endif
     return simde_float16x4_from_private(r_);
@@ -500,9 +501,10 @@ simde_vextq_f16(simde_float16x8_t a, simde_float16x8_t b, const int n)
       r_.sv128 = __riscv_vslideup_vx_f16m1(a_.sv128, b_.sv128, 8-n, 8);
     #else
       const size_t n_ = HEDLEY_STATIC_CAST(size_t, n);
-      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+      const size_t len = sizeof(r_.values) / sizeof(r_.values[0]);
+      for (size_t i = 0 ; i < len ; i++) {
         size_t src = i + n_;
-        r_.values[i] = (src < (sizeof(r_.values) / sizeof(r_.values[0]))) ? a_.values[src] : b_.values[src & 7];
+        r_.values[i] = (src < len) ? a_.values[src] : b_.values[src & 7];
       }
     #endif
     return simde_float16x8_from_private(r_);
@@ -1106,9 +1108,10 @@ simde_vextq_p8(simde_poly8x16_t a, simde_poly8x16_t b, const int n)
       b_ = simde_poly8x16_to_private(b),
       r_ = a_;
     const size_t n_ = HEDLEY_STATIC_CAST(size_t, n);
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+    const size_t len = sizeof(r_.values) / sizeof(r_.values[0]);
+    for (size_t i = 0 ; i < len ; i++) {
       size_t src = i + n_;
-      r_.values[i] = (src < (sizeof(r_.values) / sizeof(r_.values[0]))) ? a_.values[src] : b_.values[src & 15];
+      r_.values[i] = (src < len) ? a_.values[src] : b_.values[src & 15];
     }
     return simde_poly8x16_from_private(r_);
   #endif
@@ -1132,9 +1135,10 @@ simde_vextq_p16(simde_poly16x8_t a, simde_poly16x8_t b, const int n)
       b_ = simde_poly16x8_to_private(b),
       r_ = a_;
     const size_t n_ = HEDLEY_STATIC_CAST(size_t, n);
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+    const size_t len = sizeof(r_.values) / sizeof(r_.values[0]);
+    for (size_t i = 0 ; i < len ; i++) {
       size_t src = i + n_;
-      r_.values[i] = (src < (sizeof(r_.values) / sizeof(r_.values[0]))) ? a_.values[src] : b_.values[src & 7];
+      r_.values[i] = (src < len) ? a_.values[src] : b_.values[src & 7];
     }
     return simde_poly16x8_from_private(r_);
   #endif
