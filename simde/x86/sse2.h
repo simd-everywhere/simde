@@ -568,7 +568,7 @@ simde_mm_set_pd (simde_float64 e1, simde_float64 e0) {
     #elif defined(SIMDE_ARM_NEON_A64V8_NATIVE)
       SIMDE_ALIGN_TO_16 simde_float64 data[2] = { e0, e1 };
       r_.neon_f64 = vld1q_f64(data);
-    #elif defined(SIMD_LOONGARCH_LSX_NATIVE)
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
       SIMDE_ALIGN_TO_16 simde_float64 data[2] = { e0, e1 };
       r_.lsx_i64 = __lsx_vld(data, 0);
     #else
@@ -5705,8 +5705,6 @@ simde_mm_loadu_si16 (void const* mem_addr) {
       HEDLEY_INTEL_VERSION_CHECK(20,21,1) || \
       HEDLEY_GCC_VERSION_CHECK(12,1,0))
     return _mm_loadu_si16(mem_addr);
-  #elif defined(SIMD_LOONGARCH_LSX_NATIVE)
-    return __lsx_vld(mem_addr, 0);
   #else
     int16_t val;
     simde_memcpy(&val, mem_addr, sizeof(val));
@@ -5761,8 +5759,10 @@ simde_mm_loadu_si32 (void const* mem_addr) {
     simde__m128i_private r_;
     r_.neon_i32 = vsetq_lane_s32(* HEDLEY_REINTERPRET_CAST(const int32_t *, mem_addr), vdupq_n_s32(0), 0);
     return simde__m128i_from_private(r_);
-  #elif defined(SIMD_LOONGARCH_LSX_NATIVE)
-    return __lsx_vld(mem_addr, 0);
+  #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+    simde__m128i_private r_;
+    r_.lsx_i64 = __lsx_vbsrl_v(__lsx_vldrepl_w(mem_addr, 0), 12);
+    return simde__m128i_from_private(r_);
   #else
     int32_t val;
     simde_memcpy(&val, mem_addr, sizeof(val));
@@ -5783,7 +5783,7 @@ simde_mm_set_epi64 (simde__m64 e1, simde__m64 e0) {
 
     #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       r_.neon_i64 = vcombine_s64(simde__m64_to_neon_i64(e0), simde__m64_to_neon_i64(e1));
-   #elif defined(SIMD_LOONGARCH_LSX_NATIVE)
+   #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
       SIMDE_ALIGN_TO_16 simde__m64 data[2] = {e0, e1};
       r_.lsx_i64 = __lsx_vld(data, 0);
     #else
@@ -5811,7 +5811,7 @@ simde_mm_set_epi64x (int64_t e1, int64_t e0) {
       r_.neon_i64 = vld1q_s64(data);
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r_.wasm_v128 = wasm_i64x2_make(e0, e1);
-   #elif defined(SIMD_LOONGARCH_LSX_NATIVE)
+   #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
       SIMDE_ALIGN_LIKE_16(v2i64) int64_t data[2] = {e0, e1};
       r_.lsx_i64 = __lsx_vld(data, 0);
     #else
@@ -5834,8 +5834,10 @@ simde_mm_loadu_si64 (void const* mem_addr) {
       HEDLEY_GCC_VERSION_CHECK(11,0,0) || \
       HEDLEY_INTEL_VERSION_CHECK(20,21,1))
     return _mm_loadu_si64(mem_addr);
-  #elif defined(SIMD_LOONGARCH_LSX_NATIVE)
-    return __lsx_vld(mem_addr, 0);
+  #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+    simde__m128i_private r_;
+    r_.lsx_i64 = __lsx_vbsrl_v(__lsx_vldrepl_d(mem_addr, 0), 8);
+    return simde__m128i_from_private(r_);
   #else
   int64_t val;
     simde_memcpy(&val, mem_addr, sizeof(val));
@@ -5870,7 +5872,7 @@ simde_x_mm_set_epu8 (uint8_t e15, uint8_t e14, uint8_t e13, uint8_t e12,
       r_.neon_u8 = vld1q_u8(data);
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r_.wasm_v128 = wasm_u8x16_make(e0, e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12, e13, e14, e15);
-    #elif defined(SIMD_LOONGARCH_LSX_NATIVE)
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
       SIMDE_ALIGN_LIKE_16(v16u8) uint8_t data[16] = {
         e0,  e1,  e2,  e3,
         e4,  e5,  e6,  e7,
@@ -5904,7 +5906,7 @@ simde_x_mm_set_epu16 (uint16_t e7, uint16_t e6, uint16_t e5, uint16_t e4,
       r_.neon_u16 = vld1q_u16(data);
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r_.wasm_v128 = wasm_u16x8_make(e0, e1, e2, e3, e4, e5, e6, e7);
-    #elif defined(SIMD_LOONGARCH_LSX_NATIVE)
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
       SIMDE_ALIGN_LIKE_16(v8u16) uint16_t data[8] = {e0, e1, e2, e3, e4, e5, e6, e7};
       r_.lsx_i64 = __lsx_vld(data, 0);
     #else
@@ -5930,7 +5932,7 @@ simde_x_mm_set_epu32 (uint32_t e3, uint32_t e2, uint32_t e1, uint32_t e0) {
       r_.neon_u32 = vld1q_u32(data);
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r_.wasm_v128 = wasm_u32x4_make(e0, e1, e2, e3);
-    #elif defined(SIMD_LOONGARCH_LSX_NATIVE)
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
       SIMDE_ALIGN_LIKE_16(v4u32) uint32_t data[4] = {e0, e1, e2, e3};
       r_.lsx_i64 = __lsx_vld(data, 0);
     #else
@@ -5957,7 +5959,7 @@ simde_x_mm_set_epu64x (uint64_t e1, uint64_t e0) {
       r_.neon_u64 = vld1q_u64(data);
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r_.wasm_v128 = wasm_u64x2_make(e0, e1);
-    #elif defined(SIMD_LOONGARCH_LSX_NATIVE)
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
       SIMDE_ALIGN_LIKE_16(v2u64) uint64_t data[2] = {e0, e1};
       r_.lsx_i64 = __lsx_vld(data, 0);
     #else
@@ -5978,7 +5980,7 @@ simde_mm_set_sd (simde_float64 a) {
     return vsetq_lane_f64(a, vdupq_n_f64(SIMDE_FLOAT64_C(0.0)), 0);
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
     return simde__m128d_from_wasm_v128(wasm_f64x2_make(a, 0));
-  #elif defined(SIMD_LOONGARCH_LSX_NATIVE)
+  #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
     return (__m128d)__lsx_vinsgr2vr_d(__lsx_vldrepl_d(&a, 0), 0, 1);
   #else
     return simde_mm_set_pd(SIMDE_FLOAT64_C(0.0), a);
