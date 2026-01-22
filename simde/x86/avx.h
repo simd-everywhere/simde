@@ -5874,7 +5874,7 @@ void
 simde_mm256_store_ps (simde_float32 mem_addr[8], simde__m256 a) {
   #if defined(SIMDE_X86_AVX_NATIVE)
     _mm256_store_ps(mem_addr, a);
-  #elif defined(SIMDE_LOONGARCH_LASX_NATIVE)
+  #elif defined(SIMDE_LOONGARCH_LASX_NATIVE) && !defined(SIMDE_BUG_GCC_123766)
     return __lasx_xvst(a, mem_addr, 0);
   #else
     simde_memcpy(SIMDE_ALIGN_ASSUME_LIKE(mem_addr, simde__m256), &a, sizeof(a));
@@ -5890,7 +5890,7 @@ void
 simde_mm256_store_pd (simde_float64 mem_addr[4], simde__m256d a) {
   #if defined(SIMDE_X86_AVX_NATIVE)
     _mm256_store_pd(mem_addr, a);
-  #elif defined(SIMDE_LOONGARCH_LASX_NATIVE)
+  #elif defined(SIMDE_LOONGARCH_LASX_NATIVE) && !defined(SIMDE_BUG_GCC_123766)
     return __lasx_xvst(a, mem_addr, 0);
   #else
     simde_memcpy(SIMDE_ALIGN_ASSUME_LIKE(mem_addr, simde__m256d), &a, sizeof(a));
@@ -5906,7 +5906,7 @@ void
 simde_mm256_store_si256 (simde__m256i* mem_addr, simde__m256i a) {
   #if defined(SIMDE_X86_AVX_NATIVE)
     _mm256_store_si256(mem_addr, a);
-  #elif defined(SIMDE_LOONGARCH_LASX_NATIVE)
+  #elif defined(SIMDE_LOONGARCH_LASX_NATIVE) && !defined(SIMDE_BUG_GCC_123766)
     return __lasx_xvst(a, mem_addr, 0);
   #else
   simde_memcpy(SIMDE_ALIGN_ASSUME_LIKE(mem_addr, simde__m256i), &a, sizeof(a));
@@ -5922,7 +5922,7 @@ void
 simde_mm256_storeu_ps (simde_float32 mem_addr[8], simde__m256 a) {
   #if defined(SIMDE_X86_AVX_NATIVE)
     _mm256_storeu_ps(mem_addr, a);
-  #elif defined(SIMDE_LOONGARCH_LASX_NATIVE)
+  #elif defined(SIMDE_LOONGARCH_LASX_NATIVE) && !defined(SIMDE_BUG_GCC_123766)
     return __lasx_xvst(a, mem_addr, 0);
   #else
     simde_memcpy(mem_addr, &a, sizeof(a));
@@ -5938,7 +5938,7 @@ void
 simde_mm256_storeu_pd (simde_float64 mem_addr[4], simde__m256d a) {
   #if defined(SIMDE_X86_AVX_NATIVE)
     _mm256_storeu_pd(mem_addr, a);
-  #elif defined(SIMDE_LOONGARCH_LASX_NATIVE)
+  #elif defined(SIMDE_LOONGARCH_LASX_NATIVE) && !defined(SIMDE_BUG_GCC_123766)
     return __lasx_xvst(a, mem_addr, 0);
   #elif SIMDE_NATURAL_VECTOR_SIZE_LE(128)
     simde__m256d_private a_ = simde__m256d_to_private(a);
@@ -5959,7 +5959,7 @@ void
 simde_mm256_storeu_si256 (void* mem_addr, simde__m256i a) {
   #if defined(SIMDE_X86_AVX_NATIVE)
     _mm256_storeu_si256(SIMDE_ALIGN_CAST(__m256i*, mem_addr), a);
-  #elif defined(SIMDE_LOONGARCH_LASX_NATIVE)
+  #elif defined(SIMDE_LOONGARCH_LASX_NATIVE) && !defined(SIMDE_BUG_GCC_123766)
     return __lasx_xvst(a, mem_addr, 0);
   #else
     simde_memcpy(mem_addr, &a, sizeof(a));
@@ -6020,7 +6020,7 @@ void
 simde_mm256_stream_ps (simde_float32 mem_addr[8], simde__m256 a) {
   #if defined(SIMDE_X86_AVX_NATIVE)
     _mm256_stream_ps(mem_addr, a);
-  #elif defined(SIMDE_LOONGARCH_LASX_NATIVE)
+  #elif defined(SIMDE_LOONGARCH_LASX_NATIVE) && !defined(SIMDE_BUG_GCC_123766)
     return __lasx_xvst(a, mem_addr, 0);
   #elif HEDLEY_HAS_BUILTIN(__builtin_nontemporal_store) && defined(SIMDE_VECTOR_SUBSCRIPT)
     __builtin_nontemporal_store(a, SIMDE_ALIGN_CAST(__typeof__(a)*, mem_addr));
@@ -6038,7 +6038,7 @@ void
 simde_mm256_stream_pd (simde_float64 mem_addr[4], simde__m256d a) {
   #if defined(SIMDE_X86_AVX_NATIVE)
     _mm256_stream_pd(mem_addr, a);
-  #elif defined(SIMDE_LOONGARCH_LASX_NATIVE)
+  #elif defined(SIMDE_LOONGARCH_LASX_NATIVE) && !defined(SIMDE_BUG_GCC_123766)
     return __lasx_xvst(a, mem_addr, 0);
   #elif HEDLEY_HAS_BUILTIN(__builtin_nontemporal_store) && defined(SIMDE_VECTOR_SUBSCRIPT)
     __builtin_nontemporal_store(a, SIMDE_ALIGN_CAST(__typeof__(a)*, mem_addr));
@@ -6056,7 +6056,7 @@ void
 simde_mm256_stream_si256 (simde__m256i* mem_addr, simde__m256i a) {
   #if defined(SIMDE_X86_AVX_NATIVE)
     _mm256_stream_si256(mem_addr, a);
-  #elif defined(SIMDE_LOONGARCH_LASX_NATIVE)
+  #elif defined(SIMDE_LOONGARCH_LASX_NATIVE) && !defined(SIMDE_BUG_GCC_123766)
     return __lasx_xvst(a, mem_addr, 0);
   #elif HEDLEY_HAS_BUILTIN(__builtin_nontemporal_store) && defined(SIMDE_VECTOR_SUBSCRIPT)
     __builtin_nontemporal_store(a, SIMDE_ALIGN_CAST(__typeof__(a)*, mem_addr));
