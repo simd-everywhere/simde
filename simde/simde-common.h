@@ -1086,6 +1086,9 @@ HEDLEY_DIAGNOSTIC_POP
        || (HEDLEY_GCC_VERSION_CHECK(9,5,0) && !(HEDLEY_GCC_VERSION_CHECK(10,0,0))))
 #      define SIMDE_BUG_GCC_105339
 #    endif
+#    if defined(SIMDE_ARCH_LOONGARCH)
+#      define SIMDE_BUG_GCC_123766
+#    endif
 #  elif defined(__clang__)
 #    if defined(SIMDE_ARCH_AARCH64)
 #      define SIMDE_BUG_CLANG_48257  // https://github.com/llvm/llvm-project/issues/47601
