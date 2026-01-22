@@ -340,40 +340,40 @@ jobs:
           distro: ubuntu-24.04
         - version: 10
           distro: ubuntu-24.04
-          arch_flags: -ffast-math
+          arch_flags: -Ofast
         - version: 11
           distro: ubuntu-24.04
         - version: 11
           distro: ubuntu-24.04
-          arch_flags: -ffast-math
+          arch_flags: -Ofast
         - version: 11
           distro:  ubuntu-24.04-arm
         - version: 12
           distro: ubuntu-24.04
         - version: 12
           distro: ubuntu-24.04
-          arch_flags: -ffast-math
+          arch_flags: -Ofast
         - version: 12
           distro: ubuntu-24.04-arm
         - version: 13
           distro: ubuntu-24.04
         - version: 13
           distro: ubuntu-24.04
-          arch_flags: -ffast-math
+          arch_flags: -Ofast
         - version: 13
           distro: ubuntu-24.04-arm
         - version: 14
           distro: ubuntu-24.04
         - version: 14
           distro: ubuntu-24.04
-          arch_flags: -ffast-math
+          arch_flags: -Ofast
         - version: 14
           distro: ubuntu-24.04-arm
         - version: 15
           distro: ubuntu-24.04
         - version: 15
           distro: ubuntu-24.04
-          arch_flags: -ffast-math
+          arch_flags: -Ofast
         - version: 15
           distro: ubuntu-24.04-arm
     runs-on: ${{ matrix.distro }}
@@ -739,52 +739,52 @@ jobs:
           distro: ubuntu-22.04
         - version: "12"
           distro: ubuntu-22.04
-          arch_flags: -ffast-math
+          arch_flags: -Ofast
         - version: "13"
           distro: ubuntu-22.04
         - version: "13"
           distro: ubuntu-22.04
-          arch_flags: -ffast-math
+          arch_flags: -Ofast
         - version: "14"
           distro: ubuntu-24.04
         - version: "14"
           distro: ubuntu-24.04
-          arch_flags: -ffast-math
+          arch_flags: -Ofast
         - version: "14"
           distro: ubuntu-24.04-arm
           arch_flags: -march=armv8-a+fp+aes+sha2
           # grep Features < /proc/cpuinfo | head -n 1 | awk '-F: ' '{print $2}' | sed 's/asimd //;s/evtstrm //;s/pmull //;s/sha1 //;s/crc32 //;s/atomics //;s/fphp //;s/asimd.. //g;s/cpuid //;s/asimd... //g;s/jscvt //;s/fcma //;s/lrcpc //;s/dcpop //;s/sm3 //;s/sha512 //;s/uscat //;s/ilrcpc //;s/pac. //g;s/dcpodp //;s/sveaes //;s/svebitperm //;s/svesha3 //;s/svesm4 //;s/flagm2 //;s/frint //;s/svei8mm //;s/svebf16 //' | tr ' ' '+'
         - version: "14"
           distro: ubuntu-24.04-arm
-          arch_flags: -ffast-math -march=armv8-a+fp+aes+sha2
+          arch_flags: -Ofast -march=armv8-a+fp+aes+sha2
         - version: "15"
           distro: ubuntu-24.04
         - version: "15"
           distro: ubuntu-24.04
-          arch_flags: -ffast-math
+          arch_flags: -Ofast
         - version: "15"
           distro: ubuntu-24.04-arm
         - version: "15"
           distro: ubuntu-24.04-arm
-          arch_flags: -ffast-math
+          arch_flags: -Ofast
         - version: "16"
           distro: ubuntu-24.04
           arch_flags: -Wno-unsafe-buffer-usage
         - version: "16"
           distro: ubuntu-24.04
-          arch_flags: -ffast-math -Wno-unsafe-buffer-usage
+          arch_flags: -Ofast -Wno-unsafe-buffer-usage
         - version: "16"
           distro: ubuntu-24.04-arm
           arch_flags: -Wno-unsafe-buffer-usage
         - version: "16"
           distro: ubuntu-24.04-arm
-          arch_flags: -ffast-math -Wno-unsafe-buffer-usage
+          arch_flags: -Ofast -Wno-unsafe-buffer-usage
         - version: "17"
           distro: ubuntu-24.04
           arch_flags: -Wno-unsafe-buffer-usage
         - version: "17"
           distro: ubuntu-24.04
-          arch_flags: -ffast-math -Wno-unsafe-buffer-usage
+          arch_flags: -Ofast -Wno-unsafe-buffer-usage
         - version: "17"
           distro: ubuntu-24.04
           arch_flags: -Wno-unsafe-buffer-usage -O2
@@ -793,7 +793,7 @@ jobs:
           arch_flags: -Wno-unsafe-buffer-usage
         - version: "17"
           distro: ubuntu-24.04-arm
-          arch_flags: -ffast-math -Wno-unsafe-buffer-usage
+          arch_flags: -Ofast -Wno-unsafe-buffer-usage
         - version: "17"
           distro: ubuntu-24.04-arm
           arch_flags: -Wno-unsafe-buffer-usage -O2
@@ -802,7 +802,7 @@ jobs:
           arch_flags: -Wno-unsafe-buffer-usage -Wno-switch-default
         - version: "18"
           distro: ubuntu-24.04
-          arch_flags: -ffast-math -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-nan-infinity-disabled
+          arch_flags: -Ofast -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-nan-infinity-disabled
         - version: "18"
           distro: ubuntu-24.04
           arch_flags: -Wno-unsafe-buffer-usage -Wno-switch-default -O2
@@ -811,7 +811,7 @@ jobs:
           arch_flags: -Wno-unsafe-buffer-usage -Wno-switch-default
         - version: "18"
           distro: ubuntu-24.04-arm
-          arch_flags: -ffast-math -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-nan-infinity-disabled
+          arch_flags: -Ofast -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-nan-infinity-disabled
         - version: "18"
           distro: ubuntu-24.04-arm
           arch_flags: -Wno-unsafe-buffer-usage -Wno-switch-default -O2
@@ -820,7 +820,7 @@ jobs:
           arch_flags: -Wno-unsafe-buffer-usage -Wno-switch-default
         - version: "19"
           distro: ubuntu-24.04
-          arch_flags: -ffast-math -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-nan-infinity-disabled
+          arch_flags: -O3 -ffast-math -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-nan-infinity-disabled
         - version: "19"
           distro: ubuntu-24.04
           arch_flags: -Wno-unsafe-buffer-usage -Wno-switch-default -O2
@@ -829,7 +829,7 @@ jobs:
           arch_flags: -Wno-unsafe-buffer-usage -Wno-switch-default
         - version: "19"
           distro: ubuntu-24.04-arm
-          arch_flags: -ffast-math -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-nan-infinity-disabled
+          arch_flags: -O3 -ffast-math -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-nan-infinity-disabled
         - version: "19"
           distro: ubuntu-24.04-arm
           arch_flags: -Wno-unsafe-buffer-usage -Wno-switch-default -O2
@@ -838,7 +838,7 @@ jobs:
           arch_flags: -Wno-unsafe-buffer-usage -Wno-switch-default
         - version: "20"
           distro: ubuntu-24.04
-          arch_flags: -ffast-math -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-nan-infinity-disabled
+          arch_flags: -O3 -ffast-math -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-nan-infinity-disabled
         - version: "20"
           distro: ubuntu-24.04
           arch_flags: -Wno-unsafe-buffer-usage -Wno-switch-default -O2
@@ -847,7 +847,7 @@ jobs:
           arch_flags: -Wno-unsafe-buffer-usage -Wno-switch-default
         - version: "20"
           distro: ubuntu-24.04-arm
-          arch_flags: -ffast-math -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-nan-infinity-disabled
+          arch_flags: -O3 -ffast-math -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-nan-infinity-disabled
         - version: "20"
           distro: ubuntu-24.04-arm
           arch_flags: -Wno-unsafe-buffer-usage -Wno-switch-default -O2
