@@ -644,30 +644,36 @@ jobs:
       fail-fast: false
       matrix:
         include:
-        - version: 20
+        # - version: 18
+        #   cross: mips64el
+        #   arch_deb: mips64el
+        #   arch_gnu: mips64el
+        #   arch_gnu_abi: abi64
+        #   distro: ubuntu-24.04
+        - version: 22
           cross: armv7
           arch_deb: armhf
           arch_gnu_abi: eabihf
           arch_gnu: arm
           distro: ubuntu-24.04
-        - version: 20
+        - version: 22
           cross: aarch64
           arch_gnu: aarch64
           arch_deb: arm64
           distro: ubuntu-24.04
-        - version: 20
+        - version: 22
           extra: -no-extras
           cross: aarch64
           arch_gnu: aarch64
           arch_deb: arm64
           distro: ubuntu-24.04
-        - version: 20
+        - version: 22
           cross: armel
           arch_gnu_abi: eabi
           arch_deb: armel
           arch_gnu: arm
           distro: ubuntu-24.04
-        - version: 20
+        - version: 22
           cross: riscv64
           arch_gnu: riscv64
           arch_deb: riscv64
@@ -677,18 +683,12 @@ jobs:
           arch_gnu: s390x
           arch_deb: s390x
           distro: ubuntu-24.04
-        - version: 20
+        - version: 22
           cross: ppc64el
           arch_deb: ppc64el
           arch_gnu: powerpc64le
           distro: ubuntu-24.04
-        # - version: 18
-        #   cross: mips64el
-        #   arch_deb: mips64el
-        #   arch_gnu: mips64el
-        #   arch_gnu_abi: abi64
-        #   distro: ubuntu-24.04
-        - version: 20
+        - version: 22
           cross: loongarch64
           arch_deb: loong64
           arch_gnu: loongarch64
@@ -703,6 +703,9 @@ jobs:
     - name: Install APT Dependencies
       run: |
         sudo add-apt-repository ppa:stephanosio/ccache
+        wget https://apt.llvm.org/llvm.sh
+        chmod +x llvm.sh
+        sudo ./llvm.sh ${{ matrix.version }}
         sudo apt-get -y --no-install-recommends install ccache ninja-build \
           binfmt-support clang-${{ matrix.version }} llvm-${{ matrix.version }} lld-${{ matrix.version }} \
           qemu-user-static pipx libc6-${{ matrix.arch_deb }}-cross libstdc++-14-dev-${{ matrix.arch_deb }}-cross \
@@ -851,6 +854,42 @@ jobs:
         - version: "20"
           distro: ubuntu-24.04-arm
           arch_flags: -Wno-unsafe-buffer-usage -Wno-switch-default -O2
+        - version: "21"
+          distro: ubuntu-24.04
+          arch_flags: -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-c++-keyword
+        - version: "21"
+          distro: ubuntu-24.04
+          arch_flags: -ffast-math -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-c++-keyword -Wno-nan-infinity-disabled
+        - version: "21"
+          distro: ubuntu-24.04
+          arch_flags: -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-c++-keyword -O2
+        - version: "21"
+          distro: ubuntu-24.04-arm
+          arch_flags: -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-c++-keyword
+        - version: "21"
+          distro: ubuntu-24.04-arm
+          arch_flags: -ffast-math -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-c++-keyword -Wno-nan-infinity-disabled
+        - version: "21"
+          distro: ubuntu-24.04-arm
+          arch_flags: -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-c++-keyword -O2
+        - version: "22"
+          distro: ubuntu-24.04
+          arch_flags: -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-c++-keyword
+        - version: "22"
+          distro: ubuntu-24.04
+          arch_flags: -ffast-math -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-c++-keyword -Wno-nan-infinity-disabled
+        - version: "22"
+          distro: ubuntu-24.04
+          arch_flags: -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-c++-keyword -O2
+        - version: "22"
+          distro: ubuntu-24.04-arm
+          arch_flags: -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-c++-keyword
+        - version: "22"
+          distro: ubuntu-24.04-arm
+          arch_flags: -ffast-math -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-c++-keyword -Wno-nan-infinity-disabled
+        - version: "22"
+          distro: ubuntu-24.04-arm
+          arch_flags: -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-c++-keyword -O2
     runs-on: ${{ matrix.distro }}
     env:
       CFLAGS: -march=native ${{ matrix.arch_flags }} -Wall -Weverything -Werror -fno-lax-vector-conversions
@@ -863,13 +902,19 @@ jobs:
       name: CPU Information
       run: |
         cat /proc/cpuinfo
-    - name: Install PPAs
+    - name: Install PPAs for Ubuntu 22.04
       if: ${{ matrix.distro == 'ubuntu-22.04' }}
       run: |
         sudo add-apt-repository ppa:ubuntu-toolchain-r/test
         sudo add-apt-repository ppa:savoury1/build-tools
         sudo add-apt-repository ppa:savoury1/display
         sudo add-apt-repository ppa:savoury1/llvm-defaults-16
+    - name: Install newer clang
+      if: ${{ matrix.version == '21' || matrix.version == '22' }}
+      run: |
+        wget https://apt.llvm.org/llvm.sh
+        chmod +x llvm.sh
+        sudo ./llvm.sh ${{ matrix.version }}
     - name: Install APT Dependencies
       run: |
         sudo add-apt-repository ppa:stephanosio/ccache
