@@ -12,8 +12,8 @@ exe_wrapper = ['v8']
 
 [properties]
 skip_sanity_check = true
-c_args = ['-sMEMORY64', '-Weverything', '-Wno-experimental', '-Werror', '-fno-lax-vector-conversions', '-O2', '-msimd128', '-Wno-unsafe-buffer-usage', '-Wno-switch-default', '-Wno-implicit-int-conversion-on-negation', '-Wno-sign-conversion', '-Wno-implicit-int-conversion']
-cpp_args = ['-sMEMORY64', '-Weverything', '-Wno-experimental', '-Werror', '-fno-lax-vector-conversions', '-O2', '-msimd128', '-Wno-unsafe-buffer-usage', '-Wno-switch-default', '-Wno-implicit-int-conversion-on-negation', '-Wno-sign-conversion', '-Wno-implicit-int-conversion']
+c_args = ['-sMEMORY64', '-Weverything', '-Wno-experimental', '-Werror', '-fno-lax-vector-conversions', '-O2', '-msimd128', '-Wno-unsafe-buffer-usage', '-Wno-switch-default']
+cpp_args = ['-sMEMORY64', '-Weverything', '-Wno-experimental', '-Werror', '-fno-lax-vector-conversions', '-O2', '-msimd128', '-Wno-unsafe-buffer-usage', '-Wno-switch-default']
 c_link_args = ['-sMEMORY64', '-Wno-experimental', '-s', 'ENVIRONMENT=shell']
 cpp_link_args = ['-sMEMORY64', '-Wno-experimental', '-s', 'ENVIRONMENT=shell']
 

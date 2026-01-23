@@ -1916,7 +1916,7 @@ simde_math_adds_u32(uint32_t a, uint32_t b) {
     return vqadds_u32(a, b);
   #else
     uint32_t r = a + b;
-    r |= -(r < a);
+    r |= HEDLEY_STATIC_CAST(uint32_t, -(r < a));
     return r;
   #endif
 }
@@ -1928,7 +1928,7 @@ simde_math_adds_u64(uint64_t a, uint64_t b) {
     return vqaddd_u64(a, b);
   #else
     uint64_t r = a + b;
-    r |= -(r < a);
+    r |= HEDLEY_STATIC_CAST(uint64_t, -(r < a));
     return r;
   #endif
 }
@@ -2044,7 +2044,7 @@ simde_math_subs_u32(uint32_t a, uint32_t b) {
     return vqsubs_u32(a, b);
   #else
     uint32_t res = a - b;
-    res &= -(res <= a);
+    res &= HEDLEY_STATIC_CAST(uint32_t, -(res <= a));
     return res;
   #endif
 }
@@ -2056,7 +2056,7 @@ simde_math_subs_u64(uint64_t a, uint64_t b) {
     return vqsubd_u64(a, b);
   #else
     uint64_t res = a - b;
-    res &= -(res <= a);
+    res &= HEDLEY_STATIC_CAST(uint64_t, -(res <= a));
     return res;
   #endif
 }

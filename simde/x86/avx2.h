@@ -55,7 +55,7 @@ simde_mm256_abs_epi8 (simde__m256i a) {
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.i8) / sizeof(r_.i8[0])) ; i++) {
-        r_.i8[i] = (a_.i8[i] < INT32_C(0)) ? -a_.i8[i] : a_.i8[i];
+        r_.i8[i] = (a_.i8[i] < INT32_C(0)) ? HEDLEY_STATIC_CAST(int8_t, -a_.i8[i]) : a_.i8[i];
       }
     #endif
 
@@ -85,7 +85,7 @@ simde_mm256_abs_epi16 (simde__m256i a) {
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.i16) / sizeof(r_.i16[0])) ; i++) {
-        r_.i16[i] = (a_.i16[i] < INT32_C(0)) ? -a_.i16[i] : a_.i16[i];
+        r_.i16[i] = (a_.i16[i] < INT32_C(0)) ? HEDLEY_STATIC_CAST(int16_t, -a_.i16[i]) : a_.i16[i];
       }
     #endif
 
@@ -4635,7 +4635,7 @@ simde_mm256_sign_epi8 (simde__m256i a, simde__m256i b) {
 
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.i8) / sizeof(r_.i8[0])) ; i++) {
-      r_.i8[i] = (b_.i8[i] == INT8_C(0)) ? INT8_C(0) : (b_.i8[i] < INT8_C(0)) ? -a_.i8[i] : a_.i8[i];
+      r_.i8[i] = (b_.i8[i] == INT8_C(0)) ? INT8_C(0) : (b_.i8[i] < INT8_C(0)) ? HEDLEY_STATIC_CAST(int8_t, -a_.i8[i]) : a_.i8[i];
     }
 
     return simde__m256i_from_private(r_);
@@ -4661,7 +4661,7 @@ simde_mm256_sign_epi16 (simde__m256i a, simde__m256i b) {
 
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.i16) / sizeof(r_.i16[0])) ; i++) {
-      r_.i16[i] = (b_.i16[i] == INT16_C(0)) ? INT16_C(0) : (b_.i16[i] < INT16_C(0)) ? -a_.i16[i] : a_.i16[i];
+      r_.i16[i] = (b_.i16[i] == INT16_C(0)) ? INT16_C(0) : (b_.i16[i] < INT16_C(0)) ? HEDLEY_STATIC_CAST(int16_t, -a_.i16[i]) : a_.i16[i];
     }
 
     return simde__m256i_from_private(r_);
