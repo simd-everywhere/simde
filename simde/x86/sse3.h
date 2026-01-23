@@ -434,7 +434,14 @@ simde_mm_loaddup_pd (simde_float64 const* mem_addr) {
     #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
       r_.neon_f64 = vdupq_n_f64(*mem_addr);
     #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+      #if HEDLEY_HAS_WARNING("-Wundefined-reinterpret-cast") && SIMDE_DETECT_CLANG_VERSION_CHECK(21, 0, 0)
+        HEDLEY_DIAGNOSTIC_PUSH
+        _Pragma("clang diagnostic ignored \"-Wundefined-reinterpret-cast\"")
+      #endif
       r_.neon_i64 = vdupq_n_s64(*HEDLEY_REINTERPRET_CAST(int64_t const*, mem_addr));
+      #if HEDLEY_HAS_WARNING("-Wundefined-reinterpret-cast") && SIMDE_DETECT_CLANG_VERSION_CHECK(21, 0, 0)
+        HEDLEY_DIAGNOSTIC_POP
+      #endif
     #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
       r_.lsx_i64 = __lsx_vldrepl_d(mem_addr, 0);
     #else
