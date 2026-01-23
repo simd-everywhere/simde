@@ -614,6 +614,11 @@ simde_vextq_f64(simde_float64x2_t a, simde_float64x2_t b, const int n)
   #define vextq_f64(a, b, n) simde_vextq_f64((a), (b), (n))
 #endif
 
+#if defined(SIMDE_DIAGNOSTIC_DISABLE_MAYBE_UNINITIALIZED_) && (defined(HEDLEY_GCC_VERSION) && defined(SIMDE_ARCH_LOONGARCH))
+HEDLEY_DIAGNOSTIC_PUSH
+SIMDE_DIAGNOSTIC_DISABLE_MAYBE_UNINITIALIZED_
+#endif
+
 SIMDE_FUNCTION_ATTRIBUTES
 simde_int8x16_t
 simde_vextq_s8(simde_int8x16_t a, simde_int8x16_t b, const int n)
@@ -780,6 +785,10 @@ simde_vextq_s32(simde_int32x4_t a, simde_int32x4_t b, const int n)
   #define vextq_s32(a, b, n) simde_vextq_s32((a), (b), (n))
 #endif
 
+#if defined(SIMDE_DIAGNOSTIC_DISABLE_MAYBE_UNINITIALIZED_) && (defined(HEDLEY_GCC_VERSION) && defined(SIMDE_ARCH_LOONGARCH))
+HEDLEY_DIAGNOSTIC_POP
+#endif
+
 SIMDE_FUNCTION_ATTRIBUTES
 simde_int64x2_t
 simde_vextq_s64(simde_int64x2_t a, simde_int64x2_t b, const int n)
@@ -826,6 +835,11 @@ simde_vextq_s64(simde_int64x2_t a, simde_int64x2_t b, const int n)
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vextq_s64
   #define vextq_s64(a, b, n) simde_vextq_s64((a), (b), (n))
+#endif
+
+#if defined(SIMDE_DIAGNOSTIC_DISABLE_MAYBE_UNINITIALIZED_) && (defined(HEDLEY_GCC_VERSION) && defined(SIMDE_ARCH_LOONGARCH))
+HEDLEY_DIAGNOSTIC_PUSH
+SIMDE_DIAGNOSTIC_DISABLE_MAYBE_UNINITIALIZED_
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -969,6 +983,10 @@ simde_vextq_u32(simde_uint32x4_t a, simde_uint32x4_t b, const int n)
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
   #undef vextq_u32
   #define vextq_u32(a, b, n) simde_vextq_u32((a), (b), (n))
+#endif
+
+#if defined(SIMDE_DIAGNOSTIC_DISABLE_MAYBE_UNINITIALIZED_) && (defined(HEDLEY_GCC_VERSION) && defined(SIMDE_ARCH_LOONGARCH))
+HEDLEY_DIAGNOSTIC_POP
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
