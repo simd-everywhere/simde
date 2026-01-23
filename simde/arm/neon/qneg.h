@@ -45,7 +45,7 @@ simde_vqnegb_s8(int8_t a) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vqnegb_s8(a);
   #else
-    return a == INT8_MIN ? INT8_MAX : -a;
+    return a == INT8_MIN ? INT8_MAX : HEDLEY_STATIC_CAST(int8_t, -a);
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
@@ -59,7 +59,7 @@ simde_vqnegh_s16(int16_t a) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vqnegh_s16(a);
   #else
-    return a == INT16_MIN ? INT16_MAX : -a;
+    return a == INT16_MIN ? INT16_MAX : HEDLEY_STATIC_CAST(int16_t, -a);
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
@@ -109,7 +109,7 @@ simde_vqneg_s8(simde_int8x8_t a) {
 
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = (a_.values[i] == INT8_MIN) ? INT8_MAX : -(a_.values[i]);
+      r_.values[i] = (a_.values[i] == INT8_MIN) ? INT8_MAX : HEDLEY_STATIC_CAST(int8_t, -(a_.values[i]));
     }
 
     return simde_int8x8_from_private(r_);
@@ -134,7 +134,7 @@ simde_vqneg_s16(simde_int16x4_t a) {
 
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = (a_.values[i] == INT16_MIN) ? INT16_MAX : -(a_.values[i]);
+      r_.values[i] = (a_.values[i] == INT16_MIN) ? INT16_MAX : HEDLEY_STATIC_CAST(int16_t, -(a_.values[i]));
     }
 
     return simde_int16x4_from_private(r_);
@@ -209,7 +209,7 @@ simde_vqnegq_s8(simde_int8x16_t a) {
 
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = (a_.values[i] == INT8_MIN) ? INT8_MAX : -(a_.values[i]);
+      r_.values[i] = (a_.values[i] == INT8_MIN) ? INT8_MAX : HEDLEY_STATIC_CAST(int8_t, -(a_.values[i]));
     }
 
     return simde_int8x16_from_private(r_);
@@ -234,7 +234,7 @@ simde_vqnegq_s16(simde_int16x8_t a) {
 
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = (a_.values[i] == INT16_MIN) ? INT16_MAX : -(a_.values[i]);
+      r_.values[i] = (a_.values[i] == INT16_MIN) ? INT16_MAX : HEDLEY_STATIC_CAST(int16_t, -(a_.values[i]));
     }
 
     return simde_int16x8_from_private(r_);

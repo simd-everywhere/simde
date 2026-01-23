@@ -41,7 +41,7 @@ simde_knot_mask8 (simde__mmask8 a) {
       && (!defined(HEDLEY_MSVC_VERSION) || HEDLEY_MSVC_VERSION_CHECK(19,20,0))
     return _knot_mask8(a);
   #else
-    return ~a;
+    return HEDLEY_STATIC_CAST(simde__mmask8, ~a);
   #endif
 }
 #if defined(SIMDE_X86_AVX512DQ_ENABLE_NATIVE_ALIASES)
@@ -57,7 +57,7 @@ simde_knot_mask16 (simde__mmask16 a) {
       && (!defined(HEDLEY_MSVC_VERSION) || HEDLEY_MSVC_VERSION_CHECK(19,20,0))
     return _knot_mask16(a);
   #else
-    return ~a;
+    return HEDLEY_STATIC_CAST(simde__mmask16, ~a);
   #endif
 }
 #define simde_mm512_knot(a) simde_knot_mask16(a)

@@ -169,7 +169,7 @@ simde_vabs_s8(simde_int8x8_t a) {
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-        r_.values[i] = a_.values[i] < 0 ? -a_.values[i] : a_.values[i];
+        r_.values[i] = a_.values[i] < 0 ? HEDLEY_STATIC_CAST(int8_t, -a_.values[i]) : a_.values[i];
       }
     #endif
 
@@ -399,7 +399,7 @@ simde_vabsq_s8(simde_int8x16_t a) {
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-        r_.values[i] = a_.values[i] < 0 ? -a_.values[i] : a_.values[i];
+        r_.values[i] = a_.values[i] < 0 ? HEDLEY_STATIC_CAST(int8_t, -a_.values[i]) : a_.values[i];
       }
     #endif
 
@@ -437,7 +437,7 @@ simde_vabsq_s16(simde_int16x8_t a) {
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-        r_.values[i] = a_.values[i] < 0 ? -a_.values[i] : a_.values[i];
+        r_.values[i] = a_.values[i] < 0 ? HEDLEY_STATIC_CAST(int16_t, -a_.values[i]) : a_.values[i];
       }
     #endif
 

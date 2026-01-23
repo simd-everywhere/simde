@@ -457,7 +457,7 @@ simde_vmvn_p8(simde_poly8x8_t a) {
 
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = ~(a_.values[i]);
+      r_.values[i] = HEDLEY_STATIC_CAST(simde_poly8, ~(a_.values[i]));
     }
 
     return simde_poly8x8_from_private(r_);
@@ -480,7 +480,7 @@ simde_vmvnq_p8(simde_poly8x16_t a) {
 
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = ~(a_.values[i]);
+      r_.values[i] = HEDLEY_STATIC_CAST(simde_poly8, ~(a_.values[i]));
     }
 
     return simde_poly8x16_from_private(r_);

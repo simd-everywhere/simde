@@ -43,7 +43,7 @@ simde_mm_mask_compressstoreu_pd (void* base_addr, simde__mmask8 k, simde__m128d 
   #if defined(SIMDE_X86_AVX512VL_NATIVE) && defined(SIMDE_X86_AVX512F_NATIVE) && !defined(__znver4__)
     _mm_mask_compressstoreu_pd(base_addr, k, a);
   #elif defined(SIMDE_X86_AVX512VL_NATIVE) && defined(SIMDE_X86_AVX512F_NATIVE) && defined(__znver4__)
-    simde__mmask8 store_mask = _pext_u32(-1, k);
+    simde__mmask8 store_mask = HEDLEY_STATIC_CAST(simde__mmask8, _pext_u32(HEDLEY_STATIC_CAST(unsigned int, -1), k));
     _mm_mask_storeu_pd(base_addr, store_mask, _mm_maskz_compress_pd(k, a));
   #else
     simde__m128d_private
@@ -132,7 +132,7 @@ simde_mm_mask_compressstoreu_ps (void* base_addr, simde__mmask8 k, simde__m128 a
   #if defined(SIMDE_X86_AVX512VL_NATIVE) && defined(SIMDE_X86_AVX512F_NATIVE) && !defined(__znver4__)
     _mm_mask_compressstoreu_ps(base_addr, k, a);
   #elif defined(SIMDE_X86_AVX512VL_NATIVE) && defined(SIMDE_X86_AVX512F_NATIVE) && defined(__znver4__)
-    simde__mmask8 store_mask = _pext_u32(-1, k);
+    simde__mmask8 store_mask = HEDLEY_STATIC_CAST(simde__mmask8, _pext_u32(HEDLEY_STATIC_CAST(unsigned int, -1), k));
     _mm_mask_storeu_ps(base_addr, store_mask, _mm_maskz_compress_ps(k, a));
   #else
     simde__m128_private
@@ -221,7 +221,7 @@ simde_mm_mask_compressstoreu_epi32 (void* base_addr, simde__mmask8 k, simde__m12
   #if defined(SIMDE_X86_AVX512VL_NATIVE) && defined(SIMDE_X86_AVX512F_NATIVE) && !defined(__znver4__)
     _mm_mask_compressstoreu_epi32(base_addr, k, a);
   #elif defined(SIMDE_X86_AVX512VL_NATIVE) && defined(SIMDE_X86_AVX512F_NATIVE) && defined(__znver4__)
-    simde__mmask8 store_mask = _pext_u32(-1, k);
+    simde__mmask8 store_mask = HEDLEY_STATIC_CAST(simde__mmask8, _pext_u32(HEDLEY_STATIC_CAST(unsigned int, -1), k));
     _mm_mask_storeu_epi32(base_addr, store_mask, _mm_maskz_compress_epi32(k, a));
   #else
     simde__m128i_private
@@ -310,7 +310,7 @@ simde_mm_mask_compressstoreu_epi64 (void* base_addr, simde__mmask8 k, simde__m12
   #if defined(SIMDE_X86_AVX512VL_NATIVE) && defined(SIMDE_X86_AVX512F_NATIVE) && !defined(__znver4__)
     _mm_mask_compressstoreu_epi64(base_addr, k, a);
   #elif defined(SIMDE_X86_AVX512VL_NATIVE) && defined(SIMDE_X86_AVX512F_NATIVE) && defined(__znver4__)
-    simde__mmask8 store_mask = _pext_u32(-1, k);
+    simde__mmask8 store_mask = HEDLEY_STATIC_CAST(simde__mmask8, _pext_u32(HEDLEY_STATIC_CAST(unsigned int, -1), k));
     _mm_mask_storeu_epi64(base_addr, store_mask, _mm_maskz_compress_epi64(k, a));
   #else
     simde__m128i_private
@@ -399,7 +399,7 @@ simde_mm256_mask_compressstoreu_pd (void* base_addr, simde__mmask8 k, simde__m25
   #if defined(SIMDE_X86_AVX512VL_NATIVE) && defined(SIMDE_X86_AVX512F_NATIVE) && !defined(__znver4__)
     _mm256_mask_compressstoreu_pd(base_addr, k, a);
   #elif defined(SIMDE_X86_AVX512VL_NATIVE) && defined(SIMDE_X86_AVX512F_NATIVE) && defined(__znver4__)
-    simde__mmask8 store_mask = _pext_u32(-1, k);
+    simde__mmask8 store_mask = HEDLEY_STATIC_CAST(simde__mmask8, _pext_u32(HEDLEY_STATIC_CAST(unsigned int, -1), k));
     _mm256_mask_storeu_pd(base_addr, store_mask, _mm256_maskz_compress_pd(k, a));
   #else
     simde__m256d_private
@@ -488,7 +488,7 @@ simde_mm256_mask_compressstoreu_ps (void* base_addr, simde__mmask8 k, simde__m25
   #if defined(SIMDE_X86_AVX512VL_NATIVE) && defined(SIMDE_X86_AVX512F_NATIVE) && !defined(__znver4__)
     _mm256_mask_compressstoreu_ps(base_addr, k, a);
   #elif defined(SIMDE_X86_AVX512VL_NATIVE) && defined(SIMDE_X86_AVX512F_NATIVE) && defined(__znver4__)
-    simde__mmask8 store_mask = _pext_u32(-1, k);
+    simde__mmask8 store_mask = HEDLEY_STATIC_CAST(simde__mmask8, _pext_u32(HEDLEY_STATIC_CAST(unsigned int, -1), k));
     _mm256_mask_storeu_ps(base_addr, store_mask, _mm256_maskz_compress_ps(k, a));
   #else
     simde__m256_private
@@ -577,7 +577,7 @@ simde_mm256_mask_compressstoreu_epi32 (void* base_addr, simde__mmask8 k, simde__
   #if defined(SIMDE_X86_AVX512VL_NATIVE) && defined(SIMDE_X86_AVX512F_NATIVE) && !defined(__znver4__)
     _mm256_mask_compressstoreu_epi32(base_addr, k, a);
   #elif defined(SIMDE_X86_AVX512VL_NATIVE) && defined(SIMDE_X86_AVX512F_NATIVE) && defined(__znver4__)
-    simde__mmask8 store_mask = _pext_u32(-1, k);
+    simde__mmask8 store_mask = HEDLEY_STATIC_CAST(simde__mmask8, _pext_u32(HEDLEY_STATIC_CAST(unsigned int, -1), k));
     _mm256_mask_storeu_epi32(base_addr, store_mask, _mm256_maskz_compress_epi32(k, a));
   #else
     simde__m256i_private
@@ -666,7 +666,7 @@ simde_mm256_mask_compressstoreu_epi64 (void* base_addr, simde__mmask8 k, simde__
   #if defined(SIMDE_X86_AVX512VL_NATIVE) && defined(SIMDE_X86_AVX512F_NATIVE) && !defined(__znver4__)
     _mm256_mask_compressstoreu_epi64(base_addr, k, a);
   #elif defined(SIMDE_X86_AVX512VL_NATIVE) && defined(SIMDE_X86_AVX512F_NATIVE) && defined(__znver4__)
-    simde__mmask8 store_mask = _pext_u32(-1, k);
+    simde__mmask8 store_mask = HEDLEY_STATIC_CAST(simde__mmask8, _pext_u32(HEDLEY_STATIC_CAST(unsigned int, -1), k));
     _mm256_mask_storeu_epi64(base_addr, store_mask, _mm256_maskz_compress_epi64(k, a));
   #else
     simde__m256i_private
@@ -755,7 +755,7 @@ simde_mm512_mask_compressstoreu_pd (void* base_addr, simde__mmask8 k, simde__m51
   #if defined(SIMDE_X86_AVX512VL_NATIVE) && defined(SIMDE_X86_AVX512F_NATIVE) && !defined(__znver4__)
     _mm512_mask_compressstoreu_pd(base_addr, k, a);
   #elif defined(SIMDE_X86_AVX512VL_NATIVE) && defined(SIMDE_X86_AVX512F_NATIVE) && defined(__znver4__)
-    simde__mmask8 store_mask = _pext_u32(-1, k);
+    simde__mmask8 store_mask = HEDLEY_STATIC_CAST(simde__mmask8, _pext_u32(HEDLEY_STATIC_CAST(unsigned int, -1), k));
     _mm512_mask_storeu_pd(base_addr, store_mask, _mm512_maskz_compress_pd(k, a));
   #else
     simde__m512d_private
@@ -844,7 +844,7 @@ simde_mm512_mask_compressstoreu_ps (void* base_addr, simde__mmask16 k, simde__m5
   #if defined(SIMDE_X86_AVX512VL_NATIVE) && defined(SIMDE_X86_AVX512F_NATIVE) && !defined(__znver4__)
     _mm512_mask_compressstoreu_ps(base_addr, k, a);
   #elif defined(SIMDE_X86_AVX512VL_NATIVE) && defined(SIMDE_X86_AVX512F_NATIVE) && defined(__znver4__)
-    simde__mmask16 store_mask = _pext_u32(-1, k);
+    simde__mmask16 store_mask = HEDLEY_STATIC_CAST(simde__mmask16, _pext_u32(HEDLEY_STATIC_CAST(unsigned int, -1), k));
     _mm512_mask_storeu_ps(base_addr, store_mask, _mm512_maskz_compress_ps(k, a));
   #else
     simde__m512_private
@@ -933,7 +933,7 @@ simde_mm512_mask_compressstoreu_epi16 (void* base_addr, simde__mmask32 k, simde_
   #if defined(SIMDE_X86_AVX512VBMI2_NATIVE) && !defined(__znver4__)
     _mm512_mask_compressstoreu_epi16(base_addr, k, a);
   #elif defined(SIMDE_X86_AVX512VBMI2_NATIVE) && defined(__znver4__)
-    simde__mmask32 store_mask = _pext_u32(-1, k);
+    simde__mmask32 store_mask = _pext_u32(HEDLEY_STATIC_CAST(unsigned int, -1), k);
     _mm512_mask_storeu_epi16(base_addr, store_mask, _mm512_maskz_compress_epi16(k, a));
   #else
     simde__m512i_private
@@ -963,7 +963,7 @@ simde_mm512_mask_compressstoreu_epi32 (void* base_addr, simde__mmask16 k, simde_
   #if defined(SIMDE_X86_AVX512VL_NATIVE) && defined(SIMDE_X86_AVX512F_NATIVE) && !defined(__znver4__)
     _mm512_mask_compressstoreu_epi32(base_addr, k, a);
   #elif defined(SIMDE_X86_AVX512VL_NATIVE) && defined(SIMDE_X86_AVX512F_NATIVE) && defined(__znver4__)
-    simde__mmask16 store_mask = _pext_u32(-1, k);
+    simde__mmask16 store_mask = HEDLEY_STATIC_CAST(simde__mmask16, _pext_u32(HEDLEY_STATIC_CAST(unsigned int, -1), k));
     _mm512_mask_storeu_epi32(base_addr, store_mask, _mm512_maskz_compress_epi32(k, a));
   #else
     simde__m512i_private
@@ -1052,7 +1052,7 @@ simde_mm512_mask_compressstoreu_epi64 (void* base_addr, simde__mmask8 k, simde__
   #if defined(SIMDE_X86_AVX512VL_NATIVE) && defined(SIMDE_X86_AVX512F_NATIVE) && !defined(__znver4__)
     _mm512_mask_compressstoreu_epi64(base_addr, k, a);
   #elif defined(SIMDE_X86_AVX512VL_NATIVE) && defined(SIMDE_X86_AVX512F_NATIVE) && defined(__znver4__)
-    simde__mmask8 store_mask = _pext_u32(-1, k);
+    simde__mmask8 store_mask = HEDLEY_STATIC_CAST(simde__mmask8, _pext_u32(HEDLEY_STATIC_CAST(unsigned int, -1), k));
     _mm512_mask_storeu_epi64(base_addr, store_mask, _mm512_maskz_compress_epi64(k, a));
   #else
     simde__m512i_private

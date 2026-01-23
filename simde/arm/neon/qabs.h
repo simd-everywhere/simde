@@ -47,7 +47,7 @@ simde_vqabsb_s8(int8_t a) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vqabsb_s8(a);
   #else
-    return a == INT8_MIN ? INT8_MAX : (a < 0 ? -a : a);
+    return a == INT8_MIN ? INT8_MAX : (a < 0 ? HEDLEY_STATIC_CAST(int8_t, -a) : a);
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
@@ -61,7 +61,7 @@ simde_vqabsh_s16(int16_t a) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     return vqabsh_s16(a);
   #else
-    return a == INT16_MIN ? INT16_MAX : (a < 0 ? -a : a);
+    return a == INT16_MIN ? INT16_MAX : (a < 0 ? HEDLEY_STATIC_CAST(int16_t, -a) : a);
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
