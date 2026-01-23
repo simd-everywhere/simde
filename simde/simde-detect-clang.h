@@ -60,7 +60,13 @@
  */
 
 #if defined(__clang__) && !defined(SIMDE_DETECT_CLANG_VERSION)
-#  if __has_warning("-Warray-compare-cxx26")
+#  if __has_warning("-Wlifetime-safety")
+#    define SIMDE_DETECT_CLANG_VERSION 230000
+#  elif __has_builtin(__builtin_elementwise_fshl)
+#    define SIMDE_DETECT_CLANG_VERSION 220000
+#  elif __has_builtin(__builtin_structured_binding_size)
+#    define SIMDE_DETECT_CLANG_VERSION 210000
+#  elif __has_warning("-Warray-compare-cxx26")
 #    define SIMDE_DETECT_CLANG_VERSION 200000
 #  elif __has_warning("-Wmissing-designated-field-initializers")
 #    define SIMDE_DETECT_CLANG_VERSION 190000
