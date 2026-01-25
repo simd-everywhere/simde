@@ -1063,19 +1063,21 @@ HEDLEY_DIAGNOSTIC_POP
 #      if !HEDLEY_GCC_VERSION_CHECK(12,0,0)
 #        define SIMDE_BUG_VEC_CPSGN_REVERSED_ARGS
 #      endif
-#    endif
-#    if defined(SIMDE_ARCH_ZARCH)
+#    elif defined(SIMDE_ARCH_ZARCH)
 #      define SIMDE_BUG_GCC_95782
 #      if HEDLEY_GCC_VERSION_CHECK(10,0,0)
 #        define SIMDE_BUG_GCC_101614
 #      endif
-#    endif
-#    if defined(SIMDE_ARCH_MIPS_MSA)
+#    elif defined(SIMDE_ARCH_MIPS_MSA)
 #      define SIMDE_BUG_GCC_97248
 #      if !HEDLEY_GCC_VERSION_CHECK(12,1,0)
 #        define SIMDE_BUG_GCC_100760
 #        define SIMDE_BUG_GCC_100761
 #        define SIMDE_BUG_GCC_100762
+#      endif
+#    elif defined(SIMDE_ARCH_LOONGARCH)
+#      if HEDLEY_GCC_VERSION_CHECK(16,0,0)
+#        define SIMDE_BUG_GCC_123807
 #      endif
 #    endif
 #    if !defined(__OPTIMIZE__) && !(\
