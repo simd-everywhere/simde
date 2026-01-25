@@ -5,6 +5,8 @@ on:
     branches:
       - 'master'
   workflow_dispatch: {}
+  repository_dispatch:
+    types: [on-demand-gcc-16]
 
 concurrency:
   group: gcc-snapshot-${{ github.event.pull_request.number || github.ref }}
@@ -36,8 +38,15 @@ jobs:
       INTEL_TARGET: ${{ matrix.target }}
     steps:
     - uses: actions/checkout@v6
+      if: ${{ github.event_name != 'repository_dispatch' }}
       with:
         submodules: recursive
+    - uses: actions/checkout@v6
+      if: ${{ github.event_name == 'repository_dispatch' }}
+      with:
+        submodules: recursive
+        repository: ${{ github.event.client_payload.repository }}
+        ref: ${{ github.event.client_payload.ref }}
     - name: CPU Information
       run: cat /proc/cpuinfo
     - name: Install APT Dependencies
@@ -80,8 +89,15 @@ jobs:
       CXXFLAGS: -Wall -Wextra -Werror -march=bdver2
     steps:
     - uses: actions/checkout@v6
+      if: ${{ github.event_name != 'repository_dispatch' }}
       with:
         submodules: recursive
+    - uses: actions/checkout@v6
+      if: ${{ github.event_name == 'repository_dispatch' }}
+      with:
+        submodules: recursive
+        repository: ${{ github.event.client_payload.repository }}
+        ref: ${{ github.event.client_payload.ref }}
     - name: CPU Information
       run: cat /proc/cpuinfo
     - name: Install APT Dependencies
@@ -117,8 +133,15 @@ jobs:
       CXXFLAGS: -march=native -Wall -Wextra -Werror
     steps:
     - uses: actions/checkout@v6
+      if: ${{ github.event_name != 'repository_dispatch' }}
       with:
         submodules: recursive
+    - uses: actions/checkout@v6
+      if: ${{ github.event_name == 'repository_dispatch' }}
+      with:
+        submodules: recursive
+        repository: ${{ github.event.client_payload.repository }}
+        ref: ${{ github.event.client_payload.ref }}
     - id: cpu
       name: CPU Information
       run: |
@@ -168,8 +191,15 @@ jobs:
       CXXFLAGS: ${{ matrix.arch_flags }} -march=native -Wall -Wextra -Werror
     steps:
     - uses: actions/checkout@v6
+      if: ${{ github.event_name != 'repository_dispatch' }}
       with:
         submodules: recursive
+    - uses: actions/checkout@v6
+      if: ${{ github.event_name == 'repository_dispatch' }}
+      with:
+        submodules: recursive
+        repository: ${{ github.event.client_payload.repository }}
+        ref: ${{ github.event.client_payload.ref }}
     - id: cpu
       name: CPU Information
       run: |
@@ -265,8 +295,15 @@ jobs:
     runs-on: ${{ matrix.distro }}
     steps:
     - uses: actions/checkout@v6
+      if: ${{ github.event_name != 'repository_dispatch' }}
       with:
         submodules: recursive
+    - uses: actions/checkout@v6
+      if: ${{ github.event_name == 'repository_dispatch' }}
+      with:
+        submodules: recursive
+        repository: ${{ github.event.client_payload.repository }}
+        ref: ${{ github.event.client_payload.ref }}
     - name: CPU Information
       run: cat /proc/cpuinfo
     - name: Install APT Dependencies
