@@ -316,7 +316,7 @@ simde_mm512_slli_epi64 (simde__m512i a, unsigned int imm8) {
         r_.m128i[1] = simde_mm_slli_epi64(a_.m128i[1], HEDLEY_STATIC_CAST(int, imm8));
         r_.m128i[2] = simde_mm_slli_epi64(a_.m128i[2], HEDLEY_STATIC_CAST(int, imm8));
         r_.m128i[3] = simde_mm_slli_epi64(a_.m128i[3], HEDLEY_STATIC_CAST(int, imm8));
-      #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && !defined(SIMDE_BUG_GCC_97248)
+      #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && !defined(SIMDE_BUG_GCC_97248) && !defined(SIMDE_BUG_GCC_123807)
         r_.u64 = a_.u64 << imm8;
       #else
         SIMDE_VECTORIZE
