@@ -45,7 +45,7 @@ simde__m128i
 simde_mm_cvtps_ph(simde__m128 a, const int rounding) {
   simde__m128_private a_ = simde__m128_to_private(a);
   simde__m128i_private r_ = simde__m128i_to_private(simde_mm_setzero_si128());
-  
+
   switch (rounding & ~SIMDE_MM_FROUND_NO_EXC) {
     case SIMDE_MM_FROUND_CUR_DIRECTION: /* assumes current mode is half-to-even */
     case SIMDE_MM_FROUND_TO_NEAREST_INT:
