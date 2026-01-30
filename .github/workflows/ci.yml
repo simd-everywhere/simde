@@ -376,10 +376,17 @@ jobs:
           arch_flags: -ffast-math
         - version: 15
           distro: ubuntu-24.04-arm
+        - version: 15
+          distro: ubuntu-24.04-arm
+          plain: true
     runs-on: ${{ matrix.distro }}
     env:
-      CFLAGS: ${{ matrix.arch_flags }} -march=native -Wall -Wextra -Werror
-      CXXFLAGS: ${{ matrix.arch_flags }} -march=native -Wall -Wextra -Werror
+      CFLAGS: ${{ matrix.arch_flags }} ${{ case(
+        matrix.plain == true, '-Wall -Wextra -Werror',
+        '-march=native -Wall -Wextra -Werror') }}
+      CXXFLAGS: ${{ matrix.arch_flags }} ${{ case(
+        matrix.plain == true, '-Wall -Wextra -Werror',
+        '-march=native -Wall -Wextra -Werror') }}
     steps:
     - uses: actions/checkout@v6
       with:
@@ -442,17 +449,6 @@ jobs:
           arch_gnu: arm
           arch_gnu_abi: eabihf
           arch_deb: armhf
-          distro: ubuntu-24.04
-        - version: 15
-          extra: -no-extras
-          cross: aarch64
-          arch_gnu: aarch64
-          arch_deb: arm64
-          distro: ubuntu-24.04
-        - version: 15
-          cross: aarch64
-          arch_gnu: aarch64
-          arch_deb: arm64
           distro: ubuntu-24.04
         - extra: -32bit
           version: 15
@@ -657,17 +653,6 @@ jobs:
           arch_gnu: arm
           distro: ubuntu-24.04
         - version: 22
-          cross: aarch64
-          arch_gnu: aarch64
-          arch_deb: arm64
-          distro: ubuntu-24.04
-        - version: 22
-          extra: -no-extras
-          cross: aarch64
-          arch_gnu: aarch64
-          arch_deb: arm64
-          distro: ubuntu-24.04
-        - version: 22
           cross: armel
           arch_gnu_abi: eabi
           arch_deb: armel
@@ -714,14 +699,14 @@ jobs:
     - name: ccache
       uses: hendrikmuhs/ccache-action@v1.2
       with:
-        key: ${{ github.job }}-${{ matrix.version }}${{ matrix.extra }}-${{ matrix.cross }}
+        key: ${{ github.job }}-${{ matrix.version }}-${{ matrix.cross }}
         verbose: 2
     - name: add ccache to the build path
       run: |
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
     - name: Configure
       run: |
-        meson setup --cross-file=docker/cross-files/${{ matrix.cross }}-clang-${{ matrix.version }}${{ matrix.extra }}-ccache.cross build \
+        meson setup --cross-file=docker/cross-files/${{ matrix.cross }}-clang-${{ matrix.version }}-ccache.cross build \
           || (cat build/meson-logs/meson-log.txt ; false)
     - name: Build
       run: ninja -C build -v
@@ -886,14 +871,22 @@ jobs:
           arch_flags: -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-c++-keyword
         - version: "22"
           distro: ubuntu-24.04-arm
+          plain: true
+          arch_flags: -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-c++-keyword
+        - version: "22"
+          distro: ubuntu-24.04-arm
           arch_flags: -ffast-math -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-c++-keyword -Wno-nan-infinity-disabled
         - version: "22"
           distro: ubuntu-24.04-arm
           arch_flags: -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-c++-keyword -O2
     runs-on: ${{ matrix.distro }}
     env:
-      CFLAGS: -march=native ${{ matrix.arch_flags }} -Wall -Weverything -Werror -fno-lax-vector-conversions
-      CXXFLAGS: -march=native ${{ matrix.arch_flags }} -Wall -Weverything -Werror -fno-lax-vector-conversions
+      CFLAGS: ${{ matrix.arch_flags }} ${{ case(
+        matrix.plain == true, '-Wall -Weverything -Werror',
+        '-march=native -Wall -Weverything -Werror') }} -fno-lax-vector-conversions
+      CXXFLAGS: ${{ matrix.arch_flags }} ${{ case(
+        matrix.plain == true, '-Wall -Weverything -Werror',
+        '-march=native -Wall -Weverything -Werror') }} -fno-lax-vector-conversions
     steps:
     - uses: actions/checkout@v6
       with:
