@@ -270,6 +270,8 @@ simde_test_codegen_i16(size_t buf_len, char buf[HEDLEY_ARRAY_PARAM(buf_len)], in
     simde_test_codegen_snprintf_(buf, buf_len, "%16s", "INT16_MIN");
   } else if (value == INT16_MAX) {
     simde_test_codegen_snprintf_(buf, buf_len, "%16s", "INT16_MAX");
+  } else if (value == -INT16_MAX) {
+    simde_test_codegen_snprintf_(buf, buf_len, "%16s", "-INT16_MAX");
   } else {
     simde_test_codegen_snprintf_(buf, buf_len, "%cINT16_C(%6" PRId16 ")", (value < 0) ? '-' : ' ', HEDLEY_STATIC_CAST(int16_t, (value < 0) ? -value : value));
   }
