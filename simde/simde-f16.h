@@ -215,7 +215,13 @@ simde_x_float16_from_float32 (simde_float32 value, int round) {
     * operands are below 0x80000000 (we clear the sign bit). */
 
     if (f32u > f16u_max) { /* result is Inf or NaN (all exponent bits set) */
-      f16u = (f32u > f32u_infty) ?  UINT32_C(0x7e00) : UINT32_C(0x7c00); /* NaN->qNaN and Inf->Inf */
+      f16u = (f32u  > f32u_infty) ? UINT32_C(0x7e00) : /* NaN->qNaN */
+             (f32u == f32u_infty) ? UINT32_C(0x7c00) : /* Inf->Inf */
+             (round == SIMDE_F16_ROUND_TO_ZERO) ||
+             (round == SIMDE_F16_ROUND_TO_NEG_INF && !sign) ||
+             (round == SIMDE_F16_ROUND_TO_POS_INF &&  sign) ?
+              UINT32_C(0x7bff) : /* max f16 */
+              UINT32_C(0x7c00);
     } else { /* (De)normalized number or zero */
       if (f32u < (UINT32_C(113) << 23)) { /* resulting FP16 is subnormal or zero */
         if(round == SIMDE_F16_ROUND_TO_NEAREST) {
