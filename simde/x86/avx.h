@@ -3622,15 +3622,24 @@ simde_mm256_cvtpd_epi32 (simde__m256d a) {
     return a_.m128d_private[0].lsx_i64;
   #else
     simde__m128i_private r_;
-    simde__m256d_private a_ = simde__m256d_to_private(a);
+    simde__m256d_private a_;
 
-    #if defined(simde_math_nearbyint)
-      SIMDE_VECTORIZE
-      for (size_t i = 0 ; i < (sizeof(a_.f64) / sizeof(a_.f64[0])) ; i++) {
-        r_.i32[i] = SIMDE_CONVERT_FTOI(int32_t, simde_math_nearbyint(a_.f64[i]));
-      }
+    #if SIMDE_NATURAL_VECTOR_SIZE_LE(128)
+      a_ = simde__m256d_to_private(a);
+      r_.m64[0] = simde_mm_cvtpd_pi32(a_.m128d[0]);
+      r_.m64[1] = simde_mm_cvtpd_pi32(a_.m128d[1]);
     #else
-      HEDLEY_UNREACHABLE();
+      a_ = simde__m256d_to_private(simde_mm256_round_pd(a, SIMDE_MM_FROUND_TO_NEAREST_INT));
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {
+        simde_float64 v = simde_math_round(a_.f64[i]);
+        #if defined(SIMDE_FAST_CONVERSION_RANGE)
+          r_.i32[i] = SIMDE_CONVERT_FTOI(int32_t, v);
+        #else
+          r_.i32[i] = ((v > HEDLEY_STATIC_CAST(simde_float64, INT32_MIN)) && (v < HEDLEY_STATIC_CAST(simde_float64, INT32_MAX))) ?
+            SIMDE_CONVERT_FTOI(int32_t, v) : INT32_MIN;
+        #endif
+      }
     #endif
 
     return simde__m128i_from_private(r_);
@@ -3677,15 +3686,24 @@ simde_mm256_cvtps_epi32 (simde__m256 a) {
     return __lasx_xvftintrne_w_s(a);
   #else
     simde__m256i_private r_;
-    simde__m256_private a_ = simde__m256_to_private(a);
+    simde__m256_private a_;
 
-    #if defined(simde_math_nearbyintf)
-      SIMDE_VECTORIZE
-      for (size_t i = 0 ; i < (sizeof(a_.f32) / sizeof(a_.f32[0])) ; i++) {
-        r_.i32[i] = SIMDE_CONVERT_FTOI(int32_t, simde_math_nearbyintf(a_.f32[i]));
-      }
+    #if SIMDE_NATURAL_VECTOR_SIZE_LE(128)
+      a_ = simde__m256_to_private(a);
+      r_.m128i[0] = simde_mm_cvtps_epi32(a_.m128[0]);
+      r_.m128i[1] = simde_mm_cvtps_epi32(a_.m128[1]);
     #else
-      HEDLEY_UNREACHABLE();
+      a_ = simde__m256_to_private(simde_mm256_round_ps(a, SIMDE_MM_FROUND_TO_NEAREST_INT));
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {
+        simde_float32 v = simde_math_roundf(a_.f32[i]);
+        #if defined(SIMDE_FAST_CONVERSION_RANGE)
+          r_.i32[i] = SIMDE_CONVERT_FTOI(int32_t, v);
+        #else
+          r_.i32[i] = ((v > HEDLEY_STATIC_CAST(simde_float32, INT32_MIN)) && (v < HEDLEY_STATIC_CAST(simde_float32, INT32_MAX))) ?
+            SIMDE_CONVERT_FTOI(int32_t, v) : INT32_MIN;
+        #endif
+      }
     #endif
 
     return simde__m256i_from_private(r_);

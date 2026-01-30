@@ -7107,7 +7107,20 @@ test_simde_mm256_cvtpd_epi32(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256d a;
     simde__m128i r;
-  } test_vec[8] = {
+  } test_vec[] = {
+    #if !defined(SIMDE_FAST_NANS)
+    { simde_mm256_set_pd(SIMDE_MATH_NAN, -SIMDE_MATH_NAN, 0.0, 0.0),
+      simde_mm_set_epi32(     INT32_MIN,       INT32_MIN,   0,   0) },
+    #endif
+    #if !defined(SIMDE_FAST_CONVERSION_RANGE)
+    { simde_mm256_set_pd(
+        HEDLEY_STATIC_CAST(simde_float64, HEDLEY_STATIC_CAST(int64_t, INT32_MAX) + 1), 
+        HEDLEY_STATIC_CAST(simde_float64, HEDLEY_STATIC_CAST(int64_t, INT32_MAX) - 100),
+        HEDLEY_STATIC_CAST(simde_float64, HEDLEY_STATIC_CAST(int64_t, INT32_MIN) - 1), 
+        HEDLEY_STATIC_CAST(simde_float64, HEDLEY_STATIC_CAST(int64_t, INT32_MIN) + 100)),
+      simde_mm_set_epi32(
+        INT32_MIN, INT32_C(2147483547), INT32_MIN, -INT32_C(2147483548)) },
+    #endif
     { simde_mm256_set_pd(SIMDE_FLOAT64_C(  823.92), SIMDE_FLOAT64_C( -252.31),
                          SIMDE_FLOAT64_C(  311.42), SIMDE_FLOAT64_C(  639.08)),
       simde_mm_set_epi32(INT32_C( 824), INT32_C(-252), INT32_C( 311), INT32_C( 639)) },
@@ -7187,7 +7200,22 @@ test_simde_mm256_cvtps_epi32(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256 a;
     simde__m256i r;
-  } test_vec[8] = {
+  } test_vec[] = {
+    #if !defined(SIMDE_FAST_NANS)
+    { simde_mm256_set_ps(SIMDE_MATH_NAN, -SIMDE_MATH_NAN, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f),
+      simde_mm256_set_epi32(  INT32_MIN,       INT32_MIN,   0,   0,   0,   0,   0,   0) },
+    #endif
+    #if !defined(SIMDE_FAST_CONVERSION_RANGE)
+    { simde_mm256_set_ps(
+        HEDLEY_STATIC_CAST(simde_float32, HEDLEY_STATIC_CAST(int64_t, INT32_MAX) + 1), 
+        HEDLEY_STATIC_CAST(simde_float32, HEDLEY_STATIC_CAST(int64_t, INT32_MAX) - 100),
+        HEDLEY_STATIC_CAST(simde_float32, HEDLEY_STATIC_CAST(int64_t, INT32_MIN) - 1), 
+        HEDLEY_STATIC_CAST(simde_float32, HEDLEY_STATIC_CAST(int64_t, INT32_MIN) + 100),
+        0.f, 0.f, 0.f, 0.f),
+      simde_mm256_set_epi32(
+        INT32_MIN,  INT32_C(2147483520), INT32_MIN, -INT32_C(2147483520),
+        0, 0, 0, 0) },
+    #endif
     { simde_mm256_set_ps(SIMDE_FLOAT32_C(  598.58), SIMDE_FLOAT32_C(  571.41),
                          SIMDE_FLOAT32_C( -242.37), SIMDE_FLOAT32_C( -717.41),
                          SIMDE_FLOAT32_C(  374.26), SIMDE_FLOAT32_C( -165.53),
