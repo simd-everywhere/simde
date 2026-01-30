@@ -646,6 +646,18 @@ jobs:
           arch_deb: loong64
           arch_gnu: loongarch64
           distro: ubuntu-24.04
+        - version: 21
+          cross: loongarch64
+          extra: -fastmath
+          arch_deb: loong64
+          arch_gnu: loongarch64
+          distro: ubuntu-24.04
+        - version: 22
+          cross: loongarch64
+          extra: -fastmath
+          arch_deb: loong64
+          arch_gnu: loongarch64
+          distro: ubuntu-24.04
     runs-on: ${{ matrix.distro }}
     steps:
     - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
