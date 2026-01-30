@@ -16519,7 +16519,7 @@ test_simde_mm256_testnzc_si256(SIMDE_MUNIT_TEST_ARGS) {
     simde__m256i a;
     simde__m256i b;
     int r;
-  } test_vec[8] = {
+  } test_vec[9] = {
     { simde_mm256_set_epi64x(INT64_C(-6804708873655136040), INT64_C( 4446918229480945172),
                              INT64_C(-6458803806102185271), INT64_C( 6419639704555297719)),
       simde_mm256_set_epi64x(INT64_C( 4086527184939990173), INT64_C(-4592254743728630867),
@@ -16559,7 +16559,12 @@ test_simde_mm256_testnzc_si256(SIMDE_MUNIT_TEST_ARGS) {
                              INT64_C(                  -1), INT64_C(                  -1)),
       simde_mm256_set_epi64x(INT64_C(                   0), INT64_C(                   0),
                              INT64_C(                   0), INT64_C(                   0)),
-      0 }
+      0 },
+    { simde_mm256_set_epi64x(INT64_C(                   1), INT64_C(                   1),
+                             INT64_C(                   1), INT64_C(                   1)),
+      simde_mm256_set_epi64x(INT64_C(                  -1), INT64_C(                  -1),
+                             INT64_C(                  -1), INT64_C(                  -1)),
+      1 }
   };
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
