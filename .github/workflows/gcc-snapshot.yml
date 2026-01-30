@@ -184,10 +184,38 @@ jobs:
           arch_flags: -ffast-math
         - distro: ubuntu-24.04
         - distro: ubuntu-24.04-arm
+        - distro: ubuntu-24.04-arm
+          plain: true
+        - distro: ubuntu-24.04-arm  # plain armhf
+          gcc: arm-linux-gnueabihf
+          plain: true
+        - distro: ubuntu-24.04-arm  # armv7
+          gcc: arm-linux-gnueabihf
+          arch_flags: -march=armv7-a+simd+neon-fp16
+          plain: true
+        - distro: ubuntu-24.04-arm  # armv8 32-bit
+          gcc: arm-linux-gnueabihf
+          arch_flags: -mcpu=cortex-a32 -mfpu=crypto-neon-fp-armv8
+          plain: true
     runs-on: ${{ matrix.distro }}
     env:
-      CFLAGS: ${{ matrix.arch_flags }} -march=native -Wall -Wextra -Werror
-      CXXFLAGS: ${{ matrix.arch_flags }} -march=native -Wall -Wextra -Werror
+      CFLAGS: ${{ matrix.arch_flags }} ${{ case(
+        matrix.plain == true, '-Wall -Wextra -Werror',
+        '-march=native -Wall -Wextra -Werror') }}
+      CXXFLAGS: ${{ matrix.arch_flags }} ${{ case(
+        matrix.plain == true, '-Wall -Wextra -Werror',
+        '-march=native -Wall -Wextra -Werror') }}
+      CC: ${{
+        case(
+          matrix.gcc == '', 'gcc-16',
+          format('{0}-gcc-16', matrix.gcc)
+        ) }}
+      CXX: ${{
+        case(
+          matrix.gcc == '', 'g++-16',
+          format('{0}-g++-16', matrix.gcc)
+        ) }}
+
     steps:
     - uses: actions/checkout@v6
       if: ${{ github.event_name != 'repository_dispatch' }}
@@ -203,16 +231,19 @@ jobs:
       name: CPU Information
       run: |
         cat /proc/cpuinfo
+    - name: enable armhf
+      if: ${{ matrix.gcc == 'arm-linux-gnueabihf' }}
+      run: sudo dpkg --add-architecture armhf && sudo apt-get update && sudo apt-get install -y libstdc++6:armhf
     - name: Install APT Dependencies
       run: |
         sudo add-apt-repository ppa:misterc/gcc-snapshot-latest-lts
         # sudo add-apt-repository ppa:stephanosio/ccache
         sudo apt-get -y install --no-install-recommends pipx ninja-build \
             # ccache
-        sudo apt-get install -y ${{ github.event.client_payload.extra }} gcc-16 g++-16
+        sudo apt-get install -y ${{ github.event.client_payload.extra }} \
+          gcc-${{ case(matrix.gcc == '', '16', format('16-{0}', matrix.gcc)) }} \
+          g++-${{ case(matrix.gcc == '', '16', format('16-{0}', matrix.gcc)) }}
         sudo apt-get -y purge g++ gcc
-        sudo ln -s /usr/bin/gcc-16 /usr/bin/gcc
-        sudo ln -s /usr/bin/g++-16 /usr/bin/g++
         pipx install meson==0.55.1
     # - name: ccache
     #   uses: hendrikmuhs/ccache-action@v1.2
@@ -241,30 +272,6 @@ jobs:
           arch_gnu_abi: eabi
           arch_deb: armel
           arch_gnu: arm
-          distro: ubuntu-24.04
-        - version: 16
-          cross: armv7
-          arch_gnu: arm
-          arch_gnu_abi: eabihf
-          arch_deb: armhf
-          distro: ubuntu-24.04
-        - version: 16
-          extra: -no-extras
-          cross: aarch64
-          arch_gnu: aarch64
-          arch_deb: arm64
-          distro: ubuntu-24.04
-        - version: 16
-          cross: aarch64
-          arch_gnu: aarch64
-          arch_deb: arm64
-          distro: ubuntu-24.04
-        - extra: -32bit
-          version: 16
-          cross: armv8
-          arch_gnu: arm
-          arch_gnu_abi: eabihf
-          arch_deb: armhf
           distro: ubuntu-24.04
         - version: 16
           cross: riscv64
@@ -312,8 +319,8 @@ jobs:
         sudo apt-get -y --no-install-recommends install ccache ninja-build \
           binfmt-support qemu-user-static pipx libc6-${{ matrix.arch_deb }}-cross
         sudo apt-get install -y ${{ github.event.client_payload.extra }} \
-          gcc-${{ matrix.version }}-${{ matrix.arch_gnu }}-linux-gnu${{ matrix.arch_gnu_abi }} \
-          g++-${{ matrix.version }}-${{ matrix.arch_gnu }}-linux-gnu${{ matrix.arch_gnu_abi }} \
+          gcc-${{ matrix.version }}-${{ matrix.arch_gnu }}-linux-gnu$ \
+          g++-${{ matrix.version }}-${{ matrix.arch_gnu }}-linux-gnu$ \
           libstdc++-${{ matrix.version }}-dev-${{ matrix.arch_deb }}-cross
         pipx install meson==0.55.1
     # - name: ccache
@@ -328,4 +335,4 @@ jobs:
     - name: Test
       run: |
         # shellcheck disable=SC2046
-        meson test -C build --print-errorlogs --print-errorlogs
+        meson test -C build --print-errorlogs

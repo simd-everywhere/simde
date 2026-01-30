@@ -348,6 +348,9 @@ jobs:
           arch_flags: -ffast-math
         - version: 11
           distro:  ubuntu-24.04-arm
+        - version: 11
+          distro: ubuntu-24.04-arm
+          plain: true
         - version: 12
           distro: ubuntu-24.04
         - version: 12
@@ -376,10 +379,41 @@ jobs:
           arch_flags: -ffast-math
         - version: 15
           distro: ubuntu-24.04-arm
+        - version: 15
+          distro: ubuntu-24.04-arm
+          plain: true
+        - version: 15  # plain armhf
+          distro: ubuntu-24.04-arm
+          gcc: arm-linux-gnueabihf
+          plain: true
+        - version: 15  # armv7
+          distro: ubuntu-24.04-arm
+          gcc: arm-linux-gnueabihf
+          arch_flags: -march=armv7-a+simd+neon-fp16
+          plain: true
+        - version: 15  # armv8 32-bit
+          distro: ubuntu-24.04-arm
+          gcc: arm-linux-gnueabihf
+          arch_flags: -mcpu=cortex-a32 -mfpu=crypto-neon-fp-armv8
+          plain: true
     runs-on: ${{ matrix.distro }}
     env:
-      CFLAGS: ${{ matrix.arch_flags }} -march=native -Wall -Wextra -Werror
-      CXXFLAGS: ${{ matrix.arch_flags }} -march=native -Wall -Wextra -Werror
+      CFLAGS: ${{ matrix.arch_flags }} ${{ case(
+        matrix.plain == true, '-Wall -Wextra -Werror',
+        '-march=native -Wall -Wextra -Werror') }}
+      CXXFLAGS: ${{ matrix.arch_flags }} ${{ case(
+        matrix.plain == true, '-Wall -Wextra -Werror',
+        '-march=native -Wall -Wextra -Werror') }}
+      CCBIN: ${{
+        case(
+          matrix.gcc == '', format('gcc-{0}', matrix.version),
+          format('{0}-gcc-{1}', matrix.gcc, matrix.version)
+        ) }}
+      CXXBIN: ${{
+        case(
+          matrix.gcc == '', format('g++-{0}', matrix.version),
+          format('{0}-g++-{1}', matrix.gcc, matrix.version)
+        ) }}
     steps:
     - uses: actions/checkout@v6
       with:
@@ -388,6 +422,9 @@ jobs:
       name: CPU Information
       run: |
         cat /proc/cpuinfo
+    - name: enable armhf
+      if: ${{ contains(matrix.gcc,'arm-linux-gnueabihf') }}
+      run: sudo dpkg --add-architecture armhf && sudo apt-get update && sudo apt-get install -y libstdc++6:armhf
     - name: Install APT Dependencies
       run: |
         sudo add-apt-repository ppa:stephanosio/ccache
@@ -395,10 +432,11 @@ jobs:
         sudo add-apt-repository ppa:ubuntu-toolchain-r/test
         sudo add-apt-repository ppa:ubuntu-toolchain-r/ppa
         sudo add-apt-repository ppa:cppiber/build-depends
-        sudo apt-get -y install --no-install-recommends gcovr pipx ninja-build \
-          gcc-${{ matrix.version }} g++-${{ matrix.version }} ccache
+        sudo apt-get -y install --no-install-recommends pipx ninja-build \
+          ccache gcc-${{ case(matrix.gcc == '', matrix.version, format('{0}-{1}', matrix.version, matrix.gcc)) }} \
+          g++-${{ case(matrix.gcc == '', matrix.version, format('{0}-{1}', matrix.version, matrix.gcc)) }}
         sudo apt-get -y purge g++ gcc
-        pipx install meson==0.55.1
+        pipx install meson==0.64
     - if: ${{ matrix.version == '15' }}
       run: sudo apt-get satisfy -y 'binutils (>= 2.45)'
     - name: ccache
@@ -409,57 +447,27 @@ jobs:
     - name: add ccache to the build path
       run: |
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
-        sudo ln -s /usr/bin/gcc-${{ matrix.version }} /usr/bin/gcc
-        sudo ln -s /usr/bin/g++-${{ matrix.version }} /usr/bin/g++
-        sudo ln -s /usr/bin/gcov-${{ matrix.version }} /usr/bin/gcov
+        sudo ln -s /usr/bin/${CCBIN} /usr/bin/gcc
+        sudo ln -s /usr/bin/${CXXBIN} /usr/bin/g++
     - name: Configure
-      run: meson setup build
+      run: meson setup build || (cat build/meson-logs/meson-log.txt ; false)
     - name: Build
       run: meson compile -C build --verbose
     - name: Test
       run: |
         # shellcheck disable=SC2046
-        meson test -C build --print-errorlogs $(meson test -C build --list | grep -v emul)
+        meson test -C build --print-errorlogs
 
   gcc-qemu:
     strategy:
       fail-fast: false
       matrix:
         include:
-        - version: 11
-          cross: aarch64
-          arch_gnu: aarch64
-          arch_deb: arm64
-          distro: ubuntu-22.04
         - version: 14
           cross: armel
           arch_gnu_abi: eabi
           arch_deb: armel
           arch_gnu: arm
-          distro: ubuntu-24.04
-        - version: 15
-          cross: armv7
-          arch_gnu: arm
-          arch_gnu_abi: eabihf
-          arch_deb: armhf
-          distro: ubuntu-24.04
-        - version: 15
-          extra: -no-extras
-          cross: aarch64
-          arch_gnu: aarch64
-          arch_deb: arm64
-          distro: ubuntu-24.04
-        - version: 15
-          cross: aarch64
-          arch_gnu: aarch64
-          arch_deb: arm64
-          distro: ubuntu-24.04
-        - extra: -32bit
-          version: 15
-          cross: armv8
-          arch_gnu: arm
-          arch_gnu_abi: eabihf
-          arch_deb: armhf
           distro: ubuntu-24.04
         - version: 15
           cross: riscv64
@@ -527,7 +535,7 @@ jobs:
     - name: Test
       run: |
         # shellcheck disable=SC2046
-        meson test -C build --print-errorlogs --print-errorlogs $(meson test -C build --list | grep -v emul)
+        meson test -C build --print-errorlogs
 
   clang17-qemu-rvv:
     strategy:
@@ -583,7 +591,7 @@ jobs:
     - name: Test
       run: |
         # shellcheck disable=SC2046
-        meson test -C build --print-errorlogs --print-errorlogs $(meson test -C build --list | grep -v emul)
+        meson test -C build --print-errorlogs $(meson test -C build --list | grep -v emul)
 
   clang18-qemu-rvv:
     strategy:
@@ -637,7 +645,7 @@ jobs:
     - name: Test
       run: |
         # shellcheck disable=SC2046
-        meson test -C build --print-errorlogs --print-errorlogs $(meson test -C build --list | grep -v emul)
+        meson test -C build --print-errorlogs $(meson test -C build --list | grep -v emul)
 
   clang-qemu:
     strategy:
@@ -650,23 +658,6 @@ jobs:
         #   arch_gnu: mips64el
         #   arch_gnu_abi: abi64
         #   distro: ubuntu-24.04
-        - version: 22
-          cross: armv7
-          arch_deb: armhf
-          arch_gnu_abi: eabihf
-          arch_gnu: arm
-          distro: ubuntu-24.04
-        - version: 22
-          cross: aarch64
-          arch_gnu: aarch64
-          arch_deb: arm64
-          distro: ubuntu-24.04
-        - version: 22
-          extra: -no-extras
-          cross: aarch64
-          arch_gnu: aarch64
-          arch_deb: arm64
-          distro: ubuntu-24.04
         - version: 22
           cross: armel
           arch_gnu_abi: eabi
@@ -714,21 +705,21 @@ jobs:
     - name: ccache
       uses: hendrikmuhs/ccache-action@v1.2
       with:
-        key: ${{ github.job }}-${{ matrix.version }}${{ matrix.extra }}-${{ matrix.cross }}
+        key: ${{ github.job }}-${{ matrix.version }}-${{ matrix.cross }}
         verbose: 2
     - name: add ccache to the build path
       run: |
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
     - name: Configure
       run: |
-        meson setup --cross-file=docker/cross-files/${{ matrix.cross }}-clang-${{ matrix.version }}${{ matrix.extra }}-ccache.cross build \
+        meson setup --cross-file=docker/cross-files/${{ matrix.cross }}-clang-${{ matrix.version }}-ccache.cross build \
           || (cat build/meson-logs/meson-log.txt ; false)
     - name: Build
       run: ninja -C build -v
     - name: Test
       run: |
         # shellcheck disable=SC2046
-        meson test -C build --print-errorlogs --print-errorlogs $(meson test -C build --list | grep -v emul)
+        meson test -C build --print-errorlogs
 
   clang:
     strategy:
@@ -886,14 +877,27 @@ jobs:
           arch_flags: -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-c++-keyword
         - version: "22"
           distro: ubuntu-24.04-arm
+          plain: true
+          arch_flags: -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-c++-keyword
+        - version: "22"
+          distro: ubuntu-24.04-arm
           arch_flags: -ffast-math -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-c++-keyword -Wno-nan-infinity-disabled
         - version: "22"
           distro: ubuntu-24.04-arm
           arch_flags: -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-c++-keyword -O2
+        - version: "22"  # armv7
+          distro: ubuntu-24.04-arm
+          arch_flags: --target=arm-linux-gnueabihf -march=armv7-a -mfpu=neon -isystem=/usr/arm-linux-gnueabihf/include -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-c++-keyword
+          pkg: libstdc++-16-dev-armhf-cross
+          plain: true
     runs-on: ${{ matrix.distro }}
     env:
-      CFLAGS: -march=native ${{ matrix.arch_flags }} -Wall -Weverything -Werror -fno-lax-vector-conversions
-      CXXFLAGS: -march=native ${{ matrix.arch_flags }} -Wall -Weverything -Werror -fno-lax-vector-conversions
+      CFLAGS: ${{ matrix.arch_flags }} ${{ case(
+        matrix.plain == true, '-Wall -Weverything -Werror',
+        '-march=native -Wall -Weverything -Werror') }} -fno-lax-vector-conversions
+      CXXFLAGS: ${{ matrix.arch_flags }} ${{ case(
+        matrix.plain == true, '-Wall -Weverything -Werror',
+        '-march=native -Wall -Weverything -Werror') }} -fno-lax-vector-conversions
     steps:
     - uses: actions/checkout@v6
       with:
@@ -902,6 +906,9 @@ jobs:
       name: CPU Information
       run: |
         cat /proc/cpuinfo
+    - name: enable armhf
+      if: ${{ matrix.pkg == 'libstdc++-16-dev-armhf-cross' }}
+      run: sudo dpkg --add-architecture armhf && sudo apt-get update && sudo apt-get install -y libstdc++6:armhf
     - name: Install PPAs for Ubuntu 22.04
       if: ${{ matrix.distro == 'ubuntu-22.04' }}
       run: |
@@ -917,11 +924,12 @@ jobs:
         sudo ./llvm.sh ${{ matrix.version }}
     - name: Install APT Dependencies
       run: |
+        sudo add-apt-repository ppa:misterc/gcc-snapshot-latest-lts
         sudo add-apt-repository ppa:stephanosio/ccache
         sudo add-apt-repository ppa:canonical-x/x-staging
         sudo add-apt-repository ppa:ubuntu-toolchain-r/ppa
-        sudo apt-get -y --no-install-recommends install gcovr ninja-build pipx \
-          clang-${{ matrix.version }} ccache
+        sudo apt-get -y --no-install-recommends install ninja-build pipx \
+          clang-${{ matrix.version }} ccache ${{ matrix.pkg }}
         pipx install meson==0.55.1
         sudo rm /usr/bin/gcc /usr/bin/g++ /usr/bin/cc /usr/bin/c++
         sudo ln -s "$(command -v clang-${{ matrix.version }})" /usr/bin/cc
@@ -929,7 +937,7 @@ jobs:
     - name: ccache
       uses: hendrikmuhs/ccache-action@v1.2
       with:
-        key: ${{ github.job }}-${{ matrix.version }}-${{ matrix.distro }}-${{ matrix.arch_flags }}
+        key: ${{ github.job }}-${{ matrix.version }}-${{ matrix.distro }}-${{ matrix.arch_flags }}${{ matrix.plain }}
         verbose: 2
     - name: add ccache to the build path
       run: |
@@ -941,7 +949,7 @@ jobs:
     - name: Test
       run: |
         # shellcheck disable=SC2046
-        meson test -C build --print-errorlogs $(meson test -C build --list | grep -v emul)
+        meson test -C build --print-errorlogs
 
   macos:
     strategy:
