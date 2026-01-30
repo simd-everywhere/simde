@@ -7107,7 +7107,20 @@ test_simde_mm256_cvtpd_epi32(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256d a;
     simde__m128i r;
-  } test_vec[8] = {
+  } test_vec[] = {
+    #if !defined(SIMDE_FAST_NANS)
+    { simde_mm256_set_pd(SIMDE_MATH_NAN, -SIMDE_MATH_NAN, 0.0, 0.0),
+      simde_mm_set_epi32(     INT32_MIN,       INT32_MIN,   0,   0) },
+    #endif
+    #if !defined(SIMDE_FAST_CONVERSION_RANGE)
+    { simde_mm256_set_pd(
+        HEDLEY_STATIC_CAST(simde_float64, HEDLEY_STATIC_CAST(int64_t, INT32_MAX) + 1), 
+        HEDLEY_STATIC_CAST(simde_float64, HEDLEY_STATIC_CAST(int64_t, INT32_MAX) - 100),
+        HEDLEY_STATIC_CAST(simde_float64, HEDLEY_STATIC_CAST(int64_t, INT32_MIN) - 1), 
+        HEDLEY_STATIC_CAST(simde_float64, HEDLEY_STATIC_CAST(int64_t, INT32_MIN) + 100)),
+      simde_mm_set_epi32(
+        INT32_MIN, INT32_C(2147483547), INT32_MIN, -INT32_C(2147483548)) },
+    #endif
     { simde_mm256_set_pd(SIMDE_FLOAT64_C(  823.92), SIMDE_FLOAT64_C( -252.31),
                          SIMDE_FLOAT64_C(  311.42), SIMDE_FLOAT64_C(  639.08)),
       simde_mm_set_epi32(INT32_C( 824), INT32_C(-252), INT32_C( 311), INT32_C( 639)) },
@@ -7187,7 +7200,22 @@ test_simde_mm256_cvtps_epi32(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256 a;
     simde__m256i r;
-  } test_vec[8] = {
+  } test_vec[] = {
+    #if !defined(SIMDE_FAST_NANS)
+    { simde_mm256_set_ps(SIMDE_MATH_NAN, -SIMDE_MATH_NAN, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f),
+      simde_mm256_set_epi32(  INT32_MIN,       INT32_MIN,   0,   0,   0,   0,   0,   0) },
+    #endif
+    #if !defined(SIMDE_FAST_CONVERSION_RANGE)
+    { simde_mm256_set_ps(
+        HEDLEY_STATIC_CAST(simde_float32, HEDLEY_STATIC_CAST(int64_t, INT32_MAX) + 1), 
+        HEDLEY_STATIC_CAST(simde_float32, HEDLEY_STATIC_CAST(int64_t, INT32_MAX) - 100),
+        HEDLEY_STATIC_CAST(simde_float32, HEDLEY_STATIC_CAST(int64_t, INT32_MIN) - 1), 
+        HEDLEY_STATIC_CAST(simde_float32, HEDLEY_STATIC_CAST(int64_t, INT32_MIN) + 100),
+        0.f, 0.f, 0.f, 0.f),
+      simde_mm256_set_epi32(
+        INT32_MIN,  INT32_C(2147483520), INT32_MIN, -INT32_C(2147483520),
+        0, 0, 0, 0) },
+    #endif
     { simde_mm256_set_ps(SIMDE_FLOAT32_C(  598.58), SIMDE_FLOAT32_C(  571.41),
                          SIMDE_FLOAT32_C( -242.37), SIMDE_FLOAT32_C( -717.41),
                          SIMDE_FLOAT32_C(  374.26), SIMDE_FLOAT32_C( -165.53),
@@ -16491,7 +16519,7 @@ test_simde_mm256_testnzc_si256(SIMDE_MUNIT_TEST_ARGS) {
     simde__m256i a;
     simde__m256i b;
     int r;
-  } test_vec[8] = {
+  } test_vec[9] = {
     { simde_mm256_set_epi64x(INT64_C(-6804708873655136040), INT64_C( 4446918229480945172),
                              INT64_C(-6458803806102185271), INT64_C( 6419639704555297719)),
       simde_mm256_set_epi64x(INT64_C( 4086527184939990173), INT64_C(-4592254743728630867),
@@ -16531,7 +16559,12 @@ test_simde_mm256_testnzc_si256(SIMDE_MUNIT_TEST_ARGS) {
                              INT64_C(                  -1), INT64_C(                  -1)),
       simde_mm256_set_epi64x(INT64_C(                   0), INT64_C(                   0),
                              INT64_C(                   0), INT64_C(                   0)),
-      0 }
+      0 },
+    { simde_mm256_set_epi64x(INT64_C(                   1), INT64_C(                   1),
+                             INT64_C(                   1), INT64_C(                   1)),
+      simde_mm256_set_epi64x(INT64_C(                  -1), INT64_C(                  -1),
+                             INT64_C(                  -1), INT64_C(                  -1)),
+      1 }
   };
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
