@@ -35,7 +35,7 @@ test_simde_mm_cvtps_ph (SIMDE_MUNIT_TEST_ARGS) {
     const int16_t r2[8];
     const int16_t r3[8];
   } test_vec[] = {
-    { { SIMDE_MATH_NANF, -SIMDE_MATH_NANF, SIMDE_MATH_INFINITY, -SIMDE_MATH_INFINITY },
+    { { SIMDE_MATH_NANF, -SIMDE_MATH_NANF, SIMDE_MATH_INFINITYF, -SIMDE_MATH_INFINITYF },
       {  INT16_C( 32256), -INT16_C(  512), INT16_C(  31744), -INT16_C(  1024),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0) },
       {  INT16_C( 32256), -INT16_C(  512), INT16_C(  31744), -INT16_C(  1024),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0) },
       {  INT16_C( 32256), -INT16_C(  512), INT16_C(  31744), -INT16_C(  1024),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0),  INT16_C(     0) },
@@ -242,7 +242,7 @@ test_simde_mm256_cvtps_ph (SIMDE_MUNIT_TEST_ARGS) {
     const int16_t r2[8];
     const int16_t r3[8];
   } test_vec[] = {
-    { { SIMDE_MATH_NANF, -SIMDE_MATH_NANF, SIMDE_MATH_INFINITY, -SIMDE_MATH_INFINITY,
+    { { SIMDE_MATH_NANF, -SIMDE_MATH_NANF, SIMDE_MATH_INFINITYF, -SIMDE_MATH_INFINITYF,
         SIMDE_MATH_FLT_MIN, -SIMDE_MATH_FLT_MIN, SIMDE_MATH_FLT_MAX, -SIMDE_MATH_FLT_MAX },
       {  INT16_C( 32256), -INT16_C(  512), INT16_C(  31744), -INT16_C(  1024), INT16_C(     0), -INT16_C(  32768), INT16_C(  31744), -INT16_C(  1024) },
       {  INT16_C( 32256), -INT16_C(  512), INT16_C(  31744), -INT16_C(  1024), INT16_C(     0), -INT16_C(  32767), INT16_C(  31743), -INT16_C(  1024) },
