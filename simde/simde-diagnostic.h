@@ -410,9 +410,9 @@
 
 /* This is a false positive from GCC in a few places. */
 #if HEDLEY_GCC_VERSION_CHECK(4,7,0)
-  #define SIMDE_DIAGNOSTIC_DISABLE_MAYBE_UNINITIAZILED_ _Pragma("GCC diagnostic ignored \"-Wmaybe-uninitialized\"")
+  #define SIMDE_DIAGNOSTIC_DISABLE_MAYBE_UNINITIALIZED_ _Pragma("GCC diagnostic ignored \"-Wmaybe-uninitialized\"")
 #else
-  #define SIMDE_DIAGNOSTIC_DISABLE_MAYBE_UNINITIAZILED_
+  #define SIMDE_DIAGNOSTIC_DISABLE_MAYBE_UNINITIALIZED_
 #endif
 
 #if defined(SIMDE_ENABLE_NATIVE_ALIASES)
