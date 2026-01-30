@@ -687,6 +687,19 @@ jobs:
           distro: ubuntu-24.04
         - version: 21
           cross: loongarch64
+          extra: -fastmath
+          arch_deb: loong64
+          arch_gnu: loongarch64
+          distro: ubuntu-24.04
+        - version: 21
+          cross: loongarch64
+          extra: -fastmath
+          arch_deb: loong64
+          arch_gnu: loongarch64
+          distro: ubuntu-24.04
+        - version: 22
+          cross: loongarch64
+          extra: -fastmath
           arch_deb: loong64
           arch_gnu: loongarch64
           distro: ubuntu-24.04
