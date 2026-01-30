@@ -3615,7 +3615,7 @@ simde__m128i
 simde_mm256_cvtpd_epi32 (simde__m256d a) {
   #if defined(SIMDE_X86_AVX_NATIVE)
     return _mm256_cvtpd_epi32(a);
-  #elif defined(SIMDE_LOONGARCH_LASX_NATIVE)
+  #elif defined(SIMDE_LOONGARCH_LASX_NATIVE) && defined(SIMDE_FAST_CONVERSION_RANGE)
     simde__m256d_private a_;
     a_.i256 = __lasx_xvftintrne_w_d(a, a);
     a_.i256 = __lasx_xvpermi_d(a_.i256, 0xd8);
@@ -3682,7 +3682,7 @@ simde__m256i
 simde_mm256_cvtps_epi32 (simde__m256 a) {
   #if defined(SIMDE_X86_AVX_NATIVE)
     return _mm256_cvtps_epi32(a);
-  #elif defined(SIMDE_LOONGARCH_LASX_NATIVE)
+  #elif defined(SIMDE_LOONGARCH_LASX_NATIVE) && defined(SIMDE_FAST_CONVERSION_RANGE)
     return __lasx_xvftintrne_w_s(a);
   #else
     simde__m256i_private r_;
