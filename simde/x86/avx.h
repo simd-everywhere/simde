@@ -2197,7 +2197,7 @@ simde_mm256_castps128_ps256 (simde__m128 a) {
     simde__m256_private r_;
     simde__m128_private a_ = simde__m128_to_private(a);
     HEDLEY_DIAGNOSTIC_PUSH
-    SIMDE_DIAGNOSTIC_DISABLE_MAYBE_UNINITIAZILED_
+    SIMDE_DIAGNOSTIC_DISABLE_MAYBE_UNINITIALIZED_
     r_.m128_private[0] = a_;
 
     return simde__m256_from_private(r_);
@@ -4797,7 +4797,7 @@ simde_mm256_min_ps (simde__m256 a, simde__m256 b) {
     return __lasx_xvfmin_s(a, b);
   #else
     HEDLEY_DIAGNOSTIC_PUSH
-    SIMDE_DIAGNOSTIC_DISABLE_MAYBE_UNINITIAZILED_
+    SIMDE_DIAGNOSTIC_DISABLE_MAYBE_UNINITIALIZED_
     simde__m256_private
       r_,
       a_ = simde__m256_to_private(a),
@@ -5249,7 +5249,7 @@ simde__m128
 simde_mm_permute_ps (simde__m128 a, const int imm8)
   SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 255) {
   HEDLEY_DIAGNOSTIC_PUSH
-  SIMDE_DIAGNOSTIC_DISABLE_MAYBE_UNINITIAZILED_
+  SIMDE_DIAGNOSTIC_DISABLE_MAYBE_UNINITIALIZED_
   simde__m128_private
     r_,
     a_ = simde__m128_to_private(a);
