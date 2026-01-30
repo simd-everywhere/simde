@@ -239,10 +239,10 @@ simde_x_float16_from_float32 (simde_float32 value, int round) {
             f16u = (round == SIMDE_F16_ROUND_TO_NEG_INF && sign) ||
                    (round == SIMDE_F16_ROUND_TO_POS_INF && !sign) ? 1 : 0;
           } else { /* exp is in 103..112 */
-            int shift = 14 - ((f32u >> 23) - 112); /* how many bits to drop */
+            int32_t shift = 14 + (112 - (f32u >> 23)); /* how many bits to drop */
             uint32_t mant = (f32u & 0x7fffff) | 0x800000; /* implicit one */
             uint32_t dropped = mant & ((UINT32_C(1) << shift) - 1);
-            f16u = mant >> shift;
+            f16u = HEDLEY_STATIC_CAST(uint16_t, mant >> shift);
             f16u += (round == SIMDE_F16_ROUND_TO_NEG_INF && dropped && sign) ||
                     (round == SIMDE_F16_ROUND_TO_POS_INF && dropped && !sign) ? 1 : 0;
           }
