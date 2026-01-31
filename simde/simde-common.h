@@ -1159,6 +1159,9 @@ HEDLEY_DIAGNOSTIC_POP
 #      if HEDLEY_HAS_WARNING("-Wvector-conversion") && SIMDE_DETECT_CLANG_VERSION_NOT(11,0,0)
 #        define SIMDE_BUG_CLANG_44589
 #      endif
+#      if SIMDE_DETECT_CLANG_VERSION_CHECK(21,1,1)
+#        define SIMDE_BUG_CLANG_179057
+#      endif
 #      define SIMDE_BUG_CLANG_48673  // https://github.com/llvm/llvm-project/issues/48017
 #    endif
 #    define SIMDE_BUG_CLANG_45959  // https://github.com/llvm/llvm-project/issues/45304
