@@ -401,7 +401,7 @@ SIMDE_BEGIN_DECLS_
   #define _mm_fixupimm_round_ss(a, b, c, imm8, sae) simde_mm_fixupimm_round_ss(a, b, c, imm8, sae)
 #endif
 
-#if defined(SIMDE_X86_AVX512F_NATIVE)
+#if defined(SIMDE_X86_AVX512F_NATIVE) && !defined(SIMDE_BUG_CLANG_179057)
   #define simde_mm_mask_fixupimm_round_ss(a, k, b, c, imm8, sae) _mm_mask_fixupimm_round_ss(a, k, b, c, imm8, sae)
 #elif defined(SIMDE_FAST_EXCEPTIONS)
   #define simde_mm_mask_fixupimm_round_ss(a, k, b, c, imm8, sae) simde_mm_mask_fixupimm_ss(a, k, b, c, imm8)
@@ -457,7 +457,7 @@ SIMDE_BEGIN_DECLS_
   #define _mm_mask_fixupimm_round_ss(a, k, b, c, imm8, sae) simde_mm_mask_fixupimm_round_ss(a, k, b, c, imm8, sae)
 #endif
 
-#if defined(SIMDE_X86_AVX512F_NATIVE)
+#if defined(SIMDE_X86_AVX512F_NATIVE) && !defined(SIMDE_BUG_CLANG_179057)
   #define simde_mm_maskz_fixupimm_round_ss(k, a, b, c, imm8, sae) _mm_maskz_fixupimm_round_ss(k, a, b, c, imm8, sae)
 #elif defined(SIMDE_FAST_EXCEPTIONS)
   #define simde_mm_maskz_fixupimm_round_ss(k, a, b, c, imm8, sae) simde_mm_maskz_fixupimm_ss(k, a, b, c, imm8)
@@ -569,7 +569,7 @@ SIMDE_BEGIN_DECLS_
   #define _mm_fixupimm_round_sd(a, b, c, imm8, sae) simde_mm_fixupimm_round_sd(a, b, c, imm8, sae)
 #endif
 
-#if defined(SIMDE_X86_AVX512F_NATIVE)
+#if defined(SIMDE_X86_AVX512F_NATIVE) && !defined(SIMDE_BUG_CLANG_179057)
   #define simde_mm_mask_fixupimm_round_sd(a, k, b, c, imm8, sae) _mm_mask_fixupimm_round_sd(a, k, b, c, imm8, sae)
 #elif defined(SIMDE_FAST_EXCEPTIONS)
   #define simde_mm_mask_fixupimm_round_sd(a, k, b, c, imm8, sae) simde_mm_mask_fixupimm_sd(a, k, b, c, imm8)
@@ -625,7 +625,7 @@ SIMDE_BEGIN_DECLS_
   #define _mm_mask_fixupimm_round_sd(a, k, b, c, imm8, sae) simde_mm_mask_fixupimm_round_sd(a, k, b, c, imm8, sae)
 #endif
 
-#if defined(SIMDE_X86_AVX512F_NATIVE)
+#if defined(SIMDE_X86_AVX512F_NATIVE) && !defined(SIMDE_BUG_CLANG_179057)
   #define simde_mm_maskz_fixupimm_round_sd(k, a, b, c, imm8, sae) _mm_maskz_fixupimm_round_sd(k, a, b, c, imm8, sae)
 #elif defined(SIMDE_FAST_EXCEPTIONS)
   #define simde_mm_maskz_fixupimm_round_sd(k, a, b, c, imm8, sae) simde_mm_maskz_fixupimm_sd(k, a, b, c, imm8)

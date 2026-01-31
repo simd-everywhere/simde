@@ -430,7 +430,7 @@ simde_mm_fixupimm_ss (simde__m128 a, simde__m128 b, simde__m128i c, int imm8)
   #define _mm_fixupimm_ss(a, b, c, imm8) simde_mm_fixupimm_ss(a, b, c, imm8)
 #endif
 
-#if defined(SIMDE_X86_AVX512F_NATIVE)
+#if defined(SIMDE_X86_AVX512F_NATIVE) && !defined(SIMDE_BUG_CLANG_179057)
   #define simde_mm_mask_fixupimm_ss(a, k, b, c, imm8) _mm_mask_fixupimm_ss(a, k, b, c, imm8)
 #else
   #define simde_mm_mask_fixupimm_ss(a, k, b, c, imm8) simde_mm_mask_mov_ps(a, ((k) | 14), simde_mm_fixupimm_ss(a, b, c, imm8))
@@ -440,7 +440,7 @@ simde_mm_fixupimm_ss (simde__m128 a, simde__m128 b, simde__m128i c, int imm8)
   #define _mm_mask_fixupimm_ss(a, k, b, c, imm8) simde_mm_mask_fixupimm_ss(a, k, b, c, imm8)
 #endif
 
-#if defined(SIMDE_X86_AVX512F_NATIVE)
+#if defined(SIMDE_X86_AVX512F_NATIVE) && !defined(SIMDE_BUG_CLANG_179057)
   #define simde_mm_maskz_fixupimm_ss(k, a, b, c, imm8) _mm_maskz_fixupimm_ss(k, a, b, c, imm8)
 #else
   #define simde_mm_maskz_fixupimm_ss(k, a, b, c, imm8) simde_mm_maskz_mov_ps(((k) | 14), simde_mm_fixupimm_ss(a, b, c, imm8))
@@ -874,7 +874,7 @@ simde_mm_fixupimm_sd (simde__m128d a, simde__m128d b, simde__m128i c, int imm8)
   #define _mm_fixupimm_sd(a, b, c, imm8) simde_mm_fixupimm_sd(a, b, c, imm8)
 #endif
 
-#if defined(SIMDE_X86_AVX512F_NATIVE)
+#if defined(SIMDE_X86_AVX512F_NATIVE) && !defined(SIMDE_BUG_CLANG_179057)
   #define simde_mm_mask_fixupimm_sd(a, k, b, c, imm8) _mm_mask_fixupimm_sd(a, k, b, c, imm8)
 #else
   #define simde_mm_mask_fixupimm_sd(a, k, b, c, imm8) simde_mm_mask_mov_pd(a, ((k) | 2), simde_mm_fixupimm_sd(a, b, c, imm8))
@@ -884,7 +884,7 @@ simde_mm_fixupimm_sd (simde__m128d a, simde__m128d b, simde__m128i c, int imm8)
   #define _mm_mask_fixupimm_sd(a, k, b, c, imm8) simde_mm_mask_fixupimm_sd(a, k, b, c, imm8)
 #endif
 
-#if defined(SIMDE_X86_AVX512F_NATIVE)
+#if defined(SIMDE_X86_AVX512F_NATIVE) && !defined(SIMDE_BUG_CLANG_179057)
   #define simde_mm_maskz_fixupimm_sd(k, a, b, c, imm8) _mm_maskz_fixupimm_sd(k, a, b, c, imm8)
 #else
   #define simde_mm_maskz_fixupimm_sd(k, a, b, c, imm8) simde_mm_maskz_mov_pd(((k) | 2), simde_mm_fixupimm_sd(a, b, c, imm8))
