@@ -42,11 +42,11 @@ SIMDE_BEGIN_DECLS_
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128i
-simde_mm_cvtps_ph(simde__m128 a, const int rounding) {
+simde_mm_cvtps_ph(simde__m128 a, const int imm8) {
   simde__m128_private a_ = simde__m128_to_private(a);
   simde__m128i_private r_ = simde__m128i_to_private(simde_mm_setzero_si128());
 
-  switch (rounding & ~SIMDE_MM_FROUND_NO_EXC) {
+  switch (imm8 & ~SIMDE_MM_FROUND_NO_EXC) {
     case SIMDE_MM_FROUND_CUR_DIRECTION: /* assumes current mode is half-to-even */
     case SIMDE_MM_FROUND_TO_NEAREST_INT:
       #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_ARCH_ARM_NEON_FP16)
@@ -152,11 +152,11 @@ simde_mm_cvtph_ps(simde__m128i a) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128i
-simde_mm256_cvtps_ph(simde__m256 a, const int rounding) {
+simde_mm256_cvtps_ph(simde__m256 a, const int imm8) {
   simde__m256_private a_ = simde__m256_to_private(a);
   simde__m128i_private r_;
 
-  switch (rounding & ~SIMDE_MM_FROUND_NO_EXC) {
+  switch (imm8 & ~SIMDE_MM_FROUND_NO_EXC) {
     case SIMDE_MM_FROUND_CUR_DIRECTION: /* assumes current mode is half-to-even */
     case SIMDE_MM_FROUND_TO_NEAREST_INT:
       #if defined(SIMDE_LOONGARCH_LASX_NATIVE)
