@@ -286,6 +286,7 @@ The following architectures are tested in CI for every commit:
  * MIPS Loongson 64
  * RISC-V 64
  * emscripten 32- & 64-bit; regular and relaxed
+ * LoongArch64
 
 We would love to add more, so patches are extremely welcome!
 
