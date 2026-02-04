@@ -360,7 +360,6 @@ test_simde_mm256_cvtps_ph (SIMDE_MUNIT_TEST_ARGS) {
     simde_test_x86_write_i16x8(2, r2, SIMDE_TEST_VEC_POS_MIDDLE);
     simde_test_x86_write_i16x8(2, r3, SIMDE_TEST_VEC_POS_LAST);
   }
-  return 1;
   for (int i = 0 ; i < 4 ; i++) {
     simde__m256 a = simde_test_x86_random_f32x8(-1000.0f, 1000.0f);
     simde__m128i r0 = simde_mm256_cvtps_ph(a, SIMDE_MM_FROUND_TO_NEAREST_INT);

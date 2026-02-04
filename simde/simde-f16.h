@@ -224,7 +224,7 @@ simde_x_float16_from_float32 (simde_float32 value, int round) {
               UINT32_C(0x7c00);
     } else { /* (De)normalized number or zero */
       if (f32u < (UINT32_C(113) << 23)) { /* resulting FP16 is subnormal or zero */
-        if(round == SIMDE_F16_ROUND_TO_NEAREST) {
+        if (round == SIMDE_F16_ROUND_TO_NEAREST) {
           /* use a magic value to align our 10 mantissa bits at the bottom of
            * the float. as long as FP addition is round-to-nearest-even this
            * just works. */
@@ -235,7 +235,7 @@ simde_x_float16_from_float32 (simde_float32 value, int round) {
         } else {
           if (f32u == 0) {
             f16u = 0;
-          } else if(f32u < (UINT32_C(103) << 23)) { /* resulting FP16 is min or zero */
+          } else if (f32u < (UINT32_C(103) << 23)) { /* resulting FP16 is min or zero */
             f16u = (round == SIMDE_F16_ROUND_TO_NEG_INF && sign) ||
                    (round == SIMDE_F16_ROUND_TO_POS_INF && !sign) ? 1 : 0;
           } else { /* exp is in 103..112 */
@@ -255,7 +255,7 @@ simde_x_float16_from_float32 (simde_float32 value, int round) {
         f32u += (HEDLEY_STATIC_CAST(uint32_t, 15 - 127) << 23);
 
         /* rounding bias part 2 */
-        switch(round) {
+        switch (round) {
         case SIMDE_F16_ROUND_TO_NEAREST:
           f32u += UINT32_C(0xfff) + mant_odd;
           break;
