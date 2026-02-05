@@ -62,9 +62,11 @@
 #if defined(__clang__) && !defined(SIMDE_DETECT_CLANG_VERSION)
 #  if __has_warning("-Wlifetime-safety")
 #    define SIMDE_DETECT_CLANG_VERSION 230000
+#  elif __has_warning("-Wunsafe-buffer-usage-in-format-attr-call")
+#    define SIMDE_DETECT_CLANG_VERSION 220100
 #  elif __has_builtin(__builtin_elementwise_fshl)
 #    define SIMDE_DETECT_CLANG_VERSION 220000
-#  elif __has_builtin(__builtin_structured_binding_size)
+#  elif __has_warning("-Wdefault-const-init-var") || __has_builtin(__builtin_structured_binding_size)
 #    if __clang_major__ == 21 && __clang_minor__ >= 1 && __clang_patchlevel__ >= 1
 #      define SIMDE_DETECT_CLANG_VERSION 210101  // for SIMDE_BUG_CLANG_179057
 #    else
