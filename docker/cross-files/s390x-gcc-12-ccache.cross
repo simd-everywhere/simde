@@ -7,7 +7,7 @@ objcopy = 's390x-linux-gnu-objcopy'
 ld = 's390x-linux-gnu-ld'
 exe_wrapper = ['qemu-s390x-static', '-L', '/usr/s390x-linux-gnu/']
 
-[properties]
+[built-in options]
 c_args   = ['-march=z13', '-mzvector', '-Wextra', '-Werror']
 cpp_args = ['-march=z13', '-mzvector', '-Wextra', '-Werror']
 

@@ -6,7 +6,7 @@ strip = 'strip'
 objcopy = 'objcopy'
 ld = 'ld'
 
-[properties]
+[built-in options]
 c_args = ['-Wextra', '-Werror', '-march=native']
 cpp_args = ['-Wextra', '-Werror', '-march=native']
 sleef = true

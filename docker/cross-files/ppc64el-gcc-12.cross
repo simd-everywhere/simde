@@ -7,7 +7,7 @@ objcopy = 'powerpc64le-linux-gnu-objcopy'
 ld = 'powerpc64le-linux-gnu-ld'
 exe_wrapper = ['qemu-ppc64le-static', '-L', '/usr/powerpc64le-linux-gnu/']
 
-[properties]
+[built-in options]
 c_args = ['-Wextra', '-Werror', ]
 cpp_args = ['-Wextra', '-Werror', ]
 

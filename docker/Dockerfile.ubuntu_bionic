@@ -29,9 +29,7 @@ RUN \
     npm \
     python3-pip wget curl python3-setuptools  python3-wheel
 
-# Meson on stable is too old, and we want to make sure we keep 0.55
-# working for a while.
-RUN pip3 install meson==0.55.1
+RUN pip3 install meson==1.3.2
 
 # GCC cross-compilers
 RUN \

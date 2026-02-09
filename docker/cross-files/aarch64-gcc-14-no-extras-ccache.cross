@@ -7,7 +7,7 @@ objcopy = 'aarch64-linux-gnu-objcopy'
 ld = 'aarch64-linux-gnu-ld'
 exe_wrapper = ['qemu-aarch64-static', '-L', '/usr/aarch64-linux-gnu']
 
-[properties]
+[built-in options]
 c_args = ['-march=armv8-a', '-Wextra', '-Werror']
 cpp_args = ['-march=armv8-a', '-Wextra', '-Werror']
 

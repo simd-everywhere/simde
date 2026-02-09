@@ -6,6 +6,6 @@ strip = 'strip'
 objcopy = 'objcopy'
 ld = 'ld'
 
-[properties]
+[built-in options]
 c_args = ['-Wall', '-Wextra', '-Werror', '-ffast-math']
 cpp_args = ['-Wall', '-Wextra', '-Werror', '-ffast-math']

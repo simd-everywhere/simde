@@ -7,7 +7,7 @@ objcopy = 'arm-linux-gnueabihf-objcopy'
 ld = 'arm-linux-gnueabihf-ld'
 exe_wrapper = 'qemu-arm-static'
 
-[properties]
+[built-in options]
 c_args = ['-march=armv8.1-m.main+mve', '-mfloat-abi=hard', '-Wextra', '-Werror']
 cpp_args = ['-march=armv8.1-m.main+mve', '-mfloat-abi=hard', '-Wextra', '-Werror']
 

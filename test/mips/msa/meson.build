@@ -1,3 +1,5 @@
+fs = import('fs')
+
 simde_test_mips_msa_simd_tests = simde_msa_families
 
 simde_test_mips_msa_simd_sources = []
@@ -6,7 +8,7 @@ foreach name : simde_test_mips_msa_simd_tests
   foreach lang : ['c', 'cpp']
     source_file = name + '.c'
     if lang == 'cpp'
-      source_file = configure_file(input: name + '.c', output: name + '.cpp', copy: true)
+      source_file = fs.copyfile(name + '.c', name + '.cpp')
     endif
     simde_test_mips_msa_simd_sources += source_file
 

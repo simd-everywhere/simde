@@ -37,9 +37,7 @@ RUN \
     npm libsleef-dev \
     pipx wget curl
 
-# Meson on stable is too old, and we want to make sure we keep 0.55
-# working for a while.
-RUN pipx install meson==0.55.1
+RUN pipx install meson==1.3.2
 
 # GCC cross-compilers
 RUN \

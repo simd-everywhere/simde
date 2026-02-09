@@ -1,3 +1,5 @@
+fs = import('fs')
+
 simde_test_arm_neon_sources = []
 # Disable the Intel FPU with 80-bit precision.
 disable_fpu_flags = []
@@ -9,7 +11,7 @@ foreach name : simde_neon_families
     foreach lang : ['c', 'cpp']
       source_file = name + '.c'
       if lang == 'cpp'
-        source_file = configure_file(input: name + '.c', output: name + '.cpp', copy: true)
+        source_file = fs.copyfile(name + '.c', name + '.cpp')
       endif
       simde_test_arm_neon_sources += source_file
 

@@ -7,7 +7,7 @@ objcopy = 'llvm-objcopy-18'
 ld = 'llvm-ld-18'
 exe_wrapper = ['qemu-loongarch64-static', '-L', '/usr/loongarch64-linux-gnu/', '-cpu', 'la464']
 
-[properties]
+[built-in options]
 c_args = ['--target=loongarch64-linux-gnu', '-march=la464', '-isystem=/usr/loongarch64-linux-gnu/include', '-Wextra', '-Werror', '-mlsx', '-mlasx']
 cpp_args = ['--target=loongarch64-linux-gnu', '-march=la464', '-isystem=/usr/loongarch64-linux-gnu/include', '-Wextra', '-Werror', '-mlsx', '-mlasx']
 c_link_args = ['--target=loongarch64-linux-gnu']

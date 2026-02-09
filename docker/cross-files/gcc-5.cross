@@ -6,6 +6,6 @@ strip = 'strip'
 objcopy = 'objcopy'
 ld = 'ld'
 
-[properties]
+[built-in options]
 c_args = ['-Wextra', '-Werror', '-march=haswell']
 cpp_args = ['-Wextra', '-Werror', '-march=haswell']

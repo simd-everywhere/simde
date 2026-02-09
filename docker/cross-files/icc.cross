@@ -6,7 +6,7 @@ strip = 'strip'
 objcopy = 'objcopy'
 ld = 'ld'
 
-[properties]
+[built-in options]
 c_args = ['-Wextra', '-wd13200', '-wd13203', '-wd16219', '-diag-disable=10441', '-Werror', '-march=native']
 c_link_args = ['-diag-disable=10441']
 cpp_args = ['-Wextra', '-wd13200', '-wd13203', '-wd16219', '-diag-disable=10441', '-Werror', '-march=native']
