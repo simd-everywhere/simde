@@ -23,6 +23,7 @@
  * Copyright:
  *   2017      Evan Nemerson <evan@nemerson.com>
  *   2020      Hidayat Khan <huk2209@gmail.com>
+ *   2015-2026 SSE2NEON Contributors (https://github.com/DLTcollab/sse2neon, MIT)
  */
 
 #if !defined(SIMDE_X86_SSE4_2_H)
@@ -104,24 +105,51 @@ typedef struct {
   int oflag;
 } simde_x_sse42_compare_result_;
 
+static const uint8_t SIMDE_ALIGN_TO(16) simde_x_sse42_mask8b_[16] = {
+    0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80,
+    0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80,
+};
+static const uint16_t SIMDE_ALIGN_TO(16) simde_x_sse42_mask16b_[8] = {
+    0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80,
+};
+
 SIMDE_FUNCTION_ATTRIBUTES
 int
 simde_x_sse42_implicit_len_8_(simde__m128i_private v) {
-  for (int i = 0 ; i < 16 ; i++) {
-    if (v.i8[i] == 0)
-      return i;
-  }
-  return 16;
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    uint16x8_t equal_mask = vreinterpretq_u16_u8(
+        vceqq_u8(v.neon_u8, vdupq_n_u8(0)));
+    uint8x8_t res = vshrn_n_u16(equal_mask, 4);
+    uint64_t matches = vget_lane_u64(vreinterpret_u64_u8(res), 0);
+    if (matches == 0)
+      return 16;
+    return HEDLEY_STATIC_CAST(int, __builtin_ctzll(matches) >> 2);
+  #else
+    for (int i = 0 ; i < 16 ; i++) {
+      if (v.i8[i] == 0)
+        return i;
+    }
+    return 16;
+  #endif
 }
 
 SIMDE_FUNCTION_ATTRIBUTES
 int
 simde_x_sse42_implicit_len_16_(simde__m128i_private v) {
-  for (int i = 0 ; i < 8 ; i++) {
-    if (v.i16[i] == 0)
-      return i;
-  }
-  return 8;
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    uint16x8_t equal_mask = vceqq_u16(v.neon_u16, vdupq_n_u16(0));
+    uint8x8_t res = vshrn_n_u16(equal_mask, 4);
+    uint64_t matches = vget_lane_u64(vreinterpret_u64_u8(res), 0);
+    if (matches == 0)
+      return 8;
+    return HEDLEY_STATIC_CAST(int, __builtin_ctzll(matches) >> 3);
+  #else
+    for (int i = 0 ; i < 8 ; i++) {
+      if (v.i16[i] == 0)
+        return i;
+    }
+    return 8;
+  #endif
 }
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -144,19 +172,55 @@ simde_x_sse42_compare_(simde__m128i_private a_, int la, simde__m128i_private b_,
 
   switch ((imm8 >> 2) & 3) {
     case 0: /* Equal Any */
-      for (int i = 0 ; i < upper_bound ; i++) {
-        int bit = 0;
-        if (i < lb_eff) {
-          for (int j = 0 ; j < la_eff ; j++) {
-            if (imm8 & 1) {
-              if (a_.i16[j] == b_.i16[i]) { bit = 1; break; }
-            } else {
-              if (a_.i8[j] == b_.i8[i]) { bit = 1; break; }
+      #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+        if (imm8 & 1) {
+          /* Word mode: 8 elements */
+          for (int i = 0 ; i < 8 ; i++) {
+            if (i >= lb_eff) continue;
+            uint16x8_t bi = vdupq_n_u16(b_.u16[i]);
+            uint16x8_t eq = vceqq_u16(bi, a_.neon_u16);
+            /* Mask by la validity: zero out lanes >= la_eff */
+            if (la_eff < 8) {
+              uint16x8_t la_mask = vcltq_u16(
+                  vcombine_u16(vcreate_u16(0x0003000200010000ULL), vcreate_u16(0x0007000600050004ULL)),
+                  vdupq_n_u16(HEDLEY_STATIC_CAST(uint16_t, la_eff)));
+              eq = vandq_u16(eq, la_mask);
             }
+            if (vmaxvq_u16(eq))
+              intres1 |= (1 << i);
+          }
+        } else {
+          /* Byte mode: 16 elements */
+          for (int i = 0 ; i < 16 ; i++) {
+            if (i >= lb_eff) continue;
+            uint8x16_t bi = vdupq_n_u8(b_.u8[i]);
+            uint8x16_t eq = vceqq_u8(bi, a_.neon_u8);
+            /* Mask by la validity */
+            if (la_eff < 16) {
+              uint8x16_t la_mask = vcltq_u8(
+                  vcombine_u8(vcreate_u8(0x0706050403020100ULL), vcreate_u8(0x0F0E0D0C0B0A0908ULL)),
+                  vdupq_n_u8(HEDLEY_STATIC_CAST(uint8_t, la_eff)));
+              eq = vandq_u8(eq, la_mask);
+            }
+            if (vmaxvq_u8(eq))
+              intres1 |= (1 << i);
           }
         }
-        intres1 |= (bit << i);
-      }
+      #else
+        for (int i = 0 ; i < upper_bound ; i++) {
+          int bit = 0;
+          if (i < lb_eff) {
+            for (int j = 0 ; j < la_eff ; j++) {
+              if (imm8 & 1) {
+                if (a_.i16[j] == b_.i16[i]) { bit = 1; break; }
+              } else {
+                if (a_.i8[j] == b_.i8[i]) { bit = 1; break; }
+              }
+            }
+          }
+          intres1 |= (bit << i);
+        }
+      #endif
       break;
 
     case 1: /* Ranges */
@@ -190,51 +254,237 @@ simde_x_sse42_compare_(simde__m128i_private a_, int la, simde__m128i_private b_,
       break;
 
     case 2: /* Equal Each */
-      for (int i = 0 ; i < upper_bound ; i++) {
-        int bit;
-        int a_valid = (i < la_eff);
-        int b_valid = (i < lb_eff);
-        if (a_valid && b_valid) {
-          if (imm8 & 1)
-            bit = (a_.i16[i] == b_.i16[i]) ? 1 : 0;
-          else
-            bit = (a_.i8[i] == b_.i8[i]) ? 1 : 0;
-        } else if (!a_valid && !b_valid) {
-          bit = 1;
+      #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+        if (imm8 & 1) {
+          /* Word mode */
+          uint16x8_t eq = vceqq_u16(a_.neon_u16, b_.neon_u16);
+          /* Build validity masks from la_eff and lb_eff */
+          uint16x8_t idx = vcombine_u16(vcreate_u16(0x0003000200010000ULL), vcreate_u16(0x0007000600050004ULL));
+          uint16x8_t la_valid = vcltq_u16(idx, vdupq_n_u16(HEDLEY_STATIC_CAST(uint16_t, la_eff)));
+          uint16x8_t lb_valid = vcltq_u16(idx, vdupq_n_u16(HEDLEY_STATIC_CAST(uint16_t, lb_eff)));
+          /* Both valid: use eq result. Both invalid: 1. Otherwise: 0 */
+          uint16x8_t both_valid = vandq_u16(la_valid, lb_valid);
+          uint16x8_t neither_valid = vmvnq_u16(vorrq_u16(la_valid, lb_valid));
+          uint16x8_t res = vorrq_u16(vandq_u16(eq, both_valid), neither_valid);
+          /* Extract bitmask */
+          uint16x8_t pos_mask = vld1q_u16(simde_x_sse42_mask16b_);
+          uint16x8_t msbs = vshrq_n_u16(res, 15);
+          uint16x8_t positioned = vmulq_u16(msbs, pos_mask);
+          intres1 = HEDLEY_STATIC_CAST(int, vaddvq_u16(positioned));
         } else {
-          bit = 0;
+          /* Byte mode */
+          uint8x16_t eq = vceqq_u8(a_.neon_u8, b_.neon_u8);
+          uint8x16_t idx = vcombine_u8(vcreate_u8(0x0706050403020100ULL), vcreate_u8(0x0F0E0D0C0B0A0908ULL));
+          uint8x16_t la_valid = vcltq_u8(idx, vdupq_n_u8(HEDLEY_STATIC_CAST(uint8_t, la_eff)));
+          uint8x16_t lb_valid = vcltq_u8(idx, vdupq_n_u8(HEDLEY_STATIC_CAST(uint8_t, lb_eff)));
+          uint8x16_t both_valid = vandq_u8(la_valid, lb_valid);
+          uint8x16_t neither_valid = vmvnq_u8(vorrq_u8(la_valid, lb_valid));
+          uint8x16_t res = vorrq_u8(vandq_u8(eq, both_valid), neither_valid);
+          /* Extract 16-bit bitmask */
+          uint8x16_t mask_tbl = vld1q_u8(simde_x_sse42_mask8b_);
+          uint8x16_t masked = vandq_u8(res, mask_tbl);
+          intres1 = HEDLEY_STATIC_CAST(int,
+              vaddv_u8(vget_low_u8(masked)) |
+              (vaddv_u8(vget_high_u8(masked)) << 8));
         }
-        intres1 |= (bit << i);
-      }
+      #else
+        for (int i = 0 ; i < upper_bound ; i++) {
+          int bit;
+          int a_valid = (i < la_eff);
+          int b_valid = (i < lb_eff);
+          if (a_valid && b_valid) {
+            if (imm8 & 1)
+              bit = (a_.i16[i] == b_.i16[i]) ? 1 : 0;
+            else
+              bit = (a_.i8[i] == b_.i8[i]) ? 1 : 0;
+          } else if (!a_valid && !b_valid) {
+            bit = 1;
+          } else {
+            bit = 0;
+          }
+          intres1 |= (bit << i);
+        }
+      #endif
       break;
 
     case 3: /* Equal Ordered (substring search) */
-      for (int i = 0 ; i < upper_bound ; i++) {
-        int bit = 1;
-        for (int j = 0 ; j < upper_bound - i ; j++) {
-          int a_valid = (j < la_eff);
-          int b_valid = ((i + j) < lb_eff);
-          if (!a_valid) {
-            /* Pattern exhausted: match */
-            break;
-          } else if (!b_valid) {
-            /* Haystack exhausted before pattern: no match */
-            bit = 0;
-            break;
-          } else {
-            int eq;
-            if (imm8 & 1)
-              eq = (a_.i16[j] == b_.i16[i + j]) ? 1 : 0;
-            else
-              eq = (a_.i8[j] == b_.i8[i + j]) ? 1 : 0;
-            if (!eq) {
+      #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+        if (imm8 & 1) {
+          /* Word mode: 8x8 matrix transpose + diagonal extraction */
+          uint16x8_t rows[8];
+          /* Build comparison matrix: rows[i][j] = (a[j] == b[i]) ? 0xFFFF : 0 */
+          for (int i = 0 ; i < 8 ; i++) {
+            uint16x8_t bi = vdupq_n_u16(b_.u16[i]);
+            rows[i] = vceqq_u16(bi, a_.neon_u16);
+          }
+          /* Transpose the 8x8 word matrix */
+          /* Level 1: 2x2 blocks of 16-bit elements */
+          for (int i = 0 ; i < 8 ; i += 2) {
+            uint16x8x2_t t = vtrnq_u16(rows[i], rows[i + 1]);
+            rows[i] = t.val[0];
+            rows[i + 1] = t.val[1];
+          }
+          /* Level 2: 2x2 blocks of 32-bit elements */
+          for (int i = 0 ; i < 8 ; i += 4) {
+            uint32x4x2_t t0 = vtrnq_u32(vreinterpretq_u32_u16(rows[i]),
+                                         vreinterpretq_u32_u16(rows[i + 2]));
+            uint32x4x2_t t1 = vtrnq_u32(vreinterpretq_u32_u16(rows[i + 1]),
+                                         vreinterpretq_u32_u16(rows[i + 3]));
+            rows[i]     = vreinterpretq_u16_u32(t0.val[0]);
+            rows[i + 2] = vreinterpretq_u16_u32(t0.val[1]);
+            rows[i + 1] = vreinterpretq_u16_u32(t1.val[0]);
+            rows[i + 3] = vreinterpretq_u16_u32(t1.val[1]);
+          }
+          /* Level 3: swap 64-bit halves */
+          {
+            uint16x8_t tmp;
+            #define SIMDE_X_SSE42_SWAP_HL_16_(a, b) \
+              tmp = vcombine_u16(vget_low_u16(a), vget_low_u16(b)); \
+              b = vcombine_u16(vget_high_u16(a), vget_high_u16(b)); \
+              a = tmp
+            SIMDE_X_SSE42_SWAP_HL_16_(rows[0], rows[4]);
+            SIMDE_X_SSE42_SWAP_HL_16_(rows[1], rows[5]);
+            SIMDE_X_SSE42_SWAP_HL_16_(rows[2], rows[6]);
+            SIMDE_X_SSE42_SWAP_HL_16_(rows[3], rows[7]);
+            #undef SIMDE_X_SSE42_SWAP_HL_16_
+          }
+          /* Apply masking: rows j >= la_eff → 0xFFFF, columns k >= lb_eff → 0 */
+          uint16x8_t vec_ff = vdupq_n_u16(0xFFFF);
+          uint16x8_t pos_mask = vld1q_u16(simde_x_sse42_mask16b_);
+          uint16x8_t lb_clear = vtstq_u16(
+              vdupq_n_u16(HEDLEY_STATIC_CAST(uint16_t, (1U << lb_eff) - 1)), pos_mask);
+          for (int j = 0 ; j < la_eff && j < 8 ; j++)
+            rows[j] = vandq_u16(rows[j], lb_clear);
+          for (int j = la_eff ; j < 8 ; j++)
+            rows[j] = vec_ff;
+          /* Diagonal extraction via vextq + AND cascade */
+          uint16x8_t r = vec_ff;
+          r = vandq_u16(r, vextq_u16(rows[0], vec_ff, 0));
+          r = vandq_u16(r, vextq_u16(rows[1], vec_ff, 1));
+          r = vandq_u16(r, vextq_u16(rows[2], vec_ff, 2));
+          r = vandq_u16(r, vextq_u16(rows[3], vec_ff, 3));
+          r = vandq_u16(r, vextq_u16(rows[4], vec_ff, 4));
+          r = vandq_u16(r, vextq_u16(rows[5], vec_ff, 5));
+          r = vandq_u16(r, vextq_u16(rows[6], vec_ff, 6));
+          r = vandq_u16(r, vextq_u16(rows[7], vec_ff, 7));
+          /* Extract bitmask */
+          uint16x8_t msbs = vshrq_n_u16(r, 15);
+          uint16x8_t positioned = vmulq_u16(msbs, pos_mask);
+          intres1 = HEDLEY_STATIC_CAST(int, vaddvq_u16(positioned));
+        } else {
+          /* Byte mode: 16x16 matrix transpose + diagonal extraction */
+          uint8x16_t rows_b[16];
+          for (int i = 0 ; i < 16 ; i++) {
+            uint8x16_t bi = vdupq_n_u8(b_.u8[i]);
+            rows_b[i] = vceqq_u8(bi, a_.neon_u8);
+          }
+          /* Transpose the 16x16 byte matrix (4-level hierarchical) */
+          /* Level 1: 2x2 blocks of 8-bit elements */
+          for (int i = 0 ; i < 16 ; i += 2) {
+            uint8x16x2_t t = vtrnq_u8(rows_b[i], rows_b[i + 1]);
+            rows_b[i] = t.val[0];
+            rows_b[i + 1] = t.val[1];
+          }
+          /* Level 2: 2x2 blocks of 16-bit elements */
+          for (int i = 0 ; i < 16 ; i += 4) {
+            uint16x8x2_t t0 = vtrnq_u16(vreinterpretq_u16_u8(rows_b[i]),
+                                          vreinterpretq_u16_u8(rows_b[i + 2]));
+            uint16x8x2_t t1 = vtrnq_u16(vreinterpretq_u16_u8(rows_b[i + 1]),
+                                          vreinterpretq_u16_u8(rows_b[i + 3]));
+            rows_b[i]     = vreinterpretq_u8_u16(t0.val[0]);
+            rows_b[i + 2] = vreinterpretq_u8_u16(t0.val[1]);
+            rows_b[i + 1] = vreinterpretq_u8_u16(t1.val[0]);
+            rows_b[i + 3] = vreinterpretq_u8_u16(t1.val[1]);
+          }
+          /* Level 3: 2x2 blocks of 32-bit elements */
+          for (int i = 0 ; i < 16 ; i += 8) {
+            uint32x4x2_t t0 = vtrnq_u32(vreinterpretq_u32_u8(rows_b[i]),
+                                          vreinterpretq_u32_u8(rows_b[i + 4]));
+            uint32x4x2_t t1 = vtrnq_u32(vreinterpretq_u32_u8(rows_b[i + 1]),
+                                          vreinterpretq_u32_u8(rows_b[i + 5]));
+            uint32x4x2_t t2 = vtrnq_u32(vreinterpretq_u32_u8(rows_b[i + 2]),
+                                          vreinterpretq_u32_u8(rows_b[i + 6]));
+            uint32x4x2_t t3 = vtrnq_u32(vreinterpretq_u32_u8(rows_b[i + 3]),
+                                          vreinterpretq_u32_u8(rows_b[i + 7]));
+            rows_b[i]     = vreinterpretq_u8_u32(t0.val[0]);
+            rows_b[i + 4] = vreinterpretq_u8_u32(t0.val[1]);
+            rows_b[i + 1] = vreinterpretq_u8_u32(t1.val[0]);
+            rows_b[i + 5] = vreinterpretq_u8_u32(t1.val[1]);
+            rows_b[i + 2] = vreinterpretq_u8_u32(t2.val[0]);
+            rows_b[i + 6] = vreinterpretq_u8_u32(t2.val[1]);
+            rows_b[i + 3] = vreinterpretq_u8_u32(t3.val[0]);
+            rows_b[i + 7] = vreinterpretq_u8_u32(t3.val[1]);
+          }
+          /* Level 4: swap 64-bit halves between row pairs 0..7 and 8..15 */
+          for (int i = 0 ; i < 8 ; i++) {
+            uint8x16_t tmp = vcombine_u8(vget_low_u8(rows_b[i]), vget_low_u8(rows_b[i + 8]));
+            rows_b[i + 8] = vcombine_u8(vget_high_u8(rows_b[i]), vget_high_u8(rows_b[i + 8]));
+            rows_b[i] = tmp;
+          }
+          /* Apply masking: rows j >= la_eff → 0xFF, columns k >= lb_eff → 0 */
+          uint8x16_t vec_ff_b = vdupq_n_u8(0xFF);
+          uint8x16_t mask_tbl = vld1q_u8(simde_x_sse42_mask8b_);
+          uint16_t lb_bits = HEDLEY_STATIC_CAST(uint16_t, (1U << lb_eff) - 1);
+          uint8x16_t lb_clear_b = vtstq_u8(
+              vcombine_u8(vdup_n_u8(HEDLEY_STATIC_CAST(uint8_t, lb_bits)),
+                          vdup_n_u8(HEDLEY_STATIC_CAST(uint8_t, lb_bits >> 8))),
+              mask_tbl);
+          for (int j = 0 ; j < la_eff && j < 16 ; j++)
+            rows_b[j] = vandq_u8(rows_b[j], lb_clear_b);
+          for (int j = la_eff ; j < 16 ; j++)
+            rows_b[j] = vec_ff_b;
+          /* Diagonal extraction via vextq + AND cascade */
+          uint8x16_t rb = vec_ff_b;
+          rb = vandq_u8(rb, vextq_u8(rows_b[ 0], vec_ff_b,  0));
+          rb = vandq_u8(rb, vextq_u8(rows_b[ 1], vec_ff_b,  1));
+          rb = vandq_u8(rb, vextq_u8(rows_b[ 2], vec_ff_b,  2));
+          rb = vandq_u8(rb, vextq_u8(rows_b[ 3], vec_ff_b,  3));
+          rb = vandq_u8(rb, vextq_u8(rows_b[ 4], vec_ff_b,  4));
+          rb = vandq_u8(rb, vextq_u8(rows_b[ 5], vec_ff_b,  5));
+          rb = vandq_u8(rb, vextq_u8(rows_b[ 6], vec_ff_b,  6));
+          rb = vandq_u8(rb, vextq_u8(rows_b[ 7], vec_ff_b,  7));
+          rb = vandq_u8(rb, vextq_u8(rows_b[ 8], vec_ff_b,  8));
+          rb = vandq_u8(rb, vextq_u8(rows_b[ 9], vec_ff_b,  9));
+          rb = vandq_u8(rb, vextq_u8(rows_b[10], vec_ff_b, 10));
+          rb = vandq_u8(rb, vextq_u8(rows_b[11], vec_ff_b, 11));
+          rb = vandq_u8(rb, vextq_u8(rows_b[12], vec_ff_b, 12));
+          rb = vandq_u8(rb, vextq_u8(rows_b[13], vec_ff_b, 13));
+          rb = vandq_u8(rb, vextq_u8(rows_b[14], vec_ff_b, 14));
+          rb = vandq_u8(rb, vextq_u8(rows_b[15], vec_ff_b, 15));
+          /* Extract 16-bit bitmask */
+          uint8x16_t masked_b = vandq_u8(rb, mask_tbl);
+          intres1 = HEDLEY_STATIC_CAST(int,
+              vaddv_u8(vget_low_u8(masked_b)) |
+              (vaddv_u8(vget_high_u8(masked_b)) << 8));
+        }
+      #else
+        for (int i = 0 ; i < upper_bound ; i++) {
+          int bit = 1;
+          for (int j = 0 ; j < upper_bound - i ; j++) {
+            int a_valid = (j < la_eff);
+            int b_valid = ((i + j) < lb_eff);
+            if (!a_valid) {
+              /* Pattern exhausted: match */
+              break;
+            } else if (!b_valid) {
+              /* Haystack exhausted before pattern: no match */
               bit = 0;
               break;
+            } else {
+              int eq;
+              if (imm8 & 1)
+                eq = (a_.i16[j] == b_.i16[i + j]) ? 1 : 0;
+              else
+                eq = (a_.i8[j] == b_.i8[i + j]) ? 1 : 0;
+              if (!eq) {
+                bit = 0;
+                break;
+              }
             }
           }
+          intres1 |= (bit << i);
         }
-        intres1 |= (bit << i);
-      }
+      #endif
       break;
   }
 
