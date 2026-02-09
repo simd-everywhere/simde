@@ -94,6 +94,483 @@ SIMDE_BEGIN_DECLS_
   #define _SIDD_UNIT_MASK SIMDE_SIDD_UNIT_MASK
 #endif
 
+/* Core SSE4.2 string comparison engine */
+
+typedef struct {
+  int intres2;
+  int cflag;
+  int sflag;
+  int zflag;
+  int oflag;
+} simde_x_sse42_compare_result_;
+
+SIMDE_FUNCTION_ATTRIBUTES
+int
+simde_x_sse42_implicit_len_8_(simde__m128i_private v) {
+  for (int i = 0 ; i < 16 ; i++) {
+    if (v.i8[i] == 0)
+      return i;
+  }
+  return 16;
+}
+
+SIMDE_FUNCTION_ATTRIBUTES
+int
+simde_x_sse42_implicit_len_16_(simde__m128i_private v) {
+  for (int i = 0 ; i < 8 ; i++) {
+    if (v.i16[i] == 0)
+      return i;
+  }
+  return 8;
+}
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde_x_sse42_compare_result_
+simde_x_sse42_compare_(simde__m128i_private a_, int la, simde__m128i_private b_, int lb, const int imm8) {
+  simde_x_sse42_compare_result_ result;
+  const int upper_bound = (imm8 & 1) ? 8 : 16;
+
+  /* Compute flags from raw lengths before clamping */
+  result.sflag = (la < upper_bound) ? 1 : 0;
+  result.zflag = (lb < upper_bound) ? 1 : 0;
+
+  /* Take absolute value and clamp to [0, upper_bound] */
+  int la_eff = la < 0 ? -la : la;
+  int lb_eff = lb < 0 ? -lb : lb;
+  if (la_eff > upper_bound) la_eff = upper_bound;
+  if (lb_eff > upper_bound) lb_eff = upper_bound;
+
+  int intres1 = 0;
+
+  switch ((imm8 >> 2) & 3) {
+    case 0: /* Equal Any */
+      for (int i = 0 ; i < upper_bound ; i++) {
+        int bit = 0;
+        if (i < lb_eff) {
+          for (int j = 0 ; j < la_eff ; j++) {
+            if (imm8 & 1) {
+              if (a_.i16[j] == b_.i16[i]) { bit = 1; break; }
+            } else {
+              if (a_.i8[j] == b_.i8[i]) { bit = 1; break; }
+            }
+          }
+        }
+        intres1 |= (bit << i);
+      }
+      break;
+
+    case 1: /* Ranges */
+      for (int i = 0 ; i < upper_bound ; i++) {
+        int bit = 0;
+        if (i < lb_eff) {
+          for (int j = 0 ; j + 1 < la_eff ; j += 2) {
+            if (imm8 & 1) {
+              /* Word */
+              if (imm8 & 2) {
+                /* Signed */
+                if (a_.i16[j] <= b_.i16[i] && b_.i16[i] <= a_.i16[j + 1]) { bit = 1; break; }
+              } else {
+                /* Unsigned */
+                if (a_.u16[j] <= b_.u16[i] && b_.u16[i] <= a_.u16[j + 1]) { bit = 1; break; }
+              }
+            } else {
+              /* Byte */
+              if (imm8 & 2) {
+                /* Signed */
+                if (a_.i8[j] <= b_.i8[i] && b_.i8[i] <= a_.i8[j + 1]) { bit = 1; break; }
+              } else {
+                /* Unsigned */
+                if (a_.u8[j] <= b_.u8[i] && b_.u8[i] <= a_.u8[j + 1]) { bit = 1; break; }
+              }
+            }
+          }
+        }
+        intres1 |= (bit << i);
+      }
+      break;
+
+    case 2: /* Equal Each */
+      for (int i = 0 ; i < upper_bound ; i++) {
+        int bit;
+        int a_valid = (i < la_eff);
+        int b_valid = (i < lb_eff);
+        if (a_valid && b_valid) {
+          if (imm8 & 1)
+            bit = (a_.i16[i] == b_.i16[i]) ? 1 : 0;
+          else
+            bit = (a_.i8[i] == b_.i8[i]) ? 1 : 0;
+        } else if (!a_valid && !b_valid) {
+          bit = 1;
+        } else {
+          bit = 0;
+        }
+        intres1 |= (bit << i);
+      }
+      break;
+
+    case 3: /* Equal Ordered (substring search) */
+      for (int i = 0 ; i < upper_bound ; i++) {
+        int bit = 1;
+        for (int j = 0 ; j < upper_bound - i ; j++) {
+          int a_valid = (j < la_eff);
+          int b_valid = ((i + j) < lb_eff);
+          if (!a_valid) {
+            /* Pattern exhausted: match */
+            break;
+          } else if (!b_valid) {
+            /* Haystack exhausted before pattern: no match */
+            bit = 0;
+            break;
+          } else {
+            int eq;
+            if (imm8 & 1)
+              eq = (a_.i16[j] == b_.i16[i + j]) ? 1 : 0;
+            else
+              eq = (a_.i8[j] == b_.i8[i + j]) ? 1 : 0;
+            if (!eq) {
+              bit = 0;
+              break;
+            }
+          }
+        }
+        intres1 |= (bit << i);
+      }
+      break;
+  }
+
+  /* Apply polarity */
+  int intres2;
+  switch ((imm8 >> 4) & 3) {
+    case 0: /* Positive Polarity */
+    case 2: /* Masked Positive Polarity (same as positive for IntRes2) */
+      intres2 = intres1;
+      break;
+    case 1: /* Negative Polarity */
+      intres2 = ~intres1;
+      break;
+    case 3: /* Masked Negative Polarity */
+      intres2 = intres1 ^ ((1 << lb_eff) - 1);
+      break;
+    default:
+      intres2 = intres1;
+      break;
+  }
+
+  /* Mask to upper_bound bits */
+  intres2 &= ((1 << upper_bound) - 1);
+
+  result.intres2 = intres2;
+  result.cflag = (intres2 != 0) ? 1 : 0;
+  result.oflag = intres2 & 1;
+  return result;
+}
+
+/* Explicit-length string comparison functions */
+
+SIMDE_FUNCTION_ATTRIBUTES
+int simde_mm_cmpestra (simde__m128i a, int la, simde__m128i b, int lb, const int imm8)
+    SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 255) {
+  simde__m128i_private a_ = simde__m128i_to_private(a);
+  simde__m128i_private b_ = simde__m128i_to_private(b);
+  simde_x_sse42_compare_result_ r = simde_x_sse42_compare_(a_, la, b_, lb, imm8);
+  return !r.cflag && !r.zflag;
+}
+#if defined(SIMDE_X86_SSE4_2_NATIVE)
+  #if defined(__clang__) && !SIMDE_DETECT_CLANG_VERSION_CHECK(3,8,0)
+    #define simde_mm_cmpestra(a, la, b, lb, imm8) \
+      _mm_cmpestra( \
+        HEDLEY_REINTERPRET_CAST(__v16qi, a), la, \
+        HEDLEY_REINTERPRET_CAST(__v16qi, b), lb, \
+        imm8)
+  #else
+    #define simde_mm_cmpestra(a, la, b, lb, imm8) _mm_cmpestra(a, la, b, lb, imm8)
+  #endif
+#endif
+#if defined(SIMDE_X86_SSE4_2_ENABLE_NATIVE_ALIASES)
+  #undef _mm_cmpestra
+  #define _mm_cmpestra(a, la, b, lb, imm8) simde_mm_cmpestra(a, la, b, lb, imm8)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+int simde_mm_cmpestrc (simde__m128i a, int la, simde__m128i b, int lb, const int imm8)
+    SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 255) {
+  simde__m128i_private a_ = simde__m128i_to_private(a);
+  simde__m128i_private b_ = simde__m128i_to_private(b);
+  simde_x_sse42_compare_result_ r = simde_x_sse42_compare_(a_, la, b_, lb, imm8);
+  return r.cflag;
+}
+#if defined(SIMDE_X86_SSE4_2_NATIVE)
+  #if defined(__clang__) && !SIMDE_DETECT_CLANG_VERSION_CHECK(3,8,0)
+    #define simde_mm_cmpestrc(a, la, b, lb, imm8) \
+      _mm_cmpestrc( \
+        HEDLEY_REINTERPRET_CAST(__v16qi, a), la, \
+        HEDLEY_REINTERPRET_CAST(__v16qi, b), lb, \
+        imm8)
+  #else
+    #define simde_mm_cmpestrc(a, la, b, lb, imm8) _mm_cmpestrc(a, la, b, lb, imm8)
+  #endif
+#endif
+#if defined(SIMDE_X86_SSE4_2_ENABLE_NATIVE_ALIASES)
+  #undef _mm_cmpestrc
+  #define _mm_cmpestrc(a, la, b, lb, imm8) simde_mm_cmpestrc(a, la, b, lb, imm8)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+int simde_mm_cmpestri (simde__m128i a, int la, simde__m128i b, int lb, const int imm8)
+    SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 255) {
+  simde__m128i_private a_ = simde__m128i_to_private(a);
+  simde__m128i_private b_ = simde__m128i_to_private(b);
+  simde_x_sse42_compare_result_ r = simde_x_sse42_compare_(a_, la, b_, lb, imm8);
+  const int upper_bound = (imm8 & 1) ? 8 : 16;
+  if (r.intres2 == 0) return upper_bound;
+  if (imm8 & 0x40) {
+    /* Most significant bit */
+    int idx = upper_bound - 1;
+    while (idx >= 0 && !(r.intres2 & (1 << idx))) idx--;
+    return idx;
+  } else {
+    /* Least significant bit */
+    int idx = 0;
+    while (idx < upper_bound && !(r.intres2 & (1 << idx))) idx++;
+    return idx;
+  }
+}
+#if defined(SIMDE_X86_SSE4_2_NATIVE)
+  #if defined(__clang__) && !SIMDE_DETECT_CLANG_VERSION_CHECK(3,8,0)
+    #define simde_mm_cmpestri(a, la, b, lb, imm8) \
+      _mm_cmpestri( \
+        HEDLEY_REINTERPRET_CAST(__v16qi, a), la, \
+        HEDLEY_REINTERPRET_CAST(__v16qi, b), lb, \
+        imm8)
+  #else
+    #define simde_mm_cmpestri(a, la, b, lb, imm8) _mm_cmpestri(a, la, b, lb, imm8)
+  #endif
+#endif
+#if defined(SIMDE_X86_SSE4_2_ENABLE_NATIVE_ALIASES)
+  #undef _mm_cmpestri
+  #define _mm_cmpestri(a, la, b, lb, imm8) simde_mm_cmpestri(a, la, b, lb, imm8)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m128i simde_mm_cmpestrm (simde__m128i a, int la, simde__m128i b, int lb, const int imm8)
+    SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 255) {
+  simde__m128i_private a_ = simde__m128i_to_private(a);
+  simde__m128i_private b_ = simde__m128i_to_private(b);
+  simde_x_sse42_compare_result_ r = simde_x_sse42_compare_(a_, la, b_, lb, imm8);
+  simde__m128i_private result_ = simde__m128i_to_private(simde_mm_setzero_si128());
+  const int upper_bound = (imm8 & 1) ? 8 : 16;
+  if (imm8 & 0x40) {
+    /* Unit mask: expand each bit to a full element */
+    for (int i = 0 ; i < upper_bound ; i++) {
+      if (r.intres2 & (1 << i)) {
+        if (imm8 & 1)
+          result_.i16[i] = -1;
+        else
+          result_.i8[i] = -1;
+      }
+    }
+  } else {
+    /* Bit mask: store IntRes2 in lowest bits */
+    result_.i32[0] = r.intres2;
+  }
+  return simde__m128i_from_private(result_);
+}
+#if defined(SIMDE_X86_SSE4_2_NATIVE)
+  #if defined(__clang__) && !SIMDE_DETECT_CLANG_VERSION_CHECK(3,8,0)
+    #define simde_mm_cmpestrm(a, la, b, lb, imm8) \
+      _mm_cmpestrm( \
+        HEDLEY_REINTERPRET_CAST(__v16qi, a), la, \
+        HEDLEY_REINTERPRET_CAST(__v16qi, b), lb, \
+        imm8)
+  #else
+    #define simde_mm_cmpestrm(a, la, b, lb, imm8) _mm_cmpestrm(a, la, b, lb, imm8)
+  #endif
+#endif
+#if defined(SIMDE_X86_SSE4_2_ENABLE_NATIVE_ALIASES)
+  #undef _mm_cmpestrm
+  #define _mm_cmpestrm(a, la, b, lb, imm8) simde_mm_cmpestrm(a, la, b, lb, imm8)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+int simde_mm_cmpestro (simde__m128i a, int la, simde__m128i b, int lb, const int imm8)
+    SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 255) {
+  simde__m128i_private a_ = simde__m128i_to_private(a);
+  simde__m128i_private b_ = simde__m128i_to_private(b);
+  simde_x_sse42_compare_result_ r = simde_x_sse42_compare_(a_, la, b_, lb, imm8);
+  return r.oflag;
+}
+#if defined(SIMDE_X86_SSE4_2_NATIVE)
+  #if defined(__clang__) && !SIMDE_DETECT_CLANG_VERSION_CHECK(3,8,0)
+    #define simde_mm_cmpestro(a, la, b, lb, imm8) \
+      _mm_cmpestro( \
+        HEDLEY_REINTERPRET_CAST(__v16qi, a), la, \
+        HEDLEY_REINTERPRET_CAST(__v16qi, b), lb, \
+        imm8)
+  #else
+    #define simde_mm_cmpestro(a, la, b, lb, imm8) _mm_cmpestro(a, la, b, lb, imm8)
+  #endif
+#endif
+#if defined(SIMDE_X86_SSE4_2_ENABLE_NATIVE_ALIASES)
+  #undef _mm_cmpestro
+  #define _mm_cmpestro(a, la, b, lb, imm8) simde_mm_cmpestro(a, la, b, lb, imm8)
+#endif
+
+/* Implicit-length string comparison functions */
+
+SIMDE_FUNCTION_ATTRIBUTES
+int simde_mm_cmpistra (simde__m128i a, simde__m128i b, const int imm8)
+    SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 255) {
+  simde__m128i_private a_ = simde__m128i_to_private(a);
+  simde__m128i_private b_ = simde__m128i_to_private(b);
+  int la = (imm8 & 1) ? simde_x_sse42_implicit_len_16_(a_) : simde_x_sse42_implicit_len_8_(a_);
+  int lb = (imm8 & 1) ? simde_x_sse42_implicit_len_16_(b_) : simde_x_sse42_implicit_len_8_(b_);
+  simde_x_sse42_compare_result_ r = simde_x_sse42_compare_(a_, la, b_, lb, imm8);
+  return !r.cflag && !r.zflag;
+}
+#if defined(SIMDE_X86_SSE4_2_NATIVE)
+  #if defined(__clang__) && !SIMDE_DETECT_CLANG_VERSION_CHECK(3,8,0)
+    #define simde_mm_cmpistra(a, b, imm8) \
+      _mm_cmpistra( \
+        HEDLEY_REINTERPRET_CAST(__v16qi, a), \
+        HEDLEY_REINTERPRET_CAST(__v16qi, b), \
+        imm8)
+  #else
+    #define simde_mm_cmpistra(a, b, imm8) _mm_cmpistra(a, b, imm8)
+  #endif
+#endif
+#if defined(SIMDE_X86_SSE4_2_ENABLE_NATIVE_ALIASES)
+  #undef _mm_cmpistra
+  #define _mm_cmpistra(a, b, imm8) simde_mm_cmpistra(a, b, imm8)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+int simde_mm_cmpistrc (simde__m128i a, simde__m128i b, const int imm8)
+    SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 255) {
+  simde__m128i_private a_ = simde__m128i_to_private(a);
+  simde__m128i_private b_ = simde__m128i_to_private(b);
+  int la = (imm8 & 1) ? simde_x_sse42_implicit_len_16_(a_) : simde_x_sse42_implicit_len_8_(a_);
+  int lb = (imm8 & 1) ? simde_x_sse42_implicit_len_16_(b_) : simde_x_sse42_implicit_len_8_(b_);
+  simde_x_sse42_compare_result_ r = simde_x_sse42_compare_(a_, la, b_, lb, imm8);
+  return r.cflag;
+}
+#if defined(SIMDE_X86_SSE4_2_NATIVE)
+  #if defined(__clang__) && !SIMDE_DETECT_CLANG_VERSION_CHECK(3,8,0)
+    #define simde_mm_cmpistrc(a, b, imm8) \
+      _mm_cmpistrc( \
+        HEDLEY_REINTERPRET_CAST(__v16qi, a), \
+        HEDLEY_REINTERPRET_CAST(__v16qi, b), \
+        imm8)
+  #else
+    #define simde_mm_cmpistrc(a, b, imm8) _mm_cmpistrc(a, b, imm8)
+  #endif
+#endif
+#if defined(SIMDE_X86_SSE4_2_ENABLE_NATIVE_ALIASES)
+  #undef _mm_cmpistrc
+  #define _mm_cmpistrc(a, b, imm8) simde_mm_cmpistrc(a, b, imm8)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+int simde_mm_cmpistri (simde__m128i a, simde__m128i b, const int imm8)
+    SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 255) {
+  simde__m128i_private a_ = simde__m128i_to_private(a);
+  simde__m128i_private b_ = simde__m128i_to_private(b);
+  int la = (imm8 & 1) ? simde_x_sse42_implicit_len_16_(a_) : simde_x_sse42_implicit_len_8_(a_);
+  int lb = (imm8 & 1) ? simde_x_sse42_implicit_len_16_(b_) : simde_x_sse42_implicit_len_8_(b_);
+  simde_x_sse42_compare_result_ r = simde_x_sse42_compare_(a_, la, b_, lb, imm8);
+  const int upper_bound = (imm8 & 1) ? 8 : 16;
+  if (r.intres2 == 0) return upper_bound;
+  if (imm8 & 0x40) {
+    int idx = upper_bound - 1;
+    while (idx >= 0 && !(r.intres2 & (1 << idx))) idx--;
+    return idx;
+  } else {
+    int idx = 0;
+    while (idx < upper_bound && !(r.intres2 & (1 << idx))) idx++;
+    return idx;
+  }
+}
+#if defined(SIMDE_X86_SSE4_2_NATIVE)
+  #if defined(__clang__) && !SIMDE_DETECT_CLANG_VERSION_CHECK(3,8,0)
+    #define simde_mm_cmpistri(a, b, imm8) \
+      _mm_cmpistri( \
+        HEDLEY_REINTERPRET_CAST(__v16qi, a), \
+        HEDLEY_REINTERPRET_CAST(__v16qi, b), \
+        imm8)
+  #else
+    #define simde_mm_cmpistri(a, b, imm8) _mm_cmpistri(a, b, imm8)
+  #endif
+#endif
+#if defined(SIMDE_X86_SSE4_2_ENABLE_NATIVE_ALIASES)
+  #undef _mm_cmpistri
+  #define _mm_cmpistri(a, b, imm8) simde_mm_cmpistri(a, b, imm8)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m128i simde_mm_cmpistrm (simde__m128i a, simde__m128i b, const int imm8)
+    SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 255) {
+  simde__m128i_private a_ = simde__m128i_to_private(a);
+  simde__m128i_private b_ = simde__m128i_to_private(b);
+  int la = (imm8 & 1) ? simde_x_sse42_implicit_len_16_(a_) : simde_x_sse42_implicit_len_8_(a_);
+  int lb = (imm8 & 1) ? simde_x_sse42_implicit_len_16_(b_) : simde_x_sse42_implicit_len_8_(b_);
+  simde_x_sse42_compare_result_ r = simde_x_sse42_compare_(a_, la, b_, lb, imm8);
+  simde__m128i_private result_ = simde__m128i_to_private(simde_mm_setzero_si128());
+  const int upper_bound = (imm8 & 1) ? 8 : 16;
+  if (imm8 & 0x40) {
+    for (int i = 0 ; i < upper_bound ; i++) {
+      if (r.intres2 & (1 << i)) {
+        if (imm8 & 1)
+          result_.i16[i] = -1;
+        else
+          result_.i8[i] = -1;
+      }
+    }
+  } else {
+    result_.i32[0] = r.intres2;
+  }
+  return simde__m128i_from_private(result_);
+}
+#if defined(SIMDE_X86_SSE4_2_NATIVE)
+  #if defined(__clang__) && !SIMDE_DETECT_CLANG_VERSION_CHECK(3,8,0)
+    #define simde_mm_cmpistrm(a, b, imm8) \
+      _mm_cmpistrm( \
+        HEDLEY_REINTERPRET_CAST(__v16qi, a), \
+        HEDLEY_REINTERPRET_CAST(__v16qi, b), \
+        imm8)
+  #else
+    #define simde_mm_cmpistrm(a, b, imm8) _mm_cmpistrm(a, b, imm8)
+  #endif
+#endif
+#if defined(SIMDE_X86_SSE4_2_ENABLE_NATIVE_ALIASES)
+  #undef _mm_cmpistrm
+  #define _mm_cmpistrm(a, b, imm8) simde_mm_cmpistrm(a, b, imm8)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+int simde_mm_cmpistro (simde__m128i a, simde__m128i b, const int imm8)
+    SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 255) {
+  simde__m128i_private a_ = simde__m128i_to_private(a);
+  simde__m128i_private b_ = simde__m128i_to_private(b);
+  int la = (imm8 & 1) ? simde_x_sse42_implicit_len_16_(a_) : simde_x_sse42_implicit_len_8_(a_);
+  int lb = (imm8 & 1) ? simde_x_sse42_implicit_len_16_(b_) : simde_x_sse42_implicit_len_8_(b_);
+  simde_x_sse42_compare_result_ r = simde_x_sse42_compare_(a_, la, b_, lb, imm8);
+  return r.oflag;
+}
+#if defined(SIMDE_X86_SSE4_2_NATIVE)
+  #if defined(__clang__) && !SIMDE_DETECT_CLANG_VERSION_CHECK(3,8,0)
+    #define simde_mm_cmpistro(a, b, imm8) \
+      _mm_cmpistro( \
+        HEDLEY_REINTERPRET_CAST(__v16qi, a), \
+        HEDLEY_REINTERPRET_CAST(__v16qi, b), \
+        imm8)
+  #else
+    #define simde_mm_cmpistro(a, b, imm8) _mm_cmpistro(a, b, imm8)
+  #endif
+#endif
+#if defined(SIMDE_X86_SSE4_2_ENABLE_NATIVE_ALIASES)
+  #undef _mm_cmpistro
+  #define _mm_cmpistro(a, b, imm8) simde_mm_cmpistro(a, b, imm8)
+#endif
+
 SIMDE_FUNCTION_ATTRIBUTES
 int simde_mm_cmpestrs (simde__m128i a, int la, simde__m128i b, int lb, const int imm8)
     SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 255) {
