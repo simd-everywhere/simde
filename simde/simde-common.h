@@ -1079,12 +1079,20 @@ HEDLEY_DIAGNOSTIC_POP
 #      if HEDLEY_GCC_VERSION_CHECK(16,0,0)
 #        define SIMDE_BUG_GCC_123807
 #      endif
+#      if defined(SIMDE_LOONGARCH_LSX_NATIVE) && \
+           ((HEDLEY_GCC_VERSION_CHECK(14,0,0) && !HEDLEY_GCC_VERSION_CHECK(14,4,0)) || \
+            (HEDLEY_GCC_VERSION_CHECK(15,0,0) && !HEDLEY_GCC_VERSION_CHECK(15,2,0)))
+#        define SIMDE_BUG_GCC_121064
+#      endif
 #    endif
 #    if !defined(__OPTIMIZE__) && !(\
        HEDLEY_GCC_VERSION_CHECK(11,4,0) \
        || (HEDLEY_GCC_VERSION_CHECK(10,4,0) && !(HEDLEY_GCC_VERSION_CHECK(11,0,0))) \
        || (HEDLEY_GCC_VERSION_CHECK(9,5,0) && !(HEDLEY_GCC_VERSION_CHECK(10,0,0))))
 #      define SIMDE_BUG_GCC_105339
+#    endif
+#    if defined(SIMDE_ARCH_LOONGARCH)
+#      define SIMDE_BUG_GCC_123766
 #    endif
 #  elif defined(__clang__)
 #    if defined(SIMDE_ARCH_AARCH64)
