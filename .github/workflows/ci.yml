@@ -658,13 +658,13 @@ jobs:
         #   arch_gnu: mips64el
         #   arch_gnu_abi: abi64
         #   distro: ubuntu-24.04
-        - version: 22
+        - version: 21
           cross: armel
           arch_gnu_abi: eabi
           arch_deb: armel
           arch_gnu: arm
           distro: ubuntu-24.04
-        - version: 22
+        - version: 21
           cross: riscv64
           arch_gnu: riscv64
           arch_deb: riscv64
@@ -674,12 +674,12 @@ jobs:
           arch_gnu: s390x
           arch_deb: s390x
           distro: ubuntu-24.04
-        - version: 22
+        - version: 21
           cross: ppc64el
           arch_deb: ppc64el
           arch_gnu: powerpc64le
           distro: ubuntu-24.04
-        - version: 22
+        - version: 21
           cross: loongarch64
           arch_deb: loong64
           arch_gnu: loongarch64
@@ -863,29 +863,29 @@ jobs:
         - version: "21"
           distro: ubuntu-24.04-arm
           arch_flags: -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-c++-keyword -O2
-        - version: "22"
-          distro: ubuntu-24.04
-          arch_flags: -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-c++-keyword
-        - version: "22"
-          distro: ubuntu-24.04
-          arch_flags: -ffast-math -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-c++-keyword -Wno-nan-infinity-disabled
-        - version: "22"
-          distro: ubuntu-24.04
-          arch_flags: -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-c++-keyword -O2
-        - version: "22"
-          distro: ubuntu-24.04-arm
-          arch_flags: -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-c++-keyword
-        - version: "22"
-          distro: ubuntu-24.04-arm
-          plain: true
-          arch_flags: -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-c++-keyword
-        - version: "22"
-          distro: ubuntu-24.04-arm
-          arch_flags: -ffast-math -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-c++-keyword -Wno-nan-infinity-disabled
-        - version: "22"
-          distro: ubuntu-24.04-arm
-          arch_flags: -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-c++-keyword -O2
-        - version: "22"  # armv7
+        # - version: "22"
+        #   distro: ubuntu-24.04
+        #   arch_flags: -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-c++-keyword
+        # - version: "22"
+        #   distro: ubuntu-24.04
+        #   arch_flags: -ffast-math -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-c++-keyword -Wno-nan-infinity-disabled
+        # - version: "22"
+        #   distro: ubuntu-24.04
+        #   arch_flags: -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-c++-keyword -O2
+        # - version: "22"
+        #   distro: ubuntu-24.04-arm
+        #   arch_flags: -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-c++-keyword
+        # - version: "22"
+        #   distro: ubuntu-24.04-arm
+        #   plain: true
+        #   arch_flags: -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-c++-keyword
+        # - version: "22"
+        #   distro: ubuntu-24.04-arm
+        #   arch_flags: -ffast-math -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-c++-keyword -Wno-nan-infinity-disabled
+        # - version: "22"
+        #   distro: ubuntu-24.04-arm
+        #   arch_flags: -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-c++-keyword -O2
+        - version: "21"  # armv7
           distro: ubuntu-24.04-arm
           arch_flags: --target=arm-linux-gnueabihf -march=armv7-a -mfpu=neon -isystem=/usr/arm-linux-gnueabihf/include -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-c++-keyword
           pkg: libstdc++-16-dev-armhf-cross
